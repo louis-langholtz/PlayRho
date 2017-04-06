@@ -52,7 +52,7 @@ struct BodyDef
 	constexpr BodyDef& UseLocation(Vec2 l) noexcept;
 	constexpr BodyDef& UseAngle(Angle a) noexcept;
 	constexpr BodyDef& UseLinearVelocity(Vec2 v) noexcept;
-	constexpr BodyDef& UseAngularVelocity(Angle v) noexcept;
+	constexpr BodyDef& UseAngularVelocity(AngularVelocity v) noexcept;
 	constexpr BodyDef& UseLinearAcceleration(Vec2 v) noexcept;
 	constexpr BodyDef& UseAngularAcceleration(Angle v) noexcept;
 	constexpr BodyDef& UseLinearDamping(RealNum v) noexcept;
@@ -80,7 +80,7 @@ struct BodyDef
 	Vec2 linearVelocity = Vec2_zero;
 
 	/// The angular velocity of the body.
-	Angle angularVelocity = Angle{0};
+	AngularVelocity angularVelocity = AngularVelocity{0};
 
 	Vec2 linearAcceleration = Vec2_zero;
 	
@@ -153,7 +153,7 @@ constexpr BodyDef& BodyDef::UseLinearAcceleration(Vec2 v) noexcept
 	return *this;
 }
 
-constexpr BodyDef& BodyDef::UseAngularVelocity(Angle v) noexcept
+constexpr BodyDef& BodyDef::UseAngularVelocity(AngularVelocity v) noexcept
 {
 	angularVelocity = v;
 	return *this;
@@ -794,7 +794,7 @@ inline void Body::UnsetAwake() noexcept
 	{
 		UnsetAwakeFlag();
 		m_underActiveTime = 0;
-		m_velocity = Velocity{Vec2_zero, Angle{0}};
+		m_velocity = Velocity{Vec2_zero, AngularVelocity{0}};
 	}
 }
 
@@ -1060,7 +1060,7 @@ inline void ApplyLinearImpulse(Body& body, const Vec2 impulse, const Vec2 point)
 	velocity.linear += RealNum{body.GetInvMass() * Kilogram} * impulse;
 	const auto invRotI = body.GetInvRotInertia();
 	const auto intRotInertiaUnitless = invRotI * (SquareMeter * Kilogram / SquareRadian);
-	velocity.angular += Radian * intRotInertiaUnitless * Cross(point - body.GetWorldCenter(), impulse);
+	velocity.angular += RadianPerSecond * intRotInertiaUnitless * Cross(point - body.GetWorldCenter(), impulse);
 	body.SetVelocity(velocity);
 }
 
@@ -1072,7 +1072,7 @@ inline void ApplyAngularImpulse(Body& body, RealNum impulse) noexcept
 	auto velocity = body.GetVelocity();
 	const auto invRotI = body.GetInvRotInertia();
 	const auto intRotInertiaUnitless = invRotI * (SquareMeter * Kilogram / SquareRadian);
-	velocity.angular += Radian * intRotInertiaUnitless * impulse;
+	velocity.angular += RadianPerSecond * intRotInertiaUnitless * impulse;
 	body.SetVelocity(velocity);
 }
 
@@ -1111,7 +1111,7 @@ inline Vec2 GetLinearVelocity(const Body& body) noexcept
 /// Gets the angular velocity.
 /// @param body Body to get the angular velocity for.
 /// @return the angular velocity in radians/second.
-inline Angle GetAngularVelocity(const Body& body) noexcept
+inline AngularVelocity GetAngularVelocity(const Body& body) noexcept
 {
 	return body.GetVelocity().angular;
 }
@@ -1127,7 +1127,7 @@ inline void SetLinearVelocity(Body& body, const Vec2 v) noexcept
 /// Sets the angular velocity.
 /// @param body Body to set the angular velocity of.
 /// @param omega the new angular velocity in radians/second.
-inline void SetAngularVelocity(Body& body, Angle omega) noexcept
+inline void SetAngularVelocity(Body& body, AngularVelocity omega) noexcept
 {
 	body.SetVelocity(Velocity{GetLinearVelocity(body), omega});
 }
@@ -1174,7 +1174,8 @@ inline Vec2 GetLocalVector(const Body& body, const Vec2 worldVector) noexcept
 inline Vec2 GetLinearVelocityFromWorldPoint(const Body& body, const Vec2 worldPoint) noexcept
 {
 	const auto velocity = body.GetVelocity();
-	return velocity.linear + GetRevPerpendicular(worldPoint - body.GetWorldCenter()) * RealNum{velocity.angular / Radian};
+	const auto worldCtr = body.GetWorldCenter();
+	return velocity.linear + GetRevPerpendicular(worldPoint - worldCtr) * RealNum{velocity.angular / RadianPerSecond};
 }
 
 /// Get the world velocity of a local point.

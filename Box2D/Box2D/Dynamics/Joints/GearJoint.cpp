@@ -207,10 +207,10 @@ void GearJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf&
 
 	if (step.doWarmStart)
 	{
-		velA += Velocity{(m_mA * m_impulse) * m_JvAC, Radian * m_iA * m_impulse * m_JwA};
-		velB += Velocity{(m_mB * m_impulse) * m_JvBD, Radian * m_iB * m_impulse * m_JwB};
-		velC -= Velocity{(m_mC * m_impulse) * m_JvAC, Radian * m_iC * m_impulse * m_JwC};
-		velD -= Velocity{(m_mD * m_impulse) * m_JvBD, Radian * m_iD * m_impulse * m_JwD};
+		velA += Velocity{(m_mA * m_impulse) * m_JvAC, RadianPerSecond * m_iA * m_impulse * m_JwA};
+		velB += Velocity{(m_mB * m_impulse) * m_JvBD, RadianPerSecond * m_iB * m_impulse * m_JwB};
+		velC -= Velocity{(m_mC * m_impulse) * m_JvAC, RadianPerSecond * m_iC * m_impulse * m_JwC};
+		velD -= Velocity{(m_mD * m_impulse) * m_JvBD, RadianPerSecond * m_iD * m_impulse * m_JwD};
 	}
 	else
 	{
@@ -238,16 +238,16 @@ RealNum GearJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepC
 	const auto deltaVelAC = velA.linear - velC.linear;
 	const auto deltaVelBD = velB.linear - velD.linear;
 	const auto Cdot = Dot(m_JvAC, deltaVelAC) + Dot(m_JvBD, deltaVelBD)
-		+ RealNum{(m_JwA * velA.angular - m_JwC * velC.angular) / Radian}
-		+ RealNum{(m_JwB * velB.angular - m_JwD * velD.angular) / Radian};
+		+ RealNum{(m_JwA * velA.angular - m_JwC * velC.angular) / RadianPerSecond}
+		+ RealNum{(m_JwB * velB.angular - m_JwD * velD.angular) / RadianPerSecond};
 
 	const auto impulse = -m_mass * Cdot;
 	m_impulse += impulse;
 
-	velA += Velocity{(m_mA * impulse) * m_JvAC, Radian * m_iA * impulse * m_JwA};
-	velB += Velocity{(m_mB * impulse) * m_JvBD, Radian * m_iB * impulse * m_JwB};
-	velC -= Velocity{(m_mC * impulse) * m_JvAC, Radian * m_iC * impulse * m_JwC};
-	velD -= Velocity{(m_mD * impulse) * m_JvBD, Radian * m_iD * impulse * m_JwD};
+	velA += Velocity{(m_mA * impulse) * m_JvAC, RadianPerSecond * m_iA * impulse * m_JwA};
+	velB += Velocity{(m_mB * impulse) * m_JvBD, RadianPerSecond * m_iB * impulse * m_JwB};
+	velC -= Velocity{(m_mC * impulse) * m_JvAC, RadianPerSecond * m_iC * impulse * m_JwC};
+	velD -= Velocity{(m_mD * impulse) * m_JvBD, RadianPerSecond * m_iD * impulse * m_JwD};
 
 	bodiesA.SetVelocity(velA);
 	bodiesB.SetVelocity(velB);

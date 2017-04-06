@@ -58,7 +58,7 @@ public:
 		jd.localAnchorA = Vec2(0.0f, 10.0f);
 		jd.localAnchorB = Vec2(0.0f, 0.0f);
 		jd.referenceAngle = Angle{0};
-		jd.motorSpeed = 0.05f * Pi;
+		jd.motorSpeed = 0.05f * Pi * RadianPerSecond;
 		jd.maxMotorTorque = 100000; // 1e8f;
 		jd.enableMotor = true;
 		m_joint = static_cast<RevoluteJoint*>(m_world->CreateJoint(jd));
@@ -81,11 +81,11 @@ public:
 		switch (key)
 		{
 			case Key_Add:
-				m_joint->SetMotorSpeed(m_joint->GetMotorSpeed() + 0.01f * Pi);
+				m_joint->SetMotorSpeed(m_joint->GetMotorSpeed() + 0.01f * Pi * RadianPerSecond);
 				break;
 			
 			case Key_Subtract:
-				m_joint->SetMotorSpeed(m_joint->GetMotorSpeed() - 0.01f * Pi);
+				m_joint->SetMotorSpeed(m_joint->GetMotorSpeed() - 0.01f * Pi * RadianPerSecond);
 				break;
 	
 			default:

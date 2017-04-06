@@ -101,7 +101,7 @@ public:
 
 		case Key_K:
 			m_platform->SetType(BodyType::Kinematic);
-			m_platform->SetVelocity(Velocity{Vec2(-m_speed, 0.0f), Angle{0}});
+			m_platform->SetVelocity(Velocity{Vec2(-m_speed, 0.0f), AngularVelocity{0}});
 			break;
 	
 		default:

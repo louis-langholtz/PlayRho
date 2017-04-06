@@ -84,7 +84,7 @@ public:
 	TheoJansen()
 	{
 		m_offset = Vec2(0.0f, 8.0f);
-		m_motorSpeed = 2.0f;
+		m_motorSpeed = 2.0f * RadianPerSecond;
 		m_motorOn = true;
 		Vec2 pivot(0.0f, 0.8f);
 
@@ -183,7 +183,7 @@ public:
 			break;
 
 		case Key_S:
-			m_motorJoint->SetMotorSpeed(0.0f);
+			m_motorJoint->SetMotorSpeed(0.0f * RadianPerSecond);
 			break;
 
 		case Key_D:
@@ -209,7 +209,7 @@ public:
 	Body* m_wheel;
 	RevoluteJoint* m_motorJoint;
 	bool m_motorOn;
-	RealNum m_motorSpeed;
+	AngularVelocity m_motorSpeed;
 };
 
 } // namespace box2d

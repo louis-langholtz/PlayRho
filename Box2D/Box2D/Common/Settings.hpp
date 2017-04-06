@@ -33,12 +33,16 @@
 #include <boost/units/io.hpp>
 #include <boost/units/systems/si/length.hpp>
 #include <boost/units/systems/si/time.hpp>
+#include <boost/units/systems/si/velocity.hpp>
+#include <boost/units/systems/si/acceleration.hpp>
 #include <boost/units/systems/si/frequency.hpp>
 #include <boost/units/systems/si/velocity.hpp>
 #include <boost/units/systems/si/mass.hpp>
 #include <boost/units/systems/si/inverse_mass.hpp>
 #include <boost/units/systems/si/area.hpp>
 #include <boost/units/systems/si/plane_angle.hpp>
+#include <boost/units/systems/si/angular_velocity.hpp>
+#include <boost/units/systems/si/angular_acceleration.hpp>
 #include <boost/units/systems/si/second_moment_of_area.hpp>
 #include <boost/units/systems/si/surface_density.hpp>
 #include <boost/units/systems/si/moment_of_inertia.hpp>
@@ -121,6 +125,9 @@ constexpr auto Radian = Angle{boost::units::si::radian * RealNum{1}};
 constexpr auto Degree = Angle{boost::units::si::radian * RealNum{Pi / 180}};
 constexpr auto SquareRadian = Radian * Radian;
 
+using AngularVelocity = boost::units::quantity<boost::units::si::angular_velocity, RealNum>;
+constexpr auto RadianPerSecond = AngularVelocity{boost::units::si::radian_per_second * RealNum{1}};
+
 using Force = boost::units::quantity<boost::units::si::force, RealNum>;
 constexpr auto Newton = Force{boost::units::si::newton * RealNum{1}};
 
@@ -161,6 +168,9 @@ using Angle = RealNum;
 constexpr auto Radian = RealNum{1};
 constexpr auto Degree = RealNum{Pi / 180};
 constexpr auto SquareRadian = Radian * Radian;
+
+using AngularVelocity = RealNum;
+constexpr auto RadianPerSecond = RealNum{1};
 
 using Force = RealNum;
 constexpr auto Newton = RealNum{1};
@@ -402,6 +412,7 @@ inline bool IsValid(const size_t& x) noexcept
 }
 
 #ifdef USE_BOOST_UNITS
+
 template <>
 constexpr inline Angle GetInvalid() noexcept
 {
@@ -425,6 +436,19 @@ inline bool IsValid(const InvMass& x) noexcept
 {
 	return IsValid(RealNum{x * Kilogram});
 }
+
+template <>
+constexpr inline AngularVelocity GetInvalid() noexcept
+{
+	return GetInvalid<RealNum>() * RadianPerSecond;
+}
+
+template <>
+inline bool IsValid(const AngularVelocity& x) noexcept
+{
+	return IsValid(RealNum{x / RadianPerSecond});
+}
+
 #endif
 
 // Memory Allocation

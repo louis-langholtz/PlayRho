@@ -48,7 +48,7 @@ namespace box2d {
 			
 			const auto velocity = Velocity{
 				Vec2{Pi * radius / 2, 0},
-				360.0f * Degree
+				360.0f * Degree / Second
 			};
 			m_orbiter->SetVelocity(velocity);
 		}

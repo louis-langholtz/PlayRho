@@ -175,7 +175,7 @@ public:
 		
 		//angular velocity
 		const auto rotInertia = GetRotInertia(*m_body) * SquareRadian / (SquareMeter * Kilogram);
-		ApplyAngularImpulse(*m_body, m_currentTraction * 0.1f * rotInertia * -GetAngularVelocity(*m_body) / Radian);
+		ApplyAngularImpulse(*m_body, m_currentTraction * 0.1f * rotInertia * -GetAngularVelocity(*m_body) / RadianPerSecond);
 		
 		//forward linear velocity
 		auto currentForwardNormal = getForwardVelocity();

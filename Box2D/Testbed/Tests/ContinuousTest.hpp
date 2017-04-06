@@ -52,7 +52,7 @@ public:
 			m_body = m_world->CreateBody(bd);
 			m_body->CreateFixture(shape);
 
-			m_angularVelocity = Radian * RandomFloat(-50.0f, 50.0f);
+			m_angularVelocity = RadianPerSecond * RandomFloat(-50.0f, 50.0f);
 			//m_angularVelocity = 46.661274f;
 			m_body->SetVelocity(Velocity{Vec2(0.0f, -100.0f), m_angularVelocity});
 		}
@@ -65,7 +65,7 @@ public:
 		gjkCalls = 0; gjkIters = 0; gjkMaxIters = 0;
 
 		m_body->SetTransform(Vec2(0.0f, 20.0f), Angle{0});
-		m_angularVelocity = Radian * RandomFloat(-50.0f, 50.0f);
+		m_angularVelocity = RadianPerSecond * RandomFloat(-50.0f, 50.0f);
 		m_body->SetVelocity(Velocity{Vec2(0.0f, -100.0f), m_angularVelocity});
 	}
 
@@ -108,7 +108,7 @@ public:
 	}
 
 	Body* m_body;
-	Angle m_angularVelocity;
+	AngularVelocity m_angularVelocity;
 };
 
 } // namespace box2d

@@ -30,7 +30,7 @@ public:
 	{		
 		m_hz = 4.0f;
 		m_zeta = 0.7f;
-		m_speed = RealNum{50} * Radian;
+		m_speed = RealNum{50} * RadianPerSecond;
 
 		const auto ground = m_world->CreateBody();
 		{
@@ -197,7 +197,7 @@ public:
 			Vec2 axis(0.0f, 1.0f);
 
 			jd.Initialize(m_car, m_wheel1, m_wheel1->GetLocation(), axis);
-			jd.motorSpeed = Angle{0};
+			jd.motorSpeed = AngularVelocity{0};
 			jd.maxMotorTorque = 20.0f;
 			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
@@ -205,7 +205,7 @@ public:
 			m_spring1 = (WheelJoint*)m_world->CreateJoint(jd);
 
 			jd.Initialize(m_car, m_wheel2, m_wheel2->GetLocation(), axis);
-			jd.motorSpeed = Angle{0};
+			jd.motorSpeed = AngularVelocity{0};
 			jd.maxMotorTorque = 10.0f;
 			jd.enableMotor = false;
 			jd.frequencyHz = m_hz;
@@ -223,7 +223,7 @@ public:
 			break;
 
 		case Key_S:
-			m_spring1->SetMotorSpeed(Angle{0});
+			m_spring1->SetMotorSpeed(AngularVelocity{0});
 			break;
 
 		case Key_D:
@@ -271,7 +271,7 @@ public:
 
 	RealNum m_hz;
 	RealNum m_zeta;
-	Angle m_speed;
+	AngularVelocity m_speed;
 	WheelJoint* m_spring1;
 	WheelJoint* m_spring2;
 };

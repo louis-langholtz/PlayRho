@@ -163,8 +163,8 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraints& bodies,
 
 		const auto P = Vec2{m_impulse.x, m_impulse.y};
 
-		velA -= Velocity{mA * P, Radian * iA * (Cross(m_rA, P) + m_motorImpulse + m_impulse.z)};
-		velB += Velocity{mB * P, Radian * iB * (Cross(m_rB, P) + m_motorImpulse + m_impulse.z)};
+		velA -= Velocity{mA * P, RadianPerSecond * iA * (Cross(m_rA, P) + m_motorImpulse + m_impulse.z)};
+		velB += Velocity{mB * P, RadianPerSecond * iB * (Cross(m_rB, P) + m_motorImpulse + m_impulse.z)};
 	}
 	else
 	{
@@ -194,25 +194,25 @@ RealNum RevoluteJoint::SolveVelocityConstraints(BodyConstraints& bodies, const S
 	// Solve motor constraint.
 	if (m_enableMotor && (m_limitState != e_equalLimits) && !fixedRotation)
 	{
-		const auto difSpeed = RealNum{(velB.angular - velA.angular)/Radian} - m_motorSpeed;
+		const auto difSpeed = RealNum{(velB.angular - velA.angular - m_motorSpeed) / RadianPerSecond};
 		const auto impulse = -m_motorMass * difSpeed;
 		const auto oldImpulse = m_motorImpulse;
 		const auto maxImpulse = RealNum{step.get_dt() / Second} * m_maxMotorTorque;
 		m_motorImpulse = Clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse);
 		const auto incImpulse = m_motorImpulse - oldImpulse;
 
-		velA.angular -= Radian * iA * incImpulse;
-		velB.angular += Radian * iB * incImpulse;
+		velA.angular -= RadianPerSecond * iA * incImpulse;
+		velB.angular += RadianPerSecond * iB * incImpulse;
 	}
 
-	const auto vb = velB.linear + (GetRevPerpendicular(m_rB) * RealNum{velB.angular / Radian});
-	const auto va = velA.linear + (GetRevPerpendicular(m_rA) * RealNum{velA.angular / Radian});
+	const auto vb = velB.linear + (GetRevPerpendicular(m_rB) * RealNum{velB.angular / RadianPerSecond});
+	const auto va = velA.linear + (GetRevPerpendicular(m_rA) * RealNum{velA.angular / RadianPerSecond});
 
 	// Solve limit constraint.
 	if (m_enableLimit && (m_limitState != e_inactiveLimit) && !fixedRotation)
 	{
 		const auto Cdot1 = vb - va;
-		const auto Cdot2 = RealNum{(velB.angular - velA.angular) / Radian};
+		const auto Cdot2 = RealNum{(velB.angular - velA.angular) / RadianPerSecond};
 		const auto Cdot = Vec3(Cdot1.x, Cdot1.y, Cdot2);
 
 		auto impulse = -Solve33(m_mass, Cdot);
@@ -262,8 +262,8 @@ RealNum RevoluteJoint::SolveVelocityConstraints(BodyConstraints& bodies, const S
 
 		const auto P = Vec2{impulse.x, impulse.y};
 
-		velA -= Velocity{mA * P, Radian * iA * (Cross(m_rA, P) + impulse.z)};
-		velB += Velocity{mB * P, Radian * iB * (Cross(m_rB, P) + impulse.z)};
+		velA -= Velocity{mA * P, RadianPerSecond * iA * (Cross(m_rA, P) + impulse.z)};
+		velB += Velocity{mB * P, RadianPerSecond * iB * (Cross(m_rB, P) + impulse.z)};
 	}
 	else
 	{
@@ -274,8 +274,8 @@ RealNum RevoluteJoint::SolveVelocityConstraints(BodyConstraints& bodies, const S
 		m_impulse.x += impulse.x;
 		m_impulse.y += impulse.y;
 
-		velA -= Velocity{mA * impulse, Radian * iA * Cross(m_rA, impulse)};
-		velB += Velocity{mB * impulse, Radian * iB * Cross(m_rB, impulse)};
+		velA -= Velocity{mA * impulse, RadianPerSecond * iA * Cross(m_rA, impulse)};
+		velB += Velocity{mB * impulse, RadianPerSecond * iB * Cross(m_rB, impulse)};
 	}
 
 	bodiesA.SetVelocity(velA);
@@ -400,7 +400,7 @@ RealNum RevoluteJoint::GetMotorTorque(RealNum inv_dt) const
 	return inv_dt * m_motorImpulse;
 }
 
-void RevoluteJoint::SetMotorSpeed(RealNum speed)
+void RevoluteJoint::SetMotorSpeed(AngularVelocity speed)
 {
 	GetBodyA()->SetAwake();
 	GetBodyB()->SetAwake();
@@ -444,7 +444,7 @@ Angle box2d::GetJointAngle(const RevoluteJoint& joint)
 	return joint.GetBodyB()->GetAngle() - joint.GetBodyA()->GetAngle() - joint.GetReferenceAngle();
 }
 
-Angle box2d::GetJointSpeed(const RevoluteJoint& joint)
+AngularVelocity box2d::GetJointSpeed(const RevoluteJoint& joint)
 {
 	return joint.GetBodyB()->GetVelocity().angular - joint.GetBodyA()->GetVelocity().angular;
 }

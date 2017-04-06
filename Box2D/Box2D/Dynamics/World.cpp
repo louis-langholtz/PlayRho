@@ -159,12 +159,12 @@ namespace {
 			translation = timeInSecs * velocity.linear;
 		}
 		
-		auto rotation = timeInSecs * velocity.angular;
+		auto rotation = h * velocity.angular;
 		if (Abs(rotation) > conf.maxRotation)
 		{
 			const auto ratio = conf.maxRotation / Abs(rotation);
 			velocity.angular *= ratio;
-			rotation = timeInSecs * velocity.angular;
+			rotation = h * velocity.angular;
 		}
 		
 		return PositionAndVelocity{body.GetPosition() + Position{translation, rotation}, velocity};
@@ -270,7 +270,7 @@ namespace {
 	
 	inline VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc)
 	{
-		VelocityPair vp{Velocity{Vec2_zero, Angle{0}}, Velocity{Vec2_zero, Angle{0}}};
+		VelocityPair vp{Velocity{Vec2_zero, AngularVelocity{0}}, Velocity{Vec2_zero, AngularVelocity{0}}};
 		
 		const auto normal = GetNormal(vc);
 		const auto tangent = GetTangent(vc);
@@ -285,11 +285,11 @@ namespace {
 				const auto P = GetNormalImpulseAtPoint(vc, j) * normal + GetTangentImpulseAtPoint(vc, j) * tangent;
 				vp.a -= Velocity{
 					RealNum{vc.bodyA.GetInvMass() * Kilogram} * P,
-					Radian * invRotInertiaA * Cross(GetPointRelPosA(vc, j), P)
+					RadianPerSecond * invRotInertiaA * Cross(GetPointRelPosA(vc, j), P)
 				};
 				vp.b += Velocity{
 					RealNum{vc.bodyB.GetInvMass() * Kilogram} * P,
-					Radian * invRotInertiaB * Cross(GetPointRelPosB(vc, j), P)
+					RadianPerSecond * invRotInertiaB * Cross(GetPointRelPosB(vc, j), P)
 				};
 			}
 		}
@@ -584,7 +584,7 @@ private:
 			case BodyType::Static:
 				b.UnsetAwakeFlag();
 				b.m_underActiveTime = 0;
-				b.m_velocity = Velocity{Vec2_zero, Angle{0}};
+				b.m_velocity = Velocity{Vec2_zero, AngularVelocity{0}};
 				b.m_sweep.pos0 = b.m_sweep.pos1;
 				break;
 		}

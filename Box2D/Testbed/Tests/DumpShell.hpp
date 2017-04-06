@@ -49,7 +49,7 @@ public:
 			bd.position = Vec2(2.587699890136719e-02f, 5.515012264251709e+00f);
 			bd.angle = 0.0f * Radian;
 			bd.linearVelocity = Vec2(0.000000000000000e+00f, 0.000000000000000e+00f);
-			bd.angularVelocity = 0.0f * Radian;
+			bd.angularVelocity = 0.0f * RadianPerSecond;
 			bd.linearDamping = 0.000000000000000e+00f;
 			bd.angularDamping = 0.000000000000000e+00f;
 			bd.allowSleep = bool(4);
@@ -85,7 +85,7 @@ public:
 			bd.position = Vec2(-3.122138977050781e-02f, 7.535382270812988e+00f);
 			bd.angle = -1.313644275069237e-02f * Radian;
 			bd.linearVelocity = Vec2(8.230687379837036e-01f, 7.775862514972687e-02f);
-			bd.angularVelocity = 3.705333173274994e-02f * Radian;
+			bd.angularVelocity = 3.705333173274994e-02f * RadianPerSecond;
 			bd.linearDamping = 0.000000000000000e+00f;
 			bd.angularDamping = 0.000000000000000e+00f;
 			bd.allowSleep = bool(4);
@@ -122,7 +122,7 @@ public:
 			bd.position = Vec2(-7.438077926635742e-01f, 6.626811981201172e+00f);
 			bd.angle = -1.884713363647461e+01f * Radian;
 			bd.linearVelocity = Vec2(1.785794943571091e-01f, 3.799796104431152e-07f);
-			bd.angularVelocity = -5.908820639888290e-06f * Radian;
+			bd.angularVelocity = -5.908820639888290e-06f * RadianPerSecond;
 			bd.linearDamping = 0.000000000000000e+00f;
 			bd.angularDamping = 0.000000000000000e+00f;
 			bd.allowSleep = bool(4);

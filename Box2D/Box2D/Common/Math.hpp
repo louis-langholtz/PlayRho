@@ -479,7 +479,7 @@ inline bool IsValid(const Position& value) noexcept
 struct Velocity
 {
 	Vec2 linear; ///< Linear velocity (in meters/second).
-	Angle angular; ///< Angular velocity (in radians/second).
+	AngularVelocity angular; ///< Angular velocity (in radians/second).
 };
 
 template <>
@@ -1270,7 +1270,7 @@ inline RealNum Normalize(Vec2& vector)
 
 inline bool IsUnderActive(Velocity velocity, RealNum linSleepTol, RealNum angSleepTol) noexcept
 {
-	return (Square(RealNum{velocity.angular / Radian}) <= Square(angSleepTol))
+	return (Square(RealNum{velocity.angular / RadianPerSecond}) <= Square(angSleepTol))
 	    && (GetLengthSquared(velocity.linear) <= Square(linSleepTol));
 }
 
@@ -1279,8 +1279,8 @@ inline bool IsUnderActive(Velocity velocity, RealNum linSleepTol, RealNum angSle
 constexpr inline Vec2 GetContactRelVelocity(const Velocity velA, const Vec2 vcp_rA,
 											const Velocity velB, const Vec2 vcp_rB) noexcept
 {
-	return (velB.linear + (GetRevPerpendicular(vcp_rB) * RealNum{velB.angular / Radian}))
-	     - (velA.linear + (GetRevPerpendicular(vcp_rA) * RealNum{velA.angular / Radian}));
+	return (velB.linear + (GetRevPerpendicular(vcp_rB) * RealNum{velB.angular / RadianPerSecond}))
+	     - (velA.linear + (GetRevPerpendicular(vcp_rA) * RealNum{velA.angular / RadianPerSecond}));
 }
 
 template <>

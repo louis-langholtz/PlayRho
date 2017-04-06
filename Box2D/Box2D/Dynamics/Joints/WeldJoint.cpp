@@ -151,8 +151,8 @@ void WeldJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf&
 
 		const auto P = Vec2{m_impulse.x, m_impulse.y};
 
-		velA -= Velocity{mA * P, Radian * iA * (Cross(m_rA, P) + m_impulse.z)};
-		velB += Velocity{mB * P, Radian * iB * (Cross(m_rB, P) + m_impulse.z)};
+		velA -= Velocity{mA * P, RadianPerSecond * iA * (Cross(m_rA, P) + m_impulse.z)};
+		velB += Velocity{mB * P, RadianPerSecond * iB * (Cross(m_rB, P) + m_impulse.z)};
 	}
 	else
 	{
@@ -178,16 +178,16 @@ RealNum WeldJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepC
 
 	if (m_frequencyHz > 0)
 	{
-		const auto Cdot2 = RealNum{(velB.angular - velA.angular) / Radian};
+		const auto Cdot2 = RealNum{(velB.angular - velA.angular) / RadianPerSecond};
 
 		const auto impulse2 = -m_mass.ez.z * (Cdot2 + m_bias + m_gamma * m_impulse.z);
 		m_impulse.z += impulse2;
 
-		velA.angular -= Radian * iA * impulse2;
-		velB.angular += Radian * iB * impulse2;
+		velA.angular -= RadianPerSecond * iA * impulse2;
+		velB.angular += RadianPerSecond * iB * impulse2;
 
-		const auto vb = velB.linear + (GetRevPerpendicular(m_rB) * RealNum{velB.angular / Radian});
-		const auto va = velA.linear + (GetRevPerpendicular(m_rA) * RealNum{velA.angular / Radian});
+		const auto vb = velB.linear + (GetRevPerpendicular(m_rB) * RealNum{velB.angular / RadianPerSecond});
+		const auto va = velA.linear + (GetRevPerpendicular(m_rA) * RealNum{velA.angular / RadianPerSecond});
 		const auto Cdot1 = vb - va;
 
 		const auto impulse1 = -Transform(Cdot1, m_mass);
@@ -196,15 +196,15 @@ RealNum WeldJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepC
 
 		const auto P = impulse1;
 
-		velA -= Velocity{mA * P, Radian * iA * Cross(m_rA, P)};
-		velB += Velocity{mB * P, Radian * iB * Cross(m_rB, P)};
+		velA -= Velocity{mA * P, RadianPerSecond * iA * Cross(m_rA, P)};
+		velB += Velocity{mB * P, RadianPerSecond * iB * Cross(m_rB, P)};
 	}
 	else
 	{
-		const auto vb = velB.linear + (GetRevPerpendicular(m_rB) * RealNum{velB.angular / Radian});
-		const auto va = velA.linear + (GetRevPerpendicular(m_rA) * RealNum{velA.angular / Radian});
+		const auto vb = velB.linear + (GetRevPerpendicular(m_rB) * RealNum{velB.angular / RadianPerSecond});
+		const auto va = velA.linear + (GetRevPerpendicular(m_rA) * RealNum{velA.angular / RadianPerSecond});
 		const auto Cdot1 = vb - va;
-		const auto Cdot2 = RealNum{(velB.angular - velA.angular) / Radian};
+		const auto Cdot2 = RealNum{(velB.angular - velA.angular) / RadianPerSecond};
 		const auto Cdot = Vec3(Cdot1.x, Cdot1.y, Cdot2);
 
 		const auto impulse = -Transform(Cdot, m_mass);
@@ -212,8 +212,8 @@ RealNum WeldJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepC
 
 		const auto P = Vec2{impulse.x, impulse.y};
 
-		velA -= Velocity{mA * P, Radian * iA * (Cross(m_rA, P) + impulse.z)};
-		velB += Velocity{mB * P, Radian * iB * (Cross(m_rB, P) + impulse.z)};
+		velA -= Velocity{mA * P, RadianPerSecond * iA * (Cross(m_rA, P) + impulse.z)};
+		velB += Velocity{mB * P, RadianPerSecond * iB * (Cross(m_rB, P) + impulse.z)};
 	}
 
 	bodiesA.SetVelocity(velA);

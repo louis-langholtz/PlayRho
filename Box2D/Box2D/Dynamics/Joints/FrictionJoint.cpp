@@ -108,8 +108,8 @@ void FrictionJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepC
 		m_angularImpulse *= step.dtRatio;
 
 		const auto P = Vec2{m_linearImpulse.x, m_linearImpulse.y};
-		velA -= Velocity{mA * P, Radian * iA * (Cross(m_rA, P) + m_angularImpulse)};
-		velB += Velocity{mB * P, Radian * iB * (Cross(m_rB, P) + m_angularImpulse)};
+		velA -= Velocity{mA * P, RadianPerSecond * iA * (Cross(m_rA, P) + m_angularImpulse)};
+		velB += Velocity{mB * P, RadianPerSecond * iB * (Cross(m_rB, P) + m_angularImpulse)};
 	}
 	else
 	{
@@ -137,7 +137,7 @@ RealNum FrictionJoint::SolveVelocityConstraints(BodyConstraints& bodies, const S
 	// Solve angular friction
 	auto angularImpulse = RealNum{0};
 	{
-		const auto Cdot = RealNum{(velB.angular - velA.angular) / Radian};
+		const auto Cdot = RealNum{(velB.angular - velA.angular) / RadianPerSecond};
 		const auto impulse = -m_angularMass * Cdot;
 
 		const auto oldImpulse = m_angularImpulse;
@@ -145,14 +145,14 @@ RealNum FrictionJoint::SolveVelocityConstraints(BodyConstraints& bodies, const S
 		m_angularImpulse = Clamp(m_angularImpulse + impulse, -maxImpulse, maxImpulse);
 		angularImpulse = m_angularImpulse - oldImpulse;
 
-		velA.angular -= Radian * iA * angularImpulse;
-		velB.angular += Radian * iB * angularImpulse;
+		velA.angular -= RadianPerSecond * iA * angularImpulse;
+		velB.angular += RadianPerSecond * iB * angularImpulse;
 	}
 
 	// Solve linear friction
 	{
-		const auto vb = velB.linear + (GetRevPerpendicular(m_rB) * RealNum{velB.angular / Radian});
-		const auto va = velA.linear + (GetRevPerpendicular(m_rA) * RealNum{velA.angular / Radian});
+		const auto vb = velB.linear + (GetRevPerpendicular(m_rB) * RealNum{velB.angular / RadianPerSecond});
+		const auto va = velA.linear + (GetRevPerpendicular(m_rA) * RealNum{velA.angular / RadianPerSecond});
 		const auto Cdot = vb - va;
 
 		auto impulse = -Transform(Cdot, m_linearMass);
@@ -168,8 +168,8 @@ RealNum FrictionJoint::SolveVelocityConstraints(BodyConstraints& bodies, const S
 
 		impulse = m_linearImpulse - oldImpulse;
 
-		velA -= Velocity{m_invMassA * impulse, Radian * iA * Cross(m_rA, impulse)};
-		velB += Velocity{m_invMassB * impulse, Radian * iB * Cross(m_rB, impulse)};
+		velA -= Velocity{m_invMassA * impulse, RadianPerSecond * iA * Cross(m_rA, impulse)};
+		velB += Velocity{m_invMassB * impulse, RadianPerSecond * iB * Cross(m_rB, impulse)};
 	}
 
 	bodiesA.SetVelocity(velA);

@@ -109,8 +109,8 @@ public:
 		const auto center1 = body1->GetWorldCenter();
 		const auto center2 = body2->GetWorldCenter();
 		
-		const auto velocity1 = m_velocity + GetRevPerpendicular(center1 - center) * RealNum{m_angularVelocity / Radian};
-		const auto velocity2 = m_velocity + GetRevPerpendicular(center2 - center) * RealNum{m_angularVelocity / Radian};
+		const auto velocity1 = m_velocity + GetRevPerpendicular(center1 - center) * RealNum{m_angularVelocity / RadianPerSecond};
+		const auto velocity2 = m_velocity + GetRevPerpendicular(center2 - center) * RealNum{m_angularVelocity / RadianPerSecond};
 
 		body1->SetVelocity(Velocity{velocity1, m_angularVelocity});
 		body2->SetVelocity(Velocity{velocity2, m_angularVelocity});
@@ -141,7 +141,7 @@ public:
 
 	Body* m_body1;
 	Vec2 m_velocity;
-	Angle m_angularVelocity;
+	AngularVelocity m_angularVelocity;
 	std::shared_ptr<PolygonShape> m_shape1 = std::make_shared<PolygonShape>();
 	std::shared_ptr<PolygonShape> m_shape2 = std::make_shared<PolygonShape>();
 	Fixture* m_piece1;

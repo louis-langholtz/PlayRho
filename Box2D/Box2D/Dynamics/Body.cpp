@@ -183,9 +183,10 @@ void Body::ResetMassData()
 	// Move center of mass.
 	const auto oldCenter = GetWorldCenter();
 	m_sweep = Sweep{Position{Transform(localCenter, GetTransformation()), GetAngle()}, localCenter};
-
+	const auto newCenter = GetWorldCenter();
+	
 	// Update center of mass velocity.
-	m_velocity.linear += GetRevPerpendicular(GetWorldCenter() - oldCenter) * RealNum{m_velocity.angular / Radian};
+	m_velocity.linear += GetRevPerpendicular(newCenter - oldCenter) * RealNum{m_velocity.angular / RadianPerSecond};
 	
 	UnsetMassDataDirty();
 }
@@ -220,18 +221,18 @@ void Body::SetMassData(const MassData& massData)
 
 	// Move center of mass.
 	const auto oldCenter = GetWorldCenter();
-
 	m_sweep = Sweep{Position{Transform(massData.center, GetTransformation()), GetAngle()}, massData.center};
+	const auto newCenter = GetWorldCenter();
 
 	// Update center of mass velocity.
-	m_velocity.linear += GetRevPerpendicular(GetWorldCenter() - oldCenter) * RealNum{m_velocity.angular / Radian};
+	m_velocity.linear += GetRevPerpendicular(newCenter - oldCenter) * RealNum{m_velocity.angular / RadianPerSecond};
 	
 	UnsetMassDataDirty();
 }
 
 void Body::SetVelocity(const Velocity& velocity) noexcept
 {
-	if ((velocity.linear != Vec2_zero) || (velocity.angular != Angle{0}))
+	if ((velocity.linear != Vec2_zero) || (velocity.angular != AngularVelocity{0}))
 	{
 		if (!IsSpeedable())
 		{
@@ -325,7 +326,7 @@ void Body::SetFixedRotation(bool flag)
 		m_flags &= ~e_fixedRotationFlag;
 	}
 
-	m_velocity.angular = Angle{0};
+	m_velocity.angular = AngularVelocity{0};
 
 	ResetMassData();
 }
@@ -394,7 +395,7 @@ Velocity box2d::GetVelocity(const Body& body, Time h) noexcept
 	{
 		// Integrate velocities.
 		velocity.linear += timeInSecs * body.GetLinearAcceleration();
-		velocity.angular += timeInSecs * body.GetAngularAcceleration();
+		velocity.angular += AngularVelocity{(timeInSecs * body.GetAngularAcceleration()) / Second};
 		
 		// Apply damping.
 		// Ordinary differential equation: dv/dt + c * v = 0
@@ -403,8 +404,8 @@ Velocity box2d::GetVelocity(const Body& body, Time h) noexcept
 		// v2 = exp(-c * dt) * v1
 		// Pade approximation (see https://en.wikipedia.org/wiki/Pad%C3%A9_approximant ):
 		// v2 = v1 * 1 / (1 + c * dt)
-		velocity.linear  /= (1 + timeInSecs * body.GetLinearDamping());
-		velocity.angular /= (1 + timeInSecs * body.GetAngularDamping());
+		velocity.linear  /= RealNum{1 + timeInSecs * body.GetLinearDamping()};
+		velocity.angular /= RealNum{1 + timeInSecs * body.GetAngularDamping()};
 	}
 	return velocity;
 }

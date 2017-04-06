@@ -72,14 +72,14 @@ public:
 			jd.maxMotorTorque = 1000.0f;
 			jd.enableLimit = true;
 
-			jd.motorSpeed = 0.0f;
+			jd.motorSpeed = AngularVelocity{0};
 			jd.localAnchorA = p1;
 			jd.bodyB = leftFlipper;
 			jd.lowerAngle = -30.0f * Degree;
 			jd.upperAngle = 5.0f * Degree;
 			m_leftJoint = static_cast<RevoluteJoint*>(m_world->CreateJoint(jd));
 
-			jd.motorSpeed = 0.0f;
+			jd.motorSpeed = AngularVelocity{0};
 			jd.localAnchorA = p2;
 			jd.bodyB = rightFlipper;
 			jd.lowerAngle = -5.0f * Degree;
@@ -107,13 +107,13 @@ public:
 	{
 		if (m_button)
 		{
-			m_leftJoint->SetMotorSpeed(20.0f);
-			m_rightJoint->SetMotorSpeed(-20.0f);
+			m_leftJoint->SetMotorSpeed(20.0f * RadianPerSecond);
+			m_rightJoint->SetMotorSpeed(-20.0f * RadianPerSecond);
 		}
 		else
 		{
-			m_leftJoint->SetMotorSpeed(-10.0f);
-			m_rightJoint->SetMotorSpeed(10.0f);
+			m_leftJoint->SetMotorSpeed(-10.0f * RadianPerSecond);
+			m_rightJoint->SetMotorSpeed(10.0f * RadianPerSecond);
 		}
 	}
 

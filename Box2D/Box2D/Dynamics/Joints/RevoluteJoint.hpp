@@ -64,8 +64,8 @@ struct RevoluteJointDef : public JointDef
 	/// A flag to enable the joint motor.
 	bool enableMotor = false;
 
-	/// The desired motor speed. Usually in radians per second.
-	RealNum motorSpeed = 0;
+	/// The desired motor speed.
+	AngularVelocity motorSpeed = AngularVelocity{0};
 
 	/// The maximum motor torque used to achieve the desired motor speed.
 	/// Usually in N-m.
@@ -122,10 +122,10 @@ public:
 	void EnableMotor(bool flag);
 
 	/// Set the motor speed in radians per second.
-	void SetMotorSpeed(RealNum speed);
+	void SetMotorSpeed(AngularVelocity speed);
 
 	/// Get the motor speed in radians per second.
-	RealNum GetMotorSpeed() const noexcept;
+	AngularVelocity GetMotorSpeed() const noexcept;
 
 	/// Set the maximum motor torque, usually in N-m.
 	void SetMaxMotorTorque(RealNum torque);
@@ -161,7 +161,7 @@ private:
 
 	bool m_enableMotor;
 	RealNum m_maxMotorTorque;
-	RealNum m_motorSpeed;
+	AngularVelocity m_motorSpeed;
 
 	bool m_enableLimit;
 	Angle m_referenceAngle;
@@ -203,7 +203,7 @@ inline bool RevoluteJoint::IsMotorEnabled() const noexcept
 	return m_enableMotor;
 }
 
-inline RealNum RevoluteJoint::GetMotorSpeed() const noexcept
+inline AngularVelocity RevoluteJoint::GetMotorSpeed() const noexcept
 {
 	return m_motorSpeed;
 }
@@ -212,7 +212,7 @@ inline RealNum RevoluteJoint::GetMotorSpeed() const noexcept
 Angle GetJointAngle(const RevoluteJoint& joint);
 	
 /// Get the current joint angle speed in radians per second.
-Angle GetJointSpeed(const RevoluteJoint& joint);
+AngularVelocity GetJointSpeed(const RevoluteJoint& joint);
 
 } // namespace box2d
 

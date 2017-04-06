@@ -46,7 +46,7 @@ public:
 				body->CreateFixture(std::make_shared<PolygonShape>(0.5f, 2.0f, shapeConf));
 
 				RevoluteJointDef rjd{prevBody, body, Vec2(0.0f, 5.0f)};
-				rjd.motorSpeed = 1.0f * Pi;
+				rjd.motorSpeed = 1.0f * Pi * RadianPerSecond;
 				rjd.maxMotorTorque = 10000.0f;
 				rjd.enableMotor = true;
 				m_joint1 = (RevoluteJoint*)m_world->CreateJoint(rjd);
