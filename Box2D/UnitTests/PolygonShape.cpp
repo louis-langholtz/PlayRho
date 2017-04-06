@@ -317,8 +317,8 @@ TEST(PolygonShape, CanSetTwoPoints)
 	EXPECT_EQ(shape.GetVertexCount(), static_cast<PolygonShape::vertex_count_t>(points.size()));
 	EXPECT_EQ(shape.GetVertex(0), points[1]);
 	EXPECT_EQ(shape.GetVertex(1), points[0]);
-	EXPECT_EQ(Vec2(shape.GetNormal(0)), Vec2(0, +1));
-	EXPECT_EQ(Vec2(shape.GetNormal(1)), Vec2(0, -1));
+	EXPECT_EQ(GetVec2(shape.GetNormal(0)), Vec2(0, +1));
+	EXPECT_EQ(GetVec2(shape.GetNormal(1)), Vec2(0, -1));
 	EXPECT_EQ(shape.GetCentroid(), Average(points));
 	EXPECT_EQ(shape.GetVertexRadius(), vertexRadius);
 }

@@ -485,7 +485,7 @@ RealNum PrismaticJoint::GetJointTranslation() const
 {
 	const auto pA = GetWorldPoint(*GetBodyA(), m_localAnchorA);
 	const auto pB = GetWorldPoint(*GetBodyB(), m_localAnchorB);
-	return Dot(pB - pA, GetWorldVector(*GetBodyA(), Vec2{m_localXAxisA}));
+	return Dot(pB - pA, GetWorldVector(*GetBodyA(), GetVec2(m_localXAxisA)));
 }
 
 RealNum PrismaticJoint::GetJointSpeed() const

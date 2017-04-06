@@ -56,7 +56,7 @@ TEST(SeparationFinder, BehavesAsExpected)
 	conf.cache = Simplex::GetCache(distanceInfo.simplex.GetEdges());
 	const auto fcn = SeparationFinder::Get(conf.cache.GetIndices(), distproxy, xfA, distproxy, xfB);
 	EXPECT_EQ(fcn.GetType(), SeparationFinder::e_faceA);
-	EXPECT_EQ(Vec2(fcn.GetAxis()), Vec2(1, 0));
+	EXPECT_EQ(GetVec2(fcn.GetAxis()), Vec2(1, 0));
 	EXPECT_EQ(fcn.GetLocalPoint(), Vec2(0.5, 0));
 
 	auto last_min_sep = MaxFloat;

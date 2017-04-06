@@ -714,8 +714,9 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	const auto totalRadius = GetVertexRadius(shapeA) + GetVertexRadius(shapeB);
 
 	// If no valid normal can be found then this edge should not collide.
+	const auto refDir = edgeInfo.GetNormal();
 	const auto edgeAxis = GetMostAntiParallelSeparation(localShapeB.GetVertices(),
-													Vec2{edgeInfo.GetNormal()}, edgeInfo.GetVertex1());
+														GetVec2(refDir), edgeInfo.GetVertex1());
 	if (edgeAxis.separation > totalRadius)
 	{
 		return Manifold{};

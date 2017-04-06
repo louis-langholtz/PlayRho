@@ -45,7 +45,7 @@ public:
 
 			// Bouncy limit
 			const auto axis = GetUnitVector(Vec2(2.0f, 1.0f));
-			PrismaticJointDef pjd(ground, body, Vec2(0.0f, 0.0f), Vec2{axis});
+			PrismaticJointDef pjd(ground, body, Vec2(0.0f, 0.0f), GetVec2(axis));
 
 			// Non-bouncy limit
 			//pjd.Initialize(ground, body, Vec2(-10.0f, 10.0f), Vec2(1.0f, 0.0f));

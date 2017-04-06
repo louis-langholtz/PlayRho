@@ -35,7 +35,7 @@ IndexPairSeparation box2d::GetMaxSeparation(Span<const Vec2> verts1, Span<const 
 	for (auto i = decltype(count1){0}; i < count1; ++i)
 	{
 		// Get shape1 normal and vertex relative to shape2.
-		const auto s = GetMostAntiParallelSeparation(verts2, Vec2{Rotate(norms1[i], xf.q)}, Transform(verts1[i], xf));
+		const auto s = GetMostAntiParallelSeparation(verts2, GetVec2(Rotate(norms1[i], xf.q)), Transform(verts1[i], xf));
 		if (s.separation > stop)
 		{
 			return IndexPairSeparation{s.separation, static_cast<IndexSeparation::index_type>(i), s.index};
@@ -60,7 +60,7 @@ IndexPairSeparation box2d::GetMaxSeparation(Span<const Vec2> verts1, Span<const 
 	const auto count1 = verts1.size();
 	for (auto i = decltype(count1){0}; i < count1; ++i)
 	{
-		const auto s = GetMostAntiParallelSeparation(verts2, Vec2{norms1[i]}, verts1[i]);
+		const auto s = GetMostAntiParallelSeparation(verts2, GetVec2(norms1[i]), verts1[i]);
 		if (s.separation > stop)
 		{
 			return IndexPairSeparation{s.separation, static_cast<IndexSeparation::index_type>(i), s.index};

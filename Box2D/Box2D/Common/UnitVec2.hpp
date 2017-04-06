@@ -137,6 +137,11 @@ namespace box2d
 		{
 			return UnitVec2{-m_x, -m_y};
 		}
+
+		constexpr inline UnitVec2 operator+ () const noexcept
+		{
+			return UnitVec2{+m_x, +m_y};
+		}
 		
 		constexpr inline UnitVec2 Absolute() const noexcept
 		{

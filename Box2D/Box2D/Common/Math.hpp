@@ -1328,6 +1328,11 @@ constexpr inline Angle GetRevRotationalAngle(Angle a1, Angle a2) noexcept
 	return (a1 > a2)? RealNum{360} * Degree - (a1 - a2): a2 - a1;
 }
 
+constexpr inline Vec2 GetVec2(const UnitVec2 value)
+{
+	return Vec2{GetX(value), GetY(value)};
+}
+
 ::std::ostream& operator<<(::std::ostream& os, const Vec2& value);
 
 ::std::ostream& operator<<(::std::ostream& os, const UnitVec2& value);

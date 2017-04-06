@@ -20,7 +20,7 @@
 #ifndef Vec2_hpp
 #define Vec2_hpp
 
-#include <Box2D/Common/UnitVec2.hpp>
+#include <Box2D/Common/Settings.hpp>
 
 namespace box2d
 {
@@ -39,8 +39,6 @@ namespace box2d
 		
 		/// Construct using coordinates.
 		constexpr Vec2(data_type x_, data_type y_) noexcept : x{x_}, y{y_} {}
-		
-		constexpr explicit Vec2(const UnitVec2 unitvector) noexcept: x{unitvector.GetX()}, y{unitvector.GetY()} {}
 		
 		/// Negate this vector.
 		constexpr auto operator- () const noexcept { return Vec2{-x, -y}; }

@@ -59,7 +59,7 @@ int main(int, char**)
 	const auto dynamicBox = std::make_shared<PolygonShape>(1.0f, 1.0f);
 
 	// Set the box density to be non-zero, so it will be dynamic.
-	dynamicBox->SetDensity(1.0f);
+	dynamicBox->SetDensity(1.0f * KilogramPerSquareMeter);
 
 	// Override the default friction.
 	dynamicBox->SetFriction(0.3f);
@@ -71,7 +71,7 @@ int main(int, char**)
 	// second (60Hz) and 10 iterations. This provides a high quality simulation
 	// in most game scenarios.
 	auto stepConf = StepConf{};
-	stepConf.SetTime(1.0f / 60.0f);
+	stepConf.SetTime((1.0f / 60.0f) * Second);
 	stepConf.regVelocityIterations = 6;
 	stepConf.regPositionIterations = 2;
 
@@ -86,7 +86,7 @@ int main(int, char**)
 		const auto position = body->GetLocation();
 		const auto angle = body->GetAngle();
 
-		printf("%4.2f %4.2f %4.2f\n", position.x, position.y, angle / 1 * Degree);
+		printf("%4.2f %4.2f %4.2f\n", position.x, position.y, double{angle / Degree});
 	}
 
 	// When the world destructor is called, all bodies and joints are freed. This can

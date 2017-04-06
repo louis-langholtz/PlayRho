@@ -99,8 +99,10 @@ SeparationFinder SeparationFinder::Get(Span<const IndexPair> indices,
 
 SeparationFinder::Data SeparationFinder::FindMinSeparationForPoints(const Transformation& xfA, const Transformation& xfB) const
 {
-	const auto indexA = GetSupportIndex(m_proxyA, Vec2{InverseRotate(m_axis, xfA.q)});
-	const auto indexB = GetSupportIndex(m_proxyB, Vec2{InverseRotate(-m_axis, xfB.q)});
+	const auto dirA = InverseRotate(+m_axis, xfA.q);
+	const auto dirB = InverseRotate(-m_axis, xfB.q);
+	const auto indexA = GetSupportIndex(m_proxyA, GetVec2(dirA));
+	const auto indexB = GetSupportIndex(m_proxyB, GetVec2(dirB));
 	const auto pointA = Transform(m_proxyA.GetVertex(indexA), xfA);
 	const auto pointB = Transform(m_proxyB.GetVertex(indexB), xfB);
 	return Data{IndexPair{indexA, indexB}, Dot(pointB - pointA, m_axis)};
@@ -111,7 +113,8 @@ SeparationFinder::Data SeparationFinder::FindMinSeparationForFaceA(const Transfo
 	const auto normal = Rotate(m_axis, xfA.q);
 	const auto indexA = IndexPair::InvalidIndex;
 	const auto pointA = Transform(m_localPoint, xfA);
-	const auto indexB = GetSupportIndex(m_proxyB, Vec2{InverseRotate(-normal, xfB.q)});
+	const auto dir = InverseRotate(-normal, xfB.q);
+	const auto indexB = GetSupportIndex(m_proxyB, GetVec2(dir));
 	const auto pointB = Transform(m_proxyB.GetVertex(indexB), xfB);
 	return Data{IndexPair{indexA, indexB}, Dot(pointB - pointA, normal)};
 }
@@ -119,7 +122,8 @@ SeparationFinder::Data SeparationFinder::FindMinSeparationForFaceA(const Transfo
 SeparationFinder::Data SeparationFinder::FindMinSeparationForFaceB(const Transformation& xfA, const Transformation& xfB) const
 {
 	const auto normal = Rotate(m_axis, xfB.q);
-	const auto indexA = GetSupportIndex(m_proxyA, Vec2{InverseRotate(-normal, xfA.q)});
+	const auto dir = InverseRotate(-normal, xfA.q);
+	const auto indexA = GetSupportIndex(m_proxyA, GetVec2(dir));
 	const auto pointA = Transform(m_proxyA.GetVertex(indexA), xfA);
 	const auto indexB = IndexPair::InvalidIndex;
 	const auto pointB = Transform(m_localPoint, xfB);
