@@ -134,11 +134,11 @@ public:
 
 	/// Get the reaction force given the inverse time step.
 	/// Unit is N.
-	Vec2 GetReactionForce(RealNum inv_dt) const override;
+	Vec2 GetReactionForce(Frequency inv_dt) const override;
 
 	/// Get the reaction torque due to the joint limit given the inverse time step.
 	/// Unit is N*m.
-	RealNum GetReactionTorque(RealNum inv_dt) const override;
+	RealNum GetReactionTorque(Frequency inv_dt) const override;
 
 	/// Get the current motor torque given the inverse time step.
 	/// Unit is N*m.

@@ -56,8 +56,8 @@ public:
 	Vec2 GetAnchorA() const override;
 	Vec2 GetAnchorB() const override;
 
-	Vec2 GetReactionForce(RealNum inv_dt) const override;
-	RealNum GetReactionTorque(RealNum inv_dt) const override;
+	Vec2 GetReactionForce(Frequency inv_dt) const override;
+	RealNum GetReactionTorque(Frequency inv_dt) const override;
 
 	/// The local anchor point relative to bodyA's origin.
 	Vec2 GetLocalAnchorA() const { return m_localAnchorA; }

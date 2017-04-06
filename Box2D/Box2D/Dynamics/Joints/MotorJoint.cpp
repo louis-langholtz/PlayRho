@@ -208,14 +208,14 @@ Vec2 MotorJoint::GetAnchorB() const
 	return GetBodyB()->GetLocation();
 }
 
-Vec2 MotorJoint::GetReactionForce(RealNum inv_dt) const
+Vec2 MotorJoint::GetReactionForce(Frequency inv_dt) const
 {
-	return inv_dt * m_linearImpulse;
+	return RealNum{inv_dt / Hertz} * m_linearImpulse;
 }
 
-RealNum MotorJoint::GetReactionTorque(RealNum inv_dt) const
+RealNum MotorJoint::GetReactionTorque(Frequency inv_dt) const
 {
-	return inv_dt * m_angularImpulse;
+	return RealNum{inv_dt / Hertz} * m_angularImpulse;
 }
 
 void MotorJoint::SetMaxForce(RealNum force)

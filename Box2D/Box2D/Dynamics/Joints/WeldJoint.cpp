@@ -309,13 +309,13 @@ Vec2 WeldJoint::GetAnchorB() const
 	return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Vec2 WeldJoint::GetReactionForce(RealNum inv_dt) const
+Vec2 WeldJoint::GetReactionForce(Frequency inv_dt) const
 {
 	const auto P = Vec2{m_impulse.x, m_impulse.y};
-	return inv_dt * P;
+	return RealNum{inv_dt / Hertz} * P;
 }
 
-RealNum WeldJoint::GetReactionTorque(RealNum inv_dt) const
+RealNum WeldJoint::GetReactionTorque(Frequency inv_dt) const
 {
-	return inv_dt * m_impulse.z;
+	return RealNum{inv_dt / Hertz} * m_impulse.z;
 }

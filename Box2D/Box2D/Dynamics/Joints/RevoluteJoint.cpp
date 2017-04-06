@@ -378,14 +378,14 @@ Vec2 RevoluteJoint::GetAnchorB() const
 	return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Vec2 RevoluteJoint::GetReactionForce(RealNum inv_dt) const
+Vec2 RevoluteJoint::GetReactionForce(Frequency inv_dt) const
 {
-	return inv_dt * Vec2{m_impulse.x, m_impulse.y};
+	return RealNum{inv_dt / Hertz} * Vec2{m_impulse.x, m_impulse.y};
 }
 
-RealNum RevoluteJoint::GetReactionTorque(RealNum inv_dt) const
+RealNum RevoluteJoint::GetReactionTorque(Frequency inv_dt) const
 {
-	return inv_dt * m_impulse.z;
+	return RealNum{inv_dt / Hertz} * m_impulse.z;
 }
 
 void RevoluteJoint::EnableMotor(bool flag)

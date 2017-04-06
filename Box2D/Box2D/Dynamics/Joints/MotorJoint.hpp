@@ -59,8 +59,8 @@ public:
 	Vec2 GetAnchorA() const override;
 	Vec2 GetAnchorB() const override;
 
-	Vec2 GetReactionForce(RealNum inv_dt) const override;
-	RealNum GetReactionTorque(RealNum inv_dt) const override;
+	Vec2 GetReactionForce(Frequency inv_dt) const override;
+	RealNum GetReactionTorque(Frequency inv_dt) const override;
 
 	/// Set/get the target linear offset, in frame A, in meters.
 	void SetLinearOffset(const Vec2 linearOffset);

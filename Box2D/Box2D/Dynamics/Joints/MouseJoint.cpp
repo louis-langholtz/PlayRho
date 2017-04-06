@@ -188,14 +188,14 @@ Vec2 MouseJoint::GetAnchorB() const
 	return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Vec2 MouseJoint::GetReactionForce(RealNum inv_dt) const
+Vec2 MouseJoint::GetReactionForce(Frequency inv_dt) const
 {
-	return inv_dt * m_impulse;
+	return RealNum{inv_dt / Hertz} * m_impulse;
 }
 
-RealNum MouseJoint::GetReactionTorque(RealNum inv_dt) const
+RealNum MouseJoint::GetReactionTorque(Frequency inv_dt) const
 {
-	return inv_dt * 0;
+	return RealNum{inv_dt / Hertz} * 0;
 }
 
 void MouseJoint::ShiftOrigin(const Vec2 newOrigin)

@@ -75,11 +75,11 @@ public:
 
 	/// Get the reaction force given the inverse time step.
 	/// Unit is N.
-	Vec2 GetReactionForce(RealNum inv_dt) const override;
+	Vec2 GetReactionForce(Frequency inv_dt) const override;
 
 	/// Get the reaction torque given the inverse time step.
 	/// Unit is N*m. This is always zero for a distance joint.
-	RealNum GetReactionTorque(RealNum inv_dt) const override;
+	RealNum GetReactionTorque(Frequency inv_dt) const override;
 
 	/// The local anchor point relative to bodyA's origin.
 	Vec2 GetLocalAnchorA() const noexcept { return m_localAnchorA; }

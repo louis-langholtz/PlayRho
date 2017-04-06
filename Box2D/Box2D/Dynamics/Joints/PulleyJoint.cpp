@@ -239,12 +239,12 @@ Vec2 PulleyJoint::GetAnchorB() const
 	return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Vec2 PulleyJoint::GetReactionForce(RealNum inv_dt) const
+Vec2 PulleyJoint::GetReactionForce(Frequency inv_dt) const
 {
-	return inv_dt * m_impulse * m_uB;
+	return RealNum{inv_dt / Hertz} * m_impulse * m_uB;
 }
 
-RealNum PulleyJoint::GetReactionTorque(RealNum inv_dt) const
+RealNum PulleyJoint::GetReactionTorque(Frequency inv_dt) const
 {
 	NOT_USED(inv_dt);
 	return RealNum{0};

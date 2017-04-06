@@ -74,10 +74,10 @@ public:
 	Vec2 GetAnchorB() const override;
 
 	/// Implements Joint.
-	Vec2 GetReactionForce(RealNum inv_dt) const override;
+	Vec2 GetReactionForce(Frequency inv_dt) const override;
 
 	/// Implements Joint.
-	RealNum GetReactionTorque(RealNum inv_dt) const override;
+	RealNum GetReactionTorque(Frequency inv_dt) const override;
 
 	Vec2 GetLocalAnchorB() const noexcept;
 

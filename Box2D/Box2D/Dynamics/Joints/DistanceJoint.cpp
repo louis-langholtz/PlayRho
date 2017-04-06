@@ -240,12 +240,12 @@ Vec2 DistanceJoint::GetAnchorB() const
 	return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Vec2 DistanceJoint::GetReactionForce(RealNum inv_dt) const
+Vec2 DistanceJoint::GetReactionForce(Frequency inv_dt) const
 {
-	return (inv_dt * m_impulse) * m_u;
+	return (RealNum{inv_dt / Hertz} * m_impulse) * m_u;
 }
 
-RealNum DistanceJoint::GetReactionTorque(RealNum inv_dt) const
+RealNum DistanceJoint::GetReactionTorque(Frequency inv_dt) const
 {
 	NOT_USED(inv_dt);
 	return 0;

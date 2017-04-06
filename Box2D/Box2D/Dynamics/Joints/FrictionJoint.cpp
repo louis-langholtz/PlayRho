@@ -196,14 +196,14 @@ Vec2 FrictionJoint::GetAnchorB() const
 	return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Vec2 FrictionJoint::GetReactionForce(RealNum inv_dt) const
+Vec2 FrictionJoint::GetReactionForce(Frequency inv_dt) const
 {
-	return inv_dt * m_linearImpulse;
+	return RealNum{inv_dt / Hertz} * m_linearImpulse;
 }
 
-RealNum FrictionJoint::GetReactionTorque(RealNum inv_dt) const
+RealNum FrictionJoint::GetReactionTorque(Frequency inv_dt) const
 {
-	return inv_dt * m_angularImpulse;
+	return RealNum{inv_dt / Hertz} * m_angularImpulse;
 }
 
 void FrictionJoint::SetMaxForce(RealNum force)

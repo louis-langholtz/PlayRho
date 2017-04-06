@@ -190,12 +190,12 @@ Vec2 RopeJoint::GetAnchorB() const
 	return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Vec2 RopeJoint::GetReactionForce(RealNum inv_dt) const
+Vec2 RopeJoint::GetReactionForce(Frequency inv_dt) const
 {
-	return (inv_dt * m_impulse) * m_u;
+	return (RealNum{inv_dt / Hertz} * m_impulse) * m_u;
 }
 
-RealNum RopeJoint::GetReactionTorque(RealNum inv_dt) const
+RealNum RopeJoint::GetReactionTorque(Frequency inv_dt) const
 {
 	NOT_USED(inv_dt);
 	return RealNum{0};

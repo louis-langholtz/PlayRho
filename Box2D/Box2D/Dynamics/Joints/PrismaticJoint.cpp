@@ -471,14 +471,14 @@ Vec2 PrismaticJoint::GetAnchorB() const
 	return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Vec2 PrismaticJoint::GetReactionForce(RealNum inv_dt) const
+Vec2 PrismaticJoint::GetReactionForce(Frequency inv_dt) const
 {
-	return inv_dt * (m_impulse.x * m_perp + (m_motorImpulse + m_impulse.z) * m_axis);
+	return RealNum{inv_dt / Hertz} * (m_impulse.x * m_perp + (m_motorImpulse + m_impulse.z) * m_axis);
 }
 
-RealNum PrismaticJoint::GetReactionTorque(RealNum inv_dt) const
+RealNum PrismaticJoint::GetReactionTorque(Frequency inv_dt) const
 {
-	return inv_dt * m_impulse.y;
+	return RealNum{inv_dt / Hertz} * m_impulse.y;
 }
 
 RealNum PrismaticJoint::GetJointTranslation() const

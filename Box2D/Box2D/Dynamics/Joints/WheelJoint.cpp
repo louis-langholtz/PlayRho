@@ -304,14 +304,14 @@ Vec2 WheelJoint::GetAnchorB() const
 	return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Vec2 WheelJoint::GetReactionForce(RealNum inv_dt) const
+Vec2 WheelJoint::GetReactionForce(Frequency inv_dt) const
 {
-	return inv_dt * (m_impulse * m_ay + m_springImpulse * m_ax);
+	return RealNum{inv_dt / Hertz} * (m_impulse * m_ay + m_springImpulse * m_ax);
 }
 
-RealNum WheelJoint::GetReactionTorque(RealNum inv_dt) const
+RealNum WheelJoint::GetReactionTorque(Frequency inv_dt) const
 {
-	return inv_dt * m_motorImpulse;
+	return RealNum{inv_dt / Hertz} * m_motorImpulse;
 }
 
 RealNum WheelJoint::GetJointTranslation() const

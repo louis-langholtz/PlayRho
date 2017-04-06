@@ -359,14 +359,14 @@ Vec2 GearJoint::GetAnchorB() const
 	return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Vec2 GearJoint::GetReactionForce(RealNum inv_dt) const
+Vec2 GearJoint::GetReactionForce(Frequency inv_dt) const
 {
-	return inv_dt * m_impulse * m_JvAC;
+	return RealNum{inv_dt / Hertz} * m_impulse * m_JvAC;
 }
 
-RealNum GearJoint::GetReactionTorque(RealNum inv_dt) const
+RealNum GearJoint::GetReactionTorque(Frequency inv_dt) const
 {
-	return inv_dt * m_impulse * m_JwA;
+	return RealNum{inv_dt / Hertz} * m_impulse * m_JwA;
 }
 
 void GearJoint::SetRatio(RealNum ratio)
