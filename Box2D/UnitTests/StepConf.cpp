@@ -39,19 +39,19 @@ TEST(StepConf, CopyConstruction)
 	const auto displacementMultiplier = RealNum{3.4f};
 
 	StepConf conf;
-	conf.set_dt(dt);
+	conf.SetTime(dt);
 	conf.displaceMultiplier = displacementMultiplier;
 
-	ASSERT_EQ(conf.get_inv_dt(), RealNum{1} / dt);
+	ASSERT_EQ(conf.GetInvTime(), RealNum{1} / dt);
 	
-	EXPECT_EQ(StepConf{conf}.get_dt(), dt);
-	EXPECT_EQ(StepConf{conf}.get_inv_dt(), RealNum{1} / dt);
+	EXPECT_EQ(StepConf{conf}.GetTime(), dt);
+	EXPECT_EQ(StepConf{conf}.GetInvTime(), RealNum{1} / dt);
 	EXPECT_EQ(StepConf{conf}.displaceMultiplier, displacementMultiplier);
 	
-	const auto cdt = conf.get_dt() * 0.8f;
-	const auto newConf = StepConf{conf}.set_dt(cdt);
+	const auto cdt = conf.GetTime() * 0.8f;
+	const auto newConf = StepConf{conf}.SetTime(cdt);
 	
-	EXPECT_EQ(newConf.get_dt(), cdt);
+	EXPECT_EQ(newConf.GetTime(), cdt);
 }
 
 TEST(StepConf, maxTranslation)

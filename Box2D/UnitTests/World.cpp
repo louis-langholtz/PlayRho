@@ -397,7 +397,7 @@ TEST(World, BodyAccelRevPerSpecWithNegativeTimeAndNoVelOrPosIterations)
 	
 	const auto time_inc = RealNum{-0.01f};
 	auto stepConf = StepConf{};
-	stepConf.set_dt(Time{Second * time_inc});
+	stepConf.SetTime(Time{Second * time_inc});
 	stepConf.dtRatio = -1;
 	stepConf.regPositionIterations = 0;
 	stepConf.regVelocityIterations = 0;
@@ -783,7 +783,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 
 	const auto time_inc = RealNum(.01f);
 	StepConf step;
-	step.set_dt(Time{Second * time_inc});
+	step.SetTime(Time{Second * time_inc});
 
 	// Solver won't separate more than -step.linearSlop.
 	const auto full_separation = radius * 2 - step.linearSlop;
@@ -875,7 +875,7 @@ TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
 
 	auto stepConf = StepConf{};
 	const auto time_inc = RealNum(.01);
-	stepConf.set_dt(Time{Second * time_inc});
+	stepConf.SetTime(Time{Second * time_inc});
 	stepConf.maxLinearCorrection = 0.0001f * 40;
 	for (auto i = 0; i < 100; ++i)
 	{
@@ -962,7 +962,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 	
 	const auto time_inc = RealNum(.01);
 	StepConf step;
-	step.set_dt(Time{Second * time_inc});
+	step.SetTime(Time{Second * time_inc});
 	// Solver won't separate more than -step.linearSlop.
 	const auto full_separation = half_dim * 2 - step.linearSlop;
 	for (auto i = 0; i < 100; ++i)
@@ -1252,7 +1252,7 @@ TEST(World, TilesComesToRestInUnder7secs)
 	}
 	
 	StepConf step;
-	step.set_dt(Time{Second / RealNum{60}});
+	step.SetTime(Time{Second / RealNum{60}});
 
 	const auto start_time = std::chrono::high_resolution_clock::now();
 	while (GetAwakeCount(*m_world) > 0)
@@ -1343,7 +1343,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 
 	const auto time_inc = RealNum(.01);
 	auto stepConf = StepConf{};
-	stepConf.set_dt(Time{Second * time_inc});
+	stepConf.SetTime(Time{Second * time_inc});
 	const auto max_velocity = stepConf.maxTranslation / time_inc;
 	world.Step(stepConf);
 
@@ -1980,7 +1980,7 @@ public:
 			boxes[i] = box;
 		}
 		
-		const auto stepConf = StepConf{}.set_dt(Time{Second / RealNum{60}});
+		const auto stepConf = StepConf{}.SetTime(Time{Second / RealNum{60}});
 		while (loopsTillSleeping < maxLoops)
 		{
 			world.Step(stepConf);

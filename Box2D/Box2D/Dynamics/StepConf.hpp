@@ -44,28 +44,43 @@ public:
 	static constexpr auto InvalidIteration = static_cast<iteration_type>(-1);
 
 	/// Gets the delta time (time amount for this time step).
-	/// @sa set_dt(RealNum).
+	/// @sa SetTime(RealNum).
 	/// @return Time step amount in seconds.
-	Time get_dt() const noexcept { return dt; }
+	Time GetTime() const noexcept { return time; }
 
 	/// Gets the inverse delta-t value.
 	/// @return 1/dt or 0 if dt is 0.
-	/// @sa get_dt().
-	Frequency get_inv_dt() const noexcept { return inv_dt; }
+	/// @sa GetTime().
+	Frequency GetInvTime() const noexcept { return invTime; }
 	
-	/// Sets the delta time value.
+	/// Sets the delte time and inverse time from the given value and its inverse respectively.
 	/// @note Used in both the regular and TOI phases of step processing.
-	/// @post Getting the delta time will return this set value.
-	/// @post The inverse delta time value is the inverse of this set value or zero if the value is zero.
-	/// @sa get_inv_dt().
-	/// @param value Elapsed time amount (in seconds).
-	constexpr StepConf& set_dt(Time value) noexcept
+	/// @post Getting the delta time will return this value.
+	/// @post The inverse delta time value is the inverse of the given value or zero if the value is zero.
+	/// @sa GetTime().
+	/// @sa GetInvTime().
+	/// @param value Elapsed time amount.
+	constexpr StepConf& SetTime(Time value) noexcept
 	{
-		dt = value;
-		inv_dt = (value != Second * RealNum{0})? RealNum{1} / value: Hertz * RealNum{0};
+		time = value;
+		invTime = (value != Time{0})? RealNum{1} / value: Hertz * RealNum{0};
 		return *this;
 	}
 
+	/// Sets the inverse time and delta time from the given value and its inverse respectively.
+	/// @note Used in both the regular and TOI phases of step processing.
+	/// @post Getting the inverse delta time will return this value.
+	/// @post The delta time value is the inverse of the given value or zero if the value is zero.
+	/// @sa GetTime().
+	/// @sa GetInvTime().
+	/// @param value Inverse time amount.
+	constexpr StepConf& SetInvTime(Frequency value) noexcept
+	{
+		invTime = value;
+		time = (value != Frequency{0})? Time{RealNum{1} / value}: Time{0};
+		return *this;
+	}
+	
 	/// Delta t ratio.
 	/// @detail This is the delta-t times the inverse delta t from the previous world step.
 	///   Value of 1 indicates that the time step has not varied.
@@ -252,8 +267,8 @@ public:
 	bool doToi = true;
 
 private:
-	Time dt = DefaultStepTime; ///< Delta time. This is the time step in seconds.
-	Frequency inv_dt = DefaultStepFrequency; ///< Inverse time step (1/dt or 0 if dt == 0). @see dt.
+	Time time = DefaultStepTime; ///< Delta time. This is the time step in seconds.
+	Frequency invTime = DefaultStepFrequency; ///< Inverse time step (1/dt or 0 if dt == 0). @see dt.
 };
 
 inline RealNum GetMaxRegLinearCorrection(const StepConf& conf) noexcept

@@ -135,7 +135,7 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraints& bodies,
 		const auto k = m_mass * Square(omega);
 
 		// magic formulas
-		const auto h = RealNum{step.get_dt() / Second};
+		const auto h = RealNum{step.GetTime() / Second};
 		const auto gamma = h * (d + h * k);
 		m_invGamma = (gamma != 0) ? 1 / gamma: 0;
 		m_bias = C * h * k * m_invGamma;

@@ -369,7 +369,7 @@ namespace {
 	{
 		const auto underactive = IsUnderActive(b.GetVelocity(), conf.linearSleepTolerance, conf.angularSleepTolerance);
 		const auto sleepable = b.IsSleepingAllowed();
-		return (sleepable && underactive)? b.GetUnderActiveTime() + conf.get_dt(): Second * RealNum{0};
+		return (sleepable && underactive)? b.GetUnderActiveTime() + conf.GetTime(): Second * RealNum{0};
 	}
 
 	inline Time UpdateUnderActiveTimes(Island::Bodies& bodies, const StepConf& conf)
@@ -1213,7 +1213,7 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island is
 	auto finMinSeparation = std::numeric_limits<RealNum>::infinity();
 	auto solved = false;
 	auto positionIterations = conf.regPositionIterations;
-	const auto h = conf.get_dt(); ///< Time step.
+	const auto h = conf.GetTime(); ///< Time step.
 
 	auto bodyConstraints = BodyConstraints{};
 	bodyConstraints.reserve(island.m_bodies.size());
@@ -1613,7 +1613,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Contact& contac
 	RemoveUnspeedablesFromIslanded(island.m_bodies);
 
 	// Now solve for remainder of time step
-	return SolveTOI(StepConf{conf}.set_dt((1 - toi) * conf.get_dt()), island);
+	return SolveTOI(StepConf{conf}.SetTime((1 - toi) * conf.GetTime()), island);
 }
 
 void World::UpdateBody(Body& body, const Position& pos, const Velocity& vel)
@@ -1727,7 +1727,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Island& island)
 	
 	// Don't store TOI contact forces for warm starting because they can be quite large.
 	
-	IntegratePositions(bodyConstraints, conf.get_dt(), GetMovementConf(conf));
+	IntegratePositions(bodyConstraints, conf.GetTime(), GetMovementConf(conf));
 	
 	for (auto&& body: island.m_bodies)
 	{
@@ -1853,9 +1853,9 @@ StepStats World::Step(const StepConf& conf)
 			stepStats.pre.added = FindNewContacts();
 		}
 
-		if (conf.get_dt() != Second * RealNum{0})
+		if (conf.GetTime() != Second * RealNum{0})
 		{
-			m_inv_dt0 = conf.get_inv_dt();
+			m_inv_dt0 = conf.GetInvTime();
 
 #if 1
 			// Could potentially run UpdateContacts multithreaded over split lists...
@@ -2569,7 +2569,7 @@ contact_count_t World::Synchronize(Body& body,
 StepStats Step(World& world, Time dt, World::ts_iters_type velocityIterations, World::ts_iters_type positionIterations)
 {
 	StepConf conf;
-	conf.set_dt(dt);
+	conf.SetTime(dt);
 	conf.regVelocityIterations = velocityIterations;
 	conf.regPositionIterations = positionIterations;
 	conf.toiVelocityIterations = velocityIterations;

@@ -197,7 +197,7 @@ RealNum RevoluteJoint::SolveVelocityConstraints(BodyConstraints& bodies, const S
 		const auto difSpeed = RealNum{(velB.angular - velA.angular - m_motorSpeed) / RadianPerSecond};
 		const auto impulse = -m_motorMass * difSpeed;
 		const auto oldImpulse = m_motorImpulse;
-		const auto maxImpulse = RealNum{step.get_dt() / Second} * m_maxMotorTorque;
+		const auto maxImpulse = RealNum{step.GetTime() / Second} * m_maxMotorTorque;
 		m_motorImpulse = Clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse);
 		const auto incImpulse = m_motorImpulse - oldImpulse;
 

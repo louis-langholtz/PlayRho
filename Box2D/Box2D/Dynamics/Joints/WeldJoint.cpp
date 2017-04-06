@@ -123,7 +123,7 @@ void WeldJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf&
 		const auto k = m * omega * omega;
 
 		// magic formulas
-		const auto h = RealNum{step.get_dt() / Second};
+		const auto h = RealNum{step.GetTime() / Second};
 		m_gamma = h * (d + h * k);
 		m_gamma = (m_gamma != 0) ? RealNum{1} / m_gamma : RealNum{0};
 		m_bias = C * h * k * m_gamma;

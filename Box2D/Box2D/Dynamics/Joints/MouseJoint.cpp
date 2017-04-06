@@ -110,7 +110,7 @@ void MouseJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
 	// magic formulas
 	// gamma has units of inverse mass.
 	// beta has units of inverse time.
-	const auto h = RealNum{step.get_dt() / Second};
+	const auto h = RealNum{step.GetTime() / Second};
 	const auto tmp = d + h * k;
 	assert(IsValid(tmp));
 	assert((tmp > 0) && !almost_zero(tmp));
@@ -161,7 +161,7 @@ RealNum MouseJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
 	const auto addImpulse = Transform(-(Cdot + m_C + m_gamma * m_impulse), m_mass);
 	assert(IsValid(addImpulse));
 	m_impulse += addImpulse;
-	const auto maxImpulse = RealNum{step.get_dt() / Second} * m_maxForce;
+	const auto maxImpulse = RealNum{step.GetTime() / Second} * m_maxForce;
 	if (GetLengthSquared(m_impulse) > Square(maxImpulse))
 	{
 		m_impulse *= maxImpulse / GetLength(m_impulse);

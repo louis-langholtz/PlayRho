@@ -71,7 +71,7 @@ int main(int, char**)
 	// second (60Hz) and 10 iterations. This provides a high quality simulation
 	// in most game scenarios.
 	auto stepConf = StepConf{};
-	stepConf.set_dt(1.0f / 60.0f);
+	stepConf.SetTime(1.0f / 60.0f);
 	stepConf.regVelocityIterations = 6;
 	stepConf.regPositionIterations = 2;
 
