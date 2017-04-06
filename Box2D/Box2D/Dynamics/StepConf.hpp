@@ -81,9 +81,9 @@ public:
 		return *this;
 	}
 	
-	/// Delta t ratio.
-	/// @detail This is the delta-t times the inverse delta t from the previous world step.
-	///   Value of 1 indicates that the time step has not varied.
+	/// Delta time ratio.
+	/// @detail This is the delta-time multiplied by the inverse delta time from the previous
+	///    world step. The value of 1 indicates that the time step has not varied.
 	/// @note Used in the regular phase processing of the step.
 	RealNum dtRatio = 1;
 
