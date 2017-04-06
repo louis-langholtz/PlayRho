@@ -106,28 +106,20 @@ private:
 	RealNum SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) override;
 	bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
 
-	RealNum m_frequencyHz;
-	RealNum m_dampingRatio;
-	RealNum m_bias = 0;
-
-	// Solver shared
 	Vec2 m_localAnchorA;
 	Vec2 m_localAnchorB;
-	RealNum m_invGamma = 0;
-	RealNum m_impulse = 0;
 	RealNum m_length;
+	RealNum m_frequencyHz;
+	RealNum m_dampingRatio;
 
 	// Solver temp
+	RealNum m_invGamma;
+	RealNum m_impulse;
+	RealNum m_bias;
+	RealNum m_mass;
 	Vec2 m_u;
 	Vec2 m_rA;
 	Vec2 m_rB;
-	Vec2 m_localCenterA;
-	Vec2 m_localCenterB;
-	RealNum m_invMassA;
-	RealNum m_invMassB;
-	RealNum m_invIA;
-	RealNum m_invIB;
-	RealNum m_mass;
 };
 
 inline void DistanceJoint::SetLength(RealNum length) noexcept
