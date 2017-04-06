@@ -35,26 +35,31 @@ RayCastOutput box2d::RayCast(const AABB& aabb, const RayCastInput& input)
 	auto tmin = -MaxFloat;
 	auto tmax = MaxFloat;
 	
-	const auto p = input.p1;
-	const auto d = input.p2 - input.p1;
+	const auto p1 = input.p1;
+	const auto pDelta = input.p2 - input.p1;
 	
 	UnitVec2 normal;
 	
-	for (auto i = decltype(d.max_size()){0}; i < d.max_size(); ++i)
+	for (auto i = decltype(pDelta.max_size()){0}; i < pDelta.max_size(); ++i)
 	{
-		if (almost_zero(d[i]))
+		const auto p1i = p1[i];
+		const auto pdi = pDelta[i];
+		const auto lbi = aabb.GetLowerBound()[i];
+		const auto ubi = aabb.GetUpperBound()[i];
+
+		if (almost_zero(pdi))
 		{
 			// Parallel.
-			if ((p[i] < aabb.GetLowerBound()[i]) || (aabb.GetUpperBound()[i] < p[i]))
+			if ((p1i < lbi) || (ubi < p1i))
 			{
 				return RayCastOutput{};
 			}
 		}
 		else
 		{
-			const auto inv_d = RealNum{1} / d[i];
-			auto t1 = (aabb.GetLowerBound()[i] - p[i]) * inv_d;
-			auto t2 = (aabb.GetUpperBound()[i] - p[i]) * inv_d;
+			const auto inv_d = RealNum{1} / pdi;
+			auto t1 = (lbi - p1i) * inv_d;
+			auto t2 = (ubi - p1i) * inv_d;
 			
 			// Sign of the normal vector.
 			auto s = -1;
