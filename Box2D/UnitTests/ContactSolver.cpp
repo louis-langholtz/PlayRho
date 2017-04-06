@@ -32,8 +32,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
 {
 	const auto old_pA = Position{Vec2{-2, 0}, RealNum{0} * Degree};
 	const auto old_pB = Position{Vec2{+2, 0}, RealNum{0} * Degree};
-	const auto old_vA = Velocity{Vec2{0, 0}, RealNum{0} * Degree};
-	const auto old_vB = Velocity{Vec2{0, 0}, RealNum{0} * Degree};
+	const auto old_vA = Velocity{Vec2{0, 0}, RealNum{0} * Degree / Second};
+	const auto old_vB = Velocity{Vec2{0, 0}, RealNum{0} * Degree / Second};
 
 	const auto dim = RealNum(2);
 	const auto shape = PolygonShape(dim, dim);

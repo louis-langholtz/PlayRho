@@ -50,7 +50,7 @@ TEST(RevoluteJoint, Construction)
 	jd.localAnchorB = Vec2(6, 7);
 	jd.enableLimit = true;
 	jd.enableMotor = true;
-	jd.motorSpeed = 4.4f;
+	jd.motorSpeed = 4.4f * RadianPerSecond;
 	jd.maxMotorTorque = 1.0f;
 	jd.lowerAngle = 33.0f * Degree;
 	jd.upperAngle = 40.0f * Degree;

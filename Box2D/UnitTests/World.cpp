@@ -991,12 +991,12 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 		ASSERT_EQ(count, decltype(world.GetContacts().size())(1));
 
 		const auto v1 = body1->GetVelocity();
-		EXPECT_EQ(v1.angular, RealNum{0} * Degree);
+		EXPECT_EQ(v1.angular, RealNum{0} * Degree / Second);
 		EXPECT_EQ(v1.linear.x, RealNum(0));
 		EXPECT_EQ(v1.linear.y, RealNum(0));
 
 		const auto v2 = body2->GetVelocity();
-		EXPECT_EQ(v2.angular, RealNum{0} * Degree);
+		EXPECT_EQ(v2.angular, RealNum{0} * Degree / Second);
 		EXPECT_EQ(v2.linear.x, RealNum(0));
 		EXPECT_EQ(v2.linear.y, RealNum(0));
 
@@ -1339,7 +1339,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 	ASSERT_NE(ball_fixture, nullptr);
 
 	const auto velocity = Vec2{+1, 0};
-	ball_body->SetVelocity(Velocity{velocity, RealNum{0} * Degree});
+	ball_body->SetVelocity(Velocity{velocity, RealNum{0} * Degree / Second});
 
 	const auto time_inc = RealNum(.01);
 	auto stepConf = StepConf{};
