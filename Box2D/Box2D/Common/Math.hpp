@@ -1333,6 +1333,15 @@ constexpr inline Vec2 GetVec2(const UnitVec2 value)
 	return Vec2{GetX(value), GetY(value)};
 }
 
+/// Gets the unit vector for the given value.
+/// @param value Value to get the unit vector for.
+/// @return value divided by its length if length not almost zero otherwise invalid value.
+/// @sa almost_equal.
+inline UnitVec2 GetUnitVector(const Vec2 value, const UnitVec2 fallback = UnitVec2::GetDefaultFallback())
+{
+	return UnitVec2::Get(GetX(value), GetY(value), fallback);
+}
+
 ::std::ostream& operator<<(::std::ostream& os, const Vec2& value);
 
 ::std::ostream& operator<<(::std::ostream& os, const UnitVec2& value);

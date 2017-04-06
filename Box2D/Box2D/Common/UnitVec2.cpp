@@ -21,36 +21,26 @@
 
 using namespace box2d;
 
-UnitVec2::UnitVec2(const Vec2& value, UnitVec2 fallback) noexcept
+UnitVec2 UnitVec2::Get(const RealNum x, const RealNum y, const UnitVec2 fallback) noexcept
 {
-	if (IsValid(value))
+	if (IsValid(x) && IsValid(y))
 	{
 		// XXX perhaps this should use std::hypot() instead like so:
-		//    const auto length = std::hypot(value.x, value.y);
+		//    const auto magnitude = std::hypot(x, y);
 
-		const auto lengthSquared = GetLengthSquared(value);
-		if (lengthSquared > 0)
+		const auto magnitudeSquared = Square(x) + Square(y);
+		if (magnitudeSquared > 0)
 		{
-			const auto unitized = value / Sqrt(lengthSquared);
-			m_x = unitized.x;
-			m_y = unitized.y;
-			return;
+			const auto magnitude = Sqrt(magnitudeSquared);
+			return UnitVec2{x / magnitude, y / magnitude};
 		}
-		m_x = fallback.GetX();
-		m_y = fallback.GetY();
-		return;
+		return fallback;
 	}
-	m_x = GetInvalid<data_type>();
-	m_y = GetInvalid<data_type>();
+	return UnitVec2{};
 }
 
-UnitVec2::UnitVec2(const Angle& angle) noexcept:
+UnitVec2::UnitVec2(const Angle angle) noexcept:
 	m_x{std::cos(angle / Radian)}, m_y{std::sin(angle / Radian)}
 {
 	// Intentionally empty.
-}
-
-UnitVec2 box2d::GetUnitVector(const Vec2& value, UnitVec2 fallback)
-{
-	return UnitVec2{value, fallback};
 }

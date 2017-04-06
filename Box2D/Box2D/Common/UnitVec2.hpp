@@ -20,12 +20,9 @@
 #define UnitVec2_hpp
 
 #include <Box2D/Common/Settings.hpp>
-#include <cmath>
 
 namespace box2d
 {
-	struct Vec2;
-
 	class UnitVec2
 	{
 	public:
@@ -51,24 +48,24 @@ namespace box2d
 			return UnitVec2{0, -1};
 		}
 		
-		static constexpr UnitVec2 GetDefaultFallback() noexcept
-		{
-			return UnitVec2{};
-		}
-		
 		static constexpr UnitVec2 GetZero() noexcept
 		{
 			return UnitVec2{0, 0};
 		}
 		
+		static constexpr UnitVec2 GetDefaultFallback() noexcept
+		{
+			return UnitVec2{};
+		}
+		
+		static UnitVec2 Get(const RealNum x, const RealNum y, const UnitVec2 fallback = GetDefaultFallback()) noexcept;
+
 		constexpr UnitVec2() noexcept
 		{
 			// Intentionally empty.
 		}
 		
-		explicit UnitVec2(const Vec2& value, UnitVec2 fallback = GetDefaultFallback()) noexcept;
-		
-		explicit UnitVec2(const Angle& angle) noexcept;
+		explicit UnitVec2(const Angle angle) noexcept;
 		
 		constexpr auto GetX() const noexcept
 		{
@@ -158,12 +155,6 @@ namespace box2d
 		data_type m_x = GetInvalid<data_type>();
 		data_type m_y = GetInvalid<data_type>();
 	};
-		
-	/// Gets the unit vector for the given value.
-	/// @param value Value to get the unit vector for.
-	/// @return value divided by its length if length not almost zero otherwise invalid value.
-	/// @sa almost_equal.
-	UnitVec2 GetUnitVector(const Vec2& value, UnitVec2 fallback = UnitVec2::GetDefaultFallback());	
 	
 	/// Get the x-axis
 	constexpr inline UnitVec2 GetXAxis(UnitVec2 rot) noexcept
