@@ -104,7 +104,7 @@ TEST(World, DefaultInit)
 
 TEST(World, Init)
 {
-	const auto gravity = Vec2{RealNum(-4.2), RealNum(3.4)};
+	const auto gravity = Vec2{RealNum(-4.2), RealNum(3.4)} * MeterPerSquareSecond;
 	World world{World::Def{}.UseGravity(gravity)};
 	EXPECT_EQ(world.GetGravity(), gravity);
 	EXPECT_FALSE(world.IsLocked());
@@ -112,7 +112,7 @@ TEST(World, Init)
 
 TEST(World, SetGravity)
 {
-	const auto gravity = Vec2{RealNum(-4.2), RealNum(3.4)};
+	const auto gravity = Vec2{RealNum(-4.2), RealNum(3.4)} * MeterPerSquareSecond;
 	World world;
 	EXPECT_NE(world.GetGravity(), gravity);
 	world.SetGravity(gravity);
@@ -252,7 +252,7 @@ TEST(World, MaxJoints)
 
 TEST(World, StepZeroTimeDoesNothing)
 {
-	const auto gravity = Vec2{0, RealNum(-9.8)};
+	const auto gravity = Vec2{0, RealNum(-9.8)} * MeterPerSquareSecond;
 	
 	World world{World::Def{}.UseGravity(gravity)};
 	
@@ -266,7 +266,7 @@ TEST(World, StepZeroTimeDoesNothing)
 	EXPECT_EQ(body->GetLocation().y, def.position.y);
 	EXPECT_EQ(GetLinearVelocity(*body).x, RealNum(0) * MeterPerSecond);
 	EXPECT_EQ(GetLinearVelocity(*body).y, RealNum(0) * MeterPerSecond);
-	EXPECT_EQ(body->GetLinearAcceleration().x, 0);
+	EXPECT_EQ(body->GetLinearAcceleration().x, 0.0f * MeterPerSquareSecond);
 	EXPECT_EQ(body->GetLinearAcceleration().y, gravity.y);
 	
 	const auto time_inc = Time{Second * RealNum{0}};
@@ -298,7 +298,7 @@ TEST(World, GravitationalBodyMovement)
 	body_def.position = p0;
 
 	const auto a = RealNum(-10);
-	const auto gravity = Vec2{0, a};
+	const auto gravity = Vec2{0, a} * MeterPerSquareSecond;
 	const auto t = RealNum(.01);
 	
 	World world{World::Def{}.UseGravity(gravity)};
@@ -335,7 +335,7 @@ TEST(World, GravitationalBodyMovement)
 
 TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
 {
-	const auto gravity = Vec2{0, RealNum(-9.8)};
+	const auto gravity = Vec2{0, RealNum(-9.8)} * MeterPerSquareSecond;
 	
 	World world{World::Def{}.UseGravity(gravity)};
 	
@@ -349,27 +349,27 @@ TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
 	EXPECT_EQ(body->GetLocation().y, def.position.y);
 	EXPECT_EQ(GetLinearVelocity(*body).x, RealNum(0) * MeterPerSecond);
 	EXPECT_EQ(GetLinearVelocity(*body).y, RealNum(0) * MeterPerSecond);
-	EXPECT_EQ(body->GetLinearAcceleration().x, 0);
+	EXPECT_EQ(body->GetLinearAcceleration().x, 0.0f * MeterPerSquareSecond);
 	EXPECT_EQ(body->GetLinearAcceleration().y, gravity.y);
 	
-	const auto time_inc = RealNum(0.01);
+	const auto time_inc = RealNum(0.01) * Second;
 	
 	auto pos = body->GetLocation();
 	auto vel = GetLinearVelocity(*body);
 	for (auto i = 0; i < 100; ++i)
 	{
-		Step(world, Time{Second * time_inc}, 0, 0);
+		Step(world, time_inc, 0, 0);
 		
 		EXPECT_EQ(body->GetLinearAcceleration().y, gravity.y);
 		
 		EXPECT_EQ(body->GetLocation().x, def.position.x);
 		EXPECT_LT(body->GetLocation().y, pos.y);
-		EXPECT_EQ(body->GetLocation().y, pos.y + (vel.y / MeterPerSecond + gravity.y * time_inc) * time_inc);
+		EXPECT_EQ(body->GetLocation().y, pos.y + ((vel.y + gravity.y * time_inc) * time_inc) / Meter);
 		pos = body->GetLocation();
 		
 		EXPECT_EQ(GetLinearVelocity(*body).x, RealNum(0) * MeterPerSecond);
 		EXPECT_LT(GetLinearVelocity(*body).y, vel.y);
-		EXPECT_TRUE(almost_equal(GetLinearVelocity(*body).y / MeterPerSecond, vel.y / MeterPerSecond + gravity.y * time_inc));
+		EXPECT_TRUE(almost_equal(GetLinearVelocity(*body).y / MeterPerSecond, (vel.y + gravity.y * time_inc) / MeterPerSecond));
 		vel = GetLinearVelocity(*body);
 	}
 }
@@ -377,7 +377,7 @@ TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
 
 TEST(World, BodyAccelRevPerSpecWithNegativeTimeAndNoVelOrPosIterations)
 {
-	const auto gravity = Vec2{0, RealNum(-9.8)};
+	const auto gravity = Vec2{0, RealNum(-9.8)} * MeterPerSquareSecond;
 	
 	World world{World::Def{}.UseGravity(gravity)};
 	
@@ -392,12 +392,12 @@ TEST(World, BodyAccelRevPerSpecWithNegativeTimeAndNoVelOrPosIterations)
 	EXPECT_EQ(body->GetLocation().y, def.position.y);
 	EXPECT_EQ(GetLinearVelocity(*body).x, RealNum(0) * MeterPerSecond);
 	EXPECT_EQ(GetLinearVelocity(*body).y, RealNum(-9.8) * MeterPerSecond);
-	EXPECT_EQ(body->GetLinearAcceleration().x, 0);
+	EXPECT_EQ(body->GetLinearAcceleration().x, 0.0f * MeterPerSquareSecond);
 	EXPECT_EQ(body->GetLinearAcceleration().y, gravity.y);
 	
-	const auto time_inc = RealNum{-0.01f};
+	const auto time_inc = RealNum{-0.01f} * Second;
 	auto stepConf = StepConf{};
-	stepConf.SetTime(Time{Second * time_inc});
+	stepConf.SetTime(time_inc);
 	stepConf.dtRatio = -1;
 	stepConf.regPositionIterations = 0;
 	stepConf.regVelocityIterations = 0;
@@ -414,12 +414,12 @@ TEST(World, BodyAccelRevPerSpecWithNegativeTimeAndNoVelOrPosIterations)
 		
 		EXPECT_EQ(body->GetLocation().x, def.position.x);
 		EXPECT_GT(body->GetLocation().y, pos.y);
-		EXPECT_EQ(body->GetLocation().y, pos.y + (vel.y / MeterPerSecond + gravity.y * time_inc) * time_inc);
+		EXPECT_EQ(body->GetLocation().y, pos.y + ((vel.y + gravity.y * time_inc) * time_inc) / Meter);
 		pos = body->GetLocation();
 		
 		EXPECT_EQ(GetLinearVelocity(*body).x, RealNum(0) * MeterPerSecond);
 		EXPECT_GT(GetLinearVelocity(*body).y, vel.y);
-		EXPECT_TRUE(almost_equal(GetLinearVelocity(*body).y / MeterPerSecond, vel.y / MeterPerSecond + gravity.y * time_inc));
+		EXPECT_TRUE(almost_equal(GetLinearVelocity(*body).y / MeterPerSecond, (vel.y + gravity.y * time_inc) / MeterPerSecond));
 		vel = GetLinearVelocity(*body);
 	}
 }
@@ -497,7 +497,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 		[&](Contact&) {},
 	};
 
-	const Vec2 gravity{0, 0};
+	const auto gravity = Vec2{0, 0} * MeterPerSquareSecond;
 	World world{World::Def{}.UseGravity(gravity)};
 	world.SetContactListener(&listener);
 	
@@ -578,7 +578,7 @@ TEST(World, PerfectlyOverlappedSameCirclesStayPut)
 	const auto shape = std::make_shared<CircleShape>(radius);
 	shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 	shape->SetRestitution(1); // changes where bodies will be after collision
-	const Vec2 gravity{0, 0};
+	const auto gravity = Vec2{0, 0} * MeterPerSquareSecond;
 
 	World world{World::Def{}.UseGravity(gravity)};
 	
@@ -627,7 +627,7 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
 	shape2->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 	shape2->SetRestitution(1); // changes where bodies will be after collision
 
-	const Vec2 gravity{0, 0};
+	const auto gravity = Vec2{0, 0} * MeterPerSquareSecond;
 	
 	World world{World::Def{}.UseGravity(gravity)};
 	
@@ -665,7 +665,7 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
 
 TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
 {
-	World world{World::Def{}.UseGravity(Vec2(0, 0))};
+	World world{World::Def{}.UseGravity(Vec2(0, 0) * MeterPerSquareSecond)};
 	MyContactListener listener{
 		[&](Contact&, const Manifold&) {},
 		[&](Contact&, const ContactImpulsesList&, ContactListener::iteration_type) {},
@@ -701,7 +701,7 @@ TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
 
 TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
 {
-	World world{World::Def{}.UseGravity(Vec2(0, 0))};
+	World world{World::Def{}.UseGravity(Vec2(0, 0) * MeterPerSquareSecond)};
 	MyContactListener listener{
 		[&](Contact&, const Manifold&) {},
 		[&](Contact&, const ContactImpulsesList&, ContactListener::iteration_type) {},
@@ -741,7 +741,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 {
 	const auto radius = RealNum(1);
 	
-	const Vec2 gravity{0, 0};
+	const auto gravity = Vec2{0, 0} * MeterPerSquareSecond;
 	World world{World::Def{}.UseGravity(gravity)};
 	
 	auto body_def = BodyDef{};
@@ -845,7 +845,7 @@ TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
 	shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 	shape->SetRestitution(1); // changes where bodies will be after collision
 
-	const Vec2 gravity{0, 0};
+	const auto gravity = Vec2{0, 0} * MeterPerSquareSecond;
 	
 	World world{World::Def{}.UseGravity(gravity)};
 	
@@ -908,7 +908,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 	 * This tests at a high level what the position solver code does with overlapping shapes.
 	 */
 
-	const Vec2 gravity{0, 0};
+	const auto gravity = Vec2{0, 0} * MeterPerSquareSecond;
 	World world{World::Def{}.UseGravity(gravity)};
 	
 	auto body_def = BodyDef{};
@@ -1070,7 +1070,7 @@ TEST(World, CollidingDynamicBodies)
 		[&](Contact&) {},
 	};
 
-	const auto gravity = Vec2_zero;
+	const auto gravity = Vec2_zero * MeterPerSquareSecond;
 	World world{World::Def{}.UseGravity(gravity)};
 	EXPECT_EQ(world.GetGravity(), gravity);
 	world.SetContactListener(&listener);
@@ -1287,7 +1287,7 @@ TEST(World, TilesComesToRestInUnder7secs)
 
 TEST(World, SpeedingBulletBallWontTunnel)
 {
-	World world{World::Def{}.UseGravity(Vec2_zero)};
+	World world{World::Def{}.UseGravity(Vec2_zero * MeterPerSquareSecond)};
 
 	MyContactListener listener{
 		[](Contact&, const Manifold&) {},
@@ -1440,7 +1440,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 
 TEST(World, MouseJointWontCauseTunnelling)
 {
-	World world{World::Def{}.UseGravity(Vec2_zero)};
+	World world{World::Def{}.UseGravity(Vec2_zero * MeterPerSquareSecond)};
 	
 	const auto half_box_width = RealNum(0.2);
 	const auto left_edge_x = -half_box_width;
@@ -1994,7 +1994,7 @@ public:
 	}
 
 protected:
-	World world{World::Def{}.UseGravity(Vec2(0, -10))};
+	World world{World::Def{}.UseGravity(Vec2(0, -10) * MeterPerSquareSecond)};
 	size_t loopsTillSleeping = 0;
 	const size_t maxLoops = 10000;
 	std::vector<Body*> boxes{10};

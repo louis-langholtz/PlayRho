@@ -74,7 +74,7 @@ TEST(DistanceJoint, Construction)
 
 TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 {
-	World world{World::Def{}.UseGravity(Vec2_zero)};
+	World world{World::Def{}.UseGravity(Vec2_zero * MeterPerSquareSecond)};
 
 	const auto shape = std::make_shared<CircleShape>(0.2f);
 	
@@ -127,7 +127,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 
 TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
 {
-	World world{World::Def{}.UseGravity(Vec2{0, 10})};
+	World world{World::Def{}.UseGravity(Vec2{0, 10} * MeterPerSquareSecond)};
 	
 	const auto shape = std::make_shared<CircleShape>(0.2f);
 	shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
