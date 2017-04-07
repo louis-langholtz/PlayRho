@@ -32,7 +32,7 @@ namespace box2d {
 		
 		SpinningCircle()
 		{
-			m_world->SetGravity(Vec2{0, 0});
+			m_world->SetGravity(Vec2{0, 0} * MeterPerSquareSecond);
 
 			auto bodyDef = BodyDef{};
 			bodyDef.type = BodyType::Dynamic;

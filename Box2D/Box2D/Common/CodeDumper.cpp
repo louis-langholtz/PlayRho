@@ -58,7 +58,9 @@ namespace
 void box2d::Dump(const World& world)
 {
 	const auto gravity = world.GetGravity();
-	log("Vec2 g(%.15lef, %.15lef);\n", static_cast<double>(gravity.x), static_cast<double>(gravity.y));
+	log("Vec2 g(%.15lef, %.15lef);\n",
+		double{gravity.x / MeterPerSquareSecond},
+		double{gravity.y / MeterPerSquareSecond});
 	log("m_world->SetGravity(g);\n");
 	
 	const auto& bodies = world.GetBodies();

@@ -53,7 +53,7 @@ struct BodyDef
 	constexpr BodyDef& UseAngle(Angle a) noexcept;
 	constexpr BodyDef& UseLinearVelocity(Vector2D<LinearVelocity> v) noexcept;
 	constexpr BodyDef& UseAngularVelocity(AngularVelocity v) noexcept;
-	constexpr BodyDef& UseLinearAcceleration(Vec2 v) noexcept;
+	constexpr BodyDef& UseLinearAcceleration(Vector2D<LinearAcceleration> v) noexcept;
 	constexpr BodyDef& UseAngularAcceleration(AngularAcceleration v) noexcept;
 	constexpr BodyDef& UseLinearDamping(RealNum v) noexcept;
 	constexpr BodyDef& UseAngularDamping(RealNum v) noexcept;
@@ -82,7 +82,7 @@ struct BodyDef
 	/// The angular velocity of the body.
 	AngularVelocity angularVelocity = AngularVelocity{0};
 
-	Vec2 linearAcceleration = Vec2_zero;
+	Vector2D<LinearAcceleration> linearAcceleration = Vec2_zero * MeterPerSquareSecond;
 	
 	AngularAcceleration angularAcceleration = AngularAcceleration{0};
 	
@@ -147,7 +147,7 @@ constexpr BodyDef& BodyDef::UseLinearVelocity(Vector2D<LinearVelocity> v) noexce
 	return *this;
 }
 
-constexpr BodyDef& BodyDef::UseLinearAcceleration(Vec2 v) noexcept
+constexpr BodyDef& BodyDef::UseLinearAcceleration(Vector2D<LinearAcceleration> v) noexcept
 {
 	linearAcceleration = v;
 	return *this;
@@ -324,9 +324,9 @@ public:
 	/// @note A non-zero acceleration will also awaken the body.
 	/// @param linear Linear acceleration.
 	/// @param angular Angular acceleration.
-	void SetAcceleration(const Vec2 linear, const AngularAcceleration angular) noexcept;
+	void SetAcceleration(const Vector2D<LinearAcceleration> linear, const AngularAcceleration angular) noexcept;
 
-	Vec2 GetLinearAcceleration() const noexcept;
+	Vector2D<LinearAcceleration> GetLinearAcceleration() const noexcept;
 
 	AngularAcceleration GetAngularAcceleration() const noexcept;
 
@@ -574,7 +574,7 @@ private:
 	Velocity m_velocity; ///< Velocity (linear and angular). 12-bytes.
 	FlagsType m_flags = 0; ///< Flags. 2-bytes.
 	
-	Vec2 m_linearAcceleration = Vec2_zero; ///< Linear acceleration. 8-bytes.
+	Vector2D<LinearAcceleration> m_linearAcceleration = Vec2_zero * MeterPerSquareSecond; ///< Linear acceleration. 8-bytes.
 
 	World* const m_world; ///< World to which this body belongs. 8-bytes.
 	void* m_userData; ///< User data. 8-bytes.
@@ -879,7 +879,7 @@ inline void* Body::GetUserData() const noexcept
 	return m_userData;
 }
 
-inline Vec2 Body::GetLinearAcceleration() const noexcept
+inline Vector2D<LinearAcceleration> Body::GetLinearAcceleration() const noexcept
 {
 	return m_linearAcceleration;
 }
@@ -986,14 +986,14 @@ inline Mass GetMass(const Body& body) noexcept
 	return (invMass != InvMass{0})? Mass{RealNum{1} / invMass}: Mass{0};
 }
 
-inline void ApplyLinearAcceleration(Body& body, const Vec2 amount)
+inline void ApplyLinearAcceleration(Body& body, const Vector2D<LinearAcceleration> amount)
 {
 	body.SetAcceleration(body.GetLinearAcceleration() + amount, body.GetAngularAcceleration());
 }
 
 inline void SetForce(Body& body, const Vec2 force, const Vec2 point) noexcept
 {
-	const auto linAccel = force * RealNum{body.GetInvMass() * Kilogram};
+	const auto linAccel = force * RealNum{body.GetInvMass() * Kilogram} * MeterPerSquareSecond;
 	const auto invRotI = body.GetInvRotInertia();
  	const auto intRotInertiaUnitless = invRotI * (SquareMeter * Kilogram / SquareRadian);
 	const auto angAccel = Cross(point - body.GetWorldCenter(), force) * intRotInertiaUnitless * RadianPerSquareSecond;
@@ -1008,7 +1008,7 @@ inline void SetForce(Body& body, const Vec2 force, const Vec2 point) noexcept
 /// @param point World position of the point of application.
 inline void ApplyForce(Body& body, const Vec2 force, const Vec2 point) noexcept
 {
-	const auto linAccel = force * RealNum{body.GetInvMass() * Kilogram};
+	const auto linAccel = force * RealNum{body.GetInvMass() * Kilogram} * MeterPerSquareSecond;
 	const auto invRotI = body.GetInvRotInertia();
 	const auto intRotInertiaUnitless = invRotI * (SquareMeter * Kilogram / SquareRadian);
 	const auto angAccel = Cross(point - body.GetWorldCenter(), force) * intRotInertiaUnitless * RadianPerSquareSecond;
@@ -1020,7 +1020,7 @@ inline void ApplyForce(Body& body, const Vec2 force, const Vec2 point) noexcept
 /// @param force World force vector, usually in Newtons (N).
 inline void ApplyForceToCenter(Body& body, const Vec2 force) noexcept
 {
-	const auto linAccel = body.GetLinearAcceleration() + force * RealNum{body.GetInvMass() * Kilogram};
+	const auto linAccel = body.GetLinearAcceleration() + force * RealNum{body.GetInvMass() * Kilogram} * MeterPerSquareSecond;
 	const auto angAccel = body.GetAngularAcceleration();
 	body.SetAcceleration(linAccel, angAccel);
 }
@@ -1188,7 +1188,8 @@ inline Vector2D<LinearVelocity> GetLinearVelocityFromLocalPoint(const Body& body
 
 inline Vec2 GetForce(const Body& body) noexcept
 {
-	return body.GetLinearAcceleration() * RealNum{GetMass(body) / Kilogram};
+	const auto accelUnitless = body.GetLinearAcceleration() / MeterPerSquareSecond;
+	return Vec2{accelUnitless.x, accelUnitless.y} * RealNum{GetMass(body) / Kilogram};
 }
 	
 inline Torque GetTorque(const Body& body) noexcept

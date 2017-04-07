@@ -27,7 +27,7 @@ namespace box2d {
 		
 		Orbiter()
 		{
-			m_world->SetGravity(Vec2{0, 0});
+			m_world->SetGravity(Vec2{0, 0} * MeterPerSquareSecond);
 
 			BodyDef bd;
 			const auto radius = 12.0f;
@@ -56,7 +56,7 @@ namespace box2d {
 		void PreStep(const Settings&, Drawer&) override
 		{
 			const auto force = GetCentripetalForce(*m_orbiter, m_center);
-			const auto linAccel = force * RealNum{m_orbiter->GetInvMass() * Kilogram};
+			const auto linAccel = force * RealNum{m_orbiter->GetInvMass() * Kilogram} * MeterPerSquareSecond;
 			const auto angAccel = 0.0f * RadianPerSquareSecond;
 			m_orbiter->SetAcceleration(linAccel, angAccel);
 		}

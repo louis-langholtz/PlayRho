@@ -57,7 +57,7 @@ public:
 			}
 		}
 
-		m_world->SetGravity(Vec2(0.0f, 0.0f));
+		m_world->SetGravity(Vec2(0.0f, 0.0f) * MeterPerSquareSecond);
 	}
 
 	Body* CreateEnclosure(RealNum vertexRadius, RealNum wallLength)

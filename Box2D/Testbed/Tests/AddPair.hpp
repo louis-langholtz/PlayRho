@@ -31,7 +31,7 @@ public:
 
 	AddPair()
 	{
-		m_world->SetGravity(Vec2(RealNum{0}, RealNum{0}));
+		m_world->SetGravity(Vec2(RealNum{0}, RealNum{0}) * MeterPerSquareSecond);
 		{
 			auto conf = CircleShape::Conf{};
 			conf.vertexRadius = 0.1f;

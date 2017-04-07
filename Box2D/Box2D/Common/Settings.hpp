@@ -109,6 +109,9 @@ constexpr auto Meter = Length{boost::units::si::meter * RealNum{1}};
 using LinearVelocity = boost::units::quantity<boost::units::si::velocity, RealNum>;
 constexpr auto MeterPerSecond = LinearVelocity{boost::units::si::meter_per_second * RealNum{1}};
 
+using LinearAcceleration = boost::units::quantity<boost::units::si::acceleration, RealNum>;
+constexpr auto MeterPerSquareSecond = LinearAcceleration{boost::units::si::meter_per_second_squared * RealNum{1}};
+
 using Mass = boost::units::quantity<boost::units::si::mass, RealNum>;
 constexpr auto Kilogram = Mass{boost::units::si::kilogram * RealNum{1}};
 
@@ -155,6 +158,9 @@ constexpr auto Meter = RealNum{1};
 
 using LinearVelocity = RealNum;
 constexpr auto MeterPerSecond = RealNum{1};
+
+using LinearAcceleration = RealNum;
+constexpr auto MeterPerSquareSecond = RealNum{1};
 
 using Mass = RealNum;
 constexpr auto Kilogram = RealNum{1};
@@ -489,6 +495,18 @@ template <>
 inline bool IsValid(const LinearVelocity& x) noexcept
 {
 	return IsValid(RealNum{x / MeterPerSecond});
+}
+
+template <>
+constexpr inline LinearAcceleration GetInvalid() noexcept
+{
+	return GetInvalid<RealNum>() * MeterPerSquareSecond;
+}
+
+template <>
+inline bool IsValid(const LinearAcceleration& x) noexcept
+{
+	return IsValid(RealNum{x / MeterPerSquareSecond});
 }
 
 template <>

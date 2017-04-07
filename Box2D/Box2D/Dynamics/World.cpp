@@ -750,7 +750,7 @@ World::World(const Def& def):
 	m_minVertexRadius(def.minVertexRadius),
 	m_maxVertexRadius(def.maxVertexRadius)
 {
-	assert(::box2d::IsValid(def.gravity));
+	assert(::box2d::IsValid(def.gravity.x) && ::box2d::IsValid(def.gravity.y));
 	assert(def.minVertexRadius > 0);
 	assert(def.minVertexRadius < def.maxVertexRadius);
 }
@@ -807,7 +807,7 @@ World::~World()
 	}
 }
 
-void World::SetGravity(const Vec2 gravity) noexcept
+void World::SetGravity(const Vector2D<LinearAcceleration> gravity) noexcept
 {
 	if (m_gravity != gravity)
 	{
@@ -2341,7 +2341,7 @@ void World::SetType(Body& body, BodyType type)
 	else
 	{
 		body.SetAwake();
-		body.SetAcceleration(body.IsAccelerable()? GetGravity(): Vec2_zero, AngularAcceleration{0});
+		body.SetAcceleration(body.IsAccelerable()? GetGravity(): Vec2_zero * MeterPerSquareSecond, AngularAcceleration{0});
 		
 		for (auto&& fixture: body.GetFixtures())
 		{

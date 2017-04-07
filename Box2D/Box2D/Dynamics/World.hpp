@@ -50,7 +50,7 @@ const FixtureDef& GetDefaultFixtureDef() noexcept;
 
 /// Earthly gravity.
 /// @detail An approximation of Earth's average gravity at sea-level.
-constexpr auto EarthlyGravity = Vec2{0, RealNum(-9.8)};
+constexpr auto EarthlyGravity = Vector2D<LinearAcceleration>{0.0f * MeterPerSquareSecond, RealNum(-9.8f) * MeterPerSquareSecond};
 
 /// World.
 /// @detail
@@ -78,14 +78,14 @@ public:
 	/// World construction definitions.
 	struct Def
 	{
-		constexpr Def& UseGravity(Vec2 value) noexcept;
+		constexpr Def& UseGravity(Vector2D<LinearAcceleration> value) noexcept;
 		constexpr Def& UseMinVertexRadius(RealNum value) noexcept;
 		constexpr Def& UseMaxVertexRadius(RealNum value) noexcept;
 
 		/// Gravity.
 		/// @detail The acceleration all dynamic bodies are subject to.
 		/// @note Use Vec2{0, 0} to disable gravity.
-		Vec2 gravity = EarthlyGravity;
+		Vector2D<LinearAcceleration> gravity = EarthlyGravity;
 		
 		/// Minimum vertex radius.
 		/// @detail This is the minimum vertex radius that this world establishes which bodies
@@ -248,10 +248,10 @@ public:
 	RealNum GetTreeQuality() const;
 
 	/// Change the global gravity vector.
-	void SetGravity(const Vec2 gravity) noexcept;
+	void SetGravity(const Vector2D<LinearAcceleration> gravity) noexcept;
 	
 	/// Get the global gravity vector.
-	Vec2 GetGravity() const noexcept;
+	Vector2D<LinearAcceleration> GetGravity() const noexcept;
 
 	/// Is the world locked (in the middle of a time step).
 	bool IsLocked() const noexcept;
@@ -594,7 +594,7 @@ private:
 	///   during a given time step.
 	Contacts m_contacts;
 
-	Vec2 m_gravity; ///< Gravity setting. 8-bytes.
+	Vector2D<LinearAcceleration> m_gravity; ///< Gravity setting. 8-bytes.
 
 	DestructionListener* m_destructionListener = nullptr; ///< Destruction listener. 8-bytes.
 	
@@ -624,7 +624,7 @@ private:
 	const RealNum m_maxVertexRadius;
 };
 
-constexpr inline World::Def& World::Def::UseGravity(Vec2 value) noexcept
+constexpr inline World::Def& World::Def::UseGravity(Vector2D<LinearAcceleration> value) noexcept
 {
 	gravity = value;
 	return *this;
@@ -657,7 +657,7 @@ inline const World::Contacts& World::GetContacts() const noexcept
 	return m_contacts;
 }
 
-inline Vec2 World::GetGravity() const noexcept
+inline Vector2D<LinearAcceleration> World::GetGravity() const noexcept
 {
 	return m_gravity;
 }

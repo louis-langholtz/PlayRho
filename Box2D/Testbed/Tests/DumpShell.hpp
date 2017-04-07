@@ -39,7 +39,7 @@ public:
 		//  but you can easily use it in other applications by providing
 		//  a World for use as the 'm_world' variable in the code below.
 
-		Vec2 g(0.000000000000000e+00f, -1.000000000000000e+01f);
+		Vector2D<LinearAcceleration> g(0.000000000000000e+00f * MeterPerSquareSecond, -1.000000000000000e+01f * MeterPerSquareSecond);
 		m_world->SetGravity(g);
 		Body** bodies = (Body**)alloc(3 * sizeof(Body*));
 		Joint** joints = (Joint**)alloc(0 * sizeof(Joint*));

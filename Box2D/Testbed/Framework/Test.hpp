@@ -79,7 +79,7 @@ public:
 		Key_Unknown
 	};
 	
-	Test(const World::Def& config = World::Def{}.UseGravity(Vec2(0.0f, -10.0f)));
+	Test(const World::Def& config = World::Def{}.UseGravity(Vec2(0.0f, -10.0f) * MeterPerSquareSecond));
 	virtual ~Test();
 
 	void DrawTitle(Drawer& drawer, const char *string);

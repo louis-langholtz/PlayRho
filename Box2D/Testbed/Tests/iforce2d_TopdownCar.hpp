@@ -361,7 +361,7 @@ class iforce2d_TopdownCar : public Test
 public:
 	iforce2d_TopdownCar()
 	{
-		m_world->SetGravity(Vec2{0, 0});
+		m_world->SetGravity(Vec2{0, 0} * MeterPerSquareSecond);
 		m_world->SetDestructionListener(&m_destructionListener);
 		
 		//set up ground areas

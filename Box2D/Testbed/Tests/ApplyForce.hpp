@@ -27,7 +27,7 @@ class ApplyForce : public Test
 public:
 	ApplyForce()
 	{
-		m_world->SetGravity(Vec2(RealNum{0}, RealNum{0}));
+		m_world->SetGravity(Vec2(RealNum{0}, RealNum{0}) * MeterPerSquareSecond);
 
 		const auto k_restitution = RealNum(0.4);
 

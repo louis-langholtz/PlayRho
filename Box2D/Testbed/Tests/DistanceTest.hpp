@@ -31,7 +31,7 @@ class DistanceTest : public Test
 public:
 	DistanceTest()
 	{
-		m_world->SetGravity(Vec2{0, 0});
+		m_world->SetGravity(Vec2{0, 0} * MeterPerSquareSecond);
 
 		const auto def = BodyDef{}.UseType(BodyType::Dynamic).UseLinearDamping(RealNum(0.5)).UseAngularDamping(RealNum(0.5));
 		m_bodyA = m_world->CreateBody(def);
