@@ -108,7 +108,7 @@ VelocityConstraint::Point VelocityConstraint::GetPoint(RealNum normalImpulse, Re
 		// to have a check that the normal is valid and possibly incur the overhead of a
 		// conditional branch here.
 		const auto dv = GetContactRelVelocity(bodyA.GetVelocity(), rA, bodyB.GetVelocity(), rB);
-		const auto vn = Dot(dv, GetNormal());
+		const auto vn = Dot(Vec2{dv.x / MeterPerSecond, dv.y / MeterPerSecond}, GetNormal());
 		return (vn < -conf.velocityThreshold)? -GetRestitution() * vn: RealNum{0};
 	}();
 	

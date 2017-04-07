@@ -42,7 +42,7 @@ public:
 			body->CreateFixture(std::make_shared<CircleShape>(circleConf));
 
 			const auto w = 100.0f;
-			body->SetVelocity(Velocity{Vec2(-8.0f * w, 0.0f), RadianPerSecond * w});
+			body->SetVelocity(Velocity{Vec2(-8.0f * w, 0.0f) * MeterPerSecond, RadianPerSecond * w});
 			
 			RevoluteJointDef rjd(ground, body, Vec2(-10.0f, 12.0f));
 			rjd.motorSpeed = 1.0f * Pi * RadianPerSecond;

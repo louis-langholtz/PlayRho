@@ -20,11 +20,10 @@
 #ifndef B2_WORLD_CALLBACKS_H
 #define B2_WORLD_CALLBACKS_H
 
-#include <Box2D/Common/Settings.hpp>
+#include <Box2D/Common/Vec2.hpp>
 
 namespace box2d {
 
-struct Vec2;
 class UnitVec2;
 class Fixture;
 class Joint;

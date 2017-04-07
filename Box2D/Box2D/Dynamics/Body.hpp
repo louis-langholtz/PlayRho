@@ -51,7 +51,7 @@ struct BodyDef
 	constexpr BodyDef& UseType(BodyType t) noexcept;
 	constexpr BodyDef& UseLocation(Vec2 l) noexcept;
 	constexpr BodyDef& UseAngle(Angle a) noexcept;
-	constexpr BodyDef& UseLinearVelocity(Vec2 v) noexcept;
+	constexpr BodyDef& UseLinearVelocity(Vector2D<LinearVelocity> v) noexcept;
 	constexpr BodyDef& UseAngularVelocity(AngularVelocity v) noexcept;
 	constexpr BodyDef& UseLinearAcceleration(Vec2 v) noexcept;
 	constexpr BodyDef& UseAngularAcceleration(Angle v) noexcept;
@@ -77,7 +77,7 @@ struct BodyDef
 	Angle angle = Angle{0};
 
 	/// The linear velocity of the body's origin in world co-ordinates (in m/s).
-	Vec2 linearVelocity = Vec2_zero;
+	Vector2D<LinearVelocity> linearVelocity = Vec2_zero * MeterPerSecond;
 
 	/// The angular velocity of the body.
 	AngularVelocity angularVelocity = AngularVelocity{0};
@@ -141,7 +141,7 @@ constexpr inline BodyDef& BodyDef::UseAngle(Angle a) noexcept
 	return *this;
 }
 
-constexpr BodyDef& BodyDef::UseLinearVelocity(Vec2 v) noexcept
+constexpr BodyDef& BodyDef::UseLinearVelocity(Vector2D<LinearVelocity> v) noexcept
 {
 	linearVelocity = v;
 	return *this;
@@ -794,7 +794,7 @@ inline void Body::UnsetAwake() noexcept
 	{
 		UnsetAwakeFlag();
 		m_underActiveTime = 0;
-		m_velocity = Velocity{Vec2_zero, AngularVelocity{0}};
+		m_velocity = Velocity{Vec2_zero * MeterPerSecond, AngularVelocity{0}};
 	}
 }
 
@@ -1057,7 +1057,7 @@ inline void ApplyTorque(Body& body, const Torque torque) noexcept
 inline void ApplyLinearImpulse(Body& body, const Vec2 impulse, const Vec2 point) noexcept
 {
 	auto velocity = body.GetVelocity();
-	velocity.linear += RealNum{body.GetInvMass() * Kilogram} * impulse;
+	velocity.linear += RealNum{body.GetInvMass() * Kilogram} * impulse * MeterPerSecond;
 	const auto invRotI = body.GetInvRotInertia();
 	const auto intRotInertiaUnitless = invRotI * (SquareMeter * Kilogram / SquareRadian);
 	velocity.angular += RadianPerSecond * intRotInertiaUnitless * Cross(point - body.GetWorldCenter(), impulse);
@@ -1103,7 +1103,7 @@ inline MassData GetMassData(const Body& body) noexcept
 /// Gets the linear velocity of the center of mass.
 /// @param body Body to get the linear velocity for.
 /// @return the linear velocity of the center of mass.
-inline Vec2 GetLinearVelocity(const Body& body) noexcept
+inline Vector2D<LinearVelocity> GetLinearVelocity(const Body& body) noexcept
 {
 	return body.GetVelocity().linear;
 }
@@ -1119,7 +1119,7 @@ inline AngularVelocity GetAngularVelocity(const Body& body) noexcept
 /// Sets the linear velocity of the center of mass.
 /// @param body Body to set the linear velocity of.
 /// @param v the new linear velocity of the center of mass.
-inline void SetLinearVelocity(Body& body, const Vec2 v) noexcept
+inline void SetLinearVelocity(Body& body, const Vector2D<LinearVelocity> v) noexcept
 {
 	body.SetVelocity(Velocity{v, GetAngularVelocity(body)});
 }
@@ -1171,26 +1171,28 @@ inline Vec2 GetLocalVector(const Body& body, const Vec2 worldVector) noexcept
 /// Get the world linear velocity of a world point attached to this body.
 /// @param worldPoint point in world coordinates.
 /// @return the world velocity of a point.
-inline Vec2 GetLinearVelocityFromWorldPoint(const Body& body, const Vec2 worldPoint) noexcept
+inline Vector2D<LinearVelocity> GetLinearVelocityFromWorldPoint(const Body& body, const Vec2 worldPoint) noexcept
 {
 	const auto velocity = body.GetVelocity();
 	const auto worldCtr = body.GetWorldCenter();
-	return velocity.linear + GetRevPerpendicular(worldPoint - worldCtr) * RealNum{velocity.angular / RadianPerSecond};
+	return velocity.linear + GetRevPerpendicular(worldPoint - worldCtr) * RealNum{velocity.angular / RadianPerSecond} * MeterPerSecond;
 }
 
 /// Get the world velocity of a local point.
 /// @param localPoint point in local coordinates.
 /// @return the world velocity of a point.
-inline Vec2 GetLinearVelocityFromLocalPoint(const Body& body, const Vec2 localPoint) noexcept
+inline Vector2D<LinearVelocity> GetLinearVelocityFromLocalPoint(const Body& body, const Vec2 localPoint) noexcept
 {
 	return GetLinearVelocityFromWorldPoint(body, GetWorldPoint(body, localPoint));
 }
 
+#if 0
 inline Vec2 GetForce(const Body& body) noexcept
 {
 	return body.GetLinearAcceleration() * (GetMass(body) / Kilogram);
 }
-
+#endif
+	
 inline Torque GetTorque(const Body& body) noexcept
 {
 	return body.GetAngularAcceleration() * GetRotInertia(body) / (Second * Second);

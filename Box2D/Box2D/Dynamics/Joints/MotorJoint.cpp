@@ -117,8 +117,8 @@ void MotorJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
 		m_angularImpulse *= step.dtRatio;
 
 		const auto P = Vec2{m_linearImpulse.x, m_linearImpulse.y};
-		velA -= Velocity{mA * P, RadianPerSecond * iA * (Cross(m_rA, P) + m_angularImpulse)};
-		velB += Velocity{mB * P, RadianPerSecond * iB * (Cross(m_rB, P) + m_angularImpulse)};
+		velA -= Velocity{mA * P * MeterPerSecond, RadianPerSecond * iA * (Cross(m_rA, P) + m_angularImpulse)};
+		velB += Velocity{mB * P * MeterPerSecond, RadianPerSecond * iB * (Cross(m_rB, P) + m_angularImpulse)};
 	}
 	else
 	{
@@ -163,9 +163,10 @@ RealNum MotorJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
 
 	// Solve linear friction
 	{
-		const auto vb = velB.linear + (GetRevPerpendicular(m_rB) * RealNum{velB.angular / RadianPerSecond});
-		const auto va = velA.linear - (GetRevPerpendicular(m_rA) * RealNum{velA.angular / RadianPerSecond});
-		const auto Cdot = vb - va + inv_h * m_correctionFactor * m_linearError;
+		const auto vb = velB.linear + (GetRevPerpendicular(m_rB) * RealNum{velB.angular / RadianPerSecond}) * MeterPerSecond;
+		const auto va = velA.linear - (GetRevPerpendicular(m_rA) * RealNum{velA.angular / RadianPerSecond}) * MeterPerSecond;
+		const auto dv = vb - va;
+		const auto Cdot = Vec2{dv.x / MeterPerSecond, dv.y / MeterPerSecond} + inv_h * m_correctionFactor * m_linearError;
 
 		auto impulse = -Transform(Cdot, m_linearMass);
 		const auto oldImpulse = m_linearImpulse;
@@ -180,8 +181,8 @@ RealNum MotorJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
 
 		impulse = m_linearImpulse - oldImpulse;
 
-		velA -= Velocity{mA * impulse, RadianPerSecond * iA * Cross(m_rA, impulse)};
-		velB += Velocity{mB * impulse, RadianPerSecond * iB * Cross(m_rB, impulse)};
+		velA -= Velocity{mA * impulse * MeterPerSecond, RadianPerSecond * iA * Cross(m_rA, impulse)};
+		velB += Velocity{mB * impulse * MeterPerSecond, RadianPerSecond * iB * Cross(m_rB, impulse)};
 	}
 
 	bodiesA.SetVelocity(velA);

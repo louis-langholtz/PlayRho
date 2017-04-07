@@ -482,8 +482,8 @@ void Test::CompleteBombSpawn(const Vec2& p)
 		return;
 	}
 
-	const auto vel = (m_bombSpawnPoint - p) * 30.0f;
-	LaunchBomb(m_bombSpawnPoint,vel);
+	const auto vel = (m_bombSpawnPoint - p) * 30.0f * MeterPerSecond;
+	LaunchBomb(m_bombSpawnPoint, vel);
 	m_bombSpawning = false;
 }
 
@@ -526,11 +526,11 @@ void Test::MouseMove(const Vec2& p)
 void Test::LaunchBomb()
 {
 	const auto p = Vec2(RandomFloat(-15.0f, 15.0f), 30.0f);
-	const auto v = -5.0f * p;
+	const auto v = -5.0f * p * MeterPerSecond;
 	LaunchBomb(p, v);
 }
 
-void Test::LaunchBomb(const Vec2& position, const Vec2& linearVelocity)
+void Test::LaunchBomb(const Vec2& position, const Vector2D<LinearVelocity> linearVelocity)
 {
 	if (m_bomb)
 	{
@@ -650,7 +650,8 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
 		const auto velocity = body->GetVelocity();
 		drawer.DrawString(5, m_textLine, "Selected fixture: pos={%f,%f} vel={%f,%f} density=%f friction=%f restitution=%f",
 						  GetX(location), GetY(location),
-						  GetX(velocity.linear), GetY(velocity.linear),
+						  double{GetX(velocity.linear) / MeterPerSecond},
+						  double{GetY(velocity.linear) / MeterPerSecond},
 						  double{density * SquareMeter / Kilogram},
 						  friction,
 						  restitution);

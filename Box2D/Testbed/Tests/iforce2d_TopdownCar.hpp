@@ -155,13 +155,15 @@ public:
 	Vec2 getLateralVelocity()
 	{
 		const auto currentRightNormal = GetWorldVector(*m_body, Vec2(1,0) );
-		return Dot( currentRightNormal, GetLinearVelocity(*m_body) ) * currentRightNormal;
+		const auto vel = GetLinearVelocity(*m_body);
+		return Dot(currentRightNormal, Vec2{vel.x / MeterPerSecond, vel.y / MeterPerSecond}) * currentRightNormal;
 	}
 	
 	Vec2 getForwardVelocity()
 	{
 		const auto currentForwardNormal = GetWorldVector(*m_body, Vec2(0,1) );
-		return Dot( currentForwardNormal, GetLinearVelocity(*m_body) ) * currentForwardNormal;
+		const auto vel = GetLinearVelocity(*m_body);
+		return Dot(currentForwardNormal, Vec2{vel.x / MeterPerSecond, vel.y / MeterPerSecond}) * currentForwardNormal;
 	}
 	
 	void updateFriction()

@@ -151,8 +151,8 @@ void WeldJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf&
 
 		const auto P = Vec2{m_impulse.x, m_impulse.y};
 
-		velA -= Velocity{mA * P, RadianPerSecond * iA * (Cross(m_rA, P) + m_impulse.z)};
-		velB += Velocity{mB * P, RadianPerSecond * iB * (Cross(m_rB, P) + m_impulse.z)};
+		velA -= Velocity{mA * P * MeterPerSecond, RadianPerSecond * iA * (Cross(m_rA, P) + m_impulse.z)};
+		velB += Velocity{mB * P * MeterPerSecond, RadianPerSecond * iB * (Cross(m_rB, P) + m_impulse.z)};
 	}
 	else
 	{
@@ -186,34 +186,34 @@ RealNum WeldJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepC
 		velA.angular -= RadianPerSecond * iA * impulse2;
 		velB.angular += RadianPerSecond * iB * impulse2;
 
-		const auto vb = velB.linear + (GetRevPerpendicular(m_rB) * RealNum{velB.angular / RadianPerSecond});
-		const auto va = velA.linear + (GetRevPerpendicular(m_rA) * RealNum{velA.angular / RadianPerSecond});
+		const auto vb = velB.linear + (GetRevPerpendicular(m_rB) * RealNum{velB.angular / RadianPerSecond}) * MeterPerSecond;
+		const auto va = velA.linear + (GetRevPerpendicular(m_rA) * RealNum{velA.angular / RadianPerSecond}) * MeterPerSecond;
 		const auto Cdot1 = vb - va;
 
-		const auto impulse1 = -Transform(Cdot1, m_mass);
+		const auto impulse1 = -Transform(Vec2{Cdot1.x / MeterPerSecond, Cdot1.y / MeterPerSecond}, m_mass);
 		m_impulse.x += impulse1.x;
 		m_impulse.y += impulse1.y;
 
 		const auto P = impulse1;
 
-		velA -= Velocity{mA * P, RadianPerSecond * iA * Cross(m_rA, P)};
-		velB += Velocity{mB * P, RadianPerSecond * iB * Cross(m_rB, P)};
+		velA -= Velocity{mA * P * MeterPerSecond, RadianPerSecond * iA * Cross(m_rA, P)};
+		velB += Velocity{mB * P * MeterPerSecond, RadianPerSecond * iB * Cross(m_rB, P)};
 	}
 	else
 	{
-		const auto vb = velB.linear + (GetRevPerpendicular(m_rB) * RealNum{velB.angular / RadianPerSecond});
-		const auto va = velA.linear + (GetRevPerpendicular(m_rA) * RealNum{velA.angular / RadianPerSecond});
+		const auto vb = velB.linear + (GetRevPerpendicular(m_rB) * RealNum{velB.angular / RadianPerSecond}) * MeterPerSecond;
+		const auto va = velA.linear + (GetRevPerpendicular(m_rA) * RealNum{velA.angular / RadianPerSecond}) * MeterPerSecond;
 		const auto Cdot1 = vb - va;
 		const auto Cdot2 = RealNum{(velB.angular - velA.angular) / RadianPerSecond};
-		const auto Cdot = Vec3(Cdot1.x, Cdot1.y, Cdot2);
+		const auto Cdot = Vec3(Cdot1.x / MeterPerSecond, Cdot1.y / MeterPerSecond, Cdot2);
 
 		const auto impulse = -Transform(Cdot, m_mass);
 		m_impulse += impulse;
 
 		const auto P = Vec2{impulse.x, impulse.y};
 
-		velA -= Velocity{mA * P, RadianPerSecond * iA * (Cross(m_rA, P) + impulse.z)};
-		velB += Velocity{mB * P, RadianPerSecond * iB * (Cross(m_rB, P) + impulse.z)};
+		velA -= Velocity{mA * P * MeterPerSecond, RadianPerSecond * iA * (Cross(m_rA, P) + impulse.z)};
+		velB += Velocity{mB * P * MeterPerSecond, RadianPerSecond * iB * (Cross(m_rB, P) + impulse.z)};
 	}
 
 	bodiesA.SetVelocity(velA);

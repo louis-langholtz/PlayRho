@@ -101,7 +101,7 @@ public:
 
 		case Key_K:
 			m_platform->SetType(BodyType::Kinematic);
-			m_platform->SetVelocity(Velocity{Vec2(-m_speed, 0.0f), AngularVelocity{0}});
+			m_platform->SetVelocity(Velocity{Vec2(-m_speed, 0.0f) * MeterPerSecond, AngularVelocity{0}});
 			break;
 	
 		default:
@@ -117,10 +117,10 @@ public:
 			const auto p = m_platform->GetLocation();
 			const auto velocity = m_platform->GetVelocity();
 
-			if ((p.x < -10.0f && velocity.linear.x < 0.0f) ||
-				(p.x > 10.0f && velocity.linear.x > 0.0f))
+			if ((p.x < -10.0f && velocity.linear.x < 0.0f * MeterPerSecond) ||
+				(p.x > 10.0f && velocity.linear.x > 0.0f * MeterPerSecond))
 			{
-				m_platform->SetVelocity(Velocity{Vec2{-velocity.linear.x, velocity.linear.y}, velocity.angular});
+				m_platform->SetVelocity(Velocity{{-velocity.linear.x, velocity.linear.y}, velocity.angular});
 			}
 		}
 	}

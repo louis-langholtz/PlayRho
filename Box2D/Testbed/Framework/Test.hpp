@@ -88,7 +88,7 @@ public:
 	void ShiftMouseDown(const Vec2& p);
 	void MouseMove(const Vec2& p);
 	void LaunchBomb();
-	void LaunchBomb(const Vec2& position, const Vec2& velocity);
+	void LaunchBomb(const Vec2& position, const Vector2D<LinearVelocity> velocity);
 	void SpawnBomb(const Vec2& worldPt);
 	void CompleteBombSpawn(const Vec2& p);
 	void ShiftOrigin(const Vec2& newOrigin);

@@ -138,7 +138,7 @@ void MouseJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
 	if (step.doWarmStart)
 	{
 		m_impulse *= step.dtRatio;
-		velB += Velocity{m_invMassB * m_impulse, RadianPerSecond * m_invIB * Cross(m_rB, m_impulse)};
+		velB += Velocity{m_invMassB * m_impulse * MeterPerSecond, RadianPerSecond * m_invIB * Cross(m_rB, m_impulse)};
 	}
 	else
 	{
@@ -155,10 +155,10 @@ RealNum MouseJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
 	auto velB = bodiesB.GetVelocity();
 	assert(IsValid(velB));
 
-	const auto Cdot = velB.linear + (GetRevPerpendicular(m_rB) * RealNum{velB.angular / RadianPerSecond});
+	const auto Cdot = velB.linear + (GetRevPerpendicular(m_rB) * RealNum{velB.angular / RadianPerSecond}) * MeterPerSecond;
 
 	const auto oldImpulse = m_impulse;
-	const auto addImpulse = Transform(-(Cdot + m_C + m_gamma * m_impulse), m_mass);
+	const auto addImpulse = Transform(-(Vec2{Cdot.x / MeterPerSecond, Cdot.y / MeterPerSecond} + m_C + m_gamma * m_impulse), m_mass);
 	assert(IsValid(addImpulse));
 	m_impulse += addImpulse;
 	const auto maxImpulse = RealNum{step.GetTime() / Second} * m_maxForce;
@@ -169,7 +169,7 @@ RealNum MouseJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
 
 	const auto deltaImpulse = m_impulse - oldImpulse;
 
-	velB += Velocity{m_invMassB * deltaImpulse, RadianPerSecond * m_invIB * Cross(m_rB, deltaImpulse)};
+	velB += Velocity{m_invMassB * deltaImpulse * MeterPerSecond, RadianPerSecond * m_invIB * Cross(m_rB, deltaImpulse)};
 
 	bodiesB.SetVelocity(velB);
 	

@@ -25,23 +25,22 @@
 namespace box2d
 {
 	/// Vector 2D.
-	/// @note This data structure is two-times the size of the <code>RealNum</code> type
-	/// (or 8 using RealNum of float).
-	struct Vec2
+	template <typename TYPE>
+	struct Vector2D
 	{
 		using size_type = size_t;
-		using data_type = RealNum;
+		using data_type = TYPE;
 		
 		/// Default constructor does nothing (for performance).
-		Vec2() noexcept = default;
+		Vector2D() = default;
 		
-		Vec2(const Vec2& copy) noexcept = default;
+		Vector2D(const Vector2D& copy) = default;
 		
 		/// Construct using coordinates.
-		constexpr Vec2(data_type x_, data_type y_) noexcept : x{x_}, y{y_} {}
+		constexpr Vector2D(data_type x_, data_type y_) noexcept : x{x_}, y{y_} {}
 		
 		/// Negate this vector.
-		constexpr auto operator- () const noexcept { return Vec2{-x, -y}; }
+		constexpr auto operator- () const noexcept { return Vector2D{-x, -y}; }
 		
 		/// Maximum size.
 		/// @detail This is this vector type's dimensionality.
@@ -78,16 +77,101 @@ namespace box2d
 		data_type x, y;
 	};
 	
-	constexpr inline Vec2::data_type GetX(const Vec2 value)
+	template <typename TYPE>
+	constexpr inline typename Vector2D<TYPE>::data_type GetX(const Vector2D<TYPE> value)
 	{
 		return value.x;
 	}
 	
-	constexpr inline Vec2::data_type GetY(const Vec2 value)
+	template <typename TYPE>
+	constexpr inline typename Vector2D<TYPE>::data_type GetY(const Vector2D<TYPE> value)
 	{
 		return value.y;
 	}
 
+	template <typename TYPE>
+	constexpr inline bool operator == (const Vector2D<TYPE> a, const Vector2D<TYPE> b) noexcept
+	{
+		return (a.x == b.x) && (a.y == b.y);
+	}
+	
+	template <typename TYPE>
+	constexpr inline bool operator != (const Vector2D<TYPE> a, const Vector2D<TYPE> b) noexcept
+	{
+		return (a.x != b.x) || (a.y != b.y);
+	}
+
+	/// Add two vectors component-wise.
+	template <typename TYPE>
+	constexpr inline Vector2D<TYPE> operator + (const Vector2D<TYPE> a, const Vector2D<TYPE> b) noexcept
+	{
+		return Vector2D<TYPE>{a.x + b.x, a.y + b.y};
+	}
+	
+	/// Subtract two vectors component-wise.
+	template <typename TYPE>
+	constexpr inline Vector2D<TYPE> operator - (const Vector2D<TYPE> a, const Vector2D<TYPE> b) noexcept
+	{
+		return Vector2D<TYPE>{a.x - b.x, a.y - b.y};
+	}
+	
+	/// Increment the left hand side value by the right hand side value.
+	template <typename TYPE>
+	constexpr Vector2D<TYPE>& operator += (Vector2D<TYPE>& lhs, const Vector2D<TYPE> rhs) noexcept
+	{
+		lhs.x += rhs.x;
+		lhs.y += rhs.y;
+		return lhs;
+	}
+	
+	/// Decrement the left hand side value by the right hand side value.
+	template <typename TYPE>
+	constexpr Vector2D<TYPE>& operator -= (Vector2D<TYPE>& lhs, const Vector2D<TYPE> rhs) noexcept
+	{
+		lhs.x -= rhs.x;
+		lhs.y -= rhs.y;
+		return lhs;
+	}
+	
+	template <typename TYPE>
+	constexpr Vector2D<TYPE>& operator *= (Vector2D<TYPE>& lhs, const RealNum rhs) noexcept
+	{
+		lhs.x *= rhs;
+		lhs.y *= rhs;
+		return lhs;
+	}
+	
+	template <typename TYPE>
+	constexpr Vector2D<TYPE>& operator /= (Vector2D<TYPE>& lhs, const RealNum rhs) noexcept
+	{
+		lhs.x /= rhs;
+		lhs.y /= rhs;
+		return lhs;
+	}
+	
+	template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{0} * TYPE2{0})>
+	constexpr inline Vector2D<OUT_TYPE> operator * (const TYPE1 s, const Vector2D<TYPE2> a) noexcept
+	{
+		return Vector2D<OUT_TYPE>{s * a.x, s * a.y};
+	}
+	
+	template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{0} * TYPE2{0})>
+	constexpr inline Vector2D<OUT_TYPE> operator * (const Vector2D<TYPE1> a, const TYPE2 s) noexcept
+	{
+		return Vector2D<OUT_TYPE>{a.x * s, a.y * s};
+	}
+	
+	template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{0} / TYPE2{0})>
+	constexpr Vector2D<OUT_TYPE> operator/ (const Vector2D<TYPE1> a, const TYPE2 s) noexcept
+	{
+		return Vector2D<OUT_TYPE>{a.x / s, a.y / s};
+	}
+	
+	/// Vector 2D of RealNum.
+	/// @note This data structure is two-times the size of the <code>RealNum</code> type
+	/// (or 8 using RealNum of float).
+	using Vec2 = Vector2D<RealNum>;
+	
 } // namespace box2d
 
 #endif /* Vec2_hpp */

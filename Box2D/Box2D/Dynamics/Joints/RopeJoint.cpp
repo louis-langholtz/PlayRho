@@ -102,8 +102,8 @@ void RopeJoint::InitVelocityConstraints(BodyConstraints& bodies,
 		m_impulse *= step.dtRatio;
 
 		const auto P = m_impulse * m_u;
-		velA -= Velocity{m_invMassA * P, RadianPerSecond * m_invIA * Cross(m_rA, P)};
-		velB += Velocity{m_invMassB * P, RadianPerSecond * m_invIB * Cross(m_rB, P)};
+		velA -= Velocity{m_invMassA * P * MeterPerSecond, RadianPerSecond * m_invIA * Cross(m_rA, P)};
+		velB += Velocity{m_invMassB * P * MeterPerSecond, RadianPerSecond * m_invIB * Cross(m_rB, P)};
 	}
 	else
 	{
@@ -123,10 +123,11 @@ RealNum RopeJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepC
 	auto velB = bodiesB.GetVelocity();
 
 	// Cdot = dot(u, v + cross(w, r))
-	const auto vpA = velA.linear + GetRevPerpendicular(m_rA) * RealNum{velA.angular / RadianPerSecond};
-	const auto vpB = velB.linear + GetRevPerpendicular(m_rB) * RealNum{velB.angular / RadianPerSecond};
+	const auto vpA = velA.linear + GetRevPerpendicular(m_rA) * RealNum{velA.angular / RadianPerSecond} * MeterPerSecond;
+	const auto vpB = velB.linear + GetRevPerpendicular(m_rB) * RealNum{velB.angular / RadianPerSecond} * MeterPerSecond;
 	const auto C = m_length - m_maxLength;
-	auto Cdot = Dot(m_u, vpB - vpA);
+	const auto delta = vpB - vpA;
+	auto Cdot = Dot(m_u, Vec2{delta.x / MeterPerSecond, delta.y / MeterPerSecond});
 
 	// Predictive constraint.
 	if (C < 0)
@@ -140,8 +141,8 @@ RealNum RopeJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepC
 	impulse = m_impulse - oldImpulse;
 
 	const auto P = impulse * m_u;
-	velA -= Velocity{m_invMassA * P, RadianPerSecond * m_invIA * Cross(m_rA, P)};
-	velB += Velocity{m_invMassB * P, RadianPerSecond * m_invIB * Cross(m_rB, P)};
+	velA -= Velocity{m_invMassA * P * MeterPerSecond, RadianPerSecond * m_invIA * Cross(m_rA, P)};
+	velB += Velocity{m_invMassB * P * MeterPerSecond, RadianPerSecond * m_invIB * Cross(m_rB, P)};
 
 	bodiesA.SetVelocity(velA);
 	bodiesB.SetVelocity(velB);

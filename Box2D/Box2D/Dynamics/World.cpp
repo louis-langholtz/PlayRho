@@ -147,16 +147,17 @@ namespace {
 	///    that's possibly clamped to the maximum translation and rotation.
 	inline PositionAndVelocity CalculateMovement(const BodyConstraint& body, Time h, MovementConf conf)
 	{
-		const auto timeInSecs = RealNum{h / Second};
-		assert(IsValid(timeInSecs));
+		assert(IsValid(h));
 		
 		auto velocity = body.GetVelocity();
-		auto translation = timeInSecs * velocity.linear;
-		if (GetLengthSquared(translation) > Square(conf.maxTranslation))
+		auto translation = h * velocity.linear;
+		auto translationUnitless = Vec2{translation.x / Meter, translation.y / Meter};
+		const auto lsquared = GetLengthSquared(translationUnitless);
+		if (lsquared > Square(conf.maxTranslation))
 		{
-			const auto ratio = conf.maxTranslation / Sqrt(GetLengthSquared(translation));
+			const auto ratio = conf.maxTranslation / Sqrt(lsquared);
 			velocity.linear *= ratio;
-			translation = timeInSecs * velocity.linear;
+			translation = h * velocity.linear;
 		}
 		
 		auto rotation = h * velocity.angular;
@@ -167,7 +168,8 @@ namespace {
 			rotation = h * velocity.angular;
 		}
 		
-		return PositionAndVelocity{body.GetPosition() + Position{translation, rotation}, velocity};
+		translationUnitless = Vec2{translation.x / Meter, translation.y / Meter};
+		return PositionAndVelocity{body.GetPosition() + Position{translationUnitless, rotation}, velocity};
 	}
 	
 	inline void IntegratePositions(BodyConstraints& bodies,
@@ -270,7 +272,10 @@ namespace {
 	
 	inline VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc)
 	{
-		VelocityPair vp{Velocity{Vec2_zero, AngularVelocity{0}}, Velocity{Vec2_zero, AngularVelocity{0}}};
+		auto vp = VelocityPair{
+			Velocity{Vec2_zero * MeterPerSecond, AngularVelocity{0}},
+			Velocity{Vec2_zero * MeterPerSecond, AngularVelocity{0}}
+		};
 		
 		const auto normal = GetNormal(vc);
 		const auto tangent = GetTangent(vc);
@@ -284,11 +289,11 @@ namespace {
 			{
 				const auto P = GetNormalImpulseAtPoint(vc, j) * normal + GetTangentImpulseAtPoint(vc, j) * tangent;
 				vp.a -= Velocity{
-					RealNum{vc.bodyA.GetInvMass() * Kilogram} * P,
+					RealNum{vc.bodyA.GetInvMass() * Kilogram} * P * MeterPerSecond,
 					RadianPerSecond * invRotInertiaA * Cross(GetPointRelPosA(vc, j), P)
 				};
 				vp.b += Velocity{
-					RealNum{vc.bodyB.GetInvMass() * Kilogram} * P,
+					RealNum{vc.bodyB.GetInvMass() * Kilogram} * P * MeterPerSecond,
 					RadianPerSecond * invRotInertiaB * Cross(GetPointRelPosB(vc, j), P)
 				};
 			}
@@ -584,7 +589,7 @@ private:
 			case BodyType::Static:
 				b.UnsetAwakeFlag();
 				b.m_underActiveTime = 0;
-				b.m_velocity = Velocity{Vec2_zero, AngularVelocity{0}};
+				b.m_velocity = Velocity{Vec2_zero * MeterPerSecond, AngularVelocity{0}};
 				b.m_sweep.pos0 = b.m_sweep.pos1;
 				break;
 		}

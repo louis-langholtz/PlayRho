@@ -54,7 +54,7 @@ public:
 
 			m_angularVelocity = RadianPerSecond * RandomFloat(-50.0f, 50.0f);
 			//m_angularVelocity = 46.661274f;
-			m_body->SetVelocity(Velocity{Vec2(0.0f, -100.0f), m_angularVelocity});
+			m_body->SetVelocity(Velocity{Vec2(0.0f, -100.0f) * MeterPerSecond, m_angularVelocity});
 		}
 	}
 
@@ -66,7 +66,7 @@ public:
 
 		m_body->SetTransform(Vec2(0.0f, 20.0f), Angle{0});
 		m_angularVelocity = RadianPerSecond * RandomFloat(-50.0f, 50.0f);
-		m_body->SetVelocity(Velocity{Vec2(0.0f, -100.0f), m_angularVelocity});
+		m_body->SetVelocity(Velocity{Vec2(0.0f, -100.0f) * MeterPerSecond, m_angularVelocity});
 	}
 
 	void PostStep(const Settings&, Drawer& drawer) override

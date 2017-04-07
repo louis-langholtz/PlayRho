@@ -107,7 +107,7 @@ Body::Body(const BodyDef& bd, World* world):
 	m_userData{bd.userData}
 {
 	assert(::box2d::IsValid(bd.position));
-	assert(::box2d::IsValid(bd.linearVelocity));
+	assert(::box2d::IsValid(bd.linearVelocity.x) && ::box2d::IsValid(bd.linearVelocity.y));
 	assert(::box2d::IsValid(bd.angle));
 	assert(::box2d::IsValid(bd.angularVelocity));
 	assert(::box2d::IsValid(bd.angularDamping) && (bd.angularDamping >= RealNum{0}));
@@ -186,7 +186,7 @@ void Body::ResetMassData()
 	const auto newCenter = GetWorldCenter();
 	
 	// Update center of mass velocity.
-	m_velocity.linear += GetRevPerpendicular(newCenter - oldCenter) * RealNum{m_velocity.angular / RadianPerSecond};
+	m_velocity.linear += GetRevPerpendicular(newCenter - oldCenter) * RealNum{m_velocity.angular / RadianPerSecond} * MeterPerSecond;
 	
 	UnsetMassDataDirty();
 }
@@ -225,14 +225,14 @@ void Body::SetMassData(const MassData& massData)
 	const auto newCenter = GetWorldCenter();
 
 	// Update center of mass velocity.
-	m_velocity.linear += GetRevPerpendicular(newCenter - oldCenter) * RealNum{m_velocity.angular / RadianPerSecond};
+	m_velocity.linear += GetRevPerpendicular(newCenter - oldCenter) * RealNum{m_velocity.angular / RadianPerSecond} * MeterPerSecond;
 	
 	UnsetMassDataDirty();
 }
 
 void Body::SetVelocity(const Velocity& velocity) noexcept
 {
-	if ((velocity.linear != Vec2_zero) || (velocity.angular != AngularVelocity{0}))
+	if ((velocity.linear != Vec2_zero * MeterPerSecond) || (velocity.angular != AngularVelocity{0}))
 	{
 		if (!IsSpeedable())
 		{
@@ -394,7 +394,7 @@ Velocity box2d::GetVelocity(const Body& body, Time h) noexcept
 	if (body.IsAccelerable())
 	{
 		// Integrate velocities.
-		velocity.linear += timeInSecs * body.GetLinearAcceleration();
+		velocity.linear += timeInSecs * body.GetLinearAcceleration() * MeterPerSecond;
 		velocity.angular += AngularVelocity{(timeInSecs * body.GetAngularAcceleration()) / Second};
 		
 		// Apply damping.
@@ -457,11 +457,13 @@ Vec2 box2d::GetCentripetalForce(const Body& body, const Vec2 axis)
 	// For background on centripetal force, see:
 	//   https://en.wikipedia.org/wiki/Centripetal_force
 
-	const auto velocity = GetLength(GetLinearVelocity(body));
+	const auto velocity = GetLinearVelocity(body);
+	const auto velocityUnitless = Vec2{velocity.x / MeterPerSecond, velocity.y / MeterPerSecond};
+	const auto magnitude = GetLength(velocityUnitless);
 	const auto location = body.GetLocation();
 	const auto mass = GetMass(body);
 	const auto delta = axis - location;
 	const auto radius = GetLength(delta);
 	const auto dir = delta / radius;
-	return dir * (RealNum{mass / Kilogram} * Square(velocity) / radius);
+	return dir * (RealNum{mass / Kilogram} * Square(magnitude) / radius);
 }

@@ -47,7 +47,7 @@ namespace box2d {
 			m_orbiter->CreateFixture(ballShape);
 			
 			const auto velocity = Velocity{
-				Vec2{Pi * radius / 2, 0},
+				Vec2{Pi * radius / 2, 0} * MeterPerSecond,
 				360.0f * Degree / Second
 			};
 			m_orbiter->SetVelocity(velocity);

@@ -61,7 +61,7 @@ public:
 			conf.vertexRadius = m_radius;
 			conf.density = RealNum{20} * KilogramPerSquareMeter;
 			m_character = body->CreateFixture(std::make_shared<CircleShape>(conf));
-			body->SetVelocity(Velocity{Vec2(0.0f, -50.0f), AngularVelocity{0}});
+			body->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * MeterPerSecond, AngularVelocity{0}});
 		}
 	}
 
@@ -104,7 +104,7 @@ public:
 		m_textLine += DRAW_STRING_NEW_LINE;
 
         const auto v = GetLinearVelocity(*(m_character->GetBody()));
-        drawer.DrawString(5, m_textLine, "Character Linear Velocity: %f", v.y);
+		drawer.DrawString(5, m_textLine, "Character Linear Velocity: %f", double{v.y / MeterPerSecond});
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 

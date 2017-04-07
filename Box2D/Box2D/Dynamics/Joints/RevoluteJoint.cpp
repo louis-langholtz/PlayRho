@@ -163,8 +163,8 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraints& bodies,
 
 		const auto P = Vec2{m_impulse.x, m_impulse.y};
 
-		velA -= Velocity{mA * P, RadianPerSecond * iA * (Cross(m_rA, P) + m_motorImpulse + m_impulse.z)};
-		velB += Velocity{mB * P, RadianPerSecond * iB * (Cross(m_rB, P) + m_motorImpulse + m_impulse.z)};
+		velA -= Velocity{mA * P * MeterPerSecond, RadianPerSecond * iA * (Cross(m_rA, P) + m_motorImpulse + m_impulse.z)};
+		velB += Velocity{mB * P * MeterPerSecond, RadianPerSecond * iB * (Cross(m_rB, P) + m_motorImpulse + m_impulse.z)};
 	}
 	else
 	{
@@ -205,15 +205,15 @@ RealNum RevoluteJoint::SolveVelocityConstraints(BodyConstraints& bodies, const S
 		velB.angular += RadianPerSecond * iB * incImpulse;
 	}
 
-	const auto vb = velB.linear + (GetRevPerpendicular(m_rB) * RealNum{velB.angular / RadianPerSecond});
-	const auto va = velA.linear + (GetRevPerpendicular(m_rA) * RealNum{velA.angular / RadianPerSecond});
+	const auto vb = velB.linear + (GetRevPerpendicular(m_rB) * RealNum{velB.angular / RadianPerSecond}) * MeterPerSecond;
+	const auto va = velA.linear + (GetRevPerpendicular(m_rA) * RealNum{velA.angular / RadianPerSecond}) * MeterPerSecond;
 
 	// Solve limit constraint.
 	if (m_enableLimit && (m_limitState != e_inactiveLimit) && !fixedRotation)
 	{
 		const auto Cdot1 = vb - va;
 		const auto Cdot2 = RealNum{(velB.angular - velA.angular) / RadianPerSecond};
-		const auto Cdot = Vec3(Cdot1.x, Cdot1.y, Cdot2);
+		const auto Cdot = Vec3(Cdot1.x / MeterPerSecond, Cdot1.y / MeterPerSecond, Cdot2);
 
 		auto impulse = -Solve33(m_mass, Cdot);
 
@@ -226,7 +226,7 @@ RealNum RevoluteJoint::SolveVelocityConstraints(BodyConstraints& bodies, const S
 			const auto newImpulse = m_impulse.z + impulse.z;
 			if (newImpulse < 0)
 			{
-				const auto rhs = -Cdot1 + m_impulse.z * Vec2{m_mass.ez.x, m_mass.ez.y};
+				const auto rhs = -Vec2{Cdot1.x / MeterPerSecond, Cdot1.y / MeterPerSecond} + m_impulse.z * Vec2{m_mass.ez.x, m_mass.ez.y};
 				const auto reduced = Solve22(m_mass, rhs);
 				impulse.x = reduced.x;
 				impulse.y = reduced.y;
@@ -245,7 +245,7 @@ RealNum RevoluteJoint::SolveVelocityConstraints(BodyConstraints& bodies, const S
 			const auto newImpulse = m_impulse.z + impulse.z;
 			if (newImpulse > 0)
 			{
-				const auto rhs = -Cdot1 + m_impulse.z * Vec2{m_mass.ez.x, m_mass.ez.y};
+				const auto rhs = -Vec2{Cdot1.x / MeterPerSecond, Cdot1.y / MeterPerSecond} + m_impulse.z * Vec2{m_mass.ez.x, m_mass.ez.y};
 				const auto reduced = Solve22(m_mass, rhs);
 				impulse.x = reduced.x;
 				impulse.y = reduced.y;
@@ -262,20 +262,20 @@ RealNum RevoluteJoint::SolveVelocityConstraints(BodyConstraints& bodies, const S
 
 		const auto P = Vec2{impulse.x, impulse.y};
 
-		velA -= Velocity{mA * P, RadianPerSecond * iA * (Cross(m_rA, P) + impulse.z)};
-		velB += Velocity{mB * P, RadianPerSecond * iB * (Cross(m_rB, P) + impulse.z)};
+		velA -= Velocity{mA * P * MeterPerSecond, RadianPerSecond * iA * (Cross(m_rA, P) + impulse.z)};
+		velB += Velocity{mB * P * MeterPerSecond, RadianPerSecond * iB * (Cross(m_rB, P) + impulse.z)};
 	}
 	else
 	{
 		// Solve point-to-point constraint
 		const auto Cdot = vb - va;
-		const auto impulse = Solve22(m_mass, -Cdot);
+		const auto impulse = Solve22(m_mass, -Vec2{Cdot.x / MeterPerSecond, Cdot.y / MeterPerSecond});
 
 		m_impulse.x += impulse.x;
 		m_impulse.y += impulse.y;
 
-		velA -= Velocity{mA * impulse, RadianPerSecond * iA * Cross(m_rA, impulse)};
-		velB += Velocity{mB * impulse, RadianPerSecond * iB * Cross(m_rB, impulse)};
+		velA -= Velocity{mA * impulse * MeterPerSecond, RadianPerSecond * iA * Cross(m_rA, impulse)};
+		velB += Velocity{mB * impulse * MeterPerSecond, RadianPerSecond * iB * Cross(m_rB, impulse)};
 	}
 
 	bodiesA.SetVelocity(velA);

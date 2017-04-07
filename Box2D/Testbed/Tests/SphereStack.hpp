@@ -50,7 +50,7 @@ public:
 
 				m_bodies[i] = m_world->CreateBody(bd);
 				m_bodies[i]->CreateFixture(shape);
-				m_bodies[i]->SetVelocity(Velocity{Vec2(0.0f, -50.0f), AngularVelocity{0}});
+				m_bodies[i]->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * MeterPerSecond, AngularVelocity{0}});
 			}
 		}
 	}

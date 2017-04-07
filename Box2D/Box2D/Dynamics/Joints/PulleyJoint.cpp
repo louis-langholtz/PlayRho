@@ -141,8 +141,8 @@ void PulleyJoint::InitVelocityConstraints(BodyConstraints& bodies,
 		const auto PA = -(m_impulse) * m_uA;
 		const auto PB = (-m_ratio * m_impulse) * m_uB;
 
-		velA += Velocity{m_invMassA * PA, RadianPerSecond * m_invIA * Cross(m_rA, PA)};
-		velB += Velocity{m_invMassB * PB, RadianPerSecond * m_invIB * Cross(m_rB, PB)};
+		velA += Velocity{m_invMassA * PA * MeterPerSecond, RadianPerSecond * m_invIA * Cross(m_rA, PA)};
+		velB += Velocity{m_invMassB * PB * MeterPerSecond, RadianPerSecond * m_invIB * Cross(m_rB, PB)};
 	}
 	else
 	{
@@ -161,17 +161,17 @@ RealNum PulleyJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Ste
 	auto velA = bodiesA.GetVelocity();
 	auto velB = bodiesB.GetVelocity();
 
-	const auto vpA = velA.linear + GetRevPerpendicular(m_rA) * RealNum{velA.angular / RadianPerSecond};
-	const auto vpB = velB.linear + GetRevPerpendicular(m_rB) * RealNum{velB.angular / RadianPerSecond};
+	const auto vpA = velA.linear + GetRevPerpendicular(m_rA) * RealNum{velA.angular / RadianPerSecond} * MeterPerSecond;
+	const auto vpB = velB.linear + GetRevPerpendicular(m_rB) * RealNum{velB.angular / RadianPerSecond} * MeterPerSecond;
 
-	const auto Cdot = -Dot(m_uA, vpA) - m_ratio * Dot(m_uB, vpB);
+	const auto Cdot = -Dot(m_uA, Vec2{vpA.x / MeterPerSecond, vpA.y / MeterPerSecond}) - m_ratio * Dot(m_uB, Vec2{vpB.x / MeterPerSecond, vpB.y / MeterPerSecond});
 	const auto impulse = -m_mass * Cdot;
 	m_impulse += impulse;
 
 	const auto PA = -impulse * m_uA;
 	const auto PB = -m_ratio * impulse * m_uB;
-	velA += Velocity{m_invMassA * PA, RadianPerSecond * m_invIA * Cross(m_rA, PA)};
-	velB += Velocity{m_invMassB * PB, RadianPerSecond * m_invIB * Cross(m_rB, PB)};
+	velA += Velocity{m_invMassA * PA * MeterPerSecond, RadianPerSecond * m_invIA * Cross(m_rA, PA)};
+	velB += Velocity{m_invMassB * PB * MeterPerSecond, RadianPerSecond * m_invIB * Cross(m_rB, PB)};
 
 	bodiesA.SetVelocity(velA);
 	bodiesB.SetVelocity(velB);

@@ -239,8 +239,8 @@ void PrismaticJoint::InitVelocityConstraints(BodyConstraints& bodies,
 		const auto LA = m_impulse.x * m_s1 + m_impulse.y + (m_motorImpulse + m_impulse.z) * m_a1;
 		const auto LB = m_impulse.x * m_s2 + m_impulse.y + (m_motorImpulse + m_impulse.z) * m_a2;
 
-		velA -= Velocity{mA * P, RadianPerSecond * iA * LA};
-		velB += Velocity{mB * P, RadianPerSecond * iB * LB};
+		velA -= Velocity{mA * P * MeterPerSecond, RadianPerSecond * iA * LA};
+		velB += Velocity{mB * P * MeterPerSecond, RadianPerSecond * iB * LB};
 	}
 	else
 	{
@@ -266,9 +266,11 @@ RealNum PrismaticJoint::SolveVelocityConstraints(BodyConstraints& bodies, const 
 	const auto iB = m_invIB;
 
 	// Solve linear motor constraint.
+	auto vDelta = velB.linear - velA.linear;
+	auto vDelteUnitless = Vec2{vDelta.x / MeterPerSecond, vDelta.y / MeterPerSecond};
 	if (m_enableMotor && m_limitState != e_equalLimits)
 	{
-		const auto Cdot = Dot(m_axis, velB.linear - velA.linear) + RealNum{(m_a2 * velB.angular - m_a1 * velA.angular) / RadianPerSecond};
+		const auto Cdot = Dot(m_axis, vDelteUnitless) + RealNum{(m_a2 * velB.angular - m_a1 * velA.angular) / RadianPerSecond};
 		auto impulse = m_motorMass * (m_motorSpeed - Cdot);
 		const auto oldImpulse = m_motorImpulse;
 		const auto maxImpulse = RealNum{step.GetTime() / Second} * m_maxMotorForce;
@@ -279,19 +281,22 @@ RealNum PrismaticJoint::SolveVelocityConstraints(BodyConstraints& bodies, const 
 		const auto LA = impulse * m_a1;
 		const auto LB = impulse * m_a2;
 
-		velA -= Velocity{mA * P, RadianPerSecond * iA * LA};
-		velB += Velocity{mB * P, RadianPerSecond * iB * LB};
+		velA -= Velocity{mA * P * MeterPerSecond, RadianPerSecond * iA * LA};
+		velB += Velocity{mB * P * MeterPerSecond, RadianPerSecond * iB * LB};
+
+		vDelta = velB.linear - velA.linear;
+		vDelteUnitless = Vec2{vDelta.x / MeterPerSecond, vDelta.y / MeterPerSecond};
 	}
 
 	const auto Cdot1 = Vec2{
-		Dot(m_perp, velB.linear - velA.linear) + RealNum{(m_s2 * velB.angular - m_s1 * velA.angular) / RadianPerSecond},
+		Dot(m_perp, vDelteUnitless) + RealNum{(m_s2 * velB.angular - m_s1 * velA.angular) / RadianPerSecond},
 		RealNum{(velB.angular - velA.angular) / RadianPerSecond }
 	};
 
 	if (m_enableLimit && (m_limitState != e_inactiveLimit))
 	{
 		// Solve prismatic and limit constraint in block form.
-		const auto Cdot2 = Dot(m_axis, velB.linear - velA.linear) + RealNum{(m_a2 * velB.angular - m_a1 * velA.angular) / RadianPerSecond};
+		const auto Cdot2 = Dot(m_axis, vDelteUnitless) + RealNum{(m_a2 * velB.angular - m_a1 * velA.angular) / RadianPerSecond};
 		const auto Cdot = Vec3{Cdot1.x, Cdot1.y, Cdot2};
 
 		const auto f1 = m_impulse;
@@ -318,8 +323,8 @@ RealNum PrismaticJoint::SolveVelocityConstraints(BodyConstraints& bodies, const 
 		const auto LA = df.x * m_s1 + df.y + df.z * m_a1;
 		const auto LB = df.x * m_s2 + df.y + df.z * m_a2;
 
-		velA -= Velocity{mA * P, RadianPerSecond * iA * LA};
-		velB += Velocity{mB * P, RadianPerSecond * iB * LB};
+		velA -= Velocity{mA * P * MeterPerSecond, RadianPerSecond * iA * LA};
+		velB += Velocity{mB * P * MeterPerSecond, RadianPerSecond * iB * LB};
 	}
 	else
 	{
@@ -332,8 +337,8 @@ RealNum PrismaticJoint::SolveVelocityConstraints(BodyConstraints& bodies, const 
 		const auto LA = df.x * m_s1 + df.y;
 		const auto LB = df.x * m_s2 + df.y;
 
-		velA -= Velocity{mA * P, RadianPerSecond * iA * LA};
-		velB += Velocity{mB * P, RadianPerSecond * iB * LB};
+		velA -= Velocity{mA * P * MeterPerSecond, RadianPerSecond * iA * LA};
+		velB += Velocity{mB * P * MeterPerSecond, RadianPerSecond * iB * LB};
 	}
 
 	bodiesA.SetVelocity(velA);
@@ -505,7 +510,8 @@ RealNum PrismaticJoint::GetJointSpeed() const
 	const auto wA = RealNum{bA->GetVelocity().angular / RadianPerSecond};
 	const auto wB = RealNum{bB->GetVelocity().angular / RadianPerSecond};
 
-	return Dot(d, (GetRevPerpendicular(axis) * wA)) + Dot(axis, vB + (GetRevPerpendicular(rB) * wB) - vA - (GetRevPerpendicular(rA) * wA));
+	const auto vel = (vB + (GetRevPerpendicular(rB) * wB) * MeterPerSecond) - (vA + (GetRevPerpendicular(rA) * wA) * MeterPerSecond);
+	return Dot(d, (GetRevPerpendicular(axis) * wA)) + Dot(axis, Vec2{vel.x / MeterPerSecond, vel.y / MeterPerSecond});
 }
 
 bool PrismaticJoint::IsLimitEnabled() const noexcept

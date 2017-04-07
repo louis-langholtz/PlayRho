@@ -35,8 +35,6 @@ constexpr inline RealNum Dot(const Vec2 a, const Vec2 b) noexcept;
 constexpr inline RealNum Dot(const Vec3 a, const Vec3 b) noexcept;
 constexpr inline RealNum Cross(const Vec2 a, const Vec2 b) noexcept;
 constexpr inline Vec3 Cross(const Vec3 a, const Vec3 b) noexcept;
-constexpr bool operator == (const Vec2 a, const Vec2 b) noexcept;
-constexpr bool operator != (const Vec2 a, const Vec2 b) noexcept;
 
 // Other templates.
 
@@ -478,14 +476,14 @@ inline bool IsValid(const Position& value) noexcept
 /// @note This data structure is 12-bytes (with 4-byte RealNum on at least one 64-bit platform).
 struct Velocity
 {
-	Vec2 linear; ///< Linear velocity (in meters/second).
+	Vector2D<LinearVelocity> linear; ///< Linear velocity (in meters/second).
 	AngularVelocity angular; ///< Angular velocity (in radians/second).
 };
 
 template <>
 inline bool IsValid(const Velocity& value) noexcept
 {
-	return IsValid(value.linear) && IsValid(value.angular);
+	return IsValid(value.linear.x) && IsValid(value.linear.y) && IsValid(value.angular);
 }
 
 /// Sweep.
@@ -648,73 +646,6 @@ constexpr inline Vec2 Transform(const Vec2 v, const Mat22& A) noexcept
 constexpr inline Vec2 InverseTransform(const Vec2 v, const Mat22& A) noexcept
 {
 	return Vec2{Dot(v, A.ex), Dot(v, A.ey)};
-}
-
-/// Increment the left hand side value by the right hand side value.
-constexpr Vec2& operator += (Vec2& lhs, Vec2 rhs) noexcept
-{
-	lhs.x += rhs.x;
-	lhs.y += rhs.y;
-	return lhs;
-}
-
-/// Decrement the left hand side value by the right hand side value.
-constexpr Vec2& operator -= (Vec2& lhs, Vec2 rhs) noexcept
-{
-	lhs.x -= rhs.x;
-	lhs.y -= rhs.y;
-	return lhs;
-}
-
-constexpr Vec2& operator *= (Vec2& lhs, Vec2::data_type rhs) noexcept
-{
-	lhs.x *= rhs;
-	lhs.y *= rhs;
-	return lhs;
-}
-
-constexpr Vec2& operator /= (Vec2& lhs, Vec2::data_type rhs) noexcept
-{
-	lhs.x /= rhs;
-	lhs.y /= rhs;
-	return lhs;
-}
-
-/// Add two vectors component-wise.
-constexpr inline Vec2 operator + (const Vec2 a, const Vec2 b) noexcept
-{
-	return Vec2{a.x + b.x, a.y + b.y};
-}
-
-/// Subtract two vectors component-wise.
-constexpr inline Vec2 operator - (const Vec2 a, const Vec2 b) noexcept
-{
-	return Vec2{a.x - b.x, a.y - b.y};
-}
-
-constexpr inline Vec2 operator * (Vec2::data_type s, const Vec2 a) noexcept
-{
-	return Vec2{s * a.x, s * a.y};
-}
-
-constexpr inline Vec2 operator * (const Vec2 a, const Vec2::data_type s) noexcept
-{
-	return Vec2{a.x * s, a.y * s};
-}
-
-constexpr Vec2 operator/ (const Vec2 a, const Vec2::data_type s) noexcept
-{
-	return Vec2{a.x / s, a.y / s};
-}
-
-constexpr inline bool operator == (const Vec2 a, const Vec2 b) noexcept
-{
-	return (a.x == b.x) && (a.y == b.y);
-}
-
-constexpr inline bool operator != (const Vec2 a, const Vec2 b) noexcept
-{
-	return (a.x != b.x) || (a.y != b.y);
 }
 
 constexpr inline RealNum Dot(const UnitVec2 a, const UnitVec2 b) noexcept
@@ -1055,12 +986,12 @@ constexpr inline Position operator- (const Position& lhs, const Position& rhs)
 
 constexpr inline Position operator* (const Position& pos, const RealNum scalar)
 {
-	return Position{pos.linear * scalar, pos.angular * scalar};
+	return Position{Vec2{pos.linear.x * scalar, pos.linear.y * scalar}, pos.angular * scalar};
 }
 
 constexpr inline Position operator* (const RealNum scalar, const Position& pos)
 {
-	return Position{pos.linear * scalar, pos.angular * scalar};
+	return Position{Vec2{pos.linear.x * scalar, pos.linear.y * scalar}, pos.angular * scalar};
 }
 	
 constexpr inline bool operator==(const Velocity& lhs, const Velocity& rhs)
@@ -1270,17 +1201,19 @@ inline RealNum Normalize(Vec2& vector)
 
 inline bool IsUnderActive(Velocity velocity, RealNum linSleepTol, RealNum angSleepTol) noexcept
 {
+	const auto lsquared = Square(velocity.linear.x / MeterPerSecond) + Square(velocity.linear.y/ MeterPerSecond);
 	return (Square(RealNum{velocity.angular / RadianPerSecond}) <= Square(angSleepTol))
-	    && (GetLengthSquared(velocity.linear) <= Square(linSleepTol));
+	    && (lsquared <= Square(linSleepTol));
 }
 
 /// Gets the contact relative velocity.
 /// @note If vcp_rA and vcp_rB are the zero vectors, the resulting value is simply velB.linear - velA.linear.
-constexpr inline Vec2 GetContactRelVelocity(const Velocity velA, const Vec2 vcp_rA,
-											const Velocity velB, const Vec2 vcp_rB) noexcept
+constexpr inline Vector2D<LinearVelocity>
+GetContactRelVelocity(const Velocity velA, const Vec2 vcp_rA, const Velocity velB, const Vec2 vcp_rB) noexcept
 {
-	return (velB.linear + (GetRevPerpendicular(vcp_rB) * RealNum{velB.angular / RadianPerSecond}))
-	     - (velA.linear + (GetRevPerpendicular(vcp_rA) * RealNum{velA.angular / RadianPerSecond}));
+	const auto velBrot = GetRevPerpendicular(vcp_rB) * RealNum{velB.angular / RadianPerSecond};
+	const auto velArot = GetRevPerpendicular(vcp_rA) * RealNum{velA.angular / RadianPerSecond};
+	return (velB.linear + velBrot * MeterPerSecond) - (velA.linear + velArot * MeterPerSecond);
 }
 
 template <>

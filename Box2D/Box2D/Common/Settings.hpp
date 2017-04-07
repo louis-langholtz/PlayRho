@@ -449,6 +449,42 @@ inline bool IsValid(const AngularVelocity& x) noexcept
 	return IsValid(RealNum{x / RadianPerSecond});
 }
 
+template <>
+constexpr inline Time GetInvalid() noexcept
+{
+	return GetInvalid<RealNum>() * Second;
+}
+
+template <>
+inline bool IsValid(const Time& x) noexcept
+{
+	return IsValid(RealNum{x / Second});
+}
+
+template <>
+constexpr inline Length GetInvalid() noexcept
+{
+	return GetInvalid<RealNum>() * Meter;
+}
+
+template <>
+inline bool IsValid(const Length& x) noexcept
+{
+	return IsValid(RealNum{x / Meter});
+}
+
+template <>
+constexpr inline LinearVelocity GetInvalid() noexcept
+{
+	return GetInvalid<RealNum>() * MeterPerSecond;
+}
+
+template <>
+inline bool IsValid(const LinearVelocity& x) noexcept
+{
+	return IsValid(RealNum{x / MeterPerSecond});
+}
+
 #endif
 
 // Memory Allocation

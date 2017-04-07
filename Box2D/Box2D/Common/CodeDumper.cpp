@@ -94,7 +94,9 @@ void box2d::Dump(const Body& body, size_t bodyIndex)
 	log("  bd.type = BodyType(%d);\n", body.GetType());
 	log("  bd.position = Vec2(%.15lef, %.15lef);\n", static_cast<double>(body.GetLocation().x), static_cast<double>(body.GetLocation().y));
 	log("  bd.angle = %.15lef;\n", double{RealNum{body.GetAngle() / Radian}});
-	log("  bd.linearVelocity = Vec2(%.15lef, %.15lef);\n", static_cast<double>(body.GetVelocity().linear.x), static_cast<double>(body.GetVelocity().linear.y));
+	log("  bd.linearVelocity = Vec2(%.15lef, %.15lef);\n",
+		static_cast<double>(body.GetVelocity().linear.x / MeterPerSecond),
+		static_cast<double>(body.GetVelocity().linear.y / MeterPerSecond));
 	log("  bd.angularVelocity = %.15lef;\n", static_cast<double>(body.GetVelocity().angular / RadianPerSecond));
 	log("  bd.linearDamping = %.15lef;\n", static_cast<double>(body.GetLinearDamping()));
 	log("  bd.angularDamping = %.15lef;\n", static_cast<double>(body.GetAngularDamping()));

@@ -180,8 +180,8 @@ void WheelJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
 		const auto LA = m_impulse * m_sAy + m_springImpulse * m_sAx + m_motorImpulse;
 		const auto LB = m_impulse * m_sBy + m_springImpulse * m_sBx + m_motorImpulse;
 
-		velA -= Velocity{m_invMassA * P, RadianPerSecond * m_invIA * LA};
-		velB += Velocity{m_invMassB * P, RadianPerSecond * m_invIB * LB};
+		velA -= Velocity{m_invMassA * P * MeterPerSecond, RadianPerSecond * m_invIA * LA};
+		velB += Velocity{m_invMassB * P * MeterPerSecond, RadianPerSecond * m_invIB * LB};
 	}
 	else
 	{
@@ -209,7 +209,8 @@ RealNum WheelJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
 
 	// Solve spring constraint
 	{
-		const auto Cdot = Dot(m_ax, velB.linear - velA.linear) + m_sBx * RealNum{velB.angular / RadianPerSecond} - m_sAx * RealNum{velA.angular / RadianPerSecond};
+		const auto dv = velB.linear - velA.linear;
+		const auto Cdot = Dot(m_ax, Vec2{dv.x / MeterPerSecond, dv.y / MeterPerSecond}) + m_sBx * RealNum{velB.angular / RadianPerSecond} - m_sAx * RealNum{velA.angular / RadianPerSecond};
 		const auto impulse = -m_springMass * (Cdot + m_bias + m_gamma * m_springImpulse);
 		m_springImpulse += impulse;
 
@@ -217,8 +218,8 @@ RealNum WheelJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
 		const auto LA = impulse * m_sAx;
 		const auto LB = impulse * m_sBx;
 
-		velA -= Velocity{invMassA * P, RadianPerSecond * iA * LA};
-		velB += Velocity{invMassB * P, RadianPerSecond * iB * LB};
+		velA -= Velocity{invMassA * P * MeterPerSecond, RadianPerSecond * iA * LA};
+		velB += Velocity{invMassB * P * MeterPerSecond, RadianPerSecond * iB * LB};
 	}
 
 	// Solve rotational motor constraint
@@ -237,7 +238,8 @@ RealNum WheelJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
 
 	// Solve point to line constraint
 	{
-		const auto Cdot = Dot(m_ay, velB.linear - velA.linear) + m_sBy * RealNum{velB.angular / RadianPerSecond} - m_sAy * RealNum{velA.angular / RadianPerSecond};
+		const auto dv = velB.linear - velA.linear;
+		const auto Cdot = Dot(m_ay, Vec2{dv.x / MeterPerSecond, dv.y / MeterPerSecond}) + m_sBy * RealNum{velB.angular / RadianPerSecond} - m_sAy * RealNum{velA.angular / RadianPerSecond};
 		const auto impulse = -m_mass * Cdot;
 		m_impulse += impulse;
 
@@ -245,8 +247,8 @@ RealNum WheelJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
 		const auto LA = impulse * m_sAy;
 		const auto LB = impulse * m_sBy;
 
-		velA -= Velocity{invMassA * P, RadianPerSecond * iA * LA};
-		velB += Velocity{invMassB * P, RadianPerSecond * iB * LB};
+		velA -= Velocity{invMassA * P * MeterPerSecond, RadianPerSecond * iA * LA};
+		velB += Velocity{invMassB * P * MeterPerSecond, RadianPerSecond * iB * LB};
 	}
 
 	bodiesA.SetVelocity(velA);

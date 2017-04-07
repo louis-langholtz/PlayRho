@@ -62,7 +62,7 @@ public:
 			auto conf = PolygonShape::Conf{};
 			conf.density = RealNum{1.0f} * KilogramPerSquareMeter;
 			body->CreateFixture(std::make_shared<PolygonShape>(1.5f, 1.5f, conf));
-			body->SetVelocity(Velocity{Vec2(150.0f, 0.0f), AngularVelocity{0}});
+			body->SetVelocity(Velocity{Vec2(150.0f, 0.0f) * MeterPerSecond, AngularVelocity{0}});
 		}
 	}
 

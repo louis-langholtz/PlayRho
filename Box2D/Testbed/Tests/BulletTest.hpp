@@ -63,18 +63,18 @@ public:
 			m_bullet = m_world->CreateBody(bd);
 			m_bullet->CreateFixture(std::make_shared<PolygonShape>(box));
 
-			m_bullet->SetVelocity(Velocity{Vec2{0.0f, -50.0f}, AngularVelocity{0}});
+			m_bullet->SetVelocity(Velocity{Vec2{0.0f, -50.0f} * MeterPerSecond, AngularVelocity{0}});
 		}
 	}
 
 	void Launch()
 	{
 		m_body->SetTransform(Vec2(0.0f, 4.0f), 0.0f * Radian);
-		m_body->SetVelocity(Velocity{Vec2_zero, AngularVelocity{0}});
+		m_body->SetVelocity(Velocity{Vec2_zero * MeterPerSecond, AngularVelocity{0}});
 
 		m_x = RandomFloat(-1.0f, 1.0f);
 		m_bullet->SetTransform(Vec2(m_x, 10.0f), 0.0f * Radian);
-		m_bullet->SetVelocity(Velocity{Vec2(0.0f, -50.0f), AngularVelocity{0}});
+		m_bullet->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * MeterPerSecond, AngularVelocity{0}});
 
 		uint32 gjkCalls, gjkIters, gjkMaxIters;
 		std::remove_const<decltype(DefaultMaxToiIters)>::type toiMaxIters;
