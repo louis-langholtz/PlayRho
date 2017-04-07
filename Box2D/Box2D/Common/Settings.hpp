@@ -127,6 +127,9 @@ constexpr auto SquareRadian = Radian * Radian;
 
 using AngularVelocity = boost::units::quantity<boost::units::si::angular_velocity, RealNum>;
 constexpr auto RadianPerSecond = AngularVelocity{boost::units::si::radian_per_second * RealNum{1}};
+	
+using AngularAcceleration = boost::units::quantity<boost::units::si::angular_acceleration, RealNum>;
+constexpr auto RadianPerSquareSecond = Radian / (Second * Second);
 
 using Force = boost::units::quantity<boost::units::si::force, RealNum>;
 constexpr auto Newton = Force{boost::units::si::newton * RealNum{1}};
@@ -171,6 +174,9 @@ constexpr auto SquareRadian = Radian * Radian;
 
 using AngularVelocity = RealNum;
 constexpr auto RadianPerSecond = RealNum{1};
+
+using AngularAcceleration = RealNum;
+constexpr auto RadianPerSquareSecond = RealNum{1};
 
 using Force = RealNum;
 constexpr auto Newton = RealNum{1};
@@ -483,6 +489,18 @@ template <>
 inline bool IsValid(const LinearVelocity& x) noexcept
 {
 	return IsValid(RealNum{x / MeterPerSecond});
+}
+
+template <>
+constexpr inline AngularAcceleration GetInvalid() noexcept
+{
+	return GetInvalid<RealNum>() * RadianPerSquareSecond;
+}
+
+template <>
+inline bool IsValid(const AngularAcceleration& x) noexcept
+{
+	return IsValid(RealNum{x / RadianPerSquareSecond});
 }
 
 #endif

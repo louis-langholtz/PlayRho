@@ -243,12 +243,12 @@ void Body::SetVelocity(const Velocity& velocity) noexcept
 	m_velocity = velocity;
 }
 
-void Body::SetAcceleration(const Vec2 linear, const Angle angular) noexcept
+void Body::SetAcceleration(const Vec2 linear, const AngularAcceleration angular) noexcept
 {
 	assert(::box2d::IsValid(linear));
 	assert(::box2d::IsValid(angular));
 
-	if ((linear != Vec2_zero) || (angular != Angle{0}))
+	if ((linear != Vec2_zero) || (angular != AngularAcceleration{0}))
 	{
 		if (!IsAccelerable())
 		{
@@ -395,7 +395,7 @@ Velocity box2d::GetVelocity(const Body& body, Time h) noexcept
 	{
 		// Integrate velocities.
 		velocity.linear += timeInSecs * body.GetLinearAcceleration() * MeterPerSecond;
-		velocity.angular += AngularVelocity{(timeInSecs * body.GetAngularAcceleration()) / Second};
+		velocity.angular += AngularVelocity{h * body.GetAngularAcceleration()};
 		
 		// Apply damping.
 		// Ordinary differential equation: dv/dt + c * v = 0

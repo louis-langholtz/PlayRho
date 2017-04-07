@@ -838,7 +838,7 @@ Body* World::CreateBody(const BodyDef& def)
 		}		
 	}
 
-	b->SetAcceleration(m_gravity, Angle{0});
+	b->SetAcceleration(m_gravity, AngularAcceleration{0});
 	return b;
 }
 
@@ -2341,7 +2341,7 @@ void World::SetType(Body& body, BodyType type)
 	else
 	{
 		body.SetAwake();
-		body.SetAcceleration(body.IsAccelerable()? GetGravity(): Vec2_zero, Angle{0});
+		body.SetAcceleration(body.IsAccelerable()? GetGravity(): Vec2_zero, AngularAcceleration{0});
 		
 		for (auto&& fixture: body.GetFixtures())
 		{
@@ -2640,7 +2640,7 @@ void ClearForces(World& world) noexcept
 	const auto g = world.GetGravity();
 	for (auto&& body: world.GetBodies())
 	{
-		body->SetAcceleration(g, Angle{0});
+		body->SetAcceleration(g, AngularAcceleration{0});
 	}
 }
 

@@ -57,7 +57,7 @@ namespace box2d {
 		{
 			const auto force = GetCentripetalForce(*m_orbiter, m_center);
 			const auto linAccel = force * RealNum{m_orbiter->GetInvMass() * Kilogram};
-			const auto angAccel = 0.0f * Degree;
+			const auto angAccel = 0.0f * RadianPerSquareSecond;
 			m_orbiter->SetAcceleration(linAccel, angAccel);
 		}
 		
