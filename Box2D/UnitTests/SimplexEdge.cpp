@@ -36,8 +36,8 @@ TEST(SimplexEdge, InitializingConstructor)
 {
 	const auto iA = SimplexEdge::index_type{1};
 	const auto iB = SimplexEdge::index_type{2};
-	const auto pA = Vec2{RealNum(2.2), RealNum(-3.1)};
-	const auto pB = Vec2{RealNum(-9.2), RealNum(0.003)};
+	const auto pA = Vec2{RealNum(2.2), RealNum(-3.1)} * Meter;
+	const auto pB = Vec2{RealNum(-9.2), RealNum(0.003)} * Meter;
 
 	const auto sv = SimplexEdge(pA, iA, pB, iB);
 	

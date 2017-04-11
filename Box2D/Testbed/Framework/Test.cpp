@@ -40,7 +40,7 @@ static void Draw(Drawer& drawer, const CircleShape& shape, const Transformation&
 	drawer.DrawSegment(center, center + radius * axis, color);
 }
 
-static void DrawCorner(Drawer& drawer, Vec2 p, RealNum r, Angle a0, Angle a1, Color color)
+static void DrawCorner(Drawer& drawer, Length2D p, Length r, Angle a0, Angle a1, Color color)
 {
 	const auto angleDiff = GetRevRotationalAngle(a0, a1);
 	auto lastAngle = Angle{0};
@@ -67,7 +67,7 @@ static void Draw(Drawer& drawer, const EdgeShape& shape, const Transformation& x
 	if (skins)
 	{
 		const auto r = shape.GetVertexRadius();
-		if (r > 0)
+		if (r > Length{0})
 		{
 			const auto skinColor = Color{color.r * 0.6f, color.g * 0.6f, color.b * 0.6f};
 			const auto worldNormal0 = GetFwdPerpendicular(GetUnitVector(v2 - v1));
@@ -94,8 +94,8 @@ static void Draw(Drawer& drawer, const ChainShape& shape, const Transformation& 
 	{
 		const auto v2 = Transform(shape.GetVertex(i), xf);
 		drawer.DrawSegment(v1, v2, color);
-		drawer.DrawCircle(v1, RealNum(0.05), color);
-		if (skins && r > 0)
+		drawer.DrawCircle(v1, RealNum(0.05) * Meter, color);
+		if (skins && r > Length{0})
 		{
 			const auto worldNormal0 = GetFwdPerpendicular(GetUnitVector(v2 - v1));
 			const auto offset = worldNormal0 * r;
@@ -113,7 +113,7 @@ static void Draw(Drawer& drawer, const ChainShape& shape, const Transformation& 
 static void Draw(Drawer& drawer, const PolygonShape& shape, const Transformation& xf, const Color& color, bool skins)
 {
 	const auto vertexCount = shape.GetVertexCount();
-	auto vertices = std::vector<Vec2>(vertexCount);
+	auto vertices = std::vector<Length2D>(vertexCount);
 	for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 	{
 		vertices[i] = Transform(shape.GetVertex(i), xf);
@@ -306,11 +306,11 @@ static bool Draw(Drawer& drawer, const World& world, const Settings& settings, F
 				{
 					const auto proxy = f->GetProxy(i);
 					const auto aabb = world.GetFatAABB(proxy->proxyId);
-					Vec2 vs[4];
-					vs[0] = Vec2{aabb.GetLowerBound().x, aabb.GetLowerBound().y};
-					vs[1] = Vec2{aabb.GetUpperBound().x, aabb.GetLowerBound().y};
-					vs[2] = Vec2{aabb.GetUpperBound().x, aabb.GetUpperBound().y};
-					vs[3] = Vec2{aabb.GetLowerBound().x, aabb.GetUpperBound().y};
+					Length2D vs[4];
+					vs[0] = Length2D{aabb.GetLowerBound().x, aabb.GetLowerBound().y};
+					vs[1] = Length2D{aabb.GetUpperBound().x, aabb.GetLowerBound().y};
+					vs[2] = Length2D{aabb.GetUpperBound().x, aabb.GetUpperBound().y};
+					vs[3] = Length2D{aabb.GetLowerBound().x, aabb.GetUpperBound().y};
 					
 					drawer.DrawPolygon(vs, 4, color);
 				}
@@ -320,7 +320,7 @@ static bool Draw(Drawer& drawer, const World& world, const Settings& settings, F
 	
 	if (settings.drawCOMs)
 	{
-		const auto k_axisScale = RealNum(0.4);
+		const auto k_axisScale = RealNum(0.4) * Meter;
 		const auto red = Color{1.0f, 0.0f, 0.0f};
 		const auto green = Color{0.0f, 1.0f, 0.0f};
 		for (auto&& b: world.GetBodies())
@@ -411,7 +411,7 @@ void Test::DrawTitle(Drawer& drawer, const char *string)
 class QueryCallback : public QueryFixtureReporter
 {
 public:
-	QueryCallback(const Vec2& point): m_point{point}
+	QueryCallback(const Length2D& point): m_point{point}
 	{
 		// Intentionally empty.
 	}
@@ -434,11 +434,11 @@ public:
 		return true;
 	}
 
-	Vec2 m_point;
+	Length2D m_point;
 	Fixture* m_fixture = nullptr;
 };
 
-void Test::MouseDown(const Vec2& p)
+void Test::MouseDown(const Length2D& p)
 {
 	m_mouseWorld = p;
 	
@@ -448,7 +448,7 @@ void Test::MouseDown(const Vec2& p)
 	}
 
 	// Make a small box.
-	const auto aabb = GetFattenedAABB(AABB{p, p}, 0.001f);
+	const auto aabb = GetFattenedAABB(AABB{p, p}, 0.001f * Meter);
 	
 	// Query the world for overlapping shapes.
 	QueryCallback callback(p);
@@ -463,31 +463,31 @@ void Test::MouseDown(const Vec2& p)
 		md.bodyA = m_groundBody;
 		md.bodyB = body;
 		md.target = p;
-		md.maxForce = 1000.0f * RealNum{GetMass(*body) / Kilogram};
+		md.maxForce = RealNum{1000.0f} * GetMass(*body) * MeterPerSquareSecond;
 		m_mouseJoint = static_cast<MouseJoint*>(m_world->CreateJoint(md));
 		body->SetAwake();
 	}
 }
 
-void Test::SpawnBomb(const Vec2& worldPt)
+void Test::SpawnBomb(const Length2D& worldPt)
 {
 	m_bombSpawnPoint = worldPt;
 	m_bombSpawning = true;
 }
     
-void Test::CompleteBombSpawn(const Vec2& p)
+void Test::CompleteBombSpawn(const Length2D& p)
 {
 	if (!m_bombSpawning)
 	{
 		return;
 	}
 
-	const auto vel = (m_bombSpawnPoint - p) * 30.0f * MeterPerSecond;
+	const auto vel = (m_bombSpawnPoint - p) * RealNum{30} / Second;
 	LaunchBomb(m_bombSpawnPoint, vel);
 	m_bombSpawning = false;
 }
 
-void Test::ShiftMouseDown(const Vec2& p)
+void Test::ShiftMouseDown(const Length2D& p)
 {
 	m_mouseWorld = p;
 	
@@ -499,7 +499,7 @@ void Test::ShiftMouseDown(const Vec2& p)
 	SpawnBomb(p);
 }
 
-void Test::MouseUp(const Vec2& p)
+void Test::MouseUp(const Length2D& p)
 {
 	if (m_mouseJoint)
 	{
@@ -513,7 +513,7 @@ void Test::MouseUp(const Vec2& p)
 	}
 }
 
-void Test::MouseMove(const Vec2& p)
+void Test::MouseMove(const Length2D& p)
 {
 	m_mouseWorld = p;
 	
@@ -525,12 +525,12 @@ void Test::MouseMove(const Vec2& p)
 
 void Test::LaunchBomb()
 {
-	const auto p = Vec2(RandomFloat(-15.0f, 15.0f), 30.0f);
-	const auto v = -5.0f * p * MeterPerSecond;
+	const auto p = Vec2(RandomFloat(-15.0f, 15.0f), 30.0f) * Meter;
+	const auto v = RealNum{-5} * p / Second;
 	LaunchBomb(p, v);
 }
 
-void Test::LaunchBomb(const Vec2& position, const Vector2D<LinearVelocity> linearVelocity)
+void Test::LaunchBomb(const Length2D& position, const LinearVelocity2D linearVelocity)
 {
 	if (m_bomb)
 	{
@@ -542,7 +542,7 @@ void Test::LaunchBomb(const Vec2& position, const Vector2D<LinearVelocity> linea
 	m_bomb->SetVelocity(Velocity{linearVelocity, AngularVelocity{0}});
 	
 	auto conf = CircleShape::Conf{};
-	conf.vertexRadius = 0.3f;
+	conf.vertexRadius = RealNum{0.3f} * Meter;
 	conf.density = Density{RealNum{20} * Kilogram / SquareMeter};
 	conf.restitution = 0.0f;
 	const auto circle = std::make_shared<CircleShape>(conf);
@@ -574,8 +574,8 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
 	drawer.DrawString(5, m_textLine,
 					  "      bod-slept=%u min-sep=%f max-inc-imp=%f",
 					  m_stepStats.reg.bodiesSlept,
-					  float(m_stepStats.reg.minSeparation),
-					  float(m_stepStats.reg.maxIncImpulse));
+					  double{m_stepStats.reg.minSeparation / Meter},
+					  double{m_stepStats.reg.maxIncImpulse / (Kilogram * MeterPerSecond)});
 	m_textLine += DRAW_STRING_NEW_LINE;
 	
 	drawer.DrawString(5, m_textLine, "  toi-info:");
@@ -596,8 +596,8 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
 					  m_stepStats.toi.contactsAtMaxSubSteps,
 					  m_stepStats.toi.contactsUpdatedToi,
 					  m_stepStats.toi.maxDistIters, m_stepStats.toi.maxToiIters,
-					  float(m_stepStats.toi.minSeparation),
-					  float(m_stepStats.toi.maxIncImpulse));
+					  double{m_stepStats.toi.minSeparation / Meter},
+					  double{m_stepStats.toi.maxIncImpulse / (Kilogram * MeterPerSecond)});
 	m_textLine += DRAW_STRING_NEW_LINE;
 	
 	const auto sleepCount = [&](){
@@ -620,12 +620,14 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
 	m_textLine += DRAW_STRING_NEW_LINE;
 	
 	drawer.DrawString(5, m_textLine, "  Reg sums: isl-found=%llu isl-solv=%llu pos-iter=%llu vel-iter=%llu p-moved=%llu min-sep=%f max-sep=%f",
-					  m_sumRegIslandsFound, m_sumRegIslandsSolved, m_sumRegPosIters, m_sumRegVelIters, m_sumRegProxiesMoved, float(m_minRegSep), float(m_maxRegSep));
+					  m_sumRegIslandsFound, m_sumRegIslandsSolved, m_sumRegPosIters, m_sumRegVelIters, m_sumRegProxiesMoved,
+					  double{m_minRegSep / Meter}, double{m_maxRegSep / Meter});
 	m_textLine += DRAW_STRING_NEW_LINE;
 	
 	drawer.DrawString(5, m_textLine, "  TOI sums: isl-found=%llu isl-solv=%llu pos-iter=%llu vel-iter=%llu p-moved=%llu upd=%llu cts-maxstep=%llu min-sep=%f",
 					  m_sumToiIslandsFound, m_sumToiIslandsSolved, m_sumToiPosIters, m_sumToiVelIters, m_sumToiProxiesMoved,
-					  m_sumContactsUpdatedToi, m_sumContactsAtMaxSubSteps, m_minToiSep);
+					  m_sumContactsUpdatedToi, m_sumContactsAtMaxSubSteps,
+					  double{m_minToiSep / Meter});
 	m_textLine += DRAW_STRING_NEW_LINE;
 	
 	drawer.DrawString(5, m_textLine, "  TOI maxs: dist-iter=%u/%u toi-iter=%u/%u root-iter=%u/%u",
@@ -649,7 +651,8 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
 		const auto location = body->GetLocation();
 		const auto velocity = body->GetVelocity();
 		drawer.DrawString(5, m_textLine, "Selected fixture: pos={%f,%f} vel={%f,%f} density=%f friction=%f restitution=%f",
-						  GetX(location), GetY(location),
+						  double{GetX(location) / Meter},
+						  double{GetY(location) / Meter},
 						  double{GetX(velocity.linear) / MeterPerSecond},
 						  double{GetY(velocity.linear) / MeterPerSecond},
 						  double{density * SquareMeter / Kilogram},
@@ -696,14 +699,14 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 	stepConf.maxTranslation = static_cast<decltype(stepConf.maxTranslation)>(settings.maxTranslation);
 	stepConf.maxRotation = settings.maxRotation * Degree;
 	
-	stepConf.linearSlop = settings.linearSlop;
+	stepConf.linearSlop = settings.linearSlop * Meter;
 	stepConf.angularSlop = settings.angularSlop;
-	stepConf.regMinSeparation = settings.regMinSeparation;
-	stepConf.toiMinSeparation = settings.toiMinSeparation;
-	stepConf.targetDepth = settings.linearSlop * 3;
-	stepConf.tolerance = settings.linearSlop / 4;
+	stepConf.regMinSeparation = settings.regMinSeparation * Meter;
+	stepConf.toiMinSeparation = settings.toiMinSeparation * Meter;
+	stepConf.targetDepth = settings.linearSlop * RealNum{3} * Meter;
+	stepConf.tolerance = (settings.linearSlop / RealNum{4}) * Meter;
 	
-	stepConf.maxLinearCorrection = settings.maxLinearCorrection;
+	stepConf.maxLinearCorrection = settings.maxLinearCorrection * Meter;
 	stepConf.maxAngularCorrection = (settings.maxAngularCorrection * Degree) / Radian;
 	stepConf.regResolutionRate = settings.regPosResRate / 100.0f;
 	stepConf.toiResolutionRate = settings.toiPosResRate / 100.0f;
@@ -735,7 +738,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 	m_maxRootIters = Max(m_maxRootIters, stepStats.toi.maxRootIters);
 	m_maxToiIters = Max(m_maxToiIters, stepStats.toi.maxToiIters);
 
-	if (stepStats.reg.minSeparation < std::numeric_limits<RealNum>::infinity())
+	if (stepStats.reg.minSeparation < std::numeric_limits<RealNum>::infinity() * Meter)
 	{
 		m_minRegSep = Min(m_minRegSep, stepStats.reg.minSeparation);
 		m_maxRegSep = Max(m_maxRegSep, stepStats.reg.minSeparation);
@@ -830,22 +833,22 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 		const auto p1 = m_mouseJoint->GetAnchorB();
 		const auto p2 = m_mouseJoint->GetTarget();
 
-		drawer.DrawPoint(p1, 4.0f, Color{0.0f, 1.0f, 0.0f});
-		drawer.DrawPoint(p2, 4.0f, Color{0.0f, 1.0f, 0.0f});
+		drawer.DrawPoint(p1, RealNum{4} * Meter, Color{0.0f, 1.0f, 0.0f});
+		drawer.DrawPoint(p2, RealNum{4} * Meter, Color{0.0f, 1.0f, 0.0f});
 
 		drawer.DrawSegment(p1, p2, Color{0.8f, 0.8f, 0.8f});
 	}
 	
 	if (m_bombSpawning)
 	{
-		drawer.DrawPoint(m_bombSpawnPoint, 4.0f, Color{0.0f, 0.0f, 1.0f});
+		drawer.DrawPoint(m_bombSpawnPoint, RealNum{4} * Meter, Color{0.0f, 0.0f, 1.0f});
 		drawer.DrawSegment(m_mouseWorld, m_bombSpawnPoint, Color{0.8f, 0.8f, 0.8f});
 	}
 
 	if (settings.drawContactPoints)
 	{
-		const auto k_impulseScale = RealNum(0.1);
-		const auto k_axisScale = RealNum(0.3);
+		const auto k_impulseScale = RealNum(0.1) * Second / Kilogram;
+		const auto k_axisScale = (RealNum(3) / RealNum(10)) * Meter;
 
 		for (auto i = decltype(m_pointCount){0}; i < m_pointCount; ++i)
 		{
@@ -854,12 +857,12 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 			if (point->state == PointState::AddState)
 			{
 				// Add
-				drawer.DrawPoint(point->position, 10.0f, Color{0.3f, 0.95f, 0.3f});
+				drawer.DrawPoint(point->position, RealNum{10} * Meter, Color{0.3f, 0.95f, 0.3f});
 			}
 			else if (point->state == PointState::PersistState)
 			{
 				// Persist
-				drawer.DrawPoint(point->position, 5.0f, Color{0.3f, 0.3f, 0.95f});
+				drawer.DrawPoint(point->position, RealNum{5} * Meter, Color{0.3f, 0.3f, 0.95f});
 			}
 
 			if (settings.drawContactNormals)
@@ -888,7 +891,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 	PostStep(settings, drawer);
 }
 
-void Test::ShiftOrigin(const Vec2& newOrigin)
+void Test::ShiftOrigin(const Length2D& newOrigin)
 {
 	m_world->ShiftOrigin(newOrigin);
 }

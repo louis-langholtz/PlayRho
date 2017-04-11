@@ -37,7 +37,7 @@ namespace box2d {
 		
 		BodyConstraint() = default;
 		
-		constexpr BodyConstraint(InvMass invMass, InvRotInertia invRotI, Vec2 localCenter,
+		constexpr BodyConstraint(InvMass invMass, InvRotInertia invRotI, Length2D localCenter,
 								 Position position, Velocity velocity) noexcept:
 			m_position{position},
 			m_velocity{velocity},
@@ -56,7 +56,7 @@ namespace box2d {
 		
 		InvRotInertia GetInvRotInertia() const noexcept;
 		
-		Vec2 GetLocalCenter() const noexcept;
+		Length2D GetLocalCenter() const noexcept;
 		
 		Position GetPosition() const noexcept;
 		
@@ -69,7 +69,7 @@ namespace box2d {
 	private:
 		Position m_position; ///< Body position data.
 		Velocity m_velocity; ///< Body velocity data.
-		Vec2 m_localCenter; ///< Local center of the associated body's sweep (8-bytes).
+		Length2D m_localCenter; ///< Local center of the associated body's sweep (8-bytes).
 		InvMass m_invMass; ///< Inverse mass of associated body (a non-negative value, 4-bytes).
 		InvRotInertia m_invRotI; ///< Inverse rotational inertia about the center of mass of the associated body (a non-negative value, 4-bytes).
 	};
@@ -84,7 +84,7 @@ namespace box2d {
 		return m_invRotI;
 	}
 	
-	inline Vec2 BodyConstraint::GetLocalCenter() const noexcept
+	inline Length2D BodyConstraint::GetLocalCenter() const noexcept
 	{
 		return m_localCenter;
 	}

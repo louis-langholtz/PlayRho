@@ -131,8 +131,8 @@ TEST(Simplex, DefaultConstruction)
 
 TEST(Simplex, Get1)
 {
-	const auto va = Vec2{-4, 33};
-	const auto vb = Vec2{RealNum(901.5), RealNum(0.06)};
+	const auto va = Vec2{-4, 33} * Meter;
+	const auto vb = Vec2{RealNum(901.5), RealNum(0.06)} * Meter;
 	const auto ia = SimplexEdge::index_type{2};
 	const auto ib = SimplexEdge::index_type{7};
 	const auto sv = SimplexEdge{va, ia, vb, ib};
@@ -153,8 +153,8 @@ TEST(Simplex, Get1)
 
 TEST(Simplex, Get2_of_same)
 {
-	const auto va = Vec2{-4, 33};
-	const auto vb = Vec2{RealNum(901.5), RealNum(0.06)};
+	const auto va = Vec2{-4, 33} * Meter;
+	const auto vb = Vec2{RealNum(901.5), RealNum(0.06)} * Meter;
 	const auto ia = SimplexEdge::index_type{2};
 	const auto ib = SimplexEdge::index_type{7};
 	const auto sv = SimplexEdge{va, ia, vb, ib};
@@ -176,8 +176,8 @@ TEST(Simplex, Get2_of_same)
 
 TEST(Simplex, Get2_fwd_perp)
 {
-	const auto va0 = Vec2{-4, 33};
-	const auto vb0 = Vec2{RealNum(901.5), RealNum(0.06)};
+	const auto va0 = Vec2{-4, 33} * Meter;
+	const auto vb0 = Vec2{RealNum(901.5), RealNum(0.06)} * Meter;
 	const auto ia0 = SimplexEdge::index_type{2};
 	const auto ib0 = SimplexEdge::index_type{7};
 	const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
@@ -216,8 +216,8 @@ TEST(Simplex, Get2_fwd_perp)
 
 TEST(Simplex, Get2_rev_perp)
 {
-	const auto va0 = Vec2{-4, 33};
-	const auto vb0 = Vec2{RealNum(901.5), RealNum(0.06)};
+	const auto va0 = Vec2{-4, 33} * Meter;
+	const auto vb0 = Vec2{RealNum(901.5), RealNum(0.06)} * Meter;
 	const auto ia0 = SimplexEdge::index_type{2};
 	const auto ib0 = SimplexEdge::index_type{7};
 	const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
@@ -256,8 +256,8 @@ TEST(Simplex, Get2_rev_perp)
 
 TEST(Simplex, Get2_rot_plus_45)
 {
-	const auto va0 = Vec2{-4, 33};
-	const auto vb0 = Vec2{RealNum(901.5), RealNum(0.06)};
+	const auto va0 = Vec2{-4, 33} * Meter;
+	const auto vb0 = Vec2{RealNum(901.5), RealNum(0.06)} * Meter;
 	const auto ia0 = SimplexEdge::index_type{2};
 	const auto ib0 = SimplexEdge::index_type{7};
 	const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
@@ -296,38 +296,38 @@ TEST(Simplex, Get2_rot_plus_45)
 
 TEST(Simplex, Get2_rot45_half)
 {
-	const auto va0 = Vec2{-4, 33}; // upper left
-	const auto vb0 = Vec2{901, 6}; // lower right
+	const auto va0 = Vec2{-4, 33} * Meter; // upper left
+	const auto vb0 = Vec2{901, 6} * Meter; // lower right
 	const auto ia0 = SimplexEdge::index_type{2};
 	const auto ib0 = SimplexEdge::index_type{7};
 	const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
 	
-	const auto va1 = Rotate(va0, UnitVec2{45.0f * Degree}) / 2; // Vec2{-13.081475, 10.253049}
-	const auto vb1 = Rotate(vb0, UnitVec2{45.0f * Degree}) / 2; // Vec2{316.4303, 320.67291}
-	EXPECT_NEAR(double(va1.x), -13.081475, 0.00001);
-	EXPECT_NEAR(double(va1.y),  10.253049, 0.00001);
-	EXPECT_NEAR(double(vb1.x), 316.4303,   0.0001);
-	EXPECT_NEAR(double(vb1.y), 320.67291,  0.0001);
+	const auto va1 = Rotate(va0, UnitVec2{45.0f * Degree}) / RealNum{2}; // Vec2{-13.081475, 10.253049}
+	const auto vb1 = Rotate(vb0, UnitVec2{45.0f * Degree}) / RealNum{2}; // Vec2{316.4303, 320.67291}
+	EXPECT_NEAR(double(va1.x / Meter), -13.081475, 0.00001);
+	EXPECT_NEAR(double(va1.y / Meter),  10.253049, 0.00001);
+	EXPECT_NEAR(double(vb1.x / Meter), 316.4303,   0.0001);
+	EXPECT_NEAR(double(vb1.y / Meter), 320.67291,  0.0001);
 	const auto ia1 = SimplexEdge::index_type{4};
 	const auto ib1 = SimplexEdge::index_type{1};
 	const auto sv1 = SimplexEdge{va1, ia1, vb1, ib1};
 
 	const auto w1 = vb0 - va0; // Vec2{901, 6} - Vec2{-4, 33} = Vec2{905, -27}
-	EXPECT_TRUE(almost_equal(w1.x, RealNum(905)));
-	EXPECT_TRUE(almost_equal(w1.y, RealNum(-27)));
+	EXPECT_TRUE(almost_equal(w1.x / Meter, RealNum(905)));
+	EXPECT_TRUE(almost_equal(w1.y / Meter, RealNum(-27)));
 	const auto w2 = vb1 - va1; // Vec2{316.4303, 320.67291} - Vec2{-13.081475, 10.253049} = Vec2{329.51178, 310.41986}
-	EXPECT_NEAR(double(w2.x), 329.51178, 0.001);
-	EXPECT_NEAR(double(w2.y), 310.41986, 0.001);
+	EXPECT_NEAR(double(w2.x / Meter), 329.51178, 0.001);
+	EXPECT_NEAR(double(w2.y / Meter), 310.41986, 0.001);
 	
 	const auto e12 = w2 - w1; // Vec2{329.51178, 310.41986} - Vec2{905, -27} = Vec2{-575.48822, 337.41986}
-	EXPECT_NEAR(double(e12.x), -575.48822, 0.001);
-	EXPECT_NEAR(double(e12.y),  337.41986, 0.001);
+	EXPECT_NEAR(double(e12.x / Meter), -575.48822, 0.001);
+	EXPECT_NEAR(double(e12.y / Meter),  337.41986, 0.001);
 
-	const auto d12_2 = -Dot(w1, e12); // -Dot(Vec2{905, -27}, Vec2{-575.48822, 337.41986}) = 529927.19
-	EXPECT_NEAR(double(d12_2), 529927.19, 0.1);
+	const auto d12_2 = Area{-Dot(w1, e12)}; // -Dot(Vec2{905, -27}, Vec2{-575.48822, 337.41986}) = 529927.19
+	EXPECT_NEAR(double(d12_2 / SquareMeter), 529927.19, 0.1);
 
-	const auto d12_1 = Dot(w2, e12); // Dot(Vec2{329.51178, 310.41986}, Vec2{-575.48822, 337.41986}) = -84888.312
-	EXPECT_NEAR(double(d12_1), -84888.312, 0.1);
+	const auto d12_1 = Area{Dot(w2, e12)}; // Dot(Vec2{329.51178, 310.41986}, Vec2{-575.48822, 337.41986}) = -84888.312
+	EXPECT_NEAR(double(d12_1 / SquareMeter), -84888.312, 0.1);
 
 	const auto simplex = Simplex::Get(sv0, sv1);
 	

@@ -38,28 +38,28 @@ public:
 		const auto g = m_world->CreateBody(BodyDef{}.UseType(BodyType::Static));
 
 		const auto b = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic)
-										   .UseLocation(Vec2(0, 10))
+										   .UseLocation(Vec2(0, 10) * Meter)
 										   .UseAllowSleep(false));
 
 		PolygonShape shape;
 		shape.SetDensity(RealNum{5} * KilogramPerSquareMeter);
-		SetAsBox(shape, 0.5f, 10.0f, Vec2( 10.0f, 0.0f), Angle{0});
+		SetAsBox(shape, 0.5f * Meter, 10.0f * Meter, Vec2( 10.0f, 0.0f) * Meter, Angle{0});
 		b->CreateFixture(std::make_shared<PolygonShape>(shape));
-		SetAsBox(shape, 0.5f, 10.0f, Vec2(-10.0f, 0.0f), Angle{0});
+		SetAsBox(shape, 0.5f * Meter, 10.0f * Meter, Vec2(-10.0f, 0.0f) * Meter, Angle{0});
 		b->CreateFixture(std::make_shared<PolygonShape>(shape));
-		SetAsBox(shape, 10.0f, 0.5f, Vec2(0.0f, 10.0f), Angle{0});
+		SetAsBox(shape, 10.0f * Meter, 0.5f * Meter, Vec2(0.0f, 10.0f) * Meter, Angle{0});
 		b->CreateFixture(std::make_shared<PolygonShape>(shape));
-		SetAsBox(shape, 10.0f, 0.5f, Vec2(0.0f, -10.0f), Angle{0});
+		SetAsBox(shape, 10.0f * Meter, 0.5f * Meter, Vec2(0.0f, -10.0f) * Meter, Angle{0});
 		b->CreateFixture(std::make_shared<PolygonShape>(shape));
 
 		RevoluteJointDef jd;
 		jd.bodyA = g;
 		jd.bodyB = b;
-		jd.localAnchorA = Vec2(0.0f, 10.0f);
-		jd.localAnchorB = Vec2(0.0f, 0.0f);
+		jd.localAnchorA = Vec2(0.0f, 10.0f) * Meter;
+		jd.localAnchorB = Vec2(0.0f, 0.0f) * Meter;
 		jd.referenceAngle = Angle{0};
 		jd.motorSpeed = 0.05f * Pi * RadianPerSecond;
-		jd.maxMotorTorque = 100000; // 1e8f;
+		jd.maxMotorTorque = RealNum{100000} * NewtonMeter; // 1e8f;
 		jd.enableMotor = true;
 		m_joint = static_cast<RevoluteJoint*>(m_world->CreateJoint(jd));
 	}
@@ -70,7 +70,7 @@ public:
 		{
 			const auto body = m_world->CreateBody(BodyDef{}
 												  .UseType(BodyType::Dynamic)
-												  .UseLocation(Vec2(0, 10)));
+												  .UseLocation(Vec2(0, 10) * Meter));
 			body->CreateFixture(m_shape);
 			++m_count;
 		}
@@ -100,7 +100,7 @@ public:
 
 	RevoluteJoint* m_joint;
 	int32 m_count = 0;
-	std::shared_ptr<PolygonShape> m_shape = std::make_shared<PolygonShape>(0.125f, 0.125f);
+	std::shared_ptr<PolygonShape> m_shape = std::make_shared<PolygonShape>(0.125f * Meter, 0.125f * Meter);
 };
 
 } // namespace box2d

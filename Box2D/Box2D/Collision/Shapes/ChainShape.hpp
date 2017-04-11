@@ -39,9 +39,9 @@ class EdgeShape;
 class ChainShape : public Shape
 {
 public:
-	static constexpr RealNum GetDefaultVertexRadius() noexcept
+	static constexpr Length GetDefaultVertexRadius() noexcept
 	{
-		return DefaultLinearSlop * 2;
+		return DefaultLinearSlop * RealNum{2};
 	}
 	
 	struct Conf: public Shape::Conf
@@ -75,11 +75,11 @@ public:
 	/// Create a loop. This automatically adjusts connectivity.
 	/// @note Behavior is undefined if vertices is null or if count of vertices is less than 3.
 	/// @param vertices Non-null array of vertices. These are copied.
-	void CreateLoop(Span<const Vec2> vertices);
+	void CreateLoop(Span<const Length2D> vertices);
 
 	/// Create a chain with isolated end vertices.
 	/// @param vertices an array of vertices, these are copied
-	void CreateChain(Span<const Vec2> vertices);
+	void CreateChain(Span<const Length2D> vertices);
 
 	/// Get a child edge.
 	EdgeShape GetChildEdge(child_count_t index) const;
@@ -88,17 +88,17 @@ public:
 	child_count_t GetVertexCount() const noexcept { return m_count; }
 
 	/// Get a vertex by index.
-	Vec2 GetVertex(child_count_t index) const;
+	Length2D GetVertex(child_count_t index) const;
 
 private:
 	/// The vertices. Owned by this class.
-	Vec2* m_vertices = nullptr;
+	Length2D* m_vertices = nullptr;
 
 	/// The vertex count.
 	child_count_t m_count = 0;
 };
 
-inline Vec2 ChainShape::GetVertex(child_count_t index) const
+inline Length2D ChainShape::GetVertex(child_count_t index) const
 {
 	assert((0 <= index) && (index < m_count));
 	return m_vertices[index];
@@ -123,7 +123,7 @@ child_count_t GetChildCount(const ChainShape& shape);
 /// @param xf the shape world transform.
 /// @param p a point in world coordinates.
 /// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
-bool TestPoint(const ChainShape& shape, const Transformation& xf, const Vec2 p);
+bool TestPoint(const ChainShape& shape, const Transformation& xf, const Length2D p);
 
 } // namespace box2d
 

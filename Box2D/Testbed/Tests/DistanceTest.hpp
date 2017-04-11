@@ -37,8 +37,8 @@ public:
 		m_bodyA = m_world->CreateBody(def);
 		m_bodyB = m_world->CreateBody(def);
 
-		m_bodyA->SetTransform(Vec2(-10.0f, 20.2f), 0.0f * Degree);
-		m_bodyB->SetTransform(m_bodyA->GetLocation() + Vec2(19.017401f, 0.13678508f), 0.0f * Degree);
+		m_bodyA->SetTransform(Vec2(-10.0f, 20.2f) * Meter, 0.0f * Degree);
+		m_bodyB->SetTransform(m_bodyA->GetLocation() + Vec2(19.017401f, 0.13678508f) * Meter, 0.0f * Degree);
 		
 		CreateFixtures();
 	}
@@ -50,19 +50,19 @@ public:
 
 	void CreateFixtures()
 	{
-		const auto radius = RadiusIncrement * 40;
+		const auto radius = RadiusIncrement * RealNum{40};
 		auto conf = PolygonShape::Conf{};
 		conf.density = RealNum{1} * KilogramPerSquareMeter;
 
 		conf.vertexRadius = radius;
 		PolygonShape polygonA{conf};
 		//polygonA.SetAsBox(8.0f, 6.0f);
-		polygonA.Set(Span<const Vec2>{Vec2{-8, -6}, Vec2{8, -6}, Vec2{0, 6}});
+		polygonA.Set(Span<const Length2D>{Vec2{-8, -6} * Meter, Vec2{8, -6} * Meter, Vec2{0, 6} * Meter});
 		m_bodyA->CreateFixture(std::make_shared<PolygonShape>(polygonA));
 		
-		conf.vertexRadius = radius * 2;
+		conf.vertexRadius = radius * RealNum{2};
 		PolygonShape polygonB{conf};
-		polygonB.SetAsBox(7.2f, 0.8f);
+		polygonB.SetAsBox(7.2f * Meter, 0.8f * Meter);
 		//polygonB.Set(Span<const Vec2>{Vec2{float(-7.2), 0}, Vec2{float(7.2), 0}});
 		m_bodyB->CreateFixture(std::make_shared<PolygonShape>(polygonB));
 	}
@@ -96,8 +96,8 @@ public:
 		drawer.DrawString(5, m_textLine, "%s %s: lp={%g,%g}, ln={%g,%g}, #=%d%s",
 						  GetName(manifold.GetType()),
 						  name,
-						  GetX(manifold.GetLocalPoint()),
-						  GetY(manifold.GetLocalPoint()),
+						  double{GetX(manifold.GetLocalPoint()) / Meter},
+						  double{GetY(manifold.GetLocalPoint()) / Meter},
 						  GetX(manifold.GetLocalNormal()),
 						  GetY(manifold.GetLocalNormal()),
 						  count, strbuf.str().c_str());
@@ -134,7 +134,7 @@ public:
 		
 		auto adjustedWitnessPoints = witnessPoints;
 		auto adjustedDistance = outputDistance;
-		if ((outputDistance > totalRadius) && !almost_zero(outputDistance))
+		if ((outputDistance > totalRadius) && !almost_zero(StripUnit(outputDistance)))
 		{
 			// Shapes are still not overlapped.
 			// Move the witness points to the outer surface.
@@ -161,7 +161,7 @@ public:
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		drawer.DrawString(5, m_textLine, "Press num-pad '+'/'-' to increase/decrease vertex radius of selected shape (%g & %g).",
-						  rA, rB);
+						  double{rA / Meter}, double{rB / Meter});
 		m_textLine += DRAW_STRING_NEW_LINE;
 		
 		drawer.DrawString(5, m_textLine,
@@ -212,15 +212,18 @@ public:
 		}
 
 		drawer.DrawString(5, m_textLine, "distance = %g (from %g), iterations = %d",
-						  adjustedDistance, outputDistance, output.iterations);
+						  double{adjustedDistance / Meter}, double{outputDistance / Meter},
+						  output.iterations);
 		m_textLine += DRAW_STRING_NEW_LINE;
 		
 		{
 			const auto size = output.simplex.GetSize();
 			drawer.DrawString(5, m_textLine, "Simplex info: size=%d, wpt-a={%g,%g}, wpt-b={%g,%g})",
 							  size,
-							  witnessPoints.a.x, witnessPoints.a.y,
-							  witnessPoints.b.x, witnessPoints.b.y);
+							  double{witnessPoints.a.x / Meter},
+							  double{witnessPoints.a.y / Meter},
+							  double{witnessPoints.b.x / Meter},
+							  double{witnessPoints.b.y / Meter});
 			m_textLine += DRAW_STRING_NEW_LINE;
 			for (auto i = decltype(size){0}; i < size; ++i)
 			{
@@ -229,11 +232,11 @@ public:
 				
 				drawer.DrawString(5, m_textLine, "  a[%d]={%g,%g} b[%d]={%g,%g} coef=%g",
 								  edge.GetIndexA(),
-								  edge.GetPointA().x,
-								  edge.GetPointA().y,
+								  double{edge.GetPointA().x / Meter},
+								  double{edge.GetPointA().y / Meter},
 								  edge.GetIndexB(),
-								  edge.GetPointB().x,
-								  edge.GetPointB().y,
+								  double{edge.GetPointB().x / Meter},
+								  double{edge.GetPointB().y / Meter},
 								  coef);
 				m_textLine += DRAW_STRING_NEW_LINE;
 			}
@@ -254,8 +257,8 @@ public:
 				{
 					const auto pA = Transform(manifold.GetLocalPoint(), xfmA);
 					const auto pB = Transform(manifold.GetPoint(0).localPoint, xfmB);
-					drawer.DrawCircle(pA, rA / 2, Color(1, 1, 1));
-					drawer.DrawCircle(pB, rB / 2, Color(1, 1, 1));
+					drawer.DrawCircle(pA, rA / RealNum{2}, Color(1, 1, 1));
+					drawer.DrawCircle(pB, rB / RealNum{2}, Color(1, 1, 1));
 					
 					const auto psm = GetPSM(manifold, 0, xfmA, xfmB);
 					const auto psm_separation = psm.m_separation - totalRadius;
@@ -268,11 +271,11 @@ public:
 				case Manifold::e_faceA:
 				{
 					const auto pA = Transform(manifold.GetLocalPoint(), xfmA);
-					drawer.DrawCircle(pA, rA / 2, Color(1, 1, 1));
+					drawer.DrawCircle(pA, rA / RealNum{2}, Color(1, 1, 1));
 					for (auto i = decltype(pointCount){0}; i < pointCount; ++i)
 					{
 						const auto pB = Transform(manifold.GetOpposingPoint(i), xfmB);
-						drawer.DrawCircle(pB, rB / 2, Color(1, 1, 1));
+						drawer.DrawCircle(pB, rB / RealNum{2}, Color(1, 1, 1));
 						
 						const auto psm = GetPSM(manifold, i, xfmA, xfmB);
 						const auto psm_separation = psm.m_separation - totalRadius;
@@ -285,11 +288,11 @@ public:
 				case Manifold::e_faceB:
 				{
 					const auto pB = Transform(manifold.GetLocalPoint(), xfmB);
-					drawer.DrawCircle(pB, rB / 2, Color(1, 1, 1));
+					drawer.DrawCircle(pB, rB / RealNum{2}, Color(1, 1, 1));
 					for (auto i = decltype(pointCount){0}; i < pointCount; ++i)
 					{
 						const auto pA = Transform(manifold.GetOpposingPoint(i), xfmA);
-						drawer.DrawCircle(pA, rA / 2, Color(1, 1, 1));
+						drawer.DrawCircle(pA, rA / RealNum{2}, Color(1, 1, 1));
 						
 						const auto psm = GetPSM(manifold, i, xfmA, xfmB);
 						const auto psm_separation = psm.m_separation - totalRadius;
@@ -313,21 +316,21 @@ public:
 
 			if (adjustedWitnessPoints.a != adjustedWitnessPoints.b)
 			{
-				drawer.DrawPoint(adjustedWitnessPoints.a, 4.0f, adjustedPointColor);
-				drawer.DrawPoint(adjustedWitnessPoints.b, 4.0f, adjustedPointColor);
+				drawer.DrawPoint(adjustedWitnessPoints.a, 4.0f * Meter, adjustedPointColor);
+				drawer.DrawPoint(adjustedWitnessPoints.b, 4.0f * Meter, adjustedPointColor);
 			}
 			else
 			{
-				drawer.DrawPoint(adjustedWitnessPoints.a, 4.0f, matchingPointColor);
+				drawer.DrawPoint(adjustedWitnessPoints.a, 4.0f * Meter, matchingPointColor);
 			}
 
-			drawer.DrawPoint(witnessPoints.a, 4.0f, witnessPointColor);
-			drawer.DrawPoint(witnessPoints.b, 4.0f, witnessPointColor);
+			drawer.DrawPoint(witnessPoints.a, 4.0f * Meter, witnessPointColor);
+			drawer.DrawPoint(witnessPoints.b, 4.0f * Meter, witnessPointColor);
 			
 			for (auto&& edge: output.simplex.GetEdges())
 			{
-				drawer.DrawPoint(edge.GetPointA(), 6.0f, simplexPointColor);
-				drawer.DrawPoint(edge.GetPointB(), 6.0f, simplexPointColor);
+				drawer.DrawPoint(edge.GetPointA(), 6.0f * Meter, simplexPointColor);
+				drawer.DrawPoint(edge.GetPointB(), 6.0f * Meter, simplexPointColor);
 				drawer.DrawString(edge.GetPointA(), "%d", edge.GetIndexA());
 				drawer.DrawString(edge.GetPointB(), "%d", edge.GetIndexB());
 			}
@@ -344,7 +347,7 @@ public:
 		case Key_A:
 			if (body)
 			{
-				body->SetTransform(body->GetLocation() - Vec2{RealNum(0.1), 0}, body->GetAngle());
+				body->SetTransform(body->GetLocation() - Vec2{RealNum(0.1), 0} * Meter, body->GetAngle());
 				body->SetAwake();
 			}
 			break;
@@ -352,7 +355,7 @@ public:
 		case Key_D:
 			if (body)
 			{
-				body->SetTransform(body->GetLocation() + Vec2{RealNum(0.1), 0}, body->GetAngle());
+				body->SetTransform(body->GetLocation() + Vec2{RealNum(0.1), 0} * Meter, body->GetAngle());
 				body->SetAwake();
 			}
 			break;
@@ -360,7 +363,7 @@ public:
 		case Key_S:
 			if (body)
 			{
-				body->SetTransform(body->GetLocation() - Vec2{0, RealNum(0.1)}, body->GetAngle());
+				body->SetTransform(body->GetLocation() - Vec2{0, RealNum(0.1)} * Meter, body->GetAngle());
 				body->SetAwake();
 			}
 			break;
@@ -368,7 +371,7 @@ public:
 		case Key_W:
 			if (body)
 			{
-				body->SetTransform(body->GetLocation() + Vec2{0, RealNum(0.1)}, body->GetAngle());
+				body->SetTransform(body->GetLocation() + Vec2{0, RealNum(0.1)} * Meter, body->GetAngle());
 				body->SetAwake();
 			}
 			break;
@@ -425,7 +428,7 @@ public:
 	}
 
 private:
-	const RealNum RadiusIncrement = DefaultLinearSlop * 200;
+	const Length RadiusIncrement = DefaultLinearSlop * RealNum{200};
 	const Color simplexSegmentColor = Color{0.0f, 0.5f, 0.5f}; // dark cyan
 	const Color simplexPointColor = Color{0, 1, 1, 0.6f}; // semi-transparent cyan
 	const Color witnessPointColor = Color{1, 1, 0, 0.5}; // semi-transparent yellow

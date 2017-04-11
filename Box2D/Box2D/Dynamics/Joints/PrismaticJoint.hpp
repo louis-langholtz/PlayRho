@@ -38,16 +38,16 @@ struct PrismaticJointDef : public JointDef
 	
 	/// Initialize the bodies, anchors, axis, and reference angle using the world
 	/// anchor and unit world axis.
-	PrismaticJointDef(Body* bodyA, Body* bodyB, const Vec2 anchor, const Vec2 axis) noexcept;
+	PrismaticJointDef(Body* bodyA, Body* bodyB, const Length2D anchor, const UnitVec2 axis) noexcept;
 
 	/// The local anchor point relative to bodyA's origin.
-	Vec2 localAnchorA = Vec2_zero;
+	Length2D localAnchorA = Vec2_zero * Meter;
 
 	/// The local anchor point relative to bodyB's origin.
-	Vec2 localAnchorB = Vec2_zero;
+	Length2D localAnchorB = Vec2_zero * Meter;
 
 	/// The local translation unit axis in bodyA.
-	Vec2 localAxisA = Vec2{RealNum{1}, 0};
+	UnitVec2 localAxisA = UnitVec2::GetRight();
 
 	/// The constrained angle between the bodies: bodyB_angle - bodyA_angle.
 	Angle referenceAngle = Angle{0};
@@ -55,20 +55,20 @@ struct PrismaticJointDef : public JointDef
 	/// Enable/disable the joint limit.
 	bool enableLimit = false;
 
-	/// The lower translation limit, usually in meters.
-	RealNum lowerTranslation = 0;
+	/// The lower translation limit.
+	Length lowerTranslation = Length{0};
 
-	/// The upper translation limit, usually in meters.
-	RealNum upperTranslation = 0;
+	/// The upper translation limit.
+	Length upperTranslation = Length{0};
 
 	/// Enable/disable the joint motor.
 	bool enableMotor = false;
 
 	/// The maximum motor torque, usually in N-m.
-	RealNum maxMotorForce = 0;
+	Torque maxMotorTorque = Torque{0};
 
-	/// The desired motor speed in radians per second.
-	RealNum motorSpeed = 0;
+	/// The desired motor speed (in radians per second).
+	AngularVelocity motorSpeed = AngularVelocity{0};
 };
 
 /// Prismatic Joint.
@@ -84,17 +84,17 @@ class PrismaticJoint : public Joint
 public:
 	PrismaticJoint(const PrismaticJointDef& def);
 
-	Vec2 GetAnchorA() const override;
-	Vec2 GetAnchorB() const override;
+	Length2D GetAnchorA() const override;
+	Length2D GetAnchorB() const override;
 
-	Vec2 GetReactionForce(Frequency inv_dt) const override;
-	RealNum GetReactionTorque(Frequency inv_dt) const override;
+	Force2D GetReactionForce(Frequency inv_dt) const override;
+	Torque GetReactionTorque(Frequency inv_dt) const override;
 
 	/// The local anchor point relative to bodyA's origin.
-	Vec2 GetLocalAnchorA() const { return m_localAnchorA; }
+	Length2D GetLocalAnchorA() const { return m_localAnchorA; }
 
 	/// The local anchor point relative to bodyB's origin.
-	Vec2 GetLocalAnchorB() const  { return m_localAnchorB; }
+	Length2D GetLocalAnchorB() const  { return m_localAnchorB; }
 
 	/// The local joint axis relative to bodyA.
 	UnitVec2 GetLocalAxisA() const { return m_localXAxisA; }
@@ -103,10 +103,10 @@ public:
 	Angle GetReferenceAngle() const { return m_referenceAngle; }
 
 	/// Get the current joint translation, usually in meters.
-	RealNum GetJointTranslation() const;
+	Length GetJointTranslation() const;
 
 	/// Get the current joint translation speed, usually in meters per second.
-	RealNum GetJointSpeed() const;
+	LinearVelocity GetJointSpeed() const;
 
 	/// Is the joint limit enabled?
 	bool IsLimitEnabled() const noexcept;
@@ -115,13 +115,13 @@ public:
 	void EnableLimit(bool flag) noexcept;
 
 	/// Get the lower joint limit, usually in meters.
-	RealNum GetLowerLimit() const noexcept;
+	Length GetLowerLimit() const noexcept;
 
 	/// Get the upper joint limit, usually in meters.
-	RealNum GetUpperLimit() const noexcept;
+	Length GetUpperLimit() const noexcept;
 
 	/// Set the joint limits, usually in meters.
-	void SetLimits(RealNum lower, RealNum upper);
+	void SetLimits(Length lower, Length upper);
 
 	/// Is the joint motor enabled?
 	bool IsMotorEnabled() const noexcept;
@@ -129,18 +129,18 @@ public:
 	/// Enable/disable the joint motor.
 	void EnableMotor(bool flag) noexcept;
 
-	/// Set the motor speed, usually in meters per second.
-	void SetMotorSpeed(RealNum speed) noexcept;
+	/// Set the motor speed, usually in radians per second.
+	void SetMotorSpeed(AngularVelocity speed) noexcept;
 
-	/// Get the motor speed, usually in meters per second.
-	RealNum GetMotorSpeed() const noexcept;
+	/// Get the motor speed, usually in radians per second.
+	AngularVelocity GetMotorSpeed() const noexcept;
 
 	/// Set the maximum motor force, usually in N.
-	void SetMaxMotorForce(RealNum force) noexcept;
-	RealNum GetMaxMotorForce() const noexcept { return m_maxMotorForce; }
+	void SetMaxMotorForce(Force force) noexcept;
+	Force GetMaxMotorForce() const noexcept { return m_maxMotorForce; }
 
 	/// Get the current motor force given the inverse time step, usually in N.
-	RealNum GetMotorForce(RealNum inv_dt) const noexcept;
+	Force GetMotorForce(Frequency inv_dt) const noexcept;
 
 private:
 	void InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
@@ -148,37 +148,33 @@ private:
 	bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
 
 	// Solver shared
-	Vec2 m_localAnchorA;
-	Vec2 m_localAnchorB;
+	Length2D m_localAnchorA;
+	Length2D m_localAnchorB;
 	UnitVec2 m_localXAxisA;
 	UnitVec2 m_localYAxisA;
 	Angle m_referenceAngle;
 	Vec3 m_impulse = Vec3_zero;
 	RealNum m_motorImpulse = 0;
-	RealNum m_lowerTranslation;
-	RealNum m_upperTranslation;
-	RealNum m_maxMotorForce;
-	RealNum m_motorSpeed;
+	Length m_lowerTranslation;
+	Length m_upperTranslation;
+	Force m_maxMotorForce;
+	AngularVelocity m_motorSpeed;
 	bool m_enableLimit;
 	bool m_enableMotor;
 	LimitState m_limitState = e_inactiveLimit;
 
 	// Solver temp
-	Vec2 m_localCenterA;
-	Vec2 m_localCenterB;
-	RealNum m_invMassA;
-	RealNum m_invMassB;
-	RealNum m_invIA;
-	RealNum m_invIB;
 	UnitVec2 m_axis = UnitVec2::GetZero();
 	UnitVec2 m_perp = UnitVec2::GetZero();
-	RealNum m_s1, m_s2;
-	RealNum m_a1, m_a2;
+	Length m_s1;
+	Length m_s2;
+	Length m_a1;
+	Length m_a2;
 	Mat33 m_K;
-	RealNum m_motorMass = 0;
+	Mass m_motorMass = Mass{0};
 };
 
-inline RealNum PrismaticJoint::GetMotorSpeed() const noexcept
+inline AngularVelocity PrismaticJoint::GetMotorSpeed() const noexcept
 {
 	return m_motorSpeed;
 }

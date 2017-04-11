@@ -31,26 +31,42 @@ namespace box2d
 {
 // forward declarations
 struct Vec3;
+#if 0
 constexpr inline RealNum Dot(const Vec2 a, const Vec2 b) noexcept;
 constexpr inline RealNum Dot(const Vec3 a, const Vec3 b) noexcept;
 constexpr inline RealNum Cross(const Vec2 a, const Vec2 b) noexcept;
 constexpr inline Vec3 Cross(const Vec3 a, const Vec3 b) noexcept;
+#endif
 
 // Other templates.
 
-template<class T>
-constexpr inline auto Square(T t) noexcept { return t * t; }
+template<class TYPE>
+constexpr inline auto Square(TYPE t) noexcept { return t * t; }
 
 template<typename T>
-inline auto Sqrt(T t) noexcept(noexcept(std::sqrt(t))) { return std::sqrt(t); }
+inline auto Sqrt(T t)
+{
+	return std::sqrt(StripUnit(t));
+}
+
+#ifdef USE_BOOST_UNITS
+template<>
+inline auto Sqrt(Area t)
+{
+	return std::sqrt(StripUnit(t)) * Meter;
+}
+#endif
 
 template<typename T>
-inline auto Atan2(T y, T x) { return std::atan2(y, x); }
+inline auto Atan2(T y, T x)
+{
+	return Angle{std::atan2(StripUnit(y), StripUnit(x)) * Radian};
+}
 
 template <typename T>
 constexpr inline T Abs(T a)
 {
-	return (a >= T(0)) ? a : -a;
+	return (a >= T{0}) ? a : -a;
 }
 
 template <typename T>
@@ -193,15 +209,25 @@ inline T Average(Span<const T> span)
 	return (span.size() > decltype(span.size()){0})? sum / static_cast<T>(span.size()): sum;
 }
 
+#ifdef USE_BOOST_UNITS
+
+template <>
+inline Length2D Average(Span<const Length2D> span)
+{
+	auto sum = Length2D{0, 0};
+	for (auto&& element: span)
+	{
+		sum += element;
+	}
+	const auto count = static_cast<RealNum>(span.size());
+	return (span.size() > decltype(span.size()){0})? sum / count: sum;
+}
+
+#endif
+
 /// An all zero Vec2 value.
 /// @see Vec2.
 constexpr auto Vec2_zero = Vec2{0, 0};
-
-template <>
-constexpr inline Vec2 GetInvalid() noexcept
-{
-	return Vec2{GetInvalid<RealNum>(), GetInvalid<RealNum>()};
-}
 
 template <>
 inline Vec2 round(Vec2 value, uint32 precision)
@@ -211,14 +237,10 @@ inline Vec2 round(Vec2 value, uint32 precision)
 
 /// Gets the angle.
 /// @return Anglular value in the range of -Pi to +Pi radians.
-inline Angle GetAngle(Vec2 value)
+template <class T>
+inline Angle GetAngle(T value)
 {
-	return Radian * Atan2(GetY(value), GetX(value));
-}
-
-inline Angle GetAngle(UnitVec2 value)
-{
-	return Radian * Atan2(GetY(value), GetX(value));
+	return Atan2(GetY(value), GetX(value));
 }
 
 /// A 2D column vector with 3 elements.
@@ -252,31 +274,21 @@ constexpr inline Vec3 GetInvalid() noexcept
 /// For performance, use this instead of GetLength(T value) (if possible).
 /// @return Non-negative value.
 template <typename T>
-constexpr inline RealNum GetLengthSquared(T value) noexcept;
-
-template <>
-constexpr inline RealNum GetLengthSquared(Vec2 value) noexcept
+constexpr inline auto GetLengthSquared(T value) noexcept
 {
-	return Square(value.x) + Square(value.y);		
+	return Square(GetX(value)) + Square(GetY(value));
 }
 
 template <>
-constexpr inline RealNum GetLengthSquared(Vec3 value) noexcept
+constexpr inline auto GetLengthSquared(Vec3 value) noexcept
 {
 	return Square(value.x) + Square(value.y) + Square(value.z);		
 }
 
 template <typename T>
-inline RealNum GetLength(T value)
+inline auto GetLength(T value)
 {
 	return Sqrt(GetLengthSquared(value));
-}
-
-/// Does this vector contain finite coordinates?
-template <>
-inline bool IsValid(const Vec2& value) noexcept
-{
-	return IsValid(value.x) && IsValid(value.y);
 }
 
 /// Does this vector contain finite coordinates?
@@ -284,6 +296,91 @@ template <>
 inline bool IsValid(const Vec3& value) noexcept
 {
 	return IsValid(value.x) && IsValid(value.y) && IsValid(value.z);
+}
+
+/// Performs the dot product on two vectors (A and B).
+///
+/// @detail The dot product of two vectors is defined as:
+///   the magnitude of vector A, mulitiplied by, the magnitude of vector B,
+///   multiplied by, the cosine of the angle between the two vectors (A and B).
+///   Thus the dot product of two vectors is a value ranging between plus and minus the
+///   magnitudes of each vector times each other.
+///   The middle value of 0 indicates that two vectors are perpendicular to each other
+///   (at an angle of +/- 90 degrees from each other).
+///
+///
+/// @note This operation is commutative. I.e. Dot(a, b) == Dot(b, a).
+/// @note If A and B are the same vectors, GetLengthSquared(Vec2) returns the same value
+///   using effectively one less input parameter.
+///
+/// @sa https://en.wikipedia.org/wiki/Dot_product
+///
+/// @param a Vector A.
+/// @param b Vector B.
+///
+/// @return Dot product of the vectors (0 means the two vectors are perpendicular).
+///
+template <typename T1, typename T2>
+constexpr inline auto Dot(const T1 a, const T2 b) noexcept
+{
+	return (GetX(a) * GetX(b)) + (GetY(a) * GetY(b));
+}
+
+/// Perform the dot product on two vectors.
+template <>
+constexpr inline auto Dot(const Vec3 a, const Vec3 b) noexcept
+{
+	return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
+}
+
+/// Performs the 2D analog of the cross product of two vectors.
+///
+/// @detail
+/// This is defined as the result of: <code>(a.x * b.y) - (a.y * b.x)</code>.
+///
+/// @note This operation is anti-commutative. I.e. Cross(a, b) == -Cross(b, a).
+/// @note The result will be 0 if any of the following are true:
+///   vector A or vector B has a length of zero;
+///   vectors A and B point in the same direction; or
+///   vectors A and B point in exactly opposite direction of each other.
+/// @note The result will be positive if:
+///   neither vector A nor B has a length of zero; and
+///   vector B is at an angle from vector A of greater than 0 and less than 180 degrees
+///   (counter-clockwise from A being a positive angle).
+/// @note Result will be negative if:
+///   neither vector A nor B has a length of zero; and
+///   vector B is at an angle from vector A of less than 0 and greater than -180 degrees
+///   (clockwise from A being a negative angle).
+/// @note The absolute value of the result is the area of the parallelogram formed by
+///   the vectors A and B.
+///
+/// @sa https://en.wikipedia.org/wiki/Cross_product
+///
+/// @param a Vector A.
+/// @param b Vector B.
+///
+/// @return Cross product of the two vectors.
+///
+template <class T1, class T2>
+constexpr inline auto Cross(const T1 a, const T2 b) noexcept
+{
+	// Both vectors of same direction...
+	// If a = Vec2{1, 2} and b = Vec2{1, 2} then: a x b = 1 * 2 - 2 * 1 = 0.
+	// If a = Vec2{1, 2} and b = Vec2{2, 4} then: a x b = 1 * 4 - 2 * 2 = 0.
+	//
+	// Vectors at +/- 90 degrees of each other...
+	// If a = Vec2{1, 2} and b = Vec2{-2, 1} then: a x b = 1 * 1 - 2 * (-2) = 1 + 4 = 5.
+	// If a = Vec2{1, 2} and b = Vec2{2, -1} then: a x b = 1 * (-1) - 2 * 2 = -1 - 4 = -5.
+	//
+	// Vectors between 0 and 180 degrees of each other excluding 90 degrees...
+	// If a = Vec2{1, 2} and b = Vec2{-1, 2} then: a x b = 1 * 2 - 2 * (-1) = 2 + 2 = 4.
+	return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
+}
+
+template <>
+constexpr inline auto Cross(const Vec3 a, const Vec3 b) noexcept
+{
+	return Vec3{a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x};
 }
 
 /// A 2-by-2 matrix.
@@ -428,7 +525,7 @@ constexpr UnitVec2 GetInvalid() noexcept
 template <>
 inline bool IsValid(const UnitVec2& value) noexcept
 {
-	return IsValid(value.GetX()) && IsValid(value.GetY()) && (value != UnitVec2::GetZero());
+	return IsValid(GetX(value)) && IsValid(GetY(value)) && (value != UnitVec2::GetZero());
 }
 
 /// Transformation.
@@ -439,31 +536,31 @@ inline bool IsValid(const UnitVec2& value) noexcept
 struct Transformation
 {
 	/// The default constructor does nothing.
-	Transformation() noexcept = default;
+	Transformation() = default;
 
 	/// Initialize using a translation and a rotation.
-	constexpr Transformation(Vec2 translation, UnitVec2 rotation) noexcept: p{translation}, q{rotation} {}
+	constexpr Transformation(Length2D translation, UnitVec2 rotation) noexcept: p{translation}, q{rotation} {}
 
-	constexpr Transformation(const Transformation& copy) noexcept = default;
+	constexpr Transformation(const Transformation& copy) = default;
 
-	Vec2 p; ///< Translational portion of the transformation. 8-bytes.
+	Length2D p; ///< Translational portion of the transformation. 8-bytes.
 	UnitVec2 q; ///< Rotational portion of the transformation. 8-bytes.
 };
 
-constexpr auto Transform_identity = Transformation{Vec2_zero, UnitVec2::GetRight()};
+constexpr auto Transform_identity = Transformation{Vec2_zero * Meter, UnitVec2::GetRight()};
 
 template <>
 inline bool IsValid(const Transformation& value) noexcept
 {
-	return IsValid(value.p) && IsValid(value.q);
+	return IsValid(value.p.x) && IsValid(value.p.y) && IsValid(value.q);
 }
 
 /// Positional data structure.
 /// @note This structure is likely to be 12-bytes large (at least on 64-bit platforms).
 struct Position
 {
-	Vec2 linear; ///< Linear position (in meters).
-	Angle angular; ///< Angular position (in radians).
+	Length2D linear; ///< Linear position (in meters).
+	Angle angular; ///< Angular position.
 };
 
 template <>
@@ -476,7 +573,7 @@ inline bool IsValid(const Position& value) noexcept
 /// @note This data structure is 12-bytes (with 4-byte RealNum on at least one 64-bit platform).
 struct Velocity
 {
-	Vector2D<LinearVelocity> linear; ///< Linear velocity (in meters/second).
+	LinearVelocity2D linear; ///< Linear velocity (in meters/second).
 	AngularVelocity angular; ///< Angular velocity (in radians/second).
 };
 
@@ -503,7 +600,7 @@ public:
 	constexpr Sweep(const Sweep& copy) = default;
 
 	/// Initializing constructor.
-	constexpr Sweep(const Position p0, const Position p1, const Vec2 lc = Vec2_zero, RealNum a0 = 0) noexcept:
+	constexpr Sweep(const Position p0, const Position p1, const Length2D lc = Vec2_zero * Meter, RealNum a0 = 0) noexcept:
 		pos0{p0}, pos1{p1}, localCenter{lc}, alpha0{a0}
 	{
 		assert(a0 >= 0);
@@ -511,11 +608,11 @@ public:
 	}
 	
 	/// Initializing constructor.
-	constexpr explicit Sweep(const Position p, const Vec2 lc = Vec2_zero) noexcept: Sweep{p, p, lc, 0} {}
+	constexpr explicit Sweep(const Position p, const Length2D lc = Vec2_zero * Meter): Sweep{p, p, lc, 0} {}
 
 	/// Gets the local center of mass position.
  	/// @note This value can only be set via a sweep constructed using an initializing constructor.
-	Vec2 GetLocalCenter() const noexcept { return localCenter; }
+	Length2D GetLocalCenter() const noexcept { return localCenter; }
 
 	/// Gets the alpha0 for this sweep.
 	/// @return Value between 0 and less than 1.
@@ -534,7 +631,7 @@ public:
 	Position pos1; ///< Center world position and world angle at time "1". 12-bytes.
 
 private:
-	Vec2 localCenter; ///< Local center of mass position. 8-bytes.
+	Length2D localCenter; ///< Local center of mass position. 8-bytes.
 
 	/// Fraction of the current time step in the range [0,1]
 	/// pos0.linear and pos0.angular are the positions at alpha0.
@@ -547,10 +644,11 @@ private:
 /// @param vector Vector to return a counter-clockwise perpendicular equivalent for.
 /// @return A counter-clockwise 90-degree rotation of the given vector.
 /// @sa GetFwdPerpendicular.
-constexpr inline Vec2 GetRevPerpendicular(const Vec2 vector) noexcept
+template <class T>
+constexpr inline auto GetRevPerpendicular(const T vector) noexcept
 {
 	// See http://mathworld.wolfram.com/PerpendicularVector.html
-	return Vec2{-vector.y, vector.x};
+	return T{-GetY(vector), GetX(vector)};
 }
 	
 /// Gets a vector clockwise (forward-clockwise) perpendicular to the given vector.
@@ -558,80 +656,11 @@ constexpr inline Vec2 GetRevPerpendicular(const Vec2 vector) noexcept
 /// @param vector Vector to return a clockwise perpendicular equivalent for.
 /// @return A clockwise 90-degree rotation of the given vector.
 /// @sa GetRevPerpendicular.
-constexpr inline Vec2 GetFwdPerpendicular(const Vec2 vector) noexcept
+template <class T>
+constexpr inline auto GetFwdPerpendicular(const T vector) noexcept
 {
 	// See http://mathworld.wolfram.com/PerpendicularVector.html
-	return Vec2{vector.y, -vector.x};
-}
-
-/// Performs the dot product on two vectors (A and B).
-///
-/// @detail The dot product of two vectors is defined as:
-///   the magnitude of vector A, mulitiplied by, the magnitude of vector B,
-///   multiplied by, the cosine of the angle between the two vectors (A and B).
-///   Thus the dot product of two vectors is a value ranging between plus and minus the
-///   magnitudes of each vector times each other.
-///   The middle value of 0 indicates that two vectors are perpendicular to each other
-///   (at an angle of +/- 90 degrees from each other).
-///   
-///
-/// @note This operation is commutative. I.e. Dot(a, b) == Dot(b, a).
-/// @note If A and B are the same vectors, GetLengthSquared(Vec2) returns the same value
-///   using effectively one less input parameter.
-///
-/// @sa https://en.wikipedia.org/wiki/Dot_product
-///
-/// @param a Vector A.
-/// @param b Vector B.
-///
-/// @return Dot product of the vectors (0 means the two vectors are perpendicular).
-///
-constexpr inline RealNum Dot(const Vec2 a, const Vec2 b) noexcept
-{
-	return (GetX(a) * GetX(b)) + (GetY(a) * GetY(b));
-}
-
-/// Performs the 2D analog of the cross product of two vectors.
-///
-/// @detail
-/// This is defined as the result of: <code>(a.x * b.y) - (a.y * b.x)</code>.
-///
-/// @note This operation is anti-commutative. I.e. Cross(a, b) == -Cross(b, a).
-/// @note The result will be 0 if any of the following are true:
-///   vector A or vector B has a length of zero;
-///   vectors A and B point in the same direction; or
-///   vectors A and B point in exactly opposite direction of each other.
-/// @note The result will be positive if:
-///   neither vector A nor B has a length of zero; and
-///   vector B is at an angle from vector A of greater than 0 and less than 180 degrees
-///   (counter-clockwise from A being a positive angle).
-/// @note Result will be negative if:
-///   neither vector A nor B has a length of zero; and
-///   vector B is at an angle from vector A of less than 0 and greater than -180 degrees
-///   (clockwise from A being a negative angle).
-/// @note The absolute value of the result is the area of the parallelogram formed by
-///   the vectors A and B.
-///
-/// @sa https://en.wikipedia.org/wiki/Cross_product
-///
-/// @param a Vector A.
-/// @param b Vector B.
-///
-/// @return Cross product of the two vectors.
-///
-constexpr inline RealNum Cross(const Vec2 a, const Vec2 b) noexcept
-{
-	// Both vectors of same direction...
-	// If a = Vec2{1, 2} and b = Vec2{1, 2} then: a x b = 1 * 2 - 2 * 1 = 0.
-	// If a = Vec2{1, 2} and b = Vec2{2, 4} then: a x b = 1 * 4 - 2 * 2 = 0.
-	//
-	// Vectors at +/- 90 degrees of each other...
-	// If a = Vec2{1, 2} and b = Vec2{-2, 1} then: a x b = 1 * 1 - 2 * (-2) = 1 + 4 = 5.
-	// If a = Vec2{1, 2} and b = Vec2{2, -1} then: a x b = 1 * (-1) - 2 * 2 = -1 - 4 = -5.
-	//
-	// Vectors between 0 and 180 degrees of each other excluding 90 degrees...
-	// If a = Vec2{1, 2} and b = Vec2{-1, 2} then: a x b = 1 * 2 - 2 * (-1) = 2 + 2 = 4.
-	return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
+	return T{GetY(vector), -GetX(vector)};
 }
 
 /// Multiply a matrix times a vector. If a rotation matrix is provided,
@@ -647,44 +676,35 @@ constexpr inline Vec2 InverseTransform(const Vec2 v, const Mat22& A) noexcept
 {
 	return Vec2{Dot(v, A.ex), Dot(v, A.ey)};
 }
-
-constexpr inline RealNum Dot(const UnitVec2 a, const UnitVec2 b) noexcept
-{
-	return (GetX(a) * GetX(b)) + (GetY(a) * GetY(b));
-}
-
-/// Performs the dot product operation on the given parameters.
-/// @note If either input parameter is invalid, an invalid value is returned.
-/// @param a Vector A.
-/// @param b Vector B.
-constexpr inline RealNum Dot(const Vec2 a, const UnitVec2 b) noexcept
-{
-	return (GetX(a) * GetX(b)) + (GetY(a) * GetY(b));
-}
-
-/// Performs the dot product operation on the given parameters.
-/// @note If either input parameter is invalid, an invalid value is returned.
-/// @param a Vector A.
-/// @param b Vector B.
-constexpr inline RealNum Dot(const UnitVec2 a, const Vec2 b) noexcept
-{
-	return (GetX(a) * GetX(b)) + (GetY(a) * GetY(b));
-}
-
-constexpr inline RealNum Cross(const UnitVec2 a, const UnitVec2 b) noexcept
+	
+#if 0
+constexpr inline auto Cross(const UnitVec2 a, const Vec2 b) noexcept
 {
 	return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
 }
 
-constexpr inline RealNum Cross(const UnitVec2 a, const Vec2 b) noexcept
+constexpr inline auto Cross(const Vec2 a, const UnitVec2 b) noexcept
 {
 	return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
 }
 
-constexpr inline RealNum Cross(const Vec2 a, const UnitVec2 b) noexcept
+#ifdef USE_BOOST_UNITS
+constexpr inline auto Cross(const UnitVec2 a, const Length2D b) noexcept
 {
 	return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
 }
+
+constexpr inline auto Cross(const Length2D a, const UnitVec2 b) noexcept
+{
+	return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
+}
+
+constexpr inline auto Cross(const Length2D a, const Length2D b) noexcept
+{
+	return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
+}
+#endif
+#endif
 
 constexpr inline Vec2 operator+ (const UnitVec2 lhs, const UnitVec2 rhs) noexcept
 {
@@ -696,14 +716,16 @@ constexpr inline Vec2 operator- (const UnitVec2 lhs, const UnitVec2 rhs) noexcep
 	return Vec2{lhs.GetX() - rhs.GetX(), lhs.GetY() - rhs.GetY()};
 }
 
-constexpr inline Vec2 operator* (const UnitVec2::data_type s, const UnitVec2 u) noexcept
+template <class T>
+constexpr inline Vector2D<T> operator* (const T s, const UnitVec2 u) noexcept
 {
-	return Vec2{u.GetX() * s, u.GetY() * s};
+	return Vector2D<T>{u.GetX() * s, u.GetY() * s};
 }
 
-constexpr inline Vec2 operator* (const UnitVec2 u, const UnitVec2::data_type s) noexcept
+template <class T>
+constexpr inline Vector2D<T> operator* (const UnitVec2 u, const T s) noexcept
 {
-	return Vec2{u.GetX() * s, u.GetY() * s};
+	return Vector2D<T>{u.GetX() * s, u.GetY() * s};
 }
 
 constexpr inline Vec2 operator/ (const UnitVec2 u, const UnitVec2::data_type s) noexcept
@@ -772,18 +794,6 @@ constexpr inline Vec3 operator - (const Vec3 a, const Vec3 b) noexcept
 	return Vec3{a.x - b.x, a.y - b.y, a.z - b.z};
 }
 
-/// Perform the dot product on two vectors.
-constexpr inline RealNum Dot(const Vec3 a, const Vec3 b) noexcept
-{
-	return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
-}
-
-/// Perform the cross product on two vectors.
-constexpr inline Vec3 Cross(const Vec3 a, const Vec3 b) noexcept
-{
-	return Vec3{a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x};
-}
-
 constexpr inline Mat22 operator + (const Mat22 A, const Mat22 B) noexcept
 {
 	return Mat22{A.ex + B.ex, A.ey + B.ey};
@@ -817,17 +827,23 @@ constexpr inline Vec2 Transform(const Vec2 v, const Mat33& A) noexcept
 
 /// Rotates a vector by a given angle.
 /// @sa InverseRotate.
-constexpr inline Vec2 Rotate(const Vec2 vector, const UnitVec2& angle) noexcept
+template <class T>
+constexpr inline auto Rotate(const Vector2D<T> vector, const UnitVec2& angle) noexcept
 {
-	return Vec2{(angle.cos() * vector.x) - (angle.sin() * vector.y), (angle.sin() * vector.x) + (angle.cos() * vector.y)};
+	const auto newX = (angle.cos() * GetX(vector)) - (angle.sin() * GetY(vector));
+	const auto newY = (angle.sin() * GetX(vector)) + (angle.cos() * GetY(vector));
+	return Vector2D<T>{newX, newY};
 }
 
 /// Inverse rotate a vector.
 /// @detail This is the inverse of rotating a vector - it undoes what rotate does.
 /// @sa Rotate.
-constexpr inline Vec2 InverseRotate(const Vec2 vector, const UnitVec2& angle) noexcept
+template <class T>
+constexpr inline auto InverseRotate(const Vector2D<T> vector, const UnitVec2& angle) noexcept
 {
-	return Vec2{(angle.cos() * vector.x) + (angle.sin() * vector.y), (angle.cos() * vector.y) - (angle.sin() * vector.x)};
+	const auto newX = (angle.cos() * GetX(vector)) + (angle.sin() * GetY(vector));
+	const auto newY = (angle.cos() * GetY(vector)) - (angle.sin() * GetX(vector));
+	return Vector2D<T>{newX, newY};
 }
 
 /// Transforms the given 2-D vector with the given transformation.
@@ -841,9 +857,9 @@ constexpr inline Vec2 InverseRotate(const Vec2 vector, const UnitVec2& angle) no
 /// @param v 2-D position to transform (to rotate and then translate).
 /// @param T Transformation (a translation and rotation) to apply to the given vector.
 /// @return Rotated and translated vector.
-constexpr inline Vec2 Transform(const Vec2 v, const Transformation T) noexcept
+constexpr inline Length2D Transform(const Length2D v, const Transformation T) noexcept
 {
-	return Rotate(v, T.q) + T.p;
+	return Rotate(StripUnits(v), T.q) * Meter + T.p;
 }
 
 /// Inverse transforms the given 2-D vector with the given transformation.
@@ -856,23 +872,25 @@ constexpr inline Vec2 Transform(const Vec2 v, const Transformation T) noexcept
 /// @param v 2-D vector to inverse transform (inverse translate and inverse rotate).
 /// @param T Transformation (a translation and rotation) to invertedly apply to the given vector.
 /// @return Inverse transformed vector.
-constexpr inline Vec2 InverseTransform(const Vec2 v, const Transformation T) noexcept
+constexpr inline Length2D InverseTransform(const Length2D v, const Transformation T) noexcept
 {
-	return InverseRotate(v - T.p, T.q);
+	const auto v2 = v - T.p;
+	return InverseRotate(StripUnits(v2), T.q) * Meter;
 }
 
 // v2 = A.q.Rot(B.q.Rot(v1) + B.p) + A.p
 //    = (A.q * B.q).Rot(v1) + A.q.Rot(B.p) + A.p
 constexpr inline Transformation Mul(const Transformation& A, const Transformation& B) noexcept
 {
-	return Transformation{A.p + Rotate(B.p, A.q), A.q.Rotate(B.q)};
+	return Transformation{A.p + Rotate(StripUnits(B.p), A.q) * Meter, A.q.Rotate(B.q)};
 }
 
 // v2 = A.q' * (B.q * v1 + B.p - A.p)
 //    = A.q' * B.q * v1 + A.q' * (B.p - A.p)
 constexpr inline Transformation MulT(const Transformation& A, const Transformation& B) noexcept
 {
-	return Transformation{InverseRotate(B.p - A.p, A.q), B.q.Rotate(A.q.FlipY())};
+	const auto dp = B.p - A.p;
+	return Transformation{InverseRotate(StripUnits(dp), A.q) * Meter, B.q.Rotate(A.q.FlipY())};
 }
 
 template <>
@@ -905,15 +923,14 @@ constexpr inline T Max(T a, T b) noexcept
 }
 
 /// Clamps the given value within the given range (inclusive).
-/// @param a Value to clamp.
+/// @param value Value to clamp.
 /// @param low Lowest value to return or NaN to keep the low-end unbounded.
 /// @param high Highest value to return or NaN to keep the high-end unbounded.
 template <typename T>
-constexpr inline T Clamp(T a, T low, T high) noexcept
+constexpr inline T Clamp(T value, T low, T high) noexcept
 {
-	const auto b = std::isnan(high)? a: Min(a, high);
-	const auto c = std::isnan(low)? b: Max(b, low);
-	return c;
+	const auto tmp = (value > high)? high: value; // std::isnan(high)? a: Min(a, high);
+	return (tmp < low)? low: tmp; // std::isnan(low)? b: Max(b, low);
 }
 
 template<typename T>
@@ -986,12 +1003,12 @@ constexpr inline Position operator- (const Position& lhs, const Position& rhs)
 
 constexpr inline Position operator* (const Position& pos, const RealNum scalar)
 {
-	return Position{Vec2{pos.linear.x * scalar, pos.linear.y * scalar}, pos.angular * scalar};
+	return Position{{pos.linear.x * scalar, pos.linear.y * scalar}, pos.angular * scalar};
 }
 
 constexpr inline Position operator* (const RealNum scalar, const Position& pos)
 {
-	return Position{Vec2{pos.linear.x * scalar, pos.linear.y * scalar}, pos.angular * scalar};
+	return Position{{pos.linear.x * scalar, pos.linear.y * scalar}, pos.angular * scalar};
 }
 	
 constexpr inline bool operator==(const Velocity& lhs, const Velocity& rhs)
@@ -1077,12 +1094,12 @@ constexpr inline Velocity operator/ (const Velocity& lhs, const RealNum rhs)
 	return Velocity{lhs.linear / rhs, lhs.angular / rhs};
 }
 
-constexpr inline Transformation GetTransformation(const Vec2 ctr, const UnitVec2 rot, const Vec2 local_ctr) noexcept
+constexpr inline Transformation GetTransformation(const Length2D ctr, const UnitVec2 rot, const Length2D localCtr) noexcept
 {
-	return Transformation{ctr - Rotate(local_ctr, rot), rot};
+	return Transformation{ctr - (Rotate(StripUnits(localCtr), rot) * Meter), rot};
 }
 
-inline Transformation GetTransformation(const Position pos, const Vec2 local_ctr) noexcept
+inline Transformation GetTransformation(const Position pos, const Length2D local_ctr) noexcept
 {
 	assert(IsValid(pos));
 	assert(IsValid(local_ctr));
@@ -1208,11 +1225,11 @@ inline bool IsUnderActive(Velocity velocity, RealNum linSleepTol, RealNum angSle
 
 /// Gets the contact relative velocity.
 /// @note If vcp_rA and vcp_rB are the zero vectors, the resulting value is simply velB.linear - velA.linear.
-constexpr inline Vector2D<LinearVelocity>
-GetContactRelVelocity(const Velocity velA, const Vec2 vcp_rA, const Velocity velB, const Vec2 vcp_rB) noexcept
+constexpr inline LinearVelocity2D
+GetContactRelVelocity(const Velocity velA, const Length2D vcp_rA, const Velocity velB, const Length2D vcp_rB) noexcept
 {
-	const auto velBrot = GetRevPerpendicular(vcp_rB) * RealNum{velB.angular / RadianPerSecond};
-	const auto velArot = GetRevPerpendicular(vcp_rA) * RealNum{velA.angular / RadianPerSecond};
+	const auto velBrot = GetRevPerpendicular(StripUnits(vcp_rB)) * RealNum{velB.angular / RadianPerSecond};
+	const auto velArot = GetRevPerpendicular(StripUnits(vcp_rA)) * RealNum{velA.angular / RadianPerSecond};
 	return (velB.linear + velBrot * MeterPerSecond) - (velA.linear + velArot * MeterPerSecond);
 }
 
@@ -1230,7 +1247,7 @@ inline Vec2 Average(Span<const Vec2> span)
 /// Computes the centroid of a counter-clockwise array of 3 or more vertices.
 /// @note Behavior is undefined if there are less than 3 vertices or the vertices don't
 ///   go counter-clockwise.
-Vec2 ComputeCentroid(const Span<const Vec2>& vertices);
+Length2D ComputeCentroid(const Span<const Length2D>& vertices);
 
 template <typename T>
 constexpr inline T GetModuloNext(T value, T count) noexcept
@@ -1270,10 +1287,49 @@ constexpr inline Vec2 GetVec2(const UnitVec2 value)
 /// @param value Value to get the unit vector for.
 /// @return value divided by its length if length not almost zero otherwise invalid value.
 /// @sa almost_equal.
-inline UnitVec2 GetUnitVector(const Vec2 value, const UnitVec2 fallback = UnitVec2::GetDefaultFallback())
+template <class T>
+inline UnitVec2 GetUnitVector(const Vector2D<T> value, const UnitVec2 fallback = UnitVec2::GetDefaultFallback())
 {
-	return UnitVec2::Get(GetX(value), GetY(value), fallback);
+	RealNum magnitude = 1;
+	return UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), magnitude, fallback);
 }
+
+/// Gets the unit vector for the given value.
+/// @param value Value to get the unit vector for.
+/// @return value divided by its length if length not almost zero otherwise invalid value.
+/// @sa almost_equal.
+template <class T>
+inline UnitVec2 GetUnitVector(const Vector2D<T> value, T& magnitude,
+							  const UnitVec2 fallback = UnitVec2::GetDefaultFallback());
+
+template <>
+inline UnitVec2 GetUnitVector(const Vector2D<RealNum> value, RealNum& magnitude, const UnitVec2 fallback)
+{
+	return UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), magnitude, fallback);
+}
+
+#ifdef USE_BOOST_UNITS
+
+template <>
+inline UnitVec2 GetUnitVector(const Vector2D<Length> value, Length& magnitude, const UnitVec2 fallback)
+{
+	auto tmp = RealNum{0};
+	const auto uv = UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), tmp, fallback);
+	magnitude = tmp * Meter;
+	return uv;
+}
+
+template <>
+inline UnitVec2 GetUnitVector(const Vector2D<LinearVelocity> value, LinearVelocity& magnitude,
+							  const UnitVec2 fallback)
+{
+	auto tmp = RealNum{0};
+	const auto uv = UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), tmp, fallback);
+	magnitude = tmp * MeterPerSecond;
+	return uv;
+}
+
+#endif
 
 ::std::ostream& operator<<(::std::ostream& os, const Vec2& value);
 

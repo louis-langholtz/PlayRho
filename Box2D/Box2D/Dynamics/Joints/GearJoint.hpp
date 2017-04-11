@@ -55,17 +55,17 @@ class GearJoint : public Joint
 public:
 	GearJoint(const GearJointDef& data);
 	
-	Vec2 GetAnchorA() const override;
-	Vec2 GetAnchorB() const override;
+	Length2D GetAnchorA() const override;
+	Length2D GetAnchorB() const override;
 
-	Vec2 GetReactionForce(Frequency inv_dt) const override;
-	RealNum GetReactionTorque(Frequency inv_dt) const override;
+	Force2D GetReactionForce(Frequency inv_dt) const override;
+	Torque GetReactionTorque(Frequency inv_dt) const override;
 
 	/// The local anchor point relative to bodyA's origin.
-	Vec2 GetLocalAnchorA() const { return m_localAnchorA; }
+	Length2D GetLocalAnchorA() const { return m_localAnchorA; }
 	
 	/// The local anchor point relative to bodyB's origin.
-	Vec2 GetLocalAnchorB() const  { return m_localAnchorB; }
+	Length2D GetLocalAnchorB() const  { return m_localAnchorB; }
 
 	/// Get the first joint.
 	Joint* GetJoint1() noexcept { return m_joint1; }
@@ -101,10 +101,10 @@ private:
 	Body* m_bodyD;
 
 	// Solver shared
-	Vec2 m_localAnchorA;
-	Vec2 m_localAnchorB;
-	Vec2 m_localAnchorC;
-	Vec2 m_localAnchorD;
+	Length2D m_localAnchorA;
+	Length2D m_localAnchorB;
+	Length2D m_localAnchorC;
+	Length2D m_localAnchorD;
 
 	UnitVec2 m_localAxisC;
 	UnitVec2 m_localAxisD;
@@ -112,19 +112,19 @@ private:
 	Angle m_referenceAngleA;
 	Angle m_referenceAngleB;
 
-	Angle m_constant;
+	RealNum m_constant;
 	RealNum m_ratio;
 
-	RealNum m_impulse = 0;
+	Momentum m_impulse = Momentum{0};
 
 	// Solver temp
-	Vec2 m_lcA, m_lcB, m_lcC, m_lcD;
-	RealNum m_mA, m_mB, m_mC, m_mD;
-	RealNum m_iA, m_iB, m_iC, m_iD;
 	Vec2 m_JvAC;
 	Vec2 m_JvBD;
-	RealNum m_JwA, m_JwB, m_JwC, m_JwD;
-	RealNum m_mass;
+	Length m_JwA;
+	Length m_JwB;
+	Length m_JwC;
+	Length m_JwD;
+	Mass m_mass;
 };
 	
 } // namespace box2d

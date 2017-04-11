@@ -31,23 +31,23 @@ public:
 	MotorJointTest()
 	{
 		const auto ground = m_world->CreateBody();
-		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f)));
+		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
 
 		// Define motorized body
 		BodyDef bd;
 		bd.type = BodyType::Dynamic;
-		bd.position = Vec2(0.0f, 8.0f);
+		bd.position = Vec2(0.0f, 8.0f) * Meter;
 		const auto body = m_world->CreateBody(bd);
 
 		auto conf = PolygonShape::Conf{};
 		conf.friction = 0.6f;
 		conf.density = RealNum{2} * KilogramPerSquareMeter;
-		body->CreateFixture(std::make_shared<PolygonShape>(2.0f, 0.5f, conf));
+		body->CreateFixture(std::make_shared<PolygonShape>(2.0f * Meter, 0.5f * Meter, conf));
 
 		MotorJointDef mjd;
 		mjd.Initialize(ground, body);
-		mjd.maxForce = 1000.0f;
-		mjd.maxTorque = 1000.0f;
+		mjd.maxForce = 1000.0f * Newton;
+		mjd.maxTorque = 1000.0f * NewtonMeter;
 		m_joint = (MotorJoint*)m_world->CreateJoint(mjd);
 	}
 
@@ -70,12 +70,12 @@ public:
 			m_time += settings.dt;
 		}
 
-		const auto linearOffset = Vec2{6.0f * sinf(2.0f * m_time), 8.0f + 4.0f * sinf(1.0f * m_time)};
+		const auto linearOffset = Vec2{6.0f * sinf(2.0f * m_time), 8.0f + 4.0f * sinf(1.0f * m_time)} * Meter;
 
 		m_joint->SetLinearOffset(linearOffset);
 		m_joint->SetAngularOffset(4.0f * Radian * m_time);
 
-		drawer.DrawPoint(linearOffset, 4.0f, Color(0.9f, 0.9f, 0.9f));
+		drawer.DrawPoint(linearOffset, 4.0f * Meter, Color(0.9f, 0.9f, 0.9f));
 	}
 
 	void PostStep(const Settings&, Drawer& drawer) override

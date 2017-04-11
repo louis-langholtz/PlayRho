@@ -30,8 +30,8 @@ class TimeOfImpactTest : public Test
 public:
 	TimeOfImpactTest()
 	{
-		m_shapeA.SetAsBox(25.0f, 5.0f);
-		m_shapeB.SetAsBox(2.5f, 2.5f);
+		m_shapeA.SetAsBox(25.0f * Meter, 5.0f * Meter);
+		m_shapeB.SetAsBox(2.5f * Meter, 2.5f * Meter);
 	}
 
 	static Test* Create()
@@ -53,13 +53,13 @@ public:
 
 	void PostStep(const Settings&, Drawer& drawer) override
 	{
-		const auto offset = Vec2{RealNum(-35), RealNum(70)};
+		const auto offset = Vec2{RealNum(-35), RealNum(70)} * Meter;
 		const auto sweepA = Sweep{
-			Position{Vec2(24.0f, -60.0f) + offset, 2.95f * Radian}
+			Position{Vec2(24.0f, -60.0f) * Meter + offset, 2.95f * Radian}
 		};
 		const auto sweepB = Sweep{
-			Position{Vec2(53.474274f, -50.252514f) + offset, 513.36676f * Radian},
-			Position{Vec2(54.595478f, -51.083473f) + offset, 513.62781f * Radian}
+			Position{Vec2(53.474274f, -50.252514f) * Meter + offset, 513.36676f * Radian},
+			Position{Vec2(54.595478f, -51.083473f) * Meter + offset, 513.62781f * Radian}
 		};
 
 		const auto output = TimeOfImpact(GetDistanceProxy(m_shapeA, 0), sweepA,
@@ -74,7 +74,7 @@ public:
 
 		{
 			const auto vertexCount = m_shapeA.GetVertexCount();
-			auto vertices = std::vector<Vec2>(vertexCount);
+			auto vertices = std::vector<Length2D>(vertexCount);
 			const auto transformA = GetTransformation(sweepA, 0.0f);
 			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 			{
@@ -85,7 +85,7 @@ public:
 
 		{
 			const auto vertexCount = m_shapeB.GetVertexCount();
-			auto vertices = std::vector<Vec2>(vertexCount);
+			auto vertices = std::vector<Length2D>(vertexCount);
 			const auto transformB = GetTransformation(sweepB, 0.0f);
 			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 			{
@@ -96,7 +96,7 @@ public:
 
 		{
 			const auto vertexCount = m_shapeB.GetVertexCount();
-			auto vertices = std::vector<Vec2>(vertexCount);
+			auto vertices = std::vector<Length2D>(vertexCount);
 			const auto transformB = GetTransformation(sweepB, output.get_t());
 			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 			{
@@ -107,7 +107,7 @@ public:
 
 		{
 			const auto vertexCount = m_shapeB.GetVertexCount();
-			auto vertices = std::vector<Vec2>(vertexCount);
+			auto vertices = std::vector<Length2D>(vertexCount);
 			const auto transformB = GetTransformation(sweepB, 1.0f);
 			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 			{
@@ -121,7 +121,7 @@ public:
 		{
 			const auto transformB = GetTransformation(sweepB, t);
 			const auto vertexCount = m_shapeB.GetVertexCount();
-			auto vertices = std::vector<Vec2>(vertexCount);
+			auto vertices = std::vector<Length2D>(vertexCount);
 			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 			{
 				vertices[i] = Transform(m_shapeB.GetVertex(i), transformB);

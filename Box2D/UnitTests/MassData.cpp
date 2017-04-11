@@ -41,29 +41,28 @@ TEST(MassData, GetForZeroVertexRadiusCircle)
 	const auto mass_data = GetMassData(shape, KilogramPerSquareMeter);
 	EXPECT_EQ(mass_data.mass, Mass{0});
 	EXPECT_EQ(mass_data.I, RotInertia{0});
-	EXPECT_EQ(mass_data.center.x, 0);
-	EXPECT_EQ(mass_data.center.y, 0);
+	EXPECT_EQ(mass_data.center.x, RealNum{0} * Meter);
+	EXPECT_EQ(mass_data.center.y, RealNum{0} * Meter);
 }
 
 TEST(MassData, GetForOriginCenteredCircle)
 {
 	auto conf = CircleShape::Conf{};
-	conf.vertexRadius = 1;
-	conf.location = Vec2{0, 0};
+	conf.vertexRadius = RealNum{1} * Meter;
+	conf.location = Vec2{0, 0} * Meter;
 	conf.density = RealNum{1} * KilogramPerSquareMeter;
 	const auto foo = CircleShape{conf};
 	const auto mass_data = GetMassData(foo, conf.density);
 	EXPECT_EQ(RealNum{mass_data.mass / Kilogram}, Pi);
 	EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)), 1.5707964, 0.0001);
-	EXPECT_TRUE(almost_equal(mass_data.I / (SquareMeter * Kilogram / SquareRadian),
-							 (conf.density / KilogramPerSquareMeter) * (Square(conf.vertexRadius) * Square(conf.vertexRadius) * Pi / 2)));
+	EXPECT_TRUE(almost_equal(StripUnit(mass_data.I), (conf.density / KilogramPerSquareMeter) * (Square(conf.vertexRadius) * Square(conf.vertexRadius) * Pi / (RealNum{2} * SquareMeter * SquareMeter))));
 	EXPECT_EQ(mass_data.center, conf.location);
 }
 
 TEST(MassData, GetForCircle)
 {
-	const auto radius = RealNum(1);
-	const auto position = Vec2{-1, 1};
+	const auto radius = RealNum(1) * Meter;
+	const auto position = Vec2{-1, 1} * Meter;
 	const auto density = RealNum{1} * KilogramPerSquareMeter;
 	auto conf = CircleShape::Conf{};
 	conf.vertexRadius = radius;
@@ -83,14 +82,14 @@ TEST(MassData, GetForZeroVertexRadiusRectangle)
 	conf.vertexRadius = 0;
 	conf.density = density;
 	auto shape = PolygonShape(conf);
-	shape.SetAsBox(4, 1);
-	ASSERT_EQ(shape.GetCentroid().x, RealNum(0));
-	ASSERT_EQ(shape.GetCentroid().y, RealNum(0));
+	shape.SetAsBox(RealNum{4} * Meter, RealNum{1} * Meter);
+	ASSERT_EQ(shape.GetCentroid().x, RealNum(0) * Meter);
+	ASSERT_EQ(shape.GetCentroid().y, RealNum(0) * Meter);
 	const auto mass_data = GetMassData(shape, density);
 	EXPECT_TRUE(almost_equal(RealNum{mass_data.mass / Kilogram}, RealNum((density / KilogramPerSquareMeter) * (8 * 2))));
 	EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)), 90.666664 * double(density / (KilogramPerSquareMeter)), 0.0004);
-	EXPECT_TRUE(almost_equal(mass_data.center.x, shape.GetCentroid().x));
-	EXPECT_TRUE(almost_equal(mass_data.center.y, shape.GetCentroid().y));
+	EXPECT_TRUE(almost_equal(mass_data.center.x / Meter, shape.GetCentroid().x / Meter));
+	EXPECT_TRUE(almost_equal(mass_data.center.y / Meter, shape.GetCentroid().y / Meter));
 	
 	// Area moment of inertia (I) for a rectangle is Ix + Iy = (b * h^3) / 12 + (b^3 * h) / 12....
 	const auto i = 8.0 * 2.0 * 2.0 * 2.0 / 12.0 + 8.0 * 8.0 * 8.0 * 2.0 / 12.0;
@@ -104,8 +103,8 @@ TEST(MassData, GetForZeroVertexRadiusRectangle)
 
 TEST(MassData, GetForZeroVertexRadiusEdge)
 {
-	const auto v1 = Vec2{-1, 0};
-	const auto v2 = Vec2{+1, 0};
+	const auto v1 = Vec2{-1, 0} * Meter;
+	const auto v2 = Vec2{+1, 0} * Meter;
 	const auto density = RealNum{2.1f} * KilogramPerSquareMeter;
 	auto conf = EdgeShape::Conf{};
 	conf.vertexRadius = 0;
@@ -115,34 +114,34 @@ TEST(MassData, GetForZeroVertexRadiusEdge)
 	const auto mass_data = GetMassData(shape, density);
 	EXPECT_EQ(RealNum{mass_data.mass / Kilogram}, RealNum{0});
 	EXPECT_EQ(mass_data.I, RotInertia{0});
-	EXPECT_EQ(mass_data.center.x, 0);
-	EXPECT_EQ(mass_data.center.y, 0);
+	EXPECT_EQ(mass_data.center.x, Length{0});
+	EXPECT_EQ(mass_data.center.y, Length{0});
 }
 
 TEST(MassData, GetForSamePointedEdgeIsSameAsCircle)
 {
-	const auto v1 = Vec2{-1, 1};
+	const auto v1 = Vec2{-1, 1} * Meter;
 	const auto density = RealNum{1} * KilogramPerSquareMeter;
 	auto conf = EdgeShape::Conf{};
-	conf.vertexRadius = 1;
+	conf.vertexRadius = RealNum{1} * Meter;
 	conf.density = density;
 	auto shape = EdgeShape(conf);
 	shape.Set(v1, v1);
 	const auto mass_data = GetMassData(shape, density);
 	
-	const auto circleMass = RealNum{density / KilogramPerSquareMeter} * Pi * Square(shape.GetVertexRadius());
+	const auto circleMass = density * Pi * Square(shape.GetVertexRadius());
 
-	EXPECT_TRUE(almost_equal(RealNum{mass_data.mass / Kilogram}, circleMass));
+	EXPECT_TRUE(almost_equal(StripUnit(mass_data.mass), StripUnit(circleMass)));
 	EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)), 7.85398, 0.0004);
-	EXPECT_TRUE(almost_equal(mass_data.center.x, v1.x));
-	EXPECT_TRUE(almost_equal(mass_data.center.y, v1.y));
+	EXPECT_TRUE(almost_equal(StripUnit(mass_data.center.x), StripUnit(v1.x)));
+	EXPECT_TRUE(almost_equal(StripUnit(mass_data.center.y), StripUnit(v1.y)));
 }
 
 TEST(MassData, GetForCenteredEdge)
 {
-	const auto v1 = Vec2{-2, 0};
-	const auto v2 = Vec2{+2, 0};
-	const auto radius = RealNum(0.5);
+	const auto v1 = Vec2{-2, 0} * Meter;
+	const auto v2 = Vec2{+2, 0} * Meter;
+	const auto radius = RealNum(0.5) * Meter;
 	const auto density = RealNum{2.1f} * KilogramPerSquareMeter;
 	auto conf = EdgeShape::Conf{};
 	conf.vertexRadius = radius;
@@ -151,14 +150,16 @@ TEST(MassData, GetForCenteredEdge)
 	shape.Set(v1, v2);
 	const auto mass_data = GetMassData(shape, density);
 	
-	const auto vertices = Span<const Vec2>{Vec2(-2, +0.5), Vec2(-2, -0.5), Vec2(+2, -0.5), Vec2(+2, +0.5)};
-	const auto area = GetAreaOfPolygon(vertices) + GetAreaOfCircle(radius * Meter);
+	const auto vertices = Span<const Length2D>{
+		Vec2(-2, +0.5) * Meter, Vec2(-2, -0.5) * Meter, Vec2(+2, -0.5) * Meter, Vec2(+2, +0.5) * Meter
+	};
+	const auto area = GetAreaOfPolygon(vertices) + GetAreaOfCircle(radius);
 	EXPECT_EQ(mass_data.mass, density * area);
 
 	EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)), 18.70351, 0.002);
 	EXPECT_NEAR(double(RealNum{GetPolarMoment(vertices) / (SquareMeter * SquareMeter)}), 5.6666665, 0.0001);
 	EXPECT_GT(mass_data.I, (GetPolarMoment(vertices) * density) / SquareRadian);
 	
-	EXPECT_EQ(mass_data.center.x, 0);
-	EXPECT_EQ(mass_data.center.y, 0);
+	EXPECT_EQ(mass_data.center.x, Length{0});
+	EXPECT_EQ(mass_data.center.y, Length{0});
 }

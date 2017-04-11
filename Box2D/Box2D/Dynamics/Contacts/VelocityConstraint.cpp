@@ -26,10 +26,11 @@
 using namespace box2d;
 
 VelocityConstraint::VelocityConstraint(index_type contactIndex,
-									   RealNum friction, RealNum restitution, RealNum tangentSpeed,
+									   RealNum friction, RealNum restitution,
+									   LinearVelocity tangentSpeed,
 									   const Manifold& manifold,
-									   BodyConstraint& bA, RealNum radiusA,
-									   BodyConstraint& bB, RealNum radiusB,
+									   BodyConstraint& bA, Length radiusA,
+									   BodyConstraint& bB, Length radiusB,
 									   Conf conf):
 	m_contactIndex{contactIndex},
 	m_friction{friction}, m_restitution{restitution}, m_tangentSpeed{tangentSpeed},
@@ -88,7 +89,8 @@ VelocityConstraint::VelocityConstraint(index_type contactIndex,
 	}
 }
 
-VelocityConstraint::Point VelocityConstraint::GetPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, Conf conf) const noexcept
+VelocityConstraint::Point VelocityConstraint::GetPoint(Momentum normalImpulse, Momentum tangentImpulse,
+													   Length2D rA, Length2D rB, Conf conf) const noexcept
 {
 	assert(IsValid(normalImpulse));
 	assert(IsValid(tangentImpulse));
@@ -97,43 +99,43 @@ VelocityConstraint::Point VelocityConstraint::GetPoint(RealNum normalImpulse, Re
 	
 	auto point = Point{};
 
+	// Get the magnitude of the contact relative velocity in direction of the normal.
+	// This will be an invalid value if the normal is invalid. The comparison in this
+	// case will fail and this lambda will return 0. And that's fine. There's no need
+	// to have a check that the normal is valid and possibly incur the overhead of a
+	// conditional branch here.
+	const auto dv = GetContactRelVelocity(bodyA.GetVelocity(), rA, bodyB.GetVelocity(), rB);
+	const auto vn = LinearVelocity{Dot(dv, GetNormal())};
+
 	point.normalImpulse = normalImpulse;
 	point.tangentImpulse = tangentImpulse;
 	point.rA = rA;
 	point.rB = rB;
-	point.velocityBias = [&]() {
-		// Get the magnitude of the contact relative velocity in direction of the normal.
-		// This will be an invalid value if the normal is invalid. The comparison in this
-		// case will fail and this lambda will return 0. And that's fine. There's no need
-		// to have a check that the normal is valid and possibly incur the overhead of a
-		// conditional branch here.
-		const auto dv = GetContactRelVelocity(bodyA.GetVelocity(), rA, bodyB.GetVelocity(), rB);
-		const auto vn = Dot(Vec2{dv.x / MeterPerSecond, dv.y / MeterPerSecond}, GetNormal());
-		return (vn < -conf.velocityThreshold)? -GetRestitution() * vn: RealNum{0};
-	}();
+	point.velocityBias = (vn < -conf.velocityThreshold)? -GetRestitution() * vn: LinearVelocity{0};
 	
-	const auto invMass = RealNum{GetInvMass() * Kilogram};
-	const auto invRotInertiaA = bodyA.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
-	const auto invRotInertiaB = bodyB.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
+	const auto invMass = GetInvMass();
+	const auto invRotInertiaA = bodyA.GetInvRotInertia();
+	const auto invRotInertiaB = bodyB.GetInvRotInertia();
 
 	point.normalMass = [&](){
-		const auto value = invMass
-			+ (invRotInertiaA * Square(Cross(rA, GetNormal())))
-			+ (invRotInertiaB * Square(Cross(rB, GetNormal())));
-		return (value != 0)? RealNum{1} / value : RealNum{0};
+		const auto invRotMassA = invRotInertiaA * Square(Cross(rA, GetNormal())) / SquareRadian;
+		const auto invRotMassB = invRotInertiaB * Square(Cross(rB, GetNormal())) / SquareRadian;
+		const auto value = invMass + invRotMassA + invRotMassB;
+		return (value != InvMass{0})? RealNum{1} / value : Mass{0};
 	}();
 	
 	point.tangentMass = [&]() {
-		const auto value = invMass
-			+ (invRotInertiaA * Square(Cross(rA, GetTangent())))
-			+ (invRotInertiaB * Square(Cross(rB, GetTangent())));
-		return (value != 0)? RealNum{1} / value : RealNum{0};
+		const auto invRotMassA = invRotInertiaA * Square(Cross(rA, GetTangent())) / SquareRadian;
+		const auto invRotMassB = invRotInertiaB * Square(Cross(rB, GetTangent())) / SquareRadian;
+		const auto value = invMass + invRotMassA + invRotMassB;
+		return (value != InvMass{0})? RealNum{1} / value : Mass{0};
 	}();
 
 	return point;
 }
 
-void VelocityConstraint::AddPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, Conf conf)
+void VelocityConstraint::AddPoint(Momentum normalImpulse, Momentum tangentImpulse,
+								  Length2D rA, Length2D rB, Conf conf)
 {
 	assert(m_pointCount < MaxManifoldPoints);
 	m_points[m_pointCount] = GetPoint(normalImpulse * conf.dtRatio, tangentImpulse * conf.dtRatio, rA, rB, conf);
@@ -147,11 +149,11 @@ Mat22 VelocityConstraint::ComputeK() const noexcept
 	{
 		const auto normal = GetNormal();
 		
-		const auto rn1A = Cross(GetPointRelPosA(0), normal);
-		const auto rn1B = Cross(GetPointRelPosB(0), normal);
+		const auto rn1A = Cross(StripUnits(GetPointRelPosA(0)), normal);
+		const auto rn1B = Cross(StripUnits(GetPointRelPosB(0)), normal);
 		
-		const auto rn2A = Cross(GetPointRelPosA(1), normal);
-		const auto rn2B = Cross(GetPointRelPosB(1), normal);
+		const auto rn2A = Cross(StripUnits(GetPointRelPosA(1)), normal);
+		const auto rn2B = Cross(StripUnits(GetPointRelPosB(1)), normal);
 		
 		const auto invMass = RealNum{GetInvMass() * Kilogram};
 		const auto invRotInertiaA = bodyA.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);

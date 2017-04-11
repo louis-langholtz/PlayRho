@@ -40,7 +40,7 @@ public:
 		{
 			const auto a = 0.5f;
 			BodyDef bd;
-			bd.position.y = -a;
+			bd.position.y = -a * Meter;
 			const auto ground = m_world->CreateBody(bd);
 
 			const auto N = 200;
@@ -53,7 +53,7 @@ public:
 				for (auto i = 0; i < N; ++i)
 				{
 					PolygonShape shape;
-					SetAsBox(shape, a, a, position, Angle{0});
+					SetAsBox(shape, a * Meter, a * Meter, position * Meter, Angle{0});
 					ground->CreateFixture(std::make_shared<PolygonShape>(shape));
 					++m_fixtureCount;
 					position.x += 2.0f * a;
@@ -64,7 +64,7 @@ public:
 
 		{
 			const auto a = 0.5f;
-			const auto shape = std::make_shared<PolygonShape>(a, a);
+			const auto shape = std::make_shared<PolygonShape>(a * Meter, a * Meter);
 			shape->SetDensity(RealNum{5} * KilogramPerSquareMeter);
 
 			Vec2 x(-7.0f, 0.75f);
@@ -80,7 +80,7 @@ public:
 				{
 					BodyDef bd;
 					bd.type = BodyType::Dynamic;
-					bd.position = y;
+					bd.position = y * Meter;
 
 					const auto body = m_world->CreateBody(bd);
 					body->CreateFixture(shape);

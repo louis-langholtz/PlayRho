@@ -41,23 +41,23 @@ namespace box2d {
 			bodyDef.linearDamping = 0.8f;
 			bodyDef.bullet = true;
 
-			bodyDef.position = Vec2{0, 26};
+			bodyDef.position = Vec2{0, 26} * Meter;
 			const auto body1 = m_world->CreateBody(bodyDef);
-			bodyDef.position = Vec2{0, 14};
+			bodyDef.position = Vec2{0, 14} * Meter;
 			const auto body2 = m_world->CreateBody(bodyDef);
 			
 			auto shapeConf = CircleShape::Conf{};
 			shapeConf.density = RealNum{10} * KilogramPerSquareMeter;
 
-			shapeConf.vertexRadius = 2;
-			shapeConf.location = Vec2{0, 0};
+			shapeConf.vertexRadius = RealNum{2} * Meter;
+			shapeConf.location = Vec2{0, 0} * Meter;
 			auto circle = std::make_shared<CircleShape>(shapeConf);
 
-			shapeConf.vertexRadius = 1.5;
-			shapeConf.location = Vec2{0,  3};
+			shapeConf.vertexRadius = RealNum{1.5f} * Meter;
+			shapeConf.location = Vec2{0,  3} * Meter;
 			auto circleA = std::make_shared<CircleShape>(shapeConf);
-			shapeConf.vertexRadius = 1.5;
-			shapeConf.location = Vec2{0, -3};
+			shapeConf.vertexRadius = RealNum{1.5f} * Meter;
+			shapeConf.location = Vec2{0, -3} * Meter;
 			auto circleB = std::make_shared<CircleShape>(shapeConf);
 			
 			body1->CreateFixture(circleA);

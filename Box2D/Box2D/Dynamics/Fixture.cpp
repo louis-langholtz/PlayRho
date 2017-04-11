@@ -83,7 +83,7 @@ AABB box2d::GetAABB(const Fixture& fixture, child_count_t childIndex) noexcept
 	return fixture.GetProxy(childIndex)->aabb;
 }
 
-bool box2d::TestPoint(const Fixture& f, const Vec2 p)
+bool box2d::TestPoint(const Fixture& f, const Length2D p)
 {
 	return TestPoint(*f.GetShape(), GetTransformation(f), p);
 }

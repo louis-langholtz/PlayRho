@@ -60,14 +60,6 @@ void MotorJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
 	auto& bodiesA = bodies.at(GetBodyA());
 	auto& bodiesB = bodies.at(GetBodyB());
 
-	m_localCenterA = bodiesA.GetLocalCenter();
-	m_invMassA = RealNum{bodiesA.GetInvMass() * Kilogram};
-	m_invIA = bodiesA.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
-
-	m_localCenterB = bodiesB.GetLocalCenter();
-	m_invMassB = RealNum{bodiesB.GetInvMass() * Kilogram};
-	m_invIB = bodiesB.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
-
 	const auto posA = bodiesA.GetPosition();
 	auto velA = bodiesA.GetVelocity();
 
@@ -78,8 +70,8 @@ void MotorJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
 	const auto qB = UnitVec2(posB.angular);
 
 	// Compute the effective mass matrix.
-	m_rA = Rotate(-m_localCenterA, qA);
-	m_rB = Rotate(-m_localCenterB, qB);
+	m_rA = Rotate(-bodiesA.GetLocalCenter(), qA);
+	m_rB = Rotate(-bodiesB.GetLocalCenter(), qB);
 
 	// J = [-I -r1_skew I r2_skew]
 	//     [ 0       -1 0       1]
@@ -90,23 +82,37 @@ void MotorJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
 	//     [  -r1y*iA*r1x-r2y*iB*r2x, mA+r1x^2*iA+mB+r2x^2*iB,           r1x*iA+r2x*iB]
 	//     [          -r1y*iA-r2y*iB,           r1x*iA+r2x*iB,                   iA+iB]
 
-	const auto mA = m_invMassA, mB = m_invMassB;
-	const auto iA = m_invIA, iB = m_invIB;
+	const auto invMassA = bodiesA.GetInvMass();
+	const auto invMassB = bodiesB.GetInvMass();
+	const auto invRotInertiaA = bodiesA.GetInvRotInertia();
+	const auto invRotInertiaB = bodiesB.GetInvRotInertia();
 
-	Mat22 K;
-	K.ex.x = mA + mB + iA * m_rA.y * m_rA.y + iB * m_rB.y * m_rB.y;
-	K.ex.y = -iA * m_rA.x * m_rA.y - iB * m_rB.x * m_rB.y;
-	K.ey.x = K.ex.y;
-	K.ey.y = mA + mB + iA * m_rA.x * m_rA.x + iB * m_rB.x * m_rB.x;
-
-	m_linearMass = Invert(K);
-
-	m_angularMass = iA + iB;
-	if (m_angularMass > 0)
 	{
-		m_angularMass = RealNum{1} / m_angularMass;
+		Mat22 K;
+		const auto exx = InvMass{
+			invMassA + invMassB +
+			invRotInertiaA * Square(m_rA.y) / SquareRadian +
+			invRotInertiaB * Square(m_rB.y) / SquareRadian
+		};
+		const auto exy = InvMass{
+			-invRotInertiaA * m_rA.x * m_rA.y / SquareRadian +
+			-invRotInertiaB * m_rB.x * m_rB.y / SquareRadian
+		};
+		const auto eyy = InvMass{
+			invMassA + invMassB +
+			invRotInertiaA * Square(m_rA.x) / SquareRadian +
+			invRotInertiaB * Square(m_rB.x) / SquareRadian
+		};
+		K.ex.x = StripUnit(exx);
+		K.ex.y = StripUnit(exy);
+		K.ey.x = K.ex.y;
+		K.ey.y = StripUnit(eyy);
+		m_linearMass = Invert(K);
 	}
-
+	
+	const auto invRotInertia = invRotInertiaA + invRotInertiaB;
+	m_angularMass = (invRotInertia > InvRotInertia{0})? RotInertia{RealNum{1} / invRotInertia}: RotInertia{0};
+	
 	m_linearError = posB.linear + m_rB - posA.linear - m_rA - Rotate(m_linearOffset, qA);
 	m_angularError = posB.angular - posA.angular - m_angularOffset;
 
@@ -116,14 +122,18 @@ void MotorJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
 		m_linearImpulse *= step.dtRatio;
 		m_angularImpulse *= step.dtRatio;
 
-		const auto P = Vec2{m_linearImpulse.x, m_linearImpulse.y};
-		velA -= Velocity{mA * P * MeterPerSecond, RadianPerSecond * iA * (Cross(m_rA, P) + m_angularImpulse)};
-		velB += Velocity{mB * P * MeterPerSecond, RadianPerSecond * iB * (Cross(m_rB, P) + m_angularImpulse)};
+		const auto P = m_linearImpulse;
+		// L * M * L T^-1 / QP is: L^2 M T^-1 QP^-1 which is: AngularMomentum.
+		const auto crossAP = AngularMomentum{Cross(m_rA, P) / Radian};
+		const auto crossBP = AngularMomentum{Cross(m_rB, P) / Radian}; // L * M * L T^-1 is: L^2 M T^-1
+
+		velA -= Velocity{invMassA * P, invRotInertiaA * (crossAP + m_angularImpulse)};
+		velB += Velocity{invMassB * P, invRotInertiaB * (crossBP + m_angularImpulse)};
 	}
 	else
 	{
-		m_linearImpulse = Vec2_zero;
-		m_angularImpulse = 0;
+		m_linearImpulse = Vec2_zero * Kilogram * MeterPerSecond;
+		m_angularImpulse = AngularMomentum{0};
 	}
 
 	bodiesA.SetVelocity(velA);
@@ -138,37 +148,36 @@ RealNum MotorJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
 	auto velA = bodiesA.GetVelocity();
 	auto velB = bodiesB.GetVelocity();
 
-	const auto mA = m_invMassA;
-	const auto mB = m_invMassB;
-	const auto iA = m_invIA;
-	const auto iB = m_invIB;
+	const auto invMassA = bodiesA.GetInvMass();
+	const auto invMassB = bodiesB.GetInvMass();
+	const auto invRotInertiaA = bodiesA.GetInvRotInertia();
+	const auto invRotInertiaB = bodiesB.GetInvRotInertia();
 
-	const auto h = RealNum{step.GetTime() / Second};
-	const auto inv_h = RealNum{step.GetInvTime() / Hertz};
+	const auto h = step.GetTime();
+	const auto inv_h = step.GetInvTime();
 
 	// Solve angular friction
-	auto angularIncImpulse = RealNum(0);
 	{
-		const auto Cdot = RealNum{(velB.angular - velA.angular) / RadianPerSecond} + RealNum{inv_h * m_correctionFactor * m_angularError / Radian};
-		const auto impulse = -m_angularMass * Cdot;
+		const auto Cdot = AngularVelocity{(velB.angular - velA.angular) + inv_h * m_correctionFactor * m_angularError};
+		const auto angularImpulse = AngularMomentum{-m_angularMass * Cdot};
 
-		const auto oldImpulse = m_angularImpulse;
-		const auto maxImpulse = h * m_maxTorque;
-		m_angularImpulse = Clamp(m_angularImpulse + impulse, -maxImpulse, maxImpulse);
-		angularIncImpulse = m_angularImpulse - oldImpulse;
+		const auto oldAngularImpulse = m_angularImpulse;
+		const auto maxAngularImpulse = h * m_maxTorque;
+		m_angularImpulse = Clamp(m_angularImpulse + angularImpulse, -maxAngularImpulse, maxAngularImpulse);
+		const auto incAngularImpulse = m_angularImpulse - oldAngularImpulse;
 
-		velA.angular -= RadianPerSecond * iA * angularIncImpulse;
-		velB.angular += RadianPerSecond * iB * angularIncImpulse;
+		velA.angular -= invRotInertiaA * incAngularImpulse;
+		velB.angular += invRotInertiaB * incAngularImpulse;
 	}
 
 	// Solve linear friction
 	{
-		const auto vb = velB.linear + (GetRevPerpendicular(m_rB) * RealNum{velB.angular / RadianPerSecond}) * MeterPerSecond;
-		const auto va = velA.linear - (GetRevPerpendicular(m_rA) * RealNum{velA.angular / RadianPerSecond}) * MeterPerSecond;
-		const auto dv = vb - va;
-		const auto Cdot = Vec2{dv.x / MeterPerSecond, dv.y / MeterPerSecond} + inv_h * m_correctionFactor * m_linearError;
+		const auto vb = LinearVelocity2D{velB.linear + (GetRevPerpendicular(m_rB) * velB.angular / Radian)};
+		const auto va = LinearVelocity2D{velA.linear - (GetRevPerpendicular(m_rA) * velA.angular / Radian)};
 
-		auto impulse = -Transform(Cdot, m_linearMass);
+		const auto Cdot = LinearVelocity2D{(vb - va) + inv_h * m_correctionFactor * m_linearError};
+
+		const auto impulse = Momentum2D{-Transform(StripUnits(Cdot), m_linearMass) * Kilogram * MeterPerSecond};
 		const auto oldImpulse = m_linearImpulse;
 		m_linearImpulse += impulse;
 
@@ -179,10 +188,11 @@ RealNum MotorJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
 			m_linearImpulse = GetUnitVector(m_linearImpulse, UnitVec2::GetZero()) * maxImpulse;
 		}
 
-		impulse = m_linearImpulse - oldImpulse;
-
-		velA -= Velocity{mA * impulse * MeterPerSecond, RadianPerSecond * iA * Cross(m_rA, impulse)};
-		velB += Velocity{mB * impulse * MeterPerSecond, RadianPerSecond * iB * Cross(m_rB, impulse)};
+		const auto incImpulse = m_linearImpulse - oldImpulse;
+		const auto angImpulseA = AngularMomentum{Cross(m_rA, incImpulse) / Radian};
+		const auto angImpulseB = AngularMomentum{Cross(m_rB, incImpulse) / Radian};
+		velA -= Velocity{invMassA * incImpulse, invRotInertiaA * angImpulseA};
+		velB += Velocity{invMassB * incImpulse, invRotInertiaB * angImpulseB};
 	}
 
 	bodiesA.SetVelocity(velA);
@@ -199,44 +209,44 @@ bool MotorJoint::SolvePositionConstraints(BodyConstraints& bodies, const Constra
 	return true;
 }
 
-Vec2 MotorJoint::GetAnchorA() const
+Length2D MotorJoint::GetAnchorA() const
 {
 	return GetBodyA()->GetLocation();
 }
 
-Vec2 MotorJoint::GetAnchorB() const
+Length2D MotorJoint::GetAnchorB() const
 {
 	return GetBodyB()->GetLocation();
 }
 
-Vec2 MotorJoint::GetReactionForce(Frequency inv_dt) const
+Force2D MotorJoint::GetReactionForce(Frequency inv_dt) const
 {
-	return RealNum{inv_dt / Hertz} * m_linearImpulse;
+	return inv_dt * m_linearImpulse;
 }
 
-RealNum MotorJoint::GetReactionTorque(Frequency inv_dt) const
+Torque MotorJoint::GetReactionTorque(Frequency inv_dt) const
 {
-	return RealNum{inv_dt / Hertz} * m_angularImpulse;
+	return inv_dt * m_angularImpulse;
 }
 
-void MotorJoint::SetMaxForce(RealNum force)
+void MotorJoint::SetMaxForce(Force force)
 {
-	assert(IsValid(force) && (force >= 0));
+	assert(IsValid(force) && (force >= Force{0}));
 	m_maxForce = force;
 }
 
-RealNum MotorJoint::GetMaxForce() const
+Force MotorJoint::GetMaxForce() const
 {
 	return m_maxForce;
 }
 
-void MotorJoint::SetMaxTorque(RealNum torque)
+void MotorJoint::SetMaxTorque(Torque torque)
 {
-	assert(IsValid(torque) && (torque >= 0));
+	assert(IsValid(torque) && (torque >= Torque{0}));
 	m_maxTorque = torque;
 }
 
-RealNum MotorJoint::GetMaxTorque() const
+Torque MotorJoint::GetMaxTorque() const
 {
 	return m_maxTorque;
 }
@@ -252,7 +262,7 @@ RealNum MotorJoint::GetCorrectionFactor() const
 	return m_correctionFactor;
 }
 
-void MotorJoint::SetLinearOffset(const Vec2 linearOffset)
+void MotorJoint::SetLinearOffset(const Length2D linearOffset)
 {
 	if ((linearOffset.x != m_linearOffset.x) || (linearOffset.y != m_linearOffset.y))
 	{
@@ -262,7 +272,7 @@ void MotorJoint::SetLinearOffset(const Vec2 linearOffset)
 	}
 }
 
-const Vec2 MotorJoint::GetLinearOffset() const
+const Length2D MotorJoint::GetLinearOffset() const
 {
 	return m_linearOffset;
 }

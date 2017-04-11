@@ -66,7 +66,7 @@ void GetPointStates(PointStateArray& state1, PointStateArray& state2,
 	}
 }
 
-ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, RealNum offset,
+ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, Length offset,
 						   ContactFeature::index_t indexA)
 {
 	ClipList vOut;
@@ -80,17 +80,17 @@ ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, RealNum 
 		const auto distance1 = Dot(normal, vIn[1].v) - offset;
 
 		// If the points are behind the plane
-		if (distance0 <= 0)
+		if (distance0 <= Length{0})
 		{
 			vOut.push_back(vIn[0]);
 		}
-		if (distance1 <= 0)
+		if (distance1 <= Length{0})
 		{
 			vOut.push_back(vIn[1]);
 		}
 
 		// If the points are on different sides of the plane
-		if ((distance0 * distance1) < 0)
+		if ((distance0 * distance1) < RealNum{0} * SquareMeter)
 		{
 			// Neither distance0 nor distance1 is 0 and either one or the other is negative (but not both).
 			// Find intersection point of edge and plane

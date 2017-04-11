@@ -39,16 +39,16 @@ TEST(SeparationFinder, ByteSizeIs_40_56_or_96)
 
 TEST(SeparationFinder, BehavesAsExpected)
 {
-	const auto shape = PolygonShape{0.5f, 0.5f};
+	const auto shape = PolygonShape{0.5f * Meter, 0.5f * Meter};
 	const auto distproxy = GetDistanceProxy(shape, 0);
 
 	const auto x = RealNum(100);
-	const auto sweepA = Sweep{Position{Vec2{-x, 0}, 0.0f * Degree}, Position{Vec2{+x, 0}, 0.0f * Degree}};
-	const auto sweepB = Sweep{Position{Vec2{+x, 0}, 0.0f * Degree}, Position{Vec2{-x, 0}, 0.0f * Degree}};
+	const auto sweepA = Sweep{Position{Vec2{-x, 0} * Meter, 0.0f * Degree}, Position{Vec2{+x, 0} * Meter, 0.0f * Degree}};
+	const auto sweepB = Sweep{Position{Vec2{+x, 0} * Meter, 0.0f * Degree}, Position{Vec2{-x, 0} * Meter, 0.0f * Degree}};
 	
 	auto t = RealNum{0}; // Will be set to value of t2
-	auto last_s = MaxFloat;
-	auto last_distance = MaxFloat;
+	auto last_s = MaxFloat * Meter;
+	auto last_distance = MaxFloat * Meter;
 	auto xfA = GetTransformation(sweepA, t);
 	auto xfB = GetTransformation(sweepB, t);
 	DistanceConf conf;
@@ -57,9 +57,9 @@ TEST(SeparationFinder, BehavesAsExpected)
 	const auto fcn = SeparationFinder::Get(conf.cache.GetIndices(), distproxy, xfA, distproxy, xfB);
 	EXPECT_EQ(fcn.GetType(), SeparationFinder::e_faceA);
 	EXPECT_EQ(GetVec2(fcn.GetAxis()), Vec2(1, 0));
-	EXPECT_EQ(fcn.GetLocalPoint(), Vec2(0.5, 0));
+	EXPECT_EQ(fcn.GetLocalPoint(), Vec2(0.5, 0) * Meter);
 
-	auto last_min_sep = MaxFloat;
+	auto last_min_sep = MaxFloat * Meter;
 	for (auto i = 0u; i < 500; ++i)
 	{
 		// Prepare input for distance query.
@@ -70,14 +70,14 @@ TEST(SeparationFinder, BehavesAsExpected)
 
 		EXPECT_EQ(minSeparation.indexPair, (IndexPair{IndexPair::InvalidIndex, 2}));
 		EXPECT_LT(minSeparation.distance, last_s);
-		if (minSeparation.distance > 0)
+		if (minSeparation.distance > Length{0})
 		{
 			EXPECT_LT(distance, last_distance);
-			EXPECT_NEAR(double(minSeparation.distance), double(distance), 0.00001);
+			EXPECT_NEAR(double(minSeparation.distance / Meter), double(distance / Meter), 0.00001);
 		}
-		else if (minSeparation.distance < 0)
+		else if (minSeparation.distance < Length{0})
 		{
-			if (last_min_sep < 0 && distance != 0)
+			if (last_min_sep < Length{0} && distance != Length{0})
 			{
 				EXPECT_GT(distance, last_distance);
 			}
@@ -86,13 +86,13 @@ TEST(SeparationFinder, BehavesAsExpected)
 		
 		const auto s = fcn.Evaluate(minSeparation.indexPair, xfA, xfB);
 		EXPECT_EQ(s, minSeparation.distance);
-		if (s >= 0)
+		if (s >= Length{0})
 		{
-			EXPECT_NEAR(double(s), double(distance), 0.0001);
+			EXPECT_NEAR(double(s / Meter), double(distance / Meter), 0.0001);
 		}
 		else
 		{
-			EXPECT_LE(double(s), double(distance));
+			EXPECT_LE(double(s / Meter), double(distance / Meter));
 		}
 		EXPECT_LT(s, last_s);
 		

@@ -53,8 +53,8 @@ namespace box2d {
 		using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
 
 		constexpr ToiConf& UseTimeMax(RealNum value) noexcept;
-		constexpr ToiConf& UseTargetDepth(RealNum value) noexcept;
-		constexpr ToiConf& UseTolerance(RealNum value) noexcept;
+		constexpr ToiConf& UseTargetDepth(Length value) noexcept;
+		constexpr ToiConf& UseTolerance(Length value) noexcept;
 		constexpr ToiConf& UseMaxRootIters(root_iter_type value) noexcept;
 		constexpr ToiConf& UseMaxToiIters(toi_iter_type value) noexcept;
 		constexpr ToiConf& UseMaxDistIters(dist_iter_type value) noexcept;
@@ -63,9 +63,9 @@ namespace box2d {
 		
 		/// Targetted depth of impact.
 		/// @note Value must be less than twice the minimum vertex radius of any shape.
-		RealNum targetDepth = DefaultLinearSlop * 3;
+		Length targetDepth = DefaultLinearSlop * RealNum{3};
 
-		RealNum tolerance = DefaultLinearSlop / 4; ///< Tolerance.
+		Length tolerance = DefaultLinearSlop / RealNum{4}; ///< Tolerance.
 		
 		/// Maximum number of root finder iterations.
 		/// @detail This is the maximum number of iterations for calculating the 1D root of
@@ -92,13 +92,13 @@ namespace box2d {
 		return *this;
 	}
 
-	constexpr ToiConf& ToiConf::UseTargetDepth(RealNum value) noexcept
+	constexpr ToiConf& ToiConf::UseTargetDepth(Length value) noexcept
 	{
 		targetDepth = value;
 		return *this;
 	}
 
-	constexpr ToiConf& ToiConf::UseTolerance(RealNum value) noexcept
+	constexpr ToiConf& ToiConf::UseTolerance(Length value) noexcept
 	{
 		tolerance = value;
 		return *this;

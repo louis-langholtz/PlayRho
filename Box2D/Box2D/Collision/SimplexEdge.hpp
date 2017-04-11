@@ -40,25 +40,25 @@ namespace box2d
 		/// Default constructor.
 		SimplexEdge() = default;
 		
-		constexpr SimplexEdge(const SimplexEdge& copy) noexcept = default;
+		constexpr SimplexEdge(const SimplexEdge& copy) = default;
 		
 		/// Initializing constructor.
 		/// @param pA Point A in world coordinates.
 		/// @param iA Index of point A within the shape that it comes from.
 		/// @param pB Point B in world coordinates.
 		/// @param iB Index of point B within the shape that it comes from.
-		constexpr SimplexEdge(Vec2 pA, index_type iA, Vec2 pB, index_type iB) noexcept;
+		constexpr SimplexEdge(Length2D pA, index_type iA, Length2D pB, index_type iB) noexcept;
 		
 		/// Gets point A (in world coordinates).
-		constexpr Vec2 GetPointA() const noexcept { return m_wA; }
+		constexpr auto GetPointA() const noexcept { return m_wA; }
 		
 		/// Gets point B (in world coordinates).
-		constexpr Vec2 GetPointB() const noexcept { return m_wB; }
+		constexpr auto GetPointB() const noexcept { return m_wB; }
 		
 		/// Gets the point delta.
 		/// @detail This is the difference between points A and B.
 		/// @return Point B minus point A.
-		constexpr Vec2 GetPointDelta() const noexcept;
+		constexpr Length2D GetPointDelta() const noexcept;
 
 		constexpr auto GetIndexA() const noexcept { return m_indexPair.a; }
 		
@@ -67,15 +67,15 @@ namespace box2d
 		constexpr auto GetIndexPair() const noexcept { return m_indexPair; }
 
 	private:
-		Vec2 m_wA; ///< Point A in world coordinates. This is the support point in proxy A. 8-bytes.
-		Vec2 m_wB; ///< Point B in world coordinates. This is the support point in proxy B. 8-bytes.
+		Length2D m_wA; ///< Point A in world coordinates. This is the support point in proxy A. 8-bytes.
+		Length2D m_wB; ///< Point B in world coordinates. This is the support point in proxy B. 8-bytes.
 #ifndef DONT_CACHE
-		Vec2 m_delta; ///< Edge defined wB - wA. 8-bytes.
+		Length2D m_delta; ///< Edge defined wB - wA. 8-bytes.
 #endif
 		IndexPair m_indexPair; ///< Index pair. @detail Indices of points A and B. 2-bytes.
 	};
 	
-	constexpr inline SimplexEdge::SimplexEdge(Vec2 pA, index_type iA, Vec2 pB, index_type iB) noexcept:
+	constexpr inline SimplexEdge::SimplexEdge(Length2D pA, index_type iA, Length2D pB, index_type iB) noexcept:
 		m_wA{pA}, m_wB{pB},
 #ifndef DONT_CACHE
 		m_delta{pB - pA},
@@ -84,7 +84,7 @@ namespace box2d
 	{
 	}
 
-	constexpr inline Vec2 SimplexEdge::GetPointDelta() const noexcept
+	constexpr inline Length2D SimplexEdge::GetPointDelta() const noexcept
 	{
 #ifndef DONT_CACHE
 		return m_delta;
@@ -95,7 +95,7 @@ namespace box2d
 
 	/// Gets "w".
 	/// @return 2D vector value of wB minus wA.
-	constexpr inline Vec2 GetPointDelta(const SimplexEdge& sv)
+	constexpr inline Length2D GetPointDelta(const SimplexEdge& sv)
 	{
 		return sv.GetPointDelta();
 	}

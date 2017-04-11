@@ -29,32 +29,32 @@ public:
 	Prismatic()
 	{
 		const auto ground = m_world->CreateBody();
-		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
+		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 
 		{
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(-10.0f, 10.0f);
+			bd.position = Vec2(-10.0f, 10.0f) * Meter;
 			bd.angle = 0.5f * Radian * Pi;
 			bd.allowSleep = false;
 			const auto body = m_world->CreateBody(bd);
 			
 			auto polygonConf = PolygonShape::Conf{};
 			polygonConf.density = RealNum{5} * KilogramPerSquareMeter;
-			body->CreateFixture(std::make_shared<PolygonShape>(2.0f, 0.5f, polygonConf));
+			body->CreateFixture(std::make_shared<PolygonShape>(2.0f * Meter, 0.5f * Meter, polygonConf));
 
 			// Bouncy limit
 			const auto axis = GetUnitVector(Vec2(2.0f, 1.0f));
-			PrismaticJointDef pjd(ground, body, Vec2(0.0f, 0.0f), GetVec2(axis));
+			PrismaticJointDef pjd(ground, body, Vec2(0.0f, 0.0f) * Meter, axis);
 
 			// Non-bouncy limit
 			//pjd.Initialize(ground, body, Vec2(-10.0f, 10.0f), Vec2(1.0f, 0.0f));
 
-			pjd.motorSpeed = 10.0f;
-			pjd.maxMotorForce = 10000.0f;
+			pjd.motorSpeed = 10.0f * RadianPerSecond;
+			pjd.maxMotorTorque = 10000.0f * NewtonMeter;
 			pjd.enableMotor = true;
-			pjd.lowerTranslation = 0.0f;
-			pjd.upperTranslation = 20.0f;
+			pjd.lowerTranslation = 0.0f * Meter;
+			pjd.upperTranslation = 20.0f * Meter;
 			pjd.enableLimit = true;
 
 			m_joint = (PrismaticJoint*)m_world->CreateJoint(pjd);
@@ -86,8 +86,8 @@ public:
 	{
 		drawer.DrawString(5, m_textLine, "Keys: (l) limits, (m) motors, (s) speed");
 		m_textLine += DRAW_STRING_NEW_LINE;
-		const auto force = m_joint->GetMotorForce(settings.hz);
-		drawer.DrawString(5, m_textLine, "Motor Force = %4.0f", (float) force);
+		const auto force = m_joint->GetMotorForce(settings.hz * Hertz);
+		drawer.DrawString(5, m_textLine, "Motor Force = %4.0f", double{force / Newton});
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 

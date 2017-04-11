@@ -37,7 +37,7 @@ TEST(VertexSet, DefaultConstruction)
 	const auto set = VertexSet{};
 	EXPECT_EQ(set.size(), size_t(0));
 	EXPECT_EQ(set.begin(), set.end());
-	EXPECT_EQ(set.find(Vec2{0, 0}), set.end());
+	EXPECT_EQ(set.find(Vec2{0, 0} * Meter), set.end());
 }
 
 TEST(VertexSet, Add)
@@ -45,36 +45,36 @@ TEST(VertexSet, Add)
 	auto set = VertexSet{};
 	ASSERT_EQ(set.size(), size_t(0));
 
-	EXPECT_TRUE(set.add(Vec2{1, 1}));
+	EXPECT_TRUE(set.add(Vec2{1, 1} * Meter));
 	EXPECT_EQ(set.size(), size_t(1));
 
-	EXPECT_FALSE(set.add(Vec2{1, 1}));
+	EXPECT_FALSE(set.add(Vec2{1, 1} * Meter));
 	EXPECT_EQ(set.size(), size_t(1));
 	
-	const auto v = Vec2{RealNum(0), RealNum(0)};
+	const auto v = Vec2{RealNum(0), RealNum(0)} * Meter;
 
 	EXPECT_TRUE(set.add(v));
 	EXPECT_EQ(set.size(), size_t(2));
 	
-	EXPECT_FALSE(set.add(Vec2{1, 1}));
+	EXPECT_FALSE(set.add(Vec2{1, 1} * Meter));
 	EXPECT_EQ(set.size(), size_t(2));
 	
 	EXPECT_FALSE(set.add(v));
 	EXPECT_EQ(set.size(), size_t(2));
 	
-	const auto v_prime = v + Vec2{std::numeric_limits<RealNum>::min(), std::numeric_limits<RealNum>::min()};
+	const auto v_prime = v + Vec2{std::numeric_limits<RealNum>::min(), std::numeric_limits<RealNum>::min()} * Meter;
 	
 	ASSERT_NE(v, v_prime);
 	
 	EXPECT_FALSE(set.add(v_prime));
 	EXPECT_EQ(set.size(), size_t(2));
 	
-	EXPECT_TRUE(set.add(Vec2{4, 5}));
+	EXPECT_TRUE(set.add(Vec2{4, 5} * Meter));
 	EXPECT_EQ(set.size(), size_t(3));
 	
-	EXPECT_TRUE(set.add(Vec2{6, 5}));
+	EXPECT_TRUE(set.add(Vec2{6, 5} * Meter));
 	EXPECT_EQ(set.size(), size_t(4));
 
-	EXPECT_TRUE(set.add(Vec2{8, 5}));
+	EXPECT_TRUE(set.add(Vec2{8, 5} * Meter));
 	EXPECT_EQ(set.size(), size_t(5));
 }

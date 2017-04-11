@@ -30,7 +30,7 @@ using namespace box2d;
 
 namespace
 {
-	MassData GetMassData(Length r, Density density, Vec2 location)
+	MassData GetMassData(Length r, Density density, Length2D location)
 	{
 		assert(density >= Density{0});
 
@@ -50,12 +50,12 @@ namespace
 		const auto r_squared = r * r;
 		const auto area = r_squared * Pi;
 		const auto mass = Mass{density * area};
-		const auto Iz = SecondMomentOfArea{area * ((r_squared / RealNum{2}) + SquareMeter * GetLengthSquared(location))};
+		const auto Iz = SecondMomentOfArea{area * ((r_squared / RealNum{2}) + GetLengthSquared(location))};
 		const auto I = RotInertia{Iz * density / SquareRadian};
 		return MassData{mass, location, I};
 	}
 
-	MassData GetMassData(Length r, Density density, Vec2 v0, Vec2 v1)
+	MassData GetMassData(Length r, Density density, Length2D v0, Length2D v1)
 	{
 		assert(density >= Density{0});
 
@@ -63,26 +63,27 @@ namespace
 		const auto circle_area = r_squared * Pi;
 		const auto circle_mass = density * circle_area;
 		const auto d = v1 - v0;
-		const auto offset = GetRevPerpendicular(GetUnitVector(d, UnitVec2::GetZero())) * (r / Meter);
-		const auto b = Meter * GetLength(d);
+		const auto dUnitless = StripUnits(d);
+		const auto offset = GetRevPerpendicular(GetUnitVector(dUnitless, UnitVec2::GetZero())) * (r / Meter);
+		const auto b = Meter * GetLength(dUnitless);
 		const auto h = r * RealNum{2};
 		const auto rect_mass = density * b * h;
 		const auto totalMass = circle_mass + rect_mass;
 		
 		/// Use the fixture's areal mass density times the shape's second moment of area to derive I.
 		/// @sa https://en.wikipedia.org/wiki/Second_moment_of_area
-		const auto I0 = SecondMomentOfArea{(circle_area / RealNum{2}) * ((r_squared / RealNum{2}) + SquareMeter * GetLengthSquared(v0))};
-		const auto I1 = SecondMomentOfArea{(circle_area / RealNum{2}) * ((r_squared / RealNum{2}) + SquareMeter * GetLengthSquared(v1))};
+		const auto I0 = SecondMomentOfArea{(circle_area / RealNum{2}) * ((r_squared / RealNum{2}) + GetLengthSquared(v0))};
+		const auto I1 = SecondMomentOfArea{(circle_area / RealNum{2}) * ((r_squared / RealNum{2}) + GetLengthSquared(v1))};
 		
-		const auto vertices = Span<const Vec2>{
-			Vec2{v0 + offset},
-			Vec2{v0 - offset},
-			Vec2{v1 - offset},
-			Vec2{v1 + offset}
+		const auto vertices = Span<const Length2D>{
+			Length2D{v0 + offset * Meter},
+			Length2D{v0 - offset * Meter},
+			Length2D{v1 - offset * Meter},
+			Length2D{v1 + offset * Meter}
 		};
 		const auto I_z = GetPolarMoment(vertices);
 		const auto I = RotInertia{(I0 + I1 + I_z) * density / SquareRadian};
-		return MassData{totalMass, (v0 + v1) / 2, I};
+		return MassData{totalMass, (v0 + v1) / 2.0f, I};
 	}
 
 } // unnamed namespace
@@ -92,11 +93,11 @@ Area box2d::GetAreaOfCircle(Length radius)
 	return Area{radius * radius * Pi};
 }
 
-Area box2d::GetAreaOfPolygon(Span<const Vec2> vertices)
+Area box2d::GetAreaOfPolygon(Span<const Length2D> vertices)
 {
 	// Uses the "Shoelace formula".
 	// See: https://en.wikipedia.org/wiki/Shoelace_formula
-	auto sum = RealNum(0);
+	auto sum = RealNum(0) * SquareMeter;
 	const auto count = vertices.size();
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
@@ -105,10 +106,10 @@ Area box2d::GetAreaOfPolygon(Span<const Vec2> vertices)
 		const auto next_v = vertices[GetModuloNext(i, count)];
 		sum += this_v.x * (next_v.y - last_v.y);
 	}
-	return Area{SquareMeter * sum / RealNum{2}};
+	return sum / RealNum{2};
 }
 
-SecondMomentOfArea box2d::GetPolarMoment(Span<const Vec2> vertices)
+SecondMomentOfArea box2d::GetPolarMoment(Span<const Length2D> vertices)
 {
 	assert(vertices.size() > 2);
 
@@ -123,8 +124,8 @@ SecondMomentOfArea box2d::GetPolarMoment(Span<const Vec2> vertices)
 	const auto count = vertices.size();
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
-		const auto this_v = vertices[i];
-		const auto next_v = vertices[GetModuloNext(i, count)];
+		const auto this_v = StripUnits(vertices[i]);
+		const auto next_v = StripUnits(vertices[GetModuloNext(i, count)]);
 		const auto fact_b = this_v.x * next_v.y - next_v.x * this_v.y;
 		sum_x += [&]() {
 			const auto fact_a = Square(this_v.y) + this_v.y * next_v.y + Square(next_v.y);
@@ -176,20 +177,20 @@ MassData box2d::GetMassData(const PolygonShape& shape, Density density)
 		case 0:
 			return MassData{
 				Mass{Kilogram * GetInvalid<RealNum>()},
-				GetInvalid<Vec2>(),
+				GetInvalid<Length2D>(),
 				RotInertia{SquareMeter * Kilogram * GetInvalid<RealNum>() / SquareRadian}
 			};
 		case 1:
-			return ::GetMassData(Meter * shape.GetVertexRadius(), density, shape.GetVertex(0));
+			return ::GetMassData(shape.GetVertexRadius(), density, shape.GetVertex(0));
 		case 2:
-			return ::GetMassData(Meter * shape.GetVertexRadius(), density, shape.GetVertex(0), shape.GetVertex(1));;
+			return ::GetMassData(shape.GetVertexRadius(), density, shape.GetVertex(0), shape.GetVertex(1));;
 		default:
 			break;
 	}
 	
-	auto center = Vec2_zero;
-	auto area = RealNum{0};
-	auto I = RealNum{0};
+	auto center = Vec2_zero * Meter;
+	auto area = Area{0};
+	auto I = SecondMomentOfArea{0};
 	
 	// s is the reference point for forming triangles.
 	// It's location doesn't change the result (except for rounding error).
@@ -204,48 +205,47 @@ MassData box2d::GetMassData(const PolygonShape& shape, Density density)
 		
 		const auto D = Cross(e1, e2);
 		
-		const auto triangleArea = D / 2;
+		const auto triangleArea = D / RealNum{2};
 		area += triangleArea;
 		
 		// Area weighted centroid
-		center += triangleArea * (e1 + e2) / 3;
+		center += StripUnit(triangleArea) * (e1 + e2) / RealNum{3};
 		
 		const auto intx2 = e1.x * e1.x + e2.x * e1.x + e2.x * e2.x;
 		const auto inty2 = e1.y * e1.y + e2.y * e1.y + e2.y * e2.y;
 		
-		const auto triangleI = D * (intx2 + inty2) / (3 * 4);
+		const auto triangleI = D * (intx2 + inty2) / RealNum{3 * 4};
 		I += triangleI;
 	}
 	
 	// Total mass
-	const auto mass = Mass{density * Area{SquareMeter * area}};
+	const auto mass = Mass{density * area};
 	
 	// Center of mass
-	assert((area > 0) && !almost_zero(area));
-	center *= 1 / area;
+	assert((area > Area{0}) && !almost_zero(StripUnit(area)));
+	center /= StripUnit(area);
 	const auto massDataCenter = center + s;
 	
 	// Inertia tensor relative to the local origin (point s).
 	// Shift to center of mass then to original body origin.
 	const auto massCenterOffset = GetLengthSquared(massDataCenter);
 	const auto centerOffset = GetLengthSquared(center);
-	const auto intertialLever = SquareMeter * (massCenterOffset - centerOffset);
-	const auto secondMomentOfArea = SecondMomentOfArea{SquareMeter * SquareMeter * I};
-	const auto massDataI = RotInertia{((density * secondMomentOfArea) + (mass * intertialLever)) / SquareRadian};
+	const auto intertialLever = massCenterOffset - centerOffset;
+	const auto massDataI = RotInertia{((density * I) + (mass * intertialLever)) / SquareRadian};
 	
 	return MassData{mass, massDataCenter, massDataI};
 }
 
 MassData box2d::GetMassData(const CircleShape& shape, Density density)
 {
-	return ::GetMassData(Length{Meter * shape.GetVertexRadius()}, density, shape.GetLocation());
+	return ::GetMassData(shape.GetVertexRadius(), density, shape.GetLocation());
 }
 
 MassData box2d::GetMassData(const EdgeShape& shape, Density density)
 {
 	assert(!shape.HasVertex0());
 	assert(!shape.HasVertex3());
-	return ::GetMassData(Length{Meter * shape.GetVertexRadius()}, density, shape.GetVertex1(), shape.GetVertex2());
+	return ::GetMassData(shape.GetVertexRadius(), density, shape.GetVertex1(), shape.GetVertex2());
 }
 
 MassData box2d::GetMassData(const ChainShape& shape, Density density)
@@ -253,7 +253,7 @@ MassData box2d::GetMassData(const ChainShape& shape, Density density)
 	NOT_USED(shape);
 	NOT_USED(density);
 	
-	return MassData{Mass{0}, Vec2_zero, RotInertia{0}};
+	return MassData{Mass{0}, Vec2_zero * Meter, RotInertia{0}};
 }
 
 MassData box2d::GetMassData(const Shape& shape, Density density)
@@ -266,7 +266,7 @@ MassData box2d::GetMassData(const Shape& shape, Density density)
 		case Shape::e_chain: return GetMassData(static_cast<const ChainShape&>(shape), density);
 		case Shape::e_circle: return GetMassData(static_cast<const CircleShape&>(shape), density);
 		case Shape::e_polygon: return GetMassData(static_cast<const PolygonShape&>(shape), density);
-		case Shape::e_typeCount: return MassData{0, GetInvalid<Vec2>(), 0};
+		case Shape::e_typeCount: return MassData{Mass{0}, GetInvalid<Length2D>(), RotInertia{0}};
 	}
 }
 

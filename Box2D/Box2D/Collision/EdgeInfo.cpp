@@ -22,32 +22,32 @@
 
 using namespace box2d;
 
-EdgeInfo::EdgeInfo(const EdgeShape& edge, const Vec2 centroid) noexcept:
+EdgeInfo::EdgeInfo(const EdgeShape& edge, const Length2D centroid) noexcept:
 	m_vertex1(edge.GetVertex1()),
 	m_vertex2(edge.GetVertex2()),
-	m_edge1(GetUnitVector(edge.GetVertex2() - edge.GetVertex1(), UnitVec2::GetZero())),
+	m_edge1(GetUnitVector(StripUnits(edge.GetVertex2() - edge.GetVertex1()), UnitVec2::GetZero())),
 	m_normal1(GetFwdPerpendicular(m_edge1)),
 	m_vertexRadius(box2d::GetVertexRadius(edge))
 {
 	const auto hasVertex0 = edge.HasVertex0();
 	const auto hasVertex3 = edge.HasVertex3();
 	
-	const auto offset1 = Dot(m_normal1, centroid - m_vertex1);
+	const auto offset1 = Dot(m_normal1, StripUnits(centroid - m_vertex1));
 	
 	// Determine front or back collision. Determine collision normal limits.
 	if (hasVertex0 && hasVertex3)
 	{
 		const auto vertex0 = edge.GetVertex0();
-		const auto edge0 = GetUnitVector(m_vertex1 - vertex0, UnitVec2::GetZero());
+		const auto edge0 = GetUnitVector(StripUnits(m_vertex1 - vertex0), UnitVec2::GetZero());
 		const auto normal0 = GetFwdPerpendicular(edge0);
 		const auto convex1 = Cross(edge0, m_edge1) >= RealNum{0};
-		const auto offset0 = Dot(normal0, centroid - vertex0);
+		const auto offset0 = Dot(normal0, StripUnits(centroid - vertex0));
 		
 		const auto vertex3 = edge.GetVertex3();
-		const auto edge2 = GetUnitVector(vertex3 - m_vertex2, UnitVec2::GetZero());
+		const auto edge2 = GetUnitVector(StripUnits(vertex3 - m_vertex2), UnitVec2::GetZero());
 		const auto normal2 = GetFwdPerpendicular(edge2);
 		const auto convex2 = Cross(m_edge1, edge2) > RealNum{0};
-		const auto offset2 = Dot(normal2, centroid - m_vertex2);
+		const auto offset2 = Dot(normal2, StripUnits(centroid - m_vertex2));
 		
 		if (convex1 && convex2)
 		{
@@ -101,10 +101,10 @@ EdgeInfo::EdgeInfo(const EdgeShape& edge, const Vec2 centroid) noexcept:
 	else if (hasVertex0)
 	{
 		const auto vertex0 = edge.GetVertex0();
-		const auto edge0 = GetUnitVector(m_vertex1 - vertex0, UnitVec2::GetZero());
+		const auto edge0 = GetUnitVector(StripUnits(m_vertex1 - vertex0), UnitVec2::GetZero());
 		const auto normal0 = GetFwdPerpendicular(edge0);
 		const auto convex1 = Cross(edge0, m_edge1) >= RealNum{0};
-		const auto offset0 = Dot(normal0, centroid - vertex0);
+		const auto offset0 = Dot(normal0, StripUnits(centroid - vertex0));
 		
 		if (convex1)
 		{
@@ -134,10 +134,10 @@ EdgeInfo::EdgeInfo(const EdgeShape& edge, const Vec2 centroid) noexcept:
 	else if (hasVertex3)
 	{
 		const auto vertex3 = edge.GetVertex3();
-		const auto edge2 = GetUnitVector(vertex3 - m_vertex2, UnitVec2::GetZero());
+		const auto edge2 = GetUnitVector(StripUnits(vertex3 - m_vertex2), UnitVec2::GetZero());
 		const auto normal2 = GetFwdPerpendicular(edge2);
 		const auto convex2 = Cross(m_edge1, edge2) > RealNum{0};
-		const auto offset2 = Dot(normal2, centroid - m_vertex2);
+		const auto offset2 = Dot(normal2, StripUnits(centroid - m_vertex2));
 		
 		if (convex2)
 		{

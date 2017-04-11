@@ -39,7 +39,7 @@ using namespace box2d;
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-void WeldJointDef::Initialize(Body* bA, Body* bB, const Vec2 anchor)
+void WeldJointDef::Initialize(Body* bA, Body* bB, const Length2D anchor)
 {
 	bodyA = bA;
 	bodyB = bB;
@@ -64,22 +64,16 @@ void WeldJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf&
 	auto& bodiesA = bodies.at(GetBodyA());
 	auto& bodiesB = bodies.at(GetBodyB());
 
-	m_localCenterA = bodiesA.GetLocalCenter();
-	m_invMassA = RealNum{bodiesA.GetInvMass() * Kilogram};
-	m_invIA = bodiesA.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
 	const auto aA = bodiesA.GetPosition().angular;
 	auto velA = bodiesA.GetVelocity();
 
-	m_localCenterB = bodiesB.GetLocalCenter();
-	m_invMassB = RealNum{bodiesB.GetInvMass() * Kilogram};
-	m_invIB = bodiesB.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
 	const auto aB = bodiesB.GetPosition().angular;
 	auto velB = bodiesB.GetVelocity();
 
 	const UnitVec2 qA(aA), qB(aB);
 
-	m_rA = Rotate(m_localAnchorA - m_localCenterA, qA);
-	m_rB = Rotate(m_localAnchorB - m_localCenterB, qB);
+	m_rA = Rotate(m_localAnchorA - bodiesA.GetLocalCenter(), qA);
+	m_rB = Rotate(m_localAnchorB - bodiesB.GetLocalCenter(), qB);
 
 	// J = [-I -r1_skew I r2_skew]
 	//     [ 0       -1 0       1]
@@ -90,9 +84,12 @@ void WeldJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf&
 	//     [  -r1y*iA*r1x-r2y*iB*r2x, mA+r1x^2*iA+mB+r2x^2*iB,           r1x*iA+r2x*iB]
 	//     [          -r1y*iA-r2y*iB,           r1x*iA+r2x*iB,                   iA+iB]
 
-	const auto mA = m_invMassA, mB = m_invMassB;
-	const auto iA = m_invIA, iB = m_invIB;
+	const auto mA = bodiesA.GetInvMass();
+	const auto mB = bodiesB.GetInvMass();
+	const auto iA = bodiesA.GetInvRotInertia();
+	const auto iB = bodiesB.GetInvRotInertia();
 
+#if 0 // TODO
 	Mat33 K;
 	K.ex.x = mA + mB + m_rA.y * m_rA.y * iA + m_rB.y * m_rB.y * iB;
 	K.ey.x = -m_rA.y * m_rA.x * iA - m_rB.y * m_rB.x * iB;
@@ -158,7 +155,7 @@ void WeldJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf&
 	{
 		m_impulse = Vec3_zero;
 	}
-
+#endif
 	bodiesA.SetVelocity(velA);
 	bodiesB.SetVelocity(velB);
 }
@@ -171,12 +168,13 @@ RealNum WeldJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepC
 	auto velA = bodiesA.GetVelocity();
 	auto velB = bodiesB.GetVelocity();
 	
-	const auto mA = m_invMassA;
-	const auto mB = m_invMassB;
-	const auto iA = m_invIA;
-	const auto iB = m_invIB;
+	const auto mA = bodiesA.GetInvMass();
+	const auto iA = bodiesA.GetInvRotInertia();
+	const auto mB = bodiesB.GetInvMass();
+	const auto iB = bodiesB.GetInvRotInertia();
 
-	if (m_frequencyHz > 0)
+#if 0 // TODO
+	if (m_frequencyHz > Frequency{0})
 	{
 		const auto Cdot2 = RealNum{(velB.angular - velA.angular) / RadianPerSecond};
 
@@ -215,7 +213,7 @@ RealNum WeldJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepC
 		velA -= Velocity{mA * P * MeterPerSecond, RadianPerSecond * iA * (Cross(m_rA, P) + impulse.z)};
 		velB += Velocity{mB * P * MeterPerSecond, RadianPerSecond * iB * (Cross(m_rB, P) + impulse.z)};
 	}
-
+#endif
 	bodiesA.SetVelocity(velA);
 	bodiesB.SetVelocity(velB);
 	
@@ -233,15 +231,17 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraints& bodies, const Constrai
 	const auto qA = UnitVec2{posA.angular};
 	const auto qB = UnitVec2{posB.angular};
 
-	const auto mA = m_invMassA;
-	const auto mB = m_invMassB;
-	const auto iA = m_invIA;
-	const auto iB = m_invIB;
+	const auto mA = bodiesA.GetInvMass();
+	const auto iA = bodiesA.GetInvRotInertia();
+	const auto mB = bodiesB.GetInvMass();
+	const auto iB = bodiesB.GetInvRotInertia();
 
-	const auto rA = Rotate(m_localAnchorA - m_localCenterA, qA);
-	const auto rB = Rotate(m_localAnchorB - m_localCenterB, qB);
+	const auto rA = Rotate(m_localAnchorA - bodiesA.GetLocalCenter(), qA);
+	const auto rB = Rotate(m_localAnchorB - bodiesB.GetLocalCenter(), qB);
 
-	RealNum positionError, angularError;
+	auto positionError = Length{0};
+	auto angularError = RealNum{0};
+#if 0 // TODO
 
 	Mat33 K;
 	K.ex.x = mA + mB + rA.y * rA.y * iA + rB.y * rB.y * iB;
@@ -292,30 +292,32 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraints& bodies, const Constrai
 		posA -= Position{mA * P, Radian * iA * (Cross(rA, P) + impulse.z)};
 		posB += Position{mB * P, Radian * iB * (Cross(rB, P) + impulse.z)};
 	}
-
+#endif
 	bodiesA.SetPosition(posA);
 	bodiesB.SetPosition(posB);
 
 	return (positionError <= conf.linearSlop) && (angularError <= conf.angularSlop);
 }
 
-Vec2 WeldJoint::GetAnchorA() const
+Length2D WeldJoint::GetAnchorA() const
 {
 	return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
 }
 
-Vec2 WeldJoint::GetAnchorB() const
+Length2D WeldJoint::GetAnchorB() const
 {
 	return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Vec2 WeldJoint::GetReactionForce(Frequency inv_dt) const
+Force2D WeldJoint::GetReactionForce(Frequency inv_dt) const
 {
-	const auto P = Vec2{m_impulse.x, m_impulse.y};
-	return RealNum{inv_dt / Hertz} * P;
+	const auto P = Momentum2D{Vec2{m_impulse.x, m_impulse.y} * Kilogram * MeterPerSecond};
+	return inv_dt * P;
 }
 
-RealNum WeldJoint::GetReactionTorque(Frequency inv_dt) const
+Torque WeldJoint::GetReactionTorque(Frequency inv_dt) const
 {
-	return RealNum{inv_dt / Hertz} * m_impulse.z;
+	// AngularMomentum is L^2 M T^-1 QP^-1
+	const auto angMomentum = AngularMomentum{m_impulse.z * SquareMeter * Kilogram / (Second * Radian)};
+	return inv_dt * angMomentum;
 }

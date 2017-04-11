@@ -29,10 +29,10 @@ namespace box2d {
 	{
 	public:
 		const RealNum scale = RealNum(1);
-		const RealNum ball_radius = scale * 2; // 2
-		const RealNum frame_width_per_arm = ball_radius * 2;
-		const RealNum frame_height = scale * 30; // 30
-		const RealNum arm_length = scale * 16; // 16
+		const Length ball_radius = scale * 2 * Meter; // 2
+		const Length frame_width_per_arm = ball_radius * RealNum{2};
+		const Length frame_height = scale * 30 * Meter; // 30
+		const Length arm_length = scale * 16 * Meter; // 16
 		static const auto default_num_arms = 5;
 
 		NewtonsCradle()
@@ -53,11 +53,11 @@ namespace box2d {
 			m_frame = [&]() {
 				BodyDef bd;
 				bd.type = BodyType::Static;
-				bd.position = Vec2{0, frame_height};
+				bd.position = Length2D{0, frame_height};
 				const auto body = m_world->CreateBody(bd);
 				
 				const auto frame_width = frame_width_per_arm * static_cast<RealNum>(m_num_arms);
-				auto shape = PolygonShape(frame_width/2, frame_width / 24);
+				auto shape = PolygonShape((frame_width/RealNum{2}), (frame_width / RealNum{24}));
 				shape.SetDensity(RealNum{20} * KilogramPerSquareMeter);
 				body->CreateFixture(std::make_shared<PolygonShape>(shape));
 				return body;
@@ -70,13 +70,13 @@ namespace box2d {
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.bullet = m_bullet_mode;
-				bd.position = Vec2{x, frame_height - (arm_length / 2)};
+				bd.position = Length2D{x, frame_height - (arm_length / RealNum{2})};
 				
 				m_swings[i] = m_world->CreateBody(bd);
 				CreateArm(m_swings[i], arm_length);
-				CreateBall(m_swings[i], Vec2{0, -arm_length / 2}, ball_radius);
+				CreateBall(m_swings[i], Length2D{0, -arm_length / RealNum{2}}, ball_radius);
 				
-				m_world->CreateJoint(RevoluteJointDef(m_frame, m_swings[i], Vec2{x, frame_height}));
+				m_world->CreateJoint(RevoluteJointDef(m_frame, m_swings[i], Length2D{x, frame_height}));
 			}			
 		}
 
@@ -102,14 +102,14 @@ namespace box2d {
 		void CreateRightSideWall()
 		{
 			if (!m_right_side_wall) {
-				const auto frame_width = m_num_arms * frame_width_per_arm;
+				const auto frame_width = static_cast<RealNum>(m_num_arms) * frame_width_per_arm;
 
 				BodyDef def;
 				def.type = BodyType::Static;
-				def.position = Vec2{frame_width / 2 + frame_width/24, frame_height - (arm_length / 2)};
+				def.position = Length2D{frame_width / RealNum{2} + frame_width / RealNum{24}, frame_height - (arm_length / RealNum{2})};
 				const auto body = m_world->CreateBody(def);
 				
-				auto shape = PolygonShape(frame_width/24, arm_length / 2 + frame_width / 24);
+				auto shape = PolygonShape((frame_width/RealNum{24}), (arm_length / RealNum{2} + frame_width / RealNum{24}));
 				shape.SetDensity(RealNum{20} * KilogramPerSquareMeter);
 				body->CreateFixture(std::make_shared<PolygonShape>(shape));
 				
@@ -120,14 +120,17 @@ namespace box2d {
 		void CreateLeftSideWall()
 		{
 			if (!m_left_side_wall) {
-				const auto frame_width = m_num_arms * frame_width_per_arm;
+				const auto frame_width = static_cast<RealNum>(m_num_arms) * frame_width_per_arm;
 
 				BodyDef def;
 				def.type = BodyType::Static;
-				def.position = Vec2{-(frame_width / 2 + frame_width/24), frame_height - (arm_length / 2)};
+				def.position = Length2D{
+					-(frame_width / RealNum{2} + frame_width / RealNum{24}),
+					frame_height - (arm_length / RealNum{2})
+				};
 				const auto body = m_world->CreateBody(def);
 				
-				auto shape = PolygonShape(frame_width/24, arm_length / 2 + frame_width / 24);
+				auto shape = PolygonShape(frame_width/RealNum{24}, (arm_length / RealNum{2} + frame_width / RealNum{24}));
 				shape.SetDensity(RealNum{20} * KilogramPerSquareMeter);
 				body->CreateFixture(std::make_shared<PolygonShape>(shape));
 				
@@ -153,7 +156,7 @@ namespace box2d {
 			}
 		}
 
-		Fixture* CreateBall(Body* body, Vec2 pos, RealNum radius)
+		Fixture* CreateBall(Body* body, Length2D pos, Length radius)
 		{
 			auto conf = CircleShape::Conf{};
 			conf.vertexRadius = radius;
@@ -164,9 +167,9 @@ namespace box2d {
 			return body->CreateFixture(std::make_shared<CircleShape>(conf));
 		}
 
-		Fixture* CreateArm(Body* body, RealNum length = RealNum(10))
+		Fixture* CreateArm(Body* body, Length length = RealNum(10) * Meter)
 		{
-			auto shape = PolygonShape(length / 2000, length / 2);
+			auto shape = PolygonShape(length / RealNum{2000}, length / RealNum{2});
 			shape.SetDensity(RealNum{20} * KilogramPerSquareMeter);
 			return body->CreateFixture(std::make_shared<PolygonShape>(shape));
 		}

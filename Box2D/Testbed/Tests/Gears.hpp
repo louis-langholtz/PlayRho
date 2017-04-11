@@ -28,30 +28,30 @@ public:
 	Gears()
 	{
 		const auto ground = m_world->CreateBody();
-		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(50.0f, 0.0f), Vec2(-50.0f, 0.0f)));
+		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(50.0f, 0.0f) * Meter, Vec2(-50.0f, 0.0f) * Meter));
 
-		const auto circle1 = std::make_shared<CircleShape>(1);
+		const auto circle1 = std::make_shared<CircleShape>(RealNum{1} * Meter);
 		circle1->SetDensity(RealNum{5} * KilogramPerSquareMeter);
-		const auto circle2 = std::make_shared<CircleShape>(2);
+		const auto circle2 = std::make_shared<CircleShape>(RealNum{2} * Meter);
 		circle2->SetDensity(RealNum{5} * KilogramPerSquareMeter);
-		const auto box = std::make_shared<PolygonShape>(0.5f, 5.0f);
+		const auto box = std::make_shared<PolygonShape>(0.5f * Meter, 5.0f * Meter);
 		box->SetDensity(RealNum{5} * KilogramPerSquareMeter);
 	
 		{
 			BodyDef bd1;
 			bd1.type = BodyType::Static;
-			bd1.position = Vec2(10.0f, 9.0f);
+			bd1.position = Vec2(10.0f, 9.0f) * Meter;
 			const auto body1 = m_world->CreateBody(bd1);
 
 			BodyDef bd2;
 			bd2.type = BodyType::Dynamic;
-			bd2.position = Vec2(10.0f, 8.0f);
+			bd2.position = Vec2(10.0f, 8.0f) * Meter;
 			const auto body2 = m_world->CreateBody(bd2);
 			body2->CreateFixture(box);
 
 			BodyDef bd3;
 			bd3.type = BodyType::Dynamic;
-			bd3.position = Vec2(10.0f, 6.0f);
+			bd3.position = Vec2(10.0f, 6.0f) * Meter;
 			const auto body3 = m_world->CreateBody(bd3);
 			body3->CreateFixture(circle2);
 
@@ -70,7 +70,7 @@ public:
 		{
 			BodyDef bd1;
 			bd1.type = BodyType::Dynamic;
-			bd1.position = Vec2(-3.0f, 12.0f);
+			bd1.position = Vec2(-3.0f, 12.0f) * Meter;
 			const auto body1 = m_world->CreateBody(bd1);
 			body1->CreateFixture(circle1);
 
@@ -84,7 +84,7 @@ public:
 
 			BodyDef bd2;
 			bd2.type = BodyType::Dynamic;
-			bd2.position = Vec2(0.0f, 12.0f);
+			bd2.position = Vec2(0.0f, 12.0f) * Meter;
 			const auto body2 = m_world->CreateBody(bd2);
 			body2->CreateFixture(circle2);
 
@@ -93,13 +93,13 @@ public:
 
 			BodyDef bd3;
 			bd3.type = BodyType::Dynamic;
-			bd3.position = Vec2(2.5f, 12.0f);
+			bd3.position = Vec2(2.5f, 12.0f) * Meter;
 			const auto body3 = m_world->CreateBody(bd3);
 			body3->CreateFixture(box);
 
-			PrismaticJointDef jd3(ground, body3, bd3.position, Vec2(0.0f, 1.0f));
-			jd3.lowerTranslation = -5.0f;
-			jd3.upperTranslation = 5.0f;
+			PrismaticJointDef jd3(ground, body3, bd3.position, UnitVec2::GetTop());
+			jd3.lowerTranslation = -5.0f * Meter;
+			jd3.upperTranslation = 5.0f * Meter;
 			jd3.enableLimit = true;
 
 			m_joint3 = (PrismaticJoint*)m_world->CreateJoint(jd3);
@@ -117,7 +117,7 @@ public:
 			jd5.bodyB = body3;
 			jd5.joint1 = m_joint2;
 			jd5.joint2 = m_joint3;
-			jd5.ratio = -1.0f / circle2->GetRadius();
+			jd5.ratio = -1.0f / (circle2->GetRadius() / Meter);
 			m_joint5 = (GearJoint*)m_world->CreateJoint(jd5);
 		}
 	}
@@ -134,7 +134,8 @@ public:
 		{
 			const auto ratio = m_joint5->GetRatio();
 			const auto value = ratio * m_joint3->GetJointTranslation();
-			drawer.DrawString(5, m_textLine, "theta2 + %4.2f * delta = %4.2f", (float) ratio, value);
+			drawer.DrawString(5, m_textLine, "theta2 + %4.2f * delta = %4.2f",
+							  double{ratio}, double{value / Meter});
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 	}

@@ -79,9 +79,9 @@ struct Camera
 	int32 m_height = 800;
 };
 
-Vec2 ConvertScreenToWorld(const Camera& camera, const Coord2D screenPoint);
+Length2D ConvertScreenToWorld(const Camera& camera, const Coord2D screenPoint);
 AABB ConvertScreenToWorld(const Camera& camera);
-Coord2D ConvertWorldToScreen(const Camera& camera, const Vec2 worldPoint);
+Coord2D ConvertWorldToScreen(const Camera& camera, const Length2D worldPoint);
 ProjectionMatrix GetProjectionMatrix(const Camera& camera, RealNum zBias);
 
 class DebugDraw : public Drawer
@@ -91,30 +91,30 @@ public:
 
 	virtual ~DebugDraw() noexcept;
 	
-	void DrawPolygon(const Vec2* vertices, size_type vertexCount, const Color& color) override;
+	void DrawPolygon(const Length2D* vertices, size_type vertexCount, const Color& color) override;
 
-	void DrawSolidPolygon(const Vec2* vertices, size_type vertexCount, const Color& color) override;
+	void DrawSolidPolygon(const Length2D* vertices, size_type vertexCount, const Color& color) override;
 
-	void DrawCircle(const Vec2& center, RealNum radius, const Color& color) override;
+	void DrawCircle(const Length2D& center, Length radius, const Color& color) override;
 
-	void DrawSolidCircle(const Vec2& center, RealNum radius, const Color& color) override;
+	void DrawSolidCircle(const Length2D& center, Length radius, const Color& color) override;
 
-	void DrawSegment(const Vec2& p1, const Vec2& p2, const Color& color) override;
+	void DrawSegment(const Length2D& p1, const Length2D& p2, const Color& color) override;
 
-    void DrawPoint(const Vec2& p, RealNum size, const Color& color) override;
+    void DrawPoint(const Length2D& p, Length size, const Color& color) override;
 
     void DrawString(int x, int y, const char* string, ...) override; 
 
-    void DrawString(const Vec2& p, const char* string, ...) override;
+    void DrawString(const Length2D& p, const char* string, ...) override;
 
     void Flush() override;
 	
-	Vec2 GetTranslation() const override;
+	Length2D GetTranslation() const override;
 
-	void SetTranslation(Vec2 value) override;
+	void SetTranslation(Length2D value) override;
 
 private:
-	void DrawTriangle(const Vec2& p1, const Vec2& p2, const Vec2& p3, const Color& color);
+	void DrawTriangle(const Length2D& p1, const Length2D& p2, const Length2D& p3, const Color& color);
 
 	Camera& m_camera;
 	GLRenderPoints* m_points;

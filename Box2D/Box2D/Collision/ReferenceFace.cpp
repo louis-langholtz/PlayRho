@@ -25,9 +25,11 @@ using namespace box2d;
 
 ReferenceFace box2d::GetReferenceFace(const EdgeInfo& edgeInfo)
 {
+	constexpr auto idx0 = ReferenceFace::index_type{0};
+	constexpr auto idx1 = ReferenceFace::index_type{1};
 	return (edgeInfo.IsFront())?
-		ReferenceFace{0, edgeInfo.GetVertex1(), 1, edgeInfo.GetVertex2(), edgeInfo.GetNormal1()}:
-		ReferenceFace{1, edgeInfo.GetVertex2(), 0, edgeInfo.GetVertex1(), -edgeInfo.GetNormal1()};
+		ReferenceFace{idx0, edgeInfo.GetVertex1(), idx1, edgeInfo.GetVertex2(), edgeInfo.GetNormal1()}:
+		ReferenceFace{idx1, edgeInfo.GetVertex2(), idx0, edgeInfo.GetVertex1(), -edgeInfo.GetNormal1()};
 }
 
 ReferenceFace box2d::GetReferenceFace(const PolygonShape& localShapeB, const ReferenceFace::index_type index)

@@ -36,12 +36,12 @@ public:
 	{
 		{
 			const auto ground = m_world->CreateBody();
-			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
+			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 
 #if 0
 			{
 				FixtureDef sd;
-				sd.SetAsBox(10.0f, 2.0f, Vec2(0.0f, 20.0f), 0.0f);
+				sd.SetAsBox(10.0f * Meter, 2.0f * Meter, Vec2(0.0f, 20.0f) * Meter, 0.0f);
 				sd.isSensor = true;
 				m_sensor = ground->CreateFixture(sd);
 			}
@@ -50,20 +50,20 @@ public:
 				FixtureDef fd;
 				fd.isSensor = true;
 				auto conf = CircleShape::Conf{};
-				conf.vertexRadius = 5.0f;
-				conf.location = Vec2(0.0f, 10.0f);
+				conf.vertexRadius = 5.0f * Meter;
+				conf.location = Vec2(0.0f, 10.0f) * Meter;
 				m_sensor = ground->CreateFixture(std::make_shared<CircleShape>(conf), fd);
 			}
 #endif
 		}
 
-		const auto shape = std::make_shared<CircleShape>(1);
+		const auto shape = std::make_shared<CircleShape>(RealNum{1} * Meter);
 		shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 		for (auto i = 0; i < e_count; ++i)
 		{
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(-10.0f + 3.0f * i, 20.0f);
+			bd.position = Vec2(-10.0f + 3.0f * i, 20.0f) * Meter;
 			bd.userData = m_touching + i;
 
 			m_touching[i] = false;
@@ -147,12 +147,12 @@ public:
 			const auto position = body->GetLocation();
 
 			const auto d = center - position;
-			if (almost_zero(GetLengthSquared(d)))
+			if (almost_zero(GetLengthSquared(d) / SquareMeter))
 			{
 				continue;
 			}
 
-			const auto F = 100.0f * GetUnitVector(d);
+			const auto F = Force2D{100.0f * GetUnitVector(d) * Newton};
 			ApplyForce(*body, F, position);
 		}
 	}

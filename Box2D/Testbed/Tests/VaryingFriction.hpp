@@ -30,15 +30,15 @@ public:
 	{
 		{
 			const auto ground = m_world->CreateBody();
-			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
+			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 		}
 
-		const auto sliderPlank = std::make_shared<PolygonShape>(13.0f, 0.25f);
-		const auto sliderWall = std::make_shared<PolygonShape>(0.25f, 1.0f);
+		const auto sliderPlank = std::make_shared<PolygonShape>(13.0f * Meter, 0.25f * Meter);
+		const auto sliderWall = std::make_shared<PolygonShape>(0.25f * Meter, 1.0f * Meter);
 		
 		{
 			BodyDef bd;
-			bd.position = Vec2(-4.0f, 22.0f);
+			bd.position = Vec2(-4.0f, 22.0f) * Meter;
 			bd.angle = -0.25f * Radian;
 
 			const auto ground = m_world->CreateBody(bd);
@@ -47,7 +47,7 @@ public:
 
 		{
 			BodyDef bd;
-			bd.position = Vec2(10.5f, 19.0f);
+			bd.position = Vec2(10.5f, 19.0f) * Meter;
 
 			const auto ground = m_world->CreateBody(bd);
 			ground->CreateFixture(sliderWall);
@@ -55,7 +55,7 @@ public:
 
 		{
 			BodyDef bd;
-			bd.position = Vec2(4.0f, 14.0f);
+			bd.position = Vec2(4.0f, 14.0f) * Meter;
 			bd.angle = 0.25f * Radian;
 
 			const auto ground = m_world->CreateBody(bd);
@@ -64,7 +64,7 @@ public:
 
 		{
 			BodyDef bd;
-			bd.position = Vec2(-10.5f, 11.0f);
+			bd.position = Vec2(-10.5f, 11.0f) * Meter;
 
 			const auto ground = m_world->CreateBody(bd);
 			ground->CreateFixture(sliderWall);
@@ -72,7 +72,7 @@ public:
 
 		{
 			BodyDef bd;
-			bd.position = Vec2(-4.0f, 6.0f);
+			bd.position = Vec2(-4.0f, 6.0f) * Meter;
 			bd.angle = -0.25f * Radian;
 
 			const auto ground = m_world->CreateBody(bd);
@@ -80,7 +80,7 @@ public:
 		}
 
 		{
-			auto shape = PolygonShape(0.5f, 0.5f);
+			auto shape = PolygonShape(0.5f * Meter, 0.5f * Meter);
 			shape.SetDensity(RealNum{25} * KilogramPerSquareMeter);
 
 			float friction[5] = {std::numeric_limits<float>::infinity(), 0.5f, 0.35f, -0.1f, 0.0f};
@@ -88,7 +88,7 @@ public:
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
-				bd.position = Vec2(-15.0f + 4.0f * i, 28.0f);
+				bd.position = Vec2(-15.0f + 4.0f * i, 28.0f) * Meter;
 				const auto body = m_world->CreateBody(bd);
 
 				shape.SetFriction(friction[i]);

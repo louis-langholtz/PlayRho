@@ -30,7 +30,7 @@ public:
 	{
 		{
 			const auto ground = m_world->CreateBody();
-			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
+			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 		}
 		
 		auto conf = CircleShape::Conf{};
@@ -39,14 +39,14 @@ public:
 		BodyDef bd;
 		bd.type = BodyType::Dynamic;
 
-		bd.position = Vec2(0.0f, 0.5f);
+		bd.position = Vec2(0.0f, 0.5f) * Meter;
 		const auto body1 = m_world->CreateBody(bd);
-		conf.vertexRadius = 0.5f;
+		conf.vertexRadius = 0.5f * Meter;
 		body1->CreateFixture(std::make_shared<CircleShape>(conf));
         
-        bd.position = Vec2(0.0f, 6.0f);
+        bd.position = Vec2(0.0f, 6.0f) * Meter;
         const auto body2 = m_world->CreateBody(bd);
-		conf.vertexRadius = 5.0f;
+		conf.vertexRadius = 5.0f * Meter;
 		body2->CreateFixture(std::make_shared<CircleShape>(conf));
 	}
     

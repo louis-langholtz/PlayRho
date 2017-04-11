@@ -312,7 +312,7 @@ AABB GetAABB(const Fixture& fixture, child_count_t childIndex) noexcept;
 /// Test a point for containment in a fixture.
 /// @param f Fixture to use for test.
 /// @param p Point in world coordinates.
-bool TestPoint(const Fixture& f, const Vec2 p);
+bool TestPoint(const Fixture& f, const Length2D p);
 
 void SetAwake(Fixture& f) noexcept;
 

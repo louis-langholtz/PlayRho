@@ -47,10 +47,10 @@ TEST(DistanceJointDef, DefaultConstruction)
 	EXPECT_EQ(def.collideConnected, false);
 	EXPECT_EQ(def.userData, nullptr);
 	
-	EXPECT_EQ(def.localAnchorA, Vec2_zero);
-	EXPECT_EQ(def.localAnchorB, Vec2_zero);
-	EXPECT_EQ(def.length, RealNum(1));
-	EXPECT_EQ(def.frequencyHz, RealNum(0));
+	EXPECT_EQ(def.localAnchorA, Vec2_zero * Meter);
+	EXPECT_EQ(def.localAnchorB, Vec2_zero * Meter);
+	EXPECT_EQ(def.length, RealNum(1) * Meter);
+	EXPECT_EQ(def.frequencyHz, Frequency(0));
 	EXPECT_EQ(def.dampingRatio, RealNum(0));
 }
 
@@ -76,14 +76,14 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 {
 	World world{World::Def{}.UseGravity(Vec2_zero * MeterPerSquareSecond)};
 
-	const auto shape = std::make_shared<CircleShape>(0.2f);
+	const auto shape = std::make_shared<CircleShape>(0.2f * Meter);
 	
-	const auto location1 = Vec2{-1, 0};
+	const auto location1 = Vec2{-1, 0} * Meter;
 	const auto body1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location1));
 	ASSERT_EQ(body1->GetLocation(), location1);
 	ASSERT_NE(body1->CreateFixture(shape), nullptr);
 	
-	const auto location2 = Vec2{+1, 0};
+	const auto location2 = Vec2{+1, 0} * Meter;
 	const auto body2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location2));
 	ASSERT_EQ(body2->GetLocation(), location2);
 	ASSERT_NE(body2->CreateFixture(shape), nullptr);
@@ -92,9 +92,9 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 	jointdef.bodyA = body1;
 	jointdef.bodyB = body2;
 	jointdef.collideConnected = false;
-	jointdef.localAnchorA = Vec2_zero;
-	jointdef.localAnchorB = Vec2_zero;
-	jointdef.length = 5;
+	jointdef.localAnchorA = Vec2_zero * Meter;
+	jointdef.localAnchorB = Vec2_zero * Meter;
+	jointdef.length = RealNum{5} * Meter;
 	jointdef.frequencyHz = 0;
 	jointdef.dampingRatio = 0;
 	EXPECT_NE(world.CreateJoint(jointdef), nullptr);
@@ -110,14 +110,14 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 		const auto newDistance = GetLength(body1->GetLocation() - body2->GetLocation());
 		if (distanceMet)
 		{
-			EXPECT_NEAR(double(newDistance), double(oldDistance), 0.01);
+			EXPECT_NEAR(double(newDistance / Meter), double(oldDistance / Meter), 0.01);
 		}
 		else
 		{
 			EXPECT_GE(newDistance, oldDistance);
 		}
 		
-		if (!distanceMet && (std::abs(newDistance - jointdef.length) < 0.01))
+		if (!distanceMet && (Abs(newDistance - jointdef.length) < 0.01f * Meter))
 		{
 			distanceMet = i;
 		}
@@ -129,15 +129,15 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
 {
 	World world{World::Def{}.UseGravity(Vec2{0, 10} * MeterPerSquareSecond)};
 	
-	const auto shape = std::make_shared<CircleShape>(0.2f);
+	const auto shape = std::make_shared<CircleShape>(0.2f * Meter);
 	shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 	
-	const auto location1 = Vec2{-10, 10};
+	const auto location1 = Vec2{-10, 10} * Meter;
 	const auto body1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location1));
 	ASSERT_EQ(body1->GetLocation(), location1);
 	ASSERT_NE(body1->CreateFixture(shape), nullptr);
 	
-	const auto location2 = Vec2{+10, -10};
+	const auto location2 = Vec2{+10, -10} * Meter;
 	const auto body2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location2));
 	ASSERT_EQ(body2->GetLocation(), location2);
 	ASSERT_NE(body2->CreateFixture(shape), nullptr);
@@ -146,10 +146,10 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
 	jointdef.bodyA = body1;
 	jointdef.bodyB = body2;
 	jointdef.collideConnected = false;
-	jointdef.localAnchorA = Vec2_zero;
-	jointdef.localAnchorB = Vec2_zero;
-	jointdef.length = 5;
-	jointdef.frequencyHz = 60;
+	jointdef.localAnchorA = Vec2_zero * Meter;
+	jointdef.localAnchorB = Vec2_zero * Meter;
+	jointdef.length = RealNum{5} * Meter;
+	jointdef.frequencyHz = RealNum{60} * Hertz;
 	jointdef.dampingRatio = 0;
 	EXPECT_NE(world.CreateJoint(jointdef), nullptr);
 	
@@ -162,13 +162,13 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
 		world.Step(stepConf);
 		
 		const auto newDistance = GetLength(body1->GetLocation() - body2->GetLocation());
-		if (!distanceMet && (newDistance - oldDistance) >= 0)
+		if (!distanceMet && (newDistance - oldDistance) >= Length{0})
 		{
 			distanceMet = i;
 		}
 		if (distanceMet)
 		{
-			EXPECT_NEAR(double(newDistance), double(oldDistance), 2.5);
+			EXPECT_NEAR(double(newDistance / Meter), double(oldDistance / Meter), 2.5);
 		}
 		else
 		{
@@ -178,5 +178,5 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
 		oldDistance = newDistance;
 	}
 	
-	EXPECT_NEAR(double(oldDistance), double(jointdef.length), 0.1);
+	EXPECT_NEAR(double(oldDistance / Meter), double(jointdef.length / Meter), 0.1);
 }

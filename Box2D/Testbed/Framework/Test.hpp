@@ -35,12 +35,12 @@ struct Settings
 	float maxRotation = 90; // in degrees
 	float hz = 60;
 	float dt = 1 / hz;
-	float maxLinearCorrection = static_cast<float>(DefaultMaxLinearCorrection); // in meters
+	float maxLinearCorrection = StripUnit(DefaultMaxLinearCorrection); // in meters
 	float maxAngularCorrection = static_cast<float>(DefaultMaxAngularCorrection * Radian / Degree); // in degrees
-	float linearSlop = static_cast<float>(DefaultLinearSlop);
+	float linearSlop = StripUnit(DefaultLinearSlop);
 	float angularSlop = DefaultAngularSlop;
-	float regMinSeparation = static_cast<float>(DefaultLinearSlop) * -3;
-	float toiMinSeparation = static_cast<float>(DefaultLinearSlop) * -1.5f;
+	float regMinSeparation = StripUnit(DefaultLinearSlop) * -3;
+	float toiMinSeparation = StripUnit(DefaultLinearSlop) * -1.5f;
 	int regPosResRate = 20; // in percent
 	int toiPosResRate = 75; // in percent
 	int regVelocityIterations = 8;
@@ -85,18 +85,18 @@ public:
 	void DrawTitle(Drawer& drawer, const char *string);
 	void Step(const Settings& settings, Drawer& drawer);
 	void DrawStats(Drawer& drawer, const StepConf& stepConf);
-	void ShiftMouseDown(const Vec2& p);
-	void MouseMove(const Vec2& p);
+	void ShiftMouseDown(const Length2D& p);
+	void MouseMove(const Length2D& p);
 	void LaunchBomb();
-	void LaunchBomb(const Vec2& position, const Vector2D<LinearVelocity> velocity);
-	void SpawnBomb(const Vec2& worldPt);
-	void CompleteBombSpawn(const Vec2& p);
-	void ShiftOrigin(const Vec2& newOrigin);
+	void LaunchBomb(const Length2D& position, const LinearVelocity2D velocity);
+	void SpawnBomb(const Length2D& worldPt);
+	void CompleteBombSpawn(const Length2D& p);
+	void ShiftOrigin(const Length2D& newOrigin);
 	
 	virtual void KeyboardDown(Key key) { NOT_USED(key); }
 	virtual void KeyboardUp(Key key) { NOT_USED(key); }
-	virtual void MouseDown(const Vec2& p);
-	virtual void MouseUp(const Vec2& p);
+	virtual void MouseDown(const Length2D& p);
+	virtual void MouseUp(const Length2D& p);
 	
 	// Let derived tests know that a joint was destroyed.
 	virtual void JointDestroyed(Joint* joint) { NOT_USED(joint); }
@@ -126,11 +126,11 @@ protected:
 		Fixture* fixtureA;
 		Fixture* fixtureB;
 		UnitVec2 normal;
-		Vec2 position;
+		Length2D position;
 		PointState state;
-		RealNum normalImpulse;
-		RealNum tangentImpulse;
-		RealNum separation;
+		Momentum normalImpulse;
+		Momentum tangentImpulse;
+		Length separation;
 	};
 	
 	// This is called when a joint in the world is implicitly destroyed
@@ -179,9 +179,9 @@ private:
 	DestructionListenerImpl m_destructionListener;
 	Body* m_bomb = nullptr;
 	MouseJoint* m_mouseJoint = nullptr;
-	Vec2 m_bombSpawnPoint;
+	Length2D m_bombSpawnPoint;
 	bool m_bombSpawning = false;
-	Vec2 m_mouseWorld;
+	Length2D m_mouseWorld;
 	double m_sumDeltaTime = 0.0;
 	int32 m_stepCount = 0;
 	StepStats m_stepStats;
@@ -199,9 +199,9 @@ private:
 	uint64 m_sumToiVelIters = 0;
 	uint64 m_sumRegProxiesMoved = 0;
 	uint64 m_sumToiProxiesMoved = 0;
-	RealNum m_minRegSep = std::numeric_limits<RealNum>::infinity();
-	RealNum m_maxRegSep = -std::numeric_limits<RealNum>::infinity();
-	RealNum m_minToiSep = 0;
+	Length m_minRegSep = std::numeric_limits<RealNum>::infinity() * Meter;
+	Length m_maxRegSep = -std::numeric_limits<RealNum>::infinity() * Meter;
+	Length m_minToiSep = 0;
 
 	using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
 	using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;

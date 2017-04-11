@@ -26,11 +26,14 @@ using namespace box2d;
 
 namespace {
 	
-	inline bool IsEachVertexFarEnoughApart(Span<const Vec2> vertices)
+	inline bool IsEachVertexFarEnoughApart(Span<const Length2D> vertices)
 	{
 		for (auto i = decltype(vertices.size()){1}; i < vertices.size(); ++i)
 		{
-			if (GetLengthSquared(vertices[i-1] - vertices[i]) <= DefaultLinearSlop)
+			const auto delta = vertices[i-1] - vertices[i];
+			
+			// XXX not quite right unit-wise but this works well enough.
+			if (GetLengthSquared(StripUnits(delta)) * Meter <= DefaultLinearSlop)
 			{
 				return false;
 			}
@@ -54,8 +57,8 @@ ChainShape& ChainShape::operator=(const ChainShape& other)
 
 		m_count = other.m_count;
 
-		m_vertices = alloc<Vec2>(other.m_count);
-		std::memcpy(m_vertices, other.m_vertices, other.m_count * sizeof(Vec2));
+		m_vertices = alloc<Length2D>(other.m_count);
+		std::memcpy(m_vertices, other.m_vertices, other.m_count * sizeof(Length2D));
 	}
 	return *this;
 }
@@ -72,7 +75,7 @@ void ChainShape::Clear()
 	m_count = 0;
 }
 
-void ChainShape::CreateLoop(Span<const Vec2> vertices)
+void ChainShape::CreateLoop(Span<const Length2D> vertices)
 {
 	assert(vertices.begin() != nullptr);
 	assert(vertices.size() >= 3);
@@ -80,12 +83,12 @@ void ChainShape::CreateLoop(Span<const Vec2> vertices)
 	assert(m_vertices == nullptr && m_count == 0);
 	
 	m_count = static_cast<child_count_t>(vertices.size() + 1);
-	m_vertices = alloc<Vec2>(m_count);
+	m_vertices = alloc<Length2D>(m_count);
 	std::memcpy(m_vertices, vertices.begin(), vertices.size() * sizeof(Vec2));
 	m_vertices[vertices.size()] = m_vertices[0];
 }
 
-void ChainShape::CreateChain(Span<const Vec2> vertices)
+void ChainShape::CreateChain(Span<const Length2D> vertices)
 {
 	assert(vertices.begin() != nullptr);
 	assert(vertices.size() >= 2);
@@ -93,7 +96,7 @@ void ChainShape::CreateChain(Span<const Vec2> vertices)
 	assert((m_vertices == nullptr) && (m_count == 0));
 
 	m_count = static_cast<child_count_t>(vertices.size());
-	m_vertices = alloc<Vec2>(vertices.size());
+	m_vertices = alloc<Length2D>(vertices.size());
 	std::memcpy(m_vertices, vertices.begin(), m_count * sizeof(Vec2));
 }
 
@@ -102,8 +105,8 @@ EdgeShape ChainShape::GetChildEdge(child_count_t index) const
 	assert(index + 1 < m_count);
 
 	const auto isLooped = ::IsLooped(*this);
-	const auto v0 = (index > 0)? m_vertices[index - 1]: isLooped? m_vertices[m_count - 2]: GetInvalid<Vec2>();
-	const auto v3 = (index < (m_count - 2))? m_vertices[index + 2]: isLooped? m_vertices[1]: GetInvalid<Vec2>();
+	const auto v0 = (index > 0)? m_vertices[index - 1]: isLooped? m_vertices[m_count - 2]: GetInvalid<Length2D>();
+	const auto v3 = (index < (m_count - 2))? m_vertices[index + 2]: isLooped? m_vertices[1]: GetInvalid<Length2D>();
 	auto conf = EdgeShape::Conf{};
 	conf.UseVertexRadius(GetVertexRadius());
 	conf.v0 = v0;
@@ -118,7 +121,7 @@ child_count_t box2d::GetChildCount(const ChainShape& shape)
 	return (count > 1)? count - 1: 0;
 }
 
-bool box2d::TestPoint(const ChainShape& shape, const Transformation& xf, const Vec2 p)
+bool box2d::TestPoint(const ChainShape& shape, const Transformation& xf, const Length2D p)
 {
 	NOT_USED(shape);
 	NOT_USED(xf);

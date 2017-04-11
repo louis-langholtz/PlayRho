@@ -30,8 +30,8 @@ namespace box2d
 	/// Witness Points.
 	struct WitnessPoints
 	{
-		Vec2 a;
-		Vec2 b;
+		Length2D a;
+		Length2D b;
 	};
 	
 	/// Gets the witness points of the given simplex.

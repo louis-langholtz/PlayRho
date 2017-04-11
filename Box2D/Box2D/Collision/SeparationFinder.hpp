@@ -53,8 +53,8 @@ namespace box2d {
 			IndexPair indexPair;
 
 			/// Distance.
-			/// @detail Distance of separation (in meters) between vertices indexed by the index-pair.
-			RealNum distance;
+			/// @detail Distance of separation between vertices indexed by the index-pair.
+			Length distance;
 		};
 		
 		/// Gets a separation finder for the given inputs.
@@ -86,7 +86,7 @@ namespace box2d {
 		/// @param indexPair Indexes of the proxy A and proxy B vertexes.
 		/// @return Separation distance which will be negative when the given transforms put the
 		///    vertices on the opposite sides of the separating axis.
-		RealNum Evaluate(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
+		Length Evaluate(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
 		{
 			switch (m_type)
 			{
@@ -96,16 +96,16 @@ namespace box2d {
 				default: break;
 			}
 			assert(false);
-			return RealNum{0};
+			return Length{0};
 		}
 		
 		constexpr Type GetType() const noexcept;
 		constexpr UnitVec2 GetAxis() const noexcept;
-		constexpr Vec2 GetLocalPoint() const noexcept;
+		constexpr Length2D GetLocalPoint() const noexcept;
 
 	private:
 		SeparationFinder(const DistanceProxy& dpA, const DistanceProxy& dpB,
-						 const UnitVec2 axis, const Vec2 lp, const Type type):
+						 const UnitVec2 axis, const Length2D lp, const Type type):
 			m_proxyA{dpA}, m_proxyB{dpB}, m_axis{axis}, m_localPoint{lp}, m_type{type}
 		{
 			// Intentionally empty.
@@ -117,16 +117,16 @@ namespace box2d {
 		
 		Data FindMinSeparationForFaceB(const Transformation& xfA, const Transformation& xfB) const;
 		
-		RealNum EvaluateForPoints(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const;
+		Length EvaluateForPoints(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const;
 		
-		RealNum EvaluateForFaceA(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const;
+		Length EvaluateForFaceA(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const;
 		
-		RealNum EvaluateForFaceB(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const;
+		Length EvaluateForFaceB(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const;
 		
 		const DistanceProxy& m_proxyA;
 		const DistanceProxy& m_proxyB;
 		const UnitVec2 m_axis; ///< Axis. @detail Directional vector of the axis of separation.
-		const Vec2 m_localPoint; ///< Local point. @note Only used if type is e_faceA or e_faceB.
+		const Length2D m_localPoint; ///< Local point. @note Only used if type is e_faceA or e_faceB.
 		const Type m_type;
 	};
 
@@ -140,7 +140,7 @@ namespace box2d {
 		return m_axis;
 	}
 	
-	constexpr Vec2 SeparationFinder::GetLocalPoint() const noexcept
+	constexpr Length2D SeparationFinder::GetLocalPoint() const noexcept
 	{
 		return m_localPoint;
 	}

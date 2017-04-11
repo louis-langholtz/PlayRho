@@ -31,26 +31,26 @@ namespace box2d {
 			auto pipeShape = std::make_shared<ChainShape>();
 			pipeShape->SetFriction(1.0f);
 			{
-				auto vertices = std::vector<Vec2>();
-				const auto pipeRadius = 20.0f;
+				auto vertices = std::vector<Length2D>();
+				const auto pipeRadius = 20.0f * Meter;
 				for (auto i = 0; i < 90; ++i)
 				{
 					const auto angle = RealNum{((i * 2 + 180.0f) * Degree) / Radian};
 					const auto x = pipeRadius * std::cos(angle);
 					const auto y = pipeRadius * std::sin(angle);
-					vertices.push_back(Vec2{x, y + 20});
+					vertices.push_back(Length2D{x, y + RealNum{20} * Meter});
 				}
-				pipeShape->CreateChain(Span<const Vec2>(vertices.data(), vertices.size()));
+				pipeShape->CreateChain(Span<const Length2D>(vertices.data(), vertices.size()));
 			}
 			pipeBody->CreateFixture(pipeShape);
 			
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(-19, 28);
+			bd.position = Vec2(-19, 28) * Meter;
 			const auto ballBody = m_world->CreateBody(bd);
 			auto conf = CircleShape::Conf{};
 			conf.density = RealNum{0.01f} * KilogramPerSquareMeter;
-			conf.vertexRadius = 1;
+			conf.vertexRadius = RealNum{1} * Meter;
 			conf.friction = 1.0f;
 			ballBody->CreateFixture(std::make_shared<CircleShape>(conf));
 		}

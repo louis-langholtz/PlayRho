@@ -51,7 +51,7 @@ public:
 
 			// Clamp onto a square to help create collinearities.
 			// This will stress the convex hull algorithm.
-			const auto v = Vec2{Clamp(x, lowerBound.x, upperBound.x), Clamp(y, lowerBound.y, upperBound.y)};
+			const auto v = Vec2{Clamp(x, lowerBound.x, upperBound.x), Clamp(y, lowerBound.y, upperBound.y)} * Meter;
 			m_points.emplace_back(v);
 		}
 	}
@@ -81,7 +81,7 @@ public:
 	void PostStep(const Settings&, Drawer& drawer) override
 	{
 		const auto conf = PolygonShape::Conf{};
-		const auto shape = PolygonShape{Span<const Vec2>{&m_points[0], m_points.size()}, conf};
+		const auto shape = PolygonShape{Span<const Length2D>{&m_points[0], m_points.size()}, conf};
 
 		drawer.DrawString(5, m_textLine, "Press g to generate a new random convex hull");
 		m_textLine += DRAW_STRING_NEW_LINE;
@@ -90,8 +90,8 @@ public:
 
 		for (auto i = std::size_t{0}; i < m_points.size(); ++i)
 		{
-			drawer.DrawPoint(m_points[i], 3.0f, Color(0.3f, 0.9f, 0.3f));
-			drawer.DrawString(m_points[i] + Vec2(0.05f, 0.05f), "%d", i);
+			drawer.DrawPoint(m_points[i], 3.0f * Meter, Color(0.3f, 0.9f, 0.3f));
+			drawer.DrawString(m_points[i] + Vec2(0.05f, 0.05f) * Meter, "%d", i);
 		}
 
 		if (!Validate(shape))
@@ -106,7 +106,7 @@ public:
 		}
 	}
 
-	std::vector<Vec2> m_points{e_count};
+	std::vector<Length2D> m_points{e_count};
 	bool m_auto;
 };
 

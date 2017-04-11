@@ -43,8 +43,8 @@ TEST(DistanceProxy, ByteSizeIs_32_56_or_96)
 
 TEST(DistanceProxy, OneVecInitialization)
 {
-	const auto radius = RealNum{1};
-	const auto vertex0 = Vec2{RealNum(2), RealNum(-3)};
+	const auto radius = RealNum{1} * Meter;
+	const auto vertex0 = Vec2{RealNum(2), RealNum(-3)} * Meter;
 	const DistanceProxy foo{radius, vertex0};
 	EXPECT_EQ(radius, foo.GetRadius());
 	EXPECT_EQ(1, foo.GetVertexCount());
@@ -53,19 +53,19 @@ TEST(DistanceProxy, OneVecInitialization)
 
 TEST(DistanceProxy, OneVecSupportIndex)
 {
-	const auto radius = RealNum{1};
-	const auto vertex0 = Vec2{RealNum(2), RealNum(-3)};
+	const auto radius = RealNum{1} * Meter;
+	const auto vertex0 = Vec2{RealNum(2), RealNum(-3)} * Meter;
 	const DistanceProxy foo{radius, vertex0};
 	EXPECT_EQ(0, GetSupportIndex(foo, vertex0));
-	EXPECT_EQ(0, GetSupportIndex(foo, Vec2_zero));
-	EXPECT_EQ(0, GetSupportIndex(foo, Vec2{vertex0.y, vertex0.x}));
+	EXPECT_EQ(0, GetSupportIndex(foo, Vec2_zero * Meter));
+	EXPECT_EQ(0, GetSupportIndex(foo, Length2D{vertex0.y, vertex0.x}));
 }
 
 TEST(DistanceProxy, TwoVecInitialization)
 {
-	const auto radius = RealNum{1};
-	const auto vertex0 = Vec2{RealNum(2), RealNum(3)};
-	const auto vertex1 = Vec2{RealNum(-10), RealNum(-1)};
+	const auto radius = RealNum{1} * Meter;
+	const auto vertex0 = Vec2{RealNum(2), RealNum(3)} * Meter;
+	const auto vertex1 = Vec2{RealNum(-10), RealNum(-1)} * Meter;
 	const DistanceProxy foo{radius, vertex0, vertex1};
 	EXPECT_EQ(radius, foo.GetRadius());
 	EXPECT_EQ(2, foo.GetVertexCount());
@@ -75,25 +75,25 @@ TEST(DistanceProxy, TwoVecInitialization)
 
 TEST(DistanceProxy, TwoVecSupportIndex)
 {
-	const auto radius = RealNum{1};
-	const auto vertex0 = Vec2{RealNum(2), RealNum(3)};
-	const auto vertex1 = Vec2{RealNum(-10), RealNum(-1)};
+	const auto radius = RealNum{1} * Meter;
+	const auto vertex0 = Vec2{RealNum(2), RealNum(3)} * Meter;
+	const auto vertex1 = Vec2{RealNum(-10), RealNum(-1)} * Meter;
 	const DistanceProxy foo{radius, vertex0, vertex1};
 	EXPECT_EQ(0, GetSupportIndex(foo, vertex0));
-	EXPECT_EQ(0, GetSupportIndex(foo, Vec2{vertex0.y, vertex0.x}));
-	EXPECT_EQ(0, GetSupportIndex(foo, Vec2_zero));
+	EXPECT_EQ(0, GetSupportIndex(foo, Length2D{vertex0.y, vertex0.x}));
+	EXPECT_EQ(0, GetSupportIndex(foo, Vec2_zero * Meter));
 	EXPECT_EQ(1, GetSupportIndex(foo, vertex1));
-	EXPECT_EQ(1, GetSupportIndex(foo, Vec2{vertex1.y, vertex1.x}));
+	EXPECT_EQ(1, GetSupportIndex(foo, Length2D{vertex1.y, vertex1.x}));
 }
 
 TEST(DistanceProxy, ThreeVertices)
 {
-	const auto radius = RealNum(33);
+	const auto radius = RealNum(33) * Meter;
 	const auto count = DistanceProxy::size_type(3);
-	const auto v0 = Vec2{RealNum(1), RealNum(2)};
-	const auto v1 = Vec2{RealNum(-3), RealNum(-4)};
-	const auto v2 = Vec2{RealNum(-6), RealNum(5)};
-	const auto vertices = std::array<Vec2, count>{{v0, v1, v2}};
+	const auto v0 = Vec2{RealNum(1), RealNum(2)} * Meter;
+	const auto v1 = Vec2{RealNum(-3), RealNum(-4)} * Meter;
+	const auto v2 = Vec2{RealNum(-6), RealNum(5)} * Meter;
+	const auto vertices = std::array<Length2D, count>{{v0, v1, v2}};
 	
 	const DistanceProxy foo{radius, vertices};
 	

@@ -63,33 +63,33 @@ public:
 	virtual ~Drawer() noexcept = 0;
 
 	/// Draw a closed polygon provided in CCW order.
-	virtual void DrawPolygon(const Vec2* vertices, size_type vertexCount, const Color& color) = 0;
+	virtual void DrawPolygon(const Length2D* vertices, size_type vertexCount, const Color& color) = 0;
 
 	/// Draw a solid closed polygon provided in CCW order.
-	virtual void DrawSolidPolygon(const Vec2* vertices, size_type vertexCount, const Color& color) = 0;
+	virtual void DrawSolidPolygon(const Length2D* vertices, size_type vertexCount, const Color& color) = 0;
 
 	/// Draw a circle.
-	virtual void DrawCircle(const Vec2& center, RealNum radius, const Color& color) = 0;
+	virtual void DrawCircle(const Length2D& center, Length radius, const Color& color) = 0;
 	
 	/// Draw a solid circle.
-	virtual void DrawSolidCircle(const Vec2& center, RealNum radius, const Color& color) = 0;
+	virtual void DrawSolidCircle(const Length2D& center, Length radius, const Color& color) = 0;
 	
 	/// Draw a line segment.
-	virtual void DrawSegment(const Vec2& p1, const Vec2& p2, const Color& color) = 0;
+	virtual void DrawSegment(const Length2D& p1, const Length2D& p2, const Color& color) = 0;
 
-	virtual void DrawPoint(const Vec2& p, RealNum size, const Color& color) = 0;
+	virtual void DrawPoint(const Length2D& p, Length size, const Color& color) = 0;
 	
 	/// Draws a string at the given screen coordinates.
 	virtual void DrawString(int x, int y, const char* string, ...) = 0; 
 	
 	/// Draws a string at the given world coordinates.
-	virtual void DrawString(const Vec2& p, const char* string, ...) = 0;
+	virtual void DrawString(const Length2D& p, const char* string, ...) = 0;
 		
 	virtual void Flush() = 0;
 	
-	virtual void SetTranslation(Vec2 value) = 0;
+	virtual void SetTranslation(Length2D value) = 0;
 
-	virtual Vec2 GetTranslation() const = 0;
+	virtual Length2D GetTranslation() const = 0;
 };
 
 } // namespace box2d

@@ -22,28 +22,28 @@
 
 using namespace box2d;
 
-PolygonShape::PolygonShape(RealNum hx, RealNum hy, const Conf& conf) noexcept:
+PolygonShape::PolygonShape(Length hx, Length hy, const Conf& conf) noexcept:
 	Shape{e_polygon, conf}
 {
 	SetAsBox(hx, hy);
 }
 
-PolygonShape::PolygonShape(Span<const Vec2> points, const Conf& conf) noexcept:
+PolygonShape::PolygonShape(Span<const Length2D> points, const Conf& conf) noexcept:
 	Shape{e_polygon, conf}
 {
 	Set(points);
 }
 
-void PolygonShape::SetAsBox(RealNum hx, RealNum hy) noexcept
+void PolygonShape::SetAsBox(Length hx, Length hy) noexcept
 {
-	m_centroid = Vec2_zero;
+	m_centroid = Vec2_zero * Meter;
 
 	// vertices must be counter-clockwise
 
-	const auto btm_rgt = Vec2{+hx, -hy};
-	const auto top_rgt = Vec2{ hx,  hy};
-	const auto top_lft = Vec2{-hx, +hy};
-	const auto btm_lft = Vec2{-hx, -hy};
+	const auto btm_rgt = Length2D{+hx, -hy};
+	const auto top_rgt = Length2D{ hx,  hy};
+	const auto top_lft = Length2D{-hx, +hy};
+	const auto btm_lft = Length2D{-hx, -hy};
 	
 	m_vertices.clear();
 	m_vertices.emplace_back(btm_rgt);
@@ -58,7 +58,7 @@ void PolygonShape::SetAsBox(RealNum hx, RealNum hy) noexcept
 	m_normals.emplace_back(UnitVec2::GetBottom());
 }
 
-void box2d::SetAsBox(PolygonShape& shape, RealNum hx, RealNum hy, const Vec2 center, Angle angle) noexcept
+void box2d::SetAsBox(PolygonShape& shape, Length hx, Length hy, const Length2D center, Angle angle) noexcept
 {
 	shape.SetAsBox(hx, hy);
 	shape.Transform(Transformation{center, UnitVec2{angle}});
@@ -74,10 +74,10 @@ void PolygonShape::Transform(box2d::Transformation xf) noexcept
 	m_centroid = box2d::Transform(m_centroid, xf);
 }
 
-void PolygonShape::Set(Span<const Vec2> points) noexcept
+void PolygonShape::Set(Span<const Length2D> points) noexcept
 {
 	// Perform welding and copy vertices into local buffer.
-	auto point_set = VertexSet(DefaultLinearSlop);
+	auto point_set = VertexSet(DefaultLinearSlop / Meter);
 	for (auto&& p: points)
 	{
 		point_set.add(p);
@@ -85,9 +85,9 @@ void PolygonShape::Set(Span<const Vec2> points) noexcept
 	Set(point_set);
 }
 
-std::vector<Vec2> box2d::GetConvexHullAsVector(Span<const Vec2> vertices)
+std::vector<Length2D> box2d::GetConvexHullAsVector(Span<const Length2D> vertices)
 {
-	std::vector<Vec2> result;
+	std::vector<Length2D> result;
 	
 	// Create the convex hull using the Gift wrapping algorithm
 	// http://en.wikipedia.org/wiki/Gift_wrapping_algorithm
@@ -113,9 +113,11 @@ std::vector<Vec2> box2d::GetConvexHullAsVector(Span<const Vec2> vertices)
 				}
 				
 				const auto r = vertices[ie] - vertices[ih];
+				const auto rUnitless = StripUnits(r);
 				const auto v = vertices[j] - vertices[ih];
-				const auto c = Cross(r, v);
-				if ((c < 0) || ((c == 0) && (GetLengthSquared(v) > GetLengthSquared(r))))
+				const auto vUnitless = StripUnits(v);
+				const auto c = Cross(rUnitless, vUnitless);
+				if ((c < 0) || ((c == 0) && (GetLengthSquared(vUnitless) > GetLengthSquared(rUnitless))))
 				{
 					ie = j;
 				}
@@ -156,7 +158,8 @@ void PolygonShape::Set(const VertexSet& point_set) noexcept
 		// Compute normals.
 		for (auto i = decltype(count){0}; i < count; ++i)
 		{
-			m_normals.emplace_back(GetUnitVector(GetFwdPerpendicular(GetEdge(*this, i))));
+			const auto edge = GetEdge(*this, i);
+			m_normals.emplace_back(GetUnitVector(GetFwdPerpendicular(StripUnits(edge))));
 		}
 	}
 	else if (count == 1)
@@ -168,13 +171,13 @@ void PolygonShape::Set(const VertexSet& point_set) noexcept
 	switch (count)
 	{
 		case 0:
-			m_centroid = GetInvalid<Vec2>();
+			m_centroid = GetInvalid<Length2D>();
 			break;
 		case 1:
 			m_centroid = m_vertices[0];
 			break;
 		case 2:
-			m_centroid = (m_vertices[0] + m_vertices[1]) / 2;
+			m_centroid = (m_vertices[0] + m_vertices[1]) / 2.0f;
 			break;
 		default:
 			m_centroid = ComputeCentroid(GetVertices());
@@ -182,7 +185,7 @@ void PolygonShape::Set(const VertexSet& point_set) noexcept
 	}
 }
 
-size_t box2d::FindLowestRightMostVertex(Span<const Vec2> vertices)
+size_t box2d::FindLowestRightMostVertex(Span<const Length2D> vertices)
 {
 	const auto size = vertices.size();
 	if (size > 0)
@@ -203,7 +206,7 @@ size_t box2d::FindLowestRightMostVertex(Span<const Vec2> vertices)
 	return static_cast<size_t>(-1);
 }
 
-Vec2 box2d::GetEdge(const PolygonShape& shape, PolygonShape::vertex_count_t index)
+Length2D box2d::GetEdge(const PolygonShape& shape, PolygonShape::vertex_count_t index)
 {
 	assert(shape.GetVertexCount() > 1);
 
@@ -221,6 +224,7 @@ bool box2d::Validate(const PolygonShape& shape)
 		const auto i2 = GetModuloNext(i1, count);
 		const auto p = shape.GetVertex(i1);
 		const auto e = shape.GetVertex(i2) - p;
+		const auto eUnitless = StripUnits(e);
 		
 		for (auto j = decltype(count){0}; j < count; ++j)
 		{
@@ -230,7 +234,7 @@ bool box2d::Validate(const PolygonShape& shape)
 			}
 			
 			const auto v = shape.GetVertex(j) - p;
-			const auto c = Cross(e, v);
+			const auto c = Cross(eUnitless, StripUnits(v));
 			if (c < 0)
 			{
 				return false;
@@ -246,23 +250,28 @@ child_count_t box2d::GetChildCount(const PolygonShape&)
 	return 1;
 }
 
-bool box2d::TestPoint(const PolygonShape& shape, const Transformation& xf, const Vec2 p)
+bool box2d::TestPoint(const PolygonShape& shape, const Transformation& xf, const Length2D p)
 {
-	const auto pLocal = InverseRotate(p - xf.p, xf.q);
-	const auto vr = shape.GetVertexRadius();
+	const auto dp = p - xf.p;
+	const auto pLocal = InverseRotate(StripUnits(dp), xf.q);
+	const auto vr = RealNum{shape.GetVertexRadius() / Meter};
 	const auto count = shape.GetVertexCount();
 	
 	if (count == 1)
 	{
-		const auto center = xf.p + Rotate(shape.GetVertex(0), xf.q);
-		return GetLengthSquared(p - center) <= Square(vr);
+		const auto v0 = shape.GetVertex(0);
+		const auto center = xf.p + Rotate(StripUnits(v0), xf.q) * Meter;
+		const auto delta = p - center;
+		return GetLengthSquared(StripUnits(delta)) <= Square(vr);
 	}
 
 	auto maxDot = -MaxFloat;
 	auto maxIdx = PolygonShape::InvalidVertex;
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
-		const auto dot = Dot(shape.GetNormal(i), pLocal - shape.GetVertex(i));
+		const auto vi = shape.GetVertex(i);
+		const auto delta = pLocal - StripUnits(vi);
+		const auto dot = Dot(shape.GetNormal(i), delta);
 		if (dot > vr)
 		{
 			return false;
@@ -276,18 +285,20 @@ bool box2d::TestPoint(const PolygonShape& shape, const Transformation& xf, const
 
 	const auto v0 = shape.GetVertex(maxIdx);
 	const auto v1 = shape.GetVertex(GetModuloNext(maxIdx, count));
-	const auto edge = v1 - v0;
-	const auto d0 = Dot(edge, v0 - pLocal);
+	const auto edge = StripUnits(v1 - v0);
+	const auto delta0 = StripUnits(v0) - pLocal;
+	const auto d0 = Dot(edge, delta0);
 	if (d0 >= 0)
 	{
 		// point is nearest v0 and not within edge
-		return GetLengthSquared(v0 - pLocal) <= Square(vr);
+		return GetLengthSquared(delta0) <= Square(vr);
 	}
-	const auto d1 = Dot(edge, pLocal - v1);
+	const auto delta1 = pLocal - StripUnits(v1);
+	const auto d1 = Dot(edge, delta1);
 	if (d1 >= 0)
 	{
 		// point is nearest v1 and not within edge
-		return GetLengthSquared(pLocal - v1) <= Square(vr);
+		return GetLengthSquared(delta1) <= Square(vr);
 	}
 	return true;
 }

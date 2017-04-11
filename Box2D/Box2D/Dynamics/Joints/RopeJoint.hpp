@@ -35,13 +35,13 @@ struct RopeJointDef : public JointDef
 	constexpr RopeJointDef(Body* bodyA, Body* bodyB) noexcept: JointDef(JointType::Rope, bodyA, bodyB) {}
 
 	/// The local anchor point relative to bodyA's origin.
-	Vec2 localAnchorA = Vec2{-1, 0};
+	Length2D localAnchorA = Vec2{-1, 0} * Meter;
 
 	/// The local anchor point relative to bodyB's origin.
-	Vec2 localAnchorB = Vec2{1, 0};
+	Length2D localAnchorB = Vec2{1, 0} * Meter;
 
 	/// The maximum length of the rope.
-	RealNum maxLength = 0;
+	Length maxLength = Length{0};
 };
 
 /// A rope joint enforces a maximum distance between two points
@@ -57,21 +57,21 @@ class RopeJoint : public Joint
 public:
 	RopeJoint(const RopeJointDef& data);
 
-	Vec2 GetAnchorA() const override;
-	Vec2 GetAnchorB() const override;
+	Length2D GetAnchorA() const override;
+	Length2D GetAnchorB() const override;
 
-	Vec2 GetReactionForce(Frequency inv_dt) const override;
-	RealNum GetReactionTorque(Frequency inv_dt) const override;
+	Force2D GetReactionForce(Frequency inv_dt) const override;
+	Torque GetReactionTorque(Frequency inv_dt) const override;
 
 	/// The local anchor point relative to bodyA's origin.
-	Vec2 GetLocalAnchorA() const { return m_localAnchorA; }
+	Length2D GetLocalAnchorA() const { return m_localAnchorA; }
 
 	/// The local anchor point relative to bodyB's origin.
-	Vec2 GetLocalAnchorB() const  { return m_localAnchorB; }
+	Length2D GetLocalAnchorB() const  { return m_localAnchorB; }
 
 	/// Set/Get the maximum length of the rope.
-	void SetMaxLength(RealNum length) { m_maxLength = length; }
-	RealNum GetMaxLength() const;
+	void SetMaxLength(Length length) { m_maxLength = length; }
+	Length GetMaxLength() const;
 
 	LimitState GetLimitState() const;
 
@@ -82,24 +82,18 @@ private:
 	bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
 
 	// Solver shared
-	Vec2 m_localAnchorA;
-	Vec2 m_localAnchorB;
-	RealNum m_maxLength;
-	RealNum m_length;
-	RealNum m_impulse;
+	Length2D m_localAnchorA;
+	Length2D m_localAnchorB;
+	Length m_maxLength;
+	Length m_length = 0;
+	Momentum m_impulse = Momentum{0};
 
 	// Solver temp
-	Vec2 m_u;
-	Vec2 m_rA;
-	Vec2 m_rB;
-	Vec2 m_localCenterA;
-	Vec2 m_localCenterB;
-	RealNum m_invMassA;
-	RealNum m_invMassB;
-	RealNum m_invIA;
-	RealNum m_invIB;
-	RealNum m_mass;
-	LimitState m_state;
+	UnitVec2 m_u;
+	Length2D m_rA;
+	Length2D m_rB;
+	Mass m_mass = Mass{0};
+	LimitState m_state = e_inactiveLimit;
 };
 
 } // namespace box2d

@@ -36,28 +36,28 @@ struct WheelJointDef : public JointDef
 
 	/// Initialize the bodies, anchors, axis, and reference angle using the world
 	/// anchor and world axis.
-	void Initialize(Body* bodyA, Body* bodyB, const Vec2 anchor, const Vec2 axis);
+	void Initialize(Body* bodyA, Body* bodyB, const Length2D anchor, const UnitVec2 axis);
 
 	/// The local anchor point relative to bodyA's origin.
-	Vec2 localAnchorA = Vec2_zero;
+	Length2D localAnchorA = Vec2_zero * Meter;
 
 	/// The local anchor point relative to bodyB's origin.
-	Vec2 localAnchorB = Vec2_zero;
+	Length2D localAnchorB = Vec2_zero * Meter;
 
 	/// The local translation axis in bodyA.
-	Vec2 localAxisA = Vec2{1, 0};
+	UnitVec2 localAxisA = UnitVec2::GetRight();
 
 	/// Enable/disable the joint motor.
 	bool enableMotor = false;
 
 	/// The maximum motor torque, usually in N-m.
-	RealNum maxMotorTorque = 0;
+	Torque maxMotorTorque = Torque{0};
 
 	/// The desired motor speed in radians per second.
 	AngularVelocity motorSpeed = AngularVelocity{0};
 
 	/// Suspension frequency, zero indicates no suspension
-	RealNum frequencyHz = 2;
+	Frequency frequencyHz = RealNum{2} * Hertz;
 
 	/// Suspension damping ratio, one indicates critical damping
 	RealNum dampingRatio = 0.7f;
@@ -72,23 +72,23 @@ class WheelJoint : public Joint
 public:
 	WheelJoint(const WheelJointDef& def);
 	
-	Vec2 GetAnchorA() const override;
-	Vec2 GetAnchorB() const override;
+	Length2D GetAnchorA() const override;
+	Length2D GetAnchorB() const override;
 
-	Vec2 GetReactionForce(Frequency inv_dt) const override;
-	RealNum GetReactionTorque(Frequency inv_dt) const override;
+	Force2D GetReactionForce(Frequency inv_dt) const override;
+	Torque GetReactionTorque(Frequency inv_dt) const override;
 
 	/// The local anchor point relative to bodyA's origin.
-	Vec2 GetLocalAnchorA() const { return m_localAnchorA; }
+	Length2D GetLocalAnchorA() const { return m_localAnchorA; }
 
 	/// The local anchor point relative to bodyB's origin.
-	Vec2 GetLocalAnchorB() const  { return m_localAnchorB; }
+	Length2D GetLocalAnchorB() const  { return m_localAnchorB; }
 
 	/// The local joint axis relative to bodyA.
-	Vec2 GetLocalAxisA() const { return m_localXAxisA; }
+	UnitVec2 GetLocalAxisA() const { return m_localXAxisA; }
 
 	/// Get the current joint translation, usually in meters.
-	RealNum GetJointTranslation() const;
+	Length GetJointTranslation() const;
 
 	/// Get the current joint translation speed, in Angle per second.
 	AngularVelocity GetJointSpeed() const;
@@ -106,15 +106,15 @@ public:
 	AngularVelocity GetMotorSpeed() const;
 
 	/// Set/Get the maximum motor force, usually in N-m.
-	void SetMaxMotorTorque(RealNum torque);
-	RealNum GetMaxMotorTorque() const;
+	void SetMaxMotorTorque(Torque torque);
+	Torque GetMaxMotorTorque() const;
 
 	/// Get the current motor torque given the inverse time step, usually in N-m.
-	RealNum GetMotorTorque(RealNum inv_dt) const;
+	Torque GetMotorTorque(Frequency inv_dt) const;
 
 	/// Set/Get the spring frequency in Hertz. Setting the frequency to zero disables the spring.
-	void SetSpringFrequencyHz(RealNum hz);
-	RealNum GetSpringFrequencyHz() const;
+	void SetSpringFrequencyHz(Frequency hz);
+	Frequency GetSpringFrequencyHz() const;
 
 	/// Set/Get the spring damping ratio
 	void SetSpringDampingRatio(RealNum ratio);
@@ -126,44 +126,38 @@ private:
 	RealNum SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) override;
 	bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
 
-	RealNum m_frequencyHz;
+	Frequency m_frequencyHz;
 	RealNum m_dampingRatio;
 
 	// Solver shared
-	Vec2 m_localAnchorA;
-	Vec2 m_localAnchorB;
-	Vec2 m_localXAxisA;
-	Vec2 m_localYAxisA;
+	Length2D m_localAnchorA;
+	Length2D m_localAnchorB;
+	UnitVec2 m_localXAxisA;
+	UnitVec2 m_localYAxisA;
 
-	RealNum m_impulse = 0;
-	RealNum m_motorImpulse = 0;
-	RealNum m_springImpulse = 0;
+	Momentum m_impulse = 0;
+	AngularMomentum m_motorImpulse = 0;
+	Momentum m_springImpulse = 0;
 
-	RealNum m_maxMotorTorque;
+	Torque m_maxMotorTorque;
 	AngularVelocity m_motorSpeed;
 	bool m_enableMotor;
 
-	// Solver temp
-	Vec2 m_localCenterA;
-	Vec2 m_localCenterB;
-	
-	RealNum m_invMassA;
-	RealNum m_invMassB;
-	RealNum m_invIA;
-	RealNum m_invIB;
+	// Solver temp	
+	UnitVec2 m_ax;
+	UnitVec2 m_ay;
 
-	Vec2 m_ax = Vec2_zero;
-	Vec2 m_ay = Vec2_zero;
+	Length m_sAx;
+	Length m_sBx;
+	Length m_sAy;
+	Length m_sBy;
 
-	RealNum m_sAx, m_sBx;
-	RealNum m_sAy, m_sBy;
+	Mass m_mass = Mass{0};
+	RotInertia m_motorMass = RotInertia{0};
+	Mass m_springMass = Mass{0};
 
-	RealNum m_mass = 0;
-	RealNum m_motorMass = 0;
-	RealNum m_springMass = 0;
-
-	RealNum m_bias = 0;
-	RealNum m_gamma = 0;
+	LinearVelocity m_bias = LinearVelocity{0};
+	InvMass m_gamma = InvMass{0};
 };
 
 inline AngularVelocity WheelJoint::GetMotorSpeed() const
@@ -171,17 +165,17 @@ inline AngularVelocity WheelJoint::GetMotorSpeed() const
 	return m_motorSpeed;
 }
 
-inline RealNum WheelJoint::GetMaxMotorTorque() const
+inline Torque WheelJoint::GetMaxMotorTorque() const
 {
 	return m_maxMotorTorque;
 }
 
-inline void WheelJoint::SetSpringFrequencyHz(RealNum hz)
+inline void WheelJoint::SetSpringFrequencyHz(Frequency hz)
 {
 	m_frequencyHz = hz;
 }
 
-inline RealNum WheelJoint::GetSpringFrequencyHz() const
+inline Frequency WheelJoint::GetSpringFrequencyHz() const
 {
 	return m_frequencyHz;
 }

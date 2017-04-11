@@ -42,8 +42,8 @@ namespace {
 	
 WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept
 {
-	auto pointA = Vec2{0, 0};
-	auto pointB = Vec2{0, 0};
+	auto pointA = Length2D{0, 0};
+	auto pointB = Length2D{0, 0};
 
 	const auto size = simplex.GetSize();
 	for (auto i = decltype(size){0}; i < size; ++i)
@@ -72,7 +72,7 @@ SimplexEdge GetSimplexEdge(const DistanceProxy& proxyA, const Transformation& xf
 {
 	const auto wA = Transform(proxyA.GetVertex(idxA), xfA);
 	const auto wB = Transform(proxyB.GetVertex(idxB), xfB);
-	return SimplexEdge{wA, idxA, wB, idxB};	
+	return SimplexEdge{wA, idxA, wB, idxB};
 }
 
 static inline
@@ -160,7 +160,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 		assert(IsValid(d));
 
 		// Ensure the search direction is numerically fit.
-		if (almost_zero(GetLengthSquared(d)))
+		if (almost_zero(StripUnit(GetLengthSquared(d))))
 		{
 			state = DistanceOutput::UnfitSearchDir;
 			

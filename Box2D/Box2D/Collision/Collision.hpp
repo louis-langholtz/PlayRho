@@ -56,7 +56,7 @@ void GetPointStates(PointStateArray& state1, PointStateArray& state2,
 /// @note This data structure is 12-bytes large (on at least one 64-bit platform).
 struct ClipVertex
 {
-	Vec2 v; ///< Vertex of edge or polygon. 8-bytes.
+	Length2D v; ///< Vertex of edge or polygon. 8-bytes.
 	ContactFeature cf; ///< Contact feature information. 4-bytes.
 };
 
@@ -73,7 +73,7 @@ using ClipList = ArrayList<ClipVertex, MaxManifoldPoints>;
 /// @param offset Offset of the plane with which to determine intersection.
 /// @param indexA Index of vertex A.
 /// @return List of zero one or two clip points.
-ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, RealNum offset,
+ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, Length offset,
 						   ContactFeature::index_t indexA);
 
 // ---------------- Inline Functions ------------------------------------------

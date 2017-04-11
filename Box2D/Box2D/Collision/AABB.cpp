@@ -35,11 +35,11 @@ AABB box2d::ComputeAABB(const EdgeShape& shape, const Transformation& xf, child_
 	const auto v1 = Transform(shape.GetVertex1(), xf);
 	const auto v2 = Transform(shape.GetVertex2(), xf);
 	
-	const auto lower = Vec2{Min(v1.x, v2.x), Min(v1.y, v2.y)};
-	const auto upper = Vec2{Max(v1.x, v2.x), Max(v1.y, v2.y)};
+	const auto lower = Length2D{Min(v1.x, v2.x), Min(v1.y, v2.y)};
+	const auto upper = Length2D{Max(v1.x, v2.x), Max(v1.y, v2.y)};
 	
 	const auto vertexRadius = GetVertexRadius(shape);
-	const auto r = Vec2{vertexRadius, vertexRadius};
+	const auto r = Length2D{vertexRadius, vertexRadius};
 	return AABB{lower - r, upper + r};
 }
 
@@ -56,12 +56,12 @@ AABB box2d::ComputeAABB(const PolygonShape& shape, const Transformation& xf, chi
 	for (auto i = decltype(count){1}; i < count; ++i)
 	{
 		const auto v = Transform(shape.GetVertex(i), xf);
-		lower = Vec2{Min(lower.x, v.x), Min(lower.y, v.y)};
-		upper = Vec2{Max(upper.x, v.x), Max(upper.y, v.y)};
+		lower = Length2D{Min(lower.x, v.x), Min(lower.y, v.y)};
+		upper = Length2D{Max(upper.x, v.x), Max(upper.y, v.y)};
 	}
 	
 	const auto vertexRadius = GetVertexRadius(shape);
-	const auto r = Vec2{vertexRadius, vertexRadius};
+	const auto r = Length2D{vertexRadius, vertexRadius};
 	return AABB{lower - r, upper + r};
 }
 
@@ -72,11 +72,11 @@ AABB box2d::ComputeAABB(const ChainShape& shape, const Transformation& xf, child
 	const auto v1 = Transform(shape.GetVertex(childIndex), xf);
 	const auto v2 = Transform(shape.GetVertex(GetNextIndex(shape, childIndex)), xf);
 	
-	const auto lower = Vec2{Min(v1.x, v2.x), Min(v1.y, v2.y)};
-	const auto upper = Vec2{Max(v1.x, v2.x), Max(v1.y, v2.y)};
+	const auto lower = Length2D{Min(v1.x, v2.x), Min(v1.y, v2.y)};
+	const auto upper = Length2D{Max(v1.x, v2.x), Max(v1.y, v2.y)};
 
 	const auto vertexRadius = GetVertexRadius(shape);
-	const auto r = Vec2{vertexRadius, vertexRadius};
+	const auto r = Length2D{vertexRadius, vertexRadius};
 	return AABB{lower - r, upper + r};
 }
 

@@ -31,28 +31,28 @@ public:
 		// Ground
 		{
 			const auto ground = m_world->CreateBody();
-			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f)));
+			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
 		}
 
 		// Platform
 		{
 			BodyDef bd;
-			bd.position = Vec2(-5.0f, 5.0f);
+			bd.position = Vec2(-5.0f, 5.0f) * Meter;
 			const auto body = m_world->CreateBody(bd);
 
 			auto conf = PolygonShape::Conf{};
 			conf.friction = 0.8f;
-			m_platform = body->CreateFixture(std::make_shared<PolygonShape>(10.0f, 0.5f, conf));
+			m_platform = body->CreateFixture(std::make_shared<PolygonShape>(10.0f * Meter, 0.5f * Meter, conf));
 		}
 
 		// Boxes
-		const auto boxshape = std::make_shared<PolygonShape>(0.5f, 0.5f);
+		const auto boxshape = std::make_shared<PolygonShape>(0.5f * Meter, 0.5f * Meter);
 		boxshape->SetDensity(RealNum{20} * KilogramPerSquareMeter);
 		for (auto i = 0; i < 5; ++i)
 		{
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(-10.0f + 2.0f * i, 7.0f);
+			bd.position = Vec2(-10.0f + 2.0f * i, 7.0f) * Meter;
 			const auto body = m_world->CreateBody(bd);
 			body->CreateFixture(boxshape);
 		}
@@ -67,12 +67,12 @@ public:
 
 		if (fixtureA == m_platform)
 		{
-			contact.SetTangentSpeed(5.0f);
+			contact.SetTangentSpeed(5.0f * MeterPerSecond);
 		}
 
 		if (fixtureB == m_platform)
 		{
-			contact.SetTangentSpeed(-5.0f);
+			contact.SetTangentSpeed(-5.0f * MeterPerSecond);
 		}
 	}
 

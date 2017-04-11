@@ -30,26 +30,26 @@ public:
 	{
 		{
 			BodyDef bd;
-			bd.position = Vec2(0.0f, 0.0f);
+			bd.position = Vec2(0.0f, 0.0f) * Meter;
 			const auto body = m_world->CreateBody(bd);
-			body->CreateFixture(std::make_shared<EdgeShape>(Vec2(50.0f, 0.0f), Vec2(-50.0f, 0.0f)));
+			body->CreateFixture(std::make_shared<EdgeShape>(Vec2(50.0f, 0.0f) * Meter, Vec2(-50.0f, 0.0f) * Meter));
 		}
 
 		{
 			auto conf = CircleShape::Conf{};
-			conf.vertexRadius = 0.5f;
+			conf.vertexRadius = 0.5f * Meter;
 			
-			conf.location = Vec2{-0.5f, 0.5f};
+			conf.location = Vec2{-0.5f, 0.5f} * Meter;
 			const auto circle1 = std::make_shared<CircleShape>(conf);
 			circle1->SetDensity(RealNum{2} * KilogramPerSquareMeter);
-			conf.location = Vec2{0.5f, 0.5f};
+			conf.location = Vec2{0.5f, 0.5f} * Meter;
 			const auto circle2 = std::make_shared<CircleShape>(conf);
 			for (auto i = 0; i < 10; ++i)
 			{
 				const auto x = RandomFloat(-0.1f, 0.1f);
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
-				bd.position = Vec2(x + 5.0f, 1.05f + 2.5f * i);
+				bd.position = Vec2(x + 5.0f, 1.05f + 2.5f * i) * Meter;
 				bd.angle = Radian * RandomFloat(-Pi, Pi);
 				const auto body = m_world->CreateBody(bd);
 				body->CreateFixture(circle1);
@@ -58,17 +58,17 @@ public:
 		}
 
 		{
-			const auto polygon1 = std::make_shared<PolygonShape>(0.25f, 0.5f);
+			const auto polygon1 = std::make_shared<PolygonShape>(0.25f * Meter, 0.5f * Meter);
 			polygon1->SetDensity(RealNum{2} * KilogramPerSquareMeter);
 			auto polygon2 = std::make_shared<PolygonShape>();
 			polygon2->SetDensity(RealNum{2} * KilogramPerSquareMeter);
-			SetAsBox(*polygon2, 0.25f, 0.5f, Vec2(0.0f, -0.5f), 0.5f * Radian * Pi);
+			SetAsBox(*polygon2, 0.25f * Meter, 0.5f * Meter, Vec2(0.0f, -0.5f) * Meter, 0.5f * Radian * Pi);
 			for (int i = 0; i < 10; ++i)
 			{
 				const auto x = RandomFloat(-0.1f, 0.1f);
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
-				bd.position = Vec2(x - 5.0f, 1.05f + 2.5f * i);
+				bd.position = Vec2(x - 5.0f, 1.05f + 2.5f * i) * Meter;
 				bd.angle = Radian * RandomFloat(-Pi, Pi);
 				const auto body = m_world->CreateBody(bd);
 				body->CreateFixture(polygon1);
@@ -79,25 +79,25 @@ public:
 		{
 			Transformation xf1;
 			xf1.q = UnitVec2{0.3524f * Radian * Pi};
-			xf1.p = GetXAxis(xf1.q) * 1;
+			xf1.p = GetVec2(GetXAxis(xf1.q)) * Meter;
 
 			auto triangle1 = std::make_shared<PolygonShape>();
-			triangle1->Set(Span<const Vec2>{
-				Transform(Vec2(-1.0f, 0.0f), xf1),
-				Transform(Vec2(1.0f, 0.0f), xf1),
-				Transform(Vec2(0.0f, 0.5f), xf1)
+			triangle1->Set(Span<const Length2D>{
+				Transform(Vec2(-1.0f, 0.0f) * Meter, xf1),
+				Transform(Vec2(1.0f, 0.0f) * Meter, xf1),
+				Transform(Vec2(0.0f, 0.5f) * Meter, xf1)
 			});
 			triangle1->SetDensity(RealNum{2} * KilogramPerSquareMeter);
 
 			Transformation xf2;
 			xf2.q = UnitVec2{-0.3524f * Radian * Pi};
-			xf2.p = -GetXAxis(xf2.q) * 1;
+			xf2.p = -GetVec2(GetXAxis(xf2.q)) * Meter;
 
 			auto triangle2 = std::make_shared<PolygonShape>();
-			triangle2->Set(Span<const Vec2>{
-				Transform(Vec2(-1.0f, 0.0f), xf2),
-				Transform(Vec2(1.0f, 0.0f), xf2),
-				Transform(Vec2(0.0f, 0.5f), xf2)
+			triangle2->Set(Span<const Length2D>{
+				Transform(Vec2(-1.0f, 0.0f) * Meter, xf2),
+				Transform(Vec2(1.0f, 0.0f) * Meter, xf2),
+				Transform(Vec2(0.0f, 0.5f) * Meter, xf2)
 			});
 			triangle2->SetDensity(RealNum{2} * KilogramPerSquareMeter);
 			
@@ -106,7 +106,7 @@ public:
 				const auto x = RandomFloat(-0.1f, 0.1f);
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
-				bd.position = Vec2(x, 2.05f + 2.5f * i);
+				bd.position = Vec2(x, 2.05f + 2.5f * i) * Meter;
 				bd.angle = 0.0f * Radian;
 				const auto body = m_world->CreateBody(bd);
 				body->CreateFixture(triangle1);
@@ -115,20 +115,20 @@ public:
 		}
 
 		{
-			const auto bottom = std::make_shared<PolygonShape>(1.5f, 0.15f);
+			const auto bottom = std::make_shared<PolygonShape>(1.5f * Meter, 0.15f * Meter);
 			bottom->SetDensity(RealNum{4} * KilogramPerSquareMeter);
 
 			auto left = std::make_shared<PolygonShape>();
 			left->SetDensity(RealNum{4} * KilogramPerSquareMeter);
-			SetAsBox(*left, 0.15f, 2.7f, Vec2(-1.45f, 2.35f), +0.2f * Radian);
+			SetAsBox(*left, 0.15f * Meter, 2.7f * Meter, Vec2(-1.45f, 2.35f) * Meter, +0.2f * Radian);
 
 			auto right = std::make_shared<PolygonShape>();
 			right->SetDensity(RealNum{4} * KilogramPerSquareMeter);
-			SetAsBox(*right, 0.15f, 2.7f, Vec2(1.45f, 2.35f), -0.2f * Radian);
+			SetAsBox(*right, 0.15f * Meter, 2.7f * Meter, Vec2(1.45f, 2.35f) * Meter, -0.2f * Radian);
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
-			bd.position = Vec2( 0.0f, 2.0f );
+			bd.position = Vec2( 0.0f, 2.0f ) * Meter;
 			const auto body = m_world->CreateBody(bd);
 			body->CreateFixture(bottom);
 			body->CreateFixture(left);

@@ -105,8 +105,8 @@ public:
 	///   This is a dimensionless multiplier.
 	/// @param extension Extension. Amount to extend the AABB by. This is used to fatten
 	///   AABBs in the dynamic tree.
-	bool UpdateProxy(const size_type proxyId, const AABB& aabb, const Vec2 displacement,
-				   const RealNum multiplier = 1, const RealNum extension = 0);
+	bool UpdateProxy(const size_type proxyId, const AABB& aabb, const Length2D displacement,
+					 const RealNum multiplier = 1, const Length extension = Length{0});
 
 	/// Call to trigger a re-processing of it's pairs on the next call to UpdatePairs.
 	void TouchProxy(size_type proxyId) noexcept;
@@ -152,7 +152,7 @@ public:
 	/// Shifts the world origin. Useful for large worlds.
 	/// The shift formula is: position -= newOrigin
 	/// @param newOrigin the new origin with respect to the old origin
-	void ShiftOrigin(const Vec2 newOrigin);
+	void ShiftOrigin(const Length2D newOrigin);
 
 	size_type GetPairCapacity() const noexcept;
 	size_type GetMoveCapacity() const noexcept;
@@ -235,16 +235,16 @@ inline void BroadPhase::RayCast(const RayCastInput& input, RayCastCallback callb
 	m_tree.RayCast(input, callback);
 }
 
-inline void BroadPhase::ShiftOrigin(const Vec2 newOrigin)
+inline void BroadPhase::ShiftOrigin(const Length2D newOrigin)
 {
 	m_tree.ShiftOrigin(newOrigin);
 }
 
 inline bool BroadPhase::UpdateProxy(const size_type proxyId,
 									const AABB& aabb,
-									const Vec2 displacement,
+									const Length2D displacement,
 									const RealNum multiplier,
-									const RealNum extension)
+									const Length extension)
 {
 	const auto updated = m_tree.UpdateProxy(proxyId, aabb, displacement, multiplier, extension);
 	if (updated)

@@ -40,21 +40,21 @@ public:
 		// Ground body
 		{
 			const auto ground = m_world->CreateBody();
-			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
+			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 		}
 
 		// Breakable dynamic body
 		{
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(0.0f, 40.0f);
+			bd.position = Vec2(0.0f, 40.0f) * Meter;
 			bd.angle = 0.25f * Pi * Radian;
 			m_body1 = m_world->CreateBody(bd);
 
-			SetAsBox(*m_shape1, 0.5f, 0.5f, Vec2(-0.5f, 0.0f), 0.0f * Radian);
+			SetAsBox(*m_shape1, 0.5f * Meter, 0.5f * Meter, Vec2(-0.5f, 0.0f) * Meter, 0.0f * Radian);
 			m_piece1 = m_body1->CreateFixture(m_shape1);
 
-			SetAsBox(*m_shape2, 0.5f, 0.5f, Vec2(0.5f, 0.0f), 0.0f * Radian);
+			SetAsBox(*m_shape2, 0.5f * Meter, 0.5f * Meter, Vec2(0.5f, 0.0f) * Meter, 0.0f * Radian);
 			m_piece2 = m_body1->CreateFixture(m_shape2);
 		}
 
@@ -71,7 +71,7 @@ public:
 		}
 
 		// Should the body break?
-		auto maxImpulse = RealNum(0);
+		auto maxImpulse = Momentum(0);
 		{
 			const auto count = impulse.GetCount();
 			for (auto i = decltype(count){0}; i < count; ++i)
@@ -80,7 +80,7 @@ public:
 			}
 		}
 
-		if (maxImpulse > 40)
+		if (maxImpulse > RealNum{40} * Kilogram * MeterPerSecond)
 		{
 			// Flag the body for breaking.
 			m_break = true;
@@ -109,8 +109,8 @@ public:
 		const auto center1 = body1->GetWorldCenter();
 		const auto center2 = body2->GetWorldCenter();
 		
-		const auto velocity1 = m_velocity + GetRevPerpendicular(center1 - center) * RealNum{m_angularVelocity / RadianPerSecond} * MeterPerSecond;
-		const auto velocity2 = m_velocity + GetRevPerpendicular(center2 - center) * RealNum{m_angularVelocity / RadianPerSecond} * MeterPerSecond;
+		const auto velocity1 = m_velocity + GetRevPerpendicular(center1 - center) * m_angularVelocity / Radian;
+		const auto velocity2 = m_velocity + GetRevPerpendicular(center2 - center) * m_angularVelocity / Radian;
 
 		body1->SetVelocity(Velocity{velocity1, m_angularVelocity});
 		body2->SetVelocity(Velocity{velocity2, m_angularVelocity});
@@ -140,7 +140,7 @@ public:
 	}
 
 	Body* m_body1;
-	Vector2D<LinearVelocity> m_velocity;
+	LinearVelocity2D m_velocity;
 	AngularVelocity m_angularVelocity;
 	std::shared_ptr<PolygonShape> m_shape1 = std::make_shared<PolygonShape>();
 	std::shared_ptr<PolygonShape> m_shape2 = std::make_shared<PolygonShape>();

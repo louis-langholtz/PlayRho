@@ -36,18 +36,18 @@ namespace box2d {
 			bd.position = m_center;
 			const auto ctrBody = m_world->CreateBody(bd);
 			const auto ctrShape = std::make_shared<CircleShape>();
-			ctrShape->SetRadius(3);
+			ctrShape->SetRadius(RealNum{3} * Meter);
 			ctrBody->CreateFixture(ctrShape);
 
 			bd.type = BodyType::Dynamic;
-			bd.position = Vec2{m_center.x, m_center.y + radius};
+			bd.position = Length2D{m_center.x, m_center.y + radius * Meter};
 			m_orbiter = m_world->CreateBody(bd);
 			const auto ballShape = std::make_shared<CircleShape>();
-			ballShape->SetRadius(0.5f);
+			ballShape->SetRadius(0.5f * Meter);
 			m_orbiter->CreateFixture(ballShape);
 			
 			const auto velocity = Velocity{
-				Vec2{Pi * radius / 2, 0} * MeterPerSecond,
+				Vec2{Pi * radius / RealNum{2}, 0} * MeterPerSecond,
 				360.0f * Degree / Second
 			};
 			m_orbiter->SetVelocity(velocity);
@@ -68,7 +68,7 @@ namespace box2d {
 		
 	private:
 		Body* m_orbiter = nullptr;
-		Vec2 const m_center = {0, 20};
+		Length2D const m_center = Vec2{0, 20} * Meter;
 
 	};
 	

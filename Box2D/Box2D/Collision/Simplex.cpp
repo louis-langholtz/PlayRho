@@ -54,8 +54,8 @@ Simplex Simplex::Get(const SimplexEdge& s0, const SimplexEdge& s1) noexcept
 	// a1 = d12_1 / d12_sum
 	// a2 = d12_2 / d12_sum
 
-	const auto w1 = GetPointDelta(s0);
-	const auto w2 = GetPointDelta(s1);
+	const auto w1 = StripUnits(GetPointDelta(s0));
+	const auto w2 = StripUnits(GetPointDelta(s1));
 	const auto e12 = w2 - w1;
 	
 	// w1 region
@@ -89,9 +89,9 @@ Simplex Simplex::Get(const SimplexEdge& s0, const SimplexEdge& s1, const Simplex
 	// - edge points[1]-points[2]
 	// - inside the triangle
 
-	const auto w1 = GetPointDelta(s0);
-	const auto w2 = GetPointDelta(s1);
-	const auto w3 = GetPointDelta(s2);
+	const auto w1 = StripUnits(GetPointDelta(s0));
+	const auto w2 = StripUnits(GetPointDelta(s1));
+	const auto w3 = StripUnits(GetPointDelta(s2));
 	
 	// Edge12
 	// [1      1     ][a1] = [1]

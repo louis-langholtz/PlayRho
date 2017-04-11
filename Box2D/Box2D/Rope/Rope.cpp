@@ -60,7 +60,7 @@ void Rope::Initialize(const RopeDef* def)
 	const auto count2 = m_count - 1;
 	const auto count3 = m_count - 2;
 	m_Ls = alloc<RealNum>(count2);
-	m_as = alloc<float>(count3);
+	m_as = alloc<Angle>(count3);
 
 	for (auto i = decltype(count2){0}; i < count2; ++i)
 	{
@@ -81,7 +81,7 @@ void Rope::Initialize(const RopeDef* def)
 		const auto a = Cross(d1, d2);
 		const auto b = Dot(d1, d2);
 
-		m_as[i] = static_cast<float>(Atan2(a, b));
+		m_as[i] = Atan2(a, b);
 	}
 
 	m_gravity = def->gravity;
@@ -155,12 +155,12 @@ void Rope::SolveC2()
 	}
 }
 
-void Rope::SetAngle(RealNum angle)
+void Rope::SetAngle(Angle angle)
 {
 	const auto count3 = m_count - 2;
 	for (auto i = decltype(count3){0}; i < count3; ++i)
 	{
-		m_as[i] = static_cast<float>(angle);
+		m_as[i] = angle;
 	}
 }
 
@@ -211,19 +211,19 @@ void Rope::SolveC3()
 
 		auto C = angle - m_as[i];
 
-		while (C > Pi)
+		while (C > Pi * Radian)
 		{
-			angle -= Pi * 2;
+			angle -= Pi * RealNum{2} * Radian;
 			C = angle - m_as[i];
 		}
 
-		while (C < -Pi)
+		while (C < -Pi * Radian)
 		{
-			angle += Pi * 2;
+			angle += Pi * RealNum{2} * Radian;
 			C = angle - m_as[i];
 		}
 
-		const auto impulse = - m_k3 * mass * C;
+		const auto impulse = - m_k3 * mass * StripUnit(C);
 
 		p1 += (m1 * impulse) * J1;
 		p2 += (m2 * impulse) * J2;

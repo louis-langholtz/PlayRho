@@ -21,20 +21,14 @@
 
 using namespace box2d;
 
-UnitVec2 UnitVec2::Get(const RealNum x, const RealNum y, const UnitVec2 fallback) noexcept
+UnitVec2 UnitVec2::Get(const RealNum x, const RealNum y, RealNum& magnitude, const UnitVec2 fallback)
 {
 	if (IsValid(x) && IsValid(y))
 	{
 		// XXX perhaps this should use std::hypot() instead like so:
-		//    const auto magnitude = std::hypot(x, y);
-
-		const auto magnitudeSquared = Square(x) + Square(y);
-		if (magnitudeSquared > 0)
-		{
-			const auto magnitude = Sqrt(magnitudeSquared);
-			return UnitVec2{x / magnitude, y / magnitude};
-		}
-		return fallback;
+		//    magnitude = std::hypot(x, y);
+		magnitude = Sqrt(Square(x) + Square(y));
+		return (!almost_zero(magnitude))? UnitVec2{x / magnitude, y / magnitude}: fallback;
 	}
 	return UnitVec2{};
 }

@@ -26,8 +26,8 @@
 namespace box2d {
 
 	static inline WorldManifold GetForCircles(const Manifold& manifold,
-											  const Transformation& xfA, const RealNum radiusA,
-											  const Transformation& xfB, const RealNum radiusB)
+											  const Transformation& xfA, const Length radiusA,
+											  const Transformation& xfB, const Length radiusB)
 	{
 		assert(manifold.GetPointCount() == 1);
 		
@@ -37,11 +37,11 @@ namespace box2d {
 			{
 				const auto pointA = Transform(manifold.GetLocalPoint(), xfA);
 				const auto pointB = Transform(manifold.GetPoint(0).localPoint, xfB);
-				const auto normal = GetUnitVector(pointB - pointA, UnitVec2::GetRight());
-				const auto cA = pointA + (radiusA * normal);
-				const auto cB = pointB - (radiusB * normal);
-				const auto p0 = (cA + cB) / 2;
-				const auto s0 = Dot(cB - cA, normal);
+				const auto normal = GetUnitVector(StripUnits(pointB - pointA), UnitVec2::GetRight());
+				const auto cA = pointA + ((radiusA / Meter) * normal) * Meter;
+				const auto cB = pointB - ((radiusB / Meter) * normal) * Meter;
+				const auto p0 = (cA + cB) / RealNum{2};
+				const auto s0 = Dot(StripUnits(cB - cA), normal) * Meter;
 				return WorldManifold{normal, WorldManifold::PointSeparation{p0, s0}};
 			}
 			default: break;
@@ -52,16 +52,16 @@ namespace box2d {
 	}
 	
 	static inline WorldManifold GetForFaceA(const Manifold& manifold,
-											const Transformation& xfA, const RealNum radiusA,
-											const Transformation& xfB, const RealNum radiusB)
+											const Transformation& xfA, const Length radiusA,
+											const Transformation& xfB, const Length radiusB)
 	{
 		const auto normal = Rotate(manifold.GetLocalNormal(), xfA.q);
 		const auto planePoint = Transform(manifold.GetLocalPoint(), xfA);
 		const auto pointFn = [&](Manifold::size_type index) {
 			const auto clipPoint = Transform(manifold.GetPoint(index).localPoint, xfB);
-			const auto cA = clipPoint + (radiusA - Dot(clipPoint - planePoint, normal)) * normal;
-			const auto cB = clipPoint - (radiusB * normal);
-			return WorldManifold::PointSeparation{(cA + cB) / 2, Dot(cB - cA, normal)};
+			const auto cA = clipPoint + (RealNum{radiusA / Meter} - Dot(StripUnits(clipPoint - planePoint), normal)) * normal * Meter;
+			const auto cB = clipPoint - (RealNum{radiusB / Meter} * normal) * Meter;
+			return WorldManifold::PointSeparation{(cA + cB) / RealNum{2}, Dot(StripUnits(cB - cA), normal) * Meter};
 		};
 		
 		assert(manifold.GetPointCount() <= 2);
@@ -79,16 +79,16 @@ namespace box2d {
 	}
 	
 	static inline WorldManifold GetForFaceB(const Manifold& manifold,
-											const Transformation& xfA, const RealNum radiusA,
-											const Transformation& xfB, const RealNum radiusB)
+											const Transformation& xfA, const Length radiusA,
+											const Transformation& xfB, const Length radiusB)
 	{
 		const auto normal = Rotate(manifold.GetLocalNormal(), xfB.q);
 		const auto planePoint = Transform(manifold.GetLocalPoint(), xfB);
 		const auto pointFn = [&](Manifold::size_type index) {
 			const auto clipPoint = Transform(manifold.GetPoint(index).localPoint, xfA);
-			const auto cB = clipPoint + (radiusB - Dot(clipPoint - planePoint, normal)) * normal;
-			const auto cA = clipPoint - (radiusA * normal);
-			return WorldManifold::PointSeparation{(cA + cB) / 2, Dot(cA - cB, normal)};
+			const auto cB = clipPoint + (RealNum{radiusB / Meter} - Dot(StripUnits(clipPoint - planePoint), normal)) * normal * Meter;
+			const auto cA = clipPoint - (RealNum{radiusA / Meter} * normal) * Meter;
+			return WorldManifold::PointSeparation{(cA + cB) / RealNum{2}, Dot(StripUnits(cA - cB), normal) * Meter};
 		};
 		
 		assert(manifold.GetPointCount() <= 2);
@@ -107,8 +107,8 @@ namespace box2d {
 	}
 	
 	WorldManifold GetWorldManifold(const Manifold& manifold,
-								   const Transformation& xfA, const RealNum radiusA,
-								   const Transformation& xfB, const RealNum radiusB)
+								   const Transformation& xfA, const Length radiusA,
+								   const Transformation& xfB, const Length radiusB)
 	{
 		const auto type = manifold.GetType();
 		assert((type == Manifold::e_circles) || (type == Manifold::e_faceA) || (type == Manifold::e_faceB) || (type == Manifold::e_unset));

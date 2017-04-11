@@ -30,7 +30,7 @@ public:
 	SliderCrank()
 	{
 		const auto ground = m_world->CreateBody();
-		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
+		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 
 		{
 			auto prevBody = ground;
@@ -39,15 +39,15 @@ public:
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
-				bd.position = Vec2(0.0f, 7.0f);
+				bd.position = Vec2(0.0f, 7.0f) * Meter;
 				const auto body = m_world->CreateBody(bd);
 				auto shapeConf = PolygonShape::Conf{};
 				shapeConf.density = RealNum{2} * KilogramPerSquareMeter;
-				body->CreateFixture(std::make_shared<PolygonShape>(0.5f, 2.0f, shapeConf));
+				body->CreateFixture(std::make_shared<PolygonShape>(0.5f * Meter, 2.0f * Meter, shapeConf));
 
-				RevoluteJointDef rjd{prevBody, body, Vec2(0.0f, 5.0f)};
+				RevoluteJointDef rjd{prevBody, body, Vec2(0.0f, 5.0f) * Meter};
 				rjd.motorSpeed = 1.0f * Pi * RadianPerSecond;
-				rjd.maxMotorTorque = 10000.0f;
+				rjd.maxMotorTorque = 10000.0f * NewtonMeter;
 				rjd.enableMotor = true;
 				m_joint1 = (RevoluteJoint*)m_world->CreateJoint(rjd);
 
@@ -58,13 +58,13 @@ public:
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
-				bd.position = Vec2(0.0f, 13.0f);
+				bd.position = Vec2(0.0f, 13.0f) * Meter;
 				const auto body = m_world->CreateBody(bd);
 				auto shapeConf = PolygonShape::Conf{};
 				shapeConf.density = RealNum{2} * KilogramPerSquareMeter;
-				body->CreateFixture(std::make_shared<PolygonShape>(0.5f, 4.0f, shapeConf));
+				body->CreateFixture(std::make_shared<PolygonShape>(0.5f * Meter, 4.0f * Meter, shapeConf));
 
-				RevoluteJointDef rjd{prevBody, body, Vec2(0.0f, 9.0f)};
+				RevoluteJointDef rjd{prevBody, body, Vec2(0.0f, 9.0f) * Meter};
 				rjd.enableMotor = false;
 				m_world->CreateJoint(rjd);
 
@@ -76,17 +76,17 @@ public:
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.fixedRotation = true;
-				bd.position = Vec2(0.0f, 17.0f);
+				bd.position = Vec2(0.0f, 17.0f) * Meter;
 				const auto body = m_world->CreateBody(bd);
 				auto shapeConf = PolygonShape::Conf{};
 				shapeConf.density = RealNum{2} * KilogramPerSquareMeter;
-				body->CreateFixture(std::make_shared<PolygonShape>(1.5f, 1.5f, shapeConf));
+				body->CreateFixture(std::make_shared<PolygonShape>(1.5f * Meter, 1.5f * Meter, shapeConf));
 
-				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(0.0f, 17.0f)});
+				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(0.0f, 17.0f) * Meter});
 
-				PrismaticJointDef pjd(ground, body, Vec2(0.0f, 17.0f), Vec2(0.0f, 1.0f));
+				PrismaticJointDef pjd(ground, body, Vec2(0.0f, 17.0f) * Meter, UnitVec2::GetTop());
 
-				pjd.maxMotorForce = 1000.0f;
+				pjd.maxMotorTorque = 1000.0f * NewtonMeter;
 				pjd.enableMotor = true;
 				
 				m_joint2 = static_cast<PrismaticJoint*>(m_world->CreateJoint(pjd));
@@ -96,11 +96,11 @@ public:
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
-				bd.position = Vec2(0.0f, 23.0f);
+				bd.position = Vec2(0.0f, 23.0f) * Meter;
 				const auto body = m_world->CreateBody(bd);
 				auto shapeConf = PolygonShape::Conf{};
 				shapeConf.density = RealNum{2} * KilogramPerSquareMeter;
-				body->CreateFixture(std::make_shared<PolygonShape>(1.5f, 1.5f, shapeConf));
+				body->CreateFixture(std::make_shared<PolygonShape>(1.5f * Meter, 1.5f * Meter, shapeConf));
 			}
 		}
 	}
@@ -128,8 +128,8 @@ public:
 	{
 		drawer.DrawString(5, m_textLine, "Keys: (f) toggle friction, (m) toggle motor");
 		m_textLine += DRAW_STRING_NEW_LINE;
-		const auto torque = m_joint1->GetMotorTorque(settings.hz);
-		drawer.DrawString(5, m_textLine, "Motor Torque = %5.0f", (float) torque);
+		const auto torque = m_joint1->GetMotorTorque(settings.hz * Hertz);
+		drawer.DrawString(5, m_textLine, "Motor Torque = %5.0f", double{torque / NewtonMeter});
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 

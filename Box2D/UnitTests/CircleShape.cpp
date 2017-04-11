@@ -49,14 +49,14 @@ TEST(CircleShape, DefaultConstruction)
 	EXPECT_EQ(foo.GetType(), Shape::e_circle);
 	EXPECT_EQ(GetChildCount(foo), child_count_t{1});
 	EXPECT_EQ(foo.GetRadius(), CircleShape::GetDefaultRadius());
-	EXPECT_EQ(foo.GetLocation().x, 0);
-	EXPECT_EQ(foo.GetLocation().y, 0);
+	EXPECT_EQ(foo.GetLocation().x, Length{0});
+	EXPECT_EQ(foo.GetLocation().y, Length{0});
 }
 
 TEST(CircleShape, InitConstruction)
 {
-	const auto radius = RealNum(1);
-	const auto position = Vec2{-1, 1};
+	const auto radius = RealNum(1) * Meter;
+	const auto position = Vec2{-1, 1} * Meter;
 	auto conf = CircleShape::Conf{};
 	conf.vertexRadius = radius;
 	conf.location = position;
@@ -71,26 +71,26 @@ TEST(CircleShape, InitConstruction)
 
 TEST(CircleShape, TestPoint)
 {
-	const auto radius = RealNum(1);
-	const auto position = Vec2{0, 0};
+	const auto radius = RealNum(1) * Meter;
+	const auto position = Vec2{0, 0} * Meter;
 	auto conf = CircleShape::Conf{};
 	conf.vertexRadius = radius;
 	conf.location = position;
 	CircleShape foo{conf};
-	EXPECT_TRUE(TestPoint(foo, Transform_identity, Vec2{ 0,  0}));
-	EXPECT_TRUE(TestPoint(foo, Transform_identity, Vec2{+1,  0}));
-	EXPECT_TRUE(TestPoint(foo, Transform_identity, Vec2{ 0, +1}));
-	EXPECT_TRUE(TestPoint(foo, Transform_identity, Vec2{ 0, -1}));
-	EXPECT_TRUE(TestPoint(foo, Transform_identity, Vec2{-1,  0}));
-	EXPECT_FALSE(TestPoint(foo, Transform_identity, Vec2{-1,  -1}));
-	EXPECT_FALSE(TestPoint(foo, Transform_identity, Vec2{+1,  +1}));
-	EXPECT_FALSE(TestPoint(foo, Transform_identity, Vec2{+RealNum(0.9),  +RealNum(0.9)}));
+	EXPECT_TRUE(TestPoint(foo, Transform_identity, Vec2{ 0,  0} * Meter));
+	EXPECT_TRUE(TestPoint(foo, Transform_identity, Vec2{+1,  0} * Meter));
+	EXPECT_TRUE(TestPoint(foo, Transform_identity, Vec2{ 0, +1} * Meter));
+	EXPECT_TRUE(TestPoint(foo, Transform_identity, Vec2{ 0, -1} * Meter));
+	EXPECT_TRUE(TestPoint(foo, Transform_identity, Vec2{-1,  0} * Meter));
+	EXPECT_FALSE(TestPoint(foo, Transform_identity, Vec2{-1,  -1} * Meter));
+	EXPECT_FALSE(TestPoint(foo, Transform_identity, Vec2{+1,  +1} * Meter));
+	EXPECT_FALSE(TestPoint(foo, Transform_identity, Vec2{+RealNum(0.9),  +RealNum(0.9)} * Meter));
 }
 
 TEST(CircleShape, ComputeAABB)
 {
-	const auto radius = RealNum(2.4);
-	const auto position = Vec2{2, 1};
+	const auto radius = RealNum(2.4) * Meter;
+	const auto position = Vec2{2, 1} * Meter;
 	auto conf = CircleShape::Conf{};
 	conf.vertexRadius = radius;
 	conf.location = position;
@@ -100,8 +100,8 @@ TEST(CircleShape, ComputeAABB)
 	EXPECT_EQ(aabb.GetLowerBound().y, position.y - radius);
 	EXPECT_EQ(aabb.GetUpperBound().x, position.x + radius);
 	EXPECT_EQ(aabb.GetUpperBound().y, position.y + radius);
-	EXPECT_TRUE(almost_equal(GetExtents(aabb).x, radius));
-	EXPECT_TRUE(almost_equal(GetExtents(aabb).y, radius));
+	EXPECT_TRUE(almost_equal(StripUnit(GetExtents(aabb).x), StripUnit(radius)));
+	EXPECT_TRUE(almost_equal(StripUnit(GetExtents(aabb).y), StripUnit(radius)));
 	EXPECT_EQ(GetCenter(aabb).x, position.x);
 	EXPECT_EQ(GetCenter(aabb).y, position.y);
 }

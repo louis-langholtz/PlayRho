@@ -32,12 +32,12 @@ namespace box2d {
 	class ChainShape;
 
 	Area GetAreaOfCircle(Length radius);
-	Area GetAreaOfPolygon(Span<const Vec2> vertices);
+	Area GetAreaOfPolygon(Span<const Length2D> vertices);
 
 	/// Gets the polar moment of the area enclosed by the given vertices.
 	/// @warning Behavior is undefined if given collection has less than 3 vertices.
 	/// @param vertices Collection of three or more vertices.
-	SecondMomentOfArea GetPolarMoment(Span<const Vec2> vertices);
+	SecondMomentOfArea GetPolarMoment(Span<const Length2D> vertices);
 
 	/// Mass data.
 	/// @detail This holds the mass data computed for a shape.
@@ -50,14 +50,14 @@ namespace box2d {
 		/// @param m Non-negative mass in kg.
 		/// @param c Position of the shape's centroid relative to the shape's origin.
 		/// @param i Non-negative rotational inertia of the shape about the local origin.
-		constexpr MassData(Mass m, Vec2 c, RotInertia i) noexcept: mass{m}, center{c}, I{i}
+		constexpr MassData(Mass m, Length2D c, RotInertia i) noexcept: mass{m}, center{c}, I{i}
 		{
 			assert(m >= Mass{0});
 			assert(i >= RotInertia{0});
 		}
 				
 		/// The position of the shape's centroid relative to the shape's origin.
-		Vec2 center;
+		Length2D center;
 		
 		/// Mass of the shape in kilograms.
 		/// This should NEVER be a negative value.

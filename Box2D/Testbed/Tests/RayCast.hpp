@@ -35,7 +35,7 @@ public:
 		m_hit = false;
 	}
 
-	RealNum ReportFixture(Fixture* fixture, const Vec2& point, const UnitVec2& normal, RealNum fraction) override
+	RealNum ReportFixture(Fixture* fixture, const Length2D& point, const UnitVec2& normal, RealNum fraction) override
 	{
 		const auto body = fixture->GetBody();
 		const auto userData = body->GetUserData();
@@ -61,7 +61,7 @@ public:
 	}
 	
 	bool m_hit;
-	Vec2 m_point;
+	Length2D m_point;
 	UnitVec2 m_normal;
 };
 
@@ -75,7 +75,7 @@ public:
 		m_hit = false;
 	}
 
-	RealNum ReportFixture(Fixture* fixture, const Vec2& point, const UnitVec2& normal, RealNum) override
+	RealNum ReportFixture(Fixture* fixture, const Length2D& point, const UnitVec2& normal, RealNum) override
 	{
 		const auto body = fixture->GetBody();
 		const auto userData = body->GetUserData();
@@ -100,7 +100,7 @@ public:
 	}
 
 	bool m_hit;
-	Vec2 m_point;
+	Length2D m_point;
 	UnitVec2 m_normal;
 };
 
@@ -120,7 +120,7 @@ public:
 		m_count = 0;
 	}
 
-	RealNum ReportFixture(Fixture* fixture, const Vec2& point, const UnitVec2& normal, RealNum) override
+	RealNum ReportFixture(Fixture* fixture, const Length2D& point, const UnitVec2& normal, RealNum) override
 	{
 		const auto body = fixture->GetBody();
 		const auto userData = body->GetUserData();
@@ -152,7 +152,7 @@ public:
 		return 1.0f;
 	}
 
-	Vec2 m_points[e_maxCount];
+	Length2D m_points[e_maxCount];
 	UnitVec2 m_normals[e_maxCount];
 	int32 m_count;
 };
@@ -176,13 +176,13 @@ public:
 
 	RayCast()
 	{
-		m_circle->SetVertexRadius(0.5f);
+		m_circle->SetVertexRadius(0.5f * Meter);
 		m_circle->SetFriction(0.3f);
 		m_edge->SetFriction(0.3f);
 		
 		// Ground body
 		const auto ground = m_world->CreateBody();
-		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
+		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 		
 		for (auto&& p: m_polygons)
 		{
@@ -190,9 +190,9 @@ public:
 			p->SetFriction(0.3f);
 		}
 
-		m_polygons[0]->Set({Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)});
+		m_polygons[0]->Set({Vec2(-0.5f, 0.0f) * Meter, Vec2(0.5f, 0.0f) * Meter, Vec2(0.0f, 1.5f) * Meter});
 
-		m_polygons[1]->Set({Vec2(-0.1f, 0.0f), Vec2(0.1f, 0.0f), Vec2(0.0f, 1.5f)});
+		m_polygons[1]->Set({Vec2(-0.1f, 0.0f) * Meter, Vec2(0.1f, 0.0f) * Meter, Vec2(0.0f, 1.5f) * Meter});
 
 		{
 			const auto w = 1.0f;
@@ -200,18 +200,18 @@ public:
 			const auto s = Sqrt(2.0f) * b;
 
 			m_polygons[2]->Set({
-				Vec2(0.5f * s, 0.0f),
-				Vec2(0.5f * w, b),
-				Vec2(0.5f * w, b + s),
-				Vec2(0.5f * s, w),
-				Vec2(-0.5f * s, w),
-				Vec2(-0.5f * w, b + s),
-				Vec2(-0.5f * w, b),
-				Vec2(-0.5f * s, 0.0f)
+				Vec2(0.5f * s, 0.0f) * Meter,
+				Vec2(0.5f * w, b) * Meter,
+				Vec2(0.5f * w, b + s) * Meter,
+				Vec2(0.5f * s, w) * Meter,
+				Vec2(-0.5f * s, w) * Meter,
+				Vec2(-0.5f * w, b + s) * Meter,
+				Vec2(-0.5f * w, b) * Meter,
+				Vec2(-0.5f * s, 0.0f) * Meter
 			});
 		}
 
-		m_polygons[3]->SetAsBox(0.5f, 0.5f);
+		m_polygons[3]->SetAsBox(0.5f * Meter, 0.5f * Meter);
 		
 		m_bodyIndex = 0;
 		memset(m_bodies, 0, sizeof(m_bodies));
@@ -233,7 +233,7 @@ public:
 
 		const auto x = RandomFloat(-10.0f, 10.0f);
 		const auto y = RandomFloat(0.0f, 20.0f);
-		bd.position = Vec2(x, y);
+		bd.position = Vec2(x, y) * Meter;
 		bd.angle = Radian * RandomFloat(-Pi, Pi);
 
 		m_userData[m_bodyIndex] = index;
@@ -334,8 +334,8 @@ public:
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		const auto L = 11.0f;
-		const auto point1 = Vec2(0.0f, 10.0f);
-		const auto d = Vec2(L * std::cos(m_angle), L * std::sin(m_angle));
+		const auto point1 = Vec2(0.0f, 10.0f) * Meter;
+		const auto d = Vec2(L * std::cos(m_angle), L * std::sin(m_angle)) * Meter;
 		const auto point2 = point1 + d;
 
 		if (m_mode == e_closest)
@@ -345,9 +345,9 @@ public:
 
 			if (callback.m_hit)
 			{
-				drawer.DrawPoint(callback.m_point, 5.0f, Color(0.4f, 0.9f, 0.4f));
+				drawer.DrawPoint(callback.m_point, 5.0f * Meter, Color(0.4f, 0.9f, 0.4f));
 				drawer.DrawSegment(point1, callback.m_point, Color(0.8f, 0.8f, 0.8f));
-				Vec2 head = callback.m_point + 0.5f * callback.m_normal;
+				const auto head = callback.m_point + 0.5f * callback.m_normal * Meter;
 				drawer.DrawSegment(callback.m_point, head, Color(0.9f, 0.9f, 0.4f));
 			}
 			else
@@ -362,9 +362,9 @@ public:
 
 			if (callback.m_hit)
 			{
-				drawer.DrawPoint(callback.m_point, 5.0f, Color(0.4f, 0.9f, 0.4f));
+				drawer.DrawPoint(callback.m_point, 5.0f * Meter, Color(0.4f, 0.9f, 0.4f));
 				drawer.DrawSegment(point1, callback.m_point, Color(0.8f, 0.8f, 0.8f));
-				Vec2 head = callback.m_point + 0.5f * callback.m_normal;
+				const auto head = callback.m_point + 0.5f * callback.m_normal * Meter;
 				drawer.DrawSegment(callback.m_point, head, Color(0.9f, 0.9f, 0.4f));
 			}
 			else
@@ -382,9 +382,9 @@ public:
 			{
 				const auto p = callback.m_points[i];
 				const auto n = callback.m_normals[i];
-				drawer.DrawPoint(p, 5.0f, Color(0.4f, 0.9f, 0.4f));
+				drawer.DrawPoint(p, 5.0f * Meter, Color(0.4f, 0.9f, 0.4f));
 				drawer.DrawSegment(point1, p, Color(0.8f, 0.8f, 0.8f));
-				Vec2 head = p + 0.5f * n;
+				const auto head = p + 0.5f * n * Meter;
 				drawer.DrawSegment(p, head, Color(0.9f, 0.9f, 0.4f));
 			}
 		}
@@ -446,7 +446,7 @@ public:
 	int32 m_userData[e_maxBodies];
 	std::shared_ptr<PolygonShape> m_polygons[4];
 	std::shared_ptr<CircleShape> m_circle = std::make_shared<CircleShape>();
-	std::shared_ptr<EdgeShape> m_edge = std::make_shared<EdgeShape>(Vec2(-1.0f, 0.0f), Vec2(1.0f, 0.0f));
+	std::shared_ptr<EdgeShape> m_edge = std::make_shared<EdgeShape>(Vec2(-1.0f, 0.0f) * Meter, Vec2(1.0f, 0.0f) * Meter);
 	
 	RealNum m_angle;
 

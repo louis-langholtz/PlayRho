@@ -50,7 +50,7 @@ const FixtureDef& GetDefaultFixtureDef() noexcept;
 
 /// Earthly gravity.
 /// @detail An approximation of Earth's average gravity at sea-level.
-constexpr auto EarthlyGravity = Vector2D<LinearAcceleration>{0.0f * MeterPerSquareSecond, RealNum(-9.8f) * MeterPerSquareSecond};
+constexpr auto EarthlyGravity = LinearAcceleration2D{0.0f * MeterPerSquareSecond, RealNum(-9.8f) * MeterPerSquareSecond};
 
 /// World.
 /// @detail
@@ -78,14 +78,14 @@ public:
 	/// World construction definitions.
 	struct Def
 	{
-		constexpr Def& UseGravity(Vector2D<LinearAcceleration> value) noexcept;
-		constexpr Def& UseMinVertexRadius(RealNum value) noexcept;
-		constexpr Def& UseMaxVertexRadius(RealNum value) noexcept;
+		constexpr Def& UseGravity(LinearAcceleration2D value) noexcept;
+		constexpr Def& UseMinVertexRadius(Length value) noexcept;
+		constexpr Def& UseMaxVertexRadius(Length value) noexcept;
 
 		/// Gravity.
 		/// @detail The acceleration all dynamic bodies are subject to.
 		/// @note Use Vec2{0, 0} to disable gravity.
-		Vector2D<LinearAcceleration> gravity = EarthlyGravity;
+		LinearAcceleration2D gravity = EarthlyGravity;
 		
 		/// Minimum vertex radius.
 		/// @detail This is the minimum vertex radius that this world establishes which bodies
@@ -95,14 +95,14 @@ public:
 		/// @note This value probably should not be changed except to experiment with what can happen.
 		/// @note Making it smaller means some shapes could have insufficient buffer for continuous collision.
 		/// @note Making it larger may create artifacts for vertex collision.
-		RealNum minVertexRadius = DefaultLinearSlop * 2;
+		Length minVertexRadius = DefaultLinearSlop * RealNum{2};
 
 		/// Maximum vertex radius.
 		/// @detail This is the maximum vertex radius that this world establishes which bodies
 		///    shall allow fixtures to be created with. Trying to create a fixture with a shape
 		///    having a larger vertex radius shall be rejected with a <code>nullptr</code>
 		///    returned value.
-		RealNum maxVertexRadius = 255.0f; // linearSlop * 2550000
+		Length maxVertexRadius = RealNum{255} * Meter; // linearSlop * 2550000
 	};
 	
 	/// Gets the default definitions value.
@@ -211,7 +211,7 @@ public:
 	/// @param callback a user implemented callback class.
 	/// @param point1 the ray starting point
 	/// @param point2 the ray ending point
-	void RayCast(RayCastFixtureReporter* callback, const Vec2& point1, const Vec2& point2) const;
+	void RayCast(RayCastFixtureReporter* callback, const Length2D& point1, const Length2D& point2) const;
 
 	/// Gets the world body container for this constant world.
 	/// @return Body container that can be iterated over using its begin and end methods or using ranged-based for-loops.
@@ -248,10 +248,10 @@ public:
 	RealNum GetTreeQuality() const;
 
 	/// Change the global gravity vector.
-	void SetGravity(const Vector2D<LinearAcceleration> gravity) noexcept;
+	void SetGravity(const LinearAcceleration2D gravity) noexcept;
 	
 	/// Get the global gravity vector.
-	Vector2D<LinearAcceleration> GetGravity() const noexcept;
+	LinearAcceleration2D GetGravity() const noexcept;
 
 	/// Is the world locked (in the middle of a time step).
 	bool IsLocked() const noexcept;
@@ -259,13 +259,13 @@ public:
 	/// Shift the world origin. Useful for large worlds.
 	/// The body shift formula is: position -= newOrigin
 	/// @param newOrigin the new origin with respect to the old origin
-	void ShiftOrigin(const Vec2 newOrigin);
+	void ShiftOrigin(const Length2D newOrigin);
 
 	/// Gets the minimum vertex radius that shapes in this world can be.
-	RealNum GetMinVertexRadius() const noexcept;
+	Length GetMinVertexRadius() const noexcept;
 	
 	/// Gets the maximum vertex radius that shapes in this world can be.
-	RealNum GetMaxVertexRadius() const noexcept;
+	Length GetMaxVertexRadius() const noexcept;
 
 	/// Gets the inverse delta time.
 	Frequency GetInvDeltaTime() const noexcept;
@@ -333,8 +333,8 @@ private:
 	/// Island solver results.
 	struct IslandSolverResults
 	{
-		RealNum minSeparation = std::numeric_limits<decltype(minSeparation)>::infinity(); ///< Minimum separation.
-		RealNum maxIncImpulse = 0; ///< Maximum incremental impulse.
+		Length minSeparation = std::numeric_limits<RealNum>::infinity() * Meter; ///< Minimum separation.
+		Momentum maxIncImpulse = 0; ///< Maximum incremental impulse.
 		bool solved = false; ///< Solved. <code>true</code> if position constraints solved, <code>false</code> otherwise.
 		ts_iters_t positionIterations = 0; ///< Position iterations actually performed.
 		ts_iters_t velocityIterations = 0; ///< Velocity iterations actually performed.
@@ -537,7 +537,7 @@ private:
 	
 	/// Creates proxies for every child of the given fixture's shape.
 	/// @note This sets the proxy count to the child count of the shape.
-	void CreateProxies(Fixture& fixture, const RealNum aabbExtension);
+	void CreateProxies(Fixture& fixture, const Length aabbExtension);
 
 	/// Destroys the given fixture's proxies.
 	/// @note This resets the proxy count to 0.
@@ -549,11 +549,11 @@ private:
 
 	child_count_t Synchronize(Fixture& fixture,
 							  const Transformation xfm1, const Transformation xfm2,
-							  const RealNum multiplier, const RealNum extension);
+							  const RealNum multiplier, const Length extension);
 
 	contact_count_t Synchronize(Body& body,
 								const Transformation& xfm1, const Transformation& xfm2,
-								const RealNum multiplier, const RealNum aabbExtension);
+								const RealNum multiplier, const Length aabbExtension);
 	
 	void CreateAndDestroyProxies(const StepConf& conf);
 	void CreateAndDestroyProxies(Fixture& fixture, const StepConf& conf);
@@ -594,7 +594,7 @@ private:
 	///   during a given time step.
 	Contacts m_contacts;
 
-	Vector2D<LinearAcceleration> m_gravity; ///< Gravity setting. 8-bytes.
+	LinearAcceleration2D m_gravity; ///< Gravity setting. 8-bytes.
 
 	DestructionListener* m_destructionListener = nullptr; ///< Destruction listener. 8-bytes.
 	
@@ -611,7 +611,7 @@ private:
 	Frequency m_inv_dt0 = 0;
 
 	/// Minimum vertex radius.
-	const RealNum m_minVertexRadius;
+	const Length m_minVertexRadius;
 
 	/// Maximum vertex radius.
 	/// @detail
@@ -621,22 +621,22 @@ private:
 	/// associated with this world that would otherwise not be able to be simulated due to
 	/// numerical issues. It can also be set below this upper bound to constrain the differences
 	/// between shape vertex radiuses to possibly more limited visual ranges.
-	const RealNum m_maxVertexRadius;
+	const Length m_maxVertexRadius;
 };
 
-constexpr inline World::Def& World::Def::UseGravity(Vector2D<LinearAcceleration> value) noexcept
+constexpr inline World::Def& World::Def::UseGravity(LinearAcceleration2D value) noexcept
 {
 	gravity = value;
 	return *this;
 }
 
-constexpr inline World::Def& World::Def::UseMinVertexRadius(RealNum value) noexcept
+constexpr inline World::Def& World::Def::UseMinVertexRadius(Length value) noexcept
 {
 	minVertexRadius = value;
 	return *this;
 }
 
-constexpr inline World::Def& World::Def::UseMaxVertexRadius(RealNum value) noexcept
+constexpr inline World::Def& World::Def::UseMaxVertexRadius(Length value) noexcept
 {
 	maxVertexRadius = value;
 	return *this;
@@ -657,7 +657,7 @@ inline const World::Contacts& World::GetContacts() const noexcept
 	return m_contacts;
 }
 
-inline Vector2D<LinearAcceleration> World::GetGravity() const noexcept
+inline LinearAcceleration2D World::GetGravity() const noexcept
 {
 	return m_gravity;
 }
@@ -716,12 +716,12 @@ inline void World::UnsetNewFixtures() noexcept
 	m_flags &= ~e_newFixture;
 }
 
-inline RealNum World::GetMinVertexRadius() const noexcept
+inline Length World::GetMinVertexRadius() const noexcept
 {
 	return m_minVertexRadius;
 }
 
-inline RealNum World::GetMaxVertexRadius() const noexcept
+inline Length World::GetMaxVertexRadius() const noexcept
 {
 	return m_maxVertexRadius;
 }

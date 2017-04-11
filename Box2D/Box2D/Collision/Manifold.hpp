@@ -32,8 +32,8 @@ namespace box2d
 
 	struct ContactImpulses
 	{
-		RealNum m_normal; ///< Normal impulse. This is the non-penetration impulse (4-bytes).
-		RealNum m_tangent; ///< Tangent impulse. This is the friction impulse (4-bytes).
+		Momentum m_normal; ///< Normal impulse. This is the non-penetration impulse (4-bytes).
+		Momentum m_tangent; ///< Tangent impulse. This is the friction impulse (4-bytes).
 	};
 
 	/// Manifold for two convex shapes.
@@ -127,7 +127,7 @@ namespace box2d
 			/// point of shape A. It is also the point at which impulse forces should be relatively
 			/// applied for position resolution.
 			/// @note 8-bytes.
-			Vec2 localPoint;
+			Length2D localPoint;
 
 			/// Contact feature.
 			/// @detail Uniquely identifies a contact point between two shapes - A and B.
@@ -139,13 +139,13 @@ namespace box2d
 			/// @detail This is the non-penetration impulse.
 			/// @note This is only used for velocity constraint resolution.
 			/// @note 4-bytes.
-			RealNum normalImpulse = 0;
+			Momentum normalImpulse = 0;
 			
 			/// Tangent impulse.
 			/// @detail This is the friction impulse.
 			/// @note This is only used for velocity constraint resolution.
 			/// @note 4-bytes.
-			RealNum tangentImpulse = 0;
+			Momentum tangentImpulse = 0;
 		};
 		
 		// For Circles type manifolds...
@@ -155,7 +155,7 @@ namespace box2d
 		/// @param iA Index of vertex from shape A representing the local center of "circle" A.
 		/// @param vB Local center of "circle" B.
 		/// @param iB Index of vertex from shape B representing the local center of "circle" B.
-		static constexpr Manifold GetForCircles(Vec2 vA, sidx_t iA, Vec2 vB, sidx_t iB) noexcept
+		static constexpr Manifold GetForCircles(Length2D vA, sidx_t iA, Length2D vB, sidx_t iB) noexcept
 		{
 			return Manifold{e_circles, GetInvalid<UnitVec2>(), vA, 1, {{
 				Point{vB, GetVertexVertexContactFeature(iA, iB)}
@@ -168,7 +168,7 @@ namespace box2d
 		/// @param normalA Local normal of the face from polygon A.
 		/// @param faceA Any point in local coordinates on the face whose normal was provided.
 		[[deprecated]]
-		static constexpr Manifold GetForFaceA(UnitVec2 normalA, Vec2 faceA) noexcept
+		static constexpr Manifold GetForFaceA(UnitVec2 normalA, Length2D faceA) noexcept
 		{
 			return Manifold{e_faceA, normalA, faceA, 0, {{}}};
 		}
@@ -178,7 +178,7 @@ namespace box2d
 		/// @param lp Center of face A.
 		/// @param mp1 Manifold point 1 (of 1).
 		[[deprecated]]
-		static constexpr Manifold GetForFaceA(UnitVec2 ln, Vec2 lp, const Point& mp1) noexcept
+		static constexpr Manifold GetForFaceA(UnitVec2 ln, Length2D lp, const Point& mp1) noexcept
 		{
 			//assert(mp1.contactFeature.typeA == ContactFeature::e_face || mp1.contactFeature.typeB == ContactFeature::e_face);
 			return Manifold{e_faceA, ln, lp, 1, {{mp1}}};
@@ -190,7 +190,7 @@ namespace box2d
 		/// @param mp1 Manifold point 1 (of 2).
 		/// @param mp2 Manifold point 2 (of 2).
 		[[deprecated]]
-		static constexpr Manifold GetForFaceA(UnitVec2 ln, Vec2 lp, const Point& mp1, const Point& mp2) noexcept
+		static constexpr Manifold GetForFaceA(UnitVec2 ln, Length2D lp, const Point& mp1, const Point& mp2) noexcept
 		{
 			//assert(mp1.contactFeature.typeA == ContactFeature::e_face || mp1.contactFeature.typeB == ContactFeature::e_face);
 			//assert(mp2.contactFeature.typeA == ContactFeature::e_face || mp2.contactFeature.typeB == ContactFeature::e_face);
@@ -204,7 +204,7 @@ namespace box2d
 		/// @param ln Normal on polygon B.
 		/// @param lp Center of face B.
 		[[deprecated]]
-		static constexpr Manifold GetForFaceB(UnitVec2 ln, Vec2 lp) noexcept
+		static constexpr Manifold GetForFaceB(UnitVec2 ln, Length2D lp) noexcept
 		{
 			return Manifold{e_faceB, ln, lp, 0, {{}}};
 		}
@@ -214,7 +214,7 @@ namespace box2d
 		/// @param lp Center of face B.
 		/// @param mp1 Manifold point 1.
 		[[deprecated]]
-		static constexpr Manifold GetForFaceB(UnitVec2 ln, Vec2 lp, const Point& mp1) noexcept
+		static constexpr Manifold GetForFaceB(UnitVec2 ln, Length2D lp, const Point& mp1) noexcept
 		{
 			//assert(mp1.contactFeature.typeA == ContactFeature::e_face || mp1.contactFeature.typeB == ContactFeature::e_face);
 			return Manifold{e_faceB, ln, lp, 1, {{mp1}}};
@@ -226,7 +226,7 @@ namespace box2d
 		/// @param mp1 Manifold point 1 (of 2).
 		/// @param mp2 Manifold point 2 (of 2).
 		[[deprecated]]
-		static constexpr Manifold GetForFaceB(UnitVec2 ln, Vec2 lp, const Point& mp1, const Point& mp2) noexcept
+		static constexpr Manifold GetForFaceB(UnitVec2 ln, Length2D lp, const Point& mp1, const Point& mp2) noexcept
 		{
 			//assert(mp1.contactFeature.typeA == ContactFeature::e_face || mp1.contactFeature.typeB == ContactFeature::e_face);
 			//assert(mp2.contactFeature.typeA == ContactFeature::e_face || mp2.contactFeature.typeB == ContactFeature::e_face);
@@ -234,24 +234,24 @@ namespace box2d
 			return Manifold{e_faceB, ln, lp, 2, {{mp1, mp2}}};
 		}
 		
-		static constexpr Manifold GetForFaceA(UnitVec2 na, sidx_t ia, Vec2 pa) noexcept
+		static constexpr Manifold GetForFaceA(UnitVec2 na, sidx_t ia, Length2D pa) noexcept
 		{
 			return Manifold{e_faceA, na, pa, 0, {{
-				Point{GetInvalid<Vec2>(), ContactFeature{ContactFeature::e_face, ia, ContactFeature::e_face, 0}},
-				Point{GetInvalid<Vec2>(), ContactFeature{ContactFeature::e_face, ia, ContactFeature::e_face, 0}}
+				Point{GetInvalid<Length2D>(), ContactFeature{ContactFeature::e_face, ia, ContactFeature::e_face, 0}},
+				Point{GetInvalid<Length2D>(), ContactFeature{ContactFeature::e_face, ia, ContactFeature::e_face, 0}}
 			}}};
 		}
 		
-		static constexpr Manifold GetForFaceB(UnitVec2 nb, sidx_t ib, Vec2 pb) noexcept
+		static constexpr Manifold GetForFaceB(UnitVec2 nb, sidx_t ib, Length2D pb) noexcept
 		{
 			return Manifold{e_faceB, nb, pb, 0, {{
-				Point{GetInvalid<Vec2>(), ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_face, ib}},
-				Point{GetInvalid<Vec2>(), ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_face, ib}}
+				Point{GetInvalid<Length2D>(), ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_face, ib}},
+				Point{GetInvalid<Length2D>(), ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_face, ib}}
 			}}};
 		}
 
-		static constexpr Manifold GetForFaceA(UnitVec2 na, sidx_t ia, Vec2 pa,
-											  cf_t tb0, sidx_t ib0, Vec2 pb0) noexcept
+		static constexpr Manifold GetForFaceA(UnitVec2 na, sidx_t ia, Length2D pa,
+											  cf_t tb0, sidx_t ib0, Length2D pb0) noexcept
 		{
 			return Manifold{e_faceA, na, pa, 1, {{
 				Point{pb0, ContactFeature{ContactFeature::e_face, ia, tb0, ib0}},
@@ -259,8 +259,8 @@ namespace box2d
 			}}};
 		}
 		
-		static constexpr Manifold GetForFaceB(UnitVec2 nb, sidx_t ib, Vec2 pb,
-											  cf_t ta0, sidx_t ia0, Vec2 pa0) noexcept
+		static constexpr Manifold GetForFaceB(UnitVec2 nb, sidx_t ib, Length2D pb,
+											  cf_t ta0, sidx_t ia0, Length2D pa0) noexcept
 		{
 			return Manifold{e_faceB, nb, pb, 1, {{
 				Point{pa0, ContactFeature{ta0, ia0, ContactFeature::e_face, ib}},
@@ -268,9 +268,9 @@ namespace box2d
 			}}};
 		}
 		
-		static constexpr Manifold GetForFaceA(UnitVec2 na, sidx_t ia, Vec2 pa,
-											  cf_t tb0, sidx_t ib0, Vec2 pb0,
-											  cf_t tb1, sidx_t ib1, Vec2 pb1) noexcept
+		static constexpr Manifold GetForFaceA(UnitVec2 na, sidx_t ia, Length2D pa,
+											  cf_t tb0, sidx_t ib0, Length2D pb0,
+											  cf_t tb1, sidx_t ib1, Length2D pb1) noexcept
 		{
 			return Manifold{e_faceA, na, pa, 2, {{
 				Point{pb0, ContactFeature{ContactFeature::e_face, ia, tb0, ib0}},
@@ -278,9 +278,9 @@ namespace box2d
 			}}};
 		}
 
-		static constexpr Manifold GetForFaceB(UnitVec2 nb, sidx_t ib, Vec2 pb,
-											  cf_t ta0, sidx_t ia0, Vec2 pa0,
-											  cf_t ta1, sidx_t ia1, Vec2 pa1) noexcept
+		static constexpr Manifold GetForFaceB(UnitVec2 nb, sidx_t ib, Length2D pb,
+											  cf_t ta0, sidx_t ia0, Length2D pa0,
+											  cf_t ta1, sidx_t ia1, Length2D pa1) noexcept
 		{
 			return Manifold{e_faceB, nb, pb, 2, {{
 				Point{pa0, ContactFeature{ta0, ia0, ContactFeature::e_face, ib}},
@@ -293,9 +293,9 @@ namespace box2d
 		/// Constructs an unset-type manifold.
 		/// For an unset-type manifold:
 		/// point count is zero, point data is undefined, and all other properties are invalid.
-		Manifold() noexcept = default;
+		Manifold() = default;
 		
-		Manifold(const Manifold& copy) noexcept = default;
+		Manifold(const Manifold& copy) = default;
 		
 		/// Gets the type of this manifold.
 		Type GetType() const noexcept { return m_type; }
@@ -335,7 +335,7 @@ namespace box2d
 			return m_points[index];
 		}
 		
-		void SetPointImpulses(size_type index, RealNum n, RealNum t)
+		void SetPointImpulses(size_type index, Momentum n, Momentum t)
 		{
 			assert((0 <= index) && (index < m_pointCount));
 			m_points[index].normalImpulse = n;
@@ -351,7 +351,7 @@ namespace box2d
 		[[deprecated]]
 		void AddPoint(const Point& mp) noexcept;
 
-		void AddPoint(cf_t type, sidx_t index, Vec2 point) noexcept;
+		void AddPoint(cf_t type, sidx_t index, Length2D point) noexcept;
 
 		/// Gets the local normal for a face-type manifold.
 		/// @return Local normal if the manifold type is face A or face B, else invalid value.
@@ -368,12 +368,12 @@ namespace box2d
 		/// the center of face B for face-B-type manifolds.
 		/// @note Value invalid for unset (e_unset) type manifolds.
 		/// @return Local point.
-		Vec2 GetLocalPoint() const noexcept
+		Length2D GetLocalPoint() const noexcept
 		{
 			return m_localPoint;
 		}
 		
-		Vec2 GetOpposingPoint(size_type index) const noexcept
+		Length2D GetOpposingPoint(size_type index) const noexcept
 		{
 			assert((0 <= index) && (index < m_pointCount));
 			return m_points[index].localPoint;
@@ -388,7 +388,7 @@ namespace box2d
 		/// @param lp Local point.
 		/// @param n number of points defined in arary.
 		/// @param mpa Manifold point array.
-		constexpr Manifold(Type t, UnitVec2 ln, Vec2 lp, size_type n, const PointArray& mpa) noexcept;
+		constexpr Manifold(Type t, UnitVec2 ln, Length2D lp, size_type n, const PointArray& mpa) noexcept;
 		
 		Type m_type = e_unset; ///< Type of collision this manifold is associated with (1-byte).
 		size_type m_pointCount = 0; ///< Number of defined manifold points (1-byte).
@@ -401,7 +401,7 @@ namespace box2d
 		/// Local point.
 		/// @detail Exact usage depends on manifold type (8-bytes).
 		/// @note Invalid for the unset manifold type.
-		Vec2 m_localPoint = GetInvalid<Vec2>();
+		Length2D m_localPoint = GetInvalid<Length2D>();
 		
 		PointArray m_points; ///< Points of contact (at least 40-bytes). @sa pointCount.
 	};
@@ -417,7 +417,7 @@ namespace box2d
 	
 	bool operator!=(const Manifold& lhs, const Manifold& rhs);
 
-	constexpr Manifold::Manifold(Type t, UnitVec2 ln, Vec2 lp, size_type n, const PointArray& mpa) noexcept:
+	constexpr Manifold::Manifold(Type t, UnitVec2 ln, Length2D lp, size_type n, const PointArray& mpa) noexcept:
 		m_type{t}, m_localNormal{ln}, m_localPoint{lp}, m_pointCount{n}, m_points{mpa}
 	{
 		assert(t != e_unset || n == 0);
@@ -439,7 +439,7 @@ namespace box2d
 		++m_pointCount;
 	}
 
-	inline void Manifold::AddPoint(cf_t type, sidx_t index, Vec2 point) noexcept
+	inline void Manifold::AddPoint(cf_t type, sidx_t index, Length2D point) noexcept
 	{
 		assert(m_pointCount < MaxManifoldPoints);
 		switch (m_type)
@@ -472,7 +472,7 @@ namespace box2d
 	Manifold GetManifold(const DistanceProxy& proxyA, const Transformation& transformA,
 						 const DistanceProxy& proxyB, const Transformation& transformB);
 
-	Vec2 GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type type, ContactFeature::index_t index);
+	Length2D GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type type, ContactFeature::index_t index);
 
 	const char* GetName(Manifold::Type) noexcept;
 	

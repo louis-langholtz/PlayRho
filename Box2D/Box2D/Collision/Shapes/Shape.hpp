@@ -36,12 +36,12 @@ class Shape
 public:
 	struct Conf
 	{
-		constexpr Conf& UseVertexRadius(RealNum value) noexcept;
+		constexpr Conf& UseVertexRadius(Length value) noexcept;
 		constexpr Conf& UseFriction(RealNum value) noexcept;
 		constexpr Conf& UseRestitution(RealNum value) noexcept;
 		constexpr Conf& UseDensity(Density value) noexcept;
 
-		RealNum vertexRadius = DefaultLinearSlop;
+		Length vertexRadius = DefaultLinearSlop;
 
 		/// Friction coefficient.
 		///
@@ -89,7 +89,7 @@ public:
 		m_restitution{conf.restitution}
 	{
 		assert(type < e_typeCount);
-		assert(conf.vertexRadius >= 0);
+		assert(conf.vertexRadius >= Length{0});
 		assert(conf.density >= Density{0});
 		assert(conf.friction >= 0);
 		assert(conf.restitution < std::numeric_limits<decltype(conf.restitution)>::infinity());
@@ -105,11 +105,11 @@ public:
 	/// @return the shape type.
 	Type GetType() const noexcept { return m_type; }
 	
-	RealNum GetVertexRadius() const noexcept { return m_vertexRadius; }
+	Length GetVertexRadius() const noexcept { return m_vertexRadius; }
 
-	void SetVertexRadius(RealNum vertexRadius)
+	void SetVertexRadius(Length vertexRadius)
 	{
-		assert(vertexRadius >= 0);
+		assert(vertexRadius >= Length{0});
 		m_vertexRadius = vertexRadius;
 	}
 
@@ -140,13 +140,13 @@ public:
 
 private:
 	Type m_type;
-	RealNum m_vertexRadius;
+	Length m_vertexRadius;
 	Density m_density = KilogramPerSquareMeter * RealNum{0}; ///< Density in kg/m^2. 4-bytes.
 	RealNum m_friction = RealNum{2} / RealNum{10}; ///< Friction as a coefficient. 4-bytes.
 	RealNum m_restitution = 0; ///< Restitution as a coefficient. 4-bytes.
 };
 
-constexpr inline Shape::Conf& Shape::Conf::UseVertexRadius(RealNum value) noexcept
+constexpr inline Shape::Conf& Shape::Conf::UseVertexRadius(Length value) noexcept
 {
 	vertexRadius = value;
 	return *this;
@@ -207,7 +207,7 @@ inline void Shape::SetRestitution(RealNum restitution) noexcept
 /// @detail Gets the radius (in meters) of every vertex of this shape.
 /// This is used for collision handling.
 /// @note This value should never be less than zero.
-inline RealNum GetVertexRadius(const Shape& shape) noexcept
+inline Length GetVertexRadius(const Shape& shape) noexcept
 {
 	return shape.GetVertexRadius();
 }
@@ -220,7 +220,7 @@ child_count_t GetChildCount(const Shape& shape);
 /// @param xf the shape world transform.
 /// @param p a point in world coordinates.
 /// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
-bool TestPoint(const Shape& shape, const Transformation& xf, const Vec2 p);
+bool TestPoint(const Shape& shape, const Transformation& xf, const Length2D p);
 
 /// Determine if two generic shapes overlap.
 bool TestOverlap(const Shape& shapeA, child_count_t indexA, const Transformation& xfA,

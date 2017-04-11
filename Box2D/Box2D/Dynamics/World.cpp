@@ -151,7 +151,7 @@ namespace {
 		
 		auto velocity = body.GetVelocity();
 		auto translation = h * velocity.linear;
-		auto translationUnitless = Vec2{translation.x / Meter, translation.y / Meter};
+		auto translationUnitless = StripUnits(translation);
 		const auto lsquared = GetLengthSquared(translationUnitless);
 		if (lsquared > Square(conf.maxTranslation))
 		{
@@ -168,8 +168,7 @@ namespace {
 			rotation = h * velocity.angular;
 		}
 		
-		translationUnitless = Vec2{translation.x / Meter, translation.y / Meter};
-		return PositionAndVelocity{body.GetPosition() + Position{translationUnitless, rotation}, velocity};
+		return PositionAndVelocity{body.GetPosition() + Position{translation, rotation}, velocity};
 	}
 	
 	inline void IntegratePositions(BodyConstraints& bodies,
@@ -281,21 +280,22 @@ namespace {
 		const auto tangent = GetTangent(vc);
 		if (IsValid(normal) && IsValid(tangent))
 		{
-			const auto invRotInertiaA = vc.bodyA.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
-			const auto invRotInertiaB = vc.bodyB.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
+			// inverse moment of inertia : L^-2 M^-1 QP^2
+			const auto invRotInertiaA = vc.bodyA.GetInvRotInertia();
+			const auto invRotInertiaB = vc.bodyB.GetInvRotInertia();
 
 			const auto pointCount = vc.GetPointCount();
 			for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 			{
-				const auto P = GetNormalImpulseAtPoint(vc, j) * normal + GetTangentImpulseAtPoint(vc, j) * tangent;
-				vp.a -= Velocity{
-					RealNum{vc.bodyA.GetInvMass() * Kilogram} * P * MeterPerSecond,
-					RadianPerSecond * invRotInertiaA * Cross(GetPointRelPosA(vc, j), P)
-				};
-				vp.b += Velocity{
-					RealNum{vc.bodyB.GetInvMass() * Kilogram} * P * MeterPerSecond,
-					RadianPerSecond * invRotInertiaB * Cross(GetPointRelPosB(vc, j), P)
-				};
+				// P is M L T^-2
+				// GetPointRelPosA() is Length2D
+				// Cross(Length2D, P) is: M L^2 T^-2
+				// L^-2 M^-1 QP^2 M L^2 T^-2 is: QP^2 T^-2
+				const auto P = (GetNormalImpulseAtPoint(vc, j) * normal + GetTangentImpulseAtPoint(vc, j) * tangent);
+				const auto LA = Cross(GetPointRelPosA(vc, j), P) / Radian;
+				const auto LB = Cross(GetPointRelPosB(vc, j), P) / Radian;
+				vp.a -= Velocity{vc.bodyA.GetInvMass() * P, invRotInertiaA * LA};
+				vp.b += Velocity{vc.bodyB.GetInvMass() * P, invRotInertiaB * LB};
 			}
 		}
 		return vp;
@@ -360,9 +360,9 @@ namespace {
 	/// "Solves" the velocity constraints.
 	/// @detail Updates the velocities and velocity constraint points' normal and tangent impulses.
 	/// @pre <code>UpdateVelocityConstraints</code> has been called on the velocity constraints.
-	inline RealNum SolveVelocityConstraints(VelocityConstraints& velocityConstraints)
+	inline Momentum SolveVelocityConstraints(VelocityConstraints& velocityConstraints)
 	{
-		auto maxIncImpulse = RealNum{0};
+		auto maxIncImpulse = Momentum{0};
 		for (auto&& vc: velocityConstraints)
 		{
 			maxIncImpulse = std::max(maxIncImpulse, SolveVelocityConstraint(vc));
@@ -751,7 +751,7 @@ World::World(const Def& def):
 	m_maxVertexRadius(def.maxVertexRadius)
 {
 	assert(::box2d::IsValid(def.gravity.x) && ::box2d::IsValid(def.gravity.y));
-	assert(def.minVertexRadius > 0);
+	assert(def.minVertexRadius > Length{0});
 	assert(def.minVertexRadius < def.maxVertexRadius);
 }
 
@@ -807,7 +807,7 @@ World::~World()
 	}
 }
 
-void World::SetGravity(const Vector2D<LinearAcceleration> gravity) noexcept
+void World::SetGravity(const LinearAcceleration2D gravity) noexcept
 {
 	if (m_gravity != gravity)
 	{
@@ -1215,7 +1215,7 @@ RegStepStats World::SolveReg(const StepConf& conf)
 
 World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island island)
 {
-	auto finMinSeparation = std::numeric_limits<RealNum>::infinity();
+	auto finMinSeparation = std::numeric_limits<RealNum>::infinity() * Meter;
 	auto solved = false;
 	auto positionIterations = conf.regPositionIterations;
 	const auto h = conf.GetTime(); ///< Time step.
@@ -1246,7 +1246,7 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island is
 	}
 	
 	auto velocityIterations = conf.regVelocityIterations;
-	auto maxIncImpulse = RealNum{0};
+	auto maxIncImpulse = Momentum{0};
 	for (auto i = decltype(conf.regVelocityIterations){0}; i < conf.regVelocityIterations; ++i)
 	{
 		for (auto&& joint: island.m_joints)
@@ -1662,7 +1662,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Island& island)
 	auto positionConstraints = GetPositionConstraints(island.m_contacts, bodyConstraints);
 	
 	// Solve TOI-based position constraints.
-	auto finMinSeparation = std::numeric_limits<RealNum>::infinity();
+	auto finMinSeparation = std::numeric_limits<RealNum>::infinity() * Meter;
 	auto solved = false;
 	auto positionIterations = conf.toiPositionIterations;
 	
@@ -1722,7 +1722,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Island& island)
 	// starting impulses were applied in the discrete solver.
 
 	// Solve velocity constraints.
-	auto maxIncImpulse = RealNum{0};
+	auto maxIncImpulse = Momentum{0};
 	auto velocityIterations = conf.toiVelocityIterations;
 	for (auto i = decltype(conf.toiVelocityIterations){0}; i < conf.toiVelocityIterations; ++i)
 	{
@@ -1833,7 +1833,7 @@ void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi)
 
 StepStats World::Step(const StepConf& conf)
 {
-	assert((m_maxVertexRadius * 2) + (conf.linearSlop / 4) > (m_maxVertexRadius * 2));
+	assert((m_maxVertexRadius * RealNum{2}) + (conf.linearSlop / RealNum{4}) > (m_maxVertexRadius * RealNum{2}));
 	assert(!IsLocked());
 
 	auto stepStats = StepStats{};
@@ -1939,7 +1939,7 @@ struct WorldRayCastWrapper
 	RayCastFixtureReporter* const callback;
 };
 
-void World::RayCast(RayCastFixtureReporter* callback, const Vec2& point1, const Vec2& point2) const
+void World::RayCast(RayCastFixtureReporter* callback, const Length2D& point1, const Length2D& point2) const
 {
 	WorldRayCastWrapper wrapper(&m_broadPhase, callback);
 	const auto input = RayCastInput{point1, point2, RealNum{1}};
@@ -1948,7 +1948,7 @@ void World::RayCast(RayCastFixtureReporter* callback, const Vec2& point1, const 
 	});
 }
 
-void World::ShiftOrigin(const Vec2 newOrigin)
+void World::ShiftOrigin(const Length2D newOrigin)
 {
 	assert(!IsLocked());
 	if (IsLocked())
@@ -2470,7 +2470,7 @@ bool World::DestroyFixture(Fixture* fixture, bool resetMassData)
 	return true;
 }
 
-void World::CreateProxies(Fixture& fixture, const RealNum aabbExtension)
+void World::CreateProxies(Fixture& fixture, const Length aabbExtension)
 {
 	assert(fixture.GetProxyCount() == 0);
 	
@@ -2533,7 +2533,7 @@ void World::InternalTouchProxies(Fixture& fixture) noexcept
 
 child_count_t World::Synchronize(Fixture& fixture,
 								 const Transformation xfm1, const Transformation xfm2,
-								 const RealNum multiplier, const RealNum extension)
+								 const RealNum multiplier, const Length extension)
 {
 	assert(::box2d::IsValid(xfm1));
 	assert(::box2d::IsValid(xfm2));
@@ -2559,7 +2559,7 @@ child_count_t World::Synchronize(Fixture& fixture,
 
 contact_count_t World::Synchronize(Body& body,
 								   const Transformation& xfm1, const Transformation& xfm2,
-								   const RealNum multiplier, const RealNum aabbExtension)
+								   const RealNum multiplier, const Length aabbExtension)
 {
 	auto updatedCount = contact_count_t{0};
 	for (auto&& fixture: body.GetFixtures())

@@ -66,7 +66,7 @@ public:
 			{
 				const auto poly = static_cast<const PolygonShape*>(fixture->GetShape());
 				const auto vertexCount = poly->GetVertexCount();
-				auto vertices = std::vector<Vec2>(vertexCount);
+				auto vertices = std::vector<Length2D>(vertexCount);
 
 				for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 				{
@@ -127,7 +127,7 @@ public:
 		// Ground body
 		{
 			const auto ground = m_world->CreateBody();
-			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
+			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 		}
 
 		for (auto&& p: m_polygons)
@@ -137,8 +137,8 @@ public:
 			p->SetFriction(0.3f);
 		}
 
-		m_polygons[0]->Set({Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)});
-		m_polygons[1]->Set({Vec2(-0.1f, 0.0f), Vec2(0.1f, 0.0f), Vec2(0.0f, 1.5f)});
+		m_polygons[0]->Set({Vec2(-0.5f, 0.0f) * Meter, Vec2(0.5f, 0.0f) * Meter, Vec2(0.0f, 1.5f) * Meter});
+		m_polygons[1]->Set({Vec2(-0.1f, 0.0f) * Meter, Vec2(0.1f, 0.0f) * Meter, Vec2(0.0f, 1.5f) * Meter});
 
 		{
 			const auto w = RealNum(1);
@@ -146,19 +146,19 @@ public:
 			const auto s = Sqrt(2.0f) * b;
 
 			m_polygons[2]->Set({
-				Vec2(0.5f * s, 0.0f),
-				Vec2(0.5f * w, b),
-				Vec2(0.5f * w, b + s),
-				Vec2(0.5f * s, w),
-				Vec2(-0.5f * s, w),
-				Vec2(-0.5f * w, b + s),
-				Vec2(-0.5f * w, b),
-				Vec2(-0.5f * s, 0.0f)
+				Vec2(0.5f * s, 0.0f) * Meter,
+				Vec2(0.5f * w, b) * Meter,
+				Vec2(0.5f * w, b + s) * Meter,
+				Vec2(0.5f * s, w) * Meter,
+				Vec2(-0.5f * s, w) * Meter,
+				Vec2(-0.5f * w, b + s) * Meter,
+				Vec2(-0.5f * w, b) * Meter,
+				Vec2(-0.5f * s, 0.0f) * Meter
 			});
 		}
 
 		{
-			m_polygons[3]->SetAsBox(0.5f, 0.5f);
+			m_polygons[3]->SetAsBox(0.5f * Meter, 0.5f * Meter);
 		}
 
 		m_bodyIndex = 0;
@@ -177,7 +177,7 @@ public:
 		bd.type = BodyType::Dynamic;
 
 		const auto x = RandomFloat(-2.0f, 2.0f);
-		bd.position = Vec2(x, 10.0f);
+		bd.position = Vec2(x, 10.0f) * Meter;
 		bd.angle = Radian * RandomFloat(-Pi, Pi);
 
 		if (index == 4)
@@ -247,8 +247,8 @@ public:
 	void PostStep(const Settings&, Drawer& drawer) override
 	{
 		PolyShapesCallback callback;
-		callback.m_circle.SetRadius(RealNum(2.0));
-		callback.m_circle.SetLocation(Vec2(0.0f, 1.1f));
+		callback.m_circle.SetRadius(RealNum(2) * Meter);
+		callback.m_circle.SetLocation(Vec2(0.0f, 1.1f) * Meter);
 		callback.m_transform = Transform_identity;
 		callback.g_debugDraw = &drawer;
 
@@ -275,7 +275,7 @@ public:
 	int32 m_bodyIndex;
 	Body* m_bodies[e_maxBodies];
 	std::shared_ptr<PolygonShape> m_polygons[4];
-	std::shared_ptr<CircleShape> m_circle = std::make_shared<CircleShape>(0.5f);
+	std::shared_ptr<CircleShape> m_circle = std::make_shared<CircleShape>(0.5f * Meter);
 };
 
 } // namespace box2d

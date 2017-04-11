@@ -33,17 +33,17 @@ namespace box2d
 	public:
 		using index_type = std::remove_const<decltype(MaxShapeVertices)>::type;
 		
-		ReferenceFace(index_type i1, Vec2 v1, index_type i2, Vec2 v2, UnitVec2 normal) noexcept;
+		ReferenceFace(index_type i1, Length2D v1, index_type i2, Length2D v2, UnitVec2 normal) noexcept;
 		
 		index_type GetIndex1() const noexcept { return m_idx1; };
-		Vec2 GetVertex1() const noexcept { return m_v1; };
+		Length2D GetVertex1() const noexcept { return m_v1; };
 		UnitVec2 GetNormal1() const noexcept { return m_normal1; };
-		RealNum GetOffset1() const noexcept { return m_offset1; };
+		Length GetOffset1() const noexcept { return m_offset1; };
 		
 		index_type GetIndex2() const noexcept { return m_idx2; };
-		Vec2 GetVertex2() const noexcept { return m_v2; };
+		Length2D GetVertex2() const noexcept { return m_v2; };
 		UnitVec2 GetNormal2() const noexcept { return m_normal2; };
-		RealNum GetOffset2() const noexcept { return m_offset2; };
+		Length GetOffset2() const noexcept { return m_offset2; };
 		
 		UnitVec2 GetNormal() const noexcept { return m_normal; };
 		
@@ -52,20 +52,20 @@ namespace box2d
 		
 		UnitVec2 m_normal;
 		
-		Vec2 m_v1;
-		Vec2 m_v2;
+		Length2D m_v1;
+		Length2D m_v2;
 		
 		UnitVec2 m_normal1;
 		UnitVec2 m_normal2;
 		
-		RealNum m_offset1;	
-		RealNum m_offset2;
+		Length m_offset1;
+		Length m_offset2;
 		
 		index_type m_idx1;
 		index_type m_idx2;
 	};
 	
-	inline ReferenceFace::ReferenceFace(index_type i1, Vec2 v1, index_type i2, Vec2 v2, UnitVec2 normal) noexcept:
+	inline ReferenceFace::ReferenceFace(index_type i1, Length2D v1, index_type i2, Length2D v2, UnitVec2 normal) noexcept:
 		m_idx1{i1},
 		m_idx2{i2},
 		m_v1{v1},

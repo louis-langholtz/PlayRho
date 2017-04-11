@@ -29,9 +29,9 @@ class CircleShape : public Shape
 {
 public:
 	
-	static RealNum GetDefaultRadius() noexcept
+	static Length GetDefaultRadius() noexcept
 	{
-		return DefaultLinearSlop * 2;
+		return DefaultLinearSlop * RealNum{2};
 	}
 
 	struct Conf: public Shape::Conf
@@ -40,7 +40,7 @@ public:
 		{
 		}
 		
-		Vec2 location = Vec2_zero;
+		Length2D location = Vec2_zero * Meter;
 	};
 
 	static Conf GetDefaultConf() noexcept
@@ -58,7 +58,7 @@ public:
 		// Intentionally empty.
 	}
 
-	constexpr explicit CircleShape(RealNum radius, const Conf& conf = GetDefaultConf()) noexcept:
+	constexpr explicit CircleShape(const Length radius, const Conf& conf = GetDefaultConf()) noexcept:
 		Shape{e_circle, conf}, m_location{conf.location}
 	{
 		SetVertexRadius(radius);
@@ -70,9 +70,9 @@ public:
 
 	/// Gets the "radius" of the shape.
 	/// @return Non-negative distance.
-	RealNum GetRadius() const noexcept { return GetVertexRadius(); }
+	Length GetRadius() const noexcept { return GetVertexRadius(); }
 	
-	void SetRadius(RealNum radius) noexcept
+	void SetRadius(Length radius) noexcept
 	{
 		SetVertexRadius(radius);
 	}
@@ -81,13 +81,13 @@ public:
 	/// @return The origin (0, 0) unless explicitly set otherwise on construction or via
 	///   the set location method.
 	/// @sa SetPosition.
-	Vec2 GetLocation() const noexcept { return m_location; }
+	Length2D GetLocation() const noexcept { return m_location; }
 	
-	void SetLocation(const Vec2 value) noexcept { m_location = value; }
+	void SetLocation(const Length2D value) noexcept { m_location = value; }
 
 private:
 	/// Linear position of the shape as initialized on construction or as assigned using the SetPosition method.
-	Vec2 m_location = Vec2_zero;
+	Length2D m_location = Vec2_zero * Meter;
 };
 
 /// Gets the number of child primitives.
@@ -98,7 +98,7 @@ child_count_t GetChildCount(const CircleShape& shape);
 /// @param xf the shape world transform.
 /// @param p a point in world coordinates.
 /// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
-bool TestPoint(const CircleShape& shape, const Transformation& xf, const Vec2 p);
+bool TestPoint(const CircleShape& shape, const Transformation& xf, const Length2D p);
 
 } // namespace box2d
 

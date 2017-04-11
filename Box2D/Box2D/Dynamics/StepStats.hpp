@@ -36,8 +36,8 @@ namespace box2d {
 	/// Regular-phase per-step statistics.
 	struct RegStepStats
 	{
-		RealNum minSeparation = std::numeric_limits<RealNum>::infinity();
-		RealNum maxIncImpulse = 0;
+		Length minSeparation = std::numeric_limits<RealNum>::infinity() * Meter;
+		Momentum maxIncImpulse = 0;
 		
 		uint32 islandsFound = 0;
 		uint32 islandsSolved = 0;
@@ -51,8 +51,8 @@ namespace box2d {
 	/// TOI-phase per-step statistics.
 	struct ToiStepStats
 	{
-		RealNum minSeparation = std::numeric_limits<RealNum>::infinity();
-		RealNum maxIncImpulse = 0;
+		Length minSeparation = std::numeric_limits<RealNum>::infinity() * Meter;
+		Momentum maxIncImpulse = 0;
 		
 		uint32 islandsFound = 0;
 		uint32 islandsSolved = 0;

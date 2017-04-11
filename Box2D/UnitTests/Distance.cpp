@@ -27,10 +27,10 @@ TEST(Distance, MatchingCircles)
 	DistanceConf conf;
 	Transformation xf1 = Transform_identity;
 	Transformation xf2 = Transform_identity;
-	const auto pos1 = Vec2{2, 2};
-	const auto pos2 = Vec2{2, 2};
-	DistanceProxy dp1{1, pos1};
-	DistanceProxy dp2{1, pos2};
+	const auto pos1 = Vec2{2, 2} * Meter;
+	const auto pos2 = Vec2{2, 2} * Meter;
+	DistanceProxy dp1{RealNum{1} * Meter, pos1};
+	DistanceProxy dp2{RealNum{1} * Meter, pos2};
 
 	const auto output = Distance(dp1, xf1, dp2, xf2, conf);
 	conf.cache = Simplex::GetCache(output.simplex.GetEdges());
@@ -55,10 +55,10 @@ TEST(Distance, OpposingCircles)
 	DistanceConf conf;
 	Transformation xf1 = Transform_identity;
 	Transformation xf2 = Transform_identity;
-	const auto pos1 = Vec2{2, 2};
-	const auto pos2 = Vec2{-2, -2};
-	DistanceProxy dp1{2, pos1};
-	DistanceProxy dp2{2, pos2};
+	const auto pos1 = Vec2{2, 2} * Meter;
+	const auto pos2 = Vec2{-2, -2} * Meter;
+	DistanceProxy dp1{RealNum{2} * Meter, pos1};
+	DistanceProxy dp2{RealNum{2} * Meter, pos2};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, conf);
 	conf.cache = Simplex::GetCache(output.simplex.GetEdges());
@@ -86,14 +86,14 @@ TEST(Distance, HorTouchingCircles)
 {
 	DistanceConf conf;
 	
-	const auto pos1 = Vec2{-2, 2};
-	const auto pos2 = Vec2{+2, 2};
+	const auto pos1 = Vec2{-2, 2} * Meter;
+	const auto pos2 = Vec2{+2, 2} * Meter;
 
 	const auto output = [&]() {
 		Transformation xf1 = Transform_identity;
 		Transformation xf2 = Transform_identity;
-		DistanceProxy dp1{2, pos1};
-		DistanceProxy dp2{2, pos2};
+		DistanceProxy dp1{RealNum{2} * Meter, pos1};
+		DistanceProxy dp2{RealNum{2} * Meter, pos2};
 		return Distance(dp1, xf1, dp2, xf2, conf);
 	}();
 	conf.cache = Simplex::GetCache(output.simplex.GetEdges());
@@ -122,10 +122,10 @@ TEST(Distance, OverlappingCirclesPN)
 	DistanceConf conf;
 	Transformation xf1 = Transform_identity;
 	Transformation xf2 = Transform_identity;
-	const auto pos1 = Vec2{1, 1};
-	const auto pos2 = Vec2{-1, -1};
-	DistanceProxy dp1{2, pos1};
-	DistanceProxy dp2{2, pos2};
+	const auto pos1 = Vec2{1, 1} * Meter;
+	const auto pos2 = Vec2{-1, -1} * Meter;
+	DistanceProxy dp1{RealNum{2} * Meter, pos1};
+	DistanceProxy dp2{RealNum{2} * Meter, pos2};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, conf);
 	conf.cache = Simplex::GetCache(output.simplex.GetEdges());
@@ -154,10 +154,10 @@ TEST(Distance, OverlappingCirclesNP)
 	DistanceConf conf;
 	Transformation xf1 = Transform_identity;
 	Transformation xf2 = Transform_identity;
-	const auto pos1 = Vec2{-1, -1};
-	const auto pos2 = Vec2{1, 1};
-	DistanceProxy dp1{2, pos1};
-	DistanceProxy dp2{2, pos2};
+	const auto pos1 = Vec2{-1, -1} * Meter;
+	const auto pos2 = Vec2{1, 1} * Meter;
+	DistanceProxy dp1{RealNum{2} * Meter, pos1};
+	DistanceProxy dp2{RealNum{2} * Meter, pos2};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, conf);
 	conf.cache = Simplex::GetCache(output.simplex.GetEdges());
@@ -187,10 +187,10 @@ TEST(Distance, SeparatedCircles)
 	DistanceConf conf;
 	Transformation xf1 = Transform_identity;
 	Transformation xf2 = Transform_identity;
-	const auto pos1 = Vec2{2, 2};
-	const auto pos2 = Vec2{-2, -2};
-	DistanceProxy dp1{1, pos1};
-	DistanceProxy dp2{1, pos2};
+	const auto pos1 = Vec2{2, 2} * Meter;
+	const auto pos2 = Vec2{-2, -2} * Meter;
+	DistanceProxy dp1{RealNum{1} * Meter, pos1};
+	DistanceProxy dp2{RealNum{1} * Meter, pos2};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, conf);
 	conf.cache = Simplex::GetCache(output.simplex.GetEdges());
@@ -219,11 +219,11 @@ TEST(Distance, EdgeCircleOverlapping)
 	DistanceConf conf;
 	Transformation xf1 = Transform_identity;
 	Transformation xf2 = Transform_identity;
-	const auto pos1 = Vec2{0, 2};
-	const auto pos2 = Vec2{4, 2};
-	const auto pos3 = Vec2{2, 2};
-	DistanceProxy dp1{RealNum(0.1), pos1, pos2};
-	DistanceProxy dp2{1, pos3};
+	const auto pos1 = Vec2{0, 2} * Meter;
+	const auto pos2 = Vec2{4, 2} * Meter;
+	const auto pos3 = Vec2{2, 2} * Meter;
+	DistanceProxy dp1{RealNum(0.1) * Meter, pos1, pos2};
+	DistanceProxy dp2{RealNum{1} * Meter, pos3};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, conf);
 	conf.cache = Simplex::GetCache(output.simplex.GetEdges());
@@ -256,11 +256,11 @@ TEST(Distance, EdgeCircleOverlapping2)
 	DistanceConf conf;
 	Transformation xf1 = Transform_identity;
 	Transformation xf2 = Transform_identity;
-	const auto pos1 = Vec2{-3, 2};
-	const auto pos2 = Vec2{7, 2};
-	const auto pos3 = Vec2{2, 2};
-	DistanceProxy dp1{RealNum(0.1), pos1, pos2};
-	DistanceProxy dp2{1, pos3};
+	const auto pos1 = Vec2{-3, 2} * Meter;
+	const auto pos2 = Vec2{7, 2} * Meter;
+	const auto pos3 = Vec2{2, 2} * Meter;
+	DistanceProxy dp1{RealNum(0.1) * Meter, pos1, pos2};
+	DistanceProxy dp2{RealNum{1} * Meter, pos3};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, conf);
 	conf.cache = Simplex::GetCache(output.simplex.GetEdges());
@@ -293,21 +293,21 @@ TEST(Distance, EdgeCircleTouching)
 	DistanceConf conf;
 	Transformation xf1 = Transform_identity;
 	Transformation xf2 = Transform_identity;
-	const auto pos1 = Vec2{0, 3};
-	const auto pos2 = Vec2{4, 3};
-	const auto pos3 = Vec2{2, 1};
-	DistanceProxy dp1{RealNum(1), pos1, pos2};
-	DistanceProxy dp2{1, pos3};
+	const auto pos1 = Vec2{0, 3} * Meter;
+	const auto pos2 = Vec2{4, 3} * Meter;
+	const auto pos3 = Vec2{2, 1} * Meter;
+	DistanceProxy dp1{RealNum(1) * Meter, pos1, pos2};
+	DistanceProxy dp2{RealNum{1} * Meter, pos3};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, conf);
 	conf.cache = Simplex::GetCache(output.simplex.GetEdges());
 	const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-	EXPECT_EQ(witnessPoints.a.x, RealNum{2});
-	EXPECT_EQ(witnessPoints.a.y, RealNum{3});
+	EXPECT_EQ(witnessPoints.a.x, RealNum{2} * Meter);
+	EXPECT_EQ(witnessPoints.a.y, RealNum{3} * Meter);
 	
-	EXPECT_EQ(witnessPoints.b.x, RealNum{2});
-	EXPECT_EQ(witnessPoints.b.y, RealNum{1});
+	EXPECT_EQ(witnessPoints.b.x, RealNum{2} * Meter);
+	EXPECT_EQ(witnessPoints.b.y, RealNum{1} * Meter);
 	
 	EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
 	
@@ -327,16 +327,16 @@ TEST(Distance, EdgeCircleTouching)
 
 TEST(Distance, HorEdgeSquareTouching)
 {
-	const auto pos1 = Vec2{1, 1};
-	const auto pos2 = Vec2{1, 3};
-	const auto pos3 = Vec2{3, 3};
-	const auto pos4 = Vec2{3, 1};
+	const auto pos1 = Vec2{1, 1} * Meter;
+	const auto pos2 = Vec2{1, 3} * Meter;
+	const auto pos3 = Vec2{3, 3} * Meter;
+	const auto pos4 = Vec2{3, 1} * Meter;
 	const auto square = {pos1, pos2, pos3, pos4};
-	DistanceProxy dp1{RealNum(0.5), square};
+	DistanceProxy dp1{RealNum(0.5) * Meter, square};
 
-	const auto pos5 = Vec2{-2, 0};
-	const auto pos6 = Vec2{6, 0};
-	DistanceProxy dp2{RealNum(0.5), pos5, pos6};
+	const auto pos5 = Vec2{-2, 0} * Meter;
+	const auto pos6 = Vec2{6, 0} * Meter;
+	DistanceProxy dp2{RealNum(0.5) * Meter, pos5, pos6};
 	
 	DistanceConf conf;
 	Transformation xf1 = Transform_identity;
@@ -346,11 +346,11 @@ TEST(Distance, HorEdgeSquareTouching)
 	conf.cache = Simplex::GetCache(output.simplex.GetEdges());
 	const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-	EXPECT_EQ(witnessPoints.a.x, RealNum{1});
-	EXPECT_EQ(witnessPoints.a.y, RealNum{1});
+	EXPECT_EQ(witnessPoints.a.x, RealNum{1} * Meter);
+	EXPECT_EQ(witnessPoints.a.y, RealNum{1} * Meter);
 	
-	EXPECT_EQ(witnessPoints.b.x, RealNum{1});
-	EXPECT_EQ(witnessPoints.b.y, RealNum{0});
+	EXPECT_EQ(witnessPoints.b.x, RealNum{1} * Meter);
+	EXPECT_EQ(witnessPoints.b.y, RealNum{0} * Meter);
 	
 	EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
 	
@@ -370,16 +370,16 @@ TEST(Distance, HorEdgeSquareTouching)
 
 TEST(Distance, VerEdgeSquareTouching)
 {
-	const auto pos1 = Vec2{1, 1};
-	const auto pos2 = Vec2{1, 3};
-	const auto pos3 = Vec2{3, 3};
-	const auto pos4 = Vec2{3, 1};
+	const auto pos1 = Vec2{1, 1} * Meter;
+	const auto pos2 = Vec2{1, 3} * Meter;
+	const auto pos3 = Vec2{3, 3} * Meter;
+	const auto pos4 = Vec2{3, 1} * Meter;
 	const auto square = {pos1, pos2, pos3, pos4};
-	DistanceProxy dp1{RealNum(0.5), square};
+	DistanceProxy dp1{RealNum(0.5) * Meter, square};
 	
-	const auto pos5 = Vec2{4, -2};
-	const auto pos6 = Vec2{4, 6};
-	DistanceProxy dp2{RealNum(0.5), pos5, pos6};
+	const auto pos5 = Vec2{4, -2} * Meter;
+	const auto pos6 = Vec2{4, 6} * Meter;
+	DistanceProxy dp2{RealNum(0.5) * Meter, pos5, pos6};
 	
 	DistanceConf conf;
 	Transformation xf1 = Transform_identity;
@@ -389,12 +389,12 @@ TEST(Distance, VerEdgeSquareTouching)
 	conf.cache = Simplex::GetCache(output.simplex.GetEdges());
 	const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-	EXPECT_EQ(Sqrt(GetLengthSquared(witnessPoints.a - witnessPoints.b)), RealNum(1));
-	EXPECT_EQ(witnessPoints.a.x, RealNum{3});
-	EXPECT_EQ(witnessPoints.a.y, RealNum{2});
+	EXPECT_EQ(Sqrt(GetLengthSquared(witnessPoints.a - witnessPoints.b)), RealNum(1) * Meter);
+	EXPECT_EQ(witnessPoints.a.x, RealNum{3} * Meter);
+	EXPECT_EQ(witnessPoints.a.y, RealNum{2} * Meter);
 	
-	EXPECT_EQ(witnessPoints.b.x, RealNum{4});
-	EXPECT_EQ(witnessPoints.b.y, RealNum{2});
+	EXPECT_EQ(witnessPoints.b.x, RealNum{4} * Meter);
+	EXPECT_EQ(witnessPoints.b.y, RealNum{2} * Meter);
 	
 	EXPECT_EQ(decltype(output.iterations){3}, output.iterations);
 	
@@ -414,12 +414,12 @@ TEST(Distance, VerEdgeSquareTouching)
 
 TEST(Distance, SquareTwice)
 {
-	const auto pos1 = Vec2{2, 2};
-	const auto pos2 = Vec2{2, 4};
-	const auto pos3 = Vec2{4, 4};
-	const auto pos4 = Vec2{4, 2};
+	const auto pos1 = Vec2{2, 2} * Meter;
+	const auto pos2 = Vec2{2, 4} * Meter;
+	const auto pos3 = Vec2{4, 4} * Meter;
+	const auto pos4 = Vec2{4, 2} * Meter;
 	const auto square = {pos1, pos2, pos3, pos4};
-	DistanceProxy dp1{RealNum(0.05), square};
+	DistanceProxy dp1{RealNum(0.05) * Meter, square};
 
 	DistanceConf conf;
 	Transformation xfm = Transform_identity;
@@ -428,11 +428,11 @@ TEST(Distance, SquareTwice)
 	conf.cache = Simplex::GetCache(output.simplex.GetEdges());
 	const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-	EXPECT_EQ(witnessPoints.a.x, 2);
-	EXPECT_EQ(witnessPoints.a.y, 2);
+	EXPECT_EQ(witnessPoints.a.x, RealNum{2} * Meter);
+	EXPECT_EQ(witnessPoints.a.y, RealNum{2} * Meter);
 
-	EXPECT_EQ(witnessPoints.b.x, 2);
-	EXPECT_EQ(witnessPoints.b.y, 2);
+	EXPECT_EQ(witnessPoints.b.x, RealNum{2} * Meter);
+	EXPECT_EQ(witnessPoints.b.y, RealNum{2} * Meter);
 
 	EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
 	
@@ -449,19 +449,19 @@ TEST(Distance, SquareTwice)
 
 TEST(Distance, SquareSquareTouchingVertically)
 {
-	const auto pos1 = Vec2{2, 2};
-	const auto pos2 = Vec2{2, 4};
-	const auto pos3 = Vec2{4, 4};
-	const auto pos4 = Vec2{4, 2};
+	const auto pos1 = Vec2{2, 2} * Meter;
+	const auto pos2 = Vec2{2, 4} * Meter;
+	const auto pos3 = Vec2{4, 4} * Meter;
+	const auto pos4 = Vec2{4, 2} * Meter;
 	const auto square1 = {pos1, pos2, pos3, pos4};
-	DistanceProxy dp1{RealNum(0.05), square1};
+	DistanceProxy dp1{RealNum(0.05) * Meter, square1};
 	
-	const auto pos5 = Vec2{4, 2};
-	const auto pos6 = Vec2{4, 4};
-	const auto pos7 = Vec2{6, 4};
-	const auto pos8 = Vec2{6, 2};
+	const auto pos5 = Vec2{4, 2} * Meter;
+	const auto pos6 = Vec2{4, 4} * Meter;
+	const auto pos7 = Vec2{6, 4} * Meter;
+	const auto pos8 = Vec2{6, 2} * Meter;
 	const auto square2 = {pos5, pos6, pos7, pos8};
-	DistanceProxy dp2{RealNum(0.05), square2};
+	DistanceProxy dp2{RealNum(0.05) * Meter, square2};
 
 	DistanceConf conf;
 	Transformation xfm = Transform_identity;
@@ -470,11 +470,11 @@ TEST(Distance, SquareSquareTouchingVertically)
 	conf.cache = Simplex::GetCache(output.simplex.GetEdges());
 	const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-	EXPECT_EQ(witnessPoints.a.x, 4);
-	EXPECT_EQ(witnessPoints.a.y, 3);
+	EXPECT_EQ(witnessPoints.a.x, RealNum{4} * Meter);
+	EXPECT_EQ(witnessPoints.a.y, RealNum{3} * Meter);
 	
-	EXPECT_EQ(witnessPoints.b.x, 4);
-	EXPECT_EQ(witnessPoints.b.y, 3);
+	EXPECT_EQ(witnessPoints.b.x, RealNum{4} * Meter);
+	EXPECT_EQ(witnessPoints.b.y, RealNum{3} * Meter);
 	
 	EXPECT_EQ(decltype(output.iterations){3}, output.iterations);
 	
@@ -490,19 +490,19 @@ TEST(Distance, SquareSquareTouchingVertically)
 
 TEST(Distance, SquareSquareDiagonally)
 {
-	const auto pos1 = Vec2{-3, -3};
-	const auto pos2 = Vec2{-3, -1};
-	const auto pos3 = Vec2{-1, -1};
-	const auto pos4 = Vec2{-1, -3};
+	const auto pos1 = Vec2{-3, -3} * Meter;
+	const auto pos2 = Vec2{-3, -1} * Meter;
+	const auto pos3 = Vec2{-1, -1} * Meter;
+	const auto pos4 = Vec2{-1, -3} * Meter;
 	const auto square1 = {pos1, pos2, pos3, pos4};
-	DistanceProxy dp1{RealNum(0.05), square1};
+	DistanceProxy dp1{RealNum(0.05) * Meter, square1};
 	
-	const auto pos5 = Vec2{1, 3};
-	const auto pos6 = Vec2{3, 3};
-	const auto pos7 = Vec2{3, 1};
-	const auto pos8 = Vec2{1, 1};
+	const auto pos5 = Vec2{1, 3} * Meter;
+	const auto pos6 = Vec2{3, 3} * Meter;
+	const auto pos7 = Vec2{3, 1} * Meter;
+	const auto pos8 = Vec2{1, 1} * Meter;
 	const auto square2 = {pos5, pos6, pos7, pos8};
-	DistanceProxy dp2{RealNum(0.05), square2};
+	DistanceProxy dp2{RealNum(0.05) * Meter, square2};
 	
 	DistanceConf conf;
 	Transformation xfm = Transform_identity;
@@ -511,11 +511,11 @@ TEST(Distance, SquareSquareDiagonally)
 	conf.cache = Simplex::GetCache(output.simplex.GetEdges());
 	const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-	EXPECT_EQ(witnessPoints.a.x, -1);
-	EXPECT_EQ(witnessPoints.a.y, -1);
+	EXPECT_EQ(witnessPoints.a.x, RealNum{-1} * Meter);
+	EXPECT_EQ(witnessPoints.a.y, RealNum{-1} * Meter);
 	
-	EXPECT_EQ(witnessPoints.b.x, 1);
-	EXPECT_EQ(witnessPoints.b.y, 1);
+	EXPECT_EQ(witnessPoints.b.x, RealNum{1} * Meter);
+	EXPECT_EQ(witnessPoints.b.y, RealNum{1} * Meter);
 	
 	EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
 	
@@ -543,10 +543,10 @@ TEST(Distance, SquareSquareOverlappingDiagnally)
 	 *  +-----3-+
 	 */
 	// Go counter-clockwise...
-	const auto pos1 = Vec2{-3, 1};
-	const auto pos2 = Vec2{-3, -3};
-	const auto pos3 = Vec2{1, -3};
-	const auto pos4 = Vec2{1, 1};
+	const auto pos1 = Vec2{-3, 1} * Meter;
+	const auto pos2 = Vec2{-3, -3} * Meter;
+	const auto pos3 = Vec2{1, -3} * Meter;
+	const auto pos4 = Vec2{1, 1} * Meter;
 	const auto square1 = {pos1, pos2, pos3, pos4};
 	DistanceProxy dp1{0, square1};
 	
@@ -562,10 +562,10 @@ TEST(Distance, SquareSquareOverlappingDiagnally)
 	 *  +-1-----+
 	 */
 	// Go counter-clockwise...
-	const auto pos5 = Vec2{3, 3};
-	const auto pos6 = Vec2{-1, 3};
-	const auto pos7 = Vec2{-1, -1};
-	const auto pos8 = Vec2{-1, 3};
+	const auto pos5 = Vec2{3, 3} * Meter;
+	const auto pos6 = Vec2{-1, 3} * Meter;
+	const auto pos7 = Vec2{-1, -1} * Meter;
+	const auto pos8 = Vec2{-1, 3} * Meter;
 	const auto square2 = {pos5, pos6, pos7, pos8};
 	DistanceProxy dp2{0, square2};
 	
@@ -576,11 +576,11 @@ TEST(Distance, SquareSquareOverlappingDiagnally)
 	conf.cache = Simplex::GetCache(output.simplex.GetEdges());
 	const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-	EXPECT_EQ(witnessPoints.a.x, 0);
-	EXPECT_EQ(witnessPoints.a.y, 0.5);
+	EXPECT_EQ(witnessPoints.a.x, Length{0});
+	EXPECT_EQ(witnessPoints.a.y, RealNum{0.5f} * Meter);
 	
-	EXPECT_EQ(witnessPoints.b.x, 0);
-	EXPECT_EQ(witnessPoints.b.y, 0.5);
+	EXPECT_EQ(witnessPoints.b.x, Length{0});
+	EXPECT_EQ(witnessPoints.b.y, RealNum{0.5f} * Meter);
 	
 	EXPECT_EQ(decltype(output.iterations){3}, output.iterations);
 	

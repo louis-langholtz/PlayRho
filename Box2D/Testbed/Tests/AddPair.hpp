@@ -34,7 +34,7 @@ public:
 		m_world->SetGravity(Vec2(RealNum{0}, RealNum{0}) * MeterPerSquareSecond);
 		{
 			auto conf = CircleShape::Conf{};
-			conf.vertexRadius = 0.1f;
+			conf.vertexRadius = 0.1f * Meter;
 			conf.density = RealNum{0.01f} * KilogramPerSquareMeter;
 			const auto shape = std::make_shared<CircleShape>(conf);
 
@@ -47,7 +47,7 @@ public:
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
-				bd.position = Vec2(RandomFloat(minX, maxX), RandomFloat(minY, maxY));
+				bd.position = Vec2(RandomFloat(minX, maxX), RandomFloat(minY, maxY)) * Meter;
 				const auto body = m_world->CreateBody(bd);
 				body->CreateFixture(shape);
 			}
@@ -56,12 +56,12 @@ public:
 		{
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(-40.0f,5.0f);
+			bd.position = Vec2(-40.0f,5.0f) * Meter;
 			bd.bullet = true;
 			const auto body = m_world->CreateBody(bd);
 			auto conf = PolygonShape::Conf{};
 			conf.density = RealNum{1.0f} * KilogramPerSquareMeter;
-			body->CreateFixture(std::make_shared<PolygonShape>(1.5f, 1.5f, conf));
+			body->CreateFixture(std::make_shared<PolygonShape>(1.5f * Meter, 1.5f * Meter, conf));
 			body->SetVelocity(Velocity{Vec2(150.0f, 0.0f) * MeterPerSecond, AngularVelocity{0}});
 		}
 	}

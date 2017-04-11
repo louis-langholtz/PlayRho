@@ -32,7 +32,7 @@ public:
 		m_fixture = nullptr;
 	}
 
-	RealNum ReportFixture(Fixture* fixture, const Vec2& point,
+	RealNum ReportFixture(Fixture* fixture, const Length2D& point,
 						  const UnitVec2& normal, RealNum fraction) override
 	{
 		m_fixture = fixture;
@@ -43,7 +43,7 @@ public:
 	}
 
 	Fixture* m_fixture;
-	Vec2 m_point;
+	Length2D m_point;
 	UnitVec2 m_normal;
 };
 
@@ -70,7 +70,7 @@ public:
 			{
 				const auto x2 = x1 + 0.5f;
 				const auto y2 = 2.0f * cosf(x2 / 10.0f * Pi);
-				ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(x1, y1), Vec2(x2, y2)));
+				ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(x1, y1) * Meter, Vec2(x2, y2) * Meter));
 				x1 = x2;
 				y1 = y2;
 			}
@@ -82,8 +82,8 @@ public:
 			m_polygons[i].SetDensity(RealNum{20} * KilogramPerSquareMeter);
 		}
 		
-		m_polygons[0].Set({Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)});
-		m_polygons[1].Set({Vec2(-0.1f, 0.0f), Vec2(0.1f, 0.0f), Vec2(0.0f, 1.5f)});
+		m_polygons[0].Set({Vec2(-0.5f, 0.0f) * Meter, Vec2(0.5f, 0.0f) * Meter, Vec2(0.0f, 1.5f) * Meter});
+		m_polygons[1].Set({Vec2(-0.1f, 0.0f) * Meter, Vec2(0.1f, 0.0f) * Meter, Vec2(0.0f, 1.5f) * Meter});
 
 		{
 			const auto w = 1.0f;
@@ -91,18 +91,18 @@ public:
 			const auto s = Sqrt(2.0f) * b;
 
 			m_polygons[2].Set({
-				Vec2(0.5f * s, 0.0f),
-				Vec2(0.5f * w, b),
-				Vec2(0.5f * w, b + s),
-				Vec2(0.5f * s, w),
-				Vec2(-0.5f * s, w),
-				Vec2(-0.5f * w, b + s),
-				Vec2(-0.5f * w, b),
-				Vec2(-0.5f * s, 0.0f)
+				Vec2(0.5f * s, 0.0f) * Meter,
+				Vec2(0.5f * w, b) * Meter,
+				Vec2(0.5f * w, b + s) * Meter,
+				Vec2(0.5f * s, w) * Meter,
+				Vec2(-0.5f * s, w) * Meter,
+				Vec2(-0.5f * w, b + s) * Meter,
+				Vec2(-0.5f * w, b) * Meter,
+				Vec2(-0.5f * s, 0.0f) * Meter
 			});
 		}
 
-		m_polygons[3].SetAsBox(0.5f, 0.5f);
+		m_polygons[3].SetAsBox(0.5f * Meter, 0.5f * Meter);
 
 		m_bodyIndex = 0;
 		memset(m_bodies, 0, sizeof(m_bodies));
@@ -122,7 +122,7 @@ public:
 
 		const auto x = RandomFloat(-10.0f, 10.0f);
 		const auto y = RandomFloat(10.0f, 20.0f);
-		bd.position = Vec2(x, y);
+		bd.position = Vec2(x, y) * Meter;
 		bd.angle = Radian * RandomFloat(-Pi, Pi);
 		bd.type = BodyType::Dynamic;
 
@@ -185,8 +185,8 @@ public:
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		const auto L = RealNum(25);
-		const auto point1 = Vec2(0.0f, 10.0f);
-		const auto d = Vec2(L * std::cos(m_angle), -L * Abs(std::sin(m_angle)));
+		const auto point1 = Vec2(0.0f, 10.0f) * Meter;
+		const auto d = Vec2(L * std::cos(m_angle), -L * Abs(std::sin(m_angle))) * Meter;
 		const auto point2 = point1 + d;
 
 		EdgeShapesCallback callback;
@@ -195,11 +195,11 @@ public:
 
 		if (callback.m_fixture)
 		{
-			drawer.DrawPoint(callback.m_point, 5.0f, Color(0.4f, 0.9f, 0.4f));
+			drawer.DrawPoint(callback.m_point, 5.0f * Meter, Color(0.4f, 0.9f, 0.4f));
 
 			drawer.DrawSegment(point1, callback.m_point, Color(0.8f, 0.8f, 0.8f));
 
-			const auto head = callback.m_point + 0.5f * callback.m_normal;
+			const auto head = callback.m_point + 0.5f * callback.m_normal * Meter;
 			drawer.DrawSegment(callback.m_point, head, Color(0.9f, 0.9f, 0.4f));
 		}
 		else
@@ -222,7 +222,7 @@ public:
 	int32 m_bodyIndex;
 	Body* m_bodies[e_maxBodies];
 	PolygonShape m_polygons[4];
-	std::shared_ptr<CircleShape> m_circle = std::make_shared<CircleShape>(0.5f);
+	std::shared_ptr<CircleShape> m_circle = std::make_shared<CircleShape>(0.5f * Meter);
 
 	RealNum m_angle;
 };

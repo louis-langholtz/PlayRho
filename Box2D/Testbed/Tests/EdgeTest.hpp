@@ -36,58 +36,58 @@ public:
 
 			EdgeShape shape;
 
-			shape.Set(v1, v2);
-			shape.SetVertex3(v3);
+			shape.Set(v1 * Meter, v2 * Meter);
+			shape.SetVertex3(v3 * Meter);
 			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
-			shape.Set(v2, v3);
-			shape.SetVertex0(v1);
-			shape.SetVertex3(v4);
+			shape.Set(v2 * Meter, v3 * Meter);
+			shape.SetVertex0(v1 * Meter);
+			shape.SetVertex3(v4 * Meter);
 			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
-			shape.Set(v3, v4);
-			shape.SetVertex0(v2);
-			shape.SetVertex3(v5);
+			shape.Set(v3 * Meter, v4 * Meter);
+			shape.SetVertex0(v2 * Meter);
+			shape.SetVertex3(v5 * Meter);
 			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
-			shape.Set(v4, v5);
-			shape.SetVertex0(v3);
-			shape.SetVertex3(v6);
+			shape.Set(v4 * Meter, v5 * Meter);
+			shape.SetVertex0(v3 * Meter);
+			shape.SetVertex3(v6 * Meter);
 			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
-			shape.Set(v5, v6);
-			shape.SetVertex0(v4);
-			shape.SetVertex3(v7);
+			shape.Set(v5 * Meter, v6 * Meter);
+			shape.SetVertex0(v4 * Meter);
+			shape.SetVertex3(v7 * Meter);
 			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
-			shape.Set(v6, v7);
-			shape.SetVertex0(v5);
+			shape.Set(v6 * Meter, v7 * Meter);
+			shape.SetVertex0(v5 * Meter);
 			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 		}
 
 		{
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(-0.5f, 0.6f);
+			bd.position = Vec2(-0.5f, 0.6f) * Meter;
 			bd.allowSleep = false;
 			const auto body = m_world->CreateBody(bd);
 
 			auto conf = CircleShape::Conf{};
 			conf.density = RealNum{1} * KilogramPerSquareMeter;
-			conf.vertexRadius = 0.5f;
+			conf.vertexRadius = 0.5f * Meter;
 			body->CreateFixture(std::make_shared<CircleShape>(conf));
 		}
 
 		{
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(1.0f, 0.6f);
+			bd.position = Vec2(1.0f, 0.6f) * Meter;
 			bd.allowSleep = false;
 			const auto body = m_world->CreateBody(bd);
 
 			auto shape = PolygonShape{};
-			shape.SetVertexRadius(1);
-			shape.SetAsBox(0.5f, 0.5f);
+			shape.SetVertexRadius(RealNum{1} * Meter);
+			shape.SetAsBox(0.5f * Meter, 0.5f * Meter);
 			shape.SetDensity(RealNum{1} * KilogramPerSquareMeter);
 			body->CreateFixture(std::make_shared<PolygonShape>(shape));
 		}

@@ -34,7 +34,7 @@ TEST(Transformation, ByteSizeIs_16_32_or_64)
 
 TEST(Transformation, Initialize)
 {
-	const Vec2 translation{2, 4};
+	const auto translation = Vec2{2, 4} * Meter;
 	const UnitVec2 rotation{Radian * RealNum{Pi / 2}};
 	const Transformation xfm{translation, rotation};
 	EXPECT_EQ(translation, xfm.p);
@@ -43,7 +43,7 @@ TEST(Transformation, Initialize)
 
 TEST(Transformation, Equality)
 {
-	const Vec2 translation{2, 4};
+	const auto translation = Vec2{2, 4} * Meter;
 	const UnitVec2 rotation{Radian * RealNum{Pi / 2}};
 	const Transformation xfm{translation, rotation};
 	EXPECT_EQ(xfm, xfm);
@@ -51,11 +51,11 @@ TEST(Transformation, Equality)
 
 TEST(Transformation, Inequality)
 {
-	const Vec2 translation1{2, 4};
+	const auto translation1 = Vec2{2, 4} * Meter;
 	const UnitVec2 rotation1{Radian * Pi * 0.7f};
 	const Transformation xfm1{translation1, rotation1};
 
-	const Vec2 translation2{-3, 37};
+	const auto translation2 = Vec2{-3, 37} * Meter;
 	const UnitVec2 rotation2{Radian * Pi * 0.002f};
 	const Transformation xfm2{translation2, rotation2};
 
@@ -66,7 +66,7 @@ TEST(Transformation, Inequality)
 
 TEST(Transformation, Mul)
 {
-	const Vec2 translation1{2, 4};
+	const auto translation1 = Vec2{2, 4} * Meter;
 	const UnitVec2 rotation1{Radian * RealNum{Pi / 2}};
 	const Transformation xfm{translation1, rotation1};
 
@@ -86,12 +86,12 @@ TEST(Transformation, Mul)
 
 TEST(Transformation, MulSameAsTransformTwice)
 {
-	const Vec2 translation1{2, 4};
+	const auto translation1 = Vec2{2, 4} * Meter;
 	const UnitVec2 rotation1{Radian * RealNum{Pi / 2}};
 	const Transformation xfm{translation1, rotation1};
 	const auto xfm2 = Mul(xfm, xfm);
 
-	const auto location = Vec2{-23.4f, 0.81f};
+	const auto location = Vec2{-23.4f, 0.81f} * Meter;
 	const auto twice = Transform(Transform(location, xfm), xfm);
 	const auto location2 = Transform(location, xfm2);
 	EXPECT_EQ(twice, location2);

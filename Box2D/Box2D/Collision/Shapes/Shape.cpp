@@ -41,7 +41,7 @@ namespace box2d {
 		}
 	}
 	
-	bool TestPoint(const Shape& shape, const Transformation& xf, const Vec2 p)
+	bool TestPoint(const Shape& shape, const Transformation& xf, const Length2D p)
 	{
 		assert(shape.GetType() < Shape::e_typeCount);
 		switch (shape.GetType())
@@ -64,8 +64,8 @@ namespace box2d {
 		assert(distanceInfo.state != DistanceOutput::Unknown && distanceInfo.state != DistanceOutput::HitMaxIters);
 
 		const auto witnessPoints = GetWitnessPoints(distanceInfo.simplex);
-		const auto distanceSquared = GetLengthSquared(witnessPoints.a - witnessPoints.b);
-		const auto totalRadiusSquared = Square(proxyA.GetRadius() + proxyB.GetRadius());
+		const auto distanceSquared = GetLengthSquared(StripUnits(witnessPoints.a - witnessPoints.b));
+		const auto totalRadiusSquared = Square((proxyA.GetRadius() + proxyB.GetRadius()) / Meter);
 		const auto separation_amount = distanceSquared - totalRadiusSquared;
 		return (separation_amount < 0) || almost_zero(separation_amount);
 	}

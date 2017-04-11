@@ -130,16 +130,16 @@ public:
 	const Body* GetBodyB() const noexcept;
 
 	/// Get the anchor point on bodyA in world coordinates.
-	virtual Vec2 GetAnchorA() const = 0;
+	virtual Length2D GetAnchorA() const = 0;
 
 	/// Get the anchor point on bodyB in world coordinates.
-	virtual Vec2 GetAnchorB() const = 0;
+	virtual Length2D GetAnchorB() const = 0;
 
 	/// Get the reaction force on bodyB at the joint anchor in Newtons.
-	virtual Vec2 GetReactionForce(Frequency inv_dt) const = 0;
+	virtual Force2D GetReactionForce(Frequency inv_dt) const = 0;
 
 	/// Get the reaction torque on bodyB in N*m.
-	virtual RealNum GetReactionTorque(Frequency inv_dt) const = 0;
+	virtual Torque GetReactionTorque(Frequency inv_dt) const = 0;
 
 	/// Get the user data pointer.
 	void* GetUserData() const noexcept;
@@ -153,7 +153,7 @@ public:
 	bool GetCollideConnected() const noexcept;
 
 	/// Shift the origin for any points stored in world coordinates.
-	virtual void ShiftOrigin(const Vec2 newOrigin) { NOT_USED(newOrigin);  }
+	virtual void ShiftOrigin(const Length2D newOrigin) { NOT_USED(newOrigin);  }
 
 protected:
 	Joint(const JointDef& def);

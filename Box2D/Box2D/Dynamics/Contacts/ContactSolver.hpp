@@ -33,7 +33,7 @@ namespace box2d {
 	{
 		Position pos_a;
 		Position pos_b;
-		RealNum min_separation;
+		Length min_separation;
 	};
 
 	inline PositionSolution operator+ (PositionSolution lhs, PositionSolution rhs)
@@ -62,11 +62,11 @@ namespace box2d {
 	{
 		ConstraintSolverConf& UseResolutionRate(RealNum value) noexcept;
 
-		ConstraintSolverConf& UseLinearSlop(RealNum value) noexcept;
+		ConstraintSolverConf& UseLinearSlop(Length value) noexcept;
 		
 		ConstraintSolverConf& UseAngularSlop(RealNum value) noexcept;
 
-		ConstraintSolverConf& UseMaxLinearCorrection(RealNum value) noexcept;
+		ConstraintSolverConf& UseMaxLinearCorrection(Length value) noexcept;
 
 		ConstraintSolverConf& UseMaxAngularCorrection(RealNum value) noexcept;
 
@@ -83,7 +83,7 @@ namespace box2d {
 		/// Linear slop.
 		/// @note The negative of this amount is the maximum amount of separation to create.
 		/// @note Recommended value: <code>DefaultLinearSlop</code>.
-		RealNum linearSlop = DefaultLinearSlop;
+		Length linearSlop = DefaultLinearSlop;
 
 		/// Angular slop.
 		/// @note Recommended value: <code>DefaultAngularSlop</code>.
@@ -93,7 +93,7 @@ namespace box2d {
 		/// @detail
 		/// Maximum amount of overlap to resolve in a single solver call. Helps prevent overshoot.
 		/// @note Recommended value: <code>linearSlop * 40</code>.
-		RealNum maxLinearCorrection = DefaultLinearSlop * 20;
+		Length maxLinearCorrection = DefaultLinearSlop * RealNum{20};
 		
 		/// Maximum angular correction.
 		/// @detail Maximum angular position correction used when solving constraints.
@@ -108,7 +108,7 @@ namespace box2d {
 		return *this;
 	}
 
-	inline ConstraintSolverConf& ConstraintSolverConf::UseLinearSlop(RealNum value) noexcept
+	inline ConstraintSolverConf& ConstraintSolverConf::UseLinearSlop(Length value) noexcept
 	{
 		linearSlop = value;
 		return *this;
@@ -120,7 +120,7 @@ namespace box2d {
 		return *this;
 	}
 
-	inline ConstraintSolverConf& ConstraintSolverConf::UseMaxLinearCorrection(RealNum value) noexcept
+	inline ConstraintSolverConf& ConstraintSolverConf::UseMaxLinearCorrection(Length value) noexcept
 	{
 		maxLinearCorrection = value;
 		return *this;
@@ -140,7 +140,7 @@ namespace box2d {
 	/// @return Minimum separation distance of the position constraint's manifold points
 	///   (prior to "solving").
 	PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
-											 bool moveA, bool moveB,
+											 const bool moveA, const bool moveB,
 											 ConstraintSolverConf conf);
 	
 	inline ConstraintSolverConf GetDefaultPositionSolverConf()
@@ -156,7 +156,7 @@ namespace box2d {
 	/// @return Minimum separation.
 	/// @sa MinSeparationThreshold.
 	/// @sa Solve.
-	RealNum SolvePositionConstraints(Span<PositionConstraint> positionConstraints,
+	Length SolvePositionConstraints(Span<PositionConstraint> positionConstraints,
 									 ConstraintSolverConf conf = GetDefaultPositionSolverConf());
 	
 	inline ConstraintSolverConf GetDefaultToiPositionSolverConf()
@@ -179,9 +179,9 @@ namespace box2d {
 	///
 	/// @return Minimum separation (which is the same as the max amount of penetration/overlap).
 	///
-	RealNum SolvePositionConstraints(Span<PositionConstraint> positionConstraints,
-									 const BodyConstraint* bodiesA, const BodyConstraint* bodiesB,
-									 ConstraintSolverConf conf = GetDefaultToiPositionSolverConf());
+	Length SolvePositionConstraints(Span<PositionConstraint> positionConstraints,
+									const BodyConstraint* bodiesA, const BodyConstraint* bodiesB,
+									ConstraintSolverConf conf = GetDefaultToiPositionSolverConf());
 
 	/// Solves the velocity constraint.
 	///
@@ -195,7 +195,7 @@ namespace box2d {
 	/// @pre The velocity constraint must have a valid normal, a valid tangent,
 	///   valid point relative positions, and valid velocity biases.
 	///
-	RealNum SolveVelocityConstraint(VelocityConstraint& vc);
+	Momentum SolveVelocityConstraint(VelocityConstraint& vc);
 	
 } // namespace box2d
 

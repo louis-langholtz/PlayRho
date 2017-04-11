@@ -33,9 +33,9 @@ public:
 	Pyramid()
 	{
 		const auto ground = m_world->CreateBody();
-		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
+		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 
-		const auto a = 0.5f;
+		const auto a = 0.5f * Meter;
 		const auto shape = std::make_shared<PolygonShape>(a, a);
 		shape->SetDensity(RealNum{5} * KilogramPerSquareMeter);
 
@@ -52,7 +52,7 @@ public:
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
-				bd.position = y;
+				bd.position = y * Meter;
 				const auto body = m_world->CreateBody(bd);
 				body->CreateFixture(shape);
 

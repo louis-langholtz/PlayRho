@@ -35,7 +35,7 @@ int main(int, char**)
 
 	// Define the ground body.
 	auto groundBodyDef = BodyDef{};
-	groundBodyDef.position = Vec2(0.0f, -10.0f);
+	groundBodyDef.position = Vec2(0.0f, -10.0f) * Meter;
 
 	// Call the body factory which allocates memory for the ground body
 	// from a pool and creates the ground box shape (also from a pool).
@@ -44,7 +44,7 @@ int main(int, char**)
 
 	// Define the ground box shape.
 	// The extents are the half-widths of the box.
-	auto groundBox = std::make_shared<PolygonShape>(50.0f, 10.0f);
+	auto groundBox = std::make_shared<PolygonShape>(50.0f * Meter, 10.0f * Meter);
 
 	// Add the ground fixture to the ground body.
 	groundBody->CreateFixture(groundBox);

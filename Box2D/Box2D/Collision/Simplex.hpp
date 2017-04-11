@@ -122,7 +122,7 @@ namespace box2d
 		/// @param simplexEdges A one or two edge list.
 		/// @warning Behavior is undefined if the given edge list has zero edges.
 		/// @return "search direction" vector.
-		static constexpr Vec2 CalcSearchDirection(const Edges& simplexEdges) noexcept;
+		static constexpr Length2D CalcSearchDirection(const Edges& simplexEdges) noexcept;
 		
 		/// Gets the given simplex's "metric".
 		static inline RealNum CalcMetric(const Edges& simplexEdges);
@@ -230,24 +230,27 @@ namespace box2d
 		return list;
 	}
 
-	constexpr inline Vec2 Simplex::CalcSearchDirection(const Edges& simplexEdges) noexcept
+	constexpr inline Length2D Simplex::CalcSearchDirection(const Edges& simplexEdges) noexcept
 	{
 		assert((simplexEdges.size() == 1) || (simplexEdges.size() == 2));
 		switch (simplexEdges.size())
 		{
 			case 1:
+			{
 				return -GetPointDelta(simplexEdges[0]);
-				
+			}
+
 			case 2:
 			{
 				const auto e12 = GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]);
-				const auto sgn = Cross(e12, -GetPointDelta(simplexEdges[0]));
+				const auto e0 = GetPointDelta(simplexEdges[0]);
+				const auto sgn = Cross(e12, -e0);
 				// If sgn > 0, then origin is left of e12, else origin is right of e12.
-				return (sgn > 0)? GetRevPerpendicular(e12): GetFwdPerpendicular(e12);
+				return (sgn > RealNum{0} * SquareMeter)? GetRevPerpendicular(e12): GetFwdPerpendicular(e12);
 			}
 				
 			default:
-				return Vec2_zero;
+				return Vec2_zero * Meter;
 		}
 	}
 
@@ -258,9 +261,17 @@ namespace box2d
 		{
 			case 0: return RealNum{0};
 			case 1: return RealNum{0};
-			case 2:	return Sqrt(GetLengthSquared(GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0])));
-			case 3:	return Cross(GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]),
-								 GetPointDelta(simplexEdges[2]) - GetPointDelta(simplexEdges[0]));
+			case 2:
+			{
+				const auto delta = GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]);
+				return Sqrt(GetLengthSquared(StripUnits(delta)));
+			}
+			case 3:
+			{
+				const auto delta10 = GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]);
+				const auto delta20 = GetPointDelta(simplexEdges[2]) - GetPointDelta(simplexEdges[0]);
+				return Cross(StripUnits(delta10), StripUnits(delta20));
+			}
 			default: break; // should not be reached
 		}
 		return RealNum{0};
@@ -301,20 +312,20 @@ namespace box2d
 		return m_simplexEdges.size();
 	}
 
-	inline Vec2 GetScaledDelta(const Simplex& simplex, Simplex::size_type index)
+	inline Length2D GetScaledDelta(const Simplex& simplex, Simplex::size_type index)
 	{
 		return simplex.GetSimplexEdge(index).GetPointDelta() * simplex.GetCoefficient(index);
 	}
 
 	/// Gets the "closest point".
-	constexpr inline Vec2 GetClosestPoint(const Simplex& simplex)
+	constexpr inline Length2D GetClosestPoint(const Simplex& simplex)
 	{
 		switch (simplex.GetSize())
 		{
 			case 1: return GetScaledDelta(simplex, 0);
 			case 2: return GetScaledDelta(simplex, 0) + GetScaledDelta(simplex, 1);
-			case 3: return Vec2_zero;
-			default: return Vec2_zero;
+			case 3: return Vec2_zero * Meter;
+			default: return Vec2_zero * Meter;
 		}
 	}
 

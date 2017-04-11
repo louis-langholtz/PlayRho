@@ -52,7 +52,7 @@ TEST(BroadPhase, CreateAndDestroyProxy)
 	ASSERT_EQ(foo.GetPairCapacity(), defaultConf.pairCapacity);
 	ASSERT_EQ(foo.GetMoveCapacity(), defaultConf.moveCapacity);
 	
-	const auto aabb = AABB{Vec2{3, 1}, Vec2{-5, -2}};
+	const auto aabb = AABB{Vec2{3, 1} * Meter, Vec2{-5, -2} * Meter};
 	const auto userdata = nullptr;
 	
 	const auto pid = foo.CreateProxy(aabb, userdata);

@@ -33,7 +33,7 @@ using namespace box2d;
 
 static inline IndexSeparation GetPolygonSeparation(const PolygonShape& polygon, const EdgeInfo& edge)
 {
-	auto max_s = -MaxFloat;
+	auto max_s = -MaxFloat * Meter;
 	auto index = IndexSeparation::InvalidIndex;
 	{
 		const auto totalRadius = GetVertexRadius(polygon) + edge.GetVertexRadius();
@@ -50,7 +50,7 @@ static inline IndexSeparation GetPolygonSeparation(const PolygonShape& polygon, 
 			
 			if (s > totalRadius) // No collision
 			{
-				return IndexSeparation{s, i};
+				return IndexSeparation{StripUnit(s), i};
 			}
 			
 			// Adjacency
@@ -76,12 +76,12 @@ static inline IndexSeparation GetPolygonSeparation(const PolygonShape& polygon, 
 			}
 		}
 	}
-	return IndexSeparation{max_s, index};
+	return IndexSeparation{StripUnit(max_s), index};
 }
 
 static inline IndexPairSeparation GetMaxSeparation(const PolygonShape& shape1, const Transformation& xf1,
 												   const PolygonShape& shape2, const Transformation& xf2,
-												   RealNum stop = MaxFloat)
+												   Length stop = MaxFloat * Meter)
 {
 	return GetMaxSeparation(shape1.GetVertices(), shape1.GetNormals(), xf1, shape2.GetVertices(), xf2, stop);
 }
@@ -153,8 +153,8 @@ static ClipList GetIncidentEdgeClipList(ContactFeature::index_t index1, const Un
 #endif
 }
 
-static inline ClipList GetClipPoints(IndexSeparation::index_type iv1, RealNum sideOffset1, UnitVec2 normal1,
-									 IndexSeparation::index_type iv2, RealNum sideOffset2, UnitVec2 normal2,
+static inline ClipList GetClipPoints(IndexSeparation::index_type iv1, Length sideOffset1, UnitVec2 normal1,
+									 IndexSeparation::index_type iv2, Length sideOffset2, UnitVec2 normal2,
 									 const ClipList& incidentEdge)
 {
 	const auto points = ClipSegmentToLine(incidentEdge, normal1, sideOffset1, iv1);
@@ -250,7 +250,7 @@ static inline Manifold GetFaceManifold(const Manifold::Type type,
 {
 	const auto r1 = GetVertexRadius(shape1);
 	const auto r2 = GetVertexRadius(shape2);
-	const auto totalRadius = r1 + r2;
+	const auto totalRadius = Length{r1 + r2};
 	
 	const auto idx1Next = GetModuloNext(idx1, shape1.GetVertexCount());
 	
@@ -294,7 +294,7 @@ static inline Manifold GetFaceManifold(const Manifold::Type type,
 	if (clipPoints.size() == 2)
 	{
 		const auto abs_normal = GetFwdPerpendicular(shape1_edge1_abs_dir); // Normal points from 1 to 2
-		const auto rel_midpoint = (shape1_rel_vertex1 + shape1_rel_vertex2) / 2;
+		const auto rel_midpoint = (shape1_rel_vertex1 + shape1_rel_vertex2) / RealNum{2};
 		const auto abs_offset = Dot(abs_normal, shape1_abs_vertex1); ///< Face offset.
 		
 		switch (type)
@@ -393,7 +393,7 @@ static inline Manifold GetFaceManifold(const Manifold::Type type,
 }
 
 static Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA,
-							  Vec2 locationB, RealNum radiusB, const Transformation& xfB)
+							  Length2D locationB, Length radiusB, const Transformation& xfB)
 {
 	// Computes the center of the circle in the frame of the polygon.
 	const auto cLocal = InverseTransform(Transform(locationB, xfB), xfA); ///< Center of circle in frame of polygon.
@@ -403,7 +403,7 @@ static Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& 
 	
 	// Find edge that circle is closest to.
 	auto indexOfMax = decltype(vertexCount){0};
-	auto maxSeparation = -MaxFloat;
+	auto maxSeparation = -MaxFloat * Meter;
 	{
 		for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 		{
@@ -428,30 +428,32 @@ static Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& 
 	const auto v1 = shapeA.GetVertex(indexOfMax);
 	const auto v2 = shapeA.GetVertex(indexOfMax2);
 	
-	if (maxSeparation < 0)
+	if (maxSeparation < Length{0})
 	{
 		// Circle's center is inside the polygon and closest to edge[indexOfMax].
-		return Manifold::GetForFaceA(shapeA.GetNormal(indexOfMax), indexOfMax, (v1 + v2) / 2,
+		return Manifold::GetForFaceA(shapeA.GetNormal(indexOfMax), indexOfMax, (v1 + v2) / RealNum{2},
 									 ContactFeature::e_vertex, 0, locationB);
 	}
 	
 	// Circle's center is outside polygon and closest to edge[indexOfMax].
 	// Compute barycentric coordinates.
 	
-	if (Dot(cLocal - v1, v2 - v1) <= 0)
+	const auto cLocalV1 = cLocal - v1;
+	if (Dot(cLocalV1, v2 - v1) <= Area{0})
 	{
 		// Circle's center right of v1 (in direction of v1 to v2).
-		if (GetLengthSquared(cLocal - v1) > Square(totalRadius))
+		if (GetLengthSquared(cLocalV1) > Square(totalRadius))
 		{
 			return Manifold{};
 		}
 		return Manifold::GetForCircles(v1, indexOfMax, locationB, 0);
 	}
 	
-	if (Dot(cLocal - v2, v1 - v2) <= 0)
+	const auto ClocalV2 = cLocal - v2;
+	if (Dot(ClocalV2, v1 - v2) <= Area{0})
 	{
 		// Circle's center left of v2 (in direction of v2 to v1).
-		if (GetLengthSquared(cLocal - v2) > Square(totalRadius))
+		if (GetLengthSquared(ClocalV2) > Square(totalRadius))
 		{
 			return Manifold{};
 		}
@@ -459,7 +461,7 @@ static Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& 
 	}
 	
 	// Circle's center is between v1 and v2.
-	const auto faceCenter = (v1 + v2) / 2;
+	const auto faceCenter = (v1 + v2) / RealNum{2};
 	if (Dot(cLocal - faceCenter, shapeA.GetNormal(indexOfMax)) > totalRadius)
 	{
 		return Manifold{};
@@ -468,8 +470,8 @@ static Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& 
 								 ContactFeature::e_vertex, 0, locationB);
 }
 
-static Manifold CollideShapes(Vec2 locationA, RealNum radiusA, const Transformation& xfA,
-							  Vec2 locationB, RealNum radiusB, const Transformation& xfB)
+static Manifold CollideShapes(Length2D locationA, Length radiusA, const Transformation& xfA,
+							  Length2D locationB, Length radiusB, const Transformation& xfB)
 {
 	const auto pA = Transform(locationA, xfA);
 	const auto pB = Transform(locationB, xfB);
@@ -521,7 +523,7 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	 */
 	
 	// Compute circle in frame of edge
-	const auto Q = InverseTransform(Transform(shapeB.GetLocation(), xfB), xfA); ///< Circle's position in frame of edge.
+	const auto Q = Length2D{InverseTransform(Transform(shapeB.GetLocation(), xfB), xfA)}; ///< Circle's position in frame of edge.
 	
 	const auto A = shapeA.GetVertex1(); ///< Edge shape's vertex 1.
 	const auto B = shapeA.GetVertex2(); ///< Edge shape's vertex 2.
@@ -532,10 +534,11 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	const auto totalRadius = GetVertexRadius(shapeA) + GetVertexRadius(shapeB);
 	
 	// Check if circle's center is relatively left of first vertex of edge - this is "Region A"
-	const auto v = Dot(e, Q - A);
-	if (v <= 0)
+	const auto deltaQA = Q - A;
+	const auto v = Area{Dot(e, deltaQA)};
+	if (v <= Area{0})
 	{
-		if (GetLengthSquared(Q - A) > Square(totalRadius))
+		if (GetLengthSquared(deltaQA) > Square(totalRadius))
 		{
 			return Manifold{};
 		}
@@ -544,7 +547,7 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 		if (shapeA.HasVertex0())
 		{
 			// Is the circle in Region AB of the previous edge?
-			if (Dot(A - shapeA.GetVertex0(), A - Q) > 0)
+			if (Dot(A - shapeA.GetVertex0(), A - Q) > Area{0})
 			{
 				return Manifold{};
 			}
@@ -553,10 +556,11 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	}
 	
 	// Check if circle's center is relatively right of second vertex of edge - this is "Region B"
-	const auto u = Dot(e, B - Q);
-	if (u <= 0)
+	const auto u = Area{Dot(e, B - Q)};
+	if (u <= Area{0})
 	{
-		if (GetLengthSquared(Q - B) > Square(totalRadius))
+		const auto deltaQB = Q - B;
+		if (GetLengthSquared(deltaQB) > Square(totalRadius))
 		{
 			return Manifold{};
 		}
@@ -565,7 +569,7 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 		if (shapeA.HasVertex3())
 		{
 			// Is the circle in Region AB of the next edge?
-			if (Dot(shapeA.GetVertex3() - B, Q - B) > 0)
+			if (Area{Dot(shapeA.GetVertex3() - B, deltaQB)} > Area{0})
 			{
 				return Manifold{};
 			}
@@ -575,10 +579,10 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	
 	// Region AB
 	const auto eLenSquared = GetLengthSquared(e);
-	assert(eLenSquared > 0);
+	assert(eLenSquared > RealNum{0} * SquareMeter);
 
 	// Compute P in an order less likely to overflow
-	const auto P = ((A / eLenSquared) * u) + ((B / eLenSquared) * v);
+	const auto P = Length2D{((A / eLenSquared) * u) + ((B / eLenSquared) * v)};
 	
 	if (GetLengthSquared(Q - P) > Square(totalRadius))
 	{
@@ -586,8 +590,8 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	}
 	
 	const auto ln = GetUnitVector([=]() {
-		const auto e_perp = GetRevPerpendicular(e);
-		return (Dot(e_perp, Q - A) < 0)? -e_perp: e_perp;
+		const auto e_perp = Length2D{GetRevPerpendicular(e)};
+		return (Dot(e_perp, deltaQA) < Area{0})? -e_perp: e_perp;
 	}(), UnitVec2::GetZero());
 	
 	return Manifold::GetForFaceA(ln, 0, A, ContactFeature::e_vertex, 0, shapeB.GetLocation());
@@ -600,8 +604,8 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	const auto shapeA_v2 = shapeA.GetVertex2();
 	const auto shapeB_v1 = InverseTransform(Transform(shapeB.GetVertex1(), xfB), xfA); // q
 	const auto shapeB_v2 = InverseTransform(Transform(shapeB.GetVertex2(), xfB), xfA);
-	const auto shapeA_edge = (shapeA_v2 - shapeA_v1); // r
-	const auto shapeB_edge = (shapeB_v2 - shapeB_v1); // s
+	const auto shapeA_edge = shapeA_v2 - shapeA_v1; // r
+	const auto shapeB_edge = shapeB_v2 - shapeB_v1; // s
 	const auto shapeA_normal = GetRevPerpendicular(GetUnitVector(shapeA_edge));
 	const auto shapeA_len_squared = GetLengthSquared(shapeA_edge); // r . r
 	const auto shapeB_len_squared = GetLengthSquared(shapeB_edge); // s . s
@@ -616,10 +620,10 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	const auto cross_edge_A_B = Cross(shapeA_edge, shapeB_edge); // (r × s)
 	const auto shapeA_n = Cross(shapeB_v1_sub_shapeA_v1, shapeB_edge); // (q − p) × s
 	const auto shapeB_n = Cross(shapeB_v1_sub_shapeA_v1, shapeA_edge); // (q − p) × r
-	if (almost_zero(cross_edge_A_B))
+	if (almost_zero(StripUnit(cross_edge_A_B)))
 	{
 		// The two lines are parallel.
-		if (almost_zero(shapeB_n))
+		if (almost_zero(StripUnit(shapeB_n)))
 		{
 			// The two lines are collinear (and parallel).
 			const auto shapeA_v1_p = shapeA_v1 - (shapeA_extent * shapeA_edge);
@@ -633,7 +637,7 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 			const auto dot_edge_B_A = Dot(shapeB_edge_p, shapeA_edge_p);
 			const auto shapeA_c0 = Dot(shapeB_v1_sub_shapeA_v1_p, shapeA_edge_p) / shapeA_len_squared_p; // t0
 			const auto shapeA_c1 = shapeA_c0 + (dot_edge_B_A / shapeA_len_squared_p); // t1
-			const auto interval = (dot_edge_B_A < 0)?
+			const auto interval = (dot_edge_B_A < Area{0})?
 				std::array<RealNum, 2>{{shapeA_c1, shapeA_c0}}:
 				std::array<RealNum, 2>{{shapeA_c0, shapeA_c1}};
 			if ((interval[1] >= 0) && (interval[0] <= 1))
@@ -644,14 +648,14 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 				const auto len_squared_from_shapeA_v2 = GetLengthSquared(shapeA_v2 - contact_pt);
 				if (len_squared_from_shapeA_v1 < len_squared_from_shapeA_v2)
 				{
-					if (len_squared_from_shapeA_v1 >= 0)
+					if (len_squared_from_shapeA_v1 >= Area{0})
 					{
 						return Manifold::GetForCircles(shapeA_v1, 0, shapeB_v1, 0);						
 					}
 				}
 				else
 				{
-					if (len_squared_from_shapeA_v2 >= 0)
+					if (len_squared_from_shapeA_v2 >= Area{0})
 					{
 						return Manifold::GetForCircles(shapeA_v2, 1, shapeB_v1, 0);						
 					}
@@ -684,7 +688,7 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 		{
 			// The two line segments meet at the point shapeA_v1 + shapeA_c * shapeA_edge
 			const auto lp = shapeA_v1 + shapeA_c * shapeA_edge;
-			return Manifold::GetForFaceA(shapeA_normal, 0, (shapeA_v1 + shapeA_v2) / 2,
+			return Manifold::GetForFaceA(shapeA_normal, 0, (shapeA_v1 + shapeA_v2) / RealNum{2},
 										 ContactFeature::e_face, 0, lp);
 		}
 		else
@@ -717,27 +721,27 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	const auto refDir = edgeInfo.GetNormal();
 	const auto edgeAxis = GetMostAntiParallelSeparation(localShapeB.GetVertices(),
 														GetVec2(refDir), edgeInfo.GetVertex1());
-	if (edgeAxis.separation > totalRadius)
+	if (edgeAxis.separation * Meter > totalRadius)
 	{
 		return Manifold{};
 	}
 	
 	const auto polygonAxis = GetPolygonSeparation(localShapeB, edgeInfo);
-	if (polygonAxis.separation > totalRadius)
+	if (polygonAxis.separation * Meter > totalRadius)
 	{
 		return Manifold{};
 	}
 	
 	// Use hysteresis for jitter reduction.
 	constexpr auto k_relativeTol = RealNum(0.98);
-	constexpr auto k_absoluteTol = DefaultLinearSlop / 5; // 0.001
+	constexpr auto k_absoluteTol = DefaultLinearSlop / RealNum{5}; // 0.001
 	
 	// Now:
 	//   (edgeAxis.separation <= MaxSeparation) AND
 	//   (polygonAxis.index == EPAxis::InvalidIndex OR polygonAxis.separation <= MaxEPSeparation)
 	
 	if ((polygonAxis.index != IndexSeparation::InvalidIndex) &&
-		(polygonAxis.separation > ((k_relativeTol * edgeAxis.separation) + k_absoluteTol)))
+		(polygonAxis.separation * Meter > ((k_relativeTol * edgeAxis.separation * Meter) + k_absoluteTol)))
 	{
 		// polygonAxis
 		return GetManifoldFaceB(edgeInfo, shapeB, localShapeB, polygonAxis.index);
@@ -779,19 +783,19 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 	const auto totalRadius = GetVertexRadius(shapeA) + GetVertexRadius(shapeB);
 	
 	const auto edgeSepA = ::GetMaxSeparation(shapeA, xfA, shapeB, xfB, totalRadius);
-	if (edgeSepA.separation > totalRadius)
+	if (edgeSepA.separation * Meter > totalRadius)
 	{
 		return Manifold{};
 	}
 	
 	const auto edgeSepB = ::GetMaxSeparation(shapeB, xfB, shapeA, xfA, totalRadius);
-	if (edgeSepB.separation > totalRadius)
+	if (edgeSepB.separation * Meter > totalRadius)
 	{
 		return Manifold{};
 	}
 	
-	constexpr auto k_tol = BOX2D_MAGIC(DefaultLinearSlop / 10);
-	return (edgeSepB.separation > (edgeSepA.separation + k_tol))?
+	constexpr auto k_tol = BOX2D_MAGIC(DefaultLinearSlop / RealNum{10});
+	return (edgeSepB.separation * Meter > (edgeSepA.separation * Meter + k_tol))?
 		GetFaceManifold(Manifold::e_faceB, shapeB, xfB, edgeSepB.index1, shapeA, xfA, edgeSepB.index2):
 		GetFaceManifold(Manifold::e_faceA, shapeA, xfA, edgeSepA.index1, shapeB, xfB, edgeSepA.index2);
 }

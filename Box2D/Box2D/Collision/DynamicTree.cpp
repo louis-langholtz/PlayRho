@@ -120,8 +120,8 @@ void DynamicTree::DestroyProxy(const size_type index)
 	FreeNode(index);
 }
 
-bool DynamicTree::UpdateProxy(const size_type index, const AABB aabb, const Vec2 displacement,
-							  const RealNum multiplier, const RealNum extension)
+bool DynamicTree::UpdateProxy(const size_type index, const AABB aabb, const Length2D displacement,
+							  const RealNum multiplier, const Length extension)
 {
 	assert(index != InvalidIndex);
 	assert(index < m_nodeCapacity);
@@ -162,10 +162,10 @@ DynamicTree::size_type DynamicTree::FindLowestCostNode(const AABB leafAABB) cons
 		assert(combinedArea >= area);
 		
 		// Cost of creating a new parent for this node and the new leaf
-		const auto cost = combinedArea * 2;
+		const auto cost = combinedArea * RealNum{2};
 		
 		// Minimum cost of pushing the leaf further down the tree
-		const auto inheritanceCost = (combinedArea - area) * 2;
+		const auto inheritanceCost = (combinedArea - area) * RealNum{2};
 		
 		assert(child1 != InvalidIndex);
 		assert(child1 < m_nodeCapacity);
@@ -499,7 +499,7 @@ RealNum DynamicTree::GetAreaRatio() const noexcept
 	const auto root = m_nodes + m_root;
 	const auto rootArea = GetPerimeter(root->aabb);
 
-	auto totalArea = RealNum{0};
+	auto totalArea = Length{0};
 	for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
 	{
 		const auto node = m_nodes + i;
@@ -512,7 +512,7 @@ RealNum DynamicTree::GetAreaRatio() const noexcept
 		totalArea += GetPerimeter(node->aabb);
 	}
 
-	return totalArea / rootArea;
+	return RealNum{totalArea / rootArea};
 }
 
 // Compute the height of a sub-tree.
@@ -568,9 +568,10 @@ void DynamicTree::RayCast(const RayCastInput& input, RayCastCallback callback) c
 {
 	const auto p1 = input.p1;
 	const auto p2 = input.p2;
+	const auto delta = p2 - p1;
 	
 	// v is perpendicular to the segment.
-	const auto v = GetRevPerpendicular(GetUnitVector(p2 - p1, UnitVec2::GetZero()));
+	const auto v = GetRevPerpendicular(GetUnitVector(StripUnits(delta), UnitVec2::GetZero()));
 	const auto abs_v = Abs(v);
 	
 	// Separating axis for segment (Gino, p80).
@@ -579,7 +580,7 @@ void DynamicTree::RayCast(const RayCastInput& input, RayCastCallback callback) c
 	auto maxFraction = input.maxFraction;
 	
 	// Build a bounding box for the segment.
-	auto segmentAABB = AABB{p1, p1 + maxFraction * (p2 - p1)};
+	auto segmentAABB = AABB{p1, p1 + maxFraction * delta};
 	
 	GrowableStack<size_type, 256> stack;
 	stack.Push(m_root);
@@ -602,7 +603,7 @@ void DynamicTree::RayCast(const RayCastInput& input, RayCastCallback callback) c
 		// |dot(v, p1 - c)| > dot(|v|, h)
 		const auto c = GetCenter(node->aabb);
 		const auto h = GetExtents(node->aabb);
-		const auto separation = Abs(Dot(v, p1 - c)) - Dot(abs_v, h);
+		const auto separation = Abs(Dot(v, StripUnits(p1 - c))) - Dot(abs_v, StripUnits(h));
 		if (separation > 0)
 		{
 			continue;
@@ -881,7 +882,7 @@ void DynamicTree::RebuildBottomUp()
 
 	while (count > 1)
 	{
-		auto minCost = std::numeric_limits<RealNum>::infinity();
+		auto minCost = Length{std::numeric_limits<RealNum>::infinity() * Meter};
 		auto iMin = InvalidIndex;
 		auto jMin = InvalidIndex;
 		for (auto i = decltype(count){0}; i < count; ++i)
@@ -933,7 +934,7 @@ void DynamicTree::RebuildBottomUp()
 	Validate();
 }
 
-void DynamicTree::ShiftOrigin(const Vec2 newOrigin)
+void DynamicTree::ShiftOrigin(const Length2D newOrigin)
 {
 	// Build array of leaves. Free the rest.
 	for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)

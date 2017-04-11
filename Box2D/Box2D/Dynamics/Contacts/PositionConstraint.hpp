@@ -33,13 +33,13 @@ namespace box2d {
 		
 		PositionConstraint() = default;
 		
-		PositionConstraint(const Manifold& m, BodyConstraint& bA, RealNum rA, BodyConstraint& bB, RealNum rB):
+		PositionConstraint(const Manifold& m, BodyConstraint& bA, Length rA, BodyConstraint& bB, Length rB):
 			manifold{m}, bodyA{bA}, radiusA{rA}, bodyB{bB}, radiusB{rB}
 		{
 			assert(m.GetPointCount() > 0);
 			assert(&bA != &bB);
-			assert(rA >= 0);
-			assert(rB >= 0);
+			assert(rA >= Length{0});
+			assert(rB >= Length{0});
 		}
 		
 		Manifold manifold; ///< Copy of contact's manifold with 1 or more contact points (60-bytes).
@@ -48,9 +48,9 @@ namespace box2d {
 		
 		BodyConstraint& bodyB; ///< Body B data (8-bytes).
 
-		RealNum radiusA; ///< "Radius" distance from the associated shape of fixture A (4-bytes). 0 or greater.
+		Length radiusA; ///< "Radius" distance from the associated shape of fixture A (4-bytes). 0 or greater.
 
-		RealNum radiusB; ///< "Radius" distance from the associated shape of fixture B (4-bytes). 0 or greater.
+		Length radiusB; ///< "Radius" distance from the associated shape of fixture B (4-bytes). 0 or greater.
 	};
 
 } // namespace box2d

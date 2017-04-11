@@ -32,23 +32,23 @@ public:
 		// Ground body
 		const auto ground = m_world->CreateBody();
 		{
-			Vec2 vs[5];
-			vs[0] = Vec2(0.0f, -2.0f);
-			vs[1] = Vec2(8.0f, 6.0f);
-			vs[2] = Vec2(8.0f, 20.0f);
-			vs[3] = Vec2(-8.0f, 20.0f);
-			vs[4] = Vec2(-8.0f, 6.0f);
+			Length2D vs[5];
+			vs[0] = Vec2(0.0f, -2.0f) * Meter;
+			vs[1] = Vec2(8.0f, 6.0f) * Meter;
+			vs[2] = Vec2(8.0f, 20.0f) * Meter;
+			vs[3] = Vec2(-8.0f, 20.0f) * Meter;
+			vs[4] = Vec2(-8.0f, 6.0f) * Meter;
 
 			ChainShape loop;
-			loop.CreateLoop(Span<const Vec2>(vs, 5));
+			loop.CreateLoop(Span<const Length2D>(vs, 5));
 			loop.SetDensity(0);
 			ground->CreateFixture(std::make_shared<ChainShape>(loop));
 		}
 
 		// Flippers
 		{
-			const auto p1 = Vec2(-2.0f, 0.0f);
-			const auto p2 = Vec2(+2.0f, 0.0f);
+			const auto p1 = Vec2(-2.0f, 0.0f) * Meter;
+			const auto p2 = Vec2(+2.0f, 0.0f) * Meter;
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
@@ -59,7 +59,7 @@ public:
 			bd.position = p2;
 			const auto rightFlipper = m_world->CreateBody(bd);
 
-			const auto box = std::make_shared<PolygonShape>(1.75f, 0.1f);
+			const auto box = std::make_shared<PolygonShape>(1.75f * Meter, 0.1f * Meter);
 			box->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 
 			leftFlipper->CreateFixture(box);
@@ -67,9 +67,9 @@ public:
 
 			RevoluteJointDef jd;
 			jd.bodyA = ground;
-			jd.localAnchorB = Vec2_zero;
+			jd.localAnchorB = Vec2_zero * Meter;
 			jd.enableMotor = true;
-			jd.maxMotorTorque = 1000.0f;
+			jd.maxMotorTorque = 1000.0f * NewtonMeter;
 			jd.enableLimit = true;
 
 			jd.motorSpeed = AngularVelocity{0};
@@ -90,7 +90,7 @@ public:
 		// Circle character
 		{
 			BodyDef bd;
-			bd.position = Vec2(1.0f, 15.0f);
+			bd.position = Vec2(1.0f, 15.0f) * Meter;
 			bd.type = BodyType::Dynamic;
 			bd.bullet = true;
 
@@ -98,7 +98,7 @@ public:
 
 			auto conf = CircleShape::Conf{};
 			conf.density = RealNum{1} * KilogramPerSquareMeter;
-			conf.vertexRadius = 0.2f;
+			conf.vertexRadius = 0.2f * Meter;
 			m_ball->CreateFixture(std::make_shared<CircleShape>(conf));
 		}
 	}

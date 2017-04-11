@@ -34,7 +34,7 @@ struct ToiConf;
 	
 /// Friction mixing law. The idea is to allow either fixture to drive the resulting friction to zero.
 /// For example, anything slides on ice.
-inline RealNum MixFriction(RealNum friction1, RealNum friction2) noexcept(noexcept(Sqrt(friction1 * friction2)))
+inline RealNum MixFriction(RealNum friction1, RealNum friction2)
 {
 	return Sqrt(friction1 * friction2);
 }
@@ -124,10 +124,10 @@ public:
 	RealNum GetRestitution() const noexcept;
 
 	/// Set the desired tangent speed for a conveyor belt behavior. In meters per second.
-	void SetTangentSpeed(RealNum speed) noexcept;
+	void SetTangentSpeed(LinearVelocity speed) noexcept;
 
 	/// Gets the desired tangent speed. In meters per second.
-	RealNum GetTangentSpeed() const noexcept;
+	LinearVelocity GetTangentSpeed() const noexcept;
 
 	/// Calculates this contact's collision manifold.
 	/// @return Contact manifold with one or more points
@@ -249,7 +249,7 @@ private:
 	
 	FlagsType m_flags = e_enabledFlag;
 	
-	RealNum m_tangentSpeed = 0;
+	LinearVelocity m_tangentSpeed = 0;
 
 	
 	/// Time of impact.
@@ -375,12 +375,12 @@ inline RealNum Contact::GetRestitution() const noexcept
 	return m_restitution;
 }
 
-inline void Contact::SetTangentSpeed(RealNum speed) noexcept
+inline void Contact::SetTangentSpeed(LinearVelocity speed) noexcept
 {
 	m_tangentSpeed = speed;
 }
 
-inline RealNum Contact::GetTangentSpeed() const noexcept
+inline LinearVelocity Contact::GetTangentSpeed() const noexcept
 {
 	return m_tangentSpeed;
 }

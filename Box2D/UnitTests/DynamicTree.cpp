@@ -53,7 +53,7 @@ TEST(DynamicTree, CreateAndDestroyProxy)
 	ASSERT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
 	ASSERT_EQ(foo.GetNodeCount(), DynamicTree::size_type(0));
 
-	const auto aabb = AABB{Vec2{3, 1}, Vec2{-5, -2}};
+	const auto aabb = AABB{Vec2{3, 1} * Meter, Vec2{-5, -2} * Meter};
 	const auto userdata = nullptr;
 
 	const auto pid = foo.CreateProxy(aabb, userdata);
@@ -82,7 +82,7 @@ TEST(DynamicTree, FourIdenticalProxies)
 	ASSERT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
 	ASSERT_EQ(foo.GetNodeCount(), DynamicTree::size_type(0));
 
-	const auto aabb = AABB{Vec2{3, 1}, Vec2{-5, -2}};
+	const auto aabb = AABB{Vec2{3, 1} * Meter, Vec2{-5, -2} * Meter};
 	const auto userdata = nullptr;
 	
 	{

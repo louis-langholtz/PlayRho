@@ -33,9 +33,9 @@ namespace box2d {
 class EdgeShape : public Shape
 {
 public:
-	static constexpr RealNum GetDefaultVertexRadius() noexcept
+	static constexpr Length GetDefaultVertexRadius() noexcept
 	{
-		return DefaultLinearSlop * 2;
+		return DefaultLinearSlop * RealNum{2};
 	}
 
 	struct Conf: public Shape::Conf
@@ -44,8 +44,8 @@ public:
 		{
 		}
 		
-		Vec2 v0 = GetInvalid<Vec2>();
-		Vec2 v3 = GetInvalid<Vec2>();
+		Length2D v0 = GetInvalid<Length2D>();
+		Length2D v3 = GetInvalid<Length2D>();
 	};
 	
 	static Conf GetDefaultConf() noexcept
@@ -59,7 +59,7 @@ public:
 		// Intentionally empty.
 	}
 
-	constexpr EdgeShape(Vec2 v1, Vec2 v2, const Conf& conf = GetDefaultConf()) noexcept:
+	constexpr EdgeShape(Length2D v1, Length2D v2, const Conf& conf = GetDefaultConf()) noexcept:
 		Shape{e_edge, conf},
 		m_vertex0{conf.v0}, m_vertex1{v1}, m_vertex2{v2}, m_vertex3{conf.v3}
 	{
@@ -69,35 +69,35 @@ public:
 	EdgeShape(const EdgeShape&) = default;
 
 	/// Set this as an isolated edge.
-	void Set(const Vec2 v1, const Vec2 v2);
+	void Set(const Length2D v1, const Length2D v2);
 
-	Vec2 GetVertex0() const noexcept { return m_vertex0; }
-	Vec2 GetVertex1() const noexcept { return m_vertex1; }
-	Vec2 GetVertex2() const noexcept { return m_vertex2; }
-	Vec2 GetVertex3() const noexcept { return m_vertex3; }
+	Length2D GetVertex0() const noexcept { return m_vertex0; }
+	Length2D GetVertex1() const noexcept { return m_vertex1; }
+	Length2D GetVertex2() const noexcept { return m_vertex2; }
+	Length2D GetVertex3() const noexcept { return m_vertex3; }
 
-	void SetVertex0(const Vec2 v) noexcept;
-	void SetVertex3(const Vec2 v) noexcept;
+	void SetVertex0(const Length2D v) noexcept;
+	void SetVertex3(const Length2D v) noexcept;
 
 	bool HasVertex0() const noexcept { return IsValid(m_vertex0); }
 	bool HasVertex3() const noexcept { return IsValid(m_vertex3); }
 
 private:
 	/// These are the edge vertices
-	Vec2 m_vertex1;
-	Vec2 m_vertex2;
+	Length2D m_vertex1;
+	Length2D m_vertex2;
 
 	/// Optional adjacent vertices. These are used for smooth collision.
-	Vec2 m_vertex0 = GetInvalid<Vec2>();
-	Vec2 m_vertex3 = GetInvalid<Vec2>();
+	Length2D m_vertex0 = GetInvalid<Length2D>();
+	Length2D m_vertex3 = GetInvalid<Length2D>();
 };
 
-inline void EdgeShape::SetVertex0(const Vec2 v) noexcept
+inline void EdgeShape::SetVertex0(const Length2D v) noexcept
 {
 	m_vertex0 = v;
 }
 
-inline void EdgeShape::SetVertex3(const Vec2 v) noexcept
+inline void EdgeShape::SetVertex3(const Length2D v) noexcept
 {
 	m_vertex3 = v;
 }
@@ -110,7 +110,7 @@ child_count_t GetChildCount(const EdgeShape& shape);
 /// @param xf the shape world transform.
 /// @param p a point in world coordinates.
 /// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
-bool TestPoint(const EdgeShape& shape, const Transformation& xf, const Vec2 p);
+bool TestPoint(const EdgeShape& shape, const Transformation& xf, const Length2D p);
 
 } // namespace box2d
 

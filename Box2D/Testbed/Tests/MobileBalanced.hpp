@@ -35,28 +35,28 @@ public:
 
 	MobileBalanced()
 	{
-		const auto ground = m_world->CreateBody(BodyDef{}.UseLocation(Vec2(0.0f, 20.0f)));
+		const auto ground = m_world->CreateBody(BodyDef{}.UseLocation(Vec2(0.0f, 20.0f) * Meter));
 
 		const auto a = 0.5f;
-		Vec2 h(0.0f, a);
+		const auto h = Vec2(0.0f, a) * Meter;
 
 		auto conf = PolygonShape::Conf{};
 		conf.density = density;
-		const auto shape = std::make_shared<const PolygonShape>(0.25f * a, a, conf);
-		const auto root = AddNode(ground, Vec2_zero, 0, 3.0f, a, shape);
+		const auto shape = std::make_shared<const PolygonShape>(0.25f * a * Meter, a * Meter, conf);
+		const auto root = AddNode(ground, Vec2_zero * Meter, 0, 3.0f, a, shape);
 
 		RevoluteJointDef jointDef;
 		jointDef.bodyA = ground;
 		jointDef.bodyB = root;
-		jointDef.localAnchorA = Vec2_zero;
+		jointDef.localAnchorA = Vec2_zero * Meter;
 		jointDef.localAnchorB = h;
 		m_world->CreateJoint(jointDef);
 	}
 
-	Body* AddNode(const Body* parent, const Vec2 localAnchor, const int32 depth,
+	Body* AddNode(const Body* parent, const Length2D localAnchor, const int32 depth,
 				  const float offset, const float a, std::shared_ptr<const Shape> shape)
 	{
-		const auto h = Vec2(0.0f, a);
+		const auto h = Vec2(0.0f, a) * Meter;
 
 		const auto p = parent->GetLocation() + localAnchor - h;
 
@@ -72,13 +72,13 @@ public:
 			return body;
 		}
 
-		PolygonShape shape2(0.25f * a, a);
+		PolygonShape shape2(0.25f * a * Meter, a * Meter);
 		shape2.SetDensity(density);
-		SetAsBox(shape2, offset, 0.25f * a, Vec2(0, -a), 0.0f * Radian);
+		SetAsBox(shape2, offset * Meter, 0.25f * a * Meter, Vec2(0, -a) * Meter, 0.0f * Radian);
 		body->CreateFixture(std::make_shared<PolygonShape>(shape2));
 
-		const auto a1 = Vec2(offset, -a);
-		const auto a2 = Vec2(-offset, -a);
+		const auto a1 = Vec2(offset, -a) * Meter;
+		const auto a2 = Vec2(-offset, -a) * Meter;
 		const auto body1 = AddNode(body, a1, depth + 1, 0.5f * offset, a, shape);
 		const auto body2 = AddNode(body, a2, depth + 1, 0.5f * offset, a, shape);
 

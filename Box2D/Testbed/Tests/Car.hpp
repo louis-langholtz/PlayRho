@@ -28,7 +28,7 @@ class Car : public Test
 public:
 	Car()
 	{		
-		m_hz = 4.0f;
+		m_hz = 4.0f * Hertz;
 		m_zeta = 0.7f;
 		m_speed = RealNum{50} * RadianPerSecond;
 
@@ -36,7 +36,7 @@ public:
 		{
 			EdgeShape shape;
 
-			shape.Set(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
+			shape.Set(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter);
 			shape.SetDensity(RealNum{0} * KilogramPerSquareMeter);
 			shape.SetFriction(0.6f);
 			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
@@ -50,7 +50,7 @@ public:
 			for (auto i = 0; i < 10; ++i)
 			{
 				const auto y2 = hs[i];
-				shape.Set(Vec2(x, y1), Vec2(x + dx, y2));
+				shape.Set(Vec2(x, y1) * Meter, Vec2(x + dx, y2) * Meter);
 				ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 				y1 = y2;
 				x += dx;
@@ -59,40 +59,40 @@ public:
 			for (auto i = 0; i < 10; ++i)
 			{
 				const auto y2 = hs[i];
-				shape.Set(Vec2(x, y1), Vec2(x + dx, y2));
+				shape.Set(Vec2(x, y1) * Meter, Vec2(x + dx, y2) * Meter);
 				ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 				y1 = y2;
 				x += dx;
 			}
 
-			shape.Set(Vec2(x, 0.0f), Vec2(x + 40.0f, 0.0f));
+			shape.Set(Vec2(x, 0.0f) * Meter, Vec2(x + 40.0f, 0.0f) * Meter);
 			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
 			x += 80.0f;
-			shape.Set(Vec2(x, 0.0f), Vec2(x + 40.0f, 0.0f));
+			shape.Set(Vec2(x, 0.0f) * Meter, Vec2(x + 40.0f, 0.0f) * Meter);
 			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
 			x += 40.0f;
-			shape.Set(Vec2(x, 0.0f), Vec2(x + 10.0f, 5.0f));
+			shape.Set(Vec2(x, 0.0f) * Meter, Vec2(x + 10.0f, 5.0f) * Meter);
 			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
 			x += 20.0f;
-			shape.Set(Vec2(x, 0.0f), Vec2(x + 40.0f, 0.0f));
+			shape.Set(Vec2(x, 0.0f) * Meter, Vec2(x + 40.0f, 0.0f) * Meter);
 			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
 			x += 40.0f;
-			shape.Set(Vec2(x, 0.0f), Vec2(x, 20.0f));
+			shape.Set(Vec2(x, 0.0f) * Meter, Vec2(x, 20.0f) * Meter);
 			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 		}
 
 		// Teeter
 		{
 			BodyDef bd;
-			bd.position = Vec2(140.0f, 1.0f);
+			bd.position = Vec2(140.0f, 1.0f) * Meter;
 			bd.type = BodyType::Dynamic;
 			const auto body = m_world->CreateBody(bd);
 
-			const auto box = std::make_shared<PolygonShape>(10.0f, 0.25f);
+			const auto box = std::make_shared<PolygonShape>(10.0f * Meter, 0.25f * Meter);
 			box->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 			body->CreateFixture(box);
 
@@ -108,7 +108,7 @@ public:
 		// Bridge
 		{
 			const auto N = 20;
-			const auto shape = std::make_shared<PolygonShape>(1.0f, 0.125f);
+			const auto shape = std::make_shared<PolygonShape>(1.0f * Meter, 0.125f * Meter);
 			shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 			shape->SetFriction(0.6f);
 
@@ -117,23 +117,23 @@ public:
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
-				bd.position = Vec2(161.0f + 2.0f * i, -0.125f);
+				bd.position = Vec2(161.0f + 2.0f * i, -0.125f) * Meter;
 				const auto body = m_world->CreateBody(bd);
 				body->CreateFixture(shape);
 
 				m_world->CreateJoint(RevoluteJointDef{prevBody, body,
-					Vec2(160.0f + 2.0f * i, -0.125f)});
+					Vec2(160.0f + 2.0f * i, -0.125f) * Meter});
 
 				prevBody = body;
 			}
 
 			m_world->CreateJoint(RevoluteJointDef{prevBody, ground,
-				Vec2(160.0f + 2.0f * N, -0.125f)});
+				Vec2(160.0f + 2.0f * N, -0.125f) * Meter});
 		}
 
 		// Boxes
 		{
-			const auto box = std::make_shared<PolygonShape>(0.5f, 0.5f);
+			const auto box = std::make_shared<PolygonShape>(0.5f * Meter, 0.5f * Meter);
 			box->SetDensity(RealNum{0.5f} * KilogramPerSquareMeter);
 
 			auto body = static_cast<Body*>(nullptr);
@@ -141,23 +141,23 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 
-			bd.position = Vec2(230.0f, 0.5f);
+			bd.position = Vec2(230.0f, 0.5f) * Meter;
 			body = m_world->CreateBody(bd);
 			body->CreateFixture(box);
 
-			bd.position = Vec2(230.0f, 1.5f);
+			bd.position = Vec2(230.0f, 1.5f) * Meter;
 			body = m_world->CreateBody(bd);
 			body->CreateFixture(box);
 
-			bd.position = Vec2(230.0f, 2.5f);
+			bd.position = Vec2(230.0f, 2.5f) * Meter;
 			body = m_world->CreateBody(bd);
 			body->CreateFixture(box);
 
-			bd.position = Vec2(230.0f, 3.5f);
+			bd.position = Vec2(230.0f, 3.5f) * Meter;
 			body = m_world->CreateBody(bd);
 			body->CreateFixture(box);
 
-			bd.position = Vec2(230.0f, 4.5f);
+			bd.position = Vec2(230.0f, 4.5f) * Meter;
 			body = m_world->CreateBody(bd);
 			body->CreateFixture(box);
 		}
@@ -166,39 +166,39 @@ public:
 		{
 			auto chassis = std::make_shared<PolygonShape>();
 			chassis->Set({
-				Vec2(-1.5f, -0.5f),
-				Vec2(1.5f, -0.5f),
-				Vec2(1.5f, 0.0f),
-				Vec2(0.0f, 0.9f),
-				Vec2(-1.15f, 0.9f),
-				Vec2(-1.5f, 0.2f)
+				Vec2(-1.5f, -0.5f) * Meter,
+				Vec2(1.5f, -0.5f) * Meter,
+				Vec2(1.5f, 0.0f) * Meter,
+				Vec2(0.0f, 0.9f) * Meter,
+				Vec2(-1.15f, 0.9f) * Meter,
+				Vec2(-1.5f, 0.2f) * Meter
 			});
 			chassis->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 
-			const auto circle = std::make_shared<CircleShape>(RealNum(0.4));
+			const auto circle = std::make_shared<CircleShape>(RealNum(0.4) * Meter);
 			circle->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 			circle->SetFriction(0.9f);
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(0.0f, 1.0f);
+			bd.position = Vec2(0.0f, 1.0f) * Meter;
 			m_car = m_world->CreateBody(bd);
 			m_car->CreateFixture(chassis);
 
-			bd.position = Vec2(-1.0f, 0.35f);
+			bd.position = Vec2(-1.0f, 0.35f) * Meter;
 			m_wheel1 = m_world->CreateBody(bd);
 			m_wheel1->CreateFixture(circle);
 
-			bd.position = Vec2(1.0f, 0.4f);
+			bd.position = Vec2(1.0f, 0.4f) * Meter;
 			m_wheel2 = m_world->CreateBody(bd);
 			m_wheel2->CreateFixture(circle);
 
 			WheelJointDef jd;
-			Vec2 axis(0.0f, 1.0f);
+			const auto axis = UnitVec2::GetTop();
 
 			jd.Initialize(m_car, m_wheel1, m_wheel1->GetLocation(), axis);
 			jd.motorSpeed = AngularVelocity{0};
-			jd.maxMotorTorque = 20.0f;
+			jd.maxMotorTorque = 20.0f * NewtonMeter;
 			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
@@ -206,7 +206,7 @@ public:
 
 			jd.Initialize(m_car, m_wheel2, m_wheel2->GetLocation(), axis);
 			jd.motorSpeed = AngularVelocity{0};
-			jd.maxMotorTorque = 10.0f;
+			jd.maxMotorTorque = 10.0f * NewtonMeter;
 			jd.enableMotor = false;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
@@ -231,13 +231,13 @@ public:
 			break;
 
 		case Key_Q:
-			m_hz = Max(RealNum(0), m_hz - 1.0f);
+			m_hz = Max(RealNum(0) * Hertz, m_hz - 1.0f * Hertz);
 			m_spring1->SetSpringFrequencyHz(m_hz);
 			m_spring2->SetSpringFrequencyHz(m_hz);
 			break;
 
 		case Key_E:
-			m_hz += 1.0f;
+			m_hz += 1.0f * Hertz;
 			m_spring1->SetSpringFrequencyHz(m_hz);
 			m_spring2->SetSpringFrequencyHz(m_hz);
 			break;
@@ -249,14 +249,14 @@ public:
 
 	void PreStep(const Settings&, Drawer& drawer) override
 	{
-		drawer.SetTranslation(Vec2{m_car->GetLocation().x, drawer.GetTranslation().y});
+		drawer.SetTranslation(Length2D{m_car->GetLocation().x, drawer.GetTranslation().y});
 	}
 
 	void PostStep(const Settings&, Drawer& drawer) override
 	{
 		drawer.DrawString(5, m_textLine, "Keys: left = a, brake = s, right = d, hz down = q, hz up = e");
 		m_textLine += DRAW_STRING_NEW_LINE;
-		drawer.DrawString(5, m_textLine, "frequency = %g hz, damping ratio = %g", m_hz, m_zeta);
+		drawer.DrawString(5, m_textLine, "frequency = %g hz, damping ratio = %g", double{m_hz / Hertz}, m_zeta);
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 	
@@ -269,7 +269,7 @@ public:
 	Body* m_wheel1;
 	Body* m_wheel2;
 
-	RealNum m_hz;
+	Frequency m_hz ;
 	RealNum m_zeta;
 	AngularVelocity m_speed;
 	WheelJoint* m_spring1;

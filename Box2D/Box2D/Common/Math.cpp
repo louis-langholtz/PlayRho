@@ -21,7 +21,7 @@
 
 using namespace box2d;
 
-Vec2 box2d::ComputeCentroid(const Span<const Vec2>& vertices)
+Length2D box2d::ComputeCentroid(const Span<const Length2D>& vertices)
 {
 	assert(vertices.size() >= 3);
 	
@@ -41,17 +41,18 @@ Vec2 box2d::ComputeCentroid(const Span<const Vec2>& vertices)
 		
 		const auto e1 = p2 - p1;
 		const auto e2 = p3 - p1;
-				
-		const auto triangleArea = Cross(e1, e2) / 2;
+		
+		const auto triangleArea = Cross(StripUnits(e1), StripUnits(e2)) / 2.0f;
 		area += triangleArea;
 		
 		// Area weighted centroid
-		c += triangleArea * (p1 + p2 + p3) / 3;
+		const auto aveP = (p1 + p2 + p3) / 3.0f;
+		c += triangleArea * StripUnits(aveP);
 	}
 	
 	// Centroid
 	assert((area > 0) && !almost_zero(area));
-	return c / area;
+	return (c / area) * Meter;
 }
 
 ::std::ostream& box2d::operator<<(::std::ostream& os, const Vec2& value)

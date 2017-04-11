@@ -38,24 +38,24 @@ public:
 		// Ground
 		{
 			const auto ground = m_world->CreateBody();
-			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f)));
+			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
 		}
 
 		// Platform
 		{
 			BodyDef bd;
-			bd.position = Vec2(0.0f, 10.0f);
+			bd.position = Vec2(0.0f, 10.0f) * Meter;
 			const auto body = m_world->CreateBody(bd);
-			m_platform = body->CreateFixture(std::make_shared<PolygonShape>(3.0f, 0.5f));
-			m_bottom = 10.0f - 0.5f;
-			m_top = 10.0f + 0.5f;
+			m_platform = body->CreateFixture(std::make_shared<PolygonShape>(3.0f * Meter, 0.5f * Meter));
+			m_bottom = (10.0f - 0.5f) * Meter;
+			m_top = (10.0f + 0.5f) * Meter;
 		}
 
 		// Actor
 		{
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(0.0f, 12.0f);
+			bd.position = Vec2(0.0f, 12.0f) * Meter;
 			const auto body = m_world->CreateBody(bd);
 			auto conf = CircleShape::Conf{};
 			conf.vertexRadius = m_radius;
@@ -113,9 +113,9 @@ public:
 		return new OneSidedPlatform;
 	}
 
-	RealNum m_radius = 0.5f;
-	RealNum m_top;
-	RealNum m_bottom;
+	Length m_radius = 0.5f * Meter;
+	Length m_top;
+	Length m_bottom;
 	State m_state = e_unknown;
 	Fixture* m_platform;
 	Fixture* m_character;

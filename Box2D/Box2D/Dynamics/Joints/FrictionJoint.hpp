@@ -31,19 +31,19 @@ struct FrictionJointDef : public JointDef
 
 	/// Initialize the bodies, anchors, axis, and reference angle using the world
 	/// anchor and world axis.
-	void Initialize(Body* bodyA, Body* bodyB, const Vec2 anchor);
+	void Initialize(Body* bodyA, Body* bodyB, const Length2D anchor);
 
 	/// The local anchor point relative to bodyA's origin.
-	Vec2 localAnchorA = Vec2_zero;
+	Length2D localAnchorA = Vec2_zero * Meter;
 
 	/// The local anchor point relative to bodyB's origin.
-	Vec2 localAnchorB = Vec2_zero;
+	Length2D localAnchorB = Vec2_zero * Meter;
 
 	/// The maximum friction force in N.
-	RealNum maxForce = 0;
+	Force maxForce = Force{0};
 
 	/// The maximum friction torque in N-m.
-	RealNum maxTorque = 0;
+	Torque maxTorque = Torque{0};
 };
 
 /// Friction joint. This is used for top-down friction.
@@ -53,29 +53,29 @@ class FrictionJoint : public Joint
 public:
 	FrictionJoint(const FrictionJointDef& def);
 
-	Vec2 GetAnchorA() const override;
-	Vec2 GetAnchorB() const override;
+	Length2D GetAnchorA() const override;
+	Length2D GetAnchorB() const override;
 
-	Vec2 GetReactionForce(Frequency inv_dt) const override;
-	RealNum GetReactionTorque(Frequency inv_dt) const override;
+	Force2D GetReactionForce(Frequency inv_dt) const override;
+	Torque GetReactionTorque(Frequency inv_dt) const override;
 
 	/// The local anchor point relative to bodyA's origin.
-	Vec2 GetLocalAnchorA() const { return m_localAnchorA; }
+	Length2D GetLocalAnchorA() const { return m_localAnchorA; }
 
 	/// The local anchor point relative to bodyB's origin.
-	Vec2 GetLocalAnchorB() const  { return m_localAnchorB; }
+	Length2D GetLocalAnchorB() const  { return m_localAnchorB; }
 
 	/// Set the maximum friction force in N.
-	void SetMaxForce(RealNum force);
+	void SetMaxForce(Force force);
 
 	/// Get the maximum friction force in N.
-	RealNum GetMaxForce() const;
+	Force GetMaxForce() const;
 
 	/// Set the maximum friction torque in N*m.
-	void SetMaxTorque(RealNum torque);
+	void SetMaxTorque(Torque torque);
 
 	/// Get the maximum friction torque in N*m.
-	RealNum GetMaxTorque() const;
+	Torque GetMaxTorque() const;
 
 private:
 
@@ -83,26 +83,20 @@ private:
 	RealNum SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) override;
 	bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
 
-	Vec2 m_localAnchorA;
-	Vec2 m_localAnchorB;
+	Length2D m_localAnchorA;
+	Length2D m_localAnchorB;
 
 	// Solver shared
-	Vec2 m_linearImpulse = Vec2_zero; ///< Linear impulse.
-	RealNum m_angularImpulse = 0;
-	RealNum m_maxForce;
-	RealNum m_maxTorque;
+	Momentum2D m_linearImpulse = Vec2_zero * Kilogram * MeterPerSecond;
+	AngularMomentum m_angularImpulse = AngularMomentum{0};
+	Force m_maxForce;
+	Torque m_maxTorque;
 
 	// Solver temp
-	Vec2 m_rA;
-	Vec2 m_rB;
-	Vec2 m_localCenterA;
-	Vec2 m_localCenterB;
-	RealNum m_invMassA;
-	RealNum m_invMassB;
-	RealNum m_invIA;
-	RealNum m_invIB;
+	Length2D m_rA;
+	Length2D m_rB;
 	Mat22 m_linearMass;
-	RealNum m_angularMass;
+	RotInertia m_angularMass;
 };
 
 } // namespace box2d

@@ -28,8 +28,8 @@ namespace box2d
 	/// @detail The ray extends from p1 to p1 + maxFraction * (p2 - p1).
 	struct RayCastInput
 	{
-		Vec2 p1; ///< Point 1.
-		Vec2 p2; ///< Point 2.
+		Length2D p1; ///< Point 1.
+		Length2D p2; ///< Point 2.
 		RealNum maxFraction; ///< Max fraction.
 	};
 	

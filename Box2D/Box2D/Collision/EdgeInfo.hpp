@@ -31,10 +31,10 @@ namespace box2d
 	public:
 		EdgeInfo() = default;
 		
-		EdgeInfo(const EdgeShape& edge, const Vec2 centroid) noexcept;
+		EdgeInfo(const EdgeShape& edge, const Length2D centroid) noexcept;
 		
-		Vec2 GetVertex1() const noexcept { return m_vertex1; }
-		Vec2 GetVertex2() const noexcept { return m_vertex2; }
+		Length2D GetVertex1() const noexcept { return m_vertex1; }
+		Length2D GetVertex2() const noexcept { return m_vertex2; }
 		UnitVec2 GetEdge1() const noexcept { return m_edge1; }
 		UnitVec2 GetNormal1() const noexcept { return m_normal1; }
 		
@@ -54,11 +54,11 @@ namespace box2d
 		
 		UnitVec2 GetUpperLimit() const noexcept { return m_upperLimit; }
 		
-		RealNum GetVertexRadius() const noexcept { return m_vertexRadius; }
+		Length GetVertexRadius() const noexcept { return m_vertexRadius; }
 		
 	private:
-		Vec2 m_vertex1;
-		Vec2 m_vertex2;
+		Length2D m_vertex1;
+		Length2D m_vertex2;
 		UnitVec2 m_edge1; ///< Edge 1. @detail A unit vector of edge shape's vertex 2 - vertex 1.
 		UnitVec2 m_normal1; ///< Normal 1. @detail Forward perpendicular of edge 1.
 		
@@ -72,7 +72,7 @@ namespace box2d
 		UnitVec2 m_lowerLimit;
 		UnitVec2 m_upperLimit;
 		
-		RealNum m_vertexRadius;
+		Length m_vertexRadius;
 		
 		void SetNormalLowerUpper(UnitVec2 normal, UnitVec2 lower, UnitVec2 upper) noexcept
 		{

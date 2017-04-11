@@ -97,7 +97,7 @@ public:
 	/// @detail Linear slop for position resolution.
 	/// @note Must be greater than 0.
 	/// @note Used in both the regular and TOI phases of step processing.
-	RealNum linearSlop = DefaultLinearSlop;
+	Length linearSlop = DefaultLinearSlop;
 	
 	/// Angular slop.
 	/// @note Must be greater than 0.
@@ -120,7 +120,7 @@ public:
 	/// of the regular position iterations have been done.
 	/// @note Used in the regular phase of step processing.
 	/// @sa regPositionIterations.
-	RealNum regMinSeparation = -DefaultLinearSlop * 3;
+	Length regMinSeparation = -DefaultLinearSlop * RealNum{3};
 	
 	/// Time of impact resolution rate.
 	/// @detail
@@ -138,7 +138,7 @@ public:
 	/// of the TOI position iterations have been done.
 	/// @note Used in the TOI phase of step processing.
 	/// @sa toiPositionIterations.
-	RealNum toiMinSeparation = -DefaultLinearSlop * RealNum(1.5f);
+	Length toiMinSeparation = -DefaultLinearSlop * RealNum(1.5f);
 
 	/// Target depth.
 	/// @detail Target depth of overlap for calculating the TOI for CCD elligible bodies.
@@ -146,7 +146,7 @@ public:
 	/// @note Must not be subnormal.
  	/// @note Must be less than twice the world's minimum vertex radius.
 	/// @note Used in the TOI phase of step processing.
-	RealNum targetDepth = DefaultLinearSlop * 3;
+	Length targetDepth = DefaultLinearSlop * RealNum{3};
 	
 	/// Tolerance.
 	/// @detail The acceptable plus or minus tolerance from the target depth for TOI calculations.
@@ -154,13 +154,13 @@ public:
 	/// @note Must not be subnormal.
 	/// @note Must be less than the target depth.
 	/// @note Used in the TOI phase of step processing.
-	RealNum tolerance = DefaultLinearSlop / 4;
+	Length tolerance = DefaultLinearSlop / RealNum{4};
 
 	/// Velocity threshold.
 	/// @detail A velocity threshold for elastic collisions. Any collision with a relative linear
 	/// velocity below this threshold will be treated as inelastic.
 	/// @note Used in both the regular and TOI phases of step processing.
-	RealNum velocityThreshold = DefaultVelocityThreshold;
+	LinearVelocity velocityThreshold = DefaultVelocityThreshold;
 
 	/// Maximum translation.
 	/// @detail The maximum linear velocity of a body.
@@ -180,7 +180,7 @@ public:
 	/// @note Must be greater than 0 for any positional resolution to get done.
 	/// @note This value should be greater than the linear slop value.
 	/// @note Used in both the regular and TOI phases of step processing.
-	RealNum maxLinearCorrection = DefaultMaxLinearCorrection;
+	Length maxLinearCorrection = DefaultMaxLinearCorrection;
 	
 	/// Maximum angular correction.
 	/// @note Used in both the regular and TOI phases of step processing.
@@ -203,7 +203,7 @@ public:
 	///    a tree adjustment.
 	/// @note This is in meters.
 	/// @note Should be greater than 0.
-	RealNum aabbExtension = DefaultAabbExtension;
+	Length aabbExtension = DefaultAabbExtension;
 
 	/// Regular velocity iterations.
 	/// @detail The number of iterations of velocity resolution that will be done in the step.
@@ -271,9 +271,9 @@ private:
 	Frequency invTime = DefaultStepFrequency; ///< Inverse time step (1/dt or 0 if dt == 0). @see dt.
 };
 
-inline RealNum GetMaxRegLinearCorrection(const StepConf& conf) noexcept
+inline Length GetMaxRegLinearCorrection(const StepConf& conf) noexcept
 {
-	return conf.maxLinearCorrection * conf.regPositionIterations;
+	return conf.maxLinearCorrection * static_cast<RealNum>(conf.regPositionIterations);
 }
 
 bool IsMaxTranslationWithinTolerance(const StepConf& conf) noexcept;

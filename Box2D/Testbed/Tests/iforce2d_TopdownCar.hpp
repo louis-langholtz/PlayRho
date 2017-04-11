@@ -88,9 +88,9 @@ private:
 	Body* m_body;
 	std::set<GroundAreaFUD*> m_groundAreas;
 	float m_maxDriveForce;
-	float m_maxForwardSpeed;
-	float m_maxBackwardSpeed;
-	float m_maxLateralImpulse;
+	LinearVelocity m_maxForwardSpeed;
+	LinearVelocity m_maxBackwardSpeed;
+	Momentum m_maxLateralImpulse;
 	float m_currentTraction;
 	
 public:
@@ -102,7 +102,7 @@ public:
 		m_body = world->CreateBody(bodyDef);
 		
 		PolygonShape polygonShape;
-		polygonShape.SetAsBox( 0.5f, 1.25f );
+		polygonShape.SetAsBox(0.5f * Meter, 1.25f * Meter);
 		polygonShape.SetDensity(RealNum{1} * KilogramPerSquareMeter);
 		Fixture* fixture = m_body->CreateFixture(std::make_shared<PolygonShape>(polygonShape));//shape, density
 		fixture->SetUserData( new CarTireFUD() );
@@ -117,7 +117,7 @@ public:
 		m_body->GetWorld()->Destroy(m_body);
 	}
 	
-	void setCharacteristics(float maxForwardSpeed, float maxBackwardSpeed, float maxDriveForce, float maxLateralImpulse)
+	void setCharacteristics(LinearVelocity maxForwardSpeed, LinearVelocity maxBackwardSpeed, float maxDriveForce, Momentum maxLateralImpulse)
 	{
 		m_maxForwardSpeed = maxForwardSpeed;
 		m_maxBackwardSpeed = maxBackwardSpeed;
@@ -152,25 +152,25 @@ public:
 		return m_body;
 	}
 	
-	Vec2 getLateralVelocity()
+	LinearVelocity2D getLateralVelocity()
 	{
-		const auto currentRightNormal = GetWorldVector(*m_body, Vec2(1,0) );
-		const auto vel = GetLinearVelocity(*m_body);
-		return Dot(currentRightNormal, Vec2{vel.x / MeterPerSecond, vel.y / MeterPerSecond}) * currentRightNormal;
+		const auto currentRightNormal = GetWorldVector(*m_body, UnitVec2::GetRight());
+		const auto vel = Rotate(GetLinearVelocity(*m_body), currentRightNormal);
+		return Dot(currentRightNormal, vel) * currentRightNormal;
 	}
 	
-	Vec2 getForwardVelocity()
+	LinearVelocity2D getForwardVelocity()
 	{
-		const auto currentForwardNormal = GetWorldVector(*m_body, Vec2(0,1) );
-		const auto vel = GetLinearVelocity(*m_body);
-		return Dot(currentForwardNormal, Vec2{vel.x / MeterPerSecond, vel.y / MeterPerSecond}) * currentForwardNormal;
+		const auto currentForwardNormal = GetWorldVector(*m_body, UnitVec2::GetTop());
+		const auto vel = Rotate(GetLinearVelocity(*m_body), currentForwardNormal);
+		return Dot(currentForwardNormal, vel) * currentForwardNormal;
 	}
 	
 	void updateFriction()
 	{
 		//lateral linear velocity
-		auto impulse = RealNum{GetMass(*m_body) / Kilogram} * -getLateralVelocity();
-		const auto length = GetLength(impulse);
+		auto impulse = Momentum2D{GetMass(*m_body) * -getLateralVelocity()};
+		const auto length = GetLength(StripUnits(impulse)) * Kilogram * MeterPerSecond;
 		if ( length > m_maxLateralImpulse )
 			impulse *= m_maxLateralImpulse / length;
 		ApplyLinearImpulse(*m_body, m_currentTraction * impulse, m_body->GetWorldCenter());
@@ -180,16 +180,18 @@ public:
 		ApplyAngularImpulse(*m_body, m_currentTraction * 0.1f * rotInertia * -GetAngularVelocity(*m_body) / RadianPerSecond);
 		
 		//forward linear velocity
-		auto currentForwardNormal = getForwardVelocity();
-		const auto currentForwardSpeed = Normalize(currentForwardNormal);
-		const auto dragForceMagnitude = -2 * currentForwardSpeed;
-		SetForce(*m_body, m_currentTraction * dragForceMagnitude * currentForwardNormal, m_body->GetWorldCenter());
+		const auto forwardVelocity = getForwardVelocity();
+		auto currentForwardSpeed = LinearVelocity{0};
+		const auto forwardDir = GetUnitVector(forwardVelocity, currentForwardSpeed);
+		const auto dragForceMagnitude = RealNum{-2} * currentForwardSpeed;
+		const auto newForce = Force2D{m_currentTraction * dragForceMagnitude * forwardDir * Kilogram / Second};
+		SetForce(*m_body, newForce, m_body->GetWorldCenter());
 	}
 	
 	void updateDrive(ControlStateType controlState)
 	{
 		//find desired speed
-		float desiredSpeed = 0;
+		auto desiredSpeed = LinearVelocity{0};
 		switch ( controlState & (TDC_UP|TDC_DOWN) ) {
 			case TDC_UP:   desiredSpeed = m_maxForwardSpeed;  break;
 			case TDC_DOWN: desiredSpeed = m_maxBackwardSpeed; break;
@@ -197,18 +199,20 @@ public:
 		}
 		
 		//find current speed in forward direction
-		const auto currentForwardNormal = GetWorldVector(*m_body, Vec2{0, 1});
+		const auto currentForwardNormal = GetWorldVector(*m_body, UnitVec2::GetTop());
 		const auto currentSpeed = Dot( getForwardVelocity(), currentForwardNormal );
 		
 		//apply necessary force
-		float force = 0;
-		if ( desiredSpeed > currentSpeed )
-			force = m_maxDriveForce;
-		else if ( desiredSpeed < currentSpeed )
-			force = -m_maxDriveForce;
+		auto forceMagnitude = Force{0};
+		if (desiredSpeed > currentSpeed)
+			forceMagnitude = m_maxDriveForce * Kilogram * MeterPerSquareSecond;
+		else if (desiredSpeed < currentSpeed)
+			forceMagnitude = -m_maxDriveForce * Kilogram * MeterPerSquareSecond;
 		else
 			return;
-		SetForce(*m_body, m_currentTraction * force * currentForwardNormal, m_body->GetWorldCenter());
+		
+		const auto newForce = Force2D{m_currentTraction * forceMagnitude * currentForwardNormal};
+		SetForce(*m_body, newForce, m_body->GetWorldCenter());
 	}
 	
 	void updateTurn(ControlStateType controlState)
@@ -241,17 +245,17 @@ public:
 		m_body = world->CreateBody(bodyDef);
 		m_body->SetAngularDamping(3);
 		
-		Vec2 vertices[8];
-		vertices[0] = Vec2(+1.5f,  +0.0f);
-		vertices[1] = Vec2(+3.0f,  +2.5f);
-		vertices[2] = Vec2(+2.8f,  +5.5f);
-		vertices[3] = Vec2(+1.0f, +10.0f);
-		vertices[4] = Vec2(-1.0f, +10.0f);
-		vertices[5] = Vec2(-2.8f,  +5.5f);
-		vertices[6] = Vec2(-3.0f,  +2.5f);
-		vertices[7] = Vec2(-1.5f,  +0.0f);
+		Length2D vertices[8];
+		vertices[0] = Vec2(+1.5f,  +0.0f) * Meter;
+		vertices[1] = Vec2(+3.0f,  +2.5f) * Meter;
+		vertices[2] = Vec2(+2.8f,  +5.5f) * Meter;
+		vertices[3] = Vec2(+1.0f, +10.0f) * Meter;
+		vertices[4] = Vec2(-1.0f, +10.0f) * Meter;
+		vertices[5] = Vec2(-2.8f,  +5.5f) * Meter;
+		vertices[6] = Vec2(-3.0f,  +2.5f) * Meter;
+		vertices[7] = Vec2(-1.5f,  +0.0f) * Meter;
 		PolygonShape polygonShape;
-		polygonShape.Set(Span<const Vec2>(vertices, 8));
+		polygonShape.Set(Span<const Length2D>(vertices, 8));
 		polygonShape.SetDensity(RealNum{0.1f} * KilogramPerSquareMeter);
 		m_body->CreateFixture(std::make_shared<PolygonShape>(polygonShape));
 		
@@ -261,14 +265,14 @@ public:
 		jointDef.enableLimit = true;
 		jointDef.lowerAngle = 0.0f * Degree;
 		jointDef.upperAngle = 0.0f * Degree;
-		jointDef.localAnchorB = Vec2{0, 0}; //center of tire
+		jointDef.localAnchorB = Vec2{0, 0} * Meter; //center of tire
 		
-		const auto maxForwardSpeed = 250.0f;
-		const auto maxBackwardSpeed = -40.0f;
+		const auto maxForwardSpeed = 250.0f * MeterPerSecond;
+		const auto maxBackwardSpeed = -40.0f * MeterPerSecond;
 		const auto backTireMaxDriveForce = 950.0f; // 300.0f;
 		const auto frontTireMaxDriveForce = 400.0f; // 500.0f;
-		const auto backTireMaxLateralImpulse = 9.0f; // 8.5f;
-		const auto frontTireMaxLateralImpulse = 9.0f; // 7.5f;
+		const auto backTireMaxLateralImpulse = 9.0f * Kilogram * MeterPerSecond; // 8.5f;
+		const auto frontTireMaxLateralImpulse = 9.0f * Kilogram * MeterPerSecond; // 7.5f;
 
 		TDTire* tire;
 
@@ -276,7 +280,7 @@ public:
 		tire = new TDTire(world);
 		tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
 		jointDef.bodyB = tire->GetBody();
-		jointDef.localAnchorA = Vec2( -3, 0.75f );
+		jointDef.localAnchorA = Vec2( -3, 0.75f ) * Meter;
 		world->CreateJoint(jointDef);
 		m_tires.push_back(tire);
 		
@@ -284,7 +288,7 @@ public:
 		tire = new TDTire(world);
 		tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
 		jointDef.bodyB = tire->GetBody();
-		jointDef.localAnchorA = Vec2( 3, 0.75f );
+		jointDef.localAnchorA = Vec2( 3, 0.75f ) * Meter;
 		world->CreateJoint( jointDef );
 		m_tires.push_back(tire);
 		
@@ -292,7 +296,7 @@ public:
 		tire = new TDTire(world);
 		tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
 		jointDef.bodyB = tire->GetBody();
-		jointDef.localAnchorA = Vec2( -3, 8.5f );
+		jointDef.localAnchorA = Vec2( -3, 8.5f ) * Meter;
 		flJoint = (RevoluteJoint*)world->CreateJoint( jointDef );
 		m_tires.push_back(tire);
 		
@@ -300,7 +304,7 @@ public:
 		tire = new TDTire(world);
 		tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
 		jointDef.bodyB = tire->GetBody();
-		jointDef.localAnchorA = Vec2( 3, 8.5f );
+		jointDef.localAnchorA = Vec2( 3, 8.5f ) * Meter;
 		frJoint = (RevoluteJoint*)world->CreateJoint( jointDef );
 		m_tires.push_back(tire);
 	}
@@ -375,11 +379,11 @@ public:
 			FixtureDef fixtureDef;
 			fixtureDef.isSensor = true;
 			
-			SetAsBox(polygonShape, 9, 7, Vec2(-10,15), 20.0f * Degree );
+			SetAsBox(polygonShape, RealNum{9} * Meter, RealNum{7} * Meter, Vec2(-10,15) * Meter, 20.0f * Degree );
 			groundAreaFixture = m_groundBody->CreateFixture(std::make_shared<PolygonShape>(polygonShape), fixtureDef);
 			groundAreaFixture->SetUserData( new GroundAreaFUD( 0.5f, false ) );
 			
-			SetAsBox(polygonShape, 9, 5, Vec2(5,20), -40.0f * Degree );
+			SetAsBox(polygonShape, RealNum{9} * Meter, RealNum{5} * Meter, Vec2(5,20) * Meter, -40.0f * Degree );
 			groundAreaFixture = m_groundBody->CreateFixture(std::make_shared<PolygonShape>(polygonShape), fixtureDef);
 			groundAreaFixture->SetUserData( new GroundAreaFUD( 0.2f, false ) );
 		}

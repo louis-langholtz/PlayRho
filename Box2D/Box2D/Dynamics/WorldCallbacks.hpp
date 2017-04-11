@@ -72,10 +72,10 @@ public:
 
 	count_t GetCount() const noexcept { return count; }
 
-	RealNum GetEntryNormal(count_t index) const noexcept { return normalImpulses[index]; }
-	RealNum GetEntryTanget(count_t index) const noexcept { return tangentImpulses[index]; }
+	Momentum GetEntryNormal(count_t index) const noexcept { return normalImpulses[index]; }
+	Momentum GetEntryTanget(count_t index) const noexcept { return tangentImpulses[index]; }
 	
-	void AddEntry(RealNum normal, RealNum tangent) noexcept
+	void AddEntry(Momentum normal, Momentum tangent) noexcept
 	{
 		assert(count < MaxManifoldPoints);
 		normalImpulses[count] = normal;
@@ -84,8 +84,8 @@ public:
 	}
 
 private:
-	RealNum normalImpulses[MaxManifoldPoints];
-	RealNum tangentImpulses[MaxManifoldPoints];
+	Momentum normalImpulses[MaxManifoldPoints];
+	Momentum tangentImpulses[MaxManifoldPoints];
 	count_t count = 0;
 };
 
@@ -190,7 +190,7 @@ public:
 	/// @return -1 to filter, 0 to terminate, fraction to clip the ray for closest hit,
 	///   1 to continue.
 	///
-	virtual RealNum ReportFixture(Fixture* fixture, const Vec2& point,
+	virtual RealNum ReportFixture(Fixture* fixture, const Length2D& point,
 								  const UnitVec2& normal, RealNum fraction) = 0;
 };
 

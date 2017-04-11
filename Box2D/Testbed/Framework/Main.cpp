@@ -75,7 +75,7 @@ namespace
 	Test* test;
 	Settings settings;
 	bool rightMouseDown;
-	Vec2 lastp;
+	Length2D lastp;
 }
 
 //
@@ -173,7 +173,7 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
 			// Pan left
 			if (mods == GLFW_MOD_CONTROL)
 			{
-				test->ShiftOrigin(Vec2(2.0f, 0.0f));
+				test->ShiftOrigin(Vec2(2.0f, 0.0f) * Meter);
 			}
 			else
 			{
@@ -185,7 +185,7 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
 			// Pan right
 			if (mods == GLFW_MOD_CONTROL)
 			{
-				test->ShiftOrigin(Vec2(-2.0f, 0.0f));
+				test->ShiftOrigin(Vec2(-2.0f, 0.0f) * Meter);
 			}
 			else
 			{
@@ -197,7 +197,7 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
 			// Pan down
 			if (mods == GLFW_MOD_CONTROL)
 			{
-				test->ShiftOrigin(Vec2(0.0f, 2.0f));
+				test->ShiftOrigin(Vec2(0.0f, 2.0f) * Meter);
 			}
 			else
 			{
@@ -209,7 +209,7 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
 			// Pan up
 			if (mods == GLFW_MOD_CONTROL)
 			{
-				test->ShiftOrigin(Vec2(0.0f, -2.0f));
+				test->ShiftOrigin(Vec2(0.0f, -2.0f) * Meter);
 			}
 			else
 			{
@@ -342,8 +342,8 @@ static void sMouseMotion(GLFWwindow*, double xd, double yd)
 	if (rightMouseDown)
 	{
 		const auto movement = pw - lastp;
-		g_camera.m_center.x -= static_cast<float>(movement.x);
-		g_camera.m_center.y -= static_cast<float>(movement.y);
+		g_camera.m_center.x -= static_cast<float>(movement.x / Meter);
+		g_camera.m_center.y -= static_cast<float>(movement.y / Meter);
 		lastp = ConvertScreenToWorld(g_camera, ps);
 	}
 }
@@ -433,6 +433,7 @@ static void sInterface()
 
 		imguiSeparatorLine();
 
+		const auto defaultLinearSlop = StripUnit(DefaultLinearSlop);
 		imguiSlider("Reg Vel Iters", &settings.regVelocityIterations, 0, 100, 1, true);
 		imguiSlider("Reg Pos Iters", &settings.regPositionIterations, 0, 100, 1, true);
 		imguiSlider("TOI Vel Iters", &settings.toiVelocityIterations, 0, 100, 1, true);
@@ -440,20 +441,20 @@ static void sInterface()
 		imguiSlider("Max Sub Steps", &settings.maxSubSteps, 0, 100, 1, true);
 		imguiSlider("Hertz", &settings.hz, -120.0f, 120.0f, 5.0f, true);
 		imguiSlider("Linear Slop", &settings.linearSlop,
-					static_cast<float>(DefaultLinearSlop / 10),
-					static_cast<float>(DefaultLinearSlop),
-					static_cast<float>(DefaultLinearSlop / 100),
+					static_cast<float>(defaultLinearSlop / 10),
+					static_cast<float>(defaultLinearSlop),
+					static_cast<float>(defaultLinearSlop / 100),
 					true);
 		imguiSlider("Angular Slop", &settings.angularSlop, (Pi * 2 / 1800), (Pi * 2 / 18), 0.001f, true);
 		imguiSlider("Reg Min Sep", &settings.regMinSeparation,
-					-5 * static_cast<float>(DefaultLinearSlop),
-					-0 * static_cast<float>(DefaultLinearSlop),
-					static_cast<float>(DefaultLinearSlop) / 20,
+					-5 * static_cast<float>(defaultLinearSlop),
+					-0 * static_cast<float>(defaultLinearSlop),
+					static_cast<float>(defaultLinearSlop) / 20,
 					true);
 		imguiSlider("TOI Min Sep", &settings.toiMinSeparation,
-					-5 * static_cast<float>(DefaultLinearSlop),
-					-0 * static_cast<float>(DefaultLinearSlop),
-					static_cast<float>(DefaultLinearSlop) / 20,
+					-5 * static_cast<float>(defaultLinearSlop),
+					-0 * static_cast<float>(defaultLinearSlop),
+					static_cast<float>(defaultLinearSlop) / 20,
 					true);
 		imguiSlider("Max Translation", &settings.maxTranslation, 0.0f, 8.0f, 0.05f, true);
 		imguiSlider("Max Rotation", &settings.maxRotation, 0.0f, 360.0f, 1.0f, true);

@@ -36,7 +36,7 @@ using namespace box2d;
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-void FrictionJointDef::Initialize(Body* bA, Body* bB, const Vec2 anchor)
+void FrictionJointDef::Initialize(Body* bA, Body* bB, const Length2D anchor)
 {
 	bodyA = bA;
 	bodyB = bB;
@@ -54,26 +54,19 @@ FrictionJoint::FrictionJoint(const FrictionJointDef& def):
 	// Intentionally empty.
 }
 
-void FrictionJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf&)
+void FrictionJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step,
+											const ConstraintSolverConf&)
 {
 	auto& bodiesA = bodies.at(GetBodyA());
 	auto& bodiesB = bodies.at(GetBodyB());
-
-	m_localCenterA = bodiesA.GetLocalCenter();
-	m_invMassA = RealNum{bodiesA.GetInvMass() * Kilogram};
-	m_invIA = bodiesA.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
 	const auto posA = bodiesA.GetPosition();
 	auto velA = bodiesA.GetVelocity();
-
-	m_localCenterB = bodiesB.GetLocalCenter();
-	m_invMassB = RealNum{bodiesB.GetInvMass() * Kilogram};
-	m_invIB = bodiesB.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
 	const auto posB = bodiesB.GetPosition();
 	auto velB = bodiesB.GetVelocity();
 
 	// Compute the effective mass matrix.
-	m_rA = Rotate(m_localAnchorA - m_localCenterA, UnitVec2{posA.angular});
-	m_rB = Rotate(m_localAnchorB - m_localCenterB, UnitVec2{posB.angular});
+	m_rA = Rotate(m_localAnchorA - bodiesA.GetLocalCenter(), UnitVec2{posA.angular});
+	m_rB = Rotate(m_localAnchorB - bodiesB.GetLocalCenter(), UnitVec2{posB.angular});
 
 	// J = [-I -r1_skew I r2_skew]
 	//     [ 0       -1 0       1]
@@ -84,37 +77,56 @@ void FrictionJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepC
 	//     [  -r1y*iA*r1x-r2y*iB*r2x, mA+r1x^2*iA+mB+r2x^2*iB,           r1x*iA+r2x*iB]
 	//     [          -r1y*iA-r2y*iB,           r1x*iA+r2x*iB,                   iA+iB]
 
-	const auto mA = m_invMassA, mB = m_invMassB;
-	const auto iA = m_invIA, iB = m_invIB;
+	const auto invMassA = bodiesA.GetInvMass();
+	const auto invMassB = bodiesB.GetInvMass();
+	const auto invRotInertiaA = bodiesA.GetInvRotInertia();
+	const auto invRotInertiaB = bodiesB.GetInvRotInertia();
 
-	Mat22 K;
-	K.ex.x = mA + mB + iA * Square(m_rA.y) + iB * Square(m_rB.y);
-	K.ex.y = -iA * m_rA.x * m_rA.y - iB * m_rB.x * m_rB.y;
-	K.ey.x = K.ex.y;
-	K.ey.y = mA + mB + iA * Square(m_rA.x) + iB * Square(m_rB.x);
-
-	m_linearMass = Invert(K);
-
-	m_angularMass = iA + iB;
-	if (m_angularMass > 0)
 	{
-		m_angularMass = RealNum{1} / m_angularMass;
+		Mat22 K;
+		const auto exx = InvMass{
+			invMassA + invMassB +
+			invRotInertiaA * Square(m_rA.y) / SquareRadian +
+			invRotInertiaB * Square(m_rB.y) / SquareRadian
+		};
+		const auto exy = InvMass{
+			-invRotInertiaA * m_rA.x * m_rA.y / SquareRadian +
+			-invRotInertiaB * m_rB.x * m_rB.y / SquareRadian
+		};
+		const auto eyy = InvMass{
+			invMassA + invMassB +
+			invRotInertiaA * Square(m_rA.x) / SquareRadian +
+			invRotInertiaB * Square(m_rB.x) / SquareRadian
+		};
+		K.ex.x = StripUnit(exx);
+		K.ex.y = StripUnit(exy);
+		K.ey.x = K.ex.y;
+		K.ey.y = StripUnit(eyy);
+		m_linearMass = Invert(K);
 	}
 
+	const auto invRotInertia = invRotInertiaA + invRotInertiaB;
+	m_angularMass = (invRotInertia > InvRotInertia{0})? RotInertia{RealNum{1} / invRotInertia}: RotInertia{0};
+	
 	if (step.doWarmStart)
 	{
 		// Scale impulses to support a variable time step.
 		m_linearImpulse *= step.dtRatio;
 		m_angularImpulse *= step.dtRatio;
 
-		const auto P = Vec2{m_linearImpulse.x, m_linearImpulse.y};
-		velA -= Velocity{mA * P * MeterPerSecond, RadianPerSecond * iA * (Cross(m_rA, P) + m_angularImpulse)};
-		velB += Velocity{mB * P * MeterPerSecond, RadianPerSecond * iB * (Cross(m_rB, P) + m_angularImpulse)};
+		const auto P = m_linearImpulse;
+
+		// L * M * L T^-1 / QP is: L^2 M T^-1 QP^-1 which is: AngularMomentum.
+		const auto crossAP = AngularMomentum{Cross(m_rA, P) / Radian};
+		const auto crossBP = AngularMomentum{Cross(m_rB, P) / Radian}; // L * M * L T^-1 is: L^2 M T^-1
+		
+		velA -= Velocity{invMassA * P, invRotInertiaA * (crossAP + m_angularImpulse)};
+		velB += Velocity{invMassB * P, invRotInertiaB * (crossBP + m_angularImpulse)};
 	}
 	else
 	{
-		m_linearImpulse = Vec2_zero;
-		m_angularImpulse = 0;
+		m_linearImpulse = Vec2_zero * Kilogram * MeterPerSecond;
+		m_angularImpulse = AngularMomentum{0};
 	}
 
 	bodiesA.SetVelocity(velA);
@@ -127,35 +139,34 @@ RealNum FrictionJoint::SolveVelocityConstraints(BodyConstraints& bodies, const S
 	auto& bodiesB = bodies.at(GetBodyB());
 
 	auto velA = bodiesA.GetVelocity();
+	const auto invRotInertiaA = bodiesA.GetInvRotInertia();
+
 	auto velB = bodiesB.GetVelocity();
+	const auto invRotInertiaB = bodiesB.GetInvRotInertia();
 
-	const auto iA = m_invIA;
-	const auto iB = m_invIB;
-
-	const auto h = RealNum{step.GetTime() / Second};
+	const auto h = step.GetTime();
 
 	// Solve angular friction
-	auto angularImpulse = RealNum{0};
 	{
-		const auto Cdot = RealNum{(velB.angular - velA.angular) / RadianPerSecond};
-		const auto impulse = -m_angularMass * Cdot;
+		// L^2 M QP^-2 * QP T^-1 is: L^2 M QP^-1 T^-1 (SquareMeter * Kilogram / Second) / Radian
+		//                           L^2 M QP^-1 T^-1
+		const auto angularImpulse = AngularMomentum{-m_angularMass * (velB.angular - velA.angular)};
 
-		const auto oldImpulse = m_angularImpulse;
-		const auto maxImpulse = h * m_maxTorque;
-		m_angularImpulse = Clamp(m_angularImpulse + impulse, -maxImpulse, maxImpulse);
-		angularImpulse = m_angularImpulse - oldImpulse;
+		const auto oldAngularImpulse = m_angularImpulse;
+		const auto maxAngularImpulse = h * m_maxTorque;
+		m_angularImpulse = Clamp(m_angularImpulse + angularImpulse, -maxAngularImpulse, maxAngularImpulse);
+		const auto incAngularImpulse = m_angularImpulse - oldAngularImpulse;
 
-		velA.angular -= RadianPerSecond * iA * angularImpulse;
-		velB.angular += RadianPerSecond * iB * angularImpulse;
+		velA.angular -= invRotInertiaA * incAngularImpulse;
+		velB.angular += invRotInertiaB * incAngularImpulse;
 	}
 
 	// Solve linear friction
 	{
-		const auto vb = velB.linear + (GetRevPerpendicular(m_rB) * RealNum{velB.angular / RadianPerSecond}) * MeterPerSecond;
-		const auto va = velA.linear + (GetRevPerpendicular(m_rA) * RealNum{velA.angular / RadianPerSecond}) * MeterPerSecond;
-		const auto Cdot = vb - va;
+		const auto vb = LinearVelocity2D{velB.linear + (GetRevPerpendicular(m_rB) * velB.angular / Radian)};
+		const auto va = LinearVelocity2D{velA.linear + (GetRevPerpendicular(m_rA) * velA.angular / Radian)};
 
-		auto impulse = -Transform(Vec2{Cdot.x / MeterPerSecond, Cdot.y / MeterPerSecond}, m_linearMass);
+		const auto impulse = Momentum2D{-Transform(StripUnits(vb - va), m_linearMass) * Kilogram * MeterPerSecond};
 		const auto oldImpulse = m_linearImpulse;
 		m_linearImpulse += impulse;
 
@@ -166,10 +177,11 @@ RealNum FrictionJoint::SolveVelocityConstraints(BodyConstraints& bodies, const S
 			m_linearImpulse = GetUnitVector(m_linearImpulse, UnitVec2::GetZero()) * maxImpulse;
 		}
 
-		impulse = m_linearImpulse - oldImpulse;
-
-		velA -= Velocity{m_invMassA * impulse * MeterPerSecond, RadianPerSecond * iA * Cross(m_rA, impulse)};
-		velB += Velocity{m_invMassB * impulse * MeterPerSecond, RadianPerSecond * iB * Cross(m_rB, impulse)};
+		const auto incImpulse = m_linearImpulse - oldImpulse;
+		const auto angImpulseA = AngularMomentum{Cross(m_rA, incImpulse) / Radian};
+		const auto angImpulseB = AngularMomentum{Cross(m_rB, incImpulse) / Radian};
+		velA -= Velocity{bodiesA.GetInvMass() * incImpulse, invRotInertiaA * angImpulseA};
+		velB += Velocity{bodiesB.GetInvMass() * incImpulse, invRotInertiaB * angImpulseB};
 	}
 
 	bodiesA.SetVelocity(velA);
@@ -186,44 +198,44 @@ bool FrictionJoint::SolvePositionConstraints(BodyConstraints& bodies, const Cons
 	return true;
 }
 
-Vec2 FrictionJoint::GetAnchorA() const
+Length2D FrictionJoint::GetAnchorA() const
 {
 	return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
 }
 
-Vec2 FrictionJoint::GetAnchorB() const
+Length2D FrictionJoint::GetAnchorB() const
 {
 	return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Vec2 FrictionJoint::GetReactionForce(Frequency inv_dt) const
+Force2D FrictionJoint::GetReactionForce(Frequency inv_dt) const
 {
-	return RealNum{inv_dt / Hertz} * m_linearImpulse;
+	return inv_dt * m_linearImpulse;
 }
 
-RealNum FrictionJoint::GetReactionTorque(Frequency inv_dt) const
+Torque FrictionJoint::GetReactionTorque(Frequency inv_dt) const
 {
-	return RealNum{inv_dt / Hertz} * m_angularImpulse;
+	return inv_dt * m_angularImpulse;
 }
 
-void FrictionJoint::SetMaxForce(RealNum force)
+void FrictionJoint::SetMaxForce(Force force)
 {
-	assert(IsValid(force) && (force >= 0));
+	assert(IsValid(force) && (force >= Force{0}));
 	m_maxForce = force;
 }
 
-RealNum FrictionJoint::GetMaxForce() const
+Force FrictionJoint::GetMaxForce() const
 {
 	return m_maxForce;
 }
 
-void FrictionJoint::SetMaxTorque(RealNum torque)
+void FrictionJoint::SetMaxTorque(Torque torque)
 {
-	assert(IsValid(torque) && (torque >= 0));
+	assert(IsValid(torque) && (torque >= Torque{0}));
 	m_maxTorque = torque;
 }
 
-RealNum FrictionJoint::GetMaxTorque() const
+Torque FrictionJoint::GetMaxTorque() const
 {
 	return m_maxTorque;
 }

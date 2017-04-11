@@ -58,7 +58,7 @@ namespace box2d
 			return UnitVec2{};
 		}
 		
-		static UnitVec2 Get(const RealNum x, const RealNum y, const UnitVec2 fallback = GetDefaultFallback()) noexcept;
+		static UnitVec2 Get(const RealNum x, const RealNum y, RealNum& magnitude, const UnitVec2 fallback = GetDefaultFallback());
 
 		constexpr UnitVec2() noexcept
 		{

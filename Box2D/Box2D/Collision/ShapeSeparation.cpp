@@ -21,9 +21,9 @@
 
 using namespace box2d;
 
-IndexPairSeparation box2d::GetMaxSeparation(Span<const Vec2> verts1, Span<const UnitVec2> norms1, const Transformation& xf1,
-										Span<const Vec2> verts2, const Transformation& xf2,
-										RealNum stop)
+IndexPairSeparation box2d::GetMaxSeparation(Span<const Length2D> verts1, Span<const UnitVec2> norms1, const Transformation& xf1,
+										Span<const Length2D> verts2, const Transformation& xf2,
+										Length stop)
 {
 	assert(verts1.size() == norms1.size());
 	
@@ -36,7 +36,7 @@ IndexPairSeparation box2d::GetMaxSeparation(Span<const Vec2> verts1, Span<const 
 	{
 		// Get shape1 normal and vertex relative to shape2.
 		const auto s = GetMostAntiParallelSeparation(verts2, GetVec2(Rotate(norms1[i], xf.q)), Transform(verts1[i], xf));
-		if (s.separation > stop)
+		if (s.separation * Meter > stop)
 		{
 			return IndexPairSeparation{s.separation, static_cast<IndexSeparation::index_type>(i), s.index};
 		}
@@ -48,9 +48,9 @@ IndexPairSeparation box2d::GetMaxSeparation(Span<const Vec2> verts1, Span<const 
 	return indexPairSep;
 }
 
-IndexPairSeparation box2d::GetMaxSeparation(Span<const Vec2> verts1, Span<const UnitVec2> norms1,
-										Span<const Vec2> verts2,
-										RealNum stop)
+IndexPairSeparation box2d::GetMaxSeparation(Span<const Length2D> verts1, Span<const UnitVec2> norms1,
+										Span<const Length2D> verts2,
+										Length stop)
 {
 	assert(verts1.size() == norms1.size());
 	
@@ -61,7 +61,7 @@ IndexPairSeparation box2d::GetMaxSeparation(Span<const Vec2> verts1, Span<const 
 	for (auto i = decltype(count1){0}; i < count1; ++i)
 	{
 		const auto s = GetMostAntiParallelSeparation(verts2, GetVec2(norms1[i]), verts1[i]);
-		if (s.separation > stop)
+		if (s.separation * Meter > stop)
 		{
 			return IndexPairSeparation{s.separation, static_cast<IndexSeparation::index_type>(i), s.index};
 		}

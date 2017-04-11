@@ -47,7 +47,7 @@ RayCastOutput box2d::RayCast(const AABB& aabb, const RayCastInput& input)
 		const auto lbi = aabb.GetLowerBound()[i];
 		const auto ubi = aabb.GetUpperBound()[i];
 
-		if (almost_zero(pdi))
+		if (almost_zero(pdi / Meter))
 		{
 			// Parallel.
 			if ((p1i < lbi) || (ubi < p1i))
@@ -58,8 +58,8 @@ RayCastOutput box2d::RayCast(const AABB& aabb, const RayCastInput& input)
 		else
 		{
 			const auto inv_d = RealNum{1} / pdi;
-			auto t1 = (lbi - p1i) * inv_d;
-			auto t2 = (ubi - p1i) * inv_d;
+			auto t1 = RealNum{(lbi - p1i) * inv_d};
+			auto t2 = RealNum{(ubi - p1i) * inv_d};
 			
 			// Sign of the normal vector.
 			auto s = -1;
@@ -107,14 +107,17 @@ RayCastOutput box2d::RayCast(const CircleShape& shape, const RayCastInput& input
 {
 	NOT_USED(childIndex);
 	
-	const auto position = transform.p + Rotate(shape.GetLocation(), transform.q);
+	const auto loc = shape.GetLocation();
+	const auto position = transform.p + Rotate(StripUnits(loc), transform.q) * Meter;
 	const auto s = input.p1 - position;
-	const auto b = GetLengthSquared(s) - Square(shape.GetRadius());
+	const auto sUnitless = StripUnits(s);
+	const auto b = GetLengthSquared(sUnitless) - Square(shape.GetRadius() / Meter);
 	
 	// Solve quadratic equation.
 	const auto r = input.p2 - input.p1;
-	const auto c =  Dot(s, r);
-	const auto rr = GetLengthSquared(r);
+	const auto rUnitless = StripUnits(r);
+	const auto c =  Dot(sUnitless, rUnitless);
+	const auto rr = GetLengthSquared(rUnitless);
 	const auto sigma = Square(c) - rr * b;
 	
 	// Check for negative discriminant and short segment.
@@ -130,7 +133,7 @@ RayCastOutput box2d::RayCast(const CircleShape& shape, const RayCastInput& input
 	if ((a >= RealNum{0}) && (a <= (input.maxFraction * rr)))
 	{
 		const auto fraction = a / rr;
-		return RayCastOutput{GetUnitVector(s + fraction * r, UnitVec2::GetZero()), fraction};
+		return RayCastOutput{GetUnitVector(sUnitless + fraction * rUnitless, UnitVec2::GetZero()), fraction};
 	}
 	
 	return RayCastOutput{};
@@ -146,19 +149,23 @@ RayCastOutput box2d::RayCast(const EdgeShape& shape, const RayCastInput& input,
 	NOT_USED(childIndex);
 	
 	// Put the ray into the edge's frame of reference.
-	const auto p1 = InverseRotate(input.p1 - xf.p, xf.q);
-	const auto p2 = InverseRotate(input.p2 - xf.p, xf.q);
+	const auto d1 = input.p1 - xf.p;
+	const auto p1 = InverseRotate(StripUnits(d1), xf.q);
+	const auto d2 = input.p2 - xf.p;
+	const auto p2 = InverseRotate(StripUnits(d2), xf.q);
 	const auto d = p2 - p1;
 	
 	const auto v1 = shape.GetVertex1();
 	const auto v2 = shape.GetVertex2();
 	const auto e = v2 - v1;
-	const auto normal = GetUnitVector(GetFwdPerpendicular(e), UnitVec2::GetZero());
+	const auto eUnitless = StripUnits(e);
+	const auto normal = GetUnitVector(GetFwdPerpendicular(eUnitless), UnitVec2::GetZero());
 	
 	// q = p1 + t * d
 	// dot(normal, q - v1) = 0
 	// dot(normal, p1 - v1) + t * dot(normal, d) = 0
-	const auto numerator = Dot(normal, v1 - p1);
+	const auto v1p1 = v1 - p1 * Meter;
+	const auto numerator = Dot(normal, StripUnits(v1p1));
 	const auto denominator = Dot(normal, d);
 	
 	if (denominator == 0)
@@ -176,13 +183,14 @@ RayCastOutput box2d::RayCast(const EdgeShape& shape, const RayCastInput& input,
 	
 	// q = v1 + s * e
 	// s = dot(q - v1, e) / dot(e, e)
-	const auto ee = GetLengthSquared(e);
+	const auto ee = GetLengthSquared(eUnitless);
 	if (ee == 0)
 	{
 		return RayCastOutput{};
 	}
 	
-	const auto s = Dot(q - v1, e) / ee;
+	const auto qv1 = q * Meter - v1;
+	const auto s = Dot(StripUnits(qv1), eUnitless) / ee;
 	if ((s < 0) || (s > 1))
 	{
 		return RayCastOutput{};
@@ -198,8 +206,8 @@ RayCastOutput box2d::RayCast(const PolygonShape& shape, const RayCastInput& inpu
 	NOT_USED(childIndex);
 	
 	// Put the ray into the polygon's frame of reference.
-	const auto p1 = InverseRotate(input.p1 - xf.p, xf.q);
-	const auto p2 = InverseRotate(input.p2 - xf.p, xf.q);
+	const auto p1 = InverseRotate(StripUnits(input.p1 - xf.p), xf.q);
+	const auto p2 = InverseRotate(StripUnits(input.p2 - xf.p), xf.q);
 	const auto d = p2 - p1;
 	
 	auto lower = RealNum{0};
@@ -212,7 +220,7 @@ RayCastOutput box2d::RayCast(const PolygonShape& shape, const RayCastInput& inpu
 		// p = p1 + a * d
 		// dot(normal, p - v) = 0
 		// dot(normal, p1 - v) + a * dot(normal, d) = 0
-		const auto numerator = Dot(shape.GetNormal(i), shape.GetVertex(i) - p1);
+		const auto numerator = Dot(shape.GetNormal(i), StripUnits(shape.GetVertex(i)) - p1);
 		const auto denominator = Dot(shape.GetNormal(i), d);
 		
 		if (denominator == RealNum{0})

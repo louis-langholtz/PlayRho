@@ -39,13 +39,13 @@ namespace box2d
 		
 		struct PointSeparation
 		{
-			PointSeparation() noexcept = default;
-			PointSeparation(const PointSeparation& copy) noexcept = default;
+			PointSeparation() = default;
+			PointSeparation(const PointSeparation& copy) = default;
 			
-			constexpr PointSeparation(Vec2 point, RealNum separation) noexcept: p{point}, s{separation} {}
+			constexpr PointSeparation(Length2D point, Length separation) noexcept: p{point}, s{separation} {}
 			
-			Vec2 p; ///< Point.
-			RealNum s; ///< Separation.
+			Length2D p; ///< Point.
+			Length s; ///< Separation.
 		};
 		
 		/// Default constructor.
@@ -56,16 +56,16 @@ namespace box2d
 		
 		constexpr explicit WorldManifold(UnitVec2 normal) noexcept:
 			m_normal{normal}, m_count{0},
-			m_points{GetInvalid<Vec2>(), GetInvalid<Vec2>()},
-			m_separations{GetInvalid<RealNum>(), GetInvalid<RealNum>()}
+			m_points{GetInvalid<Length2D>(), GetInvalid<Length2D>()},
+			m_separations{GetInvalid<Length>(), GetInvalid<Length>()}
 		{
 			// Intentionally empty.
 		}
 		
 		constexpr explicit WorldManifold(UnitVec2 normal, PointSeparation ps0) noexcept:
 			m_normal{normal}, m_count{1},
-			m_points{ps0.p, GetInvalid<Vec2>()},
-			m_separations{ps0.s, GetInvalid<RealNum>()}
+			m_points{ps0.p, GetInvalid<Length2D>()},
+			m_separations{ps0.s, GetInvalid<Length>()}
 		{
 			// Intentionally empty.
 		}
@@ -100,7 +100,7 @@ namespace box2d
 		///
 		/// @return Point or an invalid value if the given index was invalid.
 		///
-		Vec2 GetPoint(size_type index) const noexcept
+		Length2D GetPoint(size_type index) const noexcept
 		{
 			assert(index < MaxManifoldPoints);
 			return m_points[index];
@@ -116,7 +116,7 @@ namespace box2d
 		/// @return Separation amount (a negative value), or an invalid value if the given index
 		///   was invalid.
 		///
-		RealNum GetSeparation(size_type index) const noexcept
+		Length GetSeparation(size_type index) const noexcept
 		{
 			assert(index < MaxManifoldPoints);
 			return m_separations[index];
@@ -129,11 +129,11 @@ namespace box2d
 
 		/// Points.
 		/// @detail Manifold's contact points in world coordinates (mid-point of intersection)
-		Vec2 m_points[MaxManifoldPoints] = {GetInvalid<Vec2>(), GetInvalid<Vec2>()};
+		Length2D m_points[MaxManifoldPoints] = {GetInvalid<Length2D>(), GetInvalid<Length2D>()};
 		
 		/// Separations (in meters).
 		/// @detail A negative value indicates overlap.
-		RealNum m_separations[MaxManifoldPoints] = {GetInvalid<RealNum>(), GetInvalid<RealNum>()};
+		Length m_separations[MaxManifoldPoints] = {GetInvalid<Length>(), GetInvalid<Length>()};
 	};
 	
 	/// Gets the world manifold for the given data.
@@ -153,8 +153,8 @@ namespace box2d
 	///   manifold intersection.
 	///
 	WorldManifold GetWorldManifold(const Manifold& manifold,
-								   const Transformation& xfA, const RealNum radiusA,
-								   const Transformation& xfB, const RealNum radiusB);
+								   const Transformation& xfA, const Length radiusA,
+								   const Transformation& xfB, const Length radiusB);
 	
 	/// Gets the world manifold for the given data.
 	///

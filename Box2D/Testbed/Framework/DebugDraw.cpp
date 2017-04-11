@@ -33,7 +33,7 @@
 
 namespace box2d {
 
-Vec2 ConvertScreenToWorld(const Camera& camera, const Coord2D ps)
+Length2D ConvertScreenToWorld(const Camera& camera, const Coord2D ps)
 {
     const auto w = float(camera.m_width);
     const auto h = float(camera.m_height);
@@ -46,7 +46,10 @@ Vec2 ConvertScreenToWorld(const Camera& camera, const Coord2D ps)
 	const auto lower = camera.m_center - extents;
 	const auto upper = camera.m_center + extents;
 
-	return Vec2{(1 - u) * lower.x + u * upper.x, (1 - v) * lower.y + v * upper.y};
+	return Length2D{
+		((1 - u) * lower.x + u * upper.x) * Meter,
+		((1 - v) * lower.y + v * upper.y) * Meter
+	};
 }
 
 AABB ConvertScreenToWorld(const Camera& camera)
@@ -60,10 +63,10 @@ AABB ConvertScreenToWorld(const Camera& camera)
 	const auto lower = camera.m_center - extents;
 	const auto upper = camera.m_center + extents;
 
-	return AABB{Vec2{lower.x, lower.y}, Vec2{upper.x, upper.y}};
+	return AABB{Vec2{lower.x, lower.y} * Meter, Vec2{upper.x, upper.y} * Meter};
 }
-	
-Coord2D ConvertWorldToScreen(const Camera& camera, const Vec2 pw)
+
+Coord2D ConvertWorldToScreen(const Camera& camera, const Length2D pw)
 {
 	const auto w = float(camera.m_width);
 	const auto h = float(camera.m_height);
@@ -73,8 +76,8 @@ Coord2D ConvertWorldToScreen(const Camera& camera, const Vec2 pw)
 	const auto lower = camera.m_center - extents;
 	const auto upper = camera.m_center + extents;
 
-	const auto u = (float(pw.x) - lower.x) / (upper.x - lower.x);
-	const auto v = (float(pw.y) - lower.y) / (upper.y - lower.y);
+	const auto u = (float(pw.x / Meter) - lower.x) / (upper.x - lower.x);
+	const auto v = (float(pw.y / Meter) - lower.y) / (upper.y - lower.y);
 
 	return Coord2D{u * w, (float(1) - v) * h};
 }
@@ -612,23 +615,29 @@ DebugDraw::~DebugDraw() noexcept
 	delete m_points;
 }
 
-void DebugDraw::DrawTriangle(const Vec2& p1, const Vec2& p2, const Vec2& p3, const Color& color)
+void DebugDraw::DrawTriangle(const Length2D& p1, const Length2D& p2, const Length2D& p3, const Color& color)
 {
-	m_triangles->Vertex(m_camera, Coord2D{static_cast<float>(p1.x), static_cast<float>(p1.y)}, color);
-	m_triangles->Vertex(m_camera, Coord2D{static_cast<float>(p2.x), static_cast<float>(p2.y)}, color);
-	m_triangles->Vertex(m_camera, Coord2D{static_cast<float>(p3.x), static_cast<float>(p3.y)}, color);
+	const auto c1 = Coord2D{static_cast<float>(StripUnit(p1.x)), static_cast<float>(StripUnit(p1.y))};
+	const auto c2 = Coord2D{static_cast<float>(StripUnit(p2.x)), static_cast<float>(StripUnit(p2.y))};
+	const auto c3 = Coord2D{static_cast<float>(StripUnit(p3.x)), static_cast<float>(StripUnit(p3.y))};
+	m_triangles->Vertex(m_camera, c1, color);
+	m_triangles->Vertex(m_camera, c2, color);
+	m_triangles->Vertex(m_camera, c3, color);
 }
 
 //
-void DebugDraw::DrawSegment(const Vec2& p1, const Vec2& p2, const Color& color)
+void DebugDraw::DrawSegment(const Length2D& p1, const Length2D& p2, const Color& color)
 {
-	m_lines->Vertex(m_camera, Coord2D{static_cast<float>(p1.x), static_cast<float>(p1.y)}, color);
-	m_lines->Vertex(m_camera, Coord2D{static_cast<float>(p2.x), static_cast<float>(p2.y)}, color);
+	const auto c1 = Coord2D{static_cast<float>(StripUnit(p1.x)), static_cast<float>(StripUnit(p1.y))};
+	const auto c2 = Coord2D{static_cast<float>(StripUnit(p2.x)), static_cast<float>(StripUnit(p2.y))};
+	m_lines->Vertex(m_camera, c1, color);
+	m_lines->Vertex(m_camera, c2, color);
 }
 
-void DebugDraw::DrawPoint(const Vec2& p, RealNum size, const Color& color)
+void DebugDraw::DrawPoint(const Length2D& p, Length size, const Color& color)
 {
-	m_points->Vertex(m_camera, Coord2D{static_cast<float>(p.x), static_cast<float>(p.y)}, color, static_cast<float>(size));
+	const auto c = Coord2D{static_cast<float>(StripUnit(p.x)), static_cast<float>(StripUnit(p.y))};
+	m_points->Vertex(m_camera, c, color, StripUnit(size));
 }
 
 //
@@ -640,7 +649,7 @@ void DebugDraw::Flush()
 }
 
 //
-void DebugDraw::DrawPolygon(const Vec2* vertices, size_type vertexCount, const Color& color)
+void DebugDraw::DrawPolygon(const Length2D* vertices, size_type vertexCount, const Color& color)
 {
     auto p1 = vertices[vertexCount - 1];
 	for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
@@ -652,7 +661,7 @@ void DebugDraw::DrawPolygon(const Vec2* vertices, size_type vertexCount, const C
 }
 
 //
-void DebugDraw::DrawCircle(const Vec2& center, RealNum radius, const Color& color)
+void DebugDraw::DrawCircle(const Length2D& center, Length radius, const Color& color)
 {
 	auto r1 = Vec2(1, 0);
 	auto v1 = center + radius * r1;
@@ -667,7 +676,7 @@ void DebugDraw::DrawCircle(const Vec2& center, RealNum radius, const Color& colo
 }
 
 //
-void DebugDraw::DrawSolidPolygon(const Vec2* vertices, size_type vertexCount, const Color& color)
+void DebugDraw::DrawSolidPolygon(const Length2D* vertices, size_type vertexCount, const Color& color)
 {
 	for (auto i = decltype(vertexCount){1}; i < vertexCount - 1; ++i)
 	{
@@ -676,7 +685,7 @@ void DebugDraw::DrawSolidPolygon(const Vec2* vertices, size_type vertexCount, co
 }
 
 //
-void DebugDraw::DrawSolidCircle(const Vec2& center, RealNum radius, const Color& color)
+void DebugDraw::DrawSolidCircle(const Length2D& center, Length radius, const Color& color)
 {
 	const auto v0 = center;
 	auto r1 = Vec2(m_cosInc, m_sinInc);
@@ -706,7 +715,7 @@ void DebugDraw::DrawString(int x, int y, const char *string, ...)
 	AddGfxCmdText(float(x), h - float(y), TEXT_ALIGN_LEFT, buffer, SetRGBA(230, 153, 153, 255));
 }
 
-void DebugDraw::DrawString(const Vec2& pw, const char *string, ...)
+void DebugDraw::DrawString(const Length2D& pw, const char *string, ...)
 {
 	const auto ps = ConvertWorldToScreen(m_camera, pw);
 	const auto h = float(m_camera.m_height);
@@ -721,14 +730,17 @@ void DebugDraw::DrawString(const Vec2& pw, const char *string, ...)
 	AddGfxCmdText(ps.x, h - ps.y, TEXT_ALIGN_LEFT, buffer, SetRGBA(230, 153, 153, 255));
 }
 
-Vec2 DebugDraw::GetTranslation() const
+Length2D DebugDraw::GetTranslation() const
 {
-	return Vec2{m_camera.m_center.x, m_camera.m_center.y};
+	return Length2D{Vec2{m_camera.m_center.x, m_camera.m_center.y} * Meter};
 }
 
-void DebugDraw::SetTranslation(Vec2 value)
+void DebugDraw::SetTranslation(Length2D value)
 {
-	m_camera.m_center = Coord2D{static_cast<float>(value.x), static_cast<float>(value.y)};
+	m_camera.m_center = Coord2D{
+		static_cast<float>(value.x / Meter),
+		static_cast<float>(value.y / Meter)
+	};
 }
 	
 }

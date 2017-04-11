@@ -28,44 +28,44 @@ public:
 	BodyTypes()
 	{
 		const auto ground = m_world->CreateBody();
-		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f)));
+		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
 
 		// Define attachment
 		{
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(0.0f, 3.0f);
+			bd.position = Vec2(0.0f, 3.0f) * Meter;
 			m_attachment = m_world->CreateBody(bd);
 			auto conf = PolygonShape::Conf{};
 			conf.density = RealNum{2} * KilogramPerSquareMeter;
-			m_attachment->CreateFixture(std::make_shared<PolygonShape>(0.5f, 2.0f, conf));
+			m_attachment->CreateFixture(std::make_shared<PolygonShape>(0.5f * Meter, 2.0f * Meter, conf));
 		}
 
 		// Define platform
 		{
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(-4.0f, 5.0f);
+			bd.position = Vec2(-4.0f, 5.0f) * Meter;
 			m_platform = m_world->CreateBody(bd);
 
 			auto conf = PolygonShape::Conf{};
 			conf.friction = 0.6f;
 			conf.density = RealNum{2} * KilogramPerSquareMeter;
 			PolygonShape shape{conf};
-			SetAsBox(shape, 0.5f, 4.0f, Vec2(4.0f, 0.0f), 0.5f * Pi * Radian);
+			SetAsBox(shape, 0.5f * Meter, 4.0f * Meter, Vec2(4.0f, 0.0f) * Meter, 0.5f * Pi * Radian);
 
 			m_platform->CreateFixture(std::make_shared<PolygonShape>(shape));
 
-			RevoluteJointDef rjd(m_attachment, m_platform, Vec2(0.0f, 5.0f));
-			rjd.maxMotorTorque = 50.0f;
+			RevoluteJointDef rjd(m_attachment, m_platform, Vec2(0.0f, 5.0f) * Meter);
+			rjd.maxMotorTorque = Torque{50.0f * NewtonMeter};
 			rjd.enableMotor = true;
 			m_world->CreateJoint(rjd);
 
-			PrismaticJointDef pjd(ground, m_platform, Vec2(0.0f, 5.0f), Vec2(1.0f, 0.0f));
-			pjd.maxMotorForce = 1000.0f;
+			PrismaticJointDef pjd(ground, m_platform, Vec2(0.0f, 5.0f) * Meter, UnitVec2::GetRight());
+			pjd.maxMotorTorque = Torque{1000.0f * NewtonMeter};
 			pjd.enableMotor = true;
-			pjd.lowerTranslation = -10.0f;
-			pjd.upperTranslation = 10.0f;
+			pjd.lowerTranslation = -10.0f * Meter;
+			pjd.upperTranslation = 10.0f * Meter;
 			pjd.enableLimit = true;
 			m_world->CreateJoint(pjd);
 
@@ -76,14 +76,14 @@ public:
 		{
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(0.0f, 8.0f);
+			bd.position = Vec2(0.0f, 8.0f) * Meter;
 			Body* body = m_world->CreateBody(bd);
 
 			auto conf = PolygonShape::Conf{};
 			conf.friction = 0.6f;
 			conf.density = RealNum{2} * KilogramPerSquareMeter;
 
-			body->CreateFixture(std::make_shared<PolygonShape>(0.75f, 0.75f, conf));
+			body->CreateFixture(std::make_shared<PolygonShape>(0.75f * Meter, 0.75f * Meter, conf));
 		}
 	}
 
@@ -117,8 +117,8 @@ public:
 			const auto p = m_platform->GetLocation();
 			const auto velocity = m_platform->GetVelocity();
 
-			if ((p.x < -10.0f && velocity.linear.x < 0.0f * MeterPerSecond) ||
-				(p.x > 10.0f && velocity.linear.x > 0.0f * MeterPerSecond))
+			if ((p.x < -10.0f * Meter && velocity.linear.x < 0.0f * MeterPerSecond) ||
+				(p.x > 10.0f * Meter && velocity.linear.x > 0.0f * MeterPerSecond))
 			{
 				m_platform->SetVelocity(Velocity{{-velocity.linear.x, velocity.linear.y}, velocity.angular});
 			}

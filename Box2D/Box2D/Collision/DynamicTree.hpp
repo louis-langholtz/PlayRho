@@ -87,8 +87,8 @@ public:
 	/// @param extension Extension. Amount to fatten the given AABB by if the proxy does
 	///   not contain it.
 	/// @return true if the proxy was re-inserted, false otherwise.
-	bool UpdateProxy(const size_type index, const AABB aabb, const Vec2 displacement,
-					 const RealNum multiplier = 1, const RealNum extension = 0);
+	bool UpdateProxy(const size_type index, const AABB aabb, const Length2D displacement,
+					 const RealNum multiplier = 1, const Length extension = Length{0});
 
 	/// Gets the user data for the node identified by the given identifier.
 	/// @warning Behavior is undefined if the given index is not valid.
@@ -152,7 +152,7 @@ public:
 	/// @note Useful for large worlds.
 	/// @note The shift formula is: position -= newOrigin
 	/// @param newOrigin the new origin with respect to the old origin
-	void ShiftOrigin(const Vec2 newOrigin);
+	void ShiftOrigin(const Length2D newOrigin);
 
 	/// Computes the height of the tree from a given node.
 	/// @warning Behavior is undefined if the given index is not valid.

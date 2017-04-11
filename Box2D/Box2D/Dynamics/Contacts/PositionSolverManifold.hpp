@@ -42,12 +42,12 @@ namespace box2d
 		/// Point.
 		/// @detail Point at which position resolution should be relatively applied.
 		/// @note This field is 8-bytes large.
-		Vec2 m_point;
+		Length2D m_point;
 		
 		/// Separation.
 		/// @detail Separation between two points (i.e. penetration if negative).
 		/// @note This field is 4-bytes large.
-		RealNum m_separation;
+		Length m_separation;
 	};
 
 	/// Gets the normal-point-separation data in world coordinates for the given inputs.
@@ -64,8 +64,8 @@ namespace box2d
 	///   the separation between the points of the manifold. To account for the vertex radiuses,
 	///   the total vertex radius must be subtracted from this separation distance.
 	inline PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type index,
-										 Position pos_a, Vec2 lc_ctr_a,
-										 Position pos_b, Vec2 lc_ctr_b)
+										 Position pos_a, Length2D lc_ctr_a,
+										 Position pos_b, Length2D lc_ctr_b)
 	{
 		const auto xfA = GetTransformation(pos_a, lc_ctr_a);
 		const auto xfB = GetTransformation(pos_b, lc_ctr_b);

@@ -35,18 +35,18 @@ public:
 	{
 		{
 			const auto ground = m_world->CreateBody();
-			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
+			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 		}
 
 		{
-			const auto shape = std::make_shared<CircleShape>(1);
+			const auto shape = std::make_shared<CircleShape>(RealNum{1} * Meter);
 			shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 
 			for (auto i = 0; i < e_count; ++i)
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
-				bd.position = Vec2(0, 4.0f + 3.0f * i);
+				bd.position = Vec2(0, 4.0f + 3.0f * i) * Meter;
 
 				m_bodies[i] = m_world->CreateBody(bd);
 				m_bodies[i]->CreateFixture(shape);

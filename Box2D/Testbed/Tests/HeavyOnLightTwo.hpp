@@ -29,15 +29,15 @@ public:
 	HeavyOnLightTwo()
 	{
 		const auto ground = m_world->CreateBody();
-		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
+		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 		
-		const auto shape = std::make_shared<CircleShape>(0.5f);
+		const auto shape = std::make_shared<CircleShape>(0.5f * Meter);
 		shape->SetDensity(RealNum{10} * KilogramPerSquareMeter);
 
-		const auto body1 = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 2.5f)));
+		const auto body1 = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 2.5f) * Meter));
 		body1->CreateFixture(shape);
         
-        const auto body2 = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 3.5f)));
+        const auto body2 = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 3.5f) * Meter));
 		body2->CreateFixture(shape);
 	}
     
@@ -50,11 +50,11 @@ public:
         }
         else
         {
-            m_heavy = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 9.0f)));
+            m_heavy = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 9.0f) * Meter));
 			
 			auto conf = CircleShape::Conf{};
 			conf.density = RealNum{10} * KilogramPerSquareMeter;
-			conf.vertexRadius = 5.0f;
+			conf.vertexRadius = 5.0f * Meter;
 			m_heavy->CreateFixture(std::make_shared<CircleShape>(conf));
         }
     }

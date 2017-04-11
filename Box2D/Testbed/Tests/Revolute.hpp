@@ -28,25 +28,25 @@ public:
 	Revolute()
 	{
 		const auto ground = m_world->CreateBody();
-		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
+		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 
 		{
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 
-			bd.position = Vec2(-10.0f, 20.0f);
+			bd.position = Vec2(-10.0f, 20.0f) * Meter;
 			const auto body = m_world->CreateBody(bd);
 			auto circleConf = CircleShape::Conf{};
-			circleConf.vertexRadius = 0.5f;
+			circleConf.vertexRadius = 0.5f * Meter;
 			circleConf.density = RealNum{5} * KilogramPerSquareMeter;
 			body->CreateFixture(std::make_shared<CircleShape>(circleConf));
 
 			const auto w = 100.0f;
 			body->SetVelocity(Velocity{Vec2(-8.0f * w, 0.0f) * MeterPerSecond, RadianPerSecond * w});
 			
-			RevoluteJointDef rjd(ground, body, Vec2(-10.0f, 12.0f));
+			RevoluteJointDef rjd(ground, body, Vec2(-10.0f, 12.0f) * Meter);
 			rjd.motorSpeed = 1.0f * Pi * RadianPerSecond;
-			rjd.maxMotorTorque = 10000.0f;
+			rjd.maxMotorTorque = 10000.0f * NewtonMeter;
 			rjd.enableMotor = false;
 			rjd.lowerAngle = -0.25f * Radian * Pi;
 			rjd.upperAngle = 0.5f * Radian * Pi;
@@ -59,29 +59,29 @@ public:
 		{
 			BodyDef circle_bd;
 			circle_bd.type = BodyType::Dynamic;
-			circle_bd.position = Vec2(5.0f, 30.0f);
+			circle_bd.position = Vec2(5.0f, 30.0f) * Meter;
 
 			FixtureDef fd;
 			fd.filter.maskBits = 1;
 
 			m_ball = m_world->CreateBody(circle_bd);
 			auto circleConf = CircleShape::Conf{};
-			circleConf.vertexRadius = 3.0f;
+			circleConf.vertexRadius = 3.0f * Meter;
 			circleConf.density = RealNum{5} * KilogramPerSquareMeter;
 			m_ball->CreateFixture(std::make_shared<CircleShape>(circleConf), fd);
 
 			PolygonShape polygon_shape;
-			SetAsBox(polygon_shape, 10.0f, 0.2f, Vec2 (-10.0f, 0.0f), Angle{0});
+			SetAsBox(polygon_shape, 10.0f * Meter, 0.2f * Meter, Vec2 (-10.0f, 0.0f) * Meter, Angle{0});
 			polygon_shape.SetDensity(RealNum{2} * KilogramPerSquareMeter);
 
 			BodyDef polygon_bd;
-			polygon_bd.position = Vec2(20.0f, 10.0f);
+			polygon_bd.position = Vec2(20.0f, 10.0f) * Meter;
 			polygon_bd.type = BodyType::Dynamic;
 			polygon_bd.bullet = true;
 			const auto polygon_body = m_world->CreateBody(polygon_bd);
 			polygon_body->CreateFixture(std::make_shared<PolygonShape>(polygon_shape));
 
-			RevoluteJointDef rjd(ground, polygon_body, Vec2(20.0f, 10.0f));
+			RevoluteJointDef rjd(ground, polygon_body, Vec2(20.0f, 10.0f) * Meter);
 			rjd.lowerAngle = -0.25f * Radian * Pi;
 			rjd.upperAngle = 0.0f * Radian * Pi;
 			rjd.enableLimit = true;
@@ -94,7 +94,11 @@ public:
 			bodyDef.type = BodyType::Dynamic;
 			const auto body = m_world->CreateBody(bodyDef);
 		
-			auto polyShape = PolygonShape({Vec2(17.63f, 36.31f), Vec2(17.52f, 36.69f), Vec2(17.19f, 36.36f)});
+			auto polyShape = PolygonShape({
+				Vec2(17.63f, 36.31f) * Meter,
+				Vec2(17.52f, 36.69f) * Meter,
+				Vec2(17.19f, 36.36f) * Meter
+			});
 			polyShape.SetDensity(RealNum{1} * KilogramPerSquareMeter);
 		
 			body->CreateFixture(std::make_shared<PolygonShape>(polyShape));	//assertion hits inside here

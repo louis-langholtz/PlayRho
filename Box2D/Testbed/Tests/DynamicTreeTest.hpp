@@ -48,10 +48,10 @@ public:
 		m_stepCount = 0;
 
 		const auto h = m_worldExtent;
-		m_queryAABB = AABB{Vec2(-3.0f, -4.0f + h), Vec2(5.0f, 6.0f + h)};
+		m_queryAABB = AABB{Vec2(-3.0f, -4.0f + h) * Meter, Vec2(5.0f, 6.0f + h) * Meter};
 
-		m_rayCastInput.p1 = Vec2(-5.0f, 5.0f + h);
-		m_rayCastInput.p2 = Vec2(7.0f, -4.0f + h);
+		m_rayCastInput.p1 = Vec2(-5.0f, 5.0f + h) * Meter;
+		m_rayCastInput.p2 = Vec2(7.0f, -4.0f + h) * Meter;
 		//m_rayCastInput.p1 = Vec2(0.0f, 2.0f + h);
 		//m_rayCastInput.p2 = Vec2(0.0f, -2.0f + h);
 		m_rayCastInput.maxFraction = 1.0f;
@@ -108,9 +108,9 @@ public:
 			}
 
 			const auto p1 = actor->aabb.GetLowerBound();
-			const auto p2 = Vec2(actor->aabb.GetUpperBound().x, actor->aabb.GetLowerBound().y);
+			const auto p2 = Length2D(actor->aabb.GetUpperBound().x, actor->aabb.GetLowerBound().y);
 			const auto p3 = actor->aabb.GetUpperBound();
-			const auto p4 = Vec2(actor->aabb.GetLowerBound().x, actor->aabb.GetUpperBound().y);
+			const auto p4 = Length2D(actor->aabb.GetLowerBound().x, actor->aabb.GetUpperBound().y);
 			
 			drawer.DrawSegment(p1, p2, c);
 			drawer.DrawSegment(p2, p3, c);
@@ -123,9 +123,9 @@ public:
 			// Draw the AABB.
 
 			const auto p1 = m_queryAABB.GetLowerBound();
-			const auto p2 = Vec2(m_queryAABB.GetUpperBound().x, m_queryAABB.GetLowerBound().y);
+			const auto p2 = Length2D(m_queryAABB.GetUpperBound().x, m_queryAABB.GetLowerBound().y);
 			const auto p3 = m_queryAABB.GetUpperBound();
-			const auto p4 = Vec2(m_queryAABB.GetLowerBound().x, m_queryAABB.GetUpperBound().y);
+			const auto p4 = Length2D(m_queryAABB.GetLowerBound().x, m_queryAABB.GetUpperBound().y);
 			
 			drawer.DrawSegment(p1, p2, c);
 			drawer.DrawSegment(p2, p3, c);
@@ -137,14 +137,14 @@ public:
 
 		Color c1(0.2f, 0.9f, 0.2f);
 		Color c2(0.9f, 0.2f, 0.2f);
-		drawer.DrawPoint(m_rayCastInput.p1, 6.0f, c1);
-		drawer.DrawPoint(m_rayCastInput.p2, 6.0f, c2);
+		drawer.DrawPoint(m_rayCastInput.p1, 6.0f * Meter, c1);
+		drawer.DrawPoint(m_rayCastInput.p2, 6.0f * Meter, c2);
 
 		if (m_rayActor)
 		{
 			Color cr(0.2f, 0.2f, 0.9f);
-			Vec2 p = m_rayCastInput.p1 + m_rayActor->fraction * (m_rayCastInput.p2 - m_rayCastInput.p1);
-			drawer.DrawPoint(p, 6.0f, cr);
+			const auto p = m_rayCastInput.p1 + m_rayActor->fraction * (m_rayCastInput.p2 - m_rayCastInput.p1);
+			drawer.DrawPoint(p, 6.0f * Meter, cr);
 		}
 
 		{
@@ -217,25 +217,25 @@ private:
 
 	AABB GetRandomAABB()
 	{
-		const Vec2 w(m_proxyExtent * 2, m_proxyExtent * 2);
+		const auto w = Vec2(m_proxyExtent * 2, m_proxyExtent * 2) * Meter;
 		//aabb->lowerBound.x = -m_proxyExtent;
 		//aabb->lowerBound.y = -m_proxyExtent + m_worldExtent;
-		const auto lowerBound = Vec2(RandomFloat(-m_worldExtent, m_worldExtent), RandomFloat(0.0f, 2.0f * m_worldExtent));
+		const auto lowerBound = Vec2(RandomFloat(-m_worldExtent, m_worldExtent), RandomFloat(0.0f, 2.0f * m_worldExtent)) * Meter;
 		const auto upperBound = lowerBound + w;
 		return AABB(lowerBound, upperBound);
 	}
 
 	void MoveAABB(AABB* aabb)
 	{
-		const auto d = Vec2{RandomFloat(-0.5f, 0.5f), RandomFloat(-0.5f, 0.5f)};
+		const auto d = Vec2{RandomFloat(-0.5f, 0.5f), RandomFloat(-0.5f, 0.5f)} * Meter;
 		//d.x = 2.0f;
 		//d.y = 0.0f;
 		aabb->Move(d);
 
 		const auto c0 = GetCenter(*aabb);
-		const auto min = Vec2(-m_worldExtent, RealNum(0));
-		const auto max = Vec2(m_worldExtent, 2.0f * m_worldExtent);
-		const auto c = Vec2{Clamp(c0.x, min.x, max.x), Clamp(c0.y, min.y, max.y)};
+		const auto min = Vec2(-m_worldExtent, RealNum(0)) * Meter;
+		const auto max = Vec2(m_worldExtent, 2.0f * m_worldExtent) * Meter;
+		const auto c = Length2D{Clamp(c0.x, min.x, max.x), Clamp(c0.y, min.y, max.y)};
 
 		aabb->Move(c - c0);
 	}

@@ -36,14 +36,14 @@ public:
 	RopeJointTest()
 	{
 		const auto ground = m_world->CreateBody();
-		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
+		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 
 		{
-			const auto rectangle = std::make_shared<PolygonShape>(0.5f, 0.125f);
+			const auto rectangle = std::make_shared<PolygonShape>(0.5f * Meter, 0.125f * Meter);
 			rectangle->SetDensity(RealNum{20} * KilogramPerSquareMeter);
 			rectangle->SetFriction(0.2f);
 
-			const auto square = std::make_shared<PolygonShape>(1.5f, 1.5f);
+			const auto square = std::make_shared<PolygonShape>(1.5f * Meter, 1.5f * Meter);
 			square->SetDensity(RealNum{100} * KilogramPerSquareMeter);
 			square->SetFriction(0.2f);
 
@@ -53,7 +53,7 @@ public:
 
 			const auto N = 10;
 			const auto y = 15.0f;
-			m_ropeDef.localAnchorA = Vec2(0.0f, y);
+			m_ropeDef.localAnchorA = Vec2(0.0f, y) * Meter;
 
 			auto prevBody = ground;
 			for (auto i = 0; i < N; ++i)
@@ -61,12 +61,12 @@ public:
 				auto shape = rectangle;
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
-				bd.position = Vec2(0.5f + 1.0f * i, y);
+				bd.position = Vec2(0.5f + 1.0f * i, y) * Meter;
 				if (i == N - 1)
 				{
 					shape = square;
 					fd.filter.categoryBits = 0x0002;
-					bd.position = Vec2(1.0f * i, y);
+					bd.position = Vec2(1.0f * i, y) * Meter;
 					bd.angularDamping = 0.4f;
 				}
 
@@ -74,15 +74,15 @@ public:
 
 				body->CreateFixture(shape, fd);
 
-				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(RealNum(i), y)});
+				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(RealNum(i), y) * Meter});
 
 				prevBody = body;
 			}
 
-			m_ropeDef.localAnchorB = Vec2_zero;
+			m_ropeDef.localAnchorB = Vec2_zero * Meter;
 
 			const auto extraLength = 0.01f;
-			m_ropeDef.maxLength = N - 1.0f + extraLength;
+			m_ropeDef.maxLength = (N - 1.0f + extraLength) * Meter;
 			m_ropeDef.bodyB = prevBody;
 		}
 

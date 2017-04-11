@@ -31,7 +31,7 @@ public:
 		const auto ground = [&]()
 		{
 			BodyDef bd;
-            bd.position = Vec2(0.0f, 17.0f);
+            bd.position = Vec2(0.0f, 17.0f) * Meter;
 			return m_world->CreateBody(bd);
 		}();
         
@@ -42,13 +42,13 @@ public:
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
-				bd.position = Vec2(-8.0f, 20.0f);
+				bd.position = Vec2(-8.0f, 20.0f) * Meter;
 				const auto body = m_world->CreateBody(bd);
 				auto conf = PolygonShape::Conf{};
 				conf.density = RealNum{2} * KilogramPerSquareMeter;
-				body->CreateFixture(std::make_shared<PolygonShape>(4.0f, 1.0f, conf));
+				body->CreateFixture(std::make_shared<PolygonShape>(4.0f * Meter, 1.0f * Meter, conf));
                 
-				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-12.0f, 20.0f)});
+				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-12.0f, 20.0f) * Meter});
                 
 				prevBody = body;
 			}
@@ -57,13 +57,13 @@ public:
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
-				bd.position = Vec2(4.0f, 20.0f);
+				bd.position = Vec2(4.0f, 20.0f) * Meter;
 				const auto body = m_world->CreateBody(bd);
 				auto conf = PolygonShape::Conf{};
 				conf.density = RealNum{2} * KilogramPerSquareMeter;
-				body->CreateFixture(std::make_shared<PolygonShape>(8.0f, 1.0f, conf));
+				body->CreateFixture(std::make_shared<PolygonShape>(8.0f * Meter, 1.0f * Meter, conf));
                 
-				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-4.0f, 20.0f)});
+				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-4.0f, 20.0f) * Meter});
                 
 				prevBody = body;
 			}
@@ -73,15 +73,15 @@ public:
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.fixedRotation = true;
-				bd.position = Vec2(12.0f, 20.0f);
+				bd.position = Vec2(12.0f, 20.0f) * Meter;
 				const auto body = m_world->CreateBody(bd);
 				auto conf = PolygonShape::Conf{};
 				conf.density = RealNum{2} * KilogramPerSquareMeter;
-				body->CreateFixture(std::make_shared<PolygonShape>(3.0f, 3.0f, conf));
+				body->CreateFixture(std::make_shared<PolygonShape>(3.0f * Meter, 3.0f * Meter, conf));
                 
-				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(12.0f, 20.0f)});
+				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(12.0f, 20.0f) * Meter});
                 
-				const PrismaticJointDef pjd{ground, body, Vec2(12.0f, 17.0f), Vec2(1.0f, 0.0f)};
+				const PrismaticJointDef pjd{ground, body, Vec2(12.0f, 17.0f) * Meter, UnitVec2::GetRight()};
 				m_world->CreateJoint(pjd);
 			}
   		}

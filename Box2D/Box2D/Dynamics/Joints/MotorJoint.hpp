@@ -33,16 +33,16 @@ struct MotorJointDef : public JointDef
 	void Initialize(Body* bodyA, Body* bodyB);
 
 	/// Position of bodyB minus the position of bodyA, in bodyA's frame, in meters.
-	Vec2 linearOffset = Vec2_zero;
+	Length2D linearOffset = Vec2_zero * Meter;
 
 	/// The bodyB angle minus bodyA angle in radians.
 	Angle angularOffset = Angle{0};
 	
 	/// The maximum motor force in N.
-	RealNum maxForce = RealNum{1};
+	Force maxForce = RealNum{1} * Newton;
 
 	/// The maximum motor torque in N-m.
-	RealNum maxTorque = RealNum{1};
+	Torque maxTorque = RealNum{1} * NewtonMeter;
 
 	/// Position correction factor in the range [0,1].
 	RealNum correctionFactor = RealNum(0.3);
@@ -56,31 +56,31 @@ class MotorJoint : public Joint
 public:
 	MotorJoint(const MotorJointDef& def);
 
-	Vec2 GetAnchorA() const override;
-	Vec2 GetAnchorB() const override;
+	Length2D GetAnchorA() const override;
+	Length2D GetAnchorB() const override;
 
-	Vec2 GetReactionForce(Frequency inv_dt) const override;
-	RealNum GetReactionTorque(Frequency inv_dt) const override;
+	Force2D GetReactionForce(Frequency inv_dt) const override;
+	Torque GetReactionTorque(Frequency inv_dt) const override;
 
 	/// Set/get the target linear offset, in frame A, in meters.
-	void SetLinearOffset(const Vec2 linearOffset);
-	const Vec2 GetLinearOffset() const;
+	void SetLinearOffset(const Length2D linearOffset);
+	const Length2D GetLinearOffset() const;
 
 	/// Set/get the target angular offset, in radians.
 	void SetAngularOffset(Angle angularOffset);
 	Angle GetAngularOffset() const;
 
 	/// Set the maximum friction force in N.
-	void SetMaxForce(RealNum force);
+	void SetMaxForce(Force force);
 
 	/// Get the maximum friction force in N.
-	RealNum GetMaxForce() const;
+	Force GetMaxForce() const;
 
 	/// Set the maximum friction torque in N*m.
-	void SetMaxTorque(RealNum torque);
+	void SetMaxTorque(Torque torque);
 
 	/// Get the maximum friction torque in N*m.
-	RealNum GetMaxTorque() const;
+	Torque GetMaxTorque() const;
 
 	/// Set the position correction factor in the range [0,1].
 	void SetCorrectionFactor(RealNum factor);
@@ -95,27 +95,21 @@ private:
 	bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
 
 	// Solver shared
-	Vec2 m_linearOffset;
+	Length2D m_linearOffset;
 	Angle m_angularOffset;
-	Vec2 m_linearImpulse = Vec2_zero;
-	RealNum m_angularImpulse = 0;
-	RealNum m_maxForce;
-	RealNum m_maxTorque;
+	Momentum2D m_linearImpulse = Vec2_zero * Kilogram * MeterPerSecond;
+	AngularMomentum m_angularImpulse = AngularMomentum{0};
+	Force m_maxForce;
+	Torque m_maxTorque;
 	RealNum m_correctionFactor;
 
 	// Solver temp
-	Vec2 m_rA;
-	Vec2 m_rB;
-	Vec2 m_localCenterA;
-	Vec2 m_localCenterB;
-	Vec2 m_linearError;
+	Length2D m_rA;
+	Length2D m_rB;
+	Length2D m_linearError;
 	Angle m_angularError;
-	RealNum m_invMassA;
-	RealNum m_invMassB;
-	RealNum m_invIA;
-	RealNum m_invIB;
 	Mat22 m_linearMass;
-	RealNum m_angularMass;
+	RotInertia m_angularMass;
 };
 
 } // namespace box2d

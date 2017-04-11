@@ -31,10 +31,10 @@ public:
 	VaryingRestitution()
 	{
 		const auto ground = m_world->CreateBody();
-		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
+		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 
 		auto shapeConf = CircleShape::Conf{};
-		shapeConf.vertexRadius = 1;
+		shapeConf.vertexRadius = RealNum{1} * Meter;
 		shapeConf.density = RealNum{1} * KilogramPerSquareMeter;
 		auto shape = CircleShape(shapeConf);
 		
@@ -44,7 +44,7 @@ public:
 		{
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(-10.0f + 3.0f * i, 20.0f);
+			bd.position = Vec2(-10.0f + 3.0f * i, 20.0f) * Meter;
 
 			auto body = m_world->CreateBody(bd);
 

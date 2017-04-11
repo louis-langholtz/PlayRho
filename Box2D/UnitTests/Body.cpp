@@ -121,15 +121,15 @@ TEST(Body, CreateFixture)
 	World world;
 	const auto body = world.CreateBody();
 
-	const auto valid_shape = std::make_shared<CircleShape>(1);
+	const auto valid_shape = std::make_shared<CircleShape>(RealNum{1} * Meter);
 
-	const auto invalid_friction_shape = std::make_shared<CircleShape>(1);
+	const auto invalid_friction_shape = std::make_shared<CircleShape>(RealNum{1} * Meter);
 	invalid_friction_shape->SetFriction(-0.1f);
 	
-	const auto invalid_density_shape = std::make_shared<CircleShape>(1);
+	const auto invalid_density_shape = std::make_shared<CircleShape>(RealNum{1} * Meter);
 	invalid_density_shape->SetDensity(std::numeric_limits<RealNum>::quiet_NaN() * KilogramPerSquareMeter);
 	
-	const auto invalid_restitution_shape = std::make_shared<CircleShape>(1);
+	const auto invalid_restitution_shape = std::make_shared<CircleShape>(RealNum{1} * Meter);
 	invalid_restitution_shape->SetRestitution(std::numeric_limits<RealNum>::quiet_NaN());
 
 	// Check default settings
@@ -155,8 +155,8 @@ TEST(Body, CreateAndDestroyFixture)
 	EXPECT_FALSE(body->IsMassDataDirty());
 
 	auto conf = CircleShape::Conf{};
-	conf.vertexRadius = 2.871f;
-	conf.location = Vec2{1.912f, -77.31f};
+	conf.vertexRadius = 2.871f * Meter;
+	conf.location = Vec2{1.912f, -77.31f} * Meter;
 	conf.density = RealNum{1} * KilogramPerSquareMeter;
 	const auto shape = std::make_shared<CircleShape>(conf);
 	
@@ -194,8 +194,8 @@ TEST(Body, CreateLotsOfFixtures)
 	BodyDef bd;
 	bd.type = BodyType::Dynamic;
 	auto conf = CircleShape::Conf{};
-	conf.vertexRadius = 2.871f;
-	conf.location = Vec2{1.912f, -77.31f};
+	conf.vertexRadius = 2.871f * Meter;
+	conf.location = Vec2{1.912f, -77.31f} * Meter;
 	conf.density = RealNum{1.3f} * KilogramPerSquareMeter;
 	const auto shape = std::make_shared<CircleShape>(conf);
 	const auto num = 5000;

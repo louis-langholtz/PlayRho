@@ -52,10 +52,10 @@ namespace {
 	
 } // anonymous namespace
 	
-DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, const Vec2 d) noexcept
+DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, const Length2D d) noexcept
 {
 	auto index = DistanceProxy::InvalidIndex; ///< Index of vertex that when dotted with d has the max value.
-	auto maxValue = -MaxFloat; ///< Max dot value.
+	auto maxValue = -MaxFloat * SquareMeter; ///< Max dot value.
 	const auto count = proxy.GetVertexCount();
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{

@@ -32,7 +32,7 @@ struct MouseJointDef : public JointDef
 
 	/// The initial world target point. This is assumed
 	/// to coincide with the body anchor initially.
-	Vec2 target = Vec2_zero;
+	Length2D target = Vec2_zero * Meter;
 
 	/// Max force.
 	/// @detail
@@ -41,13 +41,13 @@ struct MouseJointDef : public JointDef
 	/// as some multiple of the weight (multiplier * mass * gravity).
 	/// @note This may not be negative.
 	/// @warning Behavior is undefined if this is a negative value.
-	RealNum maxForce = 0;
+	Force maxForce = Force{0};
 
 	/// Frequency.
 	/// @detail The has to do with the response speed.
 	/// @note This value may not be negative.
 	/// @warning Behavior is undefined if this is a negative value.
-	RealNum frequencyHz = 5;
+	Frequency frequencyHz = RealNum{5} * Hertz;
 
 	/// The damping ratio. 0 = no damping, 1 = critical damping.
 	RealNum dampingRatio = 0.7f;
@@ -68,95 +68,92 @@ public:
 	MouseJoint(const MouseJointDef& def);
 
 	/// Implements Joint.
-	Vec2 GetAnchorA() const override;
+	Length2D GetAnchorA() const override;
 
 	/// Implements Joint.
-	Vec2 GetAnchorB() const override;
+	Length2D GetAnchorB() const override;
 
 	/// Implements Joint.
-	Vec2 GetReactionForce(Frequency inv_dt) const override;
+	Force2D GetReactionForce(Frequency inv_dt) const override;
 
 	/// Implements Joint.
-	RealNum GetReactionTorque(Frequency inv_dt) const override;
+	Torque GetReactionTorque(Frequency inv_dt) const override;
 
-	Vec2 GetLocalAnchorB() const noexcept;
+	Length2D GetLocalAnchorB() const noexcept;
 
 	/// Use this to update the target point.
-	void SetTarget(const Vec2 target) noexcept;
-	Vec2 GetTarget() const noexcept;
+	void SetTarget(const Length2D target) noexcept;
+	Length2D GetTarget() const noexcept;
 
 	/// Set/get the maximum force in Newtons.
-	void SetMaxForce(RealNum force) noexcept;
-	RealNum GetMaxForce() const noexcept;
+	void SetMaxForce(Force force) noexcept;
+	Force GetMaxForce() const noexcept;
 
 	/// Set/get the frequency in Hertz.
-	void SetFrequency(RealNum hz) noexcept;
-	RealNum GetFrequency() const noexcept;
+	void SetFrequency(Frequency hz) noexcept;
+	Frequency GetFrequency() const noexcept;
 
 	/// Set/get the damping ratio (dimensionless).
 	void SetDampingRatio(RealNum ratio) noexcept;
 	RealNum GetDampingRatio() const noexcept;
 
 	/// Implement Joint::ShiftOrigin
-	void ShiftOrigin(const Vec2 newOrigin) override;
+	void ShiftOrigin(const Length2D newOrigin) override;
 
 private:
 	void InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
 	RealNum SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) override;
 	bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
 
-	Mat22 GetEffectiveMassMatrix() const noexcept;
+	Mat22 GetEffectiveMassMatrix(const BodyConstraint& body) const noexcept;
 
-	Vec2 m_targetA;
-	Vec2 m_localAnchorB;
-	RealNum m_frequencyHz;
+	Length2D m_targetA;
+	Length2D m_localAnchorB;
+	Frequency m_frequencyHz;
 	RealNum m_dampingRatio;
 	
 	// Solver shared
-	Vec2 m_impulse = Vec2_zero;
-	RealNum m_maxForce;
-	RealNum m_gamma = 0;
+	Momentum2D m_impulse = Vec2_zero * Kilogram * MeterPerSecond;
+	Force m_maxForce;
+	InvMass m_gamma = InvMass{0};
 
 	// Solver variables. These are only valid after InitVelocityConstraints called.
-	Vec2 m_rB;
-	Vec2 m_localCenterB;
-	RealNum m_invMassB;
-	RealNum m_invIB;
+	Length2D m_rB;
 	Mat22 m_mass;
-	Vec2 m_C;
+	LinearVelocity2D m_C;
 };
 
-inline Vec2 MouseJoint::GetLocalAnchorB() const noexcept
+inline Length2D MouseJoint::GetLocalAnchorB() const noexcept
 {
 	return m_localAnchorB;
 }
 
-inline Vec2 MouseJoint::GetAnchorA() const
+inline Length2D MouseJoint::GetAnchorA() const
 {
 	return m_targetA;
 }
 
-inline Vec2 MouseJoint::GetTarget() const noexcept
+inline Length2D MouseJoint::GetTarget() const noexcept
 {
 	return m_targetA;
 }
 
-inline void MouseJoint::SetMaxForce(RealNum force) noexcept
+inline void MouseJoint::SetMaxForce(Force force) noexcept
 {
 	m_maxForce = force;
 }
 
-inline RealNum MouseJoint::GetMaxForce() const noexcept
+inline Force MouseJoint::GetMaxForce() const noexcept
 {
 	return m_maxForce;
 }
 
-inline void MouseJoint::SetFrequency(RealNum hz) noexcept
+inline void MouseJoint::SetFrequency(Frequency hz) noexcept
 {
 	m_frequencyHz = hz;
 }
 
-inline RealNum MouseJoint::GetFrequency() const noexcept
+inline Frequency MouseJoint::GetFrequency() const noexcept
 {
 	return m_frequencyHz;
 }

@@ -46,9 +46,9 @@ public:
 
 	static constexpr auto InvalidVertex = static_cast<vertex_count_t>(-1);
 
-	static constexpr RealNum GetDefaultVertexRadius() noexcept
+	static constexpr Length GetDefaultVertexRadius() noexcept
 	{
-		return DefaultLinearSlop * 2;
+		return DefaultLinearSlop * RealNum{2};
 	}
 
 	struct Conf: public Shape::Conf
@@ -78,21 +78,21 @@ public:
 	/// Initializing constructor for rectangles.
 	/// @param hx the half-width.
 	/// @param hy the half-height.
-	explicit PolygonShape(RealNum hx, RealNum hy, const Conf& conf = GetDefaultConf()) noexcept;
+	explicit PolygonShape(Length hx, Length hy, const Conf& conf = GetDefaultConf()) noexcept;
 	
 	/// Creates a convex hull from the given array of local points.
 	/// The size of the span must be in the range [1, MaxShapeVertices].
 	/// @warning the points may be re-ordered, even if they form a convex polygon
 	/// @warning collinear points are handled but not removed. Collinear points
 	/// may lead to poor stacking behavior.
-	explicit PolygonShape(Span<const Vec2> points, const Conf& conf = GetDefaultConf()) noexcept;
+	explicit PolygonShape(Span<const Length2D> points, const Conf& conf = GetDefaultConf()) noexcept;
 	
 	/// Creates a convex hull from the given array of local points.
 	/// The size of the span must be in the range [1, MaxShapeVertices].
 	/// @warning the points may be re-ordered, even if they form a convex polygon
 	/// @warning collinear points are handled but not removed. Collinear points
 	/// may lead to poor stacking behavior.
-	void Set(Span<const Vec2> points) noexcept;
+	void Set(Span<const Length2D> points) noexcept;
 
 	/// Creates a convex hull from the given set of local points.
 	/// The size of the set must be in the range [1, MaxShapeVertices].
@@ -104,7 +104,7 @@ public:
 	/// Build vertices to represent an axis-aligned box centered on the local origin.
 	/// @param hx the half-width.
 	/// @param hy the half-height.
-	void SetAsBox(RealNum hx, RealNum hy) noexcept;
+	void SetAsBox(Length hx, Length hy) noexcept;
 	
 	void Transform(Transformation xfm) noexcept;
 
@@ -118,7 +118,7 @@ public:
 
 	/// Gets a vertex by index.
 	/// @detail Vertices go counter-clockwise.
-	Vec2 GetVertex(vertex_count_t index) const;
+	Length2D GetVertex(vertex_count_t index) const;
 
 	/// Gets a normal by index.
 	/// @detail
@@ -130,16 +130,16 @@ public:
 
 	/// Gets the span of vertices.
 	/// @detail Vertices go counter-clockwise.
-	Span<const Vec2> GetVertices() const noexcept { return Span<const Vec2>(&m_vertices[0], GetVertexCount()); }
+	Span<const Length2D> GetVertices() const noexcept { return Span<const Length2D>(&m_vertices[0], GetVertexCount()); }
 
 	Span<const UnitVec2> GetNormals() const noexcept { return Span<const UnitVec2>(&m_normals[0], GetVertexCount()); }
 	
-	Vec2 GetCentroid() const noexcept { return m_centroid; }
+	Length2D GetCentroid() const noexcept { return m_centroid; }
 	
 private:
 	/// Array of vertices.
 	/// @detail Consecutive vertices constitute "edges" of the polygon.
-	std::vector<Vec2> m_vertices;
+	std::vector<Length2D> m_vertices;
 
 	/// Normals of edges.
 	/// @detail
@@ -148,10 +148,10 @@ private:
 	std::vector<UnitVec2> m_normals;
 
 	/// Centroid of this shape.
-	Vec2 m_centroid = Vec2_zero;
+	Length2D m_centroid = Vec2_zero * Meter;
 };
 
-inline Vec2 PolygonShape::GetVertex(vertex_count_t index) const
+inline Length2D PolygonShape::GetVertex(vertex_count_t index) const
 {
 	assert(0 <= index && index < GetVertexCount());
 	return m_vertices[index];
@@ -166,7 +166,7 @@ inline UnitVec2 PolygonShape::GetNormal(vertex_count_t index) const
 /// Gets the identified edge of the given polygon shape.
 /// @note This must not be called for shapes with less than 2 vertices.
 /// @warning Behavior is undefined if called for a shape with less than 2 vertices.
-Vec2 GetEdge(const PolygonShape& shape, PolygonShape::vertex_count_t index);
+Length2D GetEdge(const PolygonShape& shape, PolygonShape::vertex_count_t index);
 
 /// Gets the number of child primitives.
 /// @return Positive non-zero count.
@@ -176,7 +176,7 @@ child_count_t GetChildCount(const PolygonShape& shape);
 /// @param xf the shape world transform.
 /// @param p a point in world coordinates.
 /// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
-bool TestPoint(const PolygonShape& shape, const Transformation& xf, const Vec2 p);
+bool TestPoint(const PolygonShape& shape, const Transformation& xf, const Length2D p);
 
 /// Validate convexity of the given shape.
 /// @note This is a time consuming operation.
@@ -188,11 +188,11 @@ bool Validate(const PolygonShape& shape);
 /// @param hy the half-height.
 /// @param center the center of the box in local coordinates.
 /// @param angle the rotation of the box in local coordinates.
-void SetAsBox(PolygonShape& shape, RealNum hx, RealNum hy, const Vec2 center, Angle angle) noexcept;
+void SetAsBox(PolygonShape& shape, Length hx, Length hy, const Length2D center, Angle angle) noexcept;
 	
-size_t FindLowestRightMostVertex(Span<const Vec2> vertices);
+size_t FindLowestRightMostVertex(Span<const Length2D> vertices);
 
-std::vector<Vec2> GetConvexHullAsVector(Span<const Vec2> vertices);
+std::vector<Length2D> GetConvexHullAsVector(Span<const Length2D> vertices);
 	
 inline PolygonShape Transform(PolygonShape value, Transformation xfm) noexcept
 {

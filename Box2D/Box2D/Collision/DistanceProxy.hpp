@@ -61,10 +61,10 @@ namespace box2d
 		/// @detail Constructs a distance proxy for a single point shape (a circle).
 		/// @param radius Radius of the given vertex.
 		/// @param v0 Vertex 0 (relative to the shape's origin).
-		constexpr DistanceProxy(RealNum radius, Vec2 v0) noexcept:
+		constexpr DistanceProxy(Length radius, Length2D v0) noexcept:
 			m_radius{radius}, m_buffer{{v0}}, m_count{1}
 		{
-			assert(radius >= 0);
+			assert(radius >= Length{0});
 		}
 		
 		/// Initializing constructor.
@@ -72,10 +72,10 @@ namespace box2d
 		/// @param radius Radius of the given vertices.
 		/// @param v0 Vertex 0 (relative to the shape's origin).
 		/// @param v1 Vertex 1 (relative to the shape's origin).
-		constexpr DistanceProxy(RealNum radius, Vec2 v0, Vec2 v1) noexcept:
+		constexpr DistanceProxy(Length radius, Length2D v0, Length2D v1) noexcept:
 			m_radius{radius}, m_buffer{{v0, v1}}, m_count{2}
 		{
-			assert(radius >= 0);
+			assert(radius >= Length{0});
 		}
 		
 		/// Initializing constructor.
@@ -86,13 +86,13 @@ namespace box2d
 		///    <code>MaxShapeVertices</code> elements.
 		/// @warning Behavior is undefined if the vertices collection has less than one element or
 		///   more than <code>MaxShapeVertices</code> elements.
-		constexpr DistanceProxy(RealNum radius, const Span<const Vec2>& vertices) noexcept:
+		constexpr DistanceProxy(Length radius, const Span<const Length2D>& vertices) noexcept:
 			m_radius{radius},
 			m_buffer{},
 			m_vertices{vertices.begin()},
 			m_count{static_cast<size_type>(vertices.size())}
 		{
-			assert(radius >= 0);
+			assert(radius >= Length{0});
 			assert(vertices.size() > 0);
 			assert(vertices.size() <= MaxShapeVertices);
 		}
@@ -105,7 +105,7 @@ namespace box2d
 		/// @detail This is the count of valid vertex elements that this object provides.
 		/// @return Value between 0 and <code>MaxShapeVertices</code>.
 		/// @note This only returns 0 if this proxy was default constructed.
-		inline auto GetVertexCount() const noexcept { return m_count; }
+		auto GetVertexCount() const noexcept { return m_count; }
 		
 		/// Gets a vertex by index.
 		///
@@ -132,11 +132,11 @@ namespace box2d
 		//   The savings in memory would come at the expense of a conditional in GetVertex.
 		//   This trade-off is presumed not-worth-it performance-wise.
 
-		std::array<Vec2,2> m_buffer;
-		const Vec2* m_vertices = &m_buffer[0];
+		std::array<Length2D,2> m_buffer;
+		const Length2D* m_vertices = &m_buffer[0];
 		
 		size_type m_count = 0; ///< Count of valid elements of m_vertices.
-		RealNum m_radius = RealNum{0}; ///< Radius of the vertices of the associated shape (in meters).
+		Length m_radius = Length{0}; ///< Radius of the vertices of the associated shape (in meters).
 	};
 	
 	/// Initialize the proxy using the given shape.
@@ -151,7 +151,7 @@ namespace box2d
 	/// @param d Direction vector to find index for.
 	/// @return InvalidIndex if d is invalid or the count of vertices is zero, otherwise a value from 0 to one less than count.
 	/// @sa GetVertexCount().
-	DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, const Vec2 d) noexcept;
+	DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, const Length2D d) noexcept;
 	
 }; // namespace box2d
 

@@ -25,9 +25,9 @@ TEST(PrismaticJoint, ByteSize)
 {
 	switch (sizeof(RealNum))
 	{
-		case  4: EXPECT_EQ(sizeof(PrismaticJoint), size_t(232)); break;
-		case  8: EXPECT_EQ(sizeof(PrismaticJoint), size_t(488)); break;
-		case 16: EXPECT_EQ(sizeof(PrismaticJoint), size_t(864)); break;
+		case  4: EXPECT_EQ(sizeof(PrismaticJoint), size_t(200)); break;
+		case  8: EXPECT_EQ(sizeof(PrismaticJoint), size_t(400)); break;
+		case 16: EXPECT_EQ(sizeof(PrismaticJoint), size_t(800)); break;
 		default: FAIL(); break;
 	}
 }

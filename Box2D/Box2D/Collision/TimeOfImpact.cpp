@@ -36,7 +36,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 	auto stats = TOIOutput::Stats{};
 
 	assert(conf.tMax >= 0 && conf.tMax <=1);
-	assert(conf.tolerance > 0);
+	assert(conf.tolerance > Length{0});
 
 	const auto totalRadius = proxyA.GetRadius() + proxyB.GetRadius();
 	assert(conf.targetDepth < totalRadius);
@@ -52,9 +52,9 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 	const auto minTarget = target - conf.tolerance;
 	assert(minTarget != target);
 	assert(minTarget < maxTarget);
-	assert(minTarget > 0 && !almost_zero(minTarget));
+	assert(minTarget > Length{0} && !almost_zero(minTarget / Meter));
 	
-	const auto maxTargetSquared = Square(maxTarget);
+	const auto maxTargetSquared = Square(maxTarget / Meter);
 
 	auto t1 = RealNum{0}; // Will be set to value of t2
 	auto t1xfA = GetTransformation(sweepA, t1);
@@ -79,9 +79,10 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 		stats.max_dist_iters = Max(stats.max_dist_iters, distanceInfo.iterations);
 
 		const auto witnessPoints = GetWitnessPoints(distanceInfo.simplex);
+		const auto dwp = witnessPoints.a - witnessPoints.b;
 
 		// Get the real distance squared between shapes at the time of t1.
-		const auto distanceSquared = GetLengthSquared(witnessPoints.a - witnessPoints.b);
+		const auto distanceSquared = GetLengthSquared(StripUnits(dwp));
 		
 		// If the shapes aren't separated, give up on continuous collision.
 		if (distanceSquared <= 0) // Failure!
@@ -185,7 +186,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 			auto roots = decltype(conf.maxRootIters){0}; // counts # times f(t) checked
 			for (;;)
 			{
-				assert(!almost_zero(s2 - s1));
+				assert(!almost_zero((s2 - s1) / Meter));
 				assert(a1 <= a2);
 
 				if ((roots == conf.maxRootIters) || (a1 == a2) || (std::nextafter(a1, a2) >= a2))
