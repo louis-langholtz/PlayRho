@@ -120,8 +120,8 @@ private:
 	Momentum m_impulse = Momentum{0};
 
 	// Solver temp
-	Vec2 m_uA;
-	Vec2 m_uB;
+	Vec2 m_uA; ///< Unit vector A. Potentially candidate for UnitVec2.
+	Vec2 m_uB; ///< Unit vector B. Potentially candidate for UnitVec2.
 	Length2D m_rA;
 	Length2D m_rB;
 	Mass m_mass;

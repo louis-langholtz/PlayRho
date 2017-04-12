@@ -1216,11 +1216,12 @@ inline RealNum Normalize(Vec2& vector)
 	return 0;
 }
 
-inline bool IsUnderActive(Velocity velocity, RealNum linSleepTol, RealNum angSleepTol) noexcept
+inline bool IsUnderActive(Velocity velocity,
+						  LinearVelocity linSleepTol, AngularVelocity angSleepTol) noexcept
 {
-	const auto lsquared = Square(velocity.linear.x / MeterPerSecond) + Square(velocity.linear.y/ MeterPerSecond);
-	return (Square(RealNum{velocity.angular / RadianPerSecond}) <= Square(angSleepTol))
-	    && (lsquared <= Square(linSleepTol));
+	const auto linVelSquared = GetLengthSquared(velocity.linear);
+	const auto angVelSquared = Square(velocity.angular);
+	return (angVelSquared <= Square(angSleepTol)) && (linVelSquared <= Square(linSleepTol));
 }
 
 /// Gets the contact relative velocity.

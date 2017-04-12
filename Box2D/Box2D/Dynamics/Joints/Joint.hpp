@@ -51,13 +51,6 @@ enum class JointType
 	Motor
 };
 
-struct Jacobian
-{
-	Vec2 linear;
-	RealNum angularA;
-	RealNum angularB;
-};
-
 /// Abstract base Joint Definition class.
 /// @detail Joint definitions are used to construct joints.
 /// @note This class is not meant to be directly instantiated; it is meant

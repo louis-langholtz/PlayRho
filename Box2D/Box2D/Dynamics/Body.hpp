@@ -1021,9 +1021,9 @@ inline void ApplyForce(Body& body, const Force2D force, const Length2D point) no
 /// Apply a force to the center of mass.
 /// @note Non-zero forces wakes up the body.
 /// @param force World force vector, usually in Newtons (N).
-inline void ApplyForceToCenter(Body& body, const Vec2 force) noexcept
+inline void ApplyForceToCenter(Body& body, const Force2D force) noexcept
 {
-	const auto linAccel = body.GetLinearAcceleration() + force * RealNum{body.GetInvMass() * Kilogram} * MeterPerSquareSecond;
+	const auto linAccel = body.GetLinearAcceleration() + force * body.GetInvMass();
 	const auto angAccel = body.GetAngularAcceleration();
 	body.SetAcceleration(linAccel, angAccel);
 }
@@ -1078,7 +1078,7 @@ inline void ApplyAngularImpulse(Body& body, AngularMomentum impulse) noexcept
 	body.SetVelocity(velocity);
 }
 
-Vec2 GetCentripetalForce(const Body& body, const Length2D axis);
+Force2D GetCentripetalForce(const Body& body, const Length2D axis);
 
 /// Gets the rotational inertia of the body.
 /// @return the rotational inertia, usually in kg-m^2.
@@ -1194,10 +1194,9 @@ inline LinearVelocity2D GetLinearVelocityFromLocalPoint(const Body& body, const 
 	return GetLinearVelocityFromWorldPoint(body, GetWorldPoint(body, localPoint));
 }
 
-inline Vec2 GetForce(const Body& body) noexcept
+inline Force2D GetForce(const Body& body) noexcept
 {
-	const auto accelUnitless = body.GetLinearAcceleration() / MeterPerSquareSecond;
-	return Vec2{accelUnitless.x, accelUnitless.y} * RealNum{GetMass(body) / Kilogram};
+	return body.GetLinearAcceleration() * GetMass(body);
 }
 	
 inline Torque GetTorque(const Body& body) noexcept

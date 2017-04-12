@@ -188,11 +188,11 @@ public:
 
 	/// Linear sleep tolerance.
 	/// @note Used in the regular phase of step processing.
-	RealNum linearSleepTolerance = DefaultLinearSleepTolerance;
+	LinearVelocity linearSleepTolerance = DefaultLinearSleepTolerance;
 
 	/// Angular sleep tolerance.
 	/// @note Used in the regular phase of step processing.
-	RealNum angularSleepTolerance = DefaultAngularSleepTolerance;
+	AngularVelocity angularSleepTolerance = DefaultAngularSleepTolerance;
 	
 	RealNum displaceMultiplier = DefaultDistanceMultiplier;
 	

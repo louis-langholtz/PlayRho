@@ -406,11 +406,11 @@ constexpr auto DefaultMinStillTimeToSleep = Time{Second / RealNum{2}}; // aka 0.
 
 /// Default linear sleep tolerance.
 /// @detail A body cannot sleep if the magnitude of its linear velocity is above this amount.
-constexpr auto DefaultLinearSleepTolerance = RealNum{0.01f}; // aka 0.01
+constexpr auto DefaultLinearSleepTolerance = RealNum{0.01f} * MeterPerSecond; // aka 0.01
 
 /// Default angular sleep tolerance.
 /// @detail A body cannot sleep if its angular velocity is above this amount.
-constexpr auto DefaultAngularSleepTolerance = RealNum{(Pi * 2) / 180};
+constexpr auto DefaultAngularSleepTolerance = RealNum{(Pi * 2) / 180} * RadianPerSecond;
 
 /// Maximum list size.
 template <typename T>

@@ -42,13 +42,6 @@ struct VelocityPair
 	Velocity vel_b;
 };
 
-struct VelocitySolution
-{
-	Velocity velA;
-	Velocity velB;
-	RealNum newImpulse;
-};
-
 /// Impulse change.
 ///
 /// @detail
