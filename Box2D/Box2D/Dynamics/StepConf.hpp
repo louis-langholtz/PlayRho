@@ -102,7 +102,7 @@ public:
 	/// Angular slop.
 	/// @note Must be greater than 0.
 	/// @note Used in both the regular and TOI phases of step processing.
-	RealNum angularSlop = DefaultAngularSlop;
+	Angle angularSlop = DefaultAngularSlop;
 	
 	/// Regular resolution rate.
 	/// @detail
@@ -184,7 +184,7 @@ public:
 	
 	/// Maximum angular correction.
 	/// @note Used in both the regular and TOI phases of step processing.
-	RealNum maxAngularCorrection = DefaultMaxAngularCorrection;
+	Angle maxAngularCorrection = DefaultMaxAngularCorrection;
 
 	/// Linear sleep tolerance.
 	/// @note Used in the regular phase of step processing.

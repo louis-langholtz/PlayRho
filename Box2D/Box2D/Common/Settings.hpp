@@ -341,7 +341,7 @@ constexpr auto DefaultDistanceMultiplier = RealNum{2};
 /// @detail
 /// A small angle used as a collision and constraint tolerance. Usually it is
 /// chosen to be numerically significant, but visually insignificant.
-constexpr auto DefaultAngularSlop = (Pi * 2) / 180;
+constexpr auto DefaultAngularSlop = (Pi * RealNum{2} * Radian) / RealNum{180};
 
 /// Default maximum linear correction.
 /// @detail The maximum linear position correction used when solving constraints.
@@ -351,7 +351,7 @@ constexpr auto DefaultMaxLinearCorrection = DefaultLinearSlop * RealNum{40}; // 
 
 /// Default maximum angular correction.
 /// @note This value should be greater than the angular slop value.
-constexpr auto DefaultMaxAngularCorrection = DefaultAngularSlop * 4;
+constexpr auto DefaultMaxAngularCorrection = DefaultAngularSlop * RealNum{4};
 
 /// Default maximum time of impact iterations.
 constexpr auto DefaultMaxToiIters = uint8{20};

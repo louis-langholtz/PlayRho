@@ -90,13 +90,13 @@ private:
 
 	Frequency m_frequencyHz;
 	RealNum m_dampingRatio;
-	RealNum m_bias;
+	AngularVelocity m_bias;
 
 	// Solver shared
 	Length2D m_localAnchorA;
 	Length2D m_localAnchorB;
 	Angle m_referenceAngle;
-	RealNum m_gamma;
+	InvRotInertia m_gamma;
 	Vec3 m_impulse = Vec3_zero;
 
 	// Solver temp

@@ -85,18 +85,16 @@ void FrictionJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepC
 	{
 		Mat22 K;
 		const auto exx = InvMass{
-			invMassA + invMassB +
-			invRotInertiaA * Square(m_rA.y) / SquareRadian +
-			invRotInertiaB * Square(m_rB.y) / SquareRadian
+			invMassA + invRotInertiaA * Square(m_rA.y) / SquareRadian +
+			invMassB + invRotInertiaB * Square(m_rB.y) / SquareRadian
 		};
 		const auto exy = InvMass{
 			-invRotInertiaA * m_rA.x * m_rA.y / SquareRadian +
 			-invRotInertiaB * m_rB.x * m_rB.y / SquareRadian
 		};
 		const auto eyy = InvMass{
-			invMassA + invMassB +
-			invRotInertiaA * Square(m_rA.x) / SquareRadian +
-			invRotInertiaB * Square(m_rB.x) / SquareRadian
+			invMassA + invRotInertiaA * Square(m_rA.x) / SquareRadian +
+			invMassB + invRotInertiaB * Square(m_rB.x) / SquareRadian
 		};
 		K.ex.x = StripUnit(exx);
 		K.ex.y = StripUnit(exy);

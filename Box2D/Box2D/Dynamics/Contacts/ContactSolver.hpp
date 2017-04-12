@@ -64,11 +64,11 @@ namespace box2d {
 
 		ConstraintSolverConf& UseLinearSlop(Length value) noexcept;
 		
-		ConstraintSolverConf& UseAngularSlop(RealNum value) noexcept;
+		ConstraintSolverConf& UseAngularSlop(Angle value) noexcept;
 
 		ConstraintSolverConf& UseMaxLinearCorrection(Length value) noexcept;
 
-		ConstraintSolverConf& UseMaxAngularCorrection(RealNum value) noexcept;
+		ConstraintSolverConf& UseMaxAngularCorrection(Angle value) noexcept;
 
 		/// Resolution rate.
 		/// @detail
@@ -87,7 +87,7 @@ namespace box2d {
 
 		/// Angular slop.
 		/// @note Recommended value: <code>DefaultAngularSlop</code>.
-		RealNum angularSlop = DefaultAngularSlop;
+		Angle angularSlop = DefaultAngularSlop;
 
 		/// Maximum linear correction.
 		/// @detail
@@ -99,7 +99,7 @@ namespace box2d {
 		/// @detail Maximum angular position correction used when solving constraints.
 		/// Helps to prevent overshoot.
 		/// @note Recommended value: <code>angularSlop * 4</code>.
-		RealNum maxAngularCorrection = DefaultAngularSlop * 4;
+		Angle maxAngularCorrection = DefaultAngularSlop * RealNum{4};
 	};
 
 	inline ConstraintSolverConf& ConstraintSolverConf::UseResolutionRate(RealNum value) noexcept
@@ -114,7 +114,7 @@ namespace box2d {
 		return *this;
 	}
 
-	inline ConstraintSolverConf& ConstraintSolverConf::UseAngularSlop(RealNum value) noexcept
+	inline ConstraintSolverConf& ConstraintSolverConf::UseAngularSlop(Angle value) noexcept
 	{
 		angularSlop = value;
 		return *this;
@@ -126,7 +126,7 @@ namespace box2d {
 		return *this;
 	}
 
-	inline ConstraintSolverConf& ConstraintSolverConf::UseMaxAngularCorrection(RealNum value) noexcept
+	inline ConstraintSolverConf& ConstraintSolverConf::UseMaxAngularCorrection(Angle value) noexcept
 	{
 		maxAngularCorrection = value;
 		return *this;

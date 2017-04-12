@@ -56,14 +56,14 @@ static inline IndexSeparation GetPolygonSeparation(const PolygonShape& polygon, 
 			// Adjacency
 			if (Dot(polygonNormal, perp) >= 0)
 			{
-				if (Dot(polygonNormal - edge.GetUpperLimit(), edge.GetNormal()) < BOX2D_MAGIC(-DefaultAngularSlop))
+				if (Dot(polygonNormal - edge.GetUpperLimit(), edge.GetNormal()) < BOX2D_MAGIC(-StripUnit(DefaultAngularSlop)))
 				{
 					continue;
 				}
 			}
 			else
 			{
-				if (Dot(polygonNormal - edge.GetLowerLimit(), edge.GetNormal()) < BOX2D_MAGIC(-DefaultAngularSlop))
+				if (Dot(polygonNormal - edge.GetLowerLimit(), edge.GetNormal()) < BOX2D_MAGIC(-StripUnit(DefaultAngularSlop)))
 				{
 					continue;
 				}

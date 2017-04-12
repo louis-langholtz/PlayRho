@@ -89,9 +89,9 @@ TEST(StepConf, maxRotation)
 	const auto inc = v - n;
 	ASSERT_GT(inc, RealNum(0));
 	ASSERT_LT(inc, RealNum(1));
-	const auto max_inc = inc * StepConf{}.maxRotation / Radian;
-	EXPECT_GT(max_inc, RealNum(0));
-	EXPECT_LT(max_inc, DefaultAngularSlop / 2);
+	const auto max_inc = inc * StepConf{}.maxRotation;
+	EXPECT_GT(max_inc, Angle(0));
+	EXPECT_LT(max_inc, DefaultAngularSlop / RealNum{2});
 #if 0
 	std::cout << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
 	std::cout << " inc=" << inc;

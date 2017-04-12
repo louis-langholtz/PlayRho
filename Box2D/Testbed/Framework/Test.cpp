@@ -700,14 +700,14 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 	stepConf.maxRotation = settings.maxRotation * Degree;
 	
 	stepConf.linearSlop = settings.linearSlop * Meter;
-	stepConf.angularSlop = settings.angularSlop;
+	stepConf.angularSlop = settings.angularSlop * Radian;
 	stepConf.regMinSeparation = settings.regMinSeparation * Meter;
 	stepConf.toiMinSeparation = settings.toiMinSeparation * Meter;
 	stepConf.targetDepth = settings.linearSlop * RealNum{3} * Meter;
 	stepConf.tolerance = (settings.linearSlop / RealNum{4}) * Meter;
 	
 	stepConf.maxLinearCorrection = settings.maxLinearCorrection * Meter;
-	stepConf.maxAngularCorrection = (settings.maxAngularCorrection * Degree) / Radian;
+	stepConf.maxAngularCorrection = settings.maxAngularCorrection * Degree;
 	stepConf.regResolutionRate = settings.regPosResRate / 100.0f;
 	stepConf.toiResolutionRate = settings.toiPosResRate / 100.0f;
 	if (!settings.enableSleep)
