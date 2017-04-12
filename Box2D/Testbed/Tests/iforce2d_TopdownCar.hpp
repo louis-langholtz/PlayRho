@@ -176,8 +176,9 @@ public:
 		ApplyLinearImpulse(*m_body, m_currentTraction * impulse, m_body->GetWorldCenter());
 		
 		//angular velocity
-		const auto rotInertia = GetRotInertia(*m_body) * SquareRadian / (SquareMeter * Kilogram);
-		ApplyAngularImpulse(*m_body, m_currentTraction * 0.1f * rotInertia * -GetAngularVelocity(*m_body) / RadianPerSecond);
+		const auto rotInertia = GetRotInertia(*m_body);
+		constexpr auto Tenth = RealNum{1} / RealNum{10};
+		ApplyAngularImpulse(*m_body, m_currentTraction * Tenth * rotInertia * -GetAngularVelocity(*m_body));
 		
 		//forward linear velocity
 		const auto forwardVelocity = getForwardVelocity();

@@ -1070,12 +1070,11 @@ inline void ApplyLinearImpulse(Body& body, const Momentum2D impulse, const Lengt
 /// Apply an angular impulse.
 /// @param body Body to apply the angular impulse to.
 /// @param impulse the angular impulse in units of kg*m*m/s
-inline void ApplyAngularImpulse(Body& body, RealNum impulse) noexcept
+inline void ApplyAngularImpulse(Body& body, AngularMomentum impulse) noexcept
 {
 	auto velocity = body.GetVelocity();
 	const auto invRotI = body.GetInvRotInertia();
-	const auto intRotInertiaUnitless = invRotI * (SquareMeter * Kilogram / SquareRadian);
-	velocity.angular += RadianPerSecond * intRotInertiaUnitless * impulse;
+	velocity.angular += AngularVelocity{invRotI * impulse};
 	body.SetVelocity(velocity);
 }
 

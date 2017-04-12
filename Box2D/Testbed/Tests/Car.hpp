@@ -102,7 +102,8 @@ public:
 			jd.enableLimit = true;
 			m_world->CreateJoint(jd);
 
-			ApplyAngularImpulse(*body, 100.0f);
+			// AngularMomentum is L^2 M T^-1 QP^-1.
+			ApplyAngularImpulse(*body, RealNum{100} * SquareMeter * Kilogram / (Second * Radian));
 		}
 
 		// Bridge
