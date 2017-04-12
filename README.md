@@ -24,7 +24,8 @@ Here's a run-down of some of the changes:
 - More stable polygon stacking.
 - Shared shapes with friction, density, and restitution moved into them (from Fixture class) for reduced memory usage.
 - Support for C++11's range-based loops and constant expressions.
-- Unit tested via Google Test and over 400 tests.
+- Unit tested via [Google Test](https://github.com/google/googletest/tree/aa148eb2b7f70ede0eb10de34b6254826bfb34f4) and [over 400 tests](https://github.com/louis-langholtz/Box2D/tree/dev/Box2D/UnitTests).
+- Compile-time support for zero-runtime strongly-typed physical units (using an interface to [`constexpr`-enhanced boost units](https://github.com/louis-langholtz/units)).
 - Compile-time support for `double` and `long double` floating-point types and 32-bit and 64-bit fixed-point types (in addition to `float`).
 - Fully per-step run-time configurable (via [`StepConf`](https://github.com/louis-langholtz/Box2D/blob/dev/Box2D/Box2D/Dynamics/StepConf.hpp)).
 - In-depth per-step return value statistics (via [`StepStats`](https://github.com/louis-langholtz/Box2D/blob/dev/Box2D/Box2D/Dynamics/StepStats.hpp)).

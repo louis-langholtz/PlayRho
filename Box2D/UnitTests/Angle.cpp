@@ -32,6 +32,11 @@ TEST(Angle, ByteSizeIs_4_8_or_16)
 	}
 }
 
+TEST(Angle, DegreeAndRadian)
+{
+	EXPECT_EQ(Degree, Radian * Pi / RealNum{180});
+}
+
 TEST(Angle, GetRevRotationalAngle)
 {
 	EXPECT_EQ(GetRevRotationalAngle(RealNum{0} * Degree, RealNum{0} * Degree), RealNum{0} * Degree);

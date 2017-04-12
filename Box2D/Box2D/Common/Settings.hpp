@@ -51,6 +51,7 @@
 #include <boost/units/systems/si/inverse_moment_of_inertia.hpp>
 #include <boost/units/systems/si/force.hpp>
 #include <boost/units/systems/si/torque.hpp>
+#include <boost/units/systems/angle/degrees.hpp>
 #endif
 
 #include <Box2D/Common/Wider.hpp>
@@ -95,8 +96,6 @@ using uint64 = std::uint64_t;
 ///
 using RealNum = float;
 
-constexpr auto Pi = static_cast<float>(M_PI); ///< Pi (any narrowing is intentional).
-
 #ifdef USE_BOOST_UNITS
 
 using Time = boost::units::quantity<boost::units::si::time, RealNum>;
@@ -127,7 +126,7 @@ constexpr auto KilogramPerSquareMeter = Density{boost::units::si::kilogram_per_s
 
 using Angle = boost::units::quantity<boost::units::si::plane_angle, RealNum>;
 constexpr auto Radian = Angle{boost::units::si::radian * RealNum{1}};
-constexpr auto Degree = Angle{boost::units::si::radian * RealNum{Pi / 180}};
+constexpr auto Degree = Angle{boost::units::degree::degree * RealNum{1}};
 constexpr auto SquareRadian = Radian * Radian;
 
 using AngularVelocity = boost::units::quantity<boost::units::si::angular_velocity, RealNum>;
@@ -182,7 +181,7 @@ constexpr auto KilogramPerSquareMeter = RealNum{1};
 
 using Angle = RealNum;
 constexpr auto Radian = RealNum{1};
-constexpr auto Degree = RealNum{Pi / 180};
+constexpr auto Degree = RealNum{static_cast<float>(M_PI) / 180};
 constexpr auto SquareRadian = Radian * Radian;
 
 using AngularVelocity = RealNum;
@@ -305,6 +304,8 @@ using island_count_t = size_t;
 /// Time step iterations type.
 /// @detail A type for countining iterations per time-step.
 using ts_iters_t = uint8;
+
+constexpr auto Pi = static_cast<float>(M_PI); ///< Pi (any narrowing is intentional).
 
 constexpr auto MaxFloat = std::numeric_limits<RealNum>::max(); // FLT_MAX
 
