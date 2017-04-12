@@ -124,7 +124,7 @@ private:
 	Length m_JwB;
 	Length m_JwC;
 	Length m_JwD;
-	Mass m_mass;
+	RealNum m_mass; ///< Either linear mass or angular mass.
 };
 	
 } // namespace box2d

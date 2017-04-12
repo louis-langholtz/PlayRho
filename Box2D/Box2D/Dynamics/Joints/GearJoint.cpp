@@ -150,14 +150,15 @@ void GearJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf&
 	const auto qC = UnitVec2(aC);
 	const auto qD = UnitVec2(aD);
 
-	auto invMass = RealNum{0};
-#if 0 // TODO
+	auto invMass = RealNum{0}; // Unitless to double for either linear mass or angular mass.
+
 	if (m_typeA == JointType::Revolute)
 	{
 		m_JvAC = Vec2_zero;
 		m_JwA = RealNum{1} * Meter;
 		m_JwC = RealNum{1} * Meter;
-		invMass += StripUnit(bodiesA.GetInvRotInertia() + bodiesC.GetInvRotInertia());
+		const auto invAngMass = bodiesA.GetInvRotInertia() + bodiesC.GetInvRotInertia();
+		invMass += StripUnit(invAngMass);
 	}
 	else
 	{
@@ -169,7 +170,8 @@ void GearJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf&
 		m_JwA = Cross(rA, u);
 		const auto invRotMassC = InvMass{bodiesC.GetInvRotInertia() * Square(m_JwC) / SquareRadian};
 		const auto invRotMassA = InvMass{bodiesA.GetInvRotInertia() * Square(m_JwA) / SquareRadian};
-		invMass += bodiesC.GetInvMass() + bodiesA.GetInvMass() + invRotMassC + invRotMassA;
+		const auto invLinMass = InvMass{bodiesC.GetInvMass() + bodiesA.GetInvMass() + invRotMassC + invRotMassA};
+		invMass += StripUnit(invLinMass);
 	}
 
 	if (m_typeB == JointType::Revolute)
@@ -177,7 +179,8 @@ void GearJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf&
 		m_JvBD = Vec2_zero;
 		m_JwB = m_ratio * Meter;
 		m_JwD = m_ratio * Meter;
-		invMass += Square(m_ratio * Meter) * (bodiesB.GetInvRotInertia() + bodiesD.GetInvRotInertia());
+		const auto invAngMass = InvRotInertia{Square(m_ratio) * (bodiesB.GetInvRotInertia() + bodiesD.GetInvRotInertia())};
+		invMass += StripUnit(invAngMass);
 	}
 	else
 	{
@@ -189,11 +192,15 @@ void GearJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf&
 		m_JwB = m_ratio * Cross(rB, u);
 		const auto invRotMassD = InvMass{bodiesD.GetInvRotInertia() * Square(m_JwD) / SquareRadian};
 		const auto invRotMassB = InvMass{bodiesB.GetInvRotInertia() * Square(m_JwB) / SquareRadian};
-		invMass += Square(m_ratio) * (bodiesD.GetInvMass() + bodiesB.GetInvMass()) + invRotMassD + invRotMassB;
+		const auto invLinMass = InvMass{
+			Square(m_ratio) * (bodiesD.GetInvMass() + bodiesB.GetInvMass()) +
+			invRotMassD + invRotMassB
+		};
+		invMass += StripUnit(invLinMass);
 	}
 
 	// Compute effective mass.
-	m_mass = (invMass > InvMass{0}) ? RealNum{1} / invMass: Mass{0};
+	m_mass = (invMass > RealNum{0})? RealNum{1} / invMass: RealNum{0};
 
 	if (step.doWarmStart)
 	{
@@ -206,7 +213,7 @@ void GearJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf&
 	{
 		m_impulse = Momentum{0};
 	}
-#endif
+
 	bodiesA.SetVelocity(velA);
 	bodiesB.SetVelocity(velB);
 	bodiesC.SetVelocity(velC);
@@ -231,7 +238,7 @@ RealNum GearJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepC
 		+ (m_JwA * velA.angular - m_JwC * velC.angular) / Radian
 		+ (m_JwB * velB.angular - m_JwD * velD.angular) / Radian;
 
-	const auto impulse = -Momentum{m_mass * Cdot};
+	const auto impulse = Momentum{-m_mass * Kilogram * Cdot};
 	m_impulse += impulse;
 
 	velA += Velocity{(bodiesA.GetInvMass() * impulse) * m_JvAC, bodiesA.GetInvRotInertia() * impulse * m_JwA / Radian};
@@ -249,7 +256,6 @@ RealNum GearJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepC
 
 bool GearJoint::SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const
 {
-#if 0 // TODO
 	auto& bodiesA = bodies.at(GetBodyA());
 	auto& bodiesB = bodies.at(GetBodyB());
 	auto& bodiesC = bodies.at(m_bodyC);
@@ -262,7 +268,7 @@ bool GearJoint::SolvePositionConstraints(BodyConstraints& bodies, const Constrai
 
 	const UnitVec2 qA(posA.angular), qB(posB.angular), qC(posC.angular), qD(posD.angular);
 
-	const auto linearError = RealNum{0};
+	const auto linearError = Length{0};
 
 
 	Vec2 JvAC, JvBD;
@@ -270,14 +276,15 @@ bool GearJoint::SolvePositionConstraints(BodyConstraints& bodies, const Constrai
 
 	auto coordinateA = RealNum{0}; // Angle or length.
 	auto coordinateB = RealNum{0};
-	auto mass = RealNum{0}; // Linear mass or angular mass.
+	auto invMass = RealNum{0}; // Inverse linear mass or inverse angular mass.
 
 	if (m_typeA == JointType::Revolute)
 	{
 		JvAC = Vec2_zero;
 		JwA = 1;
 		JwC = 1;
-		mass += (bodiesA.GetInvRotInertia() + bodiesC.GetInvRotInertia()) * SquareMeter * Kilogram / SquareRadian;
+		const auto invAngMass = bodiesA.GetInvRotInertia() + bodiesC.GetInvRotInertia();
+		invMass += StripUnit(invAngMass);
 		coordinateA = (posA.angular - posC.angular - m_referenceAngleA) / Radian;
 	}
 	else
@@ -286,11 +293,12 @@ bool GearJoint::SolvePositionConstraints(BodyConstraints& bodies, const Constrai
 		const auto rC = Rotate(m_localAnchorC - bodiesC.GetLocalCenter(), qC);
 		const auto rA = Rotate(m_localAnchorA - bodiesA.GetLocalCenter(), qA);
 		JvAC = u * RealNum{1};
-		JwC = Cross(rC, u);
-		JwA = Cross(rA, u);
-		mass += (bodiesC.GetInvMass() + bodiesA.GetInvMass()) * Kilogram;
-		mass += bodiesC.GetInvRotInertia() * Square(JwC) + bodiesA.GetInvRotInertia() * Square(JwA);
-
+		JwC = StripUnit(Length{Cross(rC, u)});
+		JwA = StripUnit(Length{Cross(rA, u)});
+		const auto invLinMass = InvMass{bodiesC.GetInvMass() + bodiesA.GetInvMass()};
+		const auto invRotMassC = InvMass{bodiesC.GetInvRotInertia() * Square(JwC * Meter) / SquareRadian};
+		const auto invRotMassA = InvMass{bodiesA.GetInvRotInertia() * Square(JwA * Meter) / SquareRadian};
+		invMass += StripUnit(invLinMass + invRotMassC + invRotMassA);
 		const auto pC = m_localAnchorC - bodiesC.GetLocalCenter();
 		const auto pA = InverseRotate(rA + (posA.linear - posC.linear), qC);
 		coordinateA = Dot(pA - pC, m_localAxisC) / Meter;
@@ -301,8 +309,10 @@ bool GearJoint::SolvePositionConstraints(BodyConstraints& bodies, const Constrai
 		JvBD = Vec2_zero;
 		JwB = m_ratio;
 		JwD = m_ratio;
-		mass += Square(m_ratio) * (bodiesB.GetInvRotInertia() + bodiesD.GetInvRotInertia());
-
+		const auto invAngMass = InvRotInertia{
+			Square(m_ratio) * (bodiesB.GetInvRotInertia() + bodiesD.GetInvRotInertia())
+		};
+		invMass += StripUnit(invAngMass);
 		coordinateB = (posB.angular - posD.angular - m_referenceAngleB) / Radian;
 	}
 	else
@@ -311,10 +321,12 @@ bool GearJoint::SolvePositionConstraints(BodyConstraints& bodies, const Constrai
 		const auto rD = Rotate(m_localAnchorD - bodiesD.GetLocalCenter(), qD);
 		const auto rB = Rotate(m_localAnchorB - bodiesB.GetLocalCenter(), qB);
 		JvBD = m_ratio * u;
-		JwD = m_ratio * Cross(rD, u);
-		JwB = m_ratio * Cross(rB, u);
-		mass += Square(m_ratio) * (bodiesD.GetInvMass() + bodiesB.GetInvMass()) + bodiesD.GetInvRotInertia() * Square(JwD) + m_iB * Square(JwB);
-
+		JwD = m_ratio * StripUnit(Length{Cross(rD, u)});
+		JwB = m_ratio * StripUnit(Length{Cross(rB, u)});
+		const auto invLinMass = InvMass{Square(m_ratio) * (bodiesD.GetInvMass() + bodiesB.GetInvMass())};
+		const auto invRotMassD = InvMass{bodiesD.GetInvRotInertia() * Square(JwD * Meter) / SquareRadian};
+		const auto invRotMassB = InvMass{bodiesB.GetInvRotInertia() * Square(JwB * Meter) / SquareRadian};
+		invMass += StripUnit(invLinMass + invRotMassD + invRotMassB);
 		const auto pD = m_localAnchorD - bodiesD.GetLocalCenter();
 		const auto pB = InverseRotate(rB + (posB.linear - posD.linear), qD);
 		coordinateB = Dot(pB - pD, m_localAxisD) / Meter;
@@ -322,16 +334,24 @@ bool GearJoint::SolvePositionConstraints(BodyConstraints& bodies, const Constrai
 
 	const auto C = ((coordinateA + m_ratio * coordinateB) - m_constant);
 
-	auto impulse = RealNum{0};
-	if (mass > 0)
-	{
-		impulse = -C / mass;
-	}
+	const auto impulse = ((invMass > 0)? -C / invMass: 0) * Kilogram * Meter;
 
-	posA += Position{bodiesA.GetInvMass() * impulse * JvAC, bodiesA.GetInvRotInertia() * impulse * JwA};
-	posB += Position{bodiesB.GetInvMass() * impulse * JvBD, bodiesB.GetInvRotInertia() * impulse * JwB};
-	posC -= Position{bodiesC.GetInvMass() * impulse * JvAC, bodiesC.GetInvRotInertia() * impulse * JwC};
-	posD -= Position{bodiesD.GetInvMass() * impulse * JvBD, bodiesD.GetInvRotInertia() * impulse * JwD};
+	posA += Position{
+		bodiesA.GetInvMass() * impulse * JvAC,
+		bodiesA.GetInvRotInertia() * impulse * JwA * Meter / Radian
+	};
+	posB += Position{
+		bodiesB.GetInvMass() * impulse * JvBD,
+		bodiesB.GetInvRotInertia() * impulse * JwB * Meter / Radian
+	};
+	posC -= Position{
+		bodiesC.GetInvMass() * impulse * JvAC,
+		bodiesC.GetInvRotInertia() * impulse * JwC * Meter / Radian
+	};
+	posD -= Position{
+		bodiesD.GetInvMass() * impulse * JvBD,
+		bodiesD.GetInvRotInertia() * impulse * JwD * Meter / Radian
+	};
 
 	bodiesA.SetPosition(posA);
 	bodiesB.SetPosition(posB);
@@ -340,8 +360,6 @@ bool GearJoint::SolvePositionConstraints(BodyConstraints& bodies, const Constrai
 
 	// TODO_ERIN not implemented
 	return linearError < conf.linearSlop;
-#endif
-	return true;
 }
 
 Length2D GearJoint::GetAnchorA() const
@@ -361,7 +379,7 @@ Force2D GearJoint::GetReactionForce(Frequency inv_dt) const
 
 Torque GearJoint::GetReactionTorque(Frequency inv_dt) const
 {
-	return 0; // TODO inv_dt * m_impulse * m_JwA;
+	return inv_dt * m_impulse * m_JwA / Radian;
 }
 
 void GearJoint::SetRatio(RealNum ratio)
