@@ -1,21 +1,21 @@
 /*
-* Original work Copyright (c) 2006-2007 Erin Catto http://www.box2d.org
-* Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+ * Original work Copyright (c) 2006-2007 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty.  In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 1. The origin of this software must not be misrepresented; you must not
+ * claim that you wrote the original software. If you use this software
+ * in a product, an acknowledgment in the product documentation would be
+ * appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ * misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
 
 #include <Box2D/Box2D.hpp>
 
@@ -23,11 +23,10 @@
 
 using namespace box2d;
 
-// This is a simple example of building and running a simulation
-// using Box2D. Here we create a large ground box and a small dynamic
-// box.
-// There are no graphics for this example. Box2D is meant to be used
-// with your rendering engine in your game engine.
+// This is a simple example of building and running a simulation using Box2D.
+// Here we create a large ground box and a small dynamic box.
+// There are no graphics for this example. Box2D is meant to be used with your
+// rendering engine in your game engine.
 int main(int, char**)
 {
 	// Construct a world object, which will hold and simulate the rigid bodies.
@@ -52,11 +51,11 @@ int main(int, char**)
 	// Define the dynamic body. We set its position and call the body factory.
 	auto bodyDef = BodyDef{};
 	bodyDef.type = BodyType::Dynamic;
-	bodyDef.position = Vec2(0.0f, 4.0f);
+	bodyDef.position = Vec2(0.0f, 4.0f) * Meter;
 	const auto body = world.CreateBody(bodyDef);
 
 	// Define another box shape for our dynamic body.
-	const auto dynamicBox = std::make_shared<PolygonShape>(1.0f, 1.0f);
+	const auto dynamicBox = std::make_shared<PolygonShape>(1.0f * Meter, 1.0f * Meter);
 
 	// Set the box density to be non-zero, so it will be dynamic.
 	dynamicBox->SetDensity(1.0f * KilogramPerSquareMeter);
@@ -86,7 +85,10 @@ int main(int, char**)
 		const auto position = body->GetLocation();
 		const auto angle = body->GetAngle();
 
-		printf("%4.2f %4.2f %4.2f\n", position.x, position.y, double{angle / Degree});
+		printf("%4.2f %4.2f %4.2f\n",
+			   double{position.x / Meter},
+			   double{position.y / Meter},
+			   double{angle / Degree});
 	}
 
 	// When the world destructor is called, all bodies and joints are freed. This can
