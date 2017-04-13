@@ -183,7 +183,7 @@ public:
 		//forward linear velocity
 		const auto forwardVelocity = getForwardVelocity();
 		auto currentForwardSpeed = LinearVelocity{0};
-		const auto forwardDir = GetUnitVector(forwardVelocity, currentForwardSpeed);
+		const auto forwardDir = GetUnitVector(forwardVelocity, currentForwardSpeed, UnitVec2::GetZero());
 		const auto dragForceMagnitude = RealNum{-2} * currentForwardSpeed;
 		const auto newForce = Force2D{m_currentTraction * dragForceMagnitude * forwardDir * Kilogram / Second};
 		SetForce(*m_body, newForce, m_body->GetWorldCenter());
