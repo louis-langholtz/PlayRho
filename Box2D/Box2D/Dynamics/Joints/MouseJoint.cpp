@@ -52,8 +52,13 @@ bool MouseJoint::IsOkay(const MouseJointDef& def) noexcept
 
 MouseJoint::MouseJoint(const MouseJointDef& def):
 	Joint{def},
-	m_localAnchorB{InverseTransform(def.target, GetBodyB()->GetTransformation())},
-	m_targetA{def.target}, m_maxForce{def.maxForce}, m_frequencyHz{def.frequencyHz}, m_dampingRatio{def.dampingRatio}
+	m_localAnchorB{def.bodyB?
+		InverseTransform(def.target, def.bodyB->GetTransformation()):
+		GetInvalid<decltype(m_localAnchorB)>()},
+	m_targetA{def.target},
+	m_maxForce{def.maxForce},
+	m_frequencyHz{def.frequencyHz},
+	m_dampingRatio{def.dampingRatio}
 {
 	assert(IsValid(def.target));
 	assert(IsValid(def.maxForce) && (def.maxForce >= Force{0}));
@@ -80,9 +85,9 @@ Mat22 MouseJoint::GetEffectiveMassMatrix(const BodyConstraint& body) const noexc
 	const auto invMass = body.GetInvMass();
 	const auto invRotInertia = body.GetInvRotInertia();
 
-	const auto exx = InvMass{invMass + (invRotInertia * m_rB.y * m_rB.y / SquareRadian) + m_gamma};
+	const auto exx = InvMass{invMass + (invRotInertia * Square(m_rB.y) / SquareRadian) + m_gamma};
 	const auto exy = InvMass{-invRotInertia * m_rB.x * m_rB.y / SquareRadian};
-	const auto eyy = InvMass{invMass + (invRotInertia * m_rB.x * m_rB.x / SquareRadian) + m_gamma};
+	const auto eyy = InvMass{invMass + (invRotInertia * Square(m_rB.x) / SquareRadian) + m_gamma};
 
 	Mat22 K;
 	K.ex.x = StripUnit(exx);
@@ -92,7 +97,8 @@ Mat22 MouseJoint::GetEffectiveMassMatrix(const BodyConstraint& body) const noexc
 	return K;
 }
 
-void MouseJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf&)
+void MouseJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step,
+										 const ConstraintSolverConf&)
 {
 	auto& bodiesB = bodies.at(GetBodyB());
 
@@ -156,10 +162,10 @@ RealNum MouseJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
 	auto velB = bodiesB.GetVelocity();
 	assert(IsValid(velB));
 
-	const auto Cdot = LinearVelocity2D{velB.linear + (GetRevPerpendicular(m_rB) * velB.angular) / Radian};
-	const auto ev = LinearVelocity2D{Cdot + m_C + (m_gamma * m_impulse)};
+	const auto Cdot = velB.linear + LinearVelocity2D{(GetRevPerpendicular(m_rB) * velB.angular) / Radian};
+	const auto ev = Cdot + LinearVelocity2D{m_C + (m_gamma * m_impulse)};
 	const auto oldImpulse = m_impulse;
-	const auto addImpulse = Momentum2D{Transform(StripUnits(ev), m_mass) * Kilogram * MeterPerSecond};
+	const auto addImpulse = Momentum2D{Transform(StripUnits(-ev), m_mass) * Kilogram * MeterPerSecond};
 	assert(IsValid(addImpulse));
 	m_impulse += addImpulse;
 	const auto maxImpulse = step.GetTime() * m_maxForce;
@@ -187,7 +193,7 @@ bool MouseJoint::SolvePositionConstraints(BodyConstraints& bodies, const Constra
 
 Length2D MouseJoint::GetAnchorB() const
 {
-	return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
+	return GetBodyB()? GetWorldPoint(*GetBodyB(), GetLocalAnchorB()): GetInvalid<Length2D>();
 }
 
 Force2D MouseJoint::GetReactionForce(Frequency inv_dt) const

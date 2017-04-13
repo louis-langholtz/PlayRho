@@ -64,6 +64,7 @@
 		4731DE721DF7EB2200E7F931 /* EdgeInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE6F1DF7EB2200E7F931 /* EdgeInfo.cpp */; };
 		4731DE731DF7EB2200E7F931 /* EdgeInfo.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE701DF7EB2200E7F931 /* EdgeInfo.hpp */; };
 		4731DE741DF7EB2200E7F931 /* EdgeInfo.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE701DF7EB2200E7F931 /* EdgeInfo.hpp */; };
+		47327E751E9F1E2A0048FCD8 /* MouseJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47327E741E9F1E2A0048FCD8 /* MouseJoint.cpp */; };
 		4734B2191DC00AFD00F15E29 /* ArrayList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2161DC00AFD00F15E29 /* ArrayList.hpp */; };
 		4734B21A1DC00AFD00F15E29 /* ArrayList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2161DC00AFD00F15E29 /* ArrayList.hpp */; };
 		4734B21C1DC1121900F15E29 /* ArrayList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4734B21B1DC1121900F15E29 /* ArrayList.cpp */; };
@@ -453,6 +454,7 @@
 		4731DE6A1DF7E88500E7F931 /* ReferenceFace.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ReferenceFace.hpp; sourceTree = "<group>"; };
 		4731DE6F1DF7EB2200E7F931 /* EdgeInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdgeInfo.cpp; sourceTree = "<group>"; };
 		4731DE701DF7EB2200E7F931 /* EdgeInfo.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EdgeInfo.hpp; sourceTree = "<group>"; };
+		47327E741E9F1E2A0048FCD8 /* MouseJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MouseJoint.cpp; sourceTree = "<group>"; };
 		4734B2161DC00AFD00F15E29 /* ArrayList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ArrayList.hpp; sourceTree = "<group>"; };
 		4734B21B1DC1121900F15E29 /* ArrayList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ArrayList.cpp; sourceTree = "<group>"; };
 		4734B21E1DC1340500F15E29 /* Span.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Span.hpp; sourceTree = "<group>"; };
@@ -801,6 +803,7 @@
 				47FFD0F81DABDC63000D6D0E /* Mat22.cpp */,
 				474BC3FE1D41278800447DCD /* Mat33.cpp */,
 				473971A71D9D9B4C00F7137F /* Math.cpp */,
+				47327E741E9F1E2A0048FCD8 /* MouseJoint.cpp */,
 				474BC3FF1D41278800447DCD /* PolygonShape.cpp */,
 				47FFD0FC1DAC6235000D6D0E /* PositionConstraint.cpp */,
 				47AFC3041DAEBC120023E9D1 /* PositionSolverManifold.cpp */,
@@ -1547,6 +1550,7 @@
 				4731DE1E1DDD0B8700E7F931 /* DynamicTree.cpp in Sources */,
 				474BC43B1D413DC200447DCD /* Transformation.cpp in Sources */,
 				474BC43C1D413DC200447DCD /* Vec2.cpp in Sources */,
+				47327E751E9F1E2A0048FCD8 /* MouseJoint.cpp in Sources */,
 				47CF98501E0088ED0077F5F2 /* Angle.cpp in Sources */,
 				4731DE0A1DD7A4E000E7F931 /* ContactFilter.cpp in Sources */,
 				47315E041E28A66100DDA856 /* RevoluteJoint.cpp in Sources */,

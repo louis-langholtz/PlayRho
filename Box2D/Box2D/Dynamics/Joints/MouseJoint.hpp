@@ -53,13 +53,19 @@ struct MouseJointDef : public JointDef
 	RealNum dampingRatio = 0.7f;
 };
 
+/// Mouse Joint.
+///
+/// @detail
 /// A mouse joint is used to make a point on a body track a
-/// specified world point. This a soft constraint with a maximum
-/// force. This allows the constraint to stretch and without
-/// applying huge forces.
-/// NOTE: this joint is not documented in the manual because it was
-/// developed to be used in the testbed. If you want to learn how to
-/// use the mouse joint, look at the testbed.
+///   specified world point. This a soft constraint with a maximum
+///   force. This allows the constraint to stretch and without
+///   applying huge forces.
+/// @note This joint is not documented in the manual because it was
+///   developed to be used in the testbed. If you want to learn how to
+///   use the mouse joint, look at the testbed.
+/// @note This structure is 120-bytes large (using a 4-byte RealNum on at least one 64-bit
+///   architecture/build).
+///
 class MouseJoint : public Joint
 {
 public:
