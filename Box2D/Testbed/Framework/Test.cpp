@@ -552,7 +552,18 @@ void Test::LaunchBomb(const Length2D& position, const LinearVelocity2D linearVel
 
 void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
 {
-	drawer.DrawString(5, m_textLine, "step#=%d (@%fs):", m_stepCount, m_sumDeltaTime);
+	drawer.DrawString(5, m_textLine, "step#=%d (@%fs):",
+					  m_stepCount, m_sumDeltaTime);
+	m_textLine += DRAW_STRING_NEW_LINE;
+	
+	const auto bodyCount = GetBodyCount(*m_world);
+	const auto awakeCount = GetAwakeCount(*m_world);
+	const auto sleepCount = bodyCount - awakeCount;
+	const auto jointCount = GetJointCount(*m_world);
+	const auto fixtureCount = GetFixtureCount(*m_world);
+	const auto shapeCount = GetShapeCount(*m_world);
+	drawer.DrawString(5, m_textLine, "  bodies=%d (%d asleep), fixtures=%d, shapes=%d, contacts=%d (of %d), joints=%d",
+					  bodyCount, sleepCount, fixtureCount, shapeCount, m_numContacts, m_maxContacts, jointCount);
 	m_textLine += DRAW_STRING_NEW_LINE;
 	
 	drawer.DrawString(5, m_textLine, "  pre-info: cts-add=%d cts-ignor=%d cts-del=%d cts-upd=%d",
@@ -598,25 +609,6 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
 					  m_stepStats.toi.maxDistIters, m_stepStats.toi.maxToiIters,
 					  double{m_stepStats.toi.minSeparation / Meter},
 					  double{m_stepStats.toi.maxIncImpulse / (Kilogram * MeterPerSecond)});
-	m_textLine += DRAW_STRING_NEW_LINE;
-	
-	const auto sleepCount = [&](){
-		auto count = unsigned(0);
-		for (auto&& body: m_world->GetBodies())
-		{
-			if (!body->IsAwake())
-			{
-				++count;
-			}
-		}
-		return count;
-	}();
-	const auto bodyCount = GetBodyCount(*m_world);
-	const auto jointCount = GetJointCount(*m_world);
-	const auto fixtureCount = GetFixtureCount(*m_world);
-	const auto shapeCount = GetShapeCount(*m_world);
-	drawer.DrawString(5, m_textLine, "  sleep=%d, bodies=%d, fixtures=%d, shapes=%d, contacts=%d (of %d), joints=%d",
-					  sleepCount, bodyCount, fixtureCount, shapeCount, m_numContacts, m_maxContacts, jointCount);
 	m_textLine += DRAW_STRING_NEW_LINE;
 	
 	drawer.DrawString(5, m_textLine, "  Reg sums: isl-found=%llu isl-solv=%llu pos-iter=%llu vel-iter=%llu p-moved=%llu min-sep=%f max-sep=%f",
