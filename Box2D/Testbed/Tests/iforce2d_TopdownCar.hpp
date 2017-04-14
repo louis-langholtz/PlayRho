@@ -87,29 +87,24 @@ class TDTire
 private:
 	Body* m_body;
 	std::set<GroundAreaFUD*> m_groundAreas;
-	float m_maxDriveForce;
-	LinearVelocity m_maxForwardSpeed;
-	LinearVelocity m_maxBackwardSpeed;
-	Momentum m_maxLateralImpulse;
-	float m_currentTraction;
+	Force m_maxDriveForce = Force{0};
+	LinearVelocity m_maxForwardSpeed = LinearVelocity{0};
+	LinearVelocity m_maxBackwardSpeed = LinearVelocity{0};
+	Momentum m_maxLateralImpulse = Momentum{0};
+	float m_currentTraction = 1;
 	
 public:
 	
-	TDTire(World* world)
+	TDTire(World* world, std::shared_ptr<PolygonShape> tireShape)
 	{
 		BodyDef bodyDef;
 		bodyDef.type = BodyType::Dynamic;
 		m_body = world->CreateBody(bodyDef);
 		
-		PolygonShape polygonShape;
-		polygonShape.SetAsBox(0.5f * Meter, 1.25f * Meter);
-		polygonShape.SetDensity(RealNum{1} * KilogramPerSquareMeter);
-		Fixture* fixture = m_body->CreateFixture(std::make_shared<PolygonShape>(polygonShape));//shape, density
+		const auto fixture = m_body->CreateFixture(tireShape);
 		fixture->SetUserData( new CarTireFUD() );
 		
 		m_body->SetUserData( this );
-		
-		m_currentTraction = 1;
 	}
 	
 	~TDTire()
@@ -117,7 +112,7 @@ public:
 		m_body->GetWorld()->Destroy(m_body);
 	}
 	
-	void setCharacteristics(LinearVelocity maxForwardSpeed, LinearVelocity maxBackwardSpeed, float maxDriveForce, Momentum maxLateralImpulse)
+	void setCharacteristics(LinearVelocity maxForwardSpeed, LinearVelocity maxBackwardSpeed, Force maxDriveForce, Momentum maxLateralImpulse)
 	{
 		m_maxForwardSpeed = maxForwardSpeed;
 		m_maxBackwardSpeed = maxBackwardSpeed;
@@ -152,17 +147,17 @@ public:
 		return m_body;
 	}
 	
-	LinearVelocity2D getLateralVelocity()
+	LinearVelocity2D getLateralVelocity() const
 	{
 		const auto currentRightNormal = GetWorldVector(*m_body, UnitVec2::GetRight());
-		const auto vel = Rotate(GetLinearVelocity(*m_body), currentRightNormal);
+		const auto vel = GetLinearVelocity(*m_body);
 		return Dot(currentRightNormal, vel) * currentRightNormal;
 	}
 	
-	LinearVelocity2D getForwardVelocity()
+	LinearVelocity2D getForwardVelocity() const
 	{
 		const auto currentForwardNormal = GetWorldVector(*m_body, UnitVec2::GetTop());
-		const auto vel = Rotate(GetLinearVelocity(*m_body), currentForwardNormal);
+		const auto vel = GetLinearVelocity(*m_body);
 		return Dot(currentForwardNormal, vel) * currentForwardNormal;
 	}
 	
@@ -201,14 +196,14 @@ public:
 		
 		//find current speed in forward direction
 		const auto currentForwardNormal = GetWorldVector(*m_body, UnitVec2::GetTop());
-		const auto currentSpeed = Dot( getForwardVelocity(), currentForwardNormal );
+		const auto currentSpeed = Dot(getForwardVelocity(), currentForwardNormal);
 		
 		//apply necessary force
 		auto forceMagnitude = Force{0};
 		if (desiredSpeed > currentSpeed)
-			forceMagnitude = m_maxDriveForce * Kilogram * MeterPerSquareSecond;
+			forceMagnitude = m_maxDriveForce;
 		else if (desiredSpeed < currentSpeed)
-			forceMagnitude = -m_maxDriveForce * Kilogram * MeterPerSquareSecond;
+			forceMagnitude = -m_maxDriveForce;
 		else
 			return;
 		
@@ -219,7 +214,7 @@ public:
 	void updateTurn(ControlStateType controlState)
 	{
 		auto desiredTorque = RealNum{0} * NewtonMeter;
-		switch ( controlState & (TDC_LEFT|TDC_RIGHT) )
+		switch (controlState & (TDC_LEFT|TDC_RIGHT))
 		{
 			case TDC_LEFT:  desiredTorque = RealNum{+15} * NewtonMeter; break;
 			case TDC_RIGHT: desiredTorque = RealNum{-15} * NewtonMeter; break;
@@ -270,43 +265,48 @@ public:
 		
 		const auto maxForwardSpeed = 250.0f * MeterPerSecond;
 		const auto maxBackwardSpeed = -40.0f * MeterPerSecond;
-		const auto backTireMaxDriveForce = 950.0f; // 300.0f;
-		const auto frontTireMaxDriveForce = 400.0f; // 500.0f;
+		const auto backTireMaxDriveForce = 950.0f * Newton; // 300.0f;
+		const auto frontTireMaxDriveForce = 400.0f * Newton; // 500.0f;
 		const auto backTireMaxLateralImpulse = 9.0f * Kilogram * MeterPerSecond; // 8.5f;
 		const auto frontTireMaxLateralImpulse = 9.0f * Kilogram * MeterPerSecond; // 7.5f;
 
+		PolygonShape tireShape;
+		tireShape.SetAsBox(0.5f * Meter, 1.25f * Meter);
+		tireShape.SetDensity(RealNum{1} * KilogramPerSquareMeter);
+		const auto sharedTireShape = std::make_shared<PolygonShape>(tireShape);
+
 		TDTire* tire;
 
-		//back left tire
-		tire = new TDTire(world);
+		//back left tire (starts at absolute 0, 0 but pulled into place by joint)
+		tire = new TDTire{world, sharedTireShape};
 		tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
 		jointDef.bodyB = tire->GetBody();
-		jointDef.localAnchorA = Vec2( -3, 0.75f ) * Meter;
+		jointDef.localAnchorA = Vec2(-3, 0.75f) * Meter; // sets car relative location of tire
 		world->CreateJoint(jointDef);
 		m_tires.push_back(tire);
 		
-		//back right tire
-		tire = new TDTire(world);
+		//back right tire (starts at absolute 0, 0 but pulled into place by joint)
+		tire = new TDTire{world, sharedTireShape};
 		tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
 		jointDef.bodyB = tire->GetBody();
-		jointDef.localAnchorA = Vec2( 3, 0.75f ) * Meter;
-		world->CreateJoint( jointDef );
+		jointDef.localAnchorA = Vec2(+3, 0.75f) * Meter; // sets car relative location of tire
+		world->CreateJoint(jointDef);
 		m_tires.push_back(tire);
 		
-		//front left tire
-		tire = new TDTire(world);
+		//front left tire (starts at absolute 0, 0 but pulled into place by joint)
+		tire = new TDTire{world, sharedTireShape};
 		tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
 		jointDef.bodyB = tire->GetBody();
-		jointDef.localAnchorA = Vec2( -3, 8.5f ) * Meter;
-		flJoint = (RevoluteJoint*)world->CreateJoint( jointDef );
+		jointDef.localAnchorA = Vec2(-3, 8.5f) * Meter; // sets car relative location of tire
+		flJoint = static_cast<RevoluteJoint*>(world->CreateJoint(jointDef));
 		m_tires.push_back(tire);
 		
-		//front right tire
-		tire = new TDTire(world);
+		//front right tire (starts at absolute 0, 0 but pulled into place by joint)
+		tire = new TDTire{world, sharedTireShape};
 		tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
 		jointDef.bodyB = tire->GetBody();
-		jointDef.localAnchorA = Vec2( 3, 8.5f ) * Meter;
-		frJoint = (RevoluteJoint*)world->CreateJoint( jointDef );
+		jointDef.localAnchorA = Vec2(+3, 8.5f) * Meter; // sets car relative location of tire
+		frJoint = static_cast<RevoluteJoint*>(world->CreateJoint(jointDef));
 		m_tires.push_back(tire);
 	}
 	
@@ -338,11 +338,14 @@ public:
 			default: ;//nothing
 		}
 		const auto angleNow = GetJointAngle(*flJoint);
-		auto angleToTurn = desiredAngle - angleNow;
-		angleToTurn = Clamp( RealNum{angleToTurn / Radian}, RealNum{-turnPerTimeStep / Radian}, RealNum{turnPerTimeStep / Radian}) * Radian;
-		const auto newAngle = angleNow + angleToTurn;
-		flJoint->SetLimits( newAngle, newAngle );
-		frJoint->SetLimits( newAngle, newAngle );
+		const auto desiredAngleToTurn = desiredAngle - angleNow;
+		const auto angleToTurn = Clamp(desiredAngleToTurn, -turnPerTimeStep, turnPerTimeStep);
+		if (angleToTurn != Angle{0})
+		{
+			const auto newAngle = angleNow + angleToTurn;
+			flJoint->SetLimits( newAngle, newAngle );
+			frJoint->SetLimits( newAngle, newAngle );
+		}
 	}
 };
 
@@ -392,7 +395,7 @@ public:
 		//m_tire = new TDTire(m_world);
 		//m_tire->setCharacteristics(100, -20, 150);
 		
-		m_car = new TDCar(m_world);
+		m_car = new TDCar{m_world};
 		m_controlState = 0;
 	}
 	
