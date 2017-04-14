@@ -144,6 +144,10 @@ void WheelJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
 	else
 	{
 		m_springImpulse = 0;
+
+		m_ax = UnitVec2::GetZero();
+		m_sAx = Length{0};
+		m_sBx = Length{0};
 	}
 
 	// Rotational motor
