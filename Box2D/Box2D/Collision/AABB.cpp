@@ -28,7 +28,7 @@
 
 using namespace box2d;
 
-AABB box2d::ComputeAABB(const EdgeShape& shape, const Transformation& xf, child_count_t childIndex)
+AABB box2d::ComputeAABB(const EdgeShape& shape, const Transformation xf, child_count_t childIndex)
 {
 	NOT_USED(childIndex);
 	
@@ -43,7 +43,7 @@ AABB box2d::ComputeAABB(const EdgeShape& shape, const Transformation& xf, child_
 	return AABB{lower - r, upper + r};
 }
 
-AABB box2d::ComputeAABB(const PolygonShape& shape, const Transformation& xf, child_count_t childIndex)
+AABB box2d::ComputeAABB(const PolygonShape& shape, const Transformation xf, child_count_t childIndex)
 {
 	NOT_USED(childIndex);
 	
@@ -65,7 +65,7 @@ AABB box2d::ComputeAABB(const PolygonShape& shape, const Transformation& xf, chi
 	return AABB{lower - r, upper + r};
 }
 
-AABB box2d::ComputeAABB(const ChainShape& shape, const Transformation& xf, child_count_t childIndex)
+AABB box2d::ComputeAABB(const ChainShape& shape, const Transformation xf, child_count_t childIndex)
 {
 	assert(childIndex < shape.GetVertexCount());
 	
@@ -80,7 +80,7 @@ AABB box2d::ComputeAABB(const ChainShape& shape, const Transformation& xf, child
 	return AABB{lower - r, upper + r};
 }
 
-AABB box2d::ComputeAABB(const CircleShape& shape, const Transformation& transform, child_count_t childIndex)
+AABB box2d::ComputeAABB(const CircleShape& shape, const Transformation transform, child_count_t childIndex)
 {
 	NOT_USED(childIndex);
 	
@@ -88,7 +88,7 @@ AABB box2d::ComputeAABB(const CircleShape& shape, const Transformation& transfor
 	return GetFattenedAABB(AABB{p, p}, shape.GetRadius());
 }
 
-AABB box2d::ComputeAABB(const Shape& shape, const Transformation& xf, child_count_t childIndex)
+AABB box2d::ComputeAABB(const Shape& shape, const Transformation xf, child_count_t childIndex)
 {
 	assert(shape.GetType() < Shape::e_typeCount);
 	switch (shape.GetType())
@@ -101,7 +101,7 @@ AABB box2d::ComputeAABB(const Shape& shape, const Transformation& xf, child_coun
 	}
 }
 
-AABB box2d::ComputeAABB(const Shape& shape, const Transformation& xf)
+AABB box2d::ComputeAABB(const Shape& shape, const Transformation xf)
 {
 	const auto childCount = GetChildCount(shape);
 	auto sum = AABB{};

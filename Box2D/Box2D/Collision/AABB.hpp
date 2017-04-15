@@ -202,33 +202,33 @@ namespace box2d
 	/// @param xf the world transform of the shape.
 	/// @param childIndex the child shape
 	/// @return the axis aligned box.
-	AABB ComputeAABB(const EdgeShape& shape, const Transformation& xf, child_count_t childIndex);
+	AABB ComputeAABB(const EdgeShape& shape, const Transformation xf, child_count_t childIndex);
 	
 	/// Given a transform, compute the associated axis aligned bounding box for a child shape.
 	/// @param xf the world transform of the shape.
 	/// @param childIndex the child shape
 	/// @return the axis aligned box.
-	AABB ComputeAABB(const PolygonShape& shape, const Transformation& xf, child_count_t childIndex);
+	AABB ComputeAABB(const PolygonShape& shape, const Transformation xf, child_count_t childIndex);
 	
 	/// Given a transform, compute the associated axis aligned bounding box for a child shape.
 	/// @param xf the world transform of the shape.
 	/// @param childIndex the child shape
 	/// @return the axis aligned box.
-	AABB ComputeAABB(const ChainShape& shape, const Transformation& xf, child_count_t childIndex);
+	AABB ComputeAABB(const ChainShape& shape, const Transformation xf, child_count_t childIndex);
 	
 	/// Given a transform, compute the associated axis aligned bounding box for a child shape.
 	/// @param xf the world transform of the shape.
 	/// @param childIndex the child shape
 	/// @return the axis aligned box.
-	AABB ComputeAABB(const CircleShape& shape, const Transformation& xf, child_count_t childIndex);
+	AABB ComputeAABB(const CircleShape& shape, const Transformation xf, child_count_t childIndex);
 	
 	/// Given a transform, compute the associated axis aligned bounding box for a child shape.
 	/// @param xf the world transform of the shape.
 	/// @param childIndex the child shape
 	/// @return the axis aligned box.
-	AABB ComputeAABB(const Shape& shape, const Transformation& xf, child_count_t childIndex);
+	AABB ComputeAABB(const Shape& shape, const Transformation xf, child_count_t childIndex);
 
-	AABB ComputeAABB(const Shape& shape, const Transformation& xf);
+	AABB ComputeAABB(const Shape& shape, const Transformation xf);
 
 	AABB ComputeAABB(const Body& body);
 
