@@ -79,7 +79,7 @@ TEST(TimeOfImpact, Overlapped)
 	const auto sweepA = Sweep{Position{Vec2{0, 0} * Meter, RealNum{0} * Degree}};
 	const auto proxyB = DistanceProxy{radius, Vec2_zero * Meter};
 	const auto sweepB = Sweep{Position{Vec2{0, 0} * Meter, RealNum{0} * Degree}};
-	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
+	const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, limits);
 	EXPECT_EQ(output.get_state(), TOIOutput::e_overlapped);
 	EXPECT_EQ(output.get_t(), RealNum(0));
 	EXPECT_EQ(output.get_toi_iters(), 1);
@@ -97,7 +97,7 @@ TEST(TimeOfImpact, Touching)
 	const auto proxyB = DistanceProxy{radius, Vec2_zero * Meter};
 	const auto sweepB = Sweep{Position{Vec2{2, 0} * Meter, RealNum{0} * Degree}};
 
-	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
+	const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, limits);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
 	EXPECT_EQ(output.get_t(), RealNum(0));
@@ -115,7 +115,7 @@ TEST(TimeOfImpact, Separated)
 	const auto proxyB = DistanceProxy{radius, Vec2_zero * Meter};
 	const auto sweepB = Sweep{Position{Vec2{4, 0} * Meter, RealNum{0} * Degree}};
 	
-	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
+	const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, limits);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_separated);
 	EXPECT_EQ(output.get_t(), RealNum(1));
@@ -136,7 +136,7 @@ TEST(TimeOfImpact, CollideCirclesHorizontally)
 	const auto sweepB = Sweep{Position{Vec2{+x, 0} * Meter, RealNum{0} * Degree}, Position{Vec2{0, 0} * Meter, RealNum{0} * Degree}};
 	
 	// Compute the time of impact information now...
-	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
+	const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, limits);
 	
 	const auto approx_time_of_collision = ((x * Meter - radius) + limits.targetDepth / RealNum{2}) / (x * Meter);
 
@@ -157,7 +157,7 @@ TEST(TimeOfImpact, CollideCirclesVertically)
 	const auto proxyB = DistanceProxy{radius, Vec2_zero * Meter};
 	const auto sweepB = Sweep{Position{Vec2{0, +y} * Meter, RealNum{0} * Degree}, Position{Vec2{0, -y} * Meter, RealNum{0} * Degree}};
 	
-	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
+	const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, limits);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
 	EXPECT_NEAR(double(output.get_t()), 0.4750375, 0.000001);
@@ -179,7 +179,7 @@ TEST(TimeOfImpact, CirclesPassingParallelSeparatedPathsDontCollide)
 	const auto sweepB = Sweep{Position{Vec2{+x, -y} * Meter, RealNum{0} * Degree}, Position{Vec2{-x, -y} * Meter, RealNum{0} * Degree}};
 	
 	// Compute the time of impact information now...
-	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
+	const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, limits);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_separated);
 	EXPECT_TRUE(almost_equal(output.get_t(), RealNum(1.0)));
@@ -200,7 +200,7 @@ TEST(TimeOfImpact, RodCircleMissAt360)
 	const auto sweepB = Sweep{Position{Vec2{+x, 0} * Meter, RealNum{0} * Degree}, Position{Vec2{-x, 0} * Meter, RealNum{0} * Degree}};
 	
 	// Compute the time of impact information now...
-	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
+	const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, limits);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_separated);
 	EXPECT_TRUE(almost_equal(output.get_t(), RealNum(1.0)));
@@ -221,7 +221,7 @@ TEST(TimeOfImpact, RodCircleHitAt180)
 	const auto sweepB = Sweep{Position{Vec2{+x, 0} * Meter, RealNum{0} * Degree}, Position{Vec2{-x, 0} * Meter, RealNum{0} * Degree}};
 	
 	// Compute the time of impact information now...
-	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
+	const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, limits);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
 	EXPECT_NEAR(double(output.get_t()), 0.4884203672409058, 0.0001);
@@ -242,7 +242,7 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_1)
 		.UseMaxRootIters(200)
 		.UseTargetDepth((0.001f * 3) * Meter)
 		.UseTolerance((0.001f / 4) * Meter);
-	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, conf);
+	const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
 	EXPECT_NEAR(double(output.get_t()), 0.4975037276744843, 0.0002);
@@ -267,7 +267,7 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_2)
 		.UseMaxRootIters(200)
 		.UseTargetDepth((0.001f * 3) * Meter)
 		.UseTolerance((0.001f / 4) * Meter);
-	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, conf);
+	const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
 	EXPECT_NEAR(double(output.get_t()), 0.9975037574768066, 0.002);
@@ -323,7 +323,7 @@ TEST(TimeOfImpact, WithClosingSpeedOf1600)
 		.UseMaxRootIters(200)
 		.UseTargetDepth((0.001f * 3) * Meter)
 		.UseTolerance((0.001f / 4) * Meter);
-	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, conf);
+	const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
 	EXPECT_NEAR(double(output.get_t()), 0.4987518787384033, 0.001);
@@ -365,7 +365,7 @@ TEST(TimeOfImpact, ForNonCollidingShapesFailsIn23)
 		.UseTimeMax(1)
 		.UseTargetDepth((3.0f / 10000) * Meter)
 		.UseTolerance((1.0f / 40000) * Meter);
-	const auto output = TimeOfImpact(dpA, sweepA, dpB, sweepB, conf);
+	const auto output = GetToiViaSat(dpA, sweepA, dpB, sweepB, conf);
 	
 	EXPECT_TRUE(output.get_state() == TOIOutput::e_failed || output.get_state() == TOIOutput::e_separated);
 	switch (output.get_state())
@@ -426,7 +426,7 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
 		.UseTargetDepth((3.0f / 10000) * Meter)
 		.UseTolerance((1.0f / 40000) * Meter);
 
-	const auto output = TimeOfImpact(dpA, sweepA, dpB, sweepB, conf);
+	const auto output = GetToiViaSat(dpA, sweepA, dpB, sweepB, conf);
 
 	EXPECT_TRUE(output.get_state() == TOIOutput::e_separated || output.get_state() == TOIOutput::e_touching);
 	EXPECT_TRUE(almost_equal(output.get_t(), RealNum{1.0f}));

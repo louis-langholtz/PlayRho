@@ -24,7 +24,7 @@
 
 namespace box2d {
 
-TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
+TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
 					   const DistanceProxy& proxyB, const Sweep& sweepB,
 					   const ToiConf conf)
 {

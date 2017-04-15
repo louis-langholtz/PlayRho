@@ -19,6 +19,7 @@
 
 #include <Box2D/Dynamics/Contacts/Contact.hpp>
 #include <Box2D/Collision/Collision.hpp>
+#include <Box2D/Collision/DistanceProxy.hpp>
 #include <Box2D/Collision/CollideShapes.hpp>
 #include <Box2D/Collision/Shapes/Shape.hpp>
 #include <Box2D/Collision/Shapes/ChainShape.hpp>
@@ -252,7 +253,7 @@ void Contact::Update(ContactListener* listener)
 	}
 	else
 	{
-		auto newManifold = Evaluate();
+		auto newManifold = CalcManifold();
 		
 		const auto old_point_count = oldManifold.GetPointCount();
 		const auto new_point_count = newManifold.GetPointCount();
@@ -353,3 +354,24 @@ void box2d::ResetRestitution(Contact& contact) noexcept
 {
 	contact.SetRestitution(MixRestitution(contact.GetFixtureA()->GetRestitution(), contact.GetFixtureB()->GetRestitution()));
 }
+
+TOIOutput box2d::CalcToi(const Contact& contact, const ToiConf conf)
+{
+	const auto fA = contact.GetFixtureA();
+	const auto fB = contact.GetFixtureB();
+	const auto bA = fA->GetBody();
+	const auto bB = fB->GetBody();
+
+	const auto proxyA = GetDistanceProxy(*fA->GetShape(), contact.GetChildIndexA());
+	const auto proxyB = GetDistanceProxy(*fB->GetShape(), contact.GetChildIndexB());
+
+	// Large rotations can make the root finder of TimeOfImpact fail, so normalize sweep angles.
+	const auto sweepA = GetAnglesNormalized(bA->GetSweep());
+	const auto sweepB = GetAnglesNormalized(bB->GetSweep());
+	
+	// Compute the TOI for this contact (one or both bodies are active and impenetrable).
+	// Computes the time of impact in interval [0, 1]
+	// Large rotations can make the root finder of TimeOfImpact fail, so normalize the sweep angles.
+	return GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
+}
+

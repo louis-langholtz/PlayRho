@@ -186,23 +186,30 @@ namespace box2d {
 		Stats m_stats;
 	};
 
-	/// Calculates the time of impact.
+	/// Gets the time of impact for two disjoint convex sets using the Separating Axis Theorem.
+	///
 	/// @detail
 	/// Computes the upper bound on time before two shapes penetrate too much.
 	/// Time is represented as a fraction between [0,tMax].
 	/// This uses a swept separating axis and may miss some intermediate,
 	/// non-tunneling collision.
 	/// If you change the time interval, you should call this function again.
+	///
+	/// @sa https://en.wikipedia.org/wiki/Hyperplane_separation_theorem
 	/// @pre The given sweeps are both at the same alpha0.
 	/// @warning Behavior is undefined if the given sweeps are not at the same alpha0.
 	/// @note Uses Distance to compute the contact point and normal at the time of impact.
+	/// @note This only works for two disjoint convex sets.
+	///
 	/// @param proxyA Proxy A. The proxy's vertex count must be 1 or more.
 	/// @param sweepA Sweep A. Sweep of motion for shape represented by proxy A.
 	/// @param proxyB Proxy B. The proxy's vertex count must be 1 or more.
 	/// @param sweepB Sweep B. Sweep of motion for shape represented by proxy B.
 	/// @param conf Configuration details for on calculation. Like the targetted depth of penetration.
+	///
 	/// @return Time of impact output data.
-	TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
+	///
+	TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
 						   const DistanceProxy& proxyB, const Sweep& sweepB,
 						   const ToiConf conf = GetDefaultToiConf());
 

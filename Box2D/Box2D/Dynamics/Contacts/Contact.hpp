@@ -22,6 +22,7 @@
 
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Collision/Manifold.hpp>
+#include <Box2D/Collision/TimeOfImpact.hpp>
 #include <Box2D/Collision/Shapes/Shape.hpp>
 
 namespace box2d {
@@ -132,7 +133,7 @@ public:
 	/// Calculates this contact's collision manifold.
 	/// @return Contact manifold with one or more points
 	///   if the shapes are considered touching (collided).
-	Manifold Evaluate() const;
+	Manifold CalcManifold() const;
 
 	substep_type GetToiCount() const noexcept;
 	
@@ -146,7 +147,7 @@ public:
 	/// @return Time of impact fraction in the range of 0 to 1 if set (where 1
 	///   means no actual impact in current time slot), otheriwse undefined.
 	RealNum GetToi() const;
-
+	
 	void FlagForFiltering() noexcept;
 	bool NeedsFiltering() const noexcept;
 	
@@ -418,7 +419,7 @@ inline Contact::substep_type Contact::GetToiCount() const noexcept
 	return m_toiCount;
 }
 
-inline Manifold Contact::Evaluate() const
+inline Manifold Contact::CalcManifold() const
 {
 	return m_manifoldCalcFunc(m_fixtureA, m_indexA, m_fixtureB, m_indexB);
 }
@@ -436,6 +437,8 @@ void ResetFriction(Contact& contact);
 
 /// Reset the restitution to the default value.
 void ResetRestitution(Contact& contact) noexcept;
+
+TOIOutput CalcToi(const Contact& contact, const ToiConf conf);
 
 } // namespace box2d
 

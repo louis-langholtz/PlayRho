@@ -1381,15 +1381,9 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
 		BodyAtty::Advance0(*bA, alpha0);
 		BodyAtty::Advance0(*bB, alpha0);
 		
-		const auto proxyA = GetDistanceProxy(*fA->GetShape(), c->GetChildIndexA());
-		const auto sweepA = GetAnglesNormalized(bA->GetSweep());
-		const auto proxyB = GetDistanceProxy(*fB->GetShape(), c->GetChildIndexB());
-		const auto sweepB = GetAnglesNormalized(bB->GetSweep());
-
 		// Compute the TOI for this contact (one or both bodies are active and impenetrable).
 		// Computes the time of impact in interval [0, 1]
-		// Large rotations can make the root finder of TimeOfImpact fail, so normalize the sweep angles.
-		const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, toiConf);
+		const auto output = CalcToi(*c, toiConf);
 		
 		// Use Min function to handle floating point imprecision which possibly otherwise
 		// could provide a TOI that's greater than 1.
