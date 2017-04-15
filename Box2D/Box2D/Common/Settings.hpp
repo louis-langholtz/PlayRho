@@ -377,7 +377,7 @@ constexpr auto DefaultMaxSubSteps = uint8{48};
 constexpr auto DefaultVelocityThreshold = (RealNum{8} / RealNum{10}) * MeterPerSecond;
 
 /// Maximum number of bodies in a world (65534 based off uint16 and eliminating one value for invalid).
-constexpr auto MaxBodies = uint16{std::numeric_limits<uint16>::max() - uint16{1}};
+constexpr auto MaxBodies = static_cast<uint16>(std::numeric_limits<uint16>::max() - uint16{1});
 
 /// Body count type.
 using body_count_t = std::remove_const<decltype(MaxBodies)>::type;
@@ -391,7 +391,7 @@ using contact_count_t = Wider<body_count_t>::type;
 constexpr auto MaxContacts = contact_count_t{MaxBodies} * contact_count_t{MaxBodies - 1} / contact_count_t{2};
 
 /// Maximum number of joints in a world (65534 based off uint16 and eliminating one value for invalid).
-constexpr auto MaxJoints = uint16{std::numeric_limits<uint16>::max() - uint16{1}};
+constexpr auto MaxJoints = static_cast<uint16>(std::numeric_limits<uint16>::max() - uint16{1});
 
 /// Joint count type.
 using joint_count_t = std::remove_const<decltype(MaxJoints)>::type;
