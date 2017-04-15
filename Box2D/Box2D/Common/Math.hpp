@@ -859,7 +859,7 @@ constexpr inline auto InverseRotate(const Vector2D<T> vector, const UnitVec2& an
 /// @return Rotated and translated vector.
 constexpr inline Length2D Transform(const Length2D v, const Transformation T) noexcept
 {
-	return Rotate(StripUnits(v), T.q) * Meter + T.p;
+	return Rotate(v, T.q) + T.p;
 }
 
 /// Inverse transforms the given 2-D vector with the given transformation.
@@ -875,7 +875,7 @@ constexpr inline Length2D Transform(const Length2D v, const Transformation T) no
 constexpr inline Length2D InverseTransform(const Length2D v, const Transformation T) noexcept
 {
 	const auto v2 = v - T.p;
-	return InverseRotate(StripUnits(v2), T.q) * Meter;
+	return InverseRotate(v2, T.q);
 }
 
 // v2 = A.q.Rot(B.q.Rot(v1) + B.p) + A.p

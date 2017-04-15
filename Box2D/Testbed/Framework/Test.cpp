@@ -448,7 +448,7 @@ void Test::MouseDown(const Length2D& p)
 	}
 
 	// Make a small box.
-	const auto aabb = GetFattenedAABB(AABB{p, p}, 0.001f * Meter);
+	const auto aabb = GetFattenedAABB(AABB{p}, 0.001f * Meter);
 	
 	// Query the world for overlapping shapes.
 	QueryCallback callback(p);

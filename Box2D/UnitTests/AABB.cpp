@@ -64,14 +64,14 @@ TEST(AABB, DefaultAabbIncrementsToOther)
 	{
 		auto default_aabb = AABB{};
 		const auto other_aabb = AABB{Vec2_zero * Meter, Vec2_zero * Meter};
-		default_aabb += other_aabb;
+		default_aabb.Include(other_aabb);
 		EXPECT_EQ(default_aabb.GetLowerBound(), other_aabb.GetLowerBound());
 		EXPECT_EQ(default_aabb.GetUpperBound(), other_aabb.GetUpperBound());
 	}
 	{
 		auto default_aabb = AABB{};
 		const auto other_aabb = AABB{Vec2{-1, -2} * Meter, Vec2{+99, +3} * Meter};
-		default_aabb += other_aabb;
+		default_aabb.Include(other_aabb);
 		EXPECT_EQ(default_aabb.GetLowerBound(), other_aabb.GetLowerBound());
 		EXPECT_EQ(default_aabb.GetUpperBound(), other_aabb.GetUpperBound());
 	}
@@ -108,6 +108,32 @@ TEST(AABB, InitializingConstruction)
 		EXPECT_EQ(foo.GetUpperBound().x, upper_x);
 		EXPECT_EQ(foo.GetUpperBound().y, upper_y);
 	}
+}
+
+TEST(AABB, Include)
+{
+	const auto p1 = Length2D{RealNum{2} * Meter, RealNum{3} * Meter};
+	const auto p2 = Length2D{RealNum{20} * Meter, RealNum{30} * Meter};
+	const auto p3 = Length2D{RealNum{-3} * Meter, RealNum{-4} * Meter};
+	const auto p4 = Length2D{RealNum{0} * Meter, RealNum{0} * Meter};
+
+	auto foo = AABB{};
+	
+	foo.Include(p1);
+	EXPECT_EQ(foo.GetLowerBound(), p1);
+	EXPECT_EQ(foo.GetUpperBound(), p1);
+	
+	foo.Include(p2);
+	EXPECT_EQ(foo.GetLowerBound(), p1);
+	EXPECT_EQ(foo.GetUpperBound(), p2);
+	
+	foo.Include(p3);
+	EXPECT_EQ(foo.GetLowerBound(), p3);
+	EXPECT_EQ(foo.GetUpperBound(), p2);
+	
+	foo.Include(p4);
+	EXPECT_EQ(foo.GetLowerBound(), p3);
+	EXPECT_EQ(foo.GetUpperBound(), p2);
 }
 
 TEST(AABB, TestOverlap)

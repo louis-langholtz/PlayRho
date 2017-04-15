@@ -32,8 +32,12 @@ namespace box2d
 	class Fixture;
 	class Body;
 	
-	/// An axis aligned bounding box.
+	/// Axis aligned bounding box.
+	///
 	/// @note This data structure is 16-bytes large (on at least one 64-bit platform).
+	/// @invariant The lower bound always has lower x and y values than the upper bound's
+	///   x and y values for any non-empty valid AABB.
+	///
 	class AABB
 	{
 	public:
@@ -43,6 +47,14 @@ namespace box2d
 		///   result will always be the other AABB.
 		AABB() = default;
 		
+		/// Initializing constructor for a single point.
+		constexpr AABB(const Length2D p) noexcept:
+			lowerBound{p}, upperBound{p}
+		{
+			// Intentionally empty.
+		}
+		
+		/// Initializing constructor for two points.
 		constexpr AABB(const Length2D a, const Length2D b) noexcept:
 			lowerBound{Length2D{Min(a.x, b.x), Min(a.y, b.y)}},
 			upperBound{Length2D{Max(a.x, b.x), Max(a.y, b.y)}}
@@ -50,13 +62,9 @@ namespace box2d
 			// Intentionally empty.
 		}
 		
-		/// Combine an AABB into this one.
-		constexpr AABB& operator += (const AABB aabb)
-		{
-			lowerBound = Length2D{Min(lowerBound.x, aabb.lowerBound.x), Min(lowerBound.y, aabb.lowerBound.y)};
-			upperBound = Length2D{Max(upperBound.x, aabb.upperBound.x), Max(upperBound.y, aabb.upperBound.y)};
-			return *this;
-		}
+		constexpr Length2D GetLowerBound() const noexcept { return lowerBound; }
+		
+		constexpr Length2D GetUpperBound() const noexcept { return upperBound; }
 		
 		/// Does this AABB fully contain the given AABB.
 		constexpr bool Contains(const AABB aabb) const noexcept
@@ -66,14 +74,25 @@ namespace box2d
 			const auto other_lower = aabb.GetLowerBound();
 			const auto other_upper = aabb.GetUpperBound();
 			return
-				(lower.x <= other_lower.x) && (lower.y <= other_lower.y) &&
-				(other_upper.x <= upper.x) && (other_upper.y <= upper.y);
+			(lower.x <= other_lower.x) && (lower.y <= other_lower.y) &&
+			(other_upper.x <= upper.x) && (other_upper.y <= upper.y);
 		}
 		
-		constexpr Length2D GetLowerBound() const noexcept { return lowerBound; }
-
-		constexpr Length2D GetUpperBound() const noexcept { return upperBound; }
+		/// Combine an AABB into this one.
+		constexpr AABB& Include(const AABB aabb) noexcept
+		{
+			lowerBound = Length2D{Min(lowerBound.x, aabb.lowerBound.x), Min(lowerBound.y, aabb.lowerBound.y)};
+			upperBound = Length2D{Max(upperBound.x, aabb.upperBound.x), Max(upperBound.y, aabb.upperBound.y)};
+			return *this;
+		}
 		
+		constexpr AABB& Include(const Length2D value) noexcept
+		{
+			lowerBound = Length2D{Min(lowerBound.x, value.x), Min(lowerBound.y, value.y)};
+			upperBound = Length2D{Max(upperBound.x, value.x), Max(upperBound.y, value.y)};
+			return *this;
+		}
+
 		constexpr AABB& Move(const Length2D value) noexcept
 		{
 			lowerBound += value;
@@ -162,8 +181,7 @@ namespace box2d
 
 	constexpr AABB GetEnclosingAABB(AABB a, AABB b)
 	{
-		a += b;
-		return a;
+		return a.Include(b);
 	}
 	
 	constexpr AABB GetDisplacedAABB(AABB aabb, const Length2D displacement)
