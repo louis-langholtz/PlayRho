@@ -253,24 +253,24 @@ child_count_t box2d::GetChildCount(const PolygonShape&)
 bool box2d::TestPoint(const PolygonShape& shape, const Transformation& xf, const Length2D p)
 {
 	const auto dp = p - xf.p;
-	const auto pLocal = InverseRotate(StripUnits(dp), xf.q);
-	const auto vr = RealNum{shape.GetVertexRadius() / Meter};
+	const auto pLocal = InverseRotate(dp, xf.q);
+	const auto vr = shape.GetVertexRadius();
 	const auto count = shape.GetVertexCount();
 	
 	if (count == 1)
 	{
 		const auto v0 = shape.GetVertex(0);
-		const auto center = xf.p + Rotate(StripUnits(v0), xf.q) * Meter;
+		const auto center = xf.p + Rotate(v0, xf.q);
 		const auto delta = p - center;
-		return GetLengthSquared(StripUnits(delta)) <= Square(vr);
+		return GetLengthSquared(delta) <= Square(vr);
 	}
 
-	auto maxDot = -MaxFloat;
+	auto maxDot = -MaxFloat * Meter;
 	auto maxIdx = PolygonShape::InvalidVertex;
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
 		const auto vi = shape.GetVertex(i);
-		const auto delta = pLocal - StripUnits(vi);
+		const auto delta = pLocal - vi;
 		const auto dot = Dot(shape.GetNormal(i), delta);
 		if (dot > vr)
 		{
@@ -285,17 +285,17 @@ bool box2d::TestPoint(const PolygonShape& shape, const Transformation& xf, const
 
 	const auto v0 = shape.GetVertex(maxIdx);
 	const auto v1 = shape.GetVertex(GetModuloNext(maxIdx, count));
-	const auto edge = StripUnits(v1 - v0);
-	const auto delta0 = StripUnits(v0) - pLocal;
+	const auto edge = v1 - v0;
+	const auto delta0 = v0 - pLocal;
 	const auto d0 = Dot(edge, delta0);
-	if (d0 >= 0)
+	if (d0 >= Area{0})
 	{
 		// point is nearest v0 and not within edge
 		return GetLengthSquared(delta0) <= Square(vr);
 	}
-	const auto delta1 = pLocal - StripUnits(v1);
+	const auto delta1 = pLocal - v1;
 	const auto d1 = Dot(edge, delta1);
-	if (d1 >= 0)
+	if (d1 >= Area{0})
 	{
 		// point is nearest v1 and not within edge
 		return GetLengthSquared(delta1) <= Square(vr);
