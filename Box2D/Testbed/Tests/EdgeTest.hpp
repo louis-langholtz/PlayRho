@@ -31,37 +31,42 @@ public:
 		{
 			const auto ground = m_world->CreateBody();
 
-			Vec2 v1(-10.0f, 0.0f), v2(-7.0f, -2.0f), v3(-4.0f, 0.0f);
-			Vec2 v4(0.0f, 0.0f), v5(4.0f, 0.0f), v6(7.0f, 2.0f), v7(10.0f, 0.0f);
+			const auto v1 = Vec2(-10.0f, 0.0f) * Meter;
+			const auto v2 = Vec2(-7.0f, -2.0f) * Meter;
+			const auto v3 = Vec2(-4.0f, 0.0f) * Meter;
+			const auto v4 = Vec2(0.0f, 0.0f) * Meter;
+			const auto v5 = Vec2(4.0f, 0.0f) * Meter;
+			const auto v6 = Vec2(7.0f, 2.0f) * Meter;
+			const auto v7 = Vec2(10.0f, 0.0f) * Meter;
 
 			EdgeShape shape;
 
-			shape.Set(v1 * Meter, v2 * Meter);
-			shape.SetVertex3(v3 * Meter);
+			shape.Set(v1, v2);
+			shape.SetVertex3(v3);
 			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
-			shape.Set(v2 * Meter, v3 * Meter);
-			shape.SetVertex0(v1 * Meter);
-			shape.SetVertex3(v4 * Meter);
+			shape.Set(v2, v3);
+			shape.SetVertex0(v1);
+			shape.SetVertex3(v4);
 			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
-			shape.Set(v3 * Meter, v4 * Meter);
-			shape.SetVertex0(v2 * Meter);
-			shape.SetVertex3(v5 * Meter);
+			shape.Set(v3, v4);
+			shape.SetVertex0(v2);
+			shape.SetVertex3(v5);
 			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
-			shape.Set(v4 * Meter, v5 * Meter);
-			shape.SetVertex0(v3 * Meter);
-			shape.SetVertex3(v6 * Meter);
+			shape.Set(v4, v5);
+			shape.SetVertex0(v3);
+			shape.SetVertex3(v6);
 			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
-			shape.Set(v5 * Meter, v6 * Meter);
-			shape.SetVertex0(v4 * Meter);
-			shape.SetVertex3(v7 * Meter);
+			shape.Set(v5, v6);
+			shape.SetVertex0(v4);
+			shape.SetVertex3(v7);
 			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
-			shape.Set(v6 * Meter, v7 * Meter);
-			shape.SetVertex0(v5 * Meter);
+			shape.Set(v6, v7);
+			shape.SetVertex0(v5);
 			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 		}
 
