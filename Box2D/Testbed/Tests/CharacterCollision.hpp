@@ -51,6 +51,19 @@ public:
 			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 		}
 
+		// Collinear 2-gons with no adjacency information.
+		{
+			const auto ground = m_world->CreateBody();
+			
+			PolygonShape shape;
+			shape.Set({Vec2(-8.0f, 20.0f) * Meter, Vec2(-6.0f, 20.0f) * Meter});
+			ground->CreateFixture(std::make_shared<PolygonShape>(shape));
+			shape.Set({Vec2(-6.0f, 20.0f) * Meter, Vec2(-4.0f, 20.0f) * Meter});
+			ground->CreateFixture(std::make_shared<PolygonShape>(shape));
+			shape.Set({Vec2(-4.0f, 20.0f) * Meter, Vec2(-2.0f, 20.0f) * Meter});
+			ground->CreateFixture(std::make_shared<PolygonShape>(shape));
+		}
+
 		// Chain shape
 		{
 			BodyDef bd;
