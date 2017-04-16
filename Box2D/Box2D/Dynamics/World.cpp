@@ -1918,7 +1918,21 @@ struct WorldRayCastWrapper
 		{
 			const auto fraction = output.fraction;
 			assert(fraction >= 0 && fraction <= 1);
-			const auto point = (RealNum{1} - fraction) * input.p1 + fraction * input.p2;
+			
+			// Here point can be calculated these two ways:
+			//   (1) point = p1 * (1 - fraction) + p2 * fraction
+			//   (2) point = p1 + (p2 - p1) * fraction.
+			//
+			// The first way however suffers from the fact that:
+			//     a * (1 - fraction) + a * fraction != a
+			// for all values of a and fraction between 0 and 1 when a and fraction are
+			// floating point types.
+			// This leads to the posibility that (p1 == p2) && (point != p1 || point != p2),
+			// which may be pretty surprising to the callback. So this way SHOULD NOT be used.
+			//
+			// The second way, does not have this problem.
+			//
+			const auto point = input.p1 + (input.p2 - input.p1) * fraction;
 			return callback->ReportFixture(fixture, point, output.normal, fraction);
 		}
 
@@ -2469,12 +2483,11 @@ void World::CreateProxies(Fixture& fixture, const Length aabbExtension)
 	assert(fixture.GetProxyCount() == 0);
 	
 	const auto shape = fixture.GetShape();
+	const auto xfm = GetTransformation(fixture);
 	
 	// Reserve proxy space and create proxies in the broad-phase.
 	const auto childCount = GetChildCount(*shape);
 	const auto proxies = static_cast<FixtureProxy*>(alloc(sizeof(FixtureProxy) * childCount));
-	
-	const auto xfm = GetTransformation(fixture);
 	for (auto childIndex = decltype(childCount){0}; childIndex < childCount; ++childIndex)
 	{
 		const auto aabb = ComputeAABB(*shape, xfm, childIndex);

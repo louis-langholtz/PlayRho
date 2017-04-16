@@ -190,10 +190,29 @@ TEST(float, casting)
 
 TEST(float, beta0)
 {
-	const auto beta = std::nextafter(0.0f, 1.0f);
-	const auto coefficient0 = 1 - beta;
-	const auto coefficient1 = beta;
-	EXPECT_EQ(coefficient0 + coefficient1, 1.0f);
+	{
+		const auto beta = std::nextafter(0.0f, 1.0f);
+		const auto coefficient0 = 1 - beta;
+		const auto coefficient1 = beta;
+		EXPECT_EQ(coefficient0 + coefficient1, 1.0f);
+	}
+
+	{
+		const auto x = 2.587699890136719e-02f;
+		const auto beta = 0.0866042823f;
+		const auto coefficient0 = 1 - beta;
+		const auto coefficient1 = beta;
+		ASSERT_EQ(coefficient0 + coefficient1, 1.0f);
+		EXPECT_NE(x * coefficient0 + x * coefficient1, x);
+	}
+	{
+		const auto y = 5.515012264251709e+00f;
+		const auto beta = 0.0866042823f;
+		const auto coefficient0 = 1 - beta;
+		const auto coefficient1 = beta;
+		ASSERT_EQ(coefficient0 + coefficient1, 1.0f);
+		EXPECT_NE(y * coefficient0 + y * coefficient1, y);
+	}
 }
 
 TEST(float, beta1)
