@@ -42,7 +42,7 @@ SeparationFinder SeparationFinder::Get(Span<const IndexPair> indices,
 			const auto localPointB = proxyB.GetVertex(ip0.b);
 			const auto pointA = Transform(localPointA, xfA);
 			const auto pointB = Transform(localPointB, xfB);
-			const auto axis = GetUnitVector(StripUnits(pointB - pointA), UnitVec2::GetZero());
+			const auto axis = GetUnitVector(pointB - pointA, UnitVec2::GetZero());
 			return SeparationFinder{proxyA, proxyB, axis, GetInvalid<Length2D>(), type};
 		}
 		case e_faceB:
@@ -55,7 +55,7 @@ SeparationFinder SeparationFinder::Get(Span<const IndexPair> indices,
 			const auto localPointB2 = proxyB.GetVertex(ip1.b);
 			const auto lpDelta = localPointB2 - localPointB1;
 			
-			const auto axis = GetUnitVector(GetFwdPerpendicular(StripUnits(lpDelta)),
+			const auto axis = GetUnitVector(GetFwdPerpendicular(lpDelta),
 											UnitVec2::GetZero());
 			const auto normal = Rotate(axis, xfB.q);
 			
@@ -68,7 +68,7 @@ SeparationFinder SeparationFinder::Get(Span<const IndexPair> indices,
 			const auto deltaPoint = pointA - pointB;
 			return SeparationFinder{
 				proxyA, proxyB,
-				(Dot(StripUnits(deltaPoint), normal) < 0)? -axis: axis,
+				(Dot(deltaPoint, normal) < Length{0})? -axis: axis,
 				localPoint, type
 			};
 		}
@@ -82,7 +82,7 @@ SeparationFinder SeparationFinder::Get(Span<const IndexPair> indices,
 			const auto localPointA2 = proxyA.GetVertex(ip1.a);
 			const auto delta = localPointA2 - localPointA1;
 			
-			const auto axis = GetUnitVector(GetFwdPerpendicular(StripUnits(delta)), UnitVec2::GetZero());
+			const auto axis = GetUnitVector(GetFwdPerpendicular(delta), UnitVec2::GetZero());
 			const auto normal = Rotate(axis, xfA.q);
 			
 			const auto localPoint = (localPointA1 + localPointA2) / RealNum(2);
@@ -94,7 +94,7 @@ SeparationFinder SeparationFinder::Get(Span<const IndexPair> indices,
 			const auto deltaPoint = pointB - pointA;
 			return SeparationFinder{
 				proxyA, proxyB,
-				(Dot(StripUnits(deltaPoint), normal) < 0)? -axis: axis,
+				(Dot(deltaPoint, normal) < Length{0})? -axis: axis,
 				localPoint, type
 			};
 		}
@@ -110,7 +110,7 @@ SeparationFinder::Data SeparationFinder::FindMinSeparationForPoints(const Transf
 	const auto pointA = Transform(m_proxyA.GetVertex(indexA), xfA);
 	const auto pointB = Transform(m_proxyB.GetVertex(indexB), xfB);
 	const auto delta = pointB - pointA;
-	return Data{IndexPair{indexA, indexB}, Dot(StripUnits(delta), m_axis) * Meter};
+	return Data{IndexPair{indexA, indexB}, Dot(delta, m_axis)};
 }
 
 SeparationFinder::Data SeparationFinder::FindMinSeparationForFaceA(const Transformation& xfA, const Transformation& xfB) const
@@ -122,7 +122,7 @@ SeparationFinder::Data SeparationFinder::FindMinSeparationForFaceA(const Transfo
 	const auto indexB = GetSupportIndex(m_proxyB, GetVec2(dir) * Meter);
 	const auto pointB = Transform(m_proxyB.GetVertex(indexB), xfB);
 	const auto delta = pointB - pointA;
-	return Data{IndexPair{indexA, indexB}, Dot(StripUnits(delta), normal) * Meter};
+	return Data{IndexPair{indexA, indexB}, Dot(delta, normal)};
 }
 
 SeparationFinder::Data SeparationFinder::FindMinSeparationForFaceB(const Transformation& xfA, const Transformation& xfB) const
@@ -134,7 +134,7 @@ SeparationFinder::Data SeparationFinder::FindMinSeparationForFaceB(const Transfo
 	const auto indexB = IndexPair::InvalidIndex;
 	const auto pointB = Transform(m_localPoint, xfB);
 	const auto delta = pointA - pointB;
-	return Data{IndexPair{indexA, indexB}, Dot(StripUnits(delta), normal) * Meter};
+	return Data{IndexPair{indexA, indexB}, Dot(delta, normal)};
 }
 
 Length SeparationFinder::EvaluateForPoints(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
@@ -142,7 +142,7 @@ Length SeparationFinder::EvaluateForPoints(IndexPair indexPair, const Transforma
 	const auto pointA = Transform(m_proxyA.GetVertex(indexPair.a), xfA);
 	const auto pointB = Transform(m_proxyB.GetVertex(indexPair.b), xfB);
 	const auto delta = pointB - pointA;
-	return Dot(StripUnits(delta), m_axis) * Meter;
+	return Dot(delta, m_axis);
 }
 
 Length SeparationFinder::EvaluateForFaceA(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
@@ -151,7 +151,7 @@ Length SeparationFinder::EvaluateForFaceA(IndexPair indexPair, const Transformat
 	const auto pointA = Transform(m_localPoint, xfA);
 	const auto pointB = Transform(m_proxyB.GetVertex(indexPair.b), xfB);
 	const auto delta = pointB - pointA;
-	return Dot(StripUnits(delta), normal) * Meter;
+	return Dot(delta, normal);
 }
 
 Length SeparationFinder::EvaluateForFaceB(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
@@ -160,5 +160,5 @@ Length SeparationFinder::EvaluateForFaceB(IndexPair indexPair, const Transformat
 	const auto pointB = Transform(m_localPoint, xfB);
 	const auto pointA = Transform(m_proxyA.GetVertex(indexPair.a), xfA);
 	const auto delta = pointA - pointB;
-	return Dot(StripUnits(delta), normal) * Meter;
+	return Dot(delta, normal);
 }

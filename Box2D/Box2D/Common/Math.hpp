@@ -1096,7 +1096,7 @@ constexpr inline Velocity operator/ (const Velocity& lhs, const RealNum rhs)
 
 constexpr inline Transformation GetTransformation(const Length2D ctr, const UnitVec2 rot, const Length2D localCtr) noexcept
 {
-	return Transformation{ctr - (Rotate(StripUnits(localCtr), rot) * Meter), rot};
+	return Transformation{ctr - (Rotate(localCtr, rot)), rot};
 }
 
 inline Transformation GetTransformation(const Position pos, const Length2D local_ctr) noexcept
