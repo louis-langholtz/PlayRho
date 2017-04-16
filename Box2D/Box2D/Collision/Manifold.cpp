@@ -312,7 +312,12 @@ bool box2d::operator==(const Manifold& lhs, const Manifold& rhs)
 		return false;
 	}
 	
-	if (lhs.GetLocalNormal() != rhs.GetLocalNormal())
+	if (IsValid(lhs.GetLocalNormal()) != IsValid(rhs.GetLocalNormal()))
+	{
+		return false;
+	}
+
+	if (IsValid(lhs.GetLocalNormal()) && (lhs.GetLocalNormal() != rhs.GetLocalNormal()))
 	{
 		return false;
 	}

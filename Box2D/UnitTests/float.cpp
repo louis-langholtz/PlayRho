@@ -152,6 +152,7 @@ TEST(float, nan)
 	EXPECT_TRUE(std::isnan(std::numeric_limits<float>::quiet_NaN() / std::numeric_limits<float>::infinity()));
 	EXPECT_FALSE(std::numeric_limits<float>::quiet_NaN() > 0.0f);
 	EXPECT_FALSE(std::numeric_limits<float>::quiet_NaN() < 0.0f);
+	EXPECT_TRUE(std::numeric_limits<float>::quiet_NaN() != std::numeric_limits<float>::quiet_NaN());
 	EXPECT_NE(std::numeric_limits<float>::quiet_NaN(), std::numeric_limits<float>::quiet_NaN());
 	EXPECT_NE(std::numeric_limits<float>::quiet_NaN(), 0.0f);
 	EXPECT_TRUE(std::isnan(std::numeric_limits<float>::quiet_NaN() + 0.0f));

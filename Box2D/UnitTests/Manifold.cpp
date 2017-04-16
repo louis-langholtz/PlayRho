@@ -63,6 +63,8 @@ TEST(Manifold, GetForCircles)
 	EXPECT_EQ(foo.GetLocalPoint(), ctr);
 	EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(1));
 	EXPECT_FALSE(IsValid(foo.GetLocalNormal()));
+	EXPECT_TRUE(foo == foo);
+	EXPECT_FALSE(foo != foo);
 }
 
 TEST(Manifold, GetForFaceA)
