@@ -230,7 +230,7 @@ namespace box2d
 		return list;
 	}
 
-	constexpr inline Length2D Simplex::CalcSearchDirection(const Edges& simplexEdges) noexcept
+	BOX2D_CONSTEXPR inline Length2D Simplex::CalcSearchDirection(const Edges& simplexEdges) noexcept
 	{
 		assert((simplexEdges.size() == 1) || (simplexEdges.size() == 2));
 		switch (simplexEdges.size())
@@ -318,7 +318,7 @@ namespace box2d
 	}
 
 	/// Gets the "closest point".
-	constexpr inline Length2D GetClosestPoint(const Simplex& simplex)
+	BOX2D_CONSTEXPR inline Length2D GetClosestPoint(const Simplex& simplex)
 	{
 		switch (simplex.GetSize())
 		{
