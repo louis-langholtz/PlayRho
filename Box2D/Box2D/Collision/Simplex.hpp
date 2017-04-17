@@ -89,7 +89,7 @@ namespace box2d
 			
 			Cache(const Cache& copy) = default;
 			
-			constexpr Cache(RealNum metric, IndexPairs indices) noexcept;
+			BOX2D_CONSTEXPR Cache(RealNum metric, IndexPairs indices) noexcept;
 			
 			/// Gets the metric that was set.
 			/// @note Behavior is undefined if metric was not previously set.
@@ -101,11 +101,11 @@ namespace box2d
 			
 			bool IsMetricSet() const noexcept;
 			
-			constexpr IndexPairs GetIndices() const noexcept;
+			BOX2D_CONSTEXPR IndexPairs GetIndices() const noexcept;
 			
-			constexpr size_type GetNumIndices() const noexcept;
+			BOX2D_CONSTEXPR size_type GetNumIndices() const noexcept;
 			
-			constexpr IndexPair GetIndexPair(size_type index) const noexcept;
+			BOX2D_CONSTEXPR IndexPair GetIndexPair(size_type index) const noexcept;
 			
 		private:
 			RealNum m_metric = GetInvalid<RealNum>(); ///< Metric. @detail This is a length or area value.			
@@ -156,16 +156,16 @@ namespace box2d
 
 		Simplex() = default;
 
-		constexpr Edges GetEdges() const noexcept;
+		BOX2D_CONSTEXPR Edges GetEdges() const noexcept;
 
 		const SimplexEdge& GetSimplexEdge(size_type index) const noexcept;
 
-		constexpr RealNum GetCoefficient(size_type index) const noexcept;
+		BOX2D_CONSTEXPR RealNum GetCoefficient(size_type index) const noexcept;
 
-		constexpr size_type GetSize() const noexcept;
+		BOX2D_CONSTEXPR size_type GetSize() const noexcept;
 
 	private:
-		constexpr Simplex(const Edges& simplexEdges, const Coefficients& normalizedWeights) noexcept;
+		BOX2D_CONSTEXPR Simplex(const Edges& simplexEdges, const Coefficients& normalizedWeights) noexcept;
 
 		/// Collection of valid simplex edges.
 		///
@@ -183,7 +183,7 @@ namespace box2d
 		Coefficients m_normalizedWeights;
 	};
 
-	constexpr inline Simplex::Cache::Cache(RealNum metric, IndexPairs indices) noexcept:
+	BOX2D_CONSTEXPR inline Simplex::Cache::Cache(RealNum metric, IndexPairs indices) noexcept:
 		m_metric{metric}, m_indices{indices}
 	{
 		// Intentionally empty
@@ -200,17 +200,17 @@ namespace box2d
 		return IsValid(m_metric);
 	}
 	
-	constexpr Simplex::IndexPairs Simplex::Cache::GetIndices() const noexcept
+	BOX2D_CONSTEXPR inline Simplex::IndexPairs Simplex::Cache::GetIndices() const noexcept
 	{
 		return m_indices;
 	}
 	
-	constexpr Simplex::size_type Simplex::Cache::GetNumIndices() const noexcept
+	BOX2D_CONSTEXPR inline Simplex::size_type Simplex::Cache::GetNumIndices() const noexcept
 	{
 		return m_indices.size();
 	}
 	
-	constexpr IndexPair Simplex::Cache::GetIndexPair(size_type index) const noexcept
+	BOX2D_CONSTEXPR inline IndexPair Simplex::Cache::GetIndexPair(size_type index) const noexcept
 	{
 		return m_indices[index];
 	}
@@ -277,7 +277,7 @@ namespace box2d
 		return RealNum{0};
 	}
 
-	constexpr inline Simplex::Simplex(const Edges& simplexEdges, const Coefficients& normalizedWeights) noexcept:
+	BOX2D_CONSTEXPR inline Simplex::Simplex(const Edges& simplexEdges, const Coefficients& normalizedWeights) noexcept:
 		m_simplexEdges{simplexEdges}, m_normalizedWeights{normalizedWeights}
 	{
 		assert(simplexEdges.size() == normalizedWeights.size());
@@ -292,7 +292,7 @@ namespace box2d
 		}()));
 	}
 
-	constexpr inline Simplex::Edges Simplex::GetEdges() const noexcept
+	BOX2D_CONSTEXPR inline Simplex::Edges Simplex::GetEdges() const noexcept
 	{
 		return m_simplexEdges;
 	}
@@ -302,12 +302,12 @@ namespace box2d
 		return m_simplexEdges[index];
 	}
 	
-	constexpr inline RealNum Simplex::GetCoefficient(size_type index) const noexcept
+	BOX2D_CONSTEXPR inline RealNum Simplex::GetCoefficient(size_type index) const noexcept
 	{
 		return m_normalizedWeights[index];
 	}
 	
-	constexpr inline Simplex::size_type Simplex::GetSize() const noexcept
+	BOX2D_CONSTEXPR inline Simplex::size_type Simplex::GetSize() const noexcept
 	{
 		return m_simplexEdges.size();
 	}

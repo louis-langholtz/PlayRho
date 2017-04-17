@@ -20,6 +20,8 @@
 #ifndef ArrayList_hpp
 #define ArrayList_hpp
 
+#include <Box2D/Defines.hpp>
+
 #include <type_traits>
 #include <initializer_list>
 #include <cassert>
@@ -40,7 +42,7 @@ namespace box2d
 		ArrayList() = default;
 
 		template <std::size_t COPY_MAXSIZE, typename COPY_SIZE_TYPE, typename = std::enable_if_t< COPY_MAXSIZE <= MAXSIZE >>
-		constexpr ArrayList(const ArrayList<VALUE_TYPE, COPY_MAXSIZE, SIZE_TYPE>& copy):
+		BOX2D_CONSTEXPR ArrayList(const ArrayList<VALUE_TYPE, COPY_MAXSIZE, SIZE_TYPE>& copy):
 			m_size{copy.size()},
 			m_elements{copy.data()}
 		{
@@ -113,11 +115,11 @@ namespace box2d
 		/// @detail This is the number of elements that have been added to this collection.
 		/// @return Value between 0 and the maximum size for this collection.
 		/// @sa max_size().
-		constexpr size_type size() const noexcept { return m_size; }
+		BOX2D_CONSTEXPR size_type size() const noexcept { return m_size; }
 		
 		/// Gets the maximum size that this collection can be.
 		/// @detail This is the maximum number of elements that can be contained in this collection.
-		constexpr size_type max_size() const noexcept { return MAXSIZE; }
+		BOX2D_CONSTEXPR size_type max_size() const noexcept { return MAXSIZE; }
 		
 		pointer begin() noexcept { return &m_elements[0]; }
 		pointer end() noexcept { return &m_elements[0] + m_size; }

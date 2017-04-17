@@ -17,7 +17,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Common/ArrayList.hpp>
 #include <Box2D/Collision/Distance.hpp>
 #include <Box2D/Collision/DistanceProxy.hpp>
 #include <Box2D/Collision/Simplex.hpp>

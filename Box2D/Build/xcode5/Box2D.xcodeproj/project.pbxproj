@@ -65,6 +65,8 @@
 		4731DE731DF7EB2200E7F931 /* EdgeInfo.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE701DF7EB2200E7F931 /* EdgeInfo.hpp */; };
 		4731DE741DF7EB2200E7F931 /* EdgeInfo.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE701DF7EB2200E7F931 /* EdgeInfo.hpp */; };
 		47327E751E9F1E2A0048FCD8 /* MouseJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47327E741E9F1E2A0048FCD8 /* MouseJoint.cpp */; };
+		47327E801EA585790048FCD8 /* Defines.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47327E7D1EA585790048FCD8 /* Defines.hpp */; };
+		47327E811EA585790048FCD8 /* Defines.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47327E7D1EA585790048FCD8 /* Defines.hpp */; };
 		4734B2191DC00AFD00F15E29 /* ArrayList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2161DC00AFD00F15E29 /* ArrayList.hpp */; };
 		4734B21A1DC00AFD00F15E29 /* ArrayList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2161DC00AFD00F15E29 /* ArrayList.hpp */; };
 		4734B21C1DC1121900F15E29 /* ArrayList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4734B21B1DC1121900F15E29 /* ArrayList.cpp */; };
@@ -455,6 +457,7 @@
 		4731DE6F1DF7EB2200E7F931 /* EdgeInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdgeInfo.cpp; sourceTree = "<group>"; };
 		4731DE701DF7EB2200E7F931 /* EdgeInfo.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EdgeInfo.hpp; sourceTree = "<group>"; };
 		47327E741E9F1E2A0048FCD8 /* MouseJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MouseJoint.cpp; sourceTree = "<group>"; };
+		47327E7D1EA585790048FCD8 /* Defines.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Defines.hpp; sourceTree = "<group>"; };
 		4734B2161DC00AFD00F15E29 /* ArrayList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ArrayList.hpp; sourceTree = "<group>"; };
 		4734B21B1DC1121900F15E29 /* ArrayList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ArrayList.cpp; sourceTree = "<group>"; };
 		4734B21E1DC1340500F15E29 /* Span.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Span.hpp; sourceTree = "<group>"; };
@@ -867,6 +870,7 @@
 			isa = PBXGroup;
 			children = (
 				80BB8923141C3E5900F1753A /* Box2D.hpp */,
+				47327E7D1EA585790048FCD8 /* Defines.hpp */,
 				80BB8926141C3E5900F1753A /* Collision */,
 				80BB893E141C3E5900F1753A /* Common */,
 				80BB894C141C3E5900F1753A /* Dynamics */,
@@ -1219,6 +1223,7 @@
 				47AA5DDA1C4C5FBE008AF2BA /* Settings.hpp in Headers */,
 				475A94671D99C264000CA9A8 /* List.hpp in Headers */,
 				47AA5DDB1C4C5FBE008AF2BA /* StackAllocator.hpp in Headers */,
+				47327E811EA585790048FCD8 /* Defines.hpp in Headers */,
 				47AA5DDC1C4C5FBE008AF2BA /* Timer.hpp in Headers */,
 				4726DD391D387D630012A882 /* Manifold.hpp in Headers */,
 				47AA5DDD1C4C5FBE008AF2BA /* Body.hpp in Headers */,
@@ -1315,6 +1320,7 @@
 				4726DD0F1D3014990012A882 /* IndexPair.hpp in Headers */,
 				4731DE731DF7EB2200E7F931 /* EdgeInfo.hpp in Headers */,
 				80BB89B2141C3E5900F1753A /* Island.hpp in Headers */,
+				47327E801EA585790048FCD8 /* Defines.hpp in Headers */,
 				80BB89B3141C3E5900F1753A /* StepConf.hpp in Headers */,
 				4734B2191DC00AFD00F15E29 /* ArrayList.hpp in Headers */,
 				80BB89B5141C3E5900F1753A /* World.hpp in Headers */,

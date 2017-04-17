@@ -23,12 +23,6 @@
 #include <Box2D/Common/Math.hpp>
 #include <array>
 
-#ifdef __clang__
-#define CONSTEXPR constexpr
-#else
-#define CONSTEXPR
-#endif
-
 namespace box2d
 {
 	class Shape;
@@ -56,7 +50,7 @@ namespace box2d
 		
 		DistanceProxy() = default;
 		
-		CONSTEXPR DistanceProxy(const DistanceProxy& copy) noexcept:
+		BOX2D_CONSTEXPR DistanceProxy(const DistanceProxy& copy) noexcept:
 			m_buffer{copy.m_buffer},
 			m_vertices{copy.m_vertices == &copy.m_buffer[0]? &m_buffer[0]: copy.m_vertices},
 			m_count{copy.m_count},
@@ -67,7 +61,7 @@ namespace box2d
 		/// @detail Constructs a distance proxy for a single point shape (a circle).
 		/// @param radius Radius of the given vertex.
 		/// @param v0 Vertex 0 (relative to the shape's origin).
-		CONSTEXPR DistanceProxy(Length radius, Length2D v0) noexcept:
+		BOX2D_CONSTEXPR DistanceProxy(Length radius, Length2D v0) noexcept:
 			m_radius{radius}, m_buffer{{v0}}, m_count{1}
 		{
 			assert(radius >= Length{0});
@@ -78,7 +72,7 @@ namespace box2d
 		/// @param radius Radius of the given vertices.
 		/// @param v0 Vertex 0 (relative to the shape's origin).
 		/// @param v1 Vertex 1 (relative to the shape's origin).
-		CONSTEXPR DistanceProxy(Length radius, Length2D v0, Length2D v1) noexcept:
+		BOX2D_CONSTEXPR DistanceProxy(Length radius, Length2D v0, Length2D v1) noexcept:
 			m_radius{radius}, m_buffer{{v0, v1}}, m_count{2}
 		{
 			assert(radius >= Length{0});
@@ -92,7 +86,7 @@ namespace box2d
 		///    <code>MaxShapeVertices</code> elements.
 		/// @warning Behavior is undefined if the vertices collection has less than one element or
 		///   more than <code>MaxShapeVertices</code> elements.
-		CONSTEXPR DistanceProxy(Length radius, const Span<const Length2D>& vertices) noexcept:
+		BOX2D_CONSTEXPR DistanceProxy(Length radius, const Span<const Length2D>& vertices) noexcept:
 			m_radius{radius},
 			m_buffer{},
 			m_vertices{vertices.begin()},

@@ -54,6 +54,7 @@
 #include <boost/units/systems/angle/degrees.hpp>
 #endif
 
+#include <Box2D/Defines.hpp>
 #include <Box2D/Common/Wider.hpp>
 #include <Box2D/Common/Fixed.hpp>
 
