@@ -122,7 +122,7 @@ namespace box2d
 		/// @param simplexEdges A one or two edge list.
 		/// @warning Behavior is undefined if the given edge list has zero edges.
 		/// @return "search direction" vector.
-		static constexpr Length2D CalcSearchDirection(const Edges& simplexEdges) noexcept;
+		static BOX2D_CONSTEXPR Length2D CalcSearchDirection(const Edges& simplexEdges) noexcept;
 		
 		/// Gets the given simplex's "metric".
 		static inline RealNum CalcMetric(const Edges& simplexEdges);
