@@ -427,7 +427,7 @@ private:
 	/// @param[in,out] island Island. On return this may contain additional contacts or bodies.
 	/// @param[in,out] body A dynamic/accelerable body.
 	/// @param[in] toi Time of impact (TOI). Value between 0 and 1.
-	void ProcessContactsForTOI(Island& island, Body& body, RealNum toi);
+	void ProcessContactsForTOI(Island& island, Body& body, RealNum toi, const StepConf& conf);
 	
 	bool Add(Body& b);
 	bool Add(Joint& j);
@@ -508,7 +508,7 @@ private:
 	/// Essentially this really just purges contacts that are no longer relevant.
 	DestroyContactsStats DestroyContacts(Contacts& contacts);
 	
-	UpdateContactsStats UpdateContacts(Contacts& contacts);
+	UpdateContactsStats UpdateContacts(Contacts& contacts, const StepConf& conf);
 	
 	bool ShouldCollide(const Fixture* fixtureA, const Fixture* fixtureB);
 

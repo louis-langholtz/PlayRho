@@ -677,7 +677,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 
 	m_pointCount = 0;
 
-	StepConf stepConf;
+	auto stepConf = StepConf{};
 	
 	stepConf.SetTime(Second * settings.dt);
 	

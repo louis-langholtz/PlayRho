@@ -522,9 +522,9 @@ private:
 		c.UnflagForFiltering();
 	}
 	
-	static void Update(Contact& c, ContactListener* listener)
+	static void Update(Contact& c, const StepConf& conf, ContactListener* listener)
 	{
-		c.Update(listener);
+		c.Update(conf, listener);
 	}
 	
 	friend class World;
@@ -1389,7 +1389,7 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
 		// could provide a TOI that's greater than 1.
 		const auto toi = IsValidForTime(output.get_state())?
 			Min(alpha0 + (1 - alpha0) * output.get_t(), RealNum{1}): RealNum{1};
-		assert(toi >= alpha0);
+		assert(toi >= alpha0 && toi <= 1);
 		ContactAtty::SetToi(*c, toi);
 		
 		results.maxDistIters = Max(results.maxDistIters, output.get_max_dist_iters());
@@ -1548,8 +1548,8 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Contact& contac
 		BodyAtty::Advance(*bB, toi);
 
 		// The TOI contact likely has some new contact points.
-		contact.SetEnabled();	
-		ContactAtty::Update(contact, m_contactListener);
+		contact.SetEnabled();
+		ContactAtty::Update(contact, conf, m_contactListener);
 		ContactAtty::UnsetToi(contact);
 		ContactAtty::IncrementToiCount(contact);
 
@@ -1602,11 +1602,11 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Contact& contac
 	// bodies sweeps and transforms to the minimum contact's TOI.
 	if (bA->IsAccelerable())
 	{
-		ProcessContactsForTOI(island, *bA, toi);
+		ProcessContactsForTOI(island, *bA, toi, conf);
 	}
 	if (bB->IsAccelerable())
 	{
-		ProcessContactsForTOI(island, *bB, toi);
+		ProcessContactsForTOI(island, *bB, toi, conf);
 	}
 	
 	RemoveUnspeedablesFromIslanded(island.m_bodies);
@@ -1752,7 +1752,7 @@ void World::ResetContactsForSolveTOI(Body& body)
 	}
 }
 
-void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi)
+void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi, const StepConf& conf)
 {
 	assert(IsIslanded(&body));
 	assert(body.IsAccelerable());
@@ -1780,7 +1780,7 @@ void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi)
 				
 				// Update the contact points
 				contact->SetEnabled();
-				ContactAtty::Update(*contact, m_contactListener);
+				ContactAtty::Update(*contact, conf, m_contactListener);
 				
 				// Revert and skip if contact disabled by user or not touching anymore (very possible).
 				if (!contact->IsEnabled() || !contact->IsTouching())
@@ -1858,7 +1858,7 @@ StepStats World::Step(const StepConf& conf)
 
 #if 1
 			// Could potentially run UpdateContacts multithreaded over split lists...
-			const auto updateStats = UpdateContacts(m_contacts);
+			const auto updateStats = UpdateContacts(m_contacts, conf);
 			stepStats.pre.ignored = updateStats.ignored;
 			stepStats.pre.updated = updateStats.updated;
 #endif
@@ -2077,7 +2077,7 @@ World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
 	return stats;
 }
 
-World::UpdateContactsStats World::UpdateContacts(Contacts& contacts)
+World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepConf& conf)
 {
 	auto stats = UpdateContactsStats{};
 	
@@ -2107,7 +2107,7 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts)
 		contact->SetEnabled();
 		
 		// The following may call listener but is otherwise thread-safe.
-		ContactAtty::Update(*contact, m_contactListener);
+		ContactAtty::Update(*contact, conf, m_contactListener);
 		++stats.updated;
 	}
 	

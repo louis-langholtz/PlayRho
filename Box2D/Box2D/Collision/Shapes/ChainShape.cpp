@@ -109,8 +109,8 @@ EdgeShape ChainShape::GetChildEdge(child_count_t index) const
 	const auto v3 = (index < (m_count - 2))? m_vertices[index + 2]: isLooped? m_vertices[1]: GetInvalid<Length2D>();
 	auto conf = EdgeShape::Conf{};
 	conf.UseVertexRadius(GetVertexRadius());
-	conf.v0 = v0;
-	conf.v3 = v3;
+	//conf.v0 = v0;
+	//conf.v3 = v3;
 	return EdgeShape{m_vertices[index + 0], m_vertices[index + 1], conf};
 }
 

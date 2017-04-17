@@ -35,7 +35,7 @@ namespace box2d
 		Momentum m_normal; ///< Normal impulse. This is the non-penetration impulse (4-bytes).
 		Momentum m_tangent; ///< Tangent impulse. This is the friction impulse (4-bytes).
 	};
-
+	
 	/// Manifold for two convex shapes.
 	///
 	/// @detail
@@ -68,6 +68,8 @@ namespace box2d
 		using sidx_t = std::remove_const<decltype(MaxShapeVertices)>::type;
 		
 		using cf_t = ContactFeature::Type;
+
+		struct Conf;
 
 		/// Manifold type.
 		/// @note This is by design a 1-byte sized type.
@@ -406,6 +408,20 @@ namespace box2d
 		PointArray m_points; ///< Points of contact (at least 40-bytes). @sa pointCount.
 	};
 	
+	struct Manifold::Conf
+	{
+		/// Targetted depth of impact.
+		/// @note Value must be less than twice the minimum vertex radius of any shape.
+		Length targetDepth = DefaultLinearSlop * RealNum{3};
+		
+		Length tolerance = DefaultLinearSlop / RealNum{4}; ///< Tolerance.
+	};
+	
+	constexpr Manifold::Conf GetDefaultManifoldConf() noexcept
+	{
+		return Manifold::Conf{};
+	}
+
 	bool operator==(const Manifold::Point& lhs, const Manifold::Point& rhs);
 	
 	bool operator!=(const Manifold::Point& lhs, const Manifold::Point& rhs);

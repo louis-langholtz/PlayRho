@@ -40,6 +40,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
 
 	const auto totalRadius = proxyA.GetRadius() + proxyB.GetRadius();
 	assert(conf.targetDepth < totalRadius);
+	assert(conf.targetDepth >= conf.tolerance);
 	
 	const auto target = totalRadius - conf.targetDepth;
 	assert(target != totalRadius);

@@ -486,20 +486,23 @@ static Manifold CollideShapes(Length2D locationA, Length radiusA, const Transfor
  */
 
 Manifold box2d::CollideShapes(const CircleShape& shapeA, const Transformation& xfA,
-							  const CircleShape& shapeB, const Transformation& xfB)
+							  const CircleShape& shapeB, const Transformation& xfB,
+							  const Manifold::Conf)
 {
 	return ::CollideShapes(shapeA.GetLocation(), GetVertexRadius(shapeA), xfA,
 						   shapeB.GetLocation(), GetVertexRadius(shapeB), xfB);
 }
 
 Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& xfA,
-							  const CircleShape& shapeB, const Transformation& xfB)
+							  const CircleShape& shapeB, const Transformation& xfB,
+							  const Manifold::Conf)
 {
 	return ::CollideShapes(shapeA, xfA, shapeB.GetLocation(), shapeB.GetVertexRadius(), xfB);
 }
 
 Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA,
-							  const CircleShape& shapeB, const Transformation& xfB)
+							  const CircleShape& shapeB, const Transformation& xfB,
+							  const Manifold::Conf)
 {
 	/*
 	 * Determine the collision manifold between the edge and the circle. This accounts for
@@ -598,7 +601,8 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 }
 
 Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA,
-							  const EdgeShape& shapeB, const Transformation& xfB)
+							  const EdgeShape& shapeB, const Transformation& xfB,
+							  const Manifold::Conf)
 {
 	const auto shapeA_v1 = shapeA.GetVertex1(); // p
 	const auto shapeA_v2 = shapeA.GetVertex2();
@@ -700,7 +704,8 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 }
 
 Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA,
-							  const PolygonShape& shapeB, const Transformation& xfB)
+							  const PolygonShape& shapeB, const Transformation& xfB,
+							  const Manifold::Conf)
 {
 	// Algorithm:
 	// 1. Classify v1 and v2
@@ -751,7 +756,8 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 }
 
 Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& xfA,
-							  const PolygonShape& shapeB, const Transformation& xfB)
+							  const PolygonShape& shapeB, const Transformation& xfB,
+							  const Manifold::Conf)
 {
 	// Find edge normal of max separation on A - return if separating axis is found
 	// Find edge normal of max separation on B - return if separation axis is found
@@ -763,19 +769,23 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 	const auto vertexCountShapeB = shapeB.GetVertexCount();
 	if (vertexCountShapeA == 1)
 	{
+		assert(shapeA.GetCentroid() == shapeA.GetVertex(0));
 		if (vertexCountShapeB > 1)
 		{
 			return ::CollideShapes(shapeB, xfB, shapeA.GetCentroid(), shapeA.GetVertexRadius(), xfA);
 		}
+		assert(shapeB.GetCentroid() == shapeB.GetVertex(0));
 		return ::CollideShapes(shapeA.GetCentroid(), shapeA.GetVertexRadius(), xfA,
 							   shapeB.GetCentroid(), shapeB.GetVertexRadius(), xfB);
 	}
 	if (vertexCountShapeB == 1)
 	{
+		assert(shapeB.GetCentroid() == shapeB.GetVertex(0));
 		if (vertexCountShapeA > 1)
 		{
 			return ::CollideShapes(shapeA, xfA, shapeB.GetCentroid(), shapeB.GetVertexRadius(), xfB);
 		}
+		assert(shapeA.GetCentroid() == shapeA.GetVertex(0));
 		return ::CollideShapes(shapeA.GetCentroid(), shapeA.GetVertexRadius(), xfA,
 							   shapeB.GetCentroid(), shapeB.GetVertexRadius(), xfB);
 	}

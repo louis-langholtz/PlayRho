@@ -543,10 +543,18 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 	auto pos_b = body_b->GetLocation();
 	ASSERT_LT(pos_a.x, pos_b.x);
 
+	auto conf = StepConf{};
+	conf.SetTime(time_inc);
+	conf.regPositionIterations = 0;
+	conf.regVelocityIterations = 0;
+	conf.toiPositionIterations = 0;
+	conf.toiVelocityIterations = 0;
+	conf.tolerance = std::nextafter(StripUnit(conf.targetDepth), RealNum{0}) * Meter;
+
 	auto steps = unsigned{0};
-	while (StripUnit(pos_a.x) < x && StripUnit(pos_b.x) > -x)
+	while (pos_a.x < (x * Meter) && pos_b.x > (-x * Meter))
 	{
-		Step(world, time_inc, 0, 0);
+		world.Step(conf);
 		++steps;
 		
 		EXPECT_TRUE(almost_equal(body_a->GetLocation().x / Meter, (pos_a.x + x * time_inc * MeterPerSecond) / Meter));
@@ -775,7 +783,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 	auto position_diff = body2pos - body1pos;
 	auto distance = GetLength(position_diff);
 
-	const auto angle = GetAngle(StripUnits(position_diff));
+	const auto angle = GetAngle(position_diff);
 	ASSERT_EQ(angle, RealNum{0} * Degree);
 
 	auto lastpos1 = body1->GetLocation();
@@ -834,7 +842,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 		distance = new_distance;
 
 		// angle of the delta of their positions should stay the same as they move away
-		const auto new_angle = GetAngle(StripUnits(new_pos_diff));
+		const auto new_angle = GetAngle(new_pos_diff);
 		EXPECT_EQ(angle, new_angle);
 	}
 }
@@ -951,7 +959,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 	auto position_diff = body1pos - body2pos;
 	auto distance = GetLength(position_diff);
 	
-	auto angle = GetAngle(StripUnits(position_diff));
+	auto angle = GetAngle(position_diff);
 	EXPECT_TRUE(almost_equal(angle / Radian, RealNum{0}));
 	
 	auto lastpos1 = body1->GetLocation();
@@ -1049,7 +1057,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 		ASSERT_NE(new_distance, distance);
 		distance = new_distance;
 		
-		const auto new_angle = GetAngle(StripUnits(new_pos_diff));
+		const auto new_angle = GetAngle(new_pos_diff);
 		EXPECT_TRUE(almost_equal(angle / Radian, new_angle / Radian));
 		
 		angle = new_angle;

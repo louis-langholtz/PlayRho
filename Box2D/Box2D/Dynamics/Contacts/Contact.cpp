@@ -29,6 +29,7 @@
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/World.hpp>
+#include <Box2D/Dynamics/StepConf.hpp>
 
 using namespace box2d;
 
@@ -37,75 +38,93 @@ using ContactCreateFcn = Contact* (Fixture* fixtureA, child_count_t indexA,
 using ContactDestroyFcn = void (Contact* contact);
 
 static Manifold GetChainCircleManifold(const Fixture* fixtureA, child_count_t indexA,
-									   const Fixture* fixtureB, child_count_t)
+									   const Fixture* fixtureB, child_count_t,
+									   const Manifold::Conf conf)
 {
 	const auto xfA = GetTransformation(*fixtureA);
 	const auto xfB = GetTransformation(*fixtureB);
 	const auto edge = (static_cast<const ChainShape*>(fixtureA->GetShape()))->GetChildEdge(indexA);
-	return CollideShapes(edge, xfA, *static_cast<const CircleShape*>(fixtureB->GetShape()), xfB);
+	return CollideShapes(edge, xfA,
+						 *static_cast<const CircleShape*>(fixtureB->GetShape()), xfB,
+						 conf);
 }
 
 static Manifold GetChainPolygonManifold(const Fixture* fixtureA, child_count_t indexA,
-										const Fixture* fixtureB, child_count_t)
+										const Fixture* fixtureB, child_count_t,
+										const Manifold::Conf conf)
 {
 	const auto xfA = GetTransformation(*fixtureA);
 	const auto xfB = GetTransformation(*fixtureB);
 	const auto edge = static_cast<const ChainShape*>(fixtureA->GetShape())->GetChildEdge(indexA);
-	return CollideShapes(edge, xfA, *static_cast<const PolygonShape*>(fixtureB->GetShape()), xfB);
+	return CollideShapes(edge, xfA,
+						 *static_cast<const PolygonShape*>(fixtureB->GetShape()), xfB,
+						 conf);
 }
 
 static Manifold GetCircleCircleManifold(const Fixture* fixtureA, child_count_t,
-										const Fixture* fixtureB, child_count_t)
+										const Fixture* fixtureB, child_count_t,
+										const Manifold::Conf conf)
 {
 	const auto xfA = GetTransformation(*fixtureA);
 	const auto xfB = GetTransformation(*fixtureB);
 	return CollideShapes(*static_cast<const CircleShape*>(fixtureA->GetShape()), xfA,
-						 *static_cast<const CircleShape*>(fixtureB->GetShape()), xfB);
+						 *static_cast<const CircleShape*>(fixtureB->GetShape()), xfB,
+						 conf);
 }
 
 static Manifold GetEdgeCircleManifold(const Fixture* fixtureA, child_count_t,
-									  const Fixture* fixtureB, child_count_t)
+									  const Fixture* fixtureB, child_count_t,
+									  const Manifold::Conf conf)
 {
 	const auto xfA = GetTransformation(*fixtureA);
 	const auto xfB = GetTransformation(*fixtureB);
 	return CollideShapes(*static_cast<const EdgeShape*>(fixtureA->GetShape()), xfA,
-						 *static_cast<const CircleShape*>(fixtureB->GetShape()), xfB);
+						 *static_cast<const CircleShape*>(fixtureB->GetShape()), xfB,
+						 conf);
 }
 
 static Manifold GetEdgeEdgeManifold(const Fixture* fixtureA, child_count_t,
-									const Fixture* fixtureB, child_count_t)
+									const Fixture* fixtureB, child_count_t,
+									const Manifold::Conf conf)
 {
 	const auto xfA = GetTransformation(*fixtureA);
 	const auto xfB = GetTransformation(*fixtureB);
 	return CollideShapes(*static_cast<const EdgeShape*>(fixtureA->GetShape()), xfA,
-						 *static_cast<const EdgeShape*>(fixtureB->GetShape()), xfB);
+						 *static_cast<const EdgeShape*>(fixtureB->GetShape()), xfB,
+						 conf);
 }
 
 static Manifold GetEdgePolygonManifold(const Fixture* fixtureA, child_count_t,
-									   const Fixture* fixtureB, child_count_t)
+									   const Fixture* fixtureB, child_count_t,
+									   const Manifold::Conf conf)
 {
 	const auto xfA = GetTransformation(*fixtureA);
 	const auto xfB = GetTransformation(*fixtureB);
 	return CollideShapes(*static_cast<const EdgeShape*>(fixtureA->GetShape()), xfA,
-						 *static_cast<const PolygonShape*>(fixtureB->GetShape()), xfB);
+						 *static_cast<const PolygonShape*>(fixtureB->GetShape()), xfB,
+						 conf);
 }
 
 static Manifold GetPolygonCircleManifold(const Fixture* fixtureA, child_count_t,
-										 const Fixture* fixtureB, child_count_t)
+										 const Fixture* fixtureB, child_count_t,
+										 const Manifold::Conf conf)
 {
 	const auto xfA = GetTransformation(*fixtureA);
 	const auto xfB = GetTransformation(*fixtureB);
 	return CollideShapes(*static_cast<const PolygonShape*>(fixtureA->GetShape()), xfA,
-						 *static_cast<const CircleShape*>(fixtureB->GetShape()), xfB);
+						 *static_cast<const CircleShape*>(fixtureB->GetShape()), xfB,
+						 conf);
 }
 
 static Manifold GetPolygonPolygonManifold(const Fixture* fixtureA, child_count_t,
-										  const Fixture* fixtureB, child_count_t)
+										  const Fixture* fixtureB, child_count_t,
+										  const Manifold::Conf conf)
 {
 	const auto xfA = GetTransformation(*fixtureA);
 	const auto xfB = GetTransformation(*fixtureB);
 	return CollideShapes(*static_cast<const PolygonShape*>(fixtureA->GetShape()), xfA,
-						 *static_cast<const PolygonShape*>(fixtureB->GetShape()), xfB);
+						 *static_cast<const PolygonShape*>(fixtureB->GetShape()), xfB,
+						 conf);
 }
 
 struct HandlerEntry
@@ -227,7 +246,7 @@ Contact::Contact(Fixture* fA, child_count_t iA, Fixture* fB, child_count_t iB, M
 	assert(fA->GetBody() != fB->GetBody());
 }
 
-void Contact::Update(ContactListener* listener)
+void Contact::Update(const StepConf& conf, ContactListener* listener)
 {
 	const auto oldManifold = m_manifold;
 
@@ -253,7 +272,10 @@ void Contact::Update(ContactListener* listener)
 	}
 	else
 	{
-		auto newManifold = CalcManifold();
+		auto manifoldConf = Manifold::Conf{};
+		manifoldConf.tolerance = conf.tolerance;
+		manifoldConf.targetDepth = conf.targetDepth;
+		auto newManifold = CalcManifold(manifoldConf);
 		
 		const auto old_point_count = oldManifold.GetPointCount();
 		const auto new_point_count = newManifold.GetPointCount();

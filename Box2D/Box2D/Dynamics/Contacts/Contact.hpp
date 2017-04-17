@@ -32,6 +32,7 @@ class Contact;
 class Fixture;
 class ContactListener;
 struct ToiConf;
+class StepConf;
 	
 /// Friction mixing law. The idea is to allow either fixture to drive the resulting friction to zero.
 /// For example, anything slides on ice.
@@ -59,7 +60,8 @@ public:
 	using substep_type = ts_iters_t;
 	
 	using ManifoldCalcFunc = Manifold (*)(const Fixture* fixtureA, child_count_t indexA,
-										  const Fixture* fixtureB, child_count_t indexB);
+										  const Fixture* fixtureB, child_count_t indexB,
+										  const Manifold::Conf conf);
 	
 	Contact() = delete;
 	Contact(const Contact& copy) = delete;
@@ -133,7 +135,7 @@ public:
 	/// Calculates this contact's collision manifold.
 	/// @return Contact manifold with one or more points
 	///   if the shapes are considered touching (collided).
-	Manifold CalcManifold() const;
+	Manifold CalcManifold(const Manifold::Conf conf) const;
 
 	substep_type GetToiCount() const noexcept;
 	
@@ -208,7 +210,7 @@ private:
 	/// @param listener Listener that if non-null is called with status information.
 	/// @sa GetManifold.
 	/// @sa IsTouching.
-	void Update(ContactListener* listener = nullptr);
+	void Update(const StepConf& conf, ContactListener* listener = nullptr);
 	
 	/// Sets the time of impact (TOI).
 	/// @detail After returning, this object will have a TOI that is set as indicated by <code>HasValidToi()</code>.
@@ -419,9 +421,9 @@ inline Contact::substep_type Contact::GetToiCount() const noexcept
 	return m_toiCount;
 }
 
-inline Manifold Contact::CalcManifold() const
+inline Manifold Contact::CalcManifold(const Manifold::Conf conf) const
 {
-	return m_manifoldCalcFunc(m_fixtureA, m_indexA, m_fixtureB, m_indexB);
+	return m_manifoldCalcFunc(m_fixtureA, m_indexA, m_fixtureB, m_indexB, conf);
 }
 
 // Free functions...
