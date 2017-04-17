@@ -525,8 +525,8 @@ void Test::MouseMove(const Length2D& p)
 
 void Test::LaunchBomb()
 {
-	const auto p = Vec2(RandomFloat(-15.0f, 15.0f), 30.0f) * Meter;
-	const auto v = RealNum{-5} * p / Second;
+	const auto p = Vec2(RandomFloat(-15.0f, 15.0f), 40.0f) * Meter;
+	const auto v = RealNum{-100} * p / Second;
 	LaunchBomb(p, v);
 }
 

@@ -456,7 +456,7 @@ static void sInterface()
 					-0 * static_cast<float>(defaultLinearSlop),
 					static_cast<float>(defaultLinearSlop) / 20,
 					true);
-		imguiSlider("Max Translation", &settings.maxTranslation, 0.0f, 8.0f, 0.05f, true);
+		imguiSlider("Max Translation", &settings.maxTranslation, 0.0f, 12.0f, 0.05f, true);
 		imguiSlider("Max Rotation", &settings.maxRotation, 0.0f, 360.0f, 1.0f, true);
 		imguiSlider("Max Lin Correct", &settings.maxLinearCorrection, 0.0f, 1.0f, 0.01f, true);
 		imguiSlider("Max Ang Correct", &settings.maxAngularCorrection, 0.0f, 90.0f, 1.0f, true);
