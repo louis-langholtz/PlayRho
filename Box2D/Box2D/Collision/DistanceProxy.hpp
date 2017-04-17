@@ -64,7 +64,9 @@ namespace box2d
 		constexpr DistanceProxy(Length radius, Length2D v0) noexcept:
 			m_radius{radius}, m_buffer{{v0}}, m_count{1}
 		{
+#if __clang__
 			assert(radius >= Length{0});
+#endif
 		}
 		
 		/// Initializing constructor.
@@ -75,7 +77,9 @@ namespace box2d
 		constexpr DistanceProxy(Length radius, Length2D v0, Length2D v1) noexcept:
 			m_radius{radius}, m_buffer{{v0, v1}}, m_count{2}
 		{
+#ifdef __clang__
 			assert(radius >= Length{0});
+#endif
 		}
 		
 		/// Initializing constructor.
@@ -92,9 +96,11 @@ namespace box2d
 			m_vertices{vertices.begin()},
 			m_count{static_cast<size_type>(vertices.size())}
 		{
+#ifdef __clang__
 			assert(radius >= Length{0});
 			assert(vertices.size() > 0);
 			assert(vertices.size() <= MaxShapeVertices);
+#endif
 		}
 		
 		/// Gets the radius of the vertices of the associated shape.
