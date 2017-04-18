@@ -1302,10 +1302,21 @@ TEST(World, TilesComesToRest)
 	EXPECT_EQ(GetAwakeCount(*m_world), 0);
 
 	// The final stats seem dependent on the host the test is run on.
-	// This is probably most associated with the actual CPU/FPU.
-	// XXX: Use OS dependence for now.
-	// TODO: Change this to using CPU/FPU based preprocess define.
-#ifdef __APPLE__
+	// Presume that this is most closely associated with the actual CPU/FPU.
+#if defined(__core2__)
+	EXPECT_EQ(numSteps, 1814ul);
+	EXPECT_EQ(sumRegPosIters, 36600ul);
+	EXPECT_EQ(sumRegVelIters, 264096ul);
+	EXPECT_EQ(sumToiPosIters, 45022ul);
+	EXPECT_EQ(sumToiVelIters, 148560ul);
+#elif defined(__k8__)
+	EXPECT_EQ(numSteps, 1822ul);
+	EXPECT_EQ(sumRegPosIters, 36616ul);
+	EXPECT_EQ(sumRegVelIters, 264096ul);
+	EXPECT_EQ(sumToiPosIters, 44415ul);
+	EXPECT_EQ(sumToiVelIters, 146800ul);
+#else
+	// These will likely fail and need to be tweaked for the particular hardware...
 	EXPECT_EQ(numSteps, 1814ul);
 	EXPECT_EQ(sumRegPosIters, 36600ul);
 	EXPECT_EQ(sumRegVelIters, 264096ul);
@@ -1313,14 +1324,6 @@ TEST(World, TilesComesToRest)
 	EXPECT_EQ(sumToiVelIters, 148560ul);
 #endif
 	
-#ifdef __linux__
-	EXPECT_EQ(numSteps, 1822ul);
-	EXPECT_EQ(sumRegPosIters, 36616ul);
-	EXPECT_EQ(sumRegVelIters, 264096ul);
-	EXPECT_EQ(sumToiPosIters, 44415ul);
-	EXPECT_EQ(sumToiVelIters, 146800ul);
-#endif
-
 	//std::cout << "Time: " << elapsed_time.count() << "s" << std::endl;
 	// EXPECT_LT(elapsed_time.count(), 7.0);
 }

@@ -53,7 +53,7 @@ install:
 
 script:
   - echo CXX=$CXX
-  - $CXX -dM -E - < /dev/null
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "clang++-3.7" ]]; then (cd Box2D && mkdir -p BuildLinux && cd BuildLinux && cmake --version && cmake -DCMAKE_BUILD_TYPE=Release -DBOX2D_BUILD_UNIT_TESTS=ON .. && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:World.TilesComesToRestInUnder7secs ); fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-6" ]]; then (cd Box2D && mkdir -p BuildLinux && cd BuildLinux && cmake --version && cmake -DCMAKE_BUILD_TYPE=Debug -DBOX2D_BUILD_UNIT_TESTS=ON .. && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:StackAllocator.slower_than_mallocfree:World.TilesComesToRestInUnder7secs ); fi
+  - $CXX -dM -E - < /dev/null | sort
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "clang++-3.7" ]]; then (cd Box2D && mkdir -p BuildLinux && cd BuildLinux && cmake --version && cmake -DCMAKE_BUILD_TYPE=Release -DBOX2D_BUILD_UNIT_TESTS=ON .. && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld ); fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-6" ]]; then (cd Box2D && mkdir -p BuildLinux && cd BuildLinux && cmake --version && cmake -DCMAKE_BUILD_TYPE=Debug -DBOX2D_BUILD_UNIT_TESTS=ON .. && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:StackAllocator.slower_than_mallocfree ); fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then (cd Box2D && xcodebuild -project Box2D/Build/xcode5/Box2D.xcodeproj -list); fi
