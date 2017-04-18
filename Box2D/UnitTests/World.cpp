@@ -1206,7 +1206,7 @@ static void catch_alarm(int)
 	} }
 
 
-TEST(World, TilesComesToRestInUnder7secs)
+TEST(World, TilesComesToRest)
 {
 	const auto m_world = std::make_unique<World>();
 	
@@ -1262,14 +1262,24 @@ TEST(World, TilesComesToRestInUnder7secs)
 	StepConf step;
 	step.SetTime(Time{Second / RealNum{60}});
 
-	const auto start_time = std::chrono::high_resolution_clock::now();
+	auto numSteps = 0ul;
+	auto sumRegPosIters = 0ul;
+	auto sumRegVelIters = 0ul;
+	auto sumToiPosIters = 0ul;
+	auto sumToiVelIters = 0ul;
+	//const auto start_time = std::chrono::high_resolution_clock::now();
 	while (GetAwakeCount(*m_world) > 0)
 	{
-		m_world->Step(step);
+		const auto stats = m_world->Step(step);
+		sumRegPosIters += stats.reg.sumPosIters;
+		sumRegVelIters += stats.reg.sumVelIters;
+		sumToiPosIters += stats.toi.sumPosIters;
+		sumToiVelIters += stats.toi.sumVelIters;
+		++numSteps;
 	}
-	const auto end_time = std::chrono::high_resolution_clock::now();
+	//const auto end_time = std::chrono::high_resolution_clock::now();
 	
-	const std::chrono::duration<double> elapsed_time = end_time - start_time;
+	//const std::chrono::duration<double> elapsed_time = end_time - start_time;
 	
 	// seeing e_count=20 times around:
 	//   0.447077s with RealNum=float and NDEBUG defined.
@@ -1289,8 +1299,15 @@ TEST(World, TilesComesToRestInUnder7secs)
 	//   4.85618s with RealNum=float and NDEBUG defined.
 	//   5.32973s with RealNum=double and NDEBUG defined.
 	
+	EXPECT_EQ(GetAwakeCount(*m_world), 0);
+	EXPECT_EQ(numSteps, 1814ul);
+	EXPECT_EQ(sumRegPosIters, 36600ul);
+	EXPECT_EQ(sumRegVelIters, 264096ul);
+	EXPECT_EQ(sumToiPosIters, 45022ul);
+	EXPECT_EQ(sumToiVelIters, 148560ul);
+
 	//std::cout << "Time: " << elapsed_time.count() << "s" << std::endl;
-	EXPECT_LT(elapsed_time.count(), 7.0);
+	// EXPECT_LT(elapsed_time.count(), 7.0);
 }
 
 TEST(World, SpeedingBulletBallWontTunnel)
