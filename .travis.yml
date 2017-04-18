@@ -42,11 +42,11 @@ addons:
       - cmake
       - cmake-data
       - clang-3.7
-      - g++-6
-      - gcc-6
+      - g++-6.3
+      - gcc-6.3
 
 install:
-  - if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-6.3" CC="gcc-6.3"; fi
   - if [ "$CXX" = "clang++" ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
 
 script:
