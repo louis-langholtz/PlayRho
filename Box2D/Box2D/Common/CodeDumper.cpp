@@ -17,7 +17,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "CodeDumper.hpp"
+#include <Box2D/Common/CodeDumper.hpp>
 
 #include <Box2D/Dynamics/World.hpp>
 #include <Box2D/Dynamics/Body.hpp>
@@ -40,6 +40,8 @@
 #include <Box2D/Collision/Shapes/PolygonShape.hpp>
 #include <Box2D/Collision/Shapes/ChainShape.hpp>
 #include <Box2D/Collision/Shapes/Shape.hpp>
+
+#include <cstdarg>
 
 using namespace box2d;
 
