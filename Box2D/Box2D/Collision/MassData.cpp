@@ -30,7 +30,8 @@ using namespace box2d;
 
 namespace
 {
-	MassData GetMassData(Length r, Density density, Length2D location)
+	MassData GetMassData(const Length r, const Density density,
+						 const Length2D location)
 	{
 		assert(density >= Density{0});
 

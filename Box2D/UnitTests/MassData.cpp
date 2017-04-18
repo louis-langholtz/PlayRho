@@ -115,7 +115,7 @@ TEST(MassData, GetForZeroVertexRadiusEdge)
 	EXPECT_TRUE(IsValid(mass_data.I));
 	if (IsValid(mass_data.I))
 	{
-		EXPECT_EQ(mass_data.I, RotInertia{0});
+		EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)), 0.0, 0.00001);
 	}
 	EXPECT_EQ(mass_data.center.x, Length{0});
 	EXPECT_EQ(mass_data.center.y, Length{0});
@@ -148,8 +148,13 @@ TEST(MassData, GetForCenteredEdge)
 {
 	const auto v1 = Vec2{-2, 0} * Meter;
 	const auto v2 = Vec2{+2, 0} * Meter;
-	const auto radius = RealNum(0.5) * Meter;
+	const auto radius = RealNum{0.5f} * Meter;
 	const auto density = RealNum{2.1f} * KilogramPerSquareMeter;
+	
+	const auto radiusSquared = Area{radius * radius};
+	const auto circleArea = radiusSquared * Pi;
+	EXPECT_EQ(double(circleArea / SquareMeter), 0.5f * 0.5f * Pi);
+
 	auto conf = EdgeShape::Conf{};
 	conf.vertexRadius = radius;
 	conf.density = density;
@@ -158,7 +163,10 @@ TEST(MassData, GetForCenteredEdge)
 	const auto mass_data = GetMassData(shape, density);
 	
 	const auto vertices = Span<const Length2D>{
-		Vec2(-2, +0.5) * Meter, Vec2(-2, -0.5) * Meter, Vec2(+2, -0.5) * Meter, Vec2(+2, +0.5) * Meter
+		Vec2(-2, +0.5) * Meter,
+		Vec2(-2, -0.5) * Meter,
+		Vec2(+2, -0.5) * Meter,
+		Vec2(+2, +0.5) * Meter
 	};
 	const auto area = GetAreaOfPolygon(vertices) + GetAreaOfCircle(radius);
 	EXPECT_EQ(mass_data.mass, density * area);
