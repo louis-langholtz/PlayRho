@@ -169,7 +169,6 @@ namespace box2d
 		/// Gets a face A typed manifold.
 		/// @param normalA Local normal of the face from polygon A.
 		/// @param faceA Any point in local coordinates on the face whose normal was provided.
-		[[deprecated]]
 		static BOX2D_CONSTEXPR inline Manifold GetForFaceA(UnitVec2 normalA, Length2D faceA) noexcept
 		{
 			return Manifold{e_faceA, normalA, faceA, 0, {{}}};
@@ -179,7 +178,6 @@ namespace box2d
 		/// @param ln Normal on polygon A.
 		/// @param lp Center of face A.
 		/// @param mp1 Manifold point 1 (of 1).
-		[[deprecated]]
 		static BOX2D_CONSTEXPR inline Manifold GetForFaceA(UnitVec2 ln, Length2D lp, const Point& mp1) noexcept
 		{
 			//assert(mp1.contactFeature.typeA == ContactFeature::e_face || mp1.contactFeature.typeB == ContactFeature::e_face);
@@ -191,7 +189,6 @@ namespace box2d
 		/// @param lp Center of face A.
 		/// @param mp1 Manifold point 1 (of 2).
 		/// @param mp2 Manifold point 2 (of 2).
-		[[deprecated]]
 		static BOX2D_CONSTEXPR inline Manifold GetForFaceA(UnitVec2 ln, Length2D lp, const Point& mp1, const Point& mp2) noexcept
 		{
 			//assert(mp1.contactFeature.typeA == ContactFeature::e_face || mp1.contactFeature.typeB == ContactFeature::e_face);
@@ -205,7 +202,6 @@ namespace box2d
 		/// Gets a face B typed manifold.
 		/// @param ln Normal on polygon B.
 		/// @param lp Center of face B.
-		[[deprecated]]
 		static BOX2D_CONSTEXPR inline Manifold GetForFaceB(UnitVec2 ln, Length2D lp) noexcept
 		{
 			return Manifold{e_faceB, ln, lp, 0, {{}}};
@@ -215,7 +211,6 @@ namespace box2d
 		/// @param ln Normal on polygon B.
 		/// @param lp Center of face B.
 		/// @param mp1 Manifold point 1.
-		[[deprecated]]
 		static BOX2D_CONSTEXPR inline Manifold GetForFaceB(UnitVec2 ln, Length2D lp, const Point& mp1) noexcept
 		{
 			//assert(mp1.contactFeature.typeA == ContactFeature::e_face || mp1.contactFeature.typeB == ContactFeature::e_face);
@@ -227,7 +222,6 @@ namespace box2d
 		/// @param lp Center of face B.
 		/// @param mp1 Manifold point 1 (of 2).
 		/// @param mp2 Manifold point 2 (of 2).
-		[[deprecated]]
 		static BOX2D_CONSTEXPR inline Manifold GetForFaceB(UnitVec2 ln, Length2D lp, const Point& mp1, const Point& mp2) noexcept
 		{
 			//assert(mp1.contactFeature.typeA == ContactFeature::e_face || mp1.contactFeature.typeB == ContactFeature::e_face);
@@ -350,7 +344,6 @@ namespace box2d
 		/// GetPointCount() can be called to find out how many points have already been added.
 		/// @note Behavior is undefined if this object's type is e_unset.
 		/// @note Behavior is undefined if this is called more than twice.
-		[[deprecated]]
 		void AddPoint(const Point& mp) noexcept;
 
 		void AddPoint(cf_t type, sidx_t index, Length2D point) noexcept;
