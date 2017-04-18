@@ -679,6 +679,19 @@ inline bool IsValid(const AngularAcceleration& x) noexcept
 	return IsValid(RealNum{x / RadianPerSquareSecond});
 }
 
+template <>
+constexpr RotInertia GetInvalid() noexcept
+{
+	// RotInertia is L^2  M    QP^-2
+	return GetInvalid<RealNum>() * SquareMeter * Kilogram / SquareRadian;
+}
+
+template <>
+inline bool IsValid(const RotInertia& value) noexcept
+{
+	return IsValid(RealNum{value / (SquareMeter * Kilogram / SquareRadian)});
+}
+
 #endif
 
 // Memory Allocation

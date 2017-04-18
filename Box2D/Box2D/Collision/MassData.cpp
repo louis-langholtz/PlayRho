@@ -85,6 +85,9 @@ namespace
 			Length2D{v1 + offset}
 		};
 		const auto I_z = GetPolarMoment(vertices);
+		assert(I0 >= SecondMomentOfArea{0});
+		assert(I1 >= SecondMomentOfArea{0});
+		assert(I_z >= SecondMomentOfArea{0});
 		const auto I = RotInertia{(I0 + I1 + I_z) * density / SquareRadian};
 		return MassData{totalMass, (v0 + v1) / 2.0f, I};
 	}

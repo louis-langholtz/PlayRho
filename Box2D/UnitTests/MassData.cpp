@@ -165,23 +165,25 @@ TEST(MassData, GetForCenteredEdge)
 	ASSERT_EQ(shape.GetVertex2(), v2);
 	ASSERT_EQ(shape.GetDensity(), density);
 	
-	const auto mass_data = GetMassData(shape, density);
-	
 	const auto vertices = Span<const Length2D>{
 		Vec2(-2, +0.5) * Meter,
 		Vec2(-2, -0.5) * Meter,
 		Vec2(+2, -0.5) * Meter,
 		Vec2(+2, +0.5) * Meter
 	};
+	const auto polarMoment = GetPolarMoment(vertices);
+	ASSERT_GE(polarMoment, SecondMomentOfArea(0));
 	const auto area = GetAreaOfPolygon(vertices) + GetAreaOfCircle(radius);
+
+	const auto mass_data = GetMassData(shape, density);
 	EXPECT_EQ(mass_data.mass, density * area);
 	EXPECT_TRUE(IsValid(mass_data.I));
 	if (IsValid(mass_data.I))
 	{
 		EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)), 18.70351, 0.002);
-		EXPECT_GT(mass_data.I, (GetPolarMoment(vertices) * density) / SquareRadian);
+		EXPECT_GE(mass_data.I, (polarMoment * density) / SquareRadian);
 	}
-	EXPECT_NEAR(double(RealNum{GetPolarMoment(vertices) / (SquareMeter * SquareMeter)}), 5.6666665, 0.0001);
+	EXPECT_NEAR(double(RealNum{polarMoment / (SquareMeter * SquareMeter)}), 5.6666665, 0.0001);
 	EXPECT_EQ(mass_data.center.x, Length{0});
 	EXPECT_EQ(mass_data.center.y, Length{0});
 }
