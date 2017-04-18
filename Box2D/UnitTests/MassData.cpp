@@ -107,13 +107,16 @@ TEST(MassData, GetForZeroVertexRadiusEdge)
 	const auto v2 = Vec2{+1, 0} * Meter;
 	const auto density = RealNum{2.1f} * KilogramPerSquareMeter;
 	auto conf = EdgeShape::Conf{};
-	conf.vertexRadius = 0;
+	conf.vertexRadius = Length{0};
 	conf.density = density;
-	auto shape = EdgeShape(conf);
-	shape.Set(v1, v2);
+	const auto shape = EdgeShape(v1, v2, conf);
 	const auto mass_data = GetMassData(shape, density);
 	EXPECT_EQ(RealNum{mass_data.mass / Kilogram}, RealNum{0});
-	EXPECT_EQ(mass_data.I, RotInertia{0});
+	EXPECT_TRUE(IsValid(mass_data.I));
+	if (IsValid(mass_data.I))
+	{
+		EXPECT_EQ(mass_data.I, RotInertia{0});
+	}
 	EXPECT_EQ(mass_data.center.x, Length{0});
 	EXPECT_EQ(mass_data.center.y, Length{0});
 }
@@ -132,7 +135,11 @@ TEST(MassData, GetForSamePointedEdgeIsSameAsCircle)
 	const auto circleMass = density * Pi * Square(shape.GetVertexRadius());
 
 	EXPECT_TRUE(almost_equal(StripUnit(mass_data.mass), StripUnit(circleMass)));
-	EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)), 7.85398, 0.0004);
+	EXPECT_TRUE(IsValid(mass_data.I));
+	if (IsValid(mass_data.I))
+	{
+		EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)), 7.85398, 0.0004);
+	}
 	EXPECT_TRUE(almost_equal(StripUnit(mass_data.center.x), StripUnit(v1.x)));
 	EXPECT_TRUE(almost_equal(StripUnit(mass_data.center.y), StripUnit(v1.y)));
 }
@@ -155,11 +162,13 @@ TEST(MassData, GetForCenteredEdge)
 	};
 	const auto area = GetAreaOfPolygon(vertices) + GetAreaOfCircle(radius);
 	EXPECT_EQ(mass_data.mass, density * area);
-
-	EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)), 18.70351, 0.002);
+	EXPECT_TRUE(IsValid(mass_data.I));
+	if (IsValid(mass_data.I))
+	{
+		EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)), 18.70351, 0.002);
+		EXPECT_GT(mass_data.I, (GetPolarMoment(vertices) * density) / SquareRadian);
+	}
 	EXPECT_NEAR(double(RealNum{GetPolarMoment(vertices) / (SquareMeter * SquareMeter)}), 5.6666665, 0.0001);
-	EXPECT_GT(mass_data.I, (GetPolarMoment(vertices) * density) / SquareRadian);
-	
 	EXPECT_EQ(mass_data.center.x, Length{0});
 	EXPECT_EQ(mass_data.center.y, Length{0});
 }

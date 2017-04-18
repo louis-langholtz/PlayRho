@@ -55,7 +55,8 @@ namespace
 		return MassData{mass, location, I};
 	}
 
-	MassData GetMassData(Length r, Density density, Length2D v0, Length2D v1)
+	MassData GetMassData(const Length r, const Density density,
+						 const Length2D v0, const Length2D v1)
 	{
 		assert(density >= Density{0});
 
@@ -63,23 +64,24 @@ namespace
 		const auto circle_area = r_squared * Pi;
 		const auto circle_mass = density * circle_area;
 		const auto d = v1 - v0;
-		const auto dUnitless = StripUnits(d);
-		const auto offset = GetRevPerpendicular(GetUnitVector(dUnitless, UnitVec2::GetZero())) * (r / Meter);
-		const auto b = Meter * GetLength(dUnitless);
+		const auto offset = GetRevPerpendicular(GetUnitVector(d, UnitVec2::GetZero())) * r;
+		const auto b = GetLength(d);
 		const auto h = r * RealNum{2};
 		const auto rect_mass = density * b * h;
 		const auto totalMass = circle_mass + rect_mass;
 		
 		/// Use the fixture's areal mass density times the shape's second moment of area to derive I.
 		/// @sa https://en.wikipedia.org/wiki/Second_moment_of_area
-		const auto I0 = SecondMomentOfArea{(circle_area / RealNum{2}) * ((r_squared / RealNum{2}) + GetLengthSquared(v0))};
-		const auto I1 = SecondMomentOfArea{(circle_area / RealNum{2}) * ((r_squared / RealNum{2}) + GetLengthSquared(v1))};
+		const auto halfCircleArea = circle_area / RealNum{2};
+		const auto halfRSquared = r_squared / RealNum{2};
+		const auto I0 = SecondMomentOfArea{halfCircleArea * (halfRSquared + GetLengthSquared(v0))};
+		const auto I1 = SecondMomentOfArea{halfCircleArea * (halfRSquared + GetLengthSquared(v1))};
 		
 		const auto vertices = Span<const Length2D>{
-			Length2D{v0 + offset * Meter},
-			Length2D{v0 - offset * Meter},
-			Length2D{v1 - offset * Meter},
-			Length2D{v1 + offset * Meter}
+			Length2D{v0 + offset},
+			Length2D{v0 - offset},
+			Length2D{v1 - offset},
+			Length2D{v1 + offset}
 		};
 		const auto I_z = GetPolarMoment(vertices);
 		const auto I = RotInertia{(I0 + I1 + I_z) * density / SquareRadian};
