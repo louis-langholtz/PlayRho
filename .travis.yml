@@ -9,7 +9,9 @@ language: cpp
 
 # Specifiy which compiler or compilers to test against.
 # For details, see https://docs.travis-ci.com/user/languages/cpp/#Choosing-compilers-to-test-against
-compiler: gcc
+compiler:
+  - clang
+  - gcc
 
 # Specify explicitly which branches to build or not build
 # For details see: https://docs.travis-ci.com/user/customizing-the-build/#Building-Specific-Branches
