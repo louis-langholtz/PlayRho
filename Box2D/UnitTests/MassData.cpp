@@ -182,11 +182,21 @@ TEST(MassData, GetForCenteredEdge)
 	ASSERT_GE(polarMoment, SecondMomentOfArea(0));
 	const auto area = GetAreaOfPolygon(vertices) + GetAreaOfCircle(radius);
 
+	const auto halfCircleArea = circleArea / RealNum{2};
+	const auto halfRSquared = radiusSquared / RealNum{2};
+	const auto I1 = SecondMomentOfArea{halfCircleArea * (halfRSquared + GetLengthSquared(v1))};
+	const auto I2 = SecondMomentOfArea{halfCircleArea * (halfRSquared + GetLengthSquared(v2))};
+	EXPECT_GE(I1, SecondMomentOfArea(0));
+	EXPECT_GE(I2, SecondMomentOfArea(0));
+
 	const auto mass_data = GetMassData(shape, density);
 	EXPECT_EQ(mass_data.mass, density * area);
 	EXPECT_TRUE(IsValid(mass_data.I));
 	if (IsValid(mass_data.I))
 	{
+		const auto I = (polarMoment + I1 + I2) * density / SquareRadian;
+		EXPECT_EQ(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)),
+				  double(I / (SquareMeter * Kilogram / SquareRadian)));
 		EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)), 18.70351, 0.002);
 		EXPECT_GE(mass_data.I, (polarMoment * density) / SquareRadian);
 	}
