@@ -283,16 +283,6 @@ constexpr inline RealNum StripUnit(const Torque value)
 
 #endif
 
-template <typename T>
-struct GetDimension
-{
-#ifdef USE_BOOST_UNITS
-	using Type = typename boost::units::get_dimension<T>::type;
-#else
-	using Type = RealNum;
-#endif
-};
-
 /// Child count type. @detail Relating to "children" of Shape.
 using child_count_t = unsigned;
 
