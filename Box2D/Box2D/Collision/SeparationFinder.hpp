@@ -99,13 +99,13 @@ namespace box2d {
 			return Length{0};
 		}
 		
-		constexpr Type GetType() const noexcept;
-		constexpr UnitVec2 GetAxis() const noexcept;
-		constexpr Length2D GetLocalPoint() const noexcept;
+		BOX2D_CONSTEXPR Type GetType() const noexcept;
+		BOX2D_CONSTEXPR UnitVec2 GetAxis() const noexcept;
+		BOX2D_CONSTEXPR Length2D GetLocalPoint() const noexcept;
 
 	private:
-		SeparationFinder(const DistanceProxy& dpA, const DistanceProxy& dpB,
-						 const UnitVec2 axis, const Length2D lp, const Type type):
+		BOX2D_CONSTEXPR SeparationFinder(const DistanceProxy& dpA, const DistanceProxy& dpB,
+										 const UnitVec2 axis, const Length2D lp, const Type type):
 			m_proxyA{dpA}, m_proxyB{dpB}, m_axis{axis}, m_localPoint{lp}, m_type{type}
 		{
 			// Intentionally empty.
@@ -130,17 +130,17 @@ namespace box2d {
 		const Type m_type;
 	};
 
-	constexpr SeparationFinder::Type SeparationFinder::GetType() const noexcept
+	BOX2D_CONSTEXPR inline SeparationFinder::Type SeparationFinder::GetType() const noexcept
 	{
 		return m_type;
 	}
 	
-	constexpr UnitVec2 SeparationFinder::GetAxis() const noexcept
+	BOX2D_CONSTEXPR inline UnitVec2 SeparationFinder::GetAxis() const noexcept
 	{
 		return m_axis;
 	}
 	
-	constexpr Length2D SeparationFinder::GetLocalPoint() const noexcept
+	BOX2D_CONSTEXPR inline Length2D SeparationFinder::GetLocalPoint() const noexcept
 	{
 		return m_localPoint;
 	}
