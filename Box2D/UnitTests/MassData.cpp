@@ -160,6 +160,11 @@ TEST(MassData, GetForCenteredEdge)
 	conf.density = density;
 	auto shape = EdgeShape(conf);
 	shape.Set(v1, v2);
+	ASSERT_EQ(shape.GetVertexRadius(), radius);
+	ASSERT_EQ(shape.GetVertex1(), v1);
+	ASSERT_EQ(shape.GetVertex2(), v2);
+	ASSERT_EQ(shape.GetDensity(), density);
+	
 	const auto mass_data = GetMassData(shape, density);
 	
 	const auto vertices = Span<const Length2D>{
