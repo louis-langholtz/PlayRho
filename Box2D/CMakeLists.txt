@@ -15,7 +15,9 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # Tell C++ compiler to optimize release builds for speed.
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ot")
+# In clang++, the optimize for speed flag is '-Ot'. This option isn't supported on g++
+# however and it'd be nice to use an option that works for both compilers. So use '-O3'.
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
 
 # Set name for entire project.
 # Details at: https://cmake.org/cmake/help/v3.1/command/project.html
