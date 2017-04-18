@@ -177,7 +177,7 @@ void PolygonShape::Set(const VertexSet& point_set) noexcept
 			m_centroid = m_vertices[0];
 			break;
 		case 2:
-			m_centroid = (m_vertices[0] + m_vertices[1]) / 2.0f;
+			m_centroid = (m_vertices[0] + m_vertices[1]) / RealNum{2};
 			break;
 		default:
 			m_centroid = ComputeCentroid(GetVertices());

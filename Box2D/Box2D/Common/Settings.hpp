@@ -306,7 +306,7 @@ using island_count_t = size_t;
 /// @detail A type for countining iterations per time-step.
 using ts_iters_t = uint8;
 
-constexpr auto Pi = static_cast<float>(M_PI); ///< Pi (any narrowing is intentional).
+constexpr auto Pi = RealNum(M_PI); ///< Pi (any narrowing is intentional).
 
 constexpr auto MaxFloat = std::numeric_limits<RealNum>::max(); // FLT_MAX
 

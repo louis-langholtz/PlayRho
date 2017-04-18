@@ -113,7 +113,7 @@ TEST(Math, Square)
 TEST(Math, Atan2)
 {
 	EXPECT_EQ(Atan2(0, 0), Angle{0});
-	EXPECT_EQ(Atan2(0.0, 0.0), Angle{0});
+	EXPECT_EQ(Atan2(0.0f, 0.0f), Angle{0});
 }
 
 TEST(Math, Span)

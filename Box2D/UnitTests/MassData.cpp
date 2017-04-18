@@ -86,19 +86,26 @@ TEST(MassData, GetForZeroVertexRadiusRectangle)
 	ASSERT_EQ(shape.GetCentroid().x, RealNum(0) * Meter);
 	ASSERT_EQ(shape.GetCentroid().y, RealNum(0) * Meter);
 	const auto mass_data = GetMassData(shape, density);
-	EXPECT_TRUE(almost_equal(RealNum{mass_data.mass / Kilogram}, RealNum((density / KilogramPerSquareMeter) * (8 * 2))));
-	EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)), 90.666664 * double(density / (KilogramPerSquareMeter)), 0.0004);
+	EXPECT_TRUE(almost_equal(RealNum(mass_data.mass / Kilogram),
+							 RealNum((density / KilogramPerSquareMeter) * (8 * 2))));
+	EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)),
+				90.666664 * double(density / (KilogramPerSquareMeter)),
+				0.0004);
 	EXPECT_TRUE(almost_equal(mass_data.center.x / Meter, shape.GetCentroid().x / Meter));
 	EXPECT_TRUE(almost_equal(mass_data.center.y / Meter, shape.GetCentroid().y / Meter));
 	
 	// Area moment of inertia (I) for a rectangle is Ix + Iy = (b * h^3) / 12 + (b^3 * h) / 12....
 	const auto i = 8.0 * 2.0 * 2.0 * 2.0 / 12.0 + 8.0 * 8.0 * 8.0 * 2.0 / 12.0;
-	EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)), double((density / KilogramPerSquareMeter) * RealNum(i)), 0.0004);
+	EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)),
+				double((density / KilogramPerSquareMeter) * RealNum(i)),
+				0.0004);
 	
 	const auto i_z = GetPolarMoment(shape.GetVertices());
-	EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)), double(density * i_z / (SquareMeter * Kilogram)), 0.0004);
+	EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)),
+				double(density * i_z / (SquareMeter * Kilogram)),
+				0.0004);
 	
-	EXPECT_TRUE(almost_equal(RealNum{GetAreaOfPolygon(shape.GetVertices()) / SquareMeter}, RealNum(16)));
+	EXPECT_TRUE(almost_equal(RealNum(GetAreaOfPolygon(shape.GetVertices()) / SquareMeter), RealNum(16)));
 }
 
 TEST(MassData, GetForZeroVertexRadiusEdge)
@@ -111,7 +118,7 @@ TEST(MassData, GetForZeroVertexRadiusEdge)
 	conf.density = density;
 	const auto shape = EdgeShape(v1, v2, conf);
 	const auto mass_data = GetMassData(shape, density);
-	EXPECT_EQ(RealNum{mass_data.mass / Kilogram}, RealNum{0});
+	EXPECT_EQ(RealNum(mass_data.mass / Kilogram), RealNum(0));
 	EXPECT_TRUE(IsValid(mass_data.I));
 	if (IsValid(mass_data.I))
 	{
@@ -183,7 +190,7 @@ TEST(MassData, GetForCenteredEdge)
 		EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)), 18.70351, 0.002);
 		EXPECT_GE(mass_data.I, (polarMoment * density) / SquareRadian);
 	}
-	EXPECT_NEAR(double(RealNum{polarMoment / (SquareMeter * SquareMeter)}), 5.6666665, 0.0001);
-	EXPECT_EQ(mass_data.center.x, Length{0});
-	EXPECT_EQ(mass_data.center.y, Length{0});
+	EXPECT_NEAR(double(RealNum(polarMoment / (SquareMeter * SquareMeter))), 5.6666665, 0.0001);
+	EXPECT_EQ(mass_data.center.x, Length(0));
+	EXPECT_EQ(mass_data.center.y, Length(0));
 }

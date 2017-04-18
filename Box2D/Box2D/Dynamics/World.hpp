@@ -50,7 +50,7 @@ const FixtureDef& GetDefaultFixtureDef() noexcept;
 
 /// Earthly gravity.
 /// @detail An approximation of Earth's average gravity at sea-level.
-constexpr auto EarthlyGravity = LinearAcceleration2D{0.0f * MeterPerSquareSecond, RealNum(-9.8f) * MeterPerSquareSecond};
+constexpr auto EarthlyGravity = LinearAcceleration2D{RealNum{0} * MeterPerSquareSecond, RealNum{-9.8f} * MeterPerSquareSecond};
 
 /// World.
 /// @detail

@@ -70,13 +70,12 @@ namespace
 		const auto h = r * RealNum{2};
 		const auto rect_mass = density * b * h;
 		const auto totalMass = circle_mass + rect_mass;
-		
+		const auto center = (v0 + v1) / RealNum{2};
+
 		/// Use the fixture's areal mass density times the shape's second moment of area to derive I.
 		/// @sa https://en.wikipedia.org/wiki/Second_moment_of_area
 		const auto halfCircleArea = circle_area / RealNum{2};
 		const auto halfRSquared = r_squared / RealNum{2};
-		const auto I0 = SecondMomentOfArea{halfCircleArea * (halfRSquared + GetLengthSquared(v0))};
-		const auto I1 = SecondMomentOfArea{halfCircleArea * (halfRSquared + GetLengthSquared(v1))};
 		
 		const auto vertices = Span<const Length2D>{
 			Length2D{v0 + offset},
@@ -84,12 +83,15 @@ namespace
 			Length2D{v1 - offset},
 			Length2D{v1 + offset}
 		};
+		assert(vertices.size() == 4);
 		const auto I_z = GetPolarMoment(vertices);
+		const auto I0 = SecondMomentOfArea{halfCircleArea * (halfRSquared + GetLengthSquared(v0))};
+		const auto I1 = SecondMomentOfArea{halfCircleArea * (halfRSquared + GetLengthSquared(v1))};
 		assert(I0 >= SecondMomentOfArea{0});
 		assert(I1 >= SecondMomentOfArea{0});
 		assert(I_z >= SecondMomentOfArea{0});
 		const auto I = RotInertia{(I0 + I1 + I_z) * density / SquareRadian};
-		return MassData{totalMass, (v0 + v1) / 2.0f, I};
+		return MassData{totalMass, center, I};
 	}
 
 } // unnamed namespace

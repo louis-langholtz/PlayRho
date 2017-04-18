@@ -46,7 +46,7 @@ Length2D box2d::ComputeCentroid(const Span<const Length2D>& vertices)
 		area += triangleArea;
 		
 		// Area weighted centroid
-		const auto aveP = (p1 + p2 + p3) / 3.0f;
+		const auto aveP = (p1 + p2 + p3) / RealNum{3};
 		c += triangleArea * StripUnits(aveP);
 	}
 	
