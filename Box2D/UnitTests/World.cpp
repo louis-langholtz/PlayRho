@@ -1303,23 +1303,48 @@ TEST(World, TilesComesToRest)
 
 	// The final stats seem dependent on the host the test is run on.
 	// Presume that this is most closely associated with the actual CPU/FPU.
+	//
+	// Note about commit d361c51d6aca13079e9d44b701715e62cec18a63:
+	//   Changes were introduced that modified the way manifold calculations are done.
+	//   While many of the following counts appear to have increased, this new
+	//   mechanism for manifold calculations has benefits like no longer needing
+	//   "ghost-vertices" to avoid sticking of things like boxes being dragged across
+	//   a floor made up of chained edges nor rectangles. As to why the new manifold
+	//   calculating method makes the counts change, that's not clear to me since
+	//   it doesn't seem that the changes to the manifold calculation would be seen in
+	//   this test. That some of these counts actually became lower (in the Core-2 case)
+	//   suggests that the change to these counts has more to do with differences in
+	//   floating point hardware than in the modifications actually adversely impacting
+	//   the algorithmic efficiency of the code.
+	//
 #if defined(__core2__)
+	// From commit d361c51d6aca13079e9d44b701715e62cec18a63 onward.
 	EXPECT_EQ(numSteps, 1856ul);
 	EXPECT_EQ(sumRegPosIters, 36720ul);
 	EXPECT_EQ(sumRegVelIters, 264376ul);
 	EXPECT_EQ(sumToiPosIters, 44263ul);
 	EXPECT_EQ(sumToiVelIters, 145488ul);
+
+	// Pre commit d361c51d6aca13079e9d44b701715e62cec18a63
 	//EXPECT_EQ(numSteps, 1814ul);
 	//EXPECT_EQ(sumRegPosIters, 36600ul);
 	//EXPECT_EQ(sumRegVelIters, 264096ul);
 	//EXPECT_EQ(sumToiPosIters, 45022ul);
 	//EXPECT_EQ(sumToiVelIters, 148560ul);
 #elif defined(__k8__)
-	EXPECT_EQ(numSteps, 1822ul);
-	EXPECT_EQ(sumRegPosIters, 36616ul);
-	EXPECT_EQ(sumRegVelIters, 264096ul);
-	EXPECT_EQ(sumToiPosIters, 44415ul);
-	EXPECT_EQ(sumToiVelIters, 146800ul);
+	// From commit d361c51d6aca13079e9d44b701715e62cec18a63 onward.
+	EXPECT_EQ(numSteps, 1855ul);
+	EXPECT_EQ(sumRegPosIters, 36737ul);
+	EXPECT_EQ(sumRegVelIters, 264528ul);
+	EXPECT_EQ(sumToiPosIters, 44698ul);
+	EXPECT_EQ(sumToiVelIters, 147544ul);
+	
+	// Pre commit d361c51d6aca13079e9d44b701715e62cec18a63
+	//EXPECT_EQ(numSteps, 1822ul);
+	//EXPECT_EQ(sumRegPosIters, 36616ul);
+	//EXPECT_EQ(sumRegVelIters, 264096ul);
+	//EXPECT_EQ(sumToiPosIters, 44415ul);
+	//EXPECT_EQ(sumToiVelIters, 146800ul);
 #else
 	// These will likely fail and need to be tweaked for the particular hardware...
 	EXPECT_EQ(numSteps, 1814ul);
