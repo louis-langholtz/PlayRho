@@ -37,19 +37,19 @@ public:
 			bd.position = Vec2(-10.0f, 20.0f) * Meter;
 			const auto body = m_world->CreateBody(bd);
 			auto circleConf = CircleShape::Conf{};
-			circleConf.vertexRadius = 0.5f * Meter;
+			circleConf.vertexRadius = RealNum{0.5f} * Meter;
 			circleConf.density = RealNum{5} * KilogramPerSquareMeter;
 			body->CreateFixture(std::make_shared<CircleShape>(circleConf));
 
-			const auto w = 100.0f;
+			const auto w = RealNum{100.0f};
 			body->SetVelocity(Velocity{Vec2(-8.0f * w, 0.0f) * MeterPerSecond, RadianPerSecond * w});
 			
 			RevoluteJointDef rjd(ground, body, Vec2(-10.0f, 12.0f) * Meter);
 			rjd.motorSpeed = 1.0f * Pi * RadianPerSecond;
-			rjd.maxMotorTorque = 10000.0f * NewtonMeter;
+			rjd.maxMotorTorque = RealNum{10000.0f} * NewtonMeter;
 			rjd.enableMotor = false;
-			rjd.lowerAngle = -0.25f * Radian * Pi;
-			rjd.upperAngle = 0.5f * Radian * Pi;
+			rjd.lowerAngle = RealNum{-0.25f} * Radian * Pi;
+			rjd.upperAngle = RealNum{0.5f} * Radian * Pi;
 			rjd.enableLimit = true;
 			rjd.collideConnected = true;
 
@@ -66,12 +66,12 @@ public:
 
 			m_ball = m_world->CreateBody(circle_bd);
 			auto circleConf = CircleShape::Conf{};
-			circleConf.vertexRadius = 3.0f * Meter;
+			circleConf.vertexRadius = RealNum{3.0f} * Meter;
 			circleConf.density = RealNum{5} * KilogramPerSquareMeter;
 			m_ball->CreateFixture(std::make_shared<CircleShape>(circleConf), fd);
 
 			PolygonShape polygon_shape;
-			SetAsBox(polygon_shape, 10.0f * Meter, 0.2f * Meter, Vec2 (-10.0f, 0.0f) * Meter, Angle{0});
+			SetAsBox(polygon_shape, RealNum{10.0f} * Meter, RealNum{0.2f} * Meter, Vec2 (-10.0f, 0.0f) * Meter, Angle{0});
 			polygon_shape.SetDensity(RealNum{2} * KilogramPerSquareMeter);
 
 			BodyDef polygon_bd;
@@ -82,8 +82,8 @@ public:
 			polygon_body->CreateFixture(std::make_shared<PolygonShape>(polygon_shape));
 
 			RevoluteJointDef rjd(ground, polygon_body, Vec2(20.0f, 10.0f) * Meter);
-			rjd.lowerAngle = -0.25f * Radian * Pi;
-			rjd.upperAngle = 0.0f * Radian * Pi;
+			rjd.lowerAngle = RealNum{-0.25f} * Radian * Pi;
+			rjd.upperAngle = RealNum{0.0f} * Radian * Pi;
 			rjd.enableLimit = true;
 			m_world->CreateJoint(rjd);
 		}

@@ -37,12 +37,12 @@ public:
 	{
 		const auto ground = m_world->CreateBody(BodyDef{}.UseLocation(Vec2(0.0f, 20.0f) * Meter));
 
-		const auto a = 0.5f;
+		const auto a = RealNum{0.5f};
 		const auto h = Vec2(0.0f, a) * Meter;
 
 		auto conf = PolygonShape::Conf{};
 		conf.density = density;
-		const auto shape = std::make_shared<const PolygonShape>(0.25f * a * Meter, a * Meter, conf);
+		const auto shape = std::make_shared<const PolygonShape>(RealNum{0.25f} * a * Meter, a * Meter, conf);
 		const auto root = AddNode(ground, Vec2_zero * Meter, 0, 3.0f, a, shape);
 
 		RevoluteJointDef jointDef;
@@ -54,7 +54,7 @@ public:
 	}
 
 	Body* AddNode(const Body* parent, const Length2D localAnchor, const int32 depth,
-				  const float offset, const float a, std::shared_ptr<const Shape> shape)
+				  const RealNum offset, const RealNum a, std::shared_ptr<const Shape> shape)
 	{
 		const auto h = Vec2(0.0f, a) * Meter;
 
@@ -72,9 +72,9 @@ public:
 			return body;
 		}
 
-		PolygonShape shape2(0.25f * a * Meter, a * Meter);
+		PolygonShape shape2(RealNum{0.25f} * a * Meter, RealNum{a} * Meter);
 		shape2.SetDensity(density);
-		SetAsBox(shape2, offset * Meter, 0.25f * a * Meter, Vec2(0, -a) * Meter, 0.0f * Radian);
+		SetAsBox(shape2, offset * Meter, RealNum{0.25f} * a * Meter, Vec2(0, -a) * Meter, RealNum{0.0f} * Radian);
 		body->CreateFixture(std::make_shared<PolygonShape>(shape2));
 
 		const auto a1 = Vec2(offset, -a) * Meter;

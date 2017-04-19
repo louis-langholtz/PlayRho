@@ -43,13 +43,13 @@ public:
 
 		PolygonShape shape;
 		shape.SetDensity(RealNum{5} * KilogramPerSquareMeter);
-		SetAsBox(shape, 0.5f * Meter, 10.0f * Meter, Vec2( 10.0f, 0.0f) * Meter, Angle{0});
+		SetAsBox(shape, RealNum{0.5f} * Meter, RealNum{10.0f} * Meter, Vec2( 10.0f, 0.0f) * Meter, Angle{0});
 		b->CreateFixture(std::make_shared<PolygonShape>(shape));
-		SetAsBox(shape, 0.5f * Meter, 10.0f * Meter, Vec2(-10.0f, 0.0f) * Meter, Angle{0});
+		SetAsBox(shape, RealNum{0.5f} * Meter, RealNum{10.0f} * Meter, Vec2(-10.0f, 0.0f) * Meter, Angle{0});
 		b->CreateFixture(std::make_shared<PolygonShape>(shape));
-		SetAsBox(shape, 10.0f * Meter, 0.5f * Meter, Vec2(0.0f, 10.0f) * Meter, Angle{0});
+		SetAsBox(shape, RealNum{10.0f} * Meter, RealNum{0.5f} * Meter, Vec2(0.0f, 10.0f) * Meter, Angle{0});
 		b->CreateFixture(std::make_shared<PolygonShape>(shape));
-		SetAsBox(shape, 10.0f * Meter, 0.5f * Meter, Vec2(0.0f, -10.0f) * Meter, Angle{0});
+		SetAsBox(shape, RealNum{10.0f} * Meter, RealNum{0.5f} * Meter, Vec2(0.0f, -10.0f) * Meter, Angle{0});
 		b->CreateFixture(std::make_shared<PolygonShape>(shape));
 
 		RevoluteJointDef jd;
@@ -100,7 +100,7 @@ public:
 
 	RevoluteJoint* m_joint;
 	int32 m_count = 0;
-	std::shared_ptr<PolygonShape> m_shape = std::make_shared<PolygonShape>(0.125f * Meter, 0.125f * Meter);
+	std::shared_ptr<PolygonShape> m_shape = std::make_shared<PolygonShape>(RealNum{0.125f} * Meter, RealNum{0.125f} * Meter);
 };
 
 } // namespace box2d

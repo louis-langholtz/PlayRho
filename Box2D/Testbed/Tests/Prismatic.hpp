@@ -35,13 +35,13 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-10.0f, 10.0f) * Meter;
-			bd.angle = 0.5f * Radian * Pi;
+			bd.angle = RealNum{0.5f} * Radian * Pi;
 			bd.allowSleep = false;
 			const auto body = m_world->CreateBody(bd);
 			
 			auto polygonConf = PolygonShape::Conf{};
 			polygonConf.density = RealNum{5} * KilogramPerSquareMeter;
-			body->CreateFixture(std::make_shared<PolygonShape>(2.0f * Meter, 0.5f * Meter, polygonConf));
+			body->CreateFixture(std::make_shared<PolygonShape>(RealNum{2.0f} * Meter, RealNum{0.5f} * Meter, polygonConf));
 
 			// Bouncy limit
 			const auto axis = GetUnitVector(Vec2(2.0f, 1.0f));
@@ -50,11 +50,11 @@ public:
 			// Non-bouncy limit
 			//pjd.Initialize(ground, body, Vec2(-10.0f, 10.0f), Vec2(1.0f, 0.0f));
 
-			pjd.motorSpeed = 10.0f * RadianPerSecond;
-			pjd.maxMotorTorque = 10000.0f * NewtonMeter;
+			pjd.motorSpeed = RealNum{10.0f} * RadianPerSecond;
+			pjd.maxMotorTorque = RealNum{10000.0f} * NewtonMeter;
 			pjd.enableMotor = true;
-			pjd.lowerTranslation = 0.0f * Meter;
-			pjd.upperTranslation = 20.0f * Meter;
+			pjd.lowerTranslation = RealNum{0.0f} * Meter;
+			pjd.upperTranslation = RealNum{20.0f} * Meter;
 			pjd.enableLimit = true;
 
 			m_joint = (PrismaticJoint*)m_world->CreateJoint(pjd);
@@ -86,7 +86,7 @@ public:
 	{
 		drawer.DrawString(5, m_textLine, "Keys: (l) limits, (m) motors, (s) speed");
 		m_textLine += DRAW_STRING_NEW_LINE;
-		const auto force = m_joint->GetMotorForce(settings.hz * Hertz);
+		const auto force = m_joint->GetMotorForce(RealNum{settings.hz} * Hertz);
 		drawer.DrawString(5, m_textLine, "Motor Force = %4.0f", double{force / Newton});
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}

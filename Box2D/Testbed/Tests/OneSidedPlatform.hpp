@@ -46,9 +46,9 @@ public:
 			BodyDef bd;
 			bd.position = Vec2(0.0f, 10.0f) * Meter;
 			const auto body = m_world->CreateBody(bd);
-			m_platform = body->CreateFixture(std::make_shared<PolygonShape>(3.0f * Meter, 0.5f * Meter));
-			m_bottom = (10.0f - 0.5f) * Meter;
-			m_top = (10.0f + 0.5f) * Meter;
+			m_platform = body->CreateFixture(std::make_shared<PolygonShape>(RealNum{3.0f} * Meter, RealNum{0.5f} * Meter));
+			m_bottom = RealNum(10.0f - 0.5f) * Meter;
+			m_top = RealNum(10.0f + 0.5f) * Meter;
 		}
 
 		// Actor
@@ -113,7 +113,7 @@ public:
 		return new OneSidedPlatform;
 	}
 
-	Length m_radius = 0.5f * Meter;
+	Length m_radius = RealNum{0.5f} * Meter;
 	Length m_top;
 	Length m_bottom;
 	State m_state = e_unknown;

@@ -27,15 +27,15 @@ class Pulleys : public Test
 public:
 	Pulleys()
 	{
-		const auto y = 16.0f;
-		const auto L = 12.0f;
-		const auto a = 1.0f;
-		const auto b = 2.0f;
+		const auto y = RealNum{16.0f};
+		const auto L = RealNum{12.0f};
+		const auto a = RealNum{1.0f};
+		const auto b = RealNum{2.0f};
 
 		const auto ground = m_world->CreateBody();
 		{
 			auto conf = CircleShape::Conf{};
-			conf.vertexRadius = 2.0f * Meter;
+			conf.vertexRadius = RealNum{2.0f} * Meter;
 			conf.location = Vec2(-10.0f, y + b + L) * Meter;
 			CircleShape circle(conf);
 			ground->CreateFixture(std::make_shared<CircleShape>(circle));

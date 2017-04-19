@@ -59,7 +59,7 @@ public:
 			bd.position = p2;
 			const auto rightFlipper = m_world->CreateBody(bd);
 
-			const auto box = std::make_shared<PolygonShape>(1.75f * Meter, 0.1f * Meter);
+			const auto box = std::make_shared<PolygonShape>(RealNum{1.75f} * Meter, RealNum{0.1f} * Meter);
 			box->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 
 			leftFlipper->CreateFixture(box);
@@ -69,21 +69,21 @@ public:
 			jd.bodyA = ground;
 			jd.localAnchorB = Vec2_zero * Meter;
 			jd.enableMotor = true;
-			jd.maxMotorTorque = 1000.0f * NewtonMeter;
+			jd.maxMotorTorque = RealNum{1000.0f} * NewtonMeter;
 			jd.enableLimit = true;
 
 			jd.motorSpeed = AngularVelocity{0};
 			jd.localAnchorA = p1;
 			jd.bodyB = leftFlipper;
-			jd.lowerAngle = -30.0f * Degree;
-			jd.upperAngle = 5.0f * Degree;
+			jd.lowerAngle = RealNum{-30.0f} * Degree;
+			jd.upperAngle = RealNum{5.0f} * Degree;
 			m_leftJoint = static_cast<RevoluteJoint*>(m_world->CreateJoint(jd));
 
 			jd.motorSpeed = AngularVelocity{0};
 			jd.localAnchorA = p2;
 			jd.bodyB = rightFlipper;
-			jd.lowerAngle = -5.0f * Degree;
-			jd.upperAngle = 30.0f * Degree;
+			jd.lowerAngle = RealNum{-5.0f} * Degree;
+			jd.upperAngle = RealNum{30.0f} * Degree;
 			m_rightJoint = static_cast<RevoluteJoint*>(m_world->CreateJoint(jd));
 		}
 
@@ -98,7 +98,7 @@ public:
 
 			auto conf = CircleShape::Conf{};
 			conf.density = RealNum{1} * KilogramPerSquareMeter;
-			conf.vertexRadius = 0.2f * Meter;
+			conf.vertexRadius = RealNum{0.2f} * Meter;
 			m_ball->CreateFixture(std::make_shared<CircleShape>(conf));
 		}
 	}
@@ -107,13 +107,13 @@ public:
 	{
 		if (m_button)
 		{
-			m_leftJoint->SetMotorSpeed(20.0f * RadianPerSecond);
-			m_rightJoint->SetMotorSpeed(-20.0f * RadianPerSecond);
+			m_leftJoint->SetMotorSpeed(RealNum{20.0f} * RadianPerSecond);
+			m_rightJoint->SetMotorSpeed(RealNum{-20.0f} * RadianPerSecond);
 		}
 		else
 		{
-			m_leftJoint->SetMotorSpeed(-10.0f * RadianPerSecond);
-			m_rightJoint->SetMotorSpeed(10.0f * RadianPerSecond);
+			m_leftJoint->SetMotorSpeed(RealNum{-10.0f} * RadianPerSecond);
+			m_rightJoint->SetMotorSpeed(RealNum{10.0f} * RadianPerSecond);
 		}
 	}
 

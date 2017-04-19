@@ -30,7 +30,7 @@ namespace box2d {
 			m_world->SetGravity(Vec2{0, 0} * MeterPerSquareSecond);
 
 			BodyDef bd;
-			const auto radius = 12.0f;
+			const auto radius = RealNum{12.0f};
 
 			bd.type = BodyType::Static;
 			bd.position = m_center;
@@ -43,12 +43,12 @@ namespace box2d {
 			bd.position = Length2D{m_center.x, m_center.y + radius * Meter};
 			m_orbiter = m_world->CreateBody(bd);
 			const auto ballShape = std::make_shared<CircleShape>();
-			ballShape->SetRadius(0.5f * Meter);
+			ballShape->SetRadius(RealNum{0.5f} * Meter);
 			m_orbiter->CreateFixture(ballShape);
 			
 			const auto velocity = Velocity{
 				Vec2{Pi * radius / RealNum{2}, 0} * MeterPerSecond,
-				360.0f * Degree / Second
+				RealNum{360.0f} * Degree / Second
 			};
 			m_orbiter->SetVelocity(velocity);
 		}
@@ -57,7 +57,7 @@ namespace box2d {
 		{
 			const auto force = GetCentripetalForce(*m_orbiter, m_center);
 			const auto linAccel = force * m_orbiter->GetInvMass();
-			const auto angAccel = 0.0f * RadianPerSquareSecond;
+			const auto angAccel = RealNum{0.0f} * RadianPerSquareSecond;
 			m_orbiter->SetAcceleration(linAccel, angAccel);
 		}
 		

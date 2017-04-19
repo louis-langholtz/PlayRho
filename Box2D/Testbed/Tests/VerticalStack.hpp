@@ -40,7 +40,7 @@ public:
 
 	VerticalStack()
 	{
-		m_bulletshape->SetVertexRadius(0.25f * Meter);
+		m_bulletshape->SetVertexRadius(RealNum{0.25f} * Meter);
 		m_bulletshape->SetDensity(RealNum{20} * KilogramPerSquareMeter);
 		m_bulletshape->SetRestitution(0.05f);
 
@@ -51,7 +51,7 @@ public:
 		const float xs[] = {0.0f, -10.0f, -5.0f, 5.0f, 10.0f};
 		assert(e_columnCount <= sizeof(xs)/sizeof(xs[0]));
 
-		const auto hdim = 0.1f; // 0.5f is less stable than 1.0f for boxes not at origin (x of 0)
+		const auto hdim = RealNum{0.1f}; // 0.5f is less stable than 1.0f for boxes not at origin (x of 0)
 		const auto shape = std::make_shared<PolygonShape>(hdim * Meter, hdim * Meter);
 		shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 		shape->SetFriction(0.3f);

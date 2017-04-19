@@ -33,13 +33,13 @@ public:
 			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 		}
 
-		const auto sliderPlank = std::make_shared<PolygonShape>(13.0f * Meter, 0.25f * Meter);
-		const auto sliderWall = std::make_shared<PolygonShape>(0.25f * Meter, 1.0f * Meter);
+		const auto sliderPlank = std::make_shared<PolygonShape>(RealNum{13.0f} * Meter, RealNum{0.25f} * Meter);
+		const auto sliderWall = std::make_shared<PolygonShape>(RealNum{0.25f} * Meter, RealNum{1.0f} * Meter);
 		
 		{
 			BodyDef bd;
 			bd.position = Vec2(-4.0f, 22.0f) * Meter;
-			bd.angle = -0.25f * Radian;
+			bd.angle = RealNum{-0.25f} * Radian;
 
 			const auto ground = m_world->CreateBody(bd);
 			ground->CreateFixture(sliderPlank);
@@ -56,7 +56,7 @@ public:
 		{
 			BodyDef bd;
 			bd.position = Vec2(4.0f, 14.0f) * Meter;
-			bd.angle = 0.25f * Radian;
+			bd.angle = RealNum{0.25f} * Radian;
 
 			const auto ground = m_world->CreateBody(bd);
 			ground->CreateFixture(sliderPlank);
@@ -73,14 +73,14 @@ public:
 		{
 			BodyDef bd;
 			bd.position = Vec2(-4.0f, 6.0f) * Meter;
-			bd.angle = -0.25f * Radian;
+			bd.angle = RealNum{-0.25f} * Radian;
 
 			const auto ground = m_world->CreateBody(bd);
 			ground->CreateFixture(sliderPlank);
 		}
 
 		{
-			auto shape = PolygonShape(0.5f * Meter, 0.5f * Meter);
+			auto shape = PolygonShape(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
 			shape.SetDensity(RealNum{25} * KilogramPerSquareMeter);
 
 			float friction[5] = {std::numeric_limits<float>::infinity(), 0.5f, 0.35f, -0.1f, 0.0f};

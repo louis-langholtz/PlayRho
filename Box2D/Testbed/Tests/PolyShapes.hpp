@@ -158,7 +158,7 @@ public:
 		}
 
 		{
-			m_polygons[3]->SetAsBox(0.5f * Meter, 0.5f * Meter);
+			m_polygons[3]->SetAsBox(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
 		}
 
 		m_bodyIndex = 0;
@@ -275,7 +275,7 @@ public:
 	int32 m_bodyIndex;
 	Body* m_bodies[e_maxBodies];
 	std::shared_ptr<PolygonShape> m_polygons[4];
-	std::shared_ptr<CircleShape> m_circle = std::make_shared<CircleShape>(0.5f * Meter);
+	std::shared_ptr<CircleShape> m_circle = std::make_shared<CircleShape>(RealNum{0.5f} * Meter);
 };
 
 } // namespace box2d

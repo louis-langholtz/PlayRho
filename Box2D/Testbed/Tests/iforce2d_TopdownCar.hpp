@@ -91,7 +91,7 @@ private:
 	LinearVelocity m_maxForwardSpeed = LinearVelocity{0};
 	LinearVelocity m_maxBackwardSpeed = LinearVelocity{0};
 	Momentum m_maxLateralImpulse = Momentum{0};
-	float m_currentTraction = 1;
+	RealNum m_currentTraction = 1;
 	
 public:
 	
@@ -259,19 +259,19 @@ public:
 		RevoluteJointDef jointDef;
 		jointDef.bodyA = m_body;
 		jointDef.enableLimit = true;
-		jointDef.lowerAngle = 0.0f * Degree;
-		jointDef.upperAngle = 0.0f * Degree;
+		jointDef.lowerAngle = RealNum{0.0f} * Degree;
+		jointDef.upperAngle = RealNum{0.0f} * Degree;
 		jointDef.localAnchorB = Vec2{0, 0} * Meter; //center of tire
 		
-		const auto maxForwardSpeed = 250.0f * MeterPerSecond;
-		const auto maxBackwardSpeed = -40.0f * MeterPerSecond;
-		const auto backTireMaxDriveForce = 950.0f * Newton; // 300.0f;
-		const auto frontTireMaxDriveForce = 400.0f * Newton; // 500.0f;
-		const auto backTireMaxLateralImpulse = 9.0f * Kilogram * MeterPerSecond; // 8.5f;
-		const auto frontTireMaxLateralImpulse = 9.0f * Kilogram * MeterPerSecond; // 7.5f;
+		const auto maxForwardSpeed = RealNum{250.0f} * MeterPerSecond;
+		const auto maxBackwardSpeed = RealNum{-40.0f} * MeterPerSecond;
+		const auto backTireMaxDriveForce = RealNum{950.0f} * Newton; // 300.0f;
+		const auto frontTireMaxDriveForce = RealNum{400.0f} * Newton; // 500.0f;
+		const auto backTireMaxLateralImpulse = RealNum{9.0f} * Kilogram * MeterPerSecond; // 8.5f;
+		const auto frontTireMaxLateralImpulse = RealNum{9.0f} * Kilogram * MeterPerSecond; // 7.5f;
 
 		PolygonShape tireShape;
-		tireShape.SetAsBox(0.5f * Meter, 1.25f * Meter);
+		tireShape.SetAsBox(RealNum{0.5f} * Meter, RealNum{1.25f} * Meter);
 		tireShape.SetDensity(RealNum{1} * KilogramPerSquareMeter);
 		const auto sharedTireShape = std::make_shared<PolygonShape>(tireShape);
 
@@ -328,10 +328,10 @@ public:
 		}
 		
 		//control steering
-		const auto lockAngle = 35.0f * Degree;
-		const auto turnSpeedPerSec = 160.0f * Degree;//from lock to lock in 0.5 sec
-		const auto turnPerTimeStep = turnSpeedPerSec / 60.0f;
-		auto desiredAngle = 0.0f * Degree;
+		const auto lockAngle = RealNum{35.0f} * Degree;
+		const auto turnSpeedPerSec = RealNum{160.0f} * Degree;//from lock to lock in 0.5 sec
+		const auto turnPerTimeStep = turnSpeedPerSec / RealNum{60.0f};
+		auto desiredAngle = RealNum{0.0f} * Degree;
 		switch ( controlState & (TDC_LEFT|TDC_RIGHT) ) {
 			case TDC_LEFT:  desiredAngle = lockAngle;  break;
 			case TDC_RIGHT: desiredAngle = -lockAngle; break;
@@ -383,11 +383,11 @@ public:
 			FixtureDef fixtureDef;
 			fixtureDef.isSensor = true;
 			
-			SetAsBox(polygonShape, RealNum{9} * Meter, RealNum{7} * Meter, Vec2(-10,15) * Meter, 20.0f * Degree );
+			SetAsBox(polygonShape, RealNum{9} * Meter, RealNum{7} * Meter, Vec2(-10,15) * Meter, RealNum{20.0f} * Degree );
 			groundAreaFixture = m_groundBody->CreateFixture(std::make_shared<PolygonShape>(polygonShape), fixtureDef);
 			groundAreaFixture->SetUserData( new GroundAreaFUD( 0.5f, false ) );
 			
-			SetAsBox(polygonShape, RealNum{9} * Meter, RealNum{5} * Meter, Vec2(5,20) * Meter, -40.0f * Degree );
+			SetAsBox(polygonShape, RealNum{9} * Meter, RealNum{5} * Meter, Vec2(5,20) * Meter, RealNum{-40.0f} * Degree );
 			groundAreaFixture = m_groundBody->CreateFixture(std::make_shared<PolygonShape>(polygonShape), fixtureDef);
 			groundAreaFixture->SetUserData( new GroundAreaFUD( 0.2f, false ) );
 		}

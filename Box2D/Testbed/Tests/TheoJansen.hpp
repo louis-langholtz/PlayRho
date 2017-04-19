@@ -92,7 +92,7 @@ public:
 	TheoJansen()
 	{
 		m_offset = Vec2(0.0f, 8.0f) * Meter;
-		m_motorSpeed = 2.0f * RadianPerSecond;
+		m_motorSpeed = RealNum{2.0f} * RadianPerSecond;
 		m_motorOn = true;
 		const auto pivot = Vec2(0.0f, 0.8f) * Meter;
 
@@ -114,7 +114,7 @@ public:
 
 		// Balls
 		auto circleConf = CircleShape::Conf{};
-		circleConf.vertexRadius = 0.25f * Meter;
+		circleConf.vertexRadius = RealNum{0.25f} * Meter;
 		circleConf.density = RealNum{1} * KilogramPerSquareMeter;
 		const auto circle = std::make_shared<CircleShape>(circleConf);
 		for (auto i = 0; i < 40; ++i)
@@ -137,7 +137,7 @@ public:
 			m_chassis = m_world->CreateBody(bd);
 			auto polygonConf = PolygonShape::Conf{};
 			polygonConf.density = RealNum{1} * KilogramPerSquareMeter;
-			m_chassis->CreateFixture(std::make_shared<PolygonShape>(2.5f * Meter, 1.0f * Meter, polygonConf), sd);
+			m_chassis->CreateFixture(std::make_shared<PolygonShape>(RealNum{2.5f} * Meter, RealNum{1.0f} * Meter, polygonConf), sd);
 		}
 
 		{
@@ -148,7 +148,7 @@ public:
 			bd.position = pivot + m_offset;
 			m_wheel = m_world->CreateBody(bd);
 			auto conf = CircleShape::Conf{};
-			conf.vertexRadius = 1.6f * Meter;
+			conf.vertexRadius = RealNum{1.6f} * Meter;
 			conf.density = RealNum{1} * KilogramPerSquareMeter;
 			m_wheel->CreateFixture(std::make_shared<CircleShape>(conf), sd);
 		}
@@ -157,7 +157,7 @@ public:
 			RevoluteJointDef jd{m_wheel, m_chassis, pivot + m_offset};
 			jd.collideConnected = false;
 			jd.motorSpeed = m_motorSpeed;
-			jd.maxMotorTorque = 400.0f * NewtonMeter;
+			jd.maxMotorTorque = RealNum{400.0f} * NewtonMeter;
 			jd.enableMotor = m_motorOn;
 			m_motorJoint = (RevoluteJoint*)m_world->CreateJoint(jd);
 		}
@@ -167,11 +167,11 @@ public:
 		CreateLeg(-1.0f, wheelAnchor);
 		CreateLeg(1.0f, wheelAnchor);
 
-		m_wheel->SetTransform(m_wheel->GetLocation(), 120.0f * Degree);
+		m_wheel->SetTransform(m_wheel->GetLocation(), RealNum{120.0f} * Degree);
 		CreateLeg(-1.0f, wheelAnchor);
 		CreateLeg(1.0f, wheelAnchor);
 
-		m_wheel->SetTransform(m_wheel->GetLocation(), -120.0f * Degree);
+		m_wheel->SetTransform(m_wheel->GetLocation(), RealNum{-120.0f} * Degree);
 		CreateLeg(-1.0f, wheelAnchor);
 		CreateLeg(1.0f, wheelAnchor);
 	}
@@ -191,7 +191,7 @@ public:
 			break;
 
 		case Key_S:
-			m_motorJoint->SetMotorSpeed(0.0f * RadianPerSecond);
+			m_motorJoint->SetMotorSpeed(RealNum{0.0f} * RadianPerSecond);
 			break;
 
 		case Key_D:

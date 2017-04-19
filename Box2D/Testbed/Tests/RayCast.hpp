@@ -176,7 +176,7 @@ public:
 
 	RayCast()
 	{
-		m_circle->SetVertexRadius(0.5f * Meter);
+		m_circle->SetVertexRadius(RealNum{0.5f} * Meter);
 		m_circle->SetFriction(0.3f);
 		m_edge->SetFriction(0.3f);
 		
@@ -211,7 +211,7 @@ public:
 			});
 		}
 
-		m_polygons[3]->SetAsBox(0.5f * Meter, 0.5f * Meter);
+		m_polygons[3]->SetAsBox(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
 		
 		m_bodyIndex = 0;
 		memset(m_bodies, 0, sizeof(m_bodies));
@@ -345,9 +345,9 @@ public:
 
 			if (callback.m_hit)
 			{
-				drawer.DrawPoint(callback.m_point, 5.0f * Meter, Color(0.4f, 0.9f, 0.4f));
+				drawer.DrawPoint(callback.m_point, RealNum{5.0f} * Meter, Color(0.4f, 0.9f, 0.4f));
 				drawer.DrawSegment(point1, callback.m_point, Color(0.8f, 0.8f, 0.8f));
-				const auto head = callback.m_point + 0.5f * callback.m_normal * Meter;
+				const auto head = callback.m_point + RealNum{0.5f} * callback.m_normal * Meter;
 				drawer.DrawSegment(callback.m_point, head, Color(0.9f, 0.9f, 0.4f));
 			}
 			else
@@ -362,9 +362,9 @@ public:
 
 			if (callback.m_hit)
 			{
-				drawer.DrawPoint(callback.m_point, 5.0f * Meter, Color(0.4f, 0.9f, 0.4f));
+				drawer.DrawPoint(callback.m_point, RealNum{5.0f} * Meter, Color(0.4f, 0.9f, 0.4f));
 				drawer.DrawSegment(point1, callback.m_point, Color(0.8f, 0.8f, 0.8f));
-				const auto head = callback.m_point + 0.5f * callback.m_normal * Meter;
+				const auto head = callback.m_point + RealNum{0.5f} * callback.m_normal * Meter;
 				drawer.DrawSegment(callback.m_point, head, Color(0.9f, 0.9f, 0.4f));
 			}
 			else
@@ -382,9 +382,9 @@ public:
 			{
 				const auto p = callback.m_points[i];
 				const auto n = callback.m_normals[i];
-				drawer.DrawPoint(p, 5.0f * Meter, Color(0.4f, 0.9f, 0.4f));
+				drawer.DrawPoint(p, RealNum{5.0f} * Meter, Color(0.4f, 0.9f, 0.4f));
 				drawer.DrawSegment(point1, p, Color(0.8f, 0.8f, 0.8f));
-				const auto head = p + 0.5f * n * Meter;
+				const auto head = p + RealNum{0.5f} * n * Meter;
 				drawer.DrawSegment(p, head, Color(0.9f, 0.9f, 0.4f));
 			}
 		}

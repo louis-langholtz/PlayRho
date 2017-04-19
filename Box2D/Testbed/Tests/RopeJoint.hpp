@@ -39,11 +39,11 @@ public:
 		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 
 		{
-			const auto rectangle = std::make_shared<PolygonShape>(0.5f * Meter, 0.125f * Meter);
+			const auto rectangle = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.125f} * Meter);
 			rectangle->SetDensity(RealNum{20} * KilogramPerSquareMeter);
 			rectangle->SetFriction(0.2f);
 
-			const auto square = std::make_shared<PolygonShape>(1.5f * Meter, 1.5f * Meter);
+			const auto square = std::make_shared<PolygonShape>(RealNum{1.5f} * Meter, RealNum{1.5f} * Meter);
 			square->SetDensity(RealNum{100} * KilogramPerSquareMeter);
 			square->SetFriction(0.2f);
 
@@ -82,7 +82,7 @@ public:
 			m_ropeDef.localAnchorB = Vec2_zero * Meter;
 
 			const auto extraLength = 0.01f;
-			m_ropeDef.maxLength = (N - 1.0f + extraLength) * Meter;
+			m_ropeDef.maxLength = RealNum(N - 1.0f + extraLength) * Meter;
 			m_ropeDef.bodyB = prevBody;
 		}
 

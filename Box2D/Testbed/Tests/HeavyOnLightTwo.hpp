@@ -31,7 +31,7 @@ public:
 		const auto ground = m_world->CreateBody();
 		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 		
-		const auto shape = std::make_shared<CircleShape>(0.5f * Meter);
+		const auto shape = std::make_shared<CircleShape>(RealNum{0.5f} * Meter);
 		shape->SetDensity(RealNum{10} * KilogramPerSquareMeter);
 
 		const auto body1 = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 2.5f) * Meter));
@@ -54,7 +54,7 @@ public:
 			
 			auto conf = CircleShape::Conf{};
 			conf.density = RealNum{10} * KilogramPerSquareMeter;
-			conf.vertexRadius = 5.0f * Meter;
+			conf.vertexRadius = RealNum{5.0f} * Meter;
 			m_heavy->CreateFixture(std::make_shared<CircleShape>(conf));
         }
     }

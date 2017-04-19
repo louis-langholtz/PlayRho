@@ -50,7 +50,7 @@ public:
 				FixtureDef fd;
 				fd.isSensor = true;
 				auto conf = CircleShape::Conf{};
-				conf.vertexRadius = 5.0f * Meter;
+				conf.vertexRadius = RealNum{5.0f} * Meter;
 				conf.location = Vec2(0.0f, 10.0f) * Meter;
 				m_sensor = ground->CreateFixture(std::make_shared<CircleShape>(conf), fd);
 			}
@@ -152,7 +152,7 @@ public:
 				continue;
 			}
 
-			const auto F = Force2D{100.0f * GetUnitVector(d) * Newton};
+			const auto F = Force2D{RealNum{100.0f} * GetUnitVector(d) * Newton};
 			ApplyForce(*body, F, position);
 		}
 	}

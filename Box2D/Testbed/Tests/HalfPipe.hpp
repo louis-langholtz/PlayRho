@@ -32,10 +32,10 @@ namespace box2d {
 			pipeShape->SetFriction(1.0f);
 			{
 				auto vertices = std::vector<Length2D>();
-				const auto pipeRadius = 20.0f * Meter;
+				const auto pipeRadius = RealNum{20.0f} * Meter;
 				for (auto i = 0; i < 90; ++i)
 				{
-					const auto angle = RealNum{((i * 2 + 180.0f) * Degree) / Radian};
+					const auto angle = RealNum{(RealNum(i * 2 + 180.0f) * Degree) / Radian};
 					const auto x = pipeRadius * std::cos(angle);
 					const auto y = pipeRadius * std::sin(angle);
 					vertices.push_back(Length2D{x, y + RealNum{20} * Meter});

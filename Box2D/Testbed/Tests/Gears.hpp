@@ -34,7 +34,7 @@ public:
 		circle1->SetDensity(RealNum{5} * KilogramPerSquareMeter);
 		const auto circle2 = std::make_shared<CircleShape>(RealNum{2} * Meter);
 		circle2->SetDensity(RealNum{5} * KilogramPerSquareMeter);
-		const auto box = std::make_shared<PolygonShape>(0.5f * Meter, 5.0f * Meter);
+		const auto box = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{5.0f} * Meter);
 		box->SetDensity(RealNum{5} * KilogramPerSquareMeter);
 	
 		{
@@ -98,8 +98,8 @@ public:
 			body3->CreateFixture(box);
 
 			PrismaticJointDef jd3(ground, body3, bd3.position, UnitVec2::GetTop());
-			jd3.lowerTranslation = -5.0f * Meter;
-			jd3.upperTranslation = 5.0f * Meter;
+			jd3.lowerTranslation = RealNum{-5.0f} * Meter;
+			jd3.upperTranslation = RealNum{5.0f} * Meter;
 			jd3.enableLimit = true;
 
 			m_joint3 = (PrismaticJoint*)m_world->CreateJoint(jd3);

@@ -38,7 +38,7 @@ public:
 		Timer timer;
 
 		{
-			const auto a = 0.5f;
+			const auto a = RealNum{0.5f};
 			BodyDef bd;
 			bd.position.y = -a * Meter;
 			const auto ground = m_world->CreateBody(bd);
@@ -63,7 +63,7 @@ public:
 		}
 
 		{
-			const auto a = 0.5f;
+			const auto a = RealNum{0.5f};
 			const auto shape = std::make_shared<PolygonShape>(a * Meter, a * Meter);
 			shape->SetDensity(RealNum{5} * KilogramPerSquareMeter);
 
