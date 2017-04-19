@@ -67,7 +67,7 @@ public:
 		// Chain shape
 		{
 			BodyDef bd;
-			bd.angle = 0.25f * Radian * Pi;
+			bd.angle = RealNum{0.25f} * Radian * Pi;
 			const auto ground = m_world->CreateBody(bd);
 
 			Length2D vs[4];
@@ -88,11 +88,11 @@ public:
 			const auto ground = m_world->CreateBody(bd);
 
 			PolygonShape shape;
-			SetAsBox(shape, 1.0f * Meter, 1.0f * Meter, Vec2(4.0f, 3.0f) * Meter, 0.0f * Radian);
+			SetAsBox(shape, RealNum{1.0f} * Meter, RealNum{1.0f} * Meter, Vec2(4.0f, 3.0f) * Meter, RealNum{0.0f} * Radian);
 			ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-			SetAsBox(shape, 1.0f * Meter, 1.0f * Meter, Vec2(6.0f, 3.0f) * Meter, 0.0f * Radian);
+			SetAsBox(shape, RealNum{1.0f} * Meter, RealNum{1.0f} * Meter, Vec2(6.0f, 3.0f) * Meter, RealNum{0.0f} * Radian);
 			ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-			SetAsBox(shape, 1.0f * Meter, 1.0f * Meter, Vec2(8.0f, 3.0f) * Meter, 0.0f * Radian);
+			SetAsBox(shape, RealNum{1.0f} * Meter, RealNum{1.0f} * Meter, Vec2(8.0f, 3.0f) * Meter, RealNum{0.0f} * Radian);
 			ground->CreateFixture(std::make_shared<PolygonShape>(shape));
 		}
 
@@ -145,7 +145,7 @@ public:
 
 			auto conf = PolygonShape::Conf{};
 			conf.density = RealNum{20} * KilogramPerSquareMeter;
-			body->CreateFixture(std::make_shared<PolygonShape>(0.5f * Meter, 0.5f * Meter, conf));
+			body->CreateFixture(std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter, conf));
 		}
 
 		// Square character 2
@@ -160,7 +160,7 @@ public:
 
 			auto conf = PolygonShape::Conf{};
 			conf.density = RealNum{20} * KilogramPerSquareMeter;
-			body->CreateFixture(std::make_shared<PolygonShape>(0.25f * Meter, 0.25f * Meter, conf));
+			body->CreateFixture(std::make_shared<PolygonShape>(RealNum{0.25f} * Meter, RealNum{0.25f} * Meter, conf));
 		}
 
 		// Hexagon character
@@ -200,7 +200,7 @@ public:
 			const auto body = m_world->CreateBody(bd);
 			auto conf = CircleShape::Conf{};
 			conf.density = RealNum{20} * KilogramPerSquareMeter;
-			conf.vertexRadius = 0.5f * Meter;
+			conf.vertexRadius = RealNum{0.5f} * Meter;
 			body->CreateFixture(std::make_shared<CircleShape>(conf));
 		}
 
@@ -216,7 +216,7 @@ public:
 			auto conf = CircleShape::Conf{};
 			conf.density = RealNum{20} * KilogramPerSquareMeter;
 			conf.friction = 1.0f;
-			conf.vertexRadius = 0.25f * Meter;
+			conf.vertexRadius = RealNum{0.25f} * Meter;
 			m_character->CreateFixture(std::make_shared<CircleShape>(conf));
 		}
 	}
@@ -224,7 +224,7 @@ public:
 	void PreStep(const Settings&, Drawer&) override
 	{
 		auto velocity = m_character->GetVelocity();
-		velocity.linear.x = -5.0f * MeterPerSecond;
+		velocity.linear.x = RealNum{-5.0f} * MeterPerSecond;
 		m_character->SetVelocity(velocity);
 	}
 

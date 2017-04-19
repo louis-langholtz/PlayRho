@@ -46,10 +46,9 @@ Length2D ConvertScreenToWorld(const Camera& camera, const Coord2D ps)
 	const auto lower = camera.m_center - extents;
 	const auto upper = camera.m_center + extents;
 
-	return Length2D{
-		((1 - u) * lower.x + u * upper.x) * Meter,
-		((1 - v) * lower.y + v * upper.y) * Meter
-	};
+	const auto x = RealNum{((1 - u) * lower.x + u * upper.x)};
+	const auto y = RealNum{((1 - v) * lower.y + v * upper.y)};
+	return Length2D{x * Meter, y * Meter};
 }
 
 AABB ConvertScreenToWorld(const Camera& camera)

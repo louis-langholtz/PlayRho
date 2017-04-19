@@ -42,11 +42,11 @@ public:
 
 			auto conf = PolygonShape::Conf{};
 			conf.friction = 0.8f;
-			m_platform = body->CreateFixture(std::make_shared<PolygonShape>(10.0f * Meter, 0.5f * Meter, conf));
+			m_platform = body->CreateFixture(std::make_shared<PolygonShape>(RealNum{10.0f} * Meter, RealNum{0.5f} * Meter, conf));
 		}
 
 		// Boxes
-		const auto boxshape = std::make_shared<PolygonShape>(0.5f * Meter, 0.5f * Meter);
+		const auto boxshape = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
 		boxshape->SetDensity(RealNum{20} * KilogramPerSquareMeter);
 		for (auto i = 0; i < 5; ++i)
 		{
@@ -67,12 +67,12 @@ public:
 
 		if (fixtureA == m_platform)
 		{
-			contact.SetTangentSpeed(5.0f * MeterPerSecond);
+			contact.SetTangentSpeed(RealNum{5.0f} * MeterPerSecond);
 		}
 
 		if (fixtureB == m_platform)
 		{
-			contact.SetTangentSpeed(-5.0f * MeterPerSecond);
+			contact.SetTangentSpeed(RealNum{-5.0f} * MeterPerSecond);
 		}
 	}
 

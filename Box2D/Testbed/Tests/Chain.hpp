@@ -31,7 +31,7 @@ public:
 		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 	
 		{
-			const auto shape = std::make_shared<PolygonShape>(0.6f * Meter, 0.125f * Meter);
+			const auto shape = std::make_shared<PolygonShape>(RealNum{0.6f} * Meter, RealNum{0.125f} * Meter);
 			shape->SetDensity(RealNum{20} * KilogramPerSquareMeter);
 			shape->SetFriction(0.2f);
 

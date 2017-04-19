@@ -34,7 +34,7 @@ public:
 		m_world->SetGravity(Vec2(RealNum{0}, RealNum{0}) * MeterPerSquareSecond);
 		{
 			auto conf = CircleShape::Conf{};
-			conf.vertexRadius = 0.1f * Meter;
+			conf.vertexRadius = Meter / RealNum{10};
 			conf.density = RealNum{0.01f} * KilogramPerSquareMeter;
 			const auto shape = std::make_shared<CircleShape>(conf);
 
@@ -61,7 +61,7 @@ public:
 			const auto body = m_world->CreateBody(bd);
 			auto conf = PolygonShape::Conf{};
 			conf.density = RealNum{1.0f} * KilogramPerSquareMeter;
-			body->CreateFixture(std::make_shared<PolygonShape>(1.5f * Meter, 1.5f * Meter, conf));
+			body->CreateFixture(std::make_shared<PolygonShape>(RealNum{1.5f} * Meter, RealNum{1.5f} * Meter, conf));
 			body->SetVelocity(Velocity{Vec2(150.0f, 0.0f) * MeterPerSecond, AngularVelocity{0}});
 		}
 	}

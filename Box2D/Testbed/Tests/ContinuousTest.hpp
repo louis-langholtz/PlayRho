@@ -36,7 +36,7 @@ public:
 			body->CreateFixture(std::make_shared<EdgeShape>(Vec2(-10.0f, 0.0f) * Meter, Vec2(10.0f, 0.0f) * Meter));
 
 			PolygonShape shape;
-			SetAsBox(shape, 0.2f * Meter, 1.0f * Meter, Vec2(0.5f, 1.0f) * Meter, 0.0f * Radian);
+			SetAsBox(shape, RealNum{0.2f} * Meter, RealNum{1.0f} * Meter, Vec2(0.5f, 1.0f) * Meter, RealNum{0.0f} * Radian);
 			body->CreateFixture(std::make_shared<PolygonShape>(shape));
 		}
 
@@ -46,7 +46,7 @@ public:
 			bd.position = Vec2(0.0f, 20.0f) * Meter;
 			//bd.angle = 0.1f;
 
-			const auto shape = std::make_shared<PolygonShape>(2.0f * Meter, 0.1f * Meter);
+			const auto shape = std::make_shared<PolygonShape>(RealNum{2.0f} * Meter, RealNum{0.1f} * Meter);
 			shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 
 			m_body = m_world->CreateBody(bd);

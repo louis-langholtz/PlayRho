@@ -36,7 +36,7 @@ public:
 			body->CreateFixture(std::make_shared<EdgeShape>(Vec2(-10.0f, 0.0f) * Meter, Vec2(10.0f, 0.0f) * Meter));
 
 			PolygonShape shape;
-			SetAsBox(shape, 0.2f * Meter, 1.0f * Meter, Vec2(0.5f, 1.0f) * Meter, 0.0f * Radian);
+			SetAsBox(shape, RealNum{0.2f} * Meter, RealNum{1.0f} * Meter, Vec2(0.5f, 1.0f) * Meter, RealNum{0.0f} * Radian);
 			body->CreateFixture(std::make_shared<PolygonShape>(shape));
 		}
 
@@ -46,13 +46,13 @@ public:
 			bd.position = Vec2(0.0f, 4.0f) * Meter;
 
 			PolygonShape box;
-			box.SetAsBox(2.0f * Meter, 0.1f * Meter);
+			box.SetAsBox(RealNum{2.0f} * Meter, RealNum{0.1f} * Meter);
 			box.SetDensity(RealNum{1} * KilogramPerSquareMeter);
 
 			m_body = m_world->CreateBody(bd);
 			m_body->CreateFixture(std::make_shared<PolygonShape>(box));
 
-			box.SetAsBox(0.25f * Meter, 0.25f * Meter);
+			box.SetAsBox(RealNum{0.25f} * Meter, RealNum{0.25f} * Meter);
 			box.SetDensity(RealNum{100} * KilogramPerSquareMeter);
 
 			//m_x = RandomFloat(-1.0f, 1.0f);
@@ -69,11 +69,11 @@ public:
 
 	void Launch()
 	{
-		m_body->SetTransform(Vec2(0.0f, 4.0f) * Meter, 0.0f * Radian);
+		m_body->SetTransform(Vec2(0.0f, 4.0f) * Meter, RealNum{0.0f} * Radian);
 		m_body->SetVelocity(Velocity{Vec2_zero * MeterPerSecond, AngularVelocity{0}});
 
 		m_x = RandomFloat(-1.0f, 1.0f);
-		m_bullet->SetTransform(Vec2(m_x, 10.0f) * Meter, 0.0f * Radian);
+		m_bullet->SetTransform(Vec2(m_x, 10.0f) * Meter, RealNum{0.0f} * Radian);
 		m_bullet->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * MeterPerSecond, AngularVelocity{0}});
 
 		uint32 gjkCalls, gjkIters, gjkMaxIters;

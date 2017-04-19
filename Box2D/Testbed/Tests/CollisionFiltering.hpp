@@ -96,7 +96,7 @@ public:
 			const auto body = m_world->CreateBody(bd);
 			auto conf = PolygonShape::Conf{};
 			conf.density = RealNum{1} * KilogramPerSquareMeter;
-			body->CreateFixture(std::make_shared<PolygonShape>(0.5f * Meter, 1.0f * Meter, conf));
+			body->CreateFixture(std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{1.0f} * Meter, conf));
 
 			PrismaticJointDef jd;
 			jd.bodyA = body2;
@@ -105,14 +105,14 @@ public:
 			jd.localAnchorA = Vec2(0.0f, 4.0f) * Meter;
 			jd.localAnchorB = Vec2_zero * Meter;
 			jd.localAxisA = UnitVec2::GetTop();
-			jd.lowerTranslation = -1.0f * Meter;
-			jd.upperTranslation = 1.0f * Meter;
+			jd.lowerTranslation = RealNum{-1.0f} * Meter;
+			jd.upperTranslation = RealNum{1.0f} * Meter;
 
 			m_world->CreateJoint(jd);
 		}
 
 		// Small box
-		polygon.SetAsBox(1.0f * Meter, 0.5f * Meter);
+		polygon.SetAsBox(RealNum{1.0f} * Meter, RealNum{0.5f} * Meter);
 		polygon.SetDensity(RealNum{1} * KilogramPerSquareMeter);
 		polygon.SetRestitution(0.1f);
 
@@ -130,7 +130,7 @@ public:
 		body3->CreateFixture(std::make_shared<PolygonShape>(polygon), boxShapeDef);
 
 		// Large box (recycle definitions)
-		polygon.SetAsBox(2.0f * Meter, 1.0f * Meter);
+		polygon.SetAsBox(RealNum{2.0f} * Meter, RealNum{1.0f} * Meter);
 		boxShapeDef.filter.groupIndex = k_largeGroup;
 		boxBodyDef.position = Vec2(0.0f, 6.0f) * Meter;
 

@@ -69,7 +69,7 @@ public:
 		body2->CreateFixture(std::make_shared<PolygonShape>(polygon));
 		
 		// Small box
-		polygon.SetAsBox(1.0f * Meter, 0.5f * Meter);
+		polygon.SetAsBox(RealNum{1.0f} * Meter, RealNum{0.5f} * Meter);
 
 		BodyDef boxBodyDef;
 		boxBodyDef.type = BodyType::Dynamic;
@@ -79,7 +79,7 @@ public:
 		body3->CreateFixture(std::make_shared<PolygonShape>(polygon));
 
 		// Large box (recycle definitions)
-		polygon.SetAsBox(2.0f * Meter, 1.0f * Meter);
+		polygon.SetAsBox(RealNum{2.0f} * Meter, RealNum{1.0f} * Meter);
 		boxBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
 		
 		const auto body4 = m_world->CreateBody(boxBodyDef);

@@ -101,8 +101,8 @@ public:
 		{
 			auto conf = PolygonShape::Conf{};
 			conf.density = RealNum{1} * Kilogram / SquareMeter;
-			conf.friction = 0.3f;
-			const auto shape = std::make_shared<PolygonShape>(0.5f * Meter, 0.5f * Meter, conf);
+			conf.friction = RealNum{0.3f};
+			const auto shape = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter, conf);
 
 			const auto gravity = LinearAcceleration{RealNum{10} * MeterPerSquareSecond};
 			
@@ -154,13 +154,13 @@ public:
 
 		case Key_A:
 			{
-				ApplyTorque(*m_body, 50.0f * NewtonMeter);
+				ApplyTorque(*m_body, RealNum{50} * NewtonMeter);
 			}
 			break;
 
 		case Key_D:
 			{
-				ApplyTorque(*m_body, -50.0f * NewtonMeter);
+				ApplyTorque(*m_body, RealNum{-50} * NewtonMeter);
 			}
 			break;
 

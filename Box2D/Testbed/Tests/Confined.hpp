@@ -38,7 +38,7 @@ public:
 	{
 		m_enclosure = CreateEnclosure(m_enclosureVertexRadius, wall_length);
 
-		const auto radius = 0.5f * Meter;
+		const auto radius = RealNum{0.5f} * Meter;
 		auto conf = CircleShape::Conf{};
 		conf.vertexRadius = radius;
 		conf.density = RealNum{1} * KilogramPerSquareMeter;
@@ -51,7 +51,10 @@ public:
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
-				bd.position = Vec2(-10.0f + (2.1f * j + 1.0f + 0.01f * i) * radius / Meter, (2.0f * i + 1.0f) * radius/ Meter) * Meter;
+				bd.position = Vec2{
+					-10.0f + (2.1f * j + 1.0f + 0.01f * i) * (radius / Meter),
+					(2.0f * i + 1.0f) * (radius/ Meter)
+				} * Meter;
 				const auto body = m_world->CreateBody(bd);
 				body->CreateFixture(shape);
 			}

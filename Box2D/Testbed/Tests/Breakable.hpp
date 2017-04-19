@@ -51,10 +51,10 @@ public:
 			bd.angle = 0.25f * Pi * Radian;
 			m_body1 = m_world->CreateBody(bd);
 
-			SetAsBox(*m_shape1, 0.5f * Meter, 0.5f * Meter, Vec2(-0.5f, 0.0f) * Meter, 0.0f * Radian);
+			SetAsBox(*m_shape1, RealNum{0.5f} * Meter, RealNum{0.5f} * Meter, Vec2(-0.5f, 0.0f) * Meter, RealNum{0.0f} * Radian);
 			m_piece1 = m_body1->CreateFixture(m_shape1);
 
-			SetAsBox(*m_shape2, 0.5f * Meter, 0.5f * Meter, Vec2(0.5f, 0.0f) * Meter, 0.0f * Radian);
+			SetAsBox(*m_shape2, RealNum{0.5f} * Meter, RealNum{0.5f} * Meter, Vec2(0.5f, 0.0f) * Meter, RealNum{0.0f} * Radian);
 			m_piece2 = m_body1->CreateFixture(m_shape2);
 		}
 

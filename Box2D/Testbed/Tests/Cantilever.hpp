@@ -46,7 +46,7 @@ public:
 		{
 			auto conf = PolygonShape::Conf{};
 			conf.density = RealNum{20} * KilogramPerSquareMeter;
-			const auto shape = std::make_shared<PolygonShape>(0.5f * Meter, 0.125f * Meter, conf);
+			const auto shape = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.125f} * Meter, conf);
 
 			WeldJointDef jd;
 
@@ -70,10 +70,10 @@ public:
 		{
 			auto conf = PolygonShape::Conf{};
 			conf.density = RealNum{20} * KilogramPerSquareMeter;
-			const auto shape = std::make_shared<PolygonShape>(1.0f * Meter, 0.125f * Meter, conf);
+			const auto shape = std::make_shared<PolygonShape>(RealNum{1.0f} * Meter, RealNum{0.125f} * Meter, conf);
 
 			WeldJointDef jd;
-			jd.frequencyHz = 5.0f * Hertz;
+			jd.frequencyHz = RealNum{5} * Hertz;
 			jd.dampingRatio = 0.7f;
 
 			auto prevBody = ground;
@@ -96,7 +96,7 @@ public:
 		{
 			auto conf = PolygonShape::Conf{};
 			conf.density = RealNum{20} * KilogramPerSquareMeter;
-			const auto shape = std::make_shared<PolygonShape>(0.5f * Meter, 0.125f * Meter, conf);
+			const auto shape = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.125f} * Meter, conf);
 
 			WeldJointDef jd;
 
@@ -123,10 +123,10 @@ public:
 		{
 			auto conf = PolygonShape::Conf{};
 			conf.density = RealNum{20} * KilogramPerSquareMeter;
-			const auto shape = std::make_shared<PolygonShape>(0.5f * Meter, 0.125f * Meter, conf);
+			const auto shape = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.125f} * Meter, conf);
 
 			WeldJointDef jd;
-			jd.frequencyHz = 8.0f * Hertz;
+			jd.frequencyHz = RealNum{8} * Hertz;
 			jd.dampingRatio = 0.7f;
 
 			auto prevBody = ground;

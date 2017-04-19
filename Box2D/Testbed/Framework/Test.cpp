@@ -448,7 +448,7 @@ void Test::MouseDown(const Length2D& p)
 	}
 
 	// Make a small box.
-	const auto aabb = GetFattenedAABB(AABB{p}, 0.001f * Meter);
+	const auto aabb = GetFattenedAABB(AABB{p}, Meter / RealNum{1000});
 	
 	// Query the world for overlapping shapes.
 	QueryCallback callback(p);
@@ -679,7 +679,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 
 	auto stepConf = StepConf{};
 	
-	stepConf.SetTime(Second * settings.dt);
+	stepConf.SetTime(Second * RealNum{settings.dt});
 	
 	stepConf.regVelocityIterations = static_cast<StepConf::iteration_type>(settings.regVelocityIterations);
 	stepConf.regPositionIterations = static_cast<StepConf::iteration_type>(settings.regPositionIterations);
@@ -689,17 +689,17 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 	stepConf.maxSubSteps           = static_cast<StepConf::iteration_type>(settings.maxSubSteps);
 	
 	stepConf.maxTranslation = static_cast<decltype(stepConf.maxTranslation)>(settings.maxTranslation);
-	stepConf.maxRotation = settings.maxRotation * Degree;
+	stepConf.maxRotation = RealNum{settings.maxRotation} * Degree;
 	
-	stepConf.linearSlop = settings.linearSlop * Meter;
-	stepConf.angularSlop = settings.angularSlop * Radian;
-	stepConf.regMinSeparation = settings.regMinSeparation * Meter;
-	stepConf.toiMinSeparation = settings.toiMinSeparation * Meter;
+	stepConf.linearSlop = RealNum{settings.linearSlop} * Meter;
+	stepConf.angularSlop = RealNum{settings.angularSlop} * Radian;
+	stepConf.regMinSeparation = RealNum{settings.regMinSeparation} * Meter;
+	stepConf.toiMinSeparation = RealNum{settings.toiMinSeparation} * Meter;
 	stepConf.targetDepth = settings.linearSlop * RealNum{3} * Meter;
 	stepConf.tolerance = (settings.linearSlop / RealNum{4}) * Meter;
 	
-	stepConf.maxLinearCorrection = settings.maxLinearCorrection * Meter;
-	stepConf.maxAngularCorrection = settings.maxAngularCorrection * Degree;
+	stepConf.maxLinearCorrection = RealNum{settings.maxLinearCorrection} * Meter;
+	stepConf.maxAngularCorrection = RealNum{settings.maxAngularCorrection} * Degree;
 	stepConf.regResolutionRate = settings.regPosResRate / 100.0f;
 	stepConf.toiResolutionRate = settings.toiPosResRate / 100.0f;
 	if (!settings.enableSleep)

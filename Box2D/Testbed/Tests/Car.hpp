@@ -28,7 +28,7 @@ class Car : public Test
 public:
 	Car()
 	{		
-		m_hz = 4.0f * Hertz;
+		m_hz = RealNum{4} * Hertz;
 		m_zeta = 0.7f;
 		m_speed = RealNum{50} * RadianPerSecond;
 
@@ -92,13 +92,13 @@ public:
 			bd.type = BodyType::Dynamic;
 			const auto body = m_world->CreateBody(bd);
 
-			const auto box = std::make_shared<PolygonShape>(10.0f * Meter, 0.25f * Meter);
+			const auto box = std::make_shared<PolygonShape>(RealNum{10.0f} * Meter, RealNum{0.25f} * Meter);
 			box->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 			body->CreateFixture(box);
 
 			RevoluteJointDef jd(ground, body, body->GetLocation());
-			jd.lowerAngle = -8.0f * Degree;
-			jd.upperAngle = +8.0f * Degree;
+			jd.lowerAngle = RealNum{-8.0f} * Degree;
+			jd.upperAngle = RealNum{+8.0f} * Degree;
 			jd.enableLimit = true;
 			m_world->CreateJoint(jd);
 
@@ -109,7 +109,7 @@ public:
 		// Bridge
 		{
 			const auto N = 20;
-			const auto shape = std::make_shared<PolygonShape>(1.0f * Meter, 0.125f * Meter);
+			const auto shape = std::make_shared<PolygonShape>(RealNum{1.0f} * Meter, RealNum{0.125f} * Meter);
 			shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 			shape->SetFriction(0.6f);
 
@@ -134,7 +134,7 @@ public:
 
 		// Boxes
 		{
-			const auto box = std::make_shared<PolygonShape>(0.5f * Meter, 0.5f * Meter);
+			const auto box = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
 			box->SetDensity(RealNum{0.5f} * KilogramPerSquareMeter);
 
 			auto body = static_cast<Body*>(nullptr);
@@ -199,7 +199,7 @@ public:
 
 			jd.Initialize(m_car, m_wheel1, m_wheel1->GetLocation(), axis);
 			jd.motorSpeed = AngularVelocity{0};
-			jd.maxMotorTorque = 20.0f * NewtonMeter;
+			jd.maxMotorTorque = RealNum{20} * NewtonMeter;
 			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
@@ -207,7 +207,7 @@ public:
 
 			jd.Initialize(m_car, m_wheel2, m_wheel2->GetLocation(), axis);
 			jd.motorSpeed = AngularVelocity{0};
-			jd.maxMotorTorque = 10.0f * NewtonMeter;
+			jd.maxMotorTorque = RealNum{10} * NewtonMeter;
 			jd.enableMotor = false;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
@@ -232,13 +232,13 @@ public:
 			break;
 
 		case Key_Q:
-			m_hz = Max(RealNum(0) * Hertz, m_hz - 1.0f * Hertz);
+			m_hz = Max(RealNum(0) * Hertz, m_hz - RealNum{1} * Hertz);
 			m_spring1->SetSpringFrequencyHz(m_hz);
 			m_spring2->SetSpringFrequencyHz(m_hz);
 			break;
 
 		case Key_E:
-			m_hz += 1.0f * Hertz;
+			m_hz += RealNum{1} * Hertz;
 			m_spring1->SetSpringFrequencyHz(m_hz);
 			m_spring2->SetSpringFrequencyHz(m_hz);
 			break;

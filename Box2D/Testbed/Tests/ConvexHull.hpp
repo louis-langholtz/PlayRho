@@ -90,7 +90,7 @@ public:
 
 		for (auto i = std::size_t{0}; i < m_points.size(); ++i)
 		{
-			drawer.DrawPoint(m_points[i], 3.0f * Meter, Color(0.3f, 0.9f, 0.3f));
+			drawer.DrawPoint(m_points[i], RealNum{3.0f} * Meter, Color(0.3f, 0.9f, 0.3f));
 			drawer.DrawString(m_points[i] + Vec2(0.05f, 0.05f) * Meter, "%d", i);
 		}
 

@@ -37,8 +37,8 @@ public:
 		m_bodyA = m_world->CreateBody(def);
 		m_bodyB = m_world->CreateBody(def);
 
-		m_bodyA->SetTransform(Vec2(-10.0f, 20.2f) * Meter, 0.0f * Degree);
-		m_bodyB->SetTransform(m_bodyA->GetLocation() + Vec2(19.017401f, 0.13678508f) * Meter, 0.0f * Degree);
+		m_bodyA->SetTransform(Vec2(-10.0f, 20.2f) * Meter, RealNum{0.0f} * Degree);
+		m_bodyB->SetTransform(m_bodyA->GetLocation() + Vec2(19.017401f, 0.13678508f) * Meter, RealNum{0} * Degree);
 		
 		CreateFixtures();
 	}
@@ -317,21 +317,21 @@ public:
 
 			if (adjustedWitnessPoints.a != adjustedWitnessPoints.b)
 			{
-				drawer.DrawPoint(adjustedWitnessPoints.a, 4.0f * Meter, adjustedPointColor);
-				drawer.DrawPoint(adjustedWitnessPoints.b, 4.0f * Meter, adjustedPointColor);
+				drawer.DrawPoint(adjustedWitnessPoints.a, RealNum{4.0f} * Meter, adjustedPointColor);
+				drawer.DrawPoint(adjustedWitnessPoints.b, RealNum{4.0f} * Meter, adjustedPointColor);
 			}
 			else
 			{
-				drawer.DrawPoint(adjustedWitnessPoints.a, 4.0f * Meter, matchingPointColor);
+				drawer.DrawPoint(adjustedWitnessPoints.a, RealNum{4.0f} * Meter, matchingPointColor);
 			}
 
-			drawer.DrawPoint(witnessPoints.a, 4.0f * Meter, witnessPointColor);
-			drawer.DrawPoint(witnessPoints.b, 4.0f * Meter, witnessPointColor);
+			drawer.DrawPoint(witnessPoints.a, RealNum{4.0f} * Meter, witnessPointColor);
+			drawer.DrawPoint(witnessPoints.b, RealNum{4.0f} * Meter, witnessPointColor);
 			
 			for (auto&& edge: output.simplex.GetEdges())
 			{
-				drawer.DrawPoint(edge.GetPointA(), 6.0f * Meter, simplexPointColor);
-				drawer.DrawPoint(edge.GetPointB(), 6.0f * Meter, simplexPointColor);
+				drawer.DrawPoint(edge.GetPointA(), RealNum{6.0f} * Meter, simplexPointColor);
+				drawer.DrawPoint(edge.GetPointB(), RealNum{6.0f} * Meter, simplexPointColor);
 				drawer.DrawString(edge.GetPointA(), "%d", edge.GetIndexA());
 				drawer.DrawString(edge.GetPointB(), "%d", edge.GetIndexB());
 			}
@@ -380,7 +380,7 @@ public:
 		case Key_Q:
 			if (body)
 			{
-				body->SetTransform(body->GetLocation(), body->GetAngle() + 5.0f * Degree);
+				body->SetTransform(body->GetLocation(), body->GetAngle() + RealNum{5} * Degree);
 				body->SetAwake();
 			}
 			break;
@@ -388,7 +388,7 @@ public:
 		case Key_E:
 			if (body)
 			{
-				body->SetTransform(body->GetLocation(), body->GetAngle() - 5.0f * Degree);
+				body->SetTransform(body->GetLocation(), body->GetAngle() - RealNum{5} * Degree);
 				body->SetAwake();
 			}
 			break;

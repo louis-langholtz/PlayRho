@@ -38,7 +38,7 @@ public:
 			m_attachment = m_world->CreateBody(bd);
 			auto conf = PolygonShape::Conf{};
 			conf.density = RealNum{2} * KilogramPerSquareMeter;
-			m_attachment->CreateFixture(std::make_shared<PolygonShape>(0.5f * Meter, 2.0f * Meter, conf));
+			m_attachment->CreateFixture(std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{2.0f} * Meter, conf));
 		}
 
 		// Define platform
@@ -52,20 +52,20 @@ public:
 			conf.friction = 0.6f;
 			conf.density = RealNum{2} * KilogramPerSquareMeter;
 			PolygonShape shape{conf};
-			SetAsBox(shape, 0.5f * Meter, 4.0f * Meter, Vec2(4.0f, 0.0f) * Meter, 0.5f * Pi * Radian);
+			SetAsBox(shape, RealNum{0.5f} * Meter, RealNum{4.0f} * Meter, Vec2(4.0f, 0.0f) * Meter, RealNum{0.5f} * Pi * Radian);
 
 			m_platform->CreateFixture(std::make_shared<PolygonShape>(shape));
 
 			RevoluteJointDef rjd(m_attachment, m_platform, Vec2(0.0f, 5.0f) * Meter);
-			rjd.maxMotorTorque = Torque{50.0f * NewtonMeter};
+			rjd.maxMotorTorque = Torque{RealNum{50.0f} * NewtonMeter};
 			rjd.enableMotor = true;
 			m_world->CreateJoint(rjd);
 
 			PrismaticJointDef pjd(ground, m_platform, Vec2(0.0f, 5.0f) * Meter, UnitVec2::GetRight());
-			pjd.maxMotorTorque = Torque{1000.0f * NewtonMeter};
+			pjd.maxMotorTorque = Torque{RealNum{1000.0f} * NewtonMeter};
 			pjd.enableMotor = true;
-			pjd.lowerTranslation = -10.0f * Meter;
-			pjd.upperTranslation = 10.0f * Meter;
+			pjd.lowerTranslation = RealNum{-10.0f} * Meter;
+			pjd.upperTranslation = RealNum{10.0f} * Meter;
 			pjd.enableLimit = true;
 			m_world->CreateJoint(pjd);
 
@@ -83,7 +83,7 @@ public:
 			conf.friction = 0.6f;
 			conf.density = RealNum{2} * KilogramPerSquareMeter;
 
-			body->CreateFixture(std::make_shared<PolygonShape>(0.75f * Meter, 0.75f * Meter, conf));
+			body->CreateFixture(std::make_shared<PolygonShape>(RealNum{0.75f} * Meter, RealNum{0.75f} * Meter, conf));
 		}
 	}
 
@@ -117,8 +117,8 @@ public:
 			const auto p = m_platform->GetLocation();
 			const auto velocity = m_platform->GetVelocity();
 
-			if ((p.x < -10.0f * Meter && velocity.linear.x < 0.0f * MeterPerSecond) ||
-				(p.x > 10.0f * Meter && velocity.linear.x > 0.0f * MeterPerSecond))
+			if ((p.x < RealNum{-10.0f} * Meter && velocity.linear.x < RealNum{0.0f} * MeterPerSecond) ||
+				(p.x > RealNum{10.0f} * Meter && velocity.linear.x > RealNum{0.0f} * MeterPerSecond))
 			{
 				m_platform->SetVelocity(Velocity{{-velocity.linear.x, velocity.linear.y}, velocity.angular});
 			}

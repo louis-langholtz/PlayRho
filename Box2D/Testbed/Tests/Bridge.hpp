@@ -40,7 +40,7 @@ public:
 			auto conf = PolygonShape::Conf{};
 			conf.density = RealNum{20} * KilogramPerSquareMeter;
 			conf.friction = 0.2f;
-			const auto shape = std::make_shared<PolygonShape>(0.5f * Meter, 0.125f * Meter, conf);
+			const auto shape = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.125f} * Meter, conf);
 
 			auto prevBody = ground;
 			for (auto i = 0; i < e_count; ++i)
@@ -78,7 +78,7 @@ public:
 
 		auto circleconf = CircleShape::Conf{};
 		circleconf.density = RealNum{1} * KilogramPerSquareMeter;
-		circleconf.vertexRadius = 0.5f * Meter;
+		circleconf.vertexRadius = RealNum{0.5f} * Meter;
 		const auto circleshape = std::make_shared<CircleShape>(circleconf);
 		for (auto i = 0; i < 3; ++i)
 		{
