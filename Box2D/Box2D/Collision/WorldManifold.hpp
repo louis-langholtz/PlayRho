@@ -59,6 +59,7 @@ namespace box2d
 			m_points{GetInvalid<Length2D>(), GetInvalid<Length2D>()},
 			m_separations{GetInvalid<Length>(), GetInvalid<Length>()}
 		{
+			assert(IsValid(normal));
 			// Intentionally empty.
 		}
 		
@@ -67,12 +68,14 @@ namespace box2d
 			m_points{ps0.p, GetInvalid<Length2D>()},
 			m_separations{ps0.s, GetInvalid<Length>()}
 		{
+			assert(IsValid(normal));
 			// Intentionally empty.
 		}
 		
 		constexpr explicit WorldManifold(UnitVec2 normal, PointSeparation ps0, PointSeparation ps1) noexcept:
 			m_normal{normal}, m_count{2}, m_points{ps0.p, ps1.p}, m_separations{ps0.s, ps1.s}
 		{
+			assert(IsValid(normal));
 			// Intentionally empty.
 		}
 		

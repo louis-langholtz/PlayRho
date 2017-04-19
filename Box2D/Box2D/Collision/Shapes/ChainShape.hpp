@@ -21,6 +21,7 @@
 #define B2_CHAIN_SHAPE_H
 
 #include <Box2D/Collision/Shapes/Shape.hpp>
+#include <vector>
 
 namespace box2d {
 
@@ -90,9 +91,12 @@ public:
 	/// Get a vertex by index.
 	Length2D GetVertex(child_count_t index) const;
 
+	UnitVec2 GetNormal(child_count_t index) const;
+
 private:
 	/// The vertices. Owned by this class.
-	Length2D* m_vertices = nullptr;
+	std::vector<Length2D> m_vertices;
+	std::vector<UnitVec2> m_normals;
 
 	/// The vertex count.
 	child_count_t m_count = 0;
@@ -102,6 +106,12 @@ inline Length2D ChainShape::GetVertex(child_count_t index) const
 {
 	assert((0 <= index) && (index < m_count));
 	return m_vertices[index];
+}
+
+inline UnitVec2 ChainShape::GetNormal(child_count_t index) const
+{
+	assert((0 <= index) && (index < m_count));
+	return m_normals[index];
 }
 
 inline bool IsLooped(const ChainShape& shape) noexcept

@@ -138,7 +138,7 @@ public:
 			BodyDef bd;
 			bd.position = Vec2(-3.0f, 8.0f) * Meter;
 			bd.type = BodyType::Dynamic;
-			bd.fixedRotation = true;
+			bd.fixedRotation = false;
 			bd.allowSleep = false;
 
 			const auto body = m_world->CreateBody(bd);

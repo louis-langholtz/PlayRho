@@ -219,10 +219,13 @@ TEST(Distance, EdgeCircleOverlapping)
 	DistanceConf conf;
 	Transformation xf1 = Transform_identity;
 	Transformation xf2 = Transform_identity;
+
 	const auto pos1 = Vec2{0, 2} * Meter;
 	const auto pos2 = Vec2{4, 2} * Meter;
+	const auto normal1 = GetUnitVector(pos2 - pos1);
+	DistanceProxy dp1{RealNum(0.1) * Meter, pos1, pos2, normal1, -normal1};
+	
 	const auto pos3 = Vec2{2, 2} * Meter;
-	DistanceProxy dp1{RealNum(0.1) * Meter, pos1, pos2};
 	DistanceProxy dp2{RealNum{1} * Meter, pos3};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, conf);
@@ -256,10 +259,13 @@ TEST(Distance, EdgeCircleOverlapping2)
 	DistanceConf conf;
 	Transformation xf1 = Transform_identity;
 	Transformation xf2 = Transform_identity;
+	
 	const auto pos1 = Vec2{-3, 2} * Meter;
 	const auto pos2 = Vec2{7, 2} * Meter;
+	const auto normal1 = GetUnitVector(pos2 - pos1);
+	DistanceProxy dp1{RealNum(0.1) * Meter, pos1, pos2, normal1, -normal1};
+
 	const auto pos3 = Vec2{2, 2} * Meter;
-	DistanceProxy dp1{RealNum(0.1) * Meter, pos1, pos2};
 	DistanceProxy dp2{RealNum{1} * Meter, pos3};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, conf);
@@ -293,10 +299,13 @@ TEST(Distance, EdgeCircleTouching)
 	DistanceConf conf;
 	Transformation xf1 = Transform_identity;
 	Transformation xf2 = Transform_identity;
+	
 	const auto pos1 = Vec2{0, 3} * Meter;
 	const auto pos2 = Vec2{4, 3} * Meter;
+	const auto normal1 = GetUnitVector(pos2 - pos1);
+	DistanceProxy dp1{RealNum(1) * Meter, pos1, pos2, normal1, -normal1};
+
 	const auto pos3 = Vec2{2, 1} * Meter;
-	DistanceProxy dp1{RealNum(1) * Meter, pos1, pos2};
 	DistanceProxy dp2{RealNum{1} * Meter, pos3};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, conf);
@@ -332,11 +341,18 @@ TEST(Distance, HorEdgeSquareTouching)
 	const auto pos3 = Vec2{3, 3} * Meter;
 	const auto pos4 = Vec2{3, 1} * Meter;
 	const auto square = {pos1, pos2, pos3, pos4};
-	DistanceProxy dp1{RealNum(0.5) * Meter, square};
+	const auto n1 = GetUnitVector(pos2 - pos1);
+	const auto n2 = GetUnitVector(pos3 - pos2);
+	const auto n3 = GetUnitVector(pos4 - pos3);
+	const auto n4 = GetUnitVector(pos1 - pos4);
+	const auto normals = {n1, n2, n3, n4};
+	DistanceProxy dp1{RealNum(0.5) * Meter, square, normals};
 
 	const auto pos5 = Vec2{-2, 0} * Meter;
 	const auto pos6 = Vec2{6, 0} * Meter;
-	DistanceProxy dp2{RealNum(0.5) * Meter, pos5, pos6};
+	const auto n5 = GetUnitVector(pos6 - pos5);
+	const auto n6 = -n5;
+	DistanceProxy dp2{RealNum(0.5) * Meter, pos5, pos6, n5, n6};
 	
 	DistanceConf conf;
 	Transformation xf1 = Transform_identity;
@@ -375,11 +391,18 @@ TEST(Distance, VerEdgeSquareTouching)
 	const auto pos3 = Vec2{3, 3} * Meter;
 	const auto pos4 = Vec2{3, 1} * Meter;
 	const auto square = {pos1, pos2, pos3, pos4};
-	DistanceProxy dp1{RealNum(0.5) * Meter, square};
+	const auto n1 = GetUnitVector(pos2 - pos1);
+	const auto n2 = GetUnitVector(pos3 - pos2);
+	const auto n3 = GetUnitVector(pos4 - pos3);
+	const auto n4 = GetUnitVector(pos1 - pos4);
+	const auto normals = {n1, n2, n3, n4};
+	DistanceProxy dp1{RealNum(0.5) * Meter, square, normals};
 	
 	const auto pos5 = Vec2{4, -2} * Meter;
 	const auto pos6 = Vec2{4, 6} * Meter;
-	DistanceProxy dp2{RealNum(0.5) * Meter, pos5, pos6};
+	const auto n5 = GetUnitVector(pos6 - pos5);
+	const auto n6 = -n5;
+	DistanceProxy dp2{RealNum(0.5) * Meter, pos5, pos6, n5, n6};
 	
 	DistanceConf conf;
 	Transformation xf1 = Transform_identity;
@@ -419,7 +442,12 @@ TEST(Distance, SquareTwice)
 	const auto pos3 = Vec2{4, 4} * Meter;
 	const auto pos4 = Vec2{4, 2} * Meter;
 	const auto square = {pos1, pos2, pos3, pos4};
-	DistanceProxy dp1{RealNum(0.05) * Meter, square};
+	const auto n1 = GetUnitVector(pos2 - pos1);
+	const auto n2 = GetUnitVector(pos3 - pos2);
+	const auto n3 = GetUnitVector(pos4 - pos3);
+	const auto n4 = GetUnitVector(pos1 - pos4);
+	const auto normals = {n1, n2, n3, n4};
+	DistanceProxy dp1{RealNum(0.05) * Meter, square, normals};
 
 	DistanceConf conf;
 	Transformation xfm = Transform_identity;
@@ -454,14 +482,24 @@ TEST(Distance, SquareSquareTouchingVertically)
 	const auto pos3 = Vec2{4, 4} * Meter;
 	const auto pos4 = Vec2{4, 2} * Meter;
 	const auto square1 = {pos1, pos2, pos3, pos4};
-	DistanceProxy dp1{RealNum(0.05) * Meter, square1};
+	const auto n1 = GetUnitVector(pos2 - pos1);
+	const auto n2 = GetUnitVector(pos3 - pos2);
+	const auto n3 = GetUnitVector(pos4 - pos3);
+	const auto n4 = GetUnitVector(pos1 - pos4);
+	const auto normals1 = {n1, n2, n3, n4};
+	DistanceProxy dp1{RealNum(0.05) * Meter, square1, normals1};
 	
 	const auto pos5 = Vec2{4, 2} * Meter;
 	const auto pos6 = Vec2{4, 4} * Meter;
 	const auto pos7 = Vec2{6, 4} * Meter;
 	const auto pos8 = Vec2{6, 2} * Meter;
 	const auto square2 = {pos5, pos6, pos7, pos8};
-	DistanceProxy dp2{RealNum(0.05) * Meter, square2};
+	const auto n5 = GetUnitVector(pos6 - pos5);
+	const auto n6 = GetUnitVector(pos7 - pos6);
+	const auto n7 = GetUnitVector(pos8 - pos7);
+	const auto n8 = GetUnitVector(pos5 - pos8);
+	const auto normals2 = {n5, n6, n7, n8};
+	DistanceProxy dp2{RealNum(0.05) * Meter, square2, normals2};
 
 	DistanceConf conf;
 	Transformation xfm = Transform_identity;
@@ -495,14 +533,24 @@ TEST(Distance, SquareSquareDiagonally)
 	const auto pos3 = Vec2{-1, -1} * Meter;
 	const auto pos4 = Vec2{-1, -3} * Meter;
 	const auto square1 = {pos1, pos2, pos3, pos4};
-	DistanceProxy dp1{RealNum(0.05) * Meter, square1};
+	const auto n1 = GetUnitVector(pos2 - pos1);
+	const auto n2 = GetUnitVector(pos3 - pos2);
+	const auto n3 = GetUnitVector(pos4 - pos3);
+	const auto n4 = GetUnitVector(pos1 - pos4);
+	const auto normals1 = {n1, n2, n3, n4};
+	DistanceProxy dp1{RealNum(0.05) * Meter, square1, normals1};
 	
 	const auto pos5 = Vec2{1, 3} * Meter;
 	const auto pos6 = Vec2{3, 3} * Meter;
 	const auto pos7 = Vec2{3, 1} * Meter;
 	const auto pos8 = Vec2{1, 1} * Meter;
 	const auto square2 = {pos5, pos6, pos7, pos8};
-	DistanceProxy dp2{RealNum(0.05) * Meter, square2};
+	const auto n5 = GetUnitVector(pos6 - pos5);
+	const auto n6 = GetUnitVector(pos7 - pos6);
+	const auto n7 = GetUnitVector(pos8 - pos7);
+	const auto n8 = GetUnitVector(pos5 - pos8);
+	const auto normals2 = {n5, n6, n7, n8};
+	DistanceProxy dp2{RealNum(0.05) * Meter, square2, normals2};
 	
 	DistanceConf conf;
 	Transformation xfm = Transform_identity;
@@ -548,7 +596,12 @@ TEST(Distance, SquareSquareOverlappingDiagnally)
 	const auto pos3 = Vec2{1, -3} * Meter;
 	const auto pos4 = Vec2{1, 1} * Meter;
 	const auto square1 = {pos1, pos2, pos3, pos4};
-	DistanceProxy dp1{0, square1};
+	const auto n1 = GetUnitVector(pos2 - pos1);
+	const auto n2 = GetUnitVector(pos3 - pos2);
+	const auto n3 = GetUnitVector(pos4 - pos3);
+	const auto n4 = GetUnitVector(pos1 - pos4);
+	const auto normals1 = {n1, n2, n3, n4};
+	DistanceProxy dp1{0, square1, normals1};
 	
 	/*
 	 *  +-3-----+
@@ -567,7 +620,12 @@ TEST(Distance, SquareSquareOverlappingDiagnally)
 	const auto pos7 = Vec2{-1, -1} * Meter;
 	const auto pos8 = Vec2{-1, 3} * Meter;
 	const auto square2 = {pos5, pos6, pos7, pos8};
-	DistanceProxy dp2{0, square2};
+	const auto n5 = GetUnitVector(pos6 - pos5);
+	const auto n6 = GetUnitVector(pos7 - pos6);
+	const auto n7 = GetUnitVector(pos8 - pos7);
+	const auto n8 = GetUnitVector(pos5 - pos8);
+	const auto normals2 = {n5, n6, n7, n8};
+	DistanceProxy dp2{0, square2, normals2};
 	
 	DistanceConf conf;
 	Transformation xfm = Transform_identity;

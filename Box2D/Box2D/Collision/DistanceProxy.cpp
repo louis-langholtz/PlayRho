@@ -27,27 +27,33 @@ namespace box2d {
 
 namespace {
 	
-	inline DistanceProxy GetDistanceProxy(const CircleShape& shape, child_count_t index)
+	inline DistanceProxy GetDistanceProxy(const CircleShape& shape, child_count_t)
 	{
-		NOT_USED(index);
 		return DistanceProxy{GetVertexRadius(shape), shape.GetLocation()};
 	}
 
-	inline DistanceProxy GetDistanceProxy(const PolygonShape& shape, child_count_t index)
+	inline DistanceProxy GetDistanceProxy(const PolygonShape& shape, child_count_t)
 	{
-		NOT_USED(index);
-		return DistanceProxy{GetVertexRadius(shape), shape.GetVertices()};
+		return DistanceProxy{GetVertexRadius(shape), shape.GetVertices(), shape.GetNormals()};
 	}
 
 	inline DistanceProxy GetDistanceProxy(const ChainShape& shape, child_count_t index)
 	{
-		return DistanceProxy{GetVertexRadius(shape), shape.GetVertex(index), shape.GetVertex(GetNextIndex(shape, index))};
+		const auto normal = shape.GetNormal(index);
+		return DistanceProxy{
+			GetVertexRadius(shape),
+			shape.GetVertex(index), shape.GetVertex(GetNextIndex(shape, index)),
+			normal, -normal
+		};
 	}
 
-	inline DistanceProxy GetDistanceProxy(const EdgeShape& shape, child_count_t index)
+	inline DistanceProxy GetDistanceProxy(const EdgeShape& shape, child_count_t)
 	{
-		NOT_USED(index);
-		return DistanceProxy{GetVertexRadius(shape), shape.GetVertex1(), shape.GetVertex2()};
+		return DistanceProxy{
+			GetVertexRadius(shape),
+			shape.GetVertex1(), shape.GetVertex2(),
+			shape.GetNormal1(), shape.GetNormal2()
+		};
 	}
 	
 } // anonymous namespace

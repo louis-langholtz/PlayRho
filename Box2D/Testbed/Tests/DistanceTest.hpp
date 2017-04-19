@@ -33,7 +33,7 @@ public:
 	{
 		m_world->SetGravity(Vec2{0, 0} * MeterPerSquareSecond);
 
-		const auto def = BodyDef{}.UseType(BodyType::Dynamic).UseLinearDamping(RealNum(0.5)).UseAngularDamping(RealNum(0.5));
+		const auto def = BodyDef{}.UseType(BodyType::Dynamic).UseLinearDamping(RealNum(0.9)).UseAngularDamping(RealNum(0.9));
 		m_bodyA = m_world->CreateBody(def);
 		m_bodyB = m_world->CreateBody(def);
 
@@ -50,7 +50,7 @@ public:
 
 	void CreateFixtures()
 	{
-		const auto radius = RadiusIncrement * RealNum{40};
+		const auto radius = RadiusIncrement * RealNum{20};
 		auto conf = PolygonShape::Conf{};
 		conf.density = RealNum{1} * KilogramPerSquareMeter;
 
@@ -62,7 +62,8 @@ public:
 		
 		conf.vertexRadius = radius * RealNum{2};
 		PolygonShape polygonB{conf};
-		polygonB.SetAsBox(7.2f * Meter, 0.8f * Meter);
+		// polygonB.SetAsBox(7.2f * Meter, 0.8f * Meter);
+		polygonB.Set(Span<const Length2D>{Vec2{-7.2f, 0} * Meter, Vec2{+7.2f, 0} * Meter});
 		//polygonB.Set(Span<const Vec2>{Vec2{float(-7.2), 0}, Vec2{float(7.2), 0}});
 		m_bodyB->CreateFixture(std::make_shared<PolygonShape>(polygonB));
 	}
@@ -128,8 +129,8 @@ public:
 		const auto witnessPoints = GetWitnessPoints(output.simplex);
 		const auto outputDistance = Sqrt(GetLengthSquared(witnessPoints.a - witnessPoints.b));
 		
-		const auto rA = proxyA.GetRadius();
-		const auto rB = proxyB.GetRadius();
+		const auto rA = proxyA.GetVertexRadius();
+		const auto rB = proxyB.GetVertexRadius();
 		const auto totalRadius = rA + rB;
 		
 		auto adjustedWitnessPoints = witnessPoints;
@@ -407,10 +408,19 @@ public:
 			if (body && fixture)
 			{
 				const auto shape = fixture->GetShape();
-				PolygonShape polygon{*static_cast<const PolygonShape*>(shape)};
-				polygon.SetVertexRadius(shape->GetVertexRadius() - RadiusIncrement);
-				SetSelectedFixture(body->CreateFixture(std::make_shared<PolygonShape>(polygon)));
-				body->DestroyFixture(fixture);
+				const auto lastLegitVertexRadius = shape->GetVertexRadius();
+				const auto newVertexRadius = lastLegitVertexRadius - RadiusIncrement;
+				if (newVertexRadius >= Length{0})
+				{
+					PolygonShape polygon{*static_cast<const PolygonShape*>(shape)};
+					polygon.SetVertexRadius(newVertexRadius);
+					auto newFixture = body->CreateFixture(std::make_shared<PolygonShape>(polygon));
+					if (newFixture)
+					{
+						SetSelectedFixture(newFixture);
+						body->DestroyFixture(fixture);
+					}
+				}
 			}
 			break;
 

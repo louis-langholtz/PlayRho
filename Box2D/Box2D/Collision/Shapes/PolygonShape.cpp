@@ -159,7 +159,7 @@ void PolygonShape::Set(const VertexSet& point_set) noexcept
 		for (auto i = decltype(count){0}; i < count; ++i)
 		{
 			const auto edge = GetEdge(*this, i);
-			m_normals.emplace_back(GetUnitVector(GetFwdPerpendicular(StripUnits(edge))));
+			m_normals.emplace_back(GetUnitVector(GetFwdPerpendicular(edge)));
 		}
 	}
 	else if (count == 1)

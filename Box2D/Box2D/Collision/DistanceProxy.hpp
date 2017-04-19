@@ -35,7 +35,7 @@ namespace box2d
 	/// any single portion of a shape identified by its child-index. These are used by the GJK
 	/// algorithm: "a method for determining the minimium distance between two convex sets".
 	///
-	/// @note This data structure is 32-bytes.
+	/// @note This data structure is 56-bytes.
 	///
 	/// @sa https://en.wikipedia.org/wiki/Gilbert%2DJohnson%2DKeerthi_distance_algorithm
 	///
@@ -55,7 +55,9 @@ namespace box2d
 			m_vertices{copy.m_vertices == &copy.m_buffer[0]? &m_buffer[0]: copy.m_vertices},
 			m_count{copy.m_count},
 			m_radius{copy.m_radius}
-		{}
+		{
+			// Intentionall empty.
+		}
 		
 		/// Initializing constructor.
 		/// @detail Constructs a distance proxy for a single point shape (a circle).
@@ -72,8 +74,13 @@ namespace box2d
 		/// @param radius Radius of the given vertices.
 		/// @param v0 Vertex 0 (relative to the shape's origin).
 		/// @param v1 Vertex 1 (relative to the shape's origin).
-		BOX2D_CONSTEXPR DistanceProxy(Length radius, Length2D v0, Length2D v1) noexcept:
-			m_radius{radius}, m_buffer{{v0, v1}}, m_count{2}
+		BOX2D_CONSTEXPR DistanceProxy(Length radius,
+									  Length2D v0, Length2D v1,
+									  UnitVec2 n0, UnitVec2 n1) noexcept:
+			m_radius{radius},
+			m_buffer{{v0, v1}},
+			m_normalsBuffer{{n0, n1}},
+			m_count{2}
 		{
 			assert(radius >= Length{0});
 		}
@@ -86,20 +93,25 @@ namespace box2d
 		///    <code>MaxShapeVertices</code> elements.
 		/// @warning Behavior is undefined if the vertices collection has less than one element or
 		///   more than <code>MaxShapeVertices</code> elements.
-		BOX2D_CONSTEXPR DistanceProxy(Length radius, const Span<const Length2D>& vertices) noexcept:
+		BOX2D_CONSTEXPR DistanceProxy(Length radius,
+									  const Span<const Length2D>& vertices,
+									  const Span<const UnitVec2>& normals) noexcept:
 			m_radius{radius},
 			m_buffer{},
 			m_vertices{vertices.begin()},
+			m_normals{normals.begin()},
 			m_count{static_cast<size_type>(vertices.size())}
 		{
 			assert(radius >= Length{0});
 			assert(vertices.size() > 0);
 			assert(vertices.size() <= MaxShapeVertices);
+			assert(normals.size() > 0);
+			assert(normals.size() <= MaxShapeVertices);
 		}
 		
 		/// Gets the radius of the vertices of the associated shape.
 		/// @return Non-negative distance.
-		auto GetRadius() const noexcept { return m_radius; }
+		auto GetVertexRadius() const noexcept { return m_radius; }
 		
 		/// Gets the vertex count.
 		/// @detail This is the count of valid vertex elements that this object provides.
@@ -126,6 +138,23 @@ namespace box2d
 			return m_vertices[index];
 		}
 		
+		auto GetNormal(size_type index) const noexcept
+		{
+			assert(index != InvalidIndex);
+			assert(index < m_count);
+			return m_normals[index];
+		}
+
+		Span<const Length2D> GetVertices() const noexcept
+		{
+			return Span<const Length2D>(&m_vertices[0], GetVertexCount());
+		}
+		
+		Span<const UnitVec2> GetNormals() const noexcept
+		{
+			return Span<const UnitVec2>(&m_normals[0], GetVertexCount());
+		}
+
 	private:
 	
 		// Note: m_buffer and m_vertices could be combined in a union to save some 8-bytes.
@@ -134,6 +163,9 @@ namespace box2d
 
 		std::array<Length2D,2> m_buffer;
 		const Length2D* m_vertices = &m_buffer[0];
+		
+		std::array<UnitVec2,2> m_normalsBuffer;
+		const UnitVec2* m_normals = &m_normalsBuffer[0];
 		
 		size_type m_count = 0; ///< Count of valid elements of m_vertices.
 		Length m_radius = Length{0}; ///< Radius of the vertices of the associated shape (in meters).

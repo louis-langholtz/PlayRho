@@ -1304,11 +1304,16 @@ TEST(World, TilesComesToRest)
 	// The final stats seem dependent on the host the test is run on.
 	// Presume that this is most closely associated with the actual CPU/FPU.
 #if defined(__core2__)
-	EXPECT_EQ(numSteps, 1814ul);
-	EXPECT_EQ(sumRegPosIters, 36600ul);
-	EXPECT_EQ(sumRegVelIters, 264096ul);
-	EXPECT_EQ(sumToiPosIters, 45022ul);
-	EXPECT_EQ(sumToiVelIters, 148560ul);
+	EXPECT_EQ(numSteps, 1856ul);
+	EXPECT_EQ(sumRegPosIters, 36720ul);
+	EXPECT_EQ(sumRegVelIters, 264376ul);
+	EXPECT_EQ(sumToiPosIters, 44263ul);
+	EXPECT_EQ(sumToiVelIters, 145488ul);
+	//EXPECT_EQ(numSteps, 1814ul);
+	//EXPECT_EQ(sumRegPosIters, 36600ul);
+	//EXPECT_EQ(sumRegVelIters, 264096ul);
+	//EXPECT_EQ(sumToiPosIters, 45022ul);
+	//EXPECT_EQ(sumToiVelIters, 148560ul);
 #elif defined(__k8__)
 	EXPECT_EQ(numSteps, 1822ul);
 	EXPECT_EQ(sumRegPosIters, 36616ul);

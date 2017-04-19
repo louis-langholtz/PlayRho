@@ -194,7 +194,10 @@ TEST(TimeOfImpact, RodCircleMissAt360)
 	// with the other after they have moved roughly two-thirds of their sweep.
 	const auto radius = RealNum(1) * Meter;
 	const auto x = RealNum(40);
-	const auto proxyA = DistanceProxy{radius, Vec2{-4, 0} * Meter, Vec2{4, 0} * Meter};
+	const auto vA0 = Vec2{-4, 0} * Meter;
+	const auto vA1 = Vec2{4, 0} * Meter;
+	const auto nA0 = GetUnitVector(vA1 - vA0);
+	const auto proxyA = DistanceProxy{radius, vA0, vA1, nA0, -nA0};
 	const auto sweepA = Sweep{Position{Vec2{-x, 4} * Meter, RealNum{0} * Degree}, Position{Vec2{+x, 4} * Meter, 360.0f * Degree}};
 	const auto proxyB = DistanceProxy{radius, Vec2_zero * Meter};
 	const auto sweepB = Sweep{Position{Vec2{+x, 0} * Meter, RealNum{0} * Degree}, Position{Vec2{-x, 0} * Meter, RealNum{0} * Degree}};
@@ -215,7 +218,10 @@ TEST(TimeOfImpact, RodCircleHitAt180)
 	// with the other after they have moved roughly two-thirds of their sweep.
 	const auto radius = RealNum(1) * Meter;
 	const auto x = RealNum(40);
-	const auto proxyA = DistanceProxy{radius, Vec2{-4, 0} * Meter, Vec2{4, 0} * Meter};
+	const auto vA0 = Vec2{-4, 0} * Meter;
+	const auto vA1 = Vec2{4, 0} * Meter;
+	const auto nA0 = GetUnitVector(vA1 - vA0);
+	const auto proxyA = DistanceProxy{radius, vA0, vA1, nA0, -nA0};
 	const auto sweepA = Sweep{Position{Vec2{-x, 4} * Meter, RealNum{0} * Degree}, Position{Vec2{+x, 4} * Meter, 180.0f * Degree}};
 	const auto proxyB = DistanceProxy{radius, Vec2_zero * Meter};
 	const auto sweepB = Sweep{Position{Vec2{+x, 0} * Meter, RealNum{0} * Degree}, Position{Vec2{-x, 0} * Meter, RealNum{0} * Degree}};
@@ -403,15 +409,23 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
 		Position{Vec2{14.3689661f, 0.500306308f} * Meter, 0.0000139930862f * Radian},
 		Position{Vec2{14.3689451f, 0.500254989f} * Meter, 0.000260060915f * Radian}
 	};
-	
+
+	const auto vertices = Span<const Length2D>{
+		Vec2{14.5f, -0.5f} * Meter,
+		Vec2{14.5f, +0.5f} * Meter,
+		Vec2{13.5f, +0.5f} * Meter,
+		Vec2{13.5f, -0.5f} * Meter
+	};
+
+	const auto normals = Span<const UnitVec2>{
+		GetUnitVector(vertices[1] - vertices[0]),
+		GetUnitVector(vertices[2] - vertices[1]),
+		GetUnitVector(vertices[3] - vertices[2]),
+		GetUnitVector(vertices[0] - vertices[3]),
+	};
+
 	const auto dpA = DistanceProxy{
-		0.000199999995f * Meter,
-		Span<const Length2D>{
-			Vec2{14.5f, -0.5f} * Meter,
-			Vec2{14.5f, +0.5f} * Meter,
-			Vec2{13.5f, +0.5f} * Meter,
-			Vec2{13.5f, -0.5f} * Meter
-		}
+		0.000199999995f * Meter, vertices, normals
 	};
 	
 	auto shapeB = PolygonShape{};

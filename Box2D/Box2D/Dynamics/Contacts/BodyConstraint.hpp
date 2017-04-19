@@ -101,12 +101,14 @@ namespace box2d {
 	
 	inline BodyConstraint& BodyConstraint::SetPosition(Position value) noexcept
 	{
+		assert(IsValid(value));
 		m_position = value;
 		return *this;
 	}
 	
 	inline BodyConstraint& BodyConstraint::SetVelocity(Velocity value) noexcept
 	{
+		assert(IsValid(value));
 		m_velocity = value;
 		return *this;
 	}

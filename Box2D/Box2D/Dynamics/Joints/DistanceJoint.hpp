@@ -115,7 +115,7 @@ private:
 
 	// Solver temp
 	InvMass m_invGamma;
-	Momentum m_impulse;
+	Momentum m_impulse = Momentum{0};
 	LinearVelocity m_bias;
 	Mass m_mass;
 	UnitVec2 m_u;

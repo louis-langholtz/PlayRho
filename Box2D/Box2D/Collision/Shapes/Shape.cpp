@@ -65,7 +65,7 @@ namespace box2d {
 
 		const auto witnessPoints = GetWitnessPoints(distanceInfo.simplex);
 		const auto distanceSquared = GetLengthSquared(StripUnits(witnessPoints.a - witnessPoints.b));
-		const auto totalRadiusSquared = Square((proxyA.GetRadius() + proxyB.GetRadius()) / Meter);
+		const auto totalRadiusSquared = Square((proxyA.GetVertexRadius() + proxyB.GetVertexRadius()) / Meter);
 		const auto separation_amount = distanceSquared - totalRadiusSquared;
 		return (separation_amount < 0) || almost_zero(separation_amount);
 	}

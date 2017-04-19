@@ -44,7 +44,7 @@ Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& t
 							const DistanceProxy& proxyB, const Transformation& transformB)
 {
 	const auto distanceInfo = Distance(proxyA, transformA, proxyB, transformB);
-	const auto totalRadius = proxyA.GetRadius() + proxyB.GetRadius();
+	const auto totalRadius = proxyA.GetVertexRadius() + proxyB.GetVertexRadius();
 	const auto witnessPoints = GetWitnessPoints(distanceInfo.simplex);
 
 	const auto distance = Sqrt(GetLengthSquared(StripUnits(witnessPoints.a - witnessPoints.b))) * Meter;

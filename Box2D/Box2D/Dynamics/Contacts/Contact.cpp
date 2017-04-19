@@ -127,6 +127,21 @@ static Manifold GetPolygonPolygonManifold(const Fixture* fixtureA, child_count_t
 						 conf);
 }
 
+static Manifold GetManifold(const Fixture* fixtureA, child_count_t indexA,
+							const Fixture* fixtureB, child_count_t indexB,
+							const Manifold::Conf conf)
+{
+	const auto xfA = GetTransformation(*fixtureA);
+	const auto shapeA = fixtureA->GetShape();
+	const auto childA = GetDistanceProxy(*shapeA, indexA);
+
+	const auto xfB = GetTransformation(*fixtureB);
+	const auto shapeB = fixtureB->GetShape();
+	const auto childB = GetDistanceProxy(*shapeB, indexB);
+	
+	return CollideShapes(childA, xfA, childB, xfB, conf);
+}
+
 struct HandlerEntry
 {
 	Contact::ManifoldCalcFunc calcfunc;
@@ -206,7 +221,7 @@ Contact* Contact::Create(Fixture& fixtureA, child_count_t indexA,
 	assert(0 <= type2 && type2 < Shape::e_typeCount);
 	
 	const auto handler = GetHandlerEntry(type1, type2);
-	const auto calcfunc = handler.calcfunc;
+	const auto calcfunc = ::GetManifold;
 	if (calcfunc)
 	{
 		return (handler.primary)?

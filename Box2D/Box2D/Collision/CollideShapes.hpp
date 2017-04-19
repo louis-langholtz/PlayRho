@@ -88,6 +88,10 @@ namespace box2d
 						   const PolygonShape& shapeB, const Transformation& xfB,
 						   const Manifold::Conf conf = GetDefaultManifoldConf());
 
+	Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
+						   const DistanceProxy& shapeB, const Transformation& xfB,
+						   const Manifold::Conf conf = GetDefaultManifoldConf());
+
 } // namespace box2d
 
 #endif /* CollideShapes_hpp */

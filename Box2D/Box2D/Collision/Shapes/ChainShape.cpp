@@ -54,11 +54,9 @@ ChainShape& ChainShape::operator=(const ChainShape& other)
 	if (&other != this)
 	{
 		Clear();
-
 		m_count = other.m_count;
-
-		m_vertices = alloc<Length2D>(other.m_count);
-		std::memcpy(m_vertices, other.m_vertices, other.m_count * sizeof(Length2D));
+		m_vertices = other.m_vertices;
+		m_normals = other.m_normals;
 	}
 	return *this;
 }
@@ -70,8 +68,7 @@ ChainShape::~ChainShape()
 
 void ChainShape::Clear()
 {
-	free(m_vertices);
-	m_vertices = nullptr;
+	m_vertices.clear();
 	m_count = 0;
 }
 
@@ -80,12 +77,20 @@ void ChainShape::CreateLoop(Span<const Length2D> vertices)
 	assert(vertices.begin() != nullptr);
 	assert(vertices.size() >= 3);
 	assert(IsEachVertexFarEnoughApart(vertices));
-	assert(m_vertices == nullptr && m_count == 0);
+	assert(m_vertices.empty() && m_count == 0);
 	
-	m_count = static_cast<child_count_t>(vertices.size() + 1);
-	m_vertices = alloc<Length2D>(m_count);
-	std::memcpy(m_vertices, vertices.begin(), vertices.size() * sizeof(Vec2));
-	m_vertices[vertices.size()] = m_vertices[0];
+	const auto count = static_cast<child_count_t>(vertices.size() + 1);
+	m_count = count;
+	m_vertices.assign(vertices.begin(), vertices.end());
+	m_vertices.push_back(m_vertices[0]);
+	
+	auto vprev = m_vertices[0];
+	for (auto i = decltype(count){1}; i < count; ++i)
+	{
+		const auto v = m_vertices[i];
+		m_normals.push_back(GetUnitVector(GetFwdPerpendicular(v - vprev)));
+		vprev = v;
+	}
 }
 
 void ChainShape::CreateChain(Span<const Length2D> vertices)
@@ -93,11 +98,19 @@ void ChainShape::CreateChain(Span<const Length2D> vertices)
 	assert(vertices.begin() != nullptr);
 	assert(vertices.size() >= 2);
 	assert(IsEachVertexFarEnoughApart(vertices));
-	assert((m_vertices == nullptr) && (m_count == 0));
+	assert(m_vertices.empty() && m_count == 0);
 
-	m_count = static_cast<child_count_t>(vertices.size());
-	m_vertices = alloc<Length2D>(vertices.size());
-	std::memcpy(m_vertices, vertices.begin(), m_count * sizeof(Vec2));
+	const auto count = static_cast<child_count_t>(vertices.size());
+	m_count = count;
+	m_vertices.assign(vertices.begin(), vertices.end());
+	
+	auto vprev = m_vertices[0];
+	for (auto i = decltype(count){1}; i < count; ++i)
+	{
+		const auto v = m_vertices[i];
+		m_normals.push_back(GetUnitVector(GetFwdPerpendicular(v - vprev)));
+		vprev = v;
+	}
 }
 
 EdgeShape ChainShape::GetChildEdge(child_count_t index) const
