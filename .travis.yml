@@ -53,11 +53,14 @@ install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
   - if [ "$CXX" = "clang++" ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
 
+# Linux seems to usually support "sha256sum". OS X meanwhile calls it "shasum".
 script:
   - echo CXX=$CXX
   - $CXX -dM -E - < /dev/null | sort
-  - wget https://sourceforge.net/projects/boost/files/boost/2.63.0/boost_1_63_0.tar.bz2/download -O /tmp/boost_1_63_0.tar.bz2
-  - tar -xvf /tmp/boost_1_63_0.tar.bz2
+  - wget https://sourceforge.net/projects/boost/files/boost/2.63.0/boost_1_63_0.tar.bz2 -O /tmp/boost_1_63_0.tar.bz2
+  - file /tmp/boost_1_63_0.tar.bz2 && /bin/ls -lF /tmp/boost_1_63_0.tar.bz2 && sha256sum /tmp/boost_1_63_0.tar.bz2
+  - echo "Expect SHA256 Hash of beae2529f759f6b3bf3f4969a19c2e9d6f0c503edcb2de4a61d1428519fcb3b0"
+  - tar -xzvf /tmp/boost_1_63_0.tar.bz2
   - pushd boost_1_63_0 && ./bootstrap.sh --help && popd
   - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "clang++-3.7" ]]; then (cd Box2D && mkdir -p BuildLinux && cd BuildLinux && cmake --version && cmake -DCMAKE_BUILD_TYPE=Release -DBOX2D_BUILD_UNIT_TESTS=ON -DBOX2D_BUILD_HELLOWORLD=ON .. && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld ); fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-6" ]]; then (cd Box2D && mkdir -p BuildLinux && cd BuildLinux && cmake --version && cmake -DCMAKE_BUILD_TYPE=Debug -DBOX2D_BUILD_UNIT_TESTS=ON -DBOX2D_BUILD_HELLOWORLD=ON .. && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:StackAllocator.slower_than_mallocfree ); fi
