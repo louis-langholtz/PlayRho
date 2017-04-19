@@ -50,17 +50,17 @@ addons:
 install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
   - if [ "$CXX" = "clang++" ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
-  - export BOOST_INC_DST=/tmp/boost_1_63_0/include/boost
+  - export BOOST_INC_DST=/tmp/boost_1_63_0/include/boost BOOST_SRC=$HOME/boost-src
 
 # Linux seems to usually support "sha256sum". OS X meanwhile calls it "shasum".
 script:
-  - echo CXX=$CXX
+  - echo CXX=$CXX HOME=$HOME
   - $CXX -dM -E - < /dev/null | sort
   - git clone https://github.com/louis-langholtz/units.git
   - wget https://sourceforge.net/projects/boost/files/boost/1.63.0/boost_1_63_0.tar.bz2 -O /tmp/boost_1_63_0.tar.bz2
   - sha256sum /tmp/boost_1_63_0.tar.bz2 && echo "Expect SHA256 Hash of beae2529f759f6b3bf3f4969a19c2e9d6f0c503edcb2de4a61d1428519fcb3b0"
-  - mkdir -p ~/boost-src $BOOST_INC_DST && pushd boost-src && tar --bzip2 -xf /tmp/boost_1_63_0.tar.bz2 && cp -a boost_1_63_0/boost/ $BOOST_INC_DST && popd
-  - pushd $BOOST_INC_DST && mv units units.old && ln -s ~/units/include/boost/units . && popd && ls -laF $BOOST_INC_DST
+  - mkdir -p $BOOST_SRC $BOOST_INC_DST && pushd $BOOST_SRC && tar --bzip2 -xf /tmp/boost_1_63_0.tar.bz2 && cp -a boost_1_63_0/boost/ $BOOST_INC_DST && popd
+  - pushd $BOOST_INC_DST && mv units units.old && ln -s $HOME/units/include/boost/units . && popd && ls -laF $BOOST_INC_DST
   - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "clang++-3.7" ]]; then (cd Box2D && mkdir -p BuildLinux && cd BuildLinux && cmake --version && cmake -DCMAKE_BUILD_TYPE=Release -DBOX2D_BUILD_UNIT_TESTS=ON -DBOX2D_BUILD_HELLOWORLD=ON .. && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld ); fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-6" ]]; then (cd Box2D && mkdir -p BuildLinux && cd BuildLinux && cmake --version && cmake -DCMAKE_BUILD_TYPE=Debug -DBOX2D_BUILD_UNIT_TESTS=ON -DBOX2D_BUILD_HELLOWORLD=ON .. && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:StackAllocator.slower_than_mallocfree ); fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then (cd Box2D && xcodebuild -project Box2D/Build/xcode5/Box2D.xcodeproj -list); fi
