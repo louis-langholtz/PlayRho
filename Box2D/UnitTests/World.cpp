@@ -1180,32 +1180,6 @@ TEST(World, CollidingDynamicBodies)
 	EXPECT_EQ(GetLinearVelocity(*body_b).y, RealNum{0.0f} * MeterPerSecond);
 }
 
-#include <unistd.h>
-#include <setjmp.h>
-#include <signal.h>
-
-static jmp_buf jmp_env;
-
-static void catch_alarm(int)
-{
-	longjmp(jmp_env, 1);
-}
-
-/// Assert if the given function takes more than the given amount of microseconds.
-/// @warning The use of <code>setjmp</code> and <code>longjmp</code> will result in undefined
-///   behavior if non trivial destructors would be called if replaced with try and catch.
-#define ASSERT_USECS(fn, usecs) { \
-	const auto val = setjmp(jmp_env); \
-	if (val == 0) { \
-		signal(SIGALRM, catch_alarm); \
-		ualarm((usecs), 0); \
-		{ fn; }; \
-		ualarm(0, 0); \
-	} else { \
-		GTEST_FATAL_FAILURE_(#usecs " usecs timer tripped for " #fn); \
-	} }
-
-
 TEST(World, TilesComesToRest)
 {
 	const auto m_world = std::make_unique<World>();
@@ -1467,7 +1441,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 			}
 
 			const auto last_contact_count = listener.begin_contacts;
-			ASSERT_USECS(world.Step(stepConf), 5000);
+			world.Step(stepConf);
 
 			EXPECT_LT(ball_body->GetLocation().x, right_edge_x - (ball_radius/RealNum{2}));
 			EXPECT_GT(ball_body->GetLocation().x, left_edge_x + (ball_radius/RealNum{2}));
@@ -1504,7 +1478,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 			}
 			
 			const auto last_contact_count = listener.begin_contacts;
-			ASSERT_USECS(world.Step(stepConf), 5000);
+			world.Step(stepConf);
 			
 			EXPECT_LT(ball_body->GetLocation().x, right_edge_x - (ball_radius/RealNum{2}));
 			EXPECT_GT(ball_body->GetLocation().x, left_edge_x + (ball_radius/RealNum{2}));
@@ -1823,7 +1797,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 			angle += anglular_speed;
 			distance += distance_speed;
 
-			ASSERT_USECS(Step(world, Time{Second * time_inc}, 8, 3), 100000);
+			Step(world, Time{Second * time_inc}, 8, 3);
 			
 			ASSERT_LT(ball_body->GetLocation().x, right_edge_x * Meter);
 			ASSERT_LT(ball_body->GetLocation().y, top_edge_y * Meter);

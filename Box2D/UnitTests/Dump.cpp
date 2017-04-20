@@ -20,8 +20,6 @@
 #include <Box2D/Box2D.hpp>
 #include <Box2D/Common/CodeDumper.hpp>
 
-#include <unistd.h>
-
 using namespace box2d;
 
 static void open_stderr_as_stdout()
