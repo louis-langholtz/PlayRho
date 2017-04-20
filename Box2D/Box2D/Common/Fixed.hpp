@@ -114,8 +114,8 @@ namespace box2d
 		{
 			static_assert(std::is_integral<T>::value, "integral value required");
 			static_assert(!std::is_signed<T>::value, "must be unsigned");
-			return (val > (GetMax().m_value / ScaleFactor))? GetInfinity().m_value:
-				static_cast<value_type>(val) * ScaleFactor;
+			const auto max = static_cast<unsigned_wider_type>(GetMax().m_value / ScaleFactor);
+			return (val > max)? GetInfinity().m_value: static_cast<value_type>(val) * ScaleFactor;
 		}
 		
 		Fixed() = default;
@@ -308,7 +308,7 @@ namespace box2d
 			}
 			else if (isfinite() && val.isfinite())
 			{
-				const auto result = intermediary_type{m_value} + val.m_value;
+				const auto result = wider_type{m_value} + val.m_value;
 				if (result > GetMax().m_value)
 				{
 					// overflow from max
@@ -346,7 +346,7 @@ namespace box2d
 			}
 			else if (isfinite() && val.isfinite())
 			{
-				const auto result = intermediary_type{m_value} - val.m_value;
+				const auto result = wider_type{m_value} - val.m_value;
 				if (result > GetMax().m_value)
 				{
 					// overflow from max
@@ -384,7 +384,7 @@ namespace box2d
 			}
 			else
 			{
-				const auto product = intermediary_type{m_value} * intermediary_type{val.m_value};
+				const auto product = wider_type{m_value} * wider_type{val.m_value};
 				const auto result = product / ScaleFactor;
 				
 				if (product != 0 && result == 0)
@@ -430,7 +430,7 @@ namespace box2d
 			}
 			else
 			{
-				const auto product = intermediary_type{m_value} * ScaleFactor;
+				const auto product = wider_type{m_value} * ScaleFactor;
 				const auto result = product / val.m_value;
 				
 				if (product != 0 && result == 0)
@@ -467,8 +467,9 @@ namespace box2d
 		
 	private:
 		
-		using intermediary_type = typename Wider<value_type>::type;
-		
+		using wider_type = typename Wider<value_type>::type;
+		using unsigned_wider_type = typename std::make_unsigned<wider_type>::type;
+
 		struct scalar_type
 		{
 			value_type value = 1;
