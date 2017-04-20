@@ -31,12 +31,6 @@ namespace box2d
 {
 // forward declarations
 struct Vec3;
-#if 0
-constexpr inline RealNum Dot(const Vec2 a, const Vec2 b) noexcept;
-constexpr inline RealNum Dot(const Vec3 a, const Vec3 b) noexcept;
-constexpr inline RealNum Cross(const Vec2 a, const Vec2 b) noexcept;
-constexpr inline Vec3 Cross(const Vec3 a, const Vec3 b) noexcept;
-#endif
 
 // Other templates.
 
