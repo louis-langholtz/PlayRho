@@ -95,11 +95,11 @@ TEST(DistanceProxy, ThreeVertices)
 	const auto v0 = Vec2{RealNum(1), RealNum(2)} * Meter;
 	const auto v1 = Vec2{RealNum(-3), RealNum(-4)} * Meter;
 	const auto v2 = Vec2{RealNum(-6), RealNum(5)} * Meter;
-	const auto vertices = std::array<Length2D, count>{{v0, v1, v2}};
+	const auto vertices = Span<const Length2D>{{v0, v1, v2}};
 	const auto n0 = GetUnitVector(v1 - v0);
 	const auto n1 = GetUnitVector(v2 - v1);
 	const auto n2 = GetUnitVector(v0 - v2);
-	const auto normals = std::array<UnitVec2, count>{{n0, n1, n2}};
+	const auto normals = Span<const UnitVec2>{{n0, n1, n2}};
 	
 	const DistanceProxy foo{radius, vertices, normals};
 	
