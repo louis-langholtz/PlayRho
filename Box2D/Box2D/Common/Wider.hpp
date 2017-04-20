@@ -20,6 +20,7 @@
 #define Wider_hpp
 
 #include <cstdint>
+#include <type_traits>
 
 namespace box2d
 {
@@ -44,5 +45,15 @@ namespace box2d
 #endif
 	
 } // namespace box2d
+
+namespace std {
+#ifndef WIN32
+	// This might already be defined by the standard library header, but
+	// define it here explicitly in case it's not.
+	template <> struct make_unsigned<__int128_t> {
+		typedef __uint128_t type;
+	};
+#endif
+}
 
 #endif /* Wider_hpp */
