@@ -190,8 +190,8 @@ namespace box2d
 	}
 
 	/// Does this vector contain finite coordinates?
-	template <>
-	inline bool IsValid(const Vec2& value) noexcept
+	template <typename TYPE>
+	constexpr inline bool IsValid(const Vector2D<TYPE>& value) noexcept
 	{
 		return IsValid(value.x) && IsValid(value.y);
 	}
@@ -202,50 +202,23 @@ namespace box2d
 	{
 		return Length2D{GetInvalid<Length>(), GetInvalid<Length>()};
 	}
-
-	template <>
-	inline bool IsValid(const Length2D& value) noexcept
-	{
-		return IsValid(Vec2{value.x / Meter, value.y / Meter});
-	}
-
+	
 	template <>
 	constexpr LinearVelocity2D GetInvalid() noexcept
 	{
 		return LinearVelocity2D{GetInvalid<LinearVelocity>(), GetInvalid<LinearVelocity>()};
 	}
-	
-	template <>
-	inline bool IsValid(const LinearVelocity2D& value) noexcept
-	{
-		return IsValid(Vec2{value.x / MeterPerSecond, value.y / MeterPerSecond});
-	}
-	
+
 	template <>
 	constexpr Force2D GetInvalid() noexcept
 	{
 		return Force2D{GetInvalid<Force>(), GetInvalid<Force>()};
-	}
-
-	template <>
-	inline bool IsValid(const Force2D& value) noexcept
-	{
-		return IsValid(Vec2{value.x / Newton, value.y / Newton});
 	}
 	
 	template <>
 	constexpr Momentum2D GetInvalid() noexcept
 	{
 		return Momentum2D{GetInvalid<Momentum>(), GetInvalid<Momentum>()};
-	}
-	
-	template <>
-	inline bool IsValid(const Momentum2D& value) noexcept
-	{
-		return IsValid(Vec2{
-			value.x / (Kilogram * MeterPerSecond),
-			value.y / (Kilogram * MeterPerSecond)
-		});
 	}
 	
 	constexpr inline Vec2 StripUnits(const Length2D value)
@@ -267,7 +240,6 @@ namespace box2d
 	{
 		return Vec2{value.x / Newton, value.y / Newton};
 	}
-
 #endif
 
 } // namespace box2d

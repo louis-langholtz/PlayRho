@@ -293,7 +293,7 @@ inline auto GetLength(T value)
 
 /// Does this vector contain finite coordinates?
 template <>
-inline bool IsValid(const Vec3& value) noexcept
+constexpr inline bool IsValid(const Vec3& value) noexcept
 {
 	return IsValid(value.x) && IsValid(value.y) && IsValid(value.z);
 }
@@ -401,7 +401,7 @@ struct Mat22
 };
 
 template <>
-inline bool IsValid(const Mat22& value) noexcept
+constexpr inline bool IsValid(const Mat22& value) noexcept
 {
 	return IsValid(value.ex) && IsValid(value.ey);
 }
@@ -523,7 +523,7 @@ constexpr UnitVec2 GetInvalid() noexcept
 }
 
 template <>
-inline bool IsValid(const UnitVec2& value) noexcept
+constexpr inline bool IsValid(const UnitVec2& value) noexcept
 {
 	return IsValid(GetX(value)) && IsValid(GetY(value)) && (value != UnitVec2::GetZero());
 }
@@ -550,7 +550,7 @@ struct Transformation
 constexpr auto Transform_identity = Transformation{Vec2_zero * Meter, UnitVec2::GetRight()};
 
 template <>
-inline bool IsValid(const Transformation& value) noexcept
+constexpr inline bool IsValid(const Transformation& value) noexcept
 {
 	return IsValid(value.p.x) && IsValid(value.p.y) && IsValid(value.q);
 }
@@ -564,7 +564,7 @@ struct Position
 };
 
 template <>
-inline bool IsValid(const Position& value) noexcept
+constexpr inline bool IsValid(const Position& value) noexcept
 {
 	return IsValid(value.linear) && IsValid(value.angular);
 }
@@ -578,7 +578,7 @@ struct Velocity
 };
 
 template <>
-inline bool IsValid(const Velocity& value) noexcept
+constexpr inline bool IsValid(const Velocity& value) noexcept
 {
 	return IsValid(value.linear.x) && IsValid(value.linear.y) && IsValid(value.angular);
 }

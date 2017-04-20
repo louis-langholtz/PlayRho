@@ -476,7 +476,7 @@ namespace box2d
 	}
 
 	template <>
-	inline bool IsValid(const Manifold& value) noexcept
+	constexpr inline bool IsValid(const Manifold& value) noexcept
 	{
 		return value.GetType() != Manifold::e_unset;
 	}

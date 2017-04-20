@@ -751,7 +751,7 @@ namespace std
 		return (value > box2d::Fixed32::GetNegativeInfinity()) && (value < box2d::Fixed32::GetInfinity());
 	}
 	
-	inline bool isnan(box2d::Fixed32 value) noexcept
+	constexpr inline bool isnan(box2d::Fixed32 value) noexcept
 	{
 		return value.Compare(0) == box2d::Fixed32::ComparatorResult::Incomparable;
 	}
@@ -858,7 +858,7 @@ namespace std
 		return (value > box2d::Fixed64::GetNegativeInfinity()) && (value < box2d::Fixed64::GetInfinity());
 	}
 
-	inline bool isnan(box2d::Fixed64 value) noexcept
+	constexpr inline bool isnan(box2d::Fixed64 value) noexcept
 	{
 		return value.Compare(0) == box2d::Fixed64::ComparatorResult::Incomparable;
 	}

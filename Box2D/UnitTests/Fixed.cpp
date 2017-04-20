@@ -208,12 +208,14 @@ TEST(Fixed32, FloatConstruction)
 TEST(Fixed32, Equals)
 {
 	EXPECT_TRUE(Fixed32(12) == Fixed32(12.0f));
+	EXPECT_FALSE(std::numeric_limits<Fixed32>::quiet_NaN() == std::numeric_limits<Fixed32>::quiet_NaN());
 }
 
 TEST(Fixed32, NotEquals)
 {
 	EXPECT_TRUE(Fixed32(-302) != Fixed32(12.0f));
 	EXPECT_FALSE(Fixed32(-302) != Fixed32(-302));
+	EXPECT_TRUE(std::numeric_limits<Fixed32>::quiet_NaN() != std::numeric_limits<Fixed32>::quiet_NaN());
 }
 
 TEST(Fixed32, LessThan)

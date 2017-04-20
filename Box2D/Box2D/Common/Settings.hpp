@@ -470,43 +470,23 @@ constexpr size_t GetInvalid() noexcept
 // IsValid template and template specializations.
 
 template <typename T>
-bool IsValid(const T& value) noexcept;
-
-/// This function is used to ensure that a floating point number is not a NaN.
-template <>
-inline bool IsValid(const float& x) noexcept
+constexpr inline bool IsValid(const T& value) noexcept
 {
-	return !std::isnan(x); // && !std::isinf(x);
-}
-
-/// This function is used to ensure that a double precision floating point number is not NaN.
-template <>
-inline bool IsValid(const double& x) noexcept
-{
-	return !std::isnan(x); // && !std::isinf(x);
-}
-
-/// This function is used to ensure that a long double precision floating point number is not NaN.
-template <>
-inline bool IsValid(const long double& x) noexcept
-{
-	return !std::isnan(x); // && !std::isinf(x);
+	// Note: This is not necessarily a no-op!! But it is a "constexpr".
+	//
+	// From http://en.cppreference.com/w/cpp/numeric/math/isnan:
+	//   "Another way to test if a floating-point value is NaN is
+	//    to compare it with itself:
+	//      bool is_nan(double x) { return x != x; }
+	//
+	// So for all T, for which std::isnan() is implemented, this should work
+	// correctly and quite usefully!
+	//
+	return value == value;
 }
 
 template <>
-inline bool IsValid(const Fixed32& x) noexcept
-{
-	return !std::isnan(x);
-}
-
-template <>
-inline bool IsValid(const Fixed64& x) noexcept
-{
-	return !std::isnan(x);
-}
-
-template <>
-inline bool IsValid(const size_t& x) noexcept
+constexpr inline bool IsValid(const size_t& x) noexcept
 {
 	return x != GetInvalid<size_t>();
 }
@@ -520,7 +500,7 @@ constexpr Angle GetInvalid() noexcept
 }
 
 template <>
-inline bool IsValid(const Angle& x) noexcept
+constexpr inline bool IsValid(const Angle& x) noexcept
 {
 	return IsValid(RealNum{x / Radian});
 }
@@ -532,7 +512,7 @@ constexpr Frequency GetInvalid() noexcept
 }
 
 template <>
-inline bool IsValid(const Frequency& x) noexcept
+constexpr inline bool IsValid(const Frequency& x) noexcept
 {
 	return IsValid(RealNum{x / Hertz});
 }
@@ -544,7 +524,7 @@ constexpr AngularVelocity GetInvalid() noexcept
 }
 
 template <>
-inline bool IsValid(const AngularVelocity& x) noexcept
+constexpr inline bool IsValid(const AngularVelocity& x) noexcept
 {
 	return IsValid(RealNum{x / RadianPerSecond});
 }
@@ -556,7 +536,7 @@ constexpr Time GetInvalid() noexcept
 }
 
 template <>
-inline bool IsValid(const Time& x) noexcept
+constexpr inline bool IsValid(const Time& x) noexcept
 {
 	return IsValid(RealNum{x / Second});
 }
@@ -568,7 +548,7 @@ constexpr Length GetInvalid() noexcept
 }
 
 template <>
-inline bool IsValid(const Length& x) noexcept
+constexpr inline bool IsValid(const Length& x) noexcept
 {
 	return IsValid(RealNum{x / Meter});
 }
@@ -580,7 +560,7 @@ constexpr Mass GetInvalid() noexcept
 }
 
 template <>
-inline bool IsValid(const Mass& x) noexcept
+constexpr inline bool IsValid(const Mass& x) noexcept
 {
 	return IsValid(RealNum{x / Kilogram});
 }
@@ -592,7 +572,7 @@ constexpr InvMass GetInvalid() noexcept
 }
 
 template <>
-inline bool IsValid(const InvMass& x) noexcept
+constexpr inline bool IsValid(const InvMass& x) noexcept
 {
 	return IsValid(RealNum{x * Kilogram});
 }
@@ -604,7 +584,7 @@ constexpr Momentum GetInvalid() noexcept
 }
 
 template <>
-inline bool IsValid(const Momentum& x) noexcept
+constexpr inline bool IsValid(const Momentum& x) noexcept
 {
 	return IsValid(RealNum{x / (Kilogram * MeterPerSecond)});
 }
@@ -616,7 +596,7 @@ constexpr Force GetInvalid() noexcept
 }
 
 template <>
-inline bool IsValid(const Force& x) noexcept
+constexpr inline bool IsValid(const Force& x) noexcept
 {
 	return IsValid(RealNum{x / Newton});
 }
@@ -628,7 +608,7 @@ constexpr Torque GetInvalid() noexcept
 }
 
 template <>
-inline bool IsValid(const Torque& x) noexcept
+constexpr inline bool IsValid(const Torque& x) noexcept
 {
 	return IsValid(RealNum{x / NewtonMeter});
 }
@@ -640,7 +620,7 @@ constexpr LinearVelocity GetInvalid() noexcept
 }
 
 template <>
-inline bool IsValid(const LinearVelocity& x) noexcept
+constexpr inline bool IsValid(const LinearVelocity& x) noexcept
 {
 	return IsValid(RealNum{x / MeterPerSecond});
 }
@@ -652,7 +632,7 @@ constexpr LinearAcceleration GetInvalid() noexcept
 }
 
 template <>
-inline bool IsValid(const LinearAcceleration& x) noexcept
+constexpr inline bool IsValid(const LinearAcceleration& x) noexcept
 {
 	return IsValid(RealNum{x / MeterPerSquareSecond});
 }
@@ -664,7 +644,7 @@ constexpr AngularAcceleration GetInvalid() noexcept
 }
 
 template <>
-inline bool IsValid(const AngularAcceleration& x) noexcept
+constexpr inline bool IsValid(const AngularAcceleration& x) noexcept
 {
 	return IsValid(RealNum{x / RadianPerSquareSecond});
 }
@@ -677,7 +657,7 @@ constexpr RotInertia GetInvalid() noexcept
 }
 
 template <>
-inline bool IsValid(const RotInertia& value) noexcept
+constexpr inline bool IsValid(const RotInertia& value) noexcept
 {
 	return IsValid(RealNum{value / (SquareMeter * Kilogram / SquareRadian)});
 }
