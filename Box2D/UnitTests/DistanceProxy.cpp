@@ -96,13 +96,13 @@ TEST(DistanceProxy, ThreeVertices)
 	const auto v0 = Vec2{RealNum(1), RealNum(2)} * Meter;
 	const auto v1 = Vec2{RealNum(-3), RealNum(-4)} * Meter;
 	const auto v2 = Vec2{RealNum(-6), RealNum(5)} * Meter;
-	const auto vertices = Span<const Length2D>{std::initializer_list<const Length2D>{v0, v1, v2}};
+	const Length2D vertices[] = {v0, v1, v2};
 	const auto n0 = GetUnitVector(v1 - v0);
 	const auto n1 = GetUnitVector(v2 - v1);
 	const auto n2 = GetUnitVector(v0 - v2);
-	const auto normals = Span<const UnitVec2>{std::initializer_list<const UnitVec2>{n0, n1, n2}};
+	const UnitVec2 normals[] = {n0, n1, n2};
 	
-	const DistanceProxy foo{radius, vertices, normals};
+	const DistanceProxy foo{radius, Span<const Length2D>(vertices, 3), Span<const UnitVec2>(normals, 3)};
 	
 	EXPECT_EQ(foo.GetVertexRadius(), radius);
 	ASSERT_EQ(foo.GetVertexCount(), count);
