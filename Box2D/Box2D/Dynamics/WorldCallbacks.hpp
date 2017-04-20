@@ -28,7 +28,7 @@ class UnitVec2;
 class Fixture;
 class Joint;
 class Contact;
-struct Manifold;
+class Manifold;
 
 /// Joints and fixtures are destroyed when their associated
 /// body is destroyed. Implement this listener so that you

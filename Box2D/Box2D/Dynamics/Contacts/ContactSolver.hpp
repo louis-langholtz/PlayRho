@@ -26,7 +26,7 @@
 namespace box2d {
 
 	class VelocityConstraint;
-	class PositionConstraint;
+	struct PositionConstraint;
 	class BodyConstraint;
 	
 	struct PositionSolution

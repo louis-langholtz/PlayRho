@@ -26,7 +26,6 @@ namespace box2d
 {
 	class Manifold;
 	class Contact;
-	class PositionConstraint;
 
 	/// World manifold.
 	/// @details
