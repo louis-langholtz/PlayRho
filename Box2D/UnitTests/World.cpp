@@ -266,7 +266,7 @@ TEST(World, StepZeroTimeDoesNothing)
 	EXPECT_EQ(body->GetLocation().y, def.position.y);
 	EXPECT_EQ(GetLinearVelocity(*body).x, RealNum(0) * MeterPerSecond);
 	EXPECT_EQ(GetLinearVelocity(*body).y, RealNum(0) * MeterPerSecond);
-	EXPECT_EQ(body->GetLinearAcceleration().x, 0.0f * MeterPerSquareSecond);
+	EXPECT_EQ(body->GetLinearAcceleration().x, RealNum{0.0f} * MeterPerSquareSecond);
 	EXPECT_EQ(body->GetLinearAcceleration().y, gravity.y);
 	
 	const auto time_inc = Time{Second * RealNum{0}};
@@ -307,27 +307,27 @@ TEST(World, GravitationalBodyMovement)
 	ASSERT_NE(body, nullptr);
 	EXPECT_FALSE(body->IsImpenetrable());
 	EXPECT_EQ(body->GetType(), BodyType::Dynamic);
-	EXPECT_EQ(GetLinearVelocity(*body).x, 0.0f * MeterPerSecond);
-	EXPECT_EQ(GetLinearVelocity(*body).y, 0.0f * MeterPerSecond);
+	EXPECT_EQ(GetLinearVelocity(*body).x, RealNum{0.0f} * MeterPerSecond);
+	EXPECT_EQ(GetLinearVelocity(*body).y, RealNum{0.0f} * MeterPerSecond);
 	EXPECT_EQ(body->GetLocation().x, p0.x);
 	EXPECT_EQ(body->GetLocation().y, p0.y);
 
 	Step(world, t);
-	EXPECT_EQ(GetLinearVelocity(*body).x, 0.0f * MeterPerSecond);
+	EXPECT_EQ(GetLinearVelocity(*body).x, RealNum{0.0f} * MeterPerSecond);
 	EXPECT_EQ(GetLinearVelocity(*body).y, a * (t * RealNum{1}) * MeterPerSquareSecond);
 	EXPECT_EQ(body->GetLocation().x, p0.x);
 	EXPECT_EQ(body->GetLocation().y, p0.y + GetLinearVelocity(*body).y * t);
 
 	p0 = body->GetLocation();
 	Step(world, t);
-	EXPECT_EQ(GetLinearVelocity(*body).x, 0.0f * MeterPerSecond);
+	EXPECT_EQ(GetLinearVelocity(*body).x, RealNum{0.0f} * MeterPerSecond);
 	EXPECT_EQ(GetLinearVelocity(*body).y, a * (t * RealNum{2}) * MeterPerSquareSecond);
 	EXPECT_EQ(body->GetLocation().x, p0.x);
 	EXPECT_EQ(body->GetLocation().y, p0.y + GetLinearVelocity(*body).y * t);
 	
 	p0 = body->GetLocation();
 	Step(world, t);
-	EXPECT_EQ(GetLinearVelocity(*body).x, 0.0f * MeterPerSecond);
+	EXPECT_EQ(GetLinearVelocity(*body).x, RealNum{0.0f} * MeterPerSecond);
 	EXPECT_NEAR(double(GetLinearVelocity(*body).y / MeterPerSecond), double(a * (t * RealNum{3}) / Second), 0.00001);
 	EXPECT_EQ(body->GetLocation().x, p0.x);
 	EXPECT_EQ(body->GetLocation().y, p0.y + GetLinearVelocity(*body).y * t);
@@ -349,7 +349,7 @@ TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
 	EXPECT_EQ(body->GetLocation().y, def.position.y);
 	EXPECT_EQ(GetLinearVelocity(*body).x, RealNum(0) * MeterPerSecond);
 	EXPECT_EQ(GetLinearVelocity(*body).y, RealNum(0) * MeterPerSecond);
-	EXPECT_EQ(body->GetLinearAcceleration().x, 0.0f * MeterPerSquareSecond);
+	EXPECT_EQ(body->GetLinearAcceleration().x, RealNum{0.0f} * MeterPerSquareSecond);
 	EXPECT_EQ(body->GetLinearAcceleration().y, gravity.y);
 	
 	const auto time_inc = RealNum(0.01) * Second;
@@ -392,7 +392,7 @@ TEST(World, BodyAccelRevPerSpecWithNegativeTimeAndNoVelOrPosIterations)
 	EXPECT_EQ(body->GetLocation().y, def.position.y);
 	EXPECT_EQ(GetLinearVelocity(*body).x, RealNum(0) * MeterPerSecond);
 	EXPECT_EQ(GetLinearVelocity(*body).y, RealNum(-9.8) * MeterPerSecond);
-	EXPECT_EQ(body->GetLinearAcceleration().x, 0.0f * MeterPerSquareSecond);
+	EXPECT_EQ(body->GetLinearAcceleration().x, RealNum{0.0f} * MeterPerSquareSecond);
 	EXPECT_EQ(body->GetLinearAcceleration().y, gravity.y);
 	
 	const auto time_inc = RealNum{-0.01f} * Second;
@@ -533,9 +533,9 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 	EXPECT_TRUE(body_b->IsAccelerable());
 
 	EXPECT_EQ(GetLinearVelocity(*body_a).x, +x * MeterPerSecond);
-	EXPECT_EQ(GetLinearVelocity(*body_a).y, 0.0f * MeterPerSecond);
+	EXPECT_EQ(GetLinearVelocity(*body_a).y, RealNum{0.0f} * MeterPerSecond);
 	EXPECT_EQ(GetLinearVelocity(*body_b).x, -x * MeterPerSecond);
-	EXPECT_EQ(GetLinearVelocity(*body_b).y, 0.0f * MeterPerSecond);
+	EXPECT_EQ(GetLinearVelocity(*body_b).y, RealNum{0.0f} * MeterPerSecond);
 
 	const auto time_inc = RealNum(.01) * Second;
 
@@ -563,9 +563,9 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 		EXPECT_EQ(body_b->GetLocation().y, RealNum{0} * Meter);
 
 		EXPECT_EQ(GetLinearVelocity(*body_a).x, +x * MeterPerSecond);
-		EXPECT_EQ(GetLinearVelocity(*body_a).y, 0.0f * MeterPerSecond);
+		EXPECT_EQ(GetLinearVelocity(*body_a).y, RealNum{0.0f} * MeterPerSecond);
 		EXPECT_EQ(GetLinearVelocity(*body_b).x, -x * MeterPerSecond);
-		EXPECT_EQ(GetLinearVelocity(*body_b).y, 0.0f * MeterPerSecond);
+		EXPECT_EQ(GetLinearVelocity(*body_b).y, RealNum{0.0f} * MeterPerSecond);
 
 		pos_a = body_a->GetLocation();
 		pos_b = body_b->GetLocation();
@@ -884,7 +884,7 @@ TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
 	auto stepConf = StepConf{};
 	const auto time_inc = RealNum(.01) * Second;
 	stepConf.SetTime(time_inc);
-	stepConf.maxLinearCorrection = 0.0001f * 40 * Meter;
+	stepConf.maxLinearCorrection = RealNum{0.0001f * 40} * Meter;
 	for (auto i = 0; i < 100; ++i)
 	{
 		world.Step(stepConf);
@@ -1108,9 +1108,9 @@ TEST(World, CollidingDynamicBodies)
 	EXPECT_TRUE(body_b->IsAccelerable());
 
 	EXPECT_EQ(GetLinearVelocity(*body_a).x, +x * MeterPerSecond);
-	EXPECT_EQ(GetLinearVelocity(*body_a).y, 0.0f * MeterPerSecond);
+	EXPECT_EQ(GetLinearVelocity(*body_a).y, RealNum{0.0f} * MeterPerSecond);
 	EXPECT_EQ(GetLinearVelocity(*body_b).x, -x * MeterPerSecond);
-	EXPECT_EQ(GetLinearVelocity(*body_b).y, 0.0f * MeterPerSecond);
+	EXPECT_EQ(GetLinearVelocity(*body_b).y, RealNum{0.0f} * MeterPerSecond);
 	
 	const auto time_collision = RealNum(1.0099994); // only valid for x >= around 4.214
 	const auto time_inc = RealNum(.01);
@@ -1175,9 +1175,9 @@ TEST(World, CollidingDynamicBodies)
 	// confirm conservation of momentum:
 	// velocities should now be same magnitude but in opposite directions
 	EXPECT_NEAR(double(GetLinearVelocity(*body_a).x / MeterPerSecond), double(-x), 0.0001);
-	EXPECT_EQ(GetLinearVelocity(*body_a).y, 0.0f * MeterPerSecond);
+	EXPECT_EQ(GetLinearVelocity(*body_a).y, RealNum{0.0f} * MeterPerSecond);
 	EXPECT_NEAR(double(GetLinearVelocity(*body_b).x / MeterPerSecond), double(+x), 0.0001);
-	EXPECT_EQ(GetLinearVelocity(*body_b).y, 0.0f * MeterPerSecond);
+	EXPECT_EQ(GetLinearVelocity(*body_b).y, RealNum{0.0f} * MeterPerSecond);
 }
 
 #include <unistd.h>
@@ -1213,7 +1213,7 @@ TEST(World, TilesComesToRest)
 	constexpr auto e_count = 36;
 	
 	{
-		const auto a = 0.5f;
+		const auto a = RealNum{0.5f};
 		const auto ground = m_world->CreateBody(BodyDef{}.UseLocation(Vec2{0, -a} * Meter));
 		
 		const auto N = 200;
@@ -1235,7 +1235,7 @@ TEST(World, TilesComesToRest)
 	}
 	
 	{
-		const auto a = 0.5f;
+		const auto a = RealNum{0.5f};
 		const auto shape = std::make_shared<PolygonShape>(a * Meter, a * Meter);
 		shape->SetDensity(RealNum{5} * KilogramPerSquareMeter);
 		
@@ -1455,7 +1455,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 
 			if (listener.begin_contacts % 2 != 0) // direction switched
 			{
-				EXPECT_LT(ball_body->GetVelocity().linear.x, 0.0f * MeterPerSecond);
+				EXPECT_LT(ball_body->GetVelocity().linear.x, RealNum{0.0f} * MeterPerSecond);
 				break; // going left now
 			}
 			else if (listener.begin_contacts > last_contact_count)
@@ -1492,7 +1492,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 
 			if (listener.begin_contacts % 2 != 0) // direction switched
 			{
-				EXPECT_GT(ball_body->GetVelocity().linear.x, 0.0f * MeterPerSecond);
+				EXPECT_GT(ball_body->GetVelocity().linear.x, RealNum{0.0f} * MeterPerSecond);
 				break; // going right now
 			}
 			else if (listener.begin_contacts > last_contact_count)
@@ -2072,7 +2072,7 @@ protected:
 	const size_t maxLoops = 10000;
 	std::vector<Body*> boxes{10};
 	RealNum original_x = 0;
-	const Length hdim = 0.1f * Meter;
+	const Length hdim = RealNum{0.1f} * Meter;
 };
 
 TEST_P(VerticalStackTest, EndsBeforeMaxLoops)

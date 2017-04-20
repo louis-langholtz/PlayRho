@@ -72,7 +72,8 @@ TEST(TOIOutput, InitConstruction)
 
 TEST(TimeOfImpact, Overlapped)
 {
-	const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(0.001f * 3 * Meter).UseTolerance((0.001f / 4) * Meter);
+	const auto slop = RealNum{0.001f};
+	const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth((slop * 3) * Meter).UseTolerance((slop / 4) * Meter);
 
 	const auto radius = RealNum(1) * Meter;
 	const auto proxyA = DistanceProxy{radius, Vec2_zero * Meter};
@@ -87,7 +88,8 @@ TEST(TimeOfImpact, Overlapped)
 
 TEST(TimeOfImpact, Touching)
 {
-	const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(0.001f * 3 * Meter).UseTolerance((0.001f / 4) * Meter);
+	const auto slop = RealNum{0.001f};
+	const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth((slop * 3) * Meter).UseTolerance((slop / 4) * Meter);
 
 	const auto radius = RealNum(1.1) * Meter;
 
@@ -106,7 +108,8 @@ TEST(TimeOfImpact, Touching)
 
 TEST(TimeOfImpact, Separated)
 {
-	const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(0.001f * 3 * Meter).UseTolerance((0.001f / 4) * Meter);
+	const auto slop = RealNum{0.001f};
+	const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(slop * 3 * Meter).UseTolerance((slop / 4) * Meter);
 	const auto radius = RealNum(1) * Meter;
 	
 	const auto proxyA = DistanceProxy{radius, Vec2_zero * Meter};
@@ -124,7 +127,8 @@ TEST(TimeOfImpact, Separated)
 
 TEST(TimeOfImpact, CollideCirclesHorizontally)
 {
-	const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(0.001f * 3 * Meter).UseTolerance((0.001f / 4) * Meter);
+	const auto slop = RealNum{0.001f};
+	const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(slop * 3 * Meter).UseTolerance((slop / 4) * Meter);
 
 	// Set up for two bodies moving toward each other at same speeds and each colliding
 	// with the other after they have moved roughly two-thirds of their sweep.
@@ -147,7 +151,8 @@ TEST(TimeOfImpact, CollideCirclesHorizontally)
 
 TEST(TimeOfImpact, CollideCirclesVertically)
 {
-	const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(0.001f * 3 * Meter).UseTolerance((0.001f / 4) * Meter);
+	const auto slop = RealNum{0.001f};
+	const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(slop * 3 * Meter).UseTolerance((slop / 4) * Meter);
 	const auto radius = RealNum(1) * Meter;
 	const auto y = RealNum(20);
 
@@ -166,7 +171,8 @@ TEST(TimeOfImpact, CollideCirclesVertically)
 
 TEST(TimeOfImpact, CirclesPassingParallelSeparatedPathsDontCollide)
 {
-	const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(0.001f * 3 * Meter).UseTolerance((0.001f / 4) * Meter);
+	const auto slop = RealNum{0.001f};
+	const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(slop * 3 * Meter).UseTolerance((slop / 4) * Meter);
 	
 	// Set up for two bodies moving toward each other at same speeds and each colliding
 	// with the other after they have moved roughly two-thirds of their sweep.
@@ -188,7 +194,8 @@ TEST(TimeOfImpact, CirclesPassingParallelSeparatedPathsDontCollide)
 
 TEST(TimeOfImpact, RodCircleMissAt360)
 {
-	const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(0.001f * 3 * Meter).UseTolerance((0.001f / 4) * Meter);
+	const auto slop = RealNum{0.001f};
+	const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(slop * 3 * Meter).UseTolerance((slop / 4) * Meter);
 	
 	// Set up for two bodies moving toward each other at same speeds and each colliding
 	// with the other after they have moved roughly two-thirds of their sweep.
@@ -198,7 +205,7 @@ TEST(TimeOfImpact, RodCircleMissAt360)
 	const auto vA1 = Vec2{4, 0} * Meter;
 	const auto nA0 = GetUnitVector(vA1 - vA0);
 	const auto proxyA = DistanceProxy{radius, vA0, vA1, nA0, -nA0};
-	const auto sweepA = Sweep{Position{Vec2{-x, 4} * Meter, RealNum{0} * Degree}, Position{Vec2{+x, 4} * Meter, 360.0f * Degree}};
+	const auto sweepA = Sweep{Position{Vec2{-x, 4} * Meter, RealNum{0} * Degree}, Position{Vec2{+x, 4} * Meter, RealNum{360.0f} * Degree}};
 	const auto proxyB = DistanceProxy{radius, Vec2_zero * Meter};
 	const auto sweepB = Sweep{Position{Vec2{+x, 0} * Meter, RealNum{0} * Degree}, Position{Vec2{-x, 0} * Meter, RealNum{0} * Degree}};
 	
@@ -212,7 +219,8 @@ TEST(TimeOfImpact, RodCircleMissAt360)
 
 TEST(TimeOfImpact, RodCircleHitAt180)
 {
-	const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(0.001f * 3 * Meter).UseTolerance((0.001f / 4) * Meter);
+	const auto slop = RealNum{0.001f};
+	const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(slop * 3 * Meter).UseTolerance((slop / 4) * Meter);
 	
 	// Set up for two bodies moving toward each other at same speeds and each colliding
 	// with the other after they have moved roughly two-thirds of their sweep.
@@ -222,7 +230,7 @@ TEST(TimeOfImpact, RodCircleHitAt180)
 	const auto vA1 = Vec2{4, 0} * Meter;
 	const auto nA0 = GetUnitVector(vA1 - vA0);
 	const auto proxyA = DistanceProxy{radius, vA0, vA1, nA0, -nA0};
-	const auto sweepA = Sweep{Position{Vec2{-x, 4} * Meter, RealNum{0} * Degree}, Position{Vec2{+x, 4} * Meter, 180.0f * Degree}};
+	const auto sweepA = Sweep{Position{Vec2{-x, 4} * Meter, RealNum{0} * Degree}, Position{Vec2{+x, 4} * Meter, RealNum{180.0f} * Degree}};
 	const auto proxyB = DistanceProxy{radius, Vec2_zero * Meter};
 	const auto sweepB = Sweep{Position{Vec2{+x, 0} * Meter, RealNum{0} * Degree}, Position{Vec2{-x, 0} * Meter, RealNum{0} * Degree}};
 	
@@ -236,6 +244,7 @@ TEST(TimeOfImpact, RodCircleHitAt180)
 
 TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_1)
 {
+	const auto slop = RealNum{0.001f};
 	const auto radius = RealNum(1) * Meter;
 	const auto x = RealNum(200);
 	const auto proxyA = DistanceProxy{radius, Vec2{0, 0} * Meter};
@@ -246,8 +255,8 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_1)
 	const auto conf = ToiConf{}
 		.UseMaxToiIters(200)
 		.UseMaxRootIters(200)
-		.UseTargetDepth((0.001f * 3) * Meter)
-		.UseTolerance((0.001f / 4) * Meter);
+		.UseTargetDepth((slop * 3) * Meter)
+		.UseTolerance((slop / 4) * Meter);
 	const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
@@ -261,6 +270,7 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_1)
 
 TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_2)
 {
+	const auto slop = RealNum{0.001f};
 	const auto radius = RealNum(1) * Meter;
 	const auto x = RealNum(400);
 	const auto proxyA = DistanceProxy{radius, Vec2{0, 0} * Meter};
@@ -271,8 +281,8 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_2)
 	const auto conf = ToiConf{}
 		.UseMaxToiIters(200)
 		.UseMaxRootIters(200)
-		.UseTargetDepth((0.001f * 3) * Meter)
-		.UseTolerance((0.001f / 4) * Meter);
+		.UseTargetDepth((slop * 3) * Meter)
+		.UseTolerance((slop / 4) * Meter);
 	const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
@@ -317,6 +327,7 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_2)
 
 TEST(TimeOfImpact, WithClosingSpeedOf1600)
 {
+	const auto slop = RealNum{0.001f};
 	const auto radius = RealNum(1) * Meter;
 	const auto x = RealNum(400);
 	const auto proxyA = DistanceProxy{radius, Vec2{0, 0} * Meter};
@@ -327,8 +338,8 @@ TEST(TimeOfImpact, WithClosingSpeedOf1600)
 	const auto conf = ToiConf{}
 		.UseMaxToiIters(200)
 		.UseMaxRootIters(200)
-		.UseTargetDepth((0.001f * 3) * Meter)
-		.UseTolerance((0.001f / 4) * Meter);
+		.UseTargetDepth((slop * 3) * Meter)
+		.UseTolerance((slop / 4) * Meter);
 	const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
@@ -347,30 +358,30 @@ TEST(TimeOfImpact, ForNonCollidingShapesFailsIn23)
 
 	auto shapeA = PolygonShape{};
 	shapeA.SetVertexRadius(RealNum{0.0001f * 2} * Meter);
-	shapeA.SetAsBox(25.0f * Meter, 5.0f * Meter);
+	shapeA.SetAsBox(RealNum{25.0f} * Meter, RealNum{5.0f} * Meter);
 
 	auto shapeB = PolygonShape{};
 	shapeB.SetVertexRadius(RealNum{0.0001f * 2} * Meter);
-	shapeB.SetAsBox(2.5f * Meter, 2.5f * Meter);
+	shapeB.SetAsBox(RealNum{2.5f} * Meter, RealNum{2.5f} * Meter);
 
 	const auto dpA = GetDistanceProxy(shapeA, 0);
 	const auto dpB = GetDistanceProxy(shapeB, 0);
 
 	const auto sweepA = Sweep{
-		Position{Vec2{-11, 10} * Meter, 2.95000005f * Radian},
-		Position{Vec2{-11, 10} * Meter, 2.95000005f * Radian}
+		Position{Vec2{-11, 10} * Meter, RealNum{2.95000005f} * Radian},
+		Position{Vec2{-11, 10} * Meter, RealNum{2.95000005f} * Radian}
 	};
 	const auto sweepB = Sweep{
-		Position{Vec2{18.4742737f, 19.7474861f} * Meter, 513.36676f * Radian},
-		Position{Vec2{19.5954781f, 18.9165268f} * Meter, 513.627808f * Radian}
+		Position{Vec2{18.4742737f, 19.7474861f} * Meter, RealNum{513.36676f} * Radian},
+		Position{Vec2{19.5954781f, 18.9165268f} * Meter, RealNum{513.627808f} * Radian}
 	};
 	
 	const auto conf = ToiConf{}
 		.UseMaxToiIters(20)
 		.UseMaxRootIters(32)
 		.UseTimeMax(1)
-		.UseTargetDepth((3.0f / 10000) * Meter)
-		.UseTolerance((1.0f / 40000) * Meter);
+		.UseTargetDepth(RealNum(3.0f / 10000) * Meter)
+		.UseTolerance(RealNum(1.0f / 40000) * Meter);
 	const auto output = GetToiViaSat(dpA, sweepA, dpB, sweepB, conf);
 	
 	EXPECT_TRUE(output.get_state() == TOIOutput::e_failed || output.get_state() == TOIOutput::e_separated);
@@ -406,8 +417,8 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
 		Position{Vec2{0.0f, -0.5f} * Meter, Angle{0}}
 	};
 	const auto sweepB = Sweep{
-		Position{Vec2{14.3689661f, 0.500306308f} * Meter, 0.0000139930862f * Radian},
-		Position{Vec2{14.3689451f, 0.500254989f} * Meter, 0.000260060915f * Radian}
+		Position{Vec2{14.3689661f, 0.500306308f} * Meter, RealNum{0.0000139930862f} * Radian},
+		Position{Vec2{14.3689451f, 0.500254989f} * Meter, RealNum{0.000260060915f} * Radian}
 	};
 
 	const auto vertices = Span<const Length2D>{
@@ -425,20 +436,20 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
 	};
 
 	const auto dpA = DistanceProxy{
-		0.000199999995f * Meter, vertices, normals
+		RealNum{0.000199999995f} * Meter, vertices, normals
 	};
 	
 	auto shapeB = PolygonShape{};
 	shapeB.SetVertexRadius(RealNum{0.0001f * 2} * Meter);
-	shapeB.SetAsBox(0.5f * Meter, 0.5f * Meter);
+	shapeB.SetAsBox(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
 	const auto dpB = GetDistanceProxy(shapeB, 0);
 	
 	const auto conf = ToiConf{}
 		.UseMaxToiIters(200)
 		.UseMaxRootIters(30)
 		.UseTimeMax(1)
-		.UseTargetDepth((3.0f / 10000) * Meter)
-		.UseTolerance((1.0f / 40000) * Meter);
+		.UseTargetDepth(RealNum(3.0f / 10000) * Meter)
+		.UseTolerance(RealNum(1.0f / 40000) * Meter);
 
 	const auto output = GetToiViaSat(dpA, sweepA, dpB, sweepB, conf);
 

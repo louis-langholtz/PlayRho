@@ -76,7 +76,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 {
 	World world{World::Def{}.UseGravity(Vec2_zero * MeterPerSquareSecond)};
 
-	const auto shape = std::make_shared<CircleShape>(0.2f * Meter);
+	const auto shape = std::make_shared<CircleShape>(RealNum{0.2f} * Meter);
 	
 	const auto location1 = Vec2{-1, 0} * Meter;
 	const auto body1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location1));
@@ -117,7 +117,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 			EXPECT_GE(newDistance, oldDistance);
 		}
 		
-		if (!distanceMet && (Abs(newDistance - jointdef.length) < 0.01f * Meter))
+		if (!distanceMet && (Abs(newDistance - jointdef.length) < RealNum{0.01f} * Meter))
 		{
 			distanceMet = i;
 		}
@@ -129,7 +129,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
 {
 	World world{World::Def{}.UseGravity(Vec2{0, 10} * MeterPerSquareSecond)};
 	
-	const auto shape = std::make_shared<CircleShape>(0.2f * Meter);
+	const auto shape = std::make_shared<CircleShape>(RealNum{0.2f} * Meter);
 	shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 	
 	const auto location1 = Vec2{-10, 10} * Meter;

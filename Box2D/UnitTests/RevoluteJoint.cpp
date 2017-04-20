@@ -50,11 +50,11 @@ TEST(RevoluteJoint, Construction)
 	jd.localAnchorB = Vec2(6, 7) * Meter;
 	jd.enableLimit = true;
 	jd.enableMotor = true;
-	jd.motorSpeed = 4.4f * RadianPerSecond;
-	jd.maxMotorTorque = 1.0f * NewtonMeter;
-	jd.lowerAngle = 33.0f * Degree;
-	jd.upperAngle = 40.0f * Degree;
-	jd.referenceAngle = 45.0f * Degree;
+	jd.motorSpeed = RealNum{4.4f} * RadianPerSecond;
+	jd.maxMotorTorque = RealNum{1.0f} * NewtonMeter;
+	jd.lowerAngle = RealNum{33.0f} * Degree;
+	jd.upperAngle = RealNum{40.0f} * Degree;
+	jd.referenceAngle = RealNum{45.0f} * Degree;
 	
 	const auto joint = RevoluteJoint{jd};
 
@@ -77,7 +77,7 @@ TEST(RevoluteJoint, Construction)
 
 TEST(RevoluteJoint, MovesDynamicCircles)
 {
-	const auto circle = std::make_shared<CircleShape>(0.2f * Meter);
+	const auto circle = std::make_shared<CircleShape>(RealNum{0.2f} * Meter);
 	World world;
 	const auto p1 = Vec2{-1, 0} * Meter;
 	const auto p2 = Vec2{+1, 0} * Meter;

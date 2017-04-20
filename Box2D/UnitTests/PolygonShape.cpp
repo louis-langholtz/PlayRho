@@ -255,7 +255,7 @@ TEST(PolygonShape, SetAsBoxAngledDegrees90)
 	const auto hx = RealNum(2.3);
 	const auto hy = RealNum(54.1);
 	PolygonShape shape;
-	const auto angle = 90.0f * Degree;
+	const auto angle = RealNum{90.0f} * Degree;
 	SetAsBox(shape, hx * Meter, hy * Meter, Vec2_zero * Meter, angle);
 
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);

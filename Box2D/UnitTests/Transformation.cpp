@@ -52,11 +52,11 @@ TEST(Transformation, Equality)
 TEST(Transformation, Inequality)
 {
 	const auto translation1 = Vec2{2, 4} * Meter;
-	const UnitVec2 rotation1{Radian * Pi * 0.7f};
+	const UnitVec2 rotation1{Radian * Pi * RealNum{0.7f}};
 	const Transformation xfm1{translation1, rotation1};
 
 	const auto translation2 = Vec2{-3, 37} * Meter;
-	const UnitVec2 rotation2{Radian * Pi * 0.002f};
+	const UnitVec2 rotation2{Radian * Pi * RealNum{0.002f}};
 	const Transformation xfm2{translation2, rotation2};
 
 	ASSERT_NE(translation1, translation2);

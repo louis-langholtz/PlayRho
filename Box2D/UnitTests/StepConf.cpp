@@ -48,7 +48,7 @@ TEST(StepConf, CopyConstruction)
 	EXPECT_EQ(StepConf{conf}.GetInvTime(), RealNum{1} / dt);
 	EXPECT_EQ(StepConf{conf}.displaceMultiplier, displacementMultiplier);
 	
-	const auto cdt = conf.GetTime() * 0.8f;
+	const auto cdt = conf.GetTime() * RealNum{0.8f};
 	const auto newConf = StepConf{conf}.SetTime(cdt);
 	
 	EXPECT_EQ(newConf.GetTime(), cdt);
