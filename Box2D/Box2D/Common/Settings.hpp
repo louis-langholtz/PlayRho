@@ -469,13 +469,11 @@ constexpr Fixed32 GetInvalid() noexcept
 }
 
 #ifndef WIN32
-
 template <>
 constexpr Fixed64 GetInvalid() noexcept
 {
 	return Fixed64::GetNaN();
 }
-
 #endif
 
 template <>

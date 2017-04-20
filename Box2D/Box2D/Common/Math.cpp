@@ -70,7 +70,9 @@ Length2D box2d::ComputeCentroid(const Span<const Length2D>& vertices)
 	return os << static_cast<double>(value);
 }
 
+#ifndef WIN32
 ::std::ostream& box2d::operator<<(::std::ostream& os, const Fixed64& value)
 {
 	return os << static_cast<double>(value);
 }
+#endif

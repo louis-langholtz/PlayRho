@@ -95,12 +95,14 @@ inline Fixed32 round(Fixed32 value, uint32_t precision)
 	return std::round(value * factor) / factor;
 }
 
+#ifndef WIN32
 template <>
 inline Fixed64 round(Fixed64 value, uint32_t precision)
 {
 	const auto factor = Fixed64(precision);
 	return std::round(value * factor) / factor;
 }
+#endif
 
 /// Gets whether a given value is almost zero.
 /// @detail An almost zero value is "subnormal". Dividing by these values can lead to
@@ -138,6 +140,7 @@ constexpr inline bool almost_zero(Fixed32 value)
 	return value == 0;
 }
 
+#ifndef WIN32
 /// Gets whether a given value is almost zero.
 /// @detail An almost zero value is "subnormal". Dividing by these values can lead to
 /// odd results like a divide by zero trap occuring.
@@ -146,6 +149,7 @@ constexpr inline bool almost_zero(Fixed64 value)
 {
 	return value == 0;
 }
+#endif
 
 constexpr inline bool almost_equal(float x, float y, int ulp = 2)
 {
@@ -185,10 +189,12 @@ constexpr inline bool almost_equal(Fixed32 x, Fixed32 y, int ulp = 2)
 	return Abs(x - y) <= Fixed32{0, static_cast<uint32_t>(ulp)};
 }
 
+#ifndef WIN32
 constexpr inline bool almost_equal(Fixed64 x, Fixed64 y, int ulp = 2)
 {
 	return Abs(x - y) <= Fixed64{0, static_cast<uint32_t>(ulp)};
 }
+#endif
 
 template <typename T>
 inline T Average(Span<const T> span)
@@ -1332,7 +1338,9 @@ inline UnitVec2 GetUnitVector(const Vector2D<LinearVelocity> value, LinearVeloci
 
 ::std::ostream& operator<<(::std::ostream& os, const Fixed32& value);
 
+#ifndef WIN32
 ::std::ostream& operator<<(::std::ostream& os, const Fixed64& value);
+#endif
 
 }
 #endif

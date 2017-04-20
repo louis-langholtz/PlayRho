@@ -97,7 +97,7 @@ VelocityConstraint::Point VelocityConstraint::GetPoint(Momentum normalImpulse, M
 	assert(IsValid(rA));
 	assert(IsValid(rB));
 	
-	auto point = Point{};
+	Point point;
 
 	// Get the magnitude of the contact relative velocity in direction of the normal.
 	// This will be an invalid value if the normal is invalid. The comparison in this
