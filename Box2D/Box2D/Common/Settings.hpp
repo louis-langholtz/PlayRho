@@ -97,6 +97,21 @@ using uint64 = std::uint64_t;
 ///
 using RealNum = float;
 
+/// Pi.
+///
+/// @detail
+/// While the include file definition of M_PI may be a POSIX compliance requirement
+/// and initially attractive to use, it's apparently not a C++ standards requirement
+/// and casually including it pollutes the namespace of all code that uses this library.
+/// Whatever the case, MSVS2017 doesn't make it part of <cmath> without enabling
+///  _USE_MATH_DEFINES. So rather than add yet more C-preprocessor macros to all
+/// sources that this library may be compiled with, it's simply hard-coded in here
+/// instead using a C++ mechanism that also keeps it with the enclosing namespace.
+///
+/// @note Any narrowing is intentional.
+///
+constexpr auto Pi = RealNum(3.14159265358979323846264338327950288);
+
 #ifdef USE_BOOST_UNITS
 
 using Time = boost::units::quantity<boost::units::si::time, RealNum>;
@@ -182,7 +197,7 @@ constexpr auto KilogramPerSquareMeter = RealNum{1};
 
 using Angle = RealNum;
 constexpr auto Radian = RealNum{1};
-constexpr auto Degree = RealNum{static_cast<float>(M_PI) / 180};
+constexpr auto Degree = Pi / RealNum{180};
 constexpr auto SquareRadian = Radian * Radian;
 
 using AngularVelocity = RealNum;
@@ -295,8 +310,6 @@ using island_count_t = size_t;
 /// Time step iterations type.
 /// @detail A type for countining iterations per time-step.
 using ts_iters_t = uint8;
-
-constexpr auto Pi = RealNum(M_PI); ///< Pi (any narrowing is intentional).
 
 constexpr auto MaxFloat = std::numeric_limits<RealNum>::max(); // FLT_MAX
 
