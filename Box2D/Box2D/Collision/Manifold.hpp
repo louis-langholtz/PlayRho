@@ -23,8 +23,6 @@
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Collision/ContactFeature.hpp>
 
-#include <array>
-
 namespace box2d
 {
 	class DistanceProxy;
@@ -294,25 +292,33 @@ namespace box2d
 		Manifold(const Manifold& copy) = default;
 		
 		/// Gets the type of this manifold.
-		Type GetType() const noexcept { return m_type; }
+		///
+		/// @note This must be a constant expression in order to use it in the context
+		///   of the IsValid specialized template function for it.
+		///
+		constexpr Type GetType() const noexcept { return m_type; }
 		
 		/// Gets the manifold point count.
+		///
 		/// @detail This is the count of contact points for this manifold.
 		///   Only up to this many points can be validly accessed using the GetPoint() method.
 		/// @note Non-zero values indicate that the two shapes are touching.
+		///
 		/// @return Value between 0 and MaxManifoldPoints.
+		///
 		/// @sa MaxManifoldPoints.
 		/// @sa AddPoint().
 		/// @sa GetPoint().
-		size_type GetPointCount() const noexcept { return m_pointCount; }
+		///
+		constexpr size_type GetPointCount() const noexcept { return m_pointCount; }
 		
-		BOX2D_CONSTEXPR ContactFeature GetContactFeature(size_type index) const noexcept
+		constexpr ContactFeature GetContactFeature(size_type index) const noexcept
 		{
 			assert(index < m_pointCount);
 			return m_points[index].contactFeature;
 		}
 
-		BOX2D_CONSTEXPR ContactImpulses GetContactImpulses(size_type index) const noexcept
+		constexpr ContactImpulses GetContactImpulses(size_type index) const noexcept
 		{
 			assert(index < m_pointCount);
 			return ContactImpulses{m_points[index].normalImpulse, m_points[index].tangentImpulse};
@@ -350,7 +356,7 @@ namespace box2d
 
 		/// Gets the local normal for a face-type manifold.
 		/// @return Local normal if the manifold type is face A or face B, else invalid value.
-		UnitVec2 GetLocalNormal() const noexcept
+		constexpr UnitVec2 GetLocalNormal() const noexcept
 		{
 			return m_localNormal;
 		}
@@ -363,27 +369,32 @@ namespace box2d
 		/// the center of face B for face-B-type manifolds.
 		/// @note Value invalid for unset (e_unset) type manifolds.
 		/// @return Local point.
-		Length2D GetLocalPoint() const noexcept
+		constexpr Length2D GetLocalPoint() const noexcept
 		{
 			return m_localPoint;
 		}
 		
-		Length2D GetOpposingPoint(size_type index) const noexcept
+		constexpr Length2D GetOpposingPoint(size_type index) const noexcept
 		{
 			assert((0 <= index) && (index < m_pointCount));
 			return m_points[index].localPoint;
 		}
 
 	private:
-		using PointArray = std::array<Point, MaxManifoldPoints>;
-		
+		struct PointArray
+		{
+			Point elements[MaxManifoldPoints];
+			constexpr Point& operator[](size_t i) { return elements[i]; }
+			constexpr const Point& operator[](size_t i) const { return elements[i]; }
+		};
+	
 		/// Constructs manifold with array of points using the given values.
 		/// @param t Manifold type.
 		/// @param ln Local normal.
 		/// @param lp Local point.
 		/// @param n number of points defined in arary.
 		/// @param mpa Manifold point array.
-		BOX2D_CONSTEXPR Manifold(Type t, UnitVec2 ln, Length2D lp, size_type n, const PointArray& mpa) noexcept;
+		constexpr Manifold(Type t, UnitVec2 ln, Length2D lp, size_type n, const PointArray& mpa) noexcept;
 		
 		Type m_type = e_unset; ///< Type of collision this manifold is associated with (1-byte).
 		size_type m_pointCount = 0; ///< Number of defined manifold points (1-byte).
@@ -412,7 +423,7 @@ namespace box2d
 		RealNum maxCirclesRatio = RealNum{10};
 	};
 	
-	BOX2D_CONSTEXPR inline Manifold::Conf GetDefaultManifoldConf() noexcept
+	constexpr inline Manifold::Conf GetDefaultManifoldConf() noexcept
 	{
 		return Manifold::Conf{};
 	}
@@ -428,7 +439,8 @@ namespace box2d
 	
 	bool operator!=(const Manifold& lhs, const Manifold& rhs);
 
-	BOX2D_CONSTEXPR inline Manifold::Manifold(Type t, UnitVec2 ln, Length2D lp, size_type n, const PointArray& mpa) noexcept:
+	constexpr inline Manifold::Manifold(Type t, UnitVec2 ln, Length2D lp, size_type n,
+											  const PointArray& mpa) noexcept:
 		m_type{t}, m_localNormal{ln}, m_localPoint{lp}, m_pointCount{n}, m_points{mpa}
 	{
 		assert(t != e_unset || n == 0);
