@@ -52,13 +52,13 @@ public:
 	///
 	/// @note Behavior is undefined if a negative radius is given.
 	///
-	constexpr explicit CircleShape(const Conf& conf = GetDefaultConf()) noexcept:
+	explicit CircleShape(const Conf& conf = GetDefaultConf()) noexcept:
 		Shape{e_circle, conf}, m_location{conf.location}
 	{
 		// Intentionally empty.
 	}
 
-	constexpr explicit CircleShape(const Length radius, const Conf& conf = GetDefaultConf()) noexcept:
+	explicit CircleShape(const Length radius, const Conf& conf = GetDefaultConf()) noexcept:
 		Shape{e_circle, conf}, m_location{conf.location}
 	{
 		SetVertexRadius(radius);
