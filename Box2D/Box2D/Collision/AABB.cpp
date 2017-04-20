@@ -18,6 +18,7 @@
  */
 
 #include <Box2D/Collision/AABB.hpp>
+#include <Box2D/Collision/DistanceProxy.hpp>
 #include <Box2D/Collision/Shapes/Shape.hpp>
 #include <Box2D/Collision/Shapes/EdgeShape.hpp>
 #include <Box2D/Collision/Shapes/ChainShape.hpp>
@@ -37,14 +38,26 @@ AABB box2d::ComputeAABB(const EdgeShape& shape, const Transformation xf, child_c
 
 AABB box2d::ComputeAABB(const PolygonShape& shape, const Transformation xf, child_count_t)
 {
-	assert(shape.GetVertexCount() > 0);
-	auto result = AABB{Transform(shape.GetVertex(0), xf)};
 	const auto count = shape.GetVertexCount();
+	assert(count > 0);
+	auto result = AABB{Transform(shape.GetVertex(0), xf)};
 	for (auto i = decltype(count){1}; i < count; ++i)
 	{
 		result.Include(Transform(shape.GetVertex(i), xf));
 	}
 	return result.Fatten(GetVertexRadius(shape));
+}
+
+AABB box2d::ComputeAABB(const DistanceProxy& proxy, const Transformation xf)
+{
+	const auto count = proxy.GetVertexCount();
+	assert(count > 0);
+	auto result = AABB{Transform(proxy.GetVertex(0), xf)};
+	for (auto i = decltype(count){1}; i < count; ++i)
+	{
+		result.Include(Transform(proxy.GetVertex(i), xf));
+	}
+	return result.Fatten(proxy.GetVertexRadius());
 }
 
 AABB box2d::ComputeAABB(const ChainShape& shape, const Transformation xf, child_count_t childIndex)
@@ -70,8 +83,9 @@ AABB box2d::ComputeAABB(const Shape& shape, const Transformation xf, child_count
 		case Shape::e_chain: return ComputeAABB(static_cast<const ChainShape&>(shape), xf, childIndex);
 		case Shape::e_circle: return ComputeAABB(static_cast<const CircleShape&>(shape), xf, childIndex);
 		case Shape::e_polygon: return ComputeAABB(static_cast<const PolygonShape&>(shape), xf, childIndex);
-		case Shape::e_typeCount: return GetInvalid<AABB>();
+		default: break;
 	}
+	return GetInvalid<AABB>();
 }
 
 AABB box2d::ComputeAABB(const Shape& shape, const Transformation xf)

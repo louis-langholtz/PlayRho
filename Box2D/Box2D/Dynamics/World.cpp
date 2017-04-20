@@ -1611,8 +1611,14 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Contact& contac
 	
 	RemoveUnspeedablesFromIslanded(island.m_bodies);
 
-	// Now solve for remainder of time step
-	return SolveTOI(StepConf{conf}.SetTime((1 - toi) * conf.GetTime()), island);
+	// Now solve for remainder of time step.
+	//
+	// Note: subConf is written the way it is because MSVS2017 emitted errors when
+	//   written as:
+	//     SolveTOI(StepConf{conf}.SetTime((1 - toi) * conf.GetTime()), island);
+	//
+	StepConf subConf{conf};
+	return SolveTOI(subConf.SetTime((1 - toi) * conf.GetTime()), island);
 }
 
 void World::UpdateBody(Body& body, const Position& pos, const Velocity& vel)

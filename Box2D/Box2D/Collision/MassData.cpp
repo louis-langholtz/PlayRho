@@ -274,8 +274,9 @@ MassData box2d::GetMassData(const Shape& shape, Density density)
 		case Shape::e_chain: return GetMassData(static_cast<const ChainShape&>(shape), density);
 		case Shape::e_circle: return GetMassData(static_cast<const CircleShape&>(shape), density);
 		case Shape::e_polygon: return GetMassData(static_cast<const PolygonShape&>(shape), density);
-		case Shape::e_typeCount: return MassData{Mass{0}, GetInvalid<Length2D>(), RotInertia{0}};
+		default: break;
 	}
+	return MassData{Mass{0}, GetInvalid<Length2D>(), RotInertia{0}};
 }
 
 MassData box2d::GetMassData(const Fixture& f)

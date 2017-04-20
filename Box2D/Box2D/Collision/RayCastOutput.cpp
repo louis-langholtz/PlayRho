@@ -290,8 +290,9 @@ RayCastOutput box2d::RayCast(const Shape& shape, const RayCastInput& input,
 		case Shape::e_chain: return RayCast(static_cast<const ChainShape&>(shape), input, xf, childIndex);
 		case Shape::e_circle: return RayCast(static_cast<const CircleShape&>(shape), input, xf, childIndex);
 		case Shape::e_polygon: return RayCast(static_cast<const PolygonShape&>(shape), input, xf, childIndex);
-		case Shape::e_typeCount: return RayCastOutput{};
+		default: break;
 	}
+	return RayCastOutput{};
 }
 
 RayCastOutput box2d::RayCast(const Fixture& f, const RayCastInput& input, child_count_t childIndex)

@@ -31,6 +31,7 @@ namespace box2d
 	class CircleShape;
 	class Fixture;
 	class Body;
+	class DistanceProxy;
 	
 	/// Axis aligned bounding box.
 	///
@@ -247,6 +248,8 @@ namespace box2d
 	AABB ComputeAABB(const Shape& shape, const Transformation xf, child_count_t childIndex);
 
 	AABB ComputeAABB(const Shape& shape, const Transformation xf);
+
+	AABB ComputeAABB(const DistanceProxy& proxy, const Transformation xf);
 
 	AABB ComputeAABB(const Body& body);
 

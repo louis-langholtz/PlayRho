@@ -37,8 +37,9 @@ namespace box2d {
 			case Shape::e_chain: return GetChildCount(static_cast<const ChainShape&>(shape));
 			case Shape::e_circle: return GetChildCount(static_cast<const CircleShape&>(shape));
 			case Shape::e_polygon: return GetChildCount(static_cast<const PolygonShape&>(shape));
-			case Shape::e_typeCount: return 0;
+			default: break;
 		}
+		return 0;
 	}
 	
 	bool TestPoint(const Shape& shape, const Transformation& xf, const Length2D p)
@@ -50,8 +51,9 @@ namespace box2d {
 			case Shape::e_chain: return TestPoint(static_cast<const ChainShape&>(shape), xf, p);
 			case Shape::e_circle: return TestPoint(static_cast<const CircleShape&>(shape), xf, p);
 			case Shape::e_polygon: return TestPoint(static_cast<const PolygonShape&>(shape), xf, p);
-			case Shape::e_typeCount: return false;
+			default: break;
 		}
+		return false;
 	}
 
 	bool TestOverlap(const Shape& shapeA, child_count_t indexA, const Transformation& xfA,
