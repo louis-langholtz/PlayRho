@@ -32,7 +32,7 @@
 
 namespace box2d {
 
-struct AABB;
+class AABB;
 struct BodyDef;
 struct JointDef;
 struct FixtureDef;
