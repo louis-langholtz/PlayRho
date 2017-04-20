@@ -130,9 +130,15 @@ public:
 
 	/// Gets the span of vertices.
 	/// @detail Vertices go counter-clockwise.
-	Span<const Length2D> GetVertices() const noexcept { return Span<const Length2D>(&m_vertices[0], GetVertexCount()); }
+	Span<const Length2D> GetVertices() const noexcept
+	{
+		return Span<const Length2D>(&m_vertices[0], GetVertexCount());
+	}
 
-	Span<const UnitVec2> GetNormals() const noexcept { return Span<const UnitVec2>(&m_normals[0], GetVertexCount()); }
+	Span<const UnitVec2> GetNormals() const noexcept
+	{
+		return Span<const UnitVec2>(&m_normals[0], GetVertexCount());
+	}
 	
 	Length2D GetCentroid() const noexcept { return m_centroid; }
 	
