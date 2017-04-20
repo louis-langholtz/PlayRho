@@ -468,11 +468,15 @@ constexpr Fixed32 GetInvalid() noexcept
 	return Fixed32::GetNaN();
 }
 
+#ifndef WIN32
+
 template <>
 constexpr Fixed64 GetInvalid() noexcept
 {
 	return Fixed64::GetNaN();
 }
+
+#endif
 
 template <>
 constexpr size_t GetInvalid() noexcept

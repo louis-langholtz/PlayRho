@@ -27,10 +27,12 @@ TEST(Fixed32, ByteSizeIs4)
 	EXPECT_EQ(sizeof(Fixed32), size_t(4));
 }
 
+#ifndef WIN32
 TEST(Fixed64, ByteSizeIs8)
 {
 	EXPECT_EQ(sizeof(Fixed64), size_t(8));
 }
+#endif
 
 // Tests of Fixed<T>::GetFromUnsignedInt(v)
 
@@ -43,7 +45,9 @@ TEST(type, GetFromUnsignedInt) \
 }
 
 DECL_GET_FROM_UNSIGNED_INT_TEST(Fixed32)
+#ifndef WIN32
 DECL_GET_FROM_UNSIGNED_INT_TEST(Fixed64)
+#endif
 
 // Tests of Fixed<T>::GetFromSignedInt(v)
 
@@ -58,7 +62,9 @@ TEST(type, GetFromSignedInt) \
 }
 
 DECL_GET_FROM_SIGNED_INT_TEST(Fixed32)
+#ifndef WIN32
 DECL_GET_FROM_SIGNED_INT_TEST(Fixed64)
+#endif
 
 // Tests of Fixed<T>::GetFromFloat(v)
 
@@ -81,7 +87,9 @@ TEST(type, GetFromFloat) \
 }
 
 DECL_GET_FROM_FLOAT_TEST(Fixed32)
+#ifndef WIN32
 DECL_GET_FROM_FLOAT_TEST(Fixed64)
+#endif
 
 // Tests of Fixed<T>::Fixed(v) and comparisons
 
@@ -97,7 +105,9 @@ TEST(type, IntConstructionAndCompare) \
 }
 
 DECL_INT_CONSTRUCTION_AND_COMPARE_TEST(Fixed32)
+#ifndef WIN32
 DECL_INT_CONSTRUCTION_AND_COMPARE_TEST(Fixed64)
+#endif
 
 // Tests of std::isfinite(Fixed<T>)
 
@@ -111,7 +121,9 @@ TEST(type, isfinite) \
 }
 
 DECL_ISFINITE_TEST(Fixed32)
+#ifndef WIN32
 DECL_ISFINITE_TEST(Fixed64)
+#endif
 
 // Tests of std::isnan(Fixed<T>)
 
@@ -134,7 +146,9 @@ TEST(type, isnan) \
 }
 
 DECL_ISNAN_TEST(Fixed32)
+#ifndef WIN32
 DECL_ISNAN_TEST(Fixed64)
+#endif
 
 // Regular tests
 
@@ -147,6 +161,7 @@ TEST(Fixed32, IntCast)
 	EXPECT_EQ(static_cast<int>(Fixed32(+2)), +2);
 }
 
+#ifndef WIN32
 TEST(Fixed64, IntCast)
 {
 	EXPECT_EQ(static_cast<int>(Fixed64( 0)),  0);
@@ -155,6 +170,7 @@ TEST(Fixed64, IntCast)
 	EXPECT_EQ(static_cast<int>(Fixed64(+1)), +1);
 	EXPECT_EQ(static_cast<int>(Fixed64(+2)), +2);
 }
+#endif
 
 TEST(Fixed32, FloatCast)
 {
@@ -163,12 +179,14 @@ TEST(Fixed32, FloatCast)
 	EXPECT_EQ(static_cast<float>(Fixed32(+1)), +1.0f);
 }
 
+#ifndef WIN32
 TEST(Fixed64, FloatCast)
 {
 	EXPECT_EQ(static_cast<float>(Fixed64( 0)),  0.0f);
 	EXPECT_EQ(static_cast<float>(Fixed64(-1)), -1.0f);
 	EXPECT_EQ(static_cast<float>(Fixed64(+1)), +1.0f);
 }
+#endif
 
 TEST(Fixed32, DoubleCast)
 {
@@ -177,12 +195,14 @@ TEST(Fixed32, DoubleCast)
 	EXPECT_EQ(static_cast<double>(Fixed32(+1)), +1.0);
 }
 
+#ifndef WIN32
 TEST(Fixed64, DoubleCast)
 {
 	EXPECT_EQ(static_cast<double>(Fixed64( 0)),  0.0);
 	EXPECT_EQ(static_cast<double>(Fixed64(-1)), -1.0);
 	EXPECT_EQ(static_cast<double>(Fixed64(+1)), +1.0);
 }
+#endif
 
 TEST(Fixed32, FloatConstruction)
 {

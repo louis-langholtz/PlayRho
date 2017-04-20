@@ -67,6 +67,8 @@ struct Vals<Fixed32> {
 	}
 };
 
+#ifndef WIN32
+
 template <>
 struct Vals<Fixed64> {
 	static inline const char* GetGravity()
@@ -74,6 +76,8 @@ struct Vals<Fixed64> {
 		return "-9\\.799999952316284e\\+00f";
 	}
 };
+
+#endif /* !WIN32 */
 
 TEST(Dump, EmptyWorld)
 {
