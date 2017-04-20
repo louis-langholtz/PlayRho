@@ -29,7 +29,7 @@ TEST(DistanceProxy, ByteSize)
 	}
 	else if (sizeof(RealNum) == 8)
 	{
-		EXPECT_EQ(sizeof(DistanceProxy), size_t(56));
+		EXPECT_EQ(sizeof(DistanceProxy), size_t(96));
 	}
 	else if (sizeof(RealNum) == 16)
 	{

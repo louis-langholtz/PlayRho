@@ -22,12 +22,12 @@
 
 using namespace box2d;
 
-TEST(StepConf, ByteSizeIs_96_168_or_320)
+TEST(StepConf, ByteSize)
 {
 	switch (sizeof(RealNum))
 	{
 		case  4: EXPECT_EQ(sizeof(StepConf), size_t(96)); break;
-		case  8: EXPECT_EQ(sizeof(StepConf), size_t(168)); break;
+		case  8: EXPECT_EQ(sizeof(StepConf), size_t(184)); break;
 		case 16: EXPECT_EQ(sizeof(StepConf), size_t(320)); break;
 		default: FAIL(); break;
 	}
@@ -78,7 +78,12 @@ TEST(StepConf, maxTranslation)
 		StepConf conf;
 		conf.tolerance = RealNum(0.0000001) * Meter;
 		conf.maxTranslation = RealNum(8.0);
-		EXPECT_FALSE(IsMaxTranslationWithinTolerance(conf));
+		switch (sizeof(RealNum))
+		{
+			case 4: EXPECT_FALSE(IsMaxTranslationWithinTolerance(conf)); break;
+			case 8: EXPECT_TRUE(IsMaxTranslationWithinTolerance(conf)); break;
+			default: EXPECT_TRUE(IsMaxTranslationWithinTolerance(conf)); break;
+		}
 	}
 }
 

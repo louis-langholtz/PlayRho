@@ -34,7 +34,7 @@ TEST(Angle, ByteSizeIs_4_8_or_16)
 
 TEST(Angle, DegreeAndRadian)
 {
-	EXPECT_EQ(Degree, Radian * Pi / RealNum{180});
+	EXPECT_NEAR(double(Degree / Radian), double(((Pi * Radian) / RealNum{180}) / Radian), 0.0001);
 }
 
 TEST(Angle, GetRevRotationalAngle)
@@ -53,12 +53,12 @@ TEST(Angle, GetNormalized)
 	EXPECT_EQ(GetNormalized(RealNum{0} * Degree) / Degree, RealNum{0});
 	EXPECT_EQ(GetNormalized(RealNum{90.0f} * Degree) / Degree, RealNum{90});
 	EXPECT_EQ(GetNormalized(RealNum{180.0f} * Degree) / Degree, RealNum{180});
-	EXPECT_NEAR(double(GetNormalized(RealNum{270.0f} * Degree) / Degree), double(270), 0.0002);
-	EXPECT_EQ(GetNormalized(RealNum{360.0f} * Degree) / Degree, RealNum{0});
-	EXPECT_NEAR(GetNormalized(RealNum{395.0f} * Degree) / Degree, 35.0, 0.0002);
-	EXPECT_EQ(GetNormalized(RealNum{720.0f} * Degree) / Degree, RealNum{0});
-	EXPECT_NEAR(GetNormalized(RealNum{733.0f} * Degree) / Degree, 13.0, 0.001);
-	EXPECT_EQ(GetNormalized(-RealNum{45.0f} * Degree) / Degree, RealNum{-45});
-	EXPECT_EQ(GetNormalized(-RealNum{90.0f} * Degree) / Degree, RealNum{-90});
-	EXPECT_NEAR(GetNormalized(-RealNum{3610.0f} * Degree) / Degree, -10.0, 0.001);
+	EXPECT_NEAR(  double(GetNormalized(RealNum{270.0f} * Degree) / Degree), 270.0, 0.0002);
+	EXPECT_NEAR(  double(GetNormalized(RealNum{360.0f} * Degree) / Degree),   0.0, 0.0001);
+	EXPECT_NEAR(  double(GetNormalized(RealNum{395.0f} * Degree) / Degree),  35.0, 0.0002);
+	EXPECT_NEAR(  double(GetNormalized(RealNum{720.0f} * Degree) / Degree),   0.0, 0.0001);
+	EXPECT_NEAR(  double(GetNormalized(RealNum{733.0f} * Degree) / Degree),  13.0, 0.0001);
+	EXPECT_NEAR(  double(GetNormalized(-RealNum{45.0f} * Degree) / Degree), -45.0, 0.0001);
+	EXPECT_NEAR(  double(GetNormalized(-RealNum{90.0f} * Degree) / Degree), -90.0, 0.0001);
+	EXPECT_NEAR(double(GetNormalized(-RealNum{3610.0f} * Degree) / Degree), -10.0, 0.001);
 }

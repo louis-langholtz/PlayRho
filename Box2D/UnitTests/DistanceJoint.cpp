@@ -31,7 +31,7 @@ TEST(DistanceJoint, ByteSize)
 	switch (sizeof(RealNum))
 	{
 		case  4: EXPECT_EQ(sizeof(DistanceJoint), size_t(120)); break;
-		case  8: EXPECT_EQ(sizeof(DistanceJoint), size_t(240)); break;
+		case  8: EXPECT_EQ(sizeof(DistanceJoint), size_t(184)); break;
 		case 16: EXPECT_EQ(sizeof(DistanceJoint), size_t(480)); break;
 		default: FAIL(); break;
 	}

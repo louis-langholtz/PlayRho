@@ -62,7 +62,7 @@ TEST(Body, ByteSize)
 			EXPECT_EQ(sizeof(Body), size_t(120 + allSize));
 			break;
 		}
-		case  8: EXPECT_EQ(sizeof(Body), size_t(256)); break;
+		case  8: EXPECT_EQ(sizeof(Body), size_t(288)); break;
 		case 16: EXPECT_EQ(sizeof(Body), size_t(464)); break;
 		default: FAIL(); break;
 	}

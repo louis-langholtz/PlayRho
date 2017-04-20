@@ -48,7 +48,7 @@ TEST(World, ByteSize)
 #endif
 			break;
 		}
-		case  8: EXPECT_EQ(sizeof(World), size_t(352)); break;
+		case  8: EXPECT_EQ(sizeof(World), size_t(376)); break;
 		case 16: EXPECT_EQ(sizeof(World), size_t(400)); break;
 		default: FAIL(); break;
 	}
@@ -1318,19 +1318,43 @@ TEST(World, TilesComesToRest)
 	//   the algorithmic efficiency of the code.
 	//
 #if defined(__core2__)
-	// From commit d361c51d6aca13079e9d44b701715e62cec18a63 onward.
-	EXPECT_EQ(numSteps, 1856ul);
-	EXPECT_EQ(sumRegPosIters, 36720ul);
-	EXPECT_EQ(sumRegVelIters, 264376ul);
-	EXPECT_EQ(sumToiPosIters, 44263ul);
-	EXPECT_EQ(sumToiVelIters, 145488ul);
-
-	// Pre commit d361c51d6aca13079e9d44b701715e62cec18a63
-	//EXPECT_EQ(numSteps, 1814ul);
-	//EXPECT_EQ(sumRegPosIters, 36600ul);
-	//EXPECT_EQ(sumRegVelIters, 264096ul);
-	//EXPECT_EQ(sumToiPosIters, 45022ul);
-	//EXPECT_EQ(sumToiVelIters, 148560ul);
+	switch (sizeof(RealNum))
+	{
+		case  4:
+		{
+			// From commit d361c51d6aca13079e9d44b701715e62cec18a63 onward.
+			EXPECT_EQ(numSteps, 1856ul);
+			EXPECT_EQ(sumRegPosIters, 36720ul);
+			EXPECT_EQ(sumRegVelIters, 264376ul);
+			EXPECT_EQ(sumToiPosIters, 44263ul);
+			EXPECT_EQ(sumToiVelIters, 145488ul);
+			
+			// Pre commit d361c51d6aca13079e9d44b701715e62cec18a63
+			//EXPECT_EQ(numSteps, 1814ul);
+			//EXPECT_EQ(sumRegPosIters, 36600ul);
+			//EXPECT_EQ(sumRegVelIters, 264096ul);
+			//EXPECT_EQ(sumToiPosIters, 45022ul);
+			//EXPECT_EQ(sumToiVelIters, 148560ul);
+			break;
+		}
+		case  8:
+		{
+			EXPECT_EQ(numSteps, 1808ul);
+			EXPECT_EQ(sumRegPosIters, 36684ul);
+			EXPECT_EQ(sumRegVelIters, 264856ul);
+			EXPECT_EQ(sumToiPosIters, 45116ul);
+			EXPECT_EQ(sumToiVelIters, 149392ul);
+			break;
+		}
+		case 16:
+		{
+			break;
+		}
+		default:
+		{
+			FAIL(); break;
+		}
+	}
 #elif defined(__k8__)
 	// From commit d361c51d6aca13079e9d44b701715e62cec18a63 onward.
 	EXPECT_EQ(numSteps, 1855ul);
