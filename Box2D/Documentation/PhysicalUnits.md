@@ -1,5 +1,4 @@
-The Physical Units Interface
-============================
+# The Physical Units Interface
 
 The Physical Units Interface is an interface that ties physical values
 to their required types.
