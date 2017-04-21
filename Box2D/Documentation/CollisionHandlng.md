@@ -31,6 +31,6 @@ rectangles. For two, the rounded collision effect suggested to me that the
 collision manifold calculation for two polygons could be generalized for
 calculating the collision manifold for any two N-gons from an N of 1 on up.
 
-## Thresholded Corner Handling
+## Modified Corner Handling
 
-![Image of Thresholded Corner Handling](images/ThresholdRectRectCollision.png)
+![Image of Modified Corner Handling](images/ThresholdRectRectCollision.png)
