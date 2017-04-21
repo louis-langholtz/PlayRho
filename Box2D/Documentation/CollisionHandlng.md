@@ -17,6 +17,7 @@ Note the **blue** dots near the center of the image
 and the lines that they're connected to. These indicate the directions from
 which impulses are applied. There's an upward impulse, and two impulses
 applied leftward which is against the direction the top rectangle was moving.
+
 Boom! Icky-stickiness.
 
 ## Rounded Corner Handling
@@ -41,7 +42,9 @@ And for three, note the blue dots and lines in this image.
 
 There's still and upward impulse being applied. But now instead of any impulses
 being applied directly against the direction of motion, the impulse is applied
-at angle to the motion. So less icky-stickiness.
+at angle to the motion.
+
+Less icky-stickiness!
 
 ## Modified Corner Handling
 
