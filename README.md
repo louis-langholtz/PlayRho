@@ -1,7 +1,7 @@
 ## What's New
 
-|iOS|Linux|Mac OS X|Win32|
-|---|-----|--------|-----|
+|iOS|Linux|Mac OS X|Windows|
+|---|-----|--------|-------|
 |[![Build Status](https://travis-ci.org/louis-langholtz/Box2D.svg?branch=iosfoo)](https://travis-ci.org/louis-langholtz/Box2D)|[![Build Status](https://travis-ci.org/louis-langholtz/Box2D.svg?branch=dev)](https://travis-ci.org/louis-langholtz/Box2D)|[![Build Status](https://travis-ci.org/louis-langholtz/Box2D.svg?branch=macosxfoo)](https://travis-ci.org/louis-langholtz/Box2D)|[![Build Status](https://travis-ci.org/louis-langholtz/Box2D.svg?branch=win32foo)](https://travis-ci.org/louis-langholtz/Box2D)|
 
 This is a fork by Louis Langholtz of the Box2D physics engine.
@@ -19,7 +19,7 @@ Here's a run-down of some of the changes:
 - Exported symbols are now within the library namespace of `box2d` and are no longer preficed by `b2`.
 - Mutable global variables in the library have been removed or replaced with runtime-time parameters.
 - Preprocessor defines, except those used for include guards, have been replaced with C++ solutions or removed from the API.
-- Rounded corner collisions.
+- [Rounded and modified corner collisions](Box2D/Documentation/CollisionHandlng.md).
 - *Capsule* shapes (using 2-vertex `PolygonShape` instances).
 - More stable polygon stacking.
 - Shared shapes with friction, density, and restitution moved into them (from Fixture class) for reduced memory usage.
