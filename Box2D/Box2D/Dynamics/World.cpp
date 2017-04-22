@@ -2492,11 +2492,11 @@ void World::CreateProxies(Fixture& fixture, const Length aabbExtension)
 	const auto xfm = GetTransformation(fixture);
 	
 	// Reserve proxy space and create proxies in the broad-phase.
-	const auto childCount = GetChildCount(*shape);
+	const auto childCount = shape->GetChildCount();
 	const auto proxies = static_cast<FixtureProxy*>(alloc(sizeof(FixtureProxy) * childCount));
 	for (auto childIndex = decltype(childCount){0}; childIndex < childCount; ++childIndex)
 	{
-		const auto dp = GetDistanceProxy(*shape, childIndex);
+		const auto dp = shape->GetChild(childIndex);
 		const auto aabb = ComputeAABB(dp, xfm);
 		const auto proxyPtr = proxies + childIndex;
 		const auto proxyId = m_broadPhase.CreateProxy(GetFattenedAABB(aabb, aabbExtension), proxyPtr);
@@ -2558,7 +2558,7 @@ child_count_t World::Synchronize(Fixture& fixture,
 	const auto proxies = FixtureAtty::GetProxies(fixture);
 	for (auto&& proxy: proxies)
 	{
-		const auto dp = GetDistanceProxy(*shape, proxy.childIndex);
+		const auto dp = shape->GetChild(proxy.childIndex);
 
 		// Compute an AABB that covers the swept shape (may miss some rotation effect).
 		const auto aabb1 = ComputeAABB(dp, xfm1);

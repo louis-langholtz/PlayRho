@@ -51,7 +51,10 @@ public:
 	{
 		NOT_USED(settings);
 
-		const auto manifold = CollideShapes(m_polygonA, m_transformA, m_polygonB, m_transformB);
+		const auto proxyA = m_polygonA.GetChild(0);
+		const auto proxyB = m_polygonB.GetChild(0);
+
+		const auto manifold = CollideShapes(proxyA, m_transformA, proxyB, m_transformB);
 		const auto pointCount = manifold.GetPointCount();
 
 		drawer.DrawString(5, m_textLine, "point count = %d", pointCount);

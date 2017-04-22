@@ -66,7 +66,21 @@ public:
 	ChainShape(const ChainShape& other);
 
 	/// The destructor frees the vertices using free.
-	~ChainShape();
+	virtual ~ChainShape();
+
+	/// Gets the number of child primitives.
+	/// @return Positive non-zero count.
+	child_count_t GetChildCount() const noexcept override;
+	
+	DistanceProxy GetChild(child_count_t index) const noexcept override;
+
+	/// Computes the mass properties of this shape using its dimensions and density.
+	/// The inertia tensor is computed about the local origin.
+	/// @note Behavior is undefined if the density is negative.
+	/// @return Mass data for this shape.
+	MassData GetMassData() const noexcept override;
+
+	void Accept(Visitor& visitor) const override;
 
 	ChainShape& operator=(const ChainShape& other);
 
@@ -102,6 +116,11 @@ private:
 	child_count_t m_count = 0;
 };
 
+inline void ChainShape::Accept(box2d::Shape::Visitor &visitor) const
+{
+	visitor.Visit(*this);
+}
+
 inline Length2D ChainShape::GetVertex(child_count_t index) const
 {
 	assert((0 <= index) && (index < m_count));
@@ -124,10 +143,6 @@ inline child_count_t GetNextIndex(const ChainShape& shape, child_count_t index) 
 {
 	return GetModuloNext(index, shape.GetVertexCount());
 }
-
-/// Gets the number of child primitives.
-/// @return Positive non-zero count.
-child_count_t GetChildCount(const ChainShape& shape);
 
 /// Tests a point for containment in this shape.
 /// @param xf the shape world transform.

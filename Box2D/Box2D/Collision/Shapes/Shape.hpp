@@ -21,16 +21,24 @@
 #define B2_SHAPE_H
 
 #include <Box2D/Common/Math.hpp>
+#include <Box2D/Collision/DistanceProxy.hpp>
+#include <Box2D/Collision/MassData.hpp>
 
 namespace box2d {
 
-class Fixture;
+class CircleShape;
+class EdgeShape;
+class PolygonShape;
+class ChainShape;
 
 /// Base class for shapes.
+///
 /// @detail A shape is used for collision detection. You can create a shape however you like.
 /// Shapes used for simulation in World are created automatically when a Fixture
 /// is created. Shapes may encapsulate one or more child shapes.
-/// @note This data structure is 8-bytes large (on at least one 64-bit platform).
+///
+/// @note This data structure is 32-bytes large (on at least one 64-bit platform).
+///
 class Shape
 {
 public:
@@ -68,6 +76,17 @@ public:
 		Density density = Density{0};
 	};
 
+	struct Visitor
+	{
+	public:
+		virtual ~Visitor() = default;
+		
+		virtual void Visit(const CircleShape& shape) = 0;
+		virtual void Visit(const EdgeShape& shape) = 0;
+		virtual void Visit(const PolygonShape& shape) = 0;
+		virtual void Visit(const ChainShape& shape) = 0;
+	};
+
 	enum Type
 	{
 		e_circle = 0,
@@ -98,7 +117,23 @@ public:
 
 	Shape(const Shape&) = default;
 
-	~Shape() = default;
+	virtual ~Shape() = default;
+
+	/// Gets the number of child primitives of the shape.
+	/// @return Positive non-zero count.
+	virtual child_count_t GetChildCount() const noexcept = 0;
+
+	/// Gets the child for the given index.
+	/// @note The shape must remain in scope while the proxy is in use.
+	virtual DistanceProxy GetChild(child_count_t index) const noexcept = 0;
+
+	/// Computes the mass properties of this shape using its dimensions and density.
+	/// The inertia tensor is computed about the local origin.
+	/// @note Behavior is undefined if the density is negative.
+	/// @return Mass data for this shape.
+	virtual MassData GetMassData() const noexcept = 0;
+
+	virtual void Accept(Visitor& visitor) const = 0;
 
 	/// Gets the type of this shape.
 	/// @note You can use this to down cast to the concrete shape.
@@ -212,10 +247,6 @@ inline Length GetVertexRadius(const Shape& shape) noexcept
 	return shape.GetVertexRadius();
 }
 
-/// Gets the number of child primitives of the shape.
-/// @return Positive non-zero count.
-child_count_t GetChildCount(const Shape& shape);
-
 /// Tests a point for containment in this shape.
 /// @param xf the shape world transform.
 /// @param p a point in world coordinates.
@@ -225,8 +256,6 @@ bool TestPoint(const Shape& shape, const Transformation& xf, const Length2D p);
 /// Determine if two generic shapes overlap.
 bool TestOverlap(const Shape& shapeA, child_count_t indexA, const Transformation& xfA,
 				 const Shape& shapeB, child_count_t indexB, const Transformation& xfB);
-
-Shape::Type GetType(const Fixture& fixture) noexcept;
 	
 } // namespace box2d
 

@@ -22,10 +22,6 @@
 #include <Box2D/Collision/DistanceProxy.hpp>
 #include <Box2D/Collision/CollideShapes.hpp>
 #include <Box2D/Collision/Shapes/Shape.hpp>
-#include <Box2D/Collision/Shapes/ChainShape.hpp>
-#include <Box2D/Collision/Shapes/CircleShape.hpp>
-#include <Box2D/Collision/Shapes/PolygonShape.hpp>
-#include <Box2D/Collision/Shapes/EdgeShape.hpp>
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/World.hpp>
@@ -37,198 +33,25 @@ using ContactCreateFcn = Contact* (Fixture* fixtureA, child_count_t indexA,
 									   Fixture* fixtureB, child_count_t indexB);
 using ContactDestroyFcn = void (Contact* contact);
 
-static Manifold GetChainCircleManifold(const Fixture* fixtureA, child_count_t indexA,
-									   const Fixture* fixtureB, child_count_t,
-									   const Manifold::Conf conf)
-{
-	const auto xfA = GetTransformation(*fixtureA);
-	const auto xfB = GetTransformation(*fixtureB);
-	const auto edge = (static_cast<const ChainShape*>(fixtureA->GetShape()))->GetChildEdge(indexA);
-	return CollideShapes(edge, xfA,
-						 *static_cast<const CircleShape*>(fixtureB->GetShape()), xfB,
-						 conf);
-}
-
-static Manifold GetChainPolygonManifold(const Fixture* fixtureA, child_count_t indexA,
-										const Fixture* fixtureB, child_count_t,
-										const Manifold::Conf conf)
-{
-	const auto xfA = GetTransformation(*fixtureA);
-	const auto xfB = GetTransformation(*fixtureB);
-	const auto edge = static_cast<const ChainShape*>(fixtureA->GetShape())->GetChildEdge(indexA);
-	return CollideShapes(edge, xfA,
-						 *static_cast<const PolygonShape*>(fixtureB->GetShape()), xfB,
-						 conf);
-}
-
-static Manifold GetCircleCircleManifold(const Fixture* fixtureA, child_count_t,
-										const Fixture* fixtureB, child_count_t,
-										const Manifold::Conf conf)
-{
-	const auto xfA = GetTransformation(*fixtureA);
-	const auto xfB = GetTransformation(*fixtureB);
-	return CollideShapes(*static_cast<const CircleShape*>(fixtureA->GetShape()), xfA,
-						 *static_cast<const CircleShape*>(fixtureB->GetShape()), xfB,
-						 conf);
-}
-
-static Manifold GetEdgeCircleManifold(const Fixture* fixtureA, child_count_t,
-									  const Fixture* fixtureB, child_count_t,
-									  const Manifold::Conf conf)
-{
-	const auto xfA = GetTransformation(*fixtureA);
-	const auto xfB = GetTransformation(*fixtureB);
-	return CollideShapes(*static_cast<const EdgeShape*>(fixtureA->GetShape()), xfA,
-						 *static_cast<const CircleShape*>(fixtureB->GetShape()), xfB,
-						 conf);
-}
-
-static Manifold GetEdgeEdgeManifold(const Fixture* fixtureA, child_count_t,
-									const Fixture* fixtureB, child_count_t,
-									const Manifold::Conf conf)
-{
-	const auto xfA = GetTransformation(*fixtureA);
-	const auto xfB = GetTransformation(*fixtureB);
-	return CollideShapes(*static_cast<const EdgeShape*>(fixtureA->GetShape()), xfA,
-						 *static_cast<const EdgeShape*>(fixtureB->GetShape()), xfB,
-						 conf);
-}
-
-static Manifold GetEdgePolygonManifold(const Fixture* fixtureA, child_count_t,
-									   const Fixture* fixtureB, child_count_t,
-									   const Manifold::Conf conf)
-{
-	const auto xfA = GetTransformation(*fixtureA);
-	const auto xfB = GetTransformation(*fixtureB);
-	return CollideShapes(*static_cast<const EdgeShape*>(fixtureA->GetShape()), xfA,
-						 *static_cast<const PolygonShape*>(fixtureB->GetShape()), xfB,
-						 conf);
-}
-
-static Manifold GetPolygonCircleManifold(const Fixture* fixtureA, child_count_t,
-										 const Fixture* fixtureB, child_count_t,
-										 const Manifold::Conf conf)
-{
-	const auto xfA = GetTransformation(*fixtureA);
-	const auto xfB = GetTransformation(*fixtureB);
-	return CollideShapes(*static_cast<const PolygonShape*>(fixtureA->GetShape()), xfA,
-						 *static_cast<const CircleShape*>(fixtureB->GetShape()), xfB,
-						 conf);
-}
-
-static Manifold GetPolygonPolygonManifold(const Fixture* fixtureA, child_count_t,
-										  const Fixture* fixtureB, child_count_t,
-										  const Manifold::Conf conf)
-{
-	const auto xfA = GetTransformation(*fixtureA);
-	const auto xfB = GetTransformation(*fixtureB);
-	return CollideShapes(*static_cast<const PolygonShape*>(fixtureA->GetShape()), xfA,
-						 *static_cast<const PolygonShape*>(fixtureB->GetShape()), xfB,
-						 conf);
-}
-
 static Manifold GetManifold(const Fixture* fixtureA, child_count_t indexA,
 							const Fixture* fixtureB, child_count_t indexB,
 							const Manifold::Conf conf)
 {
 	const auto xfA = GetTransformation(*fixtureA);
 	const auto shapeA = fixtureA->GetShape();
-	const auto childA = GetDistanceProxy(*shapeA, indexA);
+	const auto childA = shapeA->GetChild(indexA);
 
 	const auto xfB = GetTransformation(*fixtureB);
 	const auto shapeB = fixtureB->GetShape();
-	const auto childB = GetDistanceProxy(*shapeB, indexB);
+	const auto childB = shapeB->GetChild(indexB);
 	
 	return CollideShapes(childA, xfA, childB, xfB, conf);
-}
-
-struct HandlerEntry
-{
-	Contact::ManifoldCalcFunc calcfunc;
-	const bool primary;
-};
-
-static HandlerEntry GetHandlerEntry(Shape::Type type1, Shape::Type type2)
-{
-	assert(type1 == Shape::e_circle || type1 == Shape::e_edge ||
-		   type1 == Shape::e_polygon || type1 == Shape::e_chain);
-	assert(type2 == Shape::e_circle || type2 == Shape::e_edge ||
-		   type2 == Shape::e_polygon || type2 == Shape::e_chain);
-
-	switch (type1)
-	{
-		case Shape::e_circle:
-		{
-			switch (type2)
-			{
-				case Shape::e_circle: return HandlerEntry{GetCircleCircleManifold, true};
-				case Shape::e_edge: return HandlerEntry{GetEdgeCircleManifold, false};
-				case Shape::e_polygon: return HandlerEntry{GetPolygonCircleManifold, false};
-				case Shape::e_chain: return HandlerEntry{GetChainCircleManifold, false};
-				default: break;
-			}
-			break;
-		}
-		case Shape::e_edge:
-		{
-			switch (type2)
-			{
-				case Shape::e_circle: return HandlerEntry{GetEdgeCircleManifold, true};
-				case Shape::e_edge: return HandlerEntry{GetEdgeEdgeManifold, false};
-				case Shape::e_polygon: return HandlerEntry{GetEdgePolygonManifold, true};
-				case Shape::e_chain: return HandlerEntry{nullptr, false};
-				default: break;
-			}
-			break;
-		}
-		case Shape::e_polygon:
-		{
-			switch (type2)
-			{
-				case Shape::e_circle: return HandlerEntry{GetPolygonCircleManifold, true};
-				case Shape::e_edge: return HandlerEntry{GetEdgePolygonManifold, false};
-				case Shape::e_polygon: return HandlerEntry{GetPolygonPolygonManifold, true};
-				case Shape::e_chain: return HandlerEntry{GetChainPolygonManifold, false};
-				default: break;
-			}
-			break;
-		}
-		case Shape::e_chain:
-		{
-			switch (type2)
-			{
-				case Shape::e_circle: return HandlerEntry{GetChainCircleManifold, true};
-				case Shape::e_edge: return HandlerEntry{nullptr, false};
-				case Shape::e_polygon: return HandlerEntry{GetChainPolygonManifold, true};
-				case Shape::e_chain: return HandlerEntry{nullptr, false};
-				default: break;
-			}
-			break;
-		}
-		default:
-			break;
-	}
-	return HandlerEntry{nullptr, false};
 }
 
 Contact* Contact::Create(Fixture& fixtureA, child_count_t indexA,
 						 Fixture& fixtureB, child_count_t indexB)
 {
-	const auto type1 = GetType(fixtureA);
-	const auto type2 = GetType(fixtureB);
-
-	assert(0 <= type1 && type1 < Shape::e_typeCount);
-	assert(0 <= type2 && type2 < Shape::e_typeCount);
-	
-	const auto handler = GetHandlerEntry(type1, type2);
-	const auto calcfunc = ::GetManifold;
-	if (calcfunc)
-	{
-		return (handler.primary)?
-			new Contact{&fixtureA, indexA, &fixtureB, indexB, calcfunc}:
-			new Contact{&fixtureB, indexB, &fixtureA, indexA, calcfunc};
-	}
-	return nullptr;
+	return new Contact{&fixtureA, indexA, &fixtureB, indexB, ::GetManifold};
 }
 
 void Contact::Destroy(Contact* contact)
@@ -399,8 +222,8 @@ TOIOutput box2d::CalcToi(const Contact& contact, const ToiConf conf)
 	const auto bA = fA->GetBody();
 	const auto bB = fB->GetBody();
 
-	const auto proxyA = GetDistanceProxy(*fA->GetShape(), contact.GetChildIndexA());
-	const auto proxyB = GetDistanceProxy(*fB->GetShape(), contact.GetChildIndexB());
+	const auto proxyA = fA->GetShape()->GetChild(contact.GetChildIndexA());
+	const auto proxyB = fB->GetShape()->GetChild(contact.GetChildIndexB());
 
 	// Large rotations can make the root finder of TimeOfImpact fail, so normalize sweep angles.
 	const auto sweepA = GetAnglesNormalized(bA->GetSweep());

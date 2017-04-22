@@ -73,48 +73,15 @@ namespace box2d {
 		RotInertia I;
 	};
 	
+	MassData GetMassData(const Length r, const Density density, const Length2D location);
+	MassData GetMassData(const Length r, const Density density, const Length2D v0, const Length2D v1);
+
 	/// Computes the mass data for the given fixture.
 	/// @detail
 	/// The mass data is based on the density and
 	/// the shape of the fixture. The rotational inertia is about the shape's origin. This operation
 	/// may be expensive.
 	MassData GetMassData(const Fixture& f);
-
-	/// Computes the mass properties of this shape using its dimensions and density.
-	/// The inertia tensor is computed about the local origin.
-	/// @note Behavior is undefined if the given density is negative.
-	/// @param density Density in kilograms per meter squared (must be non-negative).
-	/// @return Mass data for this shape.
-	MassData GetMassData(const Shape& shape, Density density);
-
-	/// Computes the mass properties of this shape using its dimensions and density.
-	/// The inertia tensor is computed about the local origin.
-	/// @note Behavior is undefined if the given density is negative.
-	/// @param density Density in kilograms per meter squared (must be non-negative).
-	/// @return Mass data for this shape.
-	MassData GetMassData(const PolygonShape& shape, Density density);
-	
-	/// Computes the mass properties of this shape using its dimensions and density.
-	/// The inertia tensor is computed about the local origin.
-	/// @note Behavior is undefined if the given density is negative.
-	/// @param density Density in kilograms per meter squared (must be non-negative).
-	/// @return Mass data for this shape.
-	MassData GetMassData(const EdgeShape& shape, Density density);
-	
-	/// Computes the mass properties of this shape using its dimensions and density.
-	/// The inertia tensor is computed about the local origin.
-	/// @note Behavior is undefined if the given density is negative.
-	/// @param density Density in kilograms per meter squared (must be non-negative).
-	/// @return Mass data for this shape.
-	MassData GetMassData(const ChainShape& shape, Density density);
-	
-	/// Computes the mass properties of this shape using its dimensions and density.
-	/// The inertia tensor is computed about the local origin.
-	/// @note Behavior is undefined if the given density is negative.
-	/// @param density Density in kilograms per meter squared (must be non-negative).
-	/// @return Mass data for this shape.
-	MassData GetMassData(const CircleShape& shape, Density density);
-	
 }
 
 #endif /* B2_MASS_DATA_HPP */

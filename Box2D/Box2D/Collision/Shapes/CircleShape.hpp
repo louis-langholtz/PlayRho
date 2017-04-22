@@ -67,6 +67,20 @@ public:
 	CircleShape(const CircleShape&) = default;
 
 	CircleShape& operator=(const CircleShape& other) = default;
+	
+	/// Gets the number of child primitives.
+	/// @return Positive non-zero count.
+	child_count_t GetChildCount() const noexcept override;
+
+	DistanceProxy GetChild(child_count_t index) const noexcept override;
+
+	/// Computes the mass properties of this shape using its dimensions and density.
+	/// The inertia tensor is computed about the local origin.
+	/// @note Behavior is undefined if the density is negative.
+	/// @return Mass data for this shape.
+	MassData GetMassData() const noexcept override;
+
+	void Accept(Visitor& visitor) const override;
 
 	/// Gets the "radius" of the shape.
 	/// @return Non-negative distance.
@@ -90,9 +104,21 @@ private:
 	Length2D m_location = Vec2_zero * Meter;
 };
 
-/// Gets the number of child primitives.
-/// @return Positive non-zero count.
-child_count_t GetChildCount(const CircleShape& shape);
+inline child_count_t CircleShape::GetChildCount() const noexcept
+{
+	return 1;
+}
+
+inline DistanceProxy CircleShape::GetChild(child_count_t index) const noexcept
+{
+	assert(index == 0);
+	return (index == 0)? DistanceProxy{GetVertexRadius(), GetLocation()}: DistanceProxy{};
+}
+
+inline void CircleShape::Accept(box2d::Shape::Visitor &visitor) const
+{
+	visitor.Visit(*this);
+}
 
 /// Tests a point for containment in this shape.
 /// @param xf the shape world transform.

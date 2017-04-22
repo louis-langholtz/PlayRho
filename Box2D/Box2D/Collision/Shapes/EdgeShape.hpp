@@ -74,6 +74,20 @@ public:
 
 	EdgeShape(const EdgeShape&) = default;
 
+	/// Gets the number of child primitives.
+	/// @return Positive non-zero count.
+	child_count_t GetChildCount() const noexcept override;
+
+	DistanceProxy GetChild(child_count_t index) const noexcept override;
+	
+	/// Computes the mass properties of this shape using its dimensions and density.
+	/// The inertia tensor is computed about the local origin.
+	/// @note Behavior is undefined if the density is negative.
+	/// @return Mass data for this shape.
+	MassData GetMassData() const noexcept override;
+
+	void Accept(Visitor& visitor) const override;
+
 	/// Set this as an isolated edge.
 	void Set(const Length2D v1, const Length2D v2);
 
@@ -104,6 +118,24 @@ private:
 	UnitVec2 m_normal2;
 };
 
+inline child_count_t EdgeShape::GetChildCount() const noexcept
+{
+	return 1;
+}
+
+inline DistanceProxy EdgeShape::GetChild(child_count_t index) const noexcept
+{
+	assert(index == 0);
+	return (index == 0)?
+		DistanceProxy{GetVertexRadius(), GetVertex1(), GetVertex2(), GetNormal1(), GetNormal2()}:
+		DistanceProxy{};
+}
+
+inline void EdgeShape::Accept(box2d::Shape::Visitor &visitor) const
+{
+	visitor.Visit(*this);
+}
+
 inline void EdgeShape::SetVertex0(const Length2D v) noexcept
 {
 	m_vertex0 = v;
@@ -113,10 +145,6 @@ inline void EdgeShape::SetVertex3(const Length2D v) noexcept
 {
 	m_vertex3 = v;
 }
-
-/// Gets the number of child primitives.
-/// @return Positive non-zero count.
-child_count_t GetChildCount(const EdgeShape& shape);
 
 /// Tests a point for containment in this shape.
 /// @param xf the shape world transform.

@@ -24,39 +24,6 @@
 #include <Box2D/Collision/Shapes/PolygonShape.hpp>
 
 namespace box2d {
-
-namespace {
-	
-	inline DistanceProxy GetDistanceProxy(const CircleShape& shape, child_count_t)
-	{
-		return DistanceProxy{GetVertexRadius(shape), shape.GetLocation()};
-	}
-
-	inline DistanceProxy GetDistanceProxy(const PolygonShape& shape, child_count_t)
-	{
-		return DistanceProxy{GetVertexRadius(shape), shape.GetVertices(), shape.GetNormals()};
-	}
-
-	inline DistanceProxy GetDistanceProxy(const ChainShape& shape, child_count_t index)
-	{
-		const auto normal = shape.GetNormal(index);
-		return DistanceProxy{
-			GetVertexRadius(shape),
-			shape.GetVertex(index), shape.GetVertex(GetNextIndex(shape, index)),
-			normal, -normal
-		};
-	}
-
-	inline DistanceProxy GetDistanceProxy(const EdgeShape& shape, child_count_t)
-	{
-		return DistanceProxy{
-			GetVertexRadius(shape),
-			shape.GetVertex1(), shape.GetVertex2(),
-			shape.GetNormal1(), shape.GetNormal2()
-		};
-	}
-	
-} // anonymous namespace
 	
 DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, const Length2D d) noexcept
 {
@@ -77,16 +44,7 @@ DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, const Lengt
 
 DistanceProxy GetDistanceProxy(const Shape& shape, child_count_t index)
 {
-	switch (shape.GetType())
-	{
-		case Shape::e_circle: return GetDistanceProxy(*static_cast<const CircleShape*>(&shape), index);
-		case Shape::e_polygon: return GetDistanceProxy(*static_cast<const PolygonShape*>(&shape), index);
-		case Shape::e_chain: return GetDistanceProxy(*static_cast<const ChainShape*>(&shape), index);
-		case Shape::e_edge: return GetDistanceProxy(*static_cast<const EdgeShape*>(&shape), index);
-		case Shape::e_typeCount: break;
-	}
-	assert(false);
-	return DistanceProxy{};
+	return shape.GetChild(index);
 }
 
 } // namespace box2d

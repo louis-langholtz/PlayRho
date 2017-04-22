@@ -27,7 +27,7 @@ namespace box2d
 	class CircleShape;
 	class PolygonShape;
 	class EdgeShape;
-
+#if 0
 	/// Computes the collision manifold between two circles.
 	/// @param shapeA Shape A.
 	/// @param xfA Transformation for shape A.
@@ -87,7 +87,7 @@ namespace box2d
 	Manifold CollideShapes(const EdgeShape& shapeA, const Transformation& xfA,
 						   const PolygonShape& shapeB, const Transformation& xfB,
 						   const Manifold::Conf conf = GetDefaultManifoldConf());
-
+#endif
 	Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
 						   const DistanceProxy& shapeB, const Transformation& xfB,
 						   const Manifold::Conf conf = GetDefaultManifoldConf());

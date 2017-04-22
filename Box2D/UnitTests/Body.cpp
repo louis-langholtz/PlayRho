@@ -161,12 +161,12 @@ TEST(Body, CreateAndDestroyFixture)
 	const auto shape = std::make_shared<CircleShape>(conf);
 	
 	auto fixture = body->CreateFixture(shape, FixtureDef{}, false);
-	ASSERT_NE(fixture, nullptr);
-	ASSERT_NE(fixture->GetShape(), nullptr);
-	EXPECT_EQ(fixture->GetShape()->GetType(), shape->GetType());
-	EXPECT_EQ(GetVertexRadius(*fixture->GetShape()), GetVertexRadius(*shape));
-	EXPECT_EQ(static_cast<const CircleShape*>(fixture->GetShape())->GetLocation().x, shape->GetLocation().x);
-	EXPECT_EQ(static_cast<const CircleShape*>(fixture->GetShape())->GetLocation().y, shape->GetLocation().y);
+	const auto fshape = fixture->GetShape();
+	ASSERT_NE(fshape, nullptr);
+	EXPECT_EQ(typeid(*fshape), typeid(CircleShape));
+	EXPECT_EQ(GetVertexRadius(*fshape), GetVertexRadius(*shape));
+	EXPECT_EQ(static_cast<const CircleShape*>(fshape)->GetLocation().x, shape->GetLocation().x);
+	EXPECT_EQ(static_cast<const CircleShape*>(fshape)->GetLocation().y, shape->GetLocation().y);
 	EXPECT_FALSE(body->GetFixtures().empty());
 	{
 		int i = 0;

@@ -164,6 +164,64 @@ void box2d::Dump(const Joint& joint, size_t index)
 	}
 }
 
+struct ShapeDumper: public Shape::Visitor
+{
+public:
+	void Visit(const CircleShape& shape) override;
+	void Visit(const EdgeShape& shape) override;
+	void Visit(const PolygonShape& shape) override;
+	void Visit(const ChainShape& shape) override;
+};
+
+void ShapeDumper::Visit(const box2d::CircleShape &s)
+{
+	log("    CircleShape shape;\n");
+	log("    shape.m_radius = %.15lef;\n", double{StripUnit(s.GetRadius())});
+	log("    shape.m_p = Vec2(%.15lef, %.15lef);\n",
+		double{StripUnit(s.GetLocation().x)}, double{StripUnit(s.GetLocation().y)});
+}
+
+void ShapeDumper::Visit(const box2d::EdgeShape &s)
+{
+	log("    EdgeShape shape;\n");
+	log("    shape.m_radius = %.15lef;\n", double{StripUnit(GetVertexRadius(s))});
+	log("    shape.m_vertex0.Set(%.15lef, %.15lef);\n",
+		double{StripUnit(s.GetVertex0().x)}, double{StripUnit(s.GetVertex0().y)});
+	log("    shape.m_vertex1.Set(%.15lef, %.15lef);\n",
+		double{StripUnit(s.GetVertex1().x)}, double{StripUnit(s.GetVertex1().y)});
+	log("    shape.m_vertex2.Set(%.15lef, %.15lef);\n",
+		double{StripUnit(s.GetVertex2().x)}, double{StripUnit(s.GetVertex2().y)});
+	log("    shape.m_vertex3.Set(%.15lef, %.15lef);\n",
+		double{StripUnit(s.GetVertex3().x)}, double{StripUnit(s.GetVertex3().y)});
+	log("    shape.m_hasVertex0 = bool(%d);\n", s.HasVertex0());
+	log("    shape.m_hasVertex3 = bool(%d);\n", s.HasVertex3());
+}
+
+void ShapeDumper::Visit(const box2d::PolygonShape &s)
+{
+	const auto vertexCount = s.GetVertexCount();
+	log("    PolygonShape shape;\n");
+	log("    Vec2 vs[%d];\n", vertexCount);
+	for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+	{
+		log("    vs[%d].Set(%.15lef, %.15lef);\n", i,
+			double{StripUnit(s.GetVertex(i).x)}, double{StripUnit(s.GetVertex(i).y)});
+	}
+	log("    shape.Set(vs, %d);\n", vertexCount);
+}
+
+void ShapeDumper::Visit(const box2d::ChainShape &s)
+{
+	log("    ChainShape shape;\n");
+	log("    Vec2 vs[%d];\n", s.GetVertexCount());
+	for (auto i = decltype(s.GetVertexCount()){0}; i < s.GetVertexCount(); ++i)
+	{
+		log("    vs[%d].Set(%.15lef, %.15lef);\n", i,
+			double{StripUnit(s.GetVertex(i).x)}, double{StripUnit(s.GetVertex(i).y)});
+	}
+	log("    shape.CreateChain(vs, %d);\n", s.GetVertexCount());
+}
+
 void box2d::Dump(const Fixture& fixture, size_t bodyIndex)
 {
 	log("    FixtureDef fd;\n");
@@ -175,68 +233,9 @@ void box2d::Dump(const Fixture& fixture, size_t bodyIndex)
 	log("    fd.filter.maskBits = uint16(%d);\n", fixture.GetFilterData().maskBits);
 	log("    fd.filter.groupIndex = int16(%d);\n", fixture.GetFilterData().groupIndex);
 	
-	switch (fixture.GetShape()->GetType())
-	{
-		case Shape::e_circle:
-		{
-			auto s = static_cast<const CircleShape*>(fixture.GetShape());
-			log("    CircleShape shape;\n");
-			log("    shape.m_radius = %.15lef;\n", double{StripUnit(s->GetRadius())});
-			log("    shape.m_p = Vec2(%.15lef, %.15lef);\n",
-				double{StripUnit(s->GetLocation().x)}, double{StripUnit(s->GetLocation().y)});
-		}
-			break;
-			
-		case Shape::e_edge:
-		{
-			auto s = static_cast<const EdgeShape*>(fixture.GetShape());
-			log("    EdgeShape shape;\n");
-			log("    shape.m_radius = %.15lef;\n", double{StripUnit(GetVertexRadius(*s))});
-			log("    shape.m_vertex0.Set(%.15lef, %.15lef);\n",
-				double{StripUnit(s->GetVertex0().x)}, double{StripUnit(s->GetVertex0().y)});
-			log("    shape.m_vertex1.Set(%.15lef, %.15lef);\n",
-				double{StripUnit(s->GetVertex1().x)}, double{StripUnit(s->GetVertex1().y)});
-			log("    shape.m_vertex2.Set(%.15lef, %.15lef);\n",
-				double{StripUnit(s->GetVertex2().x)}, double{StripUnit(s->GetVertex2().y)});
-			log("    shape.m_vertex3.Set(%.15lef, %.15lef);\n",
-				double{StripUnit(s->GetVertex3().x)}, double{StripUnit(s->GetVertex3().y)});
-			log("    shape.m_hasVertex0 = bool(%d);\n", s->HasVertex0());
-			log("    shape.m_hasVertex3 = bool(%d);\n", s->HasVertex3());
-		}
-			break;
-			
-		case Shape::e_polygon:
-		{
-			const auto s = static_cast<const PolygonShape*>(fixture.GetShape());
-			const auto vertexCount = s->GetVertexCount();
-			log("    PolygonShape shape;\n");
-			log("    Vec2 vs[%d];\n", vertexCount);
-			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
-			{
-				log("    vs[%d].Set(%.15lef, %.15lef);\n", i,
-					double{StripUnit(s->GetVertex(i).x)}, double{StripUnit(s->GetVertex(i).y)});
-			}
-			log("    shape.Set(vs, %d);\n", vertexCount);
-		}
-			break;
-			
-		case Shape::e_chain:
-		{
-			auto s = static_cast<const ChainShape*>(fixture.GetShape());
-			log("    ChainShape shape;\n");
-			log("    Vec2 vs[%d];\n", s->GetVertexCount());
-			for (auto i = decltype(s->GetVertexCount()){0}; i < s->GetVertexCount(); ++i)
-			{
-				log("    vs[%d].Set(%.15lef, %.15lef);\n", i,
-					double{StripUnit(s->GetVertex(i).x)}, double{StripUnit(s->GetVertex(i).y)});
-			}
-			log("    shape.CreateChain(vs, %d);\n", s->GetVertexCount());
-		}
-			break;
-			
-		default:
-			return;
-	}
+	const auto shape = fixture.GetShape();
+	ShapeDumper shapeDumper;
+	shape->Accept(shapeDumper);
 	
 	log("\n");
 	log("    fd.shape = &shape;\n");

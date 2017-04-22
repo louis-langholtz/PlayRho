@@ -22,11 +22,11 @@
 
 using namespace box2d;
 
-TEST(CircleShape, ByteSizeIs_16_32_or_64)
+TEST(CircleShape, ByteSize)
 {
 	if (sizeof(RealNum) == 4)
 	{
-		EXPECT_EQ(sizeof(CircleShape), size_t(28));
+		EXPECT_EQ(sizeof(CircleShape), size_t(40));
 	}
 	else if (sizeof(RealNum) == 8)
 	{
@@ -46,8 +46,8 @@ TEST(CircleShape, DefaultConstruction)
 {
 	CircleShape foo{};
 	
-	EXPECT_EQ(foo.GetType(), Shape::e_circle);
-	EXPECT_EQ(GetChildCount(foo), child_count_t{1});
+	EXPECT_EQ(typeid(foo), typeid(CircleShape));
+	EXPECT_EQ(foo.GetChildCount(), child_count_t{1});
 	EXPECT_EQ(foo.GetRadius(), CircleShape::GetDefaultRadius());
 	EXPECT_EQ(foo.GetLocation().x, Length{0});
 	EXPECT_EQ(foo.GetLocation().y, Length{0});
@@ -62,8 +62,8 @@ TEST(CircleShape, InitConstruction)
 	conf.location = position;
 	CircleShape foo{conf};
 	
-	EXPECT_EQ(foo.GetType(), Shape::e_circle);
-	EXPECT_EQ(GetChildCount(foo), child_count_t{1});
+	EXPECT_EQ(typeid(foo), typeid(CircleShape));
+	EXPECT_EQ(foo.GetChildCount(), child_count_t{1});
 	EXPECT_EQ(foo.GetRadius(), radius);
 	EXPECT_EQ(foo.GetLocation().x, position.x);
 	EXPECT_EQ(foo.GetLocation().y, position.y);

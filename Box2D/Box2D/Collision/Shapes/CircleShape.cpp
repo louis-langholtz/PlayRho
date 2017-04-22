@@ -21,9 +21,9 @@
 
 using namespace box2d;
 
-child_count_t box2d::GetChildCount(const CircleShape&)
+MassData CircleShape::GetMassData() const noexcept
 {
-	return 1;
+	return ::GetMassData(GetVertexRadius(), GetDensity(), GetLocation());
 }
 
 bool box2d::TestPoint(const CircleShape& shape, const Transformation& transform, const Length2D p)

@@ -66,6 +66,11 @@ ChainShape::~ChainShape()
 	Clear();
 }
 
+MassData ChainShape::GetMassData() const noexcept
+{
+	return MassData{Mass{0}, Vec2_zero * Meter, RotInertia{0}};
+}
+
 void ChainShape::Clear()
 {
 	m_vertices.clear();
@@ -117,9 +122,6 @@ EdgeShape ChainShape::GetChildEdge(child_count_t index) const
 {
 	assert(index + 1 < m_count);
 
-	const auto isLooped = ::IsLooped(*this);
-	const auto v0 = (index > 0)? m_vertices[index - 1]: isLooped? m_vertices[m_count - 2]: GetInvalid<Length2D>();
-	const auto v3 = (index < (m_count - 2))? m_vertices[index + 2]: isLooped? m_vertices[1]: GetInvalid<Length2D>();
 	auto conf = EdgeShape::Conf{};
 	conf.UseVertexRadius(GetVertexRadius());
 	//conf.v0 = v0;
@@ -127,11 +129,20 @@ EdgeShape ChainShape::GetChildEdge(child_count_t index) const
 	return EdgeShape{m_vertices[index + 0], m_vertices[index + 1], conf};
 }
 
-child_count_t box2d::GetChildCount(const ChainShape& shape)
+child_count_t ChainShape::GetChildCount() const noexcept
 {
 	// edge count = vertex count - 1
-	const auto count = shape.GetVertexCount();
+	const auto count = GetVertexCount();
 	return (count > 1)? count - 1: 0;
+}
+
+DistanceProxy ChainShape::GetChild(child_count_t index) const noexcept
+{
+	return DistanceProxy{
+		GetVertexRadius(),
+		m_vertices[index + 0], m_vertices[index + 1],
+		m_normals[index + 0], -m_normals[index + 0]
+	};
 }
 
 bool box2d::TestPoint(const ChainShape& shape, const Transformation& xf, const Length2D p)

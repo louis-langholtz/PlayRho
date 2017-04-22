@@ -21,6 +21,11 @@
 
 using namespace box2d;
 
+MassData EdgeShape::GetMassData() const noexcept
+{
+	return ::GetMassData(GetVertexRadius(), GetDensity(), GetVertex1(), GetVertex2());
+}
+
 void EdgeShape::Set(const Length2D v1, const Length2D v2)
 {
 	m_vertex1 = v1;
@@ -30,11 +35,6 @@ void EdgeShape::Set(const Length2D v1, const Length2D v2)
 
 	m_normal1 = GetUnitVector(GetFwdPerpendicular(v2 - v1));
 	m_normal2 = -m_normal1;
-}
-
-child_count_t box2d::GetChildCount(const EdgeShape&)
-{
-	return 1;
 }
 
 bool box2d::TestPoint(const EdgeShape& shape, const Transformation& xf, const Length2D p)

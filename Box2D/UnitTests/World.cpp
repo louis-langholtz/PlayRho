@@ -165,7 +165,6 @@ TEST(World, DynamicEdgeBodyHasCorrectMass)
 	const auto shape = std::make_shared<EdgeShape>(v1, v2, conf);
 	shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 	ASSERT_EQ(shape->GetVertexRadius(), RealNum(1) * Meter);
-	ASSERT_EQ(shape->GetType(), Shape::e_edge);
 
 	const auto fixture = body->CreateFixture(shape);
 	ASSERT_NE(fixture, nullptr);
@@ -179,7 +178,6 @@ TEST(World, DynamicEdgeBodyHasCorrectMass)
 	EXPECT_EQ(body->GetInvMass(), RealNum(1) / totalMass);
 
 	ASSERT_NE(fixture->GetShape(), nullptr);
-	EXPECT_EQ(fixture->GetShape()->GetType(), shape->GetType());
 }
 
 TEST(World, CreateAndDestroyJoint)

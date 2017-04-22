@@ -27,19 +27,6 @@
 
 using namespace box2d;
 
-static void Draw(Drawer& drawer, const CircleShape& shape, const Transformation& xf, const Color& color)
-{
-	const auto center = Transform(shape.GetLocation(), xf);
-	const auto radius = shape.GetRadius();
-	const auto fillColor = Color{0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f};
-	drawer.DrawSolidCircle(center, radius, fillColor);
-	drawer.DrawCircle(center, radius, color);
-
-	// Draw a line fixed in the circle to animate rotation.
-	const auto axis = Rotate(Vec2{RealNum{1}, RealNum{0}}, xf.q);
-	drawer.DrawSegment(center, center + radius * axis, color);
-}
-
 static void DrawCorner(Drawer& drawer, Length2D p, Length r, Angle a0, Angle a1, Color color)
 {
 	const auto angleDiff = GetRevRotationalAngle(a0, a1);
@@ -58,7 +45,40 @@ static void DrawCorner(Drawer& drawer, Length2D p, Length r, Angle a0, Angle a1,
 	}
 }
 
-static void Draw(Drawer& drawer, const EdgeShape& shape, const Transformation& xf, const Color& color, bool skins)
+struct ShapeDrawer: public Shape::Visitor
+{
+public:
+	ShapeDrawer(Drawer& d, Color c, bool s, Transformation t):
+		drawer{d}, color{c}, skins{s}, xf{t}
+	{
+		// Intentionally empty.
+	}
+	
+	void Visit(const CircleShape& shape) override;
+	void Visit(const EdgeShape& shape) override;
+	void Visit(const PolygonShape& shape) override;
+	void Visit(const ChainShape& shape) override;
+	
+	Drawer& drawer;
+	Color color;
+	bool skins;
+	Transformation xf;
+};
+
+void ShapeDrawer::Visit(const CircleShape& shape)
+{
+	const auto center = Transform(shape.GetLocation(), xf);
+	const auto radius = shape.GetRadius();
+	const auto fillColor = Color{0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f};
+	drawer.DrawSolidCircle(center, radius, fillColor);
+	drawer.DrawCircle(center, radius, color);
+
+	// Draw a line fixed in the circle to animate rotation.
+	const auto axis = Rotate(Vec2{RealNum{1}, RealNum{0}}, xf.q);
+	drawer.DrawSegment(center, center + radius * axis, color);
+}
+
+void ShapeDrawer::Visit(const EdgeShape& shape)
 {
 	const auto v1 = Transform(shape.GetVertex1(), xf);
 	const auto v2 = Transform(shape.GetVertex2(), xf);
@@ -83,7 +103,7 @@ static void Draw(Drawer& drawer, const EdgeShape& shape, const Transformation& x
 	}
 }
 
-static void Draw(Drawer& drawer, const ChainShape& shape, const Transformation& xf, const Color& color, bool skins)
+void ShapeDrawer::Visit(const ChainShape& shape)
 {
 	const auto count = shape.GetVertexCount();
 	const auto r = shape.GetVertexRadius();
@@ -110,7 +130,7 @@ static void Draw(Drawer& drawer, const ChainShape& shape, const Transformation& 
 	}
 }
 
-static void Draw(Drawer& drawer, const PolygonShape& shape, const Transformation& xf, const Color& color, bool skins)
+void ShapeDrawer::Visit(const PolygonShape& shape)
 {
 	const auto vertexCount = shape.GetVertexCount();
 	auto vertices = std::vector<Length2D>(vertexCount);
@@ -162,28 +182,9 @@ static void Draw(Drawer& drawer, const PolygonShape& shape, const Transformation
 static void Draw(Drawer& drawer, const Fixture& fixture, const Color& color, bool skins)
 {
 	const auto xf = GetTransformation(fixture);
+	auto shapeDrawer = ShapeDrawer{drawer, color, skins, xf};
 	const auto shape = fixture.GetShape();
-	switch (shape->GetType())
-	{
-		case Shape::e_circle:
-			Draw(drawer, *static_cast<const CircleShape*>(shape), xf, color);
-			break;
-			
-		case Shape::e_edge:
-			Draw(drawer, *static_cast<const EdgeShape*>(shape), xf, color, skins);
-			break;
-			
-		case Shape::e_chain:
-			Draw(drawer, *static_cast<const ChainShape*>(shape), xf, color, skins);
-			break;
-			
-		case Shape::e_polygon:
-			Draw(drawer, *static_cast<const PolygonShape*>(shape), xf, color, skins);
-			break;
-			
-		default:
-			break;
-	}
+	shape->Accept(shapeDrawer);
 }
 
 static Color GetColor(const Body& body)

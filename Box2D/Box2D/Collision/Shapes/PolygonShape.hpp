@@ -87,6 +87,20 @@ public:
 	/// may lead to poor stacking behavior.
 	explicit PolygonShape(Span<const Length2D> points, const Conf& conf = GetDefaultConf()) noexcept;
 	
+	/// Gets the number of child primitives.
+	/// @return Positive non-zero count.
+	child_count_t GetChildCount() const noexcept override;
+
+	DistanceProxy GetChild(child_count_t index) const noexcept override;
+
+	/// Computes the mass properties of this shape using its dimensions and density.
+	/// The inertia tensor is computed about the local origin.
+	/// @note Behavior is undefined if the density is negative.
+	/// @return Mass data for this shape.
+	MassData GetMassData() const noexcept override;
+
+	void Accept(Visitor& visitor) const override;
+
 	/// Creates a convex hull from the given array of local points.
 	/// The size of the span must be in the range [1, MaxShapeVertices].
 	/// @warning the points may be re-ordered, even if they form a convex polygon
@@ -111,10 +125,7 @@ public:
 	/// Gets the vertex count.
 	/// @return value between 0 and MaxShapeVertices inclusive.
 	/// @see MaxShapeVertices.
-	vertex_count_t GetVertexCount() const noexcept
-	{
-		return static_cast<vertex_count_t>(m_vertices.size());
-	}
+	vertex_count_t GetVertexCount() const noexcept;
 
 	/// Gets a vertex by index.
 	/// @detail Vertices go counter-clockwise.
@@ -157,6 +168,29 @@ private:
 	Length2D m_centroid = Vec2_zero * Meter;
 };
 
+inline child_count_t PolygonShape::GetChildCount() const noexcept
+{
+	return 1;
+}
+
+inline DistanceProxy PolygonShape::GetChild(child_count_t index) const noexcept
+{
+	assert(index == 0);
+	return (index == 0)?
+		DistanceProxy{GetVertexRadius(), GetVertices(), GetNormals()}:
+		DistanceProxy{};
+}
+
+inline void PolygonShape::Accept(box2d::Shape::Visitor &visitor) const
+{
+	visitor.Visit(*this);
+}
+
+inline PolygonShape::vertex_count_t PolygonShape::GetVertexCount() const noexcept
+{
+	return static_cast<vertex_count_t>(m_vertices.size());
+}
+
 inline Length2D PolygonShape::GetVertex(vertex_count_t index) const
 {
 	assert(0 <= index && index < GetVertexCount());
@@ -173,10 +207,6 @@ inline UnitVec2 PolygonShape::GetNormal(vertex_count_t index) const
 /// @note This must not be called for shapes with less than 2 vertices.
 /// @warning Behavior is undefined if called for a shape with less than 2 vertices.
 Length2D GetEdge(const PolygonShape& shape, PolygonShape::vertex_count_t index);
-
-/// Gets the number of child primitives.
-/// @return Positive non-zero count.
-child_count_t GetChildCount(const PolygonShape& shape);
 
 /// Tests a point for containment in this shape.
 /// @param xf the shape world transform.

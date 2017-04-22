@@ -110,8 +110,8 @@ public:
 		const auto shapeA = static_cast<const PolygonShape*>(GetFixture(m_bodyA)->GetShape());
 		const auto shapeB = static_cast<const PolygonShape*>(GetFixture(m_bodyB)->GetShape());
 
-		const auto proxyA = GetDistanceProxy(*shapeA, 0);
-		const auto proxyB = GetDistanceProxy(*shapeB, 0);
+		const auto proxyA = shapeA->GetChild(0);
+		const auto proxyB = shapeB->GetChild(0);
 		const auto xfmA = m_bodyA->GetTransformation();
 		const auto xfmB = m_bodyB->GetTransformation();
 
@@ -120,7 +120,7 @@ public:
 		const auto maxIndicesBA = GetMaxSeparation(shapeB->GetVertices(), shapeB->GetNormals(), xfmB,
 												   shapeA->GetVertices(), xfmA);
 
-		const auto manifold = CollideShapes(*shapeA, xfmA, *shapeB, xfmB);
+		const auto manifold = CollideShapes(proxyA, xfmA, proxyB, xfmB);
 		const auto panifold = GetManifold(proxyA, xfmA, proxyB, xfmB);
 
 		DistanceConf distanceConf;

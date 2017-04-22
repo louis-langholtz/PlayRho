@@ -48,12 +48,13 @@ public:
 	{
 		const auto color = Color(0.95f, 0.95f, 0.6f);
 		const auto xf = GetTransformation(*fixture);
+		const auto shape = fixture->GetShape();
 
-		switch (GetType(*fixture))
+		switch (shape->GetType())
 		{
 		case Shape::e_circle:
 			{
-				const auto circle = static_cast<const CircleShape*>(fixture->GetShape());
+				const auto circle = static_cast<const CircleShape*>(shape);
 
 				const auto center = Transform(circle->GetLocation(), xf);
 				const auto radius = circle->GetRadius();
@@ -64,7 +65,7 @@ public:
 
 		case Shape::e_polygon:
 			{
-				const auto poly = static_cast<const PolygonShape*>(fixture->GetShape());
+				const auto poly = static_cast<const PolygonShape*>(shape);
 				const auto vertexCount = poly->GetVertexCount();
 				auto vertices = std::vector<Length2D>(vertexCount);
 

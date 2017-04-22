@@ -25,11 +25,11 @@
 
 using namespace box2d;
 
-TEST(Shape, ByteSizeIs_8_16_or_32)
+TEST(Shape, ByteSize)
 {
 	switch (sizeof(RealNum))
 	{
-		case  4: EXPECT_EQ(sizeof(Shape), size_t(20)); break;
+		case  4: EXPECT_EQ(sizeof(Shape), size_t(32)); break;
 		case  8: EXPECT_EQ(sizeof(Shape), size_t(40)); break;
 		case 16: EXPECT_EQ(sizeof(Shape), size_t(80)); break;
 		default: FAIL(); break;
@@ -67,7 +67,7 @@ TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)
 			const auto start = std::chrono::high_resolution_clock::now();
 			for (auto i = decltype(maxloops){0}; i < maxloops; ++i)
 			{
-				const auto manifold = CollideShapes(shape, xfm, shape, xfm);
+				const auto manifold = CollideShapes(shape.GetChild(0), xfm, shape.GetChild(0), xfm);
 				if (manifold.GetPointCount() > 0)
 				{
 					++count;
@@ -114,7 +114,7 @@ TEST(Shape, TestOverlapFasterThanCollideShapesForPolygons)
 			const auto start = std::chrono::high_resolution_clock::now();
 			for (auto i = decltype(maxloops){0}; i < maxloops; ++i)
 			{
-				const auto manifold = CollideShapes(shape, xfm, shape, xfm);
+				const auto manifold = CollideShapes(shape.GetChild(0), xfm, shape.GetChild(0), xfm);
 				if (manifold.GetPointCount() > 0)
 				{
 					++count;

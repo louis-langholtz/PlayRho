@@ -43,11 +43,11 @@ AABB box2d::ComputeAABB(const DistanceProxy& proxy, const Transformation xf)
 
 AABB box2d::ComputeAABB(const Shape& shape, const Transformation xf)
 {
-	const auto childCount = GetChildCount(shape);
+	const auto childCount = shape.GetChildCount();
 	auto sum = AABB{};
 	for (auto i = decltype(childCount){0}; i < childCount; ++i)
 	{
-		const auto dp = GetDistanceProxy(shape, i);
+		const auto dp = shape.GetChild(i);
 		sum.Include(ComputeAABB(dp, xf));
 	}
 	return sum;

@@ -37,8 +37,9 @@ TEST(MassData, ByteSizeIs_16_32_or_64)
 
 TEST(MassData, GetForZeroVertexRadiusCircle)
 {
-	const auto shape = CircleShape(0);
-	const auto mass_data = GetMassData(shape, KilogramPerSquareMeter);
+	auto shape = CircleShape(0);
+	shape.SetDensity(KilogramPerSquareMeter);
+	const auto mass_data = shape.GetMassData();
 	EXPECT_EQ(mass_data.mass, Mass{0});
 	EXPECT_EQ(mass_data.I, RotInertia{0});
 	EXPECT_EQ(mass_data.center.x, RealNum{0} * Meter);
@@ -52,7 +53,7 @@ TEST(MassData, GetForOriginCenteredCircle)
 	conf.location = Vec2{0, 0} * Meter;
 	conf.density = RealNum{1} * KilogramPerSquareMeter;
 	const auto foo = CircleShape{conf};
-	const auto mass_data = GetMassData(foo, conf.density);
+	const auto mass_data = foo.GetMassData();
 	EXPECT_EQ(RealNum{mass_data.mass / Kilogram}, Pi);
 	EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)), 1.5707964, 0.0001);
 	EXPECT_TRUE(almost_equal(StripUnit(mass_data.I), (conf.density / KilogramPerSquareMeter) * (Square(conf.vertexRadius) * Square(conf.vertexRadius) * Pi / (RealNum{2} * SquareMeter * SquareMeter))));
@@ -69,7 +70,7 @@ TEST(MassData, GetForCircle)
 	conf.location = position;
 	conf.density = density;
 	const auto foo = CircleShape{conf};
-	const auto mass_data = GetMassData(foo, density);
+	const auto mass_data = foo.GetMassData();
 	EXPECT_EQ(RealNum{mass_data.mass / Kilogram}, Pi);
 	EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)), 7.85398, 0.0002);
 	EXPECT_EQ(mass_data.center, position);
@@ -85,7 +86,7 @@ TEST(MassData, GetForZeroVertexRadiusRectangle)
 	shape.SetAsBox(RealNum{4} * Meter, RealNum{1} * Meter);
 	ASSERT_EQ(shape.GetCentroid().x, RealNum(0) * Meter);
 	ASSERT_EQ(shape.GetCentroid().y, RealNum(0) * Meter);
-	const auto mass_data = GetMassData(shape, density);
+	const auto mass_data = shape.GetMassData();
 	EXPECT_TRUE(almost_equal(RealNum(mass_data.mass / Kilogram),
 							 RealNum((density / KilogramPerSquareMeter) * (8 * 2))));
 	EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)),
@@ -117,7 +118,7 @@ TEST(MassData, GetForZeroVertexRadiusEdge)
 	conf.vertexRadius = Length{0};
 	conf.density = density;
 	const auto shape = EdgeShape(v1, v2, conf);
-	const auto mass_data = GetMassData(shape, density);
+	const auto mass_data = shape.GetMassData();
 	EXPECT_EQ(RealNum(mass_data.mass / Kilogram), RealNum(0));
 	EXPECT_TRUE(IsValid(mass_data.I));
 	if (IsValid(mass_data.I))
@@ -137,7 +138,7 @@ TEST(MassData, GetForSamePointedEdgeIsSameAsCircle)
 	conf.density = density;
 	auto shape = EdgeShape(conf);
 	shape.Set(v1, v1);
-	const auto mass_data = GetMassData(shape, density);
+	const auto mass_data = shape.GetMassData();
 	
 	const auto circleMass = density * Pi * Square(shape.GetVertexRadius());
 
@@ -189,7 +190,7 @@ TEST(MassData, GetForCenteredEdge)
 	EXPECT_GE(I1, SecondMomentOfArea(0));
 	EXPECT_GE(I2, SecondMomentOfArea(0));
 
-	const auto mass_data = GetMassData(shape, density);
+	const auto mass_data = shape.GetMassData();
 	EXPECT_EQ(mass_data.mass, density * area);
 	EXPECT_TRUE(IsValid(mass_data.I));
 	if (IsValid(mass_data.I))
