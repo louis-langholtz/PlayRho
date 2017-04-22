@@ -162,22 +162,23 @@ static void Draw(Drawer& drawer, const PolygonShape& shape, const Transformation
 static void Draw(Drawer& drawer, const Fixture& fixture, const Color& color, bool skins)
 {
 	const auto xf = GetTransformation(fixture);
-	switch (GetType(fixture))
+	const auto shape = fixture.GetShape();
+	switch (shape->GetType())
 	{
 		case Shape::e_circle:
-			Draw(drawer, *static_cast<const CircleShape*>(fixture.GetShape()), xf, color);
+			Draw(drawer, *static_cast<const CircleShape*>(shape), xf, color);
 			break;
 			
 		case Shape::e_edge:
-			Draw(drawer, *static_cast<const EdgeShape*>(fixture.GetShape()), xf, color, skins);
+			Draw(drawer, *static_cast<const EdgeShape*>(shape), xf, color, skins);
 			break;
 			
 		case Shape::e_chain:
-			Draw(drawer, *static_cast<const ChainShape*>(fixture.GetShape()), xf, color, skins);
+			Draw(drawer, *static_cast<const ChainShape*>(shape), xf, color, skins);
 			break;
 			
 		case Shape::e_polygon:
-			Draw(drawer, *static_cast<const PolygonShape*>(fixture.GetShape()), xf, color, skins);
+			Draw(drawer, *static_cast<const PolygonShape*>(shape), xf, color, skins);
 			break;
 			
 		default:
