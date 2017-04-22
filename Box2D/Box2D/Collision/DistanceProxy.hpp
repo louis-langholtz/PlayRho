@@ -30,7 +30,7 @@ namespace box2d
 	/// Distance Proxy.
 	///
 	/// @detail
-	/// A distance proxy aggragates a convex set of vertices and a radius of those vertices.
+	/// A distance proxy aggragates a convex set of vertices and a vertexRadius of those vertices.
 	/// This can be visualized as a convex N-gon with rounded corners. It's meant to represent
 	/// any single portion of a shape identified by its child-index. These are used by the GJK
 	/// algorithm: "a method for determining the minimium distance between two convex sets".
@@ -54,64 +54,64 @@ namespace box2d
 			m_buffer{copy.m_buffer},
 			m_vertices{copy.m_vertices == &copy.m_buffer[0]? &m_buffer[0]: copy.m_vertices},
 			m_count{copy.m_count},
-			m_radius{copy.m_radius}
+			m_vertexRadius{copy.m_vertexRadius}
 		{
 			// Intentionall empty.
 		}
 		
 		/// Initializing constructor.
 		/// @detail Constructs a distance proxy for a single point shape (a circle).
-		/// @param radius Radius of the given vertex.
+		/// @param vertexRadius Radius of the given vertex.
 		/// @param v0 Vertex 0 (relative to the shape's origin).
-		BOX2D_CONSTEXPR DistanceProxy(Length radius, Length2D v0) noexcept:
-			m_radius{radius}, m_buffer{{v0}}, m_count{1}
+		BOX2D_CONSTEXPR DistanceProxy(Length vertexRadius, Length2D v0) noexcept:
+			m_vertexRadius{vertexRadius}, m_buffer{{v0}}, m_count{1}
 		{
-			assert(radius >= Length{0});
+			assert(vertexRadius >= Length{0});
 		}
 		
 		/// Initializing constructor.
 		/// @detail Constructs a distance proxy for dual point shape (an edge or a chain).
-		/// @param radius Radius of the given vertices.
+		/// @param vertexRadius Radius of the given vertices.
 		/// @param v0 Vertex 0 (relative to the shape's origin).
 		/// @param v1 Vertex 1 (relative to the shape's origin).
-		BOX2D_CONSTEXPR DistanceProxy(Length radius,
+		BOX2D_CONSTEXPR DistanceProxy(Length vertexRadius,
 									  Length2D v0, Length2D v1,
 									  UnitVec2 n0, UnitVec2 n1) noexcept:
-			m_radius{radius},
+			m_vertexRadius{vertexRadius},
 			m_buffer{{v0, v1}},
 			m_normalsBuffer{{n0, n1}},
 			m_count{2}
 		{
-			assert(radius >= Length{0});
+			assert(vertexRadius >= Length{0});
 		}
 		
 		/// Initializing constructor.
 		/// @detail Constructs a distance proxy for n-point shape (like a polygon).
-		/// @param radius Radius of the given vertices.
+		/// @param vertexRadius Radius of the given vertices.
 		/// @param vertices Collection of vertices of the shape (relative to the shape's origin).
 		/// @note The vertices collection must have more than zero elements and no more than
 		///    <code>MaxShapeVertices</code> elements.
 		/// @warning Behavior is undefined if the vertices collection has less than one element or
 		///   more than <code>MaxShapeVertices</code> elements.
-		BOX2D_CONSTEXPR DistanceProxy(Length radius,
+		BOX2D_CONSTEXPR DistanceProxy(Length vertexRadius,
 									  const Span<const Length2D>& vertices,
 									  const Span<const UnitVec2>& normals) noexcept:
-			m_radius{radius},
+			m_vertexRadius{vertexRadius},
 			m_buffer{},
 			m_vertices{vertices.begin()},
 			m_normals{normals.begin()},
 			m_count{static_cast<size_type>(vertices.size())}
 		{
-			assert(radius >= Length{0});
+			assert(vertexRadius >= Length{0});
 			assert(vertices.size() > 0);
 			assert(vertices.size() <= MaxShapeVertices);
 			assert(normals.size() > 0);
 			assert(normals.size() <= MaxShapeVertices);
 		}
 		
-		/// Gets the radius of the vertices of the associated shape.
+		/// Gets the vertexRadius of the vertices of the associated shape.
 		/// @return Non-negative distance.
-		auto GetVertexRadius() const noexcept { return m_radius; }
+		auto GetVertexRadius() const noexcept { return m_vertexRadius; }
 		
 		/// Gets the vertex count.
 		/// @detail This is the count of valid vertex elements that this object provides.
@@ -168,7 +168,7 @@ namespace box2d
 		const UnitVec2* m_normals = &m_normalsBuffer[0];
 		
 		size_type m_count = 0; ///< Count of valid elements of m_vertices.
-		Length m_radius = Length{0}; ///< Radius of the vertices of the associated shape (in meters).
+		Length m_vertexRadius = Length{0}; ///< Radius of the vertices of the associated shape (in meters).
 	};
 	
 	/// Initialize the proxy using the given shape.
