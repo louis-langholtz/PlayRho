@@ -29,25 +29,6 @@
 
 using namespace box2d;
 
-AABB box2d::ComputeAABB(const EdgeShape& shape, const Transformation xf, child_count_t)
-{
-	auto result = AABB{Transform(shape.GetVertex1(), xf)};
-	result.Include(Transform(shape.GetVertex2(), xf));
-	return result.Fatten(GetVertexRadius(shape));
-}
-
-AABB box2d::ComputeAABB(const PolygonShape& shape, const Transformation xf, child_count_t)
-{
-	const auto count = shape.GetVertexCount();
-	assert(count > 0);
-	auto result = AABB{Transform(shape.GetVertex(0), xf)};
-	for (auto i = decltype(count){1}; i < count; ++i)
-	{
-		result.Include(Transform(shape.GetVertex(i), xf));
-	}
-	return result.Fatten(GetVertexRadius(shape));
-}
-
 AABB box2d::ComputeAABB(const DistanceProxy& proxy, const Transformation xf)
 {
 	const auto count = proxy.GetVertexCount();
@@ -60,41 +41,14 @@ AABB box2d::ComputeAABB(const DistanceProxy& proxy, const Transformation xf)
 	return result.Fatten(proxy.GetVertexRadius());
 }
 
-AABB box2d::ComputeAABB(const ChainShape& shape, const Transformation xf, child_count_t childIndex)
-{
-	assert(childIndex < shape.GetVertexCount());
-	
-	auto result = AABB{Transform(shape.GetVertex(childIndex), xf)};
-	result.Include(Transform(shape.GetVertex(GetNextIndex(shape, childIndex)), xf));
-	return result.Fatten(GetVertexRadius(shape));
-}
-
-AABB box2d::ComputeAABB(const CircleShape& shape, const Transformation transform, child_count_t)
-{
-	return GetFattenedAABB(AABB{Transform(shape.GetLocation(), transform)}, shape.GetRadius());
-}
-
-AABB box2d::ComputeAABB(const Shape& shape, const Transformation xf, child_count_t childIndex)
-{
-	assert(shape.GetType() < Shape::e_typeCount);
-	switch (shape.GetType())
-	{
-		case Shape::e_edge: return ComputeAABB(static_cast<const EdgeShape&>(shape), xf, childIndex);
-		case Shape::e_chain: return ComputeAABB(static_cast<const ChainShape&>(shape), xf, childIndex);
-		case Shape::e_circle: return ComputeAABB(static_cast<const CircleShape&>(shape), xf, childIndex);
-		case Shape::e_polygon: return ComputeAABB(static_cast<const PolygonShape&>(shape), xf, childIndex);
-		default: break;
-	}
-	return GetInvalid<AABB>();
-}
-
 AABB box2d::ComputeAABB(const Shape& shape, const Transformation xf)
 {
 	const auto childCount = GetChildCount(shape);
 	auto sum = AABB{};
 	for (auto i = decltype(childCount){0}; i < childCount; ++i)
 	{
-		sum.Include(ComputeAABB(shape, xf, i));
+		const auto dp = GetDistanceProxy(shape, i);
+		sum.Include(ComputeAABB(dp, xf));
 	}
 	return sum;
 }
