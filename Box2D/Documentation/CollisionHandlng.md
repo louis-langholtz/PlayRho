@@ -1,6 +1,6 @@
 # Collision Handling
 
-This is an initial write-up of how collision handling has changed.
+This is an initial write-up of how I've changed the collision handling.
 
 ## The Original Handling
 
