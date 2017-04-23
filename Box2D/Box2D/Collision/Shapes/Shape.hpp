@@ -78,21 +78,35 @@ public:
 		Density density = Density{0};
 	};
 
+	/// Visitor interface.
+	///
+	/// @detail Interface to inerit from for objects wishing to "visit" shapes.
+	/// This uses the vistor design pattern.
+	/// @sa https://en.wikipedia.org/wiki/Visitor_pattern .
+	///
 	struct Visitor
 	{
 	public:
 		virtual ~Visitor() = default;
 		
+		// All subclasses of Shape should have a Visit method specific to them here:
 		virtual void Visit(const CircleShape& shape) = 0;
 		virtual void Visit(const EdgeShape& shape) = 0;
 		virtual void Visit(const PolygonShape& shape) = 0;
 		virtual void Visit(const ChainShape& shape) = 0;
 	};
 
+	/// Default constructor is deleted.
+	/// @detail This is a base class that shouldn't ever be directly instantiated.
 	Shape() = delete;
 
 	/// Initializing constructor.
-	constexpr Shape(const Conf& conf) noexcept:
+	///
+	/// @warning Behavior is undefined if the vertex radius is less than zero.
+	/// @warning Behavior is undefined if the density is less than zero.
+	/// @warning Behavior is undefined if the friction value is less than zero.
+	///
+	Shape(const Conf& conf) noexcept:
 		m_vertexRadius{conf.vertexRadius},
 		m_density{Max(conf.density, Density{0})},
 		m_friction{conf.friction},
@@ -126,14 +140,15 @@ public:
 	virtual RayCastOutput RayCast(const RayCastInput& input, const Transformation& xf,
 								  child_count_t childIndex) const noexcept = 0;
 
-	/// Computes the mass properties of this shape using its dimensions and density.
-	/// The inertia tensor is computed about the local origin.
+	/// Gets the mass properties of this shape using its dimensions and density.
 	/// @note Behavior is undefined if the density is negative.
 	/// @return Mass data for this shape.
 	virtual MassData GetMassData() const noexcept = 0;
 
+	/// Accepts a visitor.
 	virtual void Accept(Visitor& visitor) const = 0;
 	
+	/// Gets the vertex radius.
 	Length GetVertexRadius() const noexcept { return m_vertexRadius; }
 
 	void SetVertexRadius(Length vertexRadius)
