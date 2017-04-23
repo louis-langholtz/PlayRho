@@ -24,70 +24,8 @@
 
 namespace box2d
 {
-	class CircleShape;
-	class PolygonShape;
-	class EdgeShape;
-#if 0
-	/// Computes the collision manifold between two circles.
-	/// @param shapeA Shape A.
-	/// @param xfA Transformation for shape A.
-	/// @param shapeB Shape B.
-	/// @param xfB Transformation for shape B.
-	/// @return An unset-type manifold if the shapes aren't touching, a circles-type manifold
-	///   with one <code>ContactFeature{e_vertex, 0, e_vertex, 0}</code> point otherwise.
-	Manifold CollideShapes(const CircleShape& shapeA, const Transformation& xfA,
-						   const CircleShape& shapeB, const Transformation& xfB,
-						   const Manifold::Conf conf = GetDefaultManifoldConf());
+	class DistanceProxy;
 	
-	/// Computes the collision manifold between a polygon and a circle.
-	/// @param shapeA Shape A.
-	/// @param xfA Transformation for shape A.
-	/// @param shapeB Shape B.
-	/// @param xfB Transformation for shape B.
-	/// @return An unset-type manifold if the shapes aren't touching,
-	///   a circles-type or face-A-type manifold with one point otherwise.
-	Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA,
-						   const CircleShape& shapeB, const Transformation& xfB,
-						   const Manifold::Conf conf = GetDefaultManifoldConf());
-	
-	/// Computes the collision manifold between two polygons.
-	/// @param shapeA Shape A.
-	/// @param xfA Transformation for shape A.
-	/// @param shapeB Shape B.
-	/// @param xfB Transformation for shape B.
-	/// @return An unset-type manifold if the shapes aren't touching,
-	///   a face-A or face-B type manifold with one or two points otherwise.
-	Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA,
-						   const PolygonShape& shapeB, const Transformation& xfB,
-						   const Manifold::Conf conf = GetDefaultManifoldConf());
-	
-	/// Computes the collision manifold between an edge and a circle.
-	/// @param shapeA Shape A.
-	/// @param xfA Transformation for shape A.
-	/// @param shapeB Shape B.
-	/// @param xfB Transformation for shape B.
-	/// @return A one-point circle-type manifold if the circle shape is by either end of the edge,
-	///   a one-point face-A-type manifold if the circle shape is between the edge's ends, or an
-	///   unset-type manifold if the shapes aren't touching.
-	Manifold CollideShapes(const EdgeShape& shapeA, const Transformation& xfA,
-						   const CircleShape& shapeB, const Transformation& xfB,
-						   const Manifold::Conf conf = GetDefaultManifoldConf());
-	
-	Manifold CollideShapes(const EdgeShape& shapeA, const Transformation& xfA,
-						   const EdgeShape& shapeB, const Transformation& xfB,
-						   const Manifold::Conf conf = GetDefaultManifoldConf());
-
-	/// Computes the collision manifold between an edge and a circle.
-	/// @param shapeA Shape A.
-	/// @param xfA Transformation for shape A.
-	/// @param shapeB Shape B.
-	/// @param xfB Transformation for shape B.
-	/// @return An unset-type manifold if the shapes aren't touching,
-	///   a face-A or face-B type manifold with 0 to 2 points otherwise.
-	Manifold CollideShapes(const EdgeShape& shapeA, const Transformation& xfA,
-						   const PolygonShape& shapeB, const Transformation& xfB,
-						   const Manifold::Conf conf = GetDefaultManifoldConf());
-#endif
 	Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
 						   const DistanceProxy& shapeB, const Transformation& xfB,
 						   const Manifold::Conf conf = GetDefaultManifoldConf());
