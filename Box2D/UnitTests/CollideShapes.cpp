@@ -1024,8 +1024,6 @@ TEST(CollideShapes, EdgePolygonFaceB1)
 {
 	auto conf = EdgeShape::Conf{};
 	conf.vertexRadius = 0;
-	conf.v0 = Vec2(5, 7) * Meter;
-	conf.v3 = Vec2(8, 7) * Meter;
 	const auto edge_shape = EdgeShape(Vec2(6, 8) * Meter, Vec2(7, 8) * Meter, conf);
 	const auto edge_xfm = Transformation(Vec2(0, 0) * Meter, GetUnitVector(Vec2(RealNum(0.707106769), RealNum(0.707106769))));
 	const auto poly_shape = PolygonShape({
@@ -1056,8 +1054,6 @@ TEST(CollideShapes, EdgePolygonFaceB2)
 {
 	auto conf = EdgeShape::Conf{};
 	conf.vertexRadius = RealNum{0.000199999995f} * Meter;
-	conf.v0 = Vec2(-4, 3) * Meter;
-	conf.v3 = Vec2(0, 0) * Meter;
 	const auto edge_shape = EdgeShape(Vec2(-6, 2) * Meter, Vec2(-6, 0) * Meter, conf);
 	const auto edge_xfm = Transformation(Vec2(-9.99999904f, 4.0f) * Meter, GetUnitVector(Vec2(RealNum(1), RealNum(0))));
 	const auto poly_shape = PolygonShape({

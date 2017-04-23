@@ -43,9 +43,6 @@ public:
 		constexpr Conf(): Shape::Conf{Shape::Conf{}.UseVertexRadius(GetDefaultVertexRadius())}
 		{
 		}
-		
-		Length2D v0 = GetInvalid<Length2D>();
-		Length2D v3 = GetInvalid<Length2D>();
 	};
 	
 	static Conf GetDefaultConf() noexcept
@@ -61,10 +58,8 @@ public:
 
 	EdgeShape(Length2D v1, Length2D v2, const Conf& conf = GetDefaultConf()) noexcept:
 		Shape{conf},
-		m_vertex0{conf.v0},
 		m_vertex1{v1},
 		m_vertex2{v2},
-		m_vertex3{conf.v3},
 		m_normal1{GetUnitVector(GetFwdPerpendicular(v2 - v1))},
 		m_normal2{-m_normal1}
 	{
@@ -104,16 +99,8 @@ public:
 	/// Set this as an isolated edge.
 	void Set(const Length2D v1, const Length2D v2);
 
-	Length2D GetVertex0() const noexcept { return m_vertex0; }
 	Length2D GetVertex1() const noexcept { return m_vertex1; }
 	Length2D GetVertex2() const noexcept { return m_vertex2; }
-	Length2D GetVertex3() const noexcept { return m_vertex3; }
-
-	void SetVertex0(const Length2D v) noexcept;
-	void SetVertex3(const Length2D v) noexcept;
-
-	bool HasVertex0() const noexcept { return IsValid(m_vertex0); }
-	bool HasVertex3() const noexcept { return IsValid(m_vertex3); }
 
 	UnitVec2 GetNormal1() const noexcept { return m_normal1; }
 	UnitVec2 GetNormal2() const noexcept { return m_normal2; }
@@ -122,10 +109,6 @@ private:
 	/// These are the edge vertices
 	Length2D m_vertex1;
 	Length2D m_vertex2;
-
-	/// Optional adjacent vertices. These are used for smooth collision.
-	Length2D m_vertex0 = GetInvalid<Length2D>();
-	Length2D m_vertex3 = GetInvalid<Length2D>();
 	
 	UnitVec2 m_normal1;
 	UnitVec2 m_normal2;
@@ -147,16 +130,6 @@ inline DistanceProxy EdgeShape::GetChild(child_count_t index) const noexcept
 inline void EdgeShape::Accept(box2d::Shape::Visitor &visitor) const
 {
 	visitor.Visit(*this);
-}
-
-inline void EdgeShape::SetVertex0(const Length2D v) noexcept
-{
-	m_vertex0 = v;
-}
-
-inline void EdgeShape::SetVertex3(const Length2D v) noexcept
-{
-	m_vertex3 = v;
 }
 
 } // namespace box2d

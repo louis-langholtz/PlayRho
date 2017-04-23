@@ -32,6 +32,7 @@
 
 using namespace box2d;
 
+#if 0
 static inline IndexSeparation GetPolygonSeparation(const PolygonShape& polygon, const EdgeInfo& edge)
 {
 	auto max_s = -MaxFloat * Meter;
@@ -79,6 +80,7 @@ static inline IndexSeparation GetPolygonSeparation(const PolygonShape& polygon, 
 	}
 	return IndexSeparation{StripUnit(max_s), index};
 }
+#endif
 
 static inline IndexPairSeparation GetMaxSeparation(const DistanceProxy& shape1, const Transformation& xf1,
 												   const DistanceProxy& shape2, const Transformation& xf2,
@@ -162,6 +164,7 @@ static inline ClipList GetClipPoints(IndexSeparation::index_type iv1, Length sid
 	return ClipSegmentToLine(points, normal2, sideOffset2, iv2);
 }
 
+#if 0
 static Manifold GetManifoldFaceA(const EdgeInfo& edgeInfo,
 								 const PolygonShape& localShapeB,
 								 const Transformation& xf)
@@ -192,7 +195,9 @@ static Manifold GetManifoldFaceA(const EdgeInfo& edgeInfo,
 	}
 	return manifold;
 }
+#endif
 
+#if 0
 static Manifold GetManifoldFaceB(const EdgeInfo& edgeInfo,
 								 const PolygonShape& shapeB,
 								 const PolygonShape& localShapeB,
@@ -236,6 +241,7 @@ static Manifold GetManifoldFaceB(const EdgeInfo& edgeInfo,
 	}
 	return manifold;
 }
+#endif
 
 /// @param shape1 Shape 1. This should be shape A for face-A type manifold or shape B for face-B type manifold.
 /// @param xf1 Transform 1. This should be transform A for face-A type manifold or transform B for face-B type manifold.

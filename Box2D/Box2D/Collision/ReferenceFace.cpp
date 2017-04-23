@@ -23,6 +23,8 @@
 
 using namespace box2d;
 
+#if 0
+
 ReferenceFace box2d::GetReferenceFace(const EdgeInfo& edgeInfo)
 {
 	constexpr auto idx0 = ReferenceFace::index_type{0};
@@ -38,3 +40,5 @@ ReferenceFace box2d::GetReferenceFace(const PolygonShape& localShapeB, const Ref
 	const auto i2 = GetModuloNext(index, localShapeB.GetVertexCount());
 	return ReferenceFace{i1, localShapeB.GetVertex(i1), i2, localShapeB.GetVertex(i2), localShapeB.GetNormal(i1)};
 }
+
+#endif

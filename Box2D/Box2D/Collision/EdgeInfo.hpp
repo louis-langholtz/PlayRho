@@ -24,6 +24,7 @@
 
 namespace box2d
 {
+#if 0
 	class EdgeShape;
 
 	class EdgeInfo
@@ -81,7 +82,8 @@ namespace box2d
 			m_upperLimit = upper;
 		}
 	};
-
+#endif
+	
 } // namespace box2d
 
 #endif /* EdgeInfo_hpp */

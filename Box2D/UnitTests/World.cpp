@@ -159,8 +159,6 @@ TEST(World, DynamicEdgeBodyHasCorrectMass)
 	const auto v1 = Vec2{-1, 0} * Meter;
 	const auto v2 = Vec2{+1, 0} * Meter;
 	auto conf = EdgeShape::Conf{};
-	conf.v0 = GetInvalid<Length2D>();
-	conf.v3 = GetInvalid<Length2D>();
 	conf.vertexRadius = RealNum{1} * Meter;
 	const auto shape = std::make_shared<EdgeShape>(v1, v2, conf);
 	shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);

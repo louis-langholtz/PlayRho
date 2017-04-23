@@ -185,16 +185,10 @@ void ShapeDumper::Visit(const box2d::EdgeShape &s)
 {
 	log("    EdgeShape shape;\n");
 	log("    shape.m_radius = %.15lef;\n", double{StripUnit(GetVertexRadius(s))});
-	log("    shape.m_vertex0.Set(%.15lef, %.15lef);\n",
-		double{StripUnit(s.GetVertex0().x)}, double{StripUnit(s.GetVertex0().y)});
 	log("    shape.m_vertex1.Set(%.15lef, %.15lef);\n",
 		double{StripUnit(s.GetVertex1().x)}, double{StripUnit(s.GetVertex1().y)});
 	log("    shape.m_vertex2.Set(%.15lef, %.15lef);\n",
 		double{StripUnit(s.GetVertex2().x)}, double{StripUnit(s.GetVertex2().y)});
-	log("    shape.m_vertex3.Set(%.15lef, %.15lef);\n",
-		double{StripUnit(s.GetVertex3().x)}, double{StripUnit(s.GetVertex3().y)});
-	log("    shape.m_hasVertex0 = bool(%d);\n", s.HasVertex0());
-	log("    shape.m_hasVertex3 = bool(%d);\n", s.HasVertex3());
 }
 
 void ShapeDumper::Visit(const box2d::PolygonShape &s)

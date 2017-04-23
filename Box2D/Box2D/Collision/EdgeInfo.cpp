@@ -17,6 +17,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+#if 0
 #include <Box2D/Collision/EdgeInfo.hpp>
 #include <Box2D/Collision/Shapes/EdgeShape.hpp>
 
@@ -178,3 +179,4 @@ EdgeInfo::EdgeInfo(const EdgeShape& edge, const Length2D centroid) noexcept:
 	}
 }
 
+#endif

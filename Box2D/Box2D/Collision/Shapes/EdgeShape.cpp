@@ -31,8 +31,6 @@ void EdgeShape::Set(const Length2D v1, const Length2D v2)
 {
 	m_vertex1 = v1;
 	m_vertex2 = v2;
-	m_vertex0 = GetInvalid<Length2D>();
-	m_vertex3 = GetInvalid<Length2D>();
 
 	m_normal1 = GetUnitVector(GetFwdPerpendicular(v2 - v1));
 	m_normal2 = -m_normal1;

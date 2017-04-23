@@ -24,6 +24,7 @@
 
 namespace box2d
 {
+#if 0
 	class EdgeInfo;
 	class PolygonShape;
 
@@ -81,6 +82,7 @@ namespace box2d
 
 	ReferenceFace GetReferenceFace(const EdgeInfo& edgeInfo);
 	ReferenceFace GetReferenceFace(const PolygonShape& localShapeB, const ReferenceFace::index_type index);
+#endif
 }
 
 #endif /* ReferenceFace_hpp */
