@@ -25,7 +25,7 @@ TEST(PolygonShape, ByteSize)
 {
 	switch (sizeof(RealNum))
 	{
-		case  4: EXPECT_EQ(sizeof(PolygonShape), size_t(88)); break;
+		case  4: EXPECT_EQ(sizeof(PolygonShape), size_t(80)); break;
 		case  8: EXPECT_EQ(sizeof(PolygonShape), size_t(104)); break;
 		case 16: EXPECT_EQ(sizeof(PolygonShape), size_t(160)); break;
 		default: FAIL(); break;

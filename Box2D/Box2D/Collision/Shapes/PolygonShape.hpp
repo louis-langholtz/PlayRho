@@ -68,7 +68,7 @@ public:
 	/// @note Polygons with a vertex count less than 1 are "degenerate" and should be
 	///   treated as invalid.
 	explicit PolygonShape(const Conf& conf = GetDefaultConf()) noexcept:
-		Shape{e_polygon, conf}
+		Shape{conf}
 	{
 		// Intentionally empty.
 	}
@@ -93,11 +93,24 @@ public:
 
 	DistanceProxy GetChild(child_count_t index) const noexcept override;
 
+	/// Tests a point for containment in this shape.
+	/// @param xf the shape world transform.
+	/// @param p a point in world coordinates.
+	/// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
+	bool TestPoint(const Transformation& xf, const Length2D p) const noexcept override;
+
 	/// Computes the mass properties of this shape using its dimensions and density.
 	/// The inertia tensor is computed about the local origin.
 	/// @note Behavior is undefined if the density is negative.
 	/// @return Mass data for this shape.
 	MassData GetMassData() const noexcept override;
+
+	/// Cast a ray against a child shape.
+	/// @param input the ray-cast input parameters.
+	/// @param xf the transform to be applied to the shape.
+	/// @param childIndex the child shape index
+	RayCastOutput RayCast(const RayCastInput& input, const Transformation& xf,
+						  child_count_t childIndex) const noexcept override;
 
 	void Accept(Visitor& visitor) const override;
 
@@ -207,12 +220,6 @@ inline UnitVec2 PolygonShape::GetNormal(vertex_count_t index) const
 /// @note This must not be called for shapes with less than 2 vertices.
 /// @warning Behavior is undefined if called for a shape with less than 2 vertices.
 Length2D GetEdge(const PolygonShape& shape, PolygonShape::vertex_count_t index);
-
-/// Tests a point for containment in this shape.
-/// @param xf the shape world transform.
-/// @param p a point in world coordinates.
-/// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
-bool TestPoint(const PolygonShape& shape, const Transformation& xf, const Length2D p);
 
 /// Validate convexity of the given shape.
 /// @note This is a time consuming operation.

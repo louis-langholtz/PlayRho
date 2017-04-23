@@ -23,6 +23,7 @@
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Collision/DistanceProxy.hpp>
 #include <Box2D/Collision/MassData.hpp>
+#include <Box2D/Collision/RayCastOutput.hpp>
 
 namespace box2d {
 
@@ -31,9 +32,10 @@ class EdgeShape;
 class PolygonShape;
 class ChainShape;
 
-/// Base class for shapes.
+/// Shape.
 ///
-/// @detail A shape is used for collision detection. You can create a shape however you like.
+/// @detail Shape is an abstract base class for shapes.
+/// A shape is used for collision detection. You can create a shape however you like.
 /// Shapes used for simulation in World are created automatically when a Fixture
 /// is created. Shapes may encapsulate one or more child shapes.
 ///
@@ -87,27 +89,15 @@ public:
 		virtual void Visit(const ChainShape& shape) = 0;
 	};
 
-	enum Type
-	{
-		e_circle = 0,
-		e_edge = 1,
-		e_polygon = 2,
-		e_chain = 3,
-		e_typeCount = 4
-	};
-
 	Shape() = delete;
 
 	/// Initializing constructor.
-	/// @param type Type of this shape object.
-	constexpr Shape(Type type, const Conf& conf) noexcept:
-		m_type{type},
+	constexpr Shape(const Conf& conf) noexcept:
 		m_vertexRadius{conf.vertexRadius},
 		m_density{Max(conf.density, Density{0})},
 		m_friction{conf.friction},
 		m_restitution{conf.restitution}
 	{
-		assert(type < e_typeCount);
 		assert(conf.vertexRadius >= Length{0});
 		assert(conf.density >= Density{0});
 		assert(conf.friction >= 0);
@@ -126,6 +116,15 @@ public:
 	/// Gets the child for the given index.
 	/// @note The shape must remain in scope while the proxy is in use.
 	virtual DistanceProxy GetChild(child_count_t index) const noexcept = 0;
+	
+	/// Tests a point for containment in this shape.
+	/// @param xf the shape world transform.
+	/// @param p a point in world coordinates.
+	/// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
+	virtual bool TestPoint(const Transformation& xf, const Length2D p) const noexcept = 0;
+
+	virtual RayCastOutput RayCast(const RayCastInput& input, const Transformation& xf,
+								  child_count_t childIndex) const noexcept = 0;
 
 	/// Computes the mass properties of this shape using its dimensions and density.
 	/// The inertia tensor is computed about the local origin.
@@ -134,11 +133,6 @@ public:
 	virtual MassData GetMassData() const noexcept = 0;
 
 	virtual void Accept(Visitor& visitor) const = 0;
-
-	/// Gets the type of this shape.
-	/// @note You can use this to down cast to the concrete shape.
-	/// @return the shape type.
-	Type GetType() const noexcept { return m_type; }
 	
 	Length GetVertexRadius() const noexcept { return m_vertexRadius; }
 
@@ -174,7 +168,6 @@ public:
 	void SetRestitution(RealNum restitution) noexcept;
 
 private:
-	Type m_type;
 	Length m_vertexRadius;
 	Density m_density = KilogramPerSquareMeter * RealNum{0}; ///< Density in kg/m^2. 4-bytes.
 	RealNum m_friction = RealNum{2} / RealNum{10}; ///< Friction as a coefficient. 4-bytes.
@@ -246,12 +239,6 @@ inline Length GetVertexRadius(const Shape& shape) noexcept
 {
 	return shape.GetVertexRadius();
 }
-
-/// Tests a point for containment in this shape.
-/// @param xf the shape world transform.
-/// @param p a point in world coordinates.
-/// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
-bool TestPoint(const Shape& shape, const Transformation& xf, const Length2D p);
 
 /// Determine if two generic shapes overlap.
 bool TestOverlap(const Shape& shapeA, child_count_t indexA, const Transformation& xfA,

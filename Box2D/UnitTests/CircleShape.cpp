@@ -26,7 +26,7 @@ TEST(CircleShape, ByteSize)
 {
 	if (sizeof(RealNum) == 4)
 	{
-		EXPECT_EQ(sizeof(CircleShape), size_t(40));
+		EXPECT_EQ(sizeof(CircleShape), size_t(32));
 	}
 	else if (sizeof(RealNum) == 8)
 	{
@@ -77,14 +77,14 @@ TEST(CircleShape, TestPoint)
 	conf.vertexRadius = radius;
 	conf.location = position;
 	CircleShape foo{conf};
-	EXPECT_TRUE(TestPoint(foo, Transform_identity, Vec2{ 0,  0} * Meter));
-	EXPECT_TRUE(TestPoint(foo, Transform_identity, Vec2{+1,  0} * Meter));
-	EXPECT_TRUE(TestPoint(foo, Transform_identity, Vec2{ 0, +1} * Meter));
-	EXPECT_TRUE(TestPoint(foo, Transform_identity, Vec2{ 0, -1} * Meter));
-	EXPECT_TRUE(TestPoint(foo, Transform_identity, Vec2{-1,  0} * Meter));
-	EXPECT_FALSE(TestPoint(foo, Transform_identity, Vec2{-1,  -1} * Meter));
-	EXPECT_FALSE(TestPoint(foo, Transform_identity, Vec2{+1,  +1} * Meter));
-	EXPECT_FALSE(TestPoint(foo, Transform_identity, Vec2{+RealNum(0.9),  +RealNum(0.9)} * Meter));
+	EXPECT_TRUE(foo.TestPoint(Transform_identity, Vec2{ 0,  0} * Meter));
+	EXPECT_TRUE(foo.TestPoint(Transform_identity, Vec2{+1,  0} * Meter));
+	EXPECT_TRUE(foo.TestPoint(Transform_identity, Vec2{ 0, +1} * Meter));
+	EXPECT_TRUE(foo.TestPoint(Transform_identity, Vec2{ 0, -1} * Meter));
+	EXPECT_TRUE(foo.TestPoint(Transform_identity, Vec2{-1,  0} * Meter));
+	EXPECT_FALSE(foo.TestPoint(Transform_identity, Vec2{-1,  -1} * Meter));
+	EXPECT_FALSE(foo.TestPoint(Transform_identity, Vec2{+1,  +1} * Meter));
+	EXPECT_FALSE(foo.TestPoint(Transform_identity, Vec2{+RealNum(0.9),  +RealNum(0.9)} * Meter));
 }
 
 TEST(CircleShape, ComputeAABB)

@@ -27,21 +27,7 @@
 #include <Box2D/Dynamics/Fixture.hpp>
 
 namespace box2d {
-		
-	bool TestPoint(const Shape& shape, const Transformation& xf, const Length2D p)
-	{
-		assert(shape.GetType() < Shape::e_typeCount);
-		switch (shape.GetType())
-		{
-			case Shape::e_edge: return TestPoint(static_cast<const EdgeShape&>(shape), xf, p);
-			case Shape::e_chain: return TestPoint(static_cast<const ChainShape&>(shape), xf, p);
-			case Shape::e_circle: return TestPoint(static_cast<const CircleShape&>(shape), xf, p);
-			case Shape::e_polygon: return TestPoint(static_cast<const PolygonShape&>(shape), xf, p);
-			default: break;
-		}
-		return false;
-	}
-
+	
 	bool TestOverlap(const Shape& shapeA, child_count_t indexA, const Transformation& xfA,
 					 const Shape& shapeB, child_count_t indexB, const Transformation& xfB)
 	{

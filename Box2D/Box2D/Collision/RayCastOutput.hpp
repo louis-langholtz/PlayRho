@@ -27,11 +27,6 @@ namespace box2d
 	struct RayCastInput;
 	class AABB;
 	class Fixture;
-	class Shape;
-	class CircleShape;
-	class EdgeShape;
-	class PolygonShape;
-	class ChainShape;
 
 	/// Ray-cast output data.
 	/// @detail The ray hits at p1 + fraction * (p2 - p1), where p1 and p2 come from RayCastInput.
@@ -53,41 +48,6 @@ namespace box2d
 	/// @param input the ray-cast input parameters.
 	/// @param childIndex Child index.
 	RayCastOutput RayCast(const Fixture& f, const RayCastInput& input, child_count_t childIndex);
-	
-	/// Cast a ray against a child shape.
-	/// @param input the ray-cast input parameters.
-	/// @param transform the transform to be applied to the shape.
-	/// @param childIndex the child shape index
-	RayCastOutput RayCast(const CircleShape& shape, const RayCastInput& input,
-						  const Transformation& transform, child_count_t childIndex);
-	
-	/// Cast a ray against a child shape.
-	/// @param input the ray-cast input parameters.
-	/// @param transform the transform to be applied to the shape.
-	/// @param childIndex the child shape index
-	RayCastOutput RayCast(const EdgeShape& shape, const RayCastInput& input,
-						  const Transformation& transform, child_count_t childIndex);
-	
-	/// Cast a ray against a child shape.
-	/// @param input the ray-cast input parameters.
-	/// @param transform the transform to be applied to the shape.
-	/// @param childIndex the child shape index
-	RayCastOutput RayCast(const PolygonShape& shape, const RayCastInput& input,
-						  const Transformation& transform, child_count_t childIndex);
-	
-	/// Cast a ray against a child shape.
-	/// @param input the ray-cast input parameters.
-	/// @param transform the transform to be applied to the shape.
-	/// @param childIndex the child shape index
-	RayCastOutput RayCast(const ChainShape& shape, const RayCastInput& input,
-						  const Transformation& transform, child_count_t childIndex);
-
-	/// Casts a ray against a child shape.
-	/// @param input the ray-cast input parameters.
-	/// @param xf Transform to be applied to the shape.
-	/// @param childIndex the child shape index
-	RayCastOutput RayCast(const Shape& shape, const RayCastInput& input,
-						  const Transformation& xf, child_count_t childIndex);
 
 } // namespace box2d
 

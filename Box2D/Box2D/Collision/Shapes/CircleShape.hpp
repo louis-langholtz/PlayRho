@@ -53,13 +53,13 @@ public:
 	/// @note Behavior is undefined if a negative radius is given.
 	///
 	explicit CircleShape(const Conf& conf = GetDefaultConf()) noexcept:
-		Shape{e_circle, conf}, m_location{conf.location}
+		Shape{conf}, m_location{conf.location}
 	{
 		// Intentionally empty.
 	}
 
 	explicit CircleShape(const Length radius, const Conf& conf = GetDefaultConf()) noexcept:
-		Shape{e_circle, conf}, m_location{conf.location}
+		Shape{conf}, m_location{conf.location}
 	{
 		SetVertexRadius(radius);
 	}
@@ -74,11 +74,24 @@ public:
 
 	DistanceProxy GetChild(child_count_t index) const noexcept override;
 
+	/// Tests a point for containment in this shape.
+	/// @param xf the shape world transform.
+	/// @param p a point in world coordinates.
+	/// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
+	bool TestPoint(const Transformation& xf, const Length2D p) const noexcept override;
+
 	/// Computes the mass properties of this shape using its dimensions and density.
 	/// The inertia tensor is computed about the local origin.
 	/// @note Behavior is undefined if the density is negative.
 	/// @return Mass data for this shape.
 	MassData GetMassData() const noexcept override;
+
+	/// Cast a ray against a child shape.
+	/// @param input the ray-cast input parameters.
+	/// @param xf the transform to be applied to the shape.
+	/// @param childIndex the child shape index
+	RayCastOutput RayCast(const RayCastInput& input, const Transformation& xf,
+						  child_count_t childIndex) const noexcept override;
 
 	void Accept(Visitor& visitor) const override;
 
@@ -119,12 +132,6 @@ inline void CircleShape::Accept(box2d::Shape::Visitor &visitor) const
 {
 	visitor.Visit(*this);
 }
-
-/// Tests a point for containment in this shape.
-/// @param xf the shape world transform.
-/// @param p a point in world coordinates.
-/// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
-bool TestPoint(const CircleShape& shape, const Transformation& xf, const Length2D p);
 
 } // namespace box2d
 

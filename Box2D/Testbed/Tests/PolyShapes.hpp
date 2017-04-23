@@ -30,7 +30,7 @@ namespace box2d {
 /// This callback is called by World::QueryAABB. We find all the fixtures
 /// that overlap an AABB. Of those, we use TestOverlap to determine which fixtures
 /// overlap a circle. Up to 4 overlapped fixtures will be highlighted with a yellow border.
-class PolyShapesCallback : public QueryFixtureReporter
+class PolyShapesCallback : public QueryFixtureReporter, public Shape::Visitor
 {
 public:
 	
@@ -44,48 +44,37 @@ public:
 		m_count = 0;
 	}
 
-	void DrawFixture(const Fixture* fixture)
+	void Visit(const CircleShape& shape) override
 	{
-		const auto color = Color(0.95f, 0.95f, 0.6f);
-		const auto xf = GetTransformation(*fixture);
-		const auto shape = fixture->GetShape();
+		const auto center = Transform(shape.GetLocation(), m_xf);
+		const auto radius = shape.GetRadius();
+		g_debugDraw->DrawCircle(center, radius, m_color);
+	}
 
-		switch (shape->GetType())
+	void Visit(const PolygonShape& shape) override
+	{
+		const auto vertexCount = shape.GetVertexCount();
+		auto vertices = std::vector<Length2D>(vertexCount);
+		for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 		{
-		case Shape::e_circle:
-			{
-				const auto circle = static_cast<const CircleShape*>(shape);
-
-				const auto center = Transform(circle->GetLocation(), xf);
-				const auto radius = circle->GetRadius();
-				
-				g_debugDraw->DrawCircle(center, radius, color);
-			}
-			break;
-
-		case Shape::e_polygon:
-			{
-				const auto poly = static_cast<const PolygonShape*>(shape);
-				const auto vertexCount = poly->GetVertexCount();
-				auto vertices = std::vector<Length2D>(vertexCount);
-
-				for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
-				{
-					vertices[i] = Transform(poly->GetVertex(i), xf);
-				}
-
-				g_debugDraw->DrawPolygon(&vertices[0], vertexCount, color);
-			}
-			break;
-				
-		default:
-			break;
+			vertices[i] = Transform(shape.GetVertex(i), m_xf);
 		}
+		g_debugDraw->DrawPolygon(&vertices[0], vertexCount, m_color);
+	}
+
+	void Visit(const EdgeShape&) override
+	{
+		// Intentionally empty.
+	}
+
+	void Visit(const ChainShape&) override
+	{
+		// Intentionally empty.
 	}
 
 	/// Called for each fixture found in the query AABB.
 	/// @return false to terminate the query.
-	bool ReportFixture(Fixture* fixture)
+	bool ReportFixture(Fixture* fixture) override
 	{
 		if (m_count == e_maxCount)
 		{
@@ -98,15 +87,18 @@ public:
 		const auto overlap = TestOverlap(*shape, 0, xfm, m_circle, 0, m_transform);
 		if (overlap)
 		{
-			DrawFixture(fixture);
+			m_xf = GetTransformation(*fixture);
+			shape->Accept(*this);
 			++m_count;
 		}
 
 		return true;
 	}
 
+	Color m_color = Color(0.95f, 0.95f, 0.6f);
 	CircleShape m_circle;
 	Transformation m_transform;
+	Transformation m_xf;
 	Drawer* g_debugDraw;
 	int32 m_count;
 };

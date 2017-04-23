@@ -18,18 +18,19 @@
  */
 
 #include <Box2D/Collision/Shapes/PolygonShape.hpp>
+#include <Box2D/Collision/RayCastInput.hpp>
 #include <Box2D/Common/VertexSet.hpp>
 
 using namespace box2d;
 
 PolygonShape::PolygonShape(Length hx, Length hy, const Conf& conf) noexcept:
-	Shape{e_polygon, conf}
+	Shape{conf}
 {
 	SetAsBox(hx, hy);
 }
 
 PolygonShape::PolygonShape(Span<const Length2D> points, const Conf& conf) noexcept:
-	Shape{e_polygon, conf}
+	Shape{conf}
 {
 	Set(points);
 }
@@ -280,6 +281,126 @@ void PolygonShape::Set(const VertexSet& point_set) noexcept
 	}
 }
 
+bool PolygonShape::TestPoint(const Transformation& xf, const Length2D p) const noexcept
+{
+	const auto dp = p - xf.p;
+	const auto pLocal = InverseRotate(dp, xf.q);
+	const auto vr = GetVertexRadius();
+	const auto count = GetVertexCount();
+	
+	if (count == 1)
+	{
+		const auto v0 = GetVertex(0);
+		const auto center = xf.p + Rotate(v0, xf.q);
+		const auto delta = p - center;
+		return GetLengthSquared(delta) <= Square(vr);
+	}
+	
+	auto maxDot = -MaxFloat * Meter;
+	auto maxIdx = PolygonShape::InvalidVertex;
+	for (auto i = decltype(count){0}; i < count; ++i)
+	{
+		const auto vi = GetVertex(i);
+		const auto delta = pLocal - vi;
+		const auto dot = Dot(GetNormal(i), delta);
+		if (dot > vr)
+		{
+			return false;
+		}
+		if (maxDot < dot)
+		{
+			maxDot = dot;
+			maxIdx = i;
+		}
+	}
+	
+	const auto v0 = GetVertex(maxIdx);
+	const auto v1 = GetVertex(GetModuloNext(maxIdx, count));
+	const auto edge = v1 - v0;
+	const auto delta0 = v0 - pLocal;
+	const auto d0 = Dot(edge, delta0);
+	if (d0 >= Area{0})
+	{
+		// point is nearest v0 and not within edge
+		return GetLengthSquared(delta0) <= Square(vr);
+	}
+	const auto delta1 = pLocal - v1;
+	const auto d1 = Dot(edge, delta1);
+	if (d1 >= Area{0})
+	{
+		// point is nearest v1 and not within edge
+		return GetLengthSquared(delta1) <= Square(vr);
+	}
+	return true;
+}
+
+RayCastOutput PolygonShape::RayCast(const RayCastInput& input, const Transformation& xf,
+								 child_count_t childIndex) const noexcept
+{
+	NOT_USED(childIndex);
+	
+	// Put the ray into the polygon's frame of reference.
+	const auto p1 = InverseRotate(StripUnits(input.p1 - xf.p), xf.q);
+	const auto p2 = InverseRotate(StripUnits(input.p2 - xf.p), xf.q);
+	const auto d = p2 - p1;
+	
+	auto lower = RealNum{0};
+	auto upper = input.maxFraction;
+	constexpr auto InvalidIndex = static_cast<PolygonShape::vertex_count_t>(-1);
+	auto index = InvalidIndex;
+	const auto count = GetVertexCount();
+	for (auto i = decltype(count){0}; i < count; ++i)
+	{
+		// p = p1 + a * d
+		// dot(normal, p - v) = 0
+		// dot(normal, p1 - v) + a * dot(normal, d) = 0
+		const auto numerator = Dot(GetNormal(i), StripUnits(GetVertex(i)) - p1);
+		const auto denominator = Dot(GetNormal(i), d);
+		
+		if (denominator == RealNum{0})
+		{
+			if (numerator < RealNum{0})
+			{
+				return RayCastOutput{};
+			}
+		}
+		else
+		{
+			// Note: we want this predicate without division:
+			// lower < numerator / denominator, where denominator < 0
+			// Since denominator < 0, we have to flip the inequality:
+			// lower < numerator / denominator <==> denominator * lower > numerator.
+			if (denominator < RealNum{0} && numerator < lower * denominator)
+			{
+				// Increase lower.
+				// The segment enters this half-space.
+				lower = numerator / denominator;
+				index = i;
+			}
+			else if (denominator > RealNum{0} && numerator < upper * denominator)
+			{
+				// Decrease upper.
+				// The segment exits this half-space.
+				upper = numerator / denominator;
+			}
+		}
+		
+		if (upper < lower)
+		{
+			return RayCastOutput{};
+		}
+	}
+	
+	assert((RealNum{0} <= lower) && (lower <= input.maxFraction));
+	
+	if (index != InvalidIndex)
+	{
+		return RayCastOutput{Rotate(GetNormal(index), xf.q), lower};
+	}
+	
+	return RayCastOutput{};
+}
+
 size_t box2d::FindLowestRightMostVertex(Span<const Length2D> vertices)
 {
 	const auto size = vertices.size();
@@ -340,55 +461,3 @@ bool box2d::Validate(const PolygonShape& shape)
 	return true;
 }
 
-bool box2d::TestPoint(const PolygonShape& shape, const Transformation& xf, const Length2D p)
-{
-	const auto dp = p - xf.p;
-	const auto pLocal = InverseRotate(dp, xf.q);
-	const auto vr = shape.GetVertexRadius();
-	const auto count = shape.GetVertexCount();
-	
-	if (count == 1)
-	{
-		const auto v0 = shape.GetVertex(0);
-		const auto center = xf.p + Rotate(v0, xf.q);
-		const auto delta = p - center;
-		return GetLengthSquared(delta) <= Square(vr);
-	}
-
-	auto maxDot = -MaxFloat * Meter;
-	auto maxIdx = PolygonShape::InvalidVertex;
-	for (auto i = decltype(count){0}; i < count; ++i)
-	{
-		const auto vi = shape.GetVertex(i);
-		const auto delta = pLocal - vi;
-		const auto dot = Dot(shape.GetNormal(i), delta);
-		if (dot > vr)
-		{
-			return false;
-		}
-		if (maxDot < dot)
-		{
-			maxDot = dot;
-			maxIdx = i;
-		}
-	}
-
-	const auto v0 = shape.GetVertex(maxIdx);
-	const auto v1 = shape.GetVertex(GetModuloNext(maxIdx, count));
-	const auto edge = v1 - v0;
-	const auto delta0 = v0 - pLocal;
-	const auto d0 = Dot(edge, delta0);
-	if (d0 >= Area{0})
-	{
-		// point is nearest v0 and not within edge
-		return GetLengthSquared(delta0) <= Square(vr);
-	}
-	const auto delta1 = pLocal - v1;
-	const auto d1 = Dot(edge, delta1);
-	if (d1 >= Area{0})
-	{
-		// point is nearest v1 and not within edge
-		return GetLengthSquared(delta1) <= Square(vr);
-	}
-	return true;
-}

@@ -85,7 +85,7 @@ AABB box2d::GetAABB(const Fixture& fixture, child_count_t childIndex) noexcept
 
 bool box2d::TestPoint(const Fixture& f, const Length2D p)
 {
-	return TestPoint(*f.GetShape(), GetTransformation(f), p);
+	return f.GetShape()->TestPoint(GetTransformation(f), p);
 }
 
 void box2d::SetAwake(Fixture& f) noexcept

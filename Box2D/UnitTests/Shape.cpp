@@ -29,7 +29,7 @@ TEST(Shape, ByteSize)
 {
 	switch (sizeof(RealNum))
 	{
-		case  4: EXPECT_EQ(sizeof(Shape), size_t(32)); break;
+		case  4: EXPECT_EQ(sizeof(Shape), size_t(24)); break;
 		case  8: EXPECT_EQ(sizeof(Shape), size_t(40)); break;
 		case 16: EXPECT_EQ(sizeof(Shape), size_t(80)); break;
 		default: FAIL(); break;
