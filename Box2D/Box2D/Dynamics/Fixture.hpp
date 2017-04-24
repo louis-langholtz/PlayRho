@@ -37,17 +37,20 @@ class Shape;
 /// This holds contact filtering data.
 struct Filter
 {
+	using bits_type = std::uint16_t;
+	using index_type = std::int16_t;
+
 	/// The collision category bits. Normally you would just set one bit.
-	uint16 categoryBits = 0x0001;
+	bits_type categoryBits = 0x0001;
 
 	/// The collision mask bits. This states the categories that this
 	/// shape would accept for collision.
-	uint16 maskBits = 0xFFFF;
+	bits_type maskBits = 0xFFFF;
 
 	/// Collision groups allow a certain group of objects to never collide (negative)
 	/// or always collide (positive). Zero means no collision group. Non-zero group
 	/// filtering always wins against the mask bits.
-	int16 groupIndex = 0;
+	index_type groupIndex = 0;
 };
 
 /// Fixture definition.

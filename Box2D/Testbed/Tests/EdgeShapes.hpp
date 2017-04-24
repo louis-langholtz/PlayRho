@@ -110,7 +110,7 @@ public:
 		m_angle = 0.0f;
 	}
 
-	void Create(int32 index)
+	void Create(int index)
 	{
 		if (m_bodies[m_bodyIndex])
 		{
@@ -147,7 +147,7 @@ public:
 
 	void Destroy()
 	{
-		for (int32 i = 0; i < e_maxBodies; ++i)
+		for (auto i = 0; i < e_maxBodies; ++i)
 		{
 			if (m_bodies[i])
 			{
@@ -219,7 +219,7 @@ public:
 		return new EdgeShapes;
 	}
 
-	int32 m_bodyIndex;
+	int m_bodyIndex;
 	Body* m_bodies[e_maxBodies];
 	PolygonShape m_polygons[4];
 	std::shared_ptr<CircleShape> m_circle = std::make_shared<CircleShape>(RealNum{0.5f} * Meter);

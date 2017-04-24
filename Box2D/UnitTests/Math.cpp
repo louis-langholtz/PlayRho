@@ -529,7 +529,7 @@ TEST(Math, NextPowerOfTwo)
 	EXPECT_EQ(NextPowerOfTwo(15u), 16u);
 	EXPECT_EQ(NextPowerOfTwo(16u), 32u);
 
-	constexpr auto max = std::numeric_limits<uint32>::max() / 512;
+	constexpr auto max = std::numeric_limits<std::uint32_t>::max() / 512;
 	for (auto i = decltype(max){0}; i < max; ++i)
 	{
 		const auto next = std::pow(2, std::ceil(std::log(i + 1)/std::log(2)));

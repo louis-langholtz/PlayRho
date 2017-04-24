@@ -176,7 +176,7 @@ public:
 			auto angle = 0.0f;
 			const auto delta = Pi / 3.0f;
 			Length2D vertices[6];
-			for (int32 i = 0; i < 6; ++i)
+			for (auto i = 0; i < 6; ++i)
 			{
 				vertices[i] = Vec2(0.5f * cosf(angle), 0.5f * sinf(angle)) * Meter;
 				angle += delta;

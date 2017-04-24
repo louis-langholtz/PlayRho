@@ -28,17 +28,17 @@ namespace box2d {
 // The 3 small ones always collide.
 // The 3 large ones never collide.
 // The boxes don't collide with triangles (except if both are small).
-const int16	k_smallGroup = 1;
-const int16 k_largeGroup = -1;
+const Filter::index_type k_smallGroup = 1;
+const Filter::index_type k_largeGroup = -1;
 
-const uint16 k_defaultCategory = 0x0001;
-const uint16 k_triangleCategory = 0x0002;
-const uint16 k_boxCategory = 0x0004;
-const uint16 k_circleCategory = 0x0008;
+const Filter::bits_type k_defaultCategory = 0x0001;
+const Filter::bits_type k_triangleCategory = 0x0002;
+const Filter::bits_type k_boxCategory = 0x0004;
+const Filter::bits_type k_circleCategory = 0x0008;
 
-const uint16 k_triangleMask = 0xFFFF;
-const uint16 k_boxMask = 0xFFFF ^ k_triangleCategory;
-const uint16 k_circleMask = 0xFFFF;
+const Filter::bits_type k_triangleMask = 0xFFFF;
+const Filter::bits_type k_boxMask = 0xFFFF ^ k_triangleCategory;
+const Filter::bits_type k_circleMask = 0xFFFF;
 
 class CollisionFiltering : public Test
 {

@@ -30,9 +30,9 @@ namespace box2d
 	/// @note This data structure is 4-bytes large.
 	struct ContactFeature
 	{
-		using index_t = uint8; ///< Index type.
+		using index_t = std::uint8_t; ///< Index type.
 		
-		enum Type: uint8
+		enum Type: std::uint8_t
 		{
 			e_vertex = 0,
 			e_face = 1

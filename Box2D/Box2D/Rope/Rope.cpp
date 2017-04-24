@@ -90,7 +90,7 @@ void Rope::Initialize(const RopeDef* def)
 	m_k3 = def->k3;
 }
 
-void Rope::Step(RealNum h, int32 iterations)
+void Rope::Step(RealNum h, int iterations)
 {
 	if (h == 0.0f)
 	{

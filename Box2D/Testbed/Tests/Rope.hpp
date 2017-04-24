@@ -30,11 +30,11 @@ class RopeTest : public Test
 public:
 	RopeTest()
 	{
-		const int32 N = 40;
+		const auto N = 40;
 		Vec2 vertices[N];
 		RealNum masses[N];
 
-		for (int32 i = 0; i < N; ++i)
+		for (auto i = decltype(N){0}; i < N; ++i)
 		{
 			vertices[i] = Vec2(0.0f, 20.0f - 0.25f * i);
 			masses[i] = 1.0f;

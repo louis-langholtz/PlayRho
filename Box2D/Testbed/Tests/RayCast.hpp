@@ -41,7 +41,7 @@ public:
 		const auto userData = body->GetUserData();
 		if (userData)
 		{
-			const auto index = *static_cast<int32*>(userData);
+			const auto index = *static_cast<int*>(userData);
 			if (index == 0)
 			{
 				// By returning -1, we instruct the calling code to ignore this fixture and
@@ -81,7 +81,7 @@ public:
 		const auto userData = body->GetUserData();
 		if (userData)
 		{
-			const auto index = *static_cast<int32*>(userData);
+			const auto index = *static_cast<int*>(userData);
 			if (index == 0)
 			{
 				// By returning -1, we instruct the calling code to ignore this fixture
@@ -126,7 +126,7 @@ public:
 		const auto userData = body->GetUserData();
 		if (userData)
 		{
-			const auto index = *static_cast<int32*>(userData);
+			const auto index = *static_cast<int*>(userData);
 			if (index == 0)
 			{
 				// By returning -1, we instruct the calling code to ignore this fixture
@@ -154,7 +154,7 @@ public:
 
 	Length2D m_points[e_maxCount];
 	UnitVec2 m_normals[e_maxCount];
-	int32 m_count;
+	int m_count;
 };
 
 
@@ -221,7 +221,7 @@ public:
 		m_mode = e_closest;
 	}
 
-	void Create(int32 index)
+	void Create(int index)
 	{
 		if (m_bodies[m_bodyIndex])
 		{
@@ -264,7 +264,7 @@ public:
 
 	void Destroy()
 	{
-		for (int32 i = 0; i < e_maxBodies; ++i)
+		for (auto i = 0; i < e_maxBodies; ++i)
 		{
 			if (m_bodies[i])
 			{
@@ -378,7 +378,7 @@ public:
 			m_world->RayCast(&callback, point1, point2);
 			drawer.DrawSegment(point1, point2, Color(0.8f, 0.8f, 0.8f));
 
-			for (int32 i = 0; i < callback.m_count; ++i)
+			for (auto i = decltype(callback.m_count){0}; i < callback.m_count; ++i)
 			{
 				const auto p = callback.m_points[i];
 				const auto n = callback.m_normals[i];
@@ -425,7 +425,7 @@ public:
 
 			Color color(1.0f, 1.0f, 1.0f);
 			Vec2 vs[4];
-			for (int32 i = 0; i < 4; ++i)
+			for (auto i = 0; i < 4; ++i)
 			{
 				vs[i] = Transform(shape.m_vertices[i], xf);
 			}
@@ -441,9 +441,9 @@ public:
 		return new RayCast;
 	}
 
-	int32 m_bodyIndex;
+	int m_bodyIndex;
 	Body* m_bodies[e_maxBodies];
-	int32 m_userData[e_maxBodies];
+	int m_userData[e_maxBodies];
 	std::shared_ptr<PolygonShape> m_polygons[4];
 	std::shared_ptr<CircleShape> m_circle = std::make_shared<CircleShape>();
 	std::shared_ptr<EdgeShape> m_edge = std::make_shared<EdgeShape>(Vec2(-1.0f, 0.0f) * Meter, Vec2(1.0f, 0.0f) * Meter);

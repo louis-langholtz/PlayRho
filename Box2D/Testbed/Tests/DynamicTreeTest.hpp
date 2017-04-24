@@ -38,7 +38,7 @@ public:
 		srand(888);
 
 		const auto aabbExtension = StepConf{}.aabbExtension;
-		for (int32 i = 0; i < e_actorCount; ++i)
+		for (auto i = 0; i < e_actorCount; ++i)
 		{
 			Actor* actor = m_actors + i;
 			actor->aabb = GetRandomAABB();
@@ -69,7 +69,7 @@ public:
 		NOT_USED(settings);
 
 		m_rayActor = nullptr;
-		for (int32 i = 0; i < e_actorCount; ++i)
+		for (auto i = 0; i < e_actorCount; ++i)
 		{
 			m_actors[i].fraction = 1.0f;
 			m_actors[i].overlap = false;
@@ -87,7 +87,7 @@ public:
 		Query();
 		RayCast();
 
-		for (int32 i = 0; i < e_actorCount; ++i)
+		for (auto i = 0; i < e_actorCount; ++i)
 		{
 			const auto actor = m_actors + i;
 			if (actor->proxyId == DynamicTree::InvalidIndex)
@@ -373,7 +373,7 @@ private:
 	RayCastOutput m_rayCastOutput;
 	Actor* m_rayActor;
 	Actor m_actors[e_actorCount];
-	int32 m_stepCount;
+	int m_stepCount;
 	bool m_automated;
 };
 

@@ -100,7 +100,7 @@ public:
 	Transformation m_transform;
 	Transformation m_xf;
 	Drawer* g_debugDraw;
-	int32 m_count;
+	int m_count;
 };
 
 class PolyShapes : public Test
@@ -158,7 +158,7 @@ public:
 		memset(m_bodies, 0, sizeof(m_bodies));
 	}
 
-	void Create(int32 index)
+	void Create(int index)
 	{
 		if (m_bodies[m_bodyIndex])
 		{
@@ -265,7 +265,7 @@ public:
 		return new PolyShapes;
 	}
 
-	int32 m_bodyIndex;
+	int m_bodyIndex;
 	Body* m_bodies[e_maxBodies];
 	std::shared_ptr<PolygonShape> m_polygons[4];
 	std::shared_ptr<CircleShape> m_circle = std::make_shared<CircleShape>(RealNum{0.5f} * Meter);

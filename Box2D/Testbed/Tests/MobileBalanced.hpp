@@ -53,7 +53,7 @@ public:
 		m_world->CreateJoint(jointDef);
 	}
 
-	Body* AddNode(const Body* parent, const Length2D localAnchor, const int32 depth,
+	Body* AddNode(const Body* parent, const Length2D localAnchor, const int depth,
 				  const RealNum offset, const RealNum a, std::shared_ptr<const Shape> shape)
 	{
 		const auto h = Vec2(0.0f, a) * Meter;

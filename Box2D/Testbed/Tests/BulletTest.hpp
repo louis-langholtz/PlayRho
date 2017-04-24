@@ -76,23 +76,20 @@ public:
 		m_bullet->SetTransform(Vec2(m_x, 10.0f) * Meter, RealNum{0.0f} * Radian);
 		m_bullet->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * MeterPerSecond, AngularVelocity{0}});
 
-		uint32 gjkCalls, gjkIters, gjkMaxIters;
+		std::uint32_t gjkCalls, gjkIters, gjkMaxIters;
 		std::remove_const<decltype(DefaultMaxToiIters)>::type toiMaxIters;
-		int32 toiRootIters, toiMaxRootIters;
 
 		gjkCalls = 0;
 		gjkIters = 0;
 		gjkMaxIters = 0;
 
 		toiMaxIters = 0;
-		toiRootIters = 0;
-		toiMaxRootIters = 0;
 	}
 
 	void PostStep(const Settings&, Drawer& drawer) override
 	{
-		uint32 gjkCalls = 0, gjkIters = 0, gjkMaxIters = 0;
-		int32 toiRootIters = 0, toiMaxRootIters = 0;
+		std::uint32_t gjkCalls = 0, gjkIters = 0, gjkMaxIters = 0;
+		auto toiRootIters = 0, toiMaxRootIters = 0;
 
 		if (gjkCalls > 0)
 		{

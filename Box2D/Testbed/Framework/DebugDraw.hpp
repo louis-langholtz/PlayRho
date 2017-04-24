@@ -75,8 +75,8 @@ struct Camera
 	Coord2D m_center = Coord2D{0.0f, 20.0f};
 	float m_extent = 25.0f;
 	float m_zoom = 1.0f;
-	int32 m_width = 1280;
-	int32 m_height = 800;
+	int m_width = 1280;
+	int m_height = 800;
 };
 
 Length2D ConvertScreenToWorld(const Camera& camera, const Coord2D screenPoint);

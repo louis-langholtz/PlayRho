@@ -230,7 +230,7 @@ inline Length2D Average(Span<const Length2D> span)
 constexpr auto Vec2_zero = Vec2{0, 0};
 
 template <>
-inline Vec2 round(Vec2 value, uint32 precision)
+inline Vec2 round(Vec2 value, std::uint32_t precision)
 {
 	return Vec2{round(value.x, precision), round(value.y, precision)};
 }
@@ -946,7 +946,7 @@ constexpr inline void Swap(T& a, T& b)
 /// that recursively "folds" the upper bits into the lower bits. This process yields a bit vector with
 /// the same most significant 1 as x, but all 1's below it. Adding 1 to that value yields the next
 /// largest power of 2. For a 64-bit value:"
-inline uint64 NextPowerOfTwo(uint64 x)
+inline std::uint64_t NextPowerOfTwo(std::uint64_t x)
 {
 	x |= (x >> 1);
 	x |= (x >> 2);

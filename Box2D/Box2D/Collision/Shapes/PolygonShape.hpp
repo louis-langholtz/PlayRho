@@ -42,7 +42,7 @@ public:
 	/// @note This type must not support more than 255 vertices as that would conflict
 	///   with the <code>ContactFeature::index_t</code> type.
 	///
-	using vertex_count_t = uint8;
+	using vertex_count_t = std::uint8_t;
 
 	static constexpr auto InvalidVertex = static_cast<vertex_count_t>(-1);
 

@@ -66,7 +66,7 @@ public:
 	void Initialize(const RopeDef* def);
 
 	///
-	void Step(RealNum timeStep, int32 iterations);
+	void Step(RealNum timeStep, int iterations);
 
 	///
 	size_type GetVertexCount() const noexcept

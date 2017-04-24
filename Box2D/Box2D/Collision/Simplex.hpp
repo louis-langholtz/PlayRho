@@ -44,7 +44,7 @@ namespace box2d
 	{
 	public:
 		/// Maximum number of supportable edges in a simplex.
-		static constexpr auto MaxEdges = uint8{3};
+		static constexpr auto MaxEdges = std::uint8_t{3};
 
 		/// Simplex edge collection.
 		///

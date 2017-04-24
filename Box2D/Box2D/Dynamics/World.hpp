@@ -312,7 +312,7 @@ public:
 private:
 
 	/// Flags type data type.
-	using FlagsType = uint32;
+	using FlagsType = std::uint32_t;
 
 	using BodySet = std::unordered_set<Body*>;
 	using JointSet = std::unordered_set<Joint*>;

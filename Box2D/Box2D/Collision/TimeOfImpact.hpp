@@ -146,7 +146,7 @@ namespace box2d {
 			root_sum_type sum_root_iters = 0; ///< Sum total of root finder iterations.
 		};
 
-		enum State: uint16
+		enum State: std::uint16_t
 		{
 			e_unknown,
 			e_failed,

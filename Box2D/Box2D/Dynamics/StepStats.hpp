@@ -27,43 +27,48 @@ namespace box2d {
 	/// Pre-phase per-step statistics.
 	struct PreStepStats
 	{
-		uint32 ignored = 0;
-		uint32 destroyed = 0;
-		uint32 updated = 0;
-		uint32 added = 0;
+		using counter_type = std::uint32_t;
+		counter_type ignored = 0;
+		counter_type destroyed = 0;
+		counter_type updated = 0;
+		counter_type added = 0;
 	};
 	
 	/// Regular-phase per-step statistics.
 	struct RegStepStats
 	{
+		using counter_type = std::uint32_t;
+
 		Length minSeparation = std::numeric_limits<RealNum>::infinity() * Meter;
 		Momentum maxIncImpulse = 0;
 		
-		uint32 islandsFound = 0;
-		uint32 islandsSolved = 0;
-		uint32 contactsAdded = 0;
-		uint32 bodiesSlept = 0;
-		uint32 proxiesMoved = 0;
-		uint32 sumPosIters = 0;
-		uint32 sumVelIters = 0;
+		counter_type islandsFound = 0;
+		counter_type islandsSolved = 0;
+		counter_type contactsAdded = 0;
+		counter_type bodiesSlept = 0;
+		counter_type proxiesMoved = 0;
+		counter_type sumPosIters = 0;
+		counter_type sumVelIters = 0;
 	};
 	
 	/// TOI-phase per-step statistics.
 	struct ToiStepStats
 	{
+		using counter_type = std::uint32_t;
+
 		Length minSeparation = std::numeric_limits<RealNum>::infinity() * Meter;
 		Momentum maxIncImpulse = 0;
 		
-		uint32 islandsFound = 0;
-		uint32 islandsSolved = 0;
-		uint32 contactsFound = 0;
-		uint32 contactsAtMaxSubSteps = 0;
-		uint32 contactsUpdatedToi = 0;
-		uint32 contactsAdded = 0;
-		uint32 proxiesMoved = 0;
-		uint32 sumPosIters = 0;
-		uint32 sumVelIters = 0;
-		uint32 maxSimulContacts = 0; ///< Max contacts occuring simultaneously.
+		counter_type islandsFound = 0;
+		counter_type islandsSolved = 0;
+		counter_type contactsFound = 0;
+		counter_type contactsAtMaxSubSteps = 0;
+		counter_type contactsUpdatedToi = 0;
+		counter_type contactsAdded = 0;
+		counter_type proxiesMoved = 0;
+		counter_type sumPosIters = 0;
+		counter_type sumVelIters = 0;
+		counter_type maxSimulContacts = 0; ///< Max contacts occuring simultaneously.
 		
 		using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
 		using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;

@@ -158,7 +158,7 @@ private:
 	friend class ContactAtty;
 	
 	/// Flags type data type.
-	using FlagsType = uint8;
+	using FlagsType = std::uint8_t;
 
 	// Flags stored in m_flags
 	enum: FlagsType

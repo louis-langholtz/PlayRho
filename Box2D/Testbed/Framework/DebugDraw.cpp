@@ -331,7 +331,7 @@ struct GLRenderPoints
 	Color m_colors[e_maxVertices];
     float m_sizes[e_maxVertices];
 
-	int32 m_count;
+	GLsizei m_count;
     
 	GLuint m_vaoId;
 	GLuint m_vboIds[3];
@@ -457,7 +457,7 @@ struct GLRenderLines
 	Coord2D m_vertices[e_maxVertices];
 	Color m_colors[e_maxVertices];
     
-	int32 m_count;
+	GLsizei m_count;
     
 	GLuint m_vaoId;
 	GLuint m_vboIds[2];
@@ -585,7 +585,7 @@ struct GLRenderTriangles
 	Coord2D m_vertices[e_maxVertices];
 	Color m_colors[e_maxVertices];
 
-	int32 m_count;
+	GLsizei m_count;
 
 	GLuint m_vaoId;
 	GLuint m_vboIds[2];

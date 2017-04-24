@@ -185,7 +185,7 @@ public:
 
 	void JointDestroyed(Joint* joint) override
 	{
-		for (int32 i = 0; i < 8; ++i)
+		for (auto i = 0; i < 8; ++i)
 		{
 			if (m_joints[i] == joint)
 			{

@@ -102,7 +102,8 @@ public:
 		assert(leafCount > 0);
 		const auto minimumNodeCount = 2 * leafCount - 1;
 		const auto minimumHeight = ceilf(logf(float(minimumNodeCount)) / logf(2.0f));
-		drawer.DrawString(5, m_textLine, "dynamic tree height = %d, min = %d", height, int32(minimumHeight));
+		drawer.DrawString(5, m_textLine, "dynamic tree height = %d, min = %d",
+						  height, int(minimumHeight));
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		drawer.DrawString(5, m_textLine, "create time = %6.2f ms, fixture count = %d",
@@ -122,7 +123,7 @@ public:
 		return new Tiles;
 	}
 
-	int32 m_fixtureCount;
+	int m_fixtureCount;
 	RealNum m_createTime;
 };
 

@@ -99,7 +99,7 @@ public:
 	}
 
 	RevoluteJoint* m_joint;
-	int32 m_count = 0;
+	int m_count = 0;
 	std::shared_ptr<PolygonShape> m_shape = std::make_shared<PolygonShape>(RealNum{0.125f} * Meter, RealNum{0.125f} * Meter);
 };
 

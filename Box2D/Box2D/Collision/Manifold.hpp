@@ -71,7 +71,7 @@ namespace box2d
 
 		/// Manifold type.
 		/// @note This is by design a 1-byte sized type.
-		enum Type: uint8
+		enum Type: std::uint8_t
 		{
 			/// Unset type.
 			/// @details Manifold is unset. For manifolds of this type: the point count is zero,

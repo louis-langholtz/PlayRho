@@ -60,7 +60,7 @@ public:
 
 	void Launch()
 	{
-		uint32 gjkCalls, gjkIters, gjkMaxIters;
+		std::uint32_t gjkCalls, gjkIters, gjkMaxIters;
 
 		gjkCalls = 0; gjkIters = 0; gjkMaxIters = 0;
 
@@ -71,7 +71,7 @@ public:
 
 	void PostStep(const Settings&, Drawer& drawer) override
 	{
-		uint32 gjkCalls = 0, gjkIters = 0, gjkMaxIters = 0;
+		std::uint32_t gjkCalls = 0, gjkIters = 0, gjkMaxIters = 0;
 
 		if (gjkCalls > 0)
 		{
@@ -80,8 +80,8 @@ public:
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
-		int32 toiCalls = 0, toiIters = 0;
-		int32 toiRootIters = 0, toiMaxRootIters = 0;
+		auto toiCalls = 0, toiIters = 0;
+		auto toiRootIters = 0, toiMaxRootIters = 0;
 
 		if (toiCalls > 0)
 		{

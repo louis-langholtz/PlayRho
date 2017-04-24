@@ -55,7 +55,7 @@ namespace
 {
 	auto CountTests()
 	{
-		auto count = int32{0};
+		auto count = 0;
 		while (g_testEntries[count].createFcn)
 		{
 			++count;
@@ -68,8 +68,8 @@ namespace
 	GLFWwindow* mainWindow = nullptr;
 	UIState ui;
 
-	int32 testIndex = 0;
-	int32 testSelection = 0;
+	int testIndex = 0;
+	int testSelection = 0;
 	const auto testCount = CountTests();
 	const TestEntry* entry;
 	Test* test;
@@ -288,7 +288,7 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
 }
 
 //
-static void sMouseButton(GLFWwindow*, int32 button, int32 action, int32 mods)
+static void sMouseButton(GLFWwindow*, int button, int action, int mods)
 {
 	double xd, yd;
 	glfwGetCursorPos(mainWindow, &xd, &yd);

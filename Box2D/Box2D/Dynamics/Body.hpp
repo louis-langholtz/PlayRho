@@ -498,7 +498,7 @@ private:
 
 	friend class BodyAtty;
 	
-	using FlagsType = uint16;
+	using FlagsType = std::uint16_t;
 
 	// m_flags
 	enum Flag: FlagsType

@@ -145,8 +145,8 @@ protected:
 		Test* test;
 	};
 	
-	using PointCount = int32;
-	using TextLinePos = int32;
+	using PointCount = int;
+	using TextLinePos = int;
 	static constexpr auto k_maxContactPoints = PointCount{2048};
 	static constexpr auto DRAW_STRING_NEW_LINE = TextLinePos{16};
 
@@ -162,7 +162,7 @@ protected:
 		NOT_USED(drawer);		
 	}
 
-	int32 GetStepCount() const noexcept { return m_stepCount; }
+	int GetStepCount() const noexcept { return m_stepCount; }
 	PointCount GetPointCount() const noexcept { return m_pointCount; }
 	const ContactPoint* GetPoints() const noexcept { return m_points; }
 	const Body* GetBomb() const noexcept { return m_bomb; }
@@ -183,22 +183,22 @@ private:
 	bool m_bombSpawning = false;
 	Length2D m_mouseWorld;
 	double m_sumDeltaTime = 0.0;
-	int32 m_stepCount = 0;
+	int m_stepCount = 0;
 	StepStats m_stepStats;
 	size_t m_numContacts = 0;
 	size_t m_maxContacts = 0;
-	uint64 m_sumContactsUpdatedToi = 0;
-	uint64 m_sumContactsAtMaxSubSteps = 0;
-	uint64 m_sumRegIslandsFound = 0;
-	uint64 m_sumRegIslandsSolved = 0;
-	uint64 m_sumToiIslandsFound = 0;
-	uint64 m_sumToiIslandsSolved = 0;
-	uint64 m_sumRegPosIters = 0;
-	uint64 m_sumRegVelIters = 0;
-	uint64 m_sumToiPosIters = 0;
-	uint64 m_sumToiVelIters = 0;
-	uint64 m_sumRegProxiesMoved = 0;
-	uint64 m_sumToiProxiesMoved = 0;
+	std::uint64_t m_sumContactsUpdatedToi = 0;
+	std::uint64_t m_sumContactsAtMaxSubSteps = 0;
+	std::uint64_t m_sumRegIslandsFound = 0;
+	std::uint64_t m_sumRegIslandsSolved = 0;
+	std::uint64_t m_sumToiIslandsFound = 0;
+	std::uint64_t m_sumToiIslandsSolved = 0;
+	std::uint64_t m_sumRegPosIters = 0;
+	std::uint64_t m_sumRegVelIters = 0;
+	std::uint64_t m_sumToiPosIters = 0;
+	std::uint64_t m_sumToiVelIters = 0;
+	std::uint64_t m_sumRegProxiesMoved = 0;
+	std::uint64_t m_sumToiProxiesMoved = 0;
 	Length m_minRegSep = std::numeric_limits<RealNum>::infinity() * Meter;
 	Length m_maxRegSep = -std::numeric_limits<RealNum>::infinity() * Meter;
 	Length m_minToiSep = 0;

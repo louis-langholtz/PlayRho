@@ -49,7 +49,7 @@ namespace box2d
 	/// Distance Output.
 	struct DistanceOutput
 	{
-		enum State: uint8
+		enum State: std::uint8_t
 		{
 			Unknown,
 			MaxPoints,

@@ -72,9 +72,9 @@ public:
 				shape.SetDensity(RealNum{1.000000000000000e+00f} * KilogramPerSquareMeter);
 				FixtureDef fd;
 				fd.isSensor = bool(0);
-				fd.filter.categoryBits = uint16(1);
-				fd.filter.maskBits = uint16(65535);
-				fd.filter.groupIndex = int16(0);
+				fd.filter.categoryBits = Filter::bits_type(1);
+				fd.filter.maskBits = Filter::bits_type(65535);
+				fd.filter.groupIndex = Filter::index_type(0);
 
 				bodies[0]->CreateFixture(std::make_shared<PolygonShape>(shape), fd);
 			}
@@ -110,9 +110,9 @@ public:
 				shape.SetDensity(RealNum{5.000000000000000e+00f} * KilogramPerSquareMeter);
 				FixtureDef fd;
 				fd.isSensor = bool(0);
-				fd.filter.categoryBits = uint16(1);
-				fd.filter.maskBits = uint16(65535);
-				fd.filter.groupIndex = int16(0);
+				fd.filter.categoryBits = Filter::bits_type(1);
+				fd.filter.maskBits = Filter::bits_type(65535);
+				fd.filter.groupIndex = Filter::index_type(0);
 				bodies[1]->CreateFixture(std::make_shared<PolygonShape>(shape), fd);
 			}
 		}
@@ -145,9 +145,9 @@ public:
 				shape.SetDensity(RealNum{1.000000000000000e+01f} * KilogramPerSquareMeter);
 				FixtureDef fd;
 				fd.isSensor = bool(0);
-				fd.filter.categoryBits = uint16(1);
-				fd.filter.maskBits = uint16(65535);
-				fd.filter.groupIndex = int16(-3);
+				fd.filter.categoryBits = Filter::bits_type(1);
+				fd.filter.maskBits = Filter::bits_type(65535);
+				fd.filter.groupIndex = Filter::index_type(-3);
 				bodies[2]->CreateFixture(std::make_shared<PolygonShape>(shape), fd);
 			}
 		}

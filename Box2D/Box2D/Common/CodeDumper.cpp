@@ -223,9 +223,12 @@ void box2d::Dump(const Fixture& fixture, size_t bodyIndex)
 	log("    fd.restitution = %.15lef;\n", double{fixture.GetRestitution()});
 	log("    fd.density = %.15lef;\n", double{fixture.GetDensity() * SquareMeter / Kilogram});
 	log("    fd.isSensor = bool(%d);\n", fixture.IsSensor());
-	log("    fd.filter.categoryBits = uint16(%d);\n", fixture.GetFilterData().categoryBits);
-	log("    fd.filter.maskBits = uint16(%d);\n", fixture.GetFilterData().maskBits);
-	log("    fd.filter.groupIndex = int16(%d);\n", fixture.GetFilterData().groupIndex);
+	log("    fd.filter.categoryBits = Filter::bits_type(%u);\n",
+		fixture.GetFilterData().categoryBits);
+	log("    fd.filter.maskBits = Filter::bits_type(%u);\n",
+		fixture.GetFilterData().maskBits);
+	log("    fd.filter.groupIndex = Filter::index_type(%d);\n",
+		fixture.GetFilterData().groupIndex);
 	
 	const auto shape = fixture.GetShape();
 	ShapeDumper shapeDumper;

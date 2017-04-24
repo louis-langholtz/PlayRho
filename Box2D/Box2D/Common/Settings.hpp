@@ -75,14 +75,6 @@ template<class... T> void NOT_USED(T&&...){}
 class Body;
 class Contact;
 class Joint;
-	
-using int8 = std::int8_t; ///< 8-bit int.
-using int16 = std::int16_t; ///< 16-bit int.
-using int32 = std::int32_t; ///< 32-bit int.
-using uint8 = std::uint8_t;
-using uint16 = std::uint16_t;
-using uint32 = std::uint32_t;
-using uint64 = std::uint64_t;
 
 /// Real-number type.
 ///
@@ -319,7 +311,7 @@ using island_count_t = size_t;
 
 /// Time step iterations type.
 /// @details A type for countining iterations per time-step.
-using ts_iters_t = uint8;
+using ts_iters_t = std::uint8_t;
 
 constexpr auto MaxFloat = std::numeric_limits<RealNum>::max(); // FLT_MAX
 
@@ -329,11 +321,11 @@ constexpr auto MaxFloat = std::numeric_limits<RealNum>::max(); // FLT_MAX
 /// This is the maximum number of contact points between two convex shapes.
 /// Do not change this value.
 /// @note For memory efficiency, uses the smallest integral type that can hold the value. 
-constexpr auto MaxManifoldPoints = uint8{2};
+constexpr auto MaxManifoldPoints = std::uint8_t{2};
 
 /// Maximum number of vertices for any shape type.
 /// @note For memory efficiency, uses the smallest integral type that can hold the value.
-constexpr auto MaxShapeVertices = uint8{254};
+constexpr auto MaxShapeVertices = std::uint8_t{254};
 
 /// Default linear slop.
 /// @details
@@ -365,13 +357,13 @@ constexpr auto DefaultMaxLinearCorrection = DefaultLinearSlop * RealNum{40}; // 
 constexpr auto DefaultMaxAngularCorrection = DefaultAngularSlop * RealNum{4};
 
 /// Default maximum time of impact iterations.
-constexpr auto DefaultMaxToiIters = uint8{20};
+constexpr auto DefaultMaxToiIters = std::uint8_t{20};
 
 /// Default maximum time of impact root iterator count.
-constexpr auto DefaultMaxToiRootIters = uint8{30};
+constexpr auto DefaultMaxToiRootIters = std::uint8_t{30};
 
 /// Default max number of distance iterations.
-constexpr auto DefaultMaxDistanceIters = uint8{20};
+constexpr auto DefaultMaxDistanceIters = std::uint8_t{20};
 
 /// Default maximum number of sub steps.
 /// @details
@@ -379,15 +371,16 @@ constexpr auto DefaultMaxDistanceIters = uint8{20};
 /// In other words, this is the default maximum number of times in a world step that a contact will
 /// have continuous collision resolution done for it.
 /// @note Used in the TOI phase of step processing.
-constexpr auto DefaultMaxSubSteps = uint8{48};
+constexpr auto DefaultMaxSubSteps = std::uint8_t{48};
 	
 // Dynamics
 
 /// Default velocity threshold.
 constexpr auto DefaultVelocityThreshold = (RealNum{8} / RealNum{10}) * MeterPerSecond;
 
-/// Maximum number of bodies in a world (65534 based off uint16 and eliminating one value for invalid).
-constexpr auto MaxBodies = static_cast<uint16>(std::numeric_limits<uint16>::max() - uint16{1});
+/// Maximum number of bodies in a world (65534 based off uint16_t and eliminating one value for invalid).
+constexpr auto MaxBodies = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
+													  std::uint16_t{1});
 
 /// Body count type.
 using body_count_t = std::remove_const<decltype(MaxBodies)>::type;
@@ -400,8 +393,9 @@ using contact_count_t = Wider<body_count_t>::type;
 /// This occurs when every possible body is connected to every other body.
 constexpr auto MaxContacts = contact_count_t{MaxBodies} * contact_count_t{MaxBodies - 1} / contact_count_t{2};
 
-/// Maximum number of joints in a world (65534 based off uint16 and eliminating one value for invalid).
-constexpr auto MaxJoints = static_cast<uint16>(std::numeric_limits<uint16>::max() - uint16{1});
+/// Maximum number of joints in a world (65534 based off std::uint16_t and eliminating one value for invalid).
+constexpr auto MaxJoints = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
+													  std::uint16_t{1});
 
 /// Joint count type.
 using joint_count_t = std::remove_const<decltype(MaxJoints)>::type;
@@ -712,9 +706,11 @@ void free(void* mem);
 /// See http://en.wikipedia.org/wiki/Software_versioning
 struct Version
 {
-	int32 major;		///< significant changes
-	int32 minor;		///< incremental changes
-	int32 revision;		///< bug fixes
+	using revnum_type = std::int32_t;
+
+	revnum_type major;		///< significant changes
+	revnum_type minor;		///< incremental changes
+	revnum_type revision;		///< bug fixes
 };
 
 constexpr auto BuiltVersion = Version{3, 0, 0};
