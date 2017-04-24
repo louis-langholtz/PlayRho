@@ -93,8 +93,12 @@ void ChainShape::CreateLoop(Span<const Length2D> vertices)
 	auto vprev = m_vertices[0];
 	for (auto i = decltype(count){1}; i < count; ++i)
 	{
+		// Get the normal and push it and its reverse.
+		// This "doubling up" of the normals, makes the GetChild() method work.
 		const auto v = m_vertices[i];
-		m_normals.push_back(GetUnitVector(GetFwdPerpendicular(v - vprev)));
+		const auto normal = GetUnitVector(GetFwdPerpendicular(v - vprev));
+		m_normals.push_back(normal);
+		m_normals.push_back(-normal);
 		vprev = v;
 	}
 }
@@ -113,21 +117,14 @@ void ChainShape::CreateChain(Span<const Length2D> vertices)
 	auto vprev = m_vertices[0];
 	for (auto i = decltype(count){1}; i < count; ++i)
 	{
+		// Get the normal and push it and its reverse.
+		// This "doubling up" of the normals, makes the GetChild() method work.
 		const auto v = m_vertices[i];
-		m_normals.push_back(GetUnitVector(GetFwdPerpendicular(v - vprev)));
+		const auto normal = GetUnitVector(GetFwdPerpendicular(v - vprev));
+		m_normals.push_back(normal);
+		m_normals.push_back(-normal);
 		vprev = v;
 	}
-}
-
-EdgeShape ChainShape::GetChildEdge(child_count_t index) const
-{
-	assert(index + 1 < m_count);
-
-	auto conf = EdgeShape::Conf{};
-	conf.UseVertexRadius(GetVertexRadius());
-	//conf.v0 = v0;
-	//conf.v3 = v3;
-	return EdgeShape{m_vertices[index + 0], m_vertices[index + 1], conf};
 }
 
 child_count_t ChainShape::GetChildCount() const noexcept
@@ -139,11 +136,7 @@ child_count_t ChainShape::GetChildCount() const noexcept
 
 DistanceProxy ChainShape::GetChild(child_count_t index) const noexcept
 {
-	return DistanceProxy{
-		GetVertexRadius(),
-		m_vertices[index + 0], m_vertices[index + 1],
-		m_normals[index + 0], -m_normals[index + 0]
-	};
+	return DistanceProxy{GetVertexRadius(), 2, &m_vertices[index], &m_normals[index * 2]};
 }
 
 bool ChainShape::TestPoint(const Transformation& xf, const Length2D p) const noexcept

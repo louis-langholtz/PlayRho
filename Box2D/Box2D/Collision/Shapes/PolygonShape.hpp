@@ -190,7 +190,8 @@ inline DistanceProxy PolygonShape::GetChild(child_count_t index) const noexcept
 {
 	assert(index == 0);
 	return (index == 0)?
-		DistanceProxy{GetVertexRadius(), GetVertices(), GetNormals()}:
+		DistanceProxy{GetVertexRadius(), static_cast<DistanceProxy::size_type>(m_vertices.size()),
+			&m_vertices[0], &m_normals[0]}:
 		DistanceProxy{};
 }
 

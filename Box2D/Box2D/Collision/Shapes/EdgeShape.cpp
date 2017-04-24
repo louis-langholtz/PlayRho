@@ -29,11 +29,11 @@ MassData EdgeShape::GetMassData() const noexcept
 
 void EdgeShape::Set(const Length2D v1, const Length2D v2)
 {
-	m_vertex1 = v1;
-	m_vertex2 = v2;
+	m_vertices[0] = v1;
+	m_vertices[1] = v2;
 
-	m_normal1 = GetUnitVector(GetFwdPerpendicular(v2 - v1));
-	m_normal2 = -m_normal1;
+	m_normals[0] = GetUnitVector(GetFwdPerpendicular(v2 - v1));
+	m_normals[1] = -m_normals[0];
 }
 
 bool EdgeShape::TestPoint(const Transformation& xf, const Length2D p) const noexcept

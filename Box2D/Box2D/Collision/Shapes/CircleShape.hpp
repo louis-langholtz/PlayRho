@@ -125,7 +125,7 @@ inline child_count_t CircleShape::GetChildCount() const noexcept
 inline DistanceProxy CircleShape::GetChild(child_count_t index) const noexcept
 {
 	assert(index == 0);
-	return (index == 0)? DistanceProxy{GetVertexRadius(), GetLocation()}: DistanceProxy{};
+	return (index == 0)? DistanceProxy{GetVertexRadius(), 1, &m_location, nullptr}: DistanceProxy{};
 }
 
 inline void CircleShape::Accept(box2d::Shape::Visitor &visitor) const

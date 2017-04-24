@@ -108,10 +108,7 @@ public:
 	/// Create a chain with isolated end vertices.
 	/// @param vertices an array of vertices, these are copied
 	void CreateChain(Span<const Length2D> vertices);
-
-	/// Get a child edge.
-	EdgeShape GetChildEdge(child_count_t index) const;
-
+	
 	/// Get the vertex count.
 	child_count_t GetVertexCount() const noexcept { return m_count; }
 
@@ -121,7 +118,6 @@ public:
 	UnitVec2 GetNormal(child_count_t index) const;
 
 private:
-	/// The vertices. Owned by this class.
 	std::vector<Length2D> m_vertices;
 	std::vector<UnitVec2> m_normals;
 

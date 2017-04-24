@@ -58,13 +58,12 @@ public:
 
 	EdgeShape(Length2D v1, Length2D v2, const Conf& conf = GetDefaultConf()) noexcept:
 		Shape{conf},
-		m_vertex1{v1},
-		m_vertex2{v2},
-		m_normal1{GetUnitVector(GetFwdPerpendicular(v2 - v1))},
-		m_normal2{-m_normal1}
+		m_vertices{v1, v2}
 	{
-		assert(IsValid(m_normal1));
-		assert(IsValid(m_normal2));
+		m_normals[0] = GetUnitVector(GetFwdPerpendicular(v2 - v1));
+		m_normals[1] = -m_normals[0];
+		assert(IsValid(m_normals[0]));
+		assert(IsValid(m_normals[1]));
 	}
 
 	EdgeShape(const EdgeShape&) = default;
@@ -99,19 +98,16 @@ public:
 	/// Set this as an isolated edge.
 	void Set(const Length2D v1, const Length2D v2);
 
-	Length2D GetVertex1() const noexcept { return m_vertex1; }
-	Length2D GetVertex2() const noexcept { return m_vertex2; }
+	Length2D GetVertex1() const noexcept { return m_vertices[0]; }
+	Length2D GetVertex2() const noexcept { return m_vertices[1]; }
 
-	UnitVec2 GetNormal1() const noexcept { return m_normal1; }
-	UnitVec2 GetNormal2() const noexcept { return m_normal2; }
+	UnitVec2 GetNormal1() const noexcept { return m_normals[0]; }
+	UnitVec2 GetNormal2() const noexcept { return m_normals[1]; }
 
 private:
 	/// These are the edge vertices
-	Length2D m_vertex1;
-	Length2D m_vertex2;
-	
-	UnitVec2 m_normal1;
-	UnitVec2 m_normal2;
+	Length2D m_vertices[2];
+	UnitVec2 m_normals[2];
 };
 
 inline child_count_t EdgeShape::GetChildCount() const noexcept
@@ -123,7 +119,7 @@ inline DistanceProxy EdgeShape::GetChild(child_count_t index) const noexcept
 {
 	assert(index == 0);
 	return (index == 0)?
-		DistanceProxy{GetVertexRadius(), GetVertex1(), GetVertex2(), GetNormal1(), GetNormal2()}:
+		DistanceProxy{GetVertexRadius(), 2, m_vertices, m_normals}:
 		DistanceProxy{};
 }
 

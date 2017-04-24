@@ -26,7 +26,7 @@ TEST(DistanceProxy, ByteSize)
 {
 	if (sizeof(RealNum) == 4)
 	{
-		EXPECT_EQ(sizeof(DistanceProxy), size_t(56));
+		EXPECT_EQ(sizeof(DistanceProxy), size_t(24));
 	}
 	else if (sizeof(RealNum) == 8)
 	{
@@ -46,7 +46,8 @@ TEST(DistanceProxy, OneVecInitialization)
 {
 	const auto radius = RealNum{1} * Meter;
 	const auto vertex0 = Vec2{RealNum(2), RealNum(-3)} * Meter;
-	const DistanceProxy foo{radius, vertex0};
+	const auto normal0 = UnitVec2{};
+	const DistanceProxy foo{radius, 1, &vertex0, &normal0};
 	EXPECT_EQ(radius, foo.GetVertexRadius());
 	EXPECT_EQ(1, foo.GetVertexCount());
 	EXPECT_EQ(vertex0, foo.GetVertex(0));
@@ -56,7 +57,8 @@ TEST(DistanceProxy, OneVecSupportIndex)
 {
 	const auto radius = RealNum{1} * Meter;
 	const auto vertex0 = Vec2{RealNum(2), RealNum(-3)} * Meter;
-	const DistanceProxy foo{radius, vertex0};
+	const auto normal0 = UnitVec2{};
+	const DistanceProxy foo{radius, 1, &vertex0, &normal0};
 	EXPECT_EQ(0, GetSupportIndex(foo, vertex0));
 	EXPECT_EQ(0, GetSupportIndex(foo, Vec2_zero * Meter));
 	EXPECT_EQ(0, GetSupportIndex(foo, Length2D{vertex0.y, vertex0.x}));
@@ -67,8 +69,10 @@ TEST(DistanceProxy, TwoVecInitialization)
 	const auto radius = RealNum{1} * Meter;
 	const auto vertex0 = Vec2{RealNum(2), RealNum(3)} * Meter;
 	const auto vertex1 = Vec2{RealNum(-10), RealNum(-1)} * Meter;
+	const Length2D vertices[] = {vertex0, vertex1};
 	const auto normal0 = GetUnitVector(vertex1 - vertex0);
-	const DistanceProxy foo{radius, vertex0, vertex1, normal0, -normal0};
+	const UnitVec2 normals[] = {normal0, -normal0};
+	const DistanceProxy foo{radius, 2, vertices, normals};
 	EXPECT_EQ(radius, foo.GetVertexRadius());
 	EXPECT_EQ(2, foo.GetVertexCount());
 	EXPECT_EQ(vertex0, foo.GetVertex(0));
@@ -80,8 +84,10 @@ TEST(DistanceProxy, TwoVecSupportIndex)
 	const auto radius = RealNum{1} * Meter;
 	const auto vertex0 = Vec2{RealNum(2), RealNum(3)} * Meter;
 	const auto vertex1 = Vec2{RealNum(-10), RealNum(-1)} * Meter;
+	const Length2D vertices[] = {vertex0, vertex1};
 	const auto normal0 = GetUnitVector(vertex1 - vertex0);
-	const DistanceProxy foo{radius, vertex0, vertex1, normal0, -normal0};
+	const UnitVec2 normals[] = {normal0, -normal0};
+	const DistanceProxy foo{radius, 2, vertices, normals};
 	EXPECT_EQ(0, GetSupportIndex(foo, vertex0));
 	EXPECT_EQ(0, GetSupportIndex(foo, Length2D{vertex0.y, vertex0.x}));
 	EXPECT_EQ(0, GetSupportIndex(foo, Vec2_zero * Meter));
@@ -102,7 +108,7 @@ TEST(DistanceProxy, ThreeVertices)
 	const auto n2 = GetUnitVector(v0 - v2);
 	const UnitVec2 normals[] = {n0, n1, n2};
 	
-	const DistanceProxy foo{radius, Span<const Length2D>(vertices, 3), Span<const UnitVec2>(normals, 3)};
+	const DistanceProxy foo{radius, 3, vertices, normals};
 	
 	EXPECT_EQ(foo.GetVertexRadius(), radius);
 	ASSERT_EQ(foo.GetVertexCount(), count);
