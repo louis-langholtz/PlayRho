@@ -41,7 +41,7 @@ file(GLOB BOX2D_Rope_HDRS
 	"Rope/*.hpp"
 )
 file(GLOB BOX2D_General_HDRS
-	"Box2D.hpp"
+	"*.hpp"
 )
 include_directories( ../ )
 
