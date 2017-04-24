@@ -36,6 +36,9 @@ static constexpr auto k_errorTol = RealNum(2e-3); ///< error tolerance
 static constexpr auto k_majorErrorTol = RealNum(1e-2); ///< error tolerance
 #endif
 
+namespace
+{
+
 struct VelocityPair
 {
 	Velocity vel_a;
@@ -59,7 +62,7 @@ struct ImpulseChange
 	UnitVec2 direction; ///< Direction.
 };
 
-static inline ImpulseChange SolveTangentConstraint(const VelocityConstraint& vc,
+inline ImpulseChange SolveTangentConstraint(const VelocityConstraint& vc,
 													  const VelocityConstraint::size_type i)
 {
 	const auto direction = vc.GetTangent();
@@ -91,7 +94,7 @@ static inline ImpulseChange SolveTangentConstraint(const VelocityConstraint& vc,
 	return ImpulseChange{incImpulse, direction};
 }
 
-static inline ImpulseChange SolveNormalConstraint(const VelocityConstraint& vc,
+inline ImpulseChange SolveNormalConstraint(const VelocityConstraint& vc,
 													 const VelocityConstraint::size_type i)
 {
 	const auto direction = vc.GetNormal();
@@ -120,7 +123,7 @@ static inline ImpulseChange SolveNormalConstraint(const VelocityConstraint& vc,
 ///   updates the two given velocity structures.
 /// @warning Behavior is undefined unless the velocity constraint point count is 1 or 2.
 /// @param vc Velocity constraint.
-static inline Momentum SolveTangentConstraint(VelocityConstraint& vc)
+inline Momentum SolveTangentConstraint(VelocityConstraint& vc)
 {
 	auto maxIncImpulse = Momentum{0};
 	
@@ -167,7 +170,7 @@ static inline Momentum SolveTangentConstraint(VelocityConstraint& vc)
 	return maxIncImpulse;
 }
 
-static inline Momentum SeqSolveNormalConstraint(VelocityConstraint& vc)
+inline Momentum SeqSolveNormalConstraint(VelocityConstraint& vc)
 {
 	auto maxIncImpulse = Momentum{0};
 
@@ -213,7 +216,7 @@ static inline Momentum SeqSolveNormalConstraint(VelocityConstraint& vc)
 	return maxIncImpulse;
 }
 
-static inline VelocityPair ApplyImpulses(const VelocityConstraint& vc, const Momentum2D impulses)
+inline VelocityPair ApplyImpulses(const VelocityConstraint& vc, const Momentum2D impulses)
 {
 	assert(IsValid(impulses));
 
@@ -233,7 +236,7 @@ static inline VelocityPair ApplyImpulses(const VelocityConstraint& vc, const Mom
 	};
 }
 
-static inline Momentum BlockSolveUpdate(VelocityConstraint& vc, const Momentum2D newImpulses)
+inline Momentum BlockSolveUpdate(VelocityConstraint& vc, const Momentum2D newImpulses)
 {
 	const auto delta_v = ApplyImpulses(vc, newImpulses - GetNormalImpulses(vc));
 	vc.bodyA.SetVelocity(vc.bodyA.GetVelocity() + delta_v.vel_a);
@@ -242,7 +245,7 @@ static inline Momentum BlockSolveUpdate(VelocityConstraint& vc, const Momentum2D
 	return std::max(Abs(newImpulses[0]), Abs(newImpulses[1]));
 }
 
-static inline Momentum BlockSolveNormalCase1(VelocityConstraint& vc, const Vec2 b_prime)
+inline Momentum BlockSolveNormalCase1(VelocityConstraint& vc, const Vec2 b_prime)
 {
 	//
 	// Case 1: vn = 0
@@ -282,7 +285,7 @@ static inline Momentum BlockSolveNormalCase1(VelocityConstraint& vc, const Vec2 
 	return GetInvalid<Momentum>();
 }
 
-static inline Momentum BlockSolveNormalCase2(VelocityConstraint& vc, const Vec2 b_prime)
+inline Momentum BlockSolveNormalCase2(VelocityConstraint& vc, const Vec2 b_prime)
 {
 	//
 	// Case 2: vn1 = 0 and x2 = 0
@@ -315,7 +318,7 @@ static inline Momentum BlockSolveNormalCase2(VelocityConstraint& vc, const Vec2 
 	return GetInvalid<Momentum>();
 }
 
-static inline Momentum BlockSolveNormalCase3(VelocityConstraint& vc, const Vec2 b_prime)
+inline Momentum BlockSolveNormalCase3(VelocityConstraint& vc, const Vec2 b_prime)
 {
 	//
 	// Case 3: vn2 = 0 and x1 = 0
@@ -348,7 +351,7 @@ static inline Momentum BlockSolveNormalCase3(VelocityConstraint& vc, const Vec2 
 	return GetInvalid<Momentum>();
 }
 
-static inline Momentum BlockSolveNormalCase4(VelocityConstraint& vc, const Vec2 b_prime)
+inline Momentum BlockSolveNormalCase4(VelocityConstraint& vc, const Vec2 b_prime)
 {
 	//
 	// Case 4: x1 = 0 and x2 = 0
@@ -366,7 +369,7 @@ static inline Momentum BlockSolveNormalCase4(VelocityConstraint& vc, const Vec2 
 	return GetInvalid<Momentum>();
 }
 
-static inline Momentum BlockSolveNormalConstraint(VelocityConstraint& vc)
+inline Momentum BlockSolveNormalConstraint(VelocityConstraint& vc)
 {
 	// Block solver developed in collaboration with Dirk Gregorius (back in 01/07 on Box2D_Lite).
 	// Build the mini LCP for this contact patch
@@ -448,7 +451,7 @@ static inline Momentum BlockSolveNormalConstraint(VelocityConstraint& vc)
 /// Solves the normal portion of the velocity constraint.
 /// @details
 /// This prevents penetration and applies the contact restitution to the velocity.
-static inline Momentum SolveNormalConstraint(VelocityConstraint& vc)
+inline Momentum SolveNormalConstraint(VelocityConstraint& vc)
 {
 	const auto count = vc.GetPointCount();
 	assert((count == 1) || (count == 2));
@@ -459,6 +462,8 @@ static inline Momentum SolveNormalConstraint(VelocityConstraint& vc)
 	}
 	return BlockSolveNormalConstraint(vc);
 }
+	
+}; // anonymous namespace
 
 Momentum box2d::SolveVelocityConstraint(VelocityConstraint& vc)
 {
