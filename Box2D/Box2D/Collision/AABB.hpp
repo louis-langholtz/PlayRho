@@ -33,7 +33,7 @@ namespace box2d
 	class Body;
 	class DistanceProxy;
 	
-	/// Axis aligned bounding box.
+	/// @brief Axis Aligned Bounding Box.
 	///
 	/// @note This data structure is 16-bytes large (on at least one 64-bit platform).
 	/// @invariant The lower bound always has lower x and y values than the upper bound's
@@ -44,7 +44,7 @@ namespace box2d
 	public:
 		
 		/// Default constructor.
-		/// @detail Constructs an empty AABB. If an empty AABB is added to another AABB, the
+		/// @details Constructs an empty AABB. If an empty AABB is added to another AABB, the
 		///   result will always be the other AABB.
 		AABB() = default;
 		

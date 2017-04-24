@@ -51,7 +51,7 @@ struct Filter
 };
 
 /// Fixture definition.
-/// @detail
+/// @details
 /// A fixture definition is used to create a fixture.
 /// @sa Body::CreateFixture.
 struct FixtureDef
@@ -91,7 +91,7 @@ constexpr inline FixtureDef& FixtureDef::UseFilter(Filter value) noexcept
 
 /// Fixture.
 ///
-/// @detail
+/// @details
 /// A fixture is used to attach a shape to a body for collision detection. A fixture
 /// inherits its transform from its parent. Fixtures hold additional non-geometric data
 /// such as friction, collision filters, etc.
@@ -106,17 +106,17 @@ public:
 	Fixture() = delete; // explicitly deleted
 
 	/// Gets the parent body of this fixture.
-	/// @detail This is nullptr if the fixture is not attached.
+	/// @details This is nullptr if the fixture is not attached.
 	/// @return the parent body.
 	Body* GetBody() noexcept;
 	
 	/// Gets the parent body of this fixture.
-	/// @detail This is nullptr if the fixture is not attached.
+	/// @details This is nullptr if the fixture is not attached.
 	/// @return the parent body.
 	const Body* GetBody() const noexcept;
 
 	/// Gets the child shape.
-	/// @detail The shape is not modifiable. Use a new fixture instead.
+	/// @details The shape is not modifiable. Use a new fixture instead.
 	const Shape* GetShape() const noexcept;
 	
 	/// Set if this fixture is a sensor.
@@ -236,7 +236,7 @@ private:
 	void* m_userData = nullptr; ///< User data. 8-bytes.
 
 	/// Proxy count.
-	/// @detail This is the fixture shape's child count after proxy creation. 4-bytes.
+	/// @details This is the fixture shape's child count after proxy creation. 4-bytes.
 	child_count_t m_proxyCount = 0;
 
 	Filter m_filter; ///< Filter object. 6-bytes.

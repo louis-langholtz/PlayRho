@@ -55,7 +55,7 @@ namespace box2d {
 	}
 
 	/// Constraint solver configuration data.
-	/// @detail
+	/// @details
 	/// Defines how a constraint solver should resolve a given constraint.
 	/// @sa SolvePositionConstraint.
 	struct ConstraintSolverConf
@@ -71,7 +71,7 @@ namespace box2d {
 		ConstraintSolverConf& UseMaxAngularCorrection(Angle value) noexcept;
 
 		/// Resolution rate.
-		/// @detail
+		/// @details
 		/// Defines the percentage of the overlap that should get resolved in a single solver call.
 		/// Value greater than zero and less than or equal to one.
 		/// Ideally this would be 1 so that overlap is removed in one time step.
@@ -90,13 +90,13 @@ namespace box2d {
 		Angle angularSlop = DefaultAngularSlop;
 
 		/// Maximum linear correction.
-		/// @detail
+		/// @details
 		/// Maximum amount of overlap to resolve in a single solver call. Helps prevent overshoot.
 		/// @note Recommended value: <code>linearSlop * 40</code>.
 		Length maxLinearCorrection = DefaultLinearSlop * RealNum{20};
 		
 		/// Maximum angular correction.
-		/// @detail Maximum angular position correction used when solving constraints.
+		/// @details Maximum angular position correction used when solving constraints.
 		/// Helps to prevent overshoot.
 		/// @note Recommended value: <code>angularSlop * 4</code>.
 		Angle maxAngularCorrection = DefaultAngularSlop * RealNum{4};
@@ -133,7 +133,7 @@ namespace box2d {
 	}
 
 	/// Solves the given position constraint.
-	/// @detail
+	/// @details
 	/// This pushes apart the two given positions for every point in the contact position constraint
 	/// and returns the minimum separation value from the position solver manifold for each point.
 	/// @sa http://allenchou.net/2013/12/game-physics-resolution-contact-constraints/
@@ -149,7 +149,7 @@ namespace box2d {
 	}
 	
 	/// Solves the given position constraints.
-	/// @detail This updates positions (and nothing else) by calling the position constraint solving function.
+	/// @details This updates positions (and nothing else) by calling the position constraint solving function.
 	/// @note Can't expect the returned minimum separation to be greater than or equal to
 	///  <code>-conf.linearSlop</code> because code won't push the separation above this
 	///   amount to begin with.
@@ -167,15 +167,17 @@ namespace box2d {
 
 	/// Solves the given position constraints.
 	///
-	/// @detail This updates positions (and nothing else) for the two bodies identified by the
+	/// @details This updates positions (and nothing else) for the two bodies identified by the
 	///   given indexes by calling the position constraint solving function.
 	///
 	/// @note Can't expect the returned minimum separation to be greater than or equal to
 	///  <code>ConstraintSolverConf.max_separation</code> because code won't push the separation
 	///   above this amount to begin with.
 	///
+	/// @param positionConstraints Positions constraints.
 	/// @param bodiesA Pointer to body constraint for body A.
 	/// @param bodiesB Pointer to body constraint for body B.
+	/// @param conf Configuration for solving the constraint.
 	///
 	/// @return Minimum separation (which is the same as the max amount of penetration/overlap).
 	///
@@ -185,7 +187,7 @@ namespace box2d {
 
 	/// Solves the velocity constraint.
 	///
-	/// @detail This updates the tangent and normal impulses of the velocity constraint points of
+	/// @details This updates the tangent and normal impulses of the velocity constraint points of
 	///   the given velocity constraint and updates the given velocities.
 	///
 	/// @warning Behavior is undefined unless the velocity constraint point count is 1 or 2.

@@ -61,7 +61,7 @@ public:
 };
 
 /// Contact Impulse.
-/// @detail
+/// @details
 /// Used for reporting. Impulses are used instead of forces because
 /// sub-step forces may approach infinity for rigid body collisions. These
 /// match up one-to-one with the contact points in Manifold.
@@ -109,7 +109,7 @@ public:
 	virtual void BeginContact(Contact& contact) { NOT_USED(contact); }
 
 	/// End contact callback.
-	/// @detail
+	/// @details
 	/// Called when the contact's "touching" property becomes false, or just before the contact
 	/// is destroyed.
 	/// @note This contact persists until the broadphase determines there's no overlap anymore
@@ -122,7 +122,7 @@ public:
 	virtual void EndContact(Contact& contact) { NOT_USED(contact); }
 
 	/// Pre-solve callback.
-	/// @detail
+	/// @details
 	/// This is called after a contact is updated. This allows you to inspect a
 	/// contact before it goes to the solver. If you are careful, you can modify the
 	/// contact manifold (e.g. disable contact).
@@ -140,7 +140,7 @@ public:
 	}
 
 	/// Post-solve callback.
-	/// @detail
+	/// @details
 	/// This lets you inspect a contact after the solver is finished. This is useful
 	/// for inspecting impulses.
 	/// @note The contact manifold does not include time of impact impulses, which can be
@@ -176,7 +176,7 @@ public:
 
 	/// Reports fixture.
 	///
-	/// @detail Called for each fixture found in the query. You control how the ray cast
+	/// @details Called for each fixture found in the query. You control how the ray cast
 	/// proceeds by the return value:
 	/// return -1: ignore this fixture and continue
 	/// return 0: terminate the ray cast
@@ -185,7 +185,8 @@ public:
 	///
 	/// @param fixture the fixture hit by the ray
 	/// @param point the point of initial intersection
-	/// @param normal the normal vector at the point of intersection
+	/// @param normal the normal vector at the point of intersection.
+	/// @param fraction Fraction.
 	///
 	/// @return -1 to filter, 0 to terminate, fraction to clip the ray for closest hit,
 	///   1 to continue.

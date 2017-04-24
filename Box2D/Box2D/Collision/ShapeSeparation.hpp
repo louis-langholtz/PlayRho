@@ -26,7 +26,7 @@
 namespace box2d
 {
 	/// Index separation.
-	/// @detail This structure is used to keep track of the best separating axis.
+	/// @details This structure is used to keep track of the best separating axis.
 	struct IndexSeparation
 	{
 		using distance_type = RealNum;
@@ -40,7 +40,7 @@ namespace box2d
 	};
 	
 	/// Index pair separation.
-	/// @detail This structure is used to keep track of the best separating axis.
+	/// @details This structure is used to keep track of the best separating axis.
 	struct IndexPairSeparation
 	{
 		using distance_type = RealNum;

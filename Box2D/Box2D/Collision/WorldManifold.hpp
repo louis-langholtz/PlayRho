@@ -27,10 +27,12 @@ namespace box2d
 	class Manifold;
 	class Contact;
 
-	/// World manifold.
-	/// @details
+	/// World Manifold.
+	///
 	/// This is used to recoginze the current state of a contact manifold in world coordinates.
+	///
 	/// @note This data structure is 36-bytes large (on at least one 64-bit platform).
+	///
 	class WorldManifold
 	{
 	public:
@@ -48,7 +50,7 @@ namespace box2d
 		};
 		
 		/// Default constructor.
-		/// @detail
+		/// @details
 		/// A default constructed world manifold will gave a point count of zero, an invalid
 		/// normal, invalid points, and invalid separations.
 		WorldManifold() noexcept = default;
@@ -80,7 +82,7 @@ namespace box2d
 		
 		/// Gets the point count.
 		///
-		/// @detail This is the maximum index value that can be used to access valid point or
+		/// @details This is the maximum index value that can be used to access valid point or
 		///   separation information.
 		///
 		/// @return Value between 0 and 2.
@@ -88,7 +90,7 @@ namespace box2d
 		size_type GetPointCount() const noexcept { return m_count; }
 		
 		/// Gets the normal of the contact.
-		/// @detail This is a directional unit-vector.
+		/// @details This is a directional unit-vector.
 		/// @return Normal of the contact or an invalid value.
 		UnitVec2 GetNormal() const noexcept { return m_normal; }
 		
@@ -130,11 +132,11 @@ namespace box2d
 		size_type m_count = 0;
 
 		/// Points.
-		/// @detail Manifold's contact points in world coordinates (mid-point of intersection)
+		/// @details Manifold's contact points in world coordinates (mid-point of intersection)
 		Length2D m_points[MaxManifoldPoints] = {GetInvalid<Length2D>(), GetInvalid<Length2D>()};
 		
 		/// Separations (in meters).
-		/// @detail A negative value indicates overlap.
+		/// @details A negative value indicates overlap.
 		Length m_separations[MaxManifoldPoints] = {GetInvalid<Length>(), GetInvalid<Length>()};
 	};
 	

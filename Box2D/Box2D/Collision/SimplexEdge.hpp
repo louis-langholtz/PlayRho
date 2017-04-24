@@ -27,7 +27,7 @@ namespace box2d
 {
 	/// Simplex edge.
 	///
-	/// @detail This is the locations (in world coordinates) and indices of a pair of vertices
+	/// @details This is the locations (in world coordinates) and indices of a pair of vertices
 	/// from two shapes (shape A and shape B).
 	///
 	/// @note This data structure is 28-bytes large (on at least one 64-bit platform).
@@ -56,7 +56,7 @@ namespace box2d
 		constexpr auto GetPointB() const noexcept { return m_wB; }
 		
 		/// Gets the point delta.
-		/// @detail This is the difference between points A and B.
+		/// @details This is the difference between points A and B.
 		/// @return Point B minus point A.
 		constexpr Length2D GetPointDelta() const noexcept;
 
@@ -72,7 +72,7 @@ namespace box2d
 #ifndef DONT_CACHE
 		Length2D m_delta; ///< Edge defined wB - wA. 8-bytes.
 #endif
-		IndexPair m_indexPair; ///< Index pair. @detail Indices of points A and B. 2-bytes.
+		IndexPair m_indexPair; ///< Index pair. @details Indices of points A and B. 2-bytes.
 	};
 	
 	constexpr inline SimplexEdge::SimplexEdge(Length2D pA, index_type iA, Length2D pB, index_type iB) noexcept:

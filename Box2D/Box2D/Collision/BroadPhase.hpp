@@ -48,7 +48,7 @@ constexpr inline bool operator != (ProxyIdPair lhs, ProxyIdPair rhs)
 }
 
 /// Broad phase assistant.
-/// @detail
+/// @details
 /// The broad-phase is used for computing pairs and performing volume queries and ray casts.
 /// This broad-phase does not persist pairs. Instead, this reports potentially new pairs.
 /// It is up to the client to consume the new pairs and to track subsequent overlap.
@@ -94,7 +94,7 @@ public:
 	void DestroyProxy(size_type proxyId);
 
 	/// Updates the proxy.
-	/// @detail
+	/// @details
 	/// Call this as many times as you like, then when you are done call UpdatePairs
 	/// to finalize the proxy pairs (for your time step).
 	/// @param proxyId Proxy ID. Behavior is undefined if this is the null proxy ID.
@@ -122,7 +122,7 @@ public:
 	size_type GetProxyCount() const noexcept;
 
 	/// Updates the pairs.
-	/// @detail This results in pair callbacks. This can only add pairs.
+	/// @details This results in pair callbacks. This can only add pairs.
 	/// @param callback Callback that's called for AABB overlapping pairs.
 	size_type UpdatePairs(std::function<bool(void*,void*)> callback);
 

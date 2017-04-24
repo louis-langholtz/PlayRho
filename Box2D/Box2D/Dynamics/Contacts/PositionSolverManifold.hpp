@@ -28,24 +28,24 @@
 namespace box2d
 {
 	/// Position solver manifold.
-	/// @detail
+	/// @details
 	/// This is a normal-point-separation composition of data for position constraint resolution.
 	/// @note This data structure is 20-bytes large.
 	struct PositionSolverManifold
 	{
 		/// Normal.
-		/// @detail Normal of the contact between two points. This is the axis upon which impulses
+		/// @details Normal of the contact between two points. This is the axis upon which impulses
 		///    should be applied to resolve the negative separations of overlapping shapes.
 		/// @note This field is 8-bytes large.
 		UnitVec2 m_normal;
 
 		/// Point.
-		/// @detail Point at which position resolution should be relatively applied.
+		/// @details Point at which position resolution should be relatively applied.
 		/// @note This field is 8-bytes large.
 		Length2D m_point;
 		
 		/// Separation.
-		/// @detail Separation between two points (i.e. penetration if negative).
+		/// @details Separation between two points (i.e. penetration if negative).
 		/// @note This field is 4-bytes large.
 		Length m_separation;
 	};

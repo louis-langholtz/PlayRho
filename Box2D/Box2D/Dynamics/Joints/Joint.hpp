@@ -52,7 +52,7 @@ enum class JointType
 };
 
 /// Abstract base Joint Definition class.
-/// @detail Joint definitions are used to construct joints.
+/// @details Joint definitions are used to construct joints.
 /// @note This class is not meant to be directly instantiated; it is meant
 ///   to be inherreted from.
 struct JointDef
@@ -89,7 +89,7 @@ struct JointDef
 };
 
 /// Base Joint class.
-/// @detail
+/// @details
 /// Joints are used to constraint two bodies together in various fashions.
 /// Some joints also feature limits and motors.
 class Joint

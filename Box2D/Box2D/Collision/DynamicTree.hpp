@@ -29,7 +29,7 @@ namespace box2d {
 
 /// A dynamic AABB tree broad-phase, inspired by Nathanael Presson's btDbvt.
 ///
-/// @detail A dynamic tree arranges data in a binary tree to accelerate
+/// @details A dynamic tree arranges data in a binary tree to accelerate
 /// queries such as volume queries and ray casts. Leafs are proxies
 /// with an AABB. In the tree we expand the proxy AABB by AabbMultiplier
 /// so that the proxy AABB is bigger than the client object. This allows the client
@@ -64,7 +64,7 @@ public:
 	DynamicTree& operator=(const DynamicTree&) = delete;
 
 	/// Creates a new proxy.
-	/// @detail Creates a proxy for a tight fitting AABB and a userData pointer.
+	/// @details Creates a proxy for a tight fitting AABB and a userData pointer.
 	/// @note The indices of proxies that have been destroyed get reused for new proxies.
 	/// @return Index of the created proxy.
 	size_type CreateProxy(const AABB aabb, void* userData);
@@ -134,7 +134,7 @@ public:
 	size_type GetHeight() const noexcept;
 
 	/// Gets the maximum balance.
-	/// @detail This gets the maximum balance of nodes in the tree.
+	/// @details This gets the maximum balance of nodes in the tree.
 	/// @note The balance is the difference in height of the two children of a node.
 	size_type GetMaxBalance() const;
 
@@ -225,14 +225,14 @@ private:
 	/// @warning Behavior is undefined if the given index is not valid.
 	size_type Balance(const size_type index);
 
-	TreeNode* m_nodes; ///< Nodes. @detail Initialized on construction.
+	TreeNode* m_nodes; ///< Nodes. @details Initialized on construction.
 
 	size_type m_root = InvalidIndex; ///< Index of root element in m_nodes or InvalidIndex.
 
-	size_type m_nodeCount = 0; ///< Node count. @detail Count of currently allocated nodes.
-	size_type m_nodeCapacity; ///< Node capacity. @detail Size of buffer allocated for nodes.
+	size_type m_nodeCount = 0; ///< Node count. @details Count of currently allocated nodes.
+	size_type m_nodeCapacity; ///< Node capacity. @details Size of buffer allocated for nodes.
 
-	size_type m_freeList = 0; ///< Free list. @detail Index to free nodes.
+	size_type m_freeList = 0; ///< Free list. @details Index to free nodes.
 };
 
 constexpr DynamicTree::size_type DynamicTree::GetDefaultInitialNodeCapacity() noexcept

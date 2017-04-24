@@ -28,7 +28,7 @@ namespace box2d
 
 	/// Simplex.
 	///
-	/// @detail An encapsulation of a point, line segment, or triangle.
+	/// @details An encapsulation of a point, line segment, or triangle.
 	///   These are defined respectively as: a 0-simplex, a 1-simplex, and a 2-simplex.
 	///   Used in doing GJK collision detection.
 	///
@@ -59,7 +59,7 @@ namespace box2d
 
 		/// Coefficients.
 		///
-		/// @detail Collection of coefficient values.
+		/// @details Collection of coefficient values.
 		///
 		/// @note This data structure is 4 * 3 + 4 = 16-bytes large.
 		///
@@ -72,7 +72,7 @@ namespace box2d
 		
 		/// Simplex cache.
 		///
-		/// @detail Used to warm start Distance.
+		/// @details Used to warm start Distance.
 		/// Caches particular information from a simplex - a related metric and up-to 3 index pairs.
 		///
 		/// @invariant As the metric and list of index pairs should be values from a snapshot of a
@@ -108,8 +108,8 @@ namespace box2d
 			BOX2D_CONSTEXPR IndexPair GetIndexPair(size_type index) const noexcept;
 			
 		private:
-			RealNum m_metric = GetInvalid<RealNum>(); ///< Metric. @detail This is a length or area value.			
-			IndexPairs m_indices; ///< Indices. @detail Collection of index-pairs.
+			RealNum m_metric = GetInvalid<RealNum>(); ///< Metric. @details This is a length or area value.			
+			IndexPairs m_indices; ///< Indices. @details Collection of index-pairs.
 		};
 
 		static Cache GetCache(const Simplex::Edges& edges) noexcept;
@@ -175,7 +175,7 @@ namespace box2d
 
 		/// Normalized weights.
 		///
-		/// @detail Collection of coefficients (ranging from greater than 0 to less than 1).
+		/// @details Collection of coefficients (ranging from greater than 0 to less than 1).
 		/// A.k.a.: barycentric coordinates.
 		///
 		/// @note This member variable is 16-bytes.

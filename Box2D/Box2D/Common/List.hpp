@@ -33,7 +33,7 @@ namespace box2d {
 		using const_reference = const ListNode<T>&;
 
 		/// Iterator.
-		/// @detail
+		/// @details
 		/// Conforming to the bidirectional iterator concept.
 		/// @sa http://en.cppreference.com/w/cpp/concept/BidirectionalIterator
 		class iterator
@@ -229,7 +229,7 @@ namespace box2d {
 		using size_type = std::size_t;
 
 		/// Iterator.
-		/// @detail
+		/// @details
 		/// Conforming to the bidirectional iterator concept.
 		/// @sa http://en.cppreference.com/w/cpp/concept/BidirectionalIterator
 		class iterator

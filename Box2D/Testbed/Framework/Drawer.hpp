@@ -25,7 +25,7 @@
 namespace box2d {
 
 /// RGBA Color.
-/// @detail Color for drawing. Each value has the range [0,1].
+/// @details Color for drawing. Each value has the range [0,1].
 struct Color
 {
 	Color() = default;
@@ -48,7 +48,7 @@ struct Color
 	float r;
 	float g;
 	float b;
-	float a = 1; ///< Alpha value. @detail 0 for fully transparent to 1 for fully opaque.
+	float a = 1; ///< Alpha value. @details 0 for fully transparent to 1 for fully opaque.
 };
 
 Color Brighten(Color color, float factor);

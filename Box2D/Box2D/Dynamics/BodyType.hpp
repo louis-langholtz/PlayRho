@@ -32,21 +32,21 @@ namespace box2d
 enum class BodyType
 {
 	/// Static body type.
-	/// @detail
+	/// @details
 	/// Static bodies have no mass, have no forces applied to them, and aren't moved by
 	/// physical processeses. They are impenetrable.
 	/// @note Physics applied: none.
 	Static = 0,
 	
 	/// Kinematic body type.
-	/// @detail
+	/// @details
 	/// Kinematic bodies have no mass and have no forces applied to them, but can move at set velocities.
 	/// They are impenetrable.
 	/// @note Physics applied: velocity.
 	Kinematic,
 	
 	/// Dynamic body type.
-	/// @detail
+	/// @details
 	/// Dynamic bodies are fully simulated bodies.
 	/// Dynamic bodies always have a positive non-zero mass.
 	/// They may be penetrable.

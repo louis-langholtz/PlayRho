@@ -43,7 +43,7 @@ namespace box2d
 		constexpr auto operator- () const noexcept { return Vector2D{-x, -y}; }
 		
 		/// Maximum size.
-		/// @detail This is this vector type's dimensionality.
+		/// @details This is this vector type's dimensionality.
 		constexpr size_type max_size() const noexcept { return 2; }
 		
 		/// Accesses element by index.

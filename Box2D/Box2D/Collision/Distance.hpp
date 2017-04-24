@@ -66,7 +66,7 @@ namespace box2d
 	};
 
 	/// Determines the closest points between two shapes.
-	/// @detail
+	/// @details
 	/// Supports any combination of:
 	/// CircleShape, PolygonShape, EdgeShape. The simplex cache is input/output.
 	/// @note On the first call, the Simplex::Cache.count should be set to zero.

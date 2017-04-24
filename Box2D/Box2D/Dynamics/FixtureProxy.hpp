@@ -28,7 +28,7 @@ namespace box2d
 	class Fixture;
 
 	/// Fixture proxy.
-	/// @detail This proxy is used internally to connect fixtures to the broad-phase.
+	/// @details This proxy is used internally to connect fixtures to the broad-phase.
 	/// @note This data structure is 32-bytes large (on at least one 64-bit platform).
 	struct FixtureProxy
 	{

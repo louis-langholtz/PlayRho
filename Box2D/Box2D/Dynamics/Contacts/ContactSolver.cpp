@@ -44,7 +44,7 @@ struct VelocityPair
 
 /// Impulse change.
 ///
-/// @detail
+/// @details
 /// This describes the change in impulse necessary for a solution.
 /// To apply this: let P = magnitude * direction, then
 ///   the change to body A's velocity is
@@ -114,7 +114,7 @@ static inline ImpulseChange SolveNormalConstraint(const VelocityConstraint& vc,
 }
 
 /// Solves the tangential portion of the velocity constraint.
-/// @detail
+/// @details
 /// This imposes friction on the velocity.
 /// Specifically, this updates the tangent impulses on the velocity constraint points and
 ///   updates the two given velocity structures.
@@ -446,7 +446,7 @@ static inline Momentum BlockSolveNormalConstraint(VelocityConstraint& vc)
 }
 
 /// Solves the normal portion of the velocity constraint.
-/// @detail
+/// @details
 /// This prevents penetration and applies the contact restitution to the velocity.
 static inline Momentum SolveNormalConstraint(VelocityConstraint& vc)
 {

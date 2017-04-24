@@ -25,7 +25,7 @@
 namespace box2d
 {
 	/// Contact Feature.
-	/// @detail The features that intersect to form the contact point.
+	/// @details The features that intersect to form the contact point.
 	/// @note This structure is designed to be compact and passed-by-value.
 	/// @note This data structure is 4-bytes large.
 	struct ContactFeature

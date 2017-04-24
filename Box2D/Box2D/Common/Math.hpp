@@ -105,7 +105,7 @@ inline Fixed64 round(Fixed64 value, uint32_t precision)
 #endif
 
 /// Gets whether a given value is almost zero.
-/// @detail An almost zero value is "subnormal". Dividing by these values can lead to
+/// @details An almost zero value is "subnormal". Dividing by these values can lead to
 /// odd results like a divide by zero trap occuring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool almost_zero(float value)
@@ -114,7 +114,7 @@ constexpr inline bool almost_zero(float value)
 }
 
 /// Gets whether a given value is almost zero.
-/// @detail An almost zero value is "subnormal". Dividing by these values can lead to
+/// @details An almost zero value is "subnormal". Dividing by these values can lead to
 /// odd results like a divide by zero trap occuring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool almost_zero(double value)
@@ -123,7 +123,7 @@ constexpr inline bool almost_zero(double value)
 }
 
 /// Gets whether a given value is almost zero.
-/// @detail An almost zero value is "subnormal". Dividing by these values can lead to
+/// @details An almost zero value is "subnormal". Dividing by these values can lead to
 /// odd results like a divide by zero trap occuring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool almost_zero(long double value)
@@ -132,7 +132,7 @@ constexpr inline bool almost_zero(long double value)
 }
 
 /// Gets whether a given value is almost zero.
-/// @detail An almost zero value is "subnormal". Dividing by these values can lead to
+/// @details An almost zero value is "subnormal". Dividing by these values can lead to
 /// odd results like a divide by zero trap occuring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool almost_zero(Fixed32 value)
@@ -142,7 +142,7 @@ constexpr inline bool almost_zero(Fixed32 value)
 
 #ifndef WIN32
 /// Gets whether a given value is almost zero.
-/// @detail An almost zero value is "subnormal". Dividing by these values can lead to
+/// @details An almost zero value is "subnormal". Dividing by these values can lead to
 /// odd results like a divide by zero trap occuring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool almost_zero(Fixed64 value)
@@ -300,7 +300,7 @@ constexpr inline bool IsValid(const Vec3& value) noexcept
 
 /// Performs the dot product on two vectors (A and B).
 ///
-/// @detail The dot product of two vectors is defined as:
+/// @details The dot product of two vectors is defined as:
 ///   the magnitude of vector A, mulitiplied by, the magnitude of vector B,
 ///   multiplied by, the cosine of the angle between the two vectors (A and B).
 ///   Thus the dot product of two vectors is a value ranging between plus and minus the
@@ -335,7 +335,7 @@ constexpr inline auto Dot(const Vec3 a, const Vec3 b) noexcept
 
 /// Performs the 2D analog of the cross product of two vectors.
 ///
-/// @detail
+/// @details
 /// This is defined as the result of: <code>(a.x * b.y) - (a.y * b.x)</code>.
 ///
 /// @note This operation is anti-commutative. I.e. Cross(a, b) == -Cross(b, a).
@@ -384,7 +384,7 @@ constexpr inline auto Cross(const Vec3 a, const Vec3 b) noexcept
 }
 
 /// A 2-by-2 matrix.
-/// @detail Stored in column-major order.
+/// @details Stored in column-major order.
 /// @note This structure is likely about 16-bytes large.
 struct Mat22
 {
@@ -529,7 +529,7 @@ constexpr inline bool IsValid(const UnitVec2& value) noexcept
 }
 
 /// Transformation.
-/// @detail
+/// @details
 /// A transform contains translation and rotation. It is used to represent
 /// the position and orientation of rigid frames.
 /// @note This data structure is 16-bytes large (on at least one 64-bit platform).
@@ -584,7 +584,7 @@ constexpr inline bool IsValid(const Velocity& value) noexcept
 }
 
 /// Sweep.
-/// @detail
+/// @details
 /// This describes the motion of a body/shape for TOI computation.
 /// Shapes are defined with respect to the body origin, which may
 /// not coincide with the center of mass. However, to support dynamics
@@ -619,7 +619,7 @@ public:
 	RealNum GetAlpha0() const noexcept { return alpha0; }
 
 	/// Advances the sweep by a factor of the difference between the given time alpha and the sweep's alpha0.
-	/// @detail
+	/// @details
 	/// This advances position 0 (<code>pos0</code>) of the sweep towards position 1 (<code>pos1</code>)
 	/// by a factor of the difference between the given alpha and the alpha0.
 	/// @param alpha Valid new time factor in [0,1) to update the sweep to. Behavior is undefined if value is invalid.
@@ -640,7 +640,7 @@ private:
 };
 
 /// Gets a vector counter-clockwise (reverse-clockwise) perpendicular to the given vector.
-/// @detail This takes a vector of form (x, y) and returns the vector (-y, x).
+/// @details This takes a vector of form (x, y) and returns the vector (-y, x).
 /// @param vector Vector to return a counter-clockwise perpendicular equivalent for.
 /// @return A counter-clockwise 90-degree rotation of the given vector.
 /// @sa GetFwdPerpendicular.
@@ -652,7 +652,7 @@ constexpr inline auto GetRevPerpendicular(const T vector) noexcept
 }
 	
 /// Gets a vector clockwise (forward-clockwise) perpendicular to the given vector.
-/// @detail This takes a vector of form (x, y) and returns the vector (y, -x).
+/// @details This takes a vector of form (x, y) and returns the vector (y, -x).
 /// @param vector Vector to return a clockwise perpendicular equivalent for.
 /// @return A clockwise 90-degree rotation of the given vector.
 /// @sa GetRevPerpendicular.
@@ -836,7 +836,7 @@ constexpr inline auto Rotate(const Vector2D<T> vector, const UnitVec2& angle) no
 }
 
 /// Inverse rotate a vector.
-/// @detail This is the inverse of rotating a vector - it undoes what rotate does.
+/// @details This is the inverse of rotating a vector - it undoes what rotate does.
 /// @sa Rotate.
 template <class T>
 constexpr inline auto InverseRotate(const Vector2D<T> vector, const UnitVec2& angle) noexcept
@@ -847,7 +847,7 @@ constexpr inline auto InverseRotate(const Vector2D<T> vector, const UnitVec2& an
 }
 
 /// Transforms the given 2-D vector with the given transformation.
-/// @detail
+/// @details
 /// Rotate and translate the given 2-D linear position according to the rotation and translation
 /// defined by the given transformation.
 /// @note Passing the output of this function to <code>InverseTransform</code> (with the same
@@ -863,7 +863,7 @@ constexpr inline Length2D Transform(const Length2D v, const Transformation T) no
 }
 
 /// Inverse transforms the given 2-D vector with the given transformation.
-/// @detail
+/// @details
 /// Inverse translate and rotate the given 2-D vector according to the translation and rotation
 /// defined by the given transformation.
 /// @note Passing the output of this function to <code>Transform</code> (with the same
@@ -1109,6 +1109,7 @@ inline Transformation GetTransformation(const Position pos, const Length2D local
 /// Gets the position between two positions at a given unit interval.
 /// @param pos0 Position at unit interval value of 0.
 /// @param pos1 Position at unit interval value of 1.
+/// @param beta Unit interval (value between 0 and 1) of travel between pos0 and pos1.
 /// @return pos0 if pos0 == pos1 or beta == 0, pos1 if beta == 1, or at the given
 ///   unit interval value between pos0 and pos1.
 inline Position GetPosition(const Position pos0, const Position pos1, const RealNum beta) noexcept
@@ -1286,6 +1287,8 @@ constexpr inline Vec2 GetVec2(const UnitVec2 value)
 
 /// Gets the unit vector for the given value.
 /// @param value Value to get the unit vector for.
+/// @param fallback Fallback unit vector value to use in case a unit vector can't effectively be
+///   calculated from the given value.
 /// @return value divided by its length if length not almost zero otherwise invalid value.
 /// @sa almost_equal.
 template <class T>
@@ -1297,6 +1300,9 @@ inline UnitVec2 GetUnitVector(const Vector2D<T> value, const UnitVec2 fallback =
 
 /// Gets the unit vector for the given value.
 /// @param value Value to get the unit vector for.
+/// @param magnitude Returns the calculated magnitude of the given vector.
+/// @param fallback Fallback unit vector value to use in case a unit vector can't effectively be
+///   calculated from the given value.
 /// @return value divided by its length if length not almost zero otherwise invalid value.
 /// @sa almost_equal.
 template <class T>

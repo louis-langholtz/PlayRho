@@ -24,6 +24,10 @@
 
 namespace box2d
 {
+	/// Wider.
+	///
+	/// Widens a data type to the data type that's twice its original size.
+	///
 	template <typename T> struct Wider {};
 	
 	template<> struct Wider<std::int8_t> { using type = std::int16_t; };

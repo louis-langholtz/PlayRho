@@ -26,7 +26,7 @@ namespace box2d
 {
 	/// Vertex Set.
 	///
-	/// @detail This is a container that enforces the invariant that no two
+	/// @details This is a container that enforces the invariant that no two
 	/// vertices can be closer together than the minimum separation distance.
 	///
 	class VertexSet

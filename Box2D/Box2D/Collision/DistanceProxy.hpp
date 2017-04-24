@@ -27,9 +27,8 @@ namespace box2d
 {
 	class Shape;
 
-	/// Distance Proxy.
+	/// @brief Distance Proxy.
 	///
-	/// @detail
 	/// A distance proxy aggragates a convex set of vertices and a vertexRadius of those vertices.
 	/// This can be visualized as a convex N-gon with rounded corners. It's meant to represent
 	/// any single portion of a shape identified by its child-index. These are used by the GJK
@@ -43,7 +42,7 @@ namespace box2d
 	{
 	public:
 		/// Size type.
-		/// @detail Must be big enough to hold max posible count of vertices.
+		/// @details Must be big enough to hold max posible count of vertices.
 		using size_type = std::remove_const<decltype(MaxShapeVertices)>::type;
 		
 		static constexpr size_type InvalidIndex = static_cast<size_type>(-1);
@@ -60,13 +59,19 @@ namespace box2d
 		}
 		
 		/// Initializing constructor.
-		/// @detail Constructs a distance proxy for n-point shape (like a polygon).
+		///
+		/// @details Constructs a distance proxy for n-point shape (like a polygon).
+		///
 		/// @param vertexRadius Radius of the given vertices.
+		/// @param count Count of elements of the vertices and normals arrays.
 		/// @param vertices Collection of vertices of the shape (relative to the shape's origin).
+		/// @param normals Collection of normals of the shape.
+		///
 		/// @note The vertices collection must have more than zero elements and no more than
 		///    <code>MaxShapeVertices</code> elements.
 		/// @warning Behavior is undefined if the vertices collection has less than one element or
 		///   more than <code>MaxShapeVertices</code> elements.
+		///
 		constexpr DistanceProxy(const Length vertexRadius, const size_type count,
 								const Length2D* vertices, const UnitVec2* normals) noexcept:
 			m_vertices{vertices},
@@ -85,7 +90,7 @@ namespace box2d
 		auto GetVertexRadius() const noexcept { return m_vertexRadius; }
 		
 		/// Gets the vertex count.
-		/// @detail This is the count of valid vertex elements that this object provides.
+		/// @details This is the count of valid vertex elements that this object provides.
 		/// @return Value between 0 and <code>MaxShapeVertices</code>.
 		/// @note This only returns 0 if this proxy was default constructed.
 		auto GetVertexCount() const noexcept { return m_count; }
@@ -139,7 +144,7 @@ namespace box2d
 	DistanceProxy GetDistanceProxy(const Shape& shape, child_count_t index);
 
 	/// Gets the supporting vertex index in the given direction for the given distance proxy.
-	/// @detail This finds the vertex that's most significantly in the direction of the given
+	/// @details This finds the vertex that's most significantly in the direction of the given
 	///   vector and returns its index.
 	/// @note 0 is returned for a given zero length direction vector.
 	/// @param proxy Distance proxy object to find index in if a valid index exists for it.

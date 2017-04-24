@@ -40,7 +40,7 @@ namespace box2d {
 	SecondMomentOfArea GetPolarMoment(Span<const Length2D> vertices);
 
 	/// Mass data.
-	/// @detail This holds the mass data computed for a shape.
+	/// @details This holds the mass data computed for a shape.
 	/// @note This data structure is 16-bytes large (on at least one 64-bit platform).
 	struct MassData
 	{
@@ -65,7 +65,7 @@ namespace box2d {
 		Mass mass;
 
 		/// Rotational inertia, a.k.a. moment of inertia.
-		/// @detail
+		/// @details
 		/// This is the rotational inertia of the shape about the local origin.
 		/// This should NEVER be a negative value.
 		/// @note Behavior is undefined if this value is negative.
@@ -77,7 +77,7 @@ namespace box2d {
 	MassData GetMassData(const Length r, const Density density, const Length2D v0, const Length2D v1);
 
 	/// Computes the mass data for the given fixture.
-	/// @detail
+	/// @details
 	/// The mass data is based on the density and
 	/// the shape of the fixture. The rotational inertia is about the shape's origin. This operation
 	/// may be expensive.

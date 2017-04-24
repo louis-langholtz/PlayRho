@@ -49,7 +49,7 @@ inline RealNum MixRestitution(RealNum restitution1, RealNum restitution2) noexce
 }
 
 /// Contact.
-/// @detail
+/// @details
 /// The class manages contact between two shapes. A contact exists for each overlapping
 /// AABB in the broad-phase (except if filtered). Therefore a contact object may exist
 /// that has no contact points.
@@ -72,7 +72,7 @@ public:
 	const Manifold& GetManifold() const noexcept;
 
 	/// Is this contact touching?
-	/// @detail
+	/// @details
 	/// Touching is defined as either:
 	///   1. This contact's manifold has more than 0 contact points, or
 	///   2. This contact has sensors and the two shapes of this contact are found to be overlapping.
@@ -213,7 +213,7 @@ private:
 	void Update(const StepConf& conf, ContactListener* listener = nullptr);
 	
 	/// Sets the time of impact (TOI).
-	/// @detail After returning, this object will have a TOI that is set as indicated by <code>HasValidToi()</code>.
+	/// @details After returning, this object will have a TOI that is set as indicated by <code>HasValidToi()</code>.
 	/// @note Behavior is undefined if the value assigned is less than 0 or greater than 1.
 	/// @sa RealNum GetToi() const.
 	/// @sa HasValidToi.
@@ -240,8 +240,8 @@ private:
 	///   using a virtual method and subclassing this class.
 	ManifoldCalcFunc const m_manifoldCalcFunc;
 
-	Fixture* const m_fixtureA; ///< Fixture A. @detail Non-null pointer to fixture A.
-	Fixture* const m_fixtureB; ///< Fixture B. @detail Non-null pointer to fixture B.
+	Fixture* const m_fixtureA; ///< Fixture A. @details Non-null pointer to fixture A.
+	Fixture* const m_fixtureB; ///< Fixture B. @details Non-null pointer to fixture B.
 
 	child_count_t const m_indexA;
 	child_count_t const m_indexB;

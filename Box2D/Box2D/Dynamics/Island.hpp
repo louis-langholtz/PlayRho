@@ -30,7 +30,7 @@ class Contact;
 class Joint;
 
 /// Island.
-/// @detail A container of bodies contacts and joints relavent to handling world dynamics.
+/// @details A container of bodies contacts and joints relavent to handling world dynamics.
 /// @note This is an internal class.
 /// @note This data structure is 72-bytes large (on at least one 64-bit platform).
 class Island

@@ -29,7 +29,7 @@ namespace box2d
 	class Fixture;
 
 	/// Ray-cast output data.
-	/// @detail The ray hits at p1 + fraction * (p2 - p1), where p1 and p2 come from RayCastInput.
+	/// @details The ray hits at p1 + fraction * (p2 - p1), where p1 and p2 come from RayCastInput.
 	struct RayCastOutput
 	{
 		RayCastOutput() = default;

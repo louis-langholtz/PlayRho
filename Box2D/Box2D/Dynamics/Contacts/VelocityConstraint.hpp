@@ -53,7 +53,7 @@ namespace box2d {
 		};
 		
 		/// Default constructor.
-		/// @detail
+		/// @details
 		/// Initializes object with: a zero point count, an invalid K, an invalid normal mass,
 		/// an invalid normal, invalid friction, invalid restitution, an invalid tangent speed.
 		VelocityConstraint() = default;
@@ -212,7 +212,7 @@ namespace box2d {
 	private:
 	
 		/// Adds the given point to this contact velocity constraint object.
-		/// @detail Adds up to <code>MaxManifoldPoints</code> points. To find out how many points have already
+		/// @details Adds up to <code>MaxManifoldPoints</code> points. To find out how many points have already
 		///   been added, call GetPointCount().
 		/// @note Behavior is undefined if an attempt is made to add more than MaxManifoldPoints points.
 		/// @sa GetPointCount().
@@ -253,7 +253,7 @@ namespace box2d {
 		Mat22 m_K = GetInvalid<Mat22>();
 		
 		/// Normal mass information.
-		/// @detail This is the cached inverse of the K value or an invalid value.
+		/// @details This is the cached inverse of the K value or an invalid value.
 		/// @note Depends on the K value.
 		/// @note Only used by block solver.
 		/// @note This field is 16-bytes (on at least one 64-bit platform).

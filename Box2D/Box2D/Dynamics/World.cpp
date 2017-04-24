@@ -143,7 +143,7 @@ namespace {
 	}
 	
 	/// Calculates movement.
-	/// @detail Calculate the positional displacement based on the given velocity
+	/// @details Calculate the positional displacement based on the given velocity
 	///    that's possibly clamped to the maximum translation and rotation.
 	inline PositionAndVelocity CalculateMovement(const BodyConstraint& body, Time h, MovementConf conf)
 	{
@@ -194,7 +194,7 @@ namespace {
 	}
 	
 	/// Reports the given constraints to the listener.
-	/// @detail
+	/// @details
 	/// This calls the listener's PostSolve method for all contacts.size() elements of
 	/// the given array of constraints.
 	/// @param listener Listener to call.
@@ -252,7 +252,7 @@ namespace {
 	}
 	
 	/// Stores impulses.
-	/// @detail Saves the normal and tangent impulses of all the velocity constraint points back to their
+	/// @details Saves the normal and tangent impulses of all the velocity constraint points back to their
 	///   associated contacts' manifold points.
 	inline void StoreImpulses(const VelocityConstraints& velocityConstraints, Span<Contact*> contacts)
 	{
@@ -312,7 +312,7 @@ namespace {
 	}
 
 	/// Gets the velocity constraints for the given inputs.
-	/// @detail
+	/// @details
 	/// Inializes the velocity constraints with the position dependent portions of the current position constraints.
 	/// @post Velocity constraints will have their "normal" field set to the world manifold normal for them.
 	/// @post Velocity constraints will have their constraint points set.
@@ -358,7 +358,7 @@ namespace {
 	}
 
 	/// "Solves" the velocity constraints.
-	/// @detail Updates the velocities and velocity constraint points' normal and tangent impulses.
+	/// @details Updates the velocities and velocity constraint points' normal and tangent impulses.
 	/// @pre <code>UpdateVelocityConstraints</code> has been called on the velocity constraints.
 	inline Momentum SolveVelocityConstraints(VelocityConstraints& velocityConstraints)
 	{
@@ -456,7 +456,7 @@ namespace {
 
 /// Fixture Attorney.
 ///
-/// @detail This class uses the "attorney-client" idiom to control the granularity of
+/// @details This class uses the "attorney-client" idiom to control the granularity of
 ///   friend-based access to the Fixture class. This is meant to help preserve and enforce
 ///   the invariants of the Fixture class.
 ///

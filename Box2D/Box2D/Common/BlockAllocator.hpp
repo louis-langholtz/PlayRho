@@ -25,11 +25,12 @@
 namespace box2d {
 
 	/// Block allocator.
-	/// @detail
+	///
 	/// This is a small object allocator used for allocating small
-	/// objects that persist for more than one time step.
+	///   objects that persist for more than one time step.
 	/// @note This data structure is 136-bytes large (on at least one 64-bit platform).
 	/// @sa http://www.codeproject.com/useritems/Small_Block_Allocator.asp
+	///
 	class BlockAllocator
 	{
 	public:
@@ -44,11 +45,11 @@ namespace box2d {
 		~BlockAllocator() noexcept;
 		
 		/// Allocates memory.
-		/// @detail Allocates uninitialized storage.
-		/// Uses <code>alloc</code> if the size is larger than <code>MaxBlockSize</code>.
-		/// Otherwise looks for an appropriately sized block from the free list.
-		/// Failing that, <code>alloc</code> is used to grow the free list from which
-		/// memory is returned.
+		/// @details Allocates uninitialized storage.
+		///   Uses <code>alloc</code> if the size is larger than <code>MaxBlockSize</code>.
+		///   Otherwise looks for an appropriately sized block from the free list.
+		///   Failing that, <code>alloc</code> is used to grow the free list from which
+		///   memory is returned.
 		/// @sa alloc.
 		void* Allocate(size_type n);
 		
@@ -59,7 +60,7 @@ namespace box2d {
 		}
 		
 		/// Free memory.
-		/// @detail This will use free if the size is larger than <code>MaxBlockSize</code>.
+		/// @details This will use free if the size is larger than <code>MaxBlockSize</code>.
 		void Free(void* p, size_type n);
 		
 		/// Clears this allocator.

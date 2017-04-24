@@ -73,7 +73,7 @@ struct PrismaticJointDef : public JointDef
 
 /// Prismatic Joint.
 ///
-/// @detail This joint provides one degree of freedom: translation along an axis fixed
+/// @details This joint provides one degree of freedom: translation along an axis fixed
 /// in bodyA. Relative rotation is prevented.
 ///
 /// @note You can use a joint limit to restrict the range of motion and a joint motor

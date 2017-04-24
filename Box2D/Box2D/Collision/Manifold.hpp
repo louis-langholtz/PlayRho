@@ -36,7 +36,7 @@ namespace box2d
 	
 	/// Manifold for two convex shapes.
 	///
-	/// @detail
+	/// @details
 	/// This describes zero, one, or two points of contact for which impulses should be applied to
 	/// most naturally resolve those contacts. Ideally the manifold is calculated at the earliest
 	/// point in time of contact occuring. The further past that time, the less natural contact
@@ -74,12 +74,12 @@ namespace box2d
 		enum Type: uint8
 		{
 			/// Unset type.
-			/// @detail Manifold is unset. For manifolds of this type: the point count is zero,
+			/// @details Manifold is unset. For manifolds of this type: the point count is zero,
 			///   point data is undefined, and all other properties are invalid.
 			e_unset,
 			
 			/// Circles type.
-			/// @detail Manifold is for circle-to-circle like collisions.
+			/// @details Manifold is for circle-to-circle like collisions.
 			/// @note For manifolds of this type: the local point is local center of "circle-A"
 			///     (where shape A wasn't necessarily a circle but treating it as such is useful),
 			///     the local normal is invalid (and unused) and, the point count will be zero or
@@ -89,7 +89,7 @@ namespace box2d
 			e_circles,
 
 			/// Face-A type.
-			/// @detail Indicates: local point is center of face A, local normal is normal on shape A, and the
+			/// @details Indicates: local point is center of face A, local normal is normal on shape A, and the
 			///   local points of Point instances are the local center of cirlce B or a clip point of polygon B
 			///   where the contact feature will be <code>ContactFeature{e_face, i, e_vertex, j}</code> or
 			///   <code>ContactFeature{e_face, i, e_face, j} where i and j are indexes for the vertex or edge
@@ -97,7 +97,7 @@ namespace box2d
 			e_faceA,
 
 			/// Face-B type.
-			/// @detail Indicates: local point is center of face B, local normal is normal on shape B, and the
+			/// @details Indicates: local point is center of face B, local normal is normal on shape B, and the
 			///   local points of Point instances are the local center of cirlce A or a clip point of polygon A
 			///   where the contact feature will be <code>ContactFeature{e_face, i, e_vertex, j}</code> or
 			///   <code>ContactFeature{e_face, i, e_face, j} where i and j are indexes for the vertex or edge
@@ -107,7 +107,7 @@ namespace box2d
 		
 		/// Point data for a manifold.
 		///
-		/// @detail This is a contact point belonging to a contact manifold. It holds details
+		/// @details This is a contact point belonging to a contact manifold. It holds details
 		/// related to the geometry and dynamics of the contact points.
 		///
 		/// @note The impulses are used for internal caching and may not provide reliable contact
@@ -118,7 +118,7 @@ namespace box2d
 		struct Point
 		{
 			/// Local point.
-			/// @detail Usage depends on manifold type.
+			/// @details Usage depends on manifold type.
 			/// @note For circles type manifolds, this is the local center of circle B.
 			/// @note For face-A type manifolds, this is the local center of "cirlce" B or a clip
 			/// point of shape B. It is also the point at which impulse forces should be relatively
@@ -130,19 +130,19 @@ namespace box2d
 			Length2D localPoint;
 
 			/// Contact feature.
-			/// @detail Uniquely identifies a contact point between two shapes - A and B.
+			/// @details Uniquely identifies a contact point between two shapes - A and B.
 			/// @note This field is 4-bytes.
 			/// @sa GetPointStates.
 			ContactFeature contactFeature;
 			
 			/// Normal impulse.
-			/// @detail This is the non-penetration impulse.
+			/// @details This is the non-penetration impulse.
 			/// @note This is only used for velocity constraint resolution.
 			/// @note 4-bytes.
 			Momentum normalImpulse = 0;
 			
 			/// Tangent impulse.
-			/// @detail This is the friction impulse.
+			/// @details This is the friction impulse.
 			/// @note This is only used for velocity constraint resolution.
 			/// @note 4-bytes.
 			Momentum tangentImpulse = 0;
@@ -283,7 +283,7 @@ namespace box2d
 		}
 
 		/// Default constructor.
-		/// @detail
+		/// @details
 		/// Constructs an unset-type manifold.
 		/// For an unset-type manifold:
 		/// point count is zero, point data is undefined, and all other properties are invalid.
@@ -300,7 +300,7 @@ namespace box2d
 		
 		/// Gets the manifold point count.
 		///
-		/// @detail This is the count of contact points for this manifold.
+		/// @details This is the count of contact points for this manifold.
 		///   Only up to this many points can be validly accessed using the GetPoint() method.
 		/// @note Non-zero values indicate that the two shapes are touching.
 		///
@@ -345,7 +345,7 @@ namespace box2d
 		}
 		
 		/// Adds a new point.
-		/// @detail This can be called once for circle type manifolds,
+		/// @details This can be called once for circle type manifolds,
 		///   and up to twice for face-A or face-B type manifolds.
 		/// GetPointCount() can be called to find out how many points have already been added.
 		/// @note Behavior is undefined if this object's type is e_unset.
@@ -362,7 +362,7 @@ namespace box2d
 		}
 		
 		/// Gets the local point.
-		/// @detail
+		/// @details
 		/// This is the:
 		/// local center of "circle" A for circles-type manifolds,
 		/// the center of face A for face-A-type manifolds, and
@@ -400,12 +400,12 @@ namespace box2d
 		size_type m_pointCount = 0; ///< Number of defined manifold points (1-byte).
 		
 		/// Local normal.
-		/// @detail Exact usage depends on manifold type (8-bytes).
+		/// @details Exact usage depends on manifold type (8-bytes).
 		/// @note Invalid for the unset and circle manifold types.
 		UnitVec2 m_localNormal = GetInvalid<decltype(m_localNormal)>();
 
 		/// Local point.
-		/// @detail Exact usage depends on manifold type (8-bytes).
+		/// @details Exact usage depends on manifold type (8-bytes).
 		/// @note Invalid for the unset manifold type.
 		Length2D m_localPoint = GetInvalid<Length2D>();
 		

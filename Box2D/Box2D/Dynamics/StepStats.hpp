@@ -76,7 +76,7 @@ namespace box2d {
 	
 	/// Per-step statistics.
 	///
-	/// @detail These are statistics output from the World::Step method.
+	/// @details These are statistics output from the World::Step method.
 	/// @note Efficient transfer of this data is predicated on compiler support for
 	///   "return-value-optimization" - a form of "copy-elision".
 	///

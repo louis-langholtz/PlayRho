@@ -39,10 +39,11 @@ class Shape;
 
 const FixtureDef &GetDefaultFixtureDef() noexcept;
 
-/// Body definition.
-/// @detail
+/// Body Definition.
+///
 /// A body definition holds all the data needed to construct a rigid body.
 /// You can safely re-use body definitions.
+///
 struct BodyDef
 {
 	/// This constructor sets the body definition default values.
@@ -97,7 +98,7 @@ struct BodyDef
 	RealNum angularDamping = 0;
 
 	/// Under-active time.
-	/// @detail Set this to the value retrieved from Body::GetUnderActiveTime() or leave it as 0.
+	/// @details Set this to the value retrieved from Body::GetUnderActiveTime() or leave it as 0.
 	Time underActiveTime = Second * RealNum{0};
 
 	/// Set this flag to false if this body should never fall asleep. Note that
@@ -221,7 +222,7 @@ constexpr inline BodyDef& BodyDef::UseUserData(void* value) noexcept
 
 /// Body.
 ///
-/// @detail A rigid body entity created or destroyed through a World instance.
+/// @details A rigid body entity created or destroyed through a World instance.
 ///
 /// @invariant Only bodies that allow sleeping, can be put to sleep.
 /// @invariant Only "speedable" bodies can be awake.
@@ -266,17 +267,22 @@ public:
 						   bool resetMassData = true);
 	
 	/// Destroys a fixture.
-	/// @detail This removes the fixture from the broad-phase and
+	///
+	/// @details This removes the fixture from the broad-phase and
 	/// destroys all contacts associated with this fixture.
 	/// All fixtures attached to a body are implicitly destroyed when the body is destroyed.
+	///
 	/// @warning This function is locked during callbacks.
 	/// @note Make sure to explicitly call ResetMassData after fixtures have been destroyed.
 	/// @sa ResetMassData.
+	///
 	/// @param fixture the fixture to be removed.
+	/// @param resetMassData Whether or not to reset the mass data.
+	///
 	bool DestroyFixture(Fixture* fixture, bool resetMassData = true);
 	
 	/// Sets the position of the body's origin and rotation.
-	/// @detail This instantly adjusts the body to be at the new position and new orientation.
+	/// @details This instantly adjusts the body to be at the new position and new orientation.
 	/// @warning Manipulating a body's transform may cause non-physical behavior.
 	/// @note Contacts are updated on the next call to World::Step.
 	/// @param position Valid world position of the body's local origin. Behavior is undefined if value is invalid.
@@ -288,7 +294,7 @@ public:
 	Transformation GetTransformation() const noexcept;
 
 	/// Gets the world body origin location.
-	/// @detail This is the location of the body's origin relative to its world.
+	/// @details This is the location of the body's origin relative to its world.
 	/// The location of the body after stepping the world's physics simulations is dependent on a number of factors:
 	///   1. Location at the last time step.
 	///   2. Forces acting on the body (gravity, applied force, applied impulse).
@@ -331,7 +337,7 @@ public:
 	AngularAcceleration GetAngularAcceleration() const noexcept;
 
 	/// Gets the inverse total mass of the body.
-	/// @detail This is the cached result of dividing 1 by the body's mass.
+	/// @details This is the cached result of dividing 1 by the body's mass.
 	/// Often floating division is much slower than multiplication.
 	/// As such, it's likely faster to multiply values by this inverse value than to redivide
 	/// them all the time by the mass.
@@ -340,7 +346,7 @@ public:
 	InvMass GetInvMass() const noexcept;
 	
 	/// Gets the inverse rotational inertia of the body.
-	/// @detail This is the cached result of dividing 1 by the body's rotational inertia.
+	/// @details This is the cached result of dividing 1 by the body's rotational inertia.
 	/// Often floating division is much slower than multiplication.
 	/// As such, it's likely faster to multiply values by this inverse value than to redivide
 	/// them all the time by the rotational inertia.
@@ -355,7 +361,7 @@ public:
 	void SetMassData(const MassData& data);
 
 	/// Resets the mass data properties.
-	/// @detail This resets the mass data to the sum of the mass properties of the fixtures.
+	/// @details This resets the mass data to the sum of the mass properties of the fixtures.
 	/// @note This method must be called after calling <code>CreateFixture</code> to update the
 	///   body mass data properties unless <code>SetMassData</code> is used.
 	/// @sa SetMassData.
@@ -380,12 +386,12 @@ public:
 	BodyType GetType() const noexcept;
 
 	/// Is "speedable".
-	/// @detail Is this body able to have a non-zero speed associated with it.
+	/// @details Is this body able to have a non-zero speed associated with it.
 	/// Kinematic and Dynamic bodies are speedable. Static bodies are not.
 	bool IsSpeedable() const noexcept;
 
 	/// Is accelerable.
-	/// @detail Indicates whether this body is accelerable, ie. whether it is effected by
+	/// @details Indicates whether this body is accelerable, ie. whether it is effected by
 	///   forces. Only Dynamic bodies are accelerable.
 	/// @return true if the body is accelerable, false otherwise.
 	bool IsAccelerable() const noexcept;
@@ -404,14 +410,14 @@ public:
 	bool IsSleepingAllowed() const noexcept;
 	
 	/// Sets this body to awake if it's a "speedable" body.
-	/// @detail
+	/// @details
 	/// This sets the sleep state of the body to awake if it's a "speedable" body. It has
 	/// no effect otherwise.
 	/// @post If this body is a "speedable" body, then this body's IsAwake method returns true.
 	void SetAwake() noexcept;
 
 	/// Sets this body to asleep if sleeping is allowed.
-	/// @detail
+	/// @details
 	/// If this body is allowed to sleep, this: sets the sleep state of the body to asleep,
 	/// resets this body's under active time, and resets this body's velocity (linear and angular).
 	/// @post This body's IsAwake method returns false.
@@ -430,7 +436,7 @@ public:
 	
 	/// Sets the "under-active" time to the given value.
 	///
-	/// @detail Sets the "under-active" time to a value of zero or a non-zero value if the
+	/// @details Sets the "under-active" time to a value of zero or a non-zero value if the
 	///   body is "accelerable". Otherwise it does nothing.
 	///
 	/// @warning Behavior is undefined for negative values.
@@ -504,7 +510,7 @@ private:
 		e_autoSleepFlag		= 0x0004,
 
 		/// Impenetrable flag.
-		/// @detail Indicates whether CCD should be done for this body.
+		/// @details Indicates whether CCD should be done for this body.
 		/// All static and kinematic bodies have this flag enabled.
 		e_impenetrableFlag	= 0x0008,
 		
@@ -515,12 +521,12 @@ private:
 		e_enabledFlag		= 0x0020,
 		
 		/// Velocity flag.
-		/// @detail Set this to enable changes in position due to velocity.
+		/// @details Set this to enable changes in position due to velocity.
 		/// Bodies with this set are "speedable" - either kinematic or dynamic bodies.
 		e_velocityFlag      = 0x0080,
 
 		/// Acceleration flag.
-		/// @detail Set this to enable changes in velocity due to physical properties (like forces).
+		/// @details Set this to enable changes in velocity due to physical properties (like forces).
 		/// Bodies with this set are "accelerable" - dynamic bodies.
 		e_accelerationFlag  = 0x0100,
 		
@@ -538,7 +544,7 @@ private:
 	void UnsetAwakeFlag() noexcept;
 
 	/// Advances the body by a given time ratio.
-	/// @detail This method:
+	/// @details This method:
 	///    1. advances the body's sweep to the given time ratio;
 	///    2. updates the body's sweep positions (linear and angular) to the advanced ones; and
 	///    3. updates the body's transform to the new sweep one settings.
@@ -565,7 +571,7 @@ private:
 	//
 
 	/// Transformation for body origin.
-	/// @detail
+	/// @details
 	/// This is essentially the cached result of <code>GetTransform1(m_sweep)</code>. 16-bytes.
 	Transformation m_xf;
 
@@ -586,13 +592,13 @@ private:
 	AngularAcceleration m_angularAcceleration = AngularAcceleration{0}; ///< Angular acceleration. 4-bytes.
 	
 	/// Inverse mass of the body.
-	/// @detail A non-negative value (in units of 1/kg).
+	/// @details A non-negative value (in units of 1/kg).
 	/// Can only be zero for non-accelerable bodies.
 	/// @note 4-bytes.
 	InvMass m_invMass = 0;
 	
 	/// Inverse rotational inertia about the center of mass.
-	/// @detail A non-negative value (in units of 1/(kg*m^2)).
+	/// @details A non-negative value (in units of 1/(kg*m^2)).
 	/// @note 4-bytes.
 	InvRotInertia m_invRotI = 0;
 
@@ -600,7 +606,7 @@ private:
 	RealNum m_angularDamping; ///< Angular damping. 4-bytes.
 
 	/// Under-active time.
-	/// @detail A body under-active for enough time should have their awake flag unset.
+	/// @details A body under-active for enough time should have their awake flag unset.
 	///   I.e. if a body is under-active for long enough, it should go to sleep.
 	/// @note 4-bytes.
 	Time m_underActiveTime = 0;
@@ -965,7 +971,7 @@ inline bool Unawaken(Body& body) noexcept
 }
 
 /// Should collide.
-/// @detail Determines whether a body should possibly be able to collide with the other body.
+/// @details Determines whether a body should possibly be able to collide with the other body.
 /// @return true if either body is dynamic and no joint prevents collision, false otherwise.
 bool ShouldCollide(const Body& lhs, const Body& rhs) noexcept;
 
@@ -1005,6 +1011,7 @@ inline void SetForce(Body& body, const Force2D force, const Length2D point) noex
 /// @note If the force is not applied at the center of mass, it will generate a torque and
 ///   affect the angular velocity.
 /// @note Non-zero forces wakes up the body.
+/// @param body Body to apply the force to.
 /// @param force World force vector, usually in Newtons (N).
 /// @param point World position of the point of application.
 inline void ApplyForce(Body& body, const Force2D force, const Length2D point) noexcept
@@ -1020,6 +1027,7 @@ inline void ApplyForce(Body& body, const Force2D force, const Length2D point) no
 
 /// Apply a force to the center of mass.
 /// @note Non-zero forces wakes up the body.
+/// @param body Body to apply the force to.
 /// @param force World force vector, usually in Newtons (N).
 inline void ApplyForceToCenter(Body& body, const Force2D force) noexcept
 {
@@ -1040,6 +1048,7 @@ inline void SetTorque(Body& body, const Torque torque) noexcept
 /// Apply a torque.
 /// @note This affects the angular velocity without affecting the linear velocity of the center of mass.
 /// @note Non-zero forces wakes up the body.
+/// @param body Body to apply the torque to.
 /// @param torque about the z-axis (out of the screen), usually in N-m.
 inline void ApplyTorque(Body& body, const Torque torque) noexcept
 {
@@ -1055,6 +1064,7 @@ inline void ApplyTorque(Body& body, const Torque torque) noexcept
 /// @note This also modifies the angular velocity if the point of application
 ///   is not at the center of mass.
 /// @note Non-zero impulses wakes up the body.
+/// @param body Body to apply the impulse to.
 /// @param impulse the world impulse vector, usually in N-seconds or kg-m/s.
 /// @param point the world position of the point of application.
 inline void ApplyLinearImpulse(Body& body, const Momentum2D impulse, const Length2D point) noexcept
@@ -1081,6 +1091,7 @@ inline void ApplyAngularImpulse(Body& body, AngularMomentum impulse) noexcept
 Force2D GetCentripetalForce(const Body& body, const Length2D axis);
 
 /// Gets the rotational inertia of the body.
+/// @param body Body to get the rotational inertia for.
 /// @return the rotational inertia, usually in kg-m^2.
 inline RotInertia GetRotInertia(const Body& body) noexcept
 {
@@ -1175,10 +1186,12 @@ inline UnitVec2 GetLocalVector(const Body& body, const UnitVec2 uv) noexcept
 	return InverseRotate(uv, body.GetTransformation().q);
 }
 
-/// Get the world linear velocity of a world point attached to this body.
+/// Gets the linear velocity from a world point attached to this body.
+/// @param body Body to get the linear velocity for.
 /// @param worldPoint point in world coordinates.
 /// @return the world velocity of a point.
-inline LinearVelocity2D GetLinearVelocityFromWorldPoint(const Body& body, const Length2D worldPoint) noexcept
+inline LinearVelocity2D GetLinearVelocityFromWorldPoint(const Body& body,
+														const Length2D worldPoint) noexcept
 {
 	const auto velocity = body.GetVelocity();
 	const auto worldCtr = body.GetWorldCenter();
@@ -1186,10 +1199,12 @@ inline LinearVelocity2D GetLinearVelocityFromWorldPoint(const Body& body, const 
 	return velocity.linear + GetRevPerpendicular(StripUnits(dp)) * RealNum{velocity.angular / RadianPerSecond} * MeterPerSecond;
 }
 
-/// Get the world velocity of a local point.
+/// Gets the linear velocity from a local point.
+/// @param body Body to get the linear velocity for.
 /// @param localPoint point in local coordinates.
 /// @return the world velocity of a point.
-inline LinearVelocity2D GetLinearVelocityFromLocalPoint(const Body& body, const Length2D localPoint) noexcept
+inline LinearVelocity2D GetLinearVelocityFromLocalPoint(const Body& body,
+														const Length2D localPoint) noexcept
 {
 	return GetLinearVelocityFromWorldPoint(body, GetWorldPoint(body, localPoint));
 }
@@ -1215,14 +1230,14 @@ size_t GetWorldIndex(const Body* body);
 size_t GetFixtureCount(const Body& body);
 
 /// Computes the body's mass data.
-/// @detail This basically accumulates the mass data over all fixtures.
+/// @details This basically accumulates the mass data over all fixtures.
 /// @note The center is the mass weighted sum of all fixture centers. Divide it by the
 ///   mass to get the averaged center.
 /// @return accumalated mass data for all fixtures associated with the given body.
 MassData ComputeMassData(const Body& body) noexcept;
 
 /// Rotates a body a given amount around a point in world coordinates.
-/// @detail This changes both the linear and angular positions of the body.
+/// @details This changes both the linear and angular positions of the body.
 /// @note Manipulating a body's position this way may cause non-physical behavior.
 /// @param body Body to rotate.
 /// @param amount Amount to rotate body by (in counter-clockwise direction).
@@ -1230,7 +1245,7 @@ MassData ComputeMassData(const Body& body) noexcept;
 void RotateAboutWorldPoint(Body& body, Angle amount, Length2D worldPoint);
 
 /// Rotates a body a given amount around a point in body local coordinates.
-/// @detail This changes both the linear and angular positions of the body.
+/// @details This changes both the linear and angular positions of the body.
 /// @note Manipulating a body's position this way may cause non-physical behavior.
 /// @note This is a convenience function that translates the local point into world coordinates
 ///   and then calls the <code>RotateAboutWorldPoint</code> function.

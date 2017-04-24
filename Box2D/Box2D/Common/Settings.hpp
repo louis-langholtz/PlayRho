@@ -17,6 +17,11 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+/**
+ * @file
+ * @brief Types and default settings file.
+ */
+
 #ifndef BOX2D_SETTINGS_H
 #define BOX2D_SETTINGS_H
 
@@ -58,6 +63,11 @@
 #include <Box2D/Common/Wider.hpp>
 #include <Box2D/Common/Fixed.hpp>
 
+/**
+ * @namespace box2d
+ *
+ * Namespace for all Box2D related names.
+ */
 namespace box2d
 {
 template<class... T> void NOT_USED(T&&...){}
@@ -66,9 +76,9 @@ class Body;
 class Contact;
 class Joint;
 	
-using int8 = std::int8_t;
-using int16 = std::int16_t;
-using int32 = std::int32_t;
+using int8 = std::int8_t; ///< 8-bit int.
+using int16 = std::int16_t; ///< 16-bit int.
+using int32 = std::int32_t; ///< 32-bit int.
 using uint8 = std::uint8_t;
 using uint16 = std::uint16_t;
 using uint32 = std::uint32_t;
@@ -76,7 +86,7 @@ using uint64 = std::uint64_t;
 
 /// Real-number type.
 ///
-/// @detail This is the number type underlying numerical calculations conceptually involving
+/// @details This is the number type underlying numerical calculations conceptually involving
 /// real-numbers. Ideally the implementation of this type doesn't suffer from things like:
 /// catastrophic cancellation, catastrophic division, overflows, nor underflows.
 ///
@@ -99,11 +109,11 @@ using RealNum = float;
 
 /// Pi.
 ///
-/// @detail
+/// @details
 /// While the include file definition of M_PI may be a POSIX compliance requirement
 /// and initially attractive to use, it's apparently not a C++ standards requirement
 /// and casually including it pollutes the namespace of all code that uses this library.
-/// Whatever the case, MSVS2017 doesn't make it part of <cmath> without enabling
+/// Whatever the case, MSVS2017 doesn't make it part of the cmath include without enabling
 ///  _USE_MATH_DEFINES. So rather than add yet more C-preprocessor macros to all
 /// sources that this library may be compiled with, it's simply hard-coded in here
 /// instead using a C++ mechanism that also keeps it with the enclosing namespace.
@@ -298,24 +308,20 @@ constexpr inline RealNum StripUnit(const Torque value)
 
 #endif
 
-/// Child count type. @detail Relating to "children" of Shape.
+/// Child count type. @details Relating to "children" of Shape.
 using child_count_t = unsigned;
 
 /// Size type for sizing data.
 using size_t = std::size_t;
 
-/// Island count type. @detail Relating to items in a Island.
+/// Island count type. @details Relating to items in a Island.
 using island_count_t = size_t;
 
 /// Time step iterations type.
-/// @detail A type for countining iterations per time-step.
+/// @details A type for countining iterations per time-step.
 using ts_iters_t = uint8;
 
 constexpr auto MaxFloat = std::numeric_limits<RealNum>::max(); // FLT_MAX
-
-/// @file
-/// Global tuning constants based on meters-kilograms-seconds (MKS) units.
-///
 
 // Collision
 
@@ -330,7 +336,7 @@ constexpr auto MaxManifoldPoints = uint8{2};
 constexpr auto MaxShapeVertices = uint8{254};
 
 /// Default linear slop.
-/// @detail
+/// @details
 /// Length used as a collision and constraint tolerance.
 /// Usually chosen to be numerically significant, but visually insignificant.
 /// Lower or raise to decrease or increase respectively the minimum of space
@@ -343,13 +349,13 @@ constexpr auto DefaultAabbExtension = DefaultLinearSlop * RealNum{20};
 constexpr auto DefaultDistanceMultiplier = RealNum{2};
 
 /// Default angular slop.
-/// @detail
+/// @details
 /// A small angle used as a collision and constraint tolerance. Usually it is
 /// chosen to be numerically significant, but visually insignificant.
 constexpr auto DefaultAngularSlop = (Pi * RealNum{2} * Radian) / RealNum{180};
 
 /// Default maximum linear correction.
-/// @detail The maximum linear position correction used when solving constraints.
+/// @details The maximum linear position correction used when solving constraints.
 ///   This helps to prevent overshoot.
 /// @note This value should be greater than the linear slop value.
 constexpr auto DefaultMaxLinearCorrection = DefaultLinearSlop * RealNum{40}; // aka 0.04f
@@ -368,7 +374,7 @@ constexpr auto DefaultMaxToiRootIters = uint8{30};
 constexpr auto DefaultMaxDistanceIters = uint8{20};
 
 /// Default maximum number of sub steps.
-/// @detail
+/// @details
 /// This is the default maximum number of sub-steps per contact in continuous physics simulation.
 /// In other words, this is the default maximum number of times in a world step that a contact will
 /// have continuous collision resolution done for it.
@@ -390,7 +396,7 @@ using body_count_t = std::remove_const<decltype(MaxBodies)>::type;
 using contact_count_t = Wider<body_count_t>::type;
 	
 /// Maximum number of contacts in a world (2147319811).
-/// @detail Uses the formula for the maximum number of edges in an undirectional graph of MaxBodies nodes. 
+/// @details Uses the formula for the maximum number of edges in an undirectional graph of MaxBodies nodes. 
 /// This occurs when every possible body is connected to every other body.
 constexpr auto MaxContacts = contact_count_t{MaxBodies} * contact_count_t{MaxBodies - 1} / contact_count_t{2};
 
@@ -406,15 +412,15 @@ constexpr auto DefaultStepFrequency = Frequency{Hertz * RealNum{60}};
 // Sleep
 
 /// Default minimum still time to sleep.
-/// @detail The default minimum time bodies must be still for bodies to be put to sleep.
+/// @details The default minimum time bodies must be still for bodies to be put to sleep.
 constexpr auto DefaultMinStillTimeToSleep = Time{Second / RealNum{2}}; // aka 0.5 secs
 
 /// Default linear sleep tolerance.
-/// @detail A body cannot sleep if the magnitude of its linear velocity is above this amount.
+/// @details A body cannot sleep if the magnitude of its linear velocity is above this amount.
 constexpr auto DefaultLinearSleepTolerance = RealNum{0.01f} * MeterPerSecond; // aka 0.01
 
 /// Default angular sleep tolerance.
-/// @detail A body cannot sleep if its angular velocity is above this amount.
+/// @details A body cannot sleep if its angular velocity is above this amount.
 constexpr auto DefaultAngularSleepTolerance = RealNum{(Pi * 2) / 180} * RadianPerSecond;
 
 /// Maximum list size.

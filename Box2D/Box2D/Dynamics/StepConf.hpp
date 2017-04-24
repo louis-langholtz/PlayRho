@@ -25,7 +25,7 @@
 namespace box2d {
 
 /// Step configuration.
-/// @detail
+/// @details
 /// Provides the primary means for configuring the per-step world physics simulation. All
 /// the values have defaults. These defaults are intended to most likely be the values desired.
 /// @note Be sure to confirm that the delta time (the time-per-step i.e. <code>dt</code>) is
@@ -36,7 +36,7 @@ class StepConf
 {
 public:
 	/// Step iterations type.
-	/// @detail A type for countining iterations per-step.
+	/// @details A type for countining iterations per-step.
 	/// @note The special value of -1 is reserved for signifying an invalid iteration value.
 	using iteration_type = ts_iters_t;
 
@@ -82,19 +82,19 @@ public:
 	}
 	
 	/// Delta time ratio.
-	/// @detail This is the delta-time multiplied by the inverse delta time from the previous
+	/// @details This is the delta-time multiplied by the inverse delta time from the previous
 	///    world step. The value of 1 indicates that the time step has not varied.
 	/// @note Used in the regular phase processing of the step.
 	RealNum dtRatio = 1;
 
 	/// Minimum still time to sleep.
-	/// @detail The time that a body must be still before it will be put to sleep.
+	/// @details The time that a body must be still before it will be put to sleep.
 	/// @note Set to an invalid value to disable sleeping.
 	/// @note Used in the regular phase processing of the step.
 	Time minStillTimeToSleep = DefaultMinStillTimeToSleep;
 
 	/// Linear slop.
-	/// @detail Linear slop for position resolution.
+	/// @details Linear slop for position resolution.
 	/// @note Must be greater than 0.
 	/// @note Used in both the regular and TOI phases of step processing.
 	Length linearSlop = DefaultLinearSlop;
@@ -105,7 +105,7 @@ public:
 	Angle angularSlop = DefaultAngularSlop;
 	
 	/// Regular resolution rate.
-	/// @detail
+	/// @details
 	/// This scale factor controls how fast positional overlap is resolved.
 	/// Ideally this would be 1 so that overlap is removed in one time step.
 	/// However using values close to 1 often lead to overshoot.
@@ -114,7 +114,7 @@ public:
 	RealNum regResolutionRate = RealNum{2} / 10; // aka 0.2.
 	
 	/// Regular minimum separation.
-	/// @detail
+	/// @details
 	/// This is the minimum amount of separation there must be between regular-phase interacting
 	/// bodies for intra-step position resolution to be considered successful and end before all
 	/// of the regular position iterations have been done.
@@ -123,7 +123,7 @@ public:
 	Length regMinSeparation = -DefaultLinearSlop * RealNum{3};
 	
 	/// Time of impact resolution rate.
-	/// @detail
+	/// @details
 	/// This scale factor controls how fast positional overlap is resolved.
 	/// Ideally this would be 1 so that overlap is removed in one time step.
 	/// However using values close to 1 often lead to overshoot.
@@ -132,7 +132,7 @@ public:
 	RealNum toiResolutionRate = RealNum{75} / 100; // aka .75
 
 	/// Time of impact minimum separation.
-	/// @detail
+	/// @details
 	/// This is the minimum amount of separation there must be between TOI-phase interacting
 	/// bodies for intra-step position resolution to be considered successful and end before all
 	/// of the TOI position iterations have been done.
@@ -141,7 +141,7 @@ public:
 	Length toiMinSeparation = -DefaultLinearSlop * RealNum(1.5f);
 
 	/// Target depth.
-	/// @detail Target depth of overlap for calculating the TOI for CCD elligible bodies.
+	/// @details Target depth of overlap for calculating the TOI for CCD elligible bodies.
 	/// @note Must be greater than 0.
 	/// @note Must not be subnormal.
  	/// @note Must be less than twice the world's minimum vertex radius.
@@ -149,7 +149,7 @@ public:
 	Length targetDepth = DefaultLinearSlop * RealNum{3};
 	
 	/// Tolerance.
-	/// @detail The acceptable plus or minus tolerance from the target depth for TOI calculations.
+	/// @details The acceptable plus or minus tolerance from the target depth for TOI calculations.
 	/// @note Must be greater than 0.
 	/// @note Must not be subnormal.
 	/// @note Must be less than the target depth.
@@ -157,20 +157,20 @@ public:
 	Length tolerance = DefaultLinearSlop / RealNum{4};
 
 	/// Velocity threshold.
-	/// @detail A velocity threshold for elastic collisions. Any collision with a relative linear
+	/// @details A velocity threshold for elastic collisions. Any collision with a relative linear
 	/// velocity below this threshold will be treated as inelastic.
 	/// @note Used in both the regular and TOI phases of step processing.
 	LinearVelocity velocityThreshold = DefaultVelocityThreshold;
 
 	/// Maximum translation.
-	/// @detail The maximum linear velocity of a body.
+	/// @details The maximum linear velocity of a body.
 	/// @note This limit is very large and is used to prevent numerical problems.
 	/// You shouldn't need to adjust this.
 	/// @note Used in both the regular and TOI phases of step processing.
 	RealNum maxTranslation = 4; // originally 2
 	
 	/// Maximum rotation.
-	/// @detail The maximum angular velocity of a body.
+	/// @details The maximum angular velocity of a body.
 	/// @note This limit is very large and is used to prevent numerical problems.
 	/// You shouldn't need to adjust this.
 	/// @note Used in both the regular and TOI phases of step processing.
@@ -197,7 +197,7 @@ public:
 	RealNum displaceMultiplier = DefaultDistanceMultiplier;
 	
 	/// AABB extension.
-	/// @detail This is the extension that will be applied to Axis Aligned Bounding Box
+	/// @details This is the extension that will be applied to Axis Aligned Bounding Box
 	///    objects used in "broadphase" collision detection. This fattens AABBs in the
 	///    dynamic tree. This allows proxies to move by a small amount without triggering
 	///    a tree adjustment.
@@ -206,12 +206,12 @@ public:
 	Length aabbExtension = DefaultAabbExtension;
 
 	/// Regular velocity iterations.
-	/// @detail The number of iterations of velocity resolution that will be done in the step.
+	/// @details The number of iterations of velocity resolution that will be done in the step.
 	/// @note Used in the regular phase of step processing.
 	iteration_type regVelocityIterations = 8;
 	
 	/// Regular position iterations.
-	/// @detail
+	/// @details
 	/// This is the maximum number of iterations of position resolution that will
 	/// be done before leaving any remaining unsatisfied positions for the next step.
 	/// In this context, positions are satisfied when the minimum separation is greater than
@@ -221,13 +221,13 @@ public:
 	iteration_type regPositionIterations = 3;
 
 	/// TOI velocity iterations.
-	/// @detail
+	/// @details
 	/// This is the number of iterations of velocity resolution that will be done in the step.
 	/// @note Used in the TOI phase of step processing.
 	iteration_type toiVelocityIterations = 8;
 
 	/// TOI position iterations.
-	/// @detail
+	/// @details
 	/// This value is the maximum number of iterations of position resolution that will
 	/// be done before leaving any remaining unsatisfied positions for the next step.
 	/// In this context, positions are satisfied when the minimum separation is greater than
@@ -249,7 +249,7 @@ public:
 	iteration_type maxDistanceIters = DefaultMaxDistanceIters;
 
 	/// Maximum sub steps.
-	/// @detail
+	/// @details
 	/// This is the maximum number of sub-steps per contact in continuous physics simulation.
 	/// In other words, this is the maximum number of times in a world step that a contact will
 	/// have continuous collision resolution done for it.
@@ -257,12 +257,12 @@ public:
 	iteration_type maxSubSteps = DefaultMaxSubSteps;
 	
 	/// Do warm start.
-	/// @detail Whether or not to perform warm starting (in the regular phase).
+	/// @details Whether or not to perform warm starting (in the regular phase).
 	/// @note Used in the regular phase of step processing.
 	bool doWarmStart = true;
 	
 	/// Do TOI.
-	/// @detail Whether or not to perform continuous collision detection.
+	/// @details Whether or not to perform continuous collision detection.
 	/// @note Used in the TOI phase of step processing.
 	bool doToi = true;
 

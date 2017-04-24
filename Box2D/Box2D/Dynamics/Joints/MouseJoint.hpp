@@ -35,7 +35,7 @@ struct MouseJointDef : public JointDef
 	Length2D target = Vec2_zero * Meter;
 
 	/// Max force.
-	/// @detail
+	/// @details
 	/// The maximum constraint force that can be exerted
 	/// to move the candidate body. Usually you will express
 	/// as some multiple of the weight (multiplier * mass * gravity).
@@ -44,7 +44,7 @@ struct MouseJointDef : public JointDef
 	Force maxForce = Force{0};
 
 	/// Frequency.
-	/// @detail The has to do with the response speed.
+	/// @details The has to do with the response speed.
 	/// @note This value may not be negative.
 	/// @warning Behavior is undefined if this is a negative value.
 	Frequency frequencyHz = RealNum{5} * Hertz;
@@ -55,7 +55,7 @@ struct MouseJointDef : public JointDef
 
 /// Mouse Joint.
 ///
-/// @detail
+/// @details
 /// A mouse joint is used to make a point on a body track a
 ///   specified world point. This a soft constraint with a maximum
 ///   force. This allows the constraint to stretch and without

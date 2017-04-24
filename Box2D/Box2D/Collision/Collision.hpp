@@ -66,7 +66,7 @@ struct ClipVertex
 using ClipList = ArrayList<ClipVertex, MaxManifoldPoints>;
 
 /// Clipping for contact manifolds.
-/// @detail This returns an array of points from the given line that are inside of the plane as
+/// @details This returns an array of points from the given line that are inside of the plane as
 ///   defined by a given normal and offset.
 /// @param vIn Clip list of two points defining the line.
 /// @param normal Normal of the plane with which to determine intersection.

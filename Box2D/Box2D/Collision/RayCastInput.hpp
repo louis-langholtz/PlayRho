@@ -25,7 +25,7 @@
 namespace box2d
 {
 	/// Ray-cast input data.
-	/// @detail The ray extends from p1 to p1 + maxFraction * (p2 - p1).
+	/// @details The ray extends from p1 to p1 + maxFraction * (p2 - p1).
 	struct RayCastInput
 	{
 		Length2D p1; ///< Point 1.

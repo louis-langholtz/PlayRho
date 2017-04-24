@@ -111,7 +111,7 @@ namespace box2d
 		}
 		
 		/// Gets a vector counter-clockwise (reverse-clockwise) perpendicular to this vector.
-		/// @detail This returns the unit vector (-y, x).
+		/// @details This returns the unit vector (-y, x).
 		/// @return A counter-clockwise 90-degree rotation of this vector.
 		/// @sa GetFwdPerpendicular.
 		constexpr inline UnitVec2 GetRevPerpendicular() const noexcept
@@ -121,7 +121,7 @@ namespace box2d
 		}
 		
 		/// Gets a vector clockwise (forward-clockwise) perpendicular to this vector.
-		/// @detail This returns the unit vector (y, -x).
+		/// @details This returns the unit vector (y, -x).
 		/// @return A clockwise 90-degree rotation of this vector.
 		/// @sa GetRevPerpendicular.
 		constexpr inline UnitVec2 GetFwdPerpendicular() const noexcept
@@ -179,7 +179,7 @@ namespace box2d
 	}
 
 	/// Gets a vector counter-clockwise (reverse-clockwise) perpendicular to the given vector.
-	/// @detail This takes a vector of form (x, y) and returns the vector (-y, x).
+	/// @details This takes a vector of form (x, y) and returns the vector (-y, x).
 	/// @param vector Vector to return a counter-clockwise perpendicular equivalent for.
 	/// @return A counter-clockwise 90-degree rotation of the given vector.
 	/// @sa GetFwdPerpendicular.
@@ -189,7 +189,7 @@ namespace box2d
 	}
 	
 	/// Gets a vector clockwise (forward-clockwise) perpendicular to the given vector.
-	/// @detail This takes a vector of form (x, y) and returns the vector (y, -x).
+	/// @details This takes a vector of form (x, y) and returns the vector (y, -x).
 	/// @param vector Vector to return a clockwise perpendicular equivalent for.
 	/// @return A clockwise 90-degree rotation of the given vector.
 	/// @sa GetRevPerpendicular.

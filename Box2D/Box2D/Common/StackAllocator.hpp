@@ -25,7 +25,7 @@
 namespace box2d {
 
 /// Stack allocator.
-/// @detail
+/// @details
 /// This is a stack allocator used for fast per step allocations.
 /// You must nest allocate/free pairs. The code will assert
 /// if you try to interleave multiple allocate/free pairs.
@@ -68,7 +68,7 @@ public:
 	}
 
 	/// Functional operator for freeing memory allocated by this object.
-	/// @detail This method frees memory (like called Free) and allows this object
+	/// @details This method frees memory (like called Free) and allows this object
 	///   to be used as deleter to std::unique_ptr.
 	void operator()(void *p) noexcept
 	{
@@ -89,7 +89,7 @@ public:
 	}
 
 	/// Gets the current index location.
-	/// @detail This represents the number of bytes used (of the storage allocated at construction
+	/// @details This represents the number of bytes used (of the storage allocated at construction
     ///    time by this object). Storage remaining is calculated by subtracting this value from
 	///    <code>StackSize</code>.
 	/// @return Value between 0 and <code>StackSize</code>.

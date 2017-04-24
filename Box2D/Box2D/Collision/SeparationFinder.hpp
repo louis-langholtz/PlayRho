@@ -45,7 +45,7 @@ namespace box2d {
 		struct Data
 		{
 			/// Index pair.
-			/// @detail Pair of indices of vertices for which distance is being returned for.
+			/// @details Pair of indices of vertices for which distance is being returned for.
 			/// @note The <code>a</code> index in this pair will be <code>InvalidIndex</code> for
 			///   face-A type separarion finders.
 			/// @note The <code>b</code> index in this pair will be <code>InvalidIndex</code> for
@@ -53,14 +53,21 @@ namespace box2d {
 			IndexPair indexPair;
 
 			/// Distance.
-			/// @detail Distance of separation between vertices indexed by the index-pair.
+			/// @details Distance of separation between vertices indexed by the index-pair.
 			Length distance;
 		};
 		
 		/// Gets a separation finder for the given inputs.
+		///
 		/// @warning Behavior is undefined if given less than one index pair or more than three.
+		///
 		/// @param indices Collection of 1 to 3 index pairs. A points-type finder will be
 		///    returned if given 1 index pair. A face-type finder will be returned otherwise.
+		/// @param proxyA Proxy A.
+		/// @param xfA Transformation A.
+		/// @param proxyB Proxy B.
+		/// @param xfB Transformation B.
+		///
 		static SeparationFinder Get(Span<const IndexPair> indices,
 									const DistanceProxy& proxyA, const Transformation& xfA,
 									const DistanceProxy& proxyB, const Transformation& xfB);
@@ -83,9 +90,14 @@ namespace box2d {
 		}
 		
 		/// Evaluates the separation of the identified proxy vertices at the given time factor.
+		///
 		/// @param indexPair Indexes of the proxy A and proxy B vertexes.
+		/// @param xfA Transformation A.
+		/// @param xfB Transformation B.
+		///
 		/// @return Separation distance which will be negative when the given transforms put the
 		///    vertices on the opposite sides of the separating axis.
+		///
 		Length Evaluate(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
 		{
 			switch (m_type)
@@ -125,7 +137,7 @@ namespace box2d {
 		
 		const DistanceProxy& m_proxyA;
 		const DistanceProxy& m_proxyB;
-		const UnitVec2 m_axis; ///< Axis. @detail Directional vector of the axis of separation.
+		const UnitVec2 m_axis; ///< Axis. @details Directional vector of the axis of separation.
 		const Length2D m_localPoint; ///< Local point. @note Only used if type is e_faceA or e_faceB.
 		const Type m_type;
 	};

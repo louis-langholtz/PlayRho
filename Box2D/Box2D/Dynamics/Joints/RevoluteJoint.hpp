@@ -74,7 +74,7 @@ struct RevoluteJointDef : public JointDef
 
 /// Revolute Joint.
 ///
-/// @detail A revolute joint constrains two bodies to share a common point while they
+/// @details A revolute joint constrains two bodies to share a common point while they
 /// are free to rotate about the point. The relative rotation about the shared
 /// point is the joint angle.
 ///

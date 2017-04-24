@@ -60,7 +60,7 @@ struct DistanceJointDef : public JointDef
 };
 
 /// Distance Joint.
-/// @detail
+/// @details
 /// A distance joint constrains two points on two bodies
 /// to remain at a fixed distance from each other. You can view
 /// this as a massless, rigid rod.

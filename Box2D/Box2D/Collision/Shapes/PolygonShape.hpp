@@ -28,7 +28,7 @@
 namespace box2d {
 
 /// Polygon shape.
-/// @detail
+/// @details
 /// A convex polygon. The interior of the polygon is to the left of each edge.
 /// Polygons have a maximum number of vertices equal to MaxShapeVertices.
 /// In most cases you should not need many vertices for a convex polygon.
@@ -64,7 +64,7 @@ public:
 	}
 	
 	/// Default constructor.
-	/// @detail Constructs a polygon shape with a 0,0 centroid and vertex count of 0.
+	/// @details Constructs a polygon shape with a 0,0 centroid and vertex count of 0.
 	/// @note Polygons with a vertex count less than 1 are "degenerate" and should be
 	///   treated as invalid.
 	explicit PolygonShape(const Conf& conf = GetDefaultConf()) noexcept:
@@ -78,6 +78,7 @@ public:
 	/// Initializing constructor for rectangles.
 	/// @param hx the half-width.
 	/// @param hy the half-height.
+	/// @param conf Configuration data for the shape.
 	explicit PolygonShape(Length hx, Length hy, const Conf& conf = GetDefaultConf()) noexcept;
 	
 	/// Creates a convex hull from the given array of local points.
@@ -141,11 +142,11 @@ public:
 	vertex_count_t GetVertexCount() const noexcept;
 
 	/// Gets a vertex by index.
-	/// @detail Vertices go counter-clockwise.
+	/// @details Vertices go counter-clockwise.
 	Length2D GetVertex(vertex_count_t index) const;
 
 	/// Gets a normal by index.
-	/// @detail
+	/// @details
 	/// These are 90-degree clockwise-rotated (outward-facing) unit-vectors of the edges defined
 	/// by consecutive pairs of vertices starting with vertex 0.
 	/// @param index Index of the normal to get.
@@ -153,7 +154,7 @@ public:
 	UnitVec2 GetNormal(vertex_count_t index) const;
 
 	/// Gets the span of vertices.
-	/// @detail Vertices go counter-clockwise.
+	/// @details Vertices go counter-clockwise.
 	Span<const Length2D> GetVertices() const noexcept
 	{
 		return Span<const Length2D>(&m_vertices[0], GetVertexCount());
@@ -168,11 +169,11 @@ public:
 	
 private:
 	/// Array of vertices.
-	/// @detail Consecutive vertices constitute "edges" of the polygon.
+	/// @details Consecutive vertices constitute "edges" of the polygon.
 	std::vector<Length2D> m_vertices;
 
 	/// Normals of edges.
-	/// @detail
+	/// @details
 	/// These are 90-degree clockwise-rotated unit-vectors of the vectors defined by
 	/// consecutive pairs of elements of vertices.
 	std::vector<UnitVec2> m_normals;
@@ -228,6 +229,7 @@ Length2D GetEdge(const PolygonShape& shape, PolygonShape::vertex_count_t index);
 bool Validate(const PolygonShape& shape);
 
 /// Build vertices to represent an oriented box.
+/// @param shape Shape to set as a box.
 /// @param hx the half-width.
 /// @param hy the half-height.
 /// @param center the center of the box in local coordinates.

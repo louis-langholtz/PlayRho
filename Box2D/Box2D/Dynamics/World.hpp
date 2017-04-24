@@ -49,11 +49,11 @@ enum class BodyType;
 const FixtureDef& GetDefaultFixtureDef() noexcept;
 
 /// Earthly gravity.
-/// @detail An approximation of Earth's average gravity at sea-level.
+/// @details An approximation of Earth's average gravity at sea-level.
 constexpr auto EarthlyGravity = LinearAcceleration2D{RealNum{0} * MeterPerSquareSecond, RealNum{-9.8f} * MeterPerSquareSecond};
 
 /// World.
-/// @detail
+/// @details
 /// The world class manages all physics entities, dynamic simulation, and queries.
 /// @note This data structure is 352-bytes large (with 4-byte RealNum on at least one 64-bit platform).
 class World
@@ -83,12 +83,12 @@ public:
 		constexpr Def& UseMaxVertexRadius(Length value) noexcept;
 
 		/// Gravity.
-		/// @detail The acceleration all dynamic bodies are subject to.
+		/// @details The acceleration all dynamic bodies are subject to.
 		/// @note Use Vec2{0, 0} to disable gravity.
 		LinearAcceleration2D gravity = EarthlyGravity;
 		
 		/// Minimum vertex radius.
-		/// @detail This is the minimum vertex radius that this world establishes which bodies
+		/// @details This is the minimum vertex radius that this world establishes which bodies
 		///    shall allow fixtures to be created with. Trying to create a fixture with a shape
 		///    having a smaller vertex radius shall be rejected with a <code>nullptr</code>
 		///    returned value.
@@ -98,7 +98,7 @@ public:
 		Length minVertexRadius = DefaultLinearSlop * RealNum{2};
 
 		/// Maximum vertex radius.
-		/// @detail This is the maximum vertex radius that this world establishes which bodies
+		/// @details This is the maximum vertex radius that this world establishes which bodies
 		///    shall allow fixtures to be created with. Trying to create a fixture with a shape
 		///    having a larger vertex radius shall be rejected with a <code>nullptr</code>
 		///    returned value.
@@ -122,7 +122,7 @@ public:
 	World(const Def& def = GetDefaultDef());
 
 	/// Destructor.
-	/// @detail
+	/// @details
 	/// All physics entities are destroyed and all dynamically allocated memory is released.
 	~World();
 
@@ -151,7 +151,7 @@ public:
 	void Destroy(Body* body);
 
 	/// Creates a joint to constrain bodies together.
-	/// @detail No reference to the definition
+	/// @details No reference to the definition
 	/// is retained. This may cause the connected bodies to cease colliding.
 	/// @warning This function is locked during callbacks.
 	/// @return <code>nullptr</code> if world has <code>MaxJoints</code>,
@@ -160,7 +160,7 @@ public:
 
 	/// Destroys a joint.
 	///
-	/// @detail This may cause the connected bodies to begin colliding.
+	/// @details This may cause the connected bodies to begin colliding.
 	///
 	/// @warning This function is locked during callbacks.
 	/// @warning Behavior is undefined if the passed joint was not created by this world.
@@ -170,7 +170,7 @@ public:
 
 	/// Steps the world simulation according to the given configuration.
 	///
-	/// @detail
+	/// @details
 	/// Performs position and velocity updating, sleeping of non-moving bodies, updating
 	/// of the contacts, and notifying the contact listener of begin-contact, end-contact,
 	/// pre-solve, and post-solve events.
@@ -243,7 +243,7 @@ public:
 	proxy_size_type GetTreeBalance() const;
 
 	/// Gets the quality metric of the dynamic tree.
-	/// @detail The smaller the better.
+	/// @details The smaller the better.
 	/// @return Value of zero or more.
 	RealNum GetTreeQuality() const;
 
@@ -286,13 +286,19 @@ public:
 						   bool resetMassData = true);
 
 	/// Destroys a fixture.
-	/// @detail This removes the fixture from the broad-phase and
+	///
+	/// @details This removes the fixture from the broad-phase and
 	/// destroys all contacts associated with this fixture.
 	/// All fixtures attached to a body are implicitly destroyed when the body is destroyed.
+	///
 	/// @warning This function is locked during callbacks.
 	/// @note Make sure to explicitly call ResetMassData after fixtures have been destroyed.
-	/// @sa ResetMassData.
+	///
 	/// @param fixture the fixture to be removed.
+	/// @param resetMassData Whether or not to reset the mass data of the associated body.
+	///
+	/// @sa ResetMassData.
+	///
 	bool DestroyFixture(Fixture* fixture, bool resetMassData = true);
 	
 	bool IsValid(std::shared_ptr<const Shape> shape) const noexcept;
@@ -326,7 +332,7 @@ private:
 		/// Substepping.
 		e_substepping   = 0x0020,
 		
-		/// Step complete. @detail Used for sub-stepping. @sa e_substepping.
+		/// Step complete. @details Used for sub-stepping. @sa e_substepping.
 		e_stepComplete  = 0x0040,
 	};
 
@@ -344,13 +350,13 @@ private:
 	void InternalDestroy(Joint* joint);
 
 	/// Solves the step.
-	/// @detail Finds islands, integrates and solves constraints, solves position constraints.
+	/// @details Finds islands, integrates and solves constraints, solves position constraints.
 	/// @note This may miss collisions involving fast moving bodies and allow them to tunnel through each other.
 	RegStepStats SolveReg(const StepConf& conf);
 
 	/// Solves the given island (regularly).
 	///
-	/// @detail This:
+	/// @details This:
 	///   1. Updates every island-body's sweep.pos0 to its sweep.pos1.
 	///   2. Updates every island-body's sweep.pos1 to the new "solved" position for it.
 	///   3. Updates every island-body's velocity to the new accelerated, dampened, and "solved" velocity for it.
@@ -375,7 +381,7 @@ private:
 	Bodies::size_type RemoveUnspeedablesFromIslanded(const std::vector<Body*>& bodies);
 
 	/// Solves the step using successive time of impact (TOI) events.
-	/// @detail Used for continuous physics.
+	/// @details Used for continuous physics.
 	/// @note This is intended to detect and prevent the tunneling that the faster Solve method may miss.
 	/// @param conf Time step configuration to use.
 	ToiStepStats SolveTOI(const StepConf& conf);
@@ -392,7 +398,7 @@ private:
 	
 	/// Solves the time of impact for bodies 0 and 1 of the given island.
 	///
-	/// @detail This:
+	/// @details This:
 	///   1. Updates pos0 of the sweeps of bodies 0 and 1.
 	///   2. Updates pos1 of the sweeps, the transforms, and the velocities of the other bodies in this island.
 	///
@@ -415,7 +421,7 @@ private:
 	void ResetContactsForSolveTOI(Body& body);
 
 	/// Processes the contacts of a given body for TOI handling.
-	/// @detail This does the following:
+	/// @details This does the following:
 	///   1. Advances the appropriate associated other bodies to the given TOI (advancing
 	///      their sweeps and synchronizing their transforms to their new sweeps).
 	///   2. Updates the contact manifolds and touching statuses and notifies listener (if one given) of
@@ -436,7 +442,7 @@ private:
 	bool Remove(Joint& j);
 
 	/// Whether or not "step" is complete.
-	/// @detail The "step" is completed when there are no more TOI events for the current time step.
+	/// @details The "step" is completed when there are no more TOI events for the current time step.
 	/// @sa <code>SetStepComplete</code>.
 	bool IsStepComplete() const noexcept;
 
@@ -483,7 +489,7 @@ private:
 	UpdateContactsData UpdateContactTOIs(const StepConf& conf);
 
 	/// Gets the soonest contact.
-	/// @detail This finds the contact with the lowest (soonest) time of impact.
+	/// @details This finds the contact with the lowest (soonest) time of impact.
 	/// @return Contacts with the least time of impact and its time of impact, or null contact.
 	///  These contacts will all be enabled, not have sensors, be active, and impenetrable.
 	ContactToiData GetSoonestContacts(const size_t reserveSize) const;
@@ -495,12 +501,12 @@ private:
 	void UnsetNewFixtures() noexcept;
 	
 	/// Finds new contacts.
-	/// @detail Finds and adds new valid contacts to the contacts container.
+	/// @details Finds and adds new valid contacts to the contacts container.
 	/// @note The new contacts will all have overlapping AABBs.
 	contact_count_t FindNewContacts();
 	
 	/// Processes the narrow phase collision for the contact list.
-	/// @detail
+	/// @details
 	/// This finds and destroys the contacts that need filtering and no longer should collide or
 	/// that no longer have AABB-based overlapping fixtures. Those contacts that persist and
 	/// have active bodies (either or both) get their Update methods called with the current
@@ -513,13 +519,13 @@ private:
 	bool ShouldCollide(const Fixture* fixtureA, const Fixture* fixtureB);
 
 	/// Destroys the given contact and removes it from its list.
-	/// @detail This updates the contact list, returns the memory to the allocator,
+	/// @details This updates the contact list, returns the memory to the allocator,
 	///   and decrements the contact manager's contact count.
 	/// @param c Contact to destroy.
 	void Destroy(Contact* c, Body* from);
 	
 	/// Adds a contact for proxyA and proxyB if appropriate.
-	/// @detail Adds a new contact object to represent a contact between proxy A and proxy B if
+	/// @details Adds a new contact object to represent a contact between proxy A and proxy B if
 	/// all of the following are true:
 	///   1. The bodies of the fixtures of the proxies are not the one and the same.
 	///   2. No contact already exists for these two proxies.
@@ -605,7 +611,7 @@ private:
 	FlagsType m_flags = e_stepComplete;
 
 	/// Inverse delta-t from previous step.
-	/// @detail Used to compute time step ratio to support a variable time step.
+	/// @details Used to compute time step ratio to support a variable time step.
 	/// @note 4-bytes large.
 	/// @sa Step.
 	Frequency m_inv_dt0 = 0;
@@ -614,7 +620,7 @@ private:
 	const Length m_minVertexRadius;
 
 	/// Maximum vertex radius.
-	/// @detail
+	/// @details
 	/// This is the maximum shape vertex radius that any bodies' of this world should create
 	/// fixtures for. Requests to create fixtures for shapes with vertex radiuses bigger than
 	/// this must be rejected. As an upper bound, this value prevents shapes from getting
@@ -848,7 +854,7 @@ inline World::Contacts::size_type GetContactCount(const World& world) noexcept
 
 /// Steps the world ahead by a given time amount.
 ///
-/// @detail
+/// @details
 /// Performs position and velocity updating, sleeping of non-moving bodies, updating
 /// of the contacts, and notifying the contact listener of begin-contact, end-contact,
 /// pre-solve, and post-solve events.
@@ -870,10 +876,12 @@ inline World::Contacts::size_type GetContactCount(const World& world) noexcept
 /// applied forces, applied impulses, masses, damping, and the restitution and friction values
 /// of their fixtures when they experience collisions.
 ///
+/// @param world World to step.
 /// @param timeStep Amount of time to simulate (in seconds). This should not vary.
 /// @param velocityIterations Number of iterations for the velocity constraint solver.
 /// @param positionIterations Number of iterations for the position constraint solver.
 ///   The position constraint solver resolves the positions of bodies that overlap.
+///
 StepStats Step(World& world, Time timeStep,
 			   World::ts_iters_type velocityIterations = 8, World::ts_iters_type positionIterations = 3);
 
@@ -887,13 +895,13 @@ size_t GetShapeCount(const World& world) noexcept;
 size_t GetAwakeCount(const World& world) noexcept;
 
 /// Awakens all of the bodies in the given world.
-/// @detail Calls all of the world's bodies' <code>SetAwake</code> method.
+/// @details Calls all of the world's bodies' <code>SetAwake</code> method.
 /// @return Sum total of calls to bodies' <code>SetAwake</code> method that returned true.
 /// @sa Body::SetAwake.
 size_t Awaken(World& world);
 
 /// Clears forces.
-/// @detail
+/// @details
 /// Manually clear the force buffer on all bodies.
 void ClearForces(World& world) noexcept;
 

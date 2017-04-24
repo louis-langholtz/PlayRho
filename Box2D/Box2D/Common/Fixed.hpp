@@ -31,7 +31,7 @@ namespace box2d
 {
 	/// Fixed.
 	///
-	/// @detail This is a fixed point type template for a given base type using a given number
+	/// @details This is a fixed point type template for a given base type using a given number
 	/// of fraction bits.
 	///
 	/// This is a 32-bit sized fixed point type with a 18.14 format.

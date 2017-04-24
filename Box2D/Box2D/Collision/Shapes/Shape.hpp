@@ -34,7 +34,7 @@ class ChainShape;
 
 /// Shape.
 ///
-/// @detail Shape is an abstract base class for shapes.
+/// @details Shape is an abstract base class for shapes.
 /// A shape is used for collision detection. You can create a shape however you like.
 /// Shapes used for simulation in World are created automatically when a Fixture
 /// is created. Shapes may encapsulate one or more child shapes.
@@ -80,7 +80,7 @@ public:
 
 	/// Visitor interface.
 	///
-	/// @detail Interface to inerit from for objects wishing to "visit" shapes.
+	/// @details Interface to inerit from for objects wishing to "visit" shapes.
 	/// This uses the vistor design pattern.
 	/// @sa https://en.wikipedia.org/wiki/Visitor_pattern .
 	///
@@ -97,7 +97,7 @@ public:
 	};
 
 	/// Default constructor is deleted.
-	/// @detail This is a base class that shouldn't ever be directly instantiated.
+	/// @details This is a base class that shouldn't ever be directly instantiated.
 	Shape() = delete;
 
 	/// Initializing constructor.
@@ -247,7 +247,7 @@ inline void Shape::SetRestitution(RealNum restitution) noexcept
 // Free functions...
 
 /// Gets the vertex radius of the given shape (in meters).
-/// @detail Gets the radius (in meters) of every vertex of this shape.
+/// @details Gets the radius (in meters) of every vertex of this shape.
 /// This is used for collision handling.
 /// @note This value should never be less than zero.
 inline Length GetVertexRadius(const Shape& shape) noexcept

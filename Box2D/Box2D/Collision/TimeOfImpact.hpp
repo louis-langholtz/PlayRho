@@ -30,7 +30,7 @@ namespace box2d {
 
 	/// Time of impact configuration.
 	///
-	/// @detail These parameters effect time of impact calculations by limiting the definitions
+	/// @details These parameters effect time of impact calculations by limiting the definitions
 	///    of time and impact. If total radius is expressed as TR, and target depth as TD, then:
 	///    the max target distance is (TR - TD) + tolerance; and the min target distance is
 	///    (TR - TD) - tolerance.
@@ -68,7 +68,7 @@ namespace box2d {
 		Length tolerance = DefaultLinearSlop / RealNum{4}; ///< Tolerance.
 		
 		/// Maximum number of root finder iterations.
-		/// @detail This is the maximum number of iterations for calculating the 1D root of
+		/// @details This is the maximum number of iterations for calculating the 1D root of
 		///    <code>f(t) - (totalRadius - targetDepth) < tolerance</code>
 		/// where <code>f(t)</code> is the distance between the shapes at time <code>t</code>,
 		/// and <code>totalRadius</code> is the sum of the vertex radiuses of 2 distance proxies.
@@ -188,7 +188,7 @@ namespace box2d {
 
 	/// Gets the time of impact for two disjoint convex sets using the Separating Axis Theorem.
 	///
-	/// @detail
+	/// @details
 	/// Computes the upper bound on time before two shapes penetrate too much.
 	/// Time is represented as a fraction between [0,tMax].
 	/// This uses a swept separating axis and may miss some intermediate,
