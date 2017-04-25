@@ -48,7 +48,7 @@ inline RealNum MixRestitution(RealNum restitution1, RealNum restitution2) noexce
 	return (restitution1 > restitution2) ? restitution1 : restitution2;
 }
 
-/// Contact.
+/// A potential contact between the chidren of two Fixture objects.
 /// @details
 /// The class manages contact between two shapes. A contact exists for each overlapping
 /// AABB in the broad-phase (except if filtered). Therefore a contact object may exist

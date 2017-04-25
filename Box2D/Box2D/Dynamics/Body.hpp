@@ -220,7 +220,7 @@ constexpr inline BodyDef& BodyDef::UseUserData(void* value) noexcept
 	return *this;
 }
 
-/// Body.
+/// A physical entity that exists within a World.
 ///
 /// @details A rigid body entity created or destroyed through a World instance.
 ///

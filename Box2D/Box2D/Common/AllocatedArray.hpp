@@ -15,6 +15,7 @@
 
 namespace box2d {
 
+/// Allocated Array.
 template <typename T, typename Deleter = std::function<void (void *)> >
 class AllocatedArray
 {

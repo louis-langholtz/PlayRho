@@ -89,6 +89,7 @@ namespace box2d {
 		allocator.Free(const_cast<T*>(p), sizeof(T));
 	}
 	
+	/// Blockl Deallocator.
 	struct BlockDeallocator
 	{
 		using size_type = BlockAllocator::size_type;

@@ -483,6 +483,10 @@ private:
 	friend class World;
 };
 
+/// An "attorney" through which a World can get special access to a Contact "client".
+///
+/// @sa https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Friendship_and_the_Attorney-Client
+///
 class ContactAtty
 {
 private:
@@ -562,6 +566,10 @@ private:
 	friend class World;
 };
 
+/// An "attorney" through which a World can get special access to a Body "client".
+///
+/// @sa https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Friendship_and_the_Attorney-Client
+///
 class BodyAtty
 {
 private:
