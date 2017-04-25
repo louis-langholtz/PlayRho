@@ -20,19 +20,17 @@ Note the **blue** dots near the center of the image and the lines that they're
 connected to. These indicate the directions from which impulses are applied.
 
 The impulses are due to contacts being dealt with:
- - The contact between the upper box atop the lower box, and
- - The contact between the upper box and the lower box just to the right.
+ - a contact between the upper box atop the lower box, and
+ - a contact between the upper box and the lower box just to the right.
+
 It doesn't look like these contacts are happening, but that's only because the
 boxes' "skins" - padded extensions to the boxes - are actually where the
 contacts are happening and these **aren't** drawn in this image.
 
-Back to the impulses, there's:
-- an upward impulse, and
-- two impulses applied leftward.
-
+As to the impulses, there's an upward impulse, and two impulses applied
+leftward.
 The upward impulse is desirable. It's basically keeping the upper box from
 falling down any further.
-
 The leftward impulses however, they're counter to the direction the upper box
 was being dragged.
 
@@ -52,7 +50,8 @@ Not satisfied with squared off impulse responses, I introduced rounded corner
 collision handling into my fork of Box2D (like was being done for circle-circle
 collisions). Rounded corner collision handling for a top rectangle dragged
 across the lower rectangles from the right of the image to the left, then
-instead looks like this:
+instead looks like this (using the Testbed built from my fork of the project
+that has extra functionality like drawing the "skins"):
 
 ![Image of Round Corner Character Collision](images/RoundCornerRectRectCollision.png)
 
@@ -78,7 +77,8 @@ While rounded corner collisions were an improvement to me, I thought that for
 polygons having much longer edges than their corner radiuses, it'd be better to
 have no portion of the impulse response resisting the dragged motion at all.
 I'm calling this response the modified corner handling and it results in
-collision handling that now looks like this:
+collision handling that now looks like this (again using the Testbed built
+from my fork of the project):
 
 ![Image of Modified Corner Handling](images/ThresholdRectRectCollision.png)
 
