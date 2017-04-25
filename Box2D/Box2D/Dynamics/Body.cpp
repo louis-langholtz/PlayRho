@@ -419,24 +419,6 @@ size_t box2d::GetFixtureCount(const Body& body)
 	return static_cast<size_t>(std::distance(std::begin(fixtures), std::end(fixtures)));
 }
 
-MassData box2d::ComputeMassData(const Body& body) noexcept
-{
-	auto mass = Mass{0};
-	auto I = RotInertia{0};
-	auto center = Vec2_zero * Meter;
-	for (auto&& fixture: body.GetFixtures())
-	{
-		if (fixture->GetDensity() > Density{0})
-		{
-			const auto massData = GetMassData(*fixture);
-			mass += massData.mass;
-			center += RealNum{massData.mass / Kilogram} * massData.center;
-			I += massData.I;
-		}
-	}
-	return MassData{mass, center, I};
-}
-
 void box2d::RotateAboutWorldPoint(Body& body, Angle amount, Length2D worldPoint)
 {
 	const auto xfm = body.GetTransformation();

@@ -78,12 +78,7 @@ void Fixture::SetSensor(bool sensor) noexcept
 	}
 }
 
-AABB box2d::GetAABB(const Fixture& fixture, child_count_t childIndex) noexcept
-{
-	return fixture.GetProxy(childIndex)->aabb;
-}
-
-bool box2d::TestPoint(const Fixture& f, const Length2D p)
+bool box2d::TestPoint(const Fixture& f, const Length2D p) noexcept
 {
 	return f.GetShape()->TestPoint(GetTransformation(f), p);
 }

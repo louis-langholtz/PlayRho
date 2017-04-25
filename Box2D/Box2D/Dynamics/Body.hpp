@@ -20,6 +20,9 @@
 #ifndef B2_BODY_H
 #define B2_BODY_H
 
+/// @file
+/// Declarations of the Body and BodyDef classes, and free functions associated with them.
+
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Collision/MassData.hpp>
 #include <Box2D/Dynamics/BodyType.hpp>
@@ -1228,13 +1231,6 @@ Velocity GetVelocity(const Body& body, Time h) noexcept;
 size_t GetWorldIndex(const Body* body);
 
 size_t GetFixtureCount(const Body& body);
-
-/// Computes the body's mass data.
-/// @details This basically accumulates the mass data over all fixtures.
-/// @note The center is the mass weighted sum of all fixture centers. Divide it by the
-///   mass to get the averaged center.
-/// @return accumalated mass data for all fixtures associated with the given body.
-MassData ComputeMassData(const Body& body) noexcept;
 
 /// Rotates a body a given amount around a point in world coordinates.
 /// @details This changes both the linear and angular positions of the body.

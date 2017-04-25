@@ -20,6 +20,9 @@
 #ifndef AABB_hpp
 #define AABB_hpp
 
+/// @file
+/// Declaration of the AABB class and free functions that return instances of it.
+
 #include <Box2D/Common/Math.hpp>
 
 namespace box2d
@@ -226,6 +229,13 @@ namespace box2d
 	AABB ComputeAABB(const Shape& shape, const Transformation xf);
 
 	AABB ComputeAABB(const Body& body);
+
+	/// Gets the fixture's AABB.
+	/// @note This AABB may be enlarged and/or stale. If you need a more accurate AABB,
+	///   compute it using the shape and the body transform.
+	/// @warning Behavior is undefined is child index is not a valid proxy index.
+	/// @sa Fixture::GetProxy.
+	AABB GetAABB(const Fixture& fixture, child_count_t childIndex) noexcept;
 
 } // namespace box2d
 

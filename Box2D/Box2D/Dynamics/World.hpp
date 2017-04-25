@@ -20,6 +20,9 @@
 #ifndef B2_WORLD_H
 #define B2_WORLD_H
 
+/// @file
+/// Declarations of the World class and associated free functions.
+
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Dynamics/WorldCallbacks.hpp>
 #include <Box2D/Dynamics/StepStats.hpp>

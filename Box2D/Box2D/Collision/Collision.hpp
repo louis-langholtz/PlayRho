@@ -20,6 +20,10 @@
 #ifndef B2_COLLISION_H
 #define B2_COLLISION_H
 
+/// @file
+/// Structures and functions used for computing contact points, distance
+/// queries, and TOI queries.
+
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Common/ArrayList.hpp>
 #include <Box2D/Collision/ContactFeature.hpp>
@@ -29,11 +33,6 @@
 
 namespace box2d
 {
-
-/// @file
-/// Structures and functions used for computing contact points, distance
-/// queries, and TOI queries.
-
 class Manifold;
 	
 /// This is used for determining the state of contact points.

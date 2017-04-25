@@ -20,6 +20,10 @@
 #ifndef B2_FIXTURE_H
 #define B2_FIXTURE_H
 
+/// @file
+/// Declarations of the Filter, FixtureDef, and Fixture classes, and free functions
+///   associated with them.
+
 #include <limits>
 #include <memory>
 #include <Box2D/Common/Math.hpp>
@@ -28,13 +32,10 @@
 namespace box2d {
 
 class Body;
-class BroadPhase;
-class Fixture;
 struct FixtureProxy;
-class AABB;
 class Shape;
 
-/// This holds contact filtering data.
+/// A holder for contact filtering data.
 struct Filter
 {
 	using bits_type = std::uint16_t;
@@ -135,7 +136,7 @@ public:
 	/// @note This automatically calls Refilter.
 	void SetFilterData(const Filter filter);
 
-	/// Get the contact filtering data.
+	/// Gets the contact filtering data.
 	Filter GetFilterData() const noexcept;
 
 	/// Refilter the fixture.
@@ -305,18 +306,17 @@ inline void Fixture::SetProxies(Span<FixtureProxy> value) noexcept
 	m_proxyCount = static_cast<decltype(m_proxyCount)>(value.size());
 }
 
-/// Gets the fixture's AABB.
-/// @note This AABB may be enlarged and/or stale. If you need a more accurate AABB,
-///   compute it using the shape and the body transform.
-/// @warning Behavior is undefined is child index is not a valid proxy index.
-/// @sa Fixture::GetProxy.
-AABB GetAABB(const Fixture& fixture, child_count_t childIndex) noexcept;
+// Free functions...
 
 /// Test a point for containment in a fixture.
 /// @param f Fixture to use for test.
 /// @param p Point in world coordinates.
-bool TestPoint(const Fixture& f, const Length2D p);
+bool TestPoint(const Fixture& f, const Length2D p) noexcept;
 
+/// Sets the associated body's sleep status to awake.
+/// @note This is a convenience function that simply looks up the fixture's body and
+///   calls that body' SetAwake method.
+/// @param f Fixture whose body should be awoken.
 void SetAwake(Fixture& f) noexcept;
 
 /// Gets the transformation associated with the given fixture.

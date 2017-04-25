@@ -25,6 +25,7 @@
 #include <Box2D/Collision/Shapes/PolygonShape.hpp>
 #include <Box2D/Collision/Shapes/CircleShape.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
+#include <Box2D/Dynamics/FixtureProxy.hpp>
 #include <Box2D/Dynamics/Body.hpp>
 
 using namespace box2d;
@@ -62,4 +63,9 @@ AABB box2d::ComputeAABB(const Body& body)
 		sum.Include(ComputeAABB(*(f->GetShape()), xf));
 	}
 	return sum;
+}
+
+AABB box2d::GetAABB(const Fixture& fixture, child_count_t childIndex) noexcept
+{
+	return fixture.GetProxy(childIndex)->aabb;
 }

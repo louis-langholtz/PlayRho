@@ -25,6 +25,7 @@
 #include <Box2D/Collision/Shapes/CircleShape.hpp>
 #include <Box2D/Collision/Shapes/ChainShape.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
+#include <Box2D/Dynamics/Body.hpp>
 
 using namespace box2d;
 
@@ -148,4 +149,22 @@ SecondMomentOfArea box2d::GetPolarMoment(Span<const Length2D> vertices)
 MassData box2d::GetMassData(const Fixture& f)
 {
 	return f.GetShape()->GetMassData();
+}
+
+MassData box2d::ComputeMassData(const Body& body) noexcept
+{
+	auto mass = Mass{0};
+	auto I = RotInertia{0};
+	auto center = Vec2_zero * Meter;
+	for (auto&& fixture: body.GetFixtures())
+	{
+		if (fixture->GetDensity() > Density{0})
+		{
+			const auto massData = GetMassData(*fixture);
+			mass += massData.mass;
+			center += RealNum{massData.mass / Kilogram} * massData.center;
+			I += massData.I;
+		}
+	}
+	return MassData{mass, center, I};
 }
