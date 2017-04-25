@@ -4,8 +4,6 @@
 |---|-----|--------|-------|
 |[![Build Status](https://travis-ci.org/louis-langholtz/Box2D.svg?branch=iosfoo)](https://travis-ci.org/louis-langholtz/Box2D)|[![Build Status](https://travis-ci.org/louis-langholtz/Box2D.svg?branch=dev)](https://travis-ci.org/louis-langholtz/Box2D)|[![Build Status](https://travis-ci.org/louis-langholtz/Box2D.svg?branch=macosxfoo)](https://travis-ci.org/louis-langholtz/Box2D)|[![Build Status](https://travis-ci.org/louis-langholtz/Box2D.svg?branch=win32foo)](https://travis-ci.org/louis-langholtz/Box2D)|
 
-Coverity Scan Build Status: <a href="https://scan.coverity.com/projects/louis-langholtz-box2d"><img alt="Coverity Scan Build Status" src="https://scan.coverity.com/projects/12541/badge.svg"/></a>
-
 This is a fork by Louis Langholtz of the Box2D physics engine originally written by Erin Catto.
 
 General influences on this fork are:
