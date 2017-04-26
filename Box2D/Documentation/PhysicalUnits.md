@@ -1,10 +1,11 @@
 # The Physical Units Interface
 
-The Physical Units Interface is an interface that ties physical values
-to their required types.
+The *Physical Units Interface* for
+[this fork of Box2D](https://github.com/louis-langholtz/Box2D), is an interface
+that ties physical values to their required types.
 
-The base implementation for the physical units interface simply uses
-the RealNum type. To get the interface to enforce strong typing, an
+The base implementation for the *physical units interface* simply uses
+the `RealNum` type. To get the interface to enforce strong typing, an
 implementation that enforces it needs to be used. Otherwise, the physical
 units interface is just syntactic sugar that states only to the programmer
 what the unit is supposed to be.
