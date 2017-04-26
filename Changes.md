@@ -1,6 +1,7 @@
 # Changes
 
-Here's a run-down of some of the changes this fork of Box2D introduces:
+Here's a run-down of some of the changes
+[this fork of Box2D](https://github.com/louis-langholtz/Box2D) introduces:
 - Exported symbols are now within the library namespace of `box2d` and are no longer prefaced by `b2`.
 - Mutable global variables in the library have been removed or replaced with runtime-time parameters.
 - Preprocessor defines, except those used for include guards, have been replaced with C++ solutions or removed from the API.
