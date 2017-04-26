@@ -845,9 +845,11 @@ DynamicTree::size_type DynamicTree::GetMaxBalance() const
 		const auto child2 = node->child2;
 		assert(child2 != InvalidIndex);
 		assert(child2 < m_nodeCapacity);
-		assert(m_nodes[child1].height != InvalidIndex);
-		assert(m_nodes[child2].height != InvalidIndex);
-		const auto balance = Abs(m_nodes[child2].height - m_nodes[child1].height);
+		const auto height1 = m_nodes[child1].height;
+		const auto height2 = m_nodes[child2].height;
+		assert(height1 != InvalidIndex);
+		assert(height2 != InvalidIndex);
+		const auto balance = (height2 >= height1)? height2 - height1: height1 - height2;
 		maxBalance = Max(maxBalance, balance);
 	}
 

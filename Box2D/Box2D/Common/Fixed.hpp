@@ -579,7 +579,7 @@ namespace box2d
 		return result == Fixed32::ComparatorResult::GreaterThan;
 	}
 
-#ifndef WIN32
+#ifndef _WIN32
 	// Fixed64 free functions.
 
 	using Fixed64 = Fixed<std::int64_t,24>;
@@ -650,7 +650,7 @@ namespace box2d
 
 	template<> struct Wider<Fixed32> { using type = Fixed64; };
 
-#endif /* !WIN32 */
+#endif /* !_WIN32 */
 
 } // namespace box2d
 
@@ -761,7 +761,7 @@ namespace std
 		return value.Compare(0) == box2d::Fixed32::ComparatorResult::Incomparable;
 	}
 
-#ifndef WIN32
+#ifndef _WIN32
 
 	template <>
 	class numeric_limits<box2d::Fixed64>
@@ -868,7 +868,7 @@ namespace std
 		return value.Compare(0) == box2d::Fixed64::ComparatorResult::Incomparable;
 	}
 
-#endif /* WIN32 */
+#endif /* _WIN32 */
 
 } // namespace std
 

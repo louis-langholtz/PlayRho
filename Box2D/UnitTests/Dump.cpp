@@ -67,7 +67,7 @@ struct Vals<Fixed32> {
 	}
 };
 
-#ifndef WIN32
+#ifndef _WIN32
 
 template <>
 struct Vals<Fixed64> {
@@ -77,7 +77,7 @@ struct Vals<Fixed64> {
 	}
 };
 
-#endif /* !WIN32 */
+#endif /* !_WIN32 */
 
 TEST(Dump, EmptyWorld)
 {

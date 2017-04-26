@@ -175,7 +175,6 @@ void BlockAllocator::Free(void* p, size_type n)
 	const auto index = s_blockSizeLookup[n];
 	assert((0 <= index) && (index < BlockSizes));
 
-#define _DEBUG
 #ifdef _DEBUG
 	// Verify the memory address and size is valid.
 	const auto blockSize = s_blockSizes[index];

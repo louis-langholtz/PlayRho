@@ -98,7 +98,11 @@ SeparationFinder SeparationFinder::Get(Span<const IndexPair> indices,
 				localPoint, type
 			};
 		}
+		default: break;
 	}
+
+	// Should never be reached
+	return SeparationFinder{proxyA, proxyB, UnitVec2{}, GetInvalid<Length2D>(), type};
 }
 
 SeparationFinder::Data SeparationFinder::FindMinSeparationForPoints(const Transformation& xfA, const Transformation& xfB) const

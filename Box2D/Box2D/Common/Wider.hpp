@@ -42,7 +42,7 @@ namespace box2d
 	template<> struct Wider<float> { using type = double; };
 	template<> struct Wider<double> { using type = long double; };
 
-#ifndef WIN32
+#ifndef _WIN32
 	// Note: __int128_t not defined for Windows!
 	template<> struct Wider<std::int64_t> { using type = __int128_t; };
 	template<> struct Wider<std::uint64_t> { using type = __uint128_t; };
@@ -51,7 +51,7 @@ namespace box2d
 } // namespace box2d
 
 namespace std {
-#ifndef WIN32
+#ifndef _WIN32
 	// This might already be defined by the standard library header, but
 	// define it here explicitly in case it's not.
 	template <> struct make_unsigned<__int128_t> {

@@ -468,7 +468,7 @@ constexpr Fixed32 GetInvalid() noexcept
 	return Fixed32::GetNaN();
 }
 
-#ifndef WIN32
+#ifndef _WIN32
 template <>
 constexpr Fixed64 GetInvalid() noexcept
 {
