@@ -384,11 +384,7 @@ static void sSimulate(Drawer& drawer)
 	settings.dt = (settings.hz != 0)? 1 / settings.hz : 0;
 	if (settings.pause)
 	{
-		if (settings.singleStep)
-		{
-			settings.singleStep = false;
-		}
-		else
+		if (!settings.singleStep)
 		{
 			settings.dt = 0.0f;
 		}
@@ -399,6 +395,14 @@ static void sSimulate(Drawer& drawer)
 
 	glDisable(GL_DEPTH_TEST);
 
+	if (settings.pause)
+	{
+		if (settings.singleStep)
+		{
+			settings.singleStep = false;
+		}
+	}
+	
 	if (testSelection != testIndex)
 	{
 		testIndex = testSelection;
