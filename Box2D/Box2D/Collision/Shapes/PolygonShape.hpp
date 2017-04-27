@@ -126,7 +126,7 @@ public:
 	/// The size of the set must be in the range [1, MaxShapeVertices].
 	/// @warning the points may be re-ordered, even if they form a convex polygon
 	/// @warning collinear points are handled but not removed. Collinear points
-	/// may lead to poor stacking behavior.
+	///   may lead to poor stacking behavior.
 	void Set(const VertexSet& points) noexcept;
 	
 	/// Build vertices to represent an axis-aligned box centered on the local origin.
@@ -235,11 +235,7 @@ bool Validate(const PolygonShape& shape);
 /// @param center the center of the box in local coordinates.
 /// @param angle the rotation of the box in local coordinates.
 void SetAsBox(PolygonShape& shape, Length hx, Length hy, const Length2D center, Angle angle) noexcept;
-	
-size_t FindLowestRightMostVertex(Span<const Length2D> vertices);
 
-std::vector<Length2D> GetConvexHullAsVector(Span<const Length2D> vertices);
-	
 inline PolygonShape Transform(PolygonShape value, Transformation xfm) noexcept
 {
 	value.Transform(xfm);
