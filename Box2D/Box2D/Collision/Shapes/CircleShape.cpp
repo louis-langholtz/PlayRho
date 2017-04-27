@@ -46,7 +46,7 @@ RayCastOutput CircleShape::RayCast(const RayCastInput& input, const Transformati
 	NOT_USED(childIndex);
 	
 	const auto loc = GetLocation();
-	const auto position = transform.p + Rotate(StripUnits(loc), transform.q) * Meter;
+	const auto position = transform.p + Rotate(loc, transform.q);
 	const auto s = input.p1 - position;
 	const auto sUnitless = StripUnits(s);
 	const auto b = GetLengthSquared(sUnitless) - Square(GetRadius() / Meter);
