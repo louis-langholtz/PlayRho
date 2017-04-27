@@ -1,8 +1,8 @@
 # Testbed
 
 The Testbed GUI application provides a GUI interface to a bunch of visually
-presented tests. It may be helpful for learning how to use [this fork of the
-Box2D library](https://github.com/louis-langholtz/Box2D).
+presented demos. It may be helpful for testing and/or for learning how to use
+[this fork of the Box2D library](https://github.com/louis-langholtz/Box2D).
 
 ## Build Instructions
 
@@ -14,7 +14,7 @@ the Box2D library, the GLFW library, and the GLEW library.
 [GLFW](http://www.glfw.org) is an Open Source library that the Testbed depends
 on.
 
-Here are steps that I've used to build this library:
+Here are steps that I've used to download and build this library:
 1. Decide where you're going to have your GLFW sources. Setup an environment
    variable called `GLFW_SOURCES` that's set to this path. For example:
      `GLFW_SOURCES=/tmp/glfw-3.2.1`.
@@ -31,7 +31,7 @@ Here are steps that I've used to build this library:
 [GLEW](http://glew.sourceforge.net) is an Open Source library that the Testbed
 depends on.
 
-Here are steps that I've used to build this library:
+Here are steps that I've used to download and build this library:
 1. Get GLEW.
   - From a ZIP file:
     1. Download GLEW 2.0.0 from
