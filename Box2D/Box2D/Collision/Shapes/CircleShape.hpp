@@ -85,14 +85,7 @@ public:
 	/// @note Behavior is undefined if the density is negative.
 	/// @return Mass data for this shape.
 	MassData GetMassData() const noexcept override;
-
-	/// Cast a ray against a child shape.
-	/// @param input the ray-cast input parameters.
-	/// @param xf the transform to be applied to the shape.
-	/// @param childIndex the child shape index
-	RayCastOutput RayCast(const RayCastInput& input, const Transformation& xf,
-						  child_count_t childIndex) const noexcept override;
-
+	
 	void Accept(Visitor& visitor) const override;
 
 	/// Gets the "radius" of the shape.

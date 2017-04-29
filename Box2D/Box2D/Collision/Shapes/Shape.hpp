@@ -31,6 +31,7 @@ class CircleShape;
 class EdgeShape;
 class PolygonShape;
 class ChainShape;
+class MultiShape;
 
 /// Shape.
 ///
@@ -89,11 +90,30 @@ public:
 	public:
 		virtual ~Visitor() = default;
 		
-		// All subclasses of Shape should have a Visit method specific to them here:
-		virtual void Visit(const CircleShape& shape) = 0;
-		virtual void Visit(const EdgeShape& shape) = 0;
-		virtual void Visit(const PolygonShape& shape) = 0;
-		virtual void Visit(const ChainShape& shape) = 0;
+		virtual void Visit(const CircleShape&)
+		{
+			// Intentionally empty (no-op).
+		}
+
+		virtual void Visit(const EdgeShape&)
+		{
+			// Intentionally empty (no-op).
+		}
+
+		virtual void Visit(const PolygonShape&)
+		{
+			// Intentionally empty (no-op).
+		}
+
+		virtual void Visit(const ChainShape&)
+		{
+			// Intentionally empty (no-op).
+		}
+
+		virtual void Visit(const MultiShape&)
+		{
+			// Intentionally empty (no-op).
+		}
 	};
 
 	/// Default constructor is deleted.
@@ -136,9 +156,6 @@ public:
 	/// @param p a point in world coordinates.
 	/// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
 	virtual bool TestPoint(const Transformation& xf, const Length2D p) const noexcept = 0;
-
-	virtual RayCastOutput RayCast(const RayCastInput& input, const Transformation& xf,
-								  child_count_t childIndex) const noexcept = 0;
 
 	/// Gets the mass properties of this shape using its dimensions and density.
 	/// @note Behavior is undefined if the density is negative.

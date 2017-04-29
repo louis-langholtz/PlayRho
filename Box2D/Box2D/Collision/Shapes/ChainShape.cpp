@@ -145,16 +145,3 @@ bool ChainShape::TestPoint(const Transformation& xf, const Length2D p) const noe
 	NOT_USED(p);
 	return false;
 }
-
-RayCastOutput ChainShape::RayCast(const RayCastInput& input, const Transformation& xf,
-					  child_count_t childIndex) const noexcept
-{
-	assert(childIndex < GetVertexCount());
-	
-	const auto i1 = childIndex;
-	const auto i2 = GetNextIndex(*this, childIndex);
-	auto conf = EdgeShape::Conf{};
-	conf.vertexRadius = GetVertexRadius();
-	const auto edgeShape = EdgeShape{GetVertex(i1), GetVertex(i2), conf};
-	return edgeShape.RayCast(input, xf, 0);
-}

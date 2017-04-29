@@ -61,17 +61,7 @@ public:
 		}
 		g_debugDraw->DrawPolygon(&vertices[0], vertexCount, m_color);
 	}
-
-	void Visit(const EdgeShape&) override
-	{
-		// Intentionally empty.
-	}
-
-	void Visit(const ChainShape&) override
-	{
-		// Intentionally empty.
-	}
-
+	
 	/// Called for each fixture found in the query AABB.
 	/// @return false to terminate the query.
 	bool ReportFixture(Fixture* fixture) override

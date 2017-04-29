@@ -27,6 +27,7 @@ namespace box2d
 	struct RayCastInput;
 	class AABB;
 	class Fixture;
+	class DistanceProxy;
 
 	/// Ray-cast output data.
 	/// @details The ray hits at p1 + fraction * (p2 - p1), where p1 and p2 come from RayCastInput.
@@ -34,15 +35,29 @@ namespace box2d
 	{
 		RayCastOutput() = default;
 		
-		constexpr RayCastOutput(UnitVec2 n, RealNum f, bool h = true) noexcept: normal{n}, fraction{f}, hit{h} {}
+		constexpr RayCastOutput(UnitVec2 n, RealNum f, bool h = true) noexcept:
+			normal{n}, fraction{f}, hit{h}
+		{
+			// Intentionally empty.
+		}
 		
 		UnitVec2 normal;
 		RealNum fraction = 0;
 		bool hit = false;
 	};
 
+	/// Cast a ray against the given AABB.
+	/// @param aabb Axis Aligned Bounding Box.
+	/// @param input the ray-cast input parameters.
 	RayCastOutput RayCast(const AABB& aabb, const RayCastInput& input);
-
+	
+	/// Cast a ray against the distance proxy.
+	/// @param proxy Distance-proxy object.
+	/// @param input Ray-cast input parameters.
+	/// @param transform Transform to be applied to the shape.
+	RayCastOutput RayCast(const DistanceProxy& proxy,
+						  const RayCastInput& input, const Transformation& transform) noexcept;
+	
 	/// Cast a ray against the shape of the given fixture.
 	/// @param f Fixture.
 	/// @param input the ray-cast input parameters.

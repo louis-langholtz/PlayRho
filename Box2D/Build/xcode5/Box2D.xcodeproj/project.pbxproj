@@ -112,6 +112,10 @@
 		474AFBF11EB197D1002AA6C8 /* posix_tls.c in Sources */ = {isa = PBXBuildFile; fileRef = 474AFBD01EB19657002AA6C8 /* posix_tls.c */; };
 		474AFBF21EB197D1002AA6C8 /* window.c in Sources */ = {isa = PBXBuildFile; fileRef = 474AFBD21EB19657002AA6C8 /* window.c */; };
 		474AFBF51EB19BB6002AA6C8 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 474AFBF41EB19BB6002AA6C8 /* CoreVideo.framework */; };
+		474AFBF81EB1B2CB002AA6C8 /* MultiShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474AFBF61EB1B2CB002AA6C8 /* MultiShape.cpp */; };
+		474AFBF91EB1B2CB002AA6C8 /* MultiShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474AFBF61EB1B2CB002AA6C8 /* MultiShape.cpp */; };
+		474AFBFA1EB1B2CB002AA6C8 /* MultiShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 474AFBF71EB1B2CB002AA6C8 /* MultiShape.hpp */; };
+		474AFBFB1EB1B2CB002AA6C8 /* MultiShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 474AFBF71EB1B2CB002AA6C8 /* MultiShape.hpp */; };
 		474B67221E80466D00B6D126 /* functional.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474B67211E80466D00B6D126 /* functional.cpp */; };
 		474BAB2A1E5CBA010058E08A /* Velocity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474BAB291E5CBA010058E08A /* Velocity.cpp */; };
 		474BAB301E5D00960058E08A /* BodyConstraint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 474BAB2C1E5D00960058E08A /* BodyConstraint.hpp */; };
@@ -496,6 +500,8 @@
 		474AFBD11EB19657002AA6C8 /* posix_tls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = posix_tls.h; path = ../../glfw/posix_tls.h; sourceTree = "<group>"; };
 		474AFBD21EB19657002AA6C8 /* window.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = window.c; path = ../../glfw/window.c; sourceTree = "<group>"; };
 		474AFBF41EB19BB6002AA6C8 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		474AFBF61EB1B2CB002AA6C8 /* MultiShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MultiShape.cpp; sourceTree = "<group>"; };
+		474AFBF71EB1B2CB002AA6C8 /* MultiShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MultiShape.hpp; sourceTree = "<group>"; };
 		474B67211E80466D00B6D126 /* functional.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = functional.cpp; sourceTree = "<group>"; };
 		474BAB291E5CBA010058E08A /* Velocity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Velocity.cpp; sourceTree = "<group>"; };
 		474BAB2C1E5D00960058E08A /* BodyConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyConstraint.hpp; sourceTree = "<group>"; };
@@ -936,6 +942,8 @@
 				80BB8938141C3E5900F1753A /* CircleShape.hpp */,
 				80BB8939141C3E5900F1753A /* EdgeShape.cpp */,
 				80BB893A141C3E5900F1753A /* EdgeShape.hpp */,
+				474AFBF61EB1B2CB002AA6C8 /* MultiShape.cpp */,
+				474AFBF71EB1B2CB002AA6C8 /* MultiShape.hpp */,
 				80BB893B141C3E5900F1753A /* PolygonShape.cpp */,
 				80BB893C141C3E5900F1753A /* PolygonShape.hpp */,
 				475A94571D9453A1000CA9A8 /* Shape.cpp */,
@@ -1236,6 +1244,7 @@
 				47AA5DE21C4C5FBE008AF2BA /* World.hpp in Headers */,
 				4734B2281DC29F7C00F15E29 /* SimplexEdge.hpp in Headers */,
 				4726DD2D1D31B4090012A882 /* AABB.hpp in Headers */,
+				474AFBFB1EB1B2CB002AA6C8 /* MultiShape.hpp in Headers */,
 				47AA5DE31C4C5FBE008AF2BA /* WorldCallbacks.hpp in Headers */,
 				4726DD101D3014990012A882 /* IndexPair.hpp in Headers */,
 				4731DE1C1DDCD0E100E7F931 /* FixtureProxy.hpp in Headers */,
@@ -1283,6 +1292,7 @@
 				80BB8987141C3E5900F1753A /* Box2D.hpp in Headers */,
 				4731DE581DEC908600E7F931 /* UnitVec2.hpp in Headers */,
 				80BB8989141C3E5900F1753A /* BroadPhase.hpp in Headers */,
+				474AFBFA1EB1B2CB002AA6C8 /* MultiShape.hpp in Headers */,
 				80BB8990141C3E5900F1753A /* Distance.hpp in Headers */,
 				474AFBD91EB19657002AA6C8 /* glfw3.h in Headers */,
 				47CB34401D6F3A8500828126 /* MassData.hpp in Headers */,
@@ -1600,6 +1610,7 @@
 				47CF984C1DF9C4A30077F5F2 /* ShapeSeparation.cpp in Sources */,
 				47AA5DAB1C4C5FBE008AF2BA /* StackAllocator.cpp in Sources */,
 				4736DE8D1DB806AE003993CB /* CollideShapes.cpp in Sources */,
+				474AFBF91EB1B2CB002AA6C8 /* MultiShape.cpp in Sources */,
 				47AA5DAC1C4C5FBE008AF2BA /* Timer.cpp in Sources */,
 				47AA5DAD1C4C5FBE008AF2BA /* Body.cpp in Sources */,
 				47AA5DAF1C4C5FBE008AF2BA /* Fixture.cpp in Sources */,
@@ -1727,6 +1738,7 @@
 				80BB89D2141C3E5900F1753A /* MouseJoint.cpp in Sources */,
 				4731DE561DEC908600E7F931 /* UnitVec2.cpp in Sources */,
 				80BB89D4141C3E5900F1753A /* PrismaticJoint.cpp in Sources */,
+				474AFBF81EB1B2CB002AA6C8 /* MultiShape.cpp in Sources */,
 				80BB89D6141C3E5900F1753A /* PulleyJoint.cpp in Sources */,
 				474AFBD61EB19657002AA6C8 /* cocoa_window.m in Sources */,
 				80BB89D8141C3E5900F1753A /* RevoluteJoint.cpp in Sources */,

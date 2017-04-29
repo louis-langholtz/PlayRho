@@ -63,9 +63,10 @@ namespace
 		void Visit(const EdgeShape& shape) override;
 		void Visit(const PolygonShape& shape) override;
 		void Visit(const ChainShape& shape) override;
+		void Visit(const MultiShape& shape) override;
 	};
 	
-	void ShapeDumper::Visit(const box2d::CircleShape &s)
+	void ShapeDumper::Visit(const box2d::CircleShape& s)
 	{
 		log("    CircleShape shape;\n");
 		log("    shape.m_radius = %.15lef;\n", double{StripUnit(s.GetRadius())});
@@ -73,7 +74,7 @@ namespace
 			double{StripUnit(s.GetLocation().x)}, double{StripUnit(s.GetLocation().y)});
 	}
 	
-	void ShapeDumper::Visit(const box2d::EdgeShape &s)
+	void ShapeDumper::Visit(const box2d::EdgeShape& s)
 	{
 		log("    EdgeShape shape;\n");
 		log("    shape.m_radius = %.15lef;\n", double{StripUnit(GetVertexRadius(s))});
@@ -83,7 +84,7 @@ namespace
 			double{StripUnit(s.GetVertex2().x)}, double{StripUnit(s.GetVertex2().y)});
 	}
 	
-	void ShapeDumper::Visit(const box2d::PolygonShape &s)
+	void ShapeDumper::Visit(const box2d::PolygonShape& s)
 	{
 		const auto vertexCount = s.GetVertexCount();
 		log("    PolygonShape shape;\n");
@@ -96,7 +97,7 @@ namespace
 		log("    shape.Set(vs, %d);\n", vertexCount);
 	}
 	
-	void ShapeDumper::Visit(const box2d::ChainShape &s)
+	void ShapeDumper::Visit(const box2d::ChainShape& s)
 	{
 		log("    ChainShape shape;\n");
 		log("    Vec2 vs[%d];\n", s.GetVertexCount());
@@ -108,6 +109,10 @@ namespace
 		log("    shape.CreateChain(vs, %d);\n", s.GetVertexCount());
 	}
 
+	void ShapeDumper::Visit(const box2d::MultiShape&)
+	{
+		// TODO
+	}
 }
 
 void box2d::Dump(const World& world)

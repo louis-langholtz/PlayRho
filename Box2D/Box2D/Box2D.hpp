@@ -39,6 +39,7 @@ For discussion, please visit http://box2d.org/forum
 #include <Box2D/Collision/Shapes/EdgeShape.hpp>
 #include <Box2D/Collision/Shapes/ChainShape.hpp>
 #include <Box2D/Collision/Shapes/PolygonShape.hpp>
+#include <Box2D/Collision/Shapes/MultiShape.hpp>
 
 #include <Box2D/Collision/Collision.hpp>
 #include <Box2D/Collision/Manifold.hpp>

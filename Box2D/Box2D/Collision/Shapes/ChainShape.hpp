@@ -33,7 +33,6 @@ class EdgeShape;
 /// The chain has two-sided collision, so you can use inside and outside collision.
 /// Therefore, you may use any winding order.
 /// Since there may be many vertices, they are allocated using alloc.
-/// Connectivity information is used to create smooth collisions.
 ///
 /// @warning The chain will not collide properly if there are self-intersections.
 ///
@@ -86,13 +85,6 @@ public:
 	/// @return Mass data for this shape.
 	MassData GetMassData() const noexcept override;
 	
-	/// Cast a ray against a child shape.
-	/// @param input the ray-cast input parameters.
-	/// @param xf the transform to be applied to the shape.
-	/// @param childIndex the child shape index
-	RayCastOutput RayCast(const RayCastInput& input, const Transformation& xf,
-						  child_count_t childIndex) const noexcept override;
-
 	void Accept(Visitor& visitor) const override;
 
 	ChainShape& operator=(const ChainShape& other);

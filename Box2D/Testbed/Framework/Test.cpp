@@ -58,7 +58,10 @@ public:
 	void Visit(const EdgeShape& shape) override;
 	void Visit(const PolygonShape& shape) override;
 	void Visit(const ChainShape& shape) override;
+	void Visit(const MultiShape& shape) override;
 	
+	void Draw(const DistanceProxy& proxy);
+
 	Drawer& drawer;
 	Color color;
 	bool skins;
@@ -130,7 +133,7 @@ void ShapeDrawer::Visit(const ChainShape& shape)
 	}
 }
 
-void ShapeDrawer::Visit(const PolygonShape& shape)
+void ShapeDrawer::Draw(const DistanceProxy& shape)
 {
 	const auto vertexCount = shape.GetVertexCount();
 	auto vertices = std::vector<Length2D>(vertexCount);
@@ -176,6 +179,20 @@ void ShapeDrawer::Visit(const PolygonShape& shape)
 	else if (vertexCount == 1)
 	{
 		DrawCorner(drawer, vertices[0], r, RealNum{0} * Degree, RealNum{360} * Degree, skinColor);
+	}
+}
+
+void ShapeDrawer::Visit(const PolygonShape& shape)
+{
+	Draw(shape.GetChild(0));
+}
+
+void ShapeDrawer::Visit(const MultiShape& shape)
+{
+	const auto count = shape.GetChildCount();
+	for (auto i = decltype(count){0}; i < count; ++i)
+	{
+		Draw(shape.GetChild(i));
 	}
 }
 
