@@ -661,15 +661,76 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
 		const auto body = selectedFixture->GetBody();
 		const auto location = body->GetLocation();
 		const auto velocity = body->GetVelocity();
-		drawer.DrawString(5, m_textLine, "Selected fixture: pos={%f,%f} vel={%f,%f} density=%f friction=%f restitution=%f",
+		const auto contacts = body->GetContacts();
+		
+		auto numContacts = 0;
+		auto numTouching = 0;
+		auto numImpulses = 0;
+		for (auto&& c: contacts)
+		{
+			++numContacts;
+			if (c->IsTouching())
+			{
+				++numTouching;
+				const auto manifold = c->GetManifold();
+				numImpulses += manifold.GetPointCount();
+			}
+		}
+		drawer.DrawString(5, m_textLine,
+						  "Selected fixture: pos={%f,%f} vel={%f,%f} density=%f friction=%f restitution=%f b-cts=%d/%d b-impls=%d",
 						  double{GetX(location) / Meter},
 						  double{GetY(location) / Meter},
 						  double{GetX(velocity.linear) / MeterPerSecond},
 						  double{GetY(velocity.linear) / MeterPerSecond},
 						  double{density * SquareMeter / Kilogram},
 						  friction,
-						  restitution);
+						  restitution,
+						  numTouching, numContacts,
+						  numImpulses);
 		m_textLine += DRAW_STRING_NEW_LINE;
+	}
+}
+
+void Test::DrawContactPoints(const Settings& settings, Drawer& drawer)
+{
+	const auto k_impulseScale = RealNum(0.1) * Second / Kilogram;
+	const auto k_axisScale = (RealNum(3) / RealNum(10)) * Meter;
+	
+	for (auto i = decltype(m_pointCount){0}; i < m_pointCount; ++i)
+	{
+		const auto point = m_points + i;
+		
+		if (point->state == PointState::AddState)
+		{
+			// Add
+			drawer.DrawPoint(point->position, RealNum{10} * Meter, Color{0.3f, 0.95f, 0.3f});
+		}
+		else if (point->state == PointState::PersistState)
+		{
+			// Persist
+			drawer.DrawPoint(point->position, RealNum{5} * Meter, Color{0.3f, 0.3f, 0.95f});
+		}
+		
+		if (settings.drawContactNormals)
+		{
+			const auto p1 = point->position;
+			const auto p2 = p1 + k_axisScale * point->normal;
+			drawer.DrawSegment(p1, p2, Color{0.9f, 0.9f, 0.9f});
+		}
+		else if (settings.drawContactImpulse)
+		{
+			const auto p1 = point->position;
+			const auto p2 = p1 + k_impulseScale * point->normalImpulse * point->normal;
+			drawer.DrawSegment(p1, p2, Color{0.9f, 0.9f, 0.3f});
+		}
+		
+		if (settings.drawFrictionImpulse)
+		{
+			const auto tangent = GetFwdPerpendicular(point->normal);
+			const auto p1 = point->position;
+			const auto p2 = p1 + k_impulseScale * point->tangentImpulse * tangent;
+			drawer.DrawSegment(p1, p2, Color{0.9f, 0.9f, 0.3f});
+		}
 	}
 }
 
@@ -692,9 +753,13 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 		}
 	}
 
-	m_world->SetSubStepping(settings.enableSubStepping);
+	if (settings.dt != 0)
+	{
+		// Resets point count for contact point accumalation.
+		m_pointCount = 0;
+	}
 
-	m_pointCount = 0;
+	m_world->SetSubStepping(settings.enableSubStepping);
 
 	auto stepConf = StepConf{};
 	
@@ -858,45 +923,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 
 	if (settings.drawContactPoints)
 	{
-		const auto k_impulseScale = RealNum(0.1) * Second / Kilogram;
-		const auto k_axisScale = (RealNum(3) / RealNum(10)) * Meter;
-
-		for (auto i = decltype(m_pointCount){0}; i < m_pointCount; ++i)
-		{
-			const auto point = m_points + i;
-
-			if (point->state == PointState::AddState)
-			{
-				// Add
-				drawer.DrawPoint(point->position, RealNum{10} * Meter, Color{0.3f, 0.95f, 0.3f});
-			}
-			else if (point->state == PointState::PersistState)
-			{
-				// Persist
-				drawer.DrawPoint(point->position, RealNum{5} * Meter, Color{0.3f, 0.3f, 0.95f});
-			}
-
-			if (settings.drawContactNormals)
-			{
-				const auto p1 = point->position;
-				const auto p2 = p1 + k_axisScale * point->normal;
-				drawer.DrawSegment(p1, p2, Color{0.9f, 0.9f, 0.9f});
-			}
-			else if (settings.drawContactImpulse)
-			{
-				const auto p1 = point->position;
-				const auto p2 = p1 + k_impulseScale * point->normalImpulse * point->normal;
-				drawer.DrawSegment(p1, p2, Color{0.9f, 0.9f, 0.3f});
-			}
-
-			if (settings.drawFrictionImpulse)
-			{
-				const auto tangent = GetFwdPerpendicular(point->normal);
-				const auto p1 = point->position;
-				const auto p2 = p1 + k_impulseScale * point->tangentImpulse * tangent;
-				drawer.DrawSegment(p1, p2, Color{0.9f, 0.9f, 0.3f});
-			}
-		}
+		DrawContactPoints(settings, drawer);
 	}
 	
 	PostStep(settings, drawer);
