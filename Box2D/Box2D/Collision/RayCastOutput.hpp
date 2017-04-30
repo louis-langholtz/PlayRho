@@ -41,8 +41,8 @@ namespace box2d
 			// Intentionally empty.
 		}
 		
-		UnitVec2 normal;
-		RealNum fraction = 0;
+		UnitVec2 normal = GetInvalid<decltype(normal)>();
+		RealNum fraction = GetInvalid<decltype(fraction)>();
 		bool hit = false;
 	};
 

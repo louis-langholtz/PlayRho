@@ -23,7 +23,6 @@
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Collision/DistanceProxy.hpp>
 #include <Box2D/Collision/MassData.hpp>
-#include <Box2D/Collision/RayCastOutput.hpp>
 
 namespace box2d {
 

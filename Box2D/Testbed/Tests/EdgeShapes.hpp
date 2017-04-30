@@ -78,19 +78,28 @@ public:
 
 		for (auto i = 0; i < 4; ++i)
 		{
-			m_polygons[i].SetFriction(0.3f);
-			m_polygons[i].SetDensity(RealNum{20} * KilogramPerSquareMeter);
+			m_polygons[i] = std::make_shared<PolygonShape>();
+			m_polygons[i]->SetFriction(0.3f);
+			m_polygons[i]->SetDensity(RealNum{20} * KilogramPerSquareMeter);
 		}
 		
-		m_polygons[0].Set({Vec2(-0.5f, 0.0f) * Meter, Vec2(0.5f, 0.0f) * Meter, Vec2(0.0f, 1.5f) * Meter});
-		m_polygons[1].Set({Vec2(-0.1f, 0.0f) * Meter, Vec2(0.1f, 0.0f) * Meter, Vec2(0.0f, 1.5f) * Meter});
+		m_polygons[0]->Set({
+			Vec2(-0.5f, 0.0f) * Meter,
+			Vec2(0.5f, 0.0f) * Meter,
+			Vec2(0.0f, 1.5f) * Meter
+		});
+		m_polygons[1]->Set({
+			Vec2(-0.1f, 0.0f) * Meter,
+			Vec2(0.1f, 0.0f) * Meter,
+			Vec2(0.0f, 1.5f) * Meter
+		});
 
 		{
 			const auto w = 1.0f;
 			const auto b = w / (2.0f + Sqrt(2.0f));
 			const auto s = Sqrt(2.0f) * b;
 
-			m_polygons[2].Set({
+			m_polygons[2]->Set({
 				Vec2(0.5f * s, 0.0f) * Meter,
 				Vec2(0.5f * w, b) * Meter,
 				Vec2(0.5f * w, b + s) * Meter,
@@ -102,7 +111,7 @@ public:
 			});
 		}
 
-		m_polygons[3].SetAsBox(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
+		m_polygons[3]->SetAsBox(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
 
 		m_bodyIndex = 0;
 		memset(m_bodies, 0, sizeof(m_bodies));
@@ -135,7 +144,7 @@ public:
 
 		if (index < 4)
 		{
-			m_bodies[m_bodyIndex]->CreateFixture(std::make_shared<PolygonShape>(m_polygons[index]));
+			m_bodies[m_bodyIndex]->CreateFixture(m_polygons[index]);
 		}
 		else
 		{
@@ -221,7 +230,7 @@ public:
 
 	int m_bodyIndex;
 	Body* m_bodies[e_maxBodies];
-	PolygonShape m_polygons[4];
+	std::shared_ptr<PolygonShape> m_polygons[4];
 	std::shared_ptr<CircleShape> m_circle = std::make_shared<CircleShape>(RealNum{0.5f} * Meter);
 
 	RealNum m_angle;

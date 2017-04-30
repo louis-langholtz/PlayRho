@@ -179,6 +179,7 @@ public:
 		m_circle->SetVertexRadius(RealNum{0.5f} * Meter);
 		m_circle->SetFriction(0.3f);
 		m_edge->SetFriction(0.3f);
+		m_edge->SetVertexRadius((RealNum(1) / RealNum(5)) * Meter);
 		
 		// Ground body
 		const auto ground = m_world->CreateBody();
@@ -188,6 +189,7 @@ public:
 		{
 			p = std::make_shared<PolygonShape>();
 			p->SetFriction(0.3f);
+			p->SetVertexRadius((RealNum(1) / RealNum(20)) * Meter);
 		}
 
 		m_polygons[0]->Set({Vec2(-0.5f, 0.0f) * Meter, Vec2(0.5f, 0.0f) * Meter, Vec2(0.0f, 1.5f) * Meter});
