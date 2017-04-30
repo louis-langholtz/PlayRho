@@ -9,12 +9,11 @@ Here's a run-down of some of the changes
 - Preprocessor defines, except those used for include guards, have been
   replaced with C++ solutions or removed from the API.
 - All shapes support vertex-radius based corner rounding now. This enables
-  [*capsule shapes* and other visibly rounded
-  shapes](https://github.com/louis-langholtz/Box2D/blob/dev/Box2D/Documentation/images/RoundedCornerShapes.png).
-- [Rounded and modified corner
-  collisions](https://github.com/louis-langholtz/Box2D/blob/dev/Box2D/Documentation/CollisionHandlng.md). This supports the physical behaviors expected of
-  rounded corners, like increased roll-ability, while preventing dragged shapes
-  from getting stuck on composite surfaces.
+  [*capsule shapes* and other visibly rounded shapes](https://github.com/louis-langholtz/Box2D/blob/dev/Box2D/Documentation/images/RoundedCornerShapes.png).
+- [Rounded and modified corner collisions](https://github.com/louis-langholtz/Box2D/blob/dev/Box2D/Documentation/CollisionHandlng.md).
+  This supports the physical behaviors expected of rounded corners, like
+  increased roll-ability, while preventing dragged shapes from getting stuck
+  on composite surfaces.
 - Vertex-radius respecting `RayCast` functionality for all shapes now
   (`RayCast` functionality had been only respecting the vertex-radius for
   circle shapes).
@@ -39,11 +38,12 @@ Here's a run-down of some of the changes
   [`StepStats`](https://github.com/louis-langholtz/Box2D/blob/dev/Box2D/Box2D/Dynamics/StepStats.hpp)).
 - Increased construction-time configurability of world instances (via
   [`World::Def`](https://github.com/louis-langholtz/Box2D/blob/dev/Box2D/Box2D/Dynamics/World.hpp#L107)).
-- Various methods have been rewritten to be [non-member non-friend
-  functions](http://www.drdobbs.com/cpp/how-non-member-functions-improve-encapsu/184401197).
+- Various methods have been rewritten to be
+  [non-member non-friend functions](http://www.drdobbs.com/cpp/how-non-member-functions-improve-encapsu/184401197).
 - Various functions and procedures have been rewritten to be
   ["pure functions"](https://en.wikipedia.org/wiki/Pure_function).
 - Testbed enhancements: per-step configurability, per-step statistics, ability
   to manipulate bodies while paused, and more.
 - Testbed test additions: Half Pipe, iforce2d's Topdown Car, Orbiter, Newton's
   Cradle, and Spinning Circles.
+- Adds online [API Documentation](http://louis-langholtz.github.io/Box2D/API/index.html).

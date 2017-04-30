@@ -51,6 +51,17 @@ public:
 		constexpr Conf& UseRestitution(RealNum value) noexcept;
 		constexpr Conf& UseDensity(Density value) noexcept;
 
+		/// Vertex radius.
+		///
+		/// @details This is the radius from the vertex that the shape's "skin" should
+		///   extend outward by. While any edges - line segments between multiple vertices -
+		///   are straight, corners between them (the vertices) are rounded and treated
+		///   as rounded. Shapes with larger vertex radiuses compared to edge lengths
+		///   therefore will be more prone to rolling or having other shapes more prone
+		///   to roll off of them.
+		///
+		/// @note This should be a value greater than zero.
+		///
 		Length vertexRadius = DefaultLinearSlop;
 
 		/// Friction coefficient.
@@ -167,6 +178,17 @@ public:
 	/// Gets the vertex radius.
 	Length GetVertexRadius() const noexcept { return m_vertexRadius; }
 
+	/// Sets the vertex radius.
+	///
+	/// @details This sets the radius from the vertex that the shape's "skin" should
+	///   extend outward by. While any edges - line segments between multiple vertices -
+	///   are straight, corners between them (the vertices) are rounded and treated
+	///   as rounded. Shapes with larger vertex radiuses compared to edge lengths
+	///   therefore will be more prone to rolling or having other shapes more prone
+	///   to roll off of them.
+	///
+	/// @note This should be a value greater than zero.
+	///
 	void SetVertexRadius(Length vertexRadius)
 	{
 		assert(vertexRadius >= Length{0});
@@ -199,8 +221,8 @@ public:
 	void SetRestitution(RealNum restitution) noexcept;
 
 private:
-	Length m_vertexRadius;
-	Density m_density = KilogramPerSquareMeter * RealNum{0}; ///< Density in kg/m^2. 4-bytes.
+	Length m_vertexRadius; ///< Vertex radius.
+	Density m_density = KilogramPerSquareMeter * RealNum{0}; ///< Density. 4-bytes.
 	RealNum m_friction = RealNum{2} / RealNum{10}; ///< Friction as a coefficient. 4-bytes.
 	RealNum m_restitution = 0; ///< Restitution as a coefficient. 4-bytes.
 };
