@@ -420,7 +420,11 @@ namespace box2d
 		
 		Length tolerance = DefaultLinearSlop / RealNum{4}; ///< Tolerance.
 		
-		RealNum maxCirclesRatio = RealNum{10};
+		/// Max. circles ratio.
+		/// @details When the ratio of the closest face's length to the vertex radius is
+		///   more than this amount, then face-manifolds are forced, else circles-manifolds
+		///   may be computed for new contact manifolds.
+		RealNum maxCirclesRatio = DefaultCirclesRatio;
 	};
 	
 	constexpr inline Manifold::Conf GetDefaultManifoldConf() noexcept

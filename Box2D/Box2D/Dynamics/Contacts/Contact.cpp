@@ -113,6 +113,7 @@ void Contact::Update(const StepConf& conf, ContactListener* listener)
 		auto manifoldConf = Manifold::Conf{};
 		manifoldConf.tolerance = conf.tolerance;
 		manifoldConf.targetDepth = conf.targetDepth;
+		manifoldConf.maxCirclesRatio = conf.maxCirclesRatio;
 		auto newManifold = CalcManifold(manifoldConf);
 		
 		const auto old_point_count = oldManifold.GetPointCount();

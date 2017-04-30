@@ -30,7 +30,7 @@ namespace box2d {
 /// the values have defaults. These defaults are intended to most likely be the values desired.
 /// @note Be sure to confirm that the delta time (the time-per-step i.e. <code>dt</code>) is
 ///   correct for your use.
-/// @note This data structure is 96-bytes large (with 4-byte RealNum on at least one 64-bit platform).
+/// @note This data structure is 100-bytes large (with 4-byte RealNum on at least one 64-bit platform).
 /// @sa World::Step.
 class StepConf
 {
@@ -194,6 +194,7 @@ public:
 	/// @note Used in the regular phase of step processing.
 	AngularVelocity angularSleepTolerance = DefaultAngularSleepTolerance;
 	
+	/// Displacement multiplier for directional AABB fattening.
 	RealNum displaceMultiplier = DefaultDistanceMultiplier;
 	
 	/// AABB extension.
@@ -204,6 +205,13 @@ public:
 	/// @note This is in meters.
 	/// @note Should be greater than 0.
 	Length aabbExtension = DefaultAabbExtension;
+
+	/// Max. circles ratio.
+	/// @details When the ratio of the closest face's length to the vertex radius is
+	///   more than this amount, then face-manifolds are forced, else circles-manifolds
+	///   may be computed for new contact manifolds.
+	/// @note This is used in the calculation of new contact manifolds.
+	RealNum maxCirclesRatio = DefaultCirclesRatio;
 
 	/// Regular velocity iterations.
 	/// @details The number of iterations of velocity resolution that will be done in the step.

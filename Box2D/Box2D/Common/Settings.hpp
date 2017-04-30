@@ -338,6 +338,7 @@ constexpr auto DefaultLinearSlop = Length{Meter / RealNum{1000}}; // originally 
 
 constexpr auto DefaultAabbExtension = DefaultLinearSlop * RealNum{20};
 
+/// Default distance multiplier.
 constexpr auto DefaultDistanceMultiplier = RealNum{2};
 
 /// Default angular slop.
@@ -416,6 +417,11 @@ constexpr auto DefaultLinearSleepTolerance = RealNum{0.01f} * MeterPerSecond; //
 /// Default angular sleep tolerance.
 /// @details A body cannot sleep if its angular velocity is above this amount.
 constexpr auto DefaultAngularSleepTolerance = RealNum{(Pi * 2) / 180} * RadianPerSecond;
+
+/// Default circles ratio.
+/// @details Ratio used for switching between rounded-corner collisions and closest-face
+///   biased normal collisions.
+constexpr auto DefaultCirclesRatio = RealNum{10};
 
 /// Maximum list size.
 template <typename T>
