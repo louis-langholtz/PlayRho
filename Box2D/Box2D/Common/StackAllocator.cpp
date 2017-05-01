@@ -43,7 +43,9 @@ StackAllocator::~StackAllocator() noexcept
 
 static inline size_t alignment_size(size_t size)
 {
-	return size < 1? 1: (size < sizeof(std::max_align_t))? NextPowerOfTwo(size - 1): alignof(std::max_align_t);
+	constexpr auto one = static_cast<size_t>(1);
+	return (size < one)? one: (size < sizeof(std::max_align_t))?
+		static_cast<size_t>(NextPowerOfTwo(size - one)): alignof(std::max_align_t);
 };
 
 void* StackAllocator::Allocate(size_type size) noexcept
