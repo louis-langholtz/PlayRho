@@ -48,7 +48,9 @@ public:
 			case TOIOutput::e_touching: return "touching";
 			case TOIOutput::e_separated: return "separated";
 			case TOIOutput::e_overlapped: return "overlapped";
+			default: break;
 		}
+		return "unknown";
 	}
 
 	void PostStep(const Settings&, Drawer& drawer) override
