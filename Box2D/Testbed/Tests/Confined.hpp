@@ -163,7 +163,8 @@ public:
 			if (b->GetType() == BodyType::Dynamic)
 			{
 				const auto position = b->GetLocation();
-				const auto angle_from_center = Atan2(position.y - (wall_length / RealNum{2}), position.x);
+				const auto centerPos = Length2D{position.x, position.y - (wall_length / RealNum{2})};
+				const auto angle_from_center = GetAngle(centerPos);
 				const auto direction = angle_from_center + Pi * Radian;
 				const auto magnitude = Sqrt(Square(StripUnit(wall_length)) * RealNum{2}) * GetMass(*b) * RealNum{20} * MeterPerSecond;
 				const auto impulse = Momentum2D{magnitude * UnitVec2{direction}};
