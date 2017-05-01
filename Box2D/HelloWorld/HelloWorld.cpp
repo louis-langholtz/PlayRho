@@ -29,70 +29,70 @@ using namespace box2d;
 // rendering engine in your game engine.
 int main(int, char**)
 {
-	// Construct a world object, which will hold and simulate the rigid bodies.
-	World world;
+    // Construct a world object, which will hold and simulate the rigid bodies.
+    World world;
 
-	// Define the ground body.
-	auto groundBodyDef = BodyDef{};
-	groundBodyDef.position = Vec2(0.0f, -10.0f) * Meter;
+    // Define the ground body.
+    auto groundBodyDef = BodyDef{};
+    groundBodyDef.position = Vec2(0.0f, -10.0f) * Meter;
 
-	// Call the body factory which allocates memory for the ground body
-	// from a pool and creates the ground box shape (also from a pool).
-	// The body is also added to the world.
-	const auto groundBody = world.CreateBody(groundBodyDef);
+    // Call the body factory which allocates memory for the ground body
+    // from a pool and creates the ground box shape (also from a pool).
+    // The body is also added to the world.
+    const auto groundBody = world.CreateBody(groundBodyDef);
 
-	// Define the ground box shape.
-	// The extents are the half-widths of the box.
-	auto groundBox = std::make_shared<PolygonShape>(50.0f * Meter, 10.0f * Meter);
+    // Define the ground box shape.
+    // The extents are the half-widths of the box.
+    auto groundBox = std::make_shared<PolygonShape>(50.0f * Meter, 10.0f * Meter);
 
-	// Add the ground fixture to the ground body.
-	groundBody->CreateFixture(groundBox);
+    // Add the ground fixture to the ground body.
+    groundBody->CreateFixture(groundBox);
 
-	// Define the dynamic body. We set its position and call the body factory.
-	auto bodyDef = BodyDef{};
-	bodyDef.type = BodyType::Dynamic;
-	bodyDef.position = Vec2(0.0f, 4.0f) * Meter;
-	const auto body = world.CreateBody(bodyDef);
+    // Define the dynamic body. We set its position and call the body factory.
+    auto bodyDef = BodyDef{};
+    bodyDef.type = BodyType::Dynamic;
+    bodyDef.position = Vec2(0.0f, 4.0f) * Meter;
+    const auto body = world.CreateBody(bodyDef);
 
-	// Define another box shape for our dynamic body.
-	const auto dynamicBox = std::make_shared<PolygonShape>(1.0f * Meter, 1.0f * Meter);
+    // Define another box shape for our dynamic body.
+    const auto dynamicBox = std::make_shared<PolygonShape>(1.0f * Meter, 1.0f * Meter);
 
-	// Set the box density to be non-zero, so it will be dynamic.
-	dynamicBox->SetDensity(1.0f * KilogramPerSquareMeter);
+    // Set the box density to be non-zero, so it will be dynamic.
+    dynamicBox->SetDensity(1.0f * KilogramPerSquareMeter);
 
-	// Override the default friction.
-	dynamicBox->SetFriction(0.3f);
+    // Override the default friction.
+    dynamicBox->SetFriction(0.3f);
 
-	// Add the shape to the body.
-	body->CreateFixture(dynamicBox);
+    // Add the shape to the body.
+    body->CreateFixture(dynamicBox);
 
-	// Prepare for simulation. Typically we use a time step of 1/60 of a
-	// second (60Hz) and 10 iterations. This provides a high quality simulation
-	// in most game scenarios.
-	auto stepConf = StepConf{};
-	stepConf.SetTime((1.0f / 60.0f) * Second);
-	stepConf.regVelocityIterations = 6;
-	stepConf.regPositionIterations = 2;
+    // Prepare for simulation. Typically we use a time step of 1/60 of a
+    // second (60Hz) and 10 iterations. This provides a high quality simulation
+    // in most game scenarios.
+    auto stepConf = StepConf{};
+    stepConf.SetTime((1.0f / 60.0f) * Second);
+    stepConf.regVelocityIterations = 6;
+    stepConf.regPositionIterations = 2;
 
-	// This is our little game loop.
-	for (auto i = 0; i < 60; ++i)
-	{
-		// Instruct the world to perform a single step of simulation.
-		// It is generally best to keep the time step and iterations fixed.
-		world.Step(stepConf);
+    // This is our little game loop.
+    for (auto i = 0; i < 60; ++i)
+    {
+        // Instruct the world to perform a single step of simulation.
+        // It is generally best to keep the time step and iterations fixed.
+        world.Step(stepConf);
 
-		// Now print the position and angle of the body.
-		const auto position = body->GetLocation();
-		const auto angle = body->GetAngle();
+        // Now print the position and angle of the body.
+        const auto position = body->GetLocation();
+        const auto angle = body->GetAngle();
 
-		printf("%4.2f %4.2f %4.2f\n",
-			   double{position.x / Meter},
-			   double{position.y / Meter},
-			   double{angle / Degree});
-	}
+        printf("%4.2f %4.2f %4.2f\n",
+               double{position.x / Meter},
+               double{position.y / Meter},
+               double{angle / Degree});
+    }
 
-	// When the world destructor is called, all bodies and joints are freed. This can
-	// create orphaned pointers, so be careful about your world management.
+    // When the world destructor is called, all bodies and joints are freed. This can
+    // create orphaned pointers, so be careful about your world management.
 
-	return 0;
+    return 0;
 }
