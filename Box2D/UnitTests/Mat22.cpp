@@ -23,57 +23,57 @@ using namespace box2d;
 
 TEST(Mat22, ByteSizeIs_16_32_or_64)
 {
-	switch (sizeof(RealNum))
-	{
-		case  4: EXPECT_EQ(sizeof(Mat22), size_t(16)); break;
-		case  8: EXPECT_EQ(sizeof(Mat22), size_t(32)); break;
-		case 16: EXPECT_EQ(sizeof(Mat22), size_t(64)); break;
-		default: FAIL(); break;
-	}
+    switch (sizeof(RealNum))
+    {
+        case  4: EXPECT_EQ(sizeof(Mat22), size_t(16)); break;
+        case  8: EXPECT_EQ(sizeof(Mat22), size_t(32)); break;
+        case 16: EXPECT_EQ(sizeof(Mat22), size_t(64)); break;
+        default: FAIL(); break;
+    }
 }
 
 TEST(Mat22, Init)
 {
-	Vec2 c1{1, 1};
-	Vec2 c2{2, 2};
-	const Mat22 foo{c1, c2};
-	EXPECT_EQ(c1, foo.ex);
-	EXPECT_EQ(c2, foo.ey);
+    Vec2 c1{1, 1};
+    Vec2 c2{2, 2};
+    const Mat22 foo{c1, c2};
+    EXPECT_EQ(c1, foo.ex);
+    EXPECT_EQ(c2, foo.ey);
 }
 
 TEST(Mat22, Invert)
 {
-	Vec2 ex{1, 2};
-	Vec2 ey{3, 4};
-	const Mat22 foo{ex, ey};
-	ASSERT_EQ(foo.ex, ex);
-	ASSERT_EQ(foo.ey, ey);
+    Vec2 ex{1, 2};
+    Vec2 ey{3, 4};
+    const Mat22 foo{ex, ey};
+    ASSERT_EQ(foo.ex, ex);
+    ASSERT_EQ(foo.ey, ey);
 
-	const auto inverted = Invert(foo);
-	const auto cp = Cross(ex, ey);
-	ASSERT_EQ(cp, RealNum(-2));
-	const auto det = (cp != 0)? RealNum(1)/cp : RealNum(0);
-	
-	EXPECT_EQ(inverted.ex.x, det * foo.ey.y);
-	EXPECT_EQ(inverted.ex.y, -det * foo.ex.y);
-	EXPECT_EQ(inverted.ey.x, -det * foo.ey.x);
-	EXPECT_EQ(inverted.ey.y, det * foo.ex.x);
-	
-	EXPECT_EQ(inverted.ex.x, RealNum(-2));
-	EXPECT_EQ(inverted.ex.y, RealNum(1));
-	EXPECT_EQ(inverted.ey.x, RealNum(1.5));
-	EXPECT_EQ(inverted.ey.y, RealNum(-0.5));
+    const auto inverted = Invert(foo);
+    const auto cp = Cross(ex, ey);
+    ASSERT_EQ(cp, RealNum(-2));
+    const auto det = (cp != 0)? RealNum(1)/cp : RealNum(0);
+    
+    EXPECT_EQ(inverted.ex.x, det * foo.ey.y);
+    EXPECT_EQ(inverted.ex.y, -det * foo.ex.y);
+    EXPECT_EQ(inverted.ey.x, -det * foo.ey.x);
+    EXPECT_EQ(inverted.ey.y, det * foo.ex.x);
+    
+    EXPECT_EQ(inverted.ex.x, RealNum(-2));
+    EXPECT_EQ(inverted.ex.y, RealNum(1));
+    EXPECT_EQ(inverted.ey.x, RealNum(1.5));
+    EXPECT_EQ(inverted.ey.y, RealNum(-0.5));
 }
 
 TEST(Mat22, InvertInvertedIsOriginal)
 {
-	Vec2 c1{1, 2};
-	Vec2 c2{3, 4};
-	const Mat22 foo{c1, c2};
-	const auto inverted = Invert(foo);
-	const auto inverted2 = Invert(inverted);
-	EXPECT_EQ(foo.ex.x, inverted2.ex.x);
-	EXPECT_EQ(foo.ex.y, inverted2.ex.y);
-	EXPECT_EQ(foo.ey.x, inverted2.ey.x);
-	EXPECT_EQ(foo.ey.y, inverted2.ey.y);
+    Vec2 c1{1, 2};
+    Vec2 c2{3, 4};
+    const Mat22 foo{c1, c2};
+    const auto inverted = Invert(foo);
+    const auto inverted2 = Invert(inverted);
+    EXPECT_EQ(foo.ex.x, inverted2.ex.x);
+    EXPECT_EQ(foo.ex.y, inverted2.ex.y);
+    EXPECT_EQ(foo.ey.x, inverted2.ey.x);
+    EXPECT_EQ(foo.ey.y, inverted2.ey.y);
 }

@@ -27,104 +27,104 @@ using namespace box2d;
 
 TEST(Shape, ByteSize)
 {
-	switch (sizeof(RealNum))
-	{
-		case  4: EXPECT_EQ(sizeof(Shape), size_t(24)); break;
-		case  8: EXPECT_EQ(sizeof(Shape), size_t(40)); break;
-		case 16: EXPECT_EQ(sizeof(Shape), size_t(80)); break;
-		default: FAIL(); break;
-	}
+    switch (sizeof(RealNum))
+    {
+        case  4: EXPECT_EQ(sizeof(Shape), size_t(24)); break;
+        case  8: EXPECT_EQ(sizeof(Shape), size_t(40)); break;
+        case 16: EXPECT_EQ(sizeof(Shape), size_t(80)); break;
+        default: FAIL(); break;
+    }
 }
 
 TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)
 {
-	const auto shape = CircleShape{RealNum{2} * Meter};
-	const auto xfm = Transformation{Vec2{0, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
+    const auto shape = CircleShape{RealNum{2} * Meter};
+    const auto xfm = Transformation{Vec2{0, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
 
-	const auto maxloops = 1000000u;
+    const auto maxloops = 1000000u;
 
-	std::chrono::duration<double> elapsed_test_overlap;
-	std::chrono::duration<double> elapsed_collide_shapes;
+    std::chrono::duration<double> elapsed_test_overlap;
+    std::chrono::duration<double> elapsed_collide_shapes;
 
-	for (auto attempt = 0u; attempt < 2u; ++attempt)
-	{
-		{
-			auto count = 0u;
-			const auto start = std::chrono::high_resolution_clock::now();
-			for (auto i = decltype(maxloops){0}; i < maxloops; ++i)
-			{
-				if (TestOverlap(shape, 0, xfm, shape, 0, xfm))
-				{
-					++count;
-				}
-			}
-			const auto end = std::chrono::high_resolution_clock::now();
-			elapsed_test_overlap = end - start;
-			ASSERT_EQ(count, maxloops);
-		}
-		{
-			auto count = 0u;
-			const auto start = std::chrono::high_resolution_clock::now();
-			for (auto i = decltype(maxloops){0}; i < maxloops; ++i)
-			{
-				const auto manifold = CollideShapes(shape.GetChild(0), xfm, shape.GetChild(0), xfm);
-				if (manifold.GetPointCount() > 0)
-				{
-					++count;
-				}
-			}
-			const auto end = std::chrono::high_resolution_clock::now();
-			elapsed_collide_shapes = end - start;
-			ASSERT_EQ(count, maxloops);
-		}
-		
-		EXPECT_GT(elapsed_test_overlap.count(), elapsed_collide_shapes.count());
-	}
+    for (auto attempt = 0u; attempt < 2u; ++attempt)
+    {
+        {
+            auto count = 0u;
+            const auto start = std::chrono::high_resolution_clock::now();
+            for (auto i = decltype(maxloops){0}; i < maxloops; ++i)
+            {
+                if (TestOverlap(shape, 0, xfm, shape, 0, xfm))
+                {
+                    ++count;
+                }
+            }
+            const auto end = std::chrono::high_resolution_clock::now();
+            elapsed_test_overlap = end - start;
+            ASSERT_EQ(count, maxloops);
+        }
+        {
+            auto count = 0u;
+            const auto start = std::chrono::high_resolution_clock::now();
+            for (auto i = decltype(maxloops){0}; i < maxloops; ++i)
+            {
+                const auto manifold = CollideShapes(shape.GetChild(0), xfm, shape.GetChild(0), xfm);
+                if (manifold.GetPointCount() > 0)
+                {
+                    ++count;
+                }
+            }
+            const auto end = std::chrono::high_resolution_clock::now();
+            elapsed_collide_shapes = end - start;
+            ASSERT_EQ(count, maxloops);
+        }
+        
+        EXPECT_GT(elapsed_test_overlap.count(), elapsed_collide_shapes.count());
+    }
 }
 
 
 TEST(Shape, TestOverlapFasterThanCollideShapesForPolygons)
 {
-	const auto shape = PolygonShape{RealNum{2} * Meter, RealNum{2} * Meter};
-	const auto xfm = Transformation{Vec2{0, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
-	
-	const auto maxloops = 1000000u;
-	
-	std::chrono::duration<double> elapsed_test_overlap;
-	std::chrono::duration<double> elapsed_collide_shapes;
-	
-	for (auto attempt = 0u; attempt < 2u; ++attempt)
-	{
-		{
-			auto count = 0u;
-			const auto start = std::chrono::high_resolution_clock::now();
-			for (auto i = decltype(maxloops){0}; i < maxloops; ++i)
-			{
-				if (TestOverlap(shape, 0, xfm, shape, 0, xfm))
-				{
-					++count;
-				}
-			}
-			const auto end = std::chrono::high_resolution_clock::now();
-			elapsed_test_overlap = end - start;
-			ASSERT_EQ(count, maxloops);
-		}
-		{
-			auto count = 0u;
-			const auto start = std::chrono::high_resolution_clock::now();
-			for (auto i = decltype(maxloops){0}; i < maxloops; ++i)
-			{
-				const auto manifold = CollideShapes(shape.GetChild(0), xfm, shape.GetChild(0), xfm);
-				if (manifold.GetPointCount() > 0)
-				{
-					++count;
-				}
-			}
-			const auto end = std::chrono::high_resolution_clock::now();
-			elapsed_collide_shapes = end - start;
-			ASSERT_EQ(count, maxloops);
-		}
-		
-		EXPECT_LT(elapsed_test_overlap.count(), elapsed_collide_shapes.count());
-	}
+    const auto shape = PolygonShape{RealNum{2} * Meter, RealNum{2} * Meter};
+    const auto xfm = Transformation{Vec2{0, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
+    
+    const auto maxloops = 1000000u;
+    
+    std::chrono::duration<double> elapsed_test_overlap;
+    std::chrono::duration<double> elapsed_collide_shapes;
+    
+    for (auto attempt = 0u; attempt < 2u; ++attempt)
+    {
+        {
+            auto count = 0u;
+            const auto start = std::chrono::high_resolution_clock::now();
+            for (auto i = decltype(maxloops){0}; i < maxloops; ++i)
+            {
+                if (TestOverlap(shape, 0, xfm, shape, 0, xfm))
+                {
+                    ++count;
+                }
+            }
+            const auto end = std::chrono::high_resolution_clock::now();
+            elapsed_test_overlap = end - start;
+            ASSERT_EQ(count, maxloops);
+        }
+        {
+            auto count = 0u;
+            const auto start = std::chrono::high_resolution_clock::now();
+            for (auto i = decltype(maxloops){0}; i < maxloops; ++i)
+            {
+                const auto manifold = CollideShapes(shape.GetChild(0), xfm, shape.GetChild(0), xfm);
+                if (manifold.GetPointCount() > 0)
+                {
+                    ++count;
+                }
+            }
+            const auto end = std::chrono::high_resolution_clock::now();
+            elapsed_collide_shapes = end - start;
+            ASSERT_EQ(count, maxloops);
+        }
+        
+        EXPECT_LT(elapsed_test_overlap.count(), elapsed_collide_shapes.count());
+    }
 }

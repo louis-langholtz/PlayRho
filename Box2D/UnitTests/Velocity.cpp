@@ -23,11 +23,11 @@ using namespace box2d;
 
 TEST(Velocity, ByteSizeIs_12_24_or_48)
 {
-	switch (sizeof(RealNum))
-	{
-		case  4: EXPECT_EQ(sizeof(Velocity), size_t(12)); break;
-		case  8: EXPECT_EQ(sizeof(Velocity), size_t(24)); break;
-		case 16: EXPECT_EQ(sizeof(Velocity), size_t(48)); break;
-		default: FAIL(); break;
-	}
+    switch (sizeof(RealNum))
+    {
+        case  4: EXPECT_EQ(sizeof(Velocity), size_t(12)); break;
+        case  8: EXPECT_EQ(sizeof(Velocity), size_t(24)); break;
+        case 16: EXPECT_EQ(sizeof(Velocity), size_t(48)); break;
+        default: FAIL(); break;
+    }
 }

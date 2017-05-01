@@ -24,72 +24,72 @@ using namespace box2d;
 
 TEST(WorldManifold, ByteSizeIs_36_72_or_144)
 {
-	switch (sizeof(RealNum))
-	{
-		case  4: EXPECT_EQ(sizeof(WorldManifold), size_t(36)); break;
-		case  8: EXPECT_EQ(sizeof(WorldManifold), size_t(72)); break;
-		case 16: EXPECT_EQ(sizeof(WorldManifold), size_t(144)); break;
-		default: FAIL(); break;
-	}
+    switch (sizeof(RealNum))
+    {
+        case  4: EXPECT_EQ(sizeof(WorldManifold), size_t(36)); break;
+        case  8: EXPECT_EQ(sizeof(WorldManifold), size_t(72)); break;
+        case 16: EXPECT_EQ(sizeof(WorldManifold), size_t(144)); break;
+        default: FAIL(); break;
+    }
 }
 
 TEST(WorldManifold, default_construction)
 {
-	const auto wm = WorldManifold{};
-	
-	EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){0});
-	EXPECT_FALSE(IsValid(wm.GetNormal()));
+    const auto wm = WorldManifold{};
+    
+    EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){0});
+    EXPECT_FALSE(IsValid(wm.GetNormal()));
 }
 
 TEST(WorldManifold, GetWorldManifoldForCirclesTouchingManifold)
 {
-	const auto manifold = Manifold::GetForCircles(Vec2{0, 0} * Meter, 0, Vec2{0, 0} * Meter, 0);
-	const auto xfA = Transformation{Vec2{4-1, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
-	const auto xfB = Transformation{Vec2{4+1, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
-	const auto rA = RealNum(1) * Meter;
-	const auto rB = RealNum(1) * Meter;
-	const auto wm = GetWorldManifold(manifold, xfA, rA, xfB, rB);
-	
-	EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){1});
-	EXPECT_TRUE(IsValid(wm.GetNormal()));
-	EXPECT_EQ(wm.GetNormal() * RealNum{1}, Vec2(1, 0));
-	EXPECT_EQ(wm.GetSeparation(0), RealNum{0} * Meter);
-	EXPECT_EQ(wm.GetPoint(0), Vec2(4, 0) * Meter);
+    const auto manifold = Manifold::GetForCircles(Vec2{0, 0} * Meter, 0, Vec2{0, 0} * Meter, 0);
+    const auto xfA = Transformation{Vec2{4-1, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
+    const auto xfB = Transformation{Vec2{4+1, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
+    const auto rA = RealNum(1) * Meter;
+    const auto rB = RealNum(1) * Meter;
+    const auto wm = GetWorldManifold(manifold, xfA, rA, xfB, rB);
+    
+    EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){1});
+    EXPECT_TRUE(IsValid(wm.GetNormal()));
+    EXPECT_EQ(wm.GetNormal() * RealNum{1}, Vec2(1, 0));
+    EXPECT_EQ(wm.GetSeparation(0), RealNum{0} * Meter);
+    EXPECT_EQ(wm.GetPoint(0), Vec2(4, 0) * Meter);
 }
 
 TEST(WorldManifold, GetWorldManifoldForCirclesHalfOverlappingManifold)
 {
-	const auto manifold = Manifold::GetForCircles(Vec2{0, 0} * Meter, 0, Vec2{0, 0} * Meter, 0);
-	const auto xfA = Transformation{Vec2{7-0.5, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
-	const auto xfB = Transformation{Vec2{7+0.5, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
-	const auto rA = RealNum(1) * Meter;
-	const auto rB = RealNum(1) * Meter;
-	const auto wm = GetWorldManifold(manifold, xfA, rA, xfB, rB);
-	
-	EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){1});
-	EXPECT_TRUE(IsValid(wm.GetNormal()));
-	EXPECT_EQ(wm.GetNormal() * RealNum{1}, Vec2(1, 0));
-	EXPECT_EQ(wm.GetSeparation(0), RealNum{-1} * Meter);
-	EXPECT_EQ(wm.GetPoint(0), Vec2(7, 0) * Meter);
+    const auto manifold = Manifold::GetForCircles(Vec2{0, 0} * Meter, 0, Vec2{0, 0} * Meter, 0);
+    const auto xfA = Transformation{Vec2{7-0.5, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
+    const auto xfB = Transformation{Vec2{7+0.5, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
+    const auto rA = RealNum(1) * Meter;
+    const auto rB = RealNum(1) * Meter;
+    const auto wm = GetWorldManifold(manifold, xfA, rA, xfB, rB);
+    
+    EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){1});
+    EXPECT_TRUE(IsValid(wm.GetNormal()));
+    EXPECT_EQ(wm.GetNormal() * RealNum{1}, Vec2(1, 0));
+    EXPECT_EQ(wm.GetSeparation(0), RealNum{-1} * Meter);
+    EXPECT_EQ(wm.GetPoint(0), Vec2(7, 0) * Meter);
 }
 
 TEST(WorldManifold, GetWorldManifoldForCirclesFullyOverlappingManifold)
 {
-	const auto manifold = Manifold::GetForCircles(Vec2{0, 0} * Meter, 0, Vec2{0, 0} * Meter, 0);
-	const auto xfA = Transformation{Vec2{3-0, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
-	const auto xfB = Transformation{Vec2{3+0, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
-	const auto rA = RealNum(1) * Meter;
-	const auto rB = RealNum(1) * Meter;
-	const auto wm = GetWorldManifold(manifold, xfA, rA, xfB, rB);
-	
-	EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){1});
-	EXPECT_EQ(wm.GetSeparation(0), RealNum{-2} * Meter);
-	if (IsValid(wm.GetNormal()))
-	{
-		EXPECT_EQ(wm.GetPoint(0), Vec2(3, 0) * Meter);
-	}
-	else
-	{
-		EXPECT_FALSE(IsValid(wm.GetPoint(0)));
-	}
+    const auto manifold = Manifold::GetForCircles(Vec2{0, 0} * Meter, 0, Vec2{0, 0} * Meter, 0);
+    const auto xfA = Transformation{Vec2{3-0, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
+    const auto xfB = Transformation{Vec2{3+0, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
+    const auto rA = RealNum(1) * Meter;
+    const auto rB = RealNum(1) * Meter;
+    const auto wm = GetWorldManifold(manifold, xfA, rA, xfB, rB);
+    
+    EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){1});
+    EXPECT_EQ(wm.GetSeparation(0), RealNum{-2} * Meter);
+    if (IsValid(wm.GetNormal()))
+    {
+        EXPECT_EQ(wm.GetPoint(0), Vec2(3, 0) * Meter);
+    }
+    else
+    {
+        EXPECT_FALSE(IsValid(wm.GetPoint(0)));
+    }
 }

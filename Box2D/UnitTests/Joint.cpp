@@ -23,10 +23,10 @@ using namespace box2d;
 
 TEST(Joint, ByteSize)
 {
-	switch (sizeof(void*))
-	{
-		case 4: break;
-		case 8: EXPECT_EQ(sizeof(Joint), size_t(48)); break;
-		default: break;
-	}
+    switch (sizeof(void*))
+    {
+        case 4: break;
+        case 8: EXPECT_EQ(sizeof(Joint), size_t(48)); break;
+        default: break;
+    }
 }

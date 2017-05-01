@@ -23,32 +23,32 @@ using namespace box2d;
 
 TEST(MouseJoint, ByteSize)
 {
-	switch (sizeof(RealNum))
-	{
-		case  4: EXPECT_EQ(sizeof(MouseJoint), size_t(120)); break;
-		case  8: EXPECT_EQ(sizeof(MouseJoint), size_t(192)); break;
-		case 16: EXPECT_EQ(sizeof(MouseJoint), size_t(480)); break;
-		default: FAIL(); break;
-	}
+    switch (sizeof(RealNum))
+    {
+        case  4: EXPECT_EQ(sizeof(MouseJoint), size_t(120)); break;
+        case  8: EXPECT_EQ(sizeof(MouseJoint), size_t(192)); break;
+        case 16: EXPECT_EQ(sizeof(MouseJoint), size_t(480)); break;
+        default: FAIL(); break;
+    }
 }
 
 TEST(MouseJoint, DefaultInitialized)
 {
-	const auto def = MouseJointDef{};
-	const auto joint = MouseJoint{def};
-	
-	EXPECT_EQ(joint.GetType(), JointType::Mouse);
-	EXPECT_EQ(joint.GetBodyA(), def.bodyA);
-	EXPECT_EQ(joint.GetBodyB(), def.bodyB);
-	EXPECT_EQ(joint.GetAnchorA(), def.target);
-	EXPECT_FALSE(IsValid(joint.GetAnchorB()));
-	EXPECT_EQ(joint.GetReactionForce(RealNum{1} * Hertz), Force2D{Vec2_zero * Kilogram * MeterPerSquareSecond});
-	EXPECT_EQ(joint.GetReactionTorque(RealNum{1} * Hertz), Torque{0});
-	EXPECT_EQ(joint.GetUserData(), nullptr);
-	EXPECT_FALSE(joint.GetCollideConnected());
-	EXPECT_FALSE(IsValid(joint.GetLocalAnchorB()));
-	EXPECT_EQ(joint.GetTarget(), def.target);
-	EXPECT_EQ(joint.GetMaxForce(), def.maxForce);
-	EXPECT_EQ(joint.GetFrequency(), def.frequencyHz);
-	EXPECT_EQ(joint.GetDampingRatio(), def.dampingRatio);
+    const auto def = MouseJointDef{};
+    const auto joint = MouseJoint{def};
+    
+    EXPECT_EQ(joint.GetType(), JointType::Mouse);
+    EXPECT_EQ(joint.GetBodyA(), def.bodyA);
+    EXPECT_EQ(joint.GetBodyB(), def.bodyB);
+    EXPECT_EQ(joint.GetAnchorA(), def.target);
+    EXPECT_FALSE(IsValid(joint.GetAnchorB()));
+    EXPECT_EQ(joint.GetReactionForce(RealNum{1} * Hertz), Force2D{Vec2_zero * Kilogram * MeterPerSquareSecond});
+    EXPECT_EQ(joint.GetReactionTorque(RealNum{1} * Hertz), Torque{0});
+    EXPECT_EQ(joint.GetUserData(), nullptr);
+    EXPECT_FALSE(joint.GetCollideConnected());
+    EXPECT_FALSE(IsValid(joint.GetLocalAnchorB()));
+    EXPECT_EQ(joint.GetTarget(), def.target);
+    EXPECT_EQ(joint.GetMaxForce(), def.maxForce);
+    EXPECT_EQ(joint.GetFrequency(), def.frequencyHz);
+    EXPECT_EQ(joint.GetDampingRatio(), def.dampingRatio);
 }

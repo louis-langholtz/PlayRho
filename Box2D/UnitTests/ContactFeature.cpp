@@ -23,77 +23,77 @@ using namespace box2d;
 
 TEST(ContactFeature, ByteSizeIs4)
 {
-	EXPECT_EQ(sizeof(ContactFeature), size_t(4));
+    EXPECT_EQ(sizeof(ContactFeature), size_t(4));
 }
 
 TEST(ContactFeature, Init)
 {
-	const auto typeA = ContactFeature::e_vertex;
-	const auto typeB = ContactFeature::e_face;
-	const auto indexA = ContactFeature::index_t{1};
-	const auto indexB = ContactFeature::index_t{2};
-	ContactFeature foo{typeA, indexA, typeB, indexB};
-	
-	EXPECT_EQ(foo.typeA, typeA);
-	EXPECT_EQ(foo.typeB, typeB);
-	EXPECT_EQ(foo.indexA, indexA);
-	EXPECT_EQ(foo.indexB, indexB);
+    const auto typeA = ContactFeature::e_vertex;
+    const auto typeB = ContactFeature::e_face;
+    const auto indexA = ContactFeature::index_t{1};
+    const auto indexB = ContactFeature::index_t{2};
+    ContactFeature foo{typeA, indexA, typeB, indexB};
+    
+    EXPECT_EQ(foo.typeA, typeA);
+    EXPECT_EQ(foo.typeB, typeB);
+    EXPECT_EQ(foo.indexA, indexA);
+    EXPECT_EQ(foo.indexB, indexB);
 }
 
 TEST(ContactFeature, Flip)
 {
-	const auto typeA = ContactFeature::e_vertex;
-	const auto typeB = ContactFeature::e_face;
-	const auto indexA = ContactFeature::index_t{1};
-	const auto indexB = ContactFeature::index_t{2};
-	const auto foo = ContactFeature{typeA, indexA, typeB, indexB};
-	const auto bar = Flip(foo);
-	EXPECT_EQ(bar.typeA, typeB);
-	EXPECT_EQ(bar.typeB, typeA);
-	EXPECT_EQ(bar.indexA, indexB);
-	EXPECT_EQ(bar.indexB, indexA);	
+    const auto typeA = ContactFeature::e_vertex;
+    const auto typeB = ContactFeature::e_face;
+    const auto indexA = ContactFeature::index_t{1};
+    const auto indexB = ContactFeature::index_t{2};
+    const auto foo = ContactFeature{typeA, indexA, typeB, indexB};
+    const auto bar = Flip(foo);
+    EXPECT_EQ(bar.typeA, typeB);
+    EXPECT_EQ(bar.typeB, typeA);
+    EXPECT_EQ(bar.indexA, indexB);
+    EXPECT_EQ(bar.indexB, indexA);    
 }
 
 TEST(ContactFeature, Equals)
 {
-	const auto typeA = ContactFeature::e_vertex;
-	const auto typeB = ContactFeature::e_face;
-	const auto indexA = ContactFeature::index_t{1};
-	const auto indexB = ContactFeature::index_t{2};
-	const auto foo = ContactFeature{typeA, indexA, typeB, indexB};
-	EXPECT_EQ(foo, foo);
+    const auto typeA = ContactFeature::e_vertex;
+    const auto typeB = ContactFeature::e_face;
+    const auto indexA = ContactFeature::index_t{1};
+    const auto indexB = ContactFeature::index_t{2};
+    const auto foo = ContactFeature{typeA, indexA, typeB, indexB};
+    EXPECT_EQ(foo, foo);
 }
 
 TEST(ContactFeature, NotEquals)
 {
-	{
-		const auto cf1 = ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_face, 1};
-		const auto cf2 = ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_face, 0};
-		EXPECT_NE(cf1, cf2);
-	}
-	{
-		const auto cf1 = ContactFeature{ContactFeature::e_face, 1, ContactFeature::e_face, 1};
-		const auto cf2 = ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_face, 1};
-		EXPECT_NE(cf1, cf2);
-	}
-	{
-		const auto cf1 = ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_face, 0};
-		const auto cf2 = ContactFeature{ContactFeature::e_face, 1, ContactFeature::e_face, 0};
-		EXPECT_NE(cf1, cf2);
-	}
-	{
-		const auto cf1 = ContactFeature{ContactFeature::e_face, 1, ContactFeature::e_face, 0};
-		const auto cf2 = ContactFeature{ContactFeature::e_face, 1, ContactFeature::e_face, 1};
-		EXPECT_NE(cf1, cf2);
-	}
-	{
-		const auto cf1 = ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_face, 1};
-		const auto cf2 = ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_face, 1};
-		EXPECT_NE(cf1, cf2);
-	}
-	{
-		const auto cf1 = ContactFeature{ContactFeature::e_face, 1, ContactFeature::e_face, 1};
-		const auto cf2 = ContactFeature{ContactFeature::e_vertex, 1, ContactFeature::e_face, 1};
-		EXPECT_NE(cf1, cf2);
-	}
+    {
+        const auto cf1 = ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_face, 1};
+        const auto cf2 = ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_face, 0};
+        EXPECT_NE(cf1, cf2);
+    }
+    {
+        const auto cf1 = ContactFeature{ContactFeature::e_face, 1, ContactFeature::e_face, 1};
+        const auto cf2 = ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_face, 1};
+        EXPECT_NE(cf1, cf2);
+    }
+    {
+        const auto cf1 = ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_face, 0};
+        const auto cf2 = ContactFeature{ContactFeature::e_face, 1, ContactFeature::e_face, 0};
+        EXPECT_NE(cf1, cf2);
+    }
+    {
+        const auto cf1 = ContactFeature{ContactFeature::e_face, 1, ContactFeature::e_face, 0};
+        const auto cf2 = ContactFeature{ContactFeature::e_face, 1, ContactFeature::e_face, 1};
+        EXPECT_NE(cf1, cf2);
+    }
+    {
+        const auto cf1 = ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_face, 1};
+        const auto cf2 = ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_face, 1};
+        EXPECT_NE(cf1, cf2);
+    }
+    {
+        const auto cf1 = ContactFeature{ContactFeature::e_face, 1, ContactFeature::e_face, 1};
+        const auto cf2 = ContactFeature{ContactFeature::e_vertex, 1, ContactFeature::e_face, 1};
+        EXPECT_NE(cf1, cf2);
+    }
 }

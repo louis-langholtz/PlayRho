@@ -23,5 +23,5 @@ using namespace box2d;
 
 TEST(ProxyIdPair, ByteSizeIs8)
 {
-	EXPECT_EQ(sizeof(ProxyIdPair), size_t(8));
+    EXPECT_EQ(sizeof(ProxyIdPair), size_t(8));
 }

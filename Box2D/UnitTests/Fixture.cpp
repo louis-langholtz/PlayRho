@@ -26,42 +26,42 @@ using namespace box2d;
 
 TEST(Fixture, ByteSize)
 {
-	switch (sizeof(RealNum))
-	{
-		case  4: EXPECT_EQ(sizeof(Fixture), size_t(56)); break;
-		case  8: EXPECT_EQ(sizeof(Fixture), size_t(56)); break;
-		case 16: EXPECT_EQ(sizeof(Fixture), size_t(112)); break;
-		default: FAIL(); break;
-	}
+    switch (sizeof(RealNum))
+    {
+        case  4: EXPECT_EQ(sizeof(Fixture), size_t(56)); break;
+        case  8: EXPECT_EQ(sizeof(Fixture), size_t(56)); break;
+        case 16: EXPECT_EQ(sizeof(Fixture), size_t(112)); break;
+        default: FAIL(); break;
+    }
 }
 
 TEST(Fixture, CreateMatchesDef)
 {
-	const auto density = RealNum{2} * KilogramPerSquareMeter;
-	int variable;
-	const auto userData = &variable;
-	const auto friction = RealNum(0.5);
-	const auto restitution = RealNum(0.4);
-	const auto isSensor = true;
-	const auto shapeA = std::make_shared<CircleShape>();
-	shapeA->SetFriction(friction);
-	shapeA->SetRestitution(restitution);
-	shapeA->SetDensity(density);
+    const auto density = RealNum{2} * KilogramPerSquareMeter;
+    int variable;
+    const auto userData = &variable;
+    const auto friction = RealNum(0.5);
+    const auto restitution = RealNum(0.4);
+    const auto isSensor = true;
+    const auto shapeA = std::make_shared<CircleShape>();
+    shapeA->SetFriction(friction);
+    shapeA->SetRestitution(restitution);
+    shapeA->SetDensity(density);
 
-	auto def = FixtureDef{};
-	def.userData = userData;
-	def.isSensor = isSensor;
+    auto def = FixtureDef{};
+    def.userData = userData;
+    def.isSensor = isSensor;
 
-	World world;
-	const auto body = world.CreateBody();
-	const auto fixture = body->CreateFixture(shapeA, def);
-	
-	EXPECT_EQ(fixture->GetBody(), body);
-	EXPECT_EQ(fixture->GetShape(), &(*shapeA));
+    World world;
+    const auto body = world.CreateBody();
+    const auto fixture = body->CreateFixture(shapeA, def);
+    
+    EXPECT_EQ(fixture->GetBody(), body);
+    EXPECT_EQ(fixture->GetShape(), &(*shapeA));
 
-	EXPECT_EQ(fixture->GetDensity(), density);
-	EXPECT_EQ(fixture->GetFriction(), friction);
-	EXPECT_EQ(fixture->GetUserData(), userData);
-	EXPECT_EQ(fixture->GetRestitution(), restitution);
-	EXPECT_EQ(fixture->IsSensor(), isSensor);
+    EXPECT_EQ(fixture->GetDensity(), density);
+    EXPECT_EQ(fixture->GetFriction(), friction);
+    EXPECT_EQ(fixture->GetUserData(), userData);
+    EXPECT_EQ(fixture->GetRestitution(), restitution);
+    EXPECT_EQ(fixture->IsSensor(), isSensor);
 }

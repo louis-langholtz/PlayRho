@@ -28,81 +28,81 @@ using namespace box2d;
 
 TEST(SeparationFinder, ByteSizeIs_40_56_or_96)
 {
-	switch (sizeof(RealNum))
-	{
-		case  4: EXPECT_EQ(sizeof(SeparationFinder), size_t(40)); break;
-		case  8: EXPECT_EQ(sizeof(SeparationFinder), size_t(56)); break;
-		case 16: EXPECT_EQ(sizeof(SeparationFinder), size_t(96)); break;
-		default: FAIL(); break;
-	}
+    switch (sizeof(RealNum))
+    {
+        case  4: EXPECT_EQ(sizeof(SeparationFinder), size_t(40)); break;
+        case  8: EXPECT_EQ(sizeof(SeparationFinder), size_t(56)); break;
+        case 16: EXPECT_EQ(sizeof(SeparationFinder), size_t(96)); break;
+        default: FAIL(); break;
+    }
 }
 
 TEST(SeparationFinder, BehavesAsExpected)
 {
-	const auto shape = PolygonShape{RealNum{0.5f} * Meter, RealNum{0.5f} * Meter};
-	const auto distproxy = GetDistanceProxy(shape, 0);
+    const auto shape = PolygonShape{RealNum{0.5f} * Meter, RealNum{0.5f} * Meter};
+    const auto distproxy = GetDistanceProxy(shape, 0);
 
-	const auto x = RealNum(100);
-	const auto sweepA = Sweep{Position{Vec2{-x, 0} * Meter, RealNum{0.0f} * Degree}, Position{Vec2{+x, 0} * Meter, RealNum{0.0f} * Degree}};
-	const auto sweepB = Sweep{Position{Vec2{+x, 0} * Meter, RealNum{0.0f} * Degree}, Position{Vec2{-x, 0} * Meter, RealNum{0.0f} * Degree}};
-	
-	auto t = RealNum{0}; // Will be set to value of t2
-	auto last_s = MaxFloat * Meter;
-	auto last_distance = MaxFloat * Meter;
-	auto xfA = GetTransformation(sweepA, t);
-	auto xfB = GetTransformation(sweepB, t);
-	DistanceConf conf;
-	auto distanceInfo = Distance(distproxy, xfA, distproxy, xfB, conf);
-	conf.cache = Simplex::GetCache(distanceInfo.simplex.GetEdges());
-	const auto fcn = SeparationFinder::Get(conf.cache.GetIndices(), distproxy, xfA, distproxy, xfB);
-	EXPECT_EQ(fcn.GetType(), SeparationFinder::e_faceA);
-	EXPECT_EQ(GetVec2(fcn.GetAxis()), Vec2(1, 0));
-	EXPECT_EQ(fcn.GetLocalPoint(), Vec2(0.5, 0) * Meter);
+    const auto x = RealNum(100);
+    const auto sweepA = Sweep{Position{Vec2{-x, 0} * Meter, RealNum{0.0f} * Degree}, Position{Vec2{+x, 0} * Meter, RealNum{0.0f} * Degree}};
+    const auto sweepB = Sweep{Position{Vec2{+x, 0} * Meter, RealNum{0.0f} * Degree}, Position{Vec2{-x, 0} * Meter, RealNum{0.0f} * Degree}};
+    
+    auto t = RealNum{0}; // Will be set to value of t2
+    auto last_s = MaxFloat * Meter;
+    auto last_distance = MaxFloat * Meter;
+    auto xfA = GetTransformation(sweepA, t);
+    auto xfB = GetTransformation(sweepB, t);
+    DistanceConf conf;
+    auto distanceInfo = Distance(distproxy, xfA, distproxy, xfB, conf);
+    conf.cache = Simplex::GetCache(distanceInfo.simplex.GetEdges());
+    const auto fcn = SeparationFinder::Get(conf.cache.GetIndices(), distproxy, xfA, distproxy, xfB);
+    EXPECT_EQ(fcn.GetType(), SeparationFinder::e_faceA);
+    EXPECT_EQ(GetVec2(fcn.GetAxis()), Vec2(1, 0));
+    EXPECT_EQ(fcn.GetLocalPoint(), Vec2(0.5, 0) * Meter);
 
-	auto last_min_sep = MaxFloat * Meter;
-	for (auto i = 0u; i < 500; ++i)
-	{
-		// Prepare input for distance query.
-		const auto witnessPoints = GetWitnessPoints(distanceInfo.simplex);
-		const auto distance = Sqrt(GetLengthSquared(witnessPoints.a - witnessPoints.b));
+    auto last_min_sep = MaxFloat * Meter;
+    for (auto i = 0u; i < 500; ++i)
+    {
+        // Prepare input for distance query.
+        const auto witnessPoints = GetWitnessPoints(distanceInfo.simplex);
+        const auto distance = Sqrt(GetLengthSquared(witnessPoints.a - witnessPoints.b));
 
-		const auto minSeparation = fcn.FindMinSeparation(xfA, xfB);
+        const auto minSeparation = fcn.FindMinSeparation(xfA, xfB);
 
-		EXPECT_EQ(minSeparation.indexPair, (IndexPair{IndexPair::InvalidIndex, 2}));
-		EXPECT_LT(minSeparation.distance, last_s);
-		if (minSeparation.distance > Length{0})
-		{
-			EXPECT_LT(distance, last_distance);
-			EXPECT_NEAR(double(minSeparation.distance / Meter), double(distance / Meter), 0.00001);
-		}
-		else if (minSeparation.distance < Length{0})
-		{
-			if (last_min_sep < Length{0} && distance != Length{0})
-			{
-				EXPECT_GT(distance, last_distance);
-			}
-		}
-		last_min_sep = minSeparation.distance;
-		
-		const auto s = fcn.Evaluate(minSeparation.indexPair, xfA, xfB);
-		EXPECT_EQ(s, minSeparation.distance);
-		if (s >= Length{0})
-		{
-			EXPECT_NEAR(double(s / Meter), double(distance / Meter), 0.0001);
-		}
-		else
-		{
-			EXPECT_LE(double(s / Meter), double(distance / Meter));
-		}
-		EXPECT_LT(s, last_s);
-		
-		//t = std::nextafter(t, 1.0f);
-		t += RealNum(.001);
-		last_distance = distance;
-		last_s = s;
-		xfA = GetTransformation(sweepA, t);
-		xfB = GetTransformation(sweepB, t);
-		distanceInfo = Distance(distproxy, xfA, distproxy, xfB, conf);
-		conf.cache = Simplex::GetCache(distanceInfo.simplex.GetEdges());
-	}
+        EXPECT_EQ(minSeparation.indexPair, (IndexPair{IndexPair::InvalidIndex, 2}));
+        EXPECT_LT(minSeparation.distance, last_s);
+        if (minSeparation.distance > Length{0})
+        {
+            EXPECT_LT(distance, last_distance);
+            EXPECT_NEAR(double(minSeparation.distance / Meter), double(distance / Meter), 0.00001);
+        }
+        else if (minSeparation.distance < Length{0})
+        {
+            if (last_min_sep < Length{0} && distance != Length{0})
+            {
+                EXPECT_GT(distance, last_distance);
+            }
+        }
+        last_min_sep = minSeparation.distance;
+        
+        const auto s = fcn.Evaluate(minSeparation.indexPair, xfA, xfB);
+        EXPECT_EQ(s, minSeparation.distance);
+        if (s >= Length{0})
+        {
+            EXPECT_NEAR(double(s / Meter), double(distance / Meter), 0.0001);
+        }
+        else
+        {
+            EXPECT_LE(double(s / Meter), double(distance / Meter));
+        }
+        EXPECT_LT(s, last_s);
+        
+        //t = std::nextafter(t, 1.0f);
+        t += RealNum(.001);
+        last_distance = distance;
+        last_s = s;
+        xfA = GetTransformation(sweepA, t);
+        xfB = GetTransformation(sweepB, t);
+        distanceInfo = Distance(distproxy, xfA, distproxy, xfB, conf);
+        conf.cache = Simplex::GetCache(distanceInfo.simplex.GetEdges());
+    }
 }

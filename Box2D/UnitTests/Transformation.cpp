@@ -23,76 +23,76 @@ using namespace box2d;
 
 TEST(Transformation, ByteSizeIs_16_32_or_64)
 {
-	switch (sizeof(RealNum))
-	{
-		case  4: EXPECT_EQ(sizeof(Transformation), size_t(16)); break;
-		case  8: EXPECT_EQ(sizeof(Transformation), size_t(32)); break;
-		case 16: EXPECT_EQ(sizeof(Transformation), size_t(64)); break;
-		default: FAIL(); break;
-	}
+    switch (sizeof(RealNum))
+    {
+        case  4: EXPECT_EQ(sizeof(Transformation), size_t(16)); break;
+        case  8: EXPECT_EQ(sizeof(Transformation), size_t(32)); break;
+        case 16: EXPECT_EQ(sizeof(Transformation), size_t(64)); break;
+        default: FAIL(); break;
+    }
 }
 
 TEST(Transformation, Initialize)
 {
-	const auto translation = Vec2{2, 4} * Meter;
-	const UnitVec2 rotation{Radian * RealNum{Pi / 2}};
-	const Transformation xfm{translation, rotation};
-	EXPECT_EQ(translation, xfm.p);
-	EXPECT_EQ(rotation, xfm.q);
+    const auto translation = Vec2{2, 4} * Meter;
+    const UnitVec2 rotation{Radian * RealNum{Pi / 2}};
+    const Transformation xfm{translation, rotation};
+    EXPECT_EQ(translation, xfm.p);
+    EXPECT_EQ(rotation, xfm.q);
 }
 
 TEST(Transformation, Equality)
 {
-	const auto translation = Vec2{2, 4} * Meter;
-	const UnitVec2 rotation{Radian * RealNum{Pi / 2}};
-	const Transformation xfm{translation, rotation};
-	EXPECT_EQ(xfm, xfm);
+    const auto translation = Vec2{2, 4} * Meter;
+    const UnitVec2 rotation{Radian * RealNum{Pi / 2}};
+    const Transformation xfm{translation, rotation};
+    EXPECT_EQ(xfm, xfm);
 }
 
 TEST(Transformation, Inequality)
 {
-	const auto translation1 = Vec2{2, 4} * Meter;
-	const UnitVec2 rotation1{Radian * Pi * RealNum{0.7f}};
-	const Transformation xfm1{translation1, rotation1};
+    const auto translation1 = Vec2{2, 4} * Meter;
+    const UnitVec2 rotation1{Radian * Pi * RealNum{0.7f}};
+    const Transformation xfm1{translation1, rotation1};
 
-	const auto translation2 = Vec2{-3, 37} * Meter;
-	const UnitVec2 rotation2{Radian * Pi * RealNum{0.002f}};
-	const Transformation xfm2{translation2, rotation2};
+    const auto translation2 = Vec2{-3, 37} * Meter;
+    const UnitVec2 rotation2{Radian * Pi * RealNum{0.002f}};
+    const Transformation xfm2{translation2, rotation2};
 
-	ASSERT_NE(translation1, translation2);
-	ASSERT_NE(rotation1, rotation2);
-	EXPECT_NE(xfm1, xfm2);
+    ASSERT_NE(translation1, translation2);
+    ASSERT_NE(rotation1, rotation2);
+    EXPECT_NE(xfm1, xfm2);
 }
 
 TEST(Transformation, Mul)
 {
-	const auto translation1 = Vec2{2, 4} * Meter;
-	const UnitVec2 rotation1{Radian * RealNum{Pi / 2}};
-	const Transformation xfm{translation1, rotation1};
+    const auto translation1 = Vec2{2, 4} * Meter;
+    const UnitVec2 rotation1{Radian * RealNum{Pi / 2}};
+    const Transformation xfm{translation1, rotation1};
 
-	const auto xfm2 = Mul(xfm, xfm);
-	const Vec2 translation2{4, 8};
-	const UnitVec2 rotation2{Radian * Pi};
+    const auto xfm2 = Mul(xfm, xfm);
+    const Vec2 translation2{4, 8};
+    const UnitVec2 rotation2{Radian * Pi};
 
-	const auto Ap = xfm.p;
-	const auto Bp = xfm.p;
-	const auto newP = Ap + Rotate(Bp, xfm.q);
-	EXPECT_EQ(xfm2.p.x, newP.x);
-	EXPECT_EQ(xfm2.p.y, newP.y);
-	
-	EXPECT_NEAR(double(xfm2.q.cos()), double(rotation2.cos()), 0.0001);
-	EXPECT_NEAR(double(xfm2.q.sin()), double(rotation2.sin()), 0.0001);
+    const auto Ap = xfm.p;
+    const auto Bp = xfm.p;
+    const auto newP = Ap + Rotate(Bp, xfm.q);
+    EXPECT_EQ(xfm2.p.x, newP.x);
+    EXPECT_EQ(xfm2.p.y, newP.y);
+    
+    EXPECT_NEAR(double(xfm2.q.cos()), double(rotation2.cos()), 0.0001);
+    EXPECT_NEAR(double(xfm2.q.sin()), double(rotation2.sin()), 0.0001);
 }
 
 TEST(Transformation, MulSameAsTransformTwice)
 {
-	const auto translation1 = Vec2{2, 4} * Meter;
-	const UnitVec2 rotation1{Radian * RealNum{Pi / 2}};
-	const Transformation xfm{translation1, rotation1};
-	const auto xfm2 = Mul(xfm, xfm);
+    const auto translation1 = Vec2{2, 4} * Meter;
+    const UnitVec2 rotation1{Radian * RealNum{Pi / 2}};
+    const Transformation xfm{translation1, rotation1};
+    const auto xfm2 = Mul(xfm, xfm);
 
-	const auto location = Vec2{-23.4f, 0.81f} * Meter;
-	const auto twice = Transform(Transform(location, xfm), xfm);
-	const auto location2 = Transform(location, xfm2);
-	EXPECT_EQ(twice, location2);
+    const auto location = Vec2{-23.4f, 0.81f} * Meter;
+    const auto twice = Transform(Transform(location, xfm), xfm);
+    const auto location2 = Transform(location, xfm2);
+    EXPECT_EQ(twice, location2);
 }

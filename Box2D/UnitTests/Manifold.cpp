@@ -23,150 +23,150 @@ using namespace box2d;
 
 TEST(Manifold, ByteSizeIs_60_120_or_240)
 {
-	switch (sizeof(RealNum))
-	{
-		case  4:  EXPECT_EQ(sizeof(Manifold), size_t(60)); break;
-		case  8: EXPECT_EQ(sizeof(Manifold), size_t(120)); break;
-		case 16: EXPECT_EQ(sizeof(Manifold), size_t(240)); break;
-		default: FAIL(); break;
-	}
+    switch (sizeof(RealNum))
+    {
+        case  4:  EXPECT_EQ(sizeof(Manifold), size_t(60)); break;
+        case  8: EXPECT_EQ(sizeof(Manifold), size_t(120)); break;
+        case 16: EXPECT_EQ(sizeof(Manifold), size_t(240)); break;
+        default: FAIL(); break;
+    }
 }
 
 TEST(Manifold, DefaultConstruction)
 {
-	const auto foo = Manifold{};
-	EXPECT_EQ(foo.GetType(), Manifold::e_unset);
-	EXPECT_EQ(foo.GetPointCount(), 0);
-	EXPECT_FALSE(IsValid(foo.GetLocalNormal()));
-	EXPECT_FALSE(IsValid(foo.GetLocalPoint()));
+    const auto foo = Manifold{};
+    EXPECT_EQ(foo.GetType(), Manifold::e_unset);
+    EXPECT_EQ(foo.GetPointCount(), 0);
+    EXPECT_FALSE(IsValid(foo.GetLocalNormal()));
+    EXPECT_FALSE(IsValid(foo.GetLocalPoint()));
 }
 
 TEST(Manifold, PointInitializingConstructor)
 {
-	const auto lp = Vec2{3, 4} * Meter;
-	const auto ni = RealNum(1.2) * Kilogram * MeterPerSecond;
-	const auto ti = RealNum(2.4) * Kilogram * MeterPerSecond;
-	const auto cf = ContactFeature{};
-	const auto foo = Manifold::Point{lp, cf, ni, ti};
-	EXPECT_EQ(foo.localPoint.x, lp.x);
-	EXPECT_EQ(foo.localPoint.y, lp.y);
-	EXPECT_EQ(foo.contactFeature, cf);
-	EXPECT_EQ(foo.normalImpulse, ni);
-	EXPECT_EQ(foo.tangentImpulse, ti);
+    const auto lp = Vec2{3, 4} * Meter;
+    const auto ni = RealNum(1.2) * Kilogram * MeterPerSecond;
+    const auto ti = RealNum(2.4) * Kilogram * MeterPerSecond;
+    const auto cf = ContactFeature{};
+    const auto foo = Manifold::Point{lp, cf, ni, ti};
+    EXPECT_EQ(foo.localPoint.x, lp.x);
+    EXPECT_EQ(foo.localPoint.y, lp.y);
+    EXPECT_EQ(foo.contactFeature, cf);
+    EXPECT_EQ(foo.normalImpulse, ni);
+    EXPECT_EQ(foo.tangentImpulse, ti);
 }
 
 TEST(Manifold, GetForCircles)
 {
-	const auto ctr = Vec2{99, 21} * Meter;
-	const auto foo = Manifold::GetForCircles(ctr, 0, ctr, 0);
-	EXPECT_EQ(foo.GetType(), Manifold::e_circles);
-	EXPECT_EQ(foo.GetLocalPoint(), ctr);
-	EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(1));
-	EXPECT_FALSE(IsValid(foo.GetLocalNormal()));
-	EXPECT_TRUE(foo == foo);
-	EXPECT_FALSE(foo != foo);
+    const auto ctr = Vec2{99, 21} * Meter;
+    const auto foo = Manifold::GetForCircles(ctr, 0, ctr, 0);
+    EXPECT_EQ(foo.GetType(), Manifold::e_circles);
+    EXPECT_EQ(foo.GetLocalPoint(), ctr);
+    EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(1));
+    EXPECT_FALSE(IsValid(foo.GetLocalNormal()));
+    EXPECT_TRUE(foo == foo);
+    EXPECT_FALSE(foo != foo);
 }
 
 TEST(Manifold, GetForFaceA)
 {
-	const auto ln = UnitVec2::GetLeft();
-	const auto lp = Vec2{0, 0} * Meter;
-	{
-		Manifold foo = Manifold::GetForFaceA(ln, lp);
-		EXPECT_EQ(foo.GetType(), Manifold::e_faceA);
-		EXPECT_EQ(foo.GetLocalNormal(), ln);
-		EXPECT_EQ(foo.GetLocalPoint(), lp);
-		EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(0));
-	}
-	{
-		const auto pl = Vec2{RealNum(-0.12), RealNum(0.34)} * Meter;
-		const auto cf = GetFaceFaceContactFeature(0, 0);
-		const auto ni = RealNum(2.9) * Kilogram * MeterPerSecond;
-		const auto ti = RealNum(.7) * Kilogram * MeterPerSecond;
-		const auto foo = Manifold::GetForFaceA(ln, lp, Manifold::Point{pl, cf, ni, ti});
-		EXPECT_EQ(foo.GetType(), Manifold::e_faceA);
-		EXPECT_EQ(foo.GetLocalNormal(), ln);
-		EXPECT_EQ(foo.GetLocalPoint(), lp);
+    const auto ln = UnitVec2::GetLeft();
+    const auto lp = Vec2{0, 0} * Meter;
+    {
+        Manifold foo = Manifold::GetForFaceA(ln, lp);
+        EXPECT_EQ(foo.GetType(), Manifold::e_faceA);
+        EXPECT_EQ(foo.GetLocalNormal(), ln);
+        EXPECT_EQ(foo.GetLocalPoint(), lp);
+        EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(0));
+    }
+    {
+        const auto pl = Vec2{RealNum(-0.12), RealNum(0.34)} * Meter;
+        const auto cf = GetFaceFaceContactFeature(0, 0);
+        const auto ni = RealNum(2.9) * Kilogram * MeterPerSecond;
+        const auto ti = RealNum(.7) * Kilogram * MeterPerSecond;
+        const auto foo = Manifold::GetForFaceA(ln, lp, Manifold::Point{pl, cf, ni, ti});
+        EXPECT_EQ(foo.GetType(), Manifold::e_faceA);
+        EXPECT_EQ(foo.GetLocalNormal(), ln);
+        EXPECT_EQ(foo.GetLocalPoint(), lp);
 
-		EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(1));
-		const auto p0 = foo.GetPoint(0);
-		EXPECT_EQ(p0.localPoint, pl);
-		EXPECT_EQ(p0.contactFeature, cf);
-		EXPECT_EQ(p0.normalImpulse, ni);
-		EXPECT_EQ(p0.tangentImpulse, ti);
-	}
-	{
-		const auto pl = Vec2{RealNum(-0.12), RealNum(0.34)} * Meter;
-		const auto cf = GetFaceFaceContactFeature(0, 1);
-		const auto ni = RealNum(2.9) * Kilogram * MeterPerSecond;
-		const auto ti = RealNum(.7) * Kilogram * MeterPerSecond;
-		const auto foo = Manifold::GetForFaceA(ln, lp, Manifold::Point{pl, cf, ni, ti}, Manifold::Point{-pl, Flip(cf), -ni, -ti});
-		EXPECT_EQ(foo.GetType(), Manifold::e_faceA);
-		EXPECT_EQ(foo.GetLocalNormal(), ln);
-		EXPECT_EQ(foo.GetLocalPoint(), lp);
+        EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(1));
+        const auto p0 = foo.GetPoint(0);
+        EXPECT_EQ(p0.localPoint, pl);
+        EXPECT_EQ(p0.contactFeature, cf);
+        EXPECT_EQ(p0.normalImpulse, ni);
+        EXPECT_EQ(p0.tangentImpulse, ti);
+    }
+    {
+        const auto pl = Vec2{RealNum(-0.12), RealNum(0.34)} * Meter;
+        const auto cf = GetFaceFaceContactFeature(0, 1);
+        const auto ni = RealNum(2.9) * Kilogram * MeterPerSecond;
+        const auto ti = RealNum(.7) * Kilogram * MeterPerSecond;
+        const auto foo = Manifold::GetForFaceA(ln, lp, Manifold::Point{pl, cf, ni, ti}, Manifold::Point{-pl, Flip(cf), -ni, -ti});
+        EXPECT_EQ(foo.GetType(), Manifold::e_faceA);
+        EXPECT_EQ(foo.GetLocalNormal(), ln);
+        EXPECT_EQ(foo.GetLocalPoint(), lp);
 
-		EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(2));
-		const auto p0 = foo.GetPoint(0);
-		EXPECT_EQ(p0.localPoint, pl);
-		EXPECT_EQ(p0.contactFeature, cf);
-		EXPECT_EQ(p0.normalImpulse, ni);
-		EXPECT_EQ(p0.tangentImpulse, ti);
-		const auto p1 = foo.GetPoint(1);
-		EXPECT_EQ(p1.localPoint, -pl);
-		EXPECT_EQ(p1.contactFeature, Flip(cf));
-		EXPECT_EQ(p1.normalImpulse, -ni);
-		EXPECT_EQ(p1.tangentImpulse, -ti);
-	}
+        EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(2));
+        const auto p0 = foo.GetPoint(0);
+        EXPECT_EQ(p0.localPoint, pl);
+        EXPECT_EQ(p0.contactFeature, cf);
+        EXPECT_EQ(p0.normalImpulse, ni);
+        EXPECT_EQ(p0.tangentImpulse, ti);
+        const auto p1 = foo.GetPoint(1);
+        EXPECT_EQ(p1.localPoint, -pl);
+        EXPECT_EQ(p1.contactFeature, Flip(cf));
+        EXPECT_EQ(p1.normalImpulse, -ni);
+        EXPECT_EQ(p1.tangentImpulse, -ti);
+    }
 }
 
 TEST(Manifold, GetForFaceB)
 {
-	const auto ln = UnitVec2::GetLeft();
-	const auto lp = Vec2{0, 0} * Meter;
-	{
-		Manifold foo = Manifold::GetForFaceB(ln, lp);
-		EXPECT_EQ(foo.GetType(), Manifold::e_faceB);
-		EXPECT_EQ(foo.GetLocalNormal(), ln);
-		EXPECT_EQ(foo.GetLocalPoint(), lp);
-		EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(0));
-	}
-	{
-		const auto pl = Vec2{RealNum(-0.12), RealNum(0.34)} * Meter;
-		const auto cf = GetFaceFaceContactFeature(0, 0);
-		const auto ni = RealNum(2.9) * Kilogram * MeterPerSecond;
-		const auto ti = RealNum(.7) * Kilogram * MeterPerSecond;
-		Manifold foo = Manifold::GetForFaceB(ln, lp, Manifold::Point{pl, cf, ni, ti});
-		EXPECT_EQ(foo.GetType(), Manifold::e_faceB);
-		EXPECT_EQ(foo.GetLocalNormal(), ln);
-		EXPECT_EQ(foo.GetLocalPoint(), lp);
+    const auto ln = UnitVec2::GetLeft();
+    const auto lp = Vec2{0, 0} * Meter;
+    {
+        Manifold foo = Manifold::GetForFaceB(ln, lp);
+        EXPECT_EQ(foo.GetType(), Manifold::e_faceB);
+        EXPECT_EQ(foo.GetLocalNormal(), ln);
+        EXPECT_EQ(foo.GetLocalPoint(), lp);
+        EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(0));
+    }
+    {
+        const auto pl = Vec2{RealNum(-0.12), RealNum(0.34)} * Meter;
+        const auto cf = GetFaceFaceContactFeature(0, 0);
+        const auto ni = RealNum(2.9) * Kilogram * MeterPerSecond;
+        const auto ti = RealNum(.7) * Kilogram * MeterPerSecond;
+        Manifold foo = Manifold::GetForFaceB(ln, lp, Manifold::Point{pl, cf, ni, ti});
+        EXPECT_EQ(foo.GetType(), Manifold::e_faceB);
+        EXPECT_EQ(foo.GetLocalNormal(), ln);
+        EXPECT_EQ(foo.GetLocalPoint(), lp);
 
-		EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(1));
-		const auto p0 = foo.GetPoint(0);
-		EXPECT_EQ(p0.localPoint, pl);
-		EXPECT_EQ(p0.contactFeature, cf);
-		EXPECT_EQ(p0.normalImpulse, ni);
-		EXPECT_EQ(p0.tangentImpulse, ti);
-	}
-	{
-		const auto pl = Vec2{RealNum(-0.12), RealNum(0.34)} * Meter;
-		const auto cf = GetFaceFaceContactFeature(0, 1);
-		const auto ni = RealNum(2.9) * Kilogram * MeterPerSecond;
-		const auto ti = RealNum(.7) * Kilogram * MeterPerSecond;
-		Manifold foo = Manifold::GetForFaceB(ln, lp, Manifold::Point{pl, cf, ni, ti}, Manifold::Point{-pl, Flip(cf), -ni, -ti});
-		EXPECT_EQ(foo.GetType(), Manifold::e_faceB);
-		EXPECT_EQ(foo.GetLocalNormal(), ln);
-		EXPECT_EQ(foo.GetLocalPoint(), lp);
-		
-		EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(2));
-		const auto p0 = foo.GetPoint(0);
-		EXPECT_EQ(p0.localPoint, pl);
-		EXPECT_EQ(p0.contactFeature, cf);
-		EXPECT_EQ(p0.normalImpulse, ni);
-		EXPECT_EQ(p0.tangentImpulse, ti);
-		const auto p1 = foo.GetPoint(1);
-		EXPECT_EQ(p1.localPoint, -pl);
-		EXPECT_EQ(p1.contactFeature, Flip(cf));
-		EXPECT_EQ(p1.normalImpulse, -ni);
-		EXPECT_EQ(p1.tangentImpulse, -ti);
-	}
+        EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(1));
+        const auto p0 = foo.GetPoint(0);
+        EXPECT_EQ(p0.localPoint, pl);
+        EXPECT_EQ(p0.contactFeature, cf);
+        EXPECT_EQ(p0.normalImpulse, ni);
+        EXPECT_EQ(p0.tangentImpulse, ti);
+    }
+    {
+        const auto pl = Vec2{RealNum(-0.12), RealNum(0.34)} * Meter;
+        const auto cf = GetFaceFaceContactFeature(0, 1);
+        const auto ni = RealNum(2.9) * Kilogram * MeterPerSecond;
+        const auto ti = RealNum(.7) * Kilogram * MeterPerSecond;
+        Manifold foo = Manifold::GetForFaceB(ln, lp, Manifold::Point{pl, cf, ni, ti}, Manifold::Point{-pl, Flip(cf), -ni, -ti});
+        EXPECT_EQ(foo.GetType(), Manifold::e_faceB);
+        EXPECT_EQ(foo.GetLocalNormal(), ln);
+        EXPECT_EQ(foo.GetLocalPoint(), lp);
+        
+        EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(2));
+        const auto p0 = foo.GetPoint(0);
+        EXPECT_EQ(p0.localPoint, pl);
+        EXPECT_EQ(p0.contactFeature, cf);
+        EXPECT_EQ(p0.normalImpulse, ni);
+        EXPECT_EQ(p0.tangentImpulse, ti);
+        const auto p1 = foo.GetPoint(1);
+        EXPECT_EQ(p1.localPoint, -pl);
+        EXPECT_EQ(p1.contactFeature, Flip(cf));
+        EXPECT_EQ(p1.normalImpulse, -ni);
+        EXPECT_EQ(p1.tangentImpulse, -ti);
+    }
 }

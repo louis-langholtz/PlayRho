@@ -23,27 +23,27 @@ using namespace box2d;
 
 TEST(SimplexEdge, ByteSizeIs_28_56_or_112)
 {
-	switch (sizeof(RealNum))
-	{
-		case  4: EXPECT_EQ(sizeof(SimplexEdge), size_t(28)); break;
-		case  8: EXPECT_EQ(sizeof(SimplexEdge), size_t(56)); break;
-		case 16: EXPECT_EQ(sizeof(SimplexEdge), size_t(112)); break;
-		default: FAIL(); break;
-	}
+    switch (sizeof(RealNum))
+    {
+        case  4: EXPECT_EQ(sizeof(SimplexEdge), size_t(28)); break;
+        case  8: EXPECT_EQ(sizeof(SimplexEdge), size_t(56)); break;
+        case 16: EXPECT_EQ(sizeof(SimplexEdge), size_t(112)); break;
+        default: FAIL(); break;
+    }
 }
 
 TEST(SimplexEdge, InitializingConstructor)
 {
-	const auto iA = SimplexEdge::index_type{1};
-	const auto iB = SimplexEdge::index_type{2};
-	const auto pA = Vec2{RealNum(2.2), RealNum(-3.1)} * Meter;
-	const auto pB = Vec2{RealNum(-9.2), RealNum(0.003)} * Meter;
+    const auto iA = SimplexEdge::index_type{1};
+    const auto iB = SimplexEdge::index_type{2};
+    const auto pA = Vec2{RealNum(2.2), RealNum(-3.1)} * Meter;
+    const auto pB = Vec2{RealNum(-9.2), RealNum(0.003)} * Meter;
 
-	const auto sv = SimplexEdge(pA, iA, pB, iB);
-	
-	EXPECT_EQ(sv.GetPointA(), pA);
-	EXPECT_EQ(sv.GetPointB(), pB);
-	EXPECT_EQ(sv.GetIndexA(), iA);
-	EXPECT_EQ(sv.GetIndexB(), iB);
-	EXPECT_EQ(sv.GetPointDelta(), pB - pA);
+    const auto sv = SimplexEdge(pA, iA, pB, iB);
+    
+    EXPECT_EQ(sv.GetPointA(), pA);
+    EXPECT_EQ(sv.GetPointB(), pB);
+    EXPECT_EQ(sv.GetIndexA(), iA);
+    EXPECT_EQ(sv.GetIndexB(), iB);
+    EXPECT_EQ(sv.GetPointDelta(), pB - pA);
 }

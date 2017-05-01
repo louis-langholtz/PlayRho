@@ -25,70 +25,70 @@ using namespace box2d;
 
 TEST(IslandBodyContainer, BytesSizeIs24)
 {
-	EXPECT_EQ(sizeof(Island::Bodies), size_t(24));
+    EXPECT_EQ(sizeof(Island::Bodies), size_t(24));
 }
 
 TEST(IslandContactContainer, BytesSizeIs24)
 {
-	EXPECT_EQ(sizeof(Island::Contacts), size_t(24));
+    EXPECT_EQ(sizeof(Island::Contacts), size_t(24));
 }
 
 TEST(IslandJointContainer, BytesSizeIs24)
 {
-	EXPECT_EQ(sizeof(Island::Joints), size_t(24));
+    EXPECT_EQ(sizeof(Island::Joints), size_t(24));
 }
 
 TEST(Island, ByteSizeIs72)
 {
-	EXPECT_EQ(sizeof(Island), size_t(72));
+    EXPECT_EQ(sizeof(Island), size_t(72));
 }
 
 TEST(Island, NotDefaultConstructible)
 {
-	EXPECT_FALSE(std::is_default_constructible<Island>::value);
+    EXPECT_FALSE(std::is_default_constructible<Island>::value);
 }
 
 TEST(Island, IsCopyConstructible)
 {
-	EXPECT_TRUE(std::is_copy_constructible<Island>::value);
+    EXPECT_TRUE(std::is_copy_constructible<Island>::value);
 }
 
 TEST(Island, IsNothrowMoveConstructible)
 {
-	EXPECT_TRUE(std::is_nothrow_move_constructible<Island>::value);
+    EXPECT_TRUE(std::is_nothrow_move_constructible<Island>::value);
 }
 
 TEST(Island, IsMoveAssignable)
 {
-	EXPECT_TRUE(std::is_move_assignable<Island>::value);
+    EXPECT_TRUE(std::is_move_assignable<Island>::value);
 }
 
 TEST(Island, NotCopyAssignable)
 {
-	EXPECT_FALSE(std::is_copy_assignable<Island>::value);
+    EXPECT_FALSE(std::is_copy_assignable<Island>::value);
 }
 
 TEST(Island, IsNothrowDestructible)
 {
-	EXPECT_TRUE(std::is_nothrow_destructible<Island>::value);
+    EXPECT_TRUE(std::is_nothrow_destructible<Island>::value);
 }
 
 static Island foo()
 {
-	return Island(10, 10, 10);
+    return Island(10, 10, 10);
 }
 
 TEST(Island, IsReturnableByValue)
 {
-	// This should be possible due to C++ copy elision (regardless of move construction or copy
-	// construction support). For information on copy elision see:
-	//   http://en.cppreference.com/w/cpp/language/copy_elision
+    // This should be possible due to C++ copy elision (regardless of move construction or copy
+    // construction support). For information on copy elision see:
+    //   http://en.cppreference.com/w/cpp/language/copy_elision
 
-	{
-		const auto island = foo();
-		
-		EXPECT_EQ(island.m_bodies.capacity(), decltype(island.m_bodies.max_size()){10});
-		EXPECT_EQ(island.m_contacts.capacity(), decltype(island.m_contacts.max_size()){10});
-		EXPECT_EQ(island.m_joints.capacity(), decltype(island.m_joints.max_size()){10});
-	}
+    {
+        const auto island = foo();
+        
+        EXPECT_EQ(island.m_bodies.capacity(), decltype(island.m_bodies.max_size()){10});
+        EXPECT_EQ(island.m_contacts.capacity(), decltype(island.m_contacts.max_size()){10});
+        EXPECT_EQ(island.m_joints.capacity(), decltype(island.m_joints.max_size()){10});
+    }
 }

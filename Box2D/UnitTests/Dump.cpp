@@ -26,114 +26,114 @@ using namespace box2d;
 
 static void open_stderr_as_stdout()
 {
-	fclose(stdout);
-	stdout = stderr;
+    fclose(stdout);
+    stdout = stderr;
 }
 
 template <typename RN>
 struct Vals {
-	static const char* GetGravity();
+    static const char* GetGravity();
 };
 
 template <>
 struct Vals<float> {
-	static inline const char* GetGravity()
-	{
-		return "-9\\.800000190734863e\\+00f";
-	}
+    static inline const char* GetGravity()
+    {
+        return "-9\\.800000190734863e\\+00f";
+    }
 };
 
 template <>
 struct Vals<double> {
-	static inline const char* GetGravity()
-	{
-		return "-9\\.800000000000001e\\+00f";
-	}
+    static inline const char* GetGravity()
+    {
+        return "-9\\.800000000000001e\\+00f";
+    }
 };
 
 template <>
 struct Vals<long double> {
-	static inline const char* GetGravity()
-	{
-		return "-9\\.800000000000001e\\+00f";
-	}
+    static inline const char* GetGravity()
+    {
+        return "-9\\.800000000000001e\\+00f";
+    }
 };
 
 template <>
 struct Vals<Fixed32> {
-	static inline const char* GetGravity()
-	{
-		return "-9\\.799999952316284e\\+00f";
-	}
+    static inline const char* GetGravity()
+    {
+        return "-9\\.799999952316284e\\+00f";
+    }
 };
 
 #ifndef _WIN32
 
 template <>
 struct Vals<Fixed64> {
-	static inline const char* GetGravity()
-	{
-		return "-9\\.799999952316284e\\+00f";
-	}
+    static inline const char* GetGravity()
+    {
+        return "-9\\.799999952316284e\\+00f";
+    }
 };
 
 #endif /* !_WIN32 */
 
 TEST(Dump, EmptyWorld)
 {
-	std::stringstream buf;
-	buf << "Vec2 g\\(0\\.000000000000000e\\+00f, " << Vals<RealNum>::GetGravity() << "\\);\n";
-	buf << "m_world->SetGravity\\(g\\);\n";
-	buf << "Body\\*\\* bodies = \\(Body\\*\\*\\)alloc\\(0 \\* sizeof\\(Body\\*\\)\\);\n";
-	buf << "Joint\\*\\* joints = \\(Joint\\*\\*\\)alloc\\(0 \\* sizeof\\(Joint\\*\\)\\);\n";
-	buf << "free\\(joints\\);\n";
-	buf << "free\\(bodies\\);\n";
-	buf << "joints = nullptr;\n";
-	buf << "bodies = nullptr;\n";
+    std::stringstream buf;
+    buf << "Vec2 g\\(0\\.000000000000000e\\+00f, " << Vals<RealNum>::GetGravity() << "\\);\n";
+    buf << "m_world->SetGravity\\(g\\);\n";
+    buf << "Body\\*\\* bodies = \\(Body\\*\\*\\)alloc\\(0 \\* sizeof\\(Body\\*\\)\\);\n";
+    buf << "Joint\\*\\* joints = \\(Joint\\*\\*\\)alloc\\(0 \\* sizeof\\(Joint\\*\\)\\);\n";
+    buf << "free\\(joints\\);\n";
+    buf << "free\\(bodies\\);\n";
+    buf << "joints = nullptr;\n";
+    buf << "bodies = nullptr;\n";
 
-	EXPECT_EXIT({
-		open_stderr_as_stdout();
-		World world;
-		Dump(world);
-		exit(0);
-	}, ::testing::ExitedWithCode(0), buf.str());
+    EXPECT_EXIT({
+        open_stderr_as_stdout();
+        World world;
+        Dump(world);
+        exit(0);
+    }, ::testing::ExitedWithCode(0), buf.str());
 }
 
 TEST(Dump, OneBodyWorld)
 {
-	std::stringstream buf;
-	buf << "Vec2 g\\(0\\.000000000000000e\\+00f, " << Vals<RealNum>::GetGravity() << "\\);\n";
-	buf << "m_world->SetGravity\\(g\\);\n";
-	buf << "Body\\*\\* bodies = \\(Body\\*\\*\\)alloc\\(1 \\* sizeof\\(Body\\*\\)\\);\n";
-	buf << "{\n";
-	buf << "  BodyDef bd;\n";
-	buf << "  bd\\.type = BodyType\\(0\\);\n";
-	buf << "  bd\\.position = Vec2\\(0\\.000000000000000e\\+00f, 0\\.000000000000000e\\+00f\\);\n";
-	buf << "  bd\\.angle = 0\\.000000000000000e\\+00f;\n";
-	buf << "  bd\\.linearVelocity = Vec2\\(0\\.000000000000000e\\+00f, 0\\.000000000000000e\\+00f);\n";
-	buf << "  bd\\.angularVelocity = 0\\.000000000000000e\\+00f;\n";
-	buf << "  bd\\.linearDamping = 0\\.000000000000000e\\+00f;\n";
-	buf << "  bd\\.angularDamping = 0\\.000000000000000e\\+00f;\n";
-	buf << "  bd\\.allowSleep = bool\\(1\\);\n";
-	buf << "  bd\\.awake = bool\\(1\\);\n";
-	buf << "  bd\\.fixedRotation = bool\\(0\\);\n";
-	buf << "  bd\\.bullet = bool\\(1\\);\n";
-	buf << "  bd\\.enabled = bool\\(1\\);\n";
-	buf << "  bodies\\[0\\] = m_world->CreateBody\\(bd\\);\n";
-	buf << "\n";
-	buf << "}\n";
-	buf << "Joint\\*\\* joints = \\(Joint\\*\\*\\)alloc\\(0 \\* sizeof\\(Joint\\*\\)\\);\n";
-	buf << "free\\(joints\\);\n";
-	buf << "free\\(bodies\\);\n";
-	buf << "joints = nullptr;\n";
-	buf << "bodies = nullptr;\n";
-	EXPECT_EXIT({
-		open_stderr_as_stdout();
-		World world;
-		world.CreateBody();
-		Dump(world);
-		exit(0);
-	}, ::testing::ExitedWithCode(0), buf.str());
+    std::stringstream buf;
+    buf << "Vec2 g\\(0\\.000000000000000e\\+00f, " << Vals<RealNum>::GetGravity() << "\\);\n";
+    buf << "m_world->SetGravity\\(g\\);\n";
+    buf << "Body\\*\\* bodies = \\(Body\\*\\*\\)alloc\\(1 \\* sizeof\\(Body\\*\\)\\);\n";
+    buf << "{\n";
+    buf << "  BodyDef bd;\n";
+    buf << "  bd\\.type = BodyType\\(0\\);\n";
+    buf << "  bd\\.position = Vec2\\(0\\.000000000000000e\\+00f, 0\\.000000000000000e\\+00f\\);\n";
+    buf << "  bd\\.angle = 0\\.000000000000000e\\+00f;\n";
+    buf << "  bd\\.linearVelocity = Vec2\\(0\\.000000000000000e\\+00f, 0\\.000000000000000e\\+00f);\n";
+    buf << "  bd\\.angularVelocity = 0\\.000000000000000e\\+00f;\n";
+    buf << "  bd\\.linearDamping = 0\\.000000000000000e\\+00f;\n";
+    buf << "  bd\\.angularDamping = 0\\.000000000000000e\\+00f;\n";
+    buf << "  bd\\.allowSleep = bool\\(1\\);\n";
+    buf << "  bd\\.awake = bool\\(1\\);\n";
+    buf << "  bd\\.fixedRotation = bool\\(0\\);\n";
+    buf << "  bd\\.bullet = bool\\(1\\);\n";
+    buf << "  bd\\.enabled = bool\\(1\\);\n";
+    buf << "  bodies\\[0\\] = m_world->CreateBody\\(bd\\);\n";
+    buf << "\n";
+    buf << "}\n";
+    buf << "Joint\\*\\* joints = \\(Joint\\*\\*\\)alloc\\(0 \\* sizeof\\(Joint\\*\\)\\);\n";
+    buf << "free\\(joints\\);\n";
+    buf << "free\\(bodies\\);\n";
+    buf << "joints = nullptr;\n";
+    buf << "bodies = nullptr;\n";
+    EXPECT_EXIT({
+        open_stderr_as_stdout();
+        World world;
+        world.CreateBody();
+        Dump(world);
+        exit(0);
+    }, ::testing::ExitedWithCode(0), buf.str());
 }
 
 #endif
