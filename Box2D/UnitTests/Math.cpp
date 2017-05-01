@@ -112,8 +112,8 @@ TEST(Math, Square)
 
 TEST(Math, Atan2)
 {
-	EXPECT_EQ(Atan2(0, 0), Angle{0});
-	EXPECT_EQ(Atan2(0.0f, 0.0f), Angle{0});
+	EXPECT_EQ(Atan2(RealNum(0), RealNum(0)), Angle{0});
+	//EXPECT_EQ(Atan2(RealNum(1), RealNum(0)), RealNum(90) * Degree);
 }
 
 TEST(Math, Span)

@@ -895,7 +895,7 @@ TEST(CollideShapes, EdgeR90InsideSquare)
 	}
 	else if (sizeof(RealNum) == 8)
 	{
-		EXPECT_EQ(manifold.GetContactFeature(1), GetFaceFaceContactFeature(0, 3));
+		EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(1, 3));
 	}
 }
 
@@ -930,7 +930,7 @@ TEST(CollideShapes, EdgeR45InsideSquare)
 	}
 	else if (sizeof(RealNum) == 8)
 	{
-		EXPECT_EQ(manifold.GetContactFeature(1), GetFaceFaceContactFeature(0, 3));
+		EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(0, 3));
 	}
 }
 
@@ -988,7 +988,7 @@ TEST(CollideShapes, EdgeTwiceR180Square)
 	}
 	else if (sizeof(RealNum) == 8)
 	{
-		EXPECT_EQ(manifold.GetContactFeature(1), GetFaceFaceContactFeature(0, 0));
+		EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(1, 0));
 	}
 }
 
