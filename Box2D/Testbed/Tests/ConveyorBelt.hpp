@@ -26,62 +26,62 @@ class ConveyorBelt : public Test
 {
 public:
 
-	ConveyorBelt()
-	{
-		// Ground
-		{
-			const auto ground = m_world->CreateBody();
-			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
-		}
+    ConveyorBelt()
+    {
+        // Ground
+        {
+            const auto ground = m_world->CreateBody();
+            ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
+        }
 
-		// Platform
-		{
-			BodyDef bd;
-			bd.position = Vec2(-5.0f, 5.0f) * Meter;
-			const auto body = m_world->CreateBody(bd);
+        // Platform
+        {
+            BodyDef bd;
+            bd.position = Vec2(-5.0f, 5.0f) * Meter;
+            const auto body = m_world->CreateBody(bd);
 
-			auto conf = PolygonShape::Conf{};
-			conf.friction = 0.8f;
-			m_platform = body->CreateFixture(std::make_shared<PolygonShape>(RealNum{10.0f} * Meter, RealNum{0.5f} * Meter, conf));
-		}
+            auto conf = PolygonShape::Conf{};
+            conf.friction = 0.8f;
+            m_platform = body->CreateFixture(std::make_shared<PolygonShape>(RealNum{10.0f} * Meter, RealNum{0.5f} * Meter, conf));
+        }
 
-		// Boxes
-		const auto boxshape = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
-		boxshape->SetDensity(RealNum{20} * KilogramPerSquareMeter);
-		for (auto i = 0; i < 5; ++i)
-		{
-			BodyDef bd;
-			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(-10.0f + 2.0f * i, 7.0f) * Meter;
-			const auto body = m_world->CreateBody(bd);
-			body->CreateFixture(boxshape);
-		}
-	}
+        // Boxes
+        const auto boxshape = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
+        boxshape->SetDensity(RealNum{20} * KilogramPerSquareMeter);
+        for (auto i = 0; i < 5; ++i)
+        {
+            BodyDef bd;
+            bd.type = BodyType::Dynamic;
+            bd.position = Vec2(-10.0f + 2.0f * i, 7.0f) * Meter;
+            const auto body = m_world->CreateBody(bd);
+            body->CreateFixture(boxshape);
+        }
+    }
 
-	void PreSolve(Contact& contact, const Manifold& oldManifold) override
-	{
-		Test::PreSolve(contact, oldManifold);
+    void PreSolve(Contact& contact, const Manifold& oldManifold) override
+    {
+        Test::PreSolve(contact, oldManifold);
 
-		Fixture* fixtureA = contact.GetFixtureA();
-		Fixture* fixtureB = contact.GetFixtureB();
+        Fixture* fixtureA = contact.GetFixtureA();
+        Fixture* fixtureB = contact.GetFixtureB();
 
-		if (fixtureA == m_platform)
-		{
-			contact.SetTangentSpeed(RealNum{5.0f} * MeterPerSecond);
-		}
+        if (fixtureA == m_platform)
+        {
+            contact.SetTangentSpeed(RealNum{5.0f} * MeterPerSecond);
+        }
 
-		if (fixtureB == m_platform)
-		{
-			contact.SetTangentSpeed(RealNum{-5.0f} * MeterPerSecond);
-		}
-	}
+        if (fixtureB == m_platform)
+        {
+            contact.SetTangentSpeed(RealNum{-5.0f} * MeterPerSecond);
+        }
+    }
 
-	static Test* Create()
-	{
-		return new ConveyorBelt;
-	}
+    static Test* Create()
+    {
+        return new ConveyorBelt;
+    }
 
-	Fixture* m_platform;
+    Fixture* m_platform;
 };
 
 } // namespace box2d

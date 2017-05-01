@@ -28,74 +28,74 @@ namespace box2d {
 class RopeTest : public Test
 {
 public:
-	RopeTest()
-	{
-		const auto N = 40;
-		Vec2 vertices[N];
-		RealNum masses[N];
+    RopeTest()
+    {
+        const auto N = 40;
+        Vec2 vertices[N];
+        RealNum masses[N];
 
-		for (auto i = decltype(N){0}; i < N; ++i)
-		{
-			vertices[i] = Vec2(0.0f, 20.0f - 0.25f * i);
-			masses[i] = 1.0f;
-		}
-		masses[0] = 0.0f;
-		masses[1] = 0.0f;
+        for (auto i = decltype(N){0}; i < N; ++i)
+        {
+            vertices[i] = Vec2(0.0f, 20.0f - 0.25f * i);
+            masses[i] = 1.0f;
+        }
+        masses[0] = 0.0f;
+        masses[1] = 0.0f;
 
-		RopeDef def;
-		def.vertices = vertices;
-		def.count = N;
-		def.gravity = Vec2(0.0f, -10.0f);
-		def.masses = masses;
-		def.damping = 0.1f;
-		def.k2 = 1.0f;
-		def.k3 = 0.5f;
+        RopeDef def;
+        def.vertices = vertices;
+        def.count = N;
+        def.gravity = Vec2(0.0f, -10.0f);
+        def.masses = masses;
+        def.damping = 0.1f;
+        def.k2 = 1.0f;
+        def.k3 = 0.5f;
 
-		m_rope.Initialize(&def);
+        m_rope.Initialize(&def);
 
-		m_angle = 0.0f;
-		m_rope.SetAngle(m_angle);
-	}
+        m_angle = 0.0f;
+        m_rope.SetAngle(m_angle);
+    }
 
-	void KeyboardDown(int key) override
-	{
-		switch (key)
-		{
-		case 'q':
-			m_angle = Max(-Pi, m_angle - 0.05f * Pi);
-			m_rope.SetAngle(m_angle);
-			break;
+    void KeyboardDown(int key) override
+    {
+        switch (key)
+        {
+        case 'q':
+            m_angle = Max(-Pi, m_angle - 0.05f * Pi);
+            m_rope.SetAngle(m_angle);
+            break;
 
-		case 'e':
-			m_angle = Min(Pi, m_angle + 0.05f * Pi);
-			m_rope.SetAngle(m_angle);
-			break;
-		}
-	}
+        case 'e':
+            m_angle = Min(Pi, m_angle + 0.05f * Pi);
+            m_rope.SetAngle(m_angle);
+            break;
+        }
+    }
 
-	void Step(const Settings& settings, Drawer& drawer) override
-	{
-		const auto dt = (settings.pause && !settings.singleStep)? 0.0f: settings.dt;
+    void Step(const Settings& settings, Drawer& drawer) override
+    {
+        const auto dt = (settings.pause && !settings.singleStep)? 0.0f: settings.dt;
 
-		m_rope.Step(dt, 1);
+        m_rope.Step(dt, 1);
 
-		Test::Step(settings, drawer);
+        Test::Step(settings, drawer);
 
-		// Draw(drawer, m_rope);
+        // Draw(drawer, m_rope);
 
-		drawer.DrawString(5, m_textLine, "Press (q,e) to adjust target angle");
-		m_textLine += DRAW_STRING_NEW_LINE;
-		drawer.DrawString(5, m_textLine, "Target angle = %g degrees", m_angle * 180.0f / Pi);
-		m_textLine += DRAW_STRING_NEW_LINE;
-	}
+        drawer.DrawString(5, m_textLine, "Press (q,e) to adjust target angle");
+        m_textLine += DRAW_STRING_NEW_LINE;
+        drawer.DrawString(5, m_textLine, "Target angle = %g degrees", m_angle * 180.0f / Pi);
+        m_textLine += DRAW_STRING_NEW_LINE;
+    }
 
-	static Test* Create()
-	{
-		return new RopeTest;
-	}
+    static Test* Create()
+    {
+        return new RopeTest;
+    }
 
-	Rope m_rope;
-	RealNum m_angle;
+    Rope m_rope;
+    RealNum m_angle;
 };
 
 } // namespace box2d

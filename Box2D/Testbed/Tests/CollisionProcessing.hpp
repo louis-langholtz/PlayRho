@@ -29,145 +29,145 @@ namespace box2d {
 class CollisionProcessing : public Test
 {
 public:
-	CollisionProcessing()
-	{
-		// Ground body
-		{
-			const auto ground = m_world->CreateBody();
-			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-50.0f, 0.0f) * Meter, Vec2(50.0f, 0.0f) * Meter));
-		}
+    CollisionProcessing()
+    {
+        // Ground body
+        {
+            const auto ground = m_world->CreateBody();
+            ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-50.0f, 0.0f) * Meter, Vec2(50.0f, 0.0f) * Meter));
+        }
 
-		auto xLo = -5.0f, xHi = 5.0f;
-		auto yLo = 2.0f, yHi = 35.0f;
+        auto xLo = -5.0f, xHi = 5.0f;
+        auto yLo = 2.0f, yHi = 35.0f;
 
-		// Small triangle
-		Length2D vertices[3];
-		vertices[0] = Vec2(-1.0f, 0.0f) * Meter;
-		vertices[1] = Vec2(1.0f, 0.0f) * Meter;
-		vertices[2] = Vec2(0.0f, 2.0f) * Meter;
+        // Small triangle
+        Length2D vertices[3];
+        vertices[0] = Vec2(-1.0f, 0.0f) * Meter;
+        vertices[1] = Vec2(1.0f, 0.0f) * Meter;
+        vertices[2] = Vec2(0.0f, 2.0f) * Meter;
 
-		PolygonShape polygon;
-		polygon.Set(Span<const Length2D>{vertices, 3});
-		polygon.SetDensity(RealNum{1} * KilogramPerSquareMeter);
+        PolygonShape polygon;
+        polygon.Set(Span<const Length2D>{vertices, 3});
+        polygon.SetDensity(RealNum{1} * KilogramPerSquareMeter);
 
-		BodyDef triangleBodyDef;
-		triangleBodyDef.type = BodyType::Dynamic;
-		triangleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
+        BodyDef triangleBodyDef;
+        triangleBodyDef.type = BodyType::Dynamic;
+        triangleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
 
-		const auto body1 = m_world->CreateBody(triangleBodyDef);
-		body1->CreateFixture(std::make_shared<PolygonShape>(polygon));
+        const auto body1 = m_world->CreateBody(triangleBodyDef);
+        body1->CreateFixture(std::make_shared<PolygonShape>(polygon));
 
-		// Large triangle (recycle definitions)
-		vertices[0] *= 2.0f;
-		vertices[1] *= 2.0f;
-		vertices[2] *= 2.0f;
-		polygon.Set(Span<const Length2D>{vertices, 3});
+        // Large triangle (recycle definitions)
+        vertices[0] *= 2.0f;
+        vertices[1] *= 2.0f;
+        vertices[2] *= 2.0f;
+        polygon.Set(Span<const Length2D>{vertices, 3});
 
-		triangleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
+        triangleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
 
-		const auto body2 = m_world->CreateBody(triangleBodyDef);
-		body2->CreateFixture(std::make_shared<PolygonShape>(polygon));
-		
-		// Small box
-		polygon.SetAsBox(RealNum{1.0f} * Meter, RealNum{0.5f} * Meter);
+        const auto body2 = m_world->CreateBody(triangleBodyDef);
+        body2->CreateFixture(std::make_shared<PolygonShape>(polygon));
+        
+        // Small box
+        polygon.SetAsBox(RealNum{1.0f} * Meter, RealNum{0.5f} * Meter);
 
-		BodyDef boxBodyDef;
-		boxBodyDef.type = BodyType::Dynamic;
-		boxBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
+        BodyDef boxBodyDef;
+        boxBodyDef.type = BodyType::Dynamic;
+        boxBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
 
-		const auto body3 = m_world->CreateBody(boxBodyDef);
-		body3->CreateFixture(std::make_shared<PolygonShape>(polygon));
+        const auto body3 = m_world->CreateBody(boxBodyDef);
+        body3->CreateFixture(std::make_shared<PolygonShape>(polygon));
 
-		// Large box (recycle definitions)
-		polygon.SetAsBox(RealNum{2.0f} * Meter, RealNum{1.0f} * Meter);
-		boxBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
-		
-		const auto body4 = m_world->CreateBody(boxBodyDef);
-		body4->CreateFixture(std::make_shared<PolygonShape>(polygon));
+        // Large box (recycle definitions)
+        polygon.SetAsBox(RealNum{2.0f} * Meter, RealNum{1.0f} * Meter);
+        boxBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
+        
+        const auto body4 = m_world->CreateBody(boxBodyDef);
+        body4->CreateFixture(std::make_shared<PolygonShape>(polygon));
 
-		// Small circle
-		CircleShape circle;
-		circle.SetRadius(RealNum{1} * Meter);
-		circle.SetDensity(RealNum{1} * KilogramPerSquareMeter);
+        // Small circle
+        CircleShape circle;
+        circle.SetRadius(RealNum{1} * Meter);
+        circle.SetDensity(RealNum{1} * KilogramPerSquareMeter);
 
-		BodyDef circleBodyDef;
-		circleBodyDef.type = BodyType::Dynamic;
-		circleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
+        BodyDef circleBodyDef;
+        circleBodyDef.type = BodyType::Dynamic;
+        circleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
 
-		const auto body5 = m_world->CreateBody(circleBodyDef);
-		body5->CreateFixture(std::make_shared<CircleShape>(circle));
+        const auto body5 = m_world->CreateBody(circleBodyDef);
+        body5->CreateFixture(std::make_shared<CircleShape>(circle));
 
-		// Large circle
-		circle.SetRadius(circle.GetRadius() * RealNum{2});
-		circleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
+        // Large circle
+        circle.SetRadius(circle.GetRadius() * RealNum{2});
+        circleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
 
-		const auto body6 = m_world->CreateBody(circleBodyDef);
-		body6->CreateFixture(std::make_shared<CircleShape>(circle));
-	}
+        const auto body6 = m_world->CreateBody(circleBodyDef);
+        body6->CreateFixture(std::make_shared<CircleShape>(circle));
+    }
 
-	void PostStep(const Settings&, Drawer&) override
-	{
-		// We are going to destroy some bodies according to contact
-		// points. We must buffer the bodies that should be destroyed
-		// because they may belong to multiple contact points.
-		const auto k_maxNuke = 6;
-		Body* nuke[k_maxNuke];
-		auto nukeCount = 0;
+    void PostStep(const Settings&, Drawer&) override
+    {
+        // We are going to destroy some bodies according to contact
+        // points. We must buffer the bodies that should be destroyed
+        // because they may belong to multiple contact points.
+        const auto k_maxNuke = 6;
+        Body* nuke[k_maxNuke];
+        auto nukeCount = 0;
 
-		// Traverse the contact results. Destroy bodies that
-		// are touching heavier bodies.
-		const auto pointCount = GetPointCount();
-		for (auto i = decltype(pointCount){0}; i < pointCount; ++i)
-		{
-			auto point = GetPoints() + i;
+        // Traverse the contact results. Destroy bodies that
+        // are touching heavier bodies.
+        const auto pointCount = GetPointCount();
+        for (auto i = decltype(pointCount){0}; i < pointCount; ++i)
+        {
+            auto point = GetPoints() + i;
 
-			const auto body1 = point->fixtureA->GetBody();
-			const auto body2 = point->fixtureB->GetBody();
-			const auto mass1 = GetMass(*body1);
-			const auto mass2 = GetMass(*body2);
+            const auto body1 = point->fixtureA->GetBody();
+            const auto body2 = point->fixtureB->GetBody();
+            const auto mass1 = GetMass(*body1);
+            const auto mass2 = GetMass(*body2);
 
-			if (mass1 > Mass{0} && mass2 > Mass{0})
-			{
-				if (mass2 > mass1)
-				{
-					nuke[nukeCount++] = body1;
-				}
-				else
-				{
-					nuke[nukeCount++] = body2;
-				}
+            if (mass1 > Mass{0} && mass2 > Mass{0})
+            {
+                if (mass2 > mass1)
+                {
+                    nuke[nukeCount++] = body1;
+                }
+                else
+                {
+                    nuke[nukeCount++] = body2;
+                }
 
-				if (nukeCount == k_maxNuke)
-				{
-					break;
-				}
-			}
-		}
+                if (nukeCount == k_maxNuke)
+                {
+                    break;
+                }
+            }
+        }
 
-		// Sort the nuke array to group duplicates.
-		std::sort(nuke, nuke + nukeCount);
+        // Sort the nuke array to group duplicates.
+        std::sort(nuke, nuke + nukeCount);
 
-		// Destroy the bodies, skipping duplicates.
-		auto i = 0;
-		while (i < nukeCount)
-		{
-			const auto b = nuke[i++];
-			while (i < nukeCount && nuke[i] == b)
-			{
-				++i;
-			}
+        // Destroy the bodies, skipping duplicates.
+        auto i = 0;
+        while (i < nukeCount)
+        {
+            const auto b = nuke[i++];
+            while (i < nukeCount && nuke[i] == b)
+            {
+                ++i;
+            }
 
-			if (b != GetBomb())
-			{
-				m_world->Destroy(b);
-			}
-		}
-	}
+            if (b != GetBomb())
+            {
+                m_world->Destroy(b);
+            }
+        }
+    }
 
-	static Test* Create()
-	{
-		return new CollisionProcessing;
-	}
+    static Test* Create()
+    {
+        return new CollisionProcessing;
+    }
 };
 
 } // namespace box2d

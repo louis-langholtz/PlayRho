@@ -25,126 +25,126 @@ namespace box2d {
 class Revolute : public Test
 {
 public:
-	Revolute()
-	{
-		const auto ground = m_world->CreateBody();
-		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
+    Revolute()
+    {
+        const auto ground = m_world->CreateBody();
+        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 
-		{
-			BodyDef bd;
-			bd.type = BodyType::Dynamic;
+        {
+            BodyDef bd;
+            bd.type = BodyType::Dynamic;
 
-			bd.position = Vec2(-10.0f, 20.0f) * Meter;
-			const auto body = m_world->CreateBody(bd);
-			auto circleConf = CircleShape::Conf{};
-			circleConf.vertexRadius = RealNum{0.5f} * Meter;
-			circleConf.density = RealNum{5} * KilogramPerSquareMeter;
-			body->CreateFixture(std::make_shared<CircleShape>(circleConf));
+            bd.position = Vec2(-10.0f, 20.0f) * Meter;
+            const auto body = m_world->CreateBody(bd);
+            auto circleConf = CircleShape::Conf{};
+            circleConf.vertexRadius = RealNum{0.5f} * Meter;
+            circleConf.density = RealNum{5} * KilogramPerSquareMeter;
+            body->CreateFixture(std::make_shared<CircleShape>(circleConf));
 
-			const auto w = RealNum{100.0f};
-			body->SetVelocity(Velocity{Vec2(-8.0f * w, 0.0f) * MeterPerSecond, RadianPerSecond * w});
-			
-			RevoluteJointDef rjd(ground, body, Vec2(-10.0f, 12.0f) * Meter);
-			rjd.motorSpeed = 1.0f * Pi * RadianPerSecond;
-			rjd.maxMotorTorque = RealNum{10000.0f} * NewtonMeter;
-			rjd.enableMotor = false;
-			rjd.lowerAngle = RealNum{-0.25f} * Radian * Pi;
-			rjd.upperAngle = RealNum{0.5f} * Radian * Pi;
-			rjd.enableLimit = true;
-			rjd.collideConnected = true;
+            const auto w = RealNum{100.0f};
+            body->SetVelocity(Velocity{Vec2(-8.0f * w, 0.0f) * MeterPerSecond, RadianPerSecond * w});
+            
+            RevoluteJointDef rjd(ground, body, Vec2(-10.0f, 12.0f) * Meter);
+            rjd.motorSpeed = 1.0f * Pi * RadianPerSecond;
+            rjd.maxMotorTorque = RealNum{10000.0f} * NewtonMeter;
+            rjd.enableMotor = false;
+            rjd.lowerAngle = RealNum{-0.25f} * Radian * Pi;
+            rjd.upperAngle = RealNum{0.5f} * Radian * Pi;
+            rjd.enableLimit = true;
+            rjd.collideConnected = true;
 
-			m_joint = (RevoluteJoint*)m_world->CreateJoint(rjd);
-		}
+            m_joint = (RevoluteJoint*)m_world->CreateJoint(rjd);
+        }
 
-		{
-			BodyDef circle_bd;
-			circle_bd.type = BodyType::Dynamic;
-			circle_bd.position = Vec2(5.0f, 30.0f) * Meter;
+        {
+            BodyDef circle_bd;
+            circle_bd.type = BodyType::Dynamic;
+            circle_bd.position = Vec2(5.0f, 30.0f) * Meter;
 
-			FixtureDef fd;
-			fd.filter.maskBits = 1;
+            FixtureDef fd;
+            fd.filter.maskBits = 1;
 
-			m_ball = m_world->CreateBody(circle_bd);
-			auto circleConf = CircleShape::Conf{};
-			circleConf.vertexRadius = RealNum{3.0f} * Meter;
-			circleConf.density = RealNum{5} * KilogramPerSquareMeter;
-			m_ball->CreateFixture(std::make_shared<CircleShape>(circleConf), fd);
+            m_ball = m_world->CreateBody(circle_bd);
+            auto circleConf = CircleShape::Conf{};
+            circleConf.vertexRadius = RealNum{3.0f} * Meter;
+            circleConf.density = RealNum{5} * KilogramPerSquareMeter;
+            m_ball->CreateFixture(std::make_shared<CircleShape>(circleConf), fd);
 
-			PolygonShape polygon_shape;
-			SetAsBox(polygon_shape, RealNum{10.0f} * Meter, RealNum{0.2f} * Meter, Vec2 (-10.0f, 0.0f) * Meter, Angle{0});
-			polygon_shape.SetDensity(RealNum{2} * KilogramPerSquareMeter);
+            PolygonShape polygon_shape;
+            SetAsBox(polygon_shape, RealNum{10.0f} * Meter, RealNum{0.2f} * Meter, Vec2 (-10.0f, 0.0f) * Meter, Angle{0});
+            polygon_shape.SetDensity(RealNum{2} * KilogramPerSquareMeter);
 
-			BodyDef polygon_bd;
-			polygon_bd.position = Vec2(20.0f, 10.0f) * Meter;
-			polygon_bd.type = BodyType::Dynamic;
-			polygon_bd.bullet = true;
-			const auto polygon_body = m_world->CreateBody(polygon_bd);
-			polygon_body->CreateFixture(std::make_shared<PolygonShape>(polygon_shape));
+            BodyDef polygon_bd;
+            polygon_bd.position = Vec2(20.0f, 10.0f) * Meter;
+            polygon_bd.type = BodyType::Dynamic;
+            polygon_bd.bullet = true;
+            const auto polygon_body = m_world->CreateBody(polygon_bd);
+            polygon_body->CreateFixture(std::make_shared<PolygonShape>(polygon_shape));
 
-			RevoluteJointDef rjd(ground, polygon_body, Vec2(20.0f, 10.0f) * Meter);
-			rjd.lowerAngle = RealNum{-0.25f} * Radian * Pi;
-			rjd.upperAngle = RealNum{0.0f} * Radian * Pi;
-			rjd.enableLimit = true;
-			m_world->CreateJoint(rjd);
-		}
+            RevoluteJointDef rjd(ground, polygon_body, Vec2(20.0f, 10.0f) * Meter);
+            rjd.lowerAngle = RealNum{-0.25f} * Radian * Pi;
+            rjd.upperAngle = RealNum{0.0f} * Radian * Pi;
+            rjd.enableLimit = true;
+            m_world->CreateJoint(rjd);
+        }
 
-		// Tests mass computation of a small object far from the origin
-		{
-			BodyDef bodyDef;
-			bodyDef.type = BodyType::Dynamic;
-			const auto body = m_world->CreateBody(bodyDef);
-		
-			auto polyShape = PolygonShape({
-				Vec2(17.63f, 36.31f) * Meter,
-				Vec2(17.52f, 36.69f) * Meter,
-				Vec2(17.19f, 36.36f) * Meter
-			});
-			polyShape.SetDensity(RealNum{1} * KilogramPerSquareMeter);
-		
-			body->CreateFixture(std::make_shared<PolygonShape>(polyShape));	//assertion hits inside here
-		}
+        // Tests mass computation of a small object far from the origin
+        {
+            BodyDef bodyDef;
+            bodyDef.type = BodyType::Dynamic;
+            const auto body = m_world->CreateBody(bodyDef);
+        
+            auto polyShape = PolygonShape({
+                Vec2(17.63f, 36.31f) * Meter,
+                Vec2(17.52f, 36.69f) * Meter,
+                Vec2(17.19f, 36.36f) * Meter
+            });
+            polyShape.SetDensity(RealNum{1} * KilogramPerSquareMeter);
+        
+            body->CreateFixture(std::make_shared<PolygonShape>(polyShape));    //assertion hits inside here
+        }
 
-	}
+    }
 
-	void KeyboardDown(Key key) override
-	{
-		switch (key)
-		{
-		case Key_L:
-			m_joint->EnableLimit(!m_joint->IsLimitEnabled());
-			break;
+    void KeyboardDown(Key key) override
+    {
+        switch (key)
+        {
+        case Key_L:
+            m_joint->EnableLimit(!m_joint->IsLimitEnabled());
+            break;
 
-		case Key_M:
-			m_joint->EnableMotor(!m_joint->IsMotorEnabled());
-			break;
-				
-		default:
-			break;
-		}
-	}
+        case Key_M:
+            m_joint->EnableMotor(!m_joint->IsMotorEnabled());
+            break;
+                
+        default:
+            break;
+        }
+    }
 
-	void PostStep(const Settings&, Drawer& drawer) override
-	{
-		drawer.DrawString(5, m_textLine, "Keys: (l) limits, (m) motor");
-		m_textLine += DRAW_STRING_NEW_LINE;
+    void PostStep(const Settings&, Drawer& drawer) override
+    {
+        drawer.DrawString(5, m_textLine, "Keys: (l) limits, (m) motor");
+        m_textLine += DRAW_STRING_NEW_LINE;
 
-		//if (GetStepCount() == 360)
-		//{
-		//	m_ball->SetTransform(Vec2(0.0f, 0.5f), 0.0f);
-		//}
+        //if (GetStepCount() == 360)
+        //{
+        //    m_ball->SetTransform(Vec2(0.0f, 0.5f), 0.0f);
+        //}
 
-		//RealNum torque1 = m_joint1->GetMotorTorque();
-		//drawer.DrawString(5, m_textLine, "Motor Torque = %4.0f, %4.0f : Motor Force = %4.0f", (float) torque1, (float) torque2, (float) force3);
-		//m_textLine += DRAW_STRING_NEW_LINE;
-	}
+        //RealNum torque1 = m_joint1->GetMotorTorque();
+        //drawer.DrawString(5, m_textLine, "Motor Torque = %4.0f, %4.0f : Motor Force = %4.0f", (float) torque1, (float) torque2, (float) force3);
+        //m_textLine += DRAW_STRING_NEW_LINE;
+    }
 
-	static Test* Create()
-	{
-		return new Revolute;
-	}
+    static Test* Create()
+    {
+        return new Revolute;
+    }
 
-	Body* m_ball;
-	RevoluteJoint* m_joint;
+    Body* m_ball;
+    RevoluteJoint* m_joint;
 };
 
 } // namespace box2d

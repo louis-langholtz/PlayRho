@@ -27,114 +27,114 @@ namespace box2d {
 class PolyCollision : public Test
 {
 public:
-	PolyCollision()
-	{
-		{
-			m_polygonA.SetAsBox(RealNum{0.2f} * Meter, RealNum{0.4f} * Meter);
-			m_transformA = Transformation{Vec2(0.0f, 0.0f) * Meter, UnitVec2{Angle{0}}};
-		}
+    PolyCollision()
+    {
+        {
+            m_polygonA.SetAsBox(RealNum{0.2f} * Meter, RealNum{0.4f} * Meter);
+            m_transformA = Transformation{Vec2(0.0f, 0.0f) * Meter, UnitVec2{Angle{0}}};
+        }
 
-		{
-			m_polygonB.SetAsBox(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
-			m_positionB = Vec2(19.345284f, 1.5632932f) * Meter;
-			m_angleB = RealNum{1.9160721f} * Radian;
-			m_transformB = Transformation{m_positionB, UnitVec2{m_angleB}};
-		}
-	}
+        {
+            m_polygonB.SetAsBox(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
+            m_positionB = Vec2(19.345284f, 1.5632932f) * Meter;
+            m_angleB = RealNum{1.9160721f} * Radian;
+            m_transformB = Transformation{m_positionB, UnitVec2{m_angleB}};
+        }
+    }
 
-	static Test* Create()
-	{
-		return new PolyCollision;
-	}
+    static Test* Create()
+    {
+        return new PolyCollision;
+    }
 
-	void PostStep(const Settings& settings, Drawer& drawer) override
-	{
-		NOT_USED(settings);
+    void PostStep(const Settings& settings, Drawer& drawer) override
+    {
+        NOT_USED(settings);
 
-		const auto proxyA = m_polygonA.GetChild(0);
-		const auto proxyB = m_polygonB.GetChild(0);
+        const auto proxyA = m_polygonA.GetChild(0);
+        const auto proxyB = m_polygonB.GetChild(0);
 
-		const auto manifold = CollideShapes(proxyA, m_transformA, proxyB, m_transformB);
-		const auto pointCount = manifold.GetPointCount();
+        const auto manifold = CollideShapes(proxyA, m_transformA, proxyB, m_transformB);
+        const auto pointCount = manifold.GetPointCount();
 
-		drawer.DrawString(5, m_textLine, "point count = %d", pointCount);
-		m_textLine += DRAW_STRING_NEW_LINE;
+        drawer.DrawString(5, m_textLine, "point count = %d", pointCount);
+        m_textLine += DRAW_STRING_NEW_LINE;
 
-		{
-			const auto color = Color(0.9f, 0.9f, 0.9f);
-			{
-				const auto vertexCount = m_polygonA.GetVertexCount();
-				auto v = std::vector<Length2D>(vertexCount);
-				for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
-				{
-					v[i] = Transform(m_polygonA.GetVertex(i), m_transformA);
-				}
-				drawer.DrawPolygon(&v[0], vertexCount, color);
-			}
+        {
+            const auto color = Color(0.9f, 0.9f, 0.9f);
+            {
+                const auto vertexCount = m_polygonA.GetVertexCount();
+                auto v = std::vector<Length2D>(vertexCount);
+                for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+                {
+                    v[i] = Transform(m_polygonA.GetVertex(i), m_transformA);
+                }
+                drawer.DrawPolygon(&v[0], vertexCount, color);
+            }
 
-			{
-				const auto vertexCount = m_polygonB.GetVertexCount();
-				auto v = std::vector<Length2D>(vertexCount);
-				for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
-				{
-					v[i] = Transform(m_polygonB.GetVertex(i), m_transformB);
-				}
-				drawer.DrawPolygon(&v[0], vertexCount, color);
-			}
-		}
+            {
+                const auto vertexCount = m_polygonB.GetVertexCount();
+                auto v = std::vector<Length2D>(vertexCount);
+                for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+                {
+                    v[i] = Transform(m_polygonB.GetVertex(i), m_transformB);
+                }
+                drawer.DrawPolygon(&v[0], vertexCount, color);
+            }
+        }
 
-		const auto worldManifold = GetWorldManifold(manifold,
-													m_transformA, GetVertexRadius(m_polygonA),
-													m_transformB, GetVertexRadius(m_polygonB));
-		for (auto i = decltype(pointCount){0}; i < pointCount; ++i)
-		{
-			drawer.DrawPoint(worldManifold.GetPoint(i), RealNum{4.0f} * Meter, Color(0.9f, 0.3f, 0.3f));
-		}
-	}
+        const auto worldManifold = GetWorldManifold(manifold,
+                                                    m_transformA, GetVertexRadius(m_polygonA),
+                                                    m_transformB, GetVertexRadius(m_polygonB));
+        for (auto i = decltype(pointCount){0}; i < pointCount; ++i)
+        {
+            drawer.DrawPoint(worldManifold.GetPoint(i), RealNum{4.0f} * Meter, Color(0.9f, 0.3f, 0.3f));
+        }
+    }
 
-	void KeyboardDown(Key key) override
-	{
-		switch (key)
-		{
-		case Key_A:
-			m_positionB.x -= RealNum{0.1f} * Meter;
-			break;
+    void KeyboardDown(Key key) override
+    {
+        switch (key)
+        {
+        case Key_A:
+            m_positionB.x -= RealNum{0.1f} * Meter;
+            break;
 
-		case Key_D:
-			m_positionB.x += RealNum{0.1f} * Meter;
-			break;
+        case Key_D:
+            m_positionB.x += RealNum{0.1f} * Meter;
+            break;
 
-		case Key_S:
-			m_positionB.y -= RealNum{0.1f} * Meter;
-			break;
+        case Key_S:
+            m_positionB.y -= RealNum{0.1f} * Meter;
+            break;
 
-		case Key_W:
-			m_positionB.y += RealNum{0.1f} * Meter;
-			break;
+        case Key_W:
+            m_positionB.y += RealNum{0.1f} * Meter;
+            break;
 
-		case Key_Q:
-			m_angleB += RealNum{0.1f} * Radian * Pi;
-			break;
+        case Key_Q:
+            m_angleB += RealNum{0.1f} * Radian * Pi;
+            break;
 
-		case Key_E:
-			m_angleB -= RealNum{0.1f} * Radian * Pi;
-			break;
+        case Key_E:
+            m_angleB -= RealNum{0.1f} * Radian * Pi;
+            break;
 
-		default:
-			break;
-		}
+        default:
+            break;
+        }
 
-		m_transformB = Transformation{m_positionB, UnitVec2{m_angleB}};
-	}
+        m_transformB = Transformation{m_positionB, UnitVec2{m_angleB}};
+    }
 
-	PolygonShape m_polygonA;
-	PolygonShape m_polygonB;
+    PolygonShape m_polygonA;
+    PolygonShape m_polygonB;
 
-	Transformation m_transformA;
-	Transformation m_transformB;
+    Transformation m_transformA;
+    Transformation m_transformB;
 
-	Length2D m_positionB;
-	Angle m_angleB;
+    Length2D m_positionB;
+    Angle m_angleB;
 };
 
 } // namespace box2d

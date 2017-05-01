@@ -28,73 +28,73 @@ namespace box2d {
 class MotorJointTest : public Test
 {
 public:
-	MotorJointTest()
-	{
-		const auto ground = m_world->CreateBody();
-		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
+    MotorJointTest()
+    {
+        const auto ground = m_world->CreateBody();
+        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
 
-		// Define motorized body
-		BodyDef bd;
-		bd.type = BodyType::Dynamic;
-		bd.position = Vec2(0.0f, 8.0f) * Meter;
-		const auto body = m_world->CreateBody(bd);
+        // Define motorized body
+        BodyDef bd;
+        bd.type = BodyType::Dynamic;
+        bd.position = Vec2(0.0f, 8.0f) * Meter;
+        const auto body = m_world->CreateBody(bd);
 
-		auto conf = PolygonShape::Conf{};
-		conf.friction = 0.6f;
-		conf.density = RealNum{2} * KilogramPerSquareMeter;
-		body->CreateFixture(std::make_shared<PolygonShape>(RealNum{2.0f} * Meter, RealNum{0.5f} * Meter, conf));
+        auto conf = PolygonShape::Conf{};
+        conf.friction = 0.6f;
+        conf.density = RealNum{2} * KilogramPerSquareMeter;
+        body->CreateFixture(std::make_shared<PolygonShape>(RealNum{2.0f} * Meter, RealNum{0.5f} * Meter, conf));
 
-		MotorJointDef mjd;
-		mjd.Initialize(ground, body);
-		mjd.maxForce = RealNum{1000.0f} * Newton;
-		mjd.maxTorque = RealNum{1000.0f} * NewtonMeter;
-		m_joint = (MotorJoint*)m_world->CreateJoint(mjd);
-	}
+        MotorJointDef mjd;
+        mjd.Initialize(ground, body);
+        mjd.maxForce = RealNum{1000.0f} * Newton;
+        mjd.maxTorque = RealNum{1000.0f} * NewtonMeter;
+        m_joint = (MotorJoint*)m_world->CreateJoint(mjd);
+    }
 
-	void KeyboardDown(Key key) override
-	{
-		switch (key)
-		{
-		case Key_S:
-			m_go = !m_go;
-			break;
-		default:
-			break;
-		}
-	}
+    void KeyboardDown(Key key) override
+    {
+        switch (key)
+        {
+        case Key_S:
+            m_go = !m_go;
+            break;
+        default:
+            break;
+        }
+    }
 
-	void PreStep(const Settings& settings, Drawer& drawer) override
-	{
-		if (m_go && settings.dt > 0)
-		{
-			m_time += settings.dt;
-		}
+    void PreStep(const Settings& settings, Drawer& drawer) override
+    {
+        if (m_go && settings.dt > 0)
+        {
+            m_time += settings.dt;
+        }
 
-		const auto linearOffset = Vec2{
-			RealNum{6} * std::sin(RealNum{2} * m_time),
-			RealNum{8} + RealNum{4} * std::sin(RealNum{1} * m_time)
-		} * Meter;
+        const auto linearOffset = Vec2{
+            RealNum{6} * std::sin(RealNum{2} * m_time),
+            RealNum{8} + RealNum{4} * std::sin(RealNum{1} * m_time)
+        } * Meter;
 
-		m_joint->SetLinearOffset(linearOffset);
-		m_joint->SetAngularOffset(RealNum{4} * Radian * m_time);
+        m_joint->SetLinearOffset(linearOffset);
+        m_joint->SetAngularOffset(RealNum{4} * Radian * m_time);
 
-		drawer.DrawPoint(linearOffset, RealNum{4} * Meter, Color(0.9f, 0.9f, 0.9f));
-	}
+        drawer.DrawPoint(linearOffset, RealNum{4} * Meter, Color(0.9f, 0.9f, 0.9f));
+    }
 
-	void PostStep(const Settings&, Drawer& drawer) override
-	{
-		drawer.DrawString(5, m_textLine, "Keys: (s) pause");
-		m_textLine += 15;
-	}
-	
-	static Test* Create()
-	{
-		return new MotorJointTest;
-	}
+    void PostStep(const Settings&, Drawer& drawer) override
+    {
+        drawer.DrawString(5, m_textLine, "Keys: (s) pause");
+        m_textLine += 15;
+    }
+    
+    static Test* Create()
+    {
+        return new MotorJointTest;
+    }
 
-	MotorJoint* m_joint;
-	RealNum m_time = 0;
-	bool m_go = false;
+    MotorJoint* m_joint;
+    RealNum m_time = 0;
+    bool m_go = false;
 };
 
 } // namespace box2d

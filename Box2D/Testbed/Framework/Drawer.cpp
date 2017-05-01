@@ -23,10 +23,10 @@ using namespace box2d;
 
 Drawer::~Drawer() noexcept
 {
-	// Intentionally empty.
+    // Intentionally empty.
 }
 
 Color box2d::Brighten(Color color, float factor)
 {
-	return Color(color.r * factor, color.g * factor, color.b * factor, color.a);
+    return Color(color.r * factor, color.g * factor, color.b * factor, color.a);
 }

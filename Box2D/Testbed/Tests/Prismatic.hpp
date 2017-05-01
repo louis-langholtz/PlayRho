@@ -26,77 +26,77 @@ namespace box2d {
 class Prismatic : public Test
 {
 public:
-	Prismatic()
-	{
-		const auto ground = m_world->CreateBody();
-		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
+    Prismatic()
+    {
+        const auto ground = m_world->CreateBody();
+        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 
-		{
-			BodyDef bd;
-			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(-10.0f, 10.0f) * Meter;
-			bd.angle = RealNum{0.5f} * Radian * Pi;
-			bd.allowSleep = false;
-			const auto body = m_world->CreateBody(bd);
-			
-			auto polygonConf = PolygonShape::Conf{};
-			polygonConf.density = RealNum{5} * KilogramPerSquareMeter;
-			body->CreateFixture(std::make_shared<PolygonShape>(RealNum{2.0f} * Meter, RealNum{0.5f} * Meter, polygonConf));
+        {
+            BodyDef bd;
+            bd.type = BodyType::Dynamic;
+            bd.position = Vec2(-10.0f, 10.0f) * Meter;
+            bd.angle = RealNum{0.5f} * Radian * Pi;
+            bd.allowSleep = false;
+            const auto body = m_world->CreateBody(bd);
+            
+            auto polygonConf = PolygonShape::Conf{};
+            polygonConf.density = RealNum{5} * KilogramPerSquareMeter;
+            body->CreateFixture(std::make_shared<PolygonShape>(RealNum{2.0f} * Meter, RealNum{0.5f} * Meter, polygonConf));
 
-			// Bouncy limit
-			const auto axis = GetUnitVector(Vec2(2.0f, 1.0f));
-			PrismaticJointDef pjd(ground, body, Vec2(0.0f, 0.0f) * Meter, axis);
+            // Bouncy limit
+            const auto axis = GetUnitVector(Vec2(2.0f, 1.0f));
+            PrismaticJointDef pjd(ground, body, Vec2(0.0f, 0.0f) * Meter, axis);
 
-			// Non-bouncy limit
-			//pjd.Initialize(ground, body, Vec2(-10.0f, 10.0f), Vec2(1.0f, 0.0f));
+            // Non-bouncy limit
+            //pjd.Initialize(ground, body, Vec2(-10.0f, 10.0f), Vec2(1.0f, 0.0f));
 
-			pjd.motorSpeed = RealNum{10.0f} * RadianPerSecond;
-			pjd.maxMotorTorque = RealNum{10000.0f} * NewtonMeter;
-			pjd.enableMotor = true;
-			pjd.lowerTranslation = RealNum{0.0f} * Meter;
-			pjd.upperTranslation = RealNum{20.0f} * Meter;
-			pjd.enableLimit = true;
+            pjd.motorSpeed = RealNum{10.0f} * RadianPerSecond;
+            pjd.maxMotorTorque = RealNum{10000.0f} * NewtonMeter;
+            pjd.enableMotor = true;
+            pjd.lowerTranslation = RealNum{0.0f} * Meter;
+            pjd.upperTranslation = RealNum{20.0f} * Meter;
+            pjd.enableLimit = true;
 
-			m_joint = (PrismaticJoint*)m_world->CreateJoint(pjd);
-		}
-	}
+            m_joint = (PrismaticJoint*)m_world->CreateJoint(pjd);
+        }
+    }
 
-	void KeyboardDown(Key key) override
-	{
-		switch (key)
-		{
-		case Key_L:
-			m_joint->EnableLimit(!m_joint->IsLimitEnabled());
-			break;
+    void KeyboardDown(Key key) override
+    {
+        switch (key)
+        {
+        case Key_L:
+            m_joint->EnableLimit(!m_joint->IsLimitEnabled());
+            break;
 
-		case Key_M:
-			m_joint->EnableMotor(!m_joint->IsMotorEnabled());
-			break;
+        case Key_M:
+            m_joint->EnableMotor(!m_joint->IsMotorEnabled());
+            break;
 
-		case Key_S:
-			m_joint->SetMotorSpeed(-m_joint->GetMotorSpeed());
-			break;
+        case Key_S:
+            m_joint->SetMotorSpeed(-m_joint->GetMotorSpeed());
+            break;
 
-		default:
-			break;
-		}
-	}
+        default:
+            break;
+        }
+    }
 
-	void PostStep(const Settings& settings, Drawer& drawer) override
-	{
-		drawer.DrawString(5, m_textLine, "Keys: (l) limits, (m) motors, (s) speed");
-		m_textLine += DRAW_STRING_NEW_LINE;
-		const auto force = m_joint->GetMotorForce(RealNum{settings.hz} * Hertz);
-		drawer.DrawString(5, m_textLine, "Motor Force = %4.0f", double{force / Newton});
-		m_textLine += DRAW_STRING_NEW_LINE;
-	}
+    void PostStep(const Settings& settings, Drawer& drawer) override
+    {
+        drawer.DrawString(5, m_textLine, "Keys: (l) limits, (m) motors, (s) speed");
+        m_textLine += DRAW_STRING_NEW_LINE;
+        const auto force = m_joint->GetMotorForce(RealNum{settings.hz} * Hertz);
+        drawer.DrawString(5, m_textLine, "Motor Force = %4.0f", double{force / Newton});
+        m_textLine += DRAW_STRING_NEW_LINE;
+    }
 
-	static Test* Create()
-	{
-		return new Prismatic;
-	}
+    static Test* Create()
+    {
+        return new Prismatic;
+    }
 
-	PrismaticJoint* m_joint;
+    PrismaticJoint* m_joint;
 };
 
 } // namespace box2d

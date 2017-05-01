@@ -26,71 +26,71 @@ namespace box2d {
 class BasicSliderCrank : public Test
 {
 public:
-	BasicSliderCrank()
-	{
-		const auto ground = [&]()
-		{
-			BodyDef bd;
+    BasicSliderCrank()
+    {
+        const auto ground = [&]()
+        {
+            BodyDef bd;
             bd.position = Vec2(0.0f, 17.0f) * Meter;
-			return m_world->CreateBody(bd);
-		}();
+            return m_world->CreateBody(bd);
+        }();
         
-		{
-			auto prevBody = ground;
+        {
+            auto prevBody = ground;
             
-			// Define crank.
-			{
-				BodyDef bd;
-				bd.type = BodyType::Dynamic;
-				bd.position = Vec2(-8.0f, 20.0f) * Meter;
-				const auto body = m_world->CreateBody(bd);
-				auto conf = PolygonShape::Conf{};
-				conf.density = RealNum{2} * KilogramPerSquareMeter;
-				body->CreateFixture(std::make_shared<PolygonShape>(RealNum{4} * Meter, RealNum{1} * Meter, conf));
+            // Define crank.
+            {
+                BodyDef bd;
+                bd.type = BodyType::Dynamic;
+                bd.position = Vec2(-8.0f, 20.0f) * Meter;
+                const auto body = m_world->CreateBody(bd);
+                auto conf = PolygonShape::Conf{};
+                conf.density = RealNum{2} * KilogramPerSquareMeter;
+                body->CreateFixture(std::make_shared<PolygonShape>(RealNum{4} * Meter, RealNum{1} * Meter, conf));
                 
-				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-12.0f, 20.0f) * Meter});
+                m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-12.0f, 20.0f) * Meter});
                 
-				prevBody = body;
-			}
+                prevBody = body;
+            }
             
-			// Define connecting rod
-			{
-				BodyDef bd;
-				bd.type = BodyType::Dynamic;
-				bd.position = Vec2(4.0f, 20.0f) * Meter;
-				const auto body = m_world->CreateBody(bd);
-				auto conf = PolygonShape::Conf{};
-				conf.density = RealNum{2} * KilogramPerSquareMeter;
-				body->CreateFixture(std::make_shared<PolygonShape>(RealNum{8} * Meter, RealNum{1} * Meter, conf));
+            // Define connecting rod
+            {
+                BodyDef bd;
+                bd.type = BodyType::Dynamic;
+                bd.position = Vec2(4.0f, 20.0f) * Meter;
+                const auto body = m_world->CreateBody(bd);
+                auto conf = PolygonShape::Conf{};
+                conf.density = RealNum{2} * KilogramPerSquareMeter;
+                body->CreateFixture(std::make_shared<PolygonShape>(RealNum{8} * Meter, RealNum{1} * Meter, conf));
                 
-				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-4.0f, 20.0f) * Meter});
+                m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-4.0f, 20.0f) * Meter});
                 
-				prevBody = body;
-			}
+                prevBody = body;
+            }
             
-			// Define piston
-			{
-				BodyDef bd;
-				bd.type = BodyType::Dynamic;
-				bd.fixedRotation = true;
-				bd.position = Vec2(12.0f, 20.0f) * Meter;
-				const auto body = m_world->CreateBody(bd);
-				auto conf = PolygonShape::Conf{};
-				conf.density = RealNum{2} * KilogramPerSquareMeter;
-				body->CreateFixture(std::make_shared<PolygonShape>(RealNum{3} * Meter, RealNum{3} * Meter, conf));
+            // Define piston
+            {
+                BodyDef bd;
+                bd.type = BodyType::Dynamic;
+                bd.fixedRotation = true;
+                bd.position = Vec2(12.0f, 20.0f) * Meter;
+                const auto body = m_world->CreateBody(bd);
+                auto conf = PolygonShape::Conf{};
+                conf.density = RealNum{2} * KilogramPerSquareMeter;
+                body->CreateFixture(std::make_shared<PolygonShape>(RealNum{3} * Meter, RealNum{3} * Meter, conf));
                 
-				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(12.0f, 20.0f) * Meter});
+                m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(12.0f, 20.0f) * Meter});
                 
-				const PrismaticJointDef pjd{ground, body, Vec2(12.0f, 17.0f) * Meter, UnitVec2::GetRight()};
-				m_world->CreateJoint(pjd);
-			}
-  		}
-	}
+                const PrismaticJointDef pjd{ground, body, Vec2(12.0f, 17.0f) * Meter, UnitVec2::GetRight()};
+                m_world->CreateJoint(pjd);
+            }
+          }
+    }
     
-	static Test* Create()
-	{
-		return new BasicSliderCrank;
-	}
+    static Test* Create()
+    {
+        return new BasicSliderCrank;
+    }
 };
 
 } // namespace box2d

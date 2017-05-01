@@ -26,34 +26,34 @@ class HeavyOnLight : public Test
 {
 public:
     
-	HeavyOnLight()
-	{
-		{
-			const auto ground = m_world->CreateBody();
-			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
-		}
-		
-		auto conf = CircleShape::Conf{};
-		conf.density = RealNum{10} * KilogramPerSquareMeter;
+    HeavyOnLight()
+    {
+        {
+            const auto ground = m_world->CreateBody();
+            ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
+        }
+        
+        auto conf = CircleShape::Conf{};
+        conf.density = RealNum{10} * KilogramPerSquareMeter;
 
-		BodyDef bd;
-		bd.type = BodyType::Dynamic;
+        BodyDef bd;
+        bd.type = BodyType::Dynamic;
 
-		bd.position = Vec2(0.0f, 0.5f) * Meter;
-		const auto body1 = m_world->CreateBody(bd);
-		conf.vertexRadius = RealNum{0.5f} * Meter;
-		body1->CreateFixture(std::make_shared<CircleShape>(conf));
+        bd.position = Vec2(0.0f, 0.5f) * Meter;
+        const auto body1 = m_world->CreateBody(bd);
+        conf.vertexRadius = RealNum{0.5f} * Meter;
+        body1->CreateFixture(std::make_shared<CircleShape>(conf));
         
         bd.position = Vec2(0.0f, 6.0f) * Meter;
         const auto body2 = m_world->CreateBody(bd);
-		conf.vertexRadius = RealNum{5.0f} * Meter;
-		body2->CreateFixture(std::make_shared<CircleShape>(conf));
-	}
+        conf.vertexRadius = RealNum{5.0f} * Meter;
+        body2->CreateFixture(std::make_shared<CircleShape>(conf));
+    }
     
-	static Test* Create()
-	{
-		return new HeavyOnLight;
-	}
+    static Test* Create()
+    {
+        return new HeavyOnLight;
+    }
 };
 
 } // namespace box2d

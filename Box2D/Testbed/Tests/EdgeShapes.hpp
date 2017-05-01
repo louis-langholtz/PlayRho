@@ -27,213 +27,213 @@ namespace box2d {
 class EdgeShapesCallback : public RayCastFixtureReporter
 {
 public:
-	EdgeShapesCallback()
-	{
-		m_fixture = nullptr;
-	}
+    EdgeShapesCallback()
+    {
+        m_fixture = nullptr;
+    }
 
-	RealNum ReportFixture(Fixture* fixture, const Length2D& point,
-						  const UnitVec2& normal, RealNum fraction) override
-	{
-		m_fixture = fixture;
-		m_point = point;
-		m_normal = normal;
+    RealNum ReportFixture(Fixture* fixture, const Length2D& point,
+                          const UnitVec2& normal, RealNum fraction) override
+    {
+        m_fixture = fixture;
+        m_point = point;
+        m_normal = normal;
 
-		return fraction;
-	}
+        return fraction;
+    }
 
-	Fixture* m_fixture;
-	Length2D m_point;
-	UnitVec2 m_normal;
+    Fixture* m_fixture;
+    Length2D m_point;
+    UnitVec2 m_normal;
 };
 
 class EdgeShapes : public Test
 {
 public:
 
-	enum
-	{
-		e_maxBodies = 256
-	};
+    enum
+    {
+        e_maxBodies = 256
+    };
 
-	EdgeShapes()
-	{
-		m_circle->SetFriction(0.3f);
-		m_circle->SetDensity(RealNum{20} * KilogramPerSquareMeter);
+    EdgeShapes()
+    {
+        m_circle->SetFriction(0.3f);
+        m_circle->SetDensity(RealNum{20} * KilogramPerSquareMeter);
 
-		// Ground body
-		{
-			const auto ground = m_world->CreateBody();
-			auto x1 = -20.0f;
-			auto y1 = 2.0f * cosf(x1 / 10.0f * Pi);
-			for (auto i = 0; i < 80; ++i)
-			{
-				const auto x2 = x1 + 0.5f;
-				const auto y2 = 2.0f * cosf(x2 / 10.0f * Pi);
-				ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(x1, y1) * Meter, Vec2(x2, y2) * Meter));
-				x1 = x2;
-				y1 = y2;
-			}
-		}
+        // Ground body
+        {
+            const auto ground = m_world->CreateBody();
+            auto x1 = -20.0f;
+            auto y1 = 2.0f * cosf(x1 / 10.0f * Pi);
+            for (auto i = 0; i < 80; ++i)
+            {
+                const auto x2 = x1 + 0.5f;
+                const auto y2 = 2.0f * cosf(x2 / 10.0f * Pi);
+                ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(x1, y1) * Meter, Vec2(x2, y2) * Meter));
+                x1 = x2;
+                y1 = y2;
+            }
+        }
 
-		for (auto i = 0; i < 4; ++i)
-		{
-			m_polygons[i] = std::make_shared<PolygonShape>();
-			m_polygons[i]->SetFriction(0.3f);
-			m_polygons[i]->SetDensity(RealNum{20} * KilogramPerSquareMeter);
-		}
-		
-		m_polygons[0]->Set({
-			Vec2(-0.5f, 0.0f) * Meter,
-			Vec2(0.5f, 0.0f) * Meter,
-			Vec2(0.0f, 1.5f) * Meter
-		});
-		m_polygons[1]->Set({
-			Vec2(-0.1f, 0.0f) * Meter,
-			Vec2(0.1f, 0.0f) * Meter,
-			Vec2(0.0f, 1.5f) * Meter
-		});
+        for (auto i = 0; i < 4; ++i)
+        {
+            m_polygons[i] = std::make_shared<PolygonShape>();
+            m_polygons[i]->SetFriction(0.3f);
+            m_polygons[i]->SetDensity(RealNum{20} * KilogramPerSquareMeter);
+        }
+        
+        m_polygons[0]->Set({
+            Vec2(-0.5f, 0.0f) * Meter,
+            Vec2(0.5f, 0.0f) * Meter,
+            Vec2(0.0f, 1.5f) * Meter
+        });
+        m_polygons[1]->Set({
+            Vec2(-0.1f, 0.0f) * Meter,
+            Vec2(0.1f, 0.0f) * Meter,
+            Vec2(0.0f, 1.5f) * Meter
+        });
 
-		{
-			const auto w = 1.0f;
-			const auto b = w / (2.0f + Sqrt(2.0f));
-			const auto s = Sqrt(2.0f) * b;
+        {
+            const auto w = 1.0f;
+            const auto b = w / (2.0f + Sqrt(2.0f));
+            const auto s = Sqrt(2.0f) * b;
 
-			m_polygons[2]->Set({
-				Vec2(0.5f * s, 0.0f) * Meter,
-				Vec2(0.5f * w, b) * Meter,
-				Vec2(0.5f * w, b + s) * Meter,
-				Vec2(0.5f * s, w) * Meter,
-				Vec2(-0.5f * s, w) * Meter,
-				Vec2(-0.5f * w, b + s) * Meter,
-				Vec2(-0.5f * w, b) * Meter,
-				Vec2(-0.5f * s, 0.0f) * Meter
-			});
-		}
+            m_polygons[2]->Set({
+                Vec2(0.5f * s, 0.0f) * Meter,
+                Vec2(0.5f * w, b) * Meter,
+                Vec2(0.5f * w, b + s) * Meter,
+                Vec2(0.5f * s, w) * Meter,
+                Vec2(-0.5f * s, w) * Meter,
+                Vec2(-0.5f * w, b + s) * Meter,
+                Vec2(-0.5f * w, b) * Meter,
+                Vec2(-0.5f * s, 0.0f) * Meter
+            });
+        }
 
-		m_polygons[3]->SetAsBox(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
+        m_polygons[3]->SetAsBox(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
 
-		m_bodyIndex = 0;
-		memset(m_bodies, 0, sizeof(m_bodies));
+        m_bodyIndex = 0;
+        memset(m_bodies, 0, sizeof(m_bodies));
 
-		m_angle = 0.0f;
-	}
+        m_angle = 0.0f;
+    }
 
-	void Create(int index)
-	{
-		if (m_bodies[m_bodyIndex])
-		{
-			m_world->Destroy(m_bodies[m_bodyIndex]);
-			m_bodies[m_bodyIndex] = nullptr;
-		}
+    void Create(int index)
+    {
+        if (m_bodies[m_bodyIndex])
+        {
+            m_world->Destroy(m_bodies[m_bodyIndex]);
+            m_bodies[m_bodyIndex] = nullptr;
+        }
 
-		BodyDef bd;
+        BodyDef bd;
 
-		const auto x = RandomFloat(-10.0f, 10.0f);
-		const auto y = RandomFloat(10.0f, 20.0f);
-		bd.position = Vec2(x, y) * Meter;
-		bd.angle = Radian * RandomFloat(-Pi, Pi);
-		bd.type = BodyType::Dynamic;
+        const auto x = RandomFloat(-10.0f, 10.0f);
+        const auto y = RandomFloat(10.0f, 20.0f);
+        bd.position = Vec2(x, y) * Meter;
+        bd.angle = Radian * RandomFloat(-Pi, Pi);
+        bd.type = BodyType::Dynamic;
 
-		if (index == 4)
-		{
-			bd.angularDamping = 0.02f;
-		}
+        if (index == 4)
+        {
+            bd.angularDamping = 0.02f;
+        }
 
-		m_bodies[m_bodyIndex] = m_world->CreateBody(bd);
+        m_bodies[m_bodyIndex] = m_world->CreateBody(bd);
 
-		if (index < 4)
-		{
-			m_bodies[m_bodyIndex]->CreateFixture(m_polygons[index]);
-		}
-		else
-		{
-			m_bodies[m_bodyIndex]->CreateFixture(m_circle);
-		}
+        if (index < 4)
+        {
+            m_bodies[m_bodyIndex]->CreateFixture(m_polygons[index]);
+        }
+        else
+        {
+            m_bodies[m_bodyIndex]->CreateFixture(m_circle);
+        }
 
-		m_bodyIndex = GetModuloNext(m_bodyIndex, static_cast<decltype(m_bodyIndex)>(e_maxBodies));
-	}
+        m_bodyIndex = GetModuloNext(m_bodyIndex, static_cast<decltype(m_bodyIndex)>(e_maxBodies));
+    }
 
-	void Destroy()
-	{
-		for (auto i = 0; i < e_maxBodies; ++i)
-		{
-			if (m_bodies[i])
-			{
-				m_world->Destroy(m_bodies[i]);
-				m_bodies[i] = nullptr;
-				return;
-			}
-		}
-	}
+    void Destroy()
+    {
+        for (auto i = 0; i < e_maxBodies; ++i)
+        {
+            if (m_bodies[i])
+            {
+                m_world->Destroy(m_bodies[i]);
+                m_bodies[i] = nullptr;
+                return;
+            }
+        }
+    }
 
-	void KeyboardDown(Key key) override
-	{
-		switch (key)
-		{
-		case Key_1:
-		case Key_2:
-		case Key_3:
-		case Key_4:
-		case Key_5:
-			Create(key - Key_1);
-			break;
+    void KeyboardDown(Key key) override
+    {
+        switch (key)
+        {
+        case Key_1:
+        case Key_2:
+        case Key_3:
+        case Key_4:
+        case Key_5:
+            Create(key - Key_1);
+            break;
 
-		case Key_D:
-			Destroy();
-			break;
-				
-		default:
-			break;
-		}
-	}
+        case Key_D:
+            Destroy();
+            break;
+                
+        default:
+            break;
+        }
+    }
 
-	void PostStep(const Settings& settings, Drawer& drawer) override
-	{
-		drawer.DrawString(5, m_textLine, "Press 1-5 to drop stuff");
-		m_textLine += DRAW_STRING_NEW_LINE;
+    void PostStep(const Settings& settings, Drawer& drawer) override
+    {
+        drawer.DrawString(5, m_textLine, "Press 1-5 to drop stuff");
+        m_textLine += DRAW_STRING_NEW_LINE;
 
-		const auto L = RealNum(25);
-		const auto point1 = Vec2(0.0f, 10.0f) * Meter;
-		const auto d = Vec2(L * std::cos(m_angle), -L * Abs(std::sin(m_angle))) * Meter;
-		const auto point2 = point1 + d;
+        const auto L = RealNum(25);
+        const auto point1 = Vec2(0.0f, 10.0f) * Meter;
+        const auto d = Vec2(L * std::cos(m_angle), -L * Abs(std::sin(m_angle))) * Meter;
+        const auto point2 = point1 + d;
 
-		EdgeShapesCallback callback;
+        EdgeShapesCallback callback;
 
-		m_world->RayCast(&callback, point1, point2);
+        m_world->RayCast(&callback, point1, point2);
 
-		if (callback.m_fixture)
-		{
-			drawer.DrawPoint(callback.m_point, RealNum{5.0f} * Meter, Color(0.4f, 0.9f, 0.4f));
+        if (callback.m_fixture)
+        {
+            drawer.DrawPoint(callback.m_point, RealNum{5.0f} * Meter, Color(0.4f, 0.9f, 0.4f));
 
-			drawer.DrawSegment(point1, callback.m_point, Color(0.8f, 0.8f, 0.8f));
+            drawer.DrawSegment(point1, callback.m_point, Color(0.8f, 0.8f, 0.8f));
 
-			const auto head = callback.m_point + RealNum{0.5f} * callback.m_normal * Meter;
-			drawer.DrawSegment(callback.m_point, head, Color(0.9f, 0.9f, 0.4f));
-		}
-		else
-		{
-			drawer.DrawSegment(point1, point2, Color(0.8f, 0.8f, 0.8f));
-		}
+            const auto head = callback.m_point + RealNum{0.5f} * callback.m_normal * Meter;
+            drawer.DrawSegment(callback.m_point, head, Color(0.9f, 0.9f, 0.4f));
+        }
+        else
+        {
+            drawer.DrawSegment(point1, point2, Color(0.8f, 0.8f, 0.8f));
+        }
 
-		const auto advanceRay = !settings.pause || settings.singleStep;
-		if (advanceRay)
-		{
-			m_angle += 0.25f * Pi / 180.0f;
-		}
-	}
+        const auto advanceRay = !settings.pause || settings.singleStep;
+        if (advanceRay)
+        {
+            m_angle += 0.25f * Pi / 180.0f;
+        }
+    }
 
-	static Test* Create()
-	{
-		return new EdgeShapes;
-	}
+    static Test* Create()
+    {
+        return new EdgeShapes;
+    }
 
-	int m_bodyIndex;
-	Body* m_bodies[e_maxBodies];
-	std::shared_ptr<PolygonShape> m_polygons[4];
-	std::shared_ptr<CircleShape> m_circle = std::make_shared<CircleShape>(RealNum{0.5f} * Meter);
+    int m_bodyIndex;
+    Body* m_bodies[e_maxBodies];
+    std::shared_ptr<PolygonShape> m_polygons[4];
+    std::shared_ptr<CircleShape> m_circle = std::make_shared<CircleShape>(RealNum{0.5f} * Meter);
 
-	RealNum m_angle;
+    RealNum m_angle;
 };
 
 } // namespace box2d

@@ -20,59 +20,59 @@
 #define SPINNING_CIRCLE_HPP
 
 namespace box2d {
-	
-	class SpinningCircle : public Test
-	{
-	public:
-		
-		enum
-		{
-			e_count = 10
-		};
-		
-		SpinningCircle()
-		{
-			m_world->SetGravity(Vec2{0, 0} * MeterPerSquareSecond);
+    
+    class SpinningCircle : public Test
+    {
+    public:
+        
+        enum
+        {
+            e_count = 10
+        };
+        
+        SpinningCircle()
+        {
+            m_world->SetGravity(Vec2{0, 0} * MeterPerSquareSecond);
 
-			auto bodyDef = BodyDef{};
-			bodyDef.type = BodyType::Dynamic;
-			bodyDef.angularVelocity = RealNum{45.0f} * Degree / Second;
-			bodyDef.linearVelocity = Vec2{0, 0} * MeterPerSecond;
-			bodyDef.linearDamping = 0.8f;
-			bodyDef.bullet = true;
+            auto bodyDef = BodyDef{};
+            bodyDef.type = BodyType::Dynamic;
+            bodyDef.angularVelocity = RealNum{45.0f} * Degree / Second;
+            bodyDef.linearVelocity = Vec2{0, 0} * MeterPerSecond;
+            bodyDef.linearDamping = 0.8f;
+            bodyDef.bullet = true;
 
-			bodyDef.position = Vec2{0, 26} * Meter;
-			const auto body1 = m_world->CreateBody(bodyDef);
-			bodyDef.position = Vec2{0, 14} * Meter;
-			const auto body2 = m_world->CreateBody(bodyDef);
-			
-			auto shapeConf = CircleShape::Conf{};
-			shapeConf.density = RealNum{10} * KilogramPerSquareMeter;
+            bodyDef.position = Vec2{0, 26} * Meter;
+            const auto body1 = m_world->CreateBody(bodyDef);
+            bodyDef.position = Vec2{0, 14} * Meter;
+            const auto body2 = m_world->CreateBody(bodyDef);
+            
+            auto shapeConf = CircleShape::Conf{};
+            shapeConf.density = RealNum{10} * KilogramPerSquareMeter;
 
-			shapeConf.vertexRadius = RealNum{2} * Meter;
-			shapeConf.location = Vec2{0, 0} * Meter;
-			auto circle = std::make_shared<CircleShape>(shapeConf);
+            shapeConf.vertexRadius = RealNum{2} * Meter;
+            shapeConf.location = Vec2{0, 0} * Meter;
+            auto circle = std::make_shared<CircleShape>(shapeConf);
 
-			shapeConf.vertexRadius = RealNum{1.5f} * Meter;
-			shapeConf.location = Vec2{0,  3} * Meter;
-			auto circleA = std::make_shared<CircleShape>(shapeConf);
-			shapeConf.vertexRadius = RealNum{1.5f} * Meter;
-			shapeConf.location = Vec2{0, -3} * Meter;
-			auto circleB = std::make_shared<CircleShape>(shapeConf);
-			
-			body1->CreateFixture(circleA);
-			body1->CreateFixture(circleB);
-			
-			body2->CreateFixture(circleA);
-			body2->CreateFixture(circleB);
-		}
-		
-		static Test* Create()
-		{
-			return new SpinningCircle;
-		}
-	};
-	
+            shapeConf.vertexRadius = RealNum{1.5f} * Meter;
+            shapeConf.location = Vec2{0,  3} * Meter;
+            auto circleA = std::make_shared<CircleShape>(shapeConf);
+            shapeConf.vertexRadius = RealNum{1.5f} * Meter;
+            shapeConf.location = Vec2{0, -3} * Meter;
+            auto circleB = std::make_shared<CircleShape>(shapeConf);
+            
+            body1->CreateFixture(circleA);
+            body1->CreateFixture(circleB);
+            
+            body2->CreateFixture(circleA);
+            body2->CreateFixture(circleB);
+        }
+        
+        static Test* Create()
+        {
+            return new SpinningCircle;
+        }
+    };
+    
 } // namespace box2d
 
 #endif

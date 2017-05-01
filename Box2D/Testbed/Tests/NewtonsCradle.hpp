@@ -20,258 +20,258 @@
 #define NewtonsCradle_hpp
 
 namespace box2d {
-	
-	/// Newton's Cradle test.
-	/// @details
-	/// Demonstrates the problems that are endemic to the handling multiple collisions.
-	/// @sa http://www.myphysicslab.com/Collision-methods.html
-	class NewtonsCradle : public Test
-	{
-	public:
-		const RealNum scale = RealNum(1);
-		const Length ball_radius = scale * 2 * Meter; // 2
-		const Length frame_width_per_arm = ball_radius * RealNum{2};
-		const Length frame_height = scale * 30 * Meter; // 30
-		const Length arm_length = scale * 16 * Meter; // 16
-		static const auto default_num_arms = 5;
+    
+    /// Newton's Cradle test.
+    /// @details
+    /// Demonstrates the problems that are endemic to the handling multiple collisions.
+    /// @sa http://www.myphysicslab.com/Collision-methods.html
+    class NewtonsCradle : public Test
+    {
+    public:
+        const RealNum scale = RealNum(1);
+        const Length ball_radius = scale * 2 * Meter; // 2
+        const Length frame_width_per_arm = ball_radius * RealNum{2};
+        const Length frame_height = scale * 30 * Meter; // 30
+        const Length arm_length = scale * 16 * Meter; // 16
+        static const auto default_num_arms = 5;
 
-		NewtonsCradle()
-		{
-			for (auto&& body: m_swings)
-			{
-				body = nullptr;
-			}
-			CreateCradle();
-		}
-		
-		void CreateCradle()
-		{
-			if (m_frame)
-			{
-				return;
-			}
-			m_frame = [&]() {
-				BodyDef bd;
-				bd.type = BodyType::Static;
-				bd.position = Length2D{0, frame_height};
-				const auto body = m_world->CreateBody(bd);
-				
-				const auto frame_width = frame_width_per_arm * static_cast<RealNum>(m_num_arms);
-				auto shape = PolygonShape((frame_width/RealNum{2}), (frame_width / RealNum{24}));
-				shape.SetDensity(RealNum{20} * KilogramPerSquareMeter);
-				body->CreateFixture(std::make_shared<PolygonShape>(shape));
-				return body;
-			}();
-			
-			for (auto i = decltype(m_num_arms){0}; i < m_num_arms; ++i)
-			{
-				const auto x = (((i + RealNum(0.5f)) - RealNum(m_num_arms) / RealNum(2)) * frame_width_per_arm);
-				
-				BodyDef bd;
-				bd.type = BodyType::Dynamic;
-				bd.bullet = m_bullet_mode;
-				bd.position = Length2D{x, frame_height - (arm_length / RealNum{2})};
-				
-				m_swings[i] = m_world->CreateBody(bd);
-				CreateArm(m_swings[i], arm_length);
-				CreateBall(m_swings[i], Length2D{0, -arm_length / RealNum{2}}, ball_radius);
-				
-				m_world->CreateJoint(RevoluteJointDef(m_frame, m_swings[i], Length2D{x, frame_height}));
-			}			
-		}
+        NewtonsCradle()
+        {
+            for (auto&& body: m_swings)
+            {
+                body = nullptr;
+            }
+            CreateCradle();
+        }
+        
+        void CreateCradle()
+        {
+            if (m_frame)
+            {
+                return;
+            }
+            m_frame = [&]() {
+                BodyDef bd;
+                bd.type = BodyType::Static;
+                bd.position = Length2D{0, frame_height};
+                const auto body = m_world->CreateBody(bd);
+                
+                const auto frame_width = frame_width_per_arm * static_cast<RealNum>(m_num_arms);
+                auto shape = PolygonShape((frame_width/RealNum{2}), (frame_width / RealNum{24}));
+                shape.SetDensity(RealNum{20} * KilogramPerSquareMeter);
+                body->CreateFixture(std::make_shared<PolygonShape>(shape));
+                return body;
+            }();
+            
+            for (auto i = decltype(m_num_arms){0}; i < m_num_arms; ++i)
+            {
+                const auto x = (((i + RealNum(0.5f)) - RealNum(m_num_arms) / RealNum(2)) * frame_width_per_arm);
+                
+                BodyDef bd;
+                bd.type = BodyType::Dynamic;
+                bd.bullet = m_bullet_mode;
+                bd.position = Length2D{x, frame_height - (arm_length / RealNum{2})};
+                
+                m_swings[i] = m_world->CreateBody(bd);
+                CreateArm(m_swings[i], arm_length);
+                CreateBall(m_swings[i], Length2D{0, -arm_length / RealNum{2}}, ball_radius);
+                
+                m_world->CreateJoint(RevoluteJointDef(m_frame, m_swings[i], Length2D{x, frame_height}));
+            }            
+        }
 
-		void DestroyCradle()
-		{
-			if (m_frame)
-			{
-				m_world->Destroy(m_frame);
-				m_frame = nullptr;
-			}
-			for (auto&& body: m_swings)
-			{
-				if (body)
-				{
-					m_world->Destroy(body);
-					body = nullptr;
-				}
-			}
-			DestroyLeftSideWall();
-			DestroyRightSideWall();
-		}
+        void DestroyCradle()
+        {
+            if (m_frame)
+            {
+                m_world->Destroy(m_frame);
+                m_frame = nullptr;
+            }
+            for (auto&& body: m_swings)
+            {
+                if (body)
+                {
+                    m_world->Destroy(body);
+                    body = nullptr;
+                }
+            }
+            DestroyLeftSideWall();
+            DestroyRightSideWall();
+        }
 
-		void CreateRightSideWall()
-		{
-			if (!m_right_side_wall) {
-				const auto frame_width = static_cast<RealNum>(m_num_arms) * frame_width_per_arm;
+        void CreateRightSideWall()
+        {
+            if (!m_right_side_wall) {
+                const auto frame_width = static_cast<RealNum>(m_num_arms) * frame_width_per_arm;
 
-				BodyDef def;
-				def.type = BodyType::Static;
-				def.position = Length2D{frame_width / RealNum{2} + frame_width / RealNum{24}, frame_height - (arm_length / RealNum{2})};
-				const auto body = m_world->CreateBody(def);
-				
-				auto shape = PolygonShape((frame_width/RealNum{24}), (arm_length / RealNum{2} + frame_width / RealNum{24}));
-				shape.SetDensity(RealNum{20} * KilogramPerSquareMeter);
-				body->CreateFixture(std::make_shared<PolygonShape>(shape));
-				
-				m_right_side_wall = body;
-			}
-		}
-		
-		void CreateLeftSideWall()
-		{
-			if (!m_left_side_wall) {
-				const auto frame_width = static_cast<RealNum>(m_num_arms) * frame_width_per_arm;
+                BodyDef def;
+                def.type = BodyType::Static;
+                def.position = Length2D{frame_width / RealNum{2} + frame_width / RealNum{24}, frame_height - (arm_length / RealNum{2})};
+                const auto body = m_world->CreateBody(def);
+                
+                auto shape = PolygonShape((frame_width/RealNum{24}), (arm_length / RealNum{2} + frame_width / RealNum{24}));
+                shape.SetDensity(RealNum{20} * KilogramPerSquareMeter);
+                body->CreateFixture(std::make_shared<PolygonShape>(shape));
+                
+                m_right_side_wall = body;
+            }
+        }
+        
+        void CreateLeftSideWall()
+        {
+            if (!m_left_side_wall) {
+                const auto frame_width = static_cast<RealNum>(m_num_arms) * frame_width_per_arm;
 
-				BodyDef def;
-				def.type = BodyType::Static;
-				def.position = Length2D{
-					-(frame_width / RealNum{2} + frame_width / RealNum{24}),
-					frame_height - (arm_length / RealNum{2})
-				};
-				const auto body = m_world->CreateBody(def);
-				
-				auto shape = PolygonShape(frame_width/RealNum{24}, (arm_length / RealNum{2} + frame_width / RealNum{24}));
-				shape.SetDensity(RealNum{20} * KilogramPerSquareMeter);
-				body->CreateFixture(std::make_shared<PolygonShape>(shape));
-				
-				m_left_side_wall = body;
-			}
-		}
+                BodyDef def;
+                def.type = BodyType::Static;
+                def.position = Length2D{
+                    -(frame_width / RealNum{2} + frame_width / RealNum{24}),
+                    frame_height - (arm_length / RealNum{2})
+                };
+                const auto body = m_world->CreateBody(def);
+                
+                auto shape = PolygonShape(frame_width/RealNum{24}, (arm_length / RealNum{2} + frame_width / RealNum{24}));
+                shape.SetDensity(RealNum{20} * KilogramPerSquareMeter);
+                body->CreateFixture(std::make_shared<PolygonShape>(shape));
+                
+                m_left_side_wall = body;
+            }
+        }
 
-		void DestroyRightSideWall()
-		{
-			if (m_right_side_wall)
-			{
-				m_world->Destroy(m_right_side_wall);
-				m_right_side_wall = nullptr;
-			}
-		}
+        void DestroyRightSideWall()
+        {
+            if (m_right_side_wall)
+            {
+                m_world->Destroy(m_right_side_wall);
+                m_right_side_wall = nullptr;
+            }
+        }
 
-		void DestroyLeftSideWall()
-		{
-			if (m_left_side_wall)
-			{
-				m_world->Destroy(m_left_side_wall);
-				m_left_side_wall = nullptr;
-			}
-		}
+        void DestroyLeftSideWall()
+        {
+            if (m_left_side_wall)
+            {
+                m_world->Destroy(m_left_side_wall);
+                m_left_side_wall = nullptr;
+            }
+        }
 
-		Fixture* CreateBall(Body* body, Length2D pos, Length radius)
-		{
-			auto conf = CircleShape::Conf{};
-			conf.vertexRadius = radius;
-			conf.location = pos;
-			conf.density = RealNum{20} * KilogramPerSquareMeter;
-			conf.restitution = 1;
-			conf.friction = 0;
-			return body->CreateFixture(std::make_shared<CircleShape>(conf));
-		}
+        Fixture* CreateBall(Body* body, Length2D pos, Length radius)
+        {
+            auto conf = CircleShape::Conf{};
+            conf.vertexRadius = radius;
+            conf.location = pos;
+            conf.density = RealNum{20} * KilogramPerSquareMeter;
+            conf.restitution = 1;
+            conf.friction = 0;
+            return body->CreateFixture(std::make_shared<CircleShape>(conf));
+        }
 
-		Fixture* CreateArm(Body* body, Length length = RealNum(10) * Meter)
-		{
-			auto shape = PolygonShape(length / RealNum{2000}, length / RealNum{2});
-			shape.SetDensity(RealNum{20} * KilogramPerSquareMeter);
-			return body->CreateFixture(std::make_shared<PolygonShape>(shape));
-		}
+        Fixture* CreateArm(Body* body, Length length = RealNum(10) * Meter)
+        {
+            auto shape = PolygonShape(length / RealNum{2000}, length / RealNum{2});
+            shape.SetDensity(RealNum{20} * KilogramPerSquareMeter);
+            return body->CreateFixture(std::make_shared<PolygonShape>(shape));
+        }
 
-		void ToggleRightSideWall()
-		{
-			if (m_right_side_wall)
-				DestroyRightSideWall();
-			else
-				CreateRightSideWall();
-		}
+        void ToggleRightSideWall()
+        {
+            if (m_right_side_wall)
+                DestroyRightSideWall();
+            else
+                CreateRightSideWall();
+        }
 
-		void ToggleLeftSideWall()
-		{
-			if (m_left_side_wall)
-				DestroyLeftSideWall();
-			else
-				CreateLeftSideWall();
-		}
+        void ToggleLeftSideWall()
+        {
+            if (m_left_side_wall)
+                DestroyLeftSideWall();
+            else
+                CreateLeftSideWall();
+        }
 
-		void ToggleBulletMode()
-		{
-			m_bullet_mode = !m_bullet_mode;
-			for (auto& b: m_world->GetBodies())
-			{
-				if (b->GetType() == BodyType::Dynamic)
-				{
-					b->SetBullet(m_bullet_mode);
-				}
-			}
-		}
+        void ToggleBulletMode()
+        {
+            m_bullet_mode = !m_bullet_mode;
+            for (auto& b: m_world->GetBodies())
+            {
+                if (b->GetType() == BodyType::Dynamic)
+                {
+                    b->SetBullet(m_bullet_mode);
+                }
+            }
+        }
 
-		void KeyboardDown(Key key) override
-		{
-			switch (key)
-			{
-				case Key_Period:
-					ToggleBulletMode();
-					break;
-				case Key_D:
-					ToggleRightSideWall();
-					break;
-				case Key_A:
-					ToggleLeftSideWall();
-					break;
-				case Key_1:
-					DestroyCradle();
-					m_num_arms = 1;
-					CreateCradle();
-					break;
-				case Key_2:
-					DestroyCradle();
-					m_num_arms = 2;
-					CreateCradle();
-					break;
-				case Key_3:
-					DestroyCradle();
-					m_num_arms = 3;
-					CreateCradle();
-					break;
-				case Key_4:
-					DestroyCradle();
-					m_num_arms = 4;
-					CreateCradle();
-					break;
-				case Key_5:
-					DestroyCradle();
-					m_num_arms = 5;
-					CreateCradle();
-					break;
-				default:
-					break;
-			}
-		}
-		
-		void PostStep(const Settings&, Drawer& drawer) override
-		{
-			drawer.DrawString(5, m_textLine, "Drag a circle with mouse, then let go to see how the physics is simulated");
-			m_textLine += DRAW_STRING_NEW_LINE;
-			drawer.DrawString(5, m_textLine, "Press '.' to toggle bullet mode (currently %s).", m_bullet_mode? "on": "off");
-			m_textLine += DRAW_STRING_NEW_LINE;
-			drawer.DrawString(5, m_textLine, "Press 'A' to toggle left side wall (currently %s).", m_left_side_wall? "on": "off");
-			m_textLine += DRAW_STRING_NEW_LINE;
-			drawer.DrawString(5, m_textLine, "Press 'D' to toggle right side wall (currently %s).", m_right_side_wall? "on": "off");
-			m_textLine += DRAW_STRING_NEW_LINE;
-			drawer.DrawString(5, m_textLine, "Press '1-5' to set # of balls (currently %d).", m_num_arms);
-			m_textLine += DRAW_STRING_NEW_LINE;
-		}
-		
-		static Test* Create()
-		{
-			return new NewtonsCradle;
-		}
-	
-		int m_num_arms = default_num_arms;
-		bool m_bullet_mode = false;
-		Body *m_frame = nullptr;
-		Body *m_right_side_wall = nullptr;
-		Body *m_left_side_wall = nullptr;
-		Body *m_swings[5];
-	};
+        void KeyboardDown(Key key) override
+        {
+            switch (key)
+            {
+                case Key_Period:
+                    ToggleBulletMode();
+                    break;
+                case Key_D:
+                    ToggleRightSideWall();
+                    break;
+                case Key_A:
+                    ToggleLeftSideWall();
+                    break;
+                case Key_1:
+                    DestroyCradle();
+                    m_num_arms = 1;
+                    CreateCradle();
+                    break;
+                case Key_2:
+                    DestroyCradle();
+                    m_num_arms = 2;
+                    CreateCradle();
+                    break;
+                case Key_3:
+                    DestroyCradle();
+                    m_num_arms = 3;
+                    CreateCradle();
+                    break;
+                case Key_4:
+                    DestroyCradle();
+                    m_num_arms = 4;
+                    CreateCradle();
+                    break;
+                case Key_5:
+                    DestroyCradle();
+                    m_num_arms = 5;
+                    CreateCradle();
+                    break;
+                default:
+                    break;
+            }
+        }
+        
+        void PostStep(const Settings&, Drawer& drawer) override
+        {
+            drawer.DrawString(5, m_textLine, "Drag a circle with mouse, then let go to see how the physics is simulated");
+            m_textLine += DRAW_STRING_NEW_LINE;
+            drawer.DrawString(5, m_textLine, "Press '.' to toggle bullet mode (currently %s).", m_bullet_mode? "on": "off");
+            m_textLine += DRAW_STRING_NEW_LINE;
+            drawer.DrawString(5, m_textLine, "Press 'A' to toggle left side wall (currently %s).", m_left_side_wall? "on": "off");
+            m_textLine += DRAW_STRING_NEW_LINE;
+            drawer.DrawString(5, m_textLine, "Press 'D' to toggle right side wall (currently %s).", m_right_side_wall? "on": "off");
+            m_textLine += DRAW_STRING_NEW_LINE;
+            drawer.DrawString(5, m_textLine, "Press '1-5' to set # of balls (currently %d).", m_num_arms);
+            m_textLine += DRAW_STRING_NEW_LINE;
+        }
+        
+        static Test* Create()
+        {
+            return new NewtonsCradle;
+        }
+    
+        int m_num_arms = default_num_arms;
+        bool m_bullet_mode = false;
+        Body *m_frame = nullptr;
+        Body *m_right_side_wall = nullptr;
+        Body *m_left_side_wall = nullptr;
+        Body *m_swings[5];
+    };
 
 } // namespace box2d
-		
+        
 #endif /* NewtonsCradle_hpp */

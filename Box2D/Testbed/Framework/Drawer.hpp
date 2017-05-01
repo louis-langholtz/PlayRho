@@ -28,68 +28,68 @@ namespace box2d {
 /// @details Color for drawing. Each value has the range [0,1].
 struct Color
 {
-	Color() = default;
-	
-	constexpr Color(float ri, float gi, float bi, float ai = 1):
-		r(Clamp(ri, 0.0f, 1.0f)),
-		g(Clamp(gi, 0.0f, 1.0f)),
-		b(Clamp(bi, 0.0f, 1.0f)),
-		a(Clamp(ai, 0.0f, 1.0f))
-	{
-		// Intentionally empty.
-	}
+    Color() = default;
+    
+    constexpr Color(float ri, float gi, float bi, float ai = 1):
+        r(Clamp(ri, 0.0f, 1.0f)),
+        g(Clamp(gi, 0.0f, 1.0f)),
+        b(Clamp(bi, 0.0f, 1.0f)),
+        a(Clamp(ai, 0.0f, 1.0f))
+    {
+        // Intentionally empty.
+    }
 
-	constexpr Color(Color copy, float new_a):
-		Color{copy.r, copy.g, copy.b, new_a}
-	{
-		// Intentionally empty.
-	}
+    constexpr Color(Color copy, float new_a):
+        Color{copy.r, copy.g, copy.b, new_a}
+    {
+        // Intentionally empty.
+    }
 
-	float r;
-	float g;
-	float b;
-	float a = 1; ///< Alpha value. @details 0 for fully transparent to 1 for fully opaque.
+    float r;
+    float g;
+    float b;
+    float a = 1; ///< Alpha value. @details 0 for fully transparent to 1 for fully opaque.
 };
 
 Color Brighten(Color color, float factor);
-	
+    
 class Drawer
 {
 public:
-	using size_type = size_t;
+    using size_type = size_t;
 
-	Drawer() = default;
+    Drawer() = default;
 
-	virtual ~Drawer() noexcept = 0;
+    virtual ~Drawer() noexcept = 0;
 
-	/// Draw a closed polygon provided in CCW order.
-	virtual void DrawPolygon(const Length2D* vertices, size_type vertexCount, const Color& color) = 0;
+    /// Draw a closed polygon provided in CCW order.
+    virtual void DrawPolygon(const Length2D* vertices, size_type vertexCount, const Color& color) = 0;
 
-	/// Draw a solid closed polygon provided in CCW order.
-	virtual void DrawSolidPolygon(const Length2D* vertices, size_type vertexCount, const Color& color) = 0;
+    /// Draw a solid closed polygon provided in CCW order.
+    virtual void DrawSolidPolygon(const Length2D* vertices, size_type vertexCount, const Color& color) = 0;
 
-	/// Draw a circle.
-	virtual void DrawCircle(const Length2D& center, Length radius, const Color& color) = 0;
-	
-	/// Draw a solid circle.
-	virtual void DrawSolidCircle(const Length2D& center, Length radius, const Color& color) = 0;
-	
-	/// Draw a line segment.
-	virtual void DrawSegment(const Length2D& p1, const Length2D& p2, const Color& color) = 0;
+    /// Draw a circle.
+    virtual void DrawCircle(const Length2D& center, Length radius, const Color& color) = 0;
+    
+    /// Draw a solid circle.
+    virtual void DrawSolidCircle(const Length2D& center, Length radius, const Color& color) = 0;
+    
+    /// Draw a line segment.
+    virtual void DrawSegment(const Length2D& p1, const Length2D& p2, const Color& color) = 0;
 
-	virtual void DrawPoint(const Length2D& p, Length size, const Color& color) = 0;
-	
-	/// Draws a string at the given screen coordinates.
-	virtual void DrawString(int x, int y, const char* string, ...) = 0; 
-	
-	/// Draws a string at the given world coordinates.
-	virtual void DrawString(const Length2D& p, const char* string, ...) = 0;
-		
-	virtual void Flush() = 0;
-	
-	virtual void SetTranslation(Length2D value) = 0;
+    virtual void DrawPoint(const Length2D& p, Length size, const Color& color) = 0;
+    
+    /// Draws a string at the given screen coordinates.
+    virtual void DrawString(int x, int y, const char* string, ...) = 0; 
+    
+    /// Draws a string at the given world coordinates.
+    virtual void DrawString(const Length2D& p, const char* string, ...) = 0;
+        
+    virtual void Flush() = 0;
+    
+    virtual void SetTranslation(Length2D value) = 0;
 
-	virtual Length2D GetTranslation() const = 0;
+    virtual Length2D GetTranslation() const = 0;
 };
 
 } // namespace box2d

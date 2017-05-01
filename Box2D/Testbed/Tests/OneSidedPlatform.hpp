@@ -26,99 +26,99 @@ class OneSidedPlatform : public Test
 {
 public:
 
-	enum State
-	{
-		e_unknown,
-		e_above,
-		e_below
-	};
+    enum State
+    {
+        e_unknown,
+        e_above,
+        e_below
+    };
 
-	OneSidedPlatform()
-	{
-		// Ground
-		{
-			const auto ground = m_world->CreateBody();
-			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
-		}
+    OneSidedPlatform()
+    {
+        // Ground
+        {
+            const auto ground = m_world->CreateBody();
+            ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
+        }
 
-		// Platform
-		{
-			BodyDef bd;
-			bd.position = Vec2(0.0f, 10.0f) * Meter;
-			const auto body = m_world->CreateBody(bd);
-			m_platform = body->CreateFixture(std::make_shared<PolygonShape>(RealNum{3.0f} * Meter, RealNum{0.5f} * Meter));
-			m_bottom = RealNum(10.0f - 0.5f) * Meter;
-			m_top = RealNum(10.0f + 0.5f) * Meter;
-		}
+        // Platform
+        {
+            BodyDef bd;
+            bd.position = Vec2(0.0f, 10.0f) * Meter;
+            const auto body = m_world->CreateBody(bd);
+            m_platform = body->CreateFixture(std::make_shared<PolygonShape>(RealNum{3.0f} * Meter, RealNum{0.5f} * Meter));
+            m_bottom = RealNum(10.0f - 0.5f) * Meter;
+            m_top = RealNum(10.0f + 0.5f) * Meter;
+        }
 
-		// Actor
-		{
-			BodyDef bd;
-			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(0.0f, 12.0f) * Meter;
-			const auto body = m_world->CreateBody(bd);
-			auto conf = CircleShape::Conf{};
-			conf.vertexRadius = m_radius;
-			conf.density = RealNum{20} * KilogramPerSquareMeter;
-			m_character = body->CreateFixture(std::make_shared<CircleShape>(conf));
-			body->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * MeterPerSecond, AngularVelocity{0}});
-		}
-	}
+        // Actor
+        {
+            BodyDef bd;
+            bd.type = BodyType::Dynamic;
+            bd.position = Vec2(0.0f, 12.0f) * Meter;
+            const auto body = m_world->CreateBody(bd);
+            auto conf = CircleShape::Conf{};
+            conf.vertexRadius = m_radius;
+            conf.density = RealNum{20} * KilogramPerSquareMeter;
+            m_character = body->CreateFixture(std::make_shared<CircleShape>(conf));
+            body->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * MeterPerSecond, AngularVelocity{0}});
+        }
+    }
 
-	void PreSolve(Contact& contact, const Manifold& oldManifold) override
-	{
-		Test::PreSolve(contact, oldManifold);
+    void PreSolve(Contact& contact, const Manifold& oldManifold) override
+    {
+        Test::PreSolve(contact, oldManifold);
 
-		const auto fixtureA = contact.GetFixtureA();
-		const auto fixtureB = contact.GetFixtureB();
+        const auto fixtureA = contact.GetFixtureA();
+        const auto fixtureB = contact.GetFixtureB();
 
-		if (fixtureA != m_platform && fixtureA != m_character)
-		{
-			return;
-		}
+        if (fixtureA != m_platform && fixtureA != m_character)
+        {
+            return;
+        }
 
-		if (fixtureB != m_platform && fixtureB != m_character)
-		{
-			return;
-		}
+        if (fixtureB != m_platform && fixtureB != m_character)
+        {
+            return;
+        }
 
 #if 1
-		const auto position = m_character->GetBody()->GetLocation();
+        const auto position = m_character->GetBody()->GetLocation();
 
-		if (position.y < m_top + m_radius - m_platform->GetShape()->GetVertexRadius())
-		{
-			contact.UnsetEnabled();
-		}
+        if (position.y < m_top + m_radius - m_platform->GetShape()->GetVertexRadius())
+        {
+            contact.UnsetEnabled();
+        }
 #else
         const auto v = m_character->GetBody()->GetLinearVelocity();
         if (v.y > 0.0f)
-		{
+        {
             contact.UnsetEnabled();
         }
 #endif
-	}
+    }
 
-	void PostStep(const Settings&, Drawer& drawer) override
-	{
-		drawer.DrawString(5, m_textLine, "Press: (c) create a shape, (d) destroy a shape.");
-		m_textLine += DRAW_STRING_NEW_LINE;
+    void PostStep(const Settings&, Drawer& drawer) override
+    {
+        drawer.DrawString(5, m_textLine, "Press: (c) create a shape, (d) destroy a shape.");
+        m_textLine += DRAW_STRING_NEW_LINE;
 
         const auto v = GetLinearVelocity(*(m_character->GetBody()));
-		drawer.DrawString(5, m_textLine, "Character Linear Velocity: %f", double{v.y / MeterPerSecond});
-		m_textLine += DRAW_STRING_NEW_LINE;
-	}
+        drawer.DrawString(5, m_textLine, "Character Linear Velocity: %f", double{v.y / MeterPerSecond});
+        m_textLine += DRAW_STRING_NEW_LINE;
+    }
 
-	static Test* Create()
-	{
-		return new OneSidedPlatform;
-	}
+    static Test* Create()
+    {
+        return new OneSidedPlatform;
+    }
 
-	Length m_radius = RealNum{0.5f} * Meter;
-	Length m_top;
-	Length m_bottom;
-	State m_state = e_unknown;
-	Fixture* m_platform;
-	Fixture* m_character;
+    Length m_radius = RealNum{0.5f} * Meter;
+    Length m_top;
+    Length m_bottom;
+    State m_state = e_unknown;
+    Fixture* m_platform;
+    Fixture* m_character;
 };
 
 } // namespace box2d

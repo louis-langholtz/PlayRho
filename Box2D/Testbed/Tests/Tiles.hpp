@@ -27,104 +27,104 @@ namespace box2d {
 class Tiles : public Test
 {
 public:
-	enum
-	{
-		e_count = 20
-	};
+    enum
+    {
+        e_count = 20
+    };
 
-	Tiles()
-	{
-		m_fixtureCount = 0;
-		Timer timer;
+    Tiles()
+    {
+        m_fixtureCount = 0;
+        Timer timer;
 
-		{
-			const auto a = RealNum{0.5f};
-			BodyDef bd;
-			bd.position.y = -a * Meter;
-			const auto ground = m_world->CreateBody(bd);
+        {
+            const auto a = RealNum{0.5f};
+            BodyDef bd;
+            bd.position.y = -a * Meter;
+            const auto ground = m_world->CreateBody(bd);
 
-			const auto N = 200;
-			const auto M = 10;
-			Vec2 position;
-			position.y = 0.0f;
-			for (auto j = 0; j < M; ++j)
-			{
-				position.x = -N * a;
-				for (auto i = 0; i < N; ++i)
-				{
-					PolygonShape shape;
-					SetAsBox(shape, a * Meter, a * Meter, position * Meter, Angle{0});
-					ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-					++m_fixtureCount;
-					position.x += 2.0f * a;
-				}
-				position.y -= 2.0f * a;
-			}
-		}
+            const auto N = 200;
+            const auto M = 10;
+            Vec2 position;
+            position.y = 0.0f;
+            for (auto j = 0; j < M; ++j)
+            {
+                position.x = -N * a;
+                for (auto i = 0; i < N; ++i)
+                {
+                    PolygonShape shape;
+                    SetAsBox(shape, a * Meter, a * Meter, position * Meter, Angle{0});
+                    ground->CreateFixture(std::make_shared<PolygonShape>(shape));
+                    ++m_fixtureCount;
+                    position.x += 2.0f * a;
+                }
+                position.y -= 2.0f * a;
+            }
+        }
 
-		{
-			const auto a = RealNum{0.5f};
-			const auto shape = std::make_shared<PolygonShape>(a * Meter, a * Meter);
-			shape->SetDensity(RealNum{5} * KilogramPerSquareMeter);
+        {
+            const auto a = RealNum{0.5f};
+            const auto shape = std::make_shared<PolygonShape>(a * Meter, a * Meter);
+            shape->SetDensity(RealNum{5} * KilogramPerSquareMeter);
 
-			Vec2 x(-7.0f, 0.75f);
-			Vec2 y;
-			const auto deltaX = Vec2(0.5625f, 1.25f);
-			const auto deltaY = Vec2(1.125f, 0.0f);
+            Vec2 x(-7.0f, 0.75f);
+            Vec2 y;
+            const auto deltaX = Vec2(0.5625f, 1.25f);
+            const auto deltaY = Vec2(1.125f, 0.0f);
 
-			for (auto i = 0; i < e_count; ++i)
-			{
-				y = x;
+            for (auto i = 0; i < e_count; ++i)
+            {
+                y = x;
 
-				for (auto j = i; j < e_count; ++j)
-				{
-					BodyDef bd;
-					bd.type = BodyType::Dynamic;
-					bd.position = y * Meter;
+                for (auto j = i; j < e_count; ++j)
+                {
+                    BodyDef bd;
+                    bd.type = BodyType::Dynamic;
+                    bd.position = y * Meter;
 
-					const auto body = m_world->CreateBody(bd);
-					body->CreateFixture(shape);
-					++m_fixtureCount;
-					y += deltaY;
-				}
+                    const auto body = m_world->CreateBody(bd);
+                    body->CreateFixture(shape);
+                    ++m_fixtureCount;
+                    y += deltaY;
+                }
 
-				x += deltaX;
-			}
-		}
+                x += deltaX;
+            }
+        }
 
-		m_createTime = timer.GetMilliseconds();
-	}
+        m_createTime = timer.GetMilliseconds();
+    }
 
-	void PostStep(const Settings&, Drawer& drawer) override
-	{
-		const auto height = m_world->GetTreeHeight();
-		const auto leafCount = m_world->GetProxyCount();
-		assert(leafCount > 0);
-		const auto minimumNodeCount = 2 * leafCount - 1;
-		const auto minimumHeight = ceilf(logf(float(minimumNodeCount)) / logf(2.0f));
-		drawer.DrawString(5, m_textLine, "dynamic tree height = %d, min = %d",
-						  height, int(minimumHeight));
-		m_textLine += DRAW_STRING_NEW_LINE;
+    void PostStep(const Settings&, Drawer& drawer) override
+    {
+        const auto height = m_world->GetTreeHeight();
+        const auto leafCount = m_world->GetProxyCount();
+        assert(leafCount > 0);
+        const auto minimumNodeCount = 2 * leafCount - 1;
+        const auto minimumHeight = ceilf(logf(float(minimumNodeCount)) / logf(2.0f));
+        drawer.DrawString(5, m_textLine, "dynamic tree height = %d, min = %d",
+                          height, int(minimumHeight));
+        m_textLine += DRAW_STRING_NEW_LINE;
 
-		drawer.DrawString(5, m_textLine, "create time = %6.2f ms, fixture count = %d",
-			m_createTime, m_fixtureCount);
-		m_textLine += DRAW_STRING_NEW_LINE;
+        drawer.DrawString(5, m_textLine, "create time = %6.2f ms, fixture count = %d",
+            m_createTime, m_fixtureCount);
+        m_textLine += DRAW_STRING_NEW_LINE;
 
-		//DynamicTree* tree = &m_world->m_contactManager.m_broadPhase.m_tree;
+        //DynamicTree* tree = &m_world->m_contactManager.m_broadPhase.m_tree;
 
-		//if (GetStepCount() == 400)
-		//{
-		//	tree->RebuildBottomUp();
-		//}
-	}
+        //if (GetStepCount() == 400)
+        //{
+        //    tree->RebuildBottomUp();
+        //}
+    }
 
-	static Test* Create()
-	{
-		return new Tiles;
-	}
+    static Test* Create()
+    {
+        return new Tiles;
+    }
 
-	int m_fixtureCount;
-	RealNum m_createTime;
+    int m_fixtureCount;
+    RealNum m_createTime;
 };
 
 } // namespace box2d

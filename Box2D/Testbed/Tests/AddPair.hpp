@@ -24,52 +24,52 @@
 #include <Box2D/Collision/Shapes/PolygonShape.hpp>
 
 namespace box2d {
-	
+
 class AddPair : public Test
 {
 public:
 
-	AddPair()
-	{
-		m_world->SetGravity(Vec2(RealNum{0}, RealNum{0}) * MeterPerSquareSecond);
-		{
-			auto conf = CircleShape::Conf{};
-			conf.vertexRadius = Meter / RealNum{10};
-			conf.density = RealNum{0.01f} * KilogramPerSquareMeter;
-			const auto shape = std::make_shared<CircleShape>(conf);
+    AddPair()
+    {
+        m_world->SetGravity(Vec2(RealNum{0}, RealNum{0}) * MeterPerSquareSecond);
+        {
+            auto conf = CircleShape::Conf{};
+            conf.vertexRadius = Meter / RealNum{10};
+            conf.density = RealNum{0.01f} * KilogramPerSquareMeter;
+            const auto shape = std::make_shared<CircleShape>(conf);
 
-			const auto minX = -6.0f;
-			const auto maxX = 0.0f;
-			const auto minY = 4.0f;
-			const auto maxY = 6.0f;
-			
-			for (auto i = 0; i < 400; ++i)
-			{
-				BodyDef bd;
-				bd.type = BodyType::Dynamic;
-				bd.position = Vec2(RandomFloat(minX, maxX), RandomFloat(minY, maxY)) * Meter;
-				const auto body = m_world->CreateBody(bd);
-				body->CreateFixture(shape);
-			}
-		}
-		
-		{
-			BodyDef bd;
-			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(-40.0f,5.0f) * Meter;
-			bd.bullet = true;
-			const auto body = m_world->CreateBody(bd);
-			auto conf = PolygonShape::Conf{};
-			conf.density = RealNum{1.0f} * KilogramPerSquareMeter;
-			body->CreateFixture(std::make_shared<PolygonShape>(RealNum{1.5f} * Meter, RealNum{1.5f} * Meter, conf));
-			body->SetVelocity(Velocity{Vec2(150.0f, 0.0f) * MeterPerSecond, AngularVelocity{0}});
-		}
-	}
+            const auto minX = -6.0f;
+            const auto maxX = 0.0f;
+            const auto minY = 4.0f;
+            const auto maxY = 6.0f;
 
-	static Test* Create()
-	{
-		return new AddPair;
-	}
+            for (auto i = 0; i < 400; ++i)
+            {
+                BodyDef bd;
+                bd.type = BodyType::Dynamic;
+                bd.position = Vec2(RandomFloat(minX, maxX), RandomFloat(minY, maxY)) * Meter;
+                const auto body = m_world->CreateBody(bd);
+                body->CreateFixture(shape);
+            }
+        }
+
+        {
+            BodyDef bd;
+            bd.type = BodyType::Dynamic;
+            bd.position = Vec2(-40.0f,5.0f) * Meter;
+            bd.bullet = true;
+            const auto body = m_world->CreateBody(bd);
+            auto conf = PolygonShape::Conf{};
+            conf.density = RealNum{1.0f} * KilogramPerSquareMeter;
+            body->CreateFixture(std::make_shared<PolygonShape>(RealNum{1.5f} * Meter, RealNum{1.5f} * Meter, conf));
+            body->SetVelocity(Velocity{Vec2(150.0f, 0.0f) * MeterPerSecond, AngularVelocity{0}});
+        }
+    }
+
+    static Test* Create()
+    {
+        return new AddPair;
+    }
 };
 
 } // namespace box2d

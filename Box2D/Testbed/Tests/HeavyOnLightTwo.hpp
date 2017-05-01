@@ -26,20 +26,20 @@ class HeavyOnLightTwo : public Test
 {
 public:
     
-	HeavyOnLightTwo()
-	{
-		const auto ground = m_world->CreateBody();
-		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
-		
-		const auto shape = std::make_shared<CircleShape>(RealNum{0.5f} * Meter);
-		shape->SetDensity(RealNum{10} * KilogramPerSquareMeter);
+    HeavyOnLightTwo()
+    {
+        const auto ground = m_world->CreateBody();
+        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
+        
+        const auto shape = std::make_shared<CircleShape>(RealNum{0.5f} * Meter);
+        shape->SetDensity(RealNum{10} * KilogramPerSquareMeter);
 
-		const auto body1 = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 2.5f) * Meter));
-		body1->CreateFixture(shape);
+        const auto body1 = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 2.5f) * Meter));
+        body1->CreateFixture(shape);
         
         const auto body2 = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 3.5f) * Meter));
-		body2->CreateFixture(shape);
-	}
+        body2->CreateFixture(shape);
+    }
     
     void ToggleHeavy()
     {
@@ -51,32 +51,32 @@ public:
         else
         {
             m_heavy = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 9.0f) * Meter));
-			
-			auto conf = CircleShape::Conf{};
-			conf.density = RealNum{10} * KilogramPerSquareMeter;
-			conf.vertexRadius = RealNum{5.0f} * Meter;
-			m_heavy->CreateFixture(std::make_shared<CircleShape>(conf));
+            
+            auto conf = CircleShape::Conf{};
+            conf.density = RealNum{10} * KilogramPerSquareMeter;
+            conf.vertexRadius = RealNum{5.0f} * Meter;
+            m_heavy->CreateFixture(std::make_shared<CircleShape>(conf));
         }
     }
     
-	void KeyboardDown(Key key) override
-	{
-		switch (key)
-		{
+    void KeyboardDown(Key key) override
+    {
+        switch (key)
+        {
         case Key_H:
             ToggleHeavy();
             break;
-		default:
-			break;
-		}
-	}
+        default:
+            break;
+        }
+    }
     
-	static Test* Create()
-	{
-		return new HeavyOnLightTwo;
-	}
+    static Test* Create()
+    {
+        return new HeavyOnLightTwo;
+    }
     
-	Body* m_heavy = nullptr;
+    Body* m_heavy = nullptr;
 };
 
 } // namespace box2d

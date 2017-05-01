@@ -26,66 +26,66 @@ class Mobile : public Test
 {
 public:
 
-	enum
-	{
-		e_depth = 4
-	};
+    enum
+    {
+        e_depth = 4
+    };
 
-	Mobile()
-	{
-		// Create ground body.
-		const auto ground = m_world->CreateBody(BodyDef{}.UseLocation(Vec2(0.0f, 20.0f) * Meter));
+    Mobile()
+    {
+        // Create ground body.
+        const auto ground = m_world->CreateBody(BodyDef{}.UseLocation(Vec2(0.0f, 20.0f) * Meter));
 
-		const auto a = RealNum{0.5f};
-		const auto shape = std::make_shared<PolygonShape>(RealNum{0.25f} * a * Meter, a * Meter);
-		shape->SetDensity(RealNum{20} * KilogramPerSquareMeter);
+        const auto a = RealNum{0.5f};
+        const auto shape = std::make_shared<PolygonShape>(RealNum{0.25f} * a * Meter, a * Meter);
+        shape->SetDensity(RealNum{20} * KilogramPerSquareMeter);
 
-		RevoluteJointDef jointDef;
-		jointDef.bodyA = ground;
-		jointDef.bodyB = AddNode(ground, Vec2_zero * Meter, 0, 3.0f, a, shape);
-		jointDef.localAnchorA = Vec2_zero * Meter;
-		jointDef.localAnchorB = Vec2(0, a) * Meter;
-		m_world->CreateJoint(jointDef);
-	}
+        RevoluteJointDef jointDef;
+        jointDef.bodyA = ground;
+        jointDef.bodyB = AddNode(ground, Vec2_zero * Meter, 0, 3.0f, a, shape);
+        jointDef.localAnchorA = Vec2_zero * Meter;
+        jointDef.localAnchorB = Vec2(0, a) * Meter;
+        m_world->CreateJoint(jointDef);
+    }
 
-	Body* AddNode(Body* parent, Length2D localAnchor, int depth, float offset, float a,
-				  std::shared_ptr<Shape> shape)
-	{
-		const auto h = Vec2(0.0f, a) * Meter;
+    Body* AddNode(Body* parent, Length2D localAnchor, int depth, float offset, float a,
+                  std::shared_ptr<Shape> shape)
+    {
+        const auto h = Vec2(0.0f, a) * Meter;
 
-		BodyDef bodyDef;
-		bodyDef.type = BodyType::Dynamic;
-		bodyDef.position = parent->GetLocation() + localAnchor - h;
-		const auto body = m_world->CreateBody(bodyDef);
-		body->CreateFixture(shape);
+        BodyDef bodyDef;
+        bodyDef.type = BodyType::Dynamic;
+        bodyDef.position = parent->GetLocation() + localAnchor - h;
+        const auto body = m_world->CreateBody(bodyDef);
+        body->CreateFixture(shape);
 
-		if (depth == e_depth)
-		{
-			return body;
-		}
+        if (depth == e_depth)
+        {
+            return body;
+        }
 
-		const auto a1 = Vec2(offset, -a) * Meter;
-		const auto a2 = Vec2(-offset, -a) * Meter;
+        const auto a1 = Vec2(offset, -a) * Meter;
+        const auto a2 = Vec2(-offset, -a) * Meter;
 
-		RevoluteJointDef jointDef;
-		jointDef.bodyA = body;
-		jointDef.localAnchorB = h;
+        RevoluteJointDef jointDef;
+        jointDef.bodyA = body;
+        jointDef.localAnchorB = h;
 
-		jointDef.localAnchorA = a1;
-		jointDef.bodyB = AddNode(body, a1, depth + 1, 0.5f * offset, a, shape);
-		m_world->CreateJoint(jointDef);
+        jointDef.localAnchorA = a1;
+        jointDef.bodyB = AddNode(body, a1, depth + 1, 0.5f * offset, a, shape);
+        m_world->CreateJoint(jointDef);
 
-		jointDef.localAnchorA = a2;
-		jointDef.bodyB = AddNode(body, a2, depth + 1, 0.5f * offset, a, shape);
-		m_world->CreateJoint(jointDef);
+        jointDef.localAnchorA = a2;
+        jointDef.bodyB = AddNode(body, a2, depth + 1, 0.5f * offset, a, shape);
+        m_world->CreateJoint(jointDef);
 
-		return body;
-	}
+        return body;
+    }
 
-	static Test* Create()
-	{
-		return new Mobile;
-	}
+    static Test* Create()
+    {
+        return new Mobile;
+    }
 };
 
 } // namespace box2d

@@ -28,35 +28,35 @@ class VaryingRestitution : public Test
 {
 public:
 
-	VaryingRestitution()
-	{
-		const auto ground = m_world->CreateBody();
-		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
+    VaryingRestitution()
+    {
+        const auto ground = m_world->CreateBody();
+        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 
-		auto shapeConf = CircleShape::Conf{};
-		shapeConf.vertexRadius = RealNum{1} * Meter;
-		shapeConf.density = RealNum{1} * KilogramPerSquareMeter;
-		auto shape = CircleShape(shapeConf);
-		
-		RealNum restitution[7] = {0.0f, 0.1f, 0.3f, 0.5f, 0.75f, 0.9f, 1.0f};
+        auto shapeConf = CircleShape::Conf{};
+        shapeConf.vertexRadius = RealNum{1} * Meter;
+        shapeConf.density = RealNum{1} * KilogramPerSquareMeter;
+        auto shape = CircleShape(shapeConf);
+        
+        RealNum restitution[7] = {0.0f, 0.1f, 0.3f, 0.5f, 0.75f, 0.9f, 1.0f};
 
-		for (auto i = 0; i < 7; ++i)
-		{
-			BodyDef bd;
-			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(-10.0f + 3.0f * i, 20.0f) * Meter;
+        for (auto i = 0; i < 7; ++i)
+        {
+            BodyDef bd;
+            bd.type = BodyType::Dynamic;
+            bd.position = Vec2(-10.0f + 3.0f * i, 20.0f) * Meter;
 
-			auto body = m_world->CreateBody(bd);
+            auto body = m_world->CreateBody(bd);
 
-			shape.SetRestitution(restitution[i]);
-			body->CreateFixture(std::make_shared<CircleShape>(shape));
-		}
-	}
+            shape.SetRestitution(restitution[i]);
+            body->CreateFixture(std::make_shared<CircleShape>(shape));
+        }
+    }
 
-	static Test* Create()
-	{
-		return new VaryingRestitution;
-	}
+    static Test* Create()
+    {
+        return new VaryingRestitution;
+    }
 };
 
 } // namespace box2d

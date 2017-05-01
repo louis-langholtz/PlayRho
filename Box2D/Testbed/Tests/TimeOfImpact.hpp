@@ -28,113 +28,113 @@ namespace box2d {
 class TimeOfImpactTest : public Test
 {
 public:
-	TimeOfImpactTest()
-	{
-		m_shapeA.SetAsBox(RealNum{25.0f} * Meter, RealNum{5.0f} * Meter);
-		m_shapeB.SetAsBox(RealNum{2.5f} * Meter, RealNum{2.5f} * Meter);
-	}
+    TimeOfImpactTest()
+    {
+        m_shapeA.SetAsBox(RealNum{25.0f} * Meter, RealNum{5.0f} * Meter);
+        m_shapeB.SetAsBox(RealNum{2.5f} * Meter, RealNum{2.5f} * Meter);
+    }
 
-	static Test* Create()
-	{
-		return new TimeOfImpactTest;
-	}
+    static Test* Create()
+    {
+        return new TimeOfImpactTest;
+    }
 
-	static const char *GetName(TOIOutput::State state)
-	{
-		switch (state)
-		{
-			case TOIOutput::e_failed: return "failed";
-			case TOIOutput::e_unknown: return "unknown";
-			case TOIOutput::e_touching: return "touching";
-			case TOIOutput::e_separated: return "separated";
-			case TOIOutput::e_overlapped: return "overlapped";
-			default: break;
-		}
-		return "unknown";
-	}
+    static const char *GetName(TOIOutput::State state)
+    {
+        switch (state)
+        {
+            case TOIOutput::e_failed: return "failed";
+            case TOIOutput::e_unknown: return "unknown";
+            case TOIOutput::e_touching: return "touching";
+            case TOIOutput::e_separated: return "separated";
+            case TOIOutput::e_overlapped: return "overlapped";
+            default: break;
+        }
+        return "unknown";
+    }
 
-	void PostStep(const Settings&, Drawer& drawer) override
-	{
-		const auto offset = Vec2{RealNum(-35), RealNum(70)} * Meter;
-		const auto sweepA = Sweep{
-			Position{Vec2(24.0f, -60.0f) * Meter + offset, RealNum{2.95f} * Radian}
-		};
-		const auto sweepB = Sweep{
-			Position{Vec2(53.474274f, -50.252514f) * Meter + offset, RealNum{513.36676f} * Radian},
-			Position{Vec2(54.595478f, -51.083473f) * Meter + offset, RealNum{513.62781f} * Radian}
-		};
+    void PostStep(const Settings&, Drawer& drawer) override
+    {
+        const auto offset = Vec2{RealNum(-35), RealNum(70)} * Meter;
+        const auto sweepA = Sweep{
+            Position{Vec2(24.0f, -60.0f) * Meter + offset, RealNum{2.95f} * Radian}
+        };
+        const auto sweepB = Sweep{
+            Position{Vec2(53.474274f, -50.252514f) * Meter + offset, RealNum{513.36676f} * Radian},
+            Position{Vec2(54.595478f, -51.083473f) * Meter + offset, RealNum{513.62781f} * Radian}
+        };
 
-		const auto output = GetToiViaSat(GetDistanceProxy(m_shapeA, 0), sweepA,
-										 GetDistanceProxy(m_shapeB, 0), sweepB);
+        const auto output = GetToiViaSat(GetDistanceProxy(m_shapeA, 0), sweepA,
+                                         GetDistanceProxy(m_shapeB, 0), sweepB);
 
-		drawer.DrawString(5, m_textLine, "at toi=%g, state=%s", static_cast<float>(output.get_t()), GetName(output.get_state()));
-		m_textLine += DRAW_STRING_NEW_LINE;
+        drawer.DrawString(5, m_textLine, "at toi=%g, state=%s", static_cast<float>(output.get_t()), GetName(output.get_state()));
+        m_textLine += DRAW_STRING_NEW_LINE;
 
-		drawer.DrawString(5, m_textLine, "TOI iters = %d, max root iters = %d",
-						  output.get_toi_iters(), output.get_max_root_iters());
-		m_textLine += DRAW_STRING_NEW_LINE;
+        drawer.DrawString(5, m_textLine, "TOI iters = %d, max root iters = %d",
+                          output.get_toi_iters(), output.get_max_root_iters());
+        m_textLine += DRAW_STRING_NEW_LINE;
 
-		{
-			const auto vertexCount = m_shapeA.GetVertexCount();
-			auto vertices = std::vector<Length2D>(vertexCount);
-			const auto transformA = GetTransformation(sweepA, 0.0f);
-			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
-			{
-				vertices[i] = Transform(m_shapeA.GetVertex(i), transformA);
-			}
-			drawer.DrawPolygon(&vertices[0], vertexCount, Color(0.9f, 0.9f, 0.9f));
-		}
+        {
+            const auto vertexCount = m_shapeA.GetVertexCount();
+            auto vertices = std::vector<Length2D>(vertexCount);
+            const auto transformA = GetTransformation(sweepA, 0.0f);
+            for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+            {
+                vertices[i] = Transform(m_shapeA.GetVertex(i), transformA);
+            }
+            drawer.DrawPolygon(&vertices[0], vertexCount, Color(0.9f, 0.9f, 0.9f));
+        }
 
-		{
-			const auto vertexCount = m_shapeB.GetVertexCount();
-			auto vertices = std::vector<Length2D>(vertexCount);
-			const auto transformB = GetTransformation(sweepB, 0.0f);
-			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
-			{
-				vertices[i] = Transform(m_shapeB.GetVertex(i), transformB);
-			}
-			drawer.DrawPolygon(&vertices[0], vertexCount, Color(0.5f, 0.9f, 0.5f));
-		}
+        {
+            const auto vertexCount = m_shapeB.GetVertexCount();
+            auto vertices = std::vector<Length2D>(vertexCount);
+            const auto transformB = GetTransformation(sweepB, 0.0f);
+            for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+            {
+                vertices[i] = Transform(m_shapeB.GetVertex(i), transformB);
+            }
+            drawer.DrawPolygon(&vertices[0], vertexCount, Color(0.5f, 0.9f, 0.5f));
+        }
 
-		{
-			const auto vertexCount = m_shapeB.GetVertexCount();
-			auto vertices = std::vector<Length2D>(vertexCount);
-			const auto transformB = GetTransformation(sweepB, output.get_t());
-			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
-			{
-				vertices[i] = Transform(m_shapeB.GetVertex(i), transformB);
-			}
-			drawer.DrawPolygon(&vertices[0], vertexCount, Color(0.5f, 0.7f, 0.9f));
-		}
+        {
+            const auto vertexCount = m_shapeB.GetVertexCount();
+            auto vertices = std::vector<Length2D>(vertexCount);
+            const auto transformB = GetTransformation(sweepB, output.get_t());
+            for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+            {
+                vertices[i] = Transform(m_shapeB.GetVertex(i), transformB);
+            }
+            drawer.DrawPolygon(&vertices[0], vertexCount, Color(0.5f, 0.7f, 0.9f));
+        }
 
-		{
-			const auto vertexCount = m_shapeB.GetVertexCount();
-			auto vertices = std::vector<Length2D>(vertexCount);
-			const auto transformB = GetTransformation(sweepB, 1.0f);
-			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
-			{
-				vertices[i] = Transform(m_shapeB.GetVertex(i), transformB);
-			}
-			drawer.DrawPolygon(&vertices[0], vertexCount, Color(0.9f, 0.5f, 0.5f));
-		}
+        {
+            const auto vertexCount = m_shapeB.GetVertexCount();
+            auto vertices = std::vector<Length2D>(vertexCount);
+            const auto transformB = GetTransformation(sweepB, 1.0f);
+            for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+            {
+                vertices[i] = Transform(m_shapeB.GetVertex(i), transformB);
+            }
+            drawer.DrawPolygon(&vertices[0], vertexCount, Color(0.9f, 0.5f, 0.5f));
+        }
 
 #if 1
-		for (auto t = 0.0f; t < 1.0f; t += 0.1f)
-		{
-			const auto transformB = GetTransformation(sweepB, t);
-			const auto vertexCount = m_shapeB.GetVertexCount();
-			auto vertices = std::vector<Length2D>(vertexCount);
-			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
-			{
-				vertices[i] = Transform(m_shapeB.GetVertex(i), transformB);
-			}
-			drawer.DrawPolygon(&vertices[0], vertexCount, Color(0.9f, 0.5f, 0.5f));
-		}
+        for (auto t = 0.0f; t < 1.0f; t += 0.1f)
+        {
+            const auto transformB = GetTransformation(sweepB, t);
+            const auto vertexCount = m_shapeB.GetVertexCount();
+            auto vertices = std::vector<Length2D>(vertexCount);
+            for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+            {
+                vertices[i] = Transform(m_shapeB.GetVertex(i), transformB);
+            }
+            drawer.DrawPolygon(&vertices[0], vertexCount, Color(0.9f, 0.5f, 0.5f));
+        }
 #endif
-	}
+    }
 
-	PolygonShape m_shapeA;
-	PolygonShape m_shapeB;
+    PolygonShape m_shapeA;
+    PolygonShape m_shapeB;
 };
 
 } // namespace box2d

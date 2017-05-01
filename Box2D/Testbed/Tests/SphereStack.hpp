@@ -26,41 +26,41 @@ class SphereStack : public Test
 {
 public:
 
-	enum
-	{
-		e_count = 10
-	};
+    enum
+    {
+        e_count = 10
+    };
 
-	SphereStack()
-	{
-		{
-			const auto ground = m_world->CreateBody();
-			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
-		}
+    SphereStack()
+    {
+        {
+            const auto ground = m_world->CreateBody();
+            ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
+        }
 
-		{
-			const auto shape = std::make_shared<CircleShape>(RealNum{1} * Meter);
-			shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
+        {
+            const auto shape = std::make_shared<CircleShape>(RealNum{1} * Meter);
+            shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 
-			for (auto i = 0; i < e_count; ++i)
-			{
-				BodyDef bd;
-				bd.type = BodyType::Dynamic;
-				bd.position = Vec2(0, 4.0f + 3.0f * i) * Meter;
+            for (auto i = 0; i < e_count; ++i)
+            {
+                BodyDef bd;
+                bd.type = BodyType::Dynamic;
+                bd.position = Vec2(0, 4.0f + 3.0f * i) * Meter;
 
-				m_bodies[i] = m_world->CreateBody(bd);
-				m_bodies[i]->CreateFixture(shape);
-				m_bodies[i]->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * MeterPerSecond, AngularVelocity{0}});
-			}
-		}
-	}
+                m_bodies[i] = m_world->CreateBody(bd);
+                m_bodies[i]->CreateFixture(shape);
+                m_bodies[i]->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * MeterPerSecond, AngularVelocity{0}});
+            }
+        }
+    }
 
-	static Test* Create()
-	{
-		return new SphereStack;
-	}
+    static Test* Create()
+    {
+        return new SphereStack;
+    }
 
-	Body* m_bodies[e_count];
+    Body* m_bodies[e_count];
 };
 
 } // namespace box2d

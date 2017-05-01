@@ -27,87 +27,87 @@ namespace box2d {
 class ConvexHull : public Test
 {
 public:
-	enum: std::size_t
-	{
-		e_count = 16
-	};
+    enum: std::size_t
+    {
+        e_count = 16
+    };
 
-	ConvexHull()
-	{
-		Generate();
-		m_auto = false;
-	}
+    ConvexHull()
+    {
+        Generate();
+        m_auto = false;
+    }
 
-	void Generate()
-	{
-		const auto lowerBound = Vec2(-8.0f, -8.0f);
-		const auto upperBound = Vec2(8.0f, 8.0f);
+    void Generate()
+    {
+        const auto lowerBound = Vec2(-8.0f, -8.0f);
+        const auto upperBound = Vec2(8.0f, 8.0f);
 
-		m_points.clear();
-		for (auto i = std::size_t{0}; i < e_count; ++i)
-		{
-			const auto x = 10.0f * RandomFloat();
-			const auto y = 10.0f * RandomFloat();
+        m_points.clear();
+        for (auto i = std::size_t{0}; i < e_count; ++i)
+        {
+            const auto x = 10.0f * RandomFloat();
+            const auto y = 10.0f * RandomFloat();
 
-			// Clamp onto a square to help create collinearities.
-			// This will stress the convex hull algorithm.
-			const auto v = Vec2{Clamp(x, lowerBound.x, upperBound.x), Clamp(y, lowerBound.y, upperBound.y)} * Meter;
-			m_points.emplace_back(v);
-		}
-	}
+            // Clamp onto a square to help create collinearities.
+            // This will stress the convex hull algorithm.
+            const auto v = Vec2{Clamp(x, lowerBound.x, upperBound.x), Clamp(y, lowerBound.y, upperBound.y)} * Meter;
+            m_points.emplace_back(v);
+        }
+    }
 
-	static Test* Create()
-	{
-		return new ConvexHull;
-	}
+    static Test* Create()
+    {
+        return new ConvexHull;
+    }
 
-	void KeyboardDown(Key key) override
-	{
-		switch (key)
-		{
-		case Key_A:
-			m_auto = !m_auto;
-			break;
+    void KeyboardDown(Key key) override
+    {
+        switch (key)
+        {
+        case Key_A:
+            m_auto = !m_auto;
+            break;
 
-		case Key_G:
-			Generate();
-			break;
+        case Key_G:
+            Generate();
+            break;
 
-		default:
-			break;
-		}
-	}
+        default:
+            break;
+        }
+    }
 
-	void PostStep(const Settings&, Drawer& drawer) override
-	{
-		const auto conf = PolygonShape::Conf{};
-		const auto shape = PolygonShape{Span<const Length2D>{&m_points[0], m_points.size()}, conf};
+    void PostStep(const Settings&, Drawer& drawer) override
+    {
+        const auto conf = PolygonShape::Conf{};
+        const auto shape = PolygonShape{Span<const Length2D>{&m_points[0], m_points.size()}, conf};
 
-		drawer.DrawString(5, m_textLine, "Press g to generate a new random convex hull");
-		m_textLine += DRAW_STRING_NEW_LINE;
+        drawer.DrawString(5, m_textLine, "Press g to generate a new random convex hull");
+        m_textLine += DRAW_STRING_NEW_LINE;
 
-		drawer.DrawPolygon(shape.GetVertices().begin(), shape.GetVertexCount(), Color(0.9f, 0.9f, 0.9f));
+        drawer.DrawPolygon(shape.GetVertices().begin(), shape.GetVertexCount(), Color(0.9f, 0.9f, 0.9f));
 
-		for (auto i = std::size_t{0}; i < m_points.size(); ++i)
-		{
-			drawer.DrawPoint(m_points[i], RealNum{3.0f} * Meter, Color(0.3f, 0.9f, 0.3f));
-			drawer.DrawString(m_points[i] + Vec2(0.05f, 0.05f) * Meter, "%d", i);
-		}
+        for (auto i = std::size_t{0}; i < m_points.size(); ++i)
+        {
+            drawer.DrawPoint(m_points[i], RealNum{3.0f} * Meter, Color(0.3f, 0.9f, 0.3f));
+            drawer.DrawString(m_points[i] + Vec2(0.05f, 0.05f) * Meter, "%d", i);
+        }
 
-		if (!Validate(shape))
-		{
-			drawer.DrawString(5, m_textLine, "Note: Invalid convex hull");
-			m_textLine += DRAW_STRING_NEW_LINE;
-		}
+        if (!Validate(shape))
+        {
+            drawer.DrawString(5, m_textLine, "Note: Invalid convex hull");
+            m_textLine += DRAW_STRING_NEW_LINE;
+        }
 
-		if (m_auto)
-		{
-			Generate();
-		}
-	}
+        if (m_auto)
+        {
+            Generate();
+        }
+    }
 
-	std::vector<Length2D> m_points{e_count};
-	bool m_auto;
+    std::vector<Length2D> m_points{e_count};
+    bool m_auto;
 };
 
 } // namespace box2d

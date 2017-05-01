@@ -33,50 +33,50 @@ class AABB;
 
 struct ProjectionMatrix
 {
-	float m[16];
+    float m[16];
 };
 
 struct Coord2D
 {
-	float x;
-	float y;
+    float x;
+    float y;
 };
 
 inline Coord2D operator* (Coord2D coord, float scalar)
 {
-	return Coord2D{coord.x * scalar, coord.y * scalar};
+    return Coord2D{coord.x * scalar, coord.y * scalar};
 }
 
 inline Coord2D operator* (float scalar, Coord2D coord)
 {
-	return Coord2D{coord.x * scalar, coord.y * scalar};
+    return Coord2D{coord.x * scalar, coord.y * scalar};
 }
 
 inline Coord2D operator/ (Coord2D coord, float scalar)
 {
-	return Coord2D{coord.x / scalar, coord.y / scalar};
+    return Coord2D{coord.x / scalar, coord.y / scalar};
 }
 
 inline Coord2D operator+ (Coord2D a, Coord2D b)
 {
-	return Coord2D{a.x + b.x, a.y + b.y};
+    return Coord2D{a.x + b.x, a.y + b.y};
 }
 
 
 inline Coord2D operator- (Coord2D a, Coord2D b)
 {
-	return Coord2D{a.x - b.x, a.y - b.y};
+    return Coord2D{a.x - b.x, a.y - b.y};
 }
 
 
 //
 struct Camera
 {
-	Coord2D m_center = Coord2D{0.0f, 20.0f};
-	float m_extent = 25.0f;
-	float m_zoom = 1.0f;
-	int m_width = 1280;
-	int m_height = 800;
+    Coord2D m_center = Coord2D{0.0f, 20.0f};
+    float m_extent = 25.0f;
+    float m_zoom = 1.0f;
+    int m_width = 1280;
+    int m_height = 800;
 };
 
 Length2D ConvertScreenToWorld(const Camera& camera, const Coord2D screenPoint);
@@ -87,19 +87,19 @@ ProjectionMatrix GetProjectionMatrix(const Camera& camera, RealNum zBias);
 class DebugDraw : public Drawer
 {
 public:
-	DebugDraw(Camera& camera);
+    DebugDraw(Camera& camera);
 
-	virtual ~DebugDraw() noexcept;
-	
-	void DrawPolygon(const Length2D* vertices, size_type vertexCount, const Color& color) override;
+    virtual ~DebugDraw() noexcept;
+    
+    void DrawPolygon(const Length2D* vertices, size_type vertexCount, const Color& color) override;
 
-	void DrawSolidPolygon(const Length2D* vertices, size_type vertexCount, const Color& color) override;
+    void DrawSolidPolygon(const Length2D* vertices, size_type vertexCount, const Color& color) override;
 
-	void DrawCircle(const Length2D& center, Length radius, const Color& color) override;
+    void DrawCircle(const Length2D& center, Length radius, const Color& color) override;
 
-	void DrawSolidCircle(const Length2D& center, Length radius, const Color& color) override;
+    void DrawSolidCircle(const Length2D& center, Length radius, const Color& color) override;
 
-	void DrawSegment(const Length2D& p1, const Length2D& p2, const Color& color) override;
+    void DrawSegment(const Length2D& p1, const Length2D& p2, const Color& color) override;
 
     void DrawPoint(const Length2D& p, Length size, const Color& color) override;
 
@@ -108,21 +108,21 @@ public:
     void DrawString(const Length2D& p, const char* string, ...) override;
 
     void Flush() override;
-	
-	Length2D GetTranslation() const override;
+    
+    Length2D GetTranslation() const override;
 
-	void SetTranslation(Length2D value) override;
+    void SetTranslation(Length2D value) override;
 
 private:
-	void DrawTriangle(const Length2D& p1, const Length2D& p2, const Length2D& p3, const Color& color);
+    void DrawTriangle(const Length2D& p1, const Length2D& p2, const Length2D& p3, const Color& color);
 
-	Camera& m_camera;
-	GLRenderPoints* m_points;
+    Camera& m_camera;
+    GLRenderPoints* m_points;
     GLRenderLines* m_lines;
     GLRenderTriangles* m_triangles;
-	int m_circleParts = 16;
-	RealNum m_cosInc;
-	RealNum m_sinInc;
+    int m_circleParts = 16;
+    RealNum m_cosInc;
+    RealNum m_sinInc;
 };
 
 } // namespace box2d

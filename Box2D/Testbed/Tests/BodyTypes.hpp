@@ -25,120 +25,120 @@ namespace box2d {
 class BodyTypes : public Test
 {
 public:
-	BodyTypes()
-	{
-		const auto ground = m_world->CreateBody();
-		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
+    BodyTypes()
+    {
+        const auto ground = m_world->CreateBody();
+        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
 
-		// Define attachment
-		{
-			BodyDef bd;
-			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(0.0f, 3.0f) * Meter;
-			m_attachment = m_world->CreateBody(bd);
-			auto conf = PolygonShape::Conf{};
-			conf.density = RealNum{2} * KilogramPerSquareMeter;
-			m_attachment->CreateFixture(std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{2.0f} * Meter, conf));
-		}
+        // Define attachment
+        {
+            BodyDef bd;
+            bd.type = BodyType::Dynamic;
+            bd.position = Vec2(0.0f, 3.0f) * Meter;
+            m_attachment = m_world->CreateBody(bd);
+            auto conf = PolygonShape::Conf{};
+            conf.density = RealNum{2} * KilogramPerSquareMeter;
+            m_attachment->CreateFixture(std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{2.0f} * Meter, conf));
+        }
 
-		// Define platform
-		{
-			BodyDef bd;
-			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(-4.0f, 5.0f) * Meter;
-			m_platform = m_world->CreateBody(bd);
+        // Define platform
+        {
+            BodyDef bd;
+            bd.type = BodyType::Dynamic;
+            bd.position = Vec2(-4.0f, 5.0f) * Meter;
+            m_platform = m_world->CreateBody(bd);
 
-			auto conf = PolygonShape::Conf{};
-			conf.friction = 0.6f;
-			conf.density = RealNum{2} * KilogramPerSquareMeter;
-			PolygonShape shape{conf};
-			SetAsBox(shape, RealNum{0.5f} * Meter, RealNum{4.0f} * Meter, Vec2(4.0f, 0.0f) * Meter, RealNum{0.5f} * Pi * Radian);
+            auto conf = PolygonShape::Conf{};
+            conf.friction = 0.6f;
+            conf.density = RealNum{2} * KilogramPerSquareMeter;
+            PolygonShape shape{conf};
+            SetAsBox(shape, RealNum{0.5f} * Meter, RealNum{4.0f} * Meter, Vec2(4.0f, 0.0f) * Meter, RealNum{0.5f} * Pi * Radian);
 
-			m_platform->CreateFixture(std::make_shared<PolygonShape>(shape));
+            m_platform->CreateFixture(std::make_shared<PolygonShape>(shape));
 
-			RevoluteJointDef rjd(m_attachment, m_platform, Vec2(0.0f, 5.0f) * Meter);
-			rjd.maxMotorTorque = Torque{RealNum{50.0f} * NewtonMeter};
-			rjd.enableMotor = true;
-			m_world->CreateJoint(rjd);
+            RevoluteJointDef rjd(m_attachment, m_platform, Vec2(0.0f, 5.0f) * Meter);
+            rjd.maxMotorTorque = Torque{RealNum{50.0f} * NewtonMeter};
+            rjd.enableMotor = true;
+            m_world->CreateJoint(rjd);
 
-			PrismaticJointDef pjd(ground, m_platform, Vec2(0.0f, 5.0f) * Meter, UnitVec2::GetRight());
-			pjd.maxMotorTorque = Torque{RealNum{1000.0f} * NewtonMeter};
-			pjd.enableMotor = true;
-			pjd.lowerTranslation = RealNum{-10.0f} * Meter;
-			pjd.upperTranslation = RealNum{10.0f} * Meter;
-			pjd.enableLimit = true;
-			m_world->CreateJoint(pjd);
+            PrismaticJointDef pjd(ground, m_platform, Vec2(0.0f, 5.0f) * Meter, UnitVec2::GetRight());
+            pjd.maxMotorTorque = Torque{RealNum{1000.0f} * NewtonMeter};
+            pjd.enableMotor = true;
+            pjd.lowerTranslation = RealNum{-10.0f} * Meter;
+            pjd.upperTranslation = RealNum{10.0f} * Meter;
+            pjd.enableLimit = true;
+            m_world->CreateJoint(pjd);
 
-			m_speed = 3.0f;
-		}
+            m_speed = 3.0f;
+        }
 
-		// Create a payload
-		{
-			BodyDef bd;
-			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(0.0f, 8.0f) * Meter;
-			Body* body = m_world->CreateBody(bd);
+        // Create a payload
+        {
+            BodyDef bd;
+            bd.type = BodyType::Dynamic;
+            bd.position = Vec2(0.0f, 8.0f) * Meter;
+            Body* body = m_world->CreateBody(bd);
 
-			auto conf = PolygonShape::Conf{};
-			conf.friction = 0.6f;
-			conf.density = RealNum{2} * KilogramPerSquareMeter;
+            auto conf = PolygonShape::Conf{};
+            conf.friction = 0.6f;
+            conf.density = RealNum{2} * KilogramPerSquareMeter;
 
-			body->CreateFixture(std::make_shared<PolygonShape>(RealNum{0.75f} * Meter, RealNum{0.75f} * Meter, conf));
-		}
-	}
+            body->CreateFixture(std::make_shared<PolygonShape>(RealNum{0.75f} * Meter, RealNum{0.75f} * Meter, conf));
+        }
+    }
 
-	void KeyboardDown(Key key) override
-	{
-		switch (key)
-		{
-		case Key_D:
-			m_platform->SetType(BodyType::Dynamic);
-			break;
+    void KeyboardDown(Key key) override
+    {
+        switch (key)
+        {
+        case Key_D:
+            m_platform->SetType(BodyType::Dynamic);
+            break;
 
-		case Key_S:
-			m_platform->SetType(BodyType::Static);
-			break;
+        case Key_S:
+            m_platform->SetType(BodyType::Static);
+            break;
 
-		case Key_K:
-			m_platform->SetType(BodyType::Kinematic);
-			m_platform->SetVelocity(Velocity{Vec2(-m_speed, 0.0f) * MeterPerSecond, AngularVelocity{0}});
-			break;
-	
-		default:
-			break;
-		}
-	}
+        case Key_K:
+            m_platform->SetType(BodyType::Kinematic);
+            m_platform->SetVelocity(Velocity{Vec2(-m_speed, 0.0f) * MeterPerSecond, AngularVelocity{0}});
+            break;
+    
+        default:
+            break;
+        }
+    }
 
-	void PreStep(const Settings&, Drawer&) override
-	{
-		// Drive the kinematic body.
-		if (m_platform->GetType() == BodyType::Kinematic)
-		{
-			const auto p = m_platform->GetLocation();
-			const auto velocity = m_platform->GetVelocity();
+    void PreStep(const Settings&, Drawer&) override
+    {
+        // Drive the kinematic body.
+        if (m_platform->GetType() == BodyType::Kinematic)
+        {
+            const auto p = m_platform->GetLocation();
+            const auto velocity = m_platform->GetVelocity();
 
-			if ((p.x < RealNum{-10.0f} * Meter && velocity.linear.x < RealNum{0.0f} * MeterPerSecond) ||
-				(p.x > RealNum{10.0f} * Meter && velocity.linear.x > RealNum{0.0f} * MeterPerSecond))
-			{
-				m_platform->SetVelocity(Velocity{{-velocity.linear.x, velocity.linear.y}, velocity.angular});
-			}
-		}
-	}
+            if ((p.x < RealNum{-10.0f} * Meter && velocity.linear.x < RealNum{0.0f} * MeterPerSecond) ||
+                (p.x > RealNum{10.0f} * Meter && velocity.linear.x > RealNum{0.0f} * MeterPerSecond))
+            {
+                m_platform->SetVelocity(Velocity{{-velocity.linear.x, velocity.linear.y}, velocity.angular});
+            }
+        }
+    }
 
-	void PostStep(const Settings&, Drawer& drawer) override
-	{
-		drawer.DrawString(5, m_textLine, "Keys: (d) dynamic, (s) static, (k) kinematic");
-		m_textLine += DRAW_STRING_NEW_LINE;
-	}
-	
-	static Test* Create()
-	{
-		return new BodyTypes;
-	}
+    void PostStep(const Settings&, Drawer& drawer) override
+    {
+        drawer.DrawString(5, m_textLine, "Keys: (d) dynamic, (s) static, (k) kinematic");
+        m_textLine += DRAW_STRING_NEW_LINE;
+    }
+    
+    static Test* Create()
+    {
+        return new BodyTypes;
+    }
 
-	Body* m_attachment;
-	Body* m_platform;
-	RealNum m_speed;
+    Body* m_attachment;
+    Body* m_platform;
+    RealNum m_speed;
 };
 
 } // namespace box2d

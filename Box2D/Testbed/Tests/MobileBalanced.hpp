@@ -26,81 +26,81 @@ class MobileBalanced : public Test
 {
 public:
 
-	enum
-	{
-		e_depth = 4
-	};
+    enum
+    {
+        e_depth = 4
+    };
 
-	const Density density = RealNum{20} * KilogramPerSquareMeter;
+    const Density density = RealNum{20} * KilogramPerSquareMeter;
 
-	MobileBalanced()
-	{
-		const auto ground = m_world->CreateBody(BodyDef{}.UseLocation(Vec2(0.0f, 20.0f) * Meter));
+    MobileBalanced()
+    {
+        const auto ground = m_world->CreateBody(BodyDef{}.UseLocation(Vec2(0.0f, 20.0f) * Meter));
 
-		const auto a = RealNum{0.5f};
-		const auto h = Vec2(0.0f, a) * Meter;
+        const auto a = RealNum{0.5f};
+        const auto h = Vec2(0.0f, a) * Meter;
 
-		auto conf = PolygonShape::Conf{};
-		conf.density = density;
-		const auto shape = std::make_shared<const PolygonShape>(RealNum{0.25f} * a * Meter, a * Meter, conf);
-		const auto root = AddNode(ground, Vec2_zero * Meter, 0, 3.0f, a, shape);
+        auto conf = PolygonShape::Conf{};
+        conf.density = density;
+        const auto shape = std::make_shared<const PolygonShape>(RealNum{0.25f} * a * Meter, a * Meter, conf);
+        const auto root = AddNode(ground, Vec2_zero * Meter, 0, 3.0f, a, shape);
 
-		RevoluteJointDef jointDef;
-		jointDef.bodyA = ground;
-		jointDef.bodyB = root;
-		jointDef.localAnchorA = Vec2_zero * Meter;
-		jointDef.localAnchorB = h;
-		m_world->CreateJoint(jointDef);
-	}
+        RevoluteJointDef jointDef;
+        jointDef.bodyA = ground;
+        jointDef.bodyB = root;
+        jointDef.localAnchorA = Vec2_zero * Meter;
+        jointDef.localAnchorB = h;
+        m_world->CreateJoint(jointDef);
+    }
 
-	Body* AddNode(const Body* parent, const Length2D localAnchor, const int depth,
-				  const RealNum offset, const RealNum a, std::shared_ptr<const Shape> shape)
-	{
-		const auto h = Vec2(0.0f, a) * Meter;
+    Body* AddNode(const Body* parent, const Length2D localAnchor, const int depth,
+                  const RealNum offset, const RealNum a, std::shared_ptr<const Shape> shape)
+    {
+        const auto h = Vec2(0.0f, a) * Meter;
 
-		const auto p = parent->GetLocation() + localAnchor - h;
+        const auto p = parent->GetLocation() + localAnchor - h;
 
-		BodyDef bodyDef;
-		bodyDef.type = BodyType::Dynamic;
-		bodyDef.position = p;
-		const auto body = m_world->CreateBody(bodyDef);
+        BodyDef bodyDef;
+        bodyDef.type = BodyType::Dynamic;
+        bodyDef.position = p;
+        const auto body = m_world->CreateBody(bodyDef);
 
-		body->CreateFixture(shape);
+        body->CreateFixture(shape);
 
-		if (depth == e_depth)
-		{
-			return body;
-		}
+        if (depth == e_depth)
+        {
+            return body;
+        }
 
-		PolygonShape shape2(RealNum{0.25f} * a * Meter, RealNum{a} * Meter);
-		shape2.SetDensity(density);
-		SetAsBox(shape2, offset * Meter, RealNum{0.25f} * a * Meter, Vec2(0, -a) * Meter, RealNum{0.0f} * Radian);
-		body->CreateFixture(std::make_shared<PolygonShape>(shape2));
+        PolygonShape shape2(RealNum{0.25f} * a * Meter, RealNum{a} * Meter);
+        shape2.SetDensity(density);
+        SetAsBox(shape2, offset * Meter, RealNum{0.25f} * a * Meter, Vec2(0, -a) * Meter, RealNum{0.0f} * Radian);
+        body->CreateFixture(std::make_shared<PolygonShape>(shape2));
 
-		const auto a1 = Vec2(offset, -a) * Meter;
-		const auto a2 = Vec2(-offset, -a) * Meter;
-		const auto body1 = AddNode(body, a1, depth + 1, 0.5f * offset, a, shape);
-		const auto body2 = AddNode(body, a2, depth + 1, 0.5f * offset, a, shape);
+        const auto a1 = Vec2(offset, -a) * Meter;
+        const auto a2 = Vec2(-offset, -a) * Meter;
+        const auto body1 = AddNode(body, a1, depth + 1, 0.5f * offset, a, shape);
+        const auto body2 = AddNode(body, a2, depth + 1, 0.5f * offset, a, shape);
 
-		RevoluteJointDef jointDef;
-		jointDef.bodyA = body;
-		jointDef.localAnchorB = h;
+        RevoluteJointDef jointDef;
+        jointDef.bodyA = body;
+        jointDef.localAnchorB = h;
 
-		jointDef.localAnchorA = a1;
-		jointDef.bodyB = body1;
-		m_world->CreateJoint(jointDef);
+        jointDef.localAnchorA = a1;
+        jointDef.bodyB = body1;
+        m_world->CreateJoint(jointDef);
 
-		jointDef.localAnchorA = a2;
-		jointDef.bodyB = body2;
-		m_world->CreateJoint(jointDef);
+        jointDef.localAnchorA = a2;
+        jointDef.bodyB = body2;
+        m_world->CreateJoint(jointDef);
 
-		return body;
-	}
+        return body;
+    }
 
-	static Test* Create()
-	{
-		return new MobileBalanced;
-	}
+    static Test* Create()
+    {
+        return new MobileBalanced;
+    }
 };
 
 } // namespace box2d

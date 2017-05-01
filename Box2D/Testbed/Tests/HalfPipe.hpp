@@ -20,47 +20,47 @@
 #define HalfPipe_hpp
 
 namespace box2d {
-	
-	class HalfPipe : public Test
-	{
-	public:
-		
-		HalfPipe()
-		{
-			const auto pipeBody = m_world->CreateBody();
-			auto pipeShape = std::make_shared<ChainShape>();
-			pipeShape->SetFriction(1.0f);
-			{
-				auto vertices = std::vector<Length2D>();
-				const auto pipeRadius = RealNum{20.0f} * Meter;
-				for (auto i = 0; i < 90; ++i)
-				{
-					const auto angle = RealNum{(RealNum(i * 2 + 180.0f) * Degree) / Radian};
-					const auto x = pipeRadius * std::cos(angle);
-					const auto y = pipeRadius * std::sin(angle);
-					vertices.push_back(Length2D{x, y + RealNum{20} * Meter});
-				}
-				pipeShape->CreateChain(Span<const Length2D>(vertices.data(), vertices.size()));
-			}
-			pipeBody->CreateFixture(pipeShape);
-			
-			BodyDef bd;
-			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(-19, 28) * Meter;
-			const auto ballBody = m_world->CreateBody(bd);
-			auto conf = CircleShape::Conf{};
-			conf.density = RealNum{0.01f} * KilogramPerSquareMeter;
-			conf.vertexRadius = RealNum{1} * Meter;
-			conf.friction = 1.0f;
-			ballBody->CreateFixture(std::make_shared<CircleShape>(conf));
-		}
-		
-		static Test* Create()
-		{
-			return new HalfPipe;
-		}
-	};
-	
+    
+    class HalfPipe : public Test
+    {
+    public:
+        
+        HalfPipe()
+        {
+            const auto pipeBody = m_world->CreateBody();
+            auto pipeShape = std::make_shared<ChainShape>();
+            pipeShape->SetFriction(1.0f);
+            {
+                auto vertices = std::vector<Length2D>();
+                const auto pipeRadius = RealNum{20.0f} * Meter;
+                for (auto i = 0; i < 90; ++i)
+                {
+                    const auto angle = RealNum{(RealNum(i * 2 + 180.0f) * Degree) / Radian};
+                    const auto x = pipeRadius * std::cos(angle);
+                    const auto y = pipeRadius * std::sin(angle);
+                    vertices.push_back(Length2D{x, y + RealNum{20} * Meter});
+                }
+                pipeShape->CreateChain(Span<const Length2D>(vertices.data(), vertices.size()));
+            }
+            pipeBody->CreateFixture(pipeShape);
+            
+            BodyDef bd;
+            bd.type = BodyType::Dynamic;
+            bd.position = Vec2(-19, 28) * Meter;
+            const auto ballBody = m_world->CreateBody(bd);
+            auto conf = CircleShape::Conf{};
+            conf.density = RealNum{0.01f} * KilogramPerSquareMeter;
+            conf.vertexRadius = RealNum{1} * Meter;
+            conf.friction = 1.0f;
+            ballBody->CreateFixture(std::make_shared<CircleShape>(conf));
+        }
+        
+        static Test* Create()
+        {
+            return new HalfPipe;
+        }
+    };
+    
 }
 
 #endif /* HalfPipe_hpp */

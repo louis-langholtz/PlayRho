@@ -26,81 +26,81 @@ class ShapeEditing : public Test
 {
 public:
 
-	ShapeEditing()
-	{
-		const auto ground = m_world->CreateBody();
-		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
-		
-		BodyDef bd;
-		bd.type = BodyType::Dynamic;
-		bd.position = Vec2(0.0f, 10.0f) * Meter;
-		m_body = m_world->CreateBody(bd);
+    ShapeEditing()
+    {
+        const auto ground = m_world->CreateBody();
+        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
+        
+        BodyDef bd;
+        bd.type = BodyType::Dynamic;
+        bd.position = Vec2(0.0f, 10.0f) * Meter;
+        m_body = m_world->CreateBody(bd);
 
-		PolygonShape shape;
-		SetAsBox(shape, RealNum{4.0f} * Meter, RealNum{4.0f} * Meter, Vec2(0.0f, 0.0f) * Meter, Angle{0});
-		shape.SetDensity(RealNum{10} * KilogramPerSquareMeter);
-		m_fixture1 = m_body->CreateFixture(std::make_shared<PolygonShape>(shape));
+        PolygonShape shape;
+        SetAsBox(shape, RealNum{4.0f} * Meter, RealNum{4.0f} * Meter, Vec2(0.0f, 0.0f) * Meter, Angle{0});
+        shape.SetDensity(RealNum{10} * KilogramPerSquareMeter);
+        m_fixture1 = m_body->CreateFixture(std::make_shared<PolygonShape>(shape));
 
-		m_fixture2 = nullptr;
+        m_fixture2 = nullptr;
 
-		m_sensor = false;
-	}
+        m_sensor = false;
+    }
 
-	void KeyboardDown(Key key) override
-	{
-		switch (key)
-		{
-		case Key_C:
-			if (!m_fixture2)
-			{
-				auto conf = CircleShape::Conf{};
-				conf.vertexRadius = RealNum{3.0f} * Meter;
-				conf.location = Vec2(0.5f, -4.0f) * Meter;
-				conf.density = RealNum{10} * KilogramPerSquareMeter;
-				m_fixture2 = m_body->CreateFixture(std::make_shared<CircleShape>(conf));
-				m_body->SetAwake();
-			}
-			break;
+    void KeyboardDown(Key key) override
+    {
+        switch (key)
+        {
+        case Key_C:
+            if (!m_fixture2)
+            {
+                auto conf = CircleShape::Conf{};
+                conf.vertexRadius = RealNum{3.0f} * Meter;
+                conf.location = Vec2(0.5f, -4.0f) * Meter;
+                conf.density = RealNum{10} * KilogramPerSquareMeter;
+                m_fixture2 = m_body->CreateFixture(std::make_shared<CircleShape>(conf));
+                m_body->SetAwake();
+            }
+            break;
 
-		case Key_D:
-			if (m_fixture2)
-			{
-				m_body->DestroyFixture(m_fixture2);
-				m_fixture2 = nullptr;
-				m_body->SetAwake();
-			}
-			break;
+        case Key_D:
+            if (m_fixture2)
+            {
+                m_body->DestroyFixture(m_fixture2);
+                m_fixture2 = nullptr;
+                m_body->SetAwake();
+            }
+            break;
 
-		case Key_S:
-			if (m_fixture2)
-			{
-				m_sensor = !m_sensor;
-				m_fixture2->SetSensor(m_sensor);
-			}
-			break;
+        case Key_S:
+            if (m_fixture2)
+            {
+                m_sensor = !m_sensor;
+                m_fixture2->SetSensor(m_sensor);
+            }
+            break;
 
-		default:
-			break;
-		}
-	}
+        default:
+            break;
+        }
+    }
 
-	void PostStep(const Settings&, Drawer& drawer) override
-	{
-		drawer.DrawString(5, m_textLine, "Press: (c) create a shape, (d) destroy a shape.");
-		m_textLine += DRAW_STRING_NEW_LINE;
-		drawer.DrawString(5, m_textLine, "sensor = %d", m_sensor);
-		m_textLine += DRAW_STRING_NEW_LINE;
-	}
+    void PostStep(const Settings&, Drawer& drawer) override
+    {
+        drawer.DrawString(5, m_textLine, "Press: (c) create a shape, (d) destroy a shape.");
+        m_textLine += DRAW_STRING_NEW_LINE;
+        drawer.DrawString(5, m_textLine, "sensor = %d", m_sensor);
+        m_textLine += DRAW_STRING_NEW_LINE;
+    }
 
-	static Test* Create()
-	{
-		return new ShapeEditing;
-	}
+    static Test* Create()
+    {
+        return new ShapeEditing;
+    }
 
-	Body* m_body;
-	Fixture* m_fixture1;
-	Fixture* m_fixture2;
-	bool m_sensor;
+    Body* m_body;
+    Fixture* m_fixture1;
+    Fixture* m_fixture2;
+    bool m_sensor;
 };
 
 } // namespace box2d

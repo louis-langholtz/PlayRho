@@ -25,156 +25,156 @@ namespace box2d {
 class ApplyForce : public Test
 {
 public:
-	ApplyForce()
-	{
-		m_world->SetGravity(Vec2(RealNum{0}, RealNum{0}) * MeterPerSquareSecond);
+    ApplyForce()
+    {
+        m_world->SetGravity(Vec2(RealNum{0}, RealNum{0}) * MeterPerSquareSecond);
 
-		const auto k_restitution = RealNum(0.4);
+        const auto k_restitution = RealNum(0.4);
 
-		Body* ground;
-		{
-			BodyDef bd;
-			bd.position = Vec2(RealNum{0}, 20.0f) * Meter;
-			ground = m_world->CreateBody(bd);
+        Body* ground;
+        {
+            BodyDef bd;
+            bd.position = Vec2(RealNum{0}, 20.0f) * Meter;
+            ground = m_world->CreateBody(bd);
 
-			auto conf = EdgeShape::Conf{};
-			conf.density = 0;
-			conf.restitution = k_restitution;
-			EdgeShape shape(conf);
-			
-			// Left vertical
-			shape.Set(Vec2(-20.0f, -20.0f) * Meter, Vec2(-20.0f, 20.0f) * Meter);
-			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+            auto conf = EdgeShape::Conf{};
+            conf.density = 0;
+            conf.restitution = k_restitution;
+            EdgeShape shape(conf);
 
-			// Right vertical
-			shape.Set(Vec2(20.0f, -20.0f) * Meter, Vec2(20.0f, 20.0f) * Meter);
-			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+            // Left vertical
+            shape.Set(Vec2(-20.0f, -20.0f) * Meter, Vec2(-20.0f, 20.0f) * Meter);
+            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
-			// Top horizontal
-			shape.Set(Vec2(-20.0f, 20.0f) * Meter, Vec2(20.0f, 20.0f) * Meter);
-			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+            // Right vertical
+            shape.Set(Vec2(20.0f, -20.0f) * Meter, Vec2(20.0f, 20.0f) * Meter);
+            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
-			// Bottom horizontal
-			shape.Set(Vec2(-20.0f, -20.0f) * Meter, Vec2(20.0f, -20.0f) * Meter);
-			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
-		}
+            // Top horizontal
+            shape.Set(Vec2(-20.0f, 20.0f) * Meter, Vec2(20.0f, 20.0f) * Meter);
+            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
-		{
-			Transformation xf1;
-			xf1.q = UnitVec2{0.3524f * Pi * Radian};
-			xf1.p = GetVec2(GetXAxis(xf1.q)) * Meter;
+            // Bottom horizontal
+            shape.Set(Vec2(-20.0f, -20.0f) * Meter, Vec2(20.0f, -20.0f) * Meter);
+            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+        }
 
-			Length2D vertices[3];
-			vertices[0] = Transform(Length2D{Vec2(RealNum{-1}, RealNum{0}) * Meter}, xf1);
-			vertices[1] = Transform(Vec2(RealNum{1}, RealNum{0}) * Meter, xf1);
-			vertices[2] = Transform(Vec2(RealNum{0}, RealNum{0.5f}) * Meter, xf1);
-			
-			auto conf = PolygonShape::Conf{};
-			
-			conf.density = RealNum{4} * Kilogram / SquareMeter;
-			const auto poly1 = PolygonShape(Span<const Length2D>(vertices, 3), conf);
+        {
+            Transformation xf1;
+            xf1.q = UnitVec2{0.3524f * Pi * Radian};
+            xf1.p = GetVec2(GetXAxis(xf1.q)) * Meter;
 
-			Transformation xf2;
-			xf2.q = UnitVec2{-0.3524f * Pi * Radian};
-			xf2.p = GetVec2(-GetXAxis(xf2.q)) * Meter;
+            Length2D vertices[3];
+            vertices[0] = Transform(Length2D{Vec2(RealNum{-1}, RealNum{0}) * Meter}, xf1);
+            vertices[1] = Transform(Vec2(RealNum{1}, RealNum{0}) * Meter, xf1);
+            vertices[2] = Transform(Vec2(RealNum{0}, RealNum{0.5f}) * Meter, xf1);
 
-			vertices[0] = Transform(Vec2(-1.0f, RealNum{0}) * Meter, xf2);
-			vertices[1] = Transform(Vec2(1.0f, RealNum{0}) * Meter, xf2);
-			vertices[2] = Transform(Vec2(RealNum{0}, 0.5f) * Meter, xf2);
+            auto conf = PolygonShape::Conf{};
 
-			conf.density = RealNum{2} * Kilogram / SquareMeter;
-			const auto poly2 = PolygonShape(Span<const Length2D>(vertices, 3), conf);
+            conf.density = RealNum{4} * Kilogram / SquareMeter;
+            const auto poly1 = PolygonShape(Span<const Length2D>(vertices, 3), conf);
 
-			BodyDef bd;
-			bd.type = BodyType::Dynamic;
-			bd.angularDamping = 2.0f;
-			bd.linearDamping = 0.5f;
+            Transformation xf2;
+            xf2.q = UnitVec2{-0.3524f * Pi * Radian};
+            xf2.p = GetVec2(-GetXAxis(xf2.q)) * Meter;
 
-			bd.position = Vec2(0, 2) * Meter;
-			bd.angle = Pi * Radian;
-			bd.allowSleep = false;
-			m_body = m_world->CreateBody(bd);
-			m_body->CreateFixture(std::make_shared<PolygonShape>(poly1));
-			m_body->CreateFixture(std::make_shared<PolygonShape>(poly2));
-		}
+            vertices[0] = Transform(Vec2(-1.0f, RealNum{0}) * Meter, xf2);
+            vertices[1] = Transform(Vec2(1.0f, RealNum{0}) * Meter, xf2);
+            vertices[2] = Transform(Vec2(RealNum{0}, 0.5f) * Meter, xf2);
 
-		{
-			auto conf = PolygonShape::Conf{};
-			conf.density = RealNum{1} * Kilogram / SquareMeter;
-			conf.friction = RealNum{0.3f};
-			const auto shape = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter, conf);
+            conf.density = RealNum{2} * Kilogram / SquareMeter;
+            const auto poly2 = PolygonShape(Span<const Length2D>(vertices, 3), conf);
 
-			const auto gravity = LinearAcceleration{RealNum{10} * MeterPerSquareSecond};
-			
-			for (auto i = 0; i < 10; ++i)
-			{
-				BodyDef bd;
-				bd.type = BodyType::Dynamic;
-				bd.position = Vec2(RealNum{0}, 5.0f + 1.54f * i) * Meter;
-				const auto body = m_world->CreateBody(bd);
+            BodyDef bd;
+            bd.type = BodyType::Dynamic;
+            bd.angularDamping = 2.0f;
+            bd.linearDamping = 0.5f;
 
-				body->CreateFixture(shape);
+            bd.position = Vec2(0, 2) * Meter;
+            bd.angle = Pi * Radian;
+            bd.allowSleep = false;
+            m_body = m_world->CreateBody(bd);
+            m_body->CreateFixture(std::make_shared<PolygonShape>(poly1));
+            m_body->CreateFixture(std::make_shared<PolygonShape>(poly2));
+        }
 
-				const auto I = GetLocalInertia(*body); // RotInertia: M * L^2 QP^-2
-				const auto invMass = body->GetInvMass(); // InvMass: M^-1
-				const auto mass = (invMass != InvMass{0})? Mass{RealNum{1} / invMass}: Mass{0}; // Mass: M
+        {
+            auto conf = PolygonShape::Conf{};
+            conf.density = RealNum{1} * Kilogram / SquareMeter;
+            conf.friction = RealNum{0.3f};
+            const auto shape = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter, conf);
 
-				// For a circle: I = 0.5 * m * r * r ==> r = sqrt(2 * I / m)
-				const auto radiusSquaredUnitless = RealNum{2} * I * invMass * SquareRadian / SquareMeter;
-				const auto radius = Length{RealNum{std::sqrt(RealNum{radiusSquaredUnitless})} * Meter};
+            const auto gravity = LinearAcceleration{RealNum{10} * MeterPerSquareSecond};
 
-				FrictionJointDef jd;
-				jd.localAnchorA = Vec2_zero * Meter;
-				jd.localAnchorB = Vec2_zero * Meter;
-				jd.bodyA = ground;
-				jd.bodyB = body;
-				jd.collideConnected = true;
-				jd.maxForce = Force{mass * gravity};
-	
-				// Torque is L^2 M T^-2 QP^-1.
-				jd.maxTorque = Torque{mass * radius * gravity / Radian};
+            for (auto i = 0; i < 10; ++i)
+            {
+                BodyDef bd;
+                bd.type = BodyType::Dynamic;
+                bd.position = Vec2(RealNum{0}, 5.0f + 1.54f * i) * Meter;
+                const auto body = m_world->CreateBody(bd);
 
-				m_world->CreateJoint(jd);
-			}
-		}
-	}
+                body->CreateFixture(shape);
 
-	void KeyboardDown(Key key)
-	{
-		switch (key)
-		{
-		case Key_W:
-			{
-				const auto lv = Length2D{Vec2{RealNum{0}, RealNum{-200}} * Meter};
-				const auto f = Force2D{GetWorldVector(*m_body, lv) * Kilogram / (Second * Second)};
-				const auto p = GetWorldPoint(*m_body, Vec2(RealNum{0}, RealNum{2}) * Meter);
-				box2d::ApplyForce(*m_body, f, p);
-			}
-			break;
+                const auto I = GetLocalInertia(*body); // RotInertia: M * L^2 QP^-2
+                const auto invMass = body->GetInvMass(); // InvMass: M^-1
+                const auto mass = (invMass != InvMass{0})? Mass{RealNum{1} / invMass}: Mass{0}; // Mass: M
 
-		case Key_A:
-			{
-				ApplyTorque(*m_body, RealNum{50} * NewtonMeter);
-			}
-			break;
+                // For a circle: I = 0.5 * m * r * r ==> r = sqrt(2 * I / m)
+                const auto radiusSquaredUnitless = RealNum{2} * I * invMass * SquareRadian / SquareMeter;
+                const auto radius = Length{RealNum{std::sqrt(RealNum{radiusSquaredUnitless})} * Meter};
 
-		case Key_D:
-			{
-				ApplyTorque(*m_body, RealNum{-50} * NewtonMeter);
-			}
-			break;
+                FrictionJointDef jd;
+                jd.localAnchorA = Vec2_zero * Meter;
+                jd.localAnchorB = Vec2_zero * Meter;
+                jd.bodyA = ground;
+                jd.bodyB = body;
+                jd.collideConnected = true;
+                jd.maxForce = Force{mass * gravity};
 
-		default:
-			break;
-		}
-	}
+                // Torque is L^2 M T^-2 QP^-1.
+                jd.maxTorque = Torque{mass * radius * gravity / Radian};
 
-	static Test* Create()
-	{
-		return new ApplyForce;
-	}
+                m_world->CreateJoint(jd);
+            }
+        }
+    }
 
-	Body* m_body;
+    void KeyboardDown(Key key)
+    {
+        switch (key)
+        {
+        case Key_W:
+            {
+                const auto lv = Length2D{Vec2{RealNum{0}, RealNum{-200}} * Meter};
+                const auto f = Force2D{GetWorldVector(*m_body, lv) * Kilogram / (Second * Second)};
+                const auto p = GetWorldPoint(*m_body, Vec2(RealNum{0}, RealNum{2}) * Meter);
+                box2d::ApplyForce(*m_body, f, p);
+            }
+            break;
+
+        case Key_A:
+            {
+                ApplyTorque(*m_body, RealNum{50} * NewtonMeter);
+            }
+            break;
+
+        case Key_D:
+            {
+                ApplyTorque(*m_body, RealNum{-50} * NewtonMeter);
+            }
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    static Test* Create()
+    {
+        return new ApplyForce;
+    }
+
+    Body* m_body;
 };
 
 } // namespace box2d

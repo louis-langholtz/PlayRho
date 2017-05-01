@@ -26,111 +26,111 @@ class BulletTest : public Test
 {
 public:
 
-	BulletTest()
-	{
-		{
-			BodyDef bd;
-			bd.position = Vec2(0.0f, 0.0f) * Meter;
-			Body* body = m_world->CreateBody(bd);
+    BulletTest()
+    {
+        {
+            BodyDef bd;
+            bd.position = Vec2(0.0f, 0.0f) * Meter;
+            Body* body = m_world->CreateBody(bd);
 
-			body->CreateFixture(std::make_shared<EdgeShape>(Vec2(-10.0f, 0.0f) * Meter, Vec2(10.0f, 0.0f) * Meter));
+            body->CreateFixture(std::make_shared<EdgeShape>(Vec2(-10.0f, 0.0f) * Meter, Vec2(10.0f, 0.0f) * Meter));
 
-			PolygonShape shape;
-			SetAsBox(shape, RealNum{0.2f} * Meter, RealNum{1.0f} * Meter, Vec2(0.5f, 1.0f) * Meter, RealNum{0.0f} * Radian);
-			body->CreateFixture(std::make_shared<PolygonShape>(shape));
-		}
+            PolygonShape shape;
+            SetAsBox(shape, RealNum{0.2f} * Meter, RealNum{1.0f} * Meter, Vec2(0.5f, 1.0f) * Meter, RealNum{0.0f} * Radian);
+            body->CreateFixture(std::make_shared<PolygonShape>(shape));
+        }
 
-		{
-			BodyDef bd;
-			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(0.0f, 4.0f) * Meter;
+        {
+            BodyDef bd;
+            bd.type = BodyType::Dynamic;
+            bd.position = Vec2(0.0f, 4.0f) * Meter;
 
-			PolygonShape box;
-			box.SetAsBox(RealNum{2.0f} * Meter, RealNum{0.1f} * Meter);
-			box.SetDensity(RealNum{1} * KilogramPerSquareMeter);
+            PolygonShape box;
+            box.SetAsBox(RealNum{2.0f} * Meter, RealNum{0.1f} * Meter);
+            box.SetDensity(RealNum{1} * KilogramPerSquareMeter);
 
-			m_body = m_world->CreateBody(bd);
-			m_body->CreateFixture(std::make_shared<PolygonShape>(box));
+            m_body = m_world->CreateBody(bd);
+            m_body->CreateFixture(std::make_shared<PolygonShape>(box));
 
-			box.SetAsBox(RealNum{0.25f} * Meter, RealNum{0.25f} * Meter);
-			box.SetDensity(RealNum{100} * KilogramPerSquareMeter);
+            box.SetAsBox(RealNum{0.25f} * Meter, RealNum{0.25f} * Meter);
+            box.SetDensity(RealNum{100} * KilogramPerSquareMeter);
 
-			//m_x = RandomFloat(-1.0f, 1.0f);
-			m_x = 0.20352793f;
-			bd.position = Vec2(m_x, 10.0f) * Meter;
-			bd.bullet = true;
+            //m_x = RandomFloat(-1.0f, 1.0f);
+            m_x = 0.20352793f;
+            bd.position = Vec2(m_x, 10.0f) * Meter;
+            bd.bullet = true;
 
-			m_bullet = m_world->CreateBody(bd);
-			m_bullet->CreateFixture(std::make_shared<PolygonShape>(box));
+            m_bullet = m_world->CreateBody(bd);
+            m_bullet->CreateFixture(std::make_shared<PolygonShape>(box));
 
-			m_bullet->SetVelocity(Velocity{Vec2{0.0f, -50.0f} * MeterPerSecond, AngularVelocity{0}});
-		}
-	}
+            m_bullet->SetVelocity(Velocity{Vec2{0.0f, -50.0f} * MeterPerSecond, AngularVelocity{0}});
+        }
+    }
 
-	void Launch()
-	{
-		m_body->SetTransform(Vec2(0.0f, 4.0f) * Meter, RealNum{0.0f} * Radian);
-		m_body->SetVelocity(Velocity{Vec2_zero * MeterPerSecond, AngularVelocity{0}});
+    void Launch()
+    {
+        m_body->SetTransform(Vec2(0.0f, 4.0f) * Meter, RealNum{0.0f} * Radian);
+        m_body->SetVelocity(Velocity{Vec2_zero * MeterPerSecond, AngularVelocity{0}});
 
-		m_x = RandomFloat(-1.0f, 1.0f);
-		m_bullet->SetTransform(Vec2(m_x, 10.0f) * Meter, RealNum{0.0f} * Radian);
-		m_bullet->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * MeterPerSecond, AngularVelocity{0}});
+        m_x = RandomFloat(-1.0f, 1.0f);
+        m_bullet->SetTransform(Vec2(m_x, 10.0f) * Meter, RealNum{0.0f} * Radian);
+        m_bullet->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * MeterPerSecond, AngularVelocity{0}});
 
-		std::uint32_t gjkCalls, gjkIters, gjkMaxIters;
-		std::remove_const<decltype(DefaultMaxToiIters)>::type toiMaxIters;
+        std::uint32_t gjkCalls, gjkIters, gjkMaxIters;
+        std::remove_const<decltype(DefaultMaxToiIters)>::type toiMaxIters;
 
-		gjkCalls = 0;
-		gjkIters = 0;
-		gjkMaxIters = 0;
+        gjkCalls = 0;
+        gjkIters = 0;
+        gjkMaxIters = 0;
 
-		toiMaxIters = 0;
-	}
+        toiMaxIters = 0;
+    }
 
-	void PostStep(const Settings&, Drawer& drawer) override
-	{
-		std::uint32_t gjkCalls = 0, gjkIters = 0, gjkMaxIters = 0;
-		auto toiRootIters = 0, toiMaxRootIters = 0;
+    void PostStep(const Settings&, Drawer& drawer) override
+    {
+        std::uint32_t gjkCalls = 0, gjkIters = 0, gjkMaxIters = 0;
+        auto toiRootIters = 0, toiMaxRootIters = 0;
 
-		if (gjkCalls > 0)
-		{
-			drawer.DrawString(5, m_textLine, "gjk calls = %d, ave gjk iters = %3.1f, max gjk iters = %d",
-				gjkCalls, float(gjkIters) / gjkCalls, gjkMaxIters);
-			m_textLine += DRAW_STRING_NEW_LINE;
-		}
+        if (gjkCalls > 0)
+        {
+            drawer.DrawString(5, m_textLine, "gjk calls = %d, ave gjk iters = %3.1f, max gjk iters = %d",
+                gjkCalls, float(gjkIters) / gjkCalls, gjkMaxIters);
+            m_textLine += DRAW_STRING_NEW_LINE;
+        }
 
-		unsigned toiCalls = 0;
-		unsigned toiIters = 0;
+        unsigned toiCalls = 0;
+        unsigned toiIters = 0;
 #if 0
-		for (auto&& c: m_world->GetContacts())
-		{
-			c.GetToiCount();
-		}
+        for (auto&& c: m_world->GetContacts())
+        {
+            c.GetToiCount();
+        }
 #endif
-		if (toiCalls > 0)
-		{
-			drawer.DrawString(5, m_textLine, "toi calls = %d, ave toi iters = %3.1f, max toi iters = %d",
-				toiCalls, float(toiIters) / toiCalls, toiMaxRootIters);
-			m_textLine += DRAW_STRING_NEW_LINE;
+        if (toiCalls > 0)
+        {
+            drawer.DrawString(5, m_textLine, "toi calls = %d, ave toi iters = %3.1f, max toi iters = %d",
+                toiCalls, float(toiIters) / toiCalls, toiMaxRootIters);
+            m_textLine += DRAW_STRING_NEW_LINE;
 
-			drawer.DrawString(5, m_textLine, "ave toi root iters = %3.1f, max toi root iters = %d",
-				float(toiRootIters) / toiCalls, toiMaxRootIters);
-			m_textLine += DRAW_STRING_NEW_LINE;
-		}
+            drawer.DrawString(5, m_textLine, "ave toi root iters = %3.1f, max toi root iters = %d",
+                float(toiRootIters) / toiCalls, toiMaxRootIters);
+            m_textLine += DRAW_STRING_NEW_LINE;
+        }
 
-		if (GetStepCount() % 60 == 0)
-		{
-			Launch();
-		}
-	}
+        if (GetStepCount() % 60 == 0)
+        {
+            Launch();
+        }
+    }
 
-	static Test* Create()
-	{
-		return new BulletTest;
-	}
+    static Test* Create()
+    {
+        return new BulletTest;
+    }
 
-	Body* m_body;
-	Body* m_bullet;
-	RealNum m_x;
+    Body* m_body;
+    Body* m_bullet;
+    RealNum m_x;
 };
 
 } // namespace box2d

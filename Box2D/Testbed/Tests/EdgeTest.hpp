@@ -26,72 +26,72 @@ class EdgeTest : public Test
 {
 public:
 
-	EdgeTest()
-	{
-		{
-			const auto ground = m_world->CreateBody();
+    EdgeTest()
+    {
+        {
+            const auto ground = m_world->CreateBody();
 
-			const auto v1 = Vec2(-10.0f, 0.0f) * Meter;
-			const auto v2 = Vec2(-7.0f, -2.0f) * Meter;
-			const auto v3 = Vec2(-4.0f, 0.0f) * Meter;
-			const auto v4 = Vec2(0.0f, 0.0f) * Meter;
-			const auto v5 = Vec2(4.0f, 0.0f) * Meter;
-			const auto v6 = Vec2(7.0f, 2.0f) * Meter;
-			const auto v7 = Vec2(10.0f, 0.0f) * Meter;
+            const auto v1 = Vec2(-10.0f, 0.0f) * Meter;
+            const auto v2 = Vec2(-7.0f, -2.0f) * Meter;
+            const auto v3 = Vec2(-4.0f, 0.0f) * Meter;
+            const auto v4 = Vec2(0.0f, 0.0f) * Meter;
+            const auto v5 = Vec2(4.0f, 0.0f) * Meter;
+            const auto v6 = Vec2(7.0f, 2.0f) * Meter;
+            const auto v7 = Vec2(10.0f, 0.0f) * Meter;
 
-			EdgeShape shape;
+            EdgeShape shape;
 
-			shape.Set(v1, v2);
-			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+            shape.Set(v1, v2);
+            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
-			shape.Set(v2, v3);
-			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+            shape.Set(v2, v3);
+            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
-			shape.Set(v3, v4);
-			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+            shape.Set(v3, v4);
+            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
-			shape.Set(v4, v5);
-			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+            shape.Set(v4, v5);
+            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
-			shape.Set(v5, v6);
-			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+            shape.Set(v5, v6);
+            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
-			shape.Set(v6, v7);
-			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
-		}
+            shape.Set(v6, v7);
+            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+        }
 
-		{
-			BodyDef bd;
-			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(-0.5f, 0.6f) * Meter;
-			bd.allowSleep = false;
-			const auto body = m_world->CreateBody(bd);
+        {
+            BodyDef bd;
+            bd.type = BodyType::Dynamic;
+            bd.position = Vec2(-0.5f, 0.6f) * Meter;
+            bd.allowSleep = false;
+            const auto body = m_world->CreateBody(bd);
 
-			auto conf = CircleShape::Conf{};
-			conf.density = RealNum{1} * KilogramPerSquareMeter;
-			conf.vertexRadius = RealNum{0.5f} * Meter;
-			body->CreateFixture(std::make_shared<CircleShape>(conf));
-		}
+            auto conf = CircleShape::Conf{};
+            conf.density = RealNum{1} * KilogramPerSquareMeter;
+            conf.vertexRadius = RealNum{0.5f} * Meter;
+            body->CreateFixture(std::make_shared<CircleShape>(conf));
+        }
 
-		{
-			BodyDef bd;
-			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(1.0f, 0.6f) * Meter;
-			bd.allowSleep = false;
-			const auto body = m_world->CreateBody(bd);
+        {
+            BodyDef bd;
+            bd.type = BodyType::Dynamic;
+            bd.position = Vec2(1.0f, 0.6f) * Meter;
+            bd.allowSleep = false;
+            const auto body = m_world->CreateBody(bd);
 
-			auto shape = PolygonShape{};
-			shape.SetVertexRadius(RealNum{1} * Meter);
-			shape.SetAsBox(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
-			shape.SetDensity(RealNum{1} * KilogramPerSquareMeter);
-			body->CreateFixture(std::make_shared<PolygonShape>(shape));
-		}
-	}
+            auto shape = PolygonShape{};
+            shape.SetVertexRadius(RealNum{1} * Meter);
+            shape.SetAsBox(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
+            shape.SetDensity(RealNum{1} * KilogramPerSquareMeter);
+            body->CreateFixture(std::make_shared<PolygonShape>(shape));
+        }
+    }
 
-	static Test* Create()
-	{
-		return new EdgeTest;
-	}
+    static Test* Create()
+    {
+        return new EdgeTest;
+    }
 };
 
 } // namespace box2d

@@ -28,353 +28,353 @@ class DynamicTreeTest : public Test
 {
 public:
 
-	static constexpr auto e_actorCount = 128;
+    static constexpr auto e_actorCount = 128;
 
-	DynamicTreeTest()
-	{
-		m_worldExtent = 15.0f;
-		m_proxyExtent = 0.5f;
+    DynamicTreeTest()
+    {
+        m_worldExtent = 15.0f;
+        m_proxyExtent = 0.5f;
 
-		srand(888);
+        srand(888);
 
-		const auto aabbExtension = StepConf{}.aabbExtension;
-		for (auto i = 0; i < e_actorCount; ++i)
-		{
-			Actor* actor = m_actors + i;
-			actor->aabb = GetRandomAABB();
-			actor->proxyId = m_tree.CreateProxy(GetFattenedAABB(actor->aabb, aabbExtension), actor);
-		}
+        const auto aabbExtension = StepConf{}.aabbExtension;
+        for (auto i = 0; i < e_actorCount; ++i)
+        {
+            Actor* actor = m_actors + i;
+            actor->aabb = GetRandomAABB();
+            actor->proxyId = m_tree.CreateProxy(GetFattenedAABB(actor->aabb, aabbExtension), actor);
+        }
 
-		m_stepCount = 0;
+        m_stepCount = 0;
 
-		const auto h = m_worldExtent;
-		m_queryAABB = AABB{Vec2(-3.0f, -4.0f + h) * Meter, Vec2(5.0f, 6.0f + h) * Meter};
+        const auto h = m_worldExtent;
+        m_queryAABB = AABB{Vec2(-3.0f, -4.0f + h) * Meter, Vec2(5.0f, 6.0f + h) * Meter};
 
-		m_rayCastInput.p1 = Vec2(-5.0f, 5.0f + h) * Meter;
-		m_rayCastInput.p2 = Vec2(7.0f, -4.0f + h) * Meter;
-		//m_rayCastInput.p1 = Vec2(0.0f, 2.0f + h);
-		//m_rayCastInput.p2 = Vec2(0.0f, -2.0f + h);
-		m_rayCastInput.maxFraction = 1.0f;
+        m_rayCastInput.p1 = Vec2(-5.0f, 5.0f + h) * Meter;
+        m_rayCastInput.p2 = Vec2(7.0f, -4.0f + h) * Meter;
+        //m_rayCastInput.p1 = Vec2(0.0f, 2.0f + h);
+        //m_rayCastInput.p2 = Vec2(0.0f, -2.0f + h);
+        m_rayCastInput.maxFraction = 1.0f;
 
-		m_automated = false;
-	}
+        m_automated = false;
+    }
 
-	static Test* Create()
-	{
-		return new DynamicTreeTest;
-	}
+    static Test* Create()
+    {
+        return new DynamicTreeTest;
+    }
 
-	void PostStep(const Settings& settings, Drawer& drawer) override
-	{
-		NOT_USED(settings);
+    void PostStep(const Settings& settings, Drawer& drawer) override
+    {
+        NOT_USED(settings);
 
-		m_rayActor = nullptr;
-		for (auto i = 0; i < e_actorCount; ++i)
-		{
-			m_actors[i].fraction = 1.0f;
-			m_actors[i].overlap = false;
-		}
+        m_rayActor = nullptr;
+        for (auto i = 0; i < e_actorCount; ++i)
+        {
+            m_actors[i].fraction = 1.0f;
+            m_actors[i].overlap = false;
+        }
 
-		if (m_automated)
-		{
-			const auto actionCount = Max(1, e_actorCount >> 2);
-			for (auto i = decltype(actionCount){0}; i < actionCount; ++i)
-			{
-				Action();
-			}
-		}
+        if (m_automated)
+        {
+            const auto actionCount = Max(1, e_actorCount >> 2);
+            for (auto i = decltype(actionCount){0}; i < actionCount; ++i)
+            {
+                Action();
+            }
+        }
 
-		Query();
-		RayCast();
+        Query();
+        RayCast();
 
-		for (auto i = 0; i < e_actorCount; ++i)
-		{
-			const auto actor = m_actors + i;
-			if (actor->proxyId == DynamicTree::InvalidIndex)
-				continue;
+        for (auto i = 0; i < e_actorCount; ++i)
+        {
+            const auto actor = m_actors + i;
+            if (actor->proxyId == DynamicTree::InvalidIndex)
+                continue;
 
-			Color c(0.9f, 0.9f, 0.9f);
-			if (actor == m_rayActor && actor->overlap)
-			{
-				c = Color(0.9f, 0.6f, 0.6f);
-			}
-			else if (actor == m_rayActor)
-			{
-				c = Color(0.6f, 0.9f, 0.6f);
-			}
-			else if (actor->overlap)
-			{
-				c = Color(0.6f, 0.6f, 0.9f);
-			}
+            Color c(0.9f, 0.9f, 0.9f);
+            if (actor == m_rayActor && actor->overlap)
+            {
+                c = Color(0.9f, 0.6f, 0.6f);
+            }
+            else if (actor == m_rayActor)
+            {
+                c = Color(0.6f, 0.9f, 0.6f);
+            }
+            else if (actor->overlap)
+            {
+                c = Color(0.6f, 0.6f, 0.9f);
+            }
 
-			const auto p1 = actor->aabb.GetLowerBound();
-			const auto p2 = Length2D(actor->aabb.GetUpperBound().x, actor->aabb.GetLowerBound().y);
-			const auto p3 = actor->aabb.GetUpperBound();
-			const auto p4 = Length2D(actor->aabb.GetLowerBound().x, actor->aabb.GetUpperBound().y);
-			
-			drawer.DrawSegment(p1, p2, c);
-			drawer.DrawSegment(p2, p3, c);
-			drawer.DrawSegment(p3, p4, c);
-			drawer.DrawSegment(p4, p1, c);
-		}
+            const auto p1 = actor->aabb.GetLowerBound();
+            const auto p2 = Length2D(actor->aabb.GetUpperBound().x, actor->aabb.GetLowerBound().y);
+            const auto p3 = actor->aabb.GetUpperBound();
+            const auto p4 = Length2D(actor->aabb.GetLowerBound().x, actor->aabb.GetUpperBound().y);
+            
+            drawer.DrawSegment(p1, p2, c);
+            drawer.DrawSegment(p2, p3, c);
+            drawer.DrawSegment(p3, p4, c);
+            drawer.DrawSegment(p4, p1, c);
+        }
 
-		Color c(0.7f, 0.7f, 0.7f);
-		{
-			// Draw the AABB.
+        Color c(0.7f, 0.7f, 0.7f);
+        {
+            // Draw the AABB.
 
-			const auto p1 = m_queryAABB.GetLowerBound();
-			const auto p2 = Length2D(m_queryAABB.GetUpperBound().x, m_queryAABB.GetLowerBound().y);
-			const auto p3 = m_queryAABB.GetUpperBound();
-			const auto p4 = Length2D(m_queryAABB.GetLowerBound().x, m_queryAABB.GetUpperBound().y);
-			
-			drawer.DrawSegment(p1, p2, c);
-			drawer.DrawSegment(p2, p3, c);
-			drawer.DrawSegment(p3, p4, c);
-			drawer.DrawSegment(p4, p1, c);
-		}
+            const auto p1 = m_queryAABB.GetLowerBound();
+            const auto p2 = Length2D(m_queryAABB.GetUpperBound().x, m_queryAABB.GetLowerBound().y);
+            const auto p3 = m_queryAABB.GetUpperBound();
+            const auto p4 = Length2D(m_queryAABB.GetLowerBound().x, m_queryAABB.GetUpperBound().y);
+            
+            drawer.DrawSegment(p1, p2, c);
+            drawer.DrawSegment(p2, p3, c);
+            drawer.DrawSegment(p3, p4, c);
+            drawer.DrawSegment(p4, p1, c);
+        }
 
-		drawer.DrawSegment(m_rayCastInput.p1, m_rayCastInput.p2, c);
+        drawer.DrawSegment(m_rayCastInput.p1, m_rayCastInput.p2, c);
 
-		Color c1(0.2f, 0.9f, 0.2f);
-		Color c2(0.9f, 0.2f, 0.2f);
-		drawer.DrawPoint(m_rayCastInput.p1, RealNum{6} * Meter, c1);
-		drawer.DrawPoint(m_rayCastInput.p2, RealNum{6} * Meter, c2);
+        Color c1(0.2f, 0.9f, 0.2f);
+        Color c2(0.9f, 0.2f, 0.2f);
+        drawer.DrawPoint(m_rayCastInput.p1, RealNum{6} * Meter, c1);
+        drawer.DrawPoint(m_rayCastInput.p2, RealNum{6} * Meter, c2);
 
-		if (m_rayActor)
-		{
-			Color cr(0.2f, 0.2f, 0.9f);
-			const auto p = m_rayCastInput.p1 + m_rayActor->fraction * (m_rayCastInput.p2 - m_rayCastInput.p1);
-			drawer.DrawPoint(p, RealNum{6} * Meter, cr);
-		}
+        if (m_rayActor)
+        {
+            Color cr(0.2f, 0.2f, 0.9f);
+            const auto p = m_rayCastInput.p1 + m_rayActor->fraction * (m_rayCastInput.p2 - m_rayCastInput.p1);
+            drawer.DrawPoint(p, RealNum{6} * Meter, cr);
+        }
 
-		{
-			DynamicTree::size_type height = m_tree.GetHeight();
-			drawer.DrawString(5, m_textLine, "dynamic tree height = %d", height);
-			m_textLine += DRAW_STRING_NEW_LINE;
-		}
+        {
+            DynamicTree::size_type height = m_tree.GetHeight();
+            drawer.DrawString(5, m_textLine, "dynamic tree height = %d", height);
+            m_textLine += DRAW_STRING_NEW_LINE;
+        }
 
-		++m_stepCount;
-	}
+        ++m_stepCount;
+    }
 
-	void KeyboardDown(Key key) override
-	{
-		switch (key)
-		{
-		case Key_A:
-			m_automated = !m_automated;
-			break;
+    void KeyboardDown(Key key) override
+    {
+        switch (key)
+        {
+        case Key_A:
+            m_automated = !m_automated;
+            break;
 
-		case Key_C:
-			CreateProxy();
-			break;
+        case Key_C:
+            CreateProxy();
+            break;
 
-		case Key_D:
-			DestroyProxy();
-			break;
+        case Key_D:
+            DestroyProxy();
+            break;
 
-		case Key_M:
-			MoveProxy();
-			break;
+        case Key_M:
+            MoveProxy();
+            break;
 
-		default:
-			break;
-		}
-	}
+        default:
+            break;
+        }
+    }
 
-	bool QueryCallback(DynamicTree::size_type proxyId)
-	{
-		Actor* actor = (Actor*)m_tree.GetUserData(proxyId);
-		actor->overlap = TestOverlap(m_queryAABB, actor->aabb);
-		return true;
-	}
+    bool QueryCallback(DynamicTree::size_type proxyId)
+    {
+        Actor* actor = (Actor*)m_tree.GetUserData(proxyId);
+        actor->overlap = TestOverlap(m_queryAABB, actor->aabb);
+        return true;
+    }
 
-	RealNum RayCastCallback(const RayCastInput& input, DynamicTree::size_type proxyId)
-	{
-		auto actor = static_cast<Actor*>(m_tree.GetUserData(proxyId));
+    RealNum RayCastCallback(const RayCastInput& input, DynamicTree::size_type proxyId)
+    {
+        auto actor = static_cast<Actor*>(m_tree.GetUserData(proxyId));
 
-		const auto output = box2d::RayCast(actor->aabb, input);
+        const auto output = box2d::RayCast(actor->aabb, input);
 
-		if (output.hit)
-		{
-			m_rayCastOutput = output;
-			m_rayActor = actor;
-			m_rayActor->fraction = output.fraction;
-			return output.fraction;
-		}
+        if (output.hit)
+        {
+            m_rayCastOutput = output;
+            m_rayActor = actor;
+            m_rayActor->fraction = output.fraction;
+            return output.fraction;
+        }
 
-		return input.maxFraction;
-	}
+        return input.maxFraction;
+    }
 
 private:
 
-	struct Actor
-	{
-		AABB aabb;
-		RealNum fraction;
-		bool overlap;
-		DynamicTree::size_type proxyId;
-	};
+    struct Actor
+    {
+        AABB aabb;
+        RealNum fraction;
+        bool overlap;
+        DynamicTree::size_type proxyId;
+    };
 
-	AABB GetRandomAABB()
-	{
-		const auto w = Vec2(m_proxyExtent * 2, m_proxyExtent * 2) * Meter;
-		//aabb->lowerBound.x = -m_proxyExtent;
-		//aabb->lowerBound.y = -m_proxyExtent + m_worldExtent;
-		const auto lowerBound = Vec2(RandomFloat(-m_worldExtent, m_worldExtent), RandomFloat(0.0f, 2.0f * m_worldExtent)) * Meter;
-		const auto upperBound = lowerBound + w;
-		return AABB(lowerBound, upperBound);
-	}
+    AABB GetRandomAABB()
+    {
+        const auto w = Vec2(m_proxyExtent * 2, m_proxyExtent * 2) * Meter;
+        //aabb->lowerBound.x = -m_proxyExtent;
+        //aabb->lowerBound.y = -m_proxyExtent + m_worldExtent;
+        const auto lowerBound = Vec2(RandomFloat(-m_worldExtent, m_worldExtent), RandomFloat(0.0f, 2.0f * m_worldExtent)) * Meter;
+        const auto upperBound = lowerBound + w;
+        return AABB(lowerBound, upperBound);
+    }
 
-	void MoveAABB(AABB* aabb)
-	{
-		const auto d = Vec2{RandomFloat(-0.5f, 0.5f), RandomFloat(-0.5f, 0.5f)} * Meter;
-		//d.x = 2.0f;
-		//d.y = 0.0f;
-		aabb->Move(d);
+    void MoveAABB(AABB* aabb)
+    {
+        const auto d = Vec2{RandomFloat(-0.5f, 0.5f), RandomFloat(-0.5f, 0.5f)} * Meter;
+        //d.x = 2.0f;
+        //d.y = 0.0f;
+        aabb->Move(d);
 
-		const auto c0 = GetCenter(*aabb);
-		const auto min = Vec2(-m_worldExtent, RealNum(0)) * Meter;
-		const auto max = Vec2(m_worldExtent, 2.0f * m_worldExtent) * Meter;
-		const auto c = Length2D{Clamp(c0.x, min.x, max.x), Clamp(c0.y, min.y, max.y)};
+        const auto c0 = GetCenter(*aabb);
+        const auto min = Vec2(-m_worldExtent, RealNum(0)) * Meter;
+        const auto max = Vec2(m_worldExtent, 2.0f * m_worldExtent) * Meter;
+        const auto c = Length2D{Clamp(c0.x, min.x, max.x), Clamp(c0.y, min.y, max.y)};
 
-		aabb->Move(c - c0);
-	}
+        aabb->Move(c - c0);
+    }
 
-	void CreateProxy()
-	{
-		const auto extension = StepConf{}.aabbExtension;
-		for (auto i = decltype(e_actorCount){0}; i < e_actorCount; ++i)
-		{
-			const auto j = rand() % e_actorCount;
-			const auto actor = m_actors + j;
-			if (actor->proxyId == DynamicTree::InvalidIndex)
-			{
-				actor->aabb = GetRandomAABB();
-				actor->proxyId = m_tree.CreateProxy(GetFattenedAABB(actor->aabb, extension), actor);
-				return;
-			}
-		}
-	}
+    void CreateProxy()
+    {
+        const auto extension = StepConf{}.aabbExtension;
+        for (auto i = decltype(e_actorCount){0}; i < e_actorCount; ++i)
+        {
+            const auto j = rand() % e_actorCount;
+            const auto actor = m_actors + j;
+            if (actor->proxyId == DynamicTree::InvalidIndex)
+            {
+                actor->aabb = GetRandomAABB();
+                actor->proxyId = m_tree.CreateProxy(GetFattenedAABB(actor->aabb, extension), actor);
+                return;
+            }
+        }
+    }
 
-	void DestroyProxy()
-	{
-		for (auto i = decltype(e_actorCount){0}; i < e_actorCount; ++i)
-		{
-			const auto j = rand() % e_actorCount;
-			const auto actor = m_actors + j;
-			if (actor->proxyId != DynamicTree::InvalidIndex)
-			{
-				m_tree.DestroyProxy(actor->proxyId);
-				actor->proxyId = DynamicTree::InvalidIndex;
-				return;
-			}
-		}
-	}
+    void DestroyProxy()
+    {
+        for (auto i = decltype(e_actorCount){0}; i < e_actorCount; ++i)
+        {
+            const auto j = rand() % e_actorCount;
+            const auto actor = m_actors + j;
+            if (actor->proxyId != DynamicTree::InvalidIndex)
+            {
+                m_tree.DestroyProxy(actor->proxyId);
+                actor->proxyId = DynamicTree::InvalidIndex;
+                return;
+            }
+        }
+    }
 
-	void MoveProxy()
-	{
-		const auto extension = StepConf{}.aabbExtension;
-		const auto multiplier = StepConf{}.displaceMultiplier;
-		for (auto i = decltype(e_actorCount){0}; i < e_actorCount; ++i)
-		{
-			const auto j = rand() % e_actorCount;
-			const auto actor = m_actors + j;
-			if (actor->proxyId == DynamicTree::InvalidIndex)
-			{
-				continue;
-			}
+    void MoveProxy()
+    {
+        const auto extension = StepConf{}.aabbExtension;
+        const auto multiplier = StepConf{}.displaceMultiplier;
+        for (auto i = decltype(e_actorCount){0}; i < e_actorCount; ++i)
+        {
+            const auto j = rand() % e_actorCount;
+            const auto actor = m_actors + j;
+            if (actor->proxyId == DynamicTree::InvalidIndex)
+            {
+                continue;
+            }
 
-			const auto aabb0 = actor->aabb;
-			MoveAABB(&actor->aabb);
-			const auto displacement = GetCenter(actor->aabb) - GetCenter(aabb0);
-			m_tree.UpdateProxy(actor->proxyId, actor->aabb, displacement, multiplier, extension);
-			return;
-		}
-	}
+            const auto aabb0 = actor->aabb;
+            MoveAABB(&actor->aabb);
+            const auto displacement = GetCenter(actor->aabb) - GetCenter(aabb0);
+            m_tree.UpdateProxy(actor->proxyId, actor->aabb, displacement, multiplier, extension);
+            return;
+        }
+    }
 
-	void Action()
-	{
-		const auto choice = rand() % 20;
+    void Action()
+    {
+        const auto choice = rand() % 20;
 
-		switch (choice)
-		{
-		case 0:
-			CreateProxy();
-			break;
+        switch (choice)
+        {
+        case 0:
+            CreateProxy();
+            break;
 
-		case 1:
-			DestroyProxy();
-			break;
+        case 1:
+            DestroyProxy();
+            break;
 
-		default:
-			MoveProxy();
-		}
-	}
+        default:
+            MoveProxy();
+        }
+    }
 
-	void Query()
-	{
-		m_tree.Query(m_queryAABB, [&](DynamicTree::size_type nodeId){ return QueryCallback(nodeId); });
+    void Query()
+    {
+        m_tree.Query(m_queryAABB, [&](DynamicTree::size_type nodeId){ return QueryCallback(nodeId); });
 
-		for (auto i = decltype(e_actorCount){0}; i < e_actorCount; ++i)
-		{
-			if (m_actors[i].proxyId == DynamicTree::InvalidIndex)
-			{
-				continue;
-			}
+        for (auto i = decltype(e_actorCount){0}; i < e_actorCount; ++i)
+        {
+            if (m_actors[i].proxyId == DynamicTree::InvalidIndex)
+            {
+                continue;
+            }
 
-			const auto overlap = TestOverlap(m_queryAABB, m_actors[i].aabb);
-			NOT_USED(overlap);
-			assert(overlap == m_actors[i].overlap);
-		}
-	}
+            const auto overlap = TestOverlap(m_queryAABB, m_actors[i].aabb);
+            NOT_USED(overlap);
+            assert(overlap == m_actors[i].overlap);
+        }
+    }
 
-	void RayCast()
-	{
-		m_rayActor = nullptr;
+    void RayCast()
+    {
+        m_rayActor = nullptr;
 
-		auto input = m_rayCastInput;
+        auto input = m_rayCastInput;
 
-		// Ray cast against the dynamic tree.
-		m_tree.RayCast(input, [&](const RayCastInput& rci, DynamicTree::size_type proxyId) {
-			return RayCastCallback(rci, proxyId);
-		});
+        // Ray cast against the dynamic tree.
+        m_tree.RayCast(input, [&](const RayCastInput& rci, DynamicTree::size_type proxyId) {
+            return RayCastCallback(rci, proxyId);
+        });
 
-		// Brute force ray cast.
-		Actor* bruteActor = nullptr;
-		RayCastOutput bruteOutput;
-		for (auto i = decltype(e_actorCount){0}; i < e_actorCount; ++i)
-		{
-			if (m_actors[i].proxyId == DynamicTree::InvalidIndex)
-			{
-				continue;
-			}
+        // Brute force ray cast.
+        Actor* bruteActor = nullptr;
+        RayCastOutput bruteOutput;
+        for (auto i = decltype(e_actorCount){0}; i < e_actorCount; ++i)
+        {
+            if (m_actors[i].proxyId == DynamicTree::InvalidIndex)
+            {
+                continue;
+            }
 
-			const auto output = box2d::RayCast(m_actors[i].aabb, input);
-			if (output.hit)
-			{
-				bruteActor = m_actors + i;
-				bruteOutput = output;
-				input.maxFraction = output.fraction;
-			}
-		}
+            const auto output = box2d::RayCast(m_actors[i].aabb, input);
+            if (output.hit)
+            {
+                bruteActor = m_actors + i;
+                bruteOutput = output;
+                input.maxFraction = output.fraction;
+            }
+        }
 
-		if (bruteActor)
-		{
-			assert(bruteOutput.fraction == m_rayCastOutput.fraction);
-		}
-	}
+        if (bruteActor)
+        {
+            assert(bruteOutput.fraction == m_rayCastOutput.fraction);
+        }
+    }
 
-	RealNum m_worldExtent;
-	RealNum m_proxyExtent;
+    RealNum m_worldExtent;
+    RealNum m_proxyExtent;
 
-	DynamicTree m_tree;
-	AABB m_queryAABB;
-	RayCastInput m_rayCastInput;
-	RayCastOutput m_rayCastOutput;
-	Actor* m_rayActor;
-	Actor m_actors[e_actorCount];
-	int m_stepCount;
-	bool m_automated;
+    DynamicTree m_tree;
+    AABB m_queryAABB;
+    RayCastInput m_rayCastInput;
+    RayCastOutput m_rayCastOutput;
+    Actor* m_rayActor;
+    Actor m_actors[e_actorCount];
+    int m_stepCount;
+    bool m_automated;
 };
 
 } // namespace box2d
