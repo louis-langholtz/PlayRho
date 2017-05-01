@@ -23,203 +23,203 @@
 
 namespace box2d
 {
-	class UnitVec2
-	{
-	public:
-		using data_type = RealNum;
-		
-		static constexpr UnitVec2 GetRight() noexcept
-		{
-			return UnitVec2{1, 0};
-		}
-		
-		static constexpr UnitVec2 GetLeft() noexcept
-		{
-			return UnitVec2{-1, 0};
-		}
-		
-		static constexpr UnitVec2 GetTop() noexcept
-		{
-			return UnitVec2{0, 1};
-		}
-		
-		static constexpr UnitVec2 GetBottom() noexcept
-		{
-			return UnitVec2{0, -1};
-		}
-		
-		static constexpr UnitVec2 GetZero() noexcept
-		{
-			return UnitVec2{0, 0};
-		}
-		
-		static constexpr UnitVec2 GetDefaultFallback() noexcept
-		{
-			return UnitVec2{};
-		}
-		
-		static UnitVec2 Get(const RealNum x, const RealNum y, RealNum& magnitude, const UnitVec2 fallback = GetDefaultFallback());
+    class UnitVec2
+    {
+    public:
+        using data_type = RealNum;
+        
+        static constexpr UnitVec2 GetRight() noexcept
+        {
+            return UnitVec2{1, 0};
+        }
+        
+        static constexpr UnitVec2 GetLeft() noexcept
+        {
+            return UnitVec2{-1, 0};
+        }
+        
+        static constexpr UnitVec2 GetTop() noexcept
+        {
+            return UnitVec2{0, 1};
+        }
+        
+        static constexpr UnitVec2 GetBottom() noexcept
+        {
+            return UnitVec2{0, -1};
+        }
+        
+        static constexpr UnitVec2 GetZero() noexcept
+        {
+            return UnitVec2{0, 0};
+        }
+        
+        static constexpr UnitVec2 GetDefaultFallback() noexcept
+        {
+            return UnitVec2{};
+        }
+        
+        static UnitVec2 Get(const RealNum x, const RealNum y, RealNum& magnitude, const UnitVec2 fallback = GetDefaultFallback());
 
-		constexpr UnitVec2() noexcept
-		{
-			// Intentionally empty.
-		}
-		
-		explicit UnitVec2(const Angle angle) noexcept;
-		
-		constexpr auto GetX() const noexcept
-		{
-			return m_x;
-		}
-		
-		constexpr auto GetY() const noexcept
-		{
-			return m_y;
-		}
-		
-		constexpr auto cos() const noexcept
-		{
-			return m_x;
-		}
-		
-		constexpr auto sin() const noexcept
-		{
-			return m_y;
-		}
+        constexpr UnitVec2() noexcept
+        {
+            // Intentionally empty.
+        }
+        
+        explicit UnitVec2(const Angle angle) noexcept;
+        
+        constexpr auto GetX() const noexcept
+        {
+            return m_x;
+        }
+        
+        constexpr auto GetY() const noexcept
+        {
+            return m_y;
+        }
+        
+        constexpr auto cos() const noexcept
+        {
+            return m_x;
+        }
+        
+        constexpr auto sin() const noexcept
+        {
+            return m_y;
+        }
 
-		constexpr inline UnitVec2 FlipXY() const noexcept
-		{
-			return UnitVec2{-GetX(), -GetY()};
-		}
-		
-		constexpr inline UnitVec2 FlipX() const noexcept
-		{
-			return UnitVec2{-GetX(), GetY()};
-		}
-		
-		constexpr inline UnitVec2 FlipY() const noexcept
-		{
-			return UnitVec2{GetX(), -GetY()};
-		}
-		
-		constexpr inline UnitVec2 Rotate(UnitVec2 amount) const noexcept
-		{
-			return UnitVec2{
-				GetX() * amount.GetX() - GetY() * amount.GetY(),
-				GetY() * amount.GetX() + GetX() * amount.GetY()
-			};
-		}
-		
-		/// Gets a vector counter-clockwise (reverse-clockwise) perpendicular to this vector.
-		/// @details This returns the unit vector (-y, x).
-		/// @return A counter-clockwise 90-degree rotation of this vector.
-		/// @sa GetFwdPerpendicular.
-		constexpr inline UnitVec2 GetRevPerpendicular() const noexcept
-		{
-			// See http://mathworld.wolfram.com/PerpendicularVector.html
-			return UnitVec2{-m_y, m_x};
-		}
-		
-		/// Gets a vector clockwise (forward-clockwise) perpendicular to this vector.
-		/// @details This returns the unit vector (y, -x).
-		/// @return A clockwise 90-degree rotation of this vector.
-		/// @sa GetRevPerpendicular.
-		constexpr inline UnitVec2 GetFwdPerpendicular() const noexcept
-		{
-			// See http://mathworld.wolfram.com/PerpendicularVector.html
-			return UnitVec2{m_y, -m_x};
-		}
-		
-		constexpr inline UnitVec2 operator- () const noexcept
-		{
-			return UnitVec2{-m_x, -m_y};
-		}
+        constexpr inline UnitVec2 FlipXY() const noexcept
+        {
+            return UnitVec2{-GetX(), -GetY()};
+        }
+        
+        constexpr inline UnitVec2 FlipX() const noexcept
+        {
+            return UnitVec2{-GetX(), GetY()};
+        }
+        
+        constexpr inline UnitVec2 FlipY() const noexcept
+        {
+            return UnitVec2{GetX(), -GetY()};
+        }
+        
+        constexpr inline UnitVec2 Rotate(UnitVec2 amount) const noexcept
+        {
+            return UnitVec2{
+                GetX() * amount.GetX() - GetY() * amount.GetY(),
+                GetY() * amount.GetX() + GetX() * amount.GetY()
+            };
+        }
+        
+        /// Gets a vector counter-clockwise (reverse-clockwise) perpendicular to this vector.
+        /// @details This returns the unit vector (-y, x).
+        /// @return A counter-clockwise 90-degree rotation of this vector.
+        /// @sa GetFwdPerpendicular.
+        constexpr inline UnitVec2 GetRevPerpendicular() const noexcept
+        {
+            // See http://mathworld.wolfram.com/PerpendicularVector.html
+            return UnitVec2{-m_y, m_x};
+        }
+        
+        /// Gets a vector clockwise (forward-clockwise) perpendicular to this vector.
+        /// @details This returns the unit vector (y, -x).
+        /// @return A clockwise 90-degree rotation of this vector.
+        /// @sa GetRevPerpendicular.
+        constexpr inline UnitVec2 GetFwdPerpendicular() const noexcept
+        {
+            // See http://mathworld.wolfram.com/PerpendicularVector.html
+            return UnitVec2{m_y, -m_x};
+        }
+        
+        constexpr inline UnitVec2 operator- () const noexcept
+        {
+            return UnitVec2{-m_x, -m_y};
+        }
 
-		constexpr inline UnitVec2 operator+ () const noexcept
-		{
-			return UnitVec2{+m_x, +m_y};
-		}
-		
-		constexpr inline UnitVec2 Absolute() const noexcept
-		{
-			return UnitVec2{std::abs(m_x), std::abs(m_y)};
-		}
-		
-	private:
-		constexpr UnitVec2(data_type x, data_type y) noexcept:
-			m_x{x}, m_y{y}
-		{
-			// Intentionally empty.
-		}
-		
-		data_type m_x = GetInvalid<data_type>();
-		data_type m_y = GetInvalid<data_type>();
-	};
-	
-	/// Get the x-axis
-	constexpr inline UnitVec2 GetXAxis(UnitVec2 rot) noexcept
-	{
-		return rot;
-	}
-	
-	/// Get the u-axis ("u"??? is that a typo??? Anyway, this is the reverse perpendicular vector of rot as a directional vector)
-	constexpr inline UnitVec2 GetYAxis(UnitVec2 rot) noexcept
-	{
-		return rot.GetRevPerpendicular();
-	}
+        constexpr inline UnitVec2 operator+ () const noexcept
+        {
+            return UnitVec2{+m_x, +m_y};
+        }
+        
+        constexpr inline UnitVec2 Absolute() const noexcept
+        {
+            return UnitVec2{std::abs(m_x), std::abs(m_y)};
+        }
+        
+    private:
+        constexpr UnitVec2(data_type x, data_type y) noexcept:
+            m_x{x}, m_y{y}
+        {
+            // Intentionally empty.
+        }
+        
+        data_type m_x = GetInvalid<data_type>();
+        data_type m_y = GetInvalid<data_type>();
+    };
+    
+    /// Get the x-axis
+    constexpr inline UnitVec2 GetXAxis(UnitVec2 rot) noexcept
+    {
+        return rot;
+    }
+    
+    /// Get the u-axis ("u"??? is that a typo??? Anyway, this is the reverse perpendicular vector of rot as a directional vector)
+    constexpr inline UnitVec2 GetYAxis(UnitVec2 rot) noexcept
+    {
+        return rot.GetRevPerpendicular();
+    }
 
-	constexpr inline bool operator == (const UnitVec2 a, const UnitVec2 b) noexcept
-	{
-		return (a.GetX() == b.GetX()) && (a.GetY() == b.GetY());
-	}
-	
-	constexpr inline bool operator != (const UnitVec2 a, const UnitVec2 b) noexcept
-	{
-		return (a.GetX() != b.GetX()) || (a.GetY() != b.GetY());
-	}
+    constexpr inline bool operator == (const UnitVec2 a, const UnitVec2 b) noexcept
+    {
+        return (a.GetX() == b.GetX()) && (a.GetY() == b.GetY());
+    }
+    
+    constexpr inline bool operator != (const UnitVec2 a, const UnitVec2 b) noexcept
+    {
+        return (a.GetX() != b.GetX()) || (a.GetY() != b.GetY());
+    }
 
-	/// Gets a vector counter-clockwise (reverse-clockwise) perpendicular to the given vector.
-	/// @details This takes a vector of form (x, y) and returns the vector (-y, x).
-	/// @param vector Vector to return a counter-clockwise perpendicular equivalent for.
-	/// @return A counter-clockwise 90-degree rotation of the given vector.
-	/// @sa GetFwdPerpendicular.
-	constexpr inline UnitVec2 GetRevPerpendicular(const UnitVec2 vector) noexcept
-	{
-		return vector.GetRevPerpendicular();
-	}
-	
-	/// Gets a vector clockwise (forward-clockwise) perpendicular to the given vector.
-	/// @details This takes a vector of form (x, y) and returns the vector (y, -x).
-	/// @param vector Vector to return a clockwise perpendicular equivalent for.
-	/// @return A clockwise 90-degree rotation of the given vector.
-	/// @sa GetRevPerpendicular.
-	constexpr inline UnitVec2 GetFwdPerpendicular(const UnitVec2 vector) noexcept
-	{
-		return vector.GetFwdPerpendicular();
-	}
+    /// Gets a vector counter-clockwise (reverse-clockwise) perpendicular to the given vector.
+    /// @details This takes a vector of form (x, y) and returns the vector (-y, x).
+    /// @param vector Vector to return a counter-clockwise perpendicular equivalent for.
+    /// @return A counter-clockwise 90-degree rotation of the given vector.
+    /// @sa GetFwdPerpendicular.
+    constexpr inline UnitVec2 GetRevPerpendicular(const UnitVec2 vector) noexcept
+    {
+        return vector.GetRevPerpendicular();
+    }
+    
+    /// Gets a vector clockwise (forward-clockwise) perpendicular to the given vector.
+    /// @details This takes a vector of form (x, y) and returns the vector (y, -x).
+    /// @param vector Vector to return a clockwise perpendicular equivalent for.
+    /// @return A clockwise 90-degree rotation of the given vector.
+    /// @sa GetRevPerpendicular.
+    constexpr inline UnitVec2 GetFwdPerpendicular(const UnitVec2 vector) noexcept
+    {
+        return vector.GetFwdPerpendicular();
+    }
 
-	/// Rotates a vector by a given angle.
-	constexpr inline UnitVec2 Rotate(const UnitVec2 vector, const UnitVec2& angle) noexcept
-	{
-		return vector.Rotate(angle);
-	}
-	
-	/// Inverse rotate a vector
-	constexpr inline UnitVec2 InverseRotate(const UnitVec2 vector, const UnitVec2& angle) noexcept
-	{
-		return vector.Rotate(angle.FlipY());
-	}
+    /// Rotates a vector by a given angle.
+    constexpr inline UnitVec2 Rotate(const UnitVec2 vector, const UnitVec2& angle) noexcept
+    {
+        return vector.Rotate(angle);
+    }
+    
+    /// Inverse rotate a vector
+    constexpr inline UnitVec2 InverseRotate(const UnitVec2 vector, const UnitVec2& angle) noexcept
+    {
+        return vector.Rotate(angle.FlipY());
+    }
 
-	constexpr inline UnitVec2::data_type GetX(const UnitVec2 value)
-	{
-		return value.GetX();
-	}
-	
-	constexpr inline UnitVec2::data_type GetY(const UnitVec2 value)
-	{
-		return value.GetY();
-	}
-	
+    constexpr inline UnitVec2::data_type GetX(const UnitVec2 value)
+    {
+        return value.GetX();
+    }
+    
+    constexpr inline UnitVec2::data_type GetY(const UnitVec2 value)
+    {
+        return value.GetY();
+    }
+    
 }
 
 #endif /* UnitVec2_hpp */

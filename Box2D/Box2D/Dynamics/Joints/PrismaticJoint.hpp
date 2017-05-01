@@ -32,43 +32,43 @@ namespace box2d {
 /// anchors and a local axis helps when saving and loading a game.
 struct PrismaticJointDef : public JointDef
 {
-	constexpr PrismaticJointDef() noexcept: JointDef(JointType::Prismatic) {}
+    constexpr PrismaticJointDef() noexcept: JointDef(JointType::Prismatic) {}
 
-	PrismaticJointDef(const PrismaticJointDef& copy) = default;
-	
-	/// Initialize the bodies, anchors, axis, and reference angle using the world
-	/// anchor and unit world axis.
-	PrismaticJointDef(Body* bodyA, Body* bodyB, const Length2D anchor, const UnitVec2 axis) noexcept;
+    PrismaticJointDef(const PrismaticJointDef& copy) = default;
+    
+    /// Initialize the bodies, anchors, axis, and reference angle using the world
+    /// anchor and unit world axis.
+    PrismaticJointDef(Body* bodyA, Body* bodyB, const Length2D anchor, const UnitVec2 axis) noexcept;
 
-	/// The local anchor point relative to bodyA's origin.
-	Length2D localAnchorA = Vec2_zero * Meter;
+    /// The local anchor point relative to bodyA's origin.
+    Length2D localAnchorA = Vec2_zero * Meter;
 
-	/// The local anchor point relative to bodyB's origin.
-	Length2D localAnchorB = Vec2_zero * Meter;
+    /// The local anchor point relative to bodyB's origin.
+    Length2D localAnchorB = Vec2_zero * Meter;
 
-	/// The local translation unit axis in bodyA.
-	UnitVec2 localAxisA = UnitVec2::GetRight();
+    /// The local translation unit axis in bodyA.
+    UnitVec2 localAxisA = UnitVec2::GetRight();
 
-	/// The constrained angle between the bodies: bodyB_angle - bodyA_angle.
-	Angle referenceAngle = Angle{0};
+    /// The constrained angle between the bodies: bodyB_angle - bodyA_angle.
+    Angle referenceAngle = Angle{0};
 
-	/// Enable/disable the joint limit.
-	bool enableLimit = false;
+    /// Enable/disable the joint limit.
+    bool enableLimit = false;
 
-	/// The lower translation limit.
-	Length lowerTranslation = Length{0};
+    /// The lower translation limit.
+    Length lowerTranslation = Length{0};
 
-	/// The upper translation limit.
-	Length upperTranslation = Length{0};
+    /// The upper translation limit.
+    Length upperTranslation = Length{0};
 
-	/// Enable/disable the joint motor.
-	bool enableMotor = false;
+    /// Enable/disable the joint motor.
+    bool enableMotor = false;
 
-	/// The maximum motor torque, usually in N-m.
-	Torque maxMotorTorque = Torque{0};
+    /// The maximum motor torque, usually in N-m.
+    Torque maxMotorTorque = Torque{0};
 
-	/// The desired motor speed (in radians per second).
-	AngularVelocity motorSpeed = AngularVelocity{0};
+    /// The desired motor speed (in radians per second).
+    AngularVelocity motorSpeed = AngularVelocity{0};
 };
 
 /// Prismatic Joint.
@@ -82,101 +82,101 @@ struct PrismaticJointDef : public JointDef
 class PrismaticJoint : public Joint
 {
 public:
-	PrismaticJoint(const PrismaticJointDef& def);
+    PrismaticJoint(const PrismaticJointDef& def);
 
-	Length2D GetAnchorA() const override;
-	Length2D GetAnchorB() const override;
+    Length2D GetAnchorA() const override;
+    Length2D GetAnchorB() const override;
 
-	Force2D GetReactionForce(Frequency inv_dt) const override;
-	Torque GetReactionTorque(Frequency inv_dt) const override;
+    Force2D GetReactionForce(Frequency inv_dt) const override;
+    Torque GetReactionTorque(Frequency inv_dt) const override;
 
-	/// The local anchor point relative to bodyA's origin.
-	Length2D GetLocalAnchorA() const { return m_localAnchorA; }
+    /// The local anchor point relative to bodyA's origin.
+    Length2D GetLocalAnchorA() const { return m_localAnchorA; }
 
-	/// The local anchor point relative to bodyB's origin.
-	Length2D GetLocalAnchorB() const  { return m_localAnchorB; }
+    /// The local anchor point relative to bodyB's origin.
+    Length2D GetLocalAnchorB() const  { return m_localAnchorB; }
 
-	/// The local joint axis relative to bodyA.
-	UnitVec2 GetLocalAxisA() const { return m_localXAxisA; }
+    /// The local joint axis relative to bodyA.
+    UnitVec2 GetLocalAxisA() const { return m_localXAxisA; }
 
-	/// Get the reference angle.
-	Angle GetReferenceAngle() const { return m_referenceAngle; }
+    /// Get the reference angle.
+    Angle GetReferenceAngle() const { return m_referenceAngle; }
 
-	/// Get the current joint translation, usually in meters.
-	Length GetJointTranslation() const;
+    /// Get the current joint translation, usually in meters.
+    Length GetJointTranslation() const;
 
-	/// Get the current joint translation speed, usually in meters per second.
-	LinearVelocity GetJointSpeed() const;
+    /// Get the current joint translation speed, usually in meters per second.
+    LinearVelocity GetJointSpeed() const;
 
-	/// Is the joint limit enabled?
-	bool IsLimitEnabled() const noexcept;
+    /// Is the joint limit enabled?
+    bool IsLimitEnabled() const noexcept;
 
-	/// Enable/disable the joint limit.
-	void EnableLimit(bool flag) noexcept;
+    /// Enable/disable the joint limit.
+    void EnableLimit(bool flag) noexcept;
 
-	/// Get the lower joint limit, usually in meters.
-	Length GetLowerLimit() const noexcept;
+    /// Get the lower joint limit, usually in meters.
+    Length GetLowerLimit() const noexcept;
 
-	/// Get the upper joint limit, usually in meters.
-	Length GetUpperLimit() const noexcept;
+    /// Get the upper joint limit, usually in meters.
+    Length GetUpperLimit() const noexcept;
 
-	/// Set the joint limits, usually in meters.
-	void SetLimits(Length lower, Length upper);
+    /// Set the joint limits, usually in meters.
+    void SetLimits(Length lower, Length upper);
 
-	/// Is the joint motor enabled?
-	bool IsMotorEnabled() const noexcept;
+    /// Is the joint motor enabled?
+    bool IsMotorEnabled() const noexcept;
 
-	/// Enable/disable the joint motor.
-	void EnableMotor(bool flag) noexcept;
+    /// Enable/disable the joint motor.
+    void EnableMotor(bool flag) noexcept;
 
-	/// Set the motor speed, usually in radians per second.
-	void SetMotorSpeed(AngularVelocity speed) noexcept;
+    /// Set the motor speed, usually in radians per second.
+    void SetMotorSpeed(AngularVelocity speed) noexcept;
 
-	/// Get the motor speed, usually in radians per second.
-	AngularVelocity GetMotorSpeed() const noexcept;
+    /// Get the motor speed, usually in radians per second.
+    AngularVelocity GetMotorSpeed() const noexcept;
 
-	/// Set the maximum motor force, usually in N.
-	void SetMaxMotorForce(Force force) noexcept;
-	Force GetMaxMotorForce() const noexcept { return m_maxMotorForce; }
+    /// Set the maximum motor force, usually in N.
+    void SetMaxMotorForce(Force force) noexcept;
+    Force GetMaxMotorForce() const noexcept { return m_maxMotorForce; }
 
-	/// Get the current motor force given the inverse time step, usually in N.
-	Force GetMotorForce(Frequency inv_dt) const noexcept;
+    /// Get the current motor force given the inverse time step, usually in N.
+    Force GetMotorForce(Frequency inv_dt) const noexcept;
 
 private:
-	void InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
-	RealNum SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) override;
-	bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
+    void InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
+    RealNum SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) override;
+    bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
 
-	// Solver shared
-	Length2D m_localAnchorA;
-	Length2D m_localAnchorB;
-	UnitVec2 m_localXAxisA;
-	UnitVec2 m_localYAxisA;
-	Angle m_referenceAngle;
-	Vec3 m_impulse = Vec3_zero;
-	Momentum m_motorImpulse = 0;
-	Length m_lowerTranslation;
-	Length m_upperTranslation;
-	Force m_maxMotorForce;
-	AngularVelocity m_motorSpeed;
-	bool m_enableLimit;
-	bool m_enableMotor;
-	LimitState m_limitState = e_inactiveLimit;
+    // Solver shared
+    Length2D m_localAnchorA;
+    Length2D m_localAnchorB;
+    UnitVec2 m_localXAxisA;
+    UnitVec2 m_localYAxisA;
+    Angle m_referenceAngle;
+    Vec3 m_impulse = Vec3_zero;
+    Momentum m_motorImpulse = 0;
+    Length m_lowerTranslation;
+    Length m_upperTranslation;
+    Force m_maxMotorForce;
+    AngularVelocity m_motorSpeed;
+    bool m_enableLimit;
+    bool m_enableMotor;
+    LimitState m_limitState = e_inactiveLimit;
 
-	// Solver temp
-	UnitVec2 m_axis = UnitVec2::GetZero();
-	UnitVec2 m_perp = UnitVec2::GetZero();
-	Length m_s1;
-	Length m_s2;
-	Length m_a1;
-	Length m_a2;
-	Mat33 m_K;
-	Mass m_motorMass = Mass{0};
+    // Solver temp
+    UnitVec2 m_axis = UnitVec2::GetZero();
+    UnitVec2 m_perp = UnitVec2::GetZero();
+    Length m_s1;
+    Length m_s2;
+    Length m_a1;
+    Length m_a2;
+    Mat33 m_K;
+    Mass m_motorMass = Mass{0};
 };
 
 inline AngularVelocity PrismaticJoint::GetMotorSpeed() const noexcept
 {
-	return m_motorSpeed;
+    return m_motorSpeed;
 }
 
 } // namespace box2d

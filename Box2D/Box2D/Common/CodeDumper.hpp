@@ -24,60 +24,60 @@
 
 namespace box2d
 {
-	class World;
-	class Body;
-	class Joint;
-	class Fixture;
-	class DistanceJoint;
-	class FrictionJoint;
-	class GearJoint;
-	class MotorJoint;
-	class MouseJoint;
-	class PrismaticJoint;
-	class PulleyJoint;
-	class RevoluteJoint;
-	class RopeJoint;
-	class WeldJoint;
-	class WheelJoint;
+    class World;
+    class Body;
+    class Joint;
+    class Fixture;
+    class DistanceJoint;
+    class FrictionJoint;
+    class GearJoint;
+    class MotorJoint;
+    class MouseJoint;
+    class PrismaticJoint;
+    class PulleyJoint;
+    class RevoluteJoint;
+    class RopeJoint;
+    class WeldJoint;
+    class WheelJoint;
 
-	/// Dump the world into the log file.
-	/// @warning this should be called outside of a time step.
-	void Dump(const World& world);
-	
-	/// Dump body to a log file
-	void Dump(const Body& body, size_t bodyIndex);
-	
-	/// Dump joint to the log file.
-	void Dump(const Joint& joint, size_t index);
+    /// Dump the world into the log file.
+    /// @warning this should be called outside of a time step.
+    void Dump(const World& world);
+    
+    /// Dump body to a log file
+    void Dump(const Body& body, size_t bodyIndex);
+    
+    /// Dump joint to the log file.
+    void Dump(const Joint& joint, size_t index);
 
-	/// Dump fixture to log file.
-	void Dump(const Fixture& fixture, size_t bodyIndex);
+    /// Dump fixture to log file.
+    void Dump(const Fixture& fixture, size_t bodyIndex);
 
-	/// Dump joint to dmLog
-	void Dump(const DistanceJoint& joint, size_t index);
+    /// Dump joint to dmLog
+    void Dump(const DistanceJoint& joint, size_t index);
 
-	/// Dump joint to the log file.
-	void Dump(const FrictionJoint& joint, size_t index);
+    /// Dump joint to the log file.
+    void Dump(const FrictionJoint& joint, size_t index);
 
-	void Dump(const GearJoint& joint, size_t index);
-	
-	void Dump(const MotorJoint& joint, size_t index);
+    void Dump(const GearJoint& joint, size_t index);
+    
+    void Dump(const MotorJoint& joint, size_t index);
 
-	void Dump(const MouseJoint& joint, size_t index);
+    void Dump(const MouseJoint& joint, size_t index);
 
-	void Dump(const PrismaticJoint& joint, size_t index);
+    void Dump(const PrismaticJoint& joint, size_t index);
 
-	/// Dump joint to dmLog
-	void Dump(const PulleyJoint& joint, size_t index);
+    /// Dump joint to dmLog
+    void Dump(const PulleyJoint& joint, size_t index);
 
-	void Dump(const RevoluteJoint& joint, size_t index);
+    void Dump(const RevoluteJoint& joint, size_t index);
 
-	void Dump(const RopeJoint& joint, size_t index);
+    void Dump(const RopeJoint& joint, size_t index);
 
-	void Dump(const WeldJoint& joint, size_t index);
+    void Dump(const WeldJoint& joint, size_t index);
 
-	void Dump(const WheelJoint& joint, size_t index);
-	
+    void Dump(const WheelJoint& joint, size_t index);
+    
 } // namespace box2d
 
 #endif /* CodeDumper_hpp */

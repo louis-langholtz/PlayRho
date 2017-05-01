@@ -40,33 +40,33 @@ constexpr inline auto Square(TYPE t) noexcept { return t * t; }
 template<typename T>
 inline auto Sqrt(T t)
 {
-	return std::sqrt(StripUnit(t));
+    return std::sqrt(StripUnit(t));
 }
 
 #ifdef USE_BOOST_UNITS
 template<>
 inline auto Sqrt(Area t)
 {
-	return std::sqrt(StripUnit(t)) * Meter;
+    return std::sqrt(StripUnit(t)) * Meter;
 }
 #endif
 
 template<typename T>
 inline auto Atan2(T y, T x)
 {
-	return Angle{static_cast<RealNum>(std::atan2(StripUnit(y), StripUnit(x))) * Radian};
+    return Angle{static_cast<RealNum>(std::atan2(StripUnit(y), StripUnit(x))) * Radian};
 }
 
 template<>
 inline auto Atan2(double y, double x)
 {
-	return Angle{static_cast<RealNum>(std::atan2(y, x)) * Radian};
+    return Angle{static_cast<RealNum>(std::atan2(y, x)) * Radian};
 }
 
 template <typename T>
 constexpr inline T Abs(T a)
 {
-	return (a >= T{0}) ? a : -a;
+    return (a >= T{0}) ? a : -a;
 }
 
 template <typename T>
@@ -75,38 +75,38 @@ inline T round(T value, unsigned precision = 100000);
 template <>
 inline float round(float value, uint32_t precision)
 {
-	const auto factor = float(static_cast<int64_t>(precision));
-	return std::round(value * factor) / factor;
+    const auto factor = float(static_cast<int64_t>(precision));
+    return std::round(value * factor) / factor;
 }
 
 template <>
 inline double round(double value, uint32_t precision)
 {
-	const auto factor = double(static_cast<int64_t>(precision));
-	return std::round(value * factor) / factor;
+    const auto factor = double(static_cast<int64_t>(precision));
+    return std::round(value * factor) / factor;
 }
 
 template <>
 inline long double round(long double value, uint32_t precision)
 {
-	using ldouble = long double;
-	const auto factor = ldouble(static_cast<int64_t>(precision));
-	return std::round(value * factor) / factor;
+    using ldouble = long double;
+    const auto factor = ldouble(static_cast<int64_t>(precision));
+    return std::round(value * factor) / factor;
 }
 
 template <>
 inline Fixed32 round(Fixed32 value, uint32_t precision)
 {
-	const auto factor = Fixed32(precision);
-	return std::round(value * factor) / factor;
+    const auto factor = Fixed32(precision);
+    return std::round(value * factor) / factor;
 }
 
 #ifndef _WIN32
 template <>
 inline Fixed64 round(Fixed64 value, uint32_t precision)
 {
-	const auto factor = Fixed64(precision);
-	return std::round(value * factor) / factor;
+    const auto factor = Fixed64(precision);
+    return std::round(value * factor) / factor;
 }
 #endif
 
@@ -116,7 +116,7 @@ inline Fixed64 round(Fixed64 value, uint32_t precision)
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool almost_zero(float value)
 {
-	return Abs(value) < std::numeric_limits<decltype(value)>::min();
+    return Abs(value) < std::numeric_limits<decltype(value)>::min();
 }
 
 /// Gets whether a given value is almost zero.
@@ -125,7 +125,7 @@ constexpr inline bool almost_zero(float value)
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool almost_zero(double value)
 {
-	return Abs(value) < std::numeric_limits<decltype(value)>::min();
+    return Abs(value) < std::numeric_limits<decltype(value)>::min();
 }
 
 /// Gets whether a given value is almost zero.
@@ -134,7 +134,7 @@ constexpr inline bool almost_zero(double value)
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool almost_zero(long double value)
 {
-	return Abs(value) < std::numeric_limits<decltype(value)>::min();
+    return Abs(value) < std::numeric_limits<decltype(value)>::min();
 }
 
 /// Gets whether a given value is almost zero.
@@ -143,7 +143,7 @@ constexpr inline bool almost_zero(long double value)
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool almost_zero(Fixed32 value)
 {
-	return value == 0;
+    return value == 0;
 }
 
 #ifndef _WIN32
@@ -153,64 +153,64 @@ constexpr inline bool almost_zero(Fixed32 value)
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool almost_zero(Fixed64 value)
 {
-	return value == 0;
+    return value == 0;
 }
 #endif
 
 constexpr inline bool almost_equal(float x, float y, int ulp = 2)
 {
-	// From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
-	//   "the machine epsilon has to be scaled to the magnitude of the values used
-	//    and multiplied by the desired precision in ULPs (units in the last place)
-	//    unless the result is subnormal".
-	// Where "subnormal" means almost zero.
-	//
-	return (Abs(x - y) < (std::numeric_limits<float>::epsilon() * Abs(x + y) * ulp)) || almost_zero(x - y);
+    // From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
+    //   "the machine epsilon has to be scaled to the magnitude of the values used
+    //    and multiplied by the desired precision in ULPs (units in the last place)
+    //    unless the result is subnormal".
+    // Where "subnormal" means almost zero.
+    //
+    return (Abs(x - y) < (std::numeric_limits<float>::epsilon() * Abs(x + y) * ulp)) || almost_zero(x - y);
 }
 
 constexpr inline bool almost_equal(double x, double y, int ulp = 2)
 {
-	// From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
-	//   "the machine epsilon has to be scaled to the magnitude of the values used
-	//    and multiplied by the desired precision in ULPs (units in the last place)
-	//    unless the result is subnormal".
-	// Where "subnormal" means almost zero.
-	//
-	return (Abs(x - y) < (std::numeric_limits<double>::epsilon() * Abs(x + y) * ulp)) || almost_zero(x - y);
+    // From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
+    //   "the machine epsilon has to be scaled to the magnitude of the values used
+    //    and multiplied by the desired precision in ULPs (units in the last place)
+    //    unless the result is subnormal".
+    // Where "subnormal" means almost zero.
+    //
+    return (Abs(x - y) < (std::numeric_limits<double>::epsilon() * Abs(x + y) * ulp)) || almost_zero(x - y);
 }
 
 constexpr inline bool almost_equal(long double x, long double y, int ulp = 2)
 {
-	// From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
-	//   "the machine epsilon has to be scaled to the magnitude of the values used
-	//    and multiplied by the desired precision in ULPs (units in the last place)
-	//    unless the result is subnormal".
-	// Where "subnormal" means almost zero.
-	//
-	return (Abs(x - y) < (std::numeric_limits<long double>::epsilon() * Abs(x + y) * ulp)) || almost_zero(x - y);
+    // From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
+    //   "the machine epsilon has to be scaled to the magnitude of the values used
+    //    and multiplied by the desired precision in ULPs (units in the last place)
+    //    unless the result is subnormal".
+    // Where "subnormal" means almost zero.
+    //
+    return (Abs(x - y) < (std::numeric_limits<long double>::epsilon() * Abs(x + y) * ulp)) || almost_zero(x - y);
 }
 
 constexpr inline bool almost_equal(Fixed32 x, Fixed32 y, int ulp = 2)
 {
-	return Abs(x - y) <= Fixed32{0, static_cast<uint32_t>(ulp)};
+    return Abs(x - y) <= Fixed32{0, static_cast<uint32_t>(ulp)};
 }
 
 #ifndef _WIN32
 constexpr inline bool almost_equal(Fixed64 x, Fixed64 y, int ulp = 2)
 {
-	return Abs(x - y) <= Fixed64{0, static_cast<uint32_t>(ulp)};
+    return Abs(x - y) <= Fixed64{0, static_cast<uint32_t>(ulp)};
 }
 #endif
 
 template <typename T>
 inline T Average(Span<const T> span)
 {
-	auto sum = T{0};
-	for (auto&& element: span)
-	{
-		sum += element;
-	}
-	return (span.size() > decltype(span.size()){0})? sum / static_cast<T>(span.size()): sum;
+    auto sum = T{0};
+    for (auto&& element: span)
+    {
+        sum += element;
+    }
+    return (span.size() > decltype(span.size()){0})? sum / static_cast<T>(span.size()): sum;
 }
 
 #ifdef USE_BOOST_UNITS
@@ -218,13 +218,13 @@ inline T Average(Span<const T> span)
 template <>
 inline Length2D Average(Span<const Length2D> span)
 {
-	auto sum = Length2D{0, 0};
-	for (auto&& element: span)
-	{
-		sum += element;
-	}
-	const auto count = static_cast<RealNum>(span.size());
-	return (span.size() > decltype(span.size()){0})? sum / count: sum;
+    auto sum = Length2D{0, 0};
+    for (auto&& element: span)
+    {
+        sum += element;
+    }
+    const auto count = static_cast<RealNum>(span.size());
+    return (span.size() > decltype(span.size()){0})? sum / count: sum;
 }
 
 #endif
@@ -236,7 +236,7 @@ constexpr auto Vec2_zero = Vec2{0, 0};
 template <>
 inline Vec2 round(Vec2 value, std::uint32_t precision)
 {
-	return Vec2{round(value.x, precision), round(value.y, precision)};
+    return Vec2{round(value.x, precision), round(value.y, precision)};
 }
 
 /// Gets the angle.
@@ -244,7 +244,7 @@ inline Vec2 round(Vec2 value, std::uint32_t precision)
 template <class T>
 inline Angle GetAngle(T value)
 {
-	return Atan2(GetY(value), GetX(value));
+    return Atan2(GetY(value), GetX(value));
 }
 
 /// A 2D column vector with 3 elements.
@@ -252,16 +252,16 @@ inline Angle GetAngle(T value)
 ///   i.e. 12-bytes (with 4-byte RealNum).
 struct Vec3
 {
-	/// Default constructor does nothing (for performance).
-	Vec3() noexcept = default;
+    /// Default constructor does nothing (for performance).
+    Vec3() noexcept = default;
 
-	/// Construct using coordinates.
-	constexpr Vec3(RealNum x_, RealNum y_, RealNum z_) noexcept : x(x_), y(y_), z(z_) {}
+    /// Construct using coordinates.
+    constexpr Vec3(RealNum x_, RealNum y_, RealNum z_) noexcept : x(x_), y(y_), z(z_) {}
 
-	/// Negate this vector.
-	constexpr auto operator- () const noexcept { return Vec3{-x, -y, -z}; }
+    /// Negate this vector.
+    constexpr auto operator- () const noexcept { return Vec3{-x, -y, -z}; }
 
-	RealNum x, y, z;
+    RealNum x, y, z;
 };
 
 /// An all zero Vec3 value.
@@ -271,7 +271,7 @@ constexpr auto Vec3_zero = Vec3{0, 0, 0};
 template <>
 constexpr inline Vec3 GetInvalid() noexcept
 {
-	return Vec3{GetInvalid<RealNum>(), GetInvalid<RealNum>(), GetInvalid<RealNum>()};
+    return Vec3{GetInvalid<RealNum>(), GetInvalid<RealNum>(), GetInvalid<RealNum>()};
 }
 
 /// Gets the square of the length/magnitude of the given value.
@@ -280,26 +280,26 @@ constexpr inline Vec3 GetInvalid() noexcept
 template <typename T>
 constexpr inline auto GetLengthSquared(T value) noexcept
 {
-	return Square(GetX(value)) + Square(GetY(value));
+    return Square(GetX(value)) + Square(GetY(value));
 }
 
 template <>
 constexpr inline auto GetLengthSquared(Vec3 value) noexcept
 {
-	return Square(value.x) + Square(value.y) + Square(value.z);		
+    return Square(value.x) + Square(value.y) + Square(value.z);        
 }
 
 template <typename T>
 inline auto GetLength(T value)
 {
-	return Sqrt(GetLengthSquared(value));
+    return Sqrt(GetLengthSquared(value));
 }
 
 /// Does this vector contain finite coordinates?
 template <>
 constexpr inline bool IsValid(const Vec3& value) noexcept
 {
-	return IsValid(value.x) && IsValid(value.y) && IsValid(value.z);
+    return IsValid(value.x) && IsValid(value.y) && IsValid(value.z);
 }
 
 /// Performs the dot product on two vectors (A and B).
@@ -327,14 +327,14 @@ constexpr inline bool IsValid(const Vec3& value) noexcept
 template <typename T1, typename T2>
 constexpr inline auto Dot(const T1 a, const T2 b) noexcept
 {
-	return (GetX(a) * GetX(b)) + (GetY(a) * GetY(b));
+    return (GetX(a) * GetX(b)) + (GetY(a) * GetY(b));
 }
 
 /// Perform the dot product on two vectors.
 template <>
 constexpr inline auto Dot(const Vec3 a, const Vec3 b) noexcept
 {
-	return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
+    return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
 }
 
 /// Performs the 2D analog of the cross product of two vectors.
@@ -368,23 +368,23 @@ constexpr inline auto Dot(const Vec3 a, const Vec3 b) noexcept
 template <class T1, class T2>
 constexpr inline auto Cross(const T1 a, const T2 b) noexcept
 {
-	// Both vectors of same direction...
-	// If a = Vec2{1, 2} and b = Vec2{1, 2} then: a x b = 1 * 2 - 2 * 1 = 0.
-	// If a = Vec2{1, 2} and b = Vec2{2, 4} then: a x b = 1 * 4 - 2 * 2 = 0.
-	//
-	// Vectors at +/- 90 degrees of each other...
-	// If a = Vec2{1, 2} and b = Vec2{-2, 1} then: a x b = 1 * 1 - 2 * (-2) = 1 + 4 = 5.
-	// If a = Vec2{1, 2} and b = Vec2{2, -1} then: a x b = 1 * (-1) - 2 * 2 = -1 - 4 = -5.
-	//
-	// Vectors between 0 and 180 degrees of each other excluding 90 degrees...
-	// If a = Vec2{1, 2} and b = Vec2{-1, 2} then: a x b = 1 * 2 - 2 * (-1) = 2 + 2 = 4.
-	return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
+    // Both vectors of same direction...
+    // If a = Vec2{1, 2} and b = Vec2{1, 2} then: a x b = 1 * 2 - 2 * 1 = 0.
+    // If a = Vec2{1, 2} and b = Vec2{2, 4} then: a x b = 1 * 4 - 2 * 2 = 0.
+    //
+    // Vectors at +/- 90 degrees of each other...
+    // If a = Vec2{1, 2} and b = Vec2{-2, 1} then: a x b = 1 * 1 - 2 * (-2) = 1 + 4 = 5.
+    // If a = Vec2{1, 2} and b = Vec2{2, -1} then: a x b = 1 * (-1) - 2 * 2 = -1 - 4 = -5.
+    //
+    // Vectors between 0 and 180 degrees of each other excluding 90 degrees...
+    // If a = Vec2{1, 2} and b = Vec2{-1, 2} then: a x b = 1 * 2 - 2 * (-1) = 2 + 2 = 4.
+    return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
 }
 
 template <>
 constexpr inline auto Cross(const Vec3 a, const Vec3 b) noexcept
 {
-	return Vec3{a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x};
+    return Vec3{a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x};
 }
 
 /// A 2-by-2 matrix.
@@ -392,22 +392,22 @@ constexpr inline auto Cross(const Vec3 a, const Vec3 b) noexcept
 /// @note This structure is likely about 16-bytes large.
 struct Mat22
 {
-	/// The default constructor does nothing (for performance).
-	Mat22() noexcept = default;
+    /// The default constructor does nothing (for performance).
+    Mat22() noexcept = default;
 
-	/// Construct this matrix using columns.
-	constexpr Mat22(const Vec2 c1, const Vec2 c2) noexcept: ex{c1}, ey{c2} {}
+    /// Construct this matrix using columns.
+    constexpr Mat22(const Vec2 c1, const Vec2 c2) noexcept: ex{c1}, ey{c2} {}
 
-	/// Construct this matrix using scalars.
-	constexpr Mat22(RealNum a11, RealNum a12, RealNum a21, RealNum a22) noexcept: ex{a11, a21}, ey{a12, a22} {}
+    /// Construct this matrix using scalars.
+    constexpr Mat22(RealNum a11, RealNum a12, RealNum a21, RealNum a22) noexcept: ex{a11, a21}, ey{a12, a22} {}
 
-	Vec2 ex, ey;
+    Vec2 ex, ey;
 };
 
 template <>
 constexpr inline bool IsValid(const Mat22& value) noexcept
 {
-	return IsValid(value.ex) && IsValid(value.ey);
+    return IsValid(value.ex) && IsValid(value.ey);
 }
 
 /// An all zero Mat22 value.
@@ -417,7 +417,7 @@ constexpr auto Mat22_zero = Mat22(Vec2_zero, Vec2_zero);
 template <>
 constexpr inline Mat22 GetInvalid() noexcept
 {
-	return Mat22{GetInvalid<Vec2>(), GetInvalid<Vec2>()};
+    return Mat22{GetInvalid<Vec2>(), GetInvalid<Vec2>()};
 }
 
 /// Identity value for Mat22 objects.
@@ -428,56 +428,56 @@ constexpr auto Mat22_identity = Mat22(Vec2{1, 0}, Vec2{0, 1});
 /// than computing the inverse in one-shot cases.
 constexpr Vec2 Solve(const Mat22 mat, const Vec2 b) noexcept
 {
-	const auto cp = Cross(mat.ex, mat.ey);
-	return (cp != 0)?
-		Vec2{(mat.ey.y * b.x - mat.ey.x * b.y) / cp, (mat.ex.x * b.y - mat.ex.y * b.x) / cp}:
-		Vec2{0, 0};
+    const auto cp = Cross(mat.ex, mat.ey);
+    return (cp != 0)?
+        Vec2{(mat.ey.y * b.x - mat.ey.x * b.y) / cp, (mat.ex.x * b.y - mat.ex.y * b.x) / cp}:
+        Vec2{0, 0};
 }
 
 constexpr Mat22 Invert(const Mat22 value) noexcept
 {
-	const auto cp = Cross(value.ex, value.ey);
-	return (cp != 0)?
-		Mat22{Vec2{value.ey.y / cp, -value.ex.y / cp}, Vec2{-value.ey.x / cp, value.ex.x / cp}}:
-		Mat22{Vec2{0, 0}, Vec2{0, 0}};
+    const auto cp = Cross(value.ex, value.ey);
+    return (cp != 0)?
+        Mat22{Vec2{value.ey.y / cp, -value.ex.y / cp}, Vec2{-value.ey.x / cp, value.ex.x / cp}}:
+        Mat22{Vec2{0, 0}, Vec2{0, 0}};
 }
 
 /// A 3-by-3 matrix. Stored in column-major order.
 /// @note This data structure is 36-bytes large (on at least one 64-bit platform with 4-byte RealNum).
 struct Mat33
 {
-	/// The default constructor does nothing (for performance).
-	Mat33() noexcept = default;
+    /// The default constructor does nothing (for performance).
+    Mat33() noexcept = default;
 
-	/// Construct this matrix using columns.
-	constexpr Mat33(const Vec3 c1, const Vec3 c2, const Vec3 c3) noexcept:
-		ex{c1}, ey{c2}, ez{c3} {}
+    /// Construct this matrix using columns.
+    constexpr Mat33(const Vec3 c1, const Vec3 c2, const Vec3 c3) noexcept:
+        ex{c1}, ey{c2}, ez{c3} {}
 
-	Vec3 ex, ey, ez;
+    Vec3 ex, ey, ez;
 };
 
 /// Solve A * x = b, where b is a column vector. This is more efficient
 /// than computing the inverse in one-shot cases.
 constexpr Vec3 Solve33(const Mat33& mat, const Vec3 b) noexcept
 {
-	const auto dp = Dot(mat.ex, Cross(mat.ey, mat.ez));
-	const auto det = (dp != 0)? 1 / dp: dp;
-	const auto x = det * Dot(b, Cross(mat.ey, mat.ez));
-	const auto y = det * Dot(mat.ex, Cross(b, mat.ez));
-	const auto z = det * Dot(mat.ex, Cross(mat.ey, b));
-	return Vec3{x, y, z};
+    const auto dp = Dot(mat.ex, Cross(mat.ey, mat.ez));
+    const auto det = (dp != 0)? 1 / dp: dp;
+    const auto x = det * Dot(b, Cross(mat.ey, mat.ez));
+    const auto y = det * Dot(mat.ex, Cross(b, mat.ez));
+    const auto z = det * Dot(mat.ex, Cross(mat.ey, b));
+    return Vec3{x, y, z};
 }
-	
+    
 /// Solve A * x = b, where b is a column vector. This is more efficient
 /// than computing the inverse in one-shot cases. Solve only the upper
 /// 2-by-2 matrix equation.
 constexpr Vec2 Solve22(const Mat33& mat, const Vec2 b) noexcept
 {
-	const auto cp = mat.ex.x * mat.ey.y - mat.ey.x * mat.ex.y;
-	const auto det = (cp != 0)? 1 / cp: cp;
-	const auto x = det * (mat.ey.y * b.x - mat.ey.x * b.y);
-	const auto y = det * (mat.ex.x * b.y - mat.ex.y * b.x);
-	return Vec2{x, y};
+    const auto cp = mat.ex.x * mat.ey.y - mat.ey.x * mat.ex.y;
+    const auto det = (cp != 0)? 1 / cp: cp;
+    const auto x = det * (mat.ey.y * b.x - mat.ey.x * b.y);
+    const auto y = det * (mat.ex.x * b.y - mat.ex.y * b.x);
+    return Vec2{x, y};
 }
 
 constexpr auto Mat33_zero = Mat33(Vec3_zero, Vec3_zero, Vec3_zero);
@@ -486,50 +486,50 @@ constexpr auto Mat33_zero = Mat33(Vec3_zero, Vec3_zero, Vec3_zero);
 /// Returns the zero matrix if singular.
 constexpr inline Mat33 GetInverse22(const Mat33& value) noexcept
 {
-	const auto a = value.ex.x, b = value.ey.x, c = value.ex.y, d = value.ey.y;
-	auto det = (a * d) - (b * c);
-	if (det != RealNum{0})
-	{
-		det = RealNum{1} / det;
-	}
-	return Mat33{Vec3{det * d, -det * c, RealNum{0}}, Vec3{-det * b, det * a, 0}, Vec3{0, 0, 0}};
+    const auto a = value.ex.x, b = value.ey.x, c = value.ex.y, d = value.ey.y;
+    auto det = (a * d) - (b * c);
+    if (det != RealNum{0})
+    {
+        det = RealNum{1} / det;
+    }
+    return Mat33{Vec3{det * d, -det * c, RealNum{0}}, Vec3{-det * b, det * a, 0}, Vec3{0, 0, 0}};
 }
-	
+    
 /// Get the symmetric inverse of this matrix as a 3-by-3.
 /// Returns the zero matrix if singular.
 constexpr inline Mat33 GetSymInverse33(const Mat33& value) noexcept
 {
-	auto det = Dot(value.ex, Cross(value.ey, value.ez));
-	if (det != RealNum{0})
-	{
-		det = RealNum{1} / det;
-	}
-	
-	const auto a11 = value.ex.x, a12 = value.ey.x, a13 = value.ez.x;
-	const auto a22 = value.ey.y, a23 = value.ez.y;
-	const auto a33 = value.ez.z;
-	
-	const auto ex_y = det * (a13 * a23 - a12 * a33);
-	const auto ey_z = det * (a13 * a12 - a11 * a23);
-	const auto ex_z = det * (a12 * a23 - a13 * a22);
-	
-	return Mat33{
-		Vec3{det * (a22 * a33 - a23 * a23), ex_y, ex_z},
-		Vec3{ex_y, det * (a11 * a33 - a13 * a13), ey_z},
-		Vec3{ex_z, ey_z, det * (a11 * a22 - a12 * a12)}
-	};
+    auto det = Dot(value.ex, Cross(value.ey, value.ez));
+    if (det != RealNum{0})
+    {
+        det = RealNum{1} / det;
+    }
+    
+    const auto a11 = value.ex.x, a12 = value.ey.x, a13 = value.ez.x;
+    const auto a22 = value.ey.y, a23 = value.ez.y;
+    const auto a33 = value.ez.z;
+    
+    const auto ex_y = det * (a13 * a23 - a12 * a33);
+    const auto ey_z = det * (a13 * a12 - a11 * a23);
+    const auto ex_z = det * (a12 * a23 - a13 * a22);
+    
+    return Mat33{
+        Vec3{det * (a22 * a33 - a23 * a23), ex_y, ex_z},
+        Vec3{ex_y, det * (a11 * a33 - a13 * a13), ey_z},
+        Vec3{ex_z, ey_z, det * (a11 * a22 - a12 * a12)}
+    };
 }
 
 template <>
 constexpr UnitVec2 GetInvalid() noexcept
 {
-	return UnitVec2{};
+    return UnitVec2{};
 }
 
 template <>
 constexpr inline bool IsValid(const UnitVec2& value) noexcept
 {
-	return IsValid(GetX(value)) && IsValid(GetY(value)) && (value != UnitVec2::GetZero());
+    return IsValid(GetX(value)) && IsValid(GetY(value)) && (value != UnitVec2::GetZero());
 }
 
 /// Transformation.
@@ -539,16 +539,16 @@ constexpr inline bool IsValid(const UnitVec2& value) noexcept
 /// @note This data structure is 16-bytes large (on at least one 64-bit platform).
 struct Transformation
 {
-	/// The default constructor does nothing.
-	Transformation() = default;
+    /// The default constructor does nothing.
+    Transformation() = default;
 
-	/// Initialize using a translation and a rotation.
-	constexpr Transformation(Length2D translation, UnitVec2 rotation) noexcept: p{translation}, q{rotation} {}
+    /// Initialize using a translation and a rotation.
+    constexpr Transformation(Length2D translation, UnitVec2 rotation) noexcept: p{translation}, q{rotation} {}
 
-	constexpr Transformation(const Transformation& copy) = default;
+    constexpr Transformation(const Transformation& copy) = default;
 
-	Length2D p; ///< Translational portion of the transformation. 8-bytes.
-	UnitVec2 q; ///< Rotational portion of the transformation. 8-bytes.
+    Length2D p; ///< Translational portion of the transformation. 8-bytes.
+    UnitVec2 q; ///< Rotational portion of the transformation. 8-bytes.
 };
 
 constexpr auto Transform_identity = Transformation{Vec2_zero * Meter, UnitVec2::GetRight()};
@@ -556,35 +556,35 @@ constexpr auto Transform_identity = Transformation{Vec2_zero * Meter, UnitVec2::
 template <>
 constexpr inline bool IsValid(const Transformation& value) noexcept
 {
-	return IsValid(value.p.x) && IsValid(value.p.y) && IsValid(value.q);
+    return IsValid(value.p.x) && IsValid(value.p.y) && IsValid(value.q);
 }
 
 /// Positional data structure.
 /// @note This structure is likely to be 12-bytes large (at least on 64-bit platforms).
 struct Position
 {
-	Length2D linear; ///< Linear position (in meters).
-	Angle angular; ///< Angular position.
+    Length2D linear; ///< Linear position (in meters).
+    Angle angular; ///< Angular position.
 };
 
 template <>
 constexpr inline bool IsValid(const Position& value) noexcept
 {
-	return IsValid(value.linear) && IsValid(value.angular);
+    return IsValid(value.linear) && IsValid(value.angular);
 }
 
 /// Velocity related data structure.
 /// @note This data structure is 12-bytes (with 4-byte RealNum on at least one 64-bit platform).
 struct Velocity
 {
-	LinearVelocity2D linear; ///< Linear velocity (in meters/second).
-	AngularVelocity angular; ///< Angular velocity (in radians/second).
+    LinearVelocity2D linear; ///< Linear velocity (in meters/second).
+    AngularVelocity angular; ///< Angular velocity (in radians/second).
 };
 
 template <>
 constexpr inline bool IsValid(const Velocity& value) noexcept
 {
-	return IsValid(value.linear.x) && IsValid(value.linear.y) && IsValid(value.angular);
+    return IsValid(value.linear.x) && IsValid(value.linear.y) && IsValid(value.angular);
 }
 
 /// Sweep.
@@ -597,50 +597,50 @@ constexpr inline bool IsValid(const Velocity& value) noexcept
 class Sweep
 {
 public:
-	/// Default constructor.
-	Sweep() = default;
+    /// Default constructor.
+    Sweep() = default;
 
-	/// Copy constructor.
-	constexpr Sweep(const Sweep& copy) = default;
+    /// Copy constructor.
+    constexpr Sweep(const Sweep& copy) = default;
 
-	/// Initializing constructor.
-	constexpr Sweep(const Position p0, const Position p1, const Length2D lc = Vec2_zero * Meter, RealNum a0 = 0) noexcept:
-		pos0{p0}, pos1{p1}, localCenter{lc}, alpha0{a0}
-	{
-		assert(a0 >= 0);
-		assert(a0 < 1);
-	}
-	
-	/// Initializing constructor.
-	constexpr explicit Sweep(const Position p, const Length2D lc = Vec2_zero * Meter): Sweep{p, p, lc, 0} {}
+    /// Initializing constructor.
+    constexpr Sweep(const Position p0, const Position p1, const Length2D lc = Vec2_zero * Meter, RealNum a0 = 0) noexcept:
+        pos0{p0}, pos1{p1}, localCenter{lc}, alpha0{a0}
+    {
+        assert(a0 >= 0);
+        assert(a0 < 1);
+    }
+    
+    /// Initializing constructor.
+    constexpr explicit Sweep(const Position p, const Length2D lc = Vec2_zero * Meter): Sweep{p, p, lc, 0} {}
 
-	/// Gets the local center of mass position.
- 	/// @note This value can only be set via a sweep constructed using an initializing constructor.
-	Length2D GetLocalCenter() const noexcept { return localCenter; }
+    /// Gets the local center of mass position.
+     /// @note This value can only be set via a sweep constructed using an initializing constructor.
+    Length2D GetLocalCenter() const noexcept { return localCenter; }
 
-	/// Gets the alpha0 for this sweep.
-	/// @return Value between 0 and less than 1.
-	RealNum GetAlpha0() const noexcept { return alpha0; }
+    /// Gets the alpha0 for this sweep.
+    /// @return Value between 0 and less than 1.
+    RealNum GetAlpha0() const noexcept { return alpha0; }
 
-	/// Advances the sweep by a factor of the difference between the given time alpha and the sweep's alpha0.
-	/// @details
-	/// This advances position 0 (<code>pos0</code>) of the sweep towards position 1 (<code>pos1</code>)
-	/// by a factor of the difference between the given alpha and the alpha0.
-	/// @param alpha Valid new time factor in [0,1) to update the sweep to. Behavior is undefined if value is invalid.
-	void Advance0(RealNum alpha) noexcept;
+    /// Advances the sweep by a factor of the difference between the given time alpha and the sweep's alpha0.
+    /// @details
+    /// This advances position 0 (<code>pos0</code>) of the sweep towards position 1 (<code>pos1</code>)
+    /// by a factor of the difference between the given alpha and the alpha0.
+    /// @param alpha Valid new time factor in [0,1) to update the sweep to. Behavior is undefined if value is invalid.
+    void Advance0(RealNum alpha) noexcept;
 
-	void ResetAlpha0() noexcept;
+    void ResetAlpha0() noexcept;
 
-	Position pos0; ///< Center world position and world angle at time "0". 12-bytes.
-	Position pos1; ///< Center world position and world angle at time "1". 12-bytes.
+    Position pos0; ///< Center world position and world angle at time "0". 12-bytes.
+    Position pos1; ///< Center world position and world angle at time "1". 12-bytes.
 
 private:
-	Length2D localCenter; ///< Local center of mass position. 8-bytes.
+    Length2D localCenter; ///< Local center of mass position. 8-bytes.
 
-	/// Fraction of the current time step in the range [0,1]
-	/// pos0.linear and pos0.angular are the positions at alpha0.
-	/// @note 4-bytes.
-	RealNum alpha0;
+    /// Fraction of the current time step in the range [0,1]
+    /// pos0.linear and pos0.angular are the positions at alpha0.
+    /// @note 4-bytes.
+    RealNum alpha0;
 };
 
 /// Gets a vector counter-clockwise (reverse-clockwise) perpendicular to the given vector.
@@ -651,10 +651,10 @@ private:
 template <class T>
 constexpr inline auto GetRevPerpendicular(const T vector) noexcept
 {
-	// See http://mathworld.wolfram.com/PerpendicularVector.html
-	return T{-GetY(vector), GetX(vector)};
+    // See http://mathworld.wolfram.com/PerpendicularVector.html
+    return T{-GetY(vector), GetX(vector)};
 }
-	
+    
 /// Gets a vector clockwise (forward-clockwise) perpendicular to the given vector.
 /// @details This takes a vector of form (x, y) and returns the vector (y, -x).
 /// @param vector Vector to return a clockwise perpendicular equivalent for.
@@ -663,170 +663,170 @@ constexpr inline auto GetRevPerpendicular(const T vector) noexcept
 template <class T>
 constexpr inline auto GetFwdPerpendicular(const T vector) noexcept
 {
-	// See http://mathworld.wolfram.com/PerpendicularVector.html
-	return T{GetY(vector), -GetX(vector)};
+    // See http://mathworld.wolfram.com/PerpendicularVector.html
+    return T{GetY(vector), -GetX(vector)};
 }
 
 /// Multiply a matrix times a vector. If a rotation matrix is provided,
 /// then this transforms the vector from one frame to another.
 constexpr inline Vec2 Transform(const Vec2 v, const Mat22& A) noexcept
 {
-	return Vec2{A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y};
+    return Vec2{A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y};
 }
 
 /// Multiply a matrix transpose times a vector. If a rotation matrix is provided,
 /// then this transforms the vector from one frame to another (inverse transform).
 constexpr inline Vec2 InverseTransform(const Vec2 v, const Mat22& A) noexcept
 {
-	return Vec2{Dot(v, A.ex), Dot(v, A.ey)};
+    return Vec2{Dot(v, A.ex), Dot(v, A.ey)};
 }
-	
+    
 #if 0
 constexpr inline auto Cross(const UnitVec2 a, const Vec2 b) noexcept
 {
-	return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
+    return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
 }
 
 constexpr inline auto Cross(const Vec2 a, const UnitVec2 b) noexcept
 {
-	return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
+    return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
 }
 
 #ifdef USE_BOOST_UNITS
 constexpr inline auto Cross(const UnitVec2 a, const Length2D b) noexcept
 {
-	return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
+    return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
 }
 
 constexpr inline auto Cross(const Length2D a, const UnitVec2 b) noexcept
 {
-	return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
+    return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
 }
 
 constexpr inline auto Cross(const Length2D a, const Length2D b) noexcept
 {
-	return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
+    return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
 }
 #endif
 #endif
 
 constexpr inline Vec2 operator+ (const UnitVec2 lhs, const UnitVec2 rhs) noexcept
 {
-	return Vec2{lhs.GetX() + rhs.GetX(), lhs.GetY() + rhs.GetY()};
+    return Vec2{lhs.GetX() + rhs.GetX(), lhs.GetY() + rhs.GetY()};
 }
 
 constexpr inline Vec2 operator- (const UnitVec2 lhs, const UnitVec2 rhs) noexcept
 {
-	return Vec2{lhs.GetX() - rhs.GetX(), lhs.GetY() - rhs.GetY()};
+    return Vec2{lhs.GetX() - rhs.GetX(), lhs.GetY() - rhs.GetY()};
 }
 
 template <class T>
 constexpr inline Vector2D<T> operator* (const T s, const UnitVec2 u) noexcept
 {
-	return Vector2D<T>{u.GetX() * s, u.GetY() * s};
+    return Vector2D<T>{u.GetX() * s, u.GetY() * s};
 }
 
 template <class T>
 constexpr inline Vector2D<T> operator* (const UnitVec2 u, const T s) noexcept
 {
-	return Vector2D<T>{u.GetX() * s, u.GetY() * s};
+    return Vector2D<T>{u.GetX() * s, u.GetY() * s};
 }
 
 constexpr inline Vec2 operator/ (const UnitVec2 u, const UnitVec2::data_type s) noexcept
 {
-	return Vec2{u.GetX() / s, u.GetY() / s};
+    return Vec2{u.GetX() / s, u.GetY() / s};
 }
 
 constexpr inline bool operator == (const Vec3 lhs, const Vec3 rhs) noexcept
 {
-	return (lhs.x == rhs.x) && (lhs.y == rhs.y) && (lhs.z == rhs.z);
+    return (lhs.x == rhs.x) && (lhs.y == rhs.y) && (lhs.z == rhs.z);
 }
 
 constexpr inline bool operator != (const Vec3 lhs, const Vec3 rhs) noexcept
 {
-	return (lhs.x != rhs.x) || (lhs.y != rhs.y) || (lhs.z != rhs.z);
+    return (lhs.x != rhs.x) || (lhs.y != rhs.y) || (lhs.z != rhs.z);
 }
 
 constexpr inline bool operator == (Transformation lhs, Transformation rhs) noexcept
 {
-	return (lhs.p == rhs.p) && (lhs.q == rhs.q);
+    return (lhs.p == rhs.p) && (lhs.q == rhs.q);
 }
 
 constexpr inline bool operator != (Transformation lhs, Transformation rhs) noexcept
 {
-	return (lhs.p != rhs.p) || (lhs.q != rhs.q);
+    return (lhs.p != rhs.p) || (lhs.q != rhs.q);
 }
 
 constexpr Vec3& operator += (Vec3& lhs, const Vec3& rhs) noexcept
 {
-	lhs.x += rhs.x;
-	lhs.y += rhs.y;
-	lhs.z += rhs.z;
-	return lhs;
+    lhs.x += rhs.x;
+    lhs.y += rhs.y;
+    lhs.z += rhs.z;
+    return lhs;
 }
 
 constexpr Vec3& operator -= (Vec3& lhs, const Vec3& rhs) noexcept
 {
-	lhs.x -= rhs.x;
-	lhs.y -= rhs.y;
-	lhs.z -= rhs.z;
-	return lhs;
+    lhs.x -= rhs.x;
+    lhs.y -= rhs.y;
+    lhs.z -= rhs.z;
+    return lhs;
 }
 
 constexpr Vec3& operator *= (Vec3& lhs, const RealNum rhs) noexcept
 {
-	lhs.x *= rhs;
-	lhs.y *= rhs;
-	lhs.z *= rhs;
-	return lhs;
+    lhs.x *= rhs;
+    lhs.y *= rhs;
+    lhs.z *= rhs;
+    return lhs;
 }
 
 constexpr inline Vec3 operator * (const RealNum s, const Vec3 a) noexcept
 {
-	return Vec3{s * a.x, s * a.y, s * a.z};
+    return Vec3{s * a.x, s * a.y, s * a.z};
 }
 
 /// Add two vectors component-wise.
 constexpr inline Vec3 operator + (const Vec3 a, const Vec3 b) noexcept
 {
-	return Vec3{a.x + b.x, a.y + b.y, a.z + b.z};
+    return Vec3{a.x + b.x, a.y + b.y, a.z + b.z};
 }
 
 /// Subtract two vectors component-wise.
 constexpr inline Vec3 operator - (const Vec3 a, const Vec3 b) noexcept
 {
-	return Vec3{a.x - b.x, a.y - b.y, a.z - b.z};
+    return Vec3{a.x - b.x, a.y - b.y, a.z - b.z};
 }
 
 constexpr inline Mat22 operator + (const Mat22 A, const Mat22 B) noexcept
 {
-	return Mat22{A.ex + B.ex, A.ey + B.ey};
+    return Mat22{A.ex + B.ex, A.ey + B.ey};
 }
 
 // A * B
 constexpr inline Mat22 Mul(const Mat22& A, const Mat22& B) noexcept
 {
-	return Mat22{Transform(B.ex, A), Transform(B.ey, A)};
+    return Mat22{Transform(B.ex, A), Transform(B.ey, A)};
 }
 
 // A^T * B
 constexpr inline Mat22 MulT(const Mat22& A, const Mat22& B) noexcept
 {
-	const auto c1 = Vec2{Dot(A.ex, B.ex), Dot(A.ey, B.ex)};
-	const auto c2 = Vec2{Dot(A.ex, B.ey), Dot(A.ey, B.ey)};
-	return Mat22{c1, c2};
+    const auto c1 = Vec2{Dot(A.ex, B.ex), Dot(A.ey, B.ex)};
+    const auto c2 = Vec2{Dot(A.ex, B.ey), Dot(A.ey, B.ey)};
+    return Mat22{c1, c2};
 }
 
 /// Multiply a matrix times a vector.
 constexpr inline Vec3 Transform(const Vec3& v, const Mat33& A) noexcept
 {
-	return (v.x * A.ex) + (v.y * A.ey) + (v.z * A.ez);
+    return (v.x * A.ex) + (v.y * A.ey) + (v.z * A.ez);
 }
 
 /// Multiply a matrix times a vector.
 constexpr inline Vec2 Transform(const Vec2 v, const Mat33& A) noexcept
 {
-	return Vec2{A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y};
+    return Vec2{A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y};
 }
 
 /// Rotates a vector by a given angle.
@@ -834,9 +834,9 @@ constexpr inline Vec2 Transform(const Vec2 v, const Mat33& A) noexcept
 template <class T>
 constexpr inline auto Rotate(const Vector2D<T> vector, const UnitVec2& angle) noexcept
 {
-	const auto newX = (angle.cos() * GetX(vector)) - (angle.sin() * GetY(vector));
-	const auto newY = (angle.sin() * GetX(vector)) + (angle.cos() * GetY(vector));
-	return Vector2D<T>{newX, newY};
+    const auto newX = (angle.cos() * GetX(vector)) - (angle.sin() * GetY(vector));
+    const auto newY = (angle.sin() * GetX(vector)) + (angle.cos() * GetY(vector));
+    return Vector2D<T>{newX, newY};
 }
 
 /// Inverse rotate a vector.
@@ -845,9 +845,9 @@ constexpr inline auto Rotate(const Vector2D<T> vector, const UnitVec2& angle) no
 template <class T>
 constexpr inline auto InverseRotate(const Vector2D<T> vector, const UnitVec2& angle) noexcept
 {
-	const auto newX = (angle.cos() * GetX(vector)) + (angle.sin() * GetY(vector));
-	const auto newY = (angle.cos() * GetY(vector)) - (angle.sin() * GetX(vector));
-	return Vector2D<T>{newX, newY};
+    const auto newX = (angle.cos() * GetX(vector)) + (angle.sin() * GetY(vector));
+    const auto newY = (angle.cos() * GetY(vector)) - (angle.sin() * GetX(vector));
+    return Vector2D<T>{newX, newY};
 }
 
 /// Transforms the given 2-D vector with the given transformation.
@@ -863,7 +863,7 @@ constexpr inline auto InverseRotate(const Vector2D<T> vector, const UnitVec2& an
 /// @return Rotated and translated vector.
 constexpr inline Length2D Transform(const Length2D v, const Transformation T) noexcept
 {
-	return Rotate(v, T.q) + T.p;
+    return Rotate(v, T.q) + T.p;
 }
 
 /// Inverse transforms the given 2-D vector with the given transformation.
@@ -878,52 +878,52 @@ constexpr inline Length2D Transform(const Length2D v, const Transformation T) no
 /// @return Inverse transformed vector.
 constexpr inline Length2D InverseTransform(const Length2D v, const Transformation T) noexcept
 {
-	const auto v2 = v - T.p;
-	return InverseRotate(v2, T.q);
+    const auto v2 = v - T.p;
+    return InverseRotate(v2, T.q);
 }
 
 // v2 = A.q.Rot(B.q.Rot(v1) + B.p) + A.p
 //    = (A.q * B.q).Rot(v1) + A.q.Rot(B.p) + A.p
 constexpr inline Transformation Mul(const Transformation& A, const Transformation& B) noexcept
 {
-	return Transformation{A.p + Rotate(StripUnits(B.p), A.q) * Meter, A.q.Rotate(B.q)};
+    return Transformation{A.p + Rotate(StripUnits(B.p), A.q) * Meter, A.q.Rotate(B.q)};
 }
 
 // v2 = A.q' * (B.q * v1 + B.p - A.p)
 //    = A.q' * B.q * v1 + A.q' * (B.p - A.p)
 constexpr inline Transformation MulT(const Transformation& A, const Transformation& B) noexcept
 {
-	const auto dp = B.p - A.p;
-	return Transformation{InverseRotate(StripUnits(dp), A.q) * Meter, B.q.Rotate(A.q.FlipY())};
+    const auto dp = B.p - A.p;
+    return Transformation{InverseRotate(StripUnits(dp), A.q) * Meter, B.q.Rotate(A.q.FlipY())};
 }
 
 template <>
 inline Vec2 Abs(Vec2 a)
 {
-	return Vec2{Abs(a.x), Abs(a.y)};
+    return Vec2{Abs(a.x), Abs(a.y)};
 }
 
 template <>
 inline UnitVec2 Abs(UnitVec2 a)
 {
-	return a.Absolute();
+    return a.Absolute();
 }
 
 inline Mat22 Abs(const Mat22& A)
 {
-	return Mat22{Abs(A.ex), Abs(A.ey)};
+    return Mat22{Abs(A.ex), Abs(A.ey)};
 }
 
 template <typename T>
 constexpr inline T Min(T a, T b) noexcept
 {
-	return (a < b) ? a : b;
+    return (a < b) ? a : b;
 }
 
 template <typename T>
 constexpr inline T Max(T a, T b) noexcept
 {
-	return (a > b) ? a : b;
+    return (a > b) ? a : b;
 }
 
 /// Clamps the given value within the given range (inclusive).
@@ -933,16 +933,16 @@ constexpr inline T Max(T a, T b) noexcept
 template <typename T>
 constexpr inline T Clamp(T value, T low, T high) noexcept
 {
-	const auto tmp = (value > high)? high: value; // std::isnan(high)? a: Min(a, high);
-	return (tmp < low)? low: tmp; // std::isnan(low)? b: Max(b, low);
+    const auto tmp = (value > high)? high: value; // std::isnan(high)? a: Min(a, high);
+    return (tmp < low)? low: tmp; // std::isnan(low)? b: Max(b, low);
 }
 
 template<typename T>
 constexpr inline void Swap(T& a, T& b)
 {
-	T tmp = a;
-	a = b;
-	b = tmp;
+    T tmp = a;
+    a = b;
+    b = tmp;
 }
 
 /// "Next Largest Power of 2
@@ -952,162 +952,162 @@ constexpr inline void Swap(T& a, T& b)
 /// largest power of 2. For a 64-bit value:"
 inline std::uint64_t NextPowerOfTwo(std::uint64_t x)
 {
-	x |= (x >> 1);
-	x |= (x >> 2);
-	x |= (x >> 4);
-	x |= (x >> 8);
-	x |= (x >> 16);
-	x |= (x >> 32);
-	return x + 1;
+    x |= (x >> 1);
+    x |= (x >> 2);
+    x |= (x >> 4);
+    x |= (x >> 8);
+    x |= (x >> 16);
+    x |= (x >> 32);
+    return x + 1;
 }
 
 constexpr inline bool operator==(const Position& lhs, const Position& rhs)
 {
-	return (lhs.linear == rhs.linear) && (lhs.angular == rhs.angular);
+    return (lhs.linear == rhs.linear) && (lhs.angular == rhs.angular);
 }
 
 constexpr inline bool operator!=(const Position& lhs, const Position& rhs)
 {
-	return (lhs.linear != rhs.linear) || (lhs.angular != rhs.angular);
+    return (lhs.linear != rhs.linear) || (lhs.angular != rhs.angular);
 }
 
 constexpr inline Position operator- (const Position& value)
 {
-	return Position{-value.linear, -value.angular};
+    return Position{-value.linear, -value.angular};
 }
 
 constexpr inline Position operator+ (const Position& value)
 {
-	return value;
+    return value;
 }
 
 constexpr inline Position& operator+= (Position& lhs, const Position& rhs)
 {
-	lhs.linear += rhs.linear;
-	lhs.angular += rhs.angular;
-	return lhs;
+    lhs.linear += rhs.linear;
+    lhs.angular += rhs.angular;
+    return lhs;
 }
 
 constexpr inline Position operator+ (const Position& lhs, const Position& rhs)
 {
-	return Position{lhs.linear + rhs.linear, lhs.angular + rhs.angular};
+    return Position{lhs.linear + rhs.linear, lhs.angular + rhs.angular};
 }
-	
+    
 constexpr inline Position& operator-= (Position& lhs, const Position& rhs)
 {
-	lhs.linear -= rhs.linear;
-	lhs.angular -= rhs.angular;
-	return lhs;
+    lhs.linear -= rhs.linear;
+    lhs.angular -= rhs.angular;
+    return lhs;
 }
 
 constexpr inline Position operator- (const Position& lhs, const Position& rhs)
 {
-	return Position{lhs.linear - rhs.linear, lhs.angular - rhs.angular};
+    return Position{lhs.linear - rhs.linear, lhs.angular - rhs.angular};
 }
 
 constexpr inline Position operator* (const Position& pos, const RealNum scalar)
 {
-	return Position{{pos.linear.x * scalar, pos.linear.y * scalar}, pos.angular * scalar};
+    return Position{{pos.linear.x * scalar, pos.linear.y * scalar}, pos.angular * scalar};
 }
 
 constexpr inline Position operator* (const RealNum scalar, const Position& pos)
 {
-	return Position{{pos.linear.x * scalar, pos.linear.y * scalar}, pos.angular * scalar};
+    return Position{{pos.linear.x * scalar, pos.linear.y * scalar}, pos.angular * scalar};
 }
-	
+    
 constexpr inline bool operator==(const Velocity& lhs, const Velocity& rhs)
 {
-	return (lhs.linear == rhs.linear) && (lhs.angular == rhs.angular);
+    return (lhs.linear == rhs.linear) && (lhs.angular == rhs.angular);
 }
 
 constexpr inline bool operator!=(const Velocity& lhs, const Velocity& rhs)
 {
-	return (lhs.linear != rhs.linear) || (lhs.angular != rhs.angular);
+    return (lhs.linear != rhs.linear) || (lhs.angular != rhs.angular);
 }
 
 constexpr inline Velocity& operator*= (Velocity& lhs, const RealNum rhs)
 {
-	lhs.linear *= rhs;
-	lhs.angular *= rhs;
-	return lhs;
+    lhs.linear *= rhs;
+    lhs.angular *= rhs;
+    return lhs;
 }
 
 constexpr inline Velocity& operator/= (Velocity& lhs, const RealNum rhs)
 {
-	lhs.linear /= rhs;
-	lhs.angular /= rhs;
-	return lhs;
+    lhs.linear /= rhs;
+    lhs.angular /= rhs;
+    return lhs;
 }
 
 constexpr inline Velocity& operator+= (Velocity& lhs, const Velocity& rhs)
 {
-	lhs.linear += rhs.linear;
-	lhs.angular += rhs.angular;
-	return lhs;
+    lhs.linear += rhs.linear;
+    lhs.angular += rhs.angular;
+    return lhs;
 }
 
 constexpr inline Velocity operator+ (const Velocity& lhs, const Velocity& rhs)
 {
-	return Velocity{lhs.linear + rhs.linear, lhs.angular + rhs.angular};
+    return Velocity{lhs.linear + rhs.linear, lhs.angular + rhs.angular};
 }
 
 constexpr inline Velocity& operator-= (Velocity& lhs, const Velocity& rhs)
 {
-	lhs.linear -= rhs.linear;
-	lhs.angular -= rhs.angular;
-	return lhs;
+    lhs.linear -= rhs.linear;
+    lhs.angular -= rhs.angular;
+    return lhs;
 }
 
 constexpr inline Velocity operator- (const Velocity& lhs, const Velocity& rhs)
 {
-	return Velocity{lhs.linear - rhs.linear, lhs.angular - rhs.angular};
+    return Velocity{lhs.linear - rhs.linear, lhs.angular - rhs.angular};
 }
 
 constexpr inline Velocity operator- (const Velocity& value)
 {
-	return Velocity{-value.linear, -value.angular};
+    return Velocity{-value.linear, -value.angular};
 }
 
 constexpr inline Velocity operator+ (const Velocity& value)
 {
-	return value;
+    return value;
 }
 
 constexpr inline Velocity operator* (const Velocity& lhs, const RealNum rhs)
 {
-	return Velocity{lhs.linear * rhs, lhs.angular * rhs};
+    return Velocity{lhs.linear * rhs, lhs.angular * rhs};
 }
 
 constexpr inline Velocity operator* (const RealNum lhs, const Velocity& rhs)
 {
-	return Velocity{rhs.linear * lhs, rhs.angular * lhs};
+    return Velocity{rhs.linear * lhs, rhs.angular * lhs};
 }
 
 constexpr inline Velocity operator/ (const Velocity& lhs, const RealNum rhs)
 {
-	/*
-	 * While it can be argued that division operations shouldn't be supported due to
-	 * hardware support for division typically being significantly slower than hardware
-	 * support for multiplication, it can also be argued that it shouldn't be the
-	 * software developer's role to attempt to optimize what the compiler should be
-	 * much better at knowing how to optimize. So here the code chooses the latter
-	 * strategy which allows the intention to be clearer, and just passes the division
-	 * on down to the Vec2 and Angle types (rather than manually rewriting the divisions
-	 * as multiplications).
-	 */
-	return Velocity{lhs.linear / rhs, lhs.angular / rhs};
+    /*
+     * While it can be argued that division operations shouldn't be supported due to
+     * hardware support for division typically being significantly slower than hardware
+     * support for multiplication, it can also be argued that it shouldn't be the
+     * software developer's role to attempt to optimize what the compiler should be
+     * much better at knowing how to optimize. So here the code chooses the latter
+     * strategy which allows the intention to be clearer, and just passes the division
+     * on down to the Vec2 and Angle types (rather than manually rewriting the divisions
+     * as multiplications).
+     */
+    return Velocity{lhs.linear / rhs, lhs.angular / rhs};
 }
 
 constexpr inline Transformation GetTransformation(const Length2D ctr, const UnitVec2 rot, const Length2D localCtr) noexcept
 {
-	return Transformation{ctr - (Rotate(localCtr, rot)), rot};
+    return Transformation{ctr - (Rotate(localCtr, rot)), rot};
 }
 
 inline Transformation GetTransformation(const Position pos, const Length2D local_ctr) noexcept
 {
-	assert(IsValid(pos));
-	assert(IsValid(local_ctr));
-	return GetTransformation(pos.linear, UnitVec2{pos.angular}, local_ctr);
+    assert(IsValid(pos));
+    assert(IsValid(local_ctr));
+    return GetTransformation(pos.linear, UnitVec2{pos.angular}, local_ctr);
 }
 
 /// Gets the position between two positions at a given unit interval.
@@ -1118,16 +1118,16 @@ inline Transformation GetTransformation(const Position pos, const Length2D local
 ///   unit interval value between pos0 and pos1.
 inline Position GetPosition(const Position pos0, const Position pos1, const RealNum beta) noexcept
 {
-	// Note: have to be careful how this is done.
-	//   If pos0 == pos1 then return value should always be equal to pos0 too.
-	//   But if RealNum is float, pos0 * (1 - beta) + pos1 * beta can fail this requirement.
-	//   Meanwhile, pos0 + (pos1 - pos0) * beta always works.
-	
-	// pos0 * (1 - beta) + pos1 * beta
-	// pos0 - pos0 * beta + pos1 * beta
-	// pos0 + (pos1 * beta - pos0 * beta)
-	// pos0 + (pos1 - pos0) * beta
-	return pos0 + (pos1 - pos0) * beta;
+    // Note: have to be careful how this is done.
+    //   If pos0 == pos1 then return value should always be equal to pos0 too.
+    //   But if RealNum is float, pos0 * (1 - beta) + pos1 * beta can fail this requirement.
+    //   Meanwhile, pos0 + (pos1 - pos0) * beta always works.
+    
+    // pos0 * (1 - beta) + pos1 * beta
+    // pos0 - pos0 * beta + pos1 * beta
+    // pos0 + (pos1 * beta - pos0 * beta)
+    // pos0 + (pos1 - pos0) * beta
+    return pos0 + (pos1 - pos0) * beta;
 }
 
 /// Gets the interpolated transform at a specific time.
@@ -1136,9 +1136,9 @@ inline Position GetPosition(const Position pos0, const Position pos1, const Real
 /// @return Transformation of the given sweep at the specified time.
 inline Transformation GetTransformation(const Sweep& sweep, const RealNum beta) noexcept
 {
-	assert(beta >= 0);
-	assert(beta <= 1);
-	return GetTransformation(GetPosition(sweep.pos0, sweep.pos1, beta), sweep.GetLocalCenter());
+    assert(beta >= 0);
+    assert(beta <= 1);
+    return GetTransformation(GetPosition(sweep.pos0, sweep.pos1, beta), sweep.GetLocalCenter());
 }
 
 /// Gets the transform at "time" zero.
@@ -1148,7 +1148,7 @@ inline Transformation GetTransformation(const Sweep& sweep, const RealNum beta) 
 /// @return Transformation of the given sweep at time zero.
 inline Transformation GetTransform0(const Sweep& sweep) noexcept
 {
-	return GetTransformation(sweep.pos0, sweep.GetLocalCenter());
+    return GetTransformation(sweep.pos0, sweep.GetLocalCenter());
 }
 
 /// Gets the transform at "time" one.
@@ -1158,39 +1158,39 @@ inline Transformation GetTransform0(const Sweep& sweep) noexcept
 /// @return Transformation of the given sweep at time one.
 inline Transformation GetTransform1(const Sweep& sweep) noexcept
 {
-	return GetTransformation(sweep.pos1, sweep.GetLocalCenter());
+    return GetTransformation(sweep.pos1, sweep.GetLocalCenter());
 }
 
 inline void Sweep::Advance0(const RealNum alpha) noexcept
 {
-	assert(IsValid(alpha));
-	assert(alpha >= 0);
-	assert(alpha < 1);
-	assert(alpha0 < 1);
-	
-	const auto beta = (alpha - alpha0) / (1 - alpha0);
-	pos0 = GetPosition(pos0, pos1, beta);
-	alpha0 = alpha;
+    assert(IsValid(alpha));
+    assert(alpha >= 0);
+    assert(alpha < 1);
+    assert(alpha0 < 1);
+    
+    const auto beta = (alpha - alpha0) / (1 - alpha0);
+    pos0 = GetPosition(pos0, pos1, beta);
+    alpha0 = alpha;
 }
 
 inline void Sweep::ResetAlpha0() noexcept
 {
-	alpha0 = 0;
+    alpha0 = 0;
 }
 
-	
+    
 inline Angle GetNormalized(Angle value)
 {
 #if 1
-	constexpr auto radsPerCircle = RealNum{2 * Pi} * Radian;
-	const auto laps = static_cast<int>(value / radsPerCircle);
-	return value - (laps * RealNum{1} * radsPerCircle);
+    constexpr auto radsPerCircle = RealNum{2 * Pi} * Radian;
+    const auto laps = static_cast<int>(value / radsPerCircle);
+    return value - (laps * RealNum{1} * radsPerCircle);
 #else
-	const auto TwoPi = Pi * 2;
-	const auto res = RealNum{value / Radian} / TwoPi;
-	const auto wholePart = static_cast<int>(res);
-	const auto fractionPart = res - wholePart;
-	return RealNum{fractionPart * TwoPi} * Radian;
+    const auto TwoPi = Pi * 2;
+    const auto res = RealNum{value / Radian} / TwoPi;
+    const auto wholePart = static_cast<int>(res);
+    const auto fractionPart = res - wholePart;
+    return RealNum{fractionPart * TwoPi} * Radian;
 #endif
 }
 
@@ -1200,33 +1200,33 @@ inline Angle GetNormalized(Angle value)
 ///    and its pos1 angle reduced by the amount pos0's angle was reduced by.
 inline Sweep GetAnglesNormalized(Sweep sweep) noexcept
 {
-	const auto pos0a = GetNormalized(sweep.pos0.angular);
-	const auto d = sweep.pos0.angular - pos0a;
-	sweep.pos0.angular = pos0a;
-	sweep.pos1.angular -= d;
-	return sweep;
+    const auto pos0a = GetNormalized(sweep.pos0.angular);
+    const auto d = sweep.pos0.angular - pos0a;
+    sweep.pos0.angular = pos0a;
+    sweep.pos1.angular -= d;
+    return sweep;
 }
 
 /// Converts the given vector into a unit vector and returns its original length.
 inline RealNum Normalize(Vec2& vector)
 {
-	const auto length = GetLength(vector);
-	if (!almost_zero(length))
-	{
-		const auto invLength = 1 / length;
-		vector.x *= invLength;
-		vector.y *= invLength;
-		return length;
-	}
-	return 0;
+    const auto length = GetLength(vector);
+    if (!almost_zero(length))
+    {
+        const auto invLength = 1 / length;
+        vector.x *= invLength;
+        vector.y *= invLength;
+        return length;
+    }
+    return 0;
 }
 
 inline bool IsUnderActive(Velocity velocity,
-						  LinearVelocity linSleepTol, AngularVelocity angSleepTol) noexcept
+                          LinearVelocity linSleepTol, AngularVelocity angSleepTol) noexcept
 {
-	const auto linVelSquared = GetLengthSquared(velocity.linear);
-	const auto angVelSquared = Square(velocity.angular);
-	return (angVelSquared <= Square(angSleepTol)) && (linVelSquared <= Square(linSleepTol));
+    const auto linVelSquared = GetLengthSquared(velocity.linear);
+    const auto angVelSquared = Square(velocity.angular);
+    return (angVelSquared <= Square(angSleepTol)) && (linVelSquared <= Square(linSleepTol));
 }
 
 /// Gets the contact relative velocity.
@@ -1234,20 +1234,20 @@ inline bool IsUnderActive(Velocity velocity,
 constexpr inline LinearVelocity2D
 GetContactRelVelocity(const Velocity velA, const Length2D vcp_rA, const Velocity velB, const Length2D vcp_rB) noexcept
 {
-	const auto velBrot = GetRevPerpendicular(StripUnits(vcp_rB)) * RealNum{velB.angular / RadianPerSecond};
-	const auto velArot = GetRevPerpendicular(StripUnits(vcp_rA)) * RealNum{velA.angular / RadianPerSecond};
-	return (velB.linear + velBrot * MeterPerSecond) - (velA.linear + velArot * MeterPerSecond);
+    const auto velBrot = GetRevPerpendicular(StripUnits(vcp_rB)) * RealNum{velB.angular / RadianPerSecond};
+    const auto velArot = GetRevPerpendicular(StripUnits(vcp_rA)) * RealNum{velA.angular / RadianPerSecond};
+    return (velB.linear + velBrot * MeterPerSecond) - (velA.linear + velArot * MeterPerSecond);
 }
 
 template <>
 inline Vec2 Average(Span<const Vec2> span)
 {
-	auto sum = Vec2(0, 0);
-	for (auto&& element: span)
-	{
-		sum += element;
-	}
-	return (span.size() > decltype(span.size()){0})? sum / static_cast<Vec2::data_type>(span.size()): sum;
+    auto sum = Vec2(0, 0);
+    for (auto&& element: span)
+    {
+        sum += element;
+    }
+    return (span.size() > decltype(span.size()){0})? sum / static_cast<Vec2::data_type>(span.size()): sum;
 }
 
 /// Computes the centroid of a counter-clockwise array of 3 or more vertices.
@@ -1258,15 +1258,15 @@ Length2D ComputeCentroid(const Span<const Length2D>& vertices);
 template <typename T>
 constexpr inline T GetModuloNext(T value, T count) noexcept
 {
-	assert(value < count);
-	return (value + 1) % count;
+    assert(value < count);
+    return (value + 1) % count;
 }
 
 template <typename T>
 constexpr inline T GetModuloPrev(T value, T count) noexcept
 {
-	assert(value < count);
-	return (value? value: count) - 1;
+    assert(value < count);
+    return (value? value: count) - 1;
 }
 
 /// Gets the reverse (counter) clockwise rotational angle to go from angle 1 to angle 2.
@@ -1274,19 +1274,19 @@ constexpr inline T GetModuloPrev(T value, T count) noexcept
 /// @return Angular rotation in the counter clockwise direction to go from angle 1 to angle 2.
 constexpr inline Angle GetRevRotationalAngle(Angle a1, Angle a2) noexcept
 {
-	// If a1=90 * Degree and a2=45 * Degree then, 360 * Degree - (90 * Degree - 45) = 315 * Degree
-	// If a1=90 * Degree and a2=-90 * Degree then, 360 * Degree - (90 * Degree - -90 * Degree) = 180 * Degree
-	// If a1=45 * Degree and a2=90 * Degree then, 90 * Degree - 45 * Degree = 45 * Degree
-	// If a1=90 * Degree and a2=45 * Degree then, 360 * Degree - 45 * Degree - 90 * Degree = 235 * Degree
-	// If a1=-45 * Degree and a2=0 * Degree then, 45 * Degree
-	// If a1=-90 * Degree and a2=-100 * Degree then, 360 * Degree - (-90 * Degree - -100 * Degree) = 350 * Degree
-	// If a1=-100 * Degree and a2=-90 * Degree then, -90 * Degree - -100 * Degree = 10 * Degree
-	return (a1 > a2)? RealNum{360} * Degree - (a1 - a2): a2 - a1;
+    // If a1=90 * Degree and a2=45 * Degree then, 360 * Degree - (90 * Degree - 45) = 315 * Degree
+    // If a1=90 * Degree and a2=-90 * Degree then, 360 * Degree - (90 * Degree - -90 * Degree) = 180 * Degree
+    // If a1=45 * Degree and a2=90 * Degree then, 90 * Degree - 45 * Degree = 45 * Degree
+    // If a1=90 * Degree and a2=45 * Degree then, 360 * Degree - 45 * Degree - 90 * Degree = 235 * Degree
+    // If a1=-45 * Degree and a2=0 * Degree then, 45 * Degree
+    // If a1=-90 * Degree and a2=-100 * Degree then, 360 * Degree - (-90 * Degree - -100 * Degree) = 350 * Degree
+    // If a1=-100 * Degree and a2=-90 * Degree then, -90 * Degree - -100 * Degree = 10 * Degree
+    return (a1 > a2)? RealNum{360} * Degree - (a1 - a2): a2 - a1;
 }
 
 constexpr inline Vec2 GetVec2(const UnitVec2 value)
 {
-	return Vec2{GetX(value), GetY(value)};
+    return Vec2{GetX(value), GetY(value)};
 }
 
 /// Gets the unit vector for the given value.
@@ -1298,8 +1298,8 @@ constexpr inline Vec2 GetVec2(const UnitVec2 value)
 template <class T>
 inline UnitVec2 GetUnitVector(const Vector2D<T> value, const UnitVec2 fallback = UnitVec2::GetDefaultFallback())
 {
-	RealNum magnitude = 1;
-	return UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), magnitude, fallback);
+    RealNum magnitude = 1;
+    return UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), magnitude, fallback);
 }
 
 /// Gets the unit vector for the given value.
@@ -1311,12 +1311,12 @@ inline UnitVec2 GetUnitVector(const Vector2D<T> value, const UnitVec2 fallback =
 /// @sa almost_equal.
 template <class T>
 inline UnitVec2 GetUnitVector(const Vector2D<T> value, T& magnitude,
-							  const UnitVec2 fallback = UnitVec2::GetDefaultFallback());
+                              const UnitVec2 fallback = UnitVec2::GetDefaultFallback());
 
 template <>
 inline UnitVec2 GetUnitVector(const Vector2D<RealNum> value, RealNum& magnitude, const UnitVec2 fallback)
 {
-	return UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), magnitude, fallback);
+    return UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), magnitude, fallback);
 }
 
 #ifdef USE_BOOST_UNITS
@@ -1324,20 +1324,20 @@ inline UnitVec2 GetUnitVector(const Vector2D<RealNum> value, RealNum& magnitude,
 template <>
 inline UnitVec2 GetUnitVector(const Vector2D<Length> value, Length& magnitude, const UnitVec2 fallback)
 {
-	auto tmp = RealNum{0};
-	const auto uv = UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), tmp, fallback);
-	magnitude = tmp * Meter;
-	return uv;
+    auto tmp = RealNum{0};
+    const auto uv = UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), tmp, fallback);
+    magnitude = tmp * Meter;
+    return uv;
 }
 
 template <>
 inline UnitVec2 GetUnitVector(const Vector2D<LinearVelocity> value, LinearVelocity& magnitude,
-							  const UnitVec2 fallback)
+                              const UnitVec2 fallback)
 {
-	auto tmp = RealNum{0};
-	const auto uv = UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), tmp, fallback);
-	magnitude = tmp * MeterPerSecond;
-	return uv;
+    auto tmp = RealNum{0};
+    const auto uv = UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), tmp, fallback);
+    magnitude = tmp * MeterPerSecond;
+    return uv;
 }
 
 #endif

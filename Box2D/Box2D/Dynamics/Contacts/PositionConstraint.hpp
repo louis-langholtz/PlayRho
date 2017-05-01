@@ -25,33 +25,33 @@
 
 namespace box2d {
 
-	/// Contact Position Constraint.
-	/// @note This structure is 88-bytes large on at least one 64-bit platform.
-	struct PositionConstraint
-	{
-		using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
-		
-		PositionConstraint() = default;
-		
-		PositionConstraint(const Manifold& m, BodyConstraint& bA, Length rA, BodyConstraint& bB, Length rB):
-			manifold{m}, bodyA{bA}, radiusA{rA}, bodyB{bB}, radiusB{rB}
-		{
-			assert(m.GetPointCount() > 0);
-			assert(&bA != &bB);
-			assert(rA >= Length{0});
-			assert(rB >= Length{0});
-		}
-		
-		Manifold manifold; ///< Copy of contact's manifold with 1 or more contact points (60-bytes).
-		
-		BodyConstraint& bodyA; ///< Body A data (8-bytes).
-		
-		BodyConstraint& bodyB; ///< Body B data (8-bytes).
+    /// Contact Position Constraint.
+    /// @note This structure is 88-bytes large on at least one 64-bit platform.
+    struct PositionConstraint
+    {
+        using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
+        
+        PositionConstraint() = default;
+        
+        PositionConstraint(const Manifold& m, BodyConstraint& bA, Length rA, BodyConstraint& bB, Length rB):
+            manifold{m}, bodyA{bA}, radiusA{rA}, bodyB{bB}, radiusB{rB}
+        {
+            assert(m.GetPointCount() > 0);
+            assert(&bA != &bB);
+            assert(rA >= Length{0});
+            assert(rB >= Length{0});
+        }
+        
+        Manifold manifold; ///< Copy of contact's manifold with 1 or more contact points (60-bytes).
+        
+        BodyConstraint& bodyA; ///< Body A data (8-bytes).
+        
+        BodyConstraint& bodyB; ///< Body B data (8-bytes).
 
-		Length radiusA; ///< "Radius" distance from the associated shape of fixture A (4-bytes). 0 or greater.
+        Length radiusA; ///< "Radius" distance from the associated shape of fixture A (4-bytes). 0 or greater.
 
-		Length radiusB; ///< "Radius" distance from the associated shape of fixture B (4-bytes). 0 or greater.
-	};
+        Length radiusB; ///< "Radius" distance from the associated shape of fixture B (4-bytes). 0 or greater.
+    };
 
 } // namespace box2d
 

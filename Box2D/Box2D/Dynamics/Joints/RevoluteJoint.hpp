@@ -37,39 +37,39 @@ namespace box2d {
 ///    the joints will be broken.
 struct RevoluteJointDef : public JointDef
 {
-	constexpr RevoluteJointDef() noexcept: JointDef{JointType::Revolute} {}
+    constexpr RevoluteJointDef() noexcept: JointDef{JointType::Revolute} {}
 
-	/// Initialize the bodies, anchors, and reference angle using a world
-	/// anchor point.
-	RevoluteJointDef(Body* bodyA, Body* bodyB, const Length2D anchor, bool cc = false);
+    /// Initialize the bodies, anchors, and reference angle using a world
+    /// anchor point.
+    RevoluteJointDef(Body* bodyA, Body* bodyB, const Length2D anchor, bool cc = false);
 
-	/// The local anchor point relative to bodyA's origin.
-	Length2D localAnchorA = Vec2_zero * Meter;
+    /// The local anchor point relative to bodyA's origin.
+    Length2D localAnchorA = Vec2_zero * Meter;
 
-	/// The local anchor point relative to bodyB's origin.
-	Length2D localAnchorB = Vec2_zero * Meter;
+    /// The local anchor point relative to bodyB's origin.
+    Length2D localAnchorB = Vec2_zero * Meter;
 
-	/// The bodyB angle minus bodyA angle in the reference state (radians).
-	Angle referenceAngle = Angle{0};
+    /// The bodyB angle minus bodyA angle in the reference state (radians).
+    Angle referenceAngle = Angle{0};
 
-	/// A flag to enable joint limits.
-	bool enableLimit = false;
+    /// A flag to enable joint limits.
+    bool enableLimit = false;
 
-	/// The lower angle for the joint limit (radians).
-	Angle lowerAngle = Angle{0};
+    /// The lower angle for the joint limit (radians).
+    Angle lowerAngle = Angle{0};
 
-	/// The upper angle for the joint limit (radians).
-	Angle upperAngle = Angle{0};
+    /// The upper angle for the joint limit (radians).
+    Angle upperAngle = Angle{0};
 
-	/// A flag to enable the joint motor.
-	bool enableMotor = false;
+    /// A flag to enable the joint motor.
+    bool enableMotor = false;
 
-	/// The desired motor speed.
-	AngularVelocity motorSpeed = AngularVelocity{0};
+    /// The desired motor speed.
+    AngularVelocity motorSpeed = AngularVelocity{0};
 
-	/// The maximum motor torque used to achieve the desired motor speed.
-	/// Usually in N-m.
-	Torque maxMotorTorque = 0;
+    /// The maximum motor torque used to achieve the desired motor speed.
+    /// Usually in N-m.
+    Torque maxMotorTorque = 0;
 };
 
 /// Revolute Joint.
@@ -86,125 +86,125 @@ struct RevoluteJointDef : public JointDef
 class RevoluteJoint : public Joint
 {
 public:
-	RevoluteJoint(const RevoluteJointDef& def);
+    RevoluteJoint(const RevoluteJointDef& def);
 
-	Length2D GetAnchorA() const override;
-	Length2D GetAnchorB() const override;
+    Length2D GetAnchorA() const override;
+    Length2D GetAnchorB() const override;
 
-	/// The local anchor point relative to bodyA's origin.
-	Length2D GetLocalAnchorA() const noexcept { return m_localAnchorA; }
+    /// The local anchor point relative to bodyA's origin.
+    Length2D GetLocalAnchorA() const noexcept { return m_localAnchorA; }
 
-	/// The local anchor point relative to bodyB's origin.
-	Length2D GetLocalAnchorB() const noexcept { return m_localAnchorB; }
+    /// The local anchor point relative to bodyB's origin.
+    Length2D GetLocalAnchorB() const noexcept { return m_localAnchorB; }
 
-	/// Get the reference angle.
-	Angle GetReferenceAngle() const noexcept { return m_referenceAngle; }
+    /// Get the reference angle.
+    Angle GetReferenceAngle() const noexcept { return m_referenceAngle; }
 
-	/// Is the joint limit enabled?
-	bool IsLimitEnabled() const noexcept;
+    /// Is the joint limit enabled?
+    bool IsLimitEnabled() const noexcept;
 
-	/// Enable/disable the joint limit.
-	void EnableLimit(bool flag);
+    /// Enable/disable the joint limit.
+    void EnableLimit(bool flag);
 
-	/// Get the lower joint limit in radians.
-	Angle GetLowerLimit() const noexcept;
+    /// Get the lower joint limit in radians.
+    Angle GetLowerLimit() const noexcept;
 
-	/// Get the upper joint limit in radians.
-	Angle GetUpperLimit() const noexcept;
+    /// Get the upper joint limit in radians.
+    Angle GetUpperLimit() const noexcept;
 
-	/// Set the joint limits in radians.
-	void SetLimits(Angle lower, Angle upper);
+    /// Set the joint limits in radians.
+    void SetLimits(Angle lower, Angle upper);
 
-	/// Is the joint motor enabled?
-	bool IsMotorEnabled() const noexcept;
+    /// Is the joint motor enabled?
+    bool IsMotorEnabled() const noexcept;
 
-	/// Enable/disable the joint motor.
-	void EnableMotor(bool flag);
+    /// Enable/disable the joint motor.
+    void EnableMotor(bool flag);
 
-	/// Set the motor speed in radians per second.
-	void SetMotorSpeed(AngularVelocity speed);
+    /// Set the motor speed in radians per second.
+    void SetMotorSpeed(AngularVelocity speed);
 
-	/// Get the motor speed in radians per second.
-	AngularVelocity GetMotorSpeed() const noexcept;
+    /// Get the motor speed in radians per second.
+    AngularVelocity GetMotorSpeed() const noexcept;
 
-	/// Set the maximum motor torque, usually in N-m.
-	void SetMaxMotorTorque(Torque torque);
+    /// Set the maximum motor torque, usually in N-m.
+    void SetMaxMotorTorque(Torque torque);
 
-	Torque GetMaxMotorTorque() const noexcept { return m_maxMotorTorque; }
+    Torque GetMaxMotorTorque() const noexcept { return m_maxMotorTorque; }
 
-	/// Get the reaction force given the inverse time step.
-	/// Unit is N.
-	Force2D GetReactionForce(Frequency inv_dt) const override;
+    /// Get the reaction force given the inverse time step.
+    /// Unit is N.
+    Force2D GetReactionForce(Frequency inv_dt) const override;
 
-	/// Get the reaction torque due to the joint limit given the inverse time step.
-	/// Unit is N*m.
-	Torque GetReactionTorque(Frequency inv_dt) const override;
+    /// Get the reaction torque due to the joint limit given the inverse time step.
+    /// Unit is N*m.
+    Torque GetReactionTorque(Frequency inv_dt) const override;
 
-	/// Get the current motor torque given the inverse time step.
-	/// Unit is N*m.
-	Torque GetMotorTorque(Frequency inv_dt) const;
+    /// Get the current motor torque given the inverse time step.
+    /// Unit is N*m.
+    Torque GetMotorTorque(Frequency inv_dt) const;
 
 private:
-	
-	void InitVelocityConstraints(BodyConstraints& bodies,
-								 const StepConf& step, const ConstraintSolverConf& conf) override;
+    
+    void InitVelocityConstraints(BodyConstraints& bodies,
+                                 const StepConf& step, const ConstraintSolverConf& conf) override;
 
-	RealNum SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) override;
-	
-	bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
+    RealNum SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) override;
+    
+    bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
 
-	// Solver shared
-	Length2D m_localAnchorA;
-	Length2D m_localAnchorB;
-	Vec3 m_impulse = Vec3_zero; ///< Impulse. Mofified by: InitVelocityConstraints, SolveVelocityConstraints.
-	AngularMomentum m_motorImpulse = 0; ///< Motor impulse. Modified by: InitVelocityConstraints, SolveVelocityConstraints.
+    // Solver shared
+    Length2D m_localAnchorA;
+    Length2D m_localAnchorB;
+    Vec3 m_impulse = Vec3_zero; ///< Impulse. Mofified by: InitVelocityConstraints, SolveVelocityConstraints.
+    AngularMomentum m_motorImpulse = 0; ///< Motor impulse. Modified by: InitVelocityConstraints, SolveVelocityConstraints.
 
-	bool m_enableMotor;
-	Torque m_maxMotorTorque;
-	AngularVelocity m_motorSpeed;
+    bool m_enableMotor;
+    Torque m_maxMotorTorque;
+    AngularVelocity m_motorSpeed;
 
-	bool m_enableLimit;
-	Angle m_referenceAngle;
-	Angle m_lowerAngle;
-	Angle m_upperAngle;
+    bool m_enableLimit;
+    Angle m_referenceAngle;
+    Angle m_lowerAngle;
+    Angle m_upperAngle;
 
-	// Solver cached temporary data. Values set by by InitVelocityConstraints.
+    // Solver cached temporary data. Values set by by InitVelocityConstraints.
 
-	Length2D m_rA; ///< Rotated delta of body A's local center from local anchor A.
-	Length2D m_rB; ///< Rotated delta of body B's local center from local anchor B.
-	Mat33 m_mass; ///< Effective mass for point-to-point constraint.
-	RotInertia m_motorMass; ///< Effective mass for motor/limit angular constraint.
-	LimitState m_limitState = e_inactiveLimit; ///< Limit state.
+    Length2D m_rA; ///< Rotated delta of body A's local center from local anchor A.
+    Length2D m_rB; ///< Rotated delta of body B's local center from local anchor B.
+    Mat33 m_mass; ///< Effective mass for point-to-point constraint.
+    RotInertia m_motorMass; ///< Effective mass for motor/limit angular constraint.
+    LimitState m_limitState = e_inactiveLimit; ///< Limit state.
 };
 
 inline bool RevoluteJoint::IsLimitEnabled() const noexcept
 {
-	return m_enableLimit;
+    return m_enableLimit;
 }
 
 inline Angle RevoluteJoint::GetLowerLimit() const noexcept
 {
-	return m_lowerAngle;
+    return m_lowerAngle;
 }
 
 inline Angle RevoluteJoint::GetUpperLimit() const noexcept
 {
-	return m_upperAngle;
+    return m_upperAngle;
 }
 
 inline bool RevoluteJoint::IsMotorEnabled() const noexcept
 {
-	return m_enableMotor;
+    return m_enableMotor;
 }
 
 inline AngularVelocity RevoluteJoint::GetMotorSpeed() const noexcept
 {
-	return m_motorSpeed;
+    return m_motorSpeed;
 }
 
 /// Get the current joint angle in radians.
 Angle GetJointAngle(const RevoluteJoint& joint);
-	
+    
 /// Get the current joint angle speed in radians per second.
 AngularVelocity GetJointSpeed(const RevoluteJoint& joint);
 

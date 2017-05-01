@@ -32,40 +32,40 @@ using namespace box2d;
 
 AABB box2d::ComputeAABB(const DistanceProxy& proxy, const Transformation xf)
 {
-	const auto count = proxy.GetVertexCount();
-	assert(count > 0);
-	auto result = AABB{Transform(proxy.GetVertex(0), xf)};
-	for (auto i = decltype(count){1}; i < count; ++i)
-	{
-		result.Include(Transform(proxy.GetVertex(i), xf));
-	}
-	return result.Fatten(proxy.GetVertexRadius());
+    const auto count = proxy.GetVertexCount();
+    assert(count > 0);
+    auto result = AABB{Transform(proxy.GetVertex(0), xf)};
+    for (auto i = decltype(count){1}; i < count; ++i)
+    {
+        result.Include(Transform(proxy.GetVertex(i), xf));
+    }
+    return result.Fatten(proxy.GetVertexRadius());
 }
 
 AABB box2d::ComputeAABB(const Shape& shape, const Transformation xf)
 {
-	const auto childCount = shape.GetChildCount();
-	auto sum = AABB{};
-	for (auto i = decltype(childCount){0}; i < childCount; ++i)
-	{
-		const auto dp = shape.GetChild(i);
-		sum.Include(ComputeAABB(dp, xf));
-	}
-	return sum;
+    const auto childCount = shape.GetChildCount();
+    auto sum = AABB{};
+    for (auto i = decltype(childCount){0}; i < childCount; ++i)
+    {
+        const auto dp = shape.GetChild(i);
+        sum.Include(ComputeAABB(dp, xf));
+    }
+    return sum;
 }
 
 AABB box2d::ComputeAABB(const Body& body)
 {
-	auto sum = AABB{};
-	const auto xf = body.GetTransformation();
-	for (auto&& f: body.GetFixtures())
-	{
-		sum.Include(ComputeAABB(*(f->GetShape()), xf));
-	}
-	return sum;
+    auto sum = AABB{};
+    const auto xf = body.GetTransformation();
+    for (auto&& f: body.GetFixtures())
+    {
+        sum.Include(ComputeAABB(*(f->GetShape()), xf));
+    }
+    return sum;
 }
 
 AABB box2d::GetAABB(const Fixture& fixture, child_count_t childIndex) noexcept
 {
-	return fixture.GetProxy(childIndex)->aabb;
+    return fixture.GetProxy(childIndex)->aabb;
 }

@@ -24,39 +24,39 @@
 
 namespace box2d
 {
-	/// Wider.
-	///
-	/// Widens a data type to the data type that's twice its original size.
-	///
-	template <typename T> struct Wider {};
-	
-	template<> struct Wider<std::int8_t> { using type = std::int16_t; };
-	template<> struct Wider<std::uint8_t> { using type = std::uint16_t; };
+    /// Wider.
+    ///
+    /// Widens a data type to the data type that's twice its original size.
+    ///
+    template <typename T> struct Wider {};
+    
+    template<> struct Wider<std::int8_t> { using type = std::int16_t; };
+    template<> struct Wider<std::uint8_t> { using type = std::uint16_t; };
 
-	template<> struct Wider<std::int16_t> { using type = std::int32_t; };
-	template<> struct Wider<std::uint16_t> { using type = std::uint32_t; };
+    template<> struct Wider<std::int16_t> { using type = std::int32_t; };
+    template<> struct Wider<std::uint16_t> { using type = std::uint32_t; };
 
-	template<> struct Wider<std::int32_t> { using type = std::int64_t; };
-	template<> struct Wider<std::uint32_t> { using type = std::uint64_t; };
+    template<> struct Wider<std::int32_t> { using type = std::int64_t; };
+    template<> struct Wider<std::uint32_t> { using type = std::uint64_t; };
 
-	template<> struct Wider<float> { using type = double; };
-	template<> struct Wider<double> { using type = long double; };
+    template<> struct Wider<float> { using type = double; };
+    template<> struct Wider<double> { using type = long double; };
 
 #ifndef _WIN32
-	// Note: __int128_t not defined for Windows!
-	template<> struct Wider<std::int64_t> { using type = __int128_t; };
-	template<> struct Wider<std::uint64_t> { using type = __uint128_t; };
+    // Note: __int128_t not defined for Windows!
+    template<> struct Wider<std::int64_t> { using type = __int128_t; };
+    template<> struct Wider<std::uint64_t> { using type = __uint128_t; };
 #endif
-	
+    
 } // namespace box2d
 
 namespace std {
 #ifndef _WIN32
-	// This might already be defined by the standard library header, but
-	// define it here explicitly in case it's not.
-	template <> struct make_unsigned<__int128_t> {
-		typedef __uint128_t type;
-	};
+    // This might already be defined by the standard library header, but
+    // define it here explicitly in case it's not.
+    template <> struct make_unsigned<__int128_t> {
+        typedef __uint128_t type;
+    };
 #endif
 }
 

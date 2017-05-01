@@ -39,195 +39,195 @@ namespace box2d
 
 namespace
 {
-	inline DistanceJoint* Create(const DistanceJointDef& def)
-	{
-		if (DistanceJoint::IsOkay(def))
-		{
-			return new DistanceJoint(def);
-		}
-		return nullptr;
-	}
-	
-	inline MouseJoint* Create(const MouseJointDef& def)
-	{
-		if (MouseJoint::IsOkay(static_cast<const MouseJointDef&>(def)))
-		{
-			return new MouseJoint(def);
-		}
-		return nullptr;
-	}
-	
-	inline PrismaticJoint* Create(const PrismaticJointDef& def)
-	{
-		if (PrismaticJoint::IsOkay(def))
-		{
-			return new PrismaticJoint(def);
-		}
-		return nullptr;
-	}
-	
-	inline RevoluteJoint* Create(const RevoluteJointDef& def)
-	{
-		if (RevoluteJoint::IsOkay(def))
-		{
-			return new RevoluteJoint(def);
-		}
-		return nullptr;
-	}
-	
-	inline PulleyJoint* Create(const PulleyJointDef& def)
-	{
-		if (PulleyJoint::IsOkay(def))
-		{
-			return new PulleyJoint(def);
-		}
-		return nullptr;
-	}
-	
-	inline GearJoint* Create(const GearJointDef& def)
-	{
-		if (GearJoint::IsOkay(def))
-		{
-			return new GearJoint(def);
-		}
-		return nullptr;
-	}
-	
-	inline WheelJoint* Create(const WheelJointDef& def)
-	{
-		if (WheelJoint::IsOkay(def))
-		{
-			return new WheelJoint(def);
-		}
-		return nullptr;
-	}
-	
-	inline WeldJoint* Create(const WeldJointDef& def)
-	{
-		if (WeldJoint::IsOkay(def))
-		{
-			return new WeldJoint(def);
-		}
-		return nullptr;
-	}
-	
-	inline FrictionJoint* Create(const FrictionJointDef& def)
-	{
-		if (FrictionJoint::IsOkay(def))
-		{
-			return new FrictionJoint(def);
-		}
-		return nullptr;
-	}
-	
-	inline RopeJoint* Create(const RopeJointDef& def)
-	{
-		if (RopeJoint::IsOkay(def))
-		{
-			return new RopeJoint(def);
-		}
-		return nullptr;
-	}
-	
-	inline MotorJoint* Create(const MotorJointDef& def)
-	{
-		if (MotorJoint::IsOkay(def))
-		{
-			return new MotorJoint(def);
-		}
-		return nullptr;
-	}
-	
+    inline DistanceJoint* Create(const DistanceJointDef& def)
+    {
+        if (DistanceJoint::IsOkay(def))
+        {
+            return new DistanceJoint(def);
+        }
+        return nullptr;
+    }
+    
+    inline MouseJoint* Create(const MouseJointDef& def)
+    {
+        if (MouseJoint::IsOkay(static_cast<const MouseJointDef&>(def)))
+        {
+            return new MouseJoint(def);
+        }
+        return nullptr;
+    }
+    
+    inline PrismaticJoint* Create(const PrismaticJointDef& def)
+    {
+        if (PrismaticJoint::IsOkay(def))
+        {
+            return new PrismaticJoint(def);
+        }
+        return nullptr;
+    }
+    
+    inline RevoluteJoint* Create(const RevoluteJointDef& def)
+    {
+        if (RevoluteJoint::IsOkay(def))
+        {
+            return new RevoluteJoint(def);
+        }
+        return nullptr;
+    }
+    
+    inline PulleyJoint* Create(const PulleyJointDef& def)
+    {
+        if (PulleyJoint::IsOkay(def))
+        {
+            return new PulleyJoint(def);
+        }
+        return nullptr;
+    }
+    
+    inline GearJoint* Create(const GearJointDef& def)
+    {
+        if (GearJoint::IsOkay(def))
+        {
+            return new GearJoint(def);
+        }
+        return nullptr;
+    }
+    
+    inline WheelJoint* Create(const WheelJointDef& def)
+    {
+        if (WheelJoint::IsOkay(def))
+        {
+            return new WheelJoint(def);
+        }
+        return nullptr;
+    }
+    
+    inline WeldJoint* Create(const WeldJointDef& def)
+    {
+        if (WeldJoint::IsOkay(def))
+        {
+            return new WeldJoint(def);
+        }
+        return nullptr;
+    }
+    
+    inline FrictionJoint* Create(const FrictionJointDef& def)
+    {
+        if (FrictionJoint::IsOkay(def))
+        {
+            return new FrictionJoint(def);
+        }
+        return nullptr;
+    }
+    
+    inline RopeJoint* Create(const RopeJointDef& def)
+    {
+        if (RopeJoint::IsOkay(def))
+        {
+            return new RopeJoint(def);
+        }
+        return nullptr;
+    }
+    
+    inline MotorJoint* Create(const MotorJointDef& def)
+    {
+        if (MotorJoint::IsOkay(def))
+        {
+            return new MotorJoint(def);
+        }
+        return nullptr;
+    }
+    
 } // anonymous namespace
-	
+    
 Joint* Joint::Create(const JointDef& def)
 {
-	switch (def.type)
-	{
-	case JointType::Distance:
-		return box2d::Create(static_cast<const DistanceJointDef&>(def));
-	case JointType::Mouse:
-		return box2d::Create(static_cast<const MouseJointDef&>(def));
-	case JointType::Prismatic:
-		return box2d::Create(static_cast<const PrismaticJointDef&>(def));
-	case JointType::Revolute:
-		return box2d::Create(static_cast<const RevoluteJointDef&>(def));
-	case JointType::Pulley:
-		return box2d::Create(static_cast<const PulleyJointDef&>(def));
-	case JointType::Gear:
-		return box2d::Create(static_cast<const GearJointDef&>(def));
-	case JointType::Wheel:
-		return box2d::Create(static_cast<const WheelJointDef&>(def));
-	case JointType::Weld:
-		return box2d::Create(static_cast<const WeldJointDef&>(def));
-	case JointType::Friction:
-		return box2d::Create(static_cast<const FrictionJointDef&>(def));
-	case JointType::Rope:
-		return box2d::Create(static_cast<const RopeJointDef&>(def));
-	case JointType::Motor:
-		return box2d::Create(static_cast<const MotorJointDef&>(def));
-	case JointType::Unknown:
-		assert(false);
-		break;
-	default:
-		break;
-	}
-	return nullptr;
+    switch (def.type)
+    {
+    case JointType::Distance:
+        return box2d::Create(static_cast<const DistanceJointDef&>(def));
+    case JointType::Mouse:
+        return box2d::Create(static_cast<const MouseJointDef&>(def));
+    case JointType::Prismatic:
+        return box2d::Create(static_cast<const PrismaticJointDef&>(def));
+    case JointType::Revolute:
+        return box2d::Create(static_cast<const RevoluteJointDef&>(def));
+    case JointType::Pulley:
+        return box2d::Create(static_cast<const PulleyJointDef&>(def));
+    case JointType::Gear:
+        return box2d::Create(static_cast<const GearJointDef&>(def));
+    case JointType::Wheel:
+        return box2d::Create(static_cast<const WheelJointDef&>(def));
+    case JointType::Weld:
+        return box2d::Create(static_cast<const WeldJointDef&>(def));
+    case JointType::Friction:
+        return box2d::Create(static_cast<const FrictionJointDef&>(def));
+    case JointType::Rope:
+        return box2d::Create(static_cast<const RopeJointDef&>(def));
+    case JointType::Motor:
+        return box2d::Create(static_cast<const MotorJointDef&>(def));
+    case JointType::Unknown:
+        assert(false);
+        break;
+    default:
+        break;
+    }
+    return nullptr;
 }
 
 void Joint::Destroy(Joint* joint)
 {
-	delete joint;
+    delete joint;
 }
 
 bool Joint::IsOkay(const JointDef& def) noexcept
 {
-	if (def.bodyA == def.bodyB)
-	{
-		return false;
-	}
-	return true;
+    if (def.bodyA == def.bodyB)
+    {
+        return false;
+    }
+    return true;
 }
 
 Joint::Joint(const JointDef& def):
-	m_type{def.type}, m_bodyA{def.bodyA}, m_bodyB{def.bodyB},
-	m_collideConnected{def.collideConnected}, m_userData{def.userData}
+    m_type{def.type}, m_bodyA{def.bodyA}, m_bodyB{def.bodyB},
+    m_collideConnected{def.collideConnected}, m_userData{def.userData}
 {
-	// Intentionally empty.
+    // Intentionally empty.
 }
 
 bool IsEnabled(const Joint& j) noexcept
 {
-	return j.GetBodyA()->IsEnabled() && j.GetBodyB()->IsEnabled();
+    return j.GetBodyA()->IsEnabled() && j.GetBodyB()->IsEnabled();
 }
 
 void SetAwake(Joint& j) noexcept
 {
-	j.GetBodyA()->SetAwake();
-	j.GetBodyB()->SetAwake();
+    j.GetBodyA()->SetAwake();
+    j.GetBodyB()->SetAwake();
 }
 
 size_t GetWorldIndex(const Joint* joint)
 {
-	if (joint)
-	{
-		const auto bA = joint->GetBodyA();
-		const auto bB = joint->GetBodyB();
-		const auto world = bA? bA->GetWorld(): bB? bB->GetWorld(): static_cast<const World*>(nullptr);
-		if (world)
-		{
-			auto i = size_t{0};
-			for (auto&& j: world->GetJoints())
-			{
-				if (j == joint)
-				{
-					return i;
-				}
-				++i;
-			}
-		}
-	}
-	return size_t(-1);
+    if (joint)
+    {
+        const auto bA = joint->GetBodyA();
+        const auto bB = joint->GetBodyB();
+        const auto world = bA? bA->GetWorld(): bB? bB->GetWorld(): static_cast<const World*>(nullptr);
+        if (world)
+        {
+            auto i = size_t{0};
+            for (auto&& j: world->GetJoints())
+            {
+                if (j == joint)
+                {
+                    return i;
+                }
+                ++i;
+            }
+        }
+    }
+    return size_t(-1);
 }
 
 } // namespace box2d

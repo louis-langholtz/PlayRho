@@ -33,15 +33,15 @@ namespace
 /// @note The returned separation is the magnitude of the positional difference of the two points.
 ///   This is always a non-negative amount.
 inline PositionSolverManifold GetForCircles(const Transformation& xfA, Length2D lp,
-											const Transformation& xfB, Length2D plp)
+                                            const Transformation& xfB, Length2D plp)
 {
-	const auto pointA = Transform(lp, xfA);
-	const auto pointB = Transform(plp, xfB);
-	const auto delta = StripUnits(pointB - pointA); // The edge from pointA to pointB
-	const auto normal = GetUnitVector(delta, UnitVec2::GetZero()); // The direction of the edge.
-	const auto midpoint = (pointA + pointB) / RealNum{2};
-	const auto separation = Dot(delta, normal) * Meter; // The length of edge without doing sqrt again.
-	return PositionSolverManifold{normal, midpoint, separation};
+    const auto pointA = Transform(lp, xfA);
+    const auto pointB = Transform(plp, xfB);
+    const auto delta = StripUnits(pointB - pointA); // The edge from pointA to pointB
+    const auto normal = GetUnitVector(delta, UnitVec2::GetZero()); // The direction of the edge.
+    const auto midpoint = (pointA + pointB) / RealNum{2};
+    const auto separation = Dot(delta, normal) * Meter; // The length of edge without doing sqrt again.
+    return PositionSolverManifold{normal, midpoint, separation};
 }
 
 /// Gets the position solver manifold in world coordinates for a face-a-type manifold.
@@ -54,13 +54,13 @@ inline PositionSolverManifold GetForCircles(const Transformation& xfA, Length2D 
 /// @return Separation is the dot-product of the positional difference between the two points in
 ///   the direction of the world normal.
 inline PositionSolverManifold GetForFaceA(const Transformation& xfA, Length2D lp, UnitVec2 ln,
-										  const Transformation& xfB, Length2D plp)
+                                          const Transformation& xfB, Length2D plp)
 {
-	const auto planePoint = Transform(lp, xfA);
-	const auto normal = Rotate(ln, xfA.q);
-	const auto clipPoint = Transform(plp, xfB);
-	const auto separation = Dot(StripUnits(clipPoint - planePoint), normal) * Meter;
-	return PositionSolverManifold{normal, clipPoint, separation};
+    const auto planePoint = Transform(lp, xfA);
+    const auto normal = Rotate(ln, xfA.q);
+    const auto clipPoint = Transform(plp, xfB);
+    const auto separation = Dot(StripUnits(clipPoint - planePoint), normal) * Meter;
+    return PositionSolverManifold{normal, clipPoint, separation};
 }
 
 /// Gets the position solver manifold in world coordinates for a face-b-type manifold.
@@ -73,38 +73,38 @@ inline PositionSolverManifold GetForFaceA(const Transformation& xfA, Length2D lp
 /// @return Separation is the dot-product of the positional difference between the two points in
 ///   the direction of the world normal.
 inline PositionSolverManifold GetForFaceB(const Transformation& xfB, Length2D lp, UnitVec2 ln,
-										  const Transformation& xfA, Length2D plp)
+                                          const Transformation& xfA, Length2D plp)
 {
-	const auto planePoint = Transform(lp, xfB);
-	const auto normal = Rotate(ln, xfB.q);
-	const auto clipPoint = Transform(plp, xfA);
-	const auto separation = Dot(StripUnits(clipPoint - planePoint), normal) * Meter;
-	// Negate normal to ensure the PSM normal points from A to B
-	return PositionSolverManifold{-normal, clipPoint, separation};
+    const auto planePoint = Transform(lp, xfB);
+    const auto normal = Rotate(ln, xfB.q);
+    const auto clipPoint = Transform(plp, xfA);
+    const auto separation = Dot(StripUnits(clipPoint - planePoint), normal) * Meter;
+    // Negate normal to ensure the PSM normal points from A to B
+    return PositionSolverManifold{-normal, clipPoint, separation};
 }
 
 } // unnamed namespace
 
 PositionSolverManifold GetPSM(const Manifold& m, Manifold::size_type idx,
-							  const Transformation& xfA, const Transformation& xfB)
+                              const Transformation& xfA, const Transformation& xfB)
 {
-	assert(m.GetType() != Manifold::e_unset);
-	assert(m.GetPointCount() > 0);
-	
-	switch (m.GetType())
-	{
-	case Manifold::e_circles:
-		return GetForCircles(xfA, m.GetLocalPoint(), xfB, m.GetPoint(idx).localPoint);
-	case Manifold::e_faceA:
-		return GetForFaceA(xfA, m.GetLocalPoint(), m.GetLocalNormal(), xfB, m.GetPoint(idx).localPoint);
-	case Manifold::e_faceB:
-		return GetForFaceB(xfB, m.GetLocalPoint(), m.GetLocalNormal(), xfA, m.GetPoint(idx).localPoint);
-	case Manifold::e_unset:
-		break;
-	}
+    assert(m.GetType() != Manifold::e_unset);
+    assert(m.GetPointCount() > 0);
+    
+    switch (m.GetType())
+    {
+    case Manifold::e_circles:
+        return GetForCircles(xfA, m.GetLocalPoint(), xfB, m.GetPoint(idx).localPoint);
+    case Manifold::e_faceA:
+        return GetForFaceA(xfA, m.GetLocalPoint(), m.GetLocalNormal(), xfB, m.GetPoint(idx).localPoint);
+    case Manifold::e_faceB:
+        return GetForFaceB(xfB, m.GetLocalPoint(), m.GetLocalNormal(), xfA, m.GetPoint(idx).localPoint);
+    case Manifold::e_unset:
+        break;
+    }
 
-	// should not be reached
-	return PositionSolverManifold{GetInvalid<UnitVec2>(), GetInvalid<Length2D>(), GetInvalid<Length>()};
+    // should not be reached
+    return PositionSolverManifold{GetInvalid<UnitVec2>(), GetInvalid<Length2D>(), GetInvalid<Length>()};
 }
 
 }; // namespace box2d

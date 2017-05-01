@@ -22,53 +22,53 @@
 using namespace box2d;
 
 IndexPairSeparation box2d::GetMaxSeparation(Span<const Length2D> verts1, Span<const UnitVec2> norms1, const Transformation& xf1,
-										Span<const Length2D> verts2, const Transformation& xf2,
-										Length stop)
+                                        Span<const Length2D> verts2, const Transformation& xf2,
+                                        Length stop)
 {
-	assert(verts1.size() == norms1.size());
-	
-	// Find the max separation between shape1 and shape2 using edge normals from shape1.
+    assert(verts1.size() == norms1.size());
+    
+    // Find the max separation between shape1 and shape2 using edge normals from shape1.
 
-	auto indexPairSep = IndexPairSeparation{-MaxFloat, IndexPairSeparation::InvalidIndex, IndexPairSeparation::InvalidIndex};
-	const auto xf = MulT(xf2, xf1);
-	const auto count1 = verts1.size();
-	for (auto i = decltype(count1){0}; i < count1; ++i)
-	{
-		// Get shape1 normal and vertex relative to shape2.
-		const auto s = GetMostAntiParallelSeparation(verts2, GetVec2(Rotate(norms1[i], xf.q)), Transform(verts1[i], xf));
-		if (s.separation * Meter > stop)
-		{
-			return IndexPairSeparation{s.separation, static_cast<IndexSeparation::index_type>(i), s.index};
-		}
-		if (indexPairSep.separation < s.separation)
-		{
-			indexPairSep = IndexPairSeparation{s.separation, static_cast<IndexSeparation::index_type>(i), s.index};
-		}
-	}
-	return indexPairSep;
+    auto indexPairSep = IndexPairSeparation{-MaxFloat, IndexPairSeparation::InvalidIndex, IndexPairSeparation::InvalidIndex};
+    const auto xf = MulT(xf2, xf1);
+    const auto count1 = verts1.size();
+    for (auto i = decltype(count1){0}; i < count1; ++i)
+    {
+        // Get shape1 normal and vertex relative to shape2.
+        const auto s = GetMostAntiParallelSeparation(verts2, GetVec2(Rotate(norms1[i], xf.q)), Transform(verts1[i], xf));
+        if (s.separation * Meter > stop)
+        {
+            return IndexPairSeparation{s.separation, static_cast<IndexSeparation::index_type>(i), s.index};
+        }
+        if (indexPairSep.separation < s.separation)
+        {
+            indexPairSep = IndexPairSeparation{s.separation, static_cast<IndexSeparation::index_type>(i), s.index};
+        }
+    }
+    return indexPairSep;
 }
 
 IndexPairSeparation box2d::GetMaxSeparation(Span<const Length2D> verts1, Span<const UnitVec2> norms1,
-										Span<const Length2D> verts2,
-										Length stop)
+                                        Span<const Length2D> verts2,
+                                        Length stop)
 {
-	assert(verts1.size() == norms1.size());
-	
-	// Find the max separation between shape1 and shape2 using edge normals from shape1.
-	
-	auto indexPairSep = IndexPairSeparation{-MaxFloat, IndexPairSeparation::InvalidIndex, IndexPairSeparation::InvalidIndex};
-	const auto count1 = verts1.size();
-	for (auto i = decltype(count1){0}; i < count1; ++i)
-	{
-		const auto s = GetMostAntiParallelSeparation(verts2, GetVec2(norms1[i]), verts1[i]);
-		if (s.separation * Meter > stop)
-		{
-			return IndexPairSeparation{s.separation, static_cast<IndexSeparation::index_type>(i), s.index};
-		}
-		if (indexPairSep.separation < s.separation)
-		{
-			indexPairSep = IndexPairSeparation{s.separation, static_cast<IndexSeparation::index_type>(i), s.index};
-		}
-	}
-	return indexPairSep;
+    assert(verts1.size() == norms1.size());
+    
+    // Find the max separation between shape1 and shape2 using edge normals from shape1.
+    
+    auto indexPairSep = IndexPairSeparation{-MaxFloat, IndexPairSeparation::InvalidIndex, IndexPairSeparation::InvalidIndex};
+    const auto count1 = verts1.size();
+    for (auto i = decltype(count1){0}; i < count1; ++i)
+    {
+        const auto s = GetMostAntiParallelSeparation(verts2, GetVec2(norms1[i]), verts1[i]);
+        if (s.separation * Meter > stop)
+        {
+            return IndexPairSeparation{s.separation, static_cast<IndexSeparation::index_type>(i), s.index};
+        }
+        if (indexPairSep.separation < s.separation)
+        {
+            indexPairSep = IndexPairSeparation{s.separation, static_cast<IndexSeparation::index_type>(i), s.index};
+        }
+    }
+    return indexPairSep;
 }

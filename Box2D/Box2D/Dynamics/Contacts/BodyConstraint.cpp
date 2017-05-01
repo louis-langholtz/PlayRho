@@ -24,11 +24,11 @@ using namespace box2d;
 
 box2d::BodyConstraint box2d::GetBodyConstraint(const Body& body, Time time) noexcept
 {
-	return BodyConstraint{
-		body.GetInvMass(),
-		body.GetInvRotInertia(),
-		body.GetLocalCenter(),
-		GetPosition1(body),
-		GetVelocity(body, time)
-	};
+    return BodyConstraint{
+        body.GetInvMass(),
+        body.GetInvRotInertia(),
+        body.GetLocalCenter(),
+        GetPosition1(body),
+        GetVelocity(body, time)
+    };
 }

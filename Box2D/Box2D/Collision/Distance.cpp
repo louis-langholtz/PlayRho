@@ -25,172 +25,172 @@ namespace box2d {
 
 namespace {
 
-	inline bool Find(Span<const IndexPair> pairs, IndexPair key)
-	{
-		for (auto&& elem: pairs)
-		{
-			if (elem == key)
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-	
+    inline bool Find(Span<const IndexPair> pairs, IndexPair key)
+    {
+        for (auto&& elem: pairs)
+        {
+            if (elem == key)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
-	
+
 WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept
 {
-	auto pointA = Length2D{0, 0};
-	auto pointB = Length2D{0, 0};
+    auto pointA = Length2D{0, 0};
+    auto pointB = Length2D{0, 0};
 
-	const auto size = simplex.GetSize();
-	for (auto i = decltype(size){0}; i < size; ++i)
-	{
-		const auto e = simplex.GetSimplexEdge(i);
-		const auto c = simplex.GetCoefficient(i);
-		
-		pointA += e.GetPointA() * c;
-		pointB += e.GetPointB() * c;
-	}
+    const auto size = simplex.GetSize();
+    for (auto i = decltype(size){0}; i < size; ++i)
+    {
+        const auto e = simplex.GetSimplexEdge(i);
+        const auto c = simplex.GetCoefficient(i);
+
+        pointA += e.GetPointA() * c;
+        pointB += e.GetPointB() * c;
+    }
 #if 0
-	// In the 3-simplex case, pointA and pointB are usually equal.
-	// XXX: Sometimes in the 3-simplex case, pointA is slightly different than pointB. Why??
-	if (size == 3 && pointA != pointB)
-	{
-		std::cout << "odd: " << pointA << " != " << pointB;
-		std::cout << std::endl;
-	}
+    // In the 3-simplex case, pointA and pointB are usually equal.
+    // XXX: Sometimes in the 3-simplex case, pointA is slightly different than pointB. Why??
+    if (size == 3 && pointA != pointB)
+    {
+        std::cout << "odd: " << pointA << " != " << pointB;
+        std::cout << std::endl;
+    }
 #endif
-	return WitnessPoints{pointA, pointB};
+    return WitnessPoints{pointA, pointB};
 }
 
 static inline
 SimplexEdge GetSimplexEdge(const DistanceProxy& proxyA, const Transformation& xfA, DistanceProxy::size_type idxA,
-							   const DistanceProxy& proxyB, const Transformation& xfB, DistanceProxy::size_type idxB)
+                               const DistanceProxy& proxyB, const Transformation& xfB, DistanceProxy::size_type idxB)
 {
-	const auto wA = Transform(proxyA.GetVertex(idxA), xfA);
-	const auto wB = Transform(proxyB.GetVertex(idxB), xfB);
-	return SimplexEdge{wA, idxA, wB, idxB};
+    const auto wA = Transform(proxyA.GetVertex(idxA), xfA);
+    const auto wB = Transform(proxyB.GetVertex(idxB), xfB);
+    return SimplexEdge{wA, idxA, wB, idxB};
 }
 
 static inline
 Simplex::Edges GetSimplexEdges(const Simplex::IndexPairs& indexPairs,
-				   const DistanceProxy& proxyA, const Transformation& xfA,
-				   const DistanceProxy& proxyB, const Transformation& xfB)
+                   const DistanceProxy& proxyA, const Transformation& xfA,
+                   const DistanceProxy& proxyB, const Transformation& xfB)
 {
-	Simplex::Edges simplexEdges;
-	for (auto&& indexpair: indexPairs)
-	{
-		simplexEdges.push_back(GetSimplexEdge(proxyA, xfA, indexpair.a, proxyB, xfB, indexpair.b));
-	}
-	return simplexEdges;
+    Simplex::Edges simplexEdges;
+    for (auto&& indexpair: indexPairs)
+    {
+        simplexEdges.push_back(GetSimplexEdge(proxyA, xfA, indexpair.a, proxyB, xfB, indexpair.b));
+    }
+    return simplexEdges;
 }
 
 DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& transformA,
-						const DistanceProxy& proxyB, const Transformation& transformB,
-						const DistanceConf conf)
+                        const DistanceProxy& proxyB, const Transformation& transformB,
+                        const DistanceConf conf)
 {
-	assert(proxyA.GetVertexCount() > 0);
-	assert(IsValid(transformA.p));
-	assert(proxyB.GetVertexCount() > 0);
-	assert(IsValid(transformB.p));
-	
-	// Initialize the simplex.
-	auto simplexEdges = GetSimplexEdges(conf.cache.GetIndices(), proxyA, transformA, proxyB, transformB);
+    assert(proxyA.GetVertexCount() > 0);
+    assert(IsValid(transformA.p));
+    assert(proxyB.GetVertexCount() > 0);
+    assert(IsValid(transformB.p));
 
-	// Compute the new simplex metric, if it is substantially different than
-	// old metric then flush the simplex.
-	if (simplexEdges.size() > 1)
-	{
-		const auto metric1 = conf.cache.GetMetric();
-		const auto metric2 = Simplex::CalcMetric(simplexEdges);
-		if ((metric2 < (metric1 / 2)) || (metric2 > (metric1 * 2)) || (metric2 < 0) || almost_zero(metric2))
-		{
-			simplexEdges.clear();
-		}
-	}
-	
-	if (simplexEdges.size() == 0)
-	{
-		simplexEdges.push_back(GetSimplexEdge(proxyA, transformA, 0, proxyB, transformB, 0));
-	}
+    // Initialize the simplex.
+    auto simplexEdges = GetSimplexEdges(conf.cache.GetIndices(), proxyA, transformA, proxyB, transformB);
 
-	auto simplex = Simplex{};
-	auto state = DistanceOutput::HitMaxIters;
+    // Compute the new simplex metric, if it is substantially different than
+    // old metric then flush the simplex.
+    if (simplexEdges.size() > 1)
+    {
+        const auto metric1 = conf.cache.GetMetric();
+        const auto metric2 = Simplex::CalcMetric(simplexEdges);
+        if ((metric2 < (metric1 / 2)) || (metric2 > (metric1 * 2)) || (metric2 < 0) || almost_zero(metric2))
+        {
+            simplexEdges.clear();
+        }
+    }
 
-#if defined(DO_COMPUTE_CLOSEST_POINT)
-	auto distanceSqr1 = MaxFloat;
-#endif
+    if (simplexEdges.size() == 0)
+    {
+        simplexEdges.push_back(GetSimplexEdge(proxyA, transformA, 0, proxyB, transformB, 0));
+    }
 
-	// Main iteration loop.
-	auto iter = decltype(conf.maxIterations){0};
-	while (iter < conf.maxIterations)
-	{
-		++iter;
-	
-		// Copy simplex so we can identify duplicates and prevent cycling.
-		const auto savedIndices = Simplex::GetIndexPairs(simplexEdges);
-
-		simplex = Simplex::Get(simplexEdges);
-		simplexEdges = simplex.GetEdges();
-
-		// If we have max points (3), then the origin is in the corresponding triangle.
-		if (simplexEdges.size() == simplexEdges.max_size())
-		{
-			state = DistanceOutput::MaxPoints;
-			break;
-		}
+    auto simplex = Simplex{};
+    auto state = DistanceOutput::HitMaxIters;
 
 #if defined(DO_COMPUTE_CLOSEST_POINT)
-		// Compute closest point.
-		const auto p = GetClosestPoint(simplexEdges);
-		const auto distanceSqr2 = GetLengthSquared(p);
-
-		// Ensure progress
-		if (distanceSqr2 >= distanceSqr1)
-		{
-			//break;
-		}
-		distanceSqr1 = distanceSqr2;
+    auto distanceSqr1 = MaxFloat;
 #endif
-		// Get search direction.
-		const auto d = Simplex::CalcSearchDirection(simplexEdges);
-		assert(IsValid(d));
 
-		// Ensure the search direction is numerically fit.
-		if (almost_zero(StripUnit(GetLengthSquared(d))))
-		{
-			state = DistanceOutput::UnfitSearchDir;
-			
-			// The origin is probably contained by a line segment
-			// or triangle. Thus the shapes are overlapped.
+    // Main iteration loop.
+    auto iter = decltype(conf.maxIterations){0};
+    while (iter < conf.maxIterations)
+    {
+        ++iter;
 
-			// We can't return zero here even though there may be overlap.
-			// In case the simplex is a point, segment, or triangle it is difficult
-			// to determine if the origin is contained in the CSO or very close to it.
-			break;
-		}
+        // Copy simplex so we can identify duplicates and prevent cycling.
+        const auto savedIndices = Simplex::GetIndexPairs(simplexEdges);
 
-		// Compute a tentative new simplex edge using support points.
-		const auto indexA = GetSupportIndex(proxyA, InverseRotate(-d, transformA.q));
-		const auto indexB = GetSupportIndex(proxyB, InverseRotate(d, transformB.q));
+        simplex = Simplex::Get(simplexEdges);
+        simplexEdges = simplex.GetEdges();
 
-		// Check for duplicate support points. This is the main termination criteria.
-		// If there's a duplicate support point, code must exit loop to avoid cycling.
-		if (Find(savedIndices, IndexPair{indexA, indexB}))
-		{
-			state = DistanceOutput::DuplicateIndexPair;
-			break;
-		}
+        // If we have max points (3), then the origin is in the corresponding triangle.
+        if (simplexEdges.size() == simplexEdges.max_size())
+        {
+            state = DistanceOutput::MaxPoints;
+            break;
+        }
 
-		// New edge is ok and needed.
-		simplexEdges.push_back(GetSimplexEdge(proxyA, transformA, indexA, proxyB, transformB, indexB));
-	}
+#if defined(DO_COMPUTE_CLOSEST_POINT)
+        // Compute closest point.
+        const auto p = GetClosestPoint(simplexEdges);
+        const auto distanceSqr2 = GetLengthSquared(p);
 
-	// Note: simplexEdges is same here as simplex.GetSimplexEdges().
-	// GetWitnessPoints(simplex), iter, Simplex::GetCache(simplexEdges)
-	return DistanceOutput{simplex, iter, state};
+        // Ensure progress
+        if (distanceSqr2 >= distanceSqr1)
+        {
+            //break;
+        }
+        distanceSqr1 = distanceSqr2;
+#endif
+        // Get search direction.
+        const auto d = Simplex::CalcSearchDirection(simplexEdges);
+        assert(IsValid(d));
+
+        // Ensure the search direction is numerically fit.
+        if (almost_zero(StripUnit(GetLengthSquared(d))))
+        {
+            state = DistanceOutput::UnfitSearchDir;
+
+            // The origin is probably contained by a line segment
+            // or triangle. Thus the shapes are overlapped.
+
+            // We can't return zero here even though there may be overlap.
+            // In case the simplex is a point, segment, or triangle it is difficult
+            // to determine if the origin is contained in the CSO or very close to it.
+            break;
+        }
+
+        // Compute a tentative new simplex edge using support points.
+        const auto indexA = GetSupportIndex(proxyA, InverseRotate(-d, transformA.q));
+        const auto indexB = GetSupportIndex(proxyB, InverseRotate(d, transformB.q));
+
+        // Check for duplicate support points. This is the main termination criteria.
+        // If there's a duplicate support point, code must exit loop to avoid cycling.
+        if (Find(savedIndices, IndexPair{indexA, indexB}))
+        {
+            state = DistanceOutput::DuplicateIndexPair;
+            break;
+        }
+
+        // New edge is ok and needed.
+        simplexEdges.push_back(GetSimplexEdge(proxyA, transformA, indexA, proxyB, transformB, indexB));
+    }
+
+    // Note: simplexEdges is same here as simplex.GetSimplexEdges().
+    // GetWitnessPoints(simplex), iter, Simplex::GetCache(simplexEdges)
+    return DistanceOutput{simplex, iter, state};
 }
-	
+
 } // namespace box2d

@@ -31,55 +31,55 @@ template <typename T, size_t N>
 class GrowableStack
 {
 public:
-	using size_type = size_t;
-	static constexpr auto BufferGrowthRate = size_type{2};
+    using size_type = size_t;
+    static constexpr auto BufferGrowthRate = size_type{2};
 
-	GrowableStack() = default;
+    GrowableStack() = default;
 
-	~GrowableStack() noexcept
-	{
-		if (m_stack != m_array)
-		{
-			free(m_stack);
-			m_stack = nullptr;
-		}
-	}
+    ~GrowableStack() noexcept
+    {
+        if (m_stack != m_array)
+        {
+            free(m_stack);
+            m_stack = nullptr;
+        }
+    }
 
-	void Push(const T& element)
-	{
-		if (m_count == m_capacity)
-		{
-			T* old = m_stack;
-			m_capacity *= BufferGrowthRate;
-			m_stack = alloc<T>(m_capacity);
-			std::memcpy(m_stack, old, m_count * sizeof(T));
-			if (old != m_array)
-			{
-				free(old);
-			}
-		}
+    void Push(const T& element)
+    {
+        if (m_count == m_capacity)
+        {
+            T* old = m_stack;
+            m_capacity *= BufferGrowthRate;
+            m_stack = alloc<T>(m_capacity);
+            std::memcpy(m_stack, old, m_count * sizeof(T));
+            if (old != m_array)
+            {
+                free(old);
+            }
+        }
 
-		m_stack[m_count] = element;
-		++m_count;
-	}
+        m_stack[m_count] = element;
+        ++m_count;
+    }
 
-	T Pop()
-	{
-		assert(m_count > 0);
-		--m_count;
-		return m_stack[m_count];
-	}
+    T Pop()
+    {
+        assert(m_count > 0);
+        --m_count;
+        return m_stack[m_count];
+    }
 
-	constexpr size_type GetCount() const noexcept
-	{
-		return m_count;
-	}
+    constexpr size_type GetCount() const noexcept
+    {
+        return m_count;
+    }
 
 private:
-	T m_array[N];
-	T* m_stack = m_array;
-	size_type m_count = 0;
-	size_type m_capacity = N;
+    T m_array[N];
+    T* m_stack = m_array;
+    size_type m_count = 0;
+    size_type m_capacity = N;
 };
 
 } /* namespace box2d */

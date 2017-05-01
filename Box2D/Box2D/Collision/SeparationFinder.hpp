@@ -25,137 +25,137 @@
 
 namespace box2d {
 
-	class DistanceProxy;
-	struct Transformation;
-		
-	/// Separation finder.
-	class SeparationFinder
-	{
-	public:
-		
-		/// Separation finder type.
-		enum Type
-		{
-			e_points,
-			e_faceA,
-			e_faceB
-		};
-		
-		/// Separation finder data.
-		struct Data
-		{
-			/// Index pair.
-			/// @details Pair of indices of vertices for which distance is being returned for.
-			/// @note The <code>a</code> index in this pair will be <code>InvalidIndex</code> for
-			///   face-A type separarion finders.
-			/// @note The <code>b</code> index in this pair will be <code>InvalidIndex</code> for
-			///   face-B type separarion finders.
-			IndexPair indexPair;
+    class DistanceProxy;
+    struct Transformation;
+        
+    /// Separation finder.
+    class SeparationFinder
+    {
+    public:
+        
+        /// Separation finder type.
+        enum Type
+        {
+            e_points,
+            e_faceA,
+            e_faceB
+        };
+        
+        /// Separation finder data.
+        struct Data
+        {
+            /// Index pair.
+            /// @details Pair of indices of vertices for which distance is being returned for.
+            /// @note The <code>a</code> index in this pair will be <code>InvalidIndex</code> for
+            ///   face-A type separarion finders.
+            /// @note The <code>b</code> index in this pair will be <code>InvalidIndex</code> for
+            ///   face-B type separarion finders.
+            IndexPair indexPair;
 
-			/// Distance.
-			/// @details Distance of separation between vertices indexed by the index-pair.
-			Length distance;
-		};
-		
-		/// Gets a separation finder for the given inputs.
-		///
-		/// @warning Behavior is undefined if given less than one index pair or more than three.
-		///
-		/// @param indices Collection of 1 to 3 index pairs. A points-type finder will be
-		///    returned if given 1 index pair. A face-type finder will be returned otherwise.
-		/// @param proxyA Proxy A.
-		/// @param xfA Transformation A.
-		/// @param proxyB Proxy B.
-		/// @param xfB Transformation B.
-		///
-		static SeparationFinder Get(Span<const IndexPair> indices,
-									const DistanceProxy& proxyA, const Transformation& xfA,
-									const DistanceProxy& proxyB, const Transformation& xfB);
-		
-		/// Finds the minimum separation.
-		/// @return indexes of proxy A's and proxy B's vertices that have the minimum
-		///    distance between them and what that distance is.
-		Data FindMinSeparation(const Transformation& xfA, const Transformation& xfB) const
-		{
-			switch (m_type)
-			{
-				case e_points: return FindMinSeparationForPoints(xfA, xfB);
-				case e_faceA: return FindMinSeparationForFaceA(xfA, xfB);
-				case e_faceB: return FindMinSeparationForFaceB(xfA, xfB);
-			}
-			
-			// Should never be reached
-			assert(false);
-			return Data{IndexPair{IndexPair::InvalidIndex, IndexPair::InvalidIndex}, 0};
-		}
-		
-		/// Evaluates the separation of the identified proxy vertices at the given time factor.
-		///
-		/// @param indexPair Indexes of the proxy A and proxy B vertexes.
-		/// @param xfA Transformation A.
-		/// @param xfB Transformation B.
-		///
-		/// @return Separation distance which will be negative when the given transforms put the
-		///    vertices on the opposite sides of the separating axis.
-		///
-		Length Evaluate(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
-		{
-			switch (m_type)
-			{
-				case e_points: return EvaluateForPoints(indexPair, xfA, xfB);
-				case e_faceA: return EvaluateForFaceA(indexPair, xfA, xfB);
-				case e_faceB: return EvaluateForFaceB(indexPair, xfA, xfB);
-				default: break;
-			}
-			assert(false);
-			return Length{0};
-		}
-		
-		BOX2D_CONSTEXPR Type GetType() const noexcept;
-		BOX2D_CONSTEXPR UnitVec2 GetAxis() const noexcept;
-		BOX2D_CONSTEXPR Length2D GetLocalPoint() const noexcept;
+            /// Distance.
+            /// @details Distance of separation between vertices indexed by the index-pair.
+            Length distance;
+        };
+        
+        /// Gets a separation finder for the given inputs.
+        ///
+        /// @warning Behavior is undefined if given less than one index pair or more than three.
+        ///
+        /// @param indices Collection of 1 to 3 index pairs. A points-type finder will be
+        ///    returned if given 1 index pair. A face-type finder will be returned otherwise.
+        /// @param proxyA Proxy A.
+        /// @param xfA Transformation A.
+        /// @param proxyB Proxy B.
+        /// @param xfB Transformation B.
+        ///
+        static SeparationFinder Get(Span<const IndexPair> indices,
+                                    const DistanceProxy& proxyA, const Transformation& xfA,
+                                    const DistanceProxy& proxyB, const Transformation& xfB);
+        
+        /// Finds the minimum separation.
+        /// @return indexes of proxy A's and proxy B's vertices that have the minimum
+        ///    distance between them and what that distance is.
+        Data FindMinSeparation(const Transformation& xfA, const Transformation& xfB) const
+        {
+            switch (m_type)
+            {
+                case e_points: return FindMinSeparationForPoints(xfA, xfB);
+                case e_faceA: return FindMinSeparationForFaceA(xfA, xfB);
+                case e_faceB: return FindMinSeparationForFaceB(xfA, xfB);
+            }
+            
+            // Should never be reached
+            assert(false);
+            return Data{IndexPair{IndexPair::InvalidIndex, IndexPair::InvalidIndex}, 0};
+        }
+        
+        /// Evaluates the separation of the identified proxy vertices at the given time factor.
+        ///
+        /// @param indexPair Indexes of the proxy A and proxy B vertexes.
+        /// @param xfA Transformation A.
+        /// @param xfB Transformation B.
+        ///
+        /// @return Separation distance which will be negative when the given transforms put the
+        ///    vertices on the opposite sides of the separating axis.
+        ///
+        Length Evaluate(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
+        {
+            switch (m_type)
+            {
+                case e_points: return EvaluateForPoints(indexPair, xfA, xfB);
+                case e_faceA: return EvaluateForFaceA(indexPair, xfA, xfB);
+                case e_faceB: return EvaluateForFaceB(indexPair, xfA, xfB);
+                default: break;
+            }
+            assert(false);
+            return Length{0};
+        }
+        
+        BOX2D_CONSTEXPR Type GetType() const noexcept;
+        BOX2D_CONSTEXPR UnitVec2 GetAxis() const noexcept;
+        BOX2D_CONSTEXPR Length2D GetLocalPoint() const noexcept;
 
-	private:
-		BOX2D_CONSTEXPR SeparationFinder(const DistanceProxy& dpA, const DistanceProxy& dpB,
-										 const UnitVec2 axis, const Length2D lp, const Type type):
-			m_proxyA{dpA}, m_proxyB{dpB}, m_axis{axis}, m_localPoint{lp}, m_type{type}
-		{
-			// Intentionally empty.
-		}
-		
-		Data FindMinSeparationForPoints(const Transformation& xfA, const Transformation& xfB) const;
-		
-		Data FindMinSeparationForFaceA(const Transformation& xfA, const Transformation& xfB) const;
-		
-		Data FindMinSeparationForFaceB(const Transformation& xfA, const Transformation& xfB) const;
-		
-		Length EvaluateForPoints(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const;
-		
-		Length EvaluateForFaceA(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const;
-		
-		Length EvaluateForFaceB(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const;
-		
-		const DistanceProxy& m_proxyA;
-		const DistanceProxy& m_proxyB;
-		const UnitVec2 m_axis; ///< Axis. @details Directional vector of the axis of separation.
-		const Length2D m_localPoint; ///< Local point. @note Only used if type is e_faceA or e_faceB.
-		const Type m_type;
-	};
+    private:
+        BOX2D_CONSTEXPR SeparationFinder(const DistanceProxy& dpA, const DistanceProxy& dpB,
+                                         const UnitVec2 axis, const Length2D lp, const Type type):
+            m_proxyA{dpA}, m_proxyB{dpB}, m_axis{axis}, m_localPoint{lp}, m_type{type}
+        {
+            // Intentionally empty.
+        }
+        
+        Data FindMinSeparationForPoints(const Transformation& xfA, const Transformation& xfB) const;
+        
+        Data FindMinSeparationForFaceA(const Transformation& xfA, const Transformation& xfB) const;
+        
+        Data FindMinSeparationForFaceB(const Transformation& xfA, const Transformation& xfB) const;
+        
+        Length EvaluateForPoints(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const;
+        
+        Length EvaluateForFaceA(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const;
+        
+        Length EvaluateForFaceB(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const;
+        
+        const DistanceProxy& m_proxyA;
+        const DistanceProxy& m_proxyB;
+        const UnitVec2 m_axis; ///< Axis. @details Directional vector of the axis of separation.
+        const Length2D m_localPoint; ///< Local point. @note Only used if type is e_faceA or e_faceB.
+        const Type m_type;
+    };
 
-	BOX2D_CONSTEXPR inline SeparationFinder::Type SeparationFinder::GetType() const noexcept
-	{
-		return m_type;
-	}
-	
-	BOX2D_CONSTEXPR inline UnitVec2 SeparationFinder::GetAxis() const noexcept
-	{
-		return m_axis;
-	}
-	
-	BOX2D_CONSTEXPR inline Length2D SeparationFinder::GetLocalPoint() const noexcept
-	{
-		return m_localPoint;
-	}
+    BOX2D_CONSTEXPR inline SeparationFinder::Type SeparationFinder::GetType() const noexcept
+    {
+        return m_type;
+    }
+    
+    BOX2D_CONSTEXPR inline UnitVec2 SeparationFinder::GetAxis() const noexcept
+    {
+        return m_axis;
+    }
+    
+    BOX2D_CONSTEXPR inline Length2D SeparationFinder::GetLocalPoint() const noexcept
+    {
+        return m_localPoint;
+    }
 
 }
 

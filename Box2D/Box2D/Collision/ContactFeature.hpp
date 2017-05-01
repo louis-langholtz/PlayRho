@@ -24,64 +24,64 @@
 
 namespace box2d
 {
-	/// Contact Feature.
-	/// @details The features that intersect to form the contact point.
-	/// @note This structure is designed to be compact and passed-by-value.
-	/// @note This data structure is 4-bytes large.
-	struct ContactFeature
-	{
-		using index_t = std::uint8_t; ///< Index type.
-		
-		enum Type: std::uint8_t
-		{
-			e_vertex = 0,
-			e_face = 1
-		};
-				
-		// Fit data into 4-byte large structure...
-		
-		Type typeA; ///< The feature type on shape A
-		index_t indexA; ///< Feature index on shape A
-		Type typeB; ///< The feature type on shape B
-		index_t indexB; ///< Feature index on shape B
-	};
-	
-	constexpr ContactFeature GetVertexVertexContactFeature(ContactFeature::index_t a, ContactFeature::index_t b) noexcept
-	{
-		return ContactFeature{ContactFeature::e_vertex, a, ContactFeature::e_vertex, b};
-	}
+    /// Contact Feature.
+    /// @details The features that intersect to form the contact point.
+    /// @note This structure is designed to be compact and passed-by-value.
+    /// @note This data structure is 4-bytes large.
+    struct ContactFeature
+    {
+        using index_t = std::uint8_t; ///< Index type.
+        
+        enum Type: std::uint8_t
+        {
+            e_vertex = 0,
+            e_face = 1
+        };
+                
+        // Fit data into 4-byte large structure...
+        
+        Type typeA; ///< The feature type on shape A
+        index_t indexA; ///< Feature index on shape A
+        Type typeB; ///< The feature type on shape B
+        index_t indexB; ///< Feature index on shape B
+    };
+    
+    constexpr ContactFeature GetVertexVertexContactFeature(ContactFeature::index_t a, ContactFeature::index_t b) noexcept
+    {
+        return ContactFeature{ContactFeature::e_vertex, a, ContactFeature::e_vertex, b};
+    }
 
-	constexpr ContactFeature GetVertexFaceContactFeature(ContactFeature::index_t a, ContactFeature::index_t b) noexcept
-	{
-		return ContactFeature{ContactFeature::e_vertex, a, ContactFeature::e_face, b};
-	}
-	
-	constexpr ContactFeature GetFaceVertexContactFeature(ContactFeature::index_t a, ContactFeature::index_t b) noexcept
-	{
-		return ContactFeature{ContactFeature::e_face, a, ContactFeature::e_vertex, b};
-	}
-	
-	constexpr ContactFeature GetFaceFaceContactFeature(ContactFeature::index_t a, ContactFeature::index_t b) noexcept
-	{
-		return ContactFeature{ContactFeature::e_face, a, ContactFeature::e_face, b};
-	}
-		
-	/// Flips contact features information.
-	constexpr ContactFeature Flip(ContactFeature val) noexcept
-	{
-		return ContactFeature{val.typeB, val.indexB, val.typeA, val.indexA};
-	}
-	
-	constexpr bool operator==(ContactFeature lhs, ContactFeature rhs) noexcept
-	{
-		return (lhs.typeA == rhs.typeA) && (lhs.typeB == rhs.typeB) && (lhs.indexA == rhs.indexA) && (lhs.indexB == rhs.indexB);
-	}
+    constexpr ContactFeature GetVertexFaceContactFeature(ContactFeature::index_t a, ContactFeature::index_t b) noexcept
+    {
+        return ContactFeature{ContactFeature::e_vertex, a, ContactFeature::e_face, b};
+    }
+    
+    constexpr ContactFeature GetFaceVertexContactFeature(ContactFeature::index_t a, ContactFeature::index_t b) noexcept
+    {
+        return ContactFeature{ContactFeature::e_face, a, ContactFeature::e_vertex, b};
+    }
+    
+    constexpr ContactFeature GetFaceFaceContactFeature(ContactFeature::index_t a, ContactFeature::index_t b) noexcept
+    {
+        return ContactFeature{ContactFeature::e_face, a, ContactFeature::e_face, b};
+    }
+        
+    /// Flips contact features information.
+    constexpr ContactFeature Flip(ContactFeature val) noexcept
+    {
+        return ContactFeature{val.typeB, val.indexB, val.typeA, val.indexA};
+    }
+    
+    constexpr bool operator==(ContactFeature lhs, ContactFeature rhs) noexcept
+    {
+        return (lhs.typeA == rhs.typeA) && (lhs.typeB == rhs.typeB) && (lhs.indexA == rhs.indexA) && (lhs.indexB == rhs.indexB);
+    }
 
-	constexpr bool operator!=(ContactFeature lhs, ContactFeature rhs) noexcept
-	{
-		return (lhs.typeA != rhs.typeA) || (lhs.typeB != rhs.typeB) || (lhs.indexA != rhs.indexA) || (lhs.indexB != rhs.indexB);
-	}
-	
+    constexpr bool operator!=(ContactFeature lhs, ContactFeature rhs) noexcept
+    {
+        return (lhs.typeA != rhs.typeA) || (lhs.typeB != rhs.typeB) || (lhs.indexA != rhs.indexA) || (lhs.indexB != rhs.indexB);
+    }
+    
 }; // namespace box2d
 
 #endif /* ContactFeature_hpp */

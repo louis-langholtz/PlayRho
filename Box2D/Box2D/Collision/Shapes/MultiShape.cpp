@@ -23,8 +23,8 @@ using namespace box2d;
 
 bool MultiShape::TestPoint(const Transformation& xf, const Length2D p) const noexcept
 {
-	// TODO
-	return false;
+    // TODO
+    return false;
 }
 
 /// Computes the mass properties of this shape using its dimensions and density.
@@ -33,39 +33,39 @@ bool MultiShape::TestPoint(const Transformation& xf, const Length2D p) const noe
 /// @return Mass data for this shape.
 MassData MultiShape::GetMassData() const noexcept
 {
-	// TODO
-	return MassData{};
+    // TODO
+    return MassData{};
 }
 
 void MultiShape::AddConvexHull(const VertexSet& point_set) noexcept
 {
 #ifndef NDEBUG
-	const auto point_set_size = point_set.size();
-	assert(point_set_size > 0 && point_set_size < std::numeric_limits<vertex_count_t>::max());
+    const auto point_set_size = point_set.size();
+    assert(point_set_size > 0 && point_set_size < std::numeric_limits<vertex_count_t>::max());
 #endif
-	
-	auto vertices = GetConvexHullAsVector(point_set);
-	assert(vertices.size() > 0 && vertices.size() < std::numeric_limits<vertex_count_t>::max());
-	
-	const auto count = static_cast<vertex_count_t>(vertices.size());
-	
-	auto normals = std::vector<UnitVec2>();
-	if (count > 1)
-	{
-		// Compute normals.
-		for (auto i = decltype(count){0}; i < count; ++i)
-		{
-			const auto nextIndex = GetModuloNext(i, count);
-			const auto edge = vertices[nextIndex] - vertices[i];
-			normals.emplace_back(GetUnitVector(GetFwdPerpendicular(edge)));
-		}
-	}
-	else if (count == 1)
-	{
-		normals.emplace_back(UnitVec2{});
-	}
-	
-	// TODO: Compute the polygon centroid.
-	
-	m_children.push_back(ConvexHull{vertices, normals});
+    
+    auto vertices = GetConvexHullAsVector(point_set);
+    assert(vertices.size() > 0 && vertices.size() < std::numeric_limits<vertex_count_t>::max());
+    
+    const auto count = static_cast<vertex_count_t>(vertices.size());
+    
+    auto normals = std::vector<UnitVec2>();
+    if (count > 1)
+    {
+        // Compute normals.
+        for (auto i = decltype(count){0}; i < count; ++i)
+        {
+            const auto nextIndex = GetModuloNext(i, count);
+            const auto edge = vertices[nextIndex] - vertices[i];
+            normals.emplace_back(GetUnitVector(GetFwdPerpendicular(edge)));
+        }
+    }
+    else if (count == 1)
+    {
+        normals.emplace_back(UnitVec2{});
+    }
+    
+    // TODO: Compute the polygon centroid.
+    
+    m_children.push_back(ConvexHull{vertices, normals});
 }

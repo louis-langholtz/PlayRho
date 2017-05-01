@@ -25,116 +25,116 @@
 
 namespace box2d {
 
-	static inline WorldManifold GetForCircles(const Manifold& manifold,
-											  const Transformation& xfA, const Length radiusA,
-											  const Transformation& xfB, const Length radiusB)
-	{
-		assert(manifold.GetPointCount() == 1);
-		
-		switch (manifold.GetPointCount())
-		{
-			case 1:
-			{
-				const auto pointA = Transform(manifold.GetLocalPoint(), xfA);
-				const auto pointB = Transform(manifold.GetPoint(0).localPoint, xfB);
-				const auto normal = GetUnitVector(StripUnits(pointB - pointA), UnitVec2::GetRight());
-				const auto cA = pointA + ((radiusA / Meter) * normal) * Meter;
-				const auto cB = pointB - ((radiusB / Meter) * normal) * Meter;
-				const auto p0 = (cA + cB) / RealNum{2};
-				const auto s0 = Dot(StripUnits(cB - cA), normal) * Meter;
-				return WorldManifold{normal, WorldManifold::PointSeparation{p0, s0}};
-			}
-			default: break;
-		}
-		
-		// should never be reached
-		return WorldManifold{};
-	}
-	
-	static inline WorldManifold GetForFaceA(const Manifold& manifold,
-											const Transformation& xfA, const Length radiusA,
-											const Transformation& xfB, const Length radiusB)
-	{
-		const auto normal = Rotate(manifold.GetLocalNormal(), xfA.q);
-		const auto planePoint = Transform(manifold.GetLocalPoint(), xfA);
-		const auto pointFn = [&](Manifold::size_type index) {
-			const auto clipPoint = Transform(manifold.GetPoint(index).localPoint, xfB);
-			const auto cA = clipPoint + (RealNum{radiusA / Meter} - Dot(StripUnits(clipPoint - planePoint), normal)) * normal * Meter;
-			const auto cB = clipPoint - (RealNum{radiusB / Meter} * normal) * Meter;
-			return WorldManifold::PointSeparation{(cA + cB) / RealNum{2}, Dot(StripUnits(cB - cA), normal) * Meter};
-		};
-		
-		assert(manifold.GetPointCount() <= 2);
-		
-		switch (manifold.GetPointCount())
-		{
-			case 0: return WorldManifold{normal};
-			case 1: return WorldManifold{normal, pointFn(0)};
-			case 2: return WorldManifold{normal, pointFn(0), pointFn(1)};
-			default: break; // should never be reached
-		}
-		
-		// should never be reached
-		return WorldManifold{normal};
-	}
-	
-	static inline WorldManifold GetForFaceB(const Manifold& manifold,
-											const Transformation& xfA, const Length radiusA,
-											const Transformation& xfB, const Length radiusB)
-	{
-		const auto normal = Rotate(manifold.GetLocalNormal(), xfB.q);
-		const auto planePoint = Transform(manifold.GetLocalPoint(), xfB);
-		const auto pointFn = [&](Manifold::size_type index) {
-			const auto clipPoint = Transform(manifold.GetPoint(index).localPoint, xfA);
-			const auto cB = clipPoint + (RealNum{radiusB / Meter} - Dot(StripUnits(clipPoint - planePoint), normal)) * normal * Meter;
-			const auto cA = clipPoint - (RealNum{radiusA / Meter} * normal) * Meter;
-			return WorldManifold::PointSeparation{(cA + cB) / RealNum{2}, Dot(StripUnits(cA - cB), normal) * Meter};
-		};
-		
-		assert(manifold.GetPointCount() <= 2);
-		
-		// Negate normal given to world manifold constructor to ensure it points from A to B.
-		switch (manifold.GetPointCount())
-		{
-			case 0: return WorldManifold{-normal};
-			case 1: return WorldManifold{-normal, pointFn(0)};
-			case 2: return WorldManifold{-normal, pointFn(0), pointFn(1)};
-			default: break; // should never be reached
-		}
-		
-		// should never be reached
-		return WorldManifold{-normal};
-	}
-	
-	WorldManifold GetWorldManifold(const Manifold& manifold,
-								   const Transformation& xfA, const Length radiusA,
-								   const Transformation& xfB, const Length radiusB)
-	{
-		const auto type = manifold.GetType();
-		assert((type == Manifold::e_circles) || (type == Manifold::e_faceA) || (type == Manifold::e_faceB) || (type == Manifold::e_unset));
-		switch (type)
-		{
-			case Manifold::e_circles: return GetForCircles(manifold, xfA, radiusA, xfB, radiusB);
-			case Manifold::e_faceA: return GetForFaceA(manifold, xfA, radiusA, xfB, radiusB);
-			case Manifold::e_faceB: return GetForFaceB(manifold, xfA, radiusA, xfB, radiusB);
-			case Manifold::e_unset: return WorldManifold{};
-		}
-		
-		// should never be reached
-		return WorldManifold{};
-	}	
+    static inline WorldManifold GetForCircles(const Manifold& manifold,
+                                              const Transformation& xfA, const Length radiusA,
+                                              const Transformation& xfB, const Length radiusB)
+    {
+        assert(manifold.GetPointCount() == 1);
+        
+        switch (manifold.GetPointCount())
+        {
+            case 1:
+            {
+                const auto pointA = Transform(manifold.GetLocalPoint(), xfA);
+                const auto pointB = Transform(manifold.GetPoint(0).localPoint, xfB);
+                const auto normal = GetUnitVector(StripUnits(pointB - pointA), UnitVec2::GetRight());
+                const auto cA = pointA + ((radiusA / Meter) * normal) * Meter;
+                const auto cB = pointB - ((radiusB / Meter) * normal) * Meter;
+                const auto p0 = (cA + cB) / RealNum{2};
+                const auto s0 = Dot(StripUnits(cB - cA), normal) * Meter;
+                return WorldManifold{normal, WorldManifold::PointSeparation{p0, s0}};
+            }
+            default: break;
+        }
+        
+        // should never be reached
+        return WorldManifold{};
+    }
+    
+    static inline WorldManifold GetForFaceA(const Manifold& manifold,
+                                            const Transformation& xfA, const Length radiusA,
+                                            const Transformation& xfB, const Length radiusB)
+    {
+        const auto normal = Rotate(manifold.GetLocalNormal(), xfA.q);
+        const auto planePoint = Transform(manifold.GetLocalPoint(), xfA);
+        const auto pointFn = [&](Manifold::size_type index) {
+            const auto clipPoint = Transform(manifold.GetPoint(index).localPoint, xfB);
+            const auto cA = clipPoint + (RealNum{radiusA / Meter} - Dot(StripUnits(clipPoint - planePoint), normal)) * normal * Meter;
+            const auto cB = clipPoint - (RealNum{radiusB / Meter} * normal) * Meter;
+            return WorldManifold::PointSeparation{(cA + cB) / RealNum{2}, Dot(StripUnits(cB - cA), normal) * Meter};
+        };
+        
+        assert(manifold.GetPointCount() <= 2);
+        
+        switch (manifold.GetPointCount())
+        {
+            case 0: return WorldManifold{normal};
+            case 1: return WorldManifold{normal, pointFn(0)};
+            case 2: return WorldManifold{normal, pointFn(0), pointFn(1)};
+            default: break; // should never be reached
+        }
+        
+        // should never be reached
+        return WorldManifold{normal};
+    }
+    
+    static inline WorldManifold GetForFaceB(const Manifold& manifold,
+                                            const Transformation& xfA, const Length radiusA,
+                                            const Transformation& xfB, const Length radiusB)
+    {
+        const auto normal = Rotate(manifold.GetLocalNormal(), xfB.q);
+        const auto planePoint = Transform(manifold.GetLocalPoint(), xfB);
+        const auto pointFn = [&](Manifold::size_type index) {
+            const auto clipPoint = Transform(manifold.GetPoint(index).localPoint, xfA);
+            const auto cB = clipPoint + (RealNum{radiusB / Meter} - Dot(StripUnits(clipPoint - planePoint), normal)) * normal * Meter;
+            const auto cA = clipPoint - (RealNum{radiusA / Meter} * normal) * Meter;
+            return WorldManifold::PointSeparation{(cA + cB) / RealNum{2}, Dot(StripUnits(cA - cB), normal) * Meter};
+        };
+        
+        assert(manifold.GetPointCount() <= 2);
+        
+        // Negate normal given to world manifold constructor to ensure it points from A to B.
+        switch (manifold.GetPointCount())
+        {
+            case 0: return WorldManifold{-normal};
+            case 1: return WorldManifold{-normal, pointFn(0)};
+            case 2: return WorldManifold{-normal, pointFn(0), pointFn(1)};
+            default: break; // should never be reached
+        }
+        
+        // should never be reached
+        return WorldManifold{-normal};
+    }
+    
+    WorldManifold GetWorldManifold(const Manifold& manifold,
+                                   const Transformation& xfA, const Length radiusA,
+                                   const Transformation& xfB, const Length radiusB)
+    {
+        const auto type = manifold.GetType();
+        assert((type == Manifold::e_circles) || (type == Manifold::e_faceA) || (type == Manifold::e_faceB) || (type == Manifold::e_unset));
+        switch (type)
+        {
+            case Manifold::e_circles: return GetForCircles(manifold, xfA, radiusA, xfB, radiusB);
+            case Manifold::e_faceA: return GetForFaceA(manifold, xfA, radiusA, xfB, radiusB);
+            case Manifold::e_faceB: return GetForFaceB(manifold, xfA, radiusA, xfB, radiusB);
+            case Manifold::e_unset: return WorldManifold{};
+        }
+        
+        // should never be reached
+        return WorldManifold{};
+    }    
 
-	WorldManifold GetWorldManifold(const Contact& contact)
-	{
-		const auto fA = contact.GetFixtureA();
-		const auto xfA = GetTransformation(*fA);
-		const auto radiusA = GetVertexRadius(*(fA->GetShape()));
+    WorldManifold GetWorldManifold(const Contact& contact)
+    {
+        const auto fA = contact.GetFixtureA();
+        const auto xfA = GetTransformation(*fA);
+        const auto radiusA = GetVertexRadius(*(fA->GetShape()));
 
-		const auto fB = contact.GetFixtureB();
-		const auto xfB = GetTransformation(*fB);
-		const auto radiusB = GetVertexRadius(*(fB->GetShape()));
+        const auto fB = contact.GetFixtureB();
+        const auto xfB = GetTransformation(*fB);
+        const auto radiusB = GetVertexRadius(*(fB->GetShape()));
 
-		return GetWorldManifold(contact.GetManifold(), xfA, radiusA, xfB, radiusB);
-	}
-	
+        return GetWorldManifold(contact.GetManifold(), xfA, radiusA, xfB, radiusB);
+    }
+    
 } /* namespace box2d */

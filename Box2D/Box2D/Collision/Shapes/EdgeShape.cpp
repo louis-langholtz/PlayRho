@@ -24,21 +24,21 @@ using namespace box2d;
 
 MassData EdgeShape::GetMassData() const noexcept
 {
-	return ::GetMassData(GetVertexRadius(), GetDensity(), GetVertex1(), GetVertex2());
+    return ::GetMassData(GetVertexRadius(), GetDensity(), GetVertex1(), GetVertex2());
 }
 
 void EdgeShape::Set(const Length2D v1, const Length2D v2)
 {
-	m_vertices[0] = v1;
-	m_vertices[1] = v2;
+    m_vertices[0] = v1;
+    m_vertices[1] = v2;
 
-	m_normals[0] = GetUnitVector(GetFwdPerpendicular(v2 - v1));
-	m_normals[1] = -m_normals[0];
+    m_normals[0] = GetUnitVector(GetFwdPerpendicular(v2 - v1));
+    m_normals[1] = -m_normals[0];
 }
 
 bool EdgeShape::TestPoint(const Transformation& xf, const Length2D p) const noexcept
 {
-	NOT_USED(xf);
-	NOT_USED(p);
-	return false;
+    NOT_USED(xf);
+    NOT_USED(p);
+    return false;
 }

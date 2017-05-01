@@ -71,7 +71,7 @@
 namespace box2d
 {
 template<class... T> void NOT_USED(T&&...){}
-	
+    
 class Body;
 class Contact;
 class Joint;
@@ -149,7 +149,7 @@ constexpr auto SquareRadian = Radian * Radian;
 
 using AngularVelocity = boost::units::quantity<boost::units::si::angular_velocity, RealNum>;
 constexpr auto RadianPerSecond = AngularVelocity{boost::units::si::radian_per_second * RealNum{1}};
-	
+    
 using AngularAcceleration = boost::units::quantity<boost::units::si::angular_acceleration, RealNum>;
 constexpr auto RadianPerSquareSecond = Radian / (Second * Second);
 
@@ -228,74 +228,74 @@ using AngularMomentum = RealNum;
 
 constexpr inline RealNum StripUnit(const RealNum value)
 {
-	return value;
+    return value;
 }
 
 #ifdef USE_BOOST_UNITS
 
 constexpr inline RealNum StripUnit(const Angle value)
 {
-	return RealNum{value / Radian};
+    return RealNum{value / Radian};
 }
 
 constexpr inline RealNum StripUnit(const Length value)
 {
-	return RealNum{value / Meter};
+    return RealNum{value / Meter};
 }
 
 constexpr inline RealNum StripUnit(const Area value)
 {
-	return RealNum{value / SquareMeter};
+    return RealNum{value / SquareMeter};
 }
 
 constexpr inline RealNum StripUnit(const Mass value)
 {
-	// InvMass has units of M^-1
-	return RealNum{value / Kilogram};
+    // InvMass has units of M^-1
+    return RealNum{value / Kilogram};
 }
 
 constexpr inline RealNum StripUnit(const InvMass value)
 {
-	// InvMass has units of M^-1
-	return RealNum{value * Kilogram};
+    // InvMass has units of M^-1
+    return RealNum{value * Kilogram};
 }
 
 constexpr inline RealNum StripUnit(const RotInertia value)
 {
-	return RealNum{value * SquareRadian / (SquareMeter * Kilogram)};
+    return RealNum{value * SquareRadian / (SquareMeter * Kilogram)};
 }
 
 constexpr inline RealNum StripUnit(const InvRotInertia value)
 {
-	// InvRotInertia has units of L^-2 M^-1 QP^2
-	return RealNum{value * SquareMeter * Kilogram / SquareRadian};
+    // InvRotInertia has units of L^-2 M^-1 QP^2
+    return RealNum{value * SquareMeter * Kilogram / SquareRadian};
 }
 
 constexpr inline RealNum StripUnit(const Momentum value)
 {
-	// Momentum has units of M L T^-1
-	return RealNum{value * Second / (Kilogram * Meter)};
+    // Momentum has units of M L T^-1
+    return RealNum{value * Second / (Kilogram * Meter)};
 }
 
 constexpr inline RealNum StripUnit(const LinearVelocity value)
 {
-	return RealNum{value / MeterPerSecond};
+    return RealNum{value / MeterPerSecond};
 }
 
 constexpr inline RealNum StripUnit(const AngularVelocity value)
 {
-	return RealNum{value / RadianPerSecond};
+    return RealNum{value / RadianPerSecond};
 }
 
 constexpr inline RealNum StripUnit(const Force value)
 {
-	// Force has units of Newtons - which are M L T^2
-	return RealNum{value / Newton};
+    // Force has units of Newtons - which are M L T^2
+    return RealNum{value / Newton};
 }
 
 constexpr inline RealNum StripUnit(const Torque value)
 {
-	return RealNum{value / NewtonMeter};
+    return RealNum{value / NewtonMeter};
 }
 
 #endif
@@ -373,7 +373,7 @@ constexpr auto DefaultMaxDistanceIters = std::uint8_t{20};
 /// have continuous collision resolution done for it.
 /// @note Used in the TOI phase of step processing.
 constexpr auto DefaultMaxSubSteps = std::uint8_t{48};
-	
+    
 // Dynamics
 
 /// Default velocity threshold.
@@ -381,14 +381,14 @@ constexpr auto DefaultVelocityThreshold = (RealNum{8} / RealNum{10}) * MeterPerS
 
 /// Maximum number of bodies in a world (65534 based off uint16_t and eliminating one value for invalid).
 constexpr auto MaxBodies = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
-													  std::uint16_t{1});
+                                                      std::uint16_t{1});
 
 /// Body count type.
 using body_count_t = std::remove_const<decltype(MaxBodies)>::type;
 
 /// Contact count type.
 using contact_count_t = Wider<body_count_t>::type;
-	
+    
 /// Maximum number of contacts in a world (2147319811).
 /// @details Uses the formula for the maximum number of edges in an undirectional graph of MaxBodies nodes. 
 /// This occurs when every possible body is connected to every other body.
@@ -396,7 +396,7 @@ constexpr auto MaxContacts = contact_count_t{MaxBodies} * contact_count_t{MaxBod
 
 /// Maximum number of joints in a world (65534 based off std::uint16_t and eliminating one value for invalid).
 constexpr auto MaxJoints = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
-													  std::uint16_t{1});
+                                                      std::uint16_t{1});
 
 /// Joint count type.
 using joint_count_t = std::remove_const<decltype(MaxJoints)>::type;
@@ -430,19 +430,19 @@ constexpr size_t max_list_size();
 template <>
 constexpr size_t max_list_size<Body>()
 {
-	return MaxBodies;
+    return MaxBodies;
 }
 
 template <>
 constexpr size_t max_list_size<Contact>()
 {
-	return MaxContacts;
+    return MaxContacts;
 }
 
 template <>
 constexpr size_t max_list_size<Joint>()
 {
-	return MaxJoints;
+    return MaxJoints;
 }
 
 // GetInvalid template and template specializations.
@@ -453,39 +453,39 @@ constexpr inline T GetInvalid() noexcept;
 template <>
 constexpr float GetInvalid() noexcept
 {
-	return std::numeric_limits<float>::signaling_NaN();
+    return std::numeric_limits<float>::signaling_NaN();
 }
 
 template <>
 constexpr double GetInvalid() noexcept
 {
-	return std::numeric_limits<double>::signaling_NaN();
+    return std::numeric_limits<double>::signaling_NaN();
 }
 
 template <>
 constexpr long double GetInvalid() noexcept
 {
-	return std::numeric_limits<long double>::signaling_NaN();
+    return std::numeric_limits<long double>::signaling_NaN();
 }
 
 template <>
 constexpr Fixed32 GetInvalid() noexcept
 {
-	return Fixed32::GetNaN();
+    return Fixed32::GetNaN();
 }
 
 #ifndef _WIN32
 template <>
 constexpr Fixed64 GetInvalid() noexcept
 {
-	return Fixed64::GetNaN();
+    return Fixed64::GetNaN();
 }
 #endif
 
 template <>
 constexpr size_t GetInvalid() noexcept
 {
-	return static_cast<size_t>(-1);
+    return static_cast<size_t>(-1);
 }
 
 // IsValid template and template specializations.
@@ -493,23 +493,23 @@ constexpr size_t GetInvalid() noexcept
 template <typename T>
 constexpr inline bool IsValid(const T& value) noexcept
 {
-	// Note: This is not necessarily a no-op!! But it is a "constexpr".
-	//
-	// From http://en.cppreference.com/w/cpp/numeric/math/isnan:
-	//   "Another way to test if a floating-point value is NaN is
-	//    to compare it with itself:
-	//      bool is_nan(double x) { return x != x; }
-	//
-	// So for all T, for which std::isnan() is implemented, this should work
-	// correctly and quite usefully!
-	//
-	return value == value;
+    // Note: This is not necessarily a no-op!! But it is a "constexpr".
+    //
+    // From http://en.cppreference.com/w/cpp/numeric/math/isnan:
+    //   "Another way to test if a floating-point value is NaN is
+    //    to compare it with itself:
+    //      bool is_nan(double x) { return x != x; }
+    //
+    // So for all T, for which std::isnan() is implemented, this should work
+    // correctly and quite usefully!
+    //
+    return value == value;
 }
 
 template <>
 constexpr inline bool IsValid(const size_t& x) noexcept
 {
-	return x != GetInvalid<size_t>();
+    return x != GetInvalid<size_t>();
 }
 
 #ifdef USE_BOOST_UNITS
@@ -517,170 +517,170 @@ constexpr inline bool IsValid(const size_t& x) noexcept
 template <>
 constexpr Angle GetInvalid() noexcept
 {
-	return GetInvalid<RealNum>() * Radian;
+    return GetInvalid<RealNum>() * Radian;
 }
 
 template <>
 constexpr inline bool IsValid(const Angle& x) noexcept
 {
-	return IsValid(RealNum{x / Radian});
+    return IsValid(RealNum{x / Radian});
 }
 
 template <>
 constexpr Frequency GetInvalid() noexcept
 {
-	return GetInvalid<RealNum>() * Hertz;
+    return GetInvalid<RealNum>() * Hertz;
 }
 
 template <>
 constexpr inline bool IsValid(const Frequency& x) noexcept
 {
-	return IsValid(RealNum{x / Hertz});
+    return IsValid(RealNum{x / Hertz});
 }
 
 template <>
 constexpr AngularVelocity GetInvalid() noexcept
 {
-	return GetInvalid<RealNum>() * RadianPerSecond;
+    return GetInvalid<RealNum>() * RadianPerSecond;
 }
 
 template <>
 constexpr inline bool IsValid(const AngularVelocity& x) noexcept
 {
-	return IsValid(RealNum{x / RadianPerSecond});
+    return IsValid(RealNum{x / RadianPerSecond});
 }
 
 template <>
 constexpr Time GetInvalid() noexcept
 {
-	return GetInvalid<RealNum>() * Second;
+    return GetInvalid<RealNum>() * Second;
 }
 
 template <>
 constexpr inline bool IsValid(const Time& x) noexcept
 {
-	return IsValid(RealNum{x / Second});
+    return IsValid(RealNum{x / Second});
 }
 
 template <>
 constexpr Length GetInvalid() noexcept
 {
-	return GetInvalid<RealNum>() * Meter;
+    return GetInvalid<RealNum>() * Meter;
 }
 
 template <>
 constexpr inline bool IsValid(const Length& x) noexcept
 {
-	return IsValid(RealNum{x / Meter});
+    return IsValid(RealNum{x / Meter});
 }
 
 template <>
 constexpr Mass GetInvalid() noexcept
 {
-	return GetInvalid<RealNum>() * Kilogram;
+    return GetInvalid<RealNum>() * Kilogram;
 }
 
 template <>
 constexpr inline bool IsValid(const Mass& x) noexcept
 {
-	return IsValid(RealNum{x / Kilogram});
+    return IsValid(RealNum{x / Kilogram});
 }
 
 template <>
 constexpr InvMass GetInvalid() noexcept
 {
-	return GetInvalid<RealNum>() / Kilogram;
+    return GetInvalid<RealNum>() / Kilogram;
 }
 
 template <>
 constexpr inline bool IsValid(const InvMass& x) noexcept
 {
-	return IsValid(RealNum{x * Kilogram});
+    return IsValid(RealNum{x * Kilogram});
 }
 
 template <>
 constexpr Momentum GetInvalid() noexcept
 {
-	return GetInvalid<RealNum>() * Kilogram * MeterPerSecond;
+    return GetInvalid<RealNum>() * Kilogram * MeterPerSecond;
 }
 
 template <>
 constexpr inline bool IsValid(const Momentum& x) noexcept
 {
-	return IsValid(RealNum{x / (Kilogram * MeterPerSecond)});
+    return IsValid(RealNum{x / (Kilogram * MeterPerSecond)});
 }
 
 template <>
 constexpr Force GetInvalid() noexcept
 {
-	return GetInvalid<RealNum>() * Newton;
+    return GetInvalid<RealNum>() * Newton;
 }
 
 template <>
 constexpr inline bool IsValid(const Force& x) noexcept
 {
-	return IsValid(RealNum{x / Newton});
+    return IsValid(RealNum{x / Newton});
 }
 
 template <>
 constexpr Torque GetInvalid() noexcept
 {
-	return GetInvalid<RealNum>() * NewtonMeter;
+    return GetInvalid<RealNum>() * NewtonMeter;
 }
 
 template <>
 constexpr inline bool IsValid(const Torque& x) noexcept
 {
-	return IsValid(RealNum{x / NewtonMeter});
+    return IsValid(RealNum{x / NewtonMeter});
 }
 
 template <>
 constexpr LinearVelocity GetInvalid() noexcept
 {
-	return GetInvalid<RealNum>() * MeterPerSecond;
+    return GetInvalid<RealNum>() * MeterPerSecond;
 }
 
 template <>
 constexpr inline bool IsValid(const LinearVelocity& x) noexcept
 {
-	return IsValid(RealNum{x / MeterPerSecond});
+    return IsValid(RealNum{x / MeterPerSecond});
 }
 
 template <>
 constexpr LinearAcceleration GetInvalid() noexcept
 {
-	return GetInvalid<RealNum>() * MeterPerSquareSecond;
+    return GetInvalid<RealNum>() * MeterPerSquareSecond;
 }
 
 template <>
 constexpr inline bool IsValid(const LinearAcceleration& x) noexcept
 {
-	return IsValid(RealNum{x / MeterPerSquareSecond});
+    return IsValid(RealNum{x / MeterPerSquareSecond});
 }
 
 template <>
 constexpr AngularAcceleration GetInvalid() noexcept
 {
-	return GetInvalid<RealNum>() * RadianPerSquareSecond;
+    return GetInvalid<RealNum>() * RadianPerSquareSecond;
 }
 
 template <>
 constexpr inline bool IsValid(const AngularAcceleration& x) noexcept
 {
-	return IsValid(RealNum{x / RadianPerSquareSecond});
+    return IsValid(RealNum{x / RadianPerSquareSecond});
 }
 
 template <>
 constexpr RotInertia GetInvalid() noexcept
 {
-	// RotInertia is L^2  M    QP^-2
-	return GetInvalid<RealNum>() * SquareMeter * Kilogram / SquareRadian;
+    // RotInertia is L^2  M    QP^-2
+    return GetInvalid<RealNum>() * SquareMeter * Kilogram / SquareRadian;
 }
 
 template <>
 constexpr inline bool IsValid(const RotInertia& value) noexcept
 {
-	return IsValid(RealNum{value / (SquareMeter * Kilogram / SquareRadian)});
+    return IsValid(RealNum{value / (SquareMeter * Kilogram / SquareRadian)});
 }
 
 #endif
@@ -693,16 +693,16 @@ void* alloc(size_t size);
 template <typename T>
 T* alloc(size_t size)
 {
-	return static_cast<T*>(alloc(size * sizeof(T)));
+    return static_cast<T*>(alloc(size * sizeof(T)));
 }
-	
+    
 /// Implement this function to use your own memory allocator.
 void* realloc(void* ptr, size_t new_size);
 
 template <typename T>
 T* realloc(T* ptr, size_t size)
 {
-	return static_cast<T*>(realloc(static_cast<void *>(ptr), size * sizeof(T)));
+    return static_cast<T*>(realloc(static_cast<void *>(ptr), size * sizeof(T)));
 }
 
 /// If you implement alloc, you should also implement this function.
@@ -712,11 +712,11 @@ void free(void* mem);
 /// See http://en.wikipedia.org/wiki/Software_versioning
 struct Version
 {
-	using revnum_type = std::int32_t;
+    using revnum_type = std::int32_t;
 
-	revnum_type major;		///< significant changes
-	revnum_type minor;		///< incremental changes
-	revnum_type revision;		///< bug fixes
+    revnum_type major;        ///< significant changes
+    revnum_type minor;        ///< incremental changes
+    revnum_type revision;        ///< bug fixes
 };
 
 constexpr auto BuiltVersion = Version{3, 0, 0};

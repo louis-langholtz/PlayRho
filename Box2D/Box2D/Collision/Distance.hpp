@@ -25,62 +25,62 @@
 
 namespace box2d
 {
-	class DistanceProxy;
-	
-	/// Witness Points.
-	struct WitnessPoints
-	{
-		Length2D a;
-		Length2D b;
-	};
-	
-	/// Gets the witness points of the given simplex.
-	WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept;
-	
-	/// Distance Configuration.
-	struct DistanceConf
-	{
-		using iteration_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
+    class DistanceProxy;
+    
+    /// Witness Points.
+    struct WitnessPoints
+    {
+        Length2D a;
+        Length2D b;
+    };
+    
+    /// Gets the witness points of the given simplex.
+    WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept;
+    
+    /// Distance Configuration.
+    struct DistanceConf
+    {
+        using iteration_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
 
-		Simplex::Cache cache;
-		iteration_type maxIterations = DefaultMaxDistanceIters;
-	};
+        Simplex::Cache cache;
+        iteration_type maxIterations = DefaultMaxDistanceIters;
+    };
 
-	/// Distance Output.
-	struct DistanceOutput
-	{
-		enum State: std::uint8_t
-		{
-			Unknown,
-			MaxPoints,
-			UnfitSearchDir,
-			DuplicateIndexPair,
-			HitMaxIters
-		};
+    /// Distance Output.
+    struct DistanceOutput
+    {
+        enum State: std::uint8_t
+        {
+            Unknown,
+            MaxPoints,
+            UnfitSearchDir,
+            DuplicateIndexPair,
+            HitMaxIters
+        };
 
-		using iteration_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
+        using iteration_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
 
-		Simplex simplex; ///< Simplex.
-		iteration_type iterations = 0; ///< Count of iterations performed to return result.
-		State state = Unknown; ///< Termination state.
-	};
+        Simplex simplex; ///< Simplex.
+        iteration_type iterations = 0; ///< Count of iterations performed to return result.
+        State state = Unknown; ///< Termination state.
+    };
 
-	/// Determines the closest points between two shapes.
-	/// @details
-	/// Supports any combination of:
-	/// CircleShape, PolygonShape, EdgeShape. The simplex cache is input/output.
-	/// @note On the first call, the Simplex::Cache.count should be set to zero.
-	/// @param proxyA Proxy A.
-	/// @param transformA Transoform of A.
-	/// @param proxyB Proxy B.
-	/// @param transformB Transoform of B.
-	/// @param conf Configuration to use including the simplex cache for assisting the determination.
-	/// @return Closest points between the two shapes and the count of iterations it took to
-	///   determine them. The iteration count will always be greater than zero unless
-	///   <code>DefaultMaxDistanceIters</code> is zero.
-	DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& transformA,
-							const DistanceProxy& proxyB, const Transformation& transformB,
-							const DistanceConf conf = DistanceConf{});
+    /// Determines the closest points between two shapes.
+    /// @details
+    /// Supports any combination of:
+    /// CircleShape, PolygonShape, EdgeShape. The simplex cache is input/output.
+    /// @note On the first call, the Simplex::Cache.count should be set to zero.
+    /// @param proxyA Proxy A.
+    /// @param transformA Transoform of A.
+    /// @param proxyB Proxy B.
+    /// @param transformB Transoform of B.
+    /// @param conf Configuration to use including the simplex cache for assisting the determination.
+    /// @return Closest points between the two shapes and the count of iterations it took to
+    ///   determine them. The iteration count will always be greater than zero unless
+    ///   <code>DefaultMaxDistanceIters</code> is zero.
+    DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& transformA,
+                            const DistanceProxy& proxyB, const Transformation& transformB,
+                            const DistanceConf conf = DistanceConf{});
 
 } /* namespace box2d */
 

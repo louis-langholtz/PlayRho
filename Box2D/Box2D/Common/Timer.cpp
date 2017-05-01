@@ -31,36 +31,36 @@ double Timer::s_invFrequency = RealNum{0};
 
 Timer::Timer()
 {
-	LARGE_INTEGER largeInteger;
+    LARGE_INTEGER largeInteger;
 
-	if (s_invFrequency == RealNum{0})
-	{
-		QueryPerformanceFrequency(&largeInteger);
-		s_invFrequency = double(largeInteger.QuadPart);
-		if (s_invFrequency > RealNum{0})
-		{
-			s_invFrequency = 1000.0f / s_invFrequency;
-		}
-	}
+    if (s_invFrequency == RealNum{0})
+    {
+        QueryPerformanceFrequency(&largeInteger);
+        s_invFrequency = double(largeInteger.QuadPart);
+        if (s_invFrequency > RealNum{0})
+        {
+            s_invFrequency = 1000.0f / s_invFrequency;
+        }
+    }
 
-	QueryPerformanceCounter(&largeInteger);
-	m_start = double(largeInteger.QuadPart);
+    QueryPerformanceCounter(&largeInteger);
+    m_start = double(largeInteger.QuadPart);
 }
 
 void Timer::Reset()
 {
-	LARGE_INTEGER largeInteger;
-	QueryPerformanceCounter(&largeInteger);
-	m_start = double(largeInteger.QuadPart);
+    LARGE_INTEGER largeInteger;
+    QueryPerformanceCounter(&largeInteger);
+    m_start = double(largeInteger.QuadPart);
 }
 
 RealNum Timer::GetMilliseconds() const
 {
-	LARGE_INTEGER largeInteger;
-	QueryPerformanceCounter(&largeInteger);
-	double count = double(largeInteger.QuadPart);
-	RealNum ms = RealNum(s_invFrequency * (count - m_start));
-	return ms;
+    LARGE_INTEGER largeInteger;
+    QueryPerformanceCounter(&largeInteger);
+    double count = double(largeInteger.QuadPart);
+    RealNum ms = RealNum(s_invFrequency * (count - m_start));
+    return ms;
 }
 
 #elif defined(__linux__) || defined (__APPLE__)
@@ -99,7 +99,7 @@ void Timer::Reset()
 
 RealNum Timer::GetMilliseconds() const
 {
-	return RealNum{0};
+    return RealNum{0};
 }
 
 #endif
@@ -115,7 +115,7 @@ void Timer::Reset()
 
 RealNum Timer::GetMilliseconds() const
 {
-	return RealNum{0};
+    return RealNum{0};
 }
 
 #endif

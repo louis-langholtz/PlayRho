@@ -34,29 +34,29 @@
 namespace box2d
 {
 class Manifold;
-	
+    
 /// This is used for determining the state of contact points.
 enum class PointState
 {
-	NullState,		///< point does not exist
-	AddState,		///< point was added in the update
-	PersistState,	///< point persisted across the update
-	RemoveState		///< point was removed in the update
+    NullState, ///< point does not exist
+    AddState, ///< point was added in the update
+    PersistState, ///< point persisted across the update
+    RemoveState ///< point was removed in the update
 };
 
 using PointStateArray = std::array<PointState,MaxManifoldPoints>;
-	
+    
 /// Computes the point states given two manifolds. The states pertain to the transition from manifold1
 /// to manifold2. So state1 is either persist or remove while state2 is either add or persist.
 void GetPointStates(PointStateArray& state1, PointStateArray& state2,
-					const Manifold& manifold1, const Manifold& manifold2);
+                    const Manifold& manifold1, const Manifold& manifold2);
 
 /// Used for computing contact manifolds.
 /// @note This data structure is 12-bytes large (on at least one 64-bit platform).
 struct ClipVertex
 {
-	Length2D v; ///< Vertex of edge or polygon. 8-bytes.
-	ContactFeature cf; ///< Contact feature information. 4-bytes.
+    Length2D v; ///< Vertex of edge or polygon. 8-bytes.
+    ContactFeature cf; ///< Contact feature information. 4-bytes.
 };
 
 /// Clip list for ClipSegmentToLine.
@@ -73,7 +73,7 @@ using ClipList = ArrayList<ClipVertex, MaxManifoldPoints>;
 /// @param indexA Index of vertex A.
 /// @return List of zero one or two clip points.
 ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, Length offset,
-						   ContactFeature::index_t indexA);
+                           ContactFeature::index_t indexA);
 
 // ---------------- Inline Functions ------------------------------------------
 

@@ -30,18 +30,18 @@ namespace box2d {
 /// see collideConnected in JointDef.
 struct RopeJointDef : public JointDef
 {
-	constexpr RopeJointDef() noexcept: JointDef(JointType::Rope) {}
+    constexpr RopeJointDef() noexcept: JointDef(JointType::Rope) {}
 
-	constexpr RopeJointDef(Body* bodyA, Body* bodyB) noexcept: JointDef(JointType::Rope, bodyA, bodyB) {}
+    constexpr RopeJointDef(Body* bodyA, Body* bodyB) noexcept: JointDef(JointType::Rope, bodyA, bodyB) {}
 
-	/// The local anchor point relative to bodyA's origin.
-	Length2D localAnchorA = Vec2{-1, 0} * Meter;
+    /// The local anchor point relative to bodyA's origin.
+    Length2D localAnchorA = Vec2{-1, 0} * Meter;
 
-	/// The local anchor point relative to bodyB's origin.
-	Length2D localAnchorB = Vec2{1, 0} * Meter;
+    /// The local anchor point relative to bodyB's origin.
+    Length2D localAnchorB = Vec2{1, 0} * Meter;
 
-	/// The maximum length of the rope.
-	Length maxLength = Length{0};
+    /// The maximum length of the rope.
+    Length maxLength = Length{0};
 };
 
 /// A rope joint enforces a maximum distance between two points
@@ -55,45 +55,45 @@ struct RopeJointDef : public JointDef
 class RopeJoint : public Joint
 {
 public:
-	RopeJoint(const RopeJointDef& data);
+    RopeJoint(const RopeJointDef& data);
 
-	Length2D GetAnchorA() const override;
-	Length2D GetAnchorB() const override;
+    Length2D GetAnchorA() const override;
+    Length2D GetAnchorB() const override;
 
-	Force2D GetReactionForce(Frequency inv_dt) const override;
-	Torque GetReactionTorque(Frequency inv_dt) const override;
+    Force2D GetReactionForce(Frequency inv_dt) const override;
+    Torque GetReactionTorque(Frequency inv_dt) const override;
 
-	/// The local anchor point relative to bodyA's origin.
-	Length2D GetLocalAnchorA() const { return m_localAnchorA; }
+    /// The local anchor point relative to bodyA's origin.
+    Length2D GetLocalAnchorA() const { return m_localAnchorA; }
 
-	/// The local anchor point relative to bodyB's origin.
-	Length2D GetLocalAnchorB() const  { return m_localAnchorB; }
+    /// The local anchor point relative to bodyB's origin.
+    Length2D GetLocalAnchorB() const  { return m_localAnchorB; }
 
-	/// Set/Get the maximum length of the rope.
-	void SetMaxLength(Length length) { m_maxLength = length; }
-	Length GetMaxLength() const;
+    /// Set/Get the maximum length of the rope.
+    void SetMaxLength(Length length) { m_maxLength = length; }
+    Length GetMaxLength() const;
 
-	LimitState GetLimitState() const;
+    LimitState GetLimitState() const;
 
 private:
 
-	void InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
-	RealNum SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) override;
-	bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
+    void InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
+    RealNum SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) override;
+    bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
 
-	// Solver shared
-	Length2D m_localAnchorA;
-	Length2D m_localAnchorB;
-	Length m_maxLength;
-	Length m_length = 0;
-	Momentum m_impulse = Momentum{0};
+    // Solver shared
+    Length2D m_localAnchorA;
+    Length2D m_localAnchorB;
+    Length m_maxLength;
+    Length m_length = 0;
+    Momentum m_impulse = Momentum{0};
 
-	// Solver temp
-	UnitVec2 m_u;
-	Length2D m_rA;
-	Length2D m_rB;
-	Mass m_mass = Mass{0};
-	LimitState m_state = e_inactiveLimit;
+    // Solver temp
+    UnitVec2 m_u;
+    Length2D m_rA;
+    Length2D m_rB;
+    Mass m_mass = Mass{0};
+    LimitState m_state = e_inactiveLimit;
 };
 
 } // namespace box2d

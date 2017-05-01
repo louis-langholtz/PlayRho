@@ -36,48 +36,48 @@ class Joint;
 class Island
 {
 public:
-	using Bodies = std::vector<Body*>;
-	using Contacts = std::vector<Contact*>;
-	using Joints = std::vector<Joint*>;
-	
-	Island(Bodies::size_type bodyCapacity, Contacts::size_type contactCapacity, Joints::size_type jointCapacity);
+    using Bodies = std::vector<Body*>;
+    using Contacts = std::vector<Contact*>;
+    using Joints = std::vector<Joint*>;
+    
+    Island(Bodies::size_type bodyCapacity, Contacts::size_type contactCapacity, Joints::size_type jointCapacity);
 
-	Island(const Island& copy) noexcept:
-		m_bodies(copy.m_bodies),
-		m_contacts(copy.m_contacts),
-		m_joints(copy.m_joints)
-	{}
+    Island(const Island& copy) noexcept:
+        m_bodies(copy.m_bodies),
+        m_contacts(copy.m_contacts),
+        m_joints(copy.m_joints)
+    {}
 
-	Island(Island&& other) noexcept:
-		m_bodies{std::move(other.m_bodies)},
-		m_contacts{std::move(other.m_contacts)},
-		m_joints{std::move(other.m_joints)}
-	{}
+    Island(Island&& other) noexcept:
+        m_bodies{std::move(other.m_bodies)},
+        m_contacts{std::move(other.m_contacts)},
+        m_joints{std::move(other.m_joints)}
+    {}
 
-	/// Destructor.
-	~Island() = default;
+    /// Destructor.
+    ~Island() = default;
 
-	Island& operator= (Island&& other) noexcept
-	{
-		m_bodies = std::move(other.m_bodies);
-		m_contacts = std::move(other.m_contacts);
-		m_joints = std::move(other.m_joints);
-		return *this;
-	}
+    Island& operator= (Island&& other) noexcept
+    {
+        m_bodies = std::move(other.m_bodies);
+        m_contacts = std::move(other.m_contacts);
+        m_joints = std::move(other.m_joints);
+        return *this;
+    }
 
-	Bodies m_bodies;
-	Contacts m_contacts;
-	Joints m_joints;
+    Bodies m_bodies;
+    Contacts m_contacts;
+    Joints m_joints;
 };
 
 inline bool IsFullOfBodies(const Island& island)
 {
-	return island.m_bodies.size() == island.m_bodies.max_size();
+    return island.m_bodies.size() == island.m_bodies.max_size();
 }
 
 inline bool IsFullOfContacts(const Island& island)
 {
-	return island.m_contacts.size() == island.m_contacts.max_size();
+    return island.m_contacts.size() == island.m_contacts.max_size();
 }
 
 std::size_t Count(const Island& island, const Body* entry);

@@ -23,85 +23,85 @@
 namespace box2d {
 
 void GetPointStates(PointStateArray& state1, PointStateArray& state2,
-					const Manifold& manifold1, const Manifold& manifold2)
+                    const Manifold& manifold1, const Manifold& manifold2)
 {
-	for (auto i = decltype(MaxManifoldPoints){0}; i < MaxManifoldPoints; ++i)
-	{
-		state1[i] = PointState::NullState;
-		state2[i] = PointState::NullState;
-	}
+    for (auto i = decltype(MaxManifoldPoints){0}; i < MaxManifoldPoints; ++i)
+    {
+        state1[i] = PointState::NullState;
+        state2[i] = PointState::NullState;
+    }
 
-	// Detect persists and removes.
-	for (auto i = decltype(manifold1.GetPointCount()){0}; i < manifold1.GetPointCount(); ++i)
-	{
-		const auto cf = manifold1.GetContactFeature(i);
+    // Detect persists and removes.
+    for (auto i = decltype(manifold1.GetPointCount()){0}; i < manifold1.GetPointCount(); ++i)
+    {
+        const auto cf = manifold1.GetContactFeature(i);
 
-		state1[i] = PointState::RemoveState;
+        state1[i] = PointState::RemoveState;
 
-		for (auto j = decltype(manifold2.GetPointCount()){0}; j < manifold2.GetPointCount(); ++j)
-		{
-			if (manifold2.GetContactFeature(j) == cf)
-			{
-				state1[i] = PointState::PersistState;
-				break;
-			}
-		}
-	}
+        for (auto j = decltype(manifold2.GetPointCount()){0}; j < manifold2.GetPointCount(); ++j)
+        {
+            if (manifold2.GetContactFeature(j) == cf)
+            {
+                state1[i] = PointState::PersistState;
+                break;
+            }
+        }
+    }
 
-	// Detect persists and adds.
-	for (auto i = decltype(manifold2.GetPointCount()){0}; i < manifold2.GetPointCount(); ++i)
-	{
-		const auto cf = manifold2.GetContactFeature(i);
+    // Detect persists and adds.
+    for (auto i = decltype(manifold2.GetPointCount()){0}; i < manifold2.GetPointCount(); ++i)
+    {
+        const auto cf = manifold2.GetContactFeature(i);
 
-		state2[i] = PointState::AddState;
+        state2[i] = PointState::AddState;
 
-		for (auto j = decltype(manifold1.GetPointCount()){0}; j < manifold1.GetPointCount(); ++j)
-		{
-			if (manifold1.GetContactFeature(j) == cf)
-			{
-				state2[i] = PointState::PersistState;
-				break;
-			}
-		}
-	}
+        for (auto j = decltype(manifold1.GetPointCount()){0}; j < manifold1.GetPointCount(); ++j)
+        {
+            if (manifold1.GetContactFeature(j) == cf)
+            {
+                state2[i] = PointState::PersistState;
+                break;
+            }
+        }
+    }
 }
 
 ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, Length offset,
-						   ContactFeature::index_t indexA)
+                           ContactFeature::index_t indexA)
 {
-	ClipList vOut;
+    ClipList vOut;
 
-	if (vIn.size() == 2) // must have two points (for a segment)
-	{
-		// Use Sutherland-Hodgman clipping (https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm ).
-		
-		// Calculate the distance of end points to the line
-		const auto distance0 = Dot(normal, vIn[0].v) - offset;
-		const auto distance1 = Dot(normal, vIn[1].v) - offset;
+    if (vIn.size() == 2) // must have two points (for a segment)
+    {
+        // Use Sutherland-Hodgman clipping (https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm ).
 
-		// If the points are behind the plane
-		if (distance0 <= Length{0})
-		{
-			vOut.push_back(vIn[0]);
-		}
-		if (distance1 <= Length{0})
-		{
-			vOut.push_back(vIn[1]);
-		}
+        // Calculate the distance of end points to the line
+        const auto distance0 = Dot(normal, vIn[0].v) - offset;
+        const auto distance1 = Dot(normal, vIn[1].v) - offset;
 
-		// If the points are on different sides of the plane
-		if ((distance0 * distance1) < RealNum{0} * SquareMeter)
-		{
-			// Neither distance0 nor distance1 is 0 and either one or the other is negative (but not both).
-			// Find intersection point of edge and plane
-			// Vertex A is hitting edge B.
-			const auto interp = distance0 / (distance0 - distance1);
-			const auto vertex = vIn[0].v + (vIn[1].v - vIn[0].v) * interp;
-			vOut.push_back(ClipVertex{vertex, GetVertexFaceContactFeature(indexA, vIn[0].cf.indexB)});
-		}
-	}
+        // If the points are behind the plane
+        if (distance0 <= Length{0})
+        {
+            vOut.push_back(vIn[0]);
+        }
+        if (distance1 <= Length{0})
+        {
+            vOut.push_back(vIn[1]);
+        }
 
-	return vOut;
+        // If the points are on different sides of the plane
+        if ((distance0 * distance1) < RealNum{0} * SquareMeter)
+        {
+            // Neither distance0 nor distance1 is 0 and either one or the other is negative (but not both).
+            // Find intersection point of edge and plane
+            // Vertex A is hitting edge B.
+            const auto interp = distance0 / (distance0 - distance1);
+            const auto vertex = vIn[0].v + (vIn[1].v - vIn[0].v) * interp;
+            vOut.push_back(ClipVertex{vertex, GetVertexFaceContactFeature(indexA, vIn[0].cf.indexB)});
+        }
+    }
+
+    return vOut;
 }
 
 } // namespace box2d

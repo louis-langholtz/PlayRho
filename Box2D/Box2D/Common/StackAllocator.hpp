@@ -34,106 +34,106 @@ namespace box2d {
 class StackAllocator
 {
 public:
-	using size_type = size_t;
+    using size_type = size_t;
 
-	struct Configuration
-	{
-		size_type preallocation_size = 100 * 1024;
-		size_type allocation_records = 32;
-	};
+    struct Configuration
+    {
+        size_type preallocation_size = 100 * 1024;
+        size_type allocation_records = 32;
+    };
 
-	static constexpr Configuration GetDefaultConfiguration()
-	{
-		return Configuration{};
-	}
+    static constexpr Configuration GetDefaultConfiguration()
+    {
+        return Configuration{};
+    }
 
-	StackAllocator(Configuration config = GetDefaultConfiguration()) noexcept;
+    StackAllocator(Configuration config = GetDefaultConfiguration()) noexcept;
 
-	~StackAllocator() noexcept;
+    ~StackAllocator() noexcept;
 
-	StackAllocator(const StackAllocator& copy) = delete;
+    StackAllocator(const StackAllocator& copy) = delete;
 
-	/// Allocates an aligned block of memory of the given size.
-	/// @return Pointer to memory if the allocator has allocation records left,
-	/// <code>nullptr</code> otherwise.
-	/// @sa GetEntryCount.
-	void* Allocate(size_type size) noexcept;
+    /// Allocates an aligned block of memory of the given size.
+    /// @return Pointer to memory if the allocator has allocation records left,
+    /// <code>nullptr</code> otherwise.
+    /// @sa GetEntryCount.
+    void* Allocate(size_type size) noexcept;
 
-	void Free(void* p) noexcept;
+    void Free(void* p) noexcept;
 
-	template <typename T>
-	T* AllocateArray(size_type size) noexcept
-	{
-		return static_cast<T*>(Allocate(size * sizeof(T)));
-	}
+    template <typename T>
+    T* AllocateArray(size_type size) noexcept
+    {
+        return static_cast<T*>(Allocate(size * sizeof(T)));
+    }
 
-	/// Functional operator for freeing memory allocated by this object.
-	/// @details This method frees memory (like called Free) and allows this object
-	///   to be used as deleter to std::unique_ptr.
-	void operator()(void *p) noexcept
-	{
-		Free(p);
-	}
+    /// Functional operator for freeing memory allocated by this object.
+    /// @details This method frees memory (like called Free) and allows this object
+    ///   to be used as deleter to std::unique_ptr.
+    void operator()(void *p) noexcept
+    {
+        Free(p);
+    }
 
-	auto GetMaxAllocation() const noexcept
-	{
-		return m_maxAllocation;
-	}
+    auto GetMaxAllocation() const noexcept
+    {
+        return m_maxAllocation;
+    }
 
-	/// Gets the current allocation record entry usage count.
-	/// @return Value between 0 and the maximum number of entries possible for this allocator.
-	/// @sa GetMaxEntries.
-	auto GetEntryCount() const noexcept
-	{
-		return m_entryCount;
-	}
+    /// Gets the current allocation record entry usage count.
+    /// @return Value between 0 and the maximum number of entries possible for this allocator.
+    /// @sa GetMaxEntries.
+    auto GetEntryCount() const noexcept
+    {
+        return m_entryCount;
+    }
 
-	/// Gets the current index location.
-	/// @details This represents the number of bytes used (of the storage allocated at construction
+    /// Gets the current index location.
+    /// @details This represents the number of bytes used (of the storage allocated at construction
     ///    time by this object). Storage remaining is calculated by subtracting this value from
-	///    <code>StackSize</code>.
-	/// @return Value between 0 and <code>StackSize</code>.
-	auto GetIndex() const noexcept
-	{
-		return m_index;
-	}
+    ///    <code>StackSize</code>.
+    /// @return Value between 0 and <code>StackSize</code>.
+    auto GetIndex() const noexcept
+    {
+        return m_index;
+    }
 
-	/// Gets the total number of bytes that this object has currently allocated.
-	auto GetAllocation() const noexcept
-	{
-		return m_allocation;
-	}
-	
-	auto GetPreallocatedSize() const noexcept
-	{
-		return m_size;
-	}
-	
-	auto GetMaxEntries() const noexcept
-	{
-		return m_max_entries;
-	}
-	
+    /// Gets the total number of bytes that this object has currently allocated.
+    auto GetAllocation() const noexcept
+    {
+        return m_allocation;
+    }
+    
+    auto GetPreallocatedSize() const noexcept
+    {
+        return m_size;
+    }
+    
+    auto GetMaxEntries() const noexcept
+    {
+        return m_max_entries;
+    }
+    
 private:
 
-	struct AllocationRecord
-	{
-		void* data;
-		size_type size;
-		bool usedMalloc;
-	};
-	
-	char* const m_data;
-	AllocationRecord* const m_entries;
-	size_type const m_size;
-	size_type const m_max_entries;
-	
-	size_type m_index = 0;
-	size_type m_allocation = 0;
-	size_type m_maxAllocation = 0;
-	size_type m_entryCount = 0;
+    struct AllocationRecord
+    {
+        void* data;
+        size_type size;
+        bool usedMalloc;
+    };
+    
+    char* const m_data;
+    AllocationRecord* const m_entries;
+    size_type const m_size;
+    size_type const m_max_entries;
+    
+    size_type m_index = 0;
+    size_type m_allocation = 0;
+    size_type m_maxAllocation = 0;
+    size_type m_entryCount = 0;
 };
-	
+    
 } // namespace box2d
 
 #endif

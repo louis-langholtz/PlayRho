@@ -146,46 +146,46 @@ using namespace box2d;
 
 Island::Island(Bodies::size_type bodyCapacity, Contacts::size_type contactCapacity, Joints::size_type jointCapacity)
 {
-	m_bodies.reserve(bodyCapacity);
-	m_contacts.reserve(contactCapacity);
-	m_joints.reserve(jointCapacity);
+    m_bodies.reserve(bodyCapacity);
+    m_contacts.reserve(contactCapacity);
+    m_joints.reserve(jointCapacity);
 }
 
 std::size_t box2d::Count(const Island& island, const Body* entry)
 {
-	auto n = std::size_t{0};
-	for (auto&& b: island.m_bodies)
-	{
-		if (b == entry)
-		{
-			++n;
-		}
-	}
-	return n;
+    auto n = std::size_t{0};
+    for (auto&& b: island.m_bodies)
+    {
+        if (b == entry)
+        {
+            ++n;
+        }
+    }
+    return n;
 }
 
 std::size_t box2d::Count(const Island& island, const Contact* entry)
 {
-	auto n = std::size_t{0};
-	for (auto&& b: island.m_contacts)
-	{
-		if (b == entry)
-		{
-			++n;
-		}
-	}
-	return n;
+    auto n = std::size_t{0};
+    for (auto&& b: island.m_contacts)
+    {
+        if (b == entry)
+        {
+            ++n;
+        }
+    }
+    return n;
 }
 
 std::size_t box2d::Count(const Island& island, const Joint* entry)
 {
-	auto n = std::size_t{0};
-	for (auto&& b: island.m_joints)
-	{
-		if (b == entry)
-		{
-			++n;
-		}
-	}
-	return n;
+    auto n = std::size_t{0};
+    for (auto&& b: island.m_joints)
+    {
+        if (b == entry)
+        {
+            ++n;
+        }
+    }
+    return n;
 }

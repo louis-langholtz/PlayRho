@@ -26,95 +26,95 @@
 #include <Box2D/Common/Math.hpp>
 
 namespace box2d {
-	
-	class Fixture;
-	class Body;
-	class Shape;
-	class PolygonShape;
-	class EdgeShape;
-	class CircleShape;
-	class ChainShape;
+    
+    class Fixture;
+    class Body;
+    class Shape;
+    class PolygonShape;
+    class EdgeShape;
+    class CircleShape;
+    class ChainShape;
 
-	/// Mass data.
-	/// @details This holds the mass data computed for a shape.
-	/// @note This data structure is 16-bytes large (on at least one 64-bit platform).
-	struct MassData
-	{
-		MassData() = default;
-		
-		/// Initializing constructor.
-		/// @param m Non-negative mass in kg.
-		/// @param c Position of the shape's centroid relative to the shape's origin.
-		/// @param i Non-negative rotational inertia of the shape about the local origin.
-		constexpr MassData(Mass m, Length2D c, RotInertia i) noexcept: mass{m}, center{c}, I{i}
-		{
-			assert(m >= Mass{0});
-			assert(i >= RotInertia{0});
-		}
-				
-		/// The position of the shape's centroid relative to the shape's origin.
-		Length2D center;
-		
-		/// Mass of the shape in kilograms.
-		/// This should NEVER be a negative value.
-		/// @note Behavior is undefined if this value is negative.
-		Mass mass;
+    /// Mass data.
+    /// @details This holds the mass data computed for a shape.
+    /// @note This data structure is 16-bytes large (on at least one 64-bit platform).
+    struct MassData
+    {
+        MassData() = default;
+        
+        /// Initializing constructor.
+        /// @param m Non-negative mass in kg.
+        /// @param c Position of the shape's centroid relative to the shape's origin.
+        /// @param i Non-negative rotational inertia of the shape about the local origin.
+        constexpr MassData(Mass m, Length2D c, RotInertia i) noexcept: mass{m}, center{c}, I{i}
+        {
+            assert(m >= Mass{0});
+            assert(i >= RotInertia{0});
+        }
+                
+        /// The position of the shape's centroid relative to the shape's origin.
+        Length2D center;
+        
+        /// Mass of the shape in kilograms.
+        /// This should NEVER be a negative value.
+        /// @note Behavior is undefined if this value is negative.
+        Mass mass;
 
-		/// Rotational inertia, a.k.a. moment of inertia.
-		/// @details
-		/// This is the rotational inertia of the shape about the local origin.
-		/// This should NEVER be a negative value.
-		/// @note Behavior is undefined if this value is negative.
-		/// @sa https://en.wikipedia.org/wiki/Moment_of_inertia
-		RotInertia I;
-	};
-	
-	Area GetAreaOfCircle(Length radius);
+        /// Rotational inertia, a.k.a. moment of inertia.
+        /// @details
+        /// This is the rotational inertia of the shape about the local origin.
+        /// This should NEVER be a negative value.
+        /// @note Behavior is undefined if this value is negative.
+        /// @sa https://en.wikipedia.org/wiki/Moment_of_inertia
+        RotInertia I;
+    };
+    
+    Area GetAreaOfCircle(Length radius);
 
-	Area GetAreaOfPolygon(Span<const Length2D> vertices);
-	
-	/// Gets the polar moment of the area enclosed by the given vertices.
-	///
-	/// @warning Behavior is undefined if given collection has less than 3 vertices.
-	///
-	/// @param vertices Collection of three or more vertices.
-	///
-	SecondMomentOfArea GetPolarMoment(Span<const Length2D> vertices);
+    Area GetAreaOfPolygon(Span<const Length2D> vertices);
+    
+    /// Gets the polar moment of the area enclosed by the given vertices.
+    ///
+    /// @warning Behavior is undefined if given collection has less than 3 vertices.
+    ///
+    /// @param vertices Collection of three or more vertices.
+    ///
+    SecondMomentOfArea GetPolarMoment(Span<const Length2D> vertices);
 
-	/// Computes the mass data for a circular shape.
-	///
-	/// @param r Radius of the circlular shape.
-	/// @param density Areal density of mass.
-	/// @param location Location of the center of the shape.
-	///
-	MassData GetMassData(const Length r, const Density density, const Length2D location);
+    /// Computes the mass data for a circular shape.
+    ///
+    /// @param r Radius of the circlular shape.
+    /// @param density Areal density of mass.
+    /// @param location Location of the center of the shape.
+    ///
+    MassData GetMassData(const Length r, const Density density, const Length2D location);
 
-	/// Computes the mass data for a linear shape.
-	///
-	/// @param r Radius of the vertices of the linear shape.
-	/// @param density Areal density of mass.
-	/// @param v0 Location of vertex zero.
-	/// @param v1 Location of vertex one.
-	///
-	MassData GetMassData(const Length r, const Density density, const Length2D v0, const Length2D v1);
+    /// Computes the mass data for a linear shape.
+    ///
+    /// @param r Radius of the vertices of the linear shape.
+    /// @param density Areal density of mass.
+    /// @param v0 Location of vertex zero.
+    /// @param v1 Location of vertex one.
+    ///
+    MassData GetMassData(const Length r, const Density density, const Length2D v0, const Length2D v1);
 
-	/// Computes the mass data for the given fixture.
-	///
-	/// @details
-	/// The mass data is based on the density and the shape of the fixture.
-	/// The rotational inertia is about the shape's origin.
-	/// @note This operation may be expensive.
-	///
-	/// @param f Fixture to compute the mass data for.
-	///
-	MassData GetMassData(const Fixture& f);
-	
-	/// Computes the body's mass data.
-	/// @details This basically accumulates the mass data over all fixtures.
-	/// @note The center is the mass weighted sum of all fixture centers. Divide it by the
-	///   mass to get the averaged center.
-	/// @return accumalated mass data for all fixtures associated with the given body.
-	MassData ComputeMassData(const Body& body) noexcept;
+    /// Computes the mass data for the given fixture.
+    ///
+    /// @details
+    /// The mass data is based on the density and the shape of the fixture.
+    /// The rotational inertia is about the shape's origin.
+    /// @note This operation may be expensive.
+    ///
+    /// @param f Fixture to compute the mass data for.
+    ///
+    MassData GetMassData(const Fixture& f);
+    
+    /// Computes the body's mass data.
+    /// @details This basically accumulates the mass data over all fixtures.
+    /// @note The center is the mass weighted sum of all fixture centers. Divide it by the
+    ///   mass to get the averaged center.
+    /// @return accumalated mass data for all fixtures associated with the given body.
+    MassData ComputeMassData(const Body& body) noexcept;
 }
 
 #endif /* B2_MASS_DATA_HPP */

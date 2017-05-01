@@ -24,30 +24,30 @@
 
 namespace box2d
 {
-	
-	/// Index pair.
-	/// @note This data structure is at least 2-bytes large.
-	struct IndexPair
-	{
-		/// Size type.
-		/// @details Must be big enough to hold max posible count of vertices.
-		using size_type = std::remove_const<decltype(MaxShapeVertices)>::type;
-		
-		static constexpr size_type InvalidIndex = static_cast<size_type>(-1);
-		
-		size_type a; ///< Index of vertex from shape A.
-		size_type b; ///< Index of vertex from shape B.
-	};
-	
-	constexpr inline bool operator == (IndexPair lhs, IndexPair rhs)
-	{
-		return (lhs.a == rhs.a) && (lhs.b == rhs.b);
-	}
-	
-	constexpr inline bool operator != (IndexPair lhs, IndexPair rhs)
-	{
-		return (lhs.a != rhs.a) || (lhs.b != rhs.b);
-	}
+    
+    /// Index pair.
+    /// @note This data structure is at least 2-bytes large.
+    struct IndexPair
+    {
+        /// Size type.
+        /// @details Must be big enough to hold max posible count of vertices.
+        using size_type = std::remove_const<decltype(MaxShapeVertices)>::type;
+        
+        static constexpr size_type InvalidIndex = static_cast<size_type>(-1);
+        
+        size_type a; ///< Index of vertex from shape A.
+        size_type b; ///< Index of vertex from shape B.
+    };
+    
+    constexpr inline bool operator == (IndexPair lhs, IndexPair rhs)
+    {
+        return (lhs.a == rhs.a) && (lhs.b == rhs.b);
+    }
+    
+    constexpr inline bool operator != (IndexPair lhs, IndexPair rhs)
+    {
+        return (lhs.a != rhs.a) || (lhs.b != rhs.b);
+    }
 
 };
 

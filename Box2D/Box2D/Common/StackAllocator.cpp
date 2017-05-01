@@ -25,81 +25,81 @@
 using namespace box2d;
 
 StackAllocator::StackAllocator(Configuration config) noexcept:
-	m_data{static_cast<decltype(m_data)>(alloc(config.preallocation_size))},
-	m_entries{static_cast<AllocationRecord*>(alloc(config.allocation_records * sizeof(AllocationRecord)))},
-	m_size{config.preallocation_size},
-	m_max_entries{config.allocation_records}
+    m_data{static_cast<decltype(m_data)>(alloc(config.preallocation_size))},
+    m_entries{static_cast<AllocationRecord*>(alloc(config.allocation_records * sizeof(AllocationRecord)))},
+    m_size{config.preallocation_size},
+    m_max_entries{config.allocation_records}
 {
-	// Intentionally empty.
+    // Intentionally empty.
 }
 
 StackAllocator::~StackAllocator() noexcept
 {
-	assert(m_index == 0);
-	assert(m_entryCount == 0);
-	free(m_entries);
-	free(m_data);
+    assert(m_index == 0);
+    assert(m_entryCount == 0);
+    free(m_entries);
+    free(m_data);
 }
 
 static inline size_t alignment_size(size_t size)
 {
-	constexpr auto one = static_cast<size_t>(1);
-	return (size < one)? one: (size < sizeof(std::max_align_t))?
-		static_cast<size_t>(NextPowerOfTwo(size - one)): alignof(std::max_align_t);
+    constexpr auto one = static_cast<size_t>(1);
+    return (size < one)? one: (size < sizeof(std::max_align_t))?
+        static_cast<size_t>(NextPowerOfTwo(size - one)): alignof(std::max_align_t);
 };
 
 void* StackAllocator::Allocate(size_type size) noexcept
 {
-	assert(m_index <= m_size);
+    assert(m_index <= m_size);
 
-	if (m_entryCount < m_max_entries)
-	{
-		auto entry = m_entries + m_entryCount;
-		
-		const auto available = m_size - m_index;
-		if (size > (available / sizeof(std::max_align_t)) * sizeof(std::max_align_t))
-		{
-			entry->data = static_cast<decltype(entry->data)>(alloc(size));
-			entry->usedMalloc = true;
-		}
-		else
-		{
-			auto ptr = static_cast<void*>(m_data + m_index);
-			auto space = available;
-			entry->data = std::align(alignment_size(size), size, ptr, space);
-			entry->usedMalloc = false;
-			size += (available - space);
-			m_index += size;
-		}
+    if (m_entryCount < m_max_entries)
+    {
+        auto entry = m_entries + m_entryCount;
+        
+        const auto available = m_size - m_index;
+        if (size > (available / sizeof(std::max_align_t)) * sizeof(std::max_align_t))
+        {
+            entry->data = static_cast<decltype(entry->data)>(alloc(size));
+            entry->usedMalloc = true;
+        }
+        else
+        {
+            auto ptr = static_cast<void*>(m_data + m_index);
+            auto space = available;
+            entry->data = std::align(alignment_size(size), size, ptr, space);
+            entry->usedMalloc = false;
+            size += (available - space);
+            m_index += size;
+        }
 
-		entry->size = size;
-		m_allocation += size;
-		m_maxAllocation = Max(m_maxAllocation, m_allocation);
-		++m_entryCount;
+        entry->size = size;
+        m_allocation += size;
+        m_maxAllocation = Max(m_maxAllocation, m_allocation);
+        ++m_entryCount;
 
-		return entry->data;
-	}
-	return nullptr;
+        return entry->data;
+    }
+    return nullptr;
 }
 
 void StackAllocator::Free(void* p) noexcept
 {
-	if (p)
-	{
-		assert(m_entryCount > 0);
-		const auto entry = m_entries + m_entryCount - 1;
-		assert(p == entry->data);
-		if (entry->usedMalloc)
-		{
-			free(p);
-		}
-		else
-		{
-			assert(m_index >= entry->size);
-			m_index -= entry->size;
-		}
-		assert(m_allocation >= entry->size);
-		m_allocation -= entry->size;
-		--m_entryCount;
-	}
+    if (p)
+    {
+        assert(m_entryCount > 0);
+        const auto entry = m_entries + m_entryCount - 1;
+        assert(p == entry->data);
+        if (entry->usedMalloc)
+        {
+            free(p);
+        }
+        else
+        {
+            assert(m_index >= entry->size);
+            m_index -= entry->size;
+        }
+        assert(m_allocation >= entry->size);
+        m_allocation -= entry->size;
+        --m_entryCount;
+    }
 }

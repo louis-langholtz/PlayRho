@@ -28,17 +28,17 @@ namespace box2d {
 /// revolute or prismatic joints (any combination will work).
 struct GearJointDef : public JointDef
 {
-	constexpr GearJointDef() noexcept: JointDef(JointType::Gear) {}
+    constexpr GearJointDef() noexcept: JointDef(JointType::Gear) {}
 
-	/// The first revolute/prismatic joint attached to the gear joint.
-	Joint* joint1 = nullptr;
+    /// The first revolute/prismatic joint attached to the gear joint.
+    Joint* joint1 = nullptr;
 
-	/// The second revolute/prismatic joint attached to the gear joint.
-	Joint* joint2 = nullptr;
+    /// The second revolute/prismatic joint attached to the gear joint.
+    Joint* joint2 = nullptr;
 
-	/// The gear ratio.
-	/// @see GearJoint for explanation.
-	RealNum ratio = RealNum{1};
+    /// The gear ratio.
+    /// @see GearJoint for explanation.
+    RealNum ratio = RealNum{1};
 };
 
 /// A gear joint is used to connect two joints together. Either joint
@@ -53,80 +53,80 @@ struct GearJointDef : public JointDef
 class GearJoint : public Joint
 {
 public:
-	GearJoint(const GearJointDef& data);
-	
-	Length2D GetAnchorA() const override;
-	Length2D GetAnchorB() const override;
+    GearJoint(const GearJointDef& data);
+    
+    Length2D GetAnchorA() const override;
+    Length2D GetAnchorB() const override;
 
-	Force2D GetReactionForce(Frequency inv_dt) const override;
-	Torque GetReactionTorque(Frequency inv_dt) const override;
+    Force2D GetReactionForce(Frequency inv_dt) const override;
+    Torque GetReactionTorque(Frequency inv_dt) const override;
 
-	/// The local anchor point relative to bodyA's origin.
-	Length2D GetLocalAnchorA() const { return m_localAnchorA; }
-	
-	/// The local anchor point relative to bodyB's origin.
-	Length2D GetLocalAnchorB() const  { return m_localAnchorB; }
+    /// The local anchor point relative to bodyA's origin.
+    Length2D GetLocalAnchorA() const { return m_localAnchorA; }
+    
+    /// The local anchor point relative to bodyB's origin.
+    Length2D GetLocalAnchorB() const  { return m_localAnchorB; }
 
-	/// Get the first joint.
-	Joint* GetJoint1() noexcept { return m_joint1; }
+    /// Get the first joint.
+    Joint* GetJoint1() noexcept { return m_joint1; }
 
-	/// Get the second joint.
-	Joint* GetJoint2() noexcept { return m_joint2; }
+    /// Get the second joint.
+    Joint* GetJoint2() noexcept { return m_joint2; }
 
-	/// Get the first joint.
-	const Joint* GetJoint1() const noexcept { return m_joint1; }
-	
-	/// Get the second joint.
-	const Joint* GetJoint2() const noexcept { return m_joint2; }
-	
-	/// Set/Get the gear ratio.
-	void SetRatio(RealNum ratio);
-	RealNum GetRatio() const;
+    /// Get the first joint.
+    const Joint* GetJoint1() const noexcept { return m_joint1; }
+    
+    /// Get the second joint.
+    const Joint* GetJoint2() const noexcept { return m_joint2; }
+    
+    /// Set/Get the gear ratio.
+    void SetRatio(RealNum ratio);
+    RealNum GetRatio() const;
 
 private:
 
-	void InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
-	RealNum SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) override;
-	bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
+    void InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
+    RealNum SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) override;
+    bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
 
-	Joint* m_joint1;
-	Joint* m_joint2;
+    Joint* m_joint1;
+    Joint* m_joint2;
 
-	JointType m_typeA;
-	JointType m_typeB;
+    JointType m_typeA;
+    JointType m_typeB;
 
-	// Body A is connected to body C
-	// Body B is connected to body D
-	Body* m_bodyC;
-	Body* m_bodyD;
+    // Body A is connected to body C
+    // Body B is connected to body D
+    Body* m_bodyC;
+    Body* m_bodyD;
 
-	// Solver shared
-	Length2D m_localAnchorA;
-	Length2D m_localAnchorB;
-	Length2D m_localAnchorC;
-	Length2D m_localAnchorD;
+    // Solver shared
+    Length2D m_localAnchorA;
+    Length2D m_localAnchorB;
+    Length2D m_localAnchorC;
+    Length2D m_localAnchorD;
 
-	UnitVec2 m_localAxisC;
-	UnitVec2 m_localAxisD;
+    UnitVec2 m_localAxisC;
+    UnitVec2 m_localAxisD;
 
-	Angle m_referenceAngleA;
-	Angle m_referenceAngleB;
+    Angle m_referenceAngleA;
+    Angle m_referenceAngleB;
 
-	RealNum m_constant;
-	RealNum m_ratio;
+    RealNum m_constant;
+    RealNum m_ratio;
 
-	Momentum m_impulse = Momentum{0};
+    Momentum m_impulse = Momentum{0};
 
-	// Solver temp
-	Vec2 m_JvAC;
-	Vec2 m_JvBD;
-	Length m_JwA;
-	Length m_JwB;
-	Length m_JwC;
-	Length m_JwD;
-	RealNum m_mass; ///< Either linear mass or angular mass.
+    // Solver temp
+    Vec2 m_JvAC;
+    Vec2 m_JvBD;
+    Length m_JwA;
+    Length m_JwB;
+    Length m_JwC;
+    Length m_JwD;
+    RealNum m_mass; ///< Either linear mass or angular mass.
 };
-	
+    
 } // namespace box2d
 
 #endif

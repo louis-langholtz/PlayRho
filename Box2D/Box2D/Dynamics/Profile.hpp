@@ -23,19 +23,19 @@
 #include <Box2D/Common/Math.hpp>
 
 namespace box2d {
-	
-	/// Profiling data. Times are in milliseconds.
-	struct Profile
-	{
-		RealNum step;
-		RealNum collide;
-		RealNum solve;
-		RealNum solveInit;
-		RealNum solveVelocity;
-		RealNum solvePosition;
-		RealNum broadphase;
-		RealNum solveTOI;
-	};
+    
+    /// Profiling data. Times are in milliseconds.
+    struct Profile
+    {
+        RealNum step;
+        RealNum collide;
+        RealNum solve;
+        RealNum solveInit;
+        RealNum solveVelocity;
+        RealNum solvePosition;
+        RealNum broadphase;
+        RealNum solveTOI;
+    };
 }
 
 #endif /* Profile_hpp */

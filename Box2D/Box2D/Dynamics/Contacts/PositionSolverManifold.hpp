@@ -27,51 +27,51 @@
 
 namespace box2d
 {
-	/// Position solver manifold.
-	/// @details
-	/// This is a normal-point-separation composition of data for position constraint resolution.
-	/// @note This data structure is 20-bytes large.
-	struct PositionSolverManifold
-	{
-		/// Normal.
-		/// @details Normal of the contact between two points. This is the axis upon which impulses
-		///    should be applied to resolve the negative separations of overlapping shapes.
-		/// @note This field is 8-bytes large.
-		UnitVec2 m_normal;
+    /// Position solver manifold.
+    /// @details
+    /// This is a normal-point-separation composition of data for position constraint resolution.
+    /// @note This data structure is 20-bytes large.
+    struct PositionSolverManifold
+    {
+        /// Normal.
+        /// @details Normal of the contact between two points. This is the axis upon which impulses
+        ///    should be applied to resolve the negative separations of overlapping shapes.
+        /// @note This field is 8-bytes large.
+        UnitVec2 m_normal;
 
-		/// Point.
-		/// @details Point at which position resolution should be relatively applied.
-		/// @note This field is 8-bytes large.
-		Length2D m_point;
-		
-		/// Separation.
-		/// @details Separation between two points (i.e. penetration if negative).
-		/// @note This field is 4-bytes large.
-		Length m_separation;
-	};
+        /// Point.
+        /// @details Point at which position resolution should be relatively applied.
+        /// @note This field is 8-bytes large.
+        Length2D m_point;
+        
+        /// Separation.
+        /// @details Separation between two points (i.e. penetration if negative).
+        /// @note This field is 4-bytes large.
+        Length m_separation;
+    };
 
-	/// Gets the normal-point-separation data in world coordinates for the given inputs.
-	/// @note The returned normal is in the direction of shape A to shape B.
-	/// @note The returned separation distance does not account for vertex radiuses. It's simply
-	///   the separation between the points of the manifold. To account for the vertex radiuses,
-	///   the total vertex radius must be subtracted from this separation distance.
-	PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type index,
-								  const Transformation& xfA, const Transformation& xfB);
-	
-	/// Gets the normal-point-separation data in world coordinates for the given inputs.
-	/// @note The returned normal is in the direction of shape A to shape B.
-	/// @note The returned separation distance does not account for vertex radiuses. It's simply
-	///   the separation between the points of the manifold. To account for the vertex radiuses,
-	///   the total vertex radius must be subtracted from this separation distance.
-	inline PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type index,
-										 Position pos_a, Length2D lc_ctr_a,
-										 Position pos_b, Length2D lc_ctr_b)
-	{
-		const auto xfA = GetTransformation(pos_a, lc_ctr_a);
-		const auto xfB = GetTransformation(pos_b, lc_ctr_b);
-		return GetPSM(manifold, index, xfA, xfB);
-	}
-	
+    /// Gets the normal-point-separation data in world coordinates for the given inputs.
+    /// @note The returned normal is in the direction of shape A to shape B.
+    /// @note The returned separation distance does not account for vertex radiuses. It's simply
+    ///   the separation between the points of the manifold. To account for the vertex radiuses,
+    ///   the total vertex radius must be subtracted from this separation distance.
+    PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type index,
+                                  const Transformation& xfA, const Transformation& xfB);
+    
+    /// Gets the normal-point-separation data in world coordinates for the given inputs.
+    /// @note The returned normal is in the direction of shape A to shape B.
+    /// @note The returned separation distance does not account for vertex radiuses. It's simply
+    ///   the separation between the points of the manifold. To account for the vertex radiuses,
+    ///   the total vertex radius must be subtracted from this separation distance.
+    inline PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type index,
+                                         Position pos_a, Length2D lc_ctr_a,
+                                         Position pos_b, Length2D lc_ctr_b)
+    {
+        const auto xfA = GetTransformation(pos_a, lc_ctr_a);
+        const auto xfB = GetTransformation(pos_b, lc_ctr_b);
+        return GetPSM(manifold, index, xfA, xfB);
+    }
+    
 }; // namespace box2d
 
 #endif /* PositionSolverManifold_hpp */

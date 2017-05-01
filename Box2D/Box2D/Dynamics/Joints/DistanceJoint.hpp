@@ -32,31 +32,31 @@ namespace box2d {
 /// @warning Do not use a zero or short length.
 struct DistanceJointDef : public JointDef
 {
-	constexpr DistanceJointDef() noexcept: JointDef{JointType::Distance} {}
-	DistanceJointDef(const DistanceJointDef& copy) = default;
+    constexpr DistanceJointDef() noexcept: JointDef{JointType::Distance} {}
+    DistanceJointDef(const DistanceJointDef& copy) = default;
 
-	/// Initialize the bodies, anchors, and length using the world anchors.
-	DistanceJointDef(Body* bodyA, Body* bodyB,
-					 const Length2D anchorA = Vec2_zero * Meter,
-					 const Length2D anchorB = Vec2_zero * Meter,
-					 Frequency freq = Frequency{0}, RealNum damp = 0) noexcept;
+    /// Initialize the bodies, anchors, and length using the world anchors.
+    DistanceJointDef(Body* bodyA, Body* bodyB,
+                     const Length2D anchorA = Vec2_zero * Meter,
+                     const Length2D anchorB = Vec2_zero * Meter,
+                     Frequency freq = Frequency{0}, RealNum damp = 0) noexcept;
 
-	/// The local anchor point relative to bodyA's origin.
-	Length2D localAnchorA = Vec2_zero * Meter;
+    /// The local anchor point relative to bodyA's origin.
+    Length2D localAnchorA = Vec2_zero * Meter;
 
-	/// The local anchor point relative to bodyB's origin.
-	Length2D localAnchorB = Vec2_zero * Meter;
+    /// The local anchor point relative to bodyB's origin.
+    Length2D localAnchorB = Vec2_zero * Meter;
 
-	/// The natural length between the anchor points.
-	Length length = RealNum{1} * Meter;
+    /// The natural length between the anchor points.
+    Length length = RealNum{1} * Meter;
 
-	/// Mass-spring-damper frequency in Hertz.
-	/// @note 0 disables softness.
-	/// @note Should be 0 or greater.
-	Frequency frequencyHz = Frequency{0};
+    /// Mass-spring-damper frequency in Hertz.
+    /// @note 0 disables softness.
+    /// @note Should be 0 or greater.
+    Frequency frequencyHz = Frequency{0};
 
-	/// The damping ratio. 0 = no damping, 1 = critical damping.
-	RealNum dampingRatio = 0;
+    /// The damping ratio. 0 = no damping, 1 = critical damping.
+    RealNum dampingRatio = 0;
 };
 
 /// Distance Joint.
@@ -67,92 +67,92 @@ struct DistanceJointDef : public JointDef
 class DistanceJoint : public Joint
 {
 public:
-	static bool IsOkay(const DistanceJointDef& data) noexcept;
+    static bool IsOkay(const DistanceJointDef& data) noexcept;
 
-	DistanceJoint(const DistanceJointDef& data);
+    DistanceJoint(const DistanceJointDef& data);
 
-	Length2D GetAnchorA() const override;
-	Length2D GetAnchorB() const override;
+    Length2D GetAnchorA() const override;
+    Length2D GetAnchorB() const override;
 
-	/// Get the reaction force given the inverse time step.
-	/// Unit is N.
-	Force2D GetReactionForce(Frequency inv_dt) const override;
+    /// Get the reaction force given the inverse time step.
+    /// Unit is N.
+    Force2D GetReactionForce(Frequency inv_dt) const override;
 
-	/// Get the reaction torque given the inverse time step.
-	/// Unit is N*m. This is always zero for a distance joint.
-	Torque GetReactionTorque(Frequency inv_dt) const override;
+    /// Get the reaction torque given the inverse time step.
+    /// Unit is N*m. This is always zero for a distance joint.
+    Torque GetReactionTorque(Frequency inv_dt) const override;
 
-	/// The local anchor point relative to bodyA's origin.
-	Length2D GetLocalAnchorA() const noexcept { return m_localAnchorA; }
+    /// The local anchor point relative to bodyA's origin.
+    Length2D GetLocalAnchorA() const noexcept { return m_localAnchorA; }
 
-	/// The local anchor point relative to bodyB's origin.
-	Length2D GetLocalAnchorB() const noexcept { return m_localAnchorB; }
+    /// The local anchor point relative to bodyB's origin.
+    Length2D GetLocalAnchorB() const noexcept { return m_localAnchorB; }
 
-	/// Set/get the natural length.
-	/// Manipulating the length can lead to non-physical behavior when the frequency is zero.
-	void SetLength(Length length) noexcept;
-	Length GetLength() const noexcept;
+    /// Set/get the natural length.
+    /// Manipulating the length can lead to non-physical behavior when the frequency is zero.
+    void SetLength(Length length) noexcept;
+    Length GetLength() const noexcept;
 
-	/// Set/get frequency in Hz.
-	void SetFrequency(Frequency hz) noexcept;
-	Frequency GetFrequency() const noexcept;
+    /// Set/get frequency in Hz.
+    void SetFrequency(Frequency hz) noexcept;
+    Frequency GetFrequency() const noexcept;
 
-	/// Set/get damping ratio.
-	void SetDampingRatio(RealNum ratio) noexcept;
-	RealNum GetDampingRatio() const noexcept;
+    /// Set/get damping ratio.
+    void SetDampingRatio(RealNum ratio) noexcept;
+    RealNum GetDampingRatio() const noexcept;
 
 private:
 
-	void InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
-	RealNum SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) override;
-	bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
+    void InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
+    RealNum SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) override;
+    bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
 
-	Length2D m_localAnchorA;
-	Length2D m_localAnchorB;
-	Length m_length;
-	Frequency m_frequencyHz;
-	RealNum m_dampingRatio;
+    Length2D m_localAnchorA;
+    Length2D m_localAnchorB;
+    Length m_length;
+    Frequency m_frequencyHz;
+    RealNum m_dampingRatio;
 
-	// Solver temp
-	InvMass m_invGamma;
-	Momentum m_impulse = Momentum{0};
-	LinearVelocity m_bias;
-	Mass m_mass;
-	UnitVec2 m_u;
-	Length2D m_rA;
-	Length2D m_rB;
+    // Solver temp
+    InvMass m_invGamma;
+    Momentum m_impulse = Momentum{0};
+    LinearVelocity m_bias;
+    Mass m_mass;
+    UnitVec2 m_u;
+    Length2D m_rA;
+    Length2D m_rB;
 };
 
 inline void DistanceJoint::SetLength(Length length) noexcept
 {
-	m_length = length;
+    m_length = length;
 }
 
 inline Length DistanceJoint::GetLength() const noexcept
 {
-	return m_length;
+    return m_length;
 }
 
 inline void DistanceJoint::SetFrequency(Frequency hz) noexcept
 {
-	m_frequencyHz = hz;
+    m_frequencyHz = hz;
 }
 
 inline Frequency DistanceJoint::GetFrequency() const noexcept
 {
-	return m_frequencyHz;
+    return m_frequencyHz;
 }
 
 inline void DistanceJoint::SetDampingRatio(RealNum ratio) noexcept
 {
-	m_dampingRatio = ratio;
+    m_dampingRatio = ratio;
 }
 
 inline RealNum DistanceJoint::GetDampingRatio() const noexcept
 {
-	return m_dampingRatio;
+    return m_dampingRatio;
 }
-	
+    
 } // namespace box2d
 
 #endif

@@ -27,21 +27,21 @@
 #include <Box2D/Dynamics/Fixture.hpp>
 
 namespace box2d {
-	
-	bool TestOverlap(const Shape& shapeA, child_count_t indexA, const Transformation& xfA,
-					 const Shape& shapeB, child_count_t indexB, const Transformation& xfB)
-	{
-		const auto proxyA = shapeA.GetChild(indexA);
-		const auto proxyB = shapeB.GetChild(indexB);
-		
-		const auto distanceInfo = Distance(proxyA, xfA, proxyB, xfB);
-		assert(distanceInfo.state != DistanceOutput::Unknown && distanceInfo.state != DistanceOutput::HitMaxIters);
+    
+    bool TestOverlap(const Shape& shapeA, child_count_t indexA, const Transformation& xfA,
+                     const Shape& shapeB, child_count_t indexB, const Transformation& xfB)
+    {
+        const auto proxyA = shapeA.GetChild(indexA);
+        const auto proxyB = shapeB.GetChild(indexB);
+        
+        const auto distanceInfo = Distance(proxyA, xfA, proxyB, xfB);
+        assert(distanceInfo.state != DistanceOutput::Unknown && distanceInfo.state != DistanceOutput::HitMaxIters);
 
-		const auto witnessPoints = GetWitnessPoints(distanceInfo.simplex);
-		const auto distanceSquared = GetLengthSquared(StripUnits(witnessPoints.a - witnessPoints.b));
-		const auto totalRadiusSquared = Square((proxyA.GetVertexRadius() + proxyB.GetVertexRadius()) / Meter);
-		const auto separation_amount = distanceSquared - totalRadiusSquared;
-		return (separation_amount < 0) || almost_zero(separation_amount);
-	}
-	
+        const auto witnessPoints = GetWitnessPoints(distanceInfo.simplex);
+        const auto distanceSquared = GetLengthSquared(StripUnits(witnessPoints.a - witnessPoints.b));
+        const auto totalRadiusSquared = Square((proxyA.GetVertexRadius() + proxyB.GetVertexRadius()) / Meter);
+        const auto separation_amount = distanceSquared - totalRadiusSquared;
+        return (separation_amount < 0) || almost_zero(separation_amount);
+    }
+    
 } // namespace box2d

@@ -27,25 +27,25 @@ namespace box2d {
 /// Motor joint definition.
 struct MotorJointDef : public JointDef
 {
-	constexpr MotorJointDef() noexcept: JointDef(JointType::Motor) {}
+    constexpr MotorJointDef() noexcept: JointDef(JointType::Motor) {}
 
-	/// Initialize the bodies and offsets using the current transforms.
-	void Initialize(Body* bodyA, Body* bodyB);
+    /// Initialize the bodies and offsets using the current transforms.
+    void Initialize(Body* bodyA, Body* bodyB);
 
-	/// Position of bodyB minus the position of bodyA, in bodyA's frame, in meters.
-	Length2D linearOffset = Vec2_zero * Meter;
+    /// Position of bodyB minus the position of bodyA, in bodyA's frame, in meters.
+    Length2D linearOffset = Vec2_zero * Meter;
 
-	/// The bodyB angle minus bodyA angle in radians.
-	Angle angularOffset = Angle{0};
-	
-	/// The maximum motor force in N.
-	Force maxForce = RealNum{1} * Newton;
+    /// The bodyB angle minus bodyA angle in radians.
+    Angle angularOffset = Angle{0};
+    
+    /// The maximum motor force in N.
+    Force maxForce = RealNum{1} * Newton;
 
-	/// The maximum motor torque in N-m.
-	Torque maxTorque = RealNum{1} * NewtonMeter;
+    /// The maximum motor torque in N-m.
+    Torque maxTorque = RealNum{1} * NewtonMeter;
 
-	/// Position correction factor in the range [0,1].
-	RealNum correctionFactor = RealNum(0.3);
+    /// Position correction factor in the range [0,1].
+    RealNum correctionFactor = RealNum(0.3);
 };
 
 /// A motor joint is used to control the relative motion
@@ -54,62 +54,62 @@ struct MotorJointDef : public JointDef
 class MotorJoint : public Joint
 {
 public:
-	MotorJoint(const MotorJointDef& def);
+    MotorJoint(const MotorJointDef& def);
 
-	Length2D GetAnchorA() const override;
-	Length2D GetAnchorB() const override;
+    Length2D GetAnchorA() const override;
+    Length2D GetAnchorB() const override;
 
-	Force2D GetReactionForce(Frequency inv_dt) const override;
-	Torque GetReactionTorque(Frequency inv_dt) const override;
+    Force2D GetReactionForce(Frequency inv_dt) const override;
+    Torque GetReactionTorque(Frequency inv_dt) const override;
 
-	/// Set/get the target linear offset, in frame A, in meters.
-	void SetLinearOffset(const Length2D linearOffset);
-	const Length2D GetLinearOffset() const;
+    /// Set/get the target linear offset, in frame A, in meters.
+    void SetLinearOffset(const Length2D linearOffset);
+    const Length2D GetLinearOffset() const;
 
-	/// Set/get the target angular offset, in radians.
-	void SetAngularOffset(Angle angularOffset);
-	Angle GetAngularOffset() const;
+    /// Set/get the target angular offset, in radians.
+    void SetAngularOffset(Angle angularOffset);
+    Angle GetAngularOffset() const;
 
-	/// Set the maximum friction force in N.
-	void SetMaxForce(Force force);
+    /// Set the maximum friction force in N.
+    void SetMaxForce(Force force);
 
-	/// Get the maximum friction force in N.
-	Force GetMaxForce() const;
+    /// Get the maximum friction force in N.
+    Force GetMaxForce() const;
 
-	/// Set the maximum friction torque in N*m.
-	void SetMaxTorque(Torque torque);
+    /// Set the maximum friction torque in N*m.
+    void SetMaxTorque(Torque torque);
 
-	/// Get the maximum friction torque in N*m.
-	Torque GetMaxTorque() const;
+    /// Get the maximum friction torque in N*m.
+    Torque GetMaxTorque() const;
 
-	/// Set the position correction factor in the range [0,1].
-	void SetCorrectionFactor(RealNum factor);
+    /// Set the position correction factor in the range [0,1].
+    void SetCorrectionFactor(RealNum factor);
 
-	/// Get the position correction factor in the range [0,1].
-	RealNum GetCorrectionFactor() const;
+    /// Get the position correction factor in the range [0,1].
+    RealNum GetCorrectionFactor() const;
 
 private:
 
-	void InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
-	RealNum SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) override;
-	bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
+    void InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
+    RealNum SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) override;
+    bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
 
-	// Solver shared
-	Length2D m_linearOffset;
-	Angle m_angularOffset;
-	Momentum2D m_linearImpulse = Vec2_zero * Kilogram * MeterPerSecond;
-	AngularMomentum m_angularImpulse = AngularMomentum{0};
-	Force m_maxForce;
-	Torque m_maxTorque;
-	RealNum m_correctionFactor;
+    // Solver shared
+    Length2D m_linearOffset;
+    Angle m_angularOffset;
+    Momentum2D m_linearImpulse = Vec2_zero * Kilogram * MeterPerSecond;
+    AngularMomentum m_angularImpulse = AngularMomentum{0};
+    Force m_maxForce;
+    Torque m_maxTorque;
+    RealNum m_correctionFactor;
 
-	// Solver temp
-	Length2D m_rA;
-	Length2D m_rB;
-	Length2D m_linearError;
-	Angle m_angularError;
-	Mat22 m_linearMass;
-	RotInertia m_angularMass;
+    // Solver temp
+    Length2D m_rA;
+    Length2D m_rB;
+    Length2D m_linearError;
+    Angle m_angularError;
+    Mat22 m_linearMass;
+    RotInertia m_angularMass;
 };
 
 } // namespace box2d

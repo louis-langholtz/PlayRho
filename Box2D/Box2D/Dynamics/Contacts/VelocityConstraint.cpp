@@ -26,144 +26,144 @@
 using namespace box2d;
 
 VelocityConstraint::VelocityConstraint(index_type contactIndex,
-									   RealNum friction, RealNum restitution,
-									   LinearVelocity tangentSpeed,
-									   const Manifold& manifold,
-									   BodyConstraint& bA, Length radiusA,
-									   BodyConstraint& bB, Length radiusB,
-									   Conf conf):
-	m_contactIndex{contactIndex},
-	m_friction{friction}, m_restitution{restitution}, m_tangentSpeed{tangentSpeed},
-	bodyA{bA}, bodyB{bB},
-	m_invMass{bA.GetInvMass() + bB.GetInvMass()}
+                                       RealNum friction, RealNum restitution,
+                                       LinearVelocity tangentSpeed,
+                                       const Manifold& manifold,
+                                       BodyConstraint& bA, Length radiusA,
+                                       BodyConstraint& bB, Length radiusB,
+                                       Conf conf):
+    m_contactIndex{contactIndex},
+    m_friction{friction}, m_restitution{restitution}, m_tangentSpeed{tangentSpeed},
+    bodyA{bA}, bodyB{bB},
+    m_invMass{bA.GetInvMass() + bB.GetInvMass()}
 {
-	assert(IsValid(contactIndex));
-	assert(IsValid(friction));
-	assert(IsValid(restitution));
-	assert(IsValid(tangentSpeed));
-	
-	const auto xfA = GetTransformation(bA.GetPosition(), bA.GetLocalCenter());
-	const auto xfB = GetTransformation(bB.GetPosition(), bB.GetLocalCenter());
-	const auto worldManifold = GetWorldManifold(manifold, xfA, radiusA, xfB, radiusB);
-	m_normal = worldManifold.GetNormal();
-	assert(IsValid(m_normal));
-	m_tangent = GetFwdPerpendicular(m_normal);
+    assert(IsValid(contactIndex));
+    assert(IsValid(friction));
+    assert(IsValid(restitution));
+    assert(IsValid(tangentSpeed));
+    
+    const auto xfA = GetTransformation(bA.GetPosition(), bA.GetLocalCenter());
+    const auto xfB = GetTransformation(bB.GetPosition(), bB.GetLocalCenter());
+    const auto worldManifold = GetWorldManifold(manifold, xfA, radiusA, xfB, radiusB);
+    m_normal = worldManifold.GetNormal();
+    assert(IsValid(m_normal));
+    m_tangent = GetFwdPerpendicular(m_normal);
 
-	const auto pointCount = manifold.GetPointCount();
-	assert(pointCount > 0);
-	for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
-	{
-		const auto ci = manifold.GetContactImpulses(j);
-		
-		const auto worldPoint = worldManifold.GetPoint(j);
-		const auto vcp_rA = worldPoint - bodyA.GetPosition().linear;
-		const auto vcp_rB = worldPoint - bodyB.GetPosition().linear;
-		
-		AddPoint(ci.m_normal, ci.m_tangent, vcp_rA, vcp_rB, conf);
-	}
-	
-	if (conf.blockSolve)
-	{
-		const auto k = ComputeK();
-		if (IsValid(k))
-		{
-			// Ensure a reasonable condition number.
-			constexpr auto maxCondNum = BOX2D_MAGIC(RealNum(1000));
-			const auto scaled_k11_squared = k.ex.x * (k.ex.x / maxCondNum);
-			const auto k11_times_k22 = k.ex.x * k.ey.y;
-			const auto k12_squared = Square(k.ex.y);
-			const auto k_diff = k11_times_k22 - k12_squared;
-			if (scaled_k11_squared < k_diff)
-			{
-				// K is safe to invert.
-				// Prepare the block solver.
-				SetK(k);
-			}
-			else
-			{
-				// The constraints are redundant, just use one.
-				// TODO_ERIN use deepest?
-				RemovePoint();
-			}
-		}
-	}
+    const auto pointCount = manifold.GetPointCount();
+    assert(pointCount > 0);
+    for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
+    {
+        const auto ci = manifold.GetContactImpulses(j);
+        
+        const auto worldPoint = worldManifold.GetPoint(j);
+        const auto vcp_rA = worldPoint - bodyA.GetPosition().linear;
+        const auto vcp_rB = worldPoint - bodyB.GetPosition().linear;
+        
+        AddPoint(ci.m_normal, ci.m_tangent, vcp_rA, vcp_rB, conf);
+    }
+    
+    if (conf.blockSolve)
+    {
+        const auto k = ComputeK();
+        if (IsValid(k))
+        {
+            // Ensure a reasonable condition number.
+            constexpr auto maxCondNum = BOX2D_MAGIC(RealNum(1000));
+            const auto scaled_k11_squared = k.ex.x * (k.ex.x / maxCondNum);
+            const auto k11_times_k22 = k.ex.x * k.ey.y;
+            const auto k12_squared = Square(k.ex.y);
+            const auto k_diff = k11_times_k22 - k12_squared;
+            if (scaled_k11_squared < k_diff)
+            {
+                // K is safe to invert.
+                // Prepare the block solver.
+                SetK(k);
+            }
+            else
+            {
+                // The constraints are redundant, just use one.
+                // TODO_ERIN use deepest?
+                RemovePoint();
+            }
+        }
+    }
 }
 
 VelocityConstraint::Point VelocityConstraint::GetPoint(Momentum normalImpulse, Momentum tangentImpulse,
-													   Length2D rA, Length2D rB, Conf conf) const noexcept
+                                                       Length2D rA, Length2D rB, Conf conf) const noexcept
 {
-	assert(IsValid(normalImpulse));
-	assert(IsValid(tangentImpulse));
-	assert(IsValid(rA));
-	assert(IsValid(rB));
-	
-	Point point;
+    assert(IsValid(normalImpulse));
+    assert(IsValid(tangentImpulse));
+    assert(IsValid(rA));
+    assert(IsValid(rB));
+    
+    Point point;
 
-	// Get the magnitude of the contact relative velocity in direction of the normal.
-	// This will be an invalid value if the normal is invalid. The comparison in this
-	// case will fail and this lambda will return 0. And that's fine. There's no need
-	// to have a check that the normal is valid and possibly incur the overhead of a
-	// conditional branch here.
-	const auto dv = GetContactRelVelocity(bodyA.GetVelocity(), rA, bodyB.GetVelocity(), rB);
-	const auto vn = LinearVelocity{Dot(dv, GetNormal())};
+    // Get the magnitude of the contact relative velocity in direction of the normal.
+    // This will be an invalid value if the normal is invalid. The comparison in this
+    // case will fail and this lambda will return 0. And that's fine. There's no need
+    // to have a check that the normal is valid and possibly incur the overhead of a
+    // conditional branch here.
+    const auto dv = GetContactRelVelocity(bodyA.GetVelocity(), rA, bodyB.GetVelocity(), rB);
+    const auto vn = LinearVelocity{Dot(dv, GetNormal())};
 
-	point.normalImpulse = normalImpulse;
-	point.tangentImpulse = tangentImpulse;
-	point.rA = rA;
-	point.rB = rB;
-	point.velocityBias = (vn < -conf.velocityThreshold)? -GetRestitution() * vn: LinearVelocity{0};
-	
-	const auto invMass = GetInvMass();
-	const auto invRotInertiaA = bodyA.GetInvRotInertia();
-	const auto invRotInertiaB = bodyB.GetInvRotInertia();
+    point.normalImpulse = normalImpulse;
+    point.tangentImpulse = tangentImpulse;
+    point.rA = rA;
+    point.rB = rB;
+    point.velocityBias = (vn < -conf.velocityThreshold)? -GetRestitution() * vn: LinearVelocity{0};
+    
+    const auto invMass = GetInvMass();
+    const auto invRotInertiaA = bodyA.GetInvRotInertia();
+    const auto invRotInertiaB = bodyB.GetInvRotInertia();
 
-	point.normalMass = [&](){
-		const auto invRotMassA = invRotInertiaA * Square(Cross(rA, GetNormal())) / SquareRadian;
-		const auto invRotMassB = invRotInertiaB * Square(Cross(rB, GetNormal())) / SquareRadian;
-		const auto value = invMass + invRotMassA + invRotMassB;
-		return (value != InvMass{0})? RealNum{1} / value : Mass{0};
-	}();
-	
-	point.tangentMass = [&]() {
-		const auto invRotMassA = invRotInertiaA * Square(Cross(rA, GetTangent())) / SquareRadian;
-		const auto invRotMassB = invRotInertiaB * Square(Cross(rB, GetTangent())) / SquareRadian;
-		const auto value = invMass + invRotMassA + invRotMassB;
-		return (value != InvMass{0})? RealNum{1} / value : Mass{0};
-	}();
+    point.normalMass = [&](){
+        const auto invRotMassA = invRotInertiaA * Square(Cross(rA, GetNormal())) / SquareRadian;
+        const auto invRotMassB = invRotInertiaB * Square(Cross(rB, GetNormal())) / SquareRadian;
+        const auto value = invMass + invRotMassA + invRotMassB;
+        return (value != InvMass{0})? RealNum{1} / value : Mass{0};
+    }();
+    
+    point.tangentMass = [&]() {
+        const auto invRotMassA = invRotInertiaA * Square(Cross(rA, GetTangent())) / SquareRadian;
+        const auto invRotMassB = invRotInertiaB * Square(Cross(rB, GetTangent())) / SquareRadian;
+        const auto value = invMass + invRotMassA + invRotMassB;
+        return (value != InvMass{0})? RealNum{1} / value : Mass{0};
+    }();
 
-	return point;
+    return point;
 }
 
 void VelocityConstraint::AddPoint(Momentum normalImpulse, Momentum tangentImpulse,
-								  Length2D rA, Length2D rB, Conf conf)
+                                  Length2D rA, Length2D rB, Conf conf)
 {
-	assert(m_pointCount < MaxManifoldPoints);
-	m_points[m_pointCount] = GetPoint(normalImpulse * conf.dtRatio, tangentImpulse * conf.dtRatio, rA, rB, conf);
-	++m_pointCount;
+    assert(m_pointCount < MaxManifoldPoints);
+    m_points[m_pointCount] = GetPoint(normalImpulse * conf.dtRatio, tangentImpulse * conf.dtRatio, rA, rB, conf);
+    ++m_pointCount;
 }
 
 Mat22 VelocityConstraint::ComputeK() const noexcept
 {
-	const auto pointCount = GetPointCount();
-	if (pointCount == 2)
-	{
-		const auto normal = GetNormal();
-		
-		const auto rn1A = Cross(StripUnits(GetPointRelPosA(0)), normal);
-		const auto rn1B = Cross(StripUnits(GetPointRelPosB(0)), normal);
-		
-		const auto rn2A = Cross(StripUnits(GetPointRelPosA(1)), normal);
-		const auto rn2B = Cross(StripUnits(GetPointRelPosB(1)), normal);
-		
-		const auto invMass = RealNum{GetInvMass() * Kilogram};
-		const auto invRotInertiaA = bodyA.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
-		const auto invRotInertiaB = bodyB.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
+    const auto pointCount = GetPointCount();
+    if (pointCount == 2)
+    {
+        const auto normal = GetNormal();
+        
+        const auto rn1A = Cross(StripUnits(GetPointRelPosA(0)), normal);
+        const auto rn1B = Cross(StripUnits(GetPointRelPosB(0)), normal);
+        
+        const auto rn2A = Cross(StripUnits(GetPointRelPosA(1)), normal);
+        const auto rn2B = Cross(StripUnits(GetPointRelPosB(1)), normal);
+        
+        const auto invMass = RealNum{GetInvMass() * Kilogram};
+        const auto invRotInertiaA = bodyA.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
+        const auto invRotInertiaB = bodyB.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
 
-		const auto k11 = invMass + (invRotInertiaA * Square(rn1A)) + (invRotInertiaB * Square(rn1B));
-		const auto k22 = invMass + (invRotInertiaA * Square(rn2A)) + (invRotInertiaB * Square(rn2B));
-		const auto k12 = invMass + (invRotInertiaA * rn1A * rn2A)  + (invRotInertiaB * rn1B * rn2B);
+        const auto k11 = invMass + (invRotInertiaA * Square(rn1A)) + (invRotInertiaB * Square(rn1B));
+        const auto k22 = invMass + (invRotInertiaA * Square(rn2A)) + (invRotInertiaB * Square(rn2B));
+        const auto k12 = invMass + (invRotInertiaA * rn1A * rn2A)  + (invRotInertiaB * rn1B * rn2B);
 
-		return Mat22{Vec2{k11, k12}, Vec2{k12, k22}};
-	}
-	return GetInvalid<Mat22>();
+        return Mat22{Vec2{k11, k12}, Vec2{k12, k22}};
+    }
+    return GetInvalid<Mat22>();
 }

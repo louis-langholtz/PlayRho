@@ -24,15 +24,15 @@
 
 namespace box2d
 {
-	/// Ray-cast input data.
-	/// @details The ray extends from p1 to p1 + maxFraction * (p2 - p1).
-	struct RayCastInput
-	{
-		Length2D p1; ///< Point 1.
-		Length2D p2; ///< Point 2.
-		RealNum maxFraction; ///< Max fraction. Unit interval value (a value between 0 and 1).
-	};
-	
+    /// Ray-cast input data.
+    /// @details The ray extends from p1 to p1 + maxFraction * (p2 - p1).
+    struct RayCastInput
+    {
+        Length2D p1; ///< Point 1.
+        Length2D p2; ///< Point 2.
+        RealNum maxFraction; ///< Max fraction. Unit interval value (a value between 0 and 1).
+    };
+    
 } // namespace box2d
 
 #endif /* RayCastInput_hpp */

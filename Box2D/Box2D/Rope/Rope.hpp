@@ -27,88 +27,88 @@ namespace box2d {
 /// 
 struct RopeDef
 {
-	using size_type = size_t;
+    using size_type = size_t;
 
-	constexpr RopeDef() = default;
+    constexpr RopeDef() = default;
 
-	///
-	Vec2* vertices = nullptr;
+    ///
+    Vec2* vertices = nullptr;
 
-	///
-	size_type count = 0;
+    ///
+    size_type count = 0;
 
-	///
-	RealNum* masses = nullptr;
+    ///
+    RealNum* masses = nullptr;
 
-	///
-	Vec2 gravity = Vec2_zero;
+    ///
+    Vec2 gravity = Vec2_zero;
 
-	///
-	RealNum damping = RealNum{1} / RealNum(10);
+    ///
+    RealNum damping = RealNum{1} / RealNum(10);
 
-	/// Stretching stiffness
-	RealNum k2 = RealNum(9) / RealNum(10);
+    /// Stretching stiffness
+    RealNum k2 = RealNum(9) / RealNum(10);
 
-	/// Bending stiffness. Values above 0.5 can make the simulation blow up.
-	RealNum k3 = RealNum{1} / RealNum(10);
+    /// Bending stiffness. Values above 0.5 can make the simulation blow up.
+    RealNum k3 = RealNum{1} / RealNum(10);
 };
 
 /// 
 class Rope
 {
 public:
-	using size_type = size_t;
+    using size_type = size_t;
 
-	constexpr Rope() = default;
-	~Rope();
+    constexpr Rope() = default;
+    ~Rope();
 
-	///
-	void Initialize(const RopeDef* def);
+    ///
+    void Initialize(const RopeDef* def);
 
-	///
-	void Step(RealNum timeStep, int iterations);
+    ///
+    void Step(RealNum timeStep, int iterations);
 
-	///
-	size_type GetVertexCount() const noexcept
-	{
-		return m_count;
-	}
+    ///
+    size_type GetVertexCount() const noexcept
+    {
+        return m_count;
+    }
 
-	///
-	const Vec2* GetVertices() const noexcept
-	{
-		return m_ps;
-	}
+    ///
+    const Vec2* GetVertices() const noexcept
+    {
+        return m_ps;
+    }
 
-	Vec2 GetVertex(size_type index) const noexcept
-	{
-		assert(index < m_count);
-		return m_ps[index];
-	}
+    Vec2 GetVertex(size_type index) const noexcept
+    {
+        assert(index < m_count);
+        return m_ps[index];
+    }
 
-	///
-	void SetAngle(Angle angle);
+    ///
+    void SetAngle(Angle angle);
 
 private:
 
-	void SolveC2();
-	void SolveC3();
+    void SolveC2();
+    void SolveC3();
 
-	size_type m_count = 0;
-	Vec2* m_ps = nullptr;
-	Vec2* m_p0s = nullptr;
-	Vec2* m_vs = nullptr;
+    size_type m_count = 0;
+    Vec2* m_ps = nullptr;
+    Vec2* m_p0s = nullptr;
+    Vec2* m_vs = nullptr;
 
-	RealNum* m_ims = nullptr;
+    RealNum* m_ims = nullptr;
 
-	RealNum* m_Ls = nullptr;
-	Angle* m_as = nullptr;
+    RealNum* m_Ls = nullptr;
+    Angle* m_as = nullptr;
 
-	Vec2 m_gravity = Vec2_zero;
-	RealNum m_damping = RealNum{0};
+    Vec2 m_gravity = Vec2_zero;
+    RealNum m_damping = RealNum{0};
 
-	RealNum m_k2 = RealNum{1};
-	RealNum m_k3 = RealNum(0.1);
+    RealNum m_k2 = RealNum{1};
+    RealNum m_k3 = RealNum(0.1);
 };
 
 } // namespace box2d

@@ -39,110 +39,110 @@ class EdgeShape;
 class ChainShape: public Shape
 {
 public:
-	static constexpr Length GetDefaultVertexRadius() noexcept
-	{
-		return DefaultLinearSlop * RealNum{2};
-	}
-	
-	struct Conf: public Shape::Conf
-	{
-		constexpr Conf(): Shape::Conf{Shape::Conf{}.UseVertexRadius(GetDefaultVertexRadius())}
-		{
-		}
-	};
+    static constexpr Length GetDefaultVertexRadius() noexcept
+    {
+        return DefaultLinearSlop * RealNum{2};
+    }
+    
+    struct Conf: public Shape::Conf
+    {
+        constexpr Conf(): Shape::Conf{Shape::Conf{}.UseVertexRadius(GetDefaultVertexRadius())}
+        {
+        }
+    };
 
-	static constexpr Conf GetDefaultConf() noexcept
-	{
-		return Conf{};
-	}
-	
-	ChainShape(const Conf& conf = GetDefaultConf()):
-		Shape{conf}
-	{
-		// Intentionally empty.
-	}
+    static constexpr Conf GetDefaultConf() noexcept
+    {
+        return Conf{};
+    }
+    
+    ChainShape(const Conf& conf = GetDefaultConf()):
+        Shape{conf}
+    {
+        // Intentionally empty.
+    }
 
-	ChainShape(const ChainShape& other);
+    ChainShape(const ChainShape& other);
 
-	/// The destructor frees the vertices using free.
-	virtual ~ChainShape();
+    /// The destructor frees the vertices using free.
+    virtual ~ChainShape();
 
-	/// Gets the number of child primitives.
-	/// @return Positive non-zero count.
-	child_count_t GetChildCount() const noexcept override;
-	
-	DistanceProxy GetChild(child_count_t index) const noexcept override;
+    /// Gets the number of child primitives.
+    /// @return Positive non-zero count.
+    child_count_t GetChildCount() const noexcept override;
+    
+    DistanceProxy GetChild(child_count_t index) const noexcept override;
 
-	/// Tests a point for containment in this shape.
-	/// @param xf the shape world transform.
-	/// @param p a point in world coordinates.
-	/// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
-	bool TestPoint(const Transformation& xf, const Length2D p) const noexcept override;
+    /// Tests a point for containment in this shape.
+    /// @param xf the shape world transform.
+    /// @param p a point in world coordinates.
+    /// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
+    bool TestPoint(const Transformation& xf, const Length2D p) const noexcept override;
 
-	/// Computes the mass properties of this shape using its dimensions and density.
-	/// The inertia tensor is computed about the local origin.
-	/// @note Behavior is undefined if the density is negative.
-	/// @return Mass data for this shape.
-	MassData GetMassData() const noexcept override;
-	
-	void Accept(Visitor& visitor) const override;
+    /// Computes the mass properties of this shape using its dimensions and density.
+    /// The inertia tensor is computed about the local origin.
+    /// @note Behavior is undefined if the density is negative.
+    /// @return Mass data for this shape.
+    MassData GetMassData() const noexcept override;
+    
+    void Accept(Visitor& visitor) const override;
 
-	ChainShape& operator=(const ChainShape& other);
+    ChainShape& operator=(const ChainShape& other);
 
-	/// Clear all data.
-	void Clear();
+    /// Clear all data.
+    void Clear();
 
-	/// Create a loop. This automatically adjusts connectivity.
-	/// @note Behavior is undefined if vertices is null or if count of vertices is less than 3.
-	/// @param vertices Non-null array of vertices. These are copied.
-	void CreateLoop(Span<const Length2D> vertices);
+    /// Create a loop. This automatically adjusts connectivity.
+    /// @note Behavior is undefined if vertices is null or if count of vertices is less than 3.
+    /// @param vertices Non-null array of vertices. These are copied.
+    void CreateLoop(Span<const Length2D> vertices);
 
-	/// Create a chain with isolated end vertices.
-	/// @param vertices an array of vertices, these are copied
-	void CreateChain(Span<const Length2D> vertices);
-	
-	/// Get the vertex count.
-	child_count_t GetVertexCount() const noexcept { return m_count; }
+    /// Create a chain with isolated end vertices.
+    /// @param vertices an array of vertices, these are copied
+    void CreateChain(Span<const Length2D> vertices);
+    
+    /// Get the vertex count.
+    child_count_t GetVertexCount() const noexcept { return m_count; }
 
-	/// Get a vertex by index.
-	Length2D GetVertex(child_count_t index) const;
+    /// Get a vertex by index.
+    Length2D GetVertex(child_count_t index) const;
 
-	UnitVec2 GetNormal(child_count_t index) const;
+    UnitVec2 GetNormal(child_count_t index) const;
 
 private:
-	std::vector<Length2D> m_vertices;
-	std::vector<UnitVec2> m_normals;
+    std::vector<Length2D> m_vertices;
+    std::vector<UnitVec2> m_normals;
 
-	/// The vertex count.
-	child_count_t m_count = 0;
+    /// The vertex count.
+    child_count_t m_count = 0;
 };
 
 inline void ChainShape::Accept(box2d::Shape::Visitor &visitor) const
 {
-	visitor.Visit(*this);
+    visitor.Visit(*this);
 }
 
 inline Length2D ChainShape::GetVertex(child_count_t index) const
 {
-	assert((0 <= index) && (index < m_count));
-	return m_vertices[index];
+    assert((0 <= index) && (index < m_count));
+    return m_vertices[index];
 }
 
 inline UnitVec2 ChainShape::GetNormal(child_count_t index) const
 {
-	assert((0 <= index) && (index < m_count));
-	return m_normals[index];
+    assert((0 <= index) && (index < m_count));
+    return m_normals[index];
 }
 
 inline bool IsLooped(const ChainShape& shape) noexcept
 {
-	const auto count = shape.GetVertexCount();
-	return (count > 1)? (shape.GetVertex(count - 1) == shape.GetVertex(0)): false;
+    const auto count = shape.GetVertexCount();
+    return (count > 1)? (shape.GetVertex(count - 1) == shape.GetVertex(0)): false;
 }
 
 inline child_count_t GetNextIndex(const ChainShape& shape, child_count_t index) noexcept
 {
-	return GetModuloNext(index, shape.GetVertexCount());
+    return GetModuloNext(index, shape.GetVertexCount());
 }
 
 } // namespace box2d

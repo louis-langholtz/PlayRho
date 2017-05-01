@@ -23,79 +23,79 @@
 #include <Box2D/Common/Settings.hpp>
 
 namespace box2d {
-	
-	/// Pre-phase per-step statistics.
-	struct PreStepStats
-	{
-		using counter_type = std::uint32_t;
-		counter_type ignored = 0;
-		counter_type destroyed = 0;
-		counter_type updated = 0;
-		counter_type added = 0;
-	};
-	
-	/// Regular-phase per-step statistics.
-	struct RegStepStats
-	{
-		using counter_type = std::uint32_t;
+    
+    /// Pre-phase per-step statistics.
+    struct PreStepStats
+    {
+        using counter_type = std::uint32_t;
+        counter_type ignored = 0;
+        counter_type destroyed = 0;
+        counter_type updated = 0;
+        counter_type added = 0;
+    };
+    
+    /// Regular-phase per-step statistics.
+    struct RegStepStats
+    {
+        using counter_type = std::uint32_t;
 
-		Length minSeparation = std::numeric_limits<RealNum>::infinity() * Meter;
-		Momentum maxIncImpulse = 0;
-		
-		counter_type islandsFound = 0;
-		counter_type islandsSolved = 0;
-		counter_type contactsAdded = 0;
-		counter_type bodiesSlept = 0;
-		counter_type proxiesMoved = 0;
-		counter_type sumPosIters = 0;
-		counter_type sumVelIters = 0;
-	};
-	
-	/// TOI-phase per-step statistics.
-	struct ToiStepStats
-	{
-		using counter_type = std::uint32_t;
+        Length minSeparation = std::numeric_limits<RealNum>::infinity() * Meter;
+        Momentum maxIncImpulse = 0;
+        
+        counter_type islandsFound = 0;
+        counter_type islandsSolved = 0;
+        counter_type contactsAdded = 0;
+        counter_type bodiesSlept = 0;
+        counter_type proxiesMoved = 0;
+        counter_type sumPosIters = 0;
+        counter_type sumVelIters = 0;
+    };
+    
+    /// TOI-phase per-step statistics.
+    struct ToiStepStats
+    {
+        using counter_type = std::uint32_t;
 
-		Length minSeparation = std::numeric_limits<RealNum>::infinity() * Meter;
-		Momentum maxIncImpulse = 0;
-		
-		counter_type islandsFound = 0;
-		counter_type islandsSolved = 0;
-		counter_type contactsFound = 0;
-		counter_type contactsAtMaxSubSteps = 0;
-		counter_type contactsUpdatedToi = 0;
-		counter_type contactsAdded = 0;
-		counter_type proxiesMoved = 0;
-		counter_type sumPosIters = 0;
-		counter_type sumVelIters = 0;
-		counter_type maxSimulContacts = 0; ///< Max contacts occuring simultaneously.
-		
-		using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
-		using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
-		using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
-		
-		dist_iter_type maxDistIters = 0;
-		toi_iter_type maxToiIters = 0;
-		root_iter_type maxRootIters = 0;
-	};
-	
-	/// Per-step statistics.
-	///
-	/// @details These are statistics output from the World::Step method.
-	/// @note Efficient transfer of this data is predicated on compiler support for
-	///   "return-value-optimization" - a form of "copy-elision".
-	///
-	/// @sa World::Step.
-	/// @sa https://en.wikipedia.org/wiki/Return_value_optimization
-	/// @sa http://en.cppreference.com/w/cpp/language/copy_elision
-	///
-	struct StepStats
-	{
-		PreStepStats pre; ///< Pre-phase step statistics.
-		RegStepStats reg; ///< Reg-phase step statistics.
-		ToiStepStats toi; ///< TOI-phase step statistics.
-	};
-	
+        Length minSeparation = std::numeric_limits<RealNum>::infinity() * Meter;
+        Momentum maxIncImpulse = 0;
+        
+        counter_type islandsFound = 0;
+        counter_type islandsSolved = 0;
+        counter_type contactsFound = 0;
+        counter_type contactsAtMaxSubSteps = 0;
+        counter_type contactsUpdatedToi = 0;
+        counter_type contactsAdded = 0;
+        counter_type proxiesMoved = 0;
+        counter_type sumPosIters = 0;
+        counter_type sumVelIters = 0;
+        counter_type maxSimulContacts = 0; ///< Max contacts occuring simultaneously.
+        
+        using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
+        using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
+        using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
+        
+        dist_iter_type maxDistIters = 0;
+        toi_iter_type maxToiIters = 0;
+        root_iter_type maxRootIters = 0;
+    };
+    
+    /// Per-step statistics.
+    ///
+    /// @details These are statistics output from the World::Step method.
+    /// @note Efficient transfer of this data is predicated on compiler support for
+    ///   "return-value-optimization" - a form of "copy-elision".
+    ///
+    /// @sa World::Step.
+    /// @sa https://en.wikipedia.org/wiki/Return_value_optimization
+    /// @sa http://en.cppreference.com/w/cpp/language/copy_elision
+    ///
+    struct StepStats
+    {
+        PreStepStats pre; ///< Pre-phase step statistics.
+        RegStepStats reg; ///< Reg-phase step statistics.
+        ToiStepStats toi; ///< TOI-phase step statistics.
+    };
+    
 } // namespace box2d
 
 #endif /* StepStats_hpp */

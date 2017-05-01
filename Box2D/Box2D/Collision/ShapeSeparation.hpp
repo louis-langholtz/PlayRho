@@ -25,78 +25,78 @@
 
 namespace box2d
 {
-	/// Index separation.
-	/// @details This structure is used to keep track of the best separating axis.
-	struct IndexSeparation
-	{
-		using distance_type = RealNum;
-		using index_type = std::remove_const<decltype(MaxShapeVertices)>::type;
-		
-		static constexpr distance_type InvalidDistance = MaxFloat;
-		static constexpr index_type InvalidIndex = static_cast<index_type>(-1);
-		
-		distance_type separation = InvalidDistance;
-		index_type index = InvalidIndex;
-	};
-	
-	/// Index pair separation.
-	/// @details This structure is used to keep track of the best separating axis.
-	struct IndexPairSeparation
-	{
-		using distance_type = RealNum;
-		using index_type = std::remove_const<decltype(MaxShapeVertices)>::type;
-		
-		static constexpr distance_type InvalidDistance = MaxFloat;
-		static constexpr index_type InvalidIndex = static_cast<index_type>(-1);
-		
-		distance_type separation = InvalidDistance;
-		index_type index1 = InvalidIndex;
-		index_type index2 = InvalidIndex;
-	};
+    /// Index separation.
+    /// @details This structure is used to keep track of the best separating axis.
+    struct IndexSeparation
+    {
+        using distance_type = RealNum;
+        using index_type = std::remove_const<decltype(MaxShapeVertices)>::type;
+        
+        static constexpr distance_type InvalidDistance = MaxFloat;
+        static constexpr index_type InvalidIndex = static_cast<index_type>(-1);
+        
+        distance_type separation = InvalidDistance;
+        index_type index = InvalidIndex;
+    };
+    
+    /// Index pair separation.
+    /// @details This structure is used to keep track of the best separating axis.
+    struct IndexPairSeparation
+    {
+        using distance_type = RealNum;
+        using index_type = std::remove_const<decltype(MaxShapeVertices)>::type;
+        
+        static constexpr distance_type InvalidDistance = MaxFloat;
+        static constexpr index_type InvalidIndex = static_cast<index_type>(-1);
+        
+        distance_type separation = InvalidDistance;
+        index_type index1 = InvalidIndex;
+        index_type index2 = InvalidIndex;
+    };
 
-	/// Gets the shape separation information for the most anti-parallel vector.
-	/// @param points Collection of 0 or more points to find the most anti-parallel vector from and
-	///    its magnitude from the reference vector.
-	/// @param refvec Reference vector.
-	template <typename T1, typename T2>
-	static inline IndexSeparation GetMostAntiParallelSeparation(Span<const T1> points, const T2 refvec, const T1 offset)
-	{
-		// Search for the vector that is most anti-parallel to the reference vector.
-		// See: https://en.wikipedia.org/wiki/Antiparallel_(mathematics)#Antiparallel_vectors
-		auto index = IndexSeparation::InvalidIndex;
-		auto distance = IndexSeparation::InvalidDistance;
-		const auto count = points.size();
-		for (auto i = decltype(count){0}; i < count; ++i)
-		{
-			// Get cosine of angle between refvec and vectors[i] multiplied by their
-			// magnitudes (which will essentially be 1 for any two unit vectors).
-			// Get distance from offset to vectors[i] in direction of refvec.
-			const auto s = StripUnit(Dot(refvec, points[i] - offset));
-			if (distance > s)
-			{
-				distance = s;
-				index = static_cast<IndexSeparation::index_type>(i);
-			}
-		}
-		return IndexSeparation{distance, index};
-	}
+    /// Gets the shape separation information for the most anti-parallel vector.
+    /// @param points Collection of 0 or more points to find the most anti-parallel vector from and
+    ///    its magnitude from the reference vector.
+    /// @param refvec Reference vector.
+    template <typename T1, typename T2>
+    static inline IndexSeparation GetMostAntiParallelSeparation(Span<const T1> points, const T2 refvec, const T1 offset)
+    {
+        // Search for the vector that is most anti-parallel to the reference vector.
+        // See: https://en.wikipedia.org/wiki/Antiparallel_(mathematics)#Antiparallel_vectors
+        auto index = IndexSeparation::InvalidIndex;
+        auto distance = IndexSeparation::InvalidDistance;
+        const auto count = points.size();
+        for (auto i = decltype(count){0}; i < count; ++i)
+        {
+            // Get cosine of angle between refvec and vectors[i] multiplied by their
+            // magnitudes (which will essentially be 1 for any two unit vectors).
+            // Get distance from offset to vectors[i] in direction of refvec.
+            const auto s = StripUnit(Dot(refvec, points[i] - offset));
+            if (distance > s)
+            {
+                distance = s;
+                index = static_cast<IndexSeparation::index_type>(i);
+            }
+        }
+        return IndexSeparation{distance, index};
+    }
 
-	/// Gets the max separation information.
-	/// @return The index of the vertex and normal from <code>verts1</code> and <code>norms1</code>,
-	///   the index of the vertex from <code>verts2</code> (that had the maximum separation
-	///   distance from each other in the direction of that normal), and the maximal distance.
-	IndexPairSeparation	GetMaxSeparation(Span<const Length2D> verts1, Span<const UnitVec2> norms1,
-										 Span<const Length2D> verts2,
-										 Length stop = MaxFloat * Meter);
+    /// Gets the max separation information.
+    /// @return The index of the vertex and normal from <code>verts1</code> and <code>norms1</code>,
+    ///   the index of the vertex from <code>verts2</code> (that had the maximum separation
+    ///   distance from each other in the direction of that normal), and the maximal distance.
+    IndexPairSeparation GetMaxSeparation(Span<const Length2D> verts1, Span<const UnitVec2> norms1,
+                                         Span<const Length2D> verts2,
+                                         Length stop = MaxFloat * Meter);
 
-	/// Gets the max separation information.
-	/// @return The index of the vertex and normal from <code>verts1</code> and <code>norms1</code>,
-	///   the index of the vertex from <code>verts2</code> (that had the maximum separation
-	///   distance from each other in the direction of that normal), and the maximal distance.
-	IndexPairSeparation	GetMaxSeparation(Span<const Length2D> verts1, Span<const UnitVec2> norms1,
-										 const Transformation& xf1,
-										 Span<const Length2D> verts2, const Transformation& xf2,
-										 Length stop = MaxFloat * Meter);
+    /// Gets the max separation information.
+    /// @return The index of the vertex and normal from <code>verts1</code> and <code>norms1</code>,
+    ///   the index of the vertex from <code>verts2</code> (that had the maximum separation
+    ///   distance from each other in the direction of that normal), and the maximal distance.
+    IndexPairSeparation GetMaxSeparation(Span<const Length2D> verts1, Span<const UnitVec2> norms1,
+                                         const Transformation& xf1,
+                                         Span<const Length2D> verts2, const Transformation& xf2,
+                                         Length stop = MaxFloat * Meter);
 
 } // namespace box2d
 

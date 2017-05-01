@@ -25,28 +25,28 @@
 
 namespace box2d
 {
-	class Fixture;
+    class Fixture;
 
-	/// Fixture proxy.
-	/// @details This proxy is used internally to connect fixtures to the broad-phase.
-	/// @note This data structure is 32-bytes large (on at least one 64-bit platform).
-	struct FixtureProxy
-	{
-		using size_type = std::remove_const<decltype(MaxContacts)>::type;
-		
-		FixtureProxy() = default;
-		
-		FixtureProxy(const FixtureProxy& copy) = default;
-		
-		FixtureProxy(const AABB bb, size_type pid, Fixture* f, child_count_t ci):
-			aabb{bb}, fixture{f}, proxyId{pid}, childIndex{ci} {}
-		
-		AABB aabb; ///< Axis Aligned Bounding Box. 16-bytes.
-		Fixture* const fixture; ///< Fixture. 8-bytes.
-		const size_type proxyId; ///< Proxy ID. 4-bytes.
-		const child_count_t childIndex; ///< Child index. 4-bytes.
-	};
-	
+    /// Fixture proxy.
+    /// @details This proxy is used internally to connect fixtures to the broad-phase.
+    /// @note This data structure is 32-bytes large (on at least one 64-bit platform).
+    struct FixtureProxy
+    {
+        using size_type = std::remove_const<decltype(MaxContacts)>::type;
+        
+        FixtureProxy() = default;
+        
+        FixtureProxy(const FixtureProxy& copy) = default;
+        
+        FixtureProxy(const AABB bb, size_type pid, Fixture* f, child_count_t ci):
+            aabb{bb}, fixture{f}, proxyId{pid}, childIndex{ci} {}
+        
+        AABB aabb; ///< Axis Aligned Bounding Box. 16-bytes.
+        Fixture* const fixture; ///< Fixture. 8-bytes.
+        const size_type proxyId; ///< Proxy ID. 4-bytes.
+        const child_count_t childIndex; ///< Child index. 4-bytes.
+    };
+    
 } // namespace box2d
 
 #endif /* FixtureProxy_hpp */

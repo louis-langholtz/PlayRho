@@ -38,20 +38,20 @@ class Shape;
 /// A holder for contact filtering data.
 struct Filter
 {
-	using bits_type = std::uint16_t;
-	using index_type = std::int16_t;
+    using bits_type = std::uint16_t;
+    using index_type = std::int16_t;
 
-	/// The collision category bits. Normally you would just set one bit.
-	bits_type categoryBits = 0x0001;
+    /// The collision category bits. Normally you would just set one bit.
+    bits_type categoryBits = 0x0001;
 
-	/// The collision mask bits. This states the categories that this
-	/// shape would accept for collision.
-	bits_type maskBits = 0xFFFF;
+    /// The collision mask bits. This states the categories that this
+    /// shape would accept for collision.
+    bits_type maskBits = 0xFFFF;
 
-	/// Collision groups allow a certain group of objects to never collide (negative)
-	/// or always collide (positive). Zero means no collision group. Non-zero group
-	/// filtering always wins against the mask bits.
-	index_type groupIndex = 0;
+    /// Collision groups allow a certain group of objects to never collide (negative)
+    /// or always collide (positive). Zero means no collision group. Non-zero group
+    /// filtering always wins against the mask bits.
+    index_type groupIndex = 0;
 };
 
 /// Fixture definition.
@@ -60,37 +60,37 @@ struct Filter
 /// @sa Body::CreateFixture.
 struct FixtureDef
 {
-	constexpr FixtureDef& UseUserData(void* value) noexcept;
-	constexpr FixtureDef& UseIsSensor(bool value) noexcept;
-	constexpr FixtureDef& UseFilter(Filter value) noexcept;
+    constexpr FixtureDef& UseUserData(void* value) noexcept;
+    constexpr FixtureDef& UseIsSensor(bool value) noexcept;
+    constexpr FixtureDef& UseFilter(Filter value) noexcept;
 
-	/// Use this to store application specific fixture data.
-	void* userData = nullptr;
-	
-	/// A sensor shape collects contact information but never generates a collision
-	/// response.
-	bool isSensor = false;
+    /// Use this to store application specific fixture data.
+    void* userData = nullptr;
+    
+    /// A sensor shape collects contact information but never generates a collision
+    /// response.
+    bool isSensor = false;
 
-	/// Contact filtering data.
-	Filter filter;
+    /// Contact filtering data.
+    Filter filter;
 };
 
 constexpr inline FixtureDef& FixtureDef::UseUserData(void* value) noexcept
 {
-	userData = value;
-	return *this;
+    userData = value;
+    return *this;
 }
 
 constexpr inline FixtureDef& FixtureDef::UseIsSensor(bool value) noexcept
 {
-	isSensor = value;
-	return *this;
+    isSensor = value;
+    return *this;
 }
-	
+    
 constexpr inline FixtureDef& FixtureDef::UseFilter(Filter value) noexcept
 {
-	filter = value;
-	return *this;
+    filter = value;
+    return *this;
 }
 
 /// Fixture.
@@ -107,203 +107,203 @@ constexpr inline FixtureDef& FixtureDef::UseFilter(Filter value) noexcept
 class Fixture
 {
 public:
-	Fixture() = delete; // explicitly deleted
+    Fixture() = delete; // explicitly deleted
 
-	/// Gets the parent body of this fixture.
-	/// @details This is nullptr if the fixture is not attached.
-	/// @return the parent body.
-	Body* GetBody() noexcept;
-	
-	/// Gets the parent body of this fixture.
-	/// @details This is nullptr if the fixture is not attached.
-	/// @return the parent body.
-	const Body* GetBody() const noexcept;
+    /// Gets the parent body of this fixture.
+    /// @details This is nullptr if the fixture is not attached.
+    /// @return the parent body.
+    Body* GetBody() noexcept;
+    
+    /// Gets the parent body of this fixture.
+    /// @details This is nullptr if the fixture is not attached.
+    /// @return the parent body.
+    const Body* GetBody() const noexcept;
 
-	/// Gets the child shape.
-	/// @details The shape is not modifiable. Use a new fixture instead.
-	const Shape* GetShape() const noexcept;
-	
-	/// Set if this fixture is a sensor.
-	void SetSensor(bool sensor) noexcept;
+    /// Gets the child shape.
+    /// @details The shape is not modifiable. Use a new fixture instead.
+    const Shape* GetShape() const noexcept;
+    
+    /// Set if this fixture is a sensor.
+    void SetSensor(bool sensor) noexcept;
 
-	/// Is this fixture a sensor (non-solid)?
-	/// @return the true if the shape is a sensor.
-	bool IsSensor() const noexcept;
+    /// Is this fixture a sensor (non-solid)?
+    /// @return the true if the shape is a sensor.
+    bool IsSensor() const noexcept;
 
-	/// Sets the contact filtering data.
-	/// @note This won't update contacts until the next time step when either parent body
-	///    is speedable and awake.
-	/// @note This automatically calls Refilter.
-	void SetFilterData(const Filter filter);
+    /// Sets the contact filtering data.
+    /// @note This won't update contacts until the next time step when either parent body
+    ///    is speedable and awake.
+    /// @note This automatically calls Refilter.
+    void SetFilterData(const Filter filter);
 
-	/// Gets the contact filtering data.
-	Filter GetFilterData() const noexcept;
+    /// Gets the contact filtering data.
+    Filter GetFilterData() const noexcept;
 
-	/// Refilter the fixture.
-	/// @note Call this if you want to establish collision that was previously disabled by
-	///   ContactFilter::ShouldCollide.
-	void Refilter();
+    /// Refilter the fixture.
+    /// @note Call this if you want to establish collision that was previously disabled by
+    ///   ContactFilter::ShouldCollide.
+    void Refilter();
 
-	/// Get the user data that was assigned in the fixture definition. Use this to
-	/// store your application specific data.
-	void* GetUserData() const noexcept;
+    /// Get the user data that was assigned in the fixture definition. Use this to
+    /// store your application specific data.
+    void* GetUserData() const noexcept;
 
-	/// Set the user data. Use this to store your application specific data.
-	void SetUserData(void* data) noexcept;
+    /// Set the user data. Use this to store your application specific data.
+    void SetUserData(void* data) noexcept;
 
-	/// Sets the density of this fixture.
-	/// @note This will _not_ automatically adjust the mass of the body.
-	///   You must call Body::ResetMassData to update the body's mass.
-	/// @warning Behavior is undefined if given a negative value.
-	/// @param density Non-negative density in kg/m^2.
-	void SetDensity(RealNum density) noexcept;
+    /// Sets the density of this fixture.
+    /// @note This will _not_ automatically adjust the mass of the body.
+    ///   You must call Body::ResetMassData to update the body's mass.
+    /// @warning Behavior is undefined if given a negative value.
+    /// @param density Non-negative density in kg/m^2.
+    void SetDensity(RealNum density) noexcept;
 
-	/// Gets the density of this fixture.
-	/// @return Non-negative density in kg/m^2.
-	Density GetDensity() const noexcept;
+    /// Gets the density of this fixture.
+    /// @return Non-negative density in kg/m^2.
+    Density GetDensity() const noexcept;
 
-	/// Gets the coefficient of friction.
-	RealNum GetFriction() const noexcept;
+    /// Gets the coefficient of friction.
+    RealNum GetFriction() const noexcept;
 
-	/// Sets the coefficient of friction. This will _not_ change the friction of
-	/// existing contacts.
-	void SetFriction(RealNum friction) noexcept;
+    /// Sets the coefficient of friction. This will _not_ change the friction of
+    /// existing contacts.
+    void SetFriction(RealNum friction) noexcept;
 
-	/// Gets the coefficient of restitution.
-	RealNum GetRestitution() const noexcept;
+    /// Gets the coefficient of restitution.
+    RealNum GetRestitution() const noexcept;
 
-	/// Sets the coefficient of restitution. This will _not_ change the restitution of
-	/// existing contacts.
-	void SetRestitution(RealNum restitution) noexcept;
+    /// Sets the coefficient of restitution. This will _not_ change the restitution of
+    /// existing contacts.
+    void SetRestitution(RealNum restitution) noexcept;
 
-	child_count_t GetProxyCount() const noexcept;
+    child_count_t GetProxyCount() const noexcept;
 
-	const FixtureProxy* GetProxy(child_count_t index) const noexcept;
+    const FixtureProxy* GetProxy(child_count_t index) const noexcept;
 
-	/// Destructor.
-	/// @pre Proxy count is zero.
-	/// @warning Behavior is undefined if proxy count is greater than zero.
-	~Fixture()
-	{
-		// No access to BroadPhase now so can't call DestroyProxies here.
-		assert(!m_proxies);
-		assert(m_proxyCount == 0);
-	}
+    /// Destructor.
+    /// @pre Proxy count is zero.
+    /// @warning Behavior is undefined if proxy count is greater than zero.
+    ~Fixture()
+    {
+        // No access to BroadPhase now so can't call DestroyProxies here.
+        assert(!m_proxies);
+        assert(m_proxyCount == 0);
+    }
 
 private:
 
-	friend class FixtureAtty;
-	
-	using FixtureProxies = FixtureProxy*;
+    friend class FixtureAtty;
+    
+    using FixtureProxies = FixtureProxy*;
 
-	/// Initializing constructor.
-	///
-	/// @warning Behavior is undefined if a <code>nullptr</code> initial body setting is used.
-	/// @warning Behavior is undefined if a <code>nullptr</code> initial shape setting is used.
-	/// @warning Behavior is undefined if a negative initial density setting is used.
-	/// @warning Behavior is undefined if a negative initial friction setting is used.
-	/// @warning Behavior is undefined if the restitution value is not less than infinity.
-	/// @warning Behavior is undefined if the restitution value is not greater than -infinity.
-	///
-	/// @param body Body the new fixture is to be associated with.
-	/// @param def Initial fixture settings.
-	///    Friction must be greater-than-or-equal-to zero.
-	///    Density must be greater-than-or-equal-to zero.
-	/// @param shape Sharable shape to associate fixture with. Must be non-null.
-	///
-	Fixture(Body* body, const FixtureDef& def, std::shared_ptr<const Shape> shape):
-		m_body{body},
-		m_shape{shape},
-		m_filter{def.filter},
-		m_isSensor{def.isSensor},
-		m_userData{def.userData}
-	{
-		assert(body);
-		assert(shape);
-	}
-	
-	Span<FixtureProxy> GetProxies() const noexcept;
-	void SetProxies(Span<FixtureProxy> value) noexcept;
+    /// Initializing constructor.
+    ///
+    /// @warning Behavior is undefined if a <code>nullptr</code> initial body setting is used.
+    /// @warning Behavior is undefined if a <code>nullptr</code> initial shape setting is used.
+    /// @warning Behavior is undefined if a negative initial density setting is used.
+    /// @warning Behavior is undefined if a negative initial friction setting is used.
+    /// @warning Behavior is undefined if the restitution value is not less than infinity.
+    /// @warning Behavior is undefined if the restitution value is not greater than -infinity.
+    ///
+    /// @param body Body the new fixture is to be associated with.
+    /// @param def Initial fixture settings.
+    ///    Friction must be greater-than-or-equal-to zero.
+    ///    Density must be greater-than-or-equal-to zero.
+    /// @param shape Sharable shape to associate fixture with. Must be non-null.
+    ///
+    Fixture(Body* body, const FixtureDef& def, std::shared_ptr<const Shape> shape):
+        m_body{body},
+        m_shape{shape},
+        m_filter{def.filter},
+        m_isSensor{def.isSensor},
+        m_userData{def.userData}
+    {
+        assert(body);
+        assert(shape);
+    }
+    
+    Span<FixtureProxy> GetProxies() const noexcept;
+    void SetProxies(Span<FixtureProxy> value) noexcept;
 
-	// Data ordered here for memory compaction.
-	
-	Body* const m_body = nullptr; ///< Parent body. Set on construction. 8-bytes.
+    // Data ordered here for memory compaction.
+    
+    Body* const m_body = nullptr; ///< Parent body. Set on construction. 8-bytes.
 
-	/// Shape (of fixture).
-	/// @note Set on construction.
-	/// @note Either null or pointer to a heap-memory private copy of the assigned shape.
-	/// @note 16-bytes.
-	std::shared_ptr<const Shape> m_shape;
-	
-	FixtureProxies m_proxies = nullptr; ///< Array of fixture proxies for the assigned shape. 8-bytes.
-	
-	void* m_userData = nullptr; ///< User data. 8-bytes.
+    /// Shape (of fixture).
+    /// @note Set on construction.
+    /// @note Either null or pointer to a heap-memory private copy of the assigned shape.
+    /// @note 16-bytes.
+    std::shared_ptr<const Shape> m_shape;
+    
+    FixtureProxies m_proxies = nullptr; ///< Array of fixture proxies for the assigned shape. 8-bytes.
+    
+    void* m_userData = nullptr; ///< User data. 8-bytes.
 
-	/// Proxy count.
-	/// @details This is the fixture shape's child count after proxy creation. 4-bytes.
-	child_count_t m_proxyCount = 0;
+    /// Proxy count.
+    /// @details This is the fixture shape's child count after proxy creation. 4-bytes.
+    child_count_t m_proxyCount = 0;
 
-	Filter m_filter; ///< Filter object. 6-bytes.
-	
-	bool m_isSensor = false; ///< Is/is-not sensor. 1-bytes.
+    Filter m_filter; ///< Filter object. 6-bytes.
+    
+    bool m_isSensor = false; ///< Is/is-not sensor. 1-bytes.
 };
 
 inline const Shape* Fixture::GetShape() const noexcept
 {
-	return m_shape.get();
+    return m_shape.get();
 }
 
 inline bool Fixture::IsSensor() const noexcept
 {
-	return m_isSensor;
+    return m_isSensor;
 }
 
 inline Filter Fixture::GetFilterData() const noexcept
 {
-	return m_filter;
+    return m_filter;
 }
 
 inline void* Fixture::GetUserData() const noexcept
 {
-	return m_userData;
+    return m_userData;
 }
 
 inline void Fixture::SetUserData(void* data) noexcept
 {
-	m_userData = data;
+    m_userData = data;
 }
 
 inline Body* Fixture::GetBody() noexcept
 {
-	return m_body;
+    return m_body;
 }
 
 inline const Body* Fixture::GetBody() const noexcept
 {
-	return m_body;
+    return m_body;
 }
 
 inline child_count_t Fixture::GetProxyCount() const noexcept
 {
-	return m_proxyCount;
+    return m_proxyCount;
 }
 
 inline void Fixture::SetFilterData(const Filter filter)
 {
-	m_filter = filter;
-	Refilter();
+    m_filter = filter;
+    Refilter();
 }
 
 inline Span<FixtureProxy> Fixture::GetProxies() const noexcept
 {
-	return Span<FixtureProxy>(m_proxies, m_proxyCount);
+    return Span<FixtureProxy>(m_proxies, m_proxyCount);
 }
 
 inline void Fixture::SetProxies(Span<FixtureProxy> value) noexcept
 {
-	assert(value.size() < std::numeric_limits<child_count_t>::max());
-	m_proxies = value.begin();
-	m_proxyCount = static_cast<decltype(m_proxyCount)>(value.size());
+    assert(value.size() < std::numeric_limits<child_count_t>::max());
+    m_proxies = value.begin();
+    m_proxyCount = static_cast<decltype(m_proxyCount)>(value.size());
 }
 
 // Free functions...
@@ -323,7 +323,7 @@ void SetAwake(Fixture& f) noexcept;
 /// @warning Behavior is undefined if the fixture doesn't have an associated body - i.e.
 ///   behavior is undefined if the fixture has <code>nullptr</code> as its associated body.
 Transformation GetTransformation(const Fixture& f) noexcept;
-	
+    
 } // namespace box2d
 
 #endif

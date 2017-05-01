@@ -30,24 +30,24 @@ class Timer
 {
 public:
 
-	/// Constructor
-	Timer();
+    /// Constructor
+    Timer();
 
-	/// Reset the timer.
-	void Reset();
+    /// Reset the timer.
+    void Reset();
 
-	/// Get the time since construction or the last reset.
-	RealNum GetMilliseconds() const;
+    /// Get the time since construction or the last reset.
+    RealNum GetMilliseconds() const;
 
 private:
 
 #if defined(DO_TIMER_FOR_REALS)
 #if defined(_WIN32)
-	double m_start;
-	static double s_invFrequency;
+    double m_start;
+    static double s_invFrequency;
 #elif defined(__linux__) || defined (__APPLE__)
-	unsigned long m_start_sec;
-	unsigned long m_start_usec;
+    unsigned long m_start_sec;
+    unsigned long m_start_usec;
 #endif
 #endif
 };

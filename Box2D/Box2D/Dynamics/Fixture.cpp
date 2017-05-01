@@ -27,81 +27,81 @@ using namespace box2d;
 
 Density Fixture::GetDensity() const noexcept
 {
-	return m_shape->GetDensity();
+    return m_shape->GetDensity();
 }
 
 RealNum Fixture::GetFriction() const noexcept
 {
-	return m_shape->GetFriction();
+    return m_shape->GetFriction();
 }
 
 RealNum Fixture::GetRestitution() const noexcept
 {
-	return m_shape->GetRestitution();
+    return m_shape->GetRestitution();
 }
 
 const FixtureProxy* Fixture::GetProxy(child_count_t index) const noexcept
 {
-	assert(index < m_proxyCount);
-	return (index < m_proxyCount)? m_proxies + index: nullptr;
+    assert(index < m_proxyCount);
+    return (index < m_proxyCount)? m_proxies + index: nullptr;
 }
 
 void Fixture::Refilter()
 {
-	const auto body = GetBody();
-	const auto world = body->GetWorld();
+    const auto body = GetBody();
+    const auto world = body->GetWorld();
 
-	// Flag associated contacts for filtering.
-	for (auto&& contact: body->GetContacts())
-	{
-		const auto fixtureA = contact->GetFixtureA();
-		const auto fixtureB = contact->GetFixtureB();
-		if ((fixtureA == this) || (fixtureB == this))
-		{
-			contact->FlagForFiltering();
-		}
-	}
-	
-	world->TouchProxies(*this);
+    // Flag associated contacts for filtering.
+    for (auto&& contact: body->GetContacts())
+    {
+        const auto fixtureA = contact->GetFixtureA();
+        const auto fixtureB = contact->GetFixtureB();
+        if ((fixtureA == this) || (fixtureB == this))
+        {
+            contact->FlagForFiltering();
+        }
+    }
+    
+    world->TouchProxies(*this);
 }
 
 void Fixture::SetSensor(bool sensor) noexcept
 {
-	if (sensor != m_isSensor)
-	{
-		m_isSensor = sensor;
-		const auto body = GetBody();
-		if (body)
-		{
-			body->SetAwake();
-		}
-	}
+    if (sensor != m_isSensor)
+    {
+        m_isSensor = sensor;
+        const auto body = GetBody();
+        if (body)
+        {
+            body->SetAwake();
+        }
+    }
 }
 
 bool box2d::TestPoint(const Fixture& f, const Length2D p) noexcept
 {
-	return f.GetShape()->TestPoint(GetTransformation(f), p);
+    return f.GetShape()->TestPoint(GetTransformation(f), p);
 }
 
 void box2d::SetAwake(Fixture& f) noexcept
 {
-	const auto b = f.GetBody();
-	if (b)
-	{
-		b->SetAwake();
-	}
+    const auto b = f.GetBody();
+    if (b)
+    {
+        b->SetAwake();
+    }
 }
 
 Transformation box2d::GetTransformation(const Fixture& f) noexcept
 {
-	assert(f.GetBody() != nullptr);
+    assert(f.GetBody() != nullptr);
 
-	/*
-	 * If fixtures have transformations (in addition to the body transformation),
-	 * this could be implemented like:
-	 *   return Mul(f.GetBody()->GetTransformation(), f.GetTransformation());
-	 * Note that adding transformations to fixtures requires work to also be done
-	 * to the manifold calculating code to handle that.
-	 */
-	return f.GetBody()->GetTransformation();
+    /*
+     * If fixtures have transformations (in addition to the body transformation),
+     * this could be implemented like:
+     *   return Mul(f.GetBody()->GetTransformation(), f.GetTransformation());
+     * Note that adding transformations to fixtures requires work to also be done
+     * to the manifold calculating code to handle that.
+     */
+    return f.GetBody()->GetTransformation();
 }

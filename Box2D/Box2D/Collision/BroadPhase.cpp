@@ -22,128 +22,128 @@
 using namespace box2d;
 
 BroadPhase::BroadPhase(const Conf conf):
-	m_pairCapacity{conf.pairCapacity},
-	m_moveCapacity{conf.moveCapacity},
-	m_pairBuffer(alloc<ProxyIdPair>(conf.pairCapacity)),
-	m_moveBuffer(alloc<size_type>(conf.moveCapacity))
+    m_pairCapacity{conf.pairCapacity},
+    m_moveCapacity{conf.moveCapacity},
+    m_pairBuffer(alloc<ProxyIdPair>(conf.pairCapacity)),
+    m_moveBuffer(alloc<size_type>(conf.moveCapacity))
 {}
 
 BroadPhase::~BroadPhase() noexcept
 {
-	free(m_moveBuffer);
-	free(m_pairBuffer);
+    free(m_moveBuffer);
+    free(m_pairBuffer);
 }
 
 BroadPhase::size_type BroadPhase::CreateProxy(const AABB& aabb, void* userData)
 {
-	const auto proxyId = m_tree.CreateProxy(aabb, userData);
-	++m_proxyCount;
-	EnqueueForOverlapProcessing(proxyId);
-	return proxyId;
+    const auto proxyId = m_tree.CreateProxy(aabb, userData);
+    ++m_proxyCount;
+    EnqueueForOverlapProcessing(proxyId);
+    return proxyId;
 }
 
 void BroadPhase::DestroyProxy(size_type proxyId)
 {
-	assert(m_proxyCount > 0);
-	DequeueFromOverlapProcessing(proxyId);
-	--m_proxyCount;
-	m_tree.DestroyProxy(proxyId);
+    assert(m_proxyCount > 0);
+    DequeueFromOverlapProcessing(proxyId);
+    --m_proxyCount;
+    m_tree.DestroyProxy(proxyId);
 }
 
 void BroadPhase::EnqueueForOverlapProcessing(size_type proxyId) noexcept
 {
-	if (m_moveCount == m_moveCapacity)
-	{
-		m_moveCapacity *= BufferGrowthRate;
-		m_moveBuffer = realloc<size_type>(m_moveBuffer, m_moveCapacity);
-	}
+    if (m_moveCount == m_moveCapacity)
+    {
+        m_moveCapacity *= BufferGrowthRate;
+        m_moveBuffer = realloc<size_type>(m_moveBuffer, m_moveCapacity);
+    }
 
-	m_moveBuffer[m_moveCount] = proxyId;
-	++m_moveCount;
+    m_moveBuffer[m_moveCount] = proxyId;
+    ++m_moveCount;
 }
 
 void BroadPhase::DequeueFromOverlapProcessing(size_type proxyId)
 {
-	for (auto i = decltype(m_moveCount){0}; i < m_moveCount; ++i)
-	{
-		if (m_moveBuffer[i] == proxyId)
-		{
-			m_moveBuffer[i] = e_nullProxy;
-		}
-	}
+    for (auto i = decltype(m_moveCount){0}; i < m_moveCount; ++i)
+    {
+        if (m_moveBuffer[i] == proxyId)
+        {
+            m_moveBuffer[i] = e_nullProxy;
+        }
+    }
 }
 
 BroadPhase::size_type BroadPhase::UpdatePairs(std::function<bool(void*,void*)> callback)
 {
-	// Reset pair buffer
-	auto pairCount = size_type{0};
-	
-	// Perform tree queries for all moving proxies.
-	for (auto i = decltype(m_moveCount){0}; i < m_moveCount; ++i)
-	{
-		const auto queryProxyId = m_moveBuffer[i];
-		if (queryProxyId == e_nullProxy)
-		{
-			continue;
-		}
-		
-		// We have to query the tree with the fat AABB so that
-		// we don't fail to create a pair that may touch later.
-		const auto aabb = m_tree.GetFatAABB(queryProxyId);
-		
-		// Query tree for nodes overlapping aabb, create pairs of those & add them pair buffer.
-		m_tree.Query(aabb, [&](DynamicTree::size_type nodeId) {
-			// A proxy cannot form a pair with itself.
-			if (nodeId != queryProxyId)
-			{
-				// Grow the pair buffer as needed.
-				if (m_pairCapacity == pairCount)
-				{
-					m_pairCapacity *= BufferGrowthRate;
-					m_pairBuffer = realloc<ProxyIdPair>(m_pairBuffer, m_pairCapacity);
-				}
-				m_pairBuffer[pairCount] = ProxyIdPair{Min(nodeId, queryProxyId), Max(nodeId, queryProxyId)};
-				++pairCount;
-			}
-			return true;
-		});
-	}
-	
-	// Reset move buffer
-	m_moveCount = 0;
-	
-	// Sort the pair buffer to expose duplicates.
-	std::sort(m_pairBuffer, m_pairBuffer + pairCount, [](ProxyIdPair p1, ProxyIdPair p2) {
-		return (p1.proxyIdA < p2.proxyIdA) || ((p1.proxyIdA == p2.proxyIdA) && (p1.proxyIdB < p2.proxyIdB));
-	});
-	
-	auto count = size_type{0};
-	// Send the pairs back to the client.
-	for (auto i = decltype(pairCount){0}; i < pairCount; )
-	{
-		const auto& primaryPair = m_pairBuffer[i];
-		const auto userDataA = m_tree.GetUserData(primaryPair.proxyIdA);
-		const auto userDataB = m_tree.GetUserData(primaryPair.proxyIdB);
-		
-		if (callback(userDataA, userDataB))
-		{
-			++count;
-		}
-		++i;
-		
-		// Skip any duplicate pairs.
-		while (i < pairCount)
-		{
-			const auto& pair = m_pairBuffer[i];
-			if (pair != primaryPair)
-			{
-				break;
-			}
-			++i;
-		}
-	}
-	
-	// Try to keep the tree balanced.
-	//m_tree.Rebalance(4);
-	return count;
+    // Reset pair buffer
+    auto pairCount = size_type{0};
+    
+    // Perform tree queries for all moving proxies.
+    for (auto i = decltype(m_moveCount){0}; i < m_moveCount; ++i)
+    {
+        const auto queryProxyId = m_moveBuffer[i];
+        if (queryProxyId == e_nullProxy)
+        {
+            continue;
+        }
+        
+        // We have to query the tree with the fat AABB so that
+        // we don't fail to create a pair that may touch later.
+        const auto aabb = m_tree.GetFatAABB(queryProxyId);
+        
+        // Query tree for nodes overlapping aabb, create pairs of those & add them pair buffer.
+        m_tree.Query(aabb, [&](DynamicTree::size_type nodeId) {
+            // A proxy cannot form a pair with itself.
+            if (nodeId != queryProxyId)
+            {
+                // Grow the pair buffer as needed.
+                if (m_pairCapacity == pairCount)
+                {
+                    m_pairCapacity *= BufferGrowthRate;
+                    m_pairBuffer = realloc<ProxyIdPair>(m_pairBuffer, m_pairCapacity);
+                }
+                m_pairBuffer[pairCount] = ProxyIdPair{Min(nodeId, queryProxyId), Max(nodeId, queryProxyId)};
+                ++pairCount;
+            }
+            return true;
+        });
+    }
+    
+    // Reset move buffer
+    m_moveCount = 0;
+    
+    // Sort the pair buffer to expose duplicates.
+    std::sort(m_pairBuffer, m_pairBuffer + pairCount, [](ProxyIdPair p1, ProxyIdPair p2) {
+        return (p1.proxyIdA < p2.proxyIdA) || ((p1.proxyIdA == p2.proxyIdA) && (p1.proxyIdB < p2.proxyIdB));
+    });
+    
+    auto count = size_type{0};
+    // Send the pairs back to the client.
+    for (auto i = decltype(pairCount){0}; i < pairCount; )
+    {
+        const auto& primaryPair = m_pairBuffer[i];
+        const auto userDataA = m_tree.GetUserData(primaryPair.proxyIdA);
+        const auto userDataB = m_tree.GetUserData(primaryPair.proxyIdB);
+        
+        if (callback(userDataA, userDataB))
+        {
+            ++count;
+        }
+        ++i;
+        
+        // Skip any duplicate pairs.
+        while (i < pairCount)
+        {
+            const auto& pair = m_pairBuffer[i];
+            if (pair != primaryPair)
+            {
+                break;
+            }
+            ++i;
+        }
+    }
+    
+    // Try to keep the tree balanced.
+    //m_tree.Rebalance(4);
+    return count;
 }

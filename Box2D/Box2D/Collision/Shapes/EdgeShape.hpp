@@ -33,92 +33,92 @@ namespace box2d {
 class EdgeShape : public Shape
 {
 public:
-	static constexpr Length GetDefaultVertexRadius() noexcept
-	{
-		return DefaultLinearSlop * RealNum{2};
-	}
+    static constexpr Length GetDefaultVertexRadius() noexcept
+    {
+        return DefaultLinearSlop * RealNum{2};
+    }
 
-	struct Conf: public Shape::Conf
-	{
-		constexpr Conf(): Shape::Conf{Shape::Conf{}.UseVertexRadius(GetDefaultVertexRadius())}
-		{
-		}
-	};
-	
-	static Conf GetDefaultConf() noexcept
-	{
-		return Conf{};
-	}
+    struct Conf: public Shape::Conf
+    {
+        constexpr Conf(): Shape::Conf{Shape::Conf{}.UseVertexRadius(GetDefaultVertexRadius())}
+        {
+        }
+    };
+    
+    static Conf GetDefaultConf() noexcept
+    {
+        return Conf{};
+    }
 
-	EdgeShape(const Conf& conf = GetDefaultConf()) noexcept:
-		Shape{conf}
-	{
-		// Intentionally empty.
-	}
+    EdgeShape(const Conf& conf = GetDefaultConf()) noexcept:
+        Shape{conf}
+    {
+        // Intentionally empty.
+    }
 
-	EdgeShape(Length2D v1, Length2D v2, const Conf& conf = GetDefaultConf()) noexcept:
-		Shape{conf},
-		m_vertices{v1, v2}
-	{
-		m_normals[0] = GetUnitVector(GetFwdPerpendicular(v2 - v1));
-		m_normals[1] = -m_normals[0];
-		assert(IsValid(m_normals[0]));
-		assert(IsValid(m_normals[1]));
-	}
+    EdgeShape(Length2D v1, Length2D v2, const Conf& conf = GetDefaultConf()) noexcept:
+        Shape{conf},
+        m_vertices{v1, v2}
+    {
+        m_normals[0] = GetUnitVector(GetFwdPerpendicular(v2 - v1));
+        m_normals[1] = -m_normals[0];
+        assert(IsValid(m_normals[0]));
+        assert(IsValid(m_normals[1]));
+    }
 
-	EdgeShape(const EdgeShape&) = default;
+    EdgeShape(const EdgeShape&) = default;
 
-	/// Gets the number of child primitives.
-	/// @return Positive non-zero count.
-	child_count_t GetChildCount() const noexcept override;
+    /// Gets the number of child primitives.
+    /// @return Positive non-zero count.
+    child_count_t GetChildCount() const noexcept override;
 
-	DistanceProxy GetChild(child_count_t index) const noexcept override;
-	
-	/// Tests a point for containment in this shape.
-	/// @param xf the shape world transform.
-	/// @param p a point in world coordinates.
-	/// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
-	bool TestPoint(const Transformation& xf, const Length2D p) const noexcept override;
+    DistanceProxy GetChild(child_count_t index) const noexcept override;
+    
+    /// Tests a point for containment in this shape.
+    /// @param xf the shape world transform.
+    /// @param p a point in world coordinates.
+    /// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
+    bool TestPoint(const Transformation& xf, const Length2D p) const noexcept override;
 
-	/// Computes the mass properties of this shape using its dimensions and density.
-	/// The inertia tensor is computed about the local origin.
-	/// @note Behavior is undefined if the density is negative.
-	/// @return Mass data for this shape.
-	MassData GetMassData() const noexcept override;
-	
-	void Accept(Visitor& visitor) const override;
+    /// Computes the mass properties of this shape using its dimensions and density.
+    /// The inertia tensor is computed about the local origin.
+    /// @note Behavior is undefined if the density is negative.
+    /// @return Mass data for this shape.
+    MassData GetMassData() const noexcept override;
+    
+    void Accept(Visitor& visitor) const override;
 
-	/// Set this as an isolated edge.
-	void Set(const Length2D v1, const Length2D v2);
+    /// Set this as an isolated edge.
+    void Set(const Length2D v1, const Length2D v2);
 
-	Length2D GetVertex1() const noexcept { return m_vertices[0]; }
-	Length2D GetVertex2() const noexcept { return m_vertices[1]; }
+    Length2D GetVertex1() const noexcept { return m_vertices[0]; }
+    Length2D GetVertex2() const noexcept { return m_vertices[1]; }
 
-	UnitVec2 GetNormal1() const noexcept { return m_normals[0]; }
-	UnitVec2 GetNormal2() const noexcept { return m_normals[1]; }
+    UnitVec2 GetNormal1() const noexcept { return m_normals[0]; }
+    UnitVec2 GetNormal2() const noexcept { return m_normals[1]; }
 
 private:
-	/// These are the edge vertices
-	Length2D m_vertices[2];
-	UnitVec2 m_normals[2];
+    /// These are the edge vertices
+    Length2D m_vertices[2];
+    UnitVec2 m_normals[2];
 };
 
 inline child_count_t EdgeShape::GetChildCount() const noexcept
 {
-	return 1;
+    return 1;
 }
 
 inline DistanceProxy EdgeShape::GetChild(child_count_t index) const noexcept
 {
-	assert(index == 0);
-	return (index == 0)?
-		DistanceProxy{GetVertexRadius(), 2, m_vertices, m_normals}:
-		DistanceProxy{};
+    assert(index == 0);
+    return (index == 0)?
+        DistanceProxy{GetVertexRadius(), 2, m_vertices, m_normals}:
+        DistanceProxy{};
 }
 
 inline void EdgeShape::Accept(box2d::Shape::Visitor &visitor) const
 {
-	visitor.Visit(*this);
+    visitor.Visit(*this);
 }
 
 } // namespace box2d
