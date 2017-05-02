@@ -19,12 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\glew\glew.c" />
+    <ClCompile Include="..\..\glew\*.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\glew\glew.h" />
-    <ClInclude Include="..\..\glew\glxew.h" />
-    <ClInclude Include="..\..\glew\wglew.h" />
+    <ClInclude Include="..\..\glew\*.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{CDD714DD-7F18-4478-9DD3-72369869ACEF}</ProjectGuid>

@@ -37,6 +37,8 @@ static inline IndexPairSeparation GetMaxSeparation(const DistanceProxy& shape1, 
     return GetMaxSeparation(shape1.GetVertices(), shape1.GetNormals(), xf1, shape2.GetVertices(), xf2, stop);
 }
 
+#if 0
+
 /// Gets the incident edge clip list.
 /// @param indexA Index of the incident edge of shape A.
 /// @param normalA Normal of the incident edge of shape A.
@@ -103,6 +105,8 @@ static ClipList GetIncidentEdgeClipList(ContactFeature::index_t index1, const Un
     };
 #endif
 }
+
+#endif
 
 static inline ClipList GetClipPoints(IndexSeparation::index_type iv1, Length sideOffset1, UnitVec2 normal1,
                                      IndexSeparation::index_type iv2, Length sideOffset2, UnitVec2 normal2,

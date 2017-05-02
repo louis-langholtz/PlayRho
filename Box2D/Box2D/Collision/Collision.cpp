@@ -73,7 +73,8 @@ ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, Length o
 
     if (vIn.size() == 2) // must have two points (for a segment)
     {
-        // Use Sutherland-Hodgman clipping (https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm ).
+        // Use Sutherland-Hodgman clipping:
+        //   (https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm ).
 
         // Calculate the distance of end points to the line
         const auto distance0 = Dot(normal, vIn[0].v) - offset;

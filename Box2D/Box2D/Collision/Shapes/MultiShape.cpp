@@ -24,6 +24,8 @@ using namespace box2d;
 bool MultiShape::TestPoint(const Transformation& xf, const Length2D p) const noexcept
 {
     // TODO
+    NOT_USED(xf);
+    NOT_USED(p);
     return false;
 }
 
