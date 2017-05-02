@@ -19,10 +19,28 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\glfw\*.c" />
+    <ClCompile Include="..\..\glfw\context.c" />
+    <ClCompile Include="..\..\glfw\init.c" />
+    <ClCompile Include="..\..\glfw\input.c" />
+    <ClCompile Include="..\..\glfw\monitor.c" />
+    <ClCompile Include="..\..\glfw\wgl_context.c" />
+    <ClCompile Include="..\..\glfw\win32_init.c" />
+    <ClCompile Include="..\..\glfw\win32_monitor.c" />
+    <ClCompile Include="..\..\glfw\win32_time.c" />
+    <ClCompile Include="..\..\glfw\win32_tls.c" />
+    <ClCompile Include="..\..\glfw\win32_window.c" />
+    <ClCompile Include="..\..\glfw\window.c" />
+    <ClCompile Include="..\..\glfw\winmm_joystick.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\glfw\*.h" />
+    <ClInclude Include="..\..\glfw\glext.h" />
+    <ClInclude Include="..\..\glfw\glfw3.h" />
+    <ClInclude Include="..\..\glfw\glfw_config.h" />
+    <ClInclude Include="..\..\glfw\internal.h" />
+    <ClInclude Include="..\..\glfw\wglext.h" />
+    <ClInclude Include="..\..\glfw\win32_platform.h" />
+    <ClInclude Include="..\..\glfw\win32_tls.h" />
+    <ClInclude Include="..\..\glfw\winmm_joystick.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{EEB8858B-CAFA-445B-8253-3A9C2571E132}</ProjectGuid>

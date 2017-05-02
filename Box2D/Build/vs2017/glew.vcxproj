@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\glew\*.c" />
+    <ClCompile Include="..\..\glew\glew.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\glew\*.h" />
+    <ClInclude Include="..\..\glew\glew.h" />
+    <ClInclude Include="..\..\glew\glxew.h" />
+    <ClInclude Include="..\..\glew\wglew.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{CDD714DD-7F18-4478-9DD3-72369869ACEF}</ProjectGuid>
@@ -148,7 +150,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ProgramDataBaseFileName>$(OutDir)glew.pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
