@@ -86,8 +86,12 @@ struct BodyDef
     /// The angular velocity of the body.
     AngularVelocity angularVelocity = AngularVelocity{0};
 
+    /// Initial linear acceleration of the body.
+    /// @note Usually this should be 0.
     LinearAcceleration2D linearAcceleration = Vec2_zero * MeterPerSquareSecond;
 
+    /// Initial angular acceleration of the body.
+    /// @note Usually this should be 0.
     AngularAcceleration angularAcceleration = AngularAcceleration{0};
 
     /// Linear damping is use to reduce the linear velocity. The damping parameter
@@ -223,7 +227,7 @@ constexpr inline BodyDef& BodyDef::UseUserData(void* value) noexcept
     return *this;
 }
 
-/// A physical entity that exists within a World.
+/// @brief A physical entity that exists within a World.
 ///
 /// @details A rigid body entity created or destroyed through a World instance.
 ///
@@ -239,17 +243,22 @@ constexpr inline BodyDef& BodyDef::UseUserData(void* value) noexcept
 class Body
 {
 public:
+    
+    /// @brief Container type for fixtures.
     using Fixtures = std::forward_list<Fixture*>;
 
+    /// @brief Container type for joints.
     using Joints = std::unordered_set<Joint*>;
 
+    /// @brief Container type for contacts.
     using Contacts = std::list<Contact*>;
 
     static constexpr auto InvalidIslandIndex = static_cast<body_count_t>(-1);
 
+    /// @brief Tests whether the given shape is valid as far as the Body class is concerned.
     static bool IsValid(const Shape& shape);
 
-    /// Creates a fixture and attaches it to this body.
+    /// @brief Creates a fixture and attaches it to this body.
     ///
     /// @param shape Sharable shape definition.
     ///   Its vertex radius must be less than the minimum or more than the maximum allowed by
@@ -269,7 +278,7 @@ public:
                            const FixtureDef& def = GetDefaultFixtureDef(),
                            bool resetMassData = true);
 
-    /// Destroys a fixture.
+    /// @brief Destroys a fixture.
     ///
     /// @details This removes the fixture from the broad-phase and
     /// destroys all contacts associated with this fixture.
@@ -284,19 +293,19 @@ public:
     ///
     bool DestroyFixture(Fixture* fixture, bool resetMassData = true);
 
-    /// Sets the position of the body's origin and rotation.
+    /// @brief Sets the position of the body's origin and rotation.
     /// @details This instantly adjusts the body to be at the new position and new orientation.
-    /// @warning Manipulating a body's transform may cause non-physical behavior.
+    /// @warning Manipulating a body's transform can cause non-physical behavior!
     /// @note Contacts are updated on the next call to World::Step.
     /// @param position Valid world position of the body's local origin. Behavior is undefined if value is invalid.
     /// @param angle Valid world rotation in radians. Behavior is undefined if value is invalid.
     void SetTransform(const Length2D position, Angle angle);
 
-    /// Gets the body transform for the body's origin.
+    /// @brief Gets the body transform for the body's origin.
     /// @return the world transform of the body's origin.
     Transformation GetTransformation() const noexcept;
 
-    /// Gets the world body origin location.
+    /// @brief Gets the world body origin location.
     /// @details This is the location of the body's origin relative to its world.
     /// The location of the body after stepping the world's physics simulations is dependent on a number of factors:
     ///   1. Location at the last time step.
@@ -309,37 +318,39 @@ public:
 
     const Sweep& GetSweep() const noexcept;
 
-    /// Get the angle in radians.
+    /// @brief Get the angle in radians.
     /// @return the current world rotation angle in radians.
     Angle GetAngle() const noexcept;
 
-    /// Get the world position of the center of mass.
+    /// @brief Get the world position of the center of mass.
     Length2D GetWorldCenter() const noexcept;
 
-    /// Gets the local position of the center of mass.
+    /// @brief Gets the local position of the center of mass.
     Length2D GetLocalCenter() const noexcept;
 
     Velocity GetVelocity() const noexcept;
 
-    /// Sets the body's velocity (linear and angular velocity).
+    /// @brief Sets the body's velocity (linear and angular velocity).
     /// @note This method does nothing if this body is not speedable.
     /// @note A non-zero velocity will awaken this body.
     /// @sa SetAwake.
     /// @sa SetUnderActiveTime.
     void SetVelocity(const Velocity& v) noexcept;
 
-    /// Sets the linear and rotational accelerations on this body.
+    /// @brief Sets the linear and rotational accelerations on this body.
     /// @note This has no effect on non-accelerable bodies.
     /// @note A non-zero acceleration will also awaken the body.
     /// @param linear Linear acceleration.
     /// @param angular Angular acceleration.
     void SetAcceleration(const LinearAcceleration2D linear, const AngularAcceleration angular) noexcept;
 
+    /// @brief Gets this body's linear acceleration.
     LinearAcceleration2D GetLinearAcceleration() const noexcept;
 
+    /// @brief Gets this body's angular acceleration.
     AngularAcceleration GetAngularAcceleration() const noexcept;
 
-    /// Gets the inverse total mass of the body.
+    /// @brief Gets the inverse total mass of the body.
     /// @details This is the cached result of dividing 1 by the body's mass.
     /// Often floating division is much slower than multiplication.
     /// As such, it's likely faster to multiply values by this inverse value than to redivide
@@ -348,7 +359,7 @@ public:
     /// @sa SetMassData.
     InvMass GetInvMass() const noexcept;
 
-    /// Gets the inverse rotational inertia of the body.
+    /// @brief Gets the inverse rotational inertia of the body.
     /// @details This is the cached result of dividing 1 by the body's rotational inertia.
     /// Often floating division is much slower than multiplication.
     /// As such, it's likely faster to multiply values by this inverse value than to redivide
@@ -356,70 +367,73 @@ public:
     /// @return Inverse rotational intertia (in 1/kg-m^2).
     InvRotInertia GetInvRotInertia() const noexcept;
 
-    /// Set the mass properties to override the mass properties of the fixtures.
+    /// @brief Set the mass properties to override the mass properties of the fixtures.
     /// @note This changes the center of mass position.
     /// @note Creating or destroying fixtures can also alter the mass.
     /// @note This function has no effect if the body isn't dynamic.
     /// @param data the mass properties.
     void SetMassData(const MassData& data);
 
-    /// Resets the mass data properties.
+    /// @brief Resets the mass data properties.
     /// @details This resets the mass data to the sum of the mass properties of the fixtures.
     /// @note This method must be called after calling <code>CreateFixture</code> to update the
     ///   body mass data properties unless <code>SetMassData</code> is used.
     /// @sa SetMassData.
     void ResetMassData();
 
-    /// Get the linear damping of the body.
+    /// @brief Gets the linear damping of the body.
     RealNum GetLinearDamping() const noexcept;
 
-    /// Set the linear damping of the body.
+    /// @brief Sets the linear damping of the body.
     void SetLinearDamping(RealNum linearDamping) noexcept;
 
-    /// Get the angular damping of the body.
+    /// @brief Gets the angular damping of the body.
     RealNum GetAngularDamping() const noexcept;
 
-    /// Set the angular damping of the body.
+    /// @brief Sets the angular damping of the body.
     void SetAngularDamping(RealNum angularDamping) noexcept;
 
-    /// Set the type of this body. This may alter the mass and velocity.
+    /// @brief Sets the type of this body.
+    /// @note This may alter the mass and velocity.
     void SetType(BodyType type);
 
-    /// Get the type of this body.
+    /// @brief Gets the type of this body.
     BodyType GetType() const noexcept;
 
-    /// Is "speedable".
+    /// @brief Is "speedable".
     /// @details Is this body able to have a non-zero speed associated with it.
     /// Kinematic and Dynamic bodies are speedable. Static bodies are not.
     bool IsSpeedable() const noexcept;
 
-    /// Is accelerable.
+    /// @brief Is "accelerable".
     /// @details Indicates whether this body is accelerable, ie. whether it is effected by
     ///   forces. Only Dynamic bodies are accelerable.
     /// @return true if the body is accelerable, false otherwise.
     bool IsAccelerable() const noexcept;
 
-    /// Should this body be treated like a bullet for continuous collision detection?
+    /// @brief Sets the bullet status of this body.
+    /// @details Sets whether or not this body should be treated like a bullet for continuous
+    ///   collision detection.
     void SetBullet(bool flag) noexcept;
 
-    /// Is this body treated like a bullet for continuous collision detection?
+    /// @brief Is this body treated like a bullet for continuous collision detection?
     bool IsImpenetrable() const noexcept;
 
     /// You can disable sleeping on this body. If you disable sleeping, the
     /// body will be woken.
     void SetSleepingAllowed(bool flag) noexcept;
 
-    /// Is this body allowed to sleep
+    /// @brief Is this body allowed to sleep
     bool IsSleepingAllowed() const noexcept;
 
-    /// Sets this body to awake if it's a "speedable" body.
+    /// @brief Sets this body to awake if it's a "speedable" body.
     /// @details
     /// This sets the sleep state of the body to awake if it's a "speedable" body. It has
     /// no effect otherwise.
     /// @post If this body is a "speedable" body, then this body's IsAwake method returns true.
     void SetAwake() noexcept;
 
-    /// Sets this body to asleep if sleeping is allowed.
+    /// @brief Sets this body to asleep if sleeping is allowed.
     /// @details
     /// If this body is allowed to sleep, this: sets the sleep state of the body to asleep,
     /// resets this body's under active time, and resets this body's velocity (linear and angular).
@@ -428,16 +442,16 @@ public:
     /// @post This body's GetVelocity method returns zero linear and zero angular speed.
     void UnsetAwake() noexcept;
 
-    /// Gets the awake/asleep state of this body.
+    /// @brief Gets the awake/asleep state of this body.
     /// @warning Being awake may or may not imply being speedable.
     /// @return true if the body is awake.
     bool IsAwake() const noexcept;
 
-    /// Gets this body's under-active time value.
+    /// @brief Gets this body's under-active time value.
     /// @return Zero or more time in seconds (of step time) that this body has been "under-active" for.
     Time GetUnderActiveTime() const noexcept;
 
-    /// Sets the "under-active" time to the given value.
+    /// @brief Sets the "under-active" time to the given value.
     ///
     /// @details Sets the "under-active" time to a value of zero or a non-zero value if the
     ///   body is "accelerable". Otherwise it does nothing.
@@ -447,7 +461,8 @@ public:
     ///
     void SetUnderActiveTime(Time value) noexcept;
 
-    /// Set the enabled state of the body. A disabled body is not
+    /// @brief Sets the enabled state of the body.
+    /// @details A disabled body is not
     /// simulated and cannot be collided with or woken up.
     /// If you pass a flag of true, all fixtures will be added to the
     /// broad-phase.
@@ -462,39 +477,40 @@ public:
     /// in the body list.
     void SetEnabled(bool flag);
 
-    /// Get the enabled/disabled state of the body.
+    /// @brief Gets the enabled/disabled state of the body.
     bool IsEnabled() const noexcept;
 
-    /// Set this body to have fixed rotation. This causes the mass
-    /// to be reset.
+    /// @brief Sets this body to have fixed rotation.
+    /// @note This causes the mass to be reset.
     void SetFixedRotation(bool flag);
 
-    /// Does this body have fixed rotation?
+    /// @brief Does this body have fixed rotation?
     bool IsFixedRotation() const noexcept;
 
-    /// Gets the container of all fixtures attached to this body.
+    /// @brief Gets the container of all fixtures attached to this body.
     const Fixtures& GetFixtures() const noexcept;
 
-    /// Gets the container of all joints attached to this body.
+    /// @brief Gets the container of all joints attached to this body.
     const Joints& GetJoints() const noexcept;
 
-    /// Gets the container of all contacts attached to this body.
+    /// @brief Gets the container of all contacts attached to this body.
     /// @warning This list changes during the time step and you may
     /// miss some collisions if you don't use ContactListener.
     const Contacts& GetContacts() const noexcept;
 
-    /// Get the user data pointer that was provided in the body definition.
+    /// @brief Gets the user data pointer that was provided in the body definition.
     void* GetUserData() const noexcept;
 
-    /// Set the user data. Use this to store your application specific data.
+    /// @brief Sets the user data. Use this to store your application specific data.
     void SetUserData(void* data) noexcept;
 
-    /// Gets the parent world of this body.
+    /// @brief Gets the parent world of this body.
     World* GetWorld() noexcept;
 
-    /// Gets the parent world of this body.
+    /// @brief Gets the parent world of this body.
     const World* GetWorld() const noexcept;
 
+    /// @brief Gets whether the mass data for this body is "dirty".
     bool IsMassDataDirty() const noexcept;
 
 private:
