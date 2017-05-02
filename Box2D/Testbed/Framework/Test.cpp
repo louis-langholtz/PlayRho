@@ -772,7 +772,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 
     stepConf.maxSubSteps           = static_cast<StepConf::iteration_type>(settings.maxSubSteps);
     
-    stepConf.maxTranslation = static_cast<decltype(stepConf.maxTranslation)>(settings.maxTranslation);
+    stepConf.maxTranslation = static_cast<decltype(stepConf.maxTranslation)>(settings.maxTranslation * Meter);
     stepConf.maxRotation = RealNum{settings.maxRotation} * Degree;
     
     stepConf.linearSlop = RealNum{settings.linearSlop} * Meter;
