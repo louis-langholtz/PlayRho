@@ -1,0 +1,5 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+build:
+  project: Box2D/Box2D/Build/vs2017/Box2D.sln
+  verbosity: normal
