@@ -43,7 +43,8 @@ Here's a run-down of some of the changes
 - Various functions and procedures have been rewritten to be
   ["pure functions"](https://en.wikipedia.org/wiki/Pure_function).
 - Testbed enhancements: per-step configurability, per-step statistics, ability
-  to manipulate bodies while paused, and more.
+  to manipulate bodies while paused, additional paths to find font, a font-less
+  mode (instead of aborting), and more.
 - Testbed test additions: Half Pipe, iforce2d's Topdown Car, Orbiter, Newton's
   Cradle, and Spinning Circles.
 - Adds online [API Documentation](http://louis-langholtz.github.io/Box2D/API/index.html).
