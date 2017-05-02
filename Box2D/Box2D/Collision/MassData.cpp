@@ -124,13 +124,13 @@ SecondMomentOfArea box2d::GetPolarMoment(Span<const Length2D> vertices)
     // See:
     // https://en.wikipedia.org/wiki/Second_moment_of_area#Any_polygon
     // https://en.wikipedia.org/wiki/Second_moment_of_area#Perpendicular_axis_theorem
-    auto sum_x = RealNum(0);
-    auto sum_y = RealNum(0);
+    auto sum_x = SquareMeter * SquareMeter * RealNum(0);
+    auto sum_y = SquareMeter * SquareMeter * RealNum(0);
     const auto count = vertices.size();
     for (auto i = decltype(count){0}; i < count; ++i)
     {
-        const auto this_v = StripUnits(vertices[i]);
-        const auto next_v = StripUnits(vertices[GetModuloNext(i, count)]);
+        const auto this_v = vertices[i];
+        const auto next_v = vertices[GetModuloNext(i, count)];
         const auto fact_b = this_v.x * next_v.y - next_v.x * this_v.y;
         sum_x += [&]() {
             const auto fact_a = Square(this_v.y) + this_v.y * next_v.y + Square(next_v.y);
@@ -141,8 +141,8 @@ SecondMomentOfArea box2d::GetPolarMoment(Span<const Length2D> vertices)
             return fact_a * fact_b;
         }();
     }
-    const auto secondMomentOfAreaX = SecondMomentOfArea{SquareMeter * SquareMeter * sum_x};
-    const auto secondMomentOfAreaY = SecondMomentOfArea{SquareMeter * SquareMeter * sum_y};
+    const auto secondMomentOfAreaX = SecondMomentOfArea{sum_x};
+    const auto secondMomentOfAreaY = SecondMomentOfArea{sum_y};
     return (secondMomentOfAreaX + secondMomentOfAreaY) / RealNum{12};
 }
 

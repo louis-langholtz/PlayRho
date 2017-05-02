@@ -886,7 +886,7 @@ constexpr inline Length2D InverseTransform(const Length2D v, const Transformatio
 //    = (A.q * B.q).Rot(v1) + A.q.Rot(B.p) + A.p
 constexpr inline Transformation Mul(const Transformation& A, const Transformation& B) noexcept
 {
-    return Transformation{A.p + Rotate(StripUnits(B.p), A.q) * Meter, A.q.Rotate(B.q)};
+    return Transformation{A.p + Rotate(B.p, A.q), A.q.Rotate(B.q)};
 }
 
 // v2 = A.q' * (B.q * v1 + B.p - A.p)
@@ -894,7 +894,7 @@ constexpr inline Transformation Mul(const Transformation& A, const Transformatio
 constexpr inline Transformation MulT(const Transformation& A, const Transformation& B) noexcept
 {
     const auto dp = B.p - A.p;
-    return Transformation{InverseRotate(StripUnits(dp), A.q) * Meter, B.q.Rotate(A.q.FlipY())};
+    return Transformation{InverseRotate(dp, A.q), B.q.Rotate(A.q.FlipY())};
 }
 
 template <>
@@ -1232,11 +1232,12 @@ inline bool IsUnderActive(Velocity velocity,
 /// Gets the contact relative velocity.
 /// @note If vcp_rA and vcp_rB are the zero vectors, the resulting value is simply velB.linear - velA.linear.
 constexpr inline LinearVelocity2D
-GetContactRelVelocity(const Velocity velA, const Length2D vcp_rA, const Velocity velB, const Length2D vcp_rB) noexcept
+GetContactRelVelocity(const Velocity velA, const Length2D vcp_rA,
+                      const Velocity velB, const Length2D vcp_rB) noexcept
 {
-    const auto velBrot = GetRevPerpendicular(StripUnits(vcp_rB)) * RealNum{velB.angular / RadianPerSecond};
-    const auto velArot = GetRevPerpendicular(StripUnits(vcp_rA)) * RealNum{velA.angular / RadianPerSecond};
-    return (velB.linear + velBrot * MeterPerSecond) - (velA.linear + velArot * MeterPerSecond);
+    const auto velBrot = GetRevPerpendicular(vcp_rB) * velB.angular / Radian;
+    const auto velArot = GetRevPerpendicular(vcp_rA) * velA.angular / Radian;
+    return (velB.linear + velBrot) - (velA.linear + velArot);
 }
 
 template <>

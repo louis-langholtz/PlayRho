@@ -96,11 +96,9 @@ std::vector<Length2D> GetConvexHullAsVector(Span<const Length2D> vertices)
                 }
                 
                 const auto r = vertices[ie] - vertices[ih];
-                const auto rUnitless = StripUnits(r);
                 const auto v = vertices[j] - vertices[ih];
-                const auto vUnitless = StripUnits(v);
-                const auto c = Cross(rUnitless, vUnitless);
-                if ((c < 0) || ((c == 0) && (GetLengthSquared(vUnitless) > GetLengthSquared(rUnitless))))
+                const auto c = Cross(r, v);
+                if ((c < Area{0}) || ((c == Area{0}) && (GetLengthSquared(v) > GetLengthSquared(r))))
                 {
                     ie = j;
                 }

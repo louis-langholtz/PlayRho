@@ -173,7 +173,7 @@ void PolygonShape::Transform(box2d::Transformation xf) noexcept
 void PolygonShape::Set(Span<const Length2D> points) noexcept
 {
     // Perform welding and copy vertices into local buffer.
-    auto point_set = VertexSet(DefaultLinearSlop / Meter);
+    auto point_set = VertexSet(Square(DefaultLinearSlop));
     for (auto&& p: points)
     {
         point_set.add(p);
@@ -297,7 +297,6 @@ bool box2d::Validate(const PolygonShape& shape)
         const auto i2 = GetModuloNext(i1, count);
         const auto p = shape.GetVertex(i1);
         const auto e = shape.GetVertex(i2) - p;
-        const auto eUnitless = StripUnits(e);
         
         for (auto j = decltype(count){0}; j < count; ++j)
         {
@@ -307,8 +306,8 @@ bool box2d::Validate(const PolygonShape& shape)
             }
             
             const auto v = shape.GetVertex(j) - p;
-            const auto c = Cross(eUnitless, StripUnits(v));
-            if (c < 0)
+            const auto c = Cross(e, v);
+            if (c < Area{0})
             {
                 return false;
             }

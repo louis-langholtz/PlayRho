@@ -167,7 +167,7 @@ public:
     /// @note This limit is very large and is used to prevent numerical problems.
     /// You shouldn't need to adjust this.
     /// @note Used in both the regular and TOI phases of step processing.
-    RealNum maxTranslation = 4; // originally 2
+    Length maxTranslation = Meter * RealNum(4); // originally 2
     
     /// Maximum rotation.
     /// @details The maximum angular velocity of a body.

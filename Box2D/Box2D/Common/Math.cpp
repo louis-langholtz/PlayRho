@@ -25,8 +25,8 @@ Length2D box2d::ComputeCentroid(const Span<const Length2D>& vertices)
 {
     assert(vertices.size() >= 3);
     
-    auto c = Vec2_zero;
-    auto area = RealNum{0};
+    auto c = Vec2_zero * Meter * SquareMeter;
+    auto area = Area{0};
     
     // pRef is the reference point for forming triangles.
     // It's location doesn't change the result (except for rounding error).
@@ -42,17 +42,17 @@ Length2D box2d::ComputeCentroid(const Span<const Length2D>& vertices)
         const auto e1 = p2 - p1;
         const auto e2 = p3 - p1;
         
-        const auto triangleArea = Cross(StripUnits(e1), StripUnits(e2)) / 2.0f;
+        const auto triangleArea = Area{Cross(e1, e2) / RealNum(2)};
         area += triangleArea;
         
         // Area weighted centroid
         const auto aveP = (p1 + p2 + p3) / RealNum{3};
-        c += triangleArea * StripUnits(aveP);
+        c += triangleArea * aveP;
     }
     
     // Centroid
-    assert((area > 0) && !almost_zero(area));
-    return (c / area) * Meter;
+    assert((area > Area{0}) && !almost_zero(area / SquareMeter));
+    return c / area;
 }
 
 ::std::ostream& box2d::operator<<(::std::ostream& os, const Vec2& value)

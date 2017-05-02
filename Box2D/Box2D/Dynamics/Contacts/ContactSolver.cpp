@@ -490,11 +490,11 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
     assert(IsValid(conf.maxLinearCorrection));
 
     const auto invMassA = moveA? pc.bodyA.GetInvMass(): InvMass{0};
-    const auto invInertiaA = moveA? pc.bodyA.GetInvRotInertia(): InvRotInertia{0};
+    const auto invRotInertiaA = moveA? pc.bodyA.GetInvRotInertia(): InvRotInertia{0};
     const auto localCenterA = pc.bodyA.GetLocalCenter();
 
     const auto invMassB = moveB? pc.bodyB.GetInvMass(): InvMass{0};
-    const auto invInertiaB = moveB? pc.bodyB.GetInvRotInertia(): InvRotInertia{0};
+    const auto invRotInertiaB = moveB? pc.bodyB.GetInvRotInertia(): InvRotInertia{0};
     const auto localCenterB = pc.bodyB.GetLocalCenter();
 
     // Compute inverse mass total.
@@ -504,7 +504,8 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 
     const auto totalRadius = pc.radiusA + pc.radiusB;
 
-    const auto solver_fn = [&](const PositionSolverManifold psm, const Length2D pA, const Length2D pB) {
+    const auto solver_fn = [&](const PositionSolverManifold psm,
+                               const Length2D pA, const Length2D pB) {
         const auto separation = psm.m_separation - totalRadius;
         // Positive separation means shapes not overlapping and not touching.
         // Zero separation means shapes are touching.
@@ -515,17 +516,18 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 
         // Compute the effective mass.
         const auto K = InvMass{[&]() {
-            const auto rnA = Length{Cross(rA, psm.m_normal)};
-            const auto rnB = Length{Cross(rB, psm.m_normal)};
+            const auto rnA = Length{Cross(rA, psm.m_normal)} / Radian;
+            const auto rnB = Length{Cross(rB, psm.m_normal)} / Radian;
             // InvRotInertia is L^-2 M^-1 QP^2
             // L^-2 M^-1 QP^2 * L^2 is: M^-1 QP^2
-            const auto invRotMassA = invInertiaA * Square(rnA) / SquareRadian;
-            const auto invRotMassB = invInertiaB * Square(rnB) / SquareRadian;
+            const auto invRotMassA = InvMass{invRotInertiaA * Square(rnA)};
+            const auto invRotMassB = InvMass{invRotInertiaB * Square(rnB)};
             return invMassTotal + invRotMassA + invRotMassB;
         }()};
 
         // Prevent large corrections & don't push separation above -conf.linearSlop.
-        const auto C = -Clamp(conf.resolutionRate * (separation + conf.linearSlop), -conf.maxLinearCorrection, Length{0});
+        const auto C = -Clamp(conf.resolutionRate * (separation + conf.linearSlop),
+                              -conf.maxLinearCorrection, Length{0});
 
         // Compute normal impulse
         const auto P = Length2D{psm.m_normal * C} / K;
@@ -534,8 +536,8 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
         // InvRotInertia is: L^-2 M^-1 QP^2
         // Product is: QP^2
         return PositionSolution{
-            -Position{invMassA * P, invInertiaA * Cross(rA, P) / Radian},
-            +Position{invMassB * P, invInertiaB * Cross(rB, P) / Radian},
+            -Position{invMassA * P, invRotInertiaA * Cross(rA, P) / Radian},
+            +Position{invMassB * P, invRotInertiaB * Cross(rB, P) / Radian},
             separation
         };
     };

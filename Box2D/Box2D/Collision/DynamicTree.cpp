@@ -571,7 +571,7 @@ void DynamicTree::RayCast(const RayCastInput& input, RayCastCallback callback) c
     const auto delta = p2 - p1;
     
     // v is perpendicular to the segment.
-    const auto v = GetRevPerpendicular(GetUnitVector(StripUnits(delta), UnitVec2::GetZero()));
+    const auto v = GetRevPerpendicular(GetUnitVector(delta, UnitVec2::GetZero()));
     const auto abs_v = Abs(v);
     
     // Separating axis for segment (Gino, p80).
@@ -603,8 +603,8 @@ void DynamicTree::RayCast(const RayCastInput& input, RayCastCallback callback) c
         // |dot(v, p1 - c)| > dot(|v|, h)
         const auto c = GetCenter(node->aabb);
         const auto h = GetExtents(node->aabb);
-        const auto separation = Abs(Dot(v, StripUnits(p1 - c))) - Dot(abs_v, StripUnits(h));
-        if (separation > 0)
+        const auto separation = Abs(Dot(v, p1 - c)) - Dot(abs_v, h);
+        if (separation > Length{0})
         {
             continue;
         }

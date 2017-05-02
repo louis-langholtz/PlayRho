@@ -55,7 +55,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
     assert(minTarget < maxTarget);
     assert(minTarget > Length{0} && !almost_zero(minTarget / Meter));
     
-    const auto maxTargetSquared = Square(maxTarget / Meter);
+    const auto maxTargetSquared = Square(maxTarget);
 
     auto t1 = RealNum{0}; // Will be set to value of t2
     auto t1xfA = GetTransformation(sweepA, t1);
@@ -83,10 +83,10 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
         const auto dwp = witnessPoints.a - witnessPoints.b;
 
         // Get the real distance squared between shapes at the time of t1.
-        const auto distanceSquared = GetLengthSquared(StripUnits(dwp));
+        const auto distanceSquared = GetLengthSquared(dwp);
         
         // If the shapes aren't separated, give up on continuous collision.
-        if (distanceSquared <= 0) // Failure!
+        if (distanceSquared <= Area{0}) // Failure!
         {
             return TOIOutput{TOIOutput::e_overlapped, 0, stats};
         }

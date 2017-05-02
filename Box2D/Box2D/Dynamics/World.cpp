@@ -59,7 +59,7 @@ using VelocityConstraints = std::vector<VelocityConstraint>;
     
 struct MovementConf
 {
-    RealNum maxTranslation;
+    Length maxTranslation;
     Angle maxRotation;
 };
 
@@ -151,8 +151,7 @@ namespace {
         
         auto velocity = body.GetVelocity();
         auto translation = h * velocity.linear;
-        auto translationUnitless = StripUnits(translation);
-        const auto lsquared = GetLengthSquared(translationUnitless);
+        const auto lsquared = GetLengthSquared(translation);
         if (lsquared > Square(conf.maxTranslation))
         {
             const auto ratio = conf.maxTranslation / Sqrt(lsquared);

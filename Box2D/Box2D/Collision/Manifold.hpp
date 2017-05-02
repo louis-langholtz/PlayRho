@@ -47,6 +47,10 @@ namespace box2d
     /// account for movement, which is critical for continuous physics. All contact scenarios must
     /// be expressed in one of these types.
     ///
+    /// Conceptually, a manifold represents the intersection of two convex sets (which is itself
+    /// a convex set) and a solution for moving the sets away from each other to eliminate the
+    /// intersection.
+    ///
     /// @note The local point and local normal usage depends on the manifold type. For details, see
     ///   the documentation associated with the different manifold types.
     /// @note Every point adds computational overhead to the collision response calculation - so
@@ -56,6 +60,7 @@ namespace box2d
     /// @sa Contact.
     /// @sa PositionConstraint.
     /// @sa VelocityConstraint.
+    /// @sa https://en.wikipedia.org/wiki/Convex_set
     ///
     class Manifold
     {

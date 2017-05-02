@@ -25,5 +25,5 @@ using namespace box2d;
 bool box2d::IsMaxTranslationWithinTolerance(const StepConf& conf) noexcept
 {
     const auto delta = RealNum(1) - std::nextafter(RealNum(1), RealNum(0));
-    return (conf.maxTranslation * delta) * Meter < conf.tolerance;
+    return (conf.maxTranslation * delta) < conf.tolerance;
 }

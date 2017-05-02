@@ -66,11 +66,11 @@ TEST(World, Def)
 
     const auto v = RealNum(1);
     const auto n = std::nextafter(v, RealNum(0));
-    const auto time_inc = v - n;
-    ASSERT_GT(time_inc, RealNum(0));
-    ASSERT_LT(time_inc, RealNum(1));
+    const auto time_inc = (v - n) * Second;
+    ASSERT_GT(time_inc, RealNum(0) * Second);
+    ASSERT_LT(time_inc, RealNum(1) * Second);
     const auto max_inc = time_inc * stepConf.maxTranslation;
-    EXPECT_GT(max_inc, RealNum(0));
+    EXPECT_GT(max_inc, RealNum(0) * Meter * Second);
 }
 
 TEST(World, DefaultInit)
@@ -1408,9 +1408,9 @@ TEST(World, SpeedingBulletBallWontTunnel)
     const auto velocity = Vec2{+1, 0} * MeterPerSecond;
     ball_body->SetVelocity(Velocity{velocity, RealNum{0} * Degree / Second});
 
-    const auto time_inc = RealNum(.01);
+    const auto time_inc = RealNum(.01) * Second;
     auto stepConf = StepConf{};
-    stepConf.SetTime(Time{Second * time_inc});
+    stepConf.SetTime(time_inc);
     const auto max_velocity = stepConf.maxTranslation / time_inc;
     world.Step(stepConf);
 
@@ -1442,7 +1442,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
             EXPECT_LT(ball_body->GetLocation().x, right_edge_x - (ball_radius/RealNum{2}));
             EXPECT_GT(ball_body->GetLocation().x, left_edge_x + (ball_radius/RealNum{2}));
 
-            if (ball_body->GetVelocity().linear.x / MeterPerSecond >= max_velocity)
+            if (ball_body->GetVelocity().linear.x >= max_velocity)
             {
                 return;
             }
@@ -1479,7 +1479,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
             EXPECT_LT(ball_body->GetLocation().x, right_edge_x - (ball_radius/RealNum{2}));
             EXPECT_GT(ball_body->GetLocation().x, left_edge_x + (ball_radius/RealNum{2}));
 
-            if (ball_body->GetVelocity().linear.x / MeterPerSecond <= -max_velocity)
+            if (ball_body->GetVelocity().linear.x <= -max_velocity)
             {
                 return;
             }

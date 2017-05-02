@@ -1043,8 +1043,7 @@ inline void SetTorque(Body& body, const Torque torque) noexcept
 {
     const auto linAccel = body.GetLinearAcceleration();
     const auto invRotI = body.GetInvRotInertia();
-    const auto intRotInertiaUnitless = invRotI * (SquareMeter * Kilogram / SquareRadian);
-    const auto angAccel = RealNum{torque / NewtonMeter} * intRotInertiaUnitless * RadianPerSquareSecond;
+    const auto angAccel = torque * invRotI;
     body.SetAcceleration(linAccel, angAccel);
 }
 
@@ -1057,8 +1056,7 @@ inline void ApplyTorque(Body& body, const Torque torque) noexcept
 {
     const auto linAccel = body.GetLinearAcceleration();
     const auto invRotI = body.GetInvRotInertia();
-    const auto intRotInertiaUnitless = invRotI * (SquareMeter * Kilogram / SquareRadian);
-    const auto angAccel = body.GetAngularAcceleration() + RealNum{torque / NewtonMeter} * intRotInertiaUnitless * RadianPerSquareSecond;
+    const auto angAccel = body.GetAngularAcceleration() + torque * invRotI;
     body.SetAcceleration(linAccel, angAccel);
 }
 
@@ -1198,8 +1196,9 @@ inline LinearVelocity2D GetLinearVelocityFromWorldPoint(const Body& body,
 {
     const auto velocity = body.GetVelocity();
     const auto worldCtr = body.GetWorldCenter();
-    const auto dp = worldPoint - worldCtr;
-    return velocity.linear + GetRevPerpendicular(StripUnits(dp)) * RealNum{velocity.angular / RadianPerSecond} * MeterPerSecond;
+    const auto dp = Length2D{worldPoint - worldCtr};
+    const auto rlv = LinearVelocity2D{GetRevPerpendicular(dp) * velocity.angular / Radian};
+    return velocity.linear + rlv;
 }
 
 /// Gets the linear velocity from a local point.

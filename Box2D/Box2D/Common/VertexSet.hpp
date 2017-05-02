@@ -34,18 +34,18 @@ namespace box2d
     public:
         using const_pointer = const Length2D*;
 
-        static Vec2::data_type GetDefaultMinSeparationSquared()
+        static Area GetDefaultMinSeparationSquared()
         {
-            return Sqrt(std::numeric_limits<Vec2::data_type>::min()) * 2;
+            return Sqrt(std::numeric_limits<Vec2::data_type>::min()) * SquareMeter;
         }
         
-        VertexSet(Vec2::data_type minSepSquared = GetDefaultMinSeparationSquared()):
-            m_minSepSquared{std::abs(minSepSquared)}
+        VertexSet(Area minSepSquared = GetDefaultMinSeparationSquared()):
+            m_minSepSquared{minSepSquared}
         {
-            assert(minSepSquared >= 0);
+            assert(minSepSquared >= Area{0});
         }
 
-        Vec2::data_type GetMinSeparationSquared() const noexcept { return m_minSepSquared; }
+        Area GetMinSeparationSquared() const noexcept { return m_minSepSquared; }
 
         bool add(Length2D value)
         {
@@ -74,7 +74,7 @@ namespace box2d
             {
                 // length squared must be large enough to have a reasonable enough unit vector.
                 const auto delta = value - elem;
-                if (GetLengthSquared(StripUnits(delta)) <= m_minSepSquared)
+                if (GetLengthSquared(delta) <= m_minSepSquared)
                 {
                     // found or delta poorly conditioned
                     return &elem;
@@ -90,7 +90,7 @@ namespace box2d
 
     private:
         std::vector<Length2D> m_elements; ///< Elements.
-        const Vec2::data_type m_minSepSquared; ///< Minimum length squared. sizeof(Vec2)/2 or 4-bytes.
+        const Area m_minSepSquared; ///< Minimum length squared. sizeof(Vec2)/2 or 4-bytes.
     };
 }
 

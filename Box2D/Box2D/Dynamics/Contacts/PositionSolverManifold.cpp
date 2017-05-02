@@ -37,10 +37,10 @@ inline PositionSolverManifold GetForCircles(const Transformation& xfA, Length2D 
 {
     const auto pointA = Transform(lp, xfA);
     const auto pointB = Transform(plp, xfB);
-    const auto delta = StripUnits(pointB - pointA); // The edge from pointA to pointB
+    const auto delta = pointB - pointA; // The edge from pointA to pointB
     const auto normal = GetUnitVector(delta, UnitVec2::GetZero()); // The direction of the edge.
     const auto midpoint = (pointA + pointB) / RealNum{2};
-    const auto separation = Dot(delta, normal) * Meter; // The length of edge without doing sqrt again.
+    const auto separation = Dot(delta, normal); // The length of edge without doing sqrt again.
     return PositionSolverManifold{normal, midpoint, separation};
 }
 
@@ -59,7 +59,7 @@ inline PositionSolverManifold GetForFaceA(const Transformation& xfA, Length2D lp
     const auto planePoint = Transform(lp, xfA);
     const auto normal = Rotate(ln, xfA.q);
     const auto clipPoint = Transform(plp, xfB);
-    const auto separation = Dot(StripUnits(clipPoint - planePoint), normal) * Meter;
+    const auto separation = Dot(clipPoint - planePoint, normal);
     return PositionSolverManifold{normal, clipPoint, separation};
 }
 
@@ -78,7 +78,7 @@ inline PositionSolverManifold GetForFaceB(const Transformation& xfB, Length2D lp
     const auto planePoint = Transform(lp, xfB);
     const auto normal = Rotate(ln, xfB.q);
     const auto clipPoint = Transform(plp, xfA);
-    const auto separation = Dot(StripUnits(clipPoint - planePoint), normal) * Meter;
+    const auto separation = Dot(clipPoint - planePoint, normal);
     // Negate normal to ensure the PSM normal points from A to B
     return PositionSolverManifold{-normal, clipPoint, separation};
 }
