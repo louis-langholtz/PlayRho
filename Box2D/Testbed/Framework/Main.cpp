@@ -88,9 +88,29 @@ static void sCreateUI()
     ui.mouseOverMenu = false;
 
     // Init UI
-    const char* fontPath = "../Data/DroidSans.ttf";
-    
-    if (!RenderGLInit(fontPath))
+    const char* fontPaths[] = {
+        // This is the original path...
+        "../Data/DroidSans.ttf",
+        
+        // Possibly a relative path for windows...
+        "../../../../Data/DroidSans.ttf",
+        
+        // Try the current working directory...
+        "./DroidSans.ttf",
+    };
+
+    for (auto&& fontPath: fontPaths)
+    {
+        fprintf(stderr, "Attempting to load font from \"%s\", ", fontPath);
+	    if (RenderGLInitFont(fontPath))
+    	{
+            fprintf(stderr, "succeeded.\n");
+            break;
+    	}
+        fprintf(stderr, " failed.\n");
+    }
+
+    if (!RenderGLInit())
     {
         fprintf(stderr, "Could not init GUI renderer.\n");
         assert(false);

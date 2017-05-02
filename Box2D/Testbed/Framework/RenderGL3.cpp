@@ -1,5 +1,6 @@
 //
-// Copyright (c) 2009-2010 Mikko Mononen memon@inside.org
+// Original work Copyright (c) 2009-2010 Mikko Mononen memon@inside.org
+// Modified work  Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
 //
 // This software is provided 'as-is', without any express or implied
 // warranty.  In no event will the authors be held liable for any damages
@@ -467,8 +468,51 @@ void sRenderLine(float x0, float y0, float x1, float y1, float r, float fth, uns
     sDrawPolygon(verts, 4, fth, col);
 }
 
+bool RenderGLInitFont(const char* fontpath)
+{
+    // Load font.
+    FILE* fp = fopen(fontpath, "rb");
+    if (!fp)
+        return false;
+
+    fseek(fp, 0, SEEK_END);
+    int size = (int)ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+    
+    unsigned char* ttfBuffer = (unsigned char*)malloc(size);
+    if (!ttfBuffer)
+    {
+        fclose(fp);
+        return false;
+    }
+    
+    fread(ttfBuffer, 1, size, fp);
+    fclose(fp);
+    fp = 0;
+    
+    unsigned char* bmap = (unsigned char*)malloc(512 * 512);
+    if (!bmap)
+    {
+        free(ttfBuffer);
+        return false;
+    }
+    
+    stbtt_BakeFontBitmap(ttfBuffer, 0, 15.0f, bmap, 512, 512, 32, 96, g_cdata);
+    
+    // can free ttf_buffer at this point
+    glGenTextures(1, &g_ftex);
+    glBindTexture(GL_TEXTURE_2D, g_ftex);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, 512, 512, 0, GL_RED, GL_UNSIGNED_BYTE, bmap);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    
+    free(ttfBuffer);
+    free(bmap);
+    return true;
+}
+
 //
-bool RenderGLInit(const char* fontpath)
+bool RenderGLInit()
 {
     for (int i = 0; i < CIRCLE_VERTS; ++i)
     {
@@ -477,41 +521,6 @@ bool RenderGLInit(const char* fontpath)
         g_circleVerts[i * 2 + 1] = sinf(a);
     }
 
-    // Load font.
-    FILE* fp = fopen(fontpath, "rb");
-    if (!fp) return false;
-    fseek(fp, 0, SEEK_END);
-    int size = (int)ftell(fp);
-    fseek(fp, 0, SEEK_SET);
-
-    unsigned char* ttfBuffer = (unsigned char*)malloc(size);
-    if (!ttfBuffer)
-    {
-        fclose(fp);
-        return false;
-    }
-
-    fread(ttfBuffer, 1, size, fp);
-    fclose(fp);
-    fp = 0;
-
-    unsigned char* bmap = (unsigned char*)malloc(512 * 512);
-    if (!bmap)
-    {
-        free(ttfBuffer);
-        return false;
-    }
-
-    stbtt_BakeFontBitmap(ttfBuffer, 0, 15.0f, bmap, 512, 512, 32, 96, g_cdata);
-
-    // can free ttf_buffer at this point
-    glGenTextures(1, &g_ftex);
-    glBindTexture(GL_TEXTURE_2D, g_ftex);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, 512, 512, 0, GL_RED, GL_UNSIGNED_BYTE, bmap);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    // can free ttf_buffer at this point
     unsigned char white_alpha = 255;
     glGenTextures(1, &g_whitetex);
     glBindTexture(GL_TEXTURE_2D, g_whitetex);
@@ -587,9 +596,6 @@ bool RenderGLInit(const char* fontpath)
     g_programTextureLocation = glGetUniformLocation(g_program, "Texture");
 
     glUseProgram(0);
-
-    free(ttfBuffer);
-    free(bmap);
 
     return true;
 }

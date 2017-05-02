@@ -40,7 +40,8 @@ inline unsigned int SetRGBA(unsigned char r, unsigned char g, unsigned char b, u
 	return (r) | (g << 8) | (b << 16) | (a << 24);
 }
 
-bool RenderGLInit(const char* fontpath);
+bool RenderGLInitFont(const char* fontpath);
+bool RenderGLInit();
 void RenderGLDestroy();
 void RenderGLFlush(int width, int height);
 
