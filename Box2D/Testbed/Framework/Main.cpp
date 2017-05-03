@@ -52,30 +52,111 @@ struct UIState
     bool chooseTest;
 };
 
+class Selection
+{
+public:
+    using size_type = std::size_t;
+    
+    Selection(size_type size, size_type selection = 0):
+	    m_size(size),
+    	m_selection(selection < size? selection: 0)
+    {
+        assert(size > 0);
+        assert(selection < size);
+    }
+    
+    size_type Get() const
+    {
+        return m_selection;
+    }
+    
+    void Set(size_type selection)
+    {
+        assert(selection < m_size);
+        if (selection < m_size)
+        {
+            m_selection = selection;
+        }
+    }
+    
+    void Increment()
+    {
+        const auto next = m_selection + 1;
+        m_selection = (next < m_size)? next: 0;
+    }
+    
+    void Decrement()
+    {
+        m_selection = (m_selection > 0)? m_selection - 1: m_size - 1;
+    }
+    
+private:
+    size_type m_selection = 0;
+    size_type m_size = 0;
+};
+
+class TestSuite
+{
+public:
+    using size_type = std::size_t;
+    
+    TestSuite(Span<const TestEntry> testEntries, size_type index = 0):
+    	m_testEntries(testEntries),
+    	m_testIndex(index < testEntries.size()? index: 0)
+    {
+        assert(testEntries.size() > 0);
+        m_test = testEntries[m_testIndex].createFcn();
+    }
+    
+    size_type GetTestCount() const
+    {
+        return m_testEntries.size();
+    }
+    
+    Test* GetTest() const
+    {
+        return m_test.get();
+    }
+    
+    size_type GetIndex() const
+    {
+        return m_testIndex;
+    }
+    
+    const char* GetName(std::size_t index) const
+    {
+        return m_testEntries[index].name;
+    }
+    
+    const char* GetName() const
+    {
+        return m_testEntries[m_testIndex].name;
+    }
+    
+    void SetIndex(size_type index)
+    {
+        assert(index < GetTestCount());
+        
+        m_testIndex = index;
+        RestartTest();
+    }
+    
+    void RestartTest()
+    {
+        m_test = m_testEntries[m_testIndex].createFcn();
+    }
+    
+private:
+    Span<const TestEntry> m_testEntries;
+    size_type m_testIndex;
+    std::unique_ptr<Test> m_test;
+};
+        
 //
 namespace
 {
-    auto CountTests()
-    {
-        auto count = 0;
-        const auto tests = GetTestEntries();
-        while (tests[count].createFcn)
-        {
-            ++count;
-        }
-        return count;
-    }
-
-    struct Testbed
-    {
-        int testIndex = 0;
-        int testSelection = 0;
-        const int testCount = CountTests();
-        const TestEntry* entry;
-        std::unique_ptr<Test> test;
-    };
-
-    Testbed *g_testbed = nullptr;
+    TestSuite *g_testSuite = nullptr;
+    Selection *g_selection = nullptr;
 
     Camera g_camera;
     
@@ -202,7 +283,7 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
             // Pan left
             if (mods == GLFW_MOD_CONTROL)
             {
-                g_testbed->test->ShiftOrigin(Vec2(2.0f, 0.0f) * Meter);
+                g_testSuite->GetTest()->ShiftOrigin(Vec2(2.0f, 0.0f) * Meter);
             }
             else
             {
@@ -214,7 +295,7 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
             // Pan right
             if (mods == GLFW_MOD_CONTROL)
             {
-                g_testbed->test->ShiftOrigin(Vec2(-2.0f, 0.0f) * Meter);
+                g_testSuite->GetTest()->ShiftOrigin(Vec2(-2.0f, 0.0f) * Meter);
             }
             else
             {
@@ -226,7 +307,7 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
             // Pan down
             if (mods == GLFW_MOD_CONTROL)
             {
-                g_testbed->test->ShiftOrigin(Vec2(0.0f, 2.0f) * Meter);
+                g_testSuite->GetTest()->ShiftOrigin(Vec2(0.0f, 2.0f) * Meter);
             }
             else
             {
@@ -238,7 +319,7 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
             // Pan up
             if (mods == GLFW_MOD_CONTROL)
             {
-                g_testbed->test->ShiftOrigin(Vec2(0.0f, -2.0f) * Meter);
+                g_testSuite->GetTest()->ShiftOrigin(Vec2(0.0f, -2.0f) * Meter);
             }
             else
             {
@@ -264,14 +345,14 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
 
         case GLFW_KEY_R:
             // Reset test
-            g_testbed->test = g_testbed->entry->createFcn();
+            g_testSuite->RestartTest();
             break;
 
         case GLFW_KEY_SPACE:
             // Launch a bomb.
-            if (g_testbed->test)
+            if (g_testSuite->GetTest())
             {
-                g_testbed->test->LaunchBomb();
+                g_testSuite->GetTest()->LaunchBomb();
             }
             break;
 
@@ -282,35 +363,27 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
 
         case GLFW_KEY_LEFT_BRACKET:
             // Switch to previous test
-            --g_testbed->testSelection;
-            if (g_testbed->testSelection < 0)
-            {
-                g_testbed->testSelection = g_testbed->testCount - 1;
-            }
+            g_selection->Decrement();
             break;
 
         case GLFW_KEY_RIGHT_BRACKET:
             // Switch to next test
-            ++g_testbed->testSelection;
-            if (g_testbed->testSelection == g_testbed->testCount)
-            {
-                g_testbed->testSelection = 0;
-            }
+            g_selection->Increment();
             break;
 
         case GLFW_KEY_TAB:
             ui.showMenu = !ui.showMenu;
 
         default:
-            if (g_testbed->test)
+            if (g_testSuite->GetTest())
             {
-                g_testbed->test->KeyboardDown(GlfwKeyToTestKey(key));
+                g_testSuite->GetTest()->KeyboardDown(GlfwKeyToTestKey(key));
             }
         }
     }
     else if (action == GLFW_RELEASE)
     {
-        g_testbed->test->KeyboardUp(GlfwKeyToTestKey(key));
+        g_testSuite->GetTest()->KeyboardUp(GlfwKeyToTestKey(key));
     }
     // else GLFW_REPEAT
 }
@@ -331,17 +404,17 @@ static void sMouseButton(GLFWwindow*, int button, int action, int mods)
         {
             if (mods == GLFW_MOD_SHIFT)
             {
-                g_testbed->test->ShiftMouseDown(pw);
+                g_testSuite->GetTest()->ShiftMouseDown(pw);
             }
             else
             {
-                g_testbed->test->MouseDown(pw);
+                g_testSuite->GetTest()->MouseDown(pw);
             }
         }
         
         if (action == GLFW_RELEASE)
         {
-            g_testbed->test->MouseUp(pw);
+            g_testSuite->GetTest()->MouseUp(pw);
         }
     }
     else if (button == GLFW_MOUSE_BUTTON_2)
@@ -365,7 +438,7 @@ static void sMouseMotion(GLFWwindow*, double xd, double yd)
     const auto ps = Coord2D{static_cast<float>(xd), static_cast<float>(yd)};
     const auto pw = ConvertScreenToWorld(g_camera, ps);
 
-    g_testbed->test->MouseMove(pw);
+    g_testSuite->GetTest()->MouseMove(pw);
     
     if (rightMouseDown)
     {
@@ -397,13 +470,6 @@ static void sScrollCallback(GLFWwindow*, double, double dy)
 }
 
 //
-static void sRestart()
-{
-    g_testbed->entry = GetTestEntries() + g_testbed->testIndex;
-    g_testbed->test = g_testbed->entry->createFcn();
-}
-
-//
 static void sSimulate(Drawer& drawer)
 {
     glEnable(GL_DEPTH_TEST);
@@ -417,8 +483,8 @@ static void sSimulate(Drawer& drawer)
         }
     }
     
-    g_testbed->test->DrawTitle(drawer, g_testbed->entry->name);
-    g_testbed->test->Step(settings, drawer);
+    g_testSuite->GetTest()->DrawTitle(drawer, g_testSuite->GetName());
+    g_testSuite->GetTest()->Step(settings, drawer);
 
     glDisable(GL_DEPTH_TEST);
 
@@ -430,11 +496,9 @@ static void sSimulate(Drawer& drawer)
         }
     }
     
-    if (g_testbed->testSelection != g_testbed->testIndex)
+    if (g_testSuite->GetIndex() != g_selection->Get())
     {
-        g_testbed->testIndex = g_testbed->testSelection;
-        g_testbed->entry = GetTestEntries() + g_testbed->testIndex;
-        g_testbed->test = g_testbed->entry->createFcn();
+        g_testSuite->SetIndex(g_selection->Get());
         g_camera.m_zoom = 1.0f;
         g_camera.m_center = Coord2D{0.0f, 20.0f};
     }
@@ -456,7 +520,7 @@ static void sInterface()
         imguiSeparatorLine();
 
         imguiLabel("Test:");
-        if (imguiButton(g_testbed->entry->name, true))
+        if (imguiButton(g_testSuite->GetName(), true))
         {
             ui.chooseTest = !ui.chooseTest;
         }
@@ -530,7 +594,7 @@ static void sInterface()
         if (imguiButton("Single Step", true))
             settings.singleStep = !settings.singleStep;
         if (imguiButton("Restart", true))
-            sRestart();
+            g_testSuite->RestartTest();
         if (imguiButton("Quit", true))
             glfwSetWindowShouldClose(mainWindow, GL_TRUE);
 
@@ -547,12 +611,13 @@ static void sInterface()
                                                &testScroll);
         if (over) ui.mouseOverMenu = true;
 
-        for (int i = 0; i < g_testbed->testCount; ++i)
+        const auto testCount = g_testSuite->GetTestCount();
+        for (auto i = decltype(testCount){0}; i < testCount; ++i)
         {
-            if (imguiItem(GetTestEntries()[i].name, true))
+            if (imguiItem(g_testSuite->GetName(i), true))
             {
-                g_testbed->entry = GetTestEntries() + i;
-                g_testbed->test = g_testbed->entry->createFcn();
+                g_selection->Set(i);
+                g_testSuite->SetIndex(i);
                 ui.chooseTest = false;
             }
         }
@@ -566,8 +631,10 @@ static void sInterface()
 //
 int main()
 {
-    Testbed testbed;
-    g_testbed = &testbed;
+    TestSuite testSuite(GetTestEntries());
+    Selection selection(testSuite.GetTestCount());
+    g_testSuite = &testSuite;
+    g_selection = &selection;
 
 #if defined(_WIN32)
     // Enable memory-leak reports
@@ -623,12 +690,6 @@ int main()
 #endif
     
     sCreateUI();
-    
-    g_testbed->testIndex = Clamp(g_testbed->testIndex, 0, g_testbed->testCount - 1);
-    g_testbed->testSelection = g_testbed->testIndex;
-    
-    g_testbed->entry = GetTestEntries() + g_testbed->testIndex;
-    g_testbed->test = g_testbed->entry->createFcn();
     
     // Control the frame rate. One draw per monitor refresh.
     glfwSwapInterval(1);

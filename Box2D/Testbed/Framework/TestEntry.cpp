@@ -145,14 +145,18 @@ static const TestEntry testEntries[] =
     {"Add Pair Stress Test", MakeUniqueTest<AddPair>},
     {"Newton's Cradle", MakeUniqueTest<NewtonsCradle>},
     {"Top-down Car", MakeUniqueTest<iforce2d_TopdownCar>},
-
-    /// Empty entry signifying end of array.
-    {nullptr, nullptr}
 };
 
-const TestEntry* GetTestEntries()
+static const std::size_t numTestEntries = sizeof(testEntries) / sizeof(TestEntry);
+
+Span<const TestEntry> GetTestEntries()
 {
-    return testEntries;
+    // Intentionally encapsulates access to the static array through this function.
+    // This may help avoid issues with startup-time dependencies of having global data defined
+    // in a different file than it's used in.
+    // This also allows this code to use sizeof to compile-time determine the size of
+    // the test entries array and to return it along with the array pointer as a span.
+    return Span<const TestEntry>(testEntries, numTestEntries);
 }
 
 } // namespace box2d

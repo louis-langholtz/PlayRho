@@ -20,6 +20,7 @@
 #ifndef TestEntry_hpp
 #define TestEntry_hpp
 
+#include <Box2D/Common/Span.hpp>
 #include <memory>
 
 namespace box2d
@@ -27,12 +28,19 @@ namespace box2d
 
 class Test;
 
+/// @brief Makes a unique test instance.
+///
+/// @details Makes a unique test instance that's wrapped in a std::unique_ptr<Test> data
+///   structure for managed use of memory for test intances.
+///
 template <class U>
 std::unique_ptr<Test> MakeUniqueTest()
 {
     return std::unique_ptr<Test>(std::make_unique<U>());
 }
 
+/// @brief A name and function pointer dataset for a test entry.
+///
 struct TestEntry
 {
     typedef std::unique_ptr<Test> CreateFcn();
@@ -41,7 +49,12 @@ struct TestEntry
     CreateFcn *createFcn;
 };
 
-extern const TestEntry* GetTestEntries();
+/// @brief Gets the test entries array.
+///
+/// @note This serves as a wrapper to avoid any possible startup-time dependencies issues that
+///   might be caused by having global data defined in a different file than it's used in.
+///
+Span<const TestEntry> GetTestEntries();
 
 } // namespace box2d
 

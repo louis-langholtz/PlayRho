@@ -27,6 +27,11 @@
 
 namespace box2d
 {
+    /// @brief A C++ encapsulation of an array and its size.
+    ///
+    /// @note This is conceptually like the GSL's span template class.
+    /// @sa http://open-std.org/JTC1/SC22/WG21/docs/papers/2016/p0122r1.pdf
+    ///
     template <typename T>
     class Span
     {
@@ -84,6 +89,8 @@ namespace box2d
         
         size_type size() const noexcept { return m_size; }
         
+        pointer data() const noexcept { return m_array; }
+
     private:
         pointer m_array = nullptr;
         size_type m_size = 0;
