@@ -116,7 +116,7 @@
 		474AFBF91EB1B2CB002AA6C8 /* MultiShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474AFBF61EB1B2CB002AA6C8 /* MultiShape.cpp */; };
 		474AFBFA1EB1B2CB002AA6C8 /* MultiShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 474AFBF71EB1B2CB002AA6C8 /* MultiShape.hpp */; };
 		474AFBFB1EB1B2CB002AA6C8 /* MultiShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 474AFBF71EB1B2CB002AA6C8 /* MultiShape.hpp */; };
-		474AFC001EBA40FA002AA6C8 /* TestEntries.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474AFBFF1EBA40FA002AA6C8 /* TestEntries.cpp */; };
+		474AFC001EBA40FA002AA6C8 /* TestEntry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474AFBFF1EBA40FA002AA6C8 /* TestEntry.cpp */; };
 		474B67221E80466D00B6D126 /* functional.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474B67211E80466D00B6D126 /* functional.cpp */; };
 		474BAB2A1E5CBA010058E08A /* Velocity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474BAB291E5CBA010058E08A /* Velocity.cpp */; };
 		474BAB301E5D00960058E08A /* BodyConstraint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 474BAB2C1E5D00960058E08A /* BodyConstraint.hpp */; };
@@ -503,7 +503,7 @@
 		474AFBF61EB1B2CB002AA6C8 /* MultiShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MultiShape.cpp; sourceTree = "<group>"; };
 		474AFBF71EB1B2CB002AA6C8 /* MultiShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MultiShape.hpp; sourceTree = "<group>"; };
 		474AFBFD1EBA35A2002AA6C8 /* TestEntry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestEntry.hpp; sourceTree = "<group>"; };
-		474AFBFF1EBA40FA002AA6C8 /* TestEntries.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestEntries.cpp; sourceTree = "<group>"; };
+		474AFBFF1EBA40FA002AA6C8 /* TestEntry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestEntry.cpp; sourceTree = "<group>"; };
 		474B67211E80466D00B6D126 /* functional.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = functional.cpp; sourceTree = "<group>"; };
 		474BAB291E5CBA010058E08A /* Velocity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Velocity.cpp; sourceTree = "<group>"; };
 		474BAB2C1E5D00960058E08A /* BodyConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyConstraint.hpp; sourceTree = "<group>"; };
@@ -1101,7 +1101,7 @@
 				80BB8A3B141C3E8500F1753A /* Test.cpp */,
 				80BB8A3C141C3E8500F1753A /* Test.hpp */,
 				474AFBFD1EBA35A2002AA6C8 /* TestEntry.hpp */,
-				474AFBFF1EBA40FA002AA6C8 /* TestEntries.cpp */,
+				474AFBFF1EBA40FA002AA6C8 /* TestEntry.cpp */,
 			);
 			path = Framework;
 			sourceTree = "<group>";
@@ -1683,7 +1683,7 @@
 				805900B3184EEE0F00C8ECA3 /* RenderGL3.cpp in Sources */,
 				473971B01DA6C8DE00F7137F /* Drawer.cpp in Sources */,
 				805900B1184EEE0F00C8ECA3 /* DebugDraw.cpp in Sources */,
-				474AFC001EBA40FA002AA6C8 /* TestEntries.cpp in Sources */,
+				474AFC001EBA40FA002AA6C8 /* TestEntry.cpp in Sources */,
 				805900B2184EEE0F00C8ECA3 /* imgui.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
