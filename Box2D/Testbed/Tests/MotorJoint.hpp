@@ -20,6 +20,8 @@
 #ifndef MOTOR_JOINT_H
 #define MOTOR_JOINT_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 /// This test shows how to use a motor joint. A motor joint
@@ -85,11 +87,6 @@ public:
     {
         drawer.DrawString(5, m_textLine, "Keys: (s) pause");
         m_textLine += 15;
-    }
-    
-    static Test* Create()
-    {
-        return new MotorJointTest;
     }
 
     MotorJoint* m_joint;

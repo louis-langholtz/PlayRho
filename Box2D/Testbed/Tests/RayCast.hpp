@@ -20,6 +20,8 @@
 #ifndef RAY_CAST_H
 #define RAY_CAST_H
 
+#include "../Framework/Test.hpp"
+
 // This test demonstrates how to use the world ray-cast feature.
 // NOTE: we are intentionally filtering one of the polygons, therefore
 // the ray will always miss one type of polygon.
@@ -436,11 +438,6 @@ public:
             drawer.DrawSegment(input.p1, input.p2, color);
         }
 #endif
-    }
-
-    static Test* Create()
-    {
-        return new RayCast;
     }
 
     int m_bodyIndex;

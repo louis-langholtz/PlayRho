@@ -20,6 +20,8 @@
 #ifndef SENSOR_TEST_H
 #define SENSOR_TEST_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 // This is used to test sensor shapes.
@@ -155,11 +157,6 @@ public:
             const auto F = Force2D{RealNum{100.0f} * GetUnitVector(d) * Newton};
             ApplyForce(*body, F, position);
         }
-    }
-
-    static Test* Create()
-    {
-        return new SensorTest;
     }
 
     Fixture* m_sensor;

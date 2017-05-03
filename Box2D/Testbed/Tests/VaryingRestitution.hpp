@@ -20,6 +20,8 @@
 #ifndef VARYING_RESTITUTION_H
 #define VARYING_RESTITUTION_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 // Note: even with a restitution of 1.0, there is some energy change
@@ -51,11 +53,6 @@ public:
             shape.SetRestitution(restitution[i]);
             body->CreateFixture(std::make_shared<CircleShape>(shape));
         }
-    }
-
-    static Test* Create()
-    {
-        return new VaryingRestitution;
     }
 };
 

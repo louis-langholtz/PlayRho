@@ -20,6 +20,8 @@
 #ifndef CONFINED_H
 #define CONFINED_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 class Confined : public Test
@@ -254,11 +256,6 @@ public:
         m_textLine += DRAW_STRING_NEW_LINE;
         drawer.DrawString(5, m_textLine, "Press 'i' to impart impulses.");
         m_textLine += DRAW_STRING_NEW_LINE;
-    }
-    
-    static Test* Create()
-    {
-        return new Confined;
     }
     
     bool m_bullet_mode = false;

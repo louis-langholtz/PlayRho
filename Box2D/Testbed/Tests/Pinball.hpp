@@ -20,6 +20,8 @@
 #ifndef PINBALL_H
 #define PINBALL_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 /// This tests bullet collision and provides an example of a gameplay scenario.
@@ -145,11 +147,6 @@ public:
         default:
             break;
         }
-    }
-
-    static Test* Create()
-    {
-        return new Pinball;
     }
 
     RevoluteJoint* m_leftJoint;

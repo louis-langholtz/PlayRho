@@ -20,6 +20,7 @@
 #ifndef ROPE_H
 #define ROPE_H
 
+#include "../Framework/Test.hpp"
 #include <Box2d/Rope/Rope.hpp>
 
 namespace box2d {
@@ -87,11 +88,6 @@ public:
         m_textLine += DRAW_STRING_NEW_LINE;
         drawer.DrawString(5, m_textLine, "Target angle = %g degrees", m_angle * 180.0f / Pi);
         m_textLine += DRAW_STRING_NEW_LINE;
-    }
-
-    static Test* Create()
-    {
-        return new RopeTest;
     }
 
     Rope m_rope;

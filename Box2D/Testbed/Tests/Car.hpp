@@ -20,6 +20,8 @@
 #ifndef CAR_H
 #define CAR_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 // This is a fun demo that shows off the wheel joint
@@ -259,11 +261,6 @@ public:
         m_textLine += DRAW_STRING_NEW_LINE;
         drawer.DrawString(5, m_textLine, "frequency = %g hz, damping ratio = %g", double{m_hz / Hertz}, m_zeta);
         m_textLine += DRAW_STRING_NEW_LINE;
-    }
-    
-    static Test* Create()
-    {
-        return new Car;
     }
 
     Body* m_car;

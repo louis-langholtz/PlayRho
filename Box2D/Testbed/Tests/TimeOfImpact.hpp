@@ -20,6 +20,7 @@
 #ifndef TIME_OF_IMPACT_H
 #define TIME_OF_IMPACT_H
 
+#include "../Framework/Test.hpp"
 #include <vector>
 #include <Box2D/Collision/TimeOfImpact.hpp>
 
@@ -32,11 +33,6 @@ public:
     {
         m_shapeA.SetAsBox(RealNum{25.0f} * Meter, RealNum{5.0f} * Meter);
         m_shapeB.SetAsBox(RealNum{2.5f} * Meter, RealNum{2.5f} * Meter);
-    }
-
-    static Test* Create()
-    {
-        return new TimeOfImpactTest;
     }
 
     static const char *GetName(TOIOutput::State state)

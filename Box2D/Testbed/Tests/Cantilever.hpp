@@ -20,6 +20,8 @@
 #ifndef CANTILEVER_H
 #define CANTILEVER_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 // It is difficult to make a cantilever made of links completely rigid with weld joints.
@@ -172,11 +174,6 @@ public:
             const auto body = m_world->CreateBody(bd);
             body->CreateFixture(circleshape);
         }
-    }
-
-    static Test* Create()
-    {
-        return new Cantilever;
     }
 
     Body* m_middle;

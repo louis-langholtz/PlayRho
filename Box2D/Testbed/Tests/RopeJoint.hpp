@@ -20,6 +20,8 @@
 #ifndef ROPE_JOINT_H
 #define ROPE_JOINT_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 /// This test shows how a rope joint can be used to stabilize a chain of
@@ -124,11 +126,6 @@ public:
             drawer.DrawString(5, m_textLine, "Rope OFF");
         }
         m_textLine += DRAW_STRING_NEW_LINE;
-    }
-
-    static Test* Create()
-    {
-        return new RopeJointTest;
     }
 
     RopeJointDef m_ropeDef;

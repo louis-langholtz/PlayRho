@@ -20,6 +20,7 @@
 #ifndef DISTANCE_TEST_H
 #define DISTANCE_TEST_H
 
+#include "../Framework/Test.hpp"
 #include <sstream>
 #include <Box2D/Collision/ShapeSeparation.hpp>
 #include <Box2D/Dynamics/Contacts/PositionSolverManifold.hpp>
@@ -41,11 +42,6 @@ public:
         m_bodyB->SetTransform(m_bodyA->GetLocation() + Vec2(19.017401f, 0.13678508f) * Meter, RealNum{0} * Degree);
         
         CreateFixtures();
-    }
-
-    static Test* Create()
-    {
-        return new DistanceTest;
     }
 
     void CreateFixtures()

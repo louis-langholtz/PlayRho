@@ -20,6 +20,8 @@
 #ifndef DOMINOS_H
 #define DOMINOS_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 class Dominos : public Test
@@ -167,11 +169,6 @@ public:
                 body->CreateFixture(shape);
             }
         }
-    }
-
-    static Test* Create()
-    {
-        return new Dominos;
     }
 };
 

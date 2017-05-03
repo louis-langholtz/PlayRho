@@ -20,6 +20,8 @@
 #ifndef HEAVY_ON_LIGHT_H
 #define HEAVY_ON_LIGHT_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 class HeavyOnLight : public Test
@@ -48,11 +50,6 @@ public:
         const auto body2 = m_world->CreateBody(bd);
         conf.vertexRadius = RealNum{5.0f} * Meter;
         body2->CreateFixture(std::make_shared<CircleShape>(conf));
-    }
-    
-    static Test* Create()
-    {
-        return new HeavyOnLight;
     }
 };
 

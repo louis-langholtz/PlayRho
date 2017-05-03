@@ -20,6 +20,8 @@
 #ifndef TILES_H
 #define TILES_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 /// This stress tests the dynamic tree broad-phase. This also shows that tile
@@ -116,11 +118,6 @@ public:
         //{
         //    tree->RebuildBottomUp();
         //}
-    }
-
-    static Test* Create()
-    {
-        return new Tiles;
     }
 
     int m_fixtureCount;

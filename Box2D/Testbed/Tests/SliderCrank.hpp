@@ -20,10 +20,11 @@
 #ifndef SLIDER_CRANK_H
 #define SLIDER_CRANK_H
 
-// A motor driven slider crank with joint friction.
+#include "../Framework/Test.hpp"
 
 namespace box2d {
 
+// A motor driven slider crank with joint friction.
 class SliderCrank : public Test
 {
 public:
@@ -131,11 +132,6 @@ public:
         const auto torque = m_joint1->GetMotorTorque(RealNum{settings.hz} * Hertz);
         drawer.DrawString(5, m_textLine, "Motor Torque = %5.0f", double{torque / NewtonMeter});
         m_textLine += DRAW_STRING_NEW_LINE;
-    }
-
-    static Test* Create()
-    {
-        return new SliderCrank;
     }
 
     RevoluteJoint* m_joint1;

@@ -20,6 +20,8 @@
 #ifndef PRISMATIC_H
 #define PRISMATIC_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 // The motor in this test gets smoother with higher velocity iterations.
@@ -89,11 +91,6 @@ public:
         const auto force = m_joint->GetMotorForce(RealNum{settings.hz} * Hertz);
         drawer.DrawString(5, m_textLine, "Motor Force = %4.0f", double{force / Newton});
         m_textLine += DRAW_STRING_NEW_LINE;
-    }
-
-    static Test* Create()
-    {
-        return new Prismatic;
     }
 
     PrismaticJoint* m_joint;

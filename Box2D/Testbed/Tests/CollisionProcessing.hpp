@@ -20,6 +20,7 @@
 #ifndef COLLISION_PROCESSING_H
 #define COLLISION_PROCESSING_H
 
+#include "../Framework/Test.hpp"
 #include <algorithm>
 
 namespace box2d {
@@ -162,11 +163,6 @@ public:
                 m_world->Destroy(b);
             }
         }
-    }
-
-    static Test* Create()
-    {
-        return new CollisionProcessing;
     }
 };
 

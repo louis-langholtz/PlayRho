@@ -19,6 +19,8 @@
 #ifndef NewtonsCradle_hpp
 #define NewtonsCradle_hpp
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
     
     /// Newton's Cradle test.
@@ -257,11 +259,6 @@ namespace box2d {
             m_textLine += DRAW_STRING_NEW_LINE;
             drawer.DrawString(5, m_textLine, "Press '1-5' to set # of balls (currently %d).", m_num_arms);
             m_textLine += DRAW_STRING_NEW_LINE;
-        }
-        
-        static Test* Create()
-        {
-            return new NewtonsCradle;
         }
     
         int m_num_arms = default_num_arms;

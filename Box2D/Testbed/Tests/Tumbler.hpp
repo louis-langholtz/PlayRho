@@ -20,6 +20,8 @@
 #ifndef TUMBLER_H
 #define TUMBLER_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 class Tumbler : public Test
@@ -91,11 +93,6 @@ public:
             default:
                 break;
         }
-    }
-    
-    static Test* Create()
-    {
-        return new Tumbler;
     }
 
     RevoluteJoint* m_joint;

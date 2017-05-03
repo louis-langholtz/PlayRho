@@ -20,6 +20,8 @@
 #ifndef EDGE_TEST_H
 #define EDGE_TEST_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 class EdgeTest : public Test
@@ -86,11 +88,6 @@ public:
             shape.SetDensity(RealNum{1} * KilogramPerSquareMeter);
             body->CreateFixture(std::make_shared<PolygonShape>(shape));
         }
-    }
-
-    static Test* Create()
-    {
-        return new EdgeTest;
     }
 };
 

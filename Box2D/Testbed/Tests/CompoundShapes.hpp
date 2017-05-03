@@ -20,6 +20,8 @@
 #ifndef COMPOUND_SHAPES_H
 #define COMPOUND_SHAPES_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 // TODO_ERIN test joints on compounds.
@@ -134,11 +136,6 @@ public:
             body->CreateFixture(left);
             body->CreateFixture(right);
         }
-    }
-
-    static Test* Create()
-    {
-        return new CompoundShapes;
     }
 };
 

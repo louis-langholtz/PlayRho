@@ -20,6 +20,7 @@
 #ifndef POLY_SHAPES_H
 #define POLY_SHAPES_H
 
+#include "../Framework/Test.hpp"
 #include <vector>
 
 /// This tests stacking. It also shows how to use World::Query
@@ -248,11 +249,6 @@ public:
         m_textLine += DRAW_STRING_NEW_LINE;
         drawer.DrawString(5, m_textLine, "Press 'd' to destroy a body");
         m_textLine += DRAW_STRING_NEW_LINE;
-    }
-
-    static Test* Create()
-    {
-        return new PolyShapes;
     }
 
     int m_bodyIndex;

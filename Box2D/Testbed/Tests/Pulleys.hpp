@@ -20,6 +20,8 @@
 #ifndef PULLEYS_H
 #define PULLEYS_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 class Pulleys : public Test
@@ -77,11 +79,6 @@ public:
         const auto L = GetCurrentLengthA(*m_joint1) + ratio * GetCurrentLengthB(*m_joint1);
         drawer.DrawString(5, m_textLine, "L1 + %4.2f * L2 = %4.2f", (float) ratio, double{L / Meter});
         m_textLine += DRAW_STRING_NEW_LINE;
-    }
-
-    static Test* Create()
-    {
-        return new Pulleys;
     }
 
     PulleyJoint* m_joint1;

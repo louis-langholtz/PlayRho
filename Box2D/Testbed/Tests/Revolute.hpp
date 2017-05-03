@@ -20,6 +20,8 @@
 #ifndef REVOLUTE_H
 #define REVOLUTE_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 class Revolute : public Test
@@ -136,11 +138,6 @@ public:
         //RealNum torque1 = m_joint1->GetMotorTorque();
         //drawer.DrawString(5, m_textLine, "Motor Torque = %4.0f, %4.0f : Motor Force = %4.0f", (float) torque1, (float) torque2, (float) force3);
         //m_textLine += DRAW_STRING_NEW_LINE;
-    }
-
-    static Test* Create()
-    {
-        return new Revolute;
     }
 
     Body* m_ball;

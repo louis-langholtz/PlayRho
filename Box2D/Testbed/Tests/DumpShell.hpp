@@ -20,6 +20,8 @@
 #ifndef DUMP_SHELL_H
 #define DUMP_SHELL_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 // This test holds worlds dumped using Dump(World&).
@@ -156,11 +158,6 @@ public:
         joints = nullptr;
         bodies = nullptr;
 
-    }
-
-    static Test* Create()
-    {
-        return new DumpShell;
     }
 };
 

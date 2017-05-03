@@ -502,6 +502,7 @@
 		474AFBF41EB19BB6002AA6C8 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		474AFBF61EB1B2CB002AA6C8 /* MultiShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MultiShape.cpp; sourceTree = "<group>"; };
 		474AFBF71EB1B2CB002AA6C8 /* MultiShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MultiShape.hpp; sourceTree = "<group>"; };
+		474AFBFD1EBA35A2002AA6C8 /* TestEntry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestEntry.hpp; sourceTree = "<group>"; };
 		474B67211E80466D00B6D126 /* functional.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = functional.cpp; sourceTree = "<group>"; };
 		474BAB291E5CBA010058E08A /* Velocity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Velocity.cpp; sourceTree = "<group>"; };
 		474BAB2C1E5D00960058E08A /* BodyConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyConstraint.hpp; sourceTree = "<group>"; };
@@ -1099,6 +1100,7 @@
 				805900B0184EEE0F00C8ECA3 /* stb_truetype.h */,
 				80BB8A3B141C3E8500F1753A /* Test.cpp */,
 				80BB8A3C141C3E8500F1753A /* Test.hpp */,
+				474AFBFD1EBA35A2002AA6C8 /* TestEntry.hpp */,
 			);
 			path = Framework;
 			sourceTree = "<group>";

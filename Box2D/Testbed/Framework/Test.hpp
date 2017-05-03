@@ -21,10 +21,9 @@
 #define TEST_H
 
 #include <Box2D/Box2D.hpp>
-#include <cstdlib>
-#include "Drawer.hpp"
 #include <Box2D/Collision/CollideShapes.hpp>
 #include <Box2D/Dynamics/Profile.hpp>
+#include "Drawer.hpp"
 
 namespace box2d {
 
@@ -215,16 +214,6 @@ private:
     Profile m_maxProfile;
     Profile m_totalProfile;
 };
-
-typedef Test* TestCreateFcn();
-
-struct TestEntry
-{
-    const char *name;
-    TestCreateFcn *createFcn;
-};
-
-extern const TestEntry g_testEntries[];
 
 /// Random number in range [-1,1]
 RealNum RandomFloat();

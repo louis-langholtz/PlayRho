@@ -20,6 +20,8 @@
 #ifndef PYRAMID_H
 #define PYRAMID_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 class Pyramid : public Test
@@ -61,11 +63,6 @@ public:
 
             x += deltaX;
         }
-    }
-
-    static Test* Create()
-    {
-        return new Pyramid;
     }
 };
 

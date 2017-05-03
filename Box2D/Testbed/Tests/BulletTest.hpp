@@ -20,6 +20,8 @@
 #ifndef BULLET_TEST_H
 #define BULLET_TEST_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 class BulletTest : public Test
@@ -121,11 +123,6 @@ public:
         {
             Launch();
         }
-    }
-
-    static Test* Create()
-    {
-        return new BulletTest;
     }
 
     Body* m_body;

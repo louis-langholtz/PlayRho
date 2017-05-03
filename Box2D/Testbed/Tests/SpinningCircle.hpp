@@ -19,6 +19,8 @@
 #ifndef SPINNING_CIRCLE_HPP
 #define SPINNING_CIRCLE_HPP
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
     
     class SpinningCircle : public Test
@@ -65,11 +67,6 @@ namespace box2d {
             
             body2->CreateFixture(circleA);
             body2->CreateFixture(circleB);
-        }
-        
-        static Test* Create()
-        {
-            return new SpinningCircle;
         }
     };
     

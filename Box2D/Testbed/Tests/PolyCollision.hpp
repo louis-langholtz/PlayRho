@@ -20,6 +20,7 @@
 #ifndef POLYCOLLISION_H
 #define POLYCOLLISION_H
 
+#include "../Framework/Test.hpp"
 #include <vector>
 
 namespace box2d {
@@ -40,11 +41,6 @@ public:
             m_angleB = RealNum{1.9160721f} * Radian;
             m_transformB = Transformation{m_positionB, UnitVec2{m_angleB}};
         }
-    }
-
-    static Test* Create()
-    {
-        return new PolyCollision;
     }
 
     void PostStep(const Settings& settings, Drawer& drawer) override

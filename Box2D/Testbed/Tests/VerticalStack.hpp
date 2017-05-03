@@ -20,6 +20,7 @@
 #ifndef VERTICAL_STACK_H
 #define VERTICAL_STACK_H
 
+#include "../Framework/Test.hpp"
 #include <array>
 
 namespace box2d {
@@ -141,11 +142,6 @@ public:
         //        m_bullet->SetLinearVelocity(Vec2(400.0f, 0.0f));
         //    }
         //}
-    }
-
-    static Test* Create()
-    {
-        return new VerticalStack;
     }
 
     Body* m_bullet;

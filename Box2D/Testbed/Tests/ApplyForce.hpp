@@ -20,6 +20,8 @@
 #ifndef APPLY_FORCE_H
 #define APPLY_FORCE_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 class ApplyForce : public Test
@@ -167,11 +169,6 @@ public:
         default:
             break;
         }
-    }
-
-    static Test* Create()
-    {
-        return new ApplyForce;
     }
 
     Body* m_body;

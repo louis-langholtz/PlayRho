@@ -17,7 +17,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "../Framework/Test.hpp"
+#include "../Framework/TestEntry.hpp"
 
 #include "AddPair.hpp"
 #include "ApplyForce.hpp"
@@ -80,67 +80,79 @@
 
 namespace box2d {
 
-const TestEntry g_testEntries[] =
+/// @brief Internal test entries array
+///
+/// @detail Add subclasses of Test to this array in the order they should appear in the
+///   Testbed.
+///
+static const TestEntry testEntries[] =
 {
-    {"Tiles", Tiles::Create},
-    {"Heavy on Light", HeavyOnLight::Create},
-    {"Heavy on Light Two", HeavyOnLightTwo::Create},
-    {"Vertical Stack", VerticalStack::Create},
-    {"Basic Slider Crank", BasicSliderCrank::Create},
-    {"Slider Crank", SliderCrank::Create},
-    {"Sphere Stack", SphereStack::Create},
-    {"Convex Hull", ConvexHull::Create},
-    {"Tumbler", Tumbler::Create},
-    {"Ray-Cast", RayCast::Create},
-    {"Dump Shell", DumpShell::Create},
-    {"Apply Force", ApplyForce::Create},
-    {"Continuous Test", ContinuousTest::Create},
-    {"Time of Impact", TimeOfImpactTest::Create},
-    {"Motor Joint", MotorJointTest::Create},
-    {"One-Sided Platform", OneSidedPlatform::Create},
-    {"Mobile", Mobile::Create},
-    {"MobileBalanced", MobileBalanced::Create},
-    {"Conveyor Belt", ConveyorBelt::Create},
-    {"Gears", Gears::Create},
-    {"Varying Restitution", VaryingRestitution::Create},
-    {"Cantilever", Cantilever::Create},
-    {"Character Collision", CharacterCollision::Create},
-    {"Edge Test", EdgeTest::Create},
-    {"Body Types", BodyTypes::Create},
-    {"Shape Editing", ShapeEditing::Create},
-    {"Car", Car::Create},
-    {"Prismatic", Prismatic::Create},
-    {"Revolute", Revolute::Create},
-    {"Pulleys", Pulleys::Create},
-    {"Polygon Shapes", PolyShapes::Create},
-    {"Web", Web::Create},
-    // {"Rope", RopeTest::Create},
-    {"RopeJoint", RopeJointTest::Create},
-    {"Pinball", Pinball::Create},
-    {"Bullet Test", BulletTest::Create},
-    {"Confined", Confined::Create},
-    {"Pyramid", Pyramid::Create},
-    {"Theo Jansen's Walker", TheoJansen::Create},
-    {"Edge Shapes", EdgeShapes::Create},
-    {"PolyCollision", PolyCollision::Create},
-    {"Bridge", Bridge::Create},
-    {"Breakable", Breakable::Create},
-    {"Chain", Chain::Create},
-    {"Collision Filtering", CollisionFiltering::Create},
-    {"Collision Processing", CollisionProcessing::Create},
-    {"Compound Shapes", CompoundShapes::Create},
-    {"Distance Test", DistanceTest::Create},
-    {"Dominos", Dominos::Create},
-    {"Dynamic Tree", DynamicTreeTest::Create},
-    {"Sensor Test", SensorTest::Create},
-    {"Spinning Circles", SpinningCircle::Create},
-    {"Half Pipe", HalfPipe::Create},
-    {"Orbiter", Orbiter::Create},
-    {"Varying Friction", VaryingFriction::Create},
-    {"Add Pair Stress Test", AddPair::Create},
-    {"Newton's Cradle", NewtonsCradle::Create},
-    {"Top-down Car", iforce2d_TopdownCar::Create},
+    {"Tiles", MakeUniqueTest<Tiles>},
+    {"Heavy on Light", MakeUniqueTest<HeavyOnLight>},
+    {"Heavy on Light Two", MakeUniqueTest<HeavyOnLightTwo>},
+    {"Vertical Stack", MakeUniqueTest<VerticalStack>},
+    {"Basic Slider Crank", MakeUniqueTest<BasicSliderCrank>},
+    {"Slider Crank", MakeUniqueTest<SliderCrank>},
+    {"Sphere Stack", MakeUniqueTest<SphereStack>},
+    {"Convex Hull", MakeUniqueTest<ConvexHull>},
+    {"Tumbler", MakeUniqueTest<Tumbler>},
+    {"Ray-Cast", MakeUniqueTest<class RayCast>},
+    {"Dump Shell", MakeUniqueTest<DumpShell>},
+    {"Apply Force", MakeUniqueTest<class ApplyForce>},
+    {"Continuous Test", MakeUniqueTest<ContinuousTest>},
+    {"Time of Impact", MakeUniqueTest<TimeOfImpactTest>},
+    {"Motor Joint", MakeUniqueTest<MotorJointTest>},
+    {"One-Sided Platform", MakeUniqueTest<OneSidedPlatform>},
+    {"Mobile", MakeUniqueTest<Mobile>},
+    {"MobileBalanced", MakeUniqueTest<MobileBalanced>},
+    {"Conveyor Belt", MakeUniqueTest<ConveyorBelt>},
+    {"Gears", MakeUniqueTest<Gears>},
+    {"Varying Restitution", MakeUniqueTest<VaryingRestitution>},
+    {"Cantilever", MakeUniqueTest<Cantilever>},
+    {"Character Collision", MakeUniqueTest<CharacterCollision>},
+    {"Edge Test", MakeUniqueTest<EdgeTest>},
+    {"Body Types", MakeUniqueTest<BodyTypes>},
+    {"Shape Editing", MakeUniqueTest<ShapeEditing>},
+    {"Car", MakeUniqueTest<Car>},
+    {"Prismatic", MakeUniqueTest<Prismatic>},
+    {"Revolute", MakeUniqueTest<Revolute>},
+    {"Pulleys", MakeUniqueTest<Pulleys>},
+    {"Polygon Shapes", MakeUniqueTest<PolyShapes>},
+    {"Web", MakeUniqueTest<Web>},
+    // {"Rope", MakeUniqueTest<RopeTest>},
+    {"RopeJoint", MakeUniqueTest<RopeJointTest>},
+    {"Pinball", MakeUniqueTest<Pinball>},
+    {"Bullet Test", MakeUniqueTest<BulletTest>},
+    {"Confined", MakeUniqueTest<Confined>},
+    {"Pyramid", MakeUniqueTest<Pyramid>},
+    {"Theo Jansen's Walker", MakeUniqueTest<TheoJansen>},
+    {"Edge Shapes", MakeUniqueTest<EdgeShapes>},
+    {"PolyCollision", MakeUniqueTest<PolyCollision>},
+    {"Bridge", MakeUniqueTest<Bridge>},
+    {"Breakable", MakeUniqueTest<Breakable>},
+    {"Chain", MakeUniqueTest<Chain>},
+    {"Collision Filtering", MakeUniqueTest<CollisionFiltering>},
+    {"Collision Processing", MakeUniqueTest<CollisionProcessing>},
+    {"Compound Shapes", MakeUniqueTest<CompoundShapes>},
+    {"Distance Test", MakeUniqueTest<DistanceTest>},
+    {"Dominos", MakeUniqueTest<Dominos>},
+    {"Dynamic Tree", MakeUniqueTest<DynamicTreeTest>},
+    {"Sensor Test", MakeUniqueTest<SensorTest>},
+    {"Spinning Circles", MakeUniqueTest<SpinningCircle>},
+    {"Half Pipe", MakeUniqueTest<HalfPipe>},
+    {"Orbiter", MakeUniqueTest<Orbiter>},
+    {"Varying Friction", MakeUniqueTest<VaryingFriction>},
+    {"Add Pair Stress Test", MakeUniqueTest<AddPair>},
+    {"Newton's Cradle", MakeUniqueTest<NewtonsCradle>},
+    {"Top-down Car", MakeUniqueTest<iforce2d_TopdownCar>},
+
+    /// Empty entry signifying end of array.
     {nullptr, nullptr}
 };
+
+const TestEntry* GetTestEntries()
+{
+    return testEntries;
+}
 
 } // namespace box2d

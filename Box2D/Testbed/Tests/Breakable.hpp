@@ -20,6 +20,8 @@
 #ifndef BREAKABLE_TEST_H
 #define BREAKABLE_TEST_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 // This is used to test sensor shapes.
@@ -132,11 +134,6 @@ public:
             m_velocity = velocity.linear;
             m_angularVelocity = velocity.angular;
         }
-    }
-
-    static Test* Create()
-    {
-        return new Breakable;
     }
 
     Body* m_body1;

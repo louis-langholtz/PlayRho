@@ -19,6 +19,8 @@
 #ifndef Orbiter_hpp
 #define Orbiter_hpp
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
     
     class Orbiter: public Test
@@ -59,11 +61,6 @@ namespace box2d {
             const auto linAccel = force * m_orbiter->GetInvMass();
             const auto angAccel = RealNum{0.0f} * RadianPerSquareSecond;
             m_orbiter->SetAcceleration(linAccel, angAccel);
-        }
-        
-        static Test* Create()
-        {
-            return new Orbiter;
         }
         
     private:

@@ -20,6 +20,8 @@
 #ifndef BODY_TYPES_H
 #define BODY_TYPES_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 class BodyTypes : public Test
@@ -129,11 +131,6 @@ public:
     {
         drawer.DrawString(5, m_textLine, "Keys: (d) dynamic, (s) static, (k) kinematic");
         m_textLine += DRAW_STRING_NEW_LINE;
-    }
-    
-    static Test* Create()
-    {
-        return new BodyTypes;
     }
 
     Body* m_attachment;

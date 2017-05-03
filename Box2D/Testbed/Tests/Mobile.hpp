@@ -20,6 +20,8 @@
 #ifndef MOBILE_H
 #define MOBILE_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 class Mobile : public Test
@@ -80,11 +82,6 @@ public:
         m_world->CreateJoint(jointDef);
 
         return body;
-    }
-
-    static Test* Create()
-    {
-        return new Mobile;
     }
 };
 

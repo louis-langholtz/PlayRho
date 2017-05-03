@@ -20,6 +20,8 @@
 #ifndef VARYING_FRICTION_H
 #define VARYING_FRICTION_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 class VaryingFriction : public Test
@@ -95,11 +97,6 @@ public:
                 body->CreateFixture(std::make_shared<PolygonShape>(shape));
             }
         }
-    }
-
-    static Test* Create()
-    {
-        return new VaryingFriction;
     }
 };
 

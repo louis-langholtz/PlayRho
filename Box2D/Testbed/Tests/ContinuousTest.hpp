@@ -20,6 +20,8 @@
 #ifndef CONTINUOUS_TEST_H
 #define CONTINUOUS_TEST_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 class ContinuousTest : public Test
@@ -100,11 +102,6 @@ public:
         {
             //Launch();
         }
-    }
-
-    static Test* Create()
-    {
-        return new ContinuousTest;
     }
 
     Body* m_body;

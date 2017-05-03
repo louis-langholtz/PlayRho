@@ -20,6 +20,8 @@
 #ifndef CONVEYOR_BELT_H
 #define CONVEYOR_BELT_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 class ConveyorBelt : public Test
@@ -74,11 +76,6 @@ public:
         {
             contact.SetTangentSpeed(RealNum{-5.0f} * MeterPerSecond);
         }
-    }
-
-    static Test* Create()
-    {
-        return new ConveyorBelt;
     }
 
     Fixture* m_platform;

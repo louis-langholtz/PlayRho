@@ -20,6 +20,8 @@
 #ifndef BRIDGE_H
 #define BRIDGE_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 class Bridge : public Test
@@ -88,11 +90,6 @@ public:
             const auto body = m_world->CreateBody(bd);
             body->CreateFixture(circleshape);
         }
-    }
-
-    static Test* Create()
-    {
-        return new Bridge;
     }
 
     Body* m_middle;

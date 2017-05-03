@@ -20,6 +20,8 @@
 #ifndef HEAVY_ON_LIGHT_TWO_H
 #define HEAVY_ON_LIGHT_TWO_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 class HeavyOnLightTwo : public Test
@@ -69,11 +71,6 @@ public:
         default:
             break;
         }
-    }
-    
-    static Test* Create()
-    {
-        return new HeavyOnLightTwo;
     }
     
     Body* m_heavy = nullptr;

@@ -20,6 +20,8 @@
 #ifndef ONE_SIDED_PLATFORM_H
 #define ONE_SIDED_PLATFORM_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 class OneSidedPlatform : public Test
@@ -106,11 +108,6 @@ public:
         const auto v = GetLinearVelocity(*(m_character->GetBody()));
         drawer.DrawString(5, m_textLine, "Character Linear Velocity: %f", double{v.y / MeterPerSecond});
         m_textLine += DRAW_STRING_NEW_LINE;
-    }
-
-    static Test* Create()
-    {
-        return new OneSidedPlatform;
     }
 
     Length m_radius = RealNum{0.5f} * Meter;

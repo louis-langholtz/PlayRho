@@ -20,6 +20,8 @@
 #ifndef CHARACTER_COLLISION_H
 #define CHARACTER_COLLISION_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 /// This is a test of typical character collision scenarios. This does not
@@ -236,11 +238,6 @@ public:
         m_textLine += DRAW_STRING_NEW_LINE;
         drawer.DrawString(5, m_textLine, "Feature: edge chains have smooth collision inside and out.");
         m_textLine += DRAW_STRING_NEW_LINE;
-    }
-    
-    static Test* Create()
-    {
-        return new CharacterCollision;
     }
 
     Body* m_character;

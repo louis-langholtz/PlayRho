@@ -20,6 +20,7 @@
 #ifndef DYNAMIC_TREE_TEST_H
 #define DYNAMIC_TREE_TEST_H
 
+#include "../Framework/Test.hpp"
 #include <Box2D/Collision/RayCastOutput.hpp>
 
 namespace box2d {
@@ -57,11 +58,6 @@ public:
         m_rayCastInput.maxFraction = 1.0f;
 
         m_automated = false;
-    }
-
-    static Test* Create()
-    {
-        return new DynamicTreeTest;
     }
 
     void PostStep(const Settings& settings, Drawer& drawer) override

@@ -20,6 +20,8 @@
 #ifndef COLLISION_FILTERING_H
 #define COLLISION_FILTERING_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 // This is a test of collision filtering.
@@ -163,11 +165,6 @@ public:
 
         const auto body6 = m_world->CreateBody(circleBodyDef);
         body6->CreateFixture(std::make_shared<CircleShape>(circle), circleShapeDef);
-    }
-
-    static Test* Create()
-    {
-        return new CollisionFiltering;
     }
 };
     

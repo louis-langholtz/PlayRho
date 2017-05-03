@@ -19,6 +19,8 @@
 #ifndef HalfPipe_hpp
 #define HalfPipe_hpp
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
     
     class HalfPipe : public Test
@@ -53,11 +55,6 @@ namespace box2d {
             conf.vertexRadius = RealNum{1} * Meter;
             conf.friction = 1.0f;
             ballBody->CreateFixture(std::make_shared<CircleShape>(conf));
-        }
-        
-        static Test* Create()
-        {
-            return new HalfPipe;
         }
     };
     

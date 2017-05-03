@@ -20,6 +20,8 @@
 #ifndef CHAIN_H
 #define CHAIN_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 class Chain : public Test
@@ -50,11 +52,6 @@ public:
                 prevBody = body;
             }
         }
-    }
-
-    static Test* Create()
-    {
-        return new Chain;
     }
 };
 

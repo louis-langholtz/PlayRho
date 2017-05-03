@@ -20,6 +20,8 @@
 #ifndef MOBILE_BALANCED_H
 #define MOBILE_BALANCED_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 class MobileBalanced : public Test
@@ -95,11 +97,6 @@ public:
         m_world->CreateJoint(jointDef);
 
         return body;
-    }
-
-    static Test* Create()
-    {
-        return new MobileBalanced;
     }
 };
 

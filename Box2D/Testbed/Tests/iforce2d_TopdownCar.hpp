@@ -22,6 +22,7 @@
 #ifndef IFORCE2D_TOPDOWN_CAR_H
 #define IFORCE2D_TOPDOWN_CAR_H
 
+#include "../Framework/Test.hpp"
 #include <vector>
 #include <set>
 
@@ -473,11 +474,6 @@ public:
         
         //drawer.DrawString(5, m_textLine, "Tire traction: %.2f", m_tire->m_currentTraction);
         //m_textLine += 15;
-    }
-    
-    static Test* Create()
-    {
-        return new iforce2d_TopdownCar;
     }
     
     ControlStateType m_controlState;

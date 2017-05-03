@@ -20,6 +20,8 @@
 #ifndef WEB_H
 #define WEB_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 // This tests distance joints, body destruction, and joint destruction.
@@ -193,11 +195,6 @@ public:
                 break;
             }
         }
-    }
-
-    static Test* Create()
-    {
-        return new Web;
     }
 
     Body* m_bodies[4];

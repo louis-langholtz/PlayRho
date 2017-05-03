@@ -20,6 +20,7 @@
 #ifndef CONVEX_HULL_H
 #define CONVEX_HULL_H
 
+#include "../Framework/Test.hpp"
 #include <vector>
 
 namespace box2d {
@@ -54,11 +55,6 @@ public:
             const auto v = Vec2{Clamp(x, lowerBound.x, upperBound.x), Clamp(y, lowerBound.y, upperBound.y)} * Meter;
             m_points.emplace_back(v);
         }
-    }
-
-    static Test* Create()
-    {
-        return new ConvexHull;
     }
 
     void KeyboardDown(Key key) override

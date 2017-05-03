@@ -17,49 +17,32 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef SPHERE_STACK_H
-#define SPHERE_STACK_H
+#ifndef TestEntry_hpp
+#define TestEntry_hpp
 
-#include "../Framework/Test.hpp"
+#include <memory>
 
-namespace box2d {
-
-class SphereStack : public Test
+namespace box2d
 {
-public:
 
-    enum
-    {
-        e_count = 10
-    };
+class Test;
 
-    SphereStack()
-    {
-        {
-            const auto ground = m_world->CreateBody();
-            ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
-        }
+template <class U>
+std::unique_ptr<Test> MakeUniqueTest()
+{
+    return std::unique_ptr<Test>(std::make_unique<U>());
+}
 
-        {
-            const auto shape = std::make_shared<CircleShape>(RealNum{1} * Meter);
-            shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
+struct TestEntry
+{
+    typedef std::unique_ptr<Test> CreateFcn();
 
-            for (auto i = 0; i < e_count; ++i)
-            {
-                BodyDef bd;
-                bd.type = BodyType::Dynamic;
-                bd.position = Vec2(0, 4.0f + 3.0f * i) * Meter;
-
-                m_bodies[i] = m_world->CreateBody(bd);
-                m_bodies[i]->CreateFixture(shape);
-                m_bodies[i]->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * MeterPerSecond, AngularVelocity{0}});
-            }
-        }
-    }
-
-    Body* m_bodies[e_count];
+    const char *name;
+    CreateFcn *createFcn;
 };
+
+extern const TestEntry* GetTestEntries();
 
 } // namespace box2d
 
-#endif
+#endif /* TestEntry_hpp */

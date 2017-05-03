@@ -20,6 +20,7 @@
 #ifndef EDGE_SHAPES_H
 #define EDGE_SHAPES_H
 
+#include "../Framework/Test.hpp"
 #include <cmath>
 
 namespace box2d {
@@ -221,11 +222,6 @@ public:
         {
             m_angle += 0.25f * Pi / 180.0f;
         }
-    }
-
-    static Test* Create()
-    {
-        return new EdgeShapes;
     }
 
     int m_bodyIndex;

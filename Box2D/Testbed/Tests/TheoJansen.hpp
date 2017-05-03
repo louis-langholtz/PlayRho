@@ -23,6 +23,8 @@
 #ifndef THEO_JANSEN_H
 #define THEO_JANSEN_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 class TheoJansen : public Test
@@ -205,11 +207,6 @@ public:
         default:
             break;                
         }
-    }
-
-    static Test* Create()
-    {
-        return new TheoJansen;
     }
 
     Length2D m_offset;

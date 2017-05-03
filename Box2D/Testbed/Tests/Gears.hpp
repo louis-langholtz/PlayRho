@@ -20,6 +20,8 @@
 #ifndef GEARS_H
 #define GEARS_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 class Gears : public Test
@@ -138,11 +140,6 @@ public:
                               double{ratio}, double{value / Meter});
             m_textLine += DRAW_STRING_NEW_LINE;
         }
-    }
-
-    static Test* Create()
-    {
-        return new Gears;
     }
 
     RevoluteJoint* m_joint1;

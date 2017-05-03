@@ -22,6 +22,7 @@
 
 #include <Box2D/Collision/Shapes/CircleShape.hpp>
 #include <Box2D/Collision/Shapes/PolygonShape.hpp>
+#include "../Framework/Test.hpp"
 
 namespace box2d {
 
@@ -64,11 +65,6 @@ public:
             body->CreateFixture(std::make_shared<PolygonShape>(RealNum{1.5f} * Meter, RealNum{1.5f} * Meter, conf));
             body->SetVelocity(Velocity{Vec2(150.0f, 0.0f) * MeterPerSecond, AngularVelocity{0}});
         }
-    }
-
-    static Test* Create()
-    {
-        return new AddPair;
     }
 };
 

@@ -20,6 +20,8 @@
 #ifndef BASIC_SLIDER_CRANK_H
 #define BASIC_SLIDER_CRANK_H
 
+#include "../Framework/Test.hpp"
+
 namespace box2d {
 
 // A basic slider crank created for GDC tutorial: Understanding Constraints
@@ -85,11 +87,6 @@ public:
                 m_world->CreateJoint(pjd);
             }
           }
-    }
-    
-    static Test* Create()
-    {
-        return new BasicSliderCrank;
     }
 };
 
