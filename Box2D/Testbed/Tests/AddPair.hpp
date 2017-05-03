@@ -20,8 +20,6 @@
 #ifndef AddPair_H
 #define AddPair_H
 
-#include <Box2D/Collision/Shapes/CircleShape.hpp>
-#include <Box2D/Collision/Shapes/PolygonShape.hpp>
 #include "../Framework/Test.hpp"
 
 namespace box2d {

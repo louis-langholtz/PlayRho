@@ -21,7 +21,6 @@
 #define DYNAMIC_TREE_TEST_H
 
 #include "../Framework/Test.hpp"
-#include <Box2D/Collision/RayCastOutput.hpp>
 
 namespace box2d {
 

@@ -21,8 +21,12 @@
 #define TEST_H
 
 #include <Box2D/Box2D.hpp>
+#include <Box2D/Collision/RayCastOutput.hpp>
 #include <Box2D/Collision/CollideShapes.hpp>
+#include <Box2D/Collision/ShapeSeparation.hpp>
+#include <Box2D/Dynamics/Contacts/PositionSolverManifold.hpp>
 #include <Box2D/Dynamics/Profile.hpp>
+#include <Box2d/Rope/Rope.hpp>
 #include "Drawer.hpp"
 
 namespace box2d {

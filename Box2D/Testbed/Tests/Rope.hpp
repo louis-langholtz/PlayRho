@@ -21,7 +21,6 @@
 #define ROPE_H
 
 #include "../Framework/Test.hpp"
-#include <Box2d/Rope/Rope.hpp>
 
 namespace box2d {
 

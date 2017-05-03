@@ -22,7 +22,6 @@
 
 #include "../Framework/Test.hpp"
 #include <vector>
-#include <Box2D/Collision/TimeOfImpact.hpp>
 
 namespace box2d {
 

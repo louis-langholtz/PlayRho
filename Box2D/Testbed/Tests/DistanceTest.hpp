@@ -22,8 +22,6 @@
 
 #include "../Framework/Test.hpp"
 #include <sstream>
-#include <Box2D/Collision/ShapeSeparation.hpp>
-#include <Box2D/Dynamics/Contacts/PositionSolverManifold.hpp>
 
 namespace box2d {
 
