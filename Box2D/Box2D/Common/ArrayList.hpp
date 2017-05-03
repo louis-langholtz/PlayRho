@@ -121,11 +121,11 @@ namespace box2d
         /// @details This is the maximum number of elements that can be contained in this collection.
         BOX2D_CONSTEXPR size_type max_size() const noexcept { return MAXSIZE; }
         
-        pointer begin() noexcept { return &m_elements[0]; }
-        pointer end() noexcept { return &m_elements[0] + m_size; }
+        pointer begin() noexcept { return m_elements.data(); }
+        pointer end() noexcept { return m_elements.data() + m_size; }
         
-        const_pointer begin() const noexcept { return &m_elements[0]; }
-        const_pointer end() const noexcept { return &m_elements[0] + m_size; }
+        const_pointer begin() const noexcept { return m_elements.data(); }
+        const_pointer end() const noexcept { return m_elements.data() + m_size; }
         
         auto data() const noexcept { return m_elements; }
 

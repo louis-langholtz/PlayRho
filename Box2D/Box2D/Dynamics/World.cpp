@@ -1465,7 +1465,7 @@ ToiStepStats World::SolveTOI(const StepConf& conf)
 
         stats.maxSimulContacts = std::max(stats.maxSimulContacts,
                                           static_cast<decltype(stats.maxSimulContacts)>(ncount));
-        stats.contactsFound += ncount;
+        stats.contactsFound += static_cast<contact_count_t>(ncount);
         auto islandsFound = 0u;
         for (auto&& contact: next.contacts)
         {
@@ -2527,7 +2527,8 @@ void World::DestroyProxies(Fixture& fixture)
     }
     free(proxies.begin());
 
-    FixtureAtty::SetProxies(fixture, Span<FixtureProxy>(static_cast<FixtureProxy*>(nullptr), child_count_t{0}));
+    const auto emptyArray = static_cast<FixtureProxy*>(nullptr);
+    FixtureAtty::SetProxies(fixture, Span<FixtureProxy>(emptyArray, size_t{0}));
 }
 
 bool World::TouchProxies(Fixture& fixture) noexcept

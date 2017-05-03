@@ -59,9 +59,9 @@ namespace box2d
 
         size_t size() const noexcept { return m_elements.size(); }
         
-        const_pointer begin() const { return &m_elements[0]; }
+        const_pointer begin() const { return m_elements.data(); }
         
-        const_pointer end() const { return &m_elements[m_elements.size()]; }
+        const_pointer end() const { return m_elements.data() + m_elements.size(); }
 
         /// Finds contained point whose delta with the given point has a squared length less
         /// than or equal to this set's minimum length squared value.
