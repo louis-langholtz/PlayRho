@@ -77,7 +77,8 @@ public:
     {
         const auto ratio = m_joint1->GetRatio();
         const auto L = GetCurrentLengthA(*m_joint1) + ratio * GetCurrentLengthB(*m_joint1);
-        drawer.DrawString(5, m_textLine, "L1 + %4.2f * L2 = %4.2f", (float) ratio, double{L / Meter});
+        drawer.DrawString(5, m_textLine, "L1 + %4.2f * L2 = %4.2f", (float) ratio,
+                          static_cast<double>(L / Meter));
         m_textLine += DRAW_STRING_NEW_LINE;
     }
 

@@ -36,7 +36,6 @@ public:
         }
         
         auto conf = CircleShape::Conf{};
-        conf.density = RealNum{10} * KilogramPerSquareMeter;
 
         BodyDef bd;
         bd.type = BodyType::Dynamic;
@@ -44,11 +43,13 @@ public:
         bd.position = Vec2(0.0f, 0.5f) * Meter;
         const auto body1 = m_world->CreateBody(bd);
         conf.vertexRadius = RealNum{0.5f} * Meter;
+        conf.density = RealNum{10} * KilogramPerSquareMeter;
         body1->CreateFixture(std::make_shared<CircleShape>(conf));
         
         bd.position = Vec2(0.0f, 6.0f) * Meter;
         const auto body2 = m_world->CreateBody(bd);
         conf.vertexRadius = RealNum{5.0f} * Meter;
+        conf.density = RealNum{300} * KilogramPerSquareMeter;
         body2->CreateFixture(std::make_shared<CircleShape>(conf));
     }
 };

@@ -604,8 +604,8 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     drawer.DrawString(5, m_textLine,
                       "      bod-slept=%u min-sep=%f max-inc-imp=%f",
                       m_stepStats.reg.bodiesSlept,
-                      double{m_stepStats.reg.minSeparation / Meter},
-                      double{m_stepStats.reg.maxIncImpulse / (Kilogram * MeterPerSecond)});
+                      static_cast<double>(m_stepStats.reg.minSeparation / Meter),
+                      static_cast<double>(m_stepStats.reg.maxIncImpulse / (Kilogram * MeterPerSecond)));
     m_textLine += DRAW_STRING_NEW_LINE;
     
     drawer.DrawString(5, m_textLine, "  toi-info:");
@@ -626,19 +626,21 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
                       m_stepStats.toi.contactsAtMaxSubSteps,
                       m_stepStats.toi.contactsUpdatedToi,
                       m_stepStats.toi.maxDistIters, m_stepStats.toi.maxToiIters,
-                      double{m_stepStats.toi.minSeparation / Meter},
-                      double{m_stepStats.toi.maxIncImpulse / (Kilogram * MeterPerSecond)});
+                      static_cast<double>(m_stepStats.toi.minSeparation / Meter),
+                      static_cast<double>(m_stepStats.toi.maxIncImpulse / (Kilogram * MeterPerSecond)));
     m_textLine += DRAW_STRING_NEW_LINE;
     
-    drawer.DrawString(5, m_textLine, "  Reg sums: isl-found=%llu isl-solv=%llu pos-iter=%llu vel-iter=%llu p-moved=%llu min-sep=%f max-sep=%f",
+    drawer.DrawString(5, m_textLine,
+                      "  Reg sums: isl-found=%llu isl-solv=%llu pos-iter=%llu vel-iter=%llu p-moved=%llu min-sep=%f max-sep=%f",
                       m_sumRegIslandsFound, m_sumRegIslandsSolved, m_sumRegPosIters, m_sumRegVelIters, m_sumRegProxiesMoved,
-                      double{m_minRegSep / Meter}, double{m_maxRegSep / Meter});
+                      static_cast<double>(m_minRegSep / Meter),
+                      static_cast<double>(m_maxRegSep / Meter));
     m_textLine += DRAW_STRING_NEW_LINE;
     
     drawer.DrawString(5, m_textLine, "  TOI sums: isl-found=%llu isl-solv=%llu pos-iter=%llu vel-iter=%llu p-moved=%llu upd=%llu cts-maxstep=%llu min-sep=%f",
                       m_sumToiIslandsFound, m_sumToiIslandsSolved, m_sumToiPosIters, m_sumToiVelIters, m_sumToiProxiesMoved,
                       m_sumContactsUpdatedToi, m_sumContactsAtMaxSubSteps,
-                      double{m_minToiSep / Meter});
+                      static_cast<double>(m_minToiSep / Meter));
     m_textLine += DRAW_STRING_NEW_LINE;
     
     drawer.DrawString(5, m_textLine, "  TOI maxs: dist-iter=%u/%u toi-iter=%u/%u root-iter=%u/%u",
@@ -678,11 +680,11 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
         }
         drawer.DrawString(5, m_textLine,
                           "Selected fixture: pos={%f,%f} vel={%f,%f} density=%f friction=%f restitution=%f b-cts=%d/%d b-impls=%d",
-                          double{GetX(location) / Meter},
-                          double{GetY(location) / Meter},
-                          double{GetX(velocity.linear) / MeterPerSecond},
-                          double{GetY(velocity.linear) / MeterPerSecond},
-                          double{density * SquareMeter / Kilogram},
+                          static_cast<double>(GetX(location) / Meter),
+                          static_cast<double>(GetY(location) / Meter),
+                          static_cast<double>(GetX(velocity.linear) / MeterPerSecond),
+                          static_cast<double>(GetY(velocity.linear) / MeterPerSecond),
+                          static_cast<double>(density * SquareMeter / Kilogram),
                           friction,
                           restitution,
                           numTouching, numContacts,

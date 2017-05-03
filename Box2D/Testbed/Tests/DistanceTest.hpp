@@ -91,8 +91,8 @@ public:
         drawer.DrawString(5, m_textLine, "%s %s: lp={%g,%g}, ln={%g,%g}, #=%d%s",
                           GetName(manifold.GetType()),
                           name,
-                          double{GetX(manifold.GetLocalPoint()) / Meter},
-                          double{GetY(manifold.GetLocalPoint()) / Meter},
+                          static_cast<double>(GetX(manifold.GetLocalPoint()) / Meter),
+                          static_cast<double>(GetY(manifold.GetLocalPoint()) / Meter),
                           GetX(manifold.GetLocalNormal()),
                           GetY(manifold.GetLocalNormal()),
                           count, strbuf.str().c_str());
@@ -155,8 +155,10 @@ public:
                           "Press 'A', 'D', 'W', 'S', 'Q', 'E' to move selected shape left, right, up, down, counter-clockwise, or clockwise.");
         m_textLine += DRAW_STRING_NEW_LINE;
 
-        drawer.DrawString(5, m_textLine, "Press num-pad '+'/'-' to increase/decrease vertex radius of selected shape (%g & %g).",
-                          double{rA / Meter}, double{rB / Meter});
+        drawer.DrawString(5, m_textLine,
+                          "Press num-pad '+'/'-' to increase/decrease vertex radius of selected shape (%g & %g).",
+                          static_cast<double>(rA / Meter),
+                          static_cast<double>(rB / Meter));
         m_textLine += DRAW_STRING_NEW_LINE;
         
         drawer.DrawString(5, m_textLine,
@@ -207,7 +209,8 @@ public:
         }
 
         drawer.DrawString(5, m_textLine, "distance = %g (from %g), iterations = %d",
-                          double{adjustedDistance / Meter}, double{outputDistance / Meter},
+                          static_cast<double>(adjustedDistance / Meter),
+                          static_cast<double>(outputDistance / Meter),
                           output.iterations);
         m_textLine += DRAW_STRING_NEW_LINE;
         
@@ -215,10 +218,10 @@ public:
             const auto size = output.simplex.GetSize();
             drawer.DrawString(5, m_textLine, "Simplex info: size=%d, wpt-a={%g,%g}, wpt-b={%g,%g})",
                               size,
-                              double{witnessPoints.a.x / Meter},
-                              double{witnessPoints.a.y / Meter},
-                              double{witnessPoints.b.x / Meter},
-                              double{witnessPoints.b.y / Meter});
+                              static_cast<double>(witnessPoints.a.x / Meter),
+                              static_cast<double>(witnessPoints.a.y / Meter),
+                              static_cast<double>(witnessPoints.b.x / Meter),
+                              static_cast<double>(witnessPoints.b.y / Meter));
             m_textLine += DRAW_STRING_NEW_LINE;
             for (auto i = decltype(size){0}; i < size; ++i)
             {
@@ -227,11 +230,11 @@ public:
                 
                 drawer.DrawString(5, m_textLine, "  a[%d]={%g,%g} b[%d]={%g,%g} coef=%g",
                                   edge.GetIndexA(),
-                                  double{edge.GetPointA().x / Meter},
-                                  double{edge.GetPointA().y / Meter},
+                                  static_cast<double>(edge.GetPointA().x / Meter),
+                                  static_cast<double>(edge.GetPointA().y / Meter),
                                   edge.GetIndexB(),
-                                  double{edge.GetPointB().x / Meter},
-                                  double{edge.GetPointB().y / Meter},
+                                  static_cast<double>(edge.GetPointB().x / Meter),
+                                  static_cast<double>(edge.GetPointB().y / Meter),
                                   coef);
                 m_textLine += DRAW_STRING_NEW_LINE;
             }
