@@ -1,8 +1,14 @@
 # Testbed
 
 The Testbed GUI application provides a GUI interface to a bunch of visually
-presented demos. It may be helpful for testing and/or for learning how to use
+presented demos. These may be helpful for testing and/or for learning how to use
 [this fork of the Box2D library](https://github.com/louis-langholtz/Box2D).
+
+Here in this directory, are two sub-directories. One for code for providing a
+framework for the Testbed GUI application, and the other for demos. These demos
+all subclass the [Test](Framework/Test.hpp) base class and would be where you'd
+add your own code if you wanted it to also run under the Testbed GUI
+application. For more specifics, see the relevant directory.
 
 ## Build Instructions
 
@@ -13,6 +19,12 @@ the Box2D library, the GLFW library, and the GLEW library.
 
 [GLFW](http://www.glfw.org) is an Open Source library that the Testbed depends
 on.
+Currently the source code for GLFW is included in the Box2D source code
+distribution. This has been built on the following build setups:
+- Windows using MSVS2017 and the included Solution, and
+- OS X using Xcode and the XCode Project file.
+
+Alternatively...
 
 Here are steps that I've used to download and build this library:
 1. Decide where you're going to have your GLFW sources. Setup an environment
@@ -30,6 +42,13 @@ Here are steps that I've used to download and build this library:
 
 [GLEW](http://glew.sourceforge.net) is an Open Source library that the Testbed
 depends on.
+
+Currently the source code for GLEW is included in the Box2D source code
+distribution. This has been built on the following build setups:
+- Windows using MSVS2017 and the included Solution, and
+- OS X using Xcode and the XCode Project file.
+
+Alternatively...
 
 Here are steps that I've used to download and build this library:
 1. Get GLEW.
