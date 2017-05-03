@@ -38,12 +38,12 @@ struct Settings
     float maxRotation = 90; // in degrees
     float hz = 60;
     float dt = 1 / hz;
-    float maxLinearCorrection = StripUnit(DefaultMaxLinearCorrection); // in meters
+    float maxLinearCorrection = static_cast<float>(StripUnit(DefaultMaxLinearCorrection)); // in meters
     float maxAngularCorrection = static_cast<float>(DefaultMaxAngularCorrection / Degree); // in degrees
-    float linearSlop = StripUnit(DefaultLinearSlop);
+    float linearSlop = static_cast<float>(StripUnit(DefaultLinearSlop));
     float angularSlop = static_cast<float>(DefaultAngularSlop / Radian);
-    float regMinSeparation = StripUnit(DefaultLinearSlop) * -3;
-    float toiMinSeparation = StripUnit(DefaultLinearSlop) * -1.5f;
+    float regMinSeparation = static_cast<float>(StripUnit(DefaultLinearSlop) * -3);
+    float toiMinSeparation = static_cast<float>(StripUnit(DefaultLinearSlop) * -1.5f);
     int regPosResRate = 20; // in percent
     int toiPosResRate = 75; // in percent
     int regVelocityIterations = 8;
