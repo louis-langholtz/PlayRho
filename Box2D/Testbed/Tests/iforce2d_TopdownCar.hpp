@@ -403,7 +403,6 @@ public:
     {
         //delete m_tire;
         delete m_car;
-        m_world->Destroy( m_groundBody );
     }
     
     void KeyboardDown(Key key) override
