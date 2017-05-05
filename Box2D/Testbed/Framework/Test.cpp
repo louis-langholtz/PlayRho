@@ -21,6 +21,7 @@
 #include "Drawer.hpp"
 #include <stdio.h>
 #include <vector>
+#include <sstream>
 
 #include <Box2D/Rope/Rope.hpp>
 #include <Box2D/Dynamics/FixtureProxy.hpp>
@@ -571,8 +572,9 @@ void Test::LaunchBomb(const Length2D& position, const LinearVelocity2D linearVel
 
 void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
 {
-    drawer.DrawString(5, m_textLine, "step#=%d (@%fs):",
-                      m_stepCount, m_sumDeltaTime);
+    std::stringstream stream;
+    
+    drawer.DrawString(5, m_textLine, "step#=%d (@%fs):", m_stepCount, m_sumDeltaTime);
     m_textLine += DRAW_STRING_NEW_LINE;
     
     const auto bodyCount = GetBodyCount(*m_world);
@@ -581,77 +583,112 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     const auto jointCount = GetJointCount(*m_world);
     const auto fixtureCount = GetFixtureCount(*m_world);
     const auto shapeCount = GetShapeCount(*m_world);
-    drawer.DrawString(5, m_textLine, "  bodies=%d (%d asleep), fixtures=%d, shapes=%d, contacts=%d (of %d), joints=%d",
-                      bodyCount, sleepCount, fixtureCount, shapeCount, m_numContacts, m_maxContacts, jointCount);
+    stream = std::stringstream();
+    stream << " ";
+    stream << " bodies=" << bodyCount << " (" << sleepCount << " asleep),";
+    stream << " fixtures=" << fixtureCount << ",";
+    stream << " shapes=" << shapeCount << ",";
+    stream << " contacts=" << m_numContacts << " (of " << m_maxContacts << "),";
+    stream << " joints=" << jointCount;
+    drawer.DrawString(5, m_textLine, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
-    
-    drawer.DrawString(5, m_textLine, "  pre-info: cts-add=%d cts-ignor=%d cts-del=%d cts-upd=%d",
-                      m_stepStats.pre.added, m_stepStats.pre.ignored, m_stepStats.pre.destroyed, m_stepStats.pre.updated);
+
+    stream = std::stringstream();
+    stream << "  pre-info:";
+    stream << " cts-add=" << m_stepStats.pre.added;
+    stream << " cts-ignor=" << m_stepStats.pre.ignored;
+    stream << " cts-del=" << m_stepStats.pre.destroyed;
+    stream << " cts-upd=" << m_stepStats.pre.updated;
+    drawer.DrawString(5, m_textLine, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
     
     drawer.DrawString(5, m_textLine, "  reg-info:");
     m_textLine += DRAW_STRING_NEW_LINE;
     
-    drawer.DrawString(5, m_textLine,
-                      "    cts-add=%u isl-find=%u isl-solv=%u pos-iter=%u vel-iter=%u p-moved=%u",
-                      m_stepStats.reg.contactsAdded,
-                      m_stepStats.reg.islandsFound,
-                      m_stepStats.reg.islandsSolved,
-                      m_stepStats.reg.sumPosIters,
-                      m_stepStats.reg.sumVelIters,
-                      m_stepStats.toi.proxiesMoved);
+    stream = std::stringstream();
+    stream << "   ";
+    stream << " cts-add=" << m_stepStats.reg.contactsAdded;
+    stream << " isl-find=" << m_stepStats.reg.islandsFound;
+    stream << " isl-solv=" << m_stepStats.reg.islandsSolved;
+    stream << " pos-iter=" << m_stepStats.reg.sumPosIters;
+    stream << " vel-iter=" << m_stepStats.reg.sumVelIters;
+    stream << " proxy-moved=" << m_stepStats.toi.proxiesMoved;
+    drawer.DrawString(5, m_textLine, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
-    drawer.DrawString(5, m_textLine,
-                      "      bod-slept=%u min-sep=%f max-inc-imp=%f",
-                      m_stepStats.reg.bodiesSlept,
-                      static_cast<double>(m_stepStats.reg.minSeparation / Meter),
-                      static_cast<double>(m_stepStats.reg.maxIncImpulse / (Kilogram * MeterPerSecond)));
+
+    stream = std::stringstream();
+    stream << "   ";
+    stream << " bod-slept=" << m_stepStats.reg.bodiesSlept;
+    stream << " min-sep=" << static_cast<double>(m_stepStats.reg.minSeparation / Meter);
+    stream << " max-inc-imp=" << static_cast<double>(m_stepStats.reg.maxIncImpulse / (Kilogram * MeterPerSecond));
+    drawer.DrawString(5, m_textLine, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
     
     drawer.DrawString(5, m_textLine, "  toi-info:");
     m_textLine += DRAW_STRING_NEW_LINE;
     
-    drawer.DrawString(5, m_textLine,
-                      "    cts-add=%d isl-find=%d isl-solv=%u pos-iter=%u vel-iter=%u p-moved=%u",
-                      m_stepStats.toi.contactsAdded,
-                      m_stepStats.toi.islandsFound,
-                      m_stepStats.toi.islandsSolved,
-                      m_stepStats.toi.sumPosIters,
-                      m_stepStats.toi.sumVelIters,
-                      m_stepStats.toi.proxiesMoved);
+    stream = std::stringstream();
+    stream << "   ";
+    stream << " cts-add=" << m_stepStats.toi.contactsAdded;
+    stream << " isl-find=" << m_stepStats.toi.islandsFound;
+    stream << " isl-solv=" << m_stepStats.toi.islandsSolved;
+    stream << " pos-iter=" << m_stepStats.toi.sumPosIters;
+    stream << " vel-iter=" << m_stepStats.toi.sumVelIters;
+    stream << " proxy-moved=" << m_stepStats.toi.proxiesMoved;
+    drawer.DrawString(5, m_textLine, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
-    drawer.DrawString(5, m_textLine,
-                      "    cts-find=%d cts-atmaxsubs=%d cts-upd=%d max-dist-iter=%u max-toi-iter=%u min-sep=%f max-inc-imp=%f",
-                      m_stepStats.toi.contactsFound,
-                      m_stepStats.toi.contactsAtMaxSubSteps,
-                      m_stepStats.toi.contactsUpdatedToi,
-                      m_stepStats.toi.maxDistIters, m_stepStats.toi.maxToiIters,
-                      static_cast<double>(m_stepStats.toi.minSeparation / Meter),
-                      static_cast<double>(m_stepStats.toi.maxIncImpulse / (Kilogram * MeterPerSecond)));
-    m_textLine += DRAW_STRING_NEW_LINE;
-    
-    drawer.DrawString(5, m_textLine,
-                      "  Reg sums: isl-found=%llu isl-solv=%llu pos-iter=%llu vel-iter=%llu p-moved=%llu min-sep=%f max-sep=%f",
-                      m_sumRegIslandsFound, m_sumRegIslandsSolved, m_sumRegPosIters, m_sumRegVelIters, m_sumRegProxiesMoved,
-                      static_cast<double>(m_minRegSep / Meter),
-                      static_cast<double>(m_maxRegSep / Meter));
+
+    stream = std::stringstream();
+    stream << "   ";
+    stream << " cts-find=" << m_stepStats.toi.contactsFound;
+    stream << " cts-atmaxsubs=" << m_stepStats.toi.contactsAtMaxSubSteps;
+    stream << " cts-upd=" << m_stepStats.toi.contactsUpdatedToi;
+    stream << " max-dist-iter=" << unsigned{m_stepStats.toi.maxDistIters};
+    stream << " max-toi-iter=" << unsigned{m_stepStats.toi.maxToiIters};
+    stream << " min-sep=" << static_cast<double>(m_stepStats.toi.minSeparation / Meter);
+    stream << " max-inc-imp=" << static_cast<double>(m_stepStats.toi.maxIncImpulse / (Kilogram * MeterPerSecond));
+    drawer.DrawString(5, m_textLine, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
     
-    drawer.DrawString(5, m_textLine, "  TOI sums: isl-found=%llu isl-solv=%llu pos-iter=%llu vel-iter=%llu p-moved=%llu upd=%llu cts-maxstep=%llu min-sep=%f",
-                      m_sumToiIslandsFound, m_sumToiIslandsSolved, m_sumToiPosIters, m_sumToiVelIters, m_sumToiProxiesMoved,
-                      m_sumContactsUpdatedToi, m_sumContactsAtMaxSubSteps,
-                      static_cast<double>(m_minToiSep / Meter));
+    stream = std::stringstream();
+    stream << "  Reg sums:";
+    stream << " isl-found=" << m_sumRegIslandsFound;
+    stream << " isl-solv=" << m_sumRegIslandsSolved;
+    stream << " pos-iter=" << m_sumRegPosIters;
+    stream << " vel-iter=" << m_sumRegVelIters;
+    stream << " proxy-moved=" << m_sumRegProxiesMoved;
+    stream << " min-sep=" << static_cast<double>(m_minRegSep / Meter);
+    stream << " max-sep=" << static_cast<double>(m_maxRegSep / Meter);
+    drawer.DrawString(5, m_textLine, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
     
-    drawer.DrawString(5, m_textLine, "  TOI maxs: dist-iter=%u/%u toi-iter=%u/%u root-iter=%u/%u",
-                      m_maxDistIters, stepConf.maxDistanceIters, m_maxToiIters, stepConf.maxToiIters, m_maxRootIters, stepConf.maxToiRootIters);
+    stream = std::stringstream();
+    stream << "  TOI sums:" << m_sumToiIslandsFound;
+    stream << " isl-found=" << m_sumToiIslandsSolved;
+    stream << " isl-solv=" << m_sumToiIslandsSolved;
+    stream << " pos-iter=" << m_sumToiPosIters;
+    stream << " vel-iter=" << m_sumToiVelIters;
+    stream << " proxy-moved=" << m_sumToiProxiesMoved;
+    stream << " upd=" << m_sumContactsUpdatedToi;
+    stream << " cts-maxstep=" << m_sumContactsAtMaxSubSteps;
+    stream << " min-sep=" << static_cast<double>(m_minToiSep / Meter);
+    drawer.DrawString(5, m_textLine, stream.str().c_str());
+    m_textLine += DRAW_STRING_NEW_LINE;
+    
+    stream = std::stringstream();
+    stream << "  TOI maxs:";
+    stream << " dist-iter=" << unsigned{m_maxDistIters} << "/" << unsigned{stepConf.maxDistanceIters};
+    stream << " toi-iter=" << unsigned{m_maxToiIters} << "/" << unsigned{stepConf.maxToiIters};
+    stream << " root-iter=" << unsigned{m_maxRootIters} << "/" << unsigned{stepConf.maxToiRootIters};
+    drawer.DrawString(5, m_textLine, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
     
     const auto proxyCount = m_world->GetProxyCount();
     const auto height = m_world->GetTreeHeight();
     const auto balance = m_world->GetTreeBalance();
     const auto quality = m_world->GetTreeQuality();
-    drawer.DrawString(5, m_textLine, "  proxies/height/balance/quality = %d/%d/%d/%g", proxyCount, height, balance, quality);
+    drawer.DrawString(5, m_textLine, "  proxies/height/balance/quality = %d/%d/%d/%g",
+                      proxyCount, height, balance, quality);
     m_textLine += DRAW_STRING_NEW_LINE;
     
     const auto selectedFixture = GetSelectedFixture();
@@ -678,17 +715,25 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
                 numImpulses += manifold.GetPointCount();
             }
         }
-        drawer.DrawString(5, m_textLine,
-                          "Selected fixture: pos={%f,%f} vel={%f,%f} density=%f friction=%f restitution=%f b-cts=%d/%d b-impls=%d",
-                          static_cast<double>(GetX(location) / Meter),
-                          static_cast<double>(GetY(location) / Meter),
-                          static_cast<double>(GetX(velocity.linear) / MeterPerSecond),
-                          static_cast<double>(GetY(velocity.linear) / MeterPerSecond),
-                          static_cast<double>(density * SquareMeter / Kilogram),
-                          friction,
-                          restitution,
-                          numTouching, numContacts,
-                          numImpulses);
+        stream = std::stringstream();
+        stream << "Selected fixture:";
+        stream << " pos={";
+        stream << static_cast<double>(GetX(location) / Meter);
+        stream << ",";
+        stream << static_cast<double>(GetY(location) / Meter);
+        stream << "}";
+        stream << " vel={";
+        stream << static_cast<double>(GetX(velocity.linear) / MeterPerSecond);
+        stream << ",";
+        stream << static_cast<double>(GetY(velocity.linear) / MeterPerSecond);
+        stream << "}";
+        stream << " density=" << static_cast<double>(density * SquareMeter / Kilogram);
+        stream << " friction=" << friction;
+        stream << " restitution=" << restitution;
+        stream << " b-cts=" << numTouching;
+        stream << "/" << numContacts;
+        stream << " b-impulses=" << numImpulses;
+        drawer.DrawString(5, m_textLine, stream.str().c_str());
         m_textLine += DRAW_STRING_NEW_LINE;
     }
 }
