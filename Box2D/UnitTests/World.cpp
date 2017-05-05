@@ -1273,7 +1273,12 @@ TEST(World, TilesComesToRest)
 
     // The final stats seem dependent on the host the test is run on.
     // Presume that this is most closely associated with the actual CPU/FPU.
-    //
+
+    // Note about commit 04f9188c47961cafe76c55eb6b766a608593ee08:
+    //   Changed the way velocity constraint resolution was done. Added a check
+    //   to see if any changes to velocity were introduced. If not, new code
+    //   does an early exit from its velocityIterations looping.
+    
     // Note about commit d361c51d6aca13079e9d44b701715e62cec18a63:
     //   Changes were introduced that modified the way manifold calculations are done.
     //   While many of the following counts appear to have increased, this new
@@ -1292,12 +1297,19 @@ TEST(World, TilesComesToRest)
     {
         case  4:
         {
-            // From commit d361c51d6aca13079e9d44b701715e62cec18a63 onward.
+            // From commit 04f9188c47961cafe76c55eb6b766a608593ee08 onward.
             EXPECT_EQ(numSteps, 1856ul);
             EXPECT_EQ(sumRegPosIters, 36720ul);
-            EXPECT_EQ(sumRegVelIters, 264376ul);
+            EXPECT_EQ(sumRegVelIters, 47656ul);
             EXPECT_EQ(sumToiPosIters, 44263ul);
-            EXPECT_EQ(sumToiVelIters, 145488ul);
+            EXPECT_EQ(sumToiVelIters, 112833ul);
+            
+            // From commit d361c51d6aca13079e9d44b701715e62cec18a63 onward.
+            //EXPECT_EQ(numSteps, 1856ul);
+            //EXPECT_EQ(sumRegPosIters, 36720ul);
+            //EXPECT_EQ(sumRegVelIters, 264376ul);
+            //EXPECT_EQ(sumToiPosIters, 44263ul);
+            //EXPECT_EQ(sumToiVelIters, 145488ul);
             
             // Pre commit d361c51d6aca13079e9d44b701715e62cec18a63
             //EXPECT_EQ(numSteps, 1814ul);
