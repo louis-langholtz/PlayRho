@@ -1338,12 +1338,19 @@ TEST(World, TilesComesToRest)
         }
     }
 #elif defined(__k8__)
-    // From commit d361c51d6aca13079e9d44b701715e62cec18a63 onward.
+    // From commit 04f9188c47961cafe76c55eb6b766a608593ee08 onward.
     EXPECT_EQ(numSteps, 1855ul);
     EXPECT_EQ(sumRegPosIters, 36737ul);
-    EXPECT_EQ(sumRegVelIters, 264528ul);
+    EXPECT_EQ(sumRegVelIters, 47759ul);
     EXPECT_EQ(sumToiPosIters, 44698ul);
-    EXPECT_EQ(sumToiVelIters, 147544ul);
+    EXPECT_EQ(sumToiVelIters, 114840ul);
+
+    // From commit d361c51d6aca13079e9d44b701715e62cec18a63 onward.
+    //EXPECT_EQ(numSteps, 1855ul);
+    //EXPECT_EQ(sumRegPosIters, 36737ul);
+    //EXPECT_EQ(sumRegVelIters, 264528ul);
+    //EXPECT_EQ(sumToiPosIters, 44698ul);
+    //EXPECT_EQ(sumToiVelIters, 147544ul);
     
     // Pre commit d361c51d6aca13079e9d44b701715e62cec18a63
     //EXPECT_EQ(numSteps, 1822ul);
