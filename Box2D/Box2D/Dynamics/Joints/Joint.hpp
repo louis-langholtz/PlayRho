@@ -172,7 +172,8 @@ private:
     /// Solves velocity constraints for the given solver data.
     /// @pre <code>InitVelocityConstraints</code> has been called.
     /// @sa InitVelocityConstraints.
-    virtual RealNum SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) = 0;
+    /// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
+    virtual bool SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) = 0;
 
     // This returns true if the position errors are within tolerance.
     virtual bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const = 0;

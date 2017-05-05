@@ -155,8 +155,10 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraints& bodies,
         // Cross(Length2D, P) is: M L^2 T^-1
         // inv rotational inertia is: L^-2 M^-1 QP^2
         // Product is: L^-2 M^-1 QP^2 M L^2 T^-1 = QP^2 T^-1
-        velA -= Velocity{invMassA * P, (invRotInertiaA * Cross(m_rA, P)) / Radian};
-        velB += Velocity{invMassB * P, (invRotInertiaB * Cross(m_rB, P)) / Radian};
+        const auto LA = Cross(m_rA, P) / Radian;
+        const auto LB = Cross(m_rB, P) / Radian;
+        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity{invMassB * P, invRotInertiaB * LB};
     }
     else
     {
@@ -167,7 +169,7 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraints& bodies,
     bodiesB.SetVelocity(velB);
 }
 
-RealNum DistanceJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf&)
+bool DistanceJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf&)
 {
     auto& bodiesA = bodies.at(GetBodyA());
     auto& bodiesB = bodies.at(GetBodyB());
@@ -189,13 +191,15 @@ RealNum DistanceJoint::SolveVelocityConstraints(BodyConstraints& bodies, const S
     m_impulse += impulse;
 
     const auto P = impulse * m_u;
-    velA -= Velocity{invMassA * P, invRotInertiaA * Cross(m_rA, P) / Radian};
-    velB += Velocity{invMassB * P, invRotInertiaB * Cross(m_rB, P) / Radian};
+    const auto LA = Cross(m_rA, P) / Radian;
+    const auto LB = Cross(m_rB, P) / Radian;
+    velA -= Velocity{invMassA * P, invRotInertiaA * LA};
+    velB += Velocity{invMassB * P, invRotInertiaB * LB};
 
     bodiesA.SetVelocity(velA);
     bodiesB.SetVelocity(velB);
     
-    return impulse / NewtonSecond;
+    return impulse == Momentum{0};
 }
 
 bool DistanceJoint::SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const

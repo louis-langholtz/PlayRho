@@ -114,7 +114,7 @@ void RopeJoint::InitVelocityConstraints(BodyConstraints& bodies,
     bodiesB.SetVelocity(velB);
 }
 
-RealNum RopeJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step)
+bool RopeJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step)
 {
     auto& bodiesA = bodies.at(GetBodyA());
     auto& bodiesB = bodies.at(GetBodyB());
@@ -149,7 +149,7 @@ RealNum RopeJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepC
     bodiesA.SetVelocity(velA);
     bodiesB.SetVelocity(velB);
     
-    return impulse / (Kilogram * MeterPerSecond);
+    return impulse == Momentum(0);
 }
 
 bool RopeJoint::SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const

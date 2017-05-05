@@ -198,16 +198,18 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraints& bodies,
     bodiesB.SetVelocity(velB);
 }
 
-RealNum RevoluteJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step)
+bool RevoluteJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step)
 {
     auto& bodiesA = bodies.at(GetBodyA());
     auto& bodiesB = bodies.at(GetBodyB());
 
-    auto velA = bodiesA.GetVelocity();
+    const auto oldVelA = bodiesA.GetVelocity();
+    auto velA = oldVelA;
     const auto invMassA = bodiesA.GetInvMass();
     const auto invRotInertiaA = bodiesA.GetInvRotInertia();
 
-    auto velB = bodiesB.GetVelocity();
+    const auto oldVelB = bodiesB.GetVelocity();
+    auto velB = oldVelB;
     const auto invMassB = bodiesB.GetInvMass();
     const auto invRotInertiaB = bodiesB.GetInvRotInertia();
 
@@ -233,11 +235,18 @@ RealNum RevoluteJoint::SolveVelocityConstraints(BodyConstraints& bodies, const S
     if (m_enableLimit && (m_limitState != e_inactiveLimit) && !fixedRotation)
     {
         const auto Cdot1 = vb - va;
-        const auto Cdot = Vec3{Cdot1.x / MeterPerSecond, Cdot1.y / MeterPerSecond, (velB.angular - velA.angular) / RadianPerSecond};
+        const auto Cdot = Vec3{
+            Cdot1.x / MeterPerSecond,
+            Cdot1.y / MeterPerSecond,
+            (velB.angular - velA.angular) / RadianPerSecond
+        };
         auto impulse = -Solve33(m_mass, Cdot);
 
         auto UpdateImpulseProc = [&]() {
-            const auto rhs = -Vec2{Cdot1.x / MeterPerSecond, Cdot1.y / MeterPerSecond} + m_impulse.z * Vec2{m_mass.ez.x, m_mass.ez.y};
+            const auto rhs = -Vec2{
+                Cdot1.x / MeterPerSecond,
+                Cdot1.y / MeterPerSecond
+            } + m_impulse.z * Vec2{m_mass.ez.x, m_mass.ez.y};
             const auto reduced = Solve22(m_mass, rhs);
             impulse.x = reduced.x;
             impulse.y = reduced.y;
@@ -301,10 +310,13 @@ RealNum RevoluteJoint::SolveVelocityConstraints(BodyConstraints& bodies, const S
         velB += Velocity{invMassB * P, invRotInertiaB * LB};
     }
 
-    bodiesA.SetVelocity(velA);
-    bodiesB.SetVelocity(velB);
-
-    return GetInvalid<RealNum>(); // TODO
+    if ((velA != oldVelA) || (velB != oldVelB))
+    {
+	    bodiesA.SetVelocity(velA);
+    	bodiesB.SetVelocity(velB);
+        return false;
+    }
+    return true;
 }
 
 bool RevoluteJoint::SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const

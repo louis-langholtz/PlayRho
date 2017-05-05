@@ -140,7 +140,7 @@ void MotorJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
     bodiesB.SetVelocity(velB);
 }
 
-RealNum MotorJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step)
+bool MotorJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step)
 {
     auto& bodiesA = bodies.at(GetBodyA());
     auto& bodiesB = bodies.at(GetBodyB());
@@ -156,6 +156,8 @@ RealNum MotorJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
     const auto h = step.GetTime();
     const auto inv_h = step.GetInvTime();
 
+    auto solved = true;
+
     // Solve angular friction
     {
         const auto Cdot = AngularVelocity{(velB.angular - velA.angular) + inv_h * m_correctionFactor * m_angularError};
@@ -166,6 +168,10 @@ RealNum MotorJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
         m_angularImpulse = Clamp(m_angularImpulse + angularImpulse, -maxAngularImpulse, maxAngularImpulse);
         const auto incAngularImpulse = m_angularImpulse - oldAngularImpulse;
 
+        if (incAngularImpulse != AngularMomentum(0))
+        {
+            solved = false;
+        }
         velA.angular -= invRotInertiaA * incAngularImpulse;
         velB.angular += invRotInertiaB * incAngularImpulse;
     }
@@ -191,6 +197,12 @@ RealNum MotorJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
         const auto incImpulse = m_linearImpulse - oldImpulse;
         const auto angImpulseA = AngularMomentum{Cross(m_rA, incImpulse) / Radian};
         const auto angImpulseB = AngularMomentum{Cross(m_rB, incImpulse) / Radian};
+
+        if (incImpulse != Vec2_zero * NewtonSecond)
+        {
+            solved = false;
+        }
+
         velA -= Velocity{invMassA * incImpulse, invRotInertiaA * angImpulseA};
         velB += Velocity{invMassB * incImpulse, invRotInertiaB * angImpulseB};
     }
@@ -198,7 +210,7 @@ RealNum MotorJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
     bodiesA.SetVelocity(velA);
     bodiesB.SetVelocity(velB);
     
-    return GetInvalid<RealNum>();
+    return solved;
 }
 
 bool MotorJoint::SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const

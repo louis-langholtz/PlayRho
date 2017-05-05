@@ -190,18 +190,21 @@ void WheelJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
     bodiesB.SetVelocity(velB);
 }
 
-RealNum WheelJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step)
+bool WheelJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step)
 {
     auto& bodiesA = bodies.at(GetBodyA());
     auto& bodiesB = bodies.at(GetBodyB());
 
-    auto velA = bodiesA.GetVelocity();
+    const auto oldVelA = bodiesA.GetVelocity();
     const auto invMassA = bodiesA.GetInvMass();
     const auto invRotInertiaA = bodiesA.GetInvRotInertia();
 
-    auto velB = bodiesB.GetVelocity();
+    const auto oldVelB = bodiesB.GetVelocity();
     const auto invMassB = bodiesB.GetInvMass();
     const auto invRotInertiaB = bodiesB.GetInvRotInertia();
+
+    auto velA = oldVelA;
+    auto velB = oldVelB;
 
     // Solve spring constraint
     {
@@ -247,10 +250,13 @@ RealNum WheelJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
         velB += Velocity{invMassB * P, invRotInertiaB * LB};
     }
 
-    bodiesA.SetVelocity(velA);
-    bodiesB.SetVelocity(velB);
-    
-    return GetInvalid<RealNum>();
+    if ((velA != oldVelA) || (velB != oldVelB))
+    {
+	    bodiesA.SetVelocity(velA);
+    	bodiesB.SetVelocity(velB);
+        return false;
+    }
+    return true;
 }
 
 bool WheelJoint::SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const

@@ -185,16 +185,18 @@ void WeldJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf&
     bodiesB.SetVelocity(velB);
 }
 
-RealNum WeldJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf&)
+bool WeldJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf&)
 {
     auto& bodiesA = bodies.at(GetBodyA());
     auto& bodiesB = bodies.at(GetBodyB());
 
-    auto velA = bodiesA.GetVelocity();
+    const auto oldVelA = bodiesA.GetVelocity();
+    auto velA = oldVelA;
     const auto invMassA = bodiesA.GetInvMass();
     const auto invRotInertiaA = bodiesA.GetInvRotInertia();
 
-    auto velB = bodiesB.GetVelocity();
+    const auto oldVelB = bodiesB.GetVelocity();
+    auto velB = oldVelB;
     const auto invMassB = bodiesB.GetInvMass();
     const auto invRotInertiaB = bodiesB.GetInvRotInertia();
 
@@ -251,10 +253,13 @@ RealNum WeldJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepC
         velB += Velocity{invMassB * P, invRotInertiaB * LB};
     }
 
-    bodiesA.SetVelocity(velA);
-    bodiesB.SetVelocity(velB);
-    
-    return GetInvalid<RealNum>(); // TODO
+    if ((velA != oldVelA) || (velB != oldVelB))
+    {
+	    bodiesA.SetVelocity(velA);
+    	bodiesB.SetVelocity(velB);
+        return false;
+    }
+    return true;
 }
 
 bool WeldJoint::SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const

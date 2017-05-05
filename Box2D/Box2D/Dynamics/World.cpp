@@ -359,6 +359,8 @@ namespace {
     /// "Solves" the velocity constraints.
     /// @details Updates the velocities and velocity constraint points' normal and tangent impulses.
     /// @pre <code>UpdateVelocityConstraints</code> has been called on the velocity constraints.
+    /// @return Maximum momentum used for solving both the tangential and normal portions of
+    ///   the velocity constraints.
     inline Momentum SolveVelocityConstraints(VelocityConstraints& velocityConstraints)
     {
         auto maxIncImpulse = Momentum{0};
@@ -552,7 +554,7 @@ private:
         j.InitVelocityConstraints(bodies, step, conf);
     }
     
-    static RealNum SolveVelocityConstraints(Joint& j, BodyConstraints &bodies, const box2d::StepConf &conf)
+    static bool SolveVelocityConstraints(Joint& j, BodyConstraints &bodies, const box2d::StepConf &conf)
     {
         return j.SolveVelocityConstraints(bodies, conf);
     }
@@ -1256,12 +1258,27 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island is
     auto maxIncImpulse = Momentum{0};
     for (auto i = decltype(conf.regVelocityIterations){0}; i < conf.regVelocityIterations; ++i)
     {
+        auto jointsOkay = true;
         for (auto&& joint: island.m_joints)
         {
-            JointAtty::SolveVelocityConstraints(*joint, bodyConstraints, conf);
+            jointsOkay &= JointAtty::SolveVelocityConstraints(*joint, bodyConstraints, conf);
         }
+
+        // Note that the new incremental impulse can potentially be orders of magnitude
+        // greater than the last incremental impulse used in this loop.
         const auto newIncImpulse = SolveVelocityConstraints(velocityConstraints);
         maxIncImpulse = std::max(maxIncImpulse, newIncImpulse);
+
+        if (jointsOkay && (newIncImpulse == Momentum{0}))
+        {
+            // No joint related velocity constraints were out of tolerance.
+            // No body related velocity constraints were out of tolerance.
+            // There does not appear to be any benefit to doing more loops now.
+            // XXX: Is it really safe to bail now? Not certain of that.
+            // Bail now assuming that this is helpful to do...
+            velocityIterations = i + 1;
+            break;
+        }
     }
     
     // updates array of tentative new body positions per the velocities as if there were no obstacles...
@@ -1274,19 +1291,12 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island is
         finMinSeparation = Min(finMinSeparation, minSeparation);
         const auto contactsOkay = (minSeparation >= conf.regMinSeparation);
 
-        const auto jointsOkay = [&]()
+        auto jointsOkay = true;
+        for (auto&& joint: island.m_joints)
         {
-            auto allOkay = true;
-            for (auto&& joint: island.m_joints)
-            {
-                if (!JointAtty::SolvePositionConstraints(*joint, bodyConstraints, psConf))
-                {
-                    allOkay = false;
-                }
-            }
-            return allOkay;
-        }();
-        
+            jointsOkay &= JointAtty::SolvePositionConstraints(*joint, bodyConstraints, psConf);
+        }
+
         if (contactsOkay && jointsOkay)
         {
             // Reached tolerance, early out...
@@ -1734,6 +1744,15 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Island& island)
     for (auto i = decltype(conf.toiVelocityIterations){0}; i < conf.toiVelocityIterations; ++i)
     {
         const auto newIncImpulse = SolveVelocityConstraints(velocityConstraints);
+        if (newIncImpulse == Momentum(0))
+        {
+            // No body related velocity constraints were out of tolerance.
+            // There does not appear to be any benefit to doing more loops now.
+            // XXX: Is it really safe to bail now? Not certain of that.
+            // Bail now assuming that this is helpful to do...
+            velocityIterations = i + 1;
+            break;
+        }
         maxIncImpulse = std::max(maxIncImpulse, newIncImpulse);
     }
     

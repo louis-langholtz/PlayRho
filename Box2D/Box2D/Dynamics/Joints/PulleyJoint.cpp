@@ -144,7 +144,7 @@ void PulleyJoint::InitVelocityConstraints(BodyConstraints& bodies,
     bodiesB.SetVelocity(velB);
 }
 
-RealNum PulleyJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf&)
+bool PulleyJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf&)
 {
     auto& bodiesA = bodies.at(GetBodyA());
     auto& bodiesB = bodies.at(GetBodyB());
@@ -167,7 +167,7 @@ RealNum PulleyJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Ste
     bodiesA.SetVelocity(velA);
     bodiesB.SetVelocity(velB);
     
-    return StripUnit(impulse);
+    return impulse == Momentum(0);
 }
 
 bool PulleyJoint::SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const

@@ -155,7 +155,7 @@ void MouseJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
     bodiesB.SetVelocity(velB);
 }
 
-RealNum MouseJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step)
+bool MouseJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step)
 {
     auto& bodiesB = bodies.at(GetBodyB());
 
@@ -181,7 +181,7 @@ RealNum MouseJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
 
     bodiesB.SetVelocity(velB);
     
-    return GetInvalid<RealNum>(); // TODO
+    return incImpulse == Vec2_zero * NewtonSecond;
 }
 
 bool MouseJoint::SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const

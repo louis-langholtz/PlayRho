@@ -220,7 +220,7 @@ void GearJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf&
     bodiesD.SetVelocity(velD);
 }
 
-RealNum GearJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf&)
+bool GearJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf&)
 {
     auto& bodiesA = bodies.at(GetBodyA());
     auto& bodiesB = bodies.at(GetBodyB());
@@ -251,7 +251,7 @@ RealNum GearJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepC
     bodiesC.SetVelocity(velC);
     bodiesD.SetVelocity(velD);
     
-    return StripUnit(impulse);
+    return impulse == Momentum(0);
 }
 
 bool GearJoint::SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const
