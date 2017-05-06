@@ -1321,11 +1321,18 @@ TEST(World, TilesComesToRest)
         }
         case  8:
         {
+            // From commit 04f9188c47961cafe76c55eb6b766a608593ee08 onward.
             EXPECT_EQ(numSteps, 1808ul);
             EXPECT_EQ(sumRegPosIters, 36684ul);
-            EXPECT_EQ(sumRegVelIters, 264856ul);
+            EXPECT_EQ(sumRegVelIters, 48087ul);
             EXPECT_EQ(sumToiPosIters, 45116ul);
-            EXPECT_EQ(sumToiVelIters, 149392ul);
+            EXPECT_EQ(sumToiVelIters, 118984ul);
+
+            //EXPECT_EQ(numSteps, 1808ul);
+            //EXPECT_EQ(sumRegPosIters, 36684ul);
+            //EXPECT_EQ(sumRegVelIters, 264856ul);
+            //EXPECT_EQ(sumToiPosIters, 45116ul);
+            //EXPECT_EQ(sumToiVelIters, 149392ul);
             break;
         }
         case 16:
