@@ -274,6 +274,9 @@ public:
     /// @note Used in the TOI phase of step processing.
     bool doToi = true;
 
+    /// @brief Do blocksolve algorithm.
+    bool doBlocksolve = true;
+
 private:
     Time time = DefaultStepTime; ///< Delta time. This is the time step in seconds.
     Frequency invTime = DefaultStepFrequency; ///< Inverse time step (1/dt or 0 if dt == 0). @see dt.

@@ -452,6 +452,20 @@ namespace {
         return TestOverlap(bp, proxyIdA, proxyIdB);
     }
 
+    inline VelocityConstraint::Conf GetRegVelocityConstraintConf(const StepConf& conf)
+    {
+        return VelocityConstraint::Conf{
+            conf.doWarmStart? conf.dtRatio: 0,
+            conf.velocityThreshold,
+            conf.doBlocksolve
+        };
+    }
+    
+    inline VelocityConstraint::Conf GetToiVelocityConstraintConf(const StepConf& conf)
+    {
+        return VelocityConstraint::Conf{0, conf.velocityThreshold, conf.doBlocksolve};
+    }
+
 } // anonymous namespace
 
 
@@ -1240,7 +1254,7 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island is
     }
     auto positionConstraints = GetPositionConstraints(island.m_contacts, bodyConstraints);
     auto velocityConstraints = GetVelocityConstraints(island.m_contacts, bodyConstraints,
-                                                      VelocityConstraint::Conf{conf.doWarmStart? conf.dtRatio: 0, conf.velocityThreshold, true});
+                                                      GetRegVelocityConstraintConf(conf));
     
     if (conf.doWarmStart)
     {
@@ -1663,7 +1677,8 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Island& island)
         bodyConstraints[bodyB] = GetBodyConstraint(*bodyB);
     }
 #else
-    // Sometimes island.m_bodies misses body(s) when processing multiple contacts within same TOI.
+    // XXX: When processing multiple contacts within same TOI,
+    //   island.m_bodies *sometimes* doesn't contain all the needed bodies.
     for (auto&& body: island.m_bodies)
     {
         /*
@@ -1733,7 +1748,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Island& island)
 #endif
     
     auto velocityConstraints = GetVelocityConstraints(island.m_contacts, bodyConstraints,
-                                                      VelocityConstraint::Conf{0, conf.velocityThreshold, true});
+                                                      GetToiVelocityConstraintConf(conf));
 
     // No warm starting is needed for TOI events because warm
     // starting impulses were applied in the discrete solver.
