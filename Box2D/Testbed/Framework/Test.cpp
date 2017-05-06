@@ -657,29 +657,34 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     stream << " pos-iter=" << m_sumRegPosIters;
     stream << " vel-iter=" << m_sumRegVelIters;
     stream << " proxy-moved=" << m_sumRegProxiesMoved;
+    drawer.DrawString(5, m_textLine, stream.str().c_str());
+    m_textLine += DRAW_STRING_NEW_LINE;
+    
+    stream = std::stringstream();
+    stream << "  TOI sums:";
+    stream << " isl-found=" << m_sumToiIslandsFound;
+    stream << " isl-solv=" << m_sumToiIslandsSolved;
+    stream << " pos-iter=" << m_sumToiPosIters;
+    stream << " vel-iter=" << m_sumToiVelIters;
+    stream << " proxy-moved=" << m_sumToiProxiesMoved;
+    stream << " cts-upd=" << m_sumContactsUpdatedToi;
+    stream << " cts-maxstep=" << m_sumContactsAtMaxSubSteps;
+    drawer.DrawString(5, m_textLine, stream.str().c_str());
+    m_textLine += DRAW_STRING_NEW_LINE;
+    
+    stream = std::stringstream();
+    stream << "  Reg ranges:";
     stream << " min-sep=" << static_cast<double>(m_minRegSep / Meter);
     stream << " max-sep=" << static_cast<double>(m_maxRegSep / Meter);
     drawer.DrawString(5, m_textLine, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
     
     stream = std::stringstream();
-    stream << "  TOI sums:" << m_sumToiIslandsFound;
-    stream << " isl-found=" << m_sumToiIslandsSolved;
-    stream << " isl-solv=" << m_sumToiIslandsSolved;
-    stream << " pos-iter=" << m_sumToiPosIters;
-    stream << " vel-iter=" << m_sumToiVelIters;
-    stream << " proxy-moved=" << m_sumToiProxiesMoved;
-    stream << " upd=" << m_sumContactsUpdatedToi;
-    stream << " cts-maxstep=" << m_sumContactsAtMaxSubSteps;
+    stream << "  TOI ranges:";
     stream << " min-sep=" << static_cast<double>(m_minToiSep / Meter);
-    drawer.DrawString(5, m_textLine, stream.str().c_str());
-    m_textLine += DRAW_STRING_NEW_LINE;
-    
-    stream = std::stringstream();
-    stream << "  TOI maxs:";
-    stream << " dist-iter=" << unsigned{m_maxDistIters} << "/" << unsigned{stepConf.maxDistanceIters};
-    stream << " toi-iter=" << unsigned{m_maxToiIters} << "/" << unsigned{stepConf.maxToiIters};
-    stream << " root-iter=" << unsigned{m_maxRootIters} << "/" << unsigned{stepConf.maxToiRootIters};
+    stream << " max-dist-iter=" << unsigned{m_maxDistIters} << "/" << unsigned{stepConf.maxDistanceIters};
+    stream << " max-toi-iter=" << unsigned{m_maxToiIters} << "/" << unsigned{stepConf.maxToiIters};
+    stream << " max-root-iter=" << unsigned{m_maxRootIters} << "/" << unsigned{stepConf.maxToiRootIters};
     drawer.DrawString(5, m_textLine, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
     
