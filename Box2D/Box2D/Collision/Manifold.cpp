@@ -23,7 +23,6 @@
 #include <Box2D/Collision/DistanceProxy.hpp>
 #include <Box2D/Collision/Collision.hpp>
 #include <Box2D/Collision/ShapeSeparation.hpp>
-#include <Box2D/Collision/CollideShapes.hpp>
 
 #include <array>
 #include <bitset>

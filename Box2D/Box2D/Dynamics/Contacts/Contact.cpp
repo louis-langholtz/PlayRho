@@ -21,7 +21,6 @@
 #include <Box2D/Collision/Collision.hpp>
 #include <Box2D/Collision/Distance.hpp>
 #include <Box2D/Collision/DistanceProxy.hpp>
-#include <Box2D/Collision/CollideShapes.hpp>
 #include <Box2D/Collision/Shapes/Shape.hpp>
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>

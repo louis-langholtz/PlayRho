@@ -22,7 +22,7 @@
 #include <Box2D/Dynamics/Contacts/VelocityConstraint.hpp>
 #include <Box2D/Dynamics/Contacts/BodyConstraint.hpp>
 #include <Box2D/Collision/Shapes/PolygonShape.hpp>
-#include <Box2D/Collision/CollideShapes.hpp>
+#include <Box2D/Collision/Manifold.hpp>
 
 using namespace box2d;
 

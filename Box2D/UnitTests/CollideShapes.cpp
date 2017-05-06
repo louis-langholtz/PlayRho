@@ -17,7 +17,6 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Collision/CollideShapes.hpp>
 #include <Box2D/Collision/Manifold.hpp>
 #include <Box2D/Collision/WorldManifold.hpp>
 #include <Box2D/Collision/Shapes/CircleShape.hpp>

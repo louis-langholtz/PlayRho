@@ -70,10 +70,6 @@
 		4734B22E1DC2B11D00F15E29 /* Simplex.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B22A1DC2B11D00F15E29 /* Simplex.hpp */; };
 		4734B2361DC39F3E00F15E29 /* SimplexEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4734B2351DC39F3E00F15E29 /* SimplexEdge.cpp */; };
 		4736DE891DB7DB3B003993CB /* Vec3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4736DE881DB7DB3B003993CB /* Vec3.cpp */; };
-		4736DE8C1DB806AE003993CB /* CollideShapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4736DE8A1DB806AE003993CB /* CollideShapes.cpp */; };
-		4736DE8D1DB806AE003993CB /* CollideShapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4736DE8A1DB806AE003993CB /* CollideShapes.cpp */; };
-		4736DE8E1DB806AE003993CB /* CollideShapes.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4736DE8B1DB806AE003993CB /* CollideShapes.hpp */; };
-		4736DE8F1DB806AE003993CB /* CollideShapes.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4736DE8B1DB806AE003993CB /* CollideShapes.hpp */; };
 		473971A61D99DFFF00F7137F /* ListCustom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 473971A51D99DFFE00F7137F /* ListCustom.cpp */; };
 		473971A81D9D9B4C00F7137F /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 473971A71D9D9B4C00F7137F /* Math.cpp */; };
 		473971AA1D9F0E4E00F7137F /* ContactSolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 473971A91D9F0E4E00F7137F /* ContactSolver.cpp */; };
@@ -468,8 +464,6 @@
 		4734B22A1DC2B11D00F15E29 /* Simplex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Simplex.hpp; sourceTree = "<group>"; };
 		4734B2351DC39F3E00F15E29 /* SimplexEdge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimplexEdge.cpp; sourceTree = "<group>"; };
 		4736DE881DB7DB3B003993CB /* Vec3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vec3.cpp; sourceTree = "<group>"; };
-		4736DE8A1DB806AE003993CB /* CollideShapes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollideShapes.cpp; sourceTree = "<group>"; };
-		4736DE8B1DB806AE003993CB /* CollideShapes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CollideShapes.hpp; sourceTree = "<group>"; };
 		473971A51D99DFFE00F7137F /* ListCustom.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ListCustom.cpp; sourceTree = "<group>"; };
 		473971A71D9D9B4C00F7137F /* Math.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Math.cpp; sourceTree = "<group>"; };
 		473971A91D9F0E4E00F7137F /* ContactSolver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactSolver.cpp; sourceTree = "<group>"; };
@@ -899,8 +893,6 @@
 				4726DD291D31B4090012A882 /* AABB.hpp */,
 				80BB8927141C3E5900F1753A /* BroadPhase.cpp */,
 				80BB8928141C3E5900F1753A /* BroadPhase.hpp */,
-				4736DE8A1DB806AE003993CB /* CollideShapes.cpp */,
-				4736DE8B1DB806AE003993CB /* CollideShapes.hpp */,
 				80BB892C141C3E5900F1753A /* Collision.cpp */,
 				4731DE431DE2570900E7F931 /* Collision.hpp */,
 				4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */,
@@ -1242,7 +1234,6 @@
 				47AA5DDF1C4C5FBE008AF2BA /* Fixture.hpp in Headers */,
 				47AA5DE01C4C5FBE008AF2BA /* Island.hpp in Headers */,
 				47AA5DE11C4C5FBE008AF2BA /* StepConf.hpp in Headers */,
-				4736DE8F1DB806AE003993CB /* CollideShapes.hpp in Headers */,
 				47CB34411D6F3A8500828126 /* MassData.hpp in Headers */,
 				47AA5DE21C4C5FBE008AF2BA /* World.hpp in Headers */,
 				4734B2281DC29F7C00F15E29 /* SimplexEdge.hpp in Headers */,
@@ -1375,7 +1366,6 @@
 				472E301B1DBA925500DA821D /* VertexSet.hpp in Headers */,
 				474AFBDA1EB19657002AA6C8 /* glfw3native.h in Headers */,
 				47F932A61D11C283006A193C /* AllocatedArray.hpp in Headers */,
-				4736DE8E1DB806AE003993CB /* CollideShapes.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1612,7 +1602,6 @@
 				47AA5DAA1C4C5FBE008AF2BA /* Settings.cpp in Sources */,
 				47CF984C1DF9C4A30077F5F2 /* ShapeSeparation.cpp in Sources */,
 				47AA5DAB1C4C5FBE008AF2BA /* StackAllocator.cpp in Sources */,
-				4736DE8D1DB806AE003993CB /* CollideShapes.cpp in Sources */,
 				474AFBF91EB1B2CB002AA6C8 /* MultiShape.cpp in Sources */,
 				47AA5DAC1C4C5FBE008AF2BA /* Timer.cpp in Sources */,
 				47AA5DAD1C4C5FBE008AF2BA /* Body.cpp in Sources */,
@@ -1731,7 +1720,6 @@
 				80BB89BE141C3E5900F1753A /* Contact.cpp in Sources */,
 				474AFBE01EB19657002AA6C8 /* mach_time.c in Sources */,
 				80BB89C0141C3E5900F1753A /* ContactSolver.cpp in Sources */,
-				4736DE8C1DB806AE003993CB /* CollideShapes.cpp in Sources */,
 				80BB89CA141C3E5900F1753A /* DistanceJoint.cpp in Sources */,
 				80BB89CC141C3E5900F1753A /* FrictionJoint.cpp in Sources */,
 				80BB89CE141C3E5900F1753A /* GearJoint.cpp in Sources */,
