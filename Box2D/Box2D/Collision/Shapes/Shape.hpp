@@ -293,10 +293,6 @@ inline Length GetVertexRadius(const Shape& shape) noexcept
     return shape.GetVertexRadius();
 }
 
-/// Determine if two generic shapes overlap.
-bool TestOverlap(const DistanceProxy& proxyA, const Transformation& xfA,
-                 const DistanceProxy& proxyB, const Transformation& xfB);
-    
 } // namespace box2d
 
 #endif

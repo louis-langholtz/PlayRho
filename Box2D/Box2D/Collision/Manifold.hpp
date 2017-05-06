@@ -501,6 +501,15 @@ namespace box2d
     {
         return value.GetType() != Manifold::e_unset;
     }
+    
+    /// @brief Calculates the relevant collision manifold.
+    ///
+    /// @note The returned touching state information should agree with that returned
+    ///   from the DistanceProxy-based TestOverlap function.
+    ///
+    Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
+                           const DistanceProxy& shapeB, const Transformation& xfB,
+                           const Manifold::Conf conf = GetDefaultManifoldConf());
 
     Manifold GetManifold(const DistanceProxy& proxyA, const Transformation& transformA,
                          const DistanceProxy& proxyB, const Transformation& transformB);

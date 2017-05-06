@@ -27,18 +27,5 @@
 #include <Box2D/Dynamics/Fixture.hpp>
 
 namespace box2d {
-    
-    bool TestOverlap(const DistanceProxy& proxyA, const Transformation& xfA,
-                     const DistanceProxy& proxyB, const Transformation& xfB)
-    {
-        const auto distanceInfo = Distance(proxyA, xfA, proxyB, xfB);
-        assert(distanceInfo.state != DistanceOutput::Unknown && distanceInfo.state != DistanceOutput::HitMaxIters);
 
-        const auto witnessPoints = GetWitnessPoints(distanceInfo.simplex);
-        const auto distanceSquared = GetLengthSquared(witnessPoints.a - witnessPoints.b);
-        const auto totalRadiusSquared = Square(proxyA.GetVertexRadius() + proxyB.GetVertexRadius());
-        const auto separation_amount = distanceSquared - totalRadiusSquared;
-        return (separation_amount < Area{0}) || almost_zero(separation_amount / SquareMeter);
-    }
-    
 } // namespace box2d

@@ -19,6 +19,7 @@
 
 #include <Box2D/Dynamics/Contacts/Contact.hpp>
 #include <Box2D/Collision/Collision.hpp>
+#include <Box2D/Collision/Distance.hpp>
 #include <Box2D/Collision/DistanceProxy.hpp>
 #include <Box2D/Collision/CollideShapes.hpp>
 #include <Box2D/Collision/Shapes/Shape.hpp>
@@ -40,6 +41,13 @@ static inline Manifold::Conf GetManifoldConf(const StepConf& conf)
     manifoldConf.targetDepth = conf.targetDepth;
     manifoldConf.maxCirclesRatio = conf.maxCirclesRatio;
     return manifoldConf;
+}
+
+static inline DistanceConf GetDistanceConf(const StepConf& conf)
+{
+    DistanceConf distanceConf;
+    distanceConf.maxIterations = conf.maxDistanceIters;
+    return distanceConf;
 }
 
 Contact* Contact::Create(Fixture& fixtureA, child_count_t indexA,
@@ -96,11 +104,17 @@ void Contact::Update(const StepConf& conf, ContactListener* listener)
     const auto childA = shapeA->GetChild(indexA);
     const auto childB = shapeB->GetChild(indexB);
 
+    // NOTE: The touching state returned by the TestOverlap function
+    //    **SHOULD** agree with that returned from the CollideShapes function.
+
     const auto sensor = fixtureA->IsSensor() || fixtureB->IsSensor();
     if (sensor)
     {
-        newTouching = TestOverlap(childA, xfA, childB, xfB);
+        newTouching = TestOverlap(childA, xfA, childB, xfB, GetDistanceConf(conf));
 
+        // Check agreement between TestOverlap and CollideShapes.
+        assert(newTouching == (CollideShapes(childA, xfA, childB, xfB,
+                                             GetManifoldConf(conf)).GetPointCount() > 0));
         // Sensors don't generate manifolds.
         m_manifold = Manifold{};
     }
@@ -112,6 +126,9 @@ void Contact::Update(const StepConf& conf, ContactListener* listener)
         const auto new_point_count = newManifold.GetPointCount();
 
         newTouching = new_point_count > 0;
+
+        // Check agreement between TestOverlap and CollideShapes.
+        assert(newTouching == TestOverlap(childA, xfA, childB, xfB, GetDistanceConf(conf)));
 
         // Match old contact ids to new contact ids and copy the
         // stored impulses to warm start the solver.
@@ -127,6 +144,10 @@ void Contact::Update(const StepConf& conf, ContactListener* listener)
                 }
             }
         }
+
+        // Ideally this method is **NEVER** called unless a dependency changed such
+        // that the following assertion is **ALWAYS** valid.
+        //assert(newManifold != oldManifold);
 
         m_manifold = newManifold;
 

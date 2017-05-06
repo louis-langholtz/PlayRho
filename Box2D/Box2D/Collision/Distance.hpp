@@ -26,7 +26,7 @@
 namespace box2d
 {
     class DistanceProxy;
-    
+
     /// Witness Points.
     struct WitnessPoints
     {
@@ -81,6 +81,14 @@ namespace box2d
     DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& transformA,
                             const DistanceProxy& proxyB, const Transformation& transformB,
                             const DistanceConf conf = DistanceConf{});
+ 
+    /// @brief Determine if two generic shapes overlap.
+    ///
+    /// @note This should agree with the touching state returned from CollideShapes.
+    ///
+    bool TestOverlap(const DistanceProxy& proxyA, const Transformation& xfA,
+                     const DistanceProxy& proxyB, const Transformation& xfB,
+                     const DistanceConf conf = DistanceConf{});
 
 } /* namespace box2d */
 

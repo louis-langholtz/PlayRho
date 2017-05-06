@@ -200,10 +200,21 @@ private:
     /// Flag this contact for filtering. Filtering will occur the next time step.
     void UnflagForFiltering() noexcept;
 
-    /// Updates the contact manifold and touching status and notifies listener (if one given).
+    /// @brief Updates the touching related state and notifies listener (if one given).
+    ///
+    /// @note Ideally this method is only called when a dependent change has occurred.
+    /// @note Touching related state depends on the following data:
+    ///   - The fixtures' sensor states.
+    ///   - The fixtures bodies' transformations.
+    ///   - The "maxCirclesRatio" per-step configuration state *OR* the "maxDistanceIters"
+    ///     per-step configuration state.
+    ///
+    /// @param conf Per-step configuration information.
     /// @param listener Listener that if non-null is called with status information.
+    ///
     /// @sa GetManifold.
     /// @sa IsTouching.
+    ///
     void Update(const StepConf& conf, ContactListener* listener = nullptr);
 
     /// Sets the time of impact (TOI).

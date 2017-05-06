@@ -2152,7 +2152,13 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
 
         // Update the contact manifold and notify the listener.
         contact->SetEnabled();
-        
+
+        // Note: ideally contacts are only updated if there's a change to:
+        //   - The fixtures' sensor states.
+        //   - The fixtures bodies' transformations.
+        //   - The "maxCirclesRatio" per-step configuration state if contact IS NOT for sensor.
+        //   - The "maxDistanceIters" per-step configuration state if contact IS for sensor.
+
         // The following may call listener but is otherwise thread-safe.
         ContactAtty::Update(*contact, conf, m_contactListener);
         ++stats.updated;

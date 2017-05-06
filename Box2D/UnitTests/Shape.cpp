@@ -20,7 +20,8 @@
 #include <Box2D/Collision/Shapes/Shape.hpp>
 #include <Box2D/Collision/Shapes/CircleShape.hpp>
 #include <Box2D/Collision/Shapes/PolygonShape.hpp>
-#include <Box2D/Collision/CollideShapes.hpp>
+#include <Box2D/Collision/Distance.hpp>
+#include <Box2D/Collision/Manifold.hpp>
 #include <chrono>
 
 using namespace box2d;

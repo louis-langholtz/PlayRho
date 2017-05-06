@@ -24,6 +24,13 @@
 
 namespace box2d {
 
+static inline DistanceConf GetDistanceConf(const ToiConf& conf)
+{
+    DistanceConf distanceConf;
+    distanceConf.maxIterations = conf.maxDistIters;
+    return distanceConf;
+}
+
 TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
                        const DistanceProxy& proxyB, const Sweep& sweepB,
                        const ToiConf conf)
@@ -62,7 +69,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
     auto t1xfB = GetTransformation(sweepB, t1);
 
     // Prepare input for distance query.
-    DistanceConf distanceConf;
+    auto distanceConf = GetDistanceConf(conf);
 
     // The outer loop progressively attempts to compute new separating axes.
     // This loop terminates when an axis is repeated (no progress is made).

@@ -69,6 +69,7 @@ void Fixture::SetSensor(bool sensor) noexcept
 {
     if (sensor != m_isSensor)
     {
+        // sensor state is changing...
         m_isSensor = sensor;
         const auto body = GetBody();
         if (body)
