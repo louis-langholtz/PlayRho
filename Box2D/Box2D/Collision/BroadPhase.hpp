@@ -259,7 +259,8 @@ inline void BroadPhase::TouchProxy(size_type proxyId) noexcept
     EnqueueForOverlapProcessing(proxyId);
 }
 
-inline bool TestOverlap(const BroadPhase& bp, BroadPhase::size_type proxyIdA, BroadPhase::size_type proxyIdB)
+inline bool TestOverlap(const BroadPhase& bp,
+                        BroadPhase::size_type proxyIdA, BroadPhase::size_type proxyIdB)
 {
     return TestOverlap(bp.GetFatAABB(proxyIdA), bp.GetFatAABB(proxyIdB));
 }
