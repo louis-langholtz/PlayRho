@@ -294,8 +294,8 @@ inline Length GetVertexRadius(const Shape& shape) noexcept
 }
 
 /// Determine if two generic shapes overlap.
-bool TestOverlap(const Shape& shapeA, child_count_t indexA, const Transformation& xfA,
-                 const Shape& shapeB, child_count_t indexB, const Transformation& xfB);
+bool TestOverlap(const DistanceProxy& proxyA, const Transformation& xfA,
+                 const DistanceProxy& proxyB, const Transformation& xfB);
     
 } // namespace box2d
 

@@ -74,8 +74,10 @@ public:
 
         const auto xfm = GetTransformation(*fixture);
         const auto shape = fixture->GetShape();
+        const auto shapeChild = shape->GetChild(0);
+        const auto circleChild = m_circle.GetChild(0);
 
-        const auto overlap = TestOverlap(*shape, 0, xfm, m_circle, 0, m_transform);
+        const auto overlap = TestOverlap(shapeChild, xfm, circleChild, m_transform);
         if (overlap)
         {
             m_xf = GetTransformation(*fixture);

@@ -33,25 +33,19 @@ using ContactCreateFcn = Contact* (Fixture* fixtureA, child_count_t indexA,
                                        Fixture* fixtureB, child_count_t indexB);
 using ContactDestroyFcn = void (Contact* contact);
 
-static Manifold GetManifold(const Fixture* fixtureA, child_count_t indexA,
-                            const Fixture* fixtureB, child_count_t indexB,
-                            const Manifold::Conf conf)
+static inline Manifold::Conf GetManifoldConf(const StepConf& conf)
 {
-    const auto xfA = GetTransformation(*fixtureA);
-    const auto shapeA = fixtureA->GetShape();
-    const auto childA = shapeA->GetChild(indexA);
-
-    const auto xfB = GetTransformation(*fixtureB);
-    const auto shapeB = fixtureB->GetShape();
-    const auto childB = shapeB->GetChild(indexB);
-
-    return CollideShapes(childA, xfA, childB, xfB, conf);
+    auto manifoldConf = Manifold::Conf{};
+    manifoldConf.tolerance = conf.tolerance;
+    manifoldConf.targetDepth = conf.targetDepth;
+    manifoldConf.maxCirclesRatio = conf.maxCirclesRatio;
+    return manifoldConf;
 }
 
 Contact* Contact::Create(Fixture& fixtureA, child_count_t indexA,
                          Fixture& fixtureB, child_count_t indexB)
 {
-    return new Contact{&fixtureA, indexA, &fixtureB, indexB, ::GetManifold};
+    return new Contact{&fixtureA, indexA, &fixtureB, indexB};
 }
 
 void Contact::Destroy(Contact* contact)
@@ -71,8 +65,7 @@ void Contact::Destroy(Contact* contact)
     delete contact;
 }
 
-Contact::Contact(Fixture* fA, child_count_t iA, Fixture* fB, child_count_t iB, ManifoldCalcFunc mcf):
-    m_manifoldCalcFunc{mcf},
+Contact::Contact(Fixture* fA, child_count_t iA, Fixture* fB, child_count_t iB):
     m_fixtureA{fA}, m_fixtureB{fB}, m_indexA{iA}, m_indexB{iB},
     m_friction{MixFriction(fA->GetFriction(), fB->GetFriction())},
     m_restitution{MixRestitution(fA->GetRestitution(), fB->GetRestitution())}
@@ -93,28 +86,27 @@ void Contact::Update(const StepConf& conf, ContactListener* listener)
     auto newTouching = false;
 
     const auto fixtureA = GetFixtureA();
+    const auto indexA = GetChildIndexA();
     const auto fixtureB = GetFixtureB();
+    const auto indexB = GetChildIndexB();
+    const auto shapeA = fixtureA->GetShape();
+    const auto xfA = fixtureA->GetBody()->GetTransformation();
+    const auto shapeB = fixtureB->GetShape();
+    const auto xfB = fixtureB->GetBody()->GetTransformation();
+    const auto childA = shapeA->GetChild(indexA);
+    const auto childB = shapeB->GetChild(indexB);
 
     const auto sensor = fixtureA->IsSensor() || fixtureB->IsSensor();
     if (sensor)
     {
-        const auto shapeA = fixtureA->GetShape();
-        const auto shapeB = fixtureB->GetShape();
-        const auto xfA = GetTransformation(*fixtureA);
-        const auto xfB = GetTransformation(*fixtureB);
-
-        newTouching = TestOverlap(*shapeA, GetChildIndexA(), xfA, *shapeB, GetChildIndexB(), xfB);
+        newTouching = TestOverlap(childA, xfA, childB, xfB);
 
         // Sensors don't generate manifolds.
         m_manifold = Manifold{};
     }
     else
     {
-        auto manifoldConf = Manifold::Conf{};
-        manifoldConf.tolerance = conf.tolerance;
-        manifoldConf.targetDepth = conf.targetDepth;
-        manifoldConf.maxCirclesRatio = conf.maxCirclesRatio;
-        auto newManifold = CalcManifold(manifoldConf);
+        auto newManifold = CollideShapes(childA, xfA, childB, xfB, GetManifoldConf(conf));
 
         const auto old_point_count = oldManifold.GetPointCount();
         const auto new_point_count = newManifold.GetPointCount();
@@ -186,6 +178,8 @@ void Contact::Update(const StepConf& conf, ContactListener* listener)
     }
 }
 
+// Free functions...
+
 bool box2d::HasSensor(const Contact& contact) noexcept
 {
     return contact.GetFixtureA()->IsSensor() || contact.GetFixtureB()->IsSensor();
@@ -213,7 +207,9 @@ void box2d::ResetFriction(Contact& contact)
 /// Reset the restitution to the default value.
 void box2d::ResetRestitution(Contact& contact) noexcept
 {
-    contact.SetRestitution(MixRestitution(contact.GetFixtureA()->GetRestitution(), contact.GetFixtureB()->GetRestitution()));
+    const auto restitutionA = contact.GetFixtureA()->GetRestitution();
+    const auto restitutionB = contact.GetFixtureB()->GetRestitution();
+    contact.SetRestitution(MixRestitution(restitutionA, restitutionB));
 }
 
 TOIOutput box2d::CalcToi(const Contact& contact, const ToiConf conf)

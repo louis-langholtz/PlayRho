@@ -28,12 +28,9 @@
 
 namespace box2d {
     
-    bool TestOverlap(const Shape& shapeA, child_count_t indexA, const Transformation& xfA,
-                     const Shape& shapeB, child_count_t indexB, const Transformation& xfB)
+    bool TestOverlap(const DistanceProxy& proxyA, const Transformation& xfA,
+                     const DistanceProxy& proxyB, const Transformation& xfB)
     {
-        const auto proxyA = shapeA.GetChild(indexA);
-        const auto proxyB = shapeB.GetChild(indexB);
-        
         const auto distanceInfo = Distance(proxyA, xfA, proxyB, xfB);
         assert(distanceInfo.state != DistanceOutput::Unknown && distanceInfo.state != DistanceOutput::HitMaxIters);
 

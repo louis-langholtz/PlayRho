@@ -53,7 +53,7 @@ inline RealNum MixRestitution(RealNum restitution1, RealNum restitution2) noexce
 /// The class manages contact between two shapes. A contact exists for each overlapping
 /// AABB in the broad-phase (except if filtered). Therefore a contact object may exist
 /// that has no contact points.
-/// @note This data structure is 112-bytes large (on at least one 64-bit platform).
+/// @note This data structure is 104-bytes large (on at least one 64-bit platform).
 class Contact
 {
 public:
@@ -132,11 +132,6 @@ public:
     /// Gets the desired tangent speed. In meters per second.
     LinearVelocity GetTangentSpeed() const noexcept;
 
-    /// Calculates this contact's collision manifold.
-    /// @return Contact manifold with one or more points
-    ///   if the shapes are considered touching (collided).
-    Manifold CalcManifold(const Manifold::Conf conf) const;
-
     substep_type GetToiCount() const noexcept;
 
     /// Gets whether a TOI is set.
@@ -200,8 +195,7 @@ private:
     /// @warning Behavior is undefined if <code>fixtureB</code> has no associated shape.
     /// @warning Behavior is undefined if both fixtures have the same body.
     ///
-    Contact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB,
-            ManifoldCalcFunc mcf);
+    Contact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB);
 
     /// Flag this contact for filtering. Filtering will occur the next time step.
     void UnflagForFiltering() noexcept;
@@ -234,11 +228,6 @@ private:
     void UnsetTouching() noexcept;
 
     // Member variables...
-
-    /// Manifold calculating function.
-    /// @note This is a use of the strategy pattern via a function pointer rather than
-    ///   using a virtual method and subclassing this class.
-    ManifoldCalcFunc const m_manifoldCalcFunc;
 
     Fixture* const m_fixtureA; ///< Fixture A. @details Non-null pointer to fixture A.
     Fixture* const m_fixtureB; ///< Fixture B. @details Non-null pointer to fixture B.
@@ -419,11 +408,6 @@ inline void Contact::ResetToiCount() noexcept
 inline Contact::substep_type Contact::GetToiCount() const noexcept
 {
     return m_toiCount;
-}
-
-inline Manifold Contact::CalcManifold(const Manifold::Conf conf) const
-{
-    return m_manifoldCalcFunc(m_fixtureA, m_indexA, m_fixtureB, m_indexB, conf);
 }
 
 // Free functions...

@@ -40,6 +40,7 @@ TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)
 {
     const auto shape = CircleShape{RealNum{2} * Meter};
     const auto xfm = Transformation{Vec2{0, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
+    const auto child = shape.GetChild(0);
 
     const auto maxloops = 1000000u;
 
@@ -53,7 +54,7 @@ TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)
             const auto start = std::chrono::high_resolution_clock::now();
             for (auto i = decltype(maxloops){0}; i < maxloops; ++i)
             {
-                if (TestOverlap(shape, 0, xfm, shape, 0, xfm))
+                if (TestOverlap(child, xfm, child, xfm))
                 {
                     ++count;
                 }
@@ -67,7 +68,7 @@ TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)
             const auto start = std::chrono::high_resolution_clock::now();
             for (auto i = decltype(maxloops){0}; i < maxloops; ++i)
             {
-                const auto manifold = CollideShapes(shape.GetChild(0), xfm, shape.GetChild(0), xfm);
+                const auto manifold = CollideShapes(child, xfm, child, xfm);
                 if (manifold.GetPointCount() > 0)
                 {
                     ++count;
@@ -87,7 +88,8 @@ TEST(Shape, TestOverlapFasterThanCollideShapesForPolygons)
 {
     const auto shape = PolygonShape{RealNum{2} * Meter, RealNum{2} * Meter};
     const auto xfm = Transformation{Vec2{0, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
-    
+    const auto child = shape.GetChild(0);
+
     const auto maxloops = 1000000u;
     
     std::chrono::duration<double> elapsed_test_overlap;
@@ -100,7 +102,7 @@ TEST(Shape, TestOverlapFasterThanCollideShapesForPolygons)
             const auto start = std::chrono::high_resolution_clock::now();
             for (auto i = decltype(maxloops){0}; i < maxloops; ++i)
             {
-                if (TestOverlap(shape, 0, xfm, shape, 0, xfm))
+                if (TestOverlap(child, xfm, child, xfm))
                 {
                     ++count;
                 }
@@ -114,7 +116,7 @@ TEST(Shape, TestOverlapFasterThanCollideShapesForPolygons)
             const auto start = std::chrono::high_resolution_clock::now();
             for (auto i = decltype(maxloops){0}; i < maxloops; ++i)
             {
-                const auto manifold = CollideShapes(shape.GetChild(0), xfm, shape.GetChild(0), xfm);
+                const auto manifold = CollideShapes(child, xfm, child, xfm);
                 if (manifold.GetPointCount() > 0)
                 {
                     ++count;
