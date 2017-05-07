@@ -75,6 +75,10 @@ void Fixture::SetSensor(bool sensor) noexcept
         if (body)
         {
             body->SetAwake();
+            for (auto&& c: body->GetContacts())
+            {
+                c->FlagForUpdating();
+            }
         }
     }
 }

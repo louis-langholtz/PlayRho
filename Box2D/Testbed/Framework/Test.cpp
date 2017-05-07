@@ -651,6 +651,14 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     m_textLine += DRAW_STRING_NEW_LINE;
     
     stream = std::stringstream();
+    stream << "  Pre sums:";
+    // stream << " cts-ignored=" << m_sumContactsIgnoredPre;
+    stream << " cts-upd=" << m_sumContactsUpdatedPre;
+    stream << " cts-skipped=" << m_sumContactsSkippedPre;
+    drawer.DrawString(5, m_textLine, stream.str().c_str());
+    m_textLine += DRAW_STRING_NEW_LINE;
+    
+    stream = std::stringstream();
     stream << "  Reg sums:";
     stream << " isl-found=" << m_sumRegIslandsFound;
     stream << " isl-solv=" << m_sumRegIslandsSolved;
@@ -667,7 +675,9 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     stream << " pos-iter=" << m_sumToiPosIters;
     stream << " vel-iter=" << m_sumToiVelIters;
     stream << " proxy-moved=" << m_sumToiProxiesMoved;
-    stream << " cts-upd=" << m_sumContactsUpdatedToi;
+    stream << " cts-touch-upd=" << m_sumToiContactsUpdatedTouching;
+    stream << " cts-touch-skipped=" << m_sumToiContactsSkippedTouching;
+    stream << " cts-upd-toi=" << m_sumContactsUpdatedToi;
     stream << " cts-maxstep=" << m_sumContactsAtMaxSubSteps;
     drawer.DrawString(5, m_textLine, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
@@ -848,6 +858,10 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 
     const auto stepStats = m_world->Step(stepConf);
     
+    m_sumContactsUpdatedPre += stepStats.pre.updated;
+    m_sumContactsIgnoredPre += stepStats.pre.ignored;
+    m_sumContactsSkippedPre += stepStats.pre.skipped;
+
     m_sumRegIslandsFound += stepStats.reg.islandsFound;
     m_sumRegIslandsSolved += stepStats.reg.islandsSolved;
     m_sumRegPosIters += stepStats.reg.sumPosIters;
@@ -860,6 +874,8 @@ void Test::Step(const Settings& settings, Drawer& drawer)
     m_sumToiVelIters += stepStats.toi.sumVelIters;
     m_sumToiProxiesMoved += stepStats.toi.proxiesMoved;
     m_sumContactsUpdatedToi += stepStats.toi.contactsUpdatedToi;
+    m_sumToiContactsUpdatedTouching += stepStats.toi.contactsUpdatedTouching;
+    m_sumToiContactsSkippedTouching += stepStats.toi.contactsSkippedTouching;
     m_sumContactsAtMaxSubSteps += stepStats.toi.contactsAtMaxSubSteps;
 
     m_maxDistIters = Max(m_maxDistIters, stepStats.toi.maxDistIters);

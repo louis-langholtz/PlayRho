@@ -84,9 +84,11 @@ namespace box2d
  
     /// @brief Determine if two generic shapes overlap.
     ///
-    /// @note This should agree with the touching state returned from CollideShapes.
+    /// @note The returned touching state information typically agrees with that returned from
+    ///   the CollideShapes function. This is not always the case however especially when the
+    ///   separation or overlap distance is closer to zero.
     ///
-    bool TestOverlap(const DistanceProxy& proxyA, const Transformation& xfA,
+    Area TestOverlap(const DistanceProxy& proxyA, const Transformation& xfA,
                      const DistanceProxy& proxyB, const Transformation& xfB,
                      const DistanceConf conf = DistanceConf{});
 

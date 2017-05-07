@@ -216,8 +216,7 @@ namespace {
         constraints.reserve(contacts.size());
         for (auto&& contact: contacts)
         {
-            const auto& manifold = contact->GetManifold();
-            assert(manifold.GetPointCount() > 0);
+            const auto& manifold = static_cast<const Contact*>(contact)->GetManifold();
 
             const auto& fixtureA = *(contact->GetFixtureA());
             const auto& fixtureB = *(contact->GetFixtureB());
@@ -247,18 +246,6 @@ namespace {
         for (auto i = decltype(count){0}; i < count; ++i)
         {
             var.SetPointImpulses(i, GetNormalImpulseAtPoint(vc, i), GetTangentImpulseAtPoint(vc, i));
-        }
-    }
-    
-    /// Stores impulses.
-    /// @details Saves the normal and tangent impulses of all the velocity constraint points back to their
-    ///   associated contacts' manifold points.
-    inline void StoreImpulses(const VelocityConstraints& velocityConstraints, Span<Contact*> contacts)
-    {
-        for (auto&& vc: velocityConstraints)
-        {
-            auto& manifold = contacts[vc.GetContactIndex()]->GetManifold();
-            AssignImpulses(manifold, vc);
         }
     }
     
@@ -516,6 +503,11 @@ private:
         Contact::Destroy(c);
     }
     
+    static Manifold& GetMutableManifold(Contact& c) noexcept
+    {
+        return c.GetMutableManifold();
+    }
+
     static void SetToi(Contact& c, RealNum value) noexcept
     {
         c.SetToi(value);
@@ -1092,17 +1084,26 @@ void World::AddToIsland(Island& island, Body& seed,
             const auto bB = fB->GetBody();
             const auto other = (bA != b)? bA: bB;
 
-            if (!IsIslanded(contact) && !HasSensor(*contact) && contact->IsEnabled() && contact->IsTouching())
+            if (!IsIslanded(contact) && !HasSensor(*contact) && contact->IsEnabled())
             {
-                island.m_contacts.push_back(contact);
-                SetIslanded(contact);
-
-                if (!IsIslanded(other))
-                {                
-                    stack.push_back(other);
-                    SetIslanded(other);
+#if 0
+                if (contact->NeedsUpdating())
+                {
+                    ContactAtty::Update(*contact, StepConf{}, m_contactListener);
                 }
-            }            
+#endif
+                if (contact->IsTouching())
+                {
+                    island.m_contacts.push_back(contact);
+                    SetIslanded(contact);
+
+                    if (!IsIslanded(other))
+                    {                
+                        stack.push_back(other);
+                        SetIslanded(other);
+                    }
+                }
+            }
         }
         
         const auto newNumContacts = island.m_contacts.size();
@@ -1151,6 +1152,8 @@ World::Bodies::size_type World::RemoveUnspeedablesFromIslanded(const std::vector
 RegStepStats World::SolveReg(const StepConf& conf)
 {
     auto stats = RegStepStats{};
+    assert(stats.islandsFound == 0);
+    assert(stats.islandsSolved == 0);
 
     auto remNumBodies = m_bodies.size(); ///< Remaining number of bodies.
     auto remNumContacts = m_contacts.size(); ///< Remaining number of contacts.
@@ -1238,9 +1241,8 @@ RegStepStats World::SolveReg(const StepConf& conf)
 
 World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island island)
 {
-    auto finMinSeparation = std::numeric_limits<RealNum>::infinity() * Meter;
-    auto solved = false;
-    auto positionIterations = conf.regPositionIterations;
+    auto results = IslandSolverResults{};
+    results.positionIterations = conf.regPositionIterations;
     const auto h = conf.GetTime(); ///< Time step.
 
     auto bodyConstraints = BodyConstraints{};
@@ -1268,8 +1270,7 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island is
         JointAtty::InitVelocityConstraints(*joint, bodyConstraints, conf, psConf);
     }
     
-    auto velocityIterations = conf.regVelocityIterations;
-    auto maxIncImpulse = Momentum{0};
+    results.velocityIterations = conf.regVelocityIterations;
     for (auto i = decltype(conf.regVelocityIterations){0}; i < conf.regVelocityIterations; ++i)
     {
         auto jointsOkay = true;
@@ -1281,7 +1282,7 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island is
         // Note that the new incremental impulse can potentially be orders of magnitude
         // greater than the last incremental impulse used in this loop.
         const auto newIncImpulse = SolveVelocityConstraints(velocityConstraints);
-        maxIncImpulse = std::max(maxIncImpulse, newIncImpulse);
+        results.maxIncImpulse = std::max(results.maxIncImpulse, newIncImpulse);
 
         if (jointsOkay && (newIncImpulse == Momentum{0}))
         {
@@ -1290,7 +1291,7 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island is
             // There does not appear to be any benefit to doing more loops now.
             // XXX: Is it really safe to bail now? Not certain of that.
             // Bail now assuming that this is helpful to do...
-            velocityIterations = i + 1;
+            results.velocityIterations = i + 1;
             break;
         }
     }
@@ -1302,7 +1303,7 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island is
     for (auto i = decltype(conf.regPositionIterations){0}; i < conf.regPositionIterations; ++i)
     {
         const auto minSeparation = SolvePositionConstraints(positionConstraints, psConf);
-        finMinSeparation = Min(finMinSeparation, minSeparation);
+        results.minSeparation = Min(results.minSeparation, minSeparation);
         const auto contactsOkay = (minSeparation >= conf.regMinSeparation);
 
         auto jointsOkay = true;
@@ -1314,14 +1315,18 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island is
         if (contactsOkay && jointsOkay)
         {
             // Reached tolerance, early out...
-            positionIterations = i + 1;
-            solved = true;
+            results.positionIterations = i + 1;
+            results.solved = true;
             break;
         }
     }
     
     // Update normal and tangent impulses of contacts' manifold points
-    StoreImpulses(velocityConstraints, island.m_contacts);
+    for (auto&& vc: velocityConstraints)
+    {
+        auto& manifold = ContactAtty::GetMutableManifold(*island.m_contacts[vc.GetContactIndex()]);
+        AssignImpulses(manifold, vc);
+    }
     
     for (auto&& body: island.m_bodies)
     {
@@ -1329,24 +1334,25 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island is
         UpdateBody(*body, constraint.GetPosition(), constraint.GetVelocity());
     }
     
+    // XXX: Should contacts needing updating be updated now??
+
     if (m_contactListener)
     {
         Report(*m_contactListener, island.m_contacts, velocityConstraints,
-               solved? positionIterations - 1: StepConf::InvalidIteration);
+               results.solved? results.positionIterations - 1: StepConf::InvalidIteration);
     }
     
-    auto bodiesSlept = body_count_t{0};
+    results.bodiesSlept = body_count_t{0};
     if (::box2d::IsValid(RealNum{conf.minStillTimeToSleep / Second}))
     {
         const auto minUnderActiveTime = UpdateUnderActiveTimes(island.m_bodies, conf);
-        if ((minUnderActiveTime >= conf.minStillTimeToSleep) && solved)
+        if ((minUnderActiveTime >= conf.minStillTimeToSleep) && results.solved)
         {
-            bodiesSlept = static_cast<decltype(bodiesSlept)>(Sleepem(island.m_bodies));
+            results.bodiesSlept = static_cast<decltype(results.bodiesSlept)>(Sleepem(island.m_bodies));
         }
     }
 
-    return IslandSolverResults{finMinSeparation, maxIncImpulse, solved,
-        positionIterations, velocityIterations, bodiesSlept};
+    return results;
 }
 
 void World::ResetBodiesForSolveTOI()
@@ -1517,6 +1523,8 @@ ToiStepStats World::SolveTOI(const StepConf& conf)
                     stats.sumPosIters += solverResults.positionIterations;
                     stats.sumVelIters += solverResults.velocityIterations;
                 }
+                stats.contactsUpdatedTouching += solverResults.contactsUpdated;
+                stats.contactsSkippedTouching += solverResults.contactsSkipped;
                 break; // TODO: get working without breaking.
             }
         }
@@ -1552,6 +1560,9 @@ ToiStepStats World::SolveTOI(const StepConf& conf)
 
 World::IslandSolverResults World::SolveTOI(const StepConf& conf, Contact& contact)
 {
+    auto contactsUpdated = contact_count_t{0};
+    auto contactsSkipped = contact_count_t{0};
+
     /*
      * Confirm that contact is as it's supposed to be according to contract of the
      * GetSoonestContacts method from which this contact should have been obtained.
@@ -1580,7 +1591,15 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Contact& contac
 
         // The TOI contact likely has some new contact points.
         contact.SetEnabled();
-        ContactAtty::Update(contact, conf, m_contactListener);
+        if (contact.NeedsUpdating())
+        {
+	        ContactAtty::Update(contact, conf, m_contactListener);
+            ++contactsUpdated;
+        }
+        else
+        {
+            ++contactsSkipped;
+        }
         ContactAtty::UnsetToi(contact);
         ContactAtty::IncrementToiCount(contact);
 
@@ -1599,7 +1618,10 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Contact& contac
             contact.UnsetEnabled();
             BodyAtty::Restore(*bA, backupA);
             BodyAtty::Restore(*bB, backupB);
-            return IslandSolverResults{};
+            auto results = IslandSolverResults{};
+            results.contactsUpdated += contactsUpdated;
+            results.contactsSkipped += contactsSkipped;
+            return results;
         }
     }
 #if 0
@@ -1633,11 +1655,15 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Contact& contac
     // bodies sweeps and transforms to the minimum contact's TOI.
     if (bA->IsAccelerable())
     {
-        ProcessContactsForTOI(island, *bA, toi, conf);
+        const auto procOut = ProcessContactsForTOI(island, *bA, toi, conf);
+        contactsUpdated += procOut.contactsUpdated;
+        contactsSkipped += procOut.contactsSkipped;
     }
     if (bB->IsAccelerable())
     {
-        ProcessContactsForTOI(island, *bB, toi, conf);
+        const auto procOut = ProcessContactsForTOI(island, *bB, toi, conf);
+        contactsUpdated += procOut.contactsUpdated;
+        contactsSkipped += procOut.contactsSkipped;
     }
     
     RemoveUnspeedablesFromIslanded(island.m_bodies);
@@ -1649,7 +1675,10 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Contact& contac
     //     SolveTOI(StepConf{conf}.SetTime((1 - toi) * conf.GetTime()), island);
     //
     StepConf subConf{conf};
-    return SolveTOI(subConf.SetTime((1 - toi) * conf.GetTime()), island);
+    auto results = SolveTOI(subConf.SetTime((1 - toi) * conf.GetTime()), island);
+    results.contactsUpdated += contactsUpdated;
+    results.contactsSkipped += contactsSkipped;
+    return results;
 }
 
 void World::UpdateBody(Body& body, const Position& pos, const Velocity& vel)
@@ -1661,6 +1690,7 @@ void World::UpdateBody(Body& body, const Position& pos, const Velocity& vel)
 
 World::IslandSolverResults World::SolveTOI(const StepConf& conf, Island& island)
 {
+    auto results = IslandSolverResults{};
     auto bodyConstraints = BodyConstraints{};
     bodyConstraints.reserve(island.m_bodies.size());
 
@@ -1694,10 +1724,9 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Island& island)
     auto positionConstraints = GetPositionConstraints(island.m_contacts, bodyConstraints);
     
     // Solve TOI-based position constraints.
-    auto finMinSeparation = std::numeric_limits<RealNum>::infinity() * Meter;
-    auto solved = false;
-    auto positionIterations = conf.toiPositionIterations;
-    
+    assert(results.minSeparation == std::numeric_limits<RealNum>::infinity() * Meter);
+    assert(results.solved == false);
+    results.positionIterations = conf.toiPositionIterations;
     {
         const auto psConf = GetToiConstraintSolverConf(conf);
 
@@ -1714,12 +1743,12 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Island& island)
             //   function is the one to be calling here.
             //
             const auto minSeparation = SolvePositionConstraints(positionConstraints, psConf);
-            finMinSeparation = Min(finMinSeparation, minSeparation);
+            results.minSeparation = Min(results.minSeparation, minSeparation);
             if (minSeparation >= conf.toiMinSeparation)
             {
                 // Reached tolerance, early out...
-                positionIterations = i + 1;
-                solved = true;
+                results.positionIterations = i + 1;
+                results.solved = true;
                 break;
             }
         }
@@ -1754,8 +1783,8 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Island& island)
     // starting impulses were applied in the discrete solver.
 
     // Solve velocity constraints.
-    auto maxIncImpulse = Momentum{0};
-    auto velocityIterations = conf.toiVelocityIterations;
+    assert(results.maxIncImpulse == Momentum{0});
+    results.velocityIterations = conf.toiVelocityIterations;
     for (auto i = decltype(conf.toiVelocityIterations){0}; i < conf.toiVelocityIterations; ++i)
     {
         const auto newIncImpulse = SolveVelocityConstraints(velocityConstraints);
@@ -1765,10 +1794,10 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Island& island)
             // There does not appear to be any benefit to doing more loops now.
             // XXX: Is it really safe to bail now? Not certain of that.
             // Bail now assuming that this is helpful to do...
-            velocityIterations = i + 1;
+            results.velocityIterations = i + 1;
             break;
         }
-        maxIncImpulse = std::max(maxIncImpulse, newIncImpulse);
+        results.maxIncImpulse = std::max(results.maxIncImpulse, newIncImpulse);
     }
     
     // Don't store TOI contact forces for warm starting because they can be quite large.
@@ -1783,10 +1812,10 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Island& island)
 
     if (m_contactListener)
     {
-        Report(*m_contactListener, island.m_contacts, velocityConstraints, positionIterations);
+        Report(*m_contactListener, island.m_contacts, velocityConstraints, results.positionIterations);
     }
     
-    return IslandSolverResults{finMinSeparation, maxIncImpulse, solved, positionIterations, velocityIterations};
+    return results;
 }
     
 void World::ResetContactsForSolveTOI(Body& body)
@@ -1799,12 +1828,18 @@ void World::ResetContactsForSolveTOI(Body& body)
     }
 }
 
-void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi, const StepConf& conf)
+World::ProcessContactsOutput
+World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi,
+                             const StepConf& conf)
 {
     assert(IsIslanded(&body));
     assert(body.IsAccelerable());
     assert(toi >= 0 && toi <= 1);
 
+    auto results = ProcessContactsOutput{};
+    assert(results.contactsUpdated == 0);
+    assert(results.contactsSkipped == 0);
+    
     // Note: the original contact (for body of which this method was called) already islanded.
     for (auto&& contact: body.GetContacts())
     {
@@ -1827,7 +1862,15 @@ void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi, const
                 
                 // Update the contact points
                 contact->SetEnabled();
-                ContactAtty::Update(*contact, conf, m_contactListener);
+                if (contact->NeedsUpdating())
+                {
+                    ContactAtty::Update(*contact, conf, m_contactListener);
+                    ++results.contactsUpdated;
+                }
+                else
+                {
+                    ++results.contactsSkipped;
+                }
                 
                 // Revert and skip if contact disabled by user or not touching anymore (very possible).
                 if (!contact->IsEnabled() || !contact->IsTouching())
@@ -1851,7 +1894,7 @@ void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi, const
 #if 0
                 if (other->IsAccelerable())
                 {
-                    ProcessContactsForTOI(island, *other, toi);
+                    contactsUpdated += ProcessContactsForTOI(island, *other, toi);
                 }
 #endif
             }
@@ -1870,6 +1913,8 @@ void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi, const
 #endif
         }
     }
+
+    return results;
 }
 
 StepStats World::Step(const StepConf& conf)
@@ -1908,6 +1953,7 @@ StepStats World::Step(const StepConf& conf)
             const auto updateStats = UpdateContacts(m_contacts, conf);
             stepStats.pre.ignored = updateStats.ignored;
             stepStats.pre.updated = updateStats.updated;
+            stepStats.pre.skipped = updateStats.skipped;
 #endif
             // Integrate velocities, solve velocity constraints, and integrate positions.
             if (IsStepComplete())
@@ -2153,15 +2199,22 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
         // Update the contact manifold and notify the listener.
         contact->SetEnabled();
 
-        // Note: ideally contacts are only updated if there's a change to:
+        // Note: ideally contacts are only updated if there was a change to:
         //   - The fixtures' sensor states.
         //   - The fixtures bodies' transformations.
         //   - The "maxCirclesRatio" per-step configuration state if contact IS NOT for sensor.
         //   - The "maxDistanceIters" per-step configuration state if contact IS for sensor.
-
-        // The following may call listener but is otherwise thread-safe.
-        ContactAtty::Update(*contact, conf, m_contactListener);
-        ++stats.updated;
+        //
+        if (contact->NeedsUpdating())
+        {
+	        // The following may call listener but is otherwise thread-safe.
+    	    ContactAtty::Update(*contact, conf, m_contactListener);
+        	++stats.updated;
+        }
+        else
+        {
+            ++stats.skipped;
+        }
     }
     
     return stats;

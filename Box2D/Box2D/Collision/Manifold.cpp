@@ -108,12 +108,12 @@ static inline Manifold GetFaceManifold(const Manifold::Type type,
     const auto shape2_s1 = Dot(shape1_rel_normal, shape2_normal1);
     const auto shape2_i1 = (shape2_s0 < shape2_s1)? shape2_idx0: shape2_idx1;
     const auto shape2_i2 = GetModuloNext(shape2_i1, shape2.GetVertexCount()); /// XXX is this correct?
-    const auto incidentEdge = ClipList{
-        ClipVertex{Transform(shape2.GetVertex(shape2_i1), xf2), GetFaceVertexContactFeature(idx1, shape2_i1)},
-        ClipVertex{Transform(shape2.GetVertex(shape2_i2), xf2), GetFaceVertexContactFeature(idx1, shape2_i2)}
-    };
     const auto clipPoints = [&]()
     {
+        const auto incidentEdge = ClipList{
+            ClipVertex{Transform(shape2.GetVertex(shape2_i1), xf2), GetFaceVertexContactFeature(idx1, shape2_i1)},
+            ClipVertex{Transform(shape2.GetVertex(shape2_i2), xf2), GetFaceVertexContactFeature(idx1, shape2_i2)}
+        };
         // Gets the two vertices in world coordinates and their face-vertex contact features
         // of the incident edge of shape2
         //const auto incidentEdge = GetIncidentEdgeClipList(idx1, shape1.GetNormal(idx1), xf1, shape2, xf2, idx2);
@@ -135,7 +135,6 @@ static inline Manifold GetFaceManifold(const Manifold::Type type,
         {
             case Manifold::e_faceA:
             {
-                //auto manifold = Manifold::GetForFaceA(GetFwdPerpendicular(rel_tangent), idx1, rel_midpoint);
                 manifold = Manifold::GetForFaceA(GetFwdPerpendicular(shape1_rel_edge1_dir), rel_midpoint);
                 for (auto&& cp: clipPoints)
                 {
@@ -181,7 +180,7 @@ static inline Manifold GetFaceManifold(const Manifold::Type type,
     const auto shape2_rel_vertex2 = shape2.GetVertex(shape2_i2);
     const auto shape2_abs_vertex2 = Transform(shape2_rel_vertex2, xf2);
     const auto totalRadiusSquared = Square(totalRadius);
-    const auto mustUseFaceManifold = (shape1_len_edge1 / r1) > conf.maxCirclesRatio;
+    const auto mustUseFaceManifold = shape1_len_edge1 > (conf.maxCirclesRatio * r1);
     if (GetLengthSquared(shape1_abs_vertex1 - shape2_abs_vertex1) <= totalRadiusSquared)
     {
         // shape 1 vertex 1 is colliding with shape 2 vertex 1
@@ -275,6 +274,12 @@ static inline Manifold GetFaceManifold(const Manifold::Type type,
                 }
                 return Manifold::GetForCircles(shape1_rel_vertex2, idx1Next, shape2_rel_vertex1, shape2_i1);
             case Manifold::e_faceB:
+                if (mustUseFaceManifold)
+                {
+                    return Manifold::GetForFaceB(GetFwdPerpendicular(shape1_rel_edge1_dir), idx1Next,
+                                                 shape1_rel_vertex2, ContactFeature::e_vertex,
+                                                 shape2_i1, shape2_rel_vertex1);
+                }
                 return Manifold::GetForCircles(shape2_rel_vertex1, shape2_i1, shape1_rel_vertex2, idx1Next);
             default:
                 break;
@@ -388,7 +393,7 @@ static Manifold CollideShapes(Length2D locationA, Length radiusA, const Transfor
     const auto pB = Transform(locationB, xfB);
     const auto totalRadius = radiusA + radiusB;
     return (GetLengthSquared(pB - pA) > Square(totalRadius))?
-    Manifold{}: Manifold::GetForCircles(locationA, 0, locationB, 0);
+    	Manifold{}: Manifold::GetForCircles(locationA, 0, locationB, 0);
 }
 
 /*
@@ -432,27 +437,27 @@ Manifold box2d::CollideShapes(const DistanceProxy& shapeA, const Transformation&
     const auto totalRadius = shapeA.GetVertexRadius() + shapeB.GetVertexRadius();
     
     const auto edgeSepA = ::GetMaxSeparation(shapeA, xfA, shapeB, xfB, totalRadius);
-    if (edgeSepA.separation * Meter > totalRadius)
+    if (edgeSepA.separation > totalRadius)
     {
         return Manifold{};
     }
     
     const auto edgeSepB = ::GetMaxSeparation(shapeB, xfB, shapeA, xfA, totalRadius);
-    if (edgeSepB.separation * Meter > totalRadius)
+    if (edgeSepB.separation > totalRadius)
     {
         return Manifold{};
     }
     
     constexpr auto k_tol = BOX2D_MAGIC(DefaultLinearSlop / RealNum{10});
-    return (edgeSepB.separation * Meter > (edgeSepA.separation * Meter + k_tol))?
-    GetFaceManifold(Manifold::e_faceB,
-                    shapeB, xfB, edgeSepB.index1,
-                    shapeA, xfA, edgeSepB.index2,
-                    conf):
-    GetFaceManifold(Manifold::e_faceA,
-                    shapeA, xfA, edgeSepA.index1,
-                    shapeB, xfB, edgeSepA.index2,
-                    conf);
+    return (edgeSepB.separation > (edgeSepA.separation + k_tol))?
+        GetFaceManifold(Manifold::e_faceB,
+                        shapeB, xfB, edgeSepB.index1,
+                        shapeA, xfA, edgeSepB.index2,
+                        conf):
+        GetFaceManifold(Manifold::e_faceA,
+                        shapeA, xfA, edgeSepA.index1,
+                        shapeB, xfB, edgeSepA.index2,
+                        conf);
 }
 
 Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& transformA,

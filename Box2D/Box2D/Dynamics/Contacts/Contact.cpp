@@ -89,7 +89,7 @@ void Contact::Update(const StepConf& conf, ContactListener* listener)
     const auto oldManifold = m_manifold;
 
     // Note: do not assume the fixture AABBs are overlapping or are valid.
-    const auto oldTouching = IsTouching();
+    const auto oldTouching = (m_flags & e_touchingFlag) != 0;
     auto newTouching = false;
 
     const auto fixtureA = GetFixtureA();
@@ -103,17 +103,26 @@ void Contact::Update(const StepConf& conf, ContactListener* listener)
     const auto childA = shapeA->GetChild(indexA);
     const auto childB = shapeB->GetChild(indexB);
 
-    // NOTE: The touching state returned by the TestOverlap function
-    //    **SHOULD** agree with that returned from the CollideShapes function.
+    // NOTE: Ideally, the touching state returned by the TestOverlap function
+    //   agrees 100% of the time with that returned from the CollideShapes function.
+    //   This is not always the case however especially as the separation or overlap
+    //   approaches zero.
+#define OVERLAP_TOLERANCE (SquareMeter / RealNum(1e6))
 
     const auto sensor = fixtureA->IsSensor() || fixtureB->IsSensor();
     if (sensor)
     {
-        newTouching = TestOverlap(childA, xfA, childB, xfB, GetDistanceConf(conf));
+        const auto overlapping = TestOverlap(childA, xfA, childB, xfB, GetDistanceConf(conf));
+        newTouching = (overlapping >= Area{0});
 
-        // Check agreement between TestOverlap and CollideShapes.
-        assert(newTouching == (CollideShapes(childA, xfA, childB, xfB,
-                                             GetManifoldConf(conf)).GetPointCount() > 0));
+#ifdef OVERLAP_TOLERANCE
+#ifndef NDEBUG
+        const auto manifold = CollideShapes(childA, xfA, childB, xfB, GetManifoldConf(conf));
+        assert(newTouching == (manifold.GetPointCount() > 0) ||
+               Abs(overlapping) < OVERLAP_TOLERANCE);
+#endif
+#endif
+        
         // Sensors don't generate manifolds.
         m_manifold = Manifold{};
     }
@@ -126,8 +135,13 @@ void Contact::Update(const StepConf& conf, ContactListener* listener)
 
         newTouching = new_point_count > 0;
 
-        // Check agreement between TestOverlap and CollideShapes.
-        assert(newTouching == TestOverlap(childA, xfA, childB, xfB, GetDistanceConf(conf)));
+#ifdef OVERLAP_TOLERANCE
+#ifndef NDEBUG
+        const auto overlapping = TestOverlap(childA, xfA, childB, xfB, GetDistanceConf(conf));
+        assert(newTouching == (overlapping >= Area{0}) ||
+               Abs(overlapping) < OVERLAP_TOLERANCE);
+#endif
+#endif
 
         // Match old contact ids to new contact ids and copy the
         // stored impulses to warm start the solver.
@@ -171,6 +185,8 @@ void Contact::Update(const StepConf& conf, ContactListener* listener)
         }
 #endif
     }
+
+    UnflagForUpdating();
 
     if (!oldTouching && newTouching)
     {

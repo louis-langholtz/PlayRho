@@ -193,7 +193,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
     return DistanceOutput{simplex, iter, state};
 }
 
-bool TestOverlap(const DistanceProxy& proxyA, const Transformation& xfA,
+Area TestOverlap(const DistanceProxy& proxyA, const Transformation& xfA,
                  const DistanceProxy& proxyB, const Transformation& xfB,
                  const DistanceConf conf)
 {
@@ -203,8 +203,7 @@ bool TestOverlap(const DistanceProxy& proxyA, const Transformation& xfA,
     const auto witnessPoints = GetWitnessPoints(distanceInfo.simplex);
     const auto distanceSquared = GetLengthSquared(witnessPoints.a - witnessPoints.b);
     const auto totalRadiusSquared = Square(proxyA.GetVertexRadius() + proxyB.GetVertexRadius());
-    const auto separation_amount = distanceSquared - totalRadiusSquared;
-    return (separation_amount < Area{0}) || almost_zero(separation_amount / SquareMeter);
+    return totalRadiusSquared - distanceSquared;
 }
 
 } // namespace box2d

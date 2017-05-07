@@ -344,10 +344,12 @@ private:
     {
         Length minSeparation = std::numeric_limits<RealNum>::infinity() * Meter; ///< Minimum separation.
         Momentum maxIncImpulse = 0; ///< Maximum incremental impulse.
+        body_count_t bodiesSlept = 0;
+        contact_count_t contactsUpdated = 0;
+        contact_count_t contactsSkipped = 0;
         bool solved = false; ///< Solved. <code>true</code> if position constraints solved, <code>false</code> otherwise.
         ts_iters_t positionIterations = 0; ///< Position iterations actually performed.
         ts_iters_t velocityIterations = 0; ///< Velocity iterations actually performed.
-        body_count_t bodiesSlept = 0;
     };
 
     void InternalDestroy(Joint* joint);
@@ -423,6 +425,12 @@ private:
     void ResetContactsForSolveTOI();
     void ResetContactsForSolveTOI(Body& body);
 
+    struct ProcessContactsOutput
+    {
+        contact_count_t contactsUpdated = 0;
+        contact_count_t contactsSkipped = 0;
+    };
+
     /// Processes the contacts of a given body for TOI handling.
     /// @details This does the following:
     ///   1. Advances the appropriate associated other bodies to the given TOI (advancing
@@ -436,7 +444,8 @@ private:
     /// @param[in,out] island Island. On return this may contain additional contacts or bodies.
     /// @param[in,out] body A dynamic/accelerable body.
     /// @param[in] toi Time of impact (TOI). Value between 0 and 1.
-    void ProcessContactsForTOI(Island& island, Body& body, RealNum toi, const StepConf& conf);
+    ProcessContactsOutput ProcessContactsForTOI(Island& island, Body& body, RealNum toi,
+                                                const StepConf& conf);
     
     bool Add(Body& b);
     bool Add(Joint& j);
@@ -456,8 +465,14 @@ private:
     
     struct UpdateContactsStats
     {
+        /// @brief Number of contacts ignored (because both bodies were asleep).
         contact_count_t ignored = 0;
+
+        /// @brief Number of contacts updated.
         contact_count_t updated = 0;
+        
+        /// @brief Number of contacts skipped because they weren't marked as needing updating.
+        contact_count_t skipped = 0;
     };
     
     struct DestroyContactsStats

@@ -190,6 +190,9 @@ private:
     StepStats m_stepStats;
     size_t m_numContacts = 0;
     size_t m_maxContacts = 0;
+    std::uint64_t m_sumContactsUpdatedPre = 0;
+    std::uint64_t m_sumContactsSkippedPre = 0;
+    std::uint64_t m_sumContactsIgnoredPre = 0;
     std::uint64_t m_sumContactsUpdatedToi = 0;
     std::uint64_t m_sumContactsAtMaxSubSteps = 0;
     std::uint64_t m_sumRegIslandsFound = 0;
@@ -200,6 +203,8 @@ private:
     std::uint64_t m_sumRegVelIters = 0;
     std::uint64_t m_sumToiPosIters = 0;
     std::uint64_t m_sumToiVelIters = 0;
+    std::uint64_t m_sumToiContactsUpdatedTouching = 0;
+    std::uint64_t m_sumToiContactsSkippedTouching = 0;
     std::uint64_t m_sumRegProxiesMoved = 0;
     std::uint64_t m_sumToiProxiesMoved = 0;
     Length m_minRegSep = std::numeric_limits<RealNum>::infinity() * Meter;

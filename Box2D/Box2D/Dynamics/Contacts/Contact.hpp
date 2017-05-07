@@ -67,15 +67,14 @@ public:
     Contact(const Contact& copy) = delete;
 
     /// Gets the contact manifold.
-    /// @warning Do not modify the manifold unless you understand the internals of Box2D.
-    Manifold& GetManifold() noexcept;
     const Manifold& GetManifold() const noexcept;
 
     /// Is this contact touching?
     /// @details
     /// Touching is defined as either:
     ///   1. This contact's manifold has more than 0 contact points, or
-    ///   2. This contact has sensors and the two shapes of this contact are found to be overlapping.
+    ///   2. This contact has sensors and the two shapes of this contact are found to be
+    ///      overlapping.
     /// @return true if this contact is said to be touching, false otherwise.
     bool IsTouching() const noexcept;
 
@@ -148,6 +147,9 @@ public:
     void FlagForFiltering() noexcept;
     bool NeedsFiltering() const noexcept;
 
+    void FlagForUpdating() noexcept;
+    bool NeedsUpdating() const noexcept;
+
 private:
 
     friend class ContactAtty;
@@ -159,16 +161,19 @@ private:
     enum: FlagsType
     {
         // Set when the shapes are touching.
-        e_touchingFlag = 0x0002,
+        e_touchingFlag = 0x0001,
 
         // This contact can be disabled (by user)
-        e_enabledFlag = 0x0004,
+        e_enabledFlag = 0x0002,
 
         // This contact needs filtering because a fixture filter was changed.
-        e_filterFlag = 0x0008,
+        e_filterFlag = 0x0004,
 
         // This contact has a valid TOI in m_toi
-        e_toiFlag = 0x0010
+        e_toiFlag = 0x0008,
+        
+        // This contacts needs its touching state updated.
+        e_dirtyFlag = 0x0010
     };
 
     static Contact* Create(Fixture& fixtureA, child_count_t indexA,
@@ -199,6 +204,8 @@ private:
 
     /// Flag this contact for filtering. Filtering will occur the next time step.
     void UnflagForFiltering() noexcept;
+
+    void UnflagForUpdating() noexcept;
 
     /// @brief Updates the touching related state and notifies listener (if one given).
     ///
@@ -238,6 +245,11 @@ private:
 
     void UnsetTouching() noexcept;
 
+    /// @brief Gets the writable manifold.
+    /// @note This is intentionally not a public method.
+    /// @warning Do not modify the manifold unless you understand the internals of Box2D.
+    Manifold& GetMutableManifold() noexcept;
+    
     // Member variables...
 
     Fixture* const m_fixtureA; ///< Fixture A. @details Non-null pointer to fixture A.
@@ -246,15 +258,14 @@ private:
     child_count_t const m_indexA;
     child_count_t const m_indexB;
 
-    Manifold m_manifold; ///< Manifold of the contact. 60-bytes. @sa Update.
+    Manifold mutable m_manifold; ///< Manifold of the contact. 60-bytes. @sa Update.
 
     substep_type m_toiCount = 0; ///< Count of TOI calculations contact has gone through since last reset.
 
-    FlagsType m_flags = e_enabledFlag;
+    FlagsType m_flags = e_enabledFlag|e_dirtyFlag;
 
     LinearVelocity m_tangentSpeed = 0;
-
-
+    
     /// Time of impact.
     /// @note This is a unit interval of time (a value between 0 and 1).
     /// @note Only valid if m_flags & e_toiFlag
@@ -265,12 +276,14 @@ private:
     RealNum m_restitution; ///< Mix of restitutions of the associated fixtures. @sa MixRestitution.
 };
 
-inline Manifold& Contact::GetManifold() noexcept
+inline const Manifold& Contact::GetManifold() const noexcept
 {
+    // XXX: What to do if needs-updating?
+    //assert(!NeedsUpdating());
     return m_manifold;
 }
 
-inline const Manifold& Contact::GetManifold() const noexcept
+inline Manifold& Contact::GetMutableManifold() noexcept
 {
     return m_manifold;
 }
@@ -300,6 +313,8 @@ inline bool Contact::IsEnabled() const noexcept
 
 inline bool Contact::IsTouching() const noexcept
 {
+    // XXX: What to do if needs-updating?
+    // assert(!NeedsUpdating());
     return (m_flags & e_touchingFlag) != 0;
 }
 
@@ -356,6 +371,21 @@ inline void Contact::UnflagForFiltering() noexcept
 inline bool Contact::NeedsFiltering() const noexcept
 {
     return m_flags & Contact::e_filterFlag;
+}
+
+inline void Contact::FlagForUpdating() noexcept
+{
+    m_flags |= e_dirtyFlag;
+}
+
+inline void Contact::UnflagForUpdating() noexcept
+{
+    m_flags &= ~Contact::e_dirtyFlag;
+}
+
+inline bool Contact::NeedsUpdating() const noexcept
+{
+    return m_flags & Contact::e_dirtyFlag;
 }
 
 inline void Contact::SetFriction(RealNum friction) noexcept

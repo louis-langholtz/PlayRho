@@ -504,8 +504,9 @@ namespace box2d
     
     /// @brief Calculates the relevant collision manifold.
     ///
-    /// @note The returned touching state information should agree with that returned
-    ///   from the DistanceProxy-based TestOverlap function.
+    /// @note The returned touching state information typically agrees with that returned from
+    ///   the DistanceProxy-based TestOverlap function. This is not always the case however
+    ///   especially when the separation or overlap distance is closer to zero.
     ///
     Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
                            const DistanceProxy& shapeB, const Transformation& xfB,

@@ -31,6 +31,7 @@ namespace box2d {
         counter_type ignored = 0;
         counter_type destroyed = 0;
         counter_type updated = 0;
+        counter_type skipped = 0;
         counter_type added = 0;
     };
     
@@ -64,6 +65,8 @@ namespace box2d {
         counter_type contactsFound = 0;
         counter_type contactsAtMaxSubSteps = 0;
         counter_type contactsUpdatedToi = 0;
+        counter_type contactsUpdatedTouching = 0;
+        counter_type contactsSkippedTouching = 0;
         counter_type contactsAdded = 0;
         counter_type proxiesMoved = 0;
         counter_type sumPosIters = 0;

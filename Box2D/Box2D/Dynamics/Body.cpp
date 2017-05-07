@@ -263,6 +263,18 @@ void Body::SetAcceleration(const LinearAcceleration2D linear, const AngularAccel
     m_angularAcceleration = angular;
 }
 
+void Body::SetTransformation(const Transformation value) noexcept
+{
+    if (m_xf != value)
+    {
+        m_xf = value;
+        for (auto&& c: GetContacts())
+        {
+            c->FlagForUpdating();
+        }
+    }
+}
+
 void Body::SetTransform(const Length2D position, Angle angle)
 {
     assert(::box2d::IsValid(position));

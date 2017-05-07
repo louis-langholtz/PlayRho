@@ -495,7 +495,7 @@ public:
 
     /// @brief Gets the container of all contacts attached to this body.
     /// @warning This list changes during the time step and you may
-    /// miss some collisions if you don't use ContactListener.
+    ///   miss some collisions if you don't use ContactListener.
     const Contacts& GetContacts() const noexcept;
 
     /// @brief Gets the user data pointer that was provided in the body definition.
@@ -948,11 +948,6 @@ inline void Body::UnsetMassDataDirty() noexcept
 inline bool Body::IsMassDataDirty() const noexcept
 {
     return m_flags & e_massDataDirtyFlag;
-}
-
-inline void Body::SetTransformation(const Transformation value) noexcept
-{
-    m_xf = value;
 }
 
 inline void Body::SetEnabledFlag() noexcept

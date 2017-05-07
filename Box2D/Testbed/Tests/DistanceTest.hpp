@@ -169,11 +169,16 @@ public:
 
         drawer.DrawString(5, m_textLine,
                           "Max separation: %g for a-face[%i] b-vert[%i]; %g for b-face[%i] a-vert[%i]",
-                          maxIndicesAB.separation, maxIndicesAB.index1, maxIndicesAB.index2,
-                          maxIndicesBA.separation, maxIndicesBA.index1, maxIndicesBA.index2);
+                          static_cast<double>(maxIndicesAB.separation / Meter),
+                          maxIndicesAB.index1,
+                          maxIndicesAB.index2,
+                          static_cast<double>(maxIndicesBA.separation / Meter),
+                          maxIndicesBA.index1,
+                          maxIndicesBA.index2);
         m_textLine += DRAW_STRING_NEW_LINE;
 
-        if (almost_equal(maxIndicesAB.separation, maxIndicesBA.separation))
+        if (almost_equal(static_cast<double>(maxIndicesAB.separation / Meter),
+                         static_cast<double>(maxIndicesBA.separation / Meter)))
         {
             //assert(maxIndicesAB.index1 == maxIndicesBA.index2);
             //assert(maxIndicesAB.index2 == maxIndicesBA.index1);

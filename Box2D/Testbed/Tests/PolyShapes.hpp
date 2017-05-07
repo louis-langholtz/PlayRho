@@ -78,7 +78,7 @@ public:
         const auto circleChild = m_circle.GetChild(0);
 
         const auto overlap = TestOverlap(shapeChild, xfm, circleChild, m_transform);
-        if (overlap)
+        if (overlap >= Area{0})
         {
             m_xf = GetTransformation(*fixture);
             shape->Accept(*this);
