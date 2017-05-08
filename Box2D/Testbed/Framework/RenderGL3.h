@@ -37,7 +37,7 @@ enum TextAlign
 
 inline unsigned int SetRGBA(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
-	return (r) | (g << 8) | (b << 16) | (a << 24);
+	return unsigned(r) | (unsigned(g) << 8u) | (unsigned(b) << 16u) | (unsigned(a) << 24u);
 }
 
 bool RenderGLInitFont(const char* fontpath);

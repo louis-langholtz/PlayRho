@@ -22,10 +22,10 @@
 #if defined(__APPLE_CC__)
 #include <OpenGL/gl3.h>
 #else
-#include <glew/glew.h>
+#include <GL/glew.h>
 #endif
 
-#include <glfw/glfw3.h>
+#include <GLFW/glfw3.h>
 #include <cstdio>
 #include <cstdarg>
 
@@ -636,7 +636,7 @@ void DebugDraw::DrawSegment(const Length2D& p1, const Length2D& p2, const Color&
 void DebugDraw::DrawPoint(const Length2D& p, Length size, const Color& color)
 {
     const auto c = Coord2D{static_cast<float>(StripUnit(p.x)), static_cast<float>(StripUnit(p.y))};
-    m_points->Vertex(m_camera, c, color, StripUnit(size));
+    m_points->Vertex(m_camera, c, color, static_cast<float>(StripUnit(size)));
 }
 
 //

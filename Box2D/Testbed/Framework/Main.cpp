@@ -30,10 +30,10 @@
 #if defined(__APPLE__)
 #include <OpenGL/gl3.h>
 #else
-#include <glew/glew.h>
+#include <GL/glew.h>
 #endif
 
-#include <glfw/glfw3.h>
+#include <GLFW/glfw3.h>
 #include <stdio.h>
 
 #ifdef _MSC_VER
@@ -539,7 +539,10 @@ static void sInterface()
                     static_cast<float>(defaultLinearSlop),
                     static_cast<float>(defaultLinearSlop / 100),
                     true);
-        imguiSlider("Angular Slop", &settings.angularSlop, (Pi * 2 / 1800), (Pi * 2 / 18), 0.001f, true);
+        imguiSlider("Angular Slop", &settings.angularSlop,
+                    static_cast<float>(Pi * 2 / 1800.0),
+                    static_cast<float>(Pi * 2 / 18.0), 0.001f,
+                    true);
         imguiSlider("Reg Min Sep", &settings.regMinSeparation,
                     -5 * static_cast<float>(defaultLinearSlop),
                     -0 * static_cast<float>(defaultLinearSlop),
