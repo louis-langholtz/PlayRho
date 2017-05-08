@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Box2D", "Box2D.vcxproj", "{98400D17-43A5-1A40-95BE-C53AC78E7694}"
 EndProject
@@ -39,29 +39,9 @@ Global
 		{259F29FB-40F1-F04D-940B-BCEA3ED16B75}.Release|x64.ActiveCfg = Release|x64
 		{259F29FB-40F1-F04D-940B-BCEA3ED16B75}.Release|x64.Build.0 = Release|x64
 		{3FC8974C-9179-4D4E-A5E0-79E3C836548F}.Debug|Win32.ActiveCfg = Debug|Win32
-		{3FC8974C-9179-4D4E-A5E0-79E3C836548F}.Debug|Win32.Build.0 = Debug|Win32
 		{3FC8974C-9179-4D4E-A5E0-79E3C836548F}.Debug|x64.ActiveCfg = Debug|x64
-		{3FC8974C-9179-4D4E-A5E0-79E3C836548F}.Debug|x64.Build.0 = Debug|x64
 		{3FC8974C-9179-4D4E-A5E0-79E3C836548F}.Release|Win32.ActiveCfg = Release|Win32
-		{3FC8974C-9179-4D4E-A5E0-79E3C836548F}.Release|Win32.Build.0 = Release|Win32
 		{3FC8974C-9179-4D4E-A5E0-79E3C836548F}.Release|x64.ActiveCfg = Release|x64
-		{3FC8974C-9179-4D4E-A5E0-79E3C836548F}.Release|x64.Build.0 = Release|x64
-		{EEB8858B-CAFA-445B-8253-3A9C2571E132}.Debug|Win32.ActiveCfg = Debug|Win32
-		{EEB8858B-CAFA-445B-8253-3A9C2571E132}.Debug|Win32.Build.0 = Debug|Win32
-		{EEB8858B-CAFA-445B-8253-3A9C2571E132}.Debug|x64.ActiveCfg = Debug|x64
-		{EEB8858B-CAFA-445B-8253-3A9C2571E132}.Debug|x64.Build.0 = Debug|x64
-		{EEB8858B-CAFA-445B-8253-3A9C2571E132}.Release|Win32.ActiveCfg = Release|Win32
-		{EEB8858B-CAFA-445B-8253-3A9C2571E132}.Release|Win32.Build.0 = Release|Win32
-		{EEB8858B-CAFA-445B-8253-3A9C2571E132}.Release|x64.ActiveCfg = Release|x64
-		{EEB8858B-CAFA-445B-8253-3A9C2571E132}.Release|x64.Build.0 = Release|x64
-		{CDD714DD-7F18-4478-9DD3-72369869ACEF}.Debug|Win32.ActiveCfg = Debug|Win32
-		{CDD714DD-7F18-4478-9DD3-72369869ACEF}.Debug|Win32.Build.0 = Debug|Win32
-		{CDD714DD-7F18-4478-9DD3-72369869ACEF}.Debug|x64.ActiveCfg = Debug|x64
-		{CDD714DD-7F18-4478-9DD3-72369869ACEF}.Debug|x64.Build.0 = Debug|x64
-		{CDD714DD-7F18-4478-9DD3-72369869ACEF}.Release|Win32.ActiveCfg = Release|Win32
-		{CDD714DD-7F18-4478-9DD3-72369869ACEF}.Release|Win32.Build.0 = Release|Win32
-		{CDD714DD-7F18-4478-9DD3-72369869ACEF}.Release|x64.ActiveCfg = Release|x64
-		{CDD714DD-7F18-4478-9DD3-72369869ACEF}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
