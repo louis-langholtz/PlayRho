@@ -36,6 +36,7 @@ addons:
   apt:
     sources:
       - deadsnakes
+      - debian-sid
       - ubuntu-toolchain-r-test
       - george-edison55-precise-backports
       - llvm-toolchain-precise-3.7
