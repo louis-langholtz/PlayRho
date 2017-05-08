@@ -278,9 +278,10 @@ void MotorJoint::SetLinearOffset(const Length2D linearOffset)
 {
     if ((linearOffset.x != m_linearOffset.x) || (linearOffset.y != m_linearOffset.y))
     {
+        m_linearOffset = linearOffset;
+
         GetBodyA()->SetAwake();
         GetBodyB()->SetAwake();
-        m_linearOffset = linearOffset;
     }
 }
 
@@ -293,9 +294,10 @@ void MotorJoint::SetAngularOffset(Angle angularOffset)
 {
     if (angularOffset != m_angularOffset)
     {
+        m_angularOffset = angularOffset;
+
         GetBodyA()->SetAwake();
         GetBodyB()->SetAwake();
-        m_angularOffset = angularOffset;
     }
 }
 

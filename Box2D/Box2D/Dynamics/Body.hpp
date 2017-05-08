@@ -423,23 +423,30 @@ public:
     /// body will be woken.
     void SetSleepingAllowed(bool flag) noexcept;
 
-    /// @brief Is this body allowed to sleep
+    /// @brief Gets whether or not this body allowed to sleep
     bool IsSleepingAllowed() const noexcept;
 
-    /// @brief Sets this body to awake if it's a "speedable" body.
-    /// @details
-    /// This sets the sleep state of the body to awake if it's a "speedable" body. It has
-    /// no effect otherwise.
+    /// @brief Awakens this body.
+    ///
+    /// @details Sets this body to awake and resets its under-active time if it's a "speedable"
+    ///   body. This method has no effect otherwise.
+    ///
     /// @post If this body is a "speedable" body, then this body's IsAwake method returns true.
+    /// @post If this body is a "speedable" body, then this body's GetUnderActiveTime method
+    ///   returns zero.
+    ///
     void SetAwake() noexcept;
 
     /// @brief Sets this body to asleep if sleeping is allowed.
-    /// @details
-    /// If this body is allowed to sleep, this: sets the sleep state of the body to asleep,
-    /// resets this body's under active time, and resets this body's velocity (linear and angular).
+    ///
+    /// @details If this body is allowed to sleep, this: sets the sleep state of the body to
+    /// asleep, resets this body's under active time, and resets this body's velocity (linear
+    /// and angular).
+    ///
     /// @post This body's IsAwake method returns false.
     /// @post This body's GetUnderActiveTime method returns zero.
     /// @post This body's GetVelocity method returns zero linear and zero angular speed.
+    ///
     void UnsetAwake() noexcept;
 
     /// @brief Gets the awake/asleep state of this body.
@@ -461,20 +468,24 @@ public:
     ///
     void SetUnderActiveTime(Time value) noexcept;
 
+    /// @brief Resets the under-active time for this body.
+    /// @note This has performance degrading potential and is best not called unless the
+    ///   caller is certain that it should be.
+    void ResetUnderActiveTime() noexcept;
+
     /// @brief Sets the enabled state of the body.
-    /// @details A disabled body is not
-    /// simulated and cannot be collided with or woken up.
-    /// If you pass a flag of true, all fixtures will be added to the
-    /// broad-phase.
-    /// If you pass a flag of false, all fixtures will be removed from
-    /// the broad-phase and all contacts will be destroyed.
-    /// Fixtures and joints are otherwise unaffected. You may continue
-    /// to create/destroy fixtures and joints on disabled bodies.
-    /// Fixtures on a disabled body are implicitly disabled and will
-    /// not participate in collisions, ray-casts, or queries.
-    /// Joints connected to a disabled body are implicitly disabled.
-    /// A disabled body is still owned by a World object and remains
-    /// in the body list.
+    ///
+    /// @details A disabled body is not simulated and cannot be collided with or woken up.
+    ///   If you pass a flag of true, all fixtures will be added to the broad-phase.
+    ///   If you pass a flag of false, all fixtures will be removed from the broad-phase
+    ///   and all contacts will be destroyed. Fixtures and joints are otherwise unaffected.
+    ///
+    /// @note A disabled body is still owned by a World object and remains in the body list.
+    /// @note You may continue to create/destroy fixtures and joints on disabled bodies.
+    /// @note Fixtures on a disabled body are implicitly disabled and will not participate in
+    ///   collisions, ray-casts, or queries.
+    /// @note Joints connected to a disabled body are implicitly disabled.
+    ///
     void SetEnabled(bool flag);
 
     /// @brief Gets the enabled/disabled state of the body.
@@ -559,7 +570,12 @@ private:
     Body(const BodyDef& bd, World* world);
     ~Body();
 
+    /// @brief Sets the body's awake flag.
+    /// @detail This is done unconditionally.
+    /// @note This should **not** be called unless the body is "speedable".
+    /// @warning Behavior is undefined if called for a body that is not "speedable".
     void SetAwakeFlag() noexcept;
+
     void UnsetAwakeFlag() noexcept;
 
     /// Advances the body by a given time ratio.
@@ -794,7 +810,9 @@ inline bool Body::IsImpenetrable() const noexcept
 
 inline void Body::SetAwakeFlag() noexcept
 {
+    // Protect the body's invariant that only "speedable" bodies can be awake.
     assert(IsSpeedable());
+
     m_flags |= e_awakeFlag;
 }
 
@@ -806,10 +824,12 @@ inline void Body::UnsetAwakeFlag() noexcept
 
 inline void Body::SetAwake() noexcept
 {
+    // Ignore this request unless this body is speedable so as to maintain the body's invariant
+    // that only "speedable" bodies can be awake.
     if (IsSpeedable())
     {
-        // Note: DO NOT reset m_underActiveTime for a callers to this method.
-        SetAwakeFlag();
+    	SetAwakeFlag();
+        ResetUnderActiveTime();
     }
 }
 
@@ -841,6 +861,11 @@ inline void Body::SetUnderActiveTime(Time value) noexcept
     }
 }
 
+inline void Body::ResetUnderActiveTime() noexcept
+{
+    m_underActiveTime = Second * RealNum(0);
+}
+
 inline bool Body::IsEnabled() const noexcept
 {
     return (m_flags & e_enabledFlag) != 0;
@@ -870,7 +895,8 @@ inline void Body::SetSleepingAllowed(bool flag) noexcept
     else if (IsSpeedable())
     {
         m_flags &= ~e_autoSleepFlag;
-        SetAwake();
+        SetAwakeFlag();
+        ResetUnderActiveTime();
     }
 }
 

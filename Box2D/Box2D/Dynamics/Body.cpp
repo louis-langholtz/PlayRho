@@ -242,6 +242,7 @@ void Body::SetVelocity(const Velocity& velocity) noexcept
             return;
         }
         SetAwakeFlag();
+        ResetUnderActiveTime();
     }
     m_velocity = velocity;
 }
@@ -258,6 +259,7 @@ void Body::SetAcceleration(const LinearAcceleration2D linear, const AngularAccel
             return;
         }
         SetAwakeFlag();
+        ResetUnderActiveTime();
     }
     m_linearAcceleration = linear;
     m_angularAcceleration = angular;

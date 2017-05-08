@@ -342,23 +342,38 @@ AngularVelocity WheelJoint::GetJointSpeed() const
 
 void WheelJoint::EnableMotor(bool flag)
 {
-    GetBodyA()->SetAwake();
-    GetBodyB()->SetAwake();
-    m_enableMotor = flag;
+    if (m_enableMotor != flag)
+    {
+	    m_enableMotor = flag;
+
+        // XXX Should these be called regardless of whether the state changed?
+    	GetBodyA()->SetAwake();
+    	GetBodyB()->SetAwake();
+    }
 }
 
 void WheelJoint::SetMotorSpeed(AngularVelocity speed)
 {
-    GetBodyA()->SetAwake();
-    GetBodyB()->SetAwake();
-    m_motorSpeed = speed;
+    if (m_motorSpeed != speed)
+    {
+	    m_motorSpeed = speed;
+
+        // XXX Should these be called regardless of whether the state changed?
+    	GetBodyA()->SetAwake();
+    	GetBodyB()->SetAwake();
+    }
 }
 
 void WheelJoint::SetMaxMotorTorque(Torque torque)
 {
-    GetBodyA()->SetAwake();
-    GetBodyB()->SetAwake();
-    m_maxMotorTorque = torque;
+    if (m_maxMotorTorque != torque)
+    {
+	    m_maxMotorTorque = torque;
+
+        // XXX Should these be called regardless of whether the state changed?
+    	GetBodyA()->SetAwake();
+    	GetBodyB()->SetAwake();
+    }
 }
 
 Torque WheelJoint::GetMotorTorque(Frequency inv_dt) const

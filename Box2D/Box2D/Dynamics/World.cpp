@@ -610,6 +610,11 @@ private:
         }
     }
     
+    static void SetAwakeFlag(Body& b) noexcept
+    {
+        b.SetAwakeFlag();
+    }
+
     static void SetMassDataDirty(Body& b) noexcept
     {
         b.SetMassDataDirty();
@@ -1071,8 +1076,8 @@ void World::AddToIsland(Island& island, Body& seed,
             continue;
         }
 
-        // Make sure the body is awake.
-        b->SetAwake();
+        // Make sure the body is awake (without resetting sleep timer).
+        BodyAtty::SetAwakeFlag(*b);
 
         const auto oldNumContacts = island.m_contacts.size();
         // Adds appropriate contacts of current body and appropriate 'other' bodies of those contacts.
@@ -1560,6 +1565,13 @@ ToiStepStats World::SolveTOI(const StepConf& conf)
 
 World::IslandSolverResults World::SolveTOI(const StepConf& conf, Contact& contact)
 {
+    // Note:
+    //   This method is what used to be b2World::SolveTOI(const b2TimeStep& step).
+    //   It also differs internally from Erin's implementation.
+    //
+    //   Here's some specific behavioral differences:
+    //   1. Bodies don't get their under-active times reset (like they do in Erin's code).
+
     auto contactsUpdated = contact_count_t{0};
     auto contactsSkipped = contact_count_t{0};
 
@@ -1633,8 +1645,21 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Contact& contac
     }
 #endif
     
-    bA->SetAwake();
-    bB->SetAwake();
+    if (bA->IsSpeedable())
+    {
+        BodyAtty::SetAwakeFlag(*bA);
+        // XXX should the body's under-active time be reset here?
+        //   Erin's code does for here but not in b2World::Solve(const b2TimeStep& step).
+        //   Calling Body::ResetUnderActiveTime() has performance implications.
+    }
+
+    if (bB->IsSpeedable())
+    {
+        BodyAtty::SetAwakeFlag(*bB);
+        // XXX should the body's under-active time be reset here?
+        //   Erin's code does for here but not in b2World::Solve(const b2TimeStep& step).
+        //   Calling Body::ResetUnderActiveTime() has performance implications.
+    }
 
     // Build the island
     Island island(m_bodies.size(), m_contacts.size(), 0);
@@ -1887,7 +1912,7 @@ World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi,
             {
                 if (other->IsSpeedable())
                 {
-                    other->SetAwake();
+                    BodyAtty::SetAwakeFlag(*other);
                 }
                 island.m_bodies.push_back(other);
                 SetIslanded(other);
@@ -2317,11 +2342,11 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
     {
         if (bodyA->IsSpeedable())
         {
-            bodyA->SetAwake();
+            BodyAtty::SetAwakeFlag(*bodyA);
         }
         if (bodyB->IsSpeedable())
         {
-            bodyB->SetAwake();
+            BodyAtty::SetAwakeFlag(*bodyB);
         }
     }
 #endif

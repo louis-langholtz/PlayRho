@@ -69,11 +69,12 @@ MouseJoint::MouseJoint(const MouseJointDef& def):
 void MouseJoint::SetTarget(const Length2D target) noexcept
 {
     assert(IsValid(target));
-    if (!GetBodyB()->IsAwake())
+    if (target != m_targetA)
     {
+	    m_targetA = target;
+
         GetBodyB()->SetAwake();
     }
-    m_targetA = target;
 }
 
 Mat22 MouseJoint::GetEffectiveMassMatrix(const BodyConstraint& body) const noexcept

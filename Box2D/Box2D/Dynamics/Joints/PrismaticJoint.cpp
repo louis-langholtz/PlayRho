@@ -573,10 +573,11 @@ void PrismaticJoint::EnableLimit(bool flag) noexcept
 {
     if (m_enableLimit != flag)
     {
-        GetBodyA()->SetAwake();
-        GetBodyB()->SetAwake();
         m_enableLimit = flag;
         m_impulse.z = 0;
+
+        GetBodyA()->SetAwake();
+        GetBodyB()->SetAwake();
     }
 }
 
@@ -595,11 +596,12 @@ void PrismaticJoint::SetLimits(Length lower, Length upper)
     assert(lower <= upper);
     if ((lower != m_lowerTranslation) || (upper != m_upperTranslation))
     {
-        GetBodyA()->SetAwake();
-        GetBodyB()->SetAwake();
         m_lowerTranslation = lower;
         m_upperTranslation = upper;
         m_impulse.z = 0;
+        
+        GetBodyA()->SetAwake();
+        GetBodyB()->SetAwake();
     }
 }
 
@@ -610,23 +612,38 @@ bool PrismaticJoint::IsMotorEnabled() const noexcept
 
 void PrismaticJoint::EnableMotor(bool flag) noexcept
 {
-    GetBodyA()->SetAwake();
-    GetBodyB()->SetAwake();
-    m_enableMotor = flag;
+    if (m_enableMotor != flag)
+    {
+        m_enableMotor = flag;
+
+        // XXX Should these be called regardless of whether the state changed?
+        GetBodyA()->SetAwake();
+        GetBodyB()->SetAwake();
+    }
 }
 
 void PrismaticJoint::SetMotorSpeed(AngularVelocity speed) noexcept
 {
-    GetBodyA()->SetAwake();
-    GetBodyB()->SetAwake();
-    m_motorSpeed = speed;
+    if (m_motorSpeed != speed)
+    {
+        m_motorSpeed = speed;
+
+        // XXX Should these be called regardless of whether the state changed?
+	    GetBodyA()->SetAwake();
+    	GetBodyB()->SetAwake();
+    }
 }
 
 void PrismaticJoint::SetMaxMotorForce(Force force) noexcept
 {
-    GetBodyA()->SetAwake();
-    GetBodyB()->SetAwake();
-    m_maxMotorForce = force;
+    if (m_maxMotorForce != force)
+    {
+        m_maxMotorForce = force;
+
+        // XXX Should these be called regardless of whether the state changed?
+        GetBodyA()->SetAwake();
+        GetBodyB()->SetAwake();
+    }
 }
 
 Force PrismaticJoint::GetMotorForce(Frequency inv_dt) const noexcept

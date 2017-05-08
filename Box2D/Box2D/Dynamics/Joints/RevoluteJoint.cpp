@@ -440,9 +440,14 @@ Torque RevoluteJoint::GetReactionTorque(Frequency inv_dt) const
 
 void RevoluteJoint::EnableMotor(bool flag)
 {
-    GetBodyA()->SetAwake();
-    GetBodyB()->SetAwake();
-    m_enableMotor = flag;
+    if (m_enableMotor != flag)
+    {
+    	m_enableMotor = flag;
+        
+        // XXX Should these be called regardless of whether the state changed?
+	    GetBodyA()->SetAwake();
+    	GetBodyB()->SetAwake();
+    }
 }
 
 Torque RevoluteJoint::GetMotorTorque(Frequency inv_dt) const
@@ -452,26 +457,37 @@ Torque RevoluteJoint::GetMotorTorque(Frequency inv_dt) const
 
 void RevoluteJoint::SetMotorSpeed(AngularVelocity speed)
 {
-    GetBodyA()->SetAwake();
-    GetBodyB()->SetAwake();
-    m_motorSpeed = speed;
+    if (m_motorSpeed != speed)
+    {
+	    m_motorSpeed = speed;
+
+        // XXX Should these be called regardless of whether the state changed?
+    	GetBodyA()->SetAwake();
+    	GetBodyB()->SetAwake();
+    }
 }
 
 void RevoluteJoint::SetMaxMotorTorque(Torque torque)
 {
-    GetBodyA()->SetAwake();
-    GetBodyB()->SetAwake();
-    m_maxMotorTorque = torque;
+    if (m_maxMotorTorque != torque)
+    {
+	    m_maxMotorTorque = torque;
+
+        // XXX Should these be called regardless of whether the state changed?
+    	GetBodyA()->SetAwake();
+    	GetBodyB()->SetAwake();
+    }
 }
 
 void RevoluteJoint::EnableLimit(bool flag)
 {
     if (flag != m_enableLimit)
     {
-        GetBodyA()->SetAwake();
-        GetBodyB()->SetAwake();
         m_enableLimit = flag;
         m_impulse.z = 0;
+
+        GetBodyA()->SetAwake();
+        GetBodyB()->SetAwake();
     }
 }
 
@@ -481,11 +497,12 @@ void RevoluteJoint::SetLimits(Angle lower, Angle upper)
     
     if ((lower != m_lowerAngle) || (upper != m_upperAngle))
     {
-        GetBodyA()->SetAwake();
-        GetBodyB()->SetAwake();
         m_impulse.z = 0;
         m_lowerAngle = lower;
         m_upperAngle = upper;
+
+        GetBodyA()->SetAwake();
+        GetBodyB()->SetAwake();
     }
 }
 
