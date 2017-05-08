@@ -46,8 +46,8 @@ addons:
       - clang-3.7
       - g++-6
       - gcc-6
-      - glfw3
-      - glew2
+      - libglfw3
+      - libglew2.0
 
 install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
