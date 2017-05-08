@@ -41,7 +41,7 @@ target_link_libraries (
 	Testbed
 	Box2D
 	glew
-	glfw
+	glfw3
 	${ADDITIONAL_LIBRARIES}
 	${OPENGL_LIBRARIES}
 )

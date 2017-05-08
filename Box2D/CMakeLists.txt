@@ -47,8 +47,8 @@ endif(BOX2D_BUILD_HELLOWORLD)
 if(BOX2D_BUILD_TESTBED)
   # Testbed and dependencies.
   find_package(OpenGL REQUIRED)
-  add_subdirectory(glew)
-  add_subdirectory(glfw)
+  find_package(glfw3 REQUIRED)
+  find_package(glew REQUIRED)
   add_subdirectory(Testbed)
 endif(BOX2D_BUILD_TESTBED)
 
