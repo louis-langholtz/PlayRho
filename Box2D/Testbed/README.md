@@ -63,3 +63,19 @@ Here are steps that I've used to download and build this library:
 3. Run `make` and `make install`.
 
 ### Testbed
+
+## Runtime Instructions
+
+To run the demos under MS Visual Studio, set `Testbed` as your startup project and press <kbd>F5</kbd>.
+
+Some keyboard and mouse commands are:
+- <kbd>r</kbd> to reset the current test.
+- <kbd>SPACE</kbd> to launch a bomb.
+- <kbd>&larr;</kbd> <kbd>&rarr;</kbd> keys to pan.
+- <kbd>x</kbd> and <kbd>z</kbd> to zoom in/out.
+- <kbd>HOME</kbd> to reset the view (from zooming in/out).
+- <kbd>[</kbd> and <kbd>]</kbd> to go to previous or next test.
+- <kbd>P</kbd> to toggle pausing the test.
+- <kbd>TAB</kbd> to toggle the appearance of the UI menu.
+- Use the mouse to click and drag objects.
+- <kbd>ESC</kbd> to exit.
