@@ -4,11 +4,13 @@ The Testbed GUI application provides a GUI interface to a bunch of visually
 presented demos. These may be helpful for testing and/or for learning how to use
 [this fork of the Box2D library](https://github.com/louis-langholtz/Box2D).
 
-Here in this directory, are two sub-directories. One for code for providing a
-framework for the Testbed GUI application, and the other for demos. These demos
-all subclass the [Test](Framework/Test.hpp) base class and would be where you'd
-add your own code if you wanted it to also run under the Testbed GUI
-application.
+Here in this directory, are three sub-directories:
+1. [`Data`](Data/): For data for the application.
+2. [`Framework`](Framework/): For code providing a framework for the
+   application like the [Test](Framework/Test.hpp) base class.
+3. [`Tests`](Tests/): Containing code for demos. These demos all subclass the
+   `Test` base class. This folder is where you'd add your own code if you
+   wanted it to also run under the Testbed GUI application.
 
 For more specifics, see the relevant directory.
 
