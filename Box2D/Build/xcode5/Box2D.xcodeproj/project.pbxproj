@@ -107,6 +107,9 @@
 		475039911D2180D600D32047 /* DistanceProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4750398F1D2180D600D32047 /* DistanceProxy.cpp */; };
 		475039921D2180D600D32047 /* DistanceProxy.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 475039901D2180D600D32047 /* DistanceProxy.hpp */; };
 		4751C34B1EC18A11006D9E69 /* Profile.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4751C34A1EC18A11006D9E69 /* Profile.hpp */; };
+		4751C34D1EC25951006D9E69 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 4751C34C1EC25951006D9E69 /* README.md */; };
+		4751C34F1EC259A9006D9E69 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 4751C34E1EC259A9006D9E69 /* README.md */; };
+		4751C3511EC25AE9006D9E69 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 4751C3501EC25AE9006D9E69 /* README.md */; };
 		4751EE291CEDD78F00D459CB /* Mobile.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE281CEDD78F00D459CB /* Mobile.hpp */; };
 		4751EE2B1CEDD79900D459CB /* ConveyorBelt.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE2A1CEDD79900D459CB /* ConveyorBelt.hpp */; };
 		4751EE2E1CEDD7A300D459CB /* MotorJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE2C1CEDD7A300D459CB /* MotorJoint.hpp */; };
@@ -461,6 +464,9 @@
 		4750398F1D2180D600D32047 /* DistanceProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceProxy.cpp; sourceTree = "<group>"; };
 		475039901D2180D600D32047 /* DistanceProxy.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DistanceProxy.hpp; sourceTree = "<group>"; };
 		4751C34A1EC18A11006D9E69 /* Profile.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Profile.hpp; sourceTree = "<group>"; };
+		4751C34C1EC25951006D9E69 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		4751C34E1EC259A9006D9E69 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		4751C3501EC25AE9006D9E69 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		4751EE281CEDD78F00D459CB /* Mobile.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Mobile.hpp; sourceTree = "<group>"; };
 		4751EE2A1CEDD79900D459CB /* ConveyorBelt.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConveyorBelt.hpp; sourceTree = "<group>"; };
 		4751EE2C1CEDD7A300D459CB /* MotorJoint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MotorJoint.hpp; sourceTree = "<group>"; };
@@ -969,6 +975,7 @@
 		80BB8A35141C3E8500F1753A /* Testbed */ = {
 			isa = PBXGroup;
 			children = (
+				4751C3501EC25AE9006D9E69 /* README.md */,
 				80BB8A37141C3E8500F1753A /* Framework */,
 				80BB8A3D141C3E8500F1753A /* Tests */,
 			);
@@ -979,6 +986,7 @@
 		80BB8A37141C3E8500F1753A /* Framework */ = {
 			isa = PBXGroup;
 			children = (
+				4751C34E1EC259A9006D9E69 /* README.md */,
 				805900AA184EEE0F00C8ECA3 /* DebugDraw.cpp */,
 				805900AB184EEE0F00C8ECA3 /* DebugDraw.hpp */,
 				473971AC1DA45C4C00F7137F /* Drawer.cpp */,
@@ -1001,6 +1009,7 @@
 		80BB8A3D141C3E8500F1753A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				4751C34C1EC25951006D9E69 /* README.md */,
 				80BB8A3E141C3E8500F1753A /* AddPair.hpp */,
 				80BB8A3F141C3E8500F1753A /* ApplyForce.hpp */,
 				8066C2311890307100985759 /* BasicSliderCrank.hpp */,
@@ -1536,6 +1545,7 @@
 				4726DD2A1D31B4090012A882 /* RayCastOutput.cpp in Sources */,
 				80BB8997141C3E5900F1753A /* CircleShape.cpp in Sources */,
 				80BB8999141C3E5900F1753A /* EdgeShape.cpp in Sources */,
+				4751C34F1EC259A9006D9E69 /* README.md in Sources */,
 				4731DE2C1DDF94A600E7F931 /* AABB.cpp in Sources */,
 				80BB899B141C3E5900F1753A /* PolygonShape.cpp in Sources */,
 				80BB899E141C3E5900F1753A /* BlockAllocator.cpp in Sources */,
@@ -1554,6 +1564,7 @@
 				80BB89B1141C3E5900F1753A /* Island.cpp in Sources */,
 				475039911D2180D600D32047 /* DistanceProxy.cpp in Sources */,
 				80BB89B4141C3E5900F1753A /* World.cpp in Sources */,
+				4751C34D1EC25951006D9E69 /* README.md in Sources */,
 				80BB89B6141C3E5900F1753A /* WorldCallbacks.cpp in Sources */,
 				80BB89BE141C3E5900F1753A /* Contact.cpp in Sources */,
 				80BB89C0141C3E5900F1753A /* ContactSolver.cpp in Sources */,
@@ -1564,6 +1575,7 @@
 				80BB89D0141C3E5900F1753A /* Joint.cpp in Sources */,
 				80BB89D2141C3E5900F1753A /* MouseJoint.cpp in Sources */,
 				4731DE561DEC908600E7F931 /* UnitVec2.cpp in Sources */,
+				4751C3511EC25AE9006D9E69 /* README.md in Sources */,
 				80BB89D4141C3E5900F1753A /* PrismaticJoint.cpp in Sources */,
 				474AFBF81EB1B2CB002AA6C8 /* MultiShape.cpp in Sources */,
 				80BB89D6141C3E5900F1753A /* PulleyJoint.cpp in Sources */,
@@ -1711,8 +1723,6 @@
 			buildSettings = {
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_CXX0X_EXTENSIONS = YES;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
-				GCC_WARN_UNUSED_VALUE = NO;
 				HEADER_SEARCH_PATHS = (
 					/usr/local/include,
 					/usr/local/boost_1_63_0,
@@ -1733,8 +1743,6 @@
 			buildSettings = {
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_CXX0X_EXTENSIONS = YES;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
-				GCC_WARN_UNUSED_VALUE = NO;
 				HEADER_SEARCH_PATHS = (
 					/usr/local/include,
 					/usr/local/boost_1_63_0,
@@ -1760,7 +1768,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_CXX0X_EXTENSIONS = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
@@ -1828,7 +1836,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_CXX0X_EXTENSIONS = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
@@ -1884,6 +1892,7 @@
 			buildSettings = {
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_STATIC_ANALYZER_MODE = deep;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEPLOYMENT_LOCATION = YES;
@@ -1905,6 +1914,7 @@
 			buildSettings = {
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_STATIC_ANALYZER_MODE = deep;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;

@@ -1,4 +1,4 @@
-# Testbed
+# Testbed GUI Application
 
 The Testbed GUI application provides a GUI interface to a bunch of visually
 presented demos. These may be helpful for testing and/or for learning how to use
@@ -8,25 +8,25 @@ Here in this directory, are two sub-directories. One for code for providing a
 framework for the Testbed GUI application, and the other for demos. These demos
 all subclass the [Test](Framework/Test.hpp) base class and would be where you'd
 add your own code if you wanted it to also run under the Testbed GUI
-application. For more specifics, see the relevant directory.
+application.
+
+For more specifics, see the relevant directory.
 
 ## Build Instructions
 
 Building the *Testbed* requires some library dependencies to be available:
-the Box2D library, the GLFW library, and the GLEW library.
+the project library, the GLFW version 3 library, and the GLEW version 2 library.
 
 ### GLFW
 
 [GLFW](http://www.glfw.org) is an Open Source library that the Testbed depends
-on.
-Currently the source code for GLFW is included in the Box2D source code
-distribution. This has been built on the following build setups:
-- Windows using MSVS2017 and the included Solution, and
-- OS X using Xcode and the XCode Project file.
+on. The source code for this library is no longer included in this fork of
+the project. The GLFW version 3 library must be available in an installed form
+in order to build the Testbed. See the [GLFW Website](http://www.glfw.org) for
+up-to-date information on it including how to download and install it.
 
-Alternatively...
-
-Here are steps that I've used to download and build this library:
+Here are steps that can be used to download, build, and install this library
+from source code using a command line environment:
 1. Decide where you're going to have your GLFW sources. Setup an environment
    variable called `GLFW_SOURCES` that's set to this path. For example:
      `GLFW_SOURCES=/tmp/glfw-3.2.1`.
@@ -41,17 +41,15 @@ Here are steps that I've used to download and build this library:
 ### GLEW
 
 [GLEW](http://glew.sourceforge.net) is an Open Source library that the Testbed
-depends on.
+depends on. The source code for this library is no longer included in this fork
+of the project. The GLEW version 2 library must be available in an installed
+form in order to build the Testbed. See the
+[GLEW Website](http://glew.sourceforge.net) for up-to-date information on it
+including how to download and install it.
 
-Currently the source code for GLEW is included in the Box2D source code
-distribution. This has been built on the following build setups:
-- Windows using MSVS2017 and the included Solution, and
-- OS X using Xcode and the XCode Project file.
-
-Alternatively...
-
-Here are steps that I've used to download and build this library:
-1. Get GLEW.
+Here are steps that can be used to download, build, and install this library
+from source code using a command line environment:
+1. Get GLEW 2.
   - From a ZIP file:
     1. Download GLEW 2.0.0 from
        https://sourceforge.net/projects/glew/files/glew/2.0.0/glew-2.0.0.zip.
@@ -60,15 +58,52 @@ Here are steps that I've used to download and build this library:
 2. Make sure to have the needed build tools.
   - For Debian/Ubuntu/Mint platforms: `$ sudo apt-get install build-essential libxmu-dev libxi-dev libgl-dev libosmesa-dev git`.
   - For RedHat/CentOS/Fedora:  `$ sudo yum install libXmu-devel libXi-devel libGL-devel git`
-3. Run `make` and `make install`.
+3. Run `make` and `make install` from within the source directory.
+   It's not necessary to run `cmake` and the GLEW build instructions themselves
+   don't say to run it.
 
 ### Testbed
 
-## Runtime Instructions
+When the GLFW 3 and GLEW 2 libraries are installed along with any specific
+dependencies that they might have for your platform, the Testbed can be built.
+The Testbed GUI application is currently building for Linux using CMake
+and for Mac OS X using Xcode. With a little more work, the Testbed should be
+able to be built for Windows.
+
+#### Linux Using CMake
+
+Assuming that GLFW and GLEW are installed under `/usr/local`:
+
+    cd Box2D && mkdir -p BuildLinux && cd BuildLinux && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/usr/local -DCMAKE_LIBRARY_PATH=/tmp/usr/lib -DBOX2D_BUILD_UNIT_TESTS=ON -DBOX2D_BUILD_HELLOWORLD=ON -DBOX2D_BUILD_TESTBED=ON .. && make
+
+See the [Travis-CI configuration file](../../.travis.yml) for how this has
+been done on the Linux CI build host.
+
+#### Mac OS X Using Xcode
+
+Assuming GLFW and GLEW are installed under `/usr/local`, double-click on
+the Xcode project file from the Finder. Then select the `Testbed` scheme
+and run it by pressing <kbd>&#8984;</kbd> <kbd>R</kbd> key combination.
+This will first build the Testbed (and then it will run it).
+
+#### Mac OS X Using CMake
+
+TODO.
+
+#### Windows Using VS2017 and the Solution File
+
+TODO.
+
+#### Windows Using VS2017 and CMake
+
+TODO.
+
+## Usage Instructions
 
 To run the demos under MS Visual Studio, set `Testbed` as your startup project and press <kbd>F5</kbd>.
 
-Some keyboard and mouse commands are:
+Once the Testbed is up and running, here are some keyboard and mouse commands
+that can be used:
 - <kbd>r</kbd> to reset the current test.
 - <kbd>SPACE</kbd> to launch a bomb.
 - <kbd>&larr;</kbd> <kbd>&rarr;</kbd> keys to pan.
