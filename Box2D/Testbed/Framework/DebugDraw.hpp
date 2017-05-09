@@ -82,7 +82,7 @@ struct Camera
 Length2D ConvertScreenToWorld(const Camera& camera, const Coord2D screenPoint);
 AABB ConvertScreenToWorld(const Camera& camera);
 Coord2D ConvertWorldToScreen(const Camera& camera, const Length2D worldPoint);
-ProjectionMatrix GetProjectionMatrix(const Camera& camera, RealNum zBias);
+ProjectionMatrix GetProjectionMatrix(const Camera& camera, float zBias);
 
 class DebugDraw : public Drawer
 {

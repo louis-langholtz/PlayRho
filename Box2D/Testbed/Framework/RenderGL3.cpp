@@ -442,7 +442,7 @@ static void sDrawRoundedRect(float x, float y, float w, float h, float r, float 
 }
 
 //
-void sRenderLine(float x0, float y0, float x1, float y1, float r, float fth, unsigned int col)
+static void sRenderLine(float x0, float y0, float x1, float y1, float r, float fth, unsigned int col)
 {
     float dx = x1 - x0;
     float dy = y1 - y0;
@@ -688,7 +688,7 @@ static float sGetTextLength(stbtt_bakedchar *chardata, const char* text)
 }
 
 //
-void sRenderString(float x, float y, const char *text, TextAlign align, unsigned int col)
+static void sRenderString(float x, float y, const char *text, TextAlign align, unsigned int col)
 {
     if (!g_ftex) return;
     if (!text) return;
