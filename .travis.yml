@@ -62,6 +62,7 @@ install:
 
 # Linux seems to usually support "sha256sum". OS X meanwhile calls it "shasum".
 script:
+  - cmake --version
   - echo CXX=$CXX HOME=$HOME
   - $CXX -dM -E - < /dev/null | sort
   - git clone https://github.com/louis-langholtz/units.git
@@ -71,6 +72,6 @@ script:
   - pushd $BOOST_INC_DST && mv units units.old && ln -s $HOME/units/include/boost/units . && popd && ls -laF $BOOST_INC_DST
   - mkdir /tmp/glfw && pushd /tmp/glfw && curl --location --remote-name $GLFW_URL && md5sum *.zip && echo "Expect MD5 hash of 824c99eea073bdd6d2fec76b538f79af" && unzip -q *.zip && rm *.zip && mkdir ../glfw-build && cd ../glfw-build && cmake ../glfw/* && make && make DESTDIR=/tmp install && popd
   - mkdir /tmp/glew && pushd /tmp/glew && curl --location --remote-name $GLEW_URL && md5sum *.zip && echo "Expect MD5 hash of 54c913d0c00726fb028d089ad1664ede" && unzip -q *.zip && rm *.zip && cd * && make && make DESTDIR=/tmp install && popd
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "clang++-3.7" ]]; then (cd Box2D && mkdir -p BuildLinux && cd BuildLinux && cmake --version && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/tmp -DBOX2D_BUILD_UNIT_TESTS=ON -DBOX2D_BUILD_HELLOWORLD=ON -DBOX2D_BUILD_TESTBED=ON .. && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld ); fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-6" ]]; then (cd Box2D && mkdir -p BuildLinux && cd BuildLinux && cmake --version && cmake -DCMAKE_BUILD_TYPE=Debug -DBOX2D_BUILD_UNIT_TESTS=ON -DBOX2D_BUILD_HELLOWORLD=ON .. && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:StackAllocator.slower_than_mallocfree ); fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "clang++-3.7" ]]; then (cd Box2D && mkdir -p BuildLinux && cd BuildLinux && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/tmp/usr -DBOX2D_BUILD_UNIT_TESTS=ON -DBOX2D_BUILD_HELLOWORLD=ON -DBOX2D_BUILD_TESTBED=ON .. && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld ); fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-6" ]]; then (cd Box2D && mkdir -p BuildLinux && cd BuildLinux && cmake -DCMAKE_BUILD_TYPE=Debug -DBOX2D_BUILD_UNIT_TESTS=ON -DBOX2D_BUILD_HELLOWORLD=ON .. && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:StackAllocator.slower_than_mallocfree ); fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then (cd Box2D && xcodebuild -project Box2D/Build/xcode5/Box2D.xcodeproj -list); fi
