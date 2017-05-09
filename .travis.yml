@@ -47,9 +47,10 @@ addons:
       - g++-6
       - gcc-6
       - xorg-dev
+      - libx11-dev
       - libXmu-dev
       - libXi-dev
-      - libgl-dev
+      - libgl1-mesa-dev
       - libosmesa-dev
 
 install:
