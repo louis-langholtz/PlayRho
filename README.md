@@ -15,7 +15,7 @@ General influences on this fork are:
 correctness of the code logic. As such, this library *must* be compiled with
 the `NDEBUG` preprocessor macro enabled to see any kind of performance.
 
-## Current Continuous Integration Status
+## Continuous Integration Status
 
 |iOS|Linux CMake|OS X Xcode|Windows VS2017|
 |---|-----------|----------|--------------|
