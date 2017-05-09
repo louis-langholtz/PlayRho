@@ -7,6 +7,7 @@ message("GLFW_FOUND=${GLFW_FOUND}")
 
 find_library(GLFW_LIBRARY NAMES glfw3)
 message("GLFW_LIBRARY=${GLFW_LIBRARY}")
+message("GLFW_LIBRARY_DIRS=${GLFW_LIBRARY_DIRS}")
 
 # Some flags for Freeglut and GLUI.
 add_definitions( -DGLEW_STATIC -D_CRT_SECURE_NO_WARNINGS )
@@ -35,6 +36,10 @@ include_directories (
 	${Box2D_SOURCE_DIR}
 )
 
+link_directories (
+  ${GLFW_LIBRARY_DIRS}
+)
+
 if(APPLE)
 	# We are not using the Apple's framework version, but X11's
 	include_directories( /usr/X11/include )
@@ -53,7 +58,6 @@ target_link_libraries (
 	Testbed
 	Box2D
 	${GLEW_LIBRARY}
-	glfw3
 	${GLFW_STATIC_LIBRARIES}
 	${ADDITIONAL_LIBRARIES}
 	${OPENGL_LIBRARIES}
