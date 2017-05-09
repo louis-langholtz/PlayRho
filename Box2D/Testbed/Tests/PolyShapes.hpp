@@ -22,6 +22,7 @@
 
 #include "../Framework/Test.hpp"
 #include <vector>
+#include <cstring>
 
 /// This tests stacking. It also shows how to use World::Query
 /// and TestOverlap.
@@ -148,7 +149,7 @@ public:
         }
 
         m_bodyIndex = 0;
-        memset(m_bodies, 0, sizeof(m_bodies));
+        std::memset(m_bodies, 0, sizeof(m_bodies));
     }
 
     void Create(int index)

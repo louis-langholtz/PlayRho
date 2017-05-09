@@ -22,6 +22,7 @@
 
 #include "../Framework/Test.hpp"
 #include <cmath>
+#include <cstring>
 
 namespace box2d {
 
@@ -66,11 +67,11 @@ public:
         {
             const auto ground = m_world->CreateBody();
             auto x1 = -20.0f;
-            auto y1 = 2.0f * cosf(x1 / 10.0f * Pi);
+            auto y1 = 2.0f * std::cos(x1 / 10.0f * static_cast<float>(Pi));
             for (auto i = 0; i < 80; ++i)
             {
                 const auto x2 = x1 + 0.5f;
-                const auto y2 = 2.0f * cosf(x2 / 10.0f * Pi);
+                const auto y2 = 2.0f * std::cos(x2 / 10.0f * static_cast<float>(Pi));
                 ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(x1, y1) * Meter, Vec2(x2, y2) * Meter));
                 x1 = x2;
                 y1 = y2;
@@ -115,7 +116,7 @@ public:
         m_polygons[3]->SetAsBox(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
 
         m_bodyIndex = 0;
-        memset(m_bodies, 0, sizeof(m_bodies));
+        std::memset(m_bodies, 0, sizeof(m_bodies));
 
         m_angle = 0.0f;
     }

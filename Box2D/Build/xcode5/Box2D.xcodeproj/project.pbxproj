@@ -106,6 +106,7 @@
 		474FDB531E72643D00F401AF /* forward_list.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474FDB521E72643D00F401AF /* forward_list.cpp */; };
 		475039911D2180D600D32047 /* DistanceProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4750398F1D2180D600D32047 /* DistanceProxy.cpp */; };
 		475039921D2180D600D32047 /* DistanceProxy.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 475039901D2180D600D32047 /* DistanceProxy.hpp */; };
+		4751C34B1EC18A11006D9E69 /* Profile.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4751C34A1EC18A11006D9E69 /* Profile.hpp */; };
 		4751EE291CEDD78F00D459CB /* Mobile.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE281CEDD78F00D459CB /* Mobile.hpp */; };
 		4751EE2B1CEDD79900D459CB /* ConveyorBelt.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE2A1CEDD79900D459CB /* ConveyorBelt.hpp */; };
 		4751EE2E1CEDD7A300D459CB /* MotorJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE2C1CEDD7A300D459CB /* MotorJoint.hpp */; };
@@ -115,8 +116,6 @@
 		47578BE21D8869110078CD40 /* WorldManifold.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47578BDE1D8869110078CD40 /* WorldManifold.hpp */; };
 		47578BE41D886FED0078CD40 /* WorldManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47578BE31D886FED0078CD40 /* WorldManifold.cpp */; };
 		47578BE51D886FED0078CD40 /* WorldManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47578BE31D886FED0078CD40 /* WorldManifold.cpp */; };
-		47578BF01D8899710078CD40 /* Profile.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47578BED1D8899710078CD40 /* Profile.hpp */; };
-		47578BF11D8899710078CD40 /* Profile.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47578BED1D8899710078CD40 /* Profile.hpp */; };
 		475A94541D930503000CA9A8 /* BlockAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A94531D930503000CA9A8 /* BlockAllocator.cpp */; };
 		475A94561D930E6C000CA9A8 /* Fixture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A94551D930E6C000CA9A8 /* Fixture.cpp */; };
 		475A94581D9453A1000CA9A8 /* Shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A94571D9453A1000CA9A8 /* Shape.cpp */; };
@@ -461,6 +460,7 @@
 		474FDB521E72643D00F401AF /* forward_list.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = forward_list.cpp; sourceTree = "<group>"; };
 		4750398F1D2180D600D32047 /* DistanceProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceProxy.cpp; sourceTree = "<group>"; };
 		475039901D2180D600D32047 /* DistanceProxy.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DistanceProxy.hpp; sourceTree = "<group>"; };
+		4751C34A1EC18A11006D9E69 /* Profile.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Profile.hpp; sourceTree = "<group>"; };
 		4751EE281CEDD78F00D459CB /* Mobile.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Mobile.hpp; sourceTree = "<group>"; };
 		4751EE2A1CEDD79900D459CB /* ConveyorBelt.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConveyorBelt.hpp; sourceTree = "<group>"; };
 		4751EE2C1CEDD7A300D459CB /* MotorJoint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MotorJoint.hpp; sourceTree = "<group>"; };
@@ -468,7 +468,6 @@
 		4756CB991E0FAEF8009AD95C /* SeparationFinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SeparationFinder.cpp; sourceTree = "<group>"; };
 		47578BDE1D8869110078CD40 /* WorldManifold.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorldManifold.hpp; sourceTree = "<group>"; };
 		47578BE31D886FED0078CD40 /* WorldManifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldManifold.cpp; sourceTree = "<group>"; };
-		47578BED1D8899710078CD40 /* Profile.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Profile.hpp; sourceTree = "<group>"; };
 		475A94531D930503000CA9A8 /* BlockAllocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BlockAllocator.cpp; sourceTree = "<group>"; };
 		475A94551D930E6C000CA9A8 /* Fixture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fixture.cpp; sourceTree = "<group>"; };
 		475A94571D9453A1000CA9A8 /* Shape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shape.cpp; sourceTree = "<group>"; };
@@ -889,7 +888,6 @@
 				80BB8953141C3E5900F1753A /* Island.cpp */,
 				80BB8954141C3E5900F1753A /* Island.hpp */,
 				80BB896D141C3E5900F1753A /* Joints */,
-				47578BED1D8899710078CD40 /* Profile.hpp */,
 				4768D3FF1E54E7CB00574143 /* StepConf.cpp */,
 				80BB8955141C3E5900F1753A /* StepConf.hpp */,
 				478E67CA1E777A43009B9AD5 /* StepStats.hpp */,
@@ -988,6 +986,7 @@
 				805900AC184EEE0F00C8ECA3 /* imgui.cpp */,
 				805900AD184EEE0F00C8ECA3 /* imgui.h */,
 				80BB8A38141C3E8500F1753A /* Main.cpp */,
+				4751C34A1EC18A11006D9E69 /* Profile.hpp */,
 				805900AE184EEE0F00C8ECA3 /* RenderGL3.cpp */,
 				805900AF184EEE0F00C8ECA3 /* RenderGL3.h */,
 				805900B0184EEE0F00C8ECA3 /* stb_truetype.h */,
@@ -1165,7 +1164,6 @@
 				47AA5DF61C4C5FBE008AF2BA /* WeldJoint.hpp in Headers */,
 				47AA5DF71C4C5FBE008AF2BA /* WheelJoint.hpp in Headers */,
 				47AA5DF81C4C5FBE008AF2BA /* Rope.hpp in Headers */,
-				47578BF11D8899710078CD40 /* Profile.hpp in Headers */,
 				47AA5DF91C4C5FBE008AF2BA /* MotorJoint.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1233,7 +1231,6 @@
 				80BB89CF141C3E5900F1753A /* GearJoint.hpp in Headers */,
 				80BB89D1141C3E5900F1753A /* Joint.hpp in Headers */,
 				80BB89D3141C3E5900F1753A /* MouseJoint.hpp in Headers */,
-				47578BF01D8899710078CD40 /* Profile.hpp in Headers */,
 				80BB89D5141C3E5900F1753A /* PrismaticJoint.hpp in Headers */,
 				80BB89D7141C3E5900F1753A /* PulleyJoint.hpp in Headers */,
 				4731DE441DE2570900E7F931 /* Collision.hpp in Headers */,
@@ -1248,6 +1245,7 @@
 				80620F90168B934600D46C8D /* MotorJoint.hpp in Headers */,
 				4731DE1B1DDCD0E100E7F931 /* FixtureProxy.hpp in Headers */,
 				472E301B1DBA925500DA821D /* VertexSet.hpp in Headers */,
+				4751C34B1EC18A11006D9E69 /* Profile.hpp in Headers */,
 				47F932A61D11C283006A193C /* AllocatedArray.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

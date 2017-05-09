@@ -21,6 +21,7 @@
 #define RAY_CAST_H
 
 #include "../Framework/Test.hpp"
+#include <cstring>
 
 // This test demonstrates how to use the world ray-cast feature.
 // NOTE: we are intentionally filtering one of the polygons, therefore
@@ -218,7 +219,7 @@ public:
         m_polygons[3]->SetAsBox(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
         
         m_bodyIndex = 0;
-        memset(m_bodies, 0, sizeof(m_bodies));
+        std::memset(m_bodies, 0, sizeof(m_bodies));
 
         m_angle = 0.0f;
 

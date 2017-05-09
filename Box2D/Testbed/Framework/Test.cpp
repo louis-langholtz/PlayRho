@@ -376,9 +376,6 @@ Test::Test(const World::Def& conf):
     m_world->SetContactListener(this);
     
     m_groundBody = m_world->CreateBody();
-
-    memset(&m_maxProfile, 0, sizeof(Profile));
-    memset(&m_totalProfile, 0, sizeof(Profile));
 }
 
 Test::~Test()
@@ -940,7 +937,6 @@ void Test::Step(const Settings& settings, Drawer& drawer)
         const auto p = Profile{};
         
         Profile aveProfile;
-        memset(&aveProfile, 0, sizeof(Profile));
         if (m_stepCount > 0)
         {
             const auto scale = 1.0f / m_stepCount;
@@ -954,21 +950,29 @@ void Test::Step(const Settings& settings, Drawer& drawer)
             aveProfile.broadphase = scale * m_totalProfile.broadphase;
         }
 
-        drawer.DrawString(5, m_textLine, "step [ave] (max) = %5.2f [%6.2f] (%6.2f)", p.step, aveProfile.step, m_maxProfile.step);
+        drawer.DrawString(5, m_textLine, "step [ave] (max) = %5.2f [%6.2f] (%6.2f)",
+                          p.step, aveProfile.step, m_maxProfile.step);
         m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, "collide [ave] (max) = %5.2f [%6.2f] (%6.2f)", p.collide, aveProfile.collide, m_maxProfile.collide);
+        drawer.DrawString(5, m_textLine, "collide [ave] (max) = %5.2f [%6.2f] (%6.2f)",
+                          p.collide, aveProfile.collide, m_maxProfile.collide);
         m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, "solve [ave] (max) = %5.2f [%6.2f] (%6.2f)", p.solve, aveProfile.solve, m_maxProfile.solve);
+        drawer.DrawString(5, m_textLine, "solve [ave] (max) = %5.2f [%6.2f] (%6.2f)",
+                          p.solve, aveProfile.solve, m_maxProfile.solve);
         m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, "solve init [ave] (max) = %5.2f [%6.2f] (%6.2f)", p.solveInit, aveProfile.solveInit, m_maxProfile.solveInit);
+        drawer.DrawString(5, m_textLine, "solve init [ave] (max) = %5.2f [%6.2f] (%6.2f)",
+                          p.solveInit, aveProfile.solveInit, m_maxProfile.solveInit);
         m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, "solve velocity [ave] (max) = %5.2f [%6.2f] (%6.2f)", p.solveVelocity, aveProfile.solveVelocity, m_maxProfile.solveVelocity);
+        drawer.DrawString(5, m_textLine, "solve velocity [ave] (max) = %5.2f [%6.2f] (%6.2f)",
+                          p.solveVelocity, aveProfile.solveVelocity, m_maxProfile.solveVelocity);
         m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, "solve position [ave] (max) = %5.2f [%6.2f] (%6.2f)", p.solvePosition, aveProfile.solvePosition, m_maxProfile.solvePosition);
+        drawer.DrawString(5, m_textLine, "solve position [ave] (max) = %5.2f [%6.2f] (%6.2f)",
+                          p.solvePosition, aveProfile.solvePosition, m_maxProfile.solvePosition);
         m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, "solveTOI [ave] (max) = %5.2f [%6.2f] (%6.2f)", p.solveTOI, aveProfile.solveTOI, m_maxProfile.solveTOI);
+        drawer.DrawString(5, m_textLine, "solveTOI [ave] (max) = %5.2f [%6.2f] (%6.2f)",
+                          p.solveTOI, aveProfile.solveTOI, m_maxProfile.solveTOI);
         m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, "broad-phase [ave] (max) = %5.2f [%6.2f] (%6.2f)", p.broadphase, aveProfile.broadphase, m_maxProfile.broadphase);
+        drawer.DrawString(5, m_textLine, "broad-phase [ave] (max) = %5.2f [%6.2f] (%6.2f)",
+                          p.broadphase, aveProfile.broadphase, m_maxProfile.broadphase);
         m_textLine += DRAW_STRING_NEW_LINE;
     }
 

@@ -21,7 +21,9 @@
 
 #define _USE_MATH_DEFINES
 #include <math.h>
-#include <stdio.h>
+#include <cstdio>
+#include <cstring>
+#include <cstdlib>
 
 #ifdef __APPLE__
 #include <OpenGL/gl3.h>
@@ -95,8 +97,8 @@ static GLuint g_whitetex = 0;
 static GLuint g_vao = 0;
 static GLuint g_vbos[3] = { 0, 0, 0 };
 static GLuint g_program = 0;
-static GLuint g_programViewportLocation = 0;
-static GLuint g_programTextureLocation = 0;
+static GLint g_programViewportLocation = 0;
+static GLint g_programTextureLocation = 0;
 
 static const unsigned TEXT_POOL_SIZE = 8000;
 static char g_textPool[TEXT_POOL_SIZE];
@@ -238,8 +240,17 @@ static void sDrawPolygon(const float* coords, unsigned numCoords, float r, unsig
         g_tempNormals[j * 2 + 1] = -dx;
     }
 
-    float colf[4] = { (float)(col & 0xff) / 255.f, (float)((col >> 8) & 0xff) / 255.f, (float)((col >> 16) & 0xff) / 255.f, (float)((col >> 24) & 0xff) / 255.f };
-    float colTransf[4] = { (float)(col & 0xff) / 255.f, (float)((col >> 8) & 0xff) / 255.f, (float)((col >> 16) & 0xff) / 255.f, 0 };
+    float colf[4] = {
+        (float)(col & 0xff) / 255.f,
+        (float)((col >> 8) & 0xff) / 255.f,
+        (float)((col >> 16) & 0xff) / 255.f,
+        (float)((col >> 24) & 0xff) / 255.f
+    };
+    float colTransf[4] = {
+        (float)(col & 0xff) / 255.f,
+        (float)((col >> 8) & 0xff) / 255.f,
+        (float)((col >> 16) & 0xff) / 255.f,
+        0 };
 
     for (unsigned i = 0, j = numCoords - 1; i < numCoords; j = i++)
     {
@@ -261,17 +272,17 @@ static void sDrawPolygon(const float* coords, unsigned numCoords, float r, unsig
         g_tempCoords[i * 2 + 1] = coords[i * 2 + 1] + dmy*r;
     }
 
-    int vSize = numCoords * 12 + (numCoords - 2) * 6;
-    int uvSize = numCoords * 2 * 6 + (numCoords - 2) * 2 * 3;
-    int cSize = numCoords * 4 * 6 + (numCoords - 2) * 4 * 3;
-    float * v = g_tempVertices;
-    float * uv = g_tempTextureCoords;
-    memset(uv, 0, uvSize * sizeof(float));
-    float * c = g_tempColors;
-    memset(c, 1, cSize * sizeof(float));
+    const auto vSize = numCoords * 12 + (numCoords - 2) * 6;
+    const auto uvSize = numCoords * 2 * 6 + (numCoords - 2) * 2 * 3;
+    const auto cSize = numCoords * 4 * 6 + (numCoords - 2) * 4 * 3;
+    float *v = g_tempVertices;
+    float *uv = g_tempTextureCoords;
+    std::memset(uv, 0, uvSize * sizeof(float));
+    float *c = g_tempColors;
+    std::memset(c, 1, cSize * sizeof(float));
 
-    float * ptrV = v;
-    float * ptrC = c;
+    float *ptrV = v;
+    float *ptrC = c;
     for (unsigned i = 0, j = numCoords - 1; i < numCoords; j = i++)
     {
         *ptrV = coords[i * 2];
@@ -362,7 +373,7 @@ static void sDrawPolygon(const float* coords, unsigned numCoords, float r, unsig
     glBufferData(GL_ARRAY_BUFFER, uvSize*sizeof(float), uv, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, g_vbos[2]);
     glBufferData(GL_ARRAY_BUFFER, cSize*sizeof(float), c, GL_STATIC_DRAW);
-    glDrawArrays(GL_TRIANGLES, 0, (numCoords * 2 + numCoords - 2) * 3);
+    glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>((numCoords * 2 + numCoords - 2) * 3));
 }
 
 static void sDrawRect(float x, float y, float w, float h, float fth, unsigned int col)
@@ -479,18 +490,18 @@ bool RenderGLInitFont(const char* fontpath)
     int size = (int)ftell(fp);
     fseek(fp, 0, SEEK_SET);
     
-    unsigned char* ttfBuffer = (unsigned char*)malloc(size);
+    unsigned char* ttfBuffer = (unsigned char*)std::malloc(static_cast<std::size_t>(size));
     if (!ttfBuffer)
     {
         fclose(fp);
         return false;
     }
     
-    fread(ttfBuffer, 1, size, fp);
+    std::fread(ttfBuffer, 1, static_cast<std::size_t>(size), fp);
     fclose(fp);
     fp = 0;
     
-    unsigned char* bmap = (unsigned char*)malloc(512 * 512);
+    unsigned char* bmap = (unsigned char*)std::malloc(512 * 512);
     if (!bmap)
     {
         free(ttfBuffer);
@@ -506,8 +517,8 @@ bool RenderGLInitFont(const char* fontpath)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     
-    free(ttfBuffer);
-    free(bmap);
+    std::free(ttfBuffer);
+    std::free(bmap);
     return true;
 }
 
@@ -758,7 +769,7 @@ void sRenderString(float x, float y, const char *text, TextAlign align, unsigned
 void RenderGLFlush(int width, int height)
 {
     const GfxCmd* q = g_gfxCmdQueue;
-    int nq = g_gfxCmdQueueSize;
+    const auto nq = g_gfxCmdQueueSize;
 
     const float s = 1.0f / 8.0f;
 
@@ -768,7 +779,7 @@ void RenderGLFlush(int width, int height)
     glUniform1i(g_programTextureLocation, 0);
 
     glDisable(GL_SCISSOR_TEST);
-    for (int i = 0; i < nq; ++i)
+    for (auto i = decltype(nq){0}; i < nq; ++i)
     {
         const GfxCmd& cmd = q[i];
         if (cmd.type == GFXCMD_RECT)

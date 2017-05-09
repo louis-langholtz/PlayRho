@@ -28,6 +28,7 @@
 #include <GLFW/glfw3.h>
 #include <cstdio>
 #include <cstdarg>
+#include <cstdlib>
 
 #include "RenderGL3.h"
 
@@ -144,7 +145,7 @@ static void sPrintLog(GLuint object)
         return;
     }
 
-    char* log = (char*)malloc(static_cast<size_t>(log_length));
+    char* log = (char*)std::malloc(static_cast<size_t>(log_length));
 
     if (glIsShader(object))
         glGetShaderInfoLog(object, log_length, nullptr, log);
@@ -152,7 +153,7 @@ static void sPrintLog(GLuint object)
         glGetProgramInfoLog(object, log_length, nullptr, log);
 
     fprintf(stderr, "%s", log);
-    free(log);
+    std::free(log);
 }
 
 
