@@ -25,10 +25,10 @@ project(Box2D)
 
 # Provide options that user can optionally select.
 # Details at: https://cmake.org/cmake/help/v3.1/command/option.html
+option(BOX2D_BUILD_STATIC "Build Box2D static libraries" ON)
+option(BOX2D_BUILD_SHARED "Build Box2D shared libraries" OFF)
 option(BOX2D_INSTALL "Install Box2D libs, includes, and CMake scripts" OFF)
 option(BOX2D_INSTALL_DOC "Install Box2D documentation" OFF)
-option(BOX2D_BUILD_SHARED "Build Box2D shared libraries" OFF)
-option(BOX2D_BUILD_STATIC "Build Box2D static libraries" ON)
 option(BOX2D_BUILD_HELLOWORLD "Build Box2D HelloWorld console application" OFF)
 option(BOX2D_BUILD_UNIT_TESTS "Build Box2D unit tests" OFF)
 option(BOX2D_BUILD_TESTBED "Build Box2D Testbed GUI application" OFF)
@@ -39,16 +39,17 @@ set(LIB_INSTALL_DIR lib${LIB_SUFFIX})
 # The Box2D library.
 add_subdirectory(Box2D)
 
+# HelloWorld console example.
 if(BOX2D_BUILD_HELLOWORLD)
-  # HelloWorld console example.
   add_subdirectory(HelloWorld)
 endif(BOX2D_BUILD_HELLOWORLD)
 
+# Testbed GUI application.
 if(BOX2D_BUILD_TESTBED)
-  # Testbed GUI application.
   add_subdirectory(Testbed)
 endif(BOX2D_BUILD_TESTBED)
 
+# Unit tests console application.
 if(BOX2D_BUILD_UNIT_TESTS)
   add_subdirectory(UnitTests)
 endif(BOX2D_BUILD_UNIT_TESTS)
