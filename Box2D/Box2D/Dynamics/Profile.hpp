@@ -27,14 +27,14 @@ namespace box2d {
     /// Profiling data. Times are in milliseconds.
     struct Profile
     {
-        RealNum step;
-        RealNum collide;
-        RealNum solve;
-        RealNum solveInit;
-        RealNum solveVelocity;
-        RealNum solvePosition;
-        RealNum broadphase;
-        RealNum solveTOI;
+        RealNum step = RealNum(0);
+        RealNum collide = RealNum(0);
+        RealNum solve = RealNum(0);
+        RealNum solveInit = RealNum(0);
+        RealNum solveVelocity = RealNum(0);
+        RealNum solvePosition = RealNum(0);
+        RealNum broadphase = RealNum(0);
+        RealNum solveTOI = RealNum(0);
     };
 }
 
