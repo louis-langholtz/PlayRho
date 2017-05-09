@@ -25,7 +25,7 @@ Here's a run-down of some of the changes
 - Unit tested via [Google Test](https://github.com/google/googletest/tree/aa148eb2b7f70ede0eb10de34b6254826bfb34f4)
   and [over 400 tests](https://github.com/louis-langholtz/Box2D/tree/dev/Box2D/UnitTests).
 - Continuous integration (CI) building and unit testing of repository updates
-  for the Linux platform.
+  for the Linux and Windows platforms.
 - Compile-time support for zero-runtime strongly-typed physical units (using an
   interface to [`constexpr`-enhanced boost units](https://github.com/louis-langholtz/units)).
   For details on how to enable this, see
