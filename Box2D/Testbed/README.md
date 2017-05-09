@@ -74,7 +74,7 @@ able to be built for Windows.
 
 Assuming that GLFW and GLEW are installed under `/usr/local`:
 
-    cd Box2D && mkdir -p BuildLinux && cd BuildLinux && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/usr/local -DCMAKE_LIBRARY_PATH=/tmp/usr/lib -DBOX2D_BUILD_UNIT_TESTS=ON -DBOX2D_BUILD_HELLOWORLD=ON -DBOX2D_BUILD_TESTBED=ON .. && make
+    cd ${BUILD_DIR} && cmake -DBOX2D_BUILD_TESTBED=ON ${CMAKEFILE} && make
 
 See the [Travis-CI configuration file](../../.travis.yml) for how this has
 been done on the Linux CI build host.
