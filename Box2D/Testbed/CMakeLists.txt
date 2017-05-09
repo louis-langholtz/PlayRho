@@ -3,8 +3,10 @@ find_package(GLEW REQUIRED)
 
 find_package(PkgConfig REQUIRED)
 pkg_search_module(GLFW REQUIRED glfw3)
+message("GLFW_FOUND=${GLFW_FOUND}")
 
 find_library(GLFW_LIBRARY NAMES glfw3)
+message("GLFW_LIBRARY=${GLFW_LIBRARY}")
 
 # Some flags for Freeglut and GLUI.
 add_definitions( -DGLEW_STATIC -D_CRT_SECURE_NO_WARNINGS )
