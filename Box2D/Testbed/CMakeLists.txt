@@ -1,6 +1,8 @@
 find_package(OpenGL REQUIRED)
-find_package(glfw3 REQUIRED)
 find_package(GLEW REQUIRED)
+
+find_package(PkgConfig REQUIRED)
+pkg_search_module(GLFW REQUIRED glfw3)
 
 # Some flags for Freeglut and GLUI.
 add_definitions( -DGLEW_STATIC -D_CRT_SECURE_NO_WARNINGS )
@@ -25,6 +27,7 @@ source_group(Tests FILES ${Testbed_Tests_SRCS})
 include_directories (
 	${OPENGL_INCLUDE_DIR}
 	${GLEW_INCLUDE_DIRS}
+	${GLFW_INCLUDE_DIRS}
 	${Box2D_SOURCE_DIR}
 )
 
@@ -47,6 +50,7 @@ target_link_libraries (
 	Box2D
 	${GLEW_LIBRARY}
 	glfw3
+	${GLFW_LIBRARIES}
 	${ADDITIONAL_LIBRARIES}
 	${OPENGL_LIBRARIES}
 )
