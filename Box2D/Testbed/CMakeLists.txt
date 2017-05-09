@@ -4,6 +4,8 @@ find_package(GLEW REQUIRED)
 find_package(PkgConfig REQUIRED)
 pkg_search_module(GLFW REQUIRED glfw3)
 
+find_library(GLFW_LIBRARY NAMES glfw3)
+
 # Some flags for Freeglut and GLUI.
 add_definitions( -DGLEW_STATIC -D_CRT_SECURE_NO_WARNINGS )
 
@@ -50,7 +52,7 @@ target_link_libraries (
 	Box2D
 	${GLEW_LIBRARY}
 	glfw3
-	${GLFW_LIBRARIES}
+	${GLFW_STATIC_LIBRARIES}
 	${ADDITIONAL_LIBRARIES}
 	${OPENGL_LIBRARIES}
 )
