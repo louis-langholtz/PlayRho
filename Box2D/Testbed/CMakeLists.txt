@@ -63,4 +63,4 @@ target_link_libraries (
 	${OPENGL_LIBRARIES}
 )
 
-file(COPY ../Build/Data DESTINATION ..)
+file(COPY Data DESTINATION ..)
