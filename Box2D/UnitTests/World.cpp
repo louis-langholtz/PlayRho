@@ -49,7 +49,7 @@ TEST(World, ByteSize)
             break;
         }
         case  8: EXPECT_EQ(sizeof(World), size_t(376)); break;
-        case 16: EXPECT_EQ(sizeof(World), size_t(400)); break;
+        case 16: EXPECT_EQ(sizeof(World), size_t(416)); break;
         default: FAIL(); break;
     }
 }

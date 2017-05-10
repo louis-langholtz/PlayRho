@@ -94,5 +94,8 @@ TEST(Transformation, MulSameAsTransformTwice)
     const auto location = Vec2{-23.4f, 0.81f} * Meter;
     const auto twice = Transform(Transform(location, xfm), xfm);
     const auto location2 = Transform(location, xfm2);
-    EXPECT_EQ(twice, location2);
+    EXPECT_NEAR(static_cast<double>(RealNum{GetX(twice) / Meter}),
+                static_cast<double>(RealNum{GetX(location2) / Meter}), 0.0001);
+    EXPECT_NEAR(static_cast<double>(RealNum{GetY(twice) / Meter}),
+                static_cast<double>(RealNum{GetY(location2) / Meter}), 0.0001);
 }
