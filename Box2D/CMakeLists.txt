@@ -1,3 +1,6 @@
+set(BOX2D_REALNUM_TYPE "float")
+configure_file("Common/Settings.hpp.in" "Common/Settings.hpp" @ONLY)
+
 file(GLOB BOX2D_Collision_SRCS
 	"Collision/*.cpp"
 )
@@ -117,7 +120,7 @@ if(BOX2D_INSTALL)
 
 	# install libraries
 	if(BOX2D_BUILD_SHARED)
-		install(TARGETS Box2D_shared EXPORT Box2D-targets 
+		install(TARGETS Box2D_shared EXPORT Box2D-targets
                   LIBRARY DESTINATION ${LIB_INSTALL_DIR}
                   ARCHIVE DESTINATION ${LIB_INSTALL_DIR}
                   RUNTIME DESTINATION bin)
