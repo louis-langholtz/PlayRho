@@ -1,6 +1,52 @@
-The Build folder contains custom made project files for Visual Studio and XCode.
+# Building & Installation Instructions
 
-=============== OLD METHOD 1 UNSUPPORTED ====================
+This project can be built a few different ways depending on the target
+platform and what exactly is desired to be built. It can be installed then
+after being built.
+
+Specific instructions for building the `Testbed` GUI
+application is available in the [`Testbed/` folder's](Testbed/)
+`README.md` file.
+
+The following sections provide general per-platform and per-tool build and
+install instructions.
+
+## Linux
+
+### Using CMake
+
+This folder contains a CMake configuration file `CMakeLists.txt`. It can be
+used by `cmake` to build the library and all of the application targets on
+Linux platforms with either GCC C++ or Clang C++. This is the currently
+suggested way to build things for Linux. Simply run `cmake . && make`.
+To install the built targets, then run `make install`. This may require
+a tool like `sudo` to escalate your privileges in order to be able to install
+into the established folders. The CMake configuration file has a few options
+that can be modified to build different targets.
+
+## Mac OS X
+
+### Using Xcode
+
+The [`Build/xcode5`](Build/xcode5) folder contains project files for Xcode.
+The Xcode project file can be used to build the library and all of the
+application targets on and for the Mac OS X platform.
+
+### Using CMake
+
+This has not been tested. No further information is currently available.
+
+## Windows
+
+### Using Visual Studio 2017
+
+The [`Build/vs2017`](Build/vs2017) folder contains project files for
+Visual Studio 2017. These project files can be used to build the library
+on and for the Windows platform.
+
+## Older Build Instructions
+
+### premake
 
 For other platforms you need to run premake in this directory. You can get premake here:
 http://industriousone.com/premake
@@ -14,7 +60,7 @@ make config="debug"
 If you have build problems, you can post a question here:
 http://box2d.org/forum/viewforum.php?f=7
 
-=============== OLD METHOD 1 UNSUPPORTED ====================
+### cmake
 
 Box2D uses CMake to describe the build in a platform independent manner.
 
@@ -35,5 +81,5 @@ For Unix platforms, say the following on a terminal: (Replace $BOX2DPATH with th
 	cd $BOX2DPATH/Build
 	cmake -DBOX2D_INSTALL=ON -DBOX2D_BUILD_SHARED=ON ..
 	make
-	make install	
+	make install
 You might want to add -DCMAKE_INSTALL_PREFIX=/opt/Box2D or similar to the cmake call to change the installation location. make install might need sudo.
