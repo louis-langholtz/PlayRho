@@ -107,7 +107,7 @@ void Contact::Update(const StepConf& conf, ContactListener* listener)
     //   agrees 100% of the time with that returned from the CollideShapes function.
     //   This is not always the case however especially as the separation or overlap
     //   approaches zero.
-#define OVERLAP_TOLERANCE (SquareMeter / RealNum(1e6))
+#define OVERLAP_TOLERANCE (SquareMeter / RealNum(1e5))
 
     const auto sensor = fixtureA->IsSensor() || fixtureB->IsSensor();
     if (sensor)
@@ -117,9 +117,10 @@ void Contact::Update(const StepConf& conf, ContactListener* listener)
 
 #ifdef OVERLAP_TOLERANCE
 #ifndef NDEBUG
+        const auto tolerance = OVERLAP_TOLERANCE;
         const auto manifold = CollideShapes(childA, xfA, childB, xfB, GetManifoldConf(conf));
         assert(newTouching == (manifold.GetPointCount() > 0) ||
-               Abs(overlapping) < OVERLAP_TOLERANCE);
+               Abs(overlapping) < tolerance);
 #endif
 #endif
         
@@ -137,9 +138,10 @@ void Contact::Update(const StepConf& conf, ContactListener* listener)
 
 #ifdef OVERLAP_TOLERANCE
 #ifndef NDEBUG
+        const auto tolerance = OVERLAP_TOLERANCE;
         const auto overlapping = TestOverlap(childA, xfA, childB, xfB, GetDistanceConf(conf));
         assert(newTouching == (overlapping >= Area{0}) ||
-               Abs(overlapping) < OVERLAP_TOLERANCE);
+               Abs(overlapping) < tolerance);
 #endif
 #endif
 

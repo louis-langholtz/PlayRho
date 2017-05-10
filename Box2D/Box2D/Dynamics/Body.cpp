@@ -437,8 +437,8 @@ void box2d::RotateAboutWorldPoint(Body& body, Angle amount, Length2D worldPoint)
 {
     const auto xfm = body.GetTransformation();
     const auto p = xfm.p - worldPoint;
-    const auto c = std::cos(amount / Radian);
-    const auto s = std::sin(amount / Radian);
+    const auto c = RealNum{std::cos(amount / Radian)};
+    const auto s = RealNum{std::sin(amount / Radian)};
     const auto x = p.x * c - p.y * s;
     const auto y = p.x * s + p.y * c;
     const auto pos = Length2D{x, y} + worldPoint;

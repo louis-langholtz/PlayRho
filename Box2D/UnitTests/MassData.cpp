@@ -55,7 +55,7 @@ TEST(MassData, GetForOriginCenteredCircle)
     const auto foo = CircleShape{conf};
     const auto mass_data = foo.GetMassData();
     EXPECT_EQ(RealNum{mass_data.mass / Kilogram}, Pi);
-    EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)), 1.5707964, 0.0001);
+    EXPECT_NEAR(double(StripUnit(mass_data.I)), 1.5707964, 0.0001);
     EXPECT_TRUE(almost_equal(StripUnit(mass_data.I), (conf.density / KilogramPerSquareMeter) * (Square(conf.vertexRadius) * Square(conf.vertexRadius) * Pi / (RealNum{2} * SquareMeter * SquareMeter))));
     EXPECT_EQ(mass_data.center, conf.location);
 }
@@ -72,7 +72,7 @@ TEST(MassData, GetForCircle)
     const auto foo = CircleShape{conf};
     const auto mass_data = foo.GetMassData();
     EXPECT_EQ(RealNum{mass_data.mass / Kilogram}, Pi);
-    EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)), 7.85398, 0.0002);
+    EXPECT_NEAR(double(StripUnit(mass_data.I)), 7.85398, 0.0002);
     EXPECT_EQ(mass_data.center, position);
 }
 
@@ -89,21 +89,21 @@ TEST(MassData, GetForZeroVertexRadiusRectangle)
     const auto mass_data = shape.GetMassData();
     EXPECT_TRUE(almost_equal(RealNum(mass_data.mass / Kilogram),
                              RealNum((density / KilogramPerSquareMeter) * (8 * 2))));
-    EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)),
-                90.666664 * double(density / (KilogramPerSquareMeter)),
+    EXPECT_NEAR(double(StripUnit(mass_data.I)),
+                90.666664 * double(StripUnit(density)),
                 0.0004);
     EXPECT_TRUE(almost_equal(mass_data.center.x / Meter, shape.GetCentroid().x / Meter));
     EXPECT_TRUE(almost_equal(mass_data.center.y / Meter, shape.GetCentroid().y / Meter));
     
     // Area moment of inertia (I) for a rectangle is Ix + Iy = (b * h^3) / 12 + (b^3 * h) / 12....
     const auto i = 8.0 * 2.0 * 2.0 * 2.0 / 12.0 + 8.0 * 8.0 * 8.0 * 2.0 / 12.0;
-    EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)),
-                double((density / KilogramPerSquareMeter) * RealNum(i)),
+    EXPECT_NEAR(double(StripUnit(mass_data.I)),
+                double(StripUnit(density) * RealNum(i)),
                 0.0004);
     
     const auto i_z = GetPolarMoment(shape.GetVertices());
-    EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)),
-                double(density * i_z / (SquareMeter * Kilogram)),
+    EXPECT_NEAR(double(RealNum{mass_data.I / (SquareMeter * Kilogram / SquareRadian)}),
+                double(RealNum{density * i_z / (SquareMeter * Kilogram)}),
                 0.0004);
     
     EXPECT_TRUE(almost_equal(RealNum(GetAreaOfPolygon(shape.GetVertices()) / SquareMeter), RealNum(16)));
@@ -123,7 +123,7 @@ TEST(MassData, GetForZeroVertexRadiusEdge)
     EXPECT_TRUE(IsValid(mass_data.I));
     if (IsValid(mass_data.I))
     {
-        EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)), 0.0, 0.00001);
+        EXPECT_NEAR(double(RealNum{mass_data.I / (SquareMeter * Kilogram / SquareRadian)}), 0.0, 0.00001);
     }
     EXPECT_EQ(mass_data.center.x, Length{0});
     EXPECT_EQ(mass_data.center.y, Length{0});
@@ -146,7 +146,8 @@ TEST(MassData, GetForSamePointedEdgeIsSameAsCircle)
     EXPECT_TRUE(IsValid(mass_data.I));
     if (IsValid(mass_data.I))
     {
-        EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)), 7.85398, 0.0004);
+        EXPECT_NEAR(double(RealNum{mass_data.I / (SquareMeter * Kilogram / SquareRadian)}),
+                    7.85398, 0.0004);
     }
     EXPECT_TRUE(almost_equal(StripUnit(mass_data.center.x), StripUnit(v1.x)));
     EXPECT_TRUE(almost_equal(StripUnit(mass_data.center.y), StripUnit(v1.y)));
@@ -161,7 +162,7 @@ TEST(MassData, GetForCenteredEdge)
     
     const auto radiusSquared = Area{radius * radius};
     const auto circleArea = radiusSquared * Pi;
-    EXPECT_EQ(double(circleArea / SquareMeter), 0.5f * 0.5f * Pi);
+    EXPECT_EQ(double(RealNum{circleArea / SquareMeter}), 0.5f * 0.5f * Pi);
 
     auto conf = EdgeShape::Conf{};
     conf.vertexRadius = radius;
@@ -196,9 +197,10 @@ TEST(MassData, GetForCenteredEdge)
     if (IsValid(mass_data.I))
     {
         const auto I = (polarMoment + I1 + I2) * density / SquareRadian;
-        EXPECT_EQ(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)),
-                  double(I / (SquareMeter * Kilogram / SquareRadian)));
-        EXPECT_NEAR(double(mass_data.I / (SquareMeter * Kilogram / SquareRadian)), 18.70351, 0.002);
+        EXPECT_EQ(double(RealNum{mass_data.I / (SquareMeter * Kilogram / SquareRadian)}),
+                  double(RealNum{I / (SquareMeter * Kilogram / SquareRadian)}));
+        EXPECT_NEAR(double(RealNum{mass_data.I / (SquareMeter * Kilogram / SquareRadian)}),
+                    18.70351, 0.002);
         EXPECT_GE(mass_data.I, (polarMoment * density) / SquareRadian);
     }
     EXPECT_NEAR(double(RealNum(polarMoment / (SquareMeter * SquareMeter))), 5.6666665, 0.0001);

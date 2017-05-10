@@ -76,8 +76,8 @@ Coord2D ConvertWorldToScreen(const Camera& camera, const Length2D pw)
     const auto lower = camera.m_center - extents;
     const auto upper = camera.m_center + extents;
 
-    const auto u = (float(pw.x / Meter) - lower.x) / (upper.x - lower.x);
-    const auto v = (float(pw.y / Meter) - lower.y) / (upper.y - lower.y);
+    const auto u = (float(RealNum{pw.x / Meter}) - lower.x) / (upper.x - lower.x);
+    const auto v = (float(RealNum{pw.y / Meter}) - lower.y) / (upper.y - lower.y);
 
     return Coord2D{u * w, (float(1) - v) * h};
 }
@@ -738,8 +738,8 @@ Length2D DebugDraw::GetTranslation() const
 void DebugDraw::SetTranslation(Length2D value)
 {
     m_camera.m_center = Coord2D{
-        static_cast<float>(value.x / Meter),
-        static_cast<float>(value.y / Meter)
+        static_cast<float>(RealNum{value.x / Meter}),
+        static_cast<float>(RealNum{value.y / Meter})
     };
 }
     

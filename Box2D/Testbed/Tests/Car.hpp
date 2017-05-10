@@ -261,7 +261,7 @@ public:
                           "Keys: left = a, brake = s, right = d, hz down = q, hz up = e");
         m_textLine += DRAW_STRING_NEW_LINE;
         drawer.DrawString(5, m_textLine, "frequency = %g hz, damping ratio = %g",
-                          static_cast<double>(m_hz / Hertz), m_zeta);
+                          static_cast<double>(RealNum{m_hz / Hertz}), m_zeta);
         m_textLine += DRAW_STRING_NEW_LINE;
     }
 

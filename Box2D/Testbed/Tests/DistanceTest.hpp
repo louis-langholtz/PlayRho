@@ -91,8 +91,8 @@ public:
         drawer.DrawString(5, m_textLine, "%s %s: lp={%g,%g}, ln={%g,%g}, #=%d%s",
                           GetName(manifold.GetType()),
                           name,
-                          static_cast<double>(GetX(manifold.GetLocalPoint()) / Meter),
-                          static_cast<double>(GetY(manifold.GetLocalPoint()) / Meter),
+                          static_cast<double>(RealNum{GetX(manifold.GetLocalPoint()) / Meter}),
+                          static_cast<double>(RealNum{GetY(manifold.GetLocalPoint()) / Meter}),
                           GetX(manifold.GetLocalNormal()),
                           GetY(manifold.GetLocalNormal()),
                           count, strbuf.str().c_str());
@@ -157,8 +157,8 @@ public:
 
         drawer.DrawString(5, m_textLine,
                           "Press num-pad '+'/'-' to increase/decrease vertex radius of selected shape (%g & %g).",
-                          static_cast<double>(rA / Meter),
-                          static_cast<double>(rB / Meter));
+                          static_cast<double>(RealNum{rA / Meter}),
+                          static_cast<double>(RealNum{rB / Meter}));
         m_textLine += DRAW_STRING_NEW_LINE;
         
         drawer.DrawString(5, m_textLine,
@@ -169,16 +169,16 @@ public:
 
         drawer.DrawString(5, m_textLine,
                           "Max separation: %g for a-face[%i] b-vert[%i]; %g for b-face[%i] a-vert[%i]",
-                          static_cast<double>(maxIndicesAB.separation / Meter),
+                          static_cast<double>(RealNum{maxIndicesAB.separation / Meter}),
                           maxIndicesAB.index1,
                           maxIndicesAB.index2,
-                          static_cast<double>(maxIndicesBA.separation / Meter),
+                          static_cast<double>(RealNum{maxIndicesBA.separation / Meter}),
                           maxIndicesBA.index1,
                           maxIndicesBA.index2);
         m_textLine += DRAW_STRING_NEW_LINE;
 
-        if (almost_equal(static_cast<double>(maxIndicesAB.separation / Meter),
-                         static_cast<double>(maxIndicesBA.separation / Meter)))
+        if (almost_equal(static_cast<double>(RealNum{maxIndicesAB.separation / Meter}),
+                         static_cast<double>(RealNum{maxIndicesBA.separation / Meter})))
         {
             //assert(maxIndicesAB.index1 == maxIndicesBA.index2);
             //assert(maxIndicesAB.index2 == maxIndicesBA.index1);
@@ -214,8 +214,8 @@ public:
         }
 
         drawer.DrawString(5, m_textLine, "distance = %g (from %g), iterations = %d",
-                          static_cast<double>(adjustedDistance / Meter),
-                          static_cast<double>(outputDistance / Meter),
+                          static_cast<double>(RealNum{adjustedDistance / Meter}),
+                          static_cast<double>(RealNum{outputDistance / Meter}),
                           output.iterations);
         m_textLine += DRAW_STRING_NEW_LINE;
         
@@ -223,10 +223,10 @@ public:
             const auto size = output.simplex.GetSize();
             drawer.DrawString(5, m_textLine, "Simplex info: size=%d, wpt-a={%g,%g}, wpt-b={%g,%g})",
                               size,
-                              static_cast<double>(witnessPoints.a.x / Meter),
-                              static_cast<double>(witnessPoints.a.y / Meter),
-                              static_cast<double>(witnessPoints.b.x / Meter),
-                              static_cast<double>(witnessPoints.b.y / Meter));
+                              static_cast<double>(RealNum{witnessPoints.a.x / Meter}),
+                              static_cast<double>(RealNum{witnessPoints.a.y / Meter}),
+                              static_cast<double>(RealNum{witnessPoints.b.x / Meter}),
+                              static_cast<double>(RealNum{witnessPoints.b.y / Meter}));
             m_textLine += DRAW_STRING_NEW_LINE;
             for (auto i = decltype(size){0}; i < size; ++i)
             {
@@ -235,11 +235,11 @@ public:
                 
                 drawer.DrawString(5, m_textLine, "  a[%d]={%g,%g} b[%d]={%g,%g} coef=%g",
                                   edge.GetIndexA(),
-                                  static_cast<double>(edge.GetPointA().x / Meter),
-                                  static_cast<double>(edge.GetPointA().y / Meter),
+                                  static_cast<double>(RealNum{edge.GetPointA().x / Meter}),
+                                  static_cast<double>(RealNum{edge.GetPointA().y / Meter}),
                                   edge.GetIndexB(),
-                                  static_cast<double>(edge.GetPointB().x / Meter),
-                                  static_cast<double>(edge.GetPointB().y / Meter),
+                                  static_cast<double>(RealNum{edge.GetPointB().x / Meter}),
+                                  static_cast<double>(RealNum{edge.GetPointB().y / Meter}),
                                   coef);
                 m_textLine += DRAW_STRING_NEW_LINE;
             }

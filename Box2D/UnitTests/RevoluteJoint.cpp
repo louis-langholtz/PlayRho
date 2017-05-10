@@ -90,10 +90,10 @@ TEST(RevoluteJoint, MovesDynamicCircles)
     jd.bodyB = b2;
     world.CreateJoint(jd);
     Step(world, Time{Second * RealNum{1}});
-    EXPECT_NEAR(b1->GetLocation().x / Meter, 0, 0.001);
-    EXPECT_NEAR(b1->GetLocation().y / Meter, -4, 0.001);
-    EXPECT_NEAR(b2->GetLocation().x / Meter, 0, 0.01);
-    EXPECT_NEAR(b2->GetLocation().y / Meter, -4, 0.01);
+    EXPECT_NEAR(double(RealNum{b1->GetLocation().x / Meter}), 0, 0.001);
+    EXPECT_NEAR(double(RealNum{b1->GetLocation().y / Meter}), -4, 0.001);
+    EXPECT_NEAR(double(RealNum{b2->GetLocation().x / Meter}), 0, 0.01);
+    EXPECT_NEAR(double(RealNum{b2->GetLocation().y / Meter}), -4, 0.01);
     EXPECT_EQ(b1->GetAngle(), RealNum{0} * Degree);
     EXPECT_EQ(b2->GetAngle(), RealNum{0} * Degree);
 }
@@ -123,8 +123,10 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
     {
         Step(world, Second * RealNum{0.1f});
         EXPECT_EQ(b1->GetLocation(), p1);
-        EXPECT_NEAR(b2->GetLocation().x / Meter, p2.x / Meter, 0.0001);
-        EXPECT_NEAR(b2->GetLocation().y / Meter, p2.y / Meter, 0.0001);
+        EXPECT_NEAR(double(RealNum{b2->GetLocation().x / Meter}),
+                    double(RealNum{p2.x / Meter}), 0.0001);
+        EXPECT_NEAR(double(RealNum{b2->GetLocation().y / Meter}),
+                    double(RealNum{p2.y / Meter}), 0.0001);
         EXPECT_EQ(b2->GetAngle(), RealNum{0} * Degree);
     }
     

@@ -1183,8 +1183,8 @@ inline Angle GetNormalized(Angle value)
 {
 #if 1
     constexpr auto radsPerCircle = RealNum{2 * Pi} * Radian;
-    const auto laps = static_cast<int>(value / radsPerCircle);
-    return value - (laps * RealNum{1} * radsPerCircle);
+    const auto laps = static_cast<int>(RealNum{value / radsPerCircle});
+    return value - Angle(RealNum(laps) * radsPerCircle);
 #else
     const auto TwoPi = Pi * 2;
     const auto res = RealNum{value / Radian} / TwoPi;

@@ -616,8 +616,8 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     stream = std::stringstream();
     stream << "   ";
     stream << " bod-slept=" << m_stepStats.reg.bodiesSlept;
-    stream << " min-sep=" << static_cast<double>(m_stepStats.reg.minSeparation / Meter);
-    stream << " max-inc-imp=" << static_cast<double>(m_stepStats.reg.maxIncImpulse / (Kilogram * MeterPerSecond));
+    stream << " min-sep=" << static_cast<double>(RealNum{m_stepStats.reg.minSeparation / Meter});
+    stream << " max-inc-imp=" << static_cast<double>(RealNum{m_stepStats.reg.maxIncImpulse / (Kilogram * MeterPerSecond)});
     drawer.DrawString(5, m_textLine, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
     
@@ -642,8 +642,8 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     stream << " cts-upd=" << m_stepStats.toi.contactsUpdatedToi;
     stream << " max-dist-iter=" << unsigned{m_stepStats.toi.maxDistIters};
     stream << " max-toi-iter=" << unsigned{m_stepStats.toi.maxToiIters};
-    stream << " min-sep=" << static_cast<double>(m_stepStats.toi.minSeparation / Meter);
-    stream << " max-inc-imp=" << static_cast<double>(m_stepStats.toi.maxIncImpulse / (Kilogram * MeterPerSecond));
+    stream << " min-sep=" << static_cast<double>(RealNum{m_stepStats.toi.minSeparation / Meter});
+    stream << " max-inc-imp=" << static_cast<double>(RealNum{m_stepStats.toi.maxIncImpulse / (Kilogram * MeterPerSecond)});
     drawer.DrawString(5, m_textLine, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
     
@@ -681,14 +681,14 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     
     stream = std::stringstream();
     stream << "  Reg ranges:";
-    stream << " min-sep=" << static_cast<double>(m_minRegSep / Meter);
-    stream << " max-sep=" << static_cast<double>(m_maxRegSep / Meter);
+    stream << " min-sep=" << static_cast<double>(RealNum{m_minRegSep / Meter});
+    stream << " max-sep=" << static_cast<double>(RealNum{m_maxRegSep / Meter});
     drawer.DrawString(5, m_textLine, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
     
     stream = std::stringstream();
     stream << "  TOI ranges:";
-    stream << " min-sep=" << static_cast<double>(m_minToiSep / Meter);
+    stream << " min-sep=" << static_cast<double>(RealNum{m_minToiSep / Meter});
     stream << " max-dist-iter=" << unsigned{m_maxDistIters} << "/" << unsigned{stepConf.maxDistanceIters};
     stream << " max-toi-iter=" << unsigned{m_maxToiIters} << "/" << unsigned{stepConf.maxToiIters};
     stream << " max-root-iter=" << unsigned{m_maxRootIters} << "/" << unsigned{stepConf.maxToiRootIters};
@@ -730,16 +730,16 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
         stream = std::stringstream();
         stream << "Selected fixture:";
         stream << " pos={";
-        stream << static_cast<double>(GetX(location) / Meter);
+        stream << static_cast<double>(RealNum{GetX(location) / Meter});
         stream << ",";
-        stream << static_cast<double>(GetY(location) / Meter);
+        stream << static_cast<double>(RealNum{GetY(location) / Meter});
         stream << "}";
         stream << " vel={";
-        stream << static_cast<double>(GetX(velocity.linear) / MeterPerSecond);
+        stream << static_cast<double>(RealNum{GetX(velocity.linear) / MeterPerSecond});
         stream << ",";
-        stream << static_cast<double>(GetY(velocity.linear) / MeterPerSecond);
+        stream << static_cast<double>(RealNum{GetY(velocity.linear) / MeterPerSecond});
         stream << "}";
-        stream << " density=" << static_cast<double>(density * SquareMeter / Kilogram);
+        stream << " density=" << static_cast<double>(RealNum{density * SquareMeter / Kilogram});
         stream << " friction=" << friction;
         stream << " restitution=" << restitution;
         stream << " b-cts=" << numTouching;

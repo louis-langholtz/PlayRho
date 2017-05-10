@@ -90,7 +90,7 @@ public:
         m_textLine += DRAW_STRING_NEW_LINE;
         const auto force = m_joint->GetMotorForce(RealNum{settings.hz} * Hertz);
         drawer.DrawString(5, m_textLine, "Motor Force = %4.0f",
-                          static_cast<double>(force / Newton));
+                          static_cast<double>(RealNum{force / Newton}));
         m_textLine += DRAW_STRING_NEW_LINE;
     }
 

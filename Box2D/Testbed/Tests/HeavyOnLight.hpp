@@ -92,7 +92,7 @@ public:
     {
         drawer.DrawString(5, m_textLine,
                           "Press '+'/'-' to increase/decrease density of top shape (%f kg/m^2)",
-                          double(m_top->GetShape()->GetDensity() / KilogramPerSquareMeter));
+                          double(RealNum{m_top->GetShape()->GetDensity() / KilogramPerSquareMeter}));
         m_textLine += DRAW_STRING_NEW_LINE;
     }
 

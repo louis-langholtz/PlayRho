@@ -110,7 +110,8 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
         const auto newDistance = GetLength(body1->GetLocation() - body2->GetLocation());
         if (distanceMet)
         {
-            EXPECT_NEAR(double(newDistance / Meter), double(oldDistance / Meter), 0.01);
+            EXPECT_NEAR(double(RealNum{newDistance / Meter}),
+                        double(RealNum{oldDistance / Meter}), 0.01);
         }
         else
         {
@@ -168,7 +169,8 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
         }
         if (distanceMet)
         {
-            EXPECT_NEAR(double(newDistance / Meter), double(oldDistance / Meter), 2.5);
+            EXPECT_NEAR(double(RealNum{newDistance / Meter}),
+                        double(RealNum{oldDistance / Meter}), 2.5);
         }
         else
         {
@@ -178,5 +180,6 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
         oldDistance = newDistance;
     }
     
-    EXPECT_NEAR(double(oldDistance / Meter), double(jointdef.length / Meter), 0.1);
+    EXPECT_NEAR(double(RealNum{oldDistance / Meter}),
+                double(RealNum{jointdef.length / Meter}), 0.1);
 }

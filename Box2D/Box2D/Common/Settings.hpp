@@ -76,7 +76,7 @@ class Body;
 class Contact;
 class Joint;
 
-/// Real-number type.
+/// @brief Real-number type.
 ///
 /// @details This is the number type underlying numerical calculations conceptually involving
 /// real-numbers. Ideally the implementation of this type doesn't suffer from things like:
@@ -99,7 +99,7 @@ class Joint;
 ///
 using RealNum = float;
 
-/// Pi.
+/// @brief Pi.
 ///
 /// @details
 /// While the include file definition of M_PI may be a POSIX compliance requirement
@@ -167,6 +167,8 @@ using InvRotInertia = boost::units::quantity<boost::units::si::inverse_moment_of
 using Momentum = boost::units::quantity<boost::units::si::momentum, RealNum>;
 constexpr auto NewtonSecond = Newton * Second;
 
+/// @brief Angular momentum.
+/// @note Units of L^2 M T^-1 QP^-1.
 using AngularMomentum = boost::units::quantity<boost::units::si::angular_momentum, RealNum>;
 
 #else // USE_BOOST_UNITS
@@ -285,6 +287,11 @@ constexpr inline RealNum StripUnit(const LinearVelocity value)
 constexpr inline RealNum StripUnit(const AngularVelocity value)
 {
     return RealNum{value / RadianPerSecond};
+}
+
+constexpr inline RealNum StripUnit(const Density value)
+{
+    return RealNum{value / KilogramPerSquareMeter};
 }
 
 constexpr inline RealNum StripUnit(const Force value)

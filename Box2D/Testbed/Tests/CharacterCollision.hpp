@@ -175,12 +175,12 @@ public:
 
             const auto body = m_world->CreateBody(bd);
 
-            auto angle = 0.0f;
-            const auto delta = Pi / 3.0f;
+            auto angle = RealNum{0.0f};
+            const auto delta = RealNum{Pi / 3.0f};
             Length2D vertices[6];
             for (auto i = 0; i < 6; ++i)
             {
-                vertices[i] = Vec2(0.5f * cosf(angle), 0.5f * sinf(angle)) * Meter;
+                vertices[i] = Vec2(0.5f * std::cos(angle), 0.5f * std::sin(angle)) * Meter;
                 angle += delta;
             }
 

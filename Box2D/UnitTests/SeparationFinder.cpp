@@ -73,7 +73,8 @@ TEST(SeparationFinder, BehavesAsExpected)
         if (minSeparation.distance > Length{0})
         {
             EXPECT_LT(distance, last_distance);
-            EXPECT_NEAR(double(minSeparation.distance / Meter), double(distance / Meter), 0.00001);
+            EXPECT_NEAR(double(RealNum{minSeparation.distance / Meter}),
+                        double(RealNum{distance / Meter}), 0.00001);
         }
         else if (minSeparation.distance < Length{0})
         {
@@ -88,11 +89,11 @@ TEST(SeparationFinder, BehavesAsExpected)
         EXPECT_EQ(s, minSeparation.distance);
         if (s >= Length{0})
         {
-            EXPECT_NEAR(double(s / Meter), double(distance / Meter), 0.0001);
+            EXPECT_NEAR(double(RealNum{s / Meter}), double(RealNum{distance / Meter}), 0.0001);
         }
         else
         {
-            EXPECT_LE(double(s / Meter), double(distance / Meter));
+            EXPECT_LE(double(RealNum{s / Meter}), double(RealNum{distance / Meter}));
         }
         EXPECT_LT(s, last_s);
         

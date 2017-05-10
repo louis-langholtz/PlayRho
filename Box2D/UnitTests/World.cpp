@@ -324,7 +324,8 @@ TEST(World, GravitationalBodyMovement)
     p0 = body->GetLocation();
     Step(world, t);
     EXPECT_EQ(GetLinearVelocity(*body).x, RealNum{0.0f} * MeterPerSecond);
-    EXPECT_NEAR(double(GetLinearVelocity(*body).y / MeterPerSecond), double(a * (t * RealNum{3}) / Second), 0.00001);
+    EXPECT_NEAR(double(RealNum{GetLinearVelocity(*body).y / MeterPerSecond}),
+                double(RealNum{a * (t * RealNum{3}) / Second}), 0.00001);
     EXPECT_EQ(body->GetLocation().x, p0.x);
     EXPECT_EQ(body->GetLocation().y, p0.y + GetLinearVelocity(*body).y * t);
 }
@@ -1170,9 +1171,11 @@ TEST(World, CollidingDynamicBodies)
     
     // confirm conservation of momentum:
     // velocities should now be same magnitude but in opposite directions
-    EXPECT_NEAR(double(GetLinearVelocity(*body_a).x / MeterPerSecond), double(-x), 0.0001);
+    EXPECT_NEAR(double(RealNum{GetLinearVelocity(*body_a).x / MeterPerSecond}),
+                double(-x), 0.0001);
     EXPECT_EQ(GetLinearVelocity(*body_a).y, RealNum{0.0f} * MeterPerSecond);
-    EXPECT_NEAR(double(GetLinearVelocity(*body_b).x / MeterPerSecond), double(+x), 0.0001);
+    EXPECT_NEAR(double(RealNum{GetLinearVelocity(*body_b).x / MeterPerSecond}),
+                double(+x), 0.0001);
     EXPECT_EQ(GetLinearVelocity(*body_b).y, RealNum{0.0f} * MeterPerSecond);
 }
 
@@ -1269,7 +1272,7 @@ TEST(World, TilesComesToRest)
     //   4.85618s with RealNum=float and NDEBUG defined.
     //   5.32973s with RealNum=double and NDEBUG defined.
     
-    EXPECT_EQ(GetAwakeCount(*m_world), 0);
+    EXPECT_EQ(GetAwakeCount(*m_world), 0u);
 
     // The final stats seem dependent on the host the test is run on.
     // Presume that this is most closely associated with the actual CPU/FPU.
@@ -1624,8 +1627,8 @@ TEST(World, MouseJointWontCauseTunnelling)
     for (auto i = decltype(numBodies){0}; i < numBodies; ++i)
     {
         const auto angle = i * 2 * Pi / numBodies;
-        const auto x = ball_radius * RealNum(2.1) * std::cos(angle);
-        const auto y = ball_radius * RealNum(2.1) * std::sin(angle);
+        const auto x = ball_radius * RealNum(2.1) * RealNum(std::cos(angle));
+        const auto y = ball_radius * RealNum(2.1) * RealNum(std::sin(angle));
         body_def.position = Length2D{x, y};
         bodies[i] = world.CreateBody(body_def);
         ASSERT_NE(bodies[i], nullptr);

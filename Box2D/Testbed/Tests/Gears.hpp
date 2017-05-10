@@ -129,7 +129,7 @@ public:
         {
             const auto ratio = m_joint4->GetRatio();
             const auto angle = GetJointAngle(*m_joint1) + ratio * GetJointAngle(*m_joint2);
-            const auto value = static_cast<double>(angle / Radian);
+            const auto value = static_cast<double>(RealNum{angle / Radian});
             drawer.DrawString(5, m_textLine, "theta1 + %4.2f * theta2 = %4.2f", (float) ratio, value);
             m_textLine += DRAW_STRING_NEW_LINE;
         }
@@ -139,7 +139,7 @@ public:
             const auto value = ratio * m_joint3->GetJointTranslation();
             drawer.DrawString(5, m_textLine, "theta2 + %4.2f * delta = %4.2f",
                               static_cast<double>(ratio),
-                              static_cast<double>(value / Meter));
+                              static_cast<double>(RealNum{value / Meter}));
             m_textLine += DRAW_STRING_NEW_LINE;
         }
     }

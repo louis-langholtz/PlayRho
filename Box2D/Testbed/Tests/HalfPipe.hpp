@@ -38,8 +38,8 @@ namespace box2d {
                 for (auto i = 0; i < 90; ++i)
                 {
                     const auto angle = RealNum{(RealNum(i * 2 + 180.0f) * Degree) / Radian};
-                    const auto x = pipeRadius * std::cos(angle);
-                    const auto y = pipeRadius * std::sin(angle);
+                    const auto x = pipeRadius * RealNum{std::cos(angle)};
+                    const auto y = pipeRadius * RealNum{std::sin(angle)};
                     vertices.push_back(Length2D{x, y + RealNum{20} * Meter});
                 }
                 pipeShape->CreateChain(Span<const Length2D>(vertices.data(), vertices.size()));

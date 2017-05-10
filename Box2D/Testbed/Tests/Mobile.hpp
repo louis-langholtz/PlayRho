@@ -44,7 +44,7 @@ public:
 
         RevoluteJointDef jointDef;
         jointDef.bodyA = ground;
-        jointDef.bodyB = AddNode(ground, Vec2_zero * Meter, 0, 3.0f, a, shape);
+        jointDef.bodyB = AddNode(ground, Vec2_zero * Meter, 0, 3.0f, static_cast<float>(a), shape);
         jointDef.localAnchorA = Vec2_zero * Meter;
         jointDef.localAnchorB = Vec2(0, a) * Meter;
         m_world->CreateJoint(jointDef);
