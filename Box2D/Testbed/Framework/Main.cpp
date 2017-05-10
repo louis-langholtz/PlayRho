@@ -26,6 +26,7 @@
 #include <iostream>
 #include <iomanip>
 #include <memory>
+#include <string>
 
 #if defined(__APPLE__)
 #include <OpenGL/gl3.h>
@@ -34,7 +35,15 @@
 #endif
 
 #include <GLFW/glfw3.h>
-#include <stdio.h>
+#include <cstdio>
+
+#if defined(_WIN32) || defined(_WIN64)
+#include <direct.h>
+#else
+#include <cstdlib>
+#include <cerrno>
+#include <unistd.h>
+#endif
 
 #ifdef _MSC_VER
 #define snprintf _snprintf
@@ -168,8 +177,28 @@ namespace
     Length2D lastp;
 }
 
-//
-static void sCreateUI()
+static auto GetCwd()
+{
+    // In C++17 this implementation should be replaced with fs::current_path()
+    auto retval = std::string();
+#if defined(_WIN32) || defined(_WIN64)
+    const auto buffer = _getcwd(NULL, 0);
+    if (buffer)
+    {
+        retval += std::string(buffer);
+        std::free(buffer);
+    }
+#else
+    char buffer[1024];
+    if (getcwd(buffer, sizeof(buffer)))
+    {
+        retval += buffer;
+    }
+#endif
+    return retval;
+}
+
+static void CreateUI()
 {
     ui.showMenu = true;
     ui.scroll = 0;
@@ -179,8 +208,14 @@ static void sCreateUI()
 
     // Init UI
     const char* fontPaths[] = {
+        // Path if Testbed running from MSVS or Xcode Build folder.
+        "../../Testbed/Data/DroidSans.ttf",
+        
         // This is the original path...
         "../Data/DroidSans.ttf",
+
+        // Path if Testbed app running from Testbed folder
+        "Data/DroidSans.ttf",
         
         // Possibly a relative path for windows...
         "../../../../Data/DroidSans.ttf",
@@ -189,9 +224,14 @@ static void sCreateUI()
         "./DroidSans.ttf",
     };
 
+    const auto cwd = GetCwd();
+    if (cwd.empty())
+    {
+        std::perror("GetCwd");
+    }
     for (auto&& fontPath: fontPaths)
     {
-        fprintf(stderr, "Attempting to load font from \"%s\", ", fontPath);
+        fprintf(stderr, "Attempting to load font from \"%s/%s\", ", cwd.c_str(), fontPath);
 	    if (RenderGLInitFont(fontPath))
     	{
             fprintf(stderr, "succeeded.\n");
@@ -208,8 +248,7 @@ static void sCreateUI()
     }
 }
 
-//
-static void sResizeWindow(GLFWwindow*, int width, int height)
+static void ResizeWindow(GLFWwindow*, int width, int height)
 {
     g_camera.m_width = width;
     g_camera.m_height = height;
@@ -265,8 +304,7 @@ static Test::Key GlfwKeyToTestKey(int key)
     return Test::Key_Unknown;
 }
 
-//
-static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mods)
+static void KeyCallback(GLFWwindow*, int key, int scancode, int action, int mods)
 {
     NOT_USED(scancode);
 
@@ -388,8 +426,7 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
     // else GLFW_REPEAT
 }
 
-//
-static void sMouseButton(GLFWwindow*, int button, int action, int mods)
+static void MouseButton(GLFWwindow*, int button, int action, int mods)
 {
     double xd, yd;
     glfwGetCursorPos(mainWindow, &xd, &yd);
@@ -432,8 +469,7 @@ static void sMouseButton(GLFWwindow*, int button, int action, int mods)
     }
 }
 
-//
-static void sMouseMotion(GLFWwindow*, double xd, double yd)
+static void MouseMotion(GLFWwindow*, double xd, double yd)
 {
     const auto ps = Coord2D{static_cast<float>(xd), static_cast<float>(yd)};
     const auto pw = ConvertScreenToWorld(g_camera, ps);
@@ -449,8 +485,7 @@ static void sMouseMotion(GLFWwindow*, double xd, double yd)
     }
 }
 
-//
-static void sScrollCallback(GLFWwindow*, double, double dy)
+static void ScrollCallback(GLFWwindow*, double, double dy)
 {
     if (ui.mouseOverMenu)
     {
@@ -469,8 +504,7 @@ static void sScrollCallback(GLFWwindow*, double, double dy)
     }
 }
 
-//
-static void sSimulate(Drawer& drawer)
+static void Simulate(Drawer& drawer)
 {
     glEnable(GL_DEPTH_TEST);
     
@@ -504,8 +538,7 @@ static void sSimulate(Drawer& drawer)
     }
 }
 
-//
-static void sInterface()
+static void UserInterface()
 {
     const auto menuWidth = 200;
     ui.mouseOverMenu = false;
@@ -631,7 +664,6 @@ static void sInterface()
     imguiEndFrame();
 }
 
-//
 int main()
 {
     TestSuite testSuite(GetTestEntries());
@@ -654,7 +686,8 @@ int main()
     }
 
     char title[64];
-    sprintf(title, "Box2D Testbed Version %d.%d.%d", BuiltVersion.major, BuiltVersion.minor, BuiltVersion.revision);
+    sprintf(title, "Box2D Testbed Version %d.%d.%d",
+            BuiltVersion.major, BuiltVersion.minor, BuiltVersion.revision);
 
 #if defined(__APPLE__)
     // Not sure why, but these settings cause glewInit below to crash.
@@ -675,12 +708,12 @@ int main()
     glfwMakeContextCurrent(mainWindow);
     printf("OpenGL %s, GLSL %s\n", glGetString(GL_VERSION), glGetString(GL_SHADING_LANGUAGE_VERSION));
 
-    glfwSetScrollCallback(mainWindow, sScrollCallback);
-    glfwSetWindowSizeCallback(mainWindow, sResizeWindow);
-    glfwSetKeyCallback(mainWindow, sKeyCallback);
-    glfwSetMouseButtonCallback(mainWindow, sMouseButton);
-    glfwSetCursorPosCallback(mainWindow, sMouseMotion);
-    glfwSetScrollCallback(mainWindow, sScrollCallback);
+    glfwSetScrollCallback(mainWindow, ScrollCallback);
+    glfwSetWindowSizeCallback(mainWindow, ResizeWindow);
+    glfwSetKeyCallback(mainWindow, KeyCallback);
+    glfwSetMouseButtonCallback(mainWindow, MouseButton);
+    glfwSetCursorPosCallback(mainWindow, MouseMotion);
+    glfwSetScrollCallback(mainWindow, ScrollCallback);
 
 #if defined(__APPLE__) == FALSE
     //glewExperimental = GL_TRUE;
@@ -692,7 +725,7 @@ int main()
     }
 #endif
     
-    sCreateUI();
+    CreateUI();
     
     // Control the frame rate. One draw per monitor refresh.
     glfwSwapInterval(1);
@@ -727,8 +760,8 @@ int main()
 
             imguiBeginFrame(mousex, mousey, mousebutton, mscroll);
 
-            sSimulate(drawer);
-            sInterface();
+            Simulate(drawer);
+            UserInterface();
             
             // Measure speed
             const auto time2 = glfwGetTime();
