@@ -701,14 +701,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		474AFBF31EB19BB6002AA6C8 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				474AFBF41EB19BB6002AA6C8 /* CoreVideo.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		474BC3F31D41278800447DCD /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -1079,12 +1071,12 @@
 				80A390771852F2A000E19E2B /* Cocoa.framework */,
 				80A390781852F2A000E19E2B /* CoreFoundation.framework */,
 				80BB8A7A141C3FA700F1753A /* OpenGL.framework */,
+				474AFBF41EB19BB6002AA6C8 /* CoreVideo.framework */,
 				80BB8A35141C3E8500F1753A /* Testbed */,
 				80BB8A31141C3E7B00F1753A /* HelloWorld */,
 				80BB8922141C3E5900F1753A /* Box2D */,
 				80FF01D3141C3D980059E59D /* Products */,
 				474BC3F31D41278800447DCD /* UnitTests */,
-				474AFBF31EB19BB6002AA6C8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 			usesTabs = 0;
