@@ -6,10 +6,10 @@ local action = _ACTION or ""
 solution "Box2D"
 	location ( "Build/" .. action )
 	configurations { "Debug", "Release" }
-	
+
 	configuration "vs*"
-		defines { "_CRT_SECURE_NO_WARNINGS" }	
-		
+		defines { "_CRT_SECURE_NO_WARNINGS" }
+
 	configuration "Debug"
 		targetdir ( "Build/" .. action .. "/bin/Debug" )
 		flags { "Symbols" }
@@ -22,23 +22,23 @@ solution "Box2D"
 	project "Box2D"
 		kind "StaticLib"
 		language "C++"
-		files { "Box2D/**.h", "Box2D/**.cpp" }
+		files { "Box2D/**.hpp", "Box2D/**.cpp" }
 		vpaths { [""] = "Box2D" }
 		includedirs { "." }
-		
+
 	project "GLEW"
 		kind "StaticLib"
 		language "C++"
 		files { "glew/*.h", "glew/*.c" }
 		vpaths { ["Headers"] = "**.h",  ["Sources"] = "**.c" }
 		includedirs { "." }
-			 
+
 	project "GLFW"
 		kind "StaticLib"
 		language "C"
 		files { "glfw/*.h", "glfw/*.c" }
 		vpaths { ["Headers"] = "**.h",  ["Sources"] = "**.c" }
-	
+
 	project "HelloWorld"
 		kind "ConsoleApp"
 		language "C++"
@@ -50,7 +50,7 @@ solution "Box2D"
 	project "Testbed"
 		kind "ConsoleApp"
 		language "C++"
-		files { "Testbed/**.h", "Testbed/**.cpp" }
+		files { "Testbed/**.hpp", "Testbed/**.cpp" }
 		vpaths { [""] = "Testbed" }
 		includedirs { "." }
 		links { "Box2D", "GLEW", "GLFW" }
@@ -60,4 +60,3 @@ solution "Box2D"
 			linkoptions { "-framework OpenGL -framework Cocoa" }
 		configuration { "not windows", "not macosx" }
 			links { "X11", "GL", "GLU" }
-
