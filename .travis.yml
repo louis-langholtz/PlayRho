@@ -24,7 +24,7 @@ branches:
 # For details see: https://docs.travis-ci.com/user/osx-ci-environment/
 osx_image: xcode8
 
-xcode_project: Box2D/Build/xcode5/Box2D.xcodeproj
+xcode_project: Build/xcode5/Box2D.xcodeproj
 xcode_scheme: UnitTest
 
 sudo: false
@@ -79,6 +79,6 @@ install:
   - export GLEW_URL=https://sourceforge.net/projects/glew/files/glew/2.0.0/glew-2.0.0.zip && mkdir /tmp/glew && pushd /tmp/glew && curl --location --remote-name $GLEW_URL && md5sum *.zip && echo "Expect MD5 hash of 54c913d0c00726fb028d089ad1664ede" && unzip -q *.zip && rm *.zip && cd * && make && make DESTDIR=/tmp install && popd
 
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "clang++-3.7" ]]; then (cd Box2D && mkdir -p BuildLinux && cd BuildLinux && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib -DBOX2D_BUILD_UNIT_TESTS=ON -DBOX2D_BUILD_HELLOWORLD=ON -DBOX2D_BUILD_TESTBED=ON .. && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:StackAllocator.slower_than_mallocfree ); fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-6" ]]; then (cd Box2D && mkdir -p BuildLinux && cd BuildLinux && cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib -DBOX2D_BUILD_UNIT_TESTS=ON -DBOX2D_BUILD_HELLOWORLD=ON -DBOX2D_BUILD_TESTBED=ON .. && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:StackAllocator.slower_than_mallocfree ); fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then (cd Box2D && xcodebuild -project Box2D/Build/xcode5/Box2D.xcodeproj -list); fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "clang++-3.7" ]]; then (mkdir -p Box2D-ClangLinux && cd Box2D-ClangLinux && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib -DBOX2D_BUILD_UNIT_TESTS=ON -DBOX2D_BUILD_HELLOWORLD=ON -DBOX2D_BUILD_TESTBED=ON ../Box2D && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:StackAllocator.slower_than_mallocfree ); fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-6" ]]; then (mkdir -p Box2D-GccLinux && cd Box2D-GccLinux && cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib -DBOX2D_BUILD_UNIT_TESTS=ON -DBOX2D_BUILD_HELLOWORLD=ON -DBOX2D_BUILD_TESTBED=ON ../Box2D && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:StackAllocator.slower_than_mallocfree ); fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then (cd Box2D && xcodebuild -project Build/xcode5/Box2D.xcodeproj -list); fi

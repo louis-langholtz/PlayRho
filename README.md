@@ -25,7 +25,7 @@ the `NDEBUG` preprocessor macro enabled to see any kind of performance.
 
 - [Changes Document](https://github.com/louis-langholtz/Box2D/blob/dev/Changes.md):
   provides a run-down of changes that have been introduced.
-- [Building Document](https://github.com/louis-langholtz/Box2D/blob/dev/Box2D/Building.txt):
+- [Building Document](https://github.com/louis-langholtz/Box2D/blob/dev/Building.txt):
   information on how to build this project and run the testbed.
 - [API Pages](http://louis-langholtz.github.io/Box2D/API/index.html): documentation on the Application Programming Interface (API).
 - [Issues Web Interface](https://github.com/louis-langholtz/Box2D/issues):
