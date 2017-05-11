@@ -1,4 +1,7 @@
 set(BOX2D_REALNUM_TYPE "float")
+message("BOX2D_REALNUM_TYPE=${BOX2D_REALNUM_TYPE}")
+
+file(REMOVE "Common/Settings.hpp")
 configure_file("Common/Settings.hpp.in" "Common/Settings.hpp" @ONLY)
 
 file(GLOB BOX2D_Collision_SRCS
