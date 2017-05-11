@@ -24,10 +24,12 @@
 /// Declarations of the Filter, FixtureDef, and Fixture classes, and free functions
 ///   associated with them.
 
-#include <limits>
-#include <memory>
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Common/Span.hpp>
+#include <Box2D/Dynamics/Filter.hpp>
+#include <Box2D/Dynamics/FixtureDef.hpp>
+#include <limits>
+#include <memory>
 
 namespace box2d {
 
@@ -35,65 +37,7 @@ class Body;
 struct FixtureProxy;
 class Shape;
 
-/// A holder for contact filtering data.
-struct Filter
-{
-    using bits_type = std::uint16_t;
-    using index_type = std::int16_t;
-
-    /// The collision category bits. Normally you would just set one bit.
-    bits_type categoryBits = 0x0001;
-
-    /// The collision mask bits. This states the categories that this
-    /// shape would accept for collision.
-    bits_type maskBits = 0xFFFF;
-
-    /// Collision groups allow a certain group of objects to never collide (negative)
-    /// or always collide (positive). Zero means no collision group. Non-zero group
-    /// filtering always wins against the mask bits.
-    index_type groupIndex = 0;
-};
-
-/// Fixture definition.
-/// @details
-/// A fixture definition is used to create a fixture.
-/// @sa Body::CreateFixture.
-struct FixtureDef
-{
-    constexpr FixtureDef& UseUserData(void* value) noexcept;
-    constexpr FixtureDef& UseIsSensor(bool value) noexcept;
-    constexpr FixtureDef& UseFilter(Filter value) noexcept;
-
-    /// Use this to store application specific fixture data.
-    void* userData = nullptr;
-    
-    /// A sensor shape collects contact information but never generates a collision
-    /// response.
-    bool isSensor = false;
-
-    /// Contact filtering data.
-    Filter filter;
-};
-
-constexpr inline FixtureDef& FixtureDef::UseUserData(void* value) noexcept
-{
-    userData = value;
-    return *this;
-}
-
-constexpr inline FixtureDef& FixtureDef::UseIsSensor(bool value) noexcept
-{
-    isSensor = value;
-    return *this;
-}
-    
-constexpr inline FixtureDef& FixtureDef::UseFilter(Filter value) noexcept
-{
-    filter = value;
-    return *this;
-}
-
-/// Fixture.
+/// @brief Fixture.
 ///
 /// @details
 /// A fixture is used to attach a shape to a body for collision detection. A fixture
@@ -102,7 +46,8 @@ constexpr inline FixtureDef& FixtureDef::UseFilter(Filter value) noexcept
 ///
 /// @warning you cannot reuse fixtures.
 /// @note Fixtures are created via Body::CreateFixture.
-/// @note This structure is 56-bytes large (using a 4-byte RealNum on at least one 64-bit architecture/build).
+/// @note This structure is 56-bytes large (using a 4-byte RealNum on at least one 64-bit
+///   architecture/build).
 ///
 class Fixture
 {

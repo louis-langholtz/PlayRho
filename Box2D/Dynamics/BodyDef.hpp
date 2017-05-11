@@ -21,7 +21,7 @@
 #define BodyDef_hpp
 
 /// @file
-/// Declarations of the BodyDef class and free functions associated with it.
+/// Declarations of the BodyDef struct and free functions associated with it.
 
 #include <Box2D/Common/Settings.hpp>
 #include <Box2D/Common/Math.hpp>
