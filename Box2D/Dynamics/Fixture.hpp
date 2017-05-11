@@ -21,8 +21,7 @@
 #define B2_FIXTURE_H
 
 /// @file
-/// Declarations of the Filter, FixtureDef, and Fixture classes, and free functions
-///   associated with them.
+/// Declarations of the Fixture class, and free functions associated with it.
 
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Common/Span.hpp>
