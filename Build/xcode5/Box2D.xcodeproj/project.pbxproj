@@ -15,6 +15,10 @@
 		470F94B51EC4CB6C00AA3C82 /* Filter.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94B11EC4CB6C00AA3C82 /* Filter.hpp */; };
 		470F94BA1EC4D4F800AA3C82 /* FixtureAtty.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94B71EC4D4F800AA3C82 /* FixtureAtty.hpp */; };
 		470F94BB1EC4D4F800AA3C82 /* FixtureAtty.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94B71EC4D4F800AA3C82 /* FixtureAtty.hpp */; };
+		470F94C01EC4D63400AA3C82 /* ContactAtty.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94BD1EC4D63400AA3C82 /* ContactAtty.hpp */; };
+		470F94C11EC4D63400AA3C82 /* ContactAtty.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94BD1EC4D63400AA3C82 /* ContactAtty.hpp */; };
+		470F94C61EC4D78300AA3C82 /* JointAtty.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94C31EC4D78300AA3C82 /* JointAtty.hpp */; };
+		470F94C71EC4D78300AA3C82 /* JointAtty.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94C31EC4D78300AA3C82 /* JointAtty.hpp */; };
 		4726DD0F1D3014990012A882 /* IndexPair.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD0C1D3014990012A882 /* IndexPair.hpp */; };
 		4726DD101D3014990012A882 /* IndexPair.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD0C1D3014990012A882 /* IndexPair.hpp */; };
 		4726DD1F1D305E5D0012A882 /* ContactFeature.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */; };
@@ -397,6 +401,8 @@
 		470F94AB1EC4CAE600AA3C82 /* FixtureDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FixtureDef.hpp; sourceTree = "<group>"; };
 		470F94B11EC4CB6C00AA3C82 /* Filter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Filter.hpp; sourceTree = "<group>"; };
 		470F94B71EC4D4F800AA3C82 /* FixtureAtty.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FixtureAtty.hpp; sourceTree = "<group>"; };
+		470F94BD1EC4D63400AA3C82 /* ContactAtty.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactAtty.hpp; sourceTree = "<group>"; };
+		470F94C31EC4D78300AA3C82 /* JointAtty.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JointAtty.hpp; sourceTree = "<group>"; };
 		4726DD0C1D3014990012A882 /* IndexPair.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IndexPair.hpp; sourceTree = "<group>"; };
 		4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactFeature.hpp; sourceTree = "<group>"; };
 		4726DD261D3180980012A882 /* NewtonsCradle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NewtonsCradle.hpp; sourceTree = "<group>"; };
@@ -895,6 +901,7 @@
 				470F94A51EC4C79B00AA3C82 /* BodyDef.hpp */,
 				478E67C41E760AB7009B9AD5 /* BodyType.hpp */,
 				80BB895A141C3E5900F1753A /* Contacts */,
+				470F94BD1EC4D63400AA3C82 /* ContactAtty.hpp */,
 				470F94B11EC4CB6C00AA3C82 /* Filter.hpp */,
 				80BB8951141C3E5900F1753A /* Fixture.cpp */,
 				80BB8952141C3E5900F1753A /* Fixture.hpp */,
@@ -904,6 +911,7 @@
 				80BB8953141C3E5900F1753A /* Island.cpp */,
 				80BB8954141C3E5900F1753A /* Island.hpp */,
 				80BB896D141C3E5900F1753A /* Joints */,
+				470F94C31EC4D78300AA3C82 /* JointAtty.hpp */,
 				4768D3FF1E54E7CB00574143 /* StepConf.cpp */,
 				80BB8955141C3E5900F1753A /* StepConf.hpp */,
 				478E67CA1E777A43009B9AD5 /* StepStats.hpp */,
@@ -1120,12 +1128,14 @@
 			files = (
 				4731DE5F1DEE3F0600E7F931 /* SeparationFinder.hpp in Headers */,
 				4731DE451DE2572E00E7F931 /* Collision.hpp in Headers */,
+				470F94C11EC4D63400AA3C82 /* ContactAtty.hpp in Headers */,
 				478E67C81E760AB7009B9AD5 /* BodyType.hpp in Headers */,
 				474BAB311E5D00960058E08A /* BodyConstraint.hpp in Headers */,
 				47AA5DCB1C4C5FBE008AF2BA /* Box2D.hpp in Headers */,
 				47AA5DCC1C4C5FBE008AF2BA /* BroadPhase.hpp in Headers */,
 				470F94A91EC4C79B00AA3C82 /* BodyDef.hpp in Headers */,
 				47AA5DCE1C4C5FBE008AF2BA /* Distance.hpp in Headers */,
+				470F94C71EC4D78300AA3C82 /* JointAtty.hpp in Headers */,
 				470F94B51EC4CB6C00AA3C82 /* Filter.hpp in Headers */,
 				47AA5DCF1C4C5FBE008AF2BA /* DynamicTree.hpp in Headers */,
 				47AA5DD01C4C5FBE008AF2BA /* TimeOfImpact.hpp in Headers */,
@@ -1262,10 +1272,12 @@
 				80BB89D7141C3E5900F1753A /* PulleyJoint.hpp in Headers */,
 				4731DE441DE2570900E7F931 /* Collision.hpp in Headers */,
 				80BB89D9141C3E5900F1753A /* RevoluteJoint.hpp in Headers */,
+				470F94C01EC4D63400AA3C82 /* ContactAtty.hpp in Headers */,
 				80BB89DB141C3E5900F1753A /* RopeJoint.hpp in Headers */,
 				80BB89DD141C3E5900F1753A /* WeldJoint.hpp in Headers */,
 				80BB89DF141C3E5900F1753A /* WheelJoint.hpp in Headers */,
 				4751EE2E1CEDD7A300D459CB /* MotorJoint.hpp in Headers */,
+				470F94C61EC4D78300AA3C82 /* JointAtty.hpp in Headers */,
 				80BB89E1141C3E5900F1753A /* Rope.hpp in Headers */,
 				47578BE11D8869110078CD40 /* WorldManifold.hpp in Headers */,
 				475039921D2180D600D32047 /* DistanceProxy.hpp in Headers */,

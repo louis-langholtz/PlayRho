@@ -24,8 +24,10 @@
 #include <Box2D/Dynamics/FixtureAtty.hpp>
 #include <Box2D/Dynamics/FixtureProxy.hpp>
 #include <Box2D/Dynamics/Island.hpp>
-#include <Box2D/Dynamics/Joints/PulleyJoint.hpp>
+#include <Box2D/Dynamics/Joints/Joint.hpp>
+#include <Box2D/Dynamics/JointAtty.hpp>
 #include <Box2D/Dynamics/Contacts/Contact.hpp>
+#include <Box2D/Dynamics/ContactAtty.hpp>
 #include <Box2D/Collision/BroadPhase.hpp>
 #include <Box2D/Collision/WorldManifold.hpp>
 #include <Box2D/Collision/TimeOfImpact.hpp>
@@ -455,94 +457,6 @@ namespace {
     }
 
 } // anonymous namespace
-
-/// An "attorney" through which a World can get special access to a Contact "client".
-///
-/// @sa https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Friendship_and_the_Attorney-Client
-///
-class ContactAtty
-{
-private:
-    static Contact* Create(Fixture& fixtureA, child_count_t indexA,
-                           Fixture& fixtureB, child_count_t indexB)
-    {
-        return Contact::Create(fixtureA, indexA, fixtureB, indexB);
-    }
-
-    static void Destroy(Contact* c)
-    {
-        Contact::Destroy(c);
-    }
-    
-    static Manifold& GetMutableManifold(Contact& c) noexcept
-    {
-        return c.GetMutableManifold();
-    }
-
-    static void SetToi(Contact& c, RealNum value) noexcept
-    {
-        c.SetToi(value);
-    }
-
-    static void UnsetToi(Contact& c) noexcept
-    {
-        c.UnsetToi();
-    }
-
-    static void IncrementToiCount(Contact& c) noexcept
-    {
-        ++c.m_toiCount;
-    }
-    
-    static void ResetToiCount(Contact& c) noexcept
-    {
-        c.ResetToiCount();
-    }
-    
-    static void UnflagForFiltering(Contact& c) noexcept
-    {
-        c.UnflagForFiltering();
-    }
-    
-    static void Update(Contact& c, const StepConf& conf, ContactListener* listener)
-    {
-        c.Update(conf, listener);
-    }
-    
-    friend class World;
-};
-
-class JointAtty
-{
-private:
-    static Joint* Create(const box2d::JointDef &def)
-    {
-        return Joint::Create(def);
-    }
-    
-    static void Destroy(Joint* j)
-    {
-        Joint::Destroy(j);
-    }
-    
-    static void InitVelocityConstraints(Joint& j, BodyConstraints &bodies,
-                                        const box2d::StepConf &step, const ConstraintSolverConf &conf)
-    {
-        j.InitVelocityConstraints(bodies, step, conf);
-    }
-    
-    static bool SolveVelocityConstraints(Joint& j, BodyConstraints &bodies, const box2d::StepConf &conf)
-    {
-        return j.SolveVelocityConstraints(bodies, conf);
-    }
-    
-    static bool SolvePositionConstraints(Joint& j, BodyConstraints &bodies, const ConstraintSolverConf &conf)
-    {
-        return j.SolvePositionConstraints(bodies, conf);
-    }
-    
-    friend class World;
-};
 
 /// An "attorney" through which a World can get special access to a Body "client".
 ///

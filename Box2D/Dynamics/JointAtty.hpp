@@ -17,46 +17,57 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef FixtureAtty_hpp
-#define FixtureAtty_hpp
+#ifndef JointAtty_hpp
+#define JointAtty_hpp
 
 /// @file
-/// Declaration of the FixtureAtty class.
+/// Declaration of the JointAtty class.
 
-#include <Box2D/Common/Span.hpp>
-#include <Box2D/Dynamics/Fixture.hpp>
+#include <Box2D/Dynamics/Joints/Joint.hpp>
 
 namespace box2d
 {
-    /// @brief Fixture Attorney.
+    
+    /// @brief Joint Attorney.
     ///
     /// @details This class uses the "attorney-client" idiom to control the granularity of
-    ///   friend-based access to the Fixture class. This is meant to help preserve and enforce
-    ///   the invariants of the Fixture class.
+    ///   friend-based access to the Joint class. This is meant to help preserve and enforce
+    ///   the invariants of the Joint class.
     ///
     /// @sa https://en.wikibooks.org/wiki/More_C++_Idioms/Friendship_and_the_Attorney-Client
     ///
-    class FixtureAtty
+    class JointAtty
     {
     private:
-        static Span<FixtureProxy> GetProxies(const Fixture& fixture)
+        static Joint* Create(const box2d::JointDef &def)
         {
-            return fixture.GetProxies();
+            return Joint::Create(def);
         }
         
-        static void SetProxies(Fixture& fixture, Span<FixtureProxy> value)
+        static void Destroy(Joint* j)
         {
-            fixture.SetProxies(value);
+            Joint::Destroy(j);
         }
         
-        static Fixture* Create(Body* body, const FixtureDef& def, std::shared_ptr<const Shape> shape)
+        static void InitVelocityConstraints(Joint& j, BodyConstraints &bodies,
+                                            const box2d::StepConf &step, const ConstraintSolverConf &conf)
         {
-            return new Fixture{body, def, shape};
+            j.InitVelocityConstraints(bodies, step, conf);
+        }
+        
+        static bool SolveVelocityConstraints(Joint& j, BodyConstraints &bodies, const box2d::StepConf &conf)
+        {
+            return j.SolveVelocityConstraints(bodies, conf);
+        }
+        
+        static bool SolvePositionConstraints(Joint& j, BodyConstraints &bodies, const ConstraintSolverConf &conf)
+        {
+            return j.SolvePositionConstraints(bodies, conf);
         }
         
         friend class World;
     };
 
-} // namespace box2d
+}
 
-#endif /* FixtureAtty_hpp */
+#endif /* JointAtty_hpp */
