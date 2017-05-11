@@ -24,7 +24,7 @@
 
 namespace box2d {
     
-    /// Pre-phase per-step statistics.
+    /// @brief Pre-phase per-step statistics.
     struct PreStepStats
     {
         using counter_type = std::uint32_t;
@@ -35,7 +35,7 @@ namespace box2d {
         counter_type added = 0;
     };
     
-    /// Regular-phase per-step statistics.
+    /// @brief Regular-phase per-step statistics.
     struct RegStepStats
     {
         using counter_type = std::uint32_t;
@@ -52,7 +52,7 @@ namespace box2d {
         counter_type sumVelIters = 0;
     };
     
-    /// TOI-phase per-step statistics.
+    /// @brief TOI-phase per-step statistics.
     struct ToiStepStats
     {
         using counter_type = std::uint32_t;
@@ -82,11 +82,11 @@ namespace box2d {
         root_iter_type maxRootIters = 0;
     };
     
-    /// Per-step statistics.
+    /// @brief Per-step statistics.
     ///
     /// @details These are statistics output from the World::Step method.
     /// @note Efficient transfer of this data is predicated on compiler support for
-    ///   "return-value-optimization" - a form of "copy-elision".
+    ///   "return-value-optimization" - a form of "copy elision".
     ///
     /// @sa World::Step.
     /// @sa https://en.wikipedia.org/wiki/Return_value_optimization
