@@ -135,7 +135,7 @@ namespace box2d
         /// @details Manifold's contact points in world coordinates (mid-point of intersection)
         Length2D m_points[MaxManifoldPoints] = {GetInvalid<Length2D>(), GetInvalid<Length2D>()};
         
-        /// Separations (in meters).
+        /// Separations.
         /// @details A negative value indicates overlap.
         Length m_separations[MaxManifoldPoints] = {GetInvalid<Length>(), GetInvalid<Length>()};
     };

@@ -32,16 +32,16 @@ struct MotorJointDef : public JointDef
     /// Initialize the bodies and offsets using the current transforms.
     void Initialize(Body* bodyA, Body* bodyB);
 
-    /// Position of bodyB minus the position of bodyA, in bodyA's frame, in meters.
+    /// Position of bodyB minus the position of bodyA, in bodyA's frame.
     Length2D linearOffset = Vec2_zero * Meter;
 
-    /// The bodyB angle minus bodyA angle in radians.
+    /// The bodyB angle minus bodyA angle.
     Angle angularOffset = Angle{0};
     
-    /// The maximum motor force in N.
+    /// The maximum motor force.
     Force maxForce = RealNum{1} * Newton;
 
-    /// The maximum motor torque in N-m.
+    /// The maximum motor torque.
     Torque maxTorque = RealNum{1} * NewtonMeter;
 
     /// Position correction factor in the range [0,1].
@@ -62,24 +62,24 @@ public:
     Force2D GetReactionForce(Frequency inv_dt) const override;
     Torque GetReactionTorque(Frequency inv_dt) const override;
 
-    /// Set/get the target linear offset, in frame A, in meters.
+    /// Set/get the target linear offset, in frame A.
     void SetLinearOffset(const Length2D linearOffset);
     const Length2D GetLinearOffset() const;
 
-    /// Set/get the target angular offset, in radians.
+    /// Set/get the target angular offset.
     void SetAngularOffset(Angle angularOffset);
     Angle GetAngularOffset() const;
 
-    /// Set the maximum friction force in N.
+    /// Set the maximum friction force.
     void SetMaxForce(Force force);
 
-    /// Get the maximum friction force in N.
+    /// Get the maximum friction force.
     Force GetMaxForce() const;
 
-    /// Set the maximum friction torque in N*m.
+    /// Set the maximum friction torque.
     void SetMaxTorque(Torque torque);
 
-    /// Get the maximum friction torque in N*m.
+    /// Get the maximum friction torque.
     Torque GetMaxTorque() const;
 
     /// Set the position correction factor in the range [0,1].

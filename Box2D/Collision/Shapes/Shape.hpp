@@ -82,7 +82,6 @@ public:
         
         /// Density of the associated shape.
         ///
-        /// @note This is usually in kg/m^2.
         /// @note This must be a non-negative value.
         /// @note Use 0 to indicate that the shape's associated mass should be 0.
         ///
@@ -284,8 +283,8 @@ inline void Shape::SetRestitution(RealNum restitution) noexcept
 
 // Free functions...
 
-/// Gets the vertex radius of the given shape (in meters).
-/// @details Gets the radius (in meters) of every vertex of this shape.
+/// Gets the vertex radius of the given shape.
+/// @details Gets the radius of every vertex of this shape.
 /// This is used for collision handling.
 /// @note This value should never be less than zero.
 inline Length GetVertexRadius(const Shape& shape) noexcept

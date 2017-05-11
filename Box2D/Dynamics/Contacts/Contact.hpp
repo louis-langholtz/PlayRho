@@ -125,10 +125,10 @@ public:
     /// Get the restitution.
     RealNum GetRestitution() const noexcept;
 
-    /// Set the desired tangent speed for a conveyor belt behavior. In meters per second.
+    /// Set the desired tangent speed for a conveyor belt behavior.
     void SetTangentSpeed(LinearVelocity speed) noexcept;
 
-    /// Gets the desired tangent speed. In meters per second.
+    /// Gets the desired tangent speed.
     LinearVelocity GetTangentSpeed() const noexcept;
 
     substep_type GetToiCount() const noexcept;

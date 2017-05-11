@@ -65,7 +65,7 @@ namespace box2d
         /// since this can lead to many overlapping shapes.
         Length2D position = Vec2_zero * Meter;
         
-        /// The world angle of the body in radians.
+        /// The world angle of the body.
         Angle angle = Angle{0};
         
         /// The linear velocity of the body's origin in world co-ordinates (in m/s).

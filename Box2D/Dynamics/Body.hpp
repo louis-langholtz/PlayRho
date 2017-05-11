@@ -114,7 +114,7 @@ public:
     /// @warning Manipulating a body's transform can cause non-physical behavior!
     /// @note Contacts are updated on the next call to World::Step.
     /// @param position Valid world position of the body's local origin. Behavior is undefined if value is invalid.
-    /// @param angle Valid world rotation in radians. Behavior is undefined if value is invalid.
+    /// @param angle Valid world rotation. Behavior is undefined if value is invalid.
     void SetTransform(const Length2D position, Angle angle);
 
     /// @brief Gets the body transform for the body's origin.
@@ -134,8 +134,8 @@ public:
 
     const Sweep& GetSweep() const noexcept;
 
-    /// @brief Get the angle in radians.
-    /// @return the current world rotation angle in radians.
+    /// @brief Get the angle.
+    /// @return the current world rotation angle.
     Angle GetAngle() const noexcept;
 
     /// @brief Get the world position of the center of mass.
@@ -868,7 +868,7 @@ inline void SetForce(Body& body, const Force2D force, const Length2D point) noex
 ///   affect the angular velocity.
 /// @note Non-zero forces wakes up the body.
 /// @param body Body to apply the force to.
-/// @param force World force vector, usually in Newtons (N).
+/// @param force World force vector.
 /// @param point World position of the point of application.
 inline void ApplyForce(Body& body, const Force2D force, const Length2D point) noexcept
 {
@@ -884,7 +884,7 @@ inline void ApplyForce(Body& body, const Force2D force, const Length2D point) no
 /// Apply a force to the center of mass.
 /// @note Non-zero forces wakes up the body.
 /// @param body Body to apply the force to.
-/// @param force World force vector, usually in Newtons (N).
+/// @param force World force vector.
 inline void ApplyForceToCenter(Body& body, const Force2D force) noexcept
 {
     const auto linAccel = body.GetLinearAcceleration() + force * body.GetInvMass();
@@ -904,7 +904,7 @@ inline void SetTorque(Body& body, const Torque torque) noexcept
 /// @note This affects the angular velocity without affecting the linear velocity of the center of mass.
 /// @note Non-zero forces wakes up the body.
 /// @param body Body to apply the torque to.
-/// @param torque about the z-axis (out of the screen), usually in N-m.
+/// @param torque about the z-axis (out of the screen).
 inline void ApplyTorque(Body& body, const Torque torque) noexcept
 {
     const auto linAccel = body.GetLinearAcceleration();
@@ -919,7 +919,7 @@ inline void ApplyTorque(Body& body, const Torque torque) noexcept
 ///   is not at the center of mass.
 /// @note Non-zero impulses wakes up the body.
 /// @param body Body to apply the impulse to.
-/// @param impulse the world impulse vector, usually in N-seconds or kg-m/s.
+/// @param impulse the world impulse vector.
 /// @param point the world position of the point of application.
 inline void ApplyLinearImpulse(Body& body, const Momentum2D impulse, const Length2D point) noexcept
 {
@@ -946,14 +946,14 @@ Force2D GetCentripetalForce(const Body& body, const Length2D axis);
 
 /// Gets the rotational inertia of the body.
 /// @param body Body to get the rotational inertia for.
-/// @return the rotational inertia, usually in kg-m^2.
+/// @return the rotational inertia.
 inline RotInertia GetRotInertia(const Body& body) noexcept
 {
     return RealNum{1} / body.GetInvRotInertia();
 }
 
 /// Gets the rotational inertia of the body about the local origin.
-/// @return the rotational inertia, usually in kg-m^2.
+/// @return the rotational inertia.
 inline RotInertia GetLocalInertia(const Body& body) noexcept
 {
     return GetRotInertia(body) + GetMass(body) * GetLengthSquared(body.GetLocalCenter()) / SquareRadian;
@@ -977,7 +977,7 @@ inline LinearVelocity2D GetLinearVelocity(const Body& body) noexcept
 
 /// Gets the angular velocity.
 /// @param body Body to get the angular velocity for.
-/// @return the angular velocity in radians/second.
+/// @return the angular velocity.
 inline AngularVelocity GetAngularVelocity(const Body& body) noexcept
 {
     return body.GetVelocity().angular;
@@ -993,7 +993,7 @@ inline void SetLinearVelocity(Body& body, const LinearVelocity2D v) noexcept
 
 /// Sets the angular velocity.
 /// @param body Body to set the angular velocity of.
-/// @param omega the new angular velocity in radians/second.
+/// @param omega the new angular velocity.
 inline void SetAngularVelocity(Body& body, AngularVelocity omega) noexcept
 {
     body.SetVelocity(Velocity{GetLinearVelocity(body), omega});

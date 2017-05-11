@@ -50,10 +50,10 @@ struct WheelJointDef : public JointDef
     /// Enable/disable the joint motor.
     bool enableMotor = false;
 
-    /// The maximum motor torque, usually in N-m.
+    /// The maximum motor torque.
     Torque maxMotorTorque = Torque{0};
 
-    /// The desired motor speed in radians per second.
+    /// The desired angular motor speed.
     AngularVelocity motorSpeed = AngularVelocity{0};
 
     /// Suspension frequency, zero indicates no suspension
@@ -87,10 +87,10 @@ public:
     /// The local joint axis relative to bodyA.
     UnitVec2 GetLocalAxisA() const { return m_localXAxisA; }
 
-    /// Get the current joint translation, usually in meters.
+    /// Get the current joint translation.
     Length GetJointTranslation() const;
 
-    /// Get the current joint translation speed, in Angle per second.
+    /// Get the current joint translation speed.
     AngularVelocity GetJointSpeed() const;
 
     /// Is the joint motor enabled?
@@ -99,17 +99,17 @@ public:
     /// Enable/disable the joint motor.
     void EnableMotor(bool flag);
 
-    /// Set the motor speed, usually in radians per second.
+    /// Set the angular motor speed.
     void SetMotorSpeed(AngularVelocity speed);
 
-    /// Get the motor speed, usually in radians per second.
+    /// Get the angular motor speed.
     AngularVelocity GetMotorSpeed() const;
 
-    /// Set/Get the maximum motor force, usually in N-m.
+    /// Set/Get the maximum motor force.
     void SetMaxMotorTorque(Torque torque);
     Torque GetMaxMotorTorque() const;
 
-    /// Get the current motor torque given the inverse time step, usually in N-m.
+    /// Get the current motor torque given the inverse time step.
     Torque GetMotorTorque(Frequency inv_dt) const;
 
     /// Set/Get the spring frequency in Hertz. Setting the frequency to zero disables the spring.

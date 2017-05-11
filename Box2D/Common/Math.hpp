@@ -563,7 +563,7 @@ constexpr inline bool IsValid(const Transformation& value) noexcept
 /// @note This structure is likely to be 12-bytes large (at least on 64-bit platforms).
 struct Position
 {
-    Length2D linear; ///< Linear position (in meters).
+    Length2D linear; ///< Linear position.
     Angle angular; ///< Angular position.
 };
 
@@ -577,8 +577,8 @@ constexpr inline bool IsValid(const Position& value) noexcept
 /// @note This data structure is 12-bytes (with 4-byte RealNum on at least one 64-bit platform).
 struct Velocity
 {
-    LinearVelocity2D linear; ///< Linear velocity (in meters/second).
-    AngularVelocity angular; ///< Angular velocity (in radians/second).
+    LinearVelocity2D linear; ///< Linear velocity.
+    AngularVelocity angular; ///< Angular velocity.
 };
 
 template <>
@@ -1196,7 +1196,7 @@ inline Angle GetNormalized(Angle value)
 
 /// Gets a sweep with the given sweep's angles normalized.
 /// @param sweep Sweep to return with its angles normalized.
-/// @return Sweep with its pos0 angle in radians to be between -2 pi and 2 pi
+/// @return Sweep with its pos0 angle to be between -2 pi and 2 pi
 ///    and its pos1 angle reduced by the amount pos0's angle was reduced by.
 inline Sweep GetAnglesNormalized(Sweep sweep) noexcept
 {

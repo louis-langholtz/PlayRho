@@ -205,7 +205,6 @@ public:
     ///    objects used in "broadphase" collision detection. This fattens AABBs in the
     ///    dynamic tree. This allows proxies to move by a small amount without triggering
     ///    a tree adjustment.
-    /// @note This is in meters.
     /// @note Should be greater than 0.
     Length aabbExtension = DefaultAabbExtension;
 

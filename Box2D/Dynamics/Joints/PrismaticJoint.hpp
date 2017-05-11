@@ -64,10 +64,10 @@ struct PrismaticJointDef : public JointDef
     /// Enable/disable the joint motor.
     bool enableMotor = false;
 
-    /// The maximum motor torque, usually in N-m.
+    /// The maximum motor torque.
     Torque maxMotorTorque = Torque{0};
 
-    /// The desired motor speed (in radians per second).
+    /// The desired angular motor speed.
     AngularVelocity motorSpeed = AngularVelocity{0};
 };
 
@@ -102,10 +102,10 @@ public:
     /// Get the reference angle.
     Angle GetReferenceAngle() const { return m_referenceAngle; }
 
-    /// Get the current joint translation, usually in meters.
+    /// Get the current joint translation.
     Length GetJointTranslation() const;
 
-    /// Get the current joint translation speed, usually in meters per second.
+    /// Get the current joint translation speed.
     LinearVelocity GetJointSpeed() const;
 
     /// Is the joint limit enabled?
@@ -114,13 +114,13 @@ public:
     /// Enable/disable the joint limit.
     void EnableLimit(bool flag) noexcept;
 
-    /// Get the lower joint limit, usually in meters.
+    /// Get the lower joint limit.
     Length GetLowerLimit() const noexcept;
 
-    /// Get the upper joint limit, usually in meters.
+    /// Get the upper joint limit.
     Length GetUpperLimit() const noexcept;
 
-    /// Set the joint limits, usually in meters.
+    /// Set the joint limits.
     void SetLimits(Length lower, Length upper);
 
     /// Is the joint motor enabled?
@@ -129,17 +129,17 @@ public:
     /// Enable/disable the joint motor.
     void EnableMotor(bool flag) noexcept;
 
-    /// Set the motor speed, usually in radians per second.
+    /// Set the motor speed.
     void SetMotorSpeed(AngularVelocity speed) noexcept;
 
-    /// Get the motor speed, usually in radians per second.
+    /// Get the motor speed.
     AngularVelocity GetMotorSpeed() const noexcept;
 
-    /// Set the maximum motor force, usually in N.
+    /// Set the maximum motor force.
     void SetMaxMotorForce(Force force) noexcept;
     Force GetMaxMotorForce() const noexcept { return m_maxMotorForce; }
 
-    /// Get the current motor force given the inverse time step, usually in N.
+    /// Get the current motor force given the inverse time step.
     Force GetMotorForce(Frequency inv_dt) const noexcept;
 
 private:
