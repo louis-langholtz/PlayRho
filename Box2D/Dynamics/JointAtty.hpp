@@ -28,7 +28,7 @@
 namespace box2d
 {
     
-    /// @brief Joint Attorney.
+    /// @brief Joint attorney.
     ///
     /// @details This class uses the "attorney-client" idiom to control the granularity of
     ///   friend-based access to the Joint class. This is meant to help preserve and enforce

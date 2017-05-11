@@ -28,7 +28,7 @@
 
 namespace box2d
 {
-    /// @brief Fixture Attorney.
+    /// @brief Fixture attorney.
     ///
     /// @details This class uses the "attorney-client" idiom to control the granularity of
     ///   friend-based access to the Fixture class. This is meant to help preserve and enforce
