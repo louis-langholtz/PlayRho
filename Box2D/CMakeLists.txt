@@ -1,8 +1,10 @@
-set(BOX2D_REALNUM_TYPE "float")
+if(NOT BOX2D_REALNUM_TYPE)
+	set(BOX2D_REALNUM_TYPE float)
+endif()
 message("BOX2D_REALNUM_TYPE=${BOX2D_REALNUM_TYPE}")
 
 file(REMOVE "Common/Settings.hpp")
-configure_file("Common/Settings.hpp.in" "Common/Settings.hpp" @ONLY)
+configure_file("Common/Settings.hpp.in" "Common/Settings.hpp")
 
 file(GLOB BOX2D_Collision_SRCS
 	"Collision/*.cpp"
