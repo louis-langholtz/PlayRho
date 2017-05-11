@@ -13,6 +13,8 @@
 		470F94AF1EC4CAE600AA3C82 /* FixtureDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94AB1EC4CAE600AA3C82 /* FixtureDef.hpp */; };
 		470F94B41EC4CB6C00AA3C82 /* Filter.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94B11EC4CB6C00AA3C82 /* Filter.hpp */; };
 		470F94B51EC4CB6C00AA3C82 /* Filter.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94B11EC4CB6C00AA3C82 /* Filter.hpp */; };
+		470F94BA1EC4D4F800AA3C82 /* FixtureAtty.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94B71EC4D4F800AA3C82 /* FixtureAtty.hpp */; };
+		470F94BB1EC4D4F800AA3C82 /* FixtureAtty.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94B71EC4D4F800AA3C82 /* FixtureAtty.hpp */; };
 		4726DD0F1D3014990012A882 /* IndexPair.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD0C1D3014990012A882 /* IndexPair.hpp */; };
 		4726DD101D3014990012A882 /* IndexPair.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD0C1D3014990012A882 /* IndexPair.hpp */; };
 		4726DD1F1D305E5D0012A882 /* ContactFeature.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */; };
@@ -394,6 +396,7 @@
 		470F94A51EC4C79B00AA3C82 /* BodyDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyDef.hpp; sourceTree = "<group>"; };
 		470F94AB1EC4CAE600AA3C82 /* FixtureDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FixtureDef.hpp; sourceTree = "<group>"; };
 		470F94B11EC4CB6C00AA3C82 /* Filter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Filter.hpp; sourceTree = "<group>"; };
+		470F94B71EC4D4F800AA3C82 /* FixtureAtty.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FixtureAtty.hpp; sourceTree = "<group>"; };
 		4726DD0C1D3014990012A882 /* IndexPair.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IndexPair.hpp; sourceTree = "<group>"; };
 		4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactFeature.hpp; sourceTree = "<group>"; };
 		4726DD261D3180980012A882 /* NewtonsCradle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NewtonsCradle.hpp; sourceTree = "<group>"; };
@@ -895,6 +898,7 @@
 				470F94B11EC4CB6C00AA3C82 /* Filter.hpp */,
 				80BB8951141C3E5900F1753A /* Fixture.cpp */,
 				80BB8952141C3E5900F1753A /* Fixture.hpp */,
+				470F94B71EC4D4F800AA3C82 /* FixtureAtty.hpp */,
 				470F94AB1EC4CAE600AA3C82 /* FixtureDef.hpp */,
 				4731DE181DDCD0E100E7F931 /* FixtureProxy.hpp */,
 				80BB8953141C3E5900F1753A /* Island.cpp */,
@@ -1148,6 +1152,7 @@
 				4726DD391D387D630012A882 /* Manifold.hpp in Headers */,
 				47AA5DDD1C4C5FBE008AF2BA /* Body.hpp in Headers */,
 				47AA5DDF1C4C5FBE008AF2BA /* Fixture.hpp in Headers */,
+				470F94BB1EC4D4F800AA3C82 /* FixtureAtty.hpp in Headers */,
 				47AA5DE01C4C5FBE008AF2BA /* Island.hpp in Headers */,
 				47AA5DE11C4C5FBE008AF2BA /* StepConf.hpp in Headers */,
 				47CB34411D6F3A8500828126 /* MassData.hpp in Headers */,
@@ -1202,6 +1207,7 @@
 				80BB8992141C3E5900F1753A /* DynamicTree.hpp in Headers */,
 				80BB8994141C3E5900F1753A /* TimeOfImpact.hpp in Headers */,
 				80BB8996141C3E5900F1753A /* ChainShape.hpp in Headers */,
+				470F94BA1EC4D4F800AA3C82 /* FixtureAtty.hpp in Headers */,
 				470F94AE1EC4CAE600AA3C82 /* FixtureDef.hpp in Headers */,
 				4734B2211DC1340500F15E29 /* Span.hpp in Headers */,
 				80BB8998141C3E5900F1753A /* CircleShape.hpp in Headers */,

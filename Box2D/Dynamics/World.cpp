@@ -21,6 +21,7 @@
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/StepConf.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
+#include <Box2D/Dynamics/FixtureAtty.hpp>
 #include <Box2D/Dynamics/FixtureProxy.hpp>
 #include <Box2D/Dynamics/Island.hpp>
 #include <Box2D/Dynamics/Joints/PulleyJoint.hpp>
@@ -454,36 +455,6 @@ namespace {
     }
 
 } // anonymous namespace
-
-
-/// Fixture Attorney.
-///
-/// @details This class uses the "attorney-client" idiom to control the granularity of
-///   friend-based access to the Fixture class. This is meant to help preserve and enforce
-///   the invariants of the Fixture class.
-///
-/// @sa https://en.wikibooks.org/wiki/More_C++_Idioms/Friendship_and_the_Attorney-Client
-///
-class FixtureAtty
-{
-private:
-    static Span<FixtureProxy> GetProxies(const Fixture& fixture)
-    {
-        return fixture.GetProxies();
-    }
-    
-    static void SetProxies(Fixture& fixture, Span<FixtureProxy> value)
-    {
-        fixture.SetProxies(value);
-    }
-    
-    static Fixture* Create(Body* body, const FixtureDef& def, std::shared_ptr<const Shape> shape)
-    {
-        return new Fixture{body, def, shape};
-    }
-    
-    friend class World;
-};
 
 /// An "attorney" through which a World can get special access to a Contact "client".
 ///
