@@ -28,10 +28,6 @@
 namespace box2d
 {
     class Shape;
-    class EdgeShape;
-    class PolygonShape;
-    class ChainShape;
-    class CircleShape;
     class Fixture;
     class Body;
     class DistanceProxy;
