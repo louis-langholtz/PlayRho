@@ -57,12 +57,8 @@ TEST(Body, ByteSize)
     // architecture dependent...
     switch (sizeof(RealNum))
     {
-        case  4:
-        {
-            EXPECT_EQ(sizeof(Body), size_t(120 + allSize));
-            break;
-        }
-        case  8: EXPECT_EQ(sizeof(Body), size_t(288)); break;
+        case  4: EXPECT_EQ(sizeof(Body), size_t(120 + allSize)); break;
+        case  8: EXPECT_EQ(sizeof(Body), size_t(216 + allSize)); break;
         case 16: EXPECT_EQ(sizeof(Body), size_t(496)); break;
         default: FAIL(); break;
     }

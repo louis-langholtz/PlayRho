@@ -48,7 +48,15 @@ TEST(World, ByteSize)
 #endif
             break;
         }
-        case  8: EXPECT_EQ(sizeof(World), size_t(376)); break;
+        case  8:
+        {
+#ifdef __APPLE__
+            EXPECT_EQ(sizeof(World), size_t(376)); break;
+#endif
+#ifdef __linux__
+            EXPECT_EQ(sizeof(World), size_t(400));
+#endif
+        }
         case 16: EXPECT_EQ(sizeof(World), size_t(416)); break;
         default: FAIL(); break;
     }
@@ -1348,12 +1356,29 @@ TEST(World, TilesComesToRest)
         }
     }
 #elif defined(__k8__)
-    // From commit 04f9188c47961cafe76c55eb6b766a608593ee08 onward.
-    EXPECT_EQ(numSteps, 1855ul);
-    EXPECT_EQ(sumRegPosIters, 36737ul);
-    EXPECT_EQ(sumRegVelIters, 47759ul);
-    EXPECT_EQ(sumToiPosIters, 44698ul);
-    EXPECT_EQ(sumToiVelIters, 114840ul);
+    switch (sizeof(RealNum))
+    {
+        case  4:
+        {
+            // From commit 04f9188c47961cafe76c55eb6b766a608593ee08 onward.
+            EXPECT_EQ(numSteps, 1855ul);
+            EXPECT_EQ(sumRegPosIters, 36737ul);
+            EXPECT_EQ(sumRegVelIters, 47759ul);
+            EXPECT_EQ(sumToiPosIters, 44698ul);
+            EXPECT_EQ(sumToiVelIters, 114840ul);
+            break;
+        }
+        case  8:
+        {
+            // From commit 04f9188c47961cafe76c55eb6b766a608593ee08 onward.
+            EXPECT_EQ(numSteps, 1808ul);
+            EXPECT_EQ(sumRegPosIters, 36684ul);
+            EXPECT_EQ(sumRegVelIters, 48087ul);
+            EXPECT_EQ(sumToiPosIters, 45116ul);
+            EXPECT_EQ(sumToiVelIters, 118830ul);
+            break;
+        }
+    }
 
     // From commit d361c51d6aca13079e9d44b701715e62cec18a63 onward.
     //EXPECT_EQ(numSteps, 1855ul);

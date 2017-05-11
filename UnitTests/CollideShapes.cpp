@@ -888,7 +888,7 @@ TEST(CollideShapes, EdgeR90InsideSquare)
     }
     else if (sizeof(RealNum) == 8)
     {
-        EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 0));
+        EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 3));
     }
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(1));
     if (sizeof(RealNum) == 4)
@@ -897,7 +897,7 @@ TEST(CollideShapes, EdgeR90InsideSquare)
     }
     else if (sizeof(RealNum) == 8)
     {
-        EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(1, 3));
+        EXPECT_EQ(manifold.GetContactFeature(1), GetFaceVertexContactFeature(0, 0));
     }
 }
 
@@ -925,14 +925,13 @@ TEST(CollideShapes, EdgeR45InsideSquare)
         // On some platforms, the contact feature is: <01-00 01-02>.
         // On others, it's: <01-00 01-03>
         // XXX Not sure of why the difference.
-        const auto cf = manifold.GetContactFeature(1);
         // EXPECT_EQ(cf, GetFaceFaceContactFeature(0, 2));
-        EXPECT_EQ(cf, GetVertexFaceContactFeature(0, 3));
+        EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(0, 3));
         // EXPECT_TRUE(cf == GetFaceFaceContactFeature(0, 2) || cf == GetFaceFaceContactFeature(0, 3));
     }
     else if (sizeof(RealNum) == 8)
     {
-        EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(0, 3));
+        EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(1, 2));
     }
 }
 
@@ -953,9 +952,18 @@ TEST(CollideShapes, EdgeR180InsideSquare)
     EXPECT_EQ(GetVec2(manifold.GetLocalNormal()), Vec2(1, 0));
     EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
-    EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 1));
+    switch (sizeof(RealNum))
+    {
+        case 4: EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 1)); break;
+        case 8: EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 0)); break;
+    }
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(1));
-    EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(1, 0));
+    switch (sizeof(RealNum))
+    {
+        case 4: EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(1, 0)); break;
+        case 8: EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(0, 0)); break;
+    }
+    
 }
 
 TEST(CollideShapes, EdgeTwiceR180Square)
@@ -972,16 +980,17 @@ TEST(CollideShapes, EdgeTwiceR180Square)
     
     EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
     EXPECT_EQ(manifold.GetLocalPoint(), Vec2(0, 0) * Meter);
-    EXPECT_EQ(GetVec2(manifold.GetLocalNormal()), Vec2(1, 0));
+    switch (sizeof(RealNum))
+    {
+        case 4: EXPECT_EQ(GetVec2(manifold.GetLocalNormal()), Vec2(1, 0)); break;
+        case 8: EXPECT_EQ(GetVec2(manifold.GetLocalNormal()), Vec2(-1, 0)); break;
+    }
     EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
-    if (sizeof(RealNum) == 4)
+    switch (sizeof(RealNum))
     {
-        EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 1));
-    }
-    else if (sizeof(RealNum) == 8)
-    {
-        EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 1));
+        case 4: EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 1)); break;
+        case 8: EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(1, 2)); break;
     }
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(1));
     if (sizeof(RealNum) == 4)
@@ -990,7 +999,7 @@ TEST(CollideShapes, EdgeTwiceR180Square)
     }
     else if (sizeof(RealNum) == 8)
     {
-        EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(1, 0));
+        EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(1, 2));
     }
 }
 
