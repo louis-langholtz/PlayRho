@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <vector>
 #include <sstream>
+#include <chrono>
 
 #include <Box2D/Rope/Rope.hpp>
 #include <Box2D/Dynamics/FixtureProxy.hpp>
@@ -569,19 +570,28 @@ void Test::LaunchBomb(const Length2D& position, const LinearVelocity2D linearVel
 
 void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
 {
-    std::stringstream stream;
-    
-    drawer.DrawString(5, m_textLine, "step#=%d (@%fs):", m_stepCount, m_sumDeltaTime);
-    m_textLine += DRAW_STRING_NEW_LINE;
-    
     const auto bodyCount = GetBodyCount(*m_world);
     const auto awakeCount = GetAwakeCount(*m_world);
     const auto sleepCount = bodyCount - awakeCount;
     const auto jointCount = GetJointCount(*m_world);
     const auto fixtureCount = GetFixtureCount(*m_world);
     const auto shapeCount = GetShapeCount(*m_world);
+    
+    std::stringstream stream;
+    
+    drawer.DrawString(5, m_textLine, "step#=%d (@%fs):", m_stepCount, m_sumDeltaTime);
+    m_textLine += DRAW_STRING_NEW_LINE;
+    
     stream = std::stringstream();
-    stream << " ";
+    stream << "  Times:";
+    stream << " cur=" << m_curStepDuration.count();
+    stream << " max=" << m_maxStepDuration.count();
+    stream << " sum=" << m_sumStepDuration.count();
+    drawer.DrawString(5, m_textLine, stream.str().c_str());
+    m_textLine += DRAW_STRING_NEW_LINE;
+    
+    stream = std::stringstream();
+    stream << "  Object counts:";
     stream << " bodies=" << bodyCount << " (" << sleepCount << " asleep),";
     stream << " fixtures=" << fixtureCount << ",";
     stream << " shapes=" << shapeCount << ",";
@@ -853,7 +863,9 @@ void Test::Step(const Settings& settings, Drawer& drawer)
     stepConf.doToi = settings.enableContinuous;
     stepConf.doWarmStart = settings.enableWarmStarting;
 
+    const auto start = std::chrono::system_clock::now();
     const auto stepStats = m_world->Step(stepConf);
+    const auto end = std::chrono::system_clock::now();
     
     m_sumContactsUpdatedPre += stepStats.pre.updated;
     m_sumContactsIgnoredPre += stepStats.pre.ignored;
@@ -900,6 +912,10 @@ void Test::Step(const Settings& settings, Drawer& drawer)
         ++m_stepCount;
         m_stepStats = stepStats;
         m_minToiSep = Min(m_minToiSep, stepStats.toi.minSeparation);
+        
+        m_curStepDuration = end - start;
+        m_maxStepDuration = Max(m_maxStepDuration, m_curStepDuration);
+        m_sumStepDuration += m_curStepDuration;
     }
 
     m_numContacts = GetContactCount(*m_world);
@@ -908,72 +924,6 @@ void Test::Step(const Settings& settings, Drawer& drawer)
     if (settings.drawStats)
     {
         DrawStats(drawer, stepConf);
-    }
-
-    // Track maximum profile times
-    {
-        const auto p = Profile{};
-        m_maxProfile.step = Max(m_maxProfile.step, p.step);
-        m_maxProfile.collide = Max(m_maxProfile.collide, p.collide);
-        m_maxProfile.solve = Max(m_maxProfile.solve, p.solve);
-        m_maxProfile.solveInit = Max(m_maxProfile.solveInit, p.solveInit);
-        m_maxProfile.solveVelocity = Max(m_maxProfile.solveVelocity, p.solveVelocity);
-        m_maxProfile.solvePosition = Max(m_maxProfile.solvePosition, p.solvePosition);
-        m_maxProfile.solveTOI = Max(m_maxProfile.solveTOI, p.solveTOI);
-        m_maxProfile.broadphase = Max(m_maxProfile.broadphase, p.broadphase);
-
-        m_totalProfile.step += p.step;
-        m_totalProfile.collide += p.collide;
-        m_totalProfile.solve += p.solve;
-        m_totalProfile.solveInit += p.solveInit;
-        m_totalProfile.solveVelocity += p.solveVelocity;
-        m_totalProfile.solvePosition += p.solvePosition;
-        m_totalProfile.solveTOI += p.solveTOI;
-        m_totalProfile.broadphase += p.broadphase;
-    }
-
-    if (settings.drawProfile)
-    {
-        const auto p = Profile{};
-        
-        Profile aveProfile;
-        if (m_stepCount > 0)
-        {
-            const auto scale = 1.0f / m_stepCount;
-            aveProfile.step = scale * m_totalProfile.step;
-            aveProfile.collide = scale * m_totalProfile.collide;
-            aveProfile.solve = scale * m_totalProfile.solve;
-            aveProfile.solveInit = scale * m_totalProfile.solveInit;
-            aveProfile.solveVelocity = scale * m_totalProfile.solveVelocity;
-            aveProfile.solvePosition = scale * m_totalProfile.solvePosition;
-            aveProfile.solveTOI = scale * m_totalProfile.solveTOI;
-            aveProfile.broadphase = scale * m_totalProfile.broadphase;
-        }
-
-        drawer.DrawString(5, m_textLine, "step [ave] (max) = %5.2f [%6.2f] (%6.2f)",
-                          p.step, aveProfile.step, m_maxProfile.step);
-        m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, "collide [ave] (max) = %5.2f [%6.2f] (%6.2f)",
-                          p.collide, aveProfile.collide, m_maxProfile.collide);
-        m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, "solve [ave] (max) = %5.2f [%6.2f] (%6.2f)",
-                          p.solve, aveProfile.solve, m_maxProfile.solve);
-        m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, "solve init [ave] (max) = %5.2f [%6.2f] (%6.2f)",
-                          p.solveInit, aveProfile.solveInit, m_maxProfile.solveInit);
-        m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, "solve velocity [ave] (max) = %5.2f [%6.2f] (%6.2f)",
-                          p.solveVelocity, aveProfile.solveVelocity, m_maxProfile.solveVelocity);
-        m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, "solve position [ave] (max) = %5.2f [%6.2f] (%6.2f)",
-                          p.solvePosition, aveProfile.solvePosition, m_maxProfile.solvePosition);
-        m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, "solveTOI [ave] (max) = %5.2f [%6.2f] (%6.2f)",
-                          p.solveTOI, aveProfile.solveTOI, m_maxProfile.solveTOI);
-        m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, "broad-phase [ave] (max) = %5.2f [%6.2f] (%6.2f)",
-                          p.broadphase, aveProfile.broadphase, m_maxProfile.broadphase);
-        m_textLine += DRAW_STRING_NEW_LINE;
     }
 
     if (m_mouseJoint)

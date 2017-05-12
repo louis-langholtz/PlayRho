@@ -24,8 +24,8 @@
 #include <Box2D/Collision/RayCastOutput.hpp>
 #include <Box2D/Collision/ShapeSeparation.hpp>
 #include <Box2D/Dynamics/Contacts/PositionSolverManifold.hpp>
-#include "Profile.hpp"
 #include "Drawer.hpp"
+#include <chrono>
 
 namespace box2d {
 
@@ -59,7 +59,6 @@ struct Settings
     bool drawFrictionImpulse = false;
     bool drawCOMs = false;
     bool drawStats = false;
-    bool drawProfile = false;
     bool enableWarmStarting = true;
     bool enableContinuous = true;
     bool enableSubStepping = false;
@@ -218,8 +217,9 @@ private:
     toi_iter_type m_maxToiIters = 0;
     root_iter_type m_maxRootIters = 0;
 
-    Profile m_maxProfile;
-    Profile m_totalProfile;
+    std::chrono::duration<double> m_curStepDuration{0};
+    std::chrono::duration<double> m_maxStepDuration{0};
+    std::chrono::duration<double> m_sumStepDuration{0};
 };
 
 /// Random number in range [-1,1]
