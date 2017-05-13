@@ -232,7 +232,7 @@ private:
     size_type m_nodeCount = 0; ///< Node count. @details Count of currently allocated nodes.
     size_type m_nodeCapacity; ///< Node capacity. @details Size of buffer allocated for nodes.
 
-    size_type m_freeList = 0; ///< Free list. @details Index to free nodes.
+    size_type m_freeListIndex = 0; ///< Free list. @details Index to free nodes.
 };
 
 constexpr DynamicTree::size_type DynamicTree::GetDefaultInitialNodeCapacity() noexcept

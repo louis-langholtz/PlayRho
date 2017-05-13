@@ -50,7 +50,7 @@ DynamicTree::~DynamicTree() noexcept
 DynamicTree::size_type DynamicTree::AllocateNode()
 {
     // Expand the node pool as needed.
-    if (m_freeList == InvalidIndex)
+    if (m_freeListIndex == InvalidIndex)
     {
         assert(m_nodeCount == m_nodeCapacity);
 
@@ -67,12 +67,12 @@ DynamicTree::size_type DynamicTree::AllocateNode()
         }
         m_nodes[m_nodeCapacity - 1].next = InvalidIndex;
         m_nodes[m_nodeCapacity - 1].height = InvalidIndex;
-        m_freeList = m_nodeCount;
+        m_freeListIndex = m_nodeCount;
     }
 
     // Peel a node off the free list.
-    const auto index = m_freeList;
-    m_freeList = m_nodes[index].next;
+    const auto index = m_freeListIndex;
+    m_freeListIndex = m_nodes[index].next;
     m_nodes[index].parent = InvalidIndex;
     m_nodes[index].child1 = InvalidIndex;
     m_nodes[index].child2 = InvalidIndex;
@@ -88,9 +88,9 @@ void DynamicTree::FreeNode(const size_type index) noexcept
     assert(index != InvalidIndex);
     assert(index < m_nodeCapacity);
     assert(m_nodeCount > 0); // index is not ncessarily less than m_nodeCount.
-    m_nodes[index].next = m_freeList;
+    m_nodes[index].next = m_freeListIndex;
     m_nodes[index].height = InvalidIndex;
-    m_freeList = index;
+    m_freeListIndex = index;
     --m_nodeCount;
 }
 
@@ -797,7 +797,7 @@ bool DynamicTree::Validate() const
     }
 
     auto freeCount = size_type{0};
-    auto freeIndex = m_freeList;
+    auto freeIndex = m_freeListIndex;
     while (freeIndex != InvalidIndex)
     {
         if (freeIndex >= GetNodeCapacity())
