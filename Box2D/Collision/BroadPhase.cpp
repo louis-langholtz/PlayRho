@@ -22,6 +22,7 @@
 using namespace box2d;
 
 BroadPhase::BroadPhase(const Conf conf):
+	m_tree{conf.treeCapacity},
     m_pairCapacity{conf.pairCapacity},
     m_moveCapacity{conf.moveCapacity},
     m_pairBuffer(alloc<ProxyIdPair>(conf.pairCapacity)),

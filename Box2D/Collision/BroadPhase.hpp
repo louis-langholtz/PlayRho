@@ -69,6 +69,7 @@ public:
 
     struct Conf
     {
+        size_type treeCapacity = 256;
         size_type moveCapacity = 16;
         size_type pairCapacity = 16;
     };
