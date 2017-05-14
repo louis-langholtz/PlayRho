@@ -292,8 +292,9 @@ static bool Draw(Drawer& drawer, const World& world, const Settings& settings, F
 
     if (settings.drawShapes)
     {
-        for (auto&& b: world.GetBodies())
+        for (auto&& body: world.GetBodies())
         {
+            const auto b = GetBodyPtr(body);
             if (Draw(drawer, *b, settings.drawSkins, selected))
             {
                 found = true;
@@ -313,8 +314,9 @@ static bool Draw(Drawer& drawer, const World& world, const Settings& settings, F
     {
         const auto color = Color{0.9f, 0.3f, 0.9f};
         
-        for (auto&& b: world.GetBodies())
+        for (auto&& body: world.GetBodies())
         {
+            const auto b = GetBodyPtr(body);
             if (!b->IsEnabled())
             {
                 continue;
@@ -344,8 +346,9 @@ static bool Draw(Drawer& drawer, const World& world, const Settings& settings, F
         const auto k_axisScale = RealNum(0.4) * Meter;
         const auto red = Color{1.0f, 0.0f, 0.0f};
         const auto green = Color{0.0f, 1.0f, 0.0f};
-        for (auto&& b: world.GetBodies())
+        for (auto&& body: world.GetBodies())
         {
+            const auto b = GetBodyPtr(body);
             auto xf = b->GetTransformation();
             xf.p = b->GetWorldCenter();
             const auto p1 = xf.p;

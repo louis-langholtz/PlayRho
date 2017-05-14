@@ -77,8 +77,10 @@ public:
     /// Time step iteration type.
     using ts_iters_type = ts_iters_t;
 
+    using BodyPointers = std::list<Body*>;
+
     /// Bodies container type.
-    using Bodies = std::list<Body*>;
+    using Bodies = std::list<Body>;
 
     /// Contacts container type.
     using Contacts = std::list<Contact>;
@@ -177,6 +179,7 @@ public:
     /// @warning Behavior is undefined if the passed joint was not created by this world.
     ///
     /// @param joint Joint, created by this world, to destroy.
+    ///
     void Destroy(Joint* joint);
 
     /// Steps the world simulation according to the given configuration.
@@ -224,8 +227,11 @@ public:
     /// @param point2 the ray ending point
     void RayCast(RayCastFixtureReporter* callback, const Length2D& point1, const Length2D& point2) const;
 
+    BodyPointers GetBodies() noexcept;
+
     /// Gets the world body container for this constant world.
-    /// @return Body container that can be iterated over using its begin and end methods or using ranged-based for-loops.
+    /// @return Body container that can be iterated over using its begin and end methods
+    ///   or using ranged-based for-loops.
     const Bodies& GetBodies() const noexcept;
 
     /// Gets the world joint container.
@@ -319,6 +325,10 @@ public:
     ///   return false.
     /// @note This sets things up so that pairs may be created for potentially new contacts.
     bool TouchProxies(Fixture& fixture) noexcept;
+
+    size_t Awaken() noexcept;
+
+    void ClearForces() noexcept;
 
 private:
 
@@ -458,7 +468,6 @@ private:
     ProcessContactsOutput ProcessContactsForTOI(Island& island, Body& body, RealNum toi,
                                                 const StepConf& conf);
     
-    bool Add(Body& b);
     bool Add(Joint& j);
 
     bool Remove(Body& b);
@@ -928,7 +937,7 @@ size_t GetAwakeCount(const World& world) noexcept;
 /// @details Calls all of the world's bodies' <code>SetAwake</code> method.
 /// @return Sum total of calls to bodies' <code>SetAwake</code> method that returned true.
 /// @sa Body::SetAwake.
-size_t Awaken(World& world);
+size_t Awaken(World& world) noexcept;
 
 /// Clears forces.
 /// @details

@@ -130,8 +130,9 @@ void box2d::Dump(const World& world)
     const auto& bodies = world.GetBodies();
     log("Body** bodies = (Body**)alloc(%d * sizeof(Body*));\n", bodies.size());
     auto i = size_t{0};
-    for (auto&& b: bodies)
+    for (auto&& body: bodies)
     {
+        const auto b = GetBodyPtr(body);
         Dump(*b, i);
         ++i;
     }

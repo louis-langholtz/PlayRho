@@ -48,6 +48,8 @@
 #include <vector>
 #include <unordered_map>
 
+#define USE_CONTACTKEY_SET
+
 //#define DO_THREADED
 #if defined(DO_THREADED)
 #include <future>
@@ -492,7 +494,8 @@ World::~World()
     // bodies in their listed order.
     while (!m_bodies.empty())
     {
-        const auto b = m_bodies.front();
+        auto& body = m_bodies.front();
+        const auto b = GetBodyPtr(body);
         BodyAtty::ClearJoints(*b, [&](Joint&) {
             // Intentionally empty.
         });
@@ -505,7 +508,6 @@ World::~World()
         });
         assert(b->GetJoints().empty());
         assert(b->GetContacts().empty());
-        BodyAtty::Destruct(b);
         m_bodies.pop_front();
     }
     
@@ -533,8 +535,9 @@ void World::SetGravity(const LinearAcceleration2D gravity) noexcept
     if (m_gravity != gravity)
     {
         const auto diff = gravity - m_gravity;
-        for (auto&& body: m_bodies)
+        for (auto&& b: m_bodies)
         {
+            const auto body = GetBodyPtr(b);
             ApplyLinearAcceleration(*body, diff);
         }
         m_gravity = gravity;
@@ -549,37 +552,23 @@ Body* World::CreateBody(const BodyDef& def)
         return nullptr;
     }
 
-    auto b = BodyAtty::Create(this, def);
-    if (b)
-    {
-        if (!Add(*b))
-        {
-            BodyAtty::Destruct(b);
-            return nullptr;
-        }        
-    }
-
-    b->SetAcceleration(m_gravity, AngularAcceleration{0});
-    return b;
-}
-
-bool World::Add(Body& b)
-{
     if (m_bodies.size() >= MaxBodies)
     {
-        return false;
+        return nullptr;
     }
     
     // Add to world doubly linked list.
-    m_bodies.push_front(&b);
-    return true;
+    m_bodies.emplace_front(def, this);
+    auto& b = m_bodies.front();
+    b.SetAcceleration(m_gravity, AngularAcceleration{0});
+    return &b;
 }
 
 bool World::Remove(Body& b)
 {
     for (auto iter = m_bodies.begin(); iter != m_bodies.end(); ++iter)
     {
-        if (*iter == &b)
+        if (&*iter == &b)
         {
             m_bodies.erase(iter);
             return true;
@@ -624,8 +613,6 @@ void World::Destroy(Body* b)
     });
     
     Remove(*b);
-    
-    BodyAtty::Destruct(b);
 }
 
 Joint* World::CreateJoint(const JointDef& def)
@@ -888,8 +875,9 @@ RegStepStats World::SolveReg(const StepConf& conf)
     futures.reserve(remNumBodies);
 #endif
     // Build and simulate all awake islands.
-    for (auto&& body: m_bodies)
+    for (auto&& b: m_bodies)
     {
+        const auto body = GetBodyPtr(b);
         assert(!body->IsAwake() || body->IsSpeedable());
         if (!IsIslanded(body) && body->IsAwake() && body->IsEnabled())
         {
@@ -935,8 +923,9 @@ RegStepStats World::SolveReg(const StepConf& conf)
     }
 #endif
 
-    for (auto&& body: m_bodies)
+    for (auto&& b: m_bodies)
     {
+        const auto body = GetBodyPtr(b);
         // A non-static body that was in an island may have moved.
         if (body->IsSpeedable() && IsIslanded(body))
         {
@@ -1071,8 +1060,9 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island is
 void World::ResetBodiesForSolveTOI()
 {
     m_bodiesIslanded.clear();
-    for (auto&& b: m_bodies)
+    for (auto&& body: m_bodies)
     {
+        const auto b = GetBodyPtr(body);
         BodyAtty::ResetAlpha0(*b);
     }
 }
@@ -1248,8 +1238,9 @@ ToiStepStats World::SolveTOI(const StepConf& conf)
         stats.islandsFound += islandsFound;
 
         // Reset island flags and synchronize broad-phase proxies.
-        for (auto&& body: m_bodies)
+        for (auto&& b: m_bodies)
         {
+            const auto body = GetBodyPtr(b);
             if (IsIslanded(body))
             {
                 UnsetIslanded(body);
@@ -1796,8 +1787,10 @@ void World::ShiftOrigin(const Length2D newOrigin)
         return;
     }
 
-    for (auto&& b: m_bodies)
+    for (auto&& body: m_bodies)
     {
+        const auto b = GetBodyPtr(body);
+
         auto transformation = b->GetTransformation();
         transformation.p -= newOrigin;
         BodyAtty::SetTransformation(*b, transformation);
@@ -2516,6 +2509,41 @@ contact_count_t World::Synchronize(Body& body,
     return updatedCount;
 }
 
+size_t World::Awaken() noexcept
+{
+    auto awoken = size_t{0};
+    for (auto&& b: m_bodies)
+    {
+        const auto body = GetBodyPtr(b);
+        if (box2d::Awaken(*body))
+        {
+            ++awoken;
+        }
+    }
+    return awoken;
+}
+
+void World::ClearForces() noexcept
+{
+    const auto g = GetGravity();
+    for (auto&& b: m_bodies)
+    {
+        const auto body = GetBodyPtr(b);
+        body->SetAcceleration(g, AngularAcceleration{0});
+    }
+}
+
+World::BodyPointers World::GetBodies() noexcept
+{
+    auto bodies = World::BodyPointers{};
+    for (auto&& b: m_bodies)
+    {
+        const auto body = GetBodyPtr(b);
+        bodies.push_back(body);
+    }
+    return bodies;
+}
+
 // Free functions...
 
 StepStats Step(World& world, Time dt, World::ts_iters_type velocityIterations, World::ts_iters_type positionIterations)
@@ -2536,8 +2564,9 @@ StepStats Step(World& world, Time dt, World::ts_iters_type velocityIterations, W
 size_t GetFixtureCount(const World& world) noexcept
 {
     size_t sum = 0;
-    for (auto&& body: world.GetBodies())
+    for (auto&& b: world.GetBodies())
     {
+        const auto body = GetBodyPtr(b);
         sum += GetFixtureCount(*body);
     }
     return sum;
@@ -2546,8 +2575,9 @@ size_t GetFixtureCount(const World& world) noexcept
 size_t GetShapeCount(const World& world) noexcept
 {
     auto shapes = std::set<const Shape*>();
-    for (auto&& body: world.GetBodies())
+    for (auto&& b: world.GetBodies())
     {
+        const auto body = GetBodyPtr(b);
         for (auto&& fixture: body->GetFixtures())
         {
             shapes.insert(fixture->GetShape());
@@ -2559,8 +2589,9 @@ size_t GetShapeCount(const World& world) noexcept
 size_t GetAwakeCount(const World& world) noexcept
 {
     auto count = size_t(0);
-    for (auto&& body: world.GetBodies())
+    for (auto&& b: world.GetBodies())
     {
+        const auto body = GetBodyPtr(b);
         if (body->IsAwake())
         {
             ++count;
@@ -2569,26 +2600,14 @@ size_t GetAwakeCount(const World& world) noexcept
     return count;
 }
     
-size_t Awaken(World& world)
+size_t Awaken(World& world) noexcept
 {
-    auto awoken = size_t{0};
-    for (auto&& body: world.GetBodies())
-    {
-        if (Awaken(*body))
-        {
-            ++awoken;
-        }
-    }
-    return awoken;
+    return world.Awaken();
 }
 
 void ClearForces(World& world) noexcept
 {
-    const auto g = world.GetGravity();
-    for (auto&& body: world.GetBodies())
-    {
-        body->SetAcceleration(g, AngularAcceleration{0});
-    }
+    world.ClearForces();
 }
 
 bool IsActive(const Contact& contact) noexcept

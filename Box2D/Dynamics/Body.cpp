@@ -480,7 +480,7 @@ box2d::size_t box2d::GetWorldIndex(const Body* body)
         auto i = size_t{0};
         for (auto&& b: world->GetBodies())
         {
-            if (b == body)
+            if (&b == body)
             {
                 return i;
             }

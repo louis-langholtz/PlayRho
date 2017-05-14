@@ -85,6 +85,9 @@ public:
     /// @brief Tests whether the given shape is valid as far as the Body class is concerned.
     static bool IsValid(const Shape& shape);
 
+    Body(const BodyDef& bd, World* world);
+    ~Body();
+    
     /// @brief Creates a fixture and attaches it to this body.
     ///
     /// @param shape Sharable shape definition.
@@ -393,9 +396,6 @@ private:
 
     static FlagsType GetFlags(const BodyType type) noexcept;
     static FlagsType GetFlags(const BodyDef& bd) noexcept;
-
-    Body(const BodyDef& bd, World* world);
-    ~Body();
 
     /// @brief Sets the body's awake flag.
     /// @detail This is done unconditionally.
@@ -1049,6 +1049,16 @@ void RotateAboutWorldPoint(Body& body, Angle amount, Length2D worldPoint);
 /// @param amount Amount to rotate body by (in counter-clockwise direction).
 /// @param localPoint Point in local coordinates.
 void RotateAboutLocalPoint(Body& body, Angle amount, Length2D localPoint);
+
+inline Body* GetBodyPtr(Body& body)
+{
+    return &body;
+}
+
+inline const Body* GetBodyPtr(const Body& body)
+{
+    return &body;
+}
 
 } // namespace box2d
 

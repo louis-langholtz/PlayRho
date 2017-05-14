@@ -95,10 +95,22 @@ TEST(World, DefaultInit)
     EXPECT_EQ(world.GetTreeQuality(), RealNum(0));
 
     EXPECT_EQ(world.GetGravity(), EarthlyGravity);
-        
-    EXPECT_TRUE(world.GetBodies().empty());
-    EXPECT_EQ(world.GetBodies().size(), body_count_t(0));
-    EXPECT_EQ(world.GetBodies().begin(), world.GetBodies().end());
+
+    {
+        const auto& bodies = world.GetBodies();
+        EXPECT_TRUE(bodies.empty());
+        EXPECT_EQ(bodies.size(), body_count_t(0));
+        EXPECT_EQ(bodies.begin(), bodies.end());
+        EXPECT_NE(world.GetBodies().begin(), world.GetBodies().end());
+    }
+    {
+        const auto& w = static_cast<const World&>(world);
+        const auto& bodies = w.GetBodies();
+        EXPECT_TRUE(bodies.empty());
+        EXPECT_EQ(bodies.size(), body_count_t(0));
+        EXPECT_EQ(bodies.begin(), bodies.end());
+        EXPECT_EQ(w.GetBodies().begin(), w.GetBodies().end());
+    }
 
     EXPECT_TRUE(world.GetContacts().empty());
     EXPECT_EQ(world.GetContacts().size(), contact_count_t(0));
@@ -144,17 +156,19 @@ TEST(World, CreateAndDestroyBody)
     EXPECT_TRUE(body->IsImpenetrable());
 
     EXPECT_EQ(GetBodyCount(world), body_count_t(1));
-    EXPECT_FALSE(world.GetBodies().empty());
-    EXPECT_EQ(world.GetBodies().size(), body_count_t(1));
-    EXPECT_NE(world.GetBodies().begin(), world.GetBodies().end());
-    const auto& first = *(world.GetBodies().begin());
+    const auto& bodies1 = world.GetBodies();
+    EXPECT_FALSE(bodies1.empty());
+    EXPECT_EQ(bodies1.size(), body_count_t(1));
+    EXPECT_NE(bodies1.begin(), bodies1.end());
+    const auto& first = *(bodies1.begin());
     EXPECT_EQ(body, first);
 
     world.Destroy(body);
     EXPECT_EQ(GetBodyCount(world), body_count_t(0));
-    EXPECT_TRUE(world.GetBodies().empty());
-    EXPECT_EQ(world.GetBodies().size(), body_count_t(0));
-    EXPECT_EQ(world.GetBodies().begin(), world.GetBodies().end());
+    const auto& bodies0 = world.GetBodies();
+    EXPECT_TRUE(bodies0.empty());
+    EXPECT_EQ(bodies0.size(), body_count_t(0));
+    EXPECT_EQ(bodies0.begin(), bodies0.end());
 }
 
 TEST(World, DynamicEdgeBodyHasCorrectMass)

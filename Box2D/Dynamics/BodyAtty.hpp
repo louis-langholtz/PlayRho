@@ -40,16 +40,7 @@ namespace box2d
     class BodyAtty
     {
     private:
-        static Body* Create(World* world, const BodyDef& def)
-        {
-            return new Body(def, world);
-        }
-        
-        static void Destruct(Body* b)
-        {
-            delete b;
-        }
-        
+
         static void SetTypeFlags(Body& b, BodyType type) noexcept
         {
             b.m_flags &= ~(Body::e_impenetrableFlag|Body::e_velocityFlag|Body::e_accelerationFlag);
