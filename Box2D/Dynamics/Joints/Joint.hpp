@@ -72,6 +72,11 @@ struct JointDef
         // Intentionally empty.
     }
 
+    constexpr JointDef(const JointDef& copy) = default;
+
+    JointDef& UseBodyA(Body* body) { bodyA = body; return *this; }
+    JointDef& UseBodyB(Body* body) { bodyB = body; return *this; }
+
     /// The joint type is set automatically for concrete joint types.
     const JointType type;
 
@@ -103,8 +108,6 @@ public:
         e_equalLimits
     };
     
-    using index_t = size_t;
-
     static bool IsOkay(const JointDef& def) noexcept;
 
     /// Get the type of the concrete joint.
@@ -152,9 +155,6 @@ protected:
     Joint(const JointDef& def);
     virtual ~Joint() noexcept {}
     
-    void SetBodyA(Body* value) noexcept;
-    void SetBodyB(Body* value) noexcept;
-
 private:
     friend class JointAtty;
 
@@ -178,12 +178,9 @@ private:
     // This returns true if the position errors are within tolerance.
     virtual bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const = 0;
     
-    Body* m_bodyA;
-    Body* m_bodyB;
+    Body* const m_bodyA;
+    Body* const m_bodyB;
     void* m_userData;
-
-    index_t m_index = 0;
-    
     const JointType m_type;
     bool m_collideConnected = false;
 };
@@ -196,16 +193,6 @@ inline JointType Joint::GetType() const noexcept
 inline Body* Joint::GetBodyA() noexcept
 {
     return m_bodyA;
-}
-
-inline void Joint::SetBodyA(Body* value) noexcept
-{
-    m_bodyA = value;
-}
-
-inline void Joint::SetBodyB(Body* value) noexcept
-{
-    m_bodyB = value;
 }
 
 inline Body* Joint::GetBodyB() noexcept

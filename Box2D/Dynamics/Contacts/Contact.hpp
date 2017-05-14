@@ -59,13 +59,28 @@ class Contact
 public:
     using substep_type = ts_iters_t;
 
-    using ManifoldCalcFunc = Manifold (*)(const Fixture* fixtureA, child_count_t indexA,
-                                          const Fixture* fixtureB, child_count_t indexB,
-                                          const Manifold::Conf conf);
-
-    Contact() = delete;
-    Contact(const Contact& copy) = delete;
-
+    /// Initializing constructor.
+    ///
+    /// @param fixtureA Fixture A. A non-null pointer to fixture A that must have a shape
+    ///   and may not be the same fixture or have the same body as the other fixture.
+    /// @param indexA Index of child A (from fixture A).
+    /// @param fixtureB Fixture B. A non-null pointer to fixture B that must have a shape
+    ///   and may not be the same fixture or have the same body as the other fixture.
+    /// @param indexB Index of child B (from fixture B).
+    ///
+    /// @warning Behavior is undefined if <code>fixtureA</code> is null.
+    /// @warning Behavior is undefined if <code>fixtureB</code> is null.
+    /// @warning Behavior is undefined if <code>fixtureA == fixtureB</code>.
+    /// @warning Behavior is undefined if <code>fixtureA</code> has no associated shape.
+    /// @warning Behavior is undefined if <code>fixtureB</code> has no associated shape.
+    /// @warning Behavior is undefined if both fixtures have the same body.
+    ///
+    Contact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB);
+    
+    Contact() = default;
+    
+    Contact(const Contact& copy) = default;
+    
     /// Gets the contact manifold.
     const Manifold& GetManifold() const noexcept;
 
@@ -175,33 +190,7 @@ private:
         // This contacts needs its touching state updated.
         e_dirtyFlag = 0x0010
     };
-
-    static Contact* Create(Fixture& fixtureA, child_count_t indexA,
-                           Fixture& fixtureB, child_count_t indexB);
-
-    /// Destroys the given contact.
-    /// @note This awakens the associated fixtures of a non-sensor touching contact.
-    /// @note This calls the contact's destructor.
-    static void Destroy(Contact* contact);
-
-    /// Initializing constructor.
-    ///
-    /// @param fixtureA Fixture A. A non-null pointer to fixture A that must have a shape
-    ///   and may not be the same fixture or have the same body as the other fixture.
-    /// @param indexA Index of child A (from fixture A).
-    /// @param fixtureB Fixture B. A non-null pointer to fixture B that must have a shape
-    ///   and may not be the same fixture or have the same body as the other fixture.
-    /// @param indexB Index of child B (from fixture B).
-    ///
-    /// @warning Behavior is undefined if <code>fixtureA</code> is null.
-    /// @warning Behavior is undefined if <code>fixtureB</code> is null.
-    /// @warning Behavior is undefined if <code>fixtureA == fixtureB</code>.
-    /// @warning Behavior is undefined if <code>fixtureA</code> has no associated shape.
-    /// @warning Behavior is undefined if <code>fixtureB</code> has no associated shape.
-    /// @warning Behavior is undefined if both fixtures have the same body.
-    ///
-    Contact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB);
-
+    
     /// Flag this contact for filtering. Filtering will occur the next time step.
     void UnflagForFiltering() noexcept;
 
@@ -452,6 +441,21 @@ inline Contact::substep_type Contact::GetToiCount() const noexcept
 }
 
 // Free functions...
+
+inline Contact* GetContactPtr(Contact* value)
+{
+    return value;
+}
+
+inline Contact* GetContactPtr(Contact& value)
+{
+    return &value;
+}
+
+inline const Contact* GetContactPtr(const Contact& value)
+{
+    return &value;
+}
 
 bool HasSensor(const Contact& contact) noexcept;
 

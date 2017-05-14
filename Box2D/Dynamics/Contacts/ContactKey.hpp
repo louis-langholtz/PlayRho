@@ -25,14 +25,19 @@
 /// Declaration of the ContactKey class.
 
 #include <Box2D/Common/Settings.hpp>
+#include <utility>
 
 namespace box2d
 {
     class Fixture;
+    class FixtureProxy;
+    class Contact;
 
     class ContactKey
     {
     public:
+        static ContactKey Get(const FixtureProxy& fpA, const FixtureProxy& fpB) noexcept;
+
         static ContactKey Get(const Fixture* fixtureA, child_count_t childIndexA,
                               const Fixture* fixtureB, child_count_t childIndexB) noexcept;
         
@@ -129,6 +134,18 @@ namespace box2d
     
     ContactKey GetContactKey(const Contact& contact) noexcept;
 
+    constexpr bool operator== (const box2d::ContactKey& lhs,
+                               const box2d::ContactKey& rhs) noexcept
+    {
+        return ContactKey::Compare(lhs, rhs) == 0;
+    }
+    
+    constexpr bool operator!= (const box2d::ContactKey& lhs,
+                               const box2d::ContactKey& rhs) noexcept
+    {
+        return !(lhs == rhs);
+    }
+
 } // namespace box2d
 
 namespace std
@@ -163,6 +180,14 @@ namespace std
             return box2d::ContactKey::Compare(lhs, rhs) == 0;
         }
     };
+}
+
+namespace box2d
+{
+    inline Contact* GetContactPtr(std::pair<ContactKey, Contact*> value)
+    {
+        return value.second;
+    }
 }
 
 #endif /* ContactKey_hpp */

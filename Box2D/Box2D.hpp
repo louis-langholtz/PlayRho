@@ -48,6 +48,7 @@ For discussion, please visit http://box2d.org/forum
 #include <Box2D/Collision/DistanceProxy.hpp>
 
 #include <Box2D/Dynamics/Body.hpp>
+#include <Box2D/Dynamics/BodyDef.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/WorldCallbacks.hpp>
 #include <Box2D/Dynamics/StepConf.hpp>

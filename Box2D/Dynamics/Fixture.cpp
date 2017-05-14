@@ -52,8 +52,9 @@ void Fixture::Refilter()
     const auto world = body->GetWorld();
 
     // Flag associated contacts for filtering.
-    for (auto&& contact: body->GetContacts())
+    for (auto&& ci: body->GetContacts())
     {
+        const auto contact = GetContactPtr(ci);
         const auto fixtureA = contact->GetFixtureA();
         const auto fixtureB = contact->GetFixtureB();
         if ((fixtureA == this) || (fixtureB == this))
@@ -75,9 +76,10 @@ void Fixture::SetSensor(bool sensor) noexcept
         if (body)
         {
             body->SetAwake();
-            for (auto&& c: body->GetContacts())
+            for (auto&& ci: body->GetContacts())
             {
-                c->FlagForUpdating();
+                const auto contact = GetContactPtr(ci);
+                contact->FlagForUpdating();
             }
         }
     }

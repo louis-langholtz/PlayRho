@@ -25,6 +25,13 @@
 
 using namespace box2d;
 
+ContactKey ContactKey::Get(const FixtureProxy& fpA, const FixtureProxy& fpB) noexcept
+{
+    const auto pidA = fpA.proxyId;
+    const auto pidB = fpB.proxyId;
+    return (pidA < pidB)? ContactKey{pidA, pidB}: ContactKey{pidB, pidA};
+}
+
 ContactKey ContactKey::Get(const Fixture* fixtureA, child_count_t childIndexA,
                                 const Fixture* fixtureB, child_count_t childIndexB) noexcept
 {
@@ -33,9 +40,7 @@ ContactKey ContactKey::Get(const Fixture* fixtureA, child_count_t childIndexA,
   	  ContactKey{fixtureA, childIndexA, fixtureB, childIndexB}:
   	  ContactKey{fixtureB, childIndexB, fixtureA, childIndexA};
 #else
-    const auto pidA = fixtureA->GetProxy(childIndexA)->proxyId;
-    const auto pidB = fixtureB->GetProxy(childIndexB)->proxyId;
-    return (pidA < pidB)? ContactKey{pidA, pidB}: ContactKey{pidB, pidA};
+    return ContactKey::Get(*fixtureA->GetProxy(childIndexA), *fixtureB->GetProxy(childIndexB));
 #endif
 }
 

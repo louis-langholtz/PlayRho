@@ -115,6 +115,12 @@ namespace box2d {
     ///   mass to get the averaged center.
     /// @return accumalated mass data for all fixtures associated with the given body.
     MassData ComputeMassData(const Body& body) noexcept;
+    
+    
+    /// Gets the mass data of the body.
+    /// @return a struct containing the mass, inertia and center of the body.
+    MassData GetMassData(const Body& body) noexcept;
+    
 }
 
 #endif /* B2_MASS_DATA_HPP */

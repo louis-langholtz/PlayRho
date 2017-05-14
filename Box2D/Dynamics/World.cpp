@@ -19,6 +19,7 @@
 
 #include <Box2D/Dynamics/World.hpp>
 #include <Box2D/Dynamics/Body.hpp>
+#include <Box2D/Dynamics/BodyDef.hpp>
 #include <Box2D/Dynamics/BodyAtty.hpp>
 #include <Box2D/Dynamics/StepConf.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
@@ -402,24 +403,11 @@ namespace {
         return state == TOIOutput::e_touching;
     }
     
-    inline bool IsFor(const Contact& contact,
-                      const Fixture* fixtureA, child_count_t indexA,
-                      const Fixture* fixtureB, child_count_t indexB)
-    {
-        const auto fA = contact.GetFixtureA();
-        const auto fB = contact.GetFixtureB();
-        const auto iA = contact.GetChildIndexA();
-        const auto iB = contact.GetChildIndexB();
-        
-        return
-            ((fA == fixtureA) && (fB == fixtureB) && (iA == indexA) && (iB == indexB)) ||
-            ((fA == fixtureB) && (fB == fixtureA) && (iA == indexB) && (iB == indexA));
-    }
-
     void FlagContactsForFiltering(Body* bodyA, Body* bodyB)
     {
-        for (auto&& contact: bodyB->GetContacts())
+        for (auto&& ci: bodyB->GetContacts())
         {
+            const auto contact = GetContactPtr(ci);
             const auto fA = contact->GetFixtureA();
             const auto fB = contact->GetFixtureB();
             const auto bA = fA->GetBody();
@@ -480,17 +468,47 @@ World::~World()
     // Gets rid of the associated contacts.
     while (!m_contacts.empty())
     {
-        const auto c = m_contacts.front();
+        auto&& contact = m_contacts.front();
+        const auto c = GetContactPtr(contact);
         const auto fixtureA = c->GetFixtureA();
         const auto fixtureB = c->GetFixtureB();
         const auto bodyA = fixtureA->GetBody();
         const auto bodyB = fixtureB->GetBody();
         BodyAtty::Erase(*bodyA, c);
         BodyAtty::Erase(*bodyB, c);
+        if ((c->GetManifold().GetPointCount() > 0) &&
+            !fixtureA->IsSensor() && !fixtureB->IsSensor())
+        {
+            // Contact may have been keeping accelerable bodies of fixture A or B from moving.
+            // Need to awaken those bodies now in case they are again movable.
+            bodyA->SetAwake();
+            bodyB->SetAwake();
+        }
         m_contacts.pop_front();
-        ContactAtty::Destroy(c);
     }
 
+    // Gets rid of the created bodies and any associated fixtures.
+    // Do this before getting rid of joints so that joints can be removed from
+    // bodies in their listed order.
+    while (!m_bodies.empty())
+    {
+        const auto b = m_bodies.front();
+        BodyAtty::ClearJoints(*b, [&](Joint&) {
+            // Intentionally empty.
+        });
+        BodyAtty::ClearFixtures(*b, [&](Fixture& fixture) {
+            if (m_destructionListener)
+            {
+                m_destructionListener->SayGoodbye(fixture);
+            }
+            DestroyProxies(fixture);
+        });
+        assert(b->GetJoints().empty());
+        assert(b->GetContacts().empty());
+        BodyAtty::Destruct(b);
+        m_bodies.pop_front();
+    }
+    
     // Gets rid of the created joints.
     while (!m_joints.empty())
     {
@@ -507,23 +525,6 @@ World::~World()
         }
         m_joints.pop_front();
         JointAtty::Destroy(j);
-    }
-
-    // Gets rid of the created bodies and any associated fixtures.
-    while (!m_bodies.empty())
-    {
-        const auto b = m_bodies.front();
-        m_bodies.pop_front();
-        BodyAtty::ClearFixtures(*b, [&](Fixture& fixture) {
-            if (m_destructionListener)
-            {
-                m_destructionListener->SayGoodbye(fixture);
-            }
-            DestroyProxies(fixture);
-        });
-        assert(b->GetJoints().empty());
-        assert(b->GetContacts().empty());
-        BodyAtty::Destruct(b);
     }
 }
 
@@ -781,8 +782,9 @@ void World::AddToIsland(Island& island, Body& seed,
 
         const auto oldNumContacts = island.m_contacts.size();
         // Adds appropriate contacts of current body and appropriate 'other' bodies of those contacts.
-        for (auto&& contact: b->GetContacts())
+        for (auto&& ci: b->GetContacts())
         {
+            const auto contact = GetContactPtr(ci);
             const auto fA = contact->GetFixtureA();
             const auto fB = contact->GetFixtureB();
             const auto bA = fA->GetBody();
@@ -819,19 +821,25 @@ void World::AddToIsland(Island& island, Body& seed,
         
         const auto numJoints = island.m_joints.size();
         // Adds appropriate joints of current body and appropriate 'other' bodies of those joint.
-        for (auto&& joint: b->GetJoints())
+        for (auto&& ji: b->GetJoints())
         {
-            const auto bodyA = joint->GetBodyA();
-            const auto bodyB = joint->GetBodyB();
-            const auto other = (b != bodyA)? bodyA: bodyB;
+            // Use data of ji before dereferencing its pointers.
+            const auto joint = GetJointPtr(ji);
+            const auto body1 = ji.first.GetBody1();
+            const auto body2 = ji.first.GetBody2();
+            const auto other = (b != body1)? body1: body2;
             if (!IsIslanded(joint) && other->IsEnabled())
             {
                 island.m_joints.push_back(joint);
                 SetIslanded(joint);
                 if (!IsIslanded(other))
-                {                    
-                    stack.push_back(other);
-                    SetIslanded(other);
+                {
+                    // Only now dereference ji's pointers.
+                    const auto bodyA = joint->GetBodyA();
+                    const auto bodyB = joint->GetBodyB();
+                    const auto rwOther = bodyA != b? bodyA: bodyB;
+                    stack.push_back(rwOther);
+                    SetIslanded(rwOther);
                 }
             }
         }
@@ -1072,8 +1080,10 @@ void World::ResetBodiesForSolveTOI()
 void World::ResetContactsForSolveTOI()
 {
     m_contactsIslanded.clear();
-    for (auto&& c: m_contacts)
+    for (auto&& contact: m_contacts)
     {
+        const auto c = GetContactPtr(contact);
+
         // Invalidate TOI
         ContactAtty::UnsetToi(*c);
         ContactAtty::ResetToiCount(*c);
@@ -1086,8 +1096,9 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
 
     const auto toiConf = GetToiConf(conf);
     
-    for (auto&& c: m_contacts)
+    for (auto&& contact: m_contacts)
     {
+        const auto c = GetContactPtr(contact);
         if (c->HasValidToi())
         {
             ++results.numValidTOI;
@@ -1143,13 +1154,14 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
     return results;
 }
     
-World::ContactToiData World::GetSoonestContacts(const size_t reserveSize) const
+World::ContactToiData World::GetSoonestContacts(const size_t reserveSize)
 {
     auto minToi = std::nextafter(RealNum{1}, RealNum{0});
     auto minContacts = std::vector<Contact*>();
     minContacts.reserve(reserveSize);
-    for (auto&& c: m_contacts)
+    for (auto&& contact: m_contacts)
     {
+        const auto c = GetContactPtr(contact);
         if (c->HasValidToi())
         {
             const auto toi = c->GetToi();
@@ -1546,8 +1558,9 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Island& island)
 void World::ResetContactsForSolveTOI(Body& body)
 {
     // Invalidate all contact TOIs on this displaced body.
-    for (auto&& contact: body.GetContacts())
+    for (auto&& ci: body.GetContacts())
     {
+        const auto contact = GetContactPtr(ci);
         UnsetIslanded(contact);
         ContactAtty::UnsetToi(*contact);
     }
@@ -1566,8 +1579,9 @@ World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi,
     assert(results.contactsSkipped == 0);
     
     // Note: the original contact (for body of which this method was called) already islanded.
-    for (auto&& contact: body.GetContacts())
+    for (auto&& ci: body.GetContacts())
     {
+        const auto contact = GetContactPtr(ci);
         const auto fA = contact->GetFixtureA();
         const auto fB = contact->GetFixtureB();
         const auto bA = fA->GetBody();
@@ -1805,9 +1819,10 @@ void World::ShiftOrigin(const Length2D newOrigin)
 bool World::Erase(Contact* c)
 {
     assert(c);
+
     for (auto iter = m_contacts.begin(); iter != m_contacts.end(); ++iter)
     {
-        if (*iter == c)
+        if (&(*iter) == c)
         {
             m_contacts.erase(iter);
             return true;
@@ -1824,23 +1839,39 @@ void World::InternalDestroy(Contact* c, Body* from)
         m_contactListener->EndContact(*c);
     }
     
+    const auto fixtureA = c->GetFixtureA();
+    const auto fixtureB = c->GetFixtureB();
+    const auto bodyA = fixtureA->GetBody();
+    const auto bodyB = fixtureB->GetBody();
+    
+    if (bodyA != from)
     {
-        const auto fixtureA = c->GetFixtureA();
-        const auto fixtureB = c->GetFixtureB();
-        const auto bodyA = fixtureA->GetBody();
-        const auto bodyB = fixtureB->GetBody();
-        
-        if (bodyA != from)
-        {
-            BodyAtty::Erase(*bodyA, c);
-        }
-        if (bodyB != from)
-        {
-            BodyAtty::Erase(*bodyB, c);
-        }
+        BodyAtty::Erase(*bodyA, c);
+    }
+    if (bodyB != from)
+    {
+        BodyAtty::Erase(*bodyB, c);
     }
     
-    ContactAtty::Destroy(c);
+    if ((c->GetManifold().GetPointCount() > 0) &&
+        !fixtureA->IsSensor() && !fixtureB->IsSensor())
+    {
+        // Contact may have been keeping accelerable bodies of fixture A or B from moving.
+        // Need to awaken those bodies now in case they are again movable.
+        bodyA->SetAwake();
+        bodyB->SetAwake();
+    }
+    
+#ifdef USE_CONTACTKEY_SET
+    const auto childA = c->GetChildIndexA();
+    const auto childB = c->GetChildIndexB();
+    const auto key = ContactKey::Get(fixtureA, childA, fixtureB, childB);
+#if !defined(NDEBUG)
+    const auto numRemoved =
+#endif
+    m_contactKeySet.erase(key);
+    assert(numRemoved == 1);
+#endif
 }
 
 void World::Destroy(Contact* c, Body* from)
@@ -1858,7 +1889,7 @@ World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
     {
         next = std::next(iter);
 
-        const auto contact = *iter;
+        const auto contact = GetContactPtr(*iter);
         const auto indexA = contact->GetChildIndexA();
         const auto indexB = contact->GetChildIndexB();
         const auto fixtureA = contact->GetFixtureA();
@@ -1867,7 +1898,7 @@ World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
         if (!TestOverlap(m_broadPhase, fixtureA, indexA, fixtureB, indexB))
         {
             // Destroy contacts that cease to overlap in the broad-phase.
-            InternalDestroy(*iter);
+            InternalDestroy(&*iter);
             contacts.erase(iter);
             ++stats.notOverlapping;
             continue;
@@ -1881,7 +1912,7 @@ World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
 
             if (!::box2d::ShouldCollide(*bodyB, *bodyA) || !ShouldCollide(fixtureA, fixtureB))
             {
-                InternalDestroy(*iter);
+                InternalDestroy(&*iter);
                 contacts.erase(iter);
                 ++stats.filteredOut;
                 continue;
@@ -1902,7 +1933,7 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
     // Update awake contacts.
     for (auto iter = contacts.begin(); iter != contacts.end(); ++iter)
     {
-        const auto contact = *iter;
+        const auto contact = GetContactPtr(*iter);
         const auto fixtureA = contact->GetFixtureA();
         const auto fixtureB = contact->GetFixtureB();
         const auto bodyA = fixtureA->GetBody();
@@ -1973,6 +2004,12 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
         return false;
     }
 
+    assert(m_contacts.size() < MaxContacts);
+    if (m_contacts.size() >= MaxContacts)
+    {
+        return false;
+    }
+
 #ifndef NDEBUG
     const auto pidA = proxyA.proxyId;
     const auto pidB = proxyB.proxyId;
@@ -1991,28 +2028,90 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
     // A global lock on the world instance should work but then would it have so much
     // contention as to make multi-threaded handing of adding new connections senseless?
 
+    // Have to quickly figure out if there's a contact already added for the current
+    // fixture-childindex pair that this method's been called for.
+    //
+    // In cases where there's a bigger bullet-enabled object that's colliding with lots of
+    // smaller objects packed tightly together and overlapping like in the Add Pair Stress
+    // Test demo that has some 400 smaller objects, the bigger object could have 387 contacts
+    // while the smaller object has 369 or more, and the total world contact count can be over
+    // 30,495. While searching linearly through the object with less contacts should help,
+    // that may still be a lot of contacts to be going through in the context this method
+    // is being called.
+    //
+    // Some notes about rough performances using various strategies...
+    //
+    // With compiler optimization enabled and 400 small bodies and RealNum=double...
+    // For world:
+    //   World::std::set<Contact*> shows up as .524 seconds max step
+    //   World::std::list<Contact> shows up as .482 seconds max step.
+    // For body:
+    //    using contact map w/ proxy ID keys shows up as .561
+    // W/ unordered_map: .529 seconds max step (step 15).
+    // W/ World::std::list<Contact> and Body::std::list<ContactKey,Contact*> .444s@step15, 1.063s-sumstep20
+    // W/ World::std::list<Contact> and Body::std::list<ContactKey,Contact*> .393s@step15, 1.063s-sumstep20
+    // W/ World::std::list<Contact> and Body::std::list<ContactKey,Contact*> .412s@step15, 1.012s-sumstep20
+
+    const auto key = ContactKey::Get(proxyA, proxyB);
+#ifdef USE_CONTACTKEY_SET
+    const auto keyInsertionResult = m_contactKeySet.insert(key);
+    const auto inserted = keyInsertionResult.second;
+    if (!inserted)
+    {
+        return false;
+    }
+#else
     // TODO: use hash table to remove potential bottleneck when both bodies have many contacts?
     // Does a contact already exist?
-    const auto searchBody = (bodyA->GetContacts().size() < bodyB->GetContacts().size())? bodyA: bodyB;
-    for (auto&& contact: searchBody->GetContacts())
+    const auto searchBody = (bodyA->GetContacts().size() < bodyB->GetContacts().size())?
+        bodyA: bodyB;
+#if 1
+    //assert(searchBody->GetContacts().size() < 360);
+    auto found = false;
+    for (auto&& ci: searchBody->GetContacts())
     {
-        if (IsFor(*contact, fixtureA, childIndexA, fixtureB, childIndexB))
+        if (ci.first == key)
         {
-            // Already have a contact for proxyA with proxyB, bail!
-            return false;
+            found = true;
+            break;
         }
     }
-    
-    assert(m_contacts.size() < MaxContacts);
+    if (found)
+    {
+        return false;
+    }
+#else
+    const auto contactMap = searchBody->GetContacts();
+    const auto end = contactMap.end();
+    if (contactMap.find(key) != end)
+    {
+        return false;
+    }
+#endif
+#endif
+    //assert(inserted != found);
     
     // Call the contact factory create method.
-    const auto contact = ContactAtty::Create(*fixtureA, childIndexA, *fixtureB, childIndexB);
+    m_contacts.emplace_back(fixtureA, childIndexA, fixtureB, childIndexB);
+    const auto contact = GetContactPtr(m_contacts.back());
+
     assert(contact);
     if (!contact)
     {
         return false;
     }
     
+#if 0
+    const auto searchBody = (bodyA->GetContacts().size() < bodyB->GetContacts().size())? bodyA: bodyB;
+    if (!BodyAtty::Insert(*searchBody, contact))
+    {
+        ContactAtty::Destroy(contact);
+        return false;
+    }
+    const auto otherBody = searchBody == bodyA? bodyB: bodyA;
+    BodyAtty::Insert(*otherBody, contact);
+#endif
+
     // Insert into the contacts container.
     //
     // Should the new contact be added at front or back?
@@ -2032,11 +2131,12 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
     // TOI sums: 2960 isl-found, 2960 isl-solved, 7189 pos-iters, 23680 vel-iters, 0 moved, 29701 upd
     //   Total iters: 72437 reg, 30869 TOI, 103306 sum.
     //
-    m_contacts.push_back(contact);
+    //m_contacts.emplace_back(fixtureA, childIndexA, fixtureB, childIndexB);
+    //const auto contact = GetContactPtr(m_contacts.back());
 
     BodyAtty::Insert(*bodyA, contact);
     BodyAtty::Insert(*bodyB, contact);
-    
+
     // Wake up the bodies
     if (!fixtureA->IsSensor() && !fixtureB->IsSensor())
     {
@@ -2326,7 +2426,10 @@ void World::CreateProxies(Fixture& fixture, const Length aabbExtension)
         const auto dp = shape->GetChild(childIndex);
         const auto aabb = ComputeAABB(dp, xfm);
         const auto proxyPtr = proxies + childIndex;
-        const auto proxyId = m_broadPhase.CreateProxy(GetFattenedAABB(aabb, aabbExtension), proxyPtr);
+
+        // Note: proxyId from CreateProxy can be higher than the number of fixture proxies.
+        const auto fattenedAABB = GetFattenedAABB(aabb, aabbExtension);
+        const auto proxyId = m_broadPhase.CreateProxy(fattenedAABB, proxyPtr);
         new (proxyPtr) FixtureProxy{aabb, proxyId, &fixture, childIndex};
     }
 

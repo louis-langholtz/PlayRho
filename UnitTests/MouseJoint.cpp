@@ -25,8 +25,8 @@ TEST(MouseJoint, ByteSize)
 {
     switch (sizeof(RealNum))
     {
-        case  4: EXPECT_EQ(sizeof(MouseJoint), size_t(120)); break;
-        case  8: EXPECT_EQ(sizeof(MouseJoint), size_t(192)); break;
+        case  4: EXPECT_EQ(sizeof(MouseJoint), size_t(112)); break;
+        case  8: EXPECT_EQ(sizeof(MouseJoint), size_t(184)); break;
         case 16: EXPECT_EQ(sizeof(MouseJoint), size_t(336)); break;
         default: FAIL(); break;
     }

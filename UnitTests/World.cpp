@@ -20,6 +20,7 @@
 #include <Box2D/Dynamics/World.hpp>
 #include <Box2D/Dynamics/StepConf.hpp>
 #include <Box2D/Dynamics/Body.hpp>
+#include <Box2D/Dynamics/BodyDef.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/Contacts/Contact.hpp>
 #include <Box2D/Dynamics/Joints/DistanceJoint.hpp>
@@ -987,9 +988,10 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 
         auto count = decltype(world.GetContacts().size())(0);
         const auto& contacts = world.GetContacts();
-        for (auto&& c: contacts)
+        for (auto&& contact: contacts)
         {
             ++count;
+            const auto c = GetContactPtr(contact);
 
             const auto fa = c->GetFixtureA();
             const auto fb = c->GetFixtureB();

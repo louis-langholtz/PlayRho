@@ -168,3 +168,9 @@ MassData box2d::ComputeMassData(const Body& body) noexcept
     }
     return MassData{mass, center, I};
 }
+
+MassData box2d::GetMassData(const Body& body) noexcept
+{
+    const auto I = GetLocalInertia(body);
+    return MassData{GetMass(body), body.GetLocalCenter(), I};
+}

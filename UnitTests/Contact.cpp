@@ -37,9 +37,9 @@ TEST(Contact, IsNotDefaultConstructible)
     EXPECT_FALSE(std::is_default_constructible<Contact>::value);
 }
 
-TEST(Contact, IsNotCopyConstructible)
+TEST(Contact, IsCopyConstructible)
 {
-    EXPECT_FALSE(std::is_copy_constructible<Contact>::value);
+    EXPECT_TRUE(std::is_copy_constructible<Contact>::value);
 }
 
 TEST(Contact, IsNotCopyAssignable)

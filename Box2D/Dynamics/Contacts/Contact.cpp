@@ -29,47 +29,23 @@
 
 using namespace box2d;
 
-using ContactCreateFcn = Contact* (Fixture* fixtureA, child_count_t indexA,
-                                       Fixture* fixtureB, child_count_t indexB);
-using ContactDestroyFcn = void (Contact* contact);
-
-static inline Manifold::Conf GetManifoldConf(const StepConf& conf)
+namespace
 {
-    auto manifoldConf = Manifold::Conf{};
-    manifoldConf.tolerance = conf.tolerance;
-    manifoldConf.targetDepth = conf.targetDepth;
-    manifoldConf.maxCirclesRatio = conf.maxCirclesRatio;
-    return manifoldConf;
-}
-
-static inline DistanceConf GetDistanceConf(const StepConf& conf)
-{
-    DistanceConf distanceConf;
-    distanceConf.maxIterations = conf.maxDistanceIters;
-    return distanceConf;
-}
-
-Contact* Contact::Create(Fixture& fixtureA, child_count_t indexA,
-                         Fixture& fixtureB, child_count_t indexB)
-{
-    return new Contact{&fixtureA, indexA, &fixtureB, indexB};
-}
-
-void Contact::Destroy(Contact* contact)
-{
-    const auto fixtureA = contact->GetFixtureA();
-    const auto fixtureB = contact->GetFixtureB();
-
-    if ((contact->m_manifold.GetPointCount() > 0) &&
-        !fixtureA->IsSensor() && !fixtureB->IsSensor())
+    inline Manifold::Conf GetManifoldConf(const StepConf& conf)
     {
-        // Contact may have been keeping accelerable bodies of fixture A or B from moving.
-        // Need to awaken those bodies now in case they are again movable.
-        SetAwake(*fixtureA);
-        SetAwake(*fixtureB);
+        auto manifoldConf = Manifold::Conf{};
+        manifoldConf.tolerance = conf.tolerance;
+        manifoldConf.targetDepth = conf.targetDepth;
+        manifoldConf.maxCirclesRatio = conf.maxCirclesRatio;
+        return manifoldConf;
     }
-
-    delete contact;
+    
+    inline DistanceConf GetDistanceConf(const StepConf& conf)
+    {
+        DistanceConf distanceConf;
+        distanceConf.maxIterations = conf.maxDistanceIters;
+        return distanceConf;
+    }
 }
 
 Contact::Contact(Fixture* fA, child_count_t iA, Fixture* fB, child_count_t iB):

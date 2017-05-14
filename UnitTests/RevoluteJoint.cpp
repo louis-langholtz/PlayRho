@@ -20,6 +20,7 @@
 #include <Box2D/Dynamics/Joints/RevoluteJoint.hpp>
 #include <Box2D/Dynamics/World.hpp>
 #include <Box2D/Dynamics/Body.hpp>
+#include <Box2D/Dynamics/BodyDef.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Collision/Shapes/CircleShape.hpp>
 #include <Box2D/Collision/Shapes/PolygonShape.hpp>
@@ -30,8 +31,8 @@ TEST(RevoluteJoint, ByteSize)
 {
     switch (sizeof(RealNum))
     {
-        case  4: EXPECT_EQ(sizeof(RevoluteJoint), size_t(168)); break;
-        case  8: EXPECT_EQ(sizeof(RevoluteJoint), size_t(288)); break;
+        case  4: EXPECT_EQ(sizeof(RevoluteJoint), size_t(160)); break;
+        case  8: EXPECT_EQ(sizeof(RevoluteJoint), size_t(280)); break;
         case 16: EXPECT_EQ(sizeof(RevoluteJoint), size_t(528)); break;
         default: FAIL(); break;
     }

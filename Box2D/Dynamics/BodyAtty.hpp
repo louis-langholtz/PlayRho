@@ -25,6 +25,7 @@
 
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
+#include <Box2D/Dynamics/Joints/JointKey.hpp>
 
 namespace box2d
 {
@@ -106,8 +107,7 @@ namespace box2d
         
         static bool Insert(Body& b, Fixture* value)
         {
-            b.m_fixtures.push_front(value);
-            return true;
+            return b.Insert(value);
         }
         
         static void SetPosition0(Body& b, const Position value) noexcept
@@ -189,7 +189,7 @@ namespace box2d
             while (!b.m_joints.empty())
             {
                 auto iter = b.m_joints.begin();
-                const auto joint = *iter;
+                const auto joint = GetJointPtr(*iter);
                 b.m_joints.erase(iter);
                 callback(*joint);
             }
@@ -201,7 +201,7 @@ namespace box2d
             auto iter = b.m_contacts.begin();
             while (iter != end)
             {
-                const auto contact = *iter;
+                const auto contact = GetContactPtr(*iter);
                 if (callback(*contact))
                 {
                     const auto next = std::next(iter);

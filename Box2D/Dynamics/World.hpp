@@ -27,11 +27,14 @@
 #include <Box2D/Dynamics/WorldCallbacks.hpp>
 #include <Box2D/Dynamics/StepStats.hpp>
 #include <Box2D/Collision/BroadPhase.hpp>
+#include <Box2D/Dynamics/Contacts/ContactKey.hpp>
 
 #include <vector>
 #include <list>
 #include <unordered_set>
+#include <unordered_map>
 #include <memory>
+#include <set>
 
 namespace box2d {
 
@@ -55,10 +58,15 @@ const FixtureDef& GetDefaultFixtureDef() noexcept;
 /// @details An approximation of Earth's average gravity at sea-level.
 constexpr auto EarthlyGravity = LinearAcceleration2D{RealNum{0} * MeterPerSquareSecond, RealNum{-9.8f} * MeterPerSquareSecond};
 
-/// World.
-/// @details
-/// The world class manages all physics entities, dynamic simulation, and queries.
-/// @note This data structure is 352-bytes large (with 4-byte RealNum on at least one 64-bit platform).
+/// @brief World.
+///
+/// @details The world class manages all physics entities, dynamic simulation, and queries.
+///
+/// @note From a memory management perspective, world instances own Body, Joint, and Contact
+///   instances.
+/// @note This data structure is 352-bytes large (with 4-byte RealNum on at least one 64-bit
+///   platform).
+///
 class World
 {
 public:
@@ -73,7 +81,7 @@ public:
     using Bodies = std::list<Body*>;
 
     /// Contacts container type.
-    using Contacts = std::list<Contact*>;
+    using Contacts = std::list<Contact>;
     
     /// Joints container type.
     using Joints = std::list<Joint*>;
@@ -317,9 +325,9 @@ private:
     /// Flags type data type.
     using FlagsType = std::uint32_t;
 
-    using BodySet = std::unordered_set<Body*>;
-    using JointSet = std::unordered_set<Joint*>;
-    using ContactSet = std::unordered_set<Contact*>;
+    using BodySet = std::unordered_set<const Body*>;
+    using JointSet = std::unordered_set<const Joint*>;
+    using ContactSet = std::unordered_set<const Contact*>;
     using FixtureQueue = std::vector<Fixture*>;
     using BodyQueue = std::vector<Body*>;
     
@@ -351,6 +359,9 @@ private:
         ts_iters_t positionIterations = 0; ///< Position iterations actually performed.
         ts_iters_t velocityIterations = 0; ///< Velocity iterations actually performed.
     };
+        
+    // using ContactKeySet = std::set<ContactKey>;
+    using ContactKeySet = std::unordered_set<ContactKey>;
 
     void InternalDestroy(Joint* joint);
 
@@ -510,7 +521,7 @@ private:
     /// @details This finds the contact with the lowest (soonest) time of impact.
     /// @return Contacts with the least time of impact and its time of impact, or null contact.
     ///  These contacts will all be enabled, not have sensors, be active, and impenetrable.
-    ContactToiData GetSoonestContacts(const size_t reserveSize) const;
+    ContactToiData GetSoonestContacts(const size_t reserveSize);
 
     bool HasNewFixtures() const noexcept;
 
@@ -585,9 +596,9 @@ private:
     void SynchronizeProxies(const StepConf& conf);
     void SynchronizeProxies(Body& body, const StepConf& conf);
 
-    bool IsIslanded(Body* body);
-    bool IsIslanded(Contact* contact);
-    bool IsIslanded(Joint* joint);
+    bool IsIslanded(const Body* body);
+    bool IsIslanded(const Contact* contact);
+    bool IsIslanded(const Joint* joint);
 
     void SetIslanded(Body* body);
     void SetIslanded(Contact* contact);
@@ -599,7 +610,8 @@ private:
 
     /******** Member variables. ********/
     
-    BroadPhase m_broadPhase; ///< Broad phase data. 72-bytes.
+    BroadPhase m_broadPhase{BroadPhase::Conf{4096, 1024, 1024}}; ///< Broad phase data. 72-bytes.
+    ContactKeySet m_contactKeySet{100000};
     
     BodySet m_bodiesIslanded;
     ContactSet m_contactsIslanded;
@@ -800,17 +812,17 @@ inline bool World::ShouldCollide(const Fixture *fixtureA, const Fixture *fixture
     return !m_contactFilter || m_contactFilter->ShouldCollide(fixtureA, fixtureB);
 }
 
-inline bool World::IsIslanded(Body* key)
+inline bool World::IsIslanded(const Body* key)
 {
     return m_bodiesIslanded.count(key) != 0;
 }
 
-inline bool World::IsIslanded(Contact* key)
+inline bool World::IsIslanded(const Contact* key)
 {
     return m_contactsIslanded.count(key) != 0;
 }
 
-inline bool World::IsIslanded(Joint* key)
+inline bool World::IsIslanded(const Joint* key)
 {
     return m_jointsIslanded.count(key) != 0;
 }

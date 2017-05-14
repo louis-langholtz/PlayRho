@@ -39,17 +39,7 @@ namespace box2d
     class ContactAtty
     {
     private:
-        static Contact* Create(Fixture& fixtureA, child_count_t indexA,
-                               Fixture& fixtureB, child_count_t indexB)
-        {
-            return Contact::Create(fixtureA, indexA, fixtureB, indexB);
-        }
-        
-        static void Destroy(Contact* c)
-        {
-            Contact::Destroy(c);
-        }
-        
+
         static Manifold& GetMutableManifold(Contact& c) noexcept
         {
             return c.GetMutableManifold();

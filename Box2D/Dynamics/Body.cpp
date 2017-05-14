@@ -18,12 +18,14 @@
  */
 
 #include <Box2D/Dynamics/Body.hpp>
+#include <Box2D/Dynamics/BodyDef.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/World.hpp>
 #include <Box2D/Dynamics/Contacts/Contact.hpp>
 #include <Box2D/Dynamics/Joints/Joint.hpp>
 
 #include <iterator>
+#include <utility>
 
 using namespace box2d;
 
@@ -270,9 +272,10 @@ void Body::SetTransformation(const Transformation value) noexcept
     if (m_xf != value)
     {
         m_xf = value;
-        for (auto&& c: GetContacts())
+        for (auto&& ci: GetContacts())
         {
-            c->FlagForUpdating();
+            const auto contact = GetContactPtr(ci);
+            contact->FlagForUpdating();
         }
     }
 }
@@ -348,6 +351,91 @@ void Body::SetFixedRotation(bool flag)
     ResetMassData();
 }
 
+bool Body::Insert(Fixture* fixture)
+{
+    m_fixtures.push_front(fixture);
+    return true;
+}
+
+bool Body::Erase(Fixture* const fixture)
+{
+    auto prev = m_fixtures.before_begin();
+    for (auto iter = m_fixtures.begin(); iter != m_fixtures.end(); ++iter)
+    {
+        if (*iter == fixture)
+        {
+            m_fixtures.erase_after(prev);
+            return true;
+        }
+        prev = iter;
+    }
+    return false;
+}
+
+bool Body::Insert(Joint* j)
+{
+    //return m_joints.insert(j).second;
+    m_joints.push_back(std::make_pair(GetJointKey(*j), j));
+    return true;
+}
+
+bool Body::Erase(Joint* const joint)
+{
+    for (auto iter = m_joints.begin(); iter != m_joints.end(); ++iter)
+    {
+        if (iter->second == joint)
+        {
+            m_joints.erase(iter);
+            return true;
+        }
+    }
+    return false;
+    //return m_joints.erase(joint) > 0;
+}
+
+bool Body::Insert(Contact* contact)
+{
+#if 0
+#ifndef NDEBUG
+    // Prevent the same contact from being added more than once...
+    for (auto iter = m_contacts.begin(); iter != m_contacts.end(); ++iter)
+    {
+        assert(*iter != c);
+        if (*iter == c)
+        {
+            return false;
+        }
+    }
+#endif
+#endif
+#ifdef USE_CONTACTMAP
+    return m_contacts.insert(std::make_pair(GetContactKey(*contact), contact)).second;
+#else
+    m_contacts.emplace_back(GetContactKey(*contact), contact);
+    //m_contacts.push_back(contact);
+    return true;
+#endif
+}
+
+bool Body::Erase(Contact* const contact)
+{
+#ifdef USE_CONTACTMAP
+    return m_contacts.erase(GetContactKey(*contact)) == 1;
+#else
+    //const auto key = GetContactKey(*contact);
+    for (auto iter = m_contacts.begin(); iter != m_contacts.end(); ++iter)
+    {
+        //if (*iter == contact)
+        if (iter->second == contact)
+        {
+            m_contacts.erase(iter);
+            return true;
+        }
+    }
+    return false;
+#endif
+}
+
 // Free functions...
 
 bool box2d::ShouldCollide(const Body& lhs, const Body& rhs) noexcept
@@ -359,10 +447,11 @@ bool box2d::ShouldCollide(const Body& lhs, const Body& rhs) noexcept
     }
 
     // Does a joint prevent collision?
-    for (auto&& joint: lhs.GetJoints())
+    for (auto&& ji: lhs.GetJoints())
     {
-        if (joint->GetBodyA() == &rhs || joint->GetBodyB() == &rhs)
+        if (IsFor(ji.first, &rhs))
         {
+            const auto joint = GetJointPtr(ji);
             if (!(joint->GetCollideConnected()))
             {
                 return false;

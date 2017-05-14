@@ -25,6 +25,10 @@
 		470F94D31EC6376F00AA3C82 /* ContactKey.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94CF1EC6376F00AA3C82 /* ContactKey.hpp */; };
 		470F94D51EC649B300AA3C82 /* ContactKey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 470F94D41EC649B300AA3C82 /* ContactKey.cpp */; };
 		470F94D61EC649B300AA3C82 /* ContactKey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 470F94D41EC649B300AA3C82 /* ContactKey.cpp */; };
+		470F94D91EC8C37500AA3C82 /* JointKey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 470F94D71EC8C37500AA3C82 /* JointKey.cpp */; };
+		470F94DA1EC8C37500AA3C82 /* JointKey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 470F94D71EC8C37500AA3C82 /* JointKey.cpp */; };
+		470F94DB1EC8C37500AA3C82 /* JointKey.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94D81EC8C37500AA3C82 /* JointKey.hpp */; };
+		470F94DC1EC8C37500AA3C82 /* JointKey.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94D81EC8C37500AA3C82 /* JointKey.hpp */; };
 		4726DD0F1D3014990012A882 /* IndexPair.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD0C1D3014990012A882 /* IndexPair.hpp */; };
 		4726DD101D3014990012A882 /* IndexPair.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD0C1D3014990012A882 /* IndexPair.hpp */; };
 		4726DD1F1D305E5D0012A882 /* ContactFeature.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */; };
@@ -412,6 +416,8 @@
 		470F94C91EC4D95D00AA3C82 /* BodyAtty.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyAtty.hpp; sourceTree = "<group>"; };
 		470F94CF1EC6376F00AA3C82 /* ContactKey.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactKey.hpp; sourceTree = "<group>"; };
 		470F94D41EC649B300AA3C82 /* ContactKey.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactKey.cpp; sourceTree = "<group>"; };
+		470F94D71EC8C37500AA3C82 /* JointKey.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JointKey.cpp; sourceTree = "<group>"; };
+		470F94D81EC8C37500AA3C82 /* JointKey.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JointKey.hpp; sourceTree = "<group>"; };
 		4726DD0C1D3014990012A882 /* IndexPair.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IndexPair.hpp; sourceTree = "<group>"; };
 		4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactFeature.hpp; sourceTree = "<group>"; };
 		4726DD261D3180980012A882 /* NewtonsCradle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NewtonsCradle.hpp; sourceTree = "<group>"; };
@@ -964,6 +970,8 @@
 				80BB8973141C3E5900F1753A /* GearJoint.hpp */,
 				80BB8974141C3E5900F1753A /* Joint.cpp */,
 				80BB8975141C3E5900F1753A /* Joint.hpp */,
+				470F94D71EC8C37500AA3C82 /* JointKey.cpp */,
+				470F94D81EC8C37500AA3C82 /* JointKey.hpp */,
 				80620F8D168B934600D46C8D /* MotorJoint.cpp */,
 				80620F8E168B934600D46C8D /* MotorJoint.hpp */,
 				80BB8976141C3E5900F1753A /* MouseJoint.cpp */,
@@ -1171,6 +1179,7 @@
 				475A94671D99C264000CA9A8 /* List.hpp in Headers */,
 				47AA5DDB1C4C5FBE008AF2BA /* StackAllocator.hpp in Headers */,
 				47327E811EA585790048FCD8 /* Defines.hpp in Headers */,
+				470F94DC1EC8C37500AA3C82 /* JointKey.hpp in Headers */,
 				47AA5DDC1C4C5FBE008AF2BA /* Timer.hpp in Headers */,
 				4726DD391D387D630012A882 /* Manifold.hpp in Headers */,
 				47AA5DDD1C4C5FBE008AF2BA /* Body.hpp in Headers */,
@@ -1270,6 +1279,7 @@
 				4751EE2B1CEDD79900D459CB /* ConveyorBelt.hpp in Headers */,
 				4768D3FD1E414A0100574143 /* Vec2.hpp in Headers */,
 				477DB2AD1D1C4BE800846ED6 /* PositionSolverManifold.hpp in Headers */,
+				470F94DB1EC8C37500AA3C82 /* JointKey.hpp in Headers */,
 				4731DE291DDF84A900E7F931 /* RayCastInput.hpp in Headers */,
 				478E67C71E760AB7009B9AD5 /* BodyType.hpp in Headers */,
 				80BB89BF141C3E5900F1753A /* Contact.hpp in Headers */,
@@ -1535,6 +1545,7 @@
 				47AA5DB71C4C5FBE008AF2BA /* ContactSolver.cpp in Sources */,
 				47AA5DBC1C4C5FBE008AF2BA /* DistanceJoint.cpp in Sources */,
 				4731DE301DDF9B6900E7F931 /* MassData.cpp in Sources */,
+				470F94DA1EC8C37500AA3C82 /* JointKey.cpp in Sources */,
 				47AA5DBD1C4C5FBE008AF2BA /* FrictionJoint.cpp in Sources */,
 				47578BE51D886FED0078CD40 /* WorldManifold.cpp in Sources */,
 				47AA5DBE1C4C5FBE008AF2BA /* GearJoint.cpp in Sources */,
@@ -1598,6 +1609,7 @@
 				80BB899B141C3E5900F1753A /* PolygonShape.cpp in Sources */,
 				80BB899E141C3E5900F1753A /* BlockAllocator.cpp in Sources */,
 				80BB89A3141C3E5900F1753A /* Math.cpp in Sources */,
+				470F94D91EC8C37500AA3C82 /* JointKey.cpp in Sources */,
 				80BB89A5141C3E5900F1753A /* Settings.cpp in Sources */,
 				476162C81E245C9D002C7FB0 /* CodeDumper.cpp in Sources */,
 				80BB89A7141C3E5900F1753A /* StackAllocator.cpp in Sources */,

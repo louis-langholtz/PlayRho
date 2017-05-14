@@ -18,6 +18,7 @@
 
 #include "gtest/gtest.h"
 #include <Box2D/Dynamics/Body.hpp>
+#include <Box2D/Dynamics/BodyDef.hpp>
 #include <Box2D/Dynamics/World.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/Joints/Joint.hpp>
@@ -38,7 +39,15 @@ TEST(Body, JointsByteSize)
 {
     // Size is C++ library dependent.
     // Some platforms it's 40-bytes. Others 56.
-    EXPECT_TRUE(sizeof(Body::Joints) == size_t(40) || sizeof(Body::Joints) == size_t(56));
+#ifdef __APPLE__
+    // using std::list<std::pair<JointKey, Joint*>>
+    EXPECT_EQ(sizeof(Body::Joints), size_t(24));
+    // using std::unordered_set:
+    // EXPECT_EQ(sizeof(Body::Joints), size_t(40));
+#endif
+#ifdef __linux__
+    EXPECT_EQ(sizeof(Body::Joints), size_t(56));
+#endif
 }
 
 TEST(Body, FixturesByteSize)

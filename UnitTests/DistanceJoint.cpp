@@ -21,6 +21,7 @@
 #include <Box2D/Dynamics/World.hpp>
 #include <Box2D/Dynamics/StepConf.hpp>
 #include <Box2D/Dynamics/Body.hpp>
+#include <Box2D/Dynamics/BodyDef.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Collision/Shapes/CircleShape.hpp>
 
@@ -30,8 +31,8 @@ TEST(DistanceJoint, ByteSize)
 {
     switch (sizeof(RealNum))
     {
-        case  4: EXPECT_EQ(sizeof(DistanceJoint), size_t(120)); break;
-        case  8: EXPECT_EQ(sizeof(DistanceJoint), size_t(184)); break;
+        case  4: EXPECT_EQ(sizeof(DistanceJoint), size_t(112)); break;
+        case  8: EXPECT_EQ(sizeof(DistanceJoint), size_t(176)); break;
         case 16: EXPECT_EQ(sizeof(DistanceJoint), size_t(320)); break;
         default: FAIL(); break;
     }

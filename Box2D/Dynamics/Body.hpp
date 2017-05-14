@@ -24,15 +24,18 @@
 /// Declarations of the Body class, and free functions associated with it.
 
 #include <Box2D/Common/Math.hpp>
-#include <Box2D/Collision/MassData.hpp>
-#include <Box2D/Dynamics/BodyDef.hpp>
 #include <Box2D/Dynamics/BodyType.hpp>
+#include <Box2D/Dynamics/Contacts/ContactKey.hpp>
+#include <Box2D/Dynamics/Joints/JointKey.hpp>
 
 #include <forward_list>
 #include <list>
+#include <map>
 #include <unordered_set>
+#include <unordered_map>
 #include <memory>
 #include <cassert>
+#include <utility>
 
 namespace box2d {
 
@@ -40,6 +43,8 @@ class Fixture;
 class World;
 struct FixtureDef;
 class Shape;
+struct BodyDef;
+struct MassData;
 
 const FixtureDef &GetDefaultFixtureDef() noexcept;
 
@@ -54,6 +59,7 @@ const FixtureDef &GetDefaultFixtureDef() noexcept;
 /// @invariant Only "accelerable" bodies can have non-zero "under-active" times.
 ///
 /// @note Create these using the World::Create method.
+/// @note From a memory management perspective, bodies own Fixture instances.
 /// @note On a 64-bit architecture with 4-byte RealNum, this data structure is at least 192-bytes large.
 ///
 class Body
@@ -64,10 +70,15 @@ public:
     using Fixtures = std::forward_list<Fixture*>;
 
     /// @brief Container type for joints.
-    using Joints = std::unordered_set<Joint*>;
-
+    using Joints = std::list<std::pair<JointKey, Joint*>>;
+    
     /// @brief Container type for contacts.
-    using Contacts = std::list<Contact*>;
+    //#define USE_CONTACTMAP
+#ifdef USE_CONTACTMAP
+    using Contacts = std::unordered_map<ContactKey, Contact*>;
+#else
+    using Contacts = std::list<std::pair<ContactKey,Contact*>>;
+#endif
 
     static constexpr auto InvalidIslandIndex = static_cast<body_count_t>(-1);
 
@@ -410,6 +421,7 @@ private:
 
     bool Insert(Contact* contact);
     bool Insert(Joint* joint);
+    bool Insert(Fixture* fixture);
 
     bool Erase(Contact* const contact);
     bool Erase(Joint* const joint);
@@ -435,21 +447,21 @@ private:
 
     World* const m_world; ///< World to which this body belongs. 8-bytes.
     void* m_userData; ///< User data. 8-bytes.
-
+    
     Fixtures m_fixtures; ///< Container of fixtures. 8-bytes.
-    Contacts m_contacts; ///< Container of contacts. 8-bytes.
-    Joints m_joints; ///< Container of joints. 8-bytes.
+    Contacts m_contacts; ///< Container of contacts (owned by world). 8-bytes.
+    Joints m_joints; ///< Container of joints (owned by wolrd). 8-bytes.
 
     AngularAcceleration m_angularAcceleration = AngularAcceleration{0}; ///< Angular acceleration. 4-bytes.
 
     /// Inverse mass of the body.
-    /// @details A non-negative value (in units of 1/kg).
+    /// @details A non-negative value.
     /// Can only be zero for non-accelerable bodies.
     /// @note 4-bytes.
     InvMass m_invMass = 0;
 
     /// Inverse rotational inertia about the center of mass.
-    /// @details A non-negative value (in units of 1/(kg*m^2)).
+    /// @details A non-negative value.
     /// @note 4-bytes.
     InvRotInertia m_invRotI = 0;
 
@@ -473,62 +485,6 @@ inline Body::FlagsType Body::GetFlags(const BodyType type) noexcept
         case BodyType::Static:    flags |= (e_impenetrableFlag); break;
     }
     return flags;
-}
-
-inline bool Body::Insert(Contact* c)
-{
-#ifndef NDEBUG
-    // Prevent the same contact from being added more than once...
-    for (auto iter = m_contacts.begin(); iter != m_contacts.end(); ++iter)
-    {
-        assert(*iter != c);
-        if (*iter == c)
-        {
-            return false;
-        }
-    }
-#endif
-    m_contacts.push_back(c);
-    return true;
-}
-
-inline bool Body::Insert(Joint* j)
-{
-    const auto results = m_joints.insert(j);
-    return results.second;
-}
-
-inline bool Body::Erase(Contact* const contact)
-{
-    for (auto iter = m_contacts.begin(); iter != m_contacts.end(); ++iter)
-    {
-        if (*iter == contact)
-        {
-            m_contacts.erase(iter);
-            return true;
-        }
-    }
-    return false;
-}
-
-inline bool Body::Erase(Joint* const joint)
-{
-    return m_joints.erase(joint) > 0;
-}
-
-inline bool Body::Erase(Fixture* const fixture)
-{
-    auto prev = m_fixtures.before_begin();
-    for (auto iter = m_fixtures.begin(); iter != m_fixtures.end(); ++iter)
-    {
-        if (*iter == fixture)
-        {
-            m_fixtures.erase_after(prev);
-            return true;
-        }
-        prev = iter;
-    }
-    return false;
 }
 
 inline BodyType Body::GetType() const noexcept
@@ -933,7 +889,7 @@ inline void ApplyLinearImpulse(Body& body, const Momentum2D impulse, const Lengt
 
 /// Apply an angular impulse.
 /// @param body Body to apply the angular impulse to.
-/// @param impulse the angular impulse in units of kg*m*m/s
+/// @param impulse Angular impulse to be applied.
 inline void ApplyAngularImpulse(Body& body, AngularMomentum impulse) noexcept
 {
     auto velocity = body.GetVelocity();
@@ -957,14 +913,6 @@ inline RotInertia GetRotInertia(const Body& body) noexcept
 inline RotInertia GetLocalInertia(const Body& body) noexcept
 {
     return GetRotInertia(body) + GetMass(body) * GetLengthSquared(body.GetLocalCenter()) / SquareRadian;
-}
-
-/// Gets the mass data of the body.
-/// @return a struct containing the mass, inertia and center of the body.
-inline MassData GetMassData(const Body& body) noexcept
-{
-    const auto I = GetLocalInertia(body);
-    return MassData{GetMass(body), body.GetLocalCenter(), I};
 }
 
 /// Gets the linear velocity of the center of mass.

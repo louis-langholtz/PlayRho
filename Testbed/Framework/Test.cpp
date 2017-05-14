@@ -727,13 +727,14 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
         auto numContacts = 0;
         auto numTouching = 0;
         auto numImpulses = 0;
-        for (auto&& c: contacts)
+        for (auto&& ci: contacts)
         {
             ++numContacts;
-            if (c->IsTouching())
+            const auto contact = GetContactPtr(ci);
+            if (contact->IsTouching())
             {
                 ++numTouching;
-                const auto manifold = c->GetManifold();
+                const auto manifold = contact->GetManifold();
                 numImpulses += manifold.GetPointCount();
             }
         }
