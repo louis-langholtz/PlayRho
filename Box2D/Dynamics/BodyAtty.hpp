@@ -40,6 +40,37 @@ namespace box2d
     class BodyAtty
     {
     private:
+        
+        static Fixture* CreateFixture(Body& b, std::shared_ptr<const Shape> shape, const FixtureDef& def)
+        {
+            b.m_fixtures.emplace_front(&b, def, shape);
+            return &b.m_fixtures.front();
+        }
+        
+        static bool DestroyFixture(Body& b, Fixture* value)
+        {
+            auto prev = b.m_fixtures.before_begin();
+            for (auto iter = b.m_fixtures.begin(); iter != b.m_fixtures.end(); ++iter)
+            {
+                if (&(*iter) == value)
+                {
+                    b.m_fixtures.erase_after(prev);
+                    return true;
+                }
+                prev = iter;
+            }
+            return false;
+        }
+
+        static void ClearFixtures(Body& b, std::function<void(Fixture&)> callback)
+        {
+            while (!b.m_fixtures.empty())
+            {
+                auto& fixture = b.m_fixtures.front();
+                callback(fixture);
+                b.m_fixtures.pop_front();
+            }
+        }
 
         static void SetTypeFlags(Body& b, BodyType type) noexcept
         {
@@ -71,11 +102,6 @@ namespace box2d
             b.SetMassDataDirty();
         }
         
-        static bool Erase(Body& b, Fixture* value)
-        {
-            return b.Erase(value);
-        }
-        
         static bool Erase(Body& b, Contact* value)
         {
             return b.Erase(value);
@@ -92,11 +118,6 @@ namespace box2d
         }
         
         static bool Insert(Body& b, Contact* value)
-        {
-            return b.Insert(value);
-        }
-        
-        static bool Insert(Body& b, Fixture* value)
         {
             return b.Insert(value);
         }
@@ -162,17 +183,6 @@ namespace box2d
         {
             BodyAtty::SetSweep(b, value);
             BodyAtty::SetTransformation(b, GetTransform1(value));
-        }
-        
-        static void ClearFixtures(Body& b, std::function<void(Fixture&)> callback)
-        {
-            while (!b.m_fixtures.empty())
-            {
-                const auto fixture = b.m_fixtures.front();
-                callback(*fixture);
-                delete fixture;
-                b.m_fixtures.pop_front();
-            }
         }
         
         static void ClearJoints(Body& b, std::function<void(Joint&)> callback)

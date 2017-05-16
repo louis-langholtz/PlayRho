@@ -52,6 +52,45 @@ class Fixture
 {
 public:
     Fixture() = delete; // explicitly deleted
+    
+    /// Initializing constructor.
+    ///
+    /// @warning Behavior is undefined if a <code>nullptr</code> initial body setting is used.
+    /// @warning Behavior is undefined if a <code>nullptr</code> initial shape setting is used.
+    /// @warning Behavior is undefined if a negative initial density setting is used.
+    /// @warning Behavior is undefined if a negative initial friction setting is used.
+    /// @warning Behavior is undefined if the restitution value is not less than infinity.
+    /// @warning Behavior is undefined if the restitution value is not greater than -infinity.
+    ///
+    /// @note This is not meant to be called by normal user code. Use the Body::CreateFixture
+    ///    method instead.
+    ///
+    /// @param body Body the new fixture is to be associated with.
+    /// @param def Initial fixture settings.
+    ///    Friction must be greater-than-or-equal-to zero.
+    ///    Density must be greater-than-or-equal-to zero.
+    /// @param shape Sharable shape to associate fixture with. Must be non-null.
+    ///
+    Fixture(Body* body, const FixtureDef& def, std::shared_ptr<const Shape> shape):
+        m_body{body},
+        m_shape{shape},
+        m_filter{def.filter},
+        m_isSensor{def.isSensor},
+        m_userData{def.userData}
+    {
+        assert(body);
+        assert(shape);
+    }
+    
+    /// Destructor.
+    /// @pre Proxy count is zero.
+    /// @warning Behavior is undefined if proxy count is greater than zero.
+    ~Fixture()
+    {
+        // No access to BroadPhase now so can't call DestroyProxies here.
+        assert(!m_proxies);
+        assert(m_proxyCount == 0);
+    }
 
     /// Gets the parent body of this fixture.
     /// @details This is nullptr if the fixture is not attached.
@@ -124,47 +163,11 @@ public:
 
     const FixtureProxy* GetProxy(child_count_t index) const noexcept;
 
-    /// Destructor.
-    /// @pre Proxy count is zero.
-    /// @warning Behavior is undefined if proxy count is greater than zero.
-    ~Fixture()
-    {
-        // No access to BroadPhase now so can't call DestroyProxies here.
-        assert(!m_proxies);
-        assert(m_proxyCount == 0);
-    }
-
 private:
 
     friend class FixtureAtty;
     
     using FixtureProxies = FixtureProxy*;
-
-    /// Initializing constructor.
-    ///
-    /// @warning Behavior is undefined if a <code>nullptr</code> initial body setting is used.
-    /// @warning Behavior is undefined if a <code>nullptr</code> initial shape setting is used.
-    /// @warning Behavior is undefined if a negative initial density setting is used.
-    /// @warning Behavior is undefined if a negative initial friction setting is used.
-    /// @warning Behavior is undefined if the restitution value is not less than infinity.
-    /// @warning Behavior is undefined if the restitution value is not greater than -infinity.
-    ///
-    /// @param body Body the new fixture is to be associated with.
-    /// @param def Initial fixture settings.
-    ///    Friction must be greater-than-or-equal-to zero.
-    ///    Density must be greater-than-or-equal-to zero.
-    /// @param shape Sharable shape to associate fixture with. Must be non-null.
-    ///
-    Fixture(Body* body, const FixtureDef& def, std::shared_ptr<const Shape> shape):
-        m_body{body},
-        m_shape{shape},
-        m_filter{def.filter},
-        m_isSensor{def.isSensor},
-        m_userData{def.userData}
-    {
-        assert(body);
-        assert(shape);
-    }
     
     Span<FixtureProxy> GetProxies() const noexcept;
     void SetProxies(Span<FixtureProxy> value) noexcept;

@@ -146,6 +146,15 @@ bool Body::DestroyFixture(Fixture* fixture, bool resetMassData)
     return m_world->DestroyFixture(fixture, resetMassData);
 }
 
+void Body::DestroyFixtures()
+{
+    while (!m_fixtures.empty())
+    {
+        auto& fixture = m_fixtures.front();
+        DestroyFixture(&fixture);
+    }
+}
+
 void Body::ResetMassData()
 {
     // Compute mass data from shapes. Each shape has its own density.
@@ -323,9 +332,9 @@ void Body::SetEnabled(bool flag)
     }
 
     // Register for proxies so contacts created or destroyed the next time step.
-    for (auto&& fixture: GetFixtures())
+    for (auto&& fixture: m_fixtures)
     {
-        m_world->RegisterForProxies(fixture);
+        m_world->RegisterForProxies(&fixture);
     }
 }
 
@@ -349,27 +358,6 @@ void Body::SetFixedRotation(bool flag)
     m_velocity.angular = AngularVelocity{0};
 
     ResetMassData();
-}
-
-bool Body::Insert(Fixture* fixture)
-{
-    m_fixtures.push_front(fixture);
-    return true;
-}
-
-bool Body::Erase(Fixture* const fixture)
-{
-    auto prev = m_fixtures.before_begin();
-    for (auto iter = m_fixtures.begin(); iter != m_fixtures.end(); ++iter)
-    {
-        if (*iter == fixture)
-        {
-            m_fixtures.erase_after(prev);
-            return true;
-        }
-        prev = iter;
-    }
-    return false;
 }
 
 bool Body::Insert(Joint* j)
@@ -436,6 +424,14 @@ bool Body::Erase(Contact* const contact)
 #endif
 }
 
+void Body::ForallFixtures(std::function<void(Fixture&)> callback)
+{
+    for (auto&& fixture: m_fixtures)
+    {
+        callback(fixture);
+    }
+}
+
 // Free functions...
 
 bool box2d::ShouldCollide(const Body& lhs, const Body& rhs) noexcept
@@ -460,15 +456,6 @@ bool box2d::ShouldCollide(const Body& lhs, const Body& rhs) noexcept
     }
 
     return true;
-}
-
-void box2d::DestroyFixtures(Body& body)
-{
-    while (!body.GetFixtures().empty())
-    {
-        const auto fixture = body.GetFixtures().front();
-        body.DestroyFixture(fixture);
-    }
 }
 
 box2d::size_t box2d::GetWorldIndex(const Body* body)

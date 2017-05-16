@@ -62,16 +62,16 @@ public:
         m_bodyB->CreateFixture(std::make_shared<PolygonShape>(polygonB));
     }
 
-    static Fixture* GetFixture(Body* body)
+    static const Fixture* GetFixture(Body* body)
     {
-        return (body->GetFixtures().begin() != body->GetFixtures().end())?
-            body->GetFixtures().front(): nullptr;
+        const auto& fixtures = body->GetFixtures();
+        return (fixtures.begin() != fixtures.end())? &fixtures.front(): nullptr;
     }
 
     void DestroyFixtures()
     {
-        ::box2d::DestroyFixtures(*m_bodyA);
-        ::box2d::DestroyFixtures(*m_bodyB);
+        m_bodyA->DestroyFixtures();
+        m_bodyB->DestroyFixtures();
     }
     
     void ShowManifold(Drawer& drawer, const Manifold& manifold, const char* name)

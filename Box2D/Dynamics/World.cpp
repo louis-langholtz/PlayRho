@@ -2275,12 +2275,10 @@ void World::SetType(Body& body, BodyType type)
     else
     {
         body.SetAwake();
-        body.SetAcceleration(body.IsAccelerable()? GetGravity(): Vec2_zero * MeterPerSquareSecond, AngularAcceleration{0});
-        
-        for (auto&& fixture: body.GetFixtures())
-        {
-            InternalTouchProxies(*fixture);
-        }
+        body.SetAcceleration(body.IsAccelerable()? GetGravity(): Vec2_zero * MeterPerSquareSecond, AngularAcceleration{0});        
+        body.ForallFixtures([&](Fixture& fixture){
+            InternalTouchProxies(fixture);
+        });
     }
 }
 
@@ -2320,8 +2318,7 @@ Fixture* World::CreateFixture(Body& body, std::shared_ptr<const Shape> shape,
         return nullptr;
     }
     
-    const auto fixture = FixtureAtty::Create(&body, def, shape);
-    BodyAtty::Insert(body, fixture);
+    const auto fixture = BodyAtty::CreateFixture(body, shape, def);
 
     if (body.IsEnabled())
     {
@@ -2361,14 +2358,6 @@ bool World::DestroyFixture(Fixture* fixture, bool resetMassData)
         return false;
     }
     
-    // Remove the fixture from this body's singly linked list.
-    const auto found = BodyAtty::Erase(body, fixture);
-    if (!found)
-    {
-        // Fixture probably destroyed already.
-        return false;
-    }
-    
 #if 0
     /*
      * XXX: Should the destruction listener be called when the user requested that
@@ -2393,7 +2382,13 @@ bool World::DestroyFixture(Fixture* fixture, bool resetMassData)
     });
     
     DestroyProxies(*fixture);
-    delete fixture;
+
+    const auto found = BodyAtty::DestroyFixture(body, fixture);
+    if (!found)
+    {
+        // Fixture probably destroyed already.
+        return false;
+    }
     
     BodyAtty::SetMassDataDirty(body);
     if (resetMassData)
@@ -2502,10 +2497,9 @@ contact_count_t World::Synchronize(Body& body,
                                    const RealNum multiplier, const Length aabbExtension)
 {
     auto updatedCount = contact_count_t{0};
-    for (auto&& fixture: body.GetFixtures())
-    {
-        updatedCount += Synchronize(*fixture, xfm1, xfm2, multiplier, aabbExtension);
-    }
+    body.ForallFixtures([&](Fixture& fixture){
+        updatedCount += Synchronize(fixture, xfm1, xfm2, multiplier, aabbExtension);
+    });
     return updatedCount;
 }
 
@@ -2580,7 +2574,7 @@ size_t GetShapeCount(const World& world) noexcept
         const auto body = GetBodyPtr(b);
         for (auto&& fixture: body->GetFixtures())
         {
-            shapes.insert(fixture->GetShape());
+            shapes.insert(fixture.GetShape());
         }
     }
     return shapes.size();

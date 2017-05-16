@@ -235,12 +235,12 @@ static bool Draw(Drawer& drawer, const Body& body, bool skins, Fixture* selected
     for (auto&& f: body.GetFixtures())
     {
         auto color = bodyColor;
-        if (f == selected)
+        if (&f == selected)
         {
             color = selectedColor;
             found = true;
         }
-        Draw(drawer, *f, color, skins);
+        Draw(drawer, f, color, skins);
     }
     return found;
 }
@@ -324,10 +324,10 @@ static bool Draw(Drawer& drawer, const World& world, const Settings& settings, F
             
             for (auto&& f: b->GetFixtures())
             {
-                const auto proxy_count = f->GetProxyCount();
+                const auto proxy_count = f.GetProxyCount();
                 for (auto i = decltype(proxy_count){0}; i < proxy_count; ++i)
                 {
-                    const auto proxy = f->GetProxy(i);
+                    const auto proxy = f.GetProxy(i);
                     const auto aabb = world.GetFatAABB(proxy->proxyId);
                     Length2D vs[4];
                     vs[0] = Length2D{aabb.GetLowerBound().x, aabb.GetLowerBound().y};

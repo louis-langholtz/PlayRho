@@ -158,9 +158,9 @@ MassData box2d::ComputeMassData(const Body& body) noexcept
     auto center = Vec2_zero * Meter;
     for (auto&& fixture: body.GetFixtures())
     {
-        if (fixture->GetDensity() > Density{0})
+        if (fixture.GetDensity() > Density{0})
         {
-            const auto massData = GetMassData(*fixture);
+            const auto massData = GetMassData(fixture);
             mass += massData.mass;
             center += RealNum{massData.mass / Kilogram} * massData.center;
             I += massData.I;

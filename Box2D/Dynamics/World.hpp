@@ -329,6 +329,8 @@ public:
     size_t Awaken() noexcept;
 
     void ClearForces() noexcept;
+    
+    void SetNewFixtures() noexcept;
 
 private:
 
@@ -533,8 +535,6 @@ private:
     ContactToiData GetSoonestContacts(const size_t reserveSize);
 
     bool HasNewFixtures() const noexcept;
-
-    void SetNewFixtures() noexcept;
     
     void UnsetNewFixtures() noexcept;
     

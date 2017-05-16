@@ -92,7 +92,7 @@ TEST(Body, WorldCreated)
         int i = 0;
         for (auto&& fixture: body->GetFixtures())
         {
-            EXPECT_EQ(fixture->GetBody(), body);
+            EXPECT_EQ(fixture.GetBody(), body);
             ++i;
         }
         EXPECT_EQ(i, 0);
@@ -177,7 +177,7 @@ TEST(Body, CreateAndDestroyFixture)
         int i = 0;
         for (auto&& f: body->GetFixtures())
         {
-            EXPECT_EQ(f, fixture);
+            EXPECT_EQ(&f, fixture);
             ++i;
         }
         EXPECT_EQ(i, 1);

@@ -60,14 +60,15 @@ const FixtureDef &GetDefaultFixtureDef() noexcept;
 ///
 /// @note Create these using the World::Create method.
 /// @note From a memory management perspective, bodies own Fixture instances.
-/// @note On a 64-bit architecture with 4-byte RealNum, this data structure is at least 192-bytes large.
+/// @note On a 64-bit architecture with 4-byte RealNum, this data structure is at least
+///   192-bytes large.
 ///
 class Body
 {
 public:
     
     /// @brief Container type for fixtures.
-    using Fixtures = std::forward_list<Fixture*>;
+    using Fixtures = std::forward_list<Fixture>;
 
     /// @brief Container type for joints.
     using Joints = std::list<std::pair<JointKey, Joint*>>;
@@ -122,7 +123,9 @@ public:
     /// @param resetMassData Whether or not to reset the mass data.
     ///
     bool DestroyFixture(Fixture* fixture, bool resetMassData = true);
-
+    
+    void DestroyFixtures();
+    
     /// @brief Sets the position of the body's origin and rotation.
     /// @details This instantly adjusts the body to be at the new position and new orientation.
     /// @warning Manipulating a body's transform can cause non-physical behavior!
@@ -331,6 +334,8 @@ public:
     /// @brief Gets the container of all fixtures attached to this body.
     const Fixtures& GetFixtures() const noexcept;
 
+    void ForallFixtures(std::function<void(Fixture&)> callback);
+
     /// @brief Gets the container of all joints attached to this body.
     const Joints& GetJoints() const noexcept;
 
@@ -353,7 +358,7 @@ public:
 
     /// @brief Gets whether the mass data for this body is "dirty".
     bool IsMassDataDirty() const noexcept;
-
+    
 private:
 
     friend class BodyAtty;
@@ -421,11 +426,9 @@ private:
 
     bool Insert(Contact* contact);
     bool Insert(Joint* joint);
-    bool Insert(Fixture* fixture);
 
     bool Erase(Contact* const contact);
     bool Erase(Joint* const joint);
-    bool Erase(Fixture* const fixture);
 
     void SetTransformation(const Transformation value) noexcept;
 
@@ -786,8 +789,6 @@ inline bool Unawaken(Body& body) noexcept
 /// @details Determines whether a body should possibly be able to collide with the other body.
 /// @return true if either body is dynamic and no joint prevents collision, false otherwise.
 bool ShouldCollide(const Body& lhs, const Body& rhs) noexcept;
-
-void DestroyFixtures(Body& body);
 
 inline Position GetPosition1(const Body& body) noexcept
 {
