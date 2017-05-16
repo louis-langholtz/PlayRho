@@ -55,9 +55,12 @@ enum class BodyType;
 
 const FixtureDef& GetDefaultFixtureDef() noexcept;
 
-/// Earthly gravity.
+/// @brief Earthly gravity.
 /// @details An approximation of Earth's average gravity at sea-level.
-constexpr auto EarthlyGravity = LinearAcceleration2D{RealNum{0} * MeterPerSquareSecond, RealNum{-9.8f} * MeterPerSquareSecond};
+constexpr auto EarthlyGravity = LinearAcceleration2D{
+    RealNum{0} * MeterPerSquareSecond,
+    RealNum{-9.8f} * MeterPerSquareSecond
+};
 
 /// @brief World.
 ///
@@ -72,36 +75,35 @@ class World
 {
 public:
     
-    /// Proxy size type.
+    /// @brief Proxy size type.
     using proxy_size_type = std::remove_const<decltype(MaxContacts)>::type;
 
-    /// Time step iteration type.
+    /// @brief Time step iteration type.
     using ts_iters_type = ts_iters_t;
-
-    using BodyPointers = std::list<Body*>;
-
-    /// Bodies container type.
+    
+    /// @brief Bodies container type.
     using Bodies = std::list<Body>;
 
-    /// Contacts container type.
+    /// @brief Contacts container type.
     using Contacts = std::list<Contact>;
     
-    /// Joints container type.
+    /// @brief Joints container type.
+    /// @note Cannot be container of Joint instances since joints are polymorphic types.
     using Joints = std::list<Joint*>;
     
-    /// World construction definitions.
+    /// @brief World construction definitions.
     struct Def
     {
         constexpr Def& UseGravity(LinearAcceleration2D value) noexcept;
         constexpr Def& UseMinVertexRadius(Length value) noexcept;
         constexpr Def& UseMaxVertexRadius(Length value) noexcept;
 
-        /// Gravity.
+        /// @brief Gravity.
         /// @details The acceleration all dynamic bodies are subject to.
         /// @note Use Vec2{0, 0} to disable gravity.
         LinearAcceleration2D gravity = EarthlyGravity;
         
-        /// Minimum vertex radius.
+        /// @brief Minimum vertex radius.
         /// @details This is the minimum vertex radius that this world establishes which bodies
         ///    shall allow fixtures to be created with. Trying to create a fixture with a shape
         ///    having a smaller vertex radius shall be rejected with a <code>nullptr</code>
@@ -111,7 +113,7 @@ public:
         /// @note Making it larger may create artifacts for vertex collision.
         Length minVertexRadius = DefaultLinearSlop * RealNum{2};
 
-        /// Maximum vertex radius.
+        /// @brief Maximum vertex radius.
         /// @details This is the maximum vertex radius that this world establishes which bodies
         ///    shall allow fixtures to be created with. Trying to create a fixture with a shape
         ///    having a larger vertex radius shall be rejected with a <code>nullptr</code>
@@ -129,13 +131,13 @@ public:
         return Def{};
     }
 
-    /// Gets the default body definitions value.
+    /// @brief Gets the default body definitions value.
     static const BodyDef& GetDefaultBodyDef();
 
-    /// Constructs a world object.
+    /// @brief Constructs a world object.
     World(const Def& def = GetDefaultDef());
 
-    /// Destructor.
+    /// @brief Destructor.
     /// @details
     /// All physics entities are destroyed and all dynamically allocated memory is released.
     ~World();
@@ -153,18 +155,18 @@ public:
     /// remain in scope.
     void SetContactListener(ContactListener* listener) noexcept;
 
-    /// Creates a rigid body given a definition.
+    /// @brief Creates a rigid body given a definition.
     /// @note No reference to the definition is retained.
     /// @warning This function is locked during callbacks.
     Body* CreateBody(const BodyDef& def = GetDefaultBodyDef());
 
-    /// Destroys the given body.
+    /// @brief Destroys the given body.
     /// @note This function is locked during callbacks.
     /// @warning This automatically deletes all associated shapes and joints.
     /// @warning This function is locked during callbacks.
     void Destroy(Body* body);
 
-    /// Creates a joint to constrain bodies together.
+    /// @brief Creates a joint to constrain bodies together.
     /// @details No reference to the definition
     /// is retained. This may cause the connected bodies to cease colliding.
     /// @warning This function is locked during callbacks.
@@ -172,7 +174,7 @@ public:
     ///   else pointer to newly created joint.
     Joint* CreateJoint(const JointDef& def);
 
-    /// Destroys a joint.
+    /// @brief Destroys a joint.
     ///
     /// @details This may cause the connected bodies to begin colliding.
     ///
@@ -183,7 +185,7 @@ public:
     ///
     void Destroy(Joint* joint);
 
-    /// Steps the world simulation according to the given configuration.
+    /// @brief Steps the world simulation according to the given configuration.
     ///
     /// @details
     /// Performs position and velocity updating, sleeping of non-moving bodies, updating
@@ -215,7 +217,7 @@ public:
     ///
     StepStats Step(const StepConf& conf);
 
-    /// Queries the world for all fixtures that potentially overlap the provided AABB.
+    /// @brief Queries the world for all fixtures that potentially overlap the provided AABB.
     /// @param callback a user implemented callback class.
     /// @param aabb the query box.
     void QueryAABB(QueryFixtureReporter* callback, const AABB& aabb) const;
@@ -228,50 +230,54 @@ public:
     /// @param point2 the ray ending point
     void RayCast(RayCastFixtureReporter* callback, const Length2D& point1, const Length2D& point2) const;
 
+    /// @brief Gets the world body range for this world.
+    /// @return Body range that can be iterated over using its begin and end methods
+    ///   or using ranged-based for-loops.
     SizedRange<Bodies::iterator> GetBodies() noexcept;
 
-    /// Gets the world body container for this constant world.
-    /// @return Body container that can be iterated over using its begin and end methods
+    /// @brief Gets the world body range for this constant world.
+    /// @return Body range that can be iterated over using its begin and end methods
     ///   or using ranged-based for-loops.
     SizedRange<Bodies::const_iterator> GetBodies() const noexcept;
 
-    /// Gets the world joint container.
+    /// @brief Gets the world joint container.
     /// @return World joint container.
     const Joints& GetJoints() const noexcept;
 
-    /// Gets the world contact container.
+    /// @brief Gets the world contact container.
     /// @warning contacts are created and destroyed in the middle of a time step.
     /// Use ContactListener to avoid missing contacts.
     /// @return World contact container.
     const Contacts& GetContacts() const noexcept;
     
-    /// Gets whether or not sub-stepping is enabled.
+    /// @brief Gets whether or not sub-stepping is enabled.
     bool GetSubStepping() const noexcept;
 
-    /// Enable/disable single stepped continuous physics. For testing.
+    /// @brief Enables/disables single stepped continuous physics.
+    /// @note This is for testing.
     void SetSubStepping(bool flag) noexcept;
 
-    /// Gets the number of broad-phase proxies.
+    /// @brief Gets the number of broad-phase proxies.
     proxy_size_type GetProxyCount() const noexcept;
 
-    /// Get the height of the dynamic tree.
+    /// @brief Gets the height of the dynamic tree.
     proxy_size_type GetTreeHeight() const noexcept;
 
-    /// Get the balance of the dynamic tree.
+    /// @brief Gets the balance of the dynamic tree.
     proxy_size_type GetTreeBalance() const;
 
-    /// Gets the quality metric of the dynamic tree.
+    /// @brief Gets the quality metric of the dynamic tree.
     /// @details The smaller the better.
     /// @return Value of zero or more.
     RealNum GetTreeQuality() const;
 
-    /// Change the global gravity vector.
+    /// @brief Changes the global gravity vector.
     void SetGravity(const LinearAcceleration2D gravity) noexcept;
     
-    /// Get the global gravity vector.
+    /// @brief Gets the global gravity vector.
     LinearAcceleration2D GetGravity() const noexcept;
 
-    /// Is the world locked (in the middle of a time step).
+    /// @brief Is the world locked (in the middle of a time step).
     bool IsLocked() const noexcept;
 
     /// Shift the world origin. Useful for large worlds.
@@ -279,20 +285,20 @@ public:
     /// @param newOrigin the new origin with respect to the old origin
     void ShiftOrigin(const Length2D newOrigin);
 
-    /// Gets the minimum vertex radius that shapes in this world can be.
+    /// @brief Gets the minimum vertex radius that shapes in this world can be.
     Length GetMinVertexRadius() const noexcept;
     
-    /// Gets the maximum vertex radius that shapes in this world can be.
+    /// @brief Gets the maximum vertex radius that shapes in this world can be.
     Length GetMaxVertexRadius() const noexcept;
 
-    /// Gets the inverse delta time.
+    /// @brief Gets the inverse delta time.
     Frequency GetInvDeltaTime() const noexcept;
 
-    /// Gets the fat AABB for a proxy.
+    /// @brief Gets the fat AABB for a proxy.
     /// @warning Behavior is undefined if the given proxy ID is not a valid ID.
     AABB GetFatAABB(proxy_size_type proxyId) const;
     
-    /// Sets the type of the given body.
+    /// @brief Sets the type of the given body.
     /// @note This may alter the body's mass and velocity.
     void SetType(Body& body, BodyType type);
 
@@ -303,7 +309,7 @@ public:
                            const FixtureDef& def = GetDefaultFixtureDef(),
                            bool resetMassData = true);
 
-    /// Destroys a fixture.
+    /// @brief Destroys a fixture.
     ///
     /// @details This removes the fixture from the broad-phase and
     /// destroys all contacts associated with this fixture.
@@ -321,7 +327,7 @@ public:
     
     bool IsValid(std::shared_ptr<const Shape> shape) const noexcept;
     
-    /// Touches each proxy of the given fixture.
+    /// @brief Touches each proxy of the given fixture.
     /// @note Fixture must belong to a body that belongs to this world or this method will
     ///   return false.
     /// @note This sets things up so that pairs may be created for potentially new contacts.
@@ -335,7 +341,7 @@ public:
 
 private:
 
-    /// Flags type data type.
+    /// @brief Flags type data type.
     using FlagsType = std::uint32_t;
 
     using BodySet = std::unordered_set<const Body*>;
@@ -344,7 +350,7 @@ private:
     using FixtureQueue = std::vector<Fixture*>;
     using BodyQueue = std::vector<Body*>;
     
-    // Flag enumeration.
+    /// @brief Flag enumeration.
     enum Flag: FlagsType
     {
         /// New fixture.
@@ -360,7 +366,7 @@ private:
         e_stepComplete  = 0x0040,
     };
 
-    /// Island solver results.
+    /// @brief Island solver results.
     struct IslandSolverResults
     {
         Length minSeparation = std::numeric_limits<RealNum>::infinity() * Meter; ///< Minimum separation.
@@ -378,12 +384,12 @@ private:
 
     void InternalDestroy(Joint* joint);
 
-    /// Solves the step.
+    /// @brief Solves the step.
     /// @details Finds islands, integrates and solves constraints, solves position constraints.
     /// @note This may miss collisions involving fast moving bodies and allow them to tunnel through each other.
     RegStepStats SolveReg(const StepConf& conf);
 
-    /// Solves the given island (regularly).
+    /// @brief Solves the given island (regularly).
     ///
     /// @details This:
     ///   1. Updates every island-body's sweep.pos0 to its sweep.pos1.
@@ -399,7 +405,7 @@ private:
     ///
     IslandSolverResults SolveRegIsland(const StepConf& step, Island island);
     
-    /// Adds to the island based off of a given "seed" body.
+    /// @brief Adds to the island based off of a given "seed" body.
     /// @post Contacts are listed in the island in the order that bodies list those contacts.
     /// @post Joints are listed the island in the order that bodies list those joints.
     void AddToIsland(Island& island, Body& seed,
@@ -409,13 +415,13 @@ private:
 
     Bodies::size_type RemoveUnspeedablesFromIslanded(const std::vector<Body*>& bodies);
 
-    /// Solves the step using successive time of impact (TOI) events.
+    /// @brief Solves the step using successive time of impact (TOI) events.
     /// @details Used for continuous physics.
     /// @note This is intended to detect and prevent the tunneling that the faster Solve method may miss.
     /// @param conf Time step configuration to use.
     ToiStepStats SolveTOI(const StepConf& conf);
 
-    /// "Solves" collisions for the given time of impact.
+    /// @brief Solves collisions for the given time of impact.
     ///
     /// @param step Time step to solve for.
     /// @param contact Contact.
@@ -425,7 +431,7 @@ private:
     ///
     IslandSolverResults SolveTOI(const StepConf& step, Contact& contact);
     
-    /// Solves the time of impact for bodies 0 and 1 of the given island.
+    /// @brief Solves the time of impact for bodies 0 and 1 of the given island.
     ///
     /// @details This:
     ///   1. Updates pos0 of the sweeps of bodies 0 and 1.
@@ -455,7 +461,7 @@ private:
         contact_count_t contactsSkipped = 0;
     };
 
-    /// Processes the contacts of a given body for TOI handling.
+    /// @brief Processes the contacts of a given body for TOI handling.
     /// @details This does the following:
     ///   1. Advances the appropriate associated other bodies to the given TOI (advancing
     ///      their sweeps and synchronizing their transforms to their new sweeps).
@@ -476,7 +482,7 @@ private:
     bool Remove(Body& b);
     bool Remove(Joint& j);
 
-    /// Whether or not "step" is complete.
+    /// @brief Whether or not "step" is complete.
     /// @details The "step" is completed when there are no more TOI events for the current time step.
     /// @sa <code>SetStepComplete</code>.
     bool IsStepComplete() const noexcept;
@@ -526,10 +532,10 @@ private:
         root_iter_type maxRootIters = 0;
     };
     
-    /// Updates the contact times of impact.
+    /// @brief Updates the contact times of impact.
     UpdateContactsData UpdateContactTOIs(const StepConf& conf);
 
-    /// Gets the soonest contact.
+    /// @brief Gets the soonest contact.
     /// @details This finds the contact with the lowest (soonest) time of impact.
     /// @return Contacts with the least time of impact and its time of impact, or null contact.
     ///  These contacts will all be enabled, not have sensors, be active, and impenetrable.
@@ -539,12 +545,12 @@ private:
     
     void UnsetNewFixtures() noexcept;
     
-    /// Finds new contacts.
+    /// @brief Finds new contacts.
     /// @details Finds and adds new valid contacts to the contacts container.
     /// @note The new contacts will all have overlapping AABBs.
     contact_count_t FindNewContacts();
     
-    /// Processes the narrow phase collision for the contact list.
+    /// @brief Processes the narrow phase collision for the contact list.
     /// @details
     /// This finds and destroys the contacts that need filtering and no longer should collide or
     /// that no longer have AABB-based overlapping fixtures. Those contacts that persist and
@@ -557,13 +563,13 @@ private:
     
     bool ShouldCollide(const Fixture* fixtureA, const Fixture* fixtureB);
 
-    /// Destroys the given contact and removes it from its list.
+    /// @brief Destroys the given contact and removes it from its list.
     /// @details This updates the contact list, returns the memory to the allocator,
     ///   and decrements the contact manager's contact count.
     /// @param c Contact to destroy.
     void Destroy(Contact* c, Body* from);
     
-    /// Adds a contact for proxyA and proxyB if appropriate.
+    /// @brief Adds a contact for proxyA and proxyB if appropriate.
     /// @details Adds a new contact object to represent a contact between proxy A and proxy B if
     /// all of the following are true:
     ///   1. The bodies of the fixtures of the proxies are not the one and the same.
@@ -580,15 +586,15 @@ private:
     void InternalDestroy(Contact* contact, Body* from = nullptr);
     bool Erase(Contact* contact);
     
-    /// Creates proxies for every child of the given fixture's shape.
+    /// @brief Creates proxies for every child of the given fixture's shape.
     /// @note This sets the proxy count to the child count of the shape.
     void CreateProxies(Fixture& fixture, const Length aabbExtension);
 
-    /// Destroys the given fixture's proxies.
+    /// @brief Destroys the given fixture's proxies.
     /// @note This resets the proxy count to 0.
     void DestroyProxies(Fixture& fixture);
 
-    /// Touches each proxy of the given fixture.
+    /// @brief Touches each proxy of the given fixture.
     /// @note This sets things up so that pairs may be created for potentially new contacts.
     void InternalTouchProxies(Fixture& fixture) noexcept;
 
