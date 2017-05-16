@@ -87,14 +87,14 @@ public:
 
     BroadPhase& operator=(const BroadPhase&) = delete;
 
-    /// Creates a proxy with an initial AABB.
+    /// @brief Creates a proxy with an initial AABB.
     /// @note Pairs are not reported until UpdatePairs is called.
     size_type CreateProxy(const AABB& aabb, void* userData);
 
-    /// Destroys a proxy. It is up to the client to remove any pairs.
+    /// @brief Destroys a proxy. It is up to the client to remove any pairs.
     void DestroyProxy(size_type proxyId);
 
-    /// Updates the proxy.
+    /// @brief Updates the proxy.
     /// @details
     /// Call this as many times as you like, then when you are done call UpdatePairs
     /// to finalize the proxy pairs (for your time step).
@@ -109,55 +109,69 @@ public:
     bool UpdateProxy(const size_type proxyId, const AABB& aabb, const Length2D displacement,
                      const RealNum multiplier = 1, const Length extension = Length{0});
 
-    /// Call to trigger a re-processing of it's pairs on the next call to UpdatePairs.
+    /// @brief Call to trigger a re-processing of it's pairs on the next call to UpdatePairs.
     void TouchProxy(size_type proxyId) noexcept;
 
-    /// Gets the fat AABB for a proxy.
+    /// @brief Gets the fat AABB for a proxy.
     /// @warning Behavior is undefined if the given proxy ID is not a valid ID.
     AABB GetFatAABB(size_type proxyId) const;
 
-    /// Gets user data from a proxy.
+    /// @brief Gets user data from a proxy.
     void* GetUserData(size_type proxyId) const;
 
-    /// Get the number of proxies.
+    /// @brief Get the number of proxies.
     size_type GetProxyCount() const noexcept;
 
-    /// Updates the pairs.
+    /// @brief Updates the pairs.
     /// @details This results in pair callbacks. This can only add pairs.
     /// @param callback Callback that's called for AABB overlapping pairs.
     size_type UpdatePairs(std::function<bool(void*,void*)> callback);
 
-    /// Query an AABB for overlapping proxies. The callback class
-    /// is called for each proxy that overlaps the supplied AABB.
+    /// @brief Queries an AABB for overlapping proxies.
+    /// @note The callback class is called for each proxy that overlaps the supplied AABB.
     void Query(const AABB aabb, QueryCallback callback) const;
 
-    /// Ray-cast against the proxies in the tree. This relies on the callback
-    /// to perform an exact ray-cast in the case were the proxy contains a shape.
-    /// The callback also performs the any collision filtering. This has performance
-    /// roughly equal to k * log(n), where k is the number of collisions and n is the
-    /// number of proxies in the tree.
-    /// @param input the ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
-    /// @param callback a callback class that is called for each proxy that is hit by the ray.
+    /// @brief Ray-cast against the proxies in the tree.
+    ///
+    /// @note This relies on the callback to perform an exact ray-cast in the case were the
+    ///   proxy contains a shape.
+    /// @note The callback also performs the any collision filtering.
+    /// @note This has performance roughly equal to k * log(n), where k is the number of
+    ///   collisions and n is the number of proxies in the tree.
+    ///
+    /// @param input the ray-cast input data.
+    ///   The ray extends from p1 to p1 + maxFraction * (p2 - p1).
+    /// @param callback A callback instance that's called for each proxy that's hit by the ray.
+    ///   The callback should return 0 to terminate raycasting, or greater than 0
+    ///   to update the segment bounding box. Values less than zero are ignored.
+    ///
     void RayCast(const RayCastInput& input, RayCastCallback callback) const;
 
-    /// Gets the height of the embedded tree.
+    /// @brief Gets the height of the embedded tree.
     size_type GetTreeHeight() const noexcept;
 
-    /// Gets the balance of the embedded tree.
+    /// @brief Gets the balance of the embedded tree.
     size_type GetTreeBalance() const;
 
-    /// Gets the quality metric of the embedded tree.
+    /// @brief Gets the quality metric of the embedded tree.
     /// @return Value of zero or more.
     RealNum GetTreeQuality() const;
 
-    /// Shifts the world origin. Useful for large worlds.
-    /// The shift formula is: position -= newOrigin
+    /// @brief Shifts the world origin. Useful for large worlds.
+    /// @note The shift formula is: position -= newOrigin
     /// @param newOrigin the new origin with respect to the old origin
     void ShiftOrigin(const Length2D newOrigin);
 
+    /// @brief Gets the pair capacity.
     size_type GetPairCapacity() const noexcept;
+
+    /// @brief Gets the move capacity.
     size_type GetMoveCapacity() const noexcept;
+    
+    /// @brief Gets the move count.
     size_type GetMoveCount() const noexcept;
+    
+    /// @brief Gets the pair count.
     size_type GetPairCount() const noexcept;
 
 private:

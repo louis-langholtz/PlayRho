@@ -447,6 +447,55 @@ namespace {
         return VelocityConstraint::Conf{0, conf.velocityThreshold, conf.doBlocksolve};
     }
 
+    struct WorldRayCastWrapper
+    {
+        using size_type = BroadPhase::size_type;
+        
+        RealNum RayCastCallback(const RayCastInput& input, size_type proxyId)
+        {
+            auto userData = broadPhase->GetUserData(proxyId);
+            const auto proxy = static_cast<FixtureProxy*>(userData);
+            auto fixture = proxy->fixture;
+            const auto index = proxy->childIndex;
+            const auto output = RayCast(*fixture, input, index);
+            
+            if (output.hit)
+            {
+                const auto fraction = output.fraction;
+                assert(fraction >= 0 && fraction <= 1);
+                
+                // Here point can be calculated these two ways:
+                //   (1) point = p1 * (1 - fraction) + p2 * fraction
+                //   (2) point = p1 + (p2 - p1) * fraction.
+                //
+                // The first way however suffers from the fact that:
+                //     a * (1 - fraction) + a * fraction != a
+                // for all values of a and fraction between 0 and 1 when a and fraction are
+                // floating point types.
+                // This leads to the posibility that (p1 == p2) && (point != p1 || point != p2),
+                // which may be pretty surprising to the callback. So this way SHOULD NOT be used.
+                //
+                // The second way, does not have this problem.
+                //
+                const auto point = input.p1 + (input.p2 - input.p1) * fraction;
+                return callback->ReportFixture(fixture, point, output.normal, fraction);
+            }
+            
+            return input.maxFraction;
+        }
+        
+        WorldRayCastWrapper() = delete;
+        
+        constexpr WorldRayCastWrapper(const BroadPhase* bp, RayCastFixtureReporter* cb):
+        	broadPhase(bp), callback(cb)
+        {
+            // Intentionally empty.
+        }
+        
+        const BroadPhase* const broadPhase;
+        RayCastFixtureReporter* const callback;
+    };
+
 } // anonymous namespace
 
 const BodyDef& World::GetDefaultBodyDef()
@@ -1725,52 +1774,8 @@ void World::QueryAABB(QueryFixtureReporter* callback, const AABB& aabb) const
     });
 }
 
-struct WorldRayCastWrapper
-{
-    using size_type = BroadPhase::size_type;
-
-    RealNum RayCastCallback(const RayCastInput& input, size_type proxyId)
-    {
-        auto userData = broadPhase->GetUserData(proxyId);
-        const auto proxy = static_cast<FixtureProxy*>(userData);
-        auto fixture = proxy->fixture;
-        const auto index = proxy->childIndex;
-        const auto output = RayCast(*fixture, input, index);
-
-        if (output.hit)
-        {
-            const auto fraction = output.fraction;
-            assert(fraction >= 0 && fraction <= 1);
-            
-            // Here point can be calculated these two ways:
-            //   (1) point = p1 * (1 - fraction) + p2 * fraction
-            //   (2) point = p1 + (p2 - p1) * fraction.
-            //
-            // The first way however suffers from the fact that:
-            //     a * (1 - fraction) + a * fraction != a
-            // for all values of a and fraction between 0 and 1 when a and fraction are
-            // floating point types.
-            // This leads to the posibility that (p1 == p2) && (point != p1 || point != p2),
-            // which may be pretty surprising to the callback. So this way SHOULD NOT be used.
-            //
-            // The second way, does not have this problem.
-            //
-            const auto point = input.p1 + (input.p2 - input.p1) * fraction;
-            return callback->ReportFixture(fixture, point, output.normal, fraction);
-        }
-
-        return input.maxFraction;
-    }
-
-    WorldRayCastWrapper() = delete;
-
-    constexpr WorldRayCastWrapper(const BroadPhase* bp, RayCastFixtureReporter* cb): broadPhase(bp), callback(cb) {}
-
-    const BroadPhase* const broadPhase;
-    RayCastFixtureReporter* const callback;
-};
-
-void World::RayCast(RayCastFixtureReporter* callback, const Length2D& point1, const Length2D& point2) const
+void World::RayCast(RayCastFixtureReporter* callback, const Length2D& point1,
+                    const Length2D& point2) const
 {
     WorldRayCastWrapper wrapper(&m_broadPhase, callback);
     const auto input = RayCastInput{point1, point2, RealNum{1}};

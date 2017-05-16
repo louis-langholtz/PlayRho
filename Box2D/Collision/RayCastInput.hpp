@@ -20,11 +20,14 @@
 #ifndef RayCastInput_hpp
 #define RayCastInput_hpp
 
+/// @file
+/// Declaration of the RayCastInput struct.
+
 #include <Box2D/Common/Math.hpp>
 
 namespace box2d
 {
-    /// Ray-cast input data.
+    /// @brief Ray-cast input data.
     /// @details The ray extends from p1 to p1 + maxFraction * (p2 - p1).
     struct RayCastInput
     {

@@ -167,7 +167,7 @@ namespace
     TestSuite *g_testSuite = nullptr;
     Selection *g_selection = nullptr;
 
-    Camera g_camera;
+    Camera camera;
     
     GLFWwindow* mainWindow = nullptr;
     UIState ui;
@@ -250,8 +250,8 @@ static void CreateUI()
 
 static void ResizeWindow(GLFWwindow*, int width, int height)
 {
-    g_camera.m_width = width;
-    g_camera.m_height = height;
+    camera.m_width = width;
+    camera.m_height = height;
 }
 
 static Test::Key GlfwKeyToTestKey(int key)
@@ -325,7 +325,7 @@ static void KeyCallback(GLFWwindow*, int key, int scancode, int action, int mods
             }
             else
             {
-                g_camera.m_center.x -= 0.5f;
+                camera.m_center.x -= 0.5f;
             }
             break;
 
@@ -337,7 +337,7 @@ static void KeyCallback(GLFWwindow*, int key, int scancode, int action, int mods
             }
             else
             {
-                g_camera.m_center.x += 0.5f;
+                camera.m_center.x += 0.5f;
             }
             break;
 
@@ -349,7 +349,7 @@ static void KeyCallback(GLFWwindow*, int key, int scancode, int action, int mods
             }
             else
             {
-                g_camera.m_center.y -= 0.5f;
+                camera.m_center.y -= 0.5f;
             }
             break;
 
@@ -361,24 +361,24 @@ static void KeyCallback(GLFWwindow*, int key, int scancode, int action, int mods
             }
             else
             {
-                g_camera.m_center.y += 0.5f;
+                camera.m_center.y += 0.5f;
             }
             break;
 
         case GLFW_KEY_HOME:
             // Reset view
-            g_camera.m_zoom = 1.0f;
-            g_camera.m_center = Coord2D{0.0f, 20.0f};
+            camera.m_zoom = 1.0f;
+            camera.m_center = Coord2D{0.0f, 20.0f};
             break;
 
         case GLFW_KEY_Z:
             // Zoom out
-            g_camera.m_zoom = Min(1.1f * g_camera.m_zoom, 20.0f);
+            camera.m_zoom = Min(1.1f * camera.m_zoom, 20.0f);
             break;
 
         case GLFW_KEY_X:
             // Zoom in
-            g_camera.m_zoom = Max(0.9f * g_camera.m_zoom, 0.02f);
+            camera.m_zoom = Max(0.9f * camera.m_zoom, 0.02f);
             break;
 
         case GLFW_KEY_R:
@@ -436,7 +436,7 @@ static void MouseButton(GLFWwindow*, int button, int action, int mods)
     if (button == GLFW_MOUSE_BUTTON_1)
     {
         //ps = Vec2(0, 0);
-        const auto pw = ConvertScreenToWorld(g_camera, ps);
+        const auto pw = ConvertScreenToWorld(camera, ps);
         if (action == GLFW_PRESS)
         {
             if (mods == GLFW_MOD_SHIFT)
@@ -458,7 +458,7 @@ static void MouseButton(GLFWwindow*, int button, int action, int mods)
     {
         if (action == GLFW_PRESS)
         {    
-            lastp = ConvertScreenToWorld(g_camera, ps);
+            lastp = ConvertScreenToWorld(camera, ps);
             rightMouseDown = true;
         }
 
@@ -472,16 +472,16 @@ static void MouseButton(GLFWwindow*, int button, int action, int mods)
 static void MouseMotion(GLFWwindow*, double xd, double yd)
 {
     const auto ps = Coord2D{static_cast<float>(xd), static_cast<float>(yd)};
-    const auto pw = ConvertScreenToWorld(g_camera, ps);
+    const auto pw = ConvertScreenToWorld(camera, ps);
 
     g_testSuite->GetTest()->MouseMove(pw);
     
     if (rightMouseDown)
     {
         const auto movement = pw - lastp;
-        g_camera.m_center.x -= static_cast<float>(RealNum{movement.x / Meter});
-        g_camera.m_center.y -= static_cast<float>(RealNum{movement.y / Meter});
-        lastp = ConvertScreenToWorld(g_camera, ps);
+        camera.m_center.x -= static_cast<float>(RealNum{movement.x / Meter});
+        camera.m_center.y -= static_cast<float>(RealNum{movement.y / Meter});
+        lastp = ConvertScreenToWorld(camera, ps);
     }
 }
 
@@ -495,11 +495,11 @@ static void ScrollCallback(GLFWwindow*, double, double dy)
     {
         if (dy > 0)
         {
-            g_camera.m_zoom /= 1.1f;
+            camera.m_zoom /= 1.1f;
         }
         else
         {
-            g_camera.m_zoom *= 1.1f;
+            camera.m_zoom *= 1.1f;
         }
     }
 }
@@ -533,8 +533,8 @@ static void Simulate(Drawer& drawer)
     if (g_testSuite->GetIndex() != g_selection->Get())
     {
         g_testSuite->SetIndex(g_selection->Get());
-        g_camera.m_zoom = 1.0f;
-        g_camera.m_center = Coord2D{0.0f, 20.0f};
+        camera.m_zoom = 1.0f;
+        camera.m_center = Coord2D{0.0f, 20.0f};
     }
 }
 
@@ -545,8 +545,8 @@ static void UserInterface()
     if (ui.showMenu)
     {
         const auto over = imguiBeginScrollArea("Testbed Controls",
-                                               g_camera.m_width - menuWidth - 10, 10,
-                                               menuWidth, g_camera.m_height - 20,
+                                               camera.m_width - menuWidth - 10, 10,
+                                               menuWidth, camera.m_height - 20,
                                                &ui.scrollarea1);
         if (over) ui.mouseOverMenu = true;
 
@@ -642,8 +642,8 @@ static void UserInterface()
     {
         static int testScroll = 0;
         const auto over = imguiBeginScrollArea("Choose Sample",
-                                               g_camera.m_width - menuWidth - testMenuWidth - 20, 10,
-                                               testMenuWidth, g_camera.m_height - 20,
+                                               camera.m_width - menuWidth - testMenuWidth - 20, 10,
+                                               testMenuWidth, camera.m_height - 20,
                                                &testScroll);
         if (over) ui.mouseOverMenu = true;
 
@@ -676,8 +676,8 @@ int main()
     _CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF | _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG));
 #endif
 
-    g_camera.m_width = 1280; // 1152;
-    g_camera.m_height = 960; // 864;
+    camera.m_width = 1280; // 1152;
+    camera.m_height = 960; // 864;
     
     if (glfwInit() == 0)
     {
@@ -697,7 +697,7 @@ int main()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #endif
 
-    mainWindow = glfwCreateWindow(g_camera.m_width, g_camera.m_height, title, nullptr, nullptr);
+    mainWindow = glfwCreateWindow(camera.m_width, camera.m_height, title, nullptr, nullptr);
     if (mainWindow == nullptr)
     {
         fprintf(stderr, "Failed to open GLFW mainWindow.\n");
@@ -737,11 +737,11 @@ int main()
     glClearColor(0.3f, 0.3f, 0.3f, 1.f);
     
     {
-        DebugDraw drawer(g_camera);
+        DebugDraw drawer(camera);
         while (!glfwWindowShouldClose(mainWindow))
         {
-            glfwGetWindowSize(mainWindow, &g_camera.m_width, &g_camera.m_height);
-            glViewport(0, 0, g_camera.m_width, g_camera.m_height);
+            glfwGetWindowSize(mainWindow, &camera.m_width, &camera.m_height);
+            glViewport(0, 0, camera.m_width, camera.m_height);
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -752,7 +752,7 @@ int main()
             double xd, yd;
             glfwGetCursorPos(mainWindow, &xd, &yd);
             const auto mousex = int(xd);
-            const auto mousey = g_camera.m_height - int(yd);
+            const auto mousey = camera.m_height - int(yd);
 
             const auto leftButton = glfwGetMouseButton(mainWindow, GLFW_MOUSE_BUTTON_LEFT);
             if (leftButton == GLFW_PRESS)
@@ -773,10 +773,10 @@ int main()
 
             {
                 std::stringstream stream;
-                const auto viewport = ConvertScreenToWorld(g_camera);
-                stream << "Zoom=" << g_camera.m_zoom;
+                const auto viewport = ConvertScreenToWorld(camera);
+                stream << "Zoom=" << camera.m_zoom;
                 stream << " Center=";
-                stream << "{" << g_camera.m_center.x << "," << g_camera.m_center.y << "}";
+                stream << "{" << camera.m_center.x << "," << camera.m_center.y << "}";
                 stream << " Viewport=";
                 stream << "{";
                 stream << viewport.GetLowerBound().x << "..." << viewport.GetUpperBound().x;
@@ -794,7 +794,7 @@ int main()
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             glDisable(GL_DEPTH_TEST);
-            RenderGLFlush(g_camera.m_width, g_camera.m_height);
+            RenderGLFlush(camera.m_width, camera.m_height);
 
             glfwSwapBuffers(mainWindow);
 

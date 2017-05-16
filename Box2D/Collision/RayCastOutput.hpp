@@ -20,6 +20,9 @@
 #ifndef RayCastOutput_hpp
 #define RayCastOutput_hpp
 
+/// @file
+/// Declaration of the RayCastOutput struct and related free functions.
+
 #include <Box2D/Common/Math.hpp>
 
 namespace box2d
@@ -29,16 +32,26 @@ namespace box2d
     class Fixture;
     class DistanceProxy;
 
-    /// Ray-cast output data.
+    /// @brief Ray-cast output data.
     /// @details The ray hits at p1 + fraction * (p2 - p1), where p1 and p2 come from RayCastInput.
     struct RayCastOutput
     {
         RayCastOutput() = default;
         
+        /// @brief Initializing constructor.
+        ///
+        /// @note This intentionally default initializes the hit parameter as <code>true</code>.
+        ///
+        /// @param n Normal.
+        /// @param f Fraction. A unit interval value or NaN (a value between 0 and 1 inclusive
+        ///   or NaN).
+        /// @param h Hit (or not).
+        ///
         constexpr RayCastOutput(UnitVec2 n, RealNum f, bool h = true) noexcept:
             normal{n}, fraction{f}, hit{h}
         {
-            // Intentionally empty.
+            // Check against out-of-range values of f while accepting NaN.
+            assert(!(f < 0) && !(f > 1));
         }
         
         UnitVec2 normal = GetInvalid<decltype(normal)>();
@@ -46,19 +59,19 @@ namespace box2d
         bool hit = false;
     };
 
-    /// Cast a ray against the given AABB.
+    /// @brief Cast a ray against the given AABB.
     /// @param aabb Axis Aligned Bounding Box.
     /// @param input the ray-cast input parameters.
     RayCastOutput RayCast(const AABB& aabb, const RayCastInput& input);
     
-    /// Cast a ray against the distance proxy.
+    /// @brief Cast a ray against the distance proxy.
     /// @param proxy Distance-proxy object.
     /// @param input Ray-cast input parameters.
     /// @param transform Transform to be applied to the shape.
     RayCastOutput RayCast(const DistanceProxy& proxy,
                           const RayCastInput& input, const Transformation& transform) noexcept;
     
-    /// Cast a ray against the shape of the given fixture.
+    /// @brief Cast a ray against the shape of the given fixture.
     /// @param f Fixture.
     /// @param input the ray-cast input parameters.
     /// @param childIndex Child index.

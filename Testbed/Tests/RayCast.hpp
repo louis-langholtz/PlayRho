@@ -38,7 +38,8 @@ public:
         m_hit = false;
     }
 
-    RealNum ReportFixture(Fixture* fixture, const Length2D& point, const UnitVec2& normal, RealNum fraction) override
+    RealNum ReportFixture(Fixture* fixture, const Length2D& point, const UnitVec2& normal,
+                          RealNum fraction) override
     {
         const auto body = fixture->GetBody();
         const auto userData = body->GetUserData();
@@ -78,7 +79,8 @@ public:
         m_hit = false;
     }
 
-    RealNum ReportFixture(Fixture* fixture, const Length2D& point, const UnitVec2& normal, RealNum) override
+    RealNum ReportFixture(Fixture* fixture, const Length2D& point, const UnitVec2& normal,
+                          RealNum) override
     {
         const auto body = fixture->GetBody();
         const auto userData = body->GetUserData();
@@ -123,7 +125,8 @@ public:
         m_count = 0;
     }
 
-    RealNum ReportFixture(Fixture* fixture, const Length2D& point, const UnitVec2& normal, RealNum) override
+    RealNum ReportFixture(Fixture* fixture, const Length2D& point, const UnitVec2& normal,
+                          RealNum) override
     {
         const auto body = fixture->GetBody();
         const auto userData = body->GetUserData();
@@ -170,7 +173,7 @@ public:
         e_maxBodies = 256
     };
 
-    enum Mode
+    enum class Mode
     {
         e_closest,
         e_any,
@@ -182,22 +185,28 @@ public:
         m_circle->SetVertexRadius(RealNum{0.5f} * Meter);
         m_circle->SetFriction(0.3f);
         m_edge->SetFriction(0.3f);
-        m_edge->SetVertexRadius((RealNum(1) / RealNum(5)) * Meter);
         
         // Ground body
         const auto ground = m_world->CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
+        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter,
+                                                          Vec2(40.0f, 0.0f) * Meter));
         
         for (auto&& p: m_polygons)
         {
             p = std::make_shared<PolygonShape>();
             p->SetFriction(0.3f);
-            p->SetVertexRadius((RealNum(1) / RealNum(20)) * Meter);
         }
 
-        m_polygons[0]->Set({Vec2(-0.5f, 0.0f) * Meter, Vec2(0.5f, 0.0f) * Meter, Vec2(0.0f, 1.5f) * Meter});
-
-        m_polygons[1]->Set({Vec2(-0.1f, 0.0f) * Meter, Vec2(0.1f, 0.0f) * Meter, Vec2(0.0f, 1.5f) * Meter});
+        m_polygons[0]->Set({
+            Vec2(-0.5f, 0.0f) * Meter,
+            Vec2(0.5f, 0.0f) * Meter,
+            Vec2(0.0f, 1.5f) * Meter
+        });
+        m_polygons[1]->Set({
+            Vec2(-0.1f, 0.0f) * Meter,
+            Vec2(0.1f, 0.0f) * Meter,
+            Vec2(0.0f, 1.5f) * Meter
+        });
 
         {
             const auto w = 1.0f;
@@ -215,15 +224,8 @@ public:
                 Vec2(-0.5f * s, 0.0f) * Meter
             });
         }
-
         m_polygons[3]->SetAsBox(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
-        
-        m_bodyIndex = 0;
         std::memset(m_bodies, 0, sizeof(m_bodies));
-
-        m_angle = 0.0f;
-
-        m_mode = e_closest;
     }
 
     void Create(int index)
@@ -298,17 +300,17 @@ public:
             break;
 
         case Key_M:
-            if (m_mode == e_closest)
+                if (m_mode == Mode::e_closest)
             {
-                m_mode = e_any;
+                m_mode = Mode::e_any;
             }
-            else if (m_mode == e_any)
+            else if (m_mode == Mode::e_any)
             {
-                m_mode = e_multiple;
+                m_mode = Mode::e_multiple;
             }
-            else if (m_mode == e_multiple)
+            else if (m_mode == Mode::e_multiple)
             {
-                m_mode = e_closest;
+                m_mode = Mode::e_closest;
             }
             break;
 
@@ -317,25 +319,29 @@ public:
         }
     }
 
+    static const char* GetModeName(Mode mode) noexcept
+    {
+        switch (mode)
+        {
+            case Mode::e_closest: return "closest - find closest fixture along the ray";
+            case Mode::e_any: return "any - check for obstruction";
+            case Mode::e_multiple: return "multiple - gather multiple fixtures";
+        }
+        return "unknown";
+    }
+
     void PostStep(const Settings& settings, Drawer& drawer) override
     {
-        drawer.DrawString(5, m_textLine, "Press 1-6 to drop stuff, m to change the mode");
+        drawer.DrawString(5, m_textLine,
+                          "Press '1' to drop triangles that should be ignored by the ray.");
         m_textLine += DRAW_STRING_NEW_LINE;
-        switch (m_mode)
-        {
-        case e_closest:
-            drawer.DrawString(5, m_textLine, "Ray-cast mode: closest - find closest fixture along the ray");
-            break;
-        
-        case e_any:
-            drawer.DrawString(5, m_textLine, "Ray-cast mode: any - check for obstruction");
-            break;
+        drawer.DrawString(5, m_textLine,
+                          "Press '2'-'6' to drop shapes that should not be ignored by the ray.");
+        m_textLine += DRAW_STRING_NEW_LINE;
 
-        case e_multiple:
-            drawer.DrawString(5, m_textLine, "Ray-cast mode: multiple - gather multiple fixtures");
-            break;
-        }
-
+        drawer.DrawString(5, m_textLine,
+                          "Press 'm' to change the mode of the raycast test (currently: %s).",
+                          GetModeName(m_mode));
         m_textLine += DRAW_STRING_NEW_LINE;
 
         const auto L = 11.0f;
@@ -343,7 +349,7 @@ public:
         const auto d = Vec2(L * std::cos(m_angle), L * std::sin(m_angle)) * Meter;
         const auto point2 = point1 + d;
 
-        if (m_mode == e_closest)
+        if (m_mode == Mode::e_closest)
         {
             RayCastClosestCallback callback;
             m_world->RayCast(&callback, point1, point2);
@@ -360,7 +366,7 @@ public:
                 drawer.DrawSegment(point1, point2, Color(0.8f, 0.8f, 0.8f));
             }
         }
-        else if (m_mode == e_any)
+        else if (m_mode == Mode::e_any)
         {
             RayCastAnyCallback callback;
             m_world->RayCast(&callback, point1, point2);
@@ -377,7 +383,7 @@ public:
                 drawer.DrawSegment(point1, point2, Color(0.8f, 0.8f, 0.8f));
             }
         }
-        else if (m_mode == e_multiple)
+        else if (m_mode == Mode::e_multiple)
         {
             RayCastMultipleCallback callback;
             m_world->RayCast(&callback, point1, point2);
@@ -441,16 +447,14 @@ public:
 #endif
     }
 
-    int m_bodyIndex;
+    int m_bodyIndex = 0;
     Body* m_bodies[e_maxBodies];
     int m_userData[e_maxBodies];
     std::shared_ptr<PolygonShape> m_polygons[4];
     std::shared_ptr<CircleShape> m_circle = std::make_shared<CircleShape>();
     std::shared_ptr<EdgeShape> m_edge = std::make_shared<EdgeShape>(Vec2(-1.0f, 0.0f) * Meter, Vec2(1.0f, 0.0f) * Meter);
-    
-    RealNum m_angle;
-
-    Mode m_mode;
+    RealNum m_angle = 0.0f;
+    Mode m_mode = Mode::e_closest;
 };
 
 } // namespace box2d
