@@ -30,6 +30,8 @@
 		470F94DB1EC8C37500AA3C82 /* JointKey.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94D81EC8C37500AA3C82 /* JointKey.hpp */; };
 		470F94DC1EC8C37500AA3C82 /* JointKey.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94D81EC8C37500AA3C82 /* JointKey.hpp */; };
 		470F94DE1ECB94D600AA3C82 /* UnitVec2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 470F94DD1ECB94D600AA3C82 /* UnitVec2.cpp */; };
+		470F94E31ECBB3A100AA3C82 /* Range.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94E01ECBB3A100AA3C82 /* Range.hpp */; };
+		470F94E41ECBB3A100AA3C82 /* Range.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94E01ECBB3A100AA3C82 /* Range.hpp */; };
 		4726DD0F1D3014990012A882 /* IndexPair.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD0C1D3014990012A882 /* IndexPair.hpp */; };
 		4726DD101D3014990012A882 /* IndexPair.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD0C1D3014990012A882 /* IndexPair.hpp */; };
 		4726DD1F1D305E5D0012A882 /* ContactFeature.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */; };
@@ -420,6 +422,7 @@
 		470F94D71EC8C37500AA3C82 /* JointKey.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JointKey.cpp; sourceTree = "<group>"; };
 		470F94D81EC8C37500AA3C82 /* JointKey.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JointKey.hpp; sourceTree = "<group>"; };
 		470F94DD1ECB94D600AA3C82 /* UnitVec2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitVec2.cpp; sourceTree = "<group>"; };
+		470F94E01ECBB3A100AA3C82 /* Range.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Range.hpp; sourceTree = "<group>"; };
 		4726DD0C1D3014990012A882 /* IndexPair.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IndexPair.hpp; sourceTree = "<group>"; };
 		4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactFeature.hpp; sourceTree = "<group>"; };
 		4726DD261D3180980012A882 /* NewtonsCradle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NewtonsCradle.hpp; sourceTree = "<group>"; };
@@ -894,6 +897,7 @@
 				475A94631D99C264000CA9A8 /* List.hpp */,
 				80BB8944141C3E5900F1753A /* Math.cpp */,
 				80BB8945141C3E5900F1753A /* Math.hpp */,
+				470F94E01ECBB3A100AA3C82 /* Range.hpp */,
 				80BB8946141C3E5900F1753A /* Settings.cpp */,
 				80BB8947141C3E5900F1753A /* Settings.hpp */,
 				470F94A31EC4C6C900AA3C82 /* Settings.hpp.in */,
@@ -1221,6 +1225,7 @@
 				478869111D78BF7200AEC7F1 /* VelocityConstraint.hpp in Headers */,
 				4731DE591DEC908600E7F931 /* UnitVec2.hpp in Headers */,
 				47AA5DF61C4C5FBE008AF2BA /* WeldJoint.hpp in Headers */,
+				470F94E41ECBB3A100AA3C82 /* Range.hpp in Headers */,
 				47AA5DF71C4C5FBE008AF2BA /* WheelJoint.hpp in Headers */,
 				47AA5DF81C4C5FBE008AF2BA /* Rope.hpp in Headers */,
 				47AA5DF91C4C5FBE008AF2BA /* MotorJoint.hpp in Headers */,
@@ -1277,6 +1282,7 @@
 				478869101D78BF7200AEC7F1 /* VelocityConstraint.hpp in Headers */,
 				80BB89B7141C3E5900F1753A /* WorldCallbacks.hpp in Headers */,
 				4768D3F51E3A7ACA00574143 /* Wider.hpp in Headers */,
+				470F94E31ECBB3A100AA3C82 /* Range.hpp in Headers */,
 				470F94B41EC4CB6C00AA3C82 /* Filter.hpp in Headers */,
 				4751EE291CEDD78F00D459CB /* Mobile.hpp in Headers */,
 				4751EE2B1CEDD79900D459CB /* ConveyorBelt.hpp in Headers */,

@@ -195,11 +195,11 @@ namespace box2d {
         void ToggleBulletMode()
         {
             m_bullet_mode = !m_bullet_mode;
-            for (auto& b: m_world->GetBodies())
+            for (auto&& b: m_world->GetBodies())
             {
-                if (b->GetType() == BodyType::Dynamic)
+                if (b.GetType() == BodyType::Dynamic)
                 {
-                    b->SetBullet(m_bullet_mode);
+                    b.SetBullet(m_bullet_mode);
                 }
             }
         }

@@ -101,7 +101,7 @@ TEST(World, DefaultInit)
         EXPECT_TRUE(bodies.empty());
         EXPECT_EQ(bodies.size(), body_count_t(0));
         EXPECT_EQ(bodies.begin(), bodies.end());
-        EXPECT_NE(world.GetBodies().begin(), world.GetBodies().end());
+        EXPECT_EQ(world.GetBodies().begin(), world.GetBodies().end());
     }
     {
         const auto& w = static_cast<const World&>(world);
@@ -161,7 +161,7 @@ TEST(World, CreateAndDestroyBody)
     EXPECT_EQ(bodies1.size(), body_count_t(1));
     EXPECT_NE(bodies1.begin(), bodies1.end());
     const auto& first = *(bodies1.begin());
-    EXPECT_EQ(body, first);
+    EXPECT_EQ(body, &first);
 
     world.Destroy(body);
     EXPECT_EQ(GetBodyCount(world), body_count_t(0));

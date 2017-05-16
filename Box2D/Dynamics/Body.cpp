@@ -424,14 +424,6 @@ bool Body::Erase(Contact* const contact)
 #endif
 }
 
-void Body::ForallFixtures(std::function<void(Fixture&)> callback)
-{
-    for (auto&& fixture: m_fixtures)
-    {
-        callback(fixture);
-    }
-}
-
 // Free functions...
 
 bool box2d::ShouldCollide(const Body& lhs, const Body& rhs) noexcept

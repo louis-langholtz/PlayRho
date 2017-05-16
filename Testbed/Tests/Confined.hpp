@@ -149,28 +149,29 @@ public:
     void ToggleBulletMode()
     {
         m_bullet_mode = !m_bullet_mode;
-        for (auto& b: m_world->GetBodies())
+        for (auto&& b: m_world->GetBodies())
         {
-            if (b->GetType() == BodyType::Dynamic)
+            if (b.GetType() == BodyType::Dynamic)
             {
-                b->SetBullet(m_bullet_mode);
+                b.SetBullet(m_bullet_mode);
             }
         }
     }
 
     void ImpartRandomImpulses()
     {
-        for (auto& b: m_world->GetBodies())
+        for (auto&& b: m_world->GetBodies())
         {
-            if (b->GetType() == BodyType::Dynamic)
+            if (b.GetType() == BodyType::Dynamic)
             {
-                const auto position = b->GetLocation();
+                const auto position = b.GetLocation();
                 const auto centerPos = Length2D{position.x, position.y - (wall_length / RealNum{2})};
                 const auto angle_from_center = GetAngle(centerPos);
                 const auto direction = angle_from_center + Pi * Radian;
-                const auto magnitude = Sqrt(Square(StripUnit(wall_length)) * RealNum{2}) * GetMass(*b) * RealNum{20} * MeterPerSecond;
+                const auto magnitude = Sqrt(Square(StripUnit(wall_length)) * RealNum{2}) *
+                	GetMass(b) * RealNum{20} * MeterPerSecond;
                 const auto impulse = Momentum2D{magnitude * UnitVec2{direction}};
-                ApplyLinearImpulse(*b, impulse, b->GetWorldCenter());
+                ApplyLinearImpulse(b, impulse, b.GetWorldCenter());
             }
         }        
     }
@@ -213,14 +214,14 @@ public:
     void PreStep(const Settings&, Drawer&) override
     {
         auto sleeping = true;
-        for (auto& b: m_world->GetBodies())
+        for (auto&& b: m_world->GetBodies())
         {
-            if (b->GetType() != BodyType::Dynamic)
+            if (b.GetType() != BodyType::Dynamic)
             {
                 continue;
             }
 
-            if (b->IsAwake())
+            if (b.IsAwake())
             {
                 sleeping = false;
             }
@@ -238,13 +239,13 @@ public:
         for (auto& b: m_world->GetBodies())
         {
             ++i;
-            if (b->GetType() != BodyType::Dynamic)
+            if (b.GetType() != BodyType::Dynamic)
             {
                 continue;
             }
             
-            const auto location = b->GetLocation();
-            const auto userData = b->GetUserData();
+            const auto location = b.GetLocation();
+            const auto userData = b.GetUserData();
             drawer.DrawString(location, "B%d", reinterpret_cast<decltype(m_sequence)>(userData));
         }
         

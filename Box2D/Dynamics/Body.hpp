@@ -24,7 +24,9 @@
 /// Declarations of the Body class, and free functions associated with it.
 
 #include <Box2D/Common/Math.hpp>
+#include <Box2D/Common/Range.hpp>
 #include <Box2D/Dynamics/BodyType.hpp>
+#include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/Contacts/ContactKey.hpp>
 #include <Box2D/Dynamics/Joints/JointKey.hpp>
 
@@ -39,7 +41,6 @@
 
 namespace box2d {
 
-class Fixture;
 class World;
 struct FixtureDef;
 class Shape;
@@ -331,11 +332,12 @@ public:
     /// @brief Does this body have fixed rotation?
     bool IsFixedRotation() const noexcept;
 
-    /// @brief Gets the container of all fixtures attached to this body.
-    const Fixtures& GetFixtures() const noexcept;
+    /// @brief Gets the range of all constant fixtures attached to this body.
+    Range<Fixtures::const_iterator> GetFixtures() const noexcept;
 
-    void ForallFixtures(std::function<void(Fixture&)> callback);
-
+    /// @brief Gets the range of all fixtures attached to this body.
+    Range<Fixtures::iterator> GetFixtures() noexcept;
+    
     /// @brief Gets the container of all joints attached to this body.
     const Joints& GetJoints() const noexcept;
 
@@ -680,9 +682,14 @@ inline bool Body::IsSleepingAllowed() const noexcept
     return (m_flags & e_autoSleepFlag) != 0;
 }
 
-inline const Body::Fixtures& Body::GetFixtures() const noexcept
+inline Range<Body::Fixtures::const_iterator> Body::GetFixtures() const noexcept
 {
-    return m_fixtures;
+    return Range<Body::Fixtures::const_iterator>(m_fixtures.begin(), m_fixtures.end());
+}
+
+inline Range<Body::Fixtures::iterator> Body::GetFixtures() noexcept
+{
+    return Range<Body::Fixtures::iterator>(m_fixtures.begin(), m_fixtures.end());
 }
 
 inline const Body::Joints& Body::GetJoints() const noexcept

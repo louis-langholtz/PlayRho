@@ -2280,10 +2280,12 @@ void World::SetType(Body& body, BodyType type)
     else
     {
         body.SetAwake();
-        body.SetAcceleration(body.IsAccelerable()? GetGravity(): Vec2_zero * MeterPerSquareSecond, AngularAcceleration{0});        
-        body.ForallFixtures([&](Fixture& fixture){
+        body.SetAcceleration(body.IsAccelerable()? GetGravity(): Vec2_zero * MeterPerSquareSecond,
+                             AngularAcceleration{0});
+        for (auto&& fixture: body.GetFixtures())
+        {
             InternalTouchProxies(fixture);
-        });
+        }
     }
 }
 
@@ -2502,9 +2504,10 @@ contact_count_t World::Synchronize(Body& body,
                                    const RealNum multiplier, const Length aabbExtension)
 {
     auto updatedCount = contact_count_t{0};
-    body.ForallFixtures([&](Fixture& fixture){
+    for (auto&& fixture: body.GetFixtures())
+    {
         updatedCount += Synchronize(fixture, xfm1, xfm2, multiplier, aabbExtension);
-    });
+    }
     return updatedCount;
 }
 
@@ -2530,17 +2533,6 @@ void World::ClearForces() noexcept
         const auto body = GetBodyPtr(b);
         body->SetAcceleration(g, AngularAcceleration{0});
     }
-}
-
-World::BodyPointers World::GetBodies() noexcept
-{
-    auto bodies = World::BodyPointers{};
-    for (auto&& b: m_bodies)
-    {
-        const auto body = GetBodyPtr(b);
-        bodies.push_back(body);
-    }
-    return bodies;
 }
 
 // Free functions...

@@ -24,6 +24,7 @@
 /// Declarations of the World class and associated free functions.
 
 #include <Box2D/Common/Math.hpp>
+#include <Box2D/Common/Range.hpp>
 #include <Box2D/Dynamics/WorldCallbacks.hpp>
 #include <Box2D/Dynamics/StepStats.hpp>
 #include <Box2D/Collision/BroadPhase.hpp>
@@ -227,12 +228,12 @@ public:
     /// @param point2 the ray ending point
     void RayCast(RayCastFixtureReporter* callback, const Length2D& point1, const Length2D& point2) const;
 
-    BodyPointers GetBodies() noexcept;
+    SizedRange<Bodies::iterator> GetBodies() noexcept;
 
     /// Gets the world body container for this constant world.
     /// @return Body container that can be iterated over using its begin and end methods
     ///   or using ranged-based for-loops.
-    const Bodies& GetBodies() const noexcept;
+    SizedRange<Bodies::const_iterator> GetBodies() const noexcept;
 
     /// Gets the world joint container.
     /// @return World joint container.
@@ -688,9 +689,16 @@ constexpr inline World::Def& World::Def::UseMaxVertexRadius(Length value) noexce
     return *this;
 }
 
-inline const World::Bodies& World::GetBodies() const noexcept
+inline SizedRange<World::Bodies::iterator> World::GetBodies() noexcept
 {
-    return m_bodies;
+    return SizedRange<World::Bodies::iterator>(m_bodies.begin(), m_bodies.end(),
+                                               m_bodies.size());
+}
+
+inline SizedRange<World::Bodies::const_iterator> World::GetBodies() const noexcept
+{
+    return SizedRange<World::Bodies::const_iterator>(m_bodies.begin(), m_bodies.end(),
+                                                     m_bodies.size());
 }
 
 inline const World::Joints& World::GetJoints() const noexcept
