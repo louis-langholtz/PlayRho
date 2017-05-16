@@ -48,7 +48,7 @@
 #include <vector>
 #include <unordered_map>
 
-#define USE_CONTACTKEY_SET
+//#define USE_CONTACTKEY_SET
 
 //#define DO_THREADED
 #if defined(DO_THREADED)

@@ -373,7 +373,7 @@ private:
     };
         
     // using ContactKeySet = std::set<ContactKey>;
-    using ContactKeySet = std::unordered_set<ContactKey>;
+    // using ContactKeySet = std::unordered_set<ContactKey>;
 
     void InternalDestroy(Joint* joint);
 
@@ -620,7 +620,8 @@ private:
     /******** Member variables. ********/
     
     BroadPhase m_broadPhase{BroadPhase::Conf{4096, 1024, 1024}}; ///< Broad phase data. 72-bytes.
-    ContactKeySet m_contactKeySet{100000};
+    
+    //ContactKeySet m_contactKeySet{100000};
     
     BodySet m_bodiesIslanded;
     ContactSet m_contactsIslanded;

@@ -870,11 +870,28 @@ TEST(CollideShapes, EdgeR90InsideSquare)
     const auto p1 = Vec2(0, -1) * Meter;
     const auto p2 = Vec2(0, +1) * Meter;
     const auto edge_shape = EdgeShape(p1, p2);
-    const auto edge_xfm = Transformation{Vec2{0, 0} * Meter, UnitVec2{RealNum{90.0f} * Degree}};
+    const auto edge_xfm = Transformation{Vec2{0, 0} * Meter, UnitVec2::GetTop()};
     const auto s = RealNum(1) * Meter;
     const auto polygon_shape = PolygonShape(s, s);
-    const auto polygon_xfm = Transformation{Vec2{0, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
+    const auto polygon_xfm = Transformation{Vec2{0, 0} * Meter, UnitVec2::GetRight()};
     
+    // Sets up a collision between a line segment (A) and a square (B) where the line segment is
+    // fully inside the square and bisects the square into an upper and low rectangular area like
+    // the following (where the numbers represent coordinates on the X or Y axis)...
+    //
+    //     2
+    //
+    //   +-1-+
+    //   |   |
+    // 2 1-0-1 2
+    //   |   |
+    //   +-1-+
+    //
+    //     2
+    //
+    // Note that the square's vertex 0 is at its bottom right corner, and they go
+    // counter-clockwise from there.
+    //
     const auto manifold = CollideShapes(edge_shape.GetChild(0), edge_xfm, polygon_shape.GetChild(0), polygon_xfm);
     
     EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
@@ -931,7 +948,7 @@ TEST(CollideShapes, EdgeR45InsideSquare)
     }
     else if (sizeof(RealNum) == 8)
     {
-        EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(1, 2));
+        EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(0, 3));
     }
 }
 
@@ -955,13 +972,13 @@ TEST(CollideShapes, EdgeR180InsideSquare)
     switch (sizeof(RealNum))
     {
         case 4: EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 1)); break;
-        case 8: EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 0)); break;
+        case 8: EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 1)); break;
     }
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(1));
     switch (sizeof(RealNum))
     {
         case 4: EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(1, 0)); break;
-        case 8: EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(0, 0)); break;
+        case 8: EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(1, 0)); break;
     }
     
 }
@@ -983,14 +1000,14 @@ TEST(CollideShapes, EdgeTwiceR180Square)
     switch (sizeof(RealNum))
     {
         case 4: EXPECT_EQ(GetVec2(manifold.GetLocalNormal()), Vec2(1, 0)); break;
-        case 8: EXPECT_EQ(GetVec2(manifold.GetLocalNormal()), Vec2(-1, 0)); break;
+        case 8: EXPECT_EQ(GetVec2(manifold.GetLocalNormal()), Vec2(1, 0)); break;
     }
     EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
     switch (sizeof(RealNum))
     {
         case 4: EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 1)); break;
-        case 8: EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(1, 2)); break;
+        case 8: EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 1)); break;
     }
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(1));
     if (sizeof(RealNum) == 4)
@@ -999,7 +1016,7 @@ TEST(CollideShapes, EdgeTwiceR180Square)
     }
     else if (sizeof(RealNum) == 8)
     {
-        EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(1, 2));
+        EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(1, 0));
     }
 }
 

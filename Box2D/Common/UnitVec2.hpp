@@ -2,52 +2,78 @@
  * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
 #ifndef UnitVec2_hpp
 #define UnitVec2_hpp
 
+/// @file
+/// Declarations of the UnitVec2 class and free functions associated with it.
+
 #include <Box2D/Common/Settings.hpp>
 
 namespace box2d
 {
+    /// @brief 2-D unit vector.
+    /// @details This is a 2-dimensional directional vector.
     class UnitVec2
     {
     public:
+        
+        /// @brief Data type used for the coordinate values of this vector.
         using data_type = RealNum;
         
+        /// @brief Gets the right-ward oriented unit vector.
+        /// @note This is the value for the 0/4 turned (0 angled) unit vector.
+        /// @note This is the reverse perpendicular unit vector of the bottom oriented vector.
+        /// @note This is the forward perpendicular unit vector of the top oriented vector.
         static constexpr UnitVec2 GetRight() noexcept
         {
             return UnitVec2{1, 0};
         }
         
-        static constexpr UnitVec2 GetLeft() noexcept
-        {
-            return UnitVec2{-1, 0};
-        }
-        
+        /// @brief Gets the top-ward oriented unit vector.
+        /// @note This is the actual value for the 1/4 turned (90 degree angled) unit vector.
+        /// @note This is the reverse perpendicular unit vector of the right oriented vector.
+        /// @note This is the forward perpendicular unit vector of the left oriented vector.
         static constexpr UnitVec2 GetTop() noexcept
         {
             return UnitVec2{0, 1};
         }
         
+        /// @brief Gets the left-ward oriented unit vector.
+        /// @note This is the actual value for the 2/4 turned (180 degree angled) unit vector.
+        /// @note This is the reverse perpendicular unit vector of the top oriented vector.
+        /// @note This is the forward perpendicular unit vector of the bottom oriented vector.
+        static constexpr UnitVec2 GetLeft() noexcept
+        {
+            return UnitVec2{-1, 0};
+        }
+
+        /// @brief Gets the bottom-ward oriented unit vector.
+        /// @note This is the actual value for the 3/4 turned (270 degree angled) unit vector.
+        /// @note This is the reverse perpendicular unit vector of the left oriented vector.
+        /// @note This is the forward perpendicular unit vector of the right oriented vector.
         static constexpr UnitVec2 GetBottom() noexcept
         {
             return UnitVec2{0, -1};
         }
         
+        /// @brief Gets the non-oriented unit vector.
         static constexpr UnitVec2 GetZero() noexcept
         {
             return UnitVec2{0, 0};
@@ -58,13 +84,20 @@ namespace box2d
             return UnitVec2{};
         }
         
-        static UnitVec2 Get(const RealNum x, const RealNum y, RealNum& magnitude, const UnitVec2 fallback = GetDefaultFallback());
+        static UnitVec2 Get(const RealNum x, const RealNum y, RealNum& magnitude,
+                            const UnitVec2 fallback = GetDefaultFallback());
 
         constexpr UnitVec2() noexcept
         {
             // Intentionally empty.
         }
         
+        /// @brief Gets the given angled unit vector.
+        ///
+        /// @note For angles that are meant to be at exact multiples of the quarter turn,
+        ///   better accuracy will be had by using one of the four oriented unit
+        ///   vector returning methods - for the right, top, left, bottom orientations.
+        ///
         explicit UnitVec2(const Angle angle) noexcept;
         
         constexpr auto GetX() const noexcept
@@ -110,7 +143,7 @@ namespace box2d
             };
         }
         
-        /// Gets a vector counter-clockwise (reverse-clockwise) perpendicular to this vector.
+        /// @brief Gets a vector counter-clockwise (reverse-clockwise) perpendicular to this vector.
         /// @details This returns the unit vector (-y, x).
         /// @return A counter-clockwise 90-degree rotation of this vector.
         /// @sa GetFwdPerpendicular.
@@ -120,7 +153,7 @@ namespace box2d
             return UnitVec2{-m_y, m_x};
         }
         
-        /// Gets a vector clockwise (forward-clockwise) perpendicular to this vector.
+        /// @brief Gets a vector clockwise (forward-clockwise) perpendicular to this vector.
         /// @details This returns the unit vector (y, -x).
         /// @return A clockwise 90-degree rotation of this vector.
         /// @sa GetRevPerpendicular.
