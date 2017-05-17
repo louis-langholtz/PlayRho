@@ -32,6 +32,7 @@
 
 #include <forward_list>
 #include <list>
+#include <vector>
 #include <map>
 #include <unordered_set>
 #include <unordered_map>
@@ -79,7 +80,8 @@ public:
 #ifdef USE_CONTACTMAP
     using Contacts = std::unordered_map<ContactKey, Contact*>;
 #else
-    using Contacts = std::list<std::pair<ContactKey,Contact*>>;
+    //using Contacts = std::list<std::pair<ContactKey,Contact*>>;
+    using Contacts = std::vector<std::pair<ContactKey,Contact*>>;
 #endif
 
     static constexpr auto InvalidIslandIndex = static_cast<body_count_t>(-1);

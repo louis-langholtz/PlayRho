@@ -198,20 +198,22 @@ namespace box2d
         
         static void EraseContacts(Body& b, std::function<bool(Contact&)> callback)
         {
-            const auto end = b.m_contacts.end();
+            auto end = b.m_contacts.end();
             auto iter = b.m_contacts.begin();
+            auto index = Body::Contacts::difference_type{0};
             while (iter != end)
             {
                 const auto contact = GetContactPtr(*iter);
                 if (callback(*contact))
                 {
-                    const auto next = std::next(iter);
                     b.m_contacts.erase(iter);
-                    iter = next;
+                    iter = b.m_contacts.begin() + index;
+                    end = b.m_contacts.end();
                 }
                 else
                 {
                     iter = std::next(iter);
+                    ++index;
                 }
             }
         }
