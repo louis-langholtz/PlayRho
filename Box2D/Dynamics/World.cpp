@@ -2047,6 +2047,7 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
     // W/ World::std::list<Contact> and Body::std::list<ContactKey,Contact*> .444s@step15, 1.063s-sumstep20
     // W/ World::std::list<Contact> and Body::std::list<ContactKey,Contact*> .393s@step15, 1.063s-sumstep20
     // W/ World::std::list<Contact> and Body::std::list<ContactKey,Contact*> .412s@step15, 1.012s-sumstep20
+    // W/ World::std::list<Contact> and Body::std::vector<ContactKey,Contact*> .241s@step15, 0.636s-sumstep20
 
     const auto key = ContactKey::Get(proxyA, proxyB);
 #ifdef USE_CONTACTKEY_SET
