@@ -240,15 +240,19 @@ public:
     ///   or using ranged-based for-loops.
     SizedRange<Bodies::const_iterator> GetBodies() const noexcept;
 
-    /// @brief Gets the world joint container.
-    /// @return World joint container.
-    const Joints& GetJoints() const noexcept;
+    /// @brief Gets the world joint range.
+    /// @return World joints sized-range.
+    SizedRange<Joints::const_iterator> GetJoints() const noexcept;
 
-    /// @brief Gets the world contact container.
+    /// @brief Gets the world joint range.
+    /// @return World joints sized-range.
+    SizedRange<Joints::iterator> GetJoints() noexcept;
+
+    /// @brief Gets the world contact range.
     /// @warning contacts are created and destroyed in the middle of a time step.
     /// Use ContactListener to avoid missing contacts.
-    /// @return World contact container.
-    const Contacts& GetContacts() const noexcept;
+    /// @return World contacts sized-range.
+    SizedRange<Contacts::const_iterator> GetContacts() const noexcept;
     
     /// @brief Gets whether or not sub-stepping is enabled.
     bool GetSubStepping() const noexcept;
@@ -703,14 +707,22 @@ inline SizedRange<World::Bodies::const_iterator> World::GetBodies() const noexce
                                                      m_bodies.size());
 }
 
-inline const World::Joints& World::GetJoints() const noexcept
+inline SizedRange<World::Joints::const_iterator> World::GetJoints() const noexcept
 {
-    return m_joints;
+    return SizedRange<World::Joints::const_iterator>(m_joints.begin(), m_joints.end(),
+                                                     m_joints.size());
 }
 
-inline const World::Contacts& World::GetContacts() const noexcept
+inline SizedRange<World::Joints::iterator> World::GetJoints() noexcept
 {
-    return m_contacts;
+    return SizedRange<World::Joints::iterator>(m_joints.begin(), m_joints.end(),
+                                               m_joints.size());
+}
+
+inline SizedRange<World::Contacts::const_iterator> World::GetContacts() const noexcept
+{
+    return SizedRange<World::Contacts::const_iterator>(m_contacts.begin(), m_contacts.end(),
+                                                       m_contacts.size());
 }
 
 inline LinearAcceleration2D World::GetGravity() const noexcept
@@ -881,9 +893,9 @@ inline void World::UnsetIslanded(Joint* key)
 
 /// Gets the body count in the given world.
 /// @return 0 or higher.
-inline World::Bodies::size_type GetBodyCount(const World& world) noexcept
+inline body_count_t GetBodyCount(const World& world) noexcept
 {
-    return world.GetBodies().size();
+    return static_cast<body_count_t>(world.GetBodies().size());
 }
 
 /// Gets the count of joints in the given world.
@@ -897,9 +909,9 @@ inline joint_count_t GetJointCount(const World& world) noexcept
 /// @note Not all contacts are for shapes that are actually touching. Some contacts are for
 ///   shapes which merely have overlapping AABBs.
 /// @return 0 or higher.
-inline World::Contacts::size_type GetContactCount(const World& world) noexcept
+inline contact_count_t GetContactCount(const World& world) noexcept
 {
-    return world.GetContacts().size();
+    return static_cast<contact_count_t>(world.GetContacts().size());
 }
 
 /// Steps the world ahead by a given time amount.
