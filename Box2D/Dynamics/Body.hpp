@@ -72,7 +72,7 @@ public:
     using Fixtures = std::forward_list<Fixture>;
 
     /// @brief Container type for joints.
-    using Joints = std::list<std::pair<JointKey, Joint*>>;
+    using Joints = std::list<std::pair<Body*, Joint*>>;
     
     /// @brief Container type for contacts.
     //#define USE_CONTACTMAP
@@ -338,9 +338,12 @@ public:
     /// @brief Gets the range of all fixtures attached to this body.
     Range<Fixtures::iterator> GetFixtures() noexcept;
     
-    /// @brief Gets the container of all joints attached to this body.
-    const Joints& GetJoints() const noexcept;
-
+    /// @brief Gets the range of all joints attached to this body.
+    SizedRange<Joints::const_iterator> GetJoints() const noexcept;
+ 
+    /// @brief Gets the range of all joints attached to this body.
+    SizedRange<Joints::iterator> GetJoints() noexcept;
+    
     /// @brief Gets the container of all contacts attached to this body.
     /// @warning This list changes during the time step and you may
     ///   miss some collisions if you don't use ContactListener.
@@ -692,9 +695,14 @@ inline Range<Body::Fixtures::iterator> Body::GetFixtures() noexcept
     return Range<Body::Fixtures::iterator>(m_fixtures.begin(), m_fixtures.end());
 }
 
-inline const Body::Joints& Body::GetJoints() const noexcept
+inline SizedRange<Body::Joints::const_iterator> Body::GetJoints() const noexcept
 {
-    return m_joints;
+    return SizedRange<Body::Joints::const_iterator>(m_joints.begin(), m_joints.end(), m_joints.size());
+}
+
+inline SizedRange<Body::Joints::iterator> Body::GetJoints() noexcept
+{
+    return SizedRange<Body::Joints::iterator>(m_joints.begin(), m_joints.end(), m_joints.size());
 }
 
 inline const Body::Contacts& Body::GetContacts() const noexcept

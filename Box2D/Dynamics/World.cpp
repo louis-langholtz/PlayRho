@@ -860,10 +860,8 @@ void World::AddToIsland(Island& island, Body& seed,
         for (auto&& ji: b->GetJoints())
         {
             // Use data of ji before dereferencing its pointers.
-            const auto joint = GetJointPtr(ji);
-            const auto body1 = ji.first.GetBody1();
-            const auto body2 = ji.first.GetBody2();
-            const auto other = (b != body1)? body1: body2;
+            const auto other = ji.first;
+            const auto joint = ji.second;
             if (!IsIslanded(joint) && other->IsEnabled())
             {
                 island.m_joints.push_back(joint);

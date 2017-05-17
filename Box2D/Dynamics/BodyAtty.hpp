@@ -190,7 +190,7 @@ namespace box2d
             while (!b.m_joints.empty())
             {
                 auto iter = b.m_joints.begin();
-                const auto joint = GetJointPtr(*iter);
+                const auto joint = iter->second;
                 b.m_joints.erase(iter);
                 callback(*joint);
             }

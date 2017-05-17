@@ -362,8 +362,17 @@ void Body::SetFixedRotation(bool flag)
 
 bool Body::Insert(Joint* j)
 {
+    const auto bodyA = j->GetBodyA();
+    const auto bodyB = j->GetBodyB();
+    
+    const auto other = (this == bodyA)? bodyB: (this == bodyB)? bodyA: nullptr;
+    if (!other)
+    {
+        return false;
+    }
+
     //return m_joints.insert(j).second;
-    m_joints.push_back(std::make_pair(GetJointKey(*j), j));
+    m_joints.push_back(std::make_pair(other, j));
     return true;
 }
 
@@ -437,10 +446,9 @@ bool box2d::ShouldCollide(const Body& lhs, const Body& rhs) noexcept
     // Does a joint prevent collision?
     for (auto&& ji: lhs.GetJoints())
     {
-        if (IsFor(ji.first, &rhs))
+        if (ji.first == &rhs)
         {
-            const auto joint = GetJointPtr(ji);
-            if (!(joint->GetCollideConnected()))
+            if (!(ji.second->GetCollideConnected()))
             {
                 return false;
             }
