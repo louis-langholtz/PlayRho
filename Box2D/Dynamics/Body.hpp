@@ -133,7 +133,8 @@ public:
     /// @details This instantly adjusts the body to be at the new position and new orientation.
     /// @warning Manipulating a body's transform can cause non-physical behavior!
     /// @note Contacts are updated on the next call to World::Step.
-    /// @param position Valid world position of the body's local origin. Behavior is undefined if value is invalid.
+    /// @param position Valid world position of the body's local origin. Behavior is undefined
+    ///   if value is invalid.
     /// @param angle Valid world rotation. Behavior is undefined if value is invalid.
     void SetTransform(const Length2D position, Angle angle);
 
@@ -143,7 +144,8 @@ public:
 
     /// @brief Gets the world body origin location.
     /// @details This is the location of the body's origin relative to its world.
-    /// The location of the body after stepping the world's physics simulations is dependent on a number of factors:
+    /// The location of the body after stepping the world's physics simulations is dependent on
+    /// a number of factors:
     ///   1. Location at the last time step.
     ///   2. Forces acting on the body (gravity, applied force, applied impulse).
     ///   3. The mass data of the body.
@@ -178,7 +180,8 @@ public:
     /// @note A non-zero acceleration will also awaken the body.
     /// @param linear Linear acceleration.
     /// @param angular Angular acceleration.
-    void SetAcceleration(const LinearAcceleration2D linear, const AngularAcceleration angular) noexcept;
+    void SetAcceleration(const LinearAcceleration2D linear,
+                         const AngularAcceleration angular) noexcept;
 
     /// @brief Gets this body's linear acceleration.
     LinearAcceleration2D GetLinearAcceleration() const noexcept;
@@ -291,7 +294,8 @@ public:
     bool IsAwake() const noexcept;
 
     /// @brief Gets this body's under-active time value.
-    /// @return Zero or more time in seconds (of step time) that this body has been "under-active" for.
+    /// @return Zero or more time in seconds (of step time) that this body has been
+    ///   "under-active" for.
     Time GetUnderActiveTime() const noexcept;
 
     /// @brief Sets the "under-active" time to the given value.
@@ -349,7 +353,7 @@ public:
     /// @brief Gets the container of all contacts attached to this body.
     /// @warning This list changes during the time step and you may
     ///   miss some collisions if you don't use ContactListener.
-    const Contacts& GetContacts() const noexcept;
+    SizedRange<Contacts::const_iterator> GetContacts() const noexcept;
 
     /// @brief Gets the user data pointer that was provided in the body definition.
     void* GetUserData() const noexcept;
@@ -453,7 +457,9 @@ private:
     Velocity m_velocity; ///< Velocity (linear and angular). 12-bytes.
     FlagsType m_flags = 0; ///< Flags. 2-bytes.
 
-    LinearAcceleration2D m_linearAcceleration = Vec2_zero * MeterPerSquareSecond; ///< Linear acceleration. 8-bytes.
+    /// @brief Linear acceleration.
+    /// @note 8-bytes.
+    LinearAcceleration2D m_linearAcceleration = Vec2_zero * MeterPerSquareSecond;
 
     World* const m_world; ///< World to which this body belongs. 8-bytes.
     void* m_userData; ///< User data. 8-bytes.
@@ -462,7 +468,9 @@ private:
     Contacts m_contacts; ///< Container of contacts (owned by world). 8-bytes.
     Joints m_joints; ///< Container of joints (owned by wolrd). 8-bytes.
 
-    AngularAcceleration m_angularAcceleration = AngularAcceleration{0}; ///< Angular acceleration. 4-bytes.
+    /// @brief Angular acceleration.
+    /// @note 4-bytes.
+    AngularAcceleration m_angularAcceleration = AngularAcceleration{0};
 
     /// Inverse mass of the body.
     /// @details A non-negative value.
@@ -699,7 +707,8 @@ inline Range<Body::Fixtures::iterator> Body::GetFixtures() noexcept
 
 inline SizedRange<Body::Joints::const_iterator> Body::GetJoints() const noexcept
 {
-    return SizedRange<Body::Joints::const_iterator>(m_joints.begin(), m_joints.end(), m_joints.size());
+    return SizedRange<Body::Joints::const_iterator>(m_joints.begin(), m_joints.end(),
+                                                    m_joints.size());
 }
 
 inline SizedRange<Body::Joints::iterator> Body::GetJoints() noexcept
@@ -707,9 +716,10 @@ inline SizedRange<Body::Joints::iterator> Body::GetJoints() noexcept
     return SizedRange<Body::Joints::iterator>(m_joints.begin(), m_joints.end(), m_joints.size());
 }
 
-inline const Body::Contacts& Body::GetContacts() const noexcept
+inline SizedRange<Body::Contacts::const_iterator> Body::GetContacts() const noexcept
 {
-    return m_contacts;
+    return SizedRange<Body::Contacts::const_iterator>(m_contacts.begin(), m_contacts.end(),
+                                                      m_contacts.size());
 }
 
 inline void Body::SetUserData(void* data) noexcept
@@ -851,8 +861,10 @@ inline void ApplyForce(Body& body, const Force2D force, const Length2D point) no
     const auto invRotI = body.GetInvRotInertia(); // L^-2 M^-1 QP^2
     const auto dp = Length2D{point - body.GetWorldCenter()}; // L
     const auto cp = Torque{Cross(dp, force) / Radian}; // L * M L T^-2 is L^2 M T^-2
-    const auto angAccel = AngularAcceleration{cp * invRotI}; // L^2 M T^-2 QP^-1 * L^-2 M^-1 QP^2 = QP T^-2;
-    body.SetAcceleration(body.GetLinearAcceleration() + linAccel, body.GetAngularAcceleration() + angAccel);
+    // L^2 M T^-2 QP^-1 * L^-2 M^-1 QP^2 = QP T^-2;
+    const auto angAccel = AngularAcceleration{cp * invRotI};
+    body.SetAcceleration(body.GetLinearAcceleration() + linAccel,
+                         body.GetAngularAcceleration() + angAccel);
 }
 
 /// Apply a force to the center of mass.
@@ -875,7 +887,8 @@ inline void SetTorque(Body& body, const Torque torque) noexcept
 }
 
 /// Apply a torque.
-/// @note This affects the angular velocity without affecting the linear velocity of the center of mass.
+/// @note This affects the angular velocity without affecting the linear velocity of the
+///   center of mass.
 /// @note Non-zero forces wakes up the body.
 /// @param body Body to apply the torque to.
 /// @param torque about the z-axis (out of the screen).
@@ -930,7 +943,8 @@ inline RotInertia GetRotInertia(const Body& body) noexcept
 /// @return the rotational inertia.
 inline RotInertia GetLocalInertia(const Body& body) noexcept
 {
-    return GetRotInertia(body) + GetMass(body) * GetLengthSquared(body.GetLocalCenter()) / SquareRadian;
+    return GetRotInertia(body)
+         + GetMass(body) * GetLengthSquared(body.GetLocalCenter()) / SquareRadian;
 }
 
 /// Gets the linear velocity of the center of mass.
