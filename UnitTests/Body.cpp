@@ -38,7 +38,6 @@ TEST(Body, ContactsByteSize)
 TEST(Body, JointsByteSize)
 {
     // Size is C++ library dependent.
-    // Some platforms it's 40-bytes. Others 56.
 #ifdef __APPLE__
     // using std::list<std::pair<JointKey, Joint*>>
     EXPECT_EQ(sizeof(Body::Joints), size_t(24));
@@ -46,7 +45,7 @@ TEST(Body, JointsByteSize)
     // EXPECT_EQ(sizeof(Body::Joints), size_t(40));
 #endif
 #ifdef __linux__
-    EXPECT_EQ(sizeof(Body::Joints), size_t(56));
+    EXPECT_EQ(sizeof(Body::Joints), size_t(16));
 #endif
 }
 
