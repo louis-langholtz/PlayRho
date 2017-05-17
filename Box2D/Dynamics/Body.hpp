@@ -76,13 +76,7 @@ public:
     using Joints = std::vector<std::pair<Body*, Joint*>>;
     
     /// @brief Container type for contacts.
-    //#define USE_CONTACTMAP
-#ifdef USE_CONTACTMAP
-    using Contacts = std::unordered_map<ContactKey, Contact*>;
-#else
-    //using Contacts = std::list<std::pair<ContactKey,Contact*>>;
     using Contacts = std::vector<std::pair<ContactKey,Contact*>>;
-#endif
 
     static constexpr auto InvalidIslandIndex = static_cast<body_count_t>(-1);
 

@@ -370,8 +370,6 @@ bool Body::Insert(Joint* j)
     {
         return false;
     }
-
-    //return m_joints.insert(j).second;
     m_joints.push_back(std::make_pair(other, j));
     return true;
 }
@@ -387,42 +385,30 @@ bool Body::Erase(Joint* const joint)
         }
     }
     return false;
-    //return m_joints.erase(joint) > 0;
 }
 
 bool Body::Insert(Contact* contact)
 {
-#if 0
 #ifndef NDEBUG
     // Prevent the same contact from being added more than once...
     for (auto iter = m_contacts.begin(); iter != m_contacts.end(); ++iter)
     {
-        assert(*iter != c);
-        if (*iter == c)
+        assert(iter->second != contact);
+        if (iter->second == contact)
         {
             return false;
         }
     }
 #endif
-#endif
-#ifdef USE_CONTACTMAP
-    return m_contacts.insert(std::make_pair(GetContactKey(*contact), contact)).second;
-#else
+
     m_contacts.emplace_back(GetContactKey(*contact), contact);
-    //m_contacts.push_back(contact);
     return true;
-#endif
 }
 
 bool Body::Erase(Contact* const contact)
 {
-#ifdef USE_CONTACTMAP
-    return m_contacts.erase(GetContactKey(*contact)) == 1;
-#else
-    //const auto key = GetContactKey(*contact);
     for (auto iter = m_contacts.begin(); iter != m_contacts.end(); ++iter)
     {
-        //if (*iter == contact)
         if (iter->second == contact)
         {
             m_contacts.erase(iter);
@@ -430,7 +416,6 @@ bool Body::Erase(Contact* const contact)
         }
     }
     return false;
-#endif
 }
 
 // Free functions...

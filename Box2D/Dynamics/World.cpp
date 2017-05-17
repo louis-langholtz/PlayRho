@@ -48,8 +48,6 @@
 #include <vector>
 #include <unordered_map>
 
-//#define USE_CONTACTKEY_SET
-
 //#define DO_THREADED
 #if defined(DO_THREADED)
 #include <future>
@@ -1729,13 +1727,12 @@ StepStats World::Step(const StepConf& conf)
         {
             m_inv_dt0 = conf.GetInvTime();
 
-#if 1
             // Could potentially run UpdateContacts multithreaded over split lists...
             const auto updateStats = UpdateContacts(m_contacts, conf);
             stepStats.pre.ignored = updateStats.ignored;
             stepStats.pre.updated = updateStats.updated;
             stepStats.pre.skipped = updateStats.skipped;
-#endif
+
             // Integrate velocities, solve velocity constraints, and integrate positions.
             if (IsStepComplete())
             {
@@ -1847,17 +1844,6 @@ void World::InternalDestroy(Contact* c, Body* from)
         bodyA->SetAwake();
         bodyB->SetAwake();
     }
-    
-#ifdef USE_CONTACTKEY_SET
-    const auto childA = c->GetChildIndexA();
-    const auto childB = c->GetChildIndexB();
-    const auto key = ContactKey::Get(fixtureA, childA, fixtureB, childB);
-#if !defined(NDEBUG)
-    const auto numRemoved =
-#endif
-    m_contactKeySet.erase(key);
-    assert(numRemoved == 1);
-#endif
 }
 
 void World::Destroy(Contact* c, Body* from)
@@ -1990,12 +1976,6 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
         return false;
     }
 
-    assert(m_contacts.size() < MaxContacts);
-    if (m_contacts.size() >= MaxContacts)
-    {
-        return false;
-    }
-
 #ifndef NDEBUG
     const auto pidA = proxyA.proxyId;
     const auto pidB = proxyB.proxyId;
@@ -2004,10 +1984,7 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
     // The following assert fails on Windows
     // assert(sizeof(pidA) + sizeof(pidB) == sizeof(size_t));
 #endif
-
-    const auto childIndexA = proxyA.childIndex;
-    const auto childIndexB = proxyB.childIndex;
-    
+   
 #ifndef NO_RACING
     // Code herein may be racey in a multithreaded context...
     // Would need a lock on bodyA, bodyB, and m_contacts.
@@ -2023,9 +2000,7 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
     // while the smaller object has 369 or more, and the total world contact count can be over
     // 30,495. While searching linearly through the object with less contacts should help,
     // that may still be a lot of contacts to be going through in the context this method
-    // is being called.
-    //
-    // Some notes about rough performances using various strategies...
+    // is being called. OTOH, speed seems to be dominated by cache hit-ratio...
     //
     // With compiler optimization enabled and 400 small bodies and RealNum=double...
     // For world:
@@ -2039,65 +2014,28 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
     // W/ World::std::list<Contact> and Body::std::list<ContactKey,Contact*>   .412s@step15, 1.012s-sumstep20
     // W/ World::std::list<Contact> and Body::std::vector<ContactKey,Contact*> .219s@step15, 0.659s-sumstep20
 
-    const auto key = ContactKey::Get(proxyA, proxyB);
-#ifdef USE_CONTACTKEY_SET
-    const auto keyInsertionResult = m_contactKeySet.insert(key);
-    const auto inserted = keyInsertionResult.second;
-    if (!inserted)
-    {
-        return false;
-    }
-#else
-    // TODO: use hash table to remove potential bottleneck when both bodies have many contacts?
     // Does a contact already exist?
+    // Identify body with least contacts and search it.
+    // NOTE: Time trial testing found the following rough ordering of data structures, to be
+    // fastest to slowest: std::vector, std::list, std::unorderered_set, std::unordered_map,
+    //     std::set, std::map.
+    const auto key = ContactKey::Get(proxyA, proxyB);
     const auto searchBody = (bodyA->GetContacts().size() < bodyB->GetContacts().size())?
         bodyA: bodyB;
-#if 1
-    //assert(searchBody->GetContacts().size() < 360);
-    auto found = false;
     for (auto&& ci: searchBody->GetContacts())
     {
         if (ci.first == key)
         {
-            found = true;
-            break;
+            return false;
         }
     }
-    if (found)
-    {
-        return false;
-    }
-#else
-    const auto contactMap = searchBody->GetContacts();
-    const auto end = contactMap.end();
-    if (contactMap.find(key) != end)
-    {
-        return false;
-    }
-#endif
-#endif
-    //assert(inserted != found);
     
-    // Call the contact factory create method.
-    m_contacts.emplace_back(fixtureA, childIndexA, fixtureB, childIndexB);
-    const auto contact = GetContactPtr(m_contacts.back());
-
-    assert(contact);
-    if (!contact)
+    assert(m_contacts.size() < MaxContacts);
+    if (m_contacts.size() >= MaxContacts)
     {
+        // New contact was needed, but denied due to MaxContacts count being reached.
         return false;
     }
-    
-#if 0
-    const auto searchBody = (bodyA->GetContacts().size() < bodyB->GetContacts().size())? bodyA: bodyB;
-    if (!BodyAtty::Insert(*searchBody, contact))
-    {
-        ContactAtty::Destroy(contact);
-        return false;
-    }
-    const auto otherBody = searchBody == bodyA? bodyB: bodyA;
-    BodyAtty::Insert(*otherBody, contact);
-#endif
 
     // Insert into the contacts container.
     //
@@ -2106,20 +2044,13 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
     // Original strategy added to the front. Since processing done front to back, front
     // adding means container more a LIFO container, while back adding means more a FIFO.
     //
-    // Does it matter statistically?
-    //
-    // Tiles push_front #s:
-    // Reg sums: 7927 isl-found, 7395 isl-solved, 8991 pos-iters, 63416 vel-iters, 3231 moved
-    // TOI sums: 3026 isl-found, 3026 isl-solved, 7373 pos-iters, 24208 vel-iters, 0 moved, 29825 upd
-    //   Total iters: 72407 reg, 31581 TOI, 103988 sum.
-    //
-    // Tiles push_back #s:
-    // Reg sums: 7930 isl-found, 7397 isl-solved, 8997 pos-iters, 63440 vel-iters, 3259 moved
-    // TOI sums: 2960 isl-found, 2960 isl-solved, 7189 pos-iters, 23680 vel-iters, 0 moved, 29701 upd
-    //   Total iters: 72437 reg, 30869 TOI, 103306 sum.
-    //
-    //m_contacts.emplace_back(fixtureA, childIndexA, fixtureB, childIndexB);
-    //const auto contact = GetContactPtr(m_contacts.back());
+    m_contacts.emplace_back(fixtureA, proxyA.childIndex, fixtureB, proxyB.childIndex);
+    const auto contact = GetContactPtr(m_contacts.back());
+    assert(contact);
+    if (!contact)
+    {
+        return false;
+    }
 
     BodyAtty::Insert(*bodyA, contact);
     BodyAtty::Insert(*bodyB, contact);
@@ -2137,7 +2068,7 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
         }
     }
 #endif
-    
+
     return true;
 }
 
