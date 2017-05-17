@@ -26,11 +26,12 @@
 
 #include <Box2D/Common/Settings.hpp>
 #include <utility>
+#include <functional>
 
 namespace box2d
 {
     class Fixture;
-    class FixtureProxy;
+    struct FixtureProxy;
     class Contact;
 
     class ContactKey
@@ -43,7 +44,16 @@ namespace box2d
         
         static constexpr std::size_t Hash(const ContactKey& key) noexcept
         {
-            return static_cast<std::size_t>(key.m_fp1) << 32 | static_cast<std::size_t>(key.m_fp2);
+			if (sizeof(std::size_t) >= sizeof(key.m_fp1) * 2)
+            {
+                // For systems with 8-byte sized std::size_t...
+	            return static_cast<std::size_t>(key.m_fp1) << 32 | static_cast<std::size_t>(key.m_fp2);
+            }
+            
+            // For systems with 4-byte sized std::size_t...
+            const auto a = std::size_t{key.m_fp1} * 2654435761u;
+            const auto b = std::size_t{key.m_fp2} * 2654435761u;
+            return a ^ b;
         }
 
         static constexpr int Compare(const ContactKey& lhs, const ContactKey& rhs)

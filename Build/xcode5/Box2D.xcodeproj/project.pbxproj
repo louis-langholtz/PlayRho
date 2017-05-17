@@ -146,8 +146,6 @@
 		47578BE51D886FED0078CD40 /* WorldManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47578BE31D886FED0078CD40 /* WorldManifold.cpp */; };
 		475A94541D930503000CA9A8 /* BlockAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A94531D930503000CA9A8 /* BlockAllocator.cpp */; };
 		475A94561D930E6C000CA9A8 /* Fixture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A94551D930E6C000CA9A8 /* Fixture.cpp */; };
-		475A94581D9453A1000CA9A8 /* Shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A94571D9453A1000CA9A8 /* Shape.cpp */; };
-		475A94591D9453A1000CA9A8 /* Shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A94571D9453A1000CA9A8 /* Shape.cpp */; };
 		475A945B1D9593A4000CA9A8 /* Shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A945A1D9593A4000CA9A8 /* Shape.cpp */; };
 		475A945D1D959537000CA9A8 /* Joint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A945C1D959537000CA9A8 /* Joint.cpp */; };
 		475A945F1D95A15A000CA9A8 /* StackAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A945E1D95A15A000CA9A8 /* StackAllocator.cpp */; };
@@ -515,7 +513,6 @@
 		47578BE31D886FED0078CD40 /* WorldManifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldManifold.cpp; sourceTree = "<group>"; };
 		475A94531D930503000CA9A8 /* BlockAllocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BlockAllocator.cpp; sourceTree = "<group>"; };
 		475A94551D930E6C000CA9A8 /* Fixture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fixture.cpp; sourceTree = "<group>"; };
-		475A94571D9453A1000CA9A8 /* Shape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shape.cpp; sourceTree = "<group>"; };
 		475A945A1D9593A4000CA9A8 /* Shape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shape.cpp; sourceTree = "<group>"; };
 		475A945C1D959537000CA9A8 /* Joint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Joint.cpp; sourceTree = "<group>"; };
 		475A945E1D95A15A000CA9A8 /* StackAllocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StackAllocator.cpp; sourceTree = "<group>"; };
@@ -877,7 +874,6 @@
 				474AFBF71EB1B2CB002AA6C8 /* MultiShape.hpp */,
 				80BB893B141C3E5900F1753A /* PolygonShape.cpp */,
 				80BB893C141C3E5900F1753A /* PolygonShape.hpp */,
-				475A94571D9453A1000CA9A8 /* Shape.cpp */,
 				80BB893D141C3E5900F1753A /* Shape.hpp */,
 			);
 			path = Shapes;
@@ -1548,7 +1544,6 @@
 				4731DE621DEF7B5100E7F931 /* Simplex.cpp in Sources */,
 				47AA5DB01C4C5FBE008AF2BA /* Island.cpp in Sources */,
 				47AA5DB11C4C5FBE008AF2BA /* World.cpp in Sources */,
-				475A94591D9453A1000CA9A8 /* Shape.cpp in Sources */,
 				47AA5DB21C4C5FBE008AF2BA /* WorldCallbacks.cpp in Sources */,
 				47AA5DB61C4C5FBE008AF2BA /* Contact.cpp in Sources */,
 				47928F3C1E6A099900EE6E9E /* BodyConstraint.cpp in Sources */,
@@ -1625,7 +1620,6 @@
 				80BB89A7141C3E5900F1753A /* StackAllocator.cpp in Sources */,
 				80BB89A9141C3E5900F1753A /* Timer.cpp in Sources */,
 				80BB89AB141C3E5900F1753A /* Body.cpp in Sources */,
-				475A94581D9453A1000CA9A8 /* Shape.cpp in Sources */,
 				80BB89AF141C3E5900F1753A /* Fixture.cpp in Sources */,
 				4731DE671DF0A73000E7F931 /* Manifold.cpp in Sources */,
 				47E841721DB4018D00E5F311 /* VelocityConstraint.cpp in Sources */,

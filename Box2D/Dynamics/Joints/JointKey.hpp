@@ -26,6 +26,7 @@
 
 #include <Box2D/Common/Settings.hpp>
 #include <utility>
+#include <functional>
 
 namespace box2d
 {
