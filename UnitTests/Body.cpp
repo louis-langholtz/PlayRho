@@ -45,7 +45,7 @@ TEST(Body, JointsByteSize)
     // EXPECT_EQ(sizeof(Body::Joints), size_t(40));
 #endif
 #ifdef __linux__
-    EXPECT_EQ(sizeof(Body::Joints), size_t(16));
+    EXPECT_EQ(sizeof(Body::Joints), size_t(24));
 #endif
 }
 
