@@ -564,16 +564,6 @@ World::~World()
     while (!m_joints.empty())
     {
         const auto j = m_joints.front();
-        const auto bodyA = j->GetBodyA();
-        const auto bodyB = j->GetBodyB();
-        if (bodyA)
-        {
-            BodyAtty::Erase(*bodyA, j);
-        }
-        if (bodyB)
-        {
-            BodyAtty::Erase(*bodyB, j);
-        }
         m_joints.pop_front();
         JointAtty::Destroy(j);
     }
@@ -2044,9 +2034,9 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
     // For body:
     //    using contact map w/ proxy ID keys shows up as .561
     // W/ unordered_map: .529 seconds max step (step 15).
-    // W/ World::std::list<Contact> and Body::std::list<ContactKey,Contact*> .444s@step15, 1.063s-sumstep20
-    // W/ World::std::list<Contact> and Body::std::list<ContactKey,Contact*> .393s@step15, 1.063s-sumstep20
-    // W/ World::std::list<Contact> and Body::std::list<ContactKey,Contact*> .412s@step15, 1.012s-sumstep20
+    // W/ World::std::list<Contact> and Body::std::list<ContactKey,Contact*>   .444s@step15, 1.063s-sumstep20
+    // W/ World::std::list<Contact> and Body::std::list<ContactKey,Contact*>   .393s@step15, 1.063s-sumstep20
+    // W/ World::std::list<Contact> and Body::std::list<ContactKey,Contact*>   .412s@step15, 1.012s-sumstep20
     // W/ World::std::list<Contact> and Body::std::vector<ContactKey,Contact*> .241s@step15, 0.636s-sumstep20
 
     const auto key = ContactKey::Get(proxyA, proxyB);

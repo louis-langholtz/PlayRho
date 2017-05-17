@@ -73,7 +73,7 @@ public:
     using Fixtures = std::forward_list<Fixture>;
 
     /// @brief Container type for joints.
-    using Joints = std::list<std::pair<Body*, Joint*>>;
+    using Joints = std::vector<std::pair<Body*, Joint*>>;
     
     /// @brief Container type for contacts.
     //#define USE_CONTACTMAP
