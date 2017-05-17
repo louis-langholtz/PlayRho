@@ -495,6 +495,20 @@ namespace {
         const BroadPhase* const broadPhase;
         RayCastFixtureReporter* const callback;
     };
+    
+    struct WorldQueryWrapper
+    {
+        using size_type = BroadPhase::size_type;
+        
+        bool QueryCallback(size_type proxyId)
+        {
+            const auto proxy = static_cast<FixtureProxy*>(broadPhase->GetUserData(proxyId));
+            return callback->ReportFixture(proxy->fixture);
+        }
+        
+        const BroadPhase* broadPhase;
+        QueryFixtureReporter* callback;
+    };
 
 } // anonymous namespace
 
@@ -1738,20 +1752,6 @@ StepStats World::Step(const StepConf& conf)
     return stepStats;
 }
 
-struct WorldQueryWrapper
-{
-    using size_type = BroadPhase::size_type;
-
-    bool QueryCallback(size_type proxyId)
-    {
-        const auto proxy = static_cast<FixtureProxy*>(broadPhase->GetUserData(proxyId));
-        return callback->ReportFixture(proxy->fixture);
-    }
-
-    const BroadPhase* broadPhase;
-    QueryFixtureReporter* callback;
-};
-
 void World::QueryAABB(QueryFixtureReporter* callback, const AABB& aabb) const
 {
     WorldQueryWrapper wrapper;
@@ -1780,7 +1780,7 @@ void World::ShiftOrigin(const Length2D newOrigin)
         return;
     }
 
-    for (auto&& body: m_bodies)
+    for (auto&& body: GetBodies())
     {
         const auto b = GetBodyPtr(body);
 
@@ -2500,30 +2500,6 @@ contact_count_t World::Synchronize(Body& body,
     return updatedCount;
 }
 
-size_t World::Awaken() noexcept
-{
-    auto awoken = size_t{0};
-    for (auto&& b: m_bodies)
-    {
-        const auto body = GetBodyPtr(b);
-        if (box2d::Awaken(*body))
-        {
-            ++awoken;
-        }
-    }
-    return awoken;
-}
-
-void World::ClearForces() noexcept
-{
-    const auto g = GetGravity();
-    for (auto&& b: m_bodies)
-    {
-        const auto body = GetBodyPtr(b);
-        body->SetAcceleration(g, AngularAcceleration{0});
-    }
-}
-
 // Free functions...
 
 StepStats Step(World& world, Time dt, World::ts_iters_type velocityIterations, World::ts_iters_type positionIterations)
@@ -2582,12 +2558,27 @@ size_t GetAwakeCount(const World& world) noexcept
     
 size_t Awaken(World& world) noexcept
 {
-    return world.Awaken();
+    auto awoken = size_t{0};
+    for (auto&& b: world.GetBodies())
+    {
+        const auto body = GetBodyPtr(b);
+        if (box2d::Awaken(*body))
+        {
+            ++awoken;
+        }
+    }
+    return awoken;
 }
 
 void ClearForces(World& world) noexcept
 {
-    world.ClearForces();
+    const auto g = world.GetGravity();
+    for (auto&& b: world.GetBodies())
+    {
+        const auto body = GetBodyPtr(b);
+        body->SetAcceleration(g, AngularAcceleration{0});
+    }
+
 }
 
 bool IsActive(const Contact& contact) noexcept

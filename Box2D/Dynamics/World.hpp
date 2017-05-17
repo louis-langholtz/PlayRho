@@ -332,10 +332,6 @@ public:
     ///   return false.
     /// @note This sets things up so that pairs may be created for potentially new contacts.
     bool TouchProxies(Fixture& fixture) noexcept;
-
-    size_t Awaken() noexcept;
-
-    void ClearForces() noexcept;
     
     void SetNewFixtures() noexcept;
 
