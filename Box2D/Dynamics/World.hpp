@@ -45,6 +45,7 @@ struct JointDef;
 struct FixtureDef;
 struct FixtureProxy;
 class Body;
+class Contact;
 class Fixture;
 class Joint;
 class Island;
