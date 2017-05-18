@@ -31,6 +31,7 @@
 #include <Box2D/Dynamics/Joints/MotorJoint.hpp>
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/World.hpp>
+#include <Box2D/Dynamics/Contacts/Contact.hpp>
 
 #include <new>
 
