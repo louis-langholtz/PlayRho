@@ -20,6 +20,7 @@
 #include <Box2D/Common/CodeDumper.hpp>
 
 #include <Box2D/Dynamics/World.hpp>
+#include <Box2D/Dynamics/Contacts/Contact.hpp>
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/Joints/Joint.hpp>
