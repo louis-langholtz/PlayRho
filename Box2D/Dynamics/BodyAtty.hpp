@@ -49,15 +49,13 @@ namespace box2d
         
         static bool DestroyFixture(Body& b, Fixture* value)
         {
-            auto prev = b.m_fixtures.before_begin();
             for (auto iter = b.m_fixtures.begin(); iter != b.m_fixtures.end(); ++iter)
             {
                 if (&(*iter) == value)
                 {
-                    b.m_fixtures.erase_after(prev);
+                    b.m_fixtures.erase(iter);
                     return true;
                 }
-                prev = iter;
             }
             return false;
         }

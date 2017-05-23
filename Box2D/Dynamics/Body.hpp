@@ -30,7 +30,6 @@
 #include <Box2D/Dynamics/Contacts/ContactKey.hpp>
 #include <Box2D/Dynamics/Joints/JointKey.hpp>
 
-#include <forward_list>
 #include <list>
 #include <vector>
 #include <map>
@@ -70,7 +69,7 @@ class Body
 public:
     
     /// @brief Container type for fixtures.
-    using Fixtures = std::forward_list<Fixture>;
+    using Fixtures = std::list<Fixture>;
 
     /// @brief Container type for joints.
     using Joints = std::vector<std::pair<Body*, Joint*>>;
@@ -333,10 +332,10 @@ public:
     bool IsFixedRotation() const noexcept;
 
     /// @brief Gets the range of all constant fixtures attached to this body.
-    Range<Fixtures::const_iterator> GetFixtures() const noexcept;
+    SizedRange<Fixtures::const_iterator> GetFixtures() const noexcept;
 
     /// @brief Gets the range of all fixtures attached to this body.
-    Range<Fixtures::iterator> GetFixtures() noexcept;
+    SizedRange<Fixtures::iterator> GetFixtures() noexcept;
     
     /// @brief Gets the range of all joints attached to this body.
     SizedRange<Joints::const_iterator> GetJoints() const noexcept;
@@ -689,14 +688,16 @@ inline bool Body::IsSleepingAllowed() const noexcept
     return (m_flags & e_autoSleepFlag) != 0;
 }
 
-inline Range<Body::Fixtures::const_iterator> Body::GetFixtures() const noexcept
+inline SizedRange<Body::Fixtures::const_iterator> Body::GetFixtures() const noexcept
 {
-    return Range<Body::Fixtures::const_iterator>(m_fixtures.begin(), m_fixtures.end());
+    return SizedRange<Body::Fixtures::const_iterator>(m_fixtures.begin(), m_fixtures.end(),
+                                                      m_fixtures.size());
 }
 
-inline Range<Body::Fixtures::iterator> Body::GetFixtures() noexcept
+inline SizedRange<Body::Fixtures::iterator> Body::GetFixtures() noexcept
 {
-    return Range<Body::Fixtures::iterator>(m_fixtures.begin(), m_fixtures.end());
+    return SizedRange<Body::Fixtures::iterator>(m_fixtures.begin(), m_fixtures.end(),
+                                                m_fixtures.size());
 }
 
 inline SizedRange<Body::Joints::const_iterator> Body::GetJoints() const noexcept

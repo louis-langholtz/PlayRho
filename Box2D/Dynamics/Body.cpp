@@ -488,7 +488,7 @@ Velocity box2d::GetVelocity(const Body& body, Time h) noexcept
 size_t box2d::GetFixtureCount(const Body& body)
 {
     const auto& fixtures = body.GetFixtures();
-    return static_cast<size_t>(std::distance(std::begin(fixtures), std::end(fixtures)));
+    return static_cast<size_t>(fixtures.size());
 }
 
 void box2d::RotateAboutWorldPoint(Body& body, Angle amount, Length2D worldPoint)
