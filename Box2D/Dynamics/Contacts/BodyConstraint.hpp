@@ -74,11 +74,15 @@ namespace box2d {
         InvRotInertia m_invRotI; ///< Inverse rotational inertia about the center of mass of the associated body (a non-negative value, 4-bytes).
     };
     
+    /// @brief Gets the inverse mass of this body representation.
+    /// @return Value >= 0.
     inline InvMass BodyConstraint::GetInvMass() const noexcept
     {
         return m_invMass;
     }
     
+    /// @brief Gets the inverse rotational inertia of this body representation.
+    /// @return Value >= 0.
     inline InvRotInertia BodyConstraint::GetInvRotInertia() const noexcept
     {
         return m_invRotI;
