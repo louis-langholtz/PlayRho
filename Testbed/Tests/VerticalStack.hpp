@@ -33,7 +33,7 @@ public:
 
     enum
     {
-        e_columnCount = 1,
+        e_columnCount = 5,
         e_rowCount = 10
         //e_columnCount = 1,
         //e_rowCount = 1
@@ -114,6 +114,8 @@ public:
         drawer.DrawString(5, m_textLine, "Press: (,) to launch a bullet.");
         m_textLine += DRAW_STRING_NEW_LINE;
         drawer.DrawString(5, m_textLine, "Blocksolve = %d", g_blockSolve);
+        m_textLine += DRAW_STRING_NEW_LINE;
+
         //if (GetStepCount() == 300)
         //{
         //    if (m_bullet)
