@@ -27,12 +27,6 @@ namespace box2d
 {
     class DistanceProxy;
     struct Transformation;
-
-    struct ContactImpulses
-    {
-        Momentum m_normal; ///< Normal impulse. This is the non-penetration impulse (4-bytes).
-        Momentum m_tangent; ///< Tangent impulse. This is the friction impulse (4-bytes).
-    };
     
     /// Manifold for two convex shapes.
     ///

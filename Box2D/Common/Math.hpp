@@ -532,6 +532,12 @@ constexpr inline bool IsValid(const UnitVec2& value) noexcept
     return IsValid(GetX(value)) && IsValid(GetY(value)) && (value != UnitVec2::GetZero());
 }
 
+struct ContactImpulses
+{
+    Momentum m_normal; ///< Normal impulse. This is the non-penetration impulse (4-bytes).
+    Momentum m_tangent; ///< Tangent impulse. This is the friction impulse (4-bytes).
+};
+
 /// Transformation.
 /// @details
 /// A transform contains translation and rotation. It is used to represent
