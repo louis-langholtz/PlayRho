@@ -96,8 +96,8 @@ public:
                           name,
                           static_cast<double>(RealNum{GetX(manifold.GetLocalPoint()) / Meter}),
                           static_cast<double>(RealNum{GetY(manifold.GetLocalPoint()) / Meter}),
-                          GetX(manifold.GetLocalNormal()),
-                          GetY(manifold.GetLocalNormal()),
+                          static_cast<double>(GetX(manifold.GetLocalNormal())),
+                          static_cast<double>(GetY(manifold.GetLocalNormal())),
                           count, strbuf.str().c_str());
         m_textLine += DRAW_STRING_NEW_LINE;
     }
