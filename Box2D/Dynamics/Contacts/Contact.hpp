@@ -34,10 +34,18 @@ class ContactListener;
 struct ToiConf;
 class StepConf;
 
-/// Friction mixing law. The idea is to allow either fixture to drive the resulting friction to zero.
-/// For example, anything slides on ice.
+/// @brief Mixes friction.
+/// @detail Friction mixing formula. The idea is to allow either fixture to drive the
+/// resulting friction to zero. For example, anything slides on ice.
+///
+/// @warning Behavior is undefined if either friction values is less than zero.
+///
+/// @param friction1 A zero or greater value.
+/// @param friction2 A zero or greater value.
+///
 inline RealNum MixFriction(RealNum friction1, RealNum friction2)
 {
+    assert(friction1 >= RealNum(0) && friction2 >= RealNum(0));
     return Sqrt(friction1 * friction2);
 }
 
@@ -125,11 +133,17 @@ public:
     /// Get the child primitive index for fixture B.
     child_count_t GetChildIndexB() const noexcept;
 
-    /// Override the default friction mixture. You can call this in ContactListener::PreSolve.
-    /// This value persists until set or reset.
+    /// @brief Sets the friction value for this contact.
+    /// @details Override the default friction mixture.
+    /// @note You can call this in ContactListener::PreSolve.
+    /// @note This value persists until set or reset.
+    /// @warning Behavior is undefined if given a negative friction value.
+    /// @param friction Co-efficient of friction value of zero or greater.
     void SetFriction(RealNum friction) noexcept;
 
-    /// Gets the combined friction of the two fixtures associated with this contact.
+    /// @brief Gets the coefficient of friction.
+    /// @details Gets the combined friction of the two fixtures associated with this contact.
+    /// @return Value of 0 or higher.
     /// @sa MixFriction.
     RealNum GetFriction() const noexcept;
 
@@ -379,6 +393,7 @@ inline bool Contact::NeedsUpdating() const noexcept
 
 inline void Contact::SetFriction(RealNum friction) noexcept
 {
+    assert(friction >= 0);
     m_friction = friction;
 }
 

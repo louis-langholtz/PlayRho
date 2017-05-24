@@ -145,12 +145,9 @@ public:
     /// @return Non-negative density in kg/m^2.
     Density GetDensity() const noexcept;
 
-    /// Gets the coefficient of friction.
+    /// @brief Gets the coefficient of friction.
+    /// @return Value of 0 or higher.
     RealNum GetFriction() const noexcept;
-
-    /// Sets the coefficient of friction. This will _not_ change the friction of
-    /// existing contacts.
-    void SetFriction(RealNum friction) noexcept;
 
     /// Gets the coefficient of restitution.
     RealNum GetRestitution() const noexcept;

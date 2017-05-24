@@ -205,11 +205,14 @@ public:
     /// @param density Non-negative density in kg/m^2.
     void SetDensity(Density density) noexcept;
     
-    /// Gets the coefficient of friction.
+    /// @brief Gets the coefficient of friction.
+    /// @return Value of 0 or higher.
     RealNum GetFriction() const noexcept;
     
-    /// Sets the coefficient of friction. This will _not_ change the friction of
-    /// existing contacts.
+    /// @brief Sets the coefficient of friction.
+    /// @note This will _not_ change the friction of existing contacts.
+    /// @warning Behavior is undefined if given a negative friction value.
+    /// @param friction Zero or higher (non-negative) co-efficient of friction.
     void SetFriction(RealNum friction) noexcept;
     
     /// Gets the coefficient of restitution.
@@ -273,6 +276,7 @@ inline void Shape::SetDensity(Density density) noexcept
 
 inline void Shape::SetFriction(RealNum friction) noexcept
 {
+    assert(friction >= RealNum(0));
     m_friction = friction;
 }
 
