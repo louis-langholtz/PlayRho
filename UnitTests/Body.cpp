@@ -37,12 +37,9 @@ TEST(Body, ContactsByteSize)
 
 TEST(Body, JointsByteSize)
 {
-    // Size is C++ library dependent.
+    // Size is arch, os, or library dependent.
 #ifdef __APPLE__
-    // using std::list<std::pair<JointKey, Joint*>>
     EXPECT_EQ(sizeof(Body::Joints), size_t(24));
-    // using std::unordered_set:
-    // EXPECT_EQ(sizeof(Body::Joints), size_t(40));
 #endif
 #ifdef __linux__
     EXPECT_EQ(sizeof(Body::Joints), size_t(24));
@@ -51,8 +48,12 @@ TEST(Body, JointsByteSize)
 
 TEST(Body, FixturesByteSize)
 {
-    // Size is arch-dependent (on size of pointer/address)
+    // Size is arch, os, or library dependent.
+#ifdef __linux__
+    EXPECT_EQ(sizeof(Body::Fixtures), size_t(16));
+#else
     EXPECT_EQ(sizeof(Body::Fixtures), size_t(24));
+#endif
 }
 
 TEST(Body, ByteSize)
