@@ -85,7 +85,7 @@ public:
             auto shape = PolygonShape(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
             shape.SetDensity(RealNum{25} * KilogramPerSquareMeter);
 
-            float friction[5] = {std::numeric_limits<float>::infinity(), 0.5f, 0.35f, -0.1f, 0.0f};
+            float friction[5] = {std::numeric_limits<float>::infinity(), 0.5f, 0.35f, 0.1f, 0.0f};
             for (auto i = 0; i < 5; ++i)
             {
                 BodyDef bd;
