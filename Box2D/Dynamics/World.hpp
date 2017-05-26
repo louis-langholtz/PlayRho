@@ -223,22 +223,43 @@ public:
     /// @param aabb the query box.
     void QueryAABB(QueryFixtureReporter* callback, const AABB& aabb) const;
 
+    /// @brief Ray-cast operation code.
+    ///
+    /// @details Instructs the <code>RayCast</code> method on what to do next.
+    ///
     enum class RayCastOpcode {
+        /// @brief End the ray-cast search for fixtures.
+        /// @details Use this to stop searching for fixtures.
         Terminate,
+        
+        /// @brief Ignore the current fixture.
+        /// @details Use this to continue searching for fixtures along the ray.
         IgnoreFixture,
+
+        /// @brief Clip the ray end to the current point.
+        /// @details Use this shorten the ray to the current point and to continue searching
+        ///   for fixtures now along the newly shortened ray.
         ClipRay,
+
+        /// @brief Reset the ray end back to the second point.
+        /// @details Use this to restore the ray to its full length and to continue searching
+        ///    for fixtures now along the restored full length ray.
         ResetRay
     };
 
+    /// @brief Ray cast callback function signature.
     using RayCastCallback = std::function<RayCastOpcode(Fixture* fixture, const Length2D& point,
                                                         const UnitVec2& normal)>;
 
     /// @brief Ray-cast the world for all fixtures in the path of the ray.
+    ///
     /// @note The callback controls whether you get the closest point, any point, or n-points.
     /// @note The ray-cast ignores shapes that contain the starting point.
-    /// @param point1 the ray starting point
-    /// @param point2 the ray ending point
-    /// @param callback a user implemented callback function.
+    ///
+    /// @param point1 Ray starting point.
+    /// @param point2 Ray ending point.
+    /// @param callback A user implemented callback function.
+    ///
     void RayCast(const Length2D& point1, const Length2D& point2, RayCastCallback callback);
 
     /// @brief Gets the world body range for this world.
