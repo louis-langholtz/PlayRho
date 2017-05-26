@@ -34,14 +34,13 @@ public:
         m_fixture = nullptr;
     }
 
-    RealNum ReportFixture(Fixture* fixture, const Length2D& point,
-                          const UnitVec2& normal, RealNum fraction) override
+    Opcode ReportFixture(Fixture* fixture, const Length2D& point,
+                         const UnitVec2& normal) override
     {
         m_fixture = fixture;
         m_point = point;
         m_normal = normal;
-
-        return fraction;
+        return Opcode::ClipRay;
     }
 
     Fixture* m_fixture;
@@ -202,7 +201,7 @@ public:
 
         EdgeShapesCallback callback;
 
-        m_world->RayCast(&callback, point1, point2);
+        RayCast(*m_world, &callback, point1, point2);
 
         if (callback.m_fixture)
         {

@@ -444,70 +444,7 @@ namespace {
     {
         return VelocityConstraint::Conf{0, conf.velocityThreshold, conf.doBlocksolve};
     }
-
-    struct WorldRayCastWrapper
-    {
-        using size_type = BroadPhase::size_type;
-        
-        RealNum RayCastCallback(const RayCastInput& input, size_type proxyId)
-        {
-            auto userData = broadPhase->GetUserData(proxyId);
-            const auto proxy = static_cast<FixtureProxy*>(userData);
-            auto fixture = proxy->fixture;
-            const auto index = proxy->childIndex;
-            const auto output = RayCast(*fixture, input, index);
-            
-            if (output.hit)
-            {
-                const auto fraction = output.fraction;
-                assert(fraction >= 0 && fraction <= 1);
-                
-                // Here point can be calculated these two ways:
-                //   (1) point = p1 * (1 - fraction) + p2 * fraction
-                //   (2) point = p1 + (p2 - p1) * fraction.
-                //
-                // The first way however suffers from the fact that:
-                //     a * (1 - fraction) + a * fraction != a
-                // for all values of a and fraction between 0 and 1 when a and fraction are
-                // floating point types.
-                // This leads to the posibility that (p1 == p2) && (point != p1 || point != p2),
-                // which may be pretty surprising to the callback. So this way SHOULD NOT be used.
-                //
-                // The second way, does not have this problem.
-                //
-                const auto point = input.p1 + (input.p2 - input.p1) * fraction;
-                return callback->ReportFixture(fixture, point, output.normal, fraction);
-            }
-            
-            return input.maxFraction;
-        }
-        
-        WorldRayCastWrapper() = delete;
-        
-        constexpr WorldRayCastWrapper(const BroadPhase* bp, RayCastFixtureReporter* cb):
-        	broadPhase(bp), callback(cb)
-        {
-            // Intentionally empty.
-        }
-        
-        const BroadPhase* const broadPhase;
-        RayCastFixtureReporter* const callback;
-    };
     
-    struct WorldQueryWrapper
-    {
-        using size_type = BroadPhase::size_type;
-        
-        bool QueryCallback(size_type proxyId)
-        {
-            const auto proxy = static_cast<FixtureProxy*>(broadPhase->GetUserData(proxyId));
-            return callback->ReportFixture(proxy->fixture);
-        }
-        
-        const BroadPhase* broadPhase;
-        QueryFixtureReporter* callback;
-    };
-
 } // anonymous namespace
 
 const BodyDef& World::GetDefaultBodyDef()
@@ -1751,21 +1688,57 @@ StepStats World::Step(const StepConf& conf)
 
 void World::QueryAABB(QueryFixtureReporter* callback, const AABB& aabb) const
 {
-    WorldQueryWrapper wrapper;
-    wrapper.broadPhase = &m_broadPhase;
-    wrapper.callback = callback;
-    m_broadPhase.Query(aabb, [&](BroadPhase::size_type nodeId) {
-        return wrapper.QueryCallback(nodeId);
+    m_broadPhase.Query(aabb, [&](BroadPhase::size_type proxyId) {
+        const auto proxy = static_cast<FixtureProxy*>(m_broadPhase.GetUserData(proxyId));
+        return callback->ReportFixture(proxy->fixture);
     });
 }
 
-void World::RayCast(RayCastFixtureReporter* callback, const Length2D& point1,
-                    const Length2D& point2) const
+void World::RayCast(const Length2D& point1, const Length2D& point2, RayCastCallback callback)
 {
-    WorldRayCastWrapper wrapper(&m_broadPhase, callback);
-    const auto input = RayCastInput{point1, point2, RealNum{1}};
-    m_broadPhase.RayCast(input, [&](const RayCastInput& rci, BroadPhase::size_type proxyId) {
-        return wrapper.RayCastCallback(rci, proxyId);
+    m_broadPhase.RayCast(RayCastInput{point1, point2, RealNum{1}},
+                         [&](const RayCastInput& input, BroadPhase::size_type proxyId)
+    {
+        const auto userData = m_broadPhase.GetUserData(proxyId);
+        const auto proxy = static_cast<FixtureProxy*>(userData);
+        const auto fixture = proxy->fixture;
+        const auto index = proxy->childIndex;
+        const auto shape = fixture->GetShape();
+        const auto body = fixture->GetBody();
+        const auto child = shape->GetChild(index);
+        const auto transformation = body->GetTransformation();
+        const auto output = box2d::RayCast(child, input, transformation);
+        if (output.hit)
+        {
+            const auto fraction = output.fraction;
+            assert(fraction >= 0 && fraction <= 1);
+         
+            // Here point can be calculated these two ways:
+            //   (1) point = p1 * (1 - fraction) + p2 * fraction
+            //   (2) point = p1 + (p2 - p1) * fraction.
+            //
+            // The first way however suffers from the fact that:
+            //     a * (1 - fraction) + a * fraction != a
+            // for all values of a and fraction between 0 and 1 when a and fraction are
+            // floating point types.
+            // This leads to the posibility that (p1 == p2) && (point != p1 || point != p2),
+            // which may be pretty surprising to the callback. So this way SHOULD NOT be used.
+            //
+            // The second way, does not have this problem.
+            //
+            const auto point = input.p1 + (input.p2 - input.p1) * fraction;
+            
+            // Callback return states: terminate (0), ignore (< 0), clip (< 1), reset (1).
+            const auto opcode = callback(fixture, point, output.normal);
+            switch (opcode)
+            {
+                case RayCastOpcode::Terminate: return RealNum(0);
+                case RayCastOpcode::IgnoreFixture: return RealNum(-1);
+                case RayCastOpcode::ClipRay: return fraction;
+                case RayCastOpcode::ResetRay: return input.maxFraction;
+            }
+        }
+        return input.maxFraction;
     });
 }
 
@@ -2510,6 +2483,27 @@ void ClearForces(World& world) noexcept
         body->SetAcceleration(g, AngularAcceleration{0});
     }
 
+}
+
+void RayCast(World& world, RayCastFixtureReporter* callback,
+             const Length2D& point1, const Length2D& point2)
+{
+    world.RayCast(point1, point2, [&](Fixture* fixture, const Length2D& point,
+                                      const UnitVec2& normal) {
+        const auto opcode = callback->ReportFixture(fixture, point, normal);
+        switch (opcode)
+        {
+            case RayCastFixtureReporter::Opcode::ResetRay:
+                return World::RayCastOpcode::ResetRay;
+            case RayCastFixtureReporter::Opcode::ClipRay:
+                return World::RayCastOpcode::ClipRay;
+            case RayCastFixtureReporter::Opcode::Terminate:
+                return World::RayCastOpcode::Terminate;
+            case RayCastFixtureReporter::Opcode::IgnoreFixture:
+                return World::RayCastOpcode::IgnoreFixture;
+        }
+        return World::RayCastOpcode::IgnoreFixture;
+    });
 }
 
 bool IsActive(const Contact& contact) noexcept

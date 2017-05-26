@@ -223,13 +223,23 @@ public:
     /// @param aabb the query box.
     void QueryAABB(QueryFixtureReporter* callback, const AABB& aabb) const;
 
-    /// Ray-cast the world for all fixtures in the path of the ray. Your callback
-    /// controls whether you get the closest point, any point, or n-points.
-    /// The ray-cast ignores shapes that contain the starting point.
-    /// @param callback a user implemented callback class.
+    enum class RayCastOpcode {
+        Terminate,
+        IgnoreFixture,
+        ClipRay,
+        ResetRay
+    };
+
+    using RayCastCallback = std::function<RayCastOpcode(Fixture* fixture, const Length2D& point,
+                                                        const UnitVec2& normal)>;
+
+    /// @brief Ray-cast the world for all fixtures in the path of the ray.
+    /// @note The callback controls whether you get the closest point, any point, or n-points.
+    /// @note The ray-cast ignores shapes that contain the starting point.
     /// @param point1 the ray starting point
     /// @param point2 the ray ending point
-    void RayCast(RayCastFixtureReporter* callback, const Length2D& point1, const Length2D& point2) const;
+    /// @param callback a user implemented callback function.
+    void RayCast(const Length2D& point1, const Length2D& point2, RayCastCallback callback);
 
     /// @brief Gets the world body range for this world.
     /// @return Body range that can be iterated over using its begin and end methods
@@ -967,6 +977,15 @@ size_t Awaken(World& world) noexcept;
 /// @details
 /// Manually clear the force buffer on all bodies.
 void ClearForces(World& world) noexcept;
+
+/// Ray-cast the world for all fixtures in the path of the ray. Your callback
+/// controls whether you get the closest point, any point, or n-points.
+/// The ray-cast ignores shapes that contain the starting point.
+/// @param callback a user implemented callback class.
+/// @param point1 the ray starting point
+/// @param point2 the ray ending point
+void RayCast(World& world, RayCastFixtureReporter* callback,
+             const Length2D& point1, const Length2D& point2);
 
 bool IsActive(const Contact& contact) noexcept;
 

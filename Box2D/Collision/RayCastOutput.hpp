@@ -29,7 +29,7 @@ namespace box2d
 {
     struct RayCastInput;
     class AABB;
-    class Fixture;
+    class Shape;
     class DistanceProxy;
 
     /// @brief Ray-cast output data.
@@ -54,28 +54,50 @@ namespace box2d
             assert(!(f < 0) && !(f > 1));
         }
         
+        /// @brief Surface normal in world coordinates at the point of contact.
+        /// @note This value is meaningless unless the ray hit.
+        /// @sa hit.
         UnitVec2 normal = GetInvalid<decltype(normal)>();
+
+        /// @brief Fraction.
+        /// @note This is a unit interval value - a value between 0 and 1 - or it's invalid.
+        /// @note This value is meaningless unless the ray hit.
+        /// @sa hit.
         RealNum fraction = GetInvalid<decltype(fraction)>();
+        
+        /// @brief Hit flag.
+        /// @note <code>true</code> if the ray hit and the normal and fraction values should be
+        ///   valid, <code>false</code> otherwise.
         bool hit = false;
     };
+
+    /// @brief Cast a ray against a circle of a given radius at the given location.
+    /// @param radius Radius of the circle.
+    /// @param location Location in world coordinates of the circle.
+    /// @param input Ray-cast input parameters.
+    RayCastOutput RayCast(const Length radius, const Length2D location,
+                          const RayCastInput& input) noexcept;
 
     /// @brief Cast a ray against the given AABB.
     /// @param aabb Axis Aligned Bounding Box.
     /// @param input the ray-cast input parameters.
-    RayCastOutput RayCast(const AABB& aabb, const RayCastInput& input);
+    RayCastOutput RayCast(const AABB& aabb, const RayCastInput& input) noexcept;
     
     /// @brief Cast a ray against the distance proxy.
-    /// @param proxy Distance-proxy object.
+    /// @param proxy Distance-proxy object (in local coordinates).
     /// @param input Ray-cast input parameters.
-    /// @param transform Transform to be applied to the shape.
-    RayCastOutput RayCast(const DistanceProxy& proxy,
-                          const RayCastInput& input, const Transformation& transform) noexcept;
+    /// @param transform Transform to be applied to the distance-proxy to get world coordinates.
+    RayCastOutput RayCast(const DistanceProxy& proxy, const RayCastInput& input,
+                          const Transformation& transform) noexcept;
     
-    /// @brief Cast a ray against the shape of the given fixture.
-    /// @param f Fixture.
-    /// @param input the ray-cast input parameters.
+    /// @brief Cast a ray against the child of the given shape.
+    /// @note This is a convenience function for calling the raycast against a distance-proxy.
+    /// @param shape Shape.
     /// @param childIndex Child index.
-    RayCastOutput RayCast(const Fixture& f, const RayCastInput& input, child_count_t childIndex);
+    /// @param input the ray-cast input parameters.
+    /// @param transform Transform to be applied to the child of the shape.
+    RayCastOutput RayCast(const Shape& shape, child_count_t childIndex,
+                          const RayCastInput& input, const Transformation& transform) noexcept;
 
 } // namespace box2d
 

@@ -176,6 +176,13 @@ public:
 class RayCastFixtureReporter
 {
 public:
+    enum class Opcode {
+        Terminate,
+        IgnoreFixture,
+        ClipRay,
+        ResetRay
+    };
+
     virtual ~RayCastFixtureReporter() {}
 
     /// Reports fixture.
@@ -190,13 +197,11 @@ public:
     /// @param fixture the fixture hit by the ray
     /// @param point the point of initial intersection
     /// @param normal the normal vector at the point of intersection.
-    /// @param fraction Fraction.
     ///
-    /// @return -1 to filter, 0 to terminate, fraction to clip the ray for closest hit,
-    ///   1 to continue.
+    /// @return Operational code.
     ///
-    virtual RealNum ReportFixture(Fixture* fixture, const Length2D& point,
-                                  const UnitVec2& normal, RealNum fraction) = 0;
+    virtual Opcode ReportFixture(Fixture* fixture, const Length2D& point,
+                                 const UnitVec2& normal) = 0;
 };
 
 } // namespace box2d

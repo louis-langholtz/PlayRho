@@ -38,8 +38,7 @@ public:
         m_hit = false;
     }
 
-    RealNum ReportFixture(Fixture* fixture, const Length2D& point, const UnitVec2& normal,
-                          RealNum fraction) override
+    Opcode ReportFixture(Fixture* fixture, const Length2D& point, const UnitVec2& normal) override
     {
         const auto body = fixture->GetBody();
         const auto userData = body->GetUserData();
@@ -50,7 +49,7 @@ public:
             {
                 // By returning -1, we instruct the calling code to ignore this fixture and
                 // continue the ray-cast to the next fixture.
-                return -1.0f;
+                return Opcode::IgnoreFixture;
             }
         }
 
@@ -58,10 +57,10 @@ public:
         m_point = point;
         m_normal = normal;
 
-        // By returning the current fraction, we instruct the calling code to clip the ray and
+        // Instruct the calling code to clip the ray and
         // continue the ray-cast to the next fixture. WARNING: do not assume that fixtures
         // are reported in order. However, by clipping, we can always get the closest fixture.
-        return fraction;
+        return Opcode::ClipRay;
     }
     
     bool m_hit;
@@ -79,8 +78,7 @@ public:
         m_hit = false;
     }
 
-    RealNum ReportFixture(Fixture* fixture, const Length2D& point, const UnitVec2& normal,
-                          RealNum) override
+    Opcode ReportFixture(Fixture* fixture, const Length2D& point, const UnitVec2& normal) override
     {
         const auto body = fixture->GetBody();
         const auto userData = body->GetUserData();
@@ -89,9 +87,9 @@ public:
             const auto index = *static_cast<int*>(userData);
             if (index == 0)
             {
-                // By returning -1, we instruct the calling code to ignore this fixture
+                // Instruct the calling code to ignore this fixture
                 // and continue the ray-cast to the next fixture.
-                return -1.0f;
+                return Opcode::IgnoreFixture;
             }
         }
 
@@ -100,8 +98,8 @@ public:
         m_normal = normal;
 
         // At this point we have a hit, so we know the ray is obstructed.
-        // By returning 0, we instruct the calling code to terminate the ray-cast.
-        return 0.0f;
+        // Instruct the calling code to terminate the ray-cast.
+        return Opcode::Terminate;
     }
 
     bool m_hit;
@@ -125,8 +123,7 @@ public:
         m_count = 0;
     }
 
-    RealNum ReportFixture(Fixture* fixture, const Length2D& point, const UnitVec2& normal,
-                          RealNum) override
+    Opcode ReportFixture(Fixture* fixture, const Length2D& point, const UnitVec2& normal) override
     {
         const auto body = fixture->GetBody();
         const auto userData = body->GetUserData();
@@ -135,9 +132,9 @@ public:
             const auto index = *static_cast<int*>(userData);
             if (index == 0)
             {
-                // By returning -1, we instruct the calling code to ignore this fixture
+                // Instruct the calling code to ignore this fixture
                 // and continue the ray-cast to the next fixture.
-                return -1.0f;
+                return Opcode::IgnoreFixture;
             }
         }
 
@@ -150,12 +147,12 @@ public:
         if (m_count == e_maxCount)
         {
             // At this point the buffer is full.
-            // By returning 0, we instruct the calling code to terminate the ray-cast.
-            return 0.0f;
+            // Instruct the calling code to terminate the ray-cast.
+            return Opcode::Terminate;
         }
 
-        // By returning 1, we instruct the caller to continue without clipping the ray.
-        return 1.0f;
+        // Instruct the caller to continue without clipping the ray.
+        return Opcode::ResetRay;
     }
 
     Length2D m_points[e_maxCount];
@@ -352,7 +349,7 @@ public:
         if (m_mode == Mode::e_closest)
         {
             RayCastClosestCallback callback;
-            m_world->RayCast(&callback, point1, point2);
+            box2d::RayCast(*m_world, &callback, point1, point2);
 
             if (callback.m_hit)
             {
@@ -369,7 +366,7 @@ public:
         else if (m_mode == Mode::e_any)
         {
             RayCastAnyCallback callback;
-            m_world->RayCast(&callback, point1, point2);
+            box2d::RayCast(*m_world, &callback, point1, point2);
 
             if (callback.m_hit)
             {
@@ -386,7 +383,7 @@ public:
         else if (m_mode == Mode::e_multiple)
         {
             RayCastMultipleCallback callback;
-            m_world->RayCast(&callback, point1, point2);
+            box2d::RayCast(*m_world, &callback, point1, point2);
             drawer.DrawSegment(point1, point2, Color(0.8f, 0.8f, 0.8f));
 
             for (auto i = decltype(callback.m_count){0}; i < callback.m_count; ++i)

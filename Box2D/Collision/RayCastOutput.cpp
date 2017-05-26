@@ -31,52 +31,46 @@
 
 using namespace box2d;
 
-namespace
+RayCastOutput box2d::RayCast(const Length radius, const Length2D location,
+                             const RayCastInput& input) noexcept
 {
-    inline RayCastOutput RayCast(const Length radius, const Length2D location,
-                                 const RayCastInput& input) noexcept
+    // Collision Detection in Interactive 3D Environments by Gino van den Bergen
+    // From Section 3.1.2
+    // x = s + a * r
+    // norm(x) = radius
+    
+    const auto s = input.p1 - location;
+    const auto b = GetLengthSquared(s) - Square(radius);
+    
+    // Solve quadratic equation.
+    const auto raySegment = input.p2 - input.p1; // Length2D
+    const auto c =  Dot(s, raySegment); // Area
+    const auto rr = GetLengthSquared(raySegment); // Area
+    const auto sigma = (Square(c) - rr * b) / (SquareMeter * SquareMeter);
+    
+    // Check for negative discriminant and short segment.
+    if ((sigma < RealNum{0}) || almost_zero(RealNum{rr / SquareMeter}))
     {
-        // Collision Detection in Interactive 3D Environments by Gino van den Bergen
-        // From Section 3.1.2
-        // x = s + a * r
-        // norm(x) = radius
-        
-        const auto s = input.p1 - location;
-        const auto sUnitless = StripUnits(s);
-        const auto b = GetLengthSquared(sUnitless) - Square(radius / Meter);
-        
-        // Solve quadratic equation.
-        const auto raySegment = input.p2 - input.p1;
-        const auto rUnitless = StripUnits(raySegment);
-        const auto c =  Dot(sUnitless, rUnitless);
-        const auto rr = GetLengthSquared(rUnitless);
-        const auto sigma = Square(c) - rr * b;
-        
-        // Check for negative discriminant and short segment.
-        if ((sigma < RealNum{0}) || almost_zero(rr))
-        {
-            return RayCastOutput{};
-        }
-        
-        // Find the point of intersection of the line with the circle.
-        const auto a = -(c + Sqrt(sigma));
-        const auto fraction = a / rr;
-
-        // Is the intersection point on the segment?
-        if ((fraction >= RealNum{0}) && (fraction <= input.maxFraction))
-        {
-            return RayCastOutput{
-                GetUnitVector(sUnitless + fraction * rUnitless, UnitVec2::GetZero()),
-                fraction
-            };
-        }
-        
         return RayCastOutput{};
     }
     
-} // anonymous namespace
+    // Find the point of intersection of the line with the circle.
+    const auto a = -(c + Sqrt(sigma) * SquareMeter);
+    const auto fraction = a / rr;
 
-RayCastOutput box2d::RayCast(const AABB& aabb, const RayCastInput& input)
+    // Is the intersection point on the segment?
+    if ((fraction >= RealNum{0}) && (fraction <= input.maxFraction))
+    {
+        return RayCastOutput{
+            GetUnitVector(s + fraction * raySegment, UnitVec2::GetZero()),
+            fraction
+        };
+    }
+    
+    return RayCastOutput{};
+}
+
+RayCastOutput box2d::RayCast(const AABB& aabb, const RayCastInput& input) noexcept
 {
     // From Real-time Collision Detection, p179.
 
@@ -243,8 +237,8 @@ RayCastOutput box2d::RayCast(const DistanceProxy& proxy, const RayCastInput& inp
     return RayCastOutput{};
 }
 
-RayCastOutput box2d::RayCast(const Fixture& f, const RayCastInput& input, child_count_t childIndex)
+RayCastOutput box2d::RayCast(const Shape& shape, child_count_t childIndex,
+                             const RayCastInput& input, const Transformation& transform) noexcept
 {
-    const auto child = f.GetShape()->GetChild(childIndex);
-    return RayCast(child, input, GetTransformation(f));
+    return RayCast(shape.GetChild(childIndex), input, transform);
 }
