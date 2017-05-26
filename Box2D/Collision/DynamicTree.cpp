@@ -600,10 +600,10 @@ void DynamicTree::RayCast(const RayCastInput& input, RayCastCallback callback) c
         }
         
         // Separating axis for segment (Gino, p80).
-        // |dot(v, p1 - c)| > dot(|v|, h)
-        const auto c = GetCenter(node->aabb);
-        const auto h = GetExtents(node->aabb);
-        const auto separation = Abs(Dot(v, p1 - c)) - Dot(abs_v, h);
+        // |dot(v, p1 - ctr)| > dot(|v|, extents)
+        const auto center = GetCenter(node->aabb);
+        const auto extents = GetExtents(node->aabb);
+        const auto separation = Abs(Dot(v, p1 - center)) - Dot(abs_v, extents);
         if (separation > Length{0})
         {
             continue;
