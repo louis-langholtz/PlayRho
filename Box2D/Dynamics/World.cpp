@@ -1686,11 +1686,11 @@ StepStats World::Step(const StepConf& conf)
     return stepStats;
 }
 
-void World::QueryAABB(QueryFixtureReporter* callback, const AABB& aabb) const
+void World::QueryAABB(const AABB& aabb, QueryFixtureCallback callback)
 {
     m_broadPhase.Query(aabb, [&](BroadPhase::size_type proxyId) {
         const auto proxy = static_cast<FixtureProxy*>(m_broadPhase.GetUserData(proxyId));
-        return callback->ReportFixture(proxy->fixture);
+        return callback(proxy->fixture);
     });
 }
 

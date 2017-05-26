@@ -32,19 +32,9 @@ namespace box2d {
 /// This callback is called by World::QueryAABB. We find all the fixtures
 /// that overlap an AABB. Of those, we use TestOverlap to determine which fixtures
 /// overlap a circle. Up to 4 overlapped fixtures will be highlighted with a yellow border.
-class PolyShapesCallback : public QueryFixtureReporter, public Shape::Visitor
+class ShapeDrawer: public Shape::Visitor
 {
 public:
-    
-    enum
-    {
-        e_maxCount = 4
-    };
-
-    PolyShapesCallback()
-    {
-        m_count = 0;
-    }
 
     void Visit(const CircleShape& shape) override
     {
@@ -64,37 +54,9 @@ public:
         g_debugDraw->DrawPolygon(&vertices[0], vertexCount, m_color);
     }
     
-    /// Called for each fixture found in the query AABB.
-    /// @return false to terminate the query.
-    bool ReportFixture(Fixture* fixture) override
-    {
-        if (m_count == e_maxCount)
-        {
-            return false;
-        }
-
-        const auto xfm = GetTransformation(*fixture);
-        const auto shape = fixture->GetShape();
-        const auto shapeChild = shape->GetChild(0);
-        const auto circleChild = m_circle.GetChild(0);
-
-        const auto overlap = TestOverlap(shapeChild, xfm, circleChild, m_transform);
-        if (overlap >= Area{0})
-        {
-            m_xf = GetTransformation(*fixture);
-            shape->Accept(*this);
-            ++m_count;
-        }
-
-        return true;
-    }
-
     Color m_color = Color(0.95f, 0.95f, 0.6f);
-    CircleShape m_circle;
-    Transformation m_transform;
     Transformation m_xf;
     Drawer* g_debugDraw;
-    int m_count;
 };
 
 class PolyShapes : public Test
@@ -233,18 +195,40 @@ public:
 
     void PostStep(const Settings&, Drawer& drawer) override
     {
-        PolyShapesCallback callback;
-        callback.m_circle.SetRadius(RealNum(2) * Meter);
-        callback.m_circle.SetLocation(Vec2(0.0f, 1.1f) * Meter);
-        callback.m_transform = Transform_identity;
-        callback.g_debugDraw = &drawer;
+        auto circleConf = CircleShape::Conf{};
+        circleConf.location = Vec2(0.0f, 1.1f) * Meter;
+        circleConf.vertexRadius = RealNum(2) * Meter;
+        const auto circle = CircleShape{circleConf};
 
-        const auto aabb = ComputeAABB(callback.m_circle, callback.m_transform);
+        const auto transform = Transform_identity;
 
-        m_world->QueryAABB(&callback, aabb);
+        ShapeDrawer shapeDrawer;
+        shapeDrawer.g_debugDraw = &drawer;
+
+        constexpr int e_maxCount = 4;
+        int count = 0;
+        const auto aabb = ComputeAABB(circle, transform);
+        m_world->QueryAABB(aabb, [&](Fixture* f) {
+            if (count < e_maxCount)
+            {
+                const auto xfm = GetTransformation(*f);
+                const auto shape = f->GetShape();
+                const auto shapeChild = shape->GetChild(0);
+                const auto circleChild = circle.GetChild(0);
+                const auto overlap = TestOverlap(shapeChild, xfm, circleChild, transform);
+                if (overlap >= Area{0})
+                {
+                    shapeDrawer.m_xf = xfm;
+                    shape->Accept(shapeDrawer);
+                    ++count;
+                }
+                return true;
+            }
+            return false;
+        });
 
         const auto color = Color(0.4f, 0.7f, 0.8f);
-        drawer.DrawCircle(callback.m_circle.GetLocation(), callback.m_circle.GetRadius(), color);
+        drawer.DrawCircle(circle.GetLocation(), circle.GetRadius(), color);
 
         drawer.DrawString(5, m_textLine, "Press 1-5 to drop stuff");
         m_textLine += DRAW_STRING_NEW_LINE;

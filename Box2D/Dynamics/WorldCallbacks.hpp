@@ -159,18 +159,6 @@ public:
     }
 };
 
-/// Callback class for AABB queries.
-/// See World::Query
-class QueryFixtureReporter
-{
-public:
-    virtual ~QueryFixtureReporter() {}
-
-    /// Called for each fixture found in the query AABB.
-    /// @return false to terminate the query.
-    virtual bool ReportFixture(Fixture* fixture) = 0;
-};
-
 } // namespace box2d
 
 #endif

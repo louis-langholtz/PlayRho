@@ -218,10 +218,14 @@ public:
     ///
     StepStats Step(const StepConf& conf);
 
+    /// @brief Query AABB for fixtures callback function type.
+    /// @note Returning true will continue the query. Returning false will terminate the query.
+    using QueryFixtureCallback = std::function<bool(Fixture* fixture)>;
+
     /// @brief Queries the world for all fixtures that potentially overlap the provided AABB.
-    /// @param callback a user implemented callback class.
     /// @param aabb the query box.
-    void QueryAABB(QueryFixtureReporter* callback, const AABB& aabb) const;
+    /// @param callback User implemented callback function.
+    void QueryAABB(const AABB& aabb, QueryFixtureCallback callback);
 
     /// @brief Ray-cast operation code.
     ///

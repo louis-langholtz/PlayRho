@@ -429,36 +429,6 @@ void Test::DrawTitle(Drawer& drawer, const char *string)
     m_textLine = 3 * DRAW_STRING_NEW_LINE;
 }
 
-class QueryCallback : public QueryFixtureReporter
-{
-public:
-    QueryCallback(const Length2D& point): m_point{point}
-    {
-        // Intentionally empty.
-    }
-
-    bool ReportFixture(Fixture* fixture)
-    {
-        const auto body = fixture->GetBody();
-        if (body->GetType() == BodyType::Dynamic)
-        {
-            if (TestPoint(*fixture, m_point))
-            {
-                m_fixture = fixture;
-
-                // We are done, terminate the query.
-                return false;
-            }
-        }
-
-        // Continue the query.
-        return true;
-    }
-
-    Length2D m_point;
-    Fixture* m_fixture = nullptr;
-};
-
 void Test::MouseDown(const Length2D& p)
 {
     m_mouseWorld = p;
@@ -471,15 +441,26 @@ void Test::MouseDown(const Length2D& p)
     // Make a small box.
     const auto aabb = GetFattenedAABB(AABB{p}, Meter / RealNum{1000});
     
+    auto fixture = static_cast<Fixture*>(nullptr);
+    
     // Query the world for overlapping shapes.
-    QueryCallback callback(p);
-    m_world->QueryAABB(&callback, aabb);
-
-    SetSelectedFixture(callback.m_fixture);
-
-    if (callback.m_fixture)
+    m_world->QueryAABB(aabb, [&](Fixture* f) {
+        const auto body = f->GetBody();
+        if (body->GetType() == BodyType::Dynamic)
+        {
+            if (TestPoint(*f, p))
+            {
+                fixture = f;
+                return false; // We are done, terminate the query.
+            }
+        }
+        return true; // Continue the query.
+    });
+    
+    SetSelectedFixture(fixture);
+    if (fixture)
     {
-        const auto body = callback.m_fixture->GetBody();
+        const auto body = fixture->GetBody();
         MouseJointDef md;
         md.bodyA = m_groundBody;
         md.bodyB = body;
