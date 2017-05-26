@@ -32,7 +32,10 @@ public:
     {
         m_world->SetGravity(Vec2{0, 0} * MeterPerSquareSecond);
 
-        const auto def = BodyDef{}.UseType(BodyType::Dynamic).UseLinearDamping(RealNum(0.9)).UseAngularDamping(RealNum(0.9));
+        const auto def = BodyDef{}
+        	.UseType(BodyType::Dynamic)
+        	.UseLinearDamping(RealNum(0.9) * Hertz)
+        	.UseAngularDamping(RealNum(0.9) * Hertz);
         m_bodyA = m_world->CreateBody(def);
         m_bodyB = m_world->CreateBody(def);
 

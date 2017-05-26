@@ -240,7 +240,7 @@ public:
         BodyDef bodyDef;
         bodyDef.type = BodyType::Dynamic;
         m_body = world->CreateBody(bodyDef);
-        m_body->SetAngularDamping(3);
+        m_body->SetAngularDamping(RealNum(3) * Hertz);
         
         Length2D vertices[8];
         vertices[0] = Vec2(+1.5f,  +0.0f) * Meter;

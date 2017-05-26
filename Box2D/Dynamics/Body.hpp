@@ -215,16 +215,16 @@ public:
     void ResetMassData();
 
     /// @brief Gets the linear damping of the body.
-    RealNum GetLinearDamping() const noexcept;
+    Frequency GetLinearDamping() const noexcept;
 
     /// @brief Sets the linear damping of the body.
-    void SetLinearDamping(RealNum linearDamping) noexcept;
+    void SetLinearDamping(Frequency linearDamping) noexcept;
 
     /// @brief Gets the angular damping of the body.
-    RealNum GetAngularDamping() const noexcept;
+    Frequency GetAngularDamping() const noexcept;
 
     /// @brief Sets the angular damping of the body.
-    void SetAngularDamping(RealNum angularDamping) noexcept;
+    void SetAngularDamping(Frequency angularDamping) noexcept;
 
     /// @brief Sets the type of this body.
     /// @note This may alter the mass and velocity.
@@ -477,8 +477,8 @@ private:
     /// @note 4-bytes.
     InvRotInertia m_invRotI = 0;
 
-    RealNum m_linearDamping; ///< Linear damping. 4-bytes.
-    RealNum m_angularDamping; ///< Angular damping. 4-bytes.
+    Frequency m_linearDamping; ///< Linear damping. 4-bytes.
+    Frequency m_angularDamping; ///< Angular damping. 4-bytes.
 
     /// Under-active time.
     /// @details A body under-active for enough time should have their awake flag unset.
@@ -555,22 +555,22 @@ inline InvRotInertia Body::GetInvRotInertia() const noexcept
     return m_invRotI;
 }
 
-inline RealNum Body::GetLinearDamping() const noexcept
+inline Frequency Body::GetLinearDamping() const noexcept
 {
     return m_linearDamping;
 }
 
-inline void Body::SetLinearDamping(RealNum linearDamping) noexcept
+inline void Body::SetLinearDamping(Frequency linearDamping) noexcept
 {
     m_linearDamping = linearDamping;
 }
 
-inline RealNum Body::GetAngularDamping() const noexcept
+inline Frequency Body::GetAngularDamping() const noexcept
 {
     return m_angularDamping;
 }
 
-inline void Body::SetAngularDamping(RealNum angularDamping) noexcept
+inline void Body::SetAngularDamping(Frequency angularDamping) noexcept
 {
     m_angularDamping = angularDamping;
 }

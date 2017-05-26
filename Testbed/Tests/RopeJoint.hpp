@@ -69,7 +69,7 @@ public:
                     shape = square;
                     fd.filter.categoryBits = 0x0002;
                     bd.position = Vec2(1.0f * i, y) * Meter;
-                    bd.angularDamping = 0.4f;
+                    bd.angularDamping = RealNum(0.4f) * Hertz;
                 }
 
                 const auto body = m_world->CreateBody(bd);

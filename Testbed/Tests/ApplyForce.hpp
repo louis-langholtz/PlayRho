@@ -89,8 +89,8 @@ public:
 
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.angularDamping = 2.0f;
-            bd.linearDamping = 0.5f;
+            bd.angularDamping = RealNum(2) * Hertz;
+            bd.linearDamping = RealNum(0.5f) * Hertz;
 
             bd.position = Vec2(0, 2) * Meter;
             bd.angle = Pi * Radian;

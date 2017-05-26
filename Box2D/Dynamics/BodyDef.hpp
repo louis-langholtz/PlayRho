@@ -45,8 +45,8 @@ namespace box2d
         constexpr BodyDef& UseAngularVelocity(AngularVelocity v) noexcept;
         constexpr BodyDef& UseLinearAcceleration(LinearAcceleration2D v) noexcept;
         constexpr BodyDef& UseAngularAcceleration(AngularAcceleration v) noexcept;
-        constexpr BodyDef& UseLinearDamping(RealNum v) noexcept;
-        constexpr BodyDef& UseAngularDamping(RealNum v) noexcept;
+        constexpr BodyDef& UseLinearDamping(Frequency v) noexcept;
+        constexpr BodyDef& UseAngularDamping(Frequency v) noexcept;
         constexpr BodyDef& UseUnderActiveTime(Time v) noexcept;
         constexpr BodyDef& UseAllowSleep(bool value) noexcept;
         constexpr BodyDef& UseAwake(bool value) noexcept;
@@ -85,12 +85,12 @@ namespace box2d
         /// Linear damping is use to reduce the linear velocity. The damping parameter
         /// can be larger than 1 but the damping effect becomes sensitive to the
         /// time step when the damping parameter is large.
-        RealNum linearDamping = 0;
+        Frequency linearDamping = 0;
         
         /// Angular damping is use to reduce the angular velocity. The damping parameter
         /// can be larger than 1 but the damping effect becomes sensitive to the
         /// time step when the damping parameter is large.
-        RealNum angularDamping = 0;
+        Frequency angularDamping = 0;
         
         /// Under-active time.
         /// @details Set this to the value retrieved from Body::GetUnderActiveTime() or leave it as 0.
@@ -161,13 +161,13 @@ namespace box2d
         return *this;
     }
     
-    constexpr inline BodyDef& BodyDef::UseLinearDamping(RealNum v) noexcept
+    constexpr inline BodyDef& BodyDef::UseLinearDamping(Frequency v) noexcept
     {
         linearDamping = v;
         return *this;
     }
     
-    constexpr inline BodyDef& BodyDef::UseAngularDamping(RealNum v) noexcept
+    constexpr inline BodyDef& BodyDef::UseAngularDamping(Frequency v) noexcept
     {
         angularDamping = v;
         return *this;

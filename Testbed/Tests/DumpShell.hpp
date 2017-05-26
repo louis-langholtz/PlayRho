@@ -52,8 +52,8 @@ public:
             bd.angle = RealNum{0.0f} * Radian;
             bd.linearVelocity = Vec2(0.000000000000000e+00f, 0.000000000000000e+00f) * MeterPerSecond;
             bd.angularVelocity = RealNum{0.0f} * RadianPerSecond;
-            bd.linearDamping = 0.000000000000000e+00f;
-            bd.angularDamping = 0.000000000000000e+00f;
+            bd.linearDamping = RealNum(0) * Hertz;
+            bd.angularDamping = RealNum(0) * Hertz;
             bd.allowSleep = bool(4);
             bd.awake = bool(2);
             bd.fixedRotation = bool(0);
@@ -88,8 +88,8 @@ public:
             bd.angle = RealNum{-1.313644275069237e-02f} * Radian;
             bd.linearVelocity = Vec2(8.230687379837036e-01f, 7.775862514972687e-02f) * MeterPerSecond;
             bd.angularVelocity = RealNum{3.705333173274994e-02f} * RadianPerSecond;
-            bd.linearDamping = 0.000000000000000e+00f;
-            bd.angularDamping = 0.000000000000000e+00f;
+            bd.linearDamping = RealNum(0) * Hertz;
+            bd.angularDamping = RealNum(0) * Hertz;
             bd.allowSleep = bool(4);
             bd.awake = bool(2);
             bd.fixedRotation = bool(0);
@@ -125,8 +125,8 @@ public:
             bd.angle = RealNum{-1.884713363647461e+01f} * Radian;
             bd.linearVelocity = Vec2(1.785794943571091e-01f, 3.799796104431152e-07f) * MeterPerSecond;
             bd.angularVelocity = RealNum{-5.908820639888290e-06f} * RadianPerSecond;
-            bd.linearDamping = 0.000000000000000e+00f;
-            bd.angularDamping = 0.000000000000000e+00f;
+            bd.linearDamping = RealNum(0) * Hertz;
+            bd.angularDamping = RealNum(0) * Hertz;
             bd.allowSleep = bool(4);
             bd.awake = bool(2);
             bd.fixedRotation = bool(0);

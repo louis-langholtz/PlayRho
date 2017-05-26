@@ -64,8 +64,8 @@ public:
         bd1.position = m_offset;
         bd2.position = p4 + m_offset;
 
-        bd1.angularDamping = 10.0f;
-        bd2.angularDamping = 10.0f;
+        bd1.angularDamping = RealNum(10) * Hertz;
+        bd2.angularDamping = RealNum(10) * Hertz;
 
         const auto body1 = m_world->CreateBody(bd1);
         const auto body2 = m_world->CreateBody(bd2);

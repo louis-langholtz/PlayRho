@@ -169,7 +169,7 @@ public:
 
         if (index == 4)
         {
-            bd.angularDamping = 0.02f;
+            bd.angularDamping = RealNum(0.02f) * Hertz;
         }
 
         m_bodies[m_bodyIndex] = m_world->CreateBody(bd);

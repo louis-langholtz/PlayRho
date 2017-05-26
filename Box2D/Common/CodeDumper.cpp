@@ -169,8 +169,10 @@ void box2d::Dump(const Body& body, size_t bodyIndex)
         static_cast<double>(RealNum{body.GetVelocity().linear.y / MeterPerSecond}));
     log("  bd.angularVelocity = %.15lef;\n",
         static_cast<double>(RealNum{body.GetVelocity().angular / RadianPerSecond}));
-    log("  bd.linearDamping = %.15lef;\n", static_cast<double>(body.GetLinearDamping()));
-    log("  bd.angularDamping = %.15lef;\n", static_cast<double>(body.GetAngularDamping()));
+    log("  bd.linearDamping = %.15lef;\n",
+        static_cast<double>(RealNum{body.GetLinearDamping() / Hertz}));
+    log("  bd.angularDamping = %.15lef;\n",
+        static_cast<double>(RealNum{body.GetAngularDamping() / Hertz}));
     log("  bd.allowSleep = bool(%d);\n", body.IsSleepingAllowed());
     log("  bd.awake = bool(%d);\n", body.IsAwake());
     log("  bd.fixedRotation = bool(%d);\n", body.IsFixedRotation());
