@@ -52,7 +52,7 @@ TEST(Body, JointsByteSize)
 TEST(Body, FixturesByteSize)
 {
     // Size is arch-dependent (on size of pointer/address)
-    EXPECT_EQ(sizeof(Body::Fixtures), size_t(8));
+    EXPECT_EQ(sizeof(Body::Fixtures), size_t(24));
 }
 
 TEST(Body, ByteSize)
@@ -126,9 +126,6 @@ TEST(Body, CreateFixture)
     const auto body = world.CreateBody();
 
     const auto valid_shape = std::make_shared<CircleShape>(RealNum{1} * Meter);
-
-    const auto invalid_friction_shape = std::make_shared<CircleShape>(RealNum{1} * Meter);
-    invalid_friction_shape->SetFriction(-0.1f);
     
     const auto invalid_density_shape = std::make_shared<CircleShape>(RealNum{1} * Meter);
     invalid_density_shape->SetDensity(std::numeric_limits<RealNum>::quiet_NaN() * KilogramPerSquareMeter);
@@ -138,9 +135,6 @@ TEST(Body, CreateFixture)
 
     // Check default settings
     EXPECT_NE(body->CreateFixture(valid_shape, FixtureDef{}), nullptr);
-    
-    // Check friction settings
-    EXPECT_EQ(body->CreateFixture(invalid_friction_shape), nullptr);
     
     // Check density settings
     EXPECT_EQ(body->CreateFixture(invalid_density_shape), nullptr);
