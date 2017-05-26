@@ -29,138 +29,6 @@
 
 namespace box2d {
 
-// This callback finds the closest hit. Polygon 0 is filtered.
-class RayCastClosestCallback : public RayCastFixtureReporter
-{
-public:
-    RayCastClosestCallback()
-    {
-        m_hit = false;
-    }
-
-    Opcode ReportFixture(Fixture* fixture, const Length2D& point, const UnitVec2& normal) override
-    {
-        const auto body = fixture->GetBody();
-        const auto userData = body->GetUserData();
-        if (userData)
-        {
-            const auto index = *static_cast<int*>(userData);
-            if (index == 0)
-            {
-                // By returning -1, we instruct the calling code to ignore this fixture and
-                // continue the ray-cast to the next fixture.
-                return Opcode::IgnoreFixture;
-            }
-        }
-
-        m_hit = true;
-        m_point = point;
-        m_normal = normal;
-
-        // Instruct the calling code to clip the ray and
-        // continue the ray-cast to the next fixture. WARNING: do not assume that fixtures
-        // are reported in order. However, by clipping, we can always get the closest fixture.
-        return Opcode::ClipRay;
-    }
-    
-    bool m_hit;
-    Length2D m_point;
-    UnitVec2 m_normal;
-};
-
-// This callback finds any hit. Polygon 0 is filtered. For this type of query we are usually
-// just checking for obstruction, so the actual fixture and hit point are irrelevant. 
-class RayCastAnyCallback : public RayCastFixtureReporter
-{
-public:
-    RayCastAnyCallback()
-    {
-        m_hit = false;
-    }
-
-    Opcode ReportFixture(Fixture* fixture, const Length2D& point, const UnitVec2& normal) override
-    {
-        const auto body = fixture->GetBody();
-        const auto userData = body->GetUserData();
-        if (userData)
-        {
-            const auto index = *static_cast<int*>(userData);
-            if (index == 0)
-            {
-                // Instruct the calling code to ignore this fixture
-                // and continue the ray-cast to the next fixture.
-                return Opcode::IgnoreFixture;
-            }
-        }
-
-        m_hit = true;
-        m_point = point;
-        m_normal = normal;
-
-        // At this point we have a hit, so we know the ray is obstructed.
-        // Instruct the calling code to terminate the ray-cast.
-        return Opcode::Terminate;
-    }
-
-    bool m_hit;
-    Length2D m_point;
-    UnitVec2 m_normal;
-};
-
-// This ray cast collects multiple hits along the ray. Polygon 0 is filtered.
-// The fixtures are not necessary reported in order, so we might not capture
-// the closest fixture.
-class RayCastMultipleCallback : public RayCastFixtureReporter
-{
-public:
-    enum
-    {
-        e_maxCount = 3
-    };
-
-    RayCastMultipleCallback()
-    {
-        m_count = 0;
-    }
-
-    Opcode ReportFixture(Fixture* fixture, const Length2D& point, const UnitVec2& normal) override
-    {
-        const auto body = fixture->GetBody();
-        const auto userData = body->GetUserData();
-        if (userData)
-        {
-            const auto index = *static_cast<int*>(userData);
-            if (index == 0)
-            {
-                // Instruct the calling code to ignore this fixture
-                // and continue the ray-cast to the next fixture.
-                return Opcode::IgnoreFixture;
-            }
-        }
-
-        assert(m_count < e_maxCount);
-
-        m_points[m_count] = point;
-        m_normals[m_count] = normal;
-        ++m_count;
-
-        if (m_count == e_maxCount)
-        {
-            // At this point the buffer is full.
-            // Instruct the calling code to terminate the ray-cast.
-            return Opcode::Terminate;
-        }
-
-        // Instruct the caller to continue without clipping the ray.
-        return Opcode::ResetRay;
-    }
-
-    Length2D m_points[e_maxCount];
-    UnitVec2 m_normals[e_maxCount];
-    int m_count;
-};
-
-
 class RayCast : public Test
 {
 public:
@@ -348,15 +216,41 @@ public:
 
         if (m_mode == Mode::e_closest)
         {
-            RayCastClosestCallback callback;
-            box2d::RayCast(*m_world, &callback, point1, point2);
+            auto hit = false;
+            Length2D point;
+            UnitVec2 normal;
 
-            if (callback.m_hit)
+            m_world->RayCast(point1, point2, [&](Fixture* f, const Length2D& p, const UnitVec2& n)
             {
-                drawer.DrawPoint(callback.m_point, RealNum{5.0f} * Meter, Color(0.4f, 0.9f, 0.4f));
-                drawer.DrawSegment(point1, callback.m_point, Color(0.8f, 0.8f, 0.8f));
-                const auto head = callback.m_point + RealNum{0.5f} * callback.m_normal * Meter;
-                drawer.DrawSegment(callback.m_point, head, Color(0.9f, 0.9f, 0.4f));
+                const auto body = f->GetBody();
+                const auto userData = body->GetUserData();
+                if (userData)
+                {
+                    const auto index = *static_cast<int*>(userData);
+                    if (index == 0)
+                    {
+                        // Instruct the calling code to ignore this fixture and
+                        // continue the ray-cast to the next fixture.
+                        return World::RayCastOpcode::IgnoreFixture;
+                    }
+                }
+
+                hit = true;
+                point = p;
+                normal = n;
+                
+                // Instruct the calling code to clip the ray and
+                // continue the ray-cast to the next fixture. WARNING: do not assume that fixtures
+                // are reported in order. However, by clipping, we can always get the closest fixture.
+                return World::RayCastOpcode::ClipRay;
+            });
+
+            if (hit)
+            {
+                drawer.DrawPoint(point, RealNum{5.0f} * Meter, Color(0.4f, 0.9f, 0.4f));
+                drawer.DrawSegment(point1, point, Color(0.8f, 0.8f, 0.8f));
+                const auto head = point + RealNum{0.5f} * normal * Meter;
+                drawer.DrawSegment(point, head, Color(0.9f, 0.9f, 0.4f));
             }
             else
             {
@@ -365,15 +259,42 @@ public:
         }
         else if (m_mode == Mode::e_any)
         {
-            RayCastAnyCallback callback;
-            box2d::RayCast(*m_world, &callback, point1, point2);
+            auto hit = false;
+            Length2D point;
+            UnitVec2 normal;
 
-            if (callback.m_hit)
+            // This callback finds any hit. Polygon 0 is filtered. For this type of query we are
+            // just checking for obstruction, so the actual fixture and hit point are irrelevant.
+            m_world->RayCast(point1, point2, [&](Fixture* f, const Length2D& p, const UnitVec2& n)
             {
-                drawer.DrawPoint(callback.m_point, RealNum{5.0f} * Meter, Color(0.4f, 0.9f, 0.4f));
-                drawer.DrawSegment(point1, callback.m_point, Color(0.8f, 0.8f, 0.8f));
-                const auto head = callback.m_point + RealNum{0.5f} * callback.m_normal * Meter;
-                drawer.DrawSegment(callback.m_point, head, Color(0.9f, 0.9f, 0.4f));
+                const auto body = f->GetBody();
+                const auto userData = body->GetUserData();
+                if (userData)
+                {
+                    const auto index = *static_cast<int*>(userData);
+                    if (index == 0)
+                    {
+                        // Instruct the calling code to ignore this fixture
+                        // and continue the ray-cast to the next fixture.
+                        return World::RayCastOpcode::IgnoreFixture;
+                    }
+                }
+                
+                hit = true;
+                point = p;
+                normal = n;
+                
+                // At this point we have a hit, so we know the ray is obstructed.
+                // Instruct the calling code to terminate the ray-cast.
+                return World::RayCastOpcode::Terminate;
+            });
+
+            if (hit)
+            {
+                drawer.DrawPoint(point, RealNum{5.0f} * Meter, Color(0.4f, 0.9f, 0.4f));
+                drawer.DrawSegment(point1, point, Color(0.8f, 0.8f, 0.8f));
+                const auto head = point + RealNum{0.5f} * normal * Meter;
+                drawer.DrawSegment(point, head, Color(0.9f, 0.9f, 0.4f));
             }
             else
             {
@@ -382,19 +303,34 @@ public:
         }
         else if (m_mode == Mode::e_multiple)
         {
-            RayCastMultipleCallback callback;
-            box2d::RayCast(*m_world, &callback, point1, point2);
             drawer.DrawSegment(point1, point2, Color(0.8f, 0.8f, 0.8f));
 
-            for (auto i = decltype(callback.m_count){0}; i < callback.m_count; ++i)
+            // This ray cast collects multiple hits along the ray. Polygon 0 is filtered.
+            // The fixtures are not necessary reported in order, so we might not capture
+            // the closest fixture.
+            m_world->RayCast(point1, point2, [&](Fixture* f, const Length2D& p, const UnitVec2& n)
             {
-                const auto p = callback.m_points[i];
-                const auto n = callback.m_normals[i];
+                const auto body = f->GetBody();
+                const auto userData = body->GetUserData();
+                if (userData)
+                {
+                    const auto index = *static_cast<int*>(userData);
+                    if (index == 0)
+                    {
+                        // Instruct the calling code to ignore this fixture
+                        // and continue the ray-cast to the next fixture.
+                        return World::RayCastOpcode::IgnoreFixture;
+                    }
+                }
+                
                 drawer.DrawPoint(p, RealNum{5.0f} * Meter, Color(0.4f, 0.9f, 0.4f));
                 drawer.DrawSegment(point1, p, Color(0.8f, 0.8f, 0.8f));
                 const auto head = p + RealNum{0.5f} * n * Meter;
                 drawer.DrawSegment(p, head, Color(0.9f, 0.9f, 0.4f));
-            }
+                
+                // Instruct the caller to continue without clipping the ray.
+                return World::RayCastOpcode::ResetRay;
+            });
         }
 
         const auto advanceRay = !settings.pause || settings.singleStep;

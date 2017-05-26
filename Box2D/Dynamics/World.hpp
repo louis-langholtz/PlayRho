@@ -978,15 +978,6 @@ size_t Awaken(World& world) noexcept;
 /// Manually clear the force buffer on all bodies.
 void ClearForces(World& world) noexcept;
 
-/// Ray-cast the world for all fixtures in the path of the ray. Your callback
-/// controls whether you get the closest point, any point, or n-points.
-/// The ray-cast ignores shapes that contain the starting point.
-/// @param callback a user implemented callback class.
-/// @param point1 the ray starting point
-/// @param point2 the ray ending point
-void RayCast(World& world, RayCastFixtureReporter* callback,
-             const Length2D& point1, const Length2D& point2);
-
 bool IsActive(const Contact& contact) noexcept;
 
 } // namespace box2d

@@ -2485,27 +2485,6 @@ void ClearForces(World& world) noexcept
 
 }
 
-void RayCast(World& world, RayCastFixtureReporter* callback,
-             const Length2D& point1, const Length2D& point2)
-{
-    world.RayCast(point1, point2, [&](Fixture* fixture, const Length2D& point,
-                                      const UnitVec2& normal) {
-        const auto opcode = callback->ReportFixture(fixture, point, normal);
-        switch (opcode)
-        {
-            case RayCastFixtureReporter::Opcode::ResetRay:
-                return World::RayCastOpcode::ResetRay;
-            case RayCastFixtureReporter::Opcode::ClipRay:
-                return World::RayCastOpcode::ClipRay;
-            case RayCastFixtureReporter::Opcode::Terminate:
-                return World::RayCastOpcode::Terminate;
-            case RayCastFixtureReporter::Opcode::IgnoreFixture:
-                return World::RayCastOpcode::IgnoreFixture;
-        }
-        return World::RayCastOpcode::IgnoreFixture;
-    });
-}
-
 bool IsActive(const Contact& contact) noexcept
 {
     const auto bA = contact.GetFixtureA()->GetBody();

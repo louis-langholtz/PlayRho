@@ -171,39 +171,6 @@ public:
     virtual bool ReportFixture(Fixture* fixture) = 0;
 };
 
-/// Callback class for ray casts.
-/// See World::RayCast
-class RayCastFixtureReporter
-{
-public:
-    enum class Opcode {
-        Terminate,
-        IgnoreFixture,
-        ClipRay,
-        ResetRay
-    };
-
-    virtual ~RayCastFixtureReporter() {}
-
-    /// Reports fixture.
-    ///
-    /// @details Called for each fixture found in the query. You control how the ray cast
-    /// proceeds by the return value:
-    /// return -1: ignore this fixture and continue
-    /// return 0: terminate the ray cast
-    /// return fraction: clip the ray to this point
-    /// return 1: don't clip the ray and continue
-    ///
-    /// @param fixture the fixture hit by the ray
-    /// @param point the point of initial intersection
-    /// @param normal the normal vector at the point of intersection.
-    ///
-    /// @return Operational code.
-    ///
-    virtual Opcode ReportFixture(Fixture* fixture, const Length2D& point,
-                                 const UnitVec2& normal) = 0;
-};
-
 } // namespace box2d
 
 #endif

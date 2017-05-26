@@ -26,28 +26,6 @@
 
 namespace box2d {
 
-class EdgeShapesCallback : public RayCastFixtureReporter
-{
-public:
-    EdgeShapesCallback()
-    {
-        m_fixture = nullptr;
-    }
-
-    Opcode ReportFixture(Fixture* fixture, const Length2D& point,
-                         const UnitVec2& normal) override
-    {
-        m_fixture = fixture;
-        m_point = point;
-        m_normal = normal;
-        return Opcode::ClipRay;
-    }
-
-    Fixture* m_fixture;
-    Length2D m_point;
-    UnitVec2 m_normal;
-};
-
 class EdgeShapes : public Test
 {
 public:
@@ -199,18 +177,23 @@ public:
         const auto d = Vec2(L * std::cos(m_angle), -L * Abs(std::sin(m_angle))) * Meter;
         const auto point2 = point1 + d;
 
-        EdgeShapesCallback callback;
+        auto fixture = static_cast<Fixture*>(nullptr);
+        Length2D point;
+        UnitVec2 normal;
 
-        RayCast(*m_world, &callback, point1, point2);
+        m_world->RayCast(point1, point2, [&](Fixture* f, const Length2D& p, const UnitVec2& n) {
+            fixture = f;
+            point = p;
+            normal = n;
+            return World::RayCastOpcode::ClipRay;
+        });
 
-        if (callback.m_fixture)
+        if (fixture)
         {
-            drawer.DrawPoint(callback.m_point, RealNum{5.0f} * Meter, Color(0.4f, 0.9f, 0.4f));
-
-            drawer.DrawSegment(point1, callback.m_point, Color(0.8f, 0.8f, 0.8f));
-
-            const auto head = callback.m_point + RealNum{0.5f} * callback.m_normal * Meter;
-            drawer.DrawSegment(callback.m_point, head, Color(0.9f, 0.9f, 0.4f));
+            drawer.DrawPoint(point, RealNum{5.0f} * Meter, Color(0.4f, 0.9f, 0.4f));
+            drawer.DrawSegment(point1, point, Color(0.8f, 0.8f, 0.8f));
+            const auto head = point + RealNum{0.5f} * normal * Meter;
+            drawer.DrawSegment(point, head, Color(0.9f, 0.9f, 0.4f));
         }
         else
         {
