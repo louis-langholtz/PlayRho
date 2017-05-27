@@ -29,8 +29,8 @@
 
 using namespace box2d;
 
-MassData box2d::GetMassData(const Length r, const Density density,
-                     const Length2D location)
+MassData box2d::GetMassData(const Length r, const NonNegative<Density> density,
+                            const Length2D location)
 {
     assert(density >= Density{0});
 
@@ -49,25 +49,25 @@ MassData box2d::GetMassData(const Length r, const Density density,
     // Iz = Pi * r^2 * ((r^2 / 2) + (dx^2 + dy^2))
     const auto r_squared = r * r;
     const auto area = r_squared * Pi;
-    const auto mass = Mass{density * area};
+    const auto mass = Mass{Density{density} * area};
     const auto Iz = SecondMomentOfArea{area * ((r_squared / RealNum{2}) + GetLengthSquared(location))};
-    const auto I = RotInertia{Iz * density / SquareRadian};
+    const auto I = RotInertia{Iz * Density{density} / SquareRadian};
     return MassData{mass, location, I};
 }
 
-MassData box2d::GetMassData(const Length r, const Density density,
-                     const Length2D v0, const Length2D v1)
+MassData box2d::GetMassData(const Length r, const NonNegative<Density> density,
+                            const Length2D v0, const Length2D v1)
 {
     assert(density >= Density{0});
 
     const auto r_squared = Area{r * r};
     const auto circle_area = r_squared * Pi;
-    const auto circle_mass = density * circle_area;
+    const auto circle_mass = Density{density} * circle_area;
     const auto d = v1 - v0;
     const auto offset = GetRevPerpendicular(GetUnitVector(d, UnitVec2::GetZero())) * r;
     const auto b = GetLength(d);
     const auto h = r * RealNum{2};
-    const auto rect_mass = density * b * h;
+    const auto rect_mass = Density{density} * b * h;
     const auto totalMass = circle_mass + rect_mass;
     const auto center = (v0 + v1) / RealNum{2};
 
@@ -89,7 +89,7 @@ MassData box2d::GetMassData(const Length r, const Density density,
     assert(I0 >= SecondMomentOfArea{0});
     assert(I1 >= SecondMomentOfArea{0});
     assert(I_z >= SecondMomentOfArea{0});
-    const auto I = RotInertia{(I0 + I1 + I_z) * density / SquareRadian};
+    const auto I = RotInertia{(I0 + I1 + I_z) * Density{density} / SquareRadian};
     return MassData{totalMass, center, I};
 }
 
@@ -161,9 +161,9 @@ MassData box2d::ComputeMassData(const Body& body) noexcept
         if (fixture.GetDensity() > Density{0})
         {
             const auto massData = GetMassData(fixture);
-            mass += massData.mass;
-            center += RealNum{massData.mass / Kilogram} * massData.center;
-            I += massData.I;
+            mass += Mass{massData.mass};
+            center += RealNum{Mass{massData.mass} / Kilogram} * massData.center;
+            I += RotInertia{massData.I};
         }
     }
     return MassData{mass, center, I};

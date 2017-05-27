@@ -24,6 +24,7 @@
 /// Declaration of the AABB class and free functions that return instances of it.
 
 #include <Box2D/Common/Math.hpp>
+#include <Box2D/Common/BoundedValue.hpp>
 
 namespace box2d
 {
@@ -123,10 +124,9 @@ namespace box2d
         }
         
         /// Fattens an AABB by the given amount.
-        /// @warning Behavior is undefined if given a negative value.
-        constexpr AABB& Fatten(const Length value) noexcept
+        constexpr AABB& Fatten(const NonNegative<Length> amount) noexcept
         {
-            assert(value >= Length{0});
+            const auto value = Length{amount};
             lowerBound.x -= value;
             lowerBound.y -= value;
             upperBound.x += value;
@@ -135,14 +135,18 @@ namespace box2d
         }
         
     private:
+        
+        /// @brief Lower vertex.
         Length2D lowerBound = Length2D{
             std::numeric_limits<RealNum>::infinity() * Meter,
             std::numeric_limits<RealNum>::infinity() * Meter
-        }; ///< the lower vertex
+        };
+
+        /// @brief Upper vertex.
         Length2D upperBound = Length2D{
             -std::numeric_limits<RealNum>::infinity() * Meter,
             -std::numeric_limits<RealNum>::infinity() * Meter
-        }; ///< the upper vertex
+        };
     };
     
     template <>

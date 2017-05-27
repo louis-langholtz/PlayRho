@@ -815,7 +815,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
     step.SetTime(time_inc);
 
     // Solver won't separate more than -step.linearSlop.
-    const auto full_separation = radius * RealNum{2} * Meter - step.linearSlop;
+    const auto full_separation = radius * RealNum{2} * Meter - Length{step.linearSlop};
     for (auto i = 0; i < 100; ++i)
     {
         world.Step(step);
@@ -833,7 +833,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
         if (new_distance == distance)
         {
             // position resolution has come to tolerance
-            ASSERT_GE(new_distance, radius * RealNum{2} * Meter - step.linearSlop * RealNum{4});
+            ASSERT_GE(new_distance, radius * RealNum{2} * Meter - Length{step.linearSlop} * RealNum{4});
             break;
         }
         else // new_distance > distance
@@ -993,7 +993,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
     StepConf step;
     step.SetTime(Time{Second * time_inc});
     // Solver won't separate more than -step.linearSlop.
-    const auto full_separation = half_dim * RealNum{2} * Meter - step.linearSlop;
+    const auto full_separation = half_dim * RealNum{2} * Meter - Length{step.linearSlop};
     for (auto i = 0; i < 100; ++i)
     {
         Step(world, Time{Second * time_inc}, velocity_iters, position_iters);

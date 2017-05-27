@@ -25,6 +25,7 @@
 
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Common/Range.hpp>
+#include <Box2D/Common/BoundedValue.hpp>
 #include <Box2D/Dynamics/BodyType.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/Contacts/ContactKey.hpp>
@@ -79,10 +80,11 @@ public:
 
     static constexpr auto InvalidIslandIndex = static_cast<body_count_t>(-1);
 
-    /// @brief Tests whether the given shape is valid as far as the Body class is concerned.
-    static bool IsValid(const Shape& shape);
-
+    /// @brief Initializing constructor.
+    /// @note This is not meant to be called directly by users of the library API. Call
+    ///   a world instance's <code>CreateBody</code> method instead.
     Body(const BodyDef& bd, World* world);
+
     ~Body();
     
     /// @brief Creates a fixture and attaches it to this body.
@@ -217,13 +219,13 @@ public:
     Frequency GetLinearDamping() const noexcept;
 
     /// @brief Sets the linear damping of the body.
-    void SetLinearDamping(Frequency linearDamping) noexcept;
+    void SetLinearDamping(NonNegative<Frequency> linearDamping) noexcept;
 
     /// @brief Gets the angular damping of the body.
     Frequency GetAngularDamping() const noexcept;
 
     /// @brief Sets the angular damping of the body.
-    void SetAngularDamping(Frequency angularDamping) noexcept;
+    void SetAngularDamping(NonNegative<Frequency> angularDamping) noexcept;
 
     /// @brief Sets the type of this body.
     /// @note This may alter the mass and velocity.
@@ -476,8 +478,8 @@ private:
     /// @note 4-bytes.
     InvRotInertia m_invRotI = 0;
 
-    Frequency m_linearDamping; ///< Linear damping. 4-bytes.
-    Frequency m_angularDamping; ///< Angular damping. 4-bytes.
+    NonNegative<Frequency> m_linearDamping; ///< Linear damping. 4-bytes.
+    NonNegative<Frequency> m_angularDamping; ///< Angular damping. 4-bytes.
 
     /// Under-active time.
     /// @details A body under-active for enough time should have their awake flag unset.
@@ -559,7 +561,7 @@ inline Frequency Body::GetLinearDamping() const noexcept
     return m_linearDamping;
 }
 
-inline void Body::SetLinearDamping(Frequency linearDamping) noexcept
+inline void Body::SetLinearDamping(NonNegative<Frequency> linearDamping) noexcept
 {
     m_linearDamping = linearDamping;
 }
@@ -569,7 +571,7 @@ inline Frequency Body::GetAngularDamping() const noexcept
     return m_angularDamping;
 }
 
-inline void Body::SetAngularDamping(Frequency angularDamping) noexcept
+inline void Body::SetAngularDamping(NonNegative<Frequency> angularDamping) noexcept
 {
     m_angularDamping = angularDamping;
 }

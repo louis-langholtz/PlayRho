@@ -1077,7 +1077,7 @@ TEST(CollideShapes, EdgeFooTriangle)
     edge_shape.Set(p2, p1);
     const auto edge_xfm = Transformation{Vec2(0, 0.5) * Meter, UnitVec2{-RealNum{5.0f} * Degree}};
     auto polygon_shape = PolygonShape{};
-    polygon_shape.SetVertexRadius(0);
+    polygon_shape.SetVertexRadius(RealNum{0} * Meter);
     const auto triangleTopPt = Vec2{0, +1} * Meter;
     const auto triangleLeftPt = Vec2{-1, -1} * Meter;
     const auto triangleRightPt = Vec2{+1, -1} * Meter;

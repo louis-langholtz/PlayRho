@@ -69,7 +69,7 @@ ChainShape::~ChainShape()
 
 MassData ChainShape::GetMassData() const noexcept
 {
-    return MassData{Mass{0}, Vec2_zero * Meter, RotInertia{0}};
+    return MassData{NonNegative<Mass>{0}, Vec2_zero * Meter, NonNegative<RotInertia>{0}};
 }
 
 void ChainShape::Clear()

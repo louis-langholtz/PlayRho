@@ -23,6 +23,7 @@
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Collision/DistanceProxy.hpp>
 #include <Box2D/Collision/MassData.hpp>
+#include <Box2D/Common/BoundedValue.hpp>
 
 namespace box2d {
 
@@ -46,10 +47,10 @@ class Shape
 public:
     struct Conf
     {
-        constexpr Conf& UseVertexRadius(Length value) noexcept;
-        constexpr Conf& UseFriction(RealNum value) noexcept;
-        constexpr Conf& UseRestitution(RealNum value) noexcept;
-        constexpr Conf& UseDensity(Density value) noexcept;
+        constexpr Conf& UseVertexRadius(NonNegative<Length> value) noexcept;
+        constexpr Conf& UseFriction(NonNegative<RealNum> value) noexcept;
+        constexpr Conf& UseRestitution(Finite<RealNum> value) noexcept;
+        constexpr Conf& UseDensity(NonNegative<Density> value) noexcept;
 
         /// Vertex radius.
         ///
@@ -62,30 +63,30 @@ public:
         ///
         /// @note This should be a value greater than zero.
         ///
-        Length vertexRadius = DefaultLinearSlop;
+        NonNegative<Length> vertexRadius = NonNegative<Length>{DefaultLinearSlop};
 
         /// Friction coefficient.
         ///
         /// @note This must be a value between 0 and +infinity.
         /// @note This is usually in the range [0,1].
         /// @note The square-root of the product of this value multiplied by a touching fixture's
-        /// friction becomes the friction coefficient for the contact.
+        ///   friction becomes the friction coefficient for the contact.
         ///
-        RealNum friction = RealNum{2} / RealNum{10};
+        NonNegative<RealNum> friction = NonNegative<RealNum>{RealNum{2} / RealNum{10}};
         
         /// Restitution (elasticity) of the associated shape.
         ///
         /// @note This should be a valid finite value.
         /// @note This is usually in the range [0,1].
         ///
-        RealNum restitution = RealNum{0};
+        Finite<RealNum> restitution = Finite<RealNum>{0};
         
         /// Density of the associated shape.
         ///
         /// @note This must be a non-negative value.
         /// @note Use 0 to indicate that the shape's associated mass should be 0.
         ///
-        Density density = Density{0};
+        NonNegative<Density> density = NonNegative<Density>{0};
     };
 
     /// Visitor interface.
@@ -131,21 +132,12 @@ public:
 
     /// Initializing constructor.
     ///
-    /// @warning Behavior is undefined if the vertex radius is less than zero.
-    /// @warning Behavior is undefined if the density is less than zero.
-    /// @warning Behavior is undefined if the friction value is less than zero.
-    ///
     Shape(const Conf& conf) noexcept:
         m_vertexRadius{conf.vertexRadius},
-        m_density{Max(conf.density, Density{0})},
+        m_density{conf.density},
         m_friction{conf.friction},
         m_restitution{conf.restitution}
     {
-        assert(conf.vertexRadius >= Length{0});
-        assert(conf.density >= Density{0});
-        assert(conf.friction >= 0);
-        assert(conf.restitution < std::numeric_limits<decltype(conf.restitution)>::infinity());
-        assert(conf.restitution > -std::numeric_limits<decltype(conf.restitution)>::infinity());
     }
 
     Shape(const Shape&) = default;
@@ -167,15 +159,14 @@ public:
     virtual bool TestPoint(const Transformation& xf, const Length2D p) const noexcept = 0;
 
     /// Gets the mass properties of this shape using its dimensions and density.
-    /// @note Behavior is undefined if the density is negative.
     /// @return Mass data for this shape.
     virtual MassData GetMassData() const noexcept = 0;
 
     /// Accepts a visitor.
     virtual void Accept(Visitor& visitor) const = 0;
     
-    /// Gets the vertex radius.
-    Length GetVertexRadius() const noexcept { return m_vertexRadius; }
+    /// @brief Gets the vertex radius.
+    Length GetVertexRadius() const noexcept;
 
     /// Sets the vertex radius.
     ///
@@ -188,22 +179,17 @@ public:
     ///
     /// @note This should be a value greater than zero.
     ///
-    void SetVertexRadius(Length vertexRadius)
-    {
-        assert(vertexRadius >= Length{0});
-        m_vertexRadius = vertexRadius;
-    }
+    void SetVertexRadius(NonNegative<Length> vertexRadius) noexcept;
 
     /// Gets the density of this fixture.
-    /// @return Non-negative density in kg/m^2.
+    /// @return Non-negative density (in mass per area).
     Density GetDensity() const noexcept;
 
     /// Sets the density of this fixture.
     /// @note This will _not_ automatically adjust the mass of the body.
     ///   You must call Body::ResetMassData to update the body's mass.
-    /// @warning Behavior is undefined if given a negative value.
-    /// @param density Non-negative density in kg/m^2.
-    void SetDensity(Density density) noexcept;
+    /// @param density Non-negative density (in mass per area).
+    void SetDensity(NonNegative<Density> density) noexcept;
     
     /// @brief Gets the coefficient of friction.
     /// @return Value of 0 or higher.
@@ -211,46 +197,63 @@ public:
     
     /// @brief Sets the coefficient of friction.
     /// @note This will _not_ change the friction of existing contacts.
-    /// @warning Behavior is undefined if given a negative friction value.
     /// @param friction Zero or higher (non-negative) co-efficient of friction.
-    void SetFriction(RealNum friction) noexcept;
+    void SetFriction(NonNegative<RealNum> friction) noexcept;
     
     /// Gets the coefficient of restitution.
     RealNum GetRestitution() const noexcept;
     
     /// Sets the coefficient of restitution. This will _not_ change the restitution of
     /// existing contacts.
-    void SetRestitution(RealNum restitution) noexcept;
+    void SetRestitution(Finite<RealNum> restitution) noexcept;
 
 private:
-    Length m_vertexRadius; ///< Vertex radius.
-    Density m_density = KilogramPerSquareMeter * RealNum{0}; ///< Density. 4-bytes.
-    RealNum m_friction = RealNum{2} / RealNum{10}; ///< Friction as a coefficient. 4-bytes.
-    RealNum m_restitution = 0; ///< Restitution as a coefficient. 4-bytes.
+    
+    /// @brief Vertex radius.
+    NonNegative<Length> m_vertexRadius;
+    
+    /// @brief Density.
+    NonNegative<Density> m_density = NonNegative<Density>{KilogramPerSquareMeter * RealNum{0}};
+    
+    /// @brief Friction as a coefficient.
+    NonNegative<RealNum> m_friction = NonNegative<RealNum>{RealNum{2} / RealNum{10}};
+
+    /// @brief Restitution as a coefficient.
+    Finite<RealNum> m_restitution = Finite<RealNum>{0};
 };
 
-constexpr inline Shape::Conf& Shape::Conf::UseVertexRadius(Length value) noexcept
+constexpr inline Shape::Conf& Shape::Conf::UseVertexRadius(NonNegative<Length> value) noexcept
 {
     vertexRadius = value;
     return *this;
 }
 
-constexpr inline Shape::Conf& Shape::Conf::UseFriction(RealNum value) noexcept
+constexpr inline Shape::Conf& Shape::Conf::UseFriction(NonNegative<RealNum> value) noexcept
 {
     friction = value;
     return *this;
 }
 
-constexpr inline Shape::Conf& Shape::Conf::UseRestitution(RealNum value) noexcept
+constexpr inline Shape::Conf& Shape::Conf::UseRestitution(Finite<RealNum> value) noexcept
 {
     restitution = value;
     return *this;
 }
 
-constexpr inline Shape::Conf& Shape::Conf::UseDensity(Density value) noexcept
+constexpr inline Shape::Conf& Shape::Conf::UseDensity(NonNegative<Density> value) noexcept
 {
     density = value;
     return *this;
+}
+
+inline Length Shape::GetVertexRadius() const noexcept
+{
+    return m_vertexRadius;
+}
+
+inline void Shape::SetVertexRadius(NonNegative<Length> vertexRadius) noexcept
+{
+    m_vertexRadius = vertexRadius;
 }
 
 inline Density Shape::GetDensity() const noexcept
@@ -268,19 +271,17 @@ inline RealNum Shape::GetRestitution() const noexcept
     return m_restitution;
 }
 
-inline void Shape::SetDensity(Density density) noexcept
+inline void Shape::SetDensity(NonNegative<Density> density) noexcept
 {
     m_density = density;
 }
 
-
-inline void Shape::SetFriction(RealNum friction) noexcept
+inline void Shape::SetFriction(NonNegative<RealNum> friction) noexcept
 {
-    assert(friction >= RealNum(0));
     m_friction = friction;
 }
 
-inline void Shape::SetRestitution(RealNum restitution) noexcept
+inline void Shape::SetRestitution(Finite<RealNum> restitution) noexcept
 {
     m_restitution = restitution;
 }

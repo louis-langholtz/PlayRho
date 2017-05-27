@@ -24,6 +24,7 @@
 /// Declarations of the BodyDef struct and free functions associated with it.
 
 #include <Box2D/Common/Settings.hpp>
+#include <Box2D/Common/BoundedValue.hpp>
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Dynamics/BodyType.hpp>
 
@@ -45,8 +46,8 @@ namespace box2d
         constexpr BodyDef& UseAngularVelocity(AngularVelocity v) noexcept;
         constexpr BodyDef& UseLinearAcceleration(LinearAcceleration2D v) noexcept;
         constexpr BodyDef& UseAngularAcceleration(AngularAcceleration v) noexcept;
-        constexpr BodyDef& UseLinearDamping(Frequency v) noexcept;
-        constexpr BodyDef& UseAngularDamping(Frequency v) noexcept;
+        constexpr BodyDef& UseLinearDamping(NonNegative<Frequency> v) noexcept;
+        constexpr BodyDef& UseAngularDamping(NonNegative<Frequency> v) noexcept;
         constexpr BodyDef& UseUnderActiveTime(Time v) noexcept;
         constexpr BodyDef& UseAllowSleep(bool value) noexcept;
         constexpr BodyDef& UseAwake(bool value) noexcept;
@@ -85,12 +86,12 @@ namespace box2d
         /// Linear damping is use to reduce the linear velocity. The damping parameter
         /// can be larger than 1 but the damping effect becomes sensitive to the
         /// time step when the damping parameter is large.
-        Frequency linearDamping = 0;
+        NonNegative<Frequency> linearDamping = NonNegative<Frequency>{0};
         
         /// Angular damping is use to reduce the angular velocity. The damping parameter
         /// can be larger than 1 but the damping effect becomes sensitive to the
         /// time step when the damping parameter is large.
-        Frequency angularDamping = 0;
+        NonNegative<Frequency> angularDamping = NonNegative<Frequency>{0};
         
         /// Under-active time.
         /// @details Set this to the value retrieved from Body::GetUnderActiveTime() or leave it as 0.
@@ -161,13 +162,13 @@ namespace box2d
         return *this;
     }
     
-    constexpr inline BodyDef& BodyDef::UseLinearDamping(Frequency v) noexcept
+    constexpr inline BodyDef& BodyDef::UseLinearDamping(NonNegative<Frequency> v) noexcept
     {
         linearDamping = v;
         return *this;
     }
     
-    constexpr inline BodyDef& BodyDef::UseAngularDamping(Frequency v) noexcept
+    constexpr inline BodyDef& BodyDef::UseAngularDamping(NonNegative<Frequency> v) noexcept
     {
         angularDamping = v;
         return *this;

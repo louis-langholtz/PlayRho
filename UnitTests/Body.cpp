@@ -125,23 +125,10 @@ TEST(Body, CreateFixture)
 {
     World world;
     const auto body = world.CreateBody();
-
     const auto valid_shape = std::make_shared<CircleShape>(RealNum{1} * Meter);
     
-    const auto invalid_density_shape = std::make_shared<CircleShape>(RealNum{1} * Meter);
-    invalid_density_shape->SetDensity(std::numeric_limits<RealNum>::quiet_NaN() * KilogramPerSquareMeter);
-    
-    const auto invalid_restitution_shape = std::make_shared<CircleShape>(RealNum{1} * Meter);
-    invalid_restitution_shape->SetRestitution(std::numeric_limits<RealNum>::quiet_NaN());
-
     // Check default settings
-    EXPECT_NE(body->CreateFixture(valid_shape, FixtureDef{}), nullptr);
-    
-    // Check density settings
-    EXPECT_EQ(body->CreateFixture(invalid_density_shape), nullptr);
-    
-    // Check restitution settings
-    EXPECT_EQ(body->CreateFixture(invalid_restitution_shape), nullptr);
+    EXPECT_NE(body->CreateFixture(valid_shape, FixtureDef{}), nullptr);    
 }
 
 TEST(Body, CreateAndDestroyFixture)

@@ -2201,13 +2201,13 @@ bool World::IsValid(std::shared_ptr<const Shape> shape) const noexcept
 }
 
 Fixture* World::CreateFixture(Body& body, std::shared_ptr<const Shape> shape,
-                       const FixtureDef& def, bool resetMassData)
+                              const FixtureDef& def, bool resetMassData)
 {
     if (body.GetWorld() != this)
     {
         return nullptr;
     }
-    if (!IsValid(shape) || !Body::IsValid(*shape))
+    if (!IsValid(shape))
     {
         return nullptr;
     }

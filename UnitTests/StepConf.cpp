@@ -64,8 +64,8 @@ TEST(StepConf, maxTranslation)
     const auto max_inc = inc * StepConf{}.maxTranslation;
     EXPECT_GT(max_inc, RealNum(0) * Meter);
     EXPECT_LT(max_inc, DefaultLinearSlop / RealNum{2});
-    EXPECT_LT(max_inc, StepConf{}.linearSlop / RealNum{2});
-    EXPECT_LT(max_inc, StepConf{}.tolerance);
+    EXPECT_LT(max_inc, Length{StepConf{}.linearSlop} / RealNum{2});
+    EXPECT_LT(max_inc, Length{StepConf{}.tolerance});
 #if 0
     std::cout << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
     std::cout << " inc=" << inc;

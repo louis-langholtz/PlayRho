@@ -179,6 +179,9 @@
 		47928F391E66586400EE6E9E /* DistanceJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F381E66586400EE6E9E /* DistanceJoint.cpp */; };
 		47928F3B1E6A099900EE6E9E /* BodyConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F3A1E6A099900EE6E9E /* BodyConstraint.cpp */; };
 		47928F3C1E6A099900EE6E9E /* BodyConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F3A1E6A099900EE6E9E /* BodyConstraint.cpp */; };
+		479B63C01ED8B64300D49BC7 /* BoundedValue.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 479B63BD1ED8B64300D49BC7 /* BoundedValue.hpp */; };
+		479B63C11ED8B64300D49BC7 /* BoundedValue.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 479B63BD1ED8B64300D49BC7 /* BoundedValue.hpp */; };
+		479B63C31ED9CAC300D49BC7 /* BoundedValue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 479B63C21ED9CAC300D49BC7 /* BoundedValue.cpp */; };
 		47AA5D9B1C4C5FBE008AF2BA /* BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8927141C3E5900F1753A /* BroadPhase.cpp */; };
 		47AA5D9F1C4C5FBE008AF2BA /* Collision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB892C141C3E5900F1753A /* Collision.cpp */; };
 		47AA5DA01C4C5FBE008AF2BA /* Distance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB892E141C3E5900F1753A /* Distance.cpp */; };
@@ -537,6 +540,8 @@
 		47928F361E66539000EE6E9E /* FrictionJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FrictionJoint.cpp; sourceTree = "<group>"; };
 		47928F381E66586400EE6E9E /* DistanceJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceJoint.cpp; sourceTree = "<group>"; };
 		47928F3A1E6A099900EE6E9E /* BodyConstraint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BodyConstraint.cpp; sourceTree = "<group>"; };
+		479B63BD1ED8B64300D49BC7 /* BoundedValue.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BoundedValue.hpp; sourceTree = "<group>"; };
+		479B63C21ED9CAC300D49BC7 /* BoundedValue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BoundedValue.cpp; sourceTree = "<group>"; };
 		47AA5DFD1C4C5FBE008AF2BA /* libBox2D iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libBox2D iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		47AB01B91D6FA40C0084D721 /* Dump.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dump.cpp; sourceTree = "<group>"; };
 		47AFC3041DAEBC120023E9D1 /* PositionSolverManifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PositionSolverManifold.cpp; sourceTree = "<group>"; };
@@ -746,6 +751,7 @@
 				475A94531D930503000CA9A8 /* BlockAllocator.cpp */,
 				479039D01D5BB9ED001A2145 /* Body.cpp */,
 				47928F341E5FE19C00EE6E9E /* BodyConstraint.cpp */,
+				479B63C21ED9CAC300D49BC7 /* BoundedValue.cpp */,
 				4731DE0B1DD7A65B00E7F931 /* BroadPhase.cpp */,
 				474BC3F51D41278800447DCD /* CircleShape.cpp */,
 				474BC3F61D41278800447DCD /* CollideShapes.cpp */,
@@ -886,6 +892,7 @@
 				4734B2161DC00AFD00F15E29 /* ArrayList.hpp */,
 				80BB893F141C3E5900F1753A /* BlockAllocator.cpp */,
 				80BB8940141C3E5900F1753A /* BlockAllocator.hpp */,
+				479B63BD1ED8B64300D49BC7 /* BoundedValue.hpp */,
 				476162C61E245C9D002C7FB0 /* CodeDumper.cpp */,
 				476162C71E245C9D002C7FB0 /* CodeDumper.hpp */,
 				4727242D1E315E1A00C64921 /* Fixed.hpp */,
@@ -1222,6 +1229,7 @@
 				4731DE591DEC908600E7F931 /* UnitVec2.hpp in Headers */,
 				47AA5DF61C4C5FBE008AF2BA /* WeldJoint.hpp in Headers */,
 				470F94E41ECBB3A100AA3C82 /* Range.hpp in Headers */,
+				479B63C11ED8B64300D49BC7 /* BoundedValue.hpp in Headers */,
 				47AA5DF71C4C5FBE008AF2BA /* WheelJoint.hpp in Headers */,
 				47AA5DF81C4C5FBE008AF2BA /* Rope.hpp in Headers */,
 				47AA5DF91C4C5FBE008AF2BA /* MotorJoint.hpp in Headers */,
@@ -1280,6 +1288,7 @@
 				4768D3F51E3A7ACA00574143 /* Wider.hpp in Headers */,
 				470F94E31ECBB3A100AA3C82 /* Range.hpp in Headers */,
 				470F94B41EC4CB6C00AA3C82 /* Filter.hpp in Headers */,
+				479B63C01ED8B64300D49BC7 /* BoundedValue.hpp in Headers */,
 				4751EE291CEDD78F00D459CB /* Mobile.hpp in Headers */,
 				4751EE2B1CEDD79900D459CB /* ConveyorBelt.hpp in Headers */,
 				4768D3FD1E414A0100574143 /* Vec2.hpp in Headers */,
@@ -1505,6 +1514,7 @@
 				4731DE0C1DD7A65B00E7F931 /* BroadPhase.cpp in Sources */,
 				47E841701DB3FDC400E5F311 /* WorldManifold.cpp in Sources */,
 				474BC43D1D413DC200447DCD /* World.cpp in Sources */,
+				479B63C31ED9CAC300D49BC7 /* BoundedValue.cpp in Sources */,
 				475A94561D930E6C000CA9A8 /* Fixture.cpp in Sources */,
 				4731DE161DDCD00100E7F931 /* FixtureProxy.cpp in Sources */,
 				479039D11D5BB9ED001A2145 /* Body.cpp in Sources */,

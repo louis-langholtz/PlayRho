@@ -29,27 +29,6 @@
 
 using namespace box2d;
 
-bool Body::IsValid(const Shape& shape)
-{
-    if (!(shape.GetDensity() >= Density{0}))
-    {
-        return false;
-    }
-    if (!(shape.GetFriction() >= 0))
-    {
-        return false;
-    }
-    if (!(shape.GetRestitution() < std::numeric_limits<decltype(shape.GetRestitution())>::infinity()))
-    {
-        return false;
-    }
-    if (!(shape.GetRestitution() > -std::numeric_limits<decltype(shape.GetRestitution())>::infinity()))
-    {
-        return false;
-    }
-    return true;
-}
-
 const FixtureDef& box2d::GetDefaultFixtureDef() noexcept
 {
     static const auto def = FixtureDef{};
@@ -112,8 +91,6 @@ Body::Body(const BodyDef& bd, World* world):
     assert(::box2d::IsValid(bd.linearVelocity.x) && ::box2d::IsValid(bd.linearVelocity.y));
     assert(::box2d::IsValid(bd.angle));
     assert(::box2d::IsValid(bd.angularVelocity));
-    assert(::box2d::IsValid(bd.angularDamping) && (bd.angularDamping >= RealNum{0}));
-    assert(::box2d::IsValid(bd.linearDamping) && (bd.linearDamping >= RealNum{0}));
 
     SetVelocity(Velocity{bd.linearVelocity, bd.angularVelocity});
     SetAcceleration(bd.linearAcceleration, bd.angularAcceleration);
@@ -172,7 +149,7 @@ void Body::ResetMassData()
     const auto massData = ComputeMassData(*this);
 
     // Force all dynamic bodies to have a positive mass.
-    const auto mass = (massData.mass > Mass{0})? massData.mass: Kilogram;
+    const auto mass = (massData.mass > Mass{0})? Mass{massData.mass}: Kilogram;
     m_invMass = RealNum{1} / mass;
 
     // Compute center of mass.
@@ -182,7 +159,7 @@ void Body::ResetMassData()
     {
         // Center the inertia about the center of mass.
         const auto lengthSquared = GetLengthSquared(localCenter);
-        const auto I = massData.I - RotInertia{(mass * lengthSquared / SquareRadian)};
+        const auto I = RotInertia{massData.I} - RotInertia{(mass * lengthSquared / SquareRadian)};
         //assert((massData.I - mass * lengthSquared) > 0);
         m_invRotI = RealNum{1} / I;
     }
@@ -216,14 +193,14 @@ void Body::SetMassData(const MassData& massData)
         return;
     }
 
-    const auto mass = (massData.mass > Mass{0})? massData.mass: Kilogram;
+    const auto mass = (massData.mass > Mass{0})? Mass{massData.mass}: Kilogram;
     m_invMass = RealNum{1} / mass;
 
     if ((massData.I > RotInertia{0}) && (!IsFixedRotation()))
     {
         const auto lengthSquared = GetLengthSquared(massData.center);
         // L^2 M QP^-2
-        const auto I = massData.I - RotInertia{(mass * lengthSquared) / SquareRadian};
+        const auto I = RotInertia{massData.I} - RotInertia{(mass * lengthSquared) / SquareRadian};
         assert(I > RotInertia{0});
         m_invRotI = RealNum{1} / I;
     }
@@ -234,7 +211,10 @@ void Body::SetMassData(const MassData& massData)
 
     // Move center of mass.
     const auto oldCenter = GetWorldCenter();
-    m_sweep = Sweep{Position{Transform(massData.center, GetTransformation()), GetAngle()}, massData.center};
+    m_sweep = Sweep{
+        Position{Transform(massData.center, GetTransformation()), GetAngle()},
+        massData.center
+    };
     const auto newCenter = GetWorldCenter();
 
     // Update center of mass velocity.

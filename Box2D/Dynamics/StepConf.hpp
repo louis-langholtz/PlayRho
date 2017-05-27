@@ -24,6 +24,7 @@
 /// Declarations of the StepConf class, and free functions associated with it.
 
 #include <Box2D/Common/Settings.hpp>
+#include <Box2D/Common/BoundedValue.hpp>
 
 namespace box2d {
 
@@ -100,12 +101,12 @@ public:
     /// @details Linear slop for position resolution.
     /// @note Must be greater than 0.
     /// @note Used in both the regular and TOI phases of step processing.
-    Length linearSlop = DefaultLinearSlop;
+    Positive<Length> linearSlop = DefaultLinearSlop;
     
     /// @brief Angular slop.
     /// @note Must be greater than 0.
     /// @note Used in both the regular and TOI phases of step processing.
-    Angle angularSlop = DefaultAngularSlop;
+    Positive<Angle> angularSlop = DefaultAngularSlop;
     
     /// @brief Regular resolution rate.
     /// @details
@@ -149,7 +150,7 @@ public:
     /// @note Must not be subnormal.
     /// @note Must be less than twice the world's minimum vertex radius.
     /// @note Used in the TOI phase of step processing.
-    Length targetDepth = DefaultLinearSlop * RealNum{3};
+    Positive<Length> targetDepth = DefaultLinearSlop * RealNum{3};
     
     /// @brief Tolerance.
     /// @details The acceptable plus or minus tolerance from the target depth for TOI calculations.
@@ -157,7 +158,7 @@ public:
     /// @note Must not be subnormal.
     /// @note Must be less than the target depth.
     /// @note Used in the TOI phase of step processing.
-    Length tolerance = DefaultLinearSlop / RealNum{4};
+    Positive<Length> tolerance = DefaultLinearSlop / RealNum{4};
 
     /// @brief Velocity threshold.
     /// @details A velocity threshold for elastic collisions. Any collision with a relative linear
