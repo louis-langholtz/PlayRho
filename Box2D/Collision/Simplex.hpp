@@ -92,7 +92,7 @@ namespace box2d
             BOX2D_CONSTEXPR Cache(RealNum metric, IndexPairs indices) noexcept;
             
             /// Gets the metric that was set.
-            /// @note Behavior is undefined if metric was not previously set.
+            /// @warning Behavior is undefined if metric was not previously set.
             ///   The IsMetricSet() method can be used to check dynamically if unsure.
             /// @sa SetMetric.
             /// @sa IsMetricSet.

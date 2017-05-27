@@ -102,7 +102,6 @@ public:
 
     /// Computes the mass properties of this shape using its dimensions and density.
     /// The inertia tensor is computed about the local origin.
-    /// @note Behavior is undefined if the density is negative.
     /// @return Mass data for this shape.
     MassData GetMassData() const noexcept override;
     

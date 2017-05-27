@@ -198,7 +198,7 @@ namespace box2d {
         };
 
         /// Accesses the point identified by the given index.
-        /// @note Behavior is undefined if given index is not less than <code>MaxManifoldPoints</code>.
+        /// @warning Behavior is undefined if given index is not less than <code>MaxManifoldPoints</code>.
         /// @param index Index of the point to return. This should be a value less than returned by GetPointCount().
         /// @return velocity constraint point for the given index. This point's data will be invalid
         ///   unless previously added and set.
@@ -214,7 +214,7 @@ namespace box2d {
         /// Adds the given point to this contact velocity constraint object.
         /// @details Adds up to <code>MaxManifoldPoints</code> points. To find out how many points have already
         ///   been added, call GetPointCount().
-        /// @note Behavior is undefined if an attempt is made to add more than MaxManifoldPoints points.
+        /// @warning Behavior is undefined if an attempt is made to add more than MaxManifoldPoints points.
         /// @sa GetPointCount().
         void AddPoint(Momentum normalImpulse, Momentum tangentImpulse,
                       Length2D rA, Length2D rB, Conf conf);
@@ -231,7 +231,7 @@ namespace box2d {
         void SetK(const Mat22& value) noexcept;
 
         /// Accesses the point identified by the given index.
-        /// @note Behavior is undefined if given index is not less than <code>MaxManifoldPoints</code>.
+        /// @warning Behavior is undefined if given index is not less than <code>MaxManifoldPoints</code>.
         /// @param index Index of the point to return. This should be a value less than returned by GetPointCount().
         /// @return velocity constraint point for the given index. This point's data will be invalid
         ///   unless previously added and set.

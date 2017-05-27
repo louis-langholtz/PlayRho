@@ -347,8 +347,8 @@ namespace box2d
         /// @details This can be called once for circle type manifolds,
         ///   and up to twice for face-A or face-B type manifolds.
         /// GetPointCount() can be called to find out how many points have already been added.
-        /// @note Behavior is undefined if this object's type is e_unset.
-        /// @note Behavior is undefined if this is called more than twice.
+        /// @warning Behavior is undefined if this object's type is e_unset.
+        /// @warning Behavior is undefined if this is called more than twice.
         void AddPoint(const Point& mp) noexcept;
 
         void AddPoint(cf_t type, sidx_t index, Length2D point) noexcept;

@@ -96,7 +96,7 @@ namespace box2d
         
         /// Gets the indexed point's location in world coordinates.
         ///
-        /// @note Behavior is undefined if the index value is not less than
+        /// @warning Behavior is undefined if the index value is not less than
         ///   <code>MaxManifoldPoints</code>
         ///
         /// @param index Index to return point for. This must be between 0 and
@@ -112,7 +112,7 @@ namespace box2d
         
         /// Gets the amount of separation at the given indexed point.
         ///
-        /// @note Behavior is undefined if the index value is not less than
+        /// @warning Behavior is undefined if the index value is not less than
         ///   <code>MaxManifoldPoints</code>
         /// @param index Index to return separation for. This must be between 0 and
         ///   <code>GetPointCount()</code>.

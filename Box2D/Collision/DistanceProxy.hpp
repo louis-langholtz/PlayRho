@@ -99,9 +99,9 @@ namespace box2d
         ///
         /// @param index Index value less than the count of vertices represented by this proxy.
         ///
-        /// @note Behavior is undefined if the index given is not less than the count of vertices
+        /// @warning Behavior is undefined if the index given is not less than the count of vertices
         ///   represented by this proxy.
-        /// @note Behavior is undefined if InvalidIndex is given as the index value.
+        /// @warning Behavior is undefined if InvalidIndex is given as the index value.
         ///
         /// @return 2D vector position (relative to the shape's origin) at the given index.
         ///
