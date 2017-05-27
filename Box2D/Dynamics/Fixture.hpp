@@ -134,15 +134,8 @@ public:
     /// Set the user data. Use this to store your application specific data.
     void SetUserData(void* data) noexcept;
 
-    /// Sets the density of this fixture.
-    /// @note This will _not_ automatically adjust the mass of the body.
-    ///   You must call Body::ResetMassData to update the body's mass.
-    /// @warning Behavior is undefined if given a negative value.
-    /// @param density Non-negative density in kg/m^2.
-    void SetDensity(RealNum density) noexcept;
-
     /// Gets the density of this fixture.
-    /// @return Non-negative density in kg/m^2.
+    /// @return Non-negative density (in mass per area).
     Density GetDensity() const noexcept;
 
     /// @brief Gets the coefficient of friction.
