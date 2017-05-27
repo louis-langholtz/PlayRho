@@ -29,14 +29,11 @@
 #include <Box2D/Dynamics/WorldCallbacks.hpp>
 #include <Box2D/Dynamics/StepStats.hpp>
 #include <Box2D/Collision/BroadPhase.hpp>
-#include <Box2D/Dynamics/Contacts/ContactKey.hpp>
 
 #include <vector>
 #include <list>
 #include <unordered_set>
-#include <unordered_map>
 #include <memory>
-#include <set>
 
 namespace box2d {
 
@@ -51,7 +48,6 @@ class Fixture;
 class Joint;
 class Island;
 class StepConf;
-class BodyConstraint;
 class Shape;
 enum class BodyType;
 
@@ -185,25 +181,7 @@ public:
     ///
     /// @details Instructs the <code>RayCast</code> method on what to do next.
     ///
-    enum class RayCastOpcode {
-        /// @brief End the ray-cast search for fixtures.
-        /// @details Use this to stop searching for fixtures.
-        Terminate,
-        
-        /// @brief Ignore the current fixture.
-        /// @details Use this to continue searching for fixtures along the ray.
-        IgnoreFixture,
-
-        /// @brief Clip the ray end to the current point.
-        /// @details Use this shorten the ray to the current point and to continue searching
-        ///   for fixtures now along the newly shortened ray.
-        ClipRay,
-
-        /// @brief Reset the ray end back to the second point.
-        /// @details Use this to restore the ray to its full length and to continue searching
-        ///    for fixtures now along the restored full length ray.
-        ResetRay
-    };
+    enum class RayCastOpcode;
 
     /// @brief Ray cast callback function signature.
     using RayCastCallback = std::function<RayCastOpcode(Fixture* fixture, const Length2D& point,
@@ -368,10 +346,7 @@ private:
         ts_iters_t positionIterations = 0; ///< Position iterations actually performed.
         ts_iters_t velocityIterations = 0; ///< Velocity iterations actually performed.
     };
-        
-    // using ContactKeySet = std::set<ContactKey>;
-    // using ContactKeySet = std::unordered_set<ContactKey>;
-
+    
     void InternalDestroy(Joint* joint);
 
     /// @brief Solves the step.
@@ -665,6 +640,27 @@ private:
     /// numerical issues. It can also be set below this upper bound to constrain the differences
     /// between shape vertex radiuses to possibly more limited visual ranges.
     const Length m_maxVertexRadius;
+};
+
+enum class World::RayCastOpcode
+{
+    /// @brief End the ray-cast search for fixtures.
+    /// @details Use this to stop searching for fixtures.
+    Terminate,
+    
+    /// @brief Ignore the current fixture.
+    /// @details Use this to continue searching for fixtures along the ray.
+    IgnoreFixture,
+    
+    /// @brief Clip the ray end to the current point.
+    /// @details Use this shorten the ray to the current point and to continue searching
+    ///   for fixtures now along the newly shortened ray.
+    ClipRay,
+    
+    /// @brief Reset the ray end back to the second point.
+    /// @details Use this to restore the ray to its full length and to continue searching
+    ///    for fixtures now along the restored full length ray.
+    ResetRay
 };
 
 inline SizedRange<World::Bodies::iterator> World::GetBodies() noexcept
