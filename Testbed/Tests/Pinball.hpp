@@ -43,7 +43,7 @@ public:
 
             ChainShape loop;
             loop.CreateLoop(Span<const Length2D>(vs, 5));
-            loop.SetDensity(0);
+            loop.SetDensity(RealNum(0) * KilogramPerSquareMeter);
             ground->CreateFixture(std::make_shared<ChainShape>(loop));
         }
 
