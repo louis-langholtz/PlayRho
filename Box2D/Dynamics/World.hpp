@@ -25,6 +25,7 @@
 
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Common/Range.hpp>
+#include <Box2D/Dynamics/WorldDef.hpp>
 #include <Box2D/Dynamics/WorldCallbacks.hpp>
 #include <Box2D/Dynamics/StepStats.hpp>
 #include <Box2D/Collision/BroadPhase.hpp>
@@ -56,13 +57,6 @@ enum class BodyType;
 
 const FixtureDef& GetDefaultFixtureDef() noexcept;
 
-/// @brief Earthly gravity.
-/// @details An approximation of Earth's average gravity at sea-level.
-constexpr auto EarthlyGravity = LinearAcceleration2D{
-    RealNum{0} * MeterPerSquareSecond,
-    RealNum{-9.8f} * MeterPerSquareSecond
-};
-
 /// @brief World.
 ///
 /// @details The world class manages all physics entities, dynamic simulation, and queries.
@@ -92,51 +86,11 @@ public:
     /// @note Cannot be container of Joint instances since joints are polymorphic types.
     using Joints = std::list<Joint*>;
     
-    /// @brief World construction definitions.
-    struct Def
-    {
-        constexpr Def& UseGravity(LinearAcceleration2D value) noexcept;
-        constexpr Def& UseMinVertexRadius(Length value) noexcept;
-        constexpr Def& UseMaxVertexRadius(Length value) noexcept;
-
-        /// @brief Gravity.
-        /// @details The acceleration all dynamic bodies are subject to.
-        /// @note Use Vec2{0, 0} to disable gravity.
-        LinearAcceleration2D gravity = EarthlyGravity;
-        
-        /// @brief Minimum vertex radius.
-        /// @details This is the minimum vertex radius that this world establishes which bodies
-        ///    shall allow fixtures to be created with. Trying to create a fixture with a shape
-        ///    having a smaller vertex radius shall be rejected with a <code>nullptr</code>
-        ///    returned value.
-        /// @note This value probably should not be changed except to experiment with what can happen.
-        /// @note Making it smaller means some shapes could have insufficient buffer for continuous collision.
-        /// @note Making it larger may create artifacts for vertex collision.
-        Length minVertexRadius = DefaultLinearSlop * RealNum{2};
-
-        /// @brief Maximum vertex radius.
-        /// @details This is the maximum vertex radius that this world establishes which bodies
-        ///    shall allow fixtures to be created with. Trying to create a fixture with a shape
-        ///    having a larger vertex radius shall be rejected with a <code>nullptr</code>
-        ///    returned value.
-        Length maxVertexRadius = RealNum{255} * Meter; // linearSlop * 2550000
-    };
-    
-    /// Gets the default definitions value.
-    /// @note This method exists as a work-around for providing the World constructor a default
-    ///   value without otherwise getting a compiler error such as:
-    ///     "cannot use defaulted constructor of 'Def' within 'World' outside of member functions
-    ///      because 'gravity' has an initializer"
-    static constexpr Def GetDefaultDef() noexcept
-    {
-        return Def{};
-    }
-
     /// @brief Gets the default body definitions value.
     static const BodyDef& GetDefaultBodyDef();
 
     /// @brief Constructs a world object.
-    World(const Def& def = GetDefaultDef());
+    World(const WorldDef& def = GetDefaultWorldDef());
 
     /// @brief Destructor.
     /// @details
@@ -712,24 +666,6 @@ private:
     /// between shape vertex radiuses to possibly more limited visual ranges.
     const Length m_maxVertexRadius;
 };
-
-constexpr inline World::Def& World::Def::UseGravity(LinearAcceleration2D value) noexcept
-{
-    gravity = value;
-    return *this;
-}
-
-constexpr inline World::Def& World::Def::UseMinVertexRadius(Length value) noexcept
-{
-    minVertexRadius = value;
-    return *this;
-}
-
-constexpr inline World::Def& World::Def::UseMaxVertexRadius(Length value) noexcept
-{
-    maxVertexRadius = value;
-    return *this;
-}
 
 inline SizedRange<World::Bodies::iterator> World::GetBodies() noexcept
 {

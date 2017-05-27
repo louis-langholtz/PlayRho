@@ -453,10 +453,10 @@ const BodyDef& World::GetDefaultBodyDef()
     return def;
 }
 
-World::World(const Def& def):
-    m_gravity(def.gravity),
-    m_minVertexRadius(def.minVertexRadius),
-    m_maxVertexRadius(def.maxVertexRadius)
+World::World(const WorldDef& def):
+    m_gravity{def.gravity},
+    m_minVertexRadius{def.minVertexRadius},
+    m_maxVertexRadius{def.maxVertexRadius}
 {
     assert(::box2d::IsValid(def.gravity.x) && ::box2d::IsValid(def.gravity.y));
     assert(def.minVertexRadius > Length{0});

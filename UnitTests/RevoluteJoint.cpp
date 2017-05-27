@@ -101,7 +101,7 @@ TEST(RevoluteJoint, MovesDynamicCircles)
 
 TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
 {
-    World world{World::Def{}.UseGravity(Vec2{0, -10} * MeterPerSquareSecond)};
+    World world{WorldDef{}.UseGravity(Vec2{0, -10} * MeterPerSquareSecond)};
     
     const auto p1 = Vec2{0, 4} * Meter; // Vec2{-1, 0};
     const auto p2 = Vec2{0, -2} * Meter; // Vec2{+1, 0};

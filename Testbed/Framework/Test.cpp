@@ -372,7 +372,7 @@ void Test::DestructionListenerImpl::SayGoodbye(Joint& joint)
     }
 }
 
-Test::Test(const World::Def& conf):
+Test::Test(const WorldDef& conf):
     m_world{new World(conf)}
 {
     m_destructionListener.test = this;

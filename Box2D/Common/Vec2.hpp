@@ -177,7 +177,14 @@ namespace box2d
     using LinearAcceleration2D = Vector2D<LinearAcceleration>;
     using Force2D = Vector2D<Force>;
     using Momentum2D = Vector2D<Momentum>;
-    
+        
+    /// @brief Earthly gravity.
+    /// @details An approximation of Earth's average gravity at sea-level.
+    constexpr auto EarthlyGravity = LinearAcceleration2D{
+        RealNum{0} * MeterPerSquareSecond,
+        RealNum{-9.8f} * MeterPerSquareSecond
+    };
+
     constexpr inline Vec2 StripUnits(const Vector2D<RealNum> value)
     {
         return value;

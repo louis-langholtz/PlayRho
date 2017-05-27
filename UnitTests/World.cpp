@@ -66,8 +66,8 @@ TEST(World, ByteSize)
 
 TEST(World, Def)
 {
-    const auto worldDef = World::Def{};
-    const auto defaultDef = World::GetDefaultDef();
+    const auto worldDef = WorldDef{};
+    const auto defaultDef = GetDefaultWorldDef();
     
     EXPECT_EQ(defaultDef.gravity, worldDef.gravity);
     EXPECT_EQ(defaultDef.maxVertexRadius, worldDef.maxVertexRadius);
@@ -127,7 +127,7 @@ TEST(World, DefaultInit)
 TEST(World, Init)
 {
     const auto gravity = Vec2{RealNum(-4.2), RealNum(3.4)} * MeterPerSquareSecond;
-    World world{World::Def{}.UseGravity(gravity)};
+    World world{WorldDef{}.UseGravity(gravity)};
     EXPECT_EQ(world.GetGravity(), gravity);
     EXPECT_FALSE(world.IsLocked());
 }
@@ -274,7 +274,7 @@ TEST(World, StepZeroTimeDoesNothing)
 {
     const auto gravity = Vec2{0, RealNum(-9.8)} * MeterPerSquareSecond;
     
-    World world{World::Def{}.UseGravity(gravity)};
+    World world{WorldDef{}.UseGravity(gravity)};
     
     BodyDef def;
     def.position = Vec2{RealNum(31.9), RealNum(-19.24)} * Meter;
@@ -321,7 +321,7 @@ TEST(World, GravitationalBodyMovement)
     const auto gravity = Vec2{0, a} * MeterPerSquareSecond;
     const auto t = RealNum(.01) * Second;
     
-    World world{World::Def{}.UseGravity(gravity)};
+    World world{WorldDef{}.UseGravity(gravity)};
 
     const auto body = world.CreateBody(body_def);
     ASSERT_NE(body, nullptr);
@@ -358,7 +358,7 @@ TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
 {
     const auto gravity = Vec2{0, RealNum(-9.8)} * MeterPerSquareSecond;
     
-    World world{World::Def{}.UseGravity(gravity)};
+    World world{WorldDef{}.UseGravity(gravity)};
     
     BodyDef def;
     def.position = Vec2{RealNum(31.9), RealNum(-19.24)} * Meter;
@@ -400,7 +400,7 @@ TEST(World, BodyAccelRevPerSpecWithNegativeTimeAndNoVelOrPosIterations)
 {
     const auto gravity = Vec2{0, RealNum(-9.8)} * MeterPerSquareSecond;
     
-    World world{World::Def{}.UseGravity(gravity)};
+    World world{WorldDef{}.UseGravity(gravity)};
     
     BodyDef def;
     def.position = Vec2{RealNum(31.9), RealNum(-19.24)} * Meter;
@@ -519,7 +519,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
     };
 
     const auto gravity = Vec2{0, 0} * MeterPerSquareSecond;
-    World world{World::Def{}.UseGravity(gravity)};
+    World world{WorldDef{}.UseGravity(gravity)};
     world.SetContactListener(&listener);
     
     ASSERT_EQ(listener.begin_contacts, unsigned(0));
@@ -609,7 +609,7 @@ TEST(World, PerfectlyOverlappedSameCirclesStayPut)
     shape->SetRestitution(1); // changes where bodies will be after collision
     const auto gravity = Vec2{0, 0} * MeterPerSquareSecond;
 
-    World world{World::Def{}.UseGravity(gravity)};
+    World world{WorldDef{}.UseGravity(gravity)};
     
     auto body_def = BodyDef{};
     body_def.type = BodyType::Dynamic;
@@ -658,7 +658,7 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
 
     const auto gravity = Vec2{0, 0} * MeterPerSquareSecond;
     
-    World world{World::Def{}.UseGravity(gravity)};
+    World world{WorldDef{}.UseGravity(gravity)};
     
     auto body_def = BodyDef{};
     body_def.type = BodyType::Dynamic;
@@ -694,7 +694,7 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
 
 TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
 {
-    World world{World::Def{}.UseGravity(Vec2(0, 0) * MeterPerSquareSecond)};
+    World world{WorldDef{}.UseGravity(Vec2(0, 0) * MeterPerSquareSecond)};
     MyContactListener listener{
         [&](Contact&, const Manifold&) {},
         [&](Contact&, const ContactImpulsesList&, ContactListener::iteration_type) {},
@@ -730,7 +730,7 @@ TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
 
 TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
 {
-    World world{World::Def{}.UseGravity(Vec2(0, 0) * MeterPerSquareSecond)};
+    World world{WorldDef{}.UseGravity(Vec2(0, 0) * MeterPerSquareSecond)};
     MyContactListener listener{
         [&](Contact&, const Manifold&) {},
         [&](Contact&, const ContactImpulsesList&, ContactListener::iteration_type) {},
@@ -771,7 +771,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
     const auto radius = RealNum(1);
     
     const auto gravity = Vec2{0, 0} * MeterPerSquareSecond;
-    World world{World::Def{}.UseGravity(gravity)};
+    World world{WorldDef{}.UseGravity(gravity)};
     
     auto body_def = BodyDef{};
     body_def.type = BodyType::Dynamic;
@@ -876,7 +876,7 @@ TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
 
     const auto gravity = Vec2{0, 0} * MeterPerSquareSecond;
     
-    World world{World::Def{}.UseGravity(gravity)};
+    World world{WorldDef{}.UseGravity(gravity)};
     
     auto body_def = BodyDef{};
     body_def.type = BodyType::Dynamic;
@@ -938,7 +938,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
      */
 
     const auto gravity = Vec2{0, 0} * MeterPerSquareSecond;
-    World world{World::Def{}.UseGravity(gravity)};
+    World world{WorldDef{}.UseGravity(gravity)};
     
     auto body_def = BodyDef{};
     body_def.type = BodyType::Dynamic;
@@ -1101,7 +1101,7 @@ TEST(World, CollidingDynamicBodies)
     };
 
     const auto gravity = Vec2_zero * MeterPerSquareSecond;
-    World world{World::Def{}.UseGravity(gravity)};
+    World world{WorldDef{}.UseGravity(gravity)};
     EXPECT_EQ(world.GetGravity(), gravity);
     world.SetContactListener(&listener);
     
@@ -1425,7 +1425,7 @@ TEST(World, TilesComesToRest)
 
 TEST(World, SpeedingBulletBallWontTunnel)
 {
-    World world{World::Def{}.UseGravity(Vec2_zero * MeterPerSquareSecond)};
+    World world{WorldDef{}.UseGravity(Vec2_zero * MeterPerSquareSecond)};
 
     MyContactListener listener{
         [](Contact&, const Manifold&) {},
@@ -1578,7 +1578,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 
 TEST(World, MouseJointWontCauseTunnelling)
 {
-    World world{World::Def{}.UseGravity(Vec2_zero * MeterPerSquareSecond)};
+    World world{WorldDef{}.UseGravity(Vec2_zero * MeterPerSquareSecond)};
     
     const auto half_box_width = RealNum(0.2);
     const auto left_edge_x = -half_box_width;
@@ -1947,7 +1947,7 @@ static void smaller_still_conserves_momentum(bool bullet, RealNum multiplier, Re
     for (;;)
     {
         const auto gravity = Vec2_zero;
-        World world{World::Def{}.UseGravity(gravity)};
+        World world{WorldDef{}.UseGravity(gravity)};
         ASSERT_EQ(world.GetGravity().x, 0);
         ASSERT_EQ(world.GetGravity().y, 0);
 
@@ -2132,7 +2132,7 @@ public:
     }
 
 protected:
-    World world{World::Def{}.UseGravity(Vec2(0, -10) * MeterPerSquareSecond)};
+    World world{WorldDef{}.UseGravity(Vec2(0, -10) * MeterPerSquareSecond)};
     size_t loopsTillSleeping = 0;
     const size_t maxLoops = 10000;
     std::vector<Body*> boxes{10};

@@ -1,0 +1,89 @@
+/*
+ * Original work Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty.  In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 1. The origin of this software must not be misrepresented; you must not
+ * claim that you wrote the original software. If you use this software
+ * in a product, an acknowledgment in the product documentation would be
+ * appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ * misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
+
+#ifndef WorldDef_hpp
+#define WorldDef_hpp
+
+/// @file
+/// Declarations of the WorldDef class.
+
+#include <Box2D/Common/Math.hpp>
+
+namespace box2d {
+
+    /// @brief World construction definitions.
+    struct WorldDef
+    {
+        constexpr WorldDef& UseGravity(LinearAcceleration2D value) noexcept;
+        constexpr WorldDef& UseMinVertexRadius(Length value) noexcept;
+        constexpr WorldDef& UseMaxVertexRadius(Length value) noexcept;
+        
+        /// @brief Gravity.
+        /// @details The acceleration all dynamic bodies are subject to.
+        /// @note Use Vec2{0, 0} to disable gravity.
+        LinearAcceleration2D gravity = EarthlyGravity;
+        
+        /// @brief Minimum vertex radius.
+        /// @details This is the minimum vertex radius that this world establishes which bodies
+        ///    shall allow fixtures to be created with. Trying to create a fixture with a shape
+        ///    having a smaller vertex radius shall be rejected with a <code>nullptr</code>
+        ///    returned value.
+        /// @note This value probably should not be changed except to experiment with what can happen.
+        /// @note Making it smaller means some shapes could have insufficient buffer for continuous collision.
+        /// @note Making it larger may create artifacts for vertex collision.
+        Length minVertexRadius = DefaultLinearSlop * RealNum{2};
+        
+        /// @brief Maximum vertex radius.
+        /// @details This is the maximum vertex radius that this world establishes which bodies
+        ///    shall allow fixtures to be created with. Trying to create a fixture with a shape
+        ///    having a larger vertex radius shall be rejected with a <code>nullptr</code>
+        ///    returned value.
+        Length maxVertexRadius = RealNum{255} * Meter; // linearSlop * 2550000
+    };
+    
+    constexpr inline WorldDef& WorldDef::UseGravity(LinearAcceleration2D value) noexcept
+    {
+        gravity = value;
+        return *this;
+    }
+    
+    constexpr inline WorldDef& WorldDef::UseMinVertexRadius(Length value) noexcept
+    {
+        minVertexRadius = value;
+        return *this;
+    }
+    
+    constexpr inline WorldDef& WorldDef::UseMaxVertexRadius(Length value) noexcept
+    {
+        maxVertexRadius = value;
+        return *this;
+    }
+
+    /// Gets the default definitions value.
+    /// @note This method exists as a work-around for providing the World constructor a default
+    ///   value without otherwise getting a compiler error such as:
+    ///     "cannot use defaulted constructor of 'Def' within 'World' outside of member functions
+    ///      because 'gravity' has an initializer"
+    constexpr WorldDef GetDefaultWorldDef() noexcept
+    {
+        return WorldDef{};
+    }
+
+}
+#endif /* WorldDef_hpp */
