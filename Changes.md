@@ -8,6 +8,10 @@ Here's a run-down of some of the changes
   runtime-time parameters.
 - Preprocessor defines, except those used for include guards, have been
   replaced with C++ solutions or removed from the API.
+- All shapes can be used with dynamic bodies now (support for point selection
+  and associated mass data information has been added for chain and edge shapes).
+- All shapes can collide with any other shape now (chains can collide with other
+  chains or edges or any other kind of shape).
 - All shapes support vertex-radius based corner rounding now. This enables
   [*capsule shapes* and other visibly rounded shapes](https://github.com/louis-langholtz/Box2D/blob/dev/Documentation/images/RoundedCornerShapes.png).
 - [Rounded and modified corner collisions](https://github.com/louis-langholtz/Box2D/blob/dev/Documentation/CollisionHandlng.md).
