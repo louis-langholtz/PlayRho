@@ -291,6 +291,11 @@ inline Length GetVertexRadius(const Shape& shape) noexcept
     return shape.GetVertexRadius();
 }
 
+/// @brief Test a point for containment in the given shape.
+/// @param shape Shape to use for test.
+/// @param pLocal Point in local coordinates.
+bool TestPoint(const Shape& shape, const Length2D pLocal) noexcept;
+
 } // namespace box2d
 
 #endif
