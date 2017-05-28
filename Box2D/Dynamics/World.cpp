@@ -877,7 +877,7 @@ RegStepStats World::SolveReg(const StepConf& conf)
 
 #if defined(DO_THREADED)
             // Updates bodies' sweep.pos0 to current sweep.pos1 and bodies' sweep.pos1 to new positions
-            futures.push_back(std::async(&World::SolveRegIsland, this, conf, island));
+            futures.push_back(std::async(std::launch::async, &World::SolveRegIsland, this, conf, island));
 #else
             const auto solverResults = SolveRegIsland(conf, island);
             stats.maxIncImpulse = Max(stats.maxIncImpulse, solverResults.maxIncImpulse);
@@ -1635,7 +1635,8 @@ World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi,
 
 StepStats World::Step(const StepConf& conf)
 {
-    assert((m_maxVertexRadius * RealNum{2}) + (conf.linearSlop / RealNum{4}) > (m_maxVertexRadius * RealNum{2}));
+    assert((m_maxVertexRadius * RealNum{2}) +
+           (Length{conf.linearSlop} / RealNum{4}) > (m_maxVertexRadius * RealNum{2}));
     assert(!IsLocked());
 
     auto stepStats = StepStats{};
@@ -1875,10 +1876,22 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
 {
     auto stats = UpdateContactsStats{};
     
+#if defined(DO_THREADED)
+    std::vector<Contact*> contactsNeedingUpdate;
+    contactsNeedingUpdate.reserve(contacts.size());
+    std::vector<std::future<void>> futures;
+    futures.reserve(contacts.size());
+#endif
+
     // Update awake contacts.
     for (auto iter = contacts.begin(); iter != contacts.end(); ++iter)
     {
         const auto contact = GetContactPtr(*iter);
+
+#if 0
+        ContactAtty::Update(*contact, conf, m_contactListener);
+        ++stats.updated;
+#endif
         const auto fixtureA = contact->GetFixtureA();
         const auto fixtureB = contact->GetFixtureB();
         const auto bodyA = fixtureA->GetBody();
@@ -1890,6 +1903,7 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
         assert(!bodyB->IsAwake() || bodyB->IsSpeedable());
         if (!bodyA->IsAwake() && !bodyB->IsAwake())
         {
+            assert(!contact->HasValidToi());
             ++stats.ignored;
             continue;
         }
@@ -1908,8 +1922,14 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
         //
         if (contact->NeedsUpdating())
         {
-	        // The following may call listener but is otherwise thread-safe.
-    	    ContactAtty::Update(*contact, conf, m_contactListener);
+            // The following may call listener but is otherwise thread-safe.
+#if defined(DO_THREADED)
+            contactsNeedingUpdate.push_back(contact);
+            //futures.push_back(std::async(&ContactAtty::Update, *contact, conf, m_contactListener)));
+            //futures.push_back(std::async(std::launch::async, [=]{ ContactAtty::Update(*contact, conf, m_contactListener); }));
+#else
+            ContactAtty::Update(*contact, conf, m_contactListener);
+#endif
         	++stats.updated;
         }
         else
@@ -1917,6 +1937,36 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
             ++stats.skipped;
         }
     }
+    
+#if defined(DO_THREADED)
+    auto numJobs = contactsNeedingUpdate.size();
+    const auto jobsPerCore = numJobs / 4;
+    for (auto i = decltype(numJobs){0}; numJobs > 0 && i < 3; ++i)
+    {
+        futures.push_back(std::async(std::launch::async, [=]{
+            const auto offset = jobsPerCore * i;
+            for (auto j = decltype(jobsPerCore){0}; j < jobsPerCore; ++j)
+            {
+	            ContactAtty::Update(*contactsNeedingUpdate[offset + j], conf, m_contactListener);
+            }
+        }));
+        numJobs -= jobsPerCore;
+    }
+    if (numJobs > 0)
+    {
+        futures.push_back(std::async(std::launch::async, [=]{
+            const auto offset = jobsPerCore * 3;
+            for (auto j = decltype(numJobs){0}; j < numJobs; ++j)
+            {
+                ContactAtty::Update(*contactsNeedingUpdate[offset + j], conf, m_contactListener);
+            }
+        }));
+    }
+    for (auto&& future: futures)
+    {
+        future.get();
+    }
+#endif
     
     return stats;
 }
