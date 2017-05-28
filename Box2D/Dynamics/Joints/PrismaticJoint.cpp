@@ -175,9 +175,9 @@ void PrismaticJoint::InitVelocityConstraints(BodyConstraints& bodies,
         const auto k23 = (invRotInertiaA * m_a1 + invRotInertiaB * m_a2) * Meter * Kilogram / SquareRadian;
         const auto k33 = StripUnit(totalInvMass);
 
-        m_K.ex = Vec3(k11, k12, k13);
-        m_K.ey = Vec3(k12, k22, k23);
-        m_K.ez = Vec3(k13, k23, k33);
+        m_K.ex = Vec3{k11, k12, k13};
+        m_K.ey = Vec3{k12, k22, k23};
+        m_K.ez = Vec3{k13, k23, k33};
     }
 
     // Compute motor and limit terms.

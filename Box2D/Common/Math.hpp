@@ -252,12 +252,6 @@ inline Angle GetAngle(T value)
 ///   i.e. 12-bytes (with 4-byte RealNum).
 struct Vec3
 {
-    /// Default constructor does nothing (for performance).
-    Vec3() noexcept = default;
-
-    /// Construct using coordinates.
-    constexpr Vec3(RealNum x_, RealNum y_, RealNum z_) noexcept : x(x_), y(y_), z(z_) {}
-
     /// Negate this vector.
     constexpr auto operator- () const noexcept { return Vec3{-x, -y, -z}; }
 
@@ -545,14 +539,6 @@ struct ContactImpulses
 /// @note This data structure is 16-bytes large (on at least one 64-bit platform).
 struct Transformation
 {
-    /// The default constructor does nothing.
-    Transformation() = default;
-
-    /// Initialize using a translation and a rotation.
-    constexpr Transformation(Length2D translation, UnitVec2 rotation) noexcept: p{translation}, q{rotation} {}
-
-    constexpr Transformation(const Transformation& copy) = default;
-
     Length2D p; ///< Translational portion of the transformation. 8-bytes.
     UnitVec2 q; ///< Rotational portion of the transformation. 8-bytes.
 };

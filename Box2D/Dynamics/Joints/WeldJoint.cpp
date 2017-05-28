@@ -237,7 +237,7 @@ bool WeldJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf
 
         const auto Cdot1 = vb - va;
         const auto Cdot2 = RealNum{(velB.angular - velA.angular) / RadianPerSecond};
-        const auto Cdot = Vec3(Cdot1.x / MeterPerSecond, Cdot1.y / MeterPerSecond, Cdot2);
+        const auto Cdot = Vec3{Cdot1.x / MeterPerSecond, Cdot1.y / MeterPerSecond, Cdot2};
 
         const auto impulse = -Transform(Cdot, m_mass);
         m_impulse += impulse;
@@ -349,7 +349,7 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraints& bodies, const Constrai
         else
         {
             const auto impulse2 = -Solve22(K, StripUnits(C1));
-            impulse = Vec3(impulse2.x, impulse2.y, 0);
+            impulse = Vec3{impulse2.x, impulse2.y, 0};
         }
 
         const auto P = Vec2{impulse.x, impulse.y} * Kilogram * Meter;
