@@ -18,10 +18,7 @@
  */
 
 #include <Box2D/Collision/DistanceProxy.hpp>
-#include <Box2D/Collision/Shapes/CircleShape.hpp>
-#include <Box2D/Collision/Shapes/EdgeShape.hpp>
-#include <Box2D/Collision/Shapes/ChainShape.hpp>
-#include <Box2D/Collision/Shapes/PolygonShape.hpp>
+#include <Box2D/Collision/Shapes/Shape.hpp>
 
 namespace box2d {
     
