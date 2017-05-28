@@ -26,11 +26,3 @@ MassData CircleShape::GetMassData() const noexcept
 {
     return ::GetMassData(GetVertexRadius(), GetDensity(), GetLocation());
 }
-
-bool CircleShape::TestPoint(const Transformation& transform, const Length2D p) const noexcept
-{
-    const auto location = GetLocation();
-    const auto center = transform.p + Rotate(location, transform.q);
-    const auto delta = p - center;
-    return GetLengthSquared(delta) <= Square(GetRadius());
-}

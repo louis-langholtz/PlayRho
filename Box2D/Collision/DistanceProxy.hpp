@@ -157,6 +157,12 @@ namespace box2d
     
     std::vector<Length2D> GetConvexHullAsVector(Span<const Length2D> vertices);
 
+    /// Tests a point for containment in the given distance proxy.
+    /// @param proxy Distance proxy to check if point is within.
+    /// @param pLocal Point in local coordinates.
+    /// @return <code>true</code> if point is contained in the proxy, <code>false</code> otherwise.
+    bool TestPoint(const DistanceProxy& proxy, const Length2D pLocal) noexcept;
+    
 }; // namespace box2d
 
 #endif /* DistanceProxy_hpp */

@@ -69,6 +69,27 @@ ChainShape::~ChainShape()
 
 MassData ChainShape::GetMassData() const noexcept
 {
+    const auto density = GetDensity();
+    if (density > Density(0))
+    {
+        // XXX: This overcounts for the overlapping circle shape.
+        auto mass = Mass{0};
+        auto I = RotInertia{0};
+        auto center = Vec2_zero * Meter;
+        const auto vertexRadius = GetVertexRadius();
+        const auto childCount = GetChildCount();
+        auto vprev = GetVertex(0);
+        for (auto i = decltype(childCount){1}; i < childCount; ++i)
+        {
+            const auto v = GetVertex(i);
+            const auto massData = ::GetMassData(vertexRadius, density, vprev, v);
+            mass += Mass{massData.mass};
+            center += RealNum{Mass{massData.mass} / Kilogram} * massData.center;
+            I += RotInertia{massData.I};
+            vprev = v;
+        }
+        return MassData{mass, center, I};
+    }
     return MassData{NonNegative<Mass>{0}, Vec2_zero * Meter, NonNegative<RotInertia>{0}};
 }
 
@@ -137,11 +158,4 @@ child_count_t ChainShape::GetChildCount() const noexcept
 DistanceProxy ChainShape::GetChild(child_count_t index) const noexcept
 {
     return DistanceProxy{GetVertexRadius(), 2, &m_vertices[index], &m_normals[index * 2]};
-}
-
-bool ChainShape::TestPoint(const Transformation& xf, const Length2D p) const noexcept
-{
-    NOT_USED(xf);
-    NOT_USED(p);
-    return false;
 }

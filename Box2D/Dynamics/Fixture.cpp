@@ -87,7 +87,20 @@ void Fixture::SetSensor(bool sensor) noexcept
 
 bool box2d::TestPoint(const Fixture& f, const Length2D p) noexcept
 {
-    return f.GetShape()->TestPoint(GetTransformation(f), p);
+    const auto xf = GetTransformation(f);
+    const auto dp = p - xf.p;
+    const auto pLocal = InverseRotate(dp, xf.q);
+    
+    const auto shape = f.GetShape();
+    const auto childCount = shape->GetChildCount();
+    for (auto i = decltype(childCount){0}; i < childCount; ++i)
+    {
+        if (box2d::TestPoint(shape->GetChild(i), pLocal))
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 void box2d::SetAwake(Fixture& f) noexcept

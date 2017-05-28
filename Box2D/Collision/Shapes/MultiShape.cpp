@@ -21,14 +21,6 @@
 
 using namespace box2d;
 
-bool MultiShape::TestPoint(const Transformation& xf, const Length2D p) const noexcept
-{
-    // TODO
-    NOT_USED(xf);
-    NOT_USED(p);
-    return false;
-}
-
 /// Computes the mass properties of this shape using its dimensions and density.
 /// The inertia tensor is computed about the local origin.
 /// @return Mass data for this shape.

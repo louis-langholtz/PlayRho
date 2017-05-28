@@ -73,12 +73,6 @@ public:
     child_count_t GetChildCount() const noexcept override;
 
     DistanceProxy GetChild(child_count_t index) const noexcept override;
-    
-    /// Tests a point for containment in this shape.
-    /// @param xf the shape world transform.
-    /// @param p a point in world coordinates.
-    /// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
-    bool TestPoint(const Transformation& xf, const Length2D p) const noexcept override;
 
     /// Computes the mass properties of this shape using its dimensions and density.
     /// The inertia tensor is computed about the local origin.

@@ -226,59 +226,6 @@ void PolygonShape::Set(const VertexSet& point_set) noexcept
     }
 }
 
-bool PolygonShape::TestPoint(const Transformation& xf, const Length2D p) const noexcept
-{
-    const auto dp = p - xf.p;
-    const auto pLocal = InverseRotate(dp, xf.q);
-    const auto vr = GetVertexRadius();
-    const auto count = GetVertexCount();
-    
-    if (count == 1)
-    {
-        const auto v0 = GetVertex(0);
-        const auto center = xf.p + Rotate(v0, xf.q);
-        const auto delta = p - center;
-        return GetLengthSquared(delta) <= Square(vr);
-    }
-    
-    auto maxDot = -MaxFloat * Meter;
-    auto maxIdx = PolygonShape::InvalidVertex;
-    for (auto i = decltype(count){0}; i < count; ++i)
-    {
-        const auto vi = GetVertex(i);
-        const auto delta = pLocal - vi;
-        const auto dot = Dot(GetNormal(i), delta);
-        if (dot > vr)
-        {
-            return false;
-        }
-        if (maxDot < dot)
-        {
-            maxDot = dot;
-            maxIdx = i;
-        }
-    }
-    
-    const auto v0 = GetVertex(maxIdx);
-    const auto v1 = GetVertex(GetModuloNext(maxIdx, count));
-    const auto edge = v1 - v0;
-    const auto delta0 = v0 - pLocal;
-    const auto d0 = Dot(edge, delta0);
-    if (d0 >= Area{0})
-    {
-        // point is nearest v0 and not within edge
-        return GetLengthSquared(delta0) <= Square(vr);
-    }
-    const auto delta1 = pLocal - v1;
-    const auto d1 = Dot(edge, delta1);
-    if (d1 >= Area{0})
-    {
-        // point is nearest v1 and not within edge
-        return GetLengthSquared(delta1) <= Square(vr);
-    }
-    return true;
-}
-
 Length2D box2d::GetEdge(const PolygonShape& shape, PolygonShape::vertex_count_t index)
 {
     assert(shape.GetVertexCount() > 1);

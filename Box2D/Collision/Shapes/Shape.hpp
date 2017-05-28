@@ -152,12 +152,6 @@ public:
     /// @note The shape must remain in scope while the proxy is in use.
     virtual DistanceProxy GetChild(child_count_t index) const noexcept = 0;
     
-    /// Tests a point for containment in this shape.
-    /// @param xf the shape world transform.
-    /// @param p a point in world coordinates.
-    /// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
-    virtual bool TestPoint(const Transformation& xf, const Length2D p) const noexcept = 0;
-
     /// Gets the mass properties of this shape using its dimensions and density.
     /// @return Mass data for this shape.
     virtual MassData GetMassData() const noexcept = 0;

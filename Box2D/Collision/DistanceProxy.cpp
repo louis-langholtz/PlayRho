@@ -118,4 +118,63 @@ std::vector<Length2D> GetConvexHullAsVector(Span<const Length2D> vertices)
     return result;
 }
 
+bool TestPoint(const DistanceProxy& proxy, const Length2D pLocal) noexcept
+{
+    const auto count = proxy.GetVertexCount();
+    const auto vr = proxy.GetVertexRadius();
+
+    if (count == 0)
+    {
+        return false;
+    }
+
+    if (count == 1)
+    {
+        const auto v0 = proxy.GetVertex(0);
+        const auto delta = pLocal - v0;
+        return GetLengthSquared(delta) <= Square(vr);
+    }
+    
+    auto maxDot = -MaxFloat * Meter;
+    auto maxIdx = static_cast<decltype(count)>(-1);
+    for (auto i = decltype(count){0}; i < count; ++i)
+    {
+        const auto vi = proxy.GetVertex(i);
+        const auto delta = pLocal - vi;
+        const auto dot = Dot(proxy.GetNormal(i), delta);
+        if (dot > vr)
+        {
+            return false;
+        }
+        if (maxDot < dot)
+        {
+            maxDot = dot;
+            maxIdx = i;
+        }
+    }
+    if (maxIdx >= count)
+    {
+        return false;
+    }
+    
+    const auto v0 = proxy.GetVertex(maxIdx);
+    const auto v1 = proxy.GetVertex(GetModuloNext(maxIdx, count));
+    const auto edge = v1 - v0;
+    const auto delta0 = v0 - pLocal;
+    const auto d0 = Dot(edge, delta0);
+    if (d0 >= Area{0})
+    {
+        // point is nearest v0 and not within edge
+        return GetLengthSquared(delta0) <= Square(vr);
+    }
+    const auto delta1 = pLocal - v1;
+    const auto d1 = Dot(edge, delta1);
+    if (d1 >= Area{0})
+    {
+        // point is nearest v1 and not within edge
+        return GetLengthSquared(delta1) <= Square(vr);
+    }
+    return true;
+}
+
 } // namespace box2d
