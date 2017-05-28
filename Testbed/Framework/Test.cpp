@@ -703,6 +703,7 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
         const auto density = selectedFixture->GetDensity();
         const auto friction = selectedFixture->GetFriction();
         const auto restitution = selectedFixture->GetRestitution();
+        const auto vertexRadius = selectedFixture->GetShape()->GetVertexRadius();
         const auto body = selectedFixture->GetBody();
         const auto location = body->GetLocation();
         const auto velocity = body->GetVelocity();
@@ -735,6 +736,7 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
         stream << static_cast<double>(RealNum{GetY(velocity.linear) / MeterPerSecond});
         stream << "}";
         stream << " density=" << static_cast<double>(RealNum{density * SquareMeter / Kilogram});
+        stream << " vr=" << static_cast<double>(RealNum{vertexRadius / Meter});
         stream << " friction=" << friction;
         stream << " restitution=" << restitution;
         stream << " b-cts=" << numTouching;
