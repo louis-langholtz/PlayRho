@@ -46,6 +46,7 @@ namespace box2d {
             m_orbiter = m_world->CreateBody(bd);
             const auto ballShape = std::make_shared<CircleShape>();
             ballShape->SetRadius(RealNum{0.5f} * Meter);
+            ballShape->SetDensity(RealNum(1) * KilogramPerSquareMeter);
             m_orbiter->CreateFixture(ballShape);
             
             const auto velocity = Velocity{
@@ -53,6 +54,28 @@ namespace box2d {
                 RealNum{360.0f} * Degree / Second
             };
             m_orbiter->SetVelocity(velocity);
+            
+            const auto outerCicle = std::make_shared<ChainShape>();
+            outerCicle->SetVertexRadius(RealNum(0.1) * Meter);
+            outerCicle->SetDensity(RealNum(1) * KilogramPerSquareMeter);
+            {
+                auto vertices = std::vector<Length2D>();
+                const auto outerRadius = RealNum{20.0f} * Meter;
+                for (auto i = 0; i < 179; ++i)
+                {
+                    const auto angle = RealNum{(RealNum(i * 2 + 180.0f) * Degree) / Radian};
+                    const auto x = outerRadius * RealNum{std::cos(angle)};
+                    const auto y = outerRadius * RealNum{std::sin(angle)};
+                    vertices.push_back(Length2D{x, y});
+                }
+                outerCicle->CreateLoop(Span<const Length2D>(vertices.data(), vertices.size()));
+            }
+
+            bd.type = BodyType::Dynamic;
+            bd.position = m_center;
+            bd.bullet = true;
+            const auto dysonSphere = m_world->CreateBody(bd);
+            dysonSphere->CreateFixture(outerCicle);
         }
         
         void PreStep(const Settings&, Drawer&) override
