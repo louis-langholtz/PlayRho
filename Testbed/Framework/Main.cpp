@@ -689,13 +689,10 @@ int main()
     sprintf(title, "Box2D Testbed Version %d.%d.%d",
             BuiltVersion.major, BuiltVersion.minor, BuiltVersion.revision);
 
-#if defined(__APPLE__)
-    // Not sure why, but these settings cause glewInit below to crash.
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-#endif
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
     mainWindow = glfwCreateWindow(camera.m_width, camera.m_height, title, nullptr, nullptr);
     if (mainWindow == nullptr)
@@ -715,7 +712,7 @@ int main()
     glfwSetCursorPosCallback(mainWindow, MouseMotion);
     glfwSetScrollCallback(mainWindow, ScrollCallback);
 
-#if defined(__APPLE__) == FALSE
+#if !defined(__APPLE__)
     //glewExperimental = GL_TRUE;
     GLenum err = glewInit();
     if (GLEW_OK != err)
