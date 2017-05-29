@@ -44,12 +44,17 @@ enum class PointState
     RemoveState ///< point was removed in the update
 };
 
-using PointStateArray = std::array<PointState,MaxManifoldPoints>;
+/// @brief Point states.
+/// @details The states pertain to the transition from manifold1 manifold2.
+///   So state1 is either persist or remove while state2 is either add or persist.
+struct PointStates
+{
+    PointState state1[MaxManifoldPoints] = {PointState::NullState, PointState::NullState};
+    PointState state2[MaxManifoldPoints] = {PointState::NullState, PointState::NullState};
+};
     
-/// Computes the point states given two manifolds. The states pertain to the transition from manifold1
-/// to manifold2. So state1 is either persist or remove while state2 is either add or persist.
-void GetPointStates(PointStateArray& state1, PointStateArray& state2,
-                    const Manifold& manifold1, const Manifold& manifold2);
+/// @brief Computes the point states given two manifolds.
+PointStates GetPointStates(const Manifold& manifold1, const Manifold& manifold2) noexcept;
 
 /// Used for computing contact manifolds.
 /// @note This data structure is 12-bytes large (on at least one 64-bit platform).

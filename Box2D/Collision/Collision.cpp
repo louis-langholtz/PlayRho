@@ -22,27 +22,22 @@
 
 namespace box2d {
 
-void GetPointStates(PointStateArray& state1, PointStateArray& state2,
-                    const Manifold& manifold1, const Manifold& manifold2)
+PointStates GetPointStates(const Manifold& manifold1, const Manifold& manifold2) noexcept
 {
-    for (auto i = decltype(MaxManifoldPoints){0}; i < MaxManifoldPoints; ++i)
-    {
-        state1[i] = PointState::NullState;
-        state2[i] = PointState::NullState;
-    }
+    auto retval = PointStates{};
 
     // Detect persists and removes.
     for (auto i = decltype(manifold1.GetPointCount()){0}; i < manifold1.GetPointCount(); ++i)
     {
         const auto cf = manifold1.GetContactFeature(i);
 
-        state1[i] = PointState::RemoveState;
+        retval.state1[i] = PointState::RemoveState;
 
         for (auto j = decltype(manifold2.GetPointCount()){0}; j < manifold2.GetPointCount(); ++j)
         {
             if (manifold2.GetContactFeature(j) == cf)
             {
-                state1[i] = PointState::PersistState;
+                retval.state1[i] = PointState::PersistState;
                 break;
             }
         }
@@ -53,17 +48,19 @@ void GetPointStates(PointStateArray& state1, PointStateArray& state2,
     {
         const auto cf = manifold2.GetContactFeature(i);
 
-        state2[i] = PointState::AddState;
+        retval.state2[i] = PointState::AddState;
 
         for (auto j = decltype(manifold1.GetPointCount()){0}; j < manifold1.GetPointCount(); ++j)
         {
             if (manifold1.GetContactFeature(j) == cf)
             {
-                state2[i] = PointState::PersistState;
+                retval.state2[i] = PointState::PersistState;
                 break;
             }
         }
     }
+    
+    return retval;
 }
 
 ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, Length offset,
