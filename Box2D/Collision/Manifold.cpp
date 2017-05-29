@@ -353,7 +353,15 @@ static Manifold CollideShapes(Manifold::Type type,
         {
             return Manifold{};
         }
-        return Manifold::GetForCircles(v1, indexOfMax, point, 0);
+        switch (type)
+        {
+            case box2d::Manifold::e_faceA:
+                return Manifold::GetForCircles(v1, indexOfMax, point, 0);
+            case box2d::Manifold::e_faceB:
+                return Manifold::GetForCircles(point, 0, v1, indexOfMax);
+            default: break;
+        }
+        return Manifold{};
     }
     
     const auto ClocalV2 = cLocal - v2;
@@ -364,7 +372,15 @@ static Manifold CollideShapes(Manifold::Type type,
         {
             return Manifold{};
         }
-        return Manifold::GetForCircles(v2, indexOfMax2, point, 0);
+        switch (type)
+        {
+            case box2d::Manifold::e_faceA:
+                return Manifold::GetForCircles(v2, indexOfMax2, point, 0);
+            case box2d::Manifold::e_faceB:
+                return Manifold::GetForCircles(point, 0, v2, indexOfMax2);
+            default: break;
+        }
+        return Manifold{};
     }
     
     // Circle's center is between v1 and v2.
