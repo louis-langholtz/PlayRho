@@ -2471,9 +2471,23 @@ StepStats Step(World& world, Time dt, World::ts_iters_type velocityIterations, W
     return world.Step(conf);
 }
 
+contact_count_t GetTouchingCount(const World& world) noexcept
+{
+    auto count = contact_count_t{0};
+    for (auto&& c: world.GetContacts())
+    {
+        const auto contact = GetContactPtr(c);
+        if (contact->IsTouching())
+        {
+            ++count;
+        }
+    }
+    return count;
+}
+
 size_t GetFixtureCount(const World& world) noexcept
 {
-    size_t sum = 0;
+    auto sum = size_t{0};
     for (auto&& b: world.GetBodies())
     {
         const auto body = GetBodyPtr(b);

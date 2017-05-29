@@ -882,6 +882,8 @@ inline contact_count_t GetContactCount(const World& world) noexcept
     return static_cast<contact_count_t>(world.GetContacts().size());
 }
 
+contact_count_t GetTouchingCount(const World& world) noexcept;
+
 /// Steps the world ahead by a given time amount.
 ///
 /// @details

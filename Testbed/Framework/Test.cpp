@@ -391,35 +391,27 @@ Test::~Test()
 void Test::PreSolve(Contact& contact, const Manifold& oldManifold)
 {
     const auto& manifold = contact.GetManifold();
-
     const auto manifoldPointCount = manifold.GetPointCount();
-    if (manifoldPointCount == 0)
+    if (manifoldPointCount > 0)
     {
-        return;
-    }
-
-    auto fixtureA = contact.GetFixtureA();
-    auto fixtureB = contact.GetFixtureB();
-
-    PointStateArray state1;
-    PointStateArray state2;
-    GetPointStates(state1, state2, oldManifold, manifold);
-
-    const auto worldManifold = GetWorldManifold(contact);
-
-    for (auto i = decltype(manifoldPointCount){0}; (i < manifoldPointCount) && (m_pointCount < k_maxContactPoints); ++i)
-    {
-        auto& cp = m_points[m_pointCount];
-        cp.fixtureA = fixtureA;
-        cp.fixtureB = fixtureB;
-        cp.position = worldManifold.GetPoint(i);
-        cp.normal = worldManifold.GetNormal();
-        cp.state = state2[i];
-        const auto ci = manifold.GetContactImpulses(i);
-        cp.normalImpulse = ci.m_normal;
-        cp.tangentImpulse = ci.m_tangent;
-        cp.separation = worldManifold.GetSeparation(i);
-        ++m_pointCount;
+        const auto fixtureA = contact.GetFixtureA();
+        const auto fixtureB = contact.GetFixtureB();
+        const auto pointStates = GetPointStates(oldManifold, manifold);
+        const auto worldManifold = GetWorldManifold(contact);
+        for (auto i = decltype(manifoldPointCount){0}; (i < manifoldPointCount) && (m_pointCount < k_maxContactPoints); ++i)
+        {
+            auto& cp = m_points[m_pointCount];
+            cp.fixtureA = fixtureA;
+            cp.fixtureB = fixtureB;
+            cp.position = worldManifold.GetPoint(i);
+            cp.normal = worldManifold.GetNormal();
+            cp.state = pointStates.state2[i];
+            const auto ci = manifold.GetContactImpulses(i);
+            cp.normalImpulse = ci.m_normal;
+            cp.tangentImpulse = ci.m_tangent;
+            cp.separation = worldManifold.GetSeparation(i);
+            ++m_pointCount;
+        }
     }
 }
 
@@ -560,6 +552,7 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     const auto jointCount = GetJointCount(*m_world);
     const auto fixtureCount = GetFixtureCount(*m_world);
     const auto shapeCount = GetShapeCount(*m_world);
+    const auto touchingCount = GetTouchingCount(*m_world);
     
     std::stringstream stream;
     
@@ -579,7 +572,8 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     stream << " bodies=" << bodyCount << " (" << sleepCount << " asleep),";
     stream << " fixtures=" << fixtureCount << ",";
     stream << " shapes=" << shapeCount << ",";
-    stream << " contacts=" << m_numContacts << " (of " << m_maxContacts << "),";
+    stream << " contacts=" << m_numContacts;
+    stream << " (" << touchingCount << " touching, " << m_maxContacts << " max),";
     stream << " joints=" << jointCount;
     drawer.DrawString(5, m_textLine, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
