@@ -29,7 +29,7 @@ namespace box2d
 
     /// @brief Distance Proxy.
     ///
-    /// A distance proxy aggragates a convex set of vertices and a vertexRadius of those vertices.
+    /// @details A distance proxy aggragates a convex set of vertices and a vertexRadius of those vertices.
     /// This can be visualized as a convex N-gon with rounded corners. It's meant to represent
     /// any single portion of a shape identified by its child-index. These are used by the GJK
     /// algorithm: "a method for determining the minimium distance between two convex sets".

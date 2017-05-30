@@ -82,7 +82,7 @@ namespace box2d {
 
 /// @brief Internal test entries array
 ///
-/// @detail Add subclasses of Test to this array in the order they should appear in the
+/// @details Add subclasses of Test to this array in the order they should appear in the
 ///   Testbed.
 ///
 static const TestEntry testEntries[] =

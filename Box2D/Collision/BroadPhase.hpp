@@ -47,7 +47,7 @@ constexpr inline bool operator != (ProxyIdPair lhs, ProxyIdPair rhs)
     return !(lhs == rhs);
 }
 
-/// Broad phase assistant.
+/// @brief Broad phase assistant.
 /// @details
 /// The broad-phase is used for computing pairs and performing volume queries and ray casts.
 /// This broad-phase does not persist pairs. Instead, this reports potentially new pairs.

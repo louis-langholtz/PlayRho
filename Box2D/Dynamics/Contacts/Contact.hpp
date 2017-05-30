@@ -35,8 +35,8 @@ struct ToiConf;
 class StepConf;
 
 /// @brief Mixes friction.
-/// @detail Friction mixing formula. The idea is to allow either fixture to drive the
-/// resulting friction to zero. For example, anything slides on ice.
+/// @details Friction mixing formula. The idea is to allow either fixture to drive the
+///   resulting friction to zero. For example, anything slides on ice.
 ///
 /// @warning Behavior is undefined if either friction values is less than zero.
 ///

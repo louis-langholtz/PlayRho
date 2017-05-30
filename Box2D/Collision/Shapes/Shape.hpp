@@ -33,9 +33,9 @@ class PolygonShape;
 class ChainShape;
 class MultiShape;
 
-/// Shape.
+/// @brief Shape.
 ///
-/// @details Shape is an abstract base class for shapes.
+/// @details This is a polymorphic abstract base class for shapes.
 /// A shape is used for collision detection. You can create a shape however you like.
 /// Shapes used for simulation in World are created automatically when a Fixture
 /// is created. Shapes may encapsulate one or more child shapes.
@@ -45,6 +45,9 @@ class MultiShape;
 class Shape
 {
 public:
+    
+    /// @brief Configuration for initializing shapes.
+    /// @note This is a nested base value class for initializing shapes.
     struct Conf
     {
         constexpr Conf& UseVertexRadius(NonNegative<Length> value) noexcept;
@@ -52,7 +55,7 @@ public:
         constexpr Conf& UseRestitution(Finite<RealNum> value) noexcept;
         constexpr Conf& UseDensity(NonNegative<Density> value) noexcept;
 
-        /// Vertex radius.
+        /// @brief Vertex radius.
         ///
         /// @details This is the radius from the vertex that the shape's "skin" should
         ///   extend outward by. While any edges - line segments between multiple vertices -
@@ -65,7 +68,7 @@ public:
         ///
         NonNegative<Length> vertexRadius = NonNegative<Length>{DefaultLinearSlop};
 
-        /// Friction coefficient.
+        /// @brief Friction coefficient.
         ///
         /// @note This must be a value between 0 and +infinity.
         /// @note This is usually in the range [0,1].
@@ -74,14 +77,14 @@ public:
         ///
         NonNegative<RealNum> friction = NonNegative<RealNum>{RealNum{2} / RealNum{10}};
         
-        /// Restitution (elasticity) of the associated shape.
+        /// @brief Restitution (elasticity) of the associated shape.
         ///
         /// @note This should be a valid finite value.
         /// @note This is usually in the range [0,1].
         ///
         Finite<RealNum> restitution = Finite<RealNum>{0};
         
-        /// Density of the associated shape.
+        /// @brief Density of the associated shape.
         ///
         /// @note This must be a non-negative value.
         /// @note Use 0 to indicate that the shape's associated mass should be 0.
@@ -89,7 +92,7 @@ public:
         NonNegative<Density> density = NonNegative<Density>{0};
     };
 
-    /// Visitor interface.
+    /// @brief Visitor interface.
     ///
     /// @details Interface to inerit from for objects wishing to "visit" shapes.
     /// This uses the vistor design pattern.

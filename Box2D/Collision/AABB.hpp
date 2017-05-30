@@ -35,9 +35,15 @@ namespace box2d
     
     /// @brief Axis Aligned Bounding Box.
     ///
+    /// @details This is a value class for an axis aligned bounding box which is a type
+    ///   of bounding volume.
+    ///
     /// @note This data structure is 16-bytes large (on at least one 64-bit platform).
+    ///
     /// @invariant The lower bound always has lower x and y values than the upper bound's
     ///   x and y values for any non-empty valid AABB.
+    ///
+    /// @sa https://en.wikipedia.org/wiki/Bounding_volume
     ///
     class AABB
     {

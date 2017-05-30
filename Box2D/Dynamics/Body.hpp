@@ -409,7 +409,7 @@ private:
     static FlagsType GetFlags(const BodyDef& bd) noexcept;
 
     /// @brief Sets the body's awake flag.
-    /// @detail This is done unconditionally.
+    /// @details This is done unconditionally.
     /// @note This should **not** be called unless the body is "speedable".
     /// @warning Behavior is undefined if called for a body that is not "speedable".
     void SetAwakeFlag() noexcept;

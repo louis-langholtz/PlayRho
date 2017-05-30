@@ -35,6 +35,10 @@ namespace box2d
     /// @details A body definition holds all the data needed to construct a rigid body.
     ///   You can safely re-use body definitions.
     ///
+    /// @note This is a value class meant for passing in to the World::CreateBody method.
+    ///
+    /// @sa World.
+    ///
     struct BodyDef
     {
         // Builder-styled methods...

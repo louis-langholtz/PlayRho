@@ -46,7 +46,7 @@ namespace box2d
         iteration_type maxIterations = DefaultMaxDistanceIters;
     };
 
-    /// Distance Output.
+    /// @brief Distance Output.
     struct DistanceOutput
     {
         enum State: std::uint8_t
@@ -65,10 +65,8 @@ namespace box2d
         State state = Unknown; ///< Termination state.
     };
 
-    /// Determines the closest points between two shapes.
-    /// @details
-    /// Supports any combination of:
-    /// CircleShape, PolygonShape, EdgeShape. The simplex cache is input/output.
+    /// @brief Determines the closest points between two shapes.
+    /// @note Supports any combination of shapes.
     /// @note On the first call, the Simplex::Cache.count should be set to zero.
     /// @param proxyA Proxy A.
     /// @param transformA Transoform of A.
