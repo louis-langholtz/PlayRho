@@ -34,6 +34,7 @@ namespace box2d
     struct FixtureProxy;
     class Contact;
 
+    /// @brief Key value class for contacts.
     class ContactKey
     {
     public:
@@ -42,7 +43,7 @@ namespace box2d
         static ContactKey Get(const Fixture* fixtureA, child_count_t childIndexA,
                               const Fixture* fixtureB, child_count_t childIndexB) noexcept;
         
-        static constexpr std::size_t Hash(const ContactKey& key) noexcept
+        static constexpr std::size_t Hash(const ContactKey key) noexcept
         {
             // Use simple and fast Knuth multiplicative hash...
             const auto a = std::size_t{key.m_fp1} * 2654435761u;
@@ -50,44 +51,8 @@ namespace box2d
             return a ^ b;
         }
 
-        static constexpr int Compare(const ContactKey& lhs, const ContactKey& rhs)
+        static constexpr int Compare(const ContactKey lhs, const ContactKey rhs)
         {
-#if 0
-            if (lhs.m_fixtureA < rhs.m_fixtureA)
-            {
-                return -1;
-            }
-            if (lhs.m_fixtureA > rhs.m_fixtureA)
-            {
-                return +1;
-            }
-            if (lhs.m_fixtureB < rhs.m_fixtureB)
-            {
-                return -1;
-            }
-            if (lhs.m_fixtureB > rhs.m_fixtureB)
-            {
-                return +1;
-            }
-            if (lhs.m_childIndexA < rhs.m_childIndexA)
-            {
-                return -1;
-            }
-            if (lhs.m_childIndexA > rhs.m_childIndexA)
-            {
-                return +1;
-            }
-            if (lhs.m_childIndexB < rhs.m_childIndexB)
-            {
-                return -1;
-            }
-            if (lhs.m_childIndexB > rhs.m_childIndexB)
-            {
-                return +1;
-            }
-            // Entirely equal
-            return 0;
-#else
             if (lhs.m_fp1 < rhs.m_fp1)
             {
                 return -1;
@@ -105,47 +70,29 @@ namespace box2d
                 return +1;
             }
             return 0;
-#endif
         }
         
     private:
-#if 0
-        constexpr ContactKey(const Fixture* fixtureA, child_count_t childIndexA,
-                             const Fixture* fixtureB, child_count_t childIndexB) noexcept:
-        	m_fixtureA{fixtureA},
-        	m_fixtureB{fixtureB},
-        	m_childIndexA{childIndexA},
-        	m_childIndexB{childIndexB}
-        {
-            // Intentionally empty.
-        }
-
-        const Fixture* m_fixtureA;
-        const Fixture* m_fixtureB;
-        child_count_t m_childIndexA;
-        child_count_t m_childIndexB;
-#else
         constexpr ContactKey(contact_count_t fp1, contact_count_t fp2) noexcept:
         	m_fp1{fp1}, m_fp2{fp2}
         {
             // Intentionally empty.
         }
     
-        contact_count_t m_fp1;
-        contact_count_t m_fp2;
-#endif
+        contact_count_t m_fp1; ///< Fixture proxy 1 (ID).
+        contact_count_t m_fp2; ///< Fixture proxy 2 (ID).
     };
     
     ContactKey GetContactKey(const Contact& contact) noexcept;
 
-    constexpr bool operator== (const box2d::ContactKey& lhs,
-                               const box2d::ContactKey& rhs) noexcept
+    constexpr bool operator== (const box2d::ContactKey lhs,
+                               const box2d::ContactKey rhs) noexcept
     {
         return ContactKey::Compare(lhs, rhs) == 0;
     }
     
-    constexpr bool operator!= (const box2d::ContactKey& lhs,
-                               const box2d::ContactKey& rhs) noexcept
+    constexpr bool operator!= (const box2d::ContactKey lhs,
+                               const box2d::ContactKey rhs) noexcept
     {
         return !(lhs == rhs);
     }
