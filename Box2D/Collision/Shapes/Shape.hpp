@@ -50,11 +50,6 @@ public:
     /// @note This is a nested base value class for initializing shapes.
     struct Conf
     {
-        constexpr Conf& UseVertexRadius(NonNegative<Length> value) noexcept;
-        constexpr Conf& UseFriction(NonNegative<RealNum> value) noexcept;
-        constexpr Conf& UseRestitution(Finite<RealNum> value) noexcept;
-        constexpr Conf& UseDensity(NonNegative<Density> value) noexcept;
-
         /// @brief Vertex radius.
         ///
         /// @details This is the radius from the vertex that the shape's "skin" should
@@ -90,6 +85,22 @@ public:
         /// @note Use 0 to indicate that the shape's associated mass should be 0.
         ///
         NonNegative<Density> density = NonNegative<Density>{0};
+    };
+
+    /// @brief Builder configuration structure.
+    /// @details This is a builder structure of chainable methods for building a shape
+    ///   configuration.
+    /// @note This is a templated nested value class for initializing shapes that
+    ///   uses the Curiously Recurring Template Pattern (CRTP) to provide method chaining
+    ///   via static polymorphism.
+    /// @sa https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern
+    template <typename ConcreteConf>
+    struct Builder: Conf
+    {
+        constexpr ConcreteConf& UseVertexRadius(NonNegative<Length> value) noexcept;
+        constexpr ConcreteConf& UseFriction(NonNegative<RealNum> value) noexcept;
+        constexpr ConcreteConf& UseRestitution(Finite<RealNum> value) noexcept;
+        constexpr ConcreteConf& UseDensity(NonNegative<Density> value) noexcept;
     };
 
     /// @brief Visitor interface.
@@ -219,28 +230,32 @@ private:
     Finite<RealNum> m_restitution = Finite<RealNum>{0};
 };
 
-constexpr inline Shape::Conf& Shape::Conf::UseVertexRadius(NonNegative<Length> value) noexcept
+template <typename ConcreteConf>
+constexpr ConcreteConf& Shape::Builder<ConcreteConf>::UseVertexRadius(NonNegative<Length> value) noexcept
 {
     vertexRadius = value;
-    return *this;
+    return static_cast<ConcreteConf&>(*this);
 }
 
-constexpr inline Shape::Conf& Shape::Conf::UseFriction(NonNegative<RealNum> value) noexcept
+template <typename ConcreteConf>
+constexpr ConcreteConf& Shape::Builder<ConcreteConf>::UseFriction(NonNegative<RealNum> value) noexcept
 {
     friction = value;
-    return *this;
+    return static_cast<ConcreteConf&>(*this);
 }
 
-constexpr inline Shape::Conf& Shape::Conf::UseRestitution(Finite<RealNum> value) noexcept
+template <typename ConcreteConf>
+constexpr ConcreteConf& Shape::Builder<ConcreteConf>::UseRestitution(Finite<RealNum> value) noexcept
 {
     restitution = value;
-    return *this;
+    return static_cast<ConcreteConf&>(*this);
 }
 
-constexpr inline Shape::Conf& Shape::Conf::UseDensity(NonNegative<Density> value) noexcept
+template <typename ConcreteConf>
+constexpr ConcreteConf& Shape::Builder<ConcreteConf>::UseDensity(NonNegative<Density> value) noexcept
 {
     density = value;
-    return *this;
+    return static_cast<ConcreteConf&>(*this);
 }
 
 inline Length Shape::GetVertexRadius() const noexcept

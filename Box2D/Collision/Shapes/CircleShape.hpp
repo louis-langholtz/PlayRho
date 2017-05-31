@@ -34,12 +34,15 @@ public:
         return DefaultLinearSlop * RealNum{2};
     }
 
-    struct Conf: public Shape::Conf
+    struct Conf: public Builder<Conf>
     {
-        Conf(): Shape::Conf{Shape::Conf{}.UseVertexRadius(GetDefaultRadius())}
+        Conf(): Builder<Conf>{Builder<Conf>{}.UseVertexRadius(GetDefaultRadius())}
         {
+            // Intentionally empty.
         }
         
+        constexpr Conf& UseLocation(Length2D value) noexcept;
+
         Length2D location = Vec2_zero * Meter;
     };
 
@@ -99,6 +102,12 @@ private:
     /// Linear position of the shape as initialized on construction or as assigned using the SetPosition method.
     Length2D m_location = Vec2_zero * Meter;
 };
+
+constexpr CircleShape::Conf& CircleShape::Conf::UseLocation(Length2D value) noexcept
+{
+    location = value;
+    return *this;
+}
 
 inline child_count_t CircleShape::GetChildCount() const noexcept
 {

@@ -1071,10 +1071,8 @@ TEST(CollideShapes, EdgeFooTriangle)
 {
     const auto p1 = Vec2(2, -2) * Meter;
     const auto p2 = Vec2(-2, +2) * Meter;
-    auto conf = EdgeShape::Conf{};
-    conf.vertexRadius = 0;
-    auto edge_shape = EdgeShape(conf);
-    edge_shape.Set(p2, p1);
+    const auto edge_shape = EdgeShape(p2, p1,
+                                      EdgeShape::Conf{}.UseVertexRadius(RealNum(0) * Meter));
     const auto edge_xfm = Transformation{Vec2(0, 0.5) * Meter, UnitVec2{-RealNum{5.0f} * Degree}};
     auto polygon_shape = PolygonShape{};
     polygon_shape.SetVertexRadius(RealNum{0} * Meter);
@@ -1084,7 +1082,8 @@ TEST(CollideShapes, EdgeFooTriangle)
     polygon_shape.Set({triangleLeftPt, triangleRightPt, triangleTopPt});
     const auto polygon_xfm = Transformation{Vec2{0, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
     
-    const auto manifold = CollideShapes(edge_shape.GetChild(0), edge_xfm, polygon_shape.GetChild(0), polygon_xfm);
+    const auto manifold = CollideShapes(edge_shape.GetChild(0), edge_xfm,
+                                        polygon_shape.GetChild(0), polygon_xfm);
     
     EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
     EXPECT_EQ(manifold.GetLocalPoint(), Vec2(0, 0) * Meter);

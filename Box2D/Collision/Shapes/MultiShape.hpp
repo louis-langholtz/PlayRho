@@ -45,10 +45,11 @@ namespace box2d {
             return DefaultLinearSlop * RealNum{2};
         }
         
-        struct Conf: public Shape::Conf
+        struct Conf: public Builder<Conf>
         {
-            constexpr Conf(): Shape::Conf{Shape::Conf{}.UseVertexRadius(GetDefaultVertexRadius())}
+            constexpr Conf(): Builder<Conf>{Builder<Conf>{}.UseVertexRadius(GetDefaultVertexRadius())}
             {
+                // Intentionally empty.
             }
         };
         

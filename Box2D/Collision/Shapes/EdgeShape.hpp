@@ -38,11 +38,18 @@ public:
         return DefaultLinearSlop * RealNum{2};
     }
 
-    struct Conf: public Shape::Conf
+    struct Conf: public Builder<Conf>
     {
-        constexpr Conf(): Shape::Conf{Shape::Conf{}.UseVertexRadius(GetDefaultVertexRadius())}
+        constexpr Conf(): Builder<Conf>{Builder<Conf>{}.UseVertexRadius(GetDefaultVertexRadius())}
         {
+            // Intentionally empty.
         }
+        
+        constexpr Conf& UseVertex1(Length2D value) noexcept;
+        constexpr Conf& UseVertex2(Length2D value) noexcept;
+
+        Length2D vertex1 = Vec2_zero * Meter;
+        Length2D vertex2 = Vec2_zero * Meter;
     };
     
     static Conf GetDefaultConf() noexcept
@@ -51,9 +58,11 @@ public:
     }
 
     EdgeShape(const Conf& conf = GetDefaultConf()) noexcept:
-        Shape{conf}
+        Shape{conf},
+        m_vertices{conf.vertex1, conf.vertex2}
     {
-        // Intentionally empty.
+        m_normals[0] = GetUnitVector(GetFwdPerpendicular(conf.vertex2 - conf.vertex1));
+        m_normals[1] = -m_normals[0];
     }
 
     EdgeShape(Length2D v1, Length2D v2, const Conf& conf = GetDefaultConf()) noexcept:
@@ -62,8 +71,6 @@ public:
     {
         m_normals[0] = GetUnitVector(GetFwdPerpendicular(v2 - v1));
         m_normals[1] = -m_normals[0];
-        assert(IsValid(m_normals[0]));
-        assert(IsValid(m_normals[1]));
     }
 
     EdgeShape(const EdgeShape&) = default;
