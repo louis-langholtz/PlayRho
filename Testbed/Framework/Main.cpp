@@ -663,6 +663,11 @@ static void UserInterface()
     imguiEndFrame();
 }
 
+static void GlfwErrorCallback(int code, const char* str)
+{
+    fprintf(stderr, "GLFW error (%d): %s\n", code, str);
+}
+
 int main()
 {
     TestSuite testSuite(GetTestEntries());
@@ -677,7 +682,12 @@ int main()
 
     camera.m_width = 1280; // 1152;
     camera.m_height = 960; // 864;
-    
+
+    if (glfwSetErrorCallback(GlfwErrorCallback))
+    {
+        fprintf(stderr, "Warning: overriding previously installed GLFW error callback function.\n");
+    }
+
     if (glfwInit() == 0)
     {
         fprintf(stderr, "Failed to initialize GLFW\n");
