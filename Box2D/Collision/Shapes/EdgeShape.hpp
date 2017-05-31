@@ -52,7 +52,7 @@ public:
         Length2D vertex2 = Vec2_zero * Meter;
     };
     
-    static Conf GetDefaultConf() noexcept
+    static constexpr Conf GetDefaultConf() noexcept
     {
         return Conf{};
     }

@@ -29,7 +29,7 @@ class CircleShape : public Shape
 {
 public:
     
-    static Length GetDefaultRadius() noexcept
+    static constexpr Length GetDefaultRadius() noexcept
     {
         return DefaultLinearSlop * RealNum{2};
     }
@@ -46,7 +46,7 @@ public:
         Length2D location = Vec2_zero * Meter;
     };
 
-    static Conf GetDefaultConf() noexcept
+    static constexpr Conf GetDefaultConf() noexcept
     {
         return Conf{};
     }
