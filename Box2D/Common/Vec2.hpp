@@ -167,9 +167,9 @@ namespace box2d
         return Vector2D<OUT_TYPE>{a.x / s, a.y / s};
     }
     
-    /// Vector 2D of RealNum.
+    /// @brief Vector 2D of RealNum.
     /// @note This data structure is two-times the size of the <code>RealNum</code> type
-    /// (or 8 using RealNum of float).
+    ///   (or 8 using RealNum of float).
     using Vec2 = Vector2D<RealNum>;
     
     using Length2D = Vector2D<Length>;
