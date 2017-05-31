@@ -147,7 +147,7 @@ namespace box2d
     /// An all zero Vec3 value.
     /// @see Vec3.
     constexpr auto Vec3_zero = Vec3{0, 0, 0};
-        
+    
     template <>
     constexpr inline Vec3 GetInvalid() noexcept
     {

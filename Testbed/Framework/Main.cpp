@@ -435,7 +435,6 @@ static void MouseButton(GLFWwindow*, int button, int action, int mods)
     // Use the mouse to move things around.
     if (button == GLFW_MOUSE_BUTTON_1)
     {
-        //ps = Vec2(0, 0);
         const auto pw = ConvertScreenToWorld(camera, ps);
         if (action == GLFW_PRESS)
         {
