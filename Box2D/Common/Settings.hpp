@@ -60,6 +60,7 @@
 #endif
 
 #include <Box2D/Defines.hpp>
+#include <Box2D/Common/RealNum.hpp>
 #include <Box2D/Common/Wider.hpp>
 #include <Box2D/Common/Fixed.hpp>
 
@@ -75,29 +76,6 @@ template<class... T> void NOT_USED(T&&...){}
 class Body;
 class Contact;
 class Joint;
-
-/// @brief Real-number type.
-///
-/// @details This is the number type underlying numerical calculations conceptually involving
-/// real-numbers. Ideally the implementation of this type doesn't suffer from things like:
-/// catastrophic cancellation, catastrophic division, overflows, nor underflows.
-///
-/// @note This can be implemented using float, double, long double, Fixed32, or Fixed64.
-///
-/// @note Regarding division:
-///
-/// While dividing 1 by a RealNum, caching the result, and then doing multiplications with the
-/// result may well be faster (than repeatedly dividing), dividing 1 by RealNum can also result
-/// in an underflow situation that's then compounded every time it's multiplied with other
-/// values.
-///
-/// Meanwhile, dividing every value by RealNum isolates any underflows to the particular
-/// division where underflow occurs.
-///
-/// @warning The note regarding division applies even more so when using a fixed-point type
-/// (for RealNum).
-///
-using RealNum = float;
 
 /// @brief Pi.
 ///

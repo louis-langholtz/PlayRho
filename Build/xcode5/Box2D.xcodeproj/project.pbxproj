@@ -48,6 +48,8 @@
 		470F9B2B1EDF4EA2007EF7B6 /* Mat33.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F9B271EDF4EA2007EF7B6 /* Mat33.hpp */; };
 		470F9B301EDF5165007EF7B6 /* Velocity.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F9B2D1EDF5165007EF7B6 /* Velocity.hpp */; };
 		470F9B311EDF5165007EF7B6 /* Velocity.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F9B2D1EDF5165007EF7B6 /* Velocity.hpp */; };
+		470F9B361EDF6C82007EF7B6 /* RealNum.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F9B331EDF6C82007EF7B6 /* RealNum.hpp */; };
+		470F9B371EDF6C82007EF7B6 /* RealNum.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F9B331EDF6C82007EF7B6 /* RealNum.hpp */; };
 		4726DD0F1D3014990012A882 /* IndexPair.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD0C1D3014990012A882 /* IndexPair.hpp */; };
 		4726DD101D3014990012A882 /* IndexPair.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD0C1D3014990012A882 /* IndexPair.hpp */; };
 		4726DD1F1D305E5D0012A882 /* ContactFeature.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */; };
@@ -424,7 +426,6 @@
 
 /* Begin PBXFileReference section */
 		470D533C1E82364F00E96896 /* SpinningCircle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SpinningCircle.hpp; sourceTree = "<group>"; };
-		470F94A31EC4C6C900AA3C82 /* Settings.hpp.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Settings.hpp.in; sourceTree = "<group>"; };
 		470F94A51EC4C79B00AA3C82 /* BodyDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyDef.hpp; sourceTree = "<group>"; };
 		470F94AB1EC4CAE600AA3C82 /* FixtureDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FixtureDef.hpp; sourceTree = "<group>"; };
 		470F94B11EC4CB6C00AA3C82 /* Filter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Filter.hpp; sourceTree = "<group>"; };
@@ -446,6 +447,8 @@
 		470F9B211EDF4D72007EF7B6 /* Mat22.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Mat22.hpp; sourceTree = "<group>"; };
 		470F9B271EDF4EA2007EF7B6 /* Mat33.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Mat33.hpp; sourceTree = "<group>"; };
 		470F9B2D1EDF5165007EF7B6 /* Velocity.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Velocity.hpp; sourceTree = "<group>"; };
+		470F9B331EDF6C82007EF7B6 /* RealNum.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RealNum.hpp; sourceTree = "<group>"; };
+		470F9B381EDF6F0D007EF7B6 /* RealNum.hpp.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = RealNum.hpp.in; sourceTree = "<group>"; };
 		4726DD0C1D3014990012A882 /* IndexPair.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IndexPair.hpp; sourceTree = "<group>"; };
 		4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactFeature.hpp; sourceTree = "<group>"; };
 		4726DD261D3180980012A882 /* NewtonsCradle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NewtonsCradle.hpp; sourceTree = "<group>"; };
@@ -926,9 +929,10 @@
 				80BB8945141C3E5900F1753A /* Math.hpp */,
 				470F9B0F1EDF2890007EF7B6 /* Position.hpp */,
 				470F94E01ECBB3A100AA3C82 /* Range.hpp */,
+				470F9B331EDF6C82007EF7B6 /* RealNum.hpp */,
+				470F9B381EDF6F0D007EF7B6 /* RealNum.hpp.in */,
 				80BB8946141C3E5900F1753A /* Settings.cpp */,
 				80BB8947141C3E5900F1753A /* Settings.hpp */,
-				470F94A31EC4C6C900AA3C82 /* Settings.hpp.in */,
 				4734B21E1DC1340500F15E29 /* Span.hpp */,
 				80BB8948141C3E5900F1753A /* StackAllocator.cpp */,
 				80BB8949141C3E5900F1753A /* StackAllocator.hpp */,
@@ -1190,6 +1194,7 @@
 				470F94C11EC4D63400AA3C82 /* ContactAtty.hpp in Headers */,
 				478E67C81E760AB7009B9AD5 /* BodyType.hpp in Headers */,
 				474BAB311E5D00960058E08A /* BodyConstraint.hpp in Headers */,
+				470F9B371EDF6C82007EF7B6 /* RealNum.hpp in Headers */,
 				470F94D31EC6376F00AA3C82 /* ContactKey.hpp in Headers */,
 				47AA5DCB1C4C5FBE008AF2BA /* Box2D.hpp in Headers */,
 				47AA5DCC1C4C5FBE008AF2BA /* BroadPhase.hpp in Headers */,
@@ -1314,6 +1319,7 @@
 				80BB89AC141C3E5900F1753A /* Body.hpp in Headers */,
 				80BB89B0141C3E5900F1753A /* Fixture.hpp in Headers */,
 				4726DD0F1D3014990012A882 /* IndexPair.hpp in Headers */,
+				470F9B361EDF6C82007EF7B6 /* RealNum.hpp in Headers */,
 				80BB89B2141C3E5900F1753A /* Island.hpp in Headers */,
 				47327E801EA585790048FCD8 /* Defines.hpp in Headers */,
 				80BB89B3141C3E5900F1753A /* StepConf.hpp in Headers */,

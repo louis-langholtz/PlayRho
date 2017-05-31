@@ -3,8 +3,8 @@ if(NOT BOX2D_REALNUM_TYPE)
 endif()
 message("BOX2D_REALNUM_TYPE=${BOX2D_REALNUM_TYPE}")
 
-file(REMOVE "Common/Settings.hpp")
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Common/Settings.hpp.in" "${CMAKE_CURRENT_SOURCE_DIR}/Common/Settings.hpp")
+file(REMOVE "Common/RealNum.hpp")
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Common/RealNum.hpp.in" "${CMAKE_CURRENT_SOURCE_DIR}/Common/RealNum.hpp")
 
 file(GLOB BOX2D_Collision_SRCS
 	"Collision/*.cpp"
