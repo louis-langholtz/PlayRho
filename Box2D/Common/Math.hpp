@@ -1154,7 +1154,7 @@ GetContactRelVelocity(const Velocity velA, const Length2D vcp_rA,
 template <>
 inline Vec2 Average(Span<const Vec2> span)
 {
-    auto sum = Vec2(0, 0);
+    auto sum = Vec2{0, 0};
     for (auto&& element: span)
     {
         sum += element;

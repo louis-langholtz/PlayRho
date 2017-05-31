@@ -694,7 +694,7 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
 
 TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
 {
-    World world{WorldDef{}.UseGravity(Vec2(0, 0) * MeterPerSquareSecond)};
+    World world{WorldDef{}.UseGravity(Vec2{0, 0} * MeterPerSquareSecond)};
     MyContactListener listener{
         [&](Contact&, const Manifold&) {},
         [&](Contact&, const ContactImpulsesList&, ContactListener::iteration_type) {},
@@ -730,7 +730,7 @@ TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
 
 TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
 {
-    World world{WorldDef{}.UseGravity(Vec2(0, 0) * MeterPerSquareSecond)};
+    World world{WorldDef{}.UseGravity(Vec2{0, 0} * MeterPerSquareSecond)};
     MyContactListener listener{
         [&](Contact&, const Manifold&) {},
         [&](Contact&, const ContactImpulsesList&, ContactListener::iteration_type) {},
