@@ -161,8 +161,8 @@
 		4768D3F51E3A7ACA00574143 /* Wider.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4768D3F21E3A7ACA00574143 /* Wider.hpp */; };
 		4768D3F61E3A7ACA00574143 /* Wider.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4768D3F21E3A7ACA00574143 /* Wider.hpp */; };
 		4768D3F81E3E895A00574143 /* PrismaticJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4768D3F71E3E895A00574143 /* PrismaticJoint.cpp */; };
-		4768D3FD1E414A0100574143 /* Vec2.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4768D3FA1E414A0100574143 /* Vec2.hpp */; };
-		4768D3FE1E414A0100574143 /* Vec2.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4768D3FA1E414A0100574143 /* Vec2.hpp */; };
+		4768D3FD1E414A0100574143 /* Vector2D.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4768D3FA1E414A0100574143 /* Vector2D.hpp */; };
+		4768D3FE1E414A0100574143 /* Vector2D.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4768D3FA1E414A0100574143 /* Vector2D.hpp */; };
 		4768D4001E54E7CC00574143 /* StepConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4768D3FF1E54E7CB00574143 /* StepConf.cpp */; };
 		4768D4011E54E7CC00574143 /* StepConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4768D3FF1E54E7CB00574143 /* StepConf.cpp */; };
 		4775A9381E05B032001C2332 /* StepConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4775A9371E05B032001C2332 /* StepConf.cpp */; };
@@ -531,7 +531,7 @@
 		476162C71E245C9D002C7FB0 /* CodeDumper.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CodeDumper.hpp; sourceTree = "<group>"; };
 		4768D3F21E3A7ACA00574143 /* Wider.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Wider.hpp; sourceTree = "<group>"; };
 		4768D3F71E3E895A00574143 /* PrismaticJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PrismaticJoint.cpp; sourceTree = "<group>"; };
-		4768D3FA1E414A0100574143 /* Vec2.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Vec2.hpp; sourceTree = "<group>"; };
+		4768D3FA1E414A0100574143 /* Vector2D.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Vector2D.hpp; sourceTree = "<group>"; };
 		4768D3FF1E54E7CB00574143 /* StepConf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StepConf.cpp; sourceTree = "<group>"; };
 		4775A9371E05B032001C2332 /* StepConf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StepConf.cpp; sourceTree = "<group>"; };
 		477D20051E32B6E80069D610 /* Fixed.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fixed.cpp; sourceTree = "<group>"; };
@@ -918,7 +918,7 @@
 				80BB894B141C3E5900F1753A /* Timer.hpp */,
 				4731DE541DEC908600E7F931 /* UnitVec2.cpp */,
 				4731DE551DEC908600E7F931 /* UnitVec2.hpp */,
-				4768D3FA1E414A0100574143 /* Vec2.hpp */,
+				4768D3FA1E414A0100574143 /* Vector2D.hpp */,
 				472E30181DBA925500DA821D /* VertexSet.hpp */,
 				4768D3F21E3A7ACA00574143 /* Wider.hpp */,
 			);
@@ -1183,7 +1183,7 @@
 				4731DE241DDF83A600E7F931 /* RayCastOutput.hpp in Headers */,
 				47AA5DD21C4C5FBE008AF2BA /* CircleShape.hpp in Headers */,
 				47AA5DD31C4C5FBE008AF2BA /* EdgeShape.hpp in Headers */,
-				4768D3FE1E414A0100574143 /* Vec2.hpp in Headers */,
+				4768D3FE1E414A0100574143 /* Vector2D.hpp in Headers */,
 				47AA5DD41C4C5FBE008AF2BA /* PolygonShape.hpp in Headers */,
 				47AA5DD51C4C5FBE008AF2BA /* Shape.hpp in Headers */,
 				470F94AF1EC4CAE600AA3C82 /* FixtureDef.hpp in Headers */,
@@ -1300,7 +1300,7 @@
 				479B63C01ED8B64300D49BC7 /* BoundedValue.hpp in Headers */,
 				4751EE291CEDD78F00D459CB /* Mobile.hpp in Headers */,
 				4751EE2B1CEDD79900D459CB /* ConveyorBelt.hpp in Headers */,
-				4768D3FD1E414A0100574143 /* Vec2.hpp in Headers */,
+				4768D3FD1E414A0100574143 /* Vector2D.hpp in Headers */,
 				477DB2AD1D1C4BE800846ED6 /* PositionSolverManifold.hpp in Headers */,
 				470F94DB1EC8C37500AA3C82 /* JointKey.hpp in Headers */,
 				4731DE291DDF84A900E7F931 /* RayCastInput.hpp in Headers */,
