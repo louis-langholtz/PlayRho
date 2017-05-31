@@ -36,7 +36,7 @@ public:
 
     struct Conf: public Builder<Conf>
     {
-        Conf(): Builder<Conf>{Builder<Conf>{}.UseVertexRadius(GetDefaultRadius())}
+        constexpr Conf(): Builder<Conf>{Builder<Conf>{}.UseVertexRadius(GetDefaultRadius())}
         {
             // Intentionally empty.
         }
