@@ -25,6 +25,12 @@
 #include <Box2D/Common/UnitVec2.hpp>
 #include <Box2D/Common/Vector2D.hpp>
 #include <Box2D/Common/Vector3D.hpp>
+#include <Box2D/Common/Position.hpp>
+#include <Box2D/Common/Transformation.hpp>
+#include <Box2D/Common/Sweep.hpp>
+#include <Box2D/Common/Mat22.hpp>
+#include <Box2D/Common/Mat33.hpp>
+
 #include <cmath>
 #include <iostream>
 
@@ -227,10 +233,6 @@ inline Length2D Average(Span<const Length2D> span)
 
 #endif
 
-/// An all zero Vec2 value.
-/// @see Vec2.
-constexpr auto Vec2_zero = Vec2{0, 0};
-
 template <>
 inline Vec2 round(Vec2 value, std::uint32_t precision)
 {
@@ -351,43 +353,6 @@ constexpr inline auto Cross(const Vec3 a, const Vec3 b) noexcept
     return Vec3{a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x};
 }
 
-/// A 2-by-2 matrix.
-/// @details Stored in column-major order.
-/// @note This structure is likely about 16-bytes large.
-struct Mat22
-{
-    /// The default constructor does nothing (for performance).
-    Mat22() noexcept = default;
-
-    /// Construct this matrix using columns.
-    constexpr Mat22(const Vec2 c1, const Vec2 c2) noexcept: ex{c1}, ey{c2} {}
-
-    /// Construct this matrix using scalars.
-    constexpr Mat22(RealNum a11, RealNum a12, RealNum a21, RealNum a22) noexcept: ex{a11, a21}, ey{a12, a22} {}
-
-    Vec2 ex, ey;
-};
-
-template <>
-constexpr inline bool IsValid(const Mat22& value) noexcept
-{
-    return IsValid(value.ex) && IsValid(value.ey);
-}
-
-/// An all zero Mat22 value.
-/// @see Mat22.
-constexpr auto Mat22_zero = Mat22(Vec2_zero, Vec2_zero);
-
-template <>
-constexpr inline Mat22 GetInvalid() noexcept
-{
-    return Mat22{GetInvalid<Vec2>(), GetInvalid<Vec2>()};
-}
-
-/// Identity value for Mat22 objects.
-/// @see Mat22.
-constexpr auto Mat22_identity = Mat22(Vec2{1, 0}, Vec2{0, 1});
-
 /// Solve A * x = b, where b is a column vector. This is more efficient
 /// than computing the inverse in one-shot cases.
 constexpr Vec2 Solve(const Mat22 mat, const Vec2 b) noexcept
@@ -405,20 +370,6 @@ constexpr Mat22 Invert(const Mat22 value) noexcept
         Mat22{Vec2{value.ey.y / cp, -value.ex.y / cp}, Vec2{-value.ey.x / cp, value.ex.x / cp}}:
         Mat22{Vec2{0, 0}, Vec2{0, 0}};
 }
-
-/// A 3-by-3 matrix. Stored in column-major order.
-/// @note This data structure is 36-bytes large (on at least one 64-bit platform with 4-byte RealNum).
-struct Mat33
-{
-    /// The default constructor does nothing (for performance).
-    Mat33() noexcept = default;
-
-    /// Construct this matrix using columns.
-    constexpr Mat33(const Vec3 c1, const Vec3 c2, const Vec3 c3) noexcept:
-        ex{c1}, ey{c2}, ez{c3} {}
-
-    Vec3 ex, ey, ez;
-};
 
 /// Solve A * x = b, where b is a column vector. This is more efficient
 /// than computing the inverse in one-shot cases.
@@ -443,8 +394,6 @@ constexpr Vec2 Solve22(const Mat33& mat, const Vec2 b) noexcept
     const auto y = det * (mat.ex.x * b.y - mat.ex.y * b.x);
     return Vec2{x, y};
 }
-
-constexpr auto Mat33_zero = Mat33(Vec3_zero, Vec3_zero, Vec3_zero);
 
 /// Get the inverse of this matrix as a 2-by-2.
 /// Returns the zero matrix if singular.
@@ -484,56 +433,11 @@ constexpr inline Mat33 GetSymInverse33(const Mat33& value) noexcept
     };
 }
 
-template <>
-constexpr UnitVec2 GetInvalid() noexcept
-{
-    return UnitVec2{};
-}
-
-template <>
-constexpr inline bool IsValid(const UnitVec2& value) noexcept
-{
-    return IsValid(GetX(value)) && IsValid(GetY(value)) && (value != UnitVec2::GetZero());
-}
-
 struct ContactImpulses
 {
     Momentum m_normal; ///< Normal impulse. This is the non-penetration impulse (4-bytes).
     Momentum m_tangent; ///< Tangent impulse. This is the friction impulse (4-bytes).
 };
-
-/// Transformation.
-/// @details
-/// A transform contains translation and rotation. It is used to represent
-/// the position and orientation of rigid frames.
-/// @note This data structure is 16-bytes large (on at least one 64-bit platform).
-struct Transformation
-{
-    Length2D p; ///< Translational portion of the transformation. 8-bytes.
-    UnitVec2 q; ///< Rotational portion of the transformation. 8-bytes.
-};
-
-constexpr auto Transform_identity = Transformation{Vec2_zero * Meter, UnitVec2::GetRight()};
-
-template <>
-constexpr inline bool IsValid(const Transformation& value) noexcept
-{
-    return IsValid(value.p.x) && IsValid(value.p.y) && IsValid(value.q);
-}
-
-/// Positional data structure.
-/// @note This structure is likely to be 12-bytes large (at least on 64-bit platforms).
-struct Position
-{
-    Length2D linear; ///< Linear position.
-    Angle angular; ///< Angular position.
-};
-
-template <>
-constexpr inline bool IsValid(const Position& value) noexcept
-{
-    return IsValid(value.linear) && IsValid(value.angular);
-}
 
 /// Velocity related data structure.
 /// @note This data structure is 12-bytes (with 4-byte RealNum on at least one 64-bit platform).
@@ -548,62 +452,6 @@ constexpr inline bool IsValid(const Velocity& value) noexcept
 {
     return IsValid(value.linear.x) && IsValid(value.linear.y) && IsValid(value.angular);
 }
-
-/// Sweep.
-/// @details
-/// This describes the motion of a body/shape for TOI computation.
-/// Shapes are defined with respect to the body origin, which may
-/// not coincide with the center of mass. However, to support dynamics
-/// we must interpolate the center of mass position.
-/// @note This data structure is likely 36-bytes (at least on 64-bit platforms).
-class Sweep
-{
-public:
-    /// Default constructor.
-    Sweep() = default;
-
-    /// Copy constructor.
-    constexpr Sweep(const Sweep& copy) = default;
-
-    /// Initializing constructor.
-    constexpr Sweep(const Position p0, const Position p1, const Length2D lc = Vec2_zero * Meter, RealNum a0 = 0) noexcept:
-        pos0{p0}, pos1{p1}, localCenter{lc}, alpha0{a0}
-    {
-        assert(a0 >= 0);
-        assert(a0 < 1);
-    }
-    
-    /// Initializing constructor.
-    constexpr explicit Sweep(const Position p, const Length2D lc = Vec2_zero * Meter): Sweep{p, p, lc, 0} {}
-
-    /// Gets the local center of mass position.
-     /// @note This value can only be set via a sweep constructed using an initializing constructor.
-    Length2D GetLocalCenter() const noexcept { return localCenter; }
-
-    /// Gets the alpha0 for this sweep.
-    /// @return Value between 0 and less than 1.
-    RealNum GetAlpha0() const noexcept { return alpha0; }
-
-    /// Advances the sweep by a factor of the difference between the given time alpha and the sweep's alpha0.
-    /// @details
-    /// This advances position 0 (<code>pos0</code>) of the sweep towards position 1 (<code>pos1</code>)
-    /// by a factor of the difference between the given alpha and the alpha0.
-    /// @param alpha Valid new time factor in [0,1) to update the sweep to. Behavior is undefined if value is invalid.
-    void Advance0(RealNum alpha) noexcept;
-
-    void ResetAlpha0() noexcept;
-
-    Position pos0; ///< Center world position and world angle at time "0". 12-bytes.
-    Position pos1; ///< Center world position and world angle at time "1". 12-bytes.
-
-private:
-    Length2D localCenter; ///< Local center of mass position. 8-bytes.
-
-    /// Fraction of the current time step in the range [0,1]
-    /// pos0.linear and pos0.angular are the positions at alpha0.
-    /// @note 4-bytes.
-    RealNum alpha0;
-};
 
 /// Gets a vector counter-clockwise (reverse-clockwise) perpendicular to the given vector.
 /// @details This takes a vector of form (x, y) and returns the vector (-y, x).
@@ -872,60 +720,6 @@ inline std::uint64_t NextPowerOfTwo(std::uint64_t x)
     return x + 1;
 }
 
-constexpr inline bool operator==(const Position& lhs, const Position& rhs)
-{
-    return (lhs.linear == rhs.linear) && (lhs.angular == rhs.angular);
-}
-
-constexpr inline bool operator!=(const Position& lhs, const Position& rhs)
-{
-    return (lhs.linear != rhs.linear) || (lhs.angular != rhs.angular);
-}
-
-constexpr inline Position operator- (const Position& value)
-{
-    return Position{-value.linear, -value.angular};
-}
-
-constexpr inline Position operator+ (const Position& value)
-{
-    return value;
-}
-
-constexpr inline Position& operator+= (Position& lhs, const Position& rhs)
-{
-    lhs.linear += rhs.linear;
-    lhs.angular += rhs.angular;
-    return lhs;
-}
-
-constexpr inline Position operator+ (const Position& lhs, const Position& rhs)
-{
-    return Position{lhs.linear + rhs.linear, lhs.angular + rhs.angular};
-}
-    
-constexpr inline Position& operator-= (Position& lhs, const Position& rhs)
-{
-    lhs.linear -= rhs.linear;
-    lhs.angular -= rhs.angular;
-    return lhs;
-}
-
-constexpr inline Position operator- (const Position& lhs, const Position& rhs)
-{
-    return Position{lhs.linear - rhs.linear, lhs.angular - rhs.angular};
-}
-
-constexpr inline Position operator* (const Position& pos, const RealNum scalar)
-{
-    return Position{{pos.linear.x * scalar, pos.linear.y * scalar}, pos.angular * scalar};
-}
-
-constexpr inline Position operator* (const RealNum scalar, const Position& pos)
-{
-    return Position{{pos.linear.x * scalar, pos.linear.y * scalar}, pos.angular * scalar};
-}
-    
 constexpr inline bool operator==(const Velocity& lhs, const Velocity& rhs)
 {
     return (lhs.linear == rhs.linear) && (lhs.angular == rhs.angular);
@@ -1021,26 +815,6 @@ inline Transformation GetTransformation(const Position pos, const Length2D local
     return GetTransformation(pos.linear, UnitVec2{pos.angular}, local_ctr);
 }
 
-/// Gets the position between two positions at a given unit interval.
-/// @param pos0 Position at unit interval value of 0.
-/// @param pos1 Position at unit interval value of 1.
-/// @param beta Unit interval (value between 0 and 1) of travel between pos0 and pos1.
-/// @return pos0 if pos0 == pos1 or beta == 0, pos1 if beta == 1, or at the given
-///   unit interval value between pos0 and pos1.
-inline Position GetPosition(const Position pos0, const Position pos1, const RealNum beta) noexcept
-{
-    // Note: have to be careful how this is done.
-    //   If pos0 == pos1 then return value should always be equal to pos0 too.
-    //   But if RealNum is float, pos0 * (1 - beta) + pos1 * beta can fail this requirement.
-    //   Meanwhile, pos0 + (pos1 - pos0) * beta always works.
-    
-    // pos0 * (1 - beta) + pos1 * beta
-    // pos0 - pos0 * beta + pos1 * beta
-    // pos0 + (pos1 * beta - pos0 * beta)
-    // pos0 + (pos1 - pos0) * beta
-    return pos0 + (pos1 - pos0) * beta;
-}
-
 /// Gets the interpolated transform at a specific time.
 /// @param sweep Sweep data to get the transform from.
 /// @param beta Time factor in [0,1], where 0 indicates alpha0.
@@ -1072,24 +846,6 @@ inline Transformation GetTransform1(const Sweep& sweep) noexcept
     return GetTransformation(sweep.pos1, sweep.GetLocalCenter());
 }
 
-inline void Sweep::Advance0(const RealNum alpha) noexcept
-{
-    assert(IsValid(alpha));
-    assert(alpha >= 0);
-    assert(alpha < 1);
-    assert(alpha0 < 1);
-    
-    const auto beta = (alpha - alpha0) / (1 - alpha0);
-    pos0 = GetPosition(pos0, pos1, beta);
-    alpha0 = alpha;
-}
-
-inline void Sweep::ResetAlpha0() noexcept
-{
-    alpha0 = 0;
-}
-
-    
 inline Angle GetNormalized(Angle value)
 {
 #if 1

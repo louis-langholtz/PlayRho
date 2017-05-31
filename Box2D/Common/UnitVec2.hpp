@@ -253,6 +253,18 @@ namespace box2d
         return value.GetY();
     }
     
+    template <>
+    constexpr UnitVec2 GetInvalid() noexcept
+    {
+        return UnitVec2{};
+    }
+    
+    template <>
+    constexpr inline bool IsValid(const UnitVec2& value) noexcept
+    {
+        return IsValid(GetX(value)) && IsValid(GetY(value)) && (value != UnitVec2::GetZero());
+    }
+    
 }
 
 #endif /* UnitVec2_hpp */
