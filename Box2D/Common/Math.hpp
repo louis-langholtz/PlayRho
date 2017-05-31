@@ -23,15 +23,13 @@
 #include <Box2D/Common/Settings.hpp>
 #include <Box2D/Common/Span.hpp>
 #include <Box2D/Common/UnitVec2.hpp>
-#include <Box2D/Common/Vec2.hpp>
+#include <Box2D/Common/Vector2D.hpp>
+#include <Box2D/Common/Vector3D.hpp>
 #include <cmath>
 #include <iostream>
 
 namespace box2d
 {
-// forward declarations
-struct Vec3;
-
 // Other templates.
 
 template<class TYPE>
@@ -247,27 +245,6 @@ inline Angle GetAngle(T value)
     return Atan2(GetY(value), GetX(value));
 }
 
-/// A 2D column vector with 3 elements.
-/// @note This data structure is 3 times the size of <code>RealNum</code> -
-///   i.e. 12-bytes (with 4-byte RealNum).
-struct Vec3
-{
-    /// Negate this vector.
-    constexpr auto operator- () const noexcept { return Vec3{-x, -y, -z}; }
-
-    RealNum x, y, z;
-};
-
-/// An all zero Vec3 value.
-/// @see Vec3.
-constexpr auto Vec3_zero = Vec3{0, 0, 0};
-
-template <>
-constexpr inline Vec3 GetInvalid() noexcept
-{
-    return Vec3{GetInvalid<RealNum>(), GetInvalid<RealNum>(), GetInvalid<RealNum>()};
-}
-
 /// Gets the square of the length/magnitude of the given value.
 /// For performance, use this instead of GetLength(T value) (if possible).
 /// @return Non-negative value.
@@ -287,13 +264,6 @@ template <typename T>
 inline auto GetLength(T value)
 {
     return Sqrt(GetLengthSquared(value));
-}
-
-/// Does this vector contain finite coordinates?
-template <>
-constexpr inline bool IsValid(const Vec3& value) noexcept
-{
-    return IsValid(value.x) && IsValid(value.y) && IsValid(value.z);
 }
 
 /// Performs the dot product on two vectors (A and B).
@@ -729,16 +699,6 @@ constexpr inline Vec2 operator/ (const UnitVec2 u, const UnitVec2::data_type s) 
     return Vec2{u.GetX() / s, u.GetY() / s};
 }
 
-constexpr inline bool operator == (const Vec3 lhs, const Vec3 rhs) noexcept
-{
-    return (lhs.x == rhs.x) && (lhs.y == rhs.y) && (lhs.z == rhs.z);
-}
-
-constexpr inline bool operator != (const Vec3 lhs, const Vec3 rhs) noexcept
-{
-    return (lhs.x != rhs.x) || (lhs.y != rhs.y) || (lhs.z != rhs.z);
-}
-
 constexpr inline bool operator == (Transformation lhs, Transformation rhs) noexcept
 {
     return (lhs.p == rhs.p) && (lhs.q == rhs.q);
@@ -747,47 +707,6 @@ constexpr inline bool operator == (Transformation lhs, Transformation rhs) noexc
 constexpr inline bool operator != (Transformation lhs, Transformation rhs) noexcept
 {
     return (lhs.p != rhs.p) || (lhs.q != rhs.q);
-}
-
-constexpr Vec3& operator += (Vec3& lhs, const Vec3& rhs) noexcept
-{
-    lhs.x += rhs.x;
-    lhs.y += rhs.y;
-    lhs.z += rhs.z;
-    return lhs;
-}
-
-constexpr Vec3& operator -= (Vec3& lhs, const Vec3& rhs) noexcept
-{
-    lhs.x -= rhs.x;
-    lhs.y -= rhs.y;
-    lhs.z -= rhs.z;
-    return lhs;
-}
-
-constexpr Vec3& operator *= (Vec3& lhs, const RealNum rhs) noexcept
-{
-    lhs.x *= rhs;
-    lhs.y *= rhs;
-    lhs.z *= rhs;
-    return lhs;
-}
-
-constexpr inline Vec3 operator * (const RealNum s, const Vec3 a) noexcept
-{
-    return Vec3{s * a.x, s * a.y, s * a.z};
-}
-
-/// Add two vectors component-wise.
-constexpr inline Vec3 operator + (const Vec3 a, const Vec3 b) noexcept
-{
-    return Vec3{a.x + b.x, a.y + b.y, a.z + b.z};
-}
-
-/// Subtract two vectors component-wise.
-constexpr inline Vec3 operator - (const Vec3 a, const Vec3 b) noexcept
-{
-    return Vec3{a.x - b.x, a.y - b.y, a.z - b.z};
 }
 
 constexpr inline Mat22 operator + (const Mat22 A, const Mat22 B) noexcept

@@ -34,6 +34,8 @@
 		470F94E41ECBB3A100AA3C82 /* Range.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94E01ECBB3A100AA3C82 /* Range.hpp */; };
 		470F9B061EDB8F62007EF7B6 /* Shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 470F9B051EDB8F62007EF7B6 /* Shape.cpp */; };
 		470F9B071EDB8F62007EF7B6 /* Shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 470F9B051EDB8F62007EF7B6 /* Shape.cpp */; };
+		470F9B0C1EDE6340007EF7B6 /* Vector3D.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F9B091EDE6340007EF7B6 /* Vector3D.hpp */; };
+		470F9B0D1EDE6340007EF7B6 /* Vector3D.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F9B091EDE6340007EF7B6 /* Vector3D.hpp */; };
 		4726DD0F1D3014990012A882 /* IndexPair.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD0C1D3014990012A882 /* IndexPair.hpp */; };
 		4726DD101D3014990012A882 /* IndexPair.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD0C1D3014990012A882 /* IndexPair.hpp */; };
 		4726DD1F1D305E5D0012A882 /* ContactFeature.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */; };
@@ -429,6 +431,7 @@
 		470F94DD1ECB94D600AA3C82 /* UnitVec2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitVec2.cpp; sourceTree = "<group>"; };
 		470F94E01ECBB3A100AA3C82 /* Range.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Range.hpp; sourceTree = "<group>"; };
 		470F9B051EDB8F62007EF7B6 /* Shape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shape.cpp; sourceTree = "<group>"; };
+		470F9B091EDE6340007EF7B6 /* Vector3D.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Vector3D.hpp; sourceTree = "<group>"; };
 		4726DD0C1D3014990012A882 /* IndexPair.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IndexPair.hpp; sourceTree = "<group>"; };
 		4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactFeature.hpp; sourceTree = "<group>"; };
 		4726DD261D3180980012A882 /* NewtonsCradle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NewtonsCradle.hpp; sourceTree = "<group>"; };
@@ -919,6 +922,7 @@
 				4731DE541DEC908600E7F931 /* UnitVec2.cpp */,
 				4731DE551DEC908600E7F931 /* UnitVec2.hpp */,
 				4768D3FA1E414A0100574143 /* Vector2D.hpp */,
+				470F9B091EDE6340007EF7B6 /* Vector3D.hpp */,
 				472E30181DBA925500DA821D /* VertexSet.hpp */,
 				4768D3F21E3A7ACA00574143 /* Wider.hpp */,
 			);
@@ -1213,6 +1217,7 @@
 				474AFBFB1EB1B2CB002AA6C8 /* MultiShape.hpp in Headers */,
 				47AA5DE31C4C5FBE008AF2BA /* WorldCallbacks.hpp in Headers */,
 				4726DD101D3014990012A882 /* IndexPair.hpp in Headers */,
+				470F9B0D1EDE6340007EF7B6 /* Vector3D.hpp in Headers */,
 				4731DE1C1DDCD0E100E7F931 /* FixtureProxy.hpp in Headers */,
 				4726DD201D305E5D0012A882 /* ContactFeature.hpp in Headers */,
 				47AA5DE71C4C5FBE008AF2BA /* Contact.hpp in Headers */,
@@ -1269,6 +1274,7 @@
 				80BB899A141C3E5900F1753A /* EdgeShape.hpp in Headers */,
 				470F94CC1EC4D95D00AA3C82 /* BodyAtty.hpp in Headers */,
 				80BB899C141C3E5900F1753A /* PolygonShape.hpp in Headers */,
+				470F9B0C1EDE6340007EF7B6 /* Vector3D.hpp in Headers */,
 				4788690A1D78BE2B00AEC7F1 /* PositionConstraint.hpp in Headers */,
 				476162C91E245C9D002C7FB0 /* CodeDumper.hpp in Headers */,
 				80BB899D141C3E5900F1753A /* Shape.hpp in Headers */,
