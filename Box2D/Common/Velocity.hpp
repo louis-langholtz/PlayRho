@@ -27,7 +27,7 @@
 
 namespace box2d
 {
-    /// Velocity related data structure.
+    /// @brief Velocity related data structure.
     /// @note This data structure is 12-bytes (with 4-byte RealNum on at least one 64-bit platform).
     struct Velocity
     {
