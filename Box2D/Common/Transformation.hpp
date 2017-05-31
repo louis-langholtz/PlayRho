@@ -48,6 +48,16 @@ namespace box2d
         return IsValid(value.p.x) && IsValid(value.p.y) && IsValid(value.q);
     }
     
+    constexpr inline bool operator == (Transformation lhs, Transformation rhs) noexcept
+    {
+        return (lhs.p == rhs.p) && (lhs.q == rhs.q);
+    }
+    
+    constexpr inline bool operator != (Transformation lhs, Transformation rhs) noexcept
+    {
+        return (lhs.p != rhs.p) || (lhs.q != rhs.q);
+    }
+
 }
 
 #endif /* Transformation_hpp */

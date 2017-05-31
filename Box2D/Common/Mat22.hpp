@@ -65,6 +65,11 @@ namespace box2d
     /// @see Mat22.
     constexpr auto Mat22_identity = Mat22(Vec2{1, 0}, Vec2{0, 1});
     
+    constexpr inline Mat22 operator + (const Mat22 A, const Mat22 B) noexcept
+    {
+        return Mat22{A.ex + B.ex, A.ey + B.ey};
+    }
+
 }
 
 #endif /* Mat22_hpp */

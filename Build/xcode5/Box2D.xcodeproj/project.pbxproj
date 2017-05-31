@@ -46,6 +46,8 @@
 		470F9B251EDF4D72007EF7B6 /* Mat22.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F9B211EDF4D72007EF7B6 /* Mat22.hpp */; };
 		470F9B2A1EDF4EA2007EF7B6 /* Mat33.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F9B271EDF4EA2007EF7B6 /* Mat33.hpp */; };
 		470F9B2B1EDF4EA2007EF7B6 /* Mat33.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F9B271EDF4EA2007EF7B6 /* Mat33.hpp */; };
+		470F9B301EDF5165007EF7B6 /* Velocity.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F9B2D1EDF5165007EF7B6 /* Velocity.hpp */; };
+		470F9B311EDF5165007EF7B6 /* Velocity.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F9B2D1EDF5165007EF7B6 /* Velocity.hpp */; };
 		4726DD0F1D3014990012A882 /* IndexPair.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD0C1D3014990012A882 /* IndexPair.hpp */; };
 		4726DD101D3014990012A882 /* IndexPair.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD0C1D3014990012A882 /* IndexPair.hpp */; };
 		4726DD1F1D305E5D0012A882 /* ContactFeature.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */; };
@@ -447,6 +449,7 @@
 		470F9B1B1EDF2B8A007EF7B6 /* Sweep.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Sweep.hpp; sourceTree = "<group>"; };
 		470F9B211EDF4D72007EF7B6 /* Mat22.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Mat22.hpp; sourceTree = "<group>"; };
 		470F9B271EDF4EA2007EF7B6 /* Mat33.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Mat33.hpp; sourceTree = "<group>"; };
+		470F9B2D1EDF5165007EF7B6 /* Velocity.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Velocity.hpp; sourceTree = "<group>"; };
 		4726DD0C1D3014990012A882 /* IndexPair.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IndexPair.hpp; sourceTree = "<group>"; };
 		4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactFeature.hpp; sourceTree = "<group>"; };
 		4726DD261D3180980012A882 /* NewtonsCradle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NewtonsCradle.hpp; sourceTree = "<group>"; };
@@ -943,6 +946,7 @@
 				4731DE551DEC908600E7F931 /* UnitVec2.hpp */,
 				4768D3FA1E414A0100574143 /* Vector2D.hpp */,
 				470F9B091EDE6340007EF7B6 /* Vector3D.hpp */,
+				470F9B2D1EDF5165007EF7B6 /* Velocity.hpp */,
 				472E30181DBA925500DA821D /* VertexSet.hpp */,
 				4768D3F21E3A7ACA00574143 /* Wider.hpp */,
 			);
@@ -1258,6 +1262,7 @@
 				47578BE21D8869110078CD40 /* WorldManifold.hpp in Headers */,
 				47AA5DF11C4C5FBE008AF2BA /* MouseJoint.hpp in Headers */,
 				472724311E315E1A00C64921 /* Fixed.hpp in Headers */,
+				470F9B311EDF5165007EF7B6 /* Velocity.hpp in Headers */,
 				47AA5DF21C4C5FBE008AF2BA /* PrismaticJoint.hpp in Headers */,
 				47AA5DF31C4C5FBE008AF2BA /* PulleyJoint.hpp in Headers */,
 				47AA5DF41C4C5FBE008AF2BA /* RevoluteJoint.hpp in Headers */,
@@ -1312,6 +1317,7 @@
 				80BB89A2141C3E5900F1753A /* GrowableStack.hpp in Headers */,
 				474BAB301E5D00960058E08A /* BodyConstraint.hpp in Headers */,
 				80BB89A4141C3E5900F1753A /* Math.hpp in Headers */,
+				470F9B301EDF5165007EF7B6 /* Velocity.hpp in Headers */,
 				80BB89A6141C3E5900F1753A /* Settings.hpp in Headers */,
 				80BB89A8141C3E5900F1753A /* StackAllocator.hpp in Headers */,
 				80BB89AA141C3E5900F1753A /* Timer.hpp in Headers */,
