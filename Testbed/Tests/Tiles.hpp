@@ -37,7 +37,7 @@ public:
     Tiles()
     {
         m_fixtureCount = 0;
-        Timer timer;
+        const auto start = std::chrono::high_resolution_clock::now();
 
         {
             const auto a = RealNum{0.5f};
@@ -94,7 +94,9 @@ public:
             }
         }
 
-        m_createTime = timer.GetMilliseconds();
+        const auto end = std::chrono::high_resolution_clock::now();
+        const auto elapsed_secs = std::chrono::duration<RealNum>{end - start};
+        m_createTime = elapsed_secs.count();
     }
 
     void PostStep(const Settings&, Drawer& drawer) override
@@ -109,7 +111,7 @@ public:
         m_textLine += DRAW_STRING_NEW_LINE;
 
         drawer.DrawString(5, m_textLine, "create time = %6.2f ms, fixture count = %d",
-            m_createTime, m_fixtureCount);
+            static_cast<double>(m_createTime * RealNum(1000)), m_fixtureCount);
         m_textLine += DRAW_STRING_NEW_LINE;
 
         //DynamicTree* tree = &m_world->m_contactManager.m_broadPhase.m_tree;

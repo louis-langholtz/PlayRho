@@ -213,7 +213,6 @@
 		47AA5DA91C4C5FBE008AF2BA /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8944141C3E5900F1753A /* Math.cpp */; };
 		47AA5DAA1C4C5FBE008AF2BA /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8946141C3E5900F1753A /* Settings.cpp */; };
 		47AA5DAB1C4C5FBE008AF2BA /* StackAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8948141C3E5900F1753A /* StackAllocator.cpp */; };
-		47AA5DAC1C4C5FBE008AF2BA /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB894A141C3E5900F1753A /* Timer.cpp */; };
 		47AA5DAD1C4C5FBE008AF2BA /* Body.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB894D141C3E5900F1753A /* Body.cpp */; };
 		47AA5DAF1C4C5FBE008AF2BA /* Fixture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8951141C3E5900F1753A /* Fixture.cpp */; };
 		47AA5DB01C4C5FBE008AF2BA /* Island.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8953141C3E5900F1753A /* Island.cpp */; };
@@ -249,7 +248,6 @@
 		47AA5DD91C4C5FBE008AF2BA /* Math.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8945141C3E5900F1753A /* Math.hpp */; };
 		47AA5DDA1C4C5FBE008AF2BA /* Settings.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8947141C3E5900F1753A /* Settings.hpp */; };
 		47AA5DDB1C4C5FBE008AF2BA /* StackAllocator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8949141C3E5900F1753A /* StackAllocator.hpp */; };
-		47AA5DDC1C4C5FBE008AF2BA /* Timer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB894B141C3E5900F1753A /* Timer.hpp */; };
 		47AA5DDD1C4C5FBE008AF2BA /* Body.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB894E141C3E5900F1753A /* Body.hpp */; };
 		47AA5DDF1C4C5FBE008AF2BA /* Fixture.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8952141C3E5900F1753A /* Fixture.hpp */; };
 		47AA5DE01C4C5FBE008AF2BA /* Island.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8954141C3E5900F1753A /* Island.hpp */; };
@@ -323,8 +321,6 @@
 		80BB89A6141C3E5900F1753A /* Settings.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8947141C3E5900F1753A /* Settings.hpp */; };
 		80BB89A7141C3E5900F1753A /* StackAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8948141C3E5900F1753A /* StackAllocator.cpp */; };
 		80BB89A8141C3E5900F1753A /* StackAllocator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8949141C3E5900F1753A /* StackAllocator.hpp */; };
-		80BB89A9141C3E5900F1753A /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB894A141C3E5900F1753A /* Timer.cpp */; };
-		80BB89AA141C3E5900F1753A /* Timer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB894B141C3E5900F1753A /* Timer.hpp */; };
 		80BB89AB141C3E5900F1753A /* Body.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB894D141C3E5900F1753A /* Body.cpp */; };
 		80BB89AC141C3E5900F1753A /* Body.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB894E141C3E5900F1753A /* Body.hpp */; };
 		80BB89AF141C3E5900F1753A /* Fixture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8951141C3E5900F1753A /* Fixture.cpp */; };
@@ -628,8 +624,6 @@
 		80BB8947141C3E5900F1753A /* Settings.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Settings.hpp; sourceTree = "<group>"; };
 		80BB8948141C3E5900F1753A /* StackAllocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StackAllocator.cpp; sourceTree = "<group>"; };
 		80BB8949141C3E5900F1753A /* StackAllocator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StackAllocator.hpp; sourceTree = "<group>"; };
-		80BB894A141C3E5900F1753A /* Timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Timer.cpp; sourceTree = "<group>"; };
-		80BB894B141C3E5900F1753A /* Timer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Timer.hpp; sourceTree = "<group>"; };
 		80BB894D141C3E5900F1753A /* Body.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 2; path = Body.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		80BB894E141C3E5900F1753A /* Body.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 2; path = Body.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		80BB8951141C3E5900F1753A /* Fixture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fixture.cpp; sourceTree = "<group>"; };
@@ -939,8 +933,6 @@
 				80BB8948141C3E5900F1753A /* StackAllocator.cpp */,
 				80BB8949141C3E5900F1753A /* StackAllocator.hpp */,
 				470F9B1B1EDF2B8A007EF7B6 /* Sweep.hpp */,
-				80BB894A141C3E5900F1753A /* Timer.cpp */,
-				80BB894B141C3E5900F1753A /* Timer.hpp */,
 				470F9B151EDF2959007EF7B6 /* Transformation.hpp */,
 				4731DE541DEC908600E7F931 /* UnitVec2.cpp */,
 				4731DE551DEC908600E7F931 /* UnitVec2.hpp */,
@@ -1227,7 +1219,6 @@
 				47AA5DDB1C4C5FBE008AF2BA /* StackAllocator.hpp in Headers */,
 				47327E811EA585790048FCD8 /* Defines.hpp in Headers */,
 				470F94DC1EC8C37500AA3C82 /* JointKey.hpp in Headers */,
-				47AA5DDC1C4C5FBE008AF2BA /* Timer.hpp in Headers */,
 				4726DD391D387D630012A882 /* Manifold.hpp in Headers */,
 				47AA5DDD1C4C5FBE008AF2BA /* Body.hpp in Headers */,
 				47AA5DDF1C4C5FBE008AF2BA /* Fixture.hpp in Headers */,
@@ -1320,7 +1311,6 @@
 				470F9B301EDF5165007EF7B6 /* Velocity.hpp in Headers */,
 				80BB89A6141C3E5900F1753A /* Settings.hpp in Headers */,
 				80BB89A8141C3E5900F1753A /* StackAllocator.hpp in Headers */,
-				80BB89AA141C3E5900F1753A /* Timer.hpp in Headers */,
 				80BB89AC141C3E5900F1753A /* Body.hpp in Headers */,
 				80BB89B0141C3E5900F1753A /* Fixture.hpp in Headers */,
 				4726DD0F1D3014990012A882 /* IndexPair.hpp in Headers */,
@@ -1599,7 +1589,6 @@
 				47CF984C1DF9C4A30077F5F2 /* ShapeSeparation.cpp in Sources */,
 				47AA5DAB1C4C5FBE008AF2BA /* StackAllocator.cpp in Sources */,
 				474AFBF91EB1B2CB002AA6C8 /* MultiShape.cpp in Sources */,
-				47AA5DAC1C4C5FBE008AF2BA /* Timer.cpp in Sources */,
 				47AA5DAD1C4C5FBE008AF2BA /* Body.cpp in Sources */,
 				47AA5DAF1C4C5FBE008AF2BA /* Fixture.cpp in Sources */,
 				4731DE681DF0A73000E7F931 /* Manifold.cpp in Sources */,
@@ -1681,7 +1670,6 @@
 				80BB89A5141C3E5900F1753A /* Settings.cpp in Sources */,
 				476162C81E245C9D002C7FB0 /* CodeDumper.cpp in Sources */,
 				80BB89A7141C3E5900F1753A /* StackAllocator.cpp in Sources */,
-				80BB89A9141C3E5900F1753A /* Timer.cpp in Sources */,
 				80BB89AB141C3E5900F1753A /* Body.cpp in Sources */,
 				80BB89AF141C3E5900F1753A /* Fixture.cpp in Sources */,
 				4731DE671DF0A73000E7F931 /* Manifold.cpp in Sources */,
