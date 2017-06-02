@@ -459,9 +459,9 @@ private:
     World* const m_world; ///< World to which this body belongs. 8-bytes.
     void* m_userData; ///< User data. 8-bytes.
     
-    Fixtures m_fixtures; ///< Container of fixtures. 8-bytes.
-    Contacts m_contacts; ///< Container of contacts (owned by world). 8-bytes.
-    Joints m_joints; ///< Container of joints (owned by wolrd). 8-bytes.
+    Fixtures m_fixtures; ///< Container of fixtures.
+    Contacts m_contacts; ///< Container of contacts (owned by world).
+    Joints m_joints; ///< Container of joints (owned by world).
 
     /// @brief Angular acceleration.
     /// @note 4-bytes.
