@@ -703,8 +703,11 @@ struct Version
     revnum_type minor;        ///< incremental changes
     revnum_type revision;        ///< bug fixes
 };
+    
+Version GetVersion() noexcept;
 
-constexpr auto BuiltVersion = Version{3, 0, 0};
+const char* GetBuildDetails() noexcept;
+
 }
 
 #endif

@@ -694,9 +694,11 @@ int main()
         return -1;
     }
 
+    const auto buildVersion = GetVersion();
+
     char title[64];
     sprintf(title, "Box2D Testbed Version %d.%d.%d",
-            BuiltVersion.major, BuiltVersion.minor, BuiltVersion.revision);
+            buildVersion.major, buildVersion.minor, buildVersion.revision);
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -712,7 +714,10 @@ int main()
     }
 
     glfwMakeContextCurrent(mainWindow);
-    printf("OpenGL %s, GLSL %s\n", glGetString(GL_VERSION), glGetString(GL_SHADING_LANGUAGE_VERSION));
+    printf("Box2D %d.%d.%d (%s), OpenGL %s, GLSL %s\n",
+           buildVersion.major, buildVersion.minor, buildVersion.revision,
+           GetBuildDetails(),
+           glGetString(GL_VERSION), glGetString(GL_SHADING_LANGUAGE_VERSION));
 
     glfwSetScrollCallback(mainWindow, ScrollCallback);
     glfwSetWindowSizeCallback(mainWindow, ResizeWindow);

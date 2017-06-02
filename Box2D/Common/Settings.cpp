@@ -21,6 +21,7 @@
 #include <cstdio>
 #include <cstdarg>
 #include <cstdlib>
+#include <typeinfo>
 
 namespace box2d {
 
@@ -40,6 +41,68 @@ void* realloc(void* ptr, size_t new_size)
 void free(void* mem)
 {
     std::free(mem);
+}
+
+Version GetVersion() noexcept
+{
+    return Version{3, 0, 0};
+}
+
+template <typename T>
+const char* GetTypeName() noexcept
+{
+    // No gaurantee of what the following returns. Could be mangled!
+    // See http://en.cppreference.com/w/cpp/types/type_info/name
+    return typeid(T).name();
+}
+
+template <>
+const char* GetTypeName<float>() noexcept
+{
+    return "float";
+}
+
+template <>
+const char* GetTypeName<double>() noexcept
+{
+    return "double";
+}
+
+template <>
+const char* GetTypeName<long double>() noexcept
+{
+    return "long-double";
+}
+
+template <>
+const char* GetTypeName<Fixed32>() noexcept
+{
+    return "Fixed32";
+}
+
+template <>
+const char* GetTypeName<Fixed64>() noexcept
+{
+    return "Fixed64";
+}
+
+const char* GetBuildDetails() noexcept
+{
+    static char buf[128];
+    static bool initialized = false;
+    if (!initialized)
+    {
+        snprintf(buf, sizeof(buf), "asserts=%s, RealNum=%s",
+#ifdef NDEBUG
+                "off",
+#else
+                "on",
+#endif
+                 GetTypeName<RealNum>()
+                );
+        initialized = true;
+    }
+    return buf;
 }
 
 } // namespace box2d
