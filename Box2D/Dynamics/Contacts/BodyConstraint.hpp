@@ -26,10 +26,11 @@ namespace box2d {
     
     class Body;
     
-    /// Body Constraint.
+    /// @brief Body Constraint.
     /// @details Body data related to constraint processing.
     /// @note Only position and velocity is independently changable after construction.
-    /// @note This data structure is 40-bytes large (with 4-byte RealNum on at least one 64-bit platform).
+    /// @note This data structure is 40-bytes large (with 4-byte RealNum on at least one
+    ///   64-bit platform).
     class BodyConstraint
     {
     public:
@@ -51,38 +52,47 @@ namespace box2d {
             assert(invMass >= InvMass{0});
             assert(invRotI >= InvRotInertia{0});
         }
-                
+        
+        /// @brief Gets the inverse mass of this body representation.
+        /// @return Value >= 0.
         InvMass GetInvMass() const noexcept;
         
+        /// @brief Gets the inverse rotational inertia of this body representation.
+        /// @return Value >= 0.
         InvRotInertia GetInvRotInertia() const noexcept;
         
+        /// @brief Gets the local center of the body.
         Length2D GetLocalCenter() const noexcept;
         
+        /// @brief Gets the position of the body.
         Position GetPosition() const noexcept;
         
+        /// @brief Gets the velocity of the body.
         Velocity GetVelocity() const noexcept;
         
+        /// @brief Sets the position of the body.
+        /// @param value A valid position value to set for the represented body.
+        /// @warning Behavior is undefined if the given value is not valid.
         BodyConstraint& SetPosition(Position value) noexcept;
         
+        /// @brief Sets the velocity of the body.
+        /// @param value A valid velocity value to set for the represented body.
+        /// @warning Behavior is undefined if the given value is not valid.
         BodyConstraint& SetVelocity(Velocity value) noexcept;
         
     private:
         Position m_position; ///< Body position data.
         Velocity m_velocity; ///< Body velocity data.
-        Length2D m_localCenter; ///< Local center of the associated body's sweep (8-bytes).
-        InvMass m_invMass; ///< Inverse mass of associated body (a non-negative value, 4-bytes).
-        InvRotInertia m_invRotI; ///< Inverse rotational inertia about the center of mass of the associated body (a non-negative value, 4-bytes).
+        Length2D m_localCenter; ///< Local center of the associated body's sweep.
+        InvMass m_invMass; ///< Inverse mass of associated body (a non-negative value).
+        InvRotInertia m_invRotI; ///< Inverse rotational inertia about the center of mass of the associated body (a non-negative value).
     };
     
-    /// @brief Gets the inverse mass of this body representation.
-    /// @return Value >= 0.
     inline InvMass BodyConstraint::GetInvMass() const noexcept
     {
         return m_invMass;
     }
     
-    /// @brief Gets the inverse rotational inertia of this body representation.
-    /// @return Value >= 0.
     inline InvRotInertia BodyConstraint::GetInvRotInertia() const noexcept
     {
         return m_invRotI;
