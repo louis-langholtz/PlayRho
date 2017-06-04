@@ -28,6 +28,7 @@ namespace box2d {
     struct PreStepStats
     {
         using counter_type = std::uint32_t;
+        counter_type proxiesMoved = 0;
         counter_type ignored = 0;
         counter_type destroyed = 0;
         counter_type updated = 0;

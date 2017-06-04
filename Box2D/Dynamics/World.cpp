@@ -760,25 +760,17 @@ void World::AddToIsland(Island& island, Body& seed,
         for (auto&& ci: b->GetContacts())
         {
             const auto contact = GetContactPtr(ci);
-            const auto fA = contact->GetFixtureA();
-            const auto fB = contact->GetFixtureB();
-            const auto bA = fA->GetBody();
-            const auto bB = fB->GetBody();
-            const auto other = (bA != b)? bA: bB;
-
-            if (!IsIslanded(contact) && !HasSensor(*contact) && contact->IsEnabled())
+            if (!IsIslanded(contact) && contact->IsEnabled() && contact->IsTouching())
             {
-#if 0
-                if (contact->NeedsUpdating())
+                const auto fA = contact->GetFixtureA();
+                const auto fB = contact->GetFixtureB();
+                if (!fA->IsSensor() && !fB->IsSensor())
                 {
-                    ContactAtty::Update(*contact, StepConf{}, m_contactListener);
-                }
-#endif
-                if (contact->IsTouching())
-                {
+                    const auto bA = fA->GetBody();
+                    const auto bB = fB->GetBody();
+                    const auto other = (bA != b)? bA: bB;
                     island.m_contacts.push_back(contact);
                     SetIslanded(contact);
-
                     if (!IsIslanded(other))
                     {                
                         stack.push_back(other);
@@ -913,7 +905,7 @@ RegStepStats World::SolveReg(const StepConf& conf)
     {
         const auto body = GetBodyPtr(b);
         // A non-static body that was in an island may have moved.
-        if (body->IsSpeedable() && IsIslanded(body))
+        if (IsIslanded(body) && body->IsSpeedable())
         {
             // Update fixtures (for broad-phase).
             stats.proxiesMoved += Synchronize(*body, GetTransform0(body->GetSweep()), body->GetTransformation(),
@@ -1059,8 +1051,6 @@ void World::ResetContactsForSolveTOI()
     for (auto&& contact: m_contacts)
     {
         const auto c = GetContactPtr(contact);
-
-        // Invalidate TOI
         ContactAtty::UnsetToi(*c);
         ContactAtty::ResetToiCount(*c);
     }
@@ -1555,78 +1545,107 @@ World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi,
     assert(results.contactsUpdated == 0);
     assert(results.contactsSkipped == 0);
     
-    // Note: the original contact (for body of which this method was called) already islanded.
-    for (auto&& ci: body.GetContacts())
+    auto fn = [&](Contact* contact, Body* other)
     {
-        const auto contact = GetContactPtr(ci);
-        const auto fA = contact->GetFixtureA();
-        const auto fB = contact->GetFixtureB();
-        const auto bA = fA->GetBody();
-        const auto bB = fB->GetBody();
-        const auto other = (bA != &body)? bA: bB;
-
-        if (!IsIslanded(contact) && !HasSensor(*contact) && (other->IsImpenetrable() || body.IsImpenetrable()))
+        const auto otherIslanded = IsIslanded(other);
         {
-            const auto otherIslanded = IsIslanded(other);
-
+            const auto backup = other->GetSweep();
+            if (!otherIslanded /* && other->GetSweep().GetAlpha0() != toi */)
             {
-                const auto backup = other->GetSweep();
-                if (!otherIslanded /* && other->GetSweep().GetAlpha0() != toi */)
-                {
-                    BodyAtty::Advance(*other, toi);
-                }
-                
-                // Update the contact points
-                contact->SetEnabled();
-                if (contact->NeedsUpdating())
-                {
-                    ContactAtty::Update(*contact, conf, m_contactListener);
-                    ++results.contactsUpdated;
-                }
-                else
-                {
-                    ++results.contactsSkipped;
-                }
-                
-                // Revert and skip if contact disabled by user or not touching anymore (very possible).
-                if (!contact->IsEnabled() || !contact->IsTouching())
-                {
-                    BodyAtty::Restore(*other, backup);
-                    continue;
-                }
+                BodyAtty::Advance(*other, toi);
             }
             
-            island.m_contacts.push_back(contact);
-            SetIslanded(contact);
-            
-            if (!otherIslanded)
+            // Update the contact points
+            contact->SetEnabled();
+            if (contact->NeedsUpdating())
             {
-                if (other->IsSpeedable())
-                {
-                    BodyAtty::SetAwakeFlag(*other);
-                }
-                island.m_bodies.push_back(other);
-                SetIslanded(other);
-#if 0
-                if (other->IsAccelerable())
-                {
-                    contactsUpdated += ProcessContactsForTOI(island, *other, toi);
-                }
-#endif
+                ContactAtty::Update(*contact, conf, m_contactListener);
+                ++results.contactsUpdated;
             }
-#ifndef NDEBUG
             else
             {
-                /*
-                 * If other is islanded but not in current island, then something's gone wrong.
-                 * Other needs to be in current island but was already islanded.
-                 * A previous contact island didn't grow to include all the bodies it needed or
-                 * perhaps the current contact is-touching while another one wasn't and the
-                 * inconsistency is throwing things off.
-                 */
-                assert(Count(island, other) > 0);
+                ++results.contactsSkipped;
+            }
+            
+            // Revert and skip if contact disabled by user or not touching anymore (very possible).
+            if (!contact->IsEnabled() || !contact->IsTouching())
+            {
+                BodyAtty::Restore(*other, backup);
+                return;
+            }
+        }
+        island.m_contacts.push_back(contact);
+        SetIslanded(contact);
+        if (!otherIslanded)
+        {
+            if (other->IsSpeedable())
+            {
+                BodyAtty::SetAwakeFlag(*other);
+            }
+            island.m_bodies.push_back(other);
+            SetIslanded(other);
+#if 0
+            if (other->IsAccelerable())
+            {
+                contactsUpdated += ProcessContactsForTOI(island, *other, toi);
             }
 #endif
+        }
+#ifndef NDEBUG
+        else
+        {
+            /*
+             * If other is islanded but not in current island, then something's gone wrong.
+             * Other needs to be in current island but was already islanded.
+             * A previous contact island didn't grow to include all the bodies it needed or
+             * perhaps the current contact is-touching while another one wasn't and the
+             * inconsistency is throwing things off.
+             */
+            assert(Count(island, other) > 0);
+        }
+#endif
+    };
+
+    // Note: the original contact (for body of which this method was called) already islanded.
+    if (body.IsImpenetrable())
+    {
+        for (auto&& ci: body.GetContacts())
+        {
+            const auto contact = GetContactPtr(ci);
+            if (!IsIslanded(contact))
+            {
+                const auto fA = contact->GetFixtureA();
+                const auto fB = contact->GetFixtureB();
+                if (!fA->IsSensor() && !fB->IsSensor())
+                {
+                    const auto bA = fA->GetBody();
+                    const auto bB = fB->GetBody();
+                    const auto other = (bA != &body)? bA: bB;
+                    fn(contact, other);
+                }
+            }
+        }
+    }
+    else
+    {
+        for (auto&& ci: body.GetContacts())
+        {
+            const auto contact = GetContactPtr(ci);
+            if (!IsIslanded(contact))
+            {
+                const auto fA = contact->GetFixtureA();
+                const auto fB = contact->GetFixtureB();
+                if (!fA->IsSensor() && !fB->IsSensor())
+                {
+                    const auto bA = fA->GetBody();
+                    const auto bB = fB->GetBody();
+                    const auto other = (bA != &body)? bA: bB;
+                    if (other->IsImpenetrable())
+                    {
+                        fn(contact, other);
+                    }
+                }
+            }
         }
     }
 
@@ -1644,7 +1663,8 @@ StepStats World::Step(const StepConf& conf)
         FlagGuard<decltype(m_flags)> flagGaurd(m_flags, e_locked);
 
         CreateAndDestroyProxies(conf);
-        SynchronizeProxies(conf);
+        stepStats.pre.proxiesMoved = SynchronizeProxies(conf);
+        // pre.proxiesMoved is usually zero but sometimes isn't.
 
         {
             // Note: this may update bodies (in addition to the contacts container).
@@ -2170,19 +2190,16 @@ void World::CreateAndDestroyProxies(Fixture& fixture, const StepConf& conf)
     }
 }
 
-void World::SynchronizeProxies(const StepConf& conf)
+PreStepStats::counter_type World::SynchronizeProxies(const StepConf& conf)
 {
+    auto proxiesMoved = PreStepStats::counter_type{0};
     for (auto&& body: m_bodiesForProxies)
     {
-        SynchronizeProxies(*body, conf);
+        const auto xfm = body->GetTransformation();
+        proxiesMoved += Synchronize(*body, xfm, xfm, conf.displaceMultiplier, conf.aabbExtension);
     }
     m_bodiesForProxies.clear();
-}
-
-void World::SynchronizeProxies(Body& body, const StepConf& conf)
-{
-    const auto xfm = body.GetTransformation();
-    Synchronize(body, xfm, xfm, conf.displaceMultiplier, conf.aabbExtension);
+    return proxiesMoved;
 }
 
 void World::SetType(Body& body, BodyType type)

@@ -574,8 +574,7 @@ private:
     void CreateAndDestroyProxies(const StepConf& conf);
     void CreateAndDestroyProxies(Fixture& fixture, const StepConf& conf);
     
-    void SynchronizeProxies(const StepConf& conf);
-    void SynchronizeProxies(Body& body, const StepConf& conf);
+    PreStepStats::counter_type SynchronizeProxies(const StepConf& conf);
 
     bool IsIslanded(const Body* body);
     bool IsIslanded(const Contact* contact);
