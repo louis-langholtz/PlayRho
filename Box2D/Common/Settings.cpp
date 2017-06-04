@@ -22,6 +22,7 @@
 #include <cstdarg>
 #include <cstdlib>
 #include <typeinfo>
+#include <sstream>
 
 namespace box2d {
 
@@ -86,23 +87,17 @@ const char* GetTypeName<Fixed64>() noexcept
     return "Fixed64";
 }
 
-const char* GetBuildDetails() noexcept
+std::string GetBuildDetails() noexcept
 {
-    static char buf[128];
-    static bool initialized = false;
-    if (!initialized)
-    {
-        snprintf(buf, sizeof(buf), "asserts=%s, RealNum=%s",
+    std::stringstream stream;
+    stream << "asserts=";
 #ifdef NDEBUG
-                "off",
+    stream << "off";
 #else
-                "on",
+    stream << "on";
 #endif
-                 GetTypeName<RealNum>()
-                );
-        initialized = true;
-    }
-    return buf;
+    stream << ", RealNum=" << GetTypeName<RealNum>();
+    return stream.str();
 }
 
 } // namespace box2d

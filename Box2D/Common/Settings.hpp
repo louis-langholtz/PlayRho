@@ -29,6 +29,7 @@
 #include <cassert>
 #include <cfloat>
 #include <cmath>
+#include <string>
 #include <limits>
 #include <cstdint>
 #include <algorithm>
@@ -705,7 +706,7 @@ struct Version
     
 Version GetVersion() noexcept;
 
-const char* GetBuildDetails() noexcept;
+std::string GetBuildDetails() noexcept;
 
 }
 
