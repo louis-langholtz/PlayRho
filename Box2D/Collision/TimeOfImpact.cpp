@@ -24,12 +24,16 @@
 
 namespace box2d {
 
-static inline DistanceConf GetDistanceConf(const ToiConf& conf)
+namespace {
+        
+inline DistanceConf GetDistanceConf(const ToiConf& conf)
 {
     DistanceConf distanceConf;
     distanceConf.maxIterations = conf.maxDistIters;
     return distanceConf;
 }
+
+} // anonymous namespace
 
 TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
                        const DistanceProxy& proxyB, const Sweep& sweepB,

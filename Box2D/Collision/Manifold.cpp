@@ -34,7 +34,9 @@ using namespace box2d;
 
 using index_type = IndexPair::size_type;
 
-static inline index_type GetEdgeIndex(index_type i1, index_type i2, index_type count)
+namespace {
+
+inline index_type GetEdgeIndex(index_type i1, index_type i2, index_type count)
 {
     if (GetModuloNext(i1, count) == i2)
     {
@@ -47,14 +49,14 @@ static inline index_type GetEdgeIndex(index_type i1, index_type i2, index_type c
     return IndexPair::InvalidIndex;
 }
 
-static inline IndexPairSeparation GetMaxSeparation(const DistanceProxy& shape1, const Transformation& xf1,
-                                                   const DistanceProxy& shape2, const Transformation& xf2,
-                                                   Length stop = MaxFloat * Meter)
+inline IndexPairSeparation GetMaxSeparation(const DistanceProxy& shape1, const Transformation& xf1,
+                                            const DistanceProxy& shape2, const Transformation& xf2,
+                                            Length stop = MaxFloat * Meter)
 {
     return GetMaxSeparation(shape1.GetVertices(), shape1.GetNormals(), xf1, shape2.GetVertices(), xf2, stop);
 }
 
-static inline ClipList GetClipPoints(IndexSeparation::index_type iv1, Length sideOffset1, UnitVec2 normal1,
+inline ClipList GetClipPoints(IndexSeparation::index_type iv1, Length sideOffset1, UnitVec2 normal1,
                                      IndexSeparation::index_type iv2, Length sideOffset2, UnitVec2 normal2,
                                      const ClipList& incidentEdge)
 {
@@ -68,12 +70,12 @@ static inline ClipList GetClipPoints(IndexSeparation::index_type iv1, Length sid
 ///    separation distance from any vertex in shape2.
 /// @param idx2 Index 2. This is the index of the vertex of shape2 that had the maximal separation distance
 //     from the edge of shape1 identified by idx1.
-static inline Manifold GetFaceManifold(const Manifold::Type type,
-                                       const DistanceProxy& shape1, const Transformation& xf1,
-                                       const IndexSeparation::index_type idx1,
-                                       const DistanceProxy& shape2, const Transformation& xf2,
-                                       const IndexSeparation::index_type idx2,
-                                       const Manifold::Conf conf)
+Manifold GetFaceManifold(const Manifold::Type type,
+                         const DistanceProxy& shape1, const Transformation& xf1,
+                         const IndexSeparation::index_type idx1,
+                         const DistanceProxy& shape2, const Transformation& xf2,
+                         const IndexSeparation::index_type idx2,
+                         const Manifold::Conf conf)
 {
     assert(type == Manifold::e_faceA || type == Manifold::e_faceB);
     assert(shape1.GetVertexCount() > 1 && shape2.GetVertexCount() > 1);
@@ -288,9 +290,9 @@ static inline Manifold GetFaceManifold(const Manifold::Type type,
     return Manifold{};
 }
 
-static Manifold CollideShapes(Manifold::Type type,
-                              const DistanceProxy& shape, const Transformation& sxf,
-                              Length2D point, Length radius, const Transformation& xfm)
+Manifold CollideShapes(Manifold::Type type,
+                       const DistanceProxy& shape, const Transformation& sxf,
+                       Length2D point, Length radius, const Transformation& xfm)
 {
     // Computes the center of the circle in the frame of the polygon.
     const auto cLocal = InverseTransform(Transform(point, xfm), sxf); ///< Center of circle in frame of polygon.
@@ -402,15 +404,17 @@ static Manifold CollideShapes(Manifold::Type type,
     return Manifold{};
 }
 
-static Manifold CollideShapes(Length2D locationA, Length radiusA, const Transformation& xfA,
-                              Length2D locationB, Length radiusB, const Transformation& xfB)
+Manifold CollideShapes(Length2D locationA, Length radiusA, const Transformation& xfA,
+                       Length2D locationB, Length radiusB, const Transformation& xfB)
 {
     const auto pA = Transform(locationA, xfA);
     const auto pB = Transform(locationB, xfB);
     const auto totalRadius = radiusA + radiusB;
     return (GetLengthSquared(pB - pA) > Square(totalRadius))?
-    	Manifold{}: Manifold::GetForCircles(locationA, 0, locationB, 0);
+    Manifold{}: Manifold::GetForCircles(locationA, 0, locationB, 0);
 }
+
+} // anonymous namespace
 
 /*
  * Definition of public CollideShapes functions.

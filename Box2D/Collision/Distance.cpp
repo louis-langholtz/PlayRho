@@ -37,6 +37,30 @@ namespace {
         return false;
     }
 
+    inline SimplexEdge GetSimplexEdge(const DistanceProxy& proxyA,
+                                      const Transformation& xfA,
+                                      DistanceProxy::size_type idxA,
+                                      const DistanceProxy& proxyB,
+                                      const Transformation& xfB,
+                                      DistanceProxy::size_type idxB)
+    {
+        const auto wA = Transform(proxyA.GetVertex(idxA), xfA);
+        const auto wB = Transform(proxyB.GetVertex(idxB), xfB);
+        return SimplexEdge{wA, idxA, wB, idxB};
+    }
+    
+    inline Simplex::Edges GetSimplexEdges(const Simplex::IndexPairs& indexPairs,
+                                          const DistanceProxy& proxyA, const Transformation& xfA,
+                                          const DistanceProxy& proxyB, const Transformation& xfB)
+    {
+        Simplex::Edges simplexEdges;
+        for (auto&& indexpair: indexPairs)
+        {
+            simplexEdges.push_back(GetSimplexEdge(proxyA, xfA, indexpair.a, proxyB, xfB, indexpair.b));
+        }
+        return simplexEdges;
+    }
+
 }
 
 WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept
@@ -63,28 +87,6 @@ WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept
     }
 #endif
     return WitnessPoints{pointA, pointB};
-}
-
-static inline
-SimplexEdge GetSimplexEdge(const DistanceProxy& proxyA, const Transformation& xfA, DistanceProxy::size_type idxA,
-                               const DistanceProxy& proxyB, const Transformation& xfB, DistanceProxy::size_type idxB)
-{
-    const auto wA = Transform(proxyA.GetVertex(idxA), xfA);
-    const auto wB = Transform(proxyB.GetVertex(idxB), xfB);
-    return SimplexEdge{wA, idxA, wB, idxB};
-}
-
-static inline
-Simplex::Edges GetSimplexEdges(const Simplex::IndexPairs& indexPairs,
-                   const DistanceProxy& proxyA, const Transformation& xfA,
-                   const DistanceProxy& proxyB, const Transformation& xfB)
-{
-    Simplex::Edges simplexEdges;
-    for (auto&& indexpair: indexPairs)
-    {
-        simplexEdges.push_back(GetSimplexEdge(proxyA, xfA, indexpair.a, proxyB, xfB, indexpair.b));
-    }
-    return simplexEdges;
 }
 
 DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& transformA,
