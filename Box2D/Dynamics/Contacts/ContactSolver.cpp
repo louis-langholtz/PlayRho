@@ -27,7 +27,8 @@
 using namespace box2d;
 
 #if !defined(NDEBUG)
-// Solver debugging is normally disabled because the block solver sometimes has to deal with a poorly conditioned effective mass matrix.
+// Solver debugging is normally disabled because the block solver sometimes has to deal with a
+// poorly conditioned effective mass matrix.
 //#define B2_DEBUG_SOLVER 1
 #endif
 
