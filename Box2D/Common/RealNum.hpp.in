@@ -28,6 +28,8 @@
 #ifndef RealNum_hpp
 #define RealNum_hpp
 
+#include <Box2D/Common/Fixed.hpp>
+
 namespace box2d
 {
 

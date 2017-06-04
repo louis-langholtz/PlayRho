@@ -62,7 +62,6 @@
 #include <Box2D/Defines.hpp>
 #include <Box2D/Common/RealNum.hpp>
 #include <Box2D/Common/Wider.hpp>
-#include <Box2D/Common/Fixed.hpp>
 
 /**
  * @namespace box2d

@@ -3,25 +3,24 @@
  * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
 #include <Box2D/Box2D.hpp>
-
-#include <stdio.h>
-
-using namespace box2d;
+#include <cstdio>
 
 // This is a simple example of building and running a simulation using Box2D.
 // Here we create a large ground box and a small dynamic box.
@@ -30,38 +29,36 @@ using namespace box2d;
 int main(int, char**)
 {
     // Construct a world object, which will hold and simulate the rigid bodies.
-    World world;
-
-    // Define the ground body.
-    auto groundBodyDef = BodyDef{};
-    groundBodyDef.position = Vec2(0.0f, -10.0f) * Meter;
+    box2d::World world;
 
     // Call the body factory which allocates memory for the ground body
     // from a pool and creates the ground box shape (also from a pool).
     // The body is also added to the world.
-    const auto groundBody = world.CreateBody(groundBodyDef);
+    const auto groundBody = world.CreateBody(box2d::BodyDef{}
+                                             .UseLocation(box2d::Vec2(0.0, -10.0) * box2d::Meter));
 
     // Define the ground box shape.
     // The extents are the half-widths of the box.
-    auto groundBox = std::make_shared<PolygonShape>(50.0f * Meter, 10.0f * Meter);
+    const auto groundBox = std::make_shared<box2d::PolygonShape>(box2d::RealNum(50) * box2d::Meter,
+                                                                 box2d::RealNum(10) * box2d::Meter);
 
     // Add the ground fixture to the ground body.
     groundBody->CreateFixture(groundBox);
 
     // Define the dynamic body. We set its position and call the body factory.
-    auto bodyDef = BodyDef{};
-    bodyDef.type = BodyType::Dynamic;
-    bodyDef.position = Vec2(0.0f, 4.0f) * Meter;
-    const auto body = world.CreateBody(bodyDef);
+    const auto body = world.CreateBody(box2d::BodyDef{}
+                                       .UseType(box2d::BodyType::Dynamic)
+                                       .UseLocation(box2d::Vec2(0.0, 4.0) * box2d::Meter));
 
     // Define another box shape for our dynamic body.
-    const auto dynamicBox = std::make_shared<PolygonShape>(1.0f * Meter, 1.0f * Meter);
+    const auto dynamicBox = std::make_shared<box2d::PolygonShape>(box2d::RealNum(1) * box2d::Meter,
+                                                                  box2d::RealNum(1) * box2d::Meter);
 
     // Set the box density to be non-zero, so it will be dynamic.
-    dynamicBox->SetDensity(1.0f * KilogramPerSquareMeter);
+    dynamicBox->SetDensity(box2d::RealNum(1) * box2d::KilogramPerSquareMeter);
 
     // Override the default friction.
-    dynamicBox->SetFriction(0.3f);
+    dynamicBox->SetFriction(box2d::RealNum(0.3));
 
     // Add the shape to the body.
     body->CreateFixture(dynamicBox);
@@ -69,8 +66,8 @@ int main(int, char**)
     // Prepare for simulation. Typically we use a time step of 1/60 of a
     // second (60Hz) and 10 iterations. This provides a high quality simulation
     // in most game scenarios.
-    auto stepConf = StepConf{};
-    stepConf.SetTime((1.0f / 60.0f) * Second);
+    auto stepConf = box2d::StepConf{};
+    stepConf.SetInvTime(box2d::RealNum(60) * box2d::Hertz);
     stepConf.regVelocityIterations = 6;
     stepConf.regPositionIterations = 2;
 
@@ -85,10 +82,10 @@ int main(int, char**)
         const auto position = body->GetLocation();
         const auto angle = body->GetAngle();
 
-        printf("%4.2f %4.2f %4.2f\n",
-               double{position.x / Meter},
-               double{position.y / Meter},
-               double{angle / Degree});
+        std::printf("%4.2f %4.2f %4.2f\n",
+                    double(box2d::RealNum(position.x / box2d::Meter)),
+                    double(box2d::RealNum(position.y / box2d::Meter)),
+                    double(box2d::RealNum(angle / box2d::Degree)));
     }
 
     // When the world destructor is called, all bodies and joints are freed. This can
