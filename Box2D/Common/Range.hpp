@@ -21,6 +21,8 @@
 #ifndef Range_hpp
 #define Range_hpp
 
+#include <cstddef>
+
 namespace box2d
 {
     template <typename IT>
@@ -28,7 +30,7 @@ namespace box2d
     {
     public:
         using iterator_type = IT;
-        
+
         constexpr Range(iterator_type iter_begin, iterator_type iter_end) noexcept:
         	m_begin{iter_begin}, m_end{iter_end}
         {
@@ -54,13 +56,13 @@ namespace box2d
         iterator_type m_begin;
         iterator_type m_end;
     };
-    
+
     template <typename IT>
     class SizedRange: public Range<IT>
     {
     public:
         using size_type = std::size_t;
-        
+
         constexpr SizedRange(typename Range<IT>::iterator_type iter_begin,
                              typename Range<IT>::iterator_type iter_end,
                              size_type size) noexcept:
@@ -68,12 +70,12 @@ namespace box2d
         {
             // Intentionally empty.
         }
-        
+
         size_type size() const noexcept
         {
             return m_size;
         }
-        
+
     private:
         size_type m_size;
     };

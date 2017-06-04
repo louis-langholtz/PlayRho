@@ -447,12 +447,6 @@ namespace {
     
 } // anonymous namespace
 
-const BodyDef& World::GetDefaultBodyDef()
-{
-    static const BodyDef def = BodyDef{};
-    return def;
-}
-
 World::World(const WorldDef& def):
     m_gravity{def.gravity},
     m_minVertexRadius{def.minVertexRadius},

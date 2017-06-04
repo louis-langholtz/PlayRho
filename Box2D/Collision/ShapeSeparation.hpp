@@ -67,8 +67,8 @@ namespace box2d
     ///    its magnitude from the reference vector.
     /// @param refvec Reference vector.
     template <typename T1, typename T2>
-    static inline IndexSeparation GetMostAntiParallelSeparation(Span<const T1> points,
-                                                                const T2 refvec, const T1 offset)
+    IndexSeparation GetMostAntiParallelSeparation(Span<const T1> points,
+                                                  const T2 refvec, const T1 offset)
     {
         // Search for the vector that is most anti-parallel to the reference vector.
         // See: https://en.wikipedia.org/wiki/Antiparallel_(mathematics)#Antiparallel_vectors

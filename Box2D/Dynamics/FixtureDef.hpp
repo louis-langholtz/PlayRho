@@ -67,6 +67,11 @@ namespace box2d {
         return *this;
     }
 
+    constexpr FixtureDef GetDefaultFixtureDef() noexcept
+    {
+        return FixtureDef{};
+    }
+    
 } // namespace box2d
 
 #endif /* FixtureDef_hpp */

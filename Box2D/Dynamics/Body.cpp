@@ -29,12 +29,6 @@
 
 using namespace box2d;
 
-const FixtureDef& box2d::GetDefaultFixtureDef() noexcept
-{
-    static const auto def = FixtureDef{};
-    return def;
-}
-
 Body::FlagsType Body::GetFlags(const BodyDef& bd) noexcept
 {
     // @invariant Only bodies that allow sleeping, can be put to sleep.

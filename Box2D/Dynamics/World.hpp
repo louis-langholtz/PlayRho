@@ -26,6 +26,8 @@
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Common/Range.hpp>
 #include <Box2D/Dynamics/WorldDef.hpp>
+#include <Box2D/Dynamics/BodyDef.hpp>
+#include <Box2D/Dynamics/FixtureDef.hpp>
 #include <Box2D/Dynamics/WorldCallbacks.hpp>
 #include <Box2D/Dynamics/StepStats.hpp>
 #include <Box2D/Collision/BroadPhase.hpp>
@@ -50,8 +52,6 @@ class Island;
 class StepConf;
 class Shape;
 enum class BodyType;
-
-const FixtureDef& GetDefaultFixtureDef() noexcept;
 
 /// @brief World.
 ///
@@ -82,9 +82,6 @@ public:
     /// @note Cannot be container of Joint instances since joints are polymorphic types.
     using Joints = std::list<Joint*>;
     
-    /// @brief Gets the default body definitions value.
-    static const BodyDef& GetDefaultBodyDef();
-
     /// @brief Constructs a world object.
     World(const WorldDef& def = GetDefaultWorldDef());
 

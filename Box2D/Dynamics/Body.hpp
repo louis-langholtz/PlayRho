@@ -48,8 +48,6 @@ class Shape;
 struct BodyDef;
 struct MassData;
 
-const FixtureDef &GetDefaultFixtureDef() noexcept;
-
 /// @brief A physical entity that exists within a World.
 ///
 /// @details A rigid body entity created or destroyed through a World instance.

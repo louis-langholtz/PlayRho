@@ -220,6 +220,11 @@ namespace box2d
         return *this;
     }
     
+    constexpr BodyDef GetDefaultBodyDef() noexcept
+    {
+        return BodyDef{};
+    }
+
 } // namespace box2d
 
 #endif /* BodyDef_hpp */
