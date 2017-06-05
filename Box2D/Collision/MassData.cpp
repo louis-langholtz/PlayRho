@@ -32,8 +32,6 @@ using namespace box2d;
 MassData box2d::GetMassData(const Length r, const NonNegative<Density> density,
                             const Length2D location)
 {
-    assert(density >= Density{0});
-
     // Uses parallel axis theorem, perpendicular axis theorem, and the second moment of area.
     // See: https://en.wikipedia.org/wiki/Second_moment_of_area
     //
@@ -58,8 +56,6 @@ MassData box2d::GetMassData(const Length r, const NonNegative<Density> density,
 MassData box2d::GetMassData(const Length r, const NonNegative<Density> density,
                             const Length2D v0, const Length2D v1)
 {
-    assert(density >= Density{0});
-
     const auto r_squared = Area{r * r};
     const auto circle_area = r_squared * Pi;
     const auto circle_mass = Density{density} * circle_area;
