@@ -83,3 +83,95 @@ from my fork of the project):
 ![Image of Modified Corner Handling](images/ThresholdRectRectCollision.png)
 
 And now, no stickiness at all!! Woot!!
+
+## The Details
+
+Someone asked me for more details. I love that! Even one person asking a question about
+what I've done is hugely encouraging for me. So here's more information...
+
+Code-wise, this now (as of around May, 2017) gets done in [`Manifold.cpp`](https://github.com/louis-langholtz/Box2D/blob/dev/Box2D/Collision/Manifold.cpp), by the `box2d::CollideShapes` function. It's full function signature is:
+
+    namespace box2d {
+
+        Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
+                               const DistanceProxy& shapeB, const Transformation& xfB,
+                               const Manifold::Conf conf);
+
+    } // namespace box2d
+
+What's relevant to note about the function signature is really only that it takes `DistanceProxy`
+objects and returns `Manifold` objects.
+That's relevant because it means that the function takes any arbitrary pair of convex
+shapes that have from one to `MaxShapeVertices` (i.e. up to 254 vertices) and returns
+a calculated manifold for them.
+
+Algorithmically speaking, things get harder for me to explain.
+Pull requests for improvements to this document are greatly welcome.
+In the meantime, here goes...
+
+The `CollideShapes` function decomposes its work into essentially three categories
+of possible convex-shape to convex-shape collisions (contacts where the two shapes
+are touching and possibly overlapping):
+
+ 1. Single vertex shape to single vertex shape collisions - which are perhaps more recognizable
+    as *circle* to *circle* collisions.
+ 2. Single vertex shape to multi vertex shape collisions - like *circle* to *edge* or *circle*
+    to *polygon* collisions.
+ 3. Multi vertex shape to multi vertex shape collisions - as in an *edge* or *polygon* shape
+    colliding with another *edge* or *polygon* shape.
+
+It's this last category of collisions that's most relevant to the original stickiness problem:
+the multi vertex shape to multi vertex shape collisions - like for a rectangle over boxes.
+
+In the multi vertex shape to multi vertex shape collision case,
+the maximum separation between shapes is calculated using each shape's edge normals.
+What's returned from these two calculations is that maximum separation amount and the indices
+of the two shapes for which the maximum was found.
+This is similar to what `b2FindMaxSeparation` (in Erin's source) does
+and how it's used, except that instead of returning one index, two are returned so that
+the second index doesn't essentially need to be recalculated again.
+If either of the maximum separation amounts are greater than the total radius, the
+algorithm ends and a non-touching / non-overlapping manifold is returned (returned from the
+`CollideShapes` function that is).
+In the continuing on case (where the algorithm doesn't), things now get more convoluted
+(at least in the implementation where execution is now in the `GetFaceManifold` function
+  which is akin to the latter code in Erin's `b2CollidePolygons` function).
+
+Now clipping is attempted between the actual vertices; **not offsets to those vertices**.
+If two clip points are found, then a collision manifold is generated having a manifold point
+for each of the clip points whose edge-normal distance minus the *front offset* is less than
+the total vertex radius. This is just as Erin's code does this.
+If the resulting manifold has one or two manifold points, the algorithm ends and returns
+that manifold.
+If two clip points weren't found or the resulting manifold from the last step didn't have
+any manifold points however, things continue on and get more interesting.
+
+The algorithm is now looking at the potential case of corner to corner collisions.
+Here the algorithm essentially looks to determine which edge of the secondary shape
+that the primary shape's corner is closer to **in terms of that edge's normal**.
+If the length of this edge is greater than a specified amount (given in the `conf` parameter),
+then the algorithm switches from returning the *circles* type of collision manifold
+to figuring out a face type of collision manifold. This is the break out point between
+the *rounded* corner-collision handling and face corner-collision handling. This split
+off from returning *circles* manifolds back to returning face type manifolds is the
+*modified corner handling*.
+
+Incidentally, I'm very open to a better name for the modified corner handling.
+But back to the algorithm...
+
+Returning the *circles* manifold results in the rounded corner handling
+shown earlier. For say two edge shapes with vertex radiuses that are as large as these edges
+are long, I think the rounded corner response makes sense. If we imagined what these shapes
+look like with their *skins* drawn, we'd see very rounded capsule shapes like *Weebles*.
+I'd want these shapes to teeter and possibly wobble (and maybe even fall down).
+The scale at which the collision response should switch between rounded corners and squared-like
+corners I think is enough of a matter of preference though that I made it configurable
+(specified in the `conf` parameter).
+
+Returning the face type of manifold meanwhile now results in no opposing impulses, which
+results in smooth sliding and no impulses that oppose the direction of sliding. This is
+because of the previously mentioned edge determination and one other factor:
+the pre-existing downward skin penetration in the sliding scenario.
+This pre-existing downward penetration then favors the edge (to the corner of the upcoming shape)
+*whose normal is up*, instead of the edge whose normal opposes the direction of travel.
+And voila!
