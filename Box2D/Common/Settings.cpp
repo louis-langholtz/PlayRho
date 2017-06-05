@@ -18,7 +18,6 @@
  */
 
 #include <Box2D/Common/Settings.hpp>
-#include <Box2D/Common/Fixed.hpp>
 
 #include <cstdio>
 #include <cstdarg>
@@ -83,11 +82,13 @@ const char* GetTypeName<Fixed32>() noexcept
     return "Fixed32";
 }
 
+#ifndef _WIN32
 template <>
 const char* GetTypeName<Fixed64>() noexcept
 {
     return "Fixed64";
 }
+#endif
 
 std::string GetBuildDetails() noexcept
 {
