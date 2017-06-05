@@ -106,3 +106,51 @@ TEST(BoundedValue, FiniteDouble)
     EXPECT_THROW(Finite<double>{std::numeric_limits<double>::infinity()}, Finite<double>::exception_type);
     EXPECT_THROW(Finite<double>{std::numeric_limits<double>::quiet_NaN()}, Finite<double>::exception_type);
 }
+
+TEST(BoundedValue, FloatUnitInterval)
+{
+    EXPECT_EQ(float(UnitInterval<float>(0.0f)), 0.0f);
+    EXPECT_EQ(float(UnitInterval<float>(0.01f)), 0.01f);
+    EXPECT_EQ(float(UnitInterval<float>(0.5f)), 0.5f);
+    EXPECT_EQ(float(UnitInterval<float>(0.9999f)), 0.9999f);
+    EXPECT_EQ(float(UnitInterval<float>(1.0f)), 1.0f);
+    
+    EXPECT_THROW(UnitInterval<float>(2.0f), UnitInterval<float>::exception_type);
+    EXPECT_THROW(UnitInterval<float>(-1.0f), UnitInterval<float>::exception_type);
+    EXPECT_THROW(UnitInterval<float>(1.00001f), UnitInterval<float>::exception_type);
+    EXPECT_THROW(UnitInterval<float>(-0.00001f), UnitInterval<float>::exception_type);
+    EXPECT_THROW(UnitInterval<float>{std::numeric_limits<float>::infinity()}, UnitInterval<float>::exception_type);
+}
+
+TEST(BoundedValue, IntUnitInterval)
+{
+    EXPECT_EQ(int(UnitInterval<int>(0)), 0);
+    EXPECT_EQ(int(UnitInterval<int>(1)), 1);
+    
+    EXPECT_THROW(UnitInterval<int>(2), UnitInterval<int>::exception_type);
+    EXPECT_THROW(UnitInterval<int>(-1), UnitInterval<int>::exception_type);
+}
+
+#if 0
+
+#include <Box2D/Common/Fixed.hpp>
+
+namespace box2d
+{
+template <typename T>
+struct ValueCheckHelper<T, Fixed32>
+{
+    static constexpr bool has_one = true;
+    static constexpr T one() noexcept { return T(1); }
+};
+}
+
+TEST(BoundedValue, FixedUnitInterval)
+{
+    using fixed = Fixed32;
+    const auto zero = fixed{0};
+    EXPECT_EQ(fixed(UnitInterval<fixed>(zero)), zero);
+    
+    EXPECT_THROW(UnitInterval<float>(2.0f), UnitInterval<float>::exception_type);
+}
+#endif

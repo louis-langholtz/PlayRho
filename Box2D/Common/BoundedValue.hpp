@@ -23,6 +23,7 @@
 
 #include <stdexcept>
 #include <limits>
+#include <type_traits>
 
 namespace box2d {
     
@@ -39,9 +40,24 @@ namespace box2d {
         Any,
         BelowZero,
     	ZeroOrLess,
+        OneOrLess,
         BelowPosInf
     };
 
+    template <typename T, class Enable = void>
+    struct ValueCheckHelper
+    {
+        static constexpr bool has_one = false;
+        static constexpr T one() noexcept { return T(0); }
+    };
+    
+    template <typename T>
+    struct ValueCheckHelper<T, typename std::enable_if<std::is_arithmetic<T>::value>::type>
+    {
+        static constexpr bool has_one = true;
+        static constexpr T one() noexcept { return T(1); }
+    };
+    
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     class BoundedValue
     {
@@ -99,6 +115,16 @@ namespace box2d {
                     if (!(value <= value_type(0)))
                     {
                         throw exception_type{"value not <= 0"};
+                    }
+                    return;
+                case HiValueCheck::OneOrLess:
+                    if (!ValueCheckHelper<value_type>::has_one)
+                    {
+                        throw exception_type{"value's type does not have a trivial 1"};
+                    }
+                    if (!(value <= ValueCheckHelper<value_type>::one()))
+                    {
+                        throw exception_type{"value not <= 1"};
                     }
                     return;
                 case HiValueCheck::BelowPosInf:
@@ -272,6 +298,9 @@ namespace box2d {
 
     template <typename T>
     using Finite = BoundedValue<T, LoValueCheck::AboveNegInf, HiValueCheck::BelowPosInf>;
+    
+    template <typename T>
+    using UnitInterval = BoundedValue<T, LoValueCheck::ZeroOrMore, HiValueCheck::OneOrLess>;
 }
 
 #endif /* BoundedValue_hpp */
