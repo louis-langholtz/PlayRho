@@ -18,6 +18,8 @@
  */
 
 #include <Box2D/Common/Settings.hpp>
+#include <Box2D/Common/Fixed.hpp>
+
 #include <cstdio>
 #include <cstdarg>
 #include <cstdlib>
