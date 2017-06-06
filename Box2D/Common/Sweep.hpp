@@ -77,12 +77,12 @@ namespace box2d
         Position pos1; ///< Center world position and world angle at time "1". 12-bytes.
         
     private:
-        Length2D localCenter; ///< Local center of mass position. 8-bytes.
+        Length2D localCenter = Vec2_zero * Meter; ///< Local center of mass position. 8-bytes.
         
         /// Fraction of the current time step in the range [0,1]
         /// pos0.linear and pos0.angular are the positions at alpha0.
         /// @note 4-bytes.
-        RealNum alpha0;
+        RealNum alpha0 = 0;
     };
     
     inline void Sweep::Advance0(const RealNum alpha) noexcept
