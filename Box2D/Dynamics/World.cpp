@@ -530,7 +530,7 @@ Body* World::CreateBody(const BodyDef& def)
 {
     if (IsLocked())
     {
-        throw World::LockedError();
+        throw LockedError();
     }
 
     if (m_bodies.size() >= MaxBodies)
@@ -565,7 +565,7 @@ void World::Destroy(Body* b)
     
     if (IsLocked())
     {
-        throw World::LockedError();
+        throw LockedError();
     }
     
     // Delete the attached joints.
@@ -604,7 +604,7 @@ Joint* World::CreateJoint(const JointDef& def)
 
     if (IsLocked())
     {
-        throw World::LockedError();
+        throw LockedError();
     }
 
     // Note: creating a joint doesn't wake the bodies.
@@ -664,7 +664,7 @@ void World::Destroy(Joint* j)
     }
     if (IsLocked())
     {
-        throw World::LockedError();
+        throw LockedError();
     }
     InternalDestroy(j);
 }
@@ -1646,7 +1646,11 @@ StepStats World::Step(const StepConf& conf)
 {
     assert((m_maxVertexRadius * RealNum{2}) +
            (Length{conf.linearSlop} / RealNum{4}) > (m_maxVertexRadius * RealNum{2}));
-    assert(!IsLocked());
+    
+    if (IsLocked())
+    {
+        throw LockedError();
+    }
 
     auto stepStats = StepStats{};
     {
@@ -1757,7 +1761,7 @@ void World::ShiftOrigin(const Length2D newOrigin)
 {
     if (IsLocked())
     {
-        throw World::LockedError();
+        throw LockedError();
     }
 
     for (auto&& body: GetBodies())
@@ -2204,7 +2208,7 @@ void World::SetType(Body& body, BodyType type)
 
     if (IsLocked())
     {
-        throw World::LockedError();
+        throw LockedError();
     }
     
     BodyAtty::SetTypeFlags(body, type);
@@ -2269,7 +2273,7 @@ Fixture* World::CreateFixture(Body& body, std::shared_ptr<const Shape> shape,
     
     if (IsLocked())
     {
-        throw World::LockedError();
+        throw LockedError();
     }
     
     const auto fixture = BodyAtty::CreateFixture(body, shape, def);
@@ -2309,7 +2313,7 @@ bool World::DestroyFixture(Fixture* fixture, bool resetMassData)
     }
     if (IsLocked())
     {
-        throw World::LockedError();
+        throw LockedError();
     }
     
 #if 0
