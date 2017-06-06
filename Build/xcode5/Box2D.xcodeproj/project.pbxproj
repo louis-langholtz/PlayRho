@@ -133,7 +133,7 @@
 		474BAB311E5D00960058E08A /* BodyConstraint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 474BAB2C1E5D00960058E08A /* BodyConstraint.hpp */; };
 		474BC4291D413D7400447DCD /* libBox2D.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80FF01D2141C3D980059E59D /* libBox2D.a */; };
 		474BC42B1D413DC200447DCD /* AABB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474BC3F41D41278800447DCD /* AABB.cpp */; };
-		474BC42C1D413DC200447DCD /* CircleShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474BC3F51D41278800447DCD /* CircleShape.cpp */; };
+		474BC42C1D413DC200447DCD /* DiskShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474BC3F51D41278800447DCD /* DiskShape.cpp */; };
 		474BC42D1D413DC200447DCD /* CollideShapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474BC3F61D41278800447DCD /* CollideShapes.cpp */; };
 		474BC42E1D413DC200447DCD /* ContactFeature.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474BC3F71D41278800447DCD /* ContactFeature.cpp */; };
 		474BC42F1D413DC200447DCD /* Distance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474BC3F81D41278800447DCD /* Distance.cpp */; };
@@ -511,7 +511,7 @@
 		474BAB291E5CBA010058E08A /* Velocity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Velocity.cpp; sourceTree = "<group>"; };
 		474BAB2C1E5D00960058E08A /* BodyConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyConstraint.hpp; sourceTree = "<group>"; };
 		474BC3F41D41278800447DCD /* AABB.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AABB.cpp; sourceTree = "<group>"; };
-		474BC3F51D41278800447DCD /* CircleShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CircleShape.cpp; sourceTree = "<group>"; };
+		474BC3F51D41278800447DCD /* DiskShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DiskShape.cpp; sourceTree = "<group>"; };
 		474BC3F61D41278800447DCD /* CollideShapes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollideShapes.cpp; sourceTree = "<group>"; };
 		474BC3F71D41278800447DCD /* ContactFeature.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactFeature.cpp; sourceTree = "<group>"; };
 		474BC3F81D41278800447DCD /* Distance.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Distance.cpp; sourceTree = "<group>"; };
@@ -780,7 +780,7 @@
 				47928F341E5FE19C00EE6E9E /* BodyConstraint.cpp */,
 				479B63C21ED9CAC300D49BC7 /* BoundedValue.cpp */,
 				4731DE0B1DD7A65B00E7F931 /* BroadPhase.cpp */,
-				474BC3F51D41278800447DCD /* CircleShape.cpp */,
+				474BC3F51D41278800447DCD /* DiskShape.cpp */,
 				474BC3F61D41278800447DCD /* CollideShapes.cpp */,
 				475A94601D9996B6000CA9A8 /* Contact.cpp */,
 				474BC3F71D41278800447DCD /* ContactFeature.cpp */,
@@ -1514,7 +1514,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				474BC42B1D413DC200447DCD /* AABB.cpp in Sources */,
-				474BC42C1D413DC200447DCD /* CircleShape.cpp in Sources */,
+				474BC42C1D413DC200447DCD /* DiskShape.cpp in Sources */,
 				475A945F1D95A15A000CA9A8 /* StackAllocator.cpp in Sources */,
 				474BC42D1D413DC200447DCD /* CollideShapes.cpp in Sources */,
 				474BC42E1D413DC200447DCD /* ContactFeature.cpp in Sources */,
