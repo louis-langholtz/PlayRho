@@ -38,6 +38,29 @@ public:
             ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
         }
 
+        {
+            BodyDef bd;
+            const auto ground = m_world->CreateBody(bd);
+            
+            PolygonShape shape;
+            
+            shape.SetVertexRadius(RealNum(0.006f) * Meter);
+            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter, Vec2(-20.01f, 0.545f) * Meter, RealNum{0.0f} * Radian);
+            ground->CreateFixture(std::make_shared<PolygonShape>(shape));
+            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter, Vec2(-20.01f, 1.545f) * Meter, RealNum{0.0f} * Radian);
+            ground->CreateFixture(std::make_shared<PolygonShape>(shape));
+            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter, Vec2(-20.01f, 2.545f) * Meter, RealNum{0.0f} * Radian);
+            ground->CreateFixture(std::make_shared<PolygonShape>(shape));
+
+            shape.SetVertexRadius(RealNum(0.006f) * Meter);
+            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter, Vec2(-17.99f, 0.545f) * Meter, RealNum{0.0f} * Radian);
+            ground->CreateFixture(std::make_shared<PolygonShape>(shape));
+            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter, Vec2(-17.99f, 1.545f) * Meter, RealNum{0.0f} * Radian);
+            ground->CreateFixture(std::make_shared<PolygonShape>(shape));
+            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter, Vec2(-17.99f, 2.545f) * Meter, RealNum{0.0f} * Radian);
+            ground->CreateFixture(std::make_shared<PolygonShape>(shape));
+        }
+
         // Collinear edges with no adjacency information.
         // This shows the problematic case where a box shape can hit
         // an internal vertex.
@@ -146,8 +169,15 @@ public:
             const auto body = m_world->CreateBody(bd);
 
             auto conf = PolygonShape::Conf{};
+            conf.friction = RealNum(0);
             conf.density = RealNum{20} * KilogramPerSquareMeter;
-            body->CreateFixture(std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter, conf));
+            conf.vertexRadius = RealNum(0.006f) * Meter;
+            const auto square = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter, conf);
+            body->CreateFixture(square);
+            
+            bd.position = Vec2(-19.5f, 1.0f) * Meter;
+            const auto body2 = m_world->CreateBody(bd);
+            body2->CreateFixture(square);
         }
 
         // Square character 2
