@@ -22,7 +22,7 @@
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/BodyDef.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
-#include <Box2D/Collision/Shapes/CircleShape.hpp>
+#include <Box2D/Collision/Shapes/DiskShape.hpp>
 #include <Box2D/Collision/Shapes/PolygonShape.hpp>
 
 using namespace box2d;
@@ -78,7 +78,7 @@ TEST(RevoluteJoint, Construction)
 
 TEST(RevoluteJoint, MovesDynamicCircles)
 {
-    const auto circle = std::make_shared<CircleShape>(RealNum{0.2f} * Meter);
+    const auto circle = std::make_shared<DiskShape>(RealNum{0.2f} * Meter);
     World world;
     const auto p1 = Vec2{-1, 0} * Meter;
     const auto p2 = Vec2{+1, 0} * Meter;

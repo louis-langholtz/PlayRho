@@ -156,10 +156,10 @@ public:
 
         {
             const auto radius = RealNum{0.2f} * Meter;
-            auto conf = CircleShape::Conf{};
+            auto conf = DiskShape::Conf{};
             conf.density = RealNum{10} * KilogramPerSquareMeter;
             conf.vertexRadius = radius;
-            const auto shape = std::make_shared<CircleShape>(conf);
+            const auto shape = std::make_shared<DiskShape>(conf);
             for (auto i = 0; i < 4; ++i)
             {
                 BodyDef bd;

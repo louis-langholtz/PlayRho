@@ -35,10 +35,10 @@ public:
         const auto ground = m_world->CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 
-        auto shapeConf = CircleShape::Conf{};
+        auto shapeConf = DiskShape::Conf{};
         shapeConf.vertexRadius = RealNum{1} * Meter;
         shapeConf.density = RealNum{1} * KilogramPerSquareMeter;
-        auto shape = CircleShape(shapeConf);
+        auto shape = DiskShape(shapeConf);
         
         RealNum restitution[7] = {0.0f, 0.1f, 0.3f, 0.5f, 0.75f, 0.9f, 1.0f};
 
@@ -51,7 +51,7 @@ public:
             auto body = m_world->CreateBody(bd);
 
             shape.SetRestitution(restitution[i]);
-            body->CreateFixture(std::make_shared<CircleShape>(shape));
+            body->CreateFixture(std::make_shared<DiskShape>(shape));
         }
     }
 };

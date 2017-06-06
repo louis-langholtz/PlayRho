@@ -18,7 +18,7 @@
 
 #include "gtest/gtest.h"
 #include <Box2D/Collision/Shapes/Shape.hpp>
-#include <Box2D/Collision/Shapes/CircleShape.hpp>
+#include <Box2D/Collision/Shapes/DiskShape.hpp>
 #include <Box2D/Collision/Shapes/PolygonShape.hpp>
 #include <Box2D/Collision/Distance.hpp>
 #include <Box2D/Collision/Manifold.hpp>
@@ -39,7 +39,7 @@ TEST(Shape, ByteSize)
 
 TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)
 {
-    const auto shape = CircleShape{RealNum{2} * Meter};
+    const auto shape = DiskShape{RealNum{2} * Meter};
     const auto xfm = Transformation{Vec2{0, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
     const auto child = shape.GetChild(0);
 

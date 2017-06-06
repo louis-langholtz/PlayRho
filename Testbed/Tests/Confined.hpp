@@ -41,11 +41,11 @@ public:
         m_enclosure = CreateEnclosure(m_enclosureVertexRadius, wall_length);
 
         const auto radius = RealNum{0.5f} * Meter;
-        auto conf = CircleShape::Conf{};
+        auto conf = DiskShape::Conf{};
         conf.vertexRadius = radius;
         conf.density = RealNum{1} * KilogramPerSquareMeter;
         conf.friction = 0.1f;
-        const auto shape = std::make_shared<CircleShape>(conf);
+        const auto shape = std::make_shared<DiskShape>(conf);
 
         for (auto j = 0; j < e_columnCount; ++j)
         {
@@ -117,11 +117,11 @@ public:
 
         const auto body = m_world->CreateBody(bd);
         
-        auto conf = CircleShape::Conf{};
+        auto conf = DiskShape::Conf{};
         conf.density = RealNum{1} * KilogramPerSquareMeter;
         conf.restitution = 0.8f;
         conf.vertexRadius = radius;
-        body->CreateFixture(std::make_shared<CircleShape>(conf));
+        body->CreateFixture(std::make_shared<DiskShape>(conf));
 
         ++m_sequence;
     }

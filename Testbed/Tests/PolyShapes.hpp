@@ -36,7 +36,7 @@ class ShapeDrawer: public Shape::Visitor
 {
 public:
 
-    void Visit(const CircleShape& shape) override
+    void Visit(const DiskShape& shape) override
     {
         const auto center = Transform(shape.GetLocation(), m_xf);
         const auto radius = shape.GetRadius();
@@ -195,10 +195,10 @@ public:
 
     void PostStep(const Settings&, Drawer& drawer) override
     {
-        auto circleConf = CircleShape::Conf{};
+        auto circleConf = DiskShape::Conf{};
         circleConf.location = Vec2(0.0f, 1.1f) * Meter;
         circleConf.vertexRadius = RealNum(2) * Meter;
-        const auto circle = CircleShape{circleConf};
+        const auto circle = DiskShape{circleConf};
 
         const auto transform = Transform_identity;
 
@@ -241,7 +241,7 @@ public:
     int m_bodyIndex;
     Body* m_bodies[e_maxBodies];
     std::shared_ptr<PolygonShape> m_polygons[4];
-    std::shared_ptr<CircleShape> m_circle = std::make_shared<CircleShape>(RealNum{0.5f} * Meter);
+    std::shared_ptr<DiskShape> m_circle = std::make_shared<DiskShape>(RealNum{0.5f} * Meter);
 };
 
 } // namespace box2d

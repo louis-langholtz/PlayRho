@@ -48,19 +48,19 @@ namespace box2d {
             bodyDef.position = Vec2{0, 14} * Meter;
             const auto body2 = m_world->CreateBody(bodyDef);
             
-            auto shapeConf = CircleShape::Conf{};
+            auto shapeConf = DiskShape::Conf{};
             shapeConf.density = RealNum{10} * KilogramPerSquareMeter;
 
             shapeConf.vertexRadius = RealNum{2} * Meter;
             shapeConf.location = Vec2{0, 0} * Meter;
-            auto circle = std::make_shared<CircleShape>(shapeConf);
+            auto circle = std::make_shared<DiskShape>(shapeConf);
 
             shapeConf.vertexRadius = RealNum{1.5f} * Meter;
             shapeConf.location = Vec2{0,  3} * Meter;
-            auto circleA = std::make_shared<CircleShape>(shapeConf);
+            auto circleA = std::make_shared<DiskShape>(shapeConf);
             shapeConf.vertexRadius = RealNum{1.5f} * Meter;
             shapeConf.location = Vec2{0, -3} * Meter;
-            auto circleB = std::make_shared<CircleShape>(shapeConf);
+            auto circleB = std::make_shared<DiskShape>(shapeConf);
             
             body1->CreateFixture(circleA);
             body1->CreateFixture(circleB);

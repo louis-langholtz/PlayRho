@@ -38,10 +38,10 @@ public:
 
             bd.position = Vec2(-10.0f, 20.0f) * Meter;
             const auto body = m_world->CreateBody(bd);
-            auto circleConf = CircleShape::Conf{};
+            auto circleConf = DiskShape::Conf{};
             circleConf.vertexRadius = RealNum{0.5f} * Meter;
             circleConf.density = RealNum{5} * KilogramPerSquareMeter;
-            body->CreateFixture(std::make_shared<CircleShape>(circleConf));
+            body->CreateFixture(std::make_shared<DiskShape>(circleConf));
 
             const auto w = RealNum{100.0f};
             body->SetVelocity(Velocity{Vec2(-8.0f * w, 0.0f) * MeterPerSecond, RadianPerSecond * w});
@@ -67,10 +67,10 @@ public:
             fd.filter.maskBits = 1;
 
             m_ball = m_world->CreateBody(circle_bd);
-            auto circleConf = CircleShape::Conf{};
+            auto circleConf = DiskShape::Conf{};
             circleConf.vertexRadius = RealNum{3.0f} * Meter;
             circleConf.density = RealNum{5} * KilogramPerSquareMeter;
-            m_ball->CreateFixture(std::make_shared<CircleShape>(circleConf), fd);
+            m_ball->CreateFixture(std::make_shared<DiskShape>(circleConf), fd);
 
             PolygonShape polygon_shape;
             SetAsBox(polygon_shape, RealNum{10.0f} * Meter, RealNum{0.2f} * Meter, Vec2 (-10.0f, 0.0f) * Meter, Angle{0});

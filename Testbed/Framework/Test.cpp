@@ -56,7 +56,7 @@ public:
         // Intentionally empty.
     }
     
-    void Visit(const CircleShape& shape) override;
+    void Visit(const DiskShape& shape) override;
     void Visit(const EdgeShape& shape) override;
     void Visit(const PolygonShape& shape) override;
     void Visit(const ChainShape& shape) override;
@@ -70,7 +70,7 @@ public:
     Transformation xf;
 };
 
-void ShapeDrawer::Visit(const CircleShape& shape)
+void ShapeDrawer::Visit(const DiskShape& shape)
 {
     const auto center = Transform(shape.GetLocation(), xf);
     const auto radius = shape.GetRadius();
@@ -535,11 +535,11 @@ void Test::LaunchBomb(const Length2D& position, const LinearVelocity2D linearVel
     m_bomb = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(position).UseBullet(true));
     m_bomb->SetVelocity(Velocity{linearVelocity, AngularVelocity{0}});
     
-    auto conf = CircleShape::Conf{};
+    auto conf = DiskShape::Conf{};
     conf.vertexRadius = RealNum{0.3f} * Meter;
     conf.density = Density{RealNum{20} * Kilogram / SquareMeter};
     conf.restitution = 0.0f;
-    const auto circle = std::make_shared<CircleShape>(conf);
+    const auto circle = std::make_shared<DiskShape>(conf);
 
     m_bomb->CreateFixture(circle);
 }

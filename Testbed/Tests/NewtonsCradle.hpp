@@ -160,13 +160,13 @@ namespace box2d {
 
         Fixture* CreateBall(Body* body, Length2D pos, Length radius)
         {
-            auto conf = CircleShape::Conf{};
+            auto conf = DiskShape::Conf{};
             conf.vertexRadius = radius;
             conf.location = pos;
             conf.density = RealNum{20} * KilogramPerSquareMeter;
             conf.restitution = 1;
             conf.friction = 0;
-            return body->CreateFixture(std::make_shared<CircleShape>(conf));
+            return body->CreateFixture(std::make_shared<DiskShape>(conf));
         }
 
         Fixture* CreateArm(Body* body, Length length = RealNum(10) * Meter)

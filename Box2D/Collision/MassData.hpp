@@ -33,7 +33,7 @@ namespace box2d {
     class Shape;
     class PolygonShape;
     class EdgeShape;
-    class CircleShape;
+    class DiskShape;
     class ChainShape;
 
     /// Mass data.

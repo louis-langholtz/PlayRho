@@ -24,7 +24,7 @@
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/Contacts/Contact.hpp>
 #include <Box2D/Dynamics/Joints/DistanceJoint.hpp>
-#include <Box2D/Collision/Shapes/CircleShape.hpp>
+#include <Box2D/Collision/Shapes/DiskShape.hpp>
 #include <Box2D/Collision/Shapes/PolygonShape.hpp>
 #include <Box2D/Collision/Shapes/EdgeShape.hpp>
 #include <Box2D/Dynamics/Joints/MouseJoint.hpp>
@@ -529,7 +529,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
     body_def.type = BodyType::Dynamic;
     body_def.bullet = true;
     
-    const auto shape = std::make_shared<CircleShape>(RealNum{1} * Meter);
+    const auto shape = std::make_shared<DiskShape>(RealNum{1} * Meter);
     shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
     shape->SetRestitution(1);
     
@@ -604,7 +604,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 TEST(World, PerfectlyOverlappedSameCirclesStayPut)
 {
     const auto radius = RealNum(1) * Meter;
-    const auto shape = std::make_shared<CircleShape>(radius);
+    const auto shape = std::make_shared<DiskShape>(radius);
     shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
     shape->SetRestitution(1); // changes where bodies will be after collision
     const auto gravity = Vec2{0, 0} * MeterPerSquareSecond;
@@ -648,11 +648,11 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
     const auto radius1 = RealNum(1) * Meter;
     const auto radius2 = RealNum(0.6) * Meter;
     
-    const auto shape1 = std::make_shared<CircleShape>(radius1);
+    const auto shape1 = std::make_shared<DiskShape>(radius1);
     shape1->SetDensity(RealNum{1} * KilogramPerSquareMeter);
     shape1->SetRestitution(1); // changes where bodies will be after collision
     
-    const auto shape2 = std::make_shared<CircleShape>(radius2);
+    const auto shape2 = std::make_shared<DiskShape>(radius2);
     shape2->SetDensity(RealNum{1} * KilogramPerSquareMeter);
     shape2->SetRestitution(1); // changes where bodies will be after collision
 
@@ -705,7 +705,7 @@ TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
     auto body_def = BodyDef{};
     body_def.type = BodyType::Dynamic;
     body_def.position = Vec2{RealNum(0), RealNum(0)} * Meter;
-    const auto shape = std::make_shared<CircleShape>(RealNum{1} * Meter);
+    const auto shape = std::make_shared<DiskShape>(RealNum{1} * Meter);
     shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
     shape->SetRestitution(1);
     for (auto i = 0; i < 2; ++i)
@@ -777,7 +777,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
     body_def.type = BodyType::Dynamic;
     body_def.bullet = false; // separation is faster if true.
     
-    const auto shape = std::make_shared<CircleShape>(radius * Meter);
+    const auto shape = std::make_shared<DiskShape>(radius * Meter);
     shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
     shape->SetRestitution(1); // changes where bodies will be after collision
     
@@ -1105,7 +1105,7 @@ TEST(World, CollidingDynamicBodies)
     EXPECT_EQ(world.GetGravity(), gravity);
     world.SetContactListener(&listener);
     
-    const auto shape = std::make_shared<CircleShape>(radius);
+    const auto shape = std::make_shared<DiskShape>(radius);
     shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
     shape->SetRestitution(1); // changes where bodies will be after collision
 
@@ -1470,7 +1470,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
     ASSERT_NE(ball_body, nullptr);
     
     const auto ball_radius = RealNum(.01) * Meter;
-    const auto circle_shape = std::make_shared<CircleShape>(ball_radius);
+    const auto circle_shape = std::make_shared<DiskShape>(ball_radius);
     circle_shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
     circle_shape->SetRestitution(1); // changes where bodies will be after collision
     const auto ball_fixture = ball_body->CreateFixture(circle_shape);
@@ -2008,7 +2008,7 @@ static void smaller_still_conserves_momentum(bool bullet, RealNum multiplier, Re
         };
         world.SetContactListener(&listener);
 
-        const auto shape = std::make_shared<CircleShape>(scale * radius * Meter);
+        const auto shape = std::make_shared<DiskShape>(scale * radius * Meter);
         ASSERT_EQ(shape->GetRadius(), scale * radius);
         
         auto fixture_def = FixtureDef{}.UseDensity(1);

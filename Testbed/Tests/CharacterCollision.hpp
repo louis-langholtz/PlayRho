@@ -221,7 +221,7 @@ public:
             body->CreateFixture(hexshape);
         }
 
-        // Circle character
+        // Disk character
         {
             BodyDef bd;
             bd.position = Vec2(3.0f, 5.0f) * Meter;
@@ -230,13 +230,13 @@ public:
             bd.allowSleep = false;
 
             const auto body = m_world->CreateBody(bd);
-            auto conf = CircleShape::Conf{};
+            auto conf = DiskShape::Conf{};
             conf.density = RealNum{20} * KilogramPerSquareMeter;
             conf.vertexRadius = RealNum{0.5f} * Meter;
-            body->CreateFixture(std::make_shared<CircleShape>(conf));
+            body->CreateFixture(std::make_shared<DiskShape>(conf));
         }
 
-        // Circle character
+        // Disk character
         {
             BodyDef bd;
             bd.position = Vec2(-7.0f, 6.0f) * Meter;
@@ -245,11 +245,11 @@ public:
 
             m_character = m_world->CreateBody(bd);
 
-            auto conf = CircleShape::Conf{};
+            auto conf = DiskShape::Conf{};
             conf.density = RealNum{20} * KilogramPerSquareMeter;
             conf.friction = 1.0f;
             conf.vertexRadius = RealNum{0.25f} * Meter;
-            m_character->CreateFixture(std::make_shared<CircleShape>(conf));
+            m_character->CreateFixture(std::make_shared<DiskShape>(conf));
         }
     }
 

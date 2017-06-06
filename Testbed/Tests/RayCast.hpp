@@ -384,7 +384,7 @@ public:
     Body* m_bodies[e_maxBodies];
     int m_userData[e_maxBodies];
     std::shared_ptr<PolygonShape> m_polygons[4];
-    std::shared_ptr<CircleShape> m_circle = std::make_shared<CircleShape>();
+    std::shared_ptr<DiskShape> m_circle = std::make_shared<DiskShape>();
     std::shared_ptr<EdgeShape> m_edge = std::make_shared<EdgeShape>(Vec2(-1.0f, 0.0f) * Meter, Vec2(1.0f, 0.0f) * Meter);
     RealNum m_angle = 0.0f;
     Mode m_mode = Mode::e_closest;

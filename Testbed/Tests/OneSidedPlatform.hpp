@@ -59,10 +59,10 @@ public:
             bd.type = BodyType::Dynamic;
             bd.position = Vec2(0.0f, 12.0f) * Meter;
             const auto body = m_world->CreateBody(bd);
-            auto conf = CircleShape::Conf{};
+            auto conf = DiskShape::Conf{};
             conf.vertexRadius = m_radius;
             conf.density = RealNum{20} * KilogramPerSquareMeter;
-            m_character = body->CreateFixture(std::make_shared<CircleShape>(conf));
+            m_character = body->CreateFixture(std::make_shared<DiskShape>(conf));
             body->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * MeterPerSecond, AngularVelocity{0}});
         }
     }

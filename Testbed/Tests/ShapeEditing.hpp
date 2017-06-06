@@ -55,11 +55,11 @@ public:
         case Key_C:
             if (!m_fixture2)
             {
-                auto conf = CircleShape::Conf{};
+                auto conf = DiskShape::Conf{};
                 conf.vertexRadius = RealNum{3.0f} * Meter;
                 conf.location = Vec2(0.5f, -4.0f) * Meter;
                 conf.density = RealNum{10} * KilogramPerSquareMeter;
-                m_fixture2 = m_body->CreateFixture(std::make_shared<CircleShape>(conf));
+                m_fixture2 = m_body->CreateFixture(std::make_shared<DiskShape>(conf));
                 m_body->SetAwake();
             }
             break;

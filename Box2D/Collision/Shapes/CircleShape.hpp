@@ -24,8 +24,8 @@
 
 namespace box2d {
 
-/// Circle shape.
-class CircleShape : public Shape
+/// Disk shape.
+class DiskShape : public Shape
 {
 public:
     
@@ -52,21 +52,21 @@ public:
     }
 
     /// Initializing constructor.
-    explicit CircleShape(const Conf& conf = GetDefaultConf()) noexcept:
+    explicit DiskShape(const Conf& conf = GetDefaultConf()) noexcept:
         Shape{conf}, m_location{conf.location}
     {
         // Intentionally empty.
     }
 
-    explicit CircleShape(const Length radius, const Conf& conf = GetDefaultConf()) noexcept:
+    explicit DiskShape(const Length radius, const Conf& conf = GetDefaultConf()) noexcept:
         Shape{conf}, m_location{conf.location}
     {
         SetVertexRadius(radius);
     }
 
-    CircleShape(const CircleShape&) = default;
+    DiskShape(const DiskShape&) = default;
 
-    CircleShape& operator=(const CircleShape& other) = default;
+    DiskShape& operator=(const DiskShape& other) = default;
     
     /// Gets the number of child primitives.
     /// @return Positive non-zero count.
@@ -103,24 +103,24 @@ private:
     Length2D m_location = Vec2_zero * Meter;
 };
 
-constexpr CircleShape::Conf& CircleShape::Conf::UseLocation(Length2D value) noexcept
+constexpr DiskShape::Conf& DiskShape::Conf::UseLocation(Length2D value) noexcept
 {
     location = value;
     return *this;
 }
 
-inline child_count_t CircleShape::GetChildCount() const noexcept
+inline child_count_t DiskShape::GetChildCount() const noexcept
 {
     return 1;
 }
 
-inline DistanceProxy CircleShape::GetChild(child_count_t index) const noexcept
+inline DistanceProxy DiskShape::GetChild(child_count_t index) const noexcept
 {
     assert(index == 0);
     return (index == 0)? DistanceProxy{GetVertexRadius(), 1, &m_location, nullptr}: DistanceProxy{};
 }
 
-inline void CircleShape::Accept(box2d::Shape::Visitor &visitor) const
+inline void DiskShape::Accept(box2d::Shape::Visitor &visitor) const
 {
     visitor.Visit(*this);
 }

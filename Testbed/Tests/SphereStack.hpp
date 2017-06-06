@@ -41,7 +41,7 @@ public:
         }
 
         {
-            const auto shape = std::make_shared<CircleShape>(RealNum{1} * Meter);
+            const auto shape = std::make_shared<DiskShape>(RealNum{1} * Meter);
             shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 
             for (auto i = 0; i < e_count; ++i)

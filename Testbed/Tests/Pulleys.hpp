@@ -36,14 +36,14 @@ public:
 
         const auto ground = m_world->CreateBody();
         {
-            auto conf = CircleShape::Conf{};
+            auto conf = DiskShape::Conf{};
             conf.vertexRadius = RealNum{2.0f} * Meter;
             conf.location = Vec2(-10.0f, y + b + L) * Meter;
-            CircleShape circle(conf);
-            ground->CreateFixture(std::make_shared<CircleShape>(circle));
+            DiskShape circle(conf);
+            ground->CreateFixture(std::make_shared<DiskShape>(circle));
 
             circle.SetLocation(Vec2(10.0f, y + b + L) * Meter);
-            ground->CreateFixture(std::make_shared<CircleShape>(circle));
+            ground->CreateFixture(std::make_shared<DiskShape>(circle));
         }
 
         {

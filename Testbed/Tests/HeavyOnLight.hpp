@@ -35,7 +35,7 @@ public:
             ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
         }
         
-        auto conf = CircleShape::Conf{};
+        auto conf = DiskShape::Conf{};
 
         BodyDef bd;
         bd.type = BodyType::Dynamic;
@@ -44,13 +44,13 @@ public:
         const auto body1 = m_world->CreateBody(bd);
         conf.vertexRadius = RealNum{0.5f} * Meter;
         conf.density = RealNum(10) * KilogramPerSquareMeter;
-        body1->CreateFixture(std::make_shared<CircleShape>(conf));
+        body1->CreateFixture(std::make_shared<DiskShape>(conf));
         
         bd.position = Vec2(0.0f, 6.0f) * Meter;
         const auto body2 = m_world->CreateBody(bd);
         conf.vertexRadius = RealNum{5.0f} * Meter;
         conf.density = RealNum(10) * KilogramPerSquareMeter;
-        m_top = body2->CreateFixture(std::make_shared<CircleShape>(conf));
+        m_top = body2->CreateFixture(std::make_shared<DiskShape>(conf));
     }
 
     void ChangeDensity(Density change)
@@ -62,10 +62,10 @@ public:
             const auto wasSelected = GetSelectedFixture() == m_top;
             const auto body = m_top->GetBody();
             body->DestroyFixture(m_top);
-            auto conf = CircleShape::Conf{};
+            auto conf = DiskShape::Conf{};
             conf.vertexRadius = RealNum{5.0f} * Meter;
             conf.density = newDensity;
-            m_top = body->CreateFixture(std::make_shared<CircleShape>(conf));
+            m_top = body->CreateFixture(std::make_shared<DiskShape>(conf));
             if (wasSelected)
             {
                 SetSelectedFixture(m_top);

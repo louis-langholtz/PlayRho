@@ -23,7 +23,7 @@
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/BodyDef.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
-#include <Box2D/Collision/Shapes/CircleShape.hpp>
+#include <Box2D/Collision/Shapes/DiskShape.hpp>
 
 using namespace box2d;
 
@@ -77,7 +77,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 {
     World world{WorldDef{}.UseGravity(Vec2_zero * MeterPerSquareSecond)};
 
-    const auto shape = std::make_shared<CircleShape>(RealNum{0.2f} * Meter);
+    const auto shape = std::make_shared<DiskShape>(RealNum{0.2f} * Meter);
     
     const auto location1 = Vec2{-1, 0} * Meter;
     const auto body1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location1));
@@ -131,7 +131,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
 {
     World world{WorldDef{}.UseGravity(Vec2{0, 10} * MeterPerSquareSecond)};
     
-    const auto shape = std::make_shared<CircleShape>(RealNum{0.2f} * Meter);
+    const auto shape = std::make_shared<DiskShape>(RealNum{0.2f} * Meter);
     shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
     
     const auto location1 = Vec2{-10, 10} * Meter;

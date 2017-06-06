@@ -22,7 +22,7 @@
 #include <Box2D/Dynamics/World.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/Joints/Joint.hpp>
-#include <Box2D/Collision/Shapes/CircleShape.hpp>
+#include <Box2D/Collision/Shapes/DiskShape.hpp>
 
 #include <chrono>
 
@@ -125,7 +125,7 @@ TEST(Body, CreateFixture)
 {
     World world;
     const auto body = world.CreateBody();
-    const auto valid_shape = std::make_shared<CircleShape>(RealNum{1} * Meter);
+    const auto valid_shape = std::make_shared<DiskShape>(RealNum{1} * Meter);
     
     // Check default settings
     EXPECT_NE(body->CreateFixture(valid_shape, FixtureDef{}), nullptr);    
@@ -140,19 +140,19 @@ TEST(Body, CreateAndDestroyFixture)
     EXPECT_TRUE(body->GetFixtures().empty());
     EXPECT_FALSE(body->IsMassDataDirty());
 
-    auto conf = CircleShape::Conf{};
+    auto conf = DiskShape::Conf{};
     conf.vertexRadius = RealNum{2.871f} * Meter;
     conf.location = Vec2{1.912f, -77.31f} * Meter;
     conf.density = RealNum{1} * KilogramPerSquareMeter;
-    const auto shape = std::make_shared<CircleShape>(conf);
+    const auto shape = std::make_shared<DiskShape>(conf);
     
     auto fixture = body->CreateFixture(shape, FixtureDef{}, false);
     const auto fshape = fixture->GetShape();
     ASSERT_NE(fshape, nullptr);
-    EXPECT_EQ(typeid(*fshape), typeid(CircleShape));
+    EXPECT_EQ(typeid(*fshape), typeid(DiskShape));
     EXPECT_EQ(GetVertexRadius(*fshape), GetVertexRadius(*shape));
-    EXPECT_EQ(static_cast<const CircleShape*>(fshape)->GetLocation().x, shape->GetLocation().x);
-    EXPECT_EQ(static_cast<const CircleShape*>(fshape)->GetLocation().y, shape->GetLocation().y);
+    EXPECT_EQ(static_cast<const DiskShape*>(fshape)->GetLocation().x, shape->GetLocation().x);
+    EXPECT_EQ(static_cast<const DiskShape*>(fshape)->GetLocation().y, shape->GetLocation().y);
     EXPECT_FALSE(body->GetFixtures().empty());
     {
         int i = 0;
@@ -179,11 +179,11 @@ TEST(Body, CreateLotsOfFixtures)
 {
     BodyDef bd;
     bd.type = BodyType::Dynamic;
-    auto conf = CircleShape::Conf{};
+    auto conf = DiskShape::Conf{};
     conf.vertexRadius = RealNum{2.871f} * Meter;
     conf.location = Vec2{1.912f, -77.31f} * Meter;
     conf.density = RealNum{1.3f} * KilogramPerSquareMeter;
-    const auto shape = std::make_shared<CircleShape>(conf);
+    const auto shape = std::make_shared<DiskShape>(conf);
     const auto num = 5000;
     std::chrono::time_point<std::chrono::system_clock> start, end;
     

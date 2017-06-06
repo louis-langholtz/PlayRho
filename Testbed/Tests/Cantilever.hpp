@@ -164,7 +164,7 @@ public:
         }
 
         // Creates circles
-        const auto circleshape = std::make_shared<CircleShape>(RealNum(0.5) * Meter);
+        const auto circleshape = std::make_shared<DiskShape>(RealNum(0.5) * Meter);
         circleshape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
         for (auto i = 0; i < 2; ++i)
         {

@@ -20,7 +20,7 @@
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/World.hpp>
-#include <Box2D/Collision/Shapes/CircleShape.hpp>
+#include <Box2D/Collision/Shapes/DiskShape.hpp>
 
 using namespace box2d;
 
@@ -43,7 +43,7 @@ TEST(Fixture, CreateMatchesDef)
     const auto friction = RealNum(0.5);
     const auto restitution = RealNum(0.4);
     const auto isSensor = true;
-    const auto shapeA = std::make_shared<CircleShape>();
+    const auto shapeA = std::make_shared<DiskShape>();
     shapeA->SetFriction(friction);
     shapeA->SetRestitution(restitution);
     shapeA->SetDensity(density);

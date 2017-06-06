@@ -38,14 +38,14 @@ public:
         }
 
         {
-            auto conf = CircleShape::Conf{};
+            auto conf = DiskShape::Conf{};
             conf.vertexRadius = RealNum{0.5f} * Meter;
             
             conf.location = Vec2{-0.5f, 0.5f} * Meter;
-            const auto circle1 = std::make_shared<CircleShape>(conf);
+            const auto circle1 = std::make_shared<DiskShape>(conf);
             circle1->SetDensity(RealNum{2} * KilogramPerSquareMeter);
             conf.location = Vec2{0.5f, 0.5f} * Meter;
-            const auto circle2 = std::make_shared<CircleShape>(conf);
+            const auto circle2 = std::make_shared<DiskShape>(conf);
             for (auto i = 0; i < 10; ++i)
             {
                 const auto x = RandomFloat(-0.1f, 0.1f);

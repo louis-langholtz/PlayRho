@@ -89,7 +89,7 @@ public:
             m_rightJoint = static_cast<RevoluteJoint*>(m_world->CreateJoint(jd));
         }
 
-        // Circle character
+        // Disk character
         {
             BodyDef bd;
             bd.position = Vec2(1.0f, 15.0f) * Meter;
@@ -98,10 +98,10 @@ public:
 
             m_ball = m_world->CreateBody(bd);
 
-            auto conf = CircleShape::Conf{};
+            auto conf = DiskShape::Conf{};
             conf.density = RealNum{1} * KilogramPerSquareMeter;
             conf.vertexRadius = RealNum{0.2f} * Meter;
-            m_ball->CreateFixture(std::make_shared<CircleShape>(conf));
+            m_ball->CreateFixture(std::make_shared<DiskShape>(conf));
         }
     }
 

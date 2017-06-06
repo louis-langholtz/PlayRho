@@ -140,10 +140,10 @@ public:
         body4->CreateFixture(std::make_shared<PolygonShape>(polygon), boxShapeDef);
 
         // Small circle
-        auto circleConf = CircleShape::Conf{};
+        auto circleConf = DiskShape::Conf{};
         circleConf.vertexRadius = RealNum{1} * Meter;
         circleConf.density = RealNum{1} * KilogramPerSquareMeter;
-        auto circle = CircleShape(circleConf);
+        auto circle = DiskShape(circleConf);
 
         FixtureDef circleShapeDef;
 
@@ -156,7 +156,7 @@ public:
         circleBodyDef.position = Vec2(5.0f, 2.0f) * Meter;
         
         const auto body5 = m_world->CreateBody(circleBodyDef);
-        body5->CreateFixture(std::make_shared<CircleShape>(circle), circleShapeDef);
+        body5->CreateFixture(std::make_shared<DiskShape>(circle), circleShapeDef);
 
         // Large circle
         circle.SetRadius(circle.GetRadius() * RealNum{2});
@@ -164,7 +164,7 @@ public:
         circleBodyDef.position = Vec2(5.0f, 6.0f) * Meter;
 
         const auto body6 = m_world->CreateBody(circleBodyDef);
-        body6->CreateFixture(std::make_shared<CircleShape>(circle), circleShapeDef);
+        body6->CreateFixture(std::make_shared<DiskShape>(circle), circleShapeDef);
     }
 };
     

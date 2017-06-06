@@ -50,11 +50,11 @@ namespace box2d {
             bd.type = BodyType::Dynamic;
             bd.position = Vec2(-19, 28) * Meter;
             const auto ballBody = m_world->CreateBody(bd);
-            auto conf = CircleShape::Conf{};
+            auto conf = DiskShape::Conf{};
             conf.density = RealNum{0.01f} * KilogramPerSquareMeter;
             conf.vertexRadius = RealNum{1} * Meter;
             conf.friction = 1.0f;
-            ballBody->CreateFixture(std::make_shared<CircleShape>(conf));
+            ballBody->CreateFixture(std::make_shared<DiskShape>(conf));
         }
     };
     

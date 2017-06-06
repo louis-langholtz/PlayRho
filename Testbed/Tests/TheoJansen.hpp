@@ -115,10 +115,10 @@ public:
         }
 
         // Balls
-        auto circleConf = CircleShape::Conf{};
+        auto circleConf = DiskShape::Conf{};
         circleConf.vertexRadius = RealNum{0.25f} * Meter;
         circleConf.density = RealNum{1} * KilogramPerSquareMeter;
-        const auto circle = std::make_shared<CircleShape>(circleConf);
+        const auto circle = std::make_shared<DiskShape>(circleConf);
         for (auto i = 0; i < 40; ++i)
         {
             BodyDef bd;
@@ -149,10 +149,10 @@ public:
             bd.type = BodyType::Dynamic;
             bd.position = pivot + m_offset;
             m_wheel = m_world->CreateBody(bd);
-            auto conf = CircleShape::Conf{};
+            auto conf = DiskShape::Conf{};
             conf.vertexRadius = RealNum{1.6f} * Meter;
             conf.density = RealNum{1} * KilogramPerSquareMeter;
-            m_wheel->CreateFixture(std::make_shared<CircleShape>(conf), sd);
+            m_wheel->CreateFixture(std::make_shared<DiskShape>(conf), sd);
         }
 
         {

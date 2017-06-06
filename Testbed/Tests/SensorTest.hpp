@@ -51,15 +51,15 @@ public:
             {
                 FixtureDef fd;
                 fd.isSensor = true;
-                auto conf = CircleShape::Conf{};
+                auto conf = DiskShape::Conf{};
                 conf.vertexRadius = RealNum{5.0f} * Meter;
                 conf.location = Vec2(0.0f, 10.0f) * Meter;
-                m_sensor = ground->CreateFixture(std::make_shared<CircleShape>(conf), fd);
+                m_sensor = ground->CreateFixture(std::make_shared<DiskShape>(conf), fd);
             }
 #endif
         }
 
-        const auto shape = std::make_shared<CircleShape>(RealNum{1} * Meter);
+        const auto shape = std::make_shared<DiskShape>(RealNum{1} * Meter);
         shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
         for (auto i = 0; i < e_count; ++i)
         {
@@ -143,7 +143,7 @@ public:
             const auto body = m_bodies[i];
             const auto ground = m_sensor->GetBody();
 
-            const auto circle = static_cast<const CircleShape*>(m_sensor->GetShape());
+            const auto circle = static_cast<const DiskShape*>(m_sensor->GetShape());
             const auto center = GetWorldPoint(*ground, circle->GetLocation());
 
             const auto position = body->GetLocation();

@@ -17,12 +17,12 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Collision/Shapes/CircleShape.hpp>
+#include <Box2D/Collision/Shapes/DiskShape.hpp>
 #include <Box2D/Collision/RayCastInput.hpp>
 
 using namespace box2d;
 
-MassData CircleShape::GetMassData() const noexcept
+MassData DiskShape::GetMassData() const noexcept
 {
     return ::GetMassData(GetVertexRadius(), GetDensity(), GetLocation());
 }

@@ -34,7 +34,7 @@ For discussion, please visit http://box2d.org/forum
 
 #include <Box2D/Common/Settings.hpp>
 
-#include <Box2D/Collision/Shapes/CircleShape.hpp>
+#include <Box2D/Collision/Shapes/DiskShape.hpp>
 #include <Box2D/Collision/Shapes/EdgeShape.hpp>
 #include <Box2D/Collision/Shapes/ChainShape.hpp>
 #include <Box2D/Collision/Shapes/PolygonShape.hpp>

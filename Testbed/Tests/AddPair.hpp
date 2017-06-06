@@ -32,10 +32,10 @@ public:
     {
         m_world->SetGravity(Vec2(RealNum{0}, RealNum{0}) * MeterPerSquareSecond);
         {
-            auto conf = CircleShape::Conf{};
+            auto conf = DiskShape::Conf{};
             conf.vertexRadius = Meter / RealNum{10};
             conf.density = RealNum{0.01f} * KilogramPerSquareMeter;
-            const auto shape = std::make_shared<CircleShape>(conf);
+            const auto shape = std::make_shared<DiskShape>(conf);
 
             const auto minX = -6.0f;
             const auto maxX = 0.0f;

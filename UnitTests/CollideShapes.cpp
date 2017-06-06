@@ -19,7 +19,7 @@
 #include "gtest/gtest.h"
 #include <Box2D/Collision/Manifold.hpp>
 #include <Box2D/Collision/WorldManifold.hpp>
-#include <Box2D/Collision/Shapes/CircleShape.hpp>
+#include <Box2D/Collision/Shapes/DiskShape.hpp>
 #include <Box2D/Collision/Shapes/PolygonShape.hpp>
 #include <Box2D/Collision/Shapes/EdgeShape.hpp>
 
@@ -28,7 +28,7 @@ using namespace box2d;
 TEST(CollideShapes, IdenticalOverlappingCircles)
 {
     const auto radius = RealNum(1) * Meter;
-    const auto shape = CircleShape{radius};
+    const auto shape = DiskShape{radius};
     const auto position = Vec2{11, -4} * Meter;
     const auto xfm = Transformation{position, UnitVec2{Angle{0}}};
     
@@ -54,8 +54,8 @@ TEST(CollideShapes, CircleCircleOrientedHorizontally)
 {
     const auto r1 = RealNum(1) * Meter;
     const auto r2 = RealNum(1) * Meter;
-    const auto s1 = CircleShape{r1};
-    const auto s2 = CircleShape{r2};
+    const auto s1 = DiskShape{r1};
+    const auto s2 = DiskShape{r2};
     const auto p1 = Vec2{11, -4} * Meter;
     const auto p2 = Vec2{13, -4} * Meter;
     const auto t1 = Transformation{p1, UnitVec2{Angle{0}}};
@@ -83,8 +83,8 @@ TEST(CollideShapes, CircleCircleOrientedVertically)
 {
     const auto r1 = RealNum(1) * Meter;
     const auto r2 = RealNum(1) * Meter;
-    const auto s1 = CircleShape{r1};
-    const auto s2 = CircleShape{r2};
+    const auto s1 = DiskShape{r1};
+    const auto s2 = DiskShape{r2};
     const auto p1 = Vec2{7, -2} * Meter;
     const auto p2 = Vec2{7, -1} * Meter;
     
@@ -113,7 +113,7 @@ TEST(CollideShapes, CircleCircleOrientedVertically)
 TEST(CollideShapes, CircleTouchingTrianglePointBelow)
 {
     const auto circleRadius = RealNum(1) * Meter;
-    const auto circle = CircleShape(circleRadius);
+    const auto circle = DiskShape(circleRadius);
     const auto triangleTopPt = Vec2{0, +1} * Meter;
     const auto triangleLeftPt = Vec2{-1, -1} * Meter;
     const auto triangleRightPt = Vec2{+1, -1} * Meter;
@@ -138,7 +138,7 @@ TEST(CollideShapes, CircleTouchingTrianglePointBelow)
 TEST(CollideShapes, CircleTouchingTrianglePointLeft)
 {
     const auto circleRadius = RealNum(1) * Meter;
-    const auto circle = CircleShape(circleRadius);
+    const auto circle = DiskShape(circleRadius);
     const auto triangleTopPt = Vec2{0, +1} * Meter;
     const auto triangleLeftPt = Vec2{-1, -1} * Meter;
     const auto triangleRightPt = Vec2{+1, -1} * Meter;
@@ -163,7 +163,7 @@ TEST(CollideShapes, CircleTouchingTrianglePointLeft)
 TEST(CollideShapes, CircleTouchingTrianglePointRight)
 {
     const auto circleRadius = RealNum(1) * Meter;
-    const auto circle = CircleShape(circleRadius);
+    const auto circle = DiskShape(circleRadius);
     const auto triangleTopPt = Vec2{0, +1} * Meter;
     const auto triangleLeftPt = Vec2{-1, -1} * Meter;
     const auto triangleRightPt = Vec2{+1, -1} * Meter;
@@ -188,7 +188,7 @@ TEST(CollideShapes, CircleTouchingTrianglePointRight)
 TEST(CollideShapes, CircleJustPastTrianglePointRightDoesntCollide)
 {
     const auto circleRadius = RealNum(1) * Meter;
-    const auto circle = CircleShape(circleRadius);
+    const auto circle = DiskShape(circleRadius);
     const auto triangleTopPt = Vec2{0, +1} * Meter;
     const auto triangleLeftPt = Vec2{-1, -1} * Meter;
     const auto triangleRightPt = Vec2{+1, -1} * Meter;
@@ -209,7 +209,7 @@ TEST(CollideShapes, CircleJustPastTrianglePointRightDoesntCollide)
 TEST(CollideShapes, CircleOverRightFaceOfTriangle)
 {
     const auto circleRadius = RealNum(1) * Meter;
-    const auto circle = CircleShape(circleRadius);
+    const auto circle = DiskShape(circleRadius);
     const auto triangleTopPt = Vec2{0, +1} * Meter;
     const auto triangleLeftPt = Vec2{-1, -1} * Meter;
     const auto triangleRightPt = Vec2{+1, -1} * Meter;
@@ -239,7 +239,7 @@ TEST(CollideShapes, CircleOverRightFaceOfTriangle)
 TEST(CollideShapes, CircleOverLeftFaceOfTriangle)
 {
     const auto circleRadius = RealNum(1) * Meter;
-    const auto circle = CircleShape(circleRadius);
+    const auto circle = DiskShape(circleRadius);
     const auto triangle = PolygonShape({Vec2{-1, -1} * Meter, Vec2{+1, -1} * Meter, Vec2{0, +1} * Meter});
     const auto circleXfm = Transformation{Vec2{-1, 1} * Meter, UnitVec2{RealNum{0.0f} * Degree}};
     const auto triangleXfm = Transformation{Vec2{0, 0} * Meter, UnitVec2{RealNum{0.0f} * Degree}};
@@ -275,7 +275,7 @@ TEST(CollideShapes, TallRectangleLeftCircleRight)
     ASSERT_EQ(s1.GetVertex(2), Vec2(-hx, +hy) * Meter); // top left
     ASSERT_EQ(s1.GetVertex(3), Vec2(-hx, -hy) * Meter); // bottom left
 
-    const auto s2 = CircleShape{r2};
+    const auto s2 = DiskShape{r2};
     
     const auto p1 = Vec2{-1, 0} * Meter;
     const auto p2 = Vec2{3, 0} * Meter;

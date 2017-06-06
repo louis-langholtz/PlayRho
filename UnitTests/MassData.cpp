@@ -18,7 +18,7 @@
 
 #include "gtest/gtest.h"
 #include <Box2D/Collision/MassData.hpp>
-#include <Box2D/Collision/Shapes/CircleShape.hpp>
+#include <Box2D/Collision/Shapes/DiskShape.hpp>
 #include <Box2D/Collision/Shapes/PolygonShape.hpp>
 #include <Box2D/Collision/Shapes/EdgeShape.hpp>
 
@@ -37,7 +37,7 @@ TEST(MassData, ByteSizeIs_16_32_or_64)
 
 TEST(MassData, GetForZeroVertexRadiusCircle)
 {
-    auto shape = CircleShape(0);
+    auto shape = DiskShape(0);
     shape.SetDensity(KilogramPerSquareMeter);
     const auto mass_data = shape.GetMassData();
     EXPECT_EQ(mass_data.mass, Mass{0});
@@ -48,11 +48,11 @@ TEST(MassData, GetForZeroVertexRadiusCircle)
 
 TEST(MassData, GetForOriginCenteredCircle)
 {
-    auto conf = CircleShape::Conf{};
+    auto conf = DiskShape::Conf{};
     conf.vertexRadius = RealNum{1} * Meter;
     conf.location = Vec2{0, 0} * Meter;
     conf.density = RealNum{1} * KilogramPerSquareMeter;
-    const auto foo = CircleShape{conf};
+    const auto foo = DiskShape{conf};
     const auto mass_data = foo.GetMassData();
     EXPECT_EQ(RealNum{Mass{mass_data.mass} / Kilogram}, Pi);
     EXPECT_NEAR(double(StripUnit(mass_data.I)), 1.5707964, 0.0001);
@@ -70,11 +70,11 @@ TEST(MassData, GetForCircle)
     const auto radius = RealNum(1) * Meter;
     const auto position = Vec2{-1, 1} * Meter;
     const auto density = RealNum{1} * KilogramPerSquareMeter;
-    auto conf = CircleShape::Conf{};
+    auto conf = DiskShape::Conf{};
     conf.vertexRadius = radius;
     conf.location = position;
     conf.density = density;
-    const auto foo = CircleShape{conf};
+    const auto foo = DiskShape{conf};
     const auto mass_data = foo.GetMassData();
     EXPECT_EQ(RealNum{Mass{mass_data.mass} / Kilogram}, Pi);
     EXPECT_NEAR(double(StripUnit(mass_data.I)), 7.85398, 0.0002);

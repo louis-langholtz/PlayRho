@@ -125,7 +125,7 @@ public:
         //    }
 
         //    {
-        //        CircleShape shape;
+        //        DiskShape shape;
         //        shape.m_radius = 0.25f;
 
         //        FixtureDef fd;
@@ -147,7 +147,7 @@ public:
     }
 
     Body* m_bullet;
-    std::shared_ptr<CircleShape> m_bulletshape = std::make_shared<CircleShape>();
+    std::shared_ptr<DiskShape> m_bulletshape = std::make_shared<DiskShape>();
 };
     
 } // namespace box2d

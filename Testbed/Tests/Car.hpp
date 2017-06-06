@@ -178,7 +178,7 @@ public:
             });
             chassis->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 
-            const auto circle = std::make_shared<CircleShape>(RealNum(0.4) * Meter);
+            const auto circle = std::make_shared<DiskShape>(RealNum(0.4) * Meter);
             circle->SetDensity(RealNum{1} * KilogramPerSquareMeter);
             circle->SetFriction(0.9f);
 

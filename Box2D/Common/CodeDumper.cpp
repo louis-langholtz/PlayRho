@@ -36,7 +36,7 @@
 #include <Box2D/Dynamics/Joints/RopeJoint.hpp>
 #include <Box2D/Dynamics/Joints/WheelJoint.hpp>
 #include <Box2D/Collision/Shapes/Shape.hpp>
-#include <Box2D/Collision/Shapes/CircleShape.hpp>
+#include <Box2D/Collision/Shapes/DiskShape.hpp>
 #include <Box2D/Collision/Shapes/EdgeShape.hpp>
 #include <Box2D/Collision/Shapes/PolygonShape.hpp>
 #include <Box2D/Collision/Shapes/ChainShape.hpp>
@@ -60,16 +60,16 @@ namespace
     struct ShapeDumper: public Shape::Visitor
     {
     public:
-        void Visit(const CircleShape& shape) override;
+        void Visit(const DiskShape& shape) override;
         void Visit(const EdgeShape& shape) override;
         void Visit(const PolygonShape& shape) override;
         void Visit(const ChainShape& shape) override;
         void Visit(const MultiShape& shape) override;
     };
     
-    void ShapeDumper::Visit(const box2d::CircleShape& s)
+    void ShapeDumper::Visit(const box2d::DiskShape& s)
     {
-        log("    CircleShape shape;\n");
+        log("    DiskShape shape;\n");
         log("    shape.m_radius = %.15lef;\n", static_cast<double>(StripUnit(s.GetRadius())));
         log("    shape.m_p = Vec2(%.15lef, %.15lef);\n",
             static_cast<double>(StripUnit(s.GetLocation().x)),

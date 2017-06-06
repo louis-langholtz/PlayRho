@@ -87,7 +87,7 @@ public:
         body4->CreateFixture(std::make_shared<PolygonShape>(polygon));
 
         // Small circle
-        CircleShape circle;
+        DiskShape circle;
         circle.SetRadius(RealNum{1} * Meter);
         circle.SetDensity(RealNum{1} * KilogramPerSquareMeter);
 
@@ -96,14 +96,14 @@ public:
         circleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
 
         const auto body5 = m_world->CreateBody(circleBodyDef);
-        body5->CreateFixture(std::make_shared<CircleShape>(circle));
+        body5->CreateFixture(std::make_shared<DiskShape>(circle));
 
         // Large circle
         circle.SetRadius(circle.GetRadius() * RealNum{2});
         circleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
 
         const auto body6 = m_world->CreateBody(circleBodyDef);
-        body6->CreateFixture(std::make_shared<CircleShape>(circle));
+        body6->CreateFixture(std::make_shared<DiskShape>(circle));
     }
 
     void PostStep(const Settings&, Drawer&) override

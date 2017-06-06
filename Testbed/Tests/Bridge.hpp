@@ -78,10 +78,10 @@ public:
             body->CreateFixture(polyshape);
         }
 
-        auto circleconf = CircleShape::Conf{};
+        auto circleconf = DiskShape::Conf{};
         circleconf.density = RealNum{1} * KilogramPerSquareMeter;
         circleconf.vertexRadius = RealNum{0.5f} * Meter;
-        const auto circleshape = std::make_shared<CircleShape>(circleconf);
+        const auto circleshape = std::make_shared<DiskShape>(circleconf);
         for (auto i = 0; i < 3; ++i)
         {
             BodyDef bd;

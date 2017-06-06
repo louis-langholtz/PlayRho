@@ -37,14 +37,14 @@ namespace box2d {
             bd.type = BodyType::Static;
             bd.position = m_center;
             const auto ctrBody = m_world->CreateBody(bd);
-            const auto ctrShape = std::make_shared<CircleShape>();
+            const auto ctrShape = std::make_shared<DiskShape>();
             ctrShape->SetRadius(RealNum{3} * Meter);
             ctrBody->CreateFixture(ctrShape);
 
             bd.type = BodyType::Dynamic;
             bd.position = Length2D{m_center.x, m_center.y + radius * Meter};
             m_orbiter = m_world->CreateBody(bd);
-            const auto ballShape = std::make_shared<CircleShape>();
+            const auto ballShape = std::make_shared<DiskShape>();
             ballShape->SetRadius(RealNum{0.5f} * Meter);
             ballShape->SetDensity(RealNum(1) * KilogramPerSquareMeter);
             m_orbiter->CreateFixture(ballShape);

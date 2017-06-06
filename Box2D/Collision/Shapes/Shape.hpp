@@ -27,7 +27,7 @@
 
 namespace box2d {
 
-class CircleShape;
+class DiskShape;
 class EdgeShape;
 class PolygonShape;
 class ChainShape;
@@ -114,7 +114,7 @@ public:
     public:
         virtual ~Visitor() = default;
         
-        virtual void Visit(const CircleShape&)
+        virtual void Visit(const DiskShape&)
         {
             // Intentionally empty (no-op).
         }

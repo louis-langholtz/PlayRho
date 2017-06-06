@@ -32,9 +32,9 @@ public:
         const auto ground = m_world->CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(50.0f, 0.0f) * Meter, Vec2(-50.0f, 0.0f) * Meter));
 
-        const auto circle1 = std::make_shared<CircleShape>(RealNum{1} * Meter);
+        const auto circle1 = std::make_shared<DiskShape>(RealNum{1} * Meter);
         circle1->SetDensity(RealNum{5} * KilogramPerSquareMeter);
-        const auto circle2 = std::make_shared<CircleShape>(RealNum{2} * Meter);
+        const auto circle2 = std::make_shared<DiskShape>(RealNum{2} * Meter);
         circle2->SetDensity(RealNum{5} * KilogramPerSquareMeter);
         const auto box = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{5.0f} * Meter);
         box->SetDensity(RealNum{5} * KilogramPerSquareMeter);

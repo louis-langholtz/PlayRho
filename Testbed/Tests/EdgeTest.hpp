@@ -69,10 +69,10 @@ public:
             bd.allowSleep = false;
             const auto body = m_world->CreateBody(bd);
 
-            auto conf = CircleShape::Conf{};
+            auto conf = DiskShape::Conf{};
             conf.density = RealNum{1} * KilogramPerSquareMeter;
             conf.vertexRadius = RealNum{0.5f} * Meter;
-            body->CreateFixture(std::make_shared<CircleShape>(conf));
+            body->CreateFixture(std::make_shared<DiskShape>(conf));
         }
 
         {
