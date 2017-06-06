@@ -517,3 +517,34 @@ TEST(Fixed32, BiggerValsIdenticallyInaccurate)
         last_delta = delta;
     }
 }
+
+TEST(Fixed, Int32TypeAnd0bits)
+{
+    using fixed = Fixed<std::int32_t, 0>;
+    
+    const auto zero = fixed(0);
+    EXPECT_TRUE(zero == zero);
+    EXPECT_EQ(zero, zero);
+
+    const auto one = fixed(1);
+    EXPECT_TRUE(one == one);
+    EXPECT_EQ(one, one);
+
+    EXPECT_NE(one, zero);
+    EXPECT_NE(zero, one);
+    EXPECT_GT(one, zero);
+    EXPECT_GE(one, zero);
+    EXPECT_GE(one, one);
+    EXPECT_LT(zero, one);
+    EXPECT_LE(zero, one);
+    
+    const auto two = one + one;
+    EXPECT_NE(one, two);
+    EXPECT_GT(two, one);
+    EXPECT_GT(two, zero);
+    
+    EXPECT_EQ(one * one, one);
+    EXPECT_EQ(one * two, two);
+    EXPECT_EQ(two / two, one);
+    EXPECT_EQ(two - two, zero);
+}

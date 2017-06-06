@@ -46,7 +46,7 @@ namespace box2d
         static constexpr unsigned int FractionBits = FRACTION_BITS;
         static constexpr value_type ScaleFactor = static_cast<value_type>(1u << FractionBits);
 
-        enum class ComparatorResult
+        enum class CmpResult
         {
             Incomparable,
             Equal,
@@ -197,21 +197,21 @@ namespace box2d
                     m_value / static_cast<T>(ScaleFactor);
         }
 
-        constexpr ComparatorResult Compare(const Fixed other) const noexcept
+        constexpr CmpResult Compare(const Fixed other) const noexcept
         {
             if (isnan() || other.isnan())
             {
-                return ComparatorResult::Incomparable;
+                return CmpResult::Incomparable;
             }
             if (m_value < other.m_value)
             {
-                return ComparatorResult::LessThan;
+                return CmpResult::LessThan;
             }
             if (m_value > other.m_value)
             {
-                return ComparatorResult::GreaterThan;
+                return CmpResult::GreaterThan;
             }
-            return ComparatorResult::Equal;
+            return CmpResult::Equal;
         }
 
         // Unary operations
@@ -502,15 +502,79 @@ namespace box2d
         value_type m_value;
     };
 
-#if 0
+    template <typename BT, unsigned int FB>
+    constexpr bool operator== (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
+    {
+        return lhs.Compare(rhs) == Fixed<BT, FB>::CmpResult::Equal;
+    }
+    
+    template <typename BT, unsigned int FB>
+    constexpr bool operator!= (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
+    {
+        return lhs.Compare(rhs) != Fixed<BT, FB>::CmpResult::Equal;
+    }
+    
+    template <typename BT, unsigned int FB>
+    constexpr bool operator< (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
+    {
+        return lhs.Compare(rhs) == Fixed<BT, FB>::CmpResult::LessThan;
+    }
+
+    template <typename BT, unsigned int FB>
+    constexpr bool operator> (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
+    {
+        return lhs.Compare(rhs) == Fixed<BT, FB>::CmpResult::GreaterThan;
+    }
+    
+    template <typename BT, unsigned int FB>
+    constexpr bool operator<= (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
+    {
+        const auto result = lhs.Compare(rhs);
+        return result == Fixed<BT, FB>::CmpResult::LessThan || result == Fixed<BT, FB>::CmpResult::Equal;
+    }
+    
+    template <typename BT, unsigned int FB>
+    constexpr bool operator>= (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
+    {
+        const auto result = lhs.Compare(rhs);
+        return result == Fixed<BT, FB>::CmpResult::GreaterThan || result == Fixed<BT, FB>::CmpResult::Equal;
+    }
+
     template <typename BT, unsigned int FB>
     constexpr Fixed<BT, FB> operator+ (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
     {
         lhs += rhs;
         return lhs;
     }
-#endif
-
+    
+    template <typename BT, unsigned int FB>
+    constexpr Fixed<BT, FB> operator- (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
+    {
+        lhs -= rhs;
+        return lhs;
+    }
+    
+    template <typename BT, unsigned int FB>
+    constexpr Fixed<BT, FB> operator* (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
+    {
+        lhs *= rhs;
+        return lhs;
+    }
+    
+    template <typename BT, unsigned int FB>
+    constexpr Fixed<BT, FB> operator/ (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
+    {
+        lhs /= rhs;
+        return lhs;
+    }
+    
+    template <typename BT, unsigned int FB>
+    constexpr Fixed<BT, FB> operator% (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
+    {
+        lhs %= rhs;
+        return lhs;
+    }    
+    
     using Fixed32 = Fixed<std::int32_t,14>;
 
     // Fixed32 free functions.
@@ -547,36 +611,36 @@ namespace box2d
     
     constexpr bool operator== (Fixed32 lhs, Fixed32 rhs) noexcept
     {
-        return lhs.Compare(rhs) == Fixed32::ComparatorResult::Equal;
+        return lhs.Compare(rhs) == Fixed32::CmpResult::Equal;
     }
     
     constexpr bool operator!= (Fixed32 lhs, Fixed32 rhs) noexcept
     {
-        return lhs.Compare(rhs) != Fixed32::ComparatorResult::Equal;
+        return lhs.Compare(rhs) != Fixed32::CmpResult::Equal;
     }
     
     constexpr bool operator <= (Fixed32 lhs, Fixed32 rhs) noexcept
     {
         const auto result = lhs.Compare(rhs);
-        return (result == Fixed32::ComparatorResult::LessThan) || (result == Fixed32::ComparatorResult::Equal);
+        return (result == Fixed32::CmpResult::LessThan) || (result == Fixed32::CmpResult::Equal);
     }
     
     constexpr bool operator >= (Fixed32 lhs, Fixed32 rhs) noexcept
     {
         const auto result = lhs.Compare(rhs);
-        return (result == Fixed32::ComparatorResult::GreaterThan) || (result == Fixed32::ComparatorResult::Equal);
+        return (result == Fixed32::CmpResult::GreaterThan) || (result == Fixed32::CmpResult::Equal);
     }
     
     constexpr bool operator < (Fixed32 lhs, Fixed32 rhs) noexcept
     {
         const auto result = lhs.Compare(rhs);
-        return result == Fixed32::ComparatorResult::LessThan;
+        return result == Fixed32::CmpResult::LessThan;
     }
     
     constexpr bool operator > (Fixed32 lhs, Fixed32 rhs) noexcept
     {
         const auto result = lhs.Compare(rhs);
-        return result == Fixed32::ComparatorResult::GreaterThan;
+        return result == Fixed32::CmpResult::GreaterThan;
     }
 
 #ifndef _WIN32
@@ -616,36 +680,36 @@ namespace box2d
     
     constexpr bool operator== (Fixed64 lhs, Fixed64 rhs) noexcept
     {
-        return lhs.Compare(rhs) == Fixed64::ComparatorResult::Equal;
+        return lhs.Compare(rhs) == Fixed64::CmpResult::Equal;
     }
     
     constexpr bool operator!= (Fixed64 lhs, Fixed64 rhs) noexcept
     {
-        return lhs.Compare(rhs) != Fixed64::ComparatorResult::Equal;
+        return lhs.Compare(rhs) != Fixed64::CmpResult::Equal;
     }
     
     constexpr bool operator <= (Fixed64 lhs, Fixed64 rhs) noexcept
     {
         const auto result = lhs.Compare(rhs);
-        return (result == Fixed64::ComparatorResult::LessThan) || (result == Fixed64::ComparatorResult::Equal);
+        return (result == Fixed64::CmpResult::LessThan) || (result == Fixed64::CmpResult::Equal);
     }
     
     constexpr bool operator >= (Fixed64 lhs, Fixed64 rhs) noexcept
     {
         const auto result = lhs.Compare(rhs);
-        return (result == Fixed64::ComparatorResult::GreaterThan) || (result == Fixed64::ComparatorResult::Equal);
+        return (result == Fixed64::CmpResult::GreaterThan) || (result == Fixed64::CmpResult::Equal);
     }
     
     constexpr bool operator < (Fixed64 lhs, Fixed64 rhs) noexcept
     {
         const auto result = lhs.Compare(rhs);
-        return result == Fixed64::ComparatorResult::LessThan;
+        return result == Fixed64::CmpResult::LessThan;
     }
     
     constexpr bool operator > (Fixed64 lhs, Fixed64 rhs) noexcept
     {
         const auto result = lhs.Compare(rhs);
-        return result == Fixed64::ComparatorResult::GreaterThan;
+        return result == Fixed64::CmpResult::GreaterThan;
     }
 
     template<> struct Wider<Fixed32> { using type = Fixed64; };
@@ -758,7 +822,7 @@ namespace std
     
     constexpr inline bool isnan(box2d::Fixed32 value) noexcept
     {
-        return value.Compare(0) == box2d::Fixed32::ComparatorResult::Incomparable;
+        return value.Compare(0) == box2d::Fixed32::CmpResult::Incomparable;
     }
 
 #ifndef _WIN32
@@ -865,7 +929,7 @@ namespace std
 
     constexpr inline bool isnan(box2d::Fixed64 value) noexcept
     {
-        return value.Compare(0) == box2d::Fixed64::ComparatorResult::Incomparable;
+        return value.Compare(0) == box2d::Fixed64::CmpResult::Incomparable;
     }
 
 #endif /* _WIN32 */
