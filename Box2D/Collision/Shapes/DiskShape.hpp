@@ -24,7 +24,15 @@
 
 namespace box2d {
 
-/// Disk shape.
+/// @brief Disk shape.
+///
+/// @details A disk shape "is the region in a plane bounded by a circle". This is a
+///   two-dimensional solid round shape. This used to be called the circle shape but
+///   that's now used for hollow round shapes.
+///
+/// @sa https://en.wikipedia.org/wiki/Disk_(mathematics)
+/// @sa CircleShape.
+///
 class DiskShape : public Shape
 {
 public:

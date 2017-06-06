@@ -27,7 +27,7 @@ namespace box2d {
 
 class EdgeShape;
 
-/// Chain shape.
+/// @brief Chain shape.
 ///
 /// @details A chain shape is a free form sequence of line segments.
 /// The chain has two-sided collision, so you can use inside and outside collision.
