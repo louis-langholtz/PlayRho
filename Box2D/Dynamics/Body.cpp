@@ -176,10 +176,9 @@ void Body::ResetMassData()
 
 void Body::SetMassData(const MassData& massData)
 {
-    assert(!m_world->IsLocked());
     if (m_world->IsLocked())
     {
-        return;
+        throw World::LockedError();
     }
 
     if (!IsAccelerable())
@@ -267,11 +266,10 @@ void Body::SetTransform(const Length2D position, Angle angle)
 {
     assert(::box2d::IsValid(position));
     assert(::box2d::IsValid(angle));
-    assert(!GetWorld()->IsLocked());
 
     if (GetWorld()->IsLocked())
     {
-        return;
+        throw World::LockedError();
     }
 
     const auto xfm = Transformation{position, UnitVec2{angle}};
@@ -290,10 +288,9 @@ void Body::SetEnabled(bool flag)
         return;
     }
 
-    assert(!m_world->IsLocked());
     if (m_world->IsLocked())
     {
-        return;
+        throw World::LockedError();
     }
 
     if (flag)

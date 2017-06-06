@@ -36,6 +36,7 @@
 #include <list>
 #include <unordered_set>
 #include <memory>
+#include <stdexcept>
 
 namespace box2d {
 
@@ -82,6 +83,8 @@ public:
     /// @note Cannot be container of Joint instances since joints are polymorphic types.
     using Joints = std::list<Joint*>;
     
+    class LockedError;
+
     /// @brief Constructs a world object.
     World(const WorldDef& def = GetDefaultWorldDef());
 
@@ -636,6 +639,16 @@ private:
     /// numerical issues. It can also be set below this upper bound to constrain the differences
     /// between shape vertex radiuses to possibly more limited visual ranges.
     const Length m_maxVertexRadius;
+};
+
+class World::LockedError: public std::logic_error
+{
+public:
+    LockedError():
+    	std::logic_error{"world is locked"}
+    {
+        // Intentionally empty.
+    }
 };
 
 enum class World::RayCastOpcode

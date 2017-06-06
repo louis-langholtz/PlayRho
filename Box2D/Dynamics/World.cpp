@@ -528,10 +528,9 @@ void World::SetGravity(const LinearAcceleration2D gravity) noexcept
 
 Body* World::CreateBody(const BodyDef& def)
 {
-    assert(!IsLocked());
     if (IsLocked())
     {
-        return nullptr;
+        throw World::LockedError();
     }
 
     if (m_bodies.size() >= MaxBodies)
@@ -564,10 +563,9 @@ void World::Destroy(Body* b)
     assert(b);
     assert(b->GetWorld() == this);
     
-    assert(!IsLocked());
     if (IsLocked())
     {
-        return;
+        throw World::LockedError();
     }
     
     // Delete the attached joints.
@@ -604,10 +602,9 @@ Joint* World::CreateJoint(const JointDef& def)
         return nullptr;
     }
 
-    assert(!IsLocked());
     if (IsLocked())
     {
-        return nullptr;
+        throw World::LockedError();
     }
 
     // Note: creating a joint doesn't wake the bodies.
@@ -665,10 +662,9 @@ void World::Destroy(Joint* j)
     {
         return;
     }
-    assert(!IsLocked());
     if (IsLocked())
     {
-        return;
+        throw World::LockedError();
     }
     InternalDestroy(j);
 }
@@ -1759,10 +1755,9 @@ void World::RayCast(const Length2D& point1, const Length2D& point2, RayCastCallb
 
 void World::ShiftOrigin(const Length2D newOrigin)
 {
-    assert(!IsLocked());
     if (IsLocked())
     {
-        return;
+        throw World::LockedError();
     }
 
     for (auto&& body: GetBodies())
@@ -2207,10 +2202,9 @@ void World::SetType(Body& body, BodyType type)
         return;
     }
 
-    assert(!IsLocked());
     if (IsLocked())
     {
-        return;
+        throw World::LockedError();
     }
     
     BodyAtty::SetTypeFlags(body, type);
@@ -2273,10 +2267,9 @@ Fixture* World::CreateFixture(Body& body, std::shared_ptr<const Shape> shape,
         return nullptr;
     }
     
-    assert(!IsLocked());
     if (IsLocked())
     {
-        return nullptr;
+        throw World::LockedError();
     }
     
     const auto fixture = BodyAtty::CreateFixture(body, shape, def);
@@ -2316,7 +2309,7 @@ bool World::DestroyFixture(Fixture* fixture, bool resetMassData)
     }
     if (IsLocked())
     {
-        return false;
+        throw World::LockedError();
     }
     
 #if 0
