@@ -210,7 +210,7 @@
 		47AA5DA11C4C5FBE008AF2BA /* DynamicTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8930141C3E5900F1753A /* DynamicTree.cpp */; };
 		47AA5DA21C4C5FBE008AF2BA /* TimeOfImpact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8932141C3E5900F1753A /* TimeOfImpact.cpp */; };
 		47AA5DA31C4C5FBE008AF2BA /* ChainShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8935141C3E5900F1753A /* ChainShape.cpp */; };
-		47AA5DA41C4C5FBE008AF2BA /* CircleShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8937141C3E5900F1753A /* CircleShape.cpp */; };
+		47AA5DA41C4C5FBE008AF2BA /* DiskShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8937141C3E5900F1753A /* DiskShape.cpp */; };
 		47AA5DA51C4C5FBE008AF2BA /* EdgeShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8939141C3E5900F1753A /* EdgeShape.cpp */; };
 		47AA5DA61C4C5FBE008AF2BA /* PolygonShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB893B141C3E5900F1753A /* PolygonShape.cpp */; };
 		47AA5DA71C4C5FBE008AF2BA /* BlockAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB893F141C3E5900F1753A /* BlockAllocator.cpp */; };
@@ -243,7 +243,7 @@
 		47AA5DCF1C4C5FBE008AF2BA /* DynamicTree.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8931141C3E5900F1753A /* DynamicTree.hpp */; };
 		47AA5DD01C4C5FBE008AF2BA /* TimeOfImpact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8933141C3E5900F1753A /* TimeOfImpact.hpp */; };
 		47AA5DD11C4C5FBE008AF2BA /* ChainShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8936141C3E5900F1753A /* ChainShape.hpp */; };
-		47AA5DD21C4C5FBE008AF2BA /* CircleShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8938141C3E5900F1753A /* CircleShape.hpp */; };
+		47AA5DD21C4C5FBE008AF2BA /* DiskShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8938141C3E5900F1753A /* DiskShape.hpp */; };
 		47AA5DD31C4C5FBE008AF2BA /* EdgeShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB893A141C3E5900F1753A /* EdgeShape.hpp */; };
 		47AA5DD41C4C5FBE008AF2BA /* PolygonShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB893C141C3E5900F1753A /* PolygonShape.hpp */; };
 		47AA5DD51C4C5FBE008AF2BA /* Shape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB893D141C3E5900F1753A /* Shape.hpp */; };
@@ -309,8 +309,8 @@
 		80BB8994141C3E5900F1753A /* TimeOfImpact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8933141C3E5900F1753A /* TimeOfImpact.hpp */; };
 		80BB8995141C3E5900F1753A /* ChainShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8935141C3E5900F1753A /* ChainShape.cpp */; };
 		80BB8996141C3E5900F1753A /* ChainShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8936141C3E5900F1753A /* ChainShape.hpp */; };
-		80BB8997141C3E5900F1753A /* CircleShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8937141C3E5900F1753A /* CircleShape.cpp */; };
-		80BB8998141C3E5900F1753A /* CircleShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8938141C3E5900F1753A /* CircleShape.hpp */; };
+		80BB8997141C3E5900F1753A /* DiskShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8937141C3E5900F1753A /* DiskShape.cpp */; };
+		80BB8998141C3E5900F1753A /* DiskShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8938141C3E5900F1753A /* DiskShape.hpp */; };
 		80BB8999141C3E5900F1753A /* EdgeShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8939141C3E5900F1753A /* EdgeShape.cpp */; };
 		80BB899A141C3E5900F1753A /* EdgeShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB893A141C3E5900F1753A /* EdgeShape.hpp */; };
 		80BB899B141C3E5900F1753A /* PolygonShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB893B141C3E5900F1753A /* PolygonShape.cpp */; };
@@ -614,8 +614,8 @@
 		80BB8933141C3E5900F1753A /* TimeOfImpact.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TimeOfImpact.hpp; sourceTree = "<group>"; };
 		80BB8935141C3E5900F1753A /* ChainShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChainShape.cpp; sourceTree = "<group>"; };
 		80BB8936141C3E5900F1753A /* ChainShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ChainShape.hpp; sourceTree = "<group>"; };
-		80BB8937141C3E5900F1753A /* CircleShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CircleShape.cpp; sourceTree = "<group>"; };
-		80BB8938141C3E5900F1753A /* CircleShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CircleShape.hpp; sourceTree = "<group>"; };
+		80BB8937141C3E5900F1753A /* DiskShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DiskShape.cpp; sourceTree = "<group>"; };
+		80BB8938141C3E5900F1753A /* DiskShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DiskShape.hpp; sourceTree = "<group>"; };
 		80BB8939141C3E5900F1753A /* EdgeShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdgeShape.cpp; sourceTree = "<group>"; };
 		80BB893A141C3E5900F1753A /* EdgeShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EdgeShape.hpp; sourceTree = "<group>"; };
 		80BB893B141C3E5900F1753A /* PolygonShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolygonShape.cpp; sourceTree = "<group>"; };
@@ -899,8 +899,8 @@
 			children = (
 				80BB8935141C3E5900F1753A /* ChainShape.cpp */,
 				80BB8936141C3E5900F1753A /* ChainShape.hpp */,
-				80BB8937141C3E5900F1753A /* CircleShape.cpp */,
-				80BB8938141C3E5900F1753A /* CircleShape.hpp */,
+				80BB8937141C3E5900F1753A /* DiskShape.cpp */,
+				80BB8938141C3E5900F1753A /* DiskShape.hpp */,
 				80BB8939141C3E5900F1753A /* EdgeShape.cpp */,
 				80BB893A141C3E5900F1753A /* EdgeShape.hpp */,
 				474AFBF61EB1B2CB002AA6C8 /* MultiShape.cpp */,
@@ -1211,7 +1211,7 @@
 				47AA5DD11C4C5FBE008AF2BA /* ChainShape.hpp in Headers */,
 				4731DE2A1DDF84A900E7F931 /* RayCastInput.hpp in Headers */,
 				4731DE241DDF83A600E7F931 /* RayCastOutput.hpp in Headers */,
-				47AA5DD21C4C5FBE008AF2BA /* CircleShape.hpp in Headers */,
+				47AA5DD21C4C5FBE008AF2BA /* DiskShape.hpp in Headers */,
 				47AA5DD31C4C5FBE008AF2BA /* EdgeShape.hpp in Headers */,
 				4768D3FE1E414A0100574143 /* Vector2D.hpp in Headers */,
 				47AA5DD41C4C5FBE008AF2BA /* PolygonShape.hpp in Headers */,
@@ -1301,7 +1301,7 @@
 				470F94BA1EC4D4F800AA3C82 /* FixtureAtty.hpp in Headers */,
 				470F94AE1EC4CAE600AA3C82 /* FixtureDef.hpp in Headers */,
 				4734B2211DC1340500F15E29 /* Span.hpp in Headers */,
-				80BB8998141C3E5900F1753A /* CircleShape.hpp in Headers */,
+				80BB8998141C3E5900F1753A /* DiskShape.hpp in Headers */,
 				472724301E315E1A00C64921 /* Fixed.hpp in Headers */,
 				80BB899A141C3E5900F1753A /* EdgeShape.hpp in Headers */,
 				470F94CC1EC4D95D00AA3C82 /* BodyAtty.hpp in Headers */,
@@ -1591,7 +1591,7 @@
 				47AA5DA11C4C5FBE008AF2BA /* DynamicTree.cpp in Sources */,
 				47AA5DA21C4C5FBE008AF2BA /* TimeOfImpact.cpp in Sources */,
 				47AA5DA31C4C5FBE008AF2BA /* ChainShape.cpp in Sources */,
-				47AA5DA41C4C5FBE008AF2BA /* CircleShape.cpp in Sources */,
+				47AA5DA41C4C5FBE008AF2BA /* DiskShape.cpp in Sources */,
 				47AA5DA51C4C5FBE008AF2BA /* EdgeShape.cpp in Sources */,
 				4731DE571DEC908600E7F931 /* UnitVec2.cpp in Sources */,
 				47AA5DA61C4C5FBE008AF2BA /* PolygonShape.cpp in Sources */,
@@ -1671,7 +1671,7 @@
 				47928F3B1E6A099900EE6E9E /* BodyConstraint.cpp in Sources */,
 				80BB8995141C3E5900F1753A /* ChainShape.cpp in Sources */,
 				4726DD2A1D31B4090012A882 /* RayCastOutput.cpp in Sources */,
-				80BB8997141C3E5900F1753A /* CircleShape.cpp in Sources */,
+				80BB8997141C3E5900F1753A /* DiskShape.cpp in Sources */,
 				80BB8999141C3E5900F1753A /* EdgeShape.cpp in Sources */,
 				4751C34F1EC259A9006D9E69 /* README.md in Sources */,
 				4731DE2C1DDF94A600E7F931 /* AABB.cpp in Sources */,
