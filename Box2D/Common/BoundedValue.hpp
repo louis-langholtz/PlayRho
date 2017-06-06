@@ -21,7 +21,8 @@
 #ifndef BoundedValue_hpp
 #define BoundedValue_hpp
 
-#include <stdexcept>
+#include <Box2D/Common/InvalidArgument.hpp>
+
 #include <limits>
 #include <type_traits>
 
@@ -63,7 +64,7 @@ namespace box2d {
     {
     public:
         using value_type = T;
-        using exception_type = std::invalid_argument;
+        using exception_type = InvalidArgument;
         using this_type = BoundedValue<value_type, lo, hi>;
 
         static constexpr LoValueCheck GetLoCheck() { return lo; }
