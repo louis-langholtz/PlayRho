@@ -226,11 +226,13 @@ namespace box2d
         return (d1.x <= Length{0}) && (d1.y <= Length{0}) && (d2.x <= Length{0}) && (d2.y <= Length{0});
     }
 
-    /// Given a transform, compute the associated axis aligned bounding box for a child shape.
+    /// @brief Computes the AABB.
+    /// @details Computes the Axis Aligned Bounding Box (AABB) for the given child shape
+    ///   at a given a transform.
     /// @param proxy Distance proxy for the child shape.
     /// @param xf World transform of the shape.
-    /// @return the axis aligned box.
-    AABB ComputeAABB(const DistanceProxy& proxy, const Transformation xf);
+    /// @return AABB for the proxy shape or the default AABB if the proxy has a zero vertex count.
+    AABB ComputeAABB(const DistanceProxy& proxy, const Transformation xf) noexcept;
     
     AABB ComputeAABB(const Shape& shape, const Transformation xf);
 

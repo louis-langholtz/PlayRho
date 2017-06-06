@@ -123,12 +123,12 @@ namespace box2d
 
         Span<const Length2D> GetVertices() const noexcept
         {
-            return Span<const Length2D>(&m_vertices[0], GetVertexCount());
+            return Span<const Length2D>(m_vertices, GetVertexCount());
         }
         
         Span<const UnitVec2> GetNormals() const noexcept
         {
-            return Span<const UnitVec2>(&m_normals[0], GetVertexCount());
+            return Span<const UnitVec2>(m_normals, GetVertexCount());
         }
 
     private:

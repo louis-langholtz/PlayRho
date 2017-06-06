@@ -18,6 +18,7 @@
 
 #include "gtest/gtest.h"
 #include <Box2D/Collision/AABB.hpp>
+#include <Box2D/Collision/DistanceProxy.hpp>
 
 using namespace box2d;
 
@@ -116,6 +117,7 @@ TEST(AABB, Include)
     const auto p2 = Length2D{RealNum{20} * Meter, RealNum{30} * Meter};
     const auto p3 = Length2D{RealNum{-3} * Meter, RealNum{-4} * Meter};
     const auto p4 = Length2D{RealNum{0} * Meter, RealNum{0} * Meter};
+    const auto p5 = AABB{};
 
     auto foo = AABB{};
     
@@ -132,6 +134,10 @@ TEST(AABB, Include)
     EXPECT_EQ(foo.GetUpperBound(), p2);
     
     foo.Include(p4);
+    EXPECT_EQ(foo.GetLowerBound(), p3);
+    EXPECT_EQ(foo.GetUpperBound(), p2);
+    
+    foo.Include(p5);
     EXPECT_EQ(foo.GetLowerBound(), p3);
     EXPECT_EQ(foo.GetUpperBound(), p2);
 }
@@ -172,4 +178,12 @@ TEST(AABB, TestOverlap)
         AABB bb2{Vec2{-1, -1} * Meter, Vec2{0, -2} * Meter};
         EXPECT_FALSE(TestOverlap(bb1, bb2));
     }
+}
+
+TEST(AABB, ComputeAabbForDefaultDistanceProxy)
+{
+    const auto defaultAabb = AABB{};
+    const auto proxyAabb = ComputeAABB(DistanceProxy{}, Transform_identity);
+    
+    EXPECT_EQ(defaultAabb, proxyAabb);
 }

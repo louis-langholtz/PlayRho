@@ -42,6 +42,18 @@ TEST(DistanceProxy, ByteSize)
     }
 }
 
+TEST(DistanceProxy, DefaultInitialization)
+{
+    const auto defaultDp = DistanceProxy{};
+    
+    EXPECT_EQ(defaultDp.GetVertexCount(), 0);
+    EXPECT_EQ(defaultDp.GetVertexRadius(), (RealNum(0) * Meter));
+    EXPECT_EQ(defaultDp.GetVertices().size(), size_t{0});
+    EXPECT_EQ(defaultDp.GetVertices().data(), nullptr);
+    EXPECT_EQ(defaultDp.GetNormals().size(), size_t{0});
+    EXPECT_EQ(defaultDp.GetNormals().data(), nullptr);
+}
+
 TEST(DistanceProxy, OneVecInitialization)
 {
     const auto radius = RealNum{1} * Meter;

@@ -26,16 +26,19 @@
 
 using namespace box2d;
 
-AABB box2d::ComputeAABB(const DistanceProxy& proxy, const Transformation xf)
+AABB box2d::ComputeAABB(const DistanceProxy& proxy, const Transformation xf) noexcept
 {
     const auto count = proxy.GetVertexCount();
-    assert(count > 0);
-    auto result = AABB{Transform(proxy.GetVertex(0), xf)};
-    for (auto i = decltype(count){1}; i < count; ++i)
+    if (count > 0)
     {
-        result.Include(Transform(proxy.GetVertex(i), xf));
+        auto result = AABB{Transform(proxy.GetVertex(0), xf)};
+        for (auto i = decltype(count){1}; i < count; ++i)
+        {
+            result.Include(Transform(proxy.GetVertex(i), xf));
+        }
+        return result.Fatten(proxy.GetVertexRadius());
     }
-    return result.Fatten(proxy.GetVertexRadius());
+    return AABB{};
 }
 
 AABB box2d::ComputeAABB(const Shape& shape, const Transformation xf)
