@@ -3,17 +3,19 @@
  * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
@@ -32,7 +34,7 @@ class EdgeShape;
 /// @details A chain shape is a free form sequence of line segments.
 /// The chain has two-sided collision, so you can use inside and outside collision.
 /// Therefore, you may use any winding order.
-/// Since there may be many vertices, they are allocated using alloc.
+/// Since there may be many vertices, they are allocated on the memory heap.
 ///
 /// @warning The chain will not collide properly if there are self-intersections.
 ///
@@ -46,27 +48,24 @@ public:
     
     struct Conf: public Builder<Conf>
     {
-        constexpr Conf(): Builder<Conf>{Builder<Conf>{}.UseVertexRadius(GetDefaultVertexRadius())}
+        Conf(): Builder<Conf>{Builder<Conf>{}.UseVertexRadius(GetDefaultVertexRadius())}
         {
             // Intentionally empty.
         }
+        
+        std::vector<Length2D> vertices;
     };
 
-    static constexpr Conf GetDefaultConf() noexcept
+    static Conf GetDefaultConf() noexcept
     {
         return Conf{};
     }
     
-    ChainShape(const Conf& conf = GetDefaultConf()):
-        Shape{conf}
-    {
-        // Intentionally empty.
-    }
+    ChainShape(const Conf& conf = GetDefaultConf());
 
-    ChainShape(const ChainShape& other);
+    ChainShape(const ChainShape& other) = default;
 
-    /// The destructor frees the vertices using free.
-    virtual ~ChainShape();
+    virtual ~ChainShape() = default;
 
     /// Gets the number of child primitives.
     /// @return Positive non-zero count.
@@ -81,20 +80,6 @@ public:
     
     void Accept(Visitor& visitor) const override;
 
-    ChainShape& operator=(const ChainShape& other);
-
-    /// Clear all data.
-    void Clear();
-
-    /// Create a loop. This automatically adjusts connectivity.
-    /// @note Behavior is undefined if vertices is null or if count of vertices is less than 3.
-    /// @param vertices Non-null array of vertices. These are copied.
-    void CreateLoop(Span<const Length2D> vertices);
-
-    /// Create a chain with isolated end vertices.
-    /// @param vertices an array of vertices, these are copied
-    void CreateChain(Span<const Length2D> vertices);
-    
     /// Get the vertex count.
     child_count_t GetVertexCount() const noexcept { return m_count; }
 

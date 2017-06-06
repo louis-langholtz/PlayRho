@@ -95,14 +95,12 @@ public:
             bd.angle = RealNum{0.25f} * Radian * Pi;
             const auto ground = m_world->CreateBody(bd);
 
-            Length2D vs[4];
-            vs[0] = Vec2(5.0f, 7.0f) * Meter;
-            vs[1] = Vec2(6.0f, 8.0f) * Meter;
-            vs[2] = Vec2(7.0f, 8.0f) * Meter;
-            vs[3] = Vec2(8.0f, 7.0f) * Meter;
-            auto shape = std::make_shared<ChainShape>();
-            shape->CreateChain(Span<const Length2D>(vs, 4));
-            ground->CreateFixture(shape);
+            auto conf = ChainShape::Conf{};
+            conf.vertices.push_back(Vec2(5.0f, 7.0f) * Meter);
+            conf.vertices.push_back(Vec2(6.0f, 8.0f) * Meter);
+            conf.vertices.push_back(Vec2(7.0f, 8.0f) * Meter);
+            conf.vertices.push_back(Vec2(8.0f, 7.0f) * Meter);
+            ground->CreateFixture(std::make_shared<ChainShape>(conf));
         }
 
         // Square tiles. This shows that adjacency shapes may
@@ -126,14 +124,13 @@ public:
             BodyDef bd;
             const auto ground = m_world->CreateBody(bd);
 
-            Length2D vs[4];
-            vs[0] = Vec2(-1.0f, 3.0f) * Meter;
-            vs[1] = Vec2(1.0f, 3.0f) * Meter;
-            vs[2] = Vec2(1.0f, 5.0f) * Meter;
-            vs[3] = Vec2(-1.0f, 5.0f) * Meter;
-            auto shape = std::make_shared<ChainShape>();
-            shape->CreateLoop(Span<const Length2D>(vs, 4));
-            ground->CreateFixture(shape);
+            auto conf = ChainShape::Conf{};
+            conf.vertices.push_back(Vec2(-1.0f, 3.0f) * Meter);
+            conf.vertices.push_back(Vec2(1.0f, 3.0f) * Meter);
+            conf.vertices.push_back(Vec2(1.0f, 5.0f) * Meter);
+            conf.vertices.push_back(Vec2(-1.0f, 5.0f) * Meter);
+            conf.vertices.push_back(conf.vertices[0]); // to loop chain shape around
+            ground->CreateFixture(std::make_shared<ChainShape>(conf));
         }
 
         // Edge loop. Collision should be smooth.
@@ -142,20 +139,19 @@ public:
             bd.position = Vec2(-10.0f, 4.0f) * Meter;
             const auto ground = m_world->CreateBody(bd);
 
-            Length2D vs[10];
-            vs[0] = Vec2(0.0f, 0.0f) * Meter;
-            vs[1] = Vec2(6.0f, 0.0f) * Meter;
-            vs[2] = Vec2(6.0f, 2.0f) * Meter;
-            vs[3] = Vec2(4.0f, 1.0f) * Meter;
-            vs[4] = Vec2(2.0f, 2.0f) * Meter;
-            vs[5] = Vec2(0.0f, 2.0f) * Meter;
-            vs[6] = Vec2(-2.0f, 2.0f) * Meter;
-            vs[7] = Vec2(-4.0f, 3.0f) * Meter;
-            vs[8] = Vec2(-6.0f, 2.0f) * Meter;
-            vs[9] = Vec2(-6.0f, 0.0f) * Meter;
-            auto shape = std::make_shared<ChainShape>();
-            shape->CreateLoop(Span<const Length2D>(vs, 10));
-            ground->CreateFixture(shape);
+            auto conf = ChainShape::Conf{};
+            conf.vertices.push_back(Vec2(0.0f, 0.0f) * Meter);
+            conf.vertices.push_back(Vec2(6.0f, 0.0f) * Meter);
+            conf.vertices.push_back(Vec2(6.0f, 2.0f) * Meter);
+            conf.vertices.push_back(Vec2(4.0f, 1.0f) * Meter);
+            conf.vertices.push_back(Vec2(2.0f, 2.0f) * Meter);
+            conf.vertices.push_back(Vec2(0.0f, 2.0f) * Meter);
+            conf.vertices.push_back(Vec2(-2.0f, 2.0f) * Meter);
+            conf.vertices.push_back(Vec2(-4.0f, 3.0f) * Meter);
+            conf.vertices.push_back(Vec2(-6.0f, 2.0f) * Meter);
+            conf.vertices.push_back(Vec2(-6.0f, 0.0f) * Meter);
+            conf.vertices.push_back(conf.vertices[0]); // to loop back completely.
+            ground->CreateFixture(std::make_shared<ChainShape>(conf));
         }
 
         // Square character 1

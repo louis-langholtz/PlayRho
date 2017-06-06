@@ -34,17 +34,15 @@ public:
         // Ground body
         const auto ground = m_world->CreateBody();
         {
-            Length2D vs[5];
-            vs[0] = Vec2(0.0f, -2.0f) * Meter;
-            vs[1] = Vec2(8.0f, 6.0f) * Meter;
-            vs[2] = Vec2(8.0f, 20.0f) * Meter;
-            vs[3] = Vec2(-8.0f, 20.0f) * Meter;
-            vs[4] = Vec2(-8.0f, 6.0f) * Meter;
-
-            ChainShape loop;
-            loop.CreateLoop(Span<const Length2D>(vs, 5));
-            loop.SetDensity(RealNum(0) * KilogramPerSquareMeter);
-            ground->CreateFixture(std::make_shared<ChainShape>(loop));
+            auto conf = ChainShape::Conf{};
+            conf.vertices.push_back(Vec2(0.0f, -2.0f) * Meter);
+            conf.vertices.push_back(Vec2(8.0f, 6.0f) * Meter);
+            conf.vertices.push_back(Vec2(8.0f, 20.0f) * Meter);
+            conf.vertices.push_back(Vec2(-8.0f, 20.0f) * Meter);
+            conf.vertices.push_back(Vec2(-8.0f, 6.0f) * Meter);
+            conf.vertices.push_back(conf.vertices[0]); // to loop back around completely.
+            conf.UseDensity(RealNum(0) * KilogramPerSquareMeter);
+            ground->CreateFixture(std::make_shared<ChainShape>(conf));
         }
 
         // Flippers

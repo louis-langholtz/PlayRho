@@ -3,17 +3,19 @@
  * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
@@ -44,27 +46,29 @@ namespace {
     
 } // anonymous namespace
 
-ChainShape::ChainShape(const ChainShape& other):
-    Shape{Conf{}.UseVertexRadius(other.GetVertexRadius())}
+ChainShape::ChainShape(const Conf& conf):
+    Shape{conf}
 {
-    *this = other;
-}
-
-ChainShape& ChainShape::operator=(const ChainShape& other)
-{
-    if (&other != this)
+    if (conf.vertices.size() > MaxChildCount)
     {
-        Clear();
-        m_count = other.m_count;
-        m_vertices = other.m_vertices;
-        m_normals = other.m_normals;
+        throw InvalidArgument("too many vertices");
     }
-    return *this;
-}
 
-ChainShape::~ChainShape()
-{
-    Clear();
+    const auto count = static_cast<child_count_t>(conf.vertices.size());
+    m_count = count;
+    m_vertices = conf.vertices;
+    
+    auto vprev = m_vertices[0];
+    for (auto i = decltype(count){1}; i < count; ++i)
+    {
+        // Get the normal and push it and its reverse.
+        // This "doubling up" of the normals, makes the GetChild() method work.
+        const auto v = m_vertices[i];
+        const auto normal = GetUnitVector(GetFwdPerpendicular(v - vprev));
+        m_normals.push_back(normal);
+        m_normals.push_back(-normal);
+        vprev = v;
+    }
 }
 
 MassData ChainShape::GetMassData() const noexcept
@@ -91,61 +95,6 @@ MassData ChainShape::GetMassData() const noexcept
         return MassData{mass, center, I};
     }
     return MassData{NonNegative<Mass>{0}, Vec2_zero * Meter, NonNegative<RotInertia>{0}};
-}
-
-void ChainShape::Clear()
-{
-    m_vertices.clear();
-    m_count = 0;
-}
-
-void ChainShape::CreateLoop(Span<const Length2D> vertices)
-{
-    assert(vertices.begin() != nullptr);
-    assert(vertices.size() >= 3);
-    assert(IsEachVertexFarEnoughApart(vertices));
-    assert(m_vertices.empty() && m_count == 0);
-    
-    const auto count = static_cast<child_count_t>(vertices.size() + 1);
-    m_count = count;
-    m_vertices.assign(vertices.begin(), vertices.end());
-    m_vertices.push_back(m_vertices[0]);
-    
-    auto vprev = m_vertices[0];
-    for (auto i = decltype(count){1}; i < count; ++i)
-    {
-        // Get the normal and push it and its reverse.
-        // This "doubling up" of the normals, makes the GetChild() method work.
-        const auto v = m_vertices[i];
-        const auto normal = GetUnitVector(GetFwdPerpendicular(v - vprev));
-        m_normals.push_back(normal);
-        m_normals.push_back(-normal);
-        vprev = v;
-    }
-}
-
-void ChainShape::CreateChain(Span<const Length2D> vertices)
-{
-    assert(vertices.begin() != nullptr);
-    assert(vertices.size() >= 2);
-    assert(IsEachVertexFarEnoughApart(vertices));
-    assert(m_vertices.empty() && m_count == 0);
-
-    const auto count = static_cast<child_count_t>(vertices.size());
-    m_count = count;
-    m_vertices.assign(vertices.begin(), vertices.end());
-    
-    auto vprev = m_vertices[0];
-    for (auto i = decltype(count){1}; i < count; ++i)
-    {
-        // Get the normal and push it and its reverse.
-        // This "doubling up" of the normals, makes the GetChild() method work.
-        const auto v = m_vertices[i];
-        const auto normal = GetUnitVector(GetFwdPerpendicular(v - vprev));
-        m_normals.push_back(normal);
-        m_normals.push_back(-normal);
-        vprev = v;
-    }
 }
 
 child_count_t ChainShape::GetChildCount() const noexcept

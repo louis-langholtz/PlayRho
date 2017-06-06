@@ -285,8 +285,10 @@ constexpr inline RealNum StripUnit(const Torque value)
 
 #endif
 
+constexpr auto MaxChildCount = std::numeric_limits<unsigned>::max() - 1;
+
 /// Child count type. @details Relating to "children" of Shape.
-using child_count_t = unsigned;
+using child_count_t = std::remove_const<decltype(MaxChildCount)>::type;
 
 /// Size type for sizing data.
 using size_t = std::size_t;

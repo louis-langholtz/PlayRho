@@ -30,21 +30,20 @@ namespace box2d {
         HalfPipe()
         {
             const auto pipeBody = m_world->CreateBody();
-            auto pipeShape = std::make_shared<ChainShape>();
-            pipeShape->SetFriction(1.0f);
+
             {
-                auto vertices = std::vector<Length2D>();
+                auto conf = ChainShape::Conf{};
+                conf.UseFriction(1.0f);
                 const auto pipeRadius = RealNum{20.0f} * Meter;
                 for (auto i = 0; i < 90; ++i)
                 {
                     const auto angle = RealNum{(RealNum(i * 2 + 180.0f) * Degree) / Radian};
                     const auto x = pipeRadius * RealNum{std::cos(angle)};
                     const auto y = pipeRadius * RealNum{std::sin(angle)};
-                    vertices.push_back(Length2D{x, y + RealNum{20} * Meter});
+                    conf.vertices.push_back(Length2D{x, y + RealNum{20} * Meter});
                 }
-                pipeShape->CreateChain(Span<const Length2D>(vertices.data(), vertices.size()));
+                pipeBody->CreateFixture(std::make_shared<ChainShape>(conf));
             }
-            pipeBody->CreateFixture(pipeShape);
             
             BodyDef bd;
             bd.type = BodyType::Dynamic;

@@ -55,21 +55,19 @@ namespace box2d {
             };
             m_orbiter->SetVelocity(velocity);
             
-            const auto outerCicle = std::make_shared<ChainShape>();
-            outerCicle->SetVertexRadius(RealNum(0.1) * Meter);
-            outerCicle->SetDensity(RealNum(1) * KilogramPerSquareMeter);
+            auto conf = ChainShape::Conf{};
+            const auto outerRadius = RealNum{20.0f} * Meter;
+            for (auto i = 0; i < 179; ++i)
             {
-                auto vertices = std::vector<Length2D>();
-                const auto outerRadius = RealNum{20.0f} * Meter;
-                for (auto i = 0; i < 179; ++i)
-                {
-                    const auto angle = RealNum{(RealNum(i * 2 + 180.0f) * Degree) / Radian};
-                    const auto x = outerRadius * RealNum{std::cos(angle)};
-                    const auto y = outerRadius * RealNum{std::sin(angle)};
-                    vertices.push_back(Length2D{x, y});
-                }
-                outerCicle->CreateLoop(Span<const Length2D>(vertices.data(), vertices.size()));
+                const auto angle = RealNum{(RealNum(i * 2 + 180.0f) * Degree) / Radian};
+                const auto x = outerRadius * RealNum{std::cos(angle)};
+                const auto y = outerRadius * RealNum{std::sin(angle)};
+                conf.vertices.push_back(Length2D{x, y});
             }
+            conf.vertices.push_back(conf.vertices[0]); // to loop back around fully.
+            conf.UseVertexRadius(RealNum(0.1) * Meter);
+            conf.UseDensity(RealNum(1) * KilogramPerSquareMeter);
+            const auto outerCicle = std::make_shared<ChainShape>(conf);
 
             bd.type = BodyType::Dynamic;
             bd.position = m_center;
