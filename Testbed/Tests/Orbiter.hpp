@@ -56,14 +56,7 @@ namespace box2d {
             m_orbiter->SetVelocity(velocity);
             
             auto conf = ChainShape::Conf{};
-            const auto outerRadius = RealNum{20.0f} * Meter;
-            for (auto i = 0; i < 179; ++i)
-            {
-                const auto angle = RealNum{(RealNum(i * 2 + 180.0f) * Degree) / Radian};
-                const auto x = outerRadius * RealNum{std::cos(angle)};
-                const auto y = outerRadius * RealNum{std::sin(angle)};
-                conf.vertices.push_back(Length2D{x, y});
-            }
+            conf.vertices = GetCircleVertices(RealNum(20.0f) * Meter, 180);
             conf.vertices.push_back(conf.vertices[0]); // to loop back around fully.
             conf.UseVertexRadius(RealNum(0.1) * Meter);
             conf.UseDensity(RealNum(1) * KilogramPerSquareMeter);

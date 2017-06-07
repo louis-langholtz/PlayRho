@@ -29,31 +29,22 @@ namespace box2d {
         
         HalfPipe()
         {
-            const auto pipeBody = m_world->CreateBody();
-
+            const auto pipeBody = m_world->CreateBody(BodyDef{}.UseLocation(Vec2(0, 20) * Meter));
             {
                 auto conf = ChainShape::Conf{};
                 conf.UseFriction(1.0f);
-                const auto pipeRadius = RealNum{20.0f} * Meter;
-                for (auto i = 0; i < 90; ++i)
-                {
-                    const auto angle = RealNum{(RealNum(i * 2 + 180.0f) * Degree) / Radian};
-                    const auto x = pipeRadius * RealNum{std::cos(angle)};
-                    const auto y = pipeRadius * RealNum{std::sin(angle)};
-                    conf.vertices.push_back(Length2D{x, y + RealNum{20} * Meter});
-                }
+                conf.vertices = GetCircleVertices(RealNum{20.0f} * Meter, 90,
+                                                  RealNum(180) * Degree, RealNum(0.5f));
                 pipeBody->CreateFixture(std::make_shared<ChainShape>(conf));
             }
-            
-            BodyDef bd;
-            bd.type = BodyType::Dynamic;
-            bd.position = Vec2(-19, 28) * Meter;
-            const auto ballBody = m_world->CreateBody(bd);
-            auto conf = DiskShape::Conf{};
-            conf.density = RealNum{0.01f} * KilogramPerSquareMeter;
-            conf.vertexRadius = RealNum{1} * Meter;
-            conf.friction = 1.0f;
-            ballBody->CreateFixture(std::make_shared<DiskShape>(conf));
+
+            const auto ballBody = m_world->CreateBody(BodyDef{}
+                                                      .UseType(BodyType::Dynamic)
+                                                      .UseLocation(Vec2(-19, 28) * Meter));
+            ballBody->CreateFixture(std::make_shared<DiskShape>(DiskShape::Conf{}
+                                    .UseDensity(RealNum{0.01f} * KilogramPerSquareMeter)
+                                    .UseVertexRadius(RealNum{1} * Meter)
+                                    .UseFriction(1.0f)));
         }
     };
     

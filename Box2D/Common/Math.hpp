@@ -34,6 +34,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <vector>
 
 namespace box2d
 {
@@ -869,6 +870,9 @@ inline UnitVec2 GetUnitVector(const Vector2D<LinearVelocity> value, LinearVeloci
 }
 
 #endif
+
+std::vector<Length2D> GetCircleVertices(const Length radius, unsigned slices,
+                                        Angle start = Angle{0}, RealNum turns = RealNum{1});
 
 ::std::ostream& operator<<(::std::ostream& os, const Vec2& value);
 

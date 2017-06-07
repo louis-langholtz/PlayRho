@@ -55,6 +55,24 @@ Length2D box2d::ComputeCentroid(const Span<const Length2D>& vertices)
     return c / area;
 }
 
+std::vector<Length2D> box2d::GetCircleVertices(const Length radius, unsigned slices,
+                                               Angle start, RealNum turns)
+{
+    std::vector<Length2D> vertices;
+    if (slices > 0)
+    {
+        const auto deltaAngle = (Pi * Radian * RealNum(2) * turns) / slices;
+        for (auto i = decltype(slices){0}; i < slices; ++i)
+        {
+            const auto angleInRadians = RealNum{(start + (i * deltaAngle)) / Radian};
+            const auto x = radius * static_cast<RealNum>(std::cos(angleInRadians));
+            const auto y = radius * static_cast<RealNum>(std::sin(angleInRadians));
+            vertices.push_back(Length2D{x, y});
+        }
+    }
+    return vertices;
+}
+
 ::std::ostream& box2d::operator<<(::std::ostream& os, const Vec2& value)
 {
     return os << "Vec2(" << value.x << "," << value.y << ")";
