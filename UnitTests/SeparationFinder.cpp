@@ -40,7 +40,7 @@ TEST(SeparationFinder, ByteSizeIs_40_56_or_96)
 TEST(SeparationFinder, BehavesAsExpected)
 {
     const auto shape = PolygonShape{RealNum{0.5f} * Meter, RealNum{0.5f} * Meter};
-    const auto distproxy = GetDistanceProxy(shape, 0);
+    const auto distproxy = shape.GetChild(0);
 
     const auto x = RealNum(100);
     const auto sweepA = Sweep{Position{Vec2{-x, 0} * Meter, RealNum{0.0f} * Degree}, Position{Vec2{+x, 0} * Meter, RealNum{0.0f} * Degree}};

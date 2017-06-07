@@ -59,8 +59,8 @@ public:
             Position{Vec2(54.595478f, -51.083473f) * Meter + offset, RealNum{513.62781f} * Radian}
         };
 
-        const auto output = GetToiViaSat(GetDistanceProxy(m_shapeA, 0), sweepA,
-                                         GetDistanceProxy(m_shapeB, 0), sweepB);
+        const auto output = GetToiViaSat(m_shapeA.GetChild(0), sweepA,
+                                         m_shapeB.GetChild(0), sweepB);
 
         drawer.DrawString(5, m_textLine, "at toi=%g, state=%s", static_cast<float>(output.get_t()), GetName(output.get_state()));
         m_textLine += DRAW_STRING_NEW_LINE;

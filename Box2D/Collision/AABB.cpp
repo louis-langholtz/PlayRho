@@ -47,8 +47,7 @@ AABB box2d::ComputeAABB(const Shape& shape, const Transformation xf)
     auto sum = AABB{};
     for (auto i = decltype(childCount){0}; i < childCount; ++i)
     {
-        const auto dp = shape.GetChild(i);
-        sum.Include(ComputeAABB(dp, xf));
+        sum.Include(ComputeAABB(shape.GetChild(i), xf));
     }
     return sum;
 }

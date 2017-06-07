@@ -57,7 +57,7 @@ namespace box2d
         {
             // Intentionall empty.
         }
-        
+
         /// Initializing constructor.
         ///
         /// @details Constructs a distance proxy for n-point shape (like a polygon).
@@ -121,16 +121,6 @@ namespace box2d
             return m_normals[index];
         }
 
-        Span<const Length2D> GetVertices() const noexcept
-        {
-            return Span<const Length2D>(m_vertices, GetVertexCount());
-        }
-        
-        Span<const UnitVec2> GetNormals() const noexcept
-        {
-            return Span<const UnitVec2>(m_normals, GetVertexCount());
-        }
-
     private:
     
         const Length2D* m_vertices = nullptr;
@@ -139,10 +129,6 @@ namespace box2d
         Length m_vertexRadius = Length{0}; ///< Radius of the vertices of the associated shape.
     };
     
-    /// Initialize the proxy using the given shape.
-    /// @note The shape must remain in scope while the proxy is in use.
-    DistanceProxy GetDistanceProxy(const Shape& shape, child_count_t index);
-
     /// Gets the supporting vertex index in the given direction for the given distance proxy.
     /// @details This finds the vertex that's most significantly in the direction of the given
     ///   vector and returns its index.

@@ -104,7 +104,11 @@ child_count_t ChainShape::GetChildCount() const noexcept
     return (count > 1)? count - 1: 0;
 }
 
-DistanceProxy ChainShape::GetChild(child_count_t index) const noexcept
+DistanceProxy ChainShape::GetChild(child_count_t index) const
 {
+    if (index >= GetVertexCount())
+    {
+        throw InvalidArgument("index out of range");
+    }
     return DistanceProxy{GetVertexRadius(), 2, &m_vertices[index], &m_normals[index * 2]};
 }

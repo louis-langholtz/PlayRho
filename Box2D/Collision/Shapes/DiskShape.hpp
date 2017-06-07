@@ -21,6 +21,7 @@
 #define B2_CIRCLE_SHAPE_H
 
 #include <Box2D/Collision/Shapes/Shape.hpp>
+#include <Box2D/Common/InvalidArgument.hpp>
 
 namespace box2d {
 
@@ -80,7 +81,9 @@ public:
     /// @return Positive non-zero count.
     child_count_t GetChildCount() const noexcept override;
 
-    DistanceProxy GetChild(child_count_t index) const noexcept override;
+    /// @brief Gets the child for the given index.
+    /// @throws InvalidArgument if the index is out of range.
+    DistanceProxy GetChild(child_count_t index) const override;
 
     /// Computes the mass properties of this shape using its dimensions and density.
     /// The inertia tensor is computed about the local origin.
@@ -122,10 +125,13 @@ inline child_count_t DiskShape::GetChildCount() const noexcept
     return 1;
 }
 
-inline DistanceProxy DiskShape::GetChild(child_count_t index) const noexcept
+inline DistanceProxy DiskShape::GetChild(child_count_t index) const
 {
-    assert(index == 0);
-    return (index == 0)? DistanceProxy{GetVertexRadius(), 1, &m_location, nullptr}: DistanceProxy{};
+    if (index != 0)
+    {
+        throw InvalidArgument("only index of 0 is supported");
+    }
+    return DistanceProxy{GetVertexRadius(), 1, &m_location, nullptr};
 }
 
 inline void DiskShape::Accept(box2d::Shape::Visitor &visitor) const

@@ -39,11 +39,6 @@ DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, const Lengt
     return index;
 }
 
-DistanceProxy GetDistanceProxy(const Shape& shape, child_count_t index)
-{
-    return shape.GetChild(index);
-}
-
 size_t FindLowestRightMostVertex(Span<const Length2D> vertices)
 {
     const auto size = vertices.size();

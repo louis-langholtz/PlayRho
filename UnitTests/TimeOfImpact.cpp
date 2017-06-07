@@ -385,8 +385,8 @@ TEST(TimeOfImpact, ForNonCollidingShapesFailsIn23)
     shapeB.SetVertexRadius(RealNum{0.0001f * 2} * Meter);
     shapeB.SetAsBox(RealNum{2.5f} * Meter, RealNum{2.5f} * Meter);
 
-    const auto dpA = GetDistanceProxy(shapeA, 0);
-    const auto dpB = GetDistanceProxy(shapeB, 0);
+    const auto dpA = shapeA.GetChild(0);
+    const auto dpB = shapeB.GetChild(0);
 
     const auto sweepA = Sweep{
         Position{Vec2{-11, 10} * Meter, RealNum{2.95000005f} * Radian},
@@ -463,7 +463,7 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
     auto shapeB = PolygonShape{};
     shapeB.SetVertexRadius(RealNum{0.0001f * 2} * Meter);
     shapeB.SetAsBox(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
-    const auto dpB = GetDistanceProxy(shapeB, 0);
+    const auto dpB = shapeB.GetChild(0);
     
     const auto conf = ToiConf{}
         .UseMaxToiIters(200)

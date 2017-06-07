@@ -48,10 +48,6 @@ TEST(DistanceProxy, DefaultInitialization)
     
     EXPECT_EQ(defaultDp.GetVertexCount(), 0);
     EXPECT_EQ(defaultDp.GetVertexRadius(), (RealNum(0) * Meter));
-    EXPECT_EQ(defaultDp.GetVertices().size(), size_t{0});
-    EXPECT_EQ(defaultDp.GetVertices().data(), nullptr);
-    EXPECT_EQ(defaultDp.GetNormals().size(), size_t{0});
-    EXPECT_EQ(defaultDp.GetNormals().data(), nullptr);
 }
 
 TEST(DistanceProxy, OneVecInitialization)

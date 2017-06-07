@@ -18,39 +18,55 @@
  */
 
 #include <Box2D/Collision/ShapeSeparation.hpp>
+#include <Box2D/Collision/DistanceProxy.hpp>
 
 using namespace box2d;
 
-IndexPairSeparation
-box2d::GetMaxSeparation(Span<const Length2D> verts1, Span<const UnitVec2> norms1, const Transformation& xf1,
-                        Span<const Length2D> verts2, const Transformation& xf2,
-                        Length stop)
+IndexPairSeparation box2d::GetMaxSeparation(const DistanceProxy& proxy1, const Transformation xf1,
+                                            const DistanceProxy& proxy2, const Transformation xf2,
+                                            Length stop)
 {
-    assert(verts1.size() == norms1.size());
+    // Find the max separation between proxy1 and proxy2 using edge normals from proxy1.
     
-    // Find the max separation between shape1 and shape2 using edge normals from shape1.
-
     auto indexPairSep = IndexPairSeparation{
         -MaxFloat * Meter, IndexPairSeparation::InvalidIndex, IndexPairSeparation::InvalidIndex
     };
+    
     const auto xf = MulT(xf2, xf1);
-    const auto count1 = verts1.size();
+    const auto count1 = proxy1.GetVertexCount();
+    const auto count2 = proxy2.GetVertexCount();
+
     for (auto i = decltype(count1){0}; i < count1; ++i)
     {
-        // Get shape1 normal and vertex relative to shape2.
-        const auto s = GetMostAntiParallelSeparation(verts2, GetVec2(Rotate(norms1[i], xf.q)),
-                                                     Transform(verts1[i], xf));
-        if (s.separation > stop)
+        // Get proxy1 normal and vertex relative to proxy2.
+        const auto normal = Rotate(proxy1.GetNormal(i), xf.q);
+        const auto offset = Transform(proxy1.GetVertex(i), xf);
+
+        // Search for the vector that's most anti-parallel to the normal.
+        // See: https://en.wikipedia.org/wiki/Antiparallel_(mathematics)#Antiparallel_vectors
+        auto ap = IndexSeparation{};
+        for (auto j = decltype(count2){0}; j < count2; ++j)
+        {
+            // Get distance from offset to proxy2.GetVertex(j) in direction of normal.
+            const auto s = Dot(normal, proxy2.GetVertex(j) - offset);
+            if (ap.separation > s)
+            {
+                ap.separation = s;
+                ap.index = static_cast<IndexSeparation::index_type>(j);
+            }
+        }
+
+        if (ap.separation > stop)
         {
             return IndexPairSeparation{
-                s.separation, static_cast<IndexSeparation::index_type>(i), s.index
+                ap.separation, static_cast<IndexSeparation::index_type>(i), ap.index
             };
         }
-        if (indexPairSep.separation < s.separation)
+        if (indexPairSep.separation < ap.separation)
         {
-            indexPairSep.separation = s.separation;
+            indexPairSep.separation = ap.separation;
             indexPairSep.index1 = static_cast<IndexSeparation::index_type>(i);
-            indexPairSep.index2 = s.index;
+            indexPairSep.index2 = ap.index;
         }
     }
     return indexPairSep;

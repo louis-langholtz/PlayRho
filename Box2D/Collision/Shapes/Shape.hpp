@@ -140,11 +140,11 @@ public:
         }
     };
 
-    /// Default constructor is deleted.
+    /// @brief Default constructor is deleted.
     /// @details This is a base class that shouldn't ever be directly instantiated.
     Shape() = delete;
 
-    /// Initializing constructor.
+    /// @brief Initializing constructor.
     ///
     Shape(const Conf& conf) noexcept:
         m_vertexRadius{conf.vertexRadius},
@@ -158,25 +158,26 @@ public:
 
     virtual ~Shape() = default;
 
-    /// Gets the number of child primitives of the shape.
+    /// @brief Gets the number of child primitives of the shape.
     /// @return Positive non-zero count.
     virtual child_count_t GetChildCount() const noexcept = 0;
 
-    /// Gets the child for the given index.
+    /// @brief Gets the child for the given index.
     /// @note The shape must remain in scope while the proxy is in use.
-    virtual DistanceProxy GetChild(child_count_t index) const noexcept = 0;
+    /// @throws InvalidArgument if the index is out of range.
+    virtual DistanceProxy GetChild(child_count_t index) const = 0;
     
-    /// Gets the mass properties of this shape using its dimensions and density.
+    /// @brief Gets the mass properties of this shape using its dimensions and density.
     /// @return Mass data for this shape.
     virtual MassData GetMassData() const noexcept = 0;
 
-    /// Accepts a visitor.
+    /// @brief Accepts a visitor.
     virtual void Accept(Visitor& visitor) const = 0;
     
     /// @brief Gets the vertex radius.
     Length GetVertexRadius() const noexcept;
 
-    /// Sets the vertex radius.
+    /// @brief Sets the vertex radius.
     ///
     /// @details This sets the radius from the vertex that the shape's "skin" should
     ///   extend outward by. While any edges - line segments between multiple vertices -
@@ -189,11 +190,11 @@ public:
     ///
     void SetVertexRadius(NonNegative<Length> vertexRadius) noexcept;
 
-    /// Gets the density of this fixture.
+    /// @brief Gets the density of this fixture.
     /// @return Non-negative density (in mass per area).
     Density GetDensity() const noexcept;
 
-    /// Sets the density of this fixture.
+    /// @brief Sets the density of this fixture.
     /// @note This will _not_ automatically adjust the mass of the body.
     ///   You must call Body::ResetMassData to update the body's mass.
     /// @param density Non-negative density (in mass per area).
@@ -208,11 +209,11 @@ public:
     /// @param friction Zero or higher (non-negative) co-efficient of friction.
     void SetFriction(NonNegative<RealNum> friction) noexcept;
     
-    /// Gets the coefficient of restitution.
+    /// @brief Gets the coefficient of restitution.
     RealNum GetRestitution() const noexcept;
     
-    /// Sets the coefficient of restitution. This will _not_ change the restitution of
-    /// existing contacts.
+    /// @brief Sets the coefficient of restitution.
+    /// @note This will _not_ change the restitution of existing contacts.
     void SetRestitution(Finite<RealNum> restitution) noexcept;
 
 private:

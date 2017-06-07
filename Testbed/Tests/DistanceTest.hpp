@@ -112,10 +112,8 @@ public:
         const auto xfmA = m_bodyA->GetTransformation();
         const auto xfmB = m_bodyB->GetTransformation();
 
-        const auto maxIndicesAB = GetMaxSeparation(shapeA->GetVertices(), shapeA->GetNormals(), xfmA,
-                                                   shapeB->GetVertices(), xfmB);
-        const auto maxIndicesBA = GetMaxSeparation(shapeB->GetVertices(), shapeB->GetNormals(), xfmB,
-                                                   shapeA->GetVertices(), xfmA);
+        const auto maxIndicesAB = GetMaxSeparation(proxyA, xfmA, proxyB, xfmB);
+        const auto maxIndicesBA = GetMaxSeparation(proxyB, xfmB, proxyA, xfmA);
 
         const auto manifold = CollideShapes(proxyA, xfmA, proxyB, xfmB);
         const auto panifold = GetManifold(proxyA, xfmA, proxyB, xfmB);

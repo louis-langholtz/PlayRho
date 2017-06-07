@@ -76,7 +76,9 @@ namespace box2d {
         /// @return Positive non-zero count.
         child_count_t GetChildCount() const noexcept override;
         
-        DistanceProxy GetChild(child_count_t index) const noexcept override;
+        /// @brief Gets the child for the given index.
+        /// @throws InvalidArgument if the index is out of range.
+        DistanceProxy GetChild(child_count_t index) const override;
         
         /// Computes the mass properties of this shape using its dimensions and density.
         /// The inertia tensor is computed about the local origin.
@@ -117,7 +119,7 @@ namespace box2d {
         return static_cast<child_count_t>(m_children.size());
     }
     
-    inline DistanceProxy MultiShape::GetChild(child_count_t index) const noexcept
+    inline DistanceProxy MultiShape::GetChild(child_count_t index) const
     {
         const auto& child = m_children.at(index);
         return DistanceProxy{

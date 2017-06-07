@@ -25,6 +25,8 @@
 
 namespace box2d
 {
+    class DistanceProxy;
+
     /// Index separation.
     /// @details This structure is used to keep track of the best separating axis.
     struct IndexSeparation
@@ -62,42 +64,14 @@ namespace box2d
         index_type index2 = InvalidIndex;
     };
 
-    /// Gets the shape separation information for the most anti-parallel vector.
-    /// @param points Collection of 0 or more points to find the most anti-parallel vector from and
-    ///    its magnitude from the reference vector.
-    /// @param refvec Reference vector.
-    template <typename T1, typename T2>
-    IndexSeparation GetMostAntiParallelSeparation(Span<const T1> points,
-                                                  const T2 refvec, const T1 offset)
-    {
-        // Search for the vector that is most anti-parallel to the reference vector.
-        // See: https://en.wikipedia.org/wiki/Antiparallel_(mathematics)#Antiparallel_vectors
-        auto result = IndexSeparation{};
-        const auto count = points.size();
-        for (auto i = decltype(count){0}; i < count; ++i)
-        {
-            // Get cosine of angle between refvec and vectors[i] multiplied by their
-            // magnitudes (which will essentially be 1 for any two unit vectors).
-            // Get distance from offset to vectors[i] in direction of refvec.
-            const auto s = Dot(refvec, points[i] - offset);
-            if (result.separation > s)
-            {
-                result.separation = s;
-                result.index = static_cast<IndexSeparation::index_type>(i);
-            }
-        }
-        return result;
-    }
-
-    /// Gets the max separation information.
-    /// @return The index of the vertex and normal from <code>verts1</code> and <code>norms1</code>,
-    ///   the index of the vertex from <code>verts2</code> (that had the maximum separation
+    /// @brief Gets the max separation information.
+    /// @return Index of the vertex and normal from <code>proxy1</code>,
+    ///   index of the vertex from <code>proxy2</code> (that had the maximum separation
     ///   distance from each other in the direction of that normal), and the maximal distance.
-    IndexPairSeparation GetMaxSeparation(Span<const Length2D> verts1, Span<const UnitVec2> norms1,
-                                         const Transformation& xf1,
-                                         Span<const Length2D> verts2, const Transformation& xf2,
+    IndexPairSeparation GetMaxSeparation(const DistanceProxy& proxy1, const Transformation xf1,
+                                         const DistanceProxy& proxy2, const Transformation xf2,
                                          Length stop = MaxFloat * Meter);
-
+    
 } // namespace box2d
 
 #endif /* ShapeSeparation_hpp */

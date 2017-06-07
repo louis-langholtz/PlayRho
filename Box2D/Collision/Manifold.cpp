@@ -49,13 +49,6 @@ inline index_type GetEdgeIndex(index_type i1, index_type i2, index_type count)
     return IndexPair::InvalidIndex;
 }
 
-inline IndexPairSeparation GetMaxSeparation(const DistanceProxy& shape1, const Transformation& xf1,
-                                            const DistanceProxy& shape2, const Transformation& xf2,
-                                            Length stop = MaxFloat * Meter)
-{
-    return GetMaxSeparation(shape1.GetVertices(), shape1.GetNormals(), xf1, shape2.GetVertices(), xf2, stop);
-}
-
 inline ClipList GetClipPoints(IndexSeparation::index_type iv1, Length sideOffset1, UnitVec2 normal1,
                                      IndexSeparation::index_type iv2, Length sideOffset2, UnitVec2 normal2,
                                      const ClipList& incidentEdge)

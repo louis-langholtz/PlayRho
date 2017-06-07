@@ -93,7 +93,9 @@ public:
     /// @return Positive non-zero count.
     child_count_t GetChildCount() const noexcept override;
 
-    DistanceProxy GetChild(child_count_t index) const noexcept override;
+    /// @brief Gets the child for the given index.
+    /// @throws InvalidArgument if the index is out of range.
+    DistanceProxy GetChild(child_count_t index) const override;
     
     /// Computes the mass properties of this shape using its dimensions and density.
     /// The inertia tensor is computed about the local origin.
@@ -174,9 +176,12 @@ inline child_count_t PolygonShape::GetChildCount() const noexcept
     return 1;
 }
 
-inline DistanceProxy PolygonShape::GetChild(child_count_t index) const noexcept
+inline DistanceProxy PolygonShape::GetChild(child_count_t index) const
 {
-    assert(index == 0);
+    if (index >= GetVertexCount())
+    {
+        throw InvalidArgument("index out of range");
+    }
     return (index == 0)?
         DistanceProxy{GetVertexRadius(), static_cast<DistanceProxy::size_type>(m_vertices.size()),
             &m_vertices[0], &m_normals[0]}:
