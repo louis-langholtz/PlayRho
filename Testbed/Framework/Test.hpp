@@ -85,6 +85,7 @@ public:
     void DrawTitle(Drawer& drawer, const char *string);
     void Step(const Settings& settings, Drawer& drawer);
     void DrawStats(Drawer& drawer, const StepConf& stepConf);
+    void DrawStats(Drawer& drawer, const Fixture& fixture);
     void DrawContactPoints(const Settings& settings, Drawer& drawer);
     void ShiftMouseDown(const Length2D& p);
     void MouseMove(const Length2D& p);

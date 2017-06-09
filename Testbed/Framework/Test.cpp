@@ -119,7 +119,6 @@ void ShapeDrawer::Visit(const ChainShape& shape)
     {
         const auto v2 = Transform(shape.GetVertex(i), xf);
         drawer.DrawSegment(v1, v2, color);
-        drawer.DrawCircle(v1, RealNum(0.05) * Meter, color);
         if (skins && r > Length{0})
         {
             const auto worldNormal0 = GetFwdPerpendicular(GetUnitVector(v2 - v1));
@@ -437,14 +436,10 @@ void Test::MouseDown(const Length2D& p)
     
     // Query the world for overlapping shapes.
     m_world->QueryAABB(aabb, [&](Fixture* f) {
-        const auto body = f->GetBody();
-        if (body->GetType() == BodyType::Dynamic)
+        if (TestPoint(*f, p))
         {
-            if (TestPoint(*f, p))
-            {
-                fixture = f;
-                return false; // We are done, terminate the query.
-            }
+            fixture = f;
+            return false; // We are done, terminate the query.
         }
         return true; // Continue the query.
     });
@@ -453,13 +448,16 @@ void Test::MouseDown(const Length2D& p)
     if (fixture)
     {
         const auto body = fixture->GetBody();
-        MouseJointDef md;
-        md.bodyA = m_groundBody;
-        md.bodyB = body;
-        md.target = p;
-        md.maxForce = RealNum{1000.0f} * GetMass(*body) * MeterPerSquareSecond;
-        m_mouseJoint = static_cast<MouseJoint*>(m_world->CreateJoint(md));
-        body->SetAwake();
+        if (body->GetType() == BodyType::Dynamic)
+        {
+            MouseJointDef md;
+            md.bodyA = m_groundBody;
+            md.bodyB = body;
+            md.target = p;
+            md.maxForce = RealNum{1000.0f} * GetMass(*body) * MeterPerSquareSecond;
+            m_mouseJoint = static_cast<MouseJoint*>(m_world->CreateJoint(md));
+            body->SetAwake();
+        }
     }
 }
 
@@ -694,54 +692,65 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     const auto selectedFixture = GetSelectedFixture();
     if (selectedFixture)
     {
-        const auto density = selectedFixture->GetDensity();
-        const auto friction = selectedFixture->GetFriction();
-        const auto restitution = selectedFixture->GetRestitution();
-        const auto shape = selectedFixture->GetShape();
-        const auto childCount = shape->GetChildCount();
-        const auto vertexRadius = shape->GetVertexRadius();
-        const auto body = selectedFixture->GetBody();
-        const auto location = body->GetLocation();
-        const auto velocity = body->GetVelocity();
-        const auto contacts = body->GetContacts();
-        
-        auto numContacts = 0;
-        auto numTouching = 0;
-        auto numImpulses = 0;
-        for (auto&& ci: contacts)
-        {
-            ++numContacts;
-            const auto contact = GetContactPtr(ci);
-            if (contact->IsTouching())
-            {
-                ++numTouching;
-                const auto manifold = contact->GetManifold();
-                numImpulses += manifold.GetPointCount();
-            }
-        }
-        stream = std::stringstream();
-        stream << "Selected fixture:";
-        stream << " pos={";
-        stream << static_cast<double>(RealNum{GetX(location) / Meter});
-        stream << ",";
-        stream << static_cast<double>(RealNum{GetY(location) / Meter});
-        stream << "}";
-        stream << " vel={";
-        stream << static_cast<double>(RealNum{GetX(velocity.linear) / MeterPerSecond});
-        stream << ",";
-        stream << static_cast<double>(RealNum{GetY(velocity.linear) / MeterPerSecond});
-        stream << "}";
-        stream << " density=" << static_cast<double>(RealNum{density * SquareMeter / Kilogram});
-        stream << " vr=" << static_cast<double>(RealNum{vertexRadius / Meter});
-        stream << " childCount=" << std::size_t(childCount);
-        stream << " friction=" << friction;
-        stream << " restitution=" << restitution;
-        stream << " b-cts=" << numTouching;
-        stream << "/" << numContacts;
-        stream << " b-impulses=" << numImpulses;
-        drawer.DrawString(5, m_textLine, stream.str().c_str());
-        m_textLine += DRAW_STRING_NEW_LINE;
+        DrawStats(drawer, *selectedFixture);
     }
+}
+
+void Test::DrawStats(Drawer& drawer, const Fixture& fixture)
+{
+    const auto density = fixture.GetDensity();
+    const auto friction = fixture.GetFriction();
+    const auto restitution = fixture.GetRestitution();
+    const auto shape = fixture.GetShape();
+    const auto childCount = shape->GetChildCount();
+    const auto vertexRadius = shape->GetVertexRadius();
+    const auto body = fixture.GetBody();
+    const auto location = body->GetLocation();
+    const auto angle = body->GetAngle();
+    const auto velocity = body->GetVelocity();
+    const auto contacts = body->GetContacts();
+    
+    auto numContacts = 0;
+    auto numTouching = 0;
+    auto numImpulses = 0;
+    for (auto&& ci: contacts)
+    {
+        ++numContacts;
+        const auto contact = GetContactPtr(ci);
+        if (contact->IsTouching())
+        {
+            ++numTouching;
+            const auto manifold = contact->GetManifold();
+            numImpulses += manifold.GetPointCount();
+        }
+    }
+
+    std::stringstream stream;
+    stream << "Selected fixture:";
+    stream << " pos={{";
+    stream << static_cast<double>(RealNum{GetX(location) / Meter});
+    stream << ",";
+    stream << static_cast<double>(RealNum{GetY(location) / Meter});
+    stream << "}, ";
+    stream << static_cast<double>(RealNum{angle / Degree});
+    stream << "}, ";
+    stream << " vel={{";
+    stream << static_cast<double>(RealNum{GetX(velocity.linear) / MeterPerSecond});
+    stream << ",";
+    stream << static_cast<double>(RealNum{GetY(velocity.linear) / MeterPerSecond});
+    stream << "}, ";
+    stream << static_cast<double>(RealNum{velocity.angular / DegreePerSecond});
+    stream << "}";
+    stream << " density=" << static_cast<double>(RealNum{density * SquareMeter / Kilogram});
+    stream << " vr=" << static_cast<double>(RealNum{vertexRadius / Meter});
+    stream << " childCount=" << std::size_t(childCount);
+    stream << " friction=" << friction;
+    stream << " restitution=" << restitution;
+    stream << " b-cts=" << numTouching;
+    stream << "/" << numContacts;
+    stream << " b-impulses=" << numImpulses;
+    drawer.DrawString(5, m_textLine, stream.str().c_str());
+    m_textLine += DRAW_STRING_NEW_LINE;
 }
 
 void Test::DrawContactPoints(const Settings& settings, Drawer& drawer)
