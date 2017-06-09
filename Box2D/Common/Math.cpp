@@ -61,8 +61,24 @@ std::vector<Length2D> box2d::GetCircleVertices(const Length radius, unsigned sli
     std::vector<Length2D> vertices;
     if (slices > 0)
     {
+        const auto integralTurns = static_cast<long int>(turns);
+        const auto wholeNum = (turns == integralTurns);
         const auto deltaAngle = (Pi * Radian * RealNum(2) * turns) / RealNum(slices);
-        for (auto i = decltype(slices){0}; i < slices; ++i)
+        auto i = decltype(slices){0};
+        while (i < slices)
+        {
+            const auto angleInRadians = RealNum{(start + (RealNum(i) * deltaAngle)) / Radian};
+            const auto x = radius * static_cast<RealNum>(std::cos(angleInRadians));
+            const auto y = radius * static_cast<RealNum>(std::sin(angleInRadians));
+            vertices.push_back(Length2D{x, y});
+            ++i;
+        }
+        if (wholeNum)
+        {
+            // Ensure whole circles come back to original point EXACTLY.
+            vertices.push_back(vertices[0]);
+        }
+        else
         {
             const auto angleInRadians = RealNum{(start + (RealNum(i) * deltaAngle)) / Radian};
             const auto x = radius * static_cast<RealNum>(std::cos(angleInRadians));
