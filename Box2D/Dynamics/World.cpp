@@ -2464,7 +2464,8 @@ contact_count_t World::Synchronize(Body& body,
 
 // Free functions...
 
-StepStats Step(World& world, Time dt, World::ts_iters_type velocityIterations, World::ts_iters_type positionIterations)
+StepStats Step(World& world, Time dt, World::ts_iters_type velocityIterations,
+               World::ts_iters_type positionIterations)
 {
     StepConf conf;
     conf.SetTime(dt);
