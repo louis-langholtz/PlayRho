@@ -25,6 +25,7 @@
 
 #include <limits>
 #include <type_traits>
+#include <iostream>
 
 namespace box2d {
     
@@ -302,6 +303,12 @@ namespace box2d {
     
     template <typename T>
     using UnitInterval = BoundedValue<T, LoValueCheck::ZeroOrMore, HiValueCheck::OneOrLess>;
+    
+    template <typename T, LoValueCheck lo, HiValueCheck hi>
+    ::std::ostream& operator<<(::std::ostream& os, const BoundedValue<T, lo, hi>& value)
+    {
+        return os << T(value);
+    }
 }
 
 #endif /* BoundedValue_hpp */
