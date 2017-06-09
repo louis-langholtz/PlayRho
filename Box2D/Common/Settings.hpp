@@ -185,6 +185,7 @@ constexpr auto SquareRadian = Radian * Radian;
 
 using AngularVelocity = RealNum;
 constexpr auto RadianPerSecond = RealNum{1};
+constexpr auto DegreePerSecond = Degree;
 
 using AngularAcceleration = RealNum;
 constexpr auto RadianPerSquareSecond = RealNum{1};
