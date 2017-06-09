@@ -127,7 +127,8 @@ constexpr auto SquareRadian = Radian * Radian;
 
 using AngularVelocity = boost::units::quantity<boost::units::si::angular_velocity, RealNum>;
 constexpr auto RadianPerSecond = AngularVelocity{boost::units::si::radian_per_second * RealNum{1}};
-    
+constexpr auto DegreePerSecond = AngularVelocity{RadianPerSecond * Degree / Radian};
+
 using AngularAcceleration = boost::units::quantity<boost::units::si::angular_acceleration, RealNum>;
 constexpr auto RadianPerSquareSecond = Radian / (Second * Second);
 
