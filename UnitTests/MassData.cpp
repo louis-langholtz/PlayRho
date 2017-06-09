@@ -40,7 +40,7 @@ TEST(MassData, GetForZeroVertexRadiusCircle)
     auto shape = DiskShape(0);
     shape.SetDensity(KilogramPerSquareMeter);
     const auto mass_data = shape.GetMassData();
-    EXPECT_EQ(mass_data.mass, Mass{0});
+    EXPECT_EQ(mass_data.mass, NonNegative<Mass>(RealNum{0} * Kilogram));
     EXPECT_EQ(mass_data.I, RotInertia{0});
     EXPECT_EQ(mass_data.center.x, RealNum{0} * Meter);
     EXPECT_EQ(mass_data.center.y, RealNum{0} * Meter);

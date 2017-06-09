@@ -708,3 +708,38 @@ TEST(Math, LengthFasterThanHypot)
     EXPECT_LT(elapsed_secs_length.count(), elapsed_secs_hypot.count());
     EXPECT_EQ(totalLength, totalHypot);
 }
+
+TEST(Math, GetCircleVertices)
+{
+    {
+        const auto vertices = GetCircleVertices(Length{0}, 0);
+        EXPECT_EQ(vertices, std::vector<Length2D>());
+    }
+    {
+        const auto vertices = GetCircleVertices(Length{0}, 1);
+        EXPECT_EQ(vertices, std::vector<Length2D>({Vec2_zero, Vec2_zero}));
+    }
+    {
+        const auto vertices = GetCircleVertices(Length{0}, 2);
+        EXPECT_EQ(vertices, std::vector<Length2D>({Vec2_zero, Vec2_zero, Vec2_zero}));
+    }
+    {
+        const auto vertices = GetCircleVertices(Length{0}, 3);
+        EXPECT_EQ(vertices, std::vector<Length2D>({Vec2_zero, Vec2_zero, Vec2_zero, Vec2_zero}));
+    }
+    {
+        const auto vertices = GetCircleVertices(RealNum(1) * Meter, 0);
+        EXPECT_EQ(vertices, std::vector<Length2D>());
+    }
+    {
+        const auto vertices = GetCircleVertices(RealNum(1) * Meter, 1);
+        EXPECT_EQ(vertices, std::vector<Length2D>({Vec2(1, 0) * Meter, Vec2(1, 0) * Meter}));
+    }
+    {
+        const auto vertices = GetCircleVertices(RealNum(1) * Meter, 2);
+        EXPECT_EQ(vertices[0], Vec2(1, 0) * Meter);
+        EXPECT_NEAR(static_cast<double>(RealNum(GetX(vertices[1]) / Meter)), -1.0, 0.0001);
+        EXPECT_NEAR(static_cast<double>(RealNum(GetY(vertices[1]) / Meter)),  0.0, 0.0001);
+        EXPECT_EQ(vertices[2], Vec2(1, 0) * Meter);
+    }
+}

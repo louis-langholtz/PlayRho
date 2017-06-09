@@ -57,7 +57,6 @@ namespace box2d {
             
             auto conf = ChainShape::Conf{};
             conf.vertices = GetCircleVertices(RealNum(20.0f) * Meter, 180);
-            conf.vertices.push_back(conf.vertices[0]); // to loop back around fully.
             conf.UseVertexRadius(RealNum(0.1) * Meter);
             conf.UseDensity(RealNum(1) * KilogramPerSquareMeter);
             const auto outerCicle = std::make_shared<ChainShape>(conf);

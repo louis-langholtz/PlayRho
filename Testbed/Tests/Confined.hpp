@@ -27,7 +27,7 @@ namespace box2d {
 class Confined : public Test
 {
 public:
-    const Length wall_length = RealNum(0.1f) * Meter; // DefaultLinearSlop * 1000
+    const Length wall_length = RealNum(0.15f) * Meter; // DefaultLinearSlop * 1000
     const Length vertexRadiusIncrement = wall_length / RealNum{40};
     
     enum
@@ -69,36 +69,22 @@ public:
     {
         const auto ground = m_world->CreateBody();
         
-        auto conf = EdgeShape::Conf{};
+        auto conf = ChainShape::Conf{};
         conf.restitution = 0; // originally 0.9
         conf.vertexRadius = vertexRadius;
-        auto shape = EdgeShape{conf};
-        //PolygonShape shape;
         
         const auto btmLeft = Length2D(-wallLength / RealNum{2}, RealNum{0} * Meter);
         const auto btmRight = Length2D(wallLength / RealNum{2}, RealNum{0} * Meter);
         const auto topLeft = Length2D(-wallLength / RealNum{2}, wallLength);
         const auto topRight = Length2D(wallLength / RealNum{2}, wallLength);
         
-        // Floor
-        shape.Set(btmLeft, btmRight);
-        //shape.Set(Span<const Vec2>{btmLeft, btmRight});
-        ground->CreateFixture(std::make_shared<EdgeShape>(shape));
-        
-        // Left wall
-        shape.Set(btmLeft, topLeft);
-        //shape.Set(Span<const Vec2>{btmLeft, topLeft});
-        ground->CreateFixture(std::make_shared<EdgeShape>(shape));
-        
-        // Right wall
-        shape.Set(btmRight, topRight);
-        //shape.Set(Span<const Vec2>{btmRight, topRight});
-        ground->CreateFixture(std::make_shared<EdgeShape>(shape));
-        
-        // Roof
-        shape.Set(topLeft, topRight);
-        //shape.Set(Span<const Vec2>{topLeft, topRight});
-        ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+        conf.vertices.push_back(btmRight);
+        conf.vertices.push_back(topRight);
+        conf.vertices.push_back(topLeft);
+        conf.vertices.push_back(btmLeft);
+        conf.vertices.push_back(conf.vertices[0]);
+
+        ground->CreateFixture(std::make_shared<ChainShape>(conf));
         
         return ground;
     }

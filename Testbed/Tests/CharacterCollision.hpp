@@ -26,47 +26,68 @@ namespace box2d {
 
 /// This is a test of typical character collision scenarios. This does not
 /// show how you should implement a character in your application.
-/// Instead this is used to test smooth collision on edge chains.
+/// Instead this is used to test smooth collision on surfaces.
 class CharacterCollision : public Test
 {
 public:
     CharacterCollision()
     {
         // Ground body
-        {
-            const auto ground = m_world->CreateBody();
-            ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
-        }
+        const auto ground = m_world->CreateBody();
+        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
 
         {
-            BodyDef bd;
-            const auto ground = m_world->CreateBody(bd);
-            
             PolygonShape shape;
-            
+
             shape.SetVertexRadius(RealNum(0.006f) * Meter);
-            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter, Vec2(-20.01f, 0.545f) * Meter, RealNum{0.0f} * Radian);
+            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
+                     Vec2(20.01f, 0.545f) * Meter, RealNum{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter, Vec2(-20.01f, 1.545f) * Meter, RealNum{0.0f} * Radian);
+            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
+                     Vec2(20.01f, 1.545f) * Meter, RealNum{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter, Vec2(-20.01f, 2.545f) * Meter, RealNum{0.0f} * Radian);
+            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
+                     Vec2(20.01f, 2.545f) * Meter, RealNum{0.0f} * Radian);
+            ground->CreateFixture(std::make_shared<PolygonShape>(shape));
+            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
+                     Vec2(20.01f, 3.545f) * Meter, RealNum{0.0f} * Radian);
+            ground->CreateFixture(std::make_shared<PolygonShape>(shape));
+            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
+                     Vec2(20.01f, 4.545f) * Meter, RealNum{0.0f} * Radian);
+            ground->CreateFixture(std::make_shared<PolygonShape>(shape));
+            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
+                     Vec2(20.01f, 5.545f) * Meter, RealNum{0.0f} * Radian);
+            ground->CreateFixture(std::make_shared<PolygonShape>(shape));
+            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
+                     Vec2(20.01f, 6.545f) * Meter, RealNum{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
 
             shape.SetVertexRadius(RealNum(0.006f) * Meter);
-            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter, Vec2(-17.99f, 0.545f) * Meter, RealNum{0.0f} * Radian);
+            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
+                     Vec2(17.99f, 0.545f) * Meter, RealNum{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter, Vec2(-17.99f, 1.545f) * Meter, RealNum{0.0f} * Radian);
+            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
+                     Vec2(17.99f, 1.545f) * Meter, RealNum{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter, Vec2(-17.99f, 2.545f) * Meter, RealNum{0.0f} * Radian);
+            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
+                     Vec2(17.99f, 2.545f) * Meter, RealNum{0.0f} * Radian);
+            ground->CreateFixture(std::make_shared<PolygonShape>(shape));
+            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
+                     Vec2(17.99f, 3.545f) * Meter, RealNum{0.0f} * Radian);
+            ground->CreateFixture(std::make_shared<PolygonShape>(shape));
+            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
+                     Vec2(17.99f, 4.545f) * Meter, RealNum{0.0f} * Radian);
+            ground->CreateFixture(std::make_shared<PolygonShape>(shape));
+            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
+                     Vec2(17.99f, 5.545f) * Meter, RealNum{0.0f} * Radian);
+            ground->CreateFixture(std::make_shared<PolygonShape>(shape));
+            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
+                     Vec2(17.99f, 6.545f) * Meter, RealNum{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
         }
 
-        // Collinear edges with no adjacency information.
-        // This shows the problematic case where a box shape can hit
-        // an internal vertex.
+        // Collinear edges.
         {
-            const auto ground = m_world->CreateBody();
-
             EdgeShape shape;
             shape.Set(Vec2(-8.0f, 1.0f) * Meter, Vec2(-6.0f, 1.0f) * Meter);
             ground->CreateFixture(std::make_shared<EdgeShape>(shape));
@@ -76,10 +97,8 @@ public:
             ground->CreateFixture(std::make_shared<EdgeShape>(shape));
         }
 
-        // Collinear 2-gons with no adjacency information.
+        // Collinear 2-gons.
         {
-            const auto ground = m_world->CreateBody();
-            
             PolygonShape shape;
             shape.Set({Vec2(-8.0f, 20.0f) * Meter, Vec2(-6.0f, 20.0f) * Meter});
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
@@ -91,25 +110,17 @@ public:
 
         // Chain shape
         {
-            BodyDef bd;
-            bd.angle = RealNum{0.25f} * Radian * Pi;
-            const auto ground = m_world->CreateBody(bd);
-
+            const auto body = m_world->CreateBody(BodyDef{}.UseAngle(RealNum{45} * Degree));
             auto conf = ChainShape::Conf{};
             conf.vertices.push_back(Vec2(5.0f, 7.0f) * Meter);
             conf.vertices.push_back(Vec2(6.0f, 8.0f) * Meter);
             conf.vertices.push_back(Vec2(7.0f, 8.0f) * Meter);
             conf.vertices.push_back(Vec2(8.0f, 7.0f) * Meter);
-            ground->CreateFixture(std::make_shared<ChainShape>(conf));
+            body->CreateFixture(std::make_shared<ChainShape>(conf));
         }
 
-        // Square tiles. This shows that adjacency shapes may
-        // have non-smooth collision. There is no solution
-        // to this problem.
+        // Square tiles.
         {
-            BodyDef bd;
-            const auto ground = m_world->CreateBody(bd);
-
             PolygonShape shape;
             SetAsBox(shape, RealNum{1.0f} * Meter, RealNum{1.0f} * Meter, Vec2(4.0f, 3.0f) * Meter, RealNum{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
@@ -121,9 +132,6 @@ public:
 
         // Square made from an edge loop. Collision should be smooth.
         {
-            BodyDef bd;
-            const auto ground = m_world->CreateBody(bd);
-
             auto conf = ChainShape::Conf{};
             conf.vertices.push_back(Vec2(-1.0f, 3.0f) * Meter);
             conf.vertices.push_back(Vec2(1.0f, 3.0f) * Meter);
@@ -135,10 +143,7 @@ public:
 
         // Edge loop. Collision should be smooth.
         {
-            BodyDef bd;
-            bd.position = Vec2(-10.0f, 4.0f) * Meter;
-            const auto ground = m_world->CreateBody(bd);
-
+            const auto body = m_world->CreateBody(BodyDef{}.UseLocation(Vec2(-10.0f, 4.0f) * Meter));
             auto conf = ChainShape::Conf{};
             conf.vertices.push_back(Vec2(0.0f, 0.0f) * Meter);
             conf.vertices.push_back(Vec2(6.0f, 0.0f) * Meter);
@@ -151,7 +156,7 @@ public:
             conf.vertices.push_back(Vec2(-6.0f, 2.0f) * Meter);
             conf.vertices.push_back(Vec2(-6.0f, 0.0f) * Meter);
             conf.vertices.push_back(conf.vertices[0]); // to loop back completely.
-            ground->CreateFixture(std::make_shared<ChainShape>(conf));
+            body->CreateFixture(std::make_shared<ChainShape>(conf));
         }
 
         // Square character 1
@@ -171,7 +176,7 @@ public:
             const auto square = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter, conf);
             body->CreateFixture(square);
             
-            bd.position = Vec2(-19.5f, 1.0f) * Meter;
+            bd.position = Vec2(19.0f, 7.0f) * Meter;
             const auto body2 = m_world->CreateBody(bd);
             body2->CreateFixture(square);
         }
@@ -258,11 +263,7 @@ public:
 
     void PostStep(const Settings&, Drawer& drawer) override
     {
-        drawer.DrawString(5, m_textLine, "This tests various character collision shapes.");
-        m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, "Limitation: square and hexagon can snag on aligned boxes.");
-        m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, "Feature: edge chains have smooth collision inside and out.");
+        drawer.DrawString(5, m_textLine, "This tests various character collision shapes for snag-free smooth sliding.");
         m_textLine += DRAW_STRING_NEW_LINE;
     }
 
