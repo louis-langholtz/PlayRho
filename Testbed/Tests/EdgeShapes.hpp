@@ -181,7 +181,8 @@ public:
         Length2D point;
         UnitVec2 normal;
 
-        m_world->RayCast(point1, point2, [&](Fixture* f, const Length2D& p, const UnitVec2& n) {
+        m_world->RayCast(point1, point2, [&](Fixture* f, const child_count_t,
+                                             const Length2D& p, const UnitVec2& n) {
             fixture = f;
             point = p;
             normal = n;

@@ -170,7 +170,8 @@ public:
 
     /// @brief Query AABB for fixtures callback function type.
     /// @note Returning true will continue the query. Returning false will terminate the query.
-    using QueryFixtureCallback = std::function<bool(Fixture* fixture)>;
+    using QueryFixtureCallback = std::function<bool(Fixture* fixture,
+                                                    const child_count_t child)>;
 
     /// @brief Queries the world for all fixtures that potentially overlap the provided AABB.
     /// @param aabb the query box.
@@ -184,7 +185,9 @@ public:
     enum class RayCastOpcode;
 
     /// @brief Ray cast callback function signature.
-    using RayCastCallback = std::function<RayCastOpcode(Fixture* fixture, const Length2D& point,
+    using RayCastCallback = std::function<RayCastOpcode(Fixture* fixture,
+                                                        const child_count_t child,
+                                                        const Length2D& point,
                                                         const UnitVec2& normal)>;
 
     /// @brief Ray-cast the world for all fixtures in the path of the ray.

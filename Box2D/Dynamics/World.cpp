@@ -1705,7 +1705,7 @@ void World::QueryAABB(const AABB& aabb, QueryFixtureCallback callback)
 {
     m_broadPhase.Query(aabb, [&](BroadPhase::size_type proxyId) {
         const auto proxy = static_cast<FixtureProxy*>(m_broadPhase.GetUserData(proxyId));
-        return callback(proxy->fixture);
+        return callback(proxy->fixture, proxy->childIndex);
     });
 }
 
@@ -1744,7 +1744,7 @@ void World::RayCast(const Length2D& point1, const Length2D& point2, RayCastCallb
             const auto point = input.p1 + (input.p2 - input.p1) * fraction;
             
             // Callback return states: terminate (0), ignore (< 0), clip (< 1), reset (1).
-            const auto opcode = callback(fixture, point, output.normal);
+            const auto opcode = callback(fixture, index, point, output.normal);
             switch (opcode)
             {
                 case RayCastOpcode::Terminate: return RealNum(0);
