@@ -717,15 +717,15 @@ TEST(Math, GetCircleVertices)
     }
     {
         const auto vertices = GetCircleVertices(Length{0}, 1);
-        EXPECT_EQ(vertices, std::vector<Length2D>({Vec2_zero, Vec2_zero}));
+        EXPECT_EQ(vertices, std::vector<Length2D>({Vec2_zero * Meter, Vec2_zero * Meter}));
     }
     {
         const auto vertices = GetCircleVertices(Length{0}, 2);
-        EXPECT_EQ(vertices, std::vector<Length2D>({Vec2_zero, Vec2_zero, Vec2_zero}));
+        EXPECT_EQ(vertices, std::vector<Length2D>({Vec2_zero * Meter, Vec2_zero * Meter, Vec2_zero * Meter}));
     }
     {
         const auto vertices = GetCircleVertices(Length{0}, 3);
-        EXPECT_EQ(vertices, std::vector<Length2D>({Vec2_zero, Vec2_zero, Vec2_zero, Vec2_zero}));
+        EXPECT_EQ(vertices, std::vector<Length2D>({Vec2_zero * Meter, Vec2_zero * Meter, Vec2_zero * Meter, Vec2_zero * Meter}));
     }
     {
         const auto vertices = GetCircleVertices(RealNum(1) * Meter, 0);
