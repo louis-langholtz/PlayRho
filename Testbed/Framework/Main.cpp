@@ -169,12 +169,20 @@ namespace
 
     Camera camera;
     
-    GLFWwindow* mainWindow = nullptr;
     UIState ui;
 
     Settings settings;
-    bool rightMouseDown;
+    auto rightMouseDown = false;
+    auto leftMouseDown = false;
     Length2D lastp;
+    
+    Coord2D mouseScreen = Coord2D{0.0, 0.0};
+    Length2D mouseWorld = Vec2_zero * Meter;
+    
+    const auto menuY = 10;
+    const auto menuWidth = 200;
+    auto menuX = 0;
+    auto menuHeight = 0;
 }
 
 static auto GetCwd()
@@ -252,6 +260,9 @@ static void ResizeWindow(GLFWwindow*, int width, int height)
 {
     camera.m_width = width;
     camera.m_height = height;
+    
+    menuX = camera.m_width - menuWidth - 10;
+    menuHeight = camera.m_height - 20;
 }
 
 static Test::Key GlfwKeyToTestKey(int key)
@@ -304,7 +315,7 @@ static Test::Key GlfwKeyToTestKey(int key)
     return Test::Key_Unknown;
 }
 
-static void KeyCallback(GLFWwindow*, int key, int scancode, int action, int mods)
+static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     NOT_USED(scancode);
 
@@ -314,7 +325,7 @@ static void KeyCallback(GLFWwindow*, int key, int scancode, int action, int mods
         {
         case GLFW_KEY_ESCAPE:
             // Quit
-            glfwSetWindowShouldClose(mainWindow, GL_TRUE);
+            glfwSetWindowShouldClose(window, GL_TRUE);
             break;
 
         case GLFW_KEY_LEFT:
@@ -426,61 +437,79 @@ static void KeyCallback(GLFWwindow*, int key, int scancode, int action, int mods
     // else GLFW_REPEAT
 }
 
-static void MouseButton(GLFWwindow*, int button, int action, int mods)
+static void MouseButton(GLFWwindow*, const int button, const int action, const int mods)
 {
-    double xd, yd;
-    glfwGetCursorPos(mainWindow, &xd, &yd);
-    const auto ps = Coord2D{(float)xd, (float)yd};
+    const auto forMenu = (mouseScreen.x >= menuX);
 
-    // Use the mouse to move things around.
-    if (button == GLFW_MOUSE_BUTTON_1)
+    switch (button)
     {
-        const auto pw = ConvertScreenToWorld(camera, ps);
-        if (action == GLFW_PRESS)
+        case GLFW_MOUSE_BUTTON_LEFT:
         {
-            if (mods == GLFW_MOD_SHIFT)
+            switch (action)
             {
-                g_testSuite->GetTest()->ShiftMouseDown(pw);
+                case GLFW_PRESS:
+                    leftMouseDown = true;
+                    if (!forMenu)
+                    {
+                        if (mods == GLFW_MOD_SHIFT)
+                        {
+                            g_testSuite->GetTest()->ShiftMouseDown(mouseWorld);
+                        }
+                        else
+                        {
+                            g_testSuite->GetTest()->MouseDown(mouseWorld);
+                        }
+                    }
+                    break;
+                case GLFW_RELEASE:
+                    leftMouseDown = false;
+                    if (!forMenu)
+                    {
+                        g_testSuite->GetTest()->MouseUp(mouseWorld);
+                    }
+                    break;
+                default:
+                    break;
             }
-            else
+            break;
+        }
+        case GLFW_MOUSE_BUTTON_RIGHT:
+        {
+            switch (action)
             {
-                g_testSuite->GetTest()->MouseDown(pw);
+                case GLFW_PRESS:
+                    lastp = mouseWorld;
+                    rightMouseDown = true;
+                    break;
+                case GLFW_RELEASE:
+                    rightMouseDown = false;
+                    break;
+                default:
+                    break;
             }
         }
-        
-        if (action == GLFW_RELEASE)
-        {
-            g_testSuite->GetTest()->MouseUp(pw);
-        }
-    }
-    else if (button == GLFW_MOUSE_BUTTON_2)
-    {
-        if (action == GLFW_PRESS)
-        {    
-            lastp = ConvertScreenToWorld(camera, ps);
-            rightMouseDown = true;
-        }
-
-        if (action == GLFW_RELEASE)
-        {
-            rightMouseDown = false;
-        }
+        default:
+            break;
     }
 }
 
 static void MouseMotion(GLFWwindow*, double xd, double yd)
 {
-    const auto ps = Coord2D{static_cast<float>(xd), static_cast<float>(yd)};
-    const auto pw = ConvertScreenToWorld(camera, ps);
+    // Expects that xd and yd are the new mouse position coordinates,
+    // in screen coordinates, relative to the upper-left corner of the
+    // client area of the window.
+    
+    mouseScreen = Coord2D{static_cast<float>(xd), static_cast<float>(yd)};
+    mouseWorld = ConvertScreenToWorld(camera, mouseScreen);
 
-    g_testSuite->GetTest()->MouseMove(pw);
+    g_testSuite->GetTest()->MouseMove(mouseWorld);
     
     if (rightMouseDown)
     {
-        const auto movement = pw - lastp;
+        const auto movement = mouseWorld - lastp;
         camera.m_center.x -= static_cast<float>(RealNum{movement.x / Meter});
         camera.m_center.y -= static_cast<float>(RealNum{movement.y / Meter});
-        lastp = ConvertScreenToWorld(camera, ps);
+        lastp = ConvertScreenToWorld(camera, mouseScreen);
     }
 }
 
@@ -537,19 +566,19 @@ static void Simulate(Drawer& drawer)
     }
 }
 
-static void UserInterface()
+static bool UserInterface(int mousex, int mousey, unsigned char mousebutton, int mscroll)
 {
-    const auto menuWidth = 200;
+    auto shouldQuit = false;
+
+    imguiBeginFrame(mousex, mousey, mousebutton, mscroll);
+
     ui.mouseOverMenu = false;
     if (ui.showMenu)
     {
         const auto over = imguiBeginScrollArea("Testbed Controls",
-                                               camera.m_width - menuWidth - 10, 10,
-                                               menuWidth, camera.m_height - 20,
+                                               menuX, menuY, menuWidth, menuHeight,
                                                &ui.scrollarea1);
         if (over) ui.mouseOverMenu = true;
-
-        imguiSeparatorLine();
 
         imguiLabel("Test:");
         if (imguiButton(g_testSuite->GetName(), true))
@@ -631,7 +660,7 @@ static void UserInterface()
         if (imguiButton("Restart", true))
             g_testSuite->RestartTest();
         if (imguiButton("Quit", true))
-            glfwSetWindowShouldClose(mainWindow, GL_TRUE);
+            shouldQuit = true;
 
         imguiEndScrollArea();
     }
@@ -661,11 +690,34 @@ static void UserInterface()
     }
 
     imguiEndFrame();
+    
+    return !shouldQuit;
 }
 
 static void GlfwErrorCallback(int code, const char* str)
 {
     fprintf(stderr, "GLFW error (%d): %s\n", code, str);
+}
+
+static void ShowFrameInfo(double frameTime, double fps)
+{
+    std::stringstream stream;
+    const auto viewport = ConvertScreenToWorld(camera);
+    stream << "Zoom=" << camera.m_zoom;
+    stream << " Center=";
+    stream << "{" << camera.m_center.x << "," << camera.m_center.y << "}";
+    stream << " Viewport=";
+    stream << "{";
+    stream << viewport.GetLowerBound().x << "..." << viewport.GetUpperBound().x;
+    stream << ", ";
+    stream << viewport.GetLowerBound().y << "..." << viewport.GetUpperBound().y;
+    stream << "}";
+    stream << std::setprecision(1);
+    stream << std::fixed;
+    stream << " Refresh=" << (1000.0 * frameTime) << "ms";
+    stream << std::setprecision(0);
+    stream << " FPS=" << fps;
+    AddGfxCmdText(5, 5, TEXT_ALIGN_LEFT, stream.str().c_str(), static_cast<unsigned int>(WHITE));
 }
 
 int main()
@@ -682,6 +734,8 @@ int main()
 
     camera.m_width = 1280; // 1152;
     camera.m_height = 960; // 864;
+    menuX = camera.m_width - menuWidth - 10;
+    menuHeight = camera.m_height - 20;
 
     if (glfwSetErrorCallback(GlfwErrorCallback))
     {
@@ -706,10 +760,11 @@ int main()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-    mainWindow = glfwCreateWindow(camera.m_width, camera.m_height, title, nullptr, nullptr);
+    const auto mainWindow = glfwCreateWindow(camera.m_width, camera.m_height, title,
+                                             nullptr, nullptr);
     if (mainWindow == nullptr)
     {
-        fprintf(stderr, "Failed to open GLFW mainWindow.\n");
+        fprintf(stderr, "Failed to open GLFW main window.\n");
         glfwTerminate();
         return -1;
     }
@@ -746,33 +801,22 @@ int main()
     auto fps = 0.0;
     
     glClearColor(0.3f, 0.3f, 0.3f, 1.f);
-    
     {
         DebugDraw drawer(camera);
         while (!glfwWindowShouldClose(mainWindow))
         {
-            glfwGetWindowSize(mainWindow, &camera.m_width, &camera.m_height);
             glViewport(0, 0, camera.m_width, camera.m_height);
-
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            unsigned char mousebutton = 0;
             const auto mscroll = ui.scroll;
             ui.scroll = 0;
-
-            double xd, yd;
-            glfwGetCursorPos(mainWindow, &xd, &yd);
-            const auto mousex = int(xd);
-            const auto mousey = camera.m_height - int(yd);
-
-            const auto leftButton = glfwGetMouseButton(mainWindow, GLFW_MOUSE_BUTTON_LEFT);
-            if (leftButton == GLFW_PRESS)
-                mousebutton |= IMGUI_MBUT_LEFT;
-
-            imguiBeginFrame(mousex, mousey, mousebutton, mscroll);
+            const auto mousex = int(mouseScreen.x);
+            const auto mousey = camera.m_height - int(mouseScreen.y);
+            unsigned char mousebutton = (leftMouseDown)? IMGUI_MBUT_LEFT: 0;
+            if (!UserInterface(mousex, mousey, mousebutton, mscroll))
+	            glfwSetWindowShouldClose(mainWindow, GL_TRUE);
 
             Simulate(drawer);
-            UserInterface();
             
             // Measure speed
             const auto time2 = glfwGetTime();
@@ -781,26 +825,7 @@ int main()
             frameTime = alpha * frameTime + (1.0 - alpha) * timeElapsed;
             fps = 0.99 * fps + (1.0 - 0.99) / timeElapsed;
             time1 = time2;
-
-            {
-                std::stringstream stream;
-                const auto viewport = ConvertScreenToWorld(camera);
-                stream << "Zoom=" << camera.m_zoom;
-                stream << " Center=";
-                stream << "{" << camera.m_center.x << "," << camera.m_center.y << "}";
-                stream << " Viewport=";
-                stream << "{";
-                stream << viewport.GetLowerBound().x << "..." << viewport.GetUpperBound().x;
-                stream << ", ";
-                stream << viewport.GetLowerBound().y << "..." << viewport.GetUpperBound().y;
-                stream << "}";
-                stream << std::setprecision(1);
-                stream << std::fixed;
-                stream << " Refresh=" << (1000.0 * frameTime) << "ms";
-                stream << std::setprecision(0);
-                stream << " FPS=" << fps;
-                AddGfxCmdText(5, 5, TEXT_ALIGN_LEFT, stream.str().c_str(), static_cast<unsigned int>(WHITE));
-            }
+            ShowFrameInfo(frameTime, fps);
             
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -808,7 +833,6 @@ int main()
             RenderGLFlush(camera.m_width, camera.m_height);
 
             glfwSwapBuffers(mainWindow);
-
             glfwPollEvents();
         }
     }
