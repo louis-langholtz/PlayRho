@@ -20,15 +20,11 @@
  */
 
 #include <Box2D/Collision/Shapes/ChainShape.hpp>
-#include <Box2D/Collision/Shapes/EdgeShape.hpp>
-#include <Box2D/Collision/RayCastInput.hpp>
-
-#include <cstring>
 
 using namespace box2d;
 
 namespace {
-    
+#if 0
     inline bool IsEachVertexFarEnoughApart(Span<const Length2D> vertices)
     {
         for (auto i = decltype(vertices.size()){1}; i < vertices.size(); ++i)
@@ -43,7 +39,7 @@ namespace {
         }
         return true;
     }
-    
+#endif
 } // anonymous namespace
 
 ChainShape::ChainShape(const Conf& conf):
