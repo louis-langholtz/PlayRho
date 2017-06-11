@@ -30,21 +30,25 @@ namespace box2d
 {
     
     /// @brief Sweep.
+    ///
     /// @details This describes the motion of a body/shape for TOI computation.
     ///   Shapes are defined with respect to the body origin, which may
     ///   not coincide with the center of mass. However, to support dynamics
     ///   we must interpolate the center of mass position.
+    ///
     /// @note This data structure is likely 36-bytes (at least on 64-bit platforms).
+    ///
     class Sweep
     {
     public:
-        /// Default constructor.
+
+        /// @brief Default constructor.
         Sweep() = default;
         
-        /// Copy constructor.
+        /// @brief Copy constructor.
         constexpr Sweep(const Sweep& copy) = default;
         
-        /// Initializing constructor.
+        /// @brief Initializing constructor.
         constexpr Sweep(const Position p0, const Position p1,
                         const Length2D lc = Vec2_zero * Meter, RealNum a0 = 0) noexcept:
         	pos0{p0}, pos1{p1}, localCenter{lc}, alpha0{a0}
@@ -53,34 +57,50 @@ namespace box2d
             assert(a0 < 1);
         }
         
-        /// Initializing constructor.
-        constexpr explicit Sweep(const Position p, const Length2D lc = Vec2_zero * Meter): Sweep{p, p, lc, 0} {}
+        /// @brief Initializing constructor.
+        constexpr explicit Sweep(const Position p, const Length2D lc = Vec2_zero * Meter):
+        	Sweep{p, p, lc, 0}
+        {
+            // Intentionally empty.
+        }
         
-        /// Gets the local center of mass position.
-        /// @note This value can only be set via a sweep constructed using an initializing constructor.
+        /// @brief Gets the local center of mass position.
+        /// @note This value can only be set via a sweep constructed using an initializing
+        ///   constructor.
         Length2D GetLocalCenter() const noexcept { return localCenter; }
         
-        /// Gets the alpha0 for this sweep.
+        /// @brief Gets the alpha0 for this sweep.
         /// @return Value between 0 and less than 1.
         RealNum GetAlpha0() const noexcept { return alpha0; }
         
-        /// Advances the sweep by a factor of the difference between the given time alpha and the sweep's alpha0.
-        /// @details
-        /// This advances position 0 (<code>pos0</code>) of the sweep towards position 1 (<code>pos1</code>)
-        /// by a factor of the difference between the given alpha and the alpha0.
-        /// @param alpha Valid new time factor in [0,1) to update the sweep to. Behavior is undefined if value is invalid.
+        /// @brief Advances the sweep by a factor of the difference between the given time alpha
+        ///   and the sweep's alpha0.
+        /// @details This advances position 0 (<code>pos0</code>) of the sweep towards position
+        ///   1 (<code>pos1</code>) by a factor of the difference between the given alpha and
+        ///   the alpha0.
+        ///
+        /// @param alpha Valid new time factor in [0,1) to update the sweep to. Behavior is
+        ///   undefined if value is invalid.
+        ///
         void Advance0(RealNum alpha) noexcept;
         
+        /// @brief Resets the alpha 0 value back to zero.
+        /// @post Getting the alpha 0 value after calling this method will return zero.
         void ResetAlpha0() noexcept;
         
-        Position pos0; ///< Center world position and world angle at time "0". 12-bytes.
-        Position pos1; ///< Center world position and world angle at time "1". 12-bytes.
+        /// @brief Center world position and world angle at time "0".
+        Position pos0;
+
+        /// @brief Center world position and world angle at time "1".
+        Position pos1;
         
     private:
-        Length2D localCenter = Vec2_zero * Meter; ///< Local center of mass position. 8-bytes.
+        /// @brief Local center of mass position.
+        /// @note 8-bytes.
+        Length2D localCenter = Vec2_zero * Meter;
         
-        /// Fraction of the current time step in the range [0,1]
-        /// pos0.linear and pos0.angular are the positions at alpha0.
+        /// @brief Fraction of the current time step in the range [0,1]
+        /// @note pos0.linear and pos0.angular are the positions at alpha0.
         /// @note 4-bytes.
         RealNum alpha0 = 0;
     };
