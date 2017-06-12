@@ -21,7 +21,6 @@
 #define B2_CIRCLE_SHAPE_H
 
 #include <Box2D/Collision/Shapes/Shape.hpp>
-#include <Box2D/Common/InvalidArgument.hpp>
 
 namespace box2d {
 
