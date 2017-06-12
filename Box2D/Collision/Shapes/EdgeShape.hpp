@@ -45,8 +45,16 @@ public:
             // Intentionally empty.
         }
         
-        constexpr Conf& UseVertex1(Length2D value) noexcept;
-        constexpr Conf& UseVertex2(Length2D value) noexcept;
+        constexpr Conf& UseVertex1(Length2D value) noexcept
+        {
+            vertex1 = value;
+            return *this;
+        }
+        constexpr Conf& UseVertex2(Length2D value) noexcept
+        {
+            vertex2 = value;
+            return *this;
+        }
 
         Length2D vertex1 = Vec2_zero * Meter;
         Length2D vertex2 = Vec2_zero * Meter;
