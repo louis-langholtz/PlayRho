@@ -3,17 +3,19 @@
  * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
@@ -49,19 +51,22 @@ namespace box2d
     {
     public:
         
-        /// Default constructor.
+        /// @brief Non-throwing default constructor.
         /// @details Constructs an empty AABB. If an empty AABB is added to another AABB, the
         ///   result will always be the other AABB.
-        AABB() = default;
+        constexpr AABB() noexcept
+        {
+            // Intentionally empty.
+        }
         
-        /// Initializing constructor for a single point.
+        /// @brief Non-throwing initializing constructor for a single point.
         constexpr AABB(const Length2D p) noexcept:
             lowerBound{p}, upperBound{p}
         {
             // Intentionally empty.
         }
         
-        /// Initializing constructor for two points.
+        /// @brief Non-throwing initializing constructor for two points.
         constexpr AABB(const Length2D a, const Length2D b) noexcept:
             lowerBound{Length2D{Min(a.x, b.x), Min(a.y, b.y)}},
             upperBound{Length2D{Max(a.x, b.x), Max(a.y, b.y)}}
@@ -69,11 +74,28 @@ namespace box2d
             // Intentionally empty.
         }
         
+        /// @brief Explicitly defined non-throwing copy constructor.
+        constexpr AABB(const AABB& copy) noexcept:
+            lowerBound{copy.lowerBound}, upperBound{copy.upperBound}
+        {
+            // Intentionally empty.
+        }
+
+        /// @brief Explicitly defined non-throwing copy assignment operator.
+        constexpr AABB& operator= (const AABB copy) noexcept
+        {
+            lowerBound = copy.lowerBound;
+            upperBound = copy.upperBound;
+            return *this;
+        }
+
+        /// @brief Gets the lower bound.
         constexpr Length2D GetLowerBound() const noexcept { return lowerBound; }
         
+        /// @brief Gets the upper bound.
         constexpr Length2D GetUpperBound() const noexcept { return upperBound; }
         
-        /// Does this AABB fully contain the given AABB.
+        /// @brief Checks whether this AABB fully contains the given AABB.
         constexpr bool Contains(const AABB aabb) const noexcept
         {
             const auto lower = GetLowerBound();
@@ -85,7 +107,7 @@ namespace box2d
             (other_upper.x <= upper.x) && (other_upper.y <= upper.y);
         }
         
-        /// Combine an AABB into this one.
+        /// @brief Includes an AABB into this one.
         constexpr AABB& Include(const AABB aabb) noexcept
         {
             lowerBound = Length2D{Min(lowerBound.x, aabb.lowerBound.x), Min(lowerBound.y, aabb.lowerBound.y)};
@@ -93,6 +115,7 @@ namespace box2d
             return *this;
         }
         
+        /// @brief Includes a point into this AABB.
         constexpr AABB& Include(const Length2D value) noexcept
         {
             lowerBound = Length2D{Min(lowerBound.x, value.x), Min(lowerBound.y, value.y)};
@@ -100,6 +123,7 @@ namespace box2d
             return *this;
         }
 
+        /// @brief Moves this AABB by the given value.
         constexpr AABB& Move(const Length2D value) noexcept
         {
             lowerBound += value;
@@ -107,6 +131,7 @@ namespace box2d
             return *this;
         }
         
+        /// @brief Displaces this AABB by the given value.
         constexpr AABB& Displace(const Length2D value) noexcept
         {
             if (value.x < decltype(value.x){0})
@@ -129,7 +154,7 @@ namespace box2d
             return *this;
         }
         
-        /// Fattens an AABB by the given amount.
+        /// @brief Fattens an AABB by the given amount.
         constexpr AABB& Fatten(const NonNegative<Length> amount) noexcept
         {
             const auto value = Length{amount};
