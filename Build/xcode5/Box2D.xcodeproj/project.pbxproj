@@ -452,6 +452,7 @@
 		470F9B331EDF6C82007EF7B6 /* RealNum.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RealNum.hpp; sourceTree = "<group>"; };
 		470F9B381EDF6F0D007EF7B6 /* RealNum.hpp.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = RealNum.hpp.in; sourceTree = "<group>"; };
 		470F9B3A1EE63515007EF7B6 /* InvalidArgument.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = InvalidArgument.hpp; sourceTree = "<group>"; };
+		470F9B491EEE40AA007EF7B6 /* BagOfDisks.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BagOfDisks.hpp; sourceTree = "<group>"; };
 		4726DD0C1D3014990012A882 /* IndexPair.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IndexPair.hpp; sourceTree = "<group>"; };
 		4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactFeature.hpp; sourceTree = "<group>"; };
 		4726DD261D3180980012A882 /* NewtonsCradle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NewtonsCradle.hpp; sourceTree = "<group>"; };
@@ -1096,6 +1097,7 @@
 				4751C34C1EC25951006D9E69 /* README.md */,
 				80BB8A3E141C3E8500F1753A /* AddPair.hpp */,
 				80BB8A3F141C3E8500F1753A /* ApplyForce.hpp */,
+				470F9B491EEE40AA007EF7B6 /* BagOfDisks.hpp */,
 				8066C2311890307100985759 /* BasicSliderCrank.hpp */,
 				80BB8A40141C3E8500F1753A /* BodyTypes.hpp */,
 				80BB8A41141C3E8500F1753A /* Breakable.hpp */,
@@ -2019,7 +2021,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_STATIC_ANALYZER_MODE = deep;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -2041,7 +2042,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_STATIC_ANALYZER_MODE = deep;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEPLOYMENT_LOCATION = YES;

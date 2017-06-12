@@ -21,6 +21,7 @@
 
 #include "../Tests/AddPair.hpp"
 #include "../Tests/ApplyForce.hpp"
+#include "../Tests/BagOfDisks.hpp"
 #include "../Tests/BasicSliderCrank.hpp"
 #include "../Tests/BodyTypes.hpp"
 #include "../Tests/Breakable.hpp"
@@ -91,6 +92,7 @@ static const TestEntry testEntries[] =
     {"Heavy on Light", MakeUniqueTest<HeavyOnLight>},
     {"Heavy on Light Two", MakeUniqueTest<HeavyOnLightTwo>},
     {"Vertical Stack", MakeUniqueTest<VerticalStack>},
+    {"Bag of Disks", MakeUniqueTest<BagOfDisks>},
     {"Basic Slider Crank", MakeUniqueTest<BasicSliderCrank>},
     {"Slider Crank", MakeUniqueTest<SliderCrank>},
     {"Sphere Stack", MakeUniqueTest<SphereStack>},
