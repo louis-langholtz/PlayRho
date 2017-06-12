@@ -1,21 +1,21 @@
 /*
-* Original work Copyright (c) 2011 Erin Catto http://www.box2d.org
-* Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+ * Original work Copyright (c) 2011 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty.  In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 1. The origin of this software must not be misrepresented; you must not
+ * claim that you wrote the original software. If you use this software
+ * in a product, an acknowledgment in the product documentation would be
+ * appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ * misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
 
 #ifndef TUMBLER_H
 #define TUMBLER_H
@@ -28,14 +28,17 @@ class Tumbler : public Test
 {
 public:
 
-    enum
+    static constexpr auto Count = 800;
+
+    enum class ShapeType
     {
-        e_count = 800
+        Square, Disk
     };
 
     Tumbler()
     {
-        m_shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
+        m_square->SetDensity(RealNum(1) * KilogramPerSquareMeter);
+        m_disk->SetDensity(RealNum(0.1) * KilogramPerSquareMeter);
 
         const auto g = m_world->CreateBody(BodyDef{}.UseType(BodyType::Static));
 
@@ -66,38 +69,92 @@ public:
         m_joint = static_cast<RevoluteJoint*>(m_world->CreateJoint(jd));
     }
 
-    void PostStep(const Settings&, Drawer&) override
+    void PostStep(const Settings&, Drawer& drawer) override
     {
-        if (m_count < e_count)
+        drawer.DrawString(5, m_textLine,
+                          "Press C to clear and re-emit shapes. "
+                          "Press 0 or 1 for remaining emitted shapes to be disks or squares.");
+        m_textLine += DRAW_STRING_NEW_LINE;
+        drawer.DrawString(5, m_textLine, "Press '+' or '-' to speed up or slow down rotation.");
+        m_textLine += DRAW_STRING_NEW_LINE;
+
+        if (m_count < Count)
         {
             const auto body = m_world->CreateBody(BodyDef{}
                                                   .UseType(BodyType::Dynamic)
-                                                  .UseLocation(Vec2(0, 10) * Meter));
-            body->CreateFixture(m_shape);
+                                                  .UseLocation(Vec2(0, 10) * Meter)
+                                                  .UseUserData(reinterpret_cast<void*>(1)));
+            switch (m_shapeType)
+            {
+                case ShapeType::Square:
+                    body->CreateFixture(m_square);
+                    break;
+                case ShapeType::Disk:
+                    body->CreateFixture(m_disk);
+                    break;
+            }
             ++m_count;
         }
     }
 
     void KeyboardDown(Key key) override
     {
+        const auto selectedFixture = GetSelectedFixture();
+        const auto selectedShape = selectedFixture?
+            selectedFixture->GetShape(): static_cast<Shape*>(nullptr);
+
         switch (key)
         {
             case Key_Add:
-                m_joint->SetMotorSpeed(m_joint->GetMotorSpeed() + 0.01f * Pi * RadianPerSecond);
+                if (selectedShape)
+                    selectedShape->GetDensity();
+                else
+                    m_joint->SetMotorSpeed(m_joint->GetMotorSpeed() + 0.01f * Pi * RadianPerSecond);
                 break;
             
             case Key_Subtract:
                 m_joint->SetMotorSpeed(m_joint->GetMotorSpeed() - 0.01f * Pi * RadianPerSecond);
                 break;
-    
+                
+            case Key_0:
+                m_shapeType = ShapeType::Disk;
+                break;
+                
+            case Key_1:
+                m_shapeType = ShapeType::Square;
+                break;
+                
+            case Key_C:
+            {
+                std::vector<Body*> bodies;
+                for (auto&& b: m_world->GetBodies())
+                {
+                    if (b.GetUserData() == reinterpret_cast<void*>(1))
+                    {
+                        bodies.push_back(&b);
+                    }
+                }
+                for (auto&& b: bodies)
+                {
+                    m_world->Destroy(b);
+                }
+                m_count = 0;
+                break;
+            }
+
             default:
                 break;
         }
     }
 
     RevoluteJoint* m_joint;
+    ShapeType m_shapeType = ShapeType::Square;
     int m_count = 0;
-    std::shared_ptr<PolygonShape> m_shape = std::make_shared<PolygonShape>(RealNum{0.125f} * Meter, RealNum{0.125f} * Meter);
+    std::shared_ptr<PolygonShape> m_square = std::make_shared<PolygonShape>(RealNum{0.125f} * Meter,
+                                                                            RealNum{0.125f} * Meter);
+    std::shared_ptr<DiskShape> m_disk = std::make_shared<DiskShape>(DiskShape::Conf{}
+                                                                    .UseVertexRadius(RealNum(0.125f) * Meter)
+                                                                    .UseFriction(RealNum(0)));
 };
 
 } // namespace box2d
