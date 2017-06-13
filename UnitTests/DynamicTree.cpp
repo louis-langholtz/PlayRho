@@ -72,6 +72,60 @@ TEST(DynamicTree, InitializingConstruction)
     EXPECT_TRUE(foo.Validate());
 }
 
+TEST(DynamicTree, CopyConstruction)
+{
+    DynamicTree orig;
+    {
+        DynamicTree copy{orig};
+        EXPECT_EQ(copy.GetRootIndex(), orig.GetRootIndex());
+        EXPECT_EQ(copy.GetNodeCapacity(), orig.GetNodeCapacity());
+        EXPECT_EQ(copy.GetHeight(), orig.GetHeight());
+        EXPECT_EQ(copy.GetAreaRatio(), orig.GetAreaRatio());
+        EXPECT_EQ(copy.GetNodeCount(), orig.GetNodeCount());
+        EXPECT_EQ(copy.GetMaxBalance(), orig.GetMaxBalance());
+    }
+
+    const auto pid = orig.CreateProxy(AABB{Vec2(0, 0) * Meter, Vec2(1, 1) * Meter}, &orig);
+    {
+        DynamicTree copy{orig};
+        EXPECT_EQ(copy.GetRootIndex(), orig.GetRootIndex());
+        EXPECT_EQ(copy.GetNodeCapacity(), orig.GetNodeCapacity());
+        EXPECT_EQ(copy.GetHeight(), orig.GetHeight());
+        EXPECT_EQ(copy.GetAreaRatio(), orig.GetAreaRatio());
+        EXPECT_EQ(copy.GetNodeCount(), orig.GetNodeCount());
+        EXPECT_EQ(copy.GetMaxBalance(), orig.GetMaxBalance());
+        EXPECT_EQ(copy.GetUserData(pid), orig.GetUserData(pid));
+    }
+}
+
+TEST(DynamicTree, CopyAssignment)
+{
+    DynamicTree orig;
+    {
+        DynamicTree copy;
+        copy = orig;
+        EXPECT_EQ(copy.GetRootIndex(), orig.GetRootIndex());
+        EXPECT_EQ(copy.GetNodeCapacity(), orig.GetNodeCapacity());
+        EXPECT_EQ(copy.GetHeight(), orig.GetHeight());
+        EXPECT_EQ(copy.GetAreaRatio(), orig.GetAreaRatio());
+        EXPECT_EQ(copy.GetNodeCount(), orig.GetNodeCount());
+        EXPECT_EQ(copy.GetMaxBalance(), orig.GetMaxBalance());
+    }
+    
+    const auto pid = orig.CreateProxy(AABB{Vec2(0, 0) * Meter, Vec2(1, 1) * Meter}, &orig);
+    {
+        DynamicTree copy;
+        copy = orig;
+        EXPECT_EQ(copy.GetRootIndex(), orig.GetRootIndex());
+        EXPECT_EQ(copy.GetNodeCapacity(), orig.GetNodeCapacity());
+        EXPECT_EQ(copy.GetHeight(), orig.GetHeight());
+        EXPECT_EQ(copy.GetAreaRatio(), orig.GetAreaRatio());
+        EXPECT_EQ(copy.GetNodeCount(), orig.GetNodeCount());
+        EXPECT_EQ(copy.GetMaxBalance(), orig.GetMaxBalance());
+        EXPECT_EQ(copy.GetUserData(pid), orig.GetUserData(pid));
+    }
+}
+
 TEST(DynamicTree, CreateAndDestroyProxy)
 {
     DynamicTree foo;

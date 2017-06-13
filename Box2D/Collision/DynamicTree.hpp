@@ -141,6 +141,8 @@ public:
     /// @return <code>true</code> if valid, <code>false</code> otherwise.
     bool ValidateMetrics(size_type index) const noexcept;
 
+    size_type GetRootIndex() const noexcept;
+
     /// @brief Gets the height of the binary tree.
     /// @return Height of the tree (as stored in the root node) or 0 if the root node is not valid.
     size_type GetHeight() const noexcept;
@@ -254,6 +256,11 @@ constexpr DynamicTree::size_type DynamicTree::GetDefaultInitialNodeCapacity() no
     return size_type{16};
 }
 
+inline DynamicTree::size_type DynamicTree::GetRootIndex() const noexcept
+{
+    return m_root;
+}
+
 inline DynamicTree::size_type DynamicTree::GetNodeCapacity() const noexcept
 {
     return m_nodeCapacity;
@@ -285,7 +292,7 @@ inline DynamicTree::size_type DynamicTree::GetHeight() const noexcept
 
 inline DynamicTree::size_type DynamicTree::ComputeHeight() const noexcept
 {
-    return ComputeHeight(m_root);
+    return ComputeHeight(GetRootIndex());
 }
 
 } /* namespace box2d */
