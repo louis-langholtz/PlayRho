@@ -102,6 +102,8 @@ public:
     /// @return User data for the specified node.
     void* GetUserData(const size_type index) const noexcept;
 
+    void SetUserData(const size_type index, void* value) noexcept;
+
     /// @brief Gets the fat AABB for a proxy.
     /// @warning Behavior is undefined if the given index is not valid.
     /// @param index Proxy ID. Must be a valid ID.
@@ -276,6 +278,13 @@ inline void* DynamicTree::GetUserData(const size_type index) const noexcept
     assert(index != InvalidIndex);
     assert(index < m_nodeCapacity);
     return m_nodes[index].userData;
+}
+
+inline void DynamicTree::SetUserData(const size_type index, void* value) noexcept
+{
+    assert(index != InvalidIndex);
+    assert(index < m_nodeCapacity);
+    m_nodes[index].userData = value;
 }
 
 inline AABB DynamicTree::GetFatAABB(const size_type index) const noexcept

@@ -119,6 +119,8 @@ public:
     /// @brief Gets user data from a proxy.
     void* GetUserData(size_type proxyId) const;
 
+    void SetUserData(size_type proxyId, void* value);
+
     /// @brief Get the number of proxies.
     size_type GetProxyCount() const noexcept;
 
@@ -200,6 +202,11 @@ private:
 inline void* BroadPhase::GetUserData(size_type proxyId) const
 {
     return m_tree.GetUserData(proxyId);
+}
+
+inline void BroadPhase::SetUserData(size_type proxyId, void* value)
+{
+    m_tree.SetUserData(proxyId, value);
 }
 
 inline AABB BroadPhase::GetFatAABB(size_type proxyId) const
