@@ -18,6 +18,7 @@
  */
 
 #include <Box2D/Collision/BroadPhase.hpp>
+#include <cstring>
 
 using namespace box2d;
 
@@ -25,9 +26,42 @@ BroadPhase::BroadPhase(const Conf conf):
 	m_tree{conf.treeCapacity},
     m_pairCapacity{conf.pairCapacity},
     m_moveCapacity{conf.moveCapacity},
-    m_pairBuffer(alloc<ProxyIdPair>(conf.pairCapacity)),
-    m_moveBuffer(alloc<size_type>(conf.moveCapacity))
+    m_moveBuffer(alloc<size_type>(conf.moveCapacity)),
+    m_pairBuffer(alloc<ProxyIdPair>(conf.pairCapacity))
 {}
+
+BroadPhase::BroadPhase(const BroadPhase& copy):
+    m_tree{copy.m_tree},
+    m_proxyCount{copy.m_proxyCount},
+    m_moveCapacity{copy.m_moveCapacity},
+    m_moveCount{copy.m_moveCount},
+    m_pairCapacity{copy.m_pairCapacity},
+    m_moveBuffer{alloc<size_type>(copy.m_moveCapacity)},
+    m_pairBuffer{alloc<ProxyIdPair>(copy.m_pairCapacity)}
+{
+    std::memcpy(m_moveBuffer, copy.m_moveBuffer, copy.m_moveCapacity * sizeof(size_type));
+    std::memcpy(m_pairBuffer, copy.m_pairBuffer, copy.m_pairCapacity * sizeof(ProxyIdPair));
+}
+
+BroadPhase& BroadPhase::operator=(const BroadPhase& copy)
+{
+    if (&copy != this)
+    {
+        free(m_moveBuffer);
+        free(m_pairBuffer);
+        
+        m_tree = copy.m_tree;
+        m_proxyCount = copy.m_proxyCount;
+        m_moveCapacity = copy.m_moveCapacity;
+        m_moveCount = copy.m_moveCount;
+        m_pairCapacity = copy.m_pairCapacity;
+        m_moveBuffer = alloc<size_type>(copy.m_moveCapacity);
+        m_pairBuffer = alloc<ProxyIdPair>(copy.m_pairCapacity);
+        std::memcpy(m_moveBuffer, copy.m_moveBuffer, copy.m_moveCapacity * sizeof(size_type));
+        std::memcpy(m_pairBuffer, copy.m_pairBuffer, copy.m_pairCapacity * sizeof(ProxyIdPair));
+    }
+    return *this;
+}
 
 BroadPhase::~BroadPhase() noexcept
 {

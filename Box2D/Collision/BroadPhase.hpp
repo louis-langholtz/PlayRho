@@ -83,9 +83,9 @@ public:
 
     ~BroadPhase() noexcept;
     
-    BroadPhase(const BroadPhase& copy) = delete;
+    BroadPhase(const BroadPhase& copy);
 
-    BroadPhase& operator=(const BroadPhase&) = delete;
+    BroadPhase& operator=(const BroadPhase&);
 
     /// @brief Creates a proxy with an initial AABB.
     /// @note Pairs are not reported until UpdatePairs is called.
@@ -146,6 +146,8 @@ public:
     ///   to update the segment bounding box. Values less than zero are ignored.
     ///
     void RayCast(const RayCastInput& input, RayCastCallback callback) const;
+
+    size_type GetTreeCapacity() const noexcept;
 
     /// @brief Gets the height of the embedded tree.
     size_type GetTreeHeight() const noexcept;
@@ -225,6 +227,11 @@ inline BroadPhase::size_type BroadPhase::GetProxyCount() const noexcept
     return m_proxyCount;
 }
 
+inline BroadPhase::size_type BroadPhase::GetTreeCapacity() const noexcept
+{
+    return m_tree.GetNodeCapacity();
+}
+
 inline BroadPhase::size_type BroadPhase::GetTreeHeight() const noexcept
 {
     return m_tree.GetHeight();
@@ -278,6 +285,11 @@ inline bool TestOverlap(const BroadPhase& bp,
                         BroadPhase::size_type proxyIdA, BroadPhase::size_type proxyIdB)
 {
     return TestOverlap(bp.GetFatAABB(proxyIdA), bp.GetFatAABB(proxyIdB));
+}
+
+inline BroadPhase::Conf GetBroadPhaseConf(const BroadPhase& bp) noexcept
+{
+    return BroadPhase::Conf{bp.GetTreeCapacity(), bp.GetMoveCapacity(), bp.GetPairCapacity()};
 }
 
 } // namespace box2d
