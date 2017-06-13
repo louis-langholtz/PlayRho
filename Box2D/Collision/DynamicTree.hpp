@@ -65,8 +65,9 @@ public:
     /// @brief Destroys the tree, freeing the node pool.
     ~DynamicTree() noexcept;
 
-    DynamicTree(const DynamicTree& copy) = delete;
-    DynamicTree& operator=(const DynamicTree&) = delete;
+    DynamicTree(const DynamicTree& copy);
+
+    DynamicTree& operator=(const DynamicTree& copy);
 
     /// @brief Creates a new proxy.
     /// @details Creates a proxy for a tight fitting AABB and a userData pointer.
@@ -177,6 +178,8 @@ public:
     /// @brief Gets the current node capacity of this tree.
     size_type GetNodeCapacity() const noexcept;
     
+    void SetNodeCapacity(size_type value);
+
     /// @brief Gets the current node count.
     /// @return Count of existing proxies (count of nodes currently allocated).
     size_type GetNodeCount() const noexcept;

@@ -40,6 +40,38 @@ DynamicTree::DynamicTree(const size_type nodeCapacity):
     m_nodes[nodeCapacity - 1].height = InvalidIndex;
 }
 
+DynamicTree::DynamicTree(const DynamicTree& copy):
+    m_nodes{alloc<TreeNode>(copy.m_nodeCapacity)},
+    m_root{copy.m_root},
+    m_nodeCount{copy.m_nodeCount},
+    m_nodeCapacity{copy.m_nodeCapacity},
+    m_freeListIndex{copy.m_freeListIndex}
+{
+    for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
+    {
+        m_nodes[i] = copy.m_nodes[i];
+    }
+}
+
+DynamicTree& DynamicTree::operator=(const DynamicTree& copy)
+{
+    if (&copy != this)
+    {
+        free(m_nodes);
+        
+        m_nodes = alloc<TreeNode>(copy.m_nodeCapacity);
+        m_root = copy.m_root;
+        m_nodeCount = copy.m_nodeCount;
+        m_nodeCapacity = copy.m_nodeCapacity;
+        m_freeListIndex = copy.m_freeListIndex;
+        for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
+        {
+            m_nodes[i] = copy.m_nodes[i];
+        }
+    }
+    return *this;
+}
+
 DynamicTree::~DynamicTree() noexcept
 {
     // This frees the entire tree in one shot.
@@ -55,19 +87,7 @@ DynamicTree::size_type DynamicTree::AllocateNode()
         assert(m_nodeCount == m_nodeCapacity);
 
         // The free list is empty. Rebuild a bigger pool.
-        m_nodeCapacity *= 2;
-        m_nodes = realloc<TreeNode>(m_nodes, m_nodeCapacity);
-
-        // Build a linked list for the free list. The parent
-        // pointer becomes the "next" pointer.
-        for (auto i = m_nodeCount; i < m_nodeCapacity - 1; ++i)
-        {
-            m_nodes[i].next = i + 1;
-            m_nodes[i].height = InvalidIndex;
-        }
-        m_nodes[m_nodeCapacity - 1].next = InvalidIndex;
-        m_nodes[m_nodeCapacity - 1].height = InvalidIndex;
-        m_freeListIndex = m_nodeCount;
+        SetNodeCapacity(m_nodeCapacity * 2);
     }
 
     // Peel a node off the free list.
@@ -80,6 +100,26 @@ DynamicTree::size_type DynamicTree::AllocateNode()
     m_nodes[index].userData = nullptr;
     ++m_nodeCount;
     return index;
+}
+
+void DynamicTree::SetNodeCapacity(size_type value)
+{
+    assert(value > m_nodeCapacity);
+    
+    // The free list is empty. Rebuild a bigger pool.
+    m_nodeCapacity = value;
+    m_nodes = realloc<TreeNode>(m_nodes, m_nodeCapacity);
+    
+    // Build a linked list for the free list. The parent
+    // pointer becomes the "next" pointer.
+    for (auto i = m_nodeCount; i < m_nodeCapacity - 1; ++i)
+    {
+        m_nodes[i].next = i + 1;
+        m_nodes[i].height = InvalidIndex;
+    }
+    m_nodes[m_nodeCapacity - 1].next = InvalidIndex;
+    m_nodes[m_nodeCapacity - 1].height = InvalidIndex;
+    m_freeListIndex = m_nodeCount;
 }
 
 // Return a node to the pool.
