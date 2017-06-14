@@ -515,3 +515,22 @@ AngularVelocity box2d::GetJointSpeed(const RevoluteJoint& joint)
 {
     return joint.GetBodyB()->GetVelocity().angular - joint.GetBodyA()->GetVelocity().angular;
 }
+
+RevoluteJointDef box2d::GetRevoluteJointDef(const RevoluteJoint& joint) noexcept
+{
+    auto def = RevoluteJointDef{};
+    
+    Set(def, joint);
+
+    def.localAnchorA = joint.GetLocalAnchorA();
+    def.localAnchorB = joint.GetLocalAnchorB();
+    def.referenceAngle = joint.GetReferenceAngle();
+    def.enableLimit = joint.IsLimitEnabled();
+    def.lowerAngle = joint.GetLowerLimit();
+    def.upperAngle = joint.GetUpperLimit();
+    def.enableMotor = joint.IsMotorEnabled();
+    def.motorSpeed = joint.GetMotorSpeed();
+    def.maxMotorTorque = joint.GetMaxMotorTorque();
+
+    return def;
+}

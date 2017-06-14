@@ -34,7 +34,7 @@ struct PulleyJointDef : public JointDef
     }
 
     /// Initialize the bodies, anchors, lengths, max lengths, and ratio using the world anchors.
-    void Initialize(Body* bodyA, Body* bodyB,
+    PulleyJointDef(Body* bodyA, Body* bodyB,
                     const Length2D groundAnchorA, const Length2D groundAnchorB,
                     const Length2D anchorA, const Length2D anchorB,
                     RealNum ratio);
@@ -167,6 +167,8 @@ Length GetCurrentLengthA(const PulleyJoint& joint);
 
 /// Get the current length of the segment attached to bodyB.
 Length GetCurrentLengthB(const PulleyJoint& joint);
+
+PulleyJointDef GetPulleyJointDef(const PulleyJoint& joint) noexcept;
 
 } // namespace box2d
 

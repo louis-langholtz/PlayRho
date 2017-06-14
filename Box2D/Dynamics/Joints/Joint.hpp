@@ -114,16 +114,10 @@ public:
     JointType GetType() const noexcept;
 
     /// Get the first body attached to this joint.
-    Body* GetBodyA() noexcept;
+    Body* GetBodyA() const noexcept;
 
     /// Get the second body attached to this joint.
-    Body* GetBodyB() noexcept;
-
-    /// Get the first body attached to this joint.
-    const Body* GetBodyA() const noexcept;
-    
-    /// Get the second body attached to this joint.
-    const Body* GetBodyB() const noexcept;
+    Body* GetBodyB() const noexcept;
 
     /// Get the anchor point on bodyA in world coordinates.
     virtual Length2D GetAnchorA() const = 0;
@@ -190,22 +184,12 @@ inline JointType Joint::GetType() const noexcept
     return m_type;
 }
 
-inline Body* Joint::GetBodyA() noexcept
+inline Body* Joint::GetBodyA() const noexcept
 {
     return m_bodyA;
 }
 
-inline Body* Joint::GetBodyB() noexcept
-{
-    return m_bodyB;
-}
-
-inline const Body* Joint::GetBodyA() const noexcept
-{
-    return m_bodyA;
-}
-
-inline const Body* Joint::GetBodyB() const noexcept
+inline Body* Joint::GetBodyB() const noexcept
 {
     return m_bodyB;
 }
@@ -232,6 +216,8 @@ bool IsEnabled(const Joint& j) noexcept;
 void SetAwake(Joint& j) noexcept;
 
 size_t GetWorldIndex(const Joint* joint);
+
+void Set(JointDef& def, const Joint& joint) noexcept;
 
 } // namespace box2d
 

@@ -37,22 +37,20 @@ using namespace box2d;
 // K = J * invM * JT
 //   = invMass1 + invI1 * cross(r1, u1)^2 + ratio^2 * (invMass2 + invI2 * cross(r2, u2)^2)
 
-void PulleyJointDef::Initialize(Body* bA, Body* bB,
-                const Length2D groundA, const Length2D groundB,
-                const Length2D anchorA, const Length2D anchorB,
-                RealNum r)
+PulleyJointDef::PulleyJointDef(Body* bA, Body* bB,
+                               const Length2D groundA, const Length2D groundB,
+                               const Length2D anchorA, const Length2D anchorB,
+                               RealNum r):
+    JointDef{JointType::Pulley, bA, bB, true},
+    groundAnchorA{groundA},
+    groundAnchorB{groundB},
+    localAnchorA{GetLocalPoint(*bodyA, anchorA)},
+    localAnchorB{GetLocalPoint(*bodyB, anchorB)},
+    lengthA{GetLength(anchorA - groundA)},
+    lengthB{GetLength(anchorB - groundB)},
+    ratio{r}
 {
     assert((r > 0) && !almost_zero(r));
-    
-    bodyA = bA;
-    bodyB = bB;
-    groundAnchorA = groundA;
-    groundAnchorB = groundB;
-    localAnchorA = GetLocalPoint(*bodyA, anchorA);
-    localAnchorB = GetLocalPoint(*bodyB, anchorB);
-    lengthA = GetLength(anchorA - groundA);
-    lengthB = GetLength(anchorB - groundB);
-    ratio = r;
 }
 
 PulleyJoint::PulleyJoint(const PulleyJointDef& def):
@@ -260,4 +258,21 @@ void PulleyJoint::ShiftOrigin(const Length2D newOrigin)
 {
     m_groundAnchorA -= newOrigin;
     m_groundAnchorB -= newOrigin;
+}
+
+PulleyJointDef box2d::GetPulleyJointDef(const PulleyJoint& joint) noexcept
+{
+    auto def = PulleyJointDef{};
+    
+    Set(def, joint);
+    
+    def.groundAnchorA = joint.GetGroundAnchorA();
+    def.groundAnchorB = joint.GetGroundAnchorB();
+    def.localAnchorA = joint.GetLocalAnchorA();
+    def.localAnchorB = joint.GetGroundAnchorB();
+    def.lengthA = joint.GetLengthA();
+    def.lengthB = joint.GetLengthB();
+    def.ratio = joint.GetRatio();
+    
+    return def;
 }

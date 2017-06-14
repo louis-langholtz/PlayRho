@@ -112,6 +112,8 @@ private:
     RotInertia m_angularMass;
 };
 
+MotorJointDef GetMotorJointDef(const MotorJoint& joint) noexcept;
+
 } // namespace box2d
 
 #endif

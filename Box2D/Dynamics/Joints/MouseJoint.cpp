@@ -212,3 +212,16 @@ void MouseJoint::ShiftOrigin(const Length2D newOrigin)
     m_targetA -= newOrigin;
 }
 
+MouseJointDef box2d::GetMouseJointDef(const MouseJoint& joint) noexcept
+{
+    auto def = MouseJointDef{};
+
+    Set(def, joint);
+
+    def.target = joint.GetTarget();
+    def.maxForce = joint.GetMaxForce();
+    def.frequencyHz = joint.GetFrequency();
+    def.dampingRatio = joint.GetDampingRatio();
+
+    return def;
+}

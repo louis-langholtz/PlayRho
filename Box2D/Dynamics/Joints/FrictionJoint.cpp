@@ -250,3 +250,17 @@ Torque FrictionJoint::GetMaxTorque() const
 {
     return m_maxTorque;
 }
+
+FrictionJointDef box2d::GetFrictionJointDef(const FrictionJoint& joint) noexcept
+{
+    auto def = FrictionJointDef{};
+    
+    Set(def, joint);
+    
+    def.localAnchorA = joint.GetLocalAnchorA();
+    def.localAnchorB = joint.GetLocalAnchorB();
+    def.maxForce = joint.GetMaxForce();
+    def.maxTorque = joint.GetMaxTorque();
+    
+    return def;
+}

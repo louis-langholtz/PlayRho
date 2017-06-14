@@ -179,6 +179,8 @@ inline AngularVelocity PrismaticJoint::GetMotorSpeed() const noexcept
     return m_motorSpeed;
 }
 
+PrismaticJointDef GetPrismaticJointDef(const PrismaticJoint& joint) noexcept;
+
 } // namespace box2d
 
 #endif

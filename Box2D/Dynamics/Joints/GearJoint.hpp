@@ -62,23 +62,17 @@ public:
     Torque GetReactionTorque(Frequency inv_dt) const override;
 
     /// The local anchor point relative to bodyA's origin.
-    Length2D GetLocalAnchorA() const { return m_localAnchorA; }
+    Length2D GetLocalAnchorA() const noexcept { return m_localAnchorA; }
     
     /// The local anchor point relative to bodyB's origin.
-    Length2D GetLocalAnchorB() const  { return m_localAnchorB; }
+    Length2D GetLocalAnchorB() const noexcept { return m_localAnchorB; }
 
     /// Get the first joint.
-    Joint* GetJoint1() noexcept { return m_joint1; }
+    Joint* GetJoint1() const noexcept { return m_joint1; }
 
     /// Get the second joint.
-    Joint* GetJoint2() noexcept { return m_joint2; }
-
-    /// Get the first joint.
-    const Joint* GetJoint1() const noexcept { return m_joint1; }
-    
-    /// Get the second joint.
-    const Joint* GetJoint2() const noexcept { return m_joint2; }
-    
+    Joint* GetJoint2() const noexcept { return m_joint2; }
+   
     /// Set/Get the gear ratio.
     void SetRatio(RealNum ratio);
     RealNum GetRatio() const;
@@ -126,6 +120,8 @@ private:
     Length m_JwD;
     RealNum m_mass; ///< Either linear mass or angular mass.
 };
+
+GearJointDef GetGearJointDef(const GearJoint& joint) noexcept;
     
 } // namespace box2d
 

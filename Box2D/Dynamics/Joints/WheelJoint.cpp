@@ -380,3 +380,21 @@ Torque WheelJoint::GetMotorTorque(Frequency inv_dt) const
 {
     return inv_dt * m_motorImpulse;
 }
+
+WheelJointDef box2d::GetWheelJointDef(const WheelJoint& joint) noexcept
+{
+    auto def = WheelJointDef{};
+    
+    Set(def, joint);
+    
+    def.localAnchorA = joint.GetLocalAnchorA();
+    def.localAnchorB = joint.GetLocalAnchorB();
+    def.localAxisA = joint.GetLocalAxisA();
+    def.enableMotor = joint.IsMotorEnabled();
+    def.maxMotorTorque = joint.GetMaxMotorTorque();
+    def.motorSpeed = joint.GetMotorSpeed();
+    def.frequencyHz = joint.GetSpringFrequencyHz();
+    def.dampingRatio = joint.GetSpringDampingRatio();
+    
+    return def;
+}

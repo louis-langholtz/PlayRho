@@ -99,6 +99,8 @@ private:
     RotInertia m_angularMass;
 };
 
+FrictionJointDef GetFrictionJointDef(const FrictionJoint& joint) noexcept;
+
 } // namespace box2d
 
 #endif

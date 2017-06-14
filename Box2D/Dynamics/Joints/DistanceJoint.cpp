@@ -265,3 +265,18 @@ Torque DistanceJoint::GetReactionTorque(Frequency inv_dt) const
     NOT_USED(inv_dt);
     return Torque{0};
 }
+
+DistanceJointDef box2d::GetDistanceJointDef(const DistanceJoint& joint) noexcept
+{
+    auto def = DistanceJointDef{};
+    
+    Set(def, joint);
+
+    def.localAnchorA = joint.GetLocalAnchorA();
+    def.localAnchorB = joint.GetLocalAnchorB();
+    def.length = joint.GetLength();
+    def.frequencyHz = joint.GetFrequency();
+    def.dampingRatio = joint.GetDampingRatio();
+
+    return def;
+}

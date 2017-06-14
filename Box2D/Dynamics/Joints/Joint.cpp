@@ -231,4 +231,12 @@ size_t GetWorldIndex(const Joint* joint)
     return size_t(-1);
 }
 
+void Set(JointDef& def, const Joint& joint) noexcept
+{
+    def.bodyA = joint.GetBodyA();
+    def.bodyB = joint.GetBodyB();
+    def.userData = joint.GetUserData();
+    def.collideConnected = joint.GetCollideConnected();
+}
+
 } // namespace box2d

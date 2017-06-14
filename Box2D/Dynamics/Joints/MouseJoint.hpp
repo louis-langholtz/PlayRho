@@ -174,6 +174,8 @@ inline RealNum MouseJoint::GetDampingRatio() const noexcept
     return m_dampingRatio;
 }
 
+MouseJointDef GetMouseJointDef(const MouseJoint& joint) noexcept;
+
 } // namespace box2d
 
 #endif

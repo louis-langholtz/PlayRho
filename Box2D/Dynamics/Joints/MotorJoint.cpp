@@ -305,3 +305,18 @@ Angle MotorJoint::GetAngularOffset() const
 {
     return m_angularOffset;
 }
+
+MotorJointDef box2d::GetMotorJointDef(const MotorJoint& joint) noexcept
+{
+    auto def = MotorJointDef{};
+    
+    Set(def, joint);
+    
+    def.linearOffset = joint.GetLinearOffset();
+    def.angularOffset = joint.GetAngularOffset();
+    def.maxForce = joint.GetMaxForce();
+    def.maxTorque = joint.GetMaxTorque();
+    def.correctionFactor = joint.GetCorrectionFactor();
+    
+    return def;
+}

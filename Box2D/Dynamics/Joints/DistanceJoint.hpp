@@ -153,6 +153,8 @@ inline RealNum DistanceJoint::GetDampingRatio() const noexcept
     return m_dampingRatio;
 }
     
+DistanceJointDef GetDistanceJointDef(const DistanceJoint& joint) noexcept;
+
 } // namespace box2d
 
 #endif

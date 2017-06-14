@@ -96,6 +96,8 @@ private:
     LimitState m_state = e_inactiveLimit;
 };
 
+RopeJointDef GetRopeJointDef(const RopeJoint& joint) noexcept;
+
 } // namespace box2d
 
 #endif

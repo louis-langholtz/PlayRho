@@ -201,11 +201,15 @@ inline AngularVelocity RevoluteJoint::GetMotorSpeed() const noexcept
     return m_motorSpeed;
 }
 
+// Free functions...
+
 /// Gets the current joint angle.
 Angle GetJointAngle(const RevoluteJoint& joint);
     
 /// Gets the current joint angle speed.
 AngularVelocity GetJointSpeed(const RevoluteJoint& joint);
+
+RevoluteJointDef GetRevoluteJointDef(const RevoluteJoint& joint) noexcept;
 
 } // namespace box2d
 

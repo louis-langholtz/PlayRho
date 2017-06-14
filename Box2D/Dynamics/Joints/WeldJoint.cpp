@@ -389,3 +389,18 @@ Torque WeldJoint::GetReactionTorque(Frequency inv_dt) const
     const auto angMomentum = AngularMomentum{m_impulse.z * SquareMeter * Kilogram / (Second * Radian)};
     return inv_dt * angMomentum;
 }
+
+WeldJointDef box2d::GetWeldJointDef(const WeldJoint& joint) noexcept
+{
+    auto def = WeldJointDef{};
+    
+    Set(def, joint);
+    
+    def.localAnchorA = joint.GetLocalAnchorA();
+    def.localAnchorB = joint.GetLocalAnchorB();
+    def.referenceAngle = joint.GetReferenceAngle();
+    def.frequencyHz = joint.GetFrequency();
+    def.dampingRatio = joint.GetDampingRatio();
+    
+    return def;
+}

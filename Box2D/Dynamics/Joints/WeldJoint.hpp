@@ -107,6 +107,8 @@ private:
     Mat33 m_mass;
 };
 
+WeldJointDef GetWeldJointDef(const WeldJoint& joint) noexcept;
+
 } // namespace box2d
 
 #endif

@@ -650,3 +650,23 @@ Force PrismaticJoint::GetMotorForce(Frequency inv_dt) const noexcept
 {
     return inv_dt * m_motorImpulse;
 }
+
+PrismaticJointDef box2d::GetPrismaticJointDef(const PrismaticJoint& joint) noexcept
+{
+    auto def = PrismaticJointDef{};
+    
+    Set(def, joint);
+    
+    def.localAnchorA = joint.GetLocalAnchorA();
+    def.localAnchorB = joint.GetLocalAnchorB();
+    def.localAxisA = joint.GetLocalAxisA();
+    def.referenceAngle = joint.GetReferenceAngle();
+    def.enableLimit = joint.IsLimitEnabled();
+    def.lowerTranslation = joint.GetLowerLimit();
+    def.upperTranslation = joint.GetUpperLimit();
+    def.enableMotor = joint.IsMotorEnabled();
+    def.motorSpeed = joint.GetMotorSpeed();
+    def.maxMotorTorque = Torque{StripUnit(joint.GetMaxMotorForce()) * NewtonMeter};
+    
+    return def;
+}

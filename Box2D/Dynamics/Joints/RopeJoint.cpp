@@ -216,3 +216,16 @@ Joint::LimitState RopeJoint::GetLimitState() const
 {
     return m_state;
 }
+
+RopeJointDef box2d::GetRopeJointDef(const RopeJoint& joint) noexcept
+{
+    auto def = RopeJointDef{};
+    
+    Set(def, joint);
+    
+    def.localAnchorA = joint.GetLocalAnchorA();
+    def.localAnchorB = joint.GetLocalAnchorB();
+    def.maxLength = joint.GetMaxLength();
+    
+    return def;
+}

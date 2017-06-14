@@ -190,6 +190,8 @@ inline RealNum WheelJoint::GetSpringDampingRatio() const
     return m_dampingRatio;
 }
 
+WheelJointDef GetWheelJointDef(const WheelJoint& joint) noexcept;
+
 } // namespace box2d
 
 #endif
