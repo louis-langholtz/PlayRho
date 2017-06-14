@@ -52,6 +52,10 @@
 		470F9B371EDF6C82007EF7B6 /* RealNum.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F9B331EDF6C82007EF7B6 /* RealNum.hpp */; };
 		470F9B3D1EE63515007EF7B6 /* InvalidArgument.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F9B3A1EE63515007EF7B6 /* InvalidArgument.hpp */; };
 		470F9B3E1EE63515007EF7B6 /* InvalidArgument.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F9B3A1EE63515007EF7B6 /* InvalidArgument.hpp */; };
+		470F9B4C1EEF20B6007EF7B6 /* BodyDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 470F9B4B1EEF20B6007EF7B6 /* BodyDef.cpp */; };
+		470F9B4D1EEF20B6007EF7B6 /* BodyDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 470F9B4B1EEF20B6007EF7B6 /* BodyDef.cpp */; };
+		470F9B4F1EF0C8B8007EF7B6 /* FixtureDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 470F9B4E1EF0C8B8007EF7B6 /* FixtureDef.cpp */; };
+		470F9B501EF0C8B8007EF7B6 /* FixtureDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 470F9B4E1EF0C8B8007EF7B6 /* FixtureDef.cpp */; };
 		4726DD0F1D3014990012A882 /* IndexPair.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD0C1D3014990012A882 /* IndexPair.hpp */; };
 		4726DD101D3014990012A882 /* IndexPair.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD0C1D3014990012A882 /* IndexPair.hpp */; };
 		4726DD1F1D305E5D0012A882 /* ContactFeature.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */; };
@@ -453,6 +457,8 @@
 		470F9B381EDF6F0D007EF7B6 /* RealNum.hpp.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = RealNum.hpp.in; sourceTree = "<group>"; };
 		470F9B3A1EE63515007EF7B6 /* InvalidArgument.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = InvalidArgument.hpp; sourceTree = "<group>"; };
 		470F9B491EEE40AA007EF7B6 /* BagOfDisks.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BagOfDisks.hpp; sourceTree = "<group>"; };
+		470F9B4B1EEF20B6007EF7B6 /* BodyDef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BodyDef.cpp; sourceTree = "<group>"; };
+		470F9B4E1EF0C8B8007EF7B6 /* FixtureDef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FixtureDef.cpp; sourceTree = "<group>"; };
 		4726DD0C1D3014990012A882 /* IndexPair.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IndexPair.hpp; sourceTree = "<group>"; };
 		4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactFeature.hpp; sourceTree = "<group>"; };
 		4726DD261D3180980012A882 /* NewtonsCradle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NewtonsCradle.hpp; sourceTree = "<group>"; };
@@ -960,6 +966,7 @@
 				80BB894D141C3E5900F1753A /* Body.cpp */,
 				80BB894E141C3E5900F1753A /* Body.hpp */,
 				470F94C91EC4D95D00AA3C82 /* BodyAtty.hpp */,
+				470F9B4B1EEF20B6007EF7B6 /* BodyDef.cpp */,
 				470F94A51EC4C79B00AA3C82 /* BodyDef.hpp */,
 				478E67C41E760AB7009B9AD5 /* BodyType.hpp */,
 				80BB895A141C3E5900F1753A /* Contacts */,
@@ -968,6 +975,7 @@
 				80BB8951141C3E5900F1753A /* Fixture.cpp */,
 				80BB8952141C3E5900F1753A /* Fixture.hpp */,
 				470F94B71EC4D4F800AA3C82 /* FixtureAtty.hpp */,
+				470F9B4E1EF0C8B8007EF7B6 /* FixtureDef.cpp */,
 				470F94AB1EC4CAE600AA3C82 /* FixtureDef.hpp */,
 				4731DE181DDCD0E100E7F931 /* FixtureProxy.hpp */,
 				80BB8953141C3E5900F1753A /* Island.cpp */,
@@ -1588,6 +1596,7 @@
 				47AA5D9B1C4C5FBE008AF2BA /* BroadPhase.cpp in Sources */,
 				4726DD2B1D31B4090012A882 /* RayCastOutput.cpp in Sources */,
 				47AA5D9F1C4C5FBE008AF2BA /* Collision.cpp in Sources */,
+				470F9B501EF0C8B8007EF7B6 /* FixtureDef.cpp in Sources */,
 				47AA5DA01C4C5FBE008AF2BA /* Distance.cpp in Sources */,
 				470F94D61EC649B300AA3C82 /* ContactKey.cpp in Sources */,
 				47AA5DA11C4C5FBE008AF2BA /* DynamicTree.cpp in Sources */,
@@ -1601,6 +1610,7 @@
 				47AA5DA91C4C5FBE008AF2BA /* Math.cpp in Sources */,
 				47AA5DAA1C4C5FBE008AF2BA /* Settings.cpp in Sources */,
 				47CF984C1DF9C4A30077F5F2 /* ShapeSeparation.cpp in Sources */,
+				470F9B4D1EEF20B6007EF7B6 /* BodyDef.cpp in Sources */,
 				47AA5DAB1C4C5FBE008AF2BA /* StackAllocator.cpp in Sources */,
 				474AFBF91EB1B2CB002AA6C8 /* MultiShape.cpp in Sources */,
 				47AA5DAD1C4C5FBE008AF2BA /* Body.cpp in Sources */,
@@ -1671,6 +1681,7 @@
 				80BB8991141C3E5900F1753A /* DynamicTree.cpp in Sources */,
 				80BB8993141C3E5900F1753A /* TimeOfImpact.cpp in Sources */,
 				47928F3B1E6A099900EE6E9E /* BodyConstraint.cpp in Sources */,
+				470F9B4C1EEF20B6007EF7B6 /* BodyDef.cpp in Sources */,
 				80BB8995141C3E5900F1753A /* ChainShape.cpp in Sources */,
 				4726DD2A1D31B4090012A882 /* RayCastOutput.cpp in Sources */,
 				80BB8997141C3E5900F1753A /* DiskShape.cpp in Sources */,
@@ -1693,6 +1704,7 @@
 				80BB89B1141C3E5900F1753A /* Island.cpp in Sources */,
 				475039911D2180D600D32047 /* DistanceProxy.cpp in Sources */,
 				80BB89B4141C3E5900F1753A /* World.cpp in Sources */,
+				470F9B4F1EF0C8B8007EF7B6 /* FixtureDef.cpp in Sources */,
 				4751C34D1EC25951006D9E69 /* README.md in Sources */,
 				80BB89B6141C3E5900F1753A /* WorldCallbacks.cpp in Sources */,
 				80BB89BE141C3E5900F1753A /* Contact.cpp in Sources */,

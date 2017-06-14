@@ -237,7 +237,7 @@ private:
 
     void UnsetToi() noexcept;
 
-    void ResetToiCount() noexcept;
+    void SetToiCount(substep_type value) noexcept;
 
     /// Sets the touching flag state.
     /// @note This should only be called if either:
@@ -445,9 +445,9 @@ inline void Contact::UnsetToi() noexcept
     m_flags &= ~Contact::e_toiFlag;
 }
 
-inline void Contact::ResetToiCount() noexcept
+inline void Contact::SetToiCount(substep_type value) noexcept
 {
-    m_toiCount = 0;
+    m_toiCount = value;
 }
 
 inline Contact::substep_type Contact::GetToiCount() const noexcept

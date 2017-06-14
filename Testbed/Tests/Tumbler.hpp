@@ -101,7 +101,7 @@ public:
     {
         const auto selectedFixture = GetSelectedFixture();
         const auto selectedShape = selectedFixture?
-            selectedFixture->GetShape(): static_cast<Shape*>(nullptr);
+            selectedFixture->GetShape().get(): static_cast<Shape*>(nullptr);
 
         switch (key)
         {

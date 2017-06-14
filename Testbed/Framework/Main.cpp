@@ -269,6 +269,7 @@ static Test::Key GlfwKeyToTestKey(int key)
 {
     switch (key)
     {
+        case GLFW_KEY_SPACE: return Test::Key_Space;
         case GLFW_KEY_COMMA: return Test::Key_Comma;
         case GLFW_KEY_MINUS: return Test::Key_Minus;
         case GLFW_KEY_PERIOD: return Test::Key_Period;
@@ -309,6 +310,7 @@ static Test::Key GlfwKeyToTestKey(int key)
         case GLFW_KEY_X: return Test::Key_X;
         case GLFW_KEY_Y: return Test::Key_Y;
         case GLFW_KEY_Z: return Test::Key_Z;
+        case GLFW_KEY_BACKSPACE: return Test::Key_Backspace;
         case GLFW_KEY_KP_SUBTRACT: return Test::Key_Subtract;
         case GLFW_KEY_KP_ADD: return Test::Key_Add;
     }

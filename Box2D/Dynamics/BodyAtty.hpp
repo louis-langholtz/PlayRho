@@ -114,7 +114,16 @@ namespace box2d
         {
             return b.Insert(value);
         }
-        
+
+        static bool Insert(Body* b, Joint* value)
+        {
+            if (b)
+            {
+                return Insert(*b, value);
+            }
+            return false;
+        }
+
         static bool Insert(Body& b, Contact* value)
         {
             return b.Insert(value);

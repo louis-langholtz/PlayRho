@@ -208,9 +208,9 @@ void Body::SetMassData(const MassData& massData)
         Position{Transform(massData.center, GetTransformation()), GetAngle()},
         massData.center
     };
-    const auto newCenter = GetWorldCenter();
 
     // Update center of mass velocity.
+    const auto newCenter = GetWorldCenter();
     const auto deltaCenter = newCenter - oldCenter;
     m_velocity.linear += GetRevPerpendicular(deltaCenter) * m_velocity.angular / Radian;
 

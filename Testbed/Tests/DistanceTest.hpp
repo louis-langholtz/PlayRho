@@ -104,8 +104,8 @@ public:
 
     void PostStep(const Settings&, Drawer& drawer) override
     {
-        const auto shapeA = static_cast<const PolygonShape*>(GetFixture(m_bodyA)->GetShape());
-        const auto shapeB = static_cast<const PolygonShape*>(GetFixture(m_bodyB)->GetShape());
+        const auto shapeA = static_cast<const PolygonShape*>(GetFixture(m_bodyA)->GetShape().get());
+        const auto shapeB = static_cast<const PolygonShape*>(GetFixture(m_bodyB)->GetShape().get());
 
         const auto proxyA = shapeA->GetChild(0);
         const auto proxyB = shapeB->GetChild(0);
@@ -400,7 +400,7 @@ public:
             if (body && fixture)
             {
                 const auto shape = fixture->GetShape();
-                auto polygon = *static_cast<const PolygonShape*>(shape);
+                auto polygon = *static_cast<const PolygonShape*>(shape.get());
                 polygon.SetVertexRadius(shape->GetVertexRadius() + RadiusIncrement);
                 SetSelectedFixture(body->CreateFixture(std::make_shared<PolygonShape>(polygon)));
                 body->DestroyFixture(fixture);
@@ -415,7 +415,7 @@ public:
                 const auto newVertexRadius = lastLegitVertexRadius - RadiusIncrement;
                 if (newVertexRadius >= Length{0})
                 {
-                    PolygonShape polygon{*static_cast<const PolygonShape*>(shape)};
+                    PolygonShape polygon{*static_cast<const PolygonShape*>(shape.get())};
                     polygon.SetVertexRadius(newVertexRadius);
                     auto newFixture = body->CreateFixture(std::make_shared<PolygonShape>(polygon));
                     if (newFixture)

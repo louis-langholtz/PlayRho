@@ -143,7 +143,7 @@ public:
             const auto body = m_bodies[i];
             const auto ground = m_sensor->GetBody();
 
-            const auto circle = static_cast<const DiskShape*>(m_sensor->GetShape());
+            const auto circle = static_cast<const DiskShape*>(m_sensor->GetShape().get());
             const auto center = GetWorldPoint(*ground, circle->GetLocation());
 
             const auto position = body->GetLocation();

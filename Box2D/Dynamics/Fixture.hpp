@@ -104,7 +104,7 @@ public:
 
     /// Gets the child shape.
     /// @details The shape is not modifiable. Use a new fixture instead.
-    const Shape* GetShape() const noexcept;
+    std::shared_ptr<const Shape> GetShape() const noexcept;
     
     /// Set if this fixture is a sensor.
     void SetSensor(bool sensor) noexcept;
@@ -185,9 +185,9 @@ private:
     bool m_isSensor = false; ///< Is/is-not sensor. 1-bytes.
 };
 
-inline const Shape* Fixture::GetShape() const noexcept
+inline std::shared_ptr<const Shape> Fixture::GetShape() const noexcept
 {
-    return m_shape.get();
+    return m_shape;
 }
 
 inline bool Fixture::IsSensor() const noexcept

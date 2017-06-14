@@ -57,7 +57,7 @@ TEST(Fixture, CreateMatchesDef)
     const auto fixture = body->CreateFixture(shapeA, def);
     
     EXPECT_EQ(fixture->GetBody(), body);
-    EXPECT_EQ(fixture->GetShape(), &(*shapeA));
+    EXPECT_EQ(fixture->GetShape(), shapeA);
 
     EXPECT_EQ(fixture->GetDensity(), density);
     EXPECT_EQ(fixture->GetFriction(), friction);

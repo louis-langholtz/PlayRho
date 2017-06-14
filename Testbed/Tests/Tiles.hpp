@@ -103,12 +103,14 @@ public:
     {
         const auto height = m_world->GetTreeHeight();
         const auto leafCount = m_world->GetProxyCount();
-        assert(leafCount > 0);
-        const auto minimumNodeCount = 2 * leafCount - 1;
-        const auto minimumHeight = ceilf(logf(float(minimumNodeCount)) / logf(2.0f));
-        drawer.DrawString(5, m_textLine, "dynamic tree height = %d, min = %d",
-                          height, int(minimumHeight));
-        m_textLine += DRAW_STRING_NEW_LINE;
+        if (leafCount > 0)
+        {
+            const auto minimumNodeCount = 2 * leafCount - 1;
+            const auto minimumHeight = ceilf(logf(float(minimumNodeCount)) / logf(2.0f));
+            drawer.DrawString(5, m_textLine, "dynamic tree height = %d, min = %d",
+                              height, int(minimumHeight));
+            m_textLine += DRAW_STRING_NEW_LINE;
+        }
 
         drawer.DrawString(5, m_textLine, "create time = %6.2f ms, fixture count = %d",
             static_cast<double>(m_createTime * RealNum(1000)), m_fixtureCount);
@@ -122,8 +124,27 @@ public:
         //}
     }
 
+    void KeyboardDown(Key key) override
+    {
+        switch (key)
+        {
+            case Key_C:
+                m_snapshot = *m_world;
+                break;
+            case Key_Backspace:
+                if (m_snapshot.GetBodies().size() > 0)
+                {
+	                ResetWorld(m_snapshot);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+    
     int m_fixtureCount;
     RealNum m_createTime;
+    World m_snapshot;
 };
 
 } // namespace box2d

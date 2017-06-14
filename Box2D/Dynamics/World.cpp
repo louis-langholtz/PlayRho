@@ -3,17 +3,19 @@
  * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
@@ -26,19 +28,32 @@
 #include <Box2D/Dynamics/FixtureAtty.hpp>
 #include <Box2D/Dynamics/FixtureProxy.hpp>
 #include <Box2D/Dynamics/Island.hpp>
-#include <Box2D/Dynamics/Joints/Joint.hpp>
 #include <Box2D/Dynamics/JointAtty.hpp>
-#include <Box2D/Dynamics/Contacts/Contact.hpp>
 #include <Box2D/Dynamics/ContactAtty.hpp>
+
+#include <Box2D/Dynamics/Joints/Joint.hpp>
+#include <Box2D/Dynamics/Joints/RevoluteJoint.hpp>
+#include <Box2D/Dynamics/Joints/PrismaticJoint.hpp>
+#include <Box2D/Dynamics/Joints/DistanceJoint.hpp>
+#include <Box2D/Dynamics/Joints/PulleyJoint.hpp>
+#include <Box2D/Dynamics/Joints/MouseJoint.hpp>
+#include <Box2D/Dynamics/Joints/GearJoint.hpp>
+#include <Box2D/Dynamics/Joints/WheelJoint.hpp>
+#include <Box2D/Dynamics/Joints/WeldJoint.hpp>
+#include <Box2D/Dynamics/Joints/FrictionJoint.hpp>
+#include <Box2D/Dynamics/Joints/RopeJoint.hpp>
+#include <Box2D/Dynamics/Joints/MotorJoint.hpp>
+
+#include <Box2D/Dynamics/Contacts/Contact.hpp>
+#include <Box2D/Dynamics/Contacts/ContactSolver.hpp>
+#include <Box2D/Dynamics/Contacts/VelocityConstraint.hpp>
+#include <Box2D/Dynamics/Contacts/PositionConstraint.hpp>
+
 #include <Box2D/Collision/BroadPhase.hpp>
 #include <Box2D/Collision/WorldManifold.hpp>
 #include <Box2D/Collision/TimeOfImpact.hpp>
 #include <Box2D/Collision/RayCastOutput.hpp>
 #include <Box2D/Collision/DistanceProxy.hpp>
-
-#include <Box2D/Dynamics/Contacts/ContactSolver.hpp>
-#include <Box2D/Dynamics/Contacts/VelocityConstraint.hpp>
-#include <Box2D/Dynamics/Contacts/PositionConstraint.hpp>
 
 #include <new>
 #include <functional>
@@ -452,12 +467,59 @@ World::World(const WorldDef& def):
     m_minVertexRadius{def.minVertexRadius},
     m_maxVertexRadius{def.maxVertexRadius}
 {
-    assert(::box2d::IsValid(def.gravity.x) && ::box2d::IsValid(def.gravity.y));
-    assert(def.minVertexRadius > Length{0});
-    assert(def.minVertexRadius < def.maxVertexRadius);
+    if (def.minVertexRadius > def.maxVertexRadius)
+    {
+        throw InvalidArgument("max vertex radius must be >= min vertex radius");
+    }
 }
 
+World::World(const World& other):
+    m_gravity{other.m_gravity},
+    m_destructionListener{other.m_destructionListener},
+    m_contactListener{other.m_contactListener},
+    m_contactFilter{other.m_contactFilter},
+    m_flags{other.m_flags},
+    m_inv_dt0{other.m_inv_dt0},
+    m_minVertexRadius{other.m_minVertexRadius},
+    m_maxVertexRadius{other.m_maxVertexRadius},
+    m_broadPhase{other.m_broadPhase}
+{
+    auto bodyMap = std::map<const Body*, Body*>();
+    auto fixtureMap = std::map<const Fixture*, Fixture*>();
+    CopyBodies(bodyMap, fixtureMap, other.GetBodies());
+    CopyJoints(bodyMap, other.GetJoints());
+    CopyContacts(bodyMap, fixtureMap, other.GetContacts());
+}
+
+World& World::operator= (const World& other)
+{
+    Clear();
+    
+    m_gravity = other.m_gravity;
+    m_destructionListener = other.m_destructionListener;
+    m_contactListener = other.m_contactListener;
+    m_contactFilter = other.m_contactFilter;
+    m_flags = other.m_flags;
+    m_inv_dt0 = other.m_inv_dt0;
+    m_minVertexRadius = other.m_minVertexRadius;
+    m_maxVertexRadius = other.m_maxVertexRadius;
+    m_broadPhase = other.m_broadPhase;
+
+    auto bodyMap = std::map<const Body*, Body*>();
+    auto fixtureMap = std::map<const Fixture*, Fixture*>();
+    CopyBodies(bodyMap, fixtureMap, other.GetBodies());
+    CopyJoints(bodyMap, other.GetJoints());
+    CopyContacts(bodyMap, fixtureMap, other.GetContacts());
+
+    return *this;
+}
+    
 World::~World()
+{
+    Clear();
+}
+
+void World::Clear() noexcept
 {
     // Gets rid of the associated contacts.
     while (!m_contacts.empty())
@@ -480,7 +542,7 @@ World::~World()
         }
         m_contacts.pop_front();
     }
-
+    
     // Gets rid of the created bodies and any associated fixtures.
     // Do this before getting rid of joints so that joints can be removed from
     // bodies in their listed order.
@@ -509,6 +571,245 @@ World::~World()
         const auto j = m_joints.front();
         m_joints.pop_front();
         JointAtty::Destroy(j);
+    }
+}
+
+void World::CopyBodies(std::map<const Body*, Body*>& bodyMap,
+                       std::map<const Fixture*, Fixture*>& fixtureMap,
+                       SizedRange<World::Bodies::const_iterator> range)
+{
+    for (const auto& otherBody: range)
+    {
+        const auto newBody = CreateBody(GetBodyDef(otherBody));
+        for (auto&& otherFixture: otherBody.GetFixtures())
+        {
+            const auto shape = otherFixture.GetShape();
+            const auto fixtureDef = GetFixtureDef(otherFixture);
+            const auto newFixture = BodyAtty::CreateFixture(*newBody, shape, fixtureDef);
+            fixtureMap[&otherFixture] = newFixture;
+            const auto childCount = otherFixture.GetProxyCount();
+            const auto proxies = static_cast<FixtureProxy*>(alloc(sizeof(FixtureProxy) * childCount));
+            for (auto childIndex = decltype(childCount){0}; childIndex < childCount; ++childIndex)
+            {
+                const auto proxyPtr = proxies + childIndex;
+                const auto fp = otherFixture.GetProxy(childIndex);
+                new (proxyPtr) FixtureProxy{fp->aabb, fp->proxyId, newFixture, childIndex};
+                m_broadPhase.SetUserData(fp->proxyId, proxyPtr);
+            }
+            FixtureAtty::SetProxies(*newFixture, Span<FixtureProxy>(proxies, childCount));
+        }
+        newBody->SetMassData(GetMassData(otherBody));
+        bodyMap[&otherBody] = newBody;
+    }
+}
+
+void World::CopyContacts(const std::map<const Body*, Body*>& bodyMap,
+                         const std::map<const Fixture*, Fixture*>& fixtureMap,
+                         SizedRange<World::Contacts::const_iterator> range)
+{
+    for (const auto& otherContact: range)
+    {
+        const auto otherFixtureA = otherContact.GetFixtureA();
+        const auto otherFixtureB = otherContact.GetFixtureB();
+        const auto childIndexA = otherContact.GetChildIndexA();
+        const auto childIndexB = otherContact.GetChildIndexB();
+        const auto newFixtureA = fixtureMap.at(otherFixtureA);
+        const auto newFixtureB = fixtureMap.at(otherFixtureB);
+        const auto newBodyA = bodyMap.at(otherFixtureA->GetBody());
+        const auto newBodyB = bodyMap.at(otherFixtureB->GetBody());
+        
+        m_contacts.emplace_back(newFixtureA, childIndexA, newFixtureB, childIndexB);
+        const auto newContact = GetContactPtr(m_contacts.back());
+        assert(newContact);
+        if (newContact)
+        {
+            BodyAtty::Insert(*newBodyA, newContact);
+            BodyAtty::Insert(*newBodyB, newContact);
+            // No need to wake up the bodies - this should already be done due to above copy
+            
+            newContact->SetFriction(otherContact.GetFriction());
+            newContact->SetRestitution(otherContact.GetRestitution());
+            newContact->SetTangentSpeed(otherContact.GetTangentSpeed());
+            auto& manifold = ContactAtty::GetMutableManifold(*newContact);
+            manifold = otherContact.GetManifold();
+            ContactAtty::CopyFlags(*newContact, otherContact);
+            ContactAtty::SetToi(*newContact, otherContact.GetToi());
+            ContactAtty::SetToiCount(*newContact, otherContact.GetToiCount());
+        }
+    }
+}
+
+void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
+                       SizedRange<World::Joints::const_iterator> range)
+{
+    auto jointMap = std::map<const Joint*, Joint*>();
+
+    for (const auto otherJoint: range)
+    {
+        const auto type = otherJoint->GetType();
+        switch (type)
+        {
+            case JointType::Unknown:
+            {
+                break;
+            }
+            case JointType::Revolute:
+            {
+                const auto oJoint = static_cast<RevoluteJoint*>(otherJoint);
+                auto def = GetRevoluteJointDef(*oJoint);
+                def.bodyA = bodyMap.at(def.bodyA);
+                def.bodyB = bodyMap.at(def.bodyB);
+                const auto j = JointAtty::Create(def);
+                if (j)
+                {
+                    Add(j, def.bodyA, def.bodyB);
+                    jointMap[oJoint] = j;
+                }
+                break;
+            }
+            case JointType::Prismatic:
+            {
+                const auto oJoint = static_cast<PrismaticJoint*>(otherJoint);
+                auto def = GetPrismaticJointDef(*oJoint);
+                def.bodyA = bodyMap.at(def.bodyA);
+                def.bodyB = bodyMap.at(def.bodyB);
+                const auto j = JointAtty::Create(def);
+                if (j)
+                {
+                    Add(j, def.bodyA, def.bodyB);
+                    jointMap[oJoint] = j;
+                }
+                break;
+            }
+            case JointType::Distance:
+            {
+                const auto oJoint = static_cast<DistanceJoint*>(otherJoint);
+                auto def = GetDistanceJointDef(*oJoint);
+                def.bodyA = bodyMap.at(def.bodyA);
+                def.bodyB = bodyMap.at(def.bodyB);
+                const auto j = JointAtty::Create(def);
+                if (j)
+                {
+                    Add(j, def.bodyA, def.bodyB);
+                    jointMap[oJoint] = j;
+                }
+                break;
+            }
+            case JointType::Pulley:
+            {
+                const auto oJoint = static_cast<PulleyJoint*>(otherJoint);
+                auto def = GetPulleyJointDef(*oJoint);
+                def.bodyA = bodyMap.at(def.bodyA);
+                def.bodyB = bodyMap.at(def.bodyB);
+                const auto j = JointAtty::Create(def);
+                if (j)
+                {
+                    Add(j, def.bodyA, def.bodyB);
+                    jointMap[oJoint] = j;
+                }
+                break;
+            }
+            case JointType::Mouse:
+            {
+                const auto oJoint = static_cast<MouseJoint*>(otherJoint);
+                auto def = GetMouseJointDef(*oJoint);
+                def.bodyA = bodyMap.at(def.bodyA);
+                def.bodyB = bodyMap.at(def.bodyB);
+                const auto j = JointAtty::Create(def);
+                if (j)
+                {
+                    Add(j, def.bodyA, def.bodyB);
+                    jointMap[oJoint] = j;
+                }
+                break;
+            }
+            case JointType::Gear:
+            {
+                const auto oJoint = static_cast<GearJoint*>(otherJoint);
+                auto def = GetGearJointDef(*oJoint);
+                def.bodyA = bodyMap.at(def.bodyA);
+                def.bodyB = bodyMap.at(def.bodyB);
+                def.joint1 = jointMap.at(def.joint1);
+                def.joint2 = jointMap.at(def.joint2);
+                const auto j = JointAtty::Create(def);
+                if (j)
+                {
+                    Add(j, def.bodyA, def.bodyB);
+                    jointMap[oJoint] = j;
+                }
+                break;
+            }
+            case JointType::Wheel:
+            {
+                const auto oJoint = static_cast<WheelJoint*>(otherJoint);
+                auto def = GetWheelJointDef(*oJoint);
+                def.bodyA = bodyMap.at(def.bodyA);
+                def.bodyB = bodyMap.at(def.bodyB);
+                const auto j = JointAtty::Create(def);
+                if (j)
+                {
+                    Add(j, def.bodyA, def.bodyB);
+                    jointMap[oJoint] = j;
+                }
+                break;
+            }
+            case JointType::Weld:
+            {
+                const auto oJoint = static_cast<WeldJoint*>(otherJoint);
+                auto def = GetWeldJointDef(*oJoint);
+                def.bodyA = bodyMap.at(def.bodyA);
+                def.bodyB = bodyMap.at(def.bodyB);
+                const auto j = JointAtty::Create(def);
+                if (j)
+                {
+                    Add(j, def.bodyA, def.bodyB);
+                    jointMap[oJoint] = j;
+                }
+                break;
+            }
+            case JointType::Friction:
+            {
+                const auto oJoint = static_cast<FrictionJoint*>(otherJoint);
+                auto def = GetFrictionJointDef(*oJoint);
+                def.bodyA = bodyMap.at(def.bodyA);
+                def.bodyB = bodyMap.at(def.bodyB);
+                const auto j = JointAtty::Create(def);
+                if (j)
+                {
+                    Add(j, def.bodyA, def.bodyB);
+                    jointMap[oJoint] = j;
+                }
+                break;
+            }
+            case JointType::Rope:
+            {
+                const auto oJoint = static_cast<RopeJoint*>(otherJoint);
+                auto def = GetRopeJointDef(*oJoint);
+                def.bodyA = bodyMap.at(def.bodyA);
+                def.bodyB = bodyMap.at(def.bodyB);
+                const auto j = JointAtty::Create(def);
+                if (j)
+                {
+                    Add(j, def.bodyA, def.bodyB);
+                    jointMap[oJoint] = j;
+                }
+                break;
+            }
+            case JointType::Motor:
+            {
+                const auto oJoint = static_cast<MotorJoint*>(otherJoint);
+                auto def = GetMotorJointDef(*oJoint);
+                def.bodyA = bodyMap.at(def.bodyA);
+                def.bodyB = bodyMap.at(def.bodyB);
+                const auto j = JointAtty::Create(def);
+                if (j)
+                {
+                    Add(j, def.bodyA, def.bodyB);
+                    jointMap[oJoint] = j;
+                }
+                break;
+            }
+        }
     }
 }
 
@@ -608,38 +909,28 @@ Joint* World::CreateJoint(const JointDef& def)
     }
 
     // Note: creating a joint doesn't wake the bodies.
-    auto j = JointAtty::Create(def);
-    if (!j)
+    const auto j = JointAtty::Create(def);
+    if (j)
     {
-        return nullptr;
-    }
+        const auto bodyA = j->GetBodyA();
+        const auto bodyB = j->GetBodyB();
 
-    // Connect to the bodies' doubly linked lists.
-    const auto bodyA = j->GetBodyA();
-    const auto bodyB = j->GetBodyB();
-    if (bodyA)
-    {
-        BodyAtty::Insert(*bodyA, j);
+        Add(j, bodyA, bodyB);
+        
+        // If the joint prevents collisions, then flag any contacts for filtering.
+        if (!def.collideConnected)
+        {
+            FlagContactsForFiltering(bodyA, bodyB);
+        }
     }
-    if (bodyB)
-    {
-        BodyAtty::Insert(*bodyB, j);
-    }
-
-    // If the joint prevents collisions, then flag any contacts for filtering.
-    if (!def.collideConnected)
-    {
-        FlagContactsForFiltering(bodyA, bodyB);
-    }
-
-    Add(*j);
-    
     return j;
 }
 
-bool World::Add(Joint& j)
+bool World::Add(Joint* j, Body* bodyA, Body* bodyB)
 {
-    m_joints.push_front(&j);
+    m_joints.push_back(j);
+    BodyAtty::Insert(bodyA, j);
+    BodyAtty::Insert(bodyB, j);
     return true;
 }
 
@@ -2513,7 +2804,7 @@ size_t GetShapeCount(const World& world) noexcept
         const auto body = GetBodyPtr(b);
         for (auto&& fixture: body->GetFixtures())
         {
-            shapes.insert(fixture.GetShape());
+            shapes.insert(fixture.GetShape().get());
         }
     }
     return shapes.size();

@@ -3,17 +3,19 @@
  * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
@@ -33,6 +35,7 @@
 #include <Box2D/Collision/BroadPhase.hpp>
 
 #include <vector>
+#include <map>
 #include <list>
 #include <unordered_set>
 #include <memory>
@@ -86,12 +89,19 @@ public:
     class LockedError;
 
     /// @brief Constructs a world object.
+    /// @throws InvalidArgument if the given max vertex radius is less than the min.
     World(const WorldDef& def = GetDefaultWorldDef());
+
+    World(const World& copy);
+
+    World& operator= (const World& other);
 
     /// @brief Destructor.
     /// @details
     /// All physics entities are destroyed and all dynamically allocated memory is released.
     ~World();
+
+    void Clear() noexcept;
 
     /// Register a destruction listener. The listener is owned by you and must
     /// remain in scope.
@@ -350,6 +360,15 @@ private:
         ts_iters_t velocityIterations = 0; ///< Velocity iterations actually performed.
     };
     
+    void CopyBodies(std::map<const Body*, Body*>& bodyMap,
+                    std::map<const Fixture*, Fixture*>& fixtureMap,
+                    SizedRange<World::Bodies::const_iterator> range);
+    void CopyJoints(const std::map<const Body*, Body*>& bodyMap,
+                    SizedRange<World::Joints::const_iterator> range);
+    void CopyContacts(const std::map<const Body*, Body*>& bodyMap,
+                      const std::map<const Fixture*, Fixture*>& fixtureMap,
+                      SizedRange<World::Contacts::const_iterator> range);
+
     void InternalDestroy(Joint* joint);
 
     /// @brief Solves the step.
@@ -445,7 +464,7 @@ private:
     ProcessContactsOutput ProcessContactsForTOI(Island& island, Body& body, RealNum toi,
                                                 const StepConf& conf);
     
-    bool Add(Joint& j);
+    bool Add(Joint* j, Body* bodyA, Body* bodyB);
 
     bool Remove(Body& b);
     bool Remove(Joint& j);
@@ -630,10 +649,10 @@ private:
     /// @sa Step.
     Frequency m_inv_dt0 = 0;
 
-    /// Minimum vertex radius.
-    const Length m_minVertexRadius;
+    /// @brief Minimum vertex radius.
+    Positive<Length> m_minVertexRadius;
 
-    /// Maximum vertex radius.
+    /// @brief Maximum vertex radius.
     /// @details
     /// This is the maximum shape vertex radius that any bodies' of this world should create
     /// fixtures for. Requests to create fixtures for shapes with vertex radiuses bigger than
@@ -641,7 +660,7 @@ private:
     /// associated with this world that would otherwise not be able to be simulated due to
     /// numerical issues. It can also be set below this upper bound to constrain the differences
     /// between shape vertex radiuses to possibly more limited visual ranges.
-    const Length m_maxVertexRadius;
+    Positive<Length> m_maxVertexRadius;
 };
 
 class World::LockedError: public std::logic_error

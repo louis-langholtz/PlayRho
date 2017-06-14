@@ -62,12 +62,12 @@ public:
             const auto body2 = m_world->CreateBody(bd);
             body2->CreateFixture(shape);
 
-            PulleyJointDef pulleyDef;
             const auto anchor1 = Vec2(-10.0f, y + b) * Meter;
             const auto anchor2 = Vec2(10.0f, y + b) * Meter;
             const auto groundAnchor1 = Vec2(-10.0f, y + b + L) * Meter;
             const auto groundAnchor2 = Vec2(10.0f, y + b + L) * Meter;
-            pulleyDef.Initialize(body1, body2, groundAnchor1, groundAnchor2, anchor1, anchor2, 1.5f);
+            const auto pulleyDef = PulleyJointDef{body1, body2,
+                groundAnchor1, groundAnchor2, anchor1, anchor2, 1.5f};
 
             m_joint1 = (PulleyJoint*)m_world->CreateJoint(pulleyDef);
         }

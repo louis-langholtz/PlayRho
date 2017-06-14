@@ -45,6 +45,11 @@ namespace box2d
             return c.GetMutableManifold();
         }
         
+        static void CopyFlags(Contact& to, const Contact& from) noexcept
+        {
+            to.m_flags = from.m_flags;
+        }
+
         static void SetToi(Contact& c, RealNum value) noexcept
         {
             c.SetToi(value);
@@ -60,9 +65,14 @@ namespace box2d
             ++c.m_toiCount;
         }
         
+        static void SetToiCount(Contact& c, Contact::substep_type value) noexcept
+        {
+            c.SetToiCount(value);
+        }
+
         static void ResetToiCount(Contact& c) noexcept
         {
-            c.ResetToiCount();
+            c.SetToiCount(0);
         }
         
         static void UnflagForFiltering(Contact& c) noexcept

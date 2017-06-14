@@ -387,6 +387,48 @@ Test::~Test()
     delete m_world;
 }
 
+void Test::ResetWorld(const box2d::World &saved)
+{
+    SetSelectedFixture(nullptr);
+
+    auto bombIndex = static_cast<decltype(m_world->GetBodies().size())>(-1);
+    auto groundIndex = static_cast<decltype(m_world->GetBodies().size())>(-1);
+    
+    {
+        auto i = decltype(m_world->GetBodies().size()){0};
+        for (auto&& body: m_world->GetBodies())
+        {
+            if (&body == m_bomb)
+            {
+                bombIndex = i;
+            }
+            if (&body == m_groundBody)
+            {
+                groundIndex = i;
+            }
+            ++i;
+        }
+    }
+
+    *m_world = saved;
+    
+    {
+        auto i = decltype(m_world->GetBodies().size()){0};
+        for (auto&& body: m_world->GetBodies())
+        {
+            if (i == bombIndex)
+            {
+                m_bomb = &body;
+            }
+            if (i == groundIndex)
+            {
+                m_groundBody = &body;
+            }
+            ++i;
+        }
+    }
+}
+
 void Test::PreSolve(Contact& contact, const Manifold& oldManifold)
 {
     const auto& manifold = contact.GetManifold();

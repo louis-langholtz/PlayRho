@@ -2,17 +2,19 @@
  * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
@@ -23,13 +25,17 @@
 #include <Box2D/Dynamics/BodyDef.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/Contacts/Contact.hpp>
-#include <Box2D/Dynamics/Joints/DistanceJoint.hpp>
 #include <Box2D/Collision/Shapes/DiskShape.hpp>
 #include <Box2D/Collision/Shapes/PolygonShape.hpp>
 #include <Box2D/Collision/Shapes/EdgeShape.hpp>
 #include <Box2D/Dynamics/Joints/MouseJoint.hpp>
 #include <Box2D/Dynamics/Joints/RopeJoint.hpp>
+#include <Box2D/Dynamics/Joints/RevoluteJoint.hpp>
+#include <Box2D/Dynamics/Joints/PrismaticJoint.hpp>
+#include <Box2D/Dynamics/Joints/DistanceJoint.hpp>
+#include <Box2D/Dynamics/Joints/PulleyJoint.hpp>
 #include <chrono>
+#include <type_traits>
 
 using namespace box2d;
 
@@ -83,6 +89,29 @@ TEST(World, Def)
     EXPECT_GT(max_inc, RealNum(0) * Meter * Second);
 }
 
+TEST(World, Traits)
+{
+    EXPECT_TRUE(std::is_default_constructible<World>::value);
+    EXPECT_FALSE(std::is_nothrow_default_constructible<World>::value);
+    EXPECT_FALSE(std::is_trivially_default_constructible<World>::value);
+    
+    EXPECT_TRUE(std::is_constructible<World>::value);
+    EXPECT_FALSE(std::is_nothrow_constructible<World>::value);
+    EXPECT_FALSE(std::is_trivially_constructible<World>::value);
+    
+    EXPECT_TRUE(std::is_copy_constructible<World>::value);
+    EXPECT_FALSE(std::is_nothrow_copy_constructible<World>::value);
+    EXPECT_FALSE(std::is_trivially_copy_constructible<World>::value);
+    
+    EXPECT_TRUE(std::is_copy_assignable<World>::value);
+    EXPECT_FALSE(std::is_nothrow_copy_assignable<World>::value);
+    EXPECT_FALSE(std::is_trivially_copy_assignable<World>::value);
+    
+    EXPECT_TRUE(std::is_destructible<World>::value);
+    EXPECT_TRUE(std::is_nothrow_destructible<World>::value);
+    EXPECT_FALSE(std::is_trivially_destructible<World>::value);
+}
+
 TEST(World, DefaultInit)
 {
     World world;
@@ -130,6 +159,63 @@ TEST(World, Init)
     World world{WorldDef{}.UseGravity(gravity)};
     EXPECT_EQ(world.GetGravity(), gravity);
     EXPECT_FALSE(world.IsLocked());
+}
+
+TEST(World, CopyConstruction)
+{
+    auto world = World{};
+
+    {
+        const auto copy = World{world};
+        EXPECT_EQ(world.GetGravity(), copy.GetGravity());
+        EXPECT_EQ(world.GetMinVertexRadius(), copy.GetMinVertexRadius());
+        EXPECT_EQ(world.GetMaxVertexRadius(), copy.GetMaxVertexRadius());
+        EXPECT_EQ(world.GetJoints().size(), copy.GetJoints().size());
+        EXPECT_EQ(world.GetBodies().size(), copy.GetBodies().size());
+        EXPECT_EQ(world.GetContacts().size(), copy.GetContacts().size());
+        EXPECT_EQ(world.GetTreeHeight(), copy.GetTreeHeight());
+        EXPECT_EQ(world.GetProxyCount(), copy.GetProxyCount());
+        EXPECT_EQ(world.GetTreeBalance(), copy.GetTreeBalance());
+    }
+    
+    const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}
+                                                   .UseDensity(RealNum(1) * KilogramPerSquareMeter)
+                                                   .UseVertexRadius(RealNum(1) * Meter));
+    const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+    b1->CreateFixture(shape);
+    const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+    b2->CreateFixture(shape);
+
+    world.CreateJoint(RevoluteJointDef{b1, b2, Vec2_zero * Meter});
+    world.CreateJoint(PrismaticJointDef{b1, b2, Vec2_zero * Meter, UnitVec2::GetRight()});
+    world.CreateJoint(PulleyJointDef{b1, b2, Vec2_zero * Meter, Vec2_zero * Meter,
+        Vec2_zero * Meter, Vec2_zero * Meter, RealNum(1)});
+    
+    auto stepConf = StepConf{};
+    world.Step(stepConf);
+
+    {
+        const auto copy = World{world};
+        EXPECT_EQ(world.GetGravity(), copy.GetGravity());
+        EXPECT_EQ(world.GetMinVertexRadius(), copy.GetMinVertexRadius());
+        EXPECT_EQ(world.GetMaxVertexRadius(), copy.GetMaxVertexRadius());
+        EXPECT_EQ(world.GetJoints().size(), copy.GetJoints().size());
+        const auto minJoints = std::min(world.GetJoints().size(), copy.GetJoints().size());
+        
+        auto worldJointIter = world.GetJoints().begin();
+        auto copyJointIter = copy.GetJoints().begin();
+        for (auto i = decltype(minJoints){0}; i < minJoints; ++i)
+        {
+            EXPECT_EQ((*worldJointIter)->GetType(), (*copyJointIter)->GetType());
+            ++worldJointIter;
+            ++copyJointIter;
+        }
+        EXPECT_EQ(world.GetBodies().size(), copy.GetBodies().size());
+        EXPECT_EQ(world.GetContacts().size(), copy.GetContacts().size());
+        EXPECT_EQ(world.GetTreeHeight(), copy.GetTreeHeight());
+        EXPECT_EQ(world.GetProxyCount(), copy.GetProxyCount());
+        EXPECT_EQ(world.GetTreeBalance(), copy.GetTreeBalance());
+    }
 }
 
 TEST(World, SetGravity)

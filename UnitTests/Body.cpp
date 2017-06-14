@@ -149,10 +149,10 @@ TEST(Body, CreateAndDestroyFixture)
     auto fixture = body->CreateFixture(shape, FixtureDef{}, false);
     const auto fshape = fixture->GetShape();
     ASSERT_NE(fshape, nullptr);
-    EXPECT_EQ(typeid(*fshape), typeid(DiskShape));
+    EXPECT_EQ(typeid(fshape.get()), typeid(const Shape*));
     EXPECT_EQ(GetVertexRadius(*fshape), GetVertexRadius(*shape));
-    EXPECT_EQ(static_cast<const DiskShape*>(fshape)->GetLocation().x, shape->GetLocation().x);
-    EXPECT_EQ(static_cast<const DiskShape*>(fshape)->GetLocation().y, shape->GetLocation().y);
+    EXPECT_EQ(static_cast<const DiskShape*>(fshape.get())->GetLocation().x, shape->GetLocation().x);
+    EXPECT_EQ(static_cast<const DiskShape*>(fshape.get())->GetLocation().y, shape->GetLocation().y);
     EXPECT_FALSE(body->GetFixtures().empty());
     {
         int i = 0;
