@@ -24,7 +24,12 @@
 #include <Box2D/Dynamics/Contacts/VelocityConstraint.hpp>
 #include <Box2D/Dynamics/Contacts/PositionConstraint.hpp>
 
+#include <algorithm>
+
 using namespace box2d;
+
+using std::begin;
+using std::end;
 
 #if !defined(NDEBUG)
 // Solver debugging is normally disabled because the block solver sometimes has to deal with a
@@ -503,7 +508,7 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
     const auto invMassTotal = invMassA + invMassB;
     assert(invMassTotal >= InvMass{0});
 
-    const auto totalRadius = pc.radiusA + pc.radiusB;
+    const auto totalRadius = pc.GetRadiusA() + pc.GetRadiusB();
 
     const auto solver_fn = [&](const PositionSolverManifold psm,
                                const Length2D pA, const Length2D pB) {
@@ -605,40 +610,36 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
     return PositionSolution{posA, posB, std::numeric_limits<RealNum>::infinity() * Meter};
 }
 
-Length box2d::SolvePositionConstraints(Span<PositionConstraint> positionConstraints,
+Length box2d::SolvePositionConstraints(Span<PositionConstraint> posConstraints,
                                        ConstraintSolverConf conf)
 {
     auto minSeparation = std::numeric_limits<RealNum>::infinity() * Meter;
 
-    for (auto&& pc: positionConstraints)
-    {
+    std::for_each(begin(posConstraints), end(posConstraints), [&](PositionConstraint &pc) {
         assert(&(pc.bodyA) != &(pc.bodyB)); // Confirms ContactManager::Add() did its job.
         const auto res = SolvePositionConstraint(pc, true, true, conf);
         pc.bodyA.SetPosition(res.pos_a);
         pc.bodyB.SetPosition(res.pos_b);
         minSeparation = Min(minSeparation, res.min_separation);
-    }
+    });
 
     return minSeparation;
 }
 
-Length box2d::SolvePositionConstraints(Span<PositionConstraint> positionConstraints,
+Length box2d::SolvePositionConstraints(Span<PositionConstraint> posConstraints,
                                        const BodyConstraint* bodiesA, const BodyConstraint* bodiesB,
                                        ConstraintSolverConf conf)
 {
     auto minSeparation = std::numeric_limits<RealNum>::infinity() * Meter;
 
-    // Intentionally copy position constraint to local variable in order to
-    // modify the constraint temporarily if related to indexA or indexB.
-    for (auto&& pc: positionConstraints)
-    {
+    std::for_each(begin(posConstraints), end(posConstraints), [&](PositionConstraint &pc) {
         const auto moveA = (&(pc.bodyA) == bodiesA) || (&(pc.bodyA) == bodiesB);
         const auto moveB = (&(pc.bodyB) == bodiesA) || (&(pc.bodyB) == bodiesB);
         const auto res = SolvePositionConstraint(pc, moveA, moveB, conf);
         pc.bodyA.SetPosition(res.pos_a);
         pc.bodyB.SetPosition(res.pos_b);
         minSeparation = Min(minSeparation, res.min_separation);
-    }
+    });
 
     return minSeparation;
 }

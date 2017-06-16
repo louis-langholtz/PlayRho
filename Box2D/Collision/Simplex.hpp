@@ -223,10 +223,10 @@ namespace box2d
     inline Simplex::IndexPairs Simplex::GetIndexPairs(const Edges& collection) noexcept
     {
         IndexPairs list;
-        for (auto&& element: collection)
-        {
-            list.push_back(element.GetIndexPair());
-        }
+        list[0] = collection[0].GetIndexPair();
+        list[1] = collection[1].GetIndexPair();
+        list[2] = collection[2].GetIndexPair();
+        list.size(collection.size());
         return list;
     }
 
@@ -277,18 +277,14 @@ namespace box2d
         return RealNum{0};
     }
 
-    BOX2D_CONSTEXPR inline Simplex::Simplex(const Edges& simplexEdges, const Coefficients& normalizedWeights) noexcept:
+    BOX2D_CONSTEXPR inline Simplex::Simplex(const Edges& simplexEdges,
+                                            const Coefficients& normalizedWeights) noexcept:
         m_simplexEdges{simplexEdges}, m_normalizedWeights{normalizedWeights}
     {
         assert(simplexEdges.size() == normalizedWeights.size());
         assert(almost_equal(1, [&]() {
-            auto sum = RealNum(0);
-            for (auto&& elem: normalizedWeights)
-            {
-                assert(elem >= 0);
-                sum += elem;
-            }
-            return sum;
+            return std::accumulate(std::begin(normalizedWeights), std::end(normalizedWeights),
+                                   RealNum(0));
         }()));
     }
 

@@ -44,7 +44,7 @@ namespace box2d
             return Joint::Create(def);
         }
         
-        static void Destroy(Joint* j)
+        static void Destroy(const Joint* j)
         {
             Joint::Destroy(j);
         }

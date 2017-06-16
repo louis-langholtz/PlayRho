@@ -29,6 +29,9 @@
 
 using namespace box2d;
 
+using std::begin;
+using std::end;
+
 Body::FlagsType Body::GetFlags(const BodyDef& bd) noexcept
 {
     // @invariant Only bodies that allow sleeping, can be put to sleep.
@@ -254,11 +257,9 @@ void Body::SetTransformation(const Transformation value) noexcept
     if (m_xf != value)
     {
         m_xf = value;
-        for (auto&& ci: GetContacts())
-        {
-            const auto contact = GetContactPtr(ci);
-            contact->FlagForUpdating();
-        }
+        std::for_each(begin(m_contacts), end(m_contacts), [&](KeyedContactPtr ci) {
+            ci.second->FlagForUpdating();
+        });
     }
 }
 
@@ -303,10 +304,9 @@ void Body::SetEnabled(bool flag)
     }
 
     // Register for proxies so contacts created or destroyed the next time step.
-    for (auto&& fixture: m_fixtures)
-    {
-        m_world->RegisterForProxies(&fixture);
-    }
+    std::for_each(begin(m_fixtures), end(m_fixtures), [&](Fixture &f) {
+        m_world->RegisterForProxies(&f);
+    });
 }
 
 void Body::SetFixedRotation(bool flag)
@@ -345,30 +345,17 @@ bool Body::Insert(Joint* j)
     return true;
 }
 
-bool Body::Erase(Joint* const joint)
-{
-    for (auto iter = m_joints.begin(); iter != m_joints.end(); ++iter)
-    {
-        if (iter->second == joint)
-        {
-            m_joints.erase(iter);
-            return true;
-        }
-    }
-    return false;
-}
-
 bool Body::Insert(Contact* contact)
 {
 #ifndef NDEBUG
     // Prevent the same contact from being added more than once...
-    for (auto iter = m_contacts.begin(); iter != m_contacts.end(); ++iter)
+    const auto it = std::find_if(begin(m_contacts), end(m_contacts), [&](KeyedContactPtr ci) {
+        return ci.second == contact;
+    });
+    assert(it == end(m_contacts));
+    if (it != end(m_contacts))
     {
-        assert(iter->second != contact);
-        if (iter->second == contact)
-        {
-            return false;
-        }
+        return false;
     }
 #endif
 
@@ -376,17 +363,40 @@ bool Body::Insert(Contact* contact)
     return true;
 }
 
-bool Body::Erase(Contact* const contact)
+bool Body::Erase(const Joint* const joint)
 {
-    for (auto iter = m_contacts.begin(); iter != m_contacts.end(); ++iter)
+    const auto it = std::find_if(begin(m_joints), end(m_joints), [&](KeyedJointPtr ji) {
+        return ji.second == joint;
+    });
+    if (it != end(m_joints))
     {
-        if (iter->second == contact)
-        {
-            m_contacts.erase(iter);
-            return true;
-        }
+        m_joints.erase(it);
+        return true;
     }
     return false;
+}
+
+bool Body::Erase(const Contact* const contact)
+{
+    const auto it = std::find_if(begin(m_contacts), end(m_contacts), [&](KeyedContactPtr ci) {
+        return ci.second == contact;
+    });
+    if (it != end(m_contacts))
+    {
+        m_contacts.erase(it);
+        return true;
+    }
+    return false;
+}
+
+void Body::ClearContacts()
+{
+    m_contacts.clear();
+}
+
+void Body::ClearJoints()
+{
+    m_joints.clear();
 }
 
 // Free functions...
@@ -400,18 +410,11 @@ bool box2d::ShouldCollide(const Body& lhs, const Body& rhs) noexcept
     }
 
     // Does a joint prevent collision?
-    for (auto&& ji: lhs.GetJoints())
-    {
-        if (ji.first == &rhs)
-        {
-            if (!(ji.second->GetCollideConnected()))
-            {
-                return false;
-            }
-        }
-    }
-
-    return true;
+    const auto joints = lhs.GetJoints();
+    const auto it = std::find_if(begin(joints), end(joints), [&](Body::KeyedJointPtr ji) {
+        return (ji.first == &rhs) && !(ji.second->GetCollideConnected());
+    });
+    return it == end(joints);
 }
 
 box2d::size_t box2d::GetWorldIndex(const Body* body)
@@ -419,15 +422,14 @@ box2d::size_t box2d::GetWorldIndex(const Body* body)
     if (body)
     {
         const auto world = body->GetWorld();
-
+        const auto bodies = world->GetBodies();
         auto i = size_t{0};
-        for (auto&& b: world->GetBodies())
+        const auto it = std::find_if(begin(bodies), end(bodies), [&](const Body &b) {
+            return &b == body || (++i, false);
+        });
+        if (it != end(bodies))
         {
-            if (&b == body)
-            {
-                return i;
-            }
-            ++i;
+            return i;
         }
     }
     return size_t(-1);

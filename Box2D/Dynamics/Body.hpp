@@ -70,8 +70,10 @@ public:
     /// @brief Container type for fixtures.
     using Fixtures = std::list<Fixture>;
 
+    using KeyedJointPtr = std::pair<Body*, Joint*>;
+
     /// @brief Container type for joints.
-    using Joints = std::vector<std::pair<Body*, Joint*>>;
+    using Joints = std::vector<KeyedJointPtr>;
     
     /// @brief Container type for contacts.
     using Contacts = std::vector<std::pair<ContactKey,Contact*>>;
@@ -431,8 +433,11 @@ private:
     bool Insert(Contact* contact);
     bool Insert(Joint* joint);
 
-    bool Erase(Contact* const contact);
-    bool Erase(Joint* const joint);
+    bool Erase(const Contact* const contact);
+    bool Erase(const Joint* const joint);
+
+    void ClearContacts();
+    void ClearJoints();
 
     void SetTransformation(const Transformation value) noexcept;
 

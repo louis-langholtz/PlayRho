@@ -466,7 +466,7 @@ private:
     
     bool Add(Joint* j, Body* bodyA, Body* bodyB);
 
-    bool Remove(Body& b);
+    bool Remove(const Body& b);
     bool Remove(Joint& j);
 
     /// @brief Whether or not "step" is complete.
@@ -571,8 +571,7 @@ private:
     bool Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB);
     
     void InternalDestroy(Contact* contact, Body* from = nullptr);
-    bool Erase(Contact* contact);
-    
+
     /// @brief Creates proxies for every child of the given fixture's shape.
     /// @note This sets the proxy count to the child count of the shape.
     void CreateProxies(Fixture& fixture, const Length aabbExtension);
@@ -602,13 +601,13 @@ private:
     bool IsIslanded(const Contact* contact);
     bool IsIslanded(const Joint* joint);
 
-    void SetIslanded(Body* body);
-    void SetIslanded(Contact* contact);
-    void SetIslanded(Joint* joint);
+    void SetIslanded(const Body* body);
+    void SetIslanded(const Contact* contact);
+    void SetIslanded(const Joint* joint);
 
-    void UnsetIslanded(Body* body);
-    void UnsetIslanded(Contact* contact);
-    void UnsetIslanded(Joint* joint);
+    void UnsetIslanded(const Body* body);
+    void UnsetIslanded(const Contact* contact);
+    void UnsetIslanded(const Joint* joint);
 
     /******** Member variables. ********/
     
@@ -858,32 +857,32 @@ inline bool World::IsIslanded(const Joint* key)
     return m_jointsIslanded.count(key) != 0;
 }
 
-inline void World::SetIslanded(Body* key)
+inline void World::SetIslanded(const Body* key)
 {
     m_bodiesIslanded.insert(key);
 }
 
-inline void World::SetIslanded(Contact* key)
+inline void World::SetIslanded(const Contact* key)
 {
     m_contactsIslanded.insert(key);
 }
 
-inline void World::SetIslanded(Joint* key)
+inline void World::SetIslanded(const Joint* key)
 {
     m_jointsIslanded.insert(key);
 }
 
-inline void World::UnsetIslanded(Body* key)
+inline void World::UnsetIslanded(const Body* key)
 {
     m_bodiesIslanded.erase(key);
 }
 
-inline void World::UnsetIslanded(Contact* key)
+inline void World::UnsetIslanded(const Contact* key)
 {
     m_contactsIslanded.erase(key);
 }
 
-inline void World::UnsetIslanded(Joint* key)
+inline void World::UnsetIslanded(const Joint* key)
 {
     m_jointsIslanded.erase(key);
 }

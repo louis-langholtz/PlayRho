@@ -23,7 +23,12 @@
 #include <Box2D/Dynamics/World.hpp>
 #include <Box2D/Dynamics/Body.hpp>
 
+#include <algorithm>
+
 using namespace box2d;
+
+using std::begin;
+using std::end;
 
 Density Fixture::GetDensity() const noexcept
 {
@@ -52,8 +57,8 @@ void Fixture::Refilter()
     const auto world = body->GetWorld();
 
     // Flag associated contacts for filtering.
-    for (auto&& ci: body->GetContacts())
-    {
+    const auto contacts = body->GetContacts();
+    std::for_each(begin(contacts), end(contacts), [&](KeyedContactPtr ci) {
         const auto contact = GetContactPtr(ci);
         const auto fixtureA = contact->GetFixtureA();
         const auto fixtureB = contact->GetFixtureB();
@@ -61,7 +66,7 @@ void Fixture::Refilter()
         {
             contact->FlagForFiltering();
         }
-    }
+    });
     
     world->TouchProxies(*this);
 }
@@ -76,11 +81,12 @@ void Fixture::SetSensor(bool sensor) noexcept
         if (body)
         {
             body->SetAwake();
-            for (auto&& ci: body->GetContacts())
-            {
+
+            const auto contacts = body->GetContacts();
+            std::for_each(begin(contacts), end(contacts), [&](KeyedContactPtr ci) {
                 const auto contact = GetContactPtr(ci);
                 contact->FlagForUpdating();
-            }
+            });
         }
     }
 }

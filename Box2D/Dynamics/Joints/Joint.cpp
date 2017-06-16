@@ -34,6 +34,7 @@
 #include <Box2D/Dynamics/Contacts/Contact.hpp>
 
 #include <new>
+#include <algorithm>
 
 namespace box2d
 {
@@ -176,7 +177,7 @@ Joint* Joint::Create(const JointDef& def)
     return nullptr;
 }
 
-void Joint::Destroy(Joint* joint)
+void Joint::Destroy(const Joint* joint)
 {
     delete joint;
 }
@@ -218,13 +219,13 @@ size_t GetWorldIndex(const Joint* joint)
         if (world)
         {
             auto i = size_t{0};
-            for (auto&& j: world->GetJoints())
+            const auto joints = world->GetJoints();
+            const auto it = std::find_if(std::begin(joints), std::end(joints), [&](const Joint *j) {
+                return (j == joint) || (++i, false);
+            });
+            if (it != std::end(joints))
             {
-                if (j == joint)
-                {
-                    return i;
-                }
-                ++i;
+                return i;
             }
         }
     }

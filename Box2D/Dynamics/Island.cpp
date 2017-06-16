@@ -24,6 +24,8 @@
 #include <Box2D/Dynamics/World.hpp>
 #include <Box2D/Dynamics/Contacts/Contact.hpp>
 
+#include <algorithm>
+
 /*
 Position Correction Notes
 =========================
@@ -144,7 +146,12 @@ However, we can compute sin+cos of the same angle fast.
 
 using namespace box2d;
 
-Island::Island(Bodies::size_type bodyCapacity, Contacts::size_type contactCapacity, Joints::size_type jointCapacity)
+using std::begin;
+using std::end;
+
+Island::Island(Bodies::size_type bodyCapacity,
+               Contacts::size_type contactCapacity,
+               Joints::size_type jointCapacity)
 {
     m_bodies.reserve(bodyCapacity);
     m_contacts.reserve(contactCapacity);
@@ -153,39 +160,18 @@ Island::Island(Bodies::size_type bodyCapacity, Contacts::size_type contactCapaci
 
 std::size_t box2d::Count(const Island& island, const Body* entry)
 {
-    auto n = std::size_t{0};
-    for (auto&& b: island.m_bodies)
-    {
-        if (b == entry)
-        {
-            ++n;
-        }
-    }
-    return n;
+    return static_cast<std::size_t>(std::count_if(begin(island.m_bodies), end(island.m_bodies),
+                                                  [&](const Body *b) { return b == entry; }));
 }
 
 std::size_t box2d::Count(const Island& island, const Contact* entry)
 {
-    auto n = std::size_t{0};
-    for (auto&& b: island.m_contacts)
-    {
-        if (b == entry)
-        {
-            ++n;
-        }
-    }
-    return n;
+    return static_cast<std::size_t>(std::count_if(begin(island.m_contacts), end(island.m_contacts),
+                                                  [&](const Contact *c) { return c == entry; }));
 }
 
 std::size_t box2d::Count(const Island& island, const Joint* entry)
 {
-    auto n = std::size_t{0};
-    for (auto&& b: island.m_joints)
-    {
-        if (b == entry)
-        {
-            ++n;
-        }
-    }
-    return n;
+    return static_cast<std::size_t>(std::count_if(begin(island.m_joints), end(island.m_joints),
+                                                  [&](const Joint *j) { return j == entry; }));
 }

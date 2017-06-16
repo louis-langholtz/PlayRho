@@ -27,6 +27,8 @@
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/Joints/JointKey.hpp>
 
+#include <algorithm>
+
 namespace box2d
 {
     /// @brief Body attorney.
@@ -49,25 +51,24 @@ namespace box2d
         
         static bool DestroyFixture(Body& b, Fixture* value)
         {
-            for (auto iter = b.m_fixtures.begin(); iter != b.m_fixtures.end(); ++iter)
+            const auto it = std::find_if(begin(b.m_fixtures), end(b.m_fixtures),
+                                         [&](const Fixture& f) {
+                return &f == value;
+            });
+            if (it != end(b.m_fixtures))
             {
-                if (&(*iter) == value)
-                {
-                    b.m_fixtures.erase(iter);
-                    return true;
-                }
+                b.m_fixtures.erase(it);
+                return true;
             }
             return false;
         }
 
         static void ClearFixtures(Body& b, std::function<void(Fixture&)> callback)
         {
-            while (!b.m_fixtures.empty())
-            {
-                auto& fixture = b.m_fixtures.front();
-                callback(fixture);
-                b.m_fixtures.pop_front();
-            }
+            std::for_each(std::begin(b.m_fixtures), std::end(b.m_fixtures), [&](Fixture& f) {
+                callback(f);
+            });
+            b.m_fixtures.clear();
         }
 
         static void SetTypeFlags(Body& b, BodyType type) noexcept
@@ -100,16 +101,26 @@ namespace box2d
             b.SetMassDataDirty();
         }
         
-        static bool Erase(Body& b, Contact* value)
+        static bool Erase(Body& b, const Contact* value)
         {
             return b.Erase(value);
         }
         
-        static bool Erase(Body& b, Joint* value)
+        static bool Erase(Body& b, const Joint* value)
         {
             return b.Erase(value);
         }
         
+        static void ClearContacts(Body &b)
+        {
+            b.ClearContacts();
+        }
+
+        static void ClearJoints(Body &b)
+        {
+            b.ClearJoints();
+        }
+
         static bool Insert(Body& b, Joint* value)
         {
             return b.Insert(value);
@@ -194,13 +205,11 @@ namespace box2d
         
         static void ClearJoints(Body& b, std::function<void(Joint&)> callback)
         {
-            while (!b.m_joints.empty())
-            {
-                auto iter = b.m_joints.begin();
-                const auto joint = iter->second;
-                b.m_joints.erase(iter);
-                callback(*joint);
-            }
+            auto joints = std::move(b.m_joints);
+            assert(b.m_joints.empty());
+            std::for_each(begin(joints), end(joints), [&](Body::KeyedJointPtr j) {
+                callback(*(j.second));
+            });
         }
         
         static void EraseContacts(Body& b, std::function<bool(Contact&)> callback)

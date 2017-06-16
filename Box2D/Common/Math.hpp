@@ -35,6 +35,7 @@
 #include <cmath>
 #include <iostream>
 #include <vector>
+#include <numeric>
 
 namespace box2d
 {
@@ -76,32 +77,41 @@ constexpr inline T Abs(T a)
 }
 
 template <typename T>
+inline auto Average(Span<const T> span)
+{
+    // For C++17, switch from using std::accumulate to using std::reduce.
+    const auto sum = std::accumulate(std::begin(span), std::end(span), static_cast<T>(0));
+    const auto count = static_cast<RealNum>(span.size());
+    return (count > decltype(count){0})? sum / count: sum / RealNum(1);
+}
+
+template <typename T>
 inline T round(T value, unsigned precision = 100000);
 
 template <>
-inline float round(float value, uint32_t precision)
+inline float round(float value, std::uint32_t precision)
 {
-    const auto factor = float(static_cast<int64_t>(precision));
+    const auto factor = float(static_cast<std::int64_t>(precision));
     return std::round(value * factor) / factor;
 }
 
 template <>
-inline double round(double value, uint32_t precision)
+inline double round(double value, std::uint32_t precision)
 {
-    const auto factor = double(static_cast<int64_t>(precision));
+    const auto factor = double(static_cast<std::int64_t>(precision));
     return std::round(value * factor) / factor;
 }
 
 template <>
-inline long double round(long double value, uint32_t precision)
+inline long double round(long double value, std::uint32_t precision)
 {
     using ldouble = long double;
-    const auto factor = ldouble(static_cast<int64_t>(precision));
+    const auto factor = ldouble(static_cast<std::int64_t>(precision));
     return std::round(value * factor) / factor;
 }
 
 template <>
-inline Fixed32 round(Fixed32 value, uint32_t precision)
+inline Fixed32 round(Fixed32 value, std::uint32_t precision)
 {
     const auto factor = Fixed32(precision);
     return std::round(value * factor) / factor;
@@ -109,12 +119,18 @@ inline Fixed32 round(Fixed32 value, uint32_t precision)
 
 #ifndef _WIN32
 template <>
-inline Fixed64 round(Fixed64 value, uint32_t precision)
+inline Fixed64 round(Fixed64 value, std::uint32_t precision)
 {
     const auto factor = Fixed64(precision);
     return std::round(value * factor) / factor;
 }
 #endif
+
+template <>
+inline Vec2 round(Vec2 value, std::uint32_t precision)
+{
+    return Vec2{round(value.x, precision), round(value.y, precision)};
+}
 
 /// Gets whether a given value is almost zero.
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
@@ -198,48 +214,15 @@ constexpr inline bool almost_equal(long double x, long double y, int ulp = 2)
 
 constexpr inline bool almost_equal(Fixed32 x, Fixed32 y, int ulp = 2)
 {
-    return Abs(x - y) <= Fixed32{0, static_cast<uint32_t>(ulp)};
+    return Abs(x - y) <= Fixed32{0, static_cast<std::uint32_t>(ulp)};
 }
 
 #ifndef _WIN32
 constexpr inline bool almost_equal(Fixed64 x, Fixed64 y, int ulp = 2)
 {
-    return Abs(x - y) <= Fixed64{0, static_cast<uint32_t>(ulp)};
+    return Abs(x - y) <= Fixed64{0, static_cast<std::uint32_t>(ulp)};
 }
 #endif
-
-template <typename T>
-inline T Average(Span<const T> span)
-{
-    auto sum = T{0};
-    for (auto&& element: span)
-    {
-        sum += element;
-    }
-    return (span.size() > decltype(span.size()){0})? sum / static_cast<T>(span.size()): sum;
-}
-
-#ifdef USE_BOOST_UNITS
-
-template <>
-inline Length2D Average(Span<const Length2D> span)
-{
-    auto sum = Length2D{0, 0};
-    for (auto&& element: span)
-    {
-        sum += element;
-    }
-    const auto count = static_cast<RealNum>(span.size());
-    return (span.size() > decltype(span.size()){0})? sum / count: sum;
-}
-
-#endif
-
-template <>
-inline Vec2 round(Vec2 value, std::uint32_t precision)
-{
-    return Vec2{round(value.x, precision), round(value.y, precision)};
-}
 
 /// Gets the angle.
 /// @return Anglular value in the range of -Pi to +Pi radians.
@@ -766,17 +749,6 @@ GetContactRelVelocity(const Velocity velA, const Length2D vcp_rA,
     const auto velBrot = GetRevPerpendicular(vcp_rB) * velB.angular / Radian;
     const auto velArot = GetRevPerpendicular(vcp_rA) * velA.angular / Radian;
     return (velB.linear + velBrot) - (velA.linear + velArot);
-}
-
-template <>
-inline Vec2 Average(Span<const Vec2> span)
-{
-    auto sum = Vec2{0, 0};
-    for (auto&& element: span)
-    {
-        sum += element;
-    }
-    return (span.size() > decltype(span.size()){0})? sum / static_cast<Vec2::data_type>(span.size()): sum;
 }
 
 /// Computes the centroid of a counter-clockwise array of 3 or more vertices.
