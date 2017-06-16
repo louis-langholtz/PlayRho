@@ -37,7 +37,9 @@ namespace box2d
         Vector2D() = default;
         
         Vector2D(const Vector2D& copy) = default;
-        
+
+        constexpr explicit Vector2D(data_type value) noexcept : x{value}, y{value} {}
+
         /// Construct using coordinates.
         constexpr Vector2D(data_type x_, data_type y_) noexcept : x{x_}, y{y_} {}
         
