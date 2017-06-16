@@ -175,7 +175,7 @@ namespace box2d
         }
         
         constexpr Fixed(value_type val, unsigned int fraction) noexcept:
-            m_value{static_cast<value_type>(static_cast<uint32_t>(val * ScaleFactor) | fraction)}
+            m_value{static_cast<value_type>(static_cast<std::uint32_t>(val * ScaleFactor) | fraction)}
         {
             // Intentionally empty.
         }
