@@ -97,6 +97,8 @@ namespace box2d
         return !(lhs == rhs);
     }
 
+    using KeyedContactPtr = std::pair<ContactKey, Contact*>;
+
 } // namespace box2d
 
 namespace std
@@ -135,7 +137,7 @@ namespace std
 
 namespace box2d
 {
-    inline Contact* GetContactPtr(std::pair<ContactKey, Contact*> value)
+    inline Contact* GetContactPtr(KeyedContactPtr value)
     {
         return value.second;
     }
