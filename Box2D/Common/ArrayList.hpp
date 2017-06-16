@@ -81,6 +81,12 @@ namespace box2d
             ++m_size;
         }
         
+        void size(size_type value) noexcept
+        {
+            assert(value <= MAXSIZE);
+            m_size = value;
+        }
+
         void clear() noexcept
         {
             m_size = 0;
