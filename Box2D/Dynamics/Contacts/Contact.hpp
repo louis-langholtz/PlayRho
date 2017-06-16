@@ -116,19 +116,13 @@ public:
     bool IsEnabled() const noexcept;
 
     /// Gets fixture A in this contact.
-    Fixture* GetFixtureA() noexcept;
-
-    /// Gets fixture A in this contact.
-    const Fixture* GetFixtureA() const noexcept;
+    Fixture* GetFixtureA() const noexcept;
 
     /// Get the child primitive index for fixture A.
     child_count_t GetChildIndexA() const noexcept;
 
     /// Gets fixture B in this contact.
-    Fixture* GetFixtureB() noexcept;
-
-    /// Gets fixture B in this contact.
-    const Fixture* GetFixtureB() const noexcept;
+    Fixture* GetFixtureB() const noexcept;
 
     /// Get the child primitive index for fixture B.
     child_count_t GetChildIndexB() const noexcept;
@@ -331,19 +325,9 @@ inline void Contact::UnsetTouching() noexcept
     m_flags &= ~e_touchingFlag;
 }
 
-inline Fixture* Contact::GetFixtureA() noexcept
+inline Fixture* Contact::GetFixtureA() const noexcept
 {
     return m_fixtureA;
-}
-
-inline const Fixture* Contact::GetFixtureA() const noexcept
-{
-    return m_fixtureA;
-}
-
-inline Fixture* Contact::GetFixtureB() noexcept
-{
-    return m_fixtureB;
 }
 
 inline child_count_t Contact::GetChildIndexA() const noexcept
@@ -351,7 +335,7 @@ inline child_count_t Contact::GetChildIndexA() const noexcept
     return m_indexA;
 }
 
-inline const Fixture* Contact::GetFixtureB() const noexcept
+inline Fixture* Contact::GetFixtureB() const noexcept
 {
     return m_fixtureB;
 }
