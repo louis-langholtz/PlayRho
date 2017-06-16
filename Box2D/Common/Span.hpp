@@ -67,7 +67,8 @@ namespace box2d
 
         constexpr Span(std::vector<T>& value) noexcept: m_array{value.data()}, m_size{value.size()} {}
 
-        constexpr Span(std::initializer_list<T> list) noexcept: m_array{list.begin()}, m_size{list.size()} {}
+        constexpr Span(std::initializer_list<T> list) noexcept:
+            m_array{list.begin()}, m_size{list.size()} {}
                 
         pointer begin() const noexcept { return m_array; }
         const_pointer cbegin() const noexcept { return m_array; }

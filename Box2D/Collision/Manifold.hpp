@@ -175,7 +175,8 @@ namespace box2d
         /// @param ln Normal on polygon A.
         /// @param lp Center of face A.
         /// @param mp1 Manifold point 1 (of 1).
-        static inline Manifold GetForFaceA(UnitVec2 ln, Length2D lp, const Point& mp1) noexcept
+        static inline Manifold GetForFaceA(UnitVec2 ln, Length2D lp,
+                                           const Point& mp1) noexcept
         {
             //assert(mp1.contactFeature.typeA == ContactFeature::e_face || mp1.contactFeature.typeB == ContactFeature::e_face);
             return Manifold{e_faceA, ln, lp, 1, {{mp1}}};
@@ -186,7 +187,8 @@ namespace box2d
         /// @param lp Center of face A.
         /// @param mp1 Manifold point 1 (of 2).
         /// @param mp2 Manifold point 2 (of 2).
-        static inline Manifold GetForFaceA(UnitVec2 ln, Length2D lp, const Point& mp1, const Point& mp2) noexcept
+        static inline Manifold GetForFaceA(UnitVec2 ln, Length2D lp,
+                                           const Point& mp1, const Point& mp2) noexcept
         {
             //assert(mp1.contactFeature.typeA == ContactFeature::e_face || mp1.contactFeature.typeB == ContactFeature::e_face);
             //assert(mp2.contactFeature.typeA == ContactFeature::e_face || mp2.contactFeature.typeB == ContactFeature::e_face);
@@ -208,7 +210,8 @@ namespace box2d
         /// @param ln Normal on polygon B.
         /// @param lp Center of face B.
         /// @param mp1 Manifold point 1.
-        static inline Manifold GetForFaceB(UnitVec2 ln, Length2D lp, const Point& mp1) noexcept
+        static inline Manifold GetForFaceB(UnitVec2 ln, Length2D lp,
+                                           const Point& mp1) noexcept
         {
             //assert(mp1.contactFeature.typeA == ContactFeature::e_face || mp1.contactFeature.typeB == ContactFeature::e_face);
             return Manifold{e_faceB, ln, lp, 1, {{mp1}}};
@@ -219,7 +222,8 @@ namespace box2d
         /// @param lp Center of face B.
         /// @param mp1 Manifold point 1 (of 2).
         /// @param mp2 Manifold point 2 (of 2).
-        static inline Manifold GetForFaceB(UnitVec2 ln, Length2D lp, const Point& mp1, const Point& mp2) noexcept
+        static inline Manifold GetForFaceB(UnitVec2 ln, Length2D lp,
+                                           const Point& mp1, const Point& mp2) noexcept
         {
             //assert(mp1.contactFeature.typeA == ContactFeature::e_face || mp1.contactFeature.typeB == ContactFeature::e_face);
             //assert(mp2.contactFeature.typeA == ContactFeature::e_face || mp2.contactFeature.typeB == ContactFeature::e_face);
