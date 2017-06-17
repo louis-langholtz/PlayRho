@@ -19,8 +19,10 @@
 #ifndef VertexSet_hpp
 #define VertexSet_hpp
 
-#include <vector>
 #include <Box2D/Common/Math.hpp>
+
+#include <vector>
+#include <algorithm>
 
 namespace box2d
 {
@@ -70,17 +72,10 @@ namespace box2d
             // squaring anything smaller than the sqrt(std::numeric_limits<Vec2::data_type>::min())
             // won't be reversible.
             // i.e. won't obey the property that square(sqrt(a)) == a and sqrt(square(a)) == a.
-            for (auto&& elem: *this)
-            {
+            return std::find_if(begin(), end(), [&](Length2D elem) {
                 // length squared must be large enough to have a reasonable enough unit vector.
-                const auto delta = value - elem;
-                if (GetLengthSquared(delta) <= m_minSepSquared)
-                {
-                    // found or delta poorly conditioned
-                    return &elem;
-                }
-            }
-            return end();
+                return GetLengthSquared(value - elem) <= m_minSepSquared;
+            });
         }
 
         Length2D operator[](size_t index) const noexcept
