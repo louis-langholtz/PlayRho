@@ -78,7 +78,7 @@ namespace box2d
 {
 
 using BodyConstraints = std::unordered_map<const Body*, BodyConstraint>;
-using BodyConstraintsPair = std::pair<const Body*, BodyConstraint&>;
+using BodyConstraintsPair = std::pair<const Body* const, BodyConstraint>;
 using PositionConstraints = std::vector<PositionConstraint>;
 using VelocityConstraints = std::vector<VelocityConstraint>;
     
@@ -198,7 +198,7 @@ namespace {
     inline void IntegratePositions(BodyConstraints& bodies,
                                    Time h, MovementConf conf)
     {
-        std::for_each(begin(bodies), end(bodies), [&](BodyConstraintsPair elem) {
+        std::for_each(begin(bodies), end(bodies), [&](BodyConstraintsPair& elem) {
             const auto newPosAndVel = CalculateMovement(elem.second, h, conf);
             elem.second.SetPosition(newPosAndVel.position);
             elem.second.SetVelocity(newPosAndVel.velocity);
