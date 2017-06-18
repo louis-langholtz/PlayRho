@@ -18,6 +18,16 @@ file(GLOB UnitTest_SRCS *.cpp)
 # See details at: https://cmake.org/cmake/help/v3.1/command/add_executable.html
 add_executable(UnitTests ${UnitTest_SRCS})
 
+# enable code coverage generation (only with GCC for now)
+if(${BOX2D_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+  add_definitions(-fprofile-arcs -ftest-coverage)
+endif()
+
 # Link a target to given libraries.
 # See details at: https://cmake.org/cmake/help/v3.1/command/target_link_libraries.html
 target_link_libraries(UnitTests Box2D gtest)
+
+# link with coverage library
+if(${BOX2D_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+    target_link_libraries(-fprofile-arcs -ftest-coverage)
+endif()

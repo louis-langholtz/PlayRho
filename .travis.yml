@@ -91,7 +91,7 @@ install:
 
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "clang++-3.7" ]]; then (pwd && mkdir -p $BUILD_ROOT && cd $BUILD_ROOT && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib $BOX2D_BUILD_OPTIONS $SOURCE_ROOT && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:StackAllocator.slower_than_mallocfree ); fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-6" ]]; then (pwd && mkdir -p $BUILD_ROOT && cd $BUILD_ROOT && cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib $BOX2D_BUILD_OPTIONS $SOURCE_ROOT && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:StackAllocator.slower_than_mallocfree ); fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-6" ]]; then (pwd && mkdir -p $BUILD_ROOT && cd $BUILD_ROOT && cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib -DBOX2D_ENABLE_COVERAGE=ON $BOX2D_BUILD_OPTIONS $SOURCE_ROOT && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:StackAllocator.slower_than_mallocfree ); fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then (cd Box2D && xcodebuild -project Build/xcode5/Box2D.xcodeproj -list); fi
 
 after_success:
