@@ -319,10 +319,11 @@ namespace {
         });
     }
 
-    /// Gets the velocity constraints for the given inputs.
-    /// @details
-    /// Inializes the velocity constraints with the position dependent portions of the current position constraints.
-    /// @post Velocity constraints will have their "normal" field set to the world manifold normal for them.
+    /// @brief Gets the velocity constraints for the given inputs.
+    /// @details Inializes the velocity constraints with the position dependent portions of
+    ///   the current position constraints.
+    /// @post Velocity constraints will have their "normal" field set to the world manifold
+    ///   normal for them.
     /// @post Velocity constraints will have their constraint points set.
     /// @sa SolveVelocityConstraints.
     VelocityConstraints GetVelocityConstraints(const Island::Contacts& contacts,
@@ -333,35 +334,33 @@ namespace {
         const auto numContacts = contacts.size();
         velConstraints.reserve(numContacts);
 
-        //auto i = VelocityConstraint::index_type{0};
-        for (auto i = decltype(numContacts){0}; i < numContacts; ++i)
-        {
-            const auto& contact = *contacts[i];
-
-            const auto& manifold = contact.GetManifold();
-            const auto fixtureA = contact.GetFixtureA();
-            const auto fixtureB = contact.GetFixtureB();
-            const auto friction = contact.GetFriction();
-            const auto restitution = contact.GetRestitution();
-            const auto tangentSpeed = contact.GetTangentSpeed();
+        auto i = VelocityConstraint::index_type{0};
+        std::for_each(begin(contacts), end(contacts), [&](const Contact *contact) {
+            const auto& manifold = contact->GetManifold();
+            const auto fixtureA = contact->GetFixtureA();
+            const auto fixtureB = contact->GetFixtureB();
+            const auto friction = contact->GetFriction();
+            const auto restitution = contact->GetRestitution();
+            const auto tangentSpeed = contact->GetTangentSpeed();
             
             const auto bodyA = fixtureA->GetBody();
             const auto shapeA = fixtureA->GetShape();
-
+            
             const auto bodyB = fixtureB->GetBody();
             const auto shapeB = fixtureB->GetShape();
-
+            
             auto& bodiesA = bodies.at(bodyA);
             auto& bodiesB = bodies.at(bodyB);
-
+            
             const auto radiusA = shapeA->GetVertexRadius();
             const auto radiusB = shapeB->GetVertexRadius();
             
             velConstraints.emplace_back(i, friction, restitution, tangentSpeed,
-                                             manifold, bodiesA, radiusA, bodiesB, radiusB,
-                                             conf);
+                                        manifold, bodiesA, radiusA, bodiesB, radiusB,
+                                        conf);
 
-        }
+            ++i;
+        });
         return velConstraints;
     }
 
