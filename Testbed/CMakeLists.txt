@@ -63,4 +63,9 @@ target_link_libraries (
 	${OPENGL_LIBRARIES}
 )
 
+# link with coverage library
+if(${BOX2D_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+    target_link_libraries(Testbed -fprofile-arcs -ftest-coverage)
+endif()
+
 file(COPY Data DESTINATION ..)
