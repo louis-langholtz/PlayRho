@@ -32,6 +32,7 @@ option(BOX2D_INSTALL_DOC "Install Box2D documentation" OFF)
 option(BOX2D_BUILD_HELLOWORLD "Build Box2D HelloWorld console application" OFF)
 option(BOX2D_BUILD_UNIT_TESTS "Build Box2D unit tests" OFF)
 option(BOX2D_BUILD_TESTBED "Build Box2D Testbed GUI application" OFF)
+option(BOX2D_ENABLE_COVERAGE "Enable code coverage generation" OFF)
 
 set(BOX2D_VERSION 3.0.0)
 set(LIB_INSTALL_DIR lib${LIB_SUFFIX})
