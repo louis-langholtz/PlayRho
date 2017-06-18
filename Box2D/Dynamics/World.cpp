@@ -312,12 +312,11 @@ namespace {
     
     inline void WarmStartVelocities(const VelocityConstraints& velConstraints)
     {
-        for (auto& vc: velConstraints)
-        {
+        std::for_each(begin(velConstraints), end(velConstraints), [&](const VelocityConstraint& vc) {
             const auto vp = CalcWarmStartVelocityDeltas(vc);
             vc.bodyA.SetVelocity(vc.bodyA.GetVelocity() + vp.a);
             vc.bodyB.SetVelocity(vc.bodyB.GetVelocity() + vp.b);
-        }
+        });
     }
 
     /// Gets the velocity constraints for the given inputs.
