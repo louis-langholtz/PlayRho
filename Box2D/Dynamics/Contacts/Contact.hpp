@@ -440,6 +440,8 @@ inline Contact::substep_type Contact::GetToiCount() const noexcept
 }
 
 // Free functions...
+    
+using ContactPtr = Contact*;
 
 inline Contact* GetContactPtr(Contact* value)
 {

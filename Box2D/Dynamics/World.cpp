@@ -290,8 +290,8 @@ namespace {
         if (IsValid(normal) && IsValid(tangent))
         {
             // inverse moment of inertia : L^-2 M^-1 QP^2
-            const auto invRotInertiaA = vc.bodyA.GetInvRotInertia();
-            const auto invRotInertiaB = vc.bodyB.GetInvRotInertia();
+            const auto invRotInertiaA = vc.GetBodyA()->GetInvRotInertia();
+            const auto invRotInertiaB = vc.GetBodyB()->GetInvRotInertia();
 
             const auto pointCount = vc.GetPointCount();
             for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
@@ -303,8 +303,8 @@ namespace {
                 const auto P = (GetNormalImpulseAtPoint(vc, j) * normal + GetTangentImpulseAtPoint(vc, j) * tangent);
                 const auto LA = Cross(GetPointRelPosA(vc, j), P) / Radian;
                 const auto LB = Cross(GetPointRelPosB(vc, j), P) / Radian;
-                vp.a -= Velocity{vc.bodyA.GetInvMass() * P, invRotInertiaA * LA};
-                vp.b += Velocity{vc.bodyB.GetInvMass() * P, invRotInertiaB * LB};
+                vp.a -= Velocity{vc.GetBodyA()->GetInvMass() * P, invRotInertiaA * LA};
+                vp.b += Velocity{vc.GetBodyB()->GetInvMass() * P, invRotInertiaB * LB};
             }
         }
         return vp;
@@ -312,10 +312,13 @@ namespace {
     
     inline void WarmStartVelocities(const VelocityConstraints& velConstraints)
     {
-        std::for_each(begin(velConstraints), end(velConstraints), [&](const VelocityConstraint& vc) {
+        std::for_each(begin(velConstraints), end(velConstraints),
+                      [&](const VelocityConstraint& vc) {
             const auto vp = CalcWarmStartVelocityDeltas(vc);
-            vc.bodyA.SetVelocity(vc.bodyA.GetVelocity() + vp.a);
-            vc.bodyB.SetVelocity(vc.bodyB.GetVelocity() + vp.b);
+            const auto bodyA = vc.GetBodyA();
+            const auto bodyB = vc.GetBodyB();
+            bodyA->SetVelocity(bodyA->GetVelocity() + vp.a);
+            bodyB->SetVelocity(bodyB->GetVelocity() + vp.b);
         });
     }
 
@@ -331,11 +334,15 @@ namespace {
                                                         const VelocityConstraint::Conf conf)
     {
         auto velConstraints = VelocityConstraints{};
-        const auto numContacts = contacts.size();
-        velConstraints.reserve(numContacts);
-
-        auto i = VelocityConstraint::index_type{0};
-        std::for_each(begin(contacts), end(contacts), [&](const Contact *contact) {
+        velConstraints.reserve(contacts.size());
+        std::transform(/*std::execution::par_unseq,*/ begin(contacts), end(contacts),
+                       std::back_insert_iterator<VelocityConstraints>(velConstraints),
+                       [&](const ContactPtr& c) {
+            // Note: c *must* be passed by reference in order for following to work as intended!
+            const auto i = static_cast<std::size_t>(&c - contacts.data());
+            assert(i < contacts.size());
+            const auto contact = contacts[i];
+            
             const auto& manifold = contact->GetManifold();
             const auto fixtureA = contact->GetFixtureA();
             const auto fixtureB = contact->GetFixtureB();
@@ -355,11 +362,8 @@ namespace {
             const auto radiusA = shapeA->GetVertexRadius();
             const auto radiusB = shapeB->GetVertexRadius();
             
-            velConstraints.emplace_back(i, friction, restitution, tangentSpeed,
-                                        manifold, bodiesA, radiusA, bodiesB, radiusB,
-                                        conf);
-
-            ++i;
+            return VelocityConstraint{i, friction, restitution, tangentSpeed, manifold,
+                bodiesA, radiusA, bodiesB, radiusB, conf};
         });
         return velConstraints;
     }

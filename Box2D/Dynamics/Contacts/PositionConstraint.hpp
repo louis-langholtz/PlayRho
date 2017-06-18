@@ -37,7 +37,7 @@ namespace box2d {
         PositionConstraint(const Manifold& m,
                            BodyConstraint& bA, Length rA,
                            BodyConstraint& bB, Length rB):
-            manifold{m}, bodyA{bA}, radiusA{rA}, bodyB{bB}, radiusB{rB}
+            manifold{m}, m_bodyA{&bA}, m_radiusA{rA}, m_bodyB{&bB}, m_radiusB{rB}
         {
             assert(m.GetPointCount() > 0);
             assert(&bA != &bB);
@@ -46,23 +46,28 @@ namespace box2d {
         }
         
         Manifold manifold; ///< Copy of contact's manifold with 1 or more contact points (60-bytes).
-        
-        BodyConstraint& bodyA; ///< Body A data (8-bytes).
-        
-        BodyConstraint& bodyB; ///< Body B data (8-bytes).
 
-        Length GetRadiusA() const noexcept { return radiusA; }
+        BodyConstraint* GetBodyA() const noexcept { return m_bodyA; }
         
-        Length GetRadiusB() const noexcept { return radiusB; }
+        BodyConstraint* GetBodyB() const noexcept { return m_bodyB; }
+
+        Length GetRadiusA() const noexcept { return m_radiusA; }
+        
+        Length GetRadiusB() const noexcept { return m_radiusB; }
 
     private:
+        
+        BodyConstraint* m_bodyA; ///< Body A data (8-bytes).
+        
+        BodyConstraint* m_bodyB; ///< Body B data (8-bytes).
+
         /// @brief "Radius" distance from the associated shape of fixture A.
         /// @note 0 or greater.
-        Length radiusA; // 4-bytes.
+        Length m_radiusA; // 4-bytes.
 
         /// @brief "Radius" distance from the associated shape of fixture B.
         /// @note 0 or greater.
-        Length radiusB; // 4-bytes.
+        Length m_radiusB; // 4-bytes.
     };
 
 } // namespace box2d

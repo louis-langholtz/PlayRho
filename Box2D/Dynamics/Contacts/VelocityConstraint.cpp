@@ -34,7 +34,7 @@ VelocityConstraint::VelocityConstraint(index_type contactIndex,
                                        Conf conf):
     m_contactIndex{contactIndex},
     m_friction{friction}, m_restitution{restitution}, m_tangentSpeed{tangentSpeed},
-    bodyA{bA}, bodyB{bB},
+    m_bodyA{&bA}, m_bodyB{&bB},
     m_invMass{bA.GetInvMass() + bB.GetInvMass()}
 {
     assert(IsValid(contactIndex));
@@ -56,8 +56,8 @@ VelocityConstraint::VelocityConstraint(index_type contactIndex,
         const auto ci = manifold.GetContactImpulses(j);
         
         const auto worldPoint = worldManifold.GetPoint(j);
-        const auto vcp_rA = worldPoint - bodyA.GetPosition().linear;
-        const auto vcp_rB = worldPoint - bodyB.GetPosition().linear;
+        const auto vcp_rA = worldPoint - bA.GetPosition().linear;
+        const auto vcp_rB = worldPoint - bB.GetPosition().linear;
         
         AddPoint(ci.m_normal, ci.m_tangent, vcp_rA, vcp_rB, conf);
     }
@@ -104,7 +104,7 @@ VelocityConstraint::Point VelocityConstraint::GetPoint(Momentum normalImpulse, M
     // case will fail and this lambda will return 0. And that's fine. There's no need
     // to have a check that the normal is valid and possibly incur the overhead of a
     // conditional branch here.
-    const auto dv = GetContactRelVelocity(bodyA.GetVelocity(), rA, bodyB.GetVelocity(), rB);
+    const auto dv = GetContactRelVelocity(m_bodyA->GetVelocity(), rA, m_bodyB->GetVelocity(), rB);
     const auto vn = LinearVelocity{Dot(dv, GetNormal())};
 
     point.normalImpulse = normalImpulse;
@@ -114,8 +114,8 @@ VelocityConstraint::Point VelocityConstraint::GetPoint(Momentum normalImpulse, M
     point.velocityBias = (vn < -conf.velocityThreshold)? -GetRestitution() * vn: LinearVelocity{0};
     
     const auto invMass = GetInvMass();
-    const auto invRotInertiaA = bodyA.GetInvRotInertia();
-    const auto invRotInertiaB = bodyB.GetInvRotInertia();
+    const auto invRotInertiaA = m_bodyA->GetInvRotInertia();
+    const auto invRotInertiaB = m_bodyB->GetInvRotInertia();
 
     point.normalMass = [&](){
         const auto invRotMassA = invRotInertiaA * Square(Cross(rA, GetNormal())) / SquareRadian;
@@ -156,8 +156,8 @@ Mat22 VelocityConstraint::ComputeK() const noexcept
         const auto rn2B = Cross(StripUnits(GetPointRelPosB(1)), normal);
         
         const auto invMass = RealNum{GetInvMass() * Kilogram};
-        const auto invRotInertiaA = bodyA.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
-        const auto invRotInertiaB = bodyB.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
+        const auto invRotInertiaA = m_bodyA->GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
+        const auto invRotInertiaB = m_bodyB->GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
 
         const auto k11 = invMass + (invRotInertiaA * Square(rn1A)) + (invRotInertiaB * Square(rn1B));
         const auto k22 = invMass + (invRotInertiaA * Square(rn2A)) + (invRotInertiaB * Square(rn2B));

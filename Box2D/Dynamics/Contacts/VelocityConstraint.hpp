@@ -111,9 +111,9 @@ namespace box2d {
         /// Gets the tangent speed of the associated contact.
         LinearVelocity GetTangentSpeed() const noexcept { return m_tangentSpeed; }
         
-        BodyConstraint& bodyA; ///< Body A contact velocity constraint data.
+        BodyConstraint* GetBodyA() const noexcept { return m_bodyA; }
         
-        BodyConstraint& bodyB; ///< Body B contact velocity constraint data.
+        BodyConstraint* GetBodyB() const noexcept { return m_bodyB; }
         
         /// Gets the normal impulse at the given point.
         /// @note Call the <code>AddPoint</code> or <code>SetNormalImpulseAtPoint</code> method
@@ -259,6 +259,9 @@ namespace box2d {
         /// @note This field is 16-bytes (on at least one 64-bit platform).
         Mat22 m_normalMass = GetInvalid<Mat22>();
 
+        BodyConstraint* m_bodyA = nullptr; ///< Body A contact velocity constraint data.
+        BodyConstraint* m_bodyB = nullptr; ///< Body B contact velocity constraint data.
+
         UnitVec2 m_normal = GetInvalid<UnitVec2>(); ///< Normal of the world manifold. 8-bytes.
         UnitVec2 m_tangent = GetInvalid<UnitVec2>(); ///< Tangent of the world manifold. 8-bytes.
 
@@ -331,7 +334,7 @@ namespace box2d {
 
     inline InvMass GetInvMass(const VelocityConstraint& vc) noexcept
     {
-        return vc.bodyA.GetInvMass() + vc.bodyB.GetInvMass();
+        return vc.GetBodyA()->GetInvMass() + vc.GetBodyB()->GetInvMass();
     }
     
     inline Length2D GetPointRelPosA(const VelocityConstraint& vc, VelocityConstraint::size_type index)
