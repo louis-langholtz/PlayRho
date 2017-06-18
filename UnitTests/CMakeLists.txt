@@ -20,7 +20,7 @@ add_executable(UnitTests ${UnitTest_SRCS})
 
 # enable code coverage generation (only with GCC for now)
 if(${BOX2D_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-  add_definitions(-fprofile-arcs -ftest-coverage)
+  add_definitions(-ftest-coverage)
 endif()
 
 # Link a target to given libraries.
@@ -29,5 +29,5 @@ target_link_libraries(UnitTests Box2D gtest)
 
 # link with coverage library
 if(${BOX2D_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-    target_link_libraries(-fprofile-arcs -ftest-coverage)
+    target_link_libraries(-ftest-coverage)
 endif()
