@@ -65,6 +65,10 @@ addons:
       - libXi-dev
       - libgl1-mesa-dev
       - libosmesa-dev
+      - lcov
+
+before_install:
+  - gem install coveralls-lcov
 
 # Install stage. Setup dependencies that can't be setup as addon packages.
 #
