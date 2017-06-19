@@ -107,18 +107,24 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-6" ]]; then (pwd && mkdir -p $BUILD_ROOT && cd $BUILD_ROOT && cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib -DBOX2D_ENABLE_COVERAGE=ON $BOX2D_BUILD_OPTIONS $SOURCE_ROOT && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:StackAllocator.slower_than_mallocfree:Math.LengthFasterThanHypot ); fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then (cd Box2D && xcodebuild -project Build/xcode5/Box2D.xcodeproj -list); fi
 
+# Notes:
+#   .gcno files are binary files.
 after_success:
   - |
     if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-6" ]]; then
       pwd && ls -laF
-      lcov --version
+      echo "lcov version: " && lcov --version
+      lcov --help
+      echo "geninfo version: " && geninfo --version
+      geninfo --help
       cd $BUILD_ROOT
       pwd
       ls -laF . UnitTests UnitTests/CMakeFiles/UnitTests.dir
-      cat UnitTests/CMakeFiles/UnitTests.dir/main.cpp.gcno
       lcov --directory UnitTests --base-directory $SOURCE_ROOT --capture --output-file coverage.info
-      echo Foo
+      echo "Lcov exited with status $?"
+      ls -laF coverage.info
       lcov --remove coverage.info '*/UnitTests/*' -o coverage.info
-      echo Boo
-      coveralls-lcov coverage.info
+      ls -laF coverage.info
+      cd $SOURCE_ROOT && pwd
+      coveralls-lcov $BUILD_ROOT/coverage.info
     fi
