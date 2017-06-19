@@ -79,15 +79,21 @@ before_install:
 # Additional notes:
 # Linux seems to usually support "sha256sum". OS X meanwhile calls it "shasum".
 # For dumping compiler macros: $CXX -dM -E - < /dev/null | sort
+# Don't use backslashes for line folding/breaking; they don't work for that.
 #
 install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
   - if [ "$CXX" = "clang++" ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
-  - echo CXX=$CXX HOME=$HOME TRAVIS_BUILD_DIR=$TRAVIS_BUILD_DIR && \
-    cmake --version && \
-    export SOURCE_ROOT="${TRAVIS_BUILD_DIR}" BUILD_ROOT="${TRAVIS_BUILD_DIR}-Build" && \
+  - |
+    echo CXX=$CXX HOME=$HOME TRAVIS_BUILD_DIR=$TRAVIS_BUILD_DIR
+    cmake --version
+    export SOURCE_ROOT="${TRAVIS_BUILD_DIR}" BUILD_ROOT="${TRAVIS_BUILD_DIR}-Build"
     BOX2D_BUILD_OPTIONS="-DBOX2D_BUILD_UNIT_TESTS=ON -DBOX2D_BUILD_HELLOWORLD=ON -DBOX2D_BUILD_TESTBED=ON"
-  - if [ "${REALNUM_TYPE}foo" != "foo" ]; then BOX2D_BUILD_OPTIONS="$BOX2D_BUILD_OPTIONS  -DBOX2D_REALNUM_TYPE=$REALNUM_TYPE"; fi && echo $BOX2D_BUILD_OPTIONS
+  - |
+    if [ "${REALNUM_TYPE}foo" != "foo" ]; then
+      BOX2D_BUILD_OPTIONS="$BOX2D_BUILD_OPTIONS -DBOX2D_REALNUM_TYPE=$REALNUM_TYPE"
+    fi
+    echo $BOX2D_BUILD_OPTIONS
   - git clone https://github.com/louis-langholtz/units.git && wget https://sourceforge.net/projects/boost/files/boost/1.63.0/boost_1_63_0.tar.bz2 -O /tmp/boost_1_63_0.tar.bz2 && sha256sum /tmp/boost_1_63_0.tar.bz2 && echo "Expect SHA256 Hash of beae2529f759f6b3bf3f4969a19c2e9d6f0c503edcb2de4a61d1428519fcb3b0" && export BOOST_INC_DST=/tmp/boost_1_63_0/include/boost BOOST_SRC=$HOME/boost-src && mkdir -p $BOOST_SRC $BOOST_INC_DST && pushd $BOOST_SRC && tar --bzip2 -xf /tmp/boost_1_63_0.tar.bz2 && cp -a boost_1_63_0/boost/* $BOOST_INC_DST && popd && pushd $BOOST_INC_DST && mv units units.old && ln -s $HOME/units/include/boost/units . && popd
   - |
     export GLFW_URL=https://github.com/glfw/glfw/releases/download/3.2.1/glfw-3.2.1.zip
