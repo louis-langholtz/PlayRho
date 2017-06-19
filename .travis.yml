@@ -96,7 +96,9 @@ script:
 
 after_success:
   - |
-    ls -laF
+    ls -laF . Box2D Build UnitTests
     lcov --directory UnitTests --base-directory ../Box2D/ --capture --output-file coverage.info
+    echo Foo
     lcov --remove coverage.info '*/UnitTests/*' -o coverage.info
+    echo Boo
     coveralls-lcov coverage.info
