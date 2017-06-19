@@ -88,7 +88,8 @@ install:
       export CXX="g++-6" CC="gcc-6"
       wget http://downloads.sourceforge.net/ltp/lcov-1.13.tar.gz
       tar xf lcov-1.13.tar.gz
-      PREFIX=/tmp/usr make -C lcov-1.13/ install
+      mkdir -p /tmp/usr
+      make -C lcov-1.13/ PREFIX=/tmp/usr install
     fi
   - if [ "$CXX" = "clang++" ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
   - |
