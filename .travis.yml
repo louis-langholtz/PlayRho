@@ -82,7 +82,14 @@ before_install:
 # Don't use backslashes for line folding/breaking; they don't work for that.
 #
 install:
-  - if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
+  - |
+    if [ "$CXX" = "g++" ]
+    then
+      export CXX="g++-6" CC="gcc-6"
+      wget http://downloads.sourceforge.net/ltp/lcov-1.13.tar.gz
+      tar xf lcov-1.13.tar.gz
+      PREFIX=/tmp/usr make -C lcov-1.13/ install
+    fi
   - if [ "$CXX" = "clang++" ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
   - |
     echo CXX=$CXX HOME=$HOME TRAVIS_BUILD_DIR=$TRAVIS_BUILD_DIR
@@ -112,6 +119,7 @@ script:
 after_success:
   - |
     if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-6" ]]; then
+      export PATH=/tmp/usr/bin:$PATH
       pwd && ls -laF
       echo "lcov version: " && lcov --version
       lcov --help
