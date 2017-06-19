@@ -109,11 +109,14 @@ script:
 
 after_success:
   - |
-    pwd && ls -laF
     if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-6" ]]; then
+      pwd && ls -laF
+      lcov --version
       cd $BUILD_ROOT
-      ls -laF .
-      lcov --directory UnitTests --base-directory ../Box2D/ --capture --output-file coverage.info
+      pwd
+      ls -laF . UnitTests UnitTests/CMakeFiles/UnitTests.dir
+      cat UnitTests/CMakeFiles/UnitTests.dir/main.cpp.gcno
+      lcov --directory UnitTests --base-directory $SOURCE_ROOT --capture --output-file coverage.info
       echo Foo
       lcov --remove coverage.info '*/UnitTests/*' -o coverage.info
       echo Boo
