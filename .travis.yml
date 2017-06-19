@@ -129,8 +129,8 @@ after_success:
       geninfo --help
       cd $BUILD_ROOT
       pwd
-      ls -laF . UnitTests UnitTests/CMakeFiles/UnitTests.dir
-      lcov --gcov-tool /usr/bin/gcov-6 --directory UnitTests --base-directory $SOURCE_ROOT --capture --output-file coverage.info
+      ls -laF . Box2D Box2D/CMakeFiles/Box2D.dir UnitTests UnitTests/CMakeFiles/UnitTests.dir
+      lcov --gcov-tool /usr/bin/gcov-6 --directory Box2D --directory UnitTests --base-directory $SOURCE_ROOT --capture --output-file coverage.info
       echo "Lcov exited with status $?"
       ls -laF coverage.info
       lcov --gcov-tool /usr/bin/gcov-6 --remove coverage.info '*/UnitTests/*' -o coverage.info
