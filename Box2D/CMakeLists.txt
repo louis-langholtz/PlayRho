@@ -54,6 +54,7 @@ file(GLOB BOX2D_General_HDRS
 include_directories( ../ )
 
 if (${BOX2D_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+	message("lib: Adding definitions for coverage analysis.")
 	add_definitions(-fprofile-arcs -ftest-coverage)
 endif()
 
