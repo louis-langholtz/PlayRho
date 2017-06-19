@@ -46,13 +46,12 @@ namespace box2d {
             const auto vertices = GetCircleVertices(RealNum(10.0f) * Meter, 90);
             const auto halfSegmentLength = GetLength(vertices[1] - vertices[0]) / RealNum(2);
 
-            const auto vertexRadius = RealNum(0.125) * Meter;
             auto conf = EdgeShape::Conf{};
-            conf.vertexRadius = vertexRadius;
+            conf.vertexRadius = RealNum(0.125) * Meter;
             conf.density = RealNum{10} * KilogramPerSquareMeter;
             conf.friction = 0.2f;
-            conf.vertex1 = Length2D{-halfSegmentLength + vertexRadius, RealNum(0) * Meter};
-            conf.vertex2 = Length2D{+halfSegmentLength - vertexRadius, RealNum(0) * Meter};
+            conf.vertex1 = Length2D{-halfSegmentLength, RealNum(0) * Meter};
+            conf.vertex2 = Length2D{+halfSegmentLength, RealNum(0) * Meter};
             const auto vertexOffset = Vec2(0, 14) * Meter;
             const auto shape = std::make_shared<EdgeShape>(conf);
             auto prevBody = static_cast<Body*>(nullptr);
@@ -66,6 +65,7 @@ namespace box2d {
                     const auto angle = GetAngle(vertex - prevVertex);
                     const auto body = m_world->CreateBody(BodyDef{}
                                                           .UseType(BodyType::Dynamic)
+                                                          .UseBullet(true)
                                                           .UseLocation(midPoint + vertexOffset)
                                                           .UseAngle(angle));
                     body->CreateFixture(shape);
