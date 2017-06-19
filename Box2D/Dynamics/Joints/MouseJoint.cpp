@@ -43,7 +43,7 @@ bool MouseJoint::IsOkay(const MouseJointDef& def) noexcept
     {
         return false;
     }
-    if (!(def.maxForce >= Force{0}) || !(def.frequencyHz >= Frequency{0}) || !(def.dampingRatio >= 0))
+    if (!(def.dampingRatio >= 0))
     {
         return false;
     }
@@ -61,8 +61,6 @@ MouseJoint::MouseJoint(const MouseJointDef& def):
     m_dampingRatio{def.dampingRatio}
 {
     assert(IsValid(def.target));
-    assert(IsValid(def.maxForce) && (def.maxForce >= Force{0}));
-    assert(IsValid(def.frequencyHz) && (def.frequencyHz >= Frequency{0}));
     assert(IsValid(def.dampingRatio) && (def.dampingRatio >= 0));
 }
 
@@ -111,7 +109,7 @@ void MouseJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
     const auto mass = GetMass(*GetBodyB());
 
     // Frequency
-    const auto omega = RealNum{2} * Pi * m_frequencyHz; // T^-1
+    const auto omega = RealNum{2} * Pi * Frequency{m_frequencyHz}; // T^-1
 
     // Damping coefficient
     const auto d = RealNum{2} * mass * m_dampingRatio * omega; // M T^-1
@@ -169,7 +167,7 @@ bool MouseJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepCon
     const auto addImpulse = Momentum2D{Transform(StripUnits(-ev), m_mass) * Kilogram * MeterPerSecond};
     assert(IsValid(addImpulse));
     m_impulse += addImpulse;
-    const auto maxImpulse = step.GetTime() * m_maxForce;
+    const auto maxImpulse = step.GetTime() * Force{m_maxForce};
     if (GetLengthSquared(m_impulse) > Square(maxImpulse))
     {
         m_impulse = GetUnitVector(m_impulse, UnitVec2::GetZero()) * maxImpulse;

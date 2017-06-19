@@ -21,6 +21,7 @@
 #define B2_MOUSE_JOINT_H
 
 #include <Box2D/Dynamics/Joints/Joint.hpp>
+#include <Box2D/Common/BoundedValue.hpp>
 
 namespace box2d {
 
@@ -40,14 +41,12 @@ struct MouseJointDef : public JointDef
     /// to move the candidate body. Usually you will express
     /// as some multiple of the weight (multiplier * mass * gravity).
     /// @note This may not be negative.
-    /// @warning Behavior is undefined if this is a negative value.
-    Force maxForce = Force{0};
+    NonNegative<Force> maxForce = NonNegative<Force>{0};
 
     /// Frequency.
     /// @details The has to do with the response speed.
     /// @note This value may not be negative.
-    /// @warning Behavior is undefined if this is a negative value.
-    Frequency frequencyHz = RealNum{5} * Hertz;
+    NonNegative<Frequency> frequencyHz = NonNegative<Frequency>(RealNum{5} * Hertz);
 
     /// The damping ratio. 0 = no damping, 1 = critical damping.
     RealNum dampingRatio = 0.7f;
@@ -92,11 +91,11 @@ public:
     Length2D GetTarget() const noexcept;
 
     /// Set/get the maximum force in Newtons.
-    void SetMaxForce(Force force) noexcept;
+    void SetMaxForce(NonNegative<Force> force) noexcept;
     Force GetMaxForce() const noexcept;
 
     /// Set/get the frequency in Hertz.
-    void SetFrequency(Frequency hz) noexcept;
+    void SetFrequency(NonNegative<Frequency> hz) noexcept;
     Frequency GetFrequency() const noexcept;
 
     /// Set/get the damping ratio (dimensionless).
@@ -115,12 +114,12 @@ private:
 
     Length2D m_targetA;
     Length2D m_localAnchorB;
-    Frequency m_frequencyHz;
+    NonNegative<Frequency> m_frequencyHz;
     RealNum m_dampingRatio;
     
     // Solver shared
     Momentum2D m_impulse = Vec2_zero * Kilogram * MeterPerSecond;
-    Force m_maxForce;
+    NonNegative<Force> m_maxForce;
     InvMass m_gamma = InvMass{0};
 
     // Solver variables. These are only valid after InitVelocityConstraints called.
@@ -144,7 +143,7 @@ inline Length2D MouseJoint::GetTarget() const noexcept
     return m_targetA;
 }
 
-inline void MouseJoint::SetMaxForce(Force force) noexcept
+inline void MouseJoint::SetMaxForce(NonNegative<Force> force) noexcept
 {
     m_maxForce = force;
 }
@@ -154,7 +153,7 @@ inline Force MouseJoint::GetMaxForce() const noexcept
     return m_maxForce;
 }
 
-inline void MouseJoint::SetFrequency(Frequency hz) noexcept
+inline void MouseJoint::SetFrequency(NonNegative<Frequency> hz) noexcept
 {
     m_frequencyHz = hz;
 }
