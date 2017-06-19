@@ -496,7 +496,7 @@ void Test::MouseDown(const Length2D& p)
             md.bodyA = m_groundBody;
             md.bodyB = body;
             md.target = p;
-            md.maxForce = RealNum{1000.0f} * GetMass(*body) * MeterPerSquareSecond;
+            md.maxForce = RealNum(10000.0f) * GetMass(*body) * MeterPerSquareSecond;
             m_mouseJoint = static_cast<MouseJoint*>(m_world->CreateJoint(md));
             body->SetAwake();
         }
