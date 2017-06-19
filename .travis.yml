@@ -122,7 +122,7 @@ after_success:
   - |
     if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-6" ]]; then
       export PATH=/tmp/usr/bin:$PATH
-      pwd && ls -laF
+      pwd && ls -laF . /usr/bin/gcov*
       echo "lcov version: " && lcov --version
       lcov --help
       echo "geninfo version: " && geninfo --version
@@ -130,10 +130,10 @@ after_success:
       cd $BUILD_ROOT
       pwd
       ls -laF . UnitTests UnitTests/CMakeFiles/UnitTests.dir
-      lcov --directory UnitTests --base-directory $SOURCE_ROOT --capture --output-file coverage.info
+      lcov --gcov-tool /usr/bin/gcov-6 --directory UnitTests --base-directory $SOURCE_ROOT --capture --output-file coverage.info
       echo "Lcov exited with status $?"
       ls -laF coverage.info
-      lcov --remove coverage.info '*/UnitTests/*' -o coverage.info
+      lcov --gcov-tool /usr/bin/gcov-6 --remove coverage.info '*/UnitTests/*' -o coverage.info
       ls -laF coverage.info
       cd $SOURCE_ROOT && pwd
       coveralls-lcov $BUILD_ROOT/coverage.info
