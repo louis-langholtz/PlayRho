@@ -90,10 +90,39 @@ TEST(BroadPhase, CreateAndDestroyProxy)
     EXPECT_EQ(foo.GetTreeBalance(), BroadPhase::size_type(0));
     EXPECT_EQ(foo.GetTreeQuality(), RealNum(1));
     
+    BroadPhase boo;
+
+    boo = foo;
+    EXPECT_EQ(boo.GetProxyCount(), BroadPhase::size_type(1));
+    EXPECT_EQ(boo.GetPairCapacity(), defaultConf.pairCapacity);
+    EXPECT_EQ(boo.GetFatAABB(pid), aabb);
+    EXPECT_EQ(boo.GetUserData(pid), userdata);
+    EXPECT_EQ(boo.GetTreeHeight(), BroadPhase::size_type(0));
+    EXPECT_EQ(boo.GetTreeBalance(), BroadPhase::size_type(0));
+    EXPECT_EQ(boo.GetTreeQuality(), RealNum(1));
+    
     foo.DestroyProxy(pid);
     EXPECT_EQ(foo.GetProxyCount(), BroadPhase::size_type(0));
     EXPECT_EQ(foo.GetPairCapacity(), defaultConf.pairCapacity);
     EXPECT_EQ(foo.GetTreeHeight(), BroadPhase::size_type(0));
     EXPECT_EQ(foo.GetTreeBalance(), BroadPhase::size_type(0));
     EXPECT_EQ(foo.GetTreeQuality(), RealNum(0));
+    
+    EXPECT_EQ(boo.GetProxyCount(), BroadPhase::size_type(1));
+    EXPECT_EQ(boo.GetPairCapacity(), defaultConf.pairCapacity);
+    EXPECT_EQ(boo.GetFatAABB(pid), aabb);
+    EXPECT_EQ(boo.GetUserData(pid), userdata);
+    EXPECT_EQ(boo.GetTreeHeight(), BroadPhase::size_type(0));
+    EXPECT_EQ(boo.GetTreeBalance(), BroadPhase::size_type(0));
+    EXPECT_EQ(boo.GetTreeQuality(), RealNum(1));
+    
+    boo = boo;
+    
+    EXPECT_EQ(boo.GetProxyCount(), BroadPhase::size_type(1));
+    EXPECT_EQ(boo.GetPairCapacity(), defaultConf.pairCapacity);
+    EXPECT_EQ(boo.GetFatAABB(pid), aabb);
+    EXPECT_EQ(boo.GetUserData(pid), userdata);
+    EXPECT_EQ(boo.GetTreeHeight(), BroadPhase::size_type(0));
+    EXPECT_EQ(boo.GetTreeBalance(), BroadPhase::size_type(0));
+    EXPECT_EQ(boo.GetTreeQuality(), RealNum(1));
 }
