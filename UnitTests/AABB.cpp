@@ -213,3 +213,29 @@ TEST(AABB, ComputeAabbForDefaultDistanceProxy)
     
     EXPECT_EQ(defaultAabb, proxyAabb);
 }
+
+TEST(AABB, Move)
+{
+    {
+        auto aabb = AABB{};
+        EXPECT_EQ(aabb.Move(Vec2_zero * Meter), AABB{});
+        EXPECT_EQ(aabb.Move(Vec2(RealNum(10), RealNum(-4)) * Meter), AABB{});
+    }
+    {
+        auto aabb = AABB{Vec2_zero * Meter};
+        EXPECT_EQ(aabb.Move(Vec2_zero * Meter), AABB{Vec2_zero * Meter});
+    }
+    {
+        auto aabb = AABB{Vec2_zero * Meter};
+        EXPECT_EQ(aabb.Move(Vec2(1, 1) * Meter), AABB{Vec2(1, 1) * Meter});
+        EXPECT_EQ(aabb.Move(Vec2(-1, -1) * Meter), AABB{Vec2(0, 0) * Meter});
+        EXPECT_EQ(aabb.Move(Vec2(-10, 11) * Meter), AABB{Vec2(-10, 11) * Meter});
+    }
+    {
+        const auto lower = Vec2(-1, -1) * Meter;
+        const auto upper = Vec2(+3, +9) * Meter;
+        auto aabb = AABB{lower, upper};
+        const auto moveby = Vec2(1, 1) * Meter;
+        EXPECT_EQ(aabb.Move(moveby), AABB(lower + moveby, upper + moveby));
+    }
+}
