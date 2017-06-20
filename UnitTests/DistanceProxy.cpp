@@ -19,6 +19,7 @@
 #include "gtest/gtest.h"
 #include <Box2D/Collision/DistanceProxy.hpp>
 #include <initializer_list>
+#include <vector>
 
 using namespace box2d;
 
@@ -126,4 +127,50 @@ TEST(DistanceProxy, ThreeVertices)
     EXPECT_EQ(foo.GetVertex(1).y, v1.y);
     EXPECT_EQ(foo.GetVertex(2).x, v2.x);
     EXPECT_EQ(foo.GetVertex(2).y, v2.y);
+}
+
+TEST(DistanceProxy, FindLowestRightMostVertex)
+{
+    const auto vertices = std::vector<Length2D>();
+    const auto span = Span<const Length2D>(vertices.data(), std::size_t{0});
+    const auto result = FindLowestRightMostVertex(span);
+    EXPECT_EQ(result, static_cast<std::size_t>(-1));
+}
+
+TEST(DistanceProxy, TestPointWithEmptyProxyReturnsFalse)
+{
+    const auto defaultDp = DistanceProxy{};
+    ASSERT_EQ(defaultDp.GetVertexCount(), 0);
+    EXPECT_FALSE(TestPoint(defaultDp, Vec2_zero * Meter));
+}
+
+TEST(DistanceProxy, TestPoint)
+{
+    const auto pos1 = Vec2{3, 1} * Meter;
+    const auto pos2 = Vec2{3, 3} * Meter;
+    const auto pos3 = Vec2{1, 3} * Meter;
+    const auto pos4 = Vec2{1, 1} * Meter;
+    const Length2D squareVerts[] = {pos1, pos2, pos3, pos4};
+    const auto n1 = GetUnitVector(GetFwdPerpendicular(pos2 - pos1));
+    const auto n2 = GetUnitVector(GetFwdPerpendicular(pos3 - pos2));
+    const auto n3 = GetUnitVector(GetFwdPerpendicular(pos4 - pos3));
+    const auto n4 = GetUnitVector(GetFwdPerpendicular(pos1 - pos4));
+    const UnitVec2 squareNormals[] = {n1, n2, n3, n4};
+    const auto radius = RealNum(0.5) * Meter;
+    DistanceProxy dp{radius, 4, squareVerts, squareNormals};
+
+    const auto pos0 = Vec2{2, 2} * Meter;
+    
+    ASSERT_EQ(dp.GetVertexCount(), 4);
+    EXPECT_TRUE(TestPoint(dp, pos0));
+    EXPECT_TRUE(TestPoint(dp, pos1));
+    EXPECT_TRUE(TestPoint(dp, pos2));
+    EXPECT_TRUE(TestPoint(dp, pos3));
+    EXPECT_TRUE(TestPoint(dp, pos4));
+    EXPECT_TRUE(TestPoint(dp, Vec2(3.2f, 3.2f) * Meter));
+    EXPECT_TRUE(TestPoint(dp, pos2 + Length2D(radius, radius) / RealNum(2)));
+    EXPECT_FALSE(TestPoint(dp, pos2 + Length2D(radius, radius)));
+    EXPECT_FALSE(TestPoint(dp, Vec2{10, 10} * Meter));
+    EXPECT_FALSE(TestPoint(dp, Vec2{-10, 10} * Meter));
+    EXPECT_FALSE(TestPoint(dp, Vec2{10, -10} * Meter));
 }
