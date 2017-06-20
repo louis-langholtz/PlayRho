@@ -144,3 +144,16 @@ TEST(UnitVec2, GetForInvalid)
         EXPECT_EQ(GetY(UnitVec2::Get(x, y, magnitude, UnitVec2::GetZero())), RealNum(0));
     }
 }
+
+TEST(UnitVec2, Absolute)
+{
+    EXPECT_EQ(UnitVec2::GetZero().Absolute(), UnitVec2::GetZero());
+    EXPECT_EQ(UnitVec2::GetBottom().Absolute(), UnitVec2::GetTop());
+    EXPECT_EQ(UnitVec2::GetTop().Absolute(), UnitVec2::GetTop());
+    EXPECT_EQ(UnitVec2::GetLeft().Absolute(), UnitVec2::GetRight());
+    EXPECT_EQ(UnitVec2::GetRight().Absolute(), UnitVec2::GetRight());
+
+    RealNum magnitude;
+    EXPECT_EQ(UnitVec2::Get(RealNum(-1), RealNum(-1), magnitude).Absolute(),
+              UnitVec2::Get(RealNum(+1), RealNum(+1), magnitude));
+}
