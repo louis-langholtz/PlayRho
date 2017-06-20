@@ -39,7 +39,7 @@ DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, const Lengt
     return index;
 }
 
-size_t FindLowestRightMostVertex(Span<const Length2D> vertices)
+std::size_t FindLowestRightMostVertex(Span<const Length2D> vertices)
 {
     const auto size = vertices.size();
     if (size > 0)
@@ -57,7 +57,7 @@ size_t FindLowestRightMostVertex(Span<const Length2D> vertices)
         }
         return i0;
     }
-    return static_cast<size_t>(-1);
+    return static_cast<std::size_t>(-1);
 }
 
 std::vector<Length2D> GetConvexHullAsVector(Span<const Length2D> vertices)

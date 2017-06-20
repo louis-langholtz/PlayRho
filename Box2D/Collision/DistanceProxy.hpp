@@ -139,7 +139,7 @@ namespace box2d
     /// @sa GetVertexCount().
     DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, const Length2D d) noexcept;
     
-    size_t FindLowestRightMostVertex(Span<const Length2D> vertices);
+    std::size_t FindLowestRightMostVertex(Span<const Length2D> vertices);
     
     std::vector<Length2D> GetConvexHullAsVector(Span<const Length2D> vertices);
 
