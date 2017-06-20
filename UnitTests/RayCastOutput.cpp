@@ -29,7 +29,13 @@ using namespace box2d;
 
 TEST(RayCastOutput, ByteSize)
 {
-    EXPECT_EQ(sizeof(RayCastOutput), size_t(16));
+    switch (sizeof(RealNum))
+    {
+        case  4: EXPECT_EQ(sizeof(RayCastOutput), size_t(16)); break;
+        case  8: EXPECT_EQ(sizeof(RayCastOutput), size_t(32)); break;
+        case 16: EXPECT_EQ(sizeof(RayCastOutput), size_t(32)); break;
+        default: FAIL(); break;
+    }
 }
 
 TEST(RayCastOutput, Traits)
@@ -57,7 +63,7 @@ TEST(RayCastOutput, Traits)
 
 TEST(RayCastOutput, DefaultConstruction)
 {
-    RayCastOutput foo;
+    RayCastOutput foo{};
     EXPECT_FALSE(foo.hit);
     EXPECT_FALSE(IsValid(foo.normal));
     EXPECT_FALSE(IsValid(foo.fraction));
@@ -73,7 +79,7 @@ TEST(RayCastOutput, InitConstruction)
     EXPECT_EQ(foo.fraction, fraction);
 }
 
-TEST(RayCastOutput, RayCastFreeFunction)
+TEST(RayCastOutput, RayCastFreeFunctionHits)
 {
     const auto radius = RealNum(0.1) * Meter;
     const auto location = Vec2(5, 2) * Meter;
@@ -84,5 +90,19 @@ TEST(RayCastOutput, RayCastFreeFunction)
     const auto output = RayCast(radius, location, input);
     EXPECT_TRUE(output.hit);
     EXPECT_EQ(output.normal, UnitVec2::GetRight());
-    EXPECT_EQ(output.fraction, RealNum(0.49f));
+    EXPECT_NEAR(static_cast<double>(output.fraction), 0.49, 0.01);
+}
+
+TEST(RayCastOutput, RayCastFreeFunctionMisses)
+{
+    const auto radius = RealNum(0.1) * Meter;
+    const auto location = Vec2(15, 2) * Meter;
+    const auto p1 = Vec2(10, 2) * Meter;
+    const auto p2 = Vec2(0, 2) * Meter;
+    const auto maxFraction = RealNum(1);
+    auto input = RayCastInput{p1, p2, maxFraction};
+    const auto output = RayCast(radius, location, input);
+    EXPECT_FALSE(output.hit);
+    EXPECT_FALSE(IsValid(output.normal));
+    EXPECT_FALSE(IsValid(output.fraction));
 }
