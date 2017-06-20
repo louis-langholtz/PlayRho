@@ -56,6 +56,7 @@
 		470F9B4D1EEF20B6007EF7B6 /* BodyDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 470F9B4B1EEF20B6007EF7B6 /* BodyDef.cpp */; };
 		470F9B4F1EF0C8B8007EF7B6 /* FixtureDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 470F9B4E1EF0C8B8007EF7B6 /* FixtureDef.cpp */; };
 		470F9B501EF0C8B8007EF7B6 /* FixtureDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 470F9B4E1EF0C8B8007EF7B6 /* FixtureDef.cpp */; };
+		470F9B521EF8E2C5007EF7B6 /* RayCastOutput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 470F9B511EF8E2C5007EF7B6 /* RayCastOutput.cpp */; };
 		4726DD0F1D3014990012A882 /* IndexPair.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD0C1D3014990012A882 /* IndexPair.hpp */; };
 		4726DD101D3014990012A882 /* IndexPair.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD0C1D3014990012A882 /* IndexPair.hpp */; };
 		4726DD1F1D305E5D0012A882 /* ContactFeature.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */; };
@@ -459,6 +460,7 @@
 		470F9B491EEE40AA007EF7B6 /* BagOfDisks.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BagOfDisks.hpp; sourceTree = "<group>"; };
 		470F9B4B1EEF20B6007EF7B6 /* BodyDef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BodyDef.cpp; sourceTree = "<group>"; };
 		470F9B4E1EF0C8B8007EF7B6 /* FixtureDef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FixtureDef.cpp; sourceTree = "<group>"; };
+		470F9B511EF8E2C5007EF7B6 /* RayCastOutput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RayCastOutput.cpp; sourceTree = "<group>"; };
 		4726DD0C1D3014990012A882 /* IndexPair.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IndexPair.hpp; sourceTree = "<group>"; };
 		4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactFeature.hpp; sourceTree = "<group>"; };
 		4726DD261D3180980012A882 /* NewtonsCradle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NewtonsCradle.hpp; sourceTree = "<group>"; };
@@ -822,6 +824,7 @@
 				47AFC3041DAEBC120023E9D1 /* PositionSolverManifold.cpp */,
 				4768D3F71E3E895A00574143 /* PrismaticJoint.cpp */,
 				4731DE4A1DE7E5FA00E7F931 /* ProxyIdPair.cpp */,
+				470F9B511EF8E2C5007EF7B6 /* RayCastOutput.cpp */,
 				472724221E310BB400C64921 /* RealNum.cpp */,
 				47315E031E28A66100DDA856 /* RevoluteJoint.cpp */,
 				474BC4001D41278800447DCD /* Rot.cpp */,
@@ -1533,6 +1536,7 @@
 				474BC4301D413DC200447DCD /* DistanceProxy.cpp in Sources */,
 				475A945D1D959537000CA9A8 /* Joint.cpp in Sources */,
 				474BC4311D413DC200447DCD /* Epsilon.cpp in Sources */,
+				470F9B521EF8E2C5007EF7B6 /* RayCastOutput.cpp in Sources */,
 				472724251E310C7600C64921 /* float.cpp in Sources */,
 				474BC4321D413DC200447DCD /* IndexPair.cpp in Sources */,
 				47928F371E66539000EE6E9E /* FrictionJoint.cpp in Sources */,
