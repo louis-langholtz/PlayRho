@@ -65,3 +65,44 @@ TEST(Fixture, CreateMatchesDef)
     EXPECT_EQ(fixture->GetRestitution(), restitution);
     EXPECT_EQ(fixture->IsSensor(), isSensor);
 }
+
+TEST(Fixture, SetSensor)
+{
+    const auto shapeA = std::make_shared<DiskShape>();
+    const auto bodyCtrPos = Vec2(1, 2) * Meter;
+    
+    World world;
+    const auto body = world.CreateBody(BodyDef{}.UseLocation(bodyCtrPos));
+    const auto fixture = body->CreateFixture(shapeA);
+    fixture->SetSensor(true);
+    EXPECT_TRUE(fixture->IsSensor());
+    fixture->SetSensor(true);
+    EXPECT_TRUE(fixture->IsSensor());
+    fixture->SetSensor(false);
+    EXPECT_FALSE(fixture->IsSensor());
+}
+
+TEST(Fixture, TestPointFreeFunction)
+{
+    const auto shapeA = std::make_shared<DiskShape>();
+    const auto bodyCtrPos = Vec2(1, 2) * Meter;
+
+    World world;
+    const auto body = world.CreateBody(BodyDef{}.UseLocation(bodyCtrPos));
+    const auto fixture = body->CreateFixture(shapeA);
+    EXPECT_TRUE(TestPoint(*fixture, bodyCtrPos));
+    EXPECT_FALSE(TestPoint(*fixture, Vec2_zero * Meter));
+}
+
+TEST(Fixture, SetAwakeFreeFunction)
+{
+    const auto shapeA = std::make_shared<DiskShape>();
+    
+    World world;
+    const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+    body->UnsetAwake();
+    ASSERT_FALSE(body->IsAwake());
+    const auto fixture = body->CreateFixture(shapeA);
+    SetAwake(*fixture);
+    EXPECT_TRUE(body->IsAwake());
+}
