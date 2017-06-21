@@ -21,6 +21,8 @@
 #include "gtest/gtest.h"
 
 #include <Box2D/Dynamics/Joints/WeldJoint.hpp>
+#include <Box2D/Dynamics/Body.hpp>
+#include <Box2D/Dynamics/BodyDef.hpp>
 
 using namespace box2d;
 
@@ -83,7 +85,10 @@ TEST(WeldJoint, Construction)
 
 TEST(WeldJoint, GetWeldJointDef)
 {
-    WeldJointDef def;
+    auto bodyA = Body{BodyDef{}};
+    auto bodyB = Body{BodyDef{}};
+    const auto anchor = Vec2(2, 1) * Meter;
+    WeldJointDef def{&bodyA, &bodyB, anchor};
     WeldJoint joint{def};
     
     ASSERT_EQ(joint.GetType(), def.type);
@@ -100,13 +105,13 @@ TEST(WeldJoint, GetWeldJointDef)
     
     const auto cdef = GetWeldJointDef(joint);
     EXPECT_EQ(cdef.type, JointType::Weld);
-    EXPECT_EQ(cdef.bodyA, nullptr);
-    EXPECT_EQ(cdef.bodyB, nullptr);
+    EXPECT_EQ(cdef.bodyA, &bodyA);
+    EXPECT_EQ(cdef.bodyB, &bodyB);
     EXPECT_EQ(cdef.collideConnected, false);
     EXPECT_EQ(cdef.userData, nullptr);
     
-    EXPECT_EQ(cdef.localAnchorA, Vec2_zero * Meter);
-    EXPECT_EQ(cdef.localAnchorB, Vec2_zero * Meter);
+    EXPECT_EQ(cdef.localAnchorA, anchor);
+    EXPECT_EQ(cdef.localAnchorB, anchor);
     EXPECT_EQ(def.referenceAngle, Angle(0));
     EXPECT_EQ(def.frequencyHz, RealNum(0) * Hertz);
     EXPECT_EQ(def.dampingRatio, RealNum(0));
