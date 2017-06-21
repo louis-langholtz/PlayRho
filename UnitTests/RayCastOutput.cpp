@@ -23,6 +23,7 @@
 #include <Box2D/Collision/RayCastOutput.hpp>
 #include <Box2D/Collision/RayCastInput.hpp>
 #include <Box2D/Collision/AABB.hpp>
+#include <Box2D/Collision/DistanceProxy.hpp>
 
 #include <type_traits>
 
@@ -133,4 +134,40 @@ TEST(RayCastOutput, RayCastAabbFreeFunction)
     EXPECT_FALSE(output.hit);
     EXPECT_FALSE(IsValid(output.normal));
     EXPECT_FALSE(IsValid(output.fraction));
+}
+
+TEST(RayCastOutput, RayCastDistanceProxyFF)
+{
+    const auto pos1 = Vec2{3, 1} * Meter;
+    const auto pos2 = Vec2{3, 3} * Meter;
+    const auto pos3 = Vec2{1, 3} * Meter;
+    const auto pos4 = Vec2{1, 1} * Meter;
+    const Length2D squareVerts[] = {pos1, pos2, pos3, pos4};
+    const auto n1 = GetUnitVector(GetFwdPerpendicular(pos2 - pos1));
+    const auto n2 = GetUnitVector(GetFwdPerpendicular(pos3 - pos2));
+    const auto n3 = GetUnitVector(GetFwdPerpendicular(pos4 - pos3));
+    const auto n4 = GetUnitVector(GetFwdPerpendicular(pos1 - pos4));
+    const UnitVec2 squareNormals[] = {n1, n2, n3, n4};
+    const auto radius = RealNum(0.5) * Meter;
+    DistanceProxy dp{radius, 4, squareVerts, squareNormals};
+
+    const auto p1 = Vec2(0, 2) * Meter;
+    const auto p2 = Vec2(10, 2) * Meter;
+    const auto maxFraction = RealNum(1);
+    auto input = RayCastInput{p1, p2, maxFraction};
+    {
+        const auto output = RayCast(dp, input, Transform_identity);
+        EXPECT_TRUE(output.hit);
+        EXPECT_EQ(output.normal, UnitVec2::GetLeft());
+        EXPECT_NEAR(static_cast<double>(output.fraction), 0.05, 0.001);
+    }
+    
+    const auto p0 = Vec2_zero * Meter;
+    input = RayCastInput{p0, p1, maxFraction};
+    {
+        const auto output = RayCast(dp, input, Transform_identity);
+        EXPECT_FALSE(output.hit);
+        EXPECT_FALSE(IsValid(output.normal));
+        EXPECT_FALSE(IsValid(output.fraction));
+    }
 }
