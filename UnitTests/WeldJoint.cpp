@@ -23,6 +23,8 @@
 #include <Box2D/Dynamics/Joints/WeldJoint.hpp>
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/BodyDef.hpp>
+#include <Box2D/Dynamics/World.hpp>
+#include <Box2D/Collision/Shapes/DiskShape.hpp>
 
 using namespace box2d;
 
@@ -115,4 +117,26 @@ TEST(WeldJoint, GetWeldJointDef)
     EXPECT_EQ(def.referenceAngle, Angle(0));
     EXPECT_EQ(def.frequencyHz, RealNum(0) * Hertz);
     EXPECT_EQ(def.dampingRatio, RealNum(0));
+}
+
+TEST(WeldJoint, WithDynamicCircles)
+{
+    const auto circle = std::make_shared<DiskShape>(RealNum{0.2f} * Meter);
+    auto world = World{WorldDef{}.UseGravity(Vec2_zero * MeterPerSquareSecond)};
+    const auto p1 = Vec2{-1, 0} * Meter;
+    const auto p2 = Vec2{+1, 0} * Meter;
+    const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    b1->CreateFixture(circle);
+    b2->CreateFixture(circle);
+    const auto anchor = Vec2(2, 1) * Meter;
+    const auto jd = WeldJointDef{b1, b2, anchor};
+    world.CreateJoint(jd);
+    Step(world, Time{Second * RealNum{1}});
+    EXPECT_NEAR(double(RealNum{b1->GetLocation().x / Meter}), -1.0, 0.001);
+    EXPECT_NEAR(double(RealNum{b1->GetLocation().y / Meter}), 0.0, 0.001);
+    EXPECT_NEAR(double(RealNum{b2->GetLocation().x / Meter}), +1.0, 0.01);
+    EXPECT_NEAR(double(RealNum{b2->GetLocation().y / Meter}), 0.0, 0.01);
+    EXPECT_EQ(b1->GetAngle(), RealNum{0} * Degree);
+    EXPECT_EQ(b2->GetAngle(), RealNum{0} * Degree);
 }
