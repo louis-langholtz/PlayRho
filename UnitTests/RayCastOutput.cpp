@@ -22,6 +22,7 @@
 
 #include <Box2D/Collision/RayCastOutput.hpp>
 #include <Box2D/Collision/RayCastInput.hpp>
+#include <Box2D/Collision/AABB.hpp>
 
 #include <type_traits>
 
@@ -93,15 +94,42 @@ TEST(RayCastOutput, RayCastFreeFunctionHits)
     EXPECT_NEAR(static_cast<double>(output.fraction), 0.49, 0.01);
 }
 
-TEST(RayCastOutput, RayCastFreeFunctionMisses)
+TEST(RayCastOutput, RayCastLocationFreeFunctionMisses)
 {
-    const auto radius = RealNum(0.1) * Meter;
-    const auto location = Vec2(15, 2) * Meter;
+    {
+        const auto radius = RealNum(0.1) * Meter;
+        const auto location = Vec2(15, 2) * Meter;
+        const auto p1 = Vec2(10, 2) * Meter;
+        const auto p2 = Vec2(0, 2) * Meter;
+        const auto maxFraction = RealNum(1);
+        auto input = RayCastInput{p1, p2, maxFraction};
+        const auto output = RayCast(radius, location, input);
+        EXPECT_FALSE(output.hit);
+        EXPECT_FALSE(IsValid(output.normal));
+        EXPECT_FALSE(IsValid(output.fraction));
+    }
+    {
+        const auto radius = RealNum(0.1) * Meter;
+        const auto location = Vec2(10, 3) * Meter;
+        const auto p1 = Vec2(0, 2) * Meter;
+        const auto p2 = Vec2(10, 2) * Meter;
+        const auto maxFraction = RealNum(1);
+        auto input = RayCastInput{p1, p2, maxFraction};
+        const auto output = RayCast(radius, location, input);
+        EXPECT_FALSE(output.hit);
+        EXPECT_FALSE(IsValid(output.normal));
+        EXPECT_FALSE(IsValid(output.fraction));
+    }
+}
+
+TEST(RayCastOutput, RayCastAabbFreeFunction)
+{
+    AABB aabb;
     const auto p1 = Vec2(10, 2) * Meter;
     const auto p2 = Vec2(0, 2) * Meter;
     const auto maxFraction = RealNum(1);
-    auto input = RayCastInput{p1, p2, maxFraction};
-    const auto output = RayCast(radius, location, input);
+    RayCastInput input{p1, p2, maxFraction};
+    const auto output = RayCast(aabb, input);
     EXPECT_FALSE(output.hit);
     EXPECT_FALSE(IsValid(output.normal));
     EXPECT_FALSE(IsValid(output.fraction));
