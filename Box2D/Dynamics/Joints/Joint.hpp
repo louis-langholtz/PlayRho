@@ -210,10 +210,12 @@ inline bool Joint::GetCollideConnected() const noexcept
     return m_collideConnected;
 }
 
-/// Short-cut function to determine if both bodies are enabled.
+// Free functions...
+
+/// @brief Short-cut function to determine if both bodies are enabled.
 bool IsEnabled(const Joint& j) noexcept;
 
-// Wakes up the joined bodies.
+// @brief Wakes up the joined bodies.
 void SetAwake(Joint& j) noexcept;
 
 size_t GetWorldIndex(const Joint* joint);

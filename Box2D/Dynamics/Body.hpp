@@ -80,10 +80,10 @@ public:
 
     static constexpr auto InvalidIslandIndex = static_cast<body_count_t>(-1);
 
-    /// @brief Initializing constructor.
+    /// @brief Initializing constructor for unit testing purposes.
     /// @note This is not meant to be called directly by users of the library API. Call
     ///   a world instance's <code>CreateBody</code> method instead.
-    Body(const BodyDef& bd, World* world);
+    Body(const BodyDef& bd, World* world = nullptr);
 
     ~Body();
     
