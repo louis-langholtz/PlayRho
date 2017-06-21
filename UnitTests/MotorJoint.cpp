@@ -22,8 +22,6 @@
 
 #include <Box2D/Dynamics/Joints/MotorJoint.hpp>
 
-#include <type_traits>
-
 using namespace box2d;
 
 TEST(MotorJointDef, ByteSize)
@@ -65,29 +63,6 @@ TEST(MotorJoint, ByteSize)
     }
 }
 
-TEST(MotorJoint, Traits)
-{
-    EXPECT_FALSE(std::is_default_constructible<MotorJoint>::value);
-    EXPECT_FALSE(std::is_nothrow_default_constructible<MotorJoint>::value);
-    EXPECT_FALSE(std::is_trivially_default_constructible<MotorJoint>::value);
-    
-    EXPECT_FALSE(std::is_constructible<MotorJoint>::value);
-    EXPECT_FALSE(std::is_nothrow_constructible<MotorJoint>::value);
-    EXPECT_FALSE(std::is_trivially_constructible<MotorJoint>::value);
-    
-    EXPECT_TRUE(std::is_copy_constructible<MotorJoint>::value);
-    EXPECT_FALSE(std::is_nothrow_copy_constructible<MotorJoint>::value);
-    EXPECT_FALSE(std::is_trivially_copy_constructible<MotorJoint>::value);
-    
-    EXPECT_FALSE(std::is_copy_assignable<MotorJoint>::value);
-    EXPECT_FALSE(std::is_nothrow_copy_assignable<MotorJoint>::value);
-    EXPECT_FALSE(std::is_trivially_copy_assignable<MotorJoint>::value);
-    
-    EXPECT_TRUE(std::is_destructible<MotorJoint>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<MotorJoint>::value);
-    EXPECT_FALSE(std::is_trivially_destructible<MotorJoint>::value);
-}
-
 TEST(MotorJoint, Construction)
 {
     MotorJointDef def;
@@ -104,4 +79,35 @@ TEST(MotorJoint, Construction)
     EXPECT_EQ(joint.GetMaxForce(), def.maxForce);
     EXPECT_EQ(joint.GetMaxTorque(), def.maxTorque);
     EXPECT_EQ(joint.GetCorrectionFactor(), def.correctionFactor);
+}
+
+TEST(MotorJoint, GetMotorJointDef)
+{
+    MotorJointDef def;
+    MotorJoint joint{def};
+    
+    ASSERT_EQ(joint.GetType(), def.type);
+    ASSERT_EQ(joint.GetBodyA(), def.bodyA);
+    ASSERT_EQ(joint.GetBodyB(), def.bodyB);
+    ASSERT_EQ(joint.GetCollideConnected(), def.collideConnected);
+    ASSERT_EQ(joint.GetUserData(), def.userData);
+    
+    ASSERT_EQ(joint.GetLinearOffset(), def.linearOffset);
+    ASSERT_EQ(joint.GetAngularOffset(), def.angularOffset);
+    ASSERT_EQ(joint.GetMaxForce(), def.maxForce);
+    ASSERT_EQ(joint.GetMaxTorque(), def.maxTorque);
+    ASSERT_EQ(joint.GetCorrectionFactor(), def.correctionFactor);
+    
+    const auto cdef = GetMotorJointDef(joint);
+    EXPECT_EQ(cdef.type, JointType::Motor);
+    EXPECT_EQ(cdef.bodyA, nullptr);
+    EXPECT_EQ(cdef.bodyB, nullptr);
+    EXPECT_EQ(cdef.collideConnected, false);
+    EXPECT_EQ(cdef.userData, nullptr);
+    
+    EXPECT_EQ(cdef.linearOffset, Vec2_zero * Meter);
+    EXPECT_EQ(cdef.angularOffset, Angle(0));
+    EXPECT_EQ(cdef.maxForce, RealNum(1) * Newton);
+    EXPECT_EQ(cdef.maxTorque, RealNum{1} * NewtonMeter);
+    EXPECT_EQ(cdef.correctionFactor, RealNum(0.3));
 }
