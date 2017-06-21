@@ -20,26 +20,26 @@
 
 #include "gtest/gtest.h"
 
-#include <Box2D/Dynamics/Joints/WheelJoint.hpp>
+#include <Box2D/Dynamics/Joints/WeldJoint.hpp>
 
 using namespace box2d;
 
-TEST(WheelJointDef, ByteSize)
+TEST(WeldJointDef, ByteSize)
 {
     switch (sizeof(RealNum))
     {
-        case  4: EXPECT_EQ(sizeof(WheelJointDef), size_t(88)); break;
-        case  8: EXPECT_EQ(sizeof(WheelJointDef), size_t(128)); break;
-        case 16: EXPECT_EQ(sizeof(WheelJointDef), size_t(224)); break;
+        case  4: EXPECT_EQ(sizeof(WeldJointDef), size_t(72)); break;
+        case  8: EXPECT_EQ(sizeof(WeldJointDef), size_t(96)); break;
+        case 16: EXPECT_EQ(sizeof(WeldJointDef), size_t(160)); break;
         default: FAIL(); break;
     }
 }
 
-TEST(WheelJointDef, DefaultConstruction)
+TEST(WeldJointDef, DefaultConstruction)
 {
-    WheelJointDef def{};
+    WeldJointDef def{};
     
-    EXPECT_EQ(def.type, JointType::Wheel);
+    EXPECT_EQ(def.type, JointType::Weld);
     EXPECT_EQ(def.bodyA, nullptr);
     EXPECT_EQ(def.bodyB, nullptr);
     EXPECT_EQ(def.collideConnected, false);
@@ -47,29 +47,26 @@ TEST(WheelJointDef, DefaultConstruction)
     
     EXPECT_EQ(def.localAnchorA, Vec2_zero * Meter);
     EXPECT_EQ(def.localAnchorB, Vec2_zero * Meter);
-    EXPECT_EQ(def.localAxisA, UnitVec2::GetRight());
-    EXPECT_FALSE(def.enableMotor);
-    EXPECT_EQ(def.maxMotorTorque, Torque(0));
-    EXPECT_EQ(def.motorSpeed, AngularVelocity(0));
-    EXPECT_EQ(def.frequencyHz, RealNum{2} * Hertz);
-    EXPECT_EQ(def.dampingRatio, RealNum(0.7f));
+    EXPECT_EQ(def.referenceAngle, Angle(0));
+    EXPECT_EQ(def.frequencyHz, RealNum{0} * Hertz);
+    EXPECT_EQ(def.dampingRatio, RealNum(0));
 }
 
-TEST(WheelJoint, ByteSize)
+TEST(WeldJoint, ByteSize)
 {
     switch (sizeof(RealNum))
     {
-        case  4: EXPECT_EQ(sizeof(WheelJoint), size_t(160)); break;
-        case  8: EXPECT_EQ(sizeof(WheelJoint), size_t(272)); break;
-        case 16: EXPECT_EQ(sizeof(WheelJoint), size_t(512)); break;
+        case  4: EXPECT_EQ(sizeof(WeldJoint), size_t(144)); break;
+        case  8: EXPECT_EQ(sizeof(WeldJoint), size_t(240)); break;
+        case 16: EXPECT_EQ(sizeof(WeldJoint), size_t(448)); break;
         default: FAIL(); break;
     }
 }
 
-TEST(WheelJoint, Construction)
+TEST(WeldJoint, Construction)
 {
-    WheelJointDef def;
-    WheelJoint joint{def};
+    WeldJointDef def;
+    WeldJoint joint{def};
     
     EXPECT_EQ(joint.GetType(), def.type);
     EXPECT_EQ(joint.GetBodyA(), def.bodyA);
@@ -79,18 +76,15 @@ TEST(WheelJoint, Construction)
     
     EXPECT_EQ(joint.GetLocalAnchorA(), def.localAnchorA);
     EXPECT_EQ(joint.GetLocalAnchorB(), def.localAnchorB);
-    EXPECT_EQ(joint.GetLocalAxisA(), def.localAxisA);
-    EXPECT_EQ(joint.IsMotorEnabled(), def.enableMotor);
-    EXPECT_EQ(joint.GetMaxMotorTorque(), def.maxMotorTorque);
-    EXPECT_EQ(joint.GetMotorSpeed(), def.motorSpeed);
-    EXPECT_EQ(joint.GetSpringFrequencyHz(), def.frequencyHz);
-    EXPECT_EQ(joint.GetSpringDampingRatio(), def.dampingRatio);
+    EXPECT_EQ(joint.GetReferenceAngle(), def.referenceAngle);
+    EXPECT_EQ(joint.GetFrequency(), def.frequencyHz);
+    EXPECT_EQ(joint.GetDampingRatio(), def.dampingRatio);
 }
 
-TEST(WheelJoint, GetWheelJointDef)
+TEST(WeldJoint, GetWeldJointDef)
 {
-    WheelJointDef def;
-    WheelJoint joint{def};
+    WeldJointDef def;
+    WeldJoint joint{def};
     
     ASSERT_EQ(joint.GetType(), def.type);
     ASSERT_EQ(joint.GetBodyA(), def.bodyA);
@@ -100,15 +94,12 @@ TEST(WheelJoint, GetWheelJointDef)
     
     ASSERT_EQ(joint.GetLocalAnchorA(), def.localAnchorA);
     ASSERT_EQ(joint.GetLocalAnchorB(), def.localAnchorB);
-    ASSERT_EQ(joint.GetLocalAxisA(), def.localAxisA);
-    ASSERT_EQ(joint.IsMotorEnabled(), def.enableMotor);
-    ASSERT_EQ(joint.GetMaxMotorTorque(), def.maxMotorTorque);
-    ASSERT_EQ(joint.GetMotorSpeed(), def.motorSpeed);
-    ASSERT_EQ(joint.GetSpringFrequencyHz(), def.frequencyHz);
-    ASSERT_EQ(joint.GetSpringDampingRatio(), def.dampingRatio);
+    ASSERT_EQ(joint.GetReferenceAngle(), def.referenceAngle);
+    ASSERT_EQ(joint.GetFrequency(), def.frequencyHz);
+    ASSERT_EQ(joint.GetDampingRatio(), def.dampingRatio);
     
-    const auto cdef = GetWheelJointDef(joint);
-    EXPECT_EQ(cdef.type, JointType::Wheel);
+    const auto cdef = GetWeldJointDef(joint);
+    EXPECT_EQ(cdef.type, JointType::Weld);
     EXPECT_EQ(cdef.bodyA, nullptr);
     EXPECT_EQ(cdef.bodyB, nullptr);
     EXPECT_EQ(cdef.collideConnected, false);
@@ -116,10 +107,7 @@ TEST(WheelJoint, GetWheelJointDef)
     
     EXPECT_EQ(cdef.localAnchorA, Vec2_zero * Meter);
     EXPECT_EQ(cdef.localAnchorB, Vec2_zero * Meter);
-    EXPECT_EQ(cdef.localAxisA, UnitVec2::GetRight());
-    EXPECT_FALSE(cdef.enableMotor);
-    EXPECT_EQ(cdef.maxMotorTorque, Torque(0));
-    EXPECT_EQ(cdef.motorSpeed, AngularVelocity(0));
-    EXPECT_EQ(cdef.frequencyHz, RealNum{2} * Hertz);
-    EXPECT_EQ(cdef.dampingRatio, RealNum(0.7f));
+    EXPECT_EQ(def.referenceAngle, Angle(0));
+    EXPECT_EQ(def.frequencyHz, RealNum(0) * Hertz);
+    EXPECT_EQ(def.dampingRatio, RealNum(0));
 }

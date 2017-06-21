@@ -283,6 +283,7 @@
 		47AFC3051DAEBC120023E9D1 /* PositionSolverManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AFC3041DAEBC120023E9D1 /* PositionSolverManifold.cpp */; };
 		47C85D0A1EFA251B00F70C56 /* WheelJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47C85D091EFA251B00F70C56 /* WheelJoint.cpp */; };
 		47C85D0C1EFA2C1C00F70C56 /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47C85D0B1EFA2C1C00F70C56 /* Settings.cpp */; };
+		47C85D0E1EFAE03700F70C56 /* WeldJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47C85D0D1EFAE03700F70C56 /* WeldJoint.cpp */; };
 		47CB34401D6F3A8500828126 /* MassData.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47CB343D1D6F3A8500828126 /* MassData.hpp */; };
 		47CB34411D6F3A8500828126 /* MassData.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47CB343D1D6F3A8500828126 /* MassData.hpp */; };
 		47CF984B1DF9C4A30077F5F2 /* ShapeSeparation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47CF98491DF9C4A30077F5F2 /* ShapeSeparation.cpp */; };
@@ -589,6 +590,7 @@
 		47AFC3041DAEBC120023E9D1 /* PositionSolverManifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PositionSolverManifold.cpp; sourceTree = "<group>"; };
 		47C85D091EFA251B00F70C56 /* WheelJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WheelJoint.cpp; sourceTree = "<group>"; };
 		47C85D0B1EFA2C1C00F70C56 /* Settings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Settings.cpp; sourceTree = "<group>"; };
+		47C85D0D1EFAE03700F70C56 /* WeldJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WeldJoint.cpp; sourceTree = "<group>"; };
 		47CB343D1D6F3A8500828126 /* MassData.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MassData.hpp; sourceTree = "<group>"; };
 		47CF98491DF9C4A30077F5F2 /* ShapeSeparation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShapeSeparation.cpp; sourceTree = "<group>"; };
 		47CF984A1DF9C4A30077F5F2 /* ShapeSeparation.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ShapeSeparation.hpp; sourceTree = "<group>"; };
@@ -851,6 +853,7 @@
 				474BAB291E5CBA010058E08A /* Velocity.cpp */,
 				47FFD0FA1DAC3EFC000D6D0E /* VelocityConstraint.cpp */,
 				472E301D1DBA98BC00DA821D /* VertexSet.cpp */,
+				47C85D0D1EFAE03700F70C56 /* WeldJoint.cpp */,
 				47C85D091EFA251B00F70C56 /* WheelJoint.cpp */,
 				474BC4061D41278800447DCD /* World.cpp */,
 				47E8416F1DB3FDC400E5F311 /* WorldManifold.cpp */,
@@ -1585,6 +1588,7 @@
 				47CF98501E0088ED0077F5F2 /* Angle.cpp in Sources */,
 				47C85D0C1EFA2C1C00F70C56 /* Settings.cpp in Sources */,
 				4731DE0A1DD7A4E000E7F931 /* ContactFilter.cpp in Sources */,
+				47C85D0E1EFAE03700F70C56 /* WeldJoint.cpp in Sources */,
 				47315E041E28A66100DDA856 /* RevoluteJoint.cpp in Sources */,
 				4734B2361DC39F3E00F15E29 /* SimplexEdge.cpp in Sources */,
 				4731DDFA1DC7C9B000E7F931 /* Simplex.cpp in Sources */,
