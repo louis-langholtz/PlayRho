@@ -107,12 +107,33 @@ TEST(Vec3, IncrementOperator)
     const auto b = Vec3{0, 0, 0};
     ASSERT_EQ(a, b);
     const auto inc = Vec3{1, 1, 1};
-    
     a += inc;
-    
     EXPECT_EQ(a, inc);
-    
     a += inc;
-    
     EXPECT_EQ(a, inc * 2);
+}
+
+TEST(Vec3, Addition)
+{
+    const auto a = Vec3{1, 2, 3};
+    const auto b = Vec3{-10, 4, -6};
+    const auto c = Vec3{-9, 6, -3};
+    EXPECT_EQ(a + b, c);
+}
+
+TEST(Vec3, Subtraction)
+{
+    const auto a = Vec3{1, 2, 3};
+    const auto b = Vec3{-10, 4, -6};
+    const auto c = Vec3{11, -2, 9};
+    EXPECT_EQ(a - b, c);
+}
+
+TEST(Vec3, ScalarMultiplication)
+{
+    const auto a = Vec3{1, 2, 3};
+    const auto b = RealNum(10);
+    const auto c = Vec3{10, 20, 30};
+    EXPECT_EQ(a * b, c);
+    EXPECT_EQ(b * a, c);
 }
