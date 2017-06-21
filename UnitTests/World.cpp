@@ -28,6 +28,7 @@
 #include <Box2D/Collision/Shapes/DiskShape.hpp>
 #include <Box2D/Collision/Shapes/PolygonShape.hpp>
 #include <Box2D/Collision/Shapes/EdgeShape.hpp>
+#include <Box2D/Collision/Collision.hpp>
 #include <Box2D/Dynamics/Joints/MouseJoint.hpp>
 #include <Box2D/Dynamics/Joints/RopeJoint.hpp>
 #include <Box2D/Dynamics/Joints/RevoluteJoint.hpp>
@@ -1806,25 +1807,49 @@ TEST(World, MouseJointWontCauseTunnelling)
     const auto distance_accel = RealNum(1.001);
 
     MyContactListener listener{
-        [&](Contact&, const Manifold& /* old_manifold */)
+        [&](Contact& contact, const Manifold& old_manifold)
         {
             // PreSolve...
-#if 0
             const auto new_manifold = contact.GetManifold();
-            if (old_manifold.GetType() != Manifold::e_unset && new_manifold.GetType() != Manifold::e_unset)
+            const auto pointStates = GetPointStates(old_manifold, new_manifold);
+            const auto oldPointCount = old_manifold.GetPointCount();
+            switch (oldPointCount)
             {
-                if (old_manifold.GetType() != new_manifold.GetType())
-                {
-                    const auto oln = old_manifold.GetLocalNormal();
-                    const auto nln = new_manifold.GetLocalNormal();
-                    if (Dot(oln, nln) <= 0)
-                    {
-                        std::cout << "PreSolve normal changed";
-                        std::cout << std::endl;
-                    }
-                }
+                case 0:
+                    ASSERT_EQ(pointStates.state1[0], PointState::NullState);
+                    ASSERT_EQ(pointStates.state1[1], PointState::NullState);
+                    break;
+                case 1:
+                    ASSERT_NE(pointStates.state1[0], PointState::NullState);
+                    ASSERT_EQ(pointStates.state1[1], PointState::NullState);
+                    break;
+                case 2:
+                    ASSERT_NE(pointStates.state1[0], PointState::NullState);
+                    ASSERT_NE(pointStates.state1[1], PointState::NullState);
+                    break;
+                default:
+                    ASSERT_LE(oldPointCount, 2);
+                    break;
             }
-#endif
+            const auto newPointCount = new_manifold.GetPointCount();
+            switch (newPointCount)
+            {
+                case 0:
+                    ASSERT_EQ(pointStates.state2[0], PointState::NullState);
+                    ASSERT_EQ(pointStates.state2[1], PointState::NullState);
+                    break;
+                case 1:
+                    ASSERT_NE(pointStates.state2[0], PointState::NullState);
+                    ASSERT_EQ(pointStates.state2[1], PointState::NullState);
+                    break;
+                case 2:
+                    ASSERT_NE(pointStates.state2[0], PointState::NullState);
+                    ASSERT_NE(pointStates.state2[1], PointState::NullState);
+                    break;
+                default:
+                    ASSERT_LE(newPointCount, 2);
+                    break;
+            }
         },
         [&](Contact& contact, const ContactImpulsesList& impulse, ContactListener::iteration_type solved)
         {
