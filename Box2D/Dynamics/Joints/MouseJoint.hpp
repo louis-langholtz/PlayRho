@@ -46,7 +46,7 @@ struct MouseJointDef : public JointDef
     /// Frequency.
     /// @details The has to do with the response speed.
     /// @note This value may not be negative.
-    NonNegative<Frequency> frequencyHz = NonNegative<Frequency>(RealNum{5} * Hertz);
+    NonNegative<Frequency> frequency = NonNegative<Frequency>(RealNum{5} * Hertz);
 
     /// The damping ratio. 0 = no damping, 1 = critical damping.
     RealNum dampingRatio = 0.7f;
@@ -114,7 +114,7 @@ private:
 
     Length2D m_targetA;
     Length2D m_localAnchorB;
-    NonNegative<Frequency> m_frequencyHz;
+    NonNegative<Frequency> m_frequency;
     RealNum m_dampingRatio;
     
     // Solver shared
@@ -155,12 +155,12 @@ inline Force MouseJoint::GetMaxForce() const noexcept
 
 inline void MouseJoint::SetFrequency(NonNegative<Frequency> hz) noexcept
 {
-    m_frequencyHz = hz;
+    m_frequency = hz;
 }
 
 inline Frequency MouseJoint::GetFrequency() const noexcept
 {
-    return m_frequencyHz;
+    return m_frequency;
 }
 
 inline void MouseJoint::SetDampingRatio(RealNum ratio) noexcept

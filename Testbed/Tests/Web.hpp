@@ -59,7 +59,7 @@ public:
             DistanceJointDef jd;
             Length2D p1, p2, d;
 
-            jd.frequencyHz = RealNum{2.0f} * Hertz;
+            jd.frequency = RealNum{2.0f} * Hertz;
             jd.dampingRatio = 0.0f;
 
             jd.bodyA = ground;

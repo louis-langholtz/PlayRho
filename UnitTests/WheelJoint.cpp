@@ -55,7 +55,7 @@ TEST(WheelJointDef, DefaultConstruction)
     EXPECT_FALSE(def.enableMotor);
     EXPECT_EQ(def.maxMotorTorque, Torque(0));
     EXPECT_EQ(def.motorSpeed, AngularVelocity(0));
-    EXPECT_EQ(def.frequencyHz, RealNum{2} * Hertz);
+    EXPECT_EQ(def.frequency, RealNum{2} * Hertz);
     EXPECT_EQ(def.dampingRatio, RealNum(0.7f));
 }
 
@@ -87,7 +87,7 @@ TEST(WheelJoint, Construction)
     EXPECT_EQ(joint.IsMotorEnabled(), def.enableMotor);
     EXPECT_EQ(joint.GetMaxMotorTorque(), def.maxMotorTorque);
     EXPECT_EQ(joint.GetMotorSpeed(), def.motorSpeed);
-    EXPECT_EQ(joint.GetSpringFrequencyHz(), def.frequencyHz);
+    EXPECT_EQ(joint.GetSpringFrequency(), def.frequency);
     EXPECT_EQ(joint.GetSpringDampingRatio(), def.dampingRatio);
 }
 
@@ -108,7 +108,7 @@ TEST(WheelJoint, GetWheelJointDef)
     ASSERT_EQ(joint.IsMotorEnabled(), def.enableMotor);
     ASSERT_EQ(joint.GetMaxMotorTorque(), def.maxMotorTorque);
     ASSERT_EQ(joint.GetMotorSpeed(), def.motorSpeed);
-    ASSERT_EQ(joint.GetSpringFrequencyHz(), def.frequencyHz);
+    ASSERT_EQ(joint.GetSpringFrequency(), def.frequency);
     ASSERT_EQ(joint.GetSpringDampingRatio(), def.dampingRatio);
     
     const auto cdef = GetWheelJointDef(joint);
@@ -124,7 +124,7 @@ TEST(WheelJoint, GetWheelJointDef)
     EXPECT_FALSE(cdef.enableMotor);
     EXPECT_EQ(cdef.maxMotorTorque, Torque(0));
     EXPECT_EQ(cdef.motorSpeed, AngularVelocity(0));
-    EXPECT_EQ(cdef.frequencyHz, RealNum{2} * Hertz);
+    EXPECT_EQ(cdef.frequency, RealNum{2} * Hertz);
     EXPECT_EQ(cdef.dampingRatio, RealNum(0.7f));
 }
 

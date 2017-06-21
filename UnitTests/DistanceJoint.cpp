@@ -51,7 +51,7 @@ TEST(DistanceJointDef, DefaultConstruction)
     EXPECT_EQ(def.localAnchorA, Vec2_zero * Meter);
     EXPECT_EQ(def.localAnchorB, Vec2_zero * Meter);
     EXPECT_EQ(def.length, RealNum(1) * Meter);
-    EXPECT_EQ(def.frequencyHz, Frequency(0));
+    EXPECT_EQ(def.frequency, Frequency(0));
     EXPECT_EQ(def.dampingRatio, RealNum(0));
 }
 
@@ -69,7 +69,7 @@ TEST(DistanceJoint, Construction)
     EXPECT_EQ(joint.GetLocalAnchorA(), def.localAnchorA);
     EXPECT_EQ(joint.GetLocalAnchorB(), def.localAnchorB);
     EXPECT_EQ(joint.GetLength(), def.length);
-    EXPECT_EQ(joint.GetFrequency(), def.frequencyHz);
+    EXPECT_EQ(joint.GetFrequency(), def.frequency);
     EXPECT_EQ(joint.GetDampingRatio(), def.dampingRatio);
 }
 
@@ -96,7 +96,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
     jointdef.localAnchorA = Vec2_zero * Meter;
     jointdef.localAnchorB = Vec2_zero * Meter;
     jointdef.length = RealNum{5} * Meter;
-    jointdef.frequencyHz = 0;
+    jointdef.frequency = 0;
     jointdef.dampingRatio = 0;
     EXPECT_NE(world.CreateJoint(jointdef), nullptr);
     
@@ -151,7 +151,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
     jointdef.localAnchorA = Vec2_zero * Meter;
     jointdef.localAnchorB = Vec2_zero * Meter;
     jointdef.length = RealNum{5} * Meter;
-    jointdef.frequencyHz = RealNum{60} * Hertz;
+    jointdef.frequency = RealNum{60} * Hertz;
     jointdef.dampingRatio = 0;
     EXPECT_NE(world.CreateJoint(jointdef), nullptr);
     

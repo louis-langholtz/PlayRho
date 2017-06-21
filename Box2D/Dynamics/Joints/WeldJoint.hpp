@@ -46,7 +46,7 @@ struct WeldJointDef : public JointDef
     
     /// The mass-spring-damper frequency in Hertz. Rotation only.
     /// Disable softness with a value of 0.
-    Frequency frequencyHz = Frequency{0};
+    Frequency frequency = Frequency{0};
 
     /// The damping ratio. 0 = no damping, 1 = critical damping.
     RealNum dampingRatio = 0;
@@ -74,9 +74,9 @@ public:
     /// Get the reference angle.
     Angle GetReferenceAngle() const { return m_referenceAngle; }
 
-    /// Set/get frequency in Hz.
-    void SetFrequency(Frequency hz) { m_frequencyHz = hz; }
-    Frequency GetFrequency() const { return m_frequencyHz; }
+    /// Set/get frequency.
+    void SetFrequency(Frequency frequency) { m_frequency = frequency; }
+    Frequency GetFrequency() const { return m_frequency; }
 
     /// Set/get damping ratio.
     void SetDampingRatio(RealNum ratio) { m_dampingRatio = ratio; }
@@ -90,7 +90,7 @@ private:
     bool SolvePositionConstraints(BodyConstraints& bodies,
                                   const ConstraintSolverConf& conf) const override;
 
-    Frequency m_frequencyHz;
+    Frequency m_frequency;
     RealNum m_dampingRatio;
     AngularVelocity m_bias;
 

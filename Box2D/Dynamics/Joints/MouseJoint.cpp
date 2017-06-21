@@ -57,7 +57,7 @@ MouseJoint::MouseJoint(const MouseJointDef& def):
         GetInvalid<decltype(m_localAnchorB)>()},
     m_targetA{def.target},
     m_maxForce{def.maxForce},
-    m_frequencyHz{def.frequencyHz},
+    m_frequency{def.frequency},
     m_dampingRatio{def.dampingRatio}
 {
     assert(IsValid(def.target));
@@ -109,7 +109,7 @@ void MouseJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
     const auto mass = GetMass(*GetBodyB());
 
     // Frequency
-    const auto omega = RealNum{2} * Pi * Frequency{m_frequencyHz}; // T^-1
+    const auto omega = RealNum{2} * Pi * Frequency{m_frequency}; // T^-1
 
     // Damping coefficient
     const auto d = RealNum{2} * mass * m_dampingRatio * omega; // M T^-1
@@ -218,7 +218,7 @@ MouseJointDef box2d::GetMouseJointDef(const MouseJoint& joint) noexcept
 
     def.target = joint.GetTarget();
     def.maxForce = joint.GetMaxForce();
-    def.frequencyHz = joint.GetFrequency();
+    def.frequency = joint.GetFrequency();
     def.dampingRatio = joint.GetDampingRatio();
 
     return def;

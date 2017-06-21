@@ -60,7 +60,7 @@ WheelJoint::WheelJoint(const WheelJointDef& def):
     m_maxMotorTorque(def.maxMotorTorque),
     m_motorSpeed(def.motorSpeed),
     m_enableMotor(def.enableMotor),
-    m_frequencyHz(def.frequencyHz),
+    m_frequency(def.frequency),
     m_dampingRatio(def.dampingRatio)
 {
     // Intentionally empty.
@@ -106,7 +106,7 @@ void WheelJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
     m_springMass = Mass{0};
     m_bias = 0;
     m_gamma = 0;
-    if (m_frequencyHz > Frequency{0})
+    if (m_frequency > Frequency{0})
     {
         m_ax = Rotate(m_localXAxisA, qA);
         m_sAx = Cross(dd + rA, m_ax);
@@ -123,7 +123,7 @@ void WheelJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
             const auto C = Length{Dot(dd, m_ax)};
 
             // Frequency
-            const auto omega = RealNum{2} * Pi * m_frequencyHz;
+            const auto omega = RealNum{2} * Pi * m_frequency;
 
             // Damping coefficient
             const auto d = RealNum{2} * m_springMass * m_dampingRatio * omega;
@@ -394,7 +394,7 @@ WheelJointDef box2d::GetWheelJointDef(const WheelJoint& joint) noexcept
     def.enableMotor = joint.IsMotorEnabled();
     def.maxMotorTorque = joint.GetMaxMotorTorque();
     def.motorSpeed = joint.GetMotorSpeed();
-    def.frequencyHz = joint.GetSpringFrequencyHz();
+    def.frequency = joint.GetSpringFrequency();
     def.dampingRatio = joint.GetSpringDampingRatio();
     
     return def;

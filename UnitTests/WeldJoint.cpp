@@ -52,7 +52,7 @@ TEST(WeldJointDef, DefaultConstruction)
     EXPECT_EQ(def.localAnchorA, Vec2_zero * Meter);
     EXPECT_EQ(def.localAnchorB, Vec2_zero * Meter);
     EXPECT_EQ(def.referenceAngle, Angle(0));
-    EXPECT_EQ(def.frequencyHz, RealNum{0} * Hertz);
+    EXPECT_EQ(def.frequency, RealNum{0} * Hertz);
     EXPECT_EQ(def.dampingRatio, RealNum(0));
 }
 
@@ -81,7 +81,7 @@ TEST(WeldJoint, Construction)
     EXPECT_EQ(joint.GetLocalAnchorA(), def.localAnchorA);
     EXPECT_EQ(joint.GetLocalAnchorB(), def.localAnchorB);
     EXPECT_EQ(joint.GetReferenceAngle(), def.referenceAngle);
-    EXPECT_EQ(joint.GetFrequency(), def.frequencyHz);
+    EXPECT_EQ(joint.GetFrequency(), def.frequency);
     EXPECT_EQ(joint.GetDampingRatio(), def.dampingRatio);
 }
 
@@ -102,7 +102,7 @@ TEST(WeldJoint, GetWeldJointDef)
     ASSERT_EQ(joint.GetLocalAnchorA(), def.localAnchorA);
     ASSERT_EQ(joint.GetLocalAnchorB(), def.localAnchorB);
     ASSERT_EQ(joint.GetReferenceAngle(), def.referenceAngle);
-    ASSERT_EQ(joint.GetFrequency(), def.frequencyHz);
+    ASSERT_EQ(joint.GetFrequency(), def.frequency);
     ASSERT_EQ(joint.GetDampingRatio(), def.dampingRatio);
     
     const auto cdef = GetWeldJointDef(joint);
@@ -115,7 +115,7 @@ TEST(WeldJoint, GetWeldJointDef)
     EXPECT_EQ(cdef.localAnchorA, anchor);
     EXPECT_EQ(cdef.localAnchorB, anchor);
     EXPECT_EQ(def.referenceAngle, Angle(0));
-    EXPECT_EQ(def.frequencyHz, RealNum(0) * Hertz);
+    EXPECT_EQ(def.frequency, RealNum(0) * Hertz);
     EXPECT_EQ(def.dampingRatio, RealNum(0));
 }
 

@@ -203,7 +203,7 @@ public:
                 jd.motorSpeed = AngularVelocity{0};
                 jd.maxMotorTorque = RealNum{20} * NewtonMeter;
                 jd.enableMotor = true;
-                jd.frequencyHz = m_hz;
+                jd.frequency = m_hz;
                 jd.dampingRatio = m_zeta;
                 m_spring1 = static_cast<WheelJoint*>(m_world->CreateJoint(jd));
             }
@@ -212,7 +212,7 @@ public:
                 jd.motorSpeed = AngularVelocity{0};
                 jd.maxMotorTorque = RealNum{10} * NewtonMeter;
                 jd.enableMotor = false;
-                jd.frequencyHz = m_hz;
+                jd.frequency = m_hz;
                 jd.dampingRatio = m_zeta;
                 m_spring2 = static_cast<WheelJoint*>(m_world->CreateJoint(jd));
             }
@@ -237,14 +237,14 @@ public:
 
         case Key_Q:
             m_hz = Max(RealNum(0) * Hertz, m_hz - RealNum{1} * Hertz);
-            m_spring1->SetSpringFrequencyHz(m_hz);
-            m_spring2->SetSpringFrequencyHz(m_hz);
+            m_spring1->SetSpringFrequency(m_hz);
+            m_spring2->SetSpringFrequency(m_hz);
             break;
 
         case Key_E:
             m_hz += RealNum{1} * Hertz;
-            m_spring1->SetSpringFrequencyHz(m_hz);
-            m_spring2->SetSpringFrequencyHz(m_hz);
+            m_spring1->SetSpringFrequency(m_hz);
+            m_spring2->SetSpringFrequency(m_hz);
             break;
     
         default:

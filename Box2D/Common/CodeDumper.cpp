@@ -271,7 +271,7 @@ void box2d::Dump(const DistanceJoint& joint, size_t index)
         static_cast<double>(RealNum{joint.GetLocalAnchorB().y / Meter}));
     log("  jd.length = %.15lef;\n",
         static_cast<double>(RealNum{joint.GetLength() / Meter}));
-    log("  jd.frequencyHz = %.15lef;\n",
+    log("  jd.frequency = %.15lef;\n",
         static_cast<double>(RealNum{joint.GetFrequency() / Hertz}));
     log("  jd.dampingRatio = %.15lef;\n", joint.GetDampingRatio());
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
@@ -336,7 +336,7 @@ void box2d::Dump(const MouseJoint& joint, size_t index)
     log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n",
         static_cast<double>(RealNum{joint.GetLocalAnchorB().x / Meter}),
         static_cast<double>(RealNum{joint.GetLocalAnchorB().y / Meter}));
-    log("  jd.frequencyHz = %.15lef;\n",
+    log("  jd.frequency = %.15lef;\n",
         static_cast<double>(RealNum{joint.GetFrequency() / Hertz}));
     log("  jd.dampingRatio = %.15lef;\n", joint.GetDampingRatio());
     log("  jd.maxForce = %.15lef;\n",
@@ -457,7 +457,7 @@ void box2d::Dump(const WeldJoint& joint, size_t index)
         static_cast<double>(RealNum{joint.GetLocalAnchorB().y / Meter}));
     log("  jd.referenceAngle = %.15lef;\n",
         static_cast<double>(RealNum{joint.GetReferenceAngle() / Radian}));
-    log("  jd.frequencyHz = %.15lef;\n",
+    log("  jd.frequency = %.15lef;\n",
         static_cast<double>(RealNum{joint.GetFrequency() / Hertz}));
     log("  jd.dampingRatio = %.15lef;\n", joint.GetDampingRatio());
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
@@ -483,8 +483,8 @@ void box2d::Dump(const WheelJoint& joint, size_t index)
         static_cast<double>(RealNum{joint.GetMotorSpeed() / RadianPerSecond}));
     log("  jd.maxMotorTorque = %.15lef;\n",
         static_cast<double>(RealNum{joint.GetMaxMotorTorque() / NewtonMeter}));
-    log("  jd.frequencyHz = %.15lef;\n",
-        static_cast<double>(RealNum{joint.GetSpringFrequencyHz() / Hertz}));
+    log("  jd.frequency = %.15lef;\n",
+        static_cast<double>(RealNum{joint.GetSpringFrequency() / Hertz}));
     log("  jd.dampingRatio = %.15lef;\n", joint.GetSpringDampingRatio());
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }

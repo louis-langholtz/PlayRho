@@ -53,7 +53,7 @@ WeldJoint::WeldJoint(const WeldJointDef& def):
     m_localAnchorA(def.localAnchorA),
     m_localAnchorB(def.localAnchorB),
     m_referenceAngle(def.referenceAngle),
-    m_frequencyHz(def.frequencyHz),
+    m_frequency(def.frequency),
     m_dampingRatio(def.dampingRatio)
 {
     // Intentionally empty.
@@ -122,7 +122,7 @@ void WeldJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf&
     K.ey.z = K.ez.y;
     K.ez.z = StripUnit(ezz);
 
-    if (m_frequencyHz > Frequency{0})
+    if (m_frequency > Frequency{0})
     {
         m_mass = GetInverse22(K);
 
@@ -132,7 +132,7 @@ void WeldJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf&
         const auto rotInertia = (invRotInertia > InvRotInertia{0})? RealNum{1} / invRotInertia: RotInertia{0};
 
         const auto C = Angle{posB.angular - posA.angular - m_referenceAngle};
-        const auto omega = RealNum(2) * Pi * m_frequencyHz; // T^-1
+        const auto omega = RealNum(2) * Pi * m_frequency; // T^-1
         const auto d = RealNum(2) * rotInertia * m_dampingRatio * omega;
 
         // Spring stiffness: L^2 M QP^-2 T^-2
@@ -200,7 +200,7 @@ bool WeldJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf
     const auto invMassB = bodiesB.GetInvMass();
     const auto invRotInertiaB = bodiesB.GetInvRotInertia();
 
-    if (m_frequencyHz > Frequency{0})
+    if (m_frequency > Frequency{0})
     {
         const auto Cdot2 = velB.angular - velA.angular;
         
@@ -317,7 +317,7 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraints& bodies, const Constrai
     K.ey.z = K.ez.y;
     K.ez.z = StripUnit(ezz);
 
-    if (m_frequencyHz > Frequency{0})
+    if (m_frequency > Frequency{0})
     {
         const auto C1 = Length2D{(posB.linear + rB) - (posA.linear + rA)};
 
@@ -399,7 +399,7 @@ WeldJointDef box2d::GetWeldJointDef(const WeldJoint& joint) noexcept
     def.localAnchorA = joint.GetLocalAnchorA();
     def.localAnchorB = joint.GetLocalAnchorB();
     def.referenceAngle = joint.GetReferenceAngle();
-    def.frequencyHz = joint.GetFrequency();
+    def.frequency = joint.GetFrequency();
     def.dampingRatio = joint.GetDampingRatio();
     
     return def;

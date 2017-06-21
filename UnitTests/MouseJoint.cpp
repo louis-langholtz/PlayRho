@@ -49,6 +49,6 @@ TEST(MouseJoint, DefaultInitialized)
     EXPECT_FALSE(IsValid(joint.GetLocalAnchorB()));
     EXPECT_EQ(joint.GetTarget(), def.target);
     EXPECT_EQ(joint.GetMaxForce(), def.maxForce);
-    EXPECT_EQ(joint.GetFrequency(), def.frequencyHz);
+    EXPECT_EQ(joint.GetFrequency(), def.frequency);
     EXPECT_EQ(joint.GetDampingRatio(), def.dampingRatio);
 }

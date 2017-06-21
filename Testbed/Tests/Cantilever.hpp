@@ -83,7 +83,7 @@ public:
                 body->CreateFixture(shape);
 
                 auto jd = WeldJointDef{prevBody, body, Vec2(-15.0f + 2.0f * i, 15.0f) * Meter};
-                jd.frequencyHz = RealNum{5} * Hertz;
+                jd.frequency = RealNum{5} * Hertz;
                 jd.dampingRatio = 0.7f;
                 m_world->CreateJoint(jd);
 
@@ -135,7 +135,7 @@ public:
                 if (i > 0)
                 {
                     auto jd = WeldJointDef{prevBody, body, Vec2(5.0f + 1.0f * i, 10.0f) * Meter};
-                    jd.frequencyHz = RealNum{8} * Hertz;
+                    jd.frequency = RealNum{8} * Hertz;
                     jd.dampingRatio = 0.7f;
                     m_world->CreateJoint(jd);
                 }

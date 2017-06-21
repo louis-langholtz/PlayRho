@@ -46,7 +46,7 @@ DistanceJointDef::DistanceJointDef(Body* bA, Body* bB,
     JointDef{JointType::Distance, bA, bB},
     localAnchorA{GetLocalPoint(*bA, anchor1)}, localAnchorB{GetLocalPoint(*bB, anchor2)},
     length{GetLength(anchor2 - anchor1)},
-    frequencyHz{freq}, dampingRatio{damp}
+    frequency{freq}, dampingRatio{damp}
 {
 }
 
@@ -56,7 +56,7 @@ bool DistanceJoint::IsOkay(const DistanceJointDef& def) noexcept
     {
         return false;
     }
-    if (!(def.frequencyHz >= Frequency{0}))
+    if (!(def.frequency >= Frequency{0}))
     {
         return false;
     }
@@ -68,10 +68,10 @@ DistanceJoint::DistanceJoint(const DistanceJointDef& def):
     m_localAnchorA(def.localAnchorA),
     m_localAnchorB(def.localAnchorB),
     m_length(def.length),
-    m_frequencyHz(def.frequencyHz),
+    m_frequency(def.frequency),
     m_dampingRatio(def.dampingRatio)
 {
-    assert(def.frequencyHz >= Frequency{0});
+    assert(def.frequency >= Frequency{0});
 }
 
 void DistanceJoint::InitVelocityConstraints(BodyConstraints& bodies,
@@ -116,12 +116,12 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraints& bodies,
     // Compute the effective mass matrix.
     m_mass = (invMass != InvMass{0}) ? RealNum{1} / invMass: Mass{0};
 
-    if (m_frequencyHz > Frequency{0})
+    if (m_frequency > Frequency{0})
     {
         const auto C = length - m_length; // L
 
         // Frequency
-        const auto omega = RealNum{2} * Pi * m_frequencyHz;
+        const auto omega = RealNum{2} * Pi * m_frequency;
 
         // Damping coefficient
         const auto d = RealNum{2} * m_mass * m_dampingRatio * omega; // M T^-1
@@ -204,7 +204,7 @@ bool DistanceJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
 
 bool DistanceJoint::SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const
 {
-    if (m_frequencyHz > Frequency{0})
+    if (m_frequency > Frequency{0})
     {
         // There is no position correction for soft distance constraints.
         return true;
@@ -275,7 +275,7 @@ DistanceJointDef box2d::GetDistanceJointDef(const DistanceJoint& joint) noexcept
     def.localAnchorA = joint.GetLocalAnchorA();
     def.localAnchorB = joint.GetLocalAnchorB();
     def.length = joint.GetLength();
-    def.frequencyHz = joint.GetFrequency();
+    def.frequency = joint.GetFrequency();
     def.dampingRatio = joint.GetDampingRatio();
 
     return def;

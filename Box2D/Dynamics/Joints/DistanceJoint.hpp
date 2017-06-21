@@ -53,7 +53,7 @@ struct DistanceJointDef : public JointDef
     /// Mass-spring-damper frequency in Hertz.
     /// @note 0 disables softness.
     /// @note Should be 0 or greater.
-    Frequency frequencyHz = Frequency{0};
+    Frequency frequency = Frequency{0};
 
     /// The damping ratio. 0 = no damping, 1 = critical damping.
     RealNum dampingRatio = 0;
@@ -93,8 +93,8 @@ public:
     void SetLength(Length length) noexcept;
     Length GetLength() const noexcept;
 
-    /// Set/get frequency in Hz.
-    void SetFrequency(Frequency hz) noexcept;
+    /// Set/get frequency.
+    void SetFrequency(Frequency frequency) noexcept;
     Frequency GetFrequency() const noexcept;
 
     /// Set/get damping ratio.
@@ -110,7 +110,7 @@ private:
     Length2D m_localAnchorA;
     Length2D m_localAnchorB;
     Length m_length;
-    Frequency m_frequencyHz;
+    Frequency m_frequency;
     RealNum m_dampingRatio;
 
     // Solver temp
@@ -135,12 +135,12 @@ inline Length DistanceJoint::GetLength() const noexcept
 
 inline void DistanceJoint::SetFrequency(Frequency hz) noexcept
 {
-    m_frequencyHz = hz;
+    m_frequency = hz;
 }
 
 inline Frequency DistanceJoint::GetFrequency() const noexcept
 {
-    return m_frequencyHz;
+    return m_frequency;
 }
 
 inline void DistanceJoint::SetDampingRatio(RealNum ratio) noexcept

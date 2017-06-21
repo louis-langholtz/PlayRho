@@ -57,7 +57,7 @@ struct WheelJointDef : public JointDef
     AngularVelocity motorSpeed = AngularVelocity{0};
 
     /// Suspension frequency, zero indicates no suspension
-    Frequency frequencyHz = RealNum{2} * Hertz;
+    Frequency frequency = RealNum{2} * Hertz;
 
     /// Suspension damping ratio, one indicates critical damping
     RealNum dampingRatio = 0.7f;
@@ -112,9 +112,12 @@ public:
     /// Get the current motor torque given the inverse time step.
     Torque GetMotorTorque(Frequency inv_dt) const;
 
-    /// Set/Get the spring frequency in Hertz. Setting the frequency to zero disables the spring.
-    void SetSpringFrequencyHz(Frequency hz);
-    Frequency GetSpringFrequencyHz() const;
+    /// @brief Sets the spring frequency.
+    /// @note Setting the frequency to zero disables the spring.
+    void SetSpringFrequency(Frequency frequency);
+
+    /// @brief Gets the spring frequency.
+    Frequency GetSpringFrequency() const;
 
     /// Set/Get the spring damping ratio
     void SetSpringDampingRatio(RealNum ratio);
@@ -126,7 +129,7 @@ private:
     bool SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) override;
     bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
 
-    Frequency m_frequencyHz;
+    Frequency m_frequency;
     RealNum m_dampingRatio;
 
     // Solver shared
@@ -170,14 +173,14 @@ inline Torque WheelJoint::GetMaxMotorTorque() const
     return m_maxMotorTorque;
 }
 
-inline void WheelJoint::SetSpringFrequencyHz(Frequency hz)
+inline void WheelJoint::SetSpringFrequency(Frequency hz)
 {
-    m_frequencyHz = hz;
+    m_frequency = hz;
 }
 
-inline Frequency WheelJoint::GetSpringFrequencyHz() const
+inline Frequency WheelJoint::GetSpringFrequency() const
 {
-    return m_frequencyHz;
+    return m_frequency;
 }
 
 inline void WheelJoint::SetSpringDampingRatio(RealNum ratio)
