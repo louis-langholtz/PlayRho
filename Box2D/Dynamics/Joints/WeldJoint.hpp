@@ -33,7 +33,7 @@ struct WeldJointDef : public JointDef
 
     /// Initialize the bodies, anchors, and reference angle using a world
     /// anchor point.
-    void Initialize(Body* bodyA, Body* bodyB, const Length2D anchor);
+    WeldJointDef(Body* bodyA, Body* bodyB, const Length2D anchor) noexcept;
 
     /// The local anchor point relative to bodyA's origin.
     Length2D localAnchorA = Vec2_zero * Meter;

@@ -46,8 +46,7 @@ public:
         conf.density = RealNum{2} * KilogramPerSquareMeter;
         body->CreateFixture(std::make_shared<PolygonShape>(RealNum{2.0f} * Meter, RealNum{0.5f} * Meter, conf));
 
-        MotorJointDef mjd;
-        mjd.Initialize(ground, body);
+        auto mjd = MotorJointDef{ground, body};
         mjd.maxForce = RealNum{1000.0f} * Newton;
         mjd.maxTorque = RealNum{1000.0f} * NewtonMeter;
         m_joint = (MotorJoint*)m_world->CreateJoint(mjd);

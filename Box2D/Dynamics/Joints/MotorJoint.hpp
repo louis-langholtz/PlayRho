@@ -30,7 +30,7 @@ struct MotorJointDef : public JointDef
     constexpr MotorJointDef() noexcept: JointDef(JointType::Motor) {}
 
     /// Initialize the bodies and offsets using the current transforms.
-    void Initialize(Body* bodyA, Body* bodyB);
+    MotorJointDef(Body* bodyA, Body* bodyB) noexcept;
 
     /// Position of bodyB minus the position of bodyA, in bodyA's frame.
     Length2D linearOffset = Vec2_zero * Meter;

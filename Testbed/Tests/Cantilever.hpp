@@ -50,8 +50,6 @@ public:
             conf.density = RealNum{20} * KilogramPerSquareMeter;
             const auto shape = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.125f} * Meter, conf);
 
-            WeldJointDef jd;
-
             auto prevBody = ground;
             for (auto i = 0; i < e_count; ++i)
             {
@@ -61,8 +59,9 @@ public:
                 const auto body = m_world->CreateBody(bd);
                 body->CreateFixture(shape);
 
-                jd.Initialize(prevBody, body, Vec2(-15.0f + 1.0f * i, 5.0f) * Meter);
-                m_world->CreateJoint(jd);
+                m_world->CreateJoint(WeldJointDef{
+                    prevBody, body, Vec2(-15.0f + 1.0f * i, 5.0f) * Meter
+                });
 
                 prevBody = body;
             }
@@ -74,10 +73,6 @@ public:
             conf.density = RealNum{20} * KilogramPerSquareMeter;
             const auto shape = std::make_shared<PolygonShape>(RealNum{1.0f} * Meter, RealNum{0.125f} * Meter, conf);
 
-            WeldJointDef jd;
-            jd.frequencyHz = RealNum{5} * Hertz;
-            jd.dampingRatio = 0.7f;
-
             auto prevBody = ground;
             for (auto i = 0; i < 3; ++i)
             {
@@ -87,7 +82,9 @@ public:
                 const auto body = m_world->CreateBody(bd);
                 body->CreateFixture(shape);
 
-                jd.Initialize(prevBody, body, Vec2(-15.0f + 2.0f * i, 15.0f) * Meter);
+                auto jd = WeldJointDef{prevBody, body, Vec2(-15.0f + 2.0f * i, 15.0f) * Meter};
+                jd.frequencyHz = RealNum{5} * Hertz;
+                jd.dampingRatio = 0.7f;
                 m_world->CreateJoint(jd);
 
                 prevBody = body;
@@ -100,8 +97,6 @@ public:
             conf.density = RealNum{20} * KilogramPerSquareMeter;
             const auto shape = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.125f} * Meter, conf);
 
-            WeldJointDef jd;
-
             auto prevBody = ground;
             for (auto i = 0; i < e_count; ++i)
             {
@@ -113,8 +108,9 @@ public:
 
                 if (i > 0)
                 {
-                    jd.Initialize(prevBody, body, Vec2(-5.0f + 1.0f * i, 5.0f) * Meter);
-                    m_world->CreateJoint(jd);
+                    m_world->CreateJoint(WeldJointDef{
+                        prevBody, body, Vec2(-5.0f + 1.0f * i, 5.0f) * Meter
+                    });
                 }
 
                 prevBody = body;
@@ -127,10 +123,6 @@ public:
             conf.density = RealNum{20} * KilogramPerSquareMeter;
             const auto shape = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.125f} * Meter, conf);
 
-            WeldJointDef jd;
-            jd.frequencyHz = RealNum{8} * Hertz;
-            jd.dampingRatio = 0.7f;
-
             auto prevBody = ground;
             for (auto i = 0; i < e_count; ++i)
             {
@@ -142,7 +134,9 @@ public:
 
                 if (i > 0)
                 {
-                    jd.Initialize(prevBody, body, Vec2(5.0f + 1.0f * i, 10.0f) * Meter);
+                    auto jd = WeldJointDef{prevBody, body, Vec2(5.0f + 1.0f * i, 10.0f) * Meter};
+                    jd.frequencyHz = RealNum{8} * Hertz;
+                    jd.dampingRatio = 0.7f;
                     m_world->CreateJoint(jd);
                 }
 

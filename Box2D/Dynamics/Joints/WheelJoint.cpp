@@ -41,13 +41,14 @@ using namespace box2d;
 // Cdot = wB - wA
 // J = [0 0 -1 0 0 1]
 
-void WheelJointDef::Initialize(Body* bA, Body* bB, const Length2D anchor, const UnitVec2 axis)
+WheelJointDef::WheelJointDef(Body* bA, Body* bB, const Length2D anchor,
+                             const UnitVec2 axis) noexcept:
+    JointDef{JointType::Wheel, bA, bB},
+    localAnchorA{GetLocalPoint(*bA, anchor)},
+    localAnchorB{GetLocalPoint(*bB, anchor)},
+    localAxisA{GetLocalVector(*bA, axis)}
 {
-    bodyA = bA;
-    bodyB = bB;
-    localAnchorA = GetLocalPoint(*bodyA, anchor);
-    localAnchorB = GetLocalPoint(*bodyB, anchor);
-    localAxisA = GetLocalVector(*bodyA, axis);
+    // Intentionally empty.
 }
 
 WheelJoint::WheelJoint(const WheelJointDef& def):

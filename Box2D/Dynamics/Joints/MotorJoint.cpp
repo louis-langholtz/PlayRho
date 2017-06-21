@@ -36,12 +36,11 @@ using namespace box2d;
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-void MotorJointDef::Initialize(Body* bA, Body* bB)
+MotorJointDef::MotorJointDef(Body* bA, Body* bB) noexcept:
+    JointDef{JointType::Motor, bA, bB},
+    linearOffset{GetLocalPoint(*bodyA, bodyB->GetLocation())},
+    angularOffset{bodyB->GetAngle() - bodyA->GetAngle()}
 {
-    bodyA = bA;
-    bodyB = bB;
-    linearOffset = GetLocalPoint(*bodyA, bodyB->GetLocation());
-    angularOffset = bodyB->GetAngle() - bodyA->GetAngle();
 }
 
 MotorJoint::MotorJoint(const MotorJointDef& def):

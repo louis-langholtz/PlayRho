@@ -196,24 +196,26 @@ public:
             m_wheel2 = m_world->CreateBody(bd);
             m_wheel2->CreateFixture(circle);
 
-            WheelJointDef jd;
             const auto axis = UnitVec2::GetTop();
 
-            jd.Initialize(m_car, m_wheel1, m_wheel1->GetLocation(), axis);
-            jd.motorSpeed = AngularVelocity{0};
-            jd.maxMotorTorque = RealNum{20} * NewtonMeter;
-            jd.enableMotor = true;
-            jd.frequencyHz = m_hz;
-            jd.dampingRatio = m_zeta;
-            m_spring1 = (WheelJoint*)m_world->CreateJoint(jd);
-
-            jd.Initialize(m_car, m_wheel2, m_wheel2->GetLocation(), axis);
-            jd.motorSpeed = AngularVelocity{0};
-            jd.maxMotorTorque = RealNum{10} * NewtonMeter;
-            jd.enableMotor = false;
-            jd.frequencyHz = m_hz;
-            jd.dampingRatio = m_zeta;
-            m_spring2 = (WheelJoint*)m_world->CreateJoint(jd);
+            {
+                WheelJointDef jd(m_car, m_wheel1, m_wheel1->GetLocation(), axis);
+                jd.motorSpeed = AngularVelocity{0};
+                jd.maxMotorTorque = RealNum{20} * NewtonMeter;
+                jd.enableMotor = true;
+                jd.frequencyHz = m_hz;
+                jd.dampingRatio = m_zeta;
+                m_spring1 = static_cast<WheelJoint*>(m_world->CreateJoint(jd));
+            }
+            {
+                WheelJointDef jd(m_car, m_wheel2, m_wheel2->GetLocation(), axis);
+                jd.motorSpeed = AngularVelocity{0};
+                jd.maxMotorTorque = RealNum{10} * NewtonMeter;
+                jd.enableMotor = false;
+                jd.frequencyHz = m_hz;
+                jd.dampingRatio = m_zeta;
+                m_spring2 = static_cast<WheelJoint*>(m_world->CreateJoint(jd));
+            }
         }
     }
 

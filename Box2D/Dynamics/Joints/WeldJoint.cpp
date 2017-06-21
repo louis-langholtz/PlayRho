@@ -39,13 +39,13 @@ using namespace box2d;
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-void WeldJointDef::Initialize(Body* bA, Body* bB, const Length2D anchor)
+WeldJointDef::WeldJointDef(Body* bA, Body* bB, const Length2D anchor) noexcept:
+    JointDef{JointType::Weld, bA, bB},
+    localAnchorA{GetLocalPoint(*bA, anchor)},
+    localAnchorB{GetLocalPoint(*bB, anchor)},
+    referenceAngle{bB->GetAngle() - bA->GetAngle()}
 {
-    bodyA = bA;
-    bodyB = bB;
-    localAnchorA = GetLocalPoint(*bodyA, anchor);
-    localAnchorB = GetLocalPoint(*bodyB, anchor);
-    referenceAngle = bodyB->GetAngle() - bodyA->GetAngle();
+    // Intentionally empty.
 }
 
 WeldJoint::WeldJoint(const WeldJointDef& def):
