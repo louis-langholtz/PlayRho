@@ -53,6 +53,8 @@ struct GearJointDef : public JointDef
 class GearJoint : public Joint
 {
 public:
+    static bool IsOkay(const GearJointDef& data) noexcept;
+
     GearJoint(const GearJointDef& data);
     
     Length2D GetAnchorA() const override;

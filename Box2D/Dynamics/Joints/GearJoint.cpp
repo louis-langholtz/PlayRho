@@ -46,6 +46,11 @@ using namespace box2d;
 // J = [ug cross(r, ug)]
 // K = J * invM * JT = invMass + invI * cross(r, ug)^2
 
+bool GearJoint::IsOkay(const GearJointDef& def) noexcept
+{
+    return def.joint1 && def.joint2;
+}
+
 GearJoint::GearJoint(const GearJointDef& def):
     Joint(JointDef(def).UseBodyA(def.joint1->GetBodyB()).UseBodyB(def.joint2->GetBodyB())),
     m_joint1(def.joint1),
