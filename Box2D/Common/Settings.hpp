@@ -707,7 +707,17 @@ struct Version
     revnum_type minor;        ///< incremental changes
     revnum_type revision;        ///< bug fixes
 };
-    
+
+constexpr inline bool operator== (Version lhs, Version rhs)
+{
+    return lhs.major == rhs.major && lhs.minor == rhs.minor && lhs.revision == rhs.revision;
+}
+
+constexpr inline bool operator!= (Version lhs, Version rhs)
+{
+    return !(lhs == rhs);
+}
+
 Version GetVersion() noexcept;
 
 std::string GetBuildDetails() noexcept;
