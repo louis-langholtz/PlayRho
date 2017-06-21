@@ -36,12 +36,12 @@ using namespace box2d;
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-void FrictionJointDef::Initialize(Body* bA, Body* bB, const Length2D anchor)
+FrictionJointDef::FrictionJointDef(Body* bA, Body* bB, const Length2D anchor) noexcept:
+    JointDef{JointType::Friction, bA, bB},
+    localAnchorA{GetLocalPoint(*bA, anchor)},
+    localAnchorB{GetLocalPoint(*bB, anchor)}
 {
-    bodyA = bA;
-    bodyB = bB;
-    localAnchorA = GetLocalPoint(*bA, anchor);
-    localAnchorB = GetLocalPoint(*bB, anchor);
+    // Intentionally empty.
 }
 
 FrictionJoint::FrictionJoint(const FrictionJointDef& def):

@@ -29,9 +29,10 @@ struct FrictionJointDef : public JointDef
 {
     constexpr FrictionJointDef() noexcept: JointDef(JointType::Friction) {}
 
-    /// Initialize the bodies, anchors, axis, and reference angle using the world
-    /// anchor and world axis.
-    void Initialize(Body* bodyA, Body* bodyB, const Length2D anchor);
+    /// @brief Initializing constructor.
+    /// @details Initialize the bodies, anchors, axis, and reference angle using the world
+    ///   anchor and world axis.
+    FrictionJointDef(Body* bodyA, Body* bodyB, const Length2D anchor) noexcept;
 
     /// The local anchor point relative to bodyA's origin.
     Length2D localAnchorA = Vec2_zero * Meter;
