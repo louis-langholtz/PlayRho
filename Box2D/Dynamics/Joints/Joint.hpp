@@ -66,7 +66,8 @@ struct JointDef
         // Intentionally empty.        
     }
 
-    constexpr JointDef(JointType t, Body* bA, Body* bB, bool cc = false, void* u = nullptr) noexcept:
+    constexpr JointDef(JointType t, Body* bA, Body* bB, bool cc = false,
+                       void* u = nullptr) noexcept:
         type{t}, bodyA{bA}, bodyB{bB}, collideConnected{cc}, userData{u}
     {
         // Intentionally empty.
