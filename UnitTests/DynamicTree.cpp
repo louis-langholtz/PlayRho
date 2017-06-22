@@ -216,4 +216,13 @@ TEST(DynamicTree, FourIdenticalProxies)
     EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::size_type(0));
     EXPECT_EQ(foo.GetAreaRatio(), RealNum(7));
     EXPECT_EQ(foo.ComputeHeight(), DynamicTree::size_type(2));
+    
+    foo.RebuildBottomUp();
+    
+    EXPECT_EQ(foo.GetNodeCount(), DynamicTree::size_type(7));
+    EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
+    EXPECT_EQ(foo.GetHeight(), DynamicTree::size_type(3));
+    EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::size_type(2));
+    EXPECT_EQ(foo.GetAreaRatio(), RealNum(7));
+    EXPECT_EQ(foo.ComputeHeight(), DynamicTree::size_type(3));
 }

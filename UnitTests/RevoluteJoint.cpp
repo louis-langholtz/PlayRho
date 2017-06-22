@@ -2,17 +2,19 @@
  * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
@@ -113,7 +115,8 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
     b2->CreateFixture(circle);
     auto jd = RevoluteJointDef{b1, b2, Vec2_zero * Meter};
     jd.enableLimit = true;
-    EXPECT_NE(world.CreateJoint(jd), nullptr);
+    const auto joint = world.CreateJoint(jd);
+    EXPECT_NE(joint, nullptr);
     Step(world, Time{Second * RealNum{1}});
     EXPECT_NEAR(double(RealNum{b1->GetLocation().x / Meter}), -1.0, 0.001);
     EXPECT_NEAR(double(RealNum{b1->GetLocation().y / Meter}), -4, 0.001);
@@ -121,6 +124,16 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
     EXPECT_NEAR(double(RealNum{b2->GetLocation().y / Meter}), -4, 0.01);
     EXPECT_EQ(b1->GetAngle(), RealNum{0} * Degree);
     EXPECT_EQ(b2->GetAngle(), RealNum{0} * Degree);
+    EXPECT_TRUE(IsEnabled(*joint));
+    b1->UnsetAwake();
+    b2->UnsetAwake();
+    ASSERT_FALSE(b1->IsAwake());
+    ASSERT_FALSE(b2->IsAwake());
+    SetAwake(*joint);
+    EXPECT_TRUE(b1->IsAwake());
+    EXPECT_TRUE(b2->IsAwake());
+    
+    EXPECT_EQ(GetWorldIndex(joint), std::size_t(0));
 }
 
 TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
