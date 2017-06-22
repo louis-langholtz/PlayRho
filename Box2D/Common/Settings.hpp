@@ -677,24 +677,24 @@ constexpr inline bool IsValid(const RotInertia& value) noexcept
 // Memory Allocation
 
 /// Implement this function to use your own memory allocator.
-void* alloc(size_t size);
+void* Alloc(size_t size);
 
 template <typename T>
-T* alloc(size_t size)
+T* Alloc(size_t size)
 {
-    return static_cast<T*>(alloc(size * sizeof(T)));
+    return static_cast<T*>(Alloc(size * sizeof(T)));
 }
     
 /// Implement this function to use your own memory allocator.
-void* realloc(void* ptr, size_t new_size);
+void* Realloc(void* ptr, size_t new_size);
 
 template <typename T>
-T* realloc(T* ptr, size_t size)
+T* Realloc(T* ptr, size_t size)
 {
-    return static_cast<T*>(realloc(static_cast<void *>(ptr), size * sizeof(T)));
+    return static_cast<T*>(Realloc(static_cast<void *>(ptr), size * sizeof(T)));
 }
 
-/// If you implement alloc, you should also implement this function.
+/// If you implement Alloc, you should also implement this function.
 void Free(void* mem);
 
 /// Version numbering scheme.

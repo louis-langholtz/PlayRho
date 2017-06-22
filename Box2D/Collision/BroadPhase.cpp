@@ -26,8 +26,8 @@ BroadPhase::BroadPhase(const Conf conf):
 	m_tree{conf.treeCapacity},
     m_pairCapacity{conf.pairCapacity},
     m_moveCapacity{conf.moveCapacity},
-    m_moveBuffer(alloc<size_type>(conf.moveCapacity)),
-    m_pairBuffer(alloc<ProxyIdPair>(conf.pairCapacity))
+    m_moveBuffer(Alloc<size_type>(conf.moveCapacity)),
+    m_pairBuffer(Alloc<ProxyIdPair>(conf.pairCapacity))
 {}
 
 BroadPhase::BroadPhase(const BroadPhase& copy):
@@ -36,8 +36,8 @@ BroadPhase::BroadPhase(const BroadPhase& copy):
     m_moveCapacity{copy.m_moveCapacity},
     m_moveCount{copy.m_moveCount},
     m_pairCapacity{copy.m_pairCapacity},
-    m_moveBuffer{alloc<size_type>(copy.m_moveCapacity)},
-    m_pairBuffer{alloc<ProxyIdPair>(copy.m_pairCapacity)}
+    m_moveBuffer{Alloc<size_type>(copy.m_moveCapacity)},
+    m_pairBuffer{Alloc<ProxyIdPair>(copy.m_pairCapacity)}
 {
     std::memcpy(m_moveBuffer, copy.m_moveBuffer, copy.m_moveCapacity * sizeof(size_type));
     std::memcpy(m_pairBuffer, copy.m_pairBuffer, copy.m_pairCapacity * sizeof(ProxyIdPair));
@@ -55,8 +55,8 @@ BroadPhase& BroadPhase::operator=(const BroadPhase& copy)
         m_moveCapacity = copy.m_moveCapacity;
         m_moveCount = copy.m_moveCount;
         m_pairCapacity = copy.m_pairCapacity;
-        m_moveBuffer = alloc<size_type>(copy.m_moveCapacity);
-        m_pairBuffer = alloc<ProxyIdPair>(copy.m_pairCapacity);
+        m_moveBuffer = Alloc<size_type>(copy.m_moveCapacity);
+        m_pairBuffer = Alloc<ProxyIdPair>(copy.m_pairCapacity);
         std::memcpy(m_moveBuffer, copy.m_moveBuffer, copy.m_moveCapacity * sizeof(size_type));
         std::memcpy(m_pairBuffer, copy.m_pairBuffer, copy.m_pairCapacity * sizeof(ProxyIdPair));
     }
@@ -90,7 +90,7 @@ void BroadPhase::EnqueueForOverlapProcessing(size_type proxyId) noexcept
     if (m_moveCount == m_moveCapacity)
     {
         m_moveCapacity *= BufferGrowthRate;
-        m_moveBuffer = realloc<size_type>(m_moveBuffer, m_moveCapacity);
+        m_moveBuffer = Realloc<size_type>(m_moveBuffer, m_moveCapacity);
     }
 
     m_moveBuffer[m_moveCount] = proxyId;
@@ -135,7 +135,7 @@ BroadPhase::size_type BroadPhase::UpdatePairs(std::function<bool(void*,void*)> c
                 if (m_pairCapacity == pairCount)
                 {
                     m_pairCapacity *= BufferGrowthRate;
-                    m_pairBuffer = realloc<ProxyIdPair>(m_pairBuffer, m_pairCapacity);
+                    m_pairBuffer = Realloc<ProxyIdPair>(m_pairBuffer, m_pairCapacity);
                 }
                 m_pairBuffer[pairCount] = ProxyIdPair{Min(nodeId, queryProxyId), Max(nodeId, queryProxyId)};
                 ++pairCount;

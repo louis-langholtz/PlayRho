@@ -559,7 +559,7 @@ void World::CopyBodies(std::map<const Body*, Body*>& bodyMap,
             const auto newFixture = BodyAtty::CreateFixture(*newBody, shape, fixtureDef);
             fixtureMap[&otherFixture] = newFixture;
             const auto childCount = otherFixture.GetProxyCount();
-            const auto proxies = static_cast<FixtureProxy*>(alloc(sizeof(FixtureProxy) * childCount));
+            const auto proxies = static_cast<FixtureProxy*>(Alloc(sizeof(FixtureProxy) * childCount));
             for (auto childIndex = decltype(childCount){0}; childIndex < childCount; ++childIndex)
             {
                 const auto proxyPtr = proxies + childIndex;
@@ -2606,7 +2606,7 @@ void World::CreateProxies(Fixture& fixture, const Length aabbExtension)
     
     // Reserve proxy space and create proxies in the broad-phase.
     const auto childCount = shape->GetChildCount();
-    const auto proxies = static_cast<FixtureProxy*>(alloc(sizeof(FixtureProxy) * childCount));
+    const auto proxies = static_cast<FixtureProxy*>(Alloc(sizeof(FixtureProxy) * childCount));
     for (auto childIndex = decltype(childCount){0}; childIndex < childCount; ++childIndex)
     {
         const auto dp = shape->GetChild(childIndex);

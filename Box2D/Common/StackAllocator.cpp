@@ -36,8 +36,8 @@ inline size_t alignment_size(size_t size)
 } // anonymous namespace
 
 StackAllocator::StackAllocator(Configuration config) noexcept:
-    m_data{static_cast<decltype(m_data)>(alloc(config.preallocation_size))},
-    m_entries{static_cast<AllocationRecord*>(alloc(config.allocation_records * sizeof(AllocationRecord)))},
+    m_data{static_cast<decltype(m_data)>(Alloc(config.preallocation_size))},
+    m_entries{static_cast<AllocationRecord*>(Alloc(config.allocation_records * sizeof(AllocationRecord)))},
     m_size{config.preallocation_size},
     m_max_entries{config.allocation_records}
 {
@@ -63,7 +63,7 @@ void* StackAllocator::Allocate(size_type size) noexcept
         const auto available = m_size - m_index;
         if (size > (available / sizeof(std::max_align_t)) * sizeof(std::max_align_t))
         {
-            entry->data = static_cast<decltype(entry->data)>(alloc(size));
+            entry->data = static_cast<decltype(entry->data)>(Alloc(size));
             entry->usedMalloc = true;
         }
         else

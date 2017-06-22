@@ -83,7 +83,7 @@ TEST(InternalListForBody, PushAndPop)
     ASSERT_EQ(list.size(), size_t(0));
 
     const size_t n = 4;
-    auto list_nodes = static_cast<ListNode<Body>*>(alloc(sizeof(ListNode<Body>) * n));
+    auto list_nodes = static_cast<ListNode<Body>*>(Alloc(sizeof(ListNode<Body>) * n));
     for (auto i = decltype(n){0}; i < n; ++i)
     {
         list_nodes[i].next = nullptr;

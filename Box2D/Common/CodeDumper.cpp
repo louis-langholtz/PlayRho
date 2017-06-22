@@ -129,7 +129,7 @@ void box2d::Dump(const World& world)
     log("m_world->SetGravity(g);\n");
     
     const auto& bodies = world.GetBodies();
-    log("Body** bodies = (Body**)alloc(%d * sizeof(Body*));\n", bodies.size());
+    log("Body** bodies = (Body**)Alloc(%d * sizeof(Body*));\n", bodies.size());
     auto i = size_t{0};
     for (auto&& body: bodies)
     {
@@ -139,7 +139,7 @@ void box2d::Dump(const World& world)
     }
     
     const auto& joints = world.GetJoints();
-    log("Joint** joints = (Joint**)alloc(%d * sizeof(Joint*));\n", joints.size());
+    log("Joint** joints = (Joint**)Alloc(%d * sizeof(Joint*));\n", joints.size());
     i = 0;
     for (auto&& j: joints)
     {

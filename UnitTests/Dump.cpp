@@ -84,8 +84,8 @@ TEST(Dump, EmptyWorld)
     std::stringstream buf;
     buf << "Vec2 g\\(0\\.000000000000000e\\+00f, " << Vals<RealNum>::GetGravity() << "\\);\n";
     buf << "m_world->SetGravity\\(g\\);\n";
-    buf << "Body\\*\\* bodies = \\(Body\\*\\*\\)alloc\\(0 \\* sizeof\\(Body\\*\\)\\);\n";
-    buf << "Joint\\*\\* joints = \\(Joint\\*\\*\\)alloc\\(0 \\* sizeof\\(Joint\\*\\)\\);\n";
+    buf << "Body\\*\\* bodies = \\(Body\\*\\*\\)Alloc\\(0 \\* sizeof\\(Body\\*\\)\\);\n";
+    buf << "Joint\\*\\* joints = \\(Joint\\*\\*\\)Alloc\\(0 \\* sizeof\\(Joint\\*\\)\\);\n";
     buf << "free\\(joints\\);\n";
     buf << "free\\(bodies\\);\n";
     buf << "joints = nullptr;\n";
@@ -104,7 +104,7 @@ TEST(Dump, OneBodyWorld)
     std::stringstream buf;
     buf << "Vec2 g\\(0\\.000000000000000e\\+00f, " << Vals<RealNum>::GetGravity() << "\\);\n";
     buf << "m_world->SetGravity\\(g\\);\n";
-    buf << "Body\\*\\* bodies = \\(Body\\*\\*\\)alloc\\(1 \\* sizeof\\(Body\\*\\)\\);\n";
+    buf << "Body\\*\\* bodies = \\(Body\\*\\*\\)Alloc\\(1 \\* sizeof\\(Body\\*\\)\\);\n";
     buf << "{\n";
     buf << "  BodyDef bd;\n";
     buf << "  bd\\.type = BodyType\\(0\\);\n";
@@ -122,7 +122,7 @@ TEST(Dump, OneBodyWorld)
     buf << "  bodies\\[0\\] = m_world->CreateBody\\(bd\\);\n";
     buf << "\n";
     buf << "}\n";
-    buf << "Joint\\*\\* joints = \\(Joint\\*\\*\\)alloc\\(0 \\* sizeof\\(Joint\\*\\)\\);\n";
+    buf << "Joint\\*\\* joints = \\(Joint\\*\\*\\)Alloc\\(0 \\* sizeof\\(Joint\\*\\)\\);\n";
     buf << "free\\(joints\\);\n";
     buf << "free\\(bodies\\);\n";
     buf << "joints = nullptr;\n";

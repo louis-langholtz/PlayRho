@@ -43,8 +43,8 @@ public:
 
         LinearAcceleration2D g(RealNum{0.000000000000000e+00f} * MeterPerSquareSecond, RealNum{-1.000000000000000e+01f} * MeterPerSquareSecond);
         m_world->SetGravity(g);
-        Body** bodies = (Body**)alloc(3 * sizeof(Body*));
-        Joint** joints = (Joint**)alloc(0 * sizeof(Joint*));
+        Body** bodies = (Body**)Alloc(3 * sizeof(Body*));
+        Joint** joints = (Joint**)Alloc(0 * sizeof(Joint*));
         {
             BodyDef bd;
             bd.type = BodyType(0);

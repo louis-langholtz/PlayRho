@@ -35,10 +35,10 @@ void Rope::Initialize(const RopeDef* def)
 {
     assert(def->count >= 3);
     m_count = def->count;
-    m_ps = alloc<Vec2>(m_count);
-    m_p0s = alloc<Vec2>(m_count);
-    m_vs = alloc<Vec2>(m_count);
-    m_ims = alloc<RealNum>(m_count);
+    m_ps = Alloc<Vec2>(m_count);
+    m_p0s = Alloc<Vec2>(m_count);
+    m_vs = Alloc<Vec2>(m_count);
+    m_ims = Alloc<RealNum>(m_count);
 
     for (auto i = decltype(m_count){0}; i < m_count; ++i)
     {
@@ -59,8 +59,8 @@ void Rope::Initialize(const RopeDef* def)
 
     const auto count2 = m_count - 1;
     const auto count3 = m_count - 2;
-    m_Ls = alloc<RealNum>(count2);
-    m_as = alloc<Angle>(count3);
+    m_Ls = Alloc<RealNum>(count2);
+    m_as = Alloc<Angle>(count3);
 
     for (auto i = decltype(count2){0}; i < count2; ++i)
     {

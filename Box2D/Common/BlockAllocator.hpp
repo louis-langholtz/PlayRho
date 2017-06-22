@@ -46,11 +46,11 @@ namespace box2d {
         
         /// Allocates memory.
         /// @details Allocates uninitialized storage.
-        ///   Uses <code>alloc</code> if the size is larger than <code>MaxBlockSize</code>.
+        ///   Uses <code>Alloc</code> if the size is larger than <code>MaxBlockSize</code>.
         ///   Otherwise looks for an appropriately sized block from the free list.
-        ///   Failing that, <code>alloc</code> is used to grow the free list from which
+        ///   Failing that, <code>Alloc</code> is used to grow the free list from which
         ///   memory is returned.
-        /// @sa alloc.
+        /// @sa Alloc.
         void* Allocate(size_type n);
         
         template <typename T>
