@@ -811,6 +811,13 @@ Body* World::CreateBody(const BodyDef& def)
     }
     
     // Add to world doubly linked list.
+    //
+    // Note: the order in which bodies are added matters! At least in-so-far as
+    //   causing different results to occur when adding to the back vs. adding to
+    //   the front. The World TilesComeToRest unit test for example runs faster
+    //   with bodies getting added to the back (than when bodies are added to the
+    //   front).
+    //
     m_bodies.emplace_back(def, this);
     auto& b = m_bodies.back();
     b.SetAcceleration(m_gravity, AngularAcceleration{0});

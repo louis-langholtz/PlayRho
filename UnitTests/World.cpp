@@ -1409,6 +1409,15 @@ TEST(World, TilesComesToRest)
     // The final stats seem dependent on the host the test is run on.
     // Presume that this is most closely associated with the actual CPU/FPU.
 
+    // Note about commit 6b16f3722d5daac80ebaefd1dfda424939498dd4:
+    //   Changed the order in which bodies get added to the world body list
+    //   from being added to the front of the list to being added to the back
+    //   of the list. Adding bodies to the front of World::m_bodies list
+    //   resulted in the world index of bodies changing as new bodies got added.
+    //   This wasn't the desired behavior. Time trials of this test with bodies
+    //   being added to the back of the m_bodies list also got faster than
+    //   when bodies were getting added to the front of the list.
+    
     // Note about commit 04f9188c47961cafe76c55eb6b766a608593ee08:
     //   Changed the way velocity constraint resolution was done. Added a check
     //   to see if any changes to velocity were introduced. If not, new code
@@ -1432,12 +1441,19 @@ TEST(World, TilesComesToRest)
     {
         case  4:
         {
+            // From commit 6b16f3722d5daac80ebaefd1dfda424939498dd4 onward:
+            EXPECT_EQ(numSteps, 1801ul);
+            EXPECT_EQ(sumRegPosIters, 36523ul);
+            EXPECT_EQ(sumRegVelIters, 46973ul);
+            EXPECT_EQ(sumToiPosIters, 44044ul);
+            EXPECT_EQ(sumToiVelIters, 114344ul);
+
             // From commit 04f9188c47961cafe76c55eb6b766a608593ee08 onward.
-            EXPECT_EQ(numSteps, 1856ul);
-            EXPECT_EQ(sumRegPosIters, 36720ul);
-            EXPECT_EQ(sumRegVelIters, 47656ul);
-            EXPECT_EQ(sumToiPosIters, 44263ul);
-            EXPECT_EQ(sumToiVelIters, 112833ul);
+            //EXPECT_EQ(numSteps, 1856ul);
+            //EXPECT_EQ(sumRegPosIters, 36720ul);
+            //EXPECT_EQ(sumRegVelIters, 47656ul);
+            //EXPECT_EQ(sumToiPosIters, 44263ul);
+            //EXPECT_EQ(sumToiVelIters, 112833ul);
             
             // From commit d361c51d6aca13079e9d44b701715e62cec18a63 onward.
             //EXPECT_EQ(numSteps, 1856ul);
@@ -1456,12 +1472,19 @@ TEST(World, TilesComesToRest)
         }
         case  8:
         {
+            // From commit 6b16f3722d5daac80ebaefd1dfda424939498dd4 onward:
+            EXPECT_EQ(numSteps,         1807ul);
+            EXPECT_EQ(sumRegPosIters,  36584ul);
+            EXPECT_EQ(sumRegVelIters,  47380ul);
+            EXPECT_EQ(sumToiPosIters,  44552ul);
+            EXPECT_EQ(sumToiVelIters, 115392ul);
+
             // From commit 04f9188c47961cafe76c55eb6b766a608593ee08 onward.
-            EXPECT_EQ(numSteps, 1808ul);
-            EXPECT_EQ(sumRegPosIters, 36684ul);
-            EXPECT_EQ(sumRegVelIters, 48087ul);
-            EXPECT_EQ(sumToiPosIters, 45116ul);
-            EXPECT_EQ(sumToiVelIters, 118984ul);
+            //EXPECT_EQ(numSteps, 1808ul);
+            //EXPECT_EQ(sumRegPosIters, 36684ul);
+            //EXPECT_EQ(sumRegVelIters, 48087ul);
+            //EXPECT_EQ(sumToiPosIters, 45116ul);
+            //EXPECT_EQ(sumToiVelIters, 118984ul);
 
             //EXPECT_EQ(numSteps, 1808ul);
             //EXPECT_EQ(sumRegPosIters, 36684ul);

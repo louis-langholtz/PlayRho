@@ -949,11 +949,11 @@ TEST(CollideShapes, EdgeR45InsideSquare)
     else if (sizeof(RealNum) == 8)
     {
 #if defined(__core2__)
-        EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(0, 3));
+        EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(1, 2));
 #elif defined(__k8__)
         EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(1, 2));
 #else
-        EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(0, 3));
+        EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(1, 2));
 #endif
     }
 }
@@ -980,7 +980,7 @@ TEST(CollideShapes, EdgeR180InsideSquare)
         case 4: EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 1)); break;
         case 8:
 #if defined(__core2__)
-         	EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 1));
+         	EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 0));
 #elif defined(__k8__)
             EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 0));
 #else
@@ -994,7 +994,7 @@ TEST(CollideShapes, EdgeR180InsideSquare)
         case 4: EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(1, 0)); break;
         case 8:
 #if defined(__core2__)
-            EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(1, 0));
+            EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(0, 0));
 #elif defined(__k8__)
             EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(0, 0));
 #else
@@ -1024,11 +1024,11 @@ TEST(CollideShapes, EdgeTwiceR180Square)
         case 4: EXPECT_EQ(GetVec2(manifold.GetLocalNormal()), Vec2(1, 0)); break;
         case 8:
 #if defined(__core2__)
-            EXPECT_EQ(GetVec2(manifold.GetLocalNormal()), Vec2(1, 0));
+            EXPECT_EQ(GetVec2(manifold.GetLocalNormal()), Vec2(-1, 0));
 #elif defined(__k8__)
             EXPECT_EQ(GetVec2(manifold.GetLocalNormal()), Vec2(-1, 0));
 #else
-            EXPECT_EQ(GetVec2(manifold.GetLocalNormal()), Vec2(1, 0));
+            EXPECT_EQ(GetVec2(manifold.GetLocalNormal()), Vec2(-1, 0));
 #endif
             break;
     }
@@ -1041,11 +1041,11 @@ TEST(CollideShapes, EdgeTwiceR180Square)
             break;
         case 8:
 #if defined(__core2__)
-            EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 1));
+            EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(1, 2));
 #elif defined(__k8__)
             EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(1, 2));
 #else
-            EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 1));
+            EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(1, 2));
 #endif
             break;
     }
@@ -1057,11 +1057,11 @@ TEST(CollideShapes, EdgeTwiceR180Square)
             break;
         case 8:
 #if defined(__core2__)
-            EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(1, 0));
+            EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(1, 2));
 #elif defined(__k8__)
             EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(1, 2));
 #else
-            EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(1, 0));
+            EXPECT_EQ(manifold.GetContactFeature(1), GetVertexFaceContactFeature(1, 2));
 #endif
             break;
     }
