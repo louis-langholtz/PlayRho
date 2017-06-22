@@ -80,7 +80,7 @@ namespace box2d
             c.UnflagForFiltering();
         }
         
-        static void Update(Contact& c, const StepConf& conf, ContactListener* listener)
+        static void Update(Contact& c, const Contact::UpdateConf& conf, ContactListener* listener)
         {
             c.Update(conf, listener);
         }

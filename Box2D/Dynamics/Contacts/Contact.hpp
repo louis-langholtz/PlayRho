@@ -22,6 +22,7 @@
 
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Collision/Manifold.hpp>
+#include <Box2D/Collision/Distance.hpp>
 #include <Box2D/Collision/TimeOfImpact.hpp>
 #include <Box2D/Collision/Shapes/Shape.hpp>
 
@@ -66,6 +67,14 @@ class Contact
 {
 public:
     using substep_type = ts_iters_t;
+
+    struct UpdateConf
+    {
+        DistanceConf distance;
+        Manifold::Conf manifold;
+    };
+    
+    static UpdateConf GetUpdateConf(const StepConf& conf) noexcept;
 
     /// Initializing constructor.
     ///
@@ -219,7 +228,7 @@ private:
     /// @sa GetManifold.
     /// @sa IsTouching.
     ///
-    void Update(const StepConf& conf, ContactListener* listener = nullptr);
+    void Update(const UpdateConf& conf, ContactListener* listener = nullptr);
 
     /// Sets the time of impact (TOI).
     /// @details After returning, this object will have a TOI that is set as indicated by <code>HasValidToi()</code>.

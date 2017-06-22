@@ -1524,7 +1524,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Contact& contac
         contact.SetEnabled();
         if (contact.NeedsUpdating())
         {
-	        ContactAtty::Update(contact, conf, m_contactListener);
+            ContactAtty::Update(contact, Contact::GetUpdateConf(conf), m_contactListener);
             ++contactsUpdated;
         }
         else
@@ -1782,6 +1782,8 @@ World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi,
     assert(results.contactsUpdated == 0);
     assert(results.contactsSkipped == 0);
     
+    const auto updateConf = Contact::GetUpdateConf(conf);
+
     auto fn = [&](Contact* contact, Body* other)
     {
         const auto otherIslanded = IsIslanded(other);
@@ -1796,7 +1798,7 @@ World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi,
             contact->SetEnabled();
             if (contact->NeedsUpdating())
             {
-                ContactAtty::Update(*contact, conf, m_contactListener);
+                ContactAtty::Update(*contact, updateConf, m_contactListener);
                 ++results.contactsUpdated;
             }
             else
@@ -2129,6 +2131,8 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
 {
     auto stats = UpdateContactsStats{};
     
+    const auto updateConf = Contact::GetUpdateConf(conf);
+    
 #if defined(DO_THREADED)
     std::vector<Contact*> contactsNeedingUpdate;
     contactsNeedingUpdate.reserve(contacts.size());
@@ -2181,7 +2185,7 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
             //futures.push_back(std::async(&ContactAtty::Update, *contact, conf, m_contactListener)));
             //futures.push_back(std::async(std::launch::async, [=]{ ContactAtty::Update(*contact, conf, m_contactListener); }));
 #else
-            ContactAtty::Update(*contact, conf, m_contactListener);
+            ContactAtty::Update(*contact, updateConf, m_contactListener);
 #endif
         	++stats.updated;
         }

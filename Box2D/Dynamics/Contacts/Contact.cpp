@@ -48,6 +48,11 @@ namespace
     }
 }
 
+Contact::UpdateConf Contact::GetUpdateConf(const StepConf& conf) noexcept
+{
+    return UpdateConf{GetDistanceConf(conf), GetManifoldConf(conf)};
+}
+
 Contact::Contact(Fixture* fA, child_count_t iA, Fixture* fB, child_count_t iB):
     m_fixtureA{fA}, m_fixtureB{fB}, m_indexA{iA}, m_indexB{iB},
     m_friction{MixFriction(fA->GetFriction(), fB->GetFriction())},
@@ -60,7 +65,7 @@ Contact::Contact(Fixture* fA, child_count_t iA, Fixture* fB, child_count_t iB):
     assert(fA->GetBody() != fB->GetBody());
 }
 
-void Contact::Update(const StepConf& conf, ContactListener* listener)
+void Contact::Update(const UpdateConf& conf, ContactListener* listener)
 {
     const auto oldManifold = m_manifold;
 
@@ -88,7 +93,7 @@ void Contact::Update(const StepConf& conf, ContactListener* listener)
     const auto sensor = fixtureA->IsSensor() || fixtureB->IsSensor();
     if (sensor)
     {
-        const auto overlapping = TestOverlap(childA, xfA, childB, xfB, GetDistanceConf(conf));
+        const auto overlapping = TestOverlap(childA, xfA, childB, xfB, conf.distance);
         newTouching = (overlapping >= Area{0});
 
 #ifdef OVERLAP_TOLERANCE
@@ -105,7 +110,7 @@ void Contact::Update(const StepConf& conf, ContactListener* listener)
     }
     else
     {
-        auto newManifold = CollideShapes(childA, xfA, childB, xfB, GetManifoldConf(conf));
+        auto newManifold = CollideShapes(childA, xfA, childB, xfB, conf.manifold);
 
         const auto old_point_count = oldManifold.GetPointCount();
         const auto new_point_count = newManifold.GetPointCount();
