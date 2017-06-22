@@ -258,6 +258,38 @@ TEST(World, CreateAndDestroyBody)
     EXPECT_EQ(bodies0.begin(), bodies0.end());
 }
 
+TEST(World, ClearForcesFreeFunction)
+{
+    World world;
+    ASSERT_EQ(GetBodyCount(world), body_count_t(0));
+    
+    const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+    ASSERT_NE(body, nullptr);
+    ASSERT_EQ(body->GetType(), BodyType::Dynamic);
+    ASSERT_TRUE(body->IsSpeedable());
+    ASSERT_TRUE(body->IsAccelerable());
+    ASSERT_FALSE(body->IsImpenetrable());
+    ASSERT_EQ(body->GetLinearAcceleration().x, world.GetGravity().x);
+    ASSERT_EQ(body->GetLinearAcceleration().y, world.GetGravity().y);
+    
+    const auto v1 = Vec2{-1, 0} * Meter;
+    const auto v2 = Vec2{+1, 0} * Meter;
+    auto conf = EdgeShape::Conf{};
+    conf.vertexRadius = RealNum{1} * Meter;
+    conf.density = RealNum{1} * KilogramPerSquareMeter;
+    const auto shape = std::make_shared<EdgeShape>(v1, v2, conf);
+    const auto fixture = body->CreateFixture(shape);
+    ASSERT_NE(fixture, nullptr);
+
+    ApplyForceToCenter(*body, Vec2(2, 4) * Newton);
+    ASSERT_NE(body->GetLinearAcceleration().x, world.GetGravity().x);
+    ASSERT_NE(body->GetLinearAcceleration().y, world.GetGravity().y);
+    
+    ClearForces(world);
+    EXPECT_EQ(body->GetLinearAcceleration().x, world.GetGravity().x);
+    EXPECT_EQ(body->GetLinearAcceleration().y, world.GetGravity().y);
+}
+
 TEST(World, DynamicEdgeBodyHasCorrectMass)
 {
     World world;
@@ -1507,22 +1539,38 @@ TEST(World, TilesComesToRest)
     {
         case  4:
         {
+            // From commit 6b16f3722d5daac80ebaefd1dfda424939498dd4 onward:
+            EXPECT_EQ(numSteps,         1803ul);
+            EXPECT_EQ(sumRegPosIters,  36528ul);
+            EXPECT_EQ(sumRegVelIters,  46988ul);
+            EXPECT_EQ(sumToiPosIters,  44338ul);
+            EXPECT_EQ(sumToiVelIters, 115317ul);
+
             // From commit 04f9188c47961cafe76c55eb6b766a608593ee08 onward.
-            EXPECT_EQ(numSteps, 1855ul);
-            EXPECT_EQ(sumRegPosIters, 36737ul);
-            EXPECT_EQ(sumRegVelIters, 47759ul);
-            EXPECT_EQ(sumToiPosIters, 44698ul);
-            EXPECT_EQ(sumToiVelIters, 114840ul);
+            //EXPECT_EQ(numSteps, 1855ul);
+            //EXPECT_EQ(sumRegPosIters, 36737ul);
+            //EXPECT_EQ(sumRegVelIters, 47759ul);
+            //EXPECT_EQ(sumToiPosIters, 44698ul);
+            //EXPECT_EQ(sumToiVelIters, 114840ul);
+
             break;
         }
         case  8:
         {
+            // From commit 6b16f3722d5daac80ebaefd1dfda424939498dd4 onward:
+            EXPECT_EQ(numSteps,         1807ul);
+            EXPECT_EQ(sumRegPosIters,  36584ul);
+            EXPECT_EQ(sumRegVelIters,  47380ul);
+            EXPECT_EQ(sumToiPosIters,  44552ul);
+            EXPECT_EQ(sumToiVelIters, 115406ul);
+            
             // From commit 04f9188c47961cafe76c55eb6b766a608593ee08 onward.
-            EXPECT_EQ(numSteps, 1808ul);
-            EXPECT_EQ(sumRegPosIters, 36684ul);
-            EXPECT_EQ(sumRegVelIters, 48087ul);
-            EXPECT_EQ(sumToiPosIters, 45116ul);
-            EXPECT_EQ(sumToiVelIters, 118830ul);
+            //EXPECT_EQ(numSteps, 1808ul);
+            //EXPECT_EQ(sumRegPosIters, 36684ul);
+            //EXPECT_EQ(sumRegVelIters, 48087ul);
+            //EXPECT_EQ(sumToiPosIters, 45116ul);
+            //EXPECT_EQ(sumToiVelIters, 118830ul);
+
             break;
         }
     }
