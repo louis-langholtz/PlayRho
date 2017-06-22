@@ -99,7 +99,7 @@ void Contact::Update(const UpdateConf& conf, ContactListener* listener)
 #ifdef OVERLAP_TOLERANCE
 #ifndef NDEBUG
         const auto tolerance = OVERLAP_TOLERANCE;
-        const auto manifold = CollideShapes(childA, xfA, childB, xfB, GetManifoldConf(conf));
+        const auto manifold = CollideShapes(childA, xfA, childB, xfB, conf.manifold);
         assert(newTouching == (manifold.GetPointCount() > 0) ||
                Abs(overlapping) < tolerance);
 #endif
@@ -120,7 +120,7 @@ void Contact::Update(const UpdateConf& conf, ContactListener* listener)
 #ifdef OVERLAP_TOLERANCE
 #ifndef NDEBUG
         const auto tolerance = OVERLAP_TOLERANCE;
-        const auto overlapping = TestOverlap(childA, xfA, childB, xfB, GetDistanceConf(conf));
+        const auto overlapping = TestOverlap(childA, xfA, childB, xfB, conf.distance);
         assert(newTouching == (overlapping >= Area{0}) ||
                Abs(overlapping) < tolerance);
 #endif
