@@ -99,6 +99,30 @@ TEST(RevoluteJoint, MovesDynamicCircles)
     EXPECT_EQ(b2->GetAngle(), RealNum{0} * Degree);
 }
 
+TEST(RevoluteJoint, LimitEnabledDynamicCircles)
+{
+    const auto circle = std::make_shared<DiskShape>(DiskShape::Conf{}
+                                                    .UseVertexRadius(RealNum{0.2f} * Meter)
+                                                    .UseDensity(RealNum(1) * KilogramPerSquareMeter));
+    World world;
+    const auto p1 = Vec2{-1, 0} * Meter;
+    const auto p2 = Vec2{+1, 0} * Meter;
+    const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    b1->CreateFixture(circle);
+    b2->CreateFixture(circle);
+    auto jd = RevoluteJointDef{b1, b2, Vec2_zero * Meter};
+    jd.enableLimit = true;
+    EXPECT_NE(world.CreateJoint(jd), nullptr);
+    Step(world, Time{Second * RealNum{1}});
+    EXPECT_NEAR(double(RealNum{b1->GetLocation().x / Meter}), -1.0, 0.001);
+    EXPECT_NEAR(double(RealNum{b1->GetLocation().y / Meter}), -4, 0.001);
+    EXPECT_NEAR(double(RealNum{b2->GetLocation().x / Meter}), +1.0, 0.01);
+    EXPECT_NEAR(double(RealNum{b2->GetLocation().y / Meter}), -4, 0.01);
+    EXPECT_EQ(b1->GetAngle(), RealNum{0} * Degree);
+    EXPECT_EQ(b2->GetAngle(), RealNum{0} * Degree);
+}
+
 TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
 {
     World world{WorldDef{}.UseGravity(Vec2{0, -10} * MeterPerSquareSecond)};
