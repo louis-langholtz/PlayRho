@@ -23,12 +23,12 @@ using namespace box2d;
 
 Rope::~Rope()
 {
-    free(m_ps);
-    free(m_p0s);
-    free(m_vs);
-    free(m_ims);
-    free(m_Ls);
-    free(m_as);
+    Free(m_ps);
+    Free(m_p0s);
+    Free(m_vs);
+    Free(m_ims);
+    Free(m_Ls);
+    Free(m_as);
 }
 
 void Rope::Initialize(const RopeDef* def)

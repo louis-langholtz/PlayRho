@@ -124,6 +124,6 @@ TEST(InternalListForBody, PushAndPop)
     EXPECT_TRUE(list.empty());
     EXPECT_EQ(list.size(), size_t(0));
     
-    box2d::free(list_nodes);
+    box2d::Free(list_nodes);
 }
 #endif

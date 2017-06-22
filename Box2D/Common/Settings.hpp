@@ -695,7 +695,7 @@ T* realloc(T* ptr, size_t size)
 }
 
 /// If you implement alloc, you should also implement this function.
-void free(void* mem);
+void Free(void* mem);
 
 /// Version numbering scheme.
 /// See http://en.wikipedia.org/wiki/Software_versioning

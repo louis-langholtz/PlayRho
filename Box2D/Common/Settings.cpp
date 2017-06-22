@@ -38,7 +38,7 @@ void* realloc(void* ptr, size_t new_size)
     return std::realloc(ptr, new_size);
 }
 
-void free(void* mem)
+void Free(void* mem)
 {
     std::free(mem);
 }

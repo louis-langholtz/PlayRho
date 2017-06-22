@@ -47,8 +47,8 @@ BroadPhase& BroadPhase::operator=(const BroadPhase& copy)
 {
     if (&copy != this)
     {
-        free(m_moveBuffer);
-        free(m_pairBuffer);
+        Free(m_moveBuffer);
+        Free(m_pairBuffer);
         
         m_tree = copy.m_tree;
         m_proxyCount = copy.m_proxyCount;
@@ -65,8 +65,8 @@ BroadPhase& BroadPhase::operator=(const BroadPhase& copy)
 
 BroadPhase::~BroadPhase() noexcept
 {
-    free(m_moveBuffer);
-    free(m_pairBuffer);
+    Free(m_moveBuffer);
+    Free(m_pairBuffer);
 }
 
 BroadPhase::size_type BroadPhase::CreateProxy(const AABB& aabb, void* userData)

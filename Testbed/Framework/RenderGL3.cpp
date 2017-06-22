@@ -504,7 +504,7 @@ bool RenderGLInitFont(const char* fontpath)
     unsigned char* bmap = (unsigned char*)std::malloc(512 * 512);
     if (!bmap)
     {
-        free(ttfBuffer);
+        std::free(ttfBuffer);
         return false;
     }
     

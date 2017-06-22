@@ -57,7 +57,7 @@ DynamicTree& DynamicTree::operator=(const DynamicTree& copy)
 {
     if (&copy != this)
     {
-        free(m_nodes);
+        Free(m_nodes);
         
         m_nodes = alloc<TreeNode>(copy.m_nodeCapacity);
         m_root = copy.m_root;
@@ -75,7 +75,7 @@ DynamicTree& DynamicTree::operator=(const DynamicTree& copy)
 DynamicTree::~DynamicTree() noexcept
 {
     // This frees the entire tree in one shot.
-    free(m_nodes);
+    Free(m_nodes);
 }
 
 // Allocate a node from the pool. Grow the pool if necessary.
@@ -971,7 +971,7 @@ void DynamicTree::RebuildBottomUp()
     }
 
     m_root = nodes[0];
-    free(nodes);
+    Free(nodes);
 
     Validate();
 }

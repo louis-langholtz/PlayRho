@@ -40,7 +40,7 @@ public:
     {
         if (m_stack != m_array)
         {
-            free(m_stack);
+            Free(m_stack);
             m_stack = nullptr;
         }
     }
@@ -55,7 +55,7 @@ public:
             std::memcpy(m_stack, old, m_count * sizeof(T));
             if (old != m_array)
             {
-                free(old);
+                Free(old);
             }
         }
 

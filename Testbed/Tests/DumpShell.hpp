@@ -153,8 +153,8 @@ public:
                 bodies[2]->CreateFixture(std::make_shared<PolygonShape>(shape), fd);
             }
         }
-        free(joints);
-        free(bodies);
+        Free(joints);
+        Free(bodies);
         joints = nullptr;
         bodies = nullptr;
 

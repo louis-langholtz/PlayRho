@@ -2632,7 +2632,7 @@ void World::DestroyProxies(Fixture& fixture)
         m_broadPhase.DestroyProxy(proxies[i].proxyId);
         proxies[i].~FixtureProxy();
     }
-    free(proxies.begin());
+    Free(proxies.begin());
 
     const auto emptyArray = static_cast<FixtureProxy*>(nullptr);
     FixtureAtty::SetProxies(fixture, Span<FixtureProxy>(emptyArray, size_t{0}));

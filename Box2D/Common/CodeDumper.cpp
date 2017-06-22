@@ -149,8 +149,8 @@ void box2d::Dump(const World& world)
         ++i;
     }
     
-    log("free(joints);\n");
-    log("free(bodies);\n");
+    log("Free(joints);\n");
+    log("Free(bodies);\n");
     log("joints = nullptr;\n");
     log("bodies = nullptr;\n");
 }
