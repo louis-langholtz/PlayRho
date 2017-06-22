@@ -209,7 +209,7 @@ void SetAwake(Joint& j) noexcept
     j.GetBodyB()->SetAwake();
 }
 
-size_t GetWorldIndex(const Joint* joint)
+std::size_t GetWorldIndex(const Joint* joint)
 {
     if (joint)
     {
@@ -218,7 +218,7 @@ size_t GetWorldIndex(const Joint* joint)
         const auto world = bA? bA->GetWorld(): bB? bB->GetWorld(): static_cast<const World*>(nullptr);
         if (world)
         {
-            auto i = size_t{0};
+            auto i = std::size_t{0};
             const auto joints = world->GetJoints();
             const auto it = std::find_if(std::begin(joints), std::end(joints), [&](const Joint *j) {
                 return (j == joint) || (++i, false);
@@ -229,7 +229,7 @@ size_t GetWorldIndex(const Joint* joint)
             }
         }
     }
-    return size_t(-1);
+    return std::size_t(-1);
 }
 
 void Set(JointDef& def, const Joint& joint) noexcept
