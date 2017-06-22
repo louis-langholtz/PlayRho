@@ -811,8 +811,8 @@ Body* World::CreateBody(const BodyDef& def)
     }
     
     // Add to world doubly linked list.
-    m_bodies.emplace_front(def, this);
-    auto& b = m_bodies.front();
+    m_bodies.emplace_back(def, this);
+    auto& b = m_bodies.back();
     b.SetAcceleration(m_gravity, AngularAcceleration{0});
     return &b;
 }

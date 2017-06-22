@@ -125,8 +125,9 @@ void Body::DestroyFixtures()
     while (!m_fixtures.empty())
     {
         auto& fixture = m_fixtures.front();
-        DestroyFixture(&fixture);
+        DestroyFixture(&fixture, false);
     }
+    ResetMassData();
 }
 
 void Body::ResetMassData()

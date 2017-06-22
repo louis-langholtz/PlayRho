@@ -80,6 +80,48 @@ public:
 
     static constexpr auto InvalidIslandIndex = static_cast<body_count_t>(-1);
 
+    /// @brief Flags type.
+    /// @note For internal use. Made public to facilitate unit testing.
+    using FlagsType = std::uint16_t;
+    
+    /// @brief Flag enumeration.
+    /// @note For internal use. Made public to facilitate unit testing.
+    enum Flag: FlagsType
+    {
+        /// @brief Awake flag.
+        e_awakeFlag = 0x0002,
+        
+        /// @brief Auto sleep flag.
+        e_autoSleepFlag = 0x0004,
+        
+        /// @brief Impenetrable flag.
+        /// @details Indicates whether CCD should be done for this body.
+        /// All static and kinematic bodies have this flag enabled.
+        e_impenetrableFlag = 0x0008,
+        
+        /// @brief Fixed rotation flag.
+        e_fixedRotationFlag = 0x0010,
+        
+        /// @brief Enabled flag.
+        e_enabledFlag = 0x0020,
+        
+        /// @brief Velocity flag.
+        /// @details Set this to enable changes in position due to velocity.
+        /// Bodies with this set are "speedable" - either kinematic or dynamic bodies.
+        e_velocityFlag = 0x0080,
+        
+        /// @brief Acceleration flag.
+        /// @details Set this to enable changes in velocity due to physical properties (like forces).
+        /// Bodies with this set are "accelerable" - dynamic bodies.
+        e_accelerationFlag = 0x0100,
+        
+        /// @brief Mass Data Dirty Flag.
+        e_massDataDirtyFlag = 0x0200,
+    };
+    
+    static FlagsType GetFlags(const BodyType type) noexcept;
+    static FlagsType GetFlags(const BodyDef& bd) noexcept;
+    
     /// @brief Initializing constructor for unit testing purposes.
     /// @note This is not meant to be called directly by users of the library API. Call
     ///   a world instance's <code>CreateBody</code> method instead.
@@ -368,45 +410,6 @@ public:
 private:
 
     friend class BodyAtty;
-
-    using FlagsType = std::uint16_t;
-
-    // m_flags
-    enum Flag: FlagsType
-    {
-        /// Awake flag.
-        e_awakeFlag = 0x0002,
-
-        /// Auto sleep flag.
-        e_autoSleepFlag = 0x0004,
-
-        /// Impenetrable flag.
-        /// @details Indicates whether CCD should be done for this body.
-        /// All static and kinematic bodies have this flag enabled.
-        e_impenetrableFlag = 0x0008,
-
-        /// Fixed rotation flag.
-        e_fixedRotationFlag = 0x0010,
-
-        /// Enabled flag.
-        e_enabledFlag = 0x0020,
-
-        /// Velocity flag.
-        /// @details Set this to enable changes in position due to velocity.
-        /// Bodies with this set are "speedable" - either kinematic or dynamic bodies.
-        e_velocityFlag = 0x0080,
-
-        /// Acceleration flag.
-        /// @details Set this to enable changes in velocity due to physical properties (like forces).
-        /// Bodies with this set are "accelerable" - dynamic bodies.
-        e_accelerationFlag = 0x0100,
-
-        /// Mass Data Dirty Flag.
-        e_massDataDirtyFlag = 0x0200,
-    };
-
-    static FlagsType GetFlags(const BodyType type) noexcept;
-    static FlagsType GetFlags(const BodyDef& bd) noexcept;
 
     /// @brief Sets the body's awake flag.
     /// @details This is done unconditionally.

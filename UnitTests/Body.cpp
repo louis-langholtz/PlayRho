@@ -73,6 +73,15 @@ TEST(Body, ByteSize)
     }
 }
 
+TEST(Body, GetFlagsStatic)
+{
+    EXPECT_TRUE(Body::GetFlags(BodyDef{}.UseFixedRotation(true)) & Body::e_fixedRotationFlag);
+    EXPECT_TRUE(Body::GetFlags(BodyDef{}
+                               .UseAwake(false)
+                               .UseAllowSleep(false)
+                               .UseType(BodyType::Dynamic)) & Body::e_awakeFlag);
+}
+
 TEST(Body, WorldCreated)
 {
     World world;
@@ -125,10 +134,40 @@ TEST(Body, CreateFixture)
 {
     World world;
     const auto body = world.CreateBody();
+    EXPECT_EQ(GetFixtureCount(*body), size_t(0));
+
     const auto valid_shape = std::make_shared<DiskShape>(RealNum{1} * Meter);
+    EXPECT_NE(body->CreateFixture(valid_shape, FixtureDef{}), nullptr);
+
+    EXPECT_EQ(GetFixtureCount(*body), size_t(1));
+}
+
+TEST(Body, SetEnabled)
+{
+    World world;
+    const auto body = world.CreateBody();
+    const auto valid_shape = std::make_shared<DiskShape>(RealNum{1} * Meter);
+    ASSERT_NE(body->CreateFixture(valid_shape, FixtureDef{}), nullptr);
     
-    // Check default settings
-    EXPECT_NE(body->CreateFixture(valid_shape, FixtureDef{}), nullptr);    
+    EXPECT_TRUE(body->IsEnabled());
+    body->SetEnabled(false);
+    EXPECT_FALSE(body->IsEnabled());
+    body->SetEnabled(true);
+    EXPECT_TRUE(body->IsEnabled());
+}
+
+TEST(Body, SetFixedRotation)
+{
+    World world;
+    const auto body = world.CreateBody();
+    const auto valid_shape = std::make_shared<DiskShape>(RealNum{1} * Meter);
+    ASSERT_NE(body->CreateFixture(valid_shape, FixtureDef{}), nullptr);
+    
+    EXPECT_FALSE(body->IsFixedRotation());
+    body->SetFixedRotation(true);
+    EXPECT_TRUE(body->IsFixedRotation());
+    body->SetFixedRotation(false);
+    EXPECT_FALSE(body->IsFixedRotation());
 }
 
 TEST(Body, CreateAndDestroyFixture)
@@ -146,33 +185,66 @@ TEST(Body, CreateAndDestroyFixture)
     conf.density = RealNum{1} * KilogramPerSquareMeter;
     const auto shape = std::make_shared<DiskShape>(conf);
     
-    auto fixture = body->CreateFixture(shape, FixtureDef{}, false);
-    const auto fshape = fixture->GetShape();
-    ASSERT_NE(fshape, nullptr);
-    EXPECT_EQ(typeid(fshape.get()), typeid(const Shape*));
-    EXPECT_EQ(GetVertexRadius(*fshape), GetVertexRadius(*shape));
-    EXPECT_EQ(static_cast<const DiskShape*>(fshape.get())->GetLocation().x, shape->GetLocation().x);
-    EXPECT_EQ(static_cast<const DiskShape*>(fshape.get())->GetLocation().y, shape->GetLocation().y);
-    EXPECT_FALSE(body->GetFixtures().empty());
     {
-        int i = 0;
-        for (auto&& f: body->GetFixtures())
+        auto fixture = body->CreateFixture(shape, FixtureDef{}, false);
+        const auto fshape = fixture->GetShape();
+        ASSERT_NE(fshape, nullptr);
+        EXPECT_EQ(typeid(fshape.get()), typeid(const Shape*));
+        EXPECT_EQ(GetVertexRadius(*fshape), GetVertexRadius(*shape));
+        EXPECT_EQ(static_cast<const DiskShape*>(fshape.get())->GetLocation().x, shape->GetLocation().x);
+        EXPECT_EQ(static_cast<const DiskShape*>(fshape.get())->GetLocation().y, shape->GetLocation().y);
+        EXPECT_FALSE(body->GetFixtures().empty());
         {
-            EXPECT_EQ(&f, fixture);
-            ++i;
+            int i = 0;
+            for (auto&& f: body->GetFixtures())
+            {
+                EXPECT_EQ(&f, fixture);
+                ++i;
+            }
+            EXPECT_EQ(i, 1);
         }
-        EXPECT_EQ(i, 1);
-    }
-    EXPECT_TRUE(body->IsMassDataDirty());
-    body->ResetMassData();
-    EXPECT_FALSE(body->IsMassDataDirty());
+        EXPECT_TRUE(body->IsMassDataDirty());
+        body->ResetMassData();
+        EXPECT_FALSE(body->IsMassDataDirty());
 
-    body->DestroyFixture(fixture, false);
-    EXPECT_TRUE(body->GetFixtures().empty());
-    EXPECT_TRUE(body->IsMassDataDirty());
+        body->DestroyFixture(fixture, false);
+        EXPECT_TRUE(body->GetFixtures().empty());
+        EXPECT_TRUE(body->IsMassDataDirty());
+        
+        body->ResetMassData();
+        EXPECT_FALSE(body->IsMassDataDirty());
+        
+        body->DestroyFixtures();
+        EXPECT_TRUE(body->GetFixtures().empty());
+    }
     
-    body->ResetMassData();
-    EXPECT_FALSE(body->IsMassDataDirty());
+    {
+        auto fixture = body->CreateFixture(shape, FixtureDef{}, false);
+        const auto fshape = fixture->GetShape();
+        ASSERT_NE(fshape, nullptr);
+        EXPECT_EQ(typeid(fshape.get()), typeid(const Shape*));
+        EXPECT_EQ(GetVertexRadius(*fshape), GetVertexRadius(*shape));
+        EXPECT_EQ(static_cast<const DiskShape*>(fshape.get())->GetLocation().x, shape->GetLocation().x);
+        EXPECT_EQ(static_cast<const DiskShape*>(fshape.get())->GetLocation().y, shape->GetLocation().y);
+        EXPECT_FALSE(body->GetFixtures().empty());
+        {
+            int i = 0;
+            for (auto&& f: body->GetFixtures())
+            {
+                EXPECT_EQ(&f, fixture);
+                ++i;
+            }
+            EXPECT_EQ(i, 1);
+        }
+        EXPECT_TRUE(body->IsMassDataDirty());
+        body->ResetMassData();
+        EXPECT_FALSE(body->IsMassDataDirty());
+        EXPECT_FALSE(body->GetFixtures().empty());
+        
+        body->DestroyFixtures();
+        EXPECT_TRUE(body->GetFixtures().empty());
+        EXPECT_FALSE(body->IsMassDataDirty());
+    }
 }
 
 TEST(Body, SetType)
@@ -279,4 +351,19 @@ TEST(Body, CreateLotsOfFixtures)
     const std::chrono::duration<double> elapsed_secs_resetting_in_create = end - start;
 
     EXPECT_LT(elapsed_secs_resetting_at_end.count(), elapsed_secs_resetting_in_create.count());
+}
+
+TEST(Body, GetWorldIndex)
+{
+    World world;
+    ASSERT_EQ(world.GetBodies().size(), size_t(0));
+    const auto body0 = world.CreateBody();
+    ASSERT_EQ(world.GetBodies().size(), size_t(1));
+    EXPECT_EQ(GetWorldIndex(body0), size_t(0));
+    const auto body1 = world.CreateBody();
+    ASSERT_EQ(world.GetBodies().size(), size_t(2));
+    EXPECT_EQ(GetWorldIndex(body1), size_t(1));
+    const auto body2 = world.CreateBody();
+    ASSERT_EQ(world.GetBodies().size(), size_t(3));
+    EXPECT_EQ(GetWorldIndex(body2), size_t(2));
 }
