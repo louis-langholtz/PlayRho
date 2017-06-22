@@ -1235,6 +1235,26 @@ TEST(World, CollidingDynamicBodies)
         }
     }
     
+    // Call Refilter and SetSensor to add some unit test coverage of these Fixture methods.
+    EXPECT_FALSE(body_a->GetContacts().empty());
+    for (auto&& ci: body_a->GetContacts())
+    {
+        EXPECT_FALSE(ci.second->NeedsFiltering());
+        EXPECT_TRUE(ci.second->NeedsUpdating());
+    }
+    fixture1->Refilter();
+    EXPECT_FALSE(fixture1->IsSensor());
+    fixture1->SetSensor(true);
+    EXPECT_TRUE(fixture1->IsSensor());
+    fixture1->SetSensor(false);
+    EXPECT_FALSE(fixture1->IsSensor());
+    EXPECT_FALSE(body_a->GetContacts().empty());
+    for (auto&& ci: body_a->GetContacts())
+    {
+        EXPECT_TRUE(ci.second->NeedsFiltering());
+        EXPECT_TRUE(ci.second->NeedsUpdating());
+    }
+
     const auto time_contacting = elapsed_time;
 
     EXPECT_TRUE(listener.touching);
