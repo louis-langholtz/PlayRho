@@ -219,6 +219,65 @@ TEST(World, CopyConstruction)
     }
 }
 
+TEST(World, CopyAssignment)
+{
+    auto world = World{};
+    
+    {
+        auto copy = World{};
+        copy = world;
+        EXPECT_EQ(world.GetGravity(), copy.GetGravity());
+        EXPECT_EQ(world.GetMinVertexRadius(), copy.GetMinVertexRadius());
+        EXPECT_EQ(world.GetMaxVertexRadius(), copy.GetMaxVertexRadius());
+        EXPECT_EQ(world.GetJoints().size(), copy.GetJoints().size());
+        EXPECT_EQ(world.GetBodies().size(), copy.GetBodies().size());
+        EXPECT_EQ(world.GetContacts().size(), copy.GetContacts().size());
+        EXPECT_EQ(world.GetTreeHeight(), copy.GetTreeHeight());
+        EXPECT_EQ(world.GetProxyCount(), copy.GetProxyCount());
+        EXPECT_EQ(world.GetTreeBalance(), copy.GetTreeBalance());
+    }
+    
+    const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}
+                                                   .UseDensity(RealNum(1) * KilogramPerSquareMeter)
+                                                   .UseVertexRadius(RealNum(1) * Meter));
+    const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+    b1->CreateFixture(shape);
+    const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+    b2->CreateFixture(shape);
+    
+    world.CreateJoint(RevoluteJointDef{b1, b2, Vec2_zero * Meter});
+    world.CreateJoint(PrismaticJointDef{b1, b2, Vec2_zero * Meter, UnitVec2::GetRight()});
+    world.CreateJoint(PulleyJointDef{b1, b2, Vec2_zero * Meter, Vec2_zero * Meter,
+        Vec2_zero * Meter, Vec2_zero * Meter, RealNum(1)});
+    
+    auto stepConf = StepConf{};
+    world.Step(stepConf);
+    
+    {
+        auto copy = World{};
+        copy = world;
+        EXPECT_EQ(world.GetGravity(), copy.GetGravity());
+        EXPECT_EQ(world.GetMinVertexRadius(), copy.GetMinVertexRadius());
+        EXPECT_EQ(world.GetMaxVertexRadius(), copy.GetMaxVertexRadius());
+        EXPECT_EQ(world.GetJoints().size(), copy.GetJoints().size());
+        const auto minJoints = std::min(world.GetJoints().size(), copy.GetJoints().size());
+        
+        auto worldJointIter = world.GetJoints().begin();
+        auto copyJointIter = copy.GetJoints().begin();
+        for (auto i = decltype(minJoints){0}; i < minJoints; ++i)
+        {
+            EXPECT_EQ((*worldJointIter)->GetType(), (*copyJointIter)->GetType());
+            ++worldJointIter;
+            ++copyJointIter;
+        }
+        EXPECT_EQ(world.GetBodies().size(), copy.GetBodies().size());
+        EXPECT_EQ(world.GetContacts().size(), copy.GetContacts().size());
+        EXPECT_EQ(world.GetTreeHeight(), copy.GetTreeHeight());
+        EXPECT_EQ(world.GetProxyCount(), copy.GetProxyCount());
+        EXPECT_EQ(world.GetTreeBalance(), copy.GetTreeBalance());
+    }
+}
+
 TEST(World, SetGravity)
 {
     const auto gravity = Vec2{RealNum(-4.2), RealNum(3.4)} * MeterPerSquareSecond;
@@ -288,6 +347,101 @@ TEST(World, ClearForcesFreeFunction)
     ClearForces(world);
     EXPECT_EQ(body->GetLinearAcceleration().x, world.GetGravity().x);
     EXPECT_EQ(body->GetLinearAcceleration().y, world.GetGravity().y);
+}
+
+TEST(World, GetShapeCountFreeFunction)
+{
+    World world{WorldDef{}.UseGravity(Vec2_zero * MeterPerSquareSecond)};
+    ASSERT_EQ(GetBodyCount(world), body_count_t(0));
+    ASSERT_EQ(GetShapeCount(world), size_t(0));
+    
+    const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+    ASSERT_NE(body, nullptr);
+    
+    const auto shapeConf = EdgeShape::Conf{}
+        .UseVertexRadius(RealNum{1} * Meter)
+        .UseDensity(RealNum{1} * KilogramPerSquareMeter);
+    const auto v1 = Vec2{-1, 0} * Meter;
+    const auto v2 = Vec2{+1, 0} * Meter;
+
+    const auto shape1 = std::make_shared<EdgeShape>(v1, v2, shapeConf);
+    
+    const auto fixture1 = body->CreateFixture(shape1);
+    ASSERT_NE(fixture1, nullptr);
+    EXPECT_EQ(GetShapeCount(world), size_t(1));
+
+    const auto fixture2 = body->CreateFixture(shape1);
+    ASSERT_NE(fixture2, nullptr);
+    EXPECT_EQ(GetShapeCount(world), size_t(1));
+    
+    const auto shape2 = std::make_shared<EdgeShape>(v1, v2, shapeConf);
+    
+    const auto fixture3 = body->CreateFixture(shape2);
+    ASSERT_NE(fixture3, nullptr);
+    EXPECT_EQ(GetShapeCount(world), size_t(2));
+}
+
+TEST(World, GetFixtureCountFreeFunction)
+{
+    World world{WorldDef{}.UseGravity(Vec2_zero * MeterPerSquareSecond)};
+    ASSERT_EQ(GetBodyCount(world), body_count_t(0));
+    ASSERT_EQ(GetFixtureCount(world), size_t(0));
+    
+    const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+    ASSERT_NE(body, nullptr);
+    
+    const auto shapeConf = EdgeShape::Conf{}
+        .UseVertexRadius(RealNum{1} * Meter)
+        .UseDensity(RealNum{1} * KilogramPerSquareMeter);
+    const auto v1 = Vec2{-1, 0} * Meter;
+    const auto v2 = Vec2{+1, 0} * Meter;
+    
+    const auto shape = std::make_shared<EdgeShape>(v1, v2, shapeConf);
+    
+    const auto fixture1 = body->CreateFixture(shape);
+    ASSERT_NE(fixture1, nullptr);
+    EXPECT_EQ(GetFixtureCount(world), size_t(1));
+    
+    const auto fixture2 = body->CreateFixture(shape);
+    ASSERT_NE(fixture2, nullptr);
+    EXPECT_EQ(GetFixtureCount(world), size_t(2));
+    
+    const auto fixture3 = body->CreateFixture(shape);
+    ASSERT_NE(fixture3, nullptr);
+    EXPECT_EQ(GetFixtureCount(world), size_t(3));
+}
+
+TEST(World, AwakenFreeFunction)
+{
+    World world{WorldDef{}.UseGravity(Vec2_zero * MeterPerSquareSecond)};
+    ASSERT_EQ(GetBodyCount(world), body_count_t(0));
+    
+    const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+    ASSERT_NE(body, nullptr);
+    ASSERT_EQ(body->GetType(), BodyType::Dynamic);
+    ASSERT_TRUE(body->IsSpeedable());
+    ASSERT_TRUE(body->IsAccelerable());
+    ASSERT_FALSE(body->IsImpenetrable());
+    ASSERT_EQ(body->GetLinearAcceleration().x, RealNum(0) * MeterPerSquareSecond);
+    ASSERT_EQ(body->GetLinearAcceleration().y, RealNum(0) * MeterPerSquareSecond);
+    
+    const auto v1 = Vec2{-1, 0} * Meter;
+    const auto v2 = Vec2{+1, 0} * Meter;
+    const auto shape = std::make_shared<EdgeShape>(v1, v2,
+                                                   EdgeShape::Conf{}
+                                                   .UseVertexRadius(RealNum{1} * Meter)
+                                                   .UseDensity(RealNum{1} * KilogramPerSquareMeter));
+    const auto fixture = body->CreateFixture(shape);
+    ASSERT_NE(fixture, nullptr);
+    
+    ASSERT_TRUE(body->IsAwake());
+    auto stepConf = StepConf{};
+    while (body->IsAwake())
+        world.Step(stepConf);
+    ASSERT_FALSE(body->IsAwake());
+    
+    Awaken(world);
+    EXPECT_TRUE(body->IsAwake());
 }
 
 TEST(World, DynamicEdgeBodyHasCorrectMass)
