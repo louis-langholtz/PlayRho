@@ -175,6 +175,40 @@ TEST(Body, CreateAndDestroyFixture)
     EXPECT_FALSE(body->IsMassDataDirty());
 }
 
+TEST(Body, SetType)
+{
+    BodyDef bd;
+    bd.type = BodyType::Dynamic;
+    World world;
+    const auto body = world.CreateBody(bd);
+    ASSERT_EQ(body->GetType(), BodyType::Dynamic);
+    body->SetType(BodyType::Static);
+    EXPECT_EQ(body->GetType(), BodyType::Static);
+    body->SetType(BodyType::Kinematic);
+    EXPECT_EQ(body->GetType(), BodyType::Kinematic);
+    body->SetType(BodyType::Dynamic);
+    EXPECT_EQ(body->GetType(), BodyType::Dynamic);
+}
+
+TEST(Body, SetTransform)
+{
+    BodyDef bd;
+    bd.type = BodyType::Dynamic;
+    World world;
+    const auto body = world.CreateBody(bd);
+    const auto xfm1 = Transformation{Vec2_zero * Meter, UnitVec2::GetRight()};
+    ASSERT_EQ(body->GetTransformation(), xfm1);
+    const auto xfm2 = Transformation{Vec2(10, -12) * Meter, UnitVec2::GetLeft()};
+    body->SetTransform(xfm2.p, GetAngle(xfm2.q));
+    EXPECT_EQ(body->GetTransformation().p, xfm2.p);
+    EXPECT_NEAR(static_cast<double>(GetX(body->GetTransformation().q)),
+                static_cast<double>(GetX(xfm2.q)),
+                0.001);
+    EXPECT_NEAR(static_cast<double>(GetY(body->GetTransformation().q)),
+                static_cast<double>(GetY(xfm2.q)),
+                0.001);
+}
+
 TEST(Body, CreateLotsOfFixtures)
 {
     BodyDef bd;
