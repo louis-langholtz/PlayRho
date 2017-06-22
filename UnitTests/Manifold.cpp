@@ -170,3 +170,11 @@ TEST(Manifold, GetForFaceB)
         EXPECT_EQ(p1.tangentImpulse, -ti);
     }
 }
+
+TEST(Manifold, GetNameFreeFunction)
+{
+    EXPECT_STREQ(GetName(Manifold::e_unset), "unset");
+    EXPECT_STREQ(GetName(Manifold::e_circles), "circles");
+    EXPECT_STREQ(GetName(Manifold::e_faceA), "face-a");
+    EXPECT_STREQ(GetName(Manifold::e_faceB), "face-b");
+}
