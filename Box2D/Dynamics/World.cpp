@@ -63,6 +63,7 @@
 #include <vector>
 #include <unordered_map>
 #include <algorithm>
+#include <atomic>
 
 //#define DO_THREADED
 #if defined(DO_THREADED)
@@ -2136,7 +2137,9 @@ World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
 
 World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepConf& conf)
 {
-    auto stats = UpdateContactsStats{};
+    std::atomic<std::uint32_t> ignored;
+    std::atomic<std::uint32_t> updated;
+    std::atomic<std::uint32_t> skipped;
     
     const auto updateConf = Contact::GetUpdateConf(conf);
     
@@ -2148,16 +2151,13 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
 #endif
 
     // Update awake contacts.
-    for (auto iter = contacts.begin(); iter != contacts.end(); ++iter)
-    {
-        const auto contact = GetContactPtr(*iter);
-
+    std::for_each(/*std::execution::par_unseq,*/ begin(contacts), end(contacts), [&](Contact& contact) {
 #if 0
-        ContactAtty::Update(*contact, conf, m_contactListener);
+        ContactAtty::Update(contact, updateConf, m_contactListener);
         ++stats.updated;
-#endif
-        const auto fixtureA = contact->GetFixtureA();
-        const auto fixtureB = contact->GetFixtureB();
+#else
+        const auto fixtureA = contact.GetFixtureA();
+        const auto fixtureB = contact.GetFixtureB();
         const auto bodyA = fixtureA->GetBody();
         const auto bodyB = fixtureB->GetBody();
         
@@ -2167,16 +2167,16 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
         assert(!bodyB->IsAwake() || bodyB->IsSpeedable());
         if (!bodyA->IsAwake() && !bodyB->IsAwake())
         {
-            assert(!contact->HasValidToi());
-            ++stats.ignored;
-            continue;
+            assert(!contact.HasValidToi());
+            ++ignored;
+            return;
         }
         
         // Possible that bodyA->GetSweep().GetAlpha0() != 0
         // Possible that bodyB->GetSweep().GetAlpha0() != 0
 
         // Update the contact manifold and notify the listener.
-        contact->SetEnabled();
+        contact.SetEnabled();
 
         // Note: ideally contacts are only updated if there was a change to:
         //   - The fixtures' sensor states.
@@ -2184,23 +2184,24 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
         //   - The "maxCirclesRatio" per-step configuration state if contact IS NOT for sensor.
         //   - The "maxDistanceIters" per-step configuration state if contact IS for sensor.
         //
-        if (contact->NeedsUpdating())
+        if (contact.NeedsUpdating())
         {
             // The following may call listener but is otherwise thread-safe.
 #if defined(DO_THREADED)
-            contactsNeedingUpdate.push_back(contact);
+            contactsNeedingUpdate.push_back(&contact);
             //futures.push_back(std::async(&ContactAtty::Update, *contact, conf, m_contactListener)));
             //futures.push_back(std::async(std::launch::async, [=]{ ContactAtty::Update(*contact, conf, m_contactListener); }));
 #else
-            ContactAtty::Update(*contact, updateConf, m_contactListener);
+            ContactAtty::Update(contact, updateConf, m_contactListener);
 #endif
-        	++stats.updated;
+        	++updated;
         }
         else
         {
-            ++stats.skipped;
+            ++skipped;
         }
-    }
+#endif
+    });
     
 #if defined(DO_THREADED)
     auto numJobs = contactsNeedingUpdate.size();
@@ -2211,7 +2212,7 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
             const auto offset = jobsPerCore * i;
             for (auto j = decltype(jobsPerCore){0}; j < jobsPerCore; ++j)
             {
-	            ContactAtty::Update(*contactsNeedingUpdate[offset + j], conf, m_contactListener);
+	            ContactAtty::Update(*contactsNeedingUpdate[offset + j], updateConf, m_contactListener);
             }
         }));
         numJobs -= jobsPerCore;
@@ -2222,7 +2223,7 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
             const auto offset = jobsPerCore * 3;
             for (auto j = decltype(numJobs){0}; j < numJobs; ++j)
             {
-                ContactAtty::Update(*contactsNeedingUpdate[offset + j], conf, m_contactListener);
+                ContactAtty::Update(*contactsNeedingUpdate[offset + j], updateConf, m_contactListener);
             }
         }));
     }
@@ -2232,7 +2233,11 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
     }
 #endif
     
-    return stats;
+    return UpdateContactsStats{
+        static_cast<contact_count_t>(ignored),
+        static_cast<contact_count_t>(updated),
+        static_cast<contact_count_t>(skipped)
+    };
 }
 
 contact_count_t World::FindNewContacts()
