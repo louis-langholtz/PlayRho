@@ -124,7 +124,7 @@ BroadPhase::size_type BroadPhase::UpdatePairs(std::function<bool(void*,void*)> c
         
         // We have to query the tree with the fat AABB so that
         // we don't fail to create a pair that may touch later.
-        const auto aabb = m_tree.GetAABB(queryProxyId);
+        const auto aabb = GetAABB(queryProxyId);
         
         // Query tree for nodes overlapping aabb, create pairs of those & add them pair buffer.
         m_tree.Query(aabb, [&](DynamicTree::size_type nodeId) {

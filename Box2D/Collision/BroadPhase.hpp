@@ -99,22 +99,15 @@ public:
     /// Call this as many times as you like, then when you are done call UpdatePairs
     /// to finalize the proxy pairs (for your time step).
     /// @param proxyId Proxy ID. Behavior is undefined if this is the null proxy ID.
-    /// @param aabb Axis aligned bounding box.
-    /// @param displacement Displacement. Behavior is undefined if this is an invalid value.
-    /// @param multiplier Multiplier to displacement amount for new AABB.
-    ///   This is used to predict the future position based on the current displacement.
-    ///   This is a dimensionless multiplier.
-    /// @param extension Extension. Amount to extend the AABB by. This is used to fatten
-    ///   AABBs in the dynamic tree.
-    bool UpdateProxy(const size_type proxyId, const AABB aabb, const Length2D displacement,
-                     const RealNum multiplier = 1, const Length extension = Length{0});
+    /// @param newAabb Axis aligned bounding box.
+    void UpdateProxy(const size_type proxyId, const AABB newAabb);
 
     /// @brief Call to trigger a re-processing of it's pairs on the next call to UpdatePairs.
     void TouchProxy(size_type proxyId) noexcept;
 
-    /// @brief Gets the fat AABB for a proxy.
+    /// @brief Gets the AABB for a proxy.
     /// @warning Behavior is undefined if the given proxy ID is not a valid ID.
-    AABB GetFatAABB(size_type proxyId) const;
+    AABB GetAABB(size_type proxyId) const;
 
     /// @brief Gets user data from a proxy.
     void* GetUserData(size_type proxyId) const;
@@ -209,7 +202,7 @@ inline void BroadPhase::SetUserData(size_type proxyId, void* value)
     m_tree.SetUserData(proxyId, value);
 }
 
-inline AABB BroadPhase::GetFatAABB(size_type proxyId) const
+inline AABB BroadPhase::GetAABB(size_type proxyId) const
 {
     return m_tree.GetAABB(proxyId);
 }
@@ -269,22 +262,11 @@ inline void BroadPhase::ShiftOrigin(const Length2D newOrigin)
     m_tree.ShiftOrigin(newOrigin);
 }
 
-inline bool BroadPhase::UpdateProxy(const size_type proxyId,
-                                    const AABB aabb,
-                                    const Length2D displacement,
-                                    const RealNum multiplier,
-                                    const Length extension)
+inline void BroadPhase::UpdateProxy(const size_type proxyId,
+                                    const AABB newAabb)
 {
-    if (m_tree.GetAABB(proxyId).Contains(aabb))
-    {
-        return false;
-    }
-
-    const auto newAabb = GetDisplacedAABB(GetFattenedAABB(aabb, extension),
-                                          multiplier * displacement);
     m_tree.UpdateProxy(proxyId, newAabb);
     EnqueueForOverlapProcessing(proxyId);
-    return true;
 }
 
 inline void BroadPhase::TouchProxy(size_type proxyId) noexcept
@@ -295,7 +277,7 @@ inline void BroadPhase::TouchProxy(size_type proxyId) noexcept
 inline bool TestOverlap(const BroadPhase& bp,
                         BroadPhase::size_type proxyIdA, BroadPhase::size_type proxyIdB)
 {
-    return TestOverlap(bp.GetFatAABB(proxyIdA), bp.GetFatAABB(proxyIdB));
+    return TestOverlap(bp.GetAABB(proxyIdA), bp.GetAABB(proxyIdB));
 }
 
 inline BroadPhase::Conf GetBroadPhaseConf(const BroadPhase& bp) noexcept

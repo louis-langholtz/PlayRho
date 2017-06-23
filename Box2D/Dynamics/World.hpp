@@ -799,7 +799,7 @@ inline Frequency World::GetInvDeltaTime() const noexcept
 
 inline AABB World::GetFatAABB(proxy_size_type proxyId) const
 {
-    return m_broadPhase.GetFatAABB(proxyId);
+    return m_broadPhase.GetAABB(proxyId);
 }
 
 inline World::proxy_size_type World::GetProxyCount() const noexcept

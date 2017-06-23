@@ -84,7 +84,7 @@ TEST(BroadPhase, CreateAndDestroyProxy)
     const auto pid = foo.CreateProxy(aabb, userdata);
     EXPECT_EQ(foo.GetProxyCount(), BroadPhase::size_type(1));
     EXPECT_EQ(foo.GetPairCapacity(), defaultConf.pairCapacity);
-    EXPECT_EQ(foo.GetFatAABB(pid), aabb);
+    EXPECT_EQ(foo.GetAABB(pid), aabb);
     EXPECT_EQ(foo.GetUserData(pid), userdata);
     EXPECT_EQ(foo.GetTreeHeight(), BroadPhase::size_type(0));
     EXPECT_EQ(foo.GetTreeBalance(), BroadPhase::size_type(0));
@@ -95,7 +95,7 @@ TEST(BroadPhase, CreateAndDestroyProxy)
     boo = foo;
     EXPECT_EQ(boo.GetProxyCount(), BroadPhase::size_type(1));
     EXPECT_EQ(boo.GetPairCapacity(), defaultConf.pairCapacity);
-    EXPECT_EQ(boo.GetFatAABB(pid), aabb);
+    EXPECT_EQ(boo.GetAABB(pid), aabb);
     EXPECT_EQ(boo.GetUserData(pid), userdata);
     EXPECT_EQ(boo.GetTreeHeight(), BroadPhase::size_type(0));
     EXPECT_EQ(boo.GetTreeBalance(), BroadPhase::size_type(0));
@@ -110,7 +110,7 @@ TEST(BroadPhase, CreateAndDestroyProxy)
     
     EXPECT_EQ(boo.GetProxyCount(), BroadPhase::size_type(1));
     EXPECT_EQ(boo.GetPairCapacity(), defaultConf.pairCapacity);
-    EXPECT_EQ(boo.GetFatAABB(pid), aabb);
+    EXPECT_EQ(boo.GetAABB(pid), aabb);
     EXPECT_EQ(boo.GetUserData(pid), userdata);
     EXPECT_EQ(boo.GetTreeHeight(), BroadPhase::size_type(0));
     EXPECT_EQ(boo.GetTreeBalance(), BroadPhase::size_type(0));
@@ -120,7 +120,7 @@ TEST(BroadPhase, CreateAndDestroyProxy)
     
     EXPECT_EQ(boo.GetProxyCount(), BroadPhase::size_type(1));
     EXPECT_EQ(boo.GetPairCapacity(), defaultConf.pairCapacity);
-    EXPECT_EQ(boo.GetFatAABB(pid), aabb);
+    EXPECT_EQ(boo.GetAABB(pid), aabb);
     EXPECT_EQ(boo.GetUserData(pid), userdata);
     EXPECT_EQ(boo.GetTreeHeight(), BroadPhase::size_type(0));
     EXPECT_EQ(boo.GetTreeBalance(), BroadPhase::size_type(0));

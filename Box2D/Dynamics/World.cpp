@@ -2687,9 +2687,9 @@ child_count_t World::Synchronize(Fixture& fixture,
     
     auto updatedCount = child_count_t{0};
     const auto shape = fixture.GetShape();
-    const auto displacement = xfm2.p - xfm1.p;
+    const auto expandedDisplacement = multiplier * (xfm2.p - xfm1.p);
     const auto proxies = FixtureAtty::GetProxies(fixture);
-    for (auto&& proxy: proxies)
+    for (auto& proxy: proxies)
     {
         const auto dp = shape->GetChild(proxy.childIndex);
 
@@ -2698,8 +2698,11 @@ child_count_t World::Synchronize(Fixture& fixture,
         const auto aabb2 = ComputeAABB(dp, xfm2);
         proxy.aabb = GetEnclosingAABB(aabb1, aabb2);
         
-        if (m_broadPhase.UpdateProxy(proxy.proxyId, proxy.aabb, displacement, multiplier, extension))
+        if (!m_broadPhase.GetAABB(proxy.proxyId).Contains(proxy.aabb))
         {
+            const auto newAabb = GetDisplacedAABB(GetFattenedAABB(proxy.aabb, extension),
+                                                  expandedDisplacement);
+            m_broadPhase.UpdateProxy(proxy.proxyId, newAabb);
             ++updatedCount;
         }
     }
