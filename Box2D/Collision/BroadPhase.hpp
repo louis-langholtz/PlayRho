@@ -27,26 +27,6 @@
 
 namespace box2d {
 
-/// Proxy ID pair.
-/// @note This data structure is 8-bytes large (on at least one 64-bit platform).
-struct ProxyIdPair
-{
-    using size_type = std::remove_const<decltype(MaxContacts)>::type;
-
-    size_type proxyIdA;
-    size_type proxyIdB;
-};
-
-constexpr inline bool operator == (ProxyIdPair lhs, ProxyIdPair rhs)
-{
-    return (lhs.proxyIdA == rhs.proxyIdA) && (lhs.proxyIdB == rhs.proxyIdB);
-}
-
-constexpr inline bool operator != (ProxyIdPair lhs, ProxyIdPair rhs)
-{
-    return !(lhs == rhs);
-}
-
 /// @brief Broad phase assistant.
 /// @details
 /// The broad-phase is used for computing pairs and performing volume queries and ray casts.
@@ -286,30 +266,5 @@ inline BroadPhase::Conf GetBroadPhaseConf(const BroadPhase& bp) noexcept
 }
 
 } // namespace box2d
-
-namespace std
-{
-    template <>
-    class hash<box2d::ProxyIdPair>
-    {
-    public:
-        size_t operator()(const box2d::ProxyIdPair& pidpair) const
-        {
-            const auto a = size_t{pidpair.proxyIdA} * 2654435761u;
-            const auto b = size_t{pidpair.proxyIdB} * 2654435761u;
-            return a ^ b;
-        }
-    };
-    
-    template <>
-    struct equal_to<box2d::ProxyIdPair>
-    {
-        constexpr bool operator()(const box2d::ProxyIdPair& lhs, const box2d::ProxyIdPair& rhs) const
-        {
-            return (lhs.proxyIdA == rhs.proxyIdA && lhs.proxyIdB == rhs.proxyIdB)
-            || (lhs.proxyIdB == rhs.proxyIdA && lhs.proxyIdA == rhs.proxyIdB);
-        }
-    };
-} // namespace std
 
 #endif

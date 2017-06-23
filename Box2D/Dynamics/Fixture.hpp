@@ -87,7 +87,6 @@ public:
     /// @warning Behavior is undefined if proxy count is greater than zero.
     ~Fixture()
     {
-        // No access to BroadPhase now so can't call DestroyProxies here.
         assert(!m_proxies);
         assert(m_proxyCount == 0);
     }

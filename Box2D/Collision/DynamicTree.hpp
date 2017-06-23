@@ -30,6 +30,26 @@
 
 namespace box2d {
 
+/// Proxy ID pair.
+/// @note This data structure is 8-bytes large (on at least one 64-bit platform).
+struct ProxyIdPair
+{
+    using size_type = std::remove_const<decltype(MaxContacts)>::type;
+    
+    size_type proxyIdA;
+    size_type proxyIdB;
+};
+
+constexpr inline bool operator == (ProxyIdPair lhs, ProxyIdPair rhs)
+{
+    return (lhs.proxyIdA == rhs.proxyIdA) && (lhs.proxyIdB == rhs.proxyIdB);
+}
+
+constexpr inline bool operator != (ProxyIdPair lhs, ProxyIdPair rhs)
+{
+    return !(lhs == rhs);
+}
+
 /// @brief A dynamic AABB tree broad-phase, inspired by Nathanael Presson's btDbvt.
 ///
 /// @details A dynamic tree arranges data in a binary tree to accelerate
@@ -289,6 +309,37 @@ inline DynamicTree::size_type DynamicTree::ComputeHeight() const noexcept
     return ComputeHeight(GetRootIndex());
 }
 
+inline bool TestOverlap(const DynamicTree& tree,
+                        DynamicTree::size_type proxyIdA, DynamicTree::size_type proxyIdB)
+{
+    return TestOverlap(tree.GetAABB(proxyIdA), tree.GetAABB(proxyIdB));
+}
+
 } /* namespace box2d */
+
+namespace std
+{
+    template <>
+    class hash<box2d::ProxyIdPair>
+    {
+    public:
+        size_t operator()(const box2d::ProxyIdPair& pidpair) const
+        {
+            const auto a = size_t{pidpair.proxyIdA} * 2654435761u;
+            const auto b = size_t{pidpair.proxyIdB} * 2654435761u;
+            return a ^ b;
+        }
+    };
+    
+    template <>
+    struct equal_to<box2d::ProxyIdPair>
+    {
+        constexpr bool operator()(const box2d::ProxyIdPair& lhs, const box2d::ProxyIdPair& rhs) const
+        {
+            return (lhs.proxyIdA == rhs.proxyIdA && lhs.proxyIdB == rhs.proxyIdB)
+            || (lhs.proxyIdB == rhs.proxyIdA && lhs.proxyIdA == rhs.proxyIdB);
+        }
+    };
+} // namespace std
 
 #endif

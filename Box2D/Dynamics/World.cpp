@@ -49,7 +49,6 @@
 #include <Box2D/Dynamics/Contacts/VelocityConstraint.hpp>
 #include <Box2D/Dynamics/Contacts/PositionConstraint.hpp>
 
-#include <Box2D/Collision/BroadPhase.hpp>
 #include <Box2D/Collision/WorldManifold.hpp>
 #include <Box2D/Collision/TimeOfImpact.hpp>
 #include <Box2D/Collision/RayCastOutput.hpp>
@@ -443,13 +442,13 @@ namespace {
         }
     }
     
-    inline bool TestOverlap(const BroadPhase& bp,
+    inline bool TestOverlap(const DynamicTree& tree,
                             const Fixture* fixtureA, child_count_t indexA,
                             const Fixture* fixtureB, child_count_t indexB)
     {
         const auto proxyIdA = fixtureA->GetProxy(indexA)->proxyId;
         const auto proxyIdB = fixtureB->GetProxy(indexB)->proxyId;
-        return TestOverlap(bp, proxyIdA, proxyIdB);
+        return TestOverlap(tree, proxyIdA, proxyIdB);
     }
 
     inline VelocityConstraint::Conf GetRegVelocityConstraintConf(const StepConf& conf)
@@ -477,6 +476,8 @@ World::World(const WorldDef& def):
     {
         throw InvalidArgument("max vertex radius must be >= min vertex radius");
     }
+    m_proxyPairs.reserve(1024);
+    m_proxies.reserve(1024);
 }
 
 World::World(const World& other):
@@ -488,7 +489,7 @@ World::World(const World& other):
     m_inv_dt0{other.m_inv_dt0},
     m_minVertexRadius{other.m_minVertexRadius},
     m_maxVertexRadius{other.m_maxVertexRadius},
-    m_broadPhase{other.m_broadPhase}
+    m_tree{other.m_tree}
 {
     auto bodyMap = std::map<const Body*, Body*>();
     auto fixtureMap = std::map<const Fixture*, Fixture*>();
@@ -509,7 +510,7 @@ World& World::operator= (const World& other)
     m_inv_dt0 = other.m_inv_dt0;
     m_minVertexRadius = other.m_minVertexRadius;
     m_maxVertexRadius = other.m_maxVertexRadius;
-    m_broadPhase = other.m_broadPhase;
+    m_tree = other.m_tree;
 
     auto bodyMap = std::map<const Body*, Body*>();
     auto fixtureMap = std::map<const Fixture*, Fixture*>();
@@ -566,7 +567,7 @@ void World::CopyBodies(std::map<const Body*, Body*>& bodyMap,
                 const auto proxyPtr = proxies + childIndex;
                 const auto fp = otherFixture.GetProxy(childIndex);
                 new (proxyPtr) FixtureProxy{fp->aabb, fp->proxyId, newFixture, childIndex};
-                m_broadPhase.SetUserData(fp->proxyId, proxyPtr);
+                m_tree.SetUserData(fp->proxyId, proxyPtr);
             }
             FixtureAtty::SetProxies(*newFixture, Span<FixtureProxy>(proxies, childCount));
         }
@@ -1960,18 +1961,18 @@ StepStats World::Step(const StepConf& conf)
 
 void World::QueryAABB(const AABB& aabb, QueryFixtureCallback callback)
 {
-    m_broadPhase.Query(aabb, [&](BroadPhase::size_type proxyId) {
-        const auto proxy = static_cast<FixtureProxy*>(m_broadPhase.GetUserData(proxyId));
+    m_tree.Query(aabb, [&](DynamicTree::size_type proxyId) {
+        const auto proxy = static_cast<FixtureProxy*>(m_tree.GetUserData(proxyId));
         return callback(proxy->fixture, proxy->childIndex);
     });
 }
 
 void World::RayCast(const Length2D& point1, const Length2D& point2, RayCastCallback callback)
 {
-    m_broadPhase.RayCast(RayCastInput{point1, point2, RealNum{1}},
-                         [&](const RayCastInput& input, BroadPhase::size_type proxyId)
+    m_tree.RayCast(RayCastInput{point1, point2, RealNum{1}},
+                   [&](const RayCastInput& input, DynamicTree::size_type proxyId)
     {
-        const auto userData = m_broadPhase.GetUserData(proxyId);
+        const auto userData = m_tree.GetUserData(proxyId);
         const auto proxy = static_cast<FixtureProxy*>(userData);
         const auto fixture = proxy->fixture;
         const auto index = proxy->childIndex;
@@ -2039,7 +2040,7 @@ void World::ShiftOrigin(const Length2D newOrigin)
         j->ShiftOrigin(newOrigin);
     });
 
-    m_broadPhase.ShiftOrigin(newOrigin);
+    m_tree.ShiftOrigin(newOrigin);
 }
 
 void World::InternalDestroy(Contact* c, Body* from)
@@ -2104,7 +2105,7 @@ World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
         const auto fixtureA = contact->GetFixtureA();
         const auto fixtureB = contact->GetFixtureB();
         
-        if (!TestOverlap(m_broadPhase, fixtureA, indexA, fixtureB, indexB))
+        if (!TestOverlap(m_tree, fixtureA, indexA, fixtureB, indexB))
         {
             // Destroy contacts that cease to overlap in the broad-phase.
             InternalDestroy(&*iter);
@@ -2240,11 +2241,63 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
     };
 }
 
+void World::RegisterForProcessing(ProxyId pid) noexcept
+{
+    m_proxies.push_back(pid);
+}
+
+void World::UnregisterForProcessing(ProxyId pid) noexcept
+{
+    const auto itEnd = end(m_proxies);
+    auto it = std::find(/*std::execution::par_unseq,*/ begin(m_proxies), itEnd, pid);
+    if (it != itEnd)
+    {
+        *it = DynamicTree::InvalidIndex;
+    }
+}
+
 contact_count_t World::FindNewContacts()
 {
-    return m_broadPhase.UpdatePairs([&](void* a, void* b) {
-        return Add(*static_cast<FixtureProxy*>(a), *static_cast<FixtureProxy*>(b));
+    m_proxyPairs.clear();
+
+    std::for_each(begin(m_proxies), end(m_proxies), [&](ProxyId pid) {
+        if (pid == DynamicTree::InvalidIndex)
+        {
+            return;
+        }
+        const auto aabb = m_tree.GetAABB(pid);
+        m_tree.Query(aabb, [&](DynamicTree::size_type nodeId) {
+            // A proxy cannot form a pair with itself.
+            if (nodeId != pid)
+            {
+                m_proxyPairs.push_back(ProxyIdPair{Min(nodeId, pid), Max(nodeId, pid)});
+            }
+            return true;
+        });
     });
+    m_proxies.clear();
+
+    std::sort(/*std::execution::par_unseq,*/ begin(m_proxyPairs), end(m_proxyPairs), [](ProxyIdPair p1, ProxyIdPair p2) {
+        return (p1.proxyIdA < p2.proxyIdA) || ((p1.proxyIdA == p2.proxyIdA) && (p1.proxyIdB < p2.proxyIdB));
+    });
+
+    auto count = contact_count_t{0};
+    auto lastPair = ProxyIdPair{static_cast<ProxyIdPair::size_type>(-1), static_cast<ProxyIdPair::size_type>(-1)};
+    std::for_each(begin(m_proxyPairs), end(m_proxyPairs), [&](ProxyIdPair primaryPair)
+    {
+        if (primaryPair != lastPair)
+        {
+            const auto userDataA = m_tree.GetUserData(primaryPair.proxyIdA);
+            const auto userDataB = m_tree.GetUserData(primaryPair.proxyIdB);
+            
+            if (Add(*static_cast<FixtureProxy*>(userDataA), *static_cast<FixtureProxy*>(userDataB)))
+            {
+                ++count;
+            }
+            lastPair = primaryPair;
+        }
+    });
+    return count;
 }
 
 bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
@@ -2631,7 +2684,8 @@ void World::CreateProxies(Fixture& fixture, const Length aabbExtension)
 
         // Note: proxyId from CreateProxy can be higher than the number of fixture proxies.
         const auto fattenedAABB = GetFattenedAABB(aabb, aabbExtension);
-        const auto proxyId = m_broadPhase.CreateProxy(fattenedAABB, proxyPtr);
+        const auto proxyId = m_tree.CreateProxy(fattenedAABB, proxyPtr);
+        RegisterForProcessing(proxyId);
         new (proxyPtr) FixtureProxy{aabb, proxyId, &fixture, childIndex};
     }
 
@@ -2645,7 +2699,8 @@ void World::DestroyProxies(Fixture& fixture)
     // Destroy proxies in reverse order from what they were created in.
     for (auto i = proxies.size() - 1; i < proxies.size(); --i)
     {
-        m_broadPhase.DestroyProxy(proxies[i].proxyId);
+        UnregisterForProcessing(proxies[i].proxyId);
+        m_tree.DestroyProxy(proxies[i].proxyId);
         proxies[i].~FixtureProxy();
     }
     Free(proxies.begin());
@@ -2674,7 +2729,7 @@ void World::InternalTouchProxies(Fixture& fixture) noexcept
     const auto proxyCount = fixture.GetProxyCount();
     for (auto i = decltype(proxyCount){0}; i < proxyCount; ++i)
     {
-        m_broadPhase.TouchProxy(fixture.GetProxy(i)->proxyId);
+        RegisterForProcessing(fixture.GetProxy(i)->proxyId);
     }
 }
 
@@ -2698,11 +2753,12 @@ child_count_t World::Synchronize(Fixture& fixture,
         const auto aabb2 = ComputeAABB(dp, xfm2);
         proxy.aabb = GetEnclosingAABB(aabb1, aabb2);
         
-        if (!m_broadPhase.GetAABB(proxy.proxyId).Contains(proxy.aabb))
+        if (!m_tree.GetAABB(proxy.proxyId).Contains(proxy.aabb))
         {
             const auto newAabb = GetDisplacedAABB(GetFattenedAABB(proxy.aabb, extension),
                                                   expandedDisplacement);
-            m_broadPhase.UpdateProxy(proxy.proxyId, newAabb);
+            m_tree.UpdateProxy(proxy.proxyId, newAabb);
+            RegisterForProcessing(proxy.proxyId);
             ++updatedCount;
         }
     }

@@ -78,6 +78,26 @@ DynamicTree::~DynamicTree() noexcept
     Free(m_nodes);
 }
 
+void DynamicTree::SetNodeCapacity(size_type value)
+{
+    assert(value > m_nodeCapacity);
+    
+    // The free list is empty. Rebuild a bigger pool.
+    m_nodeCapacity = value;
+    m_nodes = Realloc<TreeNode>(m_nodes, m_nodeCapacity);
+    
+    // Build a linked list for the free list. The parent
+    // pointer becomes the "next" pointer.
+    for (auto i = m_nodeCount; i < m_nodeCapacity - 1; ++i)
+    {
+        m_nodes[i].next = i + 1;
+        m_nodes[i].height = InvalidIndex;
+    }
+    m_nodes[m_nodeCapacity - 1].next = InvalidIndex;
+    m_nodes[m_nodeCapacity - 1].height = InvalidIndex;
+    m_freeListIndex = m_nodeCount;
+}
+
 // Allocate a node from the pool. Grow the pool if necessary.
 DynamicTree::size_type DynamicTree::AllocateNode()
 {
@@ -102,26 +122,6 @@ DynamicTree::size_type DynamicTree::AllocateNode()
     return index;
 }
 
-void DynamicTree::SetNodeCapacity(size_type value)
-{
-    assert(value > m_nodeCapacity);
-    
-    // The free list is empty. Rebuild a bigger pool.
-    m_nodeCapacity = value;
-    m_nodes = Realloc<TreeNode>(m_nodes, m_nodeCapacity);
-    
-    // Build a linked list for the free list. The parent
-    // pointer becomes the "next" pointer.
-    for (auto i = m_nodeCount; i < m_nodeCapacity - 1; ++i)
-    {
-        m_nodes[i].next = i + 1;
-        m_nodes[i].height = InvalidIndex;
-    }
-    m_nodes[m_nodeCapacity - 1].next = InvalidIndex;
-    m_nodes[m_nodeCapacity - 1].height = InvalidIndex;
-    m_freeListIndex = m_nodeCount;
-}
-
 // Return a node to the pool.
 void DynamicTree::FreeNode(const size_type index) noexcept
 {
@@ -140,13 +140,10 @@ void DynamicTree::FreeNode(const size_type index) noexcept
 DynamicTree::size_type DynamicTree::CreateProxy(const AABB aabb, void* userData)
 {
     const auto index = AllocateNode();
-
     m_nodes[index].aabb = aabb;
     m_nodes[index].userData = userData;
     m_nodes[index].height = 0;
-
     InsertLeaf(index);
-
     return index;
 }
 

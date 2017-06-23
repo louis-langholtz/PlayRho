@@ -32,7 +32,7 @@
 #include <Box2D/Dynamics/FixtureDef.hpp>
 #include <Box2D/Dynamics/WorldCallbacks.hpp>
 #include <Box2D/Dynamics/StepStats.hpp>
-#include <Box2D/Collision/BroadPhase.hpp>
+#include <Box2D/Collision/DynamicTree.hpp>
 
 #include <vector>
 #include <map>
@@ -325,9 +325,12 @@ private:
     /// @brief Flags type data type.
     using FlagsType = std::uint32_t;
 
+    using ProxyId = DynamicTree::size_type;
     using BodySet = std::unordered_set<const Body*>;
     using JointSet = std::unordered_set<const Joint*>;
     using ContactSet = std::unordered_set<const Contact*>;
+    using ProxyPairQueue = std::vector<ProxyIdPair>;
+    using ProxyQueue = std::vector<ProxyId>;
     using FixtureQueue = std::vector<Fixture*>;
     using BodyQueue = std::vector<Body*>;
     
@@ -570,6 +573,9 @@ private:
     /// @sa bool Body::ShouldCollide(const Body* other) const
     bool Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB);
     
+    void RegisterForProcessing(ProxyId pid) noexcept;
+    void UnregisterForProcessing(ProxyId pid) noexcept;
+
     void InternalDestroy(Contact* contact, Body* from = nullptr);
 
     /// @brief Creates proxies for every child of the given fixture's shape.
@@ -611,7 +617,7 @@ private:
 
     /******** Member variables. ********/
     
-    BroadPhase m_broadPhase{BroadPhase::Conf{4096, 1024, 1024}}; ///< Broad phase data. 72-bytes.
+    DynamicTree m_tree{4096};
     
     //ContactKeySet m_contactKeySet{100000};
     
@@ -619,6 +625,8 @@ private:
     ContactSet m_contactsIslanded;
     JointSet m_jointsIslanded;
 
+    ProxyPairQueue m_proxyPairs;
+    ProxyQueue m_proxies;
     FixtureQueue m_fixturesForProxies;
     BodyQueue m_bodiesForProxies;
 
@@ -799,27 +807,27 @@ inline Frequency World::GetInvDeltaTime() const noexcept
 
 inline AABB World::GetFatAABB(proxy_size_type proxyId) const
 {
-    return m_broadPhase.GetAABB(proxyId);
+    return m_tree.GetAABB(proxyId);
 }
 
 inline World::proxy_size_type World::GetProxyCount() const noexcept
 {
-    return m_broadPhase.GetProxyCount();
+    return m_tree.GetNodeCount();
 }
 
 inline World::proxy_size_type World::GetTreeHeight() const noexcept
 {
-    return m_broadPhase.GetTreeHeight();
+    return m_tree.GetHeight();
 }
 
 inline World::proxy_size_type World::GetTreeBalance() const
 {
-    return m_broadPhase.GetTreeBalance();
+    return m_tree.GetMaxBalance();
 }
 
 inline RealNum World::GetTreeQuality() const
 {
-    return m_broadPhase.GetTreeQuality();
+    return m_tree.GetAreaRatio();
 }
 
 inline void World::SetDestructionListener(DestructionListener* listener) noexcept
