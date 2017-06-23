@@ -34,9 +34,7 @@ namespace box2d {
 ///
 /// @details A dynamic tree arranges data in a binary tree to accelerate
 /// queries such as volume queries and ray casts. Leafs are proxies
-/// with an AABB. In the tree we expand the proxy AABB by AabbMultiplier
-/// so that the proxy AABB is bigger than the client object. This allows the client
-/// object to move by small amounts without triggering a tree update.
+/// with an AABB.
 ///
 /// @note Nodes are pooled and relocatable, so we use node indices rather than pointers.
 /// @note This data structure is 24-bytes large (on at least one 64-bit platform).
@@ -51,8 +49,6 @@ public:
     /// @brief Ray cast callback function.
     /// @note Return 0 to terminate raycasting, or > 0 to update the segment bounding box.
     using RayCastCallback = std::function<RealNum(const RayCastInput&, size_type)>;
-
-    static constexpr auto AabbMultiplier = 2;
 
     /// @brief Invalid index value.
     static constexpr size_type InvalidIndex = static_cast<size_type>(-1);
