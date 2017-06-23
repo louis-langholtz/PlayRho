@@ -106,7 +106,7 @@ public:
     ///   This is a dimensionless multiplier.
     /// @param extension Extension. Amount to extend the AABB by. This is used to fatten
     ///   AABBs in the dynamic tree.
-    bool UpdateProxy(const size_type proxyId, const AABB& aabb, const Length2D displacement,
+    bool UpdateProxy(const size_type proxyId, const AABB aabb, const Length2D displacement,
                      const RealNum multiplier = 1, const Length extension = Length{0});
 
     /// @brief Call to trigger a re-processing of it's pairs on the next call to UpdatePairs.
@@ -211,7 +211,7 @@ inline void BroadPhase::SetUserData(size_type proxyId, void* value)
 
 inline AABB BroadPhase::GetFatAABB(size_type proxyId) const
 {
-    return m_tree.GetFatAABB(proxyId);
+    return m_tree.GetAABB(proxyId);
 }
 
 inline BroadPhase::size_type BroadPhase::GetPairCapacity() const noexcept
@@ -270,17 +270,21 @@ inline void BroadPhase::ShiftOrigin(const Length2D newOrigin)
 }
 
 inline bool BroadPhase::UpdateProxy(const size_type proxyId,
-                                    const AABB& aabb,
+                                    const AABB aabb,
                                     const Length2D displacement,
                                     const RealNum multiplier,
                                     const Length extension)
 {
-    const auto updated = m_tree.UpdateProxy(proxyId, aabb, displacement, multiplier, extension);
-    if (updated)
+    if (m_tree.GetAABB(proxyId).Contains(aabb))
     {
-        EnqueueForOverlapProcessing(proxyId);
+        return false;
     }
-    return updated;
+
+    const auto newAabb = GetDisplacedAABB(GetFattenedAABB(aabb, extension),
+                                          multiplier * displacement);
+    m_tree.UpdateProxy(proxyId, newAabb);
+    EnqueueForOverlapProcessing(proxyId);
+    return true;
 }
 
 inline void BroadPhase::TouchProxy(size_type proxyId) noexcept

@@ -79,22 +79,11 @@ public:
     /// @warning Behavior is undefined if the given index is not valid.
     void DestroyProxy(const size_type index);
 
-    /// @brief Updates a proxy.
-    /// @note If the stored AABB of the identified proxy doesn't contain the given new
-    ///   AABB of the proxy, then the proxy is removed from the tree and re-inserted with
-    ///   a fattened and displaced version of the given new AABB.
+    /// @brief Updates a proxy with a new AABB value.
     /// @warning Behavior is undefined if the given index is not valid.
     /// @param index Proxy ID. Behavior is undefined if this is not a valid ID.
     /// @param aabb New axis aligned bounding box of the proxy.
-    /// @param displacement Displacement of the proxy. Behavior undefined if not a valid value.
-    /// @param multiplier Multiplier to displacement amount for new AABB.
-    ///   This is used to predict the future position based on the current displacement.
-    ///   This is a dimensionless multiplier.
-    /// @param extension Extension. Amount to fatten the given AABB by if the proxy does
-    ///   not contain it.
-    /// @return true if the proxy was re-inserted, false otherwise.
-    bool UpdateProxy(const size_type index, const AABB aabb, const Length2D displacement,
-                     const RealNum multiplier = 1, const Length extension = Length{0});
+    void UpdateProxy(const size_type index, const AABB aabb);
 
     /// @brief Gets the user data for the node identified by the given identifier.
     /// @warning Behavior is undefined if the given index is not valid.
@@ -104,10 +93,10 @@ public:
 
     void SetUserData(const size_type index, void* value) noexcept;
 
-    /// @brief Gets the fat AABB for a proxy.
+    /// @brief Gets the AABB for a proxy.
     /// @warning Behavior is undefined if the given index is not valid.
     /// @param index Proxy ID. Must be a valid ID.
-    AABB GetFatAABB(const size_type index) const noexcept;
+    AABB GetAABB(const size_type index) const noexcept;
 
     /// @brief Query an AABB for overlapping proxies.
     /// @note The callback instance is called for each proxy that overlaps the supplied AABB.
@@ -287,7 +276,7 @@ inline void DynamicTree::SetUserData(const size_type index, void* value) noexcep
     m_nodes[index].userData = value;
 }
 
-inline AABB DynamicTree::GetFatAABB(const size_type index) const noexcept
+inline AABB DynamicTree::GetAABB(const size_type index) const noexcept
 {
     assert(index != InvalidIndex);
     assert(index < m_nodeCapacity);

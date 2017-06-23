@@ -160,28 +160,15 @@ void DynamicTree::DestroyProxy(const size_type index)
     FreeNode(index);
 }
 
-bool DynamicTree::UpdateProxy(const size_type index, const AABB aabb, const Length2D displacement,
-                              const RealNum multiplier, const Length extension)
+void DynamicTree::UpdateProxy(const size_type index, const AABB newAabb)
 {
     assert(index != InvalidIndex);
     assert(index < m_nodeCapacity);
-    assert(IsValid(displacement));
     assert(m_nodes[index].IsLeaf());
 
-    if (m_nodes[index].aabb.Contains(aabb))
-    {
-        return false;
-    }
-
     RemoveLeaf(index);
-
-    const auto fattenedAabb = GetFattenedAABB(aabb, extension);
-    const auto displacedFattenedAabb = GetDisplacedAABB(fattenedAabb, multiplier * displacement);
-    m_nodes[index].aabb = displacedFattenedAabb;
-    
+    m_nodes[index].aabb = newAabb;
     InsertLeaf(index);
-    
-    return true;
 }
 
 DynamicTree::size_type DynamicTree::FindLowestCostNode(const AABB leafAABB) const noexcept
@@ -194,9 +181,9 @@ DynamicTree::size_type DynamicTree::FindLowestCostNode(const AABB leafAABB) cons
         const auto child1 = m_nodes[index].child1;
         const auto child2 = m_nodes[index].child2;
         
-        const auto area = GetPerimeter(m_nodes[index].aabb);
+        const auto area = GetPerimeter(GetAABB(index));
         
-        const auto combinedAABB = GetEnclosingAABB(m_nodes[index].aabb, leafAABB);
+        const auto combinedAABB = GetEnclosingAABB(GetAABB(index), leafAABB);
         const auto combinedArea = GetPerimeter(combinedAABB);
         
         assert(combinedArea >= area);

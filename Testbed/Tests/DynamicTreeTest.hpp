@@ -282,7 +282,11 @@ private:
             const auto aabb0 = actor->aabb;
             MoveAABB(&actor->aabb);
             const auto displacement = GetCenter(actor->aabb) - GetCenter(aabb0);
-            m_tree.UpdateProxy(actor->proxyId, actor->aabb, displacement, multiplier, extension);
+            if (!m_tree.GetAABB(actor->proxyId).Contains(actor->aabb))
+            {
+                const auto newAabb = GetDisplacedAABB(GetFattenedAABB(actor->aabb, extension), multiplier * displacement);
+                m_tree.UpdateProxy(actor->proxyId, newAabb);
+            }
             return;
         }
     }
