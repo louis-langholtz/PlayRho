@@ -478,7 +478,7 @@ World::World(const WorldDef& def):
     {
         throw InvalidArgument("max vertex radius must be >= min vertex radius");
     }
-    m_proxyPairs.reserve(1024);
+    m_proxyKeys.reserve(1024);
     m_proxies.reserve(1024);
 }
 
@@ -2261,7 +2261,7 @@ void World::UnregisterForProcessing(ProxyId pid) noexcept
 
 contact_count_t World::FindNewContacts()
 {
-    m_proxyPairs.clear();
+    m_proxyKeys.clear();
 
     std::for_each(cbegin(m_proxies), cend(m_proxies), [&](ProxyId pid) {
         const auto aabb = m_tree.GetAABB(pid);
@@ -2269,29 +2269,28 @@ contact_count_t World::FindNewContacts()
             // A proxy cannot form a pair with itself.
             if (nodeId != pid)
             {
-                const auto mm = std::minmax(nodeId, pid);
-                m_proxyPairs.push_back(ProxyIdPair{mm.first, mm.second});
+                m_proxyKeys.push_back(ContactKey{nodeId, pid});
             }
         });
     });
     m_proxies.clear();
 
-    std::sort(begin(m_proxyPairs), end(m_proxyPairs));
+    std::sort(begin(m_proxyKeys), end(m_proxyKeys));
 
     auto count = contact_count_t{0};
-    auto lastPair = ProxyIdPair{DynamicTree::InvalidIndex, DynamicTree::InvalidIndex};
-    std::for_each(cbegin(m_proxyPairs), cend(m_proxyPairs), [&](ProxyIdPair pair)
+    auto lastKey = ContactKey{};
+    std::for_each(cbegin(m_proxyKeys), cend(m_proxyKeys), [&](ContactKey key)
     {
-        if (pair != lastPair)
+        if (key != lastKey)
         {
-            const auto& proxyA = *static_cast<FixtureProxy*>(m_tree.GetUserData(pair.proxyIdA));
-            const auto& proxyB = *static_cast<FixtureProxy*>(m_tree.GetUserData(pair.proxyIdB));
+            const auto& proxyA = *static_cast<FixtureProxy*>(m_tree.GetUserData(key.GetMin()));
+            const auto& proxyB = *static_cast<FixtureProxy*>(m_tree.GetUserData(key.GetMax()));
             
             if (Add(proxyA, proxyB))
             {
                 ++count;
             }
-            lastPair = pair;
+            lastKey = key;
         }
     });
     return count;
@@ -2361,7 +2360,7 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
     // NOTE: Time trial testing found the following rough ordering of data structures, to be
     // fastest to slowest: std::vector, std::list, std::unorderered_set, std::unordered_map,
     //     std::set, std::map.
-    const auto key = ContactKey::Get(pidA, pidB);
+    const auto key = ContactKey{pidA, pidB};
     const auto searchBody = (bodyA->GetContacts().size() < bodyB->GetContacts().size())?
         bodyA: bodyB;
     
@@ -2369,7 +2368,7 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
     const auto it = std::find_if(cbegin(contacts), cend(contacts), [&](KeyedContactPtr ci) {
         return ci.first == key;
     });
-    if (it != end(contacts))
+    if (it != cend(contacts))
     {
         return false;
     }

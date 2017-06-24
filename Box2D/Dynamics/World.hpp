@@ -33,6 +33,7 @@
 #include <Box2D/Dynamics/WorldCallbacks.hpp>
 #include <Box2D/Dynamics/StepStats.hpp>
 #include <Box2D/Collision/DynamicTree.hpp>
+#include <Box2D/Dynamics/Contacts/ContactKey.hpp>
 
 #include <vector>
 #include <map>
@@ -329,7 +330,7 @@ private:
     using BodySet = std::unordered_set<const Body*>;
     using JointSet = std::unordered_set<const Joint*>;
     using ContactSet = std::unordered_set<const Contact*>;
-    using ProxyPairQueue = std::vector<ProxyIdPair>;
+    using ContactKeyQueue = std::vector<ContactKey>;
     using ProxyQueue = std::vector<ProxyId>;
     using FixtureQueue = std::vector<Fixture*>;
     using BodyQueue = std::vector<Body*>;
@@ -625,7 +626,7 @@ private:
     ContactSet m_contactsIslanded;
     JointSet m_jointsIslanded;
 
-    ProxyPairQueue m_proxyPairs;
+    ContactKeyQueue m_proxyKeys;
     ProxyQueue m_proxies;
     FixtureQueue m_fixturesForProxies;
     BodyQueue m_bodiesForProxies;

@@ -25,15 +25,9 @@
 
 using namespace box2d;
 
-ContactKey ContactKey::Get(contact_count_t a, contact_count_t b) noexcept
-{
-    const auto mm = std::minmax(a, b);
-    return ContactKey{mm.first, mm.second};
-}
-
 ContactKey box2d::GetContactKey(const FixtureProxy& fpA, const FixtureProxy& fpB) noexcept
 {
-    return ContactKey::Get(fpA.proxyId, fpB.proxyId);
+    return ContactKey{fpA.proxyId, fpB.proxyId};
 }
 
 ContactKey box2d::GetContactKey(const Fixture* fixtureA, child_count_t childIndexA,

@@ -377,7 +377,9 @@ using body_count_t = std::remove_const<decltype(MaxBodies)>::type;
 
 /// Contact count type.
 using contact_count_t = Wider<body_count_t>::type;
-    
+
+constexpr auto InvalidContactIndex = static_cast<contact_count_t>(-1);
+
 /// Maximum number of contacts in a world (2147319811).
 /// @details Uses the formula for the maximum number of edges in an undirectional graph of MaxBodies nodes. 
 /// This occurs when every possible body is connected to every other body.

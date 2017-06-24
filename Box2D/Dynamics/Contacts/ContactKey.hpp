@@ -26,6 +26,7 @@
 
 #include <Box2D/Common/Settings.hpp>
 #include <utility>
+#include <algorithm>
 #include <functional>
 #include <cassert>
 
@@ -39,87 +40,80 @@ namespace box2d
     class ContactKey
     {
     public:
-        static ContactKey Get(contact_count_t a, contact_count_t b) noexcept;
+        using Index = contact_count_t;
         
-        static constexpr std::size_t Hash(const ContactKey key) noexcept
+        constexpr ContactKey() noexcept
         {
-            // Use simple and fast Knuth multiplicative hash...
-            const auto a = std::size_t{key.m_fp1} * 2654435761u;
-            const auto b = std::size_t{key.m_fp2} * 2654435761u;
-            return a ^ b;
-        }
-
-        static constexpr int Compare(const ContactKey lhs, const ContactKey rhs)
-        {
-            if (lhs.m_fp1 < rhs.m_fp1)
-            {
-                return -1;
-            }
-            if (lhs.m_fp1 > rhs.m_fp1)
-            {
-                return +1;
-            }
-
-            // From here on lhs.m_fp1 == rhs.m_fp1
-            if (lhs.m_fp2 < rhs.m_fp2)
-            {
-                return -1;
-            }
-            if (lhs.m_fp2 > rhs.m_fp2)
-            {
-                return +1;
-            }
-
-            return 0;
+            // Intentionally empty
         }
         
+        constexpr ContactKey(Index fp1, Index fp2) noexcept:
+            m_ids{std::minmax(fp1, fp2)}
+        {
+            // Intentionally empty
+        }
+
+        constexpr Index GetMin() const noexcept
+        {
+            return m_ids.first;
+        }
+        
+        constexpr Index GetMax() const noexcept
+        {
+            return m_ids.second;
+        }
+
     private:
-        constexpr ContactKey(contact_count_t fp1, contact_count_t fp2) noexcept:
-        	m_fp1{fp1}, m_fp2{fp2}
-        {
-            assert(fp1 <= fp2);
-        }
-    
-        contact_count_t m_fp1; ///< Fixture proxy 1 (ID).
-        contact_count_t m_fp2; ///< Fixture proxy 2 (ID).
+        std::pair<Index, Index> m_ids{static_cast<Index>(-1), static_cast<Index>(-1)};
     };
+
+    constexpr bool operator== (const ContactKey lhs, const ContactKey rhs) noexcept
+    {
+        return lhs.GetMin() == rhs.GetMin() && lhs.GetMax() == rhs.GetMax();
+    }
     
+    constexpr bool operator!= (const ContactKey lhs, const ContactKey rhs) noexcept
+    {
+        return !(lhs == rhs);
+    }
+
+    constexpr bool operator< (const ContactKey lhs, const ContactKey rhs) noexcept
+    {
+        return (lhs.GetMin() < rhs.GetMin())
+            || ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() < rhs.GetMax()));
+    }
+    
+    constexpr bool operator<= (const ContactKey lhs, const ContactKey rhs) noexcept
+    {
+        return (lhs.GetMin() < rhs.GetMin())
+        || ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() <= rhs.GetMax()));
+    }
+    
+    constexpr bool operator> (const ContactKey lhs, const ContactKey rhs) noexcept
+    {
+        return (lhs.GetMin() > rhs.GetMin())
+            || ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() > rhs.GetMax()));
+    }
+    
+    constexpr bool operator>= (const ContactKey lhs, const ContactKey rhs) noexcept
+    {
+        return (lhs.GetMin() > rhs.GetMin())
+        || ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() >= rhs.GetMax()));
+    }
+
+    using KeyedContactPtr = std::pair<ContactKey, Contact*>;
     
     ContactKey GetContactKey(const FixtureProxy& fpA, const FixtureProxy& fpB) noexcept;
     
     ContactKey GetContactKey(const Fixture* fixtureA, child_count_t childIndexA,
                              const Fixture* fixtureB, child_count_t childIndexB) noexcept;
-
-    ContactKey GetContactKey(const Contact& contact) noexcept;
-
-    constexpr bool operator== (const box2d::ContactKey lhs,
-                               const box2d::ContactKey rhs) noexcept
-    {
-        return ContactKey::Compare(lhs, rhs) == 0;
-    }
     
-    constexpr bool operator!= (const box2d::ContactKey lhs,
-                               const box2d::ContactKey rhs) noexcept
-    {
-        return !(lhs == rhs);
-    }
-
-    using KeyedContactPtr = std::pair<ContactKey, Contact*>;
+    ContactKey GetContactKey(const Contact& contact) noexcept;
 
 } // namespace box2d
 
 namespace std
 {
-    template <>
-    struct less<box2d::ContactKey>
-    {
-        constexpr bool operator()(const box2d::ContactKey& lhs,
-                                  const box2d::ContactKey& rhs) const
-        {
-            return box2d::ContactKey::Compare(lhs, rhs) < 0;
-        }
-    };
-    
     template <>
     struct hash<box2d::ContactKey>
     {
@@ -128,16 +122,10 @@ namespace std
 
         constexpr std::size_t operator()(const box2d::ContactKey& key) const
         {
-            return box2d::ContactKey::Hash(key);
-        }
-    };
-    
-    template <>
-    struct equal_to<box2d::ContactKey>
-    {
-        constexpr bool operator()( const box2d::ContactKey& lhs, const box2d::ContactKey& rhs ) const
-        {
-            return box2d::ContactKey::Compare(lhs, rhs) == 0;
+            // Use simple and fast Knuth multiplicative hash...
+            const auto a = std::size_t{key.GetMin()} * 2654435761u;
+            const auto b = std::size_t{key.GetMax()} * 2654435761u;
+            return a ^ b;
         }
     };
 }
