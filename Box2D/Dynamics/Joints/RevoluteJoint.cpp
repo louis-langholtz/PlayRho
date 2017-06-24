@@ -230,22 +230,22 @@ bool RevoluteJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
 
     const auto vb = velB.linear + GetRevPerpendicular(m_rB) * velB.angular / Radian;
     const auto va = velA.linear + GetRevPerpendicular(m_rA) * velA.angular / Radian;
+    const auto vDelta = vb - va;
 
     // Solve limit constraint.
     if (m_enableLimit && (m_limitState != e_inactiveLimit) && !fixedRotation)
     {
-        const auto Cdot1 = vb - va;
         const auto Cdot = Vec3{
-            Cdot1.x / MeterPerSecond,
-            Cdot1.y / MeterPerSecond,
+            vDelta.x / MeterPerSecond,
+            vDelta.y / MeterPerSecond,
             (velB.angular - velA.angular) / RadianPerSecond
         };
         auto impulse = -Solve33(m_mass, Cdot);
 
         auto UpdateImpulseProc = [&]() {
             const auto rhs = -Vec2{
-                Cdot1.x / MeterPerSecond,
-                Cdot1.y / MeterPerSecond
+                vDelta.x / MeterPerSecond,
+                vDelta.y / MeterPerSecond
             } + m_impulse.z * Vec2{m_mass.ez.x, m_mass.ez.y};
             const auto reduced = Solve22(m_mass, rhs);
             impulse.x = reduced.x;
@@ -296,8 +296,7 @@ bool RevoluteJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
     else
     {
         // Solve point-to-point constraint
-        const auto Cdot = vb - va;
-        const auto impulse = Solve22(m_mass, -Vec2{Cdot.x / MeterPerSecond, Cdot.y / MeterPerSecond});
+        const auto impulse = Solve22(m_mass, -Vec2{vDelta.x / MeterPerSecond, vDelta.y / MeterPerSecond});
 
         m_impulse.x += impulse.x;
         m_impulse.y += impulse.y;
@@ -373,7 +372,7 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraints& bodies, const Cons
     }
 
     // Solve point-to-point constraint.
-    auto positionError = Length{0};
+    auto positionError = Area{0};
     {
         const auto qA = UnitVec2(posA.angular);
         const auto qB = UnitVec2(posB.angular);
@@ -382,7 +381,7 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraints& bodies, const Cons
         const auto rB = Length2D{Rotate(m_localAnchorB - bodiesB.GetLocalCenter(), qB)};
 
         const auto C = (posB.linear + rB) - (posA.linear + rA);
-        positionError = GetLength(C);
+        positionError = GetLengthSquared(C);
 
         const auto invMassA = bodiesA.GetInvMass();
         const auto invMassB = bodiesB.GetInvMass();
@@ -414,7 +413,7 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraints& bodies, const Cons
     bodiesA.SetPosition(posA);
     bodiesB.SetPosition(posB);
     
-    return (positionError <= conf.linearSlop) && (angularError <= conf.angularSlop);
+    return (positionError <= Square(conf.linearSlop)) && (angularError <= conf.angularSlop);
 }
 
 Length2D RevoluteJoint::GetAnchorA() const
