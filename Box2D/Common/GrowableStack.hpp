@@ -74,6 +74,11 @@ public:
     {
         return m_count;
     }
+    
+    constexpr bool Empty() const noexcept
+    {
+        return m_count == 0;
+    }
 
 private:
     T m_array[N];
