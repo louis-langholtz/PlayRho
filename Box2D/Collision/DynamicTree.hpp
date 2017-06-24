@@ -50,6 +50,12 @@ constexpr inline bool operator != (ProxyIdPair lhs, ProxyIdPair rhs)
     return !(lhs == rhs);
 }
 
+constexpr inline bool operator< (ProxyIdPair lhs, ProxyIdPair rhs)
+{
+    return (lhs.proxyIdA < rhs.proxyIdA)
+        || ((lhs.proxyIdA == rhs.proxyIdA) && (lhs.proxyIdB < rhs.proxyIdB));
+}
+
 /// @brief A dynamic AABB tree broad-phase, inspired by Nathanael Presson's btDbvt.
 ///
 /// @details A dynamic tree arranges data in a binary tree to accelerate
@@ -65,6 +71,7 @@ public:
 
     using size_type = std::remove_const<decltype(MaxContacts)>::type;
     using QueryCallback = std::function<bool(size_type)>;
+    using ForEachCallback = std::function<void(size_type)>;
 
     /// @brief Ray cast callback function.
     /// @note Return 0 to terminate raycasting, or > 0 to update the segment bounding box.
@@ -117,6 +124,8 @@ public:
     /// @brief Query an AABB for overlapping proxies.
     /// @note The callback instance is called for each proxy that overlaps the supplied AABB.
     void Query(const AABB aabb, QueryCallback callback) const;
+
+    void ForEach(const AABB aabb, ForEachCallback callback) const;
 
     /// @brief Ray-cast against the proxies in the tree.
     ///

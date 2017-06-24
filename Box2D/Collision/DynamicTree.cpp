@@ -555,6 +555,33 @@ DynamicTree::size_type DynamicTree::ComputeHeight(const size_type index) const n
     return 1 + Max(height1, height2);
 }
 
+void DynamicTree::ForEach(const AABB aabb, ForEachCallback callback) const
+{
+    GrowableStack<size_type, 256> stack;
+    stack.Push(m_root);
+    
+    while (!stack.Empty())
+    {
+        const auto index = stack.Pop();
+        if (index != InvalidIndex)
+        {
+            const auto node = m_nodes + index;
+            if (TestOverlap(node->aabb, aabb))
+            {
+                if (node->IsLeaf())
+                {
+                    callback(index);
+                }
+                else
+                {
+                    stack.Push(node->child1);
+                    stack.Push(node->child2);
+                }
+            }
+        }
+    }
+}
+
 void DynamicTree::Query(const AABB aabb, QueryCallback callback) const
 {
     GrowableStack<size_type, 256> stack;
@@ -563,26 +590,23 @@ void DynamicTree::Query(const AABB aabb, QueryCallback callback) const
     while (stack.GetCount() > 0)
     {
         const auto index = stack.Pop();
-        if (index == InvalidIndex)
+        if (index != InvalidIndex)
         {
-            continue;
-        }
-        
-        const auto node = m_nodes + index;
-        if (TestOverlap(node->aabb, aabb))
-        {
-            if (node->IsLeaf())
+            const auto node = m_nodes + index;
+            if (TestOverlap(node->aabb, aabb))
             {
-                const auto proceed = callback(index);
-                if (!proceed)
+                if (node->IsLeaf())
                 {
-                    return;
+                    if (!callback(index))
+                    {
+                        return;
+                    }
                 }
-            }
-            else
-            {
-                stack.Push(node->child1);
-                stack.Push(node->child2);
+                else
+                {
+                    stack.Push(node->child1);
+                    stack.Push(node->child2);
+                }
             }
         }
     }
