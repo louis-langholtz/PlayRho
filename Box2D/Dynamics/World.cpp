@@ -72,7 +72,9 @@
 #define BOX2D_MAGIC(x) (x)
 
 using std::begin;
+using std::cbegin;
 using std::end;
+using std::cend;
 
 namespace box2d
 {
@@ -2243,6 +2245,7 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
 
 void World::RegisterForProcessing(ProxyId pid) noexcept
 {
+    assert(pid != DynamicTree::InvalidIndex);
     m_proxies.push_back(pid);
 }
 
@@ -2260,41 +2263,35 @@ contact_count_t World::FindNewContacts()
 {
     m_proxyPairs.clear();
 
-    std::for_each(begin(m_proxies), end(m_proxies), [&](ProxyId pid) {
-        if (pid == DynamicTree::InvalidIndex)
-        {
-            return;
-        }
+    std::for_each(cbegin(m_proxies), cend(m_proxies), [&](ProxyId pid) {
         const auto aabb = m_tree.GetAABB(pid);
-        m_tree.Query(aabb, [&](DynamicTree::size_type nodeId) {
+        m_tree.ForEach(aabb, [&](DynamicTree::size_type nodeId) {
             // A proxy cannot form a pair with itself.
             if (nodeId != pid)
             {
-                m_proxyPairs.push_back(ProxyIdPair{Min(nodeId, pid), Max(nodeId, pid)});
+                const auto mm = std::minmax(nodeId, pid);
+                m_proxyPairs.push_back(ProxyIdPair{mm.first, mm.second});
             }
-            return true;
         });
     });
     m_proxies.clear();
 
-    std::sort(/*std::execution::par_unseq,*/ begin(m_proxyPairs), end(m_proxyPairs), [](ProxyIdPair p1, ProxyIdPair p2) {
-        return (p1.proxyIdA < p2.proxyIdA) || ((p1.proxyIdA == p2.proxyIdA) && (p1.proxyIdB < p2.proxyIdB));
-    });
+    std::sort(begin(m_proxyPairs), end(m_proxyPairs));
 
     auto count = contact_count_t{0};
-    auto lastPair = ProxyIdPair{static_cast<ProxyIdPair::size_type>(-1), static_cast<ProxyIdPair::size_type>(-1)};
-    std::for_each(begin(m_proxyPairs), end(m_proxyPairs), [&](ProxyIdPair primaryPair)
+    auto lastPair = ProxyIdPair{DynamicTree::InvalidIndex, DynamicTree::InvalidIndex};
+    std::for_each(cbegin(m_proxyPairs), cend(m_proxyPairs), [&](ProxyIdPair pair)
     {
-        if (primaryPair != lastPair)
+        if (pair != lastPair)
         {
-            const auto userDataA = m_tree.GetUserData(primaryPair.proxyIdA);
-            const auto userDataB = m_tree.GetUserData(primaryPair.proxyIdB);
+            const auto& proxyA = *static_cast<FixtureProxy*>(m_tree.GetUserData(pair.proxyIdA));
+            const auto& proxyB = *static_cast<FixtureProxy*>(m_tree.GetUserData(pair.proxyIdB));
             
-            if (Add(*static_cast<FixtureProxy*>(userDataA), *static_cast<FixtureProxy*>(userDataB)))
+            if (Add(proxyA, proxyB))
             {
                 ++count;
             }
-            lastPair = primaryPair;
+            lastPair = pair;
         }
     });
     return count;
@@ -2321,9 +2318,9 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
         return false;
     }
 
-#ifndef NDEBUG
     const auto pidA = proxyA.proxyId;
     const auto pidB = proxyB.proxyId;
+#ifndef NDEBUG
     assert(pidA != pidB);
     
     // The following assert fails on Windows
@@ -2364,12 +2361,12 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
     // NOTE: Time trial testing found the following rough ordering of data structures, to be
     // fastest to slowest: std::vector, std::list, std::unorderered_set, std::unordered_map,
     //     std::set, std::map.
-    const auto key = ContactKey::Get(proxyA, proxyB);
+    const auto key = ContactKey::Get(pidA, pidB);
     const auto searchBody = (bodyA->GetContacts().size() < bodyB->GetContacts().size())?
         bodyA: bodyB;
     
     const auto contacts = searchBody->GetContacts();
-    const auto it = std::find_if(begin(contacts), end(contacts), [&](KeyedContactPtr ci) {
+    const auto it = std::find_if(cbegin(contacts), cend(contacts), [&](KeyedContactPtr ci) {
         return ci.first == key;
     });
     if (it != end(contacts))
@@ -2393,11 +2390,6 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
     //
     m_contacts.emplace_back(fixtureA, proxyA.childIndex, fixtureB, proxyB.childIndex);
     const auto contact = GetContactPtr(m_contacts.back());
-    assert(contact);
-    if (!contact)
-    {
-        return false;
-    }
 
     BodyAtty::Insert(*bodyA, contact);
     BodyAtty::Insert(*bodyB, contact);

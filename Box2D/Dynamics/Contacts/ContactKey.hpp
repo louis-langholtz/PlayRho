@@ -27,6 +27,7 @@
 #include <Box2D/Common/Settings.hpp>
 #include <utility>
 #include <functional>
+#include <cassert>
 
 namespace box2d
 {
@@ -38,10 +39,7 @@ namespace box2d
     class ContactKey
     {
     public:
-        static ContactKey Get(const FixtureProxy& fpA, const FixtureProxy& fpB) noexcept;
-
-        static ContactKey Get(const Fixture* fixtureA, child_count_t childIndexA,
-                              const Fixture* fixtureB, child_count_t childIndexB) noexcept;
+        static ContactKey Get(contact_count_t a, contact_count_t b) noexcept;
         
         static constexpr std::size_t Hash(const ContactKey key) noexcept
         {
@@ -61,6 +59,8 @@ namespace box2d
             {
                 return +1;
             }
+
+            // From here on lhs.m_fp1 == rhs.m_fp1
             if (lhs.m_fp2 < rhs.m_fp2)
             {
                 return -1;
@@ -69,6 +69,7 @@ namespace box2d
             {
                 return +1;
             }
+
             return 0;
         }
         
@@ -76,13 +77,19 @@ namespace box2d
         constexpr ContactKey(contact_count_t fp1, contact_count_t fp2) noexcept:
         	m_fp1{fp1}, m_fp2{fp2}
         {
-            // Intentionally empty.
+            assert(fp1 <= fp2);
         }
     
         contact_count_t m_fp1; ///< Fixture proxy 1 (ID).
         contact_count_t m_fp2; ///< Fixture proxy 2 (ID).
     };
     
+    
+    ContactKey GetContactKey(const FixtureProxy& fpA, const FixtureProxy& fpB) noexcept;
+    
+    ContactKey GetContactKey(const Fixture* fixtureA, child_count_t childIndexA,
+                             const Fixture* fixtureB, child_count_t childIndexB) noexcept;
+
     ContactKey GetContactKey(const Contact& contact) noexcept;
 
     constexpr bool operator== (const box2d::ContactKey lhs,

@@ -25,27 +25,25 @@
 
 using namespace box2d;
 
-ContactKey ContactKey::Get(const FixtureProxy& fpA, const FixtureProxy& fpB) noexcept
+ContactKey ContactKey::Get(contact_count_t a, contact_count_t b) noexcept
 {
-    const auto pidA = fpA.proxyId;
-    const auto pidB = fpB.proxyId;
-    return (pidA < pidB)? ContactKey{pidA, pidB}: ContactKey{pidB, pidA};
+    const auto mm = std::minmax(a, b);
+    return ContactKey{mm.first, mm.second};
 }
 
-ContactKey ContactKey::Get(const Fixture* fixtureA, child_count_t childIndexA,
+ContactKey box2d::GetContactKey(const FixtureProxy& fpA, const FixtureProxy& fpB) noexcept
+{
+    return ContactKey::Get(fpA.proxyId, fpB.proxyId);
+}
+
+ContactKey box2d::GetContactKey(const Fixture* fixtureA, child_count_t childIndexA,
                                 const Fixture* fixtureB, child_count_t childIndexB) noexcept
 {
-#if 0
-    return (fixtureA < fixtureB)?
-  	  ContactKey{fixtureA, childIndexA, fixtureB, childIndexB}:
-  	  ContactKey{fixtureB, childIndexB, fixtureA, childIndexA};
-#else
-    return ContactKey::Get(*fixtureA->GetProxy(childIndexA), *fixtureB->GetProxy(childIndexB));
-#endif
+    return GetContactKey(*fixtureA->GetProxy(childIndexA), *fixtureB->GetProxy(childIndexB));
 }
 
 ContactKey box2d::GetContactKey(const Contact& contact) noexcept
 {
-    return ContactKey::Get(contact.GetFixtureA(), contact.GetChildIndexA(),
-                           contact.GetFixtureB(), contact.GetChildIndexB());
+    return GetContactKey(contact.GetFixtureA(), contact.GetChildIndexA(),
+                         contact.GetFixtureB(), contact.GetChildIndexB());
 }
