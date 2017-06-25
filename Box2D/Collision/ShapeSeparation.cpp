@@ -71,3 +71,52 @@ IndexPairSeparation box2d::GetMaxSeparation(const DistanceProxy& proxy1, const T
     }
     return indexPairSep;
 }
+
+IndexPairSeparation box2d::GetMaxSeparation(const DistanceProxy& proxy1,
+                                            const DistanceProxy& proxy2,
+                                            Length stop)
+{
+    // Find the max separation between proxy1 and proxy2 using edge normals from proxy1.
+    
+    auto indexPairSep = IndexPairSeparation{
+        -MaxFloat * Meter, IndexPairSeparation::InvalidIndex, IndexPairSeparation::InvalidIndex
+    };
+    
+    const auto count1 = proxy1.GetVertexCount();
+    const auto count2 = proxy2.GetVertexCount();
+    
+    for (auto i = decltype(count1){0}; i < count1; ++i)
+    {
+        // Get proxy1 normal and vertex relative to proxy2.
+        const auto normal = proxy1.GetNormal(i);
+        const auto offset = proxy1.GetVertex(i);
+        
+        // Search for the vector that's most anti-parallel to the normal.
+        // See: https://en.wikipedia.org/wiki/Antiparallel_(mathematics)#Antiparallel_vectors
+        auto ap = IndexSeparation{};
+        for (auto j = decltype(count2){0}; j < count2; ++j)
+        {
+            // Get distance from offset to proxy2.GetVertex(j) in direction of normal.
+            const auto s = Dot(normal, proxy2.GetVertex(j) - offset);
+            if (ap.separation > s)
+            {
+                ap.separation = s;
+                ap.index = static_cast<IndexSeparation::index_type>(j);
+            }
+        }
+        
+        if (ap.separation > stop)
+        {
+            return IndexPairSeparation{
+                ap.separation, static_cast<IndexSeparation::index_type>(i), ap.index
+            };
+        }
+        if (indexPairSep.separation < ap.separation)
+        {
+            indexPairSep.separation = ap.separation;
+            indexPairSep.index1 = static_cast<IndexSeparation::index_type>(i);
+            indexPairSep.index2 = ap.index;
+        }
+    }
+    return indexPairSep;
+}

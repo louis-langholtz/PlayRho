@@ -71,6 +71,14 @@ namespace box2d
     IndexPairSeparation GetMaxSeparation(const DistanceProxy& proxy1, const Transformation xf1,
                                          const DistanceProxy& proxy2, const Transformation xf2,
                                          Length stop = MaxFloat * Meter);
+
+    /// @brief Gets the max separation information.
+    /// @return Index of the vertex and normal from <code>proxy1</code>,
+    ///   index of the vertex from <code>proxy2</code> (that had the maximum separation
+    ///   distance from each other in the direction of that normal), and the maximal distance.
+    IndexPairSeparation GetMaxSeparation(const DistanceProxy& proxy1,
+                                         const DistanceProxy& proxy2,
+                                         Length stop = MaxFloat * Meter);
     
 } // namespace box2d
 
