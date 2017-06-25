@@ -171,10 +171,10 @@ namespace box2d {
         struct Point
         {
             /// Position of body A relative to world manifold point.
-            Length2D rA = GetInvalid<decltype(rA)>();
+            Length2D relA = GetInvalid<decltype(relA)>();
             
             /// Position of body B relative to world manifold point.
-            Length2D rB = GetInvalid<decltype(rB)>();
+            Length2D relB = GetInvalid<decltype(relB)>();
             
             /// Normal impulse.
             Momentum normalImpulse = GetInvalid<decltype(normalImpulse)>();
@@ -310,12 +310,12 @@ namespace box2d {
 
     inline Length2D VelocityConstraint::GetPointRelPosA(VelocityConstraint::size_type index) const noexcept
     {
-        return GetPointAt(index).rA;
+        return GetPointAt(index).relA;
     }
     
     inline Length2D VelocityConstraint::GetPointRelPosB(VelocityConstraint::size_type index) const noexcept
     {
-        return GetPointAt(index).rB;
+        return GetPointAt(index).relB;
     }
 
     /// Gets the normal of the velocity constraint contact in world coordinates.

@@ -109,8 +109,8 @@ VelocityConstraint::Point VelocityConstraint::GetPoint(Momentum normalImpulse, M
 
     point.normalImpulse = normalImpulse;
     point.tangentImpulse = tangentImpulse;
-    point.rA = rA;
-    point.rB = rB;
+    point.relA = rA;
+    point.relB = rB;
     point.velocityBias = (vn < -conf.velocityThreshold)? -GetRestitution() * vn: LinearVelocity{0};
     
     const auto invMass = GetInvMass();

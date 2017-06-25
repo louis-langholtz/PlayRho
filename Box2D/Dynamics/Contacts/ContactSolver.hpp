@@ -148,6 +148,13 @@ namespace box2d {
         return ConstraintSolverConf{}.UseResolutionRate(RealNum(0.2));
     }
     
+    inline ConstraintSolverConf GetDefaultToiPositionSolverConf()
+    {
+        // For solving TOI events, use a faster/higher resolution rate than normally used.
+        return ConstraintSolverConf{}.UseResolutionRate(RealNum(0.75));
+    }
+
+#if 0
     /// Solves the given position constraints.
     /// @details This updates positions (and nothing else) by calling the position constraint solving function.
     /// @note Can't expect the returned minimum separation to be greater than or equal to
@@ -158,12 +165,6 @@ namespace box2d {
     /// @sa Solve.
     Length SolvePositionConstraints(Span<PositionConstraint> positionConstraints,
                                      ConstraintSolverConf conf = GetDefaultPositionSolverConf());
-    
-    inline ConstraintSolverConf GetDefaultToiPositionSolverConf()
-    {
-        // For solving TOI events, use a faster/higher resolution rate than normally used.
-        return ConstraintSolverConf{}.UseResolutionRate(RealNum(0.75));
-    }
 
     /// Solves the given position constraints.
     ///
@@ -184,7 +185,8 @@ namespace box2d {
     Length SolvePositionConstraints(Span<PositionConstraint> positionConstraints,
                                     const BodyConstraint* bodiesA, const BodyConstraint* bodiesB,
                                     ConstraintSolverConf conf = GetDefaultToiPositionSolverConf());
-
+#endif
+    
     /// Solves the velocity constraint.
     ///
     /// @details This updates the tangent and normal impulses of the velocity constraint points of
