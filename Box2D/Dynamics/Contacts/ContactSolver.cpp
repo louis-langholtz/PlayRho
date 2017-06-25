@@ -109,8 +109,10 @@ inline Momentum SolveTangentConstraint(VelocityConstraint& vc)
         const auto newImpulse = Clamp(oldImpulse + lambda, -maxImpulse, maxImpulse);
         const auto incImpulse = newImpulse - oldImpulse;
         const auto P = incImpulse * direction;
-        newVelA -= Velocity{invMassA * P, invRotInertiaA * Cross(vcp.relA, P) / Radian};
-        newVelB += Velocity{invMassB * P, invRotInertiaB * Cross(vcp.relB, P) / Radian};
+        const auto LA = AngularMomentum{Cross(vcp.relA, P) / Radian};
+        const auto LB = AngularMomentum{Cross(vcp.relB, P) / Radian};
+        newVelA -= Velocity{invMassA * P, invRotInertiaA * LA};
+        newVelB += Velocity{invMassB * P, invRotInertiaB * LB};
         
         // Note that using newImpulse, instead of oldImpulse + incImpulse, results in
         // an iteration counts increase for the World.TilesComesToRest unit test.
@@ -128,8 +130,10 @@ inline Momentum SolveTangentConstraint(VelocityConstraint& vc)
         const auto newImpulse = Clamp(oldImpulse + lambda, -maxImpulse, maxImpulse);
         const auto incImpulse = newImpulse - oldImpulse;
         const auto P = incImpulse * direction;
-        newVelA -= Velocity{invMassA * P, invRotInertiaA * Cross(vcp.relA, P) / Radian};
-        newVelB += Velocity{invMassB * P, invRotInertiaB * Cross(vcp.relB, P) / Radian};
+        const auto LA = AngularMomentum{Cross(vcp.relA, P) / Radian};
+        const auto LB = AngularMomentum{Cross(vcp.relB, P) / Radian};
+        newVelA -= Velocity{invMassA * P, invRotInertiaA * LA};
+        newVelB += Velocity{invMassB * P, invRotInertiaB * LB};
 
         // Note that using newImpulse, instead of oldImpulse + incImpulse, results in
         // an iteration counts increase for the World.TilesComesToRest unit test.
@@ -174,8 +178,10 @@ inline Momentum SeqSolveNormalConstraint(VelocityConstraint& vc)
         const auto newImpulse = std::max(oldImpulse + lambda, Momentum{0});
         const auto incImpulse = newImpulse - oldImpulse;
         const auto P = incImpulse * direction;
-        newVelA -= Velocity{invMassA * P, invRotInertiaA * Cross(vcp.relA, P) / Radian};
-        newVelB += Velocity{invMassB * P, invRotInertiaB * Cross(vcp.relB, P) / Radian};
+        const auto LA = AngularMomentum{Cross(vcp.relA, P) / Radian};
+        const auto LB = AngularMomentum{Cross(vcp.relB, P) / Radian};
+        newVelA -= Velocity{invMassA * P, invRotInertiaA * LA};
+        newVelB += Velocity{invMassB * P, invRotInertiaB * LB};
         vc.SetNormalImpulseAtPoint(1, oldImpulse + incImpulse);
         maxIncImpulse = std::max(maxIncImpulse, Abs(incImpulse));
     }
@@ -188,8 +194,10 @@ inline Momentum SeqSolveNormalConstraint(VelocityConstraint& vc)
         const auto newImpulse = std::max(oldImpulse + lambda, Momentum{0});
         const auto incImpulse = newImpulse - oldImpulse;
         const auto P = incImpulse * direction;
-        newVelA -= Velocity{invMassA * P, invRotInertiaA * Cross(vcp.relA, P) / Radian};
-        newVelB += Velocity{invMassB * P, invRotInertiaB * Cross(vcp.relB, P) / Radian};
+        const auto LA = AngularMomentum{Cross(vcp.relA, P) / Radian};
+        const auto LB = AngularMomentum{Cross(vcp.relB, P) / Radian};
+        newVelA -= Velocity{invMassA * P, invRotInertiaA * LA};
+        newVelB += Velocity{invMassB * P, invRotInertiaB * LB};
         vc.SetNormalImpulseAtPoint(0, oldImpulse + incImpulse);
         maxIncImpulse = std::max(maxIncImpulse, Abs(incImpulse));
     }
@@ -418,7 +426,10 @@ inline Momentum BlockSolveNormalConstraint(VelocityConstraint& vc)
         const auto vn2 = Dot(dv1, normal);
 
         // Compute b
-        const auto b = LinearVelocity2D{vn1 - vc.GetVelocityBiasAtPoint(0), vn2 - vc.GetVelocityBiasAtPoint(1)};
+        const auto b = LinearVelocity2D{
+            vn1 - vc.GetVelocityBiasAtPoint(0),
+            vn2 - vc.GetVelocityBiasAtPoint(1)
+        };
 
         // Return b'
         return StripUnits(b) - Transform(StripUnits(GetNormalImpulses(vc)), K);
@@ -483,13 +494,16 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
     assert(IsValid(conf.linearSlop));
     assert(IsValid(conf.maxLinearCorrection));
 
-    const auto invMassA = moveA? pc.GetBodyA()->GetInvMass(): InvMass{0};
-    const auto invRotInertiaA = moveA? pc.GetBodyA()->GetInvRotInertia(): InvRotInertia{0};
-    const auto localCenterA = pc.GetBodyA()->GetLocalCenter();
+    const auto bodyA = pc.GetBodyA();
+    const auto bodyB = pc.GetBodyB();
 
-    const auto invMassB = moveB? pc.GetBodyB()->GetInvMass(): InvMass{0};
-    const auto invRotInertiaB = moveB? pc.GetBodyB()->GetInvRotInertia(): InvRotInertia{0};
-    const auto localCenterB = pc.GetBodyB()->GetLocalCenter();
+    const auto invMassA = moveA? bodyA->GetInvMass(): InvMass{0};
+    const auto invRotInertiaA = moveA? bodyA->GetInvRotInertia(): InvRotInertia{0};
+    const auto localCenterA = bodyA->GetLocalCenter();
+
+    const auto invMassB = moveB? bodyB->GetInvMass(): InvMass{0};
+    const auto invRotInertiaB = moveB? bodyB->GetInvRotInertia(): InvRotInertia{0};
+    const auto localCenterB = bodyB->GetLocalCenter();
 
     // Compute inverse mass total.
     // This must be > 0 unless doing TOI solving and neither bodies were the bodies specified.
@@ -523,21 +537,23 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
         const auto C = -Clamp(conf.resolutionRate * (separation + conf.linearSlop),
                               -conf.maxLinearCorrection, Length{0});
 
-        // Compute normal impulse
-        const auto P = Length2D{psm.m_normal * C} / K;
+        // Compute response factors...
+        const auto P = Length2D{psm.m_normal * C} / K; // L M
+        const auto LA = Cross(rA, P) / Radian; // L^2 M QP^-1
+        const auto LB = Cross(rB, P) / Radian; // L^2 M QP^-1
 
-        // Cross(rA, P) is: L^2 M.
-        // InvRotInertia is: L^-2 M^-1 QP^2
-        // Product is: QP^2
+        // InvMass is M^-1, and InvRotInertia is L^-2 M^-1 QP^2.
+        // Product of InvMass * P is: L
+        // Product of InvRotInertia * L{A,B} is: QP
         return PositionSolution{
-            -Position{invMassA * P, invRotInertiaA * Cross(rA, P) / Radian},
-            +Position{invMassB * P, invRotInertiaB * Cross(rB, P) / Radian},
+            -Position{invMassA * P, invRotInertiaA * LA},
+            +Position{invMassB * P, invRotInertiaB * LB},
             separation
         };
     };
 
-    auto posA = pc.GetBodyA()->GetPosition();
-    auto posB = pc.GetBodyB()->GetPosition();
+    auto posA = bodyA->GetPosition();
+    auto posB = bodyB->GetPosition();
 
     // Solve normal constraints
     const auto pointCount = pc.manifold.GetPointCount();

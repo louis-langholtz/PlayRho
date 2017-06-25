@@ -1222,14 +1222,18 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island is
     results.positionIterations = conf.regPositionIterations;
     const auto h = conf.GetTime(); ///< Time step.
 
+    // Update bodies' pos0 values.
+    std::for_each(cbegin(island.m_bodies), cend(island.m_bodies), [&](Body* body) {
+        BodyAtty::SetPosition0(*body, GetPosition1(*body)); // like Advance0(1) on the sweep.
+    });
+
+    // Copy bodies' pos1 and velocity data into local arrays.
     auto bodyConstraints = BodyConstraints{};
     bodyConstraints.reserve(island.m_bodies.size());
-
-    // Update bodies' pos0 values then copy their pos1 and velocity data into local arrays.
-    std::for_each(begin(island.m_bodies), end(island.m_bodies), [&](Body* body) {
-        BodyAtty::SetPosition0(*body, GetPosition1(*body)); // like Advance0(1) on the sweep.
-        bodyConstraints[body] = GetBodyConstraint(*body, h); // new velocity = acceleration * h
+    std::for_each(cbegin(island.m_bodies), cend(island.m_bodies), [&](const Body* body) {
+        bodyConstraints[body] = GetBodyConstraint(*body, h); // velocity += acceleration * h
     });
+    
     auto posConstraints = GetPositionConstraints(island.m_contacts, bodyConstraints);
     auto velConstraints = GetVelocityConstraints(island.m_contacts, bodyConstraints,
                                                       GetRegVelocityConstraintConf(conf));
@@ -1241,7 +1245,7 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island is
 
     const auto psConf = GetRegConstraintSolverConf(conf);
 
-    std::for_each(begin(island.m_joints), end(island.m_joints), [&](Joint* joint) {
+    std::for_each(cbegin(island.m_joints), cend(island.m_joints), [&](Joint* joint) {
         JointAtty::InitVelocityConstraints(*joint, bodyConstraints, conf, psConf);
     });
     
@@ -1249,7 +1253,7 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island is
     for (auto i = decltype(conf.regVelocityIterations){0}; i < conf.regVelocityIterations; ++i)
     {
         auto jointsOkay = true;
-        std::for_each(begin(island.m_joints), end(island.m_joints), [&](Joint* j) {
+        std::for_each(cbegin(island.m_joints), cend(island.m_joints), [&](Joint* j) {
             jointsOkay &= JointAtty::SolveVelocityConstraints(*j, bodyConstraints, conf);
         });
 
@@ -1281,7 +1285,7 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island is
         const auto contactsOkay = (minSeparation >= conf.regMinSeparation);
 
         auto jointsOkay = true;
-        std::for_each(begin(island.m_joints), end(island.m_joints), [&](Joint* j) {
+        std::for_each(cbegin(island.m_joints), cend(island.m_joints), [&](Joint* j) {
             jointsOkay &= JointAtty::SolvePositionConstraints(*j, bodyConstraints, psConf);
         });
 
@@ -1295,12 +1299,12 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island is
     }
     
     // Update normal and tangent impulses of contacts' manifold points
-    std::for_each(begin(velConstraints), end(velConstraints), [&](const VelocityConstraint& vc) {
+    std::for_each(cbegin(velConstraints), cend(velConstraints), [&](const VelocityConstraint& vc) {
         auto& manifold = ContactAtty::GetMutableManifold(*island.m_contacts[vc.GetContactIndex()]);
         AssignImpulses(manifold, vc);
     });
     
-    std::for_each(begin(island.m_bodies), end(island.m_bodies), [&](Body* b) {
+    std::for_each(cbegin(island.m_bodies), cend(island.m_bodies), [&](Body* b) {
         const auto& constraint = bodyConstraints.at(b);
         UpdateBody(*b, constraint.GetPosition(), constraint.GetVelocity());
     });

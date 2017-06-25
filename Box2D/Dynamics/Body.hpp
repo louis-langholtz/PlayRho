@@ -1061,7 +1061,7 @@ inline Torque GetTorque(const Body& body) noexcept
 /// @warning Behavior is undefined if the given elapsed time is an invalid value (like NaN).
 /// @param body Body to get the velocity for.
 /// @param h Time elapsed to get velocity for. Behavior is undefined if this value is invalid.
-Velocity GetVelocity(const Body& body, Time h) noexcept;
+Velocity GetVelocity(const Body& body, const Time h) noexcept;
 
 size_t GetWorldIndex(const Body* body);
 

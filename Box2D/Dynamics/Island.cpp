@@ -121,33 +121,11 @@ arrays to increase the number of cache hits. Linear and angular velocity are
 stored in a single array since multiple arrays lead to multiple misses.
 */
 
-/*
-2D Rotation
-
-R = [cos(theta) -sin(theta)]
-    [sin(theta) cos(theta) ]
-
-thetaDot = omega
-
-Let q1 = cos(theta), q2 = sin(theta).
-R = [q1 -q2]
-    [q2  q1]
-
-q1Dot = -thetaDot * q2
-q2Dot = thetaDot * q1
-
-q1_new = q1_old - dt * w * q2
-q2_new = q2_old + dt * w * q1
-then normalize.
-
-This might be faster than computing sin+cos.
-However, we can compute sin+cos of the same angle fast.
-*/
-
 using namespace box2d;
 
-using std::begin;
-using std::end;
+using std::count_if;
+using std::cbegin;
+using std::cend;
 
 Island::Island(Bodies::size_type bodyCapacity,
                Contacts::size_type contactCapacity,
@@ -160,18 +138,18 @@ Island::Island(Bodies::size_type bodyCapacity,
 
 std::size_t box2d::Count(const Island& island, const Body* entry)
 {
-    return static_cast<std::size_t>(std::count_if(begin(island.m_bodies), end(island.m_bodies),
-                                                  [&](const Body *b) { return b == entry; }));
+    return static_cast<std::size_t>(count_if(cbegin(island.m_bodies), cend(island.m_bodies),
+                                             [&](const Body *b) { return b == entry; }));
 }
 
 std::size_t box2d::Count(const Island& island, const Contact* entry)
 {
-    return static_cast<std::size_t>(std::count_if(begin(island.m_contacts), end(island.m_contacts),
-                                                  [&](const Contact *c) { return c == entry; }));
+    return static_cast<std::size_t>(count_if(cbegin(island.m_contacts), cend(island.m_contacts),
+                                             [&](const Contact *c) { return c == entry; }));
 }
 
 std::size_t box2d::Count(const Island& island, const Joint* entry)
 {
-    return static_cast<std::size_t>(std::count_if(begin(island.m_joints), end(island.m_joints),
-                                                  [&](const Joint *j) { return j == entry; }));
+    return static_cast<std::size_t>(count_if(cbegin(island.m_joints), cend(island.m_joints),
+                                             [&](const Joint *j) { return j == entry; }));
 }

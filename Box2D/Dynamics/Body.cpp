@@ -436,7 +436,7 @@ box2d::size_t box2d::GetWorldIndex(const Body* body)
     return size_t(-1);
 }
 
-Velocity box2d::GetVelocity(const Body& body, Time h) noexcept
+Velocity box2d::GetVelocity(const Body& body, const Time h) noexcept
 {
     // Integrate velocity and apply damping.
     auto velocity = body.GetVelocity();
