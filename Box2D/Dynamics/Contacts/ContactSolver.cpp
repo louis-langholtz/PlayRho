@@ -68,38 +68,6 @@ struct ImpulseChange
     UnitVec2 direction; ///< Direction.
 };
 
-inline ImpulseChange SolveTangentConstraint(const VelocityConstraint& vc,
-                                                      const VelocityConstraint::size_type i)
-{
-    const auto direction = vc.GetTangent();
-    const auto velA = vc.GetBodyA()->GetVelocity();
-    const auto velB = vc.GetBodyB()->GetVelocity();
-    const auto vcp = vc.GetPointAt(i);
-
-    const auto closingVel = GetContactRelVelocity(velA, vcp.relA, velB, vcp.relB);
-    const auto directionalVel = vc.GetTangentSpeed() - Dot(closingVel, direction);
-
-    // Compute tangent force
-    const auto lambda = vcp.tangentMass * directionalVel;
-
-    // Clamp the accumulated force
-    //
-    // Notes:
-    //
-    //   vc.GetFriction() can return any value between 0 and +Inf. If it's +Inf,
-    //   multiplying it by any non-zero non-NaN value results in +/-Inf, and multiplying
-    //   it by zero or NaN results in NaN.
-    //
-    //   Meanwhile the normal impulse at the point can often be 0.
-    //
-    const auto maxImpulse = vc.GetFriction() * vcp.normalImpulse;
-    const auto oldImpulse = vcp.tangentImpulse;
-    const auto newImpulse = Clamp(oldImpulse + lambda, -maxImpulse, maxImpulse);
-    const auto incImpulse = newImpulse - oldImpulse;
-
-    return ImpulseChange{incImpulse, direction};
-}
-
 inline ImpulseChange SolveNormalConstraint(const VelocityConstraint& vc,
                                            const VelocityConstraint::size_type i)
 {
@@ -165,7 +133,11 @@ inline Momentum SolveTangentConstraint(VelocityConstraint& vc)
         const auto P = incImpulse * direction;
         newVelA -= Velocity{invMassA * P, invRotInertiaA * Cross(vcp.relA, P) / Radian};
         newVelB += Velocity{invMassB * P, invRotInertiaB * Cross(vcp.relB, P) / Radian};
+        
+        // Note that using newImpulse, instead of oldImpulse + incImpulse, results in
+        // an iteration counts increase for the World.TilesComesToRest unit test.
         vc.SetTangentImpulseAtPoint(1, oldImpulse + incImpulse);
+
         maxIncImpulse = std::max(maxIncImpulse, Abs(incImpulse));
     }
     {
@@ -180,7 +152,11 @@ inline Momentum SolveTangentConstraint(VelocityConstraint& vc)
         const auto P = incImpulse * direction;
         newVelA -= Velocity{invMassA * P, invRotInertiaA * Cross(vcp.relA, P) / Radian};
         newVelB += Velocity{invMassB * P, invRotInertiaB * Cross(vcp.relB, P) / Radian};
+
+        // Note that using newImpulse, instead of oldImpulse + incImpulse, results in
+        // an iteration counts increase for the World.TilesComesToRest unit test.
         vc.SetTangentImpulseAtPoint(0, oldImpulse + incImpulse);
+        
         maxIncImpulse = std::max(maxIncImpulse, Abs(incImpulse));
     }
 
@@ -194,10 +170,14 @@ inline Momentum SeqSolveNormalConstraint(VelocityConstraint& vc)
 {
     auto maxIncImpulse = Momentum{0};
 
-    const auto invRotInertiaA = vc.GetBodyA()->GetInvRotInertia();
-    const auto invRotInertiaB = vc.GetBodyB()->GetInvRotInertia();
-
+    const auto bodyA = vc.GetBodyA();
+    const auto bodyB = vc.GetBodyB();
     const auto count = vc.GetPointCount();
+
+    const auto invRotInertiaA = bodyA->GetInvRotInertia();
+    
+    const auto invRotInertiaB = bodyB->GetInvRotInertia();
+
     assert((count == 1) || (count == 2));
     switch (count)
     {
@@ -206,11 +186,11 @@ inline Momentum SeqSolveNormalConstraint(VelocityConstraint& vc)
             const auto solution = SolveNormalConstraint(vc, 1);
             const auto P = solution.magnitude * solution.direction;
             const auto vcp = vc.GetPointAt(1);
-            vc.GetBodyA()->SetVelocity(vc.GetBodyA()->GetVelocity() - Velocity{
-                vc.GetBodyA()->GetInvMass() * P, invRotInertiaA * Cross(vcp.relA, P) / Radian
+            bodyA->SetVelocity(bodyA->GetVelocity() - Velocity{
+                bodyA->GetInvMass() * P, invRotInertiaA * Cross(vcp.relA, P) / Radian
             });
-            vc.GetBodyB()->SetVelocity(vc.GetBodyB()->GetVelocity() + Velocity{
-                vc.GetBodyB()->GetInvMass() * P, invRotInertiaB * Cross(vcp.relB, P) / Radian
+            bodyB->SetVelocity(bodyB->GetVelocity() + Velocity{
+                bodyB->GetInvMass() * P, invRotInertiaB * Cross(vcp.relB, P) / Radian
             });
             vc.SetNormalImpulseAtPoint(1, vcp.normalImpulse + solution.magnitude);
             maxIncImpulse = std::max(maxIncImpulse, Abs(solution.magnitude));
@@ -221,11 +201,11 @@ inline Momentum SeqSolveNormalConstraint(VelocityConstraint& vc)
             const auto solution = SolveNormalConstraint(vc, 0);
             const auto P = solution.magnitude * solution.direction;
             const auto vcp = vc.GetPointAt(0);
-            vc.GetBodyA()->SetVelocity(vc.GetBodyA()->GetVelocity() - Velocity{
-                vc.GetBodyA()->GetInvMass() * P, invRotInertiaA * Cross(vcp.relA, P) / Radian
+            bodyA->SetVelocity(bodyA->GetVelocity() - Velocity{
+                bodyA->GetInvMass() * P, invRotInertiaA * Cross(vcp.relA, P) / Radian
             });
-            vc.GetBodyB()->SetVelocity(vc.GetBodyB()->GetVelocity() + Velocity{
-                vc.GetBodyB()->GetInvMass() * P, invRotInertiaB * Cross(vcp.relB, P) / Radian
+            bodyB->SetVelocity(bodyB->GetVelocity() + Velocity{
+                bodyB->GetInvMass() * P, invRotInertiaB * Cross(vcp.relB, P) / Radian
             });
             vc.SetNormalImpulseAtPoint(0, vcp.normalImpulse + solution.magnitude);
             maxIncImpulse = std::max(maxIncImpulse, Abs(solution.magnitude));
