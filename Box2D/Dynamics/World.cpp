@@ -377,24 +377,30 @@ namespace {
     /// @pre <code>UpdateVelocityConstraints</code> has been called on the velocity constraints.
     /// @return Maximum momentum used for solving both the tangential and normal portions of
     ///   the velocity constraints.
-    inline Momentum SolveVelocityConstraints(VelocityConstraints& velConstraints)
+    inline Momentum SolveVelocityConstraintsViaGS(VelocityConstraints& velConstraints)
     {
         auto maxIncImpulse = Momentum{0};
         std::for_each(begin(velConstraints), end(velConstraints), [&](VelocityConstraint& vc)
         {
-            maxIncImpulse = std::max(maxIncImpulse, SolveVelocityConstraint(vc));
+            maxIncImpulse = std::max(maxIncImpulse, GaussSeidel::SolveVelocityConstraint(vc));
         });
         return maxIncImpulse;
     }
     
-    Length SolvePositionConstraints(PositionConstraints& posConstraints,
+    /// Solves the given position constraints.
+    /// @details This updates positions (and nothing else) by calling the position constraint solving function.
+    /// @note Can't expect the returned minimum separation to be greater than or equal to
+    ///  <code>-conf.linearSlop</code> because code won't push the separation above this
+    ///   amount to begin with.
+    /// @return Minimum separation.
+    Length SolvePositionConstraintsViaGS(PositionConstraints& posConstraints,
                                     ConstraintSolverConf conf)
     {
         auto minSeparation = std::numeric_limits<RealNum>::infinity() * Meter;
         
         std::for_each(begin(posConstraints), end(posConstraints), [&](PositionConstraint &pc) {
             assert(pc.GetBodyA() != pc.GetBodyB()); // Confirms ContactManager::Add() did its job.
-            const auto res = SolvePositionConstraint(pc, true, true, conf);
+            const auto res = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
             pc.GetBodyA()->SetPosition(res.pos_a);
             pc.GetBodyB()->SetPosition(res.pos_b);
             minSeparation = Min(minSeparation, res.min_separation);
@@ -404,6 +410,22 @@ namespace {
     }
     
 #if 0
+    /// Solves the given position constraints.
+    ///
+    /// @details This updates positions (and nothing else) for the two bodies identified by the
+    ///   given indexes by calling the position constraint solving function.
+    ///
+    /// @note Can't expect the returned minimum separation to be greater than or equal to
+    ///  <code>ConstraintSolverConf.max_separation</code> because code won't push the separation
+    ///   above this amount to begin with.
+    ///
+    /// @param positionConstraints Positions constraints.
+    /// @param bodiesA Pointer to body constraint for body A.
+    /// @param bodiesB Pointer to body constraint for body B.
+    /// @param conf Configuration for solving the constraint.
+    ///
+    /// @return Minimum separation (which is the same as the max amount of penetration/overlap).
+    ///
     Length SolvePositionConstraints(PositionConstraints& posConstraints,
                                     const BodyConstraint* bodiesA, const BodyConstraint* bodiesB,
                                     ConstraintSolverConf conf)
@@ -1166,9 +1188,10 @@ RegStepStats World::SolveReg(const StepConf& conf)
 
 #if defined(DO_THREADED)
             // Updates bodies' sweep.pos0 to current sweep.pos1 and bodies' sweep.pos1 to new positions
-            futures.push_back(std::async(std::launch::async, &World::SolveRegIsland, this, conf, island));
+            futures.push_back(std::async(std::launch::async, &World::SolveRegIslandViaGS,
+                                         this, conf, island));
 #else
-            const auto solverResults = SolveRegIsland(conf, island);
+            const auto solverResults = SolveRegIslandViaGS(conf, island);
             stats.maxIncImpulse = Max(stats.maxIncImpulse, solverResults.maxIncImpulse);
             stats.minSeparation = Min(stats.minSeparation, solverResults.minSeparation);
             if (solverResults.solved)
@@ -1216,7 +1239,7 @@ RegStepStats World::SolveReg(const StepConf& conf)
     return stats;
 }
 
-World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island island)
+World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Island island)
 {
     auto results = IslandSolverResults{};
     results.positionIterations = conf.regPositionIterations;
@@ -1259,7 +1282,7 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island is
 
         // Note that the new incremental impulse can potentially be orders of magnitude
         // greater than the last incremental impulse used in this loop.
-        const auto newIncImpulse = SolveVelocityConstraints(velConstraints);
+        const auto newIncImpulse = SolveVelocityConstraintsViaGS(velConstraints);
         results.maxIncImpulse = std::max(results.maxIncImpulse, newIncImpulse);
 
         if (jointsOkay && (newIncImpulse == Momentum{0}))
@@ -1280,7 +1303,7 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island is
     // Solve position constraints
     for (auto i = decltype(conf.regPositionIterations){0}; i < conf.regPositionIterations; ++i)
     {
-        const auto minSeparation = SolvePositionConstraints(posConstraints, psConf);
+        const auto minSeparation = SolvePositionConstraintsViaGS(posConstraints, psConf);
         results.minSeparation = Min(results.minSeparation, minSeparation);
         const auto contactsOkay = (minSeparation >= conf.regMinSeparation);
 
@@ -1438,7 +1461,7 @@ World::ContactToiData World::GetSoonestContacts(const size_t reserveSize)
     return ContactToiData{minContacts, minToi};
 }
 
-ToiStepStats World::SolveTOI(const StepConf& conf)
+ToiStepStats World::SolveToi(const StepConf& conf)
 {
     auto stats = ToiStepStats{};
 
@@ -1484,7 +1507,7 @@ ToiStepStats World::SolveTOI(const StepConf& conf)
                 assert(IsActive(*contact));
                 assert(IsImpenetrable(*contact));
 
-                const auto solverResults = SolveTOI(conf, *contact);
+                const auto solverResults = SolveToi(conf, *contact);
                 stats.minSeparation = Min(stats.minSeparation, solverResults.minSeparation);
                 stats.maxIncImpulse = Max(stats.maxIncImpulse, solverResults.maxIncImpulse);
                 if (solverResults.solved)
@@ -1533,10 +1556,10 @@ ToiStepStats World::SolveTOI(const StepConf& conf)
     return stats;
 }
 
-World::IslandSolverResults World::SolveTOI(const StepConf& conf, Contact& contact)
+World::IslandSolverResults World::SolveToi(const StepConf& conf, Contact& contact)
 {
     // Note:
-    //   This method is what used to be b2World::SolveTOI(const b2TimeStep& step).
+    //   This method is what used to be b2World::SolveToi(const b2TimeStep& step).
     //   It also differs internally from Erin's implementation.
     //
     //   Here's some specific behavioral differences:
@@ -1667,10 +1690,10 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Contact& contac
     //
     // Note: subConf is written the way it is because MSVS2017 emitted errors when
     //   written as:
-    //     SolveTOI(StepConf{conf}.SetTime((1 - toi) * conf.GetTime()), island);
+    //     SolveToi(StepConf{conf}.SetTime((1 - toi) * conf.GetTime()), island);
     //
     StepConf subConf{conf};
-    auto results = SolveTOI(subConf.SetTime((1 - toi) * conf.GetTime()), island);
+    auto results = SolveToiViaGS(subConf.SetTime((1 - toi) * conf.GetTime()), island);
     results.contactsUpdated += contactsUpdated;
     results.contactsSkipped += contactsSkipped;
     return results;
@@ -1683,7 +1706,7 @@ void World::UpdateBody(Body& body, const Position& pos, const Velocity& vel)
     BodyAtty::SetTransformation(body, GetTransformation(GetPosition1(body), body.GetLocalCenter()));
 }
 
-World::IslandSolverResults World::SolveTOI(const StepConf& conf, Island& island)
+World::IslandSolverResults World::SolveToiViaGS(const StepConf& conf, Island& island)
 {
     auto results = IslandSolverResults{};
     auto bodyConstraints = BodyConstraints{};
@@ -1728,15 +1751,15 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Island& island)
         {
             //
             // Note: There are two flavors of the SolvePositionConstraints function.
-            //   One takes an extra two arguments that are the indexes of two bodies that are okay to
-            //   move. The other one does not.
-            //   Calling the selective solver (that takes the two additional arguments) appears to
-            //   result in phsyics simulations that are more prone to tunneling. Meanwhile, using the
-            //   non-selective solver would presumably be slower (since it appears to have more that
-            //   it will do). Assuming that slower is preferable to tunnelling, then the non-selective
-            //   function is the one to be calling here.
+            //   One takes an extra two arguments that are the indexes of two bodies that are
+            //   okay tomove. The other one does not.
+            //   Calling the selective solver (that takes the two additional arguments) appears
+            //   to result in phsyics simulations that are more prone to tunneling. Meanwhile,
+            //   using the non-selective solver would presumably be slower (since it appears to
+            //   have more that it will do). Assuming that slower is preferable to tunnelling,
+            //   then the non-selective function is the one to be calling here.
             //
-            const auto minSeparation = SolvePositionConstraints(posConstraints, psConf);
+            const auto minSeparation = SolvePositionConstraintsViaGS(posConstraints, psConf);
             results.minSeparation = Min(results.minSeparation, minSeparation);
             if (minSeparation >= conf.toiMinSeparation)
             {
@@ -1780,7 +1803,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Island& island)
     results.velocityIterations = conf.toiVelocityIterations;
     for (auto i = decltype(conf.toiVelocityIterations){0}; i < conf.toiVelocityIterations; ++i)
     {
-        const auto newIncImpulse = SolveVelocityConstraints(velConstraints);
+        const auto newIncImpulse = SolveVelocityConstraintsViaGS(velConstraints);
         if (newIncImpulse == Momentum(0))
         {
             // No body related velocity constraints were out of tolerance.
@@ -1994,7 +2017,7 @@ StepStats World::Step(const StepConf& conf)
             // Handle TOI events.
             if (conf.doToi)
             {
-                stepStats.toi = SolveTOI(conf);
+                stepStats.toi = SolveToi(conf);
             }
         }
     }

@@ -132,17 +132,6 @@ namespace box2d {
         return *this;
     }
 
-    /// Solves the given position constraint.
-    /// @details
-    /// This pushes apart the two given positions for every point in the contact position constraint
-    /// and returns the minimum separation value from the position solver manifold for each point.
-    /// @sa http://allenchou.net/2013/12/game-physics-resolution-contact-constraints/
-    /// @return Minimum separation distance of the position constraint's manifold points
-    ///   (prior to "solving").
-    PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
-                                             const bool moveA, const bool moveB,
-                                             ConstraintSolverConf conf);
-    
     inline ConstraintSolverConf GetDefaultPositionSolverConf()
     {
         return ConstraintSolverConf{}.UseResolutionRate(RealNum(0.2));
@@ -153,53 +142,53 @@ namespace box2d {
         // For solving TOI events, use a faster/higher resolution rate than normally used.
         return ConstraintSolverConf{}.UseResolutionRate(RealNum(0.75));
     }
-
-#if 0
-    /// Solves the given position constraints.
-    /// @details This updates positions (and nothing else) by calling the position constraint solving function.
-    /// @note Can't expect the returned minimum separation to be greater than or equal to
-    ///  <code>-conf.linearSlop</code> because code won't push the separation above this
-    ///   amount to begin with.
-    /// @return Minimum separation.
-    /// @sa MinSeparationThreshold.
-    /// @sa Solve.
-    Length SolvePositionConstraints(Span<PositionConstraint> positionConstraints,
-                                     ConstraintSolverConf conf = GetDefaultPositionSolverConf());
-
-    /// Solves the given position constraints.
-    ///
-    /// @details This updates positions (and nothing else) for the two bodies identified by the
-    ///   given indexes by calling the position constraint solving function.
-    ///
-    /// @note Can't expect the returned minimum separation to be greater than or equal to
-    ///  <code>ConstraintSolverConf.max_separation</code> because code won't push the separation
-    ///   above this amount to begin with.
-    ///
-    /// @param positionConstraints Positions constraints.
-    /// @param bodiesA Pointer to body constraint for body A.
-    /// @param bodiesB Pointer to body constraint for body B.
-    /// @param conf Configuration for solving the constraint.
-    ///
-    /// @return Minimum separation (which is the same as the max amount of penetration/overlap).
-    ///
-    Length SolvePositionConstraints(Span<PositionConstraint> positionConstraints,
-                                    const BodyConstraint* bodiesA, const BodyConstraint* bodiesB,
-                                    ConstraintSolverConf conf = GetDefaultToiPositionSolverConf());
-#endif
     
-    /// Solves the velocity constraint.
-    ///
-    /// @details This updates the tangent and normal impulses of the velocity constraint points of
-    ///   the given velocity constraint and updates the given velocities.
-    ///
-    /// @warning Behavior is undefined unless the velocity constraint point count is 1 or 2.
-    /// @note Linear velocity is only changed if the inverse mass of either body is non-zero.
-    /// @note Angular velocity is only changed if the inverse rotational inertia of either body is non-zero.
-    ///
-    /// @pre The velocity constraint must have a valid normal, a valid tangent,
-    ///   valid point relative positions, and valid velocity biases.
-    ///
-    Momentum SolveVelocityConstraint(VelocityConstraint& vc);
+    namespace GaussSeidel {
+
+        Momentum BlockSolveNormalConstraint(VelocityConstraint& vc);
+
+        Momentum SeqSolveNormalConstraint(VelocityConstraint& vc);
+
+        /// Solves the tangential portion of the velocity constraint.
+        /// @details
+        /// This imposes friction on the velocity.
+        /// Specifically, this updates the tangent impulses on the velocity constraint points and
+        ///   updates the two given velocity structures.
+        /// @warning Behavior is undefined unless the velocity constraint point count is 1 or 2.
+        /// @param vc Velocity constraint.
+        Momentum SolveTangentConstraint(VelocityConstraint& vc);
+
+        /// Solves the normal portion of the velocity constraint.
+        /// @details
+        /// This prevents penetration and applies the contact restitution to the velocity.
+        Momentum SolveNormalConstraint(VelocityConstraint& vc);
+
+        /// Solves the velocity constraint.
+        ///
+        /// @details This updates the tangent and normal impulses of the velocity constraint points of
+        ///   the given velocity constraint and updates the given velocities.
+        ///
+        /// @warning Behavior is undefined unless the velocity constraint point count is 1 or 2.
+        /// @note Linear velocity is only changed if the inverse mass of either body is non-zero.
+        /// @note Angular velocity is only changed if the inverse rotational inertia of either body is non-zero.
+        ///
+        /// @pre The velocity constraint must have a valid normal, a valid tangent,
+        ///   valid point relative positions, and valid velocity biases.
+        ///
+        Momentum SolveVelocityConstraint(VelocityConstraint& vc);
+        
+        /// Solves the given position constraint.
+        /// @details
+        /// This pushes apart the two given positions for every point in the contact position constraint
+        /// and returns the minimum separation value from the position solver manifold for each point.
+        /// @sa http://allenchou.net/2013/12/game-physics-resolution-contact-constraints/
+        /// @return Minimum separation distance of the position constraint's manifold points
+        ///   (prior to "solving").
+        PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
+                                                 const bool moveA, const bool moveB,
+                                                 ConstraintSolverConf conf);
+        
+    } // namespace GaussSidel
     
 } // namespace box2d
 

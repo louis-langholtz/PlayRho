@@ -50,7 +50,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
     const auto pc = PositionConstraint{manifold, bA, RealNum{0} * Meter, bB, RealNum{0} * Meter};
     
     const auto conf = ConstraintSolverConf{};
-    const auto solution = SolvePositionConstraint(pc, true, true, conf);
+    const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
     
     EXPECT_EQ(solution.min_separation, Length{0});
     
@@ -85,7 +85,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
     const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
     
     const auto conf = ConstraintSolverConf{};
-    const auto solution = SolvePositionConstraint(pc, true, true, conf);
+    const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
     
     EXPECT_EQ(solution.min_separation, Length{0});
     
@@ -120,7 +120,7 @@ TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
 
     const auto maxLinearCorrection = std::numeric_limits<RealNum>::infinity() * Meter;
     const auto conf = ConstraintSolverConf{}.UseResolutionRate(0).UseMaxLinearCorrection(maxLinearCorrection);
-    const auto solution = SolvePositionConstraint(pc, true, true, conf);
+    const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
 
     EXPECT_EQ(solution.min_separation, RealNum{-2} * dim);
     
@@ -164,7 +164,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
     
     const auto maxLinearCorrection = std::numeric_limits<RealNum>::infinity() * Meter;
     const auto conf = ConstraintSolverConf{}.UseResolutionRate(Baumgarte).UseMaxLinearCorrection(maxLinearCorrection);
-    const auto solution = SolvePositionConstraint(pc, true, true, conf);
+    const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
     
     EXPECT_TRUE(almost_equal(solution.min_separation / Meter, RealNum(-2))); // -2.002398
         
@@ -209,7 +209,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
     
     const auto maxLinearCorrection = std::numeric_limits<RealNum>::infinity() * Meter;
     const auto conf = ConstraintSolverConf{}.UseResolutionRate(Baumgarte).UseMaxLinearCorrection(maxLinearCorrection);
-    const auto solution = SolvePositionConstraint(pc, true, true, conf);
+    const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
     
     EXPECT_TRUE(almost_equal(solution.min_separation / Meter, RealNum(-2))); // -2.002398
     
@@ -254,7 +254,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
     
     const auto maxLinearCorrection = std::numeric_limits<RealNum>::infinity() * Meter;
     const auto conf = ConstraintSolverConf{}.UseResolutionRate(Baumgarte).UseMaxLinearCorrection(maxLinearCorrection);
-    const auto solution = SolvePositionConstraint(pc, true, true, conf);
+    const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
     
     EXPECT_TRUE(almost_equal(solution.min_separation / Meter, RealNum(-2))); // -2.002398
     
@@ -312,7 +312,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
 
     const auto maxLinearCorrection = std::numeric_limits<RealNum>::infinity() * Meter;
     const auto conf = ConstraintSolverConf{}.UseResolutionRate(Baumgarte).UseMaxLinearCorrection(maxLinearCorrection);
-    const auto solution = SolvePositionConstraint(pc, true, true, conf);
+    const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
     
     EXPECT_TRUE(almost_equal(solution.min_separation / Meter, RealNum(-2))); // -2.002398
     
@@ -361,7 +361,7 @@ TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
     const auto pc = PositionConstraint{manifold, bA, GetVertexRadius(shape), bB, GetVertexRadius(shape)};
     
     const auto conf = ConstraintSolverConf{};
-    const auto solution = SolvePositionConstraint(pc, true, true, conf);
+    const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
     
     EXPECT_LT(solution.min_separation, -conf.linearSlop);
     

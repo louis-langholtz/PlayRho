@@ -394,7 +394,7 @@ private:
     ///
     /// @return Island solver results.
     ///
-    IslandSolverResults SolveRegIsland(const StepConf& step, Island island);
+    IslandSolverResults SolveRegIslandViaGS(const StepConf& step, Island island);
     
     /// @brief Adds to the island based off of a given "seed" body.
     /// @post Contacts are listed in the island in the order that bodies list those contacts.
@@ -410,7 +410,7 @@ private:
     /// @details Used for continuous physics.
     /// @note This is intended to detect and prevent the tunneling that the faster Solve method may miss.
     /// @param conf Time step configuration to use.
-    ToiStepStats SolveTOI(const StepConf& conf);
+    ToiStepStats SolveToi(const StepConf& conf);
 
     /// @brief Solves collisions for the given time of impact.
     ///
@@ -420,7 +420,7 @@ private:
     /// @note Precondition 1: there is no contact having a lower TOI in this time step that has not already been solved for.
     /// @note Precondition 2: there is not a lower TOI in the time step for which collisions have not already been processed.
     ///
-    IslandSolverResults SolveTOI(const StepConf& step, Contact& contact);
+    IslandSolverResults SolveToi(const StepConf& step, Contact& contact);
     
     /// @brief Solves the time of impact for bodies 0 and 1 of the given island.
     ///
@@ -438,7 +438,7 @@ private:
     ///
     /// @return Island solver results.
     ///
-    IslandSolverResults SolveTOI(const StepConf& step, Island& island);
+    IslandSolverResults SolveToiViaGS(const StepConf& step, Island& island);
 
     static void UpdateBody(Body& body, const Position& pos, const Velocity& vel);
 
