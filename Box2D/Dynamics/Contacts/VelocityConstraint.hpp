@@ -44,7 +44,7 @@ namespace box2d {
     public:
         using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
         using index_type = size_t;
-
+        
         struct Conf
         {
             RealNum dtRatio = 1;
@@ -59,7 +59,7 @@ namespace box2d {
         VelocityConstraint() = default;
         
         VelocityConstraint(const VelocityConstraint& copy) = default;
-
+        
         VelocityConstraint& operator= (const VelocityConstraint& copy) = default;
         
         VelocityConstraint(index_type contactIndex,
@@ -69,17 +69,17 @@ namespace box2d {
                            BodyConstraint& bA, Length rA,
                            BodyConstraint& bB, Length rB,
                            Conf conf);
-
+        
         /// Gets the normal of the contact in world coordinates.
         /// @note This value is set on construction.
         /// @return Contact normal (in world coordinates) if previously set, an invalid value
         ///   otherwise.
         UnitVec2 GetNormal() const noexcept { return m_normal; }
-
+        
         UnitVec2 GetTangent() const noexcept { return m_tangent; }
         
         InvMass GetInvMass() const noexcept { return m_invMass; }
-
+        
         /// Gets the count of points added to this object.
         /// @return Value between 0 and MaxManifoldPoints
         /// @sa MaxManifoldPoints.
@@ -133,7 +133,7 @@ namespace box2d {
         /// @note The <code>AddPoint</code> method sets this value.
         /// @return Previously set value or an invalid value.
         LinearVelocity GetVelocityBiasAtPoint(size_type index) const noexcept;
-
+        
         /// Gets the normal mass at the given point.
         /// @note This value depends on the values of:
         ///   the sum of the inverse-masses of the two bodies,
@@ -151,12 +151,12 @@ namespace box2d {
         ///   the tangent.
         /// @note The <code>AddPoint</code> method sets this value.
         Mass GetTangentMassAtPoint(size_type index) const noexcept;
-
+        
         /// Gets the point relative position of A.
         /// @note The <code>AddPoint</code> method sets this value.
         /// @return Previously set value or an invalid value.
         Length2D GetPointRelPosA(size_type index) const noexcept;
-
+        
         /// Gets the point relative position of B.
         /// @note The <code>AddPoint</code> method sets this value.
         /// @return Previously set value or an invalid value.
@@ -165,38 +165,45 @@ namespace box2d {
         void SetNormalImpulseAtPoint(size_type index, Momentum value);
         
         void SetTangentImpulseAtPoint(size_type index, Momentum value);
-
-        /// Velocity constraint point.
+        
+        /// @brief Velocity constraint point.
+        ///
+        /// @note Default initialized to values that make this point ineffective if it got
+        ///   processed counter to being a valid point per the point count property.
+        ///   This allows both points to be unconditionally processed which may be faster
+        ///   if it'd otherwise cause branch-misprediction and depending on the cost of
+        ///   branch mis-prediction.
         /// @note This structure is at least 36-bytes large.
+        ///
         struct Point
         {
             /// Position of body A relative to world manifold point.
-            Length2D relA = GetInvalid<decltype(relA)>();
+            Length2D relA = Length2D{0, 0};
             
             /// Position of body B relative to world manifold point.
-            Length2D relB = GetInvalid<decltype(relB)>();
+            Length2D relB = Length2D{0, 0};
             
             /// Normal impulse.
-            Momentum normalImpulse = GetInvalid<decltype(normalImpulse)>();
+            Momentum normalImpulse = Momentum{0};
             
             /// Tangent impulse.
-            Momentum tangentImpulse = GetInvalid<decltype(tangentImpulse)>();
+            Momentum tangentImpulse = Momentum{0};
             
             /// Normal mass.
             /// @note 0 or greater.
             /// @note Dependent on rA and rB.
-            Mass normalMass = GetInvalid<decltype(normalMass)>();
+            Mass normalMass = Mass{0};
             
             /// Tangent mass.
             /// @note 0 or greater.
             /// @note Dependent on rA and rB.
-            Mass tangentMass = GetInvalid<decltype(tangentMass)>();
-
+            Mass tangentMass = Mass{0};
+            
             /// Velocity bias.
             /// @note A product of the contact restitution.
-            LinearVelocity velocityBias = GetInvalid<decltype(velocityBias)>();
+            LinearVelocity velocityBias = LinearVelocity{0};
         };
-
+        
         /// Accesses the point identified by the given index.
         /// @warning Behavior is undefined if given index is not less than <code>MaxManifoldPoints</code>.
         /// @param index Index of the point to return. This should be a value less than returned by GetPointCount().
@@ -208,28 +215,29 @@ namespace box2d {
             assert(index < MaxManifoldPoints);
             return m_points[index];
         }
-
+        
     private:
-    
+        
         /// Adds the given point to this contact velocity constraint object.
         /// @details Adds up to <code>MaxManifoldPoints</code> points. To find out how many points have already
         ///   been added, call GetPointCount().
         /// @warning Behavior is undefined if an attempt is made to add more than MaxManifoldPoints points.
         /// @sa GetPointCount().
         void AddPoint(Momentum normalImpulse, Momentum tangentImpulse,
-                      Length2D rA, Length2D rB, Conf conf);
-
+                      Length2D relA, Length2D relB, Conf conf);
+        
         /// Removes the last point added.
         void RemovePoint() noexcept;
-
-        Point GetPoint(Momentum normalImpulse, Momentum tangentImpulse, Length2D rA, Length2D rB, Conf conf) const noexcept;
-
+        
+        Point GetPoint(Momentum normalImpulse, Momentum tangentImpulse,
+                       Length2D relA, Length2D relB, Conf conf) const noexcept;
+        
         Mat22 ComputeK() const noexcept;
-
+        
         /// Sets this object's K value.
         /// @param value A position constraint dependent value or the zero matrix (Mat22_zero).
         void SetK(const Mat22& value) noexcept;
-
+        
         /// Accesses the point identified by the given index.
         /// @warning Behavior is undefined if given index is not less than <code>MaxManifoldPoints</code>.
         /// @param index Index of the point to return. This should be a value less than returned by GetPointCount().
@@ -241,9 +249,9 @@ namespace box2d {
             assert(index < MaxManifoldPoints);
             return m_points[index];
         }
-
+        
         Point m_points[MaxManifoldPoints]; ///< Velocity constraint points array (at least 72-bytes).
-
+        
         // K and normalMass fields are only used for the block solver.
         
         /// Block solver "K" info.
@@ -258,15 +266,15 @@ namespace box2d {
         /// @note Only used by block solver.
         /// @note This field is 16-bytes (on at least one 64-bit platform).
         Mat22 m_normalMass = GetInvalid<Mat22>();
-
+        
         BodyConstraint* m_bodyA = nullptr; ///< Body A contact velocity constraint data.
         BodyConstraint* m_bodyB = nullptr; ///< Body B contact velocity constraint data.
-
+        
         UnitVec2 m_normal = GetInvalid<UnitVec2>(); ///< Normal of the world manifold. 8-bytes.
         UnitVec2 m_tangent = GetInvalid<UnitVec2>(); ///< Tangent of the world manifold. 8-bytes.
-
+        
         InvMass m_invMass = GetInvalid<InvMass>(); ///< Total inverse mass.
-
+        
         /// Friction coefficient (4-bytes). Usually in the range of [0,1].
         RealNum m_friction = GetInvalid<RealNum>();
         
@@ -279,13 +287,14 @@ namespace box2d {
         
         size_type m_pointCount = 0; ///< Point count (at least 1-byte).
     };
-        
+    
     inline void VelocityConstraint::RemovePoint() noexcept
     {
         assert(m_pointCount > 0);
+        m_points[m_pointCount - 1] = Point{};
         --m_pointCount;
     }
-
+    
     inline void VelocityConstraint::SetK(const Mat22& value) noexcept
     {
         m_K = value;
@@ -307,7 +316,7 @@ namespace box2d {
     {
         return m_normalMass;
     }
-
+    
     inline Length2D VelocityConstraint::GetPointRelPosA(VelocityConstraint::size_type index) const noexcept
     {
         return GetPointAt(index).relA;
@@ -317,7 +326,7 @@ namespace box2d {
     {
         return GetPointAt(index).relB;
     }
-
+    
     /// Gets the normal of the velocity constraint contact in world coordinates.
     /// @note This value is set via the velocity constraint's <code>SetNormal</code> method.
     /// @return Contact normal (in world coordinates) if previously set, an invalid value
@@ -326,12 +335,12 @@ namespace box2d {
     {
         return vc.GetNormal();
     }
-
+    
     inline UnitVec2 GetTangent(const VelocityConstraint& vc) noexcept
     {
         return vc.GetTangent();
     }
-
+    
     inline InvMass GetInvMass(const VelocityConstraint& vc) noexcept
     {
         return vc.GetBodyA()->GetInvMass() + vc.GetBodyB()->GetInvMass();
@@ -356,7 +365,7 @@ namespace box2d {
     {
         return vc.GetVelocityBiasAtPoint(index);
     }
-
+    
     inline Mass VelocityConstraint::GetNormalMassAtPoint(VelocityConstraint::size_type index) const noexcept
     {
         return GetPointAt(index).normalMass;
@@ -366,7 +375,7 @@ namespace box2d {
     {
         return GetPointAt(index).tangentMass;
     }
-
+    
     inline Mass GetNormalMassAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
     {
         return vc.GetNormalMassAtPoint(index);
@@ -376,7 +385,7 @@ namespace box2d {
     {
         return vc.GetTangentMassAtPoint(index);
     }
-
+    
     inline Momentum VelocityConstraint::GetNormalImpulseAtPoint(VelocityConstraint::size_type index) const noexcept
     {
         return GetPointAt(index).normalImpulse;
@@ -411,12 +420,12 @@ namespace box2d {
     {
         PointAt(index).normalImpulse = value;
     }
-
+    
     inline void VelocityConstraint::SetTangentImpulseAtPoint(VelocityConstraint::size_type index, Momentum value)
     {
         PointAt(index).tangentImpulse = value;        
     }
-
+    
     inline void SetNormalImpulseAtPoint(VelocityConstraint& vc, VelocityConstraint::size_type index, Momentum value)
     {
         vc.SetNormalImpulseAtPoint(index, value);

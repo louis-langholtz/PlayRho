@@ -56,10 +56,10 @@ VelocityConstraint::VelocityConstraint(index_type contactIndex,
         const auto ci = manifold.GetContactImpulses(j);
         
         const auto worldPoint = worldManifold.GetPoint(j);
-        const auto vcp_rA = worldPoint - bA.GetPosition().linear;
-        const auto vcp_rB = worldPoint - bB.GetPosition().linear;
+        const auto relA = worldPoint - bA.GetPosition().linear;
+        const auto relB = worldPoint - bB.GetPosition().linear;
         
-        AddPoint(ci.m_normal, ci.m_tangent, vcp_rA, vcp_rB, conf);
+        AddPoint(ci.m_normal, ci.m_tangent, relA, relB, conf);
     }
     
     if (conf.blockSolve)
@@ -89,13 +89,14 @@ VelocityConstraint::VelocityConstraint(index_type contactIndex,
     }
 }
 
-VelocityConstraint::Point VelocityConstraint::GetPoint(Momentum normalImpulse, Momentum tangentImpulse,
-                                                       Length2D rA, Length2D rB, Conf conf) const noexcept
+VelocityConstraint::Point
+VelocityConstraint::GetPoint(Momentum normalImpulse, Momentum tangentImpulse,
+                                                       Length2D relA, Length2D relB, Conf conf) const noexcept
 {
     assert(IsValid(normalImpulse));
     assert(IsValid(tangentImpulse));
-    assert(IsValid(rA));
-    assert(IsValid(rB));
+    assert(IsValid(relA));
+    assert(IsValid(relB));
     
     Point point;
 
@@ -104,13 +105,14 @@ VelocityConstraint::Point VelocityConstraint::GetPoint(Momentum normalImpulse, M
     // case will fail and this lambda will return 0. And that's fine. There's no need
     // to have a check that the normal is valid and possibly incur the overhead of a
     // conditional branch here.
-    const auto dv = GetContactRelVelocity(m_bodyA->GetVelocity(), rA, m_bodyB->GetVelocity(), rB);
+    const auto dv = GetContactRelVelocity(m_bodyA->GetVelocity(), relA,
+                                          m_bodyB->GetVelocity(), relB);
     const auto vn = LinearVelocity{Dot(dv, GetNormal())};
 
     point.normalImpulse = normalImpulse;
     point.tangentImpulse = tangentImpulse;
-    point.relA = rA;
-    point.relB = rB;
+    point.relA = relA;
+    point.relB = relB;
     point.velocityBias = (vn < -conf.velocityThreshold)? -GetRestitution() * vn: LinearVelocity{0};
     
     const auto invMass = GetInvMass();
@@ -118,15 +120,15 @@ VelocityConstraint::Point VelocityConstraint::GetPoint(Momentum normalImpulse, M
     const auto invRotInertiaB = m_bodyB->GetInvRotInertia();
 
     point.normalMass = [&](){
-        const auto invRotMassA = invRotInertiaA * Square(Cross(rA, GetNormal())) / SquareRadian;
-        const auto invRotMassB = invRotInertiaB * Square(Cross(rB, GetNormal())) / SquareRadian;
+        const auto invRotMassA = invRotInertiaA * Square(Cross(relA, GetNormal())) / SquareRadian;
+        const auto invRotMassB = invRotInertiaB * Square(Cross(relB, GetNormal())) / SquareRadian;
         const auto value = invMass + invRotMassA + invRotMassB;
         return (value != InvMass{0})? RealNum{1} / value : Mass{0};
     }();
     
     point.tangentMass = [&]() {
-        const auto invRotMassA = invRotInertiaA * Square(Cross(rA, GetTangent())) / SquareRadian;
-        const auto invRotMassB = invRotInertiaB * Square(Cross(rB, GetTangent())) / SquareRadian;
+        const auto invRotMassA = invRotInertiaA * Square(Cross(relA, GetTangent())) / SquareRadian;
+        const auto invRotMassB = invRotInertiaB * Square(Cross(relB, GetTangent())) / SquareRadian;
         const auto value = invMass + invRotMassA + invRotMassB;
         return (value != InvMass{0})? RealNum{1} / value : Mass{0};
     }();
@@ -135,10 +137,11 @@ VelocityConstraint::Point VelocityConstraint::GetPoint(Momentum normalImpulse, M
 }
 
 void VelocityConstraint::AddPoint(Momentum normalImpulse, Momentum tangentImpulse,
-                                  Length2D rA, Length2D rB, Conf conf)
+                                  Length2D relA, Length2D relB, Conf conf)
 {
     assert(m_pointCount < MaxManifoldPoints);
-    m_points[m_pointCount] = GetPoint(normalImpulse * conf.dtRatio, tangentImpulse * conf.dtRatio, rA, rB, conf);
+    m_points[m_pointCount] = GetPoint(normalImpulse * conf.dtRatio, tangentImpulse * conf.dtRatio,
+                                      relA, relB, conf);
     ++m_pointCount;
 }
 
