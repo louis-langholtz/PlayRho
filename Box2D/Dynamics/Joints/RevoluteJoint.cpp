@@ -66,20 +66,20 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraints& bodies,
                                             const StepConf& step,
                                             const ConstraintSolverConf& conf)
 {
-    auto& bodiesA = bodies.at(GetBodyA());
-    auto& bodiesB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = bodies.at(GetBodyA());
+    auto& bodyConstraintB = bodies.at(GetBodyB());
 
-    const auto aA = bodiesA.GetPosition().angular;
-    auto velA = bodiesA.GetVelocity();
+    const auto aA = bodyConstraintA.GetPosition().angular;
+    auto velA = bodyConstraintA.GetVelocity();
 
-    const auto aB = bodiesB.GetPosition().angular;
-    auto velB = bodiesB.GetVelocity();
+    const auto aB = bodyConstraintB.GetPosition().angular;
+    auto velB = bodyConstraintB.GetVelocity();
 
     const auto qA = UnitVec2(aA);
     const auto qB = UnitVec2(aB);
 
-    m_rA = Rotate(m_localAnchorA - bodiesA.GetLocalCenter(), qA);
-    m_rB = Rotate(m_localAnchorB - bodiesB.GetLocalCenter(), qB);
+    m_rA = Rotate(m_localAnchorA - bodyConstraintA.GetLocalCenter(), qA);
+    m_rB = Rotate(m_localAnchorB - bodyConstraintB.GetLocalCenter(), qB);
 
     // J = [-I -r1_skew I r2_skew]
     //     [ 0       -1 0       1]
@@ -90,11 +90,11 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraints& bodies,
     //     [  -r1y*iA*r1x-r2y*iB*r2x, mA+r1x^2*iA+mB+r2x^2*iB,           r1x*iA+r2x*iB]
     //     [          -r1y*iA-r2y*iB,           r1x*iA+r2x*iB,                   iA+iB]
 
-    const auto invMassA = bodiesA.GetInvMass();
-    const auto invRotInertiaA = bodiesA.GetInvRotInertia();
+    const auto invMassA = bodyConstraintA.GetInvMass();
+    const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
 
-    const auto invMassB = bodiesB.GetInvMass();
-    const auto invRotInertiaB = bodiesB.GetInvRotInertia();
+    const auto invMassB = bodyConstraintB.GetInvMass();
+    const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
     
     const auto totInvI = invRotInertiaA + invRotInertiaB;
 
@@ -194,24 +194,24 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraints& bodies,
         m_motorImpulse = 0;
     }
 
-    bodiesA.SetVelocity(velA);
-    bodiesB.SetVelocity(velB);
+    bodyConstraintA.SetVelocity(velA);
+    bodyConstraintB.SetVelocity(velB);
 }
 
 bool RevoluteJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step)
 {
-    auto& bodiesA = bodies.at(GetBodyA());
-    auto& bodiesB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = bodies.at(GetBodyA());
+    auto& bodyConstraintB = bodies.at(GetBodyB());
 
-    const auto oldVelA = bodiesA.GetVelocity();
+    const auto oldVelA = bodyConstraintA.GetVelocity();
     auto velA = oldVelA;
-    const auto invMassA = bodiesA.GetInvMass();
-    const auto invRotInertiaA = bodiesA.GetInvRotInertia();
+    const auto invMassA = bodyConstraintA.GetInvMass();
+    const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
 
-    const auto oldVelB = bodiesB.GetVelocity();
+    const auto oldVelB = bodyConstraintB.GetVelocity();
     auto velB = oldVelB;
-    const auto invMassB = bodiesB.GetInvMass();
-    const auto invRotInertiaB = bodiesB.GetInvRotInertia();
+    const auto invMassB = bodyConstraintB.GetInvMass();
+    const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
 
     const auto fixedRotation = (invRotInertiaA + invRotInertiaB == InvRotInertia{0});
 
@@ -311,8 +311,8 @@ bool RevoluteJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
 
     if ((velA != oldVelA) || (velB != oldVelB))
     {
-	    bodiesA.SetVelocity(velA);
-    	bodiesB.SetVelocity(velB);
+	    bodyConstraintA.SetVelocity(velA);
+    	bodyConstraintB.SetVelocity(velB);
         return false;
     }
     return true;
@@ -320,14 +320,14 @@ bool RevoluteJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
 
 bool RevoluteJoint::SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const
 {
-    auto& bodiesA = bodies.at(GetBodyA());
-    auto& bodiesB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = bodies.at(GetBodyA());
+    auto& bodyConstraintB = bodies.at(GetBodyB());
 
-    auto posA = bodiesA.GetPosition();
-    const auto invRotInertiaA = bodiesA.GetInvRotInertia();
+    auto posA = bodyConstraintA.GetPosition();
+    const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
 
-    auto posB = bodiesB.GetPosition();
-    const auto invRotInertiaB = bodiesB.GetInvRotInertia();
+    auto posB = bodyConstraintB.GetPosition();
+    const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
 
     const auto fixedRotation = ((invRotInertiaA + invRotInertiaB) == InvRotInertia{0});
 
@@ -377,14 +377,14 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraints& bodies, const Cons
         const auto qA = UnitVec2(posA.angular);
         const auto qB = UnitVec2(posB.angular);
 
-        const auto rA = Length2D{Rotate(m_localAnchorA - bodiesA.GetLocalCenter(), qA)};
-        const auto rB = Length2D{Rotate(m_localAnchorB - bodiesB.GetLocalCenter(), qB)};
+        const auto rA = Length2D{Rotate(m_localAnchorA - bodyConstraintA.GetLocalCenter(), qA)};
+        const auto rB = Length2D{Rotate(m_localAnchorB - bodyConstraintB.GetLocalCenter(), qB)};
 
         const auto C = (posB.linear + rB) - (posA.linear + rA);
         positionError = GetLengthSquared(C);
 
-        const auto invMassA = bodiesA.GetInvMass();
-        const auto invMassB = bodiesB.GetInvMass();
+        const auto invMassA = bodyConstraintA.GetInvMass();
+        const auto invMassB = bodyConstraintB.GetInvMass();
 
         const auto exx = InvMass{
             invMassA + (invRotInertiaA * Square(rA.y) / SquareRadian) +
@@ -410,8 +410,8 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraints& bodies, const Cons
         posB += Position{invMassB * P, invRotInertiaB * Cross(rB, P) / Radian};
     }
 
-    bodiesA.SetPosition(posA);
-    bodiesB.SetPosition(posB);
+    bodyConstraintA.SetPosition(posA);
+    bodyConstraintB.SetPosition(posB);
     
     return (positionError <= Square(conf.linearSlop)) && (angularError <= conf.angularSlop);
 }

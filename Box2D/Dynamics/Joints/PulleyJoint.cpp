@@ -71,18 +71,18 @@ void PulleyJoint::InitVelocityConstraints(BodyConstraints& bodies,
                                           const StepConf& step,
                                           const ConstraintSolverConf& conf)
 {
-    auto& bodiesA = bodies.at(GetBodyA());
-    auto& bodiesB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = bodies.at(GetBodyA());
+    auto& bodyConstraintB = bodies.at(GetBodyB());
     
-    const auto posA = bodiesA.GetPosition();
-    auto velA = bodiesA.GetVelocity();
-    const auto posB = bodiesB.GetPosition();
-    auto velB = bodiesB.GetVelocity();
+    const auto posA = bodyConstraintA.GetPosition();
+    auto velA = bodyConstraintA.GetVelocity();
+    const auto posB = bodyConstraintB.GetPosition();
+    auto velB = bodyConstraintB.GetVelocity();
 
     const UnitVec2 qA(posA.angular), qB(posB.angular);
 
-    m_rA = Rotate(m_localAnchorA - bodiesA.GetLocalCenter(), qA);
-    m_rB = Rotate(m_localAnchorB - bodiesB.GetLocalCenter(), qB);
+    m_rA = Rotate(m_localAnchorA - bodyConstraintA.GetLocalCenter(), qA);
+    m_rB = Rotate(m_localAnchorB - bodyConstraintB.GetLocalCenter(), qB);
 
     // Get the pulley axes.
     const auto pulleyAxisA = Length2D{posA.linear + m_rA - m_groundAnchorA};
@@ -114,8 +114,8 @@ void PulleyJoint::InitVelocityConstraints(BodyConstraints& bodies,
     const auto ruA = Cross(m_rA, m_uA);
     const auto ruB = Cross(m_rB, m_uB);
 
-    const auto invMassA = bodiesA.GetInvMass() + (bodiesA.GetInvRotInertia() * Square(ruA)) / SquareRadian;
-    const auto invMassB = bodiesB.GetInvMass() + (bodiesB.GetInvRotInertia() * Square(ruB)) / SquareRadian;
+    const auto invMassA = bodyConstraintA.GetInvMass() + (bodyConstraintA.GetInvRotInertia() * Square(ruA)) / SquareRadian;
+    const auto invMassB = bodyConstraintB.GetInvMass() + (bodyConstraintB.GetInvRotInertia() * Square(ruB)) / SquareRadian;
 
     const auto totalInvMass = invMassA + m_ratio * m_ratio * invMassB;
 
@@ -130,25 +130,25 @@ void PulleyJoint::InitVelocityConstraints(BodyConstraints& bodies,
         const auto PA = -(m_impulse) * m_uA;
         const auto PB = (-m_ratio * m_impulse) * m_uB;
 
-        velA += Velocity{bodiesA.GetInvMass() * PA, bodiesA.GetInvRotInertia() * Cross(m_rA, PA) / Radian};
-        velB += Velocity{bodiesB.GetInvMass() * PB, bodiesB.GetInvRotInertia() * Cross(m_rB, PB) / Radian};
+        velA += Velocity{bodyConstraintA.GetInvMass() * PA, bodyConstraintA.GetInvRotInertia() * Cross(m_rA, PA) / Radian};
+        velB += Velocity{bodyConstraintB.GetInvMass() * PB, bodyConstraintB.GetInvRotInertia() * Cross(m_rB, PB) / Radian};
     }
     else
     {
         m_impulse = 0;
     }
 
-    bodiesA.SetVelocity(velA);
-    bodiesB.SetVelocity(velB);
+    bodyConstraintA.SetVelocity(velA);
+    bodyConstraintB.SetVelocity(velB);
 }
 
 bool PulleyJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf&)
 {
-    auto& bodiesA = bodies.at(GetBodyA());
-    auto& bodiesB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = bodies.at(GetBodyA());
+    auto& bodyConstraintB = bodies.at(GetBodyB());
 
-    auto velA = bodiesA.GetVelocity();
-    auto velB = bodiesB.GetVelocity();
+    auto velA = bodyConstraintA.GetVelocity();
+    auto velB = bodyConstraintB.GetVelocity();
 
     const auto vpA = LinearVelocity2D{velA.linear + GetRevPerpendicular(m_rA) * (velA.angular / Radian)};
     const auto vpB = LinearVelocity2D{velB.linear + GetRevPerpendicular(m_rB) * (velB.angular / Radian)};
@@ -159,25 +159,25 @@ bool PulleyJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepCo
 
     const auto PA = -impulse * m_uA;
     const auto PB = -m_ratio * impulse * m_uB;
-    velA += Velocity{bodiesA.GetInvMass() * PA, bodiesA.GetInvRotInertia() * Cross(m_rA, PA) / Radian};
-    velB += Velocity{bodiesB.GetInvMass() * PB, bodiesB.GetInvRotInertia() * Cross(m_rB, PB) / Radian};
+    velA += Velocity{bodyConstraintA.GetInvMass() * PA, bodyConstraintA.GetInvRotInertia() * Cross(m_rA, PA) / Radian};
+    velB += Velocity{bodyConstraintB.GetInvMass() * PB, bodyConstraintB.GetInvRotInertia() * Cross(m_rB, PB) / Radian};
 
-    bodiesA.SetVelocity(velA);
-    bodiesB.SetVelocity(velB);
+    bodyConstraintA.SetVelocity(velA);
+    bodyConstraintB.SetVelocity(velB);
     
     return impulse == Momentum(0);
 }
 
 bool PulleyJoint::SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const
 {
-    auto& bodiesA = bodies.at(GetBodyA());
-    auto& bodiesB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = bodies.at(GetBodyA());
+    auto& bodyConstraintB = bodies.at(GetBodyB());
 
-    auto posA = bodiesA.GetPosition();
-    auto posB = bodiesB.GetPosition();
+    auto posA = bodyConstraintA.GetPosition();
+    auto posB = bodyConstraintB.GetPosition();
 
-    const auto rA = Rotate(m_localAnchorA - bodiesA.GetLocalCenter(), UnitVec2{posA.angular});
-    const auto rB = Rotate(m_localAnchorB - bodiesB.GetLocalCenter(), UnitVec2{posB.angular});
+    const auto rA = Rotate(m_localAnchorA - bodyConstraintA.GetLocalCenter(), UnitVec2{posA.angular});
+    const auto rB = Rotate(m_localAnchorB - bodyConstraintB.GetLocalCenter(), UnitVec2{posB.angular});
 
     // Get the pulley axes.
     const auto pA = Length2D{posA.linear + rA - m_groundAnchorA};
@@ -200,8 +200,8 @@ bool PulleyJoint::SolvePositionConstraints(BodyConstraints& bodies, const Constr
     const auto ruA = Length{Cross(rA, uA)};
     const auto ruB = Length{Cross(rB, uB)};
 
-    const auto totalInvMassA = bodiesA.GetInvMass() + bodiesA.GetInvRotInertia() * ruA * ruA / SquareRadian;
-    const auto totalInvMassB = bodiesB.GetInvMass() + bodiesB.GetInvRotInertia() * ruB * ruB / SquareRadian;
+    const auto totalInvMassA = bodyConstraintA.GetInvMass() + bodyConstraintA.GetInvRotInertia() * ruA * ruA / SquareRadian;
+    const auto totalInvMassB = bodyConstraintB.GetInvMass() + bodyConstraintB.GetInvRotInertia() * ruB * ruB / SquareRadian;
 
     const auto totalInvMass = totalInvMassA + m_ratio * m_ratio * totalInvMassB;
     const auto mass = (totalInvMass > InvMass{0})? RealNum{1} / totalInvMass: Mass{0};
@@ -214,11 +214,11 @@ bool PulleyJoint::SolvePositionConstraints(BodyConstraints& bodies, const Constr
     const auto PA = -impulse * uA;
     const auto PB = -m_ratio * impulse * uB;
 
-    posA += Position{bodiesA.GetInvMass() * PA, bodiesA.GetInvRotInertia() * Cross(rA, PA) / Radian};
-    posB += Position{bodiesB.GetInvMass() * PB, bodiesB.GetInvRotInertia() * Cross(rB, PB) / Radian};
+    posA += Position{bodyConstraintA.GetInvMass() * PA, bodyConstraintA.GetInvRotInertia() * Cross(rA, PA) / Radian};
+    posB += Position{bodyConstraintB.GetInvMass() * PB, bodyConstraintB.GetInvRotInertia() * Cross(rB, PB) / Radian};
 
-    bodiesA.SetPosition(posA);
-    bodiesB.SetPosition(posB);
+    bodyConstraintA.SetPosition(posA);
+    bodyConstraintB.SetPosition(posB);
 
     return linearError < conf.linearSlop;
 }

@@ -315,13 +315,13 @@ namespace {
             const auto bodyB = fixtureB.GetBody();
             const auto shapeB = fixtureB.GetShape();
             
-            auto& bodiesA = bodies.at(bodyA);
-            auto& bodiesB = bodies.at(bodyB);
+            auto& bodyConstraintA = bodies.at(bodyA);
+            auto& bodyConstraintB = bodies.at(bodyB);
             
             const auto radiusA = GetVertexRadius(*shapeA);
             const auto radiusB = GetVertexRadius(*shapeB);
             
-            return PositionConstraint{manifold, bodiesA, radiusA, bodiesB, radiusB};
+            return PositionConstraint{manifold, bodyConstraintA, radiusA, bodyConstraintB, radiusB};
         });
         return constraints;
     }
@@ -360,14 +360,14 @@ namespace {
             const auto bodyB = fixtureB->GetBody();
             const auto shapeB = fixtureB->GetShape();
             
-            auto& bodiesA = bodies.at(bodyA);
-            auto& bodiesB = bodies.at(bodyB);
+            auto& bodyConstraintA = bodies.at(bodyA);
+            auto& bodyConstraintB = bodies.at(bodyB);
             
             const auto radiusA = shapeA->GetVertexRadius();
             const auto radiusB = shapeB->GetVertexRadius();
             
             return VelocityConstraint{i, friction, restitution, tangentSpeed, manifold,
-                bodiesA, radiusA, bodiesB, radiusB, conf};
+                bodyConstraintA, radiusA, bodyConstraintB, radiusB, conf};
         });
         return velConstraints;
     }
@@ -420,21 +420,21 @@ namespace {
     ///   above this amount to begin with.
     ///
     /// @param positionConstraints Positions constraints.
-    /// @param bodiesA Pointer to body constraint for body A.
-    /// @param bodiesB Pointer to body constraint for body B.
+    /// @param bodyConstraintA Pointer to body constraint for body A.
+    /// @param bodyConstraintB Pointer to body constraint for body B.
     /// @param conf Configuration for solving the constraint.
     ///
     /// @return Minimum separation (which is the same as the max amount of penetration/overlap).
     ///
     Length SolvePositionConstraints(PositionConstraints& posConstraints,
-                                    const BodyConstraint* bodiesA, const BodyConstraint* bodiesB,
+                                    const BodyConstraint* bodyConstraintA, const BodyConstraint* bodyConstraintB,
                                     ConstraintSolverConf conf)
     {
         auto minSeparation = std::numeric_limits<RealNum>::infinity() * Meter;
         
         std::for_each(begin(posConstraints), end(posConstraints), [&](PositionConstraint &pc) {
-            const auto moveA = (pc.GetBodyA() == bodiesA) || (pc.GetBodyA() == bodiesB);
-            const auto moveB = (pc.GetBodyB() == bodiesA) || (pc.GetBodyB() == bodiesB);
+            const auto moveA = (pc.GetBodyA() == bodyConstraintA) || (pc.GetBodyA() == bodyConstraintB);
+            const auto moveB = (pc.GetBodyB() == bodyConstraintA) || (pc.GetBodyB() == bodyConstraintB);
             const auto res = SolvePositionConstraint(pc, moveA, moveB, conf);
             pc.GetBodyA()->SetPosition(res.pos_a);
             pc.GetBodyB()->SetPosition(res.pos_b);

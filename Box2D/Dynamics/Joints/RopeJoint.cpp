@@ -45,24 +45,24 @@ void RopeJoint::InitVelocityConstraints(BodyConstraints& bodies,
                                         const StepConf& step,
                                         const ConstraintSolverConf& conf)
 {
-    auto& bodiesA = bodies.at(GetBodyA());
-    auto& bodiesB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = bodies.at(GetBodyA());
+    auto& bodyConstraintB = bodies.at(GetBodyB());
 
-    const auto invMassA = bodiesA.GetInvMass();
-    const auto invRotInertiaA = bodiesA.GetInvRotInertia();
-    const auto posA = bodiesA.GetPosition();
-    auto velA = bodiesA.GetVelocity();
+    const auto invMassA = bodyConstraintA.GetInvMass();
+    const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
+    const auto posA = bodyConstraintA.GetPosition();
+    auto velA = bodyConstraintA.GetVelocity();
 
-    const auto invMassB = bodiesB.GetInvMass();
-    const auto invRotInertiaB = bodiesB.GetInvRotInertia();
-    const auto posB = bodiesB.GetPosition();
-    auto velB = bodiesB.GetVelocity();
+    const auto invMassB = bodyConstraintB.GetInvMass();
+    const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
+    const auto posB = bodyConstraintB.GetPosition();
+    auto velB = bodyConstraintB.GetVelocity();
 
     const auto qA = UnitVec2{posA.angular};
     const auto qB = UnitVec2{posB.angular};
 
-    m_rA = Rotate(m_localAnchorA - bodiesA.GetLocalCenter(), qA);
-    m_rB = Rotate(m_localAnchorB - bodiesB.GetLocalCenter(), qB);
+    m_rA = Rotate(m_localAnchorA - bodyConstraintA.GetLocalCenter(), qA);
+    m_rB = Rotate(m_localAnchorB - bodyConstraintB.GetLocalCenter(), qB);
     const auto posDelta = Length2D{(posB.linear + m_rB) - (posA.linear + m_rA)};
     
     const auto uv = GetUnitVector(posDelta, m_length);
@@ -102,25 +102,25 @@ void RopeJoint::InitVelocityConstraints(BodyConstraints& bodies,
         const auto crossAP = AngularMomentum{Cross(m_rA, P) / Radian};
         const auto crossBP = AngularMomentum{Cross(m_rB, P) / Radian}; // L * M * L T^-1 is: L^2 M T^-1
 
-        velA -= Velocity{bodiesA.GetInvMass() * P, invRotInertiaA * crossAP};
-        velB += Velocity{bodiesB.GetInvMass() * P, invRotInertiaB * crossBP};
+        velA -= Velocity{bodyConstraintA.GetInvMass() * P, invRotInertiaA * crossAP};
+        velB += Velocity{bodyConstraintB.GetInvMass() * P, invRotInertiaB * crossBP};
     }
     else
     {
         m_impulse = 0;
     }
 
-    bodiesA.SetVelocity(velA);
-    bodiesB.SetVelocity(velB);
+    bodyConstraintA.SetVelocity(velA);
+    bodyConstraintB.SetVelocity(velB);
 }
 
 bool RopeJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step)
 {
-    auto& bodiesA = bodies.at(GetBodyA());
-    auto& bodiesB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = bodies.at(GetBodyA());
+    auto& bodyConstraintB = bodies.at(GetBodyB());
 
-    auto velA = bodiesA.GetVelocity();
-    auto velB = bodiesB.GetVelocity();
+    auto velA = bodyConstraintA.GetVelocity();
+    auto velB = bodyConstraintB.GetVelocity();
 
     // Cdot = dot(u, v + cross(w, r))
     const auto vpA = velA.linear + GetRevPerpendicular(m_rA) * velA.angular / Radian;
@@ -143,27 +143,27 @@ bool RopeJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf
     const auto crossAP = AngularMomentum{Cross(m_rA, P) / Radian};
     const auto crossBP = AngularMomentum{Cross(m_rB, P) / Radian}; // L * M * L T^-1 is: L^2 M T^-1
 
-    velA -= Velocity{bodiesA.GetInvMass() * P, bodiesA.GetInvRotInertia() * crossAP};
-    velB += Velocity{bodiesB.GetInvMass() * P, bodiesB.GetInvRotInertia() * crossBP};
+    velA -= Velocity{bodyConstraintA.GetInvMass() * P, bodyConstraintA.GetInvRotInertia() * crossAP};
+    velB += Velocity{bodyConstraintB.GetInvMass() * P, bodyConstraintB.GetInvRotInertia() * crossBP};
 
-    bodiesA.SetVelocity(velA);
-    bodiesB.SetVelocity(velB);
+    bodyConstraintA.SetVelocity(velA);
+    bodyConstraintB.SetVelocity(velB);
     
     return impulse == Momentum(0);
 }
 
 bool RopeJoint::SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const
 {
-    auto& bodiesA = bodies.at(GetBodyA());
-    auto& bodiesB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = bodies.at(GetBodyA());
+    auto& bodyConstraintB = bodies.at(GetBodyB());
 
-    auto posA = bodiesA.GetPosition();
-    auto posB = bodiesB.GetPosition();
+    auto posA = bodyConstraintA.GetPosition();
+    auto posB = bodyConstraintB.GetPosition();
 
     const UnitVec2 qA(posA.angular), qB(posB.angular);
 
-    const auto rA = Length2D{Rotate(m_localAnchorA - bodiesA.GetLocalCenter(), qA)};
-    const auto rB = Length2D{Rotate(m_localAnchorB - bodiesB.GetLocalCenter(), qB)};
+    const auto rA = Length2D{Rotate(m_localAnchorA - bodyConstraintA.GetLocalCenter(), qA)};
+    const auto rB = Length2D{Rotate(m_localAnchorB - bodyConstraintB.GetLocalCenter(), qB)};
     const auto posDelta = (posB.linear + rB) - (posA.linear + rA);
     
     auto length = Length{0};
@@ -177,11 +177,11 @@ bool RopeJoint::SolvePositionConstraints(BodyConstraints& bodies, const Constrai
     const auto angImpulseA = Cross(rA, linImpulse) / Radian;
     const auto angImpulseB = Cross(rB, linImpulse) / Radian;
 
-    posA -= Position{bodiesA.GetInvMass() * linImpulse, bodiesA.GetInvRotInertia() * angImpulseA};
-    posB += Position{bodiesB.GetInvMass() * linImpulse, bodiesB.GetInvRotInertia() * angImpulseB};
+    posA -= Position{bodyConstraintA.GetInvMass() * linImpulse, bodyConstraintA.GetInvRotInertia() * angImpulseA};
+    posB += Position{bodyConstraintB.GetInvMass() * linImpulse, bodyConstraintB.GetInvRotInertia() * angImpulseB};
 
-    bodiesA.SetPosition(posA);
-    bodiesB.SetPosition(posB);
+    bodyConstraintA.SetPosition(posA);
+    bodyConstraintB.SetPosition(posB);
 
     return (length - m_maxLength) < conf.linearSlop;
 }

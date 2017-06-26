@@ -78,25 +78,25 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraints& bodies,
                                             const StepConf& step,
                                             const ConstraintSolverConf& conf)
 {
-    auto& bodiesA = bodies.at(GetBodyA());
-    auto& bodiesB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = bodies.at(GetBodyA());
+    auto& bodyConstraintB = bodies.at(GetBodyB());
 
-    const auto invMassA = bodiesA.GetInvMass();
-    const auto invRotInertiaA = bodiesA.GetInvRotInertia(); // L^-2 M^-1 QP^2
-    const auto invMassB = bodiesB.GetInvMass();
-    const auto invRotInertiaB = bodiesB.GetInvRotInertia(); // L^-2 M^-1 QP^2
+    const auto invMassA = bodyConstraintA.GetInvMass();
+    const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia(); // L^-2 M^-1 QP^2
+    const auto invMassB = bodyConstraintB.GetInvMass();
+    const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia(); // L^-2 M^-1 QP^2
 
-    const auto posA = bodiesA.GetPosition();
-    auto velA = bodiesA.GetVelocity();
+    const auto posA = bodyConstraintA.GetPosition();
+    auto velA = bodyConstraintA.GetVelocity();
 
-    const auto posB = bodiesB.GetPosition();
-    auto velB = bodiesB.GetVelocity();
+    const auto posB = bodyConstraintB.GetPosition();
+    auto velB = bodyConstraintB.GetVelocity();
 
     const auto qA = UnitVec2{posA.angular};
     const auto qB = UnitVec2{posB.angular};
 
-    m_rA = Rotate(m_localAnchorA - bodiesA.GetLocalCenter(), qA);
-    m_rB = Rotate(m_localAnchorB - bodiesB.GetLocalCenter(), qB);
+    m_rA = Rotate(m_localAnchorA - bodyConstraintA.GetLocalCenter(), qA);
+    m_rB = Rotate(m_localAnchorB - bodyConstraintB.GetLocalCenter(), qB);
     const auto deltaLocation = Length2D{(posB.linear + m_rB) - (posA.linear + m_rA)};
 
     // Handle singularity.
@@ -165,22 +165,22 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraints& bodies,
         m_impulse = 0;
     }
 
-    bodiesA.SetVelocity(velA);
-    bodiesB.SetVelocity(velB);
+    bodyConstraintA.SetVelocity(velA);
+    bodyConstraintB.SetVelocity(velB);
 }
 
 bool DistanceJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf&)
 {
-    auto& bodiesA = bodies.at(GetBodyA());
-    auto& bodiesB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = bodies.at(GetBodyA());
+    auto& bodyConstraintB = bodies.at(GetBodyB());
 
-    const auto invMassA = bodiesA.GetInvMass();
-    const auto invRotInertiaA = bodiesA.GetInvRotInertia();
-    const auto invMassB = bodiesB.GetInvMass();
-    const auto invRotInertiaB = bodiesB.GetInvRotInertia();
+    const auto invMassA = bodyConstraintA.GetInvMass();
+    const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
+    const auto invMassB = bodyConstraintB.GetInvMass();
+    const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
 
-    auto velA = bodiesA.GetVelocity();
-    auto velB = bodiesB.GetVelocity();
+    auto velA = bodyConstraintA.GetVelocity();
+    auto velB = bodyConstraintB.GetVelocity();
 
     // Cdot = dot(u, v + cross(w, r))
     const auto vpA = velA.linear + GetRevPerpendicular(m_rA) * velA.angular / Radian;
@@ -196,8 +196,8 @@ bool DistanceJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
     velA -= Velocity{invMassA * P, invRotInertiaA * LA};
     velB += Velocity{invMassB * P, invRotInertiaB * LB};
 
-    bodiesA.SetVelocity(velA);
-    bodiesB.SetVelocity(velB);
+    bodyConstraintA.SetVelocity(velA);
+    bodyConstraintB.SetVelocity(velB);
     
     return impulse == Momentum{0};
 }
@@ -210,22 +210,22 @@ bool DistanceJoint::SolvePositionConstraints(BodyConstraints& bodies, const Cons
         return true;
     }
 
-    auto& bodiesA = bodies.at(GetBodyA());
-    auto& bodiesB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = bodies.at(GetBodyA());
+    auto& bodyConstraintB = bodies.at(GetBodyB());
 
-    const auto invMassA = bodiesA.GetInvMass();
-    const auto invRotInertiaA = bodiesA.GetInvRotInertia();
-    const auto invMassB = bodiesB.GetInvMass();
-    const auto invRotInertiaB = bodiesB.GetInvRotInertia();
+    const auto invMassA = bodyConstraintA.GetInvMass();
+    const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
+    const auto invMassB = bodyConstraintB.GetInvMass();
+    const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
 
-    auto posA = bodiesA.GetPosition();
-    auto posB = bodiesB.GetPosition();
+    auto posA = bodyConstraintA.GetPosition();
+    auto posB = bodyConstraintB.GetPosition();
 
     const auto qA = UnitVec2(posA.angular);
     const auto qB = UnitVec2(posB.angular);
 
-    const auto rA = Length2D{Rotate(m_localAnchorA - bodiesA.GetLocalCenter(), qA)};
-    const auto rB = Length2D{Rotate(m_localAnchorB - bodiesB.GetLocalCenter(), qB)};
+    const auto rA = Length2D{Rotate(m_localAnchorA - bodyConstraintA.GetLocalCenter(), qA)};
+    const auto rB = Length2D{Rotate(m_localAnchorB - bodyConstraintB.GetLocalCenter(), qB)};
     const auto relLoc = Length2D{(posB.linear + rB) - (posA.linear + rA)};
     
     auto length = Length{0};
@@ -239,8 +239,8 @@ bool DistanceJoint::SolvePositionConstraints(BodyConstraints& bodies, const Cons
     posA -= Position{invMassA * P, invRotInertiaA * Cross(rA, P) / Radian};
     posB += Position{invMassB * P, invRotInertiaB * Cross(rB, P) / Radian};
 
-    bodiesA.SetPosition(posA);
-    bodiesB.SetPosition(posB);
+    bodyConstraintA.SetPosition(posA);
+    bodyConstraintB.SetPosition(posB);
 
     return Abs(C) < conf.linearSlop;
 }
