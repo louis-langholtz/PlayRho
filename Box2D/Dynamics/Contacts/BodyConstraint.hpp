@@ -34,6 +34,8 @@ namespace box2d {
     class BodyConstraint
     {
     public:
+        // Note: Seeing World.TilesComesToRest times of around 5686 ms with this setup.
+
         using index_type = std::remove_const<decltype(MaxBodies)>::type;
         
         BodyConstraint() = default;
@@ -128,7 +130,7 @@ namespace box2d {
     }
     
     BodyConstraint GetBodyConstraint(const Body& body, Time time = 0) noexcept;
-
+    
 } // namespace box2d
 
 #endif /* BodyConstraint_hpp */
