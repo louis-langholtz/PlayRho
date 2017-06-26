@@ -339,40 +339,38 @@ Momentum SeqSolveNormalConstraint(VelocityConstraint& vc)
     auto newVelA = oldVelA;
     auto newVelB = oldVelB;
     
+    auto solverProc = [&](VelocityConstraint::size_type index) {
+        const auto vcp = vc.GetPointAt(index);
+        const auto closingVel = GetContactRelVelocity(newVelA, vcp.relA, newVelB, vcp.relB);
+        const auto directionalVel = LinearVelocity{Dot(closingVel, direction)};
+        const auto lambda = Momentum{vcp.normalMass * (vcp.velocityBias - directionalVel)};
+        const auto oldImpulse = vcp.normalImpulse;
+        const auto newImpulse = std::max(oldImpulse + lambda, Momentum{0});
+
+        // Note: using almost_equal here results in increased iteration counts and is slower.
+#if 0
+        const auto incImpulse = almost_equal(newImpulse, oldImpulse)? Momentum{0}: newImpulse - oldImpulse;
+#else
+        const auto incImpulse = newImpulse - oldImpulse;
+#endif
+        
+        const auto P = incImpulse * direction;
+        const auto LA = AngularMomentum{Cross(vcp.relA, P) / Radian};
+        const auto LB = AngularMomentum{Cross(vcp.relB, P) / Radian};
+        newVelA -= Velocity{invMassA * P, invRotInertiaA * LA};
+        newVelB += Velocity{invMassB * P, invRotInertiaB * LB};
+        maxIncImpulse = std::max(maxIncImpulse, Abs(incImpulse));
+
+        // Note: using newImpulse, instead of oldImpulse + incImpulse, results in
+        //   iteration count increases for the World.TilesComesToRest unit test.
+        vc.SetNormalImpulseAtPoint(index, oldImpulse + incImpulse);
+    };
+
     if (count == 2)
     {
-        const auto vcp = vc.GetPointAt(1);
-        const auto closingVel = GetContactRelVelocity(newVelA, vcp.relA, newVelB, vcp.relB);
-        const auto directionalVel = LinearVelocity{Dot(closingVel, direction)};
-        const auto lambda = Momentum{vcp.normalMass * (vcp.velocityBias - directionalVel)};
-        const auto oldImpulse = vcp.normalImpulse;
-        const auto newImpulse = std::max(oldImpulse + lambda, Momentum{0});
-        const auto incImpulse = newImpulse - oldImpulse;
-        const auto P = incImpulse * direction;
-        const auto LA = AngularMomentum{Cross(vcp.relA, P) / Radian};
-        const auto LB = AngularMomentum{Cross(vcp.relB, P) / Radian};
-        newVelA -= Velocity{invMassA * P, invRotInertiaA * LA};
-        newVelB += Velocity{invMassB * P, invRotInertiaB * LB};
-        vc.SetNormalImpulseAtPoint(1, oldImpulse + incImpulse);
-        maxIncImpulse = std::max(maxIncImpulse, Abs(incImpulse));
-        assert(count == 2 || (newVelA == oldVelA && newVelB == oldVelB && incImpulse == Momentum{0}));
+        solverProc(1);
     }
-    {
-        const auto vcp = vc.GetPointAt(0);
-        const auto closingVel = GetContactRelVelocity(newVelA, vcp.relA, newVelB, vcp.relB);
-        const auto directionalVel = LinearVelocity{Dot(closingVel, direction)};
-        const auto lambda = Momentum{vcp.normalMass * (vcp.velocityBias - directionalVel)};
-        const auto oldImpulse = vcp.normalImpulse;
-        const auto newImpulse = std::max(oldImpulse + lambda, Momentum{0});
-        const auto incImpulse = newImpulse - oldImpulse;
-        const auto P = incImpulse * direction;
-        const auto LA = AngularMomentum{Cross(vcp.relA, P) / Radian};
-        const auto LB = AngularMomentum{Cross(vcp.relB, P) / Radian};
-        newVelA -= Velocity{invMassA * P, invRotInertiaA * LA};
-        newVelB += Velocity{invMassB * P, invRotInertiaB * LB};
-        vc.SetNormalImpulseAtPoint(0, oldImpulse + incImpulse);
-        maxIncImpulse = std::max(maxIncImpulse, Abs(incImpulse));
-    }
+    solverProc(0);
     
     bodyA->SetVelocity(newVelA);
     bodyB->SetVelocity(newVelB);
@@ -402,52 +400,40 @@ Momentum SolveTangentConstraint(VelocityConstraint& vc)
     auto newVelA = oldVelA;
     auto newVelB = oldVelB;
     
+    auto solverProc = [&](VelocityConstraint::size_type index) {
+        const auto vcp = vc.GetPointAt(index);
+        const auto closingVel = GetContactRelVelocity(newVelA, vcp.relA, newVelB, vcp.relB);
+        const auto directionalVel = LinearVelocity{tangentSpeed - Dot(closingVel, direction)};
+        const auto lambda = vcp.tangentMass * directionalVel;
+        const auto maxImpulse = friction * vcp.normalImpulse;
+        const auto oldImpulse = vcp.tangentImpulse;
+        const auto newImpulse = Clamp(oldImpulse + lambda, -maxImpulse, maxImpulse);
+        
+        // Note: using almost_equal here results in increased iteration counts and is slower.
+#if 0
+        const auto incImpulse = almost_equal(newImpulse, oldImpulse)? Momentum{0}: newImpulse - oldImpulse;
+#else
+        const auto incImpulse = newImpulse - oldImpulse;
+#endif
+
+        const auto P = incImpulse * direction;
+        const auto LA = AngularMomentum{Cross(vcp.relA, P) / Radian};
+        const auto LB = AngularMomentum{Cross(vcp.relB, P) / Radian};
+        newVelA -= Velocity{invMassA * P, invRotInertiaA * LA};
+        newVelB += Velocity{invMassB * P, invRotInertiaB * LB};
+        maxIncImpulse = std::max(maxIncImpulse, Abs(incImpulse));
+        
+        // Note: using newImpulse, instead of oldImpulse + incImpulse, results in
+        //   iteration count increases for the World.TilesComesToRest unit test.
+        vc.SetTangentImpulseAtPoint(index, oldImpulse + incImpulse);
+    };
     assert((count == 1) || (count == 2));
     if (count == 2)
     {
-        const auto vcp = vc.GetPointAt(1);
-        const auto closingVel = GetContactRelVelocity(newVelA, vcp.relA, newVelB, vcp.relB);
-        const auto directionalVel = LinearVelocity{tangentSpeed - Dot(closingVel, direction)};
-        const auto lambda = vcp.tangentMass * directionalVel;
-        const auto maxImpulse = friction * vcp.normalImpulse;
-        const auto oldImpulse = vcp.tangentImpulse;
-        const auto newImpulse = Clamp(oldImpulse + lambda, -maxImpulse, maxImpulse);
-        const auto incImpulse = newImpulse - oldImpulse;
-        const auto P = incImpulse * direction;
-        const auto LA = AngularMomentum{Cross(vcp.relA, P) / Radian};
-        const auto LB = AngularMomentum{Cross(vcp.relB, P) / Radian};
-        newVelA -= Velocity{invMassA * P, invRotInertiaA * LA};
-        newVelB += Velocity{invMassB * P, invRotInertiaB * LB};
-        
-        // Note that using newImpulse, instead of oldImpulse + incImpulse, results in
-        // an iteration counts increase for the World.TilesComesToRest unit test.
-        vc.SetTangentImpulseAtPoint(1, oldImpulse + incImpulse);
-        
-        maxIncImpulse = std::max(maxIncImpulse, Abs(incImpulse));
-        assert(count == 2 || (newVelA == oldVelA && newVelB == oldVelB && incImpulse == Momentum{0}));
+        solverProc(1);
     }
-    {
-        const auto vcp = vc.GetPointAt(0);
-        const auto closingVel = GetContactRelVelocity(newVelA, vcp.relA, newVelB, vcp.relB);
-        const auto directionalVel = LinearVelocity{tangentSpeed - Dot(closingVel, direction)};
-        const auto lambda = vcp.tangentMass * directionalVel;
-        const auto maxImpulse = friction * vcp.normalImpulse;
-        const auto oldImpulse = vcp.tangentImpulse;
-        const auto newImpulse = Clamp(oldImpulse + lambda, -maxImpulse, maxImpulse);
-        const auto incImpulse = newImpulse - oldImpulse;
-        const auto P = incImpulse * direction;
-        const auto LA = AngularMomentum{Cross(vcp.relA, P) / Radian};
-        const auto LB = AngularMomentum{Cross(vcp.relB, P) / Radian};
-        newVelA -= Velocity{invMassA * P, invRotInertiaA * LA};
-        newVelB += Velocity{invMassB * P, invRotInertiaB * LB};
-        
-        // Note that using newImpulse, instead of oldImpulse + incImpulse, results in
-        // an iteration counts increase for the World.TilesComesToRest unit test.
-        vc.SetTangentImpulseAtPoint(0, oldImpulse + incImpulse);
-        
-        maxIncImpulse = std::max(maxIncImpulse, Abs(incImpulse));
-    }
-    
+    solverProc(0);
+
     bodyA->SetVelocity(newVelA);
     bodyB->SetVelocity(newVelB);
     
@@ -456,6 +442,10 @@ Momentum SolveTangentConstraint(VelocityConstraint& vc)
 
 Momentum SolveNormalConstraint(VelocityConstraint& vc)
 {
+    // Note: Block solving reduces World.TilesComesToRest iteration counts and is faster.
+    //   This is because the block solver provides more stable solutions per iteration.
+    //   The difference is especially pronounced in the Vertical Stack Testbed demo.
+#if 1
     const auto count = vc.GetPointCount();
     assert((count == 1) || (count == 2));
     
@@ -464,6 +454,9 @@ Momentum SolveNormalConstraint(VelocityConstraint& vc)
         return SeqSolveNormalConstraint(vc);
     }
     return BlockSolveNormalConstraint(vc);
+#else
+    return SeqSolveNormalConstraint(vc);
+#endif
 }
 
 Momentum SolveVelocityConstraint(VelocityConstraint& vc)
