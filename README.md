@@ -8,7 +8,7 @@ a [Zlib License](https://opensource.org/licenses/Zlib). For the original Box2D, 
 General influences on this fork are:
 - [C++14](https://en.wikipedia.org/wiki/C%2B%2B14);
 - [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md);
-- [Unit Testing](https://en.wikipedia.org/wiki/Unit_testing);
+- [Continuous Integration](https://en.wikipedia.org/wiki/Continuous_integration), [Build Automation](https://en.wikipedia.org/wiki/Build_automation), and [Unit Testing](https://en.wikipedia.org/wiki/Unit_testing);
 
 **NOTE**: These sources make heavy use of the standard C++ library
 [`assert`](http://en.cppreference.com/w/cpp/error/assert) macro to help confirm
