@@ -25,9 +25,9 @@ TEST(SimplexEdge, ByteSizeIs_28_56_or_112)
 {
     switch (sizeof(RealNum))
     {
-        case  4: EXPECT_EQ(sizeof(SimplexEdge), size_t(28)); break;
-        case  8: EXPECT_EQ(sizeof(SimplexEdge), size_t(56)); break;
-        case 16: EXPECT_EQ(sizeof(SimplexEdge), size_t(112)); break;
+        case  4: EXPECT_EQ(sizeof(SimplexEdge), std::size_t(28)); break;
+        case  8: EXPECT_EQ(sizeof(SimplexEdge), std::size_t(56)); break;
+        case 16: EXPECT_EQ(sizeof(SimplexEdge), std::size_t(112)); break;
         default: FAIL(); break;
     }
 }

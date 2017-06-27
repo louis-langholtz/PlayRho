@@ -467,9 +467,9 @@ namespace {
         return minUnderActiveTime;
     }
     
-    inline size_t Sleepem(Island::Bodies& bodies)
+    inline std::size_t Sleepem(Island::Bodies& bodies)
     {
-        auto unawoken = size_t{0};
+        auto unawoken = std::size_t{0};
         std::for_each(cbegin(bodies), cend(bodies), [&](Body *b)
         {
             if (Unawaken(*b))
@@ -505,8 +505,8 @@ namespace {
     }
     
     inline bool TestOverlap(const DynamicTree& tree,
-                            const Fixture* fixtureA, child_count_t indexA,
-                            const Fixture* fixtureB, child_count_t indexB)
+                            const Fixture* fixtureA, ChildCounter indexA,
+                            const Fixture* fixtureB, ChildCounter indexB)
     {
         const auto proxyIdA = fixtureA->GetProxy(indexA)->proxyId;
         const auto proxyIdB = fixtureB->GetProxy(indexB)->proxyId;
@@ -1340,7 +1340,7 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
                results.solved? results.positionIterations - 1: StepConf::InvalidIteration);
     }
     
-    results.bodiesSlept = body_count_t{0};
+    results.bodiesSlept = BodyCounter{0};
     if (::box2d::IsValid(RealNum{conf.minStillTimeToSleep / Second}))
     {
         const auto minUnderActiveTime = UpdateUnderActiveTimes(island.m_bodies, conf);
@@ -1434,7 +1434,7 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
     return results;
 }
     
-World::ContactToiData World::GetSoonestContacts(const size_t reserveSize)
+World::ContactToiData World::GetSoonestContacts(const std::size_t reserveSize)
 {
     auto minToi = std::nextafter(RealNum{1}, RealNum{0});
     auto minContacts = std::vector<Contact*>();
@@ -1492,7 +1492,7 @@ ToiStepStats World::SolveToi(const StepConf& conf)
 
         stats.maxSimulContacts = std::max(stats.maxSimulContacts,
                                           static_cast<decltype(stats.maxSimulContacts)>(ncount));
-        stats.contactsFound += static_cast<contact_count_t>(ncount);
+        stats.contactsFound += static_cast<ContactCounter>(ncount);
         auto islandsFound = 0u;
         for (auto&& contact: next.contacts)
         {
@@ -1565,8 +1565,8 @@ World::IslandSolverResults World::SolveToi(const StepConf& conf, Contact& contac
     //   Here's some specific behavioral differences:
     //   1. Bodies don't get their under-active times reset (like they do in Erin's code).
 
-    auto contactsUpdated = contact_count_t{0};
-    auto contactsSkipped = contact_count_t{0};
+    auto contactsUpdated = ContactCounter{0};
+    auto contactsSkipped = ContactCounter{0};
 
     /*
      * Confirm that contact is as it's supposed to be according to contract of the
@@ -2300,9 +2300,9 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
 #endif
     
     return UpdateContactsStats{
-        static_cast<contact_count_t>(ignored),
-        static_cast<contact_count_t>(updated),
-        static_cast<contact_count_t>(skipped)
+        static_cast<ContactCounter>(ignored),
+        static_cast<ContactCounter>(updated),
+        static_cast<ContactCounter>(skipped)
     };
 }
 
@@ -2322,7 +2322,7 @@ void World::UnregisterForProcessing(ProxyId pid) noexcept
     }
 }
 
-contact_count_t World::FindNewContacts()
+ContactCounter World::FindNewContacts()
 {
     m_proxyKeys.clear();
 
@@ -2340,7 +2340,7 @@ contact_count_t World::FindNewContacts()
 
     std::sort(begin(m_proxyKeys), end(m_proxyKeys));
 
-    auto count = contact_count_t{0};
+    auto count = ContactCounter{0};
     auto lastKey = ContactKey{};
     std::for_each(cbegin(m_proxyKeys), cend(m_proxyKeys), [&](ContactKey key)
     {
@@ -2386,7 +2386,7 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
     assert(pidA != pidB);
     
     // The following assert fails on Windows
-    // assert(sizeof(pidA) + sizeof(pidB) == sizeof(size_t));
+    // assert(sizeof(pidA) + sizeof(pidB) == sizeof(std::size_t));
 #endif
    
 #ifndef NO_RACING
@@ -2760,7 +2760,7 @@ void World::DestroyProxies(Fixture& fixture)
     Free(proxies.begin());
 
     const auto emptyArray = static_cast<FixtureProxy*>(nullptr);
-    FixtureAtty::SetProxies(fixture, Span<FixtureProxy>(emptyArray, size_t{0}));
+    FixtureAtty::SetProxies(fixture, Span<FixtureProxy>(emptyArray, std::size_t{0}));
 }
 
 bool World::TouchProxies(Fixture& fixture) noexcept
@@ -2787,14 +2787,14 @@ void World::InternalTouchProxies(Fixture& fixture) noexcept
     }
 }
 
-child_count_t World::Synchronize(Fixture& fixture,
+ChildCounter World::Synchronize(Fixture& fixture,
                                  const Transformation xfm1, const Transformation xfm2,
                                  const RealNum multiplier, const Length extension)
 {
     assert(::box2d::IsValid(xfm1));
     assert(::box2d::IsValid(xfm2));
     
-    auto updatedCount = child_count_t{0};
+    auto updatedCount = ChildCounter{0};
     const auto shape = fixture.GetShape();
     const auto expandedDisplacement = multiplier * (xfm2.p - xfm1.p);
     const auto proxies = FixtureAtty::GetProxies(fixture);
@@ -2819,11 +2819,11 @@ child_count_t World::Synchronize(Fixture& fixture,
     return updatedCount;
 }
 
-contact_count_t World::Synchronize(Body& body,
+ContactCounter World::Synchronize(Body& body,
                                    const Transformation& xfm1, const Transformation& xfm2,
                                    const RealNum multiplier, const Length aabbExtension)
 {
-    auto updatedCount = contact_count_t{0};
+    auto updatedCount = ContactCounter{0};
     std::for_each(begin(body.GetFixtures()), end(body.GetFixtures()), [&](Fixture& f) {
         updatedCount += Synchronize(f, xfm1, xfm2, multiplier, aabbExtension);
     });
@@ -2848,23 +2848,23 @@ StepStats Step(World& world, Time dt, World::ts_iters_type velocityIterations,
     return world.Step(conf);
 }
 
-contact_count_t GetTouchingCount(const World& world) noexcept
+ContactCounter GetTouchingCount(const World& world) noexcept
 {
     const auto contacts = world.GetContacts();
-    return static_cast<contact_count_t>(std::count_if(begin(contacts), end(contacts),
+    return static_cast<ContactCounter>(std::count_if(begin(contacts), end(contacts),
         [&](const Contact &c) { return c.IsTouching(); }));
 }
 
-size_t GetFixtureCount(const World& world) noexcept
+std::size_t GetFixtureCount(const World& world) noexcept
 {
-    auto sum = size_t{0};
+    auto sum = std::size_t{0};
     std::for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](const Body &b) {
         sum += GetFixtureCount(b);
     });
     return sum;
 }
 
-size_t GetShapeCount(const World& world) noexcept
+std::size_t GetShapeCount(const World& world) noexcept
 {
     auto shapes = std::set<const Shape*>();
     std::for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](const Body &b) {
@@ -2876,16 +2876,16 @@ size_t GetShapeCount(const World& world) noexcept
     return shapes.size();
 }
 
-size_t GetAwakeCount(const World& world) noexcept
+std::size_t GetAwakeCount(const World& world) noexcept
 {
-    return static_cast<size_t>(std::count_if(begin(world.GetBodies()), end(world.GetBodies()),
+    return static_cast<std::size_t>(std::count_if(begin(world.GetBodies()), end(world.GetBodies()),
                                              [&](const Body &b) { return b.IsAwake(); }));
 }
     
-size_t Awaken(World& world) noexcept
+std::size_t Awaken(World& world) noexcept
 {
     // Can't use std::count_if since body gets modified.
-    auto awoken = size_t{0};
+    auto awoken = std::size_t{0};
     std::for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](Body &b) {
         if (box2d::Awaken(b))
         {

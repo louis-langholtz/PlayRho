@@ -45,38 +45,38 @@ namespace box2d
     void Dump(const World& world);
     
     /// Dump body to a log file
-    void Dump(const Body& body, size_t bodyIndex);
+    void Dump(const Body& body, std::size_t bodyIndex);
     
     /// Dump joint to the log file.
-    void Dump(const Joint& joint, size_t index);
+    void Dump(const Joint& joint, std::size_t index);
 
     /// Dump fixture to log file.
-    void Dump(const Fixture& fixture, size_t bodyIndex);
+    void Dump(const Fixture& fixture, std::size_t bodyIndex);
 
     /// Dump joint to dmLog
-    void Dump(const DistanceJoint& joint, size_t index);
+    void Dump(const DistanceJoint& joint, std::size_t index);
 
     /// Dump joint to the log file.
-    void Dump(const FrictionJoint& joint, size_t index);
+    void Dump(const FrictionJoint& joint, std::size_t index);
 
-    void Dump(const GearJoint& joint, size_t index);
+    void Dump(const GearJoint& joint, std::size_t index);
     
-    void Dump(const MotorJoint& joint, size_t index);
+    void Dump(const MotorJoint& joint, std::size_t index);
 
-    void Dump(const MouseJoint& joint, size_t index);
+    void Dump(const MouseJoint& joint, std::size_t index);
 
-    void Dump(const PrismaticJoint& joint, size_t index);
+    void Dump(const PrismaticJoint& joint, std::size_t index);
 
     /// Dump joint to dmLog
-    void Dump(const PulleyJoint& joint, size_t index);
+    void Dump(const PulleyJoint& joint, std::size_t index);
 
-    void Dump(const RevoluteJoint& joint, size_t index);
+    void Dump(const RevoluteJoint& joint, std::size_t index);
 
-    void Dump(const RopeJoint& joint, size_t index);
+    void Dump(const RopeJoint& joint, std::size_t index);
 
-    void Dump(const WeldJoint& joint, size_t index);
+    void Dump(const WeldJoint& joint, std::size_t index);
 
-    void Dump(const WheelJoint& joint, size_t index);
+    void Dump(const WheelJoint& joint, std::size_t index);
     
 } // namespace box2d
 

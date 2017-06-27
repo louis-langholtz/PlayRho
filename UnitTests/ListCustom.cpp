@@ -26,7 +26,7 @@ using namespace box2d;
 #if 0
 TEST(InternalListForBody, ByteSizeIs16)
 {
-    EXPECT_EQ(sizeof(InternalList<Body>), size_t(16));
+    EXPECT_EQ(sizeof(InternalList<Body>), std::size_t(16));
 }
 
 TEST(InternalListForBody, IsDefaultConstructable)
@@ -44,8 +44,8 @@ TEST(InternalListForBody, DefaultInit)
     InternalList<Body> list;
 
     EXPECT_TRUE(list.empty());
-    EXPECT_EQ(list.size(), size_t(0));
-    EXPECT_EQ(list.max_size(), size_t(MaxBodies));
+    EXPECT_EQ(list.size(), std::size_t(0));
+    EXPECT_EQ(list.max_size(), std::size_t(MaxBodies));
     
     EXPECT_EQ(list.begin(), list.end());
     EXPECT_EQ(list.cbegin(), list.cend());
@@ -57,8 +57,8 @@ TEST(ListForBody, DefaultInit)
     List<Body> list{internal_list};
     
     EXPECT_TRUE(list.empty());
-    EXPECT_EQ(list.size(), size_t(0));
-    EXPECT_EQ(list.max_size(), size_t(MaxBodies));
+    EXPECT_EQ(list.size(), std::size_t(0));
+    EXPECT_EQ(list.max_size(), std::size_t(MaxBodies));
     
     EXPECT_EQ(list.begin(), list.end());
     EXPECT_EQ(list.cbegin(), list.cend());
@@ -68,9 +68,9 @@ TEST(ListNodeForBody, ByteSizeIs_208_272_or_480)
 {
     switch (sizeof(RealNum))
     {
-        case  4: EXPECT_EQ(sizeof(ListNode<Body>), size_t(208)); break;
-        case  8: EXPECT_EQ(sizeof(ListNode<Body>), size_t(272)); break;
-        case 16: EXPECT_EQ(sizeof(ListNode<Body>), size_t(480)); break;
+        case  4: EXPECT_EQ(sizeof(ListNode<Body>), std::size_t(208)); break;
+        case  8: EXPECT_EQ(sizeof(ListNode<Body>), std::size_t(272)); break;
+        case 16: EXPECT_EQ(sizeof(ListNode<Body>), std::size_t(480)); break;
         default: FAIL(); break;
     }
 }
@@ -80,9 +80,9 @@ TEST(InternalListForBody, PushAndPop)
     InternalList<Body> list;
 
     ASSERT_TRUE(list.empty());
-    ASSERT_EQ(list.size(), size_t(0));
+    ASSERT_EQ(list.size(), std::size_t(0));
 
-    const size_t n = 4;
+    const std::size_t n = 4;
     auto list_nodes = static_cast<ListNode<Body>*>(Alloc(sizeof(ListNode<Body>) * n));
     for (auto i = decltype(n){0}; i < n; ++i)
     {
@@ -94,7 +94,7 @@ TEST(InternalListForBody, PushAndPop)
     EXPECT_FALSE(list.empty());
     EXPECT_EQ(list.size(), n);
     
-    auto size = size_t(0);
+    auto size = std::size_t(0);
     for (auto&& e: list)
     {
         if (size == 0)
@@ -122,7 +122,7 @@ TEST(InternalListForBody, PushAndPop)
         list.pop_front();
     }
     EXPECT_TRUE(list.empty());
-    EXPECT_EQ(list.size(), size_t(0));
+    EXPECT_EQ(list.size(), std::size_t(0));
     
     box2d::Free(list_nodes);
 }

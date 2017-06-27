@@ -25,9 +25,9 @@ TEST(BodyConstraint, ByteSizeIs_40_80_or_160)
 {
     switch (sizeof(RealNum))
     {
-        case  4: EXPECT_EQ(sizeof(BodyConstraint), size_t(40)); break;
-        case  8: EXPECT_EQ(sizeof(BodyConstraint), size_t(80)); break;
-        case 16: EXPECT_EQ(sizeof(BodyConstraint), size_t(160)); break;
+        case  4: EXPECT_EQ(sizeof(BodyConstraint), std::size_t(40)); break;
+        case  8: EXPECT_EQ(sizeof(BodyConstraint), std::size_t(80)); break;
+        case 16: EXPECT_EQ(sizeof(BodyConstraint), std::size_t(160)); break;
         default: FAIL(); break;
     }
 }

@@ -78,7 +78,7 @@ public:
     /// @brief Container type for contacts.
     using Contacts = std::vector<std::pair<ContactKey,Contact*>>;
 
-    static constexpr auto InvalidIslandIndex = static_cast<body_count_t>(-1);
+    static constexpr auto InvalidIslandIndex = static_cast<BodyCounter>(-1);
 
     /// @brief Flags type.
     /// @note For internal use. Made public to facilitate unit testing.
@@ -1063,9 +1063,9 @@ inline Torque GetTorque(const Body& body) noexcept
 /// @param h Time elapsed to get velocity for. Behavior is undefined if this value is invalid.
 Velocity GetVelocity(const Body& body, const Time h) noexcept;
 
-size_t GetWorldIndex(const Body* body);
+BodyCounter GetWorldIndex(const Body* body);
 
-size_t GetFixtureCount(const Body& body);
+std::size_t GetFixtureCount(const Body& body);
 
 /// Rotates a body a given amount around a point in world coordinates.
 /// @details This changes both the linear and angular positions of the body.

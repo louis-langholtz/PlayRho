@@ -26,7 +26,7 @@ using namespace box2d;
 
 TEST(DynamicTree, ByteSizeIs24)
 {
-    EXPECT_EQ(sizeof(DynamicTree), size_t(24));
+    EXPECT_EQ(sizeof(DynamicTree), std::size_t(24));
 }
 
 TEST(DynamicTree, Traits)

@@ -24,7 +24,7 @@ using namespace box2d;
 
 TEST(StackAllocator, ByteSizeIs64)
 {
-    EXPECT_EQ(sizeof(StackAllocator), size_t(64));
+    EXPECT_EQ(sizeof(StackAllocator), std::size_t(64));
 }
 
 TEST(StackAllocator, DefaultConstruction)
@@ -56,7 +56,7 @@ TEST(StackAllocator, slower_than_mallocfree)
         {
             for (auto i = decltype(iterations){0}; i < iterations; ++i)
             {
-                for (auto num_body_ptrs = size_t(1); num_body_ptrs < 200; ++num_body_ptrs)
+                for (auto num_body_ptrs = std::size_t(1); num_body_ptrs < 200; ++num_body_ptrs)
                 {
                     const auto elem_to_poke = num_body_ptrs / 2;
                     auto buf = static_cast<Body**>(foo.Allocate(num_body_ptrs * sizeof(Body*)));
@@ -75,7 +75,7 @@ TEST(StackAllocator, slower_than_mallocfree)
         start = std::chrono::high_resolution_clock::now();
         for (auto i = decltype(iterations){0}; i < iterations; ++i)
         {
-            for (auto num_body_ptrs = size_t(1); num_body_ptrs < 200; ++num_body_ptrs)
+            for (auto num_body_ptrs = std::size_t(1); num_body_ptrs < 200; ++num_body_ptrs)
             {
                 const auto elem_to_poke = num_body_ptrs / 2;
                 auto buf = static_cast<Body**>(std::malloc(num_body_ptrs * sizeof(Body*)));

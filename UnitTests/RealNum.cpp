@@ -24,7 +24,7 @@ using namespace box2d;
 TEST(RealNum, ByteSizeIs_4_8_or_16)
 {
     const auto size = sizeof(RealNum);
-    EXPECT_TRUE(size == size_t(4) || size == size_t(8) || size == size_t(16));
+    EXPECT_TRUE(size == std::size_t(4) || size == std::size_t(8) || size == std::size_t(16));
 }
 
 #if 0

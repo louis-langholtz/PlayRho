@@ -208,7 +208,7 @@ public:
         constexpr int e_maxCount = 4;
         int count = 0;
         const auto aabb = ComputeAABB(circle, transform);
-        m_world->QueryAABB(aabb, [&](Fixture* f, const child_count_t) {
+        m_world->QueryAABB(aabb, [&](Fixture* f, const ChildCounter) {
             if (count < e_maxCount)
             {
                 const auto xfm = GetTransformation(*f);

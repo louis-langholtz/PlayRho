@@ -53,7 +53,7 @@ Contact::UpdateConf Contact::GetUpdateConf(const StepConf& conf) noexcept
     return UpdateConf{GetDistanceConf(conf), GetManifoldConf(conf)};
 }
 
-Contact::Contact(Fixture* fA, child_count_t iA, Fixture* fB, child_count_t iB):
+Contact::Contact(Fixture* fA, ChildCounter iA, Fixture* fB, ChildCounter iB):
     m_fixtureA{fA}, m_fixtureB{fB}, m_indexA{iA}, m_indexB{iB},
     m_friction{MixFriction(fA->GetFriction(), fB->GetFriction())},
     m_restitution{MixRestitution(fA->GetRestitution(), fB->GetRestitution())}

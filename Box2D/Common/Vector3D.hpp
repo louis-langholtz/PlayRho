@@ -30,7 +30,7 @@ namespace box2d
     template <typename TYPE>
     struct Vector3D
     {
-        using size_type = size_t;
+        using size_type = std::size_t;
         using data_type = TYPE;
 
         constexpr auto operator+ () const noexcept { return Vector3D<data_type>{+x, +y, +z}; }

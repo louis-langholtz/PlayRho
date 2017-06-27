@@ -26,11 +26,11 @@ using namespace box2d;
 
 namespace {
 
-inline size_t alignment_size(size_t size)
+inline std::size_t alignment_size(std::size_t size)
 {
-    constexpr auto one = static_cast<size_t>(1);
+    constexpr auto one = static_cast<std::size_t>(1);
     return (size < one)? one: (size < sizeof(std::max_align_t))?
-    static_cast<size_t>(NextPowerOfTwo(size - one)): alignof(std::max_align_t);
+    static_cast<std::size_t>(NextPowerOfTwo(size - one)): alignof(std::max_align_t);
 };
 
 } // anonymous namespace

@@ -24,7 +24,7 @@ using namespace box2d;
 #if 0
 TEST(Rot, ByteSizeIs8)
 {
-    EXPECT_EQ(sizeof(Rot), size_t(8));
+    EXPECT_EQ(sizeof(Rot), std::size_t(8));
 }
 
 TEST(Rot, sin)

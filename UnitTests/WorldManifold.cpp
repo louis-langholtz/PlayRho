@@ -26,9 +26,9 @@ TEST(WorldManifold, ByteSizeIs_36_72_or_144)
 {
     switch (sizeof(RealNum))
     {
-        case  4: EXPECT_EQ(sizeof(WorldManifold), size_t(36)); break;
-        case  8: EXPECT_EQ(sizeof(WorldManifold), size_t(72)); break;
-        case 16: EXPECT_EQ(sizeof(WorldManifold), size_t(144)); break;
+        case  4: EXPECT_EQ(sizeof(WorldManifold), std::size_t(36)); break;
+        case  8: EXPECT_EQ(sizeof(WorldManifold), std::size_t(72)); break;
+        case 16: EXPECT_EQ(sizeof(WorldManifold), std::size_t(144)); break;
         default: FAIL(); break;
     }
 }

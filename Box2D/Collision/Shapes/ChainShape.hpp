@@ -69,11 +69,11 @@ public:
 
     /// Gets the number of child primitives.
     /// @return Positive non-zero count.
-    child_count_t GetChildCount() const noexcept override;
+    ChildCounter GetChildCount() const noexcept override;
     
     /// @brief Gets the child for the given index.
     /// @throws InvalidArgument if the index is out of range.
-    DistanceProxy GetChild(child_count_t index) const override;
+    DistanceProxy GetChild(ChildCounter index) const override;
 
     /// Computes the mass properties of this shape using its dimensions and density.
     /// The inertia tensor is computed about the local origin.
@@ -83,19 +83,19 @@ public:
     void Accept(Visitor& visitor) const override;
 
     /// Get the vertex count.
-    child_count_t GetVertexCount() const noexcept { return m_count; }
+    ChildCounter GetVertexCount() const noexcept { return m_count; }
 
     /// Get a vertex by index.
-    Length2D GetVertex(child_count_t index) const;
+    Length2D GetVertex(ChildCounter index) const;
 
-    UnitVec2 GetNormal(child_count_t index) const;
+    UnitVec2 GetNormal(ChildCounter index) const;
 
 private:
     std::vector<Length2D> m_vertices;
     std::vector<UnitVec2> m_normals;
 
     /// The vertex count.
-    child_count_t m_count = 0;
+    ChildCounter m_count = 0;
 };
 
 inline void ChainShape::Accept(box2d::Shape::Visitor &visitor) const
@@ -103,13 +103,13 @@ inline void ChainShape::Accept(box2d::Shape::Visitor &visitor) const
     visitor.Visit(*this);
 }
 
-inline Length2D ChainShape::GetVertex(child_count_t index) const
+inline Length2D ChainShape::GetVertex(ChildCounter index) const
 {
     assert((0 <= index) && (index < m_count));
     return m_vertices[index];
 }
 
-inline UnitVec2 ChainShape::GetNormal(child_count_t index) const
+inline UnitVec2 ChainShape::GetNormal(ChildCounter index) const
 {
     assert((0 <= index) && (index < m_count));
     return m_normals[index];
@@ -121,7 +121,7 @@ inline bool IsLooped(const ChainShape& shape) noexcept
     return (count > 1)? (shape.GetVertex(count - 1) == shape.GetVertex(0)): false;
 }
 
-inline child_count_t GetNextIndex(const ChainShape& shape, child_count_t index) noexcept
+inline ChildCounter GetNextIndex(const ChainShape& shape, ChildCounter index) noexcept
 {
     return GetModuloNext(index, shape.GetVertexCount());
 }

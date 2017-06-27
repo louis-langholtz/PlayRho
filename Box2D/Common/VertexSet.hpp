@@ -59,7 +59,7 @@ namespace box2d
             return true;
         }
 
-        size_t size() const noexcept { return m_elements.size(); }
+        std::size_t size() const noexcept { return m_elements.size(); }
         
         const_pointer begin() const { return m_elements.data(); }
         
@@ -78,7 +78,7 @@ namespace box2d
             });
         }
 
-        Length2D operator[](size_t index) const noexcept
+        Length2D operator[](std::size_t index) const noexcept
         {
             return m_elements[index];
         }

@@ -30,7 +30,7 @@ namespace box2d
     template <typename TYPE>
     struct Vector2D
     {
-        using size_type = size_t;
+        using size_type = std::size_t;
         using data_type = TYPE;
         
         /// Default constructor does nothing (for performance).

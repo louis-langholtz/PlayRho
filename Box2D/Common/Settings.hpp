@@ -3,17 +3,19 @@
  * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
@@ -287,16 +289,14 @@ constexpr inline RealNum StripUnit(const Torque value)
 
 #endif
 
+/// @brief Max child count.
 constexpr auto MaxChildCount = std::numeric_limits<unsigned>::max() - 1;
 
-/// Child count type. @details Relating to "children" of Shape.
-using child_count_t = std::remove_const<decltype(MaxChildCount)>::type;
-
-/// Size type for sizing data.
-using size_t = std::size_t;
-
-/// Island count type. @details Relating to items in a Island.
-using island_count_t = size_t;
+/// @brief Child counter type.
+/// @details Relating to "children" of shape where each child is a convex shape possibly
+///   comprising a concave shape.
+/// @note This type must always be able to contain the <code>MaxChildCount</code> value.
+using ChildCounter = std::remove_const<decltype(MaxChildCount)>::type;
 
 /// Time step iterations type.
 /// @details A type for countining iterations per time-step.
@@ -325,6 +325,7 @@ constexpr auto MaxShapeVertices = std::uint8_t{254};
 /// @note Smaller values relative to sizes of bodies increases the time it takes for bodies to come to rest.
 constexpr auto DefaultLinearSlop = Length{Meter / RealNum{1000}}; // originally 0.005
 
+/// @brief Default AABB extension amount.
 constexpr auto DefaultAabbExtension = DefaultLinearSlop * RealNum{20};
 
 /// Default distance multiplier.
@@ -365,34 +366,43 @@ constexpr auto DefaultMaxSubSteps = std::uint8_t{48};
     
 // Dynamics
 
-/// Default velocity threshold.
+/// @brief Default velocity threshold.
 constexpr auto DefaultVelocityThreshold = (RealNum{8} / RealNum{10}) * MeterPerSecond;
 
-/// Maximum number of bodies in a world (65534 based off uint16_t and eliminating one value for invalid).
+/// @brief Maximum number of bodies in a world.
+/// @note This is 65534 based off std::uint16_t and eliminating one value for invalid.
 constexpr auto MaxBodies = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
                                                       std::uint16_t{1});
 
-/// Body count type.
-using body_count_t = std::remove_const<decltype(MaxBodies)>::type;
+/// @brief Body count type.
+/// @note This type must always be able to contain the <code>MaxBodies</code> value.
+using BodyCounter = std::remove_const<decltype(MaxBodies)>::type;
 
-/// Contact count type.
-using contact_count_t = Wider<body_count_t>::type;
+/// @brief Contact count type.
+/// @note This type must be able to contain the squared value of <code>BodyCounter</code>.
+using ContactCounter = Wider<BodyCounter>::type;
 
-constexpr auto InvalidContactIndex = static_cast<contact_count_t>(-1);
+/// @brief Invalid contact index.
+constexpr auto InvalidContactIndex = static_cast<ContactCounter>(-1);
 
-/// Maximum number of contacts in a world (2147319811).
+/// @brief Maximum number of contacts in a world (2147319811).
 /// @details Uses the formula for the maximum number of edges in an undirectional graph of MaxBodies nodes. 
 /// This occurs when every possible body is connected to every other body.
-constexpr auto MaxContacts = contact_count_t{MaxBodies} * contact_count_t{MaxBodies - 1} / contact_count_t{2};
+constexpr auto MaxContacts = ContactCounter{MaxBodies} * ContactCounter{MaxBodies - 1} / ContactCounter{2};
 
-/// Maximum number of joints in a world (65534 based off std::uint16_t and eliminating one value for invalid).
+/// @brief Maximum number of joints in a world.
+/// @note This is 65534 based off std::uint16_t and eliminating one value for invalid.
 constexpr auto MaxJoints = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
                                                       std::uint16_t{1});
 
-/// Joint count type.
-using joint_count_t = std::remove_const<decltype(MaxJoints)>::type;
+/// @brief Joint count type.
+/// @note This type must be able to contain the <code>MaxJoints</code> value.
+using JointCounter = std::remove_const<decltype(MaxJoints)>::type;
 
+/// @brief Default step time.
 constexpr auto DefaultStepTime = Time{Second / RealNum{60}};
+
+/// @brief Default step frequency.
 constexpr auto DefaultStepFrequency = Frequency{Hertz * RealNum{60}};
 
 // Sleep
@@ -416,22 +426,22 @@ constexpr auto DefaultCirclesRatio = RealNum{10};
 
 /// Maximum list size.
 template <typename T>
-constexpr size_t max_list_size();
+constexpr std::size_t max_list_size();
 
 template <>
-constexpr size_t max_list_size<Body>()
+constexpr std::size_t max_list_size<Body>()
 {
     return MaxBodies;
 }
 
 template <>
-constexpr size_t max_list_size<Contact>()
+constexpr std::size_t max_list_size<Contact>()
 {
     return MaxContacts;
 }
 
 template <>
-constexpr size_t max_list_size<Joint>()
+constexpr std::size_t max_list_size<Joint>()
 {
     return MaxJoints;
 }
@@ -474,9 +484,9 @@ constexpr Fixed64 GetInvalid() noexcept
 #endif
 
 template <>
-constexpr size_t GetInvalid() noexcept
+constexpr std::size_t GetInvalid() noexcept
 {
-    return static_cast<size_t>(-1);
+    return static_cast<std::size_t>(-1);
 }
 
 // IsValid template and template specializations.
@@ -498,9 +508,9 @@ constexpr inline bool IsValid(const T& value) noexcept
 }
 
 template <>
-constexpr inline bool IsValid(const size_t& x) noexcept
+constexpr inline bool IsValid(const std::size_t& x) noexcept
 {
-    return x != GetInvalid<size_t>();
+    return x != GetInvalid<std::size_t>();
 }
 
 #ifdef USE_BOOST_UNITS
@@ -679,19 +689,19 @@ constexpr inline bool IsValid(const RotInertia& value) noexcept
 // Memory Allocation
 
 /// Implement this function to use your own memory allocator.
-void* Alloc(size_t size);
+void* Alloc(std::size_t size);
 
 template <typename T>
-T* Alloc(size_t size)
+T* Alloc(std::size_t size)
 {
     return static_cast<T*>(Alloc(size * sizeof(T)));
 }
     
 /// Implement this function to use your own memory allocator.
-void* Realloc(void* ptr, size_t new_size);
+void* Realloc(void* ptr, std::size_t new_size);
 
 template <typename T>
-T* Realloc(T* ptr, size_t size)
+T* Realloc(T* ptr, std::size_t size)
 {
     return static_cast<T*>(Realloc(static_cast<void *>(ptr), size * sizeof(T)));
 }

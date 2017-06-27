@@ -50,7 +50,7 @@ ChainShape::ChainShape(const Conf& conf):
         throw InvalidArgument("too many vertices");
     }
 
-    const auto count = static_cast<child_count_t>(conf.vertices.size());
+    const auto count = static_cast<ChildCounter>(conf.vertices.size());
     m_count = count;
     m_vertices = conf.vertices;
     
@@ -93,14 +93,14 @@ MassData ChainShape::GetMassData() const noexcept
     return MassData{NonNegative<Mass>{0}, Vec2_zero * Meter, NonNegative<RotInertia>{0}};
 }
 
-child_count_t ChainShape::GetChildCount() const noexcept
+ChildCounter ChainShape::GetChildCount() const noexcept
 {
     // edge count = vertex count - 1
     const auto count = GetVertexCount();
     return (count > 1)? count - 1: 0;
 }
 
-DistanceProxy ChainShape::GetChild(child_count_t index) const
+DistanceProxy ChainShape::GetChild(ChildCounter index) const
 {
     if (index >= GetVertexCount())
     {

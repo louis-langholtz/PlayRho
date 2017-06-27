@@ -220,7 +220,7 @@ public:
             Length2D point;
             UnitVec2 normal;
 
-            m_world->RayCast(point1, point2, [&](Fixture* f, const child_count_t,
+            m_world->RayCast(point1, point2, [&](Fixture* f, const ChildCounter,
                                                  const Length2D& p, const UnitVec2& n)
             {
                 const auto body = f->GetBody();
@@ -266,7 +266,7 @@ public:
 
             // This callback finds any hit. Polygon 0 is filtered. For this type of query we are
             // just checking for obstruction, so the actual fixture and hit point are irrelevant.
-            m_world->RayCast(point1, point2, [&](Fixture* f, const child_count_t,
+            m_world->RayCast(point1, point2, [&](Fixture* f, const ChildCounter,
                                                  const Length2D& p, const UnitVec2& n)
             {
                 const auto body = f->GetBody();
@@ -310,7 +310,7 @@ public:
             // This ray cast collects multiple hits along the ray. Polygon 0 is filtered.
             // The fixtures are not necessary reported in order, so we might not capture
             // the closest fixture.
-            m_world->RayCast(point1, point2, [&](Fixture* f, const child_count_t,
+            m_world->RayCast(point1, point2, [&](Fixture* f, const ChildCounter,
                                                  const Length2D& p, const UnitVec2& n)
             {
                 const auto body = f->GetBody();

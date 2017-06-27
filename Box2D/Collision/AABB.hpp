@@ -268,7 +268,7 @@ namespace box2d
     ///   compute it using the shape and the body transform.
     /// @warning Behavior is undefined is child index is not a valid proxy index.
     /// @sa Fixture::GetProxy.
-    AABB GetAABB(const Fixture& fixture, child_count_t childIndex) noexcept;
+    AABB GetAABB(const Fixture& fixture, ChildCounter childIndex) noexcept;
 
 } // namespace box2d
 

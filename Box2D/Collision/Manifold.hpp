@@ -104,7 +104,7 @@ namespace box2d
             e_faceB
         };
         
-        /// Point data for a manifold.
+        /// @brief Point data for a manifold.
         ///
         /// @details This is a contact point belonging to a contact manifold. It holds details
         /// related to the geometry and dynamics of the contact points.
@@ -116,7 +116,7 @@ namespace box2d
         ///
         struct Point
         {
-            /// Local point.
+            /// @brief Local point.
             /// @details Usage depends on manifold type.
             /// @note For circles type manifolds, this is the local center of circle B.
             /// @note For face-A type manifolds, this is the local center of "cirlce" B or a clip
@@ -128,19 +128,19 @@ namespace box2d
             /// @note 8-bytes.
             Length2D localPoint;
 
-            /// Contact feature.
+            /// @brief Contact feature.
             /// @details Uniquely identifies a contact point between two shapes - A and B.
             /// @note This field is 4-bytes.
             /// @sa GetPointStates.
             ContactFeature contactFeature;
             
-            /// Normal impulse.
+            /// @brief Normal impulse.
             /// @details This is the non-penetration impulse.
             /// @note This is only used for velocity constraint resolution.
             /// @note 4-bytes.
             Momentum normalImpulse = 0;
             
-            /// Tangent impulse.
+            /// @brief Tangent impulse.
             /// @details This is the friction impulse.
             /// @note This is only used for velocity constraint resolution.
             /// @note 4-bytes.
@@ -387,8 +387,8 @@ namespace box2d
         struct PointArray
         {
             Point elements[MaxManifoldPoints];
-            constexpr Point& operator[](size_t i) { return elements[i]; }
-            constexpr const Point& operator[](size_t i) const { return elements[i]; }
+            constexpr Point& operator[](std::size_t i) { return elements[i]; }
+            constexpr const Point& operator[](std::size_t i) const { return elements[i]; }
         };
     
         /// Constructs manifold with array of points using the given values.
@@ -509,6 +509,11 @@ namespace box2d
     Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
                            const DistanceProxy& shapeB, const Transformation& xfB,
                            const Manifold::Conf conf = GetDefaultManifoldConf());
+#if 0
+    Manifold CollideCached(const DistanceProxy& shapeA, const Transformation& xfA,
+                           const DistanceProxy& shapeB, const Transformation& xfB,
+                           const Manifold::Conf conf = GetDefaultManifoldConf());
+#endif
 
     Manifold GetManifold(const DistanceProxy& proxyA, const Transformation& transformA,
                          const DistanceProxy& proxyB, const Transformation& transformB);

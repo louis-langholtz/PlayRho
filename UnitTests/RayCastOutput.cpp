@@ -33,9 +33,9 @@ TEST(RayCastOutput, ByteSize)
 {
     switch (sizeof(RealNum))
     {
-        case  4: EXPECT_EQ(sizeof(RayCastOutput), size_t(16)); break;
-        case  8: EXPECT_EQ(sizeof(RayCastOutput), size_t(32)); break;
-        case 16: EXPECT_EQ(sizeof(RayCastOutput), size_t(32)); break;
+        case  4: EXPECT_EQ(sizeof(RayCastOutput), std::size_t(16)); break;
+        case  8: EXPECT_EQ(sizeof(RayCastOutput), std::size_t(32)); break;
+        case 16: EXPECT_EQ(sizeof(RayCastOutput), std::size_t(32)); break;
         default: FAIL(); break;
     }
 }

@@ -34,7 +34,7 @@ namespace box2d {
     class BlockAllocator
     {
     public:
-        using size_type = size_t;
+        using size_type = std::size_t;
         
         static constexpr auto ChunkSize = size_type{16 * 1024}; ///< Chunk size.
         static constexpr auto MaxBlockSize = size_type{640}; ///< Max block size (before using external allocator).

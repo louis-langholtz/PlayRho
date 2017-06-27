@@ -30,8 +30,8 @@ ContactKey box2d::GetContactKey(const FixtureProxy& fpA, const FixtureProxy& fpB
     return ContactKey{fpA.proxyId, fpB.proxyId};
 }
 
-ContactKey box2d::GetContactKey(const Fixture* fixtureA, child_count_t childIndexA,
-                                const Fixture* fixtureB, child_count_t childIndexB) noexcept
+ContactKey box2d::GetContactKey(const Fixture* fixtureA, ChildCounter childIndexA,
+                                const Fixture* fixtureB, ChildCounter childIndexB) noexcept
 {
     return GetContactKey(*fixtureA->GetProxy(childIndexA), *fixtureB->GetProxy(childIndexB));
 }

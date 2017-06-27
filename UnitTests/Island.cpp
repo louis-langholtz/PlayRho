@@ -25,22 +25,22 @@ using namespace box2d;
 
 TEST(IslandBodyContainer, BytesSizeIs24)
 {
-    EXPECT_EQ(sizeof(Island::Bodies), size_t(24));
+    EXPECT_EQ(sizeof(Island::Bodies), std::size_t(24));
 }
 
 TEST(IslandContactContainer, BytesSizeIs24)
 {
-    EXPECT_EQ(sizeof(Island::Contacts), size_t(24));
+    EXPECT_EQ(sizeof(Island::Contacts), std::size_t(24));
 }
 
 TEST(IslandJointContainer, BytesSizeIs24)
 {
-    EXPECT_EQ(sizeof(Island::Joints), size_t(24));
+    EXPECT_EQ(sizeof(Island::Joints), std::size_t(24));
 }
 
 TEST(Island, ByteSizeIs72)
 {
-    EXPECT_EQ(sizeof(Island), size_t(72));
+    EXPECT_EQ(sizeof(Island), std::size_t(72));
 }
 
 TEST(Island, NotDefaultConstructible)

@@ -182,7 +182,7 @@ public:
     /// @brief Query AABB for fixtures callback function type.
     /// @note Returning true will continue the query. Returning false will terminate the query.
     using QueryFixtureCallback = std::function<bool(Fixture* fixture,
-                                                    const child_count_t child)>;
+                                                    const ChildCounter child)>;
 
     /// @brief Queries the world for all fixtures that potentially overlap the provided AABB.
     /// @param aabb the query box.
@@ -197,7 +197,7 @@ public:
 
     /// @brief Ray cast callback function signature.
     using RayCastCallback = std::function<RayCastOpcode(Fixture* fixture,
-                                                        const child_count_t child,
+                                                        const ChildCounter child,
                                                         const Length2D& point,
                                                         const UnitVec2& normal)>;
 
@@ -356,9 +356,9 @@ private:
     {
         Length minSeparation = std::numeric_limits<RealNum>::infinity() * Meter; ///< Minimum separation.
         Momentum maxIncImpulse = 0; ///< Maximum incremental impulse.
-        body_count_t bodiesSlept = 0;
-        contact_count_t contactsUpdated = 0;
-        contact_count_t contactsSkipped = 0;
+        BodyCounter bodiesSlept = 0;
+        ContactCounter contactsUpdated = 0;
+        ContactCounter contactsSkipped = 0;
         bool solved = false; ///< Solved. <code>true</code> if position constraints solved, <code>false</code> otherwise.
         ts_iters_t positionIterations = 0; ///< Position iterations actually performed.
         ts_iters_t velocityIterations = 0; ///< Velocity iterations actually performed.
@@ -448,8 +448,8 @@ private:
 
     struct ProcessContactsOutput
     {
-        contact_count_t contactsUpdated = 0;
-        contact_count_t contactsSkipped = 0;
+        ContactCounter contactsUpdated = 0;
+        ContactCounter contactsSkipped = 0;
     };
 
     /// @brief Processes the contacts of a given body for TOI handling.
@@ -486,20 +486,20 @@ private:
     struct UpdateContactsStats
     {
         /// @brief Number of contacts ignored (because both bodies were asleep).
-        contact_count_t ignored = 0;
+        ContactCounter ignored = 0;
 
         /// @brief Number of contacts updated.
-        contact_count_t updated = 0;
+        ContactCounter updated = 0;
         
         /// @brief Number of contacts skipped because they weren't marked as needing updating.
-        contact_count_t skipped = 0;
+        ContactCounter skipped = 0;
     };
     
     struct DestroyContactsStats
     {
-        contact_count_t ignored = 0;
-        contact_count_t filteredOut = 0;
-        contact_count_t notOverlapping = 0;
+        ContactCounter ignored = 0;
+        ContactCounter filteredOut = 0;
+        ContactCounter notOverlapping = 0;
     };
     
     struct ContactToiData
@@ -510,9 +510,9 @@ private:
 
     struct UpdateContactsData
     {
-        contact_count_t numAtMaxSubSteps = 0;
-        contact_count_t numUpdatedTOI = 0; ///< # updated TOIs (made valid).
-        contact_count_t numValidTOI = 0; ///< # already valid TOIs.
+        ContactCounter numAtMaxSubSteps = 0;
+        ContactCounter numUpdatedTOI = 0; ///< # updated TOIs (made valid).
+        ContactCounter numValidTOI = 0; ///< # already valid TOIs.
     
         using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
         using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
@@ -530,7 +530,7 @@ private:
     /// @details This finds the contact with the lowest (soonest) time of impact.
     /// @return Contacts with the least time of impact and its time of impact, or null contact.
     ///  These contacts will all be enabled, not have sensors, be active, and impenetrable.
-    ContactToiData GetSoonestContacts(const size_t reserveSize);
+    ContactToiData GetSoonestContacts(const std::size_t reserveSize);
 
     bool HasNewFixtures() const noexcept;
     
@@ -539,7 +539,7 @@ private:
     /// @brief Finds new contacts.
     /// @details Finds and adds new valid contacts to the contacts container.
     /// @note The new contacts will all have overlapping AABBs.
-    contact_count_t FindNewContacts();
+    ContactCounter FindNewContacts();
     
     /// @brief Processes the narrow phase collision for the contact list.
     /// @details
@@ -591,11 +591,11 @@ private:
     /// @note This sets things up so that pairs may be created for potentially new contacts.
     void InternalTouchProxies(Fixture& fixture) noexcept;
 
-    child_count_t Synchronize(Fixture& fixture,
+    ChildCounter Synchronize(Fixture& fixture,
                               const Transformation xfm1, const Transformation xfm2,
                               const RealNum multiplier, const Length extension);
 
-    contact_count_t Synchronize(Body& body,
+    ContactCounter Synchronize(Body& body,
                                 const Transformation& xfm1, const Transformation& xfm2,
                                 const RealNum multiplier, const Length aabbExtension);
     
@@ -900,28 +900,28 @@ inline void World::UnsetIslanded(const Joint* key)
 
 /// Gets the body count in the given world.
 /// @return 0 or higher.
-inline body_count_t GetBodyCount(const World& world) noexcept
+inline BodyCounter GetBodyCount(const World& world) noexcept
 {
-    return static_cast<body_count_t>(world.GetBodies().size());
+    return static_cast<BodyCounter>(world.GetBodies().size());
 }
 
 /// Gets the count of joints in the given world.
 /// @return 0 or higher.
-inline joint_count_t GetJointCount(const World& world) noexcept
+inline JointCounter GetJointCount(const World& world) noexcept
 {
-    return static_cast<joint_count_t>(world.GetJoints().size());
+    return static_cast<JointCounter>(world.GetJoints().size());
 }
 
 /// Gets the count of contacts in the given world.
 /// @note Not all contacts are for shapes that are actually touching. Some contacts are for
 ///   shapes which merely have overlapping AABBs.
 /// @return 0 or higher.
-inline contact_count_t GetContactCount(const World& world) noexcept
+inline ContactCounter GetContactCount(const World& world) noexcept
 {
-    return static_cast<contact_count_t>(world.GetContacts().size());
+    return static_cast<ContactCounter>(world.GetContacts().size());
 }
 
-contact_count_t GetTouchingCount(const World& world) noexcept;
+ContactCounter GetTouchingCount(const World& world) noexcept;
 
 /// Steps the world ahead by a given time amount.
 ///
@@ -957,19 +957,19 @@ StepStats Step(World& world, Time timeStep,
                World::ts_iters_type velocityIterations = 8, World::ts_iters_type positionIterations = 3);
 
 /// Gets the count of fixtures in the given world.
-size_t GetFixtureCount(const World& world) noexcept;
+std::size_t GetFixtureCount(const World& world) noexcept;
 
 /// Gets the count of unique shapes in the given world.
-size_t GetShapeCount(const World& world) noexcept;
+std::size_t GetShapeCount(const World& world) noexcept;
 
 /// Gets the count of awake bodies in the given world.
-size_t GetAwakeCount(const World& world) noexcept;
+std::size_t GetAwakeCount(const World& world) noexcept;
 
 /// Awakens all of the bodies in the given world.
 /// @details Calls all of the world's bodies' <code>SetAwake</code> method.
 /// @return Sum total of calls to bodies' <code>SetAwake</code> method that returned true.
 /// @sa Body::SetAwake.
-size_t Awaken(World& world) noexcept;
+std::size_t Awaken(World& world) noexcept;
 
 /// Clears forces.
 /// @details

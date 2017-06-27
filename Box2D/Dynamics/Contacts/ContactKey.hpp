@@ -40,7 +40,7 @@ namespace box2d
     class ContactKey
     {
     public:
-        using Index = contact_count_t;
+        using Index = ContactCounter;
         
         constexpr ContactKey() noexcept
         {
@@ -105,8 +105,8 @@ namespace box2d
     
     ContactKey GetContactKey(const FixtureProxy& fpA, const FixtureProxy& fpB) noexcept;
     
-    ContactKey GetContactKey(const Fixture* fixtureA, child_count_t childIndexA,
-                             const Fixture* fixtureB, child_count_t childIndexB) noexcept;
+    ContactKey GetContactKey(const Fixture* fixtureA, ChildCounter childIndexA,
+                             const Fixture* fixtureB, ChildCounter childIndexB) noexcept;
     
     ContactKey GetContactKey(const Contact& contact) noexcept;
 

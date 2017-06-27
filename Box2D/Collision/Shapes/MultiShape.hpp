@@ -74,11 +74,11 @@ namespace box2d {
         
         /// Gets the number of child primitives.
         /// @return Positive non-zero count.
-        child_count_t GetChildCount() const noexcept override;
+        ChildCounter GetChildCount() const noexcept override;
         
         /// @brief Gets the child for the given index.
         /// @throws InvalidArgument if the index is out of range.
-        DistanceProxy GetChild(child_count_t index) const override;
+        DistanceProxy GetChild(ChildCounter index) const override;
         
         /// Computes the mass properties of this shape using its dimensions and density.
         /// The inertia tensor is computed about the local origin.
@@ -114,12 +114,12 @@ namespace box2d {
         Length2D m_centroid = Vec2_zero * Meter;
     };
     
-    inline child_count_t MultiShape::GetChildCount() const noexcept
+    inline ChildCounter MultiShape::GetChildCount() const noexcept
     {
-        return static_cast<child_count_t>(m_children.size());
+        return static_cast<ChildCounter>(m_children.size());
     }
     
-    inline DistanceProxy MultiShape::GetChild(child_count_t index) const
+    inline DistanceProxy MultiShape::GetChild(ChildCounter index) const
     {
         const auto& child = m_children.at(index);
         return DistanceProxy{

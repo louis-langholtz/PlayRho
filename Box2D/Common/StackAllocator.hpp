@@ -34,7 +34,7 @@ namespace box2d {
 class StackAllocator
 {
 public:
-    using size_type = size_t;
+    using size_type = std::size_t;
 
     struct Configuration
     {

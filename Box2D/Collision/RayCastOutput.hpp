@@ -96,7 +96,7 @@ namespace box2d
     /// @param childIndex Child index.
     /// @param input the ray-cast input parameters.
     /// @param transform Transform to be applied to the child of the shape.
-    RayCastOutput RayCast(const Shape& shape, child_count_t childIndex,
+    RayCastOutput RayCast(const Shape& shape, ChildCounter childIndex,
                           const RayCastInput& input, const Transformation& transform) noexcept;
 
 } // namespace box2d

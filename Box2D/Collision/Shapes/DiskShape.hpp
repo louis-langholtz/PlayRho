@@ -78,11 +78,11 @@ public:
     
     /// Gets the number of child primitives.
     /// @return Positive non-zero count.
-    child_count_t GetChildCount() const noexcept override;
+    ChildCounter GetChildCount() const noexcept override;
 
     /// @brief Gets the child for the given index.
     /// @throws InvalidArgument if the index is out of range.
-    DistanceProxy GetChild(child_count_t index) const override;
+    DistanceProxy GetChild(ChildCounter index) const override;
 
     /// Computes the mass properties of this shape using its dimensions and density.
     /// The inertia tensor is computed about the local origin.
@@ -119,12 +119,12 @@ constexpr DiskShape::Conf& DiskShape::Conf::UseLocation(Length2D value) noexcept
     return *this;
 }
 
-inline child_count_t DiskShape::GetChildCount() const noexcept
+inline ChildCounter DiskShape::GetChildCount() const noexcept
 {
     return 1;
 }
 
-inline DistanceProxy DiskShape::GetChild(child_count_t index) const
+inline DistanceProxy DiskShape::GetChild(ChildCounter index) const
 {
     if (index != 0)
     {

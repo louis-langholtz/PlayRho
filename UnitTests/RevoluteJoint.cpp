@@ -33,9 +33,9 @@ TEST(RevoluteJoint, ByteSize)
 {
     switch (sizeof(RealNum))
     {
-        case  4: EXPECT_EQ(sizeof(RevoluteJoint), size_t(160)); break;
-        case  8: EXPECT_EQ(sizeof(RevoluteJoint), size_t(280)); break;
-        case 16: EXPECT_EQ(sizeof(RevoluteJoint), size_t(528)); break;
+        case  4: EXPECT_EQ(sizeof(RevoluteJoint), std::size_t(160)); break;
+        case  8: EXPECT_EQ(sizeof(RevoluteJoint), std::size_t(280)); break;
+        case 16: EXPECT_EQ(sizeof(RevoluteJoint), std::size_t(528)); break;
         default: FAIL(); break;
     }
 }

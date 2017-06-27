@@ -24,13 +24,13 @@ using namespace box2d;
 
 TEST(Fixed32, ByteSizeIs4)
 {
-    EXPECT_EQ(sizeof(Fixed32), size_t(4));
+    EXPECT_EQ(sizeof(Fixed32), std::size_t(4));
 }
 
 #ifndef _WIN32
 TEST(Fixed64, ByteSizeIs8)
 {
-    EXPECT_EQ(sizeof(Fixed64), size_t(8));
+    EXPECT_EQ(sizeof(Fixed64), std::size_t(8));
 }
 #endif
 

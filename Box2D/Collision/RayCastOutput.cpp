@@ -233,7 +233,7 @@ RayCastOutput box2d::RayCast(const DistanceProxy& proxy, const RayCastInput& inp
     return RayCastOutput{};
 }
 
-RayCastOutput box2d::RayCast(const Shape& shape, child_count_t childIndex,
+RayCastOutput box2d::RayCast(const Shape& shape, ChildCounter childIndex,
                              const RayCastInput& input, const Transformation& transform) noexcept
 {
     return RayCast(shape.GetChild(childIndex), input, transform);

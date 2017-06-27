@@ -25,9 +25,9 @@ TEST(PolygonShape, ByteSize)
 {
     switch (sizeof(RealNum))
     {
-        case  4: EXPECT_EQ(sizeof(PolygonShape), size_t(80)); break;
-        case  8: EXPECT_EQ(sizeof(PolygonShape), size_t(104)); break;
-        case 16: EXPECT_EQ(sizeof(PolygonShape), size_t(160)); break;
+        case  4: EXPECT_EQ(sizeof(PolygonShape), std::size_t(80)); break;
+        case  8: EXPECT_EQ(sizeof(PolygonShape), std::size_t(104)); break;
+        case 16: EXPECT_EQ(sizeof(PolygonShape), std::size_t(160)); break;
         default: FAIL(); break;
     }
 }
@@ -37,7 +37,7 @@ TEST(PolygonShape, DefaultConstruction)
     PolygonShape shape;
     EXPECT_EQ(shape.GetVertexCount(), 0);
     EXPECT_EQ(shape.GetCentroid(), Vec2(0, 0) * Meter);
-    EXPECT_EQ(shape.GetChildCount(), child_count_t(1));
+    EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
 }
 
@@ -52,7 +52,7 @@ TEST(PolygonShape, FindLowestRightMostVertex)
 
     const auto index = FindLowestRightMostVertex(vertices);
     
-    EXPECT_EQ(index, size_t(2));
+    EXPECT_EQ(index, std::size_t(2));
 }
 
 TEST(PolygonShape, BoxConstruction)
@@ -62,7 +62,7 @@ TEST(PolygonShape, BoxConstruction)
     const auto shape = PolygonShape{hx, hy};
 
     EXPECT_EQ(shape.GetCentroid(), Vec2(0, 0) * Meter);
-    EXPECT_EQ(shape.GetChildCount(), child_count_t(1));
+    EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
 
     ASSERT_EQ(shape.GetVertexCount(), PolygonShape::vertex_count_t(4));
@@ -87,7 +87,7 @@ TEST(PolygonShape, Copy)
     
     auto shape = PolygonShape{hx, hy};
     ASSERT_EQ(shape.GetCentroid(), Vec2(0, 0) * Meter);
-    ASSERT_EQ(shape.GetChildCount(), child_count_t(1));
+    ASSERT_EQ(shape.GetChildCount(), ChildCounter(1));
     ASSERT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
     ASSERT_EQ(shape.GetVertexCount(), PolygonShape::vertex_count_t(4));
     
@@ -106,7 +106,7 @@ TEST(PolygonShape, Copy)
     
     EXPECT_EQ(typeid(copy), typeid(shape));
     EXPECT_EQ(copy.GetCentroid(), Vec2(0, 0) * Meter);
-    EXPECT_EQ(copy.GetChildCount(), child_count_t(1));
+    EXPECT_EQ(copy.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(copy), PolygonShape::GetDefaultVertexRadius());
     
     ASSERT_EQ(copy.GetVertexCount(), PolygonShape::vertex_count_t(4));
@@ -131,7 +131,7 @@ TEST(PolygonShape, Translate)
     
     auto shape = PolygonShape{hx, hy};
     ASSERT_EQ(shape.GetCentroid(), Vec2(0, 0) * Meter);
-    ASSERT_EQ(shape.GetChildCount(), child_count_t(1));
+    ASSERT_EQ(shape.GetChildCount(), ChildCounter(1));
     ASSERT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
     ASSERT_EQ(shape.GetVertexCount(), PolygonShape::vertex_count_t(4));
     
@@ -150,7 +150,7 @@ TEST(PolygonShape, Translate)
     shape.Transform(Transformation{new_ctr, UnitVec2{RealNum{0} * Degree}});
     
     EXPECT_EQ(shape.GetCentroid(), new_ctr);
-    EXPECT_EQ(shape.GetChildCount(), child_count_t(1));
+    EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
 
     ASSERT_EQ(shape.GetVertexCount(), PolygonShape::vertex_count_t(4));
@@ -173,7 +173,7 @@ TEST(PolygonShape, SetAsBox)
     PolygonShape shape;
     shape.SetAsBox(hx, hy);
     EXPECT_EQ(shape.GetCentroid(), Vec2(0, 0) * Meter);
-    EXPECT_EQ(shape.GetChildCount(), child_count_t(1));
+    EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
     
     ASSERT_EQ(shape.GetVertexCount(), PolygonShape::vertex_count_t(4));
@@ -198,7 +198,7 @@ TEST(PolygonShape, SetAsZeroCenteredRotatedBox)
     PolygonShape shape;
     SetAsBox(shape, hx, hy, Vec2_zero * Meter, RealNum{0} * Degree);
     EXPECT_EQ(shape.GetCentroid(), Vec2(0, 0) * Meter);
-    EXPECT_EQ(shape.GetChildCount(), child_count_t(1));
+    EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
     
     ASSERT_EQ(shape.GetVertexCount(), PolygonShape::vertex_count_t(4));
@@ -225,7 +225,7 @@ TEST(PolygonShape, SetAsCenteredBox)
     const auto y_off = RealNum(-5) * Meter;
     SetAsBox(shape, hx, hy, Length2D(x_off, y_off), RealNum{0} * Degree);
     EXPECT_EQ(shape.GetCentroid(), Length2D(x_off, y_off));
-    EXPECT_EQ(shape.GetChildCount(), child_count_t(1));
+    EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
     
     ASSERT_EQ(shape.GetVertexCount(), PolygonShape::vertex_count_t(4));
@@ -253,7 +253,7 @@ TEST(PolygonShape, SetAsBoxAngledDegrees90)
 
     EXPECT_EQ(shape.GetCentroid().x, RealNum(0) * Meter);
     EXPECT_EQ(shape.GetCentroid().y, RealNum(0) * Meter);
-    EXPECT_EQ(shape.GetChildCount(), child_count_t(1));
+    EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
     
     ASSERT_EQ(shape.GetVertexCount(), PolygonShape::vertex_count_t(4));

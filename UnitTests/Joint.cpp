@@ -26,7 +26,7 @@ TEST(Joint, ByteSize)
     switch (sizeof(void*))
     {
         case 4: break;
-        case 8: EXPECT_EQ(sizeof(Joint), size_t(40)); break;
+        case 8: EXPECT_EQ(sizeof(Joint), std::size_t(40)); break;
         default: break;
     }
 }

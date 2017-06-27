@@ -38,13 +38,13 @@ namespace box2d
         
         FixtureProxy(const FixtureProxy& copy) = default;
         
-        FixtureProxy(const AABB bb, size_type pid, Fixture* f, child_count_t ci):
+        FixtureProxy(const AABB bb, size_type pid, Fixture* f, ChildCounter ci):
             aabb{bb}, fixture{f}, proxyId{pid}, childIndex{ci} {}
         
         AABB aabb; ///< Axis Aligned Bounding Box. 16-bytes.
         Fixture* const fixture; ///< Fixture. 8-bytes.
         const size_type proxyId; ///< Proxy ID. 4-bytes.
-        const child_count_t childIndex; ///< Child index. 4-bytes.
+        const ChildCounter childIndex; ///< Child index. 4-bytes.
     };
     
 } // namespace box2d

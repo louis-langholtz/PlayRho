@@ -418,13 +418,13 @@ bool box2d::ShouldCollide(const Body& lhs, const Body& rhs) noexcept
     return it == end(joints);
 }
 
-box2d::size_t box2d::GetWorldIndex(const Body* body)
+BodyCounter box2d::GetWorldIndex(const Body* body)
 {
     if (body)
     {
         const auto world = body->GetWorld();
         const auto bodies = world->GetBodies();
-        auto i = size_t{0};
+        auto i = BodyCounter{0};
         const auto it = std::find_if(begin(bodies), end(bodies), [&](const Body &b) {
             return &b == body || (++i, false);
         });
@@ -433,7 +433,7 @@ box2d::size_t box2d::GetWorldIndex(const Body* body)
             return i;
         }
     }
-    return size_t(-1);
+    return BodyCounter(-1);
 }
 
 Velocity box2d::GetVelocity(const Body& body, const Time h) noexcept
@@ -459,10 +459,10 @@ Velocity box2d::GetVelocity(const Body& body, const Time h) noexcept
     return velocity;
 }
 
-size_t box2d::GetFixtureCount(const Body& body)
+std::size_t box2d::GetFixtureCount(const Body& body)
 {
     const auto& fixtures = body.GetFixtures();
-    return static_cast<size_t>(fixtures.size());
+    return fixtures.size();
 }
 
 void box2d::RotateAboutWorldPoint(Body& body, Angle amount, Length2D worldPoint)

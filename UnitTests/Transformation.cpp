@@ -25,9 +25,9 @@ TEST(Transformation, ByteSizeIs_16_32_or_64)
 {
     switch (sizeof(RealNum))
     {
-        case  4: EXPECT_EQ(sizeof(Transformation), size_t(16)); break;
-        case  8: EXPECT_EQ(sizeof(Transformation), size_t(32)); break;
-        case 16: EXPECT_EQ(sizeof(Transformation), size_t(64)); break;
+        case  4: EXPECT_EQ(sizeof(Transformation), std::size_t(16)); break;
+        case  8: EXPECT_EQ(sizeof(Transformation), std::size_t(32)); break;
+        case 16: EXPECT_EQ(sizeof(Transformation), std::size_t(64)); break;
         default: FAIL(); break;
     }
 }

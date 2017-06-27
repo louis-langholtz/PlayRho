@@ -63,7 +63,7 @@ AABB box2d::ComputeAABB(const Body& body)
     return sum;
 }
 
-AABB box2d::GetAABB(const Fixture& fixture, child_count_t childIndex) noexcept
+AABB box2d::GetAABB(const Fixture& fixture, ChildCounter childIndex) noexcept
 {
     return fixture.GetProxy(childIndex)->aabb;
 }

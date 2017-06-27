@@ -30,9 +30,9 @@ TEST(SeparationFinder, ByteSizeIs_40_56_or_96)
 {
     switch (sizeof(RealNum))
     {
-        case  4: EXPECT_EQ(sizeof(SeparationFinder), size_t(40)); break;
-        case  8: EXPECT_EQ(sizeof(SeparationFinder), size_t(56)); break;
-        case 16: EXPECT_EQ(sizeof(SeparationFinder), size_t(96)); break;
+        case  4: EXPECT_EQ(sizeof(SeparationFinder), std::size_t(40)); break;
+        case  8: EXPECT_EQ(sizeof(SeparationFinder), std::size_t(56)); break;
+        case 16: EXPECT_EQ(sizeof(SeparationFinder), std::size_t(96)); break;
         default: FAIL(); break;
     }
 }

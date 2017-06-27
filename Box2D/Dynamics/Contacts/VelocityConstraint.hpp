@@ -43,7 +43,7 @@ namespace box2d {
     {
     public:
         using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
-        using index_type = size_t;
+        using index_type = std::size_t;
         
         struct Conf
         {

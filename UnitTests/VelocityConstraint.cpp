@@ -27,9 +27,9 @@ TEST(VelocityConstraint, ByteSizeIs_168_or_304_or_576)
 {
     switch (sizeof(RealNum))
     {
-        case  4: EXPECT_EQ(sizeof(VelocityConstraint), size_t(168)); break;
-        case  8: EXPECT_EQ(sizeof(VelocityConstraint), size_t(304)); break;
-        case 16: EXPECT_EQ(sizeof(VelocityConstraint), size_t(576)); break;
+        case  4: EXPECT_EQ(sizeof(VelocityConstraint), std::size_t(168)); break;
+        case  8: EXPECT_EQ(sizeof(VelocityConstraint), std::size_t(304)); break;
+        case 16: EXPECT_EQ(sizeof(VelocityConstraint), std::size_t(576)); break;
         default: FAIL(); break;
     }
 }

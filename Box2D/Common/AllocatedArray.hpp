@@ -20,7 +20,7 @@ template <typename T, typename Deleter = std::function<void (void *)> >
 class AllocatedArray
 {
 public:
-    using size_type = size_t;
+    using size_type = std::size_t;
     using value_type = T;
     using const_value_type = const value_type;
     using reference = value_type&;

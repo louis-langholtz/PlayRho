@@ -91,11 +91,11 @@ public:
     
     /// Gets the number of child primitives.
     /// @return Positive non-zero count.
-    child_count_t GetChildCount() const noexcept override;
+    ChildCounter GetChildCount() const noexcept override;
 
     /// @brief Gets the child for the given index.
     /// @throws InvalidArgument if the index is out of range.
-    DistanceProxy GetChild(child_count_t index) const override;
+    DistanceProxy GetChild(ChildCounter index) const override;
     
     /// Computes the mass properties of this shape using its dimensions and density.
     /// The inertia tensor is computed about the local origin.
@@ -171,12 +171,12 @@ private:
     Length2D m_centroid = Vec2_zero * Meter;
 };
 
-inline child_count_t PolygonShape::GetChildCount() const noexcept
+inline ChildCounter PolygonShape::GetChildCount() const noexcept
 {
     return 1;
 }
 
-inline DistanceProxy PolygonShape::GetChild(child_count_t index) const
+inline DistanceProxy PolygonShape::GetChild(ChildCounter index) const
 {
     if (index >= GetVertexCount())
     {

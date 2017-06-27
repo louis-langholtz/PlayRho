@@ -25,9 +25,9 @@ TEST(Angle, ByteSizeIs_4_8_or_16)
 {
     switch (sizeof(RealNum))
     {
-        case  4: EXPECT_EQ(sizeof(Angle), size_t(4)); break;
-        case  8: EXPECT_EQ(sizeof(Angle), size_t(8)); break;
-        case 16: EXPECT_EQ(sizeof(Angle), size_t(16)); break;
+        case  4: EXPECT_EQ(sizeof(Angle), std::size_t(4)); break;
+        case  8: EXPECT_EQ(sizeof(Angle), std::size_t(8)); break;
+        case 16: EXPECT_EQ(sizeof(Angle), std::size_t(16)); break;
         default: FAIL(); break;
     }
 }

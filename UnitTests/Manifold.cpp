@@ -25,9 +25,9 @@ TEST(Manifold, ByteSizeIs_60_120_or_240)
 {
     switch (sizeof(RealNum))
     {
-        case  4:  EXPECT_EQ(sizeof(Manifold), size_t(60)); break;
-        case  8: EXPECT_EQ(sizeof(Manifold), size_t(120)); break;
-        case 16: EXPECT_EQ(sizeof(Manifold), size_t(240)); break;
+        case  4:  EXPECT_EQ(sizeof(Manifold), std::size_t(60)); break;
+        case  8: EXPECT_EQ(sizeof(Manifold), std::size_t(120)); break;
+        case 16: EXPECT_EQ(sizeof(Manifold), std::size_t(240)); break;
         default: FAIL(); break;
     }
 }

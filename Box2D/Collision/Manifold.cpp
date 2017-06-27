@@ -473,6 +473,112 @@ Manifold box2d::CollideShapes(const DistanceProxy& shapeA, const Transformation&
                         conf);
 }
 
+#if 0
+Manifold box2d::CollideCached(const DistanceProxy& shapeA, const Transformation& xfA,
+                              const DistanceProxy& shapeB, const Transformation& xfB,
+                              const Manifold::Conf conf)
+{
+    // Find edge normal of max separation on A - return if separating axis is found
+    // Find edge normal of max separation on B - return if separation axis is found
+    // Choose reference edge as min(minA, minB)
+    // Find incident edge
+    // Clip
+    
+    const auto vertexCountShapeA = shapeA.GetVertexCount();
+    const auto vertexCountShapeB = shapeB.GetVertexCount();
+    if (vertexCountShapeA == 1)
+    {
+        if (vertexCountShapeB > 1)
+        {
+            return ::CollideShapes(Manifold::e_faceB, shapeB, xfB,
+                                   shapeA.GetVertex(0), shapeA.GetVertexRadius(), xfA);
+        }
+        return ::CollideShapes(shapeA.GetVertex(0), shapeA.GetVertexRadius(), xfA,
+                               shapeB.GetVertex(0), shapeB.GetVertexRadius(), xfB);
+    }
+    if (vertexCountShapeB == 1)
+    {
+        if (vertexCountShapeA > 1)
+        {
+            return ::CollideShapes(Manifold::e_faceA, shapeA, xfA,
+                                   shapeB.GetVertex(0), shapeB.GetVertexRadius(), xfB);
+        }
+        return ::CollideShapes(shapeA.GetVertex(0), shapeA.GetVertexRadius(), xfA,
+                               shapeB.GetVertex(0), shapeB.GetVertexRadius(), xfB);
+    }
+
+    const auto totalRadius = shapeA.GetVertexRadius() + shapeB.GetVertexRadius();
+
+    IndexPairSeparation edgeSepA;
+    IndexPairSeparation edgeSepB;
+
+    if (vertexCountShapeA == 4 && vertexCountShapeB == 4)
+    {
+        Length2D verticesA[4];
+        Length2D verticesB[4];
+        UnitVec2 normalsA[4];
+        UnitVec2 normalsB[4];
+        
+        verticesA[0] = Transform(shapeA.GetVertex(0), xfA);
+        verticesA[1] = Transform(shapeA.GetVertex(1), xfA);
+        verticesA[2] = Transform(shapeA.GetVertex(2), xfA);
+        verticesA[3] = Transform(shapeA.GetVertex(3), xfA);
+        
+        normalsA[0] = Rotate(shapeA.GetNormal(0), xfA.q);
+        normalsA[1] = Rotate(shapeA.GetNormal(1), xfA.q);
+        normalsA[2] = Rotate(shapeA.GetNormal(2), xfA.q);
+        normalsA[3] = Rotate(shapeA.GetNormal(3), xfA.q);
+
+        verticesB[0] = Transform(shapeB.GetVertex(0), xfB);
+        verticesB[1] = Transform(shapeB.GetVertex(1), xfB);
+        verticesB[2] = Transform(shapeB.GetVertex(2), xfB);
+        verticesB[3] = Transform(shapeB.GetVertex(3), xfB);
+
+        normalsB[0] = Rotate(shapeB.GetNormal(0), xfB.q);
+        normalsB[1] = Rotate(shapeB.GetNormal(1), xfB.q);
+        normalsB[2] = Rotate(shapeB.GetNormal(2), xfB.q);
+        normalsB[3] = Rotate(shapeB.GetNormal(3), xfB.q);
+        
+        const auto dpA = DistanceProxy{shapeA.GetVertexRadius(), vertexCountShapeA, verticesA, normalsA};
+        const auto dpB = DistanceProxy{shapeB.GetVertexRadius(), vertexCountShapeB, verticesB, normalsB};
+        edgeSepA = ::GetMaxSeparation(dpA, dpB, totalRadius);
+        if (edgeSepA.separation > totalRadius)
+        {
+            return Manifold{};
+        }
+        edgeSepB = ::GetMaxSeparation(dpB, dpA, totalRadius);
+        if (edgeSepB.separation > totalRadius)
+        {
+            return Manifold{};
+        }
+    }
+    else
+    {
+        edgeSepA = ::GetMaxSeparation(shapeA, xfA, shapeB, xfB, totalRadius);
+        if (edgeSepA.separation > totalRadius)
+        {
+            return Manifold{};
+        }
+        edgeSepB = ::GetMaxSeparation(shapeB, xfB, shapeA, xfA, totalRadius);
+        if (edgeSepB.separation > totalRadius)
+        {
+            return Manifold{};
+        }
+    }
+    
+    constexpr auto k_tol = BOX2D_MAGIC(DefaultLinearSlop / RealNum{10});
+    return (edgeSepB.separation > (edgeSepA.separation + k_tol))?
+    GetFaceManifold(Manifold::e_faceB,
+                    shapeB, xfB, edgeSepB.index1,
+                    shapeA, xfA, edgeSepB.index2,
+                    conf):
+    GetFaceManifold(Manifold::e_faceA,
+                    shapeA, xfA, edgeSepA.index1,
+                    shapeB, xfB, edgeSepA.index2,
+                    conf);
+}
+#endif
+
 Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& transformA,
                             const DistanceProxy& proxyB, const Transformation& transformB)
 {
@@ -492,8 +598,8 @@ Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& t
 
     index_type a_indices_array[Simplex::MaxEdges];
     index_type b_indices_array[Simplex::MaxEdges];
-    auto uniqA = size_t{0};
-    auto uniqB = size_t{0};
+    auto uniqA = std::size_t{0};
+    auto uniqB = std::size_t{0};
     {
         std::bitset<MaxShapeVertices> a_indices_set;
         std::bitset<MaxShapeVertices> b_indices_set;

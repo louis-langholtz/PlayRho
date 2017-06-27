@@ -191,8 +191,8 @@ private:
     double m_sumDeltaTime = 0.0;
     int m_stepCount = 0;
     StepStats m_stepStats;
-    size_t m_numContacts = 0;
-    size_t m_maxContacts = 0;
+    std::size_t m_numContacts = 0;
+    std::size_t m_maxContacts = 0;
     std::uint64_t m_sumContactsUpdatedPre = 0;
     std::uint64_t m_sumContactsSkippedPre = 0;
     std::uint64_t m_sumContactsIgnoredPre = 0;

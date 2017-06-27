@@ -24,7 +24,7 @@
 
 using namespace box2d;
 
-static constexpr size_t s_blockSizes[BlockAllocator::BlockSizes] =
+static constexpr std::size_t s_blockSizes[BlockAllocator::BlockSizes] =
 {
     16,        // 0
     32,        // 1
@@ -70,7 +70,7 @@ static constexpr std::uint8_t s_blockSizeLookup[BlockAllocator::MaxBlockSize + 1
 
 struct BlockAllocator::Chunk
 {
-    using size_type = size_t;
+    using size_type = std::size_t;
 
     size_type blockSize;
     Block* blocks;

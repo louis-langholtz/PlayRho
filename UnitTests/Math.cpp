@@ -121,7 +121,7 @@ TEST(Math, Span)
     {
         // check aggragate initialization
         const Span<const int> foo = {1, 2, 4};
-        EXPECT_EQ(foo.size(), size_t(3));
+        EXPECT_EQ(foo.size(), std::size_t(3));
         EXPECT_EQ(foo[0], 1);
         EXPECT_EQ(foo[1], 2);
         EXPECT_EQ(foo[2], 4);
@@ -129,7 +129,7 @@ TEST(Math, Span)
     {
         // check initialization from explicit initializer list
         const auto foo = Span<const int>(std::initializer_list<int>{1, 2, 4});
-        EXPECT_EQ(foo.size(), size_t(3));
+        EXPECT_EQ(foo.size(), std::size_t(3));
         EXPECT_EQ(foo[0], 1);
         EXPECT_EQ(foo[1], 2);
         EXPECT_EQ(foo[2], 4);
@@ -138,7 +138,7 @@ TEST(Math, Span)
         // check initialization from non-const array
         int array[6] = {1, 2, 4, 10, -1, -33};
         auto foo = Span<int>(array);
-        EXPECT_EQ(foo.size(), size_t(6));
+        EXPECT_EQ(foo.size(), std::size_t(6));
         EXPECT_EQ(foo[0], 1);
         EXPECT_EQ(foo[1], 2);
         EXPECT_EQ(foo[2], 4);
@@ -150,10 +150,10 @@ TEST(Math, Span)
     }
     {
         float array[15];
-        EXPECT_EQ(Span<float>(array).size(), size_t(15));
-        EXPECT_EQ(Span<float>(array, 2).size(), size_t(2));        
-        EXPECT_EQ(Span<float>(array, array + 4).size(), size_t(4));
-        EXPECT_EQ(Span<float>(array + 1, array + 3).size(), size_t(2));
+        EXPECT_EQ(Span<float>(array).size(), std::size_t(15));
+        EXPECT_EQ(Span<float>(array, 2).size(), std::size_t(2));        
+        EXPECT_EQ(Span<float>(array, array + 4).size(), std::size_t(4));
+        EXPECT_EQ(Span<float>(array + 1, array + 3).size(), std::size_t(2));
     }
 }
 

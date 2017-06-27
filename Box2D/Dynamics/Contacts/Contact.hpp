@@ -92,7 +92,7 @@ public:
     /// @warning Behavior is undefined if <code>fixtureB</code> has no associated shape.
     /// @warning Behavior is undefined if both fixtures have the same body.
     ///
-    Contact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB);
+    Contact(Fixture* fixtureA, ChildCounter indexA, Fixture* fixtureB, ChildCounter indexB);
     
     Contact() = default;
     
@@ -128,13 +128,13 @@ public:
     Fixture* GetFixtureA() const noexcept;
 
     /// Get the child primitive index for fixture A.
-    child_count_t GetChildIndexA() const noexcept;
+    ChildCounter GetChildIndexA() const noexcept;
 
     /// Gets fixture B in this contact.
     Fixture* GetFixtureB() const noexcept;
 
     /// Get the child primitive index for fixture B.
-    child_count_t GetChildIndexB() const noexcept;
+    ChildCounter GetChildIndexB() const noexcept;
 
     /// @brief Sets the friction value for this contact.
     /// @details Override the default friction mixture.
@@ -261,8 +261,8 @@ private:
     Fixture* const m_fixtureA; ///< Fixture A. @details Non-null pointer to fixture A.
     Fixture* const m_fixtureB; ///< Fixture B. @details Non-null pointer to fixture B.
 
-    child_count_t const m_indexA;
-    child_count_t const m_indexB;
+    ChildCounter const m_indexA;
+    ChildCounter const m_indexB;
 
     Manifold mutable m_manifold; ///< Manifold of the contact. 60-bytes. @sa Update.
 
@@ -339,7 +339,7 @@ inline Fixture* Contact::GetFixtureA() const noexcept
     return m_fixtureA;
 }
 
-inline child_count_t Contact::GetChildIndexA() const noexcept
+inline ChildCounter Contact::GetChildIndexA() const noexcept
 {
     return m_indexA;
 }
@@ -349,7 +349,7 @@ inline Fixture* Contact::GetFixtureB() const noexcept
     return m_fixtureB;
 }
 
-inline child_count_t Contact::GetChildIndexB() const noexcept
+inline ChildCounter Contact::GetChildIndexB() const noexcept
 {
     return m_indexB;
 }

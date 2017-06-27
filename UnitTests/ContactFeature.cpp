@@ -23,7 +23,7 @@ using namespace box2d;
 
 TEST(ContactFeature, ByteSizeIs4)
 {
-    EXPECT_EQ(sizeof(ContactFeature), size_t(4));
+    EXPECT_EQ(sizeof(ContactFeature), std::size_t(4));
 }
 
 TEST(ContactFeature, Init)

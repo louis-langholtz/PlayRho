@@ -148,9 +148,9 @@ public:
     /// existing contacts.
     void SetRestitution(RealNum restitution) noexcept;
 
-    child_count_t GetProxyCount() const noexcept;
+    ChildCounter GetProxyCount() const noexcept;
 
-    const FixtureProxy* GetProxy(child_count_t index) const noexcept;
+    const FixtureProxy* GetProxy(ChildCounter index) const noexcept;
 
 private:
 
@@ -177,7 +177,7 @@ private:
 
     /// Proxy count.
     /// @details This is the fixture shape's child count after proxy creation. 4-bytes.
-    child_count_t m_proxyCount = 0;
+    ChildCounter m_proxyCount = 0;
 
     Filter m_filter; ///< Filter object. 6-bytes.
     
@@ -219,7 +219,7 @@ inline const Body* Fixture::GetBody() const noexcept
     return m_body;
 }
 
-inline child_count_t Fixture::GetProxyCount() const noexcept
+inline ChildCounter Fixture::GetProxyCount() const noexcept
 {
     return m_proxyCount;
 }
@@ -237,7 +237,7 @@ inline Span<FixtureProxy> Fixture::GetProxies() const noexcept
 
 inline void Fixture::SetProxies(Span<FixtureProxy> value) noexcept
 {
-    assert(value.size() < std::numeric_limits<child_count_t>::max());
+    assert(value.size() < std::numeric_limits<ChildCounter>::max());
     m_proxies = value.begin();
     m_proxyCount = static_cast<decltype(m_proxyCount)>(value.size());
 }

@@ -23,7 +23,7 @@ using namespace box2d;
 
 TEST(BlockAllocator, ByteSizeIs136)
 {
-    EXPECT_EQ(sizeof(BlockAllocator), size_t(136));
+    EXPECT_EQ(sizeof(BlockAllocator), std::size_t(136));
 }
 
 TEST(BlockAllocator, Equals)

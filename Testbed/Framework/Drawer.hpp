@@ -56,7 +56,7 @@ Color Brighten(Color color, float factor);
 class Drawer
 {
 public:
-    using size_type = size_t;
+    using size_type = std::size_t;
 
     Drawer() = default;
 

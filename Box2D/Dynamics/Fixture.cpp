@@ -45,7 +45,7 @@ RealNum Fixture::GetRestitution() const noexcept
     return m_shape->GetRestitution();
 }
 
-const FixtureProxy* Fixture::GetProxy(child_count_t index) const noexcept
+const FixtureProxy* Fixture::GetProxy(ChildCounter index) const noexcept
 {
     assert(index < m_proxyCount);
     return (index < m_proxyCount)? m_proxies + index: nullptr;

@@ -26,9 +26,9 @@ TEST(StepConf, ByteSize)
 {
     switch (sizeof(RealNum))
     {
-        case  4: EXPECT_EQ(sizeof(StepConf), size_t(100)); break;
-        case  8: EXPECT_EQ(sizeof(StepConf), size_t(192)); break;
-        case 16: EXPECT_EQ(sizeof(StepConf), size_t(368)); break;
+        case  4: EXPECT_EQ(sizeof(StepConf), std::size_t(100)); break;
+        case  8: EXPECT_EQ(sizeof(StepConf), std::size_t(192)); break;
+        case 16: EXPECT_EQ(sizeof(StepConf), std::size_t(368)); break;
         default: FAIL(); break;
     }
 }

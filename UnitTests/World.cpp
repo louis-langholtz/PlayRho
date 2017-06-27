@@ -49,24 +49,24 @@ TEST(World, ByteSize)
             // Size is OS dependent.
             // Seems linux containers are bigger in size...
 #ifdef __APPLE__
-            EXPECT_EQ(sizeof(World), size_t(368));
+            EXPECT_EQ(sizeof(World), std::size_t(368));
 #endif
 #ifdef __linux__
-            EXPECT_EQ(sizeof(World), size_t(376));
+            EXPECT_EQ(sizeof(World), std::size_t(376));
 #endif
             break;
         }
         case  8:
         {
 #ifdef __APPLE__
-            EXPECT_EQ(sizeof(World), size_t(376));
+            EXPECT_EQ(sizeof(World), std::size_t(376));
 #endif
 #ifdef __linux__
-            EXPECT_EQ(sizeof(World), size_t(400));
+            EXPECT_EQ(sizeof(World), std::size_t(400));
 #endif
             break;
         }
-        case 16: EXPECT_EQ(sizeof(World), size_t(416)); break;
+        case 16: EXPECT_EQ(sizeof(World), std::size_t(416)); break;
         default: FAIL(); break;
     }
 }
@@ -117,10 +117,10 @@ TEST(World, DefaultInit)
 {
     World world;
 
-    EXPECT_EQ(GetBodyCount(world), body_count_t(0));
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
     EXPECT_EQ(world.GetProxyCount(), World::proxy_size_type(0));
-    EXPECT_EQ(GetJointCount(world), joint_count_t(0));
-    EXPECT_EQ(GetContactCount(world), contact_count_t(0));
+    EXPECT_EQ(GetJointCount(world), JointCounter(0));
+    EXPECT_EQ(GetContactCount(world), ContactCounter(0));
     EXPECT_EQ(world.GetTreeHeight(), World::proxy_size_type(0));
     EXPECT_EQ(world.GetTreeQuality(), RealNum(0));
 
@@ -129,7 +129,7 @@ TEST(World, DefaultInit)
     {
         const auto& bodies = world.GetBodies();
         EXPECT_TRUE(bodies.empty());
-        EXPECT_EQ(bodies.size(), body_count_t(0));
+        EXPECT_EQ(bodies.size(), BodyCounter(0));
         EXPECT_EQ(bodies.begin(), bodies.end());
         EXPECT_EQ(world.GetBodies().begin(), world.GetBodies().end());
     }
@@ -137,17 +137,17 @@ TEST(World, DefaultInit)
         const auto& w = static_cast<const World&>(world);
         const auto& bodies = w.GetBodies();
         EXPECT_TRUE(bodies.empty());
-        EXPECT_EQ(bodies.size(), body_count_t(0));
+        EXPECT_EQ(bodies.size(), BodyCounter(0));
         EXPECT_EQ(bodies.begin(), bodies.end());
         EXPECT_EQ(w.GetBodies().begin(), w.GetBodies().end());
     }
 
     EXPECT_TRUE(world.GetContacts().empty());
-    EXPECT_EQ(world.GetContacts().size(), contact_count_t(0));
+    EXPECT_EQ(world.GetContacts().size(), ContactCounter(0));
     EXPECT_EQ(world.GetContacts().begin(), world.GetContacts().end());
     
     EXPECT_TRUE(world.GetJoints().empty());
-    EXPECT_EQ(world.GetJoints().size(), joint_count_t(0));
+    EXPECT_EQ(world.GetJoints().size(), JointCounter(0));
     EXPECT_EQ(world.GetJoints().begin(), world.GetJoints().end());
     
     EXPECT_FALSE(world.GetSubStepping());
@@ -292,7 +292,7 @@ TEST(World, SetGravity)
 TEST(World, CreateAndDestroyBody)
 {
     World world;
-    EXPECT_EQ(GetBodyCount(world), body_count_t(0));
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
 
     const auto body = world.CreateBody();
     EXPECT_NE(body, nullptr);
@@ -301,26 +301,26 @@ TEST(World, CreateAndDestroyBody)
     EXPECT_FALSE(body->IsAccelerable());
     EXPECT_TRUE(body->IsImpenetrable());
 
-    EXPECT_EQ(GetBodyCount(world), body_count_t(1));
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
     const auto& bodies1 = world.GetBodies();
     EXPECT_FALSE(bodies1.empty());
-    EXPECT_EQ(bodies1.size(), body_count_t(1));
+    EXPECT_EQ(bodies1.size(), BodyCounter(1));
     EXPECT_NE(bodies1.begin(), bodies1.end());
     const auto& first = *(bodies1.begin());
     EXPECT_EQ(body, &first);
 
     world.Destroy(body);
-    EXPECT_EQ(GetBodyCount(world), body_count_t(0));
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
     const auto& bodies0 = world.GetBodies();
     EXPECT_TRUE(bodies0.empty());
-    EXPECT_EQ(bodies0.size(), body_count_t(0));
+    EXPECT_EQ(bodies0.size(), BodyCounter(0));
     EXPECT_EQ(bodies0.begin(), bodies0.end());
 }
 
 TEST(World, ClearForcesFreeFunction)
 {
     World world;
-    ASSERT_EQ(GetBodyCount(world), body_count_t(0));
+    ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
     
     const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
     ASSERT_NE(body, nullptr);
@@ -352,8 +352,8 @@ TEST(World, ClearForcesFreeFunction)
 TEST(World, GetShapeCountFreeFunction)
 {
     World world{WorldDef{}.UseGravity(Vec2_zero * MeterPerSquareSecond)};
-    ASSERT_EQ(GetBodyCount(world), body_count_t(0));
-    ASSERT_EQ(GetShapeCount(world), size_t(0));
+    ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
+    ASSERT_EQ(GetShapeCount(world), std::size_t(0));
     
     const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
     ASSERT_NE(body, nullptr);
@@ -368,24 +368,24 @@ TEST(World, GetShapeCountFreeFunction)
     
     const auto fixture1 = body->CreateFixture(shape1);
     ASSERT_NE(fixture1, nullptr);
-    EXPECT_EQ(GetShapeCount(world), size_t(1));
+    EXPECT_EQ(GetShapeCount(world), std::size_t(1));
 
     const auto fixture2 = body->CreateFixture(shape1);
     ASSERT_NE(fixture2, nullptr);
-    EXPECT_EQ(GetShapeCount(world), size_t(1));
+    EXPECT_EQ(GetShapeCount(world), std::size_t(1));
     
     const auto shape2 = std::make_shared<EdgeShape>(v1, v2, shapeConf);
     
     const auto fixture3 = body->CreateFixture(shape2);
     ASSERT_NE(fixture3, nullptr);
-    EXPECT_EQ(GetShapeCount(world), size_t(2));
+    EXPECT_EQ(GetShapeCount(world), std::size_t(2));
 }
 
 TEST(World, GetFixtureCountFreeFunction)
 {
     World world{WorldDef{}.UseGravity(Vec2_zero * MeterPerSquareSecond)};
-    ASSERT_EQ(GetBodyCount(world), body_count_t(0));
-    ASSERT_EQ(GetFixtureCount(world), size_t(0));
+    ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
+    ASSERT_EQ(GetFixtureCount(world), std::size_t(0));
     
     const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
     ASSERT_NE(body, nullptr);
@@ -400,21 +400,21 @@ TEST(World, GetFixtureCountFreeFunction)
     
     const auto fixture1 = body->CreateFixture(shape);
     ASSERT_NE(fixture1, nullptr);
-    EXPECT_EQ(GetFixtureCount(world), size_t(1));
+    EXPECT_EQ(GetFixtureCount(world), std::size_t(1));
     
     const auto fixture2 = body->CreateFixture(shape);
     ASSERT_NE(fixture2, nullptr);
-    EXPECT_EQ(GetFixtureCount(world), size_t(2));
+    EXPECT_EQ(GetFixtureCount(world), std::size_t(2));
     
     const auto fixture3 = body->CreateFixture(shape);
     ASSERT_NE(fixture3, nullptr);
-    EXPECT_EQ(GetFixtureCount(world), size_t(3));
+    EXPECT_EQ(GetFixtureCount(world), std::size_t(3));
 }
 
 TEST(World, AwakenFreeFunction)
 {
     World world{WorldDef{}.UseGravity(Vec2_zero * MeterPerSquareSecond)};
-    ASSERT_EQ(GetBodyCount(world), body_count_t(0));
+    ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
     
     const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
     ASSERT_NE(body, nullptr);
@@ -483,15 +483,15 @@ TEST(World, CreateAndDestroyJoint)
     const auto body2 = world.CreateBody();
     EXPECT_NE(body1, nullptr);
     EXPECT_NE(body2, nullptr);
-    EXPECT_EQ(GetBodyCount(world), body_count_t(2));
-    EXPECT_EQ(GetJointCount(world), joint_count_t(0));
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(2));
+    EXPECT_EQ(GetJointCount(world), JointCounter(0));
     EXPECT_TRUE(world.GetJoints().empty());
     EXPECT_EQ(world.GetJoints().begin(), world.GetJoints().end());
     
     const auto anchorA = Vec2{RealNum(+0.4), RealNum(-1.2)} * Meter;
     const auto anchorB = Vec2{RealNum(-2.3), RealNum(+0.7)} * Meter;
     const auto joint = world.CreateJoint(DistanceJointDef{body1, body2, anchorA, anchorB});
-    EXPECT_EQ(GetJointCount(world), joint_count_t(1));
+    EXPECT_EQ(GetJointCount(world), JointCounter(1));
     EXPECT_FALSE(world.GetJoints().empty());
     EXPECT_NE(world.GetJoints().begin(), world.GetJoints().end());
     const auto first = *world.GetJoints().begin();
@@ -504,7 +504,7 @@ TEST(World, CreateAndDestroyJoint)
     EXPECT_FALSE(joint->GetCollideConnected());
 
     world.Destroy(joint);
-    EXPECT_EQ(GetJointCount(world), joint_count_t(0));
+    EXPECT_EQ(GetJointCount(world), JointCounter(0));
     EXPECT_TRUE(world.GetJoints().empty());
     EXPECT_EQ(world.GetJoints().begin(), world.GetJoints().end());
 }
@@ -2489,8 +2489,8 @@ public:
 
 protected:
     World world{WorldDef{}.UseGravity(Vec2(0, -10) * MeterPerSquareSecond)};
-    size_t loopsTillSleeping = 0;
-    const size_t maxLoops = 10000;
+    std::size_t loopsTillSleeping = 0;
+    const std::size_t maxLoops = 10000;
     std::vector<Body*> boxes{10};
     RealNum original_x = 0;
     const Length hdim = RealNum{0.1f} * Meter;

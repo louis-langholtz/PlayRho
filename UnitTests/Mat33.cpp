@@ -25,9 +25,9 @@ TEST(Mat33, ByteSizeIs_36_72_or_144)
 {
     switch (sizeof(RealNum))
     {
-        case  4:  EXPECT_EQ(sizeof(Mat33), size_t(36)); break;
-        case  8:  EXPECT_EQ(sizeof(Mat33), size_t(72)); break;
-        case 16: EXPECT_EQ(sizeof(Mat33), size_t(144)); break;
+        case  4:  EXPECT_EQ(sizeof(Mat33), std::size_t(36)); break;
+        case  8:  EXPECT_EQ(sizeof(Mat33), std::size_t(72)); break;
+        case 16: EXPECT_EQ(sizeof(Mat33), std::size_t(144)); break;
         default: FAIL(); break;
     }
 }

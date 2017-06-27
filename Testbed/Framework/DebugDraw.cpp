@@ -145,7 +145,7 @@ static void sPrintLog(GLuint object)
         return;
     }
 
-    char* log = (char*)std::malloc(static_cast<size_t>(log_length));
+    char* log = (char*)std::malloc(static_cast<std::size_t>(log_length));
 
     if (glIsShader(object))
         glGetShaderInfoLog(object, log_length, nullptr, log);

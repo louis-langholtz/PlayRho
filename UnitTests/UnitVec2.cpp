@@ -27,9 +27,9 @@ TEST(UnitVec2, ByteSize)
 {
     switch (sizeof(RealNum))
     {
-        case  4: EXPECT_EQ(sizeof(UnitVec2), size_t(8)); break;
-        case  8: EXPECT_EQ(sizeof(UnitVec2), size_t(16)); break;
-        case 16: EXPECT_EQ(sizeof(UnitVec2), size_t(32)); break;
+        case  4: EXPECT_EQ(sizeof(UnitVec2), std::size_t(8)); break;
+        case  8: EXPECT_EQ(sizeof(UnitVec2), std::size_t(16)); break;
+        case 16: EXPECT_EQ(sizeof(UnitVec2), std::size_t(32)); break;
         default: FAIL(); break;
     }
 }

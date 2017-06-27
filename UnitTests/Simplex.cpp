@@ -25,16 +25,16 @@ TEST(SimplexCache, ByteSizeIs_12_16_or_32)
 {
     switch (sizeof(RealNum))
     {
-        case  4: EXPECT_EQ(sizeof(Simplex::Cache), size_t(12)); break;
-        case  8: EXPECT_EQ(sizeof(Simplex::Cache), size_t(16)); break;
-        case 16: EXPECT_EQ(sizeof(Simplex::Cache), size_t(32)); break;
+        case  4: EXPECT_EQ(sizeof(Simplex::Cache), std::size_t(12)); break;
+        case  8: EXPECT_EQ(sizeof(Simplex::Cache), std::size_t(16)); break;
+        case 16: EXPECT_EQ(sizeof(Simplex::Cache), std::size_t(32)); break;
         default: FAIL(); break;
     }
 }
 
 TEST(SimplexCache, IndexPairListByteSizeIs7)
 {
-    EXPECT_EQ(sizeof(Simplex::IndexPairs), size_t(7));
+    EXPECT_EQ(sizeof(Simplex::IndexPairs), std::size_t(7));
 }
 
 TEST(SimplexCache, DefaultInit)
@@ -104,9 +104,9 @@ TEST(SimplexEdgeList, ByteSizeIs_88_176_or_352)
 {
     switch (sizeof(RealNum))
     {
-        case  4: EXPECT_EQ(sizeof(Simplex::Edges), size_t(88)); break;
-        case  8: EXPECT_EQ(sizeof(Simplex::Edges), size_t(176)); break;
-        case 16: EXPECT_EQ(sizeof(Simplex::Edges), size_t(352)); break;
+        case  4: EXPECT_EQ(sizeof(Simplex::Edges), std::size_t(88)); break;
+        case  8: EXPECT_EQ(sizeof(Simplex::Edges), std::size_t(176)); break;
+        case 16: EXPECT_EQ(sizeof(Simplex::Edges), std::size_t(352)); break;
         default: FAIL();
     }
 }
@@ -115,9 +115,9 @@ TEST(Simplex, ByteSizeIs_104_208_or_416)
 {
     switch (sizeof(RealNum))
     {
-        case  4: EXPECT_EQ(sizeof(Simplex), size_t(104)); break;
-        case  8: EXPECT_EQ(sizeof(Simplex), size_t(208)); break;
-        case 16: EXPECT_EQ(sizeof(Simplex), size_t(416)); break;
+        case  4: EXPECT_EQ(sizeof(Simplex), std::size_t(104)); break;
+        case  8: EXPECT_EQ(sizeof(Simplex), std::size_t(208)); break;
+        case 16: EXPECT_EQ(sizeof(Simplex), std::size_t(416)); break;
         default: FAIL();
     }
 }

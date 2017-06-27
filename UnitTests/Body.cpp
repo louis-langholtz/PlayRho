@@ -32,17 +32,18 @@ TEST(Body, ContactsByteSize)
 {
     // Size is C++ library dependent.
     // Some platforms it's 24-bytes. Others 16.
-    EXPECT_TRUE(sizeof(Body::Contacts) == size_t(24) || sizeof(Body::Contacts) == size_t(16));
+    EXPECT_TRUE(sizeof(Body::Contacts) == std::size_t(24)
+                || sizeof(Body::Contacts) == std::size_t(16));
 }
 
 TEST(Body, JointsByteSize)
 {
     // Size is arch, os, or library dependent.
 #ifdef __APPLE__
-    EXPECT_EQ(sizeof(Body::Joints), size_t(24));
+    EXPECT_EQ(sizeof(Body::Joints), std::size_t(24));
 #endif
 #ifdef __linux__
-    EXPECT_EQ(sizeof(Body::Joints), size_t(24));
+    EXPECT_EQ(sizeof(Body::Joints), std::size_t(24));
 #endif
 }
 
@@ -50,9 +51,9 @@ TEST(Body, FixturesByteSize)
 {
     // Size is arch, os, or library dependent.
 #ifdef __linux__
-    EXPECT_EQ(sizeof(Body::Fixtures), size_t(16));
+    EXPECT_EQ(sizeof(Body::Fixtures), std::size_t(16));
 #else
-    EXPECT_EQ(sizeof(Body::Fixtures), size_t(24));
+    EXPECT_EQ(sizeof(Body::Fixtures), std::size_t(24));
 #endif
 }
 
@@ -66,9 +67,9 @@ TEST(Body, ByteSize)
     // architecture dependent...
     switch (sizeof(RealNum))
     {
-        case  4: EXPECT_EQ(sizeof(Body), size_t(120 + allSize)); break;
-        case  8: EXPECT_EQ(sizeof(Body), size_t(216 + allSize)); break;
-        case 16: EXPECT_EQ(sizeof(Body), size_t(496)); break;
+        case  4: EXPECT_EQ(sizeof(Body), std::size_t(120 + allSize)); break;
+        case  8: EXPECT_EQ(sizeof(Body), std::size_t(216 + allSize)); break;
+        case 16: EXPECT_EQ(sizeof(Body), std::size_t(496)); break;
         default: FAIL(); break;
     }
 }
@@ -134,12 +135,12 @@ TEST(Body, CreateFixture)
 {
     World world;
     const auto body = world.CreateBody();
-    EXPECT_EQ(GetFixtureCount(*body), size_t(0));
+    EXPECT_EQ(GetFixtureCount(*body), std::size_t(0));
 
     const auto valid_shape = std::make_shared<DiskShape>(RealNum{1} * Meter);
     EXPECT_NE(body->CreateFixture(valid_shape, FixtureDef{}), nullptr);
 
-    EXPECT_EQ(GetFixtureCount(*body), size_t(1));
+    EXPECT_EQ(GetFixtureCount(*body), std::size_t(1));
 }
 
 TEST(Body, SetEnabled)
@@ -356,14 +357,14 @@ TEST(Body, CreateLotsOfFixtures)
 TEST(Body, GetWorldIndex)
 {
     World world;
-    ASSERT_EQ(world.GetBodies().size(), size_t(0));
+    ASSERT_EQ(world.GetBodies().size(), std::size_t(0));
     const auto body0 = world.CreateBody();
-    ASSERT_EQ(world.GetBodies().size(), size_t(1));
-    EXPECT_EQ(GetWorldIndex(body0), size_t(0));
+    ASSERT_EQ(world.GetBodies().size(), std::size_t(1));
+    EXPECT_EQ(GetWorldIndex(body0), std::size_t(0));
     const auto body1 = world.CreateBody();
-    ASSERT_EQ(world.GetBodies().size(), size_t(2));
-    EXPECT_EQ(GetWorldIndex(body1), size_t(1));
+    ASSERT_EQ(world.GetBodies().size(), std::size_t(2));
+    EXPECT_EQ(GetWorldIndex(body1), std::size_t(1));
     const auto body2 = world.CreateBody();
-    ASSERT_EQ(world.GetBodies().size(), size_t(3));
-    EXPECT_EQ(GetWorldIndex(body2), size_t(2));
+    ASSERT_EQ(world.GetBodies().size(), std::size_t(3));
+    EXPECT_EQ(GetWorldIndex(body2), std::size_t(2));
 }

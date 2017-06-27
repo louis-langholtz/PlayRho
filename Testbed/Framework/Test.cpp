@@ -477,7 +477,7 @@ void Test::MouseDown(const Length2D& p)
     auto fixture = static_cast<Fixture*>(nullptr);
     
     // Query the world for overlapping shapes.
-    m_world->QueryAABB(aabb, [&](Fixture* f, const child_count_t) {
+    m_world->QueryAABB(aabb, [&](Fixture* f, const ChildCounter) {
         if (TestPoint(*f, p))
         {
             fixture = f;

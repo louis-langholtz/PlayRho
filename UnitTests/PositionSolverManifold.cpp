@@ -28,9 +28,9 @@ TEST(PositionSolverManifold, ByteSizeIs_20_40_or_80)
 {
     switch (sizeof(RealNum))
     {
-        case  4: EXPECT_EQ(sizeof(PositionSolverManifold), size_t(20)); break;
-        case  8: EXPECT_EQ(sizeof(PositionSolverManifold), size_t(40)); break;
-        case 16: EXPECT_EQ(sizeof(PositionSolverManifold), size_t(80)); break;
+        case  4: EXPECT_EQ(sizeof(PositionSolverManifold), std::size_t(20)); break;
+        case  8: EXPECT_EQ(sizeof(PositionSolverManifold), std::size_t(40)); break;
+        case 16: EXPECT_EQ(sizeof(PositionSolverManifold), std::size_t(80)); break;
         default: FAIL(); break;
     }
 }

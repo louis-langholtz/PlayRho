@@ -23,5 +23,5 @@ using namespace box2d;
 
 TEST(ContactFilter, ByteSizeIs8)
 {
-    EXPECT_EQ(sizeof(ContactFilter), size_t(8));
+    EXPECT_EQ(sizeof(ContactFilter), std::size_t(8));
 }

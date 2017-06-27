@@ -26,15 +26,15 @@ TEST(DiskShape, ByteSize)
 {
     if (sizeof(RealNum) == 4)
     {
-        EXPECT_EQ(sizeof(DiskShape), size_t(32));
+        EXPECT_EQ(sizeof(DiskShape), std::size_t(32));
     }
     else if (sizeof(RealNum) == 8)
     {
-        EXPECT_EQ(sizeof(DiskShape), size_t(56));
+        EXPECT_EQ(sizeof(DiskShape), std::size_t(56));
     }
     else if (sizeof(RealNum) == 16)
     {
-        EXPECT_EQ(sizeof(DiskShape), size_t(112));
+        EXPECT_EQ(sizeof(DiskShape), std::size_t(112));
     }
     else
     {
@@ -47,7 +47,7 @@ TEST(DiskShape, DefaultConstruction)
     DiskShape foo{};
     
     EXPECT_EQ(typeid(foo), typeid(DiskShape));
-    EXPECT_EQ(foo.GetChildCount(), child_count_t{1});
+    EXPECT_EQ(foo.GetChildCount(), ChildCounter{1});
     EXPECT_EQ(foo.GetRadius(), DiskShape::GetDefaultRadius());
     EXPECT_EQ(foo.GetLocation().x, Length{0});
     EXPECT_EQ(foo.GetLocation().y, Length{0});
@@ -63,7 +63,7 @@ TEST(DiskShape, InitConstruction)
     DiskShape foo{conf};
     
     EXPECT_EQ(typeid(foo), typeid(DiskShape));
-    EXPECT_EQ(foo.GetChildCount(), child_count_t{1});
+    EXPECT_EQ(foo.GetChildCount(), ChildCounter{1});
     EXPECT_EQ(foo.GetRadius(), radius);
     EXPECT_EQ(foo.GetLocation().x, position.x);
     EXPECT_EQ(foo.GetLocation().y, position.y);

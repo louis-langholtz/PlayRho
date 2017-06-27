@@ -248,7 +248,7 @@ public:
     bool m_bullet_mode = false;
     Length m_enclosureVertexRadius = vertexRadiusIncrement;
     Body* m_enclosure = nullptr;
-    size_t m_sequence = 0;
+    std::size_t m_sequence = 0;
 };
 
 } // namespace box2d

@@ -130,7 +130,7 @@ void box2d::Dump(const World& world)
     
     const auto& bodies = world.GetBodies();
     log("Body** bodies = (Body**)Alloc(%d * sizeof(Body*));\n", bodies.size());
-    auto i = size_t{0};
+    auto i = std::size_t{0};
     for (auto&& body: bodies)
     {
         const auto b = GetBodyPtr(body);
@@ -155,7 +155,7 @@ void box2d::Dump(const World& world)
     log("bodies = nullptr;\n");
 }
 
-void box2d::Dump(const Body& body, size_t bodyIndex)
+void box2d::Dump(const Body& body, std::size_t bodyIndex)
 {
     log("{\n");
     log("  BodyDef bd;\n");
@@ -189,7 +189,7 @@ void box2d::Dump(const Body& body, size_t bodyIndex)
     log("}\n");
 }
 
-void box2d::Dump(const Joint& joint, size_t index)
+void box2d::Dump(const Joint& joint, std::size_t index)
 {
     switch (joint.GetType())
     {
@@ -232,7 +232,7 @@ void box2d::Dump(const Joint& joint, size_t index)
     }
 }
 
-void box2d::Dump(const Fixture& fixture, size_t bodyIndex)
+void box2d::Dump(const Fixture& fixture, std::size_t bodyIndex)
 {
     log("    FixtureDef fd;\n");
     log("    fd.friction = %.15lef;\n", static_cast<double>(fixture.GetFriction()));
@@ -257,7 +257,7 @@ void box2d::Dump(const Fixture& fixture, size_t bodyIndex)
     log("    bodies[%d]->CreateFixture(fd);\n", bodyIndex);
 }
 
-void box2d::Dump(const DistanceJoint& joint, size_t index)
+void box2d::Dump(const DistanceJoint& joint, std::size_t index)
 {
     log("  DistanceJointDef jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
@@ -277,7 +277,7 @@ void box2d::Dump(const DistanceJoint& joint, size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void box2d::Dump(const FrictionJoint& joint, size_t index)
+void box2d::Dump(const FrictionJoint& joint, std::size_t index)
 {
     log("  FrictionJointDef jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
@@ -296,7 +296,7 @@ void box2d::Dump(const FrictionJoint& joint, size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void box2d::Dump(const GearJoint& joint, size_t index)
+void box2d::Dump(const GearJoint& joint, std::size_t index)
 {
     log("  GearJointDef jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
@@ -308,7 +308,7 @@ void box2d::Dump(const GearJoint& joint, size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void box2d::Dump(const MotorJoint& joint, size_t index)
+void box2d::Dump(const MotorJoint& joint, std::size_t index)
 {
     log("  MotorJointDef jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
@@ -327,7 +327,7 @@ void box2d::Dump(const MotorJoint& joint, size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void box2d::Dump(const MouseJoint& joint, size_t index)
+void box2d::Dump(const MouseJoint& joint, std::size_t index)
 {
     log("  MouseJointDef jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
@@ -344,7 +344,7 @@ void box2d::Dump(const MouseJoint& joint, size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void box2d::Dump(const PrismaticJoint& joint, size_t index)
+void box2d::Dump(const PrismaticJoint& joint, std::size_t index)
 {
     log("  PrismaticJointDef jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
@@ -373,7 +373,7 @@ void box2d::Dump(const PrismaticJoint& joint, size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void box2d::Dump(const PulleyJoint& joint, size_t index)
+void box2d::Dump(const PulleyJoint& joint, std::size_t index)
 {
     log("  PulleyJointDef jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
@@ -399,7 +399,7 @@ void box2d::Dump(const PulleyJoint& joint, size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void box2d::Dump(const RevoluteJoint& joint, size_t index)
+void box2d::Dump(const RevoluteJoint& joint, std::size_t index)
 {
     log("  RevoluteJointDef jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
@@ -426,7 +426,7 @@ void box2d::Dump(const RevoluteJoint& joint, size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void box2d::Dump(const RopeJoint& joint, size_t index)
+void box2d::Dump(const RopeJoint& joint, std::size_t index)
 {
     log("  RopeJointDef jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
@@ -443,7 +443,7 @@ void box2d::Dump(const RopeJoint& joint, size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void box2d::Dump(const WeldJoint& joint, size_t index)
+void box2d::Dump(const WeldJoint& joint, std::size_t index)
 {
     log("  WeldJointDef jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
@@ -463,7 +463,7 @@ void box2d::Dump(const WeldJoint& joint, size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void box2d::Dump(const WheelJoint& joint, size_t index)
+void box2d::Dump(const WheelJoint& joint, std::size_t index)
 {
     log("  WheelJointDef jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));

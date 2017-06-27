@@ -25,9 +25,9 @@ TEST(FixtureProxy, ByteSizeIs_32_48_or_80)
 {
     switch (sizeof(RealNum))
     {
-        case  4: EXPECT_EQ(sizeof(FixtureProxy), size_t(32)); break;
-        case  8: EXPECT_EQ(sizeof(FixtureProxy), size_t(48)); break;
-        case 16: EXPECT_EQ(sizeof(FixtureProxy), size_t(80)); break;
+        case  4: EXPECT_EQ(sizeof(FixtureProxy), std::size_t(32)); break;
+        case  8: EXPECT_EQ(sizeof(FixtureProxy), std::size_t(48)); break;
+        case 16: EXPECT_EQ(sizeof(FixtureProxy), std::size_t(80)); break;
         default: FAIL(); break;
     }
 }

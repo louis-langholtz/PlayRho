@@ -25,9 +25,9 @@ TEST(Sweep, ByteSizeIs_36_or_72)
 {
     switch (sizeof(RealNum))
     {
-        case  4: EXPECT_EQ(sizeof(Sweep), size_t(36)); break;
-        case  8: EXPECT_EQ(sizeof(Sweep), size_t(72)); break;
-        case 16: EXPECT_EQ(sizeof(Sweep), size_t(144)); break;
+        case  4: EXPECT_EQ(sizeof(Sweep), std::size_t(36)); break;
+        case  8: EXPECT_EQ(sizeof(Sweep), std::size_t(72)); break;
+        case 16: EXPECT_EQ(sizeof(Sweep), std::size_t(144)); break;
         default: FAIL(); break;
     }
 }

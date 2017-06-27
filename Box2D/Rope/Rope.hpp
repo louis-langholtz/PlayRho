@@ -27,7 +27,7 @@ namespace box2d {
 /// 
 struct RopeDef
 {
-    using size_type = size_t;
+    using size_type = std::size_t;
 
     constexpr RopeDef() = default;
 
@@ -57,7 +57,7 @@ struct RopeDef
 class Rope
 {
 public:
-    using size_type = size_t;
+    using size_type = std::size_t;
 
     constexpr Rope() = default;
     ~Rope();

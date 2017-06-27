@@ -160,12 +160,12 @@ public:
 
     /// @brief Gets the number of child primitives of the shape.
     /// @return Positive non-zero count.
-    virtual child_count_t GetChildCount() const noexcept = 0;
+    virtual ChildCounter GetChildCount() const noexcept = 0;
 
     /// @brief Gets the child for the given index.
     /// @note The shape must remain in scope while the proxy is in use.
     /// @throws InvalidArgument if the index is out of range.
-    virtual DistanceProxy GetChild(child_count_t index) const = 0;
+    virtual DistanceProxy GetChild(ChildCounter index) const = 0;
     
     /// @brief Gets the mass properties of this shape using its dimensions and density.
     /// @return Mass data for this shape.

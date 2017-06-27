@@ -218,7 +218,7 @@ bool IsEnabled(const Joint& j) noexcept;
 // @brief Wakes up the joined bodies.
 void SetAwake(Joint& j) noexcept;
 
-std::size_t GetWorldIndex(const Joint* joint);
+JointCounter GetWorldIndex(const Joint* joint);
 
 void Set(JointDef& def, const Joint& joint) noexcept;
 
