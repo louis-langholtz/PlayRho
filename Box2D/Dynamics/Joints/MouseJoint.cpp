@@ -96,13 +96,13 @@ Mat22 MouseJoint::GetEffectiveMassMatrix(const BodyConstraint& body) const noexc
     return K;
 }
 
-void MouseJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step,
+void MouseJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
                                          const ConstraintSolverConf&)
 {
     auto& bodyConstraintB = bodies.at(GetBodyB());
 
-    const auto posB = bodyConstraintB.GetPosition();
-    auto velB = bodyConstraintB.GetVelocity();
+    const auto posB = bodyConstraintB->GetPosition();
+    auto velB = bodyConstraintB->GetVelocity();
 
     const UnitVec2 qB(posB.angular);
 
@@ -129,9 +129,9 @@ void MouseJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
     const auto beta = Frequency{h * k * m_gamma}; // T * M T^-2 * M^-1 is T^-1
 
     // Compute the effective mass matrix.
-    m_rB = Rotate(m_localAnchorB - bodyConstraintB.GetLocalCenter(), qB);
+    m_rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB);
 
-    m_mass = Invert(GetEffectiveMassMatrix(bodyConstraintB));
+    m_mass = Invert(GetEffectiveMassMatrix(*bodyConstraintB));
 
     m_C = LinearVelocity2D{((posB.linear + m_rB) - m_targetA) * beta};
     assert(IsValid(m_C));
@@ -144,21 +144,21 @@ void MouseJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
         m_impulse *= step.dtRatio;
         const auto P = m_impulse;
         const auto crossBP = AngularMomentum{Cross(m_rB, P) / Radian}; // L * M * L T^-1 is: L^2 M T^-1
-        velB += Velocity{bodyConstraintB.GetInvMass() * P, bodyConstraintB.GetInvRotInertia() * crossBP};
+        velB += Velocity{bodyConstraintB->GetInvMass() * P, bodyConstraintB->GetInvRotInertia() * crossBP};
     }
     else
     {
         m_impulse = Vec2_zero * Kilogram * MeterPerSecond;
     }
 
-    bodyConstraintB.SetVelocity(velB);
+    bodyConstraintB->SetVelocity(velB);
 }
 
-bool MouseJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step)
+bool MouseJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step)
 {
     auto& bodyConstraintB = bodies.at(GetBodyB());
 
-    auto velB = bodyConstraintB.GetVelocity();
+    auto velB = bodyConstraintB->GetVelocity();
     assert(IsValid(velB));
 
     const auto Cdot = velB.linear + LinearVelocity2D{(GetRevPerpendicular(m_rB) * velB.angular) / Radian};
@@ -176,14 +176,14 @@ bool MouseJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepCon
     const auto incImpulse = (m_impulse - oldImpulse);
     const auto angImpulseB = AngularMomentum{Cross(m_rB, incImpulse) / Radian};
 
-    velB += Velocity{bodyConstraintB.GetInvMass() * incImpulse, bodyConstraintB.GetInvRotInertia() * angImpulseB};
+    velB += Velocity{bodyConstraintB->GetInvMass() * incImpulse, bodyConstraintB->GetInvRotInertia() * angImpulseB};
 
-    bodyConstraintB.SetVelocity(velB);
+    bodyConstraintB->SetVelocity(velB);
     
     return incImpulse == Vec2_zero * NewtonSecond;
 }
 
-bool MouseJoint::SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const
+bool MouseJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const
 {
     NOT_USED(bodies);
     NOT_USED(conf);

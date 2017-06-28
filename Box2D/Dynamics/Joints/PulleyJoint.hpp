@@ -103,9 +103,9 @@ public:
 
 private:
 
-    void InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
-    bool SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) override;
-    bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
+    void InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
+    bool SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step) override;
+    bool SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const override;
 
     Length2D m_groundAnchorA;
     Length2D m_groundAnchorB;

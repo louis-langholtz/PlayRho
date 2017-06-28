@@ -119,31 +119,31 @@ PrismaticJoint::PrismaticJoint(const PrismaticJointDef& def):
     // Intentionally empty.
 }
 
-void PrismaticJoint::InitVelocityConstraints(BodyConstraints& bodies,
+void PrismaticJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
                                              const StepConf& step,
                                              const ConstraintSolverConf& conf)
 {
     auto& bodyConstraintA = bodies.at(GetBodyA());
     auto& bodyConstraintB = bodies.at(GetBodyB());
 
-    const auto posA = bodyConstraintA.GetPosition();
-    auto velA = bodyConstraintA.GetVelocity();
+    const auto posA = bodyConstraintA->GetPosition();
+    auto velA = bodyConstraintA->GetVelocity();
 
-    const auto posB = bodyConstraintB.GetPosition();
-    auto velB = bodyConstraintB.GetVelocity();
+    const auto posB = bodyConstraintB->GetPosition();
+    auto velB = bodyConstraintB->GetVelocity();
 
     const auto qA = UnitVec2(posA.angular);
     const auto qB = UnitVec2(posB.angular);
 
     // Compute the effective masses.
-    const auto rA = Rotate(m_localAnchorA - bodyConstraintA.GetLocalCenter(), qA); // Length2D
-    const auto rB = Rotate(m_localAnchorB - bodyConstraintB.GetLocalCenter(), qB); // Length2D
+    const auto rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA); // Length2D
+    const auto rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB); // Length2D
     const auto d = (posB.linear - posA.linear) + rB - rA; // Length2D
 
-    const auto invMassA = bodyConstraintA.GetInvMass();
-    const auto invMassB = bodyConstraintB.GetInvMass();
-    const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
-    const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
+    const auto invMassA = bodyConstraintA->GetInvMass();
+    const auto invMassB = bodyConstraintB->GetInvMass();
+    const auto invRotInertiaA = bodyConstraintA->GetInvRotInertia();
+    const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
 
     // Compute motor Jacobian and effective mass.
     m_axis = Rotate(m_localXAxisA, qA);
@@ -249,24 +249,24 @@ void PrismaticJoint::InitVelocityConstraints(BodyConstraints& bodies,
         m_motorImpulse = 0;
     }
 
-    bodyConstraintA.SetVelocity(velA);
-    bodyConstraintB.SetVelocity(velB);
+    bodyConstraintA->SetVelocity(velA);
+    bodyConstraintB->SetVelocity(velB);
 }
 
-bool PrismaticJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step)
+bool PrismaticJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step)
 {
     auto& bodyConstraintA = bodies.at(GetBodyA());
     auto& bodyConstraintB = bodies.at(GetBodyB());
 
-    const auto oldVelA = bodyConstraintA.GetVelocity();
+    const auto oldVelA = bodyConstraintA->GetVelocity();
     auto velA = oldVelA;
-    const auto invMassA = bodyConstraintA.GetInvMass();
-    const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
+    const auto invMassA = bodyConstraintA->GetInvMass();
+    const auto invRotInertiaA = bodyConstraintA->GetInvRotInertia();
 
-    const auto oldVelB = bodyConstraintB.GetVelocity();
+    const auto oldVelB = bodyConstraintB->GetVelocity();
     auto velB = oldVelB;
-    const auto invMassB = bodyConstraintB.GetInvMass();
-    const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
+    const auto invMassB = bodyConstraintB->GetInvMass();
+    const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
 
     // Solve linear motor constraint.
     if (m_enableMotor && m_limitState != e_equalLimits)
@@ -358,8 +358,8 @@ bool PrismaticJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Ste
 
     if ((velA != oldVelA) || (velB != oldVelB))
     {
-	    bodyConstraintA.SetVelocity(velA);
-    	bodyConstraintB.SetVelocity(velB);
+	    bodyConstraintA->SetVelocity(velA);
+    	bodyConstraintB->SetVelocity(velB);
         return false;
     }
     return true;
@@ -372,25 +372,25 @@ bool PrismaticJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Ste
 //
 // We could take the active state from the velocity solver.However, the joint might push past the limit when the velocity
 // solver indicates the limit is inactive.
-bool PrismaticJoint::SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const
+bool PrismaticJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const
 {
     auto& bodyConstraintA = bodies.at(GetBodyA());
     auto& bodyConstraintB = bodies.at(GetBodyB());
 
-    auto posA = bodyConstraintA.GetPosition();
-    const auto invMassA = bodyConstraintA.GetInvMass();
-    const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
+    auto posA = bodyConstraintA->GetPosition();
+    const auto invMassA = bodyConstraintA->GetInvMass();
+    const auto invRotInertiaA = bodyConstraintA->GetInvRotInertia();
 
-    auto posB = bodyConstraintB.GetPosition();
-    const auto invMassB = bodyConstraintB.GetInvMass();
-    const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
+    auto posB = bodyConstraintB->GetPosition();
+    const auto invMassB = bodyConstraintB->GetInvMass();
+    const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
 
     const auto qA = UnitVec2{posA.angular};
     const auto qB = UnitVec2{posB.angular};
 
     // Compute fresh Jacobians
-    const auto rA = Rotate(m_localAnchorA - bodyConstraintA.GetLocalCenter(), qA);
-    const auto rB = Rotate(m_localAnchorB - bodyConstraintB.GetLocalCenter(), qB);
+    const auto rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA);
+    const auto rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB);
     const auto d = Length2D{(posB.linear + rB) - (posA.linear + rA)};
 
     const auto axis = Rotate(m_localXAxisA, qA);
@@ -505,8 +505,8 @@ bool PrismaticJoint::SolvePositionConstraints(BodyConstraints& bodies, const Con
     posA -= Position{invMassA * P, invRotInertiaA * LA};
     posB += Position{invMassB * P, invRotInertiaB * LB};
 
-    bodyConstraintA.SetPosition(posA);
-    bodyConstraintB.SetPosition(posB);
+    bodyConstraintA->SetPosition(posA);
+    bodyConstraintB->SetPosition(posB);
 
     return (linearError <= conf.linearSlop) && (angularError <= conf.angularSlop);
 }

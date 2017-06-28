@@ -79,8 +79,10 @@ using std::cend;
 namespace box2d
 {
 
-using BodyConstraints = std::unordered_map<const Body*, BodyConstraint>;
-using BodyConstraintsPair = std::pair<const Body* const, BodyConstraint>;
+using BodyPtr = Body*;
+using BodyConstraintsMap = std::unordered_map<const Body*, BodyConstraint*>;
+using BodyConstraintsPair = std::pair<const Body* const, BodyConstraint*>;
+using BodyConstraints = std::vector<BodyConstraint>;
 using PositionConstraints = std::vector<PositionConstraint>;
 using VelocityConstraints = std::vector<VelocityConstraint>;
     
@@ -200,10 +202,10 @@ namespace {
     inline void IntegratePositions(BodyConstraints& bodies,
                                    Time h, MovementConf conf)
     {
-        std::for_each(begin(bodies), end(bodies), [&](BodyConstraintsPair& elem) {
-            const auto newPosAndVel = CalculateMovement(elem.second, h, conf);
-            elem.second.SetPosition(newPosAndVel.position);
-            elem.second.SetVelocity(newPosAndVel.velocity);
+        std::for_each(begin(bodies), end(bodies), [&](BodyConstraint& bc) {
+            const auto newPosAndVel = CalculateMovement(bc, h, conf);
+            bc.SetPosition(newPosAndVel.position);
+            bc.SetVelocity(newPosAndVel.velocity);
         });
     }
     
@@ -297,7 +299,7 @@ namespace {
         });
     }
     
-    PositionConstraints GetPositionConstraints(const Island::Contacts& contacts, BodyConstraints& bodies)
+    PositionConstraints GetPositionConstraints(const Island::Contacts& contacts, BodyConstraintsMap& bodies)
     {
         auto constraints = PositionConstraints{};
         constraints.reserve(contacts.size());
@@ -315,13 +317,13 @@ namespace {
             const auto bodyB = fixtureB.GetBody();
             const auto shapeB = fixtureB.GetShape();
             
-            auto& bodyConstraintA = bodies.at(bodyA);
-            auto& bodyConstraintB = bodies.at(bodyB);
+            const auto bodyConstraintA = bodies.at(bodyA);
+            const auto bodyConstraintB = bodies.at(bodyB);
             
             const auto radiusA = GetVertexRadius(*shapeA);
             const auto radiusB = GetVertexRadius(*shapeB);
             
-            return PositionConstraint{manifold, bodyConstraintA, radiusA, bodyConstraintB, radiusB};
+            return PositionConstraint{manifold, *bodyConstraintA, radiusA, *bodyConstraintB, radiusB};
         });
         return constraints;
     }
@@ -334,7 +336,7 @@ namespace {
     /// @post Velocity constraints will have their constraint points set.
     /// @sa SolveVelocityConstraints.
     VelocityConstraints GetVelocityConstraints(const Island::Contacts& contacts,
-                                                        BodyConstraints& bodies,
+                                                        BodyConstraintsMap& bodies,
                                                         const VelocityConstraint::Conf conf)
     {
         auto velConstraints = VelocityConstraints{};
@@ -360,14 +362,14 @@ namespace {
             const auto bodyB = fixtureB->GetBody();
             const auto shapeB = fixtureB->GetShape();
             
-            auto& bodyConstraintA = bodies.at(bodyA);
-            auto& bodyConstraintB = bodies.at(bodyB);
+            const auto bodyConstraintA = bodies.at(bodyA);
+            const auto bodyConstraintB = bodies.at(bodyB);
             
             const auto radiusA = shapeA->GetVertexRadius();
             const auto radiusB = shapeB->GetVertexRadius();
             
             return VelocityConstraint{i, friction, restitution, tangentSpeed, manifold,
-                bodyConstraintA, radiusA, bodyConstraintB, radiusB, conf};
+                *bodyConstraintA, radiusA, *bodyConstraintB, radiusB, conf};
         });
         return velConstraints;
     }
@@ -1253,12 +1255,22 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
     // Copy bodies' pos1 and velocity data into local arrays.
     auto bodyConstraints = BodyConstraints{};
     bodyConstraints.reserve(island.m_bodies.size());
-    std::for_each(cbegin(island.m_bodies), cend(island.m_bodies), [&](const Body* body) {
-        bodyConstraints[body] = GetBodyConstraint(*body, h); // velocity += acceleration * h
+    std::transform(cbegin(island.m_bodies), cend(island.m_bodies),
+                   std::back_insert_iterator<BodyConstraints>(bodyConstraints),
+                   [&](const Body* body) {
+        return GetBodyConstraint(*body, h); // velocity += acceleration * h
+    });
+
+    auto bodyConstraintsMap = BodyConstraintsMap{};
+    bodyConstraintsMap.reserve(island.m_bodies.size());
+    std::for_each(cbegin(island.m_bodies), cend(island.m_bodies), [&](const BodyPtr& body) {
+        const auto i = static_cast<std::size_t>(&body - island.m_bodies.data());
+        assert(i < island.m_bodies.size());
+        bodyConstraintsMap[body] = &bodyConstraints[i];
     });
     
-    auto posConstraints = GetPositionConstraints(island.m_contacts, bodyConstraints);
-    auto velConstraints = GetVelocityConstraints(island.m_contacts, bodyConstraints,
+    auto posConstraints = GetPositionConstraints(island.m_contacts, bodyConstraintsMap);
+    auto velConstraints = GetVelocityConstraints(island.m_contacts, bodyConstraintsMap,
                                                       GetRegVelocityConstraintConf(conf));
     
     if (conf.doWarmStart)
@@ -1269,7 +1281,7 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
     const auto psConf = GetRegConstraintSolverConf(conf);
 
     std::for_each(cbegin(island.m_joints), cend(island.m_joints), [&](Joint* joint) {
-        JointAtty::InitVelocityConstraints(*joint, bodyConstraints, conf, psConf);
+        JointAtty::InitVelocityConstraints(*joint, bodyConstraintsMap, conf, psConf);
     });
     
     results.velocityIterations = conf.regVelocityIterations;
@@ -1277,7 +1289,7 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
     {
         auto jointsOkay = true;
         std::for_each(cbegin(island.m_joints), cend(island.m_joints), [&](Joint* j) {
-            jointsOkay &= JointAtty::SolveVelocityConstraints(*j, bodyConstraints, conf);
+            jointsOkay &= JointAtty::SolveVelocityConstraints(*j, bodyConstraintsMap, conf);
         });
 
         // Note that the new incremental impulse can potentially be orders of magnitude
@@ -1309,7 +1321,7 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
 
         auto jointsOkay = true;
         std::for_each(cbegin(island.m_joints), cend(island.m_joints), [&](Joint* j) {
-            jointsOkay &= JointAtty::SolvePositionConstraints(*j, bodyConstraints, psConf);
+            jointsOkay &= JointAtty::SolvePositionConstraints(*j, bodyConstraintsMap, psConf);
         });
 
         if (contactsOkay && jointsOkay)
@@ -1327,9 +1339,10 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
         AssignImpulses(manifold, vc);
     });
     
-    std::for_each(cbegin(island.m_bodies), cend(island.m_bodies), [&](Body* b) {
-        const auto& constraint = bodyConstraints.at(b);
-        UpdateBody(*b, constraint.GetPosition(), constraint.GetVelocity());
+    std::for_each(cbegin(bodyConstraints), cend(bodyConstraints), [&](const BodyConstraint& bc) {
+        const auto i = static_cast<std::size_t>(&bc - bodyConstraints.data());
+        assert(i < bodyConstraints.size());
+        UpdateBody(*island.m_bodies[i], bc.GetPosition(), bc.GetVelocity());
     });
     
     // XXX: Should contacts needing updating be updated now??
@@ -1709,8 +1722,29 @@ void World::UpdateBody(Body& body, const Position& pos, const Velocity& vel)
 World::IslandSolverResults World::SolveToiViaGS(const StepConf& conf, Island& island)
 {
     auto results = IslandSolverResults{};
+    
     auto bodyConstraints = BodyConstraints{};
     bodyConstraints.reserve(island.m_bodies.size());
+    std::transform(cbegin(island.m_bodies), cend(island.m_bodies),
+                   std::back_insert_iterator<BodyConstraints>(bodyConstraints),
+                   [&](const Body* body)
+    {
+       /*
+        * Presumably the regular phase resolution has already taken care of updating the
+        * body's velocity w.r.t. acceleration and damping such that this call here to get
+        * the body constraint doesn't need to pass an elapsed time (and doesn't need to
+        * update the velocity from what it already is).
+        */
+       return GetBodyConstraint(*body);
+    });
+    
+    auto bodyConstraintsMap = BodyConstraintsMap{};
+    bodyConstraintsMap.reserve(island.m_bodies.size());
+    std::for_each(cbegin(island.m_bodies), cend(island.m_bodies), [&](const BodyPtr& body) {
+        const auto i = static_cast<std::size_t>(&body - island.m_bodies.data());
+        assert(i < island.m_bodies.size());
+        bodyConstraintsMap[body] = &bodyConstraints[i];
+    });
 
     // Initialize the body state.
 #if 0
@@ -1721,24 +1755,12 @@ World::IslandSolverResults World::SolveToiViaGS(const StepConf& conf, Island& is
         const auto bodyA = fixtureA->GetBody();
         const auto bodyB = fixtureB->GetBody();
 
-        bodyConstraints[bodyA] = GetBodyConstraint(*bodyA);
-        bodyConstraints[bodyB] = GetBodyConstraint(*bodyB);
+        bodyConstraintsMap[bodyA] = GetBodyConstraint(*bodyA);
+        bodyConstraintsMap[bodyB] = GetBodyConstraint(*bodyB);
     }
-#else
-    // XXX: When processing multiple contacts within same TOI,
-    //   island.m_bodies *sometimes* doesn't contain all the needed bodies.
-    std::for_each(cbegin(island.m_bodies), cend(island.m_bodies), [&](const Body* body) {
-        /*
-         * Presumably the regular phase resolution has already taken care of updating the
-         * body's velocity w.r.t. acceleration and damping such that this call here to get
-         * the body constraint doesn't need to pass an elapsed time (and doesn't need to
-         * update the velocity from what it already is).
-         */
-        bodyConstraints[body] = GetBodyConstraint(*body);
-    });
 #endif
     
-    auto posConstraints = GetPositionConstraints(island.m_contacts, bodyConstraints);
+    auto posConstraints = GetPositionConstraints(island.m_contacts, bodyConstraintsMap);
     
     // Solve TOI-based position constraints.
     assert(results.minSeparation == std::numeric_limits<RealNum>::infinity() * Meter);
@@ -1783,16 +1805,18 @@ World::IslandSolverResults World::SolveToiViaGS(const StepConf& conf, Island& is
         const auto bodyA = fixtureA->GetBody();
         const auto bodyB = fixtureB->GetBody();
         
-        BodyAtty::SetPosition0(*bodyA, bodyConstraints.at(bodyA).GetPosition());
-        BodyAtty::SetPosition0(*bodyB, bodyConstraints.at(bodyB).GetPosition());
+        BodyAtty::SetPosition0(*bodyA, bodyConstraintsMap.at(bodyA).GetPosition());
+        BodyAtty::SetPosition0(*bodyB, bodyConstraintsMap.at(bodyB).GetPosition());
     }
 #else
-    std::for_each(cbegin(island.m_bodies), cend(island.m_bodies), [&](Body *body) {
-        BodyAtty::SetPosition0(*body, bodyConstraints.at(body).GetPosition());
+    std::for_each(cbegin(bodyConstraints), cend(bodyConstraints), [&](const BodyConstraint& bc) {
+        const auto i = static_cast<std::size_t>(&bc - bodyConstraints.data());
+        assert(i < bodyConstraints.size());
+        BodyAtty::SetPosition0(*island.m_bodies[i], bc.GetPosition());
     });
 #endif
     
-    auto velConstraints = GetVelocityConstraints(island.m_contacts, bodyConstraints,
+    auto velConstraints = GetVelocityConstraints(island.m_contacts, bodyConstraintsMap,
                                                       GetToiVelocityConstraintConf(conf));
 
     // No warm starting is needed for TOI events because warm
@@ -1820,9 +1844,10 @@ World::IslandSolverResults World::SolveToiViaGS(const StepConf& conf, Island& is
     
     IntegratePositions(bodyConstraints, conf.GetTime(), GetMovementConf(conf));
     
-    std::for_each(cbegin(island.m_bodies), cend(island.m_bodies), [&](Body *body) {
-        const auto& constraint = bodyConstraints.at(body);
-        UpdateBody(*body, constraint.GetPosition(), constraint.GetVelocity());
+    std::for_each(cbegin(bodyConstraints), cend(bodyConstraints), [&](const BodyConstraint& bc) {
+        const auto i = static_cast<std::size_t>(&bc - bodyConstraints.data());
+        assert(i < bodyConstraints.size());
+        UpdateBody(*island.m_bodies[i], bc.GetPosition(), bc.GetVelocity());
     });
 
     if (m_contactListener)

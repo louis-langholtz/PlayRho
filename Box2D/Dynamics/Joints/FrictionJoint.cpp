@@ -54,19 +54,19 @@ FrictionJoint::FrictionJoint(const FrictionJointDef& def):
     // Intentionally empty.
 }
 
-void FrictionJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step,
+void FrictionJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
                                             const ConstraintSolverConf&)
 {
-    auto& bodyA = bodies.at(GetBodyA());
-    auto& bodyB = bodies.at(GetBodyB());
-    const auto posA = bodyA.GetPosition();
-    auto velA = bodyA.GetVelocity();
-    const auto posB = bodyB.GetPosition();
-    auto velB = bodyB.GetVelocity();
+    auto& bodyConstraintA = bodies.at(GetBodyA());
+    auto& bodyConstraintB = bodies.at(GetBodyB());
+    const auto posA = bodyConstraintA->GetPosition();
+    auto velA = bodyConstraintA->GetVelocity();
+    const auto posB = bodyConstraintB->GetPosition();
+    auto velB = bodyConstraintB->GetVelocity();
 
     // Compute the effective mass matrix.
-    m_rA = Rotate(m_localAnchorA - bodyA.GetLocalCenter(), UnitVec2{posA.angular});
-    m_rB = Rotate(m_localAnchorB - bodyB.GetLocalCenter(), UnitVec2{posB.angular});
+    m_rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), UnitVec2{posA.angular});
+    m_rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), UnitVec2{posB.angular});
 
     // J = [-I -r1_skew I r2_skew]
     //     [ 0       -1 0       1]
@@ -77,10 +77,10 @@ void FrictionJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepC
     //     [  -r1y*iA*r1x-r2y*iB*r2x, mA+r1x^2*iA+mB+r2x^2*iB,           r1x*iA+r2x*iB]
     //     [          -r1y*iA-r2y*iB,           r1x*iA+r2x*iB,                   iA+iB]
 
-    const auto invMassA = bodyA.GetInvMass();
-    const auto invMassB = bodyB.GetInvMass();
-    const auto invRotInertiaA = bodyA.GetInvRotInertia();
-    const auto invRotInertiaB = bodyB.GetInvRotInertia();
+    const auto invMassA = bodyConstraintA->GetInvMass();
+    const auto invMassB = bodyConstraintB->GetInvMass();
+    const auto invRotInertiaA = bodyConstraintA->GetInvRotInertia();
+    const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
 
     {
         Mat22 K;
@@ -127,20 +127,20 @@ void FrictionJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepC
         m_angularImpulse = AngularMomentum{0};
     }
 
-    bodyA.SetVelocity(velA);
-    bodyB.SetVelocity(velB);
+    bodyConstraintA->SetVelocity(velA);
+    bodyConstraintB->SetVelocity(velB);
 }
 
-bool FrictionJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step)
+bool FrictionJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step)
 {
-    auto& bodyA = bodies.at(GetBodyA());
-    auto& bodyB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = bodies.at(GetBodyA());
+    auto& bodyConstraintB = bodies.at(GetBodyB());
 
-    auto velA = bodyA.GetVelocity();
-    const auto invRotInertiaA = bodyA.GetInvRotInertia();
+    auto velA = bodyConstraintA->GetVelocity();
+    const auto invRotInertiaA = bodyConstraintA->GetInvRotInertia();
 
-    auto velB = bodyB.GetVelocity();
-    const auto invRotInertiaB = bodyB.GetInvRotInertia();
+    auto velB = bodyConstraintB->GetVelocity();
+    const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
 
     const auto h = step.GetTime();
 
@@ -191,17 +191,17 @@ bool FrictionJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
             solved = false;
         }
 
-        velA -= Velocity{bodyA.GetInvMass() * incImpulse, invRotInertiaA * angImpulseA};
-        velB += Velocity{bodyB.GetInvMass() * incImpulse, invRotInertiaB * angImpulseB};
+        velA -= Velocity{bodyConstraintA->GetInvMass() * incImpulse, invRotInertiaA * angImpulseA};
+        velB += Velocity{bodyConstraintB->GetInvMass() * incImpulse, invRotInertiaB * angImpulseB};
     }
 
-    bodyA.SetVelocity(velA);
-    bodyB.SetVelocity(velB);
+    bodyConstraintA->SetVelocity(velA);
+    bodyConstraintB->SetVelocity(velB);
     
     return solved;
 }
 
-bool FrictionJoint::SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const
+bool FrictionJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const
 {
     NOT_USED(bodies);
     NOT_USED(conf);

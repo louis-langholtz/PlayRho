@@ -59,26 +59,26 @@ WeldJoint::WeldJoint(const WeldJointDef& def):
     // Intentionally empty.
 }
 
-void WeldJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf&)
+void WeldJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step, const ConstraintSolverConf&)
 {
     auto& bodyConstraintA = bodies.at(GetBodyA());
     auto& bodyConstraintB = bodies.at(GetBodyB());
 
-    auto velA = bodyConstraintA.GetVelocity();
-    const auto posA = bodyConstraintA.GetPosition();
-    const auto invMassA = bodyConstraintA.GetInvMass();
-    const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
+    auto velA = bodyConstraintA->GetVelocity();
+    const auto posA = bodyConstraintA->GetPosition();
+    const auto invMassA = bodyConstraintA->GetInvMass();
+    const auto invRotInertiaA = bodyConstraintA->GetInvRotInertia();
 
-    auto velB = bodyConstraintB.GetVelocity();
-    const auto posB = bodyConstraintB.GetPosition();
-    const auto invMassB = bodyConstraintB.GetInvMass();
-    const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
+    auto velB = bodyConstraintB->GetVelocity();
+    const auto posB = bodyConstraintB->GetPosition();
+    const auto invMassB = bodyConstraintB->GetInvMass();
+    const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
 
     const auto qA = UnitVec2{posA.angular};
     const auto qB = UnitVec2{posB.angular};
 
-    m_rA = Rotate(m_localAnchorA - bodyConstraintA.GetLocalCenter(), qA);
-    m_rB = Rotate(m_localAnchorB - bodyConstraintB.GetLocalCenter(), qB);
+    m_rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA);
+    m_rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB);
 
     // J = [-I -r1_skew I r2_skew]
     //     [ 0       -1 0       1]
@@ -181,24 +181,24 @@ void WeldJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf&
         m_impulse = Vec3_zero;
     }
 
-    bodyConstraintA.SetVelocity(velA);
-    bodyConstraintB.SetVelocity(velB);
+    bodyConstraintA->SetVelocity(velA);
+    bodyConstraintB->SetVelocity(velB);
 }
 
-bool WeldJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf&)
+bool WeldJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf&)
 {
     auto& bodyConstraintA = bodies.at(GetBodyA());
     auto& bodyConstraintB = bodies.at(GetBodyB());
 
-    const auto oldVelA = bodyConstraintA.GetVelocity();
+    const auto oldVelA = bodyConstraintA->GetVelocity();
     auto velA = oldVelA;
-    const auto invMassA = bodyConstraintA.GetInvMass();
-    const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
+    const auto invMassA = bodyConstraintA->GetInvMass();
+    const auto invRotInertiaA = bodyConstraintA->GetInvRotInertia();
 
-    const auto oldVelB = bodyConstraintB.GetVelocity();
+    const auto oldVelB = bodyConstraintB->GetVelocity();
     auto velB = oldVelB;
-    const auto invMassB = bodyConstraintB.GetInvMass();
-    const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
+    const auto invMassB = bodyConstraintB->GetInvMass();
+    const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
 
     if (m_frequency > Frequency{0})
     {
@@ -255,31 +255,31 @@ bool WeldJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf
 
     if ((velA != oldVelA) || (velB != oldVelB))
     {
-	    bodyConstraintA.SetVelocity(velA);
-    	bodyConstraintB.SetVelocity(velB);
+	    bodyConstraintA->SetVelocity(velA);
+    	bodyConstraintB->SetVelocity(velB);
         return false;
     }
     return true;
 }
 
-bool WeldJoint::SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const
+bool WeldJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const
 {
     auto& bodyConstraintA = bodies.at(GetBodyA());
     auto& bodyConstraintB = bodies.at(GetBodyB());
 
-    auto posA = bodyConstraintA.GetPosition();
-    auto posB = bodyConstraintB.GetPosition();
+    auto posA = bodyConstraintA->GetPosition();
+    auto posB = bodyConstraintB->GetPosition();
 
     const auto qA = UnitVec2{posA.angular};
     const auto qB = UnitVec2{posB.angular};
 
-    const auto invMassA = bodyConstraintA.GetInvMass();
-    const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
-    const auto invMassB = bodyConstraintB.GetInvMass();
-    const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
+    const auto invMassA = bodyConstraintA->GetInvMass();
+    const auto invRotInertiaA = bodyConstraintA->GetInvRotInertia();
+    const auto invMassB = bodyConstraintB->GetInvMass();
+    const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
 
-    const auto rA = Rotate(m_localAnchorA - bodyConstraintA.GetLocalCenter(), qA);
-    const auto rB = Rotate(m_localAnchorB - bodyConstraintB.GetLocalCenter(), qB);
+    const auto rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA);
+    const auto rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB);
 
     auto positionError = Length{0};
     auto angularError = Angle{0};
@@ -361,8 +361,8 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraints& bodies, const Constrai
         posB += Position{invMassB * P, invRotInertiaB * LB};
     }
 
-    bodyConstraintA.SetPosition(posA);
-    bodyConstraintB.SetPosition(posB);
+    bodyConstraintA->SetPosition(posA);
+    bodyConstraintB->SetPosition(posB);
 
     return (positionError <= conf.linearSlop) && (angularError <= conf.angularSlop);
 }

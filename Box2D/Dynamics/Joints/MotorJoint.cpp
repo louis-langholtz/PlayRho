@@ -54,23 +54,23 @@ MotorJoint::MotorJoint(const MotorJointDef& def):
     // Intentionally empty.
 }
 
-void MotorJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf&)
+void MotorJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step, const ConstraintSolverConf&)
 {
     auto& bodyConstraintA = bodies.at(GetBodyA());
     auto& bodyConstraintB = bodies.at(GetBodyB());
 
-    const auto posA = bodyConstraintA.GetPosition();
-    auto velA = bodyConstraintA.GetVelocity();
+    const auto posA = bodyConstraintA->GetPosition();
+    auto velA = bodyConstraintA->GetVelocity();
 
-    const auto posB = bodyConstraintB.GetPosition();
-    auto velB = bodyConstraintB.GetVelocity();
+    const auto posB = bodyConstraintB->GetPosition();
+    auto velB = bodyConstraintB->GetVelocity();
 
     const auto qA = UnitVec2(posA.angular);
     const auto qB = UnitVec2(posB.angular);
 
     // Compute the effective mass matrix.
-    m_rA = Rotate(-bodyConstraintA.GetLocalCenter(), qA);
-    m_rB = Rotate(-bodyConstraintB.GetLocalCenter(), qB);
+    m_rA = Rotate(-bodyConstraintA->GetLocalCenter(), qA);
+    m_rB = Rotate(-bodyConstraintB->GetLocalCenter(), qB);
 
     // J = [-I -r1_skew I r2_skew]
     //     [ 0       -1 0       1]
@@ -81,10 +81,10 @@ void MotorJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
     //     [  -r1y*iA*r1x-r2y*iB*r2x, mA+r1x^2*iA+mB+r2x^2*iB,           r1x*iA+r2x*iB]
     //     [          -r1y*iA-r2y*iB,           r1x*iA+r2x*iB,                   iA+iB]
 
-    const auto invMassA = bodyConstraintA.GetInvMass();
-    const auto invMassB = bodyConstraintB.GetInvMass();
-    const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
-    const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
+    const auto invMassA = bodyConstraintA->GetInvMass();
+    const auto invMassB = bodyConstraintB->GetInvMass();
+    const auto invRotInertiaA = bodyConstraintA->GetInvRotInertia();
+    const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
 
     {
         Mat22 K;
@@ -135,22 +135,22 @@ void MotorJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
         m_angularImpulse = AngularMomentum{0};
     }
 
-    bodyConstraintA.SetVelocity(velA);
-    bodyConstraintB.SetVelocity(velB);
+    bodyConstraintA->SetVelocity(velA);
+    bodyConstraintB->SetVelocity(velB);
 }
 
-bool MotorJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step)
+bool MotorJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step)
 {
     auto& bodyConstraintA = bodies.at(GetBodyA());
     auto& bodyConstraintB = bodies.at(GetBodyB());
 
-    auto velA = bodyConstraintA.GetVelocity();
-    auto velB = bodyConstraintB.GetVelocity();
+    auto velA = bodyConstraintA->GetVelocity();
+    auto velB = bodyConstraintB->GetVelocity();
 
-    const auto invMassA = bodyConstraintA.GetInvMass();
-    const auto invMassB = bodyConstraintB.GetInvMass();
-    const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
-    const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
+    const auto invMassA = bodyConstraintA->GetInvMass();
+    const auto invMassB = bodyConstraintB->GetInvMass();
+    const auto invRotInertiaA = bodyConstraintA->GetInvRotInertia();
+    const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
 
     const auto h = step.GetTime();
     const auto inv_h = step.GetInvTime();
@@ -206,13 +206,13 @@ bool MotorJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepCon
         velB += Velocity{invMassB * incImpulse, invRotInertiaB * angImpulseB};
     }
 
-    bodyConstraintA.SetVelocity(velA);
-    bodyConstraintB.SetVelocity(velB);
+    bodyConstraintA->SetVelocity(velA);
+    bodyConstraintB->SetVelocity(velB);
     
     return solved;
 }
 
-bool MotorJoint::SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const
+bool MotorJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const
 {
     NOT_USED(bodies);
     NOT_USED(conf);

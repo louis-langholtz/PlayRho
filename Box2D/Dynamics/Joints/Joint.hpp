@@ -33,7 +33,7 @@ struct Velocity;
 struct ConstraintSolverConf;
 class BodyConstraint;
 
-using BodyConstraints = std::unordered_map<const Body*, BodyConstraint>;
+using BodyConstraintsMap = std::unordered_map<const Body*, BodyConstraint*>;
 
 enum class JointType
 {
@@ -162,16 +162,16 @@ private:
     /// Initializes velocity constraint data based on the given solver data.
     /// @note This MUST be called prior to calling <code>SolveVelocityConstraints</code>.
     /// @sa SolveVelocityConstraints.
-    virtual void InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf& conf) = 0;
+    virtual void InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step, const ConstraintSolverConf& conf) = 0;
 
     /// Solves velocity constraints for the given solver data.
     /// @pre <code>InitVelocityConstraints</code> has been called.
     /// @sa InitVelocityConstraints.
     /// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
-    virtual bool SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) = 0;
+    virtual bool SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step) = 0;
 
     // This returns true if the position errors are within tolerance.
-    virtual bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const = 0;
+    virtual bool SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const = 0;
     
     Body* const m_bodyA;
     Body* const m_bodyB;

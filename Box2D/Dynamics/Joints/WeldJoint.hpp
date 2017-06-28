@@ -84,10 +84,10 @@ public:
 
 private:
 
-    void InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step,
+    void InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
                                  const ConstraintSolverConf& conf) override;
-    bool SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) override;
-    bool SolvePositionConstraints(BodyConstraints& bodies,
+    bool SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step) override;
+    bool SolvePositionConstraints(BodyConstraintsMap& bodies,
                                   const ConstraintSolverConf& conf) const override;
 
     Frequency m_frequency;

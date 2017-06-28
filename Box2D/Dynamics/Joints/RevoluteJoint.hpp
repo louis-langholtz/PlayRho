@@ -145,12 +145,12 @@ public:
 
 private:
     
-    void InitVelocityConstraints(BodyConstraints& bodies,
+    void InitVelocityConstraints(BodyConstraintsMap& bodies,
                                  const StepConf& step, const ConstraintSolverConf& conf) override;
 
-    bool SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) override;
+    bool SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step) override;
     
-    bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
+    bool SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const override;
 
     // Solver shared
     Length2D m_localAnchorA;

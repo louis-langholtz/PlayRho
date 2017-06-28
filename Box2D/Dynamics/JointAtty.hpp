@@ -49,18 +49,18 @@ namespace box2d
             Joint::Destroy(j);
         }
         
-        static void InitVelocityConstraints(Joint& j, BodyConstraints &bodies,
+        static void InitVelocityConstraints(Joint& j, BodyConstraintsMap &bodies,
                                             const box2d::StepConf &step, const ConstraintSolverConf &conf)
         {
             j.InitVelocityConstraints(bodies, step, conf);
         }
         
-        static bool SolveVelocityConstraints(Joint& j, BodyConstraints &bodies, const box2d::StepConf &conf)
+        static bool SolveVelocityConstraints(Joint& j, BodyConstraintsMap &bodies, const box2d::StepConf &conf)
         {
             return j.SolveVelocityConstraints(bodies, conf);
         }
         
-        static bool SolvePositionConstraints(Joint& j, BodyConstraints &bodies, const ConstraintSolverConf &conf)
+        static bool SolvePositionConstraints(Joint& j, BodyConstraintsMap &bodies, const ConstraintSolverConf &conf)
         {
             return j.SolvePositionConstraints(bodies, conf);
         }
