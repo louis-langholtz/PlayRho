@@ -71,20 +71,17 @@
 
 #define BOX2D_MAGIC(x) (x)
 
-using std::begin;
-using std::cbegin;
-using std::end;
-using std::cend;
+using namespace std;
 
 namespace box2d
 {
 
 using BodyPtr = Body*;
-using BodyConstraintsMap = std::unordered_map<const Body*, BodyConstraint*>;
-using BodyConstraintsPair = std::pair<const Body* const, BodyConstraint*>;
-using BodyConstraints = std::vector<BodyConstraint>;
-using PositionConstraints = std::vector<PositionConstraint>;
-using VelocityConstraints = std::vector<VelocityConstraint>;
+using BodyConstraintsMap = unordered_map<const Body*, BodyConstraint*>;
+using BodyConstraintsPair = pair<const Body* const, BodyConstraint*>;
+using BodyConstraints = vector<BodyConstraint>;
+using PositionConstraints = vector<PositionConstraint>;
+using VelocityConstraints = vector<VelocityConstraint>;
     
 struct MovementConf
 {
@@ -98,7 +95,7 @@ class FlagGuard
 public:
     FlagGuard(T& flag, T value) : m_flag(flag), m_value(value)
     {
-        static_assert(std::is_unsigned<T>::value, "Unsigned integer required");
+        static_assert(is_unsigned<T>::value, "Unsigned integer required");
         m_flag |= m_value;
     }
 
@@ -119,12 +116,12 @@ class RaiiWrapper
 {
 public:
     RaiiWrapper() = delete;
-    RaiiWrapper(std::function<void(T&)> on_destruction): m_on_destruction(on_destruction) {}
+    RaiiWrapper(function<void(T&)> on_destruction): m_on_destruction(on_destruction) {}
     ~RaiiWrapper() { m_on_destruction(m_wrapped); }
     T m_wrapped;
 
 private:
-    std::function<void(T&)> m_on_destruction;
+    function<void(T&)> m_on_destruction;
 };
 
 namespace {
@@ -202,7 +199,7 @@ namespace {
     inline void IntegratePositions(BodyConstraints& bodies,
                                    Time h, MovementConf conf)
     {
-        std::for_each(begin(bodies), end(bodies), [&](BodyConstraint& bc) {
+        for_each(begin(bodies), end(bodies), [&](BodyConstraint& bc) {
             const auto newPosAndVel = CalculateMovement(bc, h, conf);
             bc.SetPosition(newPosAndVel.position);
             bc.SetVelocity(newPosAndVel.velocity);
@@ -289,7 +286,7 @@ namespace {
     
     inline void WarmStartVelocities(const VelocityConstraints& velConstraints)
     {
-        std::for_each(cbegin(velConstraints), cend(velConstraints),
+        for_each(cbegin(velConstraints), cend(velConstraints),
                       [&](const VelocityConstraint& vc) {
             const auto vp = CalcWarmStartVelocityDeltas(vc);
             const auto bodyA = vc.GetBodyA();
@@ -298,39 +295,36 @@ namespace {
             bodyB->SetVelocity(bodyB->GetVelocity() + vp.b);
         });
     }
-    
-    BodyConstraints GetBodyConstraints(const Island::Bodies& bodies, Time h)
-    {
-        auto bodyConstraints = BodyConstraints{};
-        bodyConstraints.reserve(bodies.size());
-        std::transform(cbegin(bodies), cend(bodies),
-                       std::back_insert_iterator<BodyConstraints>(bodyConstraints),
-                       [&](const BodyPtr &body) {
-            return GetBodyConstraint(*body, h); // velocity += acceleration * h
-        });
-        return bodyConstraints;
-    }
 
     BodyConstraintsMap GetBodyConstraintsMap(const Island::Bodies& bodies,
                                              BodyConstraints &bodyConstraints)
     {
         auto bodyConstraintsMap = BodyConstraintsMap{};
         bodyConstraintsMap.reserve(bodies.size());
-        std::for_each(cbegin(bodies), cend(bodies), [&](const BodyPtr& body) {
-            const auto i = static_cast<std::size_t>(&body - bodies.data());
+        for_each(cbegin(bodies), cend(bodies), [&](const BodyPtr& body) {
+            const auto i = static_cast<size_t>(&body - bodies.data());
             assert(i < bodies.size());
             bodyConstraintsMap[body] = &bodyConstraints[i];
         });
         return bodyConstraintsMap;
     }
+    
+    BodyConstraints GetBodyConstraints(const Island::Bodies& bodies, Time h)
+    {
+        auto bodyConstraints = BodyConstraints{};
+        bodyConstraints.reserve(bodies.size());
+        transform(cbegin(bodies), cend(bodies), back_inserter(bodyConstraints),
+                  [&](const BodyPtr &body) { return GetBodyConstraint(*body, h); });
+        return bodyConstraints;
+    }
 
-    PositionConstraints GetPositionConstraints(const Island::Contacts& contacts, BodyConstraintsMap& bodies)
+    PositionConstraints GetPositionConstraints(const Island::Contacts& contacts,
+                                               BodyConstraintsMap& bodies)
     {
         auto constraints = PositionConstraints{};
         constraints.reserve(contacts.size());
-        std::transform(/*std::execution::par_unseq,*/ cbegin(contacts), cend(contacts),
-                       std::back_insert_iterator<PositionConstraints>(constraints),
-                       [&](const Contact *contact) {
+        transform(cbegin(contacts), cend(contacts), back_inserter(constraints),
+                  [&](const Contact *contact) {
             const auto& manifold = static_cast<const Contact*>(contact)->GetManifold();
             
             const auto& fixtureA = *(contact->GetFixtureA());
@@ -348,7 +342,9 @@ namespace {
             const auto radiusA = GetVertexRadius(*shapeA);
             const auto radiusB = GetVertexRadius(*shapeB);
             
-            return PositionConstraint{manifold, *bodyConstraintA, radiusA, *bodyConstraintB, radiusB};
+            return PositionConstraint{
+                manifold, *bodyConstraintA, radiusA, *bodyConstraintB, radiusB
+            };
         });
         return constraints;
     }
@@ -366,11 +362,10 @@ namespace {
     {
         auto velConstraints = VelocityConstraints{};
         velConstraints.reserve(contacts.size());
-        std::transform(/*std::execution::par_unseq,*/ cbegin(contacts), cend(contacts),
-                       std::back_insert_iterator<VelocityConstraints>(velConstraints),
-                       [&](const ContactPtr& c) {
+        transform(cbegin(contacts), cend(contacts), back_inserter(velConstraints),
+                  [&](const ContactPtr& c) {
             // Note: c *must* be passed by reference in order for following to work as intended!
-            const auto i = static_cast<std::size_t>(&c - contacts.data());
+            const auto i = static_cast<size_t>(&c - contacts.data());
             assert(i < contacts.size());
             const auto contact = contacts[i];
             
@@ -407,9 +402,9 @@ namespace {
     inline Momentum SolveVelocityConstraintsViaGS(VelocityConstraints& velConstraints)
     {
         auto maxIncImpulse = Momentum{0};
-        std::for_each(begin(velConstraints), end(velConstraints), [&](VelocityConstraint& vc)
+        for_each(begin(velConstraints), end(velConstraints), [&](VelocityConstraint& vc)
         {
-            maxIncImpulse = std::max(maxIncImpulse, GaussSeidel::SolveVelocityConstraint(vc));
+            maxIncImpulse = max(maxIncImpulse, GaussSeidel::SolveVelocityConstraint(vc));
         });
         return maxIncImpulse;
     }
@@ -423,9 +418,9 @@ namespace {
     Length SolvePositionConstraintsViaGS(PositionConstraints& posConstraints,
                                     ConstraintSolverConf conf)
     {
-        auto minSeparation = std::numeric_limits<RealNum>::infinity() * Meter;
+        auto minSeparation = numeric_limits<RealNum>::infinity() * Meter;
         
-        std::for_each(begin(posConstraints), end(posConstraints), [&](PositionConstraint &pc) {
+        for_each(begin(posConstraints), end(posConstraints), [&](PositionConstraint &pc) {
             assert(pc.GetBodyA() != pc.GetBodyB()); // Confirms ContactManager::Add() did its job.
             const auto res = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
             pc.GetBodyA()->SetPosition(res.pos_a);
@@ -457,9 +452,9 @@ namespace {
                                     const BodyConstraint* bodyConstraintA, const BodyConstraint* bodyConstraintB,
                                     ConstraintSolverConf conf)
     {
-        auto minSeparation = std::numeric_limits<RealNum>::infinity() * Meter;
+        auto minSeparation = numeric_limits<RealNum>::infinity() * Meter;
         
-        std::for_each(begin(posConstraints), end(posConstraints), [&](PositionConstraint &pc) {
+        for_each(begin(posConstraints), end(posConstraints), [&](PositionConstraint &pc) {
             const auto moveA = (pc.GetBodyA() == bodyConstraintA) || (pc.GetBodyA() == bodyConstraintB);
             const auto moveB = (pc.GetBodyB() == bodyConstraintA) || (pc.GetBodyB() == bodyConstraintB);
             const auto res = SolvePositionConstraint(pc, moveA, moveB, conf);
@@ -481,8 +476,8 @@ namespace {
 
     inline Time UpdateUnderActiveTimes(Island::Bodies& bodies, const StepConf& conf)
     {
-        auto minUnderActiveTime = Second * std::numeric_limits<RealNum>::infinity();
-        std::for_each(cbegin(bodies), cend(bodies), [&](Body *b)
+        auto minUnderActiveTime = Second * numeric_limits<RealNum>::infinity();
+        for_each(cbegin(bodies), cend(bodies), [&](Body *b)
         {
             if (b->IsSpeedable())
             {
@@ -494,10 +489,10 @@ namespace {
         return minUnderActiveTime;
     }
     
-    inline std::size_t Sleepem(Island::Bodies& bodies)
+    inline size_t Sleepem(Island::Bodies& bodies)
     {
-        auto unawoken = std::size_t{0};
-        std::for_each(cbegin(bodies), cend(bodies), [&](Body *b)
+        auto unawoken = size_t{0};
+        for_each(cbegin(bodies), cend(bodies), [&](Body *b)
         {
             if (Unawaken(*b))
             {
@@ -580,8 +575,8 @@ World::World(const World& other):
     m_maxVertexRadius{other.m_maxVertexRadius},
     m_tree{other.m_tree}
 {
-    auto bodyMap = std::map<const Body*, Body*>();
-    auto fixtureMap = std::map<const Fixture*, Fixture*>();
+    auto bodyMap = map<const Body*, Body*>();
+    auto fixtureMap = map<const Fixture*, Fixture*>();
     CopyBodies(bodyMap, fixtureMap, other.GetBodies());
     CopyJoints(bodyMap, other.GetJoints());
     CopyContacts(bodyMap, fixtureMap, other.GetContacts());
@@ -601,8 +596,8 @@ World& World::operator= (const World& other)
     m_maxVertexRadius = other.m_maxVertexRadius;
     m_tree = other.m_tree;
 
-    auto bodyMap = std::map<const Body*, Body*>();
-    auto fixtureMap = std::map<const Fixture*, Fixture*>();
+    auto bodyMap = map<const Body*, Body*>();
+    auto fixtureMap = map<const Fixture*, Fixture*>();
     CopyBodies(bodyMap, fixtureMap, other.GetBodies());
     CopyJoints(bodyMap, other.GetJoints());
     CopyContacts(bodyMap, fixtureMap, other.GetContacts());
@@ -617,10 +612,10 @@ World::~World()
 
 void World::Clear() noexcept
 {
-    std::for_each(begin(m_joints), end(m_joints), [&](const Joint *j) {
+    for_each(begin(m_joints), end(m_joints), [&](const Joint *j) {
         JointAtty::Destroy(j);
     });
-    std::for_each(begin(m_bodies), end(m_bodies), [&](Body& b) {
+    for_each(begin(m_bodies), end(m_bodies), [&](Body& b) {
         BodyAtty::ClearContacts(b);
         BodyAtty::ClearJoints(b);
         BodyAtty::ClearFixtures(b, [&](Fixture& fixture) {
@@ -636,8 +631,8 @@ void World::Clear() noexcept
     m_contacts.clear();
 }
 
-void World::CopyBodies(std::map<const Body*, Body*>& bodyMap,
-                       std::map<const Fixture*, Fixture*>& fixtureMap,
+void World::CopyBodies(map<const Body*, Body*>& bodyMap,
+                       map<const Fixture*, Fixture*>& fixtureMap,
                        SizedRange<World::Bodies::const_iterator> range)
 {
     for (const auto& otherBody: range)
@@ -665,8 +660,8 @@ void World::CopyBodies(std::map<const Body*, Body*>& bodyMap,
     }
 }
 
-void World::CopyContacts(const std::map<const Body*, Body*>& bodyMap,
-                         const std::map<const Fixture*, Fixture*>& fixtureMap,
+void World::CopyContacts(const map<const Body*, Body*>& bodyMap,
+                         const map<const Fixture*, Fixture*>& fixtureMap,
                          SizedRange<World::Contacts::const_iterator> range)
 {
     for (const auto& otherContact: range)
@@ -701,10 +696,10 @@ void World::CopyContacts(const std::map<const Body*, Body*>& bodyMap,
     }
 }
 
-void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
+void World::CopyJoints(const map<const Body*, Body*>& bodyMap,
                        SizedRange<World::Joints::const_iterator> range)
 {
-    auto jointMap = std::map<const Joint*, Joint*>();
+    auto jointMap = map<const Joint*, Joint*>();
 
     for (const auto& otherJoint: range)
     {
@@ -917,7 +912,7 @@ Body* World::CreateBody(const BodyDef& def)
 
 bool World::Remove(const Body& b)
 {
-    const auto it = std::find_if(m_bodies.begin(), m_bodies.end(),
+    const auto it = find_if(m_bodies.begin(), m_bodies.end(),
                                  [&](const Body& body) { return &body == &b; });
     if (it != m_bodies.end())
     {
@@ -1004,7 +999,7 @@ bool World::Add(Joint* j, Body* bodyA, Body* bodyB)
 
 bool World::Remove(Joint& j)
 {
-    const auto iter = std::find(cbegin(m_joints), cend(m_joints), &j);
+    const auto iter = find(cbegin(m_joints), cend(m_joints), &j);
     if (iter != cend(m_joints))
     {
         m_joints.erase(iter);
@@ -1075,7 +1070,7 @@ void World::AddToIsland(Island& island, Body& seed,
     // Perform a depth first search (DFS) on the constraint graph.
 
     // Create a stack for bodies to be islanded that aren't already islanded.
-    auto stack = std::vector<Body*>();
+    auto stack = vector<Body*>();
     stack.reserve(remNumBodies);
 
     stack.push_back(&seed);
@@ -1159,10 +1154,10 @@ void World::AddToIsland(Island& island, Body& seed,
     }
 }
 
-World::Bodies::size_type World::RemoveUnspeedablesFromIslanded(const std::vector<Body*>& bodies)
+World::Bodies::size_type World::RemoveUnspeedablesFromIslanded(const vector<Body*>& bodies)
 {
     auto numRemoved = Bodies::size_type{0};
-    std::for_each(begin(bodies), end(bodies), [&](const Body* body) {
+    for_each(begin(bodies), end(bodies), [&](const Body* body) {
         if (!body->IsSpeedable())
         {
             // Allow static bodies to participate in other islands.
@@ -1195,7 +1190,7 @@ RegStepStats World::SolveReg(const StepConf& conf)
     m_jointsIslanded.reserve(remNumJoints);
 
 #if defined(DO_THREADED)
-    std::vector<std::future<World::IslandSolverResults>> futures;
+    vector<future<World::IslandSolverResults>> futures;
     futures.reserve(remNumBodies);
 #endif
     // Build and simulate all awake islands.
@@ -1215,7 +1210,7 @@ RegStepStats World::SolveReg(const StepConf& conf)
 
 #if defined(DO_THREADED)
             // Updates bodies' sweep.pos0 to current sweep.pos1 and bodies' sweep.pos1 to new positions
-            futures.push_back(std::async(std::launch::async, &World::SolveRegIslandViaGS,
+            futures.push_back(async(launch::async, &World::SolveRegIslandViaGS,
                                          this, conf, island));
 #else
             const auto solverResults = SolveRegIslandViaGS(conf, island);
@@ -1273,7 +1268,7 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
     const auto h = conf.GetTime(); ///< Time step.
 
     // Update bodies' pos0 values.
-    std::for_each(cbegin(island.m_bodies), cend(island.m_bodies), [&](Body* body) {
+    for_each(cbegin(island.m_bodies), cend(island.m_bodies), [&](Body* body) {
         BodyAtty::SetPosition0(*body, GetPosition1(*body)); // like Advance0(1) on the sweep.
     });
 
@@ -1291,7 +1286,7 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
 
     const auto psConf = GetRegConstraintSolverConf(conf);
 
-    std::for_each(cbegin(island.m_joints), cend(island.m_joints), [&](Joint* joint) {
+    for_each(cbegin(island.m_joints), cend(island.m_joints), [&](Joint* joint) {
         JointAtty::InitVelocityConstraints(*joint, bodyConstraintsMap, conf, psConf);
     });
     
@@ -1299,14 +1294,14 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
     for (auto i = decltype(conf.regVelocityIterations){0}; i < conf.regVelocityIterations; ++i)
     {
         auto jointsOkay = true;
-        std::for_each(cbegin(island.m_joints), cend(island.m_joints), [&](Joint* j) {
+        for_each(cbegin(island.m_joints), cend(island.m_joints), [&](Joint* j) {
             jointsOkay &= JointAtty::SolveVelocityConstraints(*j, bodyConstraintsMap, conf);
         });
 
         // Note that the new incremental impulse can potentially be orders of magnitude
         // greater than the last incremental impulse used in this loop.
         const auto newIncImpulse = SolveVelocityConstraintsViaGS(velConstraints);
-        results.maxIncImpulse = std::max(results.maxIncImpulse, newIncImpulse);
+        results.maxIncImpulse = max(results.maxIncImpulse, newIncImpulse);
 
         if (jointsOkay && (newIncImpulse == Momentum{0}))
         {
@@ -1331,7 +1326,7 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
         const auto contactsOkay = (minSeparation >= conf.regMinSeparation);
 
         auto jointsOkay = true;
-        std::for_each(cbegin(island.m_joints), cend(island.m_joints), [&](Joint* j) {
+        for_each(cbegin(island.m_joints), cend(island.m_joints), [&](Joint* j) {
             jointsOkay &= JointAtty::SolvePositionConstraints(*j, bodyConstraintsMap, psConf);
         });
 
@@ -1345,13 +1340,13 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
     }
     
     // Update normal and tangent impulses of contacts' manifold points
-    std::for_each(cbegin(velConstraints), cend(velConstraints), [&](const VelocityConstraint& vc) {
+    for_each(cbegin(velConstraints), cend(velConstraints), [&](const VelocityConstraint& vc) {
         auto& manifold = ContactAtty::GetMutableManifold(*island.m_contacts[vc.GetContactIndex()]);
         AssignImpulses(manifold, vc);
     });
     
-    std::for_each(cbegin(bodyConstraints), cend(bodyConstraints), [&](const BodyConstraint& bc) {
-        const auto i = static_cast<std::size_t>(&bc - bodyConstraints.data());
+    for_each(cbegin(bodyConstraints), cend(bodyConstraints), [&](const BodyConstraint& bc) {
+        const auto i = static_cast<size_t>(&bc - bodyConstraints.data());
         assert(i < bodyConstraints.size());
         UpdateBody(*island.m_bodies[i], bc.GetPosition(), bc.GetVelocity());
     });
@@ -1380,7 +1375,7 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
 void World::ResetBodiesForSolveTOI()
 {
     m_bodiesIslanded.clear();
-    std::for_each(begin(m_bodies), end(m_bodies), [&](Body &b) {
+    for_each(begin(m_bodies), end(m_bodies), [&](Body &b) {
         BodyAtty::ResetAlpha0(b);
     });
 }
@@ -1388,7 +1383,7 @@ void World::ResetBodiesForSolveTOI()
 void World::ResetContactsForSolveTOI()
 {
     m_contactsIslanded.clear();
-    std::for_each(begin(m_contacts), end(m_contacts), [&](Contact &c) {
+    for_each(begin(m_contacts), end(m_contacts), [&](Contact &c) {
         ContactAtty::UnsetToi(c);
         ContactAtty::ResetToiCount(c);
     });
@@ -1458,10 +1453,10 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
     return results;
 }
     
-World::ContactToiData World::GetSoonestContacts(const std::size_t reserveSize)
+World::ContactToiData World::GetSoonestContacts(const size_t reserveSize)
 {
-    auto minToi = std::nextafter(RealNum{1}, RealNum{0});
-    auto minContacts = std::vector<Contact*>();
+    auto minToi = nextafter(RealNum{1}, RealNum{0});
+    auto minContacts = vector<Contact*>();
     minContacts.reserve(reserveSize);
     for (auto&& contact: m_contacts)
     {
@@ -1514,7 +1509,7 @@ ToiStepStats World::SolveToi(const StepConf& conf)
             break;
         }
 
-        stats.maxSimulContacts = std::max(stats.maxSimulContacts,
+        stats.maxSimulContacts = max(stats.maxSimulContacts,
                                           static_cast<decltype(stats.maxSimulContacts)>(ncount));
         stats.contactsFound += static_cast<ContactCounter>(ncount);
         auto islandsFound = 0u;
@@ -1760,7 +1755,7 @@ World::IslandSolverResults World::SolveToiViaGS(const StepConf& conf, Island& is
     auto posConstraints = GetPositionConstraints(island.m_contacts, bodyConstraintsMap);
     
     // Solve TOI-based position constraints.
-    assert(results.minSeparation == std::numeric_limits<RealNum>::infinity() * Meter);
+    assert(results.minSeparation == numeric_limits<RealNum>::infinity() * Meter);
     assert(results.solved == false);
     results.positionIterations = conf.toiPositionIterations;
     {
@@ -1806,8 +1801,8 @@ World::IslandSolverResults World::SolveToiViaGS(const StepConf& conf, Island& is
         BodyAtty::SetPosition0(*bodyB, bodyConstraintsMap.at(bodyB).GetPosition());
     }
 #else
-    std::for_each(cbegin(bodyConstraints), cend(bodyConstraints), [&](const BodyConstraint& bc) {
-        const auto i = static_cast<std::size_t>(&bc - bodyConstraints.data());
+    for_each(cbegin(bodyConstraints), cend(bodyConstraints), [&](const BodyConstraint& bc) {
+        const auto i = static_cast<size_t>(&bc - bodyConstraints.data());
         assert(i < bodyConstraints.size());
         BodyAtty::SetPosition0(*island.m_bodies[i], bc.GetPosition());
     });
@@ -1834,15 +1829,15 @@ World::IslandSolverResults World::SolveToiViaGS(const StepConf& conf, Island& is
             results.velocityIterations = i + 1;
             break;
         }
-        results.maxIncImpulse = std::max(results.maxIncImpulse, newIncImpulse);
+        results.maxIncImpulse = max(results.maxIncImpulse, newIncImpulse);
     }
     
     // Don't store TOI contact forces for warm starting because they can be quite large.
     
     IntegratePositions(bodyConstraints, conf.GetTime(), GetMovementConf(conf));
     
-    std::for_each(cbegin(bodyConstraints), cend(bodyConstraints), [&](const BodyConstraint& bc) {
-        const auto i = static_cast<std::size_t>(&bc - bodyConstraints.data());
+    for_each(cbegin(bodyConstraints), cend(bodyConstraints), [&](const BodyConstraint& bc) {
+        const auto i = static_cast<size_t>(&bc - bodyConstraints.data());
         assert(i < bodyConstraints.size());
         UpdateBody(*island.m_bodies[i], bc.GetPosition(), bc.GetVelocity());
     });
@@ -1859,7 +1854,7 @@ void World::ResetContactsForSolveTOI(Body& body)
 {
     // Invalidate all contact TOIs on this displaced body.
     const auto contacts = body.GetContacts();
-    std::for_each(begin(contacts), end(contacts), [&](KeyedContactPtr ci) {
+    for_each(begin(contacts), end(contacts), [&](KeyedContactPtr ci) {
         const auto contact = GetContactPtr(ci);
         UnsetIslanded(contact);
         ContactAtty::UnsetToi(*contact);
@@ -2123,7 +2118,7 @@ void World::ShiftOrigin(const Length2D newOrigin)
         BodyAtty::SetSweep(*b, sweep);
     }
 
-    std::for_each(begin(m_joints), end(m_joints), [&](Joint *j) {
+    for_each(begin(m_joints), end(m_joints), [&](Joint *j) {
         j->ShiftOrigin(newOrigin);
     });
 
@@ -2168,7 +2163,7 @@ void World::Destroy(Contact* contact, Body* from)
 
     InternalDestroy(contact, from);
     
-    const auto it = std::find_if(begin(m_contacts), end(m_contacts), [&](const Contact& c) {
+    const auto it = find_if(begin(m_contacts), end(m_contacts), [&](const Contact& c) {
         return &c == contact;
     });
     if (it != end(m_contacts))
@@ -2184,7 +2179,7 @@ World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
     auto nextIter = end(contacts);
     for (auto iter = begin(contacts); iter != end(contacts); iter = nextIter)
     {
-        nextIter = std::next(iter);
+        nextIter = next(iter);
 
         const auto contact = GetContactPtr(*iter);
         const auto indexA = contact->GetChildIndexA();
@@ -2225,21 +2220,21 @@ World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
 
 World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepConf& conf)
 {
-    std::atomic<std::uint32_t> ignored;
-    std::atomic<std::uint32_t> updated;
-    std::atomic<std::uint32_t> skipped;
+    atomic<uint32_t> ignored;
+    atomic<uint32_t> updated;
+    atomic<uint32_t> skipped;
     
     const auto updateConf = Contact::GetUpdateConf(conf);
     
 #if defined(DO_THREADED)
-    std::vector<Contact*> contactsNeedingUpdate;
+    vector<Contact*> contactsNeedingUpdate;
     contactsNeedingUpdate.reserve(contacts.size());
-    std::vector<std::future<void>> futures;
+    vector<future<void>> futures;
     futures.reserve(contacts.size());
 #endif
 
     // Update awake contacts.
-    std::for_each(/*std::execution::par_unseq,*/ begin(contacts), end(contacts), [&](Contact& contact) {
+    for_each(/*execution::par_unseq,*/ begin(contacts), end(contacts), [&](Contact& contact) {
 #if 0
         ContactAtty::Update(contact, updateConf, m_contactListener);
         ++stats.updated;
@@ -2277,8 +2272,8 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
             // The following may call listener but is otherwise thread-safe.
 #if defined(DO_THREADED)
             contactsNeedingUpdate.push_back(&contact);
-            //futures.push_back(std::async(&ContactAtty::Update, *contact, conf, m_contactListener)));
-            //futures.push_back(std::async(std::launch::async, [=]{ ContactAtty::Update(*contact, conf, m_contactListener); }));
+            //futures.push_back(async(&ContactAtty::Update, *contact, conf, m_contactListener)));
+            //futures.push_back(async(launch::async, [=]{ ContactAtty::Update(*contact, conf, m_contactListener); }));
 #else
             ContactAtty::Update(contact, updateConf, m_contactListener);
 #endif
@@ -2296,7 +2291,7 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
     const auto jobsPerCore = numJobs / 4;
     for (auto i = decltype(numJobs){0}; numJobs > 0 && i < 3; ++i)
     {
-        futures.push_back(std::async(std::launch::async, [=]{
+        futures.push_back(async(launch::async, [=]{
             const auto offset = jobsPerCore * i;
             for (auto j = decltype(jobsPerCore){0}; j < jobsPerCore; ++j)
             {
@@ -2307,7 +2302,7 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
     }
     if (numJobs > 0)
     {
-        futures.push_back(std::async(std::launch::async, [=]{
+        futures.push_back(async(launch::async, [=]{
             const auto offset = jobsPerCore * 3;
             for (auto j = decltype(numJobs){0}; j < numJobs; ++j)
             {
@@ -2337,7 +2332,7 @@ void World::RegisterForProcessing(ProxyId pid) noexcept
 void World::UnregisterForProcessing(ProxyId pid) noexcept
 {
     const auto itEnd = end(m_proxies);
-    auto it = std::find(/*std::execution::par_unseq,*/ begin(m_proxies), itEnd, pid);
+    auto it = find(/*execution::par_unseq,*/ begin(m_proxies), itEnd, pid);
     if (it != itEnd)
     {
         *it = DynamicTree::InvalidIndex;
@@ -2348,7 +2343,7 @@ ContactCounter World::FindNewContacts()
 {
     m_proxyKeys.clear();
 
-    std::for_each(cbegin(m_proxies), cend(m_proxies), [&](ProxyId pid) {
+    for_each(cbegin(m_proxies), cend(m_proxies), [&](ProxyId pid) {
         const auto aabb = m_tree.GetAABB(pid);
         m_tree.ForEach(aabb, [&](DynamicTree::size_type nodeId) {
             // A proxy cannot form a pair with itself.
@@ -2360,11 +2355,11 @@ ContactCounter World::FindNewContacts()
     });
     m_proxies.clear();
 
-    std::sort(begin(m_proxyKeys), end(m_proxyKeys));
+    sort(begin(m_proxyKeys), end(m_proxyKeys));
 
     auto count = ContactCounter{0};
     auto lastKey = ContactKey{};
-    std::for_each(cbegin(m_proxyKeys), cend(m_proxyKeys), [&](ContactKey key)
+    for_each(cbegin(m_proxyKeys), cend(m_proxyKeys), [&](ContactKey key)
     {
         if (key != lastKey)
         {
@@ -2408,7 +2403,7 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
     assert(pidA != pidB);
     
     // The following assert fails on Windows
-    // assert(sizeof(pidA) + sizeof(pidB) == sizeof(std::size_t));
+    // assert(sizeof(pidA) + sizeof(pidB) == sizeof(size_t));
 #endif
    
 #ifndef NO_RACING
@@ -2430,27 +2425,27 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
     //
     // With compiler optimization enabled and 400 small bodies and RealNum=double...
     // For world:
-    //   World::std::set<Contact*> shows up as .524 seconds max step
-    //   World::std::list<Contact> shows up as .482 seconds max step.
+    //   World::set<Contact*> shows up as .524 seconds max step
+    //   World::list<Contact> shows up as .482 seconds max step.
     // For body:
     //    using contact map w/ proxy ID keys shows up as .561
     // W/ unordered_map: .529 seconds max step (step 15).
-    // W/ World::std::list<Contact> and Body::std::list<ContactKey,Contact*>   .444s@step15, 1.063s-sumstep20
-    // W/ World::std::list<Contact> and Body::std::list<ContactKey,Contact*>   .393s@step15, 1.063s-sumstep20
-    // W/ World::std::list<Contact> and Body::std::list<ContactKey,Contact*>   .412s@step15, 1.012s-sumstep20
-    // W/ World::std::list<Contact> and Body::std::vector<ContactKey,Contact*> .219s@step15, 0.659s-sumstep20
+    // W/ World::list<Contact> and Body::list<ContactKey,Contact*>   .444s@step15, 1.063s-sumstep20
+    // W/ World::list<Contact> and Body::list<ContactKey,Contact*>   .393s@step15, 1.063s-sumstep20
+    // W/ World::list<Contact> and Body::list<ContactKey,Contact*>   .412s@step15, 1.012s-sumstep20
+    // W/ World::list<Contact> and Body::vector<ContactKey,Contact*> .219s@step15, 0.659s-sumstep20
 
     // Does a contact already exist?
     // Identify body with least contacts and search it.
     // NOTE: Time trial testing found the following rough ordering of data structures, to be
-    // fastest to slowest: std::vector, std::list, std::unorderered_set, std::unordered_map,
-    //     std::set, std::map.
+    // fastest to slowest: vector, list, unorderered_set, unordered_map,
+    //     set, map.
     const auto key = ContactKey{pidA, pidB};
     const auto searchBody = (bodyA->GetContacts().size() < bodyB->GetContacts().size())?
         bodyA: bodyB;
     
     const auto contacts = searchBody->GetContacts();
-    const auto it = std::find_if(cbegin(contacts), cend(contacts), [&](KeyedContactPtr ci) {
+    const auto it = find_if(cbegin(contacts), cend(contacts), [&](KeyedContactPtr ci) {
         return ci.first == key;
     });
     if (it != cend(contacts))
@@ -2529,7 +2524,7 @@ bool World::RegisterForProxies(Body* body)
 
 void World::CreateAndDestroyProxies(const StepConf& conf)
 {
-    std::for_each(begin(m_fixturesForProxies), end(m_fixturesForProxies), [&](Fixture *f) {
+    for_each(begin(m_fixturesForProxies), end(m_fixturesForProxies), [&](Fixture *f) {
         CreateAndDestroyProxies(*f, conf);
     });
     m_fixturesForProxies.clear();
@@ -2572,7 +2567,7 @@ void World::CreateAndDestroyProxies(Fixture& fixture, const StepConf& conf)
 PreStepStats::counter_type World::SynchronizeProxies(const StepConf& conf)
 {
     auto proxiesMoved = PreStepStats::counter_type{0};
-    std::for_each(begin(m_bodiesForProxies), end(m_bodiesForProxies), [&](Body *b) {
+    for_each(begin(m_bodiesForProxies), end(m_bodiesForProxies), [&](Body *b) {
         const auto xfm = b->GetTransformation();
         proxiesMoved += Synchronize(*b, xfm, xfm, conf.displaceMultiplier, conf.aabbExtension);
     });
@@ -2620,13 +2615,13 @@ void World::SetType(Body& body, BodyType type)
         body.SetAcceleration(body.IsAccelerable()? GetGravity(): Vec2_zero * MeterPerSquareSecond,
                              AngularAcceleration{0});
         const auto fixtures = body.GetFixtures();
-        std::for_each(begin(fixtures), end(fixtures), [&](Fixture& f) {
+        for_each(begin(fixtures), end(fixtures), [&](Fixture& f) {
             InternalTouchProxies(f);
         });
     }
 }
 
-bool World::IsValid(std::shared_ptr<const Shape> shape) const noexcept
+bool World::IsValid(shared_ptr<const Shape> shape) const noexcept
 {
     if (!shape)
     {
@@ -2644,7 +2639,7 @@ bool World::IsValid(std::shared_ptr<const Shape> shape) const noexcept
     return true;
 }
 
-Fixture* World::CreateFixture(Body& body, std::shared_ptr<const Shape> shape,
+Fixture* World::CreateFixture(Body& body, shared_ptr<const Shape> shape,
                               const FixtureDef& def, bool resetMassData)
 {
     if (body.GetWorld() != this)
@@ -2782,7 +2777,7 @@ void World::DestroyProxies(Fixture& fixture)
     Free(proxies.begin());
 
     const auto emptyArray = static_cast<FixtureProxy*>(nullptr);
-    FixtureAtty::SetProxies(fixture, Span<FixtureProxy>(emptyArray, std::size_t{0}));
+    FixtureAtty::SetProxies(fixture, Span<FixtureProxy>(emptyArray, size_t{0}));
 }
 
 bool World::TouchProxies(Fixture& fixture) noexcept
@@ -2846,7 +2841,7 @@ ContactCounter World::Synchronize(Body& body,
                                    const RealNum multiplier, const Length aabbExtension)
 {
     auto updatedCount = ContactCounter{0};
-    std::for_each(begin(body.GetFixtures()), end(body.GetFixtures()), [&](Fixture& f) {
+    for_each(begin(body.GetFixtures()), end(body.GetFixtures()), [&](Fixture& f) {
         updatedCount += Synchronize(f, xfm1, xfm2, multiplier, aabbExtension);
     });
     return updatedCount;
@@ -2873,23 +2868,23 @@ StepStats Step(World& world, Time dt, World::ts_iters_type velocityIterations,
 ContactCounter GetTouchingCount(const World& world) noexcept
 {
     const auto contacts = world.GetContacts();
-    return static_cast<ContactCounter>(std::count_if(begin(contacts), end(contacts),
+    return static_cast<ContactCounter>(count_if(begin(contacts), end(contacts),
         [&](const Contact &c) { return c.IsTouching(); }));
 }
 
-std::size_t GetFixtureCount(const World& world) noexcept
+size_t GetFixtureCount(const World& world) noexcept
 {
-    auto sum = std::size_t{0};
-    std::for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](const Body &b) {
+    auto sum = size_t{0};
+    for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](const Body &b) {
         sum += GetFixtureCount(b);
     });
     return sum;
 }
 
-std::size_t GetShapeCount(const World& world) noexcept
+size_t GetShapeCount(const World& world) noexcept
 {
-    auto shapes = std::set<const Shape*>();
-    std::for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](const Body &b) {
+    auto shapes = set<const Shape*>();
+    for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](const Body &b) {
         for (auto&& fixture: b.GetFixtures())
         {
             shapes.insert(fixture.GetShape().get());
@@ -2898,17 +2893,17 @@ std::size_t GetShapeCount(const World& world) noexcept
     return shapes.size();
 }
 
-std::size_t GetAwakeCount(const World& world) noexcept
+size_t GetAwakeCount(const World& world) noexcept
 {
-    return static_cast<std::size_t>(std::count_if(begin(world.GetBodies()), end(world.GetBodies()),
+    return static_cast<size_t>(count_if(begin(world.GetBodies()), end(world.GetBodies()),
                                              [&](const Body &b) { return b.IsAwake(); }));
 }
     
-std::size_t Awaken(World& world) noexcept
+size_t Awaken(World& world) noexcept
 {
-    // Can't use std::count_if since body gets modified.
-    auto awoken = std::size_t{0};
-    std::for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](Body &b) {
+    // Can't use count_if since body gets modified.
+    auto awoken = size_t{0};
+    for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](Body &b) {
         if (box2d::Awaken(b))
         {
             ++awoken;
@@ -2920,7 +2915,7 @@ std::size_t Awaken(World& world) noexcept
 void ClearForces(World& world) noexcept
 {
     const auto g = world.GetGravity();
-    std::for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](Body &b) {
+    for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](Body &b) {
         b.SetAcceleration(g, AngularAcceleration{0});
     });
 }
