@@ -93,10 +93,10 @@ BlockAllocator::~BlockAllocator() noexcept
 {
     for (auto i = decltype(m_chunkCount){0}; i < m_chunkCount; ++i)
     {
-        box2d::Free(m_chunks[i].blocks);
+        ::Free(m_chunks[i].blocks);
     }
 
-    box2d::Free(m_chunks);
+    ::Free(m_chunks);
 }
 
 void* BlockAllocator::Allocate(size_type n)
@@ -168,7 +168,7 @@ void BlockAllocator::Free(void* p, size_type n)
 
     if (n > MaxBlockSize)
     {
-        box2d::Free(p);
+        ::Free(p);
         return;
     }
 
@@ -209,7 +209,7 @@ void BlockAllocator::Clear()
 {
     for (auto i = decltype(m_chunkCount){0}; i < m_chunkCount; ++i)
     {
-        box2d::Free(m_chunks[i].blocks);
+        ::Free(m_chunks[i].blocks);
     }
 
     m_chunkCount = 0;

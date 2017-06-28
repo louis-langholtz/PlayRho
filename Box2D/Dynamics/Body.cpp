@@ -84,10 +84,10 @@ Body::Body(const BodyDef& bd, World* world):
     m_angularDamping{bd.angularDamping},
     m_userData{bd.userData}
 {
-    assert(::box2d::IsValid(bd.position));
-    assert(::box2d::IsValid(bd.linearVelocity.x) && ::box2d::IsValid(bd.linearVelocity.y));
-    assert(::box2d::IsValid(bd.angle));
-    assert(::box2d::IsValid(bd.angularVelocity));
+    assert(::IsValid(bd.position));
+    assert(::IsValid(bd.linearVelocity.x) && ::IsValid(bd.linearVelocity.y));
+    assert(::IsValid(bd.angle));
+    assert(::IsValid(bd.angularVelocity));
 
     SetVelocity(Velocity{bd.linearVelocity, bd.angularVelocity});
     SetAcceleration(bd.linearAcceleration, bd.angularAcceleration);
@@ -237,8 +237,8 @@ void Body::SetVelocity(const Velocity& velocity) noexcept
 
 void Body::SetAcceleration(const LinearAcceleration2D linear, const AngularAcceleration angular) noexcept
 {
-    assert(::box2d::IsValid(linear.x) && ::box2d::IsValid(linear.y));
-    assert(::box2d::IsValid(angular));
+    assert(::IsValid(linear.x) && ::IsValid(linear.y));
+    assert(::IsValid(angular));
 
     if ((linear != Vec2_zero * MeterPerSquareSecond) || (angular != AngularAcceleration{0}))
     {
@@ -266,8 +266,8 @@ void Body::SetTransformation(const Transformation value) noexcept
 
 void Body::SetTransform(const Length2D position, Angle angle)
 {
-    assert(::box2d::IsValid(position));
-    assert(::box2d::IsValid(angle));
+    assert(::IsValid(position));
+    assert(::IsValid(angle));
 
     if (GetWorld()->IsLocked())
     {
