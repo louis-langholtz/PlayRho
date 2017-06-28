@@ -963,13 +963,13 @@ std::size_t GetFixtureCount(const World& world) noexcept;
 std::size_t GetShapeCount(const World& world) noexcept;
 
 /// Gets the count of awake bodies in the given world.
-std::size_t GetAwakeCount(const World& world) noexcept;
+BodyCounter GetAwakeCount(const World& world) noexcept;
 
 /// Awakens all of the bodies in the given world.
 /// @details Calls all of the world's bodies' <code>SetAwake</code> method.
 /// @return Sum total of calls to bodies' <code>SetAwake</code> method that returned true.
 /// @sa Body::SetAwake.
-std::size_t Awaken(World& world) noexcept;
+BodyCounter Awaken(World& world) noexcept;
 
 /// Clears forces.
 /// @details

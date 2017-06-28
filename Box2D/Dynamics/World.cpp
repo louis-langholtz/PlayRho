@@ -489,9 +489,9 @@ namespace {
         return minUnderActiveTime;
     }
     
-    inline size_t Sleepem(Island::Bodies& bodies)
+    inline BodyCounter Sleepem(Island::Bodies& bodies)
     {
-        auto unawoken = size_t{0};
+        auto unawoken = BodyCounter{0};
         for_each(cbegin(bodies), cend(bodies), [&](Body *b)
         {
             if (Unawaken(*b))
@@ -2893,16 +2893,16 @@ size_t GetShapeCount(const World& world) noexcept
     return shapes.size();
 }
 
-size_t GetAwakeCount(const World& world) noexcept
+BodyCounter GetAwakeCount(const World& world) noexcept
 {
-    return static_cast<size_t>(count_if(begin(world.GetBodies()), end(world.GetBodies()),
+    return static_cast<BodyCounter>(count_if(cbegin(world.GetBodies()), cend(world.GetBodies()),
                                              [&](const Body &b) { return b.IsAwake(); }));
 }
     
-size_t Awaken(World& world) noexcept
+BodyCounter Awaken(World& world) noexcept
 {
     // Can't use count_if since body gets modified.
-    auto awoken = size_t{0};
+    auto awoken = BodyCounter{0};
     for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](Body &b) {
         if (box2d::Awaken(b))
         {
