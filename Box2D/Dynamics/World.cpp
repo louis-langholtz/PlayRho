@@ -299,6 +299,31 @@ namespace {
         });
     }
     
+    BodyConstraints GetBodyConstraints(const Island::Bodies& bodies, Time h)
+    {
+        auto bodyConstraints = BodyConstraints{};
+        bodyConstraints.reserve(bodies.size());
+        std::transform(cbegin(bodies), cend(bodies),
+                       std::back_insert_iterator<BodyConstraints>(bodyConstraints),
+                       [&](const BodyPtr &body) {
+            return GetBodyConstraint(*body, h); // velocity += acceleration * h
+        });
+        return bodyConstraints;
+    }
+
+    BodyConstraintsMap GetBodyConstraintsMap(const Island::Bodies& bodies,
+                                             BodyConstraints &bodyConstraints)
+    {
+        auto bodyConstraintsMap = BodyConstraintsMap{};
+        bodyConstraintsMap.reserve(bodies.size());
+        std::for_each(cbegin(bodies), cend(bodies), [&](const BodyPtr& body) {
+            const auto i = static_cast<std::size_t>(&body - bodies.data());
+            assert(i < bodies.size());
+            bodyConstraintsMap[body] = &bodyConstraints[i];
+        });
+        return bodyConstraintsMap;
+    }
+
     PositionConstraints GetPositionConstraints(const Island::Contacts& contacts, BodyConstraintsMap& bodies)
     {
         auto constraints = PositionConstraints{};
@@ -1253,22 +1278,8 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
     });
 
     // Copy bodies' pos1 and velocity data into local arrays.
-    auto bodyConstraints = BodyConstraints{};
-    bodyConstraints.reserve(island.m_bodies.size());
-    std::transform(cbegin(island.m_bodies), cend(island.m_bodies),
-                   std::back_insert_iterator<BodyConstraints>(bodyConstraints),
-                   [&](const Body* body) {
-        return GetBodyConstraint(*body, h); // velocity += acceleration * h
-    });
-
-    auto bodyConstraintsMap = BodyConstraintsMap{};
-    bodyConstraintsMap.reserve(island.m_bodies.size());
-    std::for_each(cbegin(island.m_bodies), cend(island.m_bodies), [&](const BodyPtr& body) {
-        const auto i = static_cast<std::size_t>(&body - island.m_bodies.data());
-        assert(i < island.m_bodies.size());
-        bodyConstraintsMap[body] = &bodyConstraints[i];
-    });
-    
+    auto bodyConstraints = GetBodyConstraints(island.m_bodies, h);
+    auto bodyConstraintsMap = GetBodyConstraintsMap(island.m_bodies, bodyConstraints);
     auto posConstraints = GetPositionConstraints(island.m_contacts, bodyConstraintsMap);
     auto velConstraints = GetVelocityConstraints(island.m_contacts, bodyConstraintsMap,
                                                       GetRegVelocityConstraintConf(conf));
@@ -1723,28 +1734,14 @@ World::IslandSolverResults World::SolveToiViaGS(const StepConf& conf, Island& is
 {
     auto results = IslandSolverResults{};
     
-    auto bodyConstraints = BodyConstraints{};
-    bodyConstraints.reserve(island.m_bodies.size());
-    std::transform(cbegin(island.m_bodies), cend(island.m_bodies),
-                   std::back_insert_iterator<BodyConstraints>(bodyConstraints),
-                   [&](const Body* body)
-    {
-       /*
-        * Presumably the regular phase resolution has already taken care of updating the
-        * body's velocity w.r.t. acceleration and damping such that this call here to get
-        * the body constraint doesn't need to pass an elapsed time (and doesn't need to
-        * update the velocity from what it already is).
-        */
-       return GetBodyConstraint(*body);
-    });
-    
-    auto bodyConstraintsMap = BodyConstraintsMap{};
-    bodyConstraintsMap.reserve(island.m_bodies.size());
-    std::for_each(cbegin(island.m_bodies), cend(island.m_bodies), [&](const BodyPtr& body) {
-        const auto i = static_cast<std::size_t>(&body - island.m_bodies.data());
-        assert(i < island.m_bodies.size());
-        bodyConstraintsMap[body] = &bodyConstraints[i];
-    });
+    /*
+     * Presumably the regular phase resolution has already taken care of updating the
+     * body's velocity w.r.t. acceleration and damping such that this call here to get
+     * the body constraint doesn't need to pass an elapsed time (and doesn't need to
+     * update the velocity from what it already is).
+     */
+    auto bodyConstraints = GetBodyConstraints(island.m_bodies, Time(0));
+    auto bodyConstraintsMap = GetBodyConstraintsMap(island.m_bodies, bodyConstraints);
 
     // Initialize the body state.
 #if 0
