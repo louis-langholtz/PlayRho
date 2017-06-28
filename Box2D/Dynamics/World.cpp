@@ -239,11 +239,20 @@ namespace {
     {
         assert(var.GetPointCount() >= vc.GetPointCount());
         
+        auto assignProc = [&](VelocityConstraint::size_type i) {
+            var.SetPointImpulses(i, GetNormalImpulseAtPoint(vc, i), GetTangentImpulseAtPoint(vc, i));
+        };
+#if 0
+        // Branch free assignment causes problems in TilesComeToRest test.
+        assignProc(1);
+        assignProc(0);
+#else
         const auto count = vc.GetPointCount();
         for (auto i = decltype(count){0}; i < count; ++i)
         {
-            var.SetPointImpulses(i, GetNormalImpulseAtPoint(vc, i), GetTangentImpulseAtPoint(vc, i));
+            assignProc(i);
         }
+#endif
     }
     
     struct VelocityPair
@@ -259,27 +268,25 @@ namespace {
             Velocity{Vec2_zero * MeterPerSecond, AngularVelocity{0}}
         };
         
-        const auto normal = GetNormal(vc);
-        const auto tangent = GetTangent(vc);
-        if (IsValid(normal) && IsValid(tangent))
-        {
-            // inverse moment of inertia : L^-2 M^-1 QP^2
-            const auto invRotInertiaA = vc.GetBodyA()->GetInvRotInertia();
-            const auto invRotInertiaB = vc.GetBodyB()->GetInvRotInertia();
+        const auto normal = vc.GetNormal();
+        const auto tangent = vc.GetTangent();
+        const auto pointCount = vc.GetPointCount();
 
-            const auto pointCount = vc.GetPointCount();
-            for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
-            {
-                // P is M L T^-2
-                // GetPointRelPosA() is Length2D
-                // Cross(Length2D, P) is: M L^2 T^-2
-                // L^-2 M^-1 QP^2 M L^2 T^-2 is: QP^2 T^-2
-                const auto P = (GetNormalImpulseAtPoint(vc, j) * normal + GetTangentImpulseAtPoint(vc, j) * tangent);
-                const auto LA = Cross(GetPointRelPosA(vc, j), P) / Radian;
-                const auto LB = Cross(GetPointRelPosB(vc, j), P) / Radian;
-                vp.a -= Velocity{vc.GetBodyA()->GetInvMass() * P, invRotInertiaA * LA};
-                vp.b += Velocity{vc.GetBodyB()->GetInvMass() * P, invRotInertiaB * LB};
-            }
+        // inverse moment of inertia : L^-2 M^-1 QP^2
+        const auto invRotInertiaA = vc.GetBodyA()->GetInvRotInertia();
+        const auto invRotInertiaB = vc.GetBodyB()->GetInvRotInertia();
+
+        for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
+        {
+            // P is M L T^-2
+            // GetPointRelPosA() is Length2D
+            // Cross(Length2D, P) is: M L^2 T^-2
+            // L^-2 M^-1 QP^2 M L^2 T^-2 is: QP^2 T^-2
+            const auto P = (GetNormalImpulseAtPoint(vc, j) * normal + GetTangentImpulseAtPoint(vc, j) * tangent);
+            const auto LA = Cross(GetPointRelPosA(vc, j), P) / Radian;
+            const auto LB = Cross(GetPointRelPosB(vc, j), P) / Radian;
+            vp.a -= Velocity{vc.GetBodyA()->GetInvMass() * P, invRotInertiaA * LA};
+            vp.b += Velocity{vc.GetBodyB()->GetInvMass() * P, invRotInertiaB * LB};
         }
         return vp;
     }
@@ -2884,11 +2891,11 @@ size_t GetFixtureCount(const World& world) noexcept
 size_t GetShapeCount(const World& world) noexcept
 {
     auto shapes = set<const Shape*>();
-    for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](const Body &b) {
-        for (auto&& fixture: b.GetFixtures())
-        {
+    for_each(cbegin(world.GetBodies()), cend(world.GetBodies()), [&](const Body &b) {
+        const auto fixtures = b.GetFixtures();
+        for_each(cbegin(fixtures), cend(fixtures), [&](const Fixture& fixture) {
             shapes.insert(fixture.GetShape().get());
-        }
+        });
     });
     return shapes.size();
 }
