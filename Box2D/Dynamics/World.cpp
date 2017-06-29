@@ -406,7 +406,7 @@ namespace {
     /// @pre <code>UpdateVelocityConstraints</code> has been called on the velocity constraints.
     /// @return Maximum momentum used for solving both the tangential and normal portions of
     ///   the velocity constraints.
-    inline Momentum SolveVelocityConstraintsViaGS(VelocityConstraints& velConstraints)
+    Momentum SolveVelocityConstraintsViaGS(VelocityConstraints& velConstraints)
     {
         auto maxIncImpulse = Momentum{0};
         for_each(begin(velConstraints), end(velConstraints), [&](VelocityConstraint& vc)
@@ -619,7 +619,7 @@ World::~World()
 
 void World::Clear() noexcept
 {
-    for_each(begin(m_joints), end(m_joints), [&](const Joint *j) {
+    for_each(cbegin(m_joints), cend(m_joints), [&](const Joint *j) {
         JointAtty::Destroy(j);
     });
     for_each(begin(m_bodies), end(m_bodies), [&](Body& b) {
@@ -919,7 +919,7 @@ Body* World::CreateBody(const BodyDef& def)
 
 bool World::Remove(const Body& b)
 {
-    const auto it = find_if(m_bodies.begin(), m_bodies.end(),
+    const auto it = find_if(cbegin(m_bodies), cend(m_bodies),
                                  [&](const Body& body) { return &body == &b; });
     if (it != m_bodies.end())
     {
@@ -1142,6 +1142,7 @@ void World::AddToIsland(Island& island, Body& seed,
             // Use data of ji before dereferencing its pointers.
             const auto other = ji.first;
             const auto joint = ji.second;
+            assert(other->IsEnabled() || !other->IsAwake());
             if (!IsIslanded(joint) && other->IsEnabled())
             {
                 island.m_joints.push_back(joint);
@@ -1164,7 +1165,7 @@ void World::AddToIsland(Island& island, Body& seed,
 World::Bodies::size_type World::RemoveUnspeedablesFromIslanded(const vector<Body*>& bodies)
 {
     auto numRemoved = Bodies::size_type{0};
-    for_each(begin(bodies), end(bodies), [&](const Body* body) {
+    for_each(cbegin(bodies), cend(bodies), [&](const Body* body) {
         if (!body->IsSpeedable())
         {
             // Allow static bodies to participate in other islands.
@@ -1205,6 +1206,7 @@ RegStepStats World::SolveReg(const StepConf& conf)
     {
         const auto body = GetBodyPtr(b);
         assert(!body->IsAwake() || body->IsSpeedable());
+        assert(!body->IsAwake() || body->IsEnabled());
         if (!IsIslanded(body) && body->IsAwake() && body->IsEnabled())
         {
             ++stats.islandsFound;
@@ -1861,7 +1863,7 @@ void World::ResetContactsForSolveTOI(Body& body)
 {
     // Invalidate all contact TOIs on this displaced body.
     const auto contacts = body.GetContacts();
-    for_each(begin(contacts), end(contacts), [&](KeyedContactPtr ci) {
+    for_each(cbegin(contacts), cend(contacts), [&](KeyedContactPtr ci) {
         const auto contact = GetContactPtr(ci);
         UnsetIslanded(contact);
         ContactAtty::UnsetToi(*contact);
@@ -2170,7 +2172,7 @@ void World::Destroy(Contact* contact, Body* from)
 
     InternalDestroy(contact, from);
     
-    const auto it = find_if(begin(m_contacts), end(m_contacts), [&](const Contact& c) {
+    const auto it = find_if(cbegin(m_contacts), cend(m_contacts), [&](const Contact& c) {
         return &c == contact;
     });
     if (it != end(m_contacts))
@@ -2875,14 +2877,14 @@ StepStats Step(World& world, Time dt, World::ts_iters_type velocityIterations,
 ContactCounter GetTouchingCount(const World& world) noexcept
 {
     const auto contacts = world.GetContacts();
-    return static_cast<ContactCounter>(count_if(begin(contacts), end(contacts),
+    return static_cast<ContactCounter>(count_if(cbegin(contacts), cend(contacts),
         [&](const Contact &c) { return c.IsTouching(); }));
 }
 
 size_t GetFixtureCount(const World& world) noexcept
 {
     auto sum = size_t{0};
-    for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](const Body &b) {
+    for_each(cbegin(world.GetBodies()), cend(world.GetBodies()), [&](const Body &b) {
         sum += GetFixtureCount(b);
     });
     return sum;

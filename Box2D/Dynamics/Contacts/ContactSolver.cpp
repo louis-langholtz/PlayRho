@@ -323,10 +323,10 @@ Momentum SeqSolveNormalConstraint(VelocityConstraint& vc)
 {
     auto maxIncImpulse = Momentum{0};
     
-    const auto bodyA = vc.GetBodyA();
-    const auto bodyB = vc.GetBodyB();
     const auto direction = vc.GetNormal();
     const auto count = vc.GetPointCount();
+    const auto bodyA = vc.GetBodyA();
+    const auto bodyB = vc.GetBodyB();
     
     const auto invRotInertiaA = bodyA->GetInvRotInertia();
     const auto invMassA = bodyA->GetInvMass();
@@ -346,14 +346,12 @@ Momentum SeqSolveNormalConstraint(VelocityConstraint& vc)
         const auto lambda = Momentum{vcp.normalMass * (vcp.velocityBias - directionalVel)};
         const auto oldImpulse = vcp.normalImpulse;
         const auto newImpulse = std::max(oldImpulse + lambda, Momentum{0});
-
-        // Note: using almost_equal here results in increased iteration counts and is slower.
 #if 0
+        // Note: using almost_equal here results in increased iteration counts and is slower.
         const auto incImpulse = almost_equal(newImpulse, oldImpulse)? Momentum{0}: newImpulse - oldImpulse;
 #else
         const auto incImpulse = newImpulse - oldImpulse;
 #endif
-        
         const auto P = incImpulse * direction;
         const auto LA = AngularMomentum{Cross(vcp.relA, P) / Radian};
         const auto LB = AngularMomentum{Cross(vcp.relB, P) / Radian};
@@ -382,12 +380,12 @@ Momentum SolveTangentConstraint(VelocityConstraint& vc)
 {
     auto maxIncImpulse = Momentum{0};
     
-    const auto bodyA = vc.GetBodyA();
-    const auto bodyB = vc.GetBodyB();
     const auto direction = vc.GetTangent();
     const auto friction = vc.GetFriction();
     const auto tangentSpeed = vc.GetTangentSpeed();
     const auto count = vc.GetPointCount();
+    const auto bodyA = vc.GetBodyA();
+    const auto bodyB = vc.GetBodyB();
     
     const auto invRotInertiaA = bodyA->GetInvRotInertia();
     const auto invMassA = bodyA->GetInvMass();
@@ -408,14 +406,12 @@ Momentum SolveTangentConstraint(VelocityConstraint& vc)
         const auto maxImpulse = friction * vcp.normalImpulse;
         const auto oldImpulse = vcp.tangentImpulse;
         const auto newImpulse = Clamp(oldImpulse + lambda, -maxImpulse, maxImpulse);
-        
-        // Note: using almost_equal here results in increased iteration counts and is slower.
 #if 0
+        // Note: using almost_equal here results in increased iteration counts and is slower.
         const auto incImpulse = almost_equal(newImpulse, oldImpulse)? Momentum{0}: newImpulse - oldImpulse;
 #else
         const auto incImpulse = newImpulse - oldImpulse;
 #endif
-
         const auto P = incImpulse * direction;
         const auto LA = AngularMomentum{Cross(vcp.relA, P) / Radian};
         const auto LB = AngularMomentum{Cross(vcp.relB, P) / Radian};
@@ -442,13 +438,12 @@ Momentum SolveTangentConstraint(VelocityConstraint& vc)
 
 Momentum SolveNormalConstraint(VelocityConstraint& vc)
 {
+#if 1
     // Note: Block solving reduces World.TilesComesToRest iteration counts and is faster.
     //   This is because the block solver provides more stable solutions per iteration.
     //   The difference is especially pronounced in the Vertical Stack Testbed demo.
-#if 1
     const auto count = vc.GetPointCount();
     assert((count == 1) || (count == 2));
-    
     if ((count == 1) || (!IsValid(vc.GetK())))
     {
         return SeqSolveNormalConstraint(vc);
@@ -457,19 +452,6 @@ Momentum SolveNormalConstraint(VelocityConstraint& vc)
 #else
     return SeqSolveNormalConstraint(vc);
 #endif
-}
-
-Momentum SolveVelocityConstraint(VelocityConstraint& vc)
-{
-    auto maxIncImpulse = Momentum{0};
-
-    // Applies frictional changes to velocity.
-    maxIncImpulse = std::max(maxIncImpulse, SolveTangentConstraint(vc));
-
-    // Applies restitutional changes to velocity.
-    maxIncImpulse = std::max(maxIncImpulse, SolveNormalConstraint(vc));
-
-    return maxIncImpulse;
 }
 
 PositionSolution SolvePositionConstraint(const PositionConstraint& pc,

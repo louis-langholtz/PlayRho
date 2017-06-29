@@ -165,18 +165,32 @@ namespace box2d {
 
         /// Solves the velocity constraint.
         ///
-        /// @details This updates the tangent and normal impulses of the velocity constraint points of
-        ///   the given velocity constraint and updates the given velocities.
+        /// @details This updates the tangent and normal impulses of the velocity constraint
+        ///   points of the given velocity constraint and updates the given velocities.
         ///
         /// @warning Behavior is undefined unless the velocity constraint point count is 1 or 2.
         /// @note Linear velocity is only changed if the inverse mass of either body is non-zero.
-        /// @note Angular velocity is only changed if the inverse rotational inertia of either body is non-zero.
+        /// @note Angular velocity is only changed if the inverse rotational inertia of either
+        ///   body is non-zero.
+        /// @note Inlining this function may yield a 10% speed boost in the World.TilesComesToRest
+        ///   unit test.
         ///
         /// @pre The velocity constraint must have a valid normal, a valid tangent,
         ///   valid point relative positions, and valid velocity biases.
         ///
-        Momentum SolveVelocityConstraint(VelocityConstraint& vc);
-        
+        inline Momentum SolveVelocityConstraint(VelocityConstraint& vc)
+        {
+            auto maxIncImpulse = Momentum{0};
+            
+            // Applies frictional changes to velocity.
+            maxIncImpulse = std::max(maxIncImpulse, SolveTangentConstraint(vc));
+            
+            // Applies restitutional changes to velocity.
+            maxIncImpulse = std::max(maxIncImpulse, SolveNormalConstraint(vc));
+            
+            return maxIncImpulse;
+        }
+
         /// Solves the given position constraint.
         /// @details
         /// This pushes apart the two given positions for every point in the contact position constraint
