@@ -80,7 +80,7 @@ template <typename T>
 inline auto Average(Span<const T> span)
 {
     // For C++17, switch from using std::accumulate to using std::reduce.
-    const auto sum = std::accumulate(std::begin(span), std::end(span), static_cast<T>(0));
+    const auto sum = std::accumulate(std::cbegin(span), std::cend(span), static_cast<T>(0));
     const auto count = static_cast<RealNum>(span.size());
     return (count > decltype(count){0})? sum / count: sum / RealNum(1);
 }
