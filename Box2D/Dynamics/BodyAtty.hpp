@@ -207,7 +207,7 @@ namespace box2d
         {
             auto joints = std::move(b.m_joints);
             assert(b.m_joints.empty());
-            std::for_each(begin(joints), end(joints), [&](Body::KeyedJointPtr j) {
+            std::for_each(cbegin(joints), cend(joints), [&](Body::KeyedJointPtr j) {
                 callback(*(j.second));
             });
         }

@@ -258,7 +258,7 @@ void Body::SetTransformation(const Transformation value) noexcept
     if (m_xf != value)
     {
         m_xf = value;
-        std::for_each(begin(m_contacts), end(m_contacts), [&](KeyedContactPtr ci) {
+        std::for_each(cbegin(m_contacts), cend(m_contacts), [&](KeyedContactPtr ci) {
             ci.second->FlagForUpdating();
         });
     }
@@ -350,7 +350,7 @@ bool Body::Insert(Contact* contact)
 {
 #ifndef NDEBUG
     // Prevent the same contact from being added more than once...
-    const auto it = std::find_if(begin(m_contacts), end(m_contacts), [&](KeyedContactPtr ci) {
+    const auto it = std::find_if(cbegin(m_contacts), cend(m_contacts), [&](KeyedContactPtr ci) {
         return ci.second == contact;
     });
     assert(it == end(m_contacts));
@@ -412,7 +412,7 @@ bool box2d::ShouldCollide(const Body& lhs, const Body& rhs) noexcept
 
     // Does a joint prevent collision?
     const auto joints = lhs.GetJoints();
-    const auto it = std::find_if(begin(joints), end(joints), [&](Body::KeyedJointPtr ji) {
+    const auto it = std::find_if(cbegin(joints), cend(joints), [&](Body::KeyedJointPtr ji) {
         return (ji.first == &rhs) && !(ji.second->GetCollideConnected());
     });
     return it == end(joints);
@@ -425,7 +425,7 @@ BodyCounter box2d::GetWorldIndex(const Body* body)
         const auto world = body->GetWorld();
         const auto bodies = world->GetBodies();
         auto i = BodyCounter{0};
-        const auto it = std::find_if(begin(bodies), end(bodies), [&](const Body &b) {
+        const auto it = std::find_if(cbegin(bodies), cend(bodies), [&](const Body &b) {
             return &b == body || (++i, false);
         });
         if (it != end(bodies))
