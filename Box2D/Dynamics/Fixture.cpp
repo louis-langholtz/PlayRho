@@ -58,7 +58,7 @@ void Fixture::Refilter()
 
     // Flag associated contacts for filtering.
     const auto contacts = body->GetContacts();
-    std::for_each(begin(contacts), end(contacts), [&](KeyedContactPtr ci) {
+    std::for_each(cbegin(contacts), cend(contacts), [&](KeyedContactPtr ci) {
         const auto contact = GetContactPtr(ci);
         const auto fixtureA = contact->GetFixtureA();
         const auto fixtureB = contact->GetFixtureB();
@@ -83,7 +83,7 @@ void Fixture::SetSensor(bool sensor) noexcept
             body->SetAwake();
 
             const auto contacts = body->GetContacts();
-            std::for_each(begin(contacts), end(contacts), [&](KeyedContactPtr ci) {
+            std::for_each(cbegin(contacts), cend(contacts), [&](KeyedContactPtr ci) {
                 const auto contact = GetContactPtr(ci);
                 contact->FlagForUpdating();
             });
