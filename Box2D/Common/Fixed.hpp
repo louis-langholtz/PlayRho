@@ -20,6 +20,7 @@
 #define Fixed_hpp
 
 #include <Box2D/Common/Wider.hpp>
+#include <Box2D/Common/Templates.hpp>
 
 #include <cstdint>
 #include <limits>
@@ -643,6 +644,12 @@ namespace box2d
         return result == Fixed32::CmpResult::GreaterThan;
     }
 
+    template <>
+    constexpr Fixed32 GetInvalid() noexcept
+    {
+        return Fixed32::GetNaN();
+    }
+    
 #ifndef _WIN32
     // Fixed64 free functions.
 
@@ -713,6 +720,12 @@ namespace box2d
     }
 
     template<> struct Wider<Fixed32> { using type = Fixed64; };
+
+    template <>
+    constexpr Fixed64 GetInvalid() noexcept
+    {
+        return Fixed64::GetNaN();
+    }
 
 #endif /* !_WIN32 */
 
