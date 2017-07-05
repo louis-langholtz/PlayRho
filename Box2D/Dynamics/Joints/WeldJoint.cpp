@@ -166,7 +166,10 @@ void WeldJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
         // Scale impulses to support a variable time step.
         m_impulse *= step.dtRatio;
 
-        const auto P = Momentum2D{Vec2{m_impulse.x, m_impulse.y} * Kilogram * MeterPerSecond};
+        const auto P = Momentum2D{
+            m_impulse.x * Kilogram * MeterPerSecond,
+            m_impulse.y * Kilogram * MeterPerSecond
+        };
 
         // AngularMomentum is L^2 M T^-1 QP^-1.
         const auto L = AngularMomentum{m_impulse.z * SquareMeter * Kilogram / (Second * Radian)};
@@ -214,8 +217,8 @@ bool WeldJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
         velA.angular -= AngularVelocity{invRotInertiaA * impulse2 * SquareMeter * Kilogram / (Second * Radian)};
         velB.angular += AngularVelocity{invRotInertiaB * impulse2 * SquareMeter * Kilogram / (Second * Radian)};
 
-        const auto vb = velB.linear + LinearVelocity2D{(GetRevPerpendicular(m_rB) * velB.angular / Radian)};
-        const auto va = velA.linear + LinearVelocity2D{(GetRevPerpendicular(m_rA) * velA.angular / Radian)};
+        const auto vb = velB.linear + LinearVelocity2D{(GetRevPerpendicular(m_rB) * (velB.angular / Radian))};
+        const auto va = velA.linear + LinearVelocity2D{(GetRevPerpendicular(m_rA) * (velA.angular / Radian))};
 
         const auto Cdot1 = vb - va;
 
@@ -223,7 +226,10 @@ bool WeldJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
         m_impulse.x += impulse1.x;
         m_impulse.y += impulse1.y;
 
-        const auto P = Momentum2D{impulse1 * Kilogram * MeterPerSecond};
+        const auto P = Momentum2D{
+            impulse1.x * Kilogram * MeterPerSecond,
+            impulse1.y * Kilogram * MeterPerSecond
+        };
         const auto LA = AngularMomentum{Cross(m_rA, P) / Radian};
         const auto LB = AngularMomentum{Cross(m_rB, P) / Radian};
 
@@ -232,8 +238,8 @@ bool WeldJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     }
     else
     {
-        const auto vb = velB.linear + LinearVelocity2D{(GetRevPerpendicular(m_rB) * velB.angular / Radian)};
-        const auto va = velA.linear + LinearVelocity2D{(GetRevPerpendicular(m_rA) * velA.angular / Radian)};
+        const auto vb = velB.linear + LinearVelocity2D{(GetRevPerpendicular(m_rB) * (velB.angular / Radian))};
+        const auto va = velA.linear + LinearVelocity2D{(GetRevPerpendicular(m_rA) * (velA.angular / Radian))};
 
         const auto Cdot1 = vb - va;
         const auto Cdot2 = RealNum{(velB.angular - velA.angular) / RadianPerSecond};
@@ -242,7 +248,10 @@ bool WeldJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
         const auto impulse = -Transform(Cdot, m_mass);
         m_impulse += impulse;
 
-        const auto P = Momentum2D{Vec2{impulse.x, impulse.y} * Kilogram * MeterPerSecond};
+        const auto P = Momentum2D{
+            impulse.x * Kilogram * MeterPerSecond,
+            impulse.y * Kilogram * MeterPerSecond
+        };
         
         // AngularMomentum is L^2 M T^-1 QP^-1.
         const auto L = AngularMomentum{impulse.z * SquareMeter * Kilogram / (Second * Radian)};
@@ -324,7 +333,7 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
         positionError = GetLength(C1);
         angularError = Angle{0};
 
-        const auto P = -Solve22(K, StripUnits(C1)) * Kilogram * Meter;
+        const auto P = -Solve22(K, C1) * (RealNum(1) * Kilogram);
         const auto LA = Cross(rA, P) / Radian;
         const auto LB = Cross(rB, P) / Radian;
 
@@ -348,11 +357,11 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
         }
         else
         {
-            const auto impulse2 = -Solve22(K, StripUnits(C1));
+            const auto impulse2 = -Solve22(K, GetVec2(C1));
             impulse = Vec3{impulse2.x, impulse2.y, 0};
         }
 
-        const auto P = Vec2{impulse.x, impulse.y} * Kilogram * Meter;
+        const auto P = Length2D{impulse.x * Meter, impulse.y * Meter} * (RealNum(1) * Kilogram);
         const auto L = impulse.z * Kilogram * SquareMeter / Radian;
         const auto LA = L + Cross(rA, P) / Radian;
         const auto LB = L + Cross(rB, P) / Radian;
@@ -379,7 +388,10 @@ Length2D WeldJoint::GetAnchorB() const
 
 Force2D WeldJoint::GetReactionForce(Frequency inv_dt) const
 {
-    const auto P = Momentum2D{Vec2{m_impulse.x, m_impulse.y} * Kilogram * MeterPerSecond};
+    const auto P = Momentum2D{
+        m_impulse.x * Kilogram * MeterPerSecond,
+        m_impulse.y * Kilogram * MeterPerSecond
+    };
     return inv_dt * P;
 }
 

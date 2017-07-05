@@ -148,7 +148,7 @@ void MouseJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     }
     else
     {
-        m_impulse = Vec2_zero * Kilogram * MeterPerSecond;
+        m_impulse = Momentum2D{0, 0};
     }
 
     bodyConstraintB->SetVelocity(velB);
@@ -161,10 +161,14 @@ bool MouseJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
     auto velB = bodyConstraintB->GetVelocity();
     assert(IsValid(velB));
 
-    const auto Cdot = velB.linear + LinearVelocity2D{(GetRevPerpendicular(m_rB) * velB.angular) / Radian};
+    const auto Cdot = LinearVelocity2D{velB.linear + (GetRevPerpendicular(m_rB) * (velB.angular / Radian))};
     const auto ev = Cdot + LinearVelocity2D{m_C + (m_gamma * m_impulse)};
     const auto oldImpulse = m_impulse;
-    const auto addImpulse = Momentum2D{Transform(StripUnits(-ev), m_mass) * Kilogram * MeterPerSecond};
+    const auto unitlessImpulse = Transform(GetVec2(-ev), m_mass);
+    const auto addImpulse = Momentum2D{
+        unitlessImpulse.GetX() * Kilogram * MeterPerSecond,
+        unitlessImpulse.GetY() * Kilogram * MeterPerSecond
+    };
     assert(IsValid(addImpulse));
     m_impulse += addImpulse;
     const auto maxImpulse = step.GetTime() * Force{m_maxForce};
@@ -180,7 +184,7 @@ bool MouseJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
 
     bodyConstraintB->SetVelocity(velB);
     
-    return incImpulse == Vec2_zero * NewtonSecond;
+    return incImpulse == Momentum2D{0, 0};
 }
 
 bool MouseJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const

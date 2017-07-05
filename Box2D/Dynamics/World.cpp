@@ -264,8 +264,8 @@ namespace {
     inline VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc)
     {
         auto vp = VelocityPair{
-            Velocity{Vec2_zero * MeterPerSecond, AngularVelocity{0}},
-            Velocity{Vec2_zero * MeterPerSecond, AngularVelocity{0}}
+            Velocity{LinearVelocity2D{0, 0}, AngularVelocity{0}},
+            Velocity{LinearVelocity2D{0, 0}, AngularVelocity{0}}
         };
         
         const auto normal = vc.GetNormal();
@@ -2621,7 +2621,7 @@ void World::SetType(Body& body, BodyType type)
     else
     {
         body.SetAwake();
-        body.SetAcceleration(body.IsAccelerable()? GetGravity(): Vec2_zero * MeterPerSquareSecond,
+        body.SetAcceleration(body.IsAccelerable()? GetGravity(): LinearAcceleration2D{0, 0},
                              AngularAcceleration{0});
         const auto fixtures = body.GetFixtures();
         for_each(begin(fixtures), end(fixtures), [&](Fixture& f) {

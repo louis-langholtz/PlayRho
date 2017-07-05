@@ -69,7 +69,7 @@ TEST(Fixture, CreateMatchesDef)
 TEST(Fixture, SetSensor)
 {
     const auto shapeA = std::make_shared<DiskShape>();
-    const auto bodyCtrPos = Vec2(1, 2) * Meter;
+    const auto bodyCtrPos = Length2D(RealNum(1) * Meter, RealNum(2) * Meter);
     
     World world;
     const auto body = world.CreateBody(BodyDef{}.UseLocation(bodyCtrPos));
@@ -85,13 +85,13 @@ TEST(Fixture, SetSensor)
 TEST(Fixture, TestPointFreeFunction)
 {
     const auto shapeA = std::make_shared<DiskShape>();
-    const auto bodyCtrPos = Vec2(1, 2) * Meter;
+    const auto bodyCtrPos = Length2D(RealNum(1) * Meter, RealNum(2) * Meter);
 
     World world;
     const auto body = world.CreateBody(BodyDef{}.UseLocation(bodyCtrPos));
     const auto fixture = body->CreateFixture(shapeA);
     EXPECT_TRUE(TestPoint(*fixture, bodyCtrPos));
-    EXPECT_FALSE(TestPoint(*fixture, Vec2_zero * Meter));
+    EXPECT_FALSE(TestPoint(*fixture, Length2D(0, 0)));
 }
 
 TEST(Fixture, SetAwakeFreeFunction)

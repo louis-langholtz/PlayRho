@@ -78,9 +78,19 @@ namespace box2d
             return x;
         }
         
+        auto GetX() const noexcept
+        {
+            return x;
+        }
+
+        auto GetY() const noexcept
+        {
+            return y;
+        }
+
         data_type x, y;
     };
-    
+#if 0
     template <typename TYPE>
     constexpr inline typename Vector2D<TYPE>::data_type GetX(const Vector2D<TYPE> value)
     {
@@ -92,7 +102,7 @@ namespace box2d
     {
         return value.y;
     }
-
+#endif
     template <typename TYPE>
     constexpr inline bool operator == (const Vector2D<TYPE> a, const Vector2D<TYPE> b) noexcept
     {
@@ -193,7 +203,7 @@ namespace box2d
         RealNum{-9.8f} * MeterPerSquareSecond
     };
 
-    constexpr inline Vec2 StripUnits(const Vector2D<RealNum> value)
+    constexpr inline Vec2 GetVec2(const Vector2D<RealNum> value)
     {
         return value;
     }
@@ -236,22 +246,22 @@ namespace box2d
         return Momentum2D{GetInvalid<Momentum>(), GetInvalid<Momentum>()};
     }
     
-    constexpr inline Vec2 StripUnits(const Length2D value)
+    constexpr inline Vec2 GetVec2(const Length2D value)
     {
         return Vec2{value.x / Meter, value.y / Meter};
     }
     
-    constexpr inline Vec2 StripUnits(const LinearVelocity2D value)
+    constexpr inline Vec2 GetVec2(const LinearVelocity2D value)
     {
         return Vec2{value.x / MeterPerSecond, value.y / MeterPerSecond};
     }
     
-    constexpr inline Vec2 StripUnits(const Momentum2D value)
+    constexpr inline Vec2 GetVec2(const Momentum2D value)
     {
         return Vec2{value.x / (Kilogram * MeterPerSecond), value.y / (Kilogram * MeterPerSecond)};
     }
 
-    constexpr inline Vec2 StripUnits(const Force2D value)
+    constexpr inline Vec2 GetVec2(const Force2D value)
     {
         return Vec2{value.x / Newton, value.y / Newton};
     }

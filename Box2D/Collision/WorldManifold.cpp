@@ -40,8 +40,8 @@ inline WorldManifold GetForCircles(const Manifold& manifold,
             const auto pointA = Transform(manifold.GetLocalPoint(), xfA);
             const auto pointB = Transform(manifold.GetPoint(0).localPoint, xfB);
             const auto normal = GetUnitVector(pointB - pointA, UnitVec2::GetRight());
-            const auto cA = pointA + ((radiusA / Meter) * normal) * Meter;
-            const auto cB = pointB - ((radiusB / Meter) * normal) * Meter;
+            const auto cA = pointA + (radiusA * normal);
+            const auto cB = pointB - (radiusB * normal);
             const auto p0 = (cA + cB) / RealNum{2};
             const auto s0 = Dot(cB - cA, normal);
             return WorldManifold{normal, WorldManifold::PointSeparation{p0, s0}};

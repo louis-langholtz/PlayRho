@@ -131,7 +131,7 @@ void MotorJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     }
     else
     {
-        m_linearImpulse = Vec2_zero * Kilogram * MeterPerSecond;
+        m_linearImpulse = Momentum2D{0, 0};
         m_angularImpulse = AngularMomentum{0};
     }
 
@@ -177,12 +177,16 @@ bool MotorJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
 
     // Solve linear friction
     {
-        const auto vb = LinearVelocity2D{velB.linear + (GetRevPerpendicular(m_rB) * velB.angular / Radian)};
-        const auto va = LinearVelocity2D{velA.linear - (GetRevPerpendicular(m_rA) * velA.angular / Radian)};
+        const auto vb = LinearVelocity2D{velB.linear + (GetRevPerpendicular(m_rB) * (velB.angular / Radian))};
+        const auto va = LinearVelocity2D{velA.linear - (GetRevPerpendicular(m_rA) * (velA.angular / Radian))};
 
         const auto Cdot = LinearVelocity2D{(vb - va) + inv_h * m_correctionFactor * m_linearError};
 
-        const auto impulse = Momentum2D{-Transform(StripUnits(Cdot), m_linearMass) * Kilogram * MeterPerSecond};
+        const auto ulImp = -Transform(GetVec2(Cdot), m_linearMass);
+        const auto impulse = Momentum2D{
+            ulImp.GetX() * Kilogram * MeterPerSecond,
+            ulImp.GetY() * Kilogram * MeterPerSecond
+        };
         const auto oldImpulse = m_linearImpulse;
         m_linearImpulse += impulse;
 
@@ -197,7 +201,7 @@ bool MotorJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
         const auto angImpulseA = AngularMomentum{Cross(m_rA, incImpulse) / Radian};
         const auto angImpulseB = AngularMomentum{Cross(m_rB, incImpulse) / Radian};
 
-        if (incImpulse != Vec2_zero * NewtonSecond)
+        if (incImpulse != Momentum2D{0, 0})
         {
             solved = false;
         }

@@ -30,7 +30,7 @@ public:
 
     AddPair()
     {
-        m_world->SetGravity(Vec2(RealNum{0}, RealNum{0}) * MeterPerSquareSecond);
+        m_world->SetGravity(LinearAcceleration2D{RealNum(0) * MeterPerSquareSecond, RealNum(0) * MeterPerSquareSecond});
         {
             auto conf = DiskShape::Conf{};
             conf.vertexRadius = Meter / RealNum{10};
@@ -55,7 +55,7 @@ public:
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.position = Vec2(-40.0f,5.0f) * Meter;
+            bd.position = Length2D{RealNum(-40.0f) * Meter, RealNum(5.0f) * Meter};
             bd.bullet = true;
             const auto body = m_world->CreateBody(bd);
             auto conf = PolygonShape::Conf{};

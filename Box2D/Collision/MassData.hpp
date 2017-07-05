@@ -54,7 +54,7 @@ namespace box2d {
         }
                 
         /// @brief Position of the shape's centroid relative to the shape's origin.
-        Length2D center = Vec2_zero * Meter;
+        Length2D center = Length2D(0, 0);
         
         /// @brief Mass of the shape in kilograms.
         NonNegative<Mass> mass = Mass{0};

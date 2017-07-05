@@ -166,7 +166,7 @@ public:
     {
         //lateral linear velocity
         auto impulse = Momentum2D{GetMass(*m_body) * -getLateralVelocity()};
-        const auto length = GetLength(StripUnits(impulse)) * Kilogram * MeterPerSecond;
+        const auto length = GetLength(GetVec2(impulse)) * Kilogram * MeterPerSecond;
         if ( length > m_maxLateralImpulse )
             impulse *= m_maxLateralImpulse / length;
         ApplyLinearImpulse(*m_body, m_currentTraction * impulse, m_body->GetWorldCenter());
@@ -260,8 +260,8 @@ public:
         RevoluteJointDef jointDef;
         jointDef.bodyA = m_body;
         jointDef.enableLimit = true;
-        jointDef.lowerAngle = RealNum{0.0f} * Degree;
-        jointDef.upperAngle = RealNum{0.0f} * Degree;
+        jointDef.lowerAngle = Angle{0};
+        jointDef.upperAngle = Angle{0};
         jointDef.localAnchorB = Vec2{0, 0} * Meter; //center of tire
         
         const auto maxForwardSpeed = RealNum{250.0f} * MeterPerSecond;
@@ -332,7 +332,7 @@ public:
         const auto lockAngle = RealNum{35.0f} * Degree;
         const auto turnSpeedPerSec = RealNum{160.0f} * Degree;//from lock to lock in 0.5 sec
         const auto turnPerTimeStep = turnSpeedPerSec / RealNum{60.0f};
-        auto desiredAngle = RealNum{0.0f} * Degree;
+        auto desiredAngle = Angle{0};
         switch ( controlState & (TDC_LEFT|TDC_RIGHT) ) {
             case TDC_LEFT:  desiredAngle = lockAngle;  break;
             case TDC_RIGHT: desiredAngle = -lockAngle; break;

@@ -69,7 +69,7 @@ TEST(GearJoint, ByteSize)
 TEST(GearJoint, Construction)
 {
     Body body{BodyDef{}};
-    RevoluteJointDef rdef{&body, &body, Vec2_zero * Meter};
+    RevoluteJointDef rdef{&body, &body, Length2D(0, 0)};
     RevoluteJoint revJoint1{rdef};
     RevoluteJoint revJoint2{rdef};
     GearJointDef def;
@@ -93,7 +93,7 @@ TEST(GearJoint, Construction)
 TEST(GearJoint, GetGearJointDef)
 {
     Body body{BodyDef{}};
-    RevoluteJointDef rdef{&body, &body, Vec2_zero * Meter};
+    RevoluteJointDef rdef{&body, &body, Length2D(0, 0)};
     RevoluteJoint revJoint1{rdef};
     RevoluteJoint revJoint2{rdef};
     GearJointDef def;
@@ -129,11 +129,11 @@ TEST(GearJoint, GetGearJointDef)
 TEST(GearJoint, WithDynamicCircles)
 {
     const auto circle = std::make_shared<DiskShape>(RealNum{0.2f} * Meter);
-    auto world = World{WorldDef{}.UseGravity(Vec2_zero * MeterPerSquareSecond)};
-    const auto p1 = Vec2{-1, 0} * Meter;
-    const auto p2 = Vec2{+1, 0} * Meter;
-    const auto p3 = Vec2{+2, 0} * Meter;
-    const auto p4 = Vec2{+3, 0} * Meter;
+    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2D{0, 0})};
+    const auto p1 = Length2D{-RealNum(1) * Meter, RealNum(0) * Meter};
+    const auto p2 = Length2D{+RealNum(1) * Meter, RealNum(0) * Meter};
+    const auto p3 = Length2D{+RealNum(2) * Meter, RealNum(0) * Meter};
+    const auto p4 = Length2D{+RealNum(3) * Meter, RealNum(0) * Meter};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     const auto b3 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p3));
@@ -141,8 +141,8 @@ TEST(GearJoint, WithDynamicCircles)
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
     GearJointDef def;
-    def.joint1 = world.CreateJoint(RevoluteJointDef{b1, b2, Vec2_zero * Meter});
-    def.joint2 = world.CreateJoint(RevoluteJointDef{b4, b3, Vec2_zero * Meter});
+    def.joint1 = world.CreateJoint(RevoluteJointDef{b1, b2, Length2D(0, 0)});
+    def.joint2 = world.CreateJoint(RevoluteJointDef{b4, b3, Length2D(0, 0)});
     ASSERT_NE(def.joint1, nullptr);
     ASSERT_NE(def.joint2, nullptr);
     const auto gearJoint = world.CreateJoint(def);
@@ -152,6 +152,6 @@ TEST(GearJoint, WithDynamicCircles)
     EXPECT_NEAR(double(RealNum{b1->GetLocation().y / Meter}), 0.0, 0.001);
     EXPECT_NEAR(double(RealNum{b2->GetLocation().x / Meter}), +1.0, 0.01);
     EXPECT_NEAR(double(RealNum{b2->GetLocation().y / Meter}), 0.0, 0.01);
-    EXPECT_EQ(b1->GetAngle(), RealNum{0} * Degree);
-    EXPECT_EQ(b2->GetAngle(), RealNum{0} * Degree);
+    EXPECT_EQ(b1->GetAngle(), Angle{0});
+    EXPECT_EQ(b2->GetAngle(), Angle{0});
 }

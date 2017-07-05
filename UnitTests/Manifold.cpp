@@ -43,7 +43,7 @@ TEST(Manifold, DefaultConstruction)
 
 TEST(Manifold, PointInitializingConstructor)
 {
-    const auto lp = Vec2{3, 4} * Meter;
+    const auto lp = Length2D{RealNum(3) * Meter, RealNum(4) * Meter};
     const auto ni = RealNum(1.2) * Kilogram * MeterPerSecond;
     const auto ti = RealNum(2.4) * Kilogram * MeterPerSecond;
     const auto cf = ContactFeature{};
@@ -57,7 +57,7 @@ TEST(Manifold, PointInitializingConstructor)
 
 TEST(Manifold, GetForCircles)
 {
-    const auto ctr = Vec2{99, 21} * Meter;
+    const auto ctr = Length2D{RealNum(99) * Meter, RealNum(21) * Meter};
     const auto foo = Manifold::GetForCircles(ctr, 0, ctr, 0);
     EXPECT_EQ(foo.GetType(), Manifold::e_circles);
     EXPECT_EQ(foo.GetLocalPoint(), ctr);
@@ -70,7 +70,7 @@ TEST(Manifold, GetForCircles)
 TEST(Manifold, GetForFaceA)
 {
     const auto ln = UnitVec2::GetLeft();
-    const auto lp = Vec2{0, 0} * Meter;
+    const auto lp = Length2D(0, 0);
     {
         Manifold foo = Manifold::GetForFaceA(ln, lp);
         EXPECT_EQ(foo.GetType(), Manifold::e_faceA);
@@ -79,7 +79,7 @@ TEST(Manifold, GetForFaceA)
         EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(0));
     }
     {
-        const auto pl = Vec2{RealNum(-0.12), RealNum(0.34)} * Meter;
+        const auto pl = Length2D{RealNum(-0.12) * Meter, RealNum(0.34) * Meter};
         const auto cf = GetFaceFaceContactFeature(0, 0);
         const auto ni = RealNum(2.9) * Kilogram * MeterPerSecond;
         const auto ti = RealNum(.7) * Kilogram * MeterPerSecond;
@@ -96,7 +96,7 @@ TEST(Manifold, GetForFaceA)
         EXPECT_EQ(p0.tangentImpulse, ti);
     }
     {
-        const auto pl = Vec2{RealNum(-0.12), RealNum(0.34)} * Meter;
+        const auto pl = Length2D{RealNum(-0.12) * Meter, RealNum(0.34) * Meter};
         const auto cf = GetFaceFaceContactFeature(0, 1);
         const auto ni = RealNum(2.9) * Kilogram * MeterPerSecond;
         const auto ti = RealNum(.7) * Kilogram * MeterPerSecond;
@@ -122,7 +122,7 @@ TEST(Manifold, GetForFaceA)
 TEST(Manifold, GetForFaceB)
 {
     const auto ln = UnitVec2::GetLeft();
-    const auto lp = Vec2{0, 0} * Meter;
+    const auto lp = Length2D(0, 0);
     {
         Manifold foo = Manifold::GetForFaceB(ln, lp);
         EXPECT_EQ(foo.GetType(), Manifold::e_faceB);
@@ -131,7 +131,7 @@ TEST(Manifold, GetForFaceB)
         EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(0));
     }
     {
-        const auto pl = Vec2{RealNum(-0.12), RealNum(0.34)} * Meter;
+        const auto pl = Length2D{RealNum(-0.12) * Meter, RealNum(0.34) * Meter};
         const auto cf = GetFaceFaceContactFeature(0, 0);
         const auto ni = RealNum(2.9) * Kilogram * MeterPerSecond;
         const auto ti = RealNum(.7) * Kilogram * MeterPerSecond;
@@ -148,7 +148,7 @@ TEST(Manifold, GetForFaceB)
         EXPECT_EQ(p0.tangentImpulse, ti);
     }
     {
-        const auto pl = Vec2{RealNum(-0.12), RealNum(0.34)} * Meter;
+        const auto pl = Length2D{RealNum(-0.12) * Meter, RealNum(0.34) * Meter};
         const auto cf = GetFaceFaceContactFeature(0, 1);
         const auto ni = RealNum(2.9) * Kilogram * MeterPerSecond;
         const auto ti = RealNum(.7) * Kilogram * MeterPerSecond;

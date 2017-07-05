@@ -43,9 +43,9 @@ TEST(WorldManifold, default_construction)
 
 TEST(WorldManifold, GetWorldManifoldForCirclesTouchingManifold)
 {
-    const auto manifold = Manifold::GetForCircles(Vec2{0, 0} * Meter, 0, Vec2{0, 0} * Meter, 0);
-    const auto xfA = Transformation{Vec2{4-1, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
-    const auto xfB = Transformation{Vec2{4+1, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
+    const auto manifold = Manifold::GetForCircles(Length2D(0, 0), 0, Length2D(0, 0), 0);
+    const auto xfA = Transformation{Length2D{RealNum(4-1) * Meter, 0}, UnitVec2{Angle{0}}};
+    const auto xfB = Transformation{Length2D{RealNum(4+1) * Meter, 0}, UnitVec2{Angle{0}}};
     const auto rA = RealNum(1) * Meter;
     const auto rB = RealNum(1) * Meter;
     const auto wm = GetWorldManifold(manifold, xfA, rA, xfB, rB);
@@ -54,14 +54,14 @@ TEST(WorldManifold, GetWorldManifoldForCirclesTouchingManifold)
     EXPECT_TRUE(IsValid(wm.GetNormal()));
     EXPECT_EQ(wm.GetNormal() * RealNum{1}, Vec2(1, 0));
     EXPECT_EQ(wm.GetSeparation(0), RealNum{0} * Meter);
-    EXPECT_EQ(wm.GetPoint(0), Vec2(4, 0) * Meter);
+    EXPECT_EQ(wm.GetPoint(0), Length2D(RealNum(4) * Meter, RealNum(0) * Meter));
 }
 
 TEST(WorldManifold, GetWorldManifoldForCirclesHalfOverlappingManifold)
 {
-    const auto manifold = Manifold::GetForCircles(Vec2{0, 0} * Meter, 0, Vec2{0, 0} * Meter, 0);
-    const auto xfA = Transformation{Vec2{7-0.5, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
-    const auto xfB = Transformation{Vec2{7+0.5, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
+    const auto manifold = Manifold::GetForCircles(Length2D(0, 0), 0, Length2D(0, 0), 0);
+    const auto xfA = Transformation{Length2D{RealNum(7-0.5) * Meter, 0}, UnitVec2{Angle{0}}};
+    const auto xfB = Transformation{Length2D{RealNum(7+0.5) * Meter, 0}, UnitVec2{Angle{0}}};
     const auto rA = RealNum(1) * Meter;
     const auto rB = RealNum(1) * Meter;
     const auto wm = GetWorldManifold(manifold, xfA, rA, xfB, rB);
@@ -70,14 +70,14 @@ TEST(WorldManifold, GetWorldManifoldForCirclesHalfOverlappingManifold)
     EXPECT_TRUE(IsValid(wm.GetNormal()));
     EXPECT_EQ(wm.GetNormal() * RealNum{1}, Vec2(1, 0));
     EXPECT_EQ(wm.GetSeparation(0), RealNum{-1} * Meter);
-    EXPECT_EQ(wm.GetPoint(0), Vec2(7, 0) * Meter);
+    EXPECT_EQ(wm.GetPoint(0), Length2D(RealNum(7) * Meter, RealNum(0) * Meter));
 }
 
 TEST(WorldManifold, GetWorldManifoldForCirclesFullyOverlappingManifold)
 {
-    const auto manifold = Manifold::GetForCircles(Vec2{0, 0} * Meter, 0, Vec2{0, 0} * Meter, 0);
-    const auto xfA = Transformation{Vec2{3-0, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
-    const auto xfB = Transformation{Vec2{3+0, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
+    const auto manifold = Manifold::GetForCircles(Length2D(0, 0), 0, Length2D(0, 0), 0);
+    const auto xfA = Transformation{Length2D{RealNum(3-0) * Meter, 0}, UnitVec2{Angle{0}}};
+    const auto xfB = Transformation{Length2D{RealNum(3+0) * Meter, 0}, UnitVec2{Angle{0}}};
     const auto rA = RealNum(1) * Meter;
     const auto rB = RealNum(1) * Meter;
     const auto wm = GetWorldManifold(manifold, xfA, rA, xfB, rB);
@@ -86,7 +86,7 @@ TEST(WorldManifold, GetWorldManifoldForCirclesFullyOverlappingManifold)
     EXPECT_EQ(wm.GetSeparation(0), RealNum{-2} * Meter);
     if (IsValid(wm.GetNormal()))
     {
-        EXPECT_EQ(wm.GetPoint(0), Vec2(3, 0) * Meter);
+        EXPECT_EQ(wm.GetPoint(0), Length2D(RealNum(3) * Meter, RealNum(0) * Meter));
     }
     else
     {

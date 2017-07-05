@@ -84,9 +84,9 @@ TEST(RayCastOutput, InitConstruction)
 TEST(RayCastOutput, RayCastFreeFunctionHits)
 {
     const auto radius = RealNum(0.1) * Meter;
-    const auto location = Vec2(5, 2) * Meter;
-    const auto p1 = Vec2(10, 2) * Meter;
-    const auto p2 = Vec2(0, 2) * Meter;
+    const auto location = Length2D(RealNum(5) * Meter, RealNum(2) * Meter);
+    const auto p1 = Length2D(RealNum(10) * Meter, RealNum(2) * Meter);
+    const auto p2 = Length2D(RealNum(0) * Meter, RealNum(2) * Meter);
     const auto maxFraction = RealNum(1);
     auto input = RayCastInput{p1, p2, maxFraction};
     const auto output = RayCast(radius, location, input);
@@ -99,9 +99,9 @@ TEST(RayCastOutput, RayCastLocationFreeFunctionMisses)
 {
     {
         const auto radius = RealNum(0.1) * Meter;
-        const auto location = Vec2(15, 2) * Meter;
-        const auto p1 = Vec2(10, 2) * Meter;
-        const auto p2 = Vec2(0, 2) * Meter;
+        const auto location = Length2D(RealNum(15) * Meter, RealNum(2) * Meter);
+        const auto p1 = Length2D(RealNum(10) * Meter, RealNum(2) * Meter);
+        const auto p2 = Length2D(RealNum(0) * Meter, RealNum(2) * Meter);
         const auto maxFraction = RealNum(1);
         auto input = RayCastInput{p1, p2, maxFraction};
         const auto output = RayCast(radius, location, input);
@@ -111,9 +111,9 @@ TEST(RayCastOutput, RayCastLocationFreeFunctionMisses)
     }
     {
         const auto radius = RealNum(0.1) * Meter;
-        const auto location = Vec2(10, 3) * Meter;
-        const auto p1 = Vec2(0, 2) * Meter;
-        const auto p2 = Vec2(10, 2) * Meter;
+        const auto location = Length2D(RealNum(10) * Meter, RealNum(3) * Meter);
+        const auto p1 = Length2D(RealNum(0) * Meter, RealNum(2) * Meter);
+        const auto p2 = Length2D(RealNum(10) * Meter, RealNum(2) * Meter);
         const auto maxFraction = RealNum(1);
         auto input = RayCastInput{p1, p2, maxFraction};
         const auto output = RayCast(radius, location, input);
@@ -126,8 +126,8 @@ TEST(RayCastOutput, RayCastLocationFreeFunctionMisses)
 TEST(RayCastOutput, RayCastAabbFreeFunction)
 {
     AABB aabb;
-    const auto p1 = Vec2(10, 2) * Meter;
-    const auto p2 = Vec2(0, 2) * Meter;
+    const auto p1 = Length2D(RealNum(10) * Meter, RealNum(2) * Meter);
+    const auto p2 = Length2D(RealNum(0) * Meter, RealNum(2) * Meter);
     const auto maxFraction = RealNum(1);
     RayCastInput input{p1, p2, maxFraction};
     const auto output = RayCast(aabb, input);
@@ -138,10 +138,10 @@ TEST(RayCastOutput, RayCastAabbFreeFunction)
 
 TEST(RayCastOutput, RayCastDistanceProxyFF)
 {
-    const auto pos1 = Vec2{3, 1} * Meter;
-    const auto pos2 = Vec2{3, 3} * Meter;
-    const auto pos3 = Vec2{1, 3} * Meter;
-    const auto pos4 = Vec2{1, 1} * Meter;
+    const auto pos1 = Length2D{RealNum(3) * Meter, RealNum(1) * Meter};
+    const auto pos2 = Length2D{RealNum(3) * Meter, RealNum(3) * Meter};
+    const auto pos3 = Length2D{RealNum(1) * Meter, RealNum(3) * Meter};
+    const auto pos4 = Length2D{RealNum(1) * Meter, RealNum(1) * Meter};
     const Length2D squareVerts[] = {pos1, pos2, pos3, pos4};
     const auto n1 = GetUnitVector(GetFwdPerpendicular(pos2 - pos1));
     const auto n2 = GetUnitVector(GetFwdPerpendicular(pos3 - pos2));
@@ -151,8 +151,8 @@ TEST(RayCastOutput, RayCastDistanceProxyFF)
     const auto radius = RealNum(0.5) * Meter;
     DistanceProxy dp{radius, 4, squareVerts, squareNormals};
 
-    const auto p1 = Vec2(0, 2) * Meter;
-    const auto p2 = Vec2(10, 2) * Meter;
+    const auto p1 = Length2D(RealNum(0) * Meter, RealNum(2) * Meter);
+    const auto p2 = Length2D(RealNum(10) * Meter, RealNum(2) * Meter);
     const auto maxFraction = RealNum(1);
     auto input = RayCastInput{p1, p2, maxFraction};
     {
@@ -162,7 +162,7 @@ TEST(RayCastOutput, RayCastDistanceProxyFF)
         EXPECT_NEAR(static_cast<double>(output.fraction), 0.05, 0.001);
     }
     
-    const auto p0 = Vec2_zero * Meter;
+    const auto p0 = Length2D(0, 0);
     input = RayCastInput{p0, p1, maxFraction};
     {
         const auto output = RayCast(dp, input, Transform_identity);

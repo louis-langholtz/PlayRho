@@ -39,10 +39,10 @@ struct WheelJointDef : public JointDef
     WheelJointDef(Body* bodyA, Body* bodyB, const Length2D anchor, const UnitVec2 axis) noexcept;
 
     /// The local anchor point relative to bodyA's origin.
-    Length2D localAnchorA = Vec2_zero * Meter;
+    Length2D localAnchorA = Length2D(0, 0);
 
     /// The local anchor point relative to bodyB's origin.
-    Length2D localAnchorB = Vec2_zero * Meter;
+    Length2D localAnchorB = Length2D(0, 0);
 
     /// The local translation axis in bodyA.
     UnitVec2 localAxisA = UnitVec2::GetRight();

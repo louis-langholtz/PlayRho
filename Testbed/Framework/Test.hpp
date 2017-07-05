@@ -79,7 +79,9 @@ public:
         Key_Unknown
     };
     
-    Test(const WorldDef& config = WorldDef{}.UseGravity(Vec2(0.0f, -10.0f) * MeterPerSquareSecond));
+    Test(const WorldDef& config = WorldDef{}.UseGravity(LinearAcceleration2D{
+        0.0f * MeterPerSquareSecond, -10.0f * MeterPerSquareSecond
+    }));
     virtual ~Test();
 
     void DrawTitle(Drawer& drawer, const char *string);

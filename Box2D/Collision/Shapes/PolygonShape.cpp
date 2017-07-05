@@ -82,7 +82,7 @@ MassData PolygonShape::GetMassData() const noexcept
             break;
     }
     
-    auto center = Vec2_zero * Meter;
+    auto center = Length2D(0, 0);
     auto area = Area{0};
     auto I = SecondMomentOfArea{0};
     
@@ -132,7 +132,7 @@ MassData PolygonShape::GetMassData() const noexcept
 
 void PolygonShape::SetAsBox(Length hx, Length hy) noexcept
 {
-    m_centroid = Vec2_zero * Meter;
+    m_centroid = Length2D(0, 0);
 
     // vertices must be counter-clockwise
 

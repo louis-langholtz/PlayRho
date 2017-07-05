@@ -33,7 +33,7 @@ struct MotorJointDef : public JointDef
     MotorJointDef(Body* bodyA, Body* bodyB) noexcept;
 
     /// Position of bodyB minus the position of bodyA, in bodyA's frame.
-    Length2D linearOffset = Vec2_zero * Meter;
+    Length2D linearOffset = Length2D(0, 0);
 
     /// The bodyB angle minus bodyA angle.
     Angle angularOffset = Angle{0};
@@ -97,7 +97,7 @@ private:
     // Solver shared
     Length2D m_linearOffset;
     Angle m_angularOffset;
-    Momentum2D m_linearImpulse = Vec2_zero * Kilogram * MeterPerSecond;
+    Momentum2D m_linearImpulse = Momentum2D{0, 0};
     AngularMomentum m_angularImpulse = AngularMomentum{0};
     Force m_maxForce;
     Torque m_maxTorque;

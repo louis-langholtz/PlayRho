@@ -63,7 +63,10 @@ AABB ConvertScreenToWorld(const Camera& camera)
     const auto lower = camera.m_center - extents;
     const auto upper = camera.m_center + extents;
 
-    return AABB{Vec2{lower.x, lower.y} * Meter, Vec2{upper.x, upper.y} * Meter};
+    return AABB{
+        Length2D{lower.x * Meter, lower.y * Meter},
+        Length2D{upper.x * Meter, upper.y * Meter}
+    };
 }
 
 Coord2D ConvertWorldToScreen(const Camera& camera, const Length2D pw)
@@ -732,7 +735,10 @@ void DebugDraw::DrawString(const Length2D& pw, const char *string, ...)
 
 Length2D DebugDraw::GetTranslation() const
 {
-    return Length2D{Vec2{m_camera.m_center.x, m_camera.m_center.y} * Meter};
+    return Length2D{
+        RealNum(m_camera.m_center.x) * Meter,
+        RealNum(m_camera.m_center.y) * Meter
+    };
 }
 
 void DebugDraw::SetTranslation(Length2D value)

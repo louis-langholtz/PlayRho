@@ -40,7 +40,7 @@ TEST(Shape, ByteSize)
 TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)
 {
     const auto shape = DiskShape{RealNum{2} * Meter};
-    const auto xfm = Transformation{Vec2{0, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
+    const auto xfm = Transformation{Length2D(0, 0), UnitVec2{Angle{0}}};
     const auto child = shape.GetChild(0);
 
     const auto maxloops = 1000000u;
@@ -88,7 +88,7 @@ TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)
 TEST(Shape, TestOverlapFasterThanCollideShapesForPolygons)
 {
     const auto shape = PolygonShape{RealNum{2} * Meter, RealNum{2} * Meter};
-    const auto xfm = Transformation{Vec2{0, 0} * Meter, UnitVec2{RealNum{0} * Degree}};
+    const auto xfm = Transformation{Length2D(0, 0), UnitVec2{Angle{0}}};
     const auto child = shape.GetChild(0);
 
     const auto maxloops = 1000000u;

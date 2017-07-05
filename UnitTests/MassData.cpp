@@ -38,7 +38,7 @@ TEST(MassData, ByteSizeIs_16_32_or_64)
 TEST(MassData, GetForZeroVertexRadiusCircle)
 {
     auto shape = DiskShape(0);
-    shape.SetDensity(KilogramPerSquareMeter);
+    shape.SetDensity(RealNum(1) * KilogramPerSquareMeter);
     const auto mass_data = shape.GetMassData();
     EXPECT_EQ(mass_data.mass, NonNegative<Mass>(RealNum{0} * Kilogram));
     EXPECT_EQ(mass_data.I, RotInertia{0});
@@ -50,7 +50,7 @@ TEST(MassData, GetForOriginCenteredCircle)
 {
     auto conf = DiskShape::Conf{};
     conf.vertexRadius = RealNum{1} * Meter;
-    conf.location = Vec2{0, 0} * Meter;
+    conf.location = Length2D(0, 0);
     conf.density = RealNum{1} * KilogramPerSquareMeter;
     const auto foo = DiskShape{conf};
     const auto mass_data = foo.GetMassData();
@@ -68,7 +68,7 @@ TEST(MassData, GetForOriginCenteredCircle)
 TEST(MassData, GetForCircle)
 {
     const auto radius = RealNum(1) * Meter;
-    const auto position = Vec2{-1, 1} * Meter;
+    const auto position = Length2D{-RealNum(1) * Meter, RealNum(1) * Meter};
     const auto density = RealNum{1} * KilogramPerSquareMeter;
     auto conf = DiskShape::Conf{};
     conf.vertexRadius = radius;
@@ -116,8 +116,8 @@ TEST(MassData, GetForZeroVertexRadiusRectangle)
 
 TEST(MassData, GetForZeroVertexRadiusEdge)
 {
-    const auto v1 = Vec2{-1, 0} * Meter;
-    const auto v2 = Vec2{+1, 0} * Meter;
+    const auto v1 = Length2D{-RealNum(1) * Meter, RealNum(0) * Meter};
+    const auto v2 = Length2D{+RealNum(1) * Meter, RealNum(0) * Meter};
     const auto density = RealNum{2.1f} * KilogramPerSquareMeter;
     auto conf = EdgeShape::Conf{};
     conf.vertexRadius = Length{0};
@@ -136,7 +136,7 @@ TEST(MassData, GetForZeroVertexRadiusEdge)
 
 TEST(MassData, GetForSamePointedEdgeIsSameAsCircle)
 {
-    const auto v1 = Vec2{-1, 1} * Meter;
+    const auto v1 = Length2D{-RealNum(1) * Meter, RealNum(1) * Meter};
     const auto density = RealNum{1} * KilogramPerSquareMeter;
     auto conf = EdgeShape::Conf{};
     conf.vertexRadius = RealNum{1} * Meter;
@@ -160,8 +160,8 @@ TEST(MassData, GetForSamePointedEdgeIsSameAsCircle)
 
 TEST(MassData, GetForCenteredEdge)
 {
-    const auto v1 = Vec2{-2, 0} * Meter;
-    const auto v2 = Vec2{+2, 0} * Meter;
+    const auto v1 = Length2D{-RealNum(2) * Meter, RealNum(0) * Meter};
+    const auto v2 = Length2D{+RealNum(2) * Meter, RealNum(0) * Meter};
     const auto radius = RealNum{0.5f} * Meter;
     const auto density = RealNum{2.1f} * KilogramPerSquareMeter;
     
@@ -180,10 +180,10 @@ TEST(MassData, GetForCenteredEdge)
     ASSERT_EQ(shape.GetDensity(), density);
     
     const auto vertices = Span<const Length2D>{
-        Vec2(-2, +0.5) * Meter,
-        Vec2(-2, -0.5) * Meter,
-        Vec2(+2, -0.5) * Meter,
-        Vec2(+2, +0.5) * Meter
+        Length2D(RealNum(-2) * Meter, RealNum(+0.5) * Meter),
+        Length2D(RealNum(-2) * Meter, RealNum(-0.5) * Meter),
+        Length2D(RealNum(+2) * Meter, RealNum(-0.5) * Meter),
+        Length2D(RealNum(+2) * Meter, RealNum(+0.5) * Meter)
     };
     const auto polarMoment = GetPolarMoment(vertices);
     ASSERT_GE(polarMoment, SecondMomentOfArea(0));

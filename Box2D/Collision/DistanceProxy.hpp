@@ -137,8 +137,8 @@ namespace box2d
     /// @param d Direction vector to find index for.
     /// @return InvalidIndex if d is invalid or the count of vertices is zero, otherwise a value from 0 to one less than count.
     /// @sa GetVertexCount().
-    DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, const Length2D d) noexcept;
-    
+    DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, const Vec2 d) noexcept;
+
     std::size_t FindLowestRightMostVertex(Span<const Length2D> vertices);
     
     std::vector<Length2D> GetConvexHullAsVector(Span<const Length2D> vertices);

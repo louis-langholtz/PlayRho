@@ -32,7 +32,7 @@ namespace {
             const auto delta = vertices[i-1] - vertices[i];
             
             // XXX not quite right unit-wise but this works well enough.
-            if (GetLengthSquared(StripUnits(delta)) * Meter <= DefaultLinearSlop)
+            if (GetLengthSquared(GetVec2(delta)) * Meter <= DefaultLinearSlop)
             {
                 return false;
             }
@@ -75,7 +75,7 @@ MassData ChainShape::GetMassData() const noexcept
         // XXX: This overcounts for the overlapping circle shape.
         auto mass = Mass{0};
         auto I = RotInertia{0};
-        auto center = Vec2_zero * Meter;
+        auto center = Length2D(0, 0);
         const auto vertexRadius = GetVertexRadius();
         const auto childCount = GetChildCount();
         auto vprev = GetVertex(0);
@@ -90,7 +90,7 @@ MassData ChainShape::GetMassData() const noexcept
         }
         return MassData{mass, center, I};
     }
-    return MassData{NonNegative<Mass>{0}, Vec2_zero * Meter, NonNegative<RotInertia>{0}};
+    return MassData{NonNegative<Mass>{0}, Length2D(0, 0), NonNegative<RotInertia>{0}};
 }
 
 ChildCounter ChainShape::GetChildCount() const noexcept

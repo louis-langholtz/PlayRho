@@ -56,7 +56,7 @@ TEST(DiskShape, DefaultConstruction)
 TEST(DiskShape, InitConstruction)
 {
     const auto radius = RealNum(1) * Meter;
-    const auto position = Vec2{-1, 1} * Meter;
+    const auto position = Length2D{-RealNum(1) * Meter, RealNum(1) * Meter};
     auto conf = DiskShape::Conf{};
     conf.vertexRadius = radius;
     conf.location = position;
@@ -72,25 +72,25 @@ TEST(DiskShape, InitConstruction)
 TEST(DiskShape, TestPoint)
 {
     const auto radius = RealNum(1) * Meter;
-    const auto position = Vec2{0, 0} * Meter;
+    const auto position = Length2D(0, 0);
     auto conf = DiskShape::Conf{};
     conf.vertexRadius = radius;
     conf.location = position;
     DiskShape foo{conf};
-    EXPECT_TRUE(TestPoint(foo, Vec2{ 0,  0} * Meter));
-    EXPECT_TRUE(TestPoint(foo, Vec2{+1,  0} * Meter));
-    EXPECT_TRUE(TestPoint(foo, Vec2{ 0, +1} * Meter));
-    EXPECT_TRUE(TestPoint(foo, Vec2{ 0, -1} * Meter));
-    EXPECT_TRUE(TestPoint(foo, Vec2{-1,  0} * Meter));
-    EXPECT_FALSE(TestPoint(foo, Vec2{-1,  -1} * Meter));
-    EXPECT_FALSE(TestPoint(foo, Vec2{+1,  +1} * Meter));
-    EXPECT_FALSE(TestPoint(foo, Vec2{+RealNum(0.9),  +RealNum(0.9)} * Meter));
+    EXPECT_TRUE(TestPoint(foo, Length2D{ RealNum(0) * Meter,  RealNum(0) * Meter}));
+    EXPECT_TRUE(TestPoint(foo, Length2D{+RealNum(1) * Meter,  RealNum(0) * Meter}));
+    EXPECT_TRUE(TestPoint(foo, Length2D{ RealNum(0) * Meter, +RealNum(1) * Meter}));
+    EXPECT_TRUE(TestPoint(foo, Length2D{ RealNum(0) * Meter, -RealNum(1) * Meter}));
+    EXPECT_TRUE(TestPoint(foo, Length2D{-RealNum(1) * Meter,  RealNum(0) * Meter}));
+    EXPECT_FALSE(TestPoint(foo, Length2D{-RealNum(1) * Meter,  -RealNum(1) * Meter}));
+    EXPECT_FALSE(TestPoint(foo, Length2D{+RealNum(1) * Meter,  +RealNum(1) * Meter}));
+    EXPECT_FALSE(TestPoint(foo, Length2D{+RealNum(0.9) * Meter,  +RealNum(0.9) * Meter}));
 }
 
 TEST(DiskShape, ComputeAABB)
 {
     const auto radius = RealNum(2.4) * Meter;
-    const auto position = Vec2{2, 1} * Meter;
+    const auto position = Length2D{RealNum(2) * Meter, RealNum(1) * Meter};
     auto conf = DiskShape::Conf{};
     conf.vertexRadius = radius;
     conf.location = position;

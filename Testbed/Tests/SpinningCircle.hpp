@@ -39,7 +39,7 @@ namespace box2d {
             auto bodyDef = BodyDef{};
             bodyDef.type = BodyType::Dynamic;
             bodyDef.angularVelocity = RealNum{45.0f} * Degree / Second;
-            bodyDef.linearVelocity = Vec2{0, 0} * MeterPerSecond;
+            bodyDef.linearVelocity = LinearVelocity2D{0, 0};
             bodyDef.linearDamping = RealNum(0.8f) * Hertz;
             bodyDef.bullet = true;
 

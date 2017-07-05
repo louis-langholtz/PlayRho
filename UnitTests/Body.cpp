@@ -182,7 +182,7 @@ TEST(Body, CreateAndDestroyFixture)
 
     auto conf = DiskShape::Conf{};
     conf.vertexRadius = RealNum{2.871f} * Meter;
-    conf.location = Vec2{1.912f, -77.31f} * Meter;
+    conf.location = Vec2{1.912f, -77.31f} * (RealNum(1) * Meter);
     conf.density = RealNum{1} * KilogramPerSquareMeter;
     const auto shape = std::make_shared<DiskShape>(conf);
     
@@ -269,9 +269,9 @@ TEST(Body, SetTransform)
     bd.type = BodyType::Dynamic;
     World world;
     const auto body = world.CreateBody(bd);
-    const auto xfm1 = Transformation{Vec2_zero * Meter, UnitVec2::GetRight()};
+    const auto xfm1 = Transformation{Vec2_zero * (RealNum(1) * Meter), UnitVec2::GetRight()};
     ASSERT_EQ(body->GetTransformation(), xfm1);
-    const auto xfm2 = Transformation{Vec2(10, -12) * Meter, UnitVec2::GetLeft()};
+    const auto xfm2 = Transformation{Vec2(10, -12) * (RealNum(1) * Meter), UnitVec2::GetLeft()};
     body->SetTransform(xfm2.p, GetAngle(xfm2.q));
     EXPECT_EQ(body->GetTransformation().p, xfm2.p);
     EXPECT_NEAR(static_cast<double>(GetX(body->GetTransformation().q)),
@@ -288,7 +288,7 @@ TEST(Body, CreateLotsOfFixtures)
     bd.type = BodyType::Dynamic;
     auto conf = DiskShape::Conf{};
     conf.vertexRadius = RealNum{2.871f} * Meter;
-    conf.location = Vec2{1.912f, -77.31f} * Meter;
+    conf.location = Vec2{1.912f, -77.31f} * (RealNum(1) * Meter);
     conf.density = RealNum{1.3f} * KilogramPerSquareMeter;
     const auto shape = std::make_shared<DiskShape>(conf);
     const auto num = 5000;

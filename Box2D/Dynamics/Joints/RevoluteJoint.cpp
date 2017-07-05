@@ -176,7 +176,10 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
         m_impulse *= step.dtRatio;
         m_motorImpulse *= step.dtRatio;
 
-        const auto P = Momentum2D{Vec2{m_impulse.x, m_impulse.y} * Kilogram * MeterPerSecond};
+        const auto P = Momentum2D{
+            m_impulse.x * Kilogram * MeterPerSecond,
+            m_impulse.y * Kilogram * MeterPerSecond
+        };
         
         // AngularMomentum is L^2 M T^-1 QP^-1.
         const auto L = AngularMomentum{
@@ -228,8 +231,8 @@ bool RevoluteJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
         velB.angular += invRotInertiaB * incImpulse;
     }
 
-    const auto vb = velB.linear + GetRevPerpendicular(m_rB) * velB.angular / Radian;
-    const auto va = velA.linear + GetRevPerpendicular(m_rA) * velA.angular / Radian;
+    const auto vb = velB.linear + GetRevPerpendicular(m_rB) * (velB.angular / Radian);
+    const auto va = velA.linear + GetRevPerpendicular(m_rA) * (velA.angular / Radian);
     const auto vDelta = vb - va;
 
     // Solve limit constraint.
@@ -285,7 +288,10 @@ bool RevoluteJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
             }
         }
 
-        const auto P = Momentum2D{Vec2{impulse.x, impulse.y} * Kilogram * MeterPerSecond};
+        const auto P = Momentum2D{
+            impulse.x * Kilogram * MeterPerSecond,
+            impulse.y * Kilogram * MeterPerSecond
+        };
         const auto L = AngularMomentum{impulse.z * SquareMeter * Kilogram / (Second * Radian)};
         const auto LA = AngularMomentum{Cross(m_rA, P) / Radian} + L;
         const auto LB = AngularMomentum{Cross(m_rB, P) / Radian} + L;
@@ -301,7 +307,10 @@ bool RevoluteJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
         m_impulse.x += impulse.x;
         m_impulse.y += impulse.y;
 
-        const auto P = Momentum2D{Vec2{impulse.x, impulse.y} * Kilogram * MeterPerSecond};
+        const auto P = Momentum2D{
+            impulse.x * Kilogram * MeterPerSecond,
+            impulse.y * Kilogram * MeterPerSecond
+        };
         const auto LA = AngularMomentum{Cross(m_rA, P) / Radian};
         const auto LB = AngularMomentum{Cross(m_rB, P) / Radian};
 
@@ -404,7 +413,7 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
         K.ex.y = StripUnit(exy);
         K.ey.x = K.ex.y;
         K.ey.y = StripUnit(eyy);
-        const auto P = -Solve(K, StripUnits(C)) * Kilogram * Meter;
+        const auto P = -Solve(K, C) * (RealNum(1) * Kilogram);
 
         posA -= Position{invMassA * P, invRotInertiaA * Cross(rA, P) / Radian};
         posB += Position{invMassB * P, invRotInertiaB * Cross(rB, P) / Radian};
@@ -428,7 +437,11 @@ Length2D RevoluteJoint::GetAnchorB() const
 
 Force2D RevoluteJoint::GetReactionForce(Frequency inv_dt) const
 {
-    return inv_dt * Vec2{m_impulse.x, m_impulse.y} * Kilogram * MeterPerSecond;
+    const auto P = Momentum2D{
+        m_impulse.x * Kilogram * MeterPerSecond,
+        m_impulse.y * Kilogram * MeterPerSecond
+    };
+    return inv_dt * P;
 }
 
 Torque RevoluteJoint::GetReactionTorque(Frequency inv_dt) const

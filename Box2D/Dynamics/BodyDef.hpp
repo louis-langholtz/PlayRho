@@ -70,20 +70,20 @@ namespace box2d
         
         /// The world position of the body. Avoid creating bodies at the origin
         /// since this can lead to many overlapping shapes.
-        Length2D position = Vec2_zero * Meter;
+        Length2D position = Length2D(0, 0);
         
         /// The world angle of the body.
         Angle angle = Angle{0};
         
         /// The linear velocity of the body's origin in world co-ordinates (in m/s).
-        LinearVelocity2D linearVelocity = Vec2_zero * MeterPerSecond;
+        LinearVelocity2D linearVelocity = LinearVelocity2D{0, 0};
         
         /// The angular velocity of the body.
         AngularVelocity angularVelocity = AngularVelocity{0};
         
         /// Initial linear acceleration of the body.
         /// @note Usually this should be 0.
-        LinearAcceleration2D linearAcceleration = Vec2_zero * MeterPerSquareSecond;
+        LinearAcceleration2D linearAcceleration = LinearAcceleration2D{0, 0};
         
         /// Initial angular acceleration of the body.
         /// @note Usually this should be 0.

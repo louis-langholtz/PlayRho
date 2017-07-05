@@ -56,8 +56,8 @@ public:
             return *this;
         }
 
-        Length2D vertex1 = Vec2_zero * Meter;
-        Length2D vertex2 = Vec2_zero * Meter;
+        Length2D vertex1 = Length2D(0, 0);
+        Length2D vertex2 = Length2D(0, 0);
     };
     
     static constexpr Conf GetDefaultConf() noexcept

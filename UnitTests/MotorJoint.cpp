@@ -49,7 +49,7 @@ TEST(MotorJointDef, DefaultConstruction)
     EXPECT_EQ(def.collideConnected, false);
     EXPECT_EQ(def.userData, nullptr);
     
-    EXPECT_EQ(def.linearOffset, Vec2_zero * Meter);
+    EXPECT_EQ(def.linearOffset, Length2D(0, 0));
     EXPECT_EQ(def.angularOffset, Angle(0));
     EXPECT_EQ(def.maxForce, RealNum(1) * Newton);
     EXPECT_EQ(def.maxTorque, RealNum{1} * NewtonMeter);
@@ -109,7 +109,7 @@ TEST(MotorJoint, GetMotorJointDef)
     EXPECT_EQ(cdef.collideConnected, false);
     EXPECT_EQ(cdef.userData, nullptr);
     
-    EXPECT_EQ(cdef.linearOffset, Vec2_zero * Meter);
+    EXPECT_EQ(cdef.linearOffset, Length2D(0, 0));
     EXPECT_EQ(cdef.angularOffset, Angle(0));
     EXPECT_EQ(cdef.maxForce, RealNum(1) * Newton);
     EXPECT_EQ(cdef.maxTorque, RealNum{1} * NewtonMeter);
@@ -119,14 +119,14 @@ TEST(MotorJoint, GetMotorJointDef)
 TEST(MotorJoint, WithDynamicCircles)
 {
     const auto circle = std::make_shared<DiskShape>(RealNum{0.2f} * Meter);
-    auto world = World{WorldDef{}.UseGravity(Vec2_zero * MeterPerSquareSecond)};
-    const auto p1 = Vec2{-1, 0} * Meter;
-    const auto p2 = Vec2{+1, 0} * Meter;
+    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2D{0, 0})};
+    const auto p1 = Length2D{-RealNum(1) * Meter, RealNum(0) * Meter};
+    const auto p2 = Length2D{+RealNum(1) * Meter, RealNum(0) * Meter};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
-    //const auto anchor = Vec2(2, 1) * Meter;
+    //const auto anchor = Length2D(RealNum(2) * Meter, RealNum(1) * Meter);
     const auto jd = MotorJointDef{b1, b2};
     world.CreateJoint(jd);
     Step(world, Time{Second * RealNum{1}});
@@ -134,6 +134,6 @@ TEST(MotorJoint, WithDynamicCircles)
     EXPECT_NEAR(double(RealNum{b1->GetLocation().y / Meter}), 0.0, 0.001);
     EXPECT_NEAR(double(RealNum{b2->GetLocation().x / Meter}), +1.0, 0.01);
     EXPECT_NEAR(double(RealNum{b2->GetLocation().y / Meter}), 0.0, 0.01);
-    EXPECT_EQ(b1->GetAngle(), RealNum{0} * Degree);
-    EXPECT_EQ(b2->GetAngle(), RealNum{0} * Degree);
+    EXPECT_EQ(b1->GetAngle(), Angle{0});
+    EXPECT_EQ(b2->GetAngle(), Angle{0});
 }

@@ -37,15 +37,15 @@ struct DistanceJointDef : public JointDef
 
     /// Initialize the bodies, anchors, and length using the world anchors.
     DistanceJointDef(Body* bodyA, Body* bodyB,
-                     const Length2D anchorA = Vec2_zero * Meter,
-                     const Length2D anchorB = Vec2_zero * Meter,
+                     const Length2D anchorA = Length2D(0, 0),
+                     const Length2D anchorB = Length2D(0, 0),
                      Frequency freq = Frequency{0}, RealNum damp = 0) noexcept;
 
     /// The local anchor point relative to bodyA's origin.
-    Length2D localAnchorA = Vec2_zero * Meter;
+    Length2D localAnchorA = Length2D(0, 0);
 
     /// The local anchor point relative to bodyB's origin.
-    Length2D localAnchorB = Vec2_zero * Meter;
+    Length2D localAnchorB = Length2D(0, 0);
 
     /// The natural length between the anchor points.
     Length length = RealNum{1} * Meter;

@@ -250,7 +250,7 @@ namespace box2d
             }
                 
             default:
-                return Vec2_zero * Meter;
+                return Length2D(0, 0);
         }
     }
 
@@ -264,13 +264,13 @@ namespace box2d
             case 2:
             {
                 const auto delta = GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]);
-                return Sqrt(GetLengthSquared(StripUnits(delta)));
+                return Sqrt(GetLengthSquared(GetVec2(delta)));
             }
             case 3:
             {
                 const auto delta10 = GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]);
                 const auto delta20 = GetPointDelta(simplexEdges[2]) - GetPointDelta(simplexEdges[0]);
-                return Cross(StripUnits(delta10), StripUnits(delta20));
+                return Cross(GetVec2(delta10), GetVec2(delta20));
             }
             default: break; // should not be reached
         }
@@ -320,8 +320,8 @@ namespace box2d
         {
             case 1: return GetScaledDelta(simplex, 0);
             case 2: return GetScaledDelta(simplex, 0) + GetScaledDelta(simplex, 1);
-            case 3: return Vec2_zero * Meter;
-            default: return Vec2_zero * Meter;
+            case 3: return Length2D(0, 0);
+            default: return Length2D(0, 0);
         }
     }
 

@@ -85,7 +85,7 @@ TEST(DynamicTree, CopyConstruction)
         EXPECT_EQ(copy.GetMaxBalance(), orig.GetMaxBalance());
     }
 
-    const auto pid = orig.CreateProxy(AABB{Vec2(0, 0) * Meter, Vec2(1, 1) * Meter}, &orig);
+    const auto pid = orig.CreateProxy(AABB{Length2D(RealNum(0) * Meter, RealNum(0) * Meter), Length2D(RealNum(1) * Meter, RealNum(1) * Meter)}, &orig);
     {
         DynamicTree copy{orig};
         EXPECT_EQ(copy.GetRootIndex(), orig.GetRootIndex());
@@ -112,7 +112,7 @@ TEST(DynamicTree, CopyAssignment)
         EXPECT_EQ(copy.GetMaxBalance(), orig.GetMaxBalance());
     }
     
-    const auto pid = orig.CreateProxy(AABB{Vec2(0, 0) * Meter, Vec2(1, 1) * Meter}, &orig);
+    const auto pid = orig.CreateProxy(AABB{Length2D(RealNum(0) * Meter, RealNum(0) * Meter), Length2D(RealNum(1) * Meter, RealNum(1) * Meter)}, &orig);
     {
         DynamicTree copy;
         copy = orig;
@@ -133,7 +133,10 @@ TEST(DynamicTree, CreateAndDestroyProxy)
     ASSERT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
     ASSERT_EQ(foo.GetNodeCount(), DynamicTree::size_type(0));
 
-    const auto aabb = AABB{Vec2{3, 1} * Meter, Vec2{-5, -2} * Meter};
+    const auto aabb = AABB{
+        Length2D{RealNum(3) * Meter, RealNum(1) * Meter},
+        Length2D{-RealNum(5) * Meter, -RealNum(2) * Meter}
+    };
     const auto userdata = nullptr;
 
     const auto pid = foo.CreateProxy(aabb, userdata);
@@ -162,7 +165,10 @@ TEST(DynamicTree, FourIdenticalProxies)
     ASSERT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
     ASSERT_EQ(foo.GetNodeCount(), DynamicTree::size_type(0));
 
-    const auto aabb = AABB{Vec2{3, 1} * Meter, Vec2{-5, -2} * Meter};
+    const auto aabb = AABB{
+        Length2D{RealNum(3) * Meter, RealNum(1) * Meter},
+        Length2D{-RealNum(5) * Meter, -RealNum(2) * Meter}
+    };
     const auto userdata = nullptr;
     
     {

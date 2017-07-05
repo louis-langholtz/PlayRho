@@ -39,8 +39,8 @@ public:
         m_bodyA = m_world->CreateBody(def);
         m_bodyB = m_world->CreateBody(def);
 
-        m_bodyA->SetTransform(Vec2(-10.0f, 20.2f) * Meter, RealNum{0.0f} * Degree);
-        m_bodyB->SetTransform(m_bodyA->GetLocation() + Vec2(19.017401f, 0.13678508f) * Meter, RealNum{0} * Degree);
+        m_bodyA->SetTransform(Vec2(-10.0f, 20.2f) * Meter, Angle{0});
+        m_bodyB->SetTransform(m_bodyA->GetLocation() + Vec2(19.017401f, 0.13678508f) * Meter, Angle{0});
         
         CreateFixtures();
     }

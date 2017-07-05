@@ -342,7 +342,7 @@ namespace box2d
         
         void SetPointImpulses(size_type index, Momentum n, Momentum t)
         {
-            assert((index < m_pointCount) || (index < MaxManifoldPoints && n == 0 && t == 0));
+            assert((index < m_pointCount) || (index < MaxManifoldPoints && n == Momentum{0} && t == Momentum{0}));
             m_points[index].normalImpulse = n;
             m_points[index].tangentImpulse = t;
         }

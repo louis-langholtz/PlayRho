@@ -44,10 +44,10 @@ struct RevoluteJointDef : public JointDef
     RevoluteJointDef(Body* bodyA, Body* bodyB, const Length2D anchor, bool cc = false);
 
     /// The local anchor point relative to bodyA's origin.
-    Length2D localAnchorA = Vec2_zero * Meter;
+    Length2D localAnchorA = Length2D(0, 0);
 
     /// The local anchor point relative to bodyB's origin.
-    Length2D localAnchorB = Vec2_zero * Meter;
+    Length2D localAnchorB = Length2D(0, 0);
 
     /// The bodyB angle minus bodyA angle in the reference state (radians).
     Angle referenceAngle = Angle{0};

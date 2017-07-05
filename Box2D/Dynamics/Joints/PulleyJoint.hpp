@@ -40,16 +40,16 @@ struct PulleyJointDef : public JointDef
                     RealNum ratio);
 
     /// The first ground anchor in world coordinates. This point never moves.
-    Length2D groundAnchorA = Vec2{-1, 1} * Meter;
+    Length2D groundAnchorA = Length2D{RealNum(-1) * Meter, RealNum(1) * Meter};
 
     /// The second ground anchor in world coordinates. This point never moves.
-    Length2D groundAnchorB = Vec2{1, 1} * Meter;
+    Length2D groundAnchorB = Length2D{RealNum(1) * Meter, RealNum(1) * Meter};
 
     /// The local anchor point relative to bodyA's origin.
-    Length2D localAnchorA = Vec2{-1, 0} * Meter;
+    Length2D localAnchorA = Length2D{RealNum(-1) * Meter, RealNum(0) * Meter};
 
     /// The local anchor point relative to bodyB's origin.
-    Length2D localAnchorB = Vec2{1, 0} * Meter;
+    Length2D localAnchorB = Length2D{RealNum(1) * Meter, RealNum(0) * Meter};
 
     /// The a reference length for the segment attached to bodyA.
     Length lengthA = Length{0};

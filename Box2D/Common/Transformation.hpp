@@ -40,7 +40,7 @@ namespace box2d
         UnitVec2 q; ///< Rotational portion of the transformation. 8-bytes.
     };
     
-    constexpr auto Transform_identity = Transformation{Vec2_zero * Meter, UnitVec2::GetRight()};
+    constexpr auto Transform_identity = Transformation{Length2D(0, 0), UnitVec2::GetRight()};
     
     template <>
     constexpr inline bool IsValid(const Transformation& value) noexcept

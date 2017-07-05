@@ -77,14 +77,14 @@ TEST(UnitVec2, BottomIsFwdPerpOfRight)
 
 TEST(UnitVec2, ByAngleInDegreesNearOriented)
 {
-    EXPECT_NEAR(GetX(UnitVec2(RealNum(0) * Degree)), GetX(UnitVec2::GetRight()), 0.0001);
-    EXPECT_NEAR(GetY(UnitVec2(RealNum(0) * Degree)), GetY(UnitVec2::GetRight()), 0.0001);
-    EXPECT_NEAR(GetX(UnitVec2(RealNum(90) * Degree)), GetX(UnitVec2::GetTop()), 0.0001);
-    EXPECT_NEAR(GetY(UnitVec2(RealNum(90) * Degree)), GetY(UnitVec2::GetTop()), 0.0001);
-    EXPECT_NEAR(GetX(UnitVec2(RealNum(180) * Degree)), GetX(UnitVec2::GetLeft()), 0.0001);
-    EXPECT_NEAR(GetY(UnitVec2(RealNum(180) * Degree)), GetY(UnitVec2::GetLeft()), 0.0001);
-    EXPECT_NEAR(GetX(UnitVec2(RealNum(270) * Degree)), GetX(UnitVec2::GetBottom()), 0.0001);
-    EXPECT_NEAR(GetY(UnitVec2(RealNum(270) * Degree)), GetY(UnitVec2::GetBottom()), 0.0001);
+    EXPECT_NEAR(GetX(UnitVec2(Angle(0))), GetX(UnitVec2::GetRight()), 0.0001);
+    EXPECT_NEAR(GetY(UnitVec2(Angle(0))), GetY(UnitVec2::GetRight()), 0.0001);
+    EXPECT_NEAR(GetX(UnitVec2(Angle{RealNum(90) * Degree})), GetX(UnitVec2::GetTop()), 0.0001);
+    EXPECT_NEAR(GetY(UnitVec2(Angle{RealNum(90) * Degree})), GetY(UnitVec2::GetTop()), 0.0001);
+    EXPECT_NEAR(GetX(UnitVec2(Angle{RealNum(180) * Degree})), GetX(UnitVec2::GetLeft()), 0.0001);
+    EXPECT_NEAR(GetY(UnitVec2(Angle{RealNum(180) * Degree})), GetY(UnitVec2::GetLeft()), 0.0001);
+    EXPECT_NEAR(GetX(UnitVec2(Angle{RealNum(270) * Degree})), GetX(UnitVec2::GetBottom()), 0.0001);
+    EXPECT_NEAR(GetY(UnitVec2(Angle{RealNum(270) * Degree})), GetY(UnitVec2::GetBottom()), 0.0001);
 }
 
 TEST(UnitVec2, ByAngleInRadiansNearOriented)

@@ -33,7 +33,7 @@ struct MouseJointDef : public JointDef
 
     /// The initial world target point. This is assumed
     /// to coincide with the body anchor initially.
-    Length2D target = Vec2_zero * Meter;
+    Length2D target = Length2D(0, 0);
 
     /// Max force.
     /// @details
@@ -118,7 +118,7 @@ private:
     RealNum m_dampingRatio;
     
     // Solver shared
-    Momentum2D m_impulse = Vec2_zero * Kilogram * MeterPerSecond;
+    Momentum2D m_impulse = Momentum2D{0, 0};
     NonNegative<Force> m_maxForce;
     InvMass m_gamma = InvMass{0};
 

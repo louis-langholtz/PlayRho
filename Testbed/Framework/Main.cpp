@@ -177,7 +177,7 @@ namespace
     Length2D lastp;
     
     Coord2D mouseScreen = Coord2D{0.0, 0.0};
-    Length2D mouseWorld = Vec2_zero * Meter;
+    Length2D mouseWorld = Length2D{0, 0};
     
     const auto menuY = 10;
     const auto menuWidth = 200;
@@ -334,7 +334,7 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
             // Pan left
             if (mods == GLFW_MOD_CONTROL)
             {
-                g_testSuite->GetTest()->ShiftOrigin(Vec2(2.0f, 0.0f) * Meter);
+                g_testSuite->GetTest()->ShiftOrigin(Length2D(2.0f * Meter, 0.0f * Meter));
             }
             else
             {
@@ -346,7 +346,7 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
             // Pan right
             if (mods == GLFW_MOD_CONTROL)
             {
-                g_testSuite->GetTest()->ShiftOrigin(Vec2(-2.0f, 0.0f) * Meter);
+                g_testSuite->GetTest()->ShiftOrigin(Length2D(-2.0f * Meter, 0.0f * Meter));
             }
             else
             {
@@ -358,7 +358,7 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
             // Pan down
             if (mods == GLFW_MOD_CONTROL)
             {
-                g_testSuite->GetTest()->ShiftOrigin(Vec2(0.0f, 2.0f) * Meter);
+                g_testSuite->GetTest()->ShiftOrigin(Length2D(0.0f * Meter, 2.0f * Meter));
             }
             else
             {
@@ -370,7 +370,7 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
             // Pan up
             if (mods == GLFW_MOD_CONTROL)
             {
-                g_testSuite->GetTest()->ShiftOrigin(Vec2(0.0f, -2.0f) * Meter);
+                g_testSuite->GetTest()->ShiftOrigin(Length2D(0.0f * Meter, -2.0f * Meter));
             }
             else
             {

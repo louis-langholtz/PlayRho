@@ -35,10 +35,10 @@ struct RopeJointDef : public JointDef
     constexpr RopeJointDef(Body* bodyA, Body* bodyB) noexcept: JointDef(JointType::Rope, bodyA, bodyB) {}
 
     /// The local anchor point relative to bodyA's origin.
-    Length2D localAnchorA = Vec2{-1, 0} * Meter;
+    Length2D localAnchorA = Length2D{RealNum(-1) * Meter, RealNum(0) * Meter};
 
     /// The local anchor point relative to bodyB's origin.
-    Length2D localAnchorB = Vec2{1, 0} * Meter;
+    Length2D localAnchorB = Length2D{RealNum(1) * Meter, RealNum(0) * Meter};
 
     /// The maximum length of the rope.
     Length maxLength = Length{0};

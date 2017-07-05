@@ -131,8 +131,8 @@ TEST(Simplex, DefaultConstruction)
 
 TEST(Simplex, Get1)
 {
-    const auto va = Vec2{-4, 33} * Meter;
-    const auto vb = Vec2{RealNum(901.5), RealNum(0.06)} * Meter;
+    const auto va = Length2D{-RealNum(4) * Meter, RealNum(33) * Meter};
+    const auto vb = Length2D{RealNum(901.5) * Meter, RealNum(0.06) * Meter};
     const auto ia = SimplexEdge::index_type{2};
     const auto ib = SimplexEdge::index_type{7};
     const auto sv = SimplexEdge{va, ia, vb, ib};
@@ -153,8 +153,8 @@ TEST(Simplex, Get1)
 
 TEST(Simplex, Get2_of_same)
 {
-    const auto va = Vec2{-4, 33} * Meter;
-    const auto vb = Vec2{RealNum(901.5), RealNum(0.06)} * Meter;
+    const auto va = Length2D{-RealNum(4) * Meter, RealNum(33) * Meter};
+    const auto vb = Length2D{RealNum(901.5) * Meter, RealNum(0.06) * Meter};
     const auto ia = SimplexEdge::index_type{2};
     const auto ib = SimplexEdge::index_type{7};
     const auto sv = SimplexEdge{va, ia, vb, ib};
@@ -176,8 +176,8 @@ TEST(Simplex, Get2_of_same)
 
 TEST(Simplex, Get2_fwd_perp)
 {
-    const auto va0 = Vec2{-4, 33} * Meter;
-    const auto vb0 = Vec2{RealNum(901.5), RealNum(0.06)} * Meter;
+    const auto va0 = Length2D{-RealNum(4) * Meter, RealNum(33) * Meter};
+    const auto vb0 = Length2D{RealNum(901.5) * Meter, RealNum(0.06) * Meter};
     const auto ia0 = SimplexEdge::index_type{2};
     const auto ib0 = SimplexEdge::index_type{7};
     const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
@@ -216,8 +216,8 @@ TEST(Simplex, Get2_fwd_perp)
 
 TEST(Simplex, Get2_rev_perp)
 {
-    const auto va0 = Vec2{-4, 33} * Meter;
-    const auto vb0 = Vec2{RealNum(901.5), RealNum(0.06)} * Meter;
+    const auto va0 = Length2D{-RealNum(4) * Meter, RealNum(33) * Meter};
+    const auto vb0 = Length2D{RealNum(901.5) * Meter, RealNum(0.06) * Meter};
     const auto ia0 = SimplexEdge::index_type{2};
     const auto ib0 = SimplexEdge::index_type{7};
     const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
@@ -256,14 +256,14 @@ TEST(Simplex, Get2_rev_perp)
 
 TEST(Simplex, Get2_rot_plus_45)
 {
-    const auto va0 = Vec2{-4, 33} * Meter;
-    const auto vb0 = Vec2{RealNum(901.5), RealNum(0.06)} * Meter;
+    const auto va0 = Length2D{-RealNum(4) * Meter, RealNum(33) * Meter};
+    const auto vb0 = Length2D{RealNum(901.5) * Meter, RealNum(0.06) * Meter};
     const auto ia0 = SimplexEdge::index_type{2};
     const auto ib0 = SimplexEdge::index_type{7};
     const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
     
-    const auto va1 = Rotate(va0, UnitVec2{RealNum{45.0f} * Degree});
-    const auto vb1 = Rotate(vb0, UnitVec2{RealNum{45.0f} * Degree});
+    const auto va1 = Rotate(va0, UnitVec2{Angle{RealNum{45.0f} * Degree}});
+    const auto vb1 = Rotate(vb0, UnitVec2{Angle{RealNum{45.0f} * Degree}});
     const auto ia1 = SimplexEdge::index_type{4};
     const auto ib1 = SimplexEdge::index_type{1};
     const auto sv1 = SimplexEdge{va1, ia1, vb1, ib1};
@@ -296,14 +296,14 @@ TEST(Simplex, Get2_rot_plus_45)
 
 TEST(Simplex, Get2_rot45_half)
 {
-    const auto va0 = Vec2{-4, 33} * Meter; // upper left
-    const auto vb0 = Vec2{901, 6} * Meter; // lower right
+    const auto va0 = Length2D{-RealNum(4) * Meter, RealNum(33) * Meter}; // upper left
+    const auto vb0 = Length2D{RealNum(901) * Meter, RealNum(6) * Meter}; // lower right
     const auto ia0 = SimplexEdge::index_type{2};
     const auto ib0 = SimplexEdge::index_type{7};
     const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
     
-    const auto va1 = Rotate(va0, UnitVec2{RealNum{45.0f} * Degree}) / RealNum{2}; // Vec2{-13.081475, 10.253049}
-    const auto vb1 = Rotate(vb0, UnitVec2{RealNum{45.0f} * Degree}) / RealNum{2}; // Vec2{316.4303, 320.67291}
+    const auto va1 = Rotate(va0, UnitVec2{Angle{RealNum{45.0f} * Degree}}) / RealNum{2}; // Vec2{-13.081475, 10.253049}
+    const auto vb1 = Rotate(vb0, UnitVec2{Angle{RealNum{45.0f} * Degree}}) / RealNum{2}; // Vec2{316.4303, 320.67291}
     EXPECT_NEAR(double(RealNum{va1.x / Meter}), -13.081475, 0.00001);
     EXPECT_NEAR(double(RealNum{va1.y / Meter}),  10.253049, 0.00001);
     EXPECT_NEAR(double(RealNum{vb1.x / Meter}), 316.4303,   0.0001);

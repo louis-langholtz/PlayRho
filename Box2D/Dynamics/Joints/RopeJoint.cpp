@@ -123,8 +123,8 @@ bool RopeJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     auto velB = bodyConstraintB->GetVelocity();
 
     // Cdot = dot(u, v + cross(w, r))
-    const auto vpA = velA.linear + GetRevPerpendicular(m_rA) * velA.angular / Radian;
-    const auto vpB = velB.linear + GetRevPerpendicular(m_rB) * velB.angular / Radian;
+    const auto vpA = velA.linear + GetRevPerpendicular(m_rA) * (velA.angular / Radian);
+    const auto vpB = velB.linear + GetRevPerpendicular(m_rB) * (velB.angular / Radian);
     const auto C = m_length - m_maxLength;
     const auto vpDelta = LinearVelocity2D{vpB - vpA};
 

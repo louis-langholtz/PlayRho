@@ -49,15 +49,15 @@ TEST(RevoluteJoint, Construction)
     jd.collideConnected = true;
     jd.userData = reinterpret_cast<void*>(0x011);
 
-    jd.localAnchorA = Vec2(4, 5) * Meter;
-    jd.localAnchorB = Vec2(6, 7) * Meter;
+    jd.localAnchorA = Length2D(RealNum(4) * Meter, RealNum(5) * Meter);
+    jd.localAnchorB = Length2D(RealNum(6) * Meter, RealNum(7) * Meter);
     jd.enableLimit = true;
     jd.enableMotor = true;
     jd.motorSpeed = RealNum{4.4f} * RadianPerSecond;
     jd.maxMotorTorque = RealNum{1.0f} * NewtonMeter;
-    jd.lowerAngle = RealNum{33.0f} * Degree;
-    jd.upperAngle = RealNum{40.0f} * Degree;
-    jd.referenceAngle = RealNum{45.0f} * Degree;
+    jd.lowerAngle = Angle{RealNum{33.0f} * Degree};
+    jd.upperAngle = Angle{RealNum{40.0f} * Degree};
+    jd.referenceAngle = Angle{RealNum{45.0f} * Degree};
     
     const auto joint = RevoluteJoint{jd};
 
@@ -82,8 +82,8 @@ TEST(RevoluteJoint, MovesDynamicCircles)
 {
     const auto circle = std::make_shared<DiskShape>(RealNum{0.2f} * Meter);
     World world;
-    const auto p1 = Vec2{-1, 0} * Meter;
-    const auto p2 = Vec2{+1, 0} * Meter;
+    const auto p1 = Length2D{-RealNum(1) * Meter, RealNum(0) * Meter};
+    const auto p2 = Length2D{+RealNum(1) * Meter, RealNum(0) * Meter};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
@@ -97,8 +97,8 @@ TEST(RevoluteJoint, MovesDynamicCircles)
     EXPECT_NEAR(double(RealNum{b1->GetLocation().y / Meter}), -4, 0.001);
     EXPECT_NEAR(double(RealNum{b2->GetLocation().x / Meter}), 0, 0.01);
     EXPECT_NEAR(double(RealNum{b2->GetLocation().y / Meter}), -4, 0.01);
-    EXPECT_EQ(b1->GetAngle(), RealNum{0} * Degree);
-    EXPECT_EQ(b2->GetAngle(), RealNum{0} * Degree);
+    EXPECT_EQ(b1->GetAngle(), Angle{0});
+    EXPECT_EQ(b2->GetAngle(), Angle{0});
 }
 
 TEST(RevoluteJoint, LimitEnabledDynamicCircles)
@@ -107,13 +107,13 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
                                                     .UseVertexRadius(RealNum{0.2f} * Meter)
                                                     .UseDensity(RealNum(1) * KilogramPerSquareMeter));
     World world;
-    const auto p1 = Vec2{-1, 0} * Meter;
-    const auto p2 = Vec2{+1, 0} * Meter;
+    const auto p1 = Length2D{-RealNum(1) * Meter, RealNum(0) * Meter};
+    const auto p2 = Length2D{+RealNum(1) * Meter, RealNum(0) * Meter};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
-    auto jd = RevoluteJointDef{b1, b2, Vec2_zero * Meter};
+    auto jd = RevoluteJointDef{b1, b2, Length2D(0, 0)};
     jd.enableLimit = true;
     const auto joint = world.CreateJoint(jd);
     EXPECT_NE(joint, nullptr);
@@ -122,8 +122,8 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
     EXPECT_NEAR(double(RealNum{b1->GetLocation().y / Meter}), -4, 0.001);
     EXPECT_NEAR(double(RealNum{b2->GetLocation().x / Meter}), +1.0, 0.01);
     EXPECT_NEAR(double(RealNum{b2->GetLocation().y / Meter}), -4, 0.01);
-    EXPECT_EQ(b1->GetAngle(), RealNum{0} * Degree);
-    EXPECT_EQ(b2->GetAngle(), RealNum{0} * Degree);
+    EXPECT_EQ(b1->GetAngle(), Angle{0});
+    EXPECT_EQ(b2->GetAngle(), Angle{0});
     EXPECT_TRUE(IsEnabled(*joint));
     b1->UnsetAwake();
     b2->UnsetAwake();
@@ -138,10 +138,13 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
 
 TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
 {
-    World world{WorldDef{}.UseGravity(Vec2{0, -10} * MeterPerSquareSecond)};
+    World world{WorldDef{}.UseGravity(LinearAcceleration2D{
+        RealNum(0) * MeterPerSquareSecond,
+        -RealNum(10) * MeterPerSquareSecond
+    })};
     
-    const auto p1 = Vec2{0, 4} * Meter; // Vec2{-1, 0};
-    const auto p2 = Vec2{0, -2} * Meter; // Vec2{+1, 0};
+    const auto p1 = Length2D{RealNum(0) * Meter, RealNum(4) * Meter}; // Vec2{-1, 0};
+    const auto p2 = Length2D{RealNum(0) * Meter, -RealNum(2) * Meter}; // Vec2{+1, 0};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Static).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
 
@@ -154,7 +157,7 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
     shape2->SetDensity(RealNum{1} * KilogramPerSquareMeter);
     b2->CreateFixture(shape2);
     
-    auto jd = RevoluteJointDef{b1, b2, Vec2{0, 0} * Meter};
+    auto jd = RevoluteJointDef{b1, b2, Length2D(0, 0)};
     const auto joint = world.CreateJoint(jd);
     
     for (auto i = 0; i < 1000; ++i)
@@ -165,7 +168,7 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
                     double(RealNum{p2.x / Meter}), 0.0001);
         EXPECT_NEAR(double(RealNum{b2->GetLocation().y / Meter}),
                     double(RealNum{p2.y / Meter}), 0.0001);
-        EXPECT_EQ(b2->GetAngle(), RealNum{0} * Degree);
+        EXPECT_EQ(b2->GetAngle(), Angle{0});
     }
     
     world.Destroy(joint);
@@ -175,7 +178,7 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
         Step(world, Time{Second * RealNum{0.1f}});
         EXPECT_EQ(b1->GetLocation(), p1);
         EXPECT_NE(b2->GetLocation(), p2);
-        EXPECT_EQ(b2->GetAngle(), RealNum{0} * Degree);
+        EXPECT_EQ(b2->GetAngle(), Angle{0});
     }
 
 }

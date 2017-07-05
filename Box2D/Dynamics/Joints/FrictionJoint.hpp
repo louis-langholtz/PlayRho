@@ -35,10 +35,10 @@ struct FrictionJointDef : public JointDef
     FrictionJointDef(Body* bodyA, Body* bodyB, const Length2D anchor) noexcept;
 
     /// The local anchor point relative to bodyA's origin.
-    Length2D localAnchorA = Vec2_zero * Meter;
+    Length2D localAnchorA = Length2D(0, 0);
 
     /// The local anchor point relative to bodyB's origin.
-    Length2D localAnchorB = Vec2_zero * Meter;
+    Length2D localAnchorB = Length2D(0, 0);
 
     /// The maximum friction force in N.
     Force maxForce = Force{0};
@@ -88,7 +88,7 @@ private:
     Length2D m_localAnchorB;
 
     // Solver shared
-    Momentum2D m_linearImpulse = Vec2_zero * Kilogram * MeterPerSecond;
+    Momentum2D m_linearImpulse = Momentum2D{0, 0};
     AngularMomentum m_angularImpulse = AngularMomentum{0};
     Force m_maxForce;
     Torque m_maxTorque;

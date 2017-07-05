@@ -179,7 +179,7 @@ void ShapeDrawer::Draw(const DistanceProxy& shape)
     }
     else if (vertexCount == 1)
     {
-        DrawCorner(drawer, vertices[0], r, RealNum{0} * Degree, RealNum{360} * Degree, skinColor);
+        DrawCorner(drawer, vertices[0], r, Angle{0}, RealNum{360} * Degree, skinColor);
     }
 }
 
@@ -516,7 +516,11 @@ void Test::CompleteBombSpawn(const Length2D& p)
         return;
     }
 
-    const auto vel = (m_bombSpawnPoint - p) * RealNum{30} / Second;
+    const auto relP = m_bombSpawnPoint - p;
+    const auto vel = LinearVelocity2D{
+        RealNum{30} * relP.GetX() / Second,
+        RealNum{30} * relP.GetY() / Second
+    };
     LaunchBomb(m_bombSpawnPoint, vel);
     m_bombSpawning = false;
 }
@@ -559,8 +563,11 @@ void Test::MouseMove(const Length2D& p)
 
 void Test::LaunchBomb()
 {
-    const auto p = Vec2(RandomFloat(-15.0f, 15.0f), 40.0f) * Meter;
-    const auto v = RealNum{-100} * p / Second;
+    const auto p = Length2D(RandomFloat(-15.0f, 15.0f) * Meter, 40.0f * Meter);
+    const auto v = LinearVelocity2D{
+        RealNum{-100} * p.GetX() / Second,
+        RealNum{-100} * p.GetY() / Second
+    };
     LaunchBomb(p, v);
 }
 

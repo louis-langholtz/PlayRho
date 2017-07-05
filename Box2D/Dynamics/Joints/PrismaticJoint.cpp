@@ -227,7 +227,11 @@ void PrismaticJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
         m_impulse *= step.dtRatio;
         m_motorImpulse *= step.dtRatio;
 
-        const auto Px = Momentum2D{m_impulse.x * m_perp * Kilogram * MeterPerSecond};
+        const auto ulImpulseX = m_impulse.x * m_perp;
+        const auto Px = Momentum2D{
+            ulImpulseX.GetX() * Kilogram * MeterPerSecond,
+            ulImpulseX.GetY() * Kilogram * MeterPerSecond
+        };
         const auto Pxs1 = Momentum{m_impulse.x * m_s1 * Kilogram / Second};
         const auto Pxs2 = Momentum{m_impulse.x * m_s2 * Kilogram / Second};
         const auto PzLength = Momentum{m_motorImpulse + m_impulse.z * Kilogram * MeterPerSecond};
@@ -324,8 +328,10 @@ bool PrismaticJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const 
 
         const auto df = m_impulse - f1;
 
+        const auto ulP = df.x * m_perp + df.z * m_axis;
         const auto P = Momentum2D{
-            (df.x * m_perp + df.z * m_axis) * Kilogram * MeterPerSecond
+            ulP.GetX() * Kilogram * MeterPerSecond,
+            ulP.GetY() * Kilogram * MeterPerSecond
         };
         const auto LA = AngularMomentum{
             (df.x * m_s1 + df.y * Meter + df.z * m_a1) * Kilogram * MeterPerSecond / Radian
@@ -344,7 +350,11 @@ bool PrismaticJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const 
         m_impulse.x += df.x;
         m_impulse.y += df.y;
 
-        const auto P = Momentum2D{df.x * m_perp * Kilogram * MeterPerSecond};
+        const auto ulP = df.x * m_perp;
+        const auto P = Momentum2D{
+            ulP.GetX() * Kilogram * MeterPerSecond,
+            ulP.GetY() * Kilogram * MeterPerSecond
+        };
         const auto LA = AngularMomentum{
             (df.x * m_s1 + df.y * Meter) * Kilogram * MeterPerSecond / Radian
         };
@@ -498,11 +508,11 @@ bool PrismaticJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const 
         impulse.z = 0;
     }
 
-    const auto P = (impulse.x * perp + impulse.z * axis) * Kilogram * Meter;
+    const auto P = (impulse.x * perp + impulse.z * axis) * (RealNum(1) * Kilogram * Meter);
     const auto LA = (impulse.x * s1 + impulse.y * Meter + impulse.z * a1) * Kilogram * Meter / Radian;
     const auto LB = (impulse.x * s2 + impulse.y * Meter + impulse.z * a2) * Kilogram * Meter / Radian;
 
-    posA -= Position{invMassA * P, invRotInertiaA * LA};
+    posA -= Position{Length2D{invMassA * P}, invRotInertiaA * LA};
     posB += Position{invMassB * P, invRotInertiaB * LB};
 
     bodyConstraintA->SetPosition(posA);
@@ -523,9 +533,13 @@ Length2D PrismaticJoint::GetAnchorB() const
 
 Force2D PrismaticJoint::GetReactionForce(Frequency inv_dt) const
 {
+    const auto ulImpulse = m_impulse.x * m_perp;
+    const auto impulse = Momentum2D{
+        ulImpulse.GetX() * Kilogram * MeterPerSecond,
+        ulImpulse.GetY() * Kilogram * MeterPerSecond
+    };
     const auto P = Momentum2D{
-        m_impulse.x * m_perp * Kilogram * MeterPerSecond +
-        (m_motorImpulse + m_impulse.z * Kilogram * MeterPerSecond) * m_axis
+        impulse + (m_motorImpulse + m_impulse.z * Kilogram * MeterPerSecond) * m_axis
     };
     return inv_dt * P;
 }
@@ -560,8 +574,8 @@ LinearVelocity PrismaticJoint::GetJointSpeed() const
     const auto wA = bA->GetVelocity().angular;
     const auto wB = bB->GetVelocity().angular;
 
-    const auto vel = (vB + (GetRevPerpendicular(rB) * wB) / Radian) - (vA + (GetRevPerpendicular(rA) * wA) / Radian);
-    return Dot(d, (GetRevPerpendicular(axis) * wA) / Radian) + Dot(axis, vel);
+    const auto vel = vB + (GetRevPerpendicular(rB) * (wB / Radian)) - (vA + (GetRevPerpendicular(rA) * (wA / Radian)));
+    return Dot(d, (GetRevPerpendicular(axis) * (wA / Radian))) + Dot(axis, vel);
 }
 
 bool PrismaticJoint::IsLimitEnabled() const noexcept

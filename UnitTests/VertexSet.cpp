@@ -37,7 +37,7 @@ TEST(VertexSet, DefaultConstruction)
     const auto set = VertexSet{};
     EXPECT_EQ(set.size(), std::size_t(0));
     EXPECT_EQ(set.begin(), set.end());
-    EXPECT_EQ(set.find(Vec2{0, 0} * Meter), set.end());
+    EXPECT_EQ(set.find(Length2D(0, 0)), set.end());
 }
 
 TEST(VertexSet, Add)
@@ -45,36 +45,39 @@ TEST(VertexSet, Add)
     auto set = VertexSet{};
     ASSERT_EQ(set.size(), std::size_t(0));
 
-    EXPECT_TRUE(set.add(Vec2{1, 1} * Meter));
+    EXPECT_TRUE(set.add(Length2D{RealNum(1) * Meter, RealNum(1) * Meter}));
     EXPECT_EQ(set.size(), std::size_t(1));
 
-    EXPECT_FALSE(set.add(Vec2{1, 1} * Meter));
+    EXPECT_FALSE(set.add(Length2D{RealNum(1) * Meter, RealNum(1) * Meter}));
     EXPECT_EQ(set.size(), std::size_t(1));
     
-    const auto v = Vec2{RealNum(0), RealNum(0)} * Meter;
+    const auto v = Length2D{RealNum(0) * Meter, RealNum(0) * Meter};
 
     EXPECT_TRUE(set.add(v));
     EXPECT_EQ(set.size(), std::size_t(2));
     
-    EXPECT_FALSE(set.add(Vec2{1, 1} * Meter));
+    EXPECT_FALSE(set.add(Length2D{RealNum(1) * Meter, RealNum(1) * Meter}));
     EXPECT_EQ(set.size(), std::size_t(2));
     
     EXPECT_FALSE(set.add(v));
     EXPECT_EQ(set.size(), std::size_t(2));
     
-    const auto v_prime = v + Vec2{std::numeric_limits<RealNum>::min(), std::numeric_limits<RealNum>::min()} * Meter;
+    const auto v_prime = v + Length2D{
+        std::numeric_limits<RealNum>::min() * Meter,
+        std::numeric_limits<RealNum>::min() * Meter
+    };
     
     ASSERT_NE(v, v_prime);
     
     EXPECT_FALSE(set.add(v_prime));
     EXPECT_EQ(set.size(), std::size_t(2));
     
-    EXPECT_TRUE(set.add(Vec2{4, 5} * Meter));
+    EXPECT_TRUE(set.add(Length2D{RealNum(4) * Meter, RealNum(5) * Meter}));
     EXPECT_EQ(set.size(), std::size_t(3));
     
-    EXPECT_TRUE(set.add(Vec2{6, 5} * Meter));
+    EXPECT_TRUE(set.add(Length2D{RealNum(6) * Meter, RealNum(5) * Meter}));
     EXPECT_EQ(set.size(), std::size_t(4));
 
-    EXPECT_TRUE(set.add(Vec2{8, 5} * Meter));
+    EXPECT_TRUE(set.add(Length2D{RealNum(8) * Meter, RealNum(5) * Meter}));
     EXPECT_EQ(set.size(), std::size_t(5));
 }

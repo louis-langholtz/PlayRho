@@ -49,8 +49,8 @@ TEST(FrictionJointDef, DefaultConstruction)
     EXPECT_EQ(def.collideConnected, false);
     EXPECT_EQ(def.userData, nullptr);
     
-    EXPECT_EQ(def.localAnchorA, Vec2_zero * Meter);
-    EXPECT_EQ(def.localAnchorB, Vec2_zero * Meter);
+    EXPECT_EQ(def.localAnchorA, Length2D(0, 0));
+    EXPECT_EQ(def.localAnchorB, Length2D(0, 0));
     EXPECT_EQ(def.maxForce, RealNum(0) * Newton);
     EXPECT_EQ(def.maxTorque, RealNum{0} * NewtonMeter);
 }
@@ -95,8 +95,8 @@ TEST(FrictionJoint, GetFrictionJointDef)
     EXPECT_EQ(cdef.collideConnected, false);
     EXPECT_EQ(cdef.userData, nullptr);
     
-    EXPECT_EQ(cdef.localAnchorA, Vec2_zero * Meter);
-    EXPECT_EQ(cdef.localAnchorB, Vec2_zero * Meter);
+    EXPECT_EQ(cdef.localAnchorA, Length2D(0, 0));
+    EXPECT_EQ(cdef.localAnchorB, Length2D(0, 0));
     EXPECT_EQ(cdef.maxForce, RealNum(0) * Newton);
     EXPECT_EQ(cdef.maxTorque, RealNum{0} * NewtonMeter);
 }
@@ -104,9 +104,9 @@ TEST(FrictionJoint, GetFrictionJointDef)
 TEST(FrictionJoint, WithDynamicCircles)
 {
     const auto circle = std::make_shared<DiskShape>(RealNum{0.2f} * Meter);
-    World world{WorldDef{}.UseGravity(Vec2_zero * MeterPerSquareSecond)};
-    const auto p1 = Vec2{-1, 0} * Meter;
-    const auto p2 = Vec2{+1, 0} * Meter;
+    World world{WorldDef{}.UseGravity(LinearAcceleration2D{0, 0})};
+    const auto p1 = Length2D{-RealNum(1) * Meter, RealNum(0) * Meter};
+    const auto p2 = Length2D{+RealNum(1) * Meter, RealNum(0) * Meter};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
@@ -120,6 +120,6 @@ TEST(FrictionJoint, WithDynamicCircles)
     EXPECT_NEAR(double(RealNum{b1->GetLocation().y / Meter}), 0.0, 0.001);
     EXPECT_NEAR(double(RealNum{b2->GetLocation().x / Meter}), +1.0, 0.01);
     EXPECT_NEAR(double(RealNum{b2->GetLocation().y / Meter}), 0.0, 0.01);
-    EXPECT_EQ(b1->GetAngle(), RealNum{0} * Degree);
-    EXPECT_EQ(b2->GetAngle(), RealNum{0} * Degree);
+    EXPECT_EQ(b1->GetAngle(), Angle{0});
+    EXPECT_EQ(b2->GetAngle(), Angle{0});
 }

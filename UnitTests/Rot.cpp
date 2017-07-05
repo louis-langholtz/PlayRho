@@ -29,7 +29,7 @@ TEST(Rot, ByteSizeIs8)
 
 TEST(Rot, sin)
 {
-    Rot rot0(RealNum{0} * Degree);
+    Rot rot0(Angle{0});
     Rot rot90(Radian * Pi / 2);
     Rot rot180(Radian * Pi);
     Rot rot270(Radian * 3 * Pi / 2);
@@ -46,7 +46,7 @@ TEST(Rot, sin)
 
 TEST(Rot, cos)
 {
-    Rot rot0(RealNum{0} * Degree);
+    Rot rot0(Angle{0});
     Rot rot90(Radian * Pi / 2);
     Rot rot180(Radian * 1 * Pi);
     Rot rot360(Radian * 2 * Pi);
@@ -60,7 +60,7 @@ TEST(Rot, cos)
 
 TEST(Rot, Add)
 {
-    Rot rot0(RealNum{0} * Degree);
+    Rot rot0(Angle{0});
     Rot rot90(Radian * Pi / 2);
     Rot rot180(Radian * Pi);
     Rot rot270(Radian * 3 * Pi / 2);
@@ -87,8 +87,8 @@ TEST(Rot, Add)
 
 TEST(Rot, Negate)
 {
-    EXPECT_EQ(round(DegreesToRadians(0)), round(ToRadians(Rot(RealNum{0} * Degree).FlipY())));
-    EXPECT_EQ(round(ToRadians(Rot(360 * Degree))), round(ToRadians(Rot(RealNum{0} * Degree).FlipY())));
+    EXPECT_EQ(round(DegreesToRadians(0)), round(ToRadians(Rot(Angle{0}).FlipY())));
+    EXPECT_EQ(round(ToRadians(Rot(360 * Degree))), round(ToRadians(Rot(Angle{0}).FlipY())));
     EXPECT_EQ(-round(DegreesToRadians(45)), round(ToRadians(Rot(45 * Degree).FlipY())));
     EXPECT_EQ(-round(DegreesToRadians(10)), round(ToRadians(Rot(10 * Degree).FlipY())));
     EXPECT_EQ(round(ToRadians(Rot(315 * Degree))), round(ToRadians(Rot(45 * Degree).FlipY())));
@@ -101,7 +101,7 @@ TEST(Rot, Negate)
 
 TEST(Rot, Subtract)
 {
-    Rot rot0(RealNum{0} * Degree);
+    Rot rot0(Angle{0});
     Rot rot90(Radian * Pi / 2);
     Rot rot180(Radian * Pi);
     Rot rot270(Radian * 3 * Pi / 2);

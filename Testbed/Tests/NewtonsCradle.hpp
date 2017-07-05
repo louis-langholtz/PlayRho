@@ -33,10 +33,10 @@ namespace box2d {
     {
     public:
         const RealNum scale = RealNum(1);
-        const Length ball_radius = scale * 2 * Meter; // 2
+        const Length ball_radius = scale * RealNum(2) * Meter; // 2
         const Length frame_width_per_arm = ball_radius * RealNum{2};
-        const Length frame_height = scale * 30 * Meter; // 30
-        const Length arm_length = scale * 16 * Meter; // 16
+        const Length frame_height = scale * RealNum(30) * Meter; // 30
+        const Length arm_length = scale * RealNum(16) * Meter; // 16
         static const auto default_num_arms = 5;
 
         NewtonsCradle()

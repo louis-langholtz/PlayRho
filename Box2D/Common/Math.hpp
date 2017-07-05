@@ -41,6 +41,18 @@ namespace box2d
 {
 // Other templates.
 
+template <typename T>
+constexpr inline auto GetX(const T value)
+{
+    return value.GetX();
+}
+
+template <typename T>
+constexpr inline auto GetY(const T value)
+{
+    return value.GetY();
+}
+
 template<class TYPE>
 constexpr inline auto Square(TYPE t) noexcept { return t * t; }
 
@@ -130,6 +142,11 @@ template <>
 inline Vec2 round(Vec2 value, std::uint32_t precision)
 {
     return Vec2{round(value.x, precision), round(value.y, precision)};
+}
+
+constexpr inline Vec2 GetVec2(const UnitVec2 value)
+{
+    return Vec2{value.GetX(), value.GetY()};
 }
 
 /// Gets whether a given value is almost zero.
@@ -278,7 +295,7 @@ inline auto GetLength(T value)
 template <typename T1, typename T2>
 constexpr inline auto Dot(const T1 a, const T2 b) noexcept
 {
-    return (GetX(a) * GetX(b)) + (GetY(a) * GetY(b));
+    return (a.GetX() * b.GetX()) + (a.GetY() * b.GetY());
 }
 
 /// Perform the dot product on two vectors.
@@ -329,7 +346,7 @@ constexpr inline auto Cross(const T1 a, const T2 b) noexcept
     //
     // Vectors between 0 and 180 degrees of each other excluding 90 degrees...
     // If a = Vec2{1, 2} and b = Vec2{-1, 2} then: a x b = 1 * 2 - 2 * (-1) = 2 + 2 = 4.
-    return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
+    return (a.GetX() * b.GetY()) - (a.GetY() * b.GetX());
 }
 
 template <>
@@ -340,12 +357,13 @@ constexpr inline auto Cross(const Vec3 a, const Vec3 b) noexcept
 
 /// Solve A * x = b, where b is a column vector. This is more efficient
 /// than computing the inverse in one-shot cases.
-constexpr Vec2 Solve(const Mat22 mat, const Vec2 b) noexcept
+template <typename T>
+constexpr T Solve(const Mat22 mat, const T b) noexcept
 {
     const auto cp = Cross(mat.ex, mat.ey);
     return (cp != 0)?
-        Vec2{(mat.ey.y * b.x - mat.ey.x * b.y) / cp, (mat.ex.x * b.y - mat.ex.y * b.x) / cp}:
-        Vec2{0, 0};
+        T{(mat.ey.y * b.GetX() - mat.ey.x * b.GetY()) / cp, (mat.ex.x * b.GetY() - mat.ex.y * b.GetX()) / cp}:
+        T{0, 0};
 }
 
 constexpr Mat22 Invert(const Mat22 value) noexcept
@@ -371,13 +389,14 @@ constexpr Vec3 Solve33(const Mat33& mat, const Vec3 b) noexcept
 /// Solve A * x = b, where b is a column vector. This is more efficient
 /// than computing the inverse in one-shot cases. Solve only the upper
 /// 2-by-2 matrix equation.
-constexpr Vec2 Solve22(const Mat33& mat, const Vec2 b) noexcept
+    template <typename T>
+constexpr T Solve22(const Mat33& mat, const T b) noexcept
 {
     const auto cp = mat.ex.x * mat.ey.y - mat.ey.x * mat.ex.y;
     const auto det = (cp != 0)? 1 / cp: cp;
-    const auto x = det * (mat.ey.y * b.x - mat.ey.x * b.y);
-    const auto y = det * (mat.ex.x * b.y - mat.ex.y * b.x);
-    return Vec2{x, y};
+    const auto x = det * (mat.ey.y * b.GetX() - mat.ey.x * b.GetY());
+    const auto y = det * (mat.ex.x * b.GetY() - mat.ex.y * b.GetX());
+    return T{x, y};
 }
 
 /// Get the inverse of this matrix as a 2-by-2.
@@ -770,8 +789,8 @@ GetContactRelVelocity(const Velocity velA, const Length2D relA,
     
     return Vec2{deltaFmaX, deltaFmaY} * MeterPerSecond;
 #else
-    const auto velBrot = GetRevPerpendicular(relB) * velB.angular / Radian;
-    const auto velArot = GetRevPerpendicular(relA) * velA.angular / Radian;
+    const auto velBrot = GetRevPerpendicular(relB) * (velB.angular / Radian);
+    const auto velArot = GetRevPerpendicular(relA) * (velA.angular / Radian);
     return (velB.linear + velBrot) - (velA.linear + velArot);
 #endif
 }
@@ -807,12 +826,7 @@ constexpr inline Angle GetRevRotationalAngle(Angle a1, Angle a2) noexcept
     // If a1=-45 * Degree and a2=0 * Degree then, 45 * Degree
     // If a1=-90 * Degree and a2=-100 * Degree then, 360 * Degree - (-90 * Degree - -100 * Degree) = 350 * Degree
     // If a1=-100 * Degree and a2=-90 * Degree then, -90 * Degree - -100 * Degree = 10 * Degree
-    return (a1 > a2)? RealNum{360} * Degree - (a1 - a2): a2 - a1;
-}
-
-constexpr inline Vec2 GetVec2(const UnitVec2 value)
-{
-    return Vec2{GetX(value), GetY(value)};
+    return (a1 > a2)? Angle(RealNum{360} * Degree) - (a1 - a2): a2 - a1;
 }
 
 /// Gets the unit vector for the given value.

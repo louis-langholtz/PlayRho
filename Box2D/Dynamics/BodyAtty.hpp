@@ -85,7 +85,7 @@ namespace box2d
                 case BodyType::Static:
                     b.UnsetAwakeFlag();
                     b.m_underActiveTime = 0;
-                    b.m_velocity = Velocity{Vec2_zero * MeterPerSecond, AngularVelocity{0}};
+                    b.m_velocity = Velocity{LinearVelocity2D{0, 0}, AngularVelocity{0}};
                     b.m_sweep.pos0 = b.m_sweep.pos1;
                     break;
             }

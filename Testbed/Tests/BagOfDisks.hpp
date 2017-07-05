@@ -90,7 +90,7 @@ namespace box2d {
                                                                .UseFriction(RealNum(0)));
             
             auto angleIncrement = RealNum(90) * Degree;
-            auto angle = RealNum(0) * Degree;
+            auto angle = Angle(0);
             const auto alpha = diskRadius;
             const auto beta = RealNum(0.000125) * Meter / Degree;
             for (auto i = 0; i < 2000; ++i)

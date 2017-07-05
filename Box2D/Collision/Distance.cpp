@@ -175,8 +175,8 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
         }
 
         // Compute a tentative new simplex edge using support points.
-        const auto indexA = GetSupportIndex(proxyA, InverseRotate(-d, transformA.q));
-        const auto indexB = GetSupportIndex(proxyB, InverseRotate(d, transformB.q));
+        const auto indexA = GetSupportIndex(proxyA, GetVec2(InverseRotate(-d, transformA.q)));
+        const auto indexB = GetSupportIndex(proxyB, GetVec2(InverseRotate(d, transformB.q)));
 
         // Check for duplicate support points. This is the main termination criteria.
         // If there's a duplicate support point, code must exit loop to avoid cycling.

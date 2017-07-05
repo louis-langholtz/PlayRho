@@ -111,7 +111,7 @@ namespace box2d {
         std::vector<ConvexHull> m_children;
 
         /// Centroid of this shape.
-        Length2D m_centroid = Vec2_zero * Meter;
+        Length2D m_centroid = Length2D(0, 0);
     };
     
     inline ChildCounter MultiShape::GetChildCount() const noexcept

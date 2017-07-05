@@ -43,8 +43,14 @@ TEST(SeparationFinder, BehavesAsExpected)
     const auto distproxy = shape.GetChild(0);
 
     const auto x = RealNum(100);
-    const auto sweepA = Sweep{Position{Vec2{-x, 0} * Meter, RealNum{0.0f} * Degree}, Position{Vec2{+x, 0} * Meter, RealNum{0.0f} * Degree}};
-    const auto sweepB = Sweep{Position{Vec2{+x, 0} * Meter, RealNum{0.0f} * Degree}, Position{Vec2{-x, 0} * Meter, RealNum{0.0f} * Degree}};
+    const auto sweepA = Sweep{
+        Position{Length2D{-x * Meter, RealNum(0) * Meter}, Angle{0}},
+        Position{Length2D{+x * Meter, RealNum(0) * Meter}, Angle{0}}
+    };
+    const auto sweepB = Sweep{
+        Position{Length2D{+x * Meter, RealNum(0) * Meter}, Angle{0}},
+        Position{Length2D{-x * Meter, RealNum(0) * Meter}, Angle{0}}
+    };
     
     auto t = RealNum{0}; // Will be set to value of t2
     auto last_s = MaxFloat * Meter;
@@ -57,7 +63,7 @@ TEST(SeparationFinder, BehavesAsExpected)
     const auto fcn = SeparationFinder::Get(conf.cache.GetIndices(), distproxy, xfA, distproxy, xfB);
     EXPECT_EQ(fcn.GetType(), SeparationFinder::e_faceA);
     EXPECT_EQ(GetVec2(fcn.GetAxis()), Vec2(1, 0));
-    EXPECT_EQ(fcn.GetLocalPoint(), Vec2(0.5, 0) * Meter);
+    EXPECT_EQ(fcn.GetLocalPoint(), Length2D(RealNum(0.5f) * Meter, RealNum(0) * Meter));
 
     auto last_min_sep = MaxFloat * Meter;
     for (auto i = 0u; i < 500; ++i)

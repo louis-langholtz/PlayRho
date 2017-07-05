@@ -147,7 +147,7 @@ void Body::ResetMassData()
     const auto massData = ComputeMassData(*this);
 
     // Force all dynamic bodies to have a positive mass.
-    const auto mass = (massData.mass > Mass{0})? Mass{massData.mass}: Kilogram;
+    const auto mass = (massData.mass > Mass{0})? Mass{massData.mass}: (RealNum(1) * Kilogram);
     m_invMass = RealNum{1} / mass;
 
     // Compute center of mass.
@@ -173,7 +173,7 @@ void Body::ResetMassData()
 
     // Update center of mass velocity.
     const auto deltaCenter = newCenter - oldCenter;
-    m_velocity.linear += GetRevPerpendicular(deltaCenter) * m_velocity.angular / Radian;
+    m_velocity.linear += GetRevPerpendicular(deltaCenter) * (m_velocity.angular / Radian);
 
     UnsetMassDataDirty();
 }
@@ -190,7 +190,7 @@ void Body::SetMassData(const MassData& massData)
         return;
     }
 
-    const auto mass = (massData.mass > Mass{0})? Mass{massData.mass}: Kilogram;
+    const auto mass = (massData.mass > Mass{0})? Mass{massData.mass}: (RealNum(1) * Kilogram);
     m_invMass = RealNum{1} / mass;
 
     if ((massData.I > RotInertia{0}) && (!IsFixedRotation()))
@@ -216,14 +216,14 @@ void Body::SetMassData(const MassData& massData)
     // Update center of mass velocity.
     const auto newCenter = GetWorldCenter();
     const auto deltaCenter = newCenter - oldCenter;
-    m_velocity.linear += GetRevPerpendicular(deltaCenter) * m_velocity.angular / Radian;
+    m_velocity.linear += GetRevPerpendicular(deltaCenter) * (m_velocity.angular / Radian);
 
     UnsetMassDataDirty();
 }
 
 void Body::SetVelocity(const Velocity& velocity) noexcept
 {
-    if ((velocity.linear != Vec2_zero * MeterPerSecond) || (velocity.angular != AngularVelocity{0}))
+    if ((velocity.linear != LinearVelocity2D{0, 0}) || (velocity.angular != AngularVelocity{0}))
     {
         if (!IsSpeedable())
         {
@@ -240,7 +240,7 @@ void Body::SetAcceleration(const LinearAcceleration2D linear, const AngularAccel
     assert(::IsValid(linear.x) && ::IsValid(linear.y));
     assert(::IsValid(angular));
 
-    if ((linear != Vec2_zero * MeterPerSquareSecond) || (angular != AngularAcceleration{0}))
+    if ((linear != LinearAcceleration2D{0, 0}) || (angular != AngularAcceleration{0}))
     {
         if (!IsAccelerable())
         {
@@ -490,7 +490,7 @@ Force2D box2d::GetCentripetalForce(const Body& body, const Length2D axis)
 
     // Force is M L T^-2.
     const auto velocity = GetLinearVelocity(body);
-    const auto magnitude = GetLength(StripUnits(velocity)) * MeterPerSecond;
+    const auto magnitude = GetLength(GetVec2(velocity)) * MeterPerSecond;
     const auto location = body.GetLocation();
     const auto mass = GetMass(body);
     const auto delta = Length2D{axis - location};

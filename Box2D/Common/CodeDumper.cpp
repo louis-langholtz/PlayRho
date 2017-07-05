@@ -161,8 +161,8 @@ void box2d::Dump(const Body& body, std::size_t bodyIndex)
     log("  BodyDef bd;\n");
     log("  bd.type = BodyType(%d);\n", body.GetType());
     log("  bd.position = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(StripUnits(body.GetLocation()).x),
-        static_cast<double>(StripUnits(body.GetLocation()).y));
+        static_cast<double>(GetVec2(body.GetLocation()).x),
+        static_cast<double>(GetVec2(body.GetLocation()).y));
     log("  bd.angle = %.15lef;\n", static_cast<double>(RealNum{body.GetAngle() / Radian}));
     log("  bd.linearVelocity = Vec2(%.15lef, %.15lef);\n",
         static_cast<double>(RealNum{body.GetVelocity().linear.x / MeterPerSecond}),

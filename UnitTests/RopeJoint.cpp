@@ -49,8 +49,8 @@ TEST(RopeJointDef, DefaultConstruction)
     EXPECT_EQ(def.collideConnected, false);
     EXPECT_EQ(def.userData, nullptr);
     
-    EXPECT_EQ(def.localAnchorA, Vec2(-1, 0) * Meter);
-    EXPECT_EQ(def.localAnchorB, Vec2(+1, 0) * Meter);
+    EXPECT_EQ(def.localAnchorA, Length2D(-RealNum(1) * Meter, RealNum(0) * Meter));
+    EXPECT_EQ(def.localAnchorB, Length2D(+RealNum(1) * Meter, RealNum(0) * Meter));
     EXPECT_EQ(def.maxLength, Length{0});
 }
 
@@ -86,8 +86,8 @@ TEST(RopeJoint, GetRopeJointDef)
     auto bodyA = Body{BodyDef{}};
     auto bodyB = Body{BodyDef{}};
     RopeJointDef def{&bodyA, &bodyB};
-    const auto localAnchorA = Vec2{-2, 0} * Meter;
-    const auto localAnchorB = Vec2{+2, 0} * Meter;
+    const auto localAnchorA = Length2D{-RealNum(2) * Meter, RealNum(0) * Meter};
+    const auto localAnchorB = Length2D{+RealNum(2) * Meter, RealNum(0) * Meter};
     def.localAnchorA = localAnchorA;
     def.localAnchorB = localAnchorB;
     RopeJoint joint{def};
@@ -117,9 +117,9 @@ TEST(RopeJoint, GetRopeJointDef)
 TEST(RopeJoint, WithDynamicCircles)
 {
     const auto circle = std::make_shared<DiskShape>(RealNum{0.2f} * Meter);
-    auto world = World{WorldDef{}.UseGravity(Vec2_zero * MeterPerSquareSecond)};
-    const auto p1 = Vec2{-1, 0} * Meter;
-    const auto p2 = Vec2{+1, 0} * Meter;
+    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2D{0, 0})};
+    const auto p1 = Length2D{-RealNum(1) * Meter, RealNum(0) * Meter};
+    const auto p2 = Length2D{+RealNum(1) * Meter, RealNum(0) * Meter};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
@@ -131,7 +131,7 @@ TEST(RopeJoint, WithDynamicCircles)
     EXPECT_EQ(b1->GetLocation().y, RealNum(0) * Meter);
     EXPECT_LT(b2->GetLocation().x, RealNum(+1) * Meter);
     EXPECT_EQ(b2->GetLocation().y, RealNum(0) * Meter);
-    EXPECT_EQ(b1->GetAngle(), RealNum{0} * Degree);
-    EXPECT_EQ(b2->GetAngle(), RealNum{0} * Degree);
+    EXPECT_EQ(b1->GetAngle(), Angle{0});
+    EXPECT_EQ(b2->GetAngle(), Angle{0});
 }
 

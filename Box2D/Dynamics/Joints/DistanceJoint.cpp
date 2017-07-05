@@ -183,8 +183,8 @@ bool DistanceJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
     auto velB = bodyConstraintB->GetVelocity();
 
     // Cdot = dot(u, v + cross(w, r))
-    const auto vpA = velA.linear + GetRevPerpendicular(m_rA) * velA.angular / Radian;
-    const auto vpB = velB.linear + GetRevPerpendicular(m_rB) * velB.angular / Radian;
+    const auto vpA = velA.linear + GetRevPerpendicular(m_rA) * (velA.angular / Radian);
+    const auto vpB = velB.linear + GetRevPerpendicular(m_rB) * (velB.angular / Radian);
     const auto Cdot = LinearVelocity{Dot(m_u, vpB - vpA)};
 
     const auto impulse = Momentum{-m_mass * (Cdot + m_bias + m_invGamma * m_impulse)};

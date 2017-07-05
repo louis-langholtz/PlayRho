@@ -34,7 +34,7 @@ TEST(Transformation, ByteSizeIs_16_32_or_64)
 
 TEST(Transformation, Initialize)
 {
-    const auto translation = Vec2{2, 4} * Meter;
+    const auto translation = Length2D{RealNum(2) * Meter, RealNum(4) * Meter};
     const UnitVec2 rotation{Radian * RealNum{Pi / 2}};
     const Transformation xfm{translation, rotation};
     EXPECT_EQ(translation, xfm.p);
@@ -43,7 +43,7 @@ TEST(Transformation, Initialize)
 
 TEST(Transformation, Equality)
 {
-    const auto translation = Vec2{2, 4} * Meter;
+    const auto translation = Length2D{RealNum(2) * Meter, RealNum(4) * Meter};
     const UnitVec2 rotation{Radian * RealNum{Pi / 2}};
     const Transformation xfm{translation, rotation};
     EXPECT_EQ(xfm, xfm);
@@ -51,11 +51,11 @@ TEST(Transformation, Equality)
 
 TEST(Transformation, Inequality)
 {
-    const auto translation1 = Vec2{2, 4} * Meter;
+    const auto translation1 = Length2D{RealNum(2) * Meter, RealNum(4) * Meter};
     const UnitVec2 rotation1{Radian * Pi * RealNum{0.7f}};
     const Transformation xfm1{translation1, rotation1};
 
-    const auto translation2 = Vec2{-3, 37} * Meter;
+    const auto translation2 = Length2D{-RealNum(3) * Meter, RealNum(37) * Meter};
     const UnitVec2 rotation2{Radian * Pi * RealNum{0.002f}};
     const Transformation xfm2{translation2, rotation2};
 
@@ -66,7 +66,7 @@ TEST(Transformation, Inequality)
 
 TEST(Transformation, Mul)
 {
-    const auto translation1 = Vec2{2, 4} * Meter;
+    const auto translation1 = Length2D{RealNum(2) * Meter, RealNum(4) * Meter};
     const UnitVec2 rotation1{Radian * RealNum{Pi / 2}};
     const Transformation xfm{translation1, rotation1};
 
@@ -86,12 +86,12 @@ TEST(Transformation, Mul)
 
 TEST(Transformation, MulSameAsTransformTwice)
 {
-    const auto translation1 = Vec2{2, 4} * Meter;
+    const auto translation1 = Length2D{RealNum(2) * Meter, RealNum(4) * Meter};
     const UnitVec2 rotation1{Radian * RealNum{Pi / 2}};
     const Transformation xfm{translation1, rotation1};
     const auto xfm2 = Mul(xfm, xfm);
 
-    const auto location = Vec2{-23.4f, 0.81f} * Meter;
+    const auto location = Length2D{-23.4f * Meter, 0.81f * Meter};
     const auto twice = Transform(Transform(location, xfm), xfm);
     const auto location2 = Transform(location, xfm2);
     EXPECT_NEAR(static_cast<double>(RealNum{GetX(twice) / Meter}),

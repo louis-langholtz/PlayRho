@@ -152,11 +152,11 @@ Mat22 VelocityConstraint::ComputeK() const noexcept
     {
         const auto normal = GetNormal();
         
-        const auto rn1A = Cross(StripUnits(GetPointRelPosA(0)), normal);
-        const auto rn1B = Cross(StripUnits(GetPointRelPosB(0)), normal);
+        const auto rn1A = Cross(GetVec2(GetPointRelPosA(0)), normal);
+        const auto rn1B = Cross(GetVec2(GetPointRelPosB(0)), normal);
         
-        const auto rn2A = Cross(StripUnits(GetPointRelPosA(1)), normal);
-        const auto rn2B = Cross(StripUnits(GetPointRelPosB(1)), normal);
+        const auto rn2A = Cross(GetVec2(GetPointRelPosA(1)), normal);
+        const auto rn2B = Cross(GetVec2(GetPointRelPosB(1)), normal);
         
         const auto invMass = RealNum{GetInvMass() * Kilogram};
         const auto invRotInertiaA = m_bodyA->GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);

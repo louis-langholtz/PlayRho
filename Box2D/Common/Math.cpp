@@ -25,7 +25,7 @@ Length2D box2d::ComputeCentroid(const Span<const Length2D>& vertices)
 {
     assert(vertices.size() >= 3);
     
-    auto c = Vec2_zero * Meter * SquareMeter;
+    auto c = Length2D(0, 0) * Area{0};
     auto area = Area{0};
     
     // pRef is the reference point for forming triangles.

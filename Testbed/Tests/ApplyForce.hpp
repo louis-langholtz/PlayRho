@@ -29,14 +29,14 @@ class ApplyForce : public Test
 public:
     ApplyForce()
     {
-        m_world->SetGravity(Vec2(RealNum{0}, RealNum{0}) * MeterPerSquareSecond);
+        m_world->SetGravity(LinearAcceleration2D{0, 0});
 
         const auto k_restitution = RealNum(0.4);
 
         Body* ground;
         {
             BodyDef bd;
-            bd.position = Vec2(RealNum{0}, 20.0f) * Meter;
+            bd.position = Length2D(RealNum(0) * Meter, RealNum(20) * Meter);
             ground = m_world->CreateBody(bd);
 
             auto conf = EdgeShape::Conf{};
@@ -73,7 +73,7 @@ public:
 
             auto conf = PolygonShape::Conf{};
 
-            conf.density = RealNum{4} * Kilogram / SquareMeter;
+            conf.density = RealNum{4} * KilogramPerSquareMeter;
             const auto poly1 = PolygonShape(Span<const Length2D>(vertices, 3), conf);
 
             Transformation xf2;
@@ -84,7 +84,7 @@ public:
             vertices[1] = Transform(Vec2(1.0f, RealNum{0}) * Meter, xf2);
             vertices[2] = Transform(Vec2(RealNum{0}, 0.5f) * Meter, xf2);
 
-            conf.density = RealNum{2} * Kilogram / SquareMeter;
+            conf.density = RealNum{2} * KilogramPerSquareMeter;
             const auto poly2 = PolygonShape(Span<const Length2D>(vertices, 3), conf);
 
             BodyDef bd;
@@ -102,7 +102,7 @@ public:
 
         {
             auto conf = PolygonShape::Conf{};
-            conf.density = RealNum{1} * Kilogram / SquareMeter;
+            conf.density = RealNum{1} * KilogramPerSquareMeter;
             conf.friction = RealNum{0.3f};
             const auto shape = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter, conf);
 

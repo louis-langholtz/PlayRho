@@ -49,8 +49,8 @@ namespace box2d
         constexpr Sweep(const Sweep& copy) = default;
         
         /// @brief Initializing constructor.
-        constexpr Sweep(const Position p0, const Position p1,
-                        const Length2D lc = Vec2_zero * Meter, RealNum a0 = 0) noexcept:
+        constexpr Sweep(const Position p0, const Position p1, const Length2D lc = Length2D(0, 0),
+                        RealNum a0 = 0) noexcept:
         	pos0{p0}, pos1{p1}, localCenter{lc}, alpha0{a0}
         {
             assert(a0 >= 0);
@@ -58,7 +58,7 @@ namespace box2d
         }
         
         /// @brief Initializing constructor.
-        constexpr explicit Sweep(const Position p, const Length2D lc = Vec2_zero * Meter):
+        constexpr explicit Sweep(const Position p, const Length2D lc = Length2D(0, 0)):
         	Sweep{p, p, lc, 0}
         {
             // Intentionally empty.
@@ -97,7 +97,7 @@ namespace box2d
     private:
         /// @brief Local center of mass position.
         /// @note 8-bytes.
-        Length2D localCenter = Vec2_zero * Meter;
+        Length2D localCenter = Length2D(0, 0);
         
         /// @brief Fraction of the current time step in the range [0,1]
         /// @note pos0.linear and pos0.angular are the positions at alpha0.
