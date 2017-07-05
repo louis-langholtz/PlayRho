@@ -47,7 +47,7 @@ public:
 
     RayCast()
     {
-        m_circle->SetVertexRadius(RealNum{0.5f} * Meter);
+        m_circle->SetVertexRadius(Real{0.5f} * Meter);
         m_circle->SetFriction(0.3f);
         m_edge->SetFriction(0.3f);
         
@@ -89,7 +89,7 @@ public:
                 Vec2(-0.5f * s, 0.0f) * Meter
             });
         }
-        m_polygons[3]->SetAsBox(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
+        m_polygons[3]->SetAsBox(Real{0.5f} * Meter, Real{0.5f} * Meter);
         std::memset(m_bodies, 0, sizeof(m_bodies));
     }
 
@@ -113,7 +113,7 @@ public:
 
         if (index == 4)
         {
-            bd.angularDamping = RealNum(0.02f) * Hertz;
+            bd.angularDamping = Real(0.02f) * Hertz;
         }
 
         m_bodies[m_bodyIndex] = m_world->CreateBody(bd);
@@ -248,9 +248,9 @@ public:
 
             if (hit)
             {
-                drawer.DrawPoint(point, RealNum{5.0f} * Meter, Color(0.4f, 0.9f, 0.4f));
+                drawer.DrawPoint(point, Real{5.0f} * Meter, Color(0.4f, 0.9f, 0.4f));
                 drawer.DrawSegment(point1, point, Color(0.8f, 0.8f, 0.8f));
-                const auto head = point + RealNum{0.5f} * normal * Meter;
+                const auto head = point + Real{0.5f} * normal * Meter;
                 drawer.DrawSegment(point, head, Color(0.9f, 0.9f, 0.4f));
             }
             else
@@ -293,9 +293,9 @@ public:
 
             if (hit)
             {
-                drawer.DrawPoint(point, RealNum{5.0f} * Meter, Color(0.4f, 0.9f, 0.4f));
+                drawer.DrawPoint(point, Real{5.0f} * Meter, Color(0.4f, 0.9f, 0.4f));
                 drawer.DrawSegment(point1, point, Color(0.8f, 0.8f, 0.8f));
-                const auto head = point + RealNum{0.5f} * normal * Meter;
+                const auto head = point + Real{0.5f} * normal * Meter;
                 drawer.DrawSegment(point, head, Color(0.9f, 0.9f, 0.4f));
             }
             else
@@ -326,9 +326,9 @@ public:
                     }
                 }
                 
-                drawer.DrawPoint(p, RealNum{5.0f} * Meter, Color(0.4f, 0.9f, 0.4f));
+                drawer.DrawPoint(p, Real{5.0f} * Meter, Color(0.4f, 0.9f, 0.4f));
                 drawer.DrawSegment(point1, p, Color(0.8f, 0.8f, 0.8f));
-                const auto head = p + RealNum{0.5f} * n * Meter;
+                const auto head = p + Real{0.5f} * n * Meter;
                 drawer.DrawSegment(p, head, Color(0.9f, 0.9f, 0.4f));
                 
                 // Instruct the caller to continue without clipping the ray.
@@ -389,7 +389,7 @@ public:
     std::shared_ptr<PolygonShape> m_polygons[4];
     std::shared_ptr<DiskShape> m_circle = std::make_shared<DiskShape>();
     std::shared_ptr<EdgeShape> m_edge = std::make_shared<EdgeShape>(Vec2(-1.0f, 0.0f) * Meter, Vec2(1.0f, 0.0f) * Meter);
-    RealNum m_angle = 0.0f;
+    Real m_angle = 0.0f;
     Mode m_mode = Mode::e_closest;
 };
 

@@ -32,9 +32,9 @@ TEST(AABB, ByteSizeIsTwiceVec2)
 
 TEST(AABB, DefaultConstruction)
 {
-    const auto infinity = std::numeric_limits<RealNum>::infinity();
-    const auto lb = Vec2{infinity, infinity} * (RealNum(1) * Meter);
-    const auto ub = Vec2{-infinity, -infinity} * (RealNum(1) * Meter);
+    const auto infinity = std::numeric_limits<Real>::infinity();
+    const auto lb = Vec2{infinity, infinity} * (Real(1) * Meter);
+    const auto ub = Vec2{-infinity, -infinity} * (Real(1) * Meter);
     const auto aabb = AABB{};
     EXPECT_EQ(aabb.GetLowerBound(), lb);
     EXPECT_EQ(aabb.GetUpperBound(), ub);
@@ -80,8 +80,8 @@ TEST(AABB, DefaultAabbAddsToOther)
     }
     {
         const auto other_aabb = AABB{
-            Length2D{RealNum( -1) * Meter, RealNum(-2) * Meter},
-            Length2D{RealNum(+99) * Meter, RealNum(+3) * Meter}
+            Length2D{Real( -1) * Meter, Real(-2) * Meter},
+            Length2D{Real(+99) * Meter, Real(+3) * Meter}
         };
         const auto sum_aabb = GetEnclosingAABB(other_aabb, default_aabb);
         EXPECT_EQ(sum_aabb.GetLowerBound(), other_aabb.GetLowerBound());
@@ -101,8 +101,8 @@ TEST(AABB, DefaultAabbIncrementsToOther)
     {
         auto default_aabb = AABB{};
         const auto other_aabb = AABB{
-            Length2D{RealNum(-1) * Meter, RealNum(-2) * Meter},
-            Length2D{RealNum(+99) * Meter, RealNum(+3) * Meter}
+            Length2D{Real(-1) * Meter, Real(-2) * Meter},
+            Length2D{Real(+99) * Meter, Real(+3) * Meter}
         };
         default_aabb.Include(other_aabb);
         EXPECT_EQ(default_aabb.GetLowerBound(), other_aabb.GetLowerBound());
@@ -112,13 +112,13 @@ TEST(AABB, DefaultAabbIncrementsToOther)
 
 TEST(AABB, InitializingConstruction)
 {
-    const auto lower_x = RealNum(-2) * Meter;
-    const auto lower_y = RealNum(-3) * Meter;
-    const auto upper_x = RealNum(+1.6) * Meter;
-    const auto upper_y = RealNum(+1.9) * Meter;
+    const auto lower_x = Real(-2) * Meter;
+    const auto lower_y = Real(-3) * Meter;
+    const auto upper_x = Real(+1.6) * Meter;
+    const auto upper_y = Real(+1.9) * Meter;
     
-    const auto center_x = (lower_x + upper_x) / RealNum{2};
-    const auto center_y = (lower_y + upper_y) / RealNum{2};
+    const auto center_x = (lower_x + upper_x) / Real{2};
+    const auto center_y = (lower_y + upper_y) / Real{2};
 
     const auto v0 = Length2D{upper_x, lower_y};
     const auto v1 = Length2D{lower_x, upper_y};
@@ -145,10 +145,10 @@ TEST(AABB, InitializingConstruction)
 
 TEST(AABB, Include)
 {
-    const auto p1 = Length2D{RealNum{2} * Meter, RealNum{3} * Meter};
-    const auto p2 = Length2D{RealNum{20} * Meter, RealNum{30} * Meter};
-    const auto p3 = Length2D{RealNum{-3} * Meter, RealNum{-4} * Meter};
-    const auto p4 = Length2D{RealNum{0} * Meter, RealNum{0} * Meter};
+    const auto p1 = Length2D{Real{2} * Meter, Real{3} * Meter};
+    const auto p2 = Length2D{Real{20} * Meter, Real{30} * Meter};
+    const auto p3 = Length2D{Real{-3} * Meter, Real{-4} * Meter};
+    const auto p4 = Length2D{Real{0} * Meter, Real{0} * Meter};
     const auto p5 = AABB{};
 
     auto foo = AABB{};
@@ -178,68 +178,68 @@ TEST(AABB, TestOverlap)
 {
     {
         AABB bb1{
-            Length2D{RealNum(-2) * Meter, RealNum(-3) * Meter},
-            Length2D{RealNum(-1) * Meter, RealNum( 0) * Meter}
+            Length2D{Real(-2) * Meter, Real(-3) * Meter},
+            Length2D{Real(-1) * Meter, Real( 0) * Meter}
         };
         EXPECT_TRUE(TestOverlap(bb1, bb1));
     }
     {
-        const auto vec = Length2D{RealNum(-2) * Meter, RealNum(-3) * Meter};
+        const auto vec = Length2D{Real(-2) * Meter, Real(-3) * Meter};
         AABB bb1{vec, vec};
         EXPECT_TRUE(TestOverlap(bb1, bb1));
     }
     {
         AABB bb1{
-            Length2D{RealNum(-2) * Meter, RealNum(-3) * Meter},
-            Length2D{RealNum(-1) * Meter, RealNum( 0) * Meter}
+            Length2D{Real(-2) * Meter, Real(-3) * Meter},
+            Length2D{Real(-1) * Meter, Real( 0) * Meter}
         };
         AABB bb2{
-            Length2D{RealNum(-1) * Meter, RealNum(-1) * Meter},
-            Length2D{RealNum( 1) * Meter, RealNum( 2) * Meter}
+            Length2D{Real(-1) * Meter, Real(-1) * Meter},
+            Length2D{Real( 1) * Meter, Real( 2) * Meter}
         };
         EXPECT_TRUE(TestOverlap(bb1, bb2));
     }
     {
         AABB bb1{
-            Length2D{RealNum(-99) * Meter, RealNum(-3) * Meter},
-            Length2D{RealNum( -1) * Meter, RealNum( 0) * Meter}
+            Length2D{Real(-99) * Meter, Real(-3) * Meter},
+            Length2D{Real( -1) * Meter, Real( 0) * Meter}
         };
         AABB bb2{
-            Length2D{RealNum(76) * Meter, RealNum(-1) * Meter},
-            Length2D{RealNum(-2) * Meter, RealNum( 2) * Meter}
+            Length2D{Real(76) * Meter, Real(-1) * Meter},
+            Length2D{Real(-2) * Meter, Real( 2) * Meter}
         };
         EXPECT_TRUE(TestOverlap(bb1, bb2));
     }
     {
         AABB bb1{
-            Length2D{RealNum(-20) * Meter, RealNum(-3) * Meter},
-            Length2D{RealNum(-18) * Meter, RealNum( 0) * Meter}
+            Length2D{Real(-20) * Meter, Real(-3) * Meter},
+            Length2D{Real(-18) * Meter, Real( 0) * Meter}
         };
         AABB bb2{
-            Length2D{RealNum(-1) * Meter, RealNum(-1) * Meter},
-            Length2D{RealNum( 1) * Meter, RealNum( 2) * Meter}
+            Length2D{Real(-1) * Meter, Real(-1) * Meter},
+            Length2D{Real( 1) * Meter, Real( 2) * Meter}
         };
         EXPECT_FALSE(TestOverlap(bb1, bb2));
     }
     {
         AABB bb1{
-            Length2D{RealNum(-2) * Meter, RealNum(-3) * Meter},
-            Length2D{RealNum(-1) * Meter, RealNum( 0) * Meter}
+            Length2D{Real(-2) * Meter, Real(-3) * Meter},
+            Length2D{Real(-1) * Meter, Real( 0) * Meter}
         };
         AABB bb2{
-            Length2D{RealNum(-1) * Meter, RealNum(+1) * Meter},
-            Length2D{RealNum( 1) * Meter, RealNum( 2) * Meter}
+            Length2D{Real(-1) * Meter, Real(+1) * Meter},
+            Length2D{Real( 1) * Meter, Real( 2) * Meter}
         };
         EXPECT_FALSE(TestOverlap(bb1, bb2));
     }
     {
         AABB bb1{
-            Length2D{RealNum(-2) * Meter, RealNum(+3) * Meter},
-            Length2D{RealNum(-1) * Meter, RealNum( 0) * Meter}
+            Length2D{Real(-2) * Meter, Real(+3) * Meter},
+            Length2D{Real(-1) * Meter, Real( 0) * Meter}
         };
         AABB bb2{
-            Length2D{RealNum(-1) * Meter, RealNum(-1) * Meter},
-            Length2D{RealNum( 0) * Meter, RealNum(-2) * Meter}
+            Length2D{Real(-1) * Meter, Real(-1) * Meter},
+            Length2D{Real( 0) * Meter, Real(-2) * Meter}
         };
         EXPECT_FALSE(TestOverlap(bb1, bb2));
     }
@@ -258,7 +258,7 @@ TEST(AABB, Move)
     {
         auto aabb = AABB{};
         EXPECT_EQ(aabb.Move(Length2D(0, 0)), AABB{});
-        EXPECT_EQ(aabb.Move(Length2D(RealNum(10) * Meter, RealNum(-4) * Meter)), AABB{});
+        EXPECT_EQ(aabb.Move(Length2D(Real(10) * Meter, Real(-4) * Meter)), AABB{});
     }
     {
         auto aabb = AABB{Length2D(0, 0)};
@@ -266,18 +266,18 @@ TEST(AABB, Move)
     }
     {
         auto aabb = AABB{Length2D(0, 0)};
-        EXPECT_EQ(aabb.Move(Length2D(RealNum(1) * Meter, RealNum(1) * Meter)),
-                  AABB{Length2D(RealNum(1) * Meter, RealNum(1) * Meter)});
-        EXPECT_EQ(aabb.Move(Length2D(RealNum(-1) * Meter, RealNum(-1) * Meter)),
+        EXPECT_EQ(aabb.Move(Length2D(Real(1) * Meter, Real(1) * Meter)),
+                  AABB{Length2D(Real(1) * Meter, Real(1) * Meter)});
+        EXPECT_EQ(aabb.Move(Length2D(Real(-1) * Meter, Real(-1) * Meter)),
                   AABB{Length2D(0, 0)});
-        EXPECT_EQ(aabb.Move(Length2D(RealNum(-10) * Meter, RealNum(11) * Meter)),
-                  AABB{Length2D(RealNum(-10) * Meter, RealNum(11) * Meter)});
+        EXPECT_EQ(aabb.Move(Length2D(Real(-10) * Meter, Real(11) * Meter)),
+                  AABB{Length2D(Real(-10) * Meter, Real(11) * Meter)});
     }
     {
-        const auto lower = Length2D(RealNum(-1) * Meter, RealNum(-1) * Meter);
-        const auto upper = Length2D(RealNum(+3) * Meter, RealNum(+9) * Meter);
+        const auto lower = Length2D(Real(-1) * Meter, Real(-1) * Meter);
+        const auto upper = Length2D(Real(+3) * Meter, Real(+9) * Meter);
         auto aabb = AABB{lower, upper};
-        const auto moveby = Length2D(RealNum(1) * Meter, RealNum(1) * Meter);
+        const auto moveby = Length2D(Real(1) * Meter, Real(1) * Meter);
         EXPECT_EQ(aabb.Move(moveby), AABB(lower + moveby, upper + moveby));
     }
 }

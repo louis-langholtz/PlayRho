@@ -23,7 +23,7 @@ using namespace box2d;
 
 TEST(Mat22, ByteSizeIs_16_32_or_64)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(Mat22), std::size_t(16)); break;
         case  8: EXPECT_EQ(sizeof(Mat22), std::size_t(32)); break;
@@ -51,18 +51,18 @@ TEST(Mat22, Invert)
 
     const auto inverted = Invert(foo);
     const auto cp = Cross(ex, ey);
-    ASSERT_EQ(cp, RealNum(-2));
-    const auto det = (cp != 0)? RealNum(1)/cp : RealNum(0);
+    ASSERT_EQ(cp, Real(-2));
+    const auto det = (cp != 0)? Real(1)/cp : Real(0);
     
     EXPECT_EQ(inverted.ex.x, det * foo.ey.y);
     EXPECT_EQ(inverted.ex.y, -det * foo.ex.y);
     EXPECT_EQ(inverted.ey.x, -det * foo.ey.x);
     EXPECT_EQ(inverted.ey.y, det * foo.ex.x);
     
-    EXPECT_EQ(inverted.ex.x, RealNum(-2));
-    EXPECT_EQ(inverted.ex.y, RealNum(1));
-    EXPECT_EQ(inverted.ey.x, RealNum(1.5));
-    EXPECT_EQ(inverted.ey.y, RealNum(-0.5));
+    EXPECT_EQ(inverted.ex.x, Real(-2));
+    EXPECT_EQ(inverted.ex.y, Real(1));
+    EXPECT_EQ(inverted.ey.x, Real(1.5));
+    EXPECT_EQ(inverted.ey.y, Real(-0.5));
 }
 
 TEST(Mat22, InvertInvertedIsOriginal)

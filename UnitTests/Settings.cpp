@@ -37,5 +37,5 @@ TEST(Settings, GetBuildDetails)
     EXPECT_FALSE(GetBuildDetails().empty());
     const auto result = GetBuildDetails();
     EXPECT_NE(result.find_first_of("asserts="), result.npos);
-    EXPECT_NE(result.find_first_of("RealNum="), result.npos);
+    EXPECT_NE(result.find_first_of("Real="), result.npos);
 }

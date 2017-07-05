@@ -32,33 +32,33 @@ namespace box2d {
             m_world->SetGravity(Vec2{0, 0} * MeterPerSquareSecond);
 
             BodyDef bd;
-            const auto radius = RealNum{12.0f};
+            const auto radius = Real{12.0f};
 
             bd.type = BodyType::Static;
             bd.position = m_center;
             const auto ctrBody = m_world->CreateBody(bd);
             const auto ctrShape = std::make_shared<DiskShape>();
-            ctrShape->SetRadius(RealNum{3} * Meter);
+            ctrShape->SetRadius(Real{3} * Meter);
             ctrBody->CreateFixture(ctrShape);
 
             bd.type = BodyType::Dynamic;
             bd.position = Length2D{m_center.x, m_center.y + radius * Meter};
             m_orbiter = m_world->CreateBody(bd);
             const auto ballShape = std::make_shared<DiskShape>();
-            ballShape->SetRadius(RealNum{0.5f} * Meter);
-            ballShape->SetDensity(RealNum(1) * KilogramPerSquareMeter);
+            ballShape->SetRadius(Real{0.5f} * Meter);
+            ballShape->SetDensity(Real(1) * KilogramPerSquareMeter);
             m_orbiter->CreateFixture(ballShape);
             
             const auto velocity = Velocity{
-                Vec2{Pi * radius / RealNum{2}, 0} * MeterPerSecond,
-                RealNum{360.0f} * Degree / Second
+                Vec2{Pi * radius / Real{2}, 0} * MeterPerSecond,
+                Real{360.0f} * Degree / Second
             };
             m_orbiter->SetVelocity(velocity);
             
             auto conf = ChainShape::Conf{};
-            conf.vertices = GetCircleVertices(RealNum(20.0f) * Meter, 180);
-            conf.UseVertexRadius(RealNum(0.1) * Meter);
-            conf.UseDensity(RealNum(1) * KilogramPerSquareMeter);
+            conf.vertices = GetCircleVertices(Real(20.0f) * Meter, 180);
+            conf.UseVertexRadius(Real(0.1) * Meter);
+            conf.UseDensity(Real(1) * KilogramPerSquareMeter);
             const auto outerCicle = std::make_shared<ChainShape>(conf);
 
             bd.type = BodyType::Dynamic;
@@ -72,7 +72,7 @@ namespace box2d {
         {
             const auto force = GetCentripetalForce(*m_orbiter, m_center);
             const auto linAccel = force * m_orbiter->GetInvMass();
-            const auto angAccel = RealNum{0.0f} * RadianPerSquareSecond;
+            const auto angAccel = Real{0.0f} * RadianPerSquareSecond;
             m_orbiter->SetAcceleration(linAccel, angAccel);
         }
         

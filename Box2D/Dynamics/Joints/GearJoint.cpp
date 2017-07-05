@@ -72,7 +72,7 @@ GearJoint::GearJoint(const GearJointDef& def):
     const auto xfC = m_bodyC->GetTransformation();
     const auto aC = m_bodyC->GetAngle();
 
-    RealNum coordinateA; // Duck-typed to handle m_typeA's type.
+    Real coordinateA; // Duck-typed to handle m_typeA's type.
     if (m_typeA == JointType::Revolute)
     {
         const auto revolute = static_cast<const RevoluteJoint*>(def.joint1);
@@ -103,7 +103,7 @@ GearJoint::GearJoint(const GearJointDef& def):
     const auto xfD = m_bodyD->GetTransformation();
     const auto aD = m_bodyD->GetAngle();
 
-    RealNum coordinateB; // Duck-typed to handle m_typeB's type.
+    Real coordinateB; // Duck-typed to handle m_typeB's type.
     if (m_typeB == JointType::Revolute)
     {
         const auto revolute = static_cast<const RevoluteJoint*>(def.joint2);
@@ -153,13 +153,13 @@ void GearJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
     const auto qC = UnitVec2(aC);
     const auto qD = UnitVec2(aD);
 
-    auto invMass = RealNum{0}; // Unitless to double for either linear mass or angular mass.
+    auto invMass = Real{0}; // Unitless to double for either linear mass or angular mass.
 
     if (m_typeA == JointType::Revolute)
     {
         m_JvAC = Vec2_zero;
-        m_JwA = RealNum{1} * Meter;
-        m_JwC = RealNum{1} * Meter;
+        m_JwA = Real{1} * Meter;
+        m_JwC = Real{1} * Meter;
         const auto invAngMass = bodyConstraintA->GetInvRotInertia() + bodyConstraintC->GetInvRotInertia();
         invMass += StripUnit(invAngMass);
     }
@@ -168,7 +168,7 @@ void GearJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
         const auto u = Rotate(m_localAxisC, qC);
         const auto rC = Length2D{Rotate(m_localAnchorC - bodyConstraintC->GetLocalCenter(), qC)};
         const auto rA = Length2D{Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA)};
-        m_JvAC = RealNum{1} * u;
+        m_JvAC = Real{1} * u;
         m_JwC = Cross(rC, u);
         m_JwA = Cross(rA, u);
         const auto invRotMassC = InvMass{bodyConstraintC->GetInvRotInertia() * Square(m_JwC) / SquareRadian};
@@ -203,7 +203,7 @@ void GearJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
     }
 
     // Compute effective mass.
-    m_mass = (invMass > RealNum{0})? RealNum{1} / invMass: RealNum{0};
+    m_mass = (invMass > Real{0})? Real{1} / invMass: Real{0};
 
     if (step.doWarmStart)
     {
@@ -299,11 +299,11 @@ bool GearJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
 
 
     Vec2 JvAC, JvBD;
-    RealNum JwA, JwB, JwC, JwD;
+    Real JwA, JwB, JwC, JwD;
 
-    auto coordinateA = RealNum{0}; // Angle or length.
-    auto coordinateB = RealNum{0};
-    auto invMass = RealNum{0}; // Inverse linear mass or inverse angular mass.
+    auto coordinateA = Real{0}; // Angle or length.
+    auto coordinateB = Real{0};
+    auto invMass = Real{0}; // Inverse linear mass or inverse angular mass.
 
     if (m_typeA == JointType::Revolute)
     {
@@ -319,7 +319,7 @@ bool GearJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
         const auto u = Rotate(m_localAxisC, qC);
         const auto rC = Rotate(m_localAnchorC - bodyConstraintC->GetLocalCenter(), qC);
         const auto rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA);
-        JvAC = u * RealNum{1};
+        JvAC = u * Real{1};
         JwC = StripUnit(Length{Cross(rC, u)});
         JwA = StripUnit(Length{Cross(rA, u)});
         const auto invLinMass = InvMass{bodyConstraintC->GetInvMass() + bodyConstraintA->GetInvMass()};
@@ -409,13 +409,13 @@ Torque GearJoint::GetReactionTorque(Frequency inv_dt) const
     return inv_dt * m_impulse * m_JwA / Radian;
 }
 
-void GearJoint::SetRatio(RealNum ratio)
+void GearJoint::SetRatio(Real ratio)
 {
     assert(IsValid(ratio));
     m_ratio = ratio;
 }
 
-RealNum GearJoint::GetRatio() const
+Real GearJoint::GetRatio() const
 {
     return m_ratio;
 }

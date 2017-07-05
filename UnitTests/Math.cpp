@@ -26,10 +26,10 @@ using namespace box2d;
 
 TEST(Math, Sqrt)
 {
-    EXPECT_EQ(Sqrt(RealNum{0}), RealNum{0});
-    EXPECT_EQ(Sqrt(RealNum{4}), RealNum{2});
-    EXPECT_EQ(Sqrt(RealNum{25}), RealNum{5});
-    EXPECT_NE(Sqrt(std::numeric_limits<RealNum>::min()), RealNum(0));
+    EXPECT_EQ(Sqrt(Real{0}), Real{0});
+    EXPECT_EQ(Sqrt(Real{4}), Real{2});
+    EXPECT_EQ(Sqrt(Real{25}), Real{5});
+    EXPECT_NE(Sqrt(std::numeric_limits<Real>::min()), Real(0));
 
     EXPECT_NE(std::sqrt(std::numeric_limits<double>::min()), double(0));
     EXPECT_EQ(Square(std::sqrt(std::numeric_limits<double>::min())), std::numeric_limits<double>::min());
@@ -112,8 +112,8 @@ TEST(Math, Square)
 
 TEST(Math, Atan2)
 {
-    EXPECT_EQ(Atan2(RealNum(0), RealNum(0)), Angle{0});
-    //EXPECT_EQ(Atan2(RealNum(1), RealNum(0)), RealNum(90) * Degree);
+    EXPECT_EQ(Atan2(Real(0), Real(0)), Angle{0});
+    //EXPECT_EQ(Atan2(Real(1), Real(0)), Real(90) * Degree);
 }
 
 TEST(Math, Span)
@@ -183,15 +183,15 @@ TEST(Math, AverageVec2)
     EXPECT_EQ(Average<Vec2>({}), Vec2(0, 0));
     
     {
-        const auto val = Vec2{RealNum(3.9), RealNum(-0.1)};
+        const auto val = Vec2{Real(3.9), Real(-0.1)};
         EXPECT_EQ(Average<Vec2>({val}), val);
     }
     
     {
-        const auto val1 = Vec2{RealNum(2.2), RealNum(-1.1)};
-        const auto val2 = Vec2{RealNum(4.4), RealNum(-1.3)};
+        const auto val1 = Vec2{Real(2.2), Real(-1.1)};
+        const auto val2 = Vec2{Real(4.4), Real(-1.3)};
         const auto average = Average<Vec2>({val1, val2});
-        const auto expected = Vec2(RealNum(3.3), RealNum(-1.2));
+        const auto expected = Vec2(Real(3.3), Real(-1.2));
         EXPECT_NEAR(double(average.x), double(expected.x), 0.0001);
         EXPECT_NEAR(double(average.y), double(expected.y), 0.0001);
     }
@@ -199,22 +199,22 @@ TEST(Math, AverageVec2)
 
 TEST(Math, DotProductOfTwoVecTwoIsCommutative)
 {
-    const auto a = Vec2{RealNum(-3.2), RealNum(1.9)};
-    const auto b = Vec2{RealNum(4.01), RealNum(-0.002)};
+    const auto a = Vec2{Real(-3.2), Real(1.9)};
+    const auto b = Vec2{Real(4.01), Real(-0.002)};
     EXPECT_EQ(Dot(a, b), Dot(b, a));
 }
 
 TEST(Math, DotProductOfTwoVecThreeIsCommutative)
 {
-    const auto a = Vec3{RealNum(-3.2), RealNum(1.9), RealNum(36.01)};
-    const auto b = Vec3{RealNum(4.01), RealNum(-0.002), RealNum(1.2)};
+    const auto a = Vec3{Real(-3.2), Real(1.9), Real(36.01)};
+    const auto b = Vec3{Real(4.01), Real(-0.002), Real(1.2)};
     EXPECT_EQ(Dot(a, b), Dot(b, a));
 }
 
 TEST(Math, CrossProductOfTwoVecTwoIsAntiCommutative)
 {
-    const auto a = Vec2{RealNum(-3.2), RealNum(1.9)};
-    const auto b = Vec2{RealNum(4.01), RealNum(-0.002)};
+    const auto a = Vec2{Real(-3.2), Real(1.9)};
+    const auto b = Vec2{Real(4.01), Real(-0.002)};
     EXPECT_EQ(Cross(a, b), -Cross(b, a));
 }
 
@@ -223,12 +223,12 @@ TEST(Math, DotProductOfInvalidIsInvalid)
     EXPECT_TRUE(std::isnan(Dot(GetInvalid<Vec2>(), GetInvalid<Vec2>())));
 
     EXPECT_TRUE(std::isnan(Dot(Vec2(0, 0), GetInvalid<Vec2>())));
-    EXPECT_TRUE(std::isnan(Dot(Vec2(0, 0), Vec2(GetInvalid<RealNum>(), 0))));
-    EXPECT_TRUE(std::isnan(Dot(Vec2(0, 0), Vec2(0, GetInvalid<RealNum>()))));
+    EXPECT_TRUE(std::isnan(Dot(Vec2(0, 0), Vec2(GetInvalid<Real>(), 0))));
+    EXPECT_TRUE(std::isnan(Dot(Vec2(0, 0), Vec2(0, GetInvalid<Real>()))));
     
     EXPECT_TRUE(std::isnan(Dot(GetInvalid<Vec2>(),             Vec2(0, 0))));
-    EXPECT_TRUE(std::isnan(Dot(Vec2(GetInvalid<RealNum>(), 0), Vec2(0, 0))));
-    EXPECT_TRUE(std::isnan(Dot(Vec2(0, GetInvalid<RealNum>()), Vec2(0, 0))));
+    EXPECT_TRUE(std::isnan(Dot(Vec2(GetInvalid<Real>(), 0), Vec2(0, 0))));
+    EXPECT_TRUE(std::isnan(Dot(Vec2(0, GetInvalid<Real>()), Vec2(0, 0))));
 
     EXPECT_TRUE(std::isnan(Dot(GetInvalid<Vec2>(), GetInvalid<UnitVec2>())));
     EXPECT_TRUE(std::isnan(Dot(Vec2(0, 0),         GetInvalid<UnitVec2>())));
@@ -242,38 +242,38 @@ TEST(Math, DotProductOfInvalidIsInvalid)
 TEST(Math, Vec2NegationAndRotationIsOrderIndependent)
 {
     {
-        const auto v = Vec2{RealNum(1), RealNum(1)};
+        const auto v = Vec2{Real(1), Real(1)};
         const auto r = UnitVec2{Angle{0}};
         EXPECT_EQ(Rotate(-v, r), -Rotate(v, r));
     }
     {
-        const auto v = Vec2{RealNum(1), RealNum(1)};
-        const auto r = UnitVec2{Angle{RealNum{33.0f} * Degree}};
+        const auto v = Vec2{Real(1), Real(1)};
+        const auto r = UnitVec2{Angle{Real{33.0f} * Degree}};
         EXPECT_EQ(Rotate(-v, r), -Rotate(v, r));
     }
     {
-        const auto v = Vec2{RealNum(-3.2), RealNum(1.9)};
-        const auto r = UnitVec2{Angle{RealNum{33.0f} * Degree}};
+        const auto v = Vec2{Real(-3.2), Real(1.9)};
+        const auto r = UnitVec2{Angle{Real{33.0f} * Degree}};
         EXPECT_EQ(Rotate(-v, r), -Rotate(v, r));
     }
     {
-        const auto v = Vec2{RealNum(-3.2), RealNum(-21.4)};
-        for (auto angle = Angle{-RealNum{360.0f} * Degree};
-             angle < Angle{RealNum{360.0f} * Degree};
-             angle += Angle{RealNum{15.0f} * Degree})
+        const auto v = Vec2{Real(-3.2), Real(-21.4)};
+        for (auto angle = Angle{-Real{360.0f} * Degree};
+             angle < Angle{Real{360.0f} * Degree};
+             angle += Angle{Real{15.0f} * Degree})
         {
             const auto r = UnitVec2{angle};
             EXPECT_EQ(Rotate(-v, r), -Rotate(v, r));
         }
     }
     {
-        const auto v = Vec2{RealNum(-3.2), RealNum(1.9)};
-        const auto r = UnitVec2{Angle{RealNum{33.0f} * Degree}};
+        const auto v = Vec2{Real(-3.2), Real(1.9)};
+        const auto r = UnitVec2{Angle{Real{33.0f} * Degree}};
         EXPECT_EQ(Rotate(v, r), -Rotate(-v, r));
     }
     {
-        const auto v = Vec2{RealNum(-3.2), RealNum(1.9)};
-        const auto r = UnitVec2{Angle{RealNum{33.0f} * Degree}};
+        const auto v = Vec2{Real(-3.2), Real(1.9)};
+        const auto r = UnitVec2{Angle{Real{33.0f} * Degree}};
         EXPECT_EQ(Rotate(v, r), -Rotate(v, -r));
     }
 }
@@ -283,8 +283,8 @@ TEST(Math, InverseRotationRevertsRotation)
     const auto vec_list = {Vec2{-10.7f, 5.3f}, Vec2{3.2f, 21.04f}, Vec2{-1.2f, -0.78f}};
     for (auto&& vec: vec_list) {
         for (auto angle = Angle{0};
-             angle < Angle{RealNum{360.0f} * Degree};
-             angle += Angle{RealNum{10.0f} * Degree})
+             angle < Angle{Real{360.0f} * Degree};
+             angle += Angle{Real{10.0f} * Degree})
         {
             const auto unit_vec = UnitVec2{angle};
             EXPECT_NEAR(double(GetX(InverseRotate(Rotate(vec, unit_vec), unit_vec))), double(GetX(vec)), 0.004);
@@ -295,9 +295,9 @@ TEST(Math, InverseRotationRevertsRotation)
 
 TEST(Math, TransformIsRotatePlusTranslate)
 {
-    const auto vector = Length2D{RealNum(19) * Meter, RealNum(-0.5) * Meter};
-    const auto translation = Length2D{RealNum(-3) * Meter, RealNum(+5) * Meter};
-    const auto rotation = UnitVec2{Angle{RealNum{90.0f} * Degree}};
+    const auto vector = Length2D{Real(19) * Meter, Real(-0.5) * Meter};
+    const auto translation = Length2D{Real(-3) * Meter, Real(+5) * Meter};
+    const auto rotation = UnitVec2{Angle{Real{90.0f} * Degree}};
     const auto transformation = Transformation{translation, rotation};
     
     const auto transformed_vector = Transform(vector, transformation);
@@ -309,9 +309,9 @@ TEST(Math, TransformIsRotatePlusTranslate)
 
 TEST(Math, InverseTransformIsUntranslateAndInverseRotate)
 {
-    const auto vector = Length2D{RealNum(19) * Meter, RealNum(-0.5) * Meter};
-    const auto translation = Length2D{RealNum(-3) * Meter, RealNum(+5) * Meter};
-    const auto rotation = UnitVec2{Angle{RealNum{90.0f} * Degree}};
+    const auto vector = Length2D{Real(19) * Meter, Real(-0.5) * Meter};
+    const auto translation = Length2D{Real(-3) * Meter, Real(+5) * Meter};
+    const auto rotation = UnitVec2{Angle{Real{90.0f} * Degree}};
     const auto transformation = Transformation{translation, rotation};
     
     const auto inv_vector = InverseTransform(vector, transformation);
@@ -323,46 +323,46 @@ TEST(Math, InverseTransformIsUntranslateAndInverseRotate)
 
 TEST(Math, InverseTransformTransformedIsOriginal)
 {
-    const auto vector = Length2D{RealNum(19) * Meter, RealNum(-0.5) * Meter};
-    const auto translation = Length2D{RealNum(-3) * Meter, RealNum(+5) * Meter};
-    const auto rotation = UnitVec2{Angle{RealNum{90.0f} * Degree}};
+    const auto vector = Length2D{Real(19) * Meter, Real(-0.5) * Meter};
+    const auto translation = Length2D{Real(-3) * Meter, Real(+5) * Meter};
+    const auto rotation = UnitVec2{Angle{Real{90.0f} * Degree}};
     const auto transformation = Transformation{translation, rotation};
 
     const auto transformed_vector = Transform(vector, transformation);
     const auto inverse_transformed_vector = InverseTransform(transformed_vector, transformation);
 
-    EXPECT_NEAR(double(RealNum{vector.x / Meter}),
-                double(RealNum{inverse_transformed_vector.x / Meter}), 0.0001);
-    EXPECT_NEAR(double(RealNum{vector.y / Meter}),
-                double(RealNum{inverse_transformed_vector.y / Meter}), 0.0001);
+    EXPECT_NEAR(double(Real{vector.x / Meter}),
+                double(Real{inverse_transformed_vector.x / Meter}), 0.0001);
+    EXPECT_NEAR(double(Real{vector.y / Meter}),
+                double(Real{inverse_transformed_vector.y / Meter}), 0.0001);
 }
 
 TEST(Math, TransformInverseTransformedIsOriginal)
 {
-    const auto vector = Length2D{RealNum(19) * Meter, RealNum(-0.5) * Meter};
-    const auto translation = Length2D{RealNum(-3) * Meter, RealNum(+5) * Meter};
-    const auto rotation = UnitVec2{Angle{RealNum{90.0f} * Degree}};
+    const auto vector = Length2D{Real(19) * Meter, Real(-0.5) * Meter};
+    const auto translation = Length2D{Real(-3) * Meter, Real(+5) * Meter};
+    const auto rotation = UnitVec2{Angle{Real{90.0f} * Degree}};
     const auto transformation = Transformation{translation, rotation};
 
     const auto inverse_transformed_vector = InverseTransform(vector, transformation);
     const auto transformed_inverse_vector = Transform(inverse_transformed_vector, transformation);
     
-    EXPECT_NEAR(double(RealNum{vector.x / Meter}),
-                double(RealNum{transformed_inverse_vector.x / Meter}), 0.00001);
-    EXPECT_NEAR(double(RealNum{vector.y / Meter}),
-                double(RealNum{transformed_inverse_vector.y / Meter}), 0.00001);
+    EXPECT_NEAR(double(Real{vector.x / Meter}),
+                double(Real{transformed_inverse_vector.x / Meter}), 0.00001);
+    EXPECT_NEAR(double(Real{vector.y / Meter}),
+                double(Real{transformed_inverse_vector.y / Meter}), 0.00001);
 }
 
 TEST(Math, ComputeCentroidCenteredR1)
 {
-    const auto hx = RealNum(1);
-    const auto hy = RealNum(1);
+    const auto hx = Real(1);
+    const auto hy = Real(1);
     const auto real_center = Vec2{0, 0};
     const auto vertices = {
-        Vec2{real_center.x + hx, real_center.y + hy} * (RealNum(1) * Meter),
-        Vec2{real_center.x - hx, real_center.y + hy} * (RealNum(1) * Meter),
-        Vec2{real_center.x - hx, real_center.y - hy} * (RealNum(1) * Meter),
-        Vec2{real_center.x + hx, real_center.y - hy} * (RealNum(1) * Meter),
+        Vec2{real_center.x + hx, real_center.y + hy} * (Real(1) * Meter),
+        Vec2{real_center.x - hx, real_center.y + hy} * (Real(1) * Meter),
+        Vec2{real_center.x - hx, real_center.y - hy} * (Real(1) * Meter),
+        Vec2{real_center.x + hx, real_center.y - hy} * (Real(1) * Meter),
     };
     const auto center = ComputeCentroid(vertices);
     EXPECT_EQ(center.x, real_center.x * Meter);
@@ -385,14 +385,14 @@ struct Results<Fixed32> {
 
 TEST(Math, ComputeCentroidCentered0R1000)
 {
-    const auto hx = RealNum(1000);
-    const auto hy = RealNum(1000);
+    const auto hx = Real(1000);
+    const auto hy = Real(1000);
     const auto real_center = Vec2{0, 0};
     const auto vertices = {
-        Vec2{real_center.x + hx, real_center.y + hy} * (RealNum(1) * Meter),
-        Vec2{real_center.x - hx, real_center.y + hy} * (RealNum(1) * Meter),
-        Vec2{real_center.x - hx, real_center.y - hy} * (RealNum(1) * Meter),
-        Vec2{real_center.x + hx, real_center.y - hy} * (RealNum(1) * Meter)
+        Vec2{real_center.x + hx, real_center.y + hy} * (Real(1) * Meter),
+        Vec2{real_center.x - hx, real_center.y + hy} * (Real(1) * Meter),
+        Vec2{real_center.x - hx, real_center.y - hy} * (Real(1) * Meter),
+        Vec2{real_center.x + hx, real_center.y - hy} * (Real(1) * Meter)
     };
     const auto center = ComputeCentroid(vertices);
     
@@ -406,115 +406,115 @@ TEST(Math, ComputeCentroidCentered0R1000)
 
 TEST(Math, ComputeCentroidUpRight1000R1)
 {
-    const auto hx = RealNum(1);
-    const auto hy = RealNum(1);
+    const auto hx = Real(1);
+    const auto hy = Real(1);
     const auto real_center = Vec2{1000, 1000};
     const auto vertices = {
-        Vec2{real_center.x + hx, real_center.y + hy} * (RealNum(1) * Meter),
-        Vec2{real_center.x - hx, real_center.y + hy} * (RealNum(1) * Meter),
-        Vec2{real_center.x - hx, real_center.y - hy} * (RealNum(1) * Meter),
-        Vec2{real_center.x + hx, real_center.y - hy} * (RealNum(1) * Meter)
+        Vec2{real_center.x + hx, real_center.y + hy} * (Real(1) * Meter),
+        Vec2{real_center.x - hx, real_center.y + hy} * (Real(1) * Meter),
+        Vec2{real_center.x - hx, real_center.y - hy} * (Real(1) * Meter),
+        Vec2{real_center.x + hx, real_center.y - hy} * (Real(1) * Meter)
     };
     const auto center = ComputeCentroid(vertices);
-    EXPECT_NEAR(double(RealNum{center.x / Meter}), double(real_center.x), 0.01);
-    EXPECT_NEAR(double(RealNum{center.y / Meter}), double(real_center.y), 0.01);
+    EXPECT_NEAR(double(Real{center.x / Meter}), double(real_center.x), 0.01);
+    EXPECT_NEAR(double(Real{center.y / Meter}), double(real_center.y), 0.01);
     
     const auto average = Average<Length2D>(vertices);
-    EXPECT_NEAR(double(RealNum{average.x / Meter}), double(RealNum{center.x / Meter}), 0.01);
-    EXPECT_NEAR(double(RealNum{average.y / Meter}), double(RealNum{center.y / Meter}), 0.01);
+    EXPECT_NEAR(double(Real{average.x / Meter}), double(Real{center.x / Meter}), 0.01);
+    EXPECT_NEAR(double(Real{average.y / Meter}), double(Real{center.y / Meter}), 0.01);
 }
 
 TEST(Math, ComputeCentroidUpRight1000R100)
 {
-    const auto hx = RealNum(100);
-    const auto hy = RealNum(100);
+    const auto hx = Real(100);
+    const auto hy = Real(100);
     const auto real_center = Vec2{1000, 1000};
     const auto vertices = {
-        Vec2{real_center.x + hx, real_center.y + hy} * (RealNum(1) * Meter),
-        Vec2{real_center.x - hx, real_center.y + hy} * (RealNum(1) * Meter),
-        Vec2{real_center.x - hx, real_center.y - hy} * (RealNum(1) * Meter),
-        Vec2{real_center.x + hx, real_center.y - hy} * (RealNum(1) * Meter)
+        Vec2{real_center.x + hx, real_center.y + hy} * (Real(1) * Meter),
+        Vec2{real_center.x - hx, real_center.y + hy} * (Real(1) * Meter),
+        Vec2{real_center.x - hx, real_center.y - hy} * (Real(1) * Meter),
+        Vec2{real_center.x + hx, real_center.y - hy} * (Real(1) * Meter)
     };
     const auto center = ComputeCentroid(vertices);
-    EXPECT_NEAR(double(RealNum{center.x / Meter}), double(real_center.x), 0.01);
-    EXPECT_NEAR(double(RealNum{center.y / Meter}), double(real_center.y), 0.01);
+    EXPECT_NEAR(double(Real{center.x / Meter}), double(real_center.x), 0.01);
+    EXPECT_NEAR(double(Real{center.y / Meter}), double(real_center.y), 0.01);
     
     const auto average = Average<Length2D>(vertices);
-    EXPECT_NEAR(double(RealNum{average.x / Meter}), double(RealNum{center.x / Meter}), 0.01);
-    EXPECT_NEAR(double(RealNum{average.y / Meter}), double(RealNum{center.y / Meter}), 0.01);
+    EXPECT_NEAR(double(Real{average.x / Meter}), double(Real{center.x / Meter}), 0.01);
+    EXPECT_NEAR(double(Real{average.y / Meter}), double(Real{center.y / Meter}), 0.01);
 }
 
 TEST(Math, ComputeCentroidUpRight10000R01)
 {
-    const auto hx = RealNum(0.1);
-    const auto hy = RealNum(0.1);
+    const auto hx = Real(0.1);
+    const auto hy = Real(0.1);
     const auto real_center = Vec2{10000, 10000};
     const auto vertices = {
-        Vec2{real_center.x + hx, real_center.y + hy} * (RealNum(1) * Meter),
-        Vec2{real_center.x - hx, real_center.y + hy} * (RealNum(1) * Meter),
-        Vec2{real_center.x - hx, real_center.y - hy} * (RealNum(1) * Meter),
-        Vec2{real_center.x + hx, real_center.y - hy} * (RealNum(1) * Meter)
+        Vec2{real_center.x + hx, real_center.y + hy} * (Real(1) * Meter),
+        Vec2{real_center.x - hx, real_center.y + hy} * (Real(1) * Meter),
+        Vec2{real_center.x - hx, real_center.y - hy} * (Real(1) * Meter),
+        Vec2{real_center.x + hx, real_center.y - hy} * (Real(1) * Meter)
     };
     const auto center = ComputeCentroid(vertices);
-    EXPECT_NEAR(double(RealNum{center.x / Meter}), double(real_center.x), 0.1);
-    EXPECT_NEAR(double(RealNum{center.y / Meter}), double(real_center.y), 0.1);
+    EXPECT_NEAR(double(Real{center.x / Meter}), double(real_center.x), 0.1);
+    EXPECT_NEAR(double(Real{center.y / Meter}), double(real_center.y), 0.1);
     
     const auto average = Average<Length2D>(vertices);
-    EXPECT_NEAR(double(RealNum{average.x / Meter}), double(RealNum{center.x / Meter}), 0.1);
-    EXPECT_NEAR(double(RealNum{average.y / Meter}), double(RealNum{center.y / Meter}), 0.1);
+    EXPECT_NEAR(double(Real{average.x / Meter}), double(Real{center.x / Meter}), 0.1);
+    EXPECT_NEAR(double(Real{average.y / Meter}), double(Real{center.y / Meter}), 0.1);
 }
 
 TEST(Math, ComputeCentroidDownLeft1000R1)
 {
-    const auto hx = RealNum(1);
-    const auto hy = RealNum(1);
+    const auto hx = Real(1);
+    const auto hy = Real(1);
     const auto real_center = Vec2{-1000, -1000};
     const auto vertices = {
-        Vec2{real_center.x + hx, real_center.y + hy} * (RealNum(1) * Meter),
-        Vec2{real_center.x - hx, real_center.y + hy} * (RealNum(1) * Meter),
-        Vec2{real_center.x - hx, real_center.y - hy} * (RealNum(1) * Meter),
-        Vec2{real_center.x + hx, real_center.y - hy} * (RealNum(1) * Meter)
+        Vec2{real_center.x + hx, real_center.y + hy} * (Real(1) * Meter),
+        Vec2{real_center.x - hx, real_center.y + hy} * (Real(1) * Meter),
+        Vec2{real_center.x - hx, real_center.y - hy} * (Real(1) * Meter),
+        Vec2{real_center.x + hx, real_center.y - hy} * (Real(1) * Meter)
     };
     const auto center = ComputeCentroid(vertices);
-    EXPECT_NEAR(double(RealNum{center.x / Meter}), double(real_center.x), 0.01);
-    EXPECT_NEAR(double(RealNum{center.y / Meter}), double(real_center.y), 0.01);
+    EXPECT_NEAR(double(Real{center.x / Meter}), double(real_center.x), 0.01);
+    EXPECT_NEAR(double(Real{center.y / Meter}), double(real_center.y), 0.01);
     
     const auto average = Average<Length2D>(vertices);
-    EXPECT_NEAR(double(RealNum{average.x / Meter}), double(RealNum{center.x / Meter}), 0.01);
-    EXPECT_NEAR(double(RealNum{average.y / Meter}), double(RealNum{center.y / Meter}), 0.01);
+    EXPECT_NEAR(double(Real{average.x / Meter}), double(Real{center.x / Meter}), 0.01);
+    EXPECT_NEAR(double(Real{average.y / Meter}), double(Real{center.y / Meter}), 0.01);
 }
 
 TEST(Math, ComputeCentroidOfHexagonalVertices)
 {
-    const auto hx = RealNum(1);
-    const auto hy = RealNum(1);
+    const auto hx = Real(1);
+    const auto hy = Real(1);
     const auto real_center = Vec2{-1000, -1000};
     const auto vertices = {
-        Vec2{real_center.x + 00, real_center.y + 2 * hy} * (RealNum(1) * Meter),
-        Vec2{real_center.x - hx, real_center.y + 1 * hy} * (RealNum(1) * Meter),
-        Vec2{real_center.x - hx, real_center.y - 1 * hy} * (RealNum(1) * Meter),
-        Vec2{real_center.x + 00, real_center.y - 2 * hy} * (RealNum(1) * Meter),
-        Vec2{real_center.x + hx, real_center.y - 1 * hy} * (RealNum(1) * Meter),
-        Vec2{real_center.x + hx, real_center.y + 1 * hy} * (RealNum(1) * Meter),
+        Vec2{real_center.x + 00, real_center.y + 2 * hy} * (Real(1) * Meter),
+        Vec2{real_center.x - hx, real_center.y + 1 * hy} * (Real(1) * Meter),
+        Vec2{real_center.x - hx, real_center.y - 1 * hy} * (Real(1) * Meter),
+        Vec2{real_center.x + 00, real_center.y - 2 * hy} * (Real(1) * Meter),
+        Vec2{real_center.x + hx, real_center.y - 1 * hy} * (Real(1) * Meter),
+        Vec2{real_center.x + hx, real_center.y + 1 * hy} * (Real(1) * Meter),
     };
     const auto center = ComputeCentroid(vertices);
-    EXPECT_NEAR(double(RealNum{center.x / Meter}), double(real_center.x), 0.01);
-    EXPECT_NEAR(double(RealNum{center.y / Meter}), double(real_center.y), 0.01);
+    EXPECT_NEAR(double(Real{center.x / Meter}), double(real_center.x), 0.01);
+    EXPECT_NEAR(double(Real{center.y / Meter}), double(real_center.y), 0.01);
     
     const auto average = Average<Length2D>(vertices);
-    EXPECT_NEAR(double(RealNum{average.x / Meter}), double(RealNum{center.x / Meter}), 0.01);
-    EXPECT_NEAR(double(RealNum{average.y / Meter}), double(RealNum{center.y / Meter}), 0.01);
+    EXPECT_NEAR(double(Real{average.x / Meter}), double(Real{center.x / Meter}), 0.01);
+    EXPECT_NEAR(double(Real{average.y / Meter}), double(Real{center.y / Meter}), 0.01);
 }
 
 TEST(Math, GetContactRelVelocity)
 {
     const auto velA = Velocity{
-        LinearVelocity2D(+RealNum(1) * MeterPerSecond, +RealNum(4) * MeterPerSecond),
-        RealNum{3.2f} * RadianPerSecond
+        LinearVelocity2D(+Real(1) * MeterPerSecond, +Real(4) * MeterPerSecond),
+        Real{3.2f} * RadianPerSecond
     };
     const auto velB = Velocity{
-        LinearVelocity2D(+RealNum(3) * MeterPerSecond, +RealNum(1) * MeterPerSecond),
-        RealNum{0.4f} * RadianPerSecond
+        LinearVelocity2D(+Real(3) * MeterPerSecond, +Real(1) * MeterPerSecond),
+        Real{0.4f} * RadianPerSecond
     };
     const auto relA = Length2D(0, 0);
     const auto relB = Length2D(0, 0);
@@ -614,18 +614,18 @@ TEST(Math, GetPosition)
 {
     /*
      * If GetPosition is implemented as: pos0 * (1 - beta) + pos1 * beta.
-     * Then it fails the following test when RealNum is implemented via float.
+     * Then it fails the following test when Real is implemented via float.
      * This is due to floating point inaccuracy.
      *
      * If GetPosition is implemented as: pos0 + (pos1 - pos0) * beta.
-     * Then it passes the following test when RealNum is implemented via float.
+     * Then it passes the following test when Real is implemented via float.
      */
 
-    const auto x = RealNum{2.587699890136719e-02f};
-    const auto y = RealNum{5.515012264251709e+00f};
-    const auto value = RealNum{0.0866042823f};
+    const auto x = Real{2.587699890136719e-02f};
+    const auto y = Real{5.515012264251709e+00f};
+    const auto value = Real{0.0866042823f};
 
-    const auto oldPos = Position{Vec2{x, y} * (RealNum(1) * Meter), RealNum{0.0f} * Radian};
+    const auto oldPos = Position{Vec2{x, y} * (Real(1) * Meter), Real{0.0f} * Radian};
     const auto newPos = GetPosition(oldPos, oldPos, value);
     
     EXPECT_EQ(oldPos.linear.x, newPos.linear.x);
@@ -738,18 +738,18 @@ TEST(Math, GetCircleVertices)
         EXPECT_EQ(vertices, std::vector<Length2D>({Length2D(0, 0), Length2D(0, 0), Length2D(0, 0), Length2D(0, 0)}));
     }
     {
-        const auto vertices = GetCircleVertices(RealNum(1) * Meter, 0);
+        const auto vertices = GetCircleVertices(Real(1) * Meter, 0);
         EXPECT_EQ(vertices, std::vector<Length2D>());
     }
     {
-        const auto vertices = GetCircleVertices(RealNum(1) * Meter, 1);
-        EXPECT_EQ(vertices, std::vector<Length2D>({Length2D(RealNum(1) * Meter, RealNum(0) * Meter), Length2D(RealNum(1) * Meter, RealNum(0) * Meter)}));
+        const auto vertices = GetCircleVertices(Real(1) * Meter, 1);
+        EXPECT_EQ(vertices, std::vector<Length2D>({Length2D(Real(1) * Meter, Real(0) * Meter), Length2D(Real(1) * Meter, Real(0) * Meter)}));
     }
     {
-        const auto vertices = GetCircleVertices(RealNum(1) * Meter, 2);
-        EXPECT_EQ(vertices[0], Length2D(RealNum(1) * Meter, RealNum(0) * Meter));
-        EXPECT_NEAR(static_cast<double>(RealNum(GetX(vertices[1]) / Meter)), -1.0, 0.0001);
-        EXPECT_NEAR(static_cast<double>(RealNum(GetY(vertices[1]) / Meter)),  0.0, 0.0001);
-        EXPECT_EQ(vertices[2], Length2D(RealNum(1) * Meter, RealNum(0) * Meter));
+        const auto vertices = GetCircleVertices(Real(1) * Meter, 2);
+        EXPECT_EQ(vertices[0], Length2D(Real(1) * Meter, Real(0) * Meter));
+        EXPECT_NEAR(static_cast<double>(Real(GetX(vertices[1]) / Meter)), -1.0, 0.0001);
+        EXPECT_NEAR(static_cast<double>(Real(GetY(vertices[1]) / Meter)),  0.0, 0.0001);
+        EXPECT_EQ(vertices[2], Length2D(Real(1) * Meter, Real(0) * Meter));
     }
 }

@@ -44,7 +44,7 @@ namespace box2d {
         
         static constexpr Length GetDefaultVertexRadius() noexcept
         {
-            return DefaultLinearSlop * RealNum{2};
+            return DefaultLinearSlop * Real{2};
         }
         
         struct Conf: public Builder<Conf>

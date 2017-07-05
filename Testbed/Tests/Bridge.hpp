@@ -37,9 +37,9 @@ public:
 
         {
             auto conf = PolygonShape::Conf{};
-            conf.density = RealNum{20} * KilogramPerSquareMeter;
+            conf.density = Real{20} * KilogramPerSquareMeter;
             conf.friction = 0.2f;
-            const auto shape = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.125f} * Meter, conf);
+            const auto shape = std::make_shared<PolygonShape>(Real{0.5f} * Meter, Real{0.125f} * Meter, conf);
             auto prevBody = ground;
             for (auto i = 0; i < Count; ++i)
             {
@@ -61,7 +61,7 @@ public:
         }
 
         const auto polyshape = std::make_shared<PolygonShape>(PolygonShape::Conf{}
-                                                              .UseDensity(RealNum{1} * KilogramPerSquareMeter));
+                                                              .UseDensity(Real{1} * KilogramPerSquareMeter));
         polyshape->Set({
             Vec2(-0.5f, 0.0f) * Meter,
             Vec2(0.5f, 0.0f) * Meter,
@@ -76,8 +76,8 @@ public:
         }
 
         const auto diskShape = std::make_shared<DiskShape>(DiskShape::Conf{}
-                                                           .UseDensity(RealNum{1} * KilogramPerSquareMeter)
-                                                           .UseVertexRadius(RealNum{0.5f} * Meter));
+                                                           .UseDensity(Real{1} * KilogramPerSquareMeter)
+                                                           .UseVertexRadius(Real{0.5f} * Meter));
         for (auto i = 0; i < 3; ++i)
         {
             const auto body = m_world->CreateBody(BodyDef{}

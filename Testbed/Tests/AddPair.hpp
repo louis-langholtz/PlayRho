@@ -30,11 +30,11 @@ public:
 
     AddPair()
     {
-        m_world->SetGravity(LinearAcceleration2D{RealNum(0) * MeterPerSquareSecond, RealNum(0) * MeterPerSquareSecond});
+        m_world->SetGravity(LinearAcceleration2D{Real(0) * MeterPerSquareSecond, Real(0) * MeterPerSquareSecond});
         {
             auto conf = DiskShape::Conf{};
-            conf.vertexRadius = Meter / RealNum{10};
-            conf.density = RealNum{0.01f} * KilogramPerSquareMeter;
+            conf.vertexRadius = Meter / Real{10};
+            conf.density = Real{0.01f} * KilogramPerSquareMeter;
             const auto shape = std::make_shared<DiskShape>(conf);
 
             const auto minX = -6.0f;
@@ -55,12 +55,12 @@ public:
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.position = Length2D{RealNum(-40.0f) * Meter, RealNum(5.0f) * Meter};
+            bd.position = Length2D{Real(-40.0f) * Meter, Real(5.0f) * Meter};
             bd.bullet = true;
             const auto body = m_world->CreateBody(bd);
             auto conf = PolygonShape::Conf{};
-            conf.density = RealNum{1.0f} * KilogramPerSquareMeter;
-            body->CreateFixture(std::make_shared<PolygonShape>(RealNum{1.5f} * Meter, RealNum{1.5f} * Meter, conf));
+            conf.density = Real{1.0f} * KilogramPerSquareMeter;
+            body->CreateFixture(std::make_shared<PolygonShape>(Real{1.5f} * Meter, Real{1.5f} * Meter, conf));
             body->SetVelocity(Velocity{Vec2(150.0f, 0.0f) * MeterPerSecond, AngularVelocity{0}});
         }
     }

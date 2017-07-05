@@ -65,7 +65,7 @@ TEST(Body, ByteSize)
     const auto allSize = contactsSize + jointsSize + fixturesSize;
 
     // architecture dependent...
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(Body), std::size_t(120 + allSize)); break;
         case  8: EXPECT_EQ(sizeof(Body), std::size_t(216 + allSize)); break;
@@ -137,7 +137,7 @@ TEST(Body, CreateFixture)
     const auto body = world.CreateBody();
     EXPECT_EQ(GetFixtureCount(*body), std::size_t(0));
 
-    const auto valid_shape = std::make_shared<DiskShape>(RealNum{1} * Meter);
+    const auto valid_shape = std::make_shared<DiskShape>(Real{1} * Meter);
     EXPECT_NE(body->CreateFixture(valid_shape, FixtureDef{}), nullptr);
 
     EXPECT_EQ(GetFixtureCount(*body), std::size_t(1));
@@ -147,7 +147,7 @@ TEST(Body, SetEnabled)
 {
     World world;
     const auto body = world.CreateBody();
-    const auto valid_shape = std::make_shared<DiskShape>(RealNum{1} * Meter);
+    const auto valid_shape = std::make_shared<DiskShape>(Real{1} * Meter);
     ASSERT_NE(body->CreateFixture(valid_shape, FixtureDef{}), nullptr);
     
     EXPECT_TRUE(body->IsEnabled());
@@ -161,7 +161,7 @@ TEST(Body, SetFixedRotation)
 {
     World world;
     const auto body = world.CreateBody();
-    const auto valid_shape = std::make_shared<DiskShape>(RealNum{1} * Meter);
+    const auto valid_shape = std::make_shared<DiskShape>(Real{1} * Meter);
     ASSERT_NE(body->CreateFixture(valid_shape, FixtureDef{}), nullptr);
     
     EXPECT_FALSE(body->IsFixedRotation());
@@ -181,9 +181,9 @@ TEST(Body, CreateAndDestroyFixture)
     EXPECT_FALSE(body->IsMassDataDirty());
 
     auto conf = DiskShape::Conf{};
-    conf.vertexRadius = RealNum{2.871f} * Meter;
-    conf.location = Vec2{1.912f, -77.31f} * (RealNum(1) * Meter);
-    conf.density = RealNum{1} * KilogramPerSquareMeter;
+    conf.vertexRadius = Real{2.871f} * Meter;
+    conf.location = Vec2{1.912f, -77.31f} * (Real(1) * Meter);
+    conf.density = Real{1} * KilogramPerSquareMeter;
     const auto shape = std::make_shared<DiskShape>(conf);
     
     {
@@ -269,9 +269,9 @@ TEST(Body, SetTransform)
     bd.type = BodyType::Dynamic;
     World world;
     const auto body = world.CreateBody(bd);
-    const auto xfm1 = Transformation{Vec2_zero * (RealNum(1) * Meter), UnitVec2::GetRight()};
+    const auto xfm1 = Transformation{Vec2_zero * (Real(1) * Meter), UnitVec2::GetRight()};
     ASSERT_EQ(body->GetTransformation(), xfm1);
-    const auto xfm2 = Transformation{Vec2(10, -12) * (RealNum(1) * Meter), UnitVec2::GetLeft()};
+    const auto xfm2 = Transformation{Vec2(10, -12) * (Real(1) * Meter), UnitVec2::GetLeft()};
     body->SetTransform(xfm2.p, GetAngle(xfm2.q));
     EXPECT_EQ(body->GetTransformation().p, xfm2.p);
     EXPECT_NEAR(static_cast<double>(GetX(body->GetTransformation().q)),
@@ -287,9 +287,9 @@ TEST(Body, CreateLotsOfFixtures)
     BodyDef bd;
     bd.type = BodyType::Dynamic;
     auto conf = DiskShape::Conf{};
-    conf.vertexRadius = RealNum{2.871f} * Meter;
-    conf.location = Vec2{1.912f, -77.31f} * (RealNum(1) * Meter);
-    conf.density = RealNum{1.3f} * KilogramPerSquareMeter;
+    conf.vertexRadius = Real{2.871f} * Meter;
+    conf.location = Vec2{1.912f, -77.31f} * (Real(1) * Meter);
+    conf.density = Real{1.3f} * KilogramPerSquareMeter;
     const auto shape = std::make_shared<DiskShape>(conf);
     const auto num = 5000;
     std::chrono::time_point<std::chrono::system_clock> start, end;

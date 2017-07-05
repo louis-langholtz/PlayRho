@@ -24,15 +24,15 @@ using namespace box2d;
 
 TEST(DiskShape, ByteSize)
 {
-    if (sizeof(RealNum) == 4)
+    if (sizeof(Real) == 4)
     {
         EXPECT_EQ(sizeof(DiskShape), std::size_t(32));
     }
-    else if (sizeof(RealNum) == 8)
+    else if (sizeof(Real) == 8)
     {
         EXPECT_EQ(sizeof(DiskShape), std::size_t(56));
     }
-    else if (sizeof(RealNum) == 16)
+    else if (sizeof(Real) == 16)
     {
         EXPECT_EQ(sizeof(DiskShape), std::size_t(112));
     }
@@ -55,8 +55,8 @@ TEST(DiskShape, DefaultConstruction)
 
 TEST(DiskShape, InitConstruction)
 {
-    const auto radius = RealNum(1) * Meter;
-    const auto position = Length2D{-RealNum(1) * Meter, RealNum(1) * Meter};
+    const auto radius = Real(1) * Meter;
+    const auto position = Length2D{-Real(1) * Meter, Real(1) * Meter};
     auto conf = DiskShape::Conf{};
     conf.vertexRadius = radius;
     conf.location = position;
@@ -71,26 +71,26 @@ TEST(DiskShape, InitConstruction)
 
 TEST(DiskShape, TestPoint)
 {
-    const auto radius = RealNum(1) * Meter;
+    const auto radius = Real(1) * Meter;
     const auto position = Length2D(0, 0);
     auto conf = DiskShape::Conf{};
     conf.vertexRadius = radius;
     conf.location = position;
     DiskShape foo{conf};
-    EXPECT_TRUE(TestPoint(foo, Length2D{ RealNum(0) * Meter,  RealNum(0) * Meter}));
-    EXPECT_TRUE(TestPoint(foo, Length2D{+RealNum(1) * Meter,  RealNum(0) * Meter}));
-    EXPECT_TRUE(TestPoint(foo, Length2D{ RealNum(0) * Meter, +RealNum(1) * Meter}));
-    EXPECT_TRUE(TestPoint(foo, Length2D{ RealNum(0) * Meter, -RealNum(1) * Meter}));
-    EXPECT_TRUE(TestPoint(foo, Length2D{-RealNum(1) * Meter,  RealNum(0) * Meter}));
-    EXPECT_FALSE(TestPoint(foo, Length2D{-RealNum(1) * Meter,  -RealNum(1) * Meter}));
-    EXPECT_FALSE(TestPoint(foo, Length2D{+RealNum(1) * Meter,  +RealNum(1) * Meter}));
-    EXPECT_FALSE(TestPoint(foo, Length2D{+RealNum(0.9) * Meter,  +RealNum(0.9) * Meter}));
+    EXPECT_TRUE(TestPoint(foo, Length2D{ Real(0) * Meter,  Real(0) * Meter}));
+    EXPECT_TRUE(TestPoint(foo, Length2D{+Real(1) * Meter,  Real(0) * Meter}));
+    EXPECT_TRUE(TestPoint(foo, Length2D{ Real(0) * Meter, +Real(1) * Meter}));
+    EXPECT_TRUE(TestPoint(foo, Length2D{ Real(0) * Meter, -Real(1) * Meter}));
+    EXPECT_TRUE(TestPoint(foo, Length2D{-Real(1) * Meter,  Real(0) * Meter}));
+    EXPECT_FALSE(TestPoint(foo, Length2D{-Real(1) * Meter,  -Real(1) * Meter}));
+    EXPECT_FALSE(TestPoint(foo, Length2D{+Real(1) * Meter,  +Real(1) * Meter}));
+    EXPECT_FALSE(TestPoint(foo, Length2D{+Real(0.9) * Meter,  +Real(0.9) * Meter}));
 }
 
 TEST(DiskShape, ComputeAABB)
 {
-    const auto radius = RealNum(2.4) * Meter;
-    const auto position = Length2D{RealNum(2) * Meter, RealNum(1) * Meter};
+    const auto radius = Real(2.4) * Meter;
+    const auto position = Length2D{Real(2) * Meter, Real(1) * Meter};
     auto conf = DiskShape::Conf{};
     conf.vertexRadius = radius;
     conf.location = position;

@@ -99,7 +99,7 @@ void WheelJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
         const auto invRotMassB = invRotInertiaB * Square(m_sBy) / SquareRadian;
         const auto invMass = invMassA + invMassB + invRotMassA + invRotMassB;
 
-        m_mass = (invMass > InvMass{0})? RealNum{1} / invMass: 0;
+        m_mass = (invMass > InvMass{0})? Real{1} / invMass: 0;
     }
 
     // Spring constraint
@@ -118,15 +118,15 @@ void WheelJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
 
         if (invMass > InvMass{0})
         {
-            m_springMass = RealNum{1} / invMass;
+            m_springMass = Real{1} / invMass;
 
             const auto C = Length{Dot(dd, m_ax)};
 
             // Frequency
-            const auto omega = RealNum{2} * Pi * m_frequency;
+            const auto omega = Real{2} * Pi * m_frequency;
 
             // Damping coefficient
-            const auto d = RealNum{2} * m_springMass * m_dampingRatio * omega;
+            const auto d = Real{2} * m_springMass * m_dampingRatio * omega;
 
             // Spring stiffness
             const auto k = m_springMass * omega * omega;
@@ -135,11 +135,11 @@ void WheelJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
             const auto h = step.GetTime();
             
             const auto invGamma = Mass{h * (d + h * k)};
-            m_gamma = (invGamma > Mass{0})? RealNum{1} / invGamma: 0;
+            m_gamma = (invGamma > Mass{0})? Real{1} / invGamma: 0;
             m_bias = LinearVelocity{C * h * k * m_gamma};
 
             const auto totalInvMass = invMass + m_gamma;
-            m_springMass = (totalInvMass > InvMass{0})? RealNum{1} / totalInvMass: Mass{0};
+            m_springMass = (totalInvMass > InvMass{0})? Real{1} / totalInvMass: Mass{0};
         }
     }
     else
@@ -155,7 +155,7 @@ void WheelJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     if (m_enableMotor)
     {
         const auto invRotInertia = invRotInertiaA + invRotInertiaB;
-        m_motorMass = (invRotInertia > InvRotInertia{0})? RealNum{1} / invRotInertia: RotInertia{0};
+        m_motorMass = (invRotInertia > InvRotInertia{0})? Real{1} / invRotInertia: RotInertia{0};
     }
     else
     {
@@ -292,7 +292,7 @@ bool WheelJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Cons
 
     const auto k = InvMass{invMassA + invMassB + invRotMassA + invRotMassB};
 
-    const auto impulse = (k != InvMass{0})? -(C / k): RealNum{0} * Kilogram * Meter;
+    const auto impulse = (k != InvMass{0})? -(C / k): Real{0} * Kilogram * Meter;
 
     const auto P = impulse * ay;
     const auto LA = impulse * sAy / Radian;

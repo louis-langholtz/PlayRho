@@ -28,7 +28,7 @@ using namespace box2d;
 
 TEST(Shape, ByteSize)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(Shape), std::size_t(24)); break;
         case  8: EXPECT_EQ(sizeof(Shape), std::size_t(40)); break;
@@ -39,7 +39,7 @@ TEST(Shape, ByteSize)
 
 TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)
 {
-    const auto shape = DiskShape{RealNum{2} * Meter};
+    const auto shape = DiskShape{Real{2} * Meter};
     const auto xfm = Transformation{Length2D(0, 0), UnitVec2{Angle{0}}};
     const auto child = shape.GetChild(0);
 
@@ -87,7 +87,7 @@ TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)
 
 TEST(Shape, TestOverlapFasterThanCollideShapesForPolygons)
 {
-    const auto shape = PolygonShape{RealNum{2} * Meter, RealNum{2} * Meter};
+    const auto shape = PolygonShape{Real{2} * Meter, Real{2} * Meter};
     const auto xfm = Transformation{Length2D(0, 0), UnitVec2{Angle{0}}};
     const auto child = shape.GetChild(0);
 

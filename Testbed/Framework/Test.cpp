@@ -33,7 +33,7 @@ static void DrawCorner(Drawer& drawer, Length2D p, Length r, Angle a0, Angle a1,
 {
     const auto angleDiff = GetRevRotationalAngle(a0, a1);
     auto lastAngle = Angle{0};
-    for (auto angle = Degree * RealNum{5}; angle < angleDiff; angle += Degree * RealNum{5})
+    for (auto angle = Degree * Real{5}; angle < angleDiff; angle += Degree * Real{5})
     {
         const auto c0 = p + r * UnitVec2(a0 + lastAngle);
         const auto c1 = p + r * UnitVec2(a0 + angle);
@@ -79,7 +79,7 @@ void ShapeDrawer::Visit(const DiskShape& shape)
     drawer.DrawCircle(center, radius, color);
 
     // Draw a line fixed in the circle to animate rotation.
-    const auto axis = Rotate(Vec2{RealNum{1}, RealNum{0}}, xf.q);
+    const auto axis = Rotate(Vec2{Real{1}, Real{0}}, xf.q);
     drawer.DrawSegment(center, center + radius * axis, color);
 }
 
@@ -179,7 +179,7 @@ void ShapeDrawer::Draw(const DistanceProxy& shape)
     }
     else if (vertexCount == 1)
     {
-        DrawCorner(drawer, vertices[0], r, Angle{0}, RealNum{360} * Degree, skinColor);
+        DrawCorner(drawer, vertices[0], r, Angle{0}, Real{360} * Degree, skinColor);
     }
 }
 
@@ -342,7 +342,7 @@ static bool Draw(Drawer& drawer, const World& world, const Settings& settings, F
     
     if (settings.drawCOMs)
     {
-        const auto k_axisScale = RealNum(0.4) * Meter;
+        const auto k_axisScale = Real(0.4) * Meter;
         const auto red = Color{1.0f, 0.0f, 0.0f};
         const auto green = Color{0.0f, 1.0f, 0.0f};
         for (auto&& body: world.GetBodies())
@@ -472,7 +472,7 @@ void Test::MouseDown(const Length2D& p)
     }
 
     // Make a small box.
-    const auto aabb = GetFattenedAABB(AABB{p}, Meter / RealNum{1000});
+    const auto aabb = GetFattenedAABB(AABB{p}, Meter / Real{1000});
     
     auto fixture = static_cast<Fixture*>(nullptr);
     
@@ -496,7 +496,7 @@ void Test::MouseDown(const Length2D& p)
             md.bodyA = m_groundBody;
             md.bodyB = body;
             md.target = p;
-            md.maxForce = RealNum(10000.0f) * GetMass(*body) * MeterPerSquareSecond;
+            md.maxForce = Real(10000.0f) * GetMass(*body) * MeterPerSquareSecond;
             m_mouseJoint = static_cast<MouseJoint*>(m_world->CreateJoint(md));
             body->SetAwake();
         }
@@ -518,8 +518,8 @@ void Test::CompleteBombSpawn(const Length2D& p)
 
     const auto relP = m_bombSpawnPoint - p;
     const auto vel = LinearVelocity2D{
-        RealNum{30} * relP.GetX() / Second,
-        RealNum{30} * relP.GetY() / Second
+        Real{30} * relP.GetX() / Second,
+        Real{30} * relP.GetY() / Second
     };
     LaunchBomb(m_bombSpawnPoint, vel);
     m_bombSpawning = false;
@@ -565,8 +565,8 @@ void Test::LaunchBomb()
 {
     const auto p = Length2D(RandomFloat(-15.0f, 15.0f) * Meter, 40.0f * Meter);
     const auto v = LinearVelocity2D{
-        RealNum{-100} * p.GetX() / Second,
-        RealNum{-100} * p.GetY() / Second
+        Real{-100} * p.GetX() / Second,
+        Real{-100} * p.GetY() / Second
     };
     LaunchBomb(p, v);
 }
@@ -583,8 +583,8 @@ void Test::LaunchBomb(const Length2D& position, const LinearVelocity2D linearVel
     m_bomb->SetVelocity(Velocity{linearVelocity, AngularVelocity{0}});
     
     auto conf = DiskShape::Conf{};
-    conf.vertexRadius = RealNum{0.3f} * Meter;
-    conf.density = Density{RealNum{20} * Kilogram / SquareMeter};
+    conf.vertexRadius = Real{0.3f} * Meter;
+    conf.density = Density{Real{20} * Kilogram / SquareMeter};
     conf.restitution = 0.0f;
     const auto circle = std::make_shared<DiskShape>(conf);
 
@@ -651,8 +651,8 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     stream = std::stringstream();
     stream << "   ";
     stream << " bod-slept=" << m_stepStats.reg.bodiesSlept;
-    stream << " min-sep=" << static_cast<double>(RealNum{m_stepStats.reg.minSeparation / Meter});
-    stream << " max-inc-imp=" << static_cast<double>(RealNum{m_stepStats.reg.maxIncImpulse / (Kilogram * MeterPerSecond)});
+    stream << " min-sep=" << static_cast<double>(Real{m_stepStats.reg.minSeparation / Meter});
+    stream << " max-inc-imp=" << static_cast<double>(Real{m_stepStats.reg.maxIncImpulse / (Kilogram * MeterPerSecond)});
     drawer.DrawString(5, m_textLine, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
     
@@ -677,8 +677,8 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     stream << " cts-upd=" << m_stepStats.toi.contactsUpdatedToi;
     stream << " max-dist-iter=" << unsigned{m_stepStats.toi.maxDistIters};
     stream << " max-toi-iter=" << unsigned{m_stepStats.toi.maxToiIters};
-    stream << " min-sep=" << static_cast<double>(RealNum{m_stepStats.toi.minSeparation / Meter});
-    stream << " max-inc-imp=" << static_cast<double>(RealNum{m_stepStats.toi.maxIncImpulse / (Kilogram * MeterPerSecond)});
+    stream << " min-sep=" << static_cast<double>(Real{m_stepStats.toi.minSeparation / Meter});
+    stream << " max-inc-imp=" << static_cast<double>(Real{m_stepStats.toi.maxIncImpulse / (Kilogram * MeterPerSecond)});
     drawer.DrawString(5, m_textLine, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
     
@@ -716,14 +716,14 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     
     stream = std::stringstream();
     stream << "  Reg ranges:";
-    stream << " min-sep=" << static_cast<double>(RealNum{m_minRegSep / Meter});
-    stream << " max-sep=" << static_cast<double>(RealNum{m_maxRegSep / Meter});
+    stream << " min-sep=" << static_cast<double>(Real{m_minRegSep / Meter});
+    stream << " max-sep=" << static_cast<double>(Real{m_maxRegSep / Meter});
     drawer.DrawString(5, m_textLine, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
     
     stream = std::stringstream();
     stream << "  TOI ranges:";
-    stream << " min-sep=" << static_cast<double>(RealNum{m_minToiSep / Meter});
+    stream << " min-sep=" << static_cast<double>(Real{m_minToiSep / Meter});
     stream << " max-dist-iter=" << unsigned{m_maxDistIters} << "/" << unsigned{stepConf.maxDistanceIters};
     stream << " max-toi-iter=" << unsigned{m_maxToiIters} << "/" << unsigned{stepConf.maxToiIters};
     stream << " max-root-iter=" << unsigned{m_maxRootIters} << "/" << unsigned{stepConf.maxToiRootIters};
@@ -777,21 +777,21 @@ void Test::DrawStats(Drawer& drawer, const Fixture& fixture)
     std::stringstream stream;
     stream << "Selected fixture:";
     stream << " pos={{";
-    stream << static_cast<double>(RealNum{GetX(location) / Meter});
+    stream << static_cast<double>(Real{GetX(location) / Meter});
     stream << ",";
-    stream << static_cast<double>(RealNum{GetY(location) / Meter});
+    stream << static_cast<double>(Real{GetY(location) / Meter});
     stream << "}, ";
-    stream << static_cast<double>(RealNum{angle / Degree});
+    stream << static_cast<double>(Real{angle / Degree});
     stream << "}, ";
     stream << " vel={{";
-    stream << static_cast<double>(RealNum{GetX(velocity.linear) / MeterPerSecond});
+    stream << static_cast<double>(Real{GetX(velocity.linear) / MeterPerSecond});
     stream << ",";
-    stream << static_cast<double>(RealNum{GetY(velocity.linear) / MeterPerSecond});
+    stream << static_cast<double>(Real{GetY(velocity.linear) / MeterPerSecond});
     stream << "}, ";
-    stream << static_cast<double>(RealNum{velocity.angular / DegreePerSecond});
+    stream << static_cast<double>(Real{velocity.angular / DegreePerSecond});
     stream << "}";
-    stream << " density=" << static_cast<double>(RealNum{density * SquareMeter / Kilogram});
-    stream << " vr=" << static_cast<double>(RealNum{vertexRadius / Meter});
+    stream << " density=" << static_cast<double>(Real{density * SquareMeter / Kilogram});
+    stream << " vr=" << static_cast<double>(Real{vertexRadius / Meter});
     stream << " childCount=" << std::size_t(childCount);
     stream << " friction=" << friction;
     stream << " restitution=" << restitution;
@@ -804,8 +804,8 @@ void Test::DrawStats(Drawer& drawer, const Fixture& fixture)
 
 void Test::DrawContactPoints(const Settings& settings, Drawer& drawer)
 {
-    const auto k_impulseScale = RealNum(0.1) * Second / Kilogram;
-    const auto k_axisScale = (RealNum(3) / RealNum(10)) * Meter;
+    const auto k_impulseScale = Real(0.1) * Second / Kilogram;
+    const auto k_axisScale = (Real(3) / Real(10)) * Meter;
     
     for (auto i = decltype(m_pointCount){0}; i < m_pointCount; ++i)
     {
@@ -814,12 +814,12 @@ void Test::DrawContactPoints(const Settings& settings, Drawer& drawer)
         if (point->state == PointState::AddState)
         {
             // Add
-            drawer.DrawPoint(point->position, RealNum{10} * Meter, Color{0.3f, 0.95f, 0.3f});
+            drawer.DrawPoint(point->position, Real{10} * Meter, Color{0.3f, 0.95f, 0.3f});
         }
         else if (point->state == PointState::PersistState)
         {
             // Persist
-            drawer.DrawPoint(point->position, RealNum{5} * Meter, Color{0.3f, 0.3f, 0.95f});
+            drawer.DrawPoint(point->position, Real{5} * Meter, Color{0.3f, 0.3f, 0.95f});
         }
         
         if (settings.drawContactNormals)
@@ -874,7 +874,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 
     auto stepConf = StepConf{};
     
-    stepConf.SetTime(Second * RealNum{settings.dt});
+    stepConf.SetTime(Second * Real{settings.dt});
     
     stepConf.regVelocityIterations = static_cast<StepConf::iteration_type>(settings.regVelocityIterations);
     stepConf.regPositionIterations = static_cast<StepConf::iteration_type>(settings.regPositionIterations);
@@ -883,23 +883,23 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 
     stepConf.maxSubSteps           = static_cast<StepConf::iteration_type>(settings.maxSubSteps);
     
-    stepConf.maxTranslation = static_cast<RealNum>(settings.maxTranslation) * Meter;
-    stepConf.maxRotation = RealNum{settings.maxRotation} * Degree;
+    stepConf.maxTranslation = static_cast<Real>(settings.maxTranslation) * Meter;
+    stepConf.maxRotation = Real{settings.maxRotation} * Degree;
     
-    stepConf.linearSlop = RealNum{settings.linearSlop} * Meter;
-    stepConf.angularSlop = RealNum{settings.angularSlop} * Radian;
-    stepConf.regMinSeparation = RealNum{settings.regMinSeparation} * Meter;
-    stepConf.toiMinSeparation = RealNum{settings.toiMinSeparation} * Meter;
-    stepConf.targetDepth = settings.linearSlop * RealNum{3} * Meter;
-    stepConf.tolerance = (settings.linearSlop / RealNum{4}) * Meter;
+    stepConf.linearSlop = Real{settings.linearSlop} * Meter;
+    stepConf.angularSlop = Real{settings.angularSlop} * Radian;
+    stepConf.regMinSeparation = Real{settings.regMinSeparation} * Meter;
+    stepConf.toiMinSeparation = Real{settings.toiMinSeparation} * Meter;
+    stepConf.targetDepth = settings.linearSlop * Real{3} * Meter;
+    stepConf.tolerance = (settings.linearSlop / Real{4}) * Meter;
     
-    stepConf.maxLinearCorrection = RealNum{settings.maxLinearCorrection} * Meter;
-    stepConf.maxAngularCorrection = RealNum{settings.maxAngularCorrection} * Degree;
+    stepConf.maxLinearCorrection = Real{settings.maxLinearCorrection} * Meter;
+    stepConf.maxAngularCorrection = Real{settings.maxAngularCorrection} * Degree;
     stepConf.regResolutionRate = settings.regPosResRate / 100.0f;
     stepConf.toiResolutionRate = settings.toiPosResRate / 100.0f;
     if (!settings.enableSleep)
     {
-        stepConf.minStillTimeToSleep = Second * GetInvalid<RealNum>();
+        stepConf.minStillTimeToSleep = Second * GetInvalid<Real>();
         Awaken(*m_world);
     }
     stepConf.doToi = settings.enableContinuous;
@@ -933,7 +933,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
     m_maxRootIters = Max(m_maxRootIters, stepStats.toi.maxRootIters);
     m_maxToiIters = Max(m_maxToiIters, stepStats.toi.maxToiIters);
 
-    if (stepStats.reg.minSeparation < std::numeric_limits<RealNum>::infinity() * Meter)
+    if (stepStats.reg.minSeparation < std::numeric_limits<Real>::infinity() * Meter)
     {
         m_minRegSep = Min(m_minRegSep, stepStats.reg.minSeparation);
         m_maxRegSep = Max(m_maxRegSep, stepStats.reg.minSeparation);
@@ -973,15 +973,15 @@ void Test::Step(const Settings& settings, Drawer& drawer)
         const auto p1 = m_mouseJoint->GetAnchorB();
         const auto p2 = m_mouseJoint->GetTarget();
 
-        drawer.DrawPoint(p1, RealNum{4} * Meter, Color{0.0f, 1.0f, 0.0f});
-        drawer.DrawPoint(p2, RealNum{4} * Meter, Color{0.0f, 1.0f, 0.0f});
+        drawer.DrawPoint(p1, Real{4} * Meter, Color{0.0f, 1.0f, 0.0f});
+        drawer.DrawPoint(p2, Real{4} * Meter, Color{0.0f, 1.0f, 0.0f});
 
         drawer.DrawSegment(p1, p2, Color{0.8f, 0.8f, 0.8f});
     }
     
     if (m_bombSpawning)
     {
-        drawer.DrawPoint(m_bombSpawnPoint, RealNum{4} * Meter, Color{0.0f, 0.0f, 1.0f});
+        drawer.DrawPoint(m_bombSpawnPoint, Real{4} * Meter, Color{0.0f, 0.0f, 1.0f});
         drawer.DrawSegment(m_mouseWorld, m_bombSpawnPoint, Color{0.8f, 0.8f, 0.8f});
     }
 
@@ -1000,17 +1000,17 @@ void Test::ShiftOrigin(const Length2D& newOrigin)
 
 constexpr auto RAND_LIMIT = 32767;
 
-RealNum box2d::RandomFloat()
+Real box2d::RandomFloat()
 {
-    auto r = static_cast<RealNum>(std::rand() & (RAND_LIMIT));
+    auto r = static_cast<Real>(std::rand() & (RAND_LIMIT));
     r /= RAND_LIMIT;
     r = 2.0f * r - 1.0f;
     return r;
 }
 
-RealNum box2d::RandomFloat(RealNum lo, RealNum hi)
+Real box2d::RandomFloat(Real lo, Real hi)
 {
-    auto r = static_cast<RealNum>(std::rand() & (RAND_LIMIT));
+    auto r = static_cast<Real>(std::rand() & (RAND_LIMIT));
     r /= RAND_LIMIT;
     r = (hi - lo) * r + lo;
     return r;

@@ -129,7 +129,7 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     m_mass.ey.z = m_mass.ez.y;
     m_mass.ez.z = StripUnit(totInvI);
 
-    m_motorMass = (totInvI > InvRotInertia{0})? RotInertia{RealNum{1} / totInvI}: RotInertia{0};
+    m_motorMass = (totInvI > InvRotInertia{0})? RotInertia{Real{1} / totInvI}: RotInertia{0};
 
     if (!m_enableMotor || fixedRotation)
     {
@@ -139,7 +139,7 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     if (m_enableLimit && !fixedRotation)
     {
         const auto jointAngle = aB - aA - GetReferenceAngle();
-        if (Abs(m_upperAngle - m_lowerAngle) < (RealNum{2} * conf.angularSlop))
+        if (Abs(m_upperAngle - m_lowerAngle) < (Real{2} * conf.angularSlop))
         {
             m_limitState = e_equalLimits;
         }
@@ -347,7 +347,7 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
         const auto angle = posB.angular - posA.angular - GetReferenceAngle();
 
         // RotInertia is L^2 M QP^-2, Angle is QP, so RotInertia * Angle is L^2 M QP^-1.
-        auto limitImpulse = RealNum{0} * SquareMeter * Kilogram / Radian;
+        auto limitImpulse = Real{0} * SquareMeter * Kilogram / Radian;
 
         if (m_limitState == e_equalLimits)
         {
@@ -362,7 +362,7 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
             angularError = -C;
 
             // Prevent large angular corrections and allow some slop.
-            C = Clamp(C + conf.angularSlop, -conf.maxAngularCorrection, RealNum{0} * Radian);
+            C = Clamp(C + conf.angularSlop, -conf.maxAngularCorrection, Real{0} * Radian);
             limitImpulse = -m_motorMass * C;
         }
         else if (m_limitState == e_atUpperLimit)
@@ -371,7 +371,7 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
             angularError = C;
 
             // Prevent large angular corrections and allow some slop.
-            C = Clamp(C - conf.angularSlop, RealNum{0} * Radian, conf.maxAngularCorrection);
+            C = Clamp(C - conf.angularSlop, Real{0} * Radian, conf.maxAngularCorrection);
             limitImpulse = -m_motorMass * C;
         }
 
@@ -413,7 +413,7 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
         K.ex.y = StripUnit(exy);
         K.ey.x = K.ex.y;
         K.ey.y = StripUnit(eyy);
-        const auto P = -Solve(K, C) * (RealNum(1) * Kilogram);
+        const auto P = -Solve(K, C) * (Real(1) * Kilogram);
 
         posA -= Position{invMassA * P, invRotInertiaA * Cross(rA, P) / Radian};
         posB += Position{invMassB * P, invRotInertiaB * Cross(rB, P) / Radian};

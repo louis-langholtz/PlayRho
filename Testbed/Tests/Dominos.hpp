@@ -37,12 +37,12 @@ public:
             BodyDef bd;
             bd.position = Vec2(-1.5f, 10.0f) * Meter;
             const auto ground = m_world->CreateBody(bd);
-            ground->CreateFixture(std::make_shared<PolygonShape>(PolygonShape{RealNum{6.0f} * Meter, RealNum{0.25f} * Meter}));
+            ground->CreateFixture(std::make_shared<PolygonShape>(PolygonShape{Real{6.0f} * Meter, Real{0.25f} * Meter}));
         }
 
         {
-            const auto shape = std::make_shared<PolygonShape>(RealNum{0.1f} * Meter, RealNum{1.0f} * Meter);
-            shape->SetDensity(RealNum{20} * KilogramPerSquareMeter);
+            const auto shape = std::make_shared<PolygonShape>(Real{0.1f} * Meter, Real{1.0f} * Meter);
+            shape->SetDensity(Real{20} * KilogramPerSquareMeter);
             shape->SetFriction(0.05f);
 
             for (auto i = 0; i < 10; ++i)
@@ -56,7 +56,7 @@ public:
 
         {
             PolygonShape shape;
-            SetAsBox(shape, RealNum{7.2f} * Meter, RealNum{0.25f} * Meter, Vec2_zero * Meter, RealNum{0.3f} * Radian);
+            SetAsBox(shape, Real{7.2f} * Meter, Real{0.25f} * Meter, Vec2_zero * Meter, Real{0.3f} * Radian);
 
             BodyDef bd;
             bd.position = Vec2(1.2f, 6.0f) * Meter;
@@ -65,19 +65,19 @@ public:
         }
 
         const auto b2 = m_world->CreateBody(BodyDef{}.UseLocation(Vec2(-7.0f, 4.0f) * Meter));
-        b2->CreateFixture(std::make_shared<PolygonShape>(RealNum{0.25f} * Meter, RealNum{1.5f} * Meter));
+        b2->CreateFixture(std::make_shared<PolygonShape>(Real{0.25f} * Meter, Real{1.5f} * Meter));
 
         Body* b3;
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
             bd.position = Vec2(-0.9f, 1.0f) * Meter;
-            bd.angle = RealNum{-0.15f} * Radian;
+            bd.angle = Real{-0.15f} * Radian;
 
             b3 = m_world->CreateBody(bd);
             auto conf = PolygonShape::Conf{};
-            conf.density = RealNum{10} * KilogramPerSquareMeter;
-            b3->CreateFixture(std::make_shared<PolygonShape>(RealNum{6.0f} * Meter, RealNum{0.125f} * Meter, conf));
+            conf.density = Real{10} * KilogramPerSquareMeter;
+            b3->CreateFixture(std::make_shared<PolygonShape>(Real{6.0f} * Meter, Real{0.125f} * Meter, conf));
         }
 
         m_world->CreateJoint(RevoluteJointDef{b1, b3, Vec2(-2.0f, 1.0f) * Meter, true});
@@ -89,8 +89,8 @@ public:
             bd.position = Vec2(-10.0f, 15.0f) * Meter;
             b4 = m_world->CreateBody(bd);
             auto conf = PolygonShape::Conf{};
-            conf.density = RealNum{10} * KilogramPerSquareMeter;
-            b4->CreateFixture(std::make_shared<PolygonShape>(RealNum{0.25f} * Meter, RealNum{0.25f} * Meter, conf));
+            conf.density = Real{10} * KilogramPerSquareMeter;
+            b4->CreateFixture(std::make_shared<PolygonShape>(Real{0.25f} * Meter, Real{0.25f} * Meter, conf));
         }
 
         m_world->CreateJoint(RevoluteJointDef{b2, b4, Vec2(-7.0f, 15.0f) * Meter, true});
@@ -103,18 +103,18 @@ public:
             b5 = m_world->CreateBody(bd);
 
             auto conf = PolygonShape::Conf{};
-            conf.density = RealNum{10} * KilogramPerSquareMeter;
+            conf.density = Real{10} * KilogramPerSquareMeter;
             conf.friction = 0.1f;
 
             PolygonShape shape{conf};
 
-            SetAsBox(shape, RealNum{1.0f} * Meter, RealNum{0.1f} * Meter, Vec2(0.0f, -0.9f) * Meter, RealNum{0.0f} * Radian);
+            SetAsBox(shape, Real{1.0f} * Meter, Real{0.1f} * Meter, Vec2(0.0f, -0.9f) * Meter, Real{0.0f} * Radian);
             b5->CreateFixture(std::make_shared<PolygonShape>(shape));
 
-            SetAsBox(shape, RealNum{0.1f} * Meter, RealNum{1.0f} * Meter, Vec2(-0.9f, 0.0f) * Meter, RealNum{0.0f} * Radian);
+            SetAsBox(shape, Real{0.1f} * Meter, Real{1.0f} * Meter, Vec2(-0.9f, 0.0f) * Meter, Real{0.0f} * Radian);
             b5->CreateFixture(std::make_shared<PolygonShape>(shape));
 
-            SetAsBox(shape, RealNum{0.1f} * Meter, RealNum{1.0f} * Meter, Vec2(0.9f, 0.0f) * Meter, RealNum{0.0f} * Radian);
+            SetAsBox(shape, Real{0.1f} * Meter, Real{1.0f} * Meter, Vec2(0.9f, 0.0f) * Meter, Real{0.0f} * Radian);
             b5->CreateFixture(std::make_shared<PolygonShape>(shape));
         }
 
@@ -127,8 +127,8 @@ public:
             bd.position = Vec2(6.5f, 4.1f) * Meter;
             b6 = m_world->CreateBody(bd);
             auto conf = PolygonShape::Conf{};
-            conf.density = RealNum{30} * KilogramPerSquareMeter;
-            b6->CreateFixture(std::make_shared<PolygonShape>(PolygonShape(RealNum{1.0f} * Meter, RealNum{0.1f} * Meter, conf)));
+            conf.density = Real{30} * KilogramPerSquareMeter;
+            b6->CreateFixture(std::make_shared<PolygonShape>(PolygonShape(Real{1.0f} * Meter, Real{0.1f} * Meter, conf)));
         }
 
         m_world->CreateJoint(RevoluteJointDef{b5, b6, Vec2(7.5f, 4.0f) * Meter, true});
@@ -141,8 +141,8 @@ public:
 
             b7 = m_world->CreateBody(bd);
             auto conf = PolygonShape::Conf{};
-            conf.density = RealNum{10} * KilogramPerSquareMeter;
-            b7->CreateFixture(std::make_shared<PolygonShape>(PolygonShape(RealNum{0.1f} * Meter, RealNum{1.0f} * Meter, conf)));
+            conf.density = Real{10} * KilogramPerSquareMeter;
+            b7->CreateFixture(std::make_shared<PolygonShape>(PolygonShape(Real{0.1f} * Meter, Real{1.0f} * Meter, conf)));
         }
 
         DistanceJointDef djd;
@@ -155,16 +155,16 @@ public:
         m_world->CreateJoint(djd);
 
         {
-            const auto radius = RealNum{0.2f} * Meter;
+            const auto radius = Real{0.2f} * Meter;
             auto conf = DiskShape::Conf{};
-            conf.density = RealNum{10} * KilogramPerSquareMeter;
+            conf.density = Real{10} * KilogramPerSquareMeter;
             conf.vertexRadius = radius;
             const auto shape = std::make_shared<DiskShape>(conf);
             for (auto i = 0; i < 4; ++i)
             {
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
-                bd.position = Length2D(RealNum{5.9f} * Meter + RealNum{2.0f} * radius * static_cast<RealNum>(i), RealNum{2.4f} * Meter);
+                bd.position = Length2D(Real{5.9f} * Meter + Real{2.0f} * radius * static_cast<Real>(i), Real{2.4f} * Meter);
                 const auto body = m_world->CreateBody(bd);
                 body->CreateFixture(shape);
             }

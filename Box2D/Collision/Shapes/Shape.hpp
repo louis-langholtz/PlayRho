@@ -70,14 +70,14 @@ public:
         /// @note The square-root of the product of this value multiplied by a touching fixture's
         ///   friction becomes the friction coefficient for the contact.
         ///
-        NonNegative<RealNum> friction = NonNegative<RealNum>{RealNum{2} / RealNum{10}};
+        NonNegative<Real> friction = NonNegative<Real>{Real{2} / Real{10}};
         
         /// @brief Restitution (elasticity) of the associated shape.
         ///
         /// @note This should be a valid finite value.
         /// @note This is usually in the range [0,1].
         ///
-        Finite<RealNum> restitution = Finite<RealNum>{0};
+        Finite<Real> restitution = Finite<Real>{0};
         
         /// @brief Density of the associated shape.
         ///
@@ -98,8 +98,8 @@ public:
     struct Builder: Conf
     {
         constexpr ConcreteConf& UseVertexRadius(NonNegative<Length> value) noexcept;
-        constexpr ConcreteConf& UseFriction(NonNegative<RealNum> value) noexcept;
-        constexpr ConcreteConf& UseRestitution(Finite<RealNum> value) noexcept;
+        constexpr ConcreteConf& UseFriction(NonNegative<Real> value) noexcept;
+        constexpr ConcreteConf& UseRestitution(Finite<Real> value) noexcept;
         constexpr ConcreteConf& UseDensity(NonNegative<Density> value) noexcept;
     };
 
@@ -202,19 +202,19 @@ public:
     
     /// @brief Gets the coefficient of friction.
     /// @return Value of 0 or higher.
-    RealNum GetFriction() const noexcept;
+    Real GetFriction() const noexcept;
     
     /// @brief Sets the coefficient of friction.
     /// @note This will _not_ change the friction of existing contacts.
     /// @param friction Zero or higher (non-negative) co-efficient of friction.
-    void SetFriction(NonNegative<RealNum> friction) noexcept;
+    void SetFriction(NonNegative<Real> friction) noexcept;
     
     /// @brief Gets the coefficient of restitution.
-    RealNum GetRestitution() const noexcept;
+    Real GetRestitution() const noexcept;
     
     /// @brief Sets the coefficient of restitution.
     /// @note This will _not_ change the restitution of existing contacts.
-    void SetRestitution(Finite<RealNum> restitution) noexcept;
+    void SetRestitution(Finite<Real> restitution) noexcept;
 
 private:
     
@@ -222,13 +222,13 @@ private:
     NonNegative<Length> m_vertexRadius;
     
     /// @brief Density.
-    NonNegative<Density> m_density = NonNegative<Density>{KilogramPerSquareMeter * RealNum{0}};
+    NonNegative<Density> m_density = NonNegative<Density>{KilogramPerSquareMeter * Real{0}};
     
     /// @brief Friction as a coefficient.
-    NonNegative<RealNum> m_friction = NonNegative<RealNum>{RealNum{2} / RealNum{10}};
+    NonNegative<Real> m_friction = NonNegative<Real>{Real{2} / Real{10}};
 
     /// @brief Restitution as a coefficient.
-    Finite<RealNum> m_restitution = Finite<RealNum>{0};
+    Finite<Real> m_restitution = Finite<Real>{0};
 };
 
 template <typename ConcreteConf>
@@ -239,14 +239,14 @@ constexpr ConcreteConf& Shape::Builder<ConcreteConf>::UseVertexRadius(NonNegativ
 }
 
 template <typename ConcreteConf>
-constexpr ConcreteConf& Shape::Builder<ConcreteConf>::UseFriction(NonNegative<RealNum> value) noexcept
+constexpr ConcreteConf& Shape::Builder<ConcreteConf>::UseFriction(NonNegative<Real> value) noexcept
 {
     friction = value;
     return static_cast<ConcreteConf&>(*this);
 }
 
 template <typename ConcreteConf>
-constexpr ConcreteConf& Shape::Builder<ConcreteConf>::UseRestitution(Finite<RealNum> value) noexcept
+constexpr ConcreteConf& Shape::Builder<ConcreteConf>::UseRestitution(Finite<Real> value) noexcept
 {
     restitution = value;
     return static_cast<ConcreteConf&>(*this);
@@ -274,12 +274,12 @@ inline Density Shape::GetDensity() const noexcept
     return m_density;
 }
 
-inline RealNum Shape::GetFriction() const noexcept
+inline Real Shape::GetFriction() const noexcept
 {
     return m_friction;
 }
 
-inline RealNum Shape::GetRestitution() const noexcept
+inline Real Shape::GetRestitution() const noexcept
 {
     return m_restitution;
 }
@@ -289,12 +289,12 @@ inline void Shape::SetDensity(NonNegative<Density> density) noexcept
     m_density = density;
 }
 
-inline void Shape::SetFriction(NonNegative<RealNum> friction) noexcept
+inline void Shape::SetFriction(NonNegative<Real> friction) noexcept
 {
     m_friction = friction;
 }
 
-inline void Shape::SetRestitution(Finite<RealNum> restitution) noexcept
+inline void Shape::SetRestitution(Finite<Real> restitution) noexcept
 {
     m_restitution = restitution;
 }

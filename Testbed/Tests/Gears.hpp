@@ -32,12 +32,12 @@ public:
         const auto ground = m_world->CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(50.0f, 0.0f) * Meter, Vec2(-50.0f, 0.0f) * Meter));
 
-        const auto circle1 = std::make_shared<DiskShape>(RealNum{1} * Meter);
-        circle1->SetDensity(RealNum{5} * KilogramPerSquareMeter);
-        const auto circle2 = std::make_shared<DiskShape>(RealNum{2} * Meter);
-        circle2->SetDensity(RealNum{5} * KilogramPerSquareMeter);
-        const auto box = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{5.0f} * Meter);
-        box->SetDensity(RealNum{5} * KilogramPerSquareMeter);
+        const auto circle1 = std::make_shared<DiskShape>(Real{1} * Meter);
+        circle1->SetDensity(Real{5} * KilogramPerSquareMeter);
+        const auto circle2 = std::make_shared<DiskShape>(Real{2} * Meter);
+        circle2->SetDensity(Real{5} * KilogramPerSquareMeter);
+        const auto box = std::make_shared<PolygonShape>(Real{0.5f} * Meter, Real{5.0f} * Meter);
+        box->SetDensity(Real{5} * KilogramPerSquareMeter);
     
         {
             BodyDef bd1;
@@ -100,8 +100,8 @@ public:
             body3->CreateFixture(box);
 
             PrismaticJointDef jd3(ground, body3, bd3.position, UnitVec2::GetTop());
-            jd3.lowerTranslation = RealNum{-5.0f} * Meter;
-            jd3.upperTranslation = RealNum{5.0f} * Meter;
+            jd3.lowerTranslation = Real{-5.0f} * Meter;
+            jd3.upperTranslation = Real{5.0f} * Meter;
             jd3.enableLimit = true;
 
             m_joint3 = (PrismaticJoint*)m_world->CreateJoint(jd3);
@@ -129,7 +129,7 @@ public:
         {
             const auto ratio = m_joint4->GetRatio();
             const auto angle = GetJointAngle(*m_joint1) + ratio * GetJointAngle(*m_joint2);
-            const auto value = static_cast<double>(RealNum{angle / Radian});
+            const auto value = static_cast<double>(Real{angle / Radian});
             drawer.DrawString(5, m_textLine, "theta1 + %4.2f * theta2 = %4.2f", (float) ratio, value);
             m_textLine += DRAW_STRING_NEW_LINE;
         }
@@ -139,7 +139,7 @@ public:
             const auto value = ratio * m_joint3->GetJointTranslation();
             drawer.DrawString(5, m_textLine, "theta2 + %4.2f * delta = %4.2f",
                               static_cast<double>(ratio),
-                              static_cast<double>(RealNum{value / Meter}));
+                              static_cast<double>(Real{value / Meter}));
             m_textLine += DRAW_STRING_NEW_LINE;
         }
     }

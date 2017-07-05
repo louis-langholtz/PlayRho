@@ -28,7 +28,7 @@ using namespace box2d;
 
 TEST(SeparationFinder, ByteSizeIs_40_56_or_96)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(SeparationFinder), std::size_t(40)); break;
         case  8: EXPECT_EQ(sizeof(SeparationFinder), std::size_t(56)); break;
@@ -39,20 +39,20 @@ TEST(SeparationFinder, ByteSizeIs_40_56_or_96)
 
 TEST(SeparationFinder, BehavesAsExpected)
 {
-    const auto shape = PolygonShape{RealNum{0.5f} * Meter, RealNum{0.5f} * Meter};
+    const auto shape = PolygonShape{Real{0.5f} * Meter, Real{0.5f} * Meter};
     const auto distproxy = shape.GetChild(0);
 
-    const auto x = RealNum(100);
+    const auto x = Real(100);
     const auto sweepA = Sweep{
-        Position{Length2D{-x * Meter, RealNum(0) * Meter}, Angle{0}},
-        Position{Length2D{+x * Meter, RealNum(0) * Meter}, Angle{0}}
+        Position{Length2D{-x * Meter, Real(0) * Meter}, Angle{0}},
+        Position{Length2D{+x * Meter, Real(0) * Meter}, Angle{0}}
     };
     const auto sweepB = Sweep{
-        Position{Length2D{+x * Meter, RealNum(0) * Meter}, Angle{0}},
-        Position{Length2D{-x * Meter, RealNum(0) * Meter}, Angle{0}}
+        Position{Length2D{+x * Meter, Real(0) * Meter}, Angle{0}},
+        Position{Length2D{-x * Meter, Real(0) * Meter}, Angle{0}}
     };
     
-    auto t = RealNum{0}; // Will be set to value of t2
+    auto t = Real{0}; // Will be set to value of t2
     auto last_s = MaxFloat * Meter;
     auto last_distance = MaxFloat * Meter;
     auto xfA = GetTransformation(sweepA, t);
@@ -63,7 +63,7 @@ TEST(SeparationFinder, BehavesAsExpected)
     const auto fcn = SeparationFinder::Get(conf.cache.GetIndices(), distproxy, xfA, distproxy, xfB);
     EXPECT_EQ(fcn.GetType(), SeparationFinder::e_faceA);
     EXPECT_EQ(GetVec2(fcn.GetAxis()), Vec2(1, 0));
-    EXPECT_EQ(fcn.GetLocalPoint(), Length2D(RealNum(0.5f) * Meter, RealNum(0) * Meter));
+    EXPECT_EQ(fcn.GetLocalPoint(), Length2D(Real(0.5f) * Meter, Real(0) * Meter));
 
     auto last_min_sep = MaxFloat * Meter;
     for (auto i = 0u; i < 500; ++i)
@@ -79,8 +79,8 @@ TEST(SeparationFinder, BehavesAsExpected)
         if (minSeparation.distance > Length{0})
         {
             EXPECT_LT(distance, last_distance);
-            EXPECT_NEAR(double(RealNum{minSeparation.distance / Meter}),
-                        double(RealNum{distance / Meter}), 0.00001);
+            EXPECT_NEAR(double(Real{minSeparation.distance / Meter}),
+                        double(Real{distance / Meter}), 0.00001);
         }
         else if (minSeparation.distance < Length{0})
         {
@@ -95,16 +95,16 @@ TEST(SeparationFinder, BehavesAsExpected)
         EXPECT_EQ(s, minSeparation.distance);
         if (s >= Length{0})
         {
-            EXPECT_NEAR(double(RealNum{s / Meter}), double(RealNum{distance / Meter}), 0.0001);
+            EXPECT_NEAR(double(Real{s / Meter}), double(Real{distance / Meter}), 0.0001);
         }
         else
         {
-            EXPECT_LE(double(RealNum{s / Meter}), double(RealNum{distance / Meter}));
+            EXPECT_LE(double(Real{s / Meter}), double(Real{distance / Meter}));
         }
         EXPECT_LT(s, last_s);
         
         //t = std::nextafter(t, 1.0f);
-        t += RealNum(.001);
+        t += Real(.001);
         last_distance = distance;
         last_s = s;
         xfA = GetTransformation(sweepA, t);

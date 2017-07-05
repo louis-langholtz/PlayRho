@@ -42,11 +42,11 @@ Length2D box2d::ComputeCentroid(const Span<const Length2D>& vertices)
         const auto e1 = p2 - p1;
         const auto e2 = p3 - p1;
         
-        const auto triangleArea = Area{Cross(e1, e2) / RealNum(2)};
+        const auto triangleArea = Area{Cross(e1, e2) / Real(2)};
         area += triangleArea;
         
         // Area weighted centroid
-        const auto aveP = (p1 + p2 + p3) / RealNum{3};
+        const auto aveP = (p1 + p2 + p3) / Real{3};
         c += triangleArea * aveP;
     }
     
@@ -56,20 +56,20 @@ Length2D box2d::ComputeCentroid(const Span<const Length2D>& vertices)
 }
 
 std::vector<Length2D> box2d::GetCircleVertices(const Length radius, unsigned slices,
-                                               Angle start, RealNum turns)
+                                               Angle start, Real turns)
 {
     std::vector<Length2D> vertices;
     if (slices > 0)
     {
         const auto integralTurns = static_cast<long int>(turns);
         const auto wholeNum = (turns == integralTurns);
-        const auto deltaAngle = (Pi * Radian * RealNum(2) * turns) / RealNum(slices);
+        const auto deltaAngle = (Pi * Radian * Real(2) * turns) / Real(slices);
         auto i = decltype(slices){0};
         while (i < slices)
         {
-            const auto angleInRadians = RealNum{(start + (RealNum(i) * deltaAngle)) / Radian};
-            const auto x = radius * static_cast<RealNum>(std::cos(angleInRadians));
-            const auto y = radius * static_cast<RealNum>(std::sin(angleInRadians));
+            const auto angleInRadians = Real{(start + (Real(i) * deltaAngle)) / Radian};
+            const auto x = radius * static_cast<Real>(std::cos(angleInRadians));
+            const auto y = radius * static_cast<Real>(std::sin(angleInRadians));
             vertices.push_back(Length2D{x, y});
             ++i;
         }
@@ -80,9 +80,9 @@ std::vector<Length2D> box2d::GetCircleVertices(const Length radius, unsigned sli
         }
         else
         {
-            const auto angleInRadians = RealNum{(start + (RealNum(i) * deltaAngle)) / Radian};
-            const auto x = radius * static_cast<RealNum>(std::cos(angleInRadians));
-            const auto y = radius * static_cast<RealNum>(std::sin(angleInRadians));
+            const auto angleInRadians = Real{(start + (Real(i) * deltaAngle)) / Radian};
+            const auto x = radius * static_cast<Real>(std::cos(angleInRadians));
+            const auto y = radius * static_cast<Real>(std::sin(angleInRadians));
             vertices.push_back(Length2D{x, y});
         }
     }

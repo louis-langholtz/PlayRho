@@ -30,7 +30,7 @@ using namespace box2d;
 
 TEST(WeldJointDef, ByteSize)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(WeldJointDef), std::size_t(72)); break;
         case  8: EXPECT_EQ(sizeof(WeldJointDef), std::size_t(96)); break;
@@ -52,13 +52,13 @@ TEST(WeldJointDef, DefaultConstruction)
     EXPECT_EQ(def.localAnchorA, Length2D(0, 0));
     EXPECT_EQ(def.localAnchorB, Length2D(0, 0));
     EXPECT_EQ(def.referenceAngle, Angle(0));
-    EXPECT_EQ(def.frequency, RealNum{0} * Hertz);
-    EXPECT_EQ(def.dampingRatio, RealNum(0));
+    EXPECT_EQ(def.frequency, Real{0} * Hertz);
+    EXPECT_EQ(def.dampingRatio, Real(0));
 }
 
 TEST(WeldJoint, ByteSize)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(WeldJoint), std::size_t(144)); break;
         case  8: EXPECT_EQ(sizeof(WeldJoint), std::size_t(240)); break;
@@ -89,7 +89,7 @@ TEST(WeldJoint, GetWeldJointDef)
 {
     auto bodyA = Body{BodyDef{}};
     auto bodyB = Body{BodyDef{}};
-    const auto anchor = Length2D(RealNum(2) * Meter, RealNum(1) * Meter);
+    const auto anchor = Length2D(Real(2) * Meter, Real(1) * Meter);
     WeldJointDef def{&bodyA, &bodyB, anchor};
     WeldJoint joint{def};
     
@@ -115,28 +115,28 @@ TEST(WeldJoint, GetWeldJointDef)
     EXPECT_EQ(cdef.localAnchorA, anchor);
     EXPECT_EQ(cdef.localAnchorB, anchor);
     EXPECT_EQ(def.referenceAngle, Angle(0));
-    EXPECT_EQ(def.frequency, RealNum(0) * Hertz);
-    EXPECT_EQ(def.dampingRatio, RealNum(0));
+    EXPECT_EQ(def.frequency, Real(0) * Hertz);
+    EXPECT_EQ(def.dampingRatio, Real(0));
 }
 
 TEST(WeldJoint, WithDynamicCircles)
 {
-    const auto circle = std::make_shared<DiskShape>(RealNum{0.2f} * Meter);
+    const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
     auto world = World{WorldDef{}.UseGravity(LinearAcceleration2D{0, 0})};
-    const auto p1 = Length2D{-RealNum(1) * Meter, RealNum(0) * Meter};
-    const auto p2 = Length2D{+RealNum(1) * Meter, RealNum(0) * Meter};
+    const auto p1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
+    const auto p2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
-    const auto anchor = Length2D(RealNum(2) * Meter, RealNum(1) * Meter);
+    const auto anchor = Length2D(Real(2) * Meter, Real(1) * Meter);
     const auto jd = WeldJointDef{b1, b2, anchor};
     world.CreateJoint(jd);
-    Step(world, Time{Second * RealNum{1}});
-    EXPECT_NEAR(double(RealNum{b1->GetLocation().x / Meter}), -1.0, 0.001);
-    EXPECT_NEAR(double(RealNum{b1->GetLocation().y / Meter}), 0.0, 0.001);
-    EXPECT_NEAR(double(RealNum{b2->GetLocation().x / Meter}), +1.0, 0.01);
-    EXPECT_NEAR(double(RealNum{b2->GetLocation().y / Meter}), 0.0, 0.01);
+    Step(world, Time{Second * Real{1}});
+    EXPECT_NEAR(double(Real{b1->GetLocation().x / Meter}), -1.0, 0.001);
+    EXPECT_NEAR(double(Real{b1->GetLocation().y / Meter}), 0.0, 0.001);
+    EXPECT_NEAR(double(Real{b2->GetLocation().x / Meter}), +1.0, 0.01);
+    EXPECT_NEAR(double(Real{b2->GetLocation().y / Meter}), 0.0, 0.01);
     EXPECT_EQ(b1->GetAngle(), Angle{0});
     EXPECT_EQ(b2->GetAngle(), Angle{0});
 }

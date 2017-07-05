@@ -21,19 +21,19 @@
 
 using namespace box2d;
 
-TEST(RealNum, ByteSizeIs_4_8_or_16)
+TEST(Real, ByteSizeIs_4_8_or_16)
 {
-    const auto size = sizeof(RealNum);
+    const auto size = sizeof(Real);
     EXPECT_TRUE(size == std::size_t(4) || size == std::size_t(8) || size == std::size_t(16));
 }
 
 #if 0
-TEST(RealNum, BiggerValsIdenticallyInaccurate)
+TEST(Real, BiggerValsIdenticallyInaccurate)
 {
-    // Check that RealNum doesn't suffer from inconstent inaccuracy (like float has depending on
+    // Check that Real doesn't suffer from inconstent inaccuracy (like float has depending on
     // the float's value).
     auto last_delta = float(0);
-    auto val = RealNum(1);
+    auto val = Real(1);
     for (auto i = 0; i < 16; ++i)
     {
         const auto next = std::nextafter(val, std::numeric_limits<decltype(val)>::max());
@@ -58,20 +58,20 @@ TEST(RealNum, BiggerValsIdenticallyInaccurate)
 }
 #endif
 
-TEST(RealNum, beta0)
+TEST(Real, beta0)
 {
-    RealNum zero{0};
-    RealNum one{1};
+    Real zero{0};
+    Real one{1};
     const auto beta = std::nextafter(zero, one);
     const auto coefficient0 = 1 - beta;
     const auto coefficient1 = beta;
     EXPECT_EQ(coefficient0 + coefficient1, one);
 }
 
-TEST(RealNum, beta1)
+TEST(Real, beta1)
 {
-    RealNum zero{0};
-    RealNum one{1};
+    Real zero{0};
+    Real one{1};
     const auto beta = std::nextafter(one, zero);
     const auto coefficient0 = 1 - beta;
     const auto coefficient1 = beta;

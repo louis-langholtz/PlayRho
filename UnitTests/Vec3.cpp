@@ -27,7 +27,7 @@ using namespace box2d;
 
 TEST(Vec3, ByteSizeIs_12_24_or_48)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(Vec3), std::size_t(12)); break;
         case  8: EXPECT_EQ(sizeof(Vec3), std::size_t(24)); break;
@@ -60,15 +60,15 @@ TEST(Vec3, Traits)
 }
 
 TEST(Vec3, Constructor) {
-    Vec3 vector{RealNum{5}, RealNum{-3}, RealNum{11}};
-    EXPECT_EQ(RealNum{5}, vector.x);
-    EXPECT_EQ(RealNum{-3}, vector.y);
-    EXPECT_EQ(RealNum{11}, vector.z);
+    Vec3 vector{Real{5}, Real{-3}, Real{11}};
+    EXPECT_EQ(Real{5}, vector.x);
+    EXPECT_EQ(Real{-3}, vector.y);
+    EXPECT_EQ(Real{11}, vector.z);
 }
 
 TEST(Vec3, Equality)
 {
-    Vec3 vector{RealNum{5}, RealNum{-3}, RealNum{11}};
+    Vec3 vector{Real{5}, Real{-3}, Real{11}};
     EXPECT_EQ(vector.x, vector.x);
     EXPECT_EQ(vector.y, vector.y);
     EXPECT_EQ(vector, vector);
@@ -76,8 +76,8 @@ TEST(Vec3, Equality)
 
 TEST(Vec3, Inequality)
 {
-    Vec3 vector1{RealNum{5}, RealNum{-3}, RealNum{11}};
-    Vec3 vector2{RealNum{-5}, RealNum{+3}, RealNum{-6}};
+    Vec3 vector1{Real{5}, Real{-3}, Real{11}};
+    Vec3 vector2{Real{-5}, Real{+3}, Real{-6}};
     EXPECT_NE(vector1.x, vector2.x);
     EXPECT_NE(vector1.y, vector2.y);
     EXPECT_NE(vector1.z, vector2.z);
@@ -96,9 +96,9 @@ TEST(Vec3, Negate)
     EXPECT_EQ(-v01.y, n01.y);
     EXPECT_EQ(-v01.z, n01.z);
     
-    EXPECT_EQ(RealNum{-22}, (-Vec3{22, 0, 0}).x);
-    EXPECT_EQ(RealNum{-3}, (-Vec3{0, 3, 0}).y);
-    EXPECT_EQ(RealNum{5}, (-Vec3{0, 3, -5}).z);
+    EXPECT_EQ(Real{-22}, (-Vec3{22, 0, 0}).x);
+    EXPECT_EQ(Real{-3}, (-Vec3{0, 3, 0}).y);
+    EXPECT_EQ(Real{5}, (-Vec3{0, 3, -5}).z);
 }
 
 TEST(Vec3, IncrementOperator)
@@ -132,7 +132,7 @@ TEST(Vec3, Subtraction)
 TEST(Vec3, ScalarMultiplication)
 {
     const auto a = Vec3{1, 2, 3};
-    const auto b = RealNum(10);
+    const auto b = Real(10);
     const auto c = Vec3{10, 20, 30};
     EXPECT_EQ(a * b, c);
     EXPECT_EQ(b * a, c);

@@ -35,12 +35,12 @@ Density Fixture::GetDensity() const noexcept
     return m_shape->GetDensity();
 }
 
-RealNum Fixture::GetFriction() const noexcept
+Real Fixture::GetFriction() const noexcept
 {
     return m_shape->GetFriction();
 }
 
-RealNum Fixture::GetRestitution() const noexcept
+Real Fixture::GetRestitution() const noexcept
 {
     return m_shape->GetRestitution();
 }

@@ -82,7 +82,7 @@ struct Vals<Fixed64> {
 TEST(Dump, EmptyWorld)
 {
     std::stringstream buf;
-    buf << "Vec2 g\\(0\\.000000000000000e\\+00f, " << Vals<RealNum>::GetGravity() << "\\);\n";
+    buf << "Vec2 g\\(0\\.000000000000000e\\+00f, " << Vals<Real>::GetGravity() << "\\);\n";
     buf << "m_world->SetGravity\\(g\\);\n";
     buf << "Body\\*\\* bodies = \\(Body\\*\\*\\)Alloc\\(0 \\* sizeof\\(Body\\*\\)\\);\n";
     buf << "Joint\\*\\* joints = \\(Joint\\*\\*\\)Alloc\\(0 \\* sizeof\\(Joint\\*\\)\\);\n";
@@ -102,7 +102,7 @@ TEST(Dump, EmptyWorld)
 TEST(Dump, OneBodyWorld)
 {
     std::stringstream buf;
-    buf << "Vec2 g\\(0\\.000000000000000e\\+00f, " << Vals<RealNum>::GetGravity() << "\\);\n";
+    buf << "Vec2 g\\(0\\.000000000000000e\\+00f, " << Vals<Real>::GetGravity() << "\\);\n";
     buf << "m_world->SetGravity\\(g\\);\n";
     buf << "Body\\*\\* bodies = \\(Body\\*\\*\\)Alloc\\(1 \\* sizeof\\(Body\\*\\)\\);\n";
     buf << "{\n";

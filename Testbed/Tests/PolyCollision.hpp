@@ -31,14 +31,14 @@ public:
     PolyCollision()
     {
         {
-            m_polygonA.SetAsBox(RealNum{0.2f} * Meter, RealNum{0.4f} * Meter);
+            m_polygonA.SetAsBox(Real{0.2f} * Meter, Real{0.4f} * Meter);
             m_transformA = Transformation{Vec2(0.0f, 0.0f) * Meter, UnitVec2{Angle{0}}};
         }
 
         {
-            m_polygonB.SetAsBox(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
+            m_polygonB.SetAsBox(Real{0.5f} * Meter, Real{0.5f} * Meter);
             m_positionB = Vec2(19.345284f, 1.5632932f) * Meter;
-            m_angleB = RealNum{1.9160721f} * Radian;
+            m_angleB = Real{1.9160721f} * Radian;
             m_transformB = Transformation{m_positionB, UnitVec2{m_angleB}};
         }
     }
@@ -84,7 +84,7 @@ public:
                                                     m_transformB, GetVertexRadius(m_polygonB));
         for (auto i = decltype(pointCount){0}; i < pointCount; ++i)
         {
-            drawer.DrawPoint(worldManifold.GetPoint(i), RealNum{4.0f} * Meter, Color(0.9f, 0.3f, 0.3f));
+            drawer.DrawPoint(worldManifold.GetPoint(i), Real{4.0f} * Meter, Color(0.9f, 0.3f, 0.3f));
         }
     }
 
@@ -93,27 +93,27 @@ public:
         switch (key)
         {
         case Key_A:
-            m_positionB.x -= RealNum{0.1f} * Meter;
+            m_positionB.x -= Real{0.1f} * Meter;
             break;
 
         case Key_D:
-            m_positionB.x += RealNum{0.1f} * Meter;
+            m_positionB.x += Real{0.1f} * Meter;
             break;
 
         case Key_S:
-            m_positionB.y -= RealNum{0.1f} * Meter;
+            m_positionB.y -= Real{0.1f} * Meter;
             break;
 
         case Key_W:
-            m_positionB.y += RealNum{0.1f} * Meter;
+            m_positionB.y += Real{0.1f} * Meter;
             break;
 
         case Key_Q:
-            m_angleB += RealNum{0.1f} * Radian * Pi;
+            m_angleB += Real{0.1f} * Radian * Pi;
             break;
 
         case Key_E:
-            m_angleB -= RealNum{0.1f} * Radian * Pi;
+            m_angleB -= Real{0.1f} * Radian * Pi;
             break;
 
         default:

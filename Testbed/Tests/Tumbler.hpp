@@ -37,8 +37,8 @@ public:
 
     Tumbler()
     {
-        m_square->SetDensity(RealNum(1) * KilogramPerSquareMeter);
-        m_disk->SetDensity(RealNum(0.1) * KilogramPerSquareMeter);
+        m_square->SetDensity(Real(1) * KilogramPerSquareMeter);
+        m_disk->SetDensity(Real(0.1) * KilogramPerSquareMeter);
 
         const auto g = m_world->CreateBody(BodyDef{}.UseType(BodyType::Static));
 
@@ -47,14 +47,14 @@ public:
                                            .UseAllowSleep(false));
 
         PolygonShape shape;
-        shape.SetDensity(RealNum{5} * KilogramPerSquareMeter);
-        SetAsBox(shape, RealNum{0.5f} * Meter, RealNum{10.0f} * Meter, Vec2( 10.0f, 0.0f) * Meter, Angle{0});
+        shape.SetDensity(Real{5} * KilogramPerSquareMeter);
+        SetAsBox(shape, Real{0.5f} * Meter, Real{10.0f} * Meter, Vec2( 10.0f, 0.0f) * Meter, Angle{0});
         b->CreateFixture(std::make_shared<PolygonShape>(shape));
-        SetAsBox(shape, RealNum{0.5f} * Meter, RealNum{10.0f} * Meter, Vec2(-10.0f, 0.0f) * Meter, Angle{0});
+        SetAsBox(shape, Real{0.5f} * Meter, Real{10.0f} * Meter, Vec2(-10.0f, 0.0f) * Meter, Angle{0});
         b->CreateFixture(std::make_shared<PolygonShape>(shape));
-        SetAsBox(shape, RealNum{10.0f} * Meter, RealNum{0.5f} * Meter, Vec2(0.0f, 10.0f) * Meter, Angle{0});
+        SetAsBox(shape, Real{10.0f} * Meter, Real{0.5f} * Meter, Vec2(0.0f, 10.0f) * Meter, Angle{0});
         b->CreateFixture(std::make_shared<PolygonShape>(shape));
-        SetAsBox(shape, RealNum{10.0f} * Meter, RealNum{0.5f} * Meter, Vec2(0.0f, -10.0f) * Meter, Angle{0});
+        SetAsBox(shape, Real{10.0f} * Meter, Real{0.5f} * Meter, Vec2(0.0f, -10.0f) * Meter, Angle{0});
         b->CreateFixture(std::make_shared<PolygonShape>(shape));
 
         RevoluteJointDef jd;
@@ -64,7 +64,7 @@ public:
         jd.localAnchorB = Vec2(0.0f, 0.0f) * Meter;
         jd.referenceAngle = Angle{0};
         jd.motorSpeed = 0.05f * Pi * RadianPerSecond;
-        jd.maxMotorTorque = RealNum{100000} * NewtonMeter; // 1e8f;
+        jd.maxMotorTorque = Real{100000} * NewtonMeter; // 1e8f;
         jd.enableMotor = true;
         m_joint = static_cast<RevoluteJoint*>(m_world->CreateJoint(jd));
     }
@@ -150,11 +150,11 @@ public:
     RevoluteJoint* m_joint;
     ShapeType m_shapeType = ShapeType::Square;
     int m_count = 0;
-    std::shared_ptr<PolygonShape> m_square = std::make_shared<PolygonShape>(RealNum{0.125f} * Meter,
-                                                                            RealNum{0.125f} * Meter);
+    std::shared_ptr<PolygonShape> m_square = std::make_shared<PolygonShape>(Real{0.125f} * Meter,
+                                                                            Real{0.125f} * Meter);
     std::shared_ptr<DiskShape> m_disk = std::make_shared<DiskShape>(DiskShape::Conf{}
-                                                                    .UseVertexRadius(RealNum(0.125f) * Meter)
-                                                                    .UseFriction(RealNum(0)));
+                                                                    .UseVertexRadius(Real(0.125f) * Meter)
+                                                                    .UseFriction(Real(0)));
 };
 
 } // namespace box2d

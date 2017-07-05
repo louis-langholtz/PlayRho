@@ -28,7 +28,7 @@
 namespace box2d
 {
     /// @brief Velocity related data structure.
-    /// @note This data structure is 12-bytes (with 4-byte RealNum on at least one 64-bit platform).
+    /// @note This data structure is 12-bytes (with 4-byte Real on at least one 64-bit platform).
     struct Velocity
     {
         LinearVelocity2D linear; ///< Linear velocity.
@@ -51,14 +51,14 @@ namespace box2d
         return (lhs.linear != rhs.linear) || (lhs.angular != rhs.angular);
     }
     
-    constexpr inline Velocity& operator*= (Velocity& lhs, const RealNum rhs)
+    constexpr inline Velocity& operator*= (Velocity& lhs, const Real rhs)
     {
         lhs.linear *= rhs;
         lhs.angular *= rhs;
         return lhs;
     }
     
-    constexpr inline Velocity& operator/= (Velocity& lhs, const RealNum rhs)
+    constexpr inline Velocity& operator/= (Velocity& lhs, const Real rhs)
     {
         lhs.linear /= rhs;
         lhs.angular /= rhs;
@@ -99,17 +99,17 @@ namespace box2d
         return value;
     }
     
-    constexpr inline Velocity operator* (const Velocity& lhs, const RealNum rhs)
+    constexpr inline Velocity operator* (const Velocity& lhs, const Real rhs)
     {
         return Velocity{lhs.linear * rhs, lhs.angular * rhs};
     }
     
-    constexpr inline Velocity operator* (const RealNum lhs, const Velocity& rhs)
+    constexpr inline Velocity operator* (const Real lhs, const Velocity& rhs)
     {
         return Velocity{rhs.linear * lhs, rhs.angular * lhs};
     }
     
-    constexpr inline Velocity operator/ (const Velocity& lhs, const RealNum rhs)
+    constexpr inline Velocity operator/ (const Velocity& lhs, const Real rhs)
     {
         /*
          * While it can be argued that division operations shouldn't be supported due to

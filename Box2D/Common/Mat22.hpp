@@ -40,7 +40,7 @@ namespace box2d
         constexpr Mat22(const Vec2 c1, const Vec2 c2) noexcept: ex{c1}, ey{c2} {}
         
         /// Construct this matrix using scalars.
-        constexpr Mat22(RealNum a11, RealNum a12, RealNum a21, RealNum a22) noexcept: ex{a11, a21}, ey{a12, a22} {}
+        constexpr Mat22(Real a11, Real a12, Real a21, Real a22) noexcept: ex{a11, a21}, ey{a12, a22} {}
         
         Vec2 ex, ey;
     };

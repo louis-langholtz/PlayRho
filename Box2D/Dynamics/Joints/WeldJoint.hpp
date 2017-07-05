@@ -49,7 +49,7 @@ struct WeldJointDef : public JointDef
     Frequency frequency = Frequency{0};
 
     /// The damping ratio. 0 = no damping, 1 = critical damping.
-    RealNum dampingRatio = 0;
+    Real dampingRatio = 0;
 };
 
 /// A weld joint essentially glues two bodies together. A weld joint may
@@ -79,8 +79,8 @@ public:
     Frequency GetFrequency() const { return m_frequency; }
 
     /// Set/get damping ratio.
-    void SetDampingRatio(RealNum ratio) { m_dampingRatio = ratio; }
-    RealNum GetDampingRatio() const { return m_dampingRatio; }
+    void SetDampingRatio(Real ratio) { m_dampingRatio = ratio; }
+    Real GetDampingRatio() const { return m_dampingRatio; }
 
 private:
 
@@ -91,7 +91,7 @@ private:
                                   const ConstraintSolverConf& conf) const override;
 
     Frequency m_frequency;
-    RealNum m_dampingRatio;
+    Real m_dampingRatio;
     AngularVelocity m_bias;
 
     // Solver shared

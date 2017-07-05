@@ -30,7 +30,7 @@ using namespace box2d;
 
 TEST(WheelJointDef, ByteSize)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(WheelJointDef), std::size_t(88)); break;
         case  8: EXPECT_EQ(sizeof(WheelJointDef), std::size_t(128)); break;
@@ -55,13 +55,13 @@ TEST(WheelJointDef, DefaultConstruction)
     EXPECT_FALSE(def.enableMotor);
     EXPECT_EQ(def.maxMotorTorque, Torque(0));
     EXPECT_EQ(def.motorSpeed, AngularVelocity(0));
-    EXPECT_EQ(def.frequency, RealNum{2} * Hertz);
-    EXPECT_EQ(def.dampingRatio, RealNum(0.7f));
+    EXPECT_EQ(def.frequency, Real{2} * Hertz);
+    EXPECT_EQ(def.dampingRatio, Real(0.7f));
 }
 
 TEST(WheelJoint, ByteSize)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(WheelJoint), std::size_t(160)); break;
         case  8: EXPECT_EQ(sizeof(WheelJoint), std::size_t(272)); break;
@@ -124,28 +124,28 @@ TEST(WheelJoint, GetWheelJointDef)
     EXPECT_FALSE(cdef.enableMotor);
     EXPECT_EQ(cdef.maxMotorTorque, Torque(0));
     EXPECT_EQ(cdef.motorSpeed, AngularVelocity(0));
-    EXPECT_EQ(cdef.frequency, RealNum{2} * Hertz);
-    EXPECT_EQ(cdef.dampingRatio, RealNum(0.7f));
+    EXPECT_EQ(cdef.frequency, Real{2} * Hertz);
+    EXPECT_EQ(cdef.dampingRatio, Real(0.7f));
 }
 
 TEST(WheelJoint, WithDynamicCircles)
 {
-    const auto circle = std::make_shared<DiskShape>(RealNum{0.2f} * Meter);
+    const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
     auto world = World{WorldDef{}.UseGravity(LinearAcceleration2D{0, 0})};
-    const auto p1 = Length2D{-RealNum(1) * Meter, RealNum(0) * Meter};
-    const auto p2 = Length2D{+RealNum(1) * Meter, RealNum(0) * Meter};
+    const auto p1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
+    const auto p2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
-    const auto anchor = Length2D(RealNum(2) * Meter, RealNum(1) * Meter);
+    const auto anchor = Length2D(Real(2) * Meter, Real(1) * Meter);
     const auto jd = WheelJointDef{b1, b2, anchor, UnitVec2::GetRight()};
     world.CreateJoint(jd);
-    Step(world, Time{Second * RealNum{1}});
-    EXPECT_NEAR(double(RealNum{b1->GetLocation().x / Meter}), -1.0, 0.001);
-    EXPECT_NEAR(double(RealNum{b1->GetLocation().y / Meter}), 0.0, 0.001);
-    EXPECT_NEAR(double(RealNum{b2->GetLocation().x / Meter}), +1.0, 0.01);
-    EXPECT_NEAR(double(RealNum{b2->GetLocation().y / Meter}), 0.0, 0.01);
+    Step(world, Time{Second * Real{1}});
+    EXPECT_NEAR(double(Real{b1->GetLocation().x / Meter}), -1.0, 0.001);
+    EXPECT_NEAR(double(Real{b1->GetLocation().y / Meter}), 0.0, 0.001);
+    EXPECT_NEAR(double(Real{b2->GetLocation().x / Meter}), +1.0, 0.01);
+    EXPECT_NEAR(double(Real{b2->GetLocation().y / Meter}), 0.0, 0.01);
     EXPECT_EQ(b1->GetAngle(), Angle{0});
     EXPECT_EQ(b2->GetAngle(), Angle{0});
 }

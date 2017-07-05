@@ -45,7 +45,7 @@ class Shape;
 ///
 /// @warning you cannot reuse fixtures.
 /// @note Fixtures are created via Body::CreateFixture.
-/// @note This structure is 56-bytes large (using a 4-byte RealNum on at least one 64-bit
+/// @note This structure is 56-bytes large (using a 4-byte Real on at least one 64-bit
 ///   architecture/build).
 ///
 class Fixture
@@ -139,14 +139,14 @@ public:
 
     /// @brief Gets the coefficient of friction.
     /// @return Value of 0 or higher.
-    RealNum GetFriction() const noexcept;
+    Real GetFriction() const noexcept;
 
     /// Gets the coefficient of restitution.
-    RealNum GetRestitution() const noexcept;
+    Real GetRestitution() const noexcept;
 
     /// Sets the coefficient of restitution. This will _not_ change the restitution of
     /// existing contacts.
-    void SetRestitution(RealNum restitution) noexcept;
+    void SetRestitution(Real restitution) noexcept;
 
     ChildCounter GetProxyCount() const noexcept;
 

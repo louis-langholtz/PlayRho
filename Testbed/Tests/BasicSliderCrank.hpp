@@ -47,8 +47,8 @@ public:
                 bd.position = Vec2(-8.0f, 20.0f) * Meter;
                 const auto body = m_world->CreateBody(bd);
                 auto conf = PolygonShape::Conf{};
-                conf.density = RealNum{2} * KilogramPerSquareMeter;
-                body->CreateFixture(std::make_shared<PolygonShape>(RealNum{4} * Meter, RealNum{1} * Meter, conf));
+                conf.density = Real{2} * KilogramPerSquareMeter;
+                body->CreateFixture(std::make_shared<PolygonShape>(Real{4} * Meter, Real{1} * Meter, conf));
                 
                 m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-12.0f, 20.0f) * Meter});
                 
@@ -62,8 +62,8 @@ public:
                 bd.position = Vec2(4.0f, 20.0f) * Meter;
                 const auto body = m_world->CreateBody(bd);
                 auto conf = PolygonShape::Conf{};
-                conf.density = RealNum{2} * KilogramPerSquareMeter;
-                body->CreateFixture(std::make_shared<PolygonShape>(RealNum{8} * Meter, RealNum{1} * Meter, conf));
+                conf.density = Real{2} * KilogramPerSquareMeter;
+                body->CreateFixture(std::make_shared<PolygonShape>(Real{8} * Meter, Real{1} * Meter, conf));
                 
                 m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-4.0f, 20.0f) * Meter});
                 
@@ -78,8 +78,8 @@ public:
                 bd.position = Vec2(12.0f, 20.0f) * Meter;
                 const auto body = m_world->CreateBody(bd);
                 auto conf = PolygonShape::Conf{};
-                conf.density = RealNum{2} * KilogramPerSquareMeter;
-                body->CreateFixture(std::make_shared<PolygonShape>(RealNum{3} * Meter, RealNum{3} * Meter, conf));
+                conf.density = Real{2} * KilogramPerSquareMeter;
+                body->CreateFixture(std::make_shared<PolygonShape>(Real{3} * Meter, Real{3} * Meter, conf));
                 
                 m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(12.0f, 20.0f) * Meter});
                 

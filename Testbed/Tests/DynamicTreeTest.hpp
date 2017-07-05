@@ -132,14 +132,14 @@ public:
 
         Color c1(0.2f, 0.9f, 0.2f);
         Color c2(0.9f, 0.2f, 0.2f);
-        drawer.DrawPoint(m_rayCastInput.p1, RealNum{6} * Meter, c1);
-        drawer.DrawPoint(m_rayCastInput.p2, RealNum{6} * Meter, c2);
+        drawer.DrawPoint(m_rayCastInput.p1, Real{6} * Meter, c1);
+        drawer.DrawPoint(m_rayCastInput.p2, Real{6} * Meter, c2);
 
         if (m_rayActor)
         {
             Color cr(0.2f, 0.2f, 0.9f);
             const auto p = m_rayCastInput.p1 + m_rayActor->fraction * (m_rayCastInput.p2 - m_rayCastInput.p1);
-            drawer.DrawPoint(p, RealNum{6} * Meter, cr);
+            drawer.DrawPoint(p, Real{6} * Meter, cr);
         }
 
         {
@@ -183,7 +183,7 @@ public:
         return true;
     }
 
-    RealNum RayCastCallback(const RayCastInput& input, DynamicTree::size_type proxyId)
+    Real RayCastCallback(const RayCastInput& input, DynamicTree::size_type proxyId)
     {
         auto actor = static_cast<Actor*>(m_tree.GetUserData(proxyId));
 
@@ -205,7 +205,7 @@ private:
     struct Actor
     {
         AABB aabb;
-        RealNum fraction;
+        Real fraction;
         bool overlap;
         DynamicTree::size_type proxyId;
     };
@@ -228,7 +228,7 @@ private:
         aabb->Move(d);
 
         const auto c0 = GetCenter(*aabb);
-        const auto min = Vec2(-m_worldExtent, RealNum(0)) * Meter;
+        const auto min = Vec2(-m_worldExtent, Real(0)) * Meter;
         const auto max = Vec2(m_worldExtent, 2.0f * m_worldExtent) * Meter;
         const auto c = Length2D{Clamp(c0.x, min.x, max.x), Clamp(c0.y, min.y, max.y)};
 
@@ -363,8 +363,8 @@ private:
         }
     }
 
-    RealNum m_worldExtent;
-    RealNum m_proxyExtent;
+    Real m_worldExtent;
+    Real m_proxyExtent;
 
     DynamicTree m_tree;
     AABB m_queryAABB;

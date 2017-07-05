@@ -47,7 +47,7 @@ namespace box2d {
         
         struct Conf
         {
-            RealNum dtRatio = 1;
+            Real dtRatio = 1;
             LinearVelocity velocityThreshold = DefaultVelocityThreshold;
             bool blockSolve = true;
         };
@@ -63,7 +63,7 @@ namespace box2d {
         VelocityConstraint& operator= (const VelocityConstraint& copy) = default;
         
         VelocityConstraint(index_type contactIndex,
-                           RealNum friction, RealNum restitution,
+                           Real friction, Real restitution,
                            LinearVelocity tangentSpeed,
                            const Manifold& manifold,
                            BodyConstraint& bA, Length rA,
@@ -103,10 +103,10 @@ namespace box2d {
         index_type GetContactIndex() const noexcept { return m_contactIndex; }
         
         /// Gets the combined friction of the associated contact.
-        RealNum GetFriction() const noexcept { return m_friction; }
+        Real GetFriction() const noexcept { return m_friction; }
         
         /// Gets the combined restitution of the associated contact.
-        RealNum GetRestitution() const noexcept { return m_restitution; }
+        Real GetRestitution() const noexcept { return m_restitution; }
         
         /// Gets the tangent speed of the associated contact.
         LinearVelocity GetTangentSpeed() const noexcept { return m_tangentSpeed; }
@@ -276,9 +276,9 @@ namespace box2d {
         InvMass m_invMass = GetInvalid<InvMass>(); ///< Total inverse mass.
         
         /// Friction coefficient (4-bytes). Usually in the range of [0,1].
-        RealNum m_friction = GetInvalid<RealNum>();
+        Real m_friction = GetInvalid<Real>();
         
-        RealNum m_restitution = GetInvalid<RealNum>(); ///< Restitution coefficient (4-bytes).
+        Real m_restitution = GetInvalid<Real>(); ///< Restitution coefficient (4-bytes).
         
         LinearVelocity m_tangentSpeed = GetInvalid<decltype(m_tangentSpeed)>(); ///< Tangent speed (4-bytes).
         

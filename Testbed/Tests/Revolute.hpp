@@ -39,19 +39,19 @@ public:
             bd.position = Vec2(-10.0f, 20.0f) * Meter;
             const auto body = m_world->CreateBody(bd);
             auto circleConf = DiskShape::Conf{};
-            circleConf.vertexRadius = RealNum{0.5f} * Meter;
-            circleConf.density = RealNum{5} * KilogramPerSquareMeter;
+            circleConf.vertexRadius = Real{0.5f} * Meter;
+            circleConf.density = Real{5} * KilogramPerSquareMeter;
             body->CreateFixture(std::make_shared<DiskShape>(circleConf));
 
-            const auto w = RealNum{100.0f};
+            const auto w = Real{100.0f};
             body->SetVelocity(Velocity{Vec2(-8.0f * w, 0.0f) * MeterPerSecond, RadianPerSecond * w});
             
             RevoluteJointDef rjd(ground, body, Vec2(-10.0f, 12.0f) * Meter);
             rjd.motorSpeed = 1.0f * Pi * RadianPerSecond;
-            rjd.maxMotorTorque = RealNum{10000.0f} * NewtonMeter;
+            rjd.maxMotorTorque = Real{10000.0f} * NewtonMeter;
             rjd.enableMotor = false;
-            rjd.lowerAngle = RealNum{-0.25f} * Radian * Pi;
-            rjd.upperAngle = RealNum{0.5f} * Radian * Pi;
+            rjd.lowerAngle = Real{-0.25f} * Radian * Pi;
+            rjd.upperAngle = Real{0.5f} * Radian * Pi;
             rjd.enableLimit = true;
             rjd.collideConnected = true;
 
@@ -68,13 +68,13 @@ public:
 
             m_ball = m_world->CreateBody(circle_bd);
             auto circleConf = DiskShape::Conf{};
-            circleConf.vertexRadius = RealNum{3.0f} * Meter;
-            circleConf.density = RealNum{5} * KilogramPerSquareMeter;
+            circleConf.vertexRadius = Real{3.0f} * Meter;
+            circleConf.density = Real{5} * KilogramPerSquareMeter;
             m_ball->CreateFixture(std::make_shared<DiskShape>(circleConf), fd);
 
             PolygonShape polygon_shape;
-            SetAsBox(polygon_shape, RealNum{10.0f} * Meter, RealNum{0.2f} * Meter, Vec2 (-10.0f, 0.0f) * Meter, Angle{0});
-            polygon_shape.SetDensity(RealNum{2} * KilogramPerSquareMeter);
+            SetAsBox(polygon_shape, Real{10.0f} * Meter, Real{0.2f} * Meter, Vec2 (-10.0f, 0.0f) * Meter, Angle{0});
+            polygon_shape.SetDensity(Real{2} * KilogramPerSquareMeter);
 
             BodyDef polygon_bd;
             polygon_bd.position = Vec2(20.0f, 10.0f) * Meter;
@@ -84,8 +84,8 @@ public:
             polygon_body->CreateFixture(std::make_shared<PolygonShape>(polygon_shape));
 
             RevoluteJointDef rjd(ground, polygon_body, Vec2(20.0f, 10.0f) * Meter);
-            rjd.lowerAngle = RealNum{-0.25f} * Radian * Pi;
-            rjd.upperAngle = RealNum{0.0f} * Radian * Pi;
+            rjd.lowerAngle = Real{-0.25f} * Radian * Pi;
+            rjd.upperAngle = Real{0.0f} * Radian * Pi;
             rjd.enableLimit = true;
             m_world->CreateJoint(rjd);
         }
@@ -101,7 +101,7 @@ public:
                 Vec2(17.52f, 36.69f) * Meter,
                 Vec2(17.19f, 36.36f) * Meter
             });
-            polyShape.SetDensity(RealNum{1} * KilogramPerSquareMeter);
+            polyShape.SetDensity(Real{1} * KilogramPerSquareMeter);
         
             body->CreateFixture(std::make_shared<PolygonShape>(polyShape));    //assertion hits inside here
         }
@@ -135,7 +135,7 @@ public:
         //    m_ball->SetTransform(Vec2(0.0f, 0.5f), 0.0f);
         //}
 
-        //RealNum torque1 = m_joint1->GetMotorTorque();
+        //Real torque1 = m_joint1->GetMotorTorque();
         //drawer.DrawString(5, m_textLine, "Motor Torque = %4.0f, %4.0f : Motor Force = %4.0f", (float) torque1, (float) torque2, (float) force3);
         //m_textLine += DRAW_STRING_NEW_LINE;
     }

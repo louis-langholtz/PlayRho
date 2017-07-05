@@ -92,199 +92,199 @@ class Joint;
 ///
 /// @note Any narrowing is intentional.
 ///
-constexpr auto Pi = RealNum(3.14159265358979323846264338327950288);
+constexpr auto Pi = Real(3.14159265358979323846264338327950288);
 
 #ifdef USE_BOOST_UNITS
 
-using Time = boost::units::quantity<boost::units::si::time, RealNum>;
-constexpr auto Second = Time{boost::units::si::second * RealNum{1}};
+using Time = boost::units::quantity<boost::units::si::time, Real>;
+constexpr auto Second = Time{boost::units::si::second * Real{1}};
 
-using Frequency = boost::units::quantity<boost::units::si::frequency, RealNum>;
-constexpr auto Hertz = Frequency{boost::units::si::hertz * RealNum{1}};
+using Frequency = boost::units::quantity<boost::units::si::frequency, Real>;
+constexpr auto Hertz = Frequency{boost::units::si::hertz * Real{1}};
 
-using Length = boost::units::quantity<boost::units::si::length, RealNum>;
-constexpr auto Meter = Length{boost::units::si::meter * RealNum{1}};
+using Length = boost::units::quantity<boost::units::si::length, Real>;
+constexpr auto Meter = Length{boost::units::si::meter * Real{1}};
 
-using LinearVelocity = boost::units::quantity<boost::units::si::velocity, RealNum>;
-constexpr auto MeterPerSecond = LinearVelocity{boost::units::si::meter_per_second * RealNum{1}};
+using LinearVelocity = boost::units::quantity<boost::units::si::velocity, Real>;
+constexpr auto MeterPerSecond = LinearVelocity{boost::units::si::meter_per_second * Real{1}};
 
-using LinearAcceleration = boost::units::quantity<boost::units::si::acceleration, RealNum>;
-constexpr auto MeterPerSquareSecond = LinearAcceleration{boost::units::si::meter_per_second_squared * RealNum{1}};
+using LinearAcceleration = boost::units::quantity<boost::units::si::acceleration, Real>;
+constexpr auto MeterPerSquareSecond = LinearAcceleration{boost::units::si::meter_per_second_squared * Real{1}};
 
-using Mass = boost::units::quantity<boost::units::si::mass, RealNum>;
-constexpr auto Kilogram = Mass{boost::units::si::kilogram * RealNum{1}};
+using Mass = boost::units::quantity<boost::units::si::mass, Real>;
+constexpr auto Kilogram = Mass{boost::units::si::kilogram * Real{1}};
 
-using InvMass = boost::units::quantity<boost::units::si::inverse_mass, RealNum>;
+using InvMass = boost::units::quantity<boost::units::si::inverse_mass, Real>;
 
-using Area = boost::units::quantity<boost::units::si::area, RealNum>;
-constexpr auto SquareMeter = Area{boost::units::si::square_meter * RealNum{1}};
+using Area = boost::units::quantity<boost::units::si::area, Real>;
+constexpr auto SquareMeter = Area{boost::units::si::square_meter * Real{1}};
 
-using Density = boost::units::quantity<boost::units::si::surface_density, RealNum>;
-constexpr auto KilogramPerSquareMeter = Density{boost::units::si::kilogram_per_square_meter * RealNum{1}};
+using Density = boost::units::quantity<boost::units::si::surface_density, Real>;
+constexpr auto KilogramPerSquareMeter = Density{boost::units::si::kilogram_per_square_meter * Real{1}};
 
-using Angle = boost::units::quantity<boost::units::si::plane_angle, RealNum>;
-constexpr auto Radian = Angle{boost::units::si::radian * RealNum{1}};
-constexpr auto Degree = Angle{boost::units::degree::degree * RealNum{1}};
+using Angle = boost::units::quantity<boost::units::si::plane_angle, Real>;
+constexpr auto Radian = Angle{boost::units::si::radian * Real{1}};
+constexpr auto Degree = Angle{boost::units::degree::degree * Real{1}};
 constexpr auto SquareRadian = Radian * Radian;
 
-using AngularVelocity = boost::units::quantity<boost::units::si::angular_velocity, RealNum>;
-constexpr auto RadianPerSecond = AngularVelocity{boost::units::si::radian_per_second * RealNum{1}};
+using AngularVelocity = boost::units::quantity<boost::units::si::angular_velocity, Real>;
+constexpr auto RadianPerSecond = AngularVelocity{boost::units::si::radian_per_second * Real{1}};
 constexpr auto DegreePerSecond = AngularVelocity{RadianPerSecond * Degree / Radian};
 
-using AngularAcceleration = boost::units::quantity<boost::units::si::angular_acceleration, RealNum>;
+using AngularAcceleration = boost::units::quantity<boost::units::si::angular_acceleration, Real>;
 constexpr auto RadianPerSquareSecond = Radian / (Second * Second);
 
-using Force = boost::units::quantity<boost::units::si::force, RealNum>;
-constexpr auto Newton = Force{boost::units::si::newton * RealNum{1}};
+using Force = boost::units::quantity<boost::units::si::force, Real>;
+constexpr auto Newton = Force{boost::units::si::newton * Real{1}};
 
-using Torque = boost::units::quantity<boost::units::si::torque, RealNum>;
-constexpr auto NewtonMeter = Torque{boost::units::si::newton_meter * RealNum{1}};
+using Torque = boost::units::quantity<boost::units::si::torque, Real>;
+constexpr auto NewtonMeter = Torque{boost::units::si::newton_meter * Real{1}};
 
-using SecondMomentOfArea = boost::units::quantity<boost::units::si::second_moment_of_area, RealNum>;
+using SecondMomentOfArea = boost::units::quantity<boost::units::si::second_moment_of_area, Real>;
 
-using RotInertia = boost::units::quantity<boost::units::si::moment_of_inertia, RealNum>;
-using InvRotInertia = boost::units::quantity<boost::units::si::inverse_moment_of_inertia, RealNum>;
+using RotInertia = boost::units::quantity<boost::units::si::moment_of_inertia, Real>;
+using InvRotInertia = boost::units::quantity<boost::units::si::inverse_moment_of_inertia, Real>;
 
-using Momentum = boost::units::quantity<boost::units::si::momentum, RealNum>;
+using Momentum = boost::units::quantity<boost::units::si::momentum, Real>;
 constexpr auto NewtonSecond = Newton * Second;
 
 /// @brief Angular momentum.
 /// @note Units of L^2 M T^-1 QP^-1.
-using AngularMomentum = boost::units::quantity<boost::units::si::angular_momentum, RealNum>;
+using AngularMomentum = boost::units::quantity<boost::units::si::angular_momentum, Real>;
 
 #else // USE_BOOST_UNITS
 
-using Time = RealNum;
-constexpr auto Second = RealNum{1};
+using Time = Real;
+constexpr auto Second = Real{1};
 
-using Frequency = RealNum;
-constexpr auto Hertz = RealNum{1};
+using Frequency = Real;
+constexpr auto Hertz = Real{1};
 
-using Length = RealNum;
-constexpr auto Meter = RealNum{1};
+using Length = Real;
+constexpr auto Meter = Real{1};
 
-using LinearVelocity = RealNum;
-constexpr auto MeterPerSecond = RealNum{1};
+using LinearVelocity = Real;
+constexpr auto MeterPerSecond = Real{1};
 
-using LinearAcceleration = RealNum;
-constexpr auto MeterPerSquareSecond = RealNum{1};
+using LinearAcceleration = Real;
+constexpr auto MeterPerSquareSecond = Real{1};
 
-using Mass = RealNum;
-constexpr auto Kilogram = RealNum{1};
+using Mass = Real;
+constexpr auto Kilogram = Real{1};
 
-using InvMass = RealNum;
+using InvMass = Real;
 
-using Area = RealNum;
-constexpr auto SquareMeter = RealNum{1};
+using Area = Real;
+constexpr auto SquareMeter = Real{1};
 
-using Density = RealNum;
-constexpr auto KilogramPerSquareMeter = RealNum{1};
+using Density = Real;
+constexpr auto KilogramPerSquareMeter = Real{1};
 
-using Angle = RealNum;
-constexpr auto Radian = RealNum{1};
-constexpr auto Degree = Pi / RealNum{180};
+using Angle = Real;
+constexpr auto Radian = Real{1};
+constexpr auto Degree = Pi / Real{180};
 constexpr auto SquareRadian = Radian * Radian;
 
-using AngularVelocity = RealNum;
-constexpr auto RadianPerSecond = RealNum{1};
+using AngularVelocity = Real;
+constexpr auto RadianPerSecond = Real{1};
 constexpr auto DegreePerSecond = Degree;
 
-using AngularAcceleration = RealNum;
-constexpr auto RadianPerSquareSecond = RealNum{1};
+using AngularAcceleration = Real;
+constexpr auto RadianPerSquareSecond = Real{1};
 
-using Force = RealNum;
-constexpr auto Newton = RealNum{1};
+using Force = Real;
+constexpr auto Newton = Real{1};
 
-using Torque = RealNum;
-constexpr auto NewtonMeter = RealNum{1};
+using Torque = Real;
+constexpr auto NewtonMeter = Real{1};
 
-using SecondMomentOfArea = RealNum;
+using SecondMomentOfArea = Real;
 
-using RotInertia = RealNum;
-using InvRotInertia = RealNum;
+using RotInertia = Real;
+using InvRotInertia = Real;
 
-using Momentum = RealNum;
-constexpr auto NewtonSecond = RealNum{1};
+using Momentum = Real;
+constexpr auto NewtonSecond = Real{1};
 
-using AngularMomentum = RealNum;
+using AngularMomentum = Real;
 
 #endif // USE_BOOST_UNITS
 
-constexpr inline RealNum StripUnit(const RealNum value)
+constexpr inline Real StripUnit(const Real value)
 {
     return value;
 }
 
 #ifdef USE_BOOST_UNITS
 
-constexpr inline RealNum StripUnit(const Angle value)
+constexpr inline Real StripUnit(const Angle value)
 {
-    return RealNum{value / Radian};
+    return Real{value / Radian};
 }
 
-constexpr inline RealNum StripUnit(const Length value)
+constexpr inline Real StripUnit(const Length value)
 {
-    return RealNum{value / Meter};
+    return Real{value / Meter};
 }
 
-constexpr inline RealNum StripUnit(const Area value)
+constexpr inline Real StripUnit(const Area value)
 {
-    return RealNum{value / SquareMeter};
+    return Real{value / SquareMeter};
 }
 
-constexpr inline RealNum StripUnit(const Mass value)
-{
-    // InvMass has units of M^-1
-    return RealNum{value / Kilogram};
-}
-
-constexpr inline RealNum StripUnit(const InvMass value)
+constexpr inline Real StripUnit(const Mass value)
 {
     // InvMass has units of M^-1
-    return RealNum{value * Kilogram};
+    return Real{value / Kilogram};
 }
 
-constexpr inline RealNum StripUnit(const RotInertia value)
+constexpr inline Real StripUnit(const InvMass value)
 {
-    return RealNum{value * SquareRadian / (SquareMeter * Kilogram)};
+    // InvMass has units of M^-1
+    return Real{value * Kilogram};
 }
 
-constexpr inline RealNum StripUnit(const InvRotInertia value)
+constexpr inline Real StripUnit(const RotInertia value)
+{
+    return Real{value * SquareRadian / (SquareMeter * Kilogram)};
+}
+
+constexpr inline Real StripUnit(const InvRotInertia value)
 {
     // InvRotInertia has units of L^-2 M^-1 QP^2
-    return RealNum{value * SquareMeter * Kilogram / SquareRadian};
+    return Real{value * SquareMeter * Kilogram / SquareRadian};
 }
 
-constexpr inline RealNum StripUnit(const Momentum value)
+constexpr inline Real StripUnit(const Momentum value)
 {
     // Momentum has units of M L T^-1
-    return RealNum{value * Second / (Kilogram * Meter)};
+    return Real{value * Second / (Kilogram * Meter)};
 }
 
-constexpr inline RealNum StripUnit(const LinearVelocity value)
+constexpr inline Real StripUnit(const LinearVelocity value)
 {
-    return RealNum{value / MeterPerSecond};
+    return Real{value / MeterPerSecond};
 }
 
-constexpr inline RealNum StripUnit(const AngularVelocity value)
+constexpr inline Real StripUnit(const AngularVelocity value)
 {
-    return RealNum{value / RadianPerSecond};
+    return Real{value / RadianPerSecond};
 }
 
-constexpr inline RealNum StripUnit(const Density value)
+constexpr inline Real StripUnit(const Density value)
 {
-    return RealNum{value / KilogramPerSquareMeter};
+    return Real{value / KilogramPerSquareMeter};
 }
 
-constexpr inline RealNum StripUnit(const Force value)
+constexpr inline Real StripUnit(const Force value)
 {
     // Force has units of Newtons - which are M L T^2
-    return RealNum{value / Newton};
+    return Real{value / Newton};
 }
 
-constexpr inline RealNum StripUnit(const Torque value)
+constexpr inline Real StripUnit(const Torque value)
 {
-    return RealNum{value / NewtonMeter};
+    return Real{value / NewtonMeter};
 }
 
 #endif
@@ -302,7 +302,7 @@ using ChildCounter = std::remove_const<decltype(MaxChildCount)>::type;
 /// @details A type for countining iterations per time-step.
 using ts_iters_t = std::uint8_t;
 
-constexpr auto MaxFloat = std::numeric_limits<RealNum>::max(); // FLT_MAX
+constexpr auto MaxFloat = std::numeric_limits<Real>::max(); // FLT_MAX
 
 // Collision
 
@@ -323,29 +323,29 @@ constexpr auto MaxShapeVertices = std::uint8_t{254};
 /// Lower or raise to decrease or increase respectively the minimum of space
 /// between bodies at rest.
 /// @note Smaller values relative to sizes of bodies increases the time it takes for bodies to come to rest.
-constexpr auto DefaultLinearSlop = Length{Meter / RealNum{1000}}; // originally 0.005
+constexpr auto DefaultLinearSlop = Length{Meter / Real{1000}}; // originally 0.005
 
 /// @brief Default AABB extension amount.
-constexpr auto DefaultAabbExtension = DefaultLinearSlop * RealNum{20};
+constexpr auto DefaultAabbExtension = DefaultLinearSlop * Real{20};
 
 /// Default distance multiplier.
-constexpr auto DefaultDistanceMultiplier = RealNum{2};
+constexpr auto DefaultDistanceMultiplier = Real{2};
 
 /// Default angular slop.
 /// @details
 /// A small angle used as a collision and constraint tolerance. Usually it is
 /// chosen to be numerically significant, but visually insignificant.
-constexpr auto DefaultAngularSlop = (Pi * RealNum{2} * Radian) / RealNum{180};
+constexpr auto DefaultAngularSlop = (Pi * Real{2} * Radian) / Real{180};
 
 /// Default maximum linear correction.
 /// @details The maximum linear position correction used when solving constraints.
 ///   This helps to prevent overshoot.
 /// @note This value should be greater than the linear slop value.
-constexpr auto DefaultMaxLinearCorrection = DefaultLinearSlop * RealNum{40}; // aka 0.04f
+constexpr auto DefaultMaxLinearCorrection = DefaultLinearSlop * Real{40}; // aka 0.04f
 
 /// Default maximum angular correction.
 /// @note This value should be greater than the angular slop value.
-constexpr auto DefaultMaxAngularCorrection = DefaultAngularSlop * RealNum{4};
+constexpr auto DefaultMaxAngularCorrection = DefaultAngularSlop * Real{4};
 
 /// Default maximum time of impact iterations.
 constexpr auto DefaultMaxToiIters = std::uint8_t{20};
@@ -367,7 +367,7 @@ constexpr auto DefaultMaxSubSteps = std::uint8_t{48};
 // Dynamics
 
 /// @brief Default velocity threshold.
-constexpr auto DefaultVelocityThreshold = (RealNum{8} / RealNum{10}) * MeterPerSecond;
+constexpr auto DefaultVelocityThreshold = (Real{8} / Real{10}) * MeterPerSecond;
 
 /// @brief Maximum number of bodies in a world.
 /// @note This is 65534 based off std::uint16_t and eliminating one value for invalid.
@@ -400,29 +400,29 @@ constexpr auto MaxJoints = static_cast<std::uint16_t>(std::numeric_limits<std::u
 using JointCounter = std::remove_const<decltype(MaxJoints)>::type;
 
 /// @brief Default step time.
-constexpr auto DefaultStepTime = Time{Second / RealNum{60}};
+constexpr auto DefaultStepTime = Time{Second / Real{60}};
 
 /// @brief Default step frequency.
-constexpr auto DefaultStepFrequency = Frequency{Hertz * RealNum{60}};
+constexpr auto DefaultStepFrequency = Frequency{Hertz * Real{60}};
 
 // Sleep
 
 /// Default minimum still time to sleep.
 /// @details The default minimum time bodies must be still for bodies to be put to sleep.
-constexpr auto DefaultMinStillTimeToSleep = Time{Second / RealNum{2}}; // aka 0.5 secs
+constexpr auto DefaultMinStillTimeToSleep = Time{Second / Real{2}}; // aka 0.5 secs
 
 /// Default linear sleep tolerance.
 /// @details A body cannot sleep if the magnitude of its linear velocity is above this amount.
-constexpr auto DefaultLinearSleepTolerance = RealNum{0.01f} * MeterPerSecond; // aka 0.01
+constexpr auto DefaultLinearSleepTolerance = Real{0.01f} * MeterPerSecond; // aka 0.01
 
 /// Default angular sleep tolerance.
 /// @details A body cannot sleep if its angular velocity is above this amount.
-constexpr auto DefaultAngularSleepTolerance = RealNum{(Pi * 2) / 180} * RadianPerSecond;
+constexpr auto DefaultAngularSleepTolerance = Real{(Pi * 2) / 180} * RadianPerSecond;
 
 /// Default circles ratio.
 /// @details Ratio used for switching between rounded-corner collisions and closest-face
 ///   biased normal collisions.
-constexpr auto DefaultCirclesRatio = RealNum{10};
+constexpr auto DefaultCirclesRatio = Real{10};
 
 /// Maximum list size.
 template <typename T>
@@ -518,170 +518,170 @@ constexpr inline bool IsValid(const std::size_t& x) noexcept
 template <>
 constexpr Angle GetInvalid() noexcept
 {
-    return GetInvalid<RealNum>() * Radian;
+    return GetInvalid<Real>() * Radian;
 }
 
 template <>
 constexpr inline bool IsValid(const Angle& x) noexcept
 {
-    return IsValid(RealNum{x / Radian});
+    return IsValid(Real{x / Radian});
 }
 
 template <>
 constexpr Frequency GetInvalid() noexcept
 {
-    return GetInvalid<RealNum>() * Hertz;
+    return GetInvalid<Real>() * Hertz;
 }
 
 template <>
 constexpr inline bool IsValid(const Frequency& x) noexcept
 {
-    return IsValid(RealNum{x / Hertz});
+    return IsValid(Real{x / Hertz});
 }
 
 template <>
 constexpr AngularVelocity GetInvalid() noexcept
 {
-    return GetInvalid<RealNum>() * RadianPerSecond;
+    return GetInvalid<Real>() * RadianPerSecond;
 }
 
 template <>
 constexpr inline bool IsValid(const AngularVelocity& x) noexcept
 {
-    return IsValid(RealNum{x / RadianPerSecond});
+    return IsValid(Real{x / RadianPerSecond});
 }
 
 template <>
 constexpr Time GetInvalid() noexcept
 {
-    return GetInvalid<RealNum>() * Second;
+    return GetInvalid<Real>() * Second;
 }
 
 template <>
 constexpr inline bool IsValid(const Time& x) noexcept
 {
-    return IsValid(RealNum{x / Second});
+    return IsValid(Real{x / Second});
 }
 
 template <>
 constexpr Length GetInvalid() noexcept
 {
-    return GetInvalid<RealNum>() * Meter;
+    return GetInvalid<Real>() * Meter;
 }
 
 template <>
 constexpr inline bool IsValid(const Length& x) noexcept
 {
-    return IsValid(RealNum{x / Meter});
+    return IsValid(Real{x / Meter});
 }
 
 template <>
 constexpr Mass GetInvalid() noexcept
 {
-    return GetInvalid<RealNum>() * Kilogram;
+    return GetInvalid<Real>() * Kilogram;
 }
 
 template <>
 constexpr inline bool IsValid(const Mass& x) noexcept
 {
-    return IsValid(RealNum{x / Kilogram});
+    return IsValid(Real{x / Kilogram});
 }
 
 template <>
 constexpr InvMass GetInvalid() noexcept
 {
-    return GetInvalid<RealNum>() / Kilogram;
+    return GetInvalid<Real>() / Kilogram;
 }
 
 template <>
 constexpr inline bool IsValid(const InvMass& x) noexcept
 {
-    return IsValid(RealNum{x * Kilogram});
+    return IsValid(Real{x * Kilogram});
 }
 
 template <>
 constexpr Momentum GetInvalid() noexcept
 {
-    return GetInvalid<RealNum>() * Kilogram * MeterPerSecond;
+    return GetInvalid<Real>() * Kilogram * MeterPerSecond;
 }
 
 template <>
 constexpr inline bool IsValid(const Momentum& x) noexcept
 {
-    return IsValid(RealNum{x / (Kilogram * MeterPerSecond)});
+    return IsValid(Real{x / (Kilogram * MeterPerSecond)});
 }
 
 template <>
 constexpr Force GetInvalid() noexcept
 {
-    return GetInvalid<RealNum>() * Newton;
+    return GetInvalid<Real>() * Newton;
 }
 
 template <>
 constexpr inline bool IsValid(const Force& x) noexcept
 {
-    return IsValid(RealNum{x / Newton});
+    return IsValid(Real{x / Newton});
 }
 
 template <>
 constexpr Torque GetInvalid() noexcept
 {
-    return GetInvalid<RealNum>() * NewtonMeter;
+    return GetInvalid<Real>() * NewtonMeter;
 }
 
 template <>
 constexpr inline bool IsValid(const Torque& x) noexcept
 {
-    return IsValid(RealNum{x / NewtonMeter});
+    return IsValid(Real{x / NewtonMeter});
 }
 
 template <>
 constexpr LinearVelocity GetInvalid() noexcept
 {
-    return GetInvalid<RealNum>() * MeterPerSecond;
+    return GetInvalid<Real>() * MeterPerSecond;
 }
 
 template <>
 constexpr inline bool IsValid(const LinearVelocity& x) noexcept
 {
-    return IsValid(RealNum{x / MeterPerSecond});
+    return IsValid(Real{x / MeterPerSecond});
 }
 
 template <>
 constexpr LinearAcceleration GetInvalid() noexcept
 {
-    return GetInvalid<RealNum>() * MeterPerSquareSecond;
+    return GetInvalid<Real>() * MeterPerSquareSecond;
 }
 
 template <>
 constexpr inline bool IsValid(const LinearAcceleration& x) noexcept
 {
-    return IsValid(RealNum{x / MeterPerSquareSecond});
+    return IsValid(Real{x / MeterPerSquareSecond});
 }
 
 template <>
 constexpr AngularAcceleration GetInvalid() noexcept
 {
-    return GetInvalid<RealNum>() * RadianPerSquareSecond;
+    return GetInvalid<Real>() * RadianPerSquareSecond;
 }
 
 template <>
 constexpr inline bool IsValid(const AngularAcceleration& x) noexcept
 {
-    return IsValid(RealNum{x / RadianPerSquareSecond});
+    return IsValid(Real{x / RadianPerSquareSecond});
 }
 
 template <>
 constexpr RotInertia GetInvalid() noexcept
 {
     // RotInertia is L^2  M    QP^-2
-    return GetInvalid<RealNum>() * SquareMeter * Kilogram / SquareRadian;
+    return GetInvalid<Real>() * SquareMeter * Kilogram / SquareRadian;
 }
 
 template <>
 constexpr inline bool IsValid(const RotInertia& value) noexcept
 {
-    return IsValid(RealNum{value / (SquareMeter * Kilogram / SquareRadian)});
+    return IsValid(Real{value / (SquareMeter * Kilogram / SquareRadian)});
 }
 
 #endif

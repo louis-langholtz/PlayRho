@@ -39,7 +39,7 @@ inline PositionSolverManifold GetForCircles(const Transformation& xfA, Length2D 
     const auto pointB = Transform(plp, xfB);
     const auto delta = pointB - pointA; // The edge from pointA to pointB
     const auto normal = GetUnitVector(delta, UnitVec2::GetZero()); // The direction of the edge.
-    const auto midpoint = (pointA + pointB) / RealNum{2};
+    const auto midpoint = (pointA + pointB) / Real{2};
     const auto separation = Dot(delta, normal); // The length of edge without doing sqrt again.
     return PositionSolverManifold{normal, midpoint, separation};
 }

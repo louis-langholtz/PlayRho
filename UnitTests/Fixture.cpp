@@ -26,7 +26,7 @@ using namespace box2d;
 
 TEST(Fixture, ByteSize)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(Fixture), std::size_t(56)); break;
         case  8: EXPECT_EQ(sizeof(Fixture), std::size_t(56)); break;
@@ -37,11 +37,11 @@ TEST(Fixture, ByteSize)
 
 TEST(Fixture, CreateMatchesDef)
 {
-    const auto density = RealNum{2} * KilogramPerSquareMeter;
+    const auto density = Real{2} * KilogramPerSquareMeter;
     int variable;
     const auto userData = &variable;
-    const auto friction = RealNum(0.5);
-    const auto restitution = RealNum(0.4);
+    const auto friction = Real(0.5);
+    const auto restitution = Real(0.4);
     const auto isSensor = true;
     const auto shapeA = std::make_shared<DiskShape>();
     shapeA->SetFriction(friction);
@@ -69,7 +69,7 @@ TEST(Fixture, CreateMatchesDef)
 TEST(Fixture, SetSensor)
 {
     const auto shapeA = std::make_shared<DiskShape>();
-    const auto bodyCtrPos = Length2D(RealNum(1) * Meter, RealNum(2) * Meter);
+    const auto bodyCtrPos = Length2D(Real(1) * Meter, Real(2) * Meter);
     
     World world;
     const auto body = world.CreateBody(BodyDef{}.UseLocation(bodyCtrPos));
@@ -85,7 +85,7 @@ TEST(Fixture, SetSensor)
 TEST(Fixture, TestPointFreeFunction)
 {
     const auto shapeA = std::make_shared<DiskShape>();
-    const auto bodyCtrPos = Length2D(RealNum(1) * Meter, RealNum(2) * Meter);
+    const auto bodyCtrPos = Length2D(Real(1) * Meter, Real(2) * Meter);
 
     World world;
     const auto body = world.CreateBody(BodyDef{}.UseLocation(bodyCtrPos));

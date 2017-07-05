@@ -23,7 +23,7 @@ using namespace box2d;
 
 TEST(PositionConstraint, ByteSizeIs_88_152_or_288)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(PositionConstraint), std::size_t(88)); break;
         case  8: EXPECT_EQ(sizeof(PositionConstraint), std::size_t(152)); break;

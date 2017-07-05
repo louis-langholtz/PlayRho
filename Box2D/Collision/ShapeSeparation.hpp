@@ -36,7 +36,7 @@ namespace box2d
         
         static constexpr distance_type GetInvalidDistance() noexcept
         {
-            return std::numeric_limits<RealNum>::max() * Meter;
+            return std::numeric_limits<Real>::max() * Meter;
         }
 
         static constexpr index_type InvalidIndex = static_cast<index_type>(-1);
@@ -54,7 +54,7 @@ namespace box2d
         
         static constexpr distance_type GetInvalidDistance() noexcept
         {
-            return std::numeric_limits<RealNum>::max() * Meter;
+            return std::numeric_limits<Real>::max() * Meter;
         }
 
         static constexpr index_type InvalidIndex = static_cast<index_type>(-1);

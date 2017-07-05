@@ -23,7 +23,7 @@ using namespace box2d;
 
 TEST(Contact, ByteSize)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(Contact), std::size_t(104)); break;
         case  8: EXPECT_EQ(sizeof(Contact), std::size_t(184)); break;

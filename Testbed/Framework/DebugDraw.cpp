@@ -47,8 +47,8 @@ Length2D ConvertScreenToWorld(const Camera& camera, const Coord2D ps)
     const auto lower = camera.m_center - extents;
     const auto upper = camera.m_center + extents;
 
-    const auto x = RealNum{((1 - u) * lower.x + u * upper.x)};
-    const auto y = RealNum{((1 - v) * lower.y + v * upper.y)};
+    const auto x = Real{((1 - u) * lower.x + u * upper.x)};
+    const auto y = Real{((1 - v) * lower.y + v * upper.y)};
     return Length2D{x * Meter, y * Meter};
 }
 
@@ -79,8 +79,8 @@ Coord2D ConvertWorldToScreen(const Camera& camera, const Length2D pw)
     const auto lower = camera.m_center - extents;
     const auto upper = camera.m_center + extents;
 
-    const auto u = (float(RealNum{pw.x / Meter}) - lower.x) / (upper.x - lower.x);
-    const auto v = (float(RealNum{pw.y / Meter}) - lower.y) / (upper.y - lower.y);
+    const auto u = (float(Real{pw.x / Meter}) - lower.x) / (upper.x - lower.x);
+    const auto v = (float(Real{pw.y / Meter}) - lower.y) / (upper.y - lower.y);
 
     return Coord2D{u * w, (float(1) - v) * h};
 }
@@ -736,16 +736,16 @@ void DebugDraw::DrawString(const Length2D& pw, const char *string, ...)
 Length2D DebugDraw::GetTranslation() const
 {
     return Length2D{
-        RealNum(m_camera.m_center.x) * Meter,
-        RealNum(m_camera.m_center.y) * Meter
+        Real(m_camera.m_center.x) * Meter,
+        Real(m_camera.m_center.y) * Meter
     };
 }
 
 void DebugDraw::SetTranslation(Length2D value)
 {
     m_camera.m_center = Coord2D{
-        static_cast<float>(RealNum{value.x / Meter}),
-        static_cast<float>(RealNum{value.y / Meter})
+        static_cast<float>(Real{value.x / Meter}),
+        static_cast<float>(Real{value.y / Meter})
     };
 }
     

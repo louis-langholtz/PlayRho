@@ -40,14 +40,14 @@ public:
 
         bd.position = Vec2(0.0f, 0.5f) * Meter;
         const auto body1 = m_world->CreateBody(bd);
-        conf.vertexRadius = RealNum{0.5f} * Meter;
-        conf.density = RealNum(10) * KilogramPerSquareMeter;
+        conf.vertexRadius = Real{0.5f} * Meter;
+        conf.density = Real(10) * KilogramPerSquareMeter;
         body1->CreateFixture(std::make_shared<DiskShape>(conf));
         
         bd.position = Vec2(0.0f, 6.0f) * Meter;
         const auto body2 = m_world->CreateBody(bd);
-        conf.vertexRadius = RealNum{5.0f} * Meter;
-        conf.density = RealNum(10) * KilogramPerSquareMeter;
+        conf.vertexRadius = Real{5.0f} * Meter;
+        conf.density = Real(10) * KilogramPerSquareMeter;
         m_top = body2->CreateFixture(std::make_shared<DiskShape>(conf));
     }
 
@@ -61,7 +61,7 @@ public:
             const auto body = m_top->GetBody();
             body->DestroyFixture(m_top);
             auto conf = DiskShape::Conf{};
-            conf.vertexRadius = RealNum{5.0f} * Meter;
+            conf.vertexRadius = Real{5.0f} * Meter;
             conf.density = newDensity;
             m_top = body->CreateFixture(std::make_shared<DiskShape>(conf));
             if (wasSelected)
@@ -90,7 +90,7 @@ public:
     {
         drawer.DrawString(5, m_textLine,
                           "Press '+'/'-' to increase/decrease density of top shape (%f kg/m^2)",
-                          double(RealNum{m_top->GetShape()->GetDensity() / KilogramPerSquareMeter}));
+                          double(Real{m_top->GetShape()->GetDensity() / KilogramPerSquareMeter}));
         m_textLine += DRAW_STRING_NEW_LINE;
     }
 

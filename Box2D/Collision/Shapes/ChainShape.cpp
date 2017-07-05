@@ -84,7 +84,7 @@ MassData ChainShape::GetMassData() const noexcept
             const auto v = GetVertex(i);
             const auto massData = ::GetMassData(vertexRadius, density, vprev, v);
             mass += Mass{massData.mass};
-            center += RealNum{Mass{massData.mass} / Kilogram} * massData.center;
+            center += Real{Mass{massData.mass} / Kilogram} * massData.center;
             I += RotInertia{massData.I};
             vprev = v;
         }

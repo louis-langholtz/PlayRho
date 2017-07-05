@@ -109,10 +109,10 @@ void MouseJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     const auto mass = GetMass(*GetBodyB());
 
     // Frequency
-    const auto omega = RealNum{2} * Pi * Frequency{m_frequency}; // T^-1
+    const auto omega = Real{2} * Pi * Frequency{m_frequency}; // T^-1
 
     // Damping coefficient
-    const auto d = RealNum{2} * mass * m_dampingRatio * omega; // M T^-1
+    const auto d = Real{2} * mass * m_dampingRatio * omega; // M T^-1
 
     // Spring stiffness
     const auto k = mass * Square(omega); // M T^-2
@@ -122,10 +122,10 @@ void MouseJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     // beta has units of inverse time.
     const auto h = step.GetTime();
     const auto tmp = d + h * k; // M T^-1
-    assert(IsValid(RealNum{tmp * Second / Kilogram}));
-    assert((tmp > RealNum{0} * Kilogram / Second) && !almost_zero(tmp * Second / Kilogram));
+    assert(IsValid(Real{tmp * Second / Kilogram}));
+    assert((tmp > Real{0} * Kilogram / Second) && !almost_zero(tmp * Second / Kilogram));
     const auto invGamma = Mass{h * tmp}; // M T^-1 * T is simply M.
-    m_gamma = (invGamma != Mass{0})? RealNum{1} / invGamma: InvMass{0};
+    m_gamma = (invGamma != Mass{0})? Real{1} / invGamma: InvMass{0};
     const auto beta = Frequency{h * k * m_gamma}; // T * M T^-2 * M^-1 is T^-1
 
     // Compute the effective mass matrix.

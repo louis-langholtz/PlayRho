@@ -29,7 +29,7 @@ using namespace box2d;
 
 TEST(DistanceJoint, ByteSize)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(DistanceJoint), std::size_t(112)); break;
         case  8: EXPECT_EQ(sizeof(DistanceJoint), std::size_t(176)); break;
@@ -50,9 +50,9 @@ TEST(DistanceJointDef, DefaultConstruction)
     
     EXPECT_EQ(def.localAnchorA, Length2D(0, 0));
     EXPECT_EQ(def.localAnchorB, Length2D(0, 0));
-    EXPECT_EQ(def.length, RealNum(1) * Meter);
+    EXPECT_EQ(def.length, Real(1) * Meter);
     EXPECT_EQ(def.frequency, Frequency(0));
-    EXPECT_EQ(def.dampingRatio, RealNum(0));
+    EXPECT_EQ(def.dampingRatio, Real(0));
 }
 
 TEST(DistanceJoint, Construction)
@@ -77,14 +77,14 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 {
     World world{WorldDef{}.UseGravity(LinearAcceleration2D{0, 0})};
 
-    const auto shape = std::make_shared<DiskShape>(RealNum{0.2f} * Meter);
+    const auto shape = std::make_shared<DiskShape>(Real{0.2f} * Meter);
     
-    const auto location1 = Length2D{-RealNum(1) * Meter, RealNum(0) * Meter};
+    const auto location1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
     const auto body1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location1));
     ASSERT_EQ(body1->GetLocation(), location1);
     ASSERT_NE(body1->CreateFixture(shape), nullptr);
     
-    const auto location2 = Length2D{+RealNum(1) * Meter, RealNum(0) * Meter};
+    const auto location2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
     const auto body2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location2));
     ASSERT_EQ(body2->GetLocation(), location2);
     ASSERT_NE(body2->CreateFixture(shape), nullptr);
@@ -95,7 +95,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
     jointdef.collideConnected = false;
     jointdef.localAnchorA = Length2D(0, 0);
     jointdef.localAnchorB = Length2D(0, 0);
-    jointdef.length = RealNum{5} * Meter;
+    jointdef.length = Real{5} * Meter;
     jointdef.frequency = 0;
     jointdef.dampingRatio = 0;
     EXPECT_NE(world.CreateJoint(jointdef), nullptr);
@@ -111,15 +111,15 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
         const auto newDistance = GetLength(body1->GetLocation() - body2->GetLocation());
         if (distanceMet)
         {
-            EXPECT_NEAR(double(RealNum{newDistance / Meter}),
-                        double(RealNum{oldDistance / Meter}), 0.01);
+            EXPECT_NEAR(double(Real{newDistance / Meter}),
+                        double(Real{oldDistance / Meter}), 0.01);
         }
         else
         {
             EXPECT_GE(newDistance, oldDistance);
         }
         
-        if (!distanceMet && (Abs(newDistance - jointdef.length) < RealNum{0.01f} * Meter))
+        if (!distanceMet && (Abs(newDistance - jointdef.length) < Real{0.01f} * Meter))
         {
             distanceMet = i;
         }
@@ -129,17 +129,17 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 
 TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
 {
-    World world{WorldDef{}.UseGravity(LinearAcceleration2D{0, RealNum(10) * MeterPerSquareSecond})};
+    World world{WorldDef{}.UseGravity(LinearAcceleration2D{0, Real(10) * MeterPerSquareSecond})};
     
-    const auto shape = std::make_shared<DiskShape>(RealNum{0.2f} * Meter);
-    shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
+    const auto shape = std::make_shared<DiskShape>(Real{0.2f} * Meter);
+    shape->SetDensity(Real{1} * KilogramPerSquareMeter);
     
-    const auto location1 = Length2D{-RealNum(10) * Meter, RealNum(10) * Meter};
+    const auto location1 = Length2D{-Real(10) * Meter, Real(10) * Meter};
     const auto body1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location1));
     ASSERT_EQ(body1->GetLocation(), location1);
     ASSERT_NE(body1->CreateFixture(shape), nullptr);
     
-    const auto location2 = Length2D{+RealNum(10) * Meter, -RealNum(10) * Meter};
+    const auto location2 = Length2D{+Real(10) * Meter, -Real(10) * Meter};
     const auto body2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location2));
     ASSERT_EQ(body2->GetLocation(), location2);
     ASSERT_NE(body2->CreateFixture(shape), nullptr);
@@ -150,8 +150,8 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
     jointdef.collideConnected = false;
     jointdef.localAnchorA = Length2D(0, 0);
     jointdef.localAnchorB = Length2D(0, 0);
-    jointdef.length = RealNum{5} * Meter;
-    jointdef.frequency = RealNum{60} * Hertz;
+    jointdef.length = Real{5} * Meter;
+    jointdef.frequency = Real{60} * Hertz;
     jointdef.dampingRatio = 0;
     EXPECT_NE(world.CreateJoint(jointdef), nullptr);
     
@@ -170,8 +170,8 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
         }
         if (distanceMet)
         {
-            EXPECT_NEAR(double(RealNum{newDistance / Meter}),
-                        double(RealNum{oldDistance / Meter}), 2.5);
+            EXPECT_NEAR(double(Real{newDistance / Meter}),
+                        double(Real{oldDistance / Meter}), 2.5);
         }
         else
         {
@@ -181,6 +181,6 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
         oldDistance = newDistance;
     }
     
-    EXPECT_NEAR(double(RealNum{oldDistance / Meter}),
-                double(RealNum{jointdef.length / Meter}), 0.1);
+    EXPECT_NEAR(double(Real{oldDistance / Meter}),
+                double(Real{jointdef.length / Meter}), 0.1);
 }

@@ -38,9 +38,9 @@ public:
         // Create ground body.
         const auto ground = m_world->CreateBody(BodyDef{}.UseLocation(Vec2(0.0f, 20.0f) * Meter));
 
-        const auto a = RealNum{0.5f};
-        const auto shape = std::make_shared<PolygonShape>(RealNum{0.25f} * a * Meter, a * Meter);
-        shape->SetDensity(RealNum{20} * KilogramPerSquareMeter);
+        const auto a = Real{0.5f};
+        const auto shape = std::make_shared<PolygonShape>(Real{0.25f} * a * Meter, a * Meter);
+        shape->SetDensity(Real{20} * KilogramPerSquareMeter);
 
         RevoluteJointDef jointDef;
         jointDef.bodyA = ground;

@@ -45,7 +45,7 @@ RayCastOutput box2d::RayCast(const Length radius, const Length2D location,
     const auto sigma = (Square(c) - rr * b) / (SquareMeter * SquareMeter);
     
     // Check for negative discriminant and short segment.
-    if ((sigma < RealNum{0}) || almost_zero(RealNum{rr / SquareMeter}))
+    if ((sigma < Real{0}) || almost_zero(Real{rr / SquareMeter}))
     {
         return RayCastOutput{};
     }
@@ -55,7 +55,7 @@ RayCastOutput box2d::RayCast(const Length radius, const Length2D location,
     const auto fraction = a / rr;
 
     // Is the intersection point on the segment?
-    if ((fraction >= RealNum{0}) && (fraction <= input.maxFraction))
+    if ((fraction >= Real{0}) && (fraction <= input.maxFraction))
     {
         return RayCastOutput{
             GetUnitVector(s + fraction * raySegment, UnitVec2::GetZero()),
@@ -95,8 +95,8 @@ RayCastOutput box2d::RayCast(const AABB& aabb, const RayCastInput& input) noexce
         }
         else
         {
-            auto t1 = RealNum{(lbi - p1i) / pdi};
-            auto t2 = RealNum{(ubi - p1i) / pdi};
+            auto t1 = Real{(lbi - p1i) / pdi};
+            auto t2 = Real{(ubi - p1i) / pdi};
             
             // Sign of the normal vector.
             auto s = -1;
@@ -174,7 +174,7 @@ RayCastOutput box2d::RayCast(const DistanceProxy& proxy, const RayCastInput& inp
     const auto ray0 = transformedInput.p1;
     const auto ray = transformedInput.p2 - transformedInput.p1; // Ray delta (p2 - p1)
     
-    auto minT = std::nextafter(input.maxFraction, RealNum(2));
+    auto minT = std::nextafter(input.maxFraction, Real(2));
     auto normalFound = GetInvalid<UnitVec2>();
     
     for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
@@ -203,8 +203,8 @@ RayCastOutput box2d::RayCast(const DistanceProxy& proxy, const RayCastInput& inp
             // u = ((q − p) × r) / (r × s)
             const auto u = Cross(q_sub_p, ray) / ray_cross_edge;
 
-            if ((t >= RealNum(0)) && (t <= RealNum(1)) &&
-                (u >= RealNum(0)) && (u <= RealNum(1)))
+            if ((t >= Real(0)) && (t <= Real(1)) &&
+                (u >= Real(0)) && (u <= Real(1)))
             {
                 // The two lines meet at the point p + t r = q + u s
                 if (minT > t)

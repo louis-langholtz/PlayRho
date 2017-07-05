@@ -23,7 +23,7 @@ using namespace box2d;
 
 TEST(SimplexEdge, ByteSizeIs_28_56_or_112)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(SimplexEdge), std::size_t(28)); break;
         case  8: EXPECT_EQ(sizeof(SimplexEdge), std::size_t(56)); break;
@@ -36,8 +36,8 @@ TEST(SimplexEdge, InitializingConstructor)
 {
     const auto iA = SimplexEdge::index_type{1};
     const auto iB = SimplexEdge::index_type{2};
-    const auto pA = Length2D{RealNum(2.2) * Meter, RealNum(-3.1) * Meter};
-    const auto pB = Length2D{RealNum(-9.2) * Meter, RealNum(0.003) * Meter};
+    const auto pA = Length2D{Real(2.2) * Meter, Real(-3.1) * Meter};
+    const auto pB = Length2D{Real(-9.2) * Meter, Real(0.003) * Meter};
 
     const auto sv = SimplexEdge(pA, iA, pB, iB);
     

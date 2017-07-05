@@ -73,13 +73,13 @@ inline auto Sqrt(Area t)
 template<typename T>
 inline auto Atan2(T y, T x)
 {
-    return Angle{static_cast<RealNum>(std::atan2(StripUnit(y), StripUnit(x))) * Radian};
+    return Angle{static_cast<Real>(std::atan2(StripUnit(y), StripUnit(x))) * Radian};
 }
 
 template<>
 inline auto Atan2(double y, double x)
 {
-    return Angle{static_cast<RealNum>(std::atan2(y, x)) * Radian};
+    return Angle{static_cast<Real>(std::atan2(y, x)) * Radian};
 }
 
 template <typename T>
@@ -93,8 +93,8 @@ inline auto Average(Span<const T> span)
 {
     // For C++17, switch from using std::accumulate to using std::reduce.
     const auto sum = std::accumulate(std::cbegin(span), std::cend(span), static_cast<T>(0));
-    const auto count = static_cast<RealNum>(span.size());
-    return (count > decltype(count){0})? sum / count: sum / RealNum(1);
+    const auto count = static_cast<Real>(span.size());
+    return (count > decltype(count){0})? sum / count: sum / Real(1);
 }
 
 template <typename T>
@@ -405,11 +405,11 @@ constexpr inline Mat33 GetInverse22(const Mat33& value) noexcept
 {
     const auto a = value.ex.x, b = value.ey.x, c = value.ex.y, d = value.ey.y;
     auto det = (a * d) - (b * c);
-    if (det != RealNum{0})
+    if (det != Real{0})
     {
-        det = RealNum{1} / det;
+        det = Real{1} / det;
     }
-    return Mat33{Vec3{det * d, -det * c, RealNum{0}}, Vec3{-det * b, det * a, 0}, Vec3{0, 0, 0}};
+    return Mat33{Vec3{det * d, -det * c, Real{0}}, Vec3{-det * b, det * a, 0}, Vec3{0, 0, 0}};
 }
     
 /// Get the symmetric inverse of this matrix as a 3-by-3.
@@ -417,9 +417,9 @@ constexpr inline Mat33 GetInverse22(const Mat33& value) noexcept
 constexpr inline Mat33 GetSymInverse33(const Mat33& value) noexcept
 {
     auto det = Dot(value.ex, Cross(value.ey, value.ez));
-    if (det != RealNum{0})
+    if (det != Real{0})
     {
-        det = RealNum{1} / det;
+        det = Real{1} / det;
     }
     
     const auto a11 = value.ex.x, a12 = value.ey.x, a13 = value.ez.x;
@@ -682,7 +682,7 @@ inline Transformation GetTransformation(const Position pos, const Length2D local
 /// @param sweep Sweep data to get the transform from.
 /// @param beta Time factor in [0,1], where 0 indicates alpha0.
 /// @return Transformation of the given sweep at the specified time.
-inline Transformation GetTransformation(const Sweep& sweep, const RealNum beta) noexcept
+inline Transformation GetTransformation(const Sweep& sweep, const Real beta) noexcept
 {
     assert(beta >= 0);
     assert(beta <= 1);
@@ -691,7 +691,7 @@ inline Transformation GetTransformation(const Sweep& sweep, const RealNum beta) 
 
 /// Gets the transform at "time" zero.
 /// @note This is like calling GetTransformation(sweep, 0), except more efficiently.
-/// @sa GetTransformation(const Sweep& sweep, RealNum beta).
+/// @sa GetTransformation(const Sweep& sweep, Real beta).
 /// @param sweep Sweep data to get the transform from.
 /// @return Transformation of the given sweep at time zero.
 inline Transformation GetTransform0(const Sweep& sweep) noexcept
@@ -701,7 +701,7 @@ inline Transformation GetTransform0(const Sweep& sweep) noexcept
 
 /// Gets the transform at "time" one.
 /// @note This is like calling GetTransformation(sweep, 1.0), except more efficiently.
-/// @sa GetTransformation(const Sweep& sweep, RealNum beta).
+/// @sa GetTransformation(const Sweep& sweep, Real beta).
 /// @param sweep Sweep data to get the transform from.
 /// @return Transformation of the given sweep at time one.
 inline Transformation GetTransform1(const Sweep& sweep) noexcept
@@ -712,15 +712,15 @@ inline Transformation GetTransform1(const Sweep& sweep) noexcept
 inline Angle GetNormalized(Angle value)
 {
 #if 1
-    constexpr auto radsPerCircle = RealNum{2 * Pi} * Radian;
-    const auto laps = static_cast<int>(RealNum{value / radsPerCircle});
-    return value - Angle(RealNum(laps) * radsPerCircle);
+    constexpr auto radsPerCircle = Real{2 * Pi} * Radian;
+    const auto laps = static_cast<int>(Real{value / radsPerCircle});
+    return value - Angle(Real(laps) * radsPerCircle);
 #else
     const auto TwoPi = Pi * 2;
-    const auto res = RealNum{value / Radian} / TwoPi;
+    const auto res = Real{value / Radian} / TwoPi;
     const auto wholePart = static_cast<int>(res);
     const auto fractionPart = res - wholePart;
-    return RealNum{fractionPart * TwoPi} * Radian;
+    return Real{fractionPart * TwoPi} * Radian;
 #endif
 }
 
@@ -738,7 +738,7 @@ inline Sweep GetAnglesNormalized(Sweep sweep) noexcept
 }
 
 /// Converts the given vector into a unit vector and returns its original length.
-inline RealNum Normalize(Vec2& vector)
+inline Real Normalize(Vec2& vector)
 {
     const auto length = GetLength(vector);
     if (!almost_zero(length))
@@ -826,7 +826,7 @@ constexpr inline Angle GetRevRotationalAngle(Angle a1, Angle a2) noexcept
     // If a1=-45 * Degree and a2=0 * Degree then, 45 * Degree
     // If a1=-90 * Degree and a2=-100 * Degree then, 360 * Degree - (-90 * Degree - -100 * Degree) = 350 * Degree
     // If a1=-100 * Degree and a2=-90 * Degree then, -90 * Degree - -100 * Degree = 10 * Degree
-    return (a1 > a2)? Angle(RealNum{360} * Degree) - (a1 - a2): a2 - a1;
+    return (a1 > a2)? Angle(Real{360} * Degree) - (a1 - a2): a2 - a1;
 }
 
 /// Gets the unit vector for the given value.
@@ -838,7 +838,7 @@ constexpr inline Angle GetRevRotationalAngle(Angle a1, Angle a2) noexcept
 template <class T>
 inline UnitVec2 GetUnitVector(const Vector2D<T> value, const UnitVec2 fallback = UnitVec2::GetDefaultFallback())
 {
-    RealNum magnitude = 1;
+    Real magnitude = 1;
     return UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), magnitude, fallback);
 }
 
@@ -854,7 +854,7 @@ inline UnitVec2 GetUnitVector(const Vector2D<T> value, T& magnitude,
                               const UnitVec2 fallback = UnitVec2::GetDefaultFallback());
 
 template <>
-inline UnitVec2 GetUnitVector(const Vector2D<RealNum> value, RealNum& magnitude, const UnitVec2 fallback)
+inline UnitVec2 GetUnitVector(const Vector2D<Real> value, Real& magnitude, const UnitVec2 fallback)
 {
     return UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), magnitude, fallback);
 }
@@ -864,7 +864,7 @@ inline UnitVec2 GetUnitVector(const Vector2D<RealNum> value, RealNum& magnitude,
 template <>
 inline UnitVec2 GetUnitVector(const Vector2D<Length> value, Length& magnitude, const UnitVec2 fallback)
 {
-    auto tmp = RealNum{0};
+    auto tmp = Real{0};
     const auto uv = UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), tmp, fallback);
     magnitude = tmp * Meter;
     return uv;
@@ -874,7 +874,7 @@ template <>
 inline UnitVec2 GetUnitVector(const Vector2D<LinearVelocity> value, LinearVelocity& magnitude,
                               const UnitVec2 fallback)
 {
-    auto tmp = RealNum{0};
+    auto tmp = Real{0};
     const auto uv = UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), tmp, fallback);
     magnitude = tmp * MeterPerSecond;
     return uv;
@@ -883,7 +883,7 @@ inline UnitVec2 GetUnitVector(const Vector2D<LinearVelocity> value, LinearVeloci
 #endif
 
 std::vector<Length2D> GetCircleVertices(const Length radius, unsigned slices,
-                                        Angle start = Angle{0}, RealNum turns = RealNum{1});
+                                        Angle start = Angle{0}, Real turns = Real{1});
 
 ::std::ostream& operator<<(::std::ostream& os, const Vec2& value);
 

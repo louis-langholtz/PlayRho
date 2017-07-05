@@ -148,7 +148,7 @@ namespace box2d
     }
     
     template <typename TYPE>
-    constexpr Vector2D<TYPE>& operator *= (Vector2D<TYPE>& lhs, const RealNum rhs) noexcept
+    constexpr Vector2D<TYPE>& operator *= (Vector2D<TYPE>& lhs, const Real rhs) noexcept
     {
         lhs.x *= rhs;
         lhs.y *= rhs;
@@ -156,7 +156,7 @@ namespace box2d
     }
     
     template <typename TYPE>
-    constexpr Vector2D<TYPE>& operator /= (Vector2D<TYPE>& lhs, const RealNum rhs) noexcept
+    constexpr Vector2D<TYPE>& operator /= (Vector2D<TYPE>& lhs, const Real rhs) noexcept
     {
         lhs.x /= rhs;
         lhs.y /= rhs;
@@ -181,10 +181,10 @@ namespace box2d
         return Vector2D<OUT_TYPE>{a.x / s, a.y / s};
     }
     
-    /// @brief Vector 2D of RealNum.
-    /// @note This data structure is two-times the size of the <code>RealNum</code> type
-    ///   (or 8 using RealNum of float).
-    using Vec2 = Vector2D<RealNum>;
+    /// @brief Vector 2D of Real.
+    /// @note This data structure is two-times the size of the <code>Real</code> type
+    ///   (or 8 using Real of float).
+    using Vec2 = Vector2D<Real>;
     
     /// An all zero Vec2 value.
     /// @see Vec2.
@@ -199,11 +199,11 @@ namespace box2d
     /// @brief Earthly gravity.
     /// @details An approximation of Earth's average gravity at sea-level.
     constexpr auto EarthlyGravity = LinearAcceleration2D{
-        RealNum{0} * MeterPerSquareSecond,
-        RealNum{-9.8f} * MeterPerSquareSecond
+        Real{0} * MeterPerSquareSecond,
+        Real{-9.8f} * MeterPerSquareSecond
     };
 
-    constexpr inline Vec2 GetVec2(const Vector2D<RealNum> value)
+    constexpr inline Vec2 GetVec2(const Vector2D<Real> value)
     {
         return value;
     }
@@ -211,7 +211,7 @@ namespace box2d
     template <>
     constexpr inline Vec2 GetInvalid() noexcept
     {
-        return Vec2{GetInvalid<RealNum>(), GetInvalid<RealNum>()};
+        return Vec2{GetInvalid<Real>(), GetInvalid<Real>()};
     }
 
     /// Does this vector contain finite coordinates?

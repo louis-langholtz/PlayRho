@@ -38,7 +38,7 @@ struct GearJointDef : public JointDef
 
     /// The gear ratio.
     /// @see GearJoint for explanation.
-    RealNum ratio = RealNum{1};
+    Real ratio = Real{1};
 };
 
 /// A gear joint is used to connect two joints together. Either joint
@@ -76,8 +76,8 @@ public:
     Joint* GetJoint2() const noexcept { return m_joint2; }
    
     /// Set/Get the gear ratio.
-    void SetRatio(RealNum ratio);
-    RealNum GetRatio() const;
+    void SetRatio(Real ratio);
+    Real GetRatio() const;
 
 private:
 
@@ -108,8 +108,8 @@ private:
     Angle m_referenceAngleA;
     Angle m_referenceAngleB;
 
-    RealNum m_constant;
-    RealNum m_ratio;
+    Real m_constant;
+    Real m_ratio;
 
     Momentum m_impulse = Momentum{0};
 
@@ -120,7 +120,7 @@ private:
     Length m_JwB;
     Length m_JwC;
     Length m_JwD;
-    RealNum m_mass; ///< Either linear mass or angular mass.
+    Real m_mass; ///< Either linear mass or angular mass.
 };
 
 GearJointDef GetGearJointDef(const GearJoint& joint) noexcept;

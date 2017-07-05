@@ -39,8 +39,8 @@ public:
         m_body = m_world->CreateBody(bd);
 
         PolygonShape shape;
-        SetAsBox(shape, RealNum{4.0f} * Meter, RealNum{4.0f} * Meter, Vec2(0.0f, 0.0f) * Meter, Angle{0});
-        shape.SetDensity(RealNum{10} * KilogramPerSquareMeter);
+        SetAsBox(shape, Real{4.0f} * Meter, Real{4.0f} * Meter, Vec2(0.0f, 0.0f) * Meter, Angle{0});
+        shape.SetDensity(Real{10} * KilogramPerSquareMeter);
         m_fixture1 = m_body->CreateFixture(std::make_shared<PolygonShape>(shape));
 
         m_fixture2 = nullptr;
@@ -56,9 +56,9 @@ public:
             if (!m_fixture2)
             {
                 auto conf = DiskShape::Conf{};
-                conf.vertexRadius = RealNum{3.0f} * Meter;
+                conf.vertexRadius = Real{3.0f} * Meter;
                 conf.location = Vec2(0.5f, -4.0f) * Meter;
-                conf.density = RealNum{10} * KilogramPerSquareMeter;
+                conf.density = Real{10} * KilogramPerSquareMeter;
                 m_fixture2 = m_body->CreateFixture(std::make_shared<DiskShape>(conf));
                 m_body->SetAwake();
             }

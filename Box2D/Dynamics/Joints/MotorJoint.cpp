@@ -110,7 +110,7 @@ void MotorJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     }
     
     const auto invRotInertia = invRotInertiaA + invRotInertiaB;
-    m_angularMass = (invRotInertia > InvRotInertia{0})? RotInertia{RealNum{1} / invRotInertia}: RotInertia{0};
+    m_angularMass = (invRotInertia > InvRotInertia{0})? RotInertia{Real{1} / invRotInertia}: RotInertia{0};
     
     m_linearError = posB.linear + m_rB - posA.linear - m_rA - Rotate(m_linearOffset, qA);
     m_angularError = posB.angular - posA.angular - m_angularOffset;
@@ -266,13 +266,13 @@ Torque MotorJoint::GetMaxTorque() const
     return m_maxTorque;
 }
 
-void MotorJoint::SetCorrectionFactor(RealNum factor)
+void MotorJoint::SetCorrectionFactor(Real factor)
 {
-    assert(IsValid(factor) && (0 <= factor) && (factor <= RealNum{1}));
+    assert(IsValid(factor) && (0 <= factor) && (factor <= Real{1}));
     m_correctionFactor = factor;
 }
 
-RealNum MotorJoint::GetCorrectionFactor() const
+Real MotorJoint::GetCorrectionFactor() const
 {
     return m_correctionFactor;
 }

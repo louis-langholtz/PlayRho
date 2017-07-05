@@ -32,7 +32,7 @@ namespace box2d {
 /// A convex polygon. The interior of the polygon is to the left of each edge.
 /// Polygons have a maximum number of vertices equal to MaxShapeVertices.
 /// In most cases you should not need many vertices for a convex polygon.
-/// @note This data structure is 64-bytes large (with 4-byte RealNum).
+/// @note This data structure is 64-bytes large (with 4-byte Real).
 class PolygonShape : public Shape
 {
 public:
@@ -48,7 +48,7 @@ public:
 
     static constexpr Length GetDefaultVertexRadius() noexcept
     {
-        return DefaultLinearSlop * RealNum{2};
+        return DefaultLinearSlop * Real{2};
     }
 
     struct Conf: public Builder<Conf>

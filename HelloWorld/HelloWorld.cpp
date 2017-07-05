@@ -39,8 +39,8 @@ int main(int, char**)
 
     // Define the ground box shape.
     // The extents are the half-widths of the box.
-    const auto groundBox = std::make_shared<box2d::PolygonShape>(box2d::RealNum(50) * box2d::Meter,
-                                                                 box2d::RealNum(10) * box2d::Meter);
+    const auto groundBox = std::make_shared<box2d::PolygonShape>(box2d::Real(50) * box2d::Meter,
+                                                                 box2d::Real(10) * box2d::Meter);
 
     // Add the ground fixture to the ground body.
     groundBody->CreateFixture(groundBox);
@@ -51,14 +51,14 @@ int main(int, char**)
                                        .UseLocation(box2d::Vec2(0.0, 4.0) * box2d::Meter));
 
     // Define another box shape for our dynamic body.
-    const auto dynamicBox = std::make_shared<box2d::PolygonShape>(box2d::RealNum(1) * box2d::Meter,
-                                                                  box2d::RealNum(1) * box2d::Meter);
+    const auto dynamicBox = std::make_shared<box2d::PolygonShape>(box2d::Real(1) * box2d::Meter,
+                                                                  box2d::Real(1) * box2d::Meter);
 
     // Set the box density to be non-zero, so it will be dynamic.
-    dynamicBox->SetDensity(box2d::RealNum(1) * box2d::KilogramPerSquareMeter);
+    dynamicBox->SetDensity(box2d::Real(1) * box2d::KilogramPerSquareMeter);
 
     // Override the default friction.
-    dynamicBox->SetFriction(box2d::RealNum(0.3));
+    dynamicBox->SetFriction(box2d::Real(0.3));
 
     // Add the shape to the body.
     body->CreateFixture(dynamicBox);
@@ -67,7 +67,7 @@ int main(int, char**)
     // second (60Hz) and 10 iterations. This provides a high quality simulation
     // in most game scenarios.
     auto stepConf = box2d::StepConf{};
-    stepConf.SetInvTime(box2d::RealNum(60) * box2d::Hertz);
+    stepConf.SetInvTime(box2d::Real(60) * box2d::Hertz);
     stepConf.regVelocityIterations = 6;
     stepConf.regPositionIterations = 2;
 
@@ -83,9 +83,9 @@ int main(int, char**)
         const auto angle = body->GetAngle();
 
         std::printf("%4.2f %4.2f %4.2f\n",
-                    double(box2d::RealNum(position.x / box2d::Meter)),
-                    double(box2d::RealNum(position.y / box2d::Meter)),
-                    double(box2d::RealNum(angle / box2d::Degree)));
+                    double(box2d::Real(position.x / box2d::Meter)),
+                    double(box2d::Real(position.y / box2d::Meter)),
+                    double(box2d::Real(angle / box2d::Degree)));
     }
 
     // When the world destructor is called, all bodies and joints are freed. This can

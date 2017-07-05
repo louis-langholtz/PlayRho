@@ -38,9 +38,9 @@ namespace box2d {
 
             auto bodyDef = BodyDef{};
             bodyDef.type = BodyType::Dynamic;
-            bodyDef.angularVelocity = RealNum{45.0f} * Degree / Second;
+            bodyDef.angularVelocity = Real{45.0f} * Degree / Second;
             bodyDef.linearVelocity = LinearVelocity2D{0, 0};
-            bodyDef.linearDamping = RealNum(0.8f) * Hertz;
+            bodyDef.linearDamping = Real(0.8f) * Hertz;
             bodyDef.bullet = true;
 
             bodyDef.position = Vec2{0, 26} * Meter;
@@ -49,16 +49,16 @@ namespace box2d {
             const auto body2 = m_world->CreateBody(bodyDef);
             
             auto shapeConf = DiskShape::Conf{};
-            shapeConf.density = RealNum{10} * KilogramPerSquareMeter;
+            shapeConf.density = Real{10} * KilogramPerSquareMeter;
 
-            shapeConf.vertexRadius = RealNum{2} * Meter;
+            shapeConf.vertexRadius = Real{2} * Meter;
             shapeConf.location = Vec2{0, 0} * Meter;
             auto circle = std::make_shared<DiskShape>(shapeConf);
 
-            shapeConf.vertexRadius = RealNum{1.5f} * Meter;
+            shapeConf.vertexRadius = Real{1.5f} * Meter;
             shapeConf.location = Vec2{0,  3} * Meter;
             auto circleA = std::make_shared<DiskShape>(shapeConf);
-            shapeConf.vertexRadius = RealNum{1.5f} * Meter;
+            shapeConf.vertexRadius = Real{1.5f} * Meter;
             shapeConf.location = Vec2{0, -3} * Meter;
             auto circleB = std::make_shared<DiskShape>(shapeConf);
             

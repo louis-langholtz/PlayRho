@@ -33,8 +33,8 @@ namespace box2d {
             {
                 auto conf = ChainShape::Conf{};
                 conf.UseFriction(1.0f);
-                conf.vertices = GetCircleVertices(RealNum{20.0f} * Meter, 90,
-                                                  RealNum(180) * Degree, RealNum(0.5f));
+                conf.vertices = GetCircleVertices(Real{20.0f} * Meter, 90,
+                                                  Real(180) * Degree, Real(0.5f));
                 pipeBody->CreateFixture(std::make_shared<ChainShape>(conf));
             }
 
@@ -42,8 +42,8 @@ namespace box2d {
                                                       .UseType(BodyType::Dynamic)
                                                       .UseLocation(Vec2(-19, 28) * Meter));
             ballBody->CreateFixture(std::make_shared<DiskShape>(DiskShape::Conf{}
-                                    .UseDensity(RealNum{0.01f} * KilogramPerSquareMeter)
-                                    .UseVertexRadius(RealNum{1} * Meter)
+                                    .UseDensity(Real{0.01f} * KilogramPerSquareMeter)
+                                    .UseVertexRadius(Real{1} * Meter)
                                     .UseFriction(1.0f)));
         }
     };

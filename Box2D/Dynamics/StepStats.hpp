@@ -41,7 +41,7 @@ namespace box2d {
     {
         using counter_type = std::uint32_t;
 
-        Length minSeparation = std::numeric_limits<RealNum>::infinity() * Meter;
+        Length minSeparation = std::numeric_limits<Real>::infinity() * Meter;
         Momentum maxIncImpulse = 0;
         
         counter_type islandsFound = 0;
@@ -58,7 +58,7 @@ namespace box2d {
     {
         using counter_type = std::uint32_t;
 
-        Length minSeparation = std::numeric_limits<RealNum>::infinity() * Meter;
+        Length minSeparation = std::numeric_limits<Real>::infinity() * Meter;
         Momentum maxIncImpulse = 0;
         
         counter_type islandsFound = 0;

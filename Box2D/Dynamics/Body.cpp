@@ -79,7 +79,7 @@ Body::Body(const BodyDef& bd, World* world):
     m_xf{bd.position, UnitVec2{bd.angle}},
     m_world{world},
     m_sweep{Position{bd.position, bd.angle}},
-    m_invMass{(bd.type == BodyType::Dynamic)? InvMass{RealNum{1} / Kilogram}: InvMass{0}},
+    m_invMass{(bd.type == BodyType::Dynamic)? InvMass{Real{1} / Kilogram}: InvMass{0}},
     m_linearDamping{bd.linearDamping},
     m_angularDamping{bd.angularDamping},
     m_userData{bd.userData}
@@ -147,11 +147,11 @@ void Body::ResetMassData()
     const auto massData = ComputeMassData(*this);
 
     // Force all dynamic bodies to have a positive mass.
-    const auto mass = (massData.mass > Mass{0})? Mass{massData.mass}: (RealNum(1) * Kilogram);
-    m_invMass = RealNum{1} / mass;
+    const auto mass = (massData.mass > Mass{0})? Mass{massData.mass}: (Real(1) * Kilogram);
+    m_invMass = Real{1} / mass;
 
     // Compute center of mass.
-    const auto localCenter = massData.center * RealNum{m_invMass * Kilogram};
+    const auto localCenter = massData.center * Real{m_invMass * Kilogram};
 
     if ((massData.I > RotInertia{0}) && (!IsFixedRotation()))
     {
@@ -159,7 +159,7 @@ void Body::ResetMassData()
         const auto lengthSquared = GetLengthSquared(localCenter);
         const auto I = RotInertia{massData.I} - RotInertia{(mass * lengthSquared / SquareRadian)};
         //assert((massData.I - mass * lengthSquared) > 0);
-        m_invRotI = RealNum{1} / I;
+        m_invRotI = Real{1} / I;
     }
     else
     {
@@ -190,8 +190,8 @@ void Body::SetMassData(const MassData& massData)
         return;
     }
 
-    const auto mass = (massData.mass > Mass{0})? Mass{massData.mass}: (RealNum(1) * Kilogram);
-    m_invMass = RealNum{1} / mass;
+    const auto mass = (massData.mass > Mass{0})? Mass{massData.mass}: (Real(1) * Kilogram);
+    m_invMass = Real{1} / mass;
 
     if ((massData.I > RotInertia{0}) && (!IsFixedRotation()))
     {
@@ -199,7 +199,7 @@ void Body::SetMassData(const MassData& massData)
         // L^2 M QP^-2
         const auto I = RotInertia{massData.I} - RotInertia{(mass * lengthSquared) / SquareRadian};
         assert(I > RotInertia{0});
-        m_invRotI = RealNum{1} / I;
+        m_invRotI = Real{1} / I;
     }
     else
     {
@@ -453,8 +453,8 @@ Velocity box2d::GetVelocity(const Body& body, const Time h) noexcept
         // v2 = exp(-c * dt) * v1
         // Pade approximation (see https://en.wikipedia.org/wiki/Pad%C3%A9_approximant ):
         // v2 = v1 * 1 / (1 + c * dt)
-        velocity.linear  /= RealNum{1 + h * body.GetLinearDamping()};
-        velocity.angular /= RealNum{1 + h * body.GetAngularDamping()};
+        velocity.linear  /= Real{1 + h * body.GetLinearDamping()};
+        velocity.angular /= Real{1 + h * body.GetAngularDamping()};
     }
     return velocity;
 }
@@ -469,8 +469,8 @@ void box2d::RotateAboutWorldPoint(Body& body, Angle amount, Length2D worldPoint)
 {
     const auto xfm = body.GetTransformation();
     const auto p = xfm.p - worldPoint;
-    const auto c = RealNum{std::cos(amount / Radian)};
-    const auto s = RealNum{std::sin(amount / Radian)};
+    const auto c = Real{std::cos(amount / Radian)};
+    const auto s = Real{std::sin(amount / Radian)};
     const auto x = p.x * c - p.y * s;
     const auto y = p.x * s + p.y * c;
     const auto pos = Length2D{x, y} + worldPoint;

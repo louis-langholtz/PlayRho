@@ -24,7 +24,7 @@ using namespace box2d;
 
 TEST(StepConf, ByteSize)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(StepConf), std::size_t(100)); break;
         case  8: EXPECT_EQ(sizeof(StepConf), std::size_t(192)); break;
@@ -35,20 +35,20 @@ TEST(StepConf, ByteSize)
 
 TEST(StepConf, CopyConstruction)
 {
-    const auto dt = Second * RealNum{10};
-    const auto displacementMultiplier = RealNum{3.4f};
+    const auto dt = Second * Real{10};
+    const auto displacementMultiplier = Real{3.4f};
 
     StepConf conf;
     conf.SetTime(dt);
     conf.displaceMultiplier = displacementMultiplier;
 
-    ASSERT_EQ(conf.GetInvTime(), RealNum{1} / dt);
+    ASSERT_EQ(conf.GetInvTime(), Real{1} / dt);
     
     EXPECT_EQ(StepConf{conf}.GetTime(), dt);
-    EXPECT_EQ(StepConf{conf}.GetInvTime(), RealNum{1} / dt);
+    EXPECT_EQ(StepConf{conf}.GetInvTime(), Real{1} / dt);
     EXPECT_EQ(StepConf{conf}.displaceMultiplier, displacementMultiplier);
     
-    const auto cdt = conf.GetTime() * RealNum{0.8f};
+    const auto cdt = conf.GetTime() * Real{0.8f};
     const auto newConf = StepConf{conf}.SetTime(cdt);
     
     EXPECT_EQ(newConf.GetTime(), cdt);
@@ -56,15 +56,15 @@ TEST(StepConf, CopyConstruction)
 
 TEST(StepConf, maxTranslation)
 {
-    const auto v = RealNum(1);
-    const auto n = std::nextafter(v, RealNum(0));
+    const auto v = Real(1);
+    const auto n = std::nextafter(v, Real(0));
     const auto inc = v - n;
-    ASSERT_GT(inc, RealNum(0));
-    ASSERT_LT(inc, RealNum(1));
+    ASSERT_GT(inc, Real(0));
+    ASSERT_LT(inc, Real(1));
     const auto max_inc = inc * StepConf{}.maxTranslation;
-    EXPECT_GT(max_inc, RealNum(0) * Meter);
-    EXPECT_LT(max_inc, DefaultLinearSlop / RealNum{2});
-    EXPECT_LT(max_inc, Length{StepConf{}.linearSlop} / RealNum{2});
+    EXPECT_GT(max_inc, Real(0) * Meter);
+    EXPECT_LT(max_inc, DefaultLinearSlop / Real{2});
+    EXPECT_LT(max_inc, Length{StepConf{}.linearSlop} / Real{2});
     EXPECT_LT(max_inc, Length{StepConf{}.tolerance});
 #if 0
     std::cout << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
@@ -76,9 +76,9 @@ TEST(StepConf, maxTranslation)
     
     {
         StepConf conf;
-        conf.tolerance = RealNum(0.0000001) * Meter;
-        conf.maxTranslation = RealNum(8.0) * Meter;
-        switch (sizeof(RealNum))
+        conf.tolerance = Real(0.0000001) * Meter;
+        conf.maxTranslation = Real(8.0) * Meter;
+        switch (sizeof(Real))
         {
             case 4: EXPECT_FALSE(IsMaxTranslationWithinTolerance(conf)); break;
             case 8: EXPECT_TRUE(IsMaxTranslationWithinTolerance(conf)); break;
@@ -89,14 +89,14 @@ TEST(StepConf, maxTranslation)
 
 TEST(StepConf, maxRotation)
 {
-    const auto v = RealNum(1);
-    const auto n = std::nextafter(v, RealNum(0));
+    const auto v = Real(1);
+    const auto n = std::nextafter(v, Real(0));
     const auto inc = v - n;
-    ASSERT_GT(inc, RealNum(0));
-    ASSERT_LT(inc, RealNum(1));
+    ASSERT_GT(inc, Real(0));
+    ASSERT_LT(inc, Real(1));
     const auto max_inc = inc * StepConf{}.maxRotation;
     EXPECT_GT(max_inc, Angle(0));
-    EXPECT_LT(max_inc, DefaultAngularSlop / RealNum{2});
+    EXPECT_LT(max_inc, DefaultAngularSlop / Real{2});
 #if 0
     std::cout << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
     std::cout << " inc=" << inc;

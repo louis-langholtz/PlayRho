@@ -35,11 +35,11 @@ TEST(Rot, sin)
     Rot rot270(Radian * 3 * Pi / 2);
     Rot rot360(Radian * 2 * Pi);
     
-    EXPECT_EQ(RealNum{0}, round(rot0.sin()));
-    EXPECT_EQ(RealNum{1}, round(rot90.sin()));
-    EXPECT_EQ(RealNum{0}, round(rot180.sin()));
-    EXPECT_EQ(RealNum{-1}, round(rot270.sin()));
-    EXPECT_EQ(RealNum{0}, round(rot360.sin()));
+    EXPECT_EQ(Real{0}, round(rot0.sin()));
+    EXPECT_EQ(Real{1}, round(rot90.sin()));
+    EXPECT_EQ(Real{0}, round(rot180.sin()));
+    EXPECT_EQ(Real{-1}, round(rot270.sin()));
+    EXPECT_EQ(Real{0}, round(rot360.sin()));
     EXPECT_EQ(round(rot0.sin()), round(rot360.sin()));
     EXPECT_EQ(0.0f, round(std::asin(rot360.sin())));
 }
@@ -51,11 +51,11 @@ TEST(Rot, cos)
     Rot rot180(Radian * 1 * Pi);
     Rot rot360(Radian * 2 * Pi);
     EXPECT_EQ(round(rot0.cos()), round(rot360.cos()));
-    EXPECT_EQ(RealNum{1}, round(rot0.cos()));
-    EXPECT_EQ(RealNum{-1}, round(rot180.cos()));
-    EXPECT_EQ(RealNum{1}, round(rot360.cos()));
+    EXPECT_EQ(Real{1}, round(rot0.cos()));
+    EXPECT_EQ(Real{-1}, round(rot180.cos()));
+    EXPECT_EQ(Real{1}, round(rot360.cos()));
 
-    EXPECT_EQ(RealNum{0}, round(rot90.cos()));
+    EXPECT_EQ(Real{0}, round(rot90.cos()));
 }
 
 TEST(Rot, Add)
@@ -66,7 +66,7 @@ TEST(Rot, Add)
     Rot rot270(Radian * 3 * Pi / 2);
     Rot rot360(Radian * 2 * Pi);
 
-    EXPECT_EQ(round(RealNum(0)), round(DegreesToRadians(0)));
+    EXPECT_EQ(round(Real(0)), round(DegreesToRadians(0)));
     EXPECT_EQ(round(Pi/2), round(DegreesToRadians(90)));
     EXPECT_EQ(round(Pi), round(DegreesToRadians(180)));
     EXPECT_EQ(round(3*Pi/2), round(DegreesToRadians(270)));

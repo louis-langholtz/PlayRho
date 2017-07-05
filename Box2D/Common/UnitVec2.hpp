@@ -35,7 +35,7 @@ namespace box2d
     public:
         
         /// @brief Data type used for the coordinate values of this vector.
-        using data_type = RealNum;
+        using data_type = Real;
         
         /// @brief Gets the right-ward oriented unit vector.
         /// @note This is the value for the 0/4 turned (0 angled) unit vector.
@@ -84,7 +84,7 @@ namespace box2d
             return UnitVec2{};
         }
         
-        static UnitVec2 Get(const RealNum x, const RealNum y, RealNum& magnitude,
+        static UnitVec2 Get(const Real x, const Real y, Real& magnitude,
                             const UnitVec2 fallback = GetDefaultFallback());
 
         constexpr UnitVec2() noexcept

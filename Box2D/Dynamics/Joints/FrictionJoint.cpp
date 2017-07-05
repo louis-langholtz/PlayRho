@@ -104,7 +104,7 @@ void FrictionJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const St
     }
 
     const auto invRotInertia = invRotInertiaA + invRotInertiaB;
-    m_angularMass = (invRotInertia > InvRotInertia{0})? RotInertia{RealNum{1} / invRotInertia}: RotInertia{0};
+    m_angularMass = (invRotInertia > InvRotInertia{0})? RotInertia{Real{1} / invRotInertia}: RotInertia{0};
     
     if (step.doWarmStart)
     {

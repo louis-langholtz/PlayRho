@@ -42,7 +42,7 @@ inline WorldManifold GetForCircles(const Manifold& manifold,
             const auto normal = GetUnitVector(pointB - pointA, UnitVec2::GetRight());
             const auto cA = pointA + (radiusA * normal);
             const auto cB = pointB - (radiusB * normal);
-            const auto p0 = (cA + cB) / RealNum{2};
+            const auto p0 = (cA + cB) / Real{2};
             const auto s0 = Dot(cB - cA, normal);
             return WorldManifold{normal, WorldManifold::PointSeparation{p0, s0}};
         }
@@ -63,7 +63,7 @@ inline WorldManifold GetForFaceA(const Manifold& manifold,
         const auto clipPoint = Transform(manifold.GetPoint(index).localPoint, xfB);
         const auto cA = clipPoint + (radiusA - Dot(clipPoint - planePoint, normal)) * normal;
         const auto cB = clipPoint - (radiusB * normal);
-        return WorldManifold::PointSeparation{(cA + cB) / RealNum{2}, Dot(cB - cA, normal)};
+        return WorldManifold::PointSeparation{(cA + cB) / Real{2}, Dot(cB - cA, normal)};
     };
     
     assert(manifold.GetPointCount() <= 2);
@@ -90,7 +90,7 @@ inline WorldManifold GetForFaceB(const Manifold& manifold,
         const auto clipPoint = Transform(manifold.GetPoint(index).localPoint, xfA);
         const auto cB = clipPoint + (radiusB - Dot(clipPoint - planePoint, normal)) * normal;
         const auto cA = clipPoint - (radiusA * normal);
-        return WorldManifold::PointSeparation{(cA + cB) / RealNum{2}, Dot(cA - cB, normal)};
+        return WorldManifold::PointSeparation{(cA + cB) / Real{2}, Dot(cA - cB, normal)};
     };
     
     assert(manifold.GetPointCount() <= 2);

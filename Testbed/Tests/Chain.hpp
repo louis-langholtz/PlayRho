@@ -33,8 +33,8 @@ public:
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
     
         {
-            const auto shape = std::make_shared<PolygonShape>(RealNum{0.6f} * Meter, RealNum{0.125f} * Meter);
-            shape->SetDensity(RealNum{20} * KilogramPerSquareMeter);
+            const auto shape = std::make_shared<PolygonShape>(Real{0.6f} * Meter, Real{0.125f} * Meter);
+            shape->SetDensity(Real{20} * KilogramPerSquareMeter);
             shape->SetFriction(0.2f);
 
             const auto y = 25.0f;
@@ -47,7 +47,7 @@ public:
                 const auto body = m_world->CreateBody(bd);
                 body->CreateFixture(shape);
 
-                m_world->CreateJoint(RevoluteJointDef(prevBody, body, Vec2(RealNum(i), y) * Meter));
+                m_world->CreateJoint(RevoluteJointDef(prevBody, body, Vec2(Real(i), y) * Meter));
 
                 prevBody = body;
             }

@@ -30,8 +30,8 @@ class TimeOfImpactTest : public Test
 public:
     TimeOfImpactTest()
     {
-        m_shapeA.SetAsBox(RealNum{25.0f} * Meter, RealNum{5.0f} * Meter);
-        m_shapeB.SetAsBox(RealNum{2.5f} * Meter, RealNum{2.5f} * Meter);
+        m_shapeA.SetAsBox(Real{25.0f} * Meter, Real{5.0f} * Meter);
+        m_shapeB.SetAsBox(Real{2.5f} * Meter, Real{2.5f} * Meter);
     }
 
     static const char *GetName(TOIOutput::State state)
@@ -50,13 +50,13 @@ public:
 
     void PostStep(const Settings&, Drawer& drawer) override
     {
-        const auto offset = Vec2{RealNum(-35), RealNum(70)} * Meter;
+        const auto offset = Vec2{Real(-35), Real(70)} * Meter;
         const auto sweepA = Sweep{
-            Position{Vec2(24.0f, -60.0f) * Meter + offset, RealNum{2.95f} * Radian}
+            Position{Vec2(24.0f, -60.0f) * Meter + offset, Real{2.95f} * Radian}
         };
         const auto sweepB = Sweep{
-            Position{Vec2(53.474274f, -50.252514f) * Meter + offset, RealNum{513.36676f} * Radian},
-            Position{Vec2(54.595478f, -51.083473f) * Meter + offset, RealNum{513.62781f} * Radian}
+            Position{Vec2(53.474274f, -50.252514f) * Meter + offset, Real{513.36676f} * Radian},
+            Position{Vec2(54.595478f, -51.083473f) * Meter + offset, Real{513.62781f} * Radian}
         };
 
         const auto output = GetToiViaSat(m_shapeA.GetChild(0), sweepA,

@@ -34,8 +34,8 @@ public:
 
         const auto def = BodyDef{}
         	.UseType(BodyType::Dynamic)
-        	.UseLinearDamping(RealNum(0.9) * Hertz)
-        	.UseAngularDamping(RealNum(0.9) * Hertz);
+        	.UseLinearDamping(Real(0.9) * Hertz)
+        	.UseAngularDamping(Real(0.9) * Hertz);
         m_bodyA = m_world->CreateBody(def);
         m_bodyB = m_world->CreateBody(def);
 
@@ -47,9 +47,9 @@ public:
 
     void CreateFixtures()
     {
-        const auto radius = RadiusIncrement * RealNum{20};
+        const auto radius = RadiusIncrement * Real{20};
         auto conf = PolygonShape::Conf{};
-        conf.density = RealNum{1} * KilogramPerSquareMeter;
+        conf.density = Real{1} * KilogramPerSquareMeter;
 
         conf.vertexRadius = radius;
         PolygonShape polygonA{conf};
@@ -57,7 +57,7 @@ public:
         polygonA.Set(Span<const Length2D>{Vec2{-8, -6} * Meter, Vec2{8, -6} * Meter, Vec2{0, 6} * Meter});
         m_bodyA->CreateFixture(std::make_shared<PolygonShape>(polygonA));
         
-        conf.vertexRadius = radius * RealNum{2};
+        conf.vertexRadius = radius * Real{2};
         PolygonShape polygonB{conf};
         // polygonB.SetAsBox(7.2f * Meter, 0.8f * Meter);
         polygonB.Set(Span<const Length2D>{Vec2{-7.2f, 0} * Meter, Vec2{+7.2f, 0} * Meter});
@@ -94,8 +94,8 @@ public:
         drawer.DrawString(5, m_textLine, "%s %s: lp={%g,%g}, ln={%g,%g}, #=%d%s",
                           GetName(manifold.GetType()),
                           name,
-                          static_cast<double>(RealNum{GetX(manifold.GetLocalPoint()) / Meter}),
-                          static_cast<double>(RealNum{GetY(manifold.GetLocalPoint()) / Meter}),
+                          static_cast<double>(Real{GetX(manifold.GetLocalPoint()) / Meter}),
+                          static_cast<double>(Real{GetY(manifold.GetLocalPoint()) / Meter}),
                           static_cast<double>(GetX(manifold.GetLocalNormal())),
                           static_cast<double>(GetY(manifold.GetLocalNormal())),
                           count, strbuf.str().c_str());
@@ -143,7 +143,7 @@ public:
         {
             // Shapes are overlapped when radii are considered.
             // Move the witness points to the middle.
-            const auto p = (witnessPoints.a + witnessPoints.b) / RealNum{2};
+            const auto p = (witnessPoints.a + witnessPoints.b) / Real{2};
             adjustedWitnessPoints.a = p;
             adjustedWitnessPoints.b = p;
             adjustedDistance = 0;
@@ -158,8 +158,8 @@ public:
 
         drawer.DrawString(5, m_textLine,
                           "Press num-pad '+'/'-' to increase/decrease vertex radius of selected shape (%g & %g).",
-                          static_cast<double>(RealNum{rA / Meter}),
-                          static_cast<double>(RealNum{rB / Meter}));
+                          static_cast<double>(Real{rA / Meter}),
+                          static_cast<double>(Real{rB / Meter}));
         m_textLine += DRAW_STRING_NEW_LINE;
         
         drawer.DrawString(5, m_textLine,
@@ -170,16 +170,16 @@ public:
 
         drawer.DrawString(5, m_textLine,
                           "Max separation: %g for a-face[%i] b-vert[%i]; %g for b-face[%i] a-vert[%i]",
-                          static_cast<double>(RealNum{maxIndicesAB.separation / Meter}),
+                          static_cast<double>(Real{maxIndicesAB.separation / Meter}),
                           maxIndicesAB.index1,
                           maxIndicesAB.index2,
-                          static_cast<double>(RealNum{maxIndicesBA.separation / Meter}),
+                          static_cast<double>(Real{maxIndicesBA.separation / Meter}),
                           maxIndicesBA.index1,
                           maxIndicesBA.index2);
         m_textLine += DRAW_STRING_NEW_LINE;
 
-        if (almost_equal(static_cast<double>(RealNum{maxIndicesAB.separation / Meter}),
-                         static_cast<double>(RealNum{maxIndicesBA.separation / Meter})))
+        if (almost_equal(static_cast<double>(Real{maxIndicesAB.separation / Meter}),
+                         static_cast<double>(Real{maxIndicesBA.separation / Meter})))
         {
             //assert(maxIndicesAB.index1 == maxIndicesBA.index2);
             //assert(maxIndicesAB.index2 == maxIndicesBA.index1);
@@ -215,8 +215,8 @@ public:
         }
 
         drawer.DrawString(5, m_textLine, "distance = %g (from %g), iterations = %d",
-                          static_cast<double>(RealNum{adjustedDistance / Meter}),
-                          static_cast<double>(RealNum{outputDistance / Meter}),
+                          static_cast<double>(Real{adjustedDistance / Meter}),
+                          static_cast<double>(Real{outputDistance / Meter}),
                           output.iterations);
         m_textLine += DRAW_STRING_NEW_LINE;
         
@@ -224,10 +224,10 @@ public:
             const auto size = output.simplex.GetSize();
             drawer.DrawString(5, m_textLine, "Simplex info: size=%d, wpt-a={%g,%g}, wpt-b={%g,%g})",
                               size,
-                              static_cast<double>(RealNum{witnessPoints.a.x / Meter}),
-                              static_cast<double>(RealNum{witnessPoints.a.y / Meter}),
-                              static_cast<double>(RealNum{witnessPoints.b.x / Meter}),
-                              static_cast<double>(RealNum{witnessPoints.b.y / Meter}));
+                              static_cast<double>(Real{witnessPoints.a.x / Meter}),
+                              static_cast<double>(Real{witnessPoints.a.y / Meter}),
+                              static_cast<double>(Real{witnessPoints.b.x / Meter}),
+                              static_cast<double>(Real{witnessPoints.b.y / Meter}));
             m_textLine += DRAW_STRING_NEW_LINE;
             for (auto i = decltype(size){0}; i < size; ++i)
             {
@@ -236,11 +236,11 @@ public:
                 
                 drawer.DrawString(5, m_textLine, "  a[%d]={%g,%g} b[%d]={%g,%g} coef=%g",
                                   edge.GetIndexA(),
-                                  static_cast<double>(RealNum{edge.GetPointA().x / Meter}),
-                                  static_cast<double>(RealNum{edge.GetPointA().y / Meter}),
+                                  static_cast<double>(Real{edge.GetPointA().x / Meter}),
+                                  static_cast<double>(Real{edge.GetPointA().y / Meter}),
                                   edge.GetIndexB(),
-                                  static_cast<double>(RealNum{edge.GetPointB().x / Meter}),
-                                  static_cast<double>(RealNum{edge.GetPointB().y / Meter}),
+                                  static_cast<double>(Real{edge.GetPointB().x / Meter}),
+                                  static_cast<double>(Real{edge.GetPointB().y / Meter}),
                                   coef);
                 m_textLine += DRAW_STRING_NEW_LINE;
             }
@@ -261,8 +261,8 @@ public:
                 {
                     const auto pA = Transform(manifold.GetLocalPoint(), xfmA);
                     const auto pB = Transform(manifold.GetPoint(0).localPoint, xfmB);
-                    drawer.DrawCircle(pA, rA / RealNum{2}, Color(1, 1, 1));
-                    drawer.DrawCircle(pB, rB / RealNum{2}, Color(1, 1, 1));
+                    drawer.DrawCircle(pA, rA / Real{2}, Color(1, 1, 1));
+                    drawer.DrawCircle(pB, rB / Real{2}, Color(1, 1, 1));
                     
                     const auto psm = GetPSM(manifold, 0, xfmA, xfmB);
                     const auto psm_separation = psm.m_separation - totalRadius;
@@ -275,11 +275,11 @@ public:
                 case Manifold::e_faceA:
                 {
                     const auto pA = Transform(manifold.GetLocalPoint(), xfmA);
-                    drawer.DrawCircle(pA, rA / RealNum{2}, Color(1, 1, 1));
+                    drawer.DrawCircle(pA, rA / Real{2}, Color(1, 1, 1));
                     for (auto i = decltype(pointCount){0}; i < pointCount; ++i)
                     {
                         const auto pB = Transform(manifold.GetOpposingPoint(i), xfmB);
-                        drawer.DrawCircle(pB, rB / RealNum{2}, Color(1, 1, 1));
+                        drawer.DrawCircle(pB, rB / Real{2}, Color(1, 1, 1));
                         
                         const auto psm = GetPSM(manifold, i, xfmA, xfmB);
                         const auto psm_separation = psm.m_separation - totalRadius;
@@ -292,11 +292,11 @@ public:
                 case Manifold::e_faceB:
                 {
                     const auto pB = Transform(manifold.GetLocalPoint(), xfmB);
-                    drawer.DrawCircle(pB, rB / RealNum{2}, Color(1, 1, 1));
+                    drawer.DrawCircle(pB, rB / Real{2}, Color(1, 1, 1));
                     for (auto i = decltype(pointCount){0}; i < pointCount; ++i)
                     {
                         const auto pA = Transform(manifold.GetOpposingPoint(i), xfmA);
-                        drawer.DrawCircle(pA, rA / RealNum{2}, Color(1, 1, 1));
+                        drawer.DrawCircle(pA, rA / Real{2}, Color(1, 1, 1));
                         
                         const auto psm = GetPSM(manifold, i, xfmA, xfmB);
                         const auto psm_separation = psm.m_separation - totalRadius;
@@ -320,21 +320,21 @@ public:
 
             if (adjustedWitnessPoints.a != adjustedWitnessPoints.b)
             {
-                drawer.DrawPoint(adjustedWitnessPoints.a, RealNum{4.0f} * Meter, adjustedPointColor);
-                drawer.DrawPoint(adjustedWitnessPoints.b, RealNum{4.0f} * Meter, adjustedPointColor);
+                drawer.DrawPoint(adjustedWitnessPoints.a, Real{4.0f} * Meter, adjustedPointColor);
+                drawer.DrawPoint(adjustedWitnessPoints.b, Real{4.0f} * Meter, adjustedPointColor);
             }
             else
             {
-                drawer.DrawPoint(adjustedWitnessPoints.a, RealNum{4.0f} * Meter, matchingPointColor);
+                drawer.DrawPoint(adjustedWitnessPoints.a, Real{4.0f} * Meter, matchingPointColor);
             }
 
-            drawer.DrawPoint(witnessPoints.a, RealNum{4.0f} * Meter, witnessPointColor);
-            drawer.DrawPoint(witnessPoints.b, RealNum{4.0f} * Meter, witnessPointColor);
+            drawer.DrawPoint(witnessPoints.a, Real{4.0f} * Meter, witnessPointColor);
+            drawer.DrawPoint(witnessPoints.b, Real{4.0f} * Meter, witnessPointColor);
             
             for (auto&& edge: output.simplex.GetEdges())
             {
-                drawer.DrawPoint(edge.GetPointA(), RealNum{6.0f} * Meter, simplexPointColor);
-                drawer.DrawPoint(edge.GetPointB(), RealNum{6.0f} * Meter, simplexPointColor);
+                drawer.DrawPoint(edge.GetPointA(), Real{6.0f} * Meter, simplexPointColor);
+                drawer.DrawPoint(edge.GetPointB(), Real{6.0f} * Meter, simplexPointColor);
                 drawer.DrawString(edge.GetPointA(), "%d", edge.GetIndexA());
                 drawer.DrawString(edge.GetPointB(), "%d", edge.GetIndexB());
             }
@@ -351,7 +351,7 @@ public:
         case Key_A:
             if (body)
             {
-                body->SetTransform(body->GetLocation() - Vec2{RealNum(0.1), 0} * Meter, body->GetAngle());
+                body->SetTransform(body->GetLocation() - Vec2{Real(0.1), 0} * Meter, body->GetAngle());
                 body->SetAwake();
             }
             break;
@@ -359,7 +359,7 @@ public:
         case Key_D:
             if (body)
             {
-                body->SetTransform(body->GetLocation() + Vec2{RealNum(0.1), 0} * Meter, body->GetAngle());
+                body->SetTransform(body->GetLocation() + Vec2{Real(0.1), 0} * Meter, body->GetAngle());
                 body->SetAwake();
             }
             break;
@@ -367,7 +367,7 @@ public:
         case Key_S:
             if (body)
             {
-                body->SetTransform(body->GetLocation() - Vec2{0, RealNum(0.1)} * Meter, body->GetAngle());
+                body->SetTransform(body->GetLocation() - Vec2{0, Real(0.1)} * Meter, body->GetAngle());
                 body->SetAwake();
             }
             break;
@@ -375,7 +375,7 @@ public:
         case Key_W:
             if (body)
             {
-                body->SetTransform(body->GetLocation() + Vec2{0, RealNum(0.1)} * Meter, body->GetAngle());
+                body->SetTransform(body->GetLocation() + Vec2{0, Real(0.1)} * Meter, body->GetAngle());
                 body->SetAwake();
             }
             break;
@@ -383,7 +383,7 @@ public:
         case Key_Q:
             if (body)
             {
-                body->SetTransform(body->GetLocation(), body->GetAngle() + RealNum{5} * Degree);
+                body->SetTransform(body->GetLocation(), body->GetAngle() + Real{5} * Degree);
                 body->SetAwake();
             }
             break;
@@ -391,7 +391,7 @@ public:
         case Key_E:
             if (body)
             {
-                body->SetTransform(body->GetLocation(), body->GetAngle() - RealNum{5} * Degree);
+                body->SetTransform(body->GetLocation(), body->GetAngle() - Real{5} * Degree);
                 body->SetAwake();
             }
             break;
@@ -441,7 +441,7 @@ public:
     }
 
 private:
-    const Length RadiusIncrement = DefaultLinearSlop * RealNum{200};
+    const Length RadiusIncrement = DefaultLinearSlop * Real{200};
     const Color simplexSegmentColor = Color{0.0f, 0.5f, 0.5f}; // dark cyan
     const Color simplexPointColor = Color{0, 1, 1, 0.6f}; // semi-transparent cyan
     const Color witnessPointColor = Color{1, 1, 0, 0.5}; // semi-transparent yellow

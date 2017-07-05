@@ -509,8 +509,8 @@ static void MouseMotion(GLFWwindow*, double xd, double yd)
     if (rightMouseDown)
     {
         const auto movement = mouseWorld - lastp;
-        camera.m_center.x -= static_cast<float>(RealNum{movement.x / Meter});
-        camera.m_center.y -= static_cast<float>(RealNum{movement.y / Meter});
+        camera.m_center.x -= static_cast<float>(Real{movement.x / Meter});
+        camera.m_center.y -= static_cast<float>(Real{movement.y / Meter});
         lastp = ConvertScreenToWorld(camera, mouseScreen);
     }
 }

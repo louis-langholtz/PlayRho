@@ -70,8 +70,8 @@ public:
             const auto body = m_world->CreateBody(bd);
 
             auto conf = DiskShape::Conf{};
-            conf.density = RealNum{1} * KilogramPerSquareMeter;
-            conf.vertexRadius = RealNum{0.5f} * Meter;
+            conf.density = Real{1} * KilogramPerSquareMeter;
+            conf.vertexRadius = Real{0.5f} * Meter;
             body->CreateFixture(std::make_shared<DiskShape>(conf));
         }
 
@@ -83,9 +83,9 @@ public:
             const auto body = m_world->CreateBody(bd);
 
             auto shape = PolygonShape{};
-            shape.SetVertexRadius(RealNum{1} * Meter);
-            shape.SetAsBox(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
-            shape.SetDensity(RealNum{1} * KilogramPerSquareMeter);
+            shape.SetVertexRadius(Real{1} * Meter);
+            shape.SetAsBox(Real{0.5f} * Meter, Real{0.5f} * Meter);
+            shape.SetDensity(Real{1} * KilogramPerSquareMeter);
             body->CreateFixture(std::make_shared<PolygonShape>(shape));
         }
     }

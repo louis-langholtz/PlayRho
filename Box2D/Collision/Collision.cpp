@@ -88,7 +88,7 @@ ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, Length o
         }
 
         // If the points are on different sides of the plane
-        if ((distance0 * distance1) < RealNum{0} * SquareMeter)
+        if ((distance0 * distance1) < Real{0} * SquareMeter)
         {
             // Neither distance0 nor distance1 is 0 and either one or the other is negative (but not both).
             // Find intersection point of edge and plane

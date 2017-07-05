@@ -29,7 +29,7 @@ namespace box2d
 {
     
     /// @brief A 3-by-3 matrix. Stored in column-major order.
-    /// @note This data structure is 36-bytes large (on at least one 64-bit platform with 4-byte RealNum).
+    /// @note This data structure is 36-bytes large (on at least one 64-bit platform with 4-byte Real).
     struct Mat33
     {
         /// The default constructor does nothing (for performance).

@@ -70,7 +70,7 @@ public:
 
     PolyShapes()
     {
-        m_circle->SetDensity(RealNum{1} * KilogramPerSquareMeter);
+        m_circle->SetDensity(Real{1} * KilogramPerSquareMeter);
         m_circle->SetFriction(0.3f);
 
         // Ground body
@@ -82,7 +82,7 @@ public:
         for (auto&& p: m_polygons)
         {
             p = std::make_shared<PolygonShape>();
-            p->SetDensity(RealNum{1} * KilogramPerSquareMeter);
+            p->SetDensity(Real{1} * KilogramPerSquareMeter);
             p->SetFriction(0.3f);
         }
 
@@ -90,7 +90,7 @@ public:
         m_polygons[1]->Set({Vec2(-0.1f, 0.0f) * Meter, Vec2(0.1f, 0.0f) * Meter, Vec2(0.0f, 1.5f) * Meter});
 
         {
-            const auto w = RealNum(1);
+            const auto w = Real(1);
             const auto b = w / (2.0f + Sqrt(2.0f));
             const auto s = Sqrt(2.0f) * b;
 
@@ -107,7 +107,7 @@ public:
         }
 
         {
-            m_polygons[3]->SetAsBox(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
+            m_polygons[3]->SetAsBox(Real{0.5f} * Meter, Real{0.5f} * Meter);
         }
 
         m_bodyIndex = 0;
@@ -131,7 +131,7 @@ public:
 
         if (index == 4)
         {
-            bd.angularDamping = RealNum(0.02f) * Hertz;
+            bd.angularDamping = Real(0.02f) * Hertz;
         }
 
         m_bodies[m_bodyIndex] = m_world->CreateBody(bd);
@@ -197,7 +197,7 @@ public:
     {
         auto circleConf = DiskShape::Conf{};
         circleConf.location = Vec2(0.0f, 1.1f) * Meter;
-        circleConf.vertexRadius = RealNum(2) * Meter;
+        circleConf.vertexRadius = Real(2) * Meter;
         const auto circle = DiskShape{circleConf};
 
         const auto transform = Transform_identity;
@@ -241,7 +241,7 @@ public:
     int m_bodyIndex;
     Body* m_bodies[e_maxBodies];
     std::shared_ptr<PolygonShape> m_polygons[4];
-    std::shared_ptr<DiskShape> m_circle = std::make_shared<DiskShape>(RealNum{0.5f} * Meter);
+    std::shared_ptr<DiskShape> m_circle = std::make_shared<DiskShape>(Real{0.5f} * Meter);
 };
 
 } // namespace box2d

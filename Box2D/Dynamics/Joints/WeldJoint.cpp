@@ -129,11 +129,11 @@ void WeldJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
         // InvRotInertia is L^-2 M^-1 QP^2
         //    RotInertia is L^2  M    QP^-2
         auto invRotInertia = InvRotInertia{invRotInertiaA + invRotInertiaB};
-        const auto rotInertia = (invRotInertia > InvRotInertia{0})? RealNum{1} / invRotInertia: RotInertia{0};
+        const auto rotInertia = (invRotInertia > InvRotInertia{0})? Real{1} / invRotInertia: RotInertia{0};
 
         const auto C = Angle{posB.angular - posA.angular - m_referenceAngle};
-        const auto omega = RealNum(2) * Pi * m_frequency; // T^-1
-        const auto d = RealNum(2) * rotInertia * m_dampingRatio * omega;
+        const auto omega = Real(2) * Pi * m_frequency; // T^-1
+        const auto d = Real(2) * rotInertia * m_dampingRatio * omega;
 
         // Spring stiffness: L^2 M QP^-2 T^-2
         const auto k = rotInertia * omega * omega;
@@ -141,12 +141,12 @@ void WeldJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
         // magic formulas
         const auto h = step.GetTime();
         const auto invGamma = RotInertia{h * (d + h * k)};
-        m_gamma = (invGamma != RotInertia{0})? RealNum{1} / invGamma: InvRotInertia{0};
+        m_gamma = (invGamma != RotInertia{0})? Real{1} / invGamma: InvRotInertia{0};
         // QP * T * L^2 M QP^-2 T^-2 * L^-2 M^-1 QP^2 is: QP T^-1
         m_bias = AngularVelocity{C * h * k * m_gamma};
 
         invRotInertia += m_gamma;
-        m_mass.ez.z = StripUnit((invRotInertia != InvRotInertia{0}) ? RealNum{1} / invRotInertia : RotInertia{0});
+        m_mass.ez.z = StripUnit((invRotInertia != InvRotInertia{0}) ? Real{1} / invRotInertia : RotInertia{0});
     }
     else if (K.ez.z == 0)
     {
@@ -242,7 +242,7 @@ bool WeldJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
         const auto va = velA.linear + LinearVelocity2D{(GetRevPerpendicular(m_rA) * (velA.angular / Radian))};
 
         const auto Cdot1 = vb - va;
-        const auto Cdot2 = RealNum{(velB.angular - velA.angular) / RadianPerSecond};
+        const auto Cdot2 = Real{(velB.angular - velA.angular) / RadianPerSecond};
         const auto Cdot = Vec3{Cdot1.x / MeterPerSecond, Cdot1.y / MeterPerSecond, Cdot2};
 
         const auto impulse = -Transform(Cdot, m_mass);
@@ -333,7 +333,7 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
         positionError = GetLength(C1);
         angularError = Angle{0};
 
-        const auto P = -Solve22(K, C1) * (RealNum(1) * Kilogram);
+        const auto P = -Solve22(K, C1) * (Real(1) * Kilogram);
         const auto LA = Cross(rA, P) / Radian;
         const auto LB = Cross(rB, P) / Radian;
 
@@ -361,7 +361,7 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
             impulse = Vec3{impulse2.x, impulse2.y, 0};
         }
 
-        const auto P = Length2D{impulse.x * Meter, impulse.y * Meter} * (RealNum(1) * Kilogram);
+        const auto P = Length2D{impulse.x * Meter, impulse.y * Meter} * (Real(1) * Kilogram);
         const auto L = impulse.z * Kilogram * SquareMeter / Radian;
         const auto LA = L + Cross(rA, P) / Radian;
         const auto LB = L + Cross(rB, P) / Radian;

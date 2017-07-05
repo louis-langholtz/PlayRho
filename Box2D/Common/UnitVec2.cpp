@@ -23,7 +23,7 @@
 
 using namespace box2d;
 
-UnitVec2 UnitVec2::Get(const RealNum x, const RealNum y, RealNum& magnitude, const UnitVec2 fallback)
+UnitVec2 UnitVec2::Get(const Real x, const Real y, Real& magnitude, const UnitVec2 fallback)
 {
     if (IsValid(x) && IsValid(y))
     {

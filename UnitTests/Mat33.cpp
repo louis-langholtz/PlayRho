@@ -23,7 +23,7 @@ using namespace box2d;
 
 TEST(Mat33, ByteSizeIs_36_72_or_144)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4:  EXPECT_EQ(sizeof(Mat33), std::size_t(36)); break;
         case  8:  EXPECT_EQ(sizeof(Mat33), std::size_t(72)); break;
@@ -52,20 +52,20 @@ TEST(Mat33, GetInverse)
     
     const auto a = foo.ex.x, b = foo.ey.x, c = foo.ex.y, d = foo.ey.y;
     auto det = (a * d) - (b * c);
-    if (det != RealNum{0})
+    if (det != Real{0})
     {
-        det = RealNum{1} / det;
+        det = Real{1} / det;
     }
 
     Mat33 boo{c1, c2, c3};
     boo = GetInverse22(foo);
 
-    EXPECT_EQ(RealNum{0}, boo.ez.x);
-    EXPECT_EQ(RealNum{0}, boo.ez.y);
-    EXPECT_EQ(RealNum{0}, boo.ez.z);
+    EXPECT_EQ(Real{0}, boo.ez.x);
+    EXPECT_EQ(Real{0}, boo.ez.y);
+    EXPECT_EQ(Real{0}, boo.ez.z);
     
-    EXPECT_EQ(RealNum{0}, boo.ey.z);
-    EXPECT_EQ(RealNum{0}, boo.ex.z);
+    EXPECT_EQ(Real{0}, boo.ey.z);
+    EXPECT_EQ(Real{0}, boo.ex.z);
     
     EXPECT_EQ(boo.ex.x, det * d);
     EXPECT_EQ(boo.ex.y, -det * c);
@@ -81,9 +81,9 @@ TEST(Mat33, GetSymInverse33)
     const Mat33 foo{c1, c2, c3};
     
     auto det = Dot(foo.ex, Cross(foo.ey, foo.ez));
-    if (det != RealNum{0})
+    if (det != Real{0})
     {
-        det = RealNum{1} / det;
+        det = Real{1} / det;
     }
     
     const auto a11 = foo.ex.x, a12 = foo.ey.x, a13 = foo.ez.x;

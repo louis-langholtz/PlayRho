@@ -40,7 +40,7 @@ public:
         const auto start = std::chrono::high_resolution_clock::now();
 
         {
-            const auto a = RealNum{0.5f};
+            const auto a = Real{0.5f};
             BodyDef bd;
             bd.position.y = -a * Meter;
             const auto ground = m_world->CreateBody(bd);
@@ -65,9 +65,9 @@ public:
         }
 
         {
-            const auto a = RealNum{0.5f};
+            const auto a = Real{0.5f};
             const auto shape = std::make_shared<PolygonShape>(a * Meter, a * Meter);
-            shape->SetDensity(RealNum{5} * KilogramPerSquareMeter);
+            shape->SetDensity(Real{5} * KilogramPerSquareMeter);
 
             Vec2 x(-7.0f, 0.75f);
             Vec2 y;
@@ -95,7 +95,7 @@ public:
         }
 
         const auto end = std::chrono::high_resolution_clock::now();
-        const auto elapsed_secs = std::chrono::duration<RealNum>{end - start};
+        const auto elapsed_secs = std::chrono::duration<Real>{end - start};
         m_createTime = elapsed_secs.count();
     }
 
@@ -113,7 +113,7 @@ public:
         }
 
         drawer.DrawString(5, m_textLine, "create time = %6.2f ms, fixture count = %d",
-            static_cast<double>(m_createTime * RealNum(1000)), m_fixtureCount);
+            static_cast<double>(m_createTime * Real(1000)), m_fixtureCount);
         m_textLine += DRAW_STRING_NEW_LINE;
 
         //DynamicTree* tree = &m_world->m_contactManager.m_broadPhase.m_tree;
@@ -143,7 +143,7 @@ public:
     }
     
     int m_fixtureCount;
-    RealNum m_createTime;
+    Real m_createTime;
     World m_snapshot;
 };
 

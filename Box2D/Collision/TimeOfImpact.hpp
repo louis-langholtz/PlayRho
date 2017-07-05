@@ -52,20 +52,20 @@ namespace box2d {
         using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
         using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
 
-        constexpr ToiConf& UseTimeMax(RealNum value) noexcept;
+        constexpr ToiConf& UseTimeMax(Real value) noexcept;
         constexpr ToiConf& UseTargetDepth(Length value) noexcept;
         constexpr ToiConf& UseTolerance(Length value) noexcept;
         constexpr ToiConf& UseMaxRootIters(root_iter_type value) noexcept;
         constexpr ToiConf& UseMaxToiIters(toi_iter_type value) noexcept;
         constexpr ToiConf& UseMaxDistIters(dist_iter_type value) noexcept;
 
-        RealNum tMax = 1;
+        Real tMax = 1;
         
         /// Targetted depth of impact.
         /// @note Value must be less than twice the minimum vertex radius of any shape.
-        Length targetDepth = DefaultLinearSlop * RealNum{3};
+        Length targetDepth = DefaultLinearSlop * Real{3};
 
-        Length tolerance = DefaultLinearSlop / RealNum{4}; ///< Tolerance.
+        Length tolerance = DefaultLinearSlop / Real{4}; ///< Tolerance.
         
         /// Maximum number of root finder iterations.
         /// @details This is the maximum number of iterations for calculating the 1D root of
@@ -86,7 +86,7 @@ namespace box2d {
         return ToiConf{};
     }
 
-    constexpr ToiConf& ToiConf::UseTimeMax(RealNum value) noexcept
+    constexpr ToiConf& ToiConf::UseTimeMax(Real value) noexcept
     {
         tMax = value;
         return *this;
@@ -157,7 +157,7 @@ namespace box2d {
 
         TOIOutput() = default;
         
-        constexpr TOIOutput(State state, RealNum time, Stats stats): m_state(state), m_time(time), m_stats(stats)
+        constexpr TOIOutput(State state, Real time, Stats stats): m_state(state), m_time(time), m_stats(stats)
         {
             assert(time >= 0);
             assert(time <= 1);
@@ -168,7 +168,7 @@ namespace box2d {
 
         /// Gets time factor at which state occurs.
         /// @return Time factor in range of [0,1] into the future.
-        RealNum get_t() const noexcept { return m_time; }
+        Real get_t() const noexcept { return m_time; }
 
         toi_iter_type get_toi_iters() const noexcept { return m_stats.toi_iters; }
         
@@ -182,7 +182,7 @@ namespace box2d {
         
     private:
         State m_state = e_unknown; ///< State at time factor.
-        RealNum m_time = 0; ///< Time factor in range of [0,1] into the future.
+        Real m_time = 0; ///< Time factor in range of [0,1] into the future.
         Stats m_stats;
     };
 

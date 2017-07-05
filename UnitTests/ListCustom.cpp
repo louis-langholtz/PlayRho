@@ -66,7 +66,7 @@ TEST(ListForBody, DefaultInit)
 
 TEST(ListNodeForBody, ByteSizeIs_208_272_or_480)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(ListNode<Body>), std::size_t(208)); break;
         case  8: EXPECT_EQ(sizeof(ListNode<Body>), std::size_t(272)); break;

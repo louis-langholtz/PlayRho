@@ -48,7 +48,7 @@ MassData box2d::GetMassData(const Length r, const NonNegative<Density> density,
     const auto r_squared = r * r;
     const auto area = r_squared * Pi;
     const auto mass = Mass{Density{density} * area};
-    const auto Iz = SecondMomentOfArea{area * ((r_squared / RealNum{2}) + GetLengthSquared(location))};
+    const auto Iz = SecondMomentOfArea{area * ((r_squared / Real{2}) + GetLengthSquared(location))};
     const auto I = RotInertia{Iz * Density{density} / SquareRadian};
     return MassData{mass, location, I};
 }
@@ -62,15 +62,15 @@ MassData box2d::GetMassData(const Length r, const NonNegative<Density> density,
     const auto d = v1 - v0;
     const auto offset = GetRevPerpendicular(GetUnitVector(d, UnitVec2::GetZero())) * r;
     const auto b = GetLength(d);
-    const auto h = r * RealNum{2};
+    const auto h = r * Real{2};
     const auto rect_mass = Density{density} * b * h;
     const auto totalMass = circle_mass + rect_mass;
-    const auto center = (v0 + v1) / RealNum{2};
+    const auto center = (v0 + v1) / Real{2};
 
     /// Use the fixture's areal mass density times the shape's second moment of area to derive I.
     /// @sa https://en.wikipedia.org/wiki/Second_moment_of_area
-    const auto halfCircleArea = circle_area / RealNum{2};
-    const auto halfRSquared = r_squared / RealNum{2};
+    const auto halfCircleArea = circle_area / Real{2};
+    const auto halfRSquared = r_squared / Real{2};
     
     const auto vertices = Span<const Length2D>{
         Length2D{v0 + offset},
@@ -98,7 +98,7 @@ Area box2d::GetAreaOfPolygon(Span<const Length2D> vertices)
 {
     // Uses the "Shoelace formula".
     // See: https://en.wikipedia.org/wiki/Shoelace_formula
-    auto sum = RealNum(0) * SquareMeter;
+    auto sum = Real(0) * SquareMeter;
     const auto count = vertices.size();
     for (auto i = decltype(count){0}; i < count; ++i)
     {
@@ -107,7 +107,7 @@ Area box2d::GetAreaOfPolygon(Span<const Length2D> vertices)
         const auto next_v = vertices[GetModuloNext(i, count)];
         sum += this_v.x * (next_v.y - last_v.y);
     }
-    return sum / RealNum{2};
+    return sum / Real{2};
 }
 
 SecondMomentOfArea box2d::GetPolarMoment(Span<const Length2D> vertices)
@@ -120,8 +120,8 @@ SecondMomentOfArea box2d::GetPolarMoment(Span<const Length2D> vertices)
     // See:
     // https://en.wikipedia.org/wiki/Second_moment_of_area#Any_polygon
     // https://en.wikipedia.org/wiki/Second_moment_of_area#Perpendicular_axis_theorem
-    auto sum_x = SquareMeter * SquareMeter * RealNum(0);
-    auto sum_y = SquareMeter * SquareMeter * RealNum(0);
+    auto sum_x = SquareMeter * SquareMeter * Real(0);
+    auto sum_y = SquareMeter * SquareMeter * Real(0);
     const auto count = vertices.size();
     for (auto i = decltype(count){0}; i < count; ++i)
     {
@@ -139,7 +139,7 @@ SecondMomentOfArea box2d::GetPolarMoment(Span<const Length2D> vertices)
     }
     const auto secondMomentOfAreaX = SecondMomentOfArea{sum_x};
     const auto secondMomentOfAreaY = SecondMomentOfArea{sum_y};
-    return (secondMomentOfAreaX + secondMomentOfAreaY) / RealNum{12};
+    return (secondMomentOfAreaX + secondMomentOfAreaY) / Real{12};
 }
 
 MassData box2d::GetMassData(const Fixture& f)
@@ -158,7 +158,7 @@ MassData box2d::ComputeMassData(const Body& body) noexcept
         {
             const auto massData = GetMassData(fixture);
             mass += Mass{massData.mass};
-            center += RealNum{Mass{massData.mass} / Kilogram} * massData.center;
+            center += Real{Mass{massData.mass} / Kilogram} * massData.center;
             I += RotInertia{massData.I};
         }
     }

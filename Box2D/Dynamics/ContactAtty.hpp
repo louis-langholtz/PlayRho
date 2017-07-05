@@ -50,7 +50,7 @@ namespace box2d
             to.m_flags = from.m_flags;
         }
 
-        static void SetToi(Contact& c, RealNum value) noexcept
+        static void SetToi(Contact& c, Real value) noexcept
         {
             c.SetToi(value);
         }

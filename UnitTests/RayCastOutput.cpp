@@ -31,7 +31,7 @@ using namespace box2d;
 
 TEST(RayCastOutput, ByteSize)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(RayCastOutput), std::size_t(16)); break;
         case  8: EXPECT_EQ(sizeof(RayCastOutput), std::size_t(32)); break;
@@ -74,7 +74,7 @@ TEST(RayCastOutput, DefaultConstruction)
 TEST(RayCastOutput, InitConstruction)
 {
     const auto normal = UnitVec2::GetLeft();
-    const auto fraction = RealNum(0.8f);
+    const auto fraction = Real(0.8f);
     RayCastOutput foo{normal, fraction};
     EXPECT_TRUE(foo.hit);
     EXPECT_EQ(foo.normal, normal);
@@ -83,11 +83,11 @@ TEST(RayCastOutput, InitConstruction)
 
 TEST(RayCastOutput, RayCastFreeFunctionHits)
 {
-    const auto radius = RealNum(0.1) * Meter;
-    const auto location = Length2D(RealNum(5) * Meter, RealNum(2) * Meter);
-    const auto p1 = Length2D(RealNum(10) * Meter, RealNum(2) * Meter);
-    const auto p2 = Length2D(RealNum(0) * Meter, RealNum(2) * Meter);
-    const auto maxFraction = RealNum(1);
+    const auto radius = Real(0.1) * Meter;
+    const auto location = Length2D(Real(5) * Meter, Real(2) * Meter);
+    const auto p1 = Length2D(Real(10) * Meter, Real(2) * Meter);
+    const auto p2 = Length2D(Real(0) * Meter, Real(2) * Meter);
+    const auto maxFraction = Real(1);
     auto input = RayCastInput{p1, p2, maxFraction};
     const auto output = RayCast(radius, location, input);
     EXPECT_TRUE(output.hit);
@@ -98,11 +98,11 @@ TEST(RayCastOutput, RayCastFreeFunctionHits)
 TEST(RayCastOutput, RayCastLocationFreeFunctionMisses)
 {
     {
-        const auto radius = RealNum(0.1) * Meter;
-        const auto location = Length2D(RealNum(15) * Meter, RealNum(2) * Meter);
-        const auto p1 = Length2D(RealNum(10) * Meter, RealNum(2) * Meter);
-        const auto p2 = Length2D(RealNum(0) * Meter, RealNum(2) * Meter);
-        const auto maxFraction = RealNum(1);
+        const auto radius = Real(0.1) * Meter;
+        const auto location = Length2D(Real(15) * Meter, Real(2) * Meter);
+        const auto p1 = Length2D(Real(10) * Meter, Real(2) * Meter);
+        const auto p2 = Length2D(Real(0) * Meter, Real(2) * Meter);
+        const auto maxFraction = Real(1);
         auto input = RayCastInput{p1, p2, maxFraction};
         const auto output = RayCast(radius, location, input);
         EXPECT_FALSE(output.hit);
@@ -110,11 +110,11 @@ TEST(RayCastOutput, RayCastLocationFreeFunctionMisses)
         EXPECT_FALSE(IsValid(output.fraction));
     }
     {
-        const auto radius = RealNum(0.1) * Meter;
-        const auto location = Length2D(RealNum(10) * Meter, RealNum(3) * Meter);
-        const auto p1 = Length2D(RealNum(0) * Meter, RealNum(2) * Meter);
-        const auto p2 = Length2D(RealNum(10) * Meter, RealNum(2) * Meter);
-        const auto maxFraction = RealNum(1);
+        const auto radius = Real(0.1) * Meter;
+        const auto location = Length2D(Real(10) * Meter, Real(3) * Meter);
+        const auto p1 = Length2D(Real(0) * Meter, Real(2) * Meter);
+        const auto p2 = Length2D(Real(10) * Meter, Real(2) * Meter);
+        const auto maxFraction = Real(1);
         auto input = RayCastInput{p1, p2, maxFraction};
         const auto output = RayCast(radius, location, input);
         EXPECT_FALSE(output.hit);
@@ -126,9 +126,9 @@ TEST(RayCastOutput, RayCastLocationFreeFunctionMisses)
 TEST(RayCastOutput, RayCastAabbFreeFunction)
 {
     AABB aabb;
-    const auto p1 = Length2D(RealNum(10) * Meter, RealNum(2) * Meter);
-    const auto p2 = Length2D(RealNum(0) * Meter, RealNum(2) * Meter);
-    const auto maxFraction = RealNum(1);
+    const auto p1 = Length2D(Real(10) * Meter, Real(2) * Meter);
+    const auto p2 = Length2D(Real(0) * Meter, Real(2) * Meter);
+    const auto maxFraction = Real(1);
     RayCastInput input{p1, p2, maxFraction};
     const auto output = RayCast(aabb, input);
     EXPECT_FALSE(output.hit);
@@ -138,22 +138,22 @@ TEST(RayCastOutput, RayCastAabbFreeFunction)
 
 TEST(RayCastOutput, RayCastDistanceProxyFF)
 {
-    const auto pos1 = Length2D{RealNum(3) * Meter, RealNum(1) * Meter};
-    const auto pos2 = Length2D{RealNum(3) * Meter, RealNum(3) * Meter};
-    const auto pos3 = Length2D{RealNum(1) * Meter, RealNum(3) * Meter};
-    const auto pos4 = Length2D{RealNum(1) * Meter, RealNum(1) * Meter};
+    const auto pos1 = Length2D{Real(3) * Meter, Real(1) * Meter};
+    const auto pos2 = Length2D{Real(3) * Meter, Real(3) * Meter};
+    const auto pos3 = Length2D{Real(1) * Meter, Real(3) * Meter};
+    const auto pos4 = Length2D{Real(1) * Meter, Real(1) * Meter};
     const Length2D squareVerts[] = {pos1, pos2, pos3, pos4};
     const auto n1 = GetUnitVector(GetFwdPerpendicular(pos2 - pos1));
     const auto n2 = GetUnitVector(GetFwdPerpendicular(pos3 - pos2));
     const auto n3 = GetUnitVector(GetFwdPerpendicular(pos4 - pos3));
     const auto n4 = GetUnitVector(GetFwdPerpendicular(pos1 - pos4));
     const UnitVec2 squareNormals[] = {n1, n2, n3, n4};
-    const auto radius = RealNum(0.5) * Meter;
+    const auto radius = Real(0.5) * Meter;
     DistanceProxy dp{radius, 4, squareVerts, squareNormals};
 
-    const auto p1 = Length2D(RealNum(0) * Meter, RealNum(2) * Meter);
-    const auto p2 = Length2D(RealNum(10) * Meter, RealNum(2) * Meter);
-    const auto maxFraction = RealNum(1);
+    const auto p1 = Length2D(Real(0) * Meter, Real(2) * Meter);
+    const auto p2 = Length2D(Real(10) * Meter, Real(2) * Meter);
+    const auto maxFraction = Real(1);
     auto input = RayCastInput{p1, p2, maxFraction};
     {
         const auto output = RayCast(dp, input, Transform_identity);

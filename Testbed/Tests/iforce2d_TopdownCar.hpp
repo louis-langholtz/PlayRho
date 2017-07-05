@@ -92,7 +92,7 @@ private:
     LinearVelocity m_maxForwardSpeed = LinearVelocity{0};
     LinearVelocity m_maxBackwardSpeed = LinearVelocity{0};
     Momentum m_maxLateralImpulse = Momentum{0};
-    RealNum m_currentTraction = 1;
+    Real m_currentTraction = 1;
     
 public:
     
@@ -173,14 +173,14 @@ public:
         
         //angular velocity
         const auto rotInertia = GetRotInertia(*m_body);
-        constexpr auto Tenth = RealNum{1} / RealNum{10};
+        constexpr auto Tenth = Real{1} / Real{10};
         ApplyAngularImpulse(*m_body, m_currentTraction * Tenth * rotInertia * -GetAngularVelocity(*m_body));
         
         //forward linear velocity
         const auto forwardVelocity = getForwardVelocity();
         auto currentForwardSpeed = LinearVelocity{0};
         const auto forwardDir = GetUnitVector(forwardVelocity, currentForwardSpeed, UnitVec2::GetZero());
-        const auto dragForceMagnitude = RealNum{-2} * currentForwardSpeed;
+        const auto dragForceMagnitude = Real{-2} * currentForwardSpeed;
         const auto newForce = Force2D{m_currentTraction * dragForceMagnitude * forwardDir * Kilogram / Second};
         SetForce(*m_body, newForce, m_body->GetWorldCenter());
     }
@@ -214,11 +214,11 @@ public:
     
     void updateTurn(ControlStateType controlState)
     {
-        auto desiredTorque = RealNum{0} * NewtonMeter;
+        auto desiredTorque = Real{0} * NewtonMeter;
         switch (controlState & (TDC_LEFT|TDC_RIGHT))
         {
-            case TDC_LEFT:  desiredTorque = RealNum{+15} * NewtonMeter; break;
-            case TDC_RIGHT: desiredTorque = RealNum{-15} * NewtonMeter; break;
+            case TDC_LEFT:  desiredTorque = Real{+15} * NewtonMeter; break;
+            case TDC_RIGHT: desiredTorque = Real{-15} * NewtonMeter; break;
             default: ;//nothing
         }
         SetTorque(*m_body, desiredTorque);
@@ -240,7 +240,7 @@ public:
         BodyDef bodyDef;
         bodyDef.type = BodyType::Dynamic;
         m_body = world->CreateBody(bodyDef);
-        m_body->SetAngularDamping(RealNum(3) * Hertz);
+        m_body->SetAngularDamping(Real(3) * Hertz);
         
         Length2D vertices[8];
         vertices[0] = Vec2(+1.5f,  +0.0f) * Meter;
@@ -253,7 +253,7 @@ public:
         vertices[7] = Vec2(-1.5f,  +0.0f) * Meter;
         PolygonShape polygonShape;
         polygonShape.Set(Span<const Length2D>(vertices, 8));
-        polygonShape.SetDensity(RealNum{0.1f} * KilogramPerSquareMeter);
+        polygonShape.SetDensity(Real{0.1f} * KilogramPerSquareMeter);
         m_body->CreateFixture(std::make_shared<PolygonShape>(polygonShape));
         
         //prepare common joint parameters
@@ -264,16 +264,16 @@ public:
         jointDef.upperAngle = Angle{0};
         jointDef.localAnchorB = Vec2{0, 0} * Meter; //center of tire
         
-        const auto maxForwardSpeed = RealNum{250.0f} * MeterPerSecond;
-        const auto maxBackwardSpeed = RealNum{-40.0f} * MeterPerSecond;
-        const auto backTireMaxDriveForce = RealNum{950.0f} * Newton; // 300.0f;
-        const auto frontTireMaxDriveForce = RealNum{400.0f} * Newton; // 500.0f;
-        const auto backTireMaxLateralImpulse = RealNum{9.0f} * Kilogram * MeterPerSecond; // 8.5f;
-        const auto frontTireMaxLateralImpulse = RealNum{9.0f} * Kilogram * MeterPerSecond; // 7.5f;
+        const auto maxForwardSpeed = Real{250.0f} * MeterPerSecond;
+        const auto maxBackwardSpeed = Real{-40.0f} * MeterPerSecond;
+        const auto backTireMaxDriveForce = Real{950.0f} * Newton; // 300.0f;
+        const auto frontTireMaxDriveForce = Real{400.0f} * Newton; // 500.0f;
+        const auto backTireMaxLateralImpulse = Real{9.0f} * Kilogram * MeterPerSecond; // 8.5f;
+        const auto frontTireMaxLateralImpulse = Real{9.0f} * Kilogram * MeterPerSecond; // 7.5f;
 
         PolygonShape tireShape;
-        tireShape.SetAsBox(RealNum{0.5f} * Meter, RealNum{1.25f} * Meter);
-        tireShape.SetDensity(RealNum{1} * KilogramPerSquareMeter);
+        tireShape.SetAsBox(Real{0.5f} * Meter, Real{1.25f} * Meter);
+        tireShape.SetDensity(Real{1} * KilogramPerSquareMeter);
         const auto sharedTireShape = std::make_shared<PolygonShape>(tireShape);
 
         TDTire* tire;
@@ -329,9 +329,9 @@ public:
         }
         
         //control steering
-        const auto lockAngle = RealNum{35.0f} * Degree;
-        const auto turnSpeedPerSec = RealNum{160.0f} * Degree;//from lock to lock in 0.5 sec
-        const auto turnPerTimeStep = turnSpeedPerSec / RealNum{60.0f};
+        const auto lockAngle = Real{35.0f} * Degree;
+        const auto turnSpeedPerSec = Real{160.0f} * Degree;//from lock to lock in 0.5 sec
+        const auto turnPerTimeStep = turnSpeedPerSec / Real{60.0f};
         auto desiredAngle = Angle{0};
         switch ( controlState & (TDC_LEFT|TDC_RIGHT) ) {
             case TDC_LEFT:  desiredAngle = lockAngle;  break;
@@ -384,11 +384,11 @@ public:
             FixtureDef fixtureDef;
             fixtureDef.isSensor = true;
             
-            SetAsBox(polygonShape, RealNum{9} * Meter, RealNum{7} * Meter, Vec2(-10,15) * Meter, RealNum{20.0f} * Degree );
+            SetAsBox(polygonShape, Real{9} * Meter, Real{7} * Meter, Vec2(-10,15) * Meter, Real{20.0f} * Degree );
             groundAreaFixture = m_groundBody->CreateFixture(std::make_shared<PolygonShape>(polygonShape), fixtureDef);
             groundAreaFixture->SetUserData( new GroundAreaFUD( 0.5f, false ) );
             
-            SetAsBox(polygonShape, RealNum{9} * Meter, RealNum{5} * Meter, Vec2(5,20) * Meter, RealNum{-40.0f} * Degree );
+            SetAsBox(polygonShape, Real{9} * Meter, Real{5} * Meter, Vec2(5,20) * Meter, Real{-40.0f} * Degree );
             groundAreaFixture = m_groundBody->CreateFixture(std::make_shared<PolygonShape>(polygonShape), fixtureDef);
             groundAreaFixture->SetUserData( new GroundAreaFUD( 0.2f, false ) );
         }

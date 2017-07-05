@@ -40,7 +40,7 @@ using namespace box2d;
 PulleyJointDef::PulleyJointDef(Body* bA, Body* bB,
                                const Length2D groundA, const Length2D groundB,
                                const Length2D anchorA, const Length2D anchorB,
-                               RealNum r):
+                               Real r):
     JointDef{JointType::Pulley, bA, bB, true},
     groundAnchorA{groundA},
     groundAnchorB{groundB},
@@ -89,10 +89,10 @@ void PulleyJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     const auto pulleyAxisB = Length2D{posB.linear + m_rB - m_groundAnchorB};
 
     const auto lengthA = GetLength(pulleyAxisA);
-    if (lengthA > (conf.linearSlop * RealNum{10}))
+    if (lengthA > (conf.linearSlop * Real{10}))
     {
         const auto uv = pulleyAxisA / lengthA;
-        m_uA = Vec2{RealNum{uv.x}, RealNum{uv.y}};
+        m_uA = Vec2{Real{uv.x}, Real{uv.y}};
     }
     else
     {
@@ -100,10 +100,10 @@ void PulleyJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     }
 
     const auto lengthB = GetLength(pulleyAxisB);
-    if (lengthB > (conf.linearSlop * RealNum{10}))
+    if (lengthB > (conf.linearSlop * Real{10}))
     {
         const auto uv = pulleyAxisB / lengthB;
-        m_uB = Vec2{RealNum{uv.x}, RealNum{uv.y}};
+        m_uB = Vec2{Real{uv.x}, Real{uv.y}};
     }
     else
     {
@@ -119,7 +119,7 @@ void PulleyJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
 
     const auto totalInvMass = invMassA + m_ratio * m_ratio * invMassB;
 
-    m_mass = (totalInvMass > InvMass{0})? RealNum{1} / totalInvMass: Mass{0};
+    m_mass = (totalInvMass > InvMass{0})? Real{1} / totalInvMass: Mass{0};
 
     if (step.doWarmStart)
     {
@@ -183,7 +183,7 @@ bool PulleyJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Con
     const auto pA = Length2D{posA.linear + rA - m_groundAnchorA};
     auto lengthA = Length{0};
     auto uA = GetUnitVector(pA, lengthA);
-    if (lengthA <= (conf.linearSlop * RealNum{10}))
+    if (lengthA <= (conf.linearSlop * Real{10}))
     {
         uA = UnitVec2::GetZero();
     }
@@ -191,7 +191,7 @@ bool PulleyJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Con
     const auto pB = Length2D{posB.linear + rB - m_groundAnchorB};
     auto lengthB = Length{0};
     auto uB = GetUnitVector(pB, lengthB);
-    if (lengthB <= (conf.linearSlop * RealNum{10}))
+    if (lengthB <= (conf.linearSlop * Real{10}))
     {
         uB = UnitVec2::GetZero();
     }
@@ -204,7 +204,7 @@ bool PulleyJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Con
     const auto totalInvMassB = bodyConstraintB->GetInvMass() + bodyConstraintB->GetInvRotInertia() * ruB * ruB / SquareRadian;
 
     const auto totalInvMass = totalInvMassA + m_ratio * m_ratio * totalInvMassB;
-    const auto mass = (totalInvMass > InvMass{0})? RealNum{1} / totalInvMass: Mass{0};
+    const auto mass = (totalInvMass > InvMass{0})? Real{1} / totalInvMass: Mass{0};
 
     const auto C = Length{m_constant - lengthA - (m_ratio * lengthB)};
     const auto linearError = Abs(C);

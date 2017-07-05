@@ -163,7 +163,7 @@ namespace box2d
     /// Gets the world manifold for the given data.
     ///
     /// @note This is a convenience function that in turn calls the
-    ///    <code>GetWorldManifold(const Manifold&, const Transformation&, const RealNum, const Transformation& xfB, const RealNum)</code>
+    ///    <code>GetWorldManifold(const Manifold&, const Transformation&, const Real, const Transformation& xfB, const Real)</code>
     ///    function.
     ///
     /// @param contact Contact to return a world manifold for.

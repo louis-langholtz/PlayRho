@@ -169,14 +169,14 @@ namespace box2d
         
         /// @brief Lower vertex.
         Length2D lowerBound = Length2D{
-            std::numeric_limits<RealNum>::infinity() * Meter,
-            std::numeric_limits<RealNum>::infinity() * Meter
+            std::numeric_limits<Real>::infinity() * Meter,
+            std::numeric_limits<Real>::infinity() * Meter
         };
 
         /// @brief Upper vertex.
         Length2D upperBound = Length2D{
-            -std::numeric_limits<RealNum>::infinity() * Meter,
-            -std::numeric_limits<RealNum>::infinity() * Meter
+            -std::numeric_limits<Real>::infinity() * Meter,
+            -std::numeric_limits<Real>::infinity() * Meter
         };
     };
     
@@ -189,7 +189,7 @@ namespace box2d
     /// Gets the center of the AABB.
     constexpr Length2D GetCenter(const AABB aabb) noexcept
     {
-        return (aabb.GetLowerBound() + aabb.GetUpperBound()) / RealNum{2};
+        return (aabb.GetLowerBound() + aabb.GetUpperBound()) / Real{2};
     }
     
     constexpr Length2D GetDimensions(const AABB aabb) noexcept
@@ -200,7 +200,7 @@ namespace box2d
     /// Gets the extents of the AABB (half-widths).
     constexpr Length2D GetExtents(const AABB aabb) noexcept
     {
-        return GetDimensions(aabb) / RealNum{2};
+        return GetDimensions(aabb) / Real{2};
     }
     
     /// Gets the perimeter length of the AABB.
@@ -211,7 +211,7 @@ namespace box2d
         const auto lower = aabb.GetLowerBound();
         const auto wx = upper.x - lower.x;
         const auto wy = upper.y - lower.y;
-        return (wx + wy) * RealNum{2};
+        return (wx + wy) * Real{2};
     }
 
     constexpr AABB GetEnclosingAABB(AABB a, AABB b)

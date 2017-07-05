@@ -23,7 +23,7 @@ using namespace box2d;
 
 TEST(PrismaticJoint, ByteSize)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(PrismaticJoint), std::size_t(192)); break;
         case  8: EXPECT_EQ(sizeof(PrismaticJoint), std::size_t(328)); break;

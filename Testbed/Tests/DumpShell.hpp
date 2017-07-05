@@ -41,7 +41,7 @@ public:
         //  but you can easily use it in other applications by providing
         //  a World for use as the 'm_world' variable in the code below.
 
-        LinearAcceleration2D g(RealNum{0.000000000000000e+00f} * MeterPerSquareSecond, RealNum{-1.000000000000000e+01f} * MeterPerSquareSecond);
+        LinearAcceleration2D g(Real{0.000000000000000e+00f} * MeterPerSquareSecond, Real{-1.000000000000000e+01f} * MeterPerSquareSecond);
         m_world->SetGravity(g);
         Body** bodies = (Body**)Alloc(3 * sizeof(Body*));
         Joint** joints = (Joint**)Alloc(0 * sizeof(Joint*));
@@ -49,11 +49,11 @@ public:
             BodyDef bd;
             bd.type = BodyType(0);
             bd.position = Vec2(2.587699890136719e-02f, 5.515012264251709e+00f) * Meter;
-            bd.angle = RealNum{0.0f} * Radian;
+            bd.angle = Real{0.0f} * Radian;
             bd.linearVelocity = Vec2(0.000000000000000e+00f, 0.000000000000000e+00f) * MeterPerSecond;
-            bd.angularVelocity = RealNum{0.0f} * RadianPerSecond;
-            bd.linearDamping = RealNum(0) * Hertz;
-            bd.angularDamping = RealNum(0) * Hertz;
+            bd.angularVelocity = Real{0.0f} * RadianPerSecond;
+            bd.linearDamping = Real(0) * Hertz;
+            bd.angularDamping = Real(0) * Hertz;
             bd.allowSleep = bool(4);
             bd.awake = bool(2);
             bd.fixedRotation = bool(0);
@@ -71,7 +71,7 @@ public:
                 shape.Set(Span<const Length2D>(vs, 4));
                 shape.SetFriction(2.000000029802322e-01f);
                 shape.SetRestitution(0.000000000000000e+00f);
-                shape.SetDensity(RealNum{1.000000000000000e+00f} * KilogramPerSquareMeter);
+                shape.SetDensity(Real{1.000000000000000e+00f} * KilogramPerSquareMeter);
                 FixtureDef fd;
                 fd.isSensor = bool(0);
                 fd.filter.categoryBits = Filter::bits_type(1);
@@ -85,11 +85,11 @@ public:
             BodyDef bd;
             bd.type = BodyType(2);
             bd.position = Vec2(-3.122138977050781e-02f, 7.535382270812988e+00f) * Meter;
-            bd.angle = RealNum{-1.313644275069237e-02f} * Radian;
+            bd.angle = Real{-1.313644275069237e-02f} * Radian;
             bd.linearVelocity = Vec2(8.230687379837036e-01f, 7.775862514972687e-02f) * MeterPerSecond;
-            bd.angularVelocity = RealNum{3.705333173274994e-02f} * RadianPerSecond;
-            bd.linearDamping = RealNum(0) * Hertz;
-            bd.angularDamping = RealNum(0) * Hertz;
+            bd.angularVelocity = Real{3.705333173274994e-02f} * RadianPerSecond;
+            bd.linearDamping = Real(0) * Hertz;
+            bd.angularDamping = Real(0) * Hertz;
             bd.allowSleep = bool(4);
             bd.awake = bool(2);
             bd.fixedRotation = bool(0);
@@ -109,7 +109,7 @@ public:
                 shape.Set(Span<const Length2D>(vs, 6));
                 shape.SetFriction(5.000000000000000e-01f);
                 shape.SetRestitution(0.000000000000000e+00f);
-                shape.SetDensity(RealNum{5.000000000000000e+00f} * KilogramPerSquareMeter);
+                shape.SetDensity(Real{5.000000000000000e+00f} * KilogramPerSquareMeter);
                 FixtureDef fd;
                 fd.isSensor = bool(0);
                 fd.filter.categoryBits = Filter::bits_type(1);
@@ -122,11 +122,11 @@ public:
             BodyDef bd;
             bd.type = BodyType(2);
             bd.position = Vec2(-7.438077926635742e-01f, 6.626811981201172e+00f) * Meter;
-            bd.angle = RealNum{-1.884713363647461e+01f} * Radian;
+            bd.angle = Real{-1.884713363647461e+01f} * Radian;
             bd.linearVelocity = Vec2(1.785794943571091e-01f, 3.799796104431152e-07f) * MeterPerSecond;
-            bd.angularVelocity = RealNum{-5.908820639888290e-06f} * RadianPerSecond;
-            bd.linearDamping = RealNum(0) * Hertz;
-            bd.angularDamping = RealNum(0) * Hertz;
+            bd.angularVelocity = Real{-5.908820639888290e-06f} * RadianPerSecond;
+            bd.linearDamping = Real(0) * Hertz;
+            bd.angularDamping = Real(0) * Hertz;
             bd.allowSleep = bool(4);
             bd.awake = bool(2);
             bd.fixedRotation = bool(0);
@@ -144,7 +144,7 @@ public:
                 shape.Set(Span<const Length2D>(vs, 4));
                 shape.SetFriction(9.499999880790710e-01f);
                 shape.SetRestitution(0.000000000000000e+00f);
-                shape.SetDensity(RealNum{1.000000000000000e+01f} * KilogramPerSquareMeter);
+                shape.SetDensity(Real{1.000000000000000e+01f} * KilogramPerSquareMeter);
                 FixtureDef fd;
                 fd.isSensor = bool(0);
                 fd.filter.categoryBits = Filter::bits_type(1);

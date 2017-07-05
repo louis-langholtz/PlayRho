@@ -43,18 +43,18 @@ namespace box2d
     ///
     /// @note Regarding division:
     ///
-    /// While dividing 1 by a RealNum, caching the result, and then doing multiplications with the
-    /// result may well be faster (than repeatedly dividing), dividing 1 by RealNum can also result
+    /// While dividing 1 by a Real, caching the result, and then doing multiplications with the
+    /// result may well be faster (than repeatedly dividing), dividing 1 by Real can also result
     /// in an underflow situation that's then compounded every time it's multiplied with other
     /// values.
     ///
-    /// Meanwhile, dividing every value by RealNum isolates any underflows to the particular
+    /// Meanwhile, dividing every value by Real isolates any underflows to the particular
     /// division where underflow occurs.
     ///
     /// @warning The note regarding division applies even more so when using a fixed-point type
-    /// (for RealNum).
+    /// (for Real).
     ///
-    using RealNum = float;
+    using Real = float;
 
 }
 

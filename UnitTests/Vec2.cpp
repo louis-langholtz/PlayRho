@@ -27,7 +27,7 @@ using namespace box2d;
 
 TEST(Vec2, ByteSizeIs_8_or_16)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(Vec2), std::size_t(8)); break;
         case  8: EXPECT_EQ(sizeof(Vec2), std::size_t(16)); break;
@@ -65,32 +65,32 @@ TEST(Vec2, Traits)
 }
 
 TEST(Vec2, Constructor) {
-    Vec2 vector{RealNum{5}, RealNum{-3}};
-    EXPECT_EQ(RealNum{5}, vector.x);
-    EXPECT_EQ(RealNum{-3}, vector.y);
+    Vec2 vector{Real{5}, Real{-3}};
+    EXPECT_EQ(Real{5}, vector.x);
+    EXPECT_EQ(Real{-3}, vector.y);
 }
 
 TEST(Vec2, OutputOperator)
 {
     std::stringstream os;
-    const Vec2 value{RealNum(1.5), RealNum(-2.3)};
+    const Vec2 value{Real(1.5), Real(-2.3)};
     os << value;
     EXPECT_EQ(os.str(), "Vec2(1.5,-2.3)");
 }
 
 TEST(Vec2, Indexing) {
-    Vec2 vector{RealNum{5}, RealNum{-3}};
-    EXPECT_EQ(RealNum{5}, vector[0]);
-    EXPECT_EQ(RealNum{-3}, vector[1]);
-    vector[0] = RealNum{4};
-    EXPECT_EQ(RealNum{4}, vector[0]);
-    vector[1] = RealNum{-2};
-    EXPECT_EQ(RealNum{-2}, vector[1]);
+    Vec2 vector{Real{5}, Real{-3}};
+    EXPECT_EQ(Real{5}, vector[0]);
+    EXPECT_EQ(Real{-3}, vector[1]);
+    vector[0] = Real{4};
+    EXPECT_EQ(Real{4}, vector[0]);
+    vector[1] = Real{-2};
+    EXPECT_EQ(Real{-2}, vector[1]);
 }
 
 TEST(Vec2, Equality)
 {    
-    Vec2 vector{RealNum{5}, RealNum{-3}};
+    Vec2 vector{Real{5}, Real{-3}};
     EXPECT_EQ(vector.x, vector.x);
     EXPECT_EQ(vector.y, vector.y);
     EXPECT_EQ(vector, vector);
@@ -98,8 +98,8 @@ TEST(Vec2, Equality)
 
 TEST(Vec2, Inequality)
 {    
-    Vec2 vector1{RealNum{5}, RealNum{-3}};
-    Vec2 vector2{RealNum{-5}, RealNum{+3}};
+    Vec2 vector1{Real{5}, Real{-3}};
+    Vec2 vector2{Real{-5}, Real{+3}};
     EXPECT_NE(vector1.x, vector2.x);
     EXPECT_NE(vector1.y, vector2.y);
     EXPECT_NE(vector1, vector2);
@@ -116,8 +116,8 @@ TEST(Vec2, Negate)
     EXPECT_EQ(-v01.x, n01.x);
     EXPECT_EQ(-v01.y, n01.y);
     
-    EXPECT_EQ(RealNum{-22}, (-Vec2{22, 0}).x);
-    EXPECT_EQ(RealNum{-3}, (-Vec2{0, 3}).y);
+    EXPECT_EQ(Real{-22}, (-Vec2{22, 0}).x);
+    EXPECT_EQ(Real{-3}, (-Vec2{0, 3}).y);
 }
 
 TEST(Vec2, Rotate)
@@ -125,11 +125,11 @@ TEST(Vec2, Rotate)
     Vec2 v10{1, 0};
     Vec2 v01{0, 1};
 
-    EXPECT_EQ(round(v01), round(Rotate(v10, UnitVec2{Angle{RealNum{90.0f} * Degree}})));
+    EXPECT_EQ(round(v01), round(Rotate(v10, UnitVec2{Angle{Real{90.0f} * Degree}})));
 
     EXPECT_EQ(round(Vec2{22, 30}), round(Rotate(Vec2{22, 30}, UnitVec2{Angle{0}})));
-    EXPECT_EQ(round(Vec2{22, 30}, 1000), round(Rotate(Vec2{22, 30}, UnitVec2{Angle{RealNum{360.0f} * Degree}}), 1000));
-    EXPECT_EQ(round(-Vec2{22, 30}, 1000), round(Rotate(Vec2{22, 30}, UnitVec2{Angle{RealNum{180.0f} * Degree}}), 1000));
+    EXPECT_EQ(round(Vec2{22, 30}, 1000), round(Rotate(Vec2{22, 30}, UnitVec2{Angle{Real{360.0f} * Degree}}), 1000));
+    EXPECT_EQ(round(-Vec2{22, 30}, 1000), round(Rotate(Vec2{22, 30}, UnitVec2{Angle{Real{180.0f} * Degree}}), 1000));
 }
 
 TEST(Vec2, IncrementOperator)

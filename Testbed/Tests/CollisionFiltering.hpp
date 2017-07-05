@@ -64,7 +64,7 @@ public:
         vertices[2] = Vec2(0.0f, 2.0f) * Meter;
         PolygonShape polygon;
         polygon.Set(Span<const Length2D>{vertices, 3});
-        polygon.SetDensity(RealNum{1} * KilogramPerSquareMeter);
+        polygon.SetDensity(Real{1} * KilogramPerSquareMeter);
 
         FixtureDef triangleShapeDef;
 
@@ -97,8 +97,8 @@ public:
             bd.position = Vec2(-5.0f, 10.0f) * Meter;
             const auto body = m_world->CreateBody(bd);
             auto conf = PolygonShape::Conf{};
-            conf.density = RealNum{1} * KilogramPerSquareMeter;
-            body->CreateFixture(std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{1.0f} * Meter, conf));
+            conf.density = Real{1} * KilogramPerSquareMeter;
+            body->CreateFixture(std::make_shared<PolygonShape>(Real{0.5f} * Meter, Real{1.0f} * Meter, conf));
 
             PrismaticJointDef jd;
             jd.bodyA = body2;
@@ -107,15 +107,15 @@ public:
             jd.localAnchorA = Vec2(0.0f, 4.0f) * Meter;
             jd.localAnchorB = Vec2_zero * Meter;
             jd.localAxisA = UnitVec2::GetTop();
-            jd.lowerTranslation = RealNum{-1.0f} * Meter;
-            jd.upperTranslation = RealNum{1.0f} * Meter;
+            jd.lowerTranslation = Real{-1.0f} * Meter;
+            jd.upperTranslation = Real{1.0f} * Meter;
 
             m_world->CreateJoint(jd);
         }
 
         // Small box
-        polygon.SetAsBox(RealNum{1.0f} * Meter, RealNum{0.5f} * Meter);
-        polygon.SetDensity(RealNum{1} * KilogramPerSquareMeter);
+        polygon.SetAsBox(Real{1.0f} * Meter, Real{0.5f} * Meter);
+        polygon.SetDensity(Real{1} * KilogramPerSquareMeter);
         polygon.SetRestitution(0.1f);
 
         FixtureDef boxShapeDef;
@@ -132,7 +132,7 @@ public:
         body3->CreateFixture(std::make_shared<PolygonShape>(polygon), boxShapeDef);
 
         // Large box (recycle definitions)
-        polygon.SetAsBox(RealNum{2.0f} * Meter, RealNum{1.0f} * Meter);
+        polygon.SetAsBox(Real{2.0f} * Meter, Real{1.0f} * Meter);
         boxShapeDef.filter.groupIndex = k_largeGroup;
         boxBodyDef.position = Vec2(0.0f, 6.0f) * Meter;
 
@@ -141,8 +141,8 @@ public:
 
         // Small circle
         auto circleConf = DiskShape::Conf{};
-        circleConf.vertexRadius = RealNum{1} * Meter;
-        circleConf.density = RealNum{1} * KilogramPerSquareMeter;
+        circleConf.vertexRadius = Real{1} * Meter;
+        circleConf.density = Real{1} * KilogramPerSquareMeter;
         auto circle = DiskShape(circleConf);
 
         FixtureDef circleShapeDef;
@@ -159,7 +159,7 @@ public:
         body5->CreateFixture(std::make_shared<DiskShape>(circle), circleShapeDef);
 
         // Large circle
-        circle.SetRadius(circle.GetRadius() * RealNum{2});
+        circle.SetRadius(circle.GetRadius() * Real{2});
         circleShapeDef.filter.groupIndex = k_largeGroup;
         circleBodyDef.position = Vec2(5.0f, 6.0f) * Meter;
 

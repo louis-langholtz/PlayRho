@@ -31,7 +31,7 @@ using namespace box2d;
 
 TEST(GearJointDef, ByteSize)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(GearJointDef), std::size_t(64)); break;
         case  8: EXPECT_EQ(sizeof(GearJointDef), std::size_t(64)); break;
@@ -52,12 +52,12 @@ TEST(GearJointDef, DefaultConstruction)
     
     EXPECT_EQ(def.joint1, nullptr);
     EXPECT_EQ(def.joint2, nullptr);
-    EXPECT_EQ(def.ratio, RealNum(1));
+    EXPECT_EQ(def.ratio, Real(1));
 }
 
 TEST(GearJoint, ByteSize)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(GearJoint), std::size_t(184)); break;
         case  8: EXPECT_EQ(sizeof(GearJoint), std::size_t(288)); break;
@@ -122,18 +122,18 @@ TEST(GearJoint, GetGearJointDef)
     
     EXPECT_EQ(cdef.joint1, &revJoint1);
     EXPECT_EQ(cdef.joint2, &revJoint2);
-    EXPECT_EQ(cdef.ratio, RealNum(1));
+    EXPECT_EQ(cdef.ratio, Real(1));
 }
 
 
 TEST(GearJoint, WithDynamicCircles)
 {
-    const auto circle = std::make_shared<DiskShape>(RealNum{0.2f} * Meter);
+    const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
     auto world = World{WorldDef{}.UseGravity(LinearAcceleration2D{0, 0})};
-    const auto p1 = Length2D{-RealNum(1) * Meter, RealNum(0) * Meter};
-    const auto p2 = Length2D{+RealNum(1) * Meter, RealNum(0) * Meter};
-    const auto p3 = Length2D{+RealNum(2) * Meter, RealNum(0) * Meter};
-    const auto p4 = Length2D{+RealNum(3) * Meter, RealNum(0) * Meter};
+    const auto p1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
+    const auto p2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
+    const auto p3 = Length2D{+Real(2) * Meter, Real(0) * Meter};
+    const auto p4 = Length2D{+Real(3) * Meter, Real(0) * Meter};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     const auto b3 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p3));
@@ -147,11 +147,11 @@ TEST(GearJoint, WithDynamicCircles)
     ASSERT_NE(def.joint2, nullptr);
     const auto gearJoint = world.CreateJoint(def);
     ASSERT_NE(gearJoint, nullptr);
-    Step(world, Time{Second * RealNum{1}});
-    EXPECT_NEAR(double(RealNum{b1->GetLocation().x / Meter}), -1.0, 0.001);
-    EXPECT_NEAR(double(RealNum{b1->GetLocation().y / Meter}), 0.0, 0.001);
-    EXPECT_NEAR(double(RealNum{b2->GetLocation().x / Meter}), +1.0, 0.01);
-    EXPECT_NEAR(double(RealNum{b2->GetLocation().y / Meter}), 0.0, 0.01);
+    Step(world, Time{Second * Real{1}});
+    EXPECT_NEAR(double(Real{b1->GetLocation().x / Meter}), -1.0, 0.001);
+    EXPECT_NEAR(double(Real{b1->GetLocation().y / Meter}), 0.0, 0.001);
+    EXPECT_NEAR(double(Real{b2->GetLocation().x / Meter}), +1.0, 0.01);
+    EXPECT_NEAR(double(Real{b2->GetLocation().y / Meter}), 0.0, 0.01);
     EXPECT_EQ(b1->GetAngle(), Angle{0});
     EXPECT_EQ(b2->GetAngle(), Angle{0});
 }

@@ -31,7 +31,7 @@ class TheoJansen : public Test
 {
 public:
 
-    void CreateLeg(RealNum s, const Length2D wheelAnchor)
+    void CreateLeg(Real s, const Length2D wheelAnchor)
     {
         const auto p1 = Vec2(5.4f * s, -6.1f) * Meter;
         const auto p2 = Vec2(7.2f * s, -1.2f) * Meter;
@@ -51,8 +51,8 @@ public:
             poly1.Set({p1, p3, p2});
             poly2.Set({Vec2_zero * Meter, p6 - p4, p5 - p4});
         }
-        poly1.SetDensity(RealNum{1} * KilogramPerSquareMeter);
-        poly2.SetDensity(RealNum{1} * KilogramPerSquareMeter);
+        poly1.SetDensity(Real{1} * KilogramPerSquareMeter);
+        poly2.SetDensity(Real{1} * KilogramPerSquareMeter);
 
         FixtureDef fd1, fd2;
         fd1.filter.groupIndex = -1;
@@ -64,8 +64,8 @@ public:
         bd1.position = m_offset;
         bd2.position = p4 + m_offset;
 
-        bd1.angularDamping = RealNum(10) * Hertz;
-        bd2.angularDamping = RealNum(10) * Hertz;
+        bd1.angularDamping = Real(10) * Hertz;
+        bd2.angularDamping = Real(10) * Hertz;
 
         const auto body1 = m_world->CreateBody(bd1);
         const auto body2 = m_world->CreateBody(bd2);
@@ -77,16 +77,16 @@ public:
         // It also makes the structure seem a bit more fluid by
         // acting like a suspension system.
         m_world->CreateJoint(DistanceJointDef{
-            body1, body2, p2 + m_offset, p5 + m_offset, RealNum(10) * Hertz, RealNum(0.5)
+            body1, body2, p2 + m_offset, p5 + m_offset, Real(10) * Hertz, Real(0.5)
         });
         m_world->CreateJoint(DistanceJointDef{
-            body1, body2, p3 + m_offset, p4 + m_offset, RealNum(10) * Hertz, RealNum(0.5)
+            body1, body2, p3 + m_offset, p4 + m_offset, Real(10) * Hertz, Real(0.5)
         });
         m_world->CreateJoint(DistanceJointDef{
-            body1, m_wheel, p3 + m_offset, wheelAnchor + m_offset, RealNum(10) * Hertz, RealNum(0.5)
+            body1, m_wheel, p3 + m_offset, wheelAnchor + m_offset, Real(10) * Hertz, Real(0.5)
         });
         m_world->CreateJoint(DistanceJointDef{
-            body2, m_wheel, p6 + m_offset, wheelAnchor + m_offset, RealNum(10) * Hertz, RealNum(0.5)
+            body2, m_wheel, p6 + m_offset, wheelAnchor + m_offset, Real(10) * Hertz, Real(0.5)
         });
         m_world->CreateJoint(RevoluteJointDef{body2, m_chassis, p4 + m_offset});
     }
@@ -94,7 +94,7 @@ public:
     TheoJansen()
     {
         m_offset = Vec2(0.0f, 8.0f) * Meter;
-        m_motorSpeed = RealNum{2.0f} * RadianPerSecond;
+        m_motorSpeed = Real{2.0f} * RadianPerSecond;
         m_motorOn = true;
         const auto pivot = Vec2(0.0f, 0.8f) * Meter;
 
@@ -116,8 +116,8 @@ public:
 
         // Balls
         auto circleConf = DiskShape::Conf{};
-        circleConf.vertexRadius = RealNum{0.25f} * Meter;
-        circleConf.density = RealNum{1} * KilogramPerSquareMeter;
+        circleConf.vertexRadius = Real{0.25f} * Meter;
+        circleConf.density = Real{1} * KilogramPerSquareMeter;
         const auto circle = std::make_shared<DiskShape>(circleConf);
         for (auto i = 0; i < 40; ++i)
         {
@@ -138,8 +138,8 @@ public:
             bd.position = pivot + m_offset;
             m_chassis = m_world->CreateBody(bd);
             auto polygonConf = PolygonShape::Conf{};
-            polygonConf.density = RealNum{1} * KilogramPerSquareMeter;
-            m_chassis->CreateFixture(std::make_shared<PolygonShape>(RealNum{2.5f} * Meter, RealNum{1.0f} * Meter, polygonConf), sd);
+            polygonConf.density = Real{1} * KilogramPerSquareMeter;
+            m_chassis->CreateFixture(std::make_shared<PolygonShape>(Real{2.5f} * Meter, Real{1.0f} * Meter, polygonConf), sd);
         }
 
         {
@@ -150,8 +150,8 @@ public:
             bd.position = pivot + m_offset;
             m_wheel = m_world->CreateBody(bd);
             auto conf = DiskShape::Conf{};
-            conf.vertexRadius = RealNum{1.6f} * Meter;
-            conf.density = RealNum{1} * KilogramPerSquareMeter;
+            conf.vertexRadius = Real{1.6f} * Meter;
+            conf.density = Real{1} * KilogramPerSquareMeter;
             m_wheel->CreateFixture(std::make_shared<DiskShape>(conf), sd);
         }
 
@@ -159,7 +159,7 @@ public:
             RevoluteJointDef jd{m_wheel, m_chassis, pivot + m_offset};
             jd.collideConnected = false;
             jd.motorSpeed = m_motorSpeed;
-            jd.maxMotorTorque = RealNum{400.0f} * NewtonMeter;
+            jd.maxMotorTorque = Real{400.0f} * NewtonMeter;
             jd.enableMotor = m_motorOn;
             m_motorJoint = (RevoluteJoint*)m_world->CreateJoint(jd);
         }
@@ -169,11 +169,11 @@ public:
         CreateLeg(-1.0f, wheelAnchor);
         CreateLeg(1.0f, wheelAnchor);
 
-        m_wheel->SetTransform(m_wheel->GetLocation(), RealNum{120.0f} * Degree);
+        m_wheel->SetTransform(m_wheel->GetLocation(), Real{120.0f} * Degree);
         CreateLeg(-1.0f, wheelAnchor);
         CreateLeg(1.0f, wheelAnchor);
 
-        m_wheel->SetTransform(m_wheel->GetLocation(), RealNum{-120.0f} * Degree);
+        m_wheel->SetTransform(m_wheel->GetLocation(), Real{-120.0f} * Degree);
         CreateLeg(-1.0f, wheelAnchor);
         CreateLeg(1.0f, wheelAnchor);
     }
@@ -193,7 +193,7 @@ public:
             break;
 
         case Key_S:
-            m_motorJoint->SetMotorSpeed(RealNum{0.0f} * RadianPerSecond);
+            m_motorJoint->SetMotorSpeed(Real{0.0f} * RadianPerSecond);
             break;
 
         case Key_D:

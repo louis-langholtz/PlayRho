@@ -106,7 +106,7 @@ namespace box2d
     }
     
     template <typename TYPE>
-    constexpr Vector3D<TYPE>& operator *= (Vector3D<TYPE>& lhs, const RealNum rhs) noexcept
+    constexpr Vector3D<TYPE>& operator *= (Vector3D<TYPE>& lhs, const Real rhs) noexcept
     {
         lhs.x *= rhs;
         lhs.y *= rhs;
@@ -115,7 +115,7 @@ namespace box2d
     }
     
     template <typename TYPE>
-    constexpr Vector3D<TYPE>& operator /= (Vector3D<TYPE>& lhs, const RealNum rhs) noexcept
+    constexpr Vector3D<TYPE>& operator /= (Vector3D<TYPE>& lhs, const Real rhs) noexcept
     {
         lhs.x /= rhs;
         lhs.y /= rhs;
@@ -142,9 +142,9 @@ namespace box2d
     }
 
     /// A 3D column vector with 3 elements.
-    /// @note This data structure is 3 times the size of <code>RealNum</code> -
-    ///   i.e. 12-bytes (with 4-byte RealNum).
-    using Vec3 = Vector3D<RealNum>;
+    /// @note This data structure is 3 times the size of <code>Real</code> -
+    ///   i.e. 12-bytes (with 4-byte Real).
+    using Vec3 = Vector3D<Real>;
 
     /// An all zero Vec3 value.
     /// @see Vec3.
@@ -153,7 +153,7 @@ namespace box2d
     template <>
     constexpr inline Vec3 GetInvalid() noexcept
     {
-        return Vec3{GetInvalid<RealNum>(), GetInvalid<RealNum>(), GetInvalid<RealNum>()};
+        return Vec3{GetInvalid<Real>(), GetInvalid<Real>(), GetInvalid<Real>()};
     }
     
     /// Does this vector contain finite coordinates?

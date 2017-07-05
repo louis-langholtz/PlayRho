@@ -60,7 +60,7 @@ struct MassData;
 ///
 /// @note Create these using the World::Create method.
 /// @note From a memory management perspective, bodies own Fixture instances.
-/// @note On a 64-bit architecture with 4-byte RealNum, this data structure is at least
+/// @note On a 64-bit architecture with 4-byte Real, this data structure is at least
 ///   192-bytes large.
 ///
 class Body
@@ -425,7 +425,7 @@ private:
     ///    2. updates the body's sweep positions (linear and angular) to the advanced ones; and
     ///    3. updates the body's transform to the new sweep one settings.
     /// @param t Valid new time factor in [0,1) to advance the sweep to.
-    void Advance(RealNum t) noexcept;
+    void Advance(Real t) noexcept;
 
     void SetMassDataDirty() noexcept;
     void UnsetMassDataDirty() noexcept;
@@ -646,7 +646,7 @@ inline Time Body::GetUnderActiveTime() const noexcept
 
 inline void Body::SetUnderActiveTime(Time value) noexcept
 {
-    if ((value == Second * RealNum{0}) || IsAccelerable())
+    if ((value == Second * Real{0}) || IsAccelerable())
     {
         m_underActiveTime = value;
     }
@@ -654,7 +654,7 @@ inline void Body::SetUnderActiveTime(Time value) noexcept
 
 inline void Body::ResetUnderActiveTime() noexcept
 {
-    m_underActiveTime = Second * RealNum(0);
+    m_underActiveTime = Second * Real(0);
 }
 
 inline bool Body::IsEnabled() const noexcept
@@ -745,7 +745,7 @@ inline AngularAcceleration Body::GetAngularAcceleration() const noexcept
     return m_angularAcceleration;
 }
 
-inline void Body::Advance(RealNum alpha) noexcept
+inline void Body::Advance(Real alpha) noexcept
 {
     //assert(m_sweep.GetAlpha0() <= alpha);
     assert(IsSpeedable() || m_sweep.pos1 == m_sweep.pos0);
@@ -832,7 +832,7 @@ inline Position GetPosition1(const Body& body) noexcept
 inline Mass GetMass(const Body& body) noexcept
 {
     const auto invMass = body.GetInvMass();
-    return (invMass != InvMass{0})? Mass{RealNum{1} / invMass}: Mass{0};
+    return (invMass != InvMass{0})? Mass{Real{1} / invMass}: Mass{0};
 }
 
 inline void ApplyLinearAcceleration(Body& body, const LinearAcceleration2D amount)
@@ -939,7 +939,7 @@ Force2D GetCentripetalForce(const Body& body, const Length2D axis);
 /// @return the rotational inertia.
 inline RotInertia GetRotInertia(const Body& body) noexcept
 {
-    return RealNum{1} / body.GetInvRotInertia();
+    return Real{1} / body.GetInvRotInertia();
 }
 
 /// Gets the rotational inertia of the body about the local origin.

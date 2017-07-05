@@ -59,7 +59,7 @@ SeparationFinder SeparationFinder::Get(Span<const IndexPair> indices,
                                             UnitVec2::GetZero());
             const auto normal = Rotate(axis, xfB.q);
             
-            const auto localPoint = (localPointB1 + localPointB2) / RealNum(2);
+            const auto localPoint = (localPointB1 + localPointB2) / Real(2);
             const auto pointB = Transform(localPoint, xfB);
             
             const auto localPointA = proxyA.GetVertex(ip0.a);
@@ -85,7 +85,7 @@ SeparationFinder SeparationFinder::Get(Span<const IndexPair> indices,
             const auto axis = GetUnitVector(GetFwdPerpendicular(delta), UnitVec2::GetZero());
             const auto normal = Rotate(axis, xfA.q);
             
-            const auto localPoint = (localPointA1 + localPointA2) / RealNum(2);
+            const auto localPoint = (localPointA1 + localPointA2) / Real(2);
             const auto pointA = Transform(localPoint, xfA);
             
             const auto localPointB = proxyB.GetVertex(ip0.b);

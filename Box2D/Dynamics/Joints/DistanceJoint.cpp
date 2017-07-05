@@ -42,7 +42,7 @@ using namespace box2d;
 
 DistanceJointDef::DistanceJointDef(Body* bA, Body* bB,
                                    const Length2D anchor1, const Length2D anchor2,
-                                   Frequency freq, RealNum damp) noexcept:
+                                   Frequency freq, Real damp) noexcept:
     JointDef{JointType::Distance, bA, bB},
     localAnchorA{GetLocalPoint(*bA, anchor1)}, localAnchorB{GetLocalPoint(*bB, anchor2)},
     length{GetLength(anchor2 - anchor1)},
@@ -114,17 +114,17 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     auto invMass = InvMass{invMassA + invRotMassA + invMassB + invRotMassB};
 
     // Compute the effective mass matrix.
-    m_mass = (invMass != InvMass{0}) ? RealNum{1} / invMass: Mass{0};
+    m_mass = (invMass != InvMass{0}) ? Real{1} / invMass: Mass{0};
 
     if (m_frequency > Frequency{0})
     {
         const auto C = length - m_length; // L
 
         // Frequency
-        const auto omega = RealNum{2} * Pi * m_frequency;
+        const auto omega = Real{2} * Pi * m_frequency;
 
         // Damping coefficient
-        const auto d = RealNum{2} * m_mass * m_dampingRatio * omega; // M T^-1
+        const auto d = Real{2} * m_mass * m_dampingRatio * omega; // M T^-1
 
         // Spring stiffness
         const auto k = m_mass * Square(omega); // M T^-2
@@ -132,11 +132,11 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
         // magic formulas
         const auto h = step.GetTime();
         const auto gamma = Mass{h * (d + h * k)}; // T (M T^-1 + T M T^-2) = M
-        m_invGamma = (gamma != Mass{0})? RealNum{1} / gamma: 0;
+        m_invGamma = (gamma != Mass{0})? Real{1} / gamma: 0;
         m_bias = C * h * k * m_invGamma; // L T M T^-2 M^-1 = L T^-1
 
         invMass += m_invGamma;
-        m_mass = (invMass != InvMass{0}) ? RealNum{1} / invMass: 0;
+        m_mass = (invMass != InvMass{0}) ? Real{1} / invMass: 0;
     }
     else
     {

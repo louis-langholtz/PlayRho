@@ -38,7 +38,7 @@ public:
             body->CreateFixture(std::make_shared<EdgeShape>(Vec2(-10.0f, 0.0f) * Meter, Vec2(10.0f, 0.0f) * Meter));
 
             PolygonShape shape;
-            SetAsBox(shape, RealNum{0.2f} * Meter, RealNum{1.0f} * Meter, Vec2(0.5f, 1.0f) * Meter, RealNum{0.0f} * Radian);
+            SetAsBox(shape, Real{0.2f} * Meter, Real{1.0f} * Meter, Vec2(0.5f, 1.0f) * Meter, Real{0.0f} * Radian);
             body->CreateFixture(std::make_shared<PolygonShape>(shape));
         }
 
@@ -48,14 +48,14 @@ public:
             bd.position = Vec2(0.0f, 4.0f) * Meter;
 
             PolygonShape box;
-            box.SetAsBox(RealNum{2.0f} * Meter, RealNum{0.1f} * Meter);
-            box.SetDensity(RealNum{1} * KilogramPerSquareMeter);
+            box.SetAsBox(Real{2.0f} * Meter, Real{0.1f} * Meter);
+            box.SetDensity(Real{1} * KilogramPerSquareMeter);
 
             m_body = m_world->CreateBody(bd);
             m_body->CreateFixture(std::make_shared<PolygonShape>(box));
 
-            box.SetAsBox(RealNum{0.25f} * Meter, RealNum{0.25f} * Meter);
-            box.SetDensity(RealNum{100} * KilogramPerSquareMeter);
+            box.SetAsBox(Real{0.25f} * Meter, Real{0.25f} * Meter);
+            box.SetDensity(Real{100} * KilogramPerSquareMeter);
 
             //m_x = RandomFloat(-1.0f, 1.0f);
             m_x = 0.20352793f;
@@ -71,11 +71,11 @@ public:
 
     void Launch()
     {
-        m_body->SetTransform(Vec2(0.0f, 4.0f) * Meter, RealNum{0.0f} * Radian);
+        m_body->SetTransform(Vec2(0.0f, 4.0f) * Meter, Real{0.0f} * Radian);
         m_body->SetVelocity(Velocity{LinearVelocity2D{0, 0}, AngularVelocity{0}});
 
         m_x = RandomFloat(-1.0f, 1.0f);
-        m_bullet->SetTransform(Vec2(m_x, 10.0f) * Meter, RealNum{0.0f} * Radian);
+        m_bullet->SetTransform(Vec2(m_x, 10.0f) * Meter, Real{0.0f} * Radian);
         m_bullet->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * MeterPerSecond, AngularVelocity{0}});
 
         std::uint32_t gjkCalls, gjkIters, gjkMaxIters;
@@ -127,7 +127,7 @@ public:
 
     Body* m_body;
     Body* m_bullet;
-    RealNum m_x;
+    Real m_x;
 };
 
 } // namespace box2d

@@ -23,7 +23,7 @@ using namespace box2d;
 
 TEST(MouseJoint, ByteSize)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(MouseJoint), std::size_t(112)); break;
         case  8: EXPECT_EQ(sizeof(MouseJoint), std::size_t(184)); break;
@@ -42,8 +42,8 @@ TEST(MouseJoint, DefaultInitialized)
     EXPECT_EQ(joint.GetBodyB(), def.bodyB);
     EXPECT_EQ(joint.GetAnchorA(), def.target);
     EXPECT_FALSE(IsValid(joint.GetAnchorB()));
-    EXPECT_EQ(joint.GetReactionForce(RealNum{1} * Hertz), Force2D(0, 0));
-    EXPECT_EQ(joint.GetReactionTorque(RealNum{1} * Hertz), Torque{0});
+    EXPECT_EQ(joint.GetReactionForce(Real{1} * Hertz), Force2D(0, 0));
+    EXPECT_EQ(joint.GetReactionTorque(Real{1} * Hertz), Torque{0});
     EXPECT_EQ(joint.GetUserData(), nullptr);
     EXPECT_FALSE(joint.GetCollideConnected());
     EXPECT_FALSE(IsValid(joint.GetLocalAnchorB()));

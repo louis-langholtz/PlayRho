@@ -50,7 +50,7 @@ namespace box2d
         
         /// @brief Initializing constructor.
         constexpr Sweep(const Position p0, const Position p1, const Length2D lc = Length2D(0, 0),
-                        RealNum a0 = 0) noexcept:
+                        Real a0 = 0) noexcept:
         	pos0{p0}, pos1{p1}, localCenter{lc}, alpha0{a0}
         {
             assert(a0 >= 0);
@@ -71,7 +71,7 @@ namespace box2d
         
         /// @brief Gets the alpha0 for this sweep.
         /// @return Value between 0 and less than 1.
-        RealNum GetAlpha0() const noexcept { return alpha0; }
+        Real GetAlpha0() const noexcept { return alpha0; }
         
         /// @brief Advances the sweep by a factor of the difference between the given time alpha
         ///   and the sweep's alpha0.
@@ -82,7 +82,7 @@ namespace box2d
         /// @param alpha Valid new time factor in [0,1) to update the sweep to. Behavior is
         ///   undefined if value is invalid.
         ///
-        void Advance0(RealNum alpha) noexcept;
+        void Advance0(Real alpha) noexcept;
         
         /// @brief Resets the alpha 0 value back to zero.
         /// @post Getting the alpha 0 value after calling this method will return zero.
@@ -102,10 +102,10 @@ namespace box2d
         /// @brief Fraction of the current time step in the range [0,1]
         /// @note pos0.linear and pos0.angular are the positions at alpha0.
         /// @note 4-bytes.
-        RealNum alpha0 = 0;
+        Real alpha0 = 0;
     };
     
-    inline void Sweep::Advance0(const RealNum alpha) noexcept
+    inline void Sweep::Advance0(const Real alpha) noexcept
     {
         assert(IsValid(alpha));
         assert(alpha >= 0);

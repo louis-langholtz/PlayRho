@@ -47,7 +47,7 @@ namespace box2d
         ///   or NaN).
         /// @param h Hit (or not).
         ///
-        constexpr RayCastOutput(UnitVec2 n, RealNum f, bool h = true) noexcept:
+        constexpr RayCastOutput(UnitVec2 n, Real f, bool h = true) noexcept:
             normal{n}, fraction{f}, hit{h}
         {
             // Check against out-of-range values of f while accepting NaN.
@@ -63,7 +63,7 @@ namespace box2d
         /// @note This is a unit interval value - a value between 0 and 1 - or it's invalid.
         /// @note This value is meaningless unless the ray hit.
         /// @sa hit.
-        RealNum fraction = GetInvalid<decltype(fraction)>();
+        Real fraction = GetInvalid<decltype(fraction)>();
         
         /// @brief Hit flag.
         /// @note <code>true</code> if the ray hit and the normal and fraction values should be

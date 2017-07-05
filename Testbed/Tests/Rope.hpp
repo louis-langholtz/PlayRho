@@ -32,7 +32,7 @@ public:
     {
         const auto N = 40;
         Vec2 vertices[N];
-        RealNum masses[N];
+        Real masses[N];
 
         for (auto i = decltype(N){0}; i < N; ++i)
         {
@@ -90,7 +90,7 @@ public:
     }
 
     Rope m_rope;
-    RealNum m_angle;
+    Real m_angle;
 };
 
 } // namespace box2d

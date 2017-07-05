@@ -38,7 +38,7 @@ public:
     EdgeShapes()
     {
         m_circle->SetFriction(0.3f);
-        m_circle->SetDensity(RealNum{20} * KilogramPerSquareMeter);
+        m_circle->SetDensity(Real{20} * KilogramPerSquareMeter);
 
         // Ground body
         {
@@ -59,7 +59,7 @@ public:
         {
             m_polygons[i] = std::make_shared<PolygonShape>();
             m_polygons[i]->SetFriction(0.3f);
-            m_polygons[i]->SetDensity(RealNum{20} * KilogramPerSquareMeter);
+            m_polygons[i]->SetDensity(Real{20} * KilogramPerSquareMeter);
         }
         
         m_polygons[0]->Set({
@@ -90,7 +90,7 @@ public:
             });
         }
 
-        m_polygons[3]->SetAsBox(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
+        m_polygons[3]->SetAsBox(Real{0.5f} * Meter, Real{0.5f} * Meter);
 
         m_bodyIndex = 0;
         std::memset(m_bodies, 0, sizeof(m_bodies));
@@ -116,7 +116,7 @@ public:
 
         if (index == 4)
         {
-            bd.angularDamping = RealNum(0.02f) * Hertz;
+            bd.angularDamping = Real(0.02f) * Hertz;
         }
 
         m_bodies[m_bodyIndex] = m_world->CreateBody(bd);
@@ -172,7 +172,7 @@ public:
         drawer.DrawString(5, m_textLine, "Press 1-5 to drop stuff");
         m_textLine += DRAW_STRING_NEW_LINE;
 
-        const auto L = RealNum(25);
+        const auto L = Real(25);
         const auto point1 = Vec2(0.0f, 10.0f) * Meter;
         const auto d = Vec2(L * std::cos(m_angle), -L * Abs(std::sin(m_angle))) * Meter;
         const auto point2 = point1 + d;
@@ -191,9 +191,9 @@ public:
 
         if (fixture)
         {
-            drawer.DrawPoint(point, RealNum{5.0f} * Meter, Color(0.4f, 0.9f, 0.4f));
+            drawer.DrawPoint(point, Real{5.0f} * Meter, Color(0.4f, 0.9f, 0.4f));
             drawer.DrawSegment(point1, point, Color(0.8f, 0.8f, 0.8f));
-            const auto head = point + RealNum{0.5f} * normal * Meter;
+            const auto head = point + Real{0.5f} * normal * Meter;
             drawer.DrawSegment(point, head, Color(0.9f, 0.9f, 0.4f));
         }
         else
@@ -211,9 +211,9 @@ public:
     int m_bodyIndex;
     Body* m_bodies[e_maxBodies];
     std::shared_ptr<PolygonShape> m_polygons[4];
-    std::shared_ptr<DiskShape> m_circle = std::make_shared<DiskShape>(RealNum{0.5f} * Meter);
+    std::shared_ptr<DiskShape> m_circle = std::make_shared<DiskShape>(Real{0.5f} * Meter);
 
-    RealNum m_angle;
+    Real m_angle;
 };
 
 } // namespace box2d

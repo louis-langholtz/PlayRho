@@ -57,10 +57,10 @@ struct WheelJointDef : public JointDef
     AngularVelocity motorSpeed = AngularVelocity{0};
 
     /// Suspension frequency, zero indicates no suspension
-    Frequency frequency = RealNum{2} * Hertz;
+    Frequency frequency = Real{2} * Hertz;
 
     /// Suspension damping ratio, one indicates critical damping
-    RealNum dampingRatio = 0.7f;
+    Real dampingRatio = 0.7f;
 };
 
 /// A wheel joint. This joint provides two degrees of freedom: translation
@@ -120,8 +120,8 @@ public:
     Frequency GetSpringFrequency() const;
 
     /// Set/Get the spring damping ratio
-    void SetSpringDampingRatio(RealNum ratio);
-    RealNum GetSpringDampingRatio() const;
+    void SetSpringDampingRatio(Real ratio);
+    Real GetSpringDampingRatio() const;
 
 private:
 
@@ -130,7 +130,7 @@ private:
     bool SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const override;
 
     Frequency m_frequency;
-    RealNum m_dampingRatio;
+    Real m_dampingRatio;
 
     // Solver shared
     Length2D m_localAnchorA;
@@ -183,12 +183,12 @@ inline Frequency WheelJoint::GetSpringFrequency() const
     return m_frequency;
 }
 
-inline void WheelJoint::SetSpringDampingRatio(RealNum ratio)
+inline void WheelJoint::SetSpringDampingRatio(Real ratio)
 {
     m_dampingRatio = ratio;
 }
 
-inline RealNum WheelJoint::GetSpringDampingRatio() const
+inline Real WheelJoint::GetSpringDampingRatio() const
 {
     return m_dampingRatio;
 }

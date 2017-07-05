@@ -26,7 +26,7 @@
 using namespace box2d;
 
 VelocityConstraint::VelocityConstraint(index_type contactIndex,
-                                       RealNum friction, RealNum restitution,
+                                       Real friction, Real restitution,
                                        LinearVelocity tangentSpeed,
                                        const Manifold& manifold,
                                        BodyConstraint& bA, Length radiusA,
@@ -68,7 +68,7 @@ VelocityConstraint::VelocityConstraint(index_type contactIndex,
         if (IsValid(k))
         {
             // Ensure a reasonable condition number.
-            constexpr auto maxCondNum = BOX2D_MAGIC(RealNum(1000));
+            constexpr auto maxCondNum = BOX2D_MAGIC(Real(1000));
             const auto scaled_k11_squared = k.ex.x * (k.ex.x / maxCondNum);
             const auto k11_times_k22 = k.ex.x * k.ey.y;
             const auto k12_squared = Square(k.ex.y);
@@ -123,14 +123,14 @@ VelocityConstraint::GetPoint(Momentum normalImpulse, Momentum tangentImpulse,
         const auto invRotMassA = invRotInertiaA * Square(Cross(relA, GetNormal())) / SquareRadian;
         const auto invRotMassB = invRotInertiaB * Square(Cross(relB, GetNormal())) / SquareRadian;
         const auto value = invMass + invRotMassA + invRotMassB;
-        return (value != InvMass{0})? RealNum{1} / value : Mass{0};
+        return (value != InvMass{0})? Real{1} / value : Mass{0};
     }();
     
     point.tangentMass = [&]() {
         const auto invRotMassA = invRotInertiaA * Square(Cross(relA, GetTangent())) / SquareRadian;
         const auto invRotMassB = invRotInertiaB * Square(Cross(relB, GetTangent())) / SquareRadian;
         const auto value = invMass + invRotMassA + invRotMassB;
-        return (value != InvMass{0})? RealNum{1} / value : Mass{0};
+        return (value != InvMass{0})? Real{1} / value : Mass{0};
     }();
 
     return point;
@@ -158,7 +158,7 @@ Mat22 VelocityConstraint::ComputeK() const noexcept
         const auto rn2A = Cross(GetVec2(GetPointRelPosA(1)), normal);
         const auto rn2B = Cross(GetVec2(GetPointRelPosB(1)), normal);
         
-        const auto invMass = RealNum{GetInvMass() * Kilogram};
+        const auto invMass = Real{GetInvMass() * Kilogram};
         const auto invRotInertiaA = m_bodyA->GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
         const auto invRotInertiaB = m_bodyB->GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
 

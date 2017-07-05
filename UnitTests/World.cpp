@@ -42,7 +42,7 @@ using namespace box2d;
 
 TEST(World, ByteSize)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4:
         {
@@ -81,13 +81,13 @@ TEST(World, Def)
     EXPECT_EQ(defaultDef.minVertexRadius, worldDef.minVertexRadius);
     const auto stepConf = StepConf{};
 
-    const auto v = RealNum(1);
-    const auto n = std::nextafter(v, RealNum(0));
+    const auto v = Real(1);
+    const auto n = std::nextafter(v, Real(0));
     const auto time_inc = (v - n) * Second;
-    ASSERT_GT(time_inc, RealNum(0) * Second);
-    ASSERT_LT(time_inc, RealNum(1) * Second);
+    ASSERT_GT(time_inc, Real(0) * Second);
+    ASSERT_LT(time_inc, Real(1) * Second);
     const auto max_inc = time_inc * stepConf.maxTranslation;
-    EXPECT_GT(max_inc, RealNum(0) * Meter * Second);
+    EXPECT_GT(max_inc, Real(0) * Meter * Second);
 }
 
 TEST(World, Traits)
@@ -122,7 +122,7 @@ TEST(World, DefaultInit)
     EXPECT_EQ(GetJointCount(world), JointCounter(0));
     EXPECT_EQ(GetContactCount(world), ContactCounter(0));
     EXPECT_EQ(world.GetTreeHeight(), World::proxy_size_type(0));
-    EXPECT_EQ(world.GetTreeQuality(), RealNum(0));
+    EXPECT_EQ(world.GetTreeQuality(), Real(0));
 
     EXPECT_EQ(world.GetGravity(), EarthlyGravity);
 
@@ -157,8 +157,8 @@ TEST(World, DefaultInit)
 TEST(World, Init)
 {
     const auto gravity = LinearAcceleration2D{
-        RealNum(-4.2) * MeterPerSquareSecond,
-        RealNum(3.4) * MeterPerSquareSecond
+        Real(-4.2) * MeterPerSquareSecond,
+        Real(3.4) * MeterPerSquareSecond
     };
     World world{WorldDef{}.UseGravity(gravity)};
     EXPECT_EQ(world.GetGravity(), gravity);
@@ -183,8 +183,8 @@ TEST(World, CopyConstruction)
     }
     
     const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}
-                                                   .UseDensity(RealNum(1) * KilogramPerSquareMeter)
-                                                   .UseVertexRadius(RealNum(1) * Meter));
+                                                   .UseDensity(Real(1) * KilogramPerSquareMeter)
+                                                   .UseVertexRadius(Real(1) * Meter));
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
     b1->CreateFixture(shape);
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
@@ -193,7 +193,7 @@ TEST(World, CopyConstruction)
     world.CreateJoint(RevoluteJointDef{b1, b2, Length2D(0, 0)});
     world.CreateJoint(PrismaticJointDef{b1, b2, Length2D(0, 0), UnitVec2::GetRight()});
     world.CreateJoint(PulleyJointDef{b1, b2, Length2D(0, 0), Length2D(0, 0),
-        Length2D(0, 0), Length2D(0, 0), RealNum(1)});
+        Length2D(0, 0), Length2D(0, 0), Real(1)});
     
     auto stepConf = StepConf{};
     world.Step(stepConf);
@@ -241,8 +241,8 @@ TEST(World, CopyAssignment)
     }
     
     const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}
-                                                   .UseDensity(RealNum(1) * KilogramPerSquareMeter)
-                                                   .UseVertexRadius(RealNum(1) * Meter));
+                                                   .UseDensity(Real(1) * KilogramPerSquareMeter)
+                                                   .UseVertexRadius(Real(1) * Meter));
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
     b1->CreateFixture(shape);
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
@@ -251,7 +251,7 @@ TEST(World, CopyAssignment)
     world.CreateJoint(RevoluteJointDef{b1, b2, Length2D(0, 0)});
     world.CreateJoint(PrismaticJointDef{b1, b2, Length2D(0, 0), UnitVec2::GetRight()});
     world.CreateJoint(PulleyJointDef{b1, b2, Length2D(0, 0), Length2D(0, 0),
-        Length2D(0, 0), Length2D(0, 0), RealNum(1)});
+        Length2D(0, 0), Length2D(0, 0), Real(1)});
     
     auto stepConf = StepConf{};
     world.Step(stepConf);
@@ -284,8 +284,8 @@ TEST(World, CopyAssignment)
 TEST(World, SetGravity)
 {
     const auto gravity = LinearAcceleration2D{
-        RealNum(-4.2) * MeterPerSquareSecond,
-        RealNum(3.4) * MeterPerSquareSecond
+        Real(-4.2) * MeterPerSquareSecond,
+        Real(3.4) * MeterPerSquareSecond
     };
     World world;
     EXPECT_NE(world.GetGravity(), gravity);
@@ -337,16 +337,16 @@ TEST(World, ClearForcesFreeFunction)
     ASSERT_EQ(body->GetLinearAcceleration().x, world.GetGravity().x);
     ASSERT_EQ(body->GetLinearAcceleration().y, world.GetGravity().y);
     
-    const auto v1 = Length2D{-RealNum(1) * Meter, RealNum(0) * Meter};
-    const auto v2 = Length2D{+RealNum(1) * Meter, RealNum(0) * Meter};
+    const auto v1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
+    const auto v2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
     auto conf = EdgeShape::Conf{};
-    conf.vertexRadius = RealNum{1} * Meter;
-    conf.density = RealNum{1} * KilogramPerSquareMeter;
+    conf.vertexRadius = Real{1} * Meter;
+    conf.density = Real{1} * KilogramPerSquareMeter;
     const auto shape = std::make_shared<EdgeShape>(v1, v2, conf);
     const auto fixture = body->CreateFixture(shape);
     ASSERT_NE(fixture, nullptr);
 
-    ApplyForceToCenter(*body, Force2D(RealNum(2) * Newton, RealNum(4) * Newton));
+    ApplyForceToCenter(*body, Force2D(Real(2) * Newton, Real(4) * Newton));
     ASSERT_NE(body->GetLinearAcceleration().x, world.GetGravity().x);
     ASSERT_NE(body->GetLinearAcceleration().y, world.GetGravity().y);
     
@@ -365,10 +365,10 @@ TEST(World, GetShapeCountFreeFunction)
     ASSERT_NE(body, nullptr);
     
     const auto shapeConf = EdgeShape::Conf{}
-        .UseVertexRadius(RealNum{1} * Meter)
-        .UseDensity(RealNum{1} * KilogramPerSquareMeter);
-    const auto v1 = Length2D{-RealNum(1) * Meter, RealNum(0) * Meter};
-    const auto v2 = Length2D{+RealNum(1) * Meter, RealNum(0) * Meter};
+        .UseVertexRadius(Real{1} * Meter)
+        .UseDensity(Real{1} * KilogramPerSquareMeter);
+    const auto v1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
+    const auto v2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
 
     const auto shape1 = std::make_shared<EdgeShape>(v1, v2, shapeConf);
     
@@ -397,10 +397,10 @@ TEST(World, GetFixtureCountFreeFunction)
     ASSERT_NE(body, nullptr);
     
     const auto shapeConf = EdgeShape::Conf{}
-        .UseVertexRadius(RealNum{1} * Meter)
-        .UseDensity(RealNum{1} * KilogramPerSquareMeter);
-    const auto v1 = Length2D{-RealNum(1) * Meter, RealNum(0) * Meter};
-    const auto v2 = Length2D{+RealNum(1) * Meter, RealNum(0) * Meter};
+        .UseVertexRadius(Real{1} * Meter)
+        .UseDensity(Real{1} * KilogramPerSquareMeter);
+    const auto v1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
+    const auto v2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
     
     const auto shape = std::make_shared<EdgeShape>(v1, v2, shapeConf);
     
@@ -428,15 +428,15 @@ TEST(World, AwakenFreeFunction)
     ASSERT_TRUE(body->IsSpeedable());
     ASSERT_TRUE(body->IsAccelerable());
     ASSERT_FALSE(body->IsImpenetrable());
-    ASSERT_EQ(body->GetLinearAcceleration().x, RealNum(0) * MeterPerSquareSecond);
-    ASSERT_EQ(body->GetLinearAcceleration().y, RealNum(0) * MeterPerSquareSecond);
+    ASSERT_EQ(body->GetLinearAcceleration().x, Real(0) * MeterPerSquareSecond);
+    ASSERT_EQ(body->GetLinearAcceleration().y, Real(0) * MeterPerSquareSecond);
     
-    const auto v1 = Length2D{-RealNum(1) * Meter, RealNum(0) * Meter};
-    const auto v2 = Length2D{+RealNum(1) * Meter, RealNum(0) * Meter};
+    const auto v1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
+    const auto v2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
     const auto shape = std::make_shared<EdgeShape>(v1, v2,
                                                    EdgeShape::Conf{}
-                                                   .UseVertexRadius(RealNum{1} * Meter)
-                                                   .UseDensity(RealNum{1} * KilogramPerSquareMeter));
+                                                   .UseVertexRadius(Real{1} * Meter)
+                                                   .UseDensity(Real{1} * KilogramPerSquareMeter));
     const auto fixture = body->CreateFixture(shape);
     ASSERT_NE(fixture, nullptr);
     
@@ -459,24 +459,24 @@ TEST(World, DynamicEdgeBodyHasCorrectMass)
     const auto body = world.CreateBody(bodyDef);
     ASSERT_EQ(body->GetType(), BodyType::Dynamic);
     
-    const auto v1 = Length2D{-RealNum(1) * Meter, RealNum(0) * Meter};
-    const auto v2 = Length2D{+RealNum(1) * Meter, RealNum(0) * Meter};
+    const auto v1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
+    const auto v2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
     auto conf = EdgeShape::Conf{};
-    conf.vertexRadius = RealNum{1} * Meter;
+    conf.vertexRadius = Real{1} * Meter;
     const auto shape = std::make_shared<EdgeShape>(v1, v2, conf);
-    shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
-    ASSERT_EQ(shape->GetVertexRadius(), RealNum(1) * Meter);
+    shape->SetDensity(Real{1} * KilogramPerSquareMeter);
+    ASSERT_EQ(shape->GetVertexRadius(), Real(1) * Meter);
 
     const auto fixture = body->CreateFixture(shape);
     ASSERT_NE(fixture, nullptr);
-    ASSERT_EQ(fixture->GetDensity(), RealNum{1} * KilogramPerSquareMeter);
+    ASSERT_EQ(fixture->GetDensity(), Real{1} * KilogramPerSquareMeter);
 
     const auto circleMass = Mass{fixture->GetDensity() * (Pi * Square(shape->GetVertexRadius()))};
-    const auto rectMass = Mass{fixture->GetDensity() * (shape->GetVertexRadius() * RealNum{2} * GetLength(v2 - v1))};
+    const auto rectMass = Mass{fixture->GetDensity() * (shape->GetVertexRadius() * Real{2} * GetLength(v2 - v1))};
     const auto totalMass = Mass{circleMass + rectMass};
     
     EXPECT_EQ(body->GetType(), BodyType::Dynamic);
-    EXPECT_EQ(body->GetInvMass(), RealNum(1) / totalMass);
+    EXPECT_EQ(body->GetInvMass(), Real(1) / totalMass);
 
     ASSERT_NE(fixture->GetShape(), nullptr);
 }
@@ -494,8 +494,8 @@ TEST(World, CreateAndDestroyJoint)
     EXPECT_TRUE(world.GetJoints().empty());
     EXPECT_EQ(world.GetJoints().begin(), world.GetJoints().end());
     
-    const auto anchorA = Length2D{RealNum(+0.4) * Meter, RealNum(-1.2) * Meter};
-    const auto anchorB = Length2D{RealNum(-2.3) * Meter, RealNum(+0.7) * Meter};
+    const auto anchorA = Length2D{Real(+0.4) * Meter, Real(-1.2) * Meter};
+    const auto anchorB = Length2D{Real(-2.3) * Meter, Real(+0.7) * Meter};
     const auto joint = world.CreateJoint(DistanceJointDef{body1, body2, anchorA, anchorB});
     EXPECT_EQ(GetJointCount(world), JointCounter(1));
     EXPECT_FALSE(world.GetJoints().empty());
@@ -556,19 +556,19 @@ TEST(World, StepZeroTimeDoesNothing)
     World world{WorldDef{}.UseGravity(gravity)};
     
     BodyDef def;
-    def.position = Length2D{RealNum(31.9) * Meter, RealNum(-19.24) * Meter};
+    def.position = Length2D{Real(31.9) * Meter, Real(-19.24) * Meter};
     def.type = BodyType::Dynamic;
     
     const auto body = world.CreateBody(def);
     ASSERT_NE(body, nullptr);
     EXPECT_EQ(body->GetLocation().x, def.position.x);
     EXPECT_EQ(body->GetLocation().y, def.position.y);
-    EXPECT_EQ(GetLinearVelocity(*body).x, RealNum(0) * MeterPerSecond);
-    EXPECT_EQ(GetLinearVelocity(*body).y, RealNum(0) * MeterPerSecond);
-    EXPECT_EQ(body->GetLinearAcceleration().x, RealNum{0.0f} * MeterPerSquareSecond);
+    EXPECT_EQ(GetLinearVelocity(*body).x, Real(0) * MeterPerSecond);
+    EXPECT_EQ(GetLinearVelocity(*body).y, Real(0) * MeterPerSecond);
+    EXPECT_EQ(body->GetLinearAcceleration().x, Real{0.0f} * MeterPerSquareSecond);
     EXPECT_EQ(body->GetLinearAcceleration().y, gravity.y);
     
-    const auto time_inc = Time{Second * RealNum{0}};
+    const auto time_inc = Time{Second * Real{0}};
     
     auto pos = body->GetLocation();
     auto vel = GetLinearVelocity(*body);
@@ -582,23 +582,23 @@ TEST(World, StepZeroTimeDoesNothing)
         EXPECT_EQ(body->GetLocation().y, pos.y);
         pos = body->GetLocation();
         
-        EXPECT_EQ(GetLinearVelocity(*body).x, RealNum(0) * MeterPerSecond);
-        EXPECT_TRUE(almost_equal(RealNum{GetLinearVelocity(*body).y / MeterPerSecond}, vel.y / MeterPerSecond));
+        EXPECT_EQ(GetLinearVelocity(*body).x, Real(0) * MeterPerSecond);
+        EXPECT_TRUE(almost_equal(Real{GetLinearVelocity(*body).y / MeterPerSecond}, vel.y / MeterPerSecond));
         vel = GetLinearVelocity(*body);
     }
 }
 
 TEST(World, GravitationalBodyMovement)
 {
-    auto p0 = Length2D{RealNum(0) * Meter, RealNum(1) * Meter};
+    auto p0 = Length2D{Real(0) * Meter, Real(1) * Meter};
 
     auto body_def = BodyDef{};
     body_def.type = BodyType::Dynamic;
     body_def.position = p0;
 
-    const auto a = RealNum(-10);
+    const auto a = Real(-10);
     const auto gravity = LinearAcceleration2D{0, a * MeterPerSquareSecond};
-    const auto t = RealNum(.01) * Second;
+    const auto t = Real(.01) * Second;
     
     World world{WorldDef{}.UseGravity(gravity)};
 
@@ -606,29 +606,29 @@ TEST(World, GravitationalBodyMovement)
     ASSERT_NE(body, nullptr);
     EXPECT_FALSE(body->IsImpenetrable());
     EXPECT_EQ(body->GetType(), BodyType::Dynamic);
-    EXPECT_EQ(GetLinearVelocity(*body).x, RealNum{0.0f} * MeterPerSecond);
-    EXPECT_EQ(GetLinearVelocity(*body).y, RealNum{0.0f} * MeterPerSecond);
+    EXPECT_EQ(GetLinearVelocity(*body).x, Real{0.0f} * MeterPerSecond);
+    EXPECT_EQ(GetLinearVelocity(*body).y, Real{0.0f} * MeterPerSecond);
     EXPECT_EQ(body->GetLocation().x, p0.x);
     EXPECT_EQ(body->GetLocation().y, p0.y);
 
     Step(world, t);
-    EXPECT_EQ(GetLinearVelocity(*body).x, RealNum{0.0f} * MeterPerSecond);
-    EXPECT_EQ(GetLinearVelocity(*body).y, a * (t * RealNum{1}) * MeterPerSquareSecond);
+    EXPECT_EQ(GetLinearVelocity(*body).x, Real{0.0f} * MeterPerSecond);
+    EXPECT_EQ(GetLinearVelocity(*body).y, a * (t * Real{1}) * MeterPerSquareSecond);
     EXPECT_EQ(body->GetLocation().x, p0.x);
     EXPECT_EQ(body->GetLocation().y, p0.y + GetLinearVelocity(*body).y * t);
 
     p0 = body->GetLocation();
     Step(world, t);
-    EXPECT_EQ(GetLinearVelocity(*body).x, RealNum{0.0f} * MeterPerSecond);
-    EXPECT_EQ(GetLinearVelocity(*body).y, a * (t * RealNum{2}) * MeterPerSquareSecond);
+    EXPECT_EQ(GetLinearVelocity(*body).x, Real{0.0f} * MeterPerSecond);
+    EXPECT_EQ(GetLinearVelocity(*body).y, a * (t * Real{2}) * MeterPerSquareSecond);
     EXPECT_EQ(body->GetLocation().x, p0.x);
     EXPECT_EQ(body->GetLocation().y, p0.y + GetLinearVelocity(*body).y * t);
     
     p0 = body->GetLocation();
     Step(world, t);
-    EXPECT_EQ(GetLinearVelocity(*body).x, RealNum{0.0f} * MeterPerSecond);
-    EXPECT_NEAR(double(RealNum{GetLinearVelocity(*body).y / MeterPerSecond}),
-                double(RealNum{a * (t * RealNum{3}) / Second}), 0.00001);
+    EXPECT_EQ(GetLinearVelocity(*body).x, Real{0.0f} * MeterPerSecond);
+    EXPECT_NEAR(double(Real{GetLinearVelocity(*body).y / MeterPerSecond}),
+                double(Real{a * (t * Real{3}) / Second}), 0.00001);
     EXPECT_EQ(body->GetLocation().x, p0.x);
     EXPECT_EQ(body->GetLocation().y, p0.y + GetLinearVelocity(*body).y * t);
 }
@@ -640,19 +640,19 @@ TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
     World world{WorldDef{}.UseGravity(gravity)};
     
     BodyDef def;
-    def.position = Length2D{RealNum(31.9) * Meter, RealNum(-19.24) * Meter};
+    def.position = Length2D{Real(31.9) * Meter, Real(-19.24) * Meter};
     def.type = BodyType::Dynamic;
     
     const auto body = world.CreateBody(def);
     ASSERT_NE(body, nullptr);
     EXPECT_EQ(body->GetLocation().x, def.position.x);
     EXPECT_EQ(body->GetLocation().y, def.position.y);
-    EXPECT_EQ(GetLinearVelocity(*body).x, RealNum(0) * MeterPerSecond);
-    EXPECT_EQ(GetLinearVelocity(*body).y, RealNum(0) * MeterPerSecond);
-    EXPECT_EQ(body->GetLinearAcceleration().x, RealNum{0.0f} * MeterPerSquareSecond);
+    EXPECT_EQ(GetLinearVelocity(*body).x, Real(0) * MeterPerSecond);
+    EXPECT_EQ(GetLinearVelocity(*body).y, Real(0) * MeterPerSecond);
+    EXPECT_EQ(body->GetLinearAcceleration().x, Real{0.0f} * MeterPerSquareSecond);
     EXPECT_EQ(body->GetLinearAcceleration().y, gravity.y);
     
-    const auto time_inc = RealNum(0.01) * Second;
+    const auto time_inc = Real(0.01) * Second;
     
     auto pos = body->GetLocation();
     auto vel = GetLinearVelocity(*body);
@@ -667,7 +667,7 @@ TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
         EXPECT_EQ(body->GetLocation().y, pos.y + ((vel.y + gravity.y * time_inc) * time_inc));
         pos = body->GetLocation();
         
-        EXPECT_EQ(GetLinearVelocity(*body).x, RealNum(0) * MeterPerSecond);
+        EXPECT_EQ(GetLinearVelocity(*body).x, Real(0) * MeterPerSecond);
         EXPECT_LT(GetLinearVelocity(*body).y, vel.y);
         EXPECT_TRUE(almost_equal(GetLinearVelocity(*body).y / MeterPerSecond, (vel.y + gravity.y * time_inc) / MeterPerSecond));
         vel = GetLinearVelocity(*body);
@@ -682,20 +682,20 @@ TEST(World, BodyAccelRevPerSpecWithNegativeTimeAndNoVelOrPosIterations)
     World world{WorldDef{}.UseGravity(gravity)};
     
     BodyDef def;
-    def.position = Length2D{RealNum(31.9) * Meter, RealNum(-19.24) * Meter};
-    def.linearVelocity = LinearVelocity2D{0, RealNum(-9.8) * MeterPerSecond};
+    def.position = Length2D{Real(31.9) * Meter, Real(-19.24) * Meter};
+    def.linearVelocity = LinearVelocity2D{0, Real(-9.8) * MeterPerSecond};
     def.type = BodyType::Dynamic;
     
     const auto body = world.CreateBody(def);
     ASSERT_NE(body, nullptr);
     EXPECT_EQ(body->GetLocation().x, def.position.x);
     EXPECT_EQ(body->GetLocation().y, def.position.y);
-    EXPECT_EQ(GetLinearVelocity(*body).x, RealNum(0) * MeterPerSecond);
-    EXPECT_EQ(GetLinearVelocity(*body).y, RealNum(-9.8) * MeterPerSecond);
-    EXPECT_EQ(body->GetLinearAcceleration().x, RealNum{0.0f} * MeterPerSquareSecond);
+    EXPECT_EQ(GetLinearVelocity(*body).x, Real(0) * MeterPerSecond);
+    EXPECT_EQ(GetLinearVelocity(*body).y, Real(-9.8) * MeterPerSecond);
+    EXPECT_EQ(body->GetLinearAcceleration().x, Real{0.0f} * MeterPerSquareSecond);
     EXPECT_EQ(body->GetLinearAcceleration().y, gravity.y);
     
-    const auto time_inc = RealNum{-0.01f} * Second;
+    const auto time_inc = Real{-0.01f} * Second;
     auto stepConf = StepConf{};
     stepConf.SetTime(time_inc);
     stepConf.dtRatio = -1;
@@ -717,7 +717,7 @@ TEST(World, BodyAccelRevPerSpecWithNegativeTimeAndNoVelOrPosIterations)
         EXPECT_EQ(body->GetLocation().y, pos.y + ((vel.y + gravity.y * time_inc) * time_inc));
         pos = body->GetLocation();
         
-        EXPECT_EQ(GetLinearVelocity(*body).x, RealNum(0) * MeterPerSecond);
+        EXPECT_EQ(GetLinearVelocity(*body).x, Real(0) * MeterPerSecond);
         EXPECT_GT(GetLinearVelocity(*body).y, vel.y);
         EXPECT_TRUE(almost_equal(GetLinearVelocity(*body).y / MeterPerSecond, (vel.y + gravity.y * time_inc) / MeterPerSecond));
         vel = GetLinearVelocity(*body);
@@ -787,7 +787,7 @@ public:
 
 TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 {
-    const auto x = RealNum(10); // other test parameters tuned to this value being 10
+    const auto x = Real(10); // other test parameters tuned to this value being 10
 
     auto presolved = unsigned{0};
     auto postsolved = unsigned{0};
@@ -808,11 +808,11 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
     body_def.type = BodyType::Dynamic;
     body_def.bullet = true;
     
-    const auto shape = std::make_shared<DiskShape>(RealNum{1} * Meter);
-    shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
+    const auto shape = std::make_shared<DiskShape>(Real{1} * Meter);
+    shape->SetDensity(Real{1} * KilogramPerSquareMeter);
     shape->SetRestitution(1);
     
-    body_def.position = Length2D{-x * Meter, RealNum(0) * Meter};
+    body_def.position = Length2D{-x * Meter, Real(0) * Meter};
     body_def.linearVelocity = LinearVelocity2D{+x * MeterPerSecond, 0};
     const auto body_a = world.CreateBody(body_def);
     ASSERT_NE(body_a, nullptr);
@@ -822,7 +822,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
     const auto fixture1 = body_a->CreateFixture(shape);
     ASSERT_NE(fixture1, nullptr);
     
-    body_def.position = Length2D{+x * Meter, RealNum(0) * Meter};
+    body_def.position = Length2D{+x * Meter, Real(0) * Meter};
     body_def.linearVelocity = LinearVelocity2D{-x * MeterPerSecond, 0};
     const auto body_b = world.CreateBody(body_def);
     ASSERT_NE(body_b, nullptr);
@@ -833,11 +833,11 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
     EXPECT_TRUE(body_b->IsAccelerable());
 
     EXPECT_EQ(GetLinearVelocity(*body_a).x, +x * MeterPerSecond);
-    EXPECT_EQ(GetLinearVelocity(*body_a).y, RealNum{0.0f} * MeterPerSecond);
+    EXPECT_EQ(GetLinearVelocity(*body_a).y, Real{0.0f} * MeterPerSecond);
     EXPECT_EQ(GetLinearVelocity(*body_b).x, -x * MeterPerSecond);
-    EXPECT_EQ(GetLinearVelocity(*body_b).y, RealNum{0.0f} * MeterPerSecond);
+    EXPECT_EQ(GetLinearVelocity(*body_b).y, Real{0.0f} * MeterPerSecond);
 
-    const auto time_inc = RealNum(.01) * Second;
+    const auto time_inc = Real(.01) * Second;
 
     auto pos_a = body_a->GetLocation();
     auto pos_b = body_b->GetLocation();
@@ -849,7 +849,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
     conf.regVelocityIterations = 0;
     conf.toiPositionIterations = 0;
     conf.toiVelocityIterations = 0;
-    conf.tolerance = std::nextafter(StripUnit(conf.targetDepth), RealNum{0}) * Meter;
+    conf.tolerance = std::nextafter(StripUnit(conf.targetDepth), Real{0}) * Meter;
 
     auto steps = unsigned{0};
     while (pos_a.x < (x * Meter) && pos_b.x > (-x * Meter))
@@ -858,14 +858,14 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
         ++steps;
         
         EXPECT_TRUE(almost_equal(body_a->GetLocation().x / Meter, (pos_a.x + x * time_inc * MeterPerSecond) / Meter));
-        EXPECT_EQ(body_a->GetLocation().y, RealNum{0} * Meter);
+        EXPECT_EQ(body_a->GetLocation().y, Real{0} * Meter);
         EXPECT_TRUE(almost_equal(body_b->GetLocation().x / Meter, (pos_b.x - x * time_inc * MeterPerSecond) / Meter));
-        EXPECT_EQ(body_b->GetLocation().y, RealNum{0} * Meter);
+        EXPECT_EQ(body_b->GetLocation().y, Real{0} * Meter);
 
         EXPECT_EQ(GetLinearVelocity(*body_a).x, +x * MeterPerSecond);
-        EXPECT_EQ(GetLinearVelocity(*body_a).y, RealNum{0.0f} * MeterPerSecond);
+        EXPECT_EQ(GetLinearVelocity(*body_a).y, Real{0.0f} * MeterPerSecond);
         EXPECT_EQ(GetLinearVelocity(*body_b).x, -x * MeterPerSecond);
-        EXPECT_EQ(GetLinearVelocity(*body_b).y, RealNum{0.0f} * MeterPerSecond);
+        EXPECT_EQ(GetLinearVelocity(*body_b).y, Real{0.0f} * MeterPerSecond);
 
         pos_a = body_a->GetLocation();
         pos_b = body_b->GetLocation();
@@ -882,9 +882,9 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 
 TEST(World, PerfectlyOverlappedSameCirclesStayPut)
 {
-    const auto radius = RealNum(1) * Meter;
+    const auto radius = Real(1) * Meter;
     const auto shape = std::make_shared<DiskShape>(radius);
-    shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
+    shape->SetDensity(Real{1} * KilogramPerSquareMeter);
     shape->SetRestitution(1); // changes where bodies will be after collision
     const auto gravity = LinearAcceleration2D{0, 0};
 
@@ -893,7 +893,7 @@ TEST(World, PerfectlyOverlappedSameCirclesStayPut)
     auto body_def = BodyDef{};
     body_def.type = BodyType::Dynamic;
     body_def.bullet = false;
-    body_def.position = Length2D{RealNum(0) * Meter, RealNum(0) * Meter};
+    body_def.position = Length2D{Real(0) * Meter, Real(0) * Meter};
 
     const auto body1 = world.CreateBody(body_def);
     {
@@ -911,7 +911,7 @@ TEST(World, PerfectlyOverlappedSameCirclesStayPut)
     ASSERT_EQ(body2->GetLocation().x, body_def.position.x);
     ASSERT_EQ(body2->GetLocation().y, body_def.position.y);
     
-    const auto time_inc = RealNum(.01);
+    const auto time_inc = Real(.01);
     for (auto i = 0; i < 100; ++i)
     {
         Step(world, Time{Second * time_inc});
@@ -924,15 +924,15 @@ TEST(World, PerfectlyOverlappedSameCirclesStayPut)
 
 TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
 {
-    const auto radius1 = RealNum(1) * Meter;
-    const auto radius2 = RealNum(0.6) * Meter;
+    const auto radius1 = Real(1) * Meter;
+    const auto radius2 = Real(0.6) * Meter;
     
     const auto shape1 = std::make_shared<DiskShape>(radius1);
-    shape1->SetDensity(RealNum{1} * KilogramPerSquareMeter);
+    shape1->SetDensity(Real{1} * KilogramPerSquareMeter);
     shape1->SetRestitution(1); // changes where bodies will be after collision
     
     const auto shape2 = std::make_shared<DiskShape>(radius2);
-    shape2->SetDensity(RealNum{1} * KilogramPerSquareMeter);
+    shape2->SetDensity(Real{1} * KilogramPerSquareMeter);
     shape2->SetRestitution(1); // changes where bodies will be after collision
 
     const auto gravity = LinearAcceleration2D{0, 0};
@@ -960,7 +960,7 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
     ASSERT_EQ(body2->GetLocation().x, body_def.position.x);
     ASSERT_EQ(body2->GetLocation().y, body_def.position.y);
     
-    const auto time_inc = RealNum(.01);
+    const auto time_inc = Real(.01);
     for (auto i = 0; i < 100; ++i)
     {
         Step(world, Time{Second * time_inc});
@@ -984,8 +984,8 @@ TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
     auto body_def = BodyDef{};
     body_def.type = BodyType::Dynamic;
     body_def.position = Length2D{0, 0};
-    const auto shape = std::make_shared<DiskShape>(RealNum{1} * Meter);
-    shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
+    const auto shape = std::make_shared<DiskShape>(Real{1} * Meter);
+    shape->SetDensity(Real{1} * KilogramPerSquareMeter);
     shape->SetRestitution(1);
     for (auto i = 0; i < 2; ++i)
     {
@@ -999,7 +999,7 @@ TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
     ASSERT_EQ(listener.pre_solves, 0u);
     ASSERT_EQ(listener.post_solves, 0u);
 
-    Step(world, Second * RealNum(1));
+    Step(world, Second * Real(1));
 
     EXPECT_NE(listener.begin_contacts, 0u);
     EXPECT_EQ(listener.end_contacts, 0u);
@@ -1021,9 +1021,9 @@ TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
     body_def.type = BodyType::Dynamic;
     body_def.position = Length2D{0, 0};
     auto shape = std::make_shared<PolygonShape>();
-    shape->SetVertexRadius(RealNum{1} * Meter);
-    shape->SetAsBox(RealNum{2} * Meter, RealNum{2} * Meter);
-    shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
+    shape->SetVertexRadius(Real{1} * Meter);
+    shape->SetAsBox(Real{2} * Meter, Real{2} * Meter);
+    shape->SetDensity(Real{1} * KilogramPerSquareMeter);
     shape->SetRestitution(1);
     for (auto i = 0; i < 2; ++i)
     {
@@ -1037,7 +1037,7 @@ TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
     ASSERT_EQ(listener.pre_solves, 0u);
     ASSERT_EQ(listener.post_solves, 0u);
     
-    Step(world, Second * RealNum(1));
+    Step(world, Second * Real(1));
     
     EXPECT_NE(listener.begin_contacts, 0u);
     EXPECT_EQ(listener.end_contacts, 0u);
@@ -1047,7 +1047,7 @@ TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
 
 TEST(World, PartiallyOverlappedSameCirclesSeparate)
 {
-    const auto radius = RealNum(1);
+    const auto radius = Real(1);
     
     const auto gravity = LinearAcceleration2D{0, 0};
     World world{WorldDef{}.UseGravity(gravity)};
@@ -1057,10 +1057,10 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
     body_def.bullet = false; // separation is faster if true.
     
     const auto shape = std::make_shared<DiskShape>(radius * Meter);
-    shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
+    shape->SetDensity(Real{1} * KilogramPerSquareMeter);
     shape->SetRestitution(1); // changes where bodies will be after collision
     
-    const auto body1pos = Length2D{-radius/RealNum(4) * Meter, 0};
+    const auto body1pos = Length2D{-radius/Real(4) * Meter, 0};
     body_def.position = body1pos;
     const auto body1 = world.CreateBody(body_def);
     {
@@ -1070,7 +1070,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
     ASSERT_EQ(body1->GetLocation().x, body_def.position.x);
     ASSERT_EQ(body1->GetLocation().y, body_def.position.y);
     
-    const auto body2pos = Length2D{+radius/RealNum(4) * Meter, 0};
+    const auto body2pos = Length2D{+radius/Real(4) * Meter, 0};
     body_def.position = body2pos;
     const auto body2 = world.CreateBody(body_def);
     {
@@ -1089,12 +1089,12 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
     auto lastpos1 = body1->GetLocation();
     auto lastpos2 = body2->GetLocation();
 
-    const auto time_inc = RealNum(.01f) * Second;
+    const auto time_inc = Real(.01f) * Second;
     StepConf step;
     step.SetTime(time_inc);
 
     // Solver won't separate more than -step.linearSlop.
-    const auto full_separation = radius * RealNum{2} * Meter - Length{step.linearSlop};
+    const auto full_separation = radius * Real{2} * Meter - Length{step.linearSlop};
     for (auto i = 0; i < 100; ++i)
     {
         world.Step(step);
@@ -1112,7 +1112,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
         if (new_distance == distance)
         {
             // position resolution has come to tolerance
-            ASSERT_GE(new_distance, radius * RealNum{2} * Meter - Length{step.linearSlop} * RealNum{4});
+            ASSERT_GE(new_distance, radius * Real{2} * Meter - Length{step.linearSlop} * Real{4});
             break;
         }
         else // new_distance > distance
@@ -1149,8 +1149,8 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 
 TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
 {
-    const auto shape = std::make_shared<PolygonShape>(RealNum{1} * Meter, RealNum{1} * Meter);
-    shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
+    const auto shape = std::make_shared<PolygonShape>(Real{1} * Meter, Real{1} * Meter);
+    shape->SetDensity(Real{1} * KilogramPerSquareMeter);
     shape->SetRestitution(1); // changes where bodies will be after collision
 
     const auto gravity = LinearAcceleration2D{0, 0};
@@ -1182,9 +1182,9 @@ TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
     auto lastpos2 = body2->GetLocation();
 
     auto stepConf = StepConf{};
-    const auto time_inc = RealNum(.01) * Second;
+    const auto time_inc = Real(.01) * Second;
     stepConf.SetTime(time_inc);
-    stepConf.maxLinearCorrection = RealNum{0.0001f * 40} * Meter;
+    stepConf.maxLinearCorrection = Real{0.0001f * 40} * Meter;
     for (auto i = 0; i < 100; ++i)
     {
         world.Step(stepConf);
@@ -1223,12 +1223,12 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
     body_def.type = BodyType::Dynamic;
     body_def.bullet = false; // separation is faster if true.
     
-    const auto half_dim = RealNum(64); // 1 causes additional y-axis separation
+    const auto half_dim = Real(64); // 1 causes additional y-axis separation
     const auto shape = std::make_shared<PolygonShape>(half_dim * Meter, half_dim * Meter);
-    shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
+    shape->SetDensity(Real{1} * KilogramPerSquareMeter);
     shape->SetRestitution(1); // changes where bodies will be after collision
     
-    const auto body1pos = Length2D{RealNum(half_dim/2) * Meter, RealNum(0) * Meter}; // 0 causes additional y-axis separation
+    const auto body1pos = Length2D{Real(half_dim/2) * Meter, Real(0) * Meter}; // 0 causes additional y-axis separation
     body_def.position = body1pos;
     const auto body1 = world.CreateBody(body_def);
     {
@@ -1238,7 +1238,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
     ASSERT_EQ(body1->GetLocation().x, body1pos.x);
     ASSERT_EQ(body1->GetLocation().y, body1pos.y);
     
-    const auto body2pos = Length2D{-RealNum(half_dim/2) * Meter, RealNum(0) * Meter}; // 0 causes additional y-axis separation
+    const auto body2pos = Length2D{-Real(half_dim/2) * Meter, Real(0) * Meter}; // 0 causes additional y-axis separation
     body_def.position = body2pos;
     const auto body2 = world.CreateBody(body_def);
     {
@@ -1260,7 +1260,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
     auto distance = GetLength(position_diff);
     
     auto angle = GetAngle(position_diff);
-    EXPECT_TRUE(almost_equal(angle / Radian, RealNum{0}));
+    EXPECT_TRUE(almost_equal(angle / Radian, Real{0}));
     
     auto lastpos1 = body1->GetLocation();
     auto lastpos2 = body2->GetLocation();
@@ -1268,11 +1268,11 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
     const auto velocity_iters = 10u;
     const auto position_iters = 10u;
     
-    const auto time_inc = RealNum(.01);
+    const auto time_inc = Real(.01);
     StepConf step;
     step.SetTime(Time{Second * time_inc});
     // Solver won't separate more than -step.linearSlop.
-    const auto full_separation = half_dim * RealNum{2} * Meter - Length{step.linearSlop};
+    const auto full_separation = half_dim * Real{2} * Meter - Length{step.linearSlop};
     for (auto i = 0; i < 100; ++i)
     {
         Step(world, Time{Second * time_inc}, velocity_iters, position_iters);
@@ -1301,13 +1301,13 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 
         const auto v1 = body1->GetVelocity();
         EXPECT_EQ(v1.angular, Angle{0} / Second);
-        EXPECT_EQ(v1.linear.x, RealNum(0) * MeterPerSecond);
-        EXPECT_EQ(v1.linear.y, RealNum(0) * MeterPerSecond);
+        EXPECT_EQ(v1.linear.x, Real(0) * MeterPerSecond);
+        EXPECT_EQ(v1.linear.y, Real(0) * MeterPerSecond);
 
         const auto v2 = body2->GetVelocity();
         EXPECT_EQ(v2.angular, Angle{0} / Second);
-        EXPECT_EQ(v2.linear.x, RealNum(0) * MeterPerSecond);
-        EXPECT_EQ(v2.linear.y, RealNum(0) * MeterPerSecond);
+        EXPECT_EQ(v2.linear.x, Real(0) * MeterPerSecond);
+        EXPECT_EQ(v2.linear.y, Real(0) * MeterPerSecond);
 
         EXPECT_TRUE(almost_equal(body1->GetAngle() / Radian, last_angle_1 / Radian));
         EXPECT_TRUE(almost_equal(body2->GetAngle() / Radian, last_angle_2 / Radian));
@@ -1334,7 +1334,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
                 EXPECT_NE(body1->GetLocation().y, lastpos1.y);
                 EXPECT_NE(body2->GetLocation().y, lastpos2.y);
             }
-            ASSERT_GE(new_distance, RealNum(2) * Meter);
+            ASSERT_GE(new_distance, Real(2) * Meter);
             break;
         }
         
@@ -1367,8 +1367,8 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 
 TEST(World, CollidingDynamicBodies)
 {
-    const auto radius = RealNum(1) * Meter;
-    const auto x = RealNum(10); // other test parameters tuned to this value being 10
+    const auto radius = Real(1) * Meter;
+    const auto x = Real(10); // other test parameters tuned to this value being 10
 
     auto body_def = BodyDef{};
     body_def.type = BodyType::Dynamic;
@@ -1385,10 +1385,10 @@ TEST(World, CollidingDynamicBodies)
     world.SetContactListener(&listener);
     
     const auto shape = std::make_shared<DiskShape>(radius);
-    shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
+    shape->SetDensity(Real{1} * KilogramPerSquareMeter);
     shape->SetRestitution(1); // changes where bodies will be after collision
 
-    body_def.position = Length2D{-(x + 1) * Meter, RealNum(0) * Meter};
+    body_def.position = Length2D{-(x + 1) * Meter, Real(0) * Meter};
     body_def.linearVelocity = LinearVelocity2D{+x * MeterPerSecond, 0};
     const auto body_a = world.CreateBody(body_def);
     ASSERT_NE(body_a, nullptr);
@@ -1398,7 +1398,7 @@ TEST(World, CollidingDynamicBodies)
     const auto fixture1 = body_a->CreateFixture(shape);
     ASSERT_NE(fixture1, nullptr);
 
-    body_def.position = Length2D{+(x + 1) * Meter, RealNum(0) * Meter};
+    body_def.position = Length2D{+(x + 1) * Meter, Real(0) * Meter};
     body_def.linearVelocity = LinearVelocity2D{-x * MeterPerSecond, 0};
     const auto body_b = world.CreateBody(body_def);
     ASSERT_NE(body_b, nullptr);
@@ -1409,14 +1409,14 @@ TEST(World, CollidingDynamicBodies)
     EXPECT_TRUE(body_b->IsAccelerable());
 
     EXPECT_EQ(GetLinearVelocity(*body_a).x, +x * MeterPerSecond);
-    EXPECT_EQ(GetLinearVelocity(*body_a).y, RealNum{0.0f} * MeterPerSecond);
+    EXPECT_EQ(GetLinearVelocity(*body_a).y, Real{0.0f} * MeterPerSecond);
     EXPECT_EQ(GetLinearVelocity(*body_b).x, -x * MeterPerSecond);
-    EXPECT_EQ(GetLinearVelocity(*body_b).y, RealNum{0.0f} * MeterPerSecond);
+    EXPECT_EQ(GetLinearVelocity(*body_b).y, Real{0.0f} * MeterPerSecond);
     
-    const auto time_collision = RealNum(1.0099994); // only valid for x >= around 4.214
-    const auto time_inc = RealNum(.01);
+    const auto time_collision = Real(1.0099994); // only valid for x >= around 4.214
+    const auto time_inc = Real(.01);
     
-    auto elapsed_time = RealNum(0);
+    auto elapsed_time = Real(0);
     for (;;)
     {
         Step(world, Time{Second * time_inc});
@@ -1457,18 +1457,18 @@ TEST(World, CollidingDynamicBodies)
     const auto tolerance = x / 100;
     
     // x position for body1 depends on restitution but it should be around -1
-    EXPECT_GE(body_a->GetLocation().x / Meter, RealNum(-1) - tolerance);
-    EXPECT_LT(body_a->GetLocation().x / Meter, RealNum(-1) + tolerance);
+    EXPECT_GE(body_a->GetLocation().x / Meter, Real(-1) - tolerance);
+    EXPECT_LT(body_a->GetLocation().x / Meter, Real(-1) + tolerance);
 
     // x position for body2 depends on restitution but it should be around +1
-    EXPECT_LE(body_b->GetLocation().x / Meter, RealNum(+1) + tolerance);
-    EXPECT_GT(body_b->GetLocation().x / Meter, RealNum(+1) - tolerance);
+    EXPECT_LE(body_b->GetLocation().x / Meter, Real(+1) + tolerance);
+    EXPECT_GT(body_b->GetLocation().x / Meter, Real(+1) - tolerance);
     
     // and their deltas from -1 and +1 should be about equal.
-    EXPECT_TRUE(almost_equal((body_a->GetLocation().x + RealNum{1} * Meter) / Meter, (RealNum{1} * Meter - body_b->GetLocation().x) / Meter));
+    EXPECT_TRUE(almost_equal((body_a->GetLocation().x + Real{1} * Meter) / Meter, (Real{1} * Meter - body_b->GetLocation().x) / Meter));
 
-    EXPECT_GE(listener.body_a[0].x, RealNum{-1} * Meter);
-    EXPECT_LE(listener.body_b[0].x, RealNum{+1} * Meter);
+    EXPECT_GE(listener.body_a[0].x, Real{-1} * Meter);
+    EXPECT_LE(listener.body_b[0].x, Real{+1} * Meter);
 
     for (;;)
     {
@@ -1484,23 +1484,23 @@ TEST(World, CollidingDynamicBodies)
     EXPECT_TRUE(almost_equal(elapsed_time, time_contacting + time_inc));
     
     // collision should be fully resolved now...
-    EXPECT_LT(body_a->GetLocation().x, RealNum(-1) * Meter);
-    EXPECT_GT(body_b->GetLocation().x, RealNum(+1) * Meter);
+    EXPECT_LT(body_a->GetLocation().x, Real(-1) * Meter);
+    EXPECT_GT(body_b->GetLocation().x, Real(+1) * Meter);
     
     // and their deltas from -1 and +1 should be about equal.
-    EXPECT_TRUE(almost_equal((body_a->GetLocation().x + RealNum{1} * Meter) / Meter, (RealNum{1} * Meter - body_b->GetLocation().x) / Meter));
+    EXPECT_TRUE(almost_equal((body_a->GetLocation().x + Real{1} * Meter) / Meter, (Real{1} * Meter - body_b->GetLocation().x) / Meter));
 
-    EXPECT_LT(listener.body_a[1].x, RealNum{-1} * Meter);
-    EXPECT_GT(listener.body_b[1].x, RealNum{+1} * Meter);
+    EXPECT_LT(listener.body_a[1].x, Real{-1} * Meter);
+    EXPECT_GT(listener.body_b[1].x, Real{+1} * Meter);
     
     // confirm conservation of momentum:
     // velocities should now be same magnitude but in opposite directions
-    EXPECT_NEAR(double(RealNum{GetLinearVelocity(*body_a).x / MeterPerSecond}),
+    EXPECT_NEAR(double(Real{GetLinearVelocity(*body_a).x / MeterPerSecond}),
                 double(-x), 0.0001);
-    EXPECT_EQ(GetLinearVelocity(*body_a).y, RealNum{0.0f} * MeterPerSecond);
-    EXPECT_NEAR(double(RealNum{GetLinearVelocity(*body_b).x / MeterPerSecond}),
+    EXPECT_EQ(GetLinearVelocity(*body_a).y, Real{0.0f} * MeterPerSecond);
+    EXPECT_NEAR(double(Real{GetLinearVelocity(*body_b).x / MeterPerSecond}),
                 double(+x), 0.0001);
-    EXPECT_EQ(GetLinearVelocity(*body_b).y, RealNum{0.0f} * MeterPerSecond);
+    EXPECT_EQ(GetLinearVelocity(*body_b).y, Real{0.0f} * MeterPerSecond);
 }
 
 TEST(World, TilesComesToRest)
@@ -1510,7 +1510,7 @@ TEST(World, TilesComesToRest)
     constexpr auto e_count = 36;
     
     {
-        const auto a = RealNum{0.5f};
+        const auto a = Real{0.5f};
         const auto ground = m_world->CreateBody(BodyDef{}.UseLocation(Length2D{0, -a * Meter}));
         
         const auto N = 200;
@@ -1532,9 +1532,9 @@ TEST(World, TilesComesToRest)
     }
     
     {
-        const auto a = RealNum{0.5f};
+        const auto a = Real{0.5f};
         const auto shape = std::make_shared<PolygonShape>(a * Meter, a * Meter);
-        shape->SetDensity(RealNum{5} * KilogramPerSquareMeter);
+        shape->SetDensity(Real{5} * KilogramPerSquareMeter);
         
         Length2D x(-7.0f * Meter, 0.75f * Meter);
         Length2D y;
@@ -1557,7 +1557,7 @@ TEST(World, TilesComesToRest)
     }
     
     StepConf step;
-    step.SetTime(Time{Second / RealNum{60}});
+    step.SetTime(Time{Second / Real{60}});
 
     auto numSteps = 0ul;
     auto sumRegPosIters = 0ul;
@@ -1579,22 +1579,22 @@ TEST(World, TilesComesToRest)
     //const std::chrono::duration<double> elapsed_time = end_time - start_time;
     
     // seeing e_count=20 times around:
-    //   0.447077s with RealNum=float and NDEBUG defined.
-    //   6.45222s with RealNum=float and NDEBUG not defined.
-    //   0.456306s with RealNum=double and NDEBUG defined.
-    //   6.74324s with RealNum=double and NDEBUG not defined.
+    //   0.447077s with Real=float and NDEBUG defined.
+    //   6.45222s with Real=float and NDEBUG not defined.
+    //   0.456306s with Real=double and NDEBUG defined.
+    //   6.74324s with Real=double and NDEBUG not defined.
     
     // seeing e_count=24 times around:
-    //   0.956078s with RealNum=float and NDEBUG defined.
-    //   0.989387s with RealNum=double and NDEBUG defined.
+    //   0.956078s with Real=float and NDEBUG defined.
+    //   0.989387s with Real=double and NDEBUG defined.
     
     // seeing e_count=30 times around:
-    //   2.35464s with RealNum=float and NDEBUG defined.
-    //   2.51661s with RealNum=double and NDEBUG defined.
+    //   2.35464s with Real=float and NDEBUG defined.
+    //   2.51661s with Real=double and NDEBUG defined.
     
     // seeing e_count=36 times around:
-    //   4.85618s with RealNum=float and NDEBUG defined.
-    //   5.32973s with RealNum=double and NDEBUG defined.
+    //   4.85618s with Real=float and NDEBUG defined.
+    //   5.32973s with Real=double and NDEBUG defined.
     
     EXPECT_EQ(GetAwakeCount(*m_world), 0u);
 
@@ -1629,7 +1629,7 @@ TEST(World, TilesComesToRest)
     //   the algorithmic efficiency of the code.
     //
 #if defined(__core2__)
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4:
         {
@@ -1695,7 +1695,7 @@ TEST(World, TilesComesToRest)
         }
     }
 #elif defined(__k8__)
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4:
         {
@@ -1774,16 +1774,16 @@ TEST(World, SpeedingBulletBallWontTunnel)
 
     ASSERT_EQ(listener.begin_contacts, unsigned{0});
 
-    const auto left_edge_x = RealNum(-0.1) * Meter;
-    const auto right_edge_x = RealNum(+0.1) * Meter;
+    const auto left_edge_x = Real(-0.1) * Meter;
+    const auto right_edge_x = Real(+0.1) * Meter;
 
     BodyDef body_def;
-    const auto edge_shape = std::make_shared<EdgeShape>(Length2D{RealNum(0) * Meter, +RealNum(10) * Meter}, Length2D{RealNum(0) * Meter, -RealNum(10) * Meter});
+    const auto edge_shape = std::make_shared<EdgeShape>(Length2D{Real(0) * Meter, +Real(10) * Meter}, Length2D{Real(0) * Meter, -Real(10) * Meter});
     edge_shape->SetRestitution(1);
 
     body_def.type = BodyType::Static;
 
-    body_def.position = Length2D{left_edge_x, RealNum{0} * Meter};
+    body_def.position = Length2D{left_edge_x, Real{0} * Meter};
     const auto left_wall_body = world.CreateBody(body_def);
     ASSERT_NE(left_wall_body, nullptr);
     {
@@ -1791,7 +1791,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
         ASSERT_NE(wall_fixture, nullptr);
     }
 
-    body_def.position = Length2D{right_edge_x, RealNum{0} * Meter};
+    body_def.position = Length2D{right_edge_x, Real{0} * Meter};
     const auto right_wall_body = world.CreateBody(body_def);
     ASSERT_NE(right_wall_body, nullptr);
     {
@@ -1799,7 +1799,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
         ASSERT_NE(wall_fixture, nullptr);
     }
     
-    const auto begin_x = RealNum(0);
+    const auto begin_x = Real(0);
 
     body_def.type = BodyType::Dynamic;
     body_def.position = Length2D{begin_x * Meter, 0};
@@ -1807,17 +1807,17 @@ TEST(World, SpeedingBulletBallWontTunnel)
     const auto ball_body = world.CreateBody(body_def);
     ASSERT_NE(ball_body, nullptr);
     
-    const auto ball_radius = RealNum(.01) * Meter;
+    const auto ball_radius = Real(.01) * Meter;
     const auto circle_shape = std::make_shared<DiskShape>(ball_radius);
-    circle_shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
+    circle_shape->SetDensity(Real{1} * KilogramPerSquareMeter);
     circle_shape->SetRestitution(1); // changes where bodies will be after collision
     const auto ball_fixture = ball_body->CreateFixture(circle_shape);
     ASSERT_NE(ball_fixture, nullptr);
 
-    const auto velocity = LinearVelocity2D{+RealNum(1) * MeterPerSecond, RealNum(0) * MeterPerSecond};
+    const auto velocity = LinearVelocity2D{+Real(1) * MeterPerSecond, Real(0) * MeterPerSecond};
     ball_body->SetVelocity(Velocity{velocity, Angle{0} / Second});
 
-    const auto time_inc = RealNum(.01) * Second;
+    const auto time_inc = Real(.01) * Second;
     auto stepConf = StepConf{};
     stepConf.SetTime(time_inc);
     const auto max_velocity = stepConf.maxTranslation / time_inc;
@@ -1848,8 +1848,8 @@ TEST(World, SpeedingBulletBallWontTunnel)
             const auto last_contact_count = listener.begin_contacts;
             world.Step(stepConf);
 
-            EXPECT_LT(ball_body->GetLocation().x, right_edge_x - (ball_radius/RealNum{2}));
-            EXPECT_GT(ball_body->GetLocation().x, left_edge_x + (ball_radius/RealNum{2}));
+            EXPECT_LT(ball_body->GetLocation().x, right_edge_x - (ball_radius/Real{2}));
+            EXPECT_GT(ball_body->GetLocation().x, left_edge_x + (ball_radius/Real{2}));
 
             if (ball_body->GetVelocity().linear.x >= max_velocity)
             {
@@ -1858,17 +1858,17 @@ TEST(World, SpeedingBulletBallWontTunnel)
 
             if (listener.begin_contacts % 2 != 0) // direction switched
             {
-                EXPECT_LT(ball_body->GetVelocity().linear.x, RealNum{0.0f} * MeterPerSecond);
+                EXPECT_LT(ball_body->GetVelocity().linear.x, Real{0.0f} * MeterPerSecond);
                 break; // going left now
             }
             else if (listener.begin_contacts > last_contact_count)
             {
                 ++increments;
-                ball_body->SetVelocity(Velocity{{static_cast<RealNum>(increments) * velocity.x, ball_body->GetVelocity().linear.y}, ball_body->GetVelocity().angular});
+                ball_body->SetVelocity(Velocity{{static_cast<Real>(increments) * velocity.x, ball_body->GetVelocity().linear.y}, ball_body->GetVelocity().angular});
             }
             else
             {
-                EXPECT_TRUE(almost_equal(ball_body->GetVelocity().linear.x / MeterPerSecond, static_cast<RealNum>(increments) * velocity.x / MeterPerSecond));
+                EXPECT_TRUE(almost_equal(ball_body->GetVelocity().linear.x / MeterPerSecond, static_cast<Real>(increments) * velocity.x / MeterPerSecond));
             }
         }
         
@@ -1885,8 +1885,8 @@ TEST(World, SpeedingBulletBallWontTunnel)
             const auto last_contact_count = listener.begin_contacts;
             world.Step(stepConf);
             
-            EXPECT_LT(ball_body->GetLocation().x, right_edge_x - (ball_radius/RealNum{2}));
-            EXPECT_GT(ball_body->GetLocation().x, left_edge_x + (ball_radius/RealNum{2}));
+            EXPECT_LT(ball_body->GetLocation().x, right_edge_x - (ball_radius/Real{2}));
+            EXPECT_GT(ball_body->GetLocation().x, left_edge_x + (ball_radius/Real{2}));
 
             if (ball_body->GetVelocity().linear.x <= -max_velocity)
             {
@@ -1895,22 +1895,22 @@ TEST(World, SpeedingBulletBallWontTunnel)
 
             if (listener.begin_contacts % 2 != 0) // direction switched
             {
-                EXPECT_GT(ball_body->GetVelocity().linear.x, RealNum{0.0f} * MeterPerSecond);
+                EXPECT_GT(ball_body->GetVelocity().linear.x, Real{0.0f} * MeterPerSecond);
                 break; // going right now
             }
             else if (listener.begin_contacts > last_contact_count)
             {
                 ++increments;
-                ball_body->SetVelocity(Velocity{{-static_cast<RealNum>(increments) * velocity.x, ball_body->GetVelocity().linear.y}, ball_body->GetVelocity().angular});
+                ball_body->SetVelocity(Velocity{{-static_cast<Real>(increments) * velocity.x, ball_body->GetVelocity().linear.y}, ball_body->GetVelocity().angular});
             }
             else
             {
-                EXPECT_TRUE(almost_equal(ball_body->GetVelocity().linear.x / MeterPerSecond, -static_cast<RealNum>(increments) * velocity.x / MeterPerSecond));
+                EXPECT_TRUE(almost_equal(ball_body->GetVelocity().linear.x / MeterPerSecond, -static_cast<Real>(increments) * velocity.x / MeterPerSecond));
             }
         }
         
         ++increments;
-        ball_body->SetVelocity(Velocity{{static_cast<RealNum>(increments) * velocity.x, ball_body->GetVelocity().linear.y}, ball_body->GetVelocity().angular});
+        ball_body->SetVelocity(Velocity{{static_cast<Real>(increments) * velocity.x, ball_body->GetVelocity().linear.y}, ball_body->GetVelocity().angular});
     }
 }
 
@@ -1918,11 +1918,11 @@ TEST(World, MouseJointWontCauseTunnelling)
 {
     World world{WorldDef{}.UseGravity(LinearAcceleration2D{0, 0})};
     
-    const auto half_box_width = RealNum(0.2);
+    const auto half_box_width = Real(0.2);
     const auto left_edge_x = -half_box_width;
     const auto right_edge_x = +half_box_width;
 
-    const auto half_box_height = RealNum(0.2);
+    const auto half_box_height = Real(0.2);
     const auto btm_edge_y = -half_box_height;
     const auto top_edge_y = +half_box_height;
 
@@ -1935,7 +1935,7 @@ TEST(World, MouseJointWontCauseTunnelling)
     body_def.type = BodyType::Static;
     
     // Setup vertical bounderies
-    edge_shape.Set(Length2D{0, +half_box_height * RealNum(2) * Meter}, Length2D{0, -half_box_height * RealNum(2) * Meter});
+    edge_shape.Set(Length2D{0, +half_box_height * Real(2) * Meter}, Length2D{0, -half_box_height * Real(2) * Meter});
 
     body_def.position = Length2D{left_edge_x * Meter, 0};
     {
@@ -1960,7 +1960,7 @@ TEST(World, MouseJointWontCauseTunnelling)
     }
 
     // Setup horizontal bounderies
-    edge_shape.Set(Length2D{-half_box_width * RealNum(2) * Meter, 0}, Length2D{+half_box_width * RealNum(2) * Meter, 0});
+    edge_shape.Set(Length2D{-half_box_width * Real(2) * Meter, 0}, Length2D{+half_box_width * Real(2) * Meter, 0});
     
     body_def.position = Length2D{0, btm_edge_y * Meter};
     {
@@ -1993,9 +1993,9 @@ TEST(World, MouseJointWontCauseTunnelling)
     ASSERT_EQ(ball_body->GetLocation().x, Length{0});
     ASSERT_EQ(ball_body->GetLocation().y, Length{0});
     
-    const auto ball_radius = RealNum(half_box_width / 4) * Meter;
+    const auto ball_radius = Real(half_box_width / 4) * Meter;
     const auto object_shape = std::make_shared<PolygonShape>(ball_radius, ball_radius);
-    object_shape->SetDensity(RealNum{10} * KilogramPerSquareMeter);
+    object_shape->SetDensity(Real{10} * KilogramPerSquareMeter);
     {
         const auto ball_fixture = ball_body->CreateFixture(object_shape);
         ASSERT_NE(ball_fixture, nullptr);
@@ -2007,8 +2007,8 @@ TEST(World, MouseJointWontCauseTunnelling)
     for (auto i = decltype(numBodies){0}; i < numBodies; ++i)
     {
         const auto angle = i * 2 * Pi / numBodies;
-        const auto x = ball_radius * RealNum(2.1) * RealNum(std::cos(angle));
-        const auto y = ball_radius * RealNum(2.1) * RealNum(std::sin(angle));
+        const auto x = ball_radius * Real(2.1) * Real(std::cos(angle));
+        const auto y = ball_radius * Real(2.1) * Real(std::sin(angle));
         body_def.position = Length2D{x, y};
         bodies[i] = world.CreateBody(body_def);
         ASSERT_NE(bodies[i], nullptr);
@@ -2029,33 +2029,33 @@ TEST(World, MouseJointWontCauseTunnelling)
         mjd.bodyA = spare_body;
         mjd.bodyB = ball_body;
         const auto ball_body_pos = ball_body->GetLocation();
-        mjd.target = Length2D{ball_body_pos.x - ball_radius / RealNum{2}, ball_body_pos.y + ball_radius / RealNum{2}};
-        mjd.maxForce = RealNum(1000) * GetMass(*ball_body) * MeterPerSquareSecond;
+        mjd.target = Length2D{ball_body_pos.x - ball_radius / Real{2}, ball_body_pos.y + ball_radius / Real{2}};
+        mjd.maxForce = Real(1000) * GetMass(*ball_body) * MeterPerSquareSecond;
         return static_cast<MouseJoint*>(world.CreateJoint(mjd));
     }();
     ASSERT_NE(mouse_joint, nullptr);
 
     ball_body->SetAwake();
 
-    auto max_x = RealNum(0);
-    auto min_x = RealNum(0);
-    auto max_y = RealNum(0);
-    auto min_y = RealNum(0);
+    auto max_x = Real(0);
+    auto min_x = Real(0);
+    auto max_y = Real(0);
+    auto min_y = Real(0);
 
-    auto max_velocity = RealNum(0);
+    auto max_velocity = Real(0);
 
-    //const auto time_inc = RealNum(.0043268126901); // numBodies = 6, somewhat dependent on fixture density (10 or less?).
-    //const auto time_inc = RealNum(.0039224); // numBodies = 4, maybe dependent on fixture density
-    //const auto time_inc = RealNum(.003746); // numBodies = 2, maybe dependent on fixture density
-    //const auto time_inc = RealNum(.0036728129); // numBodies = 1, maybe dependent on fixture density
-    const auto time_inc = RealNum(.00367281295); // numBodies = 1, maybe dependent on fixture density
+    //const auto time_inc = Real(.0043268126901); // numBodies = 6, somewhat dependent on fixture density (10 or less?).
+    //const auto time_inc = Real(.0039224); // numBodies = 4, maybe dependent on fixture density
+    //const auto time_inc = Real(.003746); // numBodies = 2, maybe dependent on fixture density
+    //const auto time_inc = Real(.0036728129); // numBodies = 1, maybe dependent on fixture density
+    const auto time_inc = Real(.00367281295); // numBodies = 1, maybe dependent on fixture density
 
-    auto angle = RealNum(0);
-    auto anglular_speed = RealNum(0.01); // radians / timestep
-    const auto anglular_accel = RealNum(1.002);
+    auto angle = Real(0);
+    auto anglular_speed = Real(0.01); // radians / timestep
+    const auto anglular_accel = Real(1.002);
     auto distance = half_box_width / 2;
-    auto distance_speed = RealNum(0.003); // meters / timestep
-    const auto distance_accel = RealNum(1.001);
+    auto distance_speed = Real(0.003); // meters / timestep
+    const auto distance_accel = Real(1.001);
 
     MyContactListener listener{
         [&](Contact& contact, const Manifold& old_manifold)
@@ -2240,11 +2240,11 @@ TEST(World, MouseJointWontCauseTunnelling)
                 ASSERT_GT(bodies[i]->GetLocation().y, btm_edge_y * Meter);
             }
 
-            max_x = Max(RealNum{ball_body->GetLocation().x / Meter}, max_x);
-            min_x = Min(RealNum{ball_body->GetLocation().x / Meter}, min_x);
+            max_x = Max(Real{ball_body->GetLocation().x / Meter}, max_x);
+            min_x = Min(Real{ball_body->GetLocation().x / Meter}, min_x);
 
-            max_y = Max(RealNum{ball_body->GetLocation().y / Meter}, max_y);
-            min_y = Min(RealNum{ball_body->GetLocation().y / Meter}, min_y);
+            max_y = Max(Real{ball_body->GetLocation().y / Meter}, max_y);
+            min_y = Min(Real{ball_body->GetLocation().y / Meter}, min_y);
 
             const auto linVel = ball_body->GetVelocity().linear;
             max_velocity = Max(GetLength(Vec2{linVel.x / MeterPerSecond, linVel.y / MeterPerSecond}), max_velocity);
@@ -2300,12 +2300,12 @@ TEST(World, MouseJointWontCauseTunnelling)
 }
 
 #if 0
-static void smaller_still_conserves_momentum(bool bullet, RealNum multiplier, RealNum time_inc)
+static void smaller_still_conserves_momentum(bool bullet, Real multiplier, Real time_inc)
 {
-    const auto radius = RealNum(1);
-    const auto start_distance = RealNum(10);
+    const auto radius = Real(1);
+    const auto start_distance = Real(10);
     
-    auto scale = RealNum(1);
+    auto scale = Real(1);
     for (;;)
     {
         const auto gravity = Vec2_zero;
@@ -2313,8 +2313,8 @@ static void smaller_still_conserves_momentum(bool bullet, RealNum multiplier, Re
         ASSERT_EQ(world.GetGravity().x, 0);
         ASSERT_EQ(world.GetGravity().y, 0);
 
-        auto maxNormalImpulse = RealNum(0);
-        auto maxTangentImpulse = RealNum(0);
+        auto maxNormalImpulse = Real(0);
+        auto maxTangentImpulse = Real(0);
         auto maxPoints = 0u;
         auto numSteps = 0u;
         auto failed = false;
@@ -2441,22 +2441,22 @@ static void smaller_still_conserves_momentum(bool bullet, RealNum multiplier, Re
 
 TEST(World, SmallerStillConservesMomemtum)
 {
-    // smaller_still_conserves_momentum(false, RealNum(0.999), RealNum(0.01));
+    // smaller_still_conserves_momentum(false, Real(0.999), Real(0.01));
     // fails around scale=0.0899796 dist0=1.79959
     // goin to smaller time increment fails nearly same point.
-    smaller_still_conserves_momentum(false, RealNum(0.999), RealNum(0.01));
+    smaller_still_conserves_momentum(false, Real(0.999), Real(0.01));
 }
 
 TEST(World, SmallerBulletStillConservesMomemtum)
 {
-    // smaller_still_conserves_momentum(true, RealNum(0.999), RealNum(0.01))
+    // smaller_still_conserves_momentum(true, Real(0.999), Real(0.01))
     // fails around scale=4.99832e-05 dist0=0.000999664
     // goin to smaller time increment fails nearly same point.
-// smaller_still_conserves_momentum(true, RealNum(0.999), RealNum(0.01));
+// smaller_still_conserves_momentum(true, Real(0.999), Real(0.01));
 }
 #endif
 
-class VerticalStackTest: public ::testing::TestWithParam<RealNum>
+class VerticalStackTest: public ::testing::TestWithParam<Real>
 {
 public:
     virtual void SetUp()
@@ -2470,18 +2470,18 @@ public:
         original_x = GetParam();
         
         const auto boxShape = std::make_shared<PolygonShape>(hdim, hdim);
-        boxShape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
+        boxShape->SetDensity(Real{1} * KilogramPerSquareMeter);
         boxShape->SetFriction(0.3f);
         for (auto i = decltype(numboxes){0}; i < numboxes; ++i)
         {
             // (hdim + 0.05f) + (hdim * 2 + 0.1f) * i
-            const auto location = Length2D{original_x * Meter, (i + RealNum{1}) * hdim * RealNum{4}};
+            const auto location = Length2D{original_x * Meter, (i + Real{1}) * hdim * Real{4}};
             const auto box = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location));
             box->CreateFixture(boxShape);
             boxes[i] = box;
         }
         
-        const auto stepConf = StepConf{}.SetTime(Time{Second / RealNum{60}});
+        const auto stepConf = StepConf{}.SetTime(Time{Second / Real{60}});
         while (loopsTillSleeping < maxLoops)
         {
             world.Step(stepConf);
@@ -2495,13 +2495,13 @@ public:
 
 protected:
     World world{WorldDef{}.UseGravity(LinearAcceleration2D{
-        RealNum(0) * MeterPerSquareSecond, -RealNum(10) * MeterPerSquareSecond
+        Real(0) * MeterPerSquareSecond, -Real(10) * MeterPerSquareSecond
     })};
     std::size_t loopsTillSleeping = 0;
     const std::size_t maxLoops = 10000;
     std::vector<Body*> boxes{10};
-    RealNum original_x = 0;
-    const Length hdim = RealNum{0.1f} * Meter;
+    Real original_x = 0;
+    const Length hdim = Real{0.1f} * Meter;
 };
 
 TEST_P(VerticalStackTest, EndsBeforeMaxLoops)
@@ -2535,7 +2535,7 @@ TEST_P(VerticalStackTest, EachBodyLevel)
     }
 }
 
-static std::string test_suffix_generator(::testing::TestParamInfo<RealNum> param_info)
+static std::string test_suffix_generator(::testing::TestParamInfo<Real> param_info)
 {
     std::stringstream strbuf;
     strbuf << param_info.index;
@@ -2545,4 +2545,4 @@ static std::string test_suffix_generator(::testing::TestParamInfo<RealNum> param
 extern ::testing::internal::ParamGenerator<VerticalStackTest::ParamType> gtest_WorldVerticalStackTest_EvalGenerator_();
 extern ::std::string gtest_WorldVerticalStackTest_EvalGenerateName_(const ::testing::TestParamInfo<VerticalStackTest::ParamType>& info);
 
-INSTANTIATE_TEST_CASE_P(World, VerticalStackTest, ::testing::Values(RealNum(0), RealNum(5)), test_suffix_generator);
+INSTANTIATE_TEST_CASE_P(World, VerticalStackTest, ::testing::Values(Real(0), Real(5)), test_suffix_generator);

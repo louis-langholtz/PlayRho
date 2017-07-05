@@ -179,7 +179,7 @@ namespace box2d
             b.m_velocity = value;
         }
         
-        static void Advance0(Body& b, RealNum value) noexcept
+        static void Advance0(Body& b, Real value) noexcept
         {
             // Note: Static bodies must **never** have different sweep position values.
             
@@ -192,7 +192,7 @@ namespace box2d
             assert(b.IsSpeedable() || b.m_sweep.pos1 == b.m_sweep.pos0);
         }
         
-        static void Advance(Body& b, RealNum toi) noexcept
+        static void Advance(Body& b, Real toi) noexcept
         {
             b.Advance(toi);
         }

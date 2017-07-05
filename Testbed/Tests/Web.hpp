@@ -34,8 +34,8 @@ public:
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 
         {
-            const auto shape = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter);
-            shape->SetDensity(RealNum{5} * KilogramPerSquareMeter);
+            const auto shape = std::make_shared<PolygonShape>(Real{0.5f} * Meter, Real{0.5f} * Meter);
+            shape->SetDensity(Real{5} * KilogramPerSquareMeter);
 
             BodyDef bd;
             bd.type = BodyType::Dynamic;
@@ -59,7 +59,7 @@ public:
             DistanceJointDef jd;
             Length2D p1, p2, d;
 
-            jd.frequency = RealNum{2.0f} * Hertz;
+            jd.frequency = Real{2.0f} * Hertz;
             jd.dampingRatio = 0.0f;
 
             jd.bodyA = ground;

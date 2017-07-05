@@ -97,7 +97,7 @@ std::string GetBuildDetails() noexcept
 #else
     stream << "on";
 #endif
-    stream << ", RealNum=" << GetTypeName<RealNum>();
+    stream << ", Real=" << GetTypeName<Real>();
     return stream.str();
 }
 

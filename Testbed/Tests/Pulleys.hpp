@@ -29,15 +29,15 @@ class Pulleys : public Test
 public:
     Pulleys()
     {
-        const auto y = RealNum{16.0f};
-        const auto L = RealNum{12.0f};
-        const auto a = RealNum{1.0f};
-        const auto b = RealNum{2.0f};
+        const auto y = Real{16.0f};
+        const auto L = Real{12.0f};
+        const auto a = Real{1.0f};
+        const auto b = Real{2.0f};
 
         const auto ground = m_world->CreateBody();
         {
             auto conf = DiskShape::Conf{};
-            conf.vertexRadius = RealNum{2.0f} * Meter;
+            conf.vertexRadius = Real{2.0f} * Meter;
             conf.location = Vec2(-10.0f, y + b + L) * Meter;
             DiskShape circle(conf);
             ground->CreateFixture(std::make_shared<DiskShape>(circle));
@@ -48,7 +48,7 @@ public:
 
         {
             const auto shape = std::make_shared<PolygonShape>(a * Meter, b * Meter);
-            shape->SetDensity(RealNum{5} * KilogramPerSquareMeter);
+            shape->SetDensity(Real{5} * KilogramPerSquareMeter);
 
             BodyDef bd;
             bd.type = BodyType::Dynamic;
@@ -78,7 +78,7 @@ public:
         const auto ratio = m_joint1->GetRatio();
         const auto L = GetCurrentLengthA(*m_joint1) + ratio * GetCurrentLengthB(*m_joint1);
         drawer.DrawString(5, m_textLine, "L1 + %4.2f * L2 = %4.2f", (float) ratio,
-                          static_cast<double>(RealNum{L / Meter}));
+                          static_cast<double>(Real{L / Meter}));
         m_textLine += DRAW_STRING_NEW_LINE;
     }
 

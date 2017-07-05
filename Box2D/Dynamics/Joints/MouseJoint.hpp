@@ -46,10 +46,10 @@ struct MouseJointDef : public JointDef
     /// Frequency.
     /// @details The has to do with the response speed.
     /// @note This value may not be negative.
-    NonNegative<Frequency> frequency = NonNegative<Frequency>(RealNum{5} * Hertz);
+    NonNegative<Frequency> frequency = NonNegative<Frequency>(Real{5} * Hertz);
 
     /// The damping ratio. 0 = no damping, 1 = critical damping.
-    RealNum dampingRatio = 0.7f;
+    Real dampingRatio = 0.7f;
 };
 
 /// Mouse Joint.
@@ -62,7 +62,7 @@ struct MouseJointDef : public JointDef
 /// @note This joint is not documented in the manual because it was
 ///   developed to be used in the testbed. If you want to learn how to
 ///   use the mouse joint, look at the testbed.
-/// @note This structure is 120-bytes large (using a 4-byte RealNum on at least one 64-bit
+/// @note This structure is 120-bytes large (using a 4-byte Real on at least one 64-bit
 ///   architecture/build).
 ///
 class MouseJoint : public Joint
@@ -99,8 +99,8 @@ public:
     Frequency GetFrequency() const noexcept;
 
     /// Set/get the damping ratio (dimensionless).
-    void SetDampingRatio(RealNum ratio) noexcept;
-    RealNum GetDampingRatio() const noexcept;
+    void SetDampingRatio(Real ratio) noexcept;
+    Real GetDampingRatio() const noexcept;
 
     /// Implement Joint::ShiftOrigin
     void ShiftOrigin(const Length2D newOrigin) override;
@@ -115,7 +115,7 @@ private:
     Length2D m_targetA;
     Length2D m_localAnchorB;
     NonNegative<Frequency> m_frequency;
-    RealNum m_dampingRatio;
+    Real m_dampingRatio;
     
     // Solver shared
     Momentum2D m_impulse = Momentum2D{0, 0};
@@ -163,12 +163,12 @@ inline Frequency MouseJoint::GetFrequency() const noexcept
     return m_frequency;
 }
 
-inline void MouseJoint::SetDampingRatio(RealNum ratio) noexcept
+inline void MouseJoint::SetDampingRatio(Real ratio) noexcept
 {
     m_dampingRatio = ratio;
 }
 
-inline RealNum MouseJoint::GetDampingRatio() const noexcept
+inline Real MouseJoint::GetDampingRatio() const noexcept
 {
     return m_dampingRatio;
 }

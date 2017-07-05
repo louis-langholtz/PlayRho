@@ -48,14 +48,14 @@ namespace box2d {
         /// @note This value probably should not be changed except to experiment with what can happen.
         /// @note Making it smaller means some shapes could have insufficient buffer for continuous collision.
         /// @note Making it larger may create artifacts for vertex collision.
-        Positive<Length> minVertexRadius = DefaultLinearSlop * RealNum{2};
+        Positive<Length> minVertexRadius = DefaultLinearSlop * Real{2};
         
         /// @brief Maximum vertex radius.
         /// @details This is the maximum vertex radius that this world establishes which bodies
         ///    shall allow fixtures to be created with. Trying to create a fixture with a shape
         ///    having a larger vertex radius shall be rejected with a <code>nullptr</code>
         ///    returned value.
-        Positive<Length> maxVertexRadius = RealNum{255} * Meter; // linearSlop * 2550000
+        Positive<Length> maxVertexRadius = Real{255} * Meter; // linearSlop * 2550000
     };
     
     constexpr inline WorldDef& WorldDef::UseGravity(LinearAcceleration2D value) noexcept

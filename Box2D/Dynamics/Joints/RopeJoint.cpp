@@ -89,7 +89,7 @@ void RopeJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     const auto invRotMassB = InvMass{invRotInertiaB * Square(crB) / SquareRadian};
     const auto invMass = invMassA + invMassB + invRotMassA + invRotMassB;
 
-    m_mass = (invMass != InvMass{0}) ? RealNum{1} / invMass : Mass{0};
+    m_mass = (invMass != InvMass{0}) ? Real{1} / invMass : Mass{0};
 
     if (step.doWarmStart)
     {

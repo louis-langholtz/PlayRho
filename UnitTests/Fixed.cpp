@@ -490,7 +490,7 @@ TEST(Fixed32, Comparators)
 
 TEST(Fixed32, BiggerValsIdenticallyInaccurate)
 {
-    // Check that RealNum doesn't suffer from inconstent inaccuracy (like float has depending on
+    // Check that Real doesn't suffer from inconstent inaccuracy (like float has depending on
     // the float's value).
     auto last_delta = float(0);
     auto val = Fixed32{1};

@@ -419,15 +419,15 @@ namespace box2d
     {
         /// Targetted depth of impact.
         /// @note Value must be less than twice the minimum vertex radius of any shape.
-        Length targetDepth = DefaultLinearSlop * RealNum{3};
+        Length targetDepth = DefaultLinearSlop * Real{3};
         
-        Length tolerance = DefaultLinearSlop / RealNum{4}; ///< Tolerance.
+        Length tolerance = DefaultLinearSlop / Real{4}; ///< Tolerance.
         
         /// Max. circles ratio.
         /// @details When the ratio of the closest face's length to the vertex radius is
         ///   more than this amount, then face-manifolds are forced, else circles-manifolds
         ///   may be computed for new contact manifolds.
-        RealNum maxCirclesRatio = DefaultCirclesRatio;
+        Real maxCirclesRatio = DefaultCirclesRatio;
     };
     
     constexpr inline Manifold::Conf GetDefaultManifoldConf() noexcept

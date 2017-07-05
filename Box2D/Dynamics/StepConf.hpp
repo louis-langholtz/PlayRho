@@ -34,7 +34,7 @@ namespace box2d {
 /// the values have defaults. These defaults are intended to most likely be the values desired.
 /// @note Be sure to confirm that the delta time (the time-per-step i.e. <code>dt</code>) is
 ///   correct for your use.
-/// @note This data structure is 100-bytes large (with 4-byte RealNum on at least one 64-bit platform).
+/// @note This data structure is 100-bytes large (with 4-byte Real on at least one 64-bit platform).
 /// @sa World::Step.
 class StepConf
 {
@@ -48,7 +48,7 @@ public:
     static constexpr auto InvalidIteration = static_cast<iteration_type>(-1);
 
     /// @brief Gets the delta time (time amount for this time step).
-    /// @sa SetTime(RealNum).
+    /// @sa SetTime(Real).
     /// @return Time step amount in seconds.
     Time GetTime() const noexcept { return time; }
 
@@ -67,7 +67,7 @@ public:
     constexpr StepConf& SetTime(Time value) noexcept
     {
         time = value;
-        invTime = (value != Time{0})? RealNum{1} / value: Hertz * RealNum{0};
+        invTime = (value != Time{0})? Real{1} / value: Hertz * Real{0};
         return *this;
     }
 
@@ -81,7 +81,7 @@ public:
     constexpr StepConf& SetInvTime(Frequency value) noexcept
     {
         invTime = value;
-        time = (value != Frequency{0})? Time{RealNum{1} / value}: Time{0};
+        time = (value != Frequency{0})? Time{Real{1} / value}: Time{0};
         return *this;
     }
     
@@ -89,7 +89,7 @@ public:
     /// @details This is the delta-time multiplied by the inverse delta time from the previous
     ///    world step. The value of 1 indicates that the time step has not varied.
     /// @note Used in the regular phase processing of the step.
-    RealNum dtRatio = 1;
+    Real dtRatio = 1;
 
     /// @brief Minimum still time to sleep.
     /// @details The time that a body must be still before it will be put to sleep.
@@ -115,7 +115,7 @@ public:
     /// However using values close to 1 often lead to overshoot.
     /// @note Must be greater than 0 for any regular-phase positional resolution to get done.
     /// @note Used in the regular phase of step processing.
-    RealNum regResolutionRate = RealNum{2} / 10; // aka 0.2.
+    Real regResolutionRate = Real{2} / 10; // aka 0.2.
     
     /// @brief Regular minimum separation.
     /// @details
@@ -124,7 +124,7 @@ public:
     /// of the regular position iterations have been done.
     /// @note Used in the regular phase of step processing.
     /// @sa regPositionIterations.
-    Length regMinSeparation = -DefaultLinearSlop * RealNum{3};
+    Length regMinSeparation = -DefaultLinearSlop * Real{3};
     
     /// @brief Time of impact resolution rate.
     /// @details
@@ -133,7 +133,7 @@ public:
     /// However using values close to 1 often lead to overshoot.
     /// @note Used in the TOI phase of step processing.
     /// @note Must be greater than 0 for any TOI-phase positional resolution to get done.
-    RealNum toiResolutionRate = RealNum{75} / 100; // aka .75
+    Real toiResolutionRate = Real{75} / 100; // aka .75
 
     /// @brief Time of impact minimum separation.
     /// @details
@@ -142,7 +142,7 @@ public:
     /// of the TOI position iterations have been done.
     /// @note Used in the TOI phase of step processing.
     /// @sa toiPositionIterations.
-    Length toiMinSeparation = -DefaultLinearSlop * RealNum(1.5f);
+    Length toiMinSeparation = -DefaultLinearSlop * Real(1.5f);
 
     /// @brief Target depth.
     /// @details Target depth of overlap for calculating the TOI for CCD elligible bodies.
@@ -150,7 +150,7 @@ public:
     /// @note Must not be subnormal.
     /// @note Must be less than twice the world's minimum vertex radius.
     /// @note Used in the TOI phase of step processing.
-    Positive<Length> targetDepth = DefaultLinearSlop * RealNum{3};
+    Positive<Length> targetDepth = DefaultLinearSlop * Real{3};
     
     /// @brief Tolerance.
     /// @details The acceptable plus or minus tolerance from the target depth for TOI calculations.
@@ -158,7 +158,7 @@ public:
     /// @note Must not be subnormal.
     /// @note Must be less than the target depth.
     /// @note Used in the TOI phase of step processing.
-    Positive<Length> tolerance = DefaultLinearSlop / RealNum{4};
+    Positive<Length> tolerance = DefaultLinearSlop / Real{4};
 
     /// @brief Velocity threshold.
     /// @details A velocity threshold for elastic collisions. Any collision with a relative linear
@@ -171,7 +171,7 @@ public:
     /// @note This limit is very large and is used to prevent numerical problems.
     /// You shouldn't need to adjust this.
     /// @note Used in both the regular and TOI phases of step processing.
-    Length maxTranslation = Meter * RealNum(4); // originally 2
+    Length maxTranslation = Meter * Real(4); // originally 2
     
     /// @brief Maximum rotation.
     /// @details The maximum angular velocity of a body.
@@ -199,7 +199,7 @@ public:
     AngularVelocity angularSleepTolerance = DefaultAngularSleepTolerance;
     
     /// @brief Displacement multiplier for directional AABB fattening.
-    RealNum displaceMultiplier = DefaultDistanceMultiplier;
+    Real displaceMultiplier = DefaultDistanceMultiplier;
     
     /// @brief AABB extension.
     /// @details This is the extension that will be applied to Axis Aligned Bounding Box
@@ -214,7 +214,7 @@ public:
     ///   more than this amount, then face-manifolds are forced, else circles-manifolds
     ///   may be computed for new contact manifolds.
     /// @note This is used in the calculation of new contact manifolds.
-    RealNum maxCirclesRatio = DefaultCirclesRatio;
+    Real maxCirclesRatio = DefaultCirclesRatio;
 
     /// @brief Regular velocity iterations.
     /// @details The number of iterations of velocity resolution that will be done in the step.
@@ -293,7 +293,7 @@ private:
 
 inline Length GetMaxRegLinearCorrection(const StepConf& conf) noexcept
 {
-    return conf.maxLinearCorrection * static_cast<RealNum>(conf.regPositionIterations);
+    return conf.maxLinearCorrection * static_cast<Real>(conf.regPositionIterations);
 }
 
 bool IsMaxTranslationWithinTolerance(const StepConf& conf) noexcept;

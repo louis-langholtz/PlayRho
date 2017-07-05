@@ -43,12 +43,12 @@ public:
 
         auto conf = PolygonShape::Conf{};
         conf.friction = 0.6f;
-        conf.density = RealNum{2} * KilogramPerSquareMeter;
-        body->CreateFixture(std::make_shared<PolygonShape>(RealNum{2.0f} * Meter, RealNum{0.5f} * Meter, conf));
+        conf.density = Real{2} * KilogramPerSquareMeter;
+        body->CreateFixture(std::make_shared<PolygonShape>(Real{2.0f} * Meter, Real{0.5f} * Meter, conf));
 
         auto mjd = MotorJointDef{ground, body};
-        mjd.maxForce = RealNum{1000.0f} * Newton;
-        mjd.maxTorque = RealNum{1000.0f} * NewtonMeter;
+        mjd.maxForce = Real{1000.0f} * Newton;
+        mjd.maxTorque = Real{1000.0f} * NewtonMeter;
         m_joint = (MotorJoint*)m_world->CreateJoint(mjd);
     }
 
@@ -72,14 +72,14 @@ public:
         }
 
         const auto linearOffset = Vec2{
-            RealNum{6} * std::sin(RealNum{2} * m_time),
-            RealNum{8} + RealNum{4} * std::sin(RealNum{1} * m_time)
+            Real{6} * std::sin(Real{2} * m_time),
+            Real{8} + Real{4} * std::sin(Real{1} * m_time)
         } * Meter;
 
         m_joint->SetLinearOffset(linearOffset);
-        m_joint->SetAngularOffset(RealNum{4} * Radian * m_time);
+        m_joint->SetAngularOffset(Real{4} * Radian * m_time);
 
-        drawer.DrawPoint(linearOffset, RealNum{4} * Meter, Color(0.9f, 0.9f, 0.9f));
+        drawer.DrawPoint(linearOffset, Real{4} * Meter, Color(0.9f, 0.9f, 0.9f));
     }
 
     void PostStep(const Settings&, Drawer& drawer) override
@@ -89,7 +89,7 @@ public:
     }
 
     MotorJoint* m_joint;
-    RealNum m_time = 0;
+    Real m_time = 0;
     bool m_go = false;
 };
 

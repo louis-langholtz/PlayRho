@@ -60,7 +60,7 @@ namespace box2d {
     /// @sa SolvePositionConstraint.
     struct ConstraintSolverConf
     {
-        ConstraintSolverConf& UseResolutionRate(RealNum value) noexcept;
+        ConstraintSolverConf& UseResolutionRate(Real value) noexcept;
 
         ConstraintSolverConf& UseLinearSlop(Length value) noexcept;
         
@@ -78,7 +78,7 @@ namespace box2d {
         /// However using values close to 1 often leads to overshoot.
         /// @note Recommended values are: <code>0.2</code> for solving regular constraints
         ///   or <code>0.75</code> for solving TOI constraints.
-        RealNum resolutionRate = RealNum(0.2);
+        Real resolutionRate = Real(0.2);
 
         /// Linear slop.
         /// @note The negative of this amount is the maximum amount of separation to create.
@@ -93,16 +93,16 @@ namespace box2d {
         /// @details
         /// Maximum amount of overlap to resolve in a single solver call. Helps prevent overshoot.
         /// @note Recommended value: <code>linearSlop * 40</code>.
-        Length maxLinearCorrection = DefaultLinearSlop * RealNum{20};
+        Length maxLinearCorrection = DefaultLinearSlop * Real{20};
         
         /// Maximum angular correction.
         /// @details Maximum angular position correction used when solving constraints.
         /// Helps to prevent overshoot.
         /// @note Recommended value: <code>angularSlop * 4</code>.
-        Angle maxAngularCorrection = DefaultAngularSlop * RealNum{4};
+        Angle maxAngularCorrection = DefaultAngularSlop * Real{4};
     };
 
-    inline ConstraintSolverConf& ConstraintSolverConf::UseResolutionRate(RealNum value) noexcept
+    inline ConstraintSolverConf& ConstraintSolverConf::UseResolutionRate(Real value) noexcept
     {
         resolutionRate = value;
         return *this;
@@ -134,13 +134,13 @@ namespace box2d {
 
     inline ConstraintSolverConf GetDefaultPositionSolverConf()
     {
-        return ConstraintSolverConf{}.UseResolutionRate(RealNum(0.2));
+        return ConstraintSolverConf{}.UseResolutionRate(Real(0.2));
     }
     
     inline ConstraintSolverConf GetDefaultToiPositionSolverConf()
     {
         // For solving TOI events, use a faster/higher resolution rate than normally used.
-        return ConstraintSolverConf{}.UseResolutionRate(RealNum(0.75));
+        return ConstraintSolverConf{}.UseResolutionRate(Real(0.75));
     }
     
     namespace GaussSeidel {

@@ -38,19 +38,19 @@ struct RopeDef
     size_type count = 0;
 
     ///
-    RealNum* masses = nullptr;
+    Real* masses = nullptr;
 
     ///
     Vec2 gravity = Vec2_zero;
 
     ///
-    RealNum damping = RealNum{1} / RealNum(10);
+    Real damping = Real{1} / Real(10);
 
     /// Stretching stiffness
-    RealNum k2 = RealNum(9) / RealNum(10);
+    Real k2 = Real(9) / Real(10);
 
     /// Bending stiffness. Values above 0.5 can make the simulation blow up.
-    RealNum k3 = RealNum{1} / RealNum(10);
+    Real k3 = Real{1} / Real(10);
 };
 
 /// 
@@ -66,7 +66,7 @@ public:
     void Initialize(const RopeDef* def);
 
     ///
-    void Step(RealNum timeStep, int iterations);
+    void Step(Real timeStep, int iterations);
 
     ///
     size_type GetVertexCount() const noexcept
@@ -99,16 +99,16 @@ private:
     Vec2* m_p0s = nullptr;
     Vec2* m_vs = nullptr;
 
-    RealNum* m_ims = nullptr;
+    Real* m_ims = nullptr;
 
-    RealNum* m_Ls = nullptr;
+    Real* m_Ls = nullptr;
     Angle* m_as = nullptr;
 
     Vec2 m_gravity = Vec2_zero;
-    RealNum m_damping = RealNum{0};
+    Real m_damping = Real{0};
 
-    RealNum m_k2 = RealNum{1};
-    RealNum m_k3 = RealNum(0.1);
+    Real m_k2 = Real{1};
+    Real m_k3 = Real(0.1);
 };
 
 } // namespace box2d

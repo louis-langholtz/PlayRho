@@ -64,7 +64,7 @@ enum class BodyType;
 ///
 /// @note From a memory management perspective, world instances own Body, Joint, and Contact
 ///   instances.
-/// @note This data structure is 352-bytes large (with 4-byte RealNum on at least one 64-bit
+/// @note This data structure is 352-bytes large (with 4-byte Real on at least one 64-bit
 ///   platform).
 ///
 class World
@@ -255,7 +255,7 @@ public:
     /// @brief Gets the quality metric of the dynamic tree.
     /// @details The smaller the better.
     /// @return Value of zero or more.
-    RealNum GetTreeQuality() const;
+    Real GetTreeQuality() const;
 
     /// @brief Changes the global gravity vector.
     void SetGravity(const LinearAcceleration2D gravity) noexcept;
@@ -354,7 +354,7 @@ private:
     /// @brief Island solver results.
     struct IslandSolverResults
     {
-        Length minSeparation = std::numeric_limits<RealNum>::infinity() * Meter; ///< Minimum separation.
+        Length minSeparation = std::numeric_limits<Real>::infinity() * Meter; ///< Minimum separation.
         Momentum maxIncImpulse = 0; ///< Maximum incremental impulse.
         BodyCounter bodiesSlept = 0;
         ContactCounter contactsUpdated = 0;
@@ -465,7 +465,7 @@ private:
     /// @param[in,out] island Island. On return this may contain additional contacts or bodies.
     /// @param[in,out] body A dynamic/accelerable body.
     /// @param[in] toi Time of impact (TOI). Value between 0 and 1.
-    ProcessContactsOutput ProcessContactsForTOI(Island& island, Body& body, RealNum toi,
+    ProcessContactsOutput ProcessContactsForTOI(Island& island, Body& body, Real toi,
                                                 const StepConf& conf);
     
     bool Add(Joint* j, Body* bodyA, Body* bodyB);
@@ -505,7 +505,7 @@ private:
     struct ContactToiData
     {
         std::vector<Contact*> contacts; ///< Contacts for which the time of impact is relavant.
-        RealNum toi = std::numeric_limits<RealNum>::infinity(); ///< Time of impact (TOI) as a fractional value between 0 and 1.
+        Real toi = std::numeric_limits<Real>::infinity(); ///< Time of impact (TOI) as a fractional value between 0 and 1.
     };
 
     struct UpdateContactsData
@@ -593,11 +593,11 @@ private:
 
     ChildCounter Synchronize(Fixture& fixture,
                               const Transformation xfm1, const Transformation xfm2,
-                              const RealNum multiplier, const Length extension);
+                              const Real multiplier, const Length extension);
 
     ContactCounter Synchronize(Body& body,
                                 const Transformation& xfm1, const Transformation& xfm2,
-                                const RealNum multiplier, const Length aabbExtension);
+                                const Real multiplier, const Length aabbExtension);
     
     void CreateAndDestroyProxies(const StepConf& conf);
     void CreateAndDestroyProxies(Fixture& fixture, const StepConf& conf);
@@ -826,7 +826,7 @@ inline World::proxy_size_type World::GetTreeBalance() const
     return m_tree.GetMaxBalance();
 }
 
-inline RealNum World::GetTreeQuality() const
+inline Real World::GetTreeQuality() const
 {
     return m_tree.GetAreaRatio();
 }

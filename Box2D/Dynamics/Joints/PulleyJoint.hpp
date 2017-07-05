@@ -37,19 +37,19 @@ struct PulleyJointDef : public JointDef
     PulleyJointDef(Body* bodyA, Body* bodyB,
                     const Length2D groundAnchorA, const Length2D groundAnchorB,
                     const Length2D anchorA, const Length2D anchorB,
-                    RealNum ratio);
+                    Real ratio);
 
     /// The first ground anchor in world coordinates. This point never moves.
-    Length2D groundAnchorA = Length2D{RealNum(-1) * Meter, RealNum(1) * Meter};
+    Length2D groundAnchorA = Length2D{Real(-1) * Meter, Real(1) * Meter};
 
     /// The second ground anchor in world coordinates. This point never moves.
-    Length2D groundAnchorB = Length2D{RealNum(1) * Meter, RealNum(1) * Meter};
+    Length2D groundAnchorB = Length2D{Real(1) * Meter, Real(1) * Meter};
 
     /// The local anchor point relative to bodyA's origin.
-    Length2D localAnchorA = Length2D{RealNum(-1) * Meter, RealNum(0) * Meter};
+    Length2D localAnchorA = Length2D{Real(-1) * Meter, Real(0) * Meter};
 
     /// The local anchor point relative to bodyB's origin.
-    Length2D localAnchorB = Length2D{RealNum(1) * Meter, RealNum(0) * Meter};
+    Length2D localAnchorB = Length2D{Real(1) * Meter, Real(0) * Meter};
 
     /// The a reference length for the segment attached to bodyA.
     Length lengthA = Length{0};
@@ -58,7 +58,7 @@ struct PulleyJointDef : public JointDef
     Length lengthB = Length{0};
 
     /// The pulley ratio, used to simulate a block-and-tackle.
-    RealNum ratio = 1;
+    Real ratio = 1;
 };
 
 /// The pulley joint is connected to two bodies and two fixed ground points.
@@ -96,7 +96,7 @@ public:
     Length GetLengthB() const noexcept;
 
     /// Get the pulley ratio.
-    RealNum GetRatio() const noexcept;
+    Real GetRatio() const noexcept;
 
     /// Implement Joint::ShiftOrigin
     void ShiftOrigin(const Length2D newOrigin) override;
@@ -116,7 +116,7 @@ private:
     Length2D m_localAnchorA;
     Length2D m_localAnchorB;
     Length m_constant;
-    RealNum m_ratio;
+    Real m_ratio;
     Momentum m_impulse = Momentum{0};
 
     // Solver temp
@@ -157,7 +157,7 @@ inline Length PulleyJoint::GetLengthB() const noexcept
     return m_lengthB;
 }
 
-inline RealNum PulleyJoint::GetRatio() const noexcept
+inline Real PulleyJoint::GetRatio() const noexcept
 {
     return m_ratio;
 }

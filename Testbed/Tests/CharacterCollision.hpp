@@ -39,50 +39,50 @@ public:
         {
             PolygonShape shape;
 
-            shape.SetVertexRadius(RealNum(0.006f) * Meter);
-            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
-                     Vec2(20.01f, 0.545f) * Meter, RealNum{0.0f} * Radian);
+            shape.SetVertexRadius(Real(0.006f) * Meter);
+            SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
+                     Vec2(20.01f, 0.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
-                     Vec2(20.01f, 1.545f) * Meter, RealNum{0.0f} * Radian);
+            SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
+                     Vec2(20.01f, 1.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
-                     Vec2(20.01f, 2.545f) * Meter, RealNum{0.0f} * Radian);
+            SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
+                     Vec2(20.01f, 2.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
-                     Vec2(20.01f, 3.545f) * Meter, RealNum{0.0f} * Radian);
+            SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
+                     Vec2(20.01f, 3.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
-                     Vec2(20.01f, 4.545f) * Meter, RealNum{0.0f} * Radian);
+            SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
+                     Vec2(20.01f, 4.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
-                     Vec2(20.01f, 5.545f) * Meter, RealNum{0.0f} * Radian);
+            SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
+                     Vec2(20.01f, 5.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
-                     Vec2(20.01f, 6.545f) * Meter, RealNum{0.0f} * Radian);
+            SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
+                     Vec2(20.01f, 6.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
 
-            shape.SetVertexRadius(RealNum(0.006f) * Meter);
-            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
-                     Vec2(17.99f, 0.545f) * Meter, RealNum{0.0f} * Radian);
+            shape.SetVertexRadius(Real(0.006f) * Meter);
+            SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
+                     Vec2(17.99f, 0.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
-                     Vec2(17.99f, 1.545f) * Meter, RealNum{0.0f} * Radian);
+            SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
+                     Vec2(17.99f, 1.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
-                     Vec2(17.99f, 2.545f) * Meter, RealNum{0.0f} * Radian);
+            SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
+                     Vec2(17.99f, 2.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
-                     Vec2(17.99f, 3.545f) * Meter, RealNum{0.0f} * Radian);
+            SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
+                     Vec2(17.99f, 3.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
-                     Vec2(17.99f, 4.545f) * Meter, RealNum{0.0f} * Radian);
+            SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
+                     Vec2(17.99f, 4.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
-                     Vec2(17.99f, 5.545f) * Meter, RealNum{0.0f} * Radian);
+            SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
+                     Vec2(17.99f, 5.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, RealNum(0.5) * Meter, RealNum(0.5) * Meter,
-                     Vec2(17.99f, 6.545f) * Meter, RealNum{0.0f} * Radian);
+            SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
+                     Vec2(17.99f, 6.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
         }
 
@@ -110,7 +110,7 @@ public:
 
         // Chain shape
         {
-            const auto body = m_world->CreateBody(BodyDef{}.UseAngle(RealNum{45} * Degree));
+            const auto body = m_world->CreateBody(BodyDef{}.UseAngle(Real{45} * Degree));
             auto conf = ChainShape::Conf{};
             conf.vertices.push_back(Vec2(5.0f, 7.0f) * Meter);
             conf.vertices.push_back(Vec2(6.0f, 8.0f) * Meter);
@@ -122,11 +122,11 @@ public:
         // Square tiles.
         {
             PolygonShape shape;
-            SetAsBox(shape, RealNum{1.0f} * Meter, RealNum{1.0f} * Meter, Vec2(4.0f, 3.0f) * Meter, RealNum{0.0f} * Radian);
+            SetAsBox(shape, Real{1.0f} * Meter, Real{1.0f} * Meter, Vec2(4.0f, 3.0f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, RealNum{1.0f} * Meter, RealNum{1.0f} * Meter, Vec2(6.0f, 3.0f) * Meter, RealNum{0.0f} * Radian);
+            SetAsBox(shape, Real{1.0f} * Meter, Real{1.0f} * Meter, Vec2(6.0f, 3.0f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, RealNum{1.0f} * Meter, RealNum{1.0f} * Meter, Vec2(8.0f, 3.0f) * Meter, RealNum{0.0f} * Radian);
+            SetAsBox(shape, Real{1.0f} * Meter, Real{1.0f} * Meter, Vec2(8.0f, 3.0f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
         }
 
@@ -170,10 +170,10 @@ public:
             const auto body = m_world->CreateBody(bd);
 
             auto conf = PolygonShape::Conf{};
-            conf.friction = RealNum(0);
-            conf.density = RealNum{20} * KilogramPerSquareMeter;
-            conf.vertexRadius = RealNum(0.006f) * Meter;
-            const auto square = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.5f} * Meter, conf);
+            conf.friction = Real(0);
+            conf.density = Real{20} * KilogramPerSquareMeter;
+            conf.vertexRadius = Real(0.006f) * Meter;
+            const auto square = std::make_shared<PolygonShape>(Real{0.5f} * Meter, Real{0.5f} * Meter, conf);
             body->CreateFixture(square);
             
             bd.position = Vec2(19.0f, 7.0f) * Meter;
@@ -192,8 +192,8 @@ public:
             const auto body = m_world->CreateBody(bd);
 
             auto conf = PolygonShape::Conf{};
-            conf.density = RealNum{20} * KilogramPerSquareMeter;
-            body->CreateFixture(std::make_shared<PolygonShape>(RealNum{0.25f} * Meter, RealNum{0.25f} * Meter, conf));
+            conf.density = Real{20} * KilogramPerSquareMeter;
+            body->CreateFixture(std::make_shared<PolygonShape>(Real{0.25f} * Meter, Real{0.25f} * Meter, conf));
         }
 
         // Hexagon character
@@ -206,8 +206,8 @@ public:
 
             const auto body = m_world->CreateBody(bd);
 
-            auto angle = RealNum{0.0f};
-            const auto delta = RealNum{Pi / 3.0f};
+            auto angle = Real{0.0f};
+            const auto delta = Real{Pi / 3.0f};
             Length2D vertices[6];
             for (auto i = 0; i < 6; ++i)
             {
@@ -216,7 +216,7 @@ public:
             }
 
             auto conf = PolygonShape::Conf{};
-            conf.density = RealNum{20} * KilogramPerSquareMeter;
+            conf.density = Real{20} * KilogramPerSquareMeter;
             auto hexshape = std::make_shared<PolygonShape>(conf);
             hexshape->Set(Span<const Length2D>(vertices, 6));
             body->CreateFixture(hexshape);
@@ -232,8 +232,8 @@ public:
 
             const auto body = m_world->CreateBody(bd);
             auto conf = DiskShape::Conf{};
-            conf.density = RealNum{20} * KilogramPerSquareMeter;
-            conf.vertexRadius = RealNum{0.5f} * Meter;
+            conf.density = Real{20} * KilogramPerSquareMeter;
+            conf.vertexRadius = Real{0.5f} * Meter;
             body->CreateFixture(std::make_shared<DiskShape>(conf));
         }
 
@@ -247,9 +247,9 @@ public:
             m_character = m_world->CreateBody(bd);
 
             auto conf = DiskShape::Conf{};
-            conf.density = RealNum{20} * KilogramPerSquareMeter;
+            conf.density = Real{20} * KilogramPerSquareMeter;
             conf.friction = 1.0f;
-            conf.vertexRadius = RealNum{0.25f} * Meter;
+            conf.vertexRadius = Real{0.25f} * Meter;
             m_character->CreateFixture(std::make_shared<DiskShape>(conf));
         }
     }
@@ -257,7 +257,7 @@ public:
     void PreStep(const Settings&, Drawer&) override
     {
         auto velocity = m_character->GetVelocity();
-        velocity.linear.x = RealNum{-5.0f} * MeterPerSecond;
+        velocity.linear.x = Real{-5.0f} * MeterPerSecond;
         m_character->SetVelocity(velocity);
     }
 

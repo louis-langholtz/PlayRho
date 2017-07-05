@@ -39,13 +39,13 @@ struct MotorJointDef : public JointDef
     Angle angularOffset = Angle{0};
     
     /// The maximum motor force.
-    Force maxForce = RealNum{1} * Newton;
+    Force maxForce = Real{1} * Newton;
 
     /// The maximum motor torque.
-    Torque maxTorque = RealNum{1} * NewtonMeter;
+    Torque maxTorque = Real{1} * NewtonMeter;
 
     /// Position correction factor in the range [0,1].
-    RealNum correctionFactor = RealNum(0.3);
+    Real correctionFactor = Real(0.3);
 };
 
 /// A motor joint is used to control the relative motion
@@ -83,10 +83,10 @@ public:
     Torque GetMaxTorque() const;
 
     /// Set the position correction factor in the range [0,1].
-    void SetCorrectionFactor(RealNum factor);
+    void SetCorrectionFactor(Real factor);
 
     /// Get the position correction factor in the range [0,1].
-    RealNum GetCorrectionFactor() const;
+    Real GetCorrectionFactor() const;
 
 private:
 
@@ -101,7 +101,7 @@ private:
     AngularMomentum m_angularImpulse = AngularMomentum{0};
     Force m_maxForce;
     Torque m_maxTorque;
-    RealNum m_correctionFactor;
+    Real m_correctionFactor;
 
     // Solver temp
     Length2D m_rA;

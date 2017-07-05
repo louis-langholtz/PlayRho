@@ -23,7 +23,7 @@ using namespace box2d;
 
 TEST(FixtureProxy, ByteSizeIs_32_48_or_80)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(FixtureProxy), std::size_t(32)); break;
         case  8: EXPECT_EQ(sizeof(FixtureProxy), std::size_t(48)); break;

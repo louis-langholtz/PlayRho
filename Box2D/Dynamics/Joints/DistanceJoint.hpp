@@ -39,7 +39,7 @@ struct DistanceJointDef : public JointDef
     DistanceJointDef(Body* bodyA, Body* bodyB,
                      const Length2D anchorA = Length2D(0, 0),
                      const Length2D anchorB = Length2D(0, 0),
-                     Frequency freq = Frequency{0}, RealNum damp = 0) noexcept;
+                     Frequency freq = Frequency{0}, Real damp = 0) noexcept;
 
     /// The local anchor point relative to bodyA's origin.
     Length2D localAnchorA = Length2D(0, 0);
@@ -48,7 +48,7 @@ struct DistanceJointDef : public JointDef
     Length2D localAnchorB = Length2D(0, 0);
 
     /// The natural length between the anchor points.
-    Length length = RealNum{1} * Meter;
+    Length length = Real{1} * Meter;
 
     /// Mass-spring-damper frequency in Hertz.
     /// @note 0 disables softness.
@@ -56,7 +56,7 @@ struct DistanceJointDef : public JointDef
     Frequency frequency = Frequency{0};
 
     /// The damping ratio. 0 = no damping, 1 = critical damping.
-    RealNum dampingRatio = 0;
+    Real dampingRatio = 0;
 };
 
 /// Distance Joint.
@@ -98,8 +98,8 @@ public:
     Frequency GetFrequency() const noexcept;
 
     /// Set/get damping ratio.
-    void SetDampingRatio(RealNum ratio) noexcept;
-    RealNum GetDampingRatio() const noexcept;
+    void SetDampingRatio(Real ratio) noexcept;
+    Real GetDampingRatio() const noexcept;
 
 private:
 
@@ -111,7 +111,7 @@ private:
     Length2D m_localAnchorB;
     Length m_length;
     Frequency m_frequency;
-    RealNum m_dampingRatio;
+    Real m_dampingRatio;
 
     // Solver temp
     InvMass m_invGamma;
@@ -143,12 +143,12 @@ inline Frequency DistanceJoint::GetFrequency() const noexcept
     return m_frequency;
 }
 
-inline void DistanceJoint::SetDampingRatio(RealNum ratio) noexcept
+inline void DistanceJoint::SetDampingRatio(Real ratio) noexcept
 {
     m_dampingRatio = ratio;
 }
 
-inline RealNum DistanceJoint::GetDampingRatio() const noexcept
+inline Real DistanceJoint::GetDampingRatio() const noexcept
 {
     return m_dampingRatio;
 }

@@ -41,8 +41,8 @@ namespace
 {
 
 #if defined(B2_DEBUG_SOLVER)
-static constexpr auto k_errorTol = RealNum(2e-3); ///< error tolerance
-static constexpr auto k_majorErrorTol = RealNum(1e-2); ///< error tolerance
+static constexpr auto k_errorTol = Real(2e-3); ///< error tolerance
+static constexpr auto k_majorErrorTol = Real(1e-2); ///< error tolerance
 #endif
 
 struct VelocityPair
@@ -591,7 +591,7 @@ PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
         }
         default: break;
     }
-    return PositionSolution{posA, posB, std::numeric_limits<RealNum>::infinity() * Meter};
+    return PositionSolution{posA, posB, std::numeric_limits<Real>::infinity() * Meter};
 }
 
 } // namespace GaussSeidel

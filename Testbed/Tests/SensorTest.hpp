@@ -52,15 +52,15 @@ public:
                 FixtureDef fd;
                 fd.isSensor = true;
                 auto conf = DiskShape::Conf{};
-                conf.vertexRadius = RealNum{5.0f} * Meter;
+                conf.vertexRadius = Real{5.0f} * Meter;
                 conf.location = Vec2(0.0f, 10.0f) * Meter;
                 m_sensor = ground->CreateFixture(std::make_shared<DiskShape>(conf), fd);
             }
 #endif
         }
 
-        const auto shape = std::make_shared<DiskShape>(RealNum{1} * Meter);
-        shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
+        const auto shape = std::make_shared<DiskShape>(Real{1} * Meter);
+        shape->SetDensity(Real{1} * KilogramPerSquareMeter);
         for (auto i = 0; i < e_count; ++i)
         {
             BodyDef bd;
@@ -154,7 +154,7 @@ public:
                 continue;
             }
 
-            const auto F = Force2D{RealNum{100.0f} * GetUnitVector(d) * Newton};
+            const auto F = Force2D{Real{100.0f} * GetUnitVector(d) * Newton};
             ApplyForce(*body, F, position);
         }
     }

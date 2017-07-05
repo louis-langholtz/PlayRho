@@ -41,12 +41,12 @@ public:
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 
         {
-            const auto rectangle = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.125f} * Meter);
-            rectangle->SetDensity(RealNum{20} * KilogramPerSquareMeter);
+            const auto rectangle = std::make_shared<PolygonShape>(Real{0.5f} * Meter, Real{0.125f} * Meter);
+            rectangle->SetDensity(Real{20} * KilogramPerSquareMeter);
             rectangle->SetFriction(0.2f);
 
-            const auto square = std::make_shared<PolygonShape>(RealNum{1.5f} * Meter, RealNum{1.5f} * Meter);
-            square->SetDensity(RealNum{100} * KilogramPerSquareMeter);
+            const auto square = std::make_shared<PolygonShape>(Real{1.5f} * Meter, Real{1.5f} * Meter);
+            square->SetDensity(Real{100} * KilogramPerSquareMeter);
             square->SetFriction(0.2f);
 
             FixtureDef fd;
@@ -69,14 +69,14 @@ public:
                     shape = square;
                     fd.filter.categoryBits = 0x0002;
                     bd.position = Vec2(1.0f * i, y) * Meter;
-                    bd.angularDamping = RealNum(0.4f) * Hertz;
+                    bd.angularDamping = Real(0.4f) * Hertz;
                 }
 
                 const auto body = m_world->CreateBody(bd);
 
                 body->CreateFixture(shape, fd);
 
-                m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(RealNum(i), y) * Meter});
+                m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(Real(i), y) * Meter});
 
                 prevBody = body;
             }
@@ -84,7 +84,7 @@ public:
             m_ropeDef.localAnchorB = Vec2_zero * Meter;
 
             const auto extraLength = 0.01f;
-            m_ropeDef.maxLength = RealNum(N - 1.0f + extraLength) * Meter;
+            m_ropeDef.maxLength = Real(N - 1.0f + extraLength) * Meter;
             m_ropeDef.bodyB = prevBody;
         }
 

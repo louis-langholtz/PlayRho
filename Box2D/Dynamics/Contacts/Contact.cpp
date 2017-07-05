@@ -88,7 +88,7 @@ void Contact::Update(const UpdateConf& conf, ContactListener* listener)
     //   agrees 100% of the time with that returned from the CollideShapes function.
     //   This is not always the case however especially as the separation or overlap
     //   approaches zero.
-#define OVERLAP_TOLERANCE (SquareMeter / RealNum(1e3))
+#define OVERLAP_TOLERANCE (SquareMeter / Real(1e3))
 
     const auto sensor = fixtureA->IsSensor() || fixtureB->IsSensor();
     if (sensor)

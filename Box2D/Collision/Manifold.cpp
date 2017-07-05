@@ -122,7 +122,7 @@ Manifold GetFaceManifold(const Manifold::Type type,
     if (clipPoints.size() == 2)
     {
         const auto abs_normal = GetFwdPerpendicular(shape1_edge1_abs_dir); // Normal points from 1 to 2
-        const auto rel_midpoint = (shape1_rel_vertex1 + shape1_rel_vertex2) / RealNum{2};
+        const auto rel_midpoint = (shape1_rel_vertex1 + shape1_rel_vertex2) / Real{2};
         const auto abs_offset = Dot(abs_normal, shape1_abs_vertex1); ///< Face offset.
         
         auto manifold = Manifold{};
@@ -322,7 +322,7 @@ Manifold CollideShapes(Manifold::Type type,
     
     if (maxSeparation < Length{0})
     {
-        const auto faceCenter = (v1 + v2) / RealNum{2};
+        const auto faceCenter = (v1 + v2) / Real{2};
         // Circle's center is inside the polygon and closest to edge[indexOfMax].
         switch (type)
         {
@@ -379,7 +379,7 @@ Manifold CollideShapes(Manifold::Type type,
     }
     
     // Circle's center is between v1 and v2.
-    const auto faceCenter = (v1 + v2) / RealNum{2};
+    const auto faceCenter = (v1 + v2) / Real{2};
     if (Dot(cLocal - faceCenter, shape.GetNormal(indexOfMax)) > totalRadius)
     {
         return Manifold{};
@@ -461,7 +461,7 @@ Manifold box2d::CollideShapes(const DistanceProxy& shapeA, const Transformation&
         return Manifold{};
     }
     
-    constexpr auto k_tol = BOX2D_MAGIC(DefaultLinearSlop / RealNum{10});
+    constexpr auto k_tol = BOX2D_MAGIC(DefaultLinearSlop / Real{10});
     return (edgeSepB.separation > (edgeSepA.separation + k_tol))?
         GetFaceManifold(Manifold::e_faceB,
                         shapeB, xfB, edgeSepB.index1,
@@ -566,7 +566,7 @@ Manifold box2d::CollideCached(const DistanceProxy& shapeA, const Transformation&
         }
     }
     
-    constexpr auto k_tol = BOX2D_MAGIC(DefaultLinearSlop / RealNum{10});
+    constexpr auto k_tol = BOX2D_MAGIC(DefaultLinearSlop / Real{10});
     return (edgeSepB.separation > (edgeSepA.separation + k_tol))?
     GetFaceManifold(Manifold::e_faceB,
                     shapeB, xfB, edgeSepB.index1,
@@ -638,7 +638,7 @@ Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& t
                 const auto b_idx1 = GetModuloNext(b_idx0, b_count);
                 const auto b_v0 = proxyB.GetVertex(b_idx0);
                 const auto b_v1 = proxyB.GetVertex(b_idx1);
-                const auto lp = (b_v0 + b_v1) / RealNum{2};
+                const auto lp = (b_v0 + b_v1) / Real{2};
                 const auto ln = GetFwdPerpendicular(GetUnitVector(b_v1 - b_v0));
                 const auto mp0 = Manifold::Point{
                     proxyA.GetVertex(a_indices_array[0]),
@@ -659,7 +659,7 @@ Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& t
                 mp1.contactFeature.typeA = ContactFeature::e_face;
                 const auto v0 = proxyA.GetVertex(a_indices_array[0]);
                 const auto v1 = proxyA.GetVertex(a_indices_array[1]);
-                const auto lp = (v0 + v1) / RealNum{2};
+                const auto lp = (v0 + v1) / Real{2};
                 const auto count = proxyA.GetVertexCount();
                 if ((a_indices_array[1] - a_indices_array[0]) == 1)
                 {
@@ -696,7 +696,7 @@ Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& t
                 const auto a_idx1 = GetModuloNext(a_idx0, a_count);
                 const auto a_v0 = proxyA.GetVertex(a_idx0);
                 const auto a_v1 = proxyA.GetVertex(a_idx1);
-                const auto lp = (a_v0 + a_v1) / RealNum{2};
+                const auto lp = (a_v0 + a_v1) / Real{2};
                 const auto ln = GetFwdPerpendicular(GetUnitVector(a_v1 - a_v0));
                 const auto mp0 = Manifold::Point{
                     proxyB.GetVertex(b_indices_array[0]),
@@ -717,7 +717,7 @@ Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& t
                 mp1.contactFeature.typeB = ContactFeature::e_face;
                 const auto v0 = proxyB.GetVertex(b_indices_array[0]);
                 const auto v1 = proxyB.GetVertex(b_indices_array[1]);
-                const auto lp = (v0 + v1) / RealNum{2};
+                const auto lp = (v0 + v1) / Real{2};
                 const auto count = proxyB.GetVertexCount();
                 if ((b_indices_array[1] - b_indices_array[0]) == 1)
                 {
@@ -756,7 +756,7 @@ Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& t
             {
                 const auto v0 = proxyA.GetVertex(a_indices_array[0]);
                 const auto v1 = proxyA.GetVertex(a_indices_array[1]);
-                const auto lp = (v0 + v1) / RealNum{2};
+                const auto lp = (v0 + v1) / Real{2};
                 const auto count = proxyA.GetVertexCount();
                 auto mp0 = Manifold::Point{};
                 auto mp1 = Manifold::Point{};

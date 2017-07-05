@@ -27,8 +27,8 @@ namespace box2d {
 class Confined : public Test
 {
 public:
-    const Length wall_length = RealNum(0.15f) * Meter; // DefaultLinearSlop * 1000
-    const Length vertexRadiusIncrement = wall_length / RealNum{40};
+    const Length wall_length = Real(0.15f) * Meter; // DefaultLinearSlop * 1000
+    const Length vertexRadiusIncrement = wall_length / Real{40};
     
     enum
     {
@@ -40,10 +40,10 @@ public:
     {
         m_enclosure = CreateEnclosure(m_enclosureVertexRadius, wall_length);
 
-        const auto radius = RealNum{0.5f} * Meter;
+        const auto radius = Real{0.5f} * Meter;
         auto conf = DiskShape::Conf{};
         conf.vertexRadius = radius;
-        conf.density = RealNum{1} * KilogramPerSquareMeter;
+        conf.density = Real{1} * KilogramPerSquareMeter;
         conf.friction = 0.1f;
         const auto shape = std::make_shared<DiskShape>(conf);
 
@@ -73,10 +73,10 @@ public:
         conf.restitution = 0; // originally 0.9
         conf.vertexRadius = vertexRadius;
         
-        const auto btmLeft = Length2D(-wallLength / RealNum{2}, RealNum{0} * Meter);
-        const auto btmRight = Length2D(wallLength / RealNum{2}, RealNum{0} * Meter);
-        const auto topLeft = Length2D(-wallLength / RealNum{2}, wallLength);
-        const auto topRight = Length2D(wallLength / RealNum{2}, wallLength);
+        const auto btmLeft = Length2D(-wallLength / Real{2}, Real{0} * Meter);
+        const auto btmRight = Length2D(wallLength / Real{2}, Real{0} * Meter);
+        const auto topLeft = Length2D(-wallLength / Real{2}, wallLength);
+        const auto topRight = Length2D(wallLength / Real{2}, wallLength);
         
         conf.vertices.push_back(btmRight);
         conf.vertices.push_back(topRight);
@@ -91,20 +91,20 @@ public:
     
     void CreateCircle()
     {
-        const auto radius = wall_length/RealNum{10}; // 2
+        const auto radius = wall_length/Real{10}; // 2
 
         BodyDef bd;
         bd.type = BodyType::Dynamic;
         bd.bullet = m_bullet_mode;
         const auto wl = StripUnit(wall_length);
-        bd.position = Vec2(RandomFloat(-wl / RealNum{2}, +wl / RealNum{2}), RandomFloat(0, wl)) * Meter;
+        bd.position = Vec2(RandomFloat(-wl / Real{2}, +wl / Real{2}), RandomFloat(0, wl)) * Meter;
         bd.userData = reinterpret_cast<void*>(m_sequence);
         //bd.allowSleep = false;
 
         const auto body = m_world->CreateBody(bd);
         
         auto conf = DiskShape::Conf{};
-        conf.density = RealNum{1} * KilogramPerSquareMeter;
+        conf.density = Real{1} * KilogramPerSquareMeter;
         conf.restitution = 0.8f;
         conf.vertexRadius = radius;
         body->CreateFixture(std::make_shared<DiskShape>(conf));
@@ -114,20 +114,20 @@ public:
 
     void CreateBox()
     {
-        const auto side_length = wall_length / RealNum{5}; // 4
+        const auto side_length = wall_length / Real{5}; // 4
 
         auto conf = PolygonShape::Conf{};
-        conf.density = RealNum{1} * KilogramPerSquareMeter;
+        conf.density = Real{1} * KilogramPerSquareMeter;
         conf.restitution = 0; // originally 0.8
         
         BodyDef bd;
         bd.type = BodyType::Dynamic;
         bd.bullet = m_bullet_mode;
         const auto wl = StripUnit(wall_length);
-        bd.position = Vec2(RandomFloat(-wl / RealNum{2}, +wl / RealNum{2}), RandomFloat(0, wl)) * Meter;
+        bd.position = Vec2(RandomFloat(-wl / Real{2}, +wl / Real{2}), RandomFloat(0, wl)) * Meter;
         bd.userData = reinterpret_cast<void*>(m_sequence);
         const auto body = m_world->CreateBody(bd);
-        body->CreateFixture(std::make_shared<PolygonShape>(side_length/RealNum{2}, side_length/RealNum{2}, conf));
+        body->CreateFixture(std::make_shared<PolygonShape>(side_length/Real{2}, side_length/Real{2}, conf));
 
         ++m_sequence;
     }
@@ -151,11 +151,11 @@ public:
             if (b.GetType() == BodyType::Dynamic)
             {
                 const auto position = b.GetLocation();
-                const auto centerPos = Length2D{position.x, position.y - (wall_length / RealNum{2})};
+                const auto centerPos = Length2D{position.x, position.y - (wall_length / Real{2})};
                 const auto angle_from_center = GetAngle(centerPos);
                 const auto direction = angle_from_center + Pi * Radian;
-                const auto magnitude = Sqrt(Square(StripUnit(wall_length)) * RealNum{2}) *
-                	GetMass(b) * RealNum{20} * MeterPerSecond;
+                const auto magnitude = Sqrt(Square(StripUnit(wall_length)) * Real{2}) *
+                	GetMass(b) * Real{20} * MeterPerSecond;
                 const auto impulse = Momentum2D{magnitude * UnitVec2{direction}};
                 ApplyLinearImpulse(b, impulse, b.GetWorldCenter());
             }

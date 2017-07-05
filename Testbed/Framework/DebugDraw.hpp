@@ -121,8 +121,8 @@ private:
     GLRenderLines* m_lines;
     GLRenderTriangles* m_triangles;
     int m_circleParts = 16;
-    RealNum m_cosInc;
-    RealNum m_sinInc;
+    Real m_cosInc;
+    Real m_sinInc;
 };
 
 } // namespace box2d

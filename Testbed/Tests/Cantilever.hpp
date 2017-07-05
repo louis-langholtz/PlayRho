@@ -47,8 +47,8 @@ public:
         // Creates left-end-fixed 8-part plank (below the top one)
         {
             auto conf = PolygonShape::Conf{};
-            conf.density = RealNum{20} * KilogramPerSquareMeter;
-            const auto shape = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.125f} * Meter, conf);
+            conf.density = Real{20} * KilogramPerSquareMeter;
+            const auto shape = std::make_shared<PolygonShape>(Real{0.5f} * Meter, Real{0.125f} * Meter, conf);
 
             auto prevBody = ground;
             for (auto i = 0; i < e_count; ++i)
@@ -70,8 +70,8 @@ public:
         // Creates left-end-fixed 3-part plank at top
         {
             auto conf = PolygonShape::Conf{};
-            conf.density = RealNum{20} * KilogramPerSquareMeter;
-            const auto shape = std::make_shared<PolygonShape>(RealNum{1.0f} * Meter, RealNum{0.125f} * Meter, conf);
+            conf.density = Real{20} * KilogramPerSquareMeter;
+            const auto shape = std::make_shared<PolygonShape>(Real{1.0f} * Meter, Real{0.125f} * Meter, conf);
 
             auto prevBody = ground;
             for (auto i = 0; i < 3; ++i)
@@ -83,7 +83,7 @@ public:
                 body->CreateFixture(shape);
 
                 auto jd = WeldJointDef{prevBody, body, Vec2(-15.0f + 2.0f * i, 15.0f) * Meter};
-                jd.frequency = RealNum{5} * Hertz;
+                jd.frequency = Real{5} * Hertz;
                 jd.dampingRatio = 0.7f;
                 m_world->CreateJoint(jd);
 
@@ -94,8 +94,8 @@ public:
         // Creates 8-part plank to the right of the fixed planks (but not farthest right)
         {
             auto conf = PolygonShape::Conf{};
-            conf.density = RealNum{20} * KilogramPerSquareMeter;
-            const auto shape = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.125f} * Meter, conf);
+            conf.density = Real{20} * KilogramPerSquareMeter;
+            const auto shape = std::make_shared<PolygonShape>(Real{0.5f} * Meter, Real{0.125f} * Meter, conf);
 
             auto prevBody = ground;
             for (auto i = 0; i < e_count; ++i)
@@ -120,8 +120,8 @@ public:
         // Creates 8-part farthest-right plank
         {
             auto conf = PolygonShape::Conf{};
-            conf.density = RealNum{20} * KilogramPerSquareMeter;
-            const auto shape = std::make_shared<PolygonShape>(RealNum{0.5f} * Meter, RealNum{0.125f} * Meter, conf);
+            conf.density = Real{20} * KilogramPerSquareMeter;
+            const auto shape = std::make_shared<PolygonShape>(Real{0.5f} * Meter, Real{0.125f} * Meter, conf);
 
             auto prevBody = ground;
             for (auto i = 0; i < e_count; ++i)
@@ -135,7 +135,7 @@ public:
                 if (i > 0)
                 {
                     auto jd = WeldJointDef{prevBody, body, Vec2(5.0f + 1.0f * i, 10.0f) * Meter};
-                    jd.frequency = RealNum{8} * Hertz;
+                    jd.frequency = Real{8} * Hertz;
                     jd.dampingRatio = 0.7f;
                     m_world->CreateJoint(jd);
                 }
@@ -147,7 +147,7 @@ public:
         // Creates triangles
         auto polyshape = std::make_shared<PolygonShape>();
         polyshape->Set({Vec2(-0.5f, 0.0f) * Meter, Vec2(0.5f, 0.0f) * Meter, Vec2(0.0f, 1.5f) * Meter});
-        polyshape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
+        polyshape->SetDensity(Real{1} * KilogramPerSquareMeter);
         for (auto i = 0; i < 2; ++i)
         {
             BodyDef bd;
@@ -158,8 +158,8 @@ public:
         }
 
         // Creates circles
-        const auto circleshape = std::make_shared<DiskShape>(RealNum(0.5) * Meter);
-        circleshape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
+        const auto circleshape = std::make_shared<DiskShape>(Real(0.5) * Meter);
+        circleshape->SetDensity(Real{1} * KilogramPerSquareMeter);
         for (auto i = 0; i < 2; ++i)
         {
             BodyDef bd;

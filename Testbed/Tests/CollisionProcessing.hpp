@@ -49,7 +49,7 @@ public:
 
         PolygonShape polygon;
         polygon.Set(Span<const Length2D>{vertices, 3});
-        polygon.SetDensity(RealNum{1} * KilogramPerSquareMeter);
+        polygon.SetDensity(Real{1} * KilogramPerSquareMeter);
 
         BodyDef triangleBodyDef;
         triangleBodyDef.type = BodyType::Dynamic;
@@ -70,7 +70,7 @@ public:
         body2->CreateFixture(std::make_shared<PolygonShape>(polygon));
         
         // Small box
-        polygon.SetAsBox(RealNum{1.0f} * Meter, RealNum{0.5f} * Meter);
+        polygon.SetAsBox(Real{1.0f} * Meter, Real{0.5f} * Meter);
 
         BodyDef boxBodyDef;
         boxBodyDef.type = BodyType::Dynamic;
@@ -80,7 +80,7 @@ public:
         body3->CreateFixture(std::make_shared<PolygonShape>(polygon));
 
         // Large box (recycle definitions)
-        polygon.SetAsBox(RealNum{2.0f} * Meter, RealNum{1.0f} * Meter);
+        polygon.SetAsBox(Real{2.0f} * Meter, Real{1.0f} * Meter);
         boxBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
         
         const auto body4 = m_world->CreateBody(boxBodyDef);
@@ -88,8 +88,8 @@ public:
 
         // Small circle
         DiskShape circle;
-        circle.SetRadius(RealNum{1} * Meter);
-        circle.SetDensity(RealNum{1} * KilogramPerSquareMeter);
+        circle.SetRadius(Real{1} * Meter);
+        circle.SetDensity(Real{1} * KilogramPerSquareMeter);
 
         BodyDef circleBodyDef;
         circleBodyDef.type = BodyType::Dynamic;
@@ -99,7 +99,7 @@ public:
         body5->CreateFixture(std::make_shared<DiskShape>(circle));
 
         // Large circle
-        circle.SetRadius(circle.GetRadius() * RealNum{2});
+        circle.SetRadius(circle.GetRadius() * Real{2});
         circleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
 
         const auto body6 = m_world->CreateBody(circleBodyDef);

@@ -25,7 +25,7 @@ using namespace box2d;
 
 TEST(VelocityConstraint, ByteSizeIs_168_or_304_or_576)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(VelocityConstraint), std::size_t(168)); break;
         case  8: EXPECT_EQ(sizeof(VelocityConstraint), std::size_t(304)); break;
@@ -68,9 +68,9 @@ TEST(VelocityConstraint, DefaultInit)
 TEST(VelocityConstraint, InitializingConstructor)
 {
     const auto contact_index = VelocityConstraint::index_type{3};
-    const auto friction = RealNum(0.432);
-    const auto restitution = RealNum(0.989);
-    const auto tangent_speed = RealNum(1.876);
+    const auto friction = Real(0.432);
+    const auto restitution = Real(0.989);
+    const auto tangent_speed = Real(1.876);
     
     auto bodyA = BodyConstraint{};
     auto bodyB = BodyConstraint{};
@@ -89,9 +89,9 @@ TEST(VelocityConstraint, InitializingConstructor)
 TEST(VelocityConstraint, AddPoint)
 {
     const auto contact_index = VelocityConstraint::index_type{3};
-    const auto friction = RealNum(0.432);
-    const auto restitution = RealNum(0.989);
-    const auto tangent_speed = RealNum(1.876);
+    const auto friction = Real(0.432);
+    const auto restitution = Real(0.989);
+    const auto tangent_speed = Real(1.876);
 
     auto bodyA = BodyConstraint{};
     auto bodyB = BodyConstraint{};
@@ -106,8 +106,8 @@ TEST(VelocityConstraint, AddPoint)
     ASSERT_EQ(vc.GetPointCount(), VelocityConstraint::size_type(0));
     ASSERT_EQ(vc.GetNormal(), normal);
 
-    const auto ni = RealNum(1.2);
-    const auto ti = RealNum(0.3);
+    const auto ni = Real(1.2);
+    const auto ti = Real(0.3);
     
     const auto rA = Vec2{0, 0};
     const auto rB = Vec2{0, 0};

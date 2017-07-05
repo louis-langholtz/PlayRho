@@ -36,11 +36,11 @@ public:
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 
         auto shapeConf = DiskShape::Conf{};
-        shapeConf.vertexRadius = RealNum{1} * Meter;
-        shapeConf.density = RealNum{1} * KilogramPerSquareMeter;
+        shapeConf.vertexRadius = Real{1} * Meter;
+        shapeConf.density = Real{1} * KilogramPerSquareMeter;
         auto shape = DiskShape(shapeConf);
         
-        RealNum restitution[7] = {0.0f, 0.1f, 0.3f, 0.5f, 0.75f, 0.9f, 1.0f};
+        Real restitution[7] = {0.0f, 0.1f, 0.3f, 0.5f, 0.75f, 0.9f, 1.0f};
 
         for (auto i = 0; i < 7; ++i)
         {

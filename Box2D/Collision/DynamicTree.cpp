@@ -186,10 +186,10 @@ DynamicTree::size_type DynamicTree::FindLowestCostNode(const AABB leafAABB) cons
         assert(combinedArea >= area);
         
         // Cost of creating a new parent for this node and the new leaf
-        const auto cost = combinedArea * RealNum{2};
+        const auto cost = combinedArea * Real{2};
         
         // Minimum cost of pushing the leaf further down the tree
-        const auto inheritanceCost = (combinedArea - area) * RealNum{2};
+        const auto inheritanceCost = (combinedArea - area) * Real{2};
         
         assert(child1 != InvalidIndex);
         assert(child1 < m_nodeCapacity);
@@ -513,11 +513,11 @@ DynamicTree::size_type DynamicTree::Balance(const size_type iA)
     return iA;
 }
 
-RealNum DynamicTree::GetAreaRatio() const noexcept
+Real DynamicTree::GetAreaRatio() const noexcept
 {
     if (m_root == InvalidIndex)
     {
-        return RealNum{0};
+        return Real{0};
     }
 
     const auto root = m_nodes + m_root;
@@ -536,7 +536,7 @@ RealNum DynamicTree::GetAreaRatio() const noexcept
         totalArea += GetPerimeter(node->aabb);
     }
 
-    return RealNum{totalArea / rootArea};
+    return Real{totalArea / rootArea};
 }
 
 // Compute the height of a sub-tree.
@@ -932,7 +932,7 @@ void DynamicTree::RebuildBottomUp()
 
     while (count > 1)
     {
-        auto minCost = Length{std::numeric_limits<RealNum>::infinity() * Meter};
+        auto minCost = Length{std::numeric_limits<Real>::infinity() * Meter};
         auto iMin = InvalidIndex;
         auto jMin = InvalidIndex;
         for (auto i = decltype(count){0}; i < count; ++i)

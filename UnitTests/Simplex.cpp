@@ -23,7 +23,7 @@ using namespace box2d;
 
 TEST(SimplexCache, ByteSizeIs_12_16_or_32)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(Simplex::Cache), std::size_t(12)); break;
         case  8: EXPECT_EQ(sizeof(Simplex::Cache), std::size_t(16)); break;
@@ -50,7 +50,7 @@ TEST(SimplexCache, DefaultInit)
 TEST(SimplexCache, InitializingConstructor)
 {
     {
-        const auto metric = RealNum(.3);
+        const auto metric = Real(.3);
         const auto indices = Simplex::IndexPairs{};
         Simplex::Cache foo{metric, indices};
         
@@ -62,7 +62,7 @@ TEST(SimplexCache, InitializingConstructor)
         const auto ip0 = IndexPair{0, 0};
         const auto ip1 = IndexPair{1, 0};
         const auto ip2 = IndexPair{4, 3};
-        const auto metric = RealNum(-1.4);
+        const auto metric = Real(-1.4);
         Simplex::Cache foo{metric, Simplex::IndexPairs{ip0, ip1, ip2}};
         
         EXPECT_EQ(foo.GetNumIndices(), decltype(foo.GetNumIndices()){3});
@@ -76,7 +76,7 @@ TEST(SimplexCache, InitializingConstructor)
 
 TEST(SimplexCache, Assignment)
 {
-    const auto metric = RealNum(.3);
+    const auto metric = Real(.3);
     const auto indices = Simplex::IndexPairs{};
     Simplex::Cache foo{metric, indices};
     
@@ -87,7 +87,7 @@ TEST(SimplexCache, Assignment)
     const auto ip0 = IndexPair{0, 0};
     const auto ip1 = IndexPair{1, 0};
     const auto ip2 = IndexPair{4, 3};
-    const auto roo_metric = RealNum(-1.4);
+    const auto roo_metric = Real(-1.4);
     Simplex::Cache roo{roo_metric, Simplex::IndexPairs{ip0, ip1, ip2}};
     
     foo = roo;
@@ -102,7 +102,7 @@ TEST(SimplexCache, Assignment)
 
 TEST(SimplexEdgeList, ByteSizeIs_88_176_or_352)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(Simplex::Edges), std::size_t(88)); break;
         case  8: EXPECT_EQ(sizeof(Simplex::Edges), std::size_t(176)); break;
@@ -113,7 +113,7 @@ TEST(SimplexEdgeList, ByteSizeIs_88_176_or_352)
 
 TEST(Simplex, ByteSizeIs_104_208_or_416)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(Simplex), std::size_t(104)); break;
         case  8: EXPECT_EQ(sizeof(Simplex), std::size_t(208)); break;
@@ -131,8 +131,8 @@ TEST(Simplex, DefaultConstruction)
 
 TEST(Simplex, Get1)
 {
-    const auto va = Length2D{-RealNum(4) * Meter, RealNum(33) * Meter};
-    const auto vb = Length2D{RealNum(901.5) * Meter, RealNum(0.06) * Meter};
+    const auto va = Length2D{-Real(4) * Meter, Real(33) * Meter};
+    const auto vb = Length2D{Real(901.5) * Meter, Real(0.06) * Meter};
     const auto ia = SimplexEdge::index_type{2};
     const auto ib = SimplexEdge::index_type{7};
     const auto sv = SimplexEdge{va, ia, vb, ib};
@@ -148,13 +148,13 @@ TEST(Simplex, Get1)
     EXPECT_EQ(sv.GetIndexB(), sv_new.GetIndexB());
     
     const auto ce_new = simplex.GetCoefficient(0);
-    EXPECT_EQ(ce_new, RealNum(1));
+    EXPECT_EQ(ce_new, Real(1));
 }
 
 TEST(Simplex, Get2_of_same)
 {
-    const auto va = Length2D{-RealNum(4) * Meter, RealNum(33) * Meter};
-    const auto vb = Length2D{RealNum(901.5) * Meter, RealNum(0.06) * Meter};
+    const auto va = Length2D{-Real(4) * Meter, Real(33) * Meter};
+    const auto vb = Length2D{Real(901.5) * Meter, Real(0.06) * Meter};
     const auto ia = SimplexEdge::index_type{2};
     const auto ib = SimplexEdge::index_type{7};
     const auto sv = SimplexEdge{va, ia, vb, ib};
@@ -171,13 +171,13 @@ TEST(Simplex, Get2_of_same)
     EXPECT_EQ(sv_new.GetIndexB(), ib);
     
     const auto ce_new = simplex.GetCoefficient(0);
-    EXPECT_EQ(ce_new, RealNum(1));
+    EXPECT_EQ(ce_new, Real(1));
 }
 
 TEST(Simplex, Get2_fwd_perp)
 {
-    const auto va0 = Length2D{-RealNum(4) * Meter, RealNum(33) * Meter};
-    const auto vb0 = Length2D{RealNum(901.5) * Meter, RealNum(0.06) * Meter};
+    const auto va0 = Length2D{-Real(4) * Meter, Real(33) * Meter};
+    const auto vb0 = Length2D{Real(901.5) * Meter, Real(0.06) * Meter};
     const auto ia0 = SimplexEdge::index_type{2};
     const auto ib0 = SimplexEdge::index_type{7};
     const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
@@ -200,7 +200,7 @@ TEST(Simplex, Get2_fwd_perp)
     EXPECT_EQ(sv_new_0.GetIndexB(), ib0);
     
     const auto ce_new_0 = simplex.GetCoefficient(0);
-    EXPECT_TRUE(almost_equal(ce_new_0, RealNum(0.5)));
+    EXPECT_TRUE(almost_equal(ce_new_0, Real(0.5)));
     
     ASSERT_GT(simplex.GetSize(), decltype(simplex.GetSize()){1});
     
@@ -211,13 +211,13 @@ TEST(Simplex, Get2_fwd_perp)
     EXPECT_EQ(sv_new_1.GetIndexB(), ib1);
     
     const auto ce_new_1 = simplex.GetCoefficient(1);
-    EXPECT_TRUE(almost_equal(ce_new_1, RealNum(0.5)));
+    EXPECT_TRUE(almost_equal(ce_new_1, Real(0.5)));
 }
 
 TEST(Simplex, Get2_rev_perp)
 {
-    const auto va0 = Length2D{-RealNum(4) * Meter, RealNum(33) * Meter};
-    const auto vb0 = Length2D{RealNum(901.5) * Meter, RealNum(0.06) * Meter};
+    const auto va0 = Length2D{-Real(4) * Meter, Real(33) * Meter};
+    const auto vb0 = Length2D{Real(901.5) * Meter, Real(0.06) * Meter};
     const auto ia0 = SimplexEdge::index_type{2};
     const auto ib0 = SimplexEdge::index_type{7};
     const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
@@ -240,7 +240,7 @@ TEST(Simplex, Get2_rev_perp)
     EXPECT_EQ(sv_new_0.GetIndexB(), ib0);
     
     const auto ce_new_0 = simplex.GetCoefficient(0);
-    EXPECT_TRUE(almost_equal(ce_new_0, RealNum(0.5)));
+    EXPECT_TRUE(almost_equal(ce_new_0, Real(0.5)));
     
     ASSERT_GT(simplex.GetSize(), decltype(simplex.GetSize()){1});
     
@@ -251,19 +251,19 @@ TEST(Simplex, Get2_rev_perp)
     EXPECT_EQ(sv_new_1.GetIndexB(), ib1);
     
     const auto ce_new_1 = simplex.GetCoefficient(1);
-    EXPECT_TRUE(almost_equal(ce_new_1, RealNum(0.5)));
+    EXPECT_TRUE(almost_equal(ce_new_1, Real(0.5)));
 }
 
 TEST(Simplex, Get2_rot_plus_45)
 {
-    const auto va0 = Length2D{-RealNum(4) * Meter, RealNum(33) * Meter};
-    const auto vb0 = Length2D{RealNum(901.5) * Meter, RealNum(0.06) * Meter};
+    const auto va0 = Length2D{-Real(4) * Meter, Real(33) * Meter};
+    const auto vb0 = Length2D{Real(901.5) * Meter, Real(0.06) * Meter};
     const auto ia0 = SimplexEdge::index_type{2};
     const auto ib0 = SimplexEdge::index_type{7};
     const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
     
-    const auto va1 = Rotate(va0, UnitVec2{Angle{RealNum{45.0f} * Degree}});
-    const auto vb1 = Rotate(vb0, UnitVec2{Angle{RealNum{45.0f} * Degree}});
+    const auto va1 = Rotate(va0, UnitVec2{Angle{Real{45.0f} * Degree}});
+    const auto vb1 = Rotate(vb0, UnitVec2{Angle{Real{45.0f} * Degree}});
     const auto ia1 = SimplexEdge::index_type{4};
     const auto ib1 = SimplexEdge::index_type{1};
     const auto sv1 = SimplexEdge{va1, ia1, vb1, ib1};
@@ -280,7 +280,7 @@ TEST(Simplex, Get2_rot_plus_45)
     EXPECT_EQ(sv_new_0.GetIndexB(), ib0);
     
     const auto ce_new_0 = simplex.GetCoefficient(0);
-    EXPECT_TRUE(almost_equal(ce_new_0, RealNum(0.5)));
+    EXPECT_TRUE(almost_equal(ce_new_0, Real(0.5)));
     
     ASSERT_GT(simplex.GetSize(), decltype(simplex.GetSize()){1});
     
@@ -291,43 +291,43 @@ TEST(Simplex, Get2_rot_plus_45)
     EXPECT_EQ(sv_new_1.GetIndexB(), ib1);
     
     const auto ce_new_1 = simplex.GetCoefficient(1);
-    EXPECT_TRUE(almost_equal(ce_new_1, RealNum(0.5)));
+    EXPECT_TRUE(almost_equal(ce_new_1, Real(0.5)));
 }
 
 TEST(Simplex, Get2_rot45_half)
 {
-    const auto va0 = Length2D{-RealNum(4) * Meter, RealNum(33) * Meter}; // upper left
-    const auto vb0 = Length2D{RealNum(901) * Meter, RealNum(6) * Meter}; // lower right
+    const auto va0 = Length2D{-Real(4) * Meter, Real(33) * Meter}; // upper left
+    const auto vb0 = Length2D{Real(901) * Meter, Real(6) * Meter}; // lower right
     const auto ia0 = SimplexEdge::index_type{2};
     const auto ib0 = SimplexEdge::index_type{7};
     const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
     
-    const auto va1 = Rotate(va0, UnitVec2{Angle{RealNum{45.0f} * Degree}}) / RealNum{2}; // Vec2{-13.081475, 10.253049}
-    const auto vb1 = Rotate(vb0, UnitVec2{Angle{RealNum{45.0f} * Degree}}) / RealNum{2}; // Vec2{316.4303, 320.67291}
-    EXPECT_NEAR(double(RealNum{va1.x / Meter}), -13.081475, 0.00001);
-    EXPECT_NEAR(double(RealNum{va1.y / Meter}),  10.253049, 0.00001);
-    EXPECT_NEAR(double(RealNum{vb1.x / Meter}), 316.4303,   0.0001);
-    EXPECT_NEAR(double(RealNum{vb1.y / Meter}), 320.67291,  0.0001);
+    const auto va1 = Rotate(va0, UnitVec2{Angle{Real{45.0f} * Degree}}) / Real{2}; // Vec2{-13.081475, 10.253049}
+    const auto vb1 = Rotate(vb0, UnitVec2{Angle{Real{45.0f} * Degree}}) / Real{2}; // Vec2{316.4303, 320.67291}
+    EXPECT_NEAR(double(Real{va1.x / Meter}), -13.081475, 0.00001);
+    EXPECT_NEAR(double(Real{va1.y / Meter}),  10.253049, 0.00001);
+    EXPECT_NEAR(double(Real{vb1.x / Meter}), 316.4303,   0.0001);
+    EXPECT_NEAR(double(Real{vb1.y / Meter}), 320.67291,  0.0001);
     const auto ia1 = SimplexEdge::index_type{4};
     const auto ib1 = SimplexEdge::index_type{1};
     const auto sv1 = SimplexEdge{va1, ia1, vb1, ib1};
 
     const auto w1 = vb0 - va0; // Vec2{901, 6} - Vec2{-4, 33} = Vec2{905, -27}
-    EXPECT_TRUE(almost_equal(w1.x / Meter, RealNum(905)));
-    EXPECT_TRUE(almost_equal(w1.y / Meter, RealNum(-27)));
+    EXPECT_TRUE(almost_equal(w1.x / Meter, Real(905)));
+    EXPECT_TRUE(almost_equal(w1.y / Meter, Real(-27)));
     const auto w2 = vb1 - va1; // Vec2{316.4303, 320.67291} - Vec2{-13.081475, 10.253049} = Vec2{329.51178, 310.41986}
-    EXPECT_NEAR(double(RealNum{w2.x / Meter}), 329.51178, 0.001);
-    EXPECT_NEAR(double(RealNum{w2.y / Meter}), 310.41986, 0.001);
+    EXPECT_NEAR(double(Real{w2.x / Meter}), 329.51178, 0.001);
+    EXPECT_NEAR(double(Real{w2.y / Meter}), 310.41986, 0.001);
     
     const auto e12 = w2 - w1; // Vec2{329.51178, 310.41986} - Vec2{905, -27} = Vec2{-575.48822, 337.41986}
-    EXPECT_NEAR(double(RealNum{e12.x / Meter}), -575.48822, 0.001);
-    EXPECT_NEAR(double(RealNum{e12.y / Meter}),  337.41986, 0.001);
+    EXPECT_NEAR(double(Real{e12.x / Meter}), -575.48822, 0.001);
+    EXPECT_NEAR(double(Real{e12.y / Meter}),  337.41986, 0.001);
 
     const auto d12_2 = Area{-Dot(w1, e12)}; // -Dot(Vec2{905, -27}, Vec2{-575.48822, 337.41986}) = 529927.19
-    EXPECT_NEAR(double(RealNum{d12_2 / SquareMeter}), 529927.19, 0.1);
+    EXPECT_NEAR(double(Real{d12_2 / SquareMeter}), 529927.19, 0.1);
 
     const auto d12_1 = Area{Dot(w2, e12)}; // Dot(Vec2{329.51178, 310.41986}, Vec2{-575.48822, 337.41986}) = -84888.312
-    EXPECT_NEAR(double(RealNum{d12_1 / SquareMeter}), -84888.312, 0.1);
+    EXPECT_NEAR(double(Real{d12_1 / SquareMeter}), -84888.312, 0.1);
 
     const auto simplex = Simplex::Get(sv0, sv1);
     
@@ -342,7 +342,7 @@ TEST(Simplex, Get2_rot45_half)
     EXPECT_EQ(sv_new_0.GetIndexB(), ib1);
     
     const auto ce_new_0 = simplex.GetCoefficient(0);
-    EXPECT_TRUE(almost_equal(ce_new_0, RealNum(1)));
+    EXPECT_TRUE(almost_equal(ce_new_0, Real(1)));
 }
 
 TEST(Simplex, GetOfSimplexVertices)

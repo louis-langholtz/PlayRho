@@ -70,9 +70,9 @@ MassData PolygonShape::GetMassData() const noexcept
     {
         case 0:
             return MassData{
-                Mass{Kilogram * GetInvalid<RealNum>()},
+                Mass{Kilogram * GetInvalid<Real>()},
                 GetInvalid<Length2D>(),
-                RotInertia{SquareMeter * Kilogram * GetInvalid<RealNum>() / SquareRadian}
+                RotInertia{SquareMeter * Kilogram * GetInvalid<Real>() / SquareRadian}
             };
         case 1:
             return ::GetMassData(GetVertexRadius(), GetDensity(), GetVertex(0));
@@ -99,16 +99,16 @@ MassData PolygonShape::GetMassData() const noexcept
         
         const auto D = Cross(e1, e2);
         
-        const auto triangleArea = D / RealNum{2};
+        const auto triangleArea = D / Real{2};
         area += triangleArea;
         
         // Area weighted centroid
-        center += StripUnit(triangleArea) * (e1 + e2) / RealNum{3};
+        center += StripUnit(triangleArea) * (e1 + e2) / Real{3};
         
         const auto intx2 = e1.x * e1.x + e2.x * e1.x + e2.x * e2.x;
         const auto inty2 = e1.y * e1.y + e2.y * e1.y + e2.y * e2.y;
         
-        const auto triangleI = D * (intx2 + inty2) / RealNum{3 * 4};
+        const auto triangleI = D * (intx2 + inty2) / Real{3 * 4};
         I += triangleI;
     }
     
@@ -218,7 +218,7 @@ void PolygonShape::Set(const VertexSet& point_set) noexcept
             m_centroid = m_vertices[0];
             break;
         case 2:
-            m_centroid = (m_vertices[0] + m_vertices[1]) / RealNum{2};
+            m_centroid = (m_vertices[0] + m_vertices[1]) / Real{2};
             break;
         default:
             m_centroid = ComputeCentroid(GetVertices());

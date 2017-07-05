@@ -30,7 +30,7 @@ using namespace box2d;
 
 TEST(MotorJointDef, ByteSize)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(MotorJointDef), std::size_t(64)); break;
         case  8: EXPECT_EQ(sizeof(MotorJointDef), std::size_t(88)); break;
@@ -51,14 +51,14 @@ TEST(MotorJointDef, DefaultConstruction)
     
     EXPECT_EQ(def.linearOffset, Length2D(0, 0));
     EXPECT_EQ(def.angularOffset, Angle(0));
-    EXPECT_EQ(def.maxForce, RealNum(1) * Newton);
-    EXPECT_EQ(def.maxTorque, RealNum{1} * NewtonMeter);
-    EXPECT_EQ(def.correctionFactor, RealNum(0.3));
+    EXPECT_EQ(def.maxForce, Real(1) * Newton);
+    EXPECT_EQ(def.maxTorque, Real{1} * NewtonMeter);
+    EXPECT_EQ(def.correctionFactor, Real(0.3));
 }
 
 TEST(MotorJoint, ByteSize)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(MotorJoint), std::size_t(128)); break;
         case  8: EXPECT_EQ(sizeof(MotorJoint), std::size_t(208)); break;
@@ -111,29 +111,29 @@ TEST(MotorJoint, GetMotorJointDef)
     
     EXPECT_EQ(cdef.linearOffset, Length2D(0, 0));
     EXPECT_EQ(cdef.angularOffset, Angle(0));
-    EXPECT_EQ(cdef.maxForce, RealNum(1) * Newton);
-    EXPECT_EQ(cdef.maxTorque, RealNum{1} * NewtonMeter);
-    EXPECT_EQ(cdef.correctionFactor, RealNum(0.3));
+    EXPECT_EQ(cdef.maxForce, Real(1) * Newton);
+    EXPECT_EQ(cdef.maxTorque, Real{1} * NewtonMeter);
+    EXPECT_EQ(cdef.correctionFactor, Real(0.3));
 }
 
 TEST(MotorJoint, WithDynamicCircles)
 {
-    const auto circle = std::make_shared<DiskShape>(RealNum{0.2f} * Meter);
+    const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
     auto world = World{WorldDef{}.UseGravity(LinearAcceleration2D{0, 0})};
-    const auto p1 = Length2D{-RealNum(1) * Meter, RealNum(0) * Meter};
-    const auto p2 = Length2D{+RealNum(1) * Meter, RealNum(0) * Meter};
+    const auto p1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
+    const auto p2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
-    //const auto anchor = Length2D(RealNum(2) * Meter, RealNum(1) * Meter);
+    //const auto anchor = Length2D(Real(2) * Meter, Real(1) * Meter);
     const auto jd = MotorJointDef{b1, b2};
     world.CreateJoint(jd);
-    Step(world, Time{Second * RealNum{1}});
-    EXPECT_NEAR(double(RealNum{b1->GetLocation().x / Meter}), -1.0, 0.001);
-    EXPECT_NEAR(double(RealNum{b1->GetLocation().y / Meter}), 0.0, 0.001);
-    EXPECT_NEAR(double(RealNum{b2->GetLocation().x / Meter}), +1.0, 0.01);
-    EXPECT_NEAR(double(RealNum{b2->GetLocation().y / Meter}), 0.0, 0.01);
+    Step(world, Time{Second * Real{1}});
+    EXPECT_NEAR(double(Real{b1->GetLocation().x / Meter}), -1.0, 0.001);
+    EXPECT_NEAR(double(Real{b1->GetLocation().y / Meter}), 0.0, 0.001);
+    EXPECT_NEAR(double(Real{b2->GetLocation().x / Meter}), +1.0, 0.01);
+    EXPECT_NEAR(double(Real{b2->GetLocation().y / Meter}), 0.0, 0.01);
     EXPECT_EQ(b1->GetAngle(), Angle{0});
     EXPECT_EQ(b2->GetAngle(), Angle{0});
 }

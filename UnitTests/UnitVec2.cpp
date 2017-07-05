@@ -25,7 +25,7 @@ using namespace box2d;
 
 TEST(UnitVec2, ByteSize)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(UnitVec2), std::size_t(8)); break;
         case  8: EXPECT_EQ(sizeof(UnitVec2), std::size_t(16)); break;
@@ -79,69 +79,69 @@ TEST(UnitVec2, ByAngleInDegreesNearOriented)
 {
     EXPECT_NEAR(GetX(UnitVec2(Angle(0))), GetX(UnitVec2::GetRight()), 0.0001);
     EXPECT_NEAR(GetY(UnitVec2(Angle(0))), GetY(UnitVec2::GetRight()), 0.0001);
-    EXPECT_NEAR(GetX(UnitVec2(Angle{RealNum(90) * Degree})), GetX(UnitVec2::GetTop()), 0.0001);
-    EXPECT_NEAR(GetY(UnitVec2(Angle{RealNum(90) * Degree})), GetY(UnitVec2::GetTop()), 0.0001);
-    EXPECT_NEAR(GetX(UnitVec2(Angle{RealNum(180) * Degree})), GetX(UnitVec2::GetLeft()), 0.0001);
-    EXPECT_NEAR(GetY(UnitVec2(Angle{RealNum(180) * Degree})), GetY(UnitVec2::GetLeft()), 0.0001);
-    EXPECT_NEAR(GetX(UnitVec2(Angle{RealNum(270) * Degree})), GetX(UnitVec2::GetBottom()), 0.0001);
-    EXPECT_NEAR(GetY(UnitVec2(Angle{RealNum(270) * Degree})), GetY(UnitVec2::GetBottom()), 0.0001);
+    EXPECT_NEAR(GetX(UnitVec2(Angle{Real(90) * Degree})), GetX(UnitVec2::GetTop()), 0.0001);
+    EXPECT_NEAR(GetY(UnitVec2(Angle{Real(90) * Degree})), GetY(UnitVec2::GetTop()), 0.0001);
+    EXPECT_NEAR(GetX(UnitVec2(Angle{Real(180) * Degree})), GetX(UnitVec2::GetLeft()), 0.0001);
+    EXPECT_NEAR(GetY(UnitVec2(Angle{Real(180) * Degree})), GetY(UnitVec2::GetLeft()), 0.0001);
+    EXPECT_NEAR(GetX(UnitVec2(Angle{Real(270) * Degree})), GetX(UnitVec2::GetBottom()), 0.0001);
+    EXPECT_NEAR(GetY(UnitVec2(Angle{Real(270) * Degree})), GetY(UnitVec2::GetBottom()), 0.0001);
 }
 
 TEST(UnitVec2, ByAngleInRadiansNearOriented)
 {
-    EXPECT_NEAR(GetX(UnitVec2((Pi * RealNum(0) / RealNum(2)) * Radian)), GetX(UnitVec2::GetRight()), 0.0001);
-    EXPECT_NEAR(GetY(UnitVec2((Pi * RealNum(0) / RealNum(2)) * Radian)), GetY(UnitVec2::GetRight()), 0.0001);
-    EXPECT_NEAR(GetX(UnitVec2((Pi * RealNum(1) / RealNum(2)) * Radian)), GetX(UnitVec2::GetTop()), 0.0001);
-    EXPECT_NEAR(GetY(UnitVec2((Pi * RealNum(1) / RealNum(2)) * Radian)), GetY(UnitVec2::GetTop()), 0.0001);
-    EXPECT_NEAR(GetX(UnitVec2((Pi * RealNum(2) / RealNum(2)) * Radian)), GetX(UnitVec2::GetLeft()), 0.0001);
-    EXPECT_NEAR(GetY(UnitVec2((Pi * RealNum(2) / RealNum(2)) * Radian)), GetY(UnitVec2::GetLeft()), 0.0001);
-    EXPECT_NEAR(GetX(UnitVec2((Pi * RealNum(3) / RealNum(2)) * Radian)), GetX(UnitVec2::GetBottom()), 0.0001);
-    EXPECT_NEAR(GetY(UnitVec2((Pi * RealNum(3) / RealNum(2)) * Radian)), GetY(UnitVec2::GetBottom()), 0.0001);
+    EXPECT_NEAR(GetX(UnitVec2((Pi * Real(0) / Real(2)) * Radian)), GetX(UnitVec2::GetRight()), 0.0001);
+    EXPECT_NEAR(GetY(UnitVec2((Pi * Real(0) / Real(2)) * Radian)), GetY(UnitVec2::GetRight()), 0.0001);
+    EXPECT_NEAR(GetX(UnitVec2((Pi * Real(1) / Real(2)) * Radian)), GetX(UnitVec2::GetTop()), 0.0001);
+    EXPECT_NEAR(GetY(UnitVec2((Pi * Real(1) / Real(2)) * Radian)), GetY(UnitVec2::GetTop()), 0.0001);
+    EXPECT_NEAR(GetX(UnitVec2((Pi * Real(2) / Real(2)) * Radian)), GetX(UnitVec2::GetLeft()), 0.0001);
+    EXPECT_NEAR(GetY(UnitVec2((Pi * Real(2) / Real(2)) * Radian)), GetY(UnitVec2::GetLeft()), 0.0001);
+    EXPECT_NEAR(GetX(UnitVec2((Pi * Real(3) / Real(2)) * Radian)), GetX(UnitVec2::GetBottom()), 0.0001);
+    EXPECT_NEAR(GetY(UnitVec2((Pi * Real(3) / Real(2)) * Radian)), GetY(UnitVec2::GetBottom()), 0.0001);
 }
 
 TEST(UnitVec2, GetForInvalid)
 {
     {
-        const auto x = GetInvalid<RealNum>();
-        const auto y = GetInvalid<RealNum>();
-        auto magnitude = GetInvalid<RealNum>();
+        const auto x = GetInvalid<Real>();
+        const auto y = GetInvalid<Real>();
+        auto magnitude = GetInvalid<Real>();
         EXPECT_FALSE(IsValid(UnitVec2::Get(x, y, magnitude)));
         EXPECT_FALSE(IsValid(GetX(UnitVec2::Get(x, y, magnitude))));
         EXPECT_FALSE(IsValid(GetY(UnitVec2::Get(x, y, magnitude))));
     }
     {
-        const auto x = GetInvalid<RealNum>();
-        const auto y = RealNum(0);
-        auto magnitude = GetInvalid<RealNum>();
+        const auto x = GetInvalid<Real>();
+        const auto y = Real(0);
+        auto magnitude = GetInvalid<Real>();
         EXPECT_FALSE(IsValid(UnitVec2::Get(x, y, magnitude)));
         EXPECT_FALSE(IsValid(GetX(UnitVec2::Get(x, y, magnitude))));
         EXPECT_FALSE(IsValid(GetY(UnitVec2::Get(x, y, magnitude))));
     }
     {
-        const auto x = RealNum(0);
-        const auto y = GetInvalid<RealNum>();
-        auto magnitude = GetInvalid<RealNum>();
+        const auto x = Real(0);
+        const auto y = GetInvalid<Real>();
+        auto magnitude = GetInvalid<Real>();
         EXPECT_FALSE(IsValid(UnitVec2::Get(x, y, magnitude)));
         EXPECT_FALSE(IsValid(GetX(UnitVec2::Get(x, y, magnitude))));
         EXPECT_FALSE(IsValid(GetY(UnitVec2::Get(x, y, magnitude))));
     }
     {
-        const auto x = RealNum(0);
-        const auto y = RealNum(0);
-        auto magnitude = GetInvalid<RealNum>();
+        const auto x = Real(0);
+        const auto y = Real(0);
+        auto magnitude = GetInvalid<Real>();
         EXPECT_FALSE(IsValid(UnitVec2::Get(x, y, magnitude, UnitVec2::GetDefaultFallback())));
-        EXPECT_EQ(magnitude, RealNum(0));
+        EXPECT_EQ(magnitude, Real(0));
         EXPECT_FALSE(IsValid(GetX(UnitVec2::Get(x, y, magnitude, UnitVec2::GetDefaultFallback()))));
         EXPECT_FALSE(IsValid(GetY(UnitVec2::Get(x, y, magnitude, UnitVec2::GetDefaultFallback()))));
     }
     {
-        const auto x = RealNum(0);
-        const auto y = RealNum(0);
-        auto magnitude = GetInvalid<RealNum>();
+        const auto x = Real(0);
+        const auto y = Real(0);
+        auto magnitude = GetInvalid<Real>();
         EXPECT_EQ(UnitVec2::Get(x, y, magnitude, UnitVec2::GetZero()), UnitVec2::GetZero());
-        EXPECT_EQ(magnitude, RealNum(0));
-        EXPECT_EQ(GetX(UnitVec2::Get(x, y, magnitude, UnitVec2::GetZero())), RealNum(0));
-        EXPECT_EQ(GetY(UnitVec2::Get(x, y, magnitude, UnitVec2::GetZero())), RealNum(0));
+        EXPECT_EQ(magnitude, Real(0));
+        EXPECT_EQ(GetX(UnitVec2::Get(x, y, magnitude, UnitVec2::GetZero())), Real(0));
+        EXPECT_EQ(GetY(UnitVec2::Get(x, y, magnitude, UnitVec2::GetZero())), Real(0));
     }
 }
 
@@ -153,7 +153,7 @@ TEST(UnitVec2, Absolute)
     EXPECT_EQ(UnitVec2::GetLeft().Absolute(), UnitVec2::GetRight());
     EXPECT_EQ(UnitVec2::GetRight().Absolute(), UnitVec2::GetRight());
 
-    RealNum magnitude;
-    EXPECT_EQ(UnitVec2::Get(RealNum(-1), RealNum(-1), magnitude).Absolute(),
-              UnitVec2::Get(RealNum(+1), RealNum(+1), magnitude));
+    Real magnitude;
+    EXPECT_EQ(UnitVec2::Get(Real(-1), Real(-1), magnitude).Absolute(),
+              UnitVec2::Get(Real(+1), Real(+1), magnitude));
 }

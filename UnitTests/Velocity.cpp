@@ -23,7 +23,7 @@ using namespace box2d;
 
 TEST(Velocity, ByteSizeIs_12_24_or_48)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(Velocity), std::size_t(12)); break;
         case  8: EXPECT_EQ(sizeof(Velocity), std::size_t(24)); break;

@@ -425,7 +425,7 @@ namespace {
     Length SolvePositionConstraintsViaGS(PositionConstraints& posConstraints,
                                     ConstraintSolverConf conf)
     {
-        auto minSeparation = numeric_limits<RealNum>::infinity() * Meter;
+        auto minSeparation = numeric_limits<Real>::infinity() * Meter;
         
         for_each(begin(posConstraints), end(posConstraints), [&](PositionConstraint &pc) {
             assert(pc.GetBodyA() != pc.GetBodyB()); // Confirms ContactManager::Add() did its job.
@@ -459,7 +459,7 @@ namespace {
                                     const BodyConstraint* bodyConstraintA, const BodyConstraint* bodyConstraintB,
                                     ConstraintSolverConf conf)
     {
-        auto minSeparation = numeric_limits<RealNum>::infinity() * Meter;
+        auto minSeparation = numeric_limits<Real>::infinity() * Meter;
         
         for_each(begin(posConstraints), end(posConstraints), [&](PositionConstraint &pc) {
             const auto moveA = (pc.GetBodyA() == bodyConstraintA) || (pc.GetBodyA() == bodyConstraintB);
@@ -478,12 +478,12 @@ namespace {
     {
         const auto underactive = IsUnderActive(b.GetVelocity(), conf.linearSleepTolerance, conf.angularSleepTolerance);
         const auto sleepable = b.IsSleepingAllowed();
-        return (sleepable && underactive)? b.GetUnderActiveTime() + conf.GetTime(): Second * RealNum{0};
+        return (sleepable && underactive)? b.GetUnderActiveTime() + conf.GetTime(): Second * Real{0};
     }
 
     inline Time UpdateUnderActiveTimes(Island::Bodies& bodies, const StepConf& conf)
     {
-        auto minUnderActiveTime = Second * numeric_limits<RealNum>::infinity();
+        auto minUnderActiveTime = Second * numeric_limits<Real>::infinity();
         for_each(cbegin(bodies), cend(bodies), [&](Body *b)
         {
             if (b->IsSpeedable())
@@ -1369,7 +1369,7 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
     }
     
     results.bodiesSlept = BodyCounter{0};
-    if (::box2d::IsValid(RealNum{conf.minStillTimeToSleep / Second}))
+    if (::box2d::IsValid(Real{conf.minStillTimeToSleep / Second}))
     {
         const auto minUnderActiveTime = UpdateUnderActiveTimes(island.m_bodies, conf);
         if ((minUnderActiveTime >= conf.minStillTimeToSleep) && results.solved)
@@ -1449,7 +1449,7 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
         // Use Min function to handle floating point imprecision which possibly otherwise
         // could provide a TOI that's greater than 1.
         const auto toi = IsValidForTime(output.get_state())?
-            Min(alpha0 + (1 - alpha0) * output.get_t(), RealNum{1}): RealNum{1};
+            Min(alpha0 + (1 - alpha0) * output.get_t(), Real{1}): Real{1};
         assert(toi >= alpha0 && toi <= 1);
         ContactAtty::SetToi(*c, toi);
         
@@ -1464,7 +1464,7 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
     
 World::ContactToiData World::GetSoonestContacts(const size_t reserveSize)
 {
-    auto minToi = nextafter(RealNum{1}, RealNum{0});
+    auto minToi = nextafter(Real{1}, Real{0});
     auto minContacts = vector<Contact*>();
     minContacts.reserve(reserveSize);
     for (auto&& contact: m_contacts)
@@ -1764,7 +1764,7 @@ World::IslandSolverResults World::SolveToiViaGS(const StepConf& conf, Island& is
     auto posConstraints = GetPositionConstraints(island.m_contacts, bodyConstraintsMap);
     
     // Solve TOI-based position constraints.
-    assert(results.minSeparation == numeric_limits<RealNum>::infinity() * Meter);
+    assert(results.minSeparation == numeric_limits<Real>::infinity() * Meter);
     assert(results.solved == false);
     results.positionIterations = conf.toiPositionIterations;
     {
@@ -1871,7 +1871,7 @@ void World::ResetContactsForSolveTOI(Body& body)
 }
 
 World::ProcessContactsOutput
-World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi,
+World::ProcessContactsForTOI(Island& island, Body& body, Real toi,
                              const StepConf& conf)
 {
     assert(IsIslanded(&body));
@@ -1993,8 +1993,8 @@ World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi,
 
 StepStats World::Step(const StepConf& conf)
 {
-    assert((Length{m_maxVertexRadius} * RealNum{2}) +
-           (Length{conf.linearSlop} / RealNum{4}) > (Length{m_maxVertexRadius} * RealNum{2}));
+    assert((Length{m_maxVertexRadius} * Real{2}) +
+           (Length{conf.linearSlop} / Real{4}) > (Length{m_maxVertexRadius} * Real{2}));
     
     if (IsLocked())
     {
@@ -2024,7 +2024,7 @@ StepStats World::Step(const StepConf& conf)
             stepStats.pre.added = FindNewContacts();
         }
 
-        if (conf.GetTime() != Second * RealNum{0})
+        if (conf.GetTime() != Second * Real{0})
         {
             m_inv_dt0 = conf.GetInvTime();
 
@@ -2060,7 +2060,7 @@ void World::QueryAABB(const AABB& aabb, QueryFixtureCallback callback)
 
 void World::RayCast(const Length2D& point1, const Length2D& point2, RayCastCallback callback)
 {
-    m_tree.RayCast(RayCastInput{point1, point2, RealNum{1}},
+    m_tree.RayCast(RayCastInput{point1, point2, Real{1}},
                    [&](const RayCastInput& input, DynamicTree::size_type proxyId)
     {
         const auto userData = m_tree.GetUserData(proxyId);
@@ -2096,8 +2096,8 @@ void World::RayCast(const Length2D& point1, const Length2D& point2, RayCastCallb
             const auto opcode = callback(fixture, index, point, output.normal);
             switch (opcode)
             {
-                case RayCastOpcode::Terminate: return RealNum(0);
-                case RayCastOpcode::IgnoreFixture: return RealNum(-1);
+                case RayCastOpcode::Terminate: return Real(0);
+                case RayCastOpcode::IgnoreFixture: return Real(-1);
                 case RayCastOpcode::ClipRay: return fraction;
                 case RayCastOpcode::ResetRay: return input.maxFraction;
             }
@@ -2432,7 +2432,7 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
     // that may still be a lot of contacts to be going through in the context this method
     // is being called. OTOH, speed seems to be dominated by cache hit-ratio...
     //
-    // With compiler optimization enabled and 400 small bodies and RealNum=double...
+    // With compiler optimization enabled and 400 small bodies and Real=double...
     // For world:
     //   World::set<Contact*> shows up as .524 seconds max step
     //   World::list<Contact> shows up as .482 seconds max step.
@@ -2815,7 +2815,7 @@ void World::InternalTouchProxies(Fixture& fixture) noexcept
 
 ChildCounter World::Synchronize(Fixture& fixture,
                                  const Transformation xfm1, const Transformation xfm2,
-                                 const RealNum multiplier, const Length extension)
+                                 const Real multiplier, const Length extension)
 {
     assert(::box2d::IsValid(xfm1));
     assert(::box2d::IsValid(xfm2));
@@ -2847,7 +2847,7 @@ ChildCounter World::Synchronize(Fixture& fixture,
 
 ContactCounter World::Synchronize(Body& body,
                                    const Transformation& xfm1, const Transformation& xfm2,
-                                   const RealNum multiplier, const Length aabbExtension)
+                                   const Real multiplier, const Length aabbExtension)
 {
     auto updatedCount = ContactCounter{0};
     for_each(begin(body.GetFixtures()), end(body.GetFixtures()), [&](Fixture& f) {

@@ -23,7 +23,7 @@ using namespace box2d;
 
 TEST(Sweep, ByteSizeIs_36_or_72)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(Sweep), std::size_t(36)); break;
         case  8: EXPECT_EQ(sizeof(Sweep), std::size_t(72)); break;
@@ -33,47 +33,47 @@ TEST(Sweep, ByteSizeIs_36_or_72)
 }
 
 TEST(Sweep, ConstructorSetsPos0and1) {
-    const auto pos = Position{Length2D{RealNum(-0.4) * Meter, RealNum(2.34) * Meter}, RealNum{3.14f} * Radian};
+    const auto pos = Position{Length2D{Real(-0.4) * Meter, Real(2.34) * Meter}, Real{3.14f} * Radian};
     Sweep sweep{pos};
     EXPECT_EQ(pos, sweep.pos0);
     EXPECT_EQ(pos, sweep.pos1);
 }
 
 TEST(Sweep, ResetSetsAlpha0to0) {
-    const auto pos = Position{Length2D{RealNum(-0.4) * Meter, RealNum(2.34) * Meter}, RealNum{3.14f} * Radian};
-    Sweep sweep{pos, pos, Length2D(0, 0), RealNum(0.6)};
-    EXPECT_NE(RealNum{0}, sweep.GetAlpha0());
+    const auto pos = Position{Length2D{Real(-0.4) * Meter, Real(2.34) * Meter}, Real{3.14f} * Radian};
+    Sweep sweep{pos, pos, Length2D(0, 0), Real(0.6)};
+    EXPECT_NE(Real{0}, sweep.GetAlpha0());
     sweep.ResetAlpha0();
-    EXPECT_EQ(RealNum{0}, sweep.GetAlpha0());    
+    EXPECT_EQ(Real{0}, sweep.GetAlpha0());    
 }
 
 TEST(Sweep, GetPosition) {
-    const auto pos0 = Position{Length2D{RealNum(-0.4) * Meter, RealNum(+2.34) * Meter}, RealNum{3.14f} * Radian};
-    const auto pos1 = Position{Length2D{RealNum(+0.4) * Meter, RealNum(-2.34) * Meter}, -RealNum{3.14f} * Radian};
-    Sweep sweep{pos0, pos1, Length2D(0, 0), RealNum(0.6)};
+    const auto pos0 = Position{Length2D{Real(-0.4) * Meter, Real(+2.34) * Meter}, Real{3.14f} * Radian};
+    const auto pos1 = Position{Length2D{Real(+0.4) * Meter, Real(-2.34) * Meter}, -Real{3.14f} * Radian};
+    Sweep sweep{pos0, pos1, Length2D(0, 0), Real(0.6)};
     EXPECT_EQ(pos0, GetPosition(sweep.pos0, sweep.pos1, 0));
     EXPECT_EQ(pos1, GetPosition(sweep.pos0, sweep.pos1, 1));
 }
 
 TEST(Sweep, Advance) {
-    const auto pos0 = Position{Length2D{RealNum(-0.4) * Meter, RealNum(+2.34) * Meter}, RealNum{3.14f} * Radian};
-    const auto pos1 = Position{Length2D{RealNum(+0.4) * Meter, RealNum(-2.34) * Meter}, -RealNum{3.14f} * Radian};
+    const auto pos0 = Position{Length2D{Real(-0.4) * Meter, Real(+2.34) * Meter}, Real{3.14f} * Radian};
+    const auto pos1 = Position{Length2D{Real(+0.4) * Meter, Real(-2.34) * Meter}, -Real{3.14f} * Radian};
     
     Sweep sweep{pos0, pos1, Length2D(0, 0), 0};
-    EXPECT_EQ(RealNum{0}, sweep.GetAlpha0());
+    EXPECT_EQ(Real{0}, sweep.GetAlpha0());
     
     sweep.Advance0(0);
-    EXPECT_EQ(RealNum{0}, sweep.GetAlpha0());
+    EXPECT_EQ(Real{0}, sweep.GetAlpha0());
     EXPECT_EQ(pos0, sweep.pos0);
     EXPECT_EQ(pos1, sweep.pos1);
     
-    sweep.Advance0(RealNum{1}/RealNum{2});
-    EXPECT_EQ(RealNum{1}/RealNum{2}, sweep.GetAlpha0());
+    sweep.Advance0(Real{1}/Real{2});
+    EXPECT_EQ(Real{1}/Real{2}, sweep.GetAlpha0());
     EXPECT_EQ(pos1, sweep.pos1);
     EXPECT_EQ((Position{Length2D(0, 0), Angle{0}}), sweep.pos0);
 
     sweep.Advance0(0);
-    EXPECT_EQ(RealNum{0}, sweep.GetAlpha0());
+    EXPECT_EQ(Real{0}, sweep.GetAlpha0());
     EXPECT_EQ(pos0, sweep.pos0);
     EXPECT_EQ(pos1, sweep.pos1);
 }
@@ -88,65 +88,65 @@ TEST(Sweep, GetAnglesNormalized)
     EXPECT_EQ(GetAnglesNormalized(sweep0).pos1.angular, Angle{0});
 
     const auto sweep1 = Sweep{
-        Position{Length2D(0, 0), Angle{RealNum{90.0f} * Degree}},
-        Position{Length2D(0, 0), Angle{RealNum{90.0f} * Degree}}
+        Position{Length2D(0, 0), Angle{Real{90.0f} * Degree}},
+        Position{Length2D(0, 0), Angle{Real{90.0f} * Degree}}
     };
-    EXPECT_NEAR(double(RealNum{GetAnglesNormalized(sweep1).pos0.angular / Angle{RealNum(1) * Degree}}),
+    EXPECT_NEAR(double(Real{GetAnglesNormalized(sweep1).pos0.angular / Angle{Real(1) * Degree}}),
                 double( 90), 0.03);
-    EXPECT_NEAR(double(RealNum{GetAnglesNormalized(sweep1).pos1.angular / Angle{RealNum(1) * Degree}}),
+    EXPECT_NEAR(double(Real{GetAnglesNormalized(sweep1).pos1.angular / Angle{Real(1) * Degree}}),
                 double( 90), 0.03);
 
     const auto sweep2 = Sweep{
-        Position{Length2D(0, 0), Angle{RealNum{180.0f} * Degree}},
-        Position{Length2D(0, 0), Angle{RealNum{180.0f} * Degree}}
+        Position{Length2D(0, 0), Angle{Real{180.0f} * Degree}},
+        Position{Length2D(0, 0), Angle{Real{180.0f} * Degree}}
     };
-    EXPECT_NEAR(double(RealNum{GetAnglesNormalized(sweep2).pos0.angular / Angle{RealNum(1) * Degree}}),
+    EXPECT_NEAR(double(Real{GetAnglesNormalized(sweep2).pos0.angular / Angle{Real(1) * Degree}}),
                 double(180), 0.03);
-    EXPECT_NEAR(double(RealNum{GetAnglesNormalized(sweep2).pos1.angular / Angle{RealNum(1) * Degree}}),
+    EXPECT_NEAR(double(Real{GetAnglesNormalized(sweep2).pos1.angular / Angle{Real(1) * Degree}}),
                 double(180), 0.03);
 
     const auto sweep3 = Sweep{
-        Position{Length2D(0, 0), Angle{RealNum{270.0f} * Degree}},
-        Position{Length2D(0, 0), Angle{RealNum{270.0f} * Degree}}
+        Position{Length2D(0, 0), Angle{Real{270.0f} * Degree}},
+        Position{Length2D(0, 0), Angle{Real{270.0f} * Degree}}
     };
-    EXPECT_NEAR(double(RealNum{GetAnglesNormalized(sweep3).pos0.angular / Angle{RealNum(1) * Degree}}),
+    EXPECT_NEAR(double(Real{GetAnglesNormalized(sweep3).pos0.angular / Angle{Real(1) * Degree}}),
                 double(270), 0.03);
-    EXPECT_NEAR(double(RealNum{GetAnglesNormalized(sweep3).pos1.angular / Angle{RealNum(1) * Degree}}),
+    EXPECT_NEAR(double(Real{GetAnglesNormalized(sweep3).pos1.angular / Angle{Real(1) * Degree}}),
                        double(270), 0.03);
 
     const auto sweep4 = Sweep{
-        Position{Length2D(0, 0), Angle{RealNum{361.0f} * Degree}},
-        Position{Length2D(0, 0), Angle{RealNum{361.0f} * Degree}}
+        Position{Length2D(0, 0), Angle{Real{361.0f} * Degree}},
+        Position{Length2D(0, 0), Angle{Real{361.0f} * Degree}}
     };
-    EXPECT_NEAR(double(RealNum{GetAnglesNormalized(sweep4).pos0.angular / Angle{RealNum(1) * Degree}}),
+    EXPECT_NEAR(double(Real{GetAnglesNormalized(sweep4).pos0.angular / Angle{Real(1) * Degree}}),
                 double(1), 0.001);
-    EXPECT_NEAR(double(RealNum{GetAnglesNormalized(sweep4).pos1.angular / Angle{RealNum(1) * Degree}}),
+    EXPECT_NEAR(double(Real{GetAnglesNormalized(sweep4).pos1.angular / Angle{Real(1) * Degree}}),
                 double(1), 0.001);
 
     const auto sweep5 = Sweep{
-        Position{Length2D(0, 0), Angle{RealNum{722.0f} * Degree}},
-        Position{Length2D(0, 0), Angle{RealNum{722.0f} * Degree}}
+        Position{Length2D(0, 0), Angle{Real{722.0f} * Degree}},
+        Position{Length2D(0, 0), Angle{Real{722.0f} * Degree}}
     };
-    EXPECT_NEAR(double(RealNum{GetAnglesNormalized(sweep5).pos0.angular / Angle{RealNum(1) * Degree}}),
+    EXPECT_NEAR(double(Real{GetAnglesNormalized(sweep5).pos0.angular / Angle{Real(1) * Degree}}),
                 double(2), 0.002);
-    EXPECT_NEAR(double(RealNum{GetAnglesNormalized(sweep5).pos1.angular / Angle{RealNum(1) * Degree}}),
+    EXPECT_NEAR(double(Real{GetAnglesNormalized(sweep5).pos1.angular / Angle{Real(1) * Degree}}),
                 double(2), 0.002);
 
     const auto sweep6 = Sweep{
-        Position{Length2D(0, 0), Angle{RealNum{726.0f} * Degree}},
-        Position{Length2D(0, 0), Angle{RealNum{90.0f} * Degree}}
+        Position{Length2D(0, 0), Angle{Real{726.0f} * Degree}},
+        Position{Length2D(0, 0), Angle{Real{90.0f} * Degree}}
     };
-    EXPECT_NEAR(double(RealNum{GetAnglesNormalized(sweep6).pos0.angular / Angle{RealNum(1) * Degree}}),
+    EXPECT_NEAR(double(Real{GetAnglesNormalized(sweep6).pos0.angular / Angle{Real(1) * Degree}}),
                 double(6), 0.03);
-    EXPECT_NEAR(double(RealNum{GetAnglesNormalized(sweep6).pos1.angular / Angle{RealNum(1) * Degree}}),
+    EXPECT_NEAR(double(Real{GetAnglesNormalized(sweep6).pos1.angular / Angle{Real(1) * Degree}}),
                 double(-630), 0.03);
     
     const auto sweep7 = Sweep{
-        Position{Length2D(0, 0), Angle{-RealNum{90.0f} * Degree}},
-        Position{Length2D(0, 0), Angle{-RealNum{90.0f} * Degree}}
+        Position{Length2D(0, 0), Angle{-Real{90.0f} * Degree}},
+        Position{Length2D(0, 0), Angle{-Real{90.0f} * Degree}}
     };
-    EXPECT_NEAR(double(RealNum{GetAnglesNormalized(sweep7).pos0.angular / Angle{RealNum(1) * Degree}}),
+    EXPECT_NEAR(double(Real{GetAnglesNormalized(sweep7).pos0.angular / Angle{Real(1) * Degree}}),
                 double( -90), 0.03);
-    EXPECT_NEAR(double(RealNum{GetAnglesNormalized(sweep7).pos1.angular / Angle{RealNum(1) * Degree}}),
+    EXPECT_NEAR(double(Real{GetAnglesNormalized(sweep7).pos1.angular / Angle{Real(1) * Degree}}),
                 double( -90), 0.03);
 }

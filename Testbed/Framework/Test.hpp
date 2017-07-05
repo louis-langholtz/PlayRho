@@ -37,9 +37,9 @@ struct Settings
     float hz = 60;
     float dt = 1 / hz;
     float maxLinearCorrection = static_cast<float>(StripUnit(DefaultMaxLinearCorrection)); // in meters
-    float maxAngularCorrection = static_cast<float>(RealNum{DefaultMaxAngularCorrection / Degree}); // in degrees
+    float maxAngularCorrection = static_cast<float>(Real{DefaultMaxAngularCorrection / Degree}); // in degrees
     float linearSlop = static_cast<float>(StripUnit(DefaultLinearSlop));
-    float angularSlop = static_cast<float>(RealNum{DefaultAngularSlop / Radian});
+    float angularSlop = static_cast<float>(Real{DefaultAngularSlop / Radian});
     float regMinSeparation = static_cast<float>(StripUnit(DefaultLinearSlop) * -3);
     float toiMinSeparation = static_cast<float>(StripUnit(DefaultLinearSlop) * -1.5f);
     int regPosResRate = 20; // in percent
@@ -212,8 +212,8 @@ private:
     std::uint64_t m_sumToiContactsSkippedTouching = 0;
     std::uint64_t m_sumRegProxiesMoved = 0;
     std::uint64_t m_sumToiProxiesMoved = 0;
-    Length m_minRegSep = std::numeric_limits<RealNum>::infinity() * Meter;
-    Length m_maxRegSep = -std::numeric_limits<RealNum>::infinity() * Meter;
+    Length m_minRegSep = std::numeric_limits<Real>::infinity() * Meter;
+    Length m_maxRegSep = -std::numeric_limits<Real>::infinity() * Meter;
     Length m_minToiSep = 0;
 
     using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
@@ -230,10 +230,10 @@ private:
 };
 
 /// Random number in range [-1,1]
-RealNum RandomFloat();
+Real RandomFloat();
 
 /// Random floating point number in range [lo, hi]
-RealNum RandomFloat(RealNum lo, RealNum hi);
+Real RandomFloat(Real lo, Real hi);
 
 ::std::ostream& operator<<(::std::ostream& os, const ContactFeature& value);
 

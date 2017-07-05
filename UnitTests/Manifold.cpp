@@ -23,7 +23,7 @@ using namespace box2d;
 
 TEST(Manifold, ByteSizeIs_60_120_or_240)
 {
-    switch (sizeof(RealNum))
+    switch (sizeof(Real))
     {
         case  4:  EXPECT_EQ(sizeof(Manifold), std::size_t(60)); break;
         case  8: EXPECT_EQ(sizeof(Manifold), std::size_t(120)); break;
@@ -43,9 +43,9 @@ TEST(Manifold, DefaultConstruction)
 
 TEST(Manifold, PointInitializingConstructor)
 {
-    const auto lp = Length2D{RealNum(3) * Meter, RealNum(4) * Meter};
-    const auto ni = RealNum(1.2) * Kilogram * MeterPerSecond;
-    const auto ti = RealNum(2.4) * Kilogram * MeterPerSecond;
+    const auto lp = Length2D{Real(3) * Meter, Real(4) * Meter};
+    const auto ni = Real(1.2) * Kilogram * MeterPerSecond;
+    const auto ti = Real(2.4) * Kilogram * MeterPerSecond;
     const auto cf = ContactFeature{};
     const auto foo = Manifold::Point{lp, cf, ni, ti};
     EXPECT_EQ(foo.localPoint.x, lp.x);
@@ -57,7 +57,7 @@ TEST(Manifold, PointInitializingConstructor)
 
 TEST(Manifold, GetForCircles)
 {
-    const auto ctr = Length2D{RealNum(99) * Meter, RealNum(21) * Meter};
+    const auto ctr = Length2D{Real(99) * Meter, Real(21) * Meter};
     const auto foo = Manifold::GetForCircles(ctr, 0, ctr, 0);
     EXPECT_EQ(foo.GetType(), Manifold::e_circles);
     EXPECT_EQ(foo.GetLocalPoint(), ctr);
@@ -79,10 +79,10 @@ TEST(Manifold, GetForFaceA)
         EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(0));
     }
     {
-        const auto pl = Length2D{RealNum(-0.12) * Meter, RealNum(0.34) * Meter};
+        const auto pl = Length2D{Real(-0.12) * Meter, Real(0.34) * Meter};
         const auto cf = GetFaceFaceContactFeature(0, 0);
-        const auto ni = RealNum(2.9) * Kilogram * MeterPerSecond;
-        const auto ti = RealNum(.7) * Kilogram * MeterPerSecond;
+        const auto ni = Real(2.9) * Kilogram * MeterPerSecond;
+        const auto ti = Real(.7) * Kilogram * MeterPerSecond;
         const auto foo = Manifold::GetForFaceA(ln, lp, Manifold::Point{pl, cf, ni, ti});
         EXPECT_EQ(foo.GetType(), Manifold::e_faceA);
         EXPECT_EQ(foo.GetLocalNormal(), ln);
@@ -96,10 +96,10 @@ TEST(Manifold, GetForFaceA)
         EXPECT_EQ(p0.tangentImpulse, ti);
     }
     {
-        const auto pl = Length2D{RealNum(-0.12) * Meter, RealNum(0.34) * Meter};
+        const auto pl = Length2D{Real(-0.12) * Meter, Real(0.34) * Meter};
         const auto cf = GetFaceFaceContactFeature(0, 1);
-        const auto ni = RealNum(2.9) * Kilogram * MeterPerSecond;
-        const auto ti = RealNum(.7) * Kilogram * MeterPerSecond;
+        const auto ni = Real(2.9) * Kilogram * MeterPerSecond;
+        const auto ti = Real(.7) * Kilogram * MeterPerSecond;
         const auto foo = Manifold::GetForFaceA(ln, lp, Manifold::Point{pl, cf, ni, ti}, Manifold::Point{-pl, Flip(cf), -ni, -ti});
         EXPECT_EQ(foo.GetType(), Manifold::e_faceA);
         EXPECT_EQ(foo.GetLocalNormal(), ln);
@@ -131,10 +131,10 @@ TEST(Manifold, GetForFaceB)
         EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(0));
     }
     {
-        const auto pl = Length2D{RealNum(-0.12) * Meter, RealNum(0.34) * Meter};
+        const auto pl = Length2D{Real(-0.12) * Meter, Real(0.34) * Meter};
         const auto cf = GetFaceFaceContactFeature(0, 0);
-        const auto ni = RealNum(2.9) * Kilogram * MeterPerSecond;
-        const auto ti = RealNum(.7) * Kilogram * MeterPerSecond;
+        const auto ni = Real(2.9) * Kilogram * MeterPerSecond;
+        const auto ti = Real(.7) * Kilogram * MeterPerSecond;
         Manifold foo = Manifold::GetForFaceB(ln, lp, Manifold::Point{pl, cf, ni, ti});
         EXPECT_EQ(foo.GetType(), Manifold::e_faceB);
         EXPECT_EQ(foo.GetLocalNormal(), ln);
@@ -148,10 +148,10 @@ TEST(Manifold, GetForFaceB)
         EXPECT_EQ(p0.tangentImpulse, ti);
     }
     {
-        const auto pl = Length2D{RealNum(-0.12) * Meter, RealNum(0.34) * Meter};
+        const auto pl = Length2D{Real(-0.12) * Meter, Real(0.34) * Meter};
         const auto cf = GetFaceFaceContactFeature(0, 1);
-        const auto ni = RealNum(2.9) * Kilogram * MeterPerSecond;
-        const auto ti = RealNum(.7) * Kilogram * MeterPerSecond;
+        const auto ni = Real(2.9) * Kilogram * MeterPerSecond;
+        const auto ti = Real(.7) * Kilogram * MeterPerSecond;
         Manifold foo = Manifold::GetForFaceB(ln, lp, Manifold::Point{pl, cf, ni, ti}, Manifold::Point{-pl, Flip(cf), -ni, -ti});
         EXPECT_EQ(foo.GetType(), Manifold::e_faceB);
         EXPECT_EQ(foo.GetLocalNormal(), ln);

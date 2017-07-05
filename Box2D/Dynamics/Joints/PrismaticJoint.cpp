@@ -153,7 +153,7 @@ void PrismaticJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     const auto invRotMassA = InvMass{invRotInertiaA * m_a1 * m_a1 / SquareRadian};
     const auto invRotMassB = InvMass{invRotInertiaB * m_a2 * m_a2 / SquareRadian};
     const auto totalInvMass = invMassA + invMassB + invRotMassA + invRotMassB;
-    m_motorMass = (totalInvMass > InvMass{0})? RealNum{1} / totalInvMass: Mass{0};
+    m_motorMass = (totalInvMass > InvMass{0})? Real{1} / totalInvMass: Mass{0};
 
     // Prismatic constraint.
     {
@@ -171,7 +171,7 @@ void PrismaticJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
         const auto k13 = StripUnit(InvMass{(invRotInertiaA * m_s1 * m_a1 + invRotInertiaB * m_s2 * m_a2) / SquareRadian});
         const auto totalInvRotInertia = invRotInertiaA + invRotInertiaB;
         
-        const auto k22 = (totalInvRotInertia == InvRotInertia{0})? RealNum{1}: StripUnit(totalInvRotInertia);
+        const auto k22 = (totalInvRotInertia == InvRotInertia{0})? Real{1}: StripUnit(totalInvRotInertia);
         const auto k23 = (invRotInertiaA * m_a1 + invRotInertiaB * m_a2) * Meter * Kilogram / SquareRadian;
         const auto k33 = StripUnit(totalInvMass);
 
@@ -184,7 +184,7 @@ void PrismaticJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     if (m_enableLimit)
     {
         const auto jointTranslation = Length{Dot(m_axis, d)};
-        if (Abs(m_upperTranslation - m_lowerTranslation) < (conf.linearSlop * RealNum{2}))
+        if (Abs(m_upperTranslation - m_lowerTranslation) < (conf.linearSlop * Real{2}))
         {
             m_limitState = e_equalLimits;
         }
@@ -313,11 +313,11 @@ bool PrismaticJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const 
 
         if (m_limitState == e_atLowerLimit)
         {
-            m_impulse.z = Max(m_impulse.z, RealNum{0});
+            m_impulse.z = Max(m_impulse.z, Real{0});
         }
         else if (m_limitState == e_atUpperLimit)
         {
-            m_impulse.z = Min(m_impulse.z, RealNum{0});
+            m_impulse.z = Min(m_impulse.z, Real{0});
         }
 
         // f2(1:2) = invK(1:2,1:2) * (-Cdot(1:2) - K(1:2,3) * (f2(3) - f1(3))) + f1(1:2)
@@ -420,11 +420,11 @@ bool PrismaticJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const 
     const auto angularError = Angle{Abs(C1.y) * Radian};
 
     auto active = false;
-    auto C2 = RealNum{0};
+    auto C2 = Real{0};
     if (m_enableLimit)
     {
         const auto translation = Length{Dot(axis, d)};
-        if (Abs(m_upperTranslation - m_lowerTranslation) < (RealNum{2} * conf.linearSlop))
+        if (Abs(m_upperTranslation - m_lowerTranslation) < (Real{2} * conf.linearSlop))
         {
             // Prevent large angular corrections
             C2 = StripUnit(Clamp(translation, -conf.maxLinearCorrection, conf.maxLinearCorrection));
@@ -465,10 +465,10 @@ bool PrismaticJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const 
     
         // InvRotInertia is L^-2 M^-1 QP^2
         auto k22 = StripUnit(invRotInertiaA + invRotInertiaB);
-        if (k22 == RealNum{0})
+        if (k22 == Real{0})
         {
             // For fixed rotation
-            k22 = StripUnit(RealNum{1} * SquareRadian / (Kilogram * SquareMeter));
+            k22 = StripUnit(Real{1} * SquareRadian / (Kilogram * SquareMeter));
         }
         const auto k23 = StripUnit(InvMass{
             invRotInertiaA * a1 * Meter / SquareRadian +
@@ -508,7 +508,7 @@ bool PrismaticJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const 
         impulse.z = 0;
     }
 
-    const auto P = (impulse.x * perp + impulse.z * axis) * (RealNum(1) * Kilogram * Meter);
+    const auto P = (impulse.x * perp + impulse.z * axis) * (Real(1) * Kilogram * Meter);
     const auto LA = (impulse.x * s1 + impulse.y * Meter + impulse.z * a1) * Kilogram * Meter / Radian;
     const auto LB = (impulse.x * s2 + impulse.y * Meter + impulse.z * a2) * Kilogram * Meter / Radian;
 

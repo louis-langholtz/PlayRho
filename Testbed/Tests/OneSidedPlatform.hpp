@@ -48,9 +48,9 @@ public:
             BodyDef bd;
             bd.position = Vec2(0.0f, 10.0f) * Meter;
             const auto body = m_world->CreateBody(bd);
-            m_platform = body->CreateFixture(std::make_shared<PolygonShape>(RealNum{3.0f} * Meter, RealNum{0.5f} * Meter));
-            m_bottom = RealNum(10.0f - 0.5f) * Meter;
-            m_top = RealNum(10.0f + 0.5f) * Meter;
+            m_platform = body->CreateFixture(std::make_shared<PolygonShape>(Real{3.0f} * Meter, Real{0.5f} * Meter));
+            m_bottom = Real(10.0f - 0.5f) * Meter;
+            m_top = Real(10.0f + 0.5f) * Meter;
         }
 
         // Actor
@@ -61,7 +61,7 @@ public:
             const auto body = m_world->CreateBody(bd);
             auto conf = DiskShape::Conf{};
             conf.vertexRadius = m_radius;
-            conf.density = RealNum{20} * KilogramPerSquareMeter;
+            conf.density = Real{20} * KilogramPerSquareMeter;
             m_character = body->CreateFixture(std::make_shared<DiskShape>(conf));
             body->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * MeterPerSecond, AngularVelocity{0}});
         }
@@ -107,11 +107,11 @@ public:
 
         const auto v = GetLinearVelocity(*(m_character->GetBody()));
         drawer.DrawString(5, m_textLine, "Character Linear Velocity: %f",
-                          static_cast<double>(RealNum{v.y / MeterPerSecond}));
+                          static_cast<double>(Real{v.y / MeterPerSecond}));
         m_textLine += DRAW_STRING_NEW_LINE;
     }
 
-    Length m_radius = RealNum{0.5f} * Meter;
+    Length m_radius = Real{0.5f} * Meter;
     Length m_top;
     Length m_bottom;
     State m_state = e_unknown;

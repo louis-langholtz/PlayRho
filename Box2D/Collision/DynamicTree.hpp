@@ -49,7 +49,7 @@ public:
 
     /// @brief Ray cast callback function.
     /// @note Return 0 to terminate raycasting, or > 0 to update the segment bounding box.
-    using RayCastCallback = std::function<RealNum(const RayCastInput&, size_type)>;
+    using RayCastCallback = std::function<Real(const RayCastInput&, size_type)>;
 
     /// @brief Invalid index value.
     static constexpr size_type InvalidIndex = static_cast<size_type>(-1);
@@ -145,7 +145,7 @@ public:
     /// @brief Gets the ratio of the sum of the perimeters of nodes to the root perimeter.
     /// @note Zero is returned if no proxies exist at the time of the call.
     /// @return Value of zero or more.
-    RealNum GetAreaRatio() const noexcept;
+    Real GetAreaRatio() const noexcept;
 
     /// @brief Builds an optimal tree.
     /// @note This operation is very expensive.
