@@ -27,6 +27,7 @@
 #define Units_hpp
 
 #include <Box2D/Common/RealNum.hpp>
+#include <Box2D/Common/Templates.hpp>
 
 // #define USE_BOOST_UNITS
 #ifdef USE_BOOST_UNITS

@@ -32,7 +32,6 @@
 #include <cfloat>
 #include <cmath>
 #include <string>
-#include <limits>
 #include <cstdint>
 #include <algorithm>
 
@@ -210,40 +209,6 @@ template <>
 constexpr std::size_t max_list_size<Joint>()
 {
     return MaxJoints;
-}
-
-// GetInvalid template and template specializations.
-
-template <>
-constexpr float GetInvalid() noexcept
-{
-    return std::numeric_limits<float>::signaling_NaN();
-}
-
-template <>
-constexpr double GetInvalid() noexcept
-{
-    return std::numeric_limits<double>::signaling_NaN();
-}
-
-template <>
-constexpr long double GetInvalid() noexcept
-{
-    return std::numeric_limits<long double>::signaling_NaN();
-}
-
-template <>
-constexpr std::size_t GetInvalid() noexcept
-{
-    return static_cast<std::size_t>(-1);
-}
-
-// IsValid template specializations.
-
-template <>
-constexpr inline bool IsValid(const std::size_t& x) noexcept
-{
-    return x != GetInvalid<std::size_t>();
 }
 
 // Memory Allocation

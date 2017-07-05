@@ -21,6 +21,8 @@
 #ifndef Templates_hpp
 #define Templates_hpp
 
+#include <limits>
+
 namespace box2d
 {
 
@@ -44,6 +46,40 @@ namespace box2d
         // correctly and quite usefully!
         //
         return value == value;
+    }
+
+    // GetInvalid template specializations.
+    
+    template <>
+    constexpr float GetInvalid() noexcept
+    {
+        return std::numeric_limits<float>::signaling_NaN();
+    }
+    
+    template <>
+    constexpr double GetInvalid() noexcept
+    {
+        return std::numeric_limits<double>::signaling_NaN();
+    }
+    
+    template <>
+    constexpr long double GetInvalid() noexcept
+    {
+        return std::numeric_limits<long double>::signaling_NaN();
+    }
+    
+    template <>
+    constexpr std::size_t GetInvalid() noexcept
+    {
+        return static_cast<std::size_t>(-1);
+    }
+    
+    // IsValid template specializations.
+    
+    template <>
+    constexpr inline bool IsValid(const std::size_t& x) noexcept
+    {
+        return x != GetInvalid<std::size_t>();
     }
 
 } // namespace box2d
