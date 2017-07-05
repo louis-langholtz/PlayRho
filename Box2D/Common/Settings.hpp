@@ -47,9 +47,7 @@
  * Namespace for all Box2D related names.
  */
 namespace box2d
-{
-template<class... T> void NOT_USED(T&&...){}
-    
+{   
 class Body;
 class Contact;
 class Joint;
@@ -188,28 +186,6 @@ constexpr auto DefaultAngularSleepTolerance = Real{(Pi * 2) / 180} * RadianPerSe
 /// @details Ratio used for switching between rounded-corner collisions and closest-face
 ///   biased normal collisions.
 constexpr auto DefaultCirclesRatio = Real{10};
-
-/// Maximum list size.
-template <typename T>
-constexpr std::size_t max_list_size();
-
-template <>
-constexpr std::size_t max_list_size<Body>()
-{
-    return MaxBodies;
-}
-
-template <>
-constexpr std::size_t max_list_size<Contact>()
-{
-    return MaxContacts;
-}
-
-template <>
-constexpr std::size_t max_list_size<Joint>()
-{
-    return MaxJoints;
-}
 
 // Memory Allocation
 

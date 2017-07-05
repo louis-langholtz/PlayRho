@@ -26,6 +26,8 @@
 namespace box2d
 {
 
+    template<class... T> void NOT_USED(T&&...){}
+
     template <typename T>
     constexpr T GetInvalid() noexcept
     {
