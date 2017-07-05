@@ -32,6 +32,8 @@
 
 namespace box2d
 {
+    class Body;
+
     /// @brief Body Definition.
     ///
     /// @details A body definition holds all the data needed to construct a rigid body.

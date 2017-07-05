@@ -48,9 +48,6 @@
  */
 namespace box2d
 {   
-class Body;
-class Contact;
-class Joint;
 
 /// @brief Max child count.
 constexpr auto MaxChildCount = std::numeric_limits<unsigned>::max() - 1;

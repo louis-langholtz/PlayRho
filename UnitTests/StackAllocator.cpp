@@ -22,6 +22,10 @@
 
 using namespace box2d;
 
+namespace box2d {
+class Body;
+}
+
 TEST(StackAllocator, ByteSizeIs64)
 {
     EXPECT_EQ(sizeof(StackAllocator), std::size_t(64));
