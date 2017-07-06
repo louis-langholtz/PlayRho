@@ -810,7 +810,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
     
     const auto shape = std::make_shared<DiskShape>(Real{1} * Meter);
     shape->SetDensity(Real{1} * KilogramPerSquareMeter);
-    shape->SetRestitution(1);
+    shape->SetRestitution(Real(1));
     
     body_def.position = Length2D{-x * Meter, Real(0) * Meter};
     body_def.linearVelocity = LinearVelocity2D{+x * MeterPerSecond, 0};
@@ -885,7 +885,7 @@ TEST(World, PerfectlyOverlappedSameCirclesStayPut)
     const auto radius = Real(1) * Meter;
     const auto shape = std::make_shared<DiskShape>(radius);
     shape->SetDensity(Real{1} * KilogramPerSquareMeter);
-    shape->SetRestitution(1); // changes where bodies will be after collision
+    shape->SetRestitution(Real(1)); // changes where bodies will be after collision
     const auto gravity = LinearAcceleration2D{0, 0};
 
     World world{WorldDef{}.UseGravity(gravity)};
@@ -929,11 +929,11 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
     
     const auto shape1 = std::make_shared<DiskShape>(radius1);
     shape1->SetDensity(Real{1} * KilogramPerSquareMeter);
-    shape1->SetRestitution(1); // changes where bodies will be after collision
+    shape1->SetRestitution(Real(1)); // changes where bodies will be after collision
     
     const auto shape2 = std::make_shared<DiskShape>(radius2);
     shape2->SetDensity(Real{1} * KilogramPerSquareMeter);
-    shape2->SetRestitution(1); // changes where bodies will be after collision
+    shape2->SetRestitution(Real(1)); // changes where bodies will be after collision
 
     const auto gravity = LinearAcceleration2D{0, 0};
     
@@ -986,7 +986,7 @@ TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
     body_def.position = Length2D{0, 0};
     const auto shape = std::make_shared<DiskShape>(Real{1} * Meter);
     shape->SetDensity(Real{1} * KilogramPerSquareMeter);
-    shape->SetRestitution(1);
+    shape->SetRestitution(Real(1));
     for (auto i = 0; i < 2; ++i)
     {
         const auto body = world.CreateBody(body_def);
@@ -1024,7 +1024,7 @@ TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
     shape->SetVertexRadius(Real{1} * Meter);
     shape->SetAsBox(Real{2} * Meter, Real{2} * Meter);
     shape->SetDensity(Real{1} * KilogramPerSquareMeter);
-    shape->SetRestitution(1);
+    shape->SetRestitution(Real(1));
     for (auto i = 0; i < 2; ++i)
     {
         const auto body = world.CreateBody(body_def);
@@ -1058,7 +1058,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
     
     const auto shape = std::make_shared<DiskShape>(radius * Meter);
     shape->SetDensity(Real{1} * KilogramPerSquareMeter);
-    shape->SetRestitution(1); // changes where bodies will be after collision
+    shape->SetRestitution(Real(1)); // changes where bodies will be after collision
     
     const auto body1pos = Length2D{-radius/Real(4) * Meter, 0};
     body_def.position = body1pos;
@@ -1151,7 +1151,7 @@ TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
 {
     const auto shape = std::make_shared<PolygonShape>(Real{1} * Meter, Real{1} * Meter);
     shape->SetDensity(Real{1} * KilogramPerSquareMeter);
-    shape->SetRestitution(1); // changes where bodies will be after collision
+    shape->SetRestitution(Real(1)); // changes where bodies will be after collision
 
     const auto gravity = LinearAcceleration2D{0, 0};
     
@@ -1226,7 +1226,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
     const auto half_dim = Real(64); // 1 causes additional y-axis separation
     const auto shape = std::make_shared<PolygonShape>(half_dim * Meter, half_dim * Meter);
     shape->SetDensity(Real{1} * KilogramPerSquareMeter);
-    shape->SetRestitution(1); // changes where bodies will be after collision
+    shape->SetRestitution(Real(1)); // changes where bodies will be after collision
     
     const auto body1pos = Length2D{Real(half_dim/2) * Meter, Real(0) * Meter}; // 0 causes additional y-axis separation
     body_def.position = body1pos;
@@ -1386,7 +1386,7 @@ TEST(World, CollidingDynamicBodies)
     
     const auto shape = std::make_shared<DiskShape>(radius);
     shape->SetDensity(Real{1} * KilogramPerSquareMeter);
-    shape->SetRestitution(1); // changes where bodies will be after collision
+    shape->SetRestitution(Real(1)); // changes where bodies will be after collision
 
     body_def.position = Length2D{-(x + 1) * Meter, Real(0) * Meter};
     body_def.linearVelocity = LinearVelocity2D{+x * MeterPerSecond, 0};
@@ -1779,7 +1779,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 
     BodyDef body_def;
     const auto edge_shape = std::make_shared<EdgeShape>(Length2D{Real(0) * Meter, +Real(10) * Meter}, Length2D{Real(0) * Meter, -Real(10) * Meter});
-    edge_shape->SetRestitution(1);
+    edge_shape->SetRestitution(Real(1));
 
     body_def.type = BodyType::Static;
 
@@ -1810,7 +1810,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
     const auto ball_radius = Real(.01) * Meter;
     const auto circle_shape = std::make_shared<DiskShape>(ball_radius);
     circle_shape->SetDensity(Real{1} * KilogramPerSquareMeter);
-    circle_shape->SetRestitution(1); // changes where bodies will be after collision
+    circle_shape->SetRestitution(Real(1)); // changes where bodies will be after collision
     const auto ball_fixture = ball_body->CreateFixture(circle_shape);
     ASSERT_NE(ball_fixture, nullptr);
 
@@ -1930,8 +1930,8 @@ TEST(World, MouseJointWontCauseTunnelling)
 
     BodyDef body_def;
     EdgeShape edge_shape;
-    edge_shape.SetFriction(0.4f);
-    edge_shape.SetRestitution(0.94f); // changes where bodies will be after collision
+    edge_shape.SetFriction(Real(0.4f));
+    edge_shape.SetRestitution(Real(0.94f)); // changes where bodies will be after collision
     body_def.type = BodyType::Static;
     
     // Setup vertical bounderies
@@ -2471,7 +2471,7 @@ public:
         
         const auto boxShape = std::make_shared<PolygonShape>(hdim, hdim);
         boxShape->SetDensity(Real{1} * KilogramPerSquareMeter);
-        boxShape->SetFriction(0.3f);
+        boxShape->SetFriction(Real(0.3f));
         for (auto i = decltype(numboxes){0}; i < numboxes; ++i)
         {
             // (hdim + 0.05f) + (hdim * 2 + 0.1f) * i

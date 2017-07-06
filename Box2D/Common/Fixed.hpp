@@ -162,6 +162,12 @@ namespace box2d
         {
             // Intentionally empty.
         }
+
+        constexpr Fixed(long val) noexcept:
+        m_value{GetFromSignedInt(val)}
+        {
+            // Intentionally empty.
+        }
         
         constexpr Fixed(int val) noexcept:
             m_value{GetFromSignedInt(val)}
@@ -836,6 +842,11 @@ namespace std
     constexpr inline bool isnan(box2d::Fixed32 value) noexcept
     {
         return value.Compare(0) == box2d::Fixed32::CmpResult::Incomparable;
+    }
+    
+    inline box2d::Fixed32 fmod(box2d::Fixed32 x, box2d::Fixed32 y)
+    {
+        return box2d::Fixed32(fmod(static_cast<double>(x), static_cast<double>(y)));
     }
 
 #ifndef _WIN32

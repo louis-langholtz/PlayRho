@@ -62,7 +62,7 @@ std::vector<Length2D> box2d::GetCircleVertices(const Length radius, unsigned sli
     if (slices > 0)
     {
         const auto integralTurns = static_cast<long int>(turns);
-        const auto wholeNum = (turns == integralTurns);
+        const auto wholeNum = (turns == Real(integralTurns * Real(1)));
         const auto deltaAngle = (Pi * Radian * Real(2) * turns) / Real(slices);
         auto i = decltype(slices){0};
         while (i < slices)
