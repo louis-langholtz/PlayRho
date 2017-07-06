@@ -955,6 +955,11 @@ namespace std
     {
         return value.Compare(0) == box2d::Fixed64::CmpResult::Incomparable;
     }
+    
+    inline box2d::Fixed64 fmod(box2d::Fixed64 x, box2d::Fixed64 y)
+    {
+        return box2d::Fixed64(fmod(static_cast<double>(x), static_cast<double>(y)));
+    }
 
 #endif /* _WIN32 */
 
