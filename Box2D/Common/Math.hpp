@@ -711,17 +711,8 @@ inline Transformation GetTransform1(const Sweep& sweep) noexcept
 
 inline Angle GetNormalized(Angle value)
 {
-#if 1
-    constexpr auto radsPerCircle = Real{2 * Pi} * Radian;
-    const auto laps = static_cast<int>(Real{value / radsPerCircle});
-    return value - Angle(Real(laps) * radsPerCircle);
-#else
-    const auto TwoPi = Pi * 2;
-    const auto res = Real{value / Radian} / TwoPi;
-    const auto wholePart = static_cast<int>(res);
-    const auto fractionPart = res - wholePart;
-    return Real{fractionPart * TwoPi} * Radian;
-#endif
+    const auto angleInRadians = Real(value / Radian);
+    return Angle{std::fmod(angleInRadians, Real(2 * Pi)) * Radian};
 }
 
 /// Gets a sweep with the given sweep's angles normalized.

@@ -59,14 +59,14 @@ TEST(World, ByteSize)
         case  8:
         {
 #ifdef __APPLE__
-            EXPECT_EQ(sizeof(World), std::size_t(376));
+            EXPECT_EQ(sizeof(World), std::size_t(392));
 #endif
 #ifdef __linux__
             EXPECT_EQ(sizeof(World), std::size_t(400));
 #endif
             break;
         }
-        case 16: EXPECT_EQ(sizeof(World), std::size_t(416)); break;
+        case 16: EXPECT_EQ(sizeof(World), std::size_t(432)); break;
         default: FAIL(); break;
     }
 }
