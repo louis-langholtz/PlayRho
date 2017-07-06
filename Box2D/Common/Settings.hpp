@@ -49,6 +49,44 @@
 namespace box2d
 {   
 
+namespace details
+{
+template <typename T>
+struct Defaults
+{
+    static constexpr auto GetLinearSlop() noexcept
+    {
+        // Used to be 0.005m. Now uses 0.001m.
+        return Length{Meter / Real(1000)};
+    }
+    
+    static constexpr auto GetMaxVertexRadius() noexcept
+    {
+        // DefaultLinearSlop * Real{2 * 1024 * 1024};
+        // linearSlop * 2550000
+        return Length{Real(255) * Meter};
+    }
+};
+
+template <unsigned int FRACTION_BITS>
+struct Defaults<Fixed<std::int32_t,FRACTION_BITS>>
+{
+    static constexpr auto GetLinearSlop() noexcept
+    {
+        // Needs to be big enough that the step tolerance doesn't go to zero.
+        // ex: FRACTION_BITS==10, then divisor==256
+        return Length{Meter / Real{(1 << (FRACTION_BITS - 2))}};
+    }
+    
+    static constexpr auto GetMaxVertexRadius() noexcept
+    {
+        // linearSlop * 2550000
+        return Length{Real(1 << (28 - FRACTION_BITS)) * Meter};
+    }
+};
+
+}
+
 /// @brief Max child count.
 constexpr auto MaxChildCount = std::numeric_limits<unsigned>::max() - 1;
 
@@ -76,14 +114,17 @@ constexpr auto MaxManifoldPoints = std::uint8_t{2};
 /// @note For memory efficiency, uses the smallest integral type that can hold the value.
 constexpr auto MaxShapeVertices = std::uint8_t{254};
 
-/// Default linear slop.
-/// @details
-/// Length used as a collision and constraint tolerance.
-/// Usually chosen to be numerically significant, but visually insignificant.
-/// Lower or raise to decrease or increase respectively the minimum of space
-/// between bodies at rest.
-/// @note Smaller values relative to sizes of bodies increases the time it takes for bodies to come to rest.
-constexpr auto DefaultLinearSlop = Length{Meter / Real{1000}}; // originally 0.005
+/// @brief Default linear slop.
+/// @details Length used as a collision and constraint tolerance.
+///   Usually chosen to be numerically significant, but visually insignificant.
+///   Lower or raise to decrease or increase respectively the minimum of space
+///   between bodies at rest.
+/// @note Smaller values relative to sizes of bodies increases the time it takes
+///   for bodies to come to rest.
+constexpr auto DefaultLinearSlop = details::Defaults<Real>::GetLinearSlop();
+
+constexpr auto DefaultMinVertexRadius = DefaultLinearSlop * Real{2};
+constexpr auto DefaultMaxVertexRadius = details::Defaults<Real>::GetMaxVertexRadius();
 
 /// @brief Default AABB extension amount.
 constexpr auto DefaultAabbExtension = DefaultLinearSlop * Real{20};

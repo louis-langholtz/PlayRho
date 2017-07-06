@@ -244,7 +244,7 @@ TEST(Fixed32, LessThan)
     EXPECT_TRUE(Fixed32(40) < Fixed32(44));
     EXPECT_FALSE(Fixed32(76) < Fixed32(31));
     EXPECT_TRUE(Fixed32(0.001) < Fixed32(0.002));
-    EXPECT_TRUE(Fixed32(0.000) < Fixed32(0.001));
+    EXPECT_TRUE(Fixed32(0.000) < Fixed32(0.01));
 }
 
 TEST(Fixed32, GreaterThan)
@@ -354,7 +354,15 @@ TEST(Fixed32, Max)
     EXPECT_EQ(Fixed32::GetMax(), max_fixed32);
     //EXPECT_EQ(static_cast<long double>(Fixed32::GetMax()), 131071.99993896484375000000L);
     //std::cout << std::setprecision(22) << static_cast<long double>(Fixed32::GetMax()) << std::endl;
-    EXPECT_EQ(static_cast<long double>(Fixed32::GetMax()), 131071.9998779296875L);
+    switch (Fixed32::FractionBits)
+    {
+        case  9:
+            EXPECT_NEAR(static_cast<long double>(Fixed32::GetMax()), 4.1943e+06, 4.0);
+            break;
+        case 14:
+            EXPECT_EQ(static_cast<long double>(Fixed32::GetMax()), 131071.9998779296875L);
+            break;
+    }
 
     EXPECT_GT(Fixed32::GetMax(), Fixed32(0));
     EXPECT_GT(Fixed32::GetMax(), Fixed32::GetMin());
@@ -366,7 +374,15 @@ TEST(Fixed32, Min)
 {
     EXPECT_EQ(Fixed32::GetMin(), Fixed32::GetMin());
     EXPECT_EQ(Fixed32::GetMin(), Fixed32(0, 1));
-    EXPECT_EQ(static_cast<long double>(Fixed32::GetMin()), 0.00006103515625000000L);
+    switch (Fixed32::FractionBits)
+    {
+        case  9:
+            EXPECT_NEAR(static_cast<long double>(Fixed32::GetMin()), 0.00195312, 0.0000001);
+            break;
+        case 14:
+            EXPECT_EQ(static_cast<long double>(Fixed32::GetMin()), 0.00006103515625000000L);
+            break;
+    }
 
     EXPECT_LT(Fixed32::GetMin(), Fixed32::GetMax());
     
@@ -383,8 +399,15 @@ TEST(Fixed32, Lowest)
     EXPECT_EQ(Fixed32::GetLowest(), lowest_fixed32);
     //EXPECT_EQ(static_cast<long double>(Fixed32::GetLowest()), -131072.00000000000000000000L);
     //std::cout << std::setprecision(22) << static_cast<long double>(Fixed32::GetLowest()) << std::endl;
-    EXPECT_EQ(static_cast<long double>(Fixed32::GetLowest()), -131071.9998779296875L);
-
+    switch (Fixed32::FractionBits)
+    {
+        case  9:
+            EXPECT_NEAR(static_cast<long double>(Fixed32::GetLowest()), -4.1943e+06, 4.0);
+            break;
+        case 14:
+            EXPECT_EQ(static_cast<long double>(Fixed32::GetLowest()), -131071.9998779296875L);
+            break;
+    }
     EXPECT_LT(Fixed32::GetLowest(), Fixed32(0));
     EXPECT_LT(Fixed32::GetLowest(), Fixed32(-((1 << (31u - Fixed32::FractionBits)) - 1), 0u));
     EXPECT_LT(Fixed32::GetLowest(), Fixed32(-((1 << (31u - Fixed32::FractionBits)) - 1), (1u << Fixed32::FractionBits) - 1u));

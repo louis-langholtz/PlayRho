@@ -582,7 +582,8 @@ namespace box2d
         return lhs;
     }    
     
-    using Fixed32 = Fixed<std::int32_t,14>;
+    /// @brief 32-bit fixed precision type.
+    using Fixed32 = Fixed<std::int32_t,9>;
 
     // Fixed32 free functions.
     
