@@ -36,7 +36,7 @@ namespace box2d {
         /// Vertex count type.
         ///
         /// @note This type must not support more than 255 vertices as that would conflict
-        ///   with the <code>ContactFeature::index_t</code> type.
+        ///   with the <code>ContactFeature::Index</code> type.
         ///
         using vertex_count_t = std::uint8_t;
         

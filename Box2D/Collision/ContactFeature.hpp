@@ -30,7 +30,7 @@ namespace box2d
     /// @note This data structure is 4-bytes large.
     struct ContactFeature
     {
-        using index_t = std::uint8_t; ///< Index type.
+        using Index = std::uint8_t; ///< Index type.
         
         enum Type: std::uint8_t
         {
@@ -41,27 +41,27 @@ namespace box2d
         // Fit data into 4-byte large structure...
         
         Type typeA; ///< The feature type on shape A
-        index_t indexA; ///< Feature index on shape A
+        Index indexA; ///< Feature index on shape A
         Type typeB; ///< The feature type on shape B
-        index_t indexB; ///< Feature index on shape B
+        Index indexB; ///< Feature index on shape B
     };
     
-    constexpr ContactFeature GetVertexVertexContactFeature(ContactFeature::index_t a, ContactFeature::index_t b) noexcept
+    constexpr ContactFeature GetVertexVertexContactFeature(ContactFeature::Index a, ContactFeature::Index b) noexcept
     {
         return ContactFeature{ContactFeature::e_vertex, a, ContactFeature::e_vertex, b};
     }
 
-    constexpr ContactFeature GetVertexFaceContactFeature(ContactFeature::index_t a, ContactFeature::index_t b) noexcept
+    constexpr ContactFeature GetVertexFaceContactFeature(ContactFeature::Index a, ContactFeature::Index b) noexcept
     {
         return ContactFeature{ContactFeature::e_vertex, a, ContactFeature::e_face, b};
     }
     
-    constexpr ContactFeature GetFaceVertexContactFeature(ContactFeature::index_t a, ContactFeature::index_t b) noexcept
+    constexpr ContactFeature GetFaceVertexContactFeature(ContactFeature::Index a, ContactFeature::Index b) noexcept
     {
         return ContactFeature{ContactFeature::e_face, a, ContactFeature::e_vertex, b};
     }
     
-    constexpr ContactFeature GetFaceFaceContactFeature(ContactFeature::index_t a, ContactFeature::index_t b) noexcept
+    constexpr ContactFeature GetFaceFaceContactFeature(ContactFeature::Index a, ContactFeature::Index b) noexcept
     {
         return ContactFeature{ContactFeature::e_face, a, ContactFeature::e_face, b};
     }

@@ -905,7 +905,7 @@ bool box2d::operator!=(const Manifold& lhs, const Manifold& rhs)
     return !(lhs == rhs);
 }
 
-Length2D box2d::GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type type, ContactFeature::index_t index)
+Length2D box2d::GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type type, ContactFeature::Index index)
 {
     switch (type)
     {

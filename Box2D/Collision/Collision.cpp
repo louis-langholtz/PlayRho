@@ -64,7 +64,7 @@ PointStates GetPointStates(const Manifold& manifold1, const Manifold& manifold2)
 }
 
 ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, Length offset,
-                           ContactFeature::index_t indexA)
+                           ContactFeature::Index indexA)
 {
     ClipList vOut;
 

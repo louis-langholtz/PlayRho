@@ -518,7 +518,7 @@ namespace box2d
     Manifold GetManifold(const DistanceProxy& proxyA, const Transformation& transformA,
                          const DistanceProxy& proxyB, const Transformation& transformB);
 
-    Length2D GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type type, ContactFeature::index_t index);
+    Length2D GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type type, ContactFeature::Index index);
 
     const char* GetName(Manifold::Type) noexcept;
     

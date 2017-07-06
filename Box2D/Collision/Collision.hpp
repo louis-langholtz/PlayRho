@@ -78,7 +78,7 @@ using ClipList = ArrayList<ClipVertex, MaxManifoldPoints>;
 /// @param indexA Index of vertex A.
 /// @return List of zero one or two clip points.
 ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, Length offset,
-                           ContactFeature::index_t indexA);
+                           ContactFeature::Index indexA);
 
 // ---------------- Inline Functions ------------------------------------------
 

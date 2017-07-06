@@ -30,8 +30,8 @@ TEST(ContactFeature, Init)
 {
     const auto typeA = ContactFeature::e_vertex;
     const auto typeB = ContactFeature::e_face;
-    const auto indexA = ContactFeature::index_t{1};
-    const auto indexB = ContactFeature::index_t{2};
+    const auto indexA = ContactFeature::Index{1};
+    const auto indexB = ContactFeature::Index{2};
     ContactFeature foo{typeA, indexA, typeB, indexB};
     
     EXPECT_EQ(foo.typeA, typeA);
@@ -44,8 +44,8 @@ TEST(ContactFeature, Flip)
 {
     const auto typeA = ContactFeature::e_vertex;
     const auto typeB = ContactFeature::e_face;
-    const auto indexA = ContactFeature::index_t{1};
-    const auto indexB = ContactFeature::index_t{2};
+    const auto indexA = ContactFeature::Index{1};
+    const auto indexB = ContactFeature::Index{2};
     const auto foo = ContactFeature{typeA, indexA, typeB, indexB};
     const auto bar = Flip(foo);
     EXPECT_EQ(bar.typeA, typeB);
@@ -58,8 +58,8 @@ TEST(ContactFeature, Equals)
 {
     const auto typeA = ContactFeature::e_vertex;
     const auto typeB = ContactFeature::e_face;
-    const auto indexA = ContactFeature::index_t{1};
-    const auto indexB = ContactFeature::index_t{2};
+    const auto indexA = ContactFeature::Index{1};
+    const auto indexB = ContactFeature::Index{2};
     const auto foo = ContactFeature{typeA, indexA, typeB, indexB};
     EXPECT_EQ(foo, foo);
 }
