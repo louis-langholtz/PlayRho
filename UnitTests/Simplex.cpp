@@ -304,10 +304,10 @@ TEST(Simplex, Get2_rot45_half)
     
     const auto va1 = Rotate(va0, UnitVec2{Angle{Real{45.0f} * Degree}}) / Real{2}; // Vec2{-13.081475, 10.253049}
     const auto vb1 = Rotate(vb0, UnitVec2{Angle{Real{45.0f} * Degree}}) / Real{2}; // Vec2{316.4303, 320.67291}
-    EXPECT_NEAR(double(Real{va1.x / Meter}), -13.081475, 0.00001);
-    EXPECT_NEAR(double(Real{va1.y / Meter}),  10.253049, 0.00001);
-    EXPECT_NEAR(double(Real{vb1.x / Meter}), 316.4303,   0.0001);
-    EXPECT_NEAR(double(Real{vb1.y / Meter}), 320.67291,  0.0001);
+    EXPECT_NEAR(double(Real{va1.x / Meter}), -13.081475, 0.001);
+    EXPECT_NEAR(double(Real{va1.y / Meter}),  10.253049, 0.001);
+    EXPECT_NEAR(double(Real{vb1.x / Meter}), 316.4303,   0.001);
+    EXPECT_NEAR(double(Real{vb1.y / Meter}), 320.67291,  0.001);
     const auto ia1 = SimplexEdge::index_type{4};
     const auto ib1 = SimplexEdge::index_type{1};
     const auto sv1 = SimplexEdge{va1, ia1, vb1, ib1};
@@ -324,10 +324,10 @@ TEST(Simplex, Get2_rot45_half)
     EXPECT_NEAR(double(Real{e12.y / Meter}),  337.41986, 0.001);
 
     const auto d12_2 = Area{-Dot(w1, e12)}; // -Dot(Vec2{905, -27}, Vec2{-575.48822, 337.41986}) = 529927.19
-    EXPECT_NEAR(double(Real{d12_2 / SquareMeter}), 529927.19, 0.1);
+    EXPECT_NEAR(double(Real{d12_2 / SquareMeter}), 529927.19, 1.0);
 
     const auto d12_1 = Area{Dot(w2, e12)}; // Dot(Vec2{329.51178, 310.41986}, Vec2{-575.48822, 337.41986}) = -84888.312
-    EXPECT_NEAR(double(Real{d12_1 / SquareMeter}), -84888.312, 0.1);
+    EXPECT_NEAR(double(Real{d12_1 / SquareMeter}), -84888.312, 1.0);
 
     const auto simplex = Simplex::Get(sv0, sv1);
     

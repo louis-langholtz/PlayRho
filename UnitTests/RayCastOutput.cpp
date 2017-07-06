@@ -91,7 +91,8 @@ TEST(RayCastOutput, RayCastFreeFunctionHits)
     auto input = RayCastInput{p1, p2, maxFraction};
     const auto output = RayCast(radius, location, input);
     EXPECT_TRUE(output.hit);
-    EXPECT_EQ(output.normal, UnitVec2::GetRight());
+    EXPECT_NEAR(static_cast<double>(output.normal.GetX()), static_cast<double>(UnitVec2::GetRight().GetX()), 0.001);
+    EXPECT_NEAR(static_cast<double>(output.normal.GetY()), static_cast<double>(UnitVec2::GetRight().GetY()), 0.001);
     EXPECT_NEAR(static_cast<double>(output.fraction), 0.49, 0.01);
 }
 
