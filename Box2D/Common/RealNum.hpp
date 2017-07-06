@@ -56,6 +56,20 @@ namespace box2d
     ///
     using Real = float;
 
+    /// @brief Pi.
+    ///
+    /// @details While the include file definition of M_PI may be a POSIX compliance requirement
+    ///   and initially attractive to use, it's apparently not a C++ standards requirement
+    ///   and casually including it pollutes the namespace of all code that uses this library.
+    ///   Whatever the case, MSVS2017 doesn't make it part of the cmath include without enabling
+    ///   _USE_MATH_DEFINES. So rather than add yet more C-preprocessor macros to all
+    ///   sources that this library may be compiled with, it's simply hard-coded in here
+    ///   instead using a C++ mechanism that also keeps it with the enclosing namespace.
+    ///
+    /// @note Any narrowing is intentional.
+    ///
+    constexpr auto Pi = Real(3.14159265358979323846264338327950288);
+
 }
 
 #endif /* RealNum_hpp */
