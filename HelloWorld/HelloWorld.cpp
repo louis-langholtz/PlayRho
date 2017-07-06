@@ -71,6 +71,8 @@ int main(int, char**)
     stepConf.regVelocityIterations = 6;
     stepConf.regPositionIterations = 2;
 
+    std::printf("%4.2s %4.2s %4.2s\n", "x", "y", "a");
+
     // This is our little game loop.
     for (auto i = 0; i < 60; ++i)
     {
