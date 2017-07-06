@@ -282,10 +282,11 @@ namespace box2d
         m_simplexEdges{simplexEdges}, m_normalizedWeights{normalizedWeights}
     {
         assert(simplexEdges.size() == normalizedWeights.size());
-        assert(almost_equal(1, [&]() {
-            return std::accumulate(std::begin(normalizedWeights), std::end(normalizedWeights),
-                                   Real(0));
-        }()));
+#ifndef NDEBUG
+        const auto sum = std::accumulate(std::begin(normalizedWeights), std::end(normalizedWeights),
+                                         Real(0));
+        assert(almost_equal(1, sum));
+#endif
     }
 
     BOX2D_CONSTEXPR inline Simplex::Edges Simplex::GetEdges() const noexcept
