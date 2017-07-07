@@ -2,17 +2,19 @@
  * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
@@ -30,15 +32,14 @@
 
 namespace box2d
 {
-    /// Fixed.
+    /// @brief Fixed point template class.
     ///
     /// @details This is a fixed point type template for a given base type using a given number
-    /// of fraction bits.
+    ///   of fraction bits.
     ///
-    /// This is a 32-bit sized fixed point type with a 18.14 format.
-    /// With a 14-bit fraction part:
-    ///   * 0.000061035156250 is the smallest double precision value that can be represented;
-    ///   *
+    /// @note For a 32-bit sized fixed point type with a 14-bit fraction part
+    ///   0.000061035156250 is the smallest double precision value that can be represented.
+    ///
     template <typename BASE_TYPE, unsigned int FRACTION_BITS>
     class Fixed
     {
@@ -107,7 +108,7 @@ namespace box2d
             static_assert(std::is_signed<T>::value, "must be signed");
             return (val > (GetMax().m_value / ScaleFactor))? GetInfinity().m_value:
                 (val < (GetLowest().m_value / ScaleFactor))? GetNegativeInfinity().m_value:
-                val * ScaleFactor;
+                static_cast<value_type>(val * ScaleFactor);
         }
         
         template <typename T>
@@ -583,6 +584,11 @@ namespace box2d
     }    
     
     /// @brief 32-bit fixed precision type.
+    ///
+    /// @note The available numeric fidelity of any 32-bit fixed point type is very limited.
+    ///   Using a 32-bit fixed point type for Real should only be considered for simulations
+    ///   where it's been found to work and where the dynamics won't be changing between runs.
+    ///
     using Fixed32 = Fixed<std::int32_t,9>;
 
     // Fixed32 free functions.

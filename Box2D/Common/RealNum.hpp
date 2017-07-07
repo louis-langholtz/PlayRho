@@ -39,20 +39,23 @@ namespace box2d
     /// real-numbers. Ideally the implementation of this type doesn't suffer from things like:
     /// catastrophic cancellation, catastrophic division, overflows, nor underflows.
     ///
-    /// @note This can be implemented using float, double, long double, Fixed32, or Fixed64.
+    /// @note This can be implemented using float, double, long double, Fixed64, or Fixed32
+    ///   (though the use of Fixed32 is discouraged).
     ///
     /// @note Regarding division:
     ///
-    /// While dividing 1 by a Real, caching the result, and then doing multiplications with the
-    /// result may well be faster (than repeatedly dividing), dividing 1 by Real can also result
-    /// in an underflow situation that's then compounded every time it's multiplied with other
-    /// values.
+    ///   While dividing 1 by a Real, caching the result, and then doing multiplications with the
+    ///   result may well be faster (than repeatedly dividing), dividing 1 by Real can also result
+    ///   in an underflow situation that's then compounded every time it's multiplied with other
+    ///   values.
     ///
-    /// Meanwhile, dividing every value by Real isolates any underflows to the particular
-    /// division where underflow occurs.
+    ///   Meanwhile, dividing every value by Real isolates any underflows to the particular
+    ///   division where underflow occurs.
     ///
+    /// @warning Using Fixed32 is not advised as it's numerical limitations are more likely to
+    ///   result in problems like overflows or underflows.
     /// @warning The note regarding division applies even more so when using a fixed-point type
-    /// (for Real).
+    ///   (for Real).
     ///
     using Real = float;
 
