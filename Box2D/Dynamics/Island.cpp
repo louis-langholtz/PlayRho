@@ -123,7 +123,7 @@ stored in a single array since multiple arrays lead to multiple misses.
 
 using namespace box2d;
 
-using std::count_if;
+using std::count;
 using std::cbegin;
 using std::cend;
 
@@ -138,18 +138,18 @@ Island::Island(Bodies::size_type bodyCapacity,
 
 std::size_t box2d::Count(const Island& island, const Body* entry)
 {
-    return static_cast<std::size_t>(count_if(cbegin(island.m_bodies), cend(island.m_bodies),
-                                             [&](const Body *b) { return b == entry; }));
+    return static_cast<std::size_t>(count(cbegin(island.m_bodies), cend(island.m_bodies),
+                                          entry));
 }
 
 std::size_t box2d::Count(const Island& island, const Contact* entry)
 {
-    return static_cast<std::size_t>(count_if(cbegin(island.m_contacts), cend(island.m_contacts),
-                                             [&](const Contact *c) { return c == entry; }));
+    return static_cast<std::size_t>(count(cbegin(island.m_contacts), cend(island.m_contacts),
+                                          entry));
 }
 
 std::size_t box2d::Count(const Island& island, const Joint* entry)
 {
-    return static_cast<std::size_t>(count_if(cbegin(island.m_joints), cend(island.m_joints),
-                                             [&](const Joint *j) { return j == entry; }));
+    return static_cast<std::size_t>(count(cbegin(island.m_joints), cend(island.m_joints),
+                                          entry));
 }

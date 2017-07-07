@@ -18,6 +18,7 @@
 
 #include "gtest/gtest.h"
 #include <Box2D/Collision/DistanceProxy.hpp>
+#include <Box2D/Collision/ShapeSeparation.hpp>
 #include <initializer_list>
 #include <vector>
 
@@ -173,4 +174,38 @@ TEST(DistanceProxy, TestPoint)
     EXPECT_FALSE(TestPoint(dp, Length2D(Real(10) * Meter, Real(10) * Meter)));
     EXPECT_FALSE(TestPoint(dp, Length2D{-Real(10) * Meter, Real(10) * Meter}));
     EXPECT_FALSE(TestPoint(dp, Length2D{Real(10) * Meter, -Real(10) * Meter}));
+}
+
+TEST(DistanceProxy, GetMaxSeparationFromWorld)
+{
+    const auto pos1 = Length2D{Real(3) * Meter, Real(1) * Meter};
+    const auto pos2 = Length2D{Real(3) * Meter, Real(3) * Meter};
+    const auto pos3 = Length2D{Real(1) * Meter, Real(3) * Meter};
+    const auto pos4 = Length2D{Real(1) * Meter, Real(1) * Meter};
+    const Length2D squareVerts[] = {pos1, pos2, pos3, pos4};
+    const auto n1 = GetUnitVector(GetFwdPerpendicular(pos2 - pos1));
+    const auto n2 = GetUnitVector(GetFwdPerpendicular(pos3 - pos2));
+    const auto n3 = GetUnitVector(GetFwdPerpendicular(pos4 - pos3));
+    const auto n4 = GetUnitVector(GetFwdPerpendicular(pos1 - pos4));
+    const UnitVec2 squareNormals[] = {n1, n2, n3, n4};
+    const auto radius = Real(0.5) * Meter;
+    const auto squareDp = DistanceProxy{radius, 4, squareVerts, squareNormals};
+    
+    const auto pos5 = Length2D{Real(-2) * Meter, Real(2) * Meter};
+    const Length2D circleVerts[] = {pos5};
+    const auto n5 = UnitVec2::GetZero();
+    const UnitVec2 circleNormals[] = {n5};
+    const auto circleDp = DistanceProxy{radius, 1, circleVerts, circleNormals};
+    
+    const auto result1 = GetMaxSeparation(squareDp, circleDp);
+    
+    EXPECT_NEAR(static_cast<double>(Real(result1.separation / Meter)), 3.0, 0.0001);
+    EXPECT_EQ(result1.index1, static_cast<decltype(result1.index1)>(2));
+    EXPECT_EQ(result1.index2, static_cast<decltype(result1.index2)>(0));
+    
+    const auto result2 = GetMaxSeparation(squareDp, circleDp, Real(0) * Meter);
+    
+    EXPECT_NEAR(static_cast<double>(Real(result2.separation / Meter)), 3.0, 0.0001);
+    EXPECT_EQ(result2.index1, static_cast<decltype(result2.index1)>(2));
+    EXPECT_EQ(result2.index2, static_cast<decltype(result2.index2)>(0));
 }
