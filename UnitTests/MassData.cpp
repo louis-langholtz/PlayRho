@@ -55,7 +55,7 @@ TEST(MassData, GetForOriginCenteredCircle)
     const auto foo = DiskShape{conf};
     const auto mass_data = foo.GetMassData();
     EXPECT_EQ(Real{Mass{mass_data.mass} / Kilogram}, Pi);
-    EXPECT_NEAR(double(StripUnit(mass_data.I)), 1.5707964, 0.0001);
+    EXPECT_NEAR(double(StripUnit(mass_data.I)), 1.5707964, 0.0005);
     const auto squareVertexRadius = Square(Length{conf.vertexRadius});
     const auto expectedI = RotInertia{
         // L^2 M QP^-2
@@ -77,7 +77,7 @@ TEST(MassData, GetForCircle)
     const auto foo = DiskShape{conf};
     const auto mass_data = foo.GetMassData();
     EXPECT_EQ(Real{Mass{mass_data.mass} / Kilogram}, Pi);
-    EXPECT_NEAR(double(StripUnit(mass_data.I)), 7.85398, 0.0002);
+    EXPECT_NEAR(double(StripUnit(mass_data.I)), 7.85398, 0.003);
     EXPECT_EQ(mass_data.center, position);
 }
 
@@ -96,7 +96,7 @@ TEST(MassData, GetForZeroVertexRadiusRectangle)
                              Real((density / KilogramPerSquareMeter) * (8 * 2))));
     EXPECT_NEAR(double(StripUnit(mass_data.I)),
                 90.666664 * double(StripUnit(density)),
-                0.0004);
+                0.008);
     EXPECT_TRUE(almost_equal(mass_data.center.x / Meter, shape.GetCentroid().x / Meter));
     EXPECT_TRUE(almost_equal(mass_data.center.y / Meter, shape.GetCentroid().y / Meter));
     
@@ -104,12 +104,12 @@ TEST(MassData, GetForZeroVertexRadiusRectangle)
     const auto i = 8.0 * 2.0 * 2.0 * 2.0 / 12.0 + 8.0 * 8.0 * 8.0 * 2.0 / 12.0;
     EXPECT_NEAR(double(StripUnit(mass_data.I)),
                 double(StripUnit(density) * Real(i)),
-                0.0004);
+                0.004);
     
     const auto i_z = GetPolarMoment(shape.GetVertices());
     EXPECT_NEAR(double(Real{RotInertia{mass_data.I} / (SquareMeter * Kilogram / SquareRadian)}),
                 double(Real{density * i_z / (SquareMeter * Kilogram)}),
-                0.0004);
+                0.004);
     
     EXPECT_TRUE(almost_equal(Real(GetAreaOfPolygon(shape.GetVertices()) / SquareMeter), Real(16)));
 }
@@ -152,7 +152,7 @@ TEST(MassData, GetForSamePointedEdgeIsSameAsCircle)
     if (IsValid(mass_data.I))
     {
         EXPECT_NEAR(double(Real{RotInertia{mass_data.I} / (SquareMeter * Kilogram / SquareRadian)}),
-                    7.85398, 0.0004);
+                    7.85398, 0.003);
     }
     EXPECT_TRUE(almost_equal(StripUnit(mass_data.center.x), StripUnit(v1.x)));
     EXPECT_TRUE(almost_equal(StripUnit(mass_data.center.y), StripUnit(v1.y)));
@@ -205,10 +205,10 @@ TEST(MassData, GetForCenteredEdge)
         EXPECT_EQ(double(Real{RotInertia{mass_data.I} / (SquareMeter * Kilogram / SquareRadian)}),
                   double(Real{I / (SquareMeter * Kilogram / SquareRadian)}));
         EXPECT_NEAR(double(Real{RotInertia{mass_data.I} / (SquareMeter * Kilogram / SquareRadian)}),
-                    18.70351, 0.002);
+                    18.70351, 0.009);
         EXPECT_GE(mass_data.I, (polarMoment * density) / SquareRadian);
     }
-    EXPECT_NEAR(double(Real(polarMoment / (SquareMeter * SquareMeter))), 5.6666665, 0.0001);
+    EXPECT_NEAR(double(Real(polarMoment / (SquareMeter * SquareMeter))), 5.6666665, 0.0007);
     EXPECT_EQ(mass_data.center.x, Length(0));
     EXPECT_EQ(mass_data.center.y, Length(0));
 }
