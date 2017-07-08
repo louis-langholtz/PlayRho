@@ -74,6 +74,29 @@ TEST(Body, ByteSize)
     }
 }
 
+TEST(Body, Traits)
+{
+    EXPECT_FALSE(std::is_default_constructible<Body>::value);
+    EXPECT_FALSE(std::is_nothrow_default_constructible<Body>::value);
+    EXPECT_FALSE(std::is_trivially_default_constructible<Body>::value);
+    
+    EXPECT_FALSE(std::is_constructible<Body>::value);
+    EXPECT_FALSE(std::is_nothrow_constructible<Body>::value);
+    EXPECT_FALSE(std::is_trivially_constructible<Body>::value);
+    
+    EXPECT_TRUE(std::is_copy_constructible<Body>::value);
+    EXPECT_FALSE(std::is_nothrow_copy_constructible<Body>::value);
+    EXPECT_FALSE(std::is_trivially_copy_constructible<Body>::value);
+    
+    EXPECT_FALSE(std::is_copy_assignable<Body>::value);
+    EXPECT_FALSE(std::is_nothrow_copy_assignable<Body>::value);
+    EXPECT_FALSE(std::is_trivially_copy_assignable<Body>::value);
+    
+    EXPECT_TRUE(std::is_destructible<Body>::value);
+    EXPECT_TRUE(std::is_nothrow_destructible<Body>::value);
+    EXPECT_FALSE(std::is_trivially_destructible<Body>::value);
+}
+
 TEST(Body, GetFlagsStatic)
 {
     EXPECT_TRUE(Body::GetFlags(BodyDef{}.UseFixedRotation(true)) & Body::e_fixedRotationFlag);
