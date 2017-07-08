@@ -96,13 +96,9 @@ bool box2d::TestPoint(const Fixture& f, const Length2D p) noexcept
     return TestPoint(*f.GetShape(), InverseTransform(p, GetTransformation(f)));
 }
 
-void box2d::SetAwake(Fixture& f) noexcept
+void box2d::SetAwake(const Fixture& f) noexcept
 {
-    const auto b = f.GetBody();
-    if (b)
-    {
-        b->SetAwake();
-    }
+    f.GetBody()->SetAwake();
 }
 
 Transformation box2d::GetTransformation(const Fixture& f) noexcept

@@ -92,15 +92,9 @@ public:
     }
 
     /// @brief Gets the parent body of this fixture.
-    /// @details This is nullptr if the fixture is not attached.
     /// @return the parent body.
-    Body* GetBody() noexcept;
+    Body* GetBody() const noexcept;
     
-    /// @brief Gets the parent body of this fixture.
-    /// @details This is nullptr if the fixture is not attached.
-    /// @return the parent body.
-    const Body* GetBody() const noexcept;
-
     /// @brief Gets the child shape.
     /// @details The shape is not modifiable. Use a new fixture instead.
     std::shared_ptr<const Shape> GetShape() const noexcept;
@@ -210,12 +204,7 @@ inline void Fixture::SetUserData(void* data) noexcept
     m_userData = data;
 }
 
-inline Body* Fixture::GetBody() noexcept
-{
-    return m_body;
-}
-
-inline const Body* Fixture::GetBody() const noexcept
+inline Body* Fixture::GetBody() const noexcept
 {
     return m_body;
 }
@@ -254,7 +243,7 @@ bool TestPoint(const Fixture& f, const Length2D p) noexcept;
 /// @note This is a convenience function that simply looks up the fixture's body and
 ///   calls that body' SetAwake method.
 /// @param f Fixture whose body should be awoken.
-void SetAwake(Fixture& f) noexcept;
+void SetAwake(const Fixture& f) noexcept;
 
 /// @brief Gets the transformation associated with the given fixture.
 /// @warning Behavior is undefined if the fixture doesn't have an associated body - i.e.
