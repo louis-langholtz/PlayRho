@@ -19,6 +19,12 @@
 #include "gtest/gtest.h"
 #include <Box2D/Collision/WorldManifold.hpp>
 #include <Box2D/Collision/Manifold.hpp>
+#include <Box2D/Collision/Shapes/DiskShape.hpp>
+#include <Box2D/Dynamics/Contacts/Contact.hpp>
+#include <Box2D/Dynamics/Fixture.hpp>
+#include <Box2D/Dynamics/Body.hpp>
+#include <Box2D/Dynamics/BodyDef.hpp>
+#include <Box2D/Dynamics/FixtureDef.hpp>
 
 using namespace box2d;
 
@@ -105,4 +111,19 @@ TEST(WorldManifold, GetWorldManifoldForCirclesFullyOverlappingManifold)
     {
         EXPECT_FALSE(IsValid(wm.GetPoint(0)));
     }
+}
+
+TEST(WorldManifold, GetForContact)
+{
+    const auto shape = std::make_shared<DiskShape>();
+    auto bA = Body{BodyDef{}};
+    auto bB = Body{BodyDef{}};
+    auto fA = Fixture{&bA, FixtureDef{}, shape};
+    auto fB = Fixture{&bB, FixtureDef{}, shape};
+    const auto c = Contact{&fA, 0, &fB, 0};
+    
+    const auto wm = GetWorldManifold(c);
+    
+    EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){0});
+    EXPECT_FALSE(IsValid(wm.GetNormal()));
 }
