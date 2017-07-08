@@ -280,6 +280,7 @@
 		47C85D1C1F0D9D8D00F70C56 /* Units.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47C85D181F0D9D8D00F70C56 /* Units.hpp */; };
 		47C85D211F0DA14500F70C56 /* Templates.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47C85D1E1F0DA14500F70C56 /* Templates.hpp */; };
 		47C85D221F0DA14500F70C56 /* Templates.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47C85D1E1F0DA14500F70C56 /* Templates.hpp */; };
+		47C85D241F112E2700F70C56 /* GrowableStack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47C85D231F112E2700F70C56 /* GrowableStack.cpp */; };
 		47CB34401D6F3A8500828126 /* MassData.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47CB343D1D6F3A8500828126 /* MassData.hpp */; };
 		47CB34411D6F3A8500828126 /* MassData.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47CB343D1D6F3A8500828126 /* MassData.hpp */; };
 		47CF984B1DF9C4A30077F5F2 /* ShapeSeparation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47CF98491DF9C4A30077F5F2 /* ShapeSeparation.cpp */; };
@@ -582,6 +583,7 @@
 		47C85D111EFB0CD600F70C56 /* RopeJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RopeJoint.cpp; sourceTree = "<group>"; };
 		47C85D181F0D9D8D00F70C56 /* Units.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Units.hpp; sourceTree = "<group>"; };
 		47C85D1E1F0DA14500F70C56 /* Templates.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Templates.hpp; sourceTree = "<group>"; };
+		47C85D231F112E2700F70C56 /* GrowableStack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GrowableStack.cpp; sourceTree = "<group>"; };
 		47CB343D1D6F3A8500828126 /* MassData.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MassData.hpp; sourceTree = "<group>"; };
 		47CF98491DF9C4A30077F5F2 /* ShapeSeparation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShapeSeparation.cpp; sourceTree = "<group>"; };
 		47CF984A1DF9C4A30077F5F2 /* ShapeSeparation.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ShapeSeparation.hpp; sourceTree = "<group>"; };
@@ -805,6 +807,7 @@
 				474B67211E80466D00B6D126 /* functional.cpp */,
 				47928F361E66539000EE6E9E /* FrictionJoint.cpp */,
 				47C85D0F1EFAE37B00F70C56 /* GearJoint.cpp */,
+				47C85D231F112E2700F70C56 /* GrowableStack.cpp */,
 				474BC3FB1D41278800447DCD /* IndexPair.cpp */,
 				4731DDFB1DC8FBEE00E7F931 /* Island.cpp */,
 				475A945C1D959537000CA9A8 /* Joint.cpp */,
@@ -1565,6 +1568,7 @@
 				472E301E1DBA98BC00DA821D /* VertexSet.cpp in Sources */,
 				4731DE1E1DDD0B8700E7F931 /* DynamicTree.cpp in Sources */,
 				474BC43B1D413DC200447DCD /* Transformation.cpp in Sources */,
+				47C85D241F112E2700F70C56 /* GrowableStack.cpp in Sources */,
 				474BC43C1D413DC200447DCD /* Vec2.cpp in Sources */,
 				47C85D101EFAE37B00F70C56 /* GearJoint.cpp in Sources */,
 				47327E751E9F1E2A0048FCD8 /* MouseJoint.cpp in Sources */,
