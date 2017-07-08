@@ -165,6 +165,15 @@ TEST(World, Init)
     EXPECT_FALSE(world.IsLocked());
 }
 
+TEST(World, InvalidArgumentInit)
+{
+    const auto min = Positive<Length>(Real(4) * Meter);
+    const auto max = Positive<Length>(Real(8) * Meter);
+    ASSERT_GT(max, min);
+    const auto def = WorldDef{}.UseMinVertexRadius(max).UseMaxVertexRadius(min);
+    EXPECT_THROW(World{def}, InvalidArgument);
+}
+
 TEST(World, CopyConstruction)
 {
     auto world = World{};
