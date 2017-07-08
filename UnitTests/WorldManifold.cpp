@@ -41,6 +41,19 @@ TEST(WorldManifold, default_construction)
     EXPECT_FALSE(IsValid(wm.GetNormal()));
 }
 
+TEST(WorldManifold, GetWorldManifoldForUnsetManifold)
+{
+    const auto manifold = Manifold{};
+    const auto xfA = Transformation{Length2D{Real(4-1) * Meter, 0}, UnitVec2{Angle{0}}};
+    const auto xfB = Transformation{Length2D{Real(4+1) * Meter, 0}, UnitVec2{Angle{0}}};
+    const auto rA = Real(1) * Meter;
+    const auto rB = Real(1) * Meter;
+    const auto wm = GetWorldManifold(manifold, xfA, rA, xfB, rB);
+    
+    EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){0});
+    EXPECT_FALSE(IsValid(wm.GetNormal()));
+}
+
 TEST(WorldManifold, GetWorldManifoldForCirclesTouchingManifold)
 {
     const auto manifold = Manifold::GetForCircles(Length2D(0, 0), 0, Length2D(0, 0), 0);
