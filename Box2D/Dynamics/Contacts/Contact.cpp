@@ -211,7 +211,7 @@ bool box2d::IsImpenetrable(const Contact& contact) noexcept
     return bA->IsImpenetrable() || bB->IsImpenetrable();
 }
 
-void box2d::SetAwake(Contact& c) noexcept
+void box2d::SetAwake(const Contact& c) noexcept
 {
     SetAwake(*c.GetFixtureA());
     SetAwake(*c.GetFixtureB());

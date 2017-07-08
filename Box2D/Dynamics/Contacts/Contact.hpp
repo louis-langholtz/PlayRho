@@ -470,7 +470,7 @@ bool HasSensor(const Contact& contact) noexcept;
 
 bool IsImpenetrable(const Contact& contact) noexcept;
 
-void SetAwake(Contact& c) noexcept;
+void SetAwake(const Contact& c) noexcept;
 
 /// Resets the friction mixture to the default value.
 void ResetFriction(Contact& contact);
