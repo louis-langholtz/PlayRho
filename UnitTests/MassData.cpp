@@ -35,6 +35,14 @@ TEST(MassData, ByteSizeIs_16_32_or_64)
     }
 }
 
+TEST(MassData, DefaultConstruct)
+{
+    MassData foo;
+    EXPECT_EQ(foo.center, Length2D(0, 0));
+    EXPECT_EQ(foo.mass, Mass(0));
+    EXPECT_EQ(foo.I, RotInertia(0));
+}
+
 TEST(MassData, GetForZeroVertexRadiusCircle)
 {
     auto shape = DiskShape(0);
