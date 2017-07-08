@@ -157,8 +157,8 @@ namespace box2d
     ///   manifold intersection.
     ///
     WorldManifold GetWorldManifold(const Manifold& manifold,
-                                   const Transformation& xfA, const Length radiusA,
-                                   const Transformation& xfB, const Length radiusB);
+                                   const Transformation xfA, const Length radiusA,
+                                   const Transformation xfB, const Length radiusB);
     
     /// Gets the world manifold for the given data.
     ///
