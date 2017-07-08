@@ -94,7 +94,7 @@ public:
     ///
     Contact(Fixture* fixtureA, ChildCounter indexA, Fixture* fixtureB, ChildCounter indexB);
     
-    Contact() = default;
+    Contact() = delete;
     
     Contact(const Contact& copy) = default;
     
