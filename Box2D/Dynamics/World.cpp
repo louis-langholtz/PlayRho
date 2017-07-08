@@ -2050,7 +2050,7 @@ StepStats World::Step(const StepConf& conf)
     return stepStats;
 }
 
-void World::QueryAABB(const AABB& aabb, QueryFixtureCallback callback)
+void World::QueryAABB(AABB aabb, QueryFixtureCallback callback)
 {
     m_tree.Query(aabb, [&](DynamicTree::size_type proxyId) {
         const auto proxy = static_cast<FixtureProxy*>(m_tree.GetUserData(proxyId));
@@ -2058,7 +2058,7 @@ void World::QueryAABB(const AABB& aabb, QueryFixtureCallback callback)
     });
 }
 
-void World::RayCast(const Length2D& point1, const Length2D& point2, RayCastCallback callback)
+void World::RayCast(Length2D point1, Length2D point2, RayCastCallback callback)
 {
     m_tree.RayCast(RayCastInput{point1, point2, Real{1}},
                    [&](const RayCastInput& input, DynamicTree::size_type proxyId)

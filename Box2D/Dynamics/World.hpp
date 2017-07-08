@@ -44,7 +44,6 @@
 
 namespace box2d {
 
-class AABB;
 struct BodyDef;
 struct JointDef;
 struct FixtureDef;
@@ -181,13 +180,12 @@ public:
 
     /// @brief Query AABB for fixtures callback function type.
     /// @note Returning true will continue the query. Returning false will terminate the query.
-    using QueryFixtureCallback = std::function<bool(Fixture* fixture,
-                                                    const ChildCounter child)>;
+    using QueryFixtureCallback = std::function<bool(Fixture* fixture, ChildCounter child)>;
 
     /// @brief Queries the world for all fixtures that potentially overlap the provided AABB.
     /// @param aabb the query box.
     /// @param callback User implemented callback function.
-    void QueryAABB(const AABB& aabb, QueryFixtureCallback callback);
+    void QueryAABB(AABB aabb, QueryFixtureCallback callback);
 
     /// @brief Ray-cast operation code.
     ///
@@ -197,9 +195,9 @@ public:
 
     /// @brief Ray cast callback function signature.
     using RayCastCallback = std::function<RayCastOpcode(Fixture* fixture,
-                                                        const ChildCounter child,
-                                                        const Length2D& point,
-                                                        const UnitVec2& normal)>;
+                                                        ChildCounter child,
+                                                        Length2D point,
+                                                        UnitVec2 normal)>;
 
     /// @brief Ray-cast the world for all fixtures in the path of the ray.
     ///
@@ -210,7 +208,7 @@ public:
     /// @param point2 Ray ending point.
     /// @param callback A user implemented callback function.
     ///
-    void RayCast(const Length2D& point1, const Length2D& point2, RayCastCallback callback);
+    void RayCast(Length2D point1, Length2D point2, RayCastCallback callback);
 
     /// @brief Gets the world body range for this world.
     /// @return Body range that can be iterated over using its begin and end methods

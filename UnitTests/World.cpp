@@ -163,6 +163,25 @@ TEST(World, Init)
     World world{WorldDef{}.UseGravity(gravity)};
     EXPECT_EQ(world.GetGravity(), gravity);
     EXPECT_FALSE(world.IsLocked());
+    
+    {
+        auto calls = 0;
+        world.QueryAABB(AABB{}, [&](Fixture*, ChildCounter) {
+            ++calls;
+            return true;
+        });
+        EXPECT_EQ(calls, 0);
+    }
+    {
+        const auto p1 = Length2D{Real(0) * Meter, Real(0) * Meter};
+        const auto p2 = Length2D{Real(100) * Meter, Real(0) * Meter};
+        auto calls = 0;
+        world.RayCast(p1, p2, [&](Fixture*, ChildCounter, Length2D, UnitVec2) {
+            ++calls;
+            return World::RayCastOpcode::ResetRay;
+        });
+        EXPECT_EQ(calls, 0);
+    }
 }
 
 TEST(World, InvalidArgumentInit)
@@ -330,6 +349,113 @@ TEST(World, CreateAndDestroyBody)
     EXPECT_TRUE(bodies0.empty());
     EXPECT_EQ(bodies0.size(), BodyCounter(0));
     EXPECT_EQ(bodies0.begin(), bodies0.end());
+}
+
+TEST(World, QueryAABB)
+{
+    const auto zeroG = LinearAcceleration2D{
+        Real(0) * MeterPerSquareSecond, Real(0) * MeterPerSquareSecond
+    };
+    World world{WorldDef{}.UseGravity(zeroG)};
+    ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
+    
+    const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+    ASSERT_NE(body, nullptr);
+    ASSERT_EQ(body->GetType(), BodyType::Dynamic);
+    ASSERT_TRUE(body->IsSpeedable());
+    ASSERT_TRUE(body->IsAccelerable());
+    ASSERT_FALSE(body->IsImpenetrable());
+    ASSERT_EQ(body->GetLocation().GetX(), Real(0) * Meter);
+    ASSERT_EQ(body->GetLocation().GetY(), Real(0) * Meter);
+    ASSERT_EQ(body->GetLinearAcceleration().x, world.GetGravity().x);
+    ASSERT_EQ(body->GetLinearAcceleration().y, world.GetGravity().y);
+    
+    const auto v1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
+    const auto v2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
+    auto conf = EdgeShape::Conf{};
+    conf.vertexRadius = Real{1} * Meter;
+    conf.density = Real{1} * KilogramPerSquareMeter;
+    const auto shape = std::make_shared<EdgeShape>(v1, v2, conf);
+    ASSERT_EQ(shape->GetChildCount(), ChildCounter(1));
+    const auto fixture = body->CreateFixture(shape);
+    ASSERT_NE(fixture, nullptr);
+    
+    auto stepConf = StepConf{};
+    stepConf.SetTime(Time(0));
+    world.Step(stepConf);
+
+    {
+        auto foundOurs = 0;
+        auto foundOthers = 0;
+        world.QueryAABB(AABB{v1, v2}, [&](Fixture* f, ChildCounter i) {
+            if (f == fixture && i == 0)
+            {
+                ++foundOurs;
+            }
+            else
+            {
+                ++foundOthers;
+            }
+            return true;
+        });
+        EXPECT_EQ(foundOurs, 1);
+        EXPECT_EQ(foundOthers, 0);
+    }
+}
+
+TEST(World, RayCast)
+{
+    const auto zeroG = LinearAcceleration2D{
+        Real(0) * MeterPerSquareSecond, Real(0) * MeterPerSquareSecond
+    };
+    World world{WorldDef{}.UseGravity(zeroG)};
+    ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
+    
+    const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+    ASSERT_NE(body, nullptr);
+    ASSERT_EQ(body->GetType(), BodyType::Dynamic);
+    ASSERT_TRUE(body->IsSpeedable());
+    ASSERT_TRUE(body->IsAccelerable());
+    ASSERT_FALSE(body->IsImpenetrable());
+    ASSERT_EQ(body->GetLocation().GetX(), Real(0) * Meter);
+    ASSERT_EQ(body->GetLocation().GetY(), Real(0) * Meter);
+    ASSERT_EQ(body->GetLinearAcceleration().x, world.GetGravity().x);
+    ASSERT_EQ(body->GetLinearAcceleration().y, world.GetGravity().y);
+    
+    const auto v1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
+    const auto v2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
+    auto conf = EdgeShape::Conf{};
+    conf.vertexRadius = Real{1} * Meter;
+    conf.density = Real{1} * KilogramPerSquareMeter;
+    const auto shape = std::make_shared<EdgeShape>(v1, v2, conf);
+    ASSERT_EQ(shape->GetChildCount(), ChildCounter(1));
+    const auto fixture = body->CreateFixture(shape);
+    ASSERT_NE(fixture, nullptr);
+    
+    auto stepConf = StepConf{};
+    stepConf.SetTime(Time(0));
+    world.Step(stepConf);
+    
+    {
+        const auto p1 = Length2D{Real(-2) * Meter, Real(0) * Meter};
+        const auto p2 = Length2D{Real(+2) * Meter, Real(0) * Meter};
+
+        auto foundOurs = 0;
+        auto foundOthers = 0;
+        world.RayCast(p1, p2, [&](Fixture* f, ChildCounter i, Length2D, UnitVec2) {
+            if (f == fixture && i == 0)
+            {
+                ++foundOurs;
+            }
+            else
+            {
+                ++foundOthers;
+            }
+            return World::RayCastOpcode::ResetRay;
+        });
+        EXPECT_EQ(foundOurs, 1);
+        EXPECT_EQ(foundOthers, 0);
+    }
 }
 
 TEST(World, ClearForcesFreeFunction)
