@@ -53,7 +53,7 @@ class Fixture
 public:
     Fixture() = delete; // explicitly deleted
     
-    /// Initializing constructor.
+    /// @brief Initializing constructor.
     ///
     /// @warning Behavior is undefined if a <code>nullptr</code> initial body setting is used.
     /// @warning Behavior is undefined if a <code>nullptr</code> initial shape setting is used.
@@ -82,7 +82,7 @@ public:
         assert(shape);
     }
     
-    /// Destructor.
+    /// @brief Destructor.
     /// @pre Proxy count is zero.
     /// @warning Behavior is undefined if proxy count is greater than zero.
     ~Fixture()
@@ -91,37 +91,37 @@ public:
         assert(m_proxyCount == 0);
     }
 
-    /// Gets the parent body of this fixture.
+    /// @brief Gets the parent body of this fixture.
     /// @details This is nullptr if the fixture is not attached.
     /// @return the parent body.
     Body* GetBody() noexcept;
     
-    /// Gets the parent body of this fixture.
+    /// @brief Gets the parent body of this fixture.
     /// @details This is nullptr if the fixture is not attached.
     /// @return the parent body.
     const Body* GetBody() const noexcept;
 
-    /// Gets the child shape.
+    /// @brief Gets the child shape.
     /// @details The shape is not modifiable. Use a new fixture instead.
     std::shared_ptr<const Shape> GetShape() const noexcept;
     
-    /// Set if this fixture is a sensor.
+    /// @brief Set if this fixture is a sensor.
     void SetSensor(bool sensor) noexcept;
 
-    /// Is this fixture a sensor (non-solid)?
+    /// @brief Is this fixture a sensor (non-solid)?
     /// @return the true if the shape is a sensor.
     bool IsSensor() const noexcept;
 
-    /// Sets the contact filtering data.
+    /// @brief Sets the contact filtering data.
     /// @note This won't update contacts until the next time step when either parent body
     ///    is speedable and awake.
     /// @note This automatically calls Refilter.
     void SetFilterData(const Filter filter);
 
-    /// Gets the contact filtering data.
+    /// @brief Gets the contact filtering data.
     Filter GetFilterData() const noexcept;
 
-    /// Refilter the fixture.
+    /// @brief Refilter the fixture.
     /// @note Call this if you want to establish collision that was previously disabled by
     ///   ContactFilter::ShouldCollide.
     void Refilter();
@@ -130,10 +130,11 @@ public:
     /// store your application specific data.
     void* GetUserData() const noexcept;
 
-    /// Set the user data. Use this to store your application specific data.
+    /// @brief Sets the user data.
+    /// @note Use this to store your application specific data.
     void SetUserData(void* data) noexcept;
 
-    /// Gets the density of this fixture.
+    /// @brief Gets the density of this fixture.
     /// @return Non-negative density (in mass per area).
     Density GetDensity() const noexcept;
 
@@ -141,11 +142,11 @@ public:
     /// @return Value of 0 or higher.
     Real GetFriction() const noexcept;
 
-    /// Gets the coefficient of restitution.
+    /// @brief Gets the coefficient of restitution.
     Real GetRestitution() const noexcept;
 
-    /// Sets the coefficient of restitution. This will _not_ change the restitution of
-    /// existing contacts.
+    /// @brief Sets the coefficient of restitution.
+    /// @note This will _not_ change the restitution of existing contacts.
     void SetRestitution(Real restitution) noexcept;
 
     ChildCounter GetProxyCount() const noexcept;
@@ -244,18 +245,18 @@ inline void Fixture::SetProxies(Span<FixtureProxy> value) noexcept
 
 // Free functions...
 
-/// Test a point for containment in a fixture.
+/// @brief Tests a point for containment in a fixture.
 /// @param f Fixture to use for test.
 /// @param p Point in world coordinates.
 bool TestPoint(const Fixture& f, const Length2D p) noexcept;
 
-/// Sets the associated body's sleep status to awake.
+/// @brief Sets the associated body's sleep status to awake.
 /// @note This is a convenience function that simply looks up the fixture's body and
 ///   calls that body' SetAwake method.
 /// @param f Fixture whose body should be awoken.
 void SetAwake(Fixture& f) noexcept;
 
-/// Gets the transformation associated with the given fixture.
+/// @brief Gets the transformation associated with the given fixture.
 /// @warning Behavior is undefined if the fixture doesn't have an associated body - i.e.
 ///   behavior is undefined if the fixture has <code>nullptr</code> as its associated body.
 Transformation GetTransformation(const Fixture& f) noexcept;
