@@ -35,7 +35,7 @@ namespace box2d {
         AboveZero,
         ZeroOrMore,
         AboveNegInf,
-        NotZero
+        NonZero
     };
 
     enum class HiValueCheck
@@ -113,7 +113,7 @@ namespace box2d {
                 case LoValueCheck::AboveNegInf:
                     CheckIfAboveNegInf<T>(value);
                     return;
-                case LoValueCheck::NotZero:
+                case LoValueCheck::NonZero:
                     if (value == static_cast<value_type>(0))
                     {
                         throw exception_type{"value may not be 0"};
@@ -337,12 +337,12 @@ namespace box2d {
     using Finite = BoundedValue<T, LoValueCheck::AboveNegInf, HiValueCheck::BelowPosInf>;
     
     template <typename T>
-    using NotZero = typename std::enable_if<!std::is_pointer<T>::value,
-        BoundedValue<T, LoValueCheck::NotZero, HiValueCheck::Any>>::type;
+    using NonZero = typename std::enable_if<!std::is_pointer<T>::value,
+        BoundedValue<T, LoValueCheck::NonZero, HiValueCheck::Any>>::type;
 
     template <typename T>
-    using NotNull = typename std::enable_if<std::is_pointer<T>::value,
-        BoundedValue<T, LoValueCheck::NotZero, HiValueCheck::Any>>::type;
+    using NonNull = typename std::enable_if<std::is_pointer<T>::value,
+        BoundedValue<T, LoValueCheck::NonZero, HiValueCheck::Any>>::type;
     
     template <typename T>
     using UnitInterval = BoundedValue<T, LoValueCheck::ZeroOrMore, HiValueCheck::OneOrLess>;

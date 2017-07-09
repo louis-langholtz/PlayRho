@@ -136,19 +136,19 @@ namespace box2d
 class Body;
 }
 
-TEST(BoundedValue, NotZero)
+TEST(BoundedValue, NonZero)
 {
-    EXPECT_THROW(NotZero<int>(0), NotZero<int>::exception_type);
-    EXPECT_NO_THROW(NotZero<int>(1));
+    EXPECT_THROW(NonZero<int>(0), NonZero<int>::exception_type);
+    EXPECT_NO_THROW(NonZero<int>(1));
 }
 
-TEST(BoundedValue, NotNull)
+TEST(BoundedValue, NonNull)
 {
-    EXPECT_THROW(NotNull<Body*>(nullptr), NotNull<Body*>::exception_type);
-    EXPECT_NO_THROW(NotNull<Body*>(reinterpret_cast<Body*>(1)));
+    EXPECT_THROW(NonNull<Body*>(nullptr), NonNull<Body*>::exception_type);
+    EXPECT_NO_THROW(NonNull<Body*>(reinterpret_cast<Body*>(1)));
     
     const int a = 5;
-    const auto foo = NotNull<const int*>(&a);
+    const auto foo = NonNull<const int*>(&a);
     EXPECT_EQ(*foo, a);
     
     struct B {
@@ -157,7 +157,7 @@ TEST(BoundedValue, NotNull)
         const char *field3 = "foo";
     };
     auto b = B{};
-    auto boo = NotNull<B*>(&b);
+    auto boo = NonNull<B*>(&b);
     EXPECT_EQ(boo->field2, 1.6);
     EXPECT_EQ((*boo).field2, 1.6);
     EXPECT_EQ(boo->field1, 6);
