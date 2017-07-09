@@ -25,6 +25,7 @@
 
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Common/Span.hpp>
+#include <Box2D/Common/BoundedValue.hpp>
 #include <Box2D/Dynamics/Filter.hpp>
 #include <Box2D/Dynamics/FixtureDef.hpp>
 #include <limits>
@@ -36,12 +37,11 @@ class Body;
 struct FixtureProxy;
 class Shape;
 
-/// @brief Fixture.
+/// @brief An association between a body and a shape.
 ///
-/// @details
-/// A fixture is used to attach a shape to a body for collision detection. A fixture
+/// @details A fixture is used to attach a shape to a body for collision detection. A fixture
 /// inherits its transform from its parent. Fixtures hold additional non-geometric data
-/// such as friction, collision filters, etc.
+/// such as collision filters, etc.
 ///
 /// @warning you cannot reuse fixtures.
 /// @note Fixtures are created via Body::CreateFixture.
@@ -55,12 +55,7 @@ public:
     
     /// @brief Initializing constructor.
     ///
-    /// @warning Behavior is undefined if a <code>nullptr</code> initial body setting is used.
-    /// @warning Behavior is undefined if a <code>nullptr</code> initial shape setting is used.
-    /// @warning Behavior is undefined if a negative initial density setting is used.
-    /// @warning Behavior is undefined if a negative initial friction setting is used.
-    /// @warning Behavior is undefined if the restitution value is not less than infinity.
-    /// @warning Behavior is undefined if the restitution value is not greater than -infinity.
+    /// @warning Behavior is undefined if shape is <code>nullptr</code>.
     ///
     /// @note This is not meant to be called by normal user code. Use the Body::CreateFixture
     ///    method instead.
@@ -71,14 +66,13 @@ public:
     ///    Density must be greater-than-or-equal-to zero.
     /// @param shape Sharable shape to associate fixture with. Must be non-null.
     ///
-    Fixture(Body* body, const FixtureDef& def, std::shared_ptr<const Shape> shape):
+    Fixture(NonNull<Body*> body, const FixtureDef& def, std::shared_ptr<const Shape> shape):
         m_body{body},
         m_shape{shape},
         m_filter{def.filter},
         m_isSensor{def.isSensor},
         m_userData{def.userData}
     {
-        assert(body);
         assert(shape);
     }
     
@@ -92,8 +86,8 @@ public:
     }
 
     /// @brief Gets the parent body of this fixture.
-    /// @return the parent body.
-    Body* GetBody() const noexcept;
+    /// @return Non-null pointer to the parent body.
+    NonNull<Body*> GetBody() const noexcept;
     
     /// @brief Gets the child shape.
     /// @details The shape is not modifiable. Use a new fixture instead.
@@ -158,7 +152,7 @@ private:
 
     // Data ordered here for memory compaction.
     
-    Body* const m_body = nullptr; ///< Parent body. Set on construction. 8-bytes.
+    NonNull<Body*> const m_body; ///< Parent body. Set on construction. 8-bytes.
 
     /// Shape (of fixture).
     /// @note Set on construction.
@@ -204,7 +198,7 @@ inline void Fixture::SetUserData(void* data) noexcept
     m_userData = data;
 }
 
-inline Body* Fixture::GetBody() const noexcept
+inline NonNull<Body*> Fixture::GetBody() const noexcept
 {
     return m_body;
 }
