@@ -116,7 +116,7 @@ class RaiiWrapper
 {
 public:
     RaiiWrapper() = delete;
-    RaiiWrapper(function<void(T&)> on_destruction): m_on_destruction(on_destruction) {}
+    explicit RaiiWrapper(function<void(T&)> on_destruction): m_on_destruction(on_destruction) {}
     ~RaiiWrapper() { m_on_destruction(m_wrapped); }
     T m_wrapped;
 
@@ -514,17 +514,17 @@ namespace {
         return state == TOIOutput::e_touching;
     }
     
-    void FlagContactsForFiltering(Body* bodyA, Body* bodyB)
+    void FlagContactsForFiltering(const Body& bodyA, const Body& bodyB)
     {
-        for (auto& ci: bodyB->GetContacts())
+        for (auto& ci: bodyB.GetContacts())
         {
             const auto contact = GetContactPtr(ci);
             const auto fA = contact->GetFixtureA();
             const auto fB = contact->GetFixtureB();
             const auto bA = fA->GetBody();
             const auto bB = fB->GetBody();
-            const auto other = (bA != bodyB)? bA: bB;
-            if (other == bodyA)
+            const auto other = (bA != &bodyB)? bA: bB;
+            if (other == &bodyA)
             {
                 // Flag the contact for filtering at the next time step (where either
                 // body is awake).
@@ -945,10 +945,10 @@ bool World::Remove(const Body& b)
     return false;
 }
 
-void World::Destroy(Body* b)
+void World::Destroy(Body* body)
 {
-    assert(b);
-    assert(b->GetWorld() == this);
+    assert(body);
+    assert(body->GetWorld() == this);
     
     if (IsLocked())
     {
@@ -956,7 +956,7 @@ void World::Destroy(Body* b)
     }
     
     // Delete the attached joints.
-    BodyAtty::ClearJoints(*b, [&](Joint& joint) {
+    BodyAtty::ClearJoints(*body, [&](Joint& joint) {
         if (m_destructionListener)
         {
             m_destructionListener->SayGoodbye(joint);
@@ -965,13 +965,13 @@ void World::Destroy(Body* b)
     });
     
     // Destroy the attached contacts.
-    BodyAtty::EraseContacts(*b, [&](Contact& contact) {
-        Destroy(&contact, b);
+    BodyAtty::EraseContacts(*body, [&](Contact& contact) {
+        Destroy(&contact, body);
         return true;
     });
     
     // Delete the attached fixtures. This destroys broad-phase proxies.
-    BodyAtty::ClearFixtures(*b, [&](Fixture& fixture) {
+    BodyAtty::ClearFixtures(*body, [&](Fixture& fixture) {
         if (m_destructionListener)
         {
             m_destructionListener->SayGoodbye(fixture);
@@ -979,7 +979,7 @@ void World::Destroy(Body* b)
         DestroyProxies(fixture);
     });
     
-    Remove(*b);
+    Remove(*body);
 }
 
 Joint* World::CreateJoint(const JointDef& def)
@@ -1004,9 +1004,9 @@ Joint* World::CreateJoint(const JointDef& def)
         Add(j, bodyA, bodyB);
         
         // If the joint prevents collisions, then flag any contacts for filtering.
-        if (!def.collideConnected)
+        if ((!def.collideConnected) && bodyA && bodyB)
         {
-            FlagContactsForFiltering(bodyA, bodyB);
+            FlagContactsForFiltering(*bodyA, *bodyB);
         }
     }
     return j;
@@ -1032,9 +1032,9 @@ bool World::Remove(Joint& j)
     return false;
 }
 
-void World::Destroy(Joint* j)
+void World::Destroy(Joint* joint)
 {
-    if (!j)
+    if (!joint)
     {
         return;
     }
@@ -1042,40 +1042,40 @@ void World::Destroy(Joint* j)
     {
         throw LockedError();
     }
-    InternalDestroy(j);
+    InternalDestroy(joint);
 }
     
-void World::InternalDestroy(Joint* j)
+void World::InternalDestroy(Joint* joint)
 {
-    if (!Remove(*j))
+    if (!Remove(*joint))
     {
         return;
     }
     
     // Disconnect from island graph.
-    const auto bodyA = j->GetBodyA();
-    const auto bodyB = j->GetBodyB();
+    const auto bodyA = joint->GetBodyA();
+    const auto bodyB = joint->GetBodyB();
 
     // Wake up connected bodies.
     if (bodyA)
     {
         bodyA->SetAwake();
-        BodyAtty::Erase(*bodyA, j);
+        BodyAtty::Erase(*bodyA, joint);
     }
     if (bodyB)
     {
         bodyB->SetAwake();
-        BodyAtty::Erase(*bodyB, j);
+        BodyAtty::Erase(*bodyB, joint);
     }
 
-    const auto collideConnected = j->GetCollideConnected();
+    const auto collideConnected = joint->GetCollideConnected();
 
-    JointAtty::Destroy(j);
+    JointAtty::Destroy(joint);
 
     // If the joint prevented collisions, then flag any contacts for filtering.
-    if (!collideConnected)
+    if ((!collideConnected) && bodyA && bodyB)
     {
-        FlagContactsForFiltering(bodyA, bodyB);
+        FlagContactsForFiltering(*bodyA, *bodyB);
     }
 }
 
@@ -2155,29 +2155,29 @@ void World::ShiftOrigin(const Length2D newOrigin)
     m_tree.ShiftOrigin(newOrigin);
 }
 
-void World::InternalDestroy(Contact* c, Body* from)
+void World::InternalDestroy(Contact* contact, Body* from)
 {
-    if (m_contactListener && c->IsTouching())
+    if (m_contactListener && contact->IsTouching())
     {
         // EndContact hadn't been called in DestroyOrUpdateContacts() since is-touching, so call it now
-        m_contactListener->EndContact(*c);
+        m_contactListener->EndContact(*contact);
     }
     
-    const auto fixtureA = c->GetFixtureA();
-    const auto fixtureB = c->GetFixtureB();
+    const auto fixtureA = contact->GetFixtureA();
+    const auto fixtureB = contact->GetFixtureB();
     const auto bodyA = fixtureA->GetBody();
     const auto bodyB = fixtureB->GetBody();
     
     if (bodyA != from)
     {
-        BodyAtty::Erase(*bodyA, c);
+        BodyAtty::Erase(*bodyA, contact);
     }
     if (bodyB != from)
     {
-        BodyAtty::Erase(*bodyB, c);
+        BodyAtty::Erase(*bodyB, contact);
     }
     
-    if ((c->GetManifold().GetPointCount() > 0) &&
+    if ((contact->GetManifold().GetPointCount() > 0) &&
         !fixtureA->IsSensor() && !fixtureB->IsSensor())
     {
         // Contact may have been keeping accelerable bodies of fixture A or B from moving.
@@ -2186,7 +2186,7 @@ void World::InternalDestroy(Contact* c, Body* from)
         bodyB->SetAwake();
     }
     
-    delete c;
+    delete contact;
 }
 
 void World::Destroy(Contact* contact, Body* from)

@@ -92,7 +92,7 @@ public:
     /// @throws InvalidArgument if the given max vertex radius is less than the min.
     World(const WorldDef& def = GetDefaultWorldDef());
 
-    World(const World& copy);
+    World(const World& other);
 
     World& operator= (const World& other);
 
@@ -555,8 +555,8 @@ private:
     /// @brief Destroys the given contact and removes it from its list.
     /// @details This updates the contact list, returns the memory to the allocator,
     ///   and decrements the contact manager's contact count.
-    /// @param c Contact to destroy.
-    void Destroy(Contact* c, Body* from);
+    /// @param contact Contact to destroy.
+    void Destroy(Contact* contact, Body* from);
     
     /// @brief Adds a contact for proxyA and proxyB if appropriate.
     /// @details Adds a new contact object to represent a contact between proxy A and proxy B if
