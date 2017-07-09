@@ -29,15 +29,17 @@
 #include <Box2D/Common/Range.hpp>
 #include <Box2D/Dynamics/WorldDef.hpp>
 #include <Box2D/Dynamics/BodyDef.hpp>
+#include <Box2D/Dynamics/BodyAtty.hpp>
 #include <Box2D/Dynamics/FixtureDef.hpp>
 #include <Box2D/Dynamics/WorldCallbacks.hpp>
 #include <Box2D/Dynamics/StepStats.hpp>
 #include <Box2D/Collision/DynamicTree.hpp>
 #include <Box2D/Dynamics/Contacts/ContactKey.hpp>
+#include <Box2D/Dynamics/ContactAtty.hpp>
+#include <Box2D/Dynamics/JointAtty.hpp>
 
 #include <vector>
 #include <map>
-#include <list>
 #include <unordered_set>
 #include <memory>
 #include <stdexcept>
@@ -325,9 +327,6 @@ private:
     using FlagsType = std::uint32_t;
 
     using ProxyId = DynamicTree::size_type;
-    using BodySet = std::unordered_set<const Body*>;
-    using JointSet = std::unordered_set<const Joint*>;
-    using ContactSet = std::unordered_set<const Contact*>;
     using ContactKeyQueue = std::vector<ContactKey>;
     using ProxyQueue = std::vector<ProxyId>;
     using FixtureQueue = std::vector<Fixture*>;
@@ -395,8 +394,8 @@ private:
     IslandSolverResults SolveRegIslandViaGS(const StepConf& step, Island island);
     
     /// @brief Adds to the island based off of a given "seed" body.
-    /// @post Contacts are listed in the island in the order that bodies list those contacts.
-    /// @post Joints are listed the island in the order that bodies list those joints.
+    /// @post Contacts are listed in the island in the order that bodies provide those contacts.
+    /// @post Joints are listed the island in the order that bodies provide those joints.
     void AddToIsland(Island& island, Body& seed,
                        Bodies::size_type& remNumBodies,
                        Contacts::size_type& remNumContacts,
@@ -539,7 +538,7 @@ private:
     /// @note The new contacts will all have overlapping AABBs.
     ContactCounter FindNewContacts();
     
-    /// @brief Processes the narrow phase collision for the contact list.
+    /// @brief Processes the narrow phase collision for the contacts collection.
     /// @details
     /// This finds and destroys the contacts that need filtering and no longer should collide or
     /// that no longer have AABB-based overlapping fixtures. Those contacts that persist and
@@ -552,8 +551,8 @@ private:
     
     bool ShouldCollide(const Fixture* fixtureA, const Fixture* fixtureB);
 
-    /// @brief Destroys the given contact and removes it from its list.
-    /// @details This updates the contact list, returns the memory to the allocator,
+    /// @brief Destroys the given contact and removes it from its container.
+    /// @details This updates the contacts container, returns the memory to the allocator,
     ///   and decrements the contact manager's contact count.
     /// @param contact Contact to destroy.
     void Destroy(Contact* contact, Body* from);
@@ -602,28 +601,22 @@ private:
     
     PreStepStats::counter_type SynchronizeProxies(const StepConf& conf);
 
-    bool IsIslanded(const Body* body);
-    bool IsIslanded(const Contact* contact);
-    bool IsIslanded(const Joint* joint);
+    bool IsIslanded(const Body* body) const noexcept;
+    bool IsIslanded(const Contact* contact) const noexcept;
+    bool IsIslanded(const Joint* joint) const noexcept;
 
-    void SetIslanded(const Body* body);
-    void SetIslanded(const Contact* contact);
-    void SetIslanded(const Joint* joint);
+    void SetIslanded(Body* body) noexcept;
+    void SetIslanded(Contact* contact) noexcept;
+    void SetIslanded(Joint* joint) noexcept;
 
-    void UnsetIslanded(const Body* body);
-    void UnsetIslanded(const Contact* contact);
-    void UnsetIslanded(const Joint* joint);
+    void UnsetIslanded(Body* body) noexcept;
+    void UnsetIslanded(Contact* contact) noexcept;
+    void UnsetIslanded(Joint* joint) noexcept;
 
     /******** Member variables. ********/
     
     DynamicTree m_tree{4096};
     
-    //ContactKeySet m_contactKeySet{100000};
-    
-    BodySet m_bodiesIslanded;
-    ContactSet m_contactsIslanded;
-    JointSet m_jointsIslanded;
-
     ContactKeyQueue m_proxyKeys;
     ProxyQueue m_proxies;
     FixtureQueue m_fixturesForProxies;
@@ -632,9 +625,10 @@ private:
     ContactFilter m_defaultFilter; ///< Default contact filter. 8-bytes.
     
     Bodies m_bodies; ///< Body collection.
+
     Joints m_joints; ///< Joint collection.
 
-    /// Container of contacts.
+    /// @brief Container of contacts.
     /// @note In the "AddPair" stress-test, 401 bodies can have some 31000 contacts
     ///   during a given time step.
     Contacts m_contacts;
@@ -849,49 +843,49 @@ inline bool World::ShouldCollide(const Fixture *fixtureA, const Fixture *fixture
     return !m_contactFilter || m_contactFilter->ShouldCollide(fixtureA, fixtureB);
 }
 
-inline bool World::IsIslanded(const Body* key)
+inline bool World::IsIslanded(const Body* key) const noexcept
 {
-    return m_bodiesIslanded.count(key) != 0;
+    return BodyAtty::IsIslanded(*key);
 }
 
-inline bool World::IsIslanded(const Contact* key)
+inline bool World::IsIslanded(const Contact* key) const noexcept
 {
-    return m_contactsIslanded.count(key) != 0;
+    return ContactAtty::IsIslanded(*key);
 }
 
-inline bool World::IsIslanded(const Joint* key)
+inline bool World::IsIslanded(const Joint* key) const noexcept
 {
-    return m_jointsIslanded.count(key) != 0;
+    return JointAtty::IsIslanded(*key);
 }
 
-inline void World::SetIslanded(const Body* key)
+inline void World::SetIslanded(Body* key) noexcept
 {
-    m_bodiesIslanded.insert(key);
+    BodyAtty::SetIslanded(*key);
 }
 
-inline void World::SetIslanded(const Contact* key)
+inline void World::SetIslanded(Contact* key) noexcept
 {
-    m_contactsIslanded.insert(key);
+    ContactAtty::SetIslanded(*key);
 }
 
-inline void World::SetIslanded(const Joint* key)
+inline void World::SetIslanded(Joint* key) noexcept
 {
-    m_jointsIslanded.insert(key);
+    JointAtty::SetIslanded(*key);
 }
 
-inline void World::UnsetIslanded(const Body* key)
+inline void World::UnsetIslanded(Body* key) noexcept
 {
-    m_bodiesIslanded.erase(key);
+    BodyAtty::UnsetIslanded(*key);
 }
 
-inline void World::UnsetIslanded(const Contact* key)
+inline void World::UnsetIslanded(Contact* key) noexcept
 {
-    m_contactsIslanded.erase(key);
+    ContactAtty::UnsetIslanded(*key);
 }
 
-inline void World::UnsetIslanded(const Joint* key)
+inline void World::UnsetIslanded(Joint* key) noexcept
 {
-    m_jointsIslanded.erase(key);
+    JointAtty::UnsetIslanded(*key);
 }
 
 // Free functions.

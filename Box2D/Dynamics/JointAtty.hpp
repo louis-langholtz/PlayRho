@@ -65,6 +65,21 @@ namespace box2d
             return j.SolvePositionConstraints(bodies, conf);
         }
         
+        static bool IsIslanded(const Joint& j) noexcept
+        {
+            return j.IsIslanded();
+        }
+        
+        static void SetIslanded(Joint& j) noexcept
+        {
+            j.SetIslanded();
+        }
+        
+        static void UnsetIslanded(Joint& j) noexcept
+        {
+            j.UnsetIslanded();
+        }
+        
         friend class World;
     };
 

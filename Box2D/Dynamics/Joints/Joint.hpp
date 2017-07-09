@@ -153,6 +153,20 @@ protected:
 private:
     friend class JointAtty;
 
+    /// Flags type data type.
+    using FlagsType = std::uint8_t;
+    
+    /// @brief Flags stored in m_flags
+    enum Flag: FlagsType
+    {
+        // Used when crawling contact graph when forming islands.
+        e_islandFlag = 0x01,
+        
+        e_collideConnectedFlag = 0x02
+    };
+    
+    static FlagsType GetFlags(const JointDef& def) noexcept;
+
     static Joint* Create(const JointDef& def);
 
     /// Destroys the given joint.
@@ -162,7 +176,8 @@ private:
     /// Initializes velocity constraint data based on the given solver data.
     /// @note This MUST be called prior to calling <code>SolveVelocityConstraints</code>.
     /// @sa SolveVelocityConstraints.
-    virtual void InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step, const ConstraintSolverConf& conf) = 0;
+    virtual void InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
+                                         const ConstraintSolverConf& conf) = 0;
 
     /// Solves velocity constraints for the given solver data.
     /// @pre <code>InitVelocityConstraints</code> has been called.
@@ -173,11 +188,15 @@ private:
     // This returns true if the position errors are within tolerance.
     virtual bool SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const = 0;
     
+    bool IsIslanded() const noexcept;
+    void SetIslanded() noexcept;
+    void UnsetIslanded() noexcept;
+
     Body* const m_bodyA;
     Body* const m_bodyB;
     void* m_userData;
     const JointType m_type;
-    bool m_collideConnected = false;
+    FlagsType m_flags = 0; ///< Flags. 1-byte.
 };
 
 inline JointType Joint::GetType() const noexcept
@@ -207,7 +226,22 @@ inline void Joint::SetUserData(void* data) noexcept
 
 inline bool Joint::GetCollideConnected() const noexcept
 {
-    return m_collideConnected;
+    return m_flags & e_collideConnectedFlag;
+}
+
+inline bool Joint::IsIslanded() const noexcept
+{
+    return m_flags & e_islandFlag;
+}
+
+inline void Joint::SetIslanded() noexcept
+{
+    m_flags |= e_islandFlag;
+}
+
+inline void Joint::UnsetIslanded() noexcept
+{
+    m_flags &= ~e_islandFlag;
 }
 
 // Free functions...

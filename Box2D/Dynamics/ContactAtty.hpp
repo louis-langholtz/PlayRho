@@ -85,6 +85,21 @@ namespace box2d
             c.Update(conf, listener);
         }
         
+        static bool IsIslanded(const Contact& c) noexcept
+        {
+            return c.IsIslanded();
+        }
+        
+        static void SetIslanded(Contact& c) noexcept
+        {
+            c.SetIslanded();
+        }
+        
+        static void UnsetIslanded(Contact& c) noexcept
+        {
+            c.UnsetIslanded();
+        }
+        
         friend class World;
     };
 

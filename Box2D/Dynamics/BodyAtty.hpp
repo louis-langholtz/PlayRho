@@ -240,6 +240,21 @@ namespace box2d
             }
         }
         
+        static bool IsIslanded(const Body& b) noexcept
+        {
+            return b.IsIslanded();
+        }
+        
+        static void SetIslanded(Body& b) noexcept
+        {
+            b.SetIslandedFlag();
+        }
+        
+        static void UnsetIslanded(Body& b) noexcept
+        {
+            b.UnsetIslandedFlag();
+        }
+        
         friend class World;
     };
 

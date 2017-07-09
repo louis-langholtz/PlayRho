@@ -1182,7 +1182,7 @@ void World::AddToIsland(Island& island, Body& seed,
 World::Bodies::size_type World::RemoveUnspeedablesFromIslanded(const vector<Body*>& bodies)
 {
     auto numRemoved = Bodies::size_type{0};
-    for_each(cbegin(bodies), cend(bodies), [&](const Body* body) {
+    for_each(begin(bodies), end(bodies), [&](Body* body) {
         if (!body->IsSpeedable())
         {
             // Allow static bodies to participate in other islands.
@@ -1207,12 +1207,15 @@ RegStepStats World::SolveReg(const StepConf& conf)
     // This builds the logical set of bodies, contacts, and joints eligible for resolution.
     // As bodies, contacts, or joints get added to resolution islands, they're essentially
     // removed from this eligible set.
-    m_bodiesIslanded.clear();
-    m_bodiesIslanded.reserve(remNumBodies);
-    m_contactsIslanded.clear();
-    m_contactsIslanded.reserve(remNumContacts);
-    m_jointsIslanded.clear();
-    m_jointsIslanded.reserve(remNumJoints);
+    for_each(begin(m_bodies), end(m_bodies), [](Bodies::value_type& b) {
+        BodyAtty::UnsetIslanded(GetRef(b));
+    });
+    for_each(begin(m_contacts), end(m_contacts), [](Contacts::value_type& c) {
+        ContactAtty::UnsetIslanded(GetRef(c));
+    });
+    for_each(begin(m_joints), end(m_joints), [](Joints::value_type& j) {
+        JointAtty::UnsetIslanded(GetRef(j));
+    });
 
 #if defined(DO_THREADED)
     vector<future<World::IslandSolverResults>> futures;
@@ -1400,18 +1403,18 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
 
 void World::ResetBodiesForSolveTOI()
 {
-    m_bodiesIslanded.clear();
     for_each(begin(m_bodies), end(m_bodies), [&](Bodies::value_type& body) {
         auto& b = GetRef(body);
+        BodyAtty::UnsetIslanded(b);
         BodyAtty::ResetAlpha0(b);
     });
 }
 
 void World::ResetContactsForSolveTOI()
 {
-    m_contactsIslanded.clear();
     for_each(begin(m_contacts), end(m_contacts), [&](Contacts::value_type &c) {
         auto& contact = GetRef(c);
+        ContactAtty::UnsetIslanded(contact);
         ContactAtty::UnsetToi(contact);
         ContactAtty::ResetToiCount(contact);
     });

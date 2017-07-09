@@ -33,11 +33,7 @@
 #include <Box2D/Dynamics/Contacts/ContactKey.hpp>
 #include <Box2D/Dynamics/Joints/JointKey.hpp>
 
-#include <list>
 #include <vector>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
 #include <memory>
 #include <cassert>
 #include <utility>
@@ -91,6 +87,9 @@ public:
     /// @note For internal use. Made public to facilitate unit testing.
     enum Flag: FlagsType
     {
+        /// @brief Island flag.
+        e_islandFlag = 0x0001,
+
         /// @brief Awake flag.
         e_awakeFlag = 0x0002,
         
@@ -360,7 +359,8 @@ public:
     ///   If you pass a flag of false, all fixtures will be removed from the broad-phase
     ///   and all contacts will be destroyed. Fixtures and joints are otherwise unaffected.
     ///
-    /// @note A disabled body is still owned by a World object and remains in the body list.
+    /// @note A disabled body is still owned by a World object and remains in the world's
+    ///   body container.
     /// @note You may continue to create/destroy fixtures and joints on disabled bodies.
     /// @note Fixtures on a disabled body are implicitly disabled and will not participate in
     ///   collisions, ray-casts, or queries.
@@ -391,7 +391,7 @@ public:
     SizedRange<Joints::iterator> GetJoints() noexcept;
     
     /// @brief Gets the container of all contacts attached to this body.
-    /// @warning This list changes during the time step and you may
+    /// @warning This collection changes during the time step and you may
     ///   miss some collisions if you don't use ContactListener.
     SizedRange<Contacts::const_iterator> GetContacts() const noexcept;
 
@@ -411,6 +411,10 @@ private:
 
     friend class BodyAtty;
 
+    bool IsIslanded() const noexcept;
+    void SetIslandedFlag() noexcept;
+    void UnsetIslandedFlag() noexcept;
+    
     /// @brief Sets the body's awake flag.
     /// @details This is done unconditionally.
     /// @note This should **not** be called unless the body is "speedable".
@@ -785,6 +789,21 @@ inline void Body::SetEnabledFlag() noexcept
 inline void Body::UnsetEnabledFlag() noexcept
 {
     m_flags &= ~e_enabledFlag;
+}
+
+inline bool Body::IsIslanded() const noexcept
+{
+    return m_flags & e_islandFlag;
+}
+
+inline void Body::SetIslandedFlag() noexcept
+{
+    m_flags |= e_islandFlag;
+}
+
+inline void Body::UnsetIslandedFlag() noexcept
+{
+    m_flags &= ~e_islandFlag;
 }
 
 // Free functions...

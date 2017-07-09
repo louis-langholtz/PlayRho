@@ -190,23 +190,26 @@ private:
     /// Flags type data type.
     using FlagsType = std::uint8_t;
 
-    // Flags stored in m_flags
+    /// @brief Flags stored in m_flags
     enum: FlagsType
     {
+        // Used when crawling contact graph when forming islands.
+        e_islandFlag = 0x01,
+        
         // Set when the shapes are touching.
-        e_touchingFlag = 0x0001,
+        e_touchingFlag = 0x02,
 
         // This contact can be disabled (by user)
-        e_enabledFlag = 0x0002,
+        e_enabledFlag = 0x04,
 
         // This contact needs filtering because a fixture filter was changed.
-        e_filterFlag = 0x0004,
+        e_filterFlag = 0x08,
 
         // This contact has a valid TOI in m_toi
-        e_toiFlag = 0x0008,
+        e_toiFlag = 0x10,
         
         // This contacts needs its touching state updated.
-        e_dirtyFlag = 0x0010
+        e_dirtyFlag = 0x20
     };
     
     /// Flag this contact for filtering. Filtering will occur the next time step.
@@ -257,6 +260,10 @@ private:
     /// @warning Do not modify the manifold unless you understand the internals of Box2D.
     Manifold& GetMutableManifold() noexcept;
     
+    bool IsIslanded() const noexcept;
+    void SetIslanded() noexcept;
+    void UnsetIslanded() noexcept;
+
     // Member variables...
 
     Fixture* const m_fixtureA; ///< Fixture A. @details Non-null pointer to fixture A.
@@ -447,6 +454,21 @@ inline void Contact::SetToiCount(substep_type value) noexcept
 inline Contact::substep_type Contact::GetToiCount() const noexcept
 {
     return m_toiCount;
+}
+
+inline bool Contact::IsIslanded() const noexcept
+{
+    return m_flags & e_islandFlag;
+}
+
+inline void Contact::SetIslanded() noexcept
+{
+    m_flags |= e_islandFlag;
+}
+
+inline void Contact::UnsetIslanded() noexcept
+{
+    m_flags &= ~e_islandFlag;
 }
 
 // Free functions...
