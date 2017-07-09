@@ -131,6 +131,40 @@ TEST(BoundedValue, IntUnitInterval)
     EXPECT_THROW(UnitInterval<int>(-1), UnitInterval<int>::exception_type);
 }
 
+namespace box2d
+{
+class Body;
+}
+
+TEST(BoundedValue, NotZero)
+{
+    EXPECT_THROW(NotZero<int>(0), NotZero<int>::exception_type);
+    EXPECT_NO_THROW(NotZero<int>(1));
+    EXPECT_THROW(NotZero<Body*>(nullptr), NotZero<Body*>::exception_type);
+    EXPECT_NO_THROW(NotZero<Body*>(reinterpret_cast<Body*>(1)));
+    
+    const int a = 5;
+    const auto foo = NotZero<const int*>(&a);
+    EXPECT_EQ(*foo, a);
+    
+    struct B {
+        int field1 = 6;
+        double field2 = 1.6;
+        const char *field3 = "foo";
+    };
+    auto b = B{};
+    auto boo = NotZero<B*>(&b);
+    EXPECT_EQ(boo->field2, 1.6);
+    EXPECT_EQ((*boo).field2, 1.6);
+    EXPECT_EQ(boo->field1, 6);
+    boo->field1 = 5;
+    EXPECT_EQ(boo->field1, 5);
+    EXPECT_EQ((*boo).field1, 5);
+    EXPECT_EQ(b.field1, 5);
+    (*boo).field1 = 44;
+    EXPECT_EQ(b.field1, 44);
+}
+
 #if 0
 
 #include <Box2D/Common/Fixed.hpp>

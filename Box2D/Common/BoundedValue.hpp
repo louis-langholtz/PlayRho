@@ -34,7 +34,8 @@ namespace box2d {
         Any,
         AboveZero,
         ZeroOrMore,
-        AboveNegInf
+        AboveNegInf,
+        NotZero
     };
 
     enum class HiValueCheck
@@ -59,12 +60,32 @@ namespace box2d {
         static constexpr bool has_one = true;
         static constexpr T one() noexcept { return T(1); }
     };
+
+    template <typename T>
+    constexpr void CheckIfAboveNegInf(typename std::enable_if<!std::is_pointer<T>::value, T>::type value)
+    {
+        if (std::numeric_limits<T>::has_infinity &&
+            std::numeric_limits<T>::is_signed)
+        {
+            if (!(value > -std::numeric_limits<T>::infinity()))
+            {
+                throw InvalidArgument{"value not > -inf"};;
+            }
+        }
+    }
     
+    template <typename T>
+    constexpr void CheckIfAboveNegInf(typename std::enable_if<std::is_pointer<T>::value, T>::type )
+    {
+        // Intentionally empty.
+    }
+
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     class BoundedValue
     {
     public:
         using value_type = T;
+        using remove_pointer_type = typename std::remove_pointer<T>::type;
         using exception_type = InvalidArgument;
         using this_type = BoundedValue<value_type, lo, hi>;
 
@@ -90,12 +111,12 @@ namespace box2d {
                     }
                     return;
                 case LoValueCheck::AboveNegInf:
-                    if (std::numeric_limits<value_type>::has_infinity)
+                    CheckIfAboveNegInf<T>(value);
+                    return;
+                case LoValueCheck::NotZero:
+                    if (value == static_cast<value_type>(0))
                     {
-	                    if (!(value > -std::numeric_limits<value_type>::infinity()))
-                        {
-                            throw exception_type{"value not > -inf"};;
-                        }
+                        throw exception_type{"value may not be 0"};
                     }
                     return;
             }
@@ -164,6 +185,18 @@ namespace box2d {
         constexpr operator value_type () const
         {
             return m_value;
+        }
+
+        template <typename U = T>
+        typename std::enable_if<std::is_pointer<U>::value, U>::type operator-> () const
+        {
+            return m_value;
+        }
+
+        template <typename U = T>
+        typename std::enable_if<std::is_pointer<U>::value, remove_pointer_type>::type& operator* () const
+        {
+            return *m_value;
         }
 
     private:
@@ -284,6 +317,8 @@ namespace box2d {
         return T{lhs} > T{rhs};
     }
 
+    // Unary operations for BoundedValue<T, lo, hi>
+    
     // Common useful aliases...
 
     template <typename T>
@@ -300,6 +335,12 @@ namespace box2d {
 
     template <typename T>
     using Finite = BoundedValue<T, LoValueCheck::AboveNegInf, HiValueCheck::BelowPosInf>;
+    
+    template <typename T>
+    using NotZero = BoundedValue<T, LoValueCheck::NotZero, HiValueCheck::Any>;
+
+    template <typename T>
+    using NotNull = typename std::enable_if<std::is_pointer<T>::value, BoundedValue<T, LoValueCheck::NotZero, HiValueCheck::Any>>::type;
     
     template <typename T>
     using UnitInterval = BoundedValue<T, LoValueCheck::ZeroOrMore, HiValueCheck::OneOrLess>;
