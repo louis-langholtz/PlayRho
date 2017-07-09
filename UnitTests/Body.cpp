@@ -51,7 +51,7 @@ TEST(Body, FixturesByteSize)
 {
     // Size is arch, os, or library dependent.
 #ifdef __linux__
-    EXPECT_EQ(sizeof(Body::Fixtures), std::size_t(16));
+    EXPECT_EQ(sizeof(Body::Fixtures), std::size_t(24));
 #else
     EXPECT_EQ(sizeof(Body::Fixtures), std::size_t(24));
 #endif
