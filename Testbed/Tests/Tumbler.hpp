@@ -127,8 +127,9 @@ public:
             case Key_C:
             {
                 std::vector<Body*> bodies;
-                for (auto&& b: m_world->GetBodies())
+                for (auto&& body: m_world->GetBodies())
                 {
+                    auto& b = GetRef(body);
                     if (b.GetUserData() == reinterpret_cast<void*>(1))
                     {
                         bodies.push_back(&b);

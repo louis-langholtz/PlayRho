@@ -340,7 +340,7 @@ TEST(World, CreateAndDestroyBody)
     EXPECT_FALSE(bodies1.empty());
     EXPECT_EQ(bodies1.size(), BodyCounter(1));
     EXPECT_NE(bodies1.begin(), bodies1.end());
-    const auto& first = *(bodies1.begin());
+    const auto& first = GetRef(*bodies1.begin());
     EXPECT_EQ(body, &first);
 
     world.Destroy(body);
@@ -1419,7 +1419,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
         for (auto&& contact: contacts)
         {
             ++count;
-            const auto c = GetContactPtr(contact);
+            const auto c = GetPtr(contact);
 
             const auto fa = c->GetFixtureA();
             const auto fb = c->GetFixtureB();

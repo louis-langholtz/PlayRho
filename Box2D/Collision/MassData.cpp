@@ -152,8 +152,9 @@ MassData box2d::ComputeMassData(const Body& body) noexcept
     auto mass = Mass{0};
     auto I = RotInertia{0};
     auto center = Length2D(0, 0);
-    for (auto&& fixture: body.GetFixtures())
+    for (auto&& f: body.GetFixtures())
     {
+        const auto& fixture = GetRef(f);
         if (fixture.GetDensity() > Density{0})
         {
             const auto massData = GetMassData(fixture);

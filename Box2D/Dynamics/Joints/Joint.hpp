@@ -211,7 +211,7 @@ inline bool Joint::GetCollideConnected() const noexcept
 }
 
 // Free functions...
-
+    
 /// @brief Short-cut function to determine if both bodies are enabled.
 bool IsEnabled(const Joint& j) noexcept;
 

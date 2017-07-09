@@ -84,6 +84,54 @@ namespace box2d
         return x != GetInvalid<std::size_t>();
     }
 
+    template <class T>
+    constexpr const T* GetPtr(const T* value) noexcept
+    {
+        return value;
+    }
+    
+    template <class T>
+    constexpr T* GetPtr(T* value) noexcept
+    {
+        return value;
+    }
+    
+    template <class T>
+    constexpr const T* GetPtr(const T& value) noexcept
+    {
+        return &value;
+    }
+    
+    template <class T>
+    constexpr T* GetPtr(T& value) noexcept
+    {
+        return &value;
+    }
+
+    template <class T>
+    constexpr const T& GetRef(const T* value) noexcept
+    {
+        return *value;
+    }
+    
+    template <class T>
+    constexpr T& GetRef(T* value) noexcept
+    {
+        return *value;
+    }
+    
+    template <class T>
+    constexpr const T& GetRef(const T& value) noexcept
+    {
+        return value;
+    }
+    
+    template <class T>
+    constexpr T& GetRef(T& value) noexcept
+    {
+        return value;
+    }
+    
 } // namespace box2d
 
 #endif /* Templates_hpp */

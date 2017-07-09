@@ -622,7 +622,8 @@ void World::Clear() noexcept
     for_each(cbegin(m_joints), cend(m_joints), [&](const Joint *j) {
         JointAtty::Destroy(j);
     });
-    for_each(begin(m_bodies), end(m_bodies), [&](Body& b) {
+    for_each(begin(m_bodies), end(m_bodies), [&](Bodies::value_type& body) {
+        auto& b = GetRef(body);
         BodyAtty::ClearContacts(b);
         BodyAtty::ClearJoints(b);
         BodyAtty::ClearFixtures(b, [&](Fixture& fixture) {
@@ -633,6 +634,14 @@ void World::Clear() noexcept
             DestroyProxies(fixture);
         });
     });
+
+    for_each(cbegin(m_bodies), cend(m_bodies), [&](const Bodies::value_type& b) {
+        delete GetPtr(b);
+    });
+    for_each(cbegin(m_contacts), cend(m_contacts), [&](const Contacts::value_type& c){
+        delete GetPtr(c);
+    });
+
     m_bodies.clear();
     m_joints.clear();
     m_contacts.clear();
@@ -644,9 +653,10 @@ void World::CopyBodies(map<const Body*, Body*>& bodyMap,
 {
     for (const auto& otherBody: range)
     {
-        const auto newBody = CreateBody(GetBodyDef(otherBody));
-        for (const auto& otherFixture: otherBody.GetFixtures())
+        const auto newBody = CreateBody(GetBodyDef(GetRef(otherBody)));
+        for (const auto& of: GetRef(otherBody).GetFixtures())
         {
+            const auto& otherFixture = GetRef(of);
             const auto shape = otherFixture.GetShape();
             const auto fixtureDef = GetFixtureDef(otherFixture);
             const auto newFixture = BodyAtty::CreateFixture(*newBody, shape, fixtureDef);
@@ -662,8 +672,8 @@ void World::CopyBodies(map<const Body*, Body*>& bodyMap,
             }
             FixtureAtty::SetProxies(*newFixture, Span<FixtureProxy>(proxies, childCount));
         }
-        newBody->SetMassData(GetMassData(otherBody));
-        bodyMap[&otherBody] = newBody;
+        newBody->SetMassData(GetMassData(GetRef(otherBody)));
+        bodyMap[GetPtr(otherBody)] = newBody;
     }
 }
 
@@ -671,8 +681,9 @@ void World::CopyContacts(const map<const Body*, Body*>& bodyMap,
                          const map<const Fixture*, Fixture*>& fixtureMap,
                          SizedRange<World::Contacts::const_iterator> range)
 {
-    for (const auto& otherContact: range)
+    for (const auto& contact: range)
     {
+        auto& otherContact = GetRef(contact);
         const auto otherFixtureA = otherContact.GetFixtureA();
         const auto otherFixtureB = otherContact.GetFixtureB();
         const auto childIndexA = otherContact.GetChildIndexA();
@@ -682,11 +693,12 @@ void World::CopyContacts(const map<const Body*, Body*>& bodyMap,
         const auto newBodyA = bodyMap.at(otherFixtureA->GetBody());
         const auto newBodyB = bodyMap.at(otherFixtureB->GetBody());
         
-        m_contacts.emplace_back(newFixtureA, childIndexA, newFixtureB, childIndexB);
-        const auto newContact = GetContactPtr(m_contacts.back());
+        const auto newContact = new Contact{newFixtureA, childIndexA, newFixtureB, childIndexB};
         assert(newContact);
         if (newContact)
         {
+            m_contacts.push_back(newContact);
+
             BodyAtty::Insert(*newBodyA, newContact);
             BodyAtty::Insert(*newBodyB, newContact);
             // No need to wake up the bodies - this should already be done due to above copy
@@ -884,8 +896,8 @@ void World::SetGravity(const LinearAcceleration2D gravity) noexcept
         const auto diff = gravity - m_gravity;
         for (auto& b: m_bodies)
         {
-            const auto body = GetBodyPtr(b);
-            ApplyLinearAcceleration(*body, diff);
+            auto& body = GetRef(b);
+            ApplyLinearAcceleration(body, diff);
         }
         m_gravity = gravity;
     }
@@ -903,7 +915,9 @@ Body* World::CreateBody(const BodyDef& def)
         return nullptr;
     }
     
-    // Add to world doubly linked list.
+    auto& b = *(new Body(def, this));
+
+    // Add to world bodies collection.
     //
     // Note: the order in which bodies are added matters! At least in-so-far as
     //   causing different results to occur when adding to the back vs. adding to
@@ -911,18 +925,20 @@ Body* World::CreateBody(const BodyDef& def)
     //   with bodies getting added to the back (than when bodies are added to the
     //   front).
     //
-    m_bodies.emplace_back(def, this);
-    auto& b = m_bodies.back();
+    m_bodies.push_back(&b);
+
     b.SetAcceleration(m_gravity, AngularAcceleration{0});
     return &b;
 }
 
 bool World::Remove(const Body& b)
 {
-    const auto it = find_if(cbegin(m_bodies), cend(m_bodies),
-                                 [&](const Body& body) { return &body == &b; });
+    const auto it = find_if(cbegin(m_bodies), cend(m_bodies), [&](const Bodies::value_type& body) {
+        return GetPtr(body) == &b;
+    });
     if (it != m_bodies.end())
     {
+        delete GetPtr(*it);
         m_bodies.erase(it);
         return true;
     }
@@ -1006,8 +1022,9 @@ bool World::Add(Joint* j, Body* bodyA, Body* bodyB)
 
 bool World::Remove(Joint& j)
 {
-    const auto iter = find(cbegin(m_joints), cend(m_joints), &j);
-    if (iter != cend(m_joints))
+    const auto endIter = cend(m_joints);
+    const auto iter = find(cbegin(m_joints), endIter, &j);
+    if (iter != endIter)
     {
         m_joints.erase(iter);
         return true;
@@ -1204,17 +1221,17 @@ RegStepStats World::SolveReg(const StepConf& conf)
     // Build and simulate all awake islands.
     for (auto&& b: m_bodies)
     {
-        const auto body = GetBodyPtr(b);
-        assert(!body->IsAwake() || body->IsSpeedable());
-        assert(!body->IsAwake() || body->IsEnabled());
-        if (!IsIslanded(body) && body->IsAwake() && body->IsEnabled())
+        auto& body = GetRef(b);
+        assert(!body.IsAwake() || body.IsSpeedable());
+        assert(!body.IsAwake() || body.IsEnabled());
+        if (!IsIslanded(&body) && body.IsAwake() && body.IsEnabled())
         {
             ++stats.islandsFound;
 
             // Size the island for the remaining un-evaluated bodies, contacts, and joints.
             Island island(remNumBodies, remNumContacts, remNumJoints);
 
-            AddToIsland(island, *body, remNumBodies, remNumContacts, remNumJoints);
+            AddToIsland(island, body, remNumBodies, remNumContacts, remNumJoints);
             remNumBodies += RemoveUnspeedablesFromIslanded(island.m_bodies);
 
 #if defined(DO_THREADED)
@@ -1254,12 +1271,12 @@ RegStepStats World::SolveReg(const StepConf& conf)
 
     for (auto&& b: m_bodies)
     {
-        const auto body = GetBodyPtr(b);
+        auto& body = GetRef(b);
         // A non-static body that was in an island may have moved.
-        if (IsIslanded(body) && body->IsSpeedable())
+        if (IsIslanded(&body) && body.IsSpeedable())
         {
             // Update fixtures (for broad-phase).
-            stats.proxiesMoved += Synchronize(*body, GetTransform0(body->GetSweep()), body->GetTransformation(),
+            stats.proxiesMoved += Synchronize(body, GetTransform0(body.GetSweep()), body.GetTransformation(),
                         conf.displaceMultiplier, conf.aabbExtension);
         }
     }
@@ -1384,7 +1401,8 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
 void World::ResetBodiesForSolveTOI()
 {
     m_bodiesIslanded.clear();
-    for_each(begin(m_bodies), end(m_bodies), [&](Body &b) {
+    for_each(begin(m_bodies), end(m_bodies), [&](Bodies::value_type& body) {
+        auto& b = GetRef(body);
         BodyAtty::ResetAlpha0(b);
     });
 }
@@ -1392,9 +1410,10 @@ void World::ResetBodiesForSolveTOI()
 void World::ResetContactsForSolveTOI()
 {
     m_contactsIslanded.clear();
-    for_each(begin(m_contacts), end(m_contacts), [&](Contact &c) {
-        ContactAtty::UnsetToi(c);
-        ContactAtty::ResetToiCount(c);
+    for_each(begin(m_contacts), end(m_contacts), [&](Contacts::value_type &c) {
+        auto& contact = GetRef(c);
+        ContactAtty::UnsetToi(contact);
+        ContactAtty::ResetToiCount(contact);
     });
 }
 
@@ -1406,17 +1425,17 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
     
     for (auto&& contact: m_contacts)
     {
-        const auto c = GetContactPtr(contact);
-        if (c->HasValidToi())
+        auto& c = GetRef(contact);
+        if (c.HasValidToi())
         {
             ++results.numValidTOI;
             continue;
         }
-        if (!c->IsEnabled() || HasSensor(*c) || !IsActive(*c) || !IsImpenetrable(*c))
+        if (!c.IsEnabled() || HasSensor(c) || !IsActive(c) || !IsImpenetrable(c))
         {
             continue;
         }
-        if (c->GetToiCount() >= conf.maxSubSteps)
+        if (c.GetToiCount() >= conf.maxSubSteps)
         {
             // What are the pros/cons of this?
             // Larger m_maxSubSteps slows down the simulation.
@@ -1426,8 +1445,8 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
             continue;
         }
         
-        const auto fA = c->GetFixtureA();
-        const auto fB = c->GetFixtureB();
+        const auto fA = c.GetFixtureA();
+        const auto fB = c.GetFixtureB();
         const auto bA = fA->GetBody();
         const auto bB = fB->GetBody();
                 
@@ -1444,14 +1463,14 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
         
         // Compute the TOI for this contact (one or both bodies are active and impenetrable).
         // Computes the time of impact in interval [0, 1]
-        const auto output = CalcToi(*c, toiConf);
+        const auto output = CalcToi(c, toiConf);
         
         // Use Min function to handle floating point imprecision which possibly otherwise
         // could provide a TOI that's greater than 1.
         const auto toi = IsValidForTime(output.get_state())?
             Min(alpha0 + (1 - alpha0) * output.get_t(), Real{1}): Real{1};
         assert(toi >= alpha0 && toi <= 1);
-        ContactAtty::SetToi(*c, toi);
+        ContactAtty::SetToi(c, toi);
         
         results.maxDistIters = Max(results.maxDistIters, output.get_max_dist_iters());
         results.maxToiIters = Max(results.maxToiIters, output.get_toi_iters());
@@ -1469,7 +1488,7 @@ World::ContactToiData World::GetSoonestContacts(const size_t reserveSize)
     minContacts.reserve(reserveSize);
     for (auto&& contact: m_contacts)
     {
-        const auto c = GetContactPtr(contact);
+        const auto c = GetPtr(contact);
         if (c->HasValidToi())
         {
             const auto toi = c->GetToi();
@@ -1558,15 +1577,17 @@ ToiStepStats World::SolveToi(const StepConf& conf)
         // Reset island flags and synchronize broad-phase proxies.
         for (auto&& b: m_bodies)
         {
-            const auto body = GetBodyPtr(b);
-            if (IsIslanded(body))
+            auto& body = GetRef(b);
+            if (IsIslanded(&body))
             {
-                UnsetIslanded(body);
-                if (body->IsAccelerable())
+                UnsetIslanded(&body);
+                if (body.IsAccelerable())
                 {
-                    stats.proxiesMoved += Synchronize(*body, GetTransform0(body->GetSweep()), body->GetTransformation(),
+                    const auto xfm0 = GetTransform0(body.GetSweep());
+                    const auto xfm1 = body.GetTransformation();
+                    stats.proxiesMoved += Synchronize(body, xfm0, xfm1,
                                                       conf.displaceMultiplier, conf.aabbExtension);
-                    ResetContactsForSolveTOI(*body);
+                    ResetContactsForSolveTOI(body);
                 }
             }
         }
@@ -2115,20 +2136,20 @@ void World::ShiftOrigin(const Length2D newOrigin)
 
     for (auto&& body: GetBodies())
     {
-        const auto b = GetBodyPtr(body);
+        auto& b = GetRef(body);
 
-        auto transformation = b->GetTransformation();
+        auto transformation = b.GetTransformation();
         transformation.p -= newOrigin;
-        BodyAtty::SetTransformation(*b, transformation);
+        BodyAtty::SetTransformation(b, transformation);
         
-        auto sweep = b->GetSweep();
+        auto sweep = b.GetSweep();
         sweep.pos0.linear -= newOrigin;
         sweep.pos1.linear -= newOrigin;
-        BodyAtty::SetSweep(*b, sweep);
+        BodyAtty::SetSweep(b, sweep);
     }
 
-    for_each(begin(m_joints), end(m_joints), [&](Joint *j) {
-        j->ShiftOrigin(newOrigin);
+    for_each(begin(m_joints), end(m_joints), [&](Joints::value_type& j) {
+        GetRef(j).ShiftOrigin(newOrigin);
     });
 
     m_tree.ShiftOrigin(newOrigin);
@@ -2164,6 +2185,8 @@ void World::InternalDestroy(Contact* c, Body* from)
         bodyA->SetAwake();
         bodyB->SetAwake();
     }
+    
+    delete c;
 }
 
 void World::Destroy(Contact* contact, Body* from)
@@ -2172,10 +2195,11 @@ void World::Destroy(Contact* contact, Body* from)
 
     InternalDestroy(contact, from);
     
-    const auto it = find_if(cbegin(m_contacts), cend(m_contacts), [&](const Contact& c) {
-        return &c == contact;
+    const auto it = find_if(cbegin(m_contacts), cend(m_contacts),
+                            [&](const Contacts::value_type& c) {
+        return GetPtr(c) == contact;
     });
-    if (it != end(m_contacts))
+    if (it != cend(m_contacts))
     {
         m_contacts.erase(it);
     }
@@ -2185,44 +2209,40 @@ World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
 {
     auto stats = DestroyContactsStats{};
     
-    auto nextIter = end(contacts);
-    for (auto iter = begin(contacts); iter != end(contacts); iter = nextIter)
+    contacts.erase(std::remove_if(begin(contacts), end(contacts), [&](Contacts::value_type& c)
     {
-        nextIter = next(iter);
-
-        const auto contact = GetContactPtr(*iter);
-        const auto indexA = contact->GetChildIndexA();
-        const auto indexB = contact->GetChildIndexB();
-        const auto fixtureA = contact->GetFixtureA();
-        const auto fixtureB = contact->GetFixtureB();
+        auto& contact = GetRef(c);
+        const auto indexA = contact.GetChildIndexA();
+        const auto indexB = contact.GetChildIndexB();
+        const auto fixtureA = contact.GetFixtureA();
+        const auto fixtureB = contact.GetFixtureB();
         
         if (!TestOverlap(m_tree, fixtureA, indexA, fixtureB, indexB))
         {
             // Destroy contacts that cease to overlap in the broad-phase.
-            InternalDestroy(&*iter);
-            contacts.erase(iter);
+            InternalDestroy(&contact);
             ++stats.notOverlapping;
-            continue;
+            return true;
         }
         
         // Is this contact flagged for filtering?
-        if (contact->NeedsFiltering())
+        if (contact.NeedsFiltering())
         {
             const auto bodyA = fixtureA->GetBody();
             const auto bodyB = fixtureB->GetBody();
 
             if (!::box2d::ShouldCollide(*bodyB, *bodyA) || !ShouldCollide(fixtureA, fixtureB))
             {
-                InternalDestroy(&*iter);
-                contacts.erase(iter);
+                InternalDestroy(&contact);
                 ++stats.filteredOut;
-                continue;
+                return true;
             }
-            ContactAtty::UnflagForFiltering(*contact);
+            ContactAtty::UnflagForFiltering(contact);
         }
 
         ++stats.ignored;
-    }
+        return false;
+    }), end(contacts));
     
     return stats;
 }
@@ -2243,7 +2263,9 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
 #endif
 
     // Update awake contacts.
-    for_each(/*execution::par_unseq,*/ begin(contacts), end(contacts), [&](Contact& contact) {
+    for_each(/*execution::par_unseq,*/ begin(contacts), end(contacts),
+             [&](Contacts::value_type& c) {
+        auto& contact = GetRef(c);
 #if 0
         ContactAtty::Update(contact, updateConf, m_contactListener);
         ++stats.updated;
@@ -2469,6 +2491,8 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
         return false;
     }
 
+    const auto contact = new Contact{fixtureA, proxyA.childIndex, fixtureB, proxyB.childIndex};
+    
     // Insert into the contacts container.
     //
     // Should the new contact be added at front or back?
@@ -2476,8 +2500,7 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
     // Original strategy added to the front. Since processing done front to back, front
     // adding means container more a LIFO container, while back adding means more a FIFO.
     //
-    m_contacts.emplace_back(fixtureA, proxyA.childIndex, fixtureB, proxyB.childIndex);
-    const auto contact = GetContactPtr(m_contacts.back());
+    m_contacts.push_back(contact);
 
     BodyAtty::Insert(*bodyA, contact);
     BodyAtty::Insert(*bodyB, contact);
@@ -2624,8 +2647,8 @@ void World::SetType(Body& body, BodyType type)
         body.SetAcceleration(body.IsAccelerable()? GetGravity(): LinearAcceleration2D{0, 0},
                              AngularAcceleration{0});
         const auto fixtures = body.GetFixtures();
-        for_each(begin(fixtures), end(fixtures), [&](Fixture& f) {
-            InternalTouchProxies(f);
+        for_each(begin(fixtures), end(fixtures), [&](Body::Fixtures::value_type& f) {
+            InternalTouchProxies(GetRef(f));
         });
     }
 }
@@ -2850,8 +2873,8 @@ ContactCounter World::Synchronize(Body& body,
                                    const Real multiplier, const Length aabbExtension)
 {
     auto updatedCount = ContactCounter{0};
-    for_each(begin(body.GetFixtures()), end(body.GetFixtures()), [&](Fixture& f) {
-        updatedCount += Synchronize(f, xfm1, xfm2, multiplier, aabbExtension);
+    for_each(begin(body.GetFixtures()), end(body.GetFixtures()), [&](Body::Fixtures::value_type& f) {
+        updatedCount += Synchronize(GetRef(f), xfm1, xfm2, multiplier, aabbExtension);
     });
     return updatedCount;
 }
@@ -2878,14 +2901,17 @@ ContactCounter GetTouchingCount(const World& world) noexcept
 {
     const auto contacts = world.GetContacts();
     return static_cast<ContactCounter>(count_if(cbegin(contacts), cend(contacts),
-        [&](const Contact &c) { return c.IsTouching(); }));
+                                                [&](const World::Contacts::value_type &c) {
+        return GetRef(c).IsTouching();
+    }));
 }
 
 size_t GetFixtureCount(const World& world) noexcept
 {
     auto sum = size_t{0};
-    for_each(cbegin(world.GetBodies()), cend(world.GetBodies()), [&](const Body &b) {
-        sum += GetFixtureCount(b);
+    for_each(cbegin(world.GetBodies()), cend(world.GetBodies()),
+             [&](const World::Bodies::value_type &body) {
+        sum += GetFixtureCount(GetRef(body));
     });
     return sum;
 }
@@ -2893,10 +2919,10 @@ size_t GetFixtureCount(const World& world) noexcept
 size_t GetShapeCount(const World& world) noexcept
 {
     auto shapes = set<const Shape*>();
-    for_each(cbegin(world.GetBodies()), cend(world.GetBodies()), [&](const Body &b) {
-        const auto fixtures = b.GetFixtures();
-        for_each(cbegin(fixtures), cend(fixtures), [&](const Fixture& fixture) {
-            shapes.insert(fixture.GetShape().get());
+    for_each(cbegin(world.GetBodies()), cend(world.GetBodies()), [&](const World::Bodies::value_type &b) {
+        const auto fixtures = GetRef(b).GetFixtures();
+        for_each(cbegin(fixtures), cend(fixtures), [&](const Body::Fixtures::value_type& f) {
+            shapes.insert(GetRef(f).GetShape().get());
         });
     });
     return shapes.size();
@@ -2905,15 +2931,16 @@ size_t GetShapeCount(const World& world) noexcept
 BodyCounter GetAwakeCount(const World& world) noexcept
 {
     return static_cast<BodyCounter>(count_if(cbegin(world.GetBodies()), cend(world.GetBodies()),
-                                             [&](const Body &b) { return b.IsAwake(); }));
+                                             [&](const World::Bodies::value_type &b) {
+                                                 return GetRef(b).IsAwake(); }));
 }
     
 BodyCounter Awaken(World& world) noexcept
 {
     // Can't use count_if since body gets modified.
     auto awoken = BodyCounter{0};
-    for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](Body &b) {
-        if (box2d::Awaken(b))
+    for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](World::Bodies::value_type &b) {
+        if (box2d::Awaken(GetRef(b)))
         {
             ++awoken;
         }
@@ -2924,8 +2951,8 @@ BodyCounter Awaken(World& world) noexcept
 void ClearForces(World& world) noexcept
 {
     const auto g = world.GetGravity();
-    for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](Body &b) {
-        b.SetAcceleration(g, AngularAcceleration{0});
+    for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](World::Bodies::value_type &b) {
+        GetRef(b).SetAcceleration(g, AngularAcceleration{0});
     });
 }
 

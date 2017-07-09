@@ -124,8 +124,8 @@ void Body::DestroyFixtures()
 {
     while (!m_fixtures.empty())
     {
-        auto& fixture = m_fixtures.front();
-        DestroyFixture(&fixture, false);
+        const auto fixture = GetPtr(m_fixtures.front());
+        DestroyFixture(fixture, false);
     }
     ResetMassData();
 }
@@ -305,8 +305,8 @@ void Body::SetEnabled(bool flag)
     }
 
     // Register for proxies so contacts created or destroyed the next time step.
-    std::for_each(begin(m_fixtures), end(m_fixtures), [&](Fixture &f) {
-        m_world->RegisterForProxies(&f);
+    std::for_each(begin(m_fixtures), end(m_fixtures), [&](Fixtures::value_type &f) {
+        m_world->RegisterForProxies(GetPtr(f));
     });
 }
 
@@ -425,8 +425,8 @@ BodyCounter box2d::GetWorldIndex(const Body* body)
         const auto world = body->GetWorld();
         const auto bodies = world->GetBodies();
         auto i = BodyCounter{0};
-        const auto it = std::find_if(cbegin(bodies), cend(bodies), [&](const Body &b) {
-            return &b == body || (++i, false);
+        const auto it = std::find_if(cbegin(bodies), cend(bodies), [&](const Body *b) {
+            return b == body || (++i, false);
         });
         if (it != end(bodies))
         {

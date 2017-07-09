@@ -451,21 +451,6 @@ inline Contact::substep_type Contact::GetToiCount() const noexcept
     
 using ContactPtr = Contact*;
 
-inline Contact* GetContactPtr(Contact* value)
-{
-    return value;
-}
-
-inline Contact* GetContactPtr(Contact& value)
-{
-    return &value;
-}
-
-inline const Contact* GetContactPtr(const Contact& value)
-{
-    return &value;
-}
-
 bool HasSensor(const Contact& contact) noexcept;
 
 bool IsImpenetrable(const Contact& contact) noexcept;

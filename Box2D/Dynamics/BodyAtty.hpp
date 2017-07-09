@@ -45,18 +45,20 @@ namespace box2d
         
         static Fixture* CreateFixture(Body& b, std::shared_ptr<const Shape> shape, const FixtureDef& def)
         {
-            b.m_fixtures.emplace_front(&b, def, shape);
-            return &b.m_fixtures.front();
+            const auto fixture = new Fixture{&b, def, shape};
+            b.m_fixtures.push_back(fixture);
+            return fixture;
         }
         
         static bool DestroyFixture(Body& b, Fixture* value)
         {
-            const auto it = std::find_if(begin(b.m_fixtures), end(b.m_fixtures),
-                                         [&](const Fixture& f) {
-                return &f == value;
+            const auto endIter = end(b.m_fixtures);
+            const auto it = std::find_if(begin(b.m_fixtures), endIter, [&](Body::Fixtures::value_type& f) {
+                return GetPtr(f) == value;
             });
-            if (it != end(b.m_fixtures))
+            if (it != endIter)
             {
+                delete GetPtr(*it);
                 b.m_fixtures.erase(it);
                 return true;
             }
@@ -65,8 +67,10 @@ namespace box2d
 
         static void ClearFixtures(Body& b, std::function<void(Fixture&)> callback)
         {
-            std::for_each(std::begin(b.m_fixtures), std::end(b.m_fixtures), [&](Fixture& f) {
-                callback(f);
+            std::for_each(std::begin(b.m_fixtures), std::end(b.m_fixtures), [&](Body::Fixtures::value_type& f) {
+                const auto fixture = GetPtr(f);
+                callback(*fixture);
+                delete fixture;
             });
             b.m_fixtures.clear();
         }

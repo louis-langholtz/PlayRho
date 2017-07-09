@@ -68,7 +68,7 @@ class Body
 public:
     
     /// @brief Container type for fixtures.
-    using Fixtures = std::list<Fixture>;
+    using Fixtures = std::vector<Fixture*>;
 
     using KeyedJointPtr = std::pair<Body*, Joint*>;
 
@@ -1084,16 +1084,6 @@ void RotateAboutWorldPoint(Body& body, Angle amount, Length2D worldPoint);
 /// @param amount Amount to rotate body by (in counter-clockwise direction).
 /// @param localPoint Point in local coordinates.
 void RotateAboutLocalPoint(Body& body, Angle amount, Length2D localPoint);
-
-inline Body* GetBodyPtr(Body& body)
-{
-    return &body;
-}
-
-inline const Body* GetBodyPtr(const Body& body)
-{
-    return &body;
-}
 
 } // namespace box2d
 

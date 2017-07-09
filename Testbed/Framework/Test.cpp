@@ -231,8 +231,9 @@ static bool Draw(Drawer& drawer, const Body& body, bool skins, Fixture* selected
     auto found = false;
     const auto bodyColor = GetColor(body);
     const auto selectedColor = Brighten(bodyColor, 1.3f);
-    for (auto&& f: body.GetFixtures())
+    for (auto&& fixture: body.GetFixtures())
     {
+        const auto& f = GetRef(fixture);
         auto color = bodyColor;
         if (&f == selected)
         {
@@ -293,7 +294,7 @@ static bool Draw(Drawer& drawer, const World& world, const Settings& settings, F
     {
         for (auto&& body: world.GetBodies())
         {
-            const auto b = GetBodyPtr(body);
+            const auto b = GetPtr(body);
             if (Draw(drawer, *b, settings.drawSkins, selected))
             {
                 found = true;
@@ -315,14 +316,15 @@ static bool Draw(Drawer& drawer, const World& world, const Settings& settings, F
         
         for (auto&& body: world.GetBodies())
         {
-            const auto b = GetBodyPtr(body);
+            const auto b = GetPtr(body);
             if (!b->IsEnabled())
             {
                 continue;
             }
             
-            for (auto&& f: b->GetFixtures())
+            for (auto&& fixture: b->GetFixtures())
             {
+                const auto& f = GetRef(fixture);
                 const auto proxy_count = f.GetProxyCount();
                 for (auto i = decltype(proxy_count){0}; i < proxy_count; ++i)
                 {
@@ -347,7 +349,7 @@ static bool Draw(Drawer& drawer, const World& world, const Settings& settings, F
         const auto green = Color{0.0f, 1.0f, 0.0f};
         for (auto&& body: world.GetBodies())
         {
-            const auto b = GetBodyPtr(body);
+            const auto b = GetPtr(body);
             auto xf = b->GetTransformation();
             xf.p = b->GetWorldCenter();
             const auto p1 = xf.p;
@@ -396,13 +398,14 @@ void Test::ResetWorld(const box2d::World &saved)
     
     {
         auto i = decltype(m_world->GetBodies().size()){0};
-        for (auto&& body: m_world->GetBodies())
+        for (auto&& b: m_world->GetBodies())
         {
-            if (&body == m_bomb)
+            const auto body = GetPtr(b);
+            if (body == m_bomb)
             {
                 bombIndex = i;
             }
-            if (&body == m_groundBody)
+            if (body == m_groundBody)
             {
                 groundIndex = i;
             }
@@ -414,15 +417,16 @@ void Test::ResetWorld(const box2d::World &saved)
     
     {
         auto i = decltype(m_world->GetBodies().size()){0};
-        for (auto&& body: m_world->GetBodies())
+        for (auto&& b: m_world->GetBodies())
         {
+            const auto body = GetPtr(b);
             if (i == bombIndex)
             {
-                m_bomb = &body;
+                m_bomb = body;
             }
             if (i == groundIndex)
             {
-                m_groundBody = &body;
+                m_groundBody = body;
             }
             ++i;
         }

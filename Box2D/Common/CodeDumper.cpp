@@ -133,8 +133,8 @@ void box2d::Dump(const World& world)
     auto i = std::size_t{0};
     for (auto&& body: bodies)
     {
-        const auto b = GetBodyPtr(body);
-        Dump(*b, i);
+        const auto& b = GetRef(body);
+        Dump(b, i);
         ++i;
     }
     
@@ -183,7 +183,7 @@ void box2d::Dump(const Body& body, std::size_t bodyIndex)
     for (auto&& fixture: body.GetFixtures())
     {
         log("  {\n");
-        Dump(fixture, bodyIndex);
+        Dump(GetRef(fixture), bodyIndex);
         log("  }\n");
     }
     log("}\n");

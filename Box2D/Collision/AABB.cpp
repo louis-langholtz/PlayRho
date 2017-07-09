@@ -58,7 +58,7 @@ AABB box2d::ComputeAABB(const Body& body)
     const auto xf = body.GetTransformation();
     for (auto&& f: body.GetFixtures())
     {
-        sum.Include(ComputeAABB(*(f.GetShape()), xf));
+        sum.Include(ComputeAABB(*(GetRef(f).GetShape()), xf));
     }
     return sum;
 }

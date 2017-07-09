@@ -135,8 +135,9 @@ public:
     void ToggleBulletMode()
     {
         m_bullet_mode = !m_bullet_mode;
-        for (auto&& b: m_world->GetBodies())
+        for (auto&& body: m_world->GetBodies())
         {
+            auto& b = GetRef(body);
             if (b.GetType() == BodyType::Dynamic)
             {
                 b.SetBullet(m_bullet_mode);
@@ -146,8 +147,9 @@ public:
 
     void ImpartRandomImpulses()
     {
-        for (auto&& b: m_world->GetBodies())
+        for (auto&& body: m_world->GetBodies())
         {
+            auto& b = GetRef(body);
             if (b.GetType() == BodyType::Dynamic)
             {
                 const auto position = b.GetLocation();
@@ -200,8 +202,10 @@ public:
     void PreStep(const Settings&, Drawer&) override
     {
         auto sleeping = true;
-        for (auto&& b: m_world->GetBodies())
+        for (auto&& body: m_world->GetBodies())
         {
+            auto& b = GetRef(body);
+
             if (b.GetType() != BodyType::Dynamic)
             {
                 continue;
@@ -221,10 +225,9 @@ public:
 
     void PostStep(const Settings&, Drawer& drawer) override
     {
-        auto i = 0;
-        for (auto& b: m_world->GetBodies())
+        for (auto& body: m_world->GetBodies())
         {
-            ++i;
+            auto& b = GetRef(body);
             if (b.GetType() != BodyType::Dynamic)
             {
                 continue;

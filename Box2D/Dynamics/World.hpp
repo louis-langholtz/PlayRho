@@ -77,14 +77,14 @@ public:
     using ts_iters_type = ts_iters_t;
     
     /// @brief Bodies container type.
-    using Bodies = std::list<Body>;
+    using Bodies = std::vector<Body*>;
 
     /// @brief Contacts container type.
-    using Contacts = std::list<Contact>;
+    using Contacts = std::vector<Contact*>;
     
     /// @brief Joints container type.
     /// @note Cannot be container of Joint instances since joints are polymorphic types.
-    using Joints = std::list<Joint*>;
+    using Joints = std::vector<Joint*>;
     
     class LockedError;
 
@@ -896,7 +896,7 @@ inline void World::UnsetIslanded(const Joint* key)
 
 // Free functions.
 
-/// Gets the body count in the given world.
+/// @brief Gets the body count in the given world.
 /// @return 0 or higher.
 inline BodyCounter GetBodyCount(const World& world) noexcept
 {
@@ -910,7 +910,7 @@ inline JointCounter GetJointCount(const World& world) noexcept
     return static_cast<JointCounter>(world.GetJoints().size());
 }
 
-/// Gets the count of contacts in the given world.
+/// @brief Gets the count of contacts in the given world.
 /// @note Not all contacts are for shapes that are actually touching. Some contacts are for
 ///   shapes which merely have overlapping AABBs.
 /// @return 0 or higher.
@@ -921,21 +921,19 @@ inline ContactCounter GetContactCount(const World& world) noexcept
 
 ContactCounter GetTouchingCount(const World& world) noexcept;
 
-/// Steps the world ahead by a given time amount.
+/// @brief Steps the world ahead by a given time amount.
 ///
-/// @details
-/// Performs position and velocity updating, sleeping of non-moving bodies, updating
-/// of the contacts, and notifying the contact listener of begin-contact, end-contact,
-/// pre-solve, and post-solve events.
-/// If the given velocity and position iterations are more than zero,
-/// this method also respectively performs velocity and position resolution of the contacting bodies.
+/// @details Performs position and velocity updating, sleeping of non-moving bodies, updating
+///   of the contacts, and notifying the contact listener of begin-contact, end-contact,
+///   pre-solve, and post-solve events.
+///   If the given velocity and position iterations are more than zero, this method also
+///   respectively performs velocity and position resolution of the contacting bodies.
 ///
 /// @note While body velocities are updated accordingly (per the sum of forces acting on them),
-/// body positions (barring any collisions) are updated as if they had moved the entire time step
-/// at those resulting velocities.
-/// In other words, a body initially at p0 going v0 fast with a sum acceleration of a,
-/// after time t and barring any collisions,
-/// will have a new velocity (v1) of v0 + (a * t) and a new position (p1) of p0 + v1 * t.
+///   body positions (barring any collisions) are updated as if they had moved the entire time
+///   step at those resulting velocities. In other words, a body initially at p0 going v0 fast
+///   with a sum acceleration of a, after time t and barring any collisions, will have a new
+///   velocity (v1) of v0 + (a * t) and a new position (p1) of p0 + v1 * t.
 ///
 /// @warning Varying the time step may lead to non-physical behaviors.
 ///
@@ -952,26 +950,26 @@ ContactCounter GetTouchingCount(const World& world) noexcept;
 ///   The position constraint solver resolves the positions of bodies that overlap.
 ///
 StepStats Step(World& world, Time timeStep,
-               World::ts_iters_type velocityIterations = 8, World::ts_iters_type positionIterations = 3);
+               World::ts_iters_type velocityIterations = 8,
+               World::ts_iters_type positionIterations = 3);
 
-/// Gets the count of fixtures in the given world.
+/// @brief Gets the count of fixtures in the given world.
 std::size_t GetFixtureCount(const World& world) noexcept;
 
-/// Gets the count of unique shapes in the given world.
+/// @brief Gets the count of unique shapes in the given world.
 std::size_t GetShapeCount(const World& world) noexcept;
 
-/// Gets the count of awake bodies in the given world.
+/// @brief Gets the count of awake bodies in the given world.
 BodyCounter GetAwakeCount(const World& world) noexcept;
 
-/// Awakens all of the bodies in the given world.
+/// @brief Awakens all of the bodies in the given world.
 /// @details Calls all of the world's bodies' <code>SetAwake</code> method.
 /// @return Sum total of calls to bodies' <code>SetAwake</code> method that returned true.
 /// @sa Body::SetAwake.
 BodyCounter Awaken(World& world) noexcept;
 
-/// Clears forces.
-/// @details
-/// Manually clear the force buffer on all bodies.
+/// @brief Clears forces.
+/// @details Manually clear the force buffer on all bodies.
 void ClearForces(World& world) noexcept;
 
 bool IsActive(const Contact& contact) noexcept;

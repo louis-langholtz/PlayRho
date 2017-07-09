@@ -197,8 +197,9 @@ namespace box2d {
         void ToggleBulletMode()
         {
             m_bullet_mode = !m_bullet_mode;
-            for (auto&& b: m_world->GetBodies())
+            for (auto&& body: m_world->GetBodies())
             {
+                auto& b = GetRef(body);
                 if (b.GetType() == BodyType::Dynamic)
                 {
                     b.SetBullet(m_bullet_mode);
