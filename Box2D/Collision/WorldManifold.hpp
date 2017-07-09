@@ -37,6 +37,21 @@ namespace box2d
     {
     public:
         using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
+
+    private:
+        UnitVec2 m_normal = GetInvalid<UnitVec2>(); ///< world vector pointing from A to B
+        
+        size_type m_count = 0;
+        
+        /// Points.
+        /// @details Manifold's contact points in world coordinates (mid-point of intersection)
+        Length2D m_points[MaxManifoldPoints] = {GetInvalid<Length2D>(), GetInvalid<Length2D>()};
+        
+        /// Separations.
+        /// @details A negative value indicates overlap.
+        Length m_separations[MaxManifoldPoints] = {GetInvalid<Length>(), GetInvalid<Length>()};
+
+    public:
         
         struct PointSeparation
         {
@@ -126,18 +141,6 @@ namespace box2d
             return m_separations[index];
         }
         
-    private:    
-        UnitVec2 m_normal = GetInvalid<UnitVec2>(); ///< world vector pointing from A to B
-        
-        size_type m_count = 0;
-
-        /// Points.
-        /// @details Manifold's contact points in world coordinates (mid-point of intersection)
-        Length2D m_points[MaxManifoldPoints] = {GetInvalid<Length2D>(), GetInvalid<Length2D>()};
-        
-        /// Separations.
-        /// @details A negative value indicates overlap.
-        Length m_separations[MaxManifoldPoints] = {GetInvalid<Length>(), GetInvalid<Length>()};
     };
     
     /// Gets the world manifold for the given data.
