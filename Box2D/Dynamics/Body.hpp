@@ -3,17 +3,19 @@
  * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
@@ -39,6 +41,7 @@
 #include <memory>
 #include <cassert>
 #include <utility>
+#include <iterator>
 
 namespace box2d {
 
@@ -399,10 +402,7 @@ public:
     void SetUserData(void* data) noexcept;
 
     /// @brief Gets the parent world of this body.
-    World* GetWorld() noexcept;
-
-    /// @brief Gets the parent world of this body.
-    const World* GetWorld() const noexcept;
+    World* GetWorld() const noexcept;
 
     /// @brief Gets whether the mass data for this body is "dirty".
     bool IsMassDataDirty() const noexcept;
@@ -721,7 +721,8 @@ inline SizedRange<Body::Joints::iterator> Body::GetJoints() noexcept
 
 inline SizedRange<Body::Contacts::const_iterator> Body::GetContacts() const noexcept
 {
-    return SizedRange<Body::Contacts::const_iterator>(m_contacts.begin(), m_contacts.end(),
+    return SizedRange<Body::Contacts::const_iterator>(std::begin(m_contacts),
+                                                      std::end(m_contacts),
                                                       m_contacts.size());
 }
 
@@ -756,12 +757,7 @@ inline void Body::Advance(Real alpha) noexcept
     SetTransformation(GetTransform1(m_sweep));
 }
 
-inline World* Body::GetWorld() noexcept
-{
-    return m_world;
-}
-
-inline const World* Body::GetWorld() const noexcept
+inline World* Body::GetWorld() const noexcept
 {
     return m_world;
 }
