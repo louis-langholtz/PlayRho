@@ -52,7 +52,7 @@ TEST(World, ByteSize)
             EXPECT_EQ(sizeof(World), std::size_t(248));
 #endif
 #ifdef __linux__
-            EXPECT_EQ(sizeof(World), std::size_t(416));
+            EXPECT_EQ(sizeof(World), std::size_t(248));
 #endif
             break;
         }
@@ -62,7 +62,7 @@ TEST(World, ByteSize)
             EXPECT_EQ(sizeof(World), std::size_t(272));
 #endif
 #ifdef __linux__
-            EXPECT_EQ(sizeof(World), std::size_t(440));
+            EXPECT_EQ(sizeof(World), std::size_t(272));
 #endif
             break;
         }

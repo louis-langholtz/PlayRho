@@ -64,8 +64,7 @@ namespace box2d {
     template <typename T>
     constexpr void CheckIfAboveNegInf(typename std::enable_if<!std::is_pointer<T>::value, T>::type value)
     {
-        if (std::numeric_limits<T>::has_infinity &&
-            std::numeric_limits<T>::is_signed)
+        if (std::numeric_limits<T>::has_infinity)
         {
             if (!(value > -std::numeric_limits<T>::infinity()))
             {
