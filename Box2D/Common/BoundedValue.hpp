@@ -337,10 +337,12 @@ namespace box2d {
     using Finite = BoundedValue<T, LoValueCheck::AboveNegInf, HiValueCheck::BelowPosInf>;
     
     template <typename T>
-    using NotZero = BoundedValue<T, LoValueCheck::NotZero, HiValueCheck::Any>;
+    using NotZero = typename std::enable_if<!std::is_pointer<T>::value,
+        BoundedValue<T, LoValueCheck::NotZero, HiValueCheck::Any>>::type;
 
     template <typename T>
-    using NotNull = typename std::enable_if<std::is_pointer<T>::value, BoundedValue<T, LoValueCheck::NotZero, HiValueCheck::Any>>::type;
+    using NotNull = typename std::enable_if<std::is_pointer<T>::value,
+        BoundedValue<T, LoValueCheck::NotZero, HiValueCheck::Any>>::type;
     
     template <typename T>
     using UnitInterval = BoundedValue<T, LoValueCheck::ZeroOrMore, HiValueCheck::OneOrLess>;

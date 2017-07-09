@@ -140,11 +140,15 @@ TEST(BoundedValue, NotZero)
 {
     EXPECT_THROW(NotZero<int>(0), NotZero<int>::exception_type);
     EXPECT_NO_THROW(NotZero<int>(1));
-    EXPECT_THROW(NotZero<Body*>(nullptr), NotZero<Body*>::exception_type);
-    EXPECT_NO_THROW(NotZero<Body*>(reinterpret_cast<Body*>(1)));
+}
+
+TEST(BoundedValue, NotNull)
+{
+    EXPECT_THROW(NotNull<Body*>(nullptr), NotNull<Body*>::exception_type);
+    EXPECT_NO_THROW(NotNull<Body*>(reinterpret_cast<Body*>(1)));
     
     const int a = 5;
-    const auto foo = NotZero<const int*>(&a);
+    const auto foo = NotNull<const int*>(&a);
     EXPECT_EQ(*foo, a);
     
     struct B {
@@ -153,7 +157,7 @@ TEST(BoundedValue, NotZero)
         const char *field3 = "foo";
     };
     auto b = B{};
-    auto boo = NotZero<B*>(&b);
+    auto boo = NotNull<B*>(&b);
     EXPECT_EQ(boo->field2, 1.6);
     EXPECT_EQ((*boo).field2, 1.6);
     EXPECT_EQ(boo->field1, 6);
