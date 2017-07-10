@@ -67,8 +67,8 @@ public:
         ///
         /// @note This must be a value between 0 and +infinity.
         /// @note This is usually in the range [0,1].
-        /// @note The square-root of the product of this value multiplied by a touching fixture's
-        ///   friction becomes the friction coefficient for the contact.
+        /// @note The square-root of the product of this value multiplied by a touching
+        ///   fixture's friction becomes the friction coefficient for the contact.
         ///
         NonNegative<Real> friction = NonNegative<Real>{Real{2} / Real{10}};
         
@@ -106,39 +106,10 @@ public:
     /// @brief Visitor interface.
     ///
     /// @details Interface to inerit from for objects wishing to "visit" shapes.
-    /// This uses the vistor design pattern.
+    ///   This uses the vistor design pattern.
     /// @sa https://en.wikipedia.org/wiki/Visitor_pattern .
     ///
-    struct Visitor
-    {
-    public:
-        virtual ~Visitor() = default;
-        
-        virtual void Visit(const DiskShape&)
-        {
-            // Intentionally empty (no-op).
-        }
-
-        virtual void Visit(const EdgeShape&)
-        {
-            // Intentionally empty (no-op).
-        }
-
-        virtual void Visit(const PolygonShape&)
-        {
-            // Intentionally empty (no-op).
-        }
-
-        virtual void Visit(const ChainShape&)
-        {
-            // Intentionally empty (no-op).
-        }
-
-        virtual void Visit(const MultiShape&)
-        {
-            // Intentionally empty (no-op).
-        }
-    };
+    struct Visitor;
 
     /// @brief Default constructor is deleted.
     /// @details This is a base class that shouldn't ever be directly instantiated.
@@ -152,6 +123,7 @@ public:
         m_friction{conf.friction},
         m_restitution{conf.restitution}
     {
+        // Intentionally empty.
     }
 
     Shape(const Shape&) = default;
@@ -232,32 +204,67 @@ private:
 };
 
 template <typename ConcreteConf>
-constexpr ConcreteConf& Shape::Builder<ConcreteConf>::UseVertexRadius(NonNegative<Length> value) noexcept
+constexpr ConcreteConf&
+Shape::Builder<ConcreteConf>::UseVertexRadius(NonNegative<Length> value) noexcept
 {
     vertexRadius = value;
     return static_cast<ConcreteConf&>(*this);
 }
 
 template <typename ConcreteConf>
-constexpr ConcreteConf& Shape::Builder<ConcreteConf>::UseFriction(NonNegative<Real> value) noexcept
+constexpr ConcreteConf&
+Shape::Builder<ConcreteConf>::UseFriction(NonNegative<Real> value) noexcept
 {
     friction = value;
     return static_cast<ConcreteConf&>(*this);
 }
 
 template <typename ConcreteConf>
-constexpr ConcreteConf& Shape::Builder<ConcreteConf>::UseRestitution(Finite<Real> value) noexcept
+constexpr ConcreteConf&
+Shape::Builder<ConcreteConf>::UseRestitution(Finite<Real> value) noexcept
 {
     restitution = value;
     return static_cast<ConcreteConf&>(*this);
 }
 
 template <typename ConcreteConf>
-constexpr ConcreteConf& Shape::Builder<ConcreteConf>::UseDensity(NonNegative<Density> value) noexcept
+constexpr ConcreteConf&
+Shape::Builder<ConcreteConf>::UseDensity(NonNegative<Density> value) noexcept
 {
     density = value;
     return static_cast<ConcreteConf&>(*this);
 }
+
+struct Shape::Visitor
+{
+public:
+    virtual ~Visitor() = default;
+    
+    virtual void Visit(const DiskShape&)
+    {
+        // Intentionally empty (no-op).
+    }
+    
+    virtual void Visit(const EdgeShape&)
+    {
+        // Intentionally empty (no-op).
+    }
+    
+    virtual void Visit(const PolygonShape&)
+    {
+        // Intentionally empty (no-op).
+    }
+    
+    virtual void Visit(const ChainShape&)
+    {
+        // Intentionally empty (no-op).
+    }
+    
+    virtual void Visit(const MultiShape&)
+    {
+        // Intentionally empty (no-op).
+    }
+};
 
 inline Length Shape::GetVertexRadius() const noexcept
 {
