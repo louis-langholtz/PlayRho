@@ -31,7 +31,7 @@ TEST(DistanceJoint, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(DistanceJoint), std::size_t(112)); break;
+        case  4: EXPECT_EQ(sizeof(DistanceJoint), std::size_t(104)); break;
         case  8: EXPECT_EQ(sizeof(DistanceJoint), std::size_t(176)); break;
         case 16: EXPECT_EQ(sizeof(DistanceJoint), std::size_t(320)); break;
         default: FAIL(); break;

@@ -35,7 +35,7 @@ class BodyConstraint;
 
 using BodyConstraintsMap = std::unordered_map<const Body*, BodyConstraint*>;
 
-enum class JointType
+enum class JointType: std::uint8_t
 {
     Unknown,
     Revolute,

@@ -63,7 +63,7 @@ TEST(WheelJoint, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(WheelJoint), std::size_t(160)); break;
+        case  4: EXPECT_EQ(sizeof(WheelJoint), std::size_t(152)); break;
         case  8: EXPECT_EQ(sizeof(WheelJoint), std::size_t(272)); break;
         case 16: EXPECT_EQ(sizeof(WheelJoint), std::size_t(512)); break;
         default: FAIL(); break;
