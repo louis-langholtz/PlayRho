@@ -721,7 +721,7 @@
 				80BB8984141C3E5900F1753A /* Rope */,
 			);
 			name = PlayRho;
-			path = ../../Box2D;
+			path = ../../PlayRho;
 			sourceTree = "<group>";
 		};
 		80BB8926141C3E5900F1753A /* Collision */ = {
