@@ -17,7 +17,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Dynamics/FixtureProxy.hpp>
+#include <PlayRho/Dynamics/FixtureProxy.hpp>
 
 using namespace box2d;
 

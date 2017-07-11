@@ -18,10 +18,10 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Dynamics/Contacts/ContactKey.hpp>
-#include <Box2D/Dynamics/Contacts/Contact.hpp>
-#include <Box2D/Dynamics/Fixture.hpp>
-#include <Box2D/Dynamics/FixtureProxy.hpp>
+#include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
+#include <PlayRho/Dynamics/Contacts/Contact.hpp>
+#include <PlayRho/Dynamics/Fixture.hpp>
+#include <PlayRho/Dynamics/FixtureProxy.hpp>
 
 using namespace box2d;
 

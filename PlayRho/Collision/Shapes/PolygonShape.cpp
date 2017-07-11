@@ -17,9 +17,9 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Collision/Shapes/PolygonShape.hpp>
-#include <Box2D/Collision/RayCastInput.hpp>
-#include <Box2D/Common/VertexSet.hpp>
+#include <PlayRho/Collision/Shapes/PolygonShape.hpp>
+#include <PlayRho/Collision/RayCastInput.hpp>
+#include <PlayRho/Common/VertexSet.hpp>
 
 using namespace box2d;
 

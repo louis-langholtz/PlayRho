@@ -17,10 +17,10 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Dynamics/Fixture.hpp>
-#include <Box2D/Dynamics/Body.hpp>
-#include <Box2D/Dynamics/World.hpp>
-#include <Box2D/Collision/Shapes/DiskShape.hpp>
+#include <PlayRho/Dynamics/Fixture.hpp>
+#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Collision/Shapes/DiskShape.hpp>
 
 using namespace box2d;
 

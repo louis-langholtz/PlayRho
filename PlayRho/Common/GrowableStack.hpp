@@ -19,7 +19,7 @@
 
 #ifndef B2_GROWABLE_STACK_H
 #define B2_GROWABLE_STACK_H
-#include <Box2D/Common/Settings.hpp>
+#include <PlayRho/Common/Settings.hpp>
 #include <cstring>
 
 namespace box2d {

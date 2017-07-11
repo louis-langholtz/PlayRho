@@ -25,7 +25,7 @@
 /// @file
 /// Declarations of the FixtureDef struct and any free functions associated with it.
 
-#include <Box2D/Dynamics/Filter.hpp>
+#include <PlayRho/Dynamics/Filter.hpp>
 
 namespace box2d {
     

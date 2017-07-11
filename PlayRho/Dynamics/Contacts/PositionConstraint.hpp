@@ -20,8 +20,8 @@
 #ifndef PositionConstraint_hpp
 #define PositionConstraint_hpp
 
-#include <Box2D/Collision/Manifold.hpp>
-#include <Box2D/Dynamics/Contacts/BodyConstraint.hpp>
+#include <PlayRho/Collision/Manifold.hpp>
+#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
 namespace box2d {
 

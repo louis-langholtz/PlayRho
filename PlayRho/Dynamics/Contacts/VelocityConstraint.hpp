@@ -20,9 +20,9 @@
 #ifndef VelocityConstraint_hpp
 #define VelocityConstraint_hpp
 
-#include <Box2D/Common/Math.hpp>
-#include <Box2D/Common/Span.hpp>
-#include <Box2D/Dynamics/Contacts/BodyConstraint.hpp>
+#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/Span.hpp>
+#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
 namespace box2d {
     

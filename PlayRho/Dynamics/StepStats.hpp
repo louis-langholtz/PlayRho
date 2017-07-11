@@ -20,7 +20,7 @@
 #ifndef StepStats_hpp
 #define StepStats_hpp
 
-#include <Box2D/Common/Settings.hpp>
+#include <PlayRho/Common/Settings.hpp>
 
 namespace box2d {
     

@@ -17,7 +17,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Dynamics/Contacts/PositionConstraint.hpp>
+#include <PlayRho/Dynamics/Contacts/PositionConstraint.hpp>
 
 using namespace box2d;
 

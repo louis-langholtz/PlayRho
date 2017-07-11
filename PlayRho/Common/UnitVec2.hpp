@@ -24,7 +24,7 @@
 /// @file
 /// Declarations of the UnitVec2 class and free functions associated with it.
 
-#include <Box2D/Common/Settings.hpp>
+#include <PlayRho/Common/Settings.hpp>
 
 namespace box2d
 {

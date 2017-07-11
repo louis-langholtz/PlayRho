@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Collision/ShapeSeparation.hpp>
-#include <Box2D/Collision/DistanceProxy.hpp>
+#include <PlayRho/Collision/ShapeSeparation.hpp>
+#include <PlayRho/Collision/DistanceProxy.hpp>
 
 using namespace box2d;
 

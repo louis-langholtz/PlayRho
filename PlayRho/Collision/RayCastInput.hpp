@@ -23,7 +23,7 @@
 /// @file
 /// Declaration of the RayCastInput struct.
 
-#include <Box2D/Common/Math.hpp>
+#include <PlayRho/Common/Math.hpp>
 
 namespace box2d
 {

@@ -23,7 +23,7 @@
 /// @file
 /// Declaration of the RayCastOutput struct and related free functions.
 
-#include <Box2D/Common/Math.hpp>
+#include <PlayRho/Common/Math.hpp>
 
 namespace box2d
 {

@@ -17,9 +17,9 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Dynamics/Contacts/VelocityConstraint.hpp>
-#include <Box2D/Dynamics/Contacts/BodyConstraint.hpp>
-#include <Box2D/Collision/WorldManifold.hpp>
+#include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
+#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
+#include <PlayRho/Collision/WorldManifold.hpp>
 
 using namespace box2d;
 

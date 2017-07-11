@@ -23,8 +23,8 @@
 /// @file
 /// Declarations of the WorldDef class.
 
-#include <Box2D/Common/Math.hpp>
-#include <Box2D/Common/BoundedValue.hpp>
+#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/BoundedValue.hpp>
 
 namespace box2d {
 

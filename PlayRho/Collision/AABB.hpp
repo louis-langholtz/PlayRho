@@ -25,8 +25,8 @@
 /// @file
 /// Declaration of the AABB class and free functions that return instances of it.
 
-#include <Box2D/Common/Math.hpp>
-#include <Box2D/Common/BoundedValue.hpp>
+#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/BoundedValue.hpp>
 
 namespace box2d
 {

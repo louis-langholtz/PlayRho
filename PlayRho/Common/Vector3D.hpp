@@ -22,7 +22,7 @@
 #ifndef Vector3D_hpp
 #define Vector3D_hpp
 
-#include <Box2D/Common/Settings.hpp>
+#include <PlayRho/Common/Settings.hpp>
 
 namespace box2d
 {

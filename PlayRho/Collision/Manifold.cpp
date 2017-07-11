@@ -17,12 +17,12 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Collision/Manifold.hpp>
-#include <Box2D/Collision/Simplex.hpp>
-#include <Box2D/Collision/Distance.hpp>
-#include <Box2D/Collision/DistanceProxy.hpp>
-#include <Box2D/Collision/Collision.hpp>
-#include <Box2D/Collision/ShapeSeparation.hpp>
+#include <PlayRho/Collision/Manifold.hpp>
+#include <PlayRho/Collision/Simplex.hpp>
+#include <PlayRho/Collision/Distance.hpp>
+#include <PlayRho/Collision/DistanceProxy.hpp>
+#include <PlayRho/Collision/Collision.hpp>
+#include <PlayRho/Collision/ShapeSeparation.hpp>
 
 #include <array>
 #include <bitset>

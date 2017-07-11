@@ -17,7 +17,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Dynamics/Contacts/BodyConstraint.hpp>
+#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
 using namespace box2d;
 

@@ -9,7 +9,7 @@
 #ifndef Array_hpp
 #define Array_hpp
 
-#include <Box2D/Common/Settings.hpp>
+#include <PlayRho/Common/Settings.hpp>
 
 #include <functional>
 

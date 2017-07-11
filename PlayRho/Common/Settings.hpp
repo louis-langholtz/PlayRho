@@ -35,11 +35,11 @@
 #include <cstdint>
 #include <algorithm>
 
-#include <Box2D/Defines.hpp>
-#include <Box2D/Common/Templates.hpp>
-#include <Box2D/Common/RealNum.hpp>
-#include <Box2D/Common/Wider.hpp>
-#include <Box2D/Common/Units.hpp>
+#include <PlayRho/Defines.hpp>
+#include <PlayRho/Common/Templates.hpp>
+#include <PlayRho/Common/RealNum.hpp>
+#include <PlayRho/Common/Wider.hpp>
+#include <PlayRho/Common/Units.hpp>
 
 /**
  * @namespace box2d

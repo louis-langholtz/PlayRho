@@ -23,8 +23,8 @@
 /// @file
 /// Declaration of the MassData structure and associated free functions.
 
-#include <Box2D/Common/Math.hpp>
-#include <Box2D/Common/BoundedValue.hpp>
+#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/BoundedValue.hpp>
 
 namespace box2d {
     

@@ -17,8 +17,8 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Dynamics/StepConf.hpp>
-#include <Box2D/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 
 using namespace box2d;
 

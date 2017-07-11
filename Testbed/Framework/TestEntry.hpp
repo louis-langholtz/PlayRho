@@ -20,7 +20,7 @@
 #ifndef TestEntry_hpp
 #define TestEntry_hpp
 
-#include <Box2D/Common/Span.hpp>
+#include <PlayRho/Common/Span.hpp>
 #include <memory>
 
 namespace box2d

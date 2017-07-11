@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Dynamics/Contacts/BodyConstraint.hpp>
-#include <Box2D/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
+#include <PlayRho/Dynamics/Body.hpp>
 
 using namespace box2d;
 

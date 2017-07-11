@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Dynamics/BodyDef.hpp>
-#include <Box2D/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/BodyDef.hpp>
+#include <PlayRho/Dynamics/Body.hpp>
 
 namespace box2d
 {

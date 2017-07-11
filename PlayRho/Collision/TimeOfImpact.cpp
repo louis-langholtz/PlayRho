@@ -17,10 +17,10 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Collision/TimeOfImpact.hpp>
-#include <Box2D/Collision/Distance.hpp>
-#include <Box2D/Collision/DistanceProxy.hpp>
-#include <Box2D/Collision/SeparationFinder.hpp>
+#include <PlayRho/Collision/TimeOfImpact.hpp>
+#include <PlayRho/Collision/Distance.hpp>
+#include <PlayRho/Collision/DistanceProxy.hpp>
+#include <PlayRho/Collision/SeparationFinder.hpp>
 
 namespace box2d {
 

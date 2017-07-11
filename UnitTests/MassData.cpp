@@ -17,10 +17,10 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Collision/MassData.hpp>
-#include <Box2D/Collision/Shapes/DiskShape.hpp>
-#include <Box2D/Collision/Shapes/PolygonShape.hpp>
-#include <Box2D/Collision/Shapes/EdgeShape.hpp>
+#include <PlayRho/Collision/MassData.hpp>
+#include <PlayRho/Collision/Shapes/DiskShape.hpp>
+#include <PlayRho/Collision/Shapes/PolygonShape.hpp>
+#include <PlayRho/Collision/Shapes/EdgeShape.hpp>
 
 using namespace box2d;
 

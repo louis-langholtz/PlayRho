@@ -17,11 +17,11 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Collision/Shapes/Shape.hpp>
-#include <Box2D/Collision/Shapes/DiskShape.hpp>
-#include <Box2D/Collision/Shapes/PolygonShape.hpp>
-#include <Box2D/Collision/Distance.hpp>
-#include <Box2D/Collision/Manifold.hpp>
+#include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <PlayRho/Collision/Shapes/DiskShape.hpp>
+#include <PlayRho/Collision/Shapes/PolygonShape.hpp>
+#include <PlayRho/Collision/Distance.hpp>
+#include <PlayRho/Collision/Manifold.hpp>
 #include <chrono>
 
 using namespace box2d;

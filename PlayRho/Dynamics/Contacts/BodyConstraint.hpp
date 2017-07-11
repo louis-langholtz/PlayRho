@@ -20,7 +20,7 @@
 #ifndef BodyConstraint_hpp
 #define BodyConstraint_hpp
 
-#include <Box2D/Common/Math.hpp>
+#include <PlayRho/Common/Math.hpp>
 
 namespace box2d {
     

@@ -19,7 +19,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Common/UnitVec2.hpp>
+#include <PlayRho/Common/UnitVec2.hpp>
 
 using namespace box2d;
 

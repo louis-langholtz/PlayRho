@@ -17,7 +17,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Common/Settings.hpp>
+#include <PlayRho/Common/Settings.hpp>
 
 #include <cstdio>
 #include <cstdarg>

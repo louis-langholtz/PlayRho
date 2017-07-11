@@ -19,12 +19,12 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Dynamics/Contacts/Contact.hpp>
-#include <Box2D/Dynamics/Fixture.hpp>
-#include <Box2D/Dynamics/Body.hpp>
-#include <Box2D/Dynamics/BodyDef.hpp>
-#include <Box2D/Dynamics/FixtureDef.hpp>
-#include <Box2D/Collision/Shapes/DiskShape.hpp>
+#include <PlayRho/Dynamics/Contacts/Contact.hpp>
+#include <PlayRho/Dynamics/Fixture.hpp>
+#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/BodyDef.hpp>
+#include <PlayRho/Dynamics/FixtureDef.hpp>
+#include <PlayRho/Collision/Shapes/DiskShape.hpp>
 
 using namespace box2d;
 

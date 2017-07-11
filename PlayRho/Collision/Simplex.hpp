@@ -20,8 +20,8 @@
 #ifndef Simplex_hpp
 #define Simplex_hpp
 
-#include <Box2D/Common/ArrayList.hpp>
-#include <Box2D/Collision/SimplexEdge.hpp>
+#include <PlayRho/Common/ArrayList.hpp>
+#include <PlayRho/Collision/SimplexEdge.hpp>
 
 namespace box2d
 {

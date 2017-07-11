@@ -22,9 +22,9 @@
 #ifndef Sweep_hpp
 #define Sweep_hpp
 
-#include <Box2D/Common/Settings.hpp>
-#include <Box2D/Common/Position.hpp>
-#include <Box2D/Common/Vector2D.hpp>
+#include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Common/Position.hpp>
+#include <PlayRho/Common/Vector2D.hpp>
 
 namespace box2d
 {

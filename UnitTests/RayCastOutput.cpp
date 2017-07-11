@@ -20,10 +20,10 @@
 
 #include "gtest/gtest.h"
 
-#include <Box2D/Collision/RayCastOutput.hpp>
-#include <Box2D/Collision/RayCastInput.hpp>
-#include <Box2D/Collision/AABB.hpp>
-#include <Box2D/Collision/DistanceProxy.hpp>
+#include <PlayRho/Collision/RayCastOutput.hpp>
+#include <PlayRho/Collision/RayCastInput.hpp>
+#include <PlayRho/Collision/AABB.hpp>
+#include <PlayRho/Collision/DistanceProxy.hpp>
 
 #include <type_traits>
 

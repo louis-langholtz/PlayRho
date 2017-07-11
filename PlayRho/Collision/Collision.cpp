@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Collision/Collision.hpp>
-#include <Box2D/Collision/Manifold.hpp>
+#include <PlayRho/Collision/Collision.hpp>
+#include <PlayRho/Collision/Manifold.hpp>
 
 namespace box2d {
 

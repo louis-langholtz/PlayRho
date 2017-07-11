@@ -20,10 +20,10 @@
 #ifndef PositionSolverManifold_hpp
 #define PositionSolverManifold_hpp
 
-#include <Box2D/Common/Settings.hpp>
-#include <Box2D/Common/Math.hpp>
+#include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Common/Math.hpp>
 
-#include <Box2D/Collision/Manifold.hpp>
+#include <PlayRho/Collision/Manifold.hpp>
 
 namespace box2d
 {

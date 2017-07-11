@@ -20,7 +20,7 @@
 #ifndef B2_EDGE_SHAPE_H
 #define B2_EDGE_SHAPE_H
 
-#include <Box2D/Collision/Shapes/Shape.hpp>
+#include <PlayRho/Collision/Shapes/Shape.hpp>
 
 namespace box2d {
 

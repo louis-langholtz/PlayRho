@@ -17,7 +17,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Collision/ContactFeature.hpp>
+#include <PlayRho/Collision/ContactFeature.hpp>
 
 using namespace box2d;
 

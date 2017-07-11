@@ -17,11 +17,11 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Collision/WorldManifold.hpp>
-#include <Box2D/Collision/Manifold.hpp>
-#include <Box2D/Dynamics/Contacts/Contact.hpp>
-#include <Box2D/Dynamics/Body.hpp>
-#include <Box2D/Dynamics/Fixture.hpp>
+#include <PlayRho/Collision/WorldManifold.hpp>
+#include <PlayRho/Collision/Manifold.hpp>
+#include <PlayRho/Dynamics/Contacts/Contact.hpp>
+#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/Fixture.hpp>
 
 namespace box2d {
 

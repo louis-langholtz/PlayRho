@@ -20,8 +20,8 @@
 #ifndef B2_DISTANCE_H
 #define B2_DISTANCE_H
 
-#include <Box2D/Common/Math.hpp>
-#include <Box2D/Collision/Simplex.hpp>
+#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Collision/Simplex.hpp>
 
 namespace box2d
 {

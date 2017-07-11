@@ -17,15 +17,15 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Collision/MassData.hpp>
-#include <Box2D/Collision/Shapes/Shape.hpp>
-#include <Box2D/Collision/Shapes/EdgeShape.hpp>
-#include <Box2D/Collision/Shapes/PolygonShape.hpp>
-#include <Box2D/Collision/Shapes/ChainShape.hpp>
-#include <Box2D/Collision/Shapes/DiskShape.hpp>
-#include <Box2D/Collision/Shapes/ChainShape.hpp>
-#include <Box2D/Dynamics/Fixture.hpp>
-#include <Box2D/Dynamics/Body.hpp>
+#include <PlayRho/Collision/MassData.hpp>
+#include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <PlayRho/Collision/Shapes/EdgeShape.hpp>
+#include <PlayRho/Collision/Shapes/PolygonShape.hpp>
+#include <PlayRho/Collision/Shapes/ChainShape.hpp>
+#include <PlayRho/Collision/Shapes/DiskShape.hpp>
+#include <PlayRho/Collision/Shapes/ChainShape.hpp>
+#include <PlayRho/Dynamics/Fixture.hpp>
+#include <PlayRho/Dynamics/Body.hpp>
 
 using namespace box2d;
 

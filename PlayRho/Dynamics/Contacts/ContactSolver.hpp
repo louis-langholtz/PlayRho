@@ -20,8 +20,8 @@
 #ifndef B2_CONTACT_SOLVER_H
 #define B2_CONTACT_SOLVER_H
 
-#include <Box2D/Common/Math.hpp>
-#include <Box2D/Common/Span.hpp>
+#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/Span.hpp>
 
 namespace box2d {
 

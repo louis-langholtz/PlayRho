@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Collision/Shapes/MultiShape.hpp>
-#include <Box2D/Common/VertexSet.hpp>
+#include <PlayRho/Collision/Shapes/MultiShape.hpp>
+#include <PlayRho/Common/VertexSet.hpp>
 
 using namespace box2d;
 

@@ -21,7 +21,7 @@
 #ifndef BoundedValue_hpp
 #define BoundedValue_hpp
 
-#include <Box2D/Common/InvalidArgument.hpp>
+#include <PlayRho/Common/InvalidArgument.hpp>
 
 #include <limits>
 #include <type_traits>

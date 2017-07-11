@@ -24,9 +24,9 @@
 /// Structures and functions used for computing contact points, distance
 /// queries, and TOI queries.
 
-#include <Box2D/Common/Math.hpp>
-#include <Box2D/Common/ArrayList.hpp>
-#include <Box2D/Collision/ContactFeature.hpp>
+#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/ArrayList.hpp>
+#include <PlayRho/Collision/ContactFeature.hpp>
 
 #include <array>
 #include <type_traits>

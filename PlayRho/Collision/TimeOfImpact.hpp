@@ -20,8 +20,8 @@
 #ifndef B2_TIME_OF_IMPACT_H
 #define B2_TIME_OF_IMPACT_H
 
-#include <Box2D/Common/Math.hpp>
-#include <Box2D/Common/Wider.hpp>
+#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/Wider.hpp>
 
 namespace box2d {
 

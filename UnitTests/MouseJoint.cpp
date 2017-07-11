@@ -17,7 +17,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Dynamics/Joints/MouseJoint.hpp>
+#include <PlayRho/Dynamics/Joints/MouseJoint.hpp>
 
 using namespace box2d;
 

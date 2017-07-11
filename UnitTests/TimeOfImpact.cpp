@@ -17,9 +17,9 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Collision/TimeOfImpact.hpp>
-#include <Box2D/Collision/DistanceProxy.hpp>
-#include <Box2D/Collision/Shapes/PolygonShape.hpp>
+#include <PlayRho/Collision/TimeOfImpact.hpp>
+#include <PlayRho/Collision/DistanceProxy.hpp>
+#include <PlayRho/Collision/Shapes/PolygonShape.hpp>
 
 using namespace box2d;
 
@@ -411,7 +411,7 @@ TEST(TimeOfImpact, WithClosingSpeedOf1600)
 
 TEST(TimeOfImpact, ForNonCollidingShapesFailsIn23)
 {
-    // The data for shapes and sweeps comes from Box2D/Testbed/Tests/TimeOfImpact.hpp
+    // The data for shapes and sweeps comes from PlayRho/Testbed/Tests/TimeOfImpact.hpp
 
     auto shapeA = PolygonShape{};
     shapeA.SetVertexRadius(Real{0.0001f * 2} * Meter);

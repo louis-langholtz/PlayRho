@@ -17,7 +17,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Collision/Manifold.hpp>
+#include <PlayRho/Collision/Manifold.hpp>
 
 using namespace box2d;
 

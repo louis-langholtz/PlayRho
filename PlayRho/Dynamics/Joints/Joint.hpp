@@ -20,8 +20,8 @@
 #ifndef B2_JOINT_H
 #define B2_JOINT_H
 
-#include <Box2D/Common/Math.hpp>
-#include <Box2D/Common/Span.hpp>
+#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/Span.hpp>
 #include <unordered_map>
 #include <vector>
 #include <utility>

@@ -19,15 +19,15 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Dynamics/Contacts/Contact.hpp>
-#include <Box2D/Collision/Collision.hpp>
-#include <Box2D/Collision/Distance.hpp>
-#include <Box2D/Collision/DistanceProxy.hpp>
-#include <Box2D/Collision/Shapes/Shape.hpp>
-#include <Box2D/Dynamics/Body.hpp>
-#include <Box2D/Dynamics/Fixture.hpp>
-#include <Box2D/Dynamics/World.hpp>
-#include <Box2D/Dynamics/StepConf.hpp>
+#include <PlayRho/Dynamics/Contacts/Contact.hpp>
+#include <PlayRho/Collision/Collision.hpp>
+#include <PlayRho/Collision/Distance.hpp>
+#include <PlayRho/Collision/DistanceProxy.hpp>
+#include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/Fixture.hpp>
+#include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
 
 using namespace box2d;
 

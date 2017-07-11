@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Common/UnitVec2.hpp>
-#include <Box2D/Common/Math.hpp>
+#include <PlayRho/Common/UnitVec2.hpp>
+#include <PlayRho/Common/Math.hpp>
 
 using namespace box2d;
 

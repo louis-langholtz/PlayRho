@@ -17,7 +17,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Collision/Simplex.hpp>
+#include <PlayRho/Collision/Simplex.hpp>
 
 using namespace box2d;
 

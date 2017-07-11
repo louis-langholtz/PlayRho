@@ -17,12 +17,12 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Collision/SeparationFinder.hpp>
-#include <Box2D/Collision/Simplex.hpp>
-#include <Box2D/Collision/TimeOfImpact.hpp>
-#include <Box2D/Collision/DistanceProxy.hpp>
-#include <Box2D/Collision/Distance.hpp>
-#include <Box2D/Collision/Shapes/PolygonShape.hpp>
+#include <PlayRho/Collision/SeparationFinder.hpp>
+#include <PlayRho/Collision/Simplex.hpp>
+#include <PlayRho/Collision/TimeOfImpact.hpp>
+#include <PlayRho/Collision/DistanceProxy.hpp>
+#include <PlayRho/Collision/Distance.hpp>
+#include <PlayRho/Collision/Shapes/PolygonShape.hpp>
 
 using namespace box2d;
 

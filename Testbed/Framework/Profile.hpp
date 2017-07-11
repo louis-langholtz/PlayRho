@@ -20,7 +20,7 @@
 #ifndef Profile_hpp
 #define Profile_hpp
 
-#include <Box2D/Common/Math.hpp>
+#include <PlayRho/Common/Math.hpp>
 
 namespace box2d {
     

@@ -21,8 +21,8 @@
 #ifndef Fixed_hpp
 #define Fixed_hpp
 
-#include <Box2D/Common/Wider.hpp>
-#include <Box2D/Common/Templates.hpp>
+#include <PlayRho/Common/Wider.hpp>
+#include <PlayRho/Common/Templates.hpp>
 
 #include <cstdint>
 #include <limits>

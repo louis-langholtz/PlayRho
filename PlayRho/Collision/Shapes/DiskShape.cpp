@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Collision/Shapes/DiskShape.hpp>
-#include <Box2D/Collision/RayCastInput.hpp>
+#include <PlayRho/Collision/Shapes/DiskShape.hpp>
+#include <PlayRho/Collision/RayCastInput.hpp>
 
 using namespace box2d;
 

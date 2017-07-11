@@ -20,7 +20,7 @@
 
 #include "gtest/gtest.h"
 
-#include <Box2D/Common/GrowableStack.hpp>
+#include <PlayRho/Common/GrowableStack.hpp>
 
 using namespace box2d;
 

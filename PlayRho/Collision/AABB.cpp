@@ -17,12 +17,12 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Collision/AABB.hpp>
-#include <Box2D/Collision/DistanceProxy.hpp>
-#include <Box2D/Collision/Shapes/Shape.hpp>
-#include <Box2D/Dynamics/Fixture.hpp>
-#include <Box2D/Dynamics/FixtureProxy.hpp>
-#include <Box2D/Dynamics/Body.hpp>
+#include <PlayRho/Collision/AABB.hpp>
+#include <PlayRho/Collision/DistanceProxy.hpp>
+#include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <PlayRho/Dynamics/Fixture.hpp>
+#include <PlayRho/Dynamics/FixtureProxy.hpp>
+#include <PlayRho/Dynamics/Body.hpp>
 
 using namespace box2d;
 

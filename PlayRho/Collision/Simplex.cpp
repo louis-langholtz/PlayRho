@@ -17,7 +17,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Collision/Simplex.hpp>
+#include <PlayRho/Collision/Simplex.hpp>
 
 using namespace box2d;
 

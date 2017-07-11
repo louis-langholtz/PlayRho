@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Common/StackAllocator.hpp>
-#include <Box2D/Common/Math.hpp>
+#include <PlayRho/Common/StackAllocator.hpp>
+#include <PlayRho/Common/Math.hpp>
 
 #include <memory>
 

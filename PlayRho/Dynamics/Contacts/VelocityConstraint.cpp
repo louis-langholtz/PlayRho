@@ -17,9 +17,9 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Dynamics/Contacts/VelocityConstraint.hpp>
-#include <Box2D/Collision/WorldManifold.hpp>
-#include <Box2D/Collision/Manifold.hpp>
+#include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
+#include <PlayRho/Collision/WorldManifold.hpp>
+#include <PlayRho/Collision/Manifold.hpp>
 
 #define BOX2D_MAGIC(x) (x)
 

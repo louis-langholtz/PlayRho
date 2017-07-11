@@ -22,11 +22,11 @@
 #ifndef B2_CONTACT_H
 #define B2_CONTACT_H
 
-#include <Box2D/Common/Math.hpp>
-#include <Box2D/Collision/Manifold.hpp>
-#include <Box2D/Collision/Distance.hpp>
-#include <Box2D/Collision/TimeOfImpact.hpp>
-#include <Box2D/Collision/Shapes/Shape.hpp>
+#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Collision/Manifold.hpp>
+#include <PlayRho/Collision/Distance.hpp>
+#include <PlayRho/Collision/TimeOfImpact.hpp>
+#include <PlayRho/Collision/Shapes/Shape.hpp>
 
 namespace box2d {
 

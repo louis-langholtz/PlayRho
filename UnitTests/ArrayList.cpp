@@ -17,7 +17,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Common/ArrayList.hpp>
+#include <PlayRho/Common/ArrayList.hpp>
 
 using namespace box2d;
 

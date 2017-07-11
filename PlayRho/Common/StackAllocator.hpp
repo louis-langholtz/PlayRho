@@ -20,7 +20,7 @@
 #ifndef B2_STACK_ALLOCATOR_H
 #define B2_STACK_ALLOCATOR_H
 
-#include <Box2D/Common/Settings.hpp>
+#include <PlayRho/Common/Settings.hpp>
 
 namespace box2d {
 

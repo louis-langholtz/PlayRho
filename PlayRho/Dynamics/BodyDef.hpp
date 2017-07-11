@@ -25,10 +25,10 @@
 /// @file
 /// Declarations of the BodyDef struct and free functions associated with it.
 
-#include <Box2D/Common/Settings.hpp>
-#include <Box2D/Common/BoundedValue.hpp>
-#include <Box2D/Common/Math.hpp>
-#include <Box2D/Dynamics/BodyType.hpp>
+#include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Common/BoundedValue.hpp>
+#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Dynamics/BodyType.hpp>
 
 namespace box2d
 {

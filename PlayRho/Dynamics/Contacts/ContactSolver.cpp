@@ -17,12 +17,12 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Dynamics/Contacts/ContactSolver.hpp>
-#include <Box2D/Collision/Collision.hpp>
-#include <Box2D/Collision/WorldManifold.hpp>
-#include <Box2D/Dynamics/Contacts/PositionSolverManifold.hpp>
-#include <Box2D/Dynamics/Contacts/VelocityConstraint.hpp>
-#include <Box2D/Dynamics/Contacts/PositionConstraint.hpp>
+#include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
+#include <PlayRho/Collision/Collision.hpp>
+#include <PlayRho/Collision/WorldManifold.hpp>
+#include <PlayRho/Dynamics/Contacts/PositionSolverManifold.hpp>
+#include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
+#include <PlayRho/Dynamics/Contacts/PositionConstraint.hpp>
 
 #include <algorithm>
 

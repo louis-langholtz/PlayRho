@@ -24,8 +24,8 @@
 #include <sstream>
 #include <chrono>
 
-#include <Box2D/Rope/Rope.hpp>
-#include <Box2D/Dynamics/FixtureProxy.hpp>
+#include <PlayRho/Rope/Rope.hpp>
+#include <PlayRho/Dynamics/FixtureProxy.hpp>
 
 using namespace box2d;
 

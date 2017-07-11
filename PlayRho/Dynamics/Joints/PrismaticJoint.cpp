@@ -17,11 +17,11 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <Box2D/Dynamics/Joints/PrismaticJoint.hpp>
-#include <Box2D/Dynamics/Body.hpp>
-#include <Box2D/Dynamics/StepConf.hpp>
-#include <Box2D/Dynamics/Contacts/ContactSolver.hpp>
-#include <Box2D/Dynamics/Contacts/BodyConstraint.hpp>
+#include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
+#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
+#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
 using namespace box2d;
 

@@ -20,7 +20,7 @@
 #ifndef DistanceProxy_hpp
 #define DistanceProxy_hpp
 
-#include <Box2D/Common/Math.hpp>
+#include <PlayRho/Common/Math.hpp>
 #include <vector>
 
 namespace box2d

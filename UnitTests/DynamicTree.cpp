@@ -19,7 +19,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Collision/DynamicTree.hpp>
+#include <PlayRho/Collision/DynamicTree.hpp>
 #include <type_traits>
 
 using namespace box2d;

@@ -19,7 +19,7 @@
 #ifndef VertexSet_hpp
 #define VertexSet_hpp
 
-#include <Box2D/Common/Math.hpp>
+#include <PlayRho/Common/Math.hpp>
 
 #include <vector>
 #include <algorithm>

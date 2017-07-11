@@ -20,8 +20,8 @@
 #ifndef SeparationFinder_hpp
 #define SeparationFinder_hpp
 
-#include <Box2D/Common/Math.hpp>
-#include <Box2D/Collision/IndexPair.hpp>
+#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Collision/IndexPair.hpp>
 
 namespace box2d {
 

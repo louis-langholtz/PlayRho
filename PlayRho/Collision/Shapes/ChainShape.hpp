@@ -22,7 +22,7 @@
 #ifndef B2_CHAIN_SHAPE_H
 #define B2_CHAIN_SHAPE_H
 
-#include <Box2D/Collision/Shapes/Shape.hpp>
+#include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <vector>
 
 namespace box2d {

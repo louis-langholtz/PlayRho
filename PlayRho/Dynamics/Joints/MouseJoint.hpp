@@ -20,8 +20,8 @@
 #ifndef B2_MOUSE_JOINT_H
 #define B2_MOUSE_JOINT_H
 
-#include <Box2D/Dynamics/Joints/Joint.hpp>
-#include <Box2D/Common/BoundedValue.hpp>
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Common/BoundedValue.hpp>
 
 namespace box2d {
 

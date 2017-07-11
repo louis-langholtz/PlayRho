@@ -23,8 +23,8 @@
 /// @file
 /// Declarations of the StepConf class, and free functions associated with it.
 
-#include <Box2D/Common/Settings.hpp>
-#include <Box2D/Common/BoundedValue.hpp>
+#include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Common/BoundedValue.hpp>
 
 namespace box2d {
 

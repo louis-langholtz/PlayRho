@@ -22,8 +22,8 @@
 #ifndef Position_hpp
 #define Position_hpp
 
-#include <Box2D/Common/Settings.hpp>
-#include <Box2D/Common/Vector2D.hpp>
+#include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Common/Vector2D.hpp>
 
 namespace box2d
 {

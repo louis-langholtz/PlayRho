@@ -17,7 +17,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Dynamics/Joints/PrismaticJoint.hpp>
+#include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
 
 using namespace box2d;
 

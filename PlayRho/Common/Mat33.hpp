@@ -22,8 +22,8 @@
 #ifndef Mat33_hpp
 #define Mat33_hpp
 
-#include <Box2D/Common/Settings.hpp>
-#include <Box2D/Common/Vector3D.hpp>
+#include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Common/Vector3D.hpp>
 
 namespace box2d
 {

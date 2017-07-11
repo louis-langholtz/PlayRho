@@ -17,8 +17,8 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Collision/Distance.hpp>
-#include <Box2D/Collision/DistanceProxy.hpp>
+#include <PlayRho/Collision/Distance.hpp>
+#include <PlayRho/Collision/DistanceProxy.hpp>
 
 using namespace box2d;
 

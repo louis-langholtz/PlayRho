@@ -17,7 +17,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Common/VertexSet.hpp>
+#include <PlayRho/Common/VertexSet.hpp>
 
 using namespace box2d;
 

@@ -24,7 +24,7 @@
 /// @file
 /// Definition of the JointKey class and any associated free functions.
 
-#include <Box2D/Common/Settings.hpp>
+#include <PlayRho/Common/Settings.hpp>
 #include <utility>
 #include <functional>
 

@@ -17,7 +17,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Dynamics/WorldCallbacks.hpp>
+#include <PlayRho/Dynamics/WorldCallbacks.hpp>
 
 using namespace box2d;
 

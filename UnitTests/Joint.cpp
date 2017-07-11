@@ -17,7 +17,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
 
 using namespace box2d;
 

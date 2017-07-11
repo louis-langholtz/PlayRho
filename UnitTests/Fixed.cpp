@@ -17,8 +17,8 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Common/Fixed.hpp>
-#include <Box2D/Common/Math.hpp>
+#include <PlayRho/Common/Fixed.hpp>
+#include <PlayRho/Common/Math.hpp>
 
 using namespace box2d;
 

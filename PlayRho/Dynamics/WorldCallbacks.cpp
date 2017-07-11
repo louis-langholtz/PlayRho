@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Dynamics/WorldCallbacks.hpp>
-#include <Box2D/Dynamics/Fixture.hpp>
+#include <PlayRho/Dynamics/WorldCallbacks.hpp>
+#include <PlayRho/Dynamics/Fixture.hpp>
 
 using namespace box2d;
 

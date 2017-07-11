@@ -25,11 +25,11 @@
 /// @file
 /// Declarations of the Fixture class, and free functions associated with it.
 
-#include <Box2D/Common/Math.hpp>
-#include <Box2D/Common/Span.hpp>
-#include <Box2D/Common/BoundedValue.hpp>
-#include <Box2D/Dynamics/Filter.hpp>
-#include <Box2D/Dynamics/FixtureDef.hpp>
+#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/Span.hpp>
+#include <PlayRho/Common/BoundedValue.hpp>
+#include <PlayRho/Dynamics/Filter.hpp>
+#include <PlayRho/Dynamics/FixtureDef.hpp>
 #include <limits>
 #include <memory>
 

@@ -17,7 +17,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <Box2D/Rope/Rope.hpp>
+#include <PlayRho/Rope/Rope.hpp>
 
 using namespace box2d;
 

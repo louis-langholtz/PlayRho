@@ -19,8 +19,8 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Collision/AABB.hpp>
-#include <Box2D/Collision/DistanceProxy.hpp>
+#include <PlayRho/Collision/AABB.hpp>
+#include <PlayRho/Collision/DistanceProxy.hpp>
 #include <type_traits>
 
 using namespace box2d;

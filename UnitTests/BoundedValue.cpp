@@ -19,7 +19,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Common/BoundedValue.hpp>
+#include <PlayRho/Common/BoundedValue.hpp>
 #include <limits>
 #include <cmath>
 
@@ -171,7 +171,7 @@ TEST(BoundedValue, NonNull)
 
 #if 0
 
-#include <Box2D/Common/Fixed.hpp>
+#include <PlayRho/Common/Fixed.hpp>
 
 namespace box2d
 {

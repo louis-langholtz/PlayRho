@@ -17,7 +17,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Collision/IndexPair.hpp>
+#include <PlayRho/Collision/IndexPair.hpp>
 
 using namespace box2d;
 

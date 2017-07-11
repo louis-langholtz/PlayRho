@@ -19,7 +19,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Common/Settings.hpp>
+#include <PlayRho/Common/Settings.hpp>
 
 using namespace box2d;
 

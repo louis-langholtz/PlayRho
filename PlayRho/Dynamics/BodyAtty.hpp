@@ -25,9 +25,9 @@
 /// @file
 /// Declaration of the BodyAtty class.
 
-#include <Box2D/Dynamics/Body.hpp>
-#include <Box2D/Dynamics/Fixture.hpp>
-#include <Box2D/Dynamics/Joints/JointKey.hpp>
+#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/Fixture.hpp>
+#include <PlayRho/Dynamics/Joints/JointKey.hpp>
 
 #include <algorithm>
 

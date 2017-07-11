@@ -20,17 +20,17 @@
 #ifndef BOX2D_MATH_H
 #define BOX2D_MATH_H
 
-#include <Box2D/Common/Settings.hpp>
-#include <Box2D/Common/Span.hpp>
-#include <Box2D/Common/UnitVec2.hpp>
-#include <Box2D/Common/Vector2D.hpp>
-#include <Box2D/Common/Vector3D.hpp>
-#include <Box2D/Common/Position.hpp>
-#include <Box2D/Common/Velocity.hpp>
-#include <Box2D/Common/Transformation.hpp>
-#include <Box2D/Common/Sweep.hpp>
-#include <Box2D/Common/Mat22.hpp>
-#include <Box2D/Common/Mat33.hpp>
+#include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Common/Span.hpp>
+#include <PlayRho/Common/UnitVec2.hpp>
+#include <PlayRho/Common/Vector2D.hpp>
+#include <PlayRho/Common/Vector3D.hpp>
+#include <PlayRho/Common/Position.hpp>
+#include <PlayRho/Common/Velocity.hpp>
+#include <PlayRho/Common/Transformation.hpp>
+#include <PlayRho/Common/Sweep.hpp>
+#include <PlayRho/Common/Mat22.hpp>
+#include <PlayRho/Common/Mat33.hpp>
 
 #include <cmath>
 #include <iostream>

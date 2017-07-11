@@ -17,8 +17,8 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Collision/DistanceProxy.hpp>
-#include <Box2D/Collision/ShapeSeparation.hpp>
+#include <PlayRho/Collision/DistanceProxy.hpp>
+#include <PlayRho/Collision/ShapeSeparation.hpp>
 #include <initializer_list>
 #include <vector>
 

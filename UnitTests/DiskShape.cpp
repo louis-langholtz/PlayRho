@@ -17,8 +17,8 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Collision/Shapes/DiskShape.hpp>
-#include <Box2D/Collision/AABB.hpp>
+#include <PlayRho/Collision/Shapes/DiskShape.hpp>
+#include <PlayRho/Collision/AABB.hpp>
 
 using namespace box2d;
 

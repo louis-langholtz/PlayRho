@@ -23,8 +23,8 @@
 /// @file
 /// Declaration of the DynamicTree class.
 
-#include <Box2D/Collision/AABB.hpp>
-#include <Box2D/Collision/RayCastInput.hpp>
+#include <PlayRho/Collision/AABB.hpp>
+#include <PlayRho/Collision/RayCastInput.hpp>
 
 #include <functional>
 

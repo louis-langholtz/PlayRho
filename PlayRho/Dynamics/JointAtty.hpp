@@ -23,7 +23,7 @@
 /// @file
 /// Declaration of the JointAtty class.
 
-#include <Box2D/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
 
 namespace box2d
 {

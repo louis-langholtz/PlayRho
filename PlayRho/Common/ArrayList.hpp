@@ -20,7 +20,7 @@
 #ifndef ArrayList_hpp
 #define ArrayList_hpp
 
-#include <Box2D/Defines.hpp>
+#include <PlayRho/Defines.hpp>
 
 #include <type_traits>
 #include <initializer_list>

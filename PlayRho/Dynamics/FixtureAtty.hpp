@@ -23,8 +23,8 @@
 /// @file
 /// Declaration of the FixtureAtty class.
 
-#include <Box2D/Common/Span.hpp>
-#include <Box2D/Dynamics/Fixture.hpp>
+#include <PlayRho/Common/Span.hpp>
+#include <PlayRho/Dynamics/Fixture.hpp>
 
 namespace box2d
 {

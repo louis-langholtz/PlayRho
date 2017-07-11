@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Collision/DynamicTree.hpp>
-#include <Box2D/Common/GrowableStack.hpp>
+#include <PlayRho/Collision/DynamicTree.hpp>
+#include <PlayRho/Common/GrowableStack.hpp>
 
 #include <cstring>
 
