@@ -1,6 +1,6 @@
 //
 // Original work Copyright (c) 2009-2010 Mikko Mononen memon@inside.org
-// Modified work  Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
+// Modified work  Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
 //
 // This software is provided 'as-is', without any express or implied
 // warranty.  In no event will the authors be held liable for any damages
