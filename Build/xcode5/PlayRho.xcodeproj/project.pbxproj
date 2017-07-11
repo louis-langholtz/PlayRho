@@ -710,7 +710,7 @@
 			path = ../../UnitTests;
 			sourceTree = "<group>";
 		};
-		80BB8922141C3E5900F1753A /* Box2D */ = {
+		80BB8922141C3E5900F1753A /* PlayRho */ = {
 			isa = PBXGroup;
 			children = (
 				80BB8923141C3E5900F1753A /* Box2D.hpp */,
@@ -720,7 +720,7 @@
 				80BB894C141C3E5900F1753A /* Dynamics */,
 				80BB8984141C3E5900F1753A /* Rope */,
 			);
-			name = Box2D;
+			name = PlayRho;
 			path = ../../Box2D;
 			sourceTree = "<group>";
 		};
@@ -1035,7 +1035,7 @@
 				474AFBF41EB19BB6002AA6C8 /* CoreVideo.framework */,
 				80BB8A35141C3E8500F1753A /* Testbed */,
 				80BB8A31141C3E7B00F1753A /* HelloWorld */,
-				80BB8922141C3E5900F1753A /* Box2D */,
+				80BB8922141C3E5900F1753A /* PlayRho */,
 				80FF01D3141C3D980059E59D /* Products */,
 				474BC3F31D41278800447DCD /* UnitTests */,
 			);
