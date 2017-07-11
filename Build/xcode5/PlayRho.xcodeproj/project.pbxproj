@@ -1215,9 +1215,9 @@
 			productReference = 80BB8918141C3E3600F1753A /* Testbed */;
 			productType = "com.apple.product-type.tool";
 		};
-		80FF01D1141C3D980059E59D /* Box2D */ = {
+		80FF01D1141C3D980059E59D /* Library */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 80FF01D6141C3D980059E59D /* Build configuration list for PBXNativeTarget "Box2D" */;
+			buildConfigurationList = 80FF01D6141C3D980059E59D /* Build configuration list for PBXNativeTarget "Library" */;
 			buildPhases = (
 				80FF01CE141C3D980059E59D /* Sources */,
 				80FF01CF141C3D980059E59D /* Frameworks */,
@@ -1227,7 +1227,7 @@
 			);
 			dependencies = (
 			);
-			name = Box2D;
+			name = Library;
 			productName = Box2D;
 			productReference = 80FF01D2141C3D980059E59D /* libBox2D.a */;
 			productType = "com.apple.product-type.library.static";
@@ -1257,7 +1257,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				80FF01D1141C3D980059E59D /* Box2D */,
+				80FF01D1141C3D980059E59D /* Library */,
 				80BB8909141C3E2600F1753A /* HelloWorld */,
 				80BB8917141C3E3600F1753A /* Testbed */,
 				474BC41F1D413D5200447DCD /* UnitTests */,
@@ -1428,17 +1428,17 @@
 /* Begin PBXTargetDependency section */
 		474BC4281D413D6300447DCD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 80FF01D1141C3D980059E59D /* Box2D */;
+			target = 80FF01D1141C3D980059E59D /* Library */;
 			targetProxy = 474BC4271D413D6300447DCD /* PBXContainerItemProxy */;
 		};
 		80BB8A70141C3EA100F1753A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 80FF01D1141C3D980059E59D /* Box2D */;
+			target = 80FF01D1141C3D980059E59D /* Library */;
 			targetProxy = 80BB8A6F141C3EA100F1753A /* PBXContainerItemProxy */;
 		};
 		80BB8A72141C3EA800F1753A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 80FF01D1141C3D980059E59D /* Box2D */;
+			target = 80FF01D1141C3D980059E59D /* Library */;
 			targetProxy = 80BB8A71141C3EA800F1753A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1758,7 +1758,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		80FF01D6141C3D980059E59D /* Build configuration list for PBXNativeTarget "Box2D" */ = {
+		80FF01D6141C3D980059E59D /* Build configuration list for PBXNativeTarget "Library" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				80FF01D7141C3D980059E59D /* Debug */,
