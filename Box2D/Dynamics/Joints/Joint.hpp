@@ -23,6 +23,9 @@
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Common/Span.hpp>
 #include <unordered_map>
+#include <vector>
+#include <utility>
+#include <stdexcept>
 
 namespace box2d {
 
@@ -33,7 +36,15 @@ struct Velocity;
 struct ConstraintSolverConf;
 class BodyConstraint;
 
+using BodyConstraintPtr = BodyConstraint*;
+using BodyConstraintPair = std::pair<const Body*, BodyConstraintPtr>;
+
+// #define USE_VECTOR_MAP
+#ifdef USE_VECTOR_MAP
+using BodyConstraintsMap = std::vector<std::pair<const Body*, BodyConstraintPtr>>;
+#else
 using BodyConstraintsMap = std::unordered_map<const Body*, BodyConstraint*>;
+#endif
 
 enum class JointType: std::uint8_t
 {
@@ -255,6 +266,26 @@ void SetAwake(Joint& j) noexcept;
 JointCounter GetWorldIndex(const Joint* joint);
 
 void Set(JointDef& def, const Joint& joint) noexcept;
+
+inline BodyConstraintPtr& At(std::vector<BodyConstraintPair>& container, const Body* key)
+{
+    auto last = std::end(container);
+    auto first = std::begin(container);
+    first = std::lower_bound(first, last, key, [](const BodyConstraintPair &a, const Body* b){
+        return a.first < b;
+    });
+    if (first == last || key != (*first).first)
+    {
+        throw std::out_of_range{"invalid key"};
+    }
+    return (*first).second;
+}
+
+inline BodyConstraintPtr& At(std::unordered_map<const Body*, BodyConstraint*>& container,
+                             const Body* key)
+{
+    return container.at(key);
+}
 
 } // namespace box2d
 

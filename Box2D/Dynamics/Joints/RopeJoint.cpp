@@ -45,8 +45,8 @@ void RopeJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
                                         const StepConf& step,
                                         const ConstraintSolverConf& conf)
 {
-    auto& bodyConstraintA = bodies.at(GetBodyA());
-    auto& bodyConstraintB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = At(bodies, GetBodyA());
+    auto& bodyConstraintB = At(bodies, GetBodyB());
 
     const auto invMassA = bodyConstraintA->GetInvMass();
     const auto invRotInertiaA = bodyConstraintA->GetInvRotInertia();
@@ -116,8 +116,8 @@ void RopeJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
 
 bool RopeJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step)
 {
-    auto& bodyConstraintA = bodies.at(GetBodyA());
-    auto& bodyConstraintB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = At(bodies, GetBodyA());
+    auto& bodyConstraintB = At(bodies, GetBodyB());
 
     auto velA = bodyConstraintA->GetVelocity();
     auto velB = bodyConstraintB->GetVelocity();
@@ -154,8 +154,8 @@ bool RopeJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
 
 bool RopeJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const
 {
-    auto& bodyConstraintA = bodies.at(GetBodyA());
-    auto& bodyConstraintB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = At(bodies, GetBodyA());
+    auto& bodyConstraintB = At(bodies, GetBodyB());
 
     auto posA = bodyConstraintA->GetPosition();
     auto posB = bodyConstraintB->GetPosition();

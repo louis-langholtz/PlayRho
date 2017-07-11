@@ -66,8 +66,8 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
                                             const StepConf& step,
                                             const ConstraintSolverConf& conf)
 {
-    auto& bodyConstraintA = bodies.at(GetBodyA());
-    auto& bodyConstraintB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = At(bodies, GetBodyA());
+    auto& bodyConstraintB = At(bodies, GetBodyB());
 
     const auto aA = bodyConstraintA->GetPosition().angular;
     auto velA = bodyConstraintA->GetVelocity();
@@ -203,8 +203,8 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
 
 bool RevoluteJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step)
 {
-    auto& bodyConstraintA = bodies.at(GetBodyA());
-    auto& bodyConstraintB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = At(bodies, GetBodyA());
+    auto& bodyConstraintB = At(bodies, GetBodyB());
 
     const auto oldVelA = bodyConstraintA->GetVelocity();
     auto velA = oldVelA;
@@ -329,8 +329,8 @@ bool RevoluteJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
 
 bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const
 {
-    auto& bodyConstraintA = bodies.at(GetBodyA());
-    auto& bodyConstraintB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = At(bodies, GetBodyA());
+    auto& bodyConstraintB = At(bodies, GetBodyB());
 
     auto posA = bodyConstraintA->GetPosition();
     const auto invRotInertiaA = bodyConstraintA->GetInvRotInertia();

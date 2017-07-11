@@ -99,7 +99,7 @@ Mat22 MouseJoint::GetEffectiveMassMatrix(const BodyConstraint& body) const noexc
 void MouseJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
                                          const ConstraintSolverConf&)
 {
-    auto& bodyConstraintB = bodies.at(GetBodyB());
+    auto& bodyConstraintB = At(bodies, GetBodyB());
 
     const auto posB = bodyConstraintB->GetPosition();
     auto velB = bodyConstraintB->GetVelocity();
@@ -156,7 +156,7 @@ void MouseJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
 
 bool MouseJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step)
 {
-    auto& bodyConstraintB = bodies.at(GetBodyB());
+    auto& bodyConstraintB = At(bodies, GetBodyB());
 
     auto velB = bodyConstraintB->GetVelocity();
     assert(IsValid(velB));

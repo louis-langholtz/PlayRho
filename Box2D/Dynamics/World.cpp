@@ -77,7 +77,6 @@ namespace box2d
 {
 
 using BodyPtr = Body*;
-using BodyConstraintsMap = unordered_map<const Body*, BodyConstraint*>;
 using BodyConstraintsPair = pair<const Body* const, BodyConstraint*>;
 using BodyConstraints = vector<BodyConstraint>;
 using PositionConstraints = vector<PositionConstraint>;
@@ -306,14 +305,23 @@ namespace {
     BodyConstraintsMap GetBodyConstraintsMap(const Island::Bodies& bodies,
                                              BodyConstraints &bodyConstraints)
     {
-        auto bodyConstraintsMap = BodyConstraintsMap{};
-        bodyConstraintsMap.reserve(bodies.size());
+        auto map = BodyConstraintsMap{};
+        map.reserve(bodies.size());
         for_each(cbegin(bodies), cend(bodies), [&](const BodyPtr& body) {
             const auto i = static_cast<size_t>(&body - bodies.data());
             assert(i < bodies.size());
-            bodyConstraintsMap[body] = &bodyConstraints[i];
+#ifdef USE_VECTOR_MAP
+            map.push_back(BodyConstraintPair{body, &bodyConstraints[i]});
+#else
+            map[body] = &bodyConstraints[i];
+#endif
         });
-        return bodyConstraintsMap;
+#ifdef USE_VECTOR_MAP
+        sort(begin(map), end(map), [](BodyConstraintPair a, BodyConstraintPair b) {
+            return a.first < b.first;
+        });
+#endif
+        return map;
     }
     
     BodyConstraints GetBodyConstraints(const Island::Bodies& bodies, Time h)
@@ -343,8 +351,8 @@ namespace {
             const auto bodyB = fixtureB.GetBody();
             const auto shapeB = fixtureB.GetShape();
             
-            const auto bodyConstraintA = bodies.at(bodyA);
-            const auto bodyConstraintB = bodies.at(bodyB);
+            const auto bodyConstraintA = At(bodies, bodyA);
+            const auto bodyConstraintB = At(bodies, bodyB);
             
             const auto radiusA = GetVertexRadius(*shapeA);
             const auto radiusB = GetVertexRadius(*shapeB);
@@ -389,8 +397,8 @@ namespace {
             const auto bodyB = fixtureB->GetBody();
             const auto shapeB = fixtureB->GetShape();
             
-            const auto bodyConstraintA = bodies.at(bodyA);
-            const auto bodyConstraintB = bodies.at(bodyB);
+            const auto bodyConstraintA = At(bodies, bodyA);
+            const auto bodyConstraintB = At(bodies, bodyB);
             
             const auto radiusA = shapeA->GetVertexRadius();
             const auto radiusB = shapeB->GetVertexRadius();

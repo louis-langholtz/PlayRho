@@ -131,10 +131,10 @@ GearJoint::GearJoint(const GearJointDef& def):
 
 void GearJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step, const ConstraintSolverConf&)
 {
-    auto& bodyConstraintA = bodies.at(GetBodyA());
-    auto& bodyConstraintB = bodies.at(GetBodyB());
-    auto& bodyConstraintC = bodies.at(m_bodyC);
-    auto& bodyConstraintD = bodies.at(m_bodyD);
+    auto& bodyConstraintA = At(bodies, GetBodyA());
+    auto& bodyConstraintB = At(bodies, GetBodyB());
+    auto& bodyConstraintC = At(bodies, m_bodyC);
+    auto& bodyConstraintD = At(bodies, m_bodyD);
 
     auto velA = bodyConstraintA->GetVelocity();
     const auto aA = bodyConstraintA->GetPosition().angular;
@@ -237,10 +237,10 @@ void GearJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
 
 bool GearJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf&)
 {
-    auto& bodyConstraintA = bodies.at(GetBodyA());
-    auto& bodyConstraintB = bodies.at(GetBodyB());
-    auto& bodyConstraintC = bodies.at(m_bodyC);
-    auto& bodyConstraintD = bodies.at(m_bodyD);
+    auto& bodyConstraintA = At(bodies, GetBodyA());
+    auto& bodyConstraintB = At(bodies, GetBodyB());
+    auto& bodyConstraintC = At(bodies, m_bodyC);
+    auto& bodyConstraintD = At(bodies, m_bodyD);
 
     auto velA = bodyConstraintA->GetVelocity();
     auto velB = bodyConstraintB->GetVelocity();
@@ -283,10 +283,10 @@ bool GearJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
 
 bool GearJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const
 {
-    auto& bodyConstraintA = bodies.at(GetBodyA());
-    auto& bodyConstraintB = bodies.at(GetBodyB());
-    auto& bodyConstraintC = bodies.at(m_bodyC);
-    auto& bodyConstraintD = bodies.at(m_bodyD);
+    auto& bodyConstraintA = At(bodies, GetBodyA());
+    auto& bodyConstraintB = At(bodies, GetBodyB());
+    auto& bodyConstraintC = At(bodies, m_bodyC);
+    auto& bodyConstraintD = At(bodies, m_bodyD);
 
     auto posA = bodyConstraintA->GetPosition();
     auto posB = bodyConstraintB->GetPosition();

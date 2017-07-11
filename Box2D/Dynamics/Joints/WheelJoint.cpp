@@ -68,8 +68,8 @@ WheelJoint::WheelJoint(const WheelJointDef& def):
 
 void WheelJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step, const ConstraintSolverConf&)
 {
-    auto& bodyConstraintA = bodies.at(GetBodyA());
-    auto& bodyConstraintB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = At(bodies, GetBodyA());
+    auto& bodyConstraintB = At(bodies, GetBodyB());
 
     const auto posA = bodyConstraintA->GetPosition();
     auto velA = bodyConstraintA->GetVelocity();
@@ -193,8 +193,8 @@ void WheelJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
 
 bool WheelJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step)
 {
-    auto& bodyConstraintA = bodies.at(GetBodyA());
-    auto& bodyConstraintB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = At(bodies, GetBodyA());
+    auto& bodyConstraintB = At(bodies, GetBodyB());
 
     const auto oldVelA = bodyConstraintA->GetVelocity();
     const auto invMassA = bodyConstraintA->GetInvMass();
@@ -262,8 +262,8 @@ bool WheelJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
 
 bool WheelJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const
 {
-    auto& bodyConstraintA = bodies.at(GetBodyA());
-    auto& bodyConstraintB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = At(bodies, GetBodyA());
+    auto& bodyConstraintB = At(bodies, GetBodyB());
 
     auto posA = bodyConstraintA->GetPosition();
     const auto invMassA = bodyConstraintA->GetInvMass();

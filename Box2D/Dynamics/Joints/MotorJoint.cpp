@@ -56,8 +56,8 @@ MotorJoint::MotorJoint(const MotorJointDef& def):
 
 void MotorJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step, const ConstraintSolverConf&)
 {
-    auto& bodyConstraintA = bodies.at(GetBodyA());
-    auto& bodyConstraintB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = At(bodies, GetBodyA());
+    auto& bodyConstraintB = At(bodies, GetBodyB());
 
     const auto posA = bodyConstraintA->GetPosition();
     auto velA = bodyConstraintA->GetVelocity();
@@ -141,8 +141,8 @@ void MotorJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
 
 bool MotorJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step)
 {
-    auto& bodyConstraintA = bodies.at(GetBodyA());
-    auto& bodyConstraintB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = At(bodies, GetBodyA());
+    auto& bodyConstraintB = At(bodies, GetBodyB());
 
     auto velA = bodyConstraintA->GetVelocity();
     auto velB = bodyConstraintB->GetVelocity();

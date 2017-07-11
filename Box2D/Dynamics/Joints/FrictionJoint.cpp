@@ -57,8 +57,8 @@ FrictionJoint::FrictionJoint(const FrictionJointDef& def):
 void FrictionJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
                                             const ConstraintSolverConf&)
 {
-    auto& bodyConstraintA = bodies.at(GetBodyA());
-    auto& bodyConstraintB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = At(bodies, GetBodyA());
+    auto& bodyConstraintB = At(bodies, GetBodyB());
     const auto posA = bodyConstraintA->GetPosition();
     auto velA = bodyConstraintA->GetVelocity();
     const auto posB = bodyConstraintB->GetPosition();
@@ -133,8 +133,8 @@ void FrictionJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const St
 
 bool FrictionJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step)
 {
-    auto& bodyConstraintA = bodies.at(GetBodyA());
-    auto& bodyConstraintB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = At(bodies, GetBodyA());
+    auto& bodyConstraintB = At(bodies, GetBodyB());
 
     auto velA = bodyConstraintA->GetVelocity();
     const auto invRotInertiaA = bodyConstraintA->GetInvRotInertia();

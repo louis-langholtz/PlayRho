@@ -71,8 +71,8 @@ void PulleyJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
                                           const StepConf& step,
                                           const ConstraintSolverConf& conf)
 {
-    auto& bodyConstraintA = bodies.at(GetBodyA());
-    auto& bodyConstraintB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = At(bodies, GetBodyA());
+    auto& bodyConstraintB = At(bodies, GetBodyB());
     
     const auto posA = bodyConstraintA->GetPosition();
     auto velA = bodyConstraintA->GetVelocity();
@@ -144,8 +144,8 @@ void PulleyJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
 
 bool PulleyJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf&)
 {
-    auto& bodyConstraintA = bodies.at(GetBodyA());
-    auto& bodyConstraintB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = At(bodies, GetBodyA());
+    auto& bodyConstraintB = At(bodies, GetBodyB());
 
     auto velA = bodyConstraintA->GetVelocity();
     auto velB = bodyConstraintB->GetVelocity();
@@ -170,8 +170,8 @@ bool PulleyJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Ste
 
 bool PulleyJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const
 {
-    auto& bodyConstraintA = bodies.at(GetBodyA());
-    auto& bodyConstraintB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = At(bodies, GetBodyA());
+    auto& bodyConstraintB = At(bodies, GetBodyB());
 
     auto posA = bodyConstraintA->GetPosition();
     auto posB = bodyConstraintB->GetPosition();

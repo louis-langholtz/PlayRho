@@ -78,8 +78,8 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
                                             const StepConf& step,
                                             const ConstraintSolverConf& conf)
 {
-    auto& bodyConstraintA = bodies.at(GetBodyA());
-    auto& bodyConstraintB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = At(bodies, static_cast<const Body*>(GetBodyA()));
+    auto& bodyConstraintB = At(bodies, GetBodyB());
 
     const auto invMassA = bodyConstraintA->GetInvMass();
     const auto invRotInertiaA = bodyConstraintA->GetInvRotInertia(); // L^-2 M^-1 QP^2
@@ -171,8 +171,8 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
 
 bool DistanceJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf&)
 {
-    auto& bodyConstraintA = bodies.at(GetBodyA());
-    auto& bodyConstraintB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = At(bodies, GetBodyA());
+    auto& bodyConstraintB = At(bodies, GetBodyB());
 
     const auto invMassA = bodyConstraintA->GetInvMass();
     const auto invRotInertiaA = bodyConstraintA->GetInvRotInertia();
@@ -210,8 +210,8 @@ bool DistanceJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
         return true;
     }
 
-    auto& bodyConstraintA = bodies.at(GetBodyA());
-    auto& bodyConstraintB = bodies.at(GetBodyB());
+    auto& bodyConstraintA = At(bodies, GetBodyA());
+    auto& bodyConstraintB = At(bodies, GetBodyB());
 
     const auto invMassA = bodyConstraintA->GetInvMass();
     const auto invRotInertiaA = bodyConstraintA->GetInvRotInertia();
