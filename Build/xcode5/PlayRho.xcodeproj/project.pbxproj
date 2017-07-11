@@ -1499,7 +1499,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 80FF01CC141C3D980059E59D /* Build configuration list for PBXProject "Box2D" */;
+			buildConfigurationList = 80FF01CC141C3D980059E59D /* Build configuration list for PBXProject "PlayRho" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -2111,7 +2111,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		80FF01CC141C3D980059E59D /* Build configuration list for PBXProject "Box2D" */ = {
+		80FF01CC141C3D980059E59D /* Build configuration list for PBXProject "PlayRho" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				80FF01D4141C3D980059E59D /* Debug */,
