@@ -83,7 +83,7 @@
 		474B67221E80466D00B6D126 /* functional.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474B67211E80466D00B6D126 /* functional.cpp */; };
 		474BAB2A1E5CBA010058E08A /* Velocity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474BAB291E5CBA010058E08A /* Velocity.cpp */; };
 		474BAB301E5D00960058E08A /* BodyConstraint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 474BAB2C1E5D00960058E08A /* BodyConstraint.hpp */; };
-		474BC4291D413D7400447DCD /* libBox2D.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80FF01D2141C3D980059E59D /* libBox2D.a */; };
+		474BC4291D413D7400447DCD /* libPlayRho.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80FF01D2141C3D980059E59D /* libPlayRho.a */; };
 		474BC42B1D413DC200447DCD /* AABB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474BC3F41D41278800447DCD /* AABB.cpp */; };
 		474BC42C1D413DC200447DCD /* DiskShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474BC3F51D41278800447DCD /* DiskShape.cpp */; };
 		474BC42D1D413DC200447DCD /* CollideShapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474BC3F61D41278800447DCD /* CollideShapes.cpp */; };
@@ -236,8 +236,8 @@
 		80BB8A34141C3E7B00F1753A /* HelloWorld.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8A33141C3E7B00F1753A /* HelloWorld.cpp */; };
 		80BB8A6B141C3E8600F1753A /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8A38141C3E8500F1753A /* Main.cpp */; };
 		80BB8A6D141C3E8600F1753A /* Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8A3B141C3E8500F1753A /* Test.cpp */; };
-		80BB8A75141C3F4C00F1753A /* libBox2D.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80FF01D2141C3D980059E59D /* libBox2D.a */; };
-		80BB8A76141C3F7600F1753A /* libBox2D.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80FF01D2141C3D980059E59D /* libBox2D.a */; };
+		80BB8A75141C3F4C00F1753A /* libPlayRho.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80FF01D2141C3D980059E59D /* libPlayRho.a */; };
+		80BB8A76141C3F7600F1753A /* libPlayRho.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80FF01D2141C3D980059E59D /* libPlayRho.a */; };
 		80BB8A7B141C3FA700F1753A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80BB8A7A141C3FA700F1753A /* OpenGL.framework */; };
 /* End PBXBuildFile section */
 
@@ -591,7 +591,7 @@
 		80BB8A6A141C3E8600F1753A /* Web.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Web.hpp; sourceTree = "<group>"; };
 		80BB8A7A141C3FA700F1753A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		80CD7722143AF3230086DB87 /* ConvexHull.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConvexHull.hpp; sourceTree = "<group>"; };
-		80FF01D2141C3D980059E59D /* libBox2D.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBox2D.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		80FF01D2141C3D980059E59D /* libPlayRho.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPlayRho.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -599,7 +599,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				474BC4291D413D7400447DCD /* libBox2D.a in Frameworks */,
+				474BC4291D413D7400447DCD /* libPlayRho.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -607,7 +607,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				80BB8A75141C3F4C00F1753A /* libBox2D.a in Frameworks */,
+				80BB8A75141C3F4C00F1753A /* libPlayRho.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -620,7 +620,7 @@
 				80A390791852F2A000E19E2B /* Cocoa.framework in Frameworks */,
 				80A3907A1852F2A000E19E2B /* CoreFoundation.framework in Frameworks */,
 				80BB8A7B141C3FA700F1753A /* OpenGL.framework in Frameworks */,
-				80BB8A76141C3F7600F1753A /* libBox2D.a in Frameworks */,
+				80BB8A76141C3F7600F1753A /* libPlayRho.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1045,7 +1045,7 @@
 		80FF01D3141C3D980059E59D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				80FF01D2141C3D980059E59D /* libBox2D.a */,
+				80FF01D2141C3D980059E59D /* libPlayRho.a */,
 				80BB890A141C3E2700F1753A /* HelloWorld */,
 				80BB8918141C3E3600F1753A /* Testbed */,
 				474BC4201D413D5200447DCD /* UnitTests */,
@@ -1215,9 +1215,9 @@
 			productReference = 80BB8918141C3E3600F1753A /* Testbed */;
 			productType = "com.apple.product-type.tool";
 		};
-		80FF01D1141C3D980059E59D /* Library */ = {
+		80FF01D1141C3D980059E59D /* PlayRho */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 80FF01D6141C3D980059E59D /* Build configuration list for PBXNativeTarget "Library" */;
+			buildConfigurationList = 80FF01D6141C3D980059E59D /* Build configuration list for PBXNativeTarget "PlayRho" */;
 			buildPhases = (
 				80FF01CE141C3D980059E59D /* Sources */,
 				80FF01CF141C3D980059E59D /* Frameworks */,
@@ -1227,9 +1227,9 @@
 			);
 			dependencies = (
 			);
-			name = Library;
+			name = PlayRho;
 			productName = Box2D;
-			productReference = 80FF01D2141C3D980059E59D /* libBox2D.a */;
+			productReference = 80FF01D2141C3D980059E59D /* libPlayRho.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -1257,7 +1257,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				80FF01D1141C3D980059E59D /* Library */,
+				80FF01D1141C3D980059E59D /* PlayRho */,
 				80BB8909141C3E2600F1753A /* HelloWorld */,
 				80BB8917141C3E3600F1753A /* Testbed */,
 				474BC41F1D413D5200447DCD /* UnitTests */,
@@ -1428,17 +1428,17 @@
 /* Begin PBXTargetDependency section */
 		474BC4281D413D6300447DCD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 80FF01D1141C3D980059E59D /* Library */;
+			target = 80FF01D1141C3D980059E59D /* PlayRho */;
 			targetProxy = 474BC4271D413D6300447DCD /* PBXContainerItemProxy */;
 		};
 		80BB8A70141C3EA100F1753A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 80FF01D1141C3D980059E59D /* Library */;
+			target = 80FF01D1141C3D980059E59D /* PlayRho */;
 			targetProxy = 80BB8A6F141C3EA100F1753A /* PBXContainerItemProxy */;
 		};
 		80BB8A72141C3EA800F1753A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 80FF01D1141C3D980059E59D /* Library */;
+			target = 80FF01D1141C3D980059E59D /* PlayRho */;
 			targetProxy = 80BB8A71141C3EA800F1753A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1758,7 +1758,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		80FF01D6141C3D980059E59D /* Build configuration list for PBXNativeTarget "Library" */ = {
+		80FF01D6141C3D980059E59D /* Build configuration list for PBXNativeTarget "PlayRho" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				80FF01D7141C3D980059E59D /* Debug */,
