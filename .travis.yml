@@ -30,7 +30,7 @@ branches:
 # For details see: https://docs.travis-ci.com/user/osx-ci-environment/
 osx_image: xcode8
 
-xcode_project: Build/xcode5/Box2D.xcodeproj
+xcode_project: Build/xcode5/PlayRho.xcodeproj
 xcode_scheme: UnitTest
 
 sudo: false
@@ -75,7 +75,7 @@ before_install:
 #
 # I'd prefer that GLFW and GLEW get installed as packages but I didn't find
 # usable packages for GLFW version 3 (or newer) and GLEW version 2 (or newer).
-# Both of which are required for the Box2D Testbed and ONLY the Testbed.
+# Both of which are required for the PlayRho Testbed and ONLY the Testbed.
 #
 # Additional notes:
 # Linux seems to usually support "sha256sum". OS X meanwhile calls it "shasum".
@@ -97,12 +97,12 @@ install:
     echo CXX=$CXX HOME=$HOME TRAVIS_BUILD_DIR=$TRAVIS_BUILD_DIR
     cmake --version
     export SOURCE_ROOT="${TRAVIS_BUILD_DIR}" BUILD_ROOT="${TRAVIS_BUILD_DIR}-Build"
-    BOX2D_BUILD_OPTIONS="-DBOX2D_BUILD_UNIT_TESTS=ON -DBOX2D_BUILD_HELLOWORLD=ON -DBOX2D_BUILD_TESTBED=ON"
+    PLAYRHO_BUILD_OPTIONS="-DPLAYRHO_BUILD_UNIT_TESTS=ON -DPLAYRHO_BUILD_HELLOWORLD=ON -DPLAYRHO_BUILD_TESTBED=ON"
   - |
     if [ "${REALNUM_TYPE}foo" != "foo" ]; then
-      BOX2D_BUILD_OPTIONS="$BOX2D_BUILD_OPTIONS -DBOX2D_REALNUM_TYPE=$REALNUM_TYPE"
+      PLAYRHO_BUILD_OPTIONS="$PLAYRHO_BUILD_OPTIONS -DPLAYRHO_REALNUM_TYPE=$REALNUM_TYPE"
     fi
-    echo $BOX2D_BUILD_OPTIONS
+    echo $PLAYRHO_BUILD_OPTIONS
   - git clone https://github.com/louis-langholtz/units.git && wget https://sourceforge.net/projects/boost/files/boost/1.63.0/boost_1_63_0.tar.bz2 -O /tmp/boost_1_63_0.tar.bz2 && sha256sum /tmp/boost_1_63_0.tar.bz2 && echo "Expect SHA256 Hash of beae2529f759f6b3bf3f4969a19c2e9d6f0c503edcb2de4a61d1428519fcb3b0" && export BOOST_INC_DST=/tmp/boost_1_63_0/include/boost BOOST_SRC=$HOME/boost-src && mkdir -p $BOOST_SRC $BOOST_INC_DST && pushd $BOOST_SRC && tar --bzip2 -xf /tmp/boost_1_63_0.tar.bz2 && cp -a boost_1_63_0/boost/* $BOOST_INC_DST && popd && pushd $BOOST_INC_DST && mv units units.old && ln -s $HOME/units/include/boost/units . && popd
   - |
     export GLFW_URL=https://github.com/glfw/glfw/releases/download/3.2.1/glfw-3.2.1.zip
@@ -112,9 +112,9 @@ install:
     mkdir /tmp/glew && pushd /tmp/glew && curl --location --remote-name $GLEW_URL && md5sum *.zip && echo "Expect MD5 hash of 54c913d0c00726fb028d089ad1664ede" && unzip -q *.zip && rm *.zip && cd * && make && make DESTDIR=/tmp install && popd
 
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "clang++-3.7" ]]; then (pwd && mkdir -p $BUILD_ROOT && cd $BUILD_ROOT && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib $BOX2D_BUILD_OPTIONS $SOURCE_ROOT && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:StackAllocator.slower_than_mallocfree ); fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-6" ]]; then (pwd && mkdir -p $BUILD_ROOT && cd $BUILD_ROOT && cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib -DBOX2D_ENABLE_COVERAGE=ON $BOX2D_BUILD_OPTIONS $SOURCE_ROOT && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:StackAllocator.slower_than_mallocfree:Math.LengthFasterThanHypot ); fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then (cd Box2D && xcodebuild -project Build/xcode5/Box2D.xcodeproj -list); fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "clang++-3.7" ]]; then (pwd && mkdir -p $BUILD_ROOT && cd $BUILD_ROOT && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib $PLAYRHO_BUILD_OPTIONS $SOURCE_ROOT && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:StackAllocator.slower_than_mallocfree ); fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-6" ]]; then (pwd && mkdir -p $BUILD_ROOT && cd $BUILD_ROOT && cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib -DPLAYRHO_ENABLE_COVERAGE=ON $PLAYRHO_BUILD_OPTIONS $SOURCE_ROOT && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:StackAllocator.slower_than_mallocfree:Math.LengthFasterThanHypot ); fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then (cd PlayRho && xcodebuild -project Build/xcode5/PlayRho.xcodeproj -list); fi
 
 # Notes:
 #   .gcno files are binary files.
@@ -124,7 +124,7 @@ after_success:
       export PATH=/tmp/usr/bin:$PATH
       pwd && ls -laF . /usr/bin/gcov*
       cd $BUILD_ROOT && pwd
-      lcov --gcov-tool /usr/bin/gcov-6 --directory Box2D --directory UnitTests --base-directory $SOURCE_ROOT --capture --output-file coverage.info
+      lcov --gcov-tool /usr/bin/gcov-6 --directory PlayRho --directory UnitTests --base-directory $SOURCE_ROOT --capture --output-file coverage.info
       echo "Lcov exited with status $?"
       ls -laF coverage.info
       lcov --gcov-tool /usr/bin/gcov-6 --remove coverage.info '*/UnitTests/*' -o coverage.info

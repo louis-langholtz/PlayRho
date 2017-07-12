@@ -1228,7 +1228,7 @@
 			dependencies = (
 			);
 			name = PlayRho;
-			productName = Box2D;
+			productName = PlayRho;
 			productReference = 80FF01D2141C3D980059E59D /* libPlayRho.a */;
 			productType = "com.apple.product-type.library.static";
 		};

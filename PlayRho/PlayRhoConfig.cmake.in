@@ -1,31 +1,29 @@
 #                                               -*- cmake -*-
 #
-#  Box2dConfig.cmake(.in)
+#  PlayRhoConfig.cmake(.in)
 #
 
-# Use the following variables to compile and link against Box2d:
-#  BOX2D_FOUND          - True if Box2d was found on your system
-#  BOX2D_USE_FILE       - The file making Box2d usable
-#  BOX2D_DEFINITIONS    - Definitions needed to build with Box2d
-#  BOX2D_INCLUDE_DIR    - Box2d headers location
-#  BOX2D_INCLUDE_DIRS   - List of directories where Box2d header file are
-#  BOX2D_LIBRARY        - Library name
-#  BOX2D_LIBRARIES      - List of libraries to link against
-#  BOX2D_LIBRARY_DIRS   - List of directories containing Box2d libraries
-#  BOX2D_ROOT_DIR       - The base directory of Box2d
-#  BOX2D_VERSION_STRING - A human-readable string containing the version
+# Use the following variables to compile and link against PlayRho:
+#  PLAYRHO_FOUND          - True if PlayRho was found on your system
+#  PLAYRHO_USE_FILE       - The file making PlayRho usable
+#  PLAYRHO_DEFINITIONS    - Definitions needed to build with PlayRho
+#  PLAYRHO_INCLUDE_DIR    - PlayRho headers location
+#  PLAYRHO_INCLUDE_DIRS   - List of directories where PlayRho header file are
+#  PLAYRHO_LIBRARY        - Library name
+#  PLAYRHO_LIBRARIES      - List of libraries to link against
+#  PLAYRHO_LIBRARY_DIRS   - List of directories containing PlayRho libraries
+#  PLAYRHO_ROOT_DIR       - The base directory of PlayRho
+#  PLAYRHO_VERSION_STRING - A human-readable string containing the version
 
-set ( BOX2D_FOUND 1 )
-set ( BOX2D_USE_FILE     "@BOX2D_USE_FILE@" )
+set ( PLAYRHO_FOUND 1 )
+set ( PLAYRHO_USE_FILE     "@PLAYRHO_USE_FILE@" )
 
-set ( BOX2D_DEFINITIONS  "@BOX2D_DEFINITIONS@" )
-set ( BOX2D_INCLUDE_DIR  "@BOX2D_INCLUDE_DIR@" )
-set ( Box2D_INCLUDE_DIRS "@BOX2D_INCLUDE_DIRS@" ) # deprecated
-set ( BOX2D_INCLUDE_DIRS "@BOX2D_INCLUDE_DIRS@" )
-set ( BOX2D_LIBRARY      "@BOX2D_LIBRARY@" )
-set ( BOX2D_LIBRARIES    "@BOX2D_LIBRARIES@" )
-set ( BOX2D_LIBRARY_DIRS "@BOX2D_LIBRARY_DIRS@" )
-set ( BOX2D_ROOT_DIR     "@CMAKE_INSTALL_PREFIX@" )
+set ( PLAYRHO_DEFINITIONS  "@PLAYRHO_DEFINITIONS@" )
+set ( PLAYRHO_INCLUDE_DIR  "@PLAYRHO_INCLUDE_DIR@" )
+set ( PLAYRHO_INCLUDE_DIRS "@PLAYRHO_INCLUDE_DIRS@" )
+set ( PLAYRHO_LIBRARY      "@PLAYRHO_LIBRARY@" )
+set ( PLAYRHO_LIBRARIES    "@PLAYRHO_LIBRARIES@" )
+set ( PLAYRHO_LIBRARY_DIRS "@PLAYRHO_LIBRARY_DIRS@" )
+set ( PLAYRHO_ROOT_DIR     "@CMAKE_INSTALL_PREFIX@" )
 
-set ( BOX2D_VERSION_STRING "@BOX2D_VERSION@" )
-
+set ( PLAYRHO_VERSION_STRING "@PLAYRHO_VERSION@" )

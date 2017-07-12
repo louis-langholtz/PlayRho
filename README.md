@@ -2,7 +2,7 @@
 
 This is a fork by [Louis Langholtz](https://github.com/louis-langholtz)
 of the Box2D physics engine originally written by Erin Catto. It's
-[licensed](https://github.com/louis-langholtz/Box2D/blob/dev/LICENSE.txt) under
+[licensed](https://github.com/louis-langholtz/PlayRho/blob/dev/LICENSE.txt) under
 a [Zlib License](https://opensource.org/licenses/Zlib). For the original Box2D, please visit http://www.box2d.org.
 
 General influences on this fork are:
@@ -19,14 +19,14 @@ the `NDEBUG` preprocessor macro enabled to see any kind of performance.
 
 |iOS|Linux CMake|OS X Xcode|Windows VS2017|Coverage|
 |---|-----------|----------|--------------|--------|
-|[![Build Status](https://travis-ci.org/louis-langholtz/Box2D.svg?branch=iosfoo)](https://travis-ci.org/louis-langholtz/Box2D)|[![Build Status](https://travis-ci.org/louis-langholtz/Box2D.svg?branch=dev)](https://travis-ci.org/louis-langholtz/Box2D)|[![Build Status](https://travis-ci.org/louis-langholtz/Box2D.svg?branch=macosxfoo)](https://travis-ci.org/louis-langholtz/Box2D)|[![Build status](https://ci.appveyor.com/api/projects/status/q4q1y1g6ckqqpiev/branch/dev?svg=true)](https://ci.appveyor.com/project/louis-langholtz/box2d/branch/dev)|[![Coverage Status](https://coveralls.io/repos/github/louis-langholtz/Box2D/badge.svg?branch=dev)](https://coveralls.io/github/louis-langholtz/Box2D?branch=dev)|
+|[![Build Status](https://travis-ci.org/louis-langholtz/PlayRho.svg?branch=iosfoo)](https://travis-ci.org/louis-langholtz/PlayRho)|[![Build Status](https://travis-ci.org/louis-langholtz/PlayRho.svg?branch=dev)](https://travis-ci.org/louis-langholtz/PlayRho)|[![Build Status](https://travis-ci.org/louis-langholtz/PlayRho.svg?branch=macosxfoo)](https://travis-ci.org/louis-langholtz/PlayRho)|[![Build status](https://ci.appveyor.com/api/projects/status/q4q1y1g6ckqqpiev/branch/dev?svg=true)](https://ci.appveyor.com/project/louis-langholtz/playrho/branch/dev)|[![Coverage Status](https://coveralls.io/repos/github/louis-langholtz/PlayRho/badge.svg?branch=dev)](https://coveralls.io/github/louis-langholtz/PlayRho?branch=dev)|
 
 ## Additional Resources
 
-- [Changes Document](https://github.com/louis-langholtz/Box2D/blob/dev/Changes.md):
+- [Changes Document](https://github.com/louis-langholtz/PlayRho/blob/dev/Changes.md):
   provides a run-down of changes that have been introduced.
-- [Building Document](https://github.com/louis-langholtz/Box2D/blob/dev/INSTALL.md):
+- [Building Document](https://github.com/louis-langholtz/PlayRho/blob/dev/INSTALL.md):
   information on how to build this project and run the testbed.
-- [API Pages](http://louis-langholtz.github.io/Box2D/API/index.html): documentation on the Application Programming Interface (API).
-- [Issues Web Interface](https://github.com/louis-langholtz/Box2D/issues):
+- [API Pages](http://louis-langholtz.github.io/PlayRho/API/index.html): documentation on the Application Programming Interface (API).
+- [Issues Web Interface](https://github.com/louis-langholtz/PlayRho/issues):
   for questions, bugs reports, or suggestions associated with this project.

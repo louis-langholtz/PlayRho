@@ -1,4 +1,4 @@
 image: Visual Studio 2017
 build:
-  project: Build/vs2017/Box2D.sln
+  project: Build/vs2017/PlayRho.sln
   verbosity: normal
