@@ -168,7 +168,7 @@
 		80A390791852F2A000E19E2B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80A390771852F2A000E19E2B /* Cocoa.framework */; };
 		80A3907A1852F2A000E19E2B /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80A390781852F2A000E19E2B /* CoreFoundation.framework */; };
 		80A3907C1852F2D100E19E2B /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80A3907B1852F2D100E19E2B /* IOKit.framework */; };
-		80BB8987141C3E5900F1753A /* Box2D.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8923141C3E5900F1753A /* Box2D.hpp */; };
+		80BB8987141C3E5900F1753A /* PlayRho.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8923141C3E5900F1753A /* PlayRho.hpp */; };
 		80BB898D141C3E5900F1753A /* Collision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB892C141C3E5900F1753A /* Collision.cpp */; };
 		80BB898F141C3E5900F1753A /* Distance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB892E141C3E5900F1753A /* Distance.cpp */; };
 		80BB8990141C3E5900F1753A /* Distance.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB892F141C3E5900F1753A /* Distance.hpp */; };
@@ -476,7 +476,7 @@
 		80A3907B1852F2D100E19E2B /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		80BB890A141C3E2700F1753A /* HelloWorld */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = HelloWorld; sourceTree = BUILT_PRODUCTS_DIR; };
 		80BB8918141C3E3600F1753A /* Testbed */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Testbed; sourceTree = BUILT_PRODUCTS_DIR; };
-		80BB8923141C3E5900F1753A /* Box2D.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Box2D.hpp; sourceTree = "<group>"; };
+		80BB8923141C3E5900F1753A /* PlayRho.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PlayRho.hpp; sourceTree = "<group>"; };
 		80BB892C141C3E5900F1753A /* Collision.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 2; path = Collision.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		80BB892E141C3E5900F1753A /* Distance.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 2; path = Distance.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		80BB892F141C3E5900F1753A /* Distance.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Distance.hpp; sourceTree = "<group>"; };
@@ -713,7 +713,7 @@
 		80BB8922141C3E5900F1753A /* PlayRho */ = {
 			isa = PBXGroup;
 			children = (
-				80BB8923141C3E5900F1753A /* Box2D.hpp */,
+				80BB8923141C3E5900F1753A /* PlayRho.hpp */,
 				47327E7D1EA585790048FCD8 /* Defines.hpp */,
 				80BB8926141C3E5900F1753A /* Collision */,
 				80BB893E141C3E5900F1753A /* Common */,
@@ -1061,7 +1061,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4726DD1F1D305E5D0012A882 /* ContactFeature.hpp in Headers */,
-				80BB8987141C3E5900F1753A /* Box2D.hpp in Headers */,
+				80BB8987141C3E5900F1753A /* PlayRho.hpp in Headers */,
 				4731DE581DEC908600E7F931 /* UnitVec2.hpp in Headers */,
 				474AFBFA1EB1B2CB002AA6C8 /* MultiShape.hpp in Headers */,
 				80BB8990141C3E5900F1753A /* Distance.hpp in Headers */,

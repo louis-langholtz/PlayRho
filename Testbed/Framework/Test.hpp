@@ -20,7 +20,7 @@
 #ifndef TEST_H
 #define TEST_H
 
-#include <PlayRho/Box2D.hpp>
+#include <PlayRho/PlayRho.hpp>
 #include <PlayRho/Collision/RayCastOutput.hpp>
 #include <PlayRho/Collision/ShapeSeparation.hpp>
 #include <PlayRho/Dynamics/Contacts/PositionSolverManifold.hpp>

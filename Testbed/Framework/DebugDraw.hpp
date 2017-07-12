@@ -20,7 +20,7 @@
 #ifndef DEBUGDRAW_H
 #define DEBUGDRAW_H
 
-#include <PlayRho/Box2D.hpp>
+#include <PlayRho/PlayRho.hpp>
 #include "Drawer.hpp"
 
 namespace box2d {

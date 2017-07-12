@@ -17,7 +17,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <PlayRho/Box2D.hpp>
+#include <PlayRho/PlayRho.hpp>
 #include <PlayRho/Common/CodeDumper.hpp>
 
 using namespace box2d;

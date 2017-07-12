@@ -19,7 +19,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Box2D.hpp>
+#include <PlayRho/PlayRho.hpp>
 #include <cstdio>
 
 // This is a simple example of building and running a simulation using Box2D.
