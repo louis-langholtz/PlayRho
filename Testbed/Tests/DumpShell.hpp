@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 // This test holds worlds dumped using Dump(World&).
 class DumpShell : public Test
@@ -161,6 +161,6 @@ public:
     }
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

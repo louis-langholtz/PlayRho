@@ -30,7 +30,7 @@
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Dynamics/BodyType.hpp>
 
-namespace box2d
+namespace playrho
 {
     class Body;
 
@@ -231,6 +231,6 @@ namespace box2d
 
     BodyDef GetBodyDef(const Body& body) noexcept;
 
-} // namespace box2d
+} // namespace playrho
 
 #endif /* BodyDef_hpp */

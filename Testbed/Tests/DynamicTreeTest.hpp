@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 class DynamicTreeTest : public Test
 {
@@ -187,7 +187,7 @@ public:
     {
         auto actor = static_cast<Actor*>(m_tree.GetUserData(proxyId));
 
-        const auto output = box2d::RayCast(actor->aabb, input);
+        const auto output = playrho::RayCast(actor->aabb, input);
 
         if (output.hit)
         {
@@ -348,7 +348,7 @@ private:
                 continue;
             }
 
-            const auto output = box2d::RayCast(m_actors[i].aabb, input);
+            const auto output = playrho::RayCast(m_actors[i].aabb, input);
             if (output.hit)
             {
                 bruteActor = m_actors + i;
@@ -376,6 +376,6 @@ private:
     bool m_automated;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

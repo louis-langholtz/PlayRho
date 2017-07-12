@@ -23,7 +23,7 @@
 #include <PlayRho/Common/Math.hpp>
 #include <vector>
 
-namespace box2d
+namespace playrho
 {
     class Shape;
 
@@ -149,6 +149,6 @@ namespace box2d
     /// @return <code>true</code> if point is contained in the proxy, <code>false</code> otherwise.
     bool TestPoint(const DistanceProxy& proxy, const Length2D pLocal) noexcept;
     
-}; // namespace box2d
+}; // namespace playrho
 
 #endif /* DistanceProxy_hpp */

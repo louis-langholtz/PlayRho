@@ -22,7 +22,7 @@
 #include <PlayRho/Collision/Shapes/PolygonShape.hpp>
 #include <PlayRho/Collision/Shapes/EdgeShape.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(MassData, ByteSizeIs_16_32_or_64)
 {

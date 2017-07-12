@@ -22,7 +22,7 @@
 
 #include <PlayRho/Common/Math.hpp>
 
-namespace box2d {
+namespace playrho {
 
 /// RGBA Color.
 /// @details Color for drawing. Each value has the range [0,1].
@@ -92,6 +92,6 @@ public:
     virtual Length2D GetTranslation() const = 0;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

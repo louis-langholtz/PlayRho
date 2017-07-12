@@ -23,7 +23,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
     
     /// @brief Bag of disks test.
     class BagOfDisks: public Test

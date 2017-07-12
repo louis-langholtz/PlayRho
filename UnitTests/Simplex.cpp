@@ -19,7 +19,7 @@
 #include "gtest/gtest.h"
 #include <PlayRho/Collision/Simplex.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(SimplexCache, ByteSizeIs_12_16_or_32)
 {

@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 class OneSidedPlatform : public Test
 {
@@ -119,6 +119,6 @@ public:
     Fixture* m_character;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

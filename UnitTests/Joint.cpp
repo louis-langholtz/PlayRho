@@ -19,7 +19,7 @@
 #include "gtest/gtest.h"
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(Joint, ByteSize)
 {

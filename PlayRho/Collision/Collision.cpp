@@ -20,7 +20,7 @@
 #include <PlayRho/Collision/Collision.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
 
-namespace box2d {
+namespace playrho {
 
 PointStates GetPointStates(const Manifold& manifold1, const Manifold& manifold2) noexcept
 {
@@ -102,4 +102,4 @@ ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, Length o
     return vOut;
 }
 
-} // namespace box2d
+} // namespace playrho

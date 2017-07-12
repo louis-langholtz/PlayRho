@@ -23,7 +23,7 @@
 #include <PlayRho/Collision/Shapes/PolygonShape.hpp>
 #include <PlayRho/Collision/Shapes/EdgeShape.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(CollideShapes, IdenticalOverlappingCircles)
 {

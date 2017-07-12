@@ -21,7 +21,7 @@
 #include <PlayRho/Dynamics/Island.hpp>
 #include <type_traits>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(IslandBodyContainer, BytesSizeIs24)
 {

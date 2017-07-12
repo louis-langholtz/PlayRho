@@ -26,7 +26,7 @@
 
 #include <chrono>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(Body, ContactsByteSize)
 {

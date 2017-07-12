@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 class ShapeEditing : public Test
 {
@@ -100,6 +100,6 @@ public:
     bool m_sensor;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

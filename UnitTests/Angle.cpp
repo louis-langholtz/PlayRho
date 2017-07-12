@@ -19,7 +19,7 @@
 #include "gtest/gtest.h"
 #include <PlayRho/Common/Math.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(Angle, ByteSizeIs_4_8_or_16)
 {

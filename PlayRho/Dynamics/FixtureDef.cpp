@@ -22,9 +22,9 @@
 #include <PlayRho/Dynamics/FixtureDef.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
-FixtureDef box2d::GetFixtureDef(const Fixture& fixture) noexcept
+FixtureDef playrho::GetFixtureDef(const Fixture& fixture) noexcept
 {
     return FixtureDef{fixture.GetUserData(), fixture.IsSensor(), fixture.GetFilterData()};
 }

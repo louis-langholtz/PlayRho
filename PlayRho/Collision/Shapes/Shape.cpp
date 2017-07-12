@@ -19,14 +19,14 @@
 
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
-bool box2d::TestPoint(const Shape& shape, const Length2D pLocal) noexcept
+bool playrho::TestPoint(const Shape& shape, const Length2D pLocal) noexcept
 {
     const auto childCount = shape.GetChildCount();
     for (auto i = decltype(childCount){0}; i < childCount; ++i)
     {
-        if (box2d::TestPoint(shape.GetChild(i), pLocal))
+        if (playrho::TestPoint(shape.GetChild(i), pLocal))
         {
             return true;
         }

@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 // Note: even with a restitution of 1.0, there is some energy change
 // due to position correction.
@@ -56,6 +56,6 @@ public:
     }
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

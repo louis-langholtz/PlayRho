@@ -23,7 +23,7 @@
 #include <PlayRho/PlayRho.hpp>
 #include "Drawer.hpp"
 
-namespace box2d {
+namespace playrho {
 
 struct GLRenderPoints;
 struct GLRenderLines;
@@ -125,6 +125,6 @@ private:
     Real m_sinInc;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

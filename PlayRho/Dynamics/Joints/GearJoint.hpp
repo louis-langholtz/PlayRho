@@ -22,7 +22,7 @@
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
-namespace box2d {
+namespace playrho {
 
 /// Gear joint definition. This definition requires two existing
 /// revolute or prismatic joints (any combination will work).
@@ -125,6 +125,6 @@ private:
 
 GearJointDef GetGearJointDef(const GearJoint& joint) noexcept;
     
-} // namespace box2d
+} // namespace playrho
 
 #endif

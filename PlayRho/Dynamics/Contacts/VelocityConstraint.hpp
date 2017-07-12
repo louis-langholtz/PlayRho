@@ -24,7 +24,7 @@
 #include <PlayRho/Common/Span.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
-namespace box2d {
+namespace playrho {
     
     class Manifold;
     
@@ -448,6 +448,6 @@ namespace box2d {
         SetTangentImpulseAtPoint(vc, 1, impulses[1]);
     }
 
-} // namespace box2d
+} // namespace playrho
 
 #endif /* VelocityConstraint_hpp */

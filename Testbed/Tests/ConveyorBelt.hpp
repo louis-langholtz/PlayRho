@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 class ConveyorBelt : public Test
 {
@@ -81,6 +81,6 @@ public:
     Fixture* m_platform;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

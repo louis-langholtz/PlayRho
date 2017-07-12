@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 class Tumbler : public Test
 {
@@ -158,6 +158,6 @@ public:
                                                                     .UseFriction(Real(0)));
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

@@ -23,7 +23,7 @@
 #include <PlayRho/Common/Span.hpp>
 #include <memory>
 
-namespace box2d
+namespace playrho
 {
 
 class Test;
@@ -56,6 +56,6 @@ struct TestEntry
 ///
 Span<const TestEntry> GetTestEntries();
 
-} // namespace box2d
+} // namespace playrho
 
 #endif /* TestEntry_hpp */

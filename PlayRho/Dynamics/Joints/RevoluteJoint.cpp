@@ -23,7 +23,7 @@
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 // Point-to-point constraint
 // C = p2 - p1
@@ -518,17 +518,17 @@ void RevoluteJoint::SetLimits(Angle lower, Angle upper)
     }
 }
 
-Angle box2d::GetJointAngle(const RevoluteJoint& joint)
+Angle playrho::GetJointAngle(const RevoluteJoint& joint)
 {
     return joint.GetBodyB()->GetAngle() - joint.GetBodyA()->GetAngle() - joint.GetReferenceAngle();
 }
 
-AngularVelocity box2d::GetJointSpeed(const RevoluteJoint& joint)
+AngularVelocity playrho::GetJointSpeed(const RevoluteJoint& joint)
 {
     return joint.GetBodyB()->GetVelocity().angular - joint.GetBodyA()->GetVelocity().angular;
 }
 
-RevoluteJointDef box2d::GetRevoluteJointDef(const RevoluteJoint& joint) noexcept
+RevoluteJointDef playrho::GetRevoluteJointDef(const RevoluteJoint& joint) noexcept
 {
     auto def = RevoluteJointDef{};
     

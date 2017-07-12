@@ -19,7 +19,7 @@
 #include "gtest/gtest.h"
 #include <PlayRho/Common/Math.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(Sweep, ByteSizeIs_36_or_72)
 {

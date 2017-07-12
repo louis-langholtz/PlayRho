@@ -19,7 +19,7 @@
 #include "gtest/gtest.h"
 #include <PlayRho/Common/Math.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 static inline bool ten_epsilon_equal(float x, float y)
 {

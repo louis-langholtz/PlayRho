@@ -19,7 +19,7 @@
 #include "gtest/gtest.h"
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(BodyConstraint, ByteSizeIs_40_80_or_160)
 {

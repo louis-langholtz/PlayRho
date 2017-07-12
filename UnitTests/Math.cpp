@@ -22,7 +22,7 @@
 #include <chrono>
 #include <cmath>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(Math, Sqrt)
 {

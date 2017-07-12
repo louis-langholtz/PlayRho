@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 class EdgeTest : public Test
 {
@@ -91,6 +91,6 @@ public:
     }
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

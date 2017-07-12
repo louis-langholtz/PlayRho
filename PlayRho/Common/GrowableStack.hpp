@@ -22,7 +22,7 @@
 #include <PlayRho/Common/Settings.hpp>
 #include <cstring>
 
-namespace box2d {
+namespace playrho {
 
 /// This is a growable LIFO stack with an initial capacity of N.
 /// If the stack size exceeds the initial capacity, the heap is used
@@ -102,6 +102,6 @@ private:
     CountType m_capacity = N;
 };
 
-} /* namespace box2d */
+} /* namespace playrho */
 
 #endif

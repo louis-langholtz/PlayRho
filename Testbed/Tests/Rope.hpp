@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 ///
 class RopeTest : public Test
@@ -93,6 +93,6 @@ public:
     Real m_angle;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

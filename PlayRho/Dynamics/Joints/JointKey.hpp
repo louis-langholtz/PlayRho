@@ -28,7 +28,7 @@
 #include <utility>
 #include <functional>
 
-namespace box2d
+namespace playrho
 {
     class Joint;
     class Body;
@@ -95,27 +95,27 @@ namespace box2d
 namespace std
 {
     template <>
-    struct less<box2d::JointKey>
+    struct less<playrho::JointKey>
     {
-        constexpr bool operator()(const box2d::JointKey& lhs,
-                                  const box2d::JointKey& rhs) const
+        constexpr bool operator()(const playrho::JointKey& lhs,
+                                  const playrho::JointKey& rhs) const
         {
-            return box2d::Compare(lhs, rhs) < 0;
+            return playrho::Compare(lhs, rhs) < 0;
         }
     };
     
     template <>
-    struct equal_to<box2d::JointKey>
+    struct equal_to<playrho::JointKey>
     {
-        constexpr bool operator()( const box2d::JointKey& lhs, const box2d::JointKey& rhs ) const
+        constexpr bool operator()( const playrho::JointKey& lhs, const playrho::JointKey& rhs ) const
         {
-            return box2d::Compare(lhs, rhs) == 0;
+            return playrho::Compare(lhs, rhs) == 0;
         }
     };
 
 }
 
-namespace box2d
+namespace playrho
 {
     inline Joint* GetJointPtr(std::pair<JointKey, Joint*> value)
     {

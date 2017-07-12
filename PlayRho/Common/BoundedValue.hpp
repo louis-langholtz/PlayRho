@@ -27,7 +27,7 @@
 #include <type_traits>
 #include <iostream>
 
-namespace box2d {
+namespace playrho {
     
     enum class LoValueCheck
     {

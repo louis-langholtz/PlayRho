@@ -22,7 +22,7 @@
 
 #include <PlayRho/Common/Settings.hpp>
 
-namespace box2d
+namespace playrho
 {
     class World;
     class Body;
@@ -78,6 +78,6 @@ namespace box2d
 
     void Dump(const WheelJoint& joint, std::size_t index);
     
-} // namespace box2d
+} // namespace playrho
 
 #endif /* CodeDumper_hpp */

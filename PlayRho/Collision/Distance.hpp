@@ -23,7 +23,7 @@
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/Simplex.hpp>
 
-namespace box2d
+namespace playrho
 {
     class DistanceProxy;
 
@@ -90,6 +90,6 @@ namespace box2d
                      const DistanceProxy& proxyB, const Transformation& xfB,
                      const DistanceConf conf = DistanceConf{});
 
-} /* namespace box2d */
+} /* namespace playrho */
 
 #endif

@@ -23,7 +23,7 @@
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/Span.hpp>
 
-namespace box2d
+namespace playrho
 {
     class DistanceProxy;
 
@@ -80,6 +80,6 @@ namespace box2d
                                          const DistanceProxy& proxy2,
                                          Length stop = MaxFloat * Meter);
     
-} // namespace box2d
+} // namespace playrho
 
 #endif /* ShapeSeparation_hpp */

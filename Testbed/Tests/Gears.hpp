@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 class Gears : public Test
 {
@@ -151,6 +151,6 @@ public:
     GearJoint* m_joint5;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

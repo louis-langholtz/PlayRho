@@ -29,36 +29,36 @@
 int main(int, char**)
 {
     // Construct a world object, which will hold and simulate the rigid bodies.
-    box2d::World world;
+    playrho::World world;
 
     // Call the body factory which allocates memory for the ground body
     // from a pool and creates the ground box shape (also from a pool).
     // The body is also added to the world.
-    const auto groundBody = world.CreateBody(box2d::BodyDef{}
-                                             .UseLocation(box2d::Vec2(0.0, -10.0) * box2d::Meter));
+    const auto groundBody = world.CreateBody(playrho::BodyDef{}
+                                             .UseLocation(playrho::Vec2(0.0, -10.0) * playrho::Meter));
 
     // Define the ground box shape.
     // The extents are the half-widths of the box.
-    const auto groundBox = std::make_shared<box2d::PolygonShape>(box2d::Real(50) * box2d::Meter,
-                                                                 box2d::Real(10) * box2d::Meter);
+    const auto groundBox = std::make_shared<playrho::PolygonShape>(playrho::Real(50) * playrho::Meter,
+                                                                 playrho::Real(10) * playrho::Meter);
 
     // Add the ground fixture to the ground body.
     groundBody->CreateFixture(groundBox);
 
     // Define the dynamic body. We set its position and call the body factory.
-    const auto body = world.CreateBody(box2d::BodyDef{}
-                                       .UseType(box2d::BodyType::Dynamic)
-                                       .UseLocation(box2d::Vec2(0.0, 4.0) * box2d::Meter));
+    const auto body = world.CreateBody(playrho::BodyDef{}
+                                       .UseType(playrho::BodyType::Dynamic)
+                                       .UseLocation(playrho::Vec2(0.0, 4.0) * playrho::Meter));
 
     // Define another box shape for our dynamic body.
-    const auto dynamicBox = std::make_shared<box2d::PolygonShape>(box2d::Real(1) * box2d::Meter,
-                                                                  box2d::Real(1) * box2d::Meter);
+    const auto dynamicBox = std::make_shared<playrho::PolygonShape>(playrho::Real(1) * playrho::Meter,
+                                                                  playrho::Real(1) * playrho::Meter);
 
     // Set the box density to be non-zero, so it will be dynamic.
-    dynamicBox->SetDensity(box2d::Real(1) * box2d::KilogramPerSquareMeter);
+    dynamicBox->SetDensity(playrho::Real(1) * playrho::KilogramPerSquareMeter);
 
     // Override the default friction.
-    dynamicBox->SetFriction(box2d::Real(0.3));
+    dynamicBox->SetFriction(playrho::Real(0.3));
 
     // Add the shape to the body.
     body->CreateFixture(dynamicBox);
@@ -66,8 +66,8 @@ int main(int, char**)
     // Prepare for simulation. Typically we use a time step of 1/60 of a
     // second (60Hz) and 10 iterations. This provides a high quality simulation
     // in most game scenarios.
-    auto stepConf = box2d::StepConf{};
-    stepConf.SetInvTime(box2d::Real(60) * box2d::Hertz);
+    auto stepConf = playrho::StepConf{};
+    stepConf.SetInvTime(playrho::Real(60) * playrho::Hertz);
     stepConf.regVelocityIterations = 6;
     stepConf.regPositionIterations = 2;
 
@@ -85,9 +85,9 @@ int main(int, char**)
         const auto angle = body->GetAngle();
 
         std::printf("%4.2f %4.2f %4.2f\n",
-                    double(box2d::Real(position.x / box2d::Meter)),
-                    double(box2d::Real(position.y / box2d::Meter)),
-                    double(box2d::Real(angle / box2d::Degree)));
+                    double(playrho::Real(position.x / playrho::Meter)),
+                    double(playrho::Real(position.y / playrho::Meter)),
+                    double(playrho::Real(angle / playrho::Degree)));
     }
 
     // When the world destructor is called, all bodies and joints are freed. This can

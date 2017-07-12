@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 /// This test shows how to use a motor joint. A motor joint
 /// can be used to animate a dynamic body. With finite motor forces
@@ -93,6 +93,6 @@ public:
     bool m_go = false;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

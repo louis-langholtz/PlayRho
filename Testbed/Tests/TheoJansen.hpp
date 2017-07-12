@@ -25,7 +25,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 class TheoJansen : public Test
 {
@@ -217,6 +217,6 @@ public:
     AngularVelocity m_motorSpeed;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif // THEO_JANSEN_H

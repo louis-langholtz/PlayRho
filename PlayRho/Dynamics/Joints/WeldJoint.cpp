@@ -23,7 +23,7 @@
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 // Point-to-point constraint
 // C = p2 - p1
@@ -402,7 +402,7 @@ Torque WeldJoint::GetReactionTorque(Frequency inv_dt) const
     return inv_dt * angMomentum;
 }
 
-WeldJointDef box2d::GetWeldJointDef(const WeldJoint& joint) noexcept
+WeldJointDef playrho::GetWeldJointDef(const WeldJoint& joint) noexcept
 {
     auto def = WeldJointDef{};
     

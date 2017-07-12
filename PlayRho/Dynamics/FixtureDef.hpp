@@ -27,7 +27,7 @@
 
 #include <PlayRho/Dynamics/Filter.hpp>
 
-namespace box2d {
+namespace playrho {
     
     class Fixture;
 
@@ -78,6 +78,6 @@ namespace box2d {
     
     FixtureDef GetFixtureDef(const Fixture& fixture) noexcept;
 
-} // namespace box2d
+} // namespace playrho
 
 #endif /* FixtureDef_hpp */

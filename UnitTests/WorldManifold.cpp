@@ -28,7 +28,7 @@
 #include <PlayRho/Dynamics/BodyDef.hpp>
 #include <PlayRho/Dynamics/FixtureDef.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(WorldManifold, ByteSizeIs_36_72_or_144)
 {

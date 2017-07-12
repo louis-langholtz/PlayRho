@@ -22,7 +22,7 @@
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
-namespace box2d {
+namespace playrho {
 
 /// Motor joint definition.
 struct MotorJointDef : public JointDef
@@ -114,6 +114,6 @@ private:
 
 MotorJointDef GetMotorJointDef(const MotorJoint& joint) noexcept;
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

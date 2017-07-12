@@ -23,7 +23,7 @@
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 // 1-D constrained system
 // m (v2 - v1) = lambda
@@ -266,7 +266,7 @@ Torque DistanceJoint::GetReactionTorque(Frequency inv_dt) const
     return Torque{0};
 }
 
-DistanceJointDef box2d::GetDistanceJointDef(const DistanceJoint& joint) noexcept
+DistanceJointDef playrho::GetDistanceJointDef(const DistanceJoint& joint) noexcept
 {
     auto def = DistanceJointDef{};
     

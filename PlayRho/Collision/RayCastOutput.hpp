@@ -25,7 +25,7 @@
 
 #include <PlayRho/Common/Math.hpp>
 
-namespace box2d
+namespace playrho
 {
     struct RayCastInput;
     class AABB;
@@ -99,6 +99,6 @@ namespace box2d
     RayCastOutput RayCast(const Shape& shape, ChildCounter childIndex,
                           const RayCastInput& input, const Transformation& transform) noexcept;
 
-} // namespace box2d
+} // namespace playrho
 
 #endif /* RayCastOutput_hpp */

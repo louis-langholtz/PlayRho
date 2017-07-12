@@ -23,7 +23,7 @@
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Collision/AABB.hpp>
 
-namespace box2d
+namespace playrho
 {
     class Fixture;
 
@@ -47,6 +47,6 @@ namespace box2d
         const ChildCounter childIndex; ///< Child index. 4-bytes.
     };
     
-} // namespace box2d
+} // namespace playrho
 
 #endif /* FixtureProxy_hpp */

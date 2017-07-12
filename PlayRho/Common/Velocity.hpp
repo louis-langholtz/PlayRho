@@ -25,7 +25,7 @@
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/Vector2D.hpp>
 
-namespace box2d
+namespace playrho
 {
     /// @brief Velocity related data structure.
     /// @note This data structure is 12-bytes (with 4-byte Real on at least one 64-bit platform).

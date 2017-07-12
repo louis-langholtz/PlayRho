@@ -25,7 +25,7 @@
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <vector>
 
-namespace box2d {
+namespace playrho {
 
 class EdgeShape;
 
@@ -98,7 +98,7 @@ private:
     ChildCounter m_count = 0;
 };
 
-inline void ChainShape::Accept(box2d::Shape::Visitor &visitor) const
+inline void ChainShape::Accept(playrho::Shape::Visitor &visitor) const
 {
     visitor.Visit(*this);
 }
@@ -126,6 +126,6 @@ inline ChildCounter GetNextIndex(const ChainShape& shape, ChildCounter index) no
     return GetModuloNext(index, shape.GetVertexCount());
 }
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

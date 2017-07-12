@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 // A basic slider crank created for GDC tutorial: Understanding Constraints
 class BasicSliderCrank : public Test
@@ -90,6 +90,6 @@ public:
     }
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

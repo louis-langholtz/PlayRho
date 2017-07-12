@@ -26,7 +26,7 @@
 #include <PlayRho/Dynamics/BodyDef.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(FrictionJoint, ByteSize)
 {

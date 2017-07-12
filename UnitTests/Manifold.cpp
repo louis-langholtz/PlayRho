@@ -19,7 +19,7 @@
 #include "gtest/gtest.h"
 #include <PlayRho/Collision/Manifold.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(Manifold, ByteSizeIs_60_120_or_240)
 {

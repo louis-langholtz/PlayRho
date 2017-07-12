@@ -22,7 +22,7 @@
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
-namespace box2d {
+namespace playrho {
 
 /// Revolute joint definition. This requires defining an
 /// anchor point where the bodies are joined. The definition
@@ -211,6 +211,6 @@ AngularVelocity GetJointSpeed(const RevoluteJoint& joint);
 
 RevoluteJointDef GetRevoluteJointDef(const RevoluteJoint& joint) noexcept;
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

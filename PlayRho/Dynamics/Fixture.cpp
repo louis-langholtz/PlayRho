@@ -27,7 +27,7 @@
 
 #include <algorithm>
 
-using namespace box2d;
+using namespace playrho;
 
 using std::begin;
 using std::end;
@@ -93,17 +93,17 @@ void Fixture::SetSensor(bool sensor) noexcept
     }
 }
 
-bool box2d::TestPoint(const Fixture& f, const Length2D p) noexcept
+bool playrho::TestPoint(const Fixture& f, const Length2D p) noexcept
 {
     return TestPoint(*f.GetShape(), InverseTransform(p, GetTransformation(f)));
 }
 
-void box2d::SetAwake(const Fixture& f) noexcept
+void playrho::SetAwake(const Fixture& f) noexcept
 {
     f.GetBody()->SetAwake();
 }
 
-Transformation box2d::GetTransformation(const Fixture& f) noexcept
+Transformation playrho::GetTransformation(const Fixture& f) noexcept
 {
     assert(f.GetBody() != nullptr);
 

@@ -20,7 +20,7 @@
 #include <PlayRho/PlayRho.hpp>
 #include <PlayRho/Common/CodeDumper.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 #if 0 // TODO: update this when library stablizes more and then re-enable its inclusion
 

@@ -27,7 +27,7 @@
 #include <PlayRho/Rope/Rope.hpp>
 #include <PlayRho/Dynamics/FixtureProxy.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 static void DrawCorner(Drawer& drawer, Length2D p, Length r, Angle a0, Angle a1, Color color)
 {
@@ -389,7 +389,7 @@ Test::~Test()
     delete m_world;
 }
 
-void Test::ResetWorld(const box2d::World &saved)
+void Test::ResetWorld(const playrho::World &saved)
 {
     SetSelectedFixture(nullptr);
 
@@ -1004,7 +1004,7 @@ void Test::ShiftOrigin(const Length2D& newOrigin)
 
 constexpr auto RAND_LIMIT = 32767;
 
-Real box2d::RandomFloat()
+Real playrho::RandomFloat()
 {
     auto r = static_cast<Real>(std::rand() & (RAND_LIMIT));
     r /= RAND_LIMIT;
@@ -1012,7 +1012,7 @@ Real box2d::RandomFloat()
     return r;
 }
 
-Real box2d::RandomFloat(Real lo, Real hi)
+Real playrho::RandomFloat(Real lo, Real hi)
 {
     auto r = static_cast<Real>(std::rand() & (RAND_LIMIT));
     r /= RAND_LIMIT;
@@ -1030,7 +1030,7 @@ static const char* GetName(ContactFeature::Type type)
     return "unknown";
 }
 
-::std::ostream& box2d::operator<<(::std::ostream& os, const ContactFeature& value)
+::std::ostream& playrho::operator<<(::std::ostream& os, const ContactFeature& value)
 {
     os << "{";
     os << ::GetName(value.typeA);

@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 // This is used to test sensor shapes.
 class SensorTest : public Test
@@ -164,6 +164,6 @@ public:
     bool m_touching[e_count];
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

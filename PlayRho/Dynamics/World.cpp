@@ -73,7 +73,7 @@
 
 using namespace std;
 
-namespace box2d
+namespace playrho
 {
 
 using BodyPtr = Body*;
@@ -1397,7 +1397,7 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
     }
     
     results.bodiesSlept = BodyCounter{0};
-    if (::box2d::IsValid(Real{conf.minStillTimeToSleep / Second}))
+    if (::playrho::IsValid(Real{conf.minStillTimeToSleep / Second}))
     {
         const auto minUnderActiveTime = UpdateUnderActiveTimes(island.m_bodies, conf);
         if ((minUnderActiveTime >= conf.minStillTimeToSleep) && results.solved)
@@ -2103,7 +2103,7 @@ void World::RayCast(Length2D point1, Length2D point2, RayCastCallback callback)
         const auto body = fixture->GetBody();
         const auto child = shape->GetChild(index);
         const auto transformation = body->GetTransformation();
-        const auto output = box2d::RayCast(child, input, transformation);
+        const auto output = playrho::RayCast(child, input, transformation);
         if (output.hit)
         {
             const auto fraction = output.fraction;
@@ -2242,7 +2242,7 @@ World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
             const auto bodyA = fixtureA->GetBody();
             const auto bodyB = fixtureB->GetBody();
 
-            if (!::box2d::ShouldCollide(*bodyB, *bodyA) || !ShouldCollide(fixtureA, fixtureB))
+            if (!::playrho::ShouldCollide(*bodyB, *bodyA) || !ShouldCollide(fixtureA, fixtureB))
             {
                 InternalDestroy(&contact);
                 ++stats.filteredOut;
@@ -2434,7 +2434,7 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
     }
     
     // Does a joint override collision? Is at least one body dynamic?
-    if (!::box2d::ShouldCollide(*bodyB, *bodyA) || !ShouldCollide(fixtureA, fixtureB))
+    if (!::playrho::ShouldCollide(*bodyB, *bodyA) || !ShouldCollide(fixtureA, fixtureB))
     {
         return false;
     }
@@ -2851,8 +2851,8 @@ ChildCounter World::Synchronize(Fixture& fixture,
                                  const Transformation xfm1, const Transformation xfm2,
                                  const Real multiplier, const Length extension)
 {
-    assert(::box2d::IsValid(xfm1));
-    assert(::box2d::IsValid(xfm2));
+    assert(::playrho::IsValid(xfm1));
+    assert(::playrho::IsValid(xfm2));
     
     auto updatedCount = ChildCounter{0};
     const auto shape = fixture.GetShape();
@@ -2951,7 +2951,7 @@ BodyCounter Awaken(World& world) noexcept
     // Can't use count_if since body gets modified.
     auto awoken = BodyCounter{0};
     for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](World::Bodies::value_type &b) {
-        if (box2d::Awaken(GetRef(b)))
+        if (playrho::Awaken(GetRef(b)))
         {
             ++awoken;
         }
@@ -2982,4 +2982,4 @@ bool IsActive(const Contact& contact) noexcept
     return activeA || activeB;
 }
 
-} // namespace box2d
+} // namespace playrho

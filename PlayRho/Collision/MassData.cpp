@@ -27,9 +27,9 @@
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
-MassData box2d::GetMassData(const Length r, const NonNegative<Density> density,
+MassData playrho::GetMassData(const Length r, const NonNegative<Density> density,
                             const Length2D location)
 {
     // Uses parallel axis theorem, perpendicular axis theorem, and the second moment of area.
@@ -53,7 +53,7 @@ MassData box2d::GetMassData(const Length r, const NonNegative<Density> density,
     return MassData{mass, location, I};
 }
 
-MassData box2d::GetMassData(const Length r, const NonNegative<Density> density,
+MassData playrho::GetMassData(const Length r, const NonNegative<Density> density,
                             const Length2D v0, const Length2D v1)
 {
     const auto r_squared = Area{r * r};
@@ -89,12 +89,12 @@ MassData box2d::GetMassData(const Length r, const NonNegative<Density> density,
     return MassData{totalMass, center, I};
 }
 
-Area box2d::GetAreaOfCircle(Length radius)
+Area playrho::GetAreaOfCircle(Length radius)
 {
     return Area{radius * radius * Pi};
 }
 
-Area box2d::GetAreaOfPolygon(Span<const Length2D> vertices)
+Area playrho::GetAreaOfPolygon(Span<const Length2D> vertices)
 {
     // Uses the "Shoelace formula".
     // See: https://en.wikipedia.org/wiki/Shoelace_formula
@@ -110,7 +110,7 @@ Area box2d::GetAreaOfPolygon(Span<const Length2D> vertices)
     return sum / Real{2};
 }
 
-SecondMomentOfArea box2d::GetPolarMoment(Span<const Length2D> vertices)
+SecondMomentOfArea playrho::GetPolarMoment(Span<const Length2D> vertices)
 {
     assert(vertices.size() > 2);
 
@@ -142,12 +142,12 @@ SecondMomentOfArea box2d::GetPolarMoment(Span<const Length2D> vertices)
     return (secondMomentOfAreaX + secondMomentOfAreaY) / Real{12};
 }
 
-MassData box2d::GetMassData(const Fixture& f)
+MassData playrho::GetMassData(const Fixture& f)
 {
     return f.GetShape()->GetMassData();
 }
 
-MassData box2d::ComputeMassData(const Body& body) noexcept
+MassData playrho::ComputeMassData(const Body& body) noexcept
 {
     auto mass = Mass{0};
     auto I = RotInertia{0};
@@ -166,7 +166,7 @@ MassData box2d::ComputeMassData(const Body& body) noexcept
     return MassData{mass, center, I};
 }
 
-MassData box2d::GetMassData(const Body& body) noexcept
+MassData playrho::GetMassData(const Body& body) noexcept
 {
     const auto I = GetLocalInertia(body);
     return MassData{GetMass(body), body.GetLocalCenter(), I};

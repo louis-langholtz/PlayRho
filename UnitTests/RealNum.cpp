@@ -19,7 +19,7 @@
 #include "gtest/gtest.h"
 #include <PlayRho/Common/Settings.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(Real, ByteSizeIs_4_8_or_16)
 {

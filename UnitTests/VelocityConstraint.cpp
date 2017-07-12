@@ -21,7 +21,7 @@
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 #include <PlayRho/Collision/WorldManifold.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(VelocityConstraint, ByteSizeIs_168_or_304_or_576)
 {

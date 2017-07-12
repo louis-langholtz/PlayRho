@@ -23,7 +23,7 @@
 
 #include <cstddef>
 
-namespace box2d
+namespace playrho
 {
     template <typename IT>
     class Range

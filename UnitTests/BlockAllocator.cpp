@@ -19,7 +19,7 @@
 #include "gtest/gtest.h"
 #include <PlayRho/Common/BlockAllocator.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(BlockAllocator, ByteSizeIs136)
 {

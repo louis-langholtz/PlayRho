@@ -24,7 +24,7 @@
 
 #include <PlayRho/Common/Settings.hpp>
 
-namespace box2d
+namespace playrho
 {
     /// Vector 2D.
     template <typename TYPE>
@@ -267,6 +267,6 @@ namespace box2d
     }
 #endif
 
-} // namespace box2d
+} // namespace playrho
 
 #endif /* Vec2_hpp */

@@ -24,7 +24,7 @@
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/Shapes/PolygonShape.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(SeparationFinder, ByteSizeIs_40_56_or_96)
 {

@@ -38,7 +38,7 @@
 #include <chrono>
 #include <type_traits>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(World, ByteSize)
 {

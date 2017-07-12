@@ -49,7 +49,7 @@
 #define snprintf _snprintf
 #endif
 
-using namespace box2d;
+using namespace playrho;
 
 //
 struct UIState

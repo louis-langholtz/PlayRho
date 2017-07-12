@@ -25,7 +25,7 @@
 #include <typeinfo>
 #include <sstream>
 
-namespace box2d {
+namespace playrho {
 
 // Memory allocators. Modify these to use your own allocator.
 void* Alloc(std::size_t size)
@@ -101,4 +101,4 @@ std::string GetBuildDetails() noexcept
     return stream.str();
 }
 
-} // namespace box2d
+} // namespace playrho

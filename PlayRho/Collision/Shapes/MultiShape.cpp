@@ -21,7 +21,7 @@
 #include <PlayRho/Collision/Shapes/MultiShape.hpp>
 #include <PlayRho/Common/VertexSet.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 /// Computes the mass properties of this shape using its dimensions and density.
 /// The inertia tensor is computed about the local origin.

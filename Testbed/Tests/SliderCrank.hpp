@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 // A motor driven slider crank with joint friction.
 class SliderCrank : public Test
@@ -139,6 +139,6 @@ public:
     PrismaticJoint* m_joint2;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

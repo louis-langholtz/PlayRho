@@ -31,7 +31,7 @@
 
 #include <algorithm>
 
-namespace box2d
+namespace playrho
 {
     /// @brief Body attorney.
     ///
@@ -258,6 +258,6 @@ namespace box2d
         friend class World;
     };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif /* BodyAtty_hpp */

@@ -19,7 +19,7 @@
 
 #include <PlayRho/Dynamics/Contacts/PositionSolverManifold.hpp>
 
-namespace box2d
+namespace playrho
 {
 
 namespace
@@ -107,4 +107,4 @@ PositionSolverManifold GetPSM(const Manifold& m, Manifold::size_type idx,
     return PositionSolverManifold{GetInvalid<UnitVec2>(), GetInvalid<Length2D>(), GetInvalid<Length>()};
 }
 
-}; // namespace box2d
+}; // namespace playrho

@@ -22,7 +22,7 @@
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
-namespace box2d {
+namespace playrho {
 
 /// Distance joint definition. This requires defining an
 /// anchor point on both bodies and the non-zero length of the
@@ -155,6 +155,6 @@ inline Real DistanceJoint::GetDampingRatio() const noexcept
     
 DistanceJointDef GetDistanceJointDef(const DistanceJoint& joint) noexcept;
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

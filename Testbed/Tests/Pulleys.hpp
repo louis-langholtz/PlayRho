@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 class Pulleys : public Test
 {
@@ -85,6 +85,6 @@ public:
     PulleyJoint* m_joint1;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

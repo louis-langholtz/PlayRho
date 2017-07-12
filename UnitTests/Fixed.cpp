@@ -20,7 +20,7 @@
 #include <PlayRho/Common/Fixed.hpp>
 #include <PlayRho/Common/Math.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(Fixed32, ByteSizeIs4)
 {

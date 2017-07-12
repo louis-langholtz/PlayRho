@@ -24,7 +24,7 @@
 #include <PlayRho/Collision/Shapes/PolygonShape.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 static constexpr auto Baumgarte = Real{2} / Real{10};
 

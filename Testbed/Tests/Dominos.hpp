@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 class Dominos : public Test
 {
@@ -172,6 +172,6 @@ public:
     }
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

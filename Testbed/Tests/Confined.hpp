@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 class Confined : public Test
 {
@@ -254,6 +254,6 @@ public:
     std::size_t m_sequence = 0;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

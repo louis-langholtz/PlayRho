@@ -29,7 +29,7 @@
 #include <iterator>
 #include <utility>
 
-using namespace box2d;
+using namespace playrho;
 
 using std::begin;
 using std::end;
@@ -404,7 +404,7 @@ void Body::ClearJoints()
 
 // Free functions...
 
-bool box2d::ShouldCollide(const Body& lhs, const Body& rhs) noexcept
+bool playrho::ShouldCollide(const Body& lhs, const Body& rhs) noexcept
 {
     // At least one body should be accelerable/dynamic.
     if (!lhs.IsAccelerable() && !rhs.IsAccelerable())
@@ -420,7 +420,7 @@ bool box2d::ShouldCollide(const Body& lhs, const Body& rhs) noexcept
     return it == end(joints);
 }
 
-BodyCounter box2d::GetWorldIndex(const Body* body)
+BodyCounter playrho::GetWorldIndex(const Body* body)
 {
     if (body)
     {
@@ -438,7 +438,7 @@ BodyCounter box2d::GetWorldIndex(const Body* body)
     return BodyCounter(-1);
 }
 
-Velocity box2d::GetVelocity(const Body& body, const Time h) noexcept
+Velocity playrho::GetVelocity(const Body& body, const Time h) noexcept
 {
     // Integrate velocity and apply damping.
     auto velocity = body.GetVelocity();
@@ -461,13 +461,13 @@ Velocity box2d::GetVelocity(const Body& body, const Time h) noexcept
     return velocity;
 }
 
-std::size_t box2d::GetFixtureCount(const Body& body)
+std::size_t playrho::GetFixtureCount(const Body& body)
 {
     const auto& fixtures = body.GetFixtures();
     return fixtures.size();
 }
 
-void box2d::RotateAboutWorldPoint(Body& body, Angle amount, Length2D worldPoint)
+void playrho::RotateAboutWorldPoint(Body& body, Angle amount, Length2D worldPoint)
 {
     const auto xfm = body.GetTransformation();
     const auto p = xfm.p - worldPoint;
@@ -480,12 +480,12 @@ void box2d::RotateAboutWorldPoint(Body& body, Angle amount, Length2D worldPoint)
     body.SetTransform(pos, angle);
 }
 
-void box2d::RotateAboutLocalPoint(Body& body, Angle amount, Length2D localPoint)
+void playrho::RotateAboutLocalPoint(Body& body, Angle amount, Length2D localPoint)
 {
     RotateAboutWorldPoint(body, amount, GetWorldPoint(body, localPoint));
 }
 
-Force2D box2d::GetCentripetalForce(const Body& body, const Length2D axis)
+Force2D playrho::GetCentripetalForce(const Body& body, const Length2D axis)
 {
     // For background on centripetal force, see:
     //   https://en.wikipedia.org/wiki/Centripetal_force

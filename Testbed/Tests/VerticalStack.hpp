@@ -23,7 +23,7 @@
 #include "../Framework/Test.hpp"
 #include <array>
 
-namespace box2d {
+namespace playrho {
 
 bool g_blockSolve = true;
 
@@ -150,6 +150,6 @@ public:
     std::shared_ptr<DiskShape> m_bulletshape = std::make_shared<DiskShape>();
 };
     
-} // namespace box2d
+} // namespace playrho
 
 #endif

@@ -30,7 +30,7 @@
 #include <cmath>
 #include <type_traits>
 
-namespace box2d
+namespace playrho
 {
     /// @brief Fixed point template class.
     ///
@@ -742,32 +742,32 @@ namespace box2d
 
 #endif /* !_WIN32 */
 
-} // namespace box2d
+} // namespace playrho
 
 namespace std
 {
     // Fixed32
 
     template <>
-    class numeric_limits<box2d::Fixed32>
+    class numeric_limits<playrho::Fixed32>
     {
     public:
         static constexpr bool is_specialized = true;
         
-        static constexpr box2d::Fixed32 min() noexcept { return box2d::Fixed32::GetMin(); }
-        static constexpr box2d::Fixed32 max() noexcept    { return box2d::Fixed32::GetMax(); }
-        static constexpr box2d::Fixed32 lowest() noexcept { return box2d::Fixed32::GetLowest(); }
+        static constexpr playrho::Fixed32 min() noexcept { return playrho::Fixed32::GetMin(); }
+        static constexpr playrho::Fixed32 max() noexcept    { return playrho::Fixed32::GetMax(); }
+        static constexpr playrho::Fixed32 lowest() noexcept { return playrho::Fixed32::GetLowest(); }
         
-        static constexpr int digits = 31 - box2d::Fixed32::FractionBits;
-        static constexpr int digits10 = 31 - box2d::Fixed32::FractionBits;
+        static constexpr int digits = 31 - playrho::Fixed32::FractionBits;
+        static constexpr int digits10 = 31 - playrho::Fixed32::FractionBits;
         static constexpr int max_digits10 = 5; // TODO: check this
         
         static constexpr bool is_signed = true;
         static constexpr bool is_integer = false;
         static constexpr bool is_exact = true;
         static constexpr int radix = 0;
-        static constexpr box2d::Fixed32 epsilon() noexcept { return box2d::Fixed32{0}; } // TODO
-        static constexpr box2d::Fixed32 round_error() noexcept { return box2d::Fixed32{0}; } // TODO
+        static constexpr playrho::Fixed32 epsilon() noexcept { return playrho::Fixed32{0}; } // TODO
+        static constexpr playrho::Fixed32 round_error() noexcept { return playrho::Fixed32{0}; } // TODO
         
         static constexpr int min_exponent = 0;
         static constexpr int min_exponent10 = 0;
@@ -779,10 +779,10 @@ namespace std
         static constexpr bool has_signaling_NaN = false;
         static constexpr float_denorm_style has_denorm = denorm_absent;
         static constexpr bool has_denorm_loss = false;
-        static constexpr box2d::Fixed32 infinity() noexcept { return box2d::Fixed32::GetInfinity(); }
-        static constexpr box2d::Fixed32 quiet_NaN() noexcept { return box2d::Fixed32::GetNaN(); }
-        static constexpr box2d::Fixed32 signaling_NaN() noexcept { return box2d::Fixed32{0}; }
-        static constexpr box2d::Fixed32 denorm_min() noexcept { return box2d::Fixed32{0}; }
+        static constexpr playrho::Fixed32 infinity() noexcept { return playrho::Fixed32::GetInfinity(); }
+        static constexpr playrho::Fixed32 quiet_NaN() noexcept { return playrho::Fixed32::GetNaN(); }
+        static constexpr playrho::Fixed32 signaling_NaN() noexcept { return playrho::Fixed32{0}; }
+        static constexpr playrho::Fixed32 denorm_min() noexcept { return playrho::Fixed32{0}; }
         
         static constexpr bool is_iec559 = false;
         static constexpr bool is_bounded = true;
@@ -793,91 +793,91 @@ namespace std
         static constexpr float_round_style round_style = round_toward_zero;
     };
 
-    inline box2d::Fixed32 abs(box2d::Fixed32 value) noexcept
+    inline playrho::Fixed32 abs(playrho::Fixed32 value) noexcept
     {
-        return (value < box2d::Fixed32{0})? -value: value;
+        return (value < playrho::Fixed32{0})? -value: value;
     }
     
-    inline box2d::Fixed32 sqrt(box2d::Fixed32 value)
+    inline playrho::Fixed32 sqrt(playrho::Fixed32 value)
     {
-        return box2d::Fixed32{::std::sqrt(static_cast<double>(value))};
+        return playrho::Fixed32{::std::sqrt(static_cast<double>(value))};
     }
 
-    inline float atan2(box2d::Fixed32 y, box2d::Fixed32 x)
+    inline float atan2(playrho::Fixed32 y, playrho::Fixed32 x)
     {
         return atan2(static_cast<float>(y), static_cast<float>(x));
     }
     
-    inline box2d::Fixed32 round(box2d::Fixed32 value) noexcept
+    inline playrho::Fixed32 round(playrho::Fixed32 value) noexcept
     {
-        return box2d::Fixed32{static_cast<int16_t>(value + (box2d::Fixed32{1} / box2d::Fixed32{2}))};
+        return playrho::Fixed32{static_cast<int16_t>(value + (playrho::Fixed32{1} / playrho::Fixed32{2}))};
     }
     
-    inline box2d::Fixed32 nextafter(box2d::Fixed32 from, box2d::Fixed32 to) noexcept
+    inline playrho::Fixed32 nextafter(playrho::Fixed32 from, playrho::Fixed32 to) noexcept
     {
         if (from < to)
         {
-            return from + numeric_limits<box2d::Fixed32>::min();
+            return from + numeric_limits<playrho::Fixed32>::min();
         }
         if (from > to)
         {
-            return from - numeric_limits<box2d::Fixed32>::min();
+            return from - numeric_limits<playrho::Fixed32>::min();
         }
         return to;
     }
     
-    inline float cos(box2d::Fixed32 value)
+    inline float cos(playrho::Fixed32 value)
     {
         return static_cast<float>(cos(static_cast<double>(value)));
     }
     
-    inline float sin(box2d::Fixed32 value)
+    inline float sin(playrho::Fixed32 value)
     {
         return static_cast<float>(sin(static_cast<double>(value)));
     }
 
-    inline double exp(box2d::Fixed32 value)
+    inline double exp(playrho::Fixed32 value)
     {
         return exp(static_cast<double>(value));
     }
     
-    inline bool isfinite(box2d::Fixed32 value) noexcept
+    inline bool isfinite(playrho::Fixed32 value) noexcept
     {
-        return (value > box2d::Fixed32::GetNegativeInfinity()) && (value < box2d::Fixed32::GetInfinity());
+        return (value > playrho::Fixed32::GetNegativeInfinity()) && (value < playrho::Fixed32::GetInfinity());
     }
     
-    constexpr inline bool isnan(box2d::Fixed32 value) noexcept
+    constexpr inline bool isnan(playrho::Fixed32 value) noexcept
     {
-        return value.Compare(0) == box2d::Fixed32::CmpResult::Incomparable;
+        return value.Compare(0) == playrho::Fixed32::CmpResult::Incomparable;
     }
     
-    inline box2d::Fixed32 fmod(box2d::Fixed32 x, box2d::Fixed32 y)
+    inline playrho::Fixed32 fmod(playrho::Fixed32 x, playrho::Fixed32 y)
     {
-        return box2d::Fixed32(fmod(static_cast<double>(x), static_cast<double>(y)));
+        return playrho::Fixed32(fmod(static_cast<double>(x), static_cast<double>(y)));
     }
 
 #ifndef _WIN32
 
     template <>
-    class numeric_limits<box2d::Fixed64>
+    class numeric_limits<playrho::Fixed64>
     {
     public:
         static constexpr bool is_specialized = true;
         
-        static constexpr box2d::Fixed64 min() noexcept { return box2d::Fixed64::GetMin(); }
-        static constexpr box2d::Fixed64 max() noexcept    { return box2d::Fixed64::GetMax(); }
-        static constexpr box2d::Fixed64 lowest() noexcept { return box2d::Fixed64::GetLowest(); }
+        static constexpr playrho::Fixed64 min() noexcept { return playrho::Fixed64::GetMin(); }
+        static constexpr playrho::Fixed64 max() noexcept    { return playrho::Fixed64::GetMax(); }
+        static constexpr playrho::Fixed64 lowest() noexcept { return playrho::Fixed64::GetLowest(); }
         
-        static constexpr int digits = 63 - box2d::Fixed64::FractionBits;
-        static constexpr int digits10 = 63 - box2d::Fixed64::FractionBits;
+        static constexpr int digits = 63 - playrho::Fixed64::FractionBits;
+        static constexpr int digits10 = 63 - playrho::Fixed64::FractionBits;
         static constexpr int max_digits10 = 10; // TODO: check this
         
         static constexpr bool is_signed = true;
         static constexpr bool is_integer = false;
         static constexpr bool is_exact = true;
         static constexpr int radix = 0;
-        static constexpr box2d::Fixed64 epsilon() noexcept { return box2d::Fixed64{0}; } // TODO
-        static constexpr box2d::Fixed64 round_error() noexcept { return box2d::Fixed64{0}; } // TODO
+        static constexpr playrho::Fixed64 epsilon() noexcept { return playrho::Fixed64{0}; } // TODO
+        static constexpr playrho::Fixed64 round_error() noexcept { return playrho::Fixed64{0}; } // TODO
         
         static constexpr int min_exponent = 0;
         static constexpr int min_exponent10 = 0;
@@ -889,10 +889,10 @@ namespace std
         static constexpr bool has_signaling_NaN = false;
         static constexpr float_denorm_style has_denorm = denorm_absent;
         static constexpr bool has_denorm_loss = false;
-        static constexpr box2d::Fixed64 infinity() noexcept { return box2d::Fixed64::GetInfinity(); }
-        static constexpr box2d::Fixed64 quiet_NaN() noexcept { return box2d::Fixed64::GetNaN(); }
-        static constexpr box2d::Fixed64 signaling_NaN() noexcept { return box2d::Fixed64{0}; }
-        static constexpr box2d::Fixed64 denorm_min() noexcept { return box2d::Fixed64{0}; }
+        static constexpr playrho::Fixed64 infinity() noexcept { return playrho::Fixed64::GetInfinity(); }
+        static constexpr playrho::Fixed64 quiet_NaN() noexcept { return playrho::Fixed64::GetNaN(); }
+        static constexpr playrho::Fixed64 signaling_NaN() noexcept { return playrho::Fixed64{0}; }
+        static constexpr playrho::Fixed64 denorm_min() noexcept { return playrho::Fixed64{0}; }
         
         static constexpr bool is_iec559 = false;
         static constexpr bool is_bounded = true;
@@ -903,69 +903,69 @@ namespace std
         static constexpr float_round_style round_style = round_toward_zero;
     };
 
-    inline box2d::Fixed64 abs(box2d::Fixed64 value) noexcept
+    inline playrho::Fixed64 abs(playrho::Fixed64 value) noexcept
     {
-        return (value < box2d::Fixed64{0})? -value: value;
+        return (value < playrho::Fixed64{0})? -value: value;
     }
     
-    inline box2d::Fixed64 sqrt(box2d::Fixed64 value)
+    inline playrho::Fixed64 sqrt(playrho::Fixed64 value)
     {
-        return box2d::Fixed64{::std::sqrt(static_cast<double>(value))};
+        return playrho::Fixed64{::std::sqrt(static_cast<double>(value))};
     }
     
-    inline double atan2(box2d::Fixed64 y, box2d::Fixed64 x)
+    inline double atan2(playrho::Fixed64 y, playrho::Fixed64 x)
     {
         return atan2(static_cast<double>(y), static_cast<double>(x));
     }
     
-    inline box2d::Fixed64 round(box2d::Fixed64 value) noexcept
+    inline playrho::Fixed64 round(playrho::Fixed64 value) noexcept
     {
-        const auto tmp = value + (box2d::Fixed64{1} / box2d::Fixed64{2});
-        const auto truncated = static_cast<box2d::Fixed64::value_type>(tmp);
-        return box2d::Fixed64{truncated, 0};
+        const auto tmp = value + (playrho::Fixed64{1} / playrho::Fixed64{2});
+        const auto truncated = static_cast<playrho::Fixed64::value_type>(tmp);
+        return playrho::Fixed64{truncated, 0};
     }
     
-    inline box2d::Fixed64 nextafter(box2d::Fixed64 from, box2d::Fixed64 to) noexcept
+    inline playrho::Fixed64 nextafter(playrho::Fixed64 from, playrho::Fixed64 to) noexcept
     {
         if (from < to)
         {
-            return from + numeric_limits<box2d::Fixed64>::min();
+            return from + numeric_limits<playrho::Fixed64>::min();
         }
         if (from > to)
         {
-            return from - numeric_limits<box2d::Fixed64>::min();
+            return from - numeric_limits<playrho::Fixed64>::min();
         }
         return to;
     }
     
-    inline double cos(box2d::Fixed64 value)
+    inline double cos(playrho::Fixed64 value)
     {
         return cos(static_cast<double>(value));
     }
     
-    inline double sin(box2d::Fixed64 value)
+    inline double sin(playrho::Fixed64 value)
     {
         return sin(static_cast<double>(value));
     }
     
-    inline double exp(box2d::Fixed64 value)
+    inline double exp(playrho::Fixed64 value)
     {
         return exp(static_cast<double>(value));
     }
 
-    inline bool isfinite(box2d::Fixed64 value) noexcept
+    inline bool isfinite(playrho::Fixed64 value) noexcept
     {
-        return (value > box2d::Fixed64::GetNegativeInfinity()) && (value < box2d::Fixed64::GetInfinity());
+        return (value > playrho::Fixed64::GetNegativeInfinity()) && (value < playrho::Fixed64::GetInfinity());
     }
 
-    constexpr inline bool isnan(box2d::Fixed64 value) noexcept
+    constexpr inline bool isnan(playrho::Fixed64 value) noexcept
     {
-        return value.Compare(0) == box2d::Fixed64::CmpResult::Incomparable;
+        return value.Compare(0) == playrho::Fixed64::CmpResult::Incomparable;
     }
     
-    inline box2d::Fixed64 fmod(box2d::Fixed64 x, box2d::Fixed64 y)
+    inline playrho::Fixed64 fmod(playrho::Fixed64 x, playrho::Fixed64 y)
     {
-        return box2d::Fixed64(fmod(static_cast<double>(x), static_cast<double>(y)));
+        return playrho::Fixed64(fmod(static_cast<double>(x), static_cast<double>(y)));
     }
 
 #endif /* _WIN32 */

@@ -25,7 +25,7 @@
 
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 
-namespace box2d
+namespace playrho
 {
 
     /// @brief Contact attorney.
@@ -103,6 +103,6 @@ namespace box2d
         friend class World;
     };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif /* ContactAtty_hpp */

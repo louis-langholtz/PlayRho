@@ -23,7 +23,7 @@
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/ContactFeature.hpp>
 
-namespace box2d
+namespace playrho
 {
     class DistanceProxy;
     struct Transformation;
@@ -522,6 +522,6 @@ namespace box2d
 
     const char* GetName(Manifold::Type) noexcept;
     
-} // namespace box2d
+} // namespace playrho
 
 #endif /* Manifold_hpp */

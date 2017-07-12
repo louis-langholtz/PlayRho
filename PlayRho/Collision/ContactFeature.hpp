@@ -22,7 +22,7 @@
 
 #include <PlayRho/Common/Math.hpp>
 
-namespace box2d
+namespace playrho
 {
     /// Contact Feature.
     /// @details The features that intersect to form the contact point.
@@ -82,6 +82,6 @@ namespace box2d
         return (lhs.typeA != rhs.typeA) || (lhs.typeB != rhs.typeB) || (lhs.indexA != rhs.indexA) || (lhs.indexB != rhs.indexB);
     }
     
-}; // namespace box2d
+}; // namespace playrho
 
 #endif /* ContactFeature_hpp */

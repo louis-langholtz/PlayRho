@@ -28,7 +28,7 @@
 #include <PlayRho/Collision/TimeOfImpact.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 
-namespace box2d {
+namespace playrho {
 
 class Body;
 class Fixture;
@@ -489,6 +489,6 @@ void ResetRestitution(Contact& contact) noexcept;
 
 TOIOutput CalcToi(const Contact& contact, const ToiConf conf);
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

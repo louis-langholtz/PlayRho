@@ -28,7 +28,7 @@
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
 
-namespace box2d
+namespace playrho
 {
     class Shape;
     class Fixture;
@@ -270,6 +270,6 @@ namespace box2d
     /// @sa Fixture::GetProxy.
     AABB GetAABB(const Fixture& fixture, ChildCounter childIndex) noexcept;
 
-} // namespace box2d
+} // namespace playrho
 
 #endif /* AABB_hpp */

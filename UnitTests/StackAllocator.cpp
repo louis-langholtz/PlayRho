@@ -20,9 +20,9 @@
 #include <PlayRho/Common/StackAllocator.hpp>
 #include <chrono>
 
-using namespace box2d;
+using namespace playrho;
 
-namespace box2d {
+namespace playrho {
 class Body;
 }
 

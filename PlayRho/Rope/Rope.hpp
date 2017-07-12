@@ -22,7 +22,7 @@
 
 #include <PlayRho/Common/Math.hpp>
 
-namespace box2d {
+namespace playrho {
 
 /// 
 struct RopeDef
@@ -111,6 +111,6 @@ private:
     Real m_k3 = Real(0.1);
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

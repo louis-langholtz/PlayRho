@@ -23,7 +23,7 @@
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/Span.hpp>
 
-namespace box2d {
+namespace playrho {
 
     class VelocityConstraint;
     class PositionConstraint;
@@ -204,7 +204,7 @@ namespace box2d {
         
     } // namespace GaussSidel
     
-} // namespace box2d
+} // namespace playrho
 
 #endif
 

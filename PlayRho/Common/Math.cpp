@@ -19,9 +19,9 @@
 
 #include <PlayRho/Common/Math.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
-Length2D box2d::ComputeCentroid(const Span<const Length2D>& vertices)
+Length2D playrho::ComputeCentroid(const Span<const Length2D>& vertices)
 {
     assert(vertices.size() >= 3);
     
@@ -55,7 +55,7 @@ Length2D box2d::ComputeCentroid(const Span<const Length2D>& vertices)
     return c / area;
 }
 
-std::vector<Length2D> box2d::GetCircleVertices(const Length radius, unsigned slices,
+std::vector<Length2D> playrho::GetCircleVertices(const Length radius, unsigned slices,
                                                Angle start, Real turns)
 {
     std::vector<Length2D> vertices;
@@ -89,23 +89,23 @@ std::vector<Length2D> box2d::GetCircleVertices(const Length radius, unsigned sli
     return vertices;
 }
 
-::std::ostream& box2d::operator<<(::std::ostream& os, const Vec2& value)
+::std::ostream& playrho::operator<<(::std::ostream& os, const Vec2& value)
 {
     return os << "Vec2(" << value.x << "," << value.y << ")";
 }
 
-::std::ostream& box2d::operator<<(::std::ostream& os, const UnitVec2& value)
+::std::ostream& playrho::operator<<(::std::ostream& os, const UnitVec2& value)
 {
     return os << "UnitVec2(" << value.GetX() << "," << value.GetY() << ")";
 }
 
-::std::ostream& box2d::operator<<(::std::ostream& os, const Fixed32& value)
+::std::ostream& playrho::operator<<(::std::ostream& os, const Fixed32& value)
 {
     return os << static_cast<double>(value);
 }
 
 #ifndef _WIN32
-::std::ostream& box2d::operator<<(::std::ostream& os, const Fixed64& value)
+::std::ostream& playrho::operator<<(::std::ostream& os, const Fixed64& value)
 {
     return os << static_cast<double>(value);
 }

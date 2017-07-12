@@ -22,7 +22,7 @@
 #include <PlayRho/Dynamics/BodyDef.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 
-namespace box2d
+namespace playrho
 {
     BodyDef GetBodyDef(const Body& body) noexcept
     {

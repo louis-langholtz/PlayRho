@@ -20,7 +20,7 @@
 #include <PlayRho/Dynamics/WorldCallbacks.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 // Return true if contact calculations should be performed between these two shapes.
 // If you implement your own collision filter you may want to build from this implementation.

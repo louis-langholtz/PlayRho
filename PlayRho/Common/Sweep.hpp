@@ -26,7 +26,7 @@
 #include <PlayRho/Common/Position.hpp>
 #include <PlayRho/Common/Vector2D.hpp>
 
-namespace box2d
+namespace playrho
 {
     
     /// @brief Sweep.

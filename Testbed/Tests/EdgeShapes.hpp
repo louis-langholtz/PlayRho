@@ -24,7 +24,7 @@
 #include <cmath>
 #include <cstring>
 
-namespace box2d {
+namespace playrho {
 
 class EdgeShapes : public Test
 {
@@ -215,6 +215,6 @@ public:
     Real m_angle;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

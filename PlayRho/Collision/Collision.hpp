@@ -31,7 +31,7 @@
 #include <array>
 #include <type_traits>
 
-namespace box2d
+namespace playrho
 {
 class Manifold;
     
@@ -82,6 +82,6 @@ ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, Length o
 
 // ---------------- Inline Functions ------------------------------------------
 
-} /* namespace box2d */
+} /* namespace playrho */
 
 #endif

@@ -22,7 +22,7 @@
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
-namespace box2d {
+namespace playrho {
 
 /// Weld joint definition. You need to specify local anchor points
 /// where they are attached and the relative body angle. The position
@@ -109,6 +109,6 @@ private:
 
 WeldJointDef GetWeldJointDef(const WeldJoint& joint) noexcept;
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

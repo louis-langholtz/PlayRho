@@ -23,7 +23,7 @@
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 // Pulley:
 // length1 = norm(p1 - s1)
@@ -244,12 +244,12 @@ Torque PulleyJoint::GetReactionTorque(Frequency inv_dt) const
     return Torque{0};
 }
 
-Length box2d::GetCurrentLengthA(const PulleyJoint& joint)
+Length playrho::GetCurrentLengthA(const PulleyJoint& joint)
 {
     return GetLength(GetWorldPoint(*joint.GetBodyA(), joint.GetLocalAnchorA()) - joint.GetGroundAnchorA());
 }
 
-Length box2d::GetCurrentLengthB(const PulleyJoint& joint)
+Length playrho::GetCurrentLengthB(const PulleyJoint& joint)
 {
     return GetLength(GetWorldPoint(*joint.GetBodyB(), joint.GetLocalAnchorB()) - joint.GetGroundAnchorB());
 }
@@ -260,7 +260,7 @@ void PulleyJoint::ShiftOrigin(const Length2D newOrigin)
     m_groundAnchorB -= newOrigin;
 }
 
-PulleyJointDef box2d::GetPulleyJointDef(const PulleyJoint& joint) noexcept
+PulleyJointDef playrho::GetPulleyJointDef(const PulleyJoint& joint) noexcept
 {
     auto def = PulleyJointDef{};
     

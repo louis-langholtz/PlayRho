@@ -22,7 +22,7 @@
 
 #include <PlayRho/Common/Settings.hpp>
 
-namespace box2d
+namespace playrho
 {
     
     /// Index pair.

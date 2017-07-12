@@ -20,7 +20,7 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(StepConf, ByteSize)
 {

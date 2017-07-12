@@ -23,7 +23,7 @@
 #include "../Framework/Test.hpp"
 #include <algorithm>
 
-namespace box2d {
+namespace playrho {
 
 // This test shows collision processing and tests
 // deferred body destruction.
@@ -166,6 +166,6 @@ public:
     }
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

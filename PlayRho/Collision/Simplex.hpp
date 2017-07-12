@@ -23,7 +23,7 @@
 #include <PlayRho/Common/ArrayList.hpp>
 #include <PlayRho/Collision/SimplexEdge.hpp>
 
-namespace box2d
+namespace playrho
 {
 
     /// Simplex.

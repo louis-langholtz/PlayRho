@@ -24,7 +24,7 @@
 
 #include <PlayRho/Common/Settings.hpp>
 
-namespace box2d
+namespace playrho
 {
     /// Vector 3D.
     template <typename TYPE>
@@ -163,6 +163,6 @@ namespace box2d
         return IsValid(value.x) && IsValid(value.y) && IsValid(value.z);
     }
     
-} // namespace box2d
+} // namespace playrho
 
 #endif /* Vector3D_hpp */

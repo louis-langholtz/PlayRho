@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 // This is a fun demo that shows off the wheel joint
 class Car : public Test
@@ -278,6 +278,6 @@ public:
     WheelJoint* m_spring2;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

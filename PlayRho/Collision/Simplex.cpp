@@ -19,7 +19,7 @@
 
 #include <PlayRho/Collision/Simplex.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 Simplex Simplex::Get(const SimplexEdge& s0) noexcept
 {

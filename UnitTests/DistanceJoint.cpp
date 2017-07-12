@@ -25,7 +25,7 @@
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Collision/Shapes/DiskShape.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(DistanceJoint, ByteSize)
 {

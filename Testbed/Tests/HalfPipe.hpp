@@ -21,7 +21,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
     
     class HalfPipe : public Test
     {

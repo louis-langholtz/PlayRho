@@ -22,7 +22,7 @@
 
 #include <cstring>
 
-using namespace box2d;
+using namespace playrho;
 
 DynamicTree::DynamicTree(const size_type nodeCapacity):
     m_nodeCapacity{nodeCapacity},

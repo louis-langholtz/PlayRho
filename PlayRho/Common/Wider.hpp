@@ -22,7 +22,7 @@
 #include <cstdint>
 #include <type_traits>
 
-namespace box2d
+namespace playrho
 {
     /// Wider.
     ///
@@ -48,7 +48,7 @@ namespace box2d
     template<> struct Wider<std::uint64_t> { using type = __uint128_t; };
 #endif
     
-} // namespace box2d
+} // namespace playrho
 
 namespace std {
 #ifndef _WIN32

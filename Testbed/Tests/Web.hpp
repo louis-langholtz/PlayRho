@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 // This tests distance joints, body destruction, and joint destruction.
 class Web : public Test
@@ -201,6 +201,6 @@ public:
     Joint* m_joints[8];
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

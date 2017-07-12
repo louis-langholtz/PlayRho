@@ -23,7 +23,7 @@
 #include "../Framework/Test.hpp"
 #include <vector>
 
-namespace box2d {
+namespace playrho {
 
 class ConvexHull : public Test
 {
@@ -106,6 +106,6 @@ public:
     bool m_auto;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

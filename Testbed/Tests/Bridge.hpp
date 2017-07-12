@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 class Bridge : public Test
 {
@@ -90,6 +90,6 @@ public:
     Body* m_middle;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

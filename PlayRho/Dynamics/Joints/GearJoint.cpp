@@ -25,7 +25,7 @@
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 // Gear Joint:
 // C0 = (coordinate1 + ratio * coordinate2)_initial
@@ -420,7 +420,7 @@ Real GearJoint::GetRatio() const
     return m_ratio;
 }
 
-GearJointDef box2d::GetGearJointDef(const GearJoint& joint) noexcept
+GearJointDef playrho::GetGearJointDef(const GearJoint& joint) noexcept
 {
     auto def = GearJointDef{};
     

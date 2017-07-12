@@ -55,7 +55,7 @@
 #include <boost/units/systems/angle/degrees.hpp>
 #endif
 
-namespace box2d
+namespace playrho
 {    
 #ifdef USE_BOOST_UNITS
     
@@ -421,6 +421,6 @@ namespace box2d
     
 #endif
 
-} // namespace box2d
+} // namespace playrho
 
 #endif /* Units_hpp */

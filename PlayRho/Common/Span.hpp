@@ -25,7 +25,7 @@
 #include <iterator>
 #include <vector>
 
-namespace box2d
+namespace playrho
 {
     /// @brief A C++ encapsulation of an array and its size.
     ///
@@ -97,6 +97,6 @@ namespace box2d
         size_type m_size = 0;
     };
     
-} // namespace box2d
+} // namespace playrho
 
 #endif /* Span_hpp */

@@ -23,7 +23,7 @@
 #include "../Framework/Test.hpp"
 #include <sstream>
 
-namespace box2d {
+namespace playrho {
 
 class DistanceTest : public Test
 {
@@ -455,6 +455,6 @@ private:
     bool m_drawManifoldInfo = true;
 };
     
-} // namespace box2d
+} // namespace playrho
 
 #endif

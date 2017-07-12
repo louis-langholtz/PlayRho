@@ -27,7 +27,7 @@
 #include "Drawer.hpp"
 #include <chrono>
 
-namespace box2d {
+namespace playrho {
 
 /// Test settings. Some can be controlled in the GUI.
 struct Settings
@@ -237,6 +237,6 @@ Real RandomFloat(Real lo, Real hi);
 
 ::std::ostream& operator<<(::std::ostream& os, const ContactFeature& value);
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

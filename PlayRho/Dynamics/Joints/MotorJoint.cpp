@@ -22,7 +22,7 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 // Point-to-point constraint
 // Cdot = v2 - v1
@@ -309,7 +309,7 @@ Angle MotorJoint::GetAngularOffset() const
     return m_angularOffset;
 }
 
-MotorJointDef box2d::GetMotorJointDef(const MotorJoint& joint) noexcept
+MotorJointDef playrho::GetMotorJointDef(const MotorJoint& joint) noexcept
 {
     auto def = MotorJointDef{};
     

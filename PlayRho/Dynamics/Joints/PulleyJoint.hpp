@@ -22,7 +22,7 @@
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
-namespace box2d {
+namespace playrho {
 
 /// Pulley joint definition. This requires two ground anchors,
 /// two dynamic body anchor points, and a pulley ratio.
@@ -170,6 +170,6 @@ Length GetCurrentLengthB(const PulleyJoint& joint);
 
 PulleyJointDef GetPulleyJointDef(const PulleyJoint& joint) noexcept;
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

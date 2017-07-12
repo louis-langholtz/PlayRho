@@ -32,7 +32,7 @@
 
 #include "RenderGL3.h"
 
-namespace box2d {
+namespace playrho {
 
 Length2D ConvertScreenToWorld(const Camera& camera, const Coord2D ps)
 {

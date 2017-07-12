@@ -25,7 +25,7 @@
 
 #include <PlayRho/Collision/Manifold.hpp>
 
-namespace box2d
+namespace playrho
 {
     /// Position solver manifold.
     /// @details
@@ -72,6 +72,6 @@ namespace box2d
         return GetPSM(manifold, index, xfA, xfB);
     }
     
-}; // namespace box2d
+}; // namespace playrho
 
 #endif /* PositionSolverManifold_hpp */

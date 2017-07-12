@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 // The motor in this test gets smoother with higher velocity iterations.
 class Prismatic : public Test
@@ -97,6 +97,6 @@ public:
     PrismaticJoint* m_joint;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

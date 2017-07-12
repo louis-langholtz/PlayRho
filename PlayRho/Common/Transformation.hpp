@@ -26,7 +26,7 @@
 #include <PlayRho/Common/Vector2D.hpp>
 #include <PlayRho/Common/UnitVec2.hpp>
 
-namespace box2d
+namespace playrho
 {
     
     /// Transformation.

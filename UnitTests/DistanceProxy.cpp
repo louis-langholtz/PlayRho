@@ -22,7 +22,7 @@
 #include <initializer_list>
 #include <vector>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(DistanceProxy, ByteSize)
 {

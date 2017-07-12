@@ -44,7 +44,7 @@
 
 #include <cstdarg>
 
-using namespace box2d;
+using namespace playrho;
 
 namespace
 {
@@ -67,7 +67,7 @@ namespace
         void Visit(const MultiShape& shape) override;
     };
     
-    void ShapeDumper::Visit(const box2d::DiskShape& s)
+    void ShapeDumper::Visit(const playrho::DiskShape& s)
     {
         log("    DiskShape shape;\n");
         log("    shape.m_radius = %.15lef;\n", static_cast<double>(StripUnit(s.GetRadius())));
@@ -76,7 +76,7 @@ namespace
             static_cast<double>(StripUnit(s.GetLocation().y)));
     }
     
-    void ShapeDumper::Visit(const box2d::EdgeShape& s)
+    void ShapeDumper::Visit(const playrho::EdgeShape& s)
     {
         log("    EdgeShape shape;\n");
         log("    shape.m_radius = %.15lef;\n", static_cast<double>(StripUnit(GetVertexRadius(s))));
@@ -88,7 +88,7 @@ namespace
             static_cast<double>(StripUnit(s.GetVertex2().y)));
     }
     
-    void ShapeDumper::Visit(const box2d::PolygonShape& s)
+    void ShapeDumper::Visit(const playrho::PolygonShape& s)
     {
         const auto vertexCount = s.GetVertexCount();
         log("    PolygonShape shape;\n");
@@ -101,7 +101,7 @@ namespace
         log("    shape.Set(vs, %d);\n", vertexCount);
     }
     
-    void ShapeDumper::Visit(const box2d::ChainShape& s)
+    void ShapeDumper::Visit(const playrho::ChainShape& s)
     {
         log("    ChainShape shape;\n");
         log("    Vec2 vs[%d];\n", s.GetVertexCount());
@@ -114,13 +114,13 @@ namespace
         log("    shape.CreateChain(vs, %d);\n", s.GetVertexCount());
     }
 
-    void ShapeDumper::Visit(const box2d::MultiShape&)
+    void ShapeDumper::Visit(const playrho::MultiShape&)
     {
         // TODO
     }
 }
 
-void box2d::Dump(const World& world)
+void playrho::Dump(const World& world)
 {
     const auto gravity = world.GetGravity();
     log("Vec2 g(%.15lef, %.15lef);\n",
@@ -155,7 +155,7 @@ void box2d::Dump(const World& world)
     log("bodies = nullptr;\n");
 }
 
-void box2d::Dump(const Body& body, std::size_t bodyIndex)
+void playrho::Dump(const Body& body, std::size_t bodyIndex)
 {
     log("{\n");
     log("  BodyDef bd;\n");
@@ -189,7 +189,7 @@ void box2d::Dump(const Body& body, std::size_t bodyIndex)
     log("}\n");
 }
 
-void box2d::Dump(const Joint& joint, std::size_t index)
+void playrho::Dump(const Joint& joint, std::size_t index)
 {
     switch (joint.GetType())
     {
@@ -232,7 +232,7 @@ void box2d::Dump(const Joint& joint, std::size_t index)
     }
 }
 
-void box2d::Dump(const Fixture& fixture, std::size_t bodyIndex)
+void playrho::Dump(const Fixture& fixture, std::size_t bodyIndex)
 {
     log("    FixtureDef fd;\n");
     log("    fd.friction = %.15lef;\n", static_cast<double>(fixture.GetFriction()));
@@ -257,7 +257,7 @@ void box2d::Dump(const Fixture& fixture, std::size_t bodyIndex)
     log("    bodies[%d]->CreateFixture(fd);\n", bodyIndex);
 }
 
-void box2d::Dump(const DistanceJoint& joint, std::size_t index)
+void playrho::Dump(const DistanceJoint& joint, std::size_t index)
 {
     log("  DistanceJointDef jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
@@ -277,7 +277,7 @@ void box2d::Dump(const DistanceJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void box2d::Dump(const FrictionJoint& joint, std::size_t index)
+void playrho::Dump(const FrictionJoint& joint, std::size_t index)
 {
     log("  FrictionJointDef jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
@@ -296,7 +296,7 @@ void box2d::Dump(const FrictionJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void box2d::Dump(const GearJoint& joint, std::size_t index)
+void playrho::Dump(const GearJoint& joint, std::size_t index)
 {
     log("  GearJointDef jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
@@ -308,7 +308,7 @@ void box2d::Dump(const GearJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void box2d::Dump(const MotorJoint& joint, std::size_t index)
+void playrho::Dump(const MotorJoint& joint, std::size_t index)
 {
     log("  MotorJointDef jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
@@ -327,7 +327,7 @@ void box2d::Dump(const MotorJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void box2d::Dump(const MouseJoint& joint, std::size_t index)
+void playrho::Dump(const MouseJoint& joint, std::size_t index)
 {
     log("  MouseJointDef jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
@@ -344,7 +344,7 @@ void box2d::Dump(const MouseJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void box2d::Dump(const PrismaticJoint& joint, std::size_t index)
+void playrho::Dump(const PrismaticJoint& joint, std::size_t index)
 {
     log("  PrismaticJointDef jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
@@ -373,7 +373,7 @@ void box2d::Dump(const PrismaticJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void box2d::Dump(const PulleyJoint& joint, std::size_t index)
+void playrho::Dump(const PulleyJoint& joint, std::size_t index)
 {
     log("  PulleyJointDef jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
@@ -399,7 +399,7 @@ void box2d::Dump(const PulleyJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void box2d::Dump(const RevoluteJoint& joint, std::size_t index)
+void playrho::Dump(const RevoluteJoint& joint, std::size_t index)
 {
     log("  RevoluteJointDef jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
@@ -426,7 +426,7 @@ void box2d::Dump(const RevoluteJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void box2d::Dump(const RopeJoint& joint, std::size_t index)
+void playrho::Dump(const RopeJoint& joint, std::size_t index)
 {
     log("  RopeJointDef jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
@@ -443,7 +443,7 @@ void box2d::Dump(const RopeJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void box2d::Dump(const WeldJoint& joint, std::size_t index)
+void playrho::Dump(const WeldJoint& joint, std::size_t index)
 {
     log("  WeldJointDef jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
@@ -463,7 +463,7 @@ void box2d::Dump(const WeldJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void box2d::Dump(const WheelJoint& joint, std::size_t index)
+void playrho::Dump(const WheelJoint& joint, std::size_t index)
 {
     log("  WheelJointDef jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));

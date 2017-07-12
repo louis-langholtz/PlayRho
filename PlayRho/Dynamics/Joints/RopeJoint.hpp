@@ -22,7 +22,7 @@
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
-namespace box2d {
+namespace playrho {
 
 /// Rope joint definition. This requires two body anchor points and
 /// a maximum lengths.
@@ -98,6 +98,6 @@ private:
 
 RopeJointDef GetRopeJointDef(const RopeJoint& joint) noexcept;
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

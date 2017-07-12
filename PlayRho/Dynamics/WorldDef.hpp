@@ -26,7 +26,7 @@
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
 
-namespace box2d {
+namespace playrho {
 
     /// @brief World construction definitions.
     struct WorldDef

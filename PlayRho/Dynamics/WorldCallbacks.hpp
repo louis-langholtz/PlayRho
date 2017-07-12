@@ -22,7 +22,7 @@
 
 #include <PlayRho/Common/Settings.hpp>
 
-namespace box2d {
+namespace playrho {
 
 class UnitVec2;
 class Fixture;
@@ -159,6 +159,6 @@ public:
                            iteration_type solved) = 0;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

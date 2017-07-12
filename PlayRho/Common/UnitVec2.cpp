@@ -21,7 +21,7 @@
 #include <PlayRho/Common/UnitVec2.hpp>
 #include <PlayRho/Common/Math.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 UnitVec2 UnitVec2::Get(const Real x, const Real y, Real& magnitude, const UnitVec2 fallback)
 {

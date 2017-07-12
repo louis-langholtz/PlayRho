@@ -22,7 +22,7 @@
 
 #include <PlayRho/Common/Math.hpp>
 
-namespace box2d
+namespace playrho
 {
     class Manifold;
     class Contact;

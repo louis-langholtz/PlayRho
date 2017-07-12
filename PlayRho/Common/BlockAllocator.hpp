@@ -22,7 +22,7 @@
 
 #include <PlayRho/Common/Settings.hpp>
 
-namespace box2d {
+namespace playrho {
 
     /// Block allocator.
     ///
@@ -117,6 +117,6 @@ namespace box2d {
         return &a != &b;
     }
     
-} // namespace box2d
+} // namespace playrho
 
 #endif

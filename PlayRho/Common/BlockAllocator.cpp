@@ -22,7 +22,7 @@
 #include <cstring>
 #include <cstddef>
 
-using namespace box2d;
+using namespace playrho;
 
 static constexpr std::size_t s_blockSizes[BlockAllocator::BlockSizes] =
 {

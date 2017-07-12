@@ -23,7 +23,7 @@
 #include "../Framework/Test.hpp"
 #include <vector>
 
-namespace box2d {
+namespace playrho {
 
 class TimeOfImpactTest : public Test
 {
@@ -132,6 +132,6 @@ public:
     PolygonShape m_shapeB;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

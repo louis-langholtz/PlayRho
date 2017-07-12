@@ -26,7 +26,7 @@
 
 #include <PlayRho/Common/Settings.hpp>
 
-namespace box2d
+namespace playrho
 {
     /// @brief 2-D unit vector.
     /// @details This is a 2-dimensional directional vector.

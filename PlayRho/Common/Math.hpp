@@ -37,7 +37,7 @@
 #include <vector>
 #include <numeric>
 
-namespace box2d
+namespace playrho
 {
 // Other templates.
 

@@ -22,7 +22,7 @@
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
-namespace box2d {
+namespace playrho {
 
 /// Friction joint definition.
 struct FrictionJointDef : public JointDef
@@ -102,6 +102,6 @@ private:
 
 FrictionJointDef GetFrictionJointDef(const FrictionJoint& joint) noexcept;
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

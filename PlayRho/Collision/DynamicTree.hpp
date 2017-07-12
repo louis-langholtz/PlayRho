@@ -28,7 +28,7 @@
 
 #include <functional>
 
-namespace box2d {
+namespace playrho {
 
 /// @brief A dynamic AABB tree broad-phase, inspired by Nathanael Presson's btDbvt.
 ///
@@ -298,6 +298,6 @@ inline bool TestOverlap(const DynamicTree& tree,
     return TestOverlap(tree.GetAABB(proxyIdA), tree.GetAABB(proxyIdB));
 }
 
-} /* namespace box2d */
+} /* namespace playrho */
 
 #endif

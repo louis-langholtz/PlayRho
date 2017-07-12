@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 class BodyTypes : public Test
 {
@@ -138,6 +138,6 @@ public:
     Real m_speed;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

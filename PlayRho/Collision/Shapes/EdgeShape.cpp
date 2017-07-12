@@ -20,7 +20,7 @@
 #include <PlayRho/Collision/Shapes/EdgeShape.hpp>
 #include <PlayRho/Collision/RayCastInput.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 MassData EdgeShape::GetMassData() const noexcept
 {

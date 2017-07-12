@@ -35,7 +35,7 @@ using std::end;
 //#define B2_DEBUG_SOLVER 1
 #endif
 
-namespace box2d {
+namespace playrho {
 
 namespace
 {
@@ -595,4 +595,4 @@ PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
 }
 
 } // namespace GaussSeidel
-} // namespace box2d
+} // namespace playrho

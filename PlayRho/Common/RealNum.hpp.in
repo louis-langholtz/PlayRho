@@ -30,7 +30,7 @@
 
 #include <PlayRho/Common/Fixed.hpp>
 
-namespace box2d
+namespace playrho
 {
 
     /// @brief Real-number type.

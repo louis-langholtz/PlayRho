@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 class SphereStack : public Test
 {
@@ -60,6 +60,6 @@ public:
     Body* m_bodies[e_count];
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

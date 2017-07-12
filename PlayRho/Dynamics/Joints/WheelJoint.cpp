@@ -23,7 +23,7 @@
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 // Linear constraint (point-to-line)
 // d = pB - pA = xB + rB - xA - rA
@@ -382,7 +382,7 @@ Torque WheelJoint::GetMotorTorque(Frequency inv_dt) const
     return inv_dt * m_motorImpulse;
 }
 
-WheelJointDef box2d::GetWheelJointDef(const WheelJoint& joint) noexcept
+WheelJointDef playrho::GetWheelJointDef(const WheelJoint& joint) noexcept
 {
     auto def = WheelJointDef{};
     

@@ -25,7 +25,7 @@
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/Vector3D.hpp>
 
-namespace box2d
+namespace playrho
 {
     
     /// @brief A 3-by-3 matrix. Stored in column-major order.

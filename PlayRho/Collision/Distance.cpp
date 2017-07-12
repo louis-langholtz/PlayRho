@@ -21,7 +21,7 @@
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/Simplex.hpp>
 
-namespace box2d {
+namespace playrho {
 
 namespace {
 
@@ -208,4 +208,4 @@ Area TestOverlap(const DistanceProxy& proxyA, const Transformation& xfA,
     return totalRadiusSquared - distanceSquared;
 }
 
-} // namespace box2d
+} // namespace playrho

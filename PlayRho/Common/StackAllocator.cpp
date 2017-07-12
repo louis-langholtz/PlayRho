@@ -22,7 +22,7 @@
 
 #include <memory>
 
-using namespace box2d;
+using namespace playrho;
 
 namespace {
 
@@ -48,8 +48,8 @@ StackAllocator::~StackAllocator() noexcept
 {
     assert(m_index == 0);
     assert(m_entryCount == 0);
-    box2d::Free(m_entries);
-    box2d::Free(m_data);
+    playrho::Free(m_entries);
+    playrho::Free(m_data);
 }
 
 void* StackAllocator::Allocate(size_type size) noexcept
@@ -95,7 +95,7 @@ void StackAllocator::Free(void* p) noexcept
         assert(p == entry->data);
         if (entry->usedMalloc)
         {
-            box2d::Free(p);
+            playrho::Free(p);
         }
         else
         {

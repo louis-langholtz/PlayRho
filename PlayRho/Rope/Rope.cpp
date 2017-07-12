@@ -19,7 +19,7 @@
 
 #include <PlayRho/Rope/Rope.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 Rope::~Rope()
 {

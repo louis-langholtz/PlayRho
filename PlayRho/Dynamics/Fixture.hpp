@@ -33,7 +33,7 @@
 #include <limits>
 #include <memory>
 
-namespace box2d {
+namespace playrho {
 
 class Body;
 struct FixtureProxy;
@@ -246,6 +246,6 @@ void SetAwake(const Fixture& f) noexcept;
 ///   behavior is undefined if the fixture has <code>nullptr</code> as its associated body.
 Transformation GetTransformation(const Fixture& f) noexcept;
     
-} // namespace box2d
+} // namespace playrho
 
 #endif

@@ -27,7 +27,7 @@
 #include <utility>
 #include <stdexcept>
 
-namespace box2d {
+namespace playrho {
 
 class Body;
 class Joint;
@@ -287,6 +287,6 @@ inline BodyConstraintPtr& At(std::unordered_map<const Body*, BodyConstraint*>& c
     return container.at(key);
 }
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

@@ -23,7 +23,7 @@
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 // Linear constraint (point-to-line)
 // d = p2 - p1 = x2 + r2 - x1 - r1
@@ -665,7 +665,7 @@ Force PrismaticJoint::GetMotorForce(Frequency inv_dt) const noexcept
     return inv_dt * m_motorImpulse;
 }
 
-PrismaticJointDef box2d::GetPrismaticJointDef(const PrismaticJoint& joint) noexcept
+PrismaticJointDef playrho::GetPrismaticJointDef(const PrismaticJoint& joint) noexcept
 {
     auto def = PrismaticJointDef{};
     

@@ -23,7 +23,7 @@
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/Wider.hpp>
 
-namespace box2d {
+namespace playrho {
 
     class Shape;
     class DistanceProxy;
@@ -213,6 +213,6 @@ namespace box2d {
                            const DistanceProxy& proxyB, const Sweep& sweepB,
                            const ToiConf conf = GetDefaultToiConf());
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

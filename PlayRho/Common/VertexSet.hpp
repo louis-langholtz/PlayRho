@@ -24,7 +24,7 @@
 #include <vector>
 #include <algorithm>
 
-namespace box2d
+namespace playrho
 {
     /// Vertex Set.
     ///

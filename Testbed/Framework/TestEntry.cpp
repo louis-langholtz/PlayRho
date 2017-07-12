@@ -79,7 +79,7 @@
 #include "../Tests/NewtonsCradle.hpp"
 #include "../Tests/iforce2d_TopdownCar.hpp"
 
-namespace box2d {
+namespace playrho {
 
 /// @brief Internal test entries array
 ///
@@ -161,4 +161,4 @@ Span<const TestEntry> GetTestEntries()
     return Span<const TestEntry>(testEntries, numTestEntries);
 }
 
-} // namespace box2d
+} // namespace playrho

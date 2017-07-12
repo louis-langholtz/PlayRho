@@ -22,7 +22,7 @@
 
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 
-namespace box2d {
+namespace playrho {
 
 /// @brief Disk shape.
 ///
@@ -133,11 +133,11 @@ inline DistanceProxy DiskShape::GetChild(ChildCounter index) const
     return DistanceProxy{GetVertexRadius(), 1, &m_location, nullptr};
 }
 
-inline void DiskShape::Accept(box2d::Shape::Visitor &visitor) const
+inline void DiskShape::Accept(playrho::Shape::Visitor &visitor) const
 {
     visitor.Visit(*this);
 }
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

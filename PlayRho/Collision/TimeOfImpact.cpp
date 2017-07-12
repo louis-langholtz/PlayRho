@@ -22,7 +22,7 @@
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/SeparationFinder.hpp>
 
-namespace box2d {
+namespace playrho {
 
 namespace {
         
@@ -263,4 +263,4 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
     return TOIOutput{TOIOutput::e_failed, t1, stats};
 }
 
-} // namespace box2d
+} // namespace playrho

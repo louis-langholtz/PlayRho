@@ -44,7 +44,7 @@
 #include <memory>
 #include <stdexcept>
 
-namespace box2d {
+namespace playrho {
 
 struct BodyDef;
 struct JointDef;
@@ -968,6 +968,6 @@ void ClearForces(World& world) noexcept;
 
 bool IsActive(const Contact& contact) noexcept;
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

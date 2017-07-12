@@ -27,7 +27,7 @@
 /// This tests stacking. It also shows how to use World::Query
 /// and TestOverlap.
 
-namespace box2d {
+namespace playrho {
 
 /// This callback is called by World::QueryAABB. We find all the fixtures
 /// that overlap an AABB. Of those, we use TestOverlap to determine which fixtures
@@ -244,6 +244,6 @@ public:
     std::shared_ptr<DiskShape> m_circle = std::make_shared<DiskShape>(Real{0.5f} * Meter);
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

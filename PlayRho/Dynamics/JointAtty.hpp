@@ -25,7 +25,7 @@
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
-namespace box2d
+namespace playrho
 {
     
     /// @brief Joint attorney.
@@ -39,7 +39,7 @@ namespace box2d
     class JointAtty
     {
     private:
-        static Joint* Create(const box2d::JointDef &def)
+        static Joint* Create(const playrho::JointDef &def)
         {
             return Joint::Create(def);
         }
@@ -50,12 +50,12 @@ namespace box2d
         }
         
         static void InitVelocityConstraints(Joint& j, BodyConstraintsMap &bodies,
-                                            const box2d::StepConf &step, const ConstraintSolverConf &conf)
+                                            const playrho::StepConf &step, const ConstraintSolverConf &conf)
         {
             j.InitVelocityConstraints(bodies, step, conf);
         }
         
-        static bool SolveVelocityConstraints(Joint& j, BodyConstraintsMap &bodies, const box2d::StepConf &conf)
+        static bool SolveVelocityConstraints(Joint& j, BodyConstraintsMap &bodies, const playrho::StepConf &conf)
         {
             return j.SolveVelocityConstraints(bodies, conf);
         }

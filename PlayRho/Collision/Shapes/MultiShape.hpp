@@ -24,7 +24,7 @@
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <vector>
 
-namespace box2d {
+namespace playrho {
     
     class VertexSet;
     
@@ -128,7 +128,7 @@ namespace box2d {
         };
     }
     
-    inline void MultiShape::Accept(box2d::Shape::Visitor &visitor) const
+    inline void MultiShape::Accept(playrho::Shape::Visitor &visitor) const
     {
         visitor.Visit(*this);
     }

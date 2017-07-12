@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 class BulletTest : public Test
 {
@@ -130,6 +130,6 @@ public:
     Real m_x;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

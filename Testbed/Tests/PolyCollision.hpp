@@ -23,7 +23,7 @@
 #include "../Framework/Test.hpp"
 #include <vector>
 
-namespace box2d {
+namespace playrho {
 
 class PolyCollision : public Test
 {
@@ -133,6 +133,6 @@ public:
     Angle m_angleB;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

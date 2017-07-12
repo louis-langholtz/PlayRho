@@ -19,7 +19,7 @@
 #include "gtest/gtest.h"
 #include <PlayRho/Common/ArrayList.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(ArrayList, DefaultConstruction)
 {

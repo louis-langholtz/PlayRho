@@ -23,7 +23,7 @@
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 // Limit:
 // C = norm(pB - pA) - L
@@ -217,7 +217,7 @@ Joint::LimitState RopeJoint::GetLimitState() const
     return m_state;
 }
 
-RopeJointDef box2d::GetRopeJointDef(const RopeJoint& joint) noexcept
+RopeJointDef playrho::GetRopeJointDef(const RopeJoint& joint) noexcept
 {
     auto def = RopeJointDef{};
     

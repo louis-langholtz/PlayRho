@@ -23,7 +23,7 @@
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 
-namespace box2d {
+namespace playrho {
 
 namespace {
 
@@ -132,4 +132,4 @@ WorldManifold GetWorldManifold(const Contact& contact)
     return GetWorldManifold(contact.GetManifold(), xfA, radiusA, xfB, radiusB);
 }
 
-} /* namespace box2d */
+} /* namespace playrho */

@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 // This is used to test sensor shapes.
 class Breakable : public Test
@@ -148,6 +148,6 @@ public:
     bool m_break;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

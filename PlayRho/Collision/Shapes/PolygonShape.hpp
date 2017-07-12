@@ -25,7 +25,7 @@
 #include <type_traits>
 #include <vector>
 
-namespace box2d {
+namespace playrho {
 
 /// Polygon shape.
 /// @details
@@ -188,7 +188,7 @@ inline DistanceProxy PolygonShape::GetChild(ChildCounter index) const
         DistanceProxy{};
 }
 
-inline void PolygonShape::Accept(box2d::Shape::Visitor &visitor) const
+inline void PolygonShape::Accept(playrho::Shape::Visitor &visitor) const
 {
     visitor.Visit(*this);
 }
@@ -234,5 +234,5 @@ inline PolygonShape Transform(PolygonShape value, Transformation xfm) noexcept
     return value;
 }
 
-} // namespace box2d
+} // namespace playrho
 #endif

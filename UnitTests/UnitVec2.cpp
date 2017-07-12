@@ -21,7 +21,7 @@
 #include "gtest/gtest.h"
 #include <PlayRho/Common/UnitVec2.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(UnitVec2, ByteSize)
 {

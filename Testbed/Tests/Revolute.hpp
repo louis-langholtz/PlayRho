@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 class Revolute : public Test
 {
@@ -144,6 +144,6 @@ public:
     RevoluteJoint* m_joint;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

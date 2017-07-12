@@ -20,9 +20,9 @@
 #include <PlayRho/Collision/ShapeSeparation.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
-IndexPairSeparation box2d::GetMaxSeparation(const DistanceProxy& proxy1, const Transformation xf1,
+IndexPairSeparation playrho::GetMaxSeparation(const DistanceProxy& proxy1, const Transformation xf1,
                                             const DistanceProxy& proxy2, const Transformation xf2,
                                             Length stop)
 {
@@ -72,7 +72,7 @@ IndexPairSeparation box2d::GetMaxSeparation(const DistanceProxy& proxy1, const T
     return indexPairSep;
 }
 
-IndexPairSeparation box2d::GetMaxSeparation(const DistanceProxy& proxy1,
+IndexPairSeparation playrho::GetMaxSeparation(const DistanceProxy& proxy1,
                                             const DistanceProxy& proxy2,
                                             Length stop)
 {

@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 /// This stress tests the dynamic tree broad-phase. This also shows that tile
 /// based collision is smooth due to PlayRho knowing about adjacency.
@@ -147,6 +147,6 @@ public:
     World m_snapshot;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

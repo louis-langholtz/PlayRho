@@ -23,7 +23,7 @@
 
 #define BOX2D_MAGIC(x) (x)
 
-using namespace box2d;
+using namespace playrho;
 
 VelocityConstraint::VelocityConstraint(index_type contactIndex,
                                        Real friction, Real restitution,

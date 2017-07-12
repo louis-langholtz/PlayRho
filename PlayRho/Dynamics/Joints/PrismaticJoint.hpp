@@ -22,7 +22,7 @@
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
-namespace box2d {
+namespace playrho {
 
 /// Prismatic joint definition. This requires defining a line of
 /// motion using an axis and an anchor point. The definition uses local
@@ -181,6 +181,6 @@ inline AngularVelocity PrismaticJoint::GetMotorSpeed() const noexcept
 
 PrismaticJointDef GetPrismaticJointDef(const PrismaticJoint& joint) noexcept;
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

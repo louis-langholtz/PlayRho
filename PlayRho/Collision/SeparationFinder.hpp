@@ -23,7 +23,7 @@
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/IndexPair.hpp>
 
-namespace box2d {
+namespace playrho {
 
     class DistanceProxy;
     struct Transformation;

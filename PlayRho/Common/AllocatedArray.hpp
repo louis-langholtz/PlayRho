@@ -13,7 +13,7 @@
 
 #include <functional>
 
-namespace box2d {
+namespace playrho {
 
 /// Allocated Array.
 template <typename T, typename Deleter = std::function<void (void *)> >
@@ -120,6 +120,6 @@ private:
     deleter_type m_deleter; ///< Deleter. 8-bytes (with default Deleter).
 };
 
-}; // namespace box2d
+}; // namespace playrho
 
 #endif /* AllocatedArray_hpp */

@@ -27,7 +27,7 @@
 #include <cassert>
 #include <array>
 
-namespace box2d
+namespace playrho
 {
     /// Array list.
     template <typename VALUE_TYPE, std::size_t MAXSIZE, typename SIZE_TYPE = std::size_t>
@@ -154,13 +154,13 @@ namespace box2d
         return lhs;
     }
 
-} /* namespace box2d */
+} /* namespace playrho */
 
 namespace std
 {
     /// Tuple size specialization for ArrayList classes.
     template< class T, size_t N, typename SIZE_TYPE >
-    class tuple_size< box2d::ArrayList<T, N, SIZE_TYPE> >: public integral_constant<size_t, N>
+    class tuple_size< playrho::ArrayList<T, N, SIZE_TYPE> >: public integral_constant<size_t, N>
     {
         // Intentionally empty.
     };

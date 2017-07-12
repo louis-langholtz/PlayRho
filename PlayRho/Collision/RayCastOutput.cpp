@@ -25,9 +25,9 @@
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <utility>
 
-using namespace box2d;
+using namespace playrho;
 
-RayCastOutput box2d::RayCast(const Length radius, const Length2D location,
+RayCastOutput playrho::RayCast(const Length radius, const Length2D location,
                              const RayCastInput& input) noexcept
 {
     // Collision Detection in Interactive 3D Environments by Gino van den Bergen
@@ -66,7 +66,7 @@ RayCastOutput box2d::RayCast(const Length radius, const Length2D location,
     return RayCastOutput{};
 }
 
-RayCastOutput box2d::RayCast(const AABB& aabb, const RayCastInput& input) noexcept
+RayCastOutput playrho::RayCast(const AABB& aabb, const RayCastInput& input) noexcept
 {
     // From Real-time Collision Detection, p179.
 
@@ -137,7 +137,7 @@ RayCastOutput box2d::RayCast(const AABB& aabb, const RayCastInput& input) noexce
     return RayCastOutput{normal, tmin};
 }
 
-RayCastOutput box2d::RayCast(const DistanceProxy& proxy, const RayCastInput& input,
+RayCastOutput playrho::RayCast(const DistanceProxy& proxy, const RayCastInput& input,
                              const Transformation& transform) noexcept
 {
     const auto vertexCount = proxy.GetVertexCount();
@@ -233,7 +233,7 @@ RayCastOutput box2d::RayCast(const DistanceProxy& proxy, const RayCastInput& inp
     return RayCastOutput{};
 }
 
-RayCastOutput box2d::RayCast(const Shape& shape, ChildCounter childIndex,
+RayCastOutput playrho::RayCast(const Shape& shape, ChildCounter childIndex,
                              const RayCastInput& input, const Transformation& transform) noexcept
 {
     return RayCast(shape.GetChild(childIndex), input, transform);

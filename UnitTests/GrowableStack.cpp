@@ -22,7 +22,7 @@
 
 #include <PlayRho/Common/GrowableStack.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(GrowableStack, ByteSize)
 {

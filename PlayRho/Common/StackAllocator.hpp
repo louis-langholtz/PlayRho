@@ -22,7 +22,7 @@
 
 #include <PlayRho/Common/Settings.hpp>
 
-namespace box2d {
+namespace playrho {
 
 /// Stack allocator.
 /// @details
@@ -134,6 +134,6 @@ private:
     size_type m_entryCount = 0;
 };
     
-} // namespace box2d
+} // namespace playrho
 
 #endif

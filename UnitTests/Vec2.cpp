@@ -23,7 +23,7 @@
 #include <sstream>
 #include <type_traits>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(Vec2, ByteSizeIs_8_or_16)
 {

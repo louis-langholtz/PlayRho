@@ -22,7 +22,7 @@
 
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 
-namespace box2d {
+namespace playrho {
 
 /// Edge shape.
 /// @details
@@ -129,11 +129,11 @@ inline DistanceProxy EdgeShape::GetChild(ChildCounter index) const
         DistanceProxy{};
 }
 
-inline void EdgeShape::Accept(box2d::Shape::Visitor &visitor) const
+inline void EdgeShape::Accept(playrho::Shape::Visitor &visitor) const
 {
     visitor.Visit(*this);
 }
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

@@ -21,7 +21,7 @@
 
 #include <PlayRho/Collision/Shapes/ChainShape.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 namespace {
 #if 0

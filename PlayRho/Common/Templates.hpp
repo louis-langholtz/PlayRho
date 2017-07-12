@@ -23,7 +23,7 @@
 
 #include <limits>
 
-namespace box2d
+namespace playrho
 {
 
     template<class... T> void NOT_USED(T&&...){}
@@ -132,6 +132,6 @@ namespace box2d
         return value;
     }
     
-} // namespace box2d
+} // namespace playrho
 
 #endif /* Templates_hpp */

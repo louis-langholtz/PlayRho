@@ -22,7 +22,7 @@
 
 #include <PlayRho/Common/Math.hpp>
 
-namespace box2d {
+namespace playrho {
     
     class Body;
     
@@ -131,6 +131,6 @@ namespace box2d {
     
     BodyConstraint GetBodyConstraint(const Body& body, Time time = 0) noexcept;
     
-} // namespace box2d
+} // namespace playrho
 
 #endif /* BodyConstraint_hpp */

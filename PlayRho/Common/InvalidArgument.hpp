@@ -23,7 +23,7 @@
 
 #include <stdexcept>
 
-namespace box2d {
+namespace playrho {
     
     class InvalidArgument: public std::invalid_argument
     {
@@ -32,6 +32,6 @@ namespace box2d {
         explicit InvalidArgument(const char* s): std::invalid_argument(s) {}
     };
     
-} // box2d namespace.
+} // namespace playrho
 
 #endif /* InvalidArgument_hpp */

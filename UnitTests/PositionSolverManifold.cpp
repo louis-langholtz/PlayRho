@@ -22,7 +22,7 @@
 #include <PlayRho/Collision/WorldManifold.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(PositionSolverManifold, ByteSizeIs_20_40_or_80)
 {

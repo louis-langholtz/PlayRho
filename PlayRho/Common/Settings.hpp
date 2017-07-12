@@ -42,11 +42,11 @@
 #include <PlayRho/Common/Units.hpp>
 
 /**
- * @namespace box2d
+ * @namespace playrho
  *
  * Namespace for all PlayRho related names.
  */
-namespace box2d
+namespace playrho
 {   
 
 namespace details

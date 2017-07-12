@@ -21,7 +21,7 @@
 #include "gtest/gtest.h"
 #include <PlayRho/Common/Settings.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(Settings, GetVersion)
 {

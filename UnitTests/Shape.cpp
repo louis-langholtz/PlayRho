@@ -24,7 +24,7 @@
 #include <PlayRho/Collision/Manifold.hpp>
 #include <chrono>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(Shape, ByteSize)
 {

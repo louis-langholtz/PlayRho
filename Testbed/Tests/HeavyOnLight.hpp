@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 class HeavyOnLight : public Test
 {
@@ -97,6 +97,6 @@ public:
     Fixture* m_top = nullptr;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

@@ -19,7 +19,7 @@
 #include "gtest/gtest.h"
 #include <PlayRho/Common/VertexSet.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(VertexSet, ByteSizeIs_32_or_48)
 {

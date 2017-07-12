@@ -26,7 +26,7 @@
 #include <PlayRho/Common/Span.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 
-namespace box2d
+namespace playrho
 {
     /// @brief Fixture attorney.
     ///
@@ -57,6 +57,6 @@ namespace box2d
         friend class World;
     };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif /* FixtureAtty_hpp */

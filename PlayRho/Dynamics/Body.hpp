@@ -39,7 +39,7 @@
 #include <utility>
 #include <iterator>
 
-namespace box2d {
+namespace playrho {
 
 class World;
 struct FixtureDef;
@@ -1100,6 +1100,6 @@ void RotateAboutWorldPoint(Body& body, Angle amount, Length2D worldPoint);
 /// @param localPoint Point in local coordinates.
 void RotateAboutLocalPoint(Body& body, Angle amount, Length2D localPoint);
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

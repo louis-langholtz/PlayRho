@@ -23,7 +23,7 @@
 #include <limits>
 #include <cmath>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(BoundedValue, NonNegativeFloat)
 {
@@ -131,7 +131,7 @@ TEST(BoundedValue, IntUnitInterval)
     EXPECT_THROW(UnitInterval<int>(-1), UnitInterval<int>::exception_type);
 }
 
-namespace box2d
+namespace playrho
 {
 class Body;
 }
@@ -173,7 +173,7 @@ TEST(BoundedValue, NonNull)
 
 #include <PlayRho/Common/Fixed.hpp>
 
-namespace box2d
+namespace playrho
 {
 template <typename T>
 struct ValueCheckHelper<T, Fixed32>

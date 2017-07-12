@@ -19,7 +19,7 @@
 #include "gtest/gtest.h"
 #include <PlayRho/Collision/SimplexEdge.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(SimplexEdge, ByteSizeIs_28_56_or_112)
 {

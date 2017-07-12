@@ -23,7 +23,7 @@
 #include <PlayRho/Common/Math.hpp>
 #include <vector>
 
-namespace box2d {
+namespace playrho {
 
 class Body;
 class Contact;
@@ -84,6 +84,6 @@ std::size_t Count(const Island& island, const Body* entry);
 std::size_t Count(const Island& island, const Contact* entry);
 std::size_t Count(const Island& island, const Joint* entry);
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

@@ -23,20 +23,20 @@
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/FixtureProxy.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
-ContactKey box2d::GetContactKey(const FixtureProxy& fpA, const FixtureProxy& fpB) noexcept
+ContactKey playrho::GetContactKey(const FixtureProxy& fpA, const FixtureProxy& fpB) noexcept
 {
     return ContactKey{fpA.proxyId, fpB.proxyId};
 }
 
-ContactKey box2d::GetContactKey(const Fixture* fixtureA, ChildCounter childIndexA,
+ContactKey playrho::GetContactKey(const Fixture* fixtureA, ChildCounter childIndexA,
                                 const Fixture* fixtureB, ChildCounter childIndexB) noexcept
 {
     return GetContactKey(*fixtureA->GetProxy(childIndexA), *fixtureB->GetProxy(childIndexB));
 }
 
-ContactKey box2d::GetContactKey(const Contact& contact) noexcept
+ContactKey playrho::GetContactKey(const Contact& contact) noexcept
 {
     return GetContactKey(contact.GetFixtureA(), contact.GetChildIndexA(),
                          contact.GetFixtureB(), contact.GetChildIndexB());

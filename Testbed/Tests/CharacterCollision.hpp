@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 /// This is a test of typical character collision scenarios. This does not
 /// show how you should implement a character in your application.
@@ -270,6 +270,6 @@ public:
     Body* m_character;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

@@ -21,7 +21,7 @@
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/Shapes/PolygonShape.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(TOIConf, DefaultConstruction)
 {

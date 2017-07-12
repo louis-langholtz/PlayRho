@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 // This is a test of collision filtering.
 // There is a triangle, a box, and a circle.
@@ -168,6 +168,6 @@ public:
     }
 };
     
-} // namespace box2d
+} // namespace playrho
 
 #endif

@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 class ContinuousTest : public Test
 {
@@ -108,6 +108,6 @@ public:
     AngularVelocity m_angularVelocity;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

@@ -20,9 +20,9 @@
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
-BodyConstraint box2d::GetBodyConstraint(const Body& body, Time time) noexcept
+BodyConstraint playrho::GetBodyConstraint(const Body& body, Time time) noexcept
 {
     return BodyConstraint{
         body.GetInvMass(),

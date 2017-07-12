@@ -21,7 +21,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
     
     class SpinningCircle : public Test
     {
@@ -70,6 +70,6 @@ namespace box2d {
         }
     };
     
-} // namespace box2d
+} // namespace playrho
 
 #endif

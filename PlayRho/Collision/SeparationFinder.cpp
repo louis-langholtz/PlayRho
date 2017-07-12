@@ -20,7 +20,7 @@
 #include <PlayRho/Collision/SeparationFinder.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 SeparationFinder SeparationFinder::Get(Span<const IndexPair> indices,
                                        const DistanceProxy& proxyA, const Transformation& xfA,

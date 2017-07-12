@@ -20,7 +20,7 @@
 #ifndef BodyType_hpp
 #define BodyType_hpp
 
-namespace box2d
+namespace playrho
 {
 
 /// Body Type.
@@ -57,6 +57,6 @@ enum class BodyType
     //BulletBody,
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif /* BodyType_hpp */

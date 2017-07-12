@@ -23,7 +23,7 @@
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
 
-namespace box2d {
+namespace playrho {
 
 /// Mouse joint definition. This requires a world target point,
 /// tuning parameters, and the time step.
@@ -175,6 +175,6 @@ inline Real MouseJoint::GetDampingRatio() const noexcept
 
 MouseJointDef GetMouseJointDef(const MouseJoint& joint) noexcept;
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

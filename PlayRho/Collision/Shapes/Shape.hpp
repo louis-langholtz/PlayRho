@@ -25,7 +25,7 @@
 #include <PlayRho/Collision/MassData.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
 
-namespace box2d {
+namespace playrho {
 
 class DiskShape;
 class EdgeShape;
@@ -322,6 +322,6 @@ inline Length GetVertexRadius(const Shape& shape) noexcept
 /// @param pLocal Point in local coordinates.
 bool TestPoint(const Shape& shape, const Length2D pLocal) noexcept;
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

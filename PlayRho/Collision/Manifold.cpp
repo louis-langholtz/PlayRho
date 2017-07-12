@@ -30,7 +30,7 @@
 
 #define BOX2D_MAGIC(x) (x)
 
-using namespace box2d;
+using namespace playrho;
 
 using index_type = IndexPair::size_type;
 
@@ -326,10 +326,10 @@ Manifold CollideShapes(Manifold::Type type,
         // Circle's center is inside the polygon and closest to edge[indexOfMax].
         switch (type)
         {
-            case box2d::Manifold::e_faceA:
+            case playrho::Manifold::e_faceA:
                 return Manifold::GetForFaceA(shape.GetNormal(indexOfMax), indexOfMax, faceCenter,
                                              ContactFeature::e_vertex, 0, point);
-            case box2d::Manifold::e_faceB:
+            case playrho::Manifold::e_faceB:
                 return Manifold::GetForFaceB(shape.GetNormal(indexOfMax), indexOfMax, faceCenter,
                                              ContactFeature::e_vertex, 0, point);
             default: break;
@@ -350,9 +350,9 @@ Manifold CollideShapes(Manifold::Type type,
         }
         switch (type)
         {
-            case box2d::Manifold::e_faceA:
+            case playrho::Manifold::e_faceA:
                 return Manifold::GetForCircles(v1, indexOfMax, point, 0);
-            case box2d::Manifold::e_faceB:
+            case playrho::Manifold::e_faceB:
                 return Manifold::GetForCircles(point, 0, v1, indexOfMax);
             default: break;
         }
@@ -369,9 +369,9 @@ Manifold CollideShapes(Manifold::Type type,
         }
         switch (type)
         {
-            case box2d::Manifold::e_faceA:
+            case playrho::Manifold::e_faceA:
                 return Manifold::GetForCircles(v2, indexOfMax2, point, 0);
-            case box2d::Manifold::e_faceB:
+            case playrho::Manifold::e_faceB:
                 return Manifold::GetForCircles(point, 0, v2, indexOfMax2);
             default: break;
         }
@@ -386,10 +386,10 @@ Manifold CollideShapes(Manifold::Type type,
     }
     switch (type)
     {
-        case box2d::Manifold::e_faceA:
+        case playrho::Manifold::e_faceA:
             return Manifold::GetForFaceA(shape.GetNormal(indexOfMax), indexOfMax, faceCenter,
                                          ContactFeature::e_vertex, 0, point);
-        case box2d::Manifold::e_faceB:
+        case playrho::Manifold::e_faceB:
             return Manifold::GetForFaceB(shape.GetNormal(indexOfMax), indexOfMax, faceCenter,
                                          ContactFeature::e_vertex, 0, point);
         default: break;
@@ -414,7 +414,7 @@ Manifold CollideShapes(Length2D locationA, Length radiusA, const Transformation&
  * All CollideShapes functions return a Manifold object.
  */
 
-Manifold box2d::CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
+Manifold playrho::CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
                               const DistanceProxy& shapeB, const Transformation& xfB,
                               const Manifold::Conf conf)
 {
@@ -474,7 +474,7 @@ Manifold box2d::CollideShapes(const DistanceProxy& shapeA, const Transformation&
 }
 
 #if 0
-Manifold box2d::CollideCached(const DistanceProxy& shapeA, const Transformation& xfA,
+Manifold playrho::CollideCached(const DistanceProxy& shapeA, const Transformation& xfA,
                               const DistanceProxy& shapeB, const Transformation& xfB,
                               const Manifold::Conf conf)
 {
@@ -579,7 +579,7 @@ Manifold box2d::CollideCached(const DistanceProxy& shapeA, const Transformation&
 }
 #endif
 
-Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& transformA,
+Manifold playrho::GetManifold(const DistanceProxy& proxyA, const Transformation& transformA,
                             const DistanceProxy& proxyB, const Transformation& transformB)
 {
     const auto distanceInfo = Distance(proxyA, transformA, proxyB, transformB);
@@ -801,7 +801,7 @@ Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& t
     return Manifold{};
 }
 
-const char* box2d::GetName(Manifold::Type type) noexcept
+const char* playrho::GetName(Manifold::Type type) noexcept
 {
     switch (type)
     {
@@ -813,7 +813,7 @@ const char* box2d::GetName(Manifold::Type type) noexcept
     return "unknown";
 }
 
-bool box2d::operator==(const Manifold::Point& lhs, const Manifold::Point& rhs)
+bool playrho::operator==(const Manifold::Point& lhs, const Manifold::Point& rhs)
 {
     if (lhs.localPoint != rhs.localPoint)
     {
@@ -834,12 +834,12 @@ bool box2d::operator==(const Manifold::Point& lhs, const Manifold::Point& rhs)
     return true;
 }
 
-bool box2d::operator!=(const Manifold::Point& lhs, const Manifold::Point& rhs)
+bool playrho::operator!=(const Manifold::Point& lhs, const Manifold::Point& rhs)
 {
     return !(lhs == rhs);
 }
 
-bool box2d::operator==(const Manifold& lhs, const Manifold& rhs)
+bool playrho::operator==(const Manifold& lhs, const Manifold& rhs)
 {
     if (lhs.GetType() != rhs.GetType())
     {
@@ -900,12 +900,12 @@ bool box2d::operator==(const Manifold& lhs, const Manifold& rhs)
     return true;
 }
 
-bool box2d::operator!=(const Manifold& lhs, const Manifold& rhs)
+bool playrho::operator!=(const Manifold& lhs, const Manifold& rhs)
 {
     return !(lhs == rhs);
 }
 
-Length2D box2d::GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type type, ContactFeature::Index index)
+Length2D playrho::GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type type, ContactFeature::Index index)
 {
     switch (type)
     {

@@ -20,7 +20,7 @@
 #include <PlayRho/Collision/Shapes/DiskShape.hpp>
 #include <PlayRho/Collision/AABB.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(DiskShape, ByteSize)
 {

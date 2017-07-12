@@ -21,7 +21,7 @@
 #include <PlayRho/Collision/RayCastInput.hpp>
 #include <PlayRho/Common/VertexSet.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 PolygonShape::PolygonShape(Length hx, Length hy, const Conf& conf) noexcept:
     Shape{conf}
@@ -154,20 +154,20 @@ void PolygonShape::SetAsBox(Length hx, Length hy) noexcept
     m_normals.emplace_back(UnitVec2::GetBottom());
 }
 
-void box2d::SetAsBox(PolygonShape& shape, Length hx, Length hy, const Length2D center, Angle angle) noexcept
+void playrho::SetAsBox(PolygonShape& shape, Length hx, Length hy, const Length2D center, Angle angle) noexcept
 {
     shape.SetAsBox(hx, hy);
     shape.Transform(Transformation{center, UnitVec2{angle}});
 }
 
-void PolygonShape::Transform(box2d::Transformation xf) noexcept
+void PolygonShape::Transform(playrho::Transformation xf) noexcept
 {
     for (auto i = decltype(GetVertexCount()){0}; i < GetVertexCount(); ++i)
     {
-        m_vertices[i] = box2d::Transform(m_vertices[i], xf);
+        m_vertices[i] = playrho::Transform(m_vertices[i], xf);
         m_normals[i] = Rotate(m_normals[i], xf.q);
     }
-    m_centroid = box2d::Transform(m_centroid, xf);
+    m_centroid = playrho::Transform(m_centroid, xf);
 }
 
 void PolygonShape::Set(Span<const Length2D> points) noexcept
@@ -226,7 +226,7 @@ void PolygonShape::Set(const VertexSet& point_set) noexcept
     }
 }
 
-Length2D box2d::GetEdge(const PolygonShape& shape, PolygonShape::vertex_count_t index)
+Length2D playrho::GetEdge(const PolygonShape& shape, PolygonShape::vertex_count_t index)
 {
     assert(shape.GetVertexCount() > 1);
 
@@ -235,7 +235,7 @@ Length2D box2d::GetEdge(const PolygonShape& shape, PolygonShape::vertex_count_t 
     return shape.GetVertex(i1) - shape.GetVertex(i0);
 }
 
-bool box2d::Validate(const PolygonShape& shape)
+bool playrho::Validate(const PolygonShape& shape)
 {
     const auto count = shape.GetVertexCount();
     for (auto i = decltype(count){0}; i < count; ++i)

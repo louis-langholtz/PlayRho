@@ -26,7 +26,7 @@
 #include <vector>
 #include <set>
 
-namespace box2d {
+namespace playrho {
 
 using ControlStateType = unsigned int;
 
@@ -483,6 +483,6 @@ public:
     TDCar* m_car;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

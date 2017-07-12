@@ -29,7 +29,7 @@
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 namespace
 {
@@ -201,39 +201,39 @@ void Contact::Update(const UpdateConf& conf, ContactListener* listener)
 
 // Free functions...
 
-bool box2d::HasSensor(const Contact& contact) noexcept
+bool playrho::HasSensor(const Contact& contact) noexcept
 {
     return contact.GetFixtureA()->IsSensor() || contact.GetFixtureB()->IsSensor();
 }
 
-bool box2d::IsImpenetrable(const Contact& contact) noexcept
+bool playrho::IsImpenetrable(const Contact& contact) noexcept
 {
     const auto bA = contact.GetFixtureA()->GetBody();
     const auto bB = contact.GetFixtureB()->GetBody();
     return bA->IsImpenetrable() || bB->IsImpenetrable();
 }
 
-void box2d::SetAwake(const Contact& c) noexcept
+void playrho::SetAwake(const Contact& c) noexcept
 {
     SetAwake(*c.GetFixtureA());
     SetAwake(*c.GetFixtureB());
 }
 
 /// Resets the friction mixture to the default value.
-void box2d::ResetFriction(Contact& contact)
+void playrho::ResetFriction(Contact& contact)
 {
     contact.SetFriction(MixFriction(contact.GetFixtureA()->GetFriction(), contact.GetFixtureB()->GetFriction()));
 }
 
 /// Reset the restitution to the default value.
-void box2d::ResetRestitution(Contact& contact) noexcept
+void playrho::ResetRestitution(Contact& contact) noexcept
 {
     const auto restitutionA = contact.GetFixtureA()->GetRestitution();
     const auto restitutionB = contact.GetFixtureB()->GetRestitution();
     contact.SetRestitution(MixRestitution(restitutionA, restitutionB));
 }
 
-TOIOutput box2d::CalcToi(const Contact& contact, const ToiConf conf)
+TOIOutput playrho::CalcToi(const Contact& contact, const ToiConf conf)
 {
     const auto fA = contact.GetFixtureA();
     const auto fB = contact.GetFixtureB();

@@ -21,9 +21,9 @@
 #include <PlayRho/Dynamics/Joints/JointKey.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
-JointKey box2d::GetJointKey(const Joint& joint) noexcept
+JointKey playrho::GetJointKey(const Joint& joint) noexcept
 {
     return JointKey::Get(joint.GetBodyA(), joint.GetBodyB());
 }

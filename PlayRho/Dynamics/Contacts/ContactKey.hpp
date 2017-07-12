@@ -30,7 +30,7 @@
 #include <functional>
 #include <cassert>
 
-namespace box2d
+namespace playrho
 {
     class Fixture;
     struct FixtureProxy;
@@ -110,17 +110,17 @@ namespace box2d
     
     ContactKey GetContactKey(const Contact& contact) noexcept;
 
-} // namespace box2d
+} // namespace playrho
 
 namespace std
 {
     template <>
-    struct hash<box2d::ContactKey>
+    struct hash<playrho::ContactKey>
     {
-        using argument_type = box2d::ContactKey;
+        using argument_type = playrho::ContactKey;
         using result_type = std::size_t;
 
-        constexpr std::size_t operator()(const box2d::ContactKey& key) const
+        constexpr std::size_t operator()(const playrho::ContactKey& key) const
         {
             // Use simple and fast Knuth multiplicative hash...
             const auto a = std::size_t{key.GetMin()} * 2654435761u;
@@ -130,7 +130,7 @@ namespace std
     };
 }
 
-namespace box2d
+namespace playrho
 {
     inline Contact* GetContactPtr(KeyedContactPtr value)
     {

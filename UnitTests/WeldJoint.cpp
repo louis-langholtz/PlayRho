@@ -26,7 +26,7 @@
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Collision/Shapes/DiskShape.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(WeldJointDef, ByteSize)
 {

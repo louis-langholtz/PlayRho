@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 class ApplyForce : public Test
 {
@@ -150,7 +150,7 @@ public:
                 const auto lv = Length2D{Vec2{Real{0}, Real{-200}} * Meter};
                 const auto f = Force2D{GetWorldVector(*m_body, lv) * Kilogram / (Second * Second)};
                 const auto p = GetWorldPoint(*m_body, Vec2(Real{0}, Real{2}) * Meter);
-                box2d::ApplyForce(*m_body, f, p);
+                playrho::ApplyForce(*m_body, f, p);
             }
             break;
 
@@ -174,6 +174,6 @@ public:
     Body* m_body;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

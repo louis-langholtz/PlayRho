@@ -26,7 +26,7 @@
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
 
-namespace box2d {
+namespace playrho {
 
 /// @brief Step configuration.
 /// @details
@@ -298,6 +298,6 @@ inline Length GetMaxRegLinearCorrection(const StepConf& conf) noexcept
 
 bool IsMaxTranslationWithinTolerance(const StepConf& conf) noexcept;
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

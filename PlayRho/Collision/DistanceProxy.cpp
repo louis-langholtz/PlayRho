@@ -20,7 +20,7 @@
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 
-namespace box2d {
+namespace playrho {
 
 DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, const Vec2 d) noexcept
 {
@@ -172,4 +172,4 @@ bool TestPoint(const DistanceProxy& proxy, const Length2D pLocal) noexcept
     return true;
 }
 
-} // namespace box2d
+} // namespace playrho

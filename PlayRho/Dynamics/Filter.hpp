@@ -25,7 +25,7 @@
 
 #include <cstdint>
 
-namespace box2d {
+namespace playrho {
     
     /// @brief A holder for contact filtering data.
     struct Filter

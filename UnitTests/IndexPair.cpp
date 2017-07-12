@@ -19,7 +19,7 @@
 #include "gtest/gtest.h"
 #include <PlayRho/Collision/IndexPair.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(IndexPair, Init)
 {

@@ -24,9 +24,9 @@
 #include <PlayRho/Dynamics/FixtureProxy.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
-AABB box2d::ComputeAABB(const DistanceProxy& proxy, const Transformation xf) noexcept
+AABB playrho::ComputeAABB(const DistanceProxy& proxy, const Transformation xf) noexcept
 {
     const auto count = proxy.GetVertexCount();
     if (count > 0)
@@ -41,7 +41,7 @@ AABB box2d::ComputeAABB(const DistanceProxy& proxy, const Transformation xf) noe
     return AABB{};
 }
 
-AABB box2d::ComputeAABB(const Shape& shape, const Transformation xf)
+AABB playrho::ComputeAABB(const Shape& shape, const Transformation xf)
 {
     const auto childCount = shape.GetChildCount();
     auto sum = AABB{};
@@ -52,7 +52,7 @@ AABB box2d::ComputeAABB(const Shape& shape, const Transformation xf)
     return sum;
 }
 
-AABB box2d::ComputeAABB(const Body& body)
+AABB playrho::ComputeAABB(const Body& body)
 {
     auto sum = AABB{};
     const auto xf = body.GetTransformation();
@@ -63,7 +63,7 @@ AABB box2d::ComputeAABB(const Body& body)
     return sum;
 }
 
-AABB box2d::GetAABB(const Fixture& fixture, ChildCounter childIndex) noexcept
+AABB playrho::GetAABB(const Fixture& fixture, ChildCounter childIndex) noexcept
 {
     return fixture.GetProxy(childIndex)->aabb;
 }

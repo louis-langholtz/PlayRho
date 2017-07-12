@@ -25,7 +25,7 @@
 
 #include <PlayRho/Common/Math.hpp>
 
-namespace box2d
+namespace playrho
 {
     /// @brief Ray-cast input data.
     /// @details The ray extends from p1 to p1 + maxFraction * (p2 - p1).
@@ -36,6 +36,6 @@ namespace box2d
         Real maxFraction; ///< Max fraction. Unit interval value (a value between 0 and 1).
     };
     
-} // namespace box2d
+} // namespace playrho
 
 #endif /* RayCastInput_hpp */

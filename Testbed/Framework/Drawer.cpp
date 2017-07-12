@@ -19,14 +19,14 @@
 
 #include "Drawer.hpp"
 
-using namespace box2d;
+using namespace playrho;
 
 Drawer::~Drawer() noexcept
 {
     // Intentionally empty.
 }
 
-Color box2d::Brighten(Color color, float factor)
+Color playrho::Brighten(Color color, float factor)
 {
     return Color(color.r * factor, color.g * factor, color.b * factor, color.a);
 }

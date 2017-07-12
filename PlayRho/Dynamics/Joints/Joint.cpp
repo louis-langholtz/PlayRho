@@ -36,7 +36,7 @@
 #include <new>
 #include <algorithm>
 
-namespace box2d
+namespace playrho
 {
 
 namespace
@@ -157,27 +157,27 @@ Joint* Joint::Create(const JointDef& def)
     switch (def.type)
     {
     case JointType::Distance:
-        return box2d::Create(static_cast<const DistanceJointDef&>(def));
+        return playrho::Create(static_cast<const DistanceJointDef&>(def));
     case JointType::Mouse:
-        return box2d::Create(static_cast<const MouseJointDef&>(def));
+        return playrho::Create(static_cast<const MouseJointDef&>(def));
     case JointType::Prismatic:
-        return box2d::Create(static_cast<const PrismaticJointDef&>(def));
+        return playrho::Create(static_cast<const PrismaticJointDef&>(def));
     case JointType::Revolute:
-        return box2d::Create(static_cast<const RevoluteJointDef&>(def));
+        return playrho::Create(static_cast<const RevoluteJointDef&>(def));
     case JointType::Pulley:
-        return box2d::Create(static_cast<const PulleyJointDef&>(def));
+        return playrho::Create(static_cast<const PulleyJointDef&>(def));
     case JointType::Gear:
-        return box2d::Create(static_cast<const GearJointDef&>(def));
+        return playrho::Create(static_cast<const GearJointDef&>(def));
     case JointType::Wheel:
-        return box2d::Create(static_cast<const WheelJointDef&>(def));
+        return playrho::Create(static_cast<const WheelJointDef&>(def));
     case JointType::Weld:
-        return box2d::Create(static_cast<const WeldJointDef&>(def));
+        return playrho::Create(static_cast<const WeldJointDef&>(def));
     case JointType::Friction:
-        return box2d::Create(static_cast<const FrictionJointDef&>(def));
+        return playrho::Create(static_cast<const FrictionJointDef&>(def));
     case JointType::Rope:
-        return box2d::Create(static_cast<const RopeJointDef&>(def));
+        return playrho::Create(static_cast<const RopeJointDef&>(def));
     case JointType::Motor:
-        return box2d::Create(static_cast<const MotorJointDef&>(def));
+        return playrho::Create(static_cast<const MotorJointDef&>(def));
     case JointType::Unknown:
         assert(false);
         break;
@@ -250,4 +250,4 @@ void Set(JointDef& def, const Joint& joint) noexcept
     def.collideConnected = joint.GetCollideConnected();
 }
 
-} // namespace box2d
+} // namespace playrho

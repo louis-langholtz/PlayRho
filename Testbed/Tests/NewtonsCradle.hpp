@@ -23,7 +23,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
     
     /// Newton's Cradle test.
     /// @details
@@ -272,6 +272,6 @@ namespace box2d {
         Body *m_swings[5];
     };
 
-} // namespace box2d
+} // namespace playrho
         
 #endif /* NewtonsCradle_hpp */

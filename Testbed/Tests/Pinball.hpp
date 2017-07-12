@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 /// This tests bullet collision and provides an example of a gameplay scenario.
 /// This also uses a loop shape.
@@ -153,6 +153,6 @@ public:
     bool m_button = false;
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

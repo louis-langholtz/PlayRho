@@ -25,7 +25,7 @@
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/Vector2D.hpp>
 
-namespace box2d
+namespace playrho
 {
     
     /// @brief A 2-by-2 matrix.

@@ -23,7 +23,7 @@
 #include <PlayRho/Collision/Manifold.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
-namespace box2d {
+namespace playrho {
 
     /// Contact Position Constraint.
     /// @note This structure is 88-bytes large on at least one 64-bit platform.
@@ -70,6 +70,6 @@ namespace box2d {
         Length m_radiusB; // 4-bytes.
     };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif /* PositionConstraint_hpp */

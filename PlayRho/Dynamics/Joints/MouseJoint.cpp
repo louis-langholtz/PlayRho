@@ -22,7 +22,7 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 // p = attached point, m = mouse point
 // C = p - m
@@ -214,7 +214,7 @@ void MouseJoint::ShiftOrigin(const Length2D newOrigin)
     m_targetA -= newOrigin;
 }
 
-MouseJointDef box2d::GetMouseJointDef(const MouseJoint& joint) noexcept
+MouseJointDef playrho::GetMouseJointDef(const MouseJoint& joint) noexcept
 {
     auto def = MouseJointDef{};
 

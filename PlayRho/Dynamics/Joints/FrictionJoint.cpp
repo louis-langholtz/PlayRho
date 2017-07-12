@@ -22,7 +22,7 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 // Point-to-point constraint
 // Cdot = v2 - v1
@@ -255,7 +255,7 @@ Torque FrictionJoint::GetMaxTorque() const
     return m_maxTorque;
 }
 
-FrictionJointDef box2d::GetFrictionJointDef(const FrictionJoint& joint) noexcept
+FrictionJointDef playrho::GetFrictionJointDef(const FrictionJoint& joint) noexcept
 {
     auto def = FrictionJointDef{};
     

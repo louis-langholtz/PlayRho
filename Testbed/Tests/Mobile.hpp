@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 class Mobile : public Test
 {
@@ -85,6 +85,6 @@ public:
     }
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

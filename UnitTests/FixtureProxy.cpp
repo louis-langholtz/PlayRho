@@ -19,7 +19,7 @@
 #include "gtest/gtest.h"
 #include <PlayRho/Dynamics/FixtureProxy.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(FixtureProxy, ByteSizeIs_32_48_or_80)
 {

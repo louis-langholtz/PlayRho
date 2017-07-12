@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace box2d {
+namespace playrho {
 
 class Pyramid : public Test
 {
@@ -66,6 +66,6 @@ public:
     }
 };
 
-} // namespace box2d
+} // namespace playrho
 
 #endif

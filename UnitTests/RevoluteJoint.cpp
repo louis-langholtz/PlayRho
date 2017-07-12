@@ -27,7 +27,7 @@
 #include <PlayRho/Collision/Shapes/DiskShape.hpp>
 #include <PlayRho/Collision/Shapes/PolygonShape.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(RevoluteJoint, ByteSize)
 {

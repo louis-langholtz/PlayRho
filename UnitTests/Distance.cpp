@@ -20,7 +20,7 @@
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 
-using namespace box2d;
+using namespace playrho;
 
 TEST(Distance, MatchingCircles)
 {

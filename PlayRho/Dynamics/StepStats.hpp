@@ -22,7 +22,7 @@
 
 #include <PlayRho/Common/Settings.hpp>
 
-namespace box2d {
+namespace playrho {
     
     /// @brief Pre-phase per-step statistics.
     struct PreStepStats
@@ -100,6 +100,6 @@ namespace box2d {
         ToiStepStats toi; ///< TOI-phase step statistics.
     };
     
-} // namespace box2d
+} // namespace playrho
 
 #endif /* StepStats_hpp */
