@@ -100,7 +100,7 @@ private:
 ///   You should strive to make your callbacks efficient because there may be
 ///   many callbacks per time step.
 ///
-/// @warning You cannot create/destroy Box2D entities inside these callbacks.
+/// @warning You cannot create/destroy PlayRho entities inside these callbacks.
 ///
 class ContactListener
 {

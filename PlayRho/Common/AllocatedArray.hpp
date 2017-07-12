@@ -1,6 +1,6 @@
 //
 //  AllocatedArray.hpp
-//  Box2D
+//  PlayRho
 //
 //  Created by Louis D. Langholtz on 6/15/16.
 //

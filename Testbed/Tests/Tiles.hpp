@@ -25,7 +25,7 @@
 namespace box2d {
 
 /// This stress tests the dynamic tree broad-phase. This also shows that tile
-/// based collision is _not_ smooth due to Box2D not knowing about adjacency.
+/// based collision is smooth due to PlayRho knowing about adjacency.
 class Tiles : public Test
 {
 public:

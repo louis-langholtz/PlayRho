@@ -257,7 +257,7 @@ private:
 
     /// @brief Gets the writable manifold.
     /// @note This is intentionally not a public method.
-    /// @warning Do not modify the manifold unless you understand the internals of Box2D.
+    /// @warning Do not modify the manifold unless you understand the internals of the engine.
     Manifold& GetMutableManifold() noexcept;
     
     bool IsIslanded() const noexcept;

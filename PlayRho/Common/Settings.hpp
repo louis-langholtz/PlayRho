@@ -44,7 +44,7 @@
 /**
  * @namespace box2d
  *
- * Namespace for all Box2D related names.
+ * Namespace for all PlayRho related names.
  */
 namespace box2d
 {   

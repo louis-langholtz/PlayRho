@@ -22,9 +22,9 @@
 #include <PlayRho/PlayRho.hpp>
 #include <cstdio>
 
-// This is a simple example of building and running a simulation using Box2D.
+// This is a simple example of building and running a simulation using PlayRho.
 // Here we create a large ground box and a small dynamic box.
-// There are no graphics for this example. Box2D is meant to be used with your
+// There are no graphics for this example. PlayRho is meant to be used with your
 // rendering engine in your game engine.
 int main(int, char**)
 {

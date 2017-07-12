@@ -754,7 +754,7 @@ int main()
     const auto buildDetails = GetBuildDetails();
     
     char title[64];
-    sprintf(title, "Box2D Testbed Version %d.%d.%d",
+    sprintf(title, "PlayRho Testbed Version %d.%d.%d",
             buildVersion.major, buildVersion.minor, buildVersion.revision);
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -772,7 +772,7 @@ int main()
     }
 
     glfwMakeContextCurrent(mainWindow);
-    printf("Box2D %d.%d.%d (%s), OpenGL %s, GLSL %s\n",
+    printf("PlayRho %d.%d.%d (%s), OpenGL %s, GLSL %s\n",
            buildVersion.major, buildVersion.minor, buildVersion.revision, buildDetails.c_str(),
            glGetString(GL_VERSION), glGetString(GL_SHADING_LANGUAGE_VERSION));
 
