@@ -33,7 +33,7 @@ include_directories (
 	${OPENGL_INCLUDE_DIR}
 	${GLEW_INCLUDE_DIRS}
 	${GLFW_INCLUDE_DIRS}
-	${Box2D_SOURCE_DIR}
+	${PlayRho_SOURCE_DIR}
 )
 
 link_directories (
@@ -56,7 +56,7 @@ add_executable(Testbed
 
 target_link_libraries (
 	Testbed
-	Box2D
+	PlayRho
 	${GLEW_LIBRARY}
 	${GLFW_STATIC_LIBRARIES}
 	${ADDITIONAL_LIBRARIES}
@@ -64,7 +64,7 @@ target_link_libraries (
 )
 
 # link with coverage library
-if(${BOX2D_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+if(${PLAYRHO_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     target_link_libraries(Testbed -fprofile-arcs -ftest-coverage)
 endif()
 
