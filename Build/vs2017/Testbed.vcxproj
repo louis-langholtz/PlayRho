@@ -212,7 +212,7 @@
     <ClCompile Include="..\..\Testbed\Tests\*.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Box2D.vcxproj">
+    <ProjectReference Include="PlayRho.vcxproj">
       <Project>{98400d17-43a5-1a40-95be-c53ac78e7694}</Project>
     </ProjectReference>
   </ItemGroup>

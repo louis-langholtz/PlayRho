@@ -21,43 +21,43 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Box2D\*.hpp" />
-    <ClInclude Include="..\..\Box2D\Collision\*.hpp">
+    <ClInclude Include="..\..\PlayRho\*.hpp" />
+    <ClInclude Include="..\..\PlayRho\Collision\*.hpp">
       <Filter>Collision</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Box2D\Collision\Shapes\*.hpp">
+    <ClInclude Include="..\..\PlayRho\Collision\Shapes\*.hpp">
       <Filter>Collision\Shapes</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Box2D\Common\*.hpp">
+    <ClInclude Include="..\..\PlayRho\Common\*.hpp">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Box2D\Dynamics\*.hpp">
+    <ClInclude Include="..\..\PlayRho\Dynamics\*.hpp">
       <Filter>Dynamics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Box2D\Dynamics\Contacts\*.hpp">
+    <ClInclude Include="..\..\PlayRho\Dynamics\Contacts\*.hpp">
       <Filter>Dynamics\Contacts</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Box2D\Dynamics\Joints\*.hpp">
+    <ClInclude Include="..\..\PlayRho\Dynamics\Joints\*.hpp">
       <Filter>Dynamics\Joints</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Box2D\Collision\*.cpp">
+    <ClCompile Include="..\..\PlayRho\Collision\*.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Box2D\Collision\Shapes\*.cpp">
+    <ClCompile Include="..\..\PlayRho\Collision\Shapes\*.cpp">
       <Filter>Collision\Shapes</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Box2D\Common\*.cpp">
+    <ClCompile Include="..\..\PlayRho\Common\*.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Box2D\Dynamics\*.cpp">
+    <ClCompile Include="..\..\PlayRho\Dynamics\*.cpp">
       <Filter>Dynamics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Box2D\Dynamics\Contacts\*.cpp">
+    <ClCompile Include="..\..\PlayRho\Dynamics\Contacts\*.cpp">
       <Filter>Dynamics\Contacts</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Box2D\Dynamics\Joints\*.cpp">
+    <ClCompile Include="..\..\PlayRho\Dynamics\Joints\*.cpp">
       <Filter>Dynamics\Joints</Filter>
     </ClCompile>
   </ItemGroup>

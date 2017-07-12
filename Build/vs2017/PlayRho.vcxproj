@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{98400D17-43A5-1A40-95BE-C53AC78E7694}</ProjectGuid>
-    <RootNamespace>Box2D</RootNamespace>
+    <RootNamespace>PlayRho</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -67,17 +67,17 @@
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">bin\x32\Debug\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">obj\x32\Debug\Box2D\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Box2D</TargetName>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">obj\x32\Debug\PlayRho\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">PlayRho</TargetName>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">bin\x64\Debug\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">obj\x64\Debug\Box2D\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Box2D</TargetName>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">obj\x64\Debug\PlayRho\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PlayRho</TargetName>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">bin\x32\Release\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">obj\x32\Release\Box2D\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Box2D</TargetName>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">obj\x32\Release\PlayRho\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">PlayRho</TargetName>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">bin\x64\Release\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">obj\x64\Release\Box2D\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Box2D</TargetName>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">obj\x64\Release\PlayRho\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">PlayRho</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -92,7 +92,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <ProgramDataBaseFileName>$(OutDir)Box2D.pdb</ProgramDataBaseFileName>
+      <ProgramDataBaseFileName>$(OutDir)PlayRho.pdb</ProgramDataBaseFileName>
       <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <ResourceCompile>
@@ -100,7 +100,7 @@
       <AdditionalIncludeDirectories>..\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Lib>
-      <OutputFile>$(OutDir)Box2D.lib</OutputFile>
+      <OutputFile>$(OutDir)PlayRho.lib</OutputFile>
       <TargetMachine>MachineX86</TargetMachine>
     </Lib>
     <Link>
@@ -121,7 +121,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <ProgramDataBaseFileName>$(OutDir)Box2D.pdb</ProgramDataBaseFileName>
+      <ProgramDataBaseFileName>$(OutDir)PlayRho.pdb</ProgramDataBaseFileName>
       <BrowseInformation>false</BrowseInformation>
     </ClCompile>
     <ResourceCompile>
@@ -129,7 +129,7 @@
       <AdditionalIncludeDirectories>..\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Lib>
-      <OutputFile>$(OutDir)Box2D.lib</OutputFile>
+      <OutputFile>$(OutDir)PlayRho.lib</OutputFile>
       <TargetMachine>MachineX64</TargetMachine>
     </Lib>
     <Link>
@@ -150,14 +150,14 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <ProgramDataBaseFileName>$(OutDir)Box2D.pdb</ProgramDataBaseFileName>
+      <ProgramDataBaseFileName>$(OutDir)PlayRho.pdb</ProgramDataBaseFileName>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Lib>
-      <OutputFile>$(OutDir)Box2D.lib</OutputFile>
+      <OutputFile>$(OutDir)PlayRho.lib</OutputFile>
       <TargetMachine>MachineX86</TargetMachine>
     </Lib>
     <Link>
@@ -183,14 +183,14 @@
       <ExceptionHandling>false</ExceptionHandling>
       <FloatingPointModel>Fast</FloatingPointModel>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
-      <ProgramDataBaseFileName>$(OutDir)Box2D.pdb</ProgramDataBaseFileName>
+      <ProgramDataBaseFileName>$(OutDir)PlayRho.pdb</ProgramDataBaseFileName>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Lib>
-      <OutputFile>$(OutDir)Box2D.lib</OutputFile>
+      <OutputFile>$(OutDir)PlayRho.lib</OutputFile>
       <TargetMachine>MachineX64</TargetMachine>
     </Lib>
     <Link>
@@ -201,21 +201,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Box2D\*.hpp" />
-    <ClInclude Include="..\..\Box2D\Collision\*.hpp" />
-    <ClInclude Include="..\..\Box2D\Collision\Shapes\*.hpp" />
-    <ClInclude Include="..\..\Box2D\Common\*.hpp" />
-    <ClInclude Include="..\..\Box2D\Dynamics\*.hpp" />
-    <ClInclude Include="..\..\Box2D\Dynamics\Contacts\*.hpp" />
-    <ClInclude Include="..\..\Box2D\Dynamics\Joints\*.hpp" />
+    <ClInclude Include="..\..\PlayRho\*.hpp" />
+    <ClInclude Include="..\..\PlayRho\Collision\*.hpp" />
+    <ClInclude Include="..\..\PlayRho\Collision\Shapes\*.hpp" />
+    <ClInclude Include="..\..\PlayRho\Common\*.hpp" />
+    <ClInclude Include="..\..\PlayRho\Dynamics\*.hpp" />
+    <ClInclude Include="..\..\PlayRho\Dynamics\Contacts\*.hpp" />
+    <ClInclude Include="..\..\PlayRho\Dynamics\Joints\*.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Box2D\Collision\*.cpp" />
-    <ClCompile Include="..\..\Box2D\Collision\Shapes\*.cpp" />
-    <ClCompile Include="..\..\Box2D\Common\*.cpp" />
-    <ClCompile Include="..\..\Box2D\Dynamics\*.cpp" />
-    <ClCompile Include="..\..\Box2D\Dynamics\Contacts\*.cpp" />
-    <ClCompile Include="..\..\Box2D\Dynamics\Joints\*.cpp" />
+    <ClCompile Include="..\..\PlayRho\Collision\*.cpp" />
+    <ClCompile Include="..\..\PlayRho\Collision\Shapes\*.cpp" />
+    <ClCompile Include="..\..\PlayRho\Common\*.cpp" />
+    <ClCompile Include="..\..\PlayRho\Dynamics\*.cpp" />
+    <ClCompile Include="..\..\PlayRho\Dynamics\Contacts\*.cpp" />
+    <ClCompile Include="..\..\PlayRho\Dynamics\Joints\*.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
