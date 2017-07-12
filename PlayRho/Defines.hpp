@@ -20,9 +20,9 @@
 #define Defines_hpp
 
 #ifdef __clang__
-#define BOX2D_CONSTEXPR constexpr
+#define PLAYRHO_CONSTEXPR constexpr
 #else
-#define BOX2D_CONSTEXPR
+#define PLAYRHO_CONSTEXPR
 #endif
 
 #endif /* Defines_hpp */

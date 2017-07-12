@@ -28,7 +28,7 @@
 #include <bitset>
 #include <algorithm>
 
-#define BOX2D_MAGIC(x) (x)
+#define PLAYRHO_MAGIC(x) (x)
 
 using namespace playrho;
 
@@ -461,7 +461,7 @@ Manifold playrho::CollideShapes(const DistanceProxy& shapeA, const Transformatio
         return Manifold{};
     }
     
-    constexpr auto k_tol = BOX2D_MAGIC(DefaultLinearSlop / Real{10});
+    constexpr auto k_tol = PLAYRHO_MAGIC(DefaultLinearSlop / Real{10});
     return (edgeSepB.separation > (edgeSepA.separation + k_tol))?
         GetFaceManifold(Manifold::e_faceB,
                         shapeB, xfB, edgeSepB.index1,
@@ -566,7 +566,7 @@ Manifold playrho::CollideCached(const DistanceProxy& shapeA, const Transformatio
         }
     }
     
-    constexpr auto k_tol = BOX2D_MAGIC(DefaultLinearSlop / Real{10});
+    constexpr auto k_tol = PLAYRHO_MAGIC(DefaultLinearSlop / Real{10});
     return (edgeSepB.separation > (edgeSepA.separation + k_tol))?
     GetFaceManifold(Manifold::e_faceB,
                     shapeB, xfB, edgeSepB.index1,

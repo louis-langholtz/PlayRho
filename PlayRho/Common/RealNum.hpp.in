@@ -57,7 +57,7 @@ namespace playrho
     /// @warning The note regarding division applies even more so when using a fixed-point type
     ///   (for Real).
     ///
-    using Real = @BOX2D_REALNUM_TYPE@;
+    using Real = @PLAYRHO_REALNUM_TYPE@;
 
     /// @brief Pi.
     ///

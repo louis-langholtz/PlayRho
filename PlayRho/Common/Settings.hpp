@@ -24,8 +24,8 @@
  * @brief Types and default settings file.
  */
 
-#ifndef BOX2D_SETTINGS_H
-#define BOX2D_SETTINGS_H
+#ifndef PLAYRHO_SETTINGS_H
+#define PLAYRHO_SETTINGS_H
 
 #include <cstddef>
 #include <cassert>

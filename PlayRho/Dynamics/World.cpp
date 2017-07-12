@@ -69,7 +69,7 @@
 #include <future>
 #endif
 
-#define BOX2D_MAGIC(x) (x)
+#define PLAYRHO_MAGIC(x) (x)
 
 using namespace std;
 

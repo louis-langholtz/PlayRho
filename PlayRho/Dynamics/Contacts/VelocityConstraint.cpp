@@ -21,7 +21,7 @@
 #include <PlayRho/Collision/WorldManifold.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
 
-#define BOX2D_MAGIC(x) (x)
+#define PLAYRHO_MAGIC(x) (x)
 
 using namespace playrho;
 
@@ -68,7 +68,7 @@ VelocityConstraint::VelocityConstraint(index_type contactIndex,
         if (IsValid(k))
         {
             // Ensure a reasonable condition number.
-            constexpr auto maxCondNum = BOX2D_MAGIC(Real(1000));
+            constexpr auto maxCondNum = PLAYRHO_MAGIC(Real(1000));
             const auto scaled_k11_squared = k.ex.x * (k.ex.x / maxCondNum);
             const auto k11_times_k22 = k.ex.x * k.ey.y;
             const auto k12_squared = Square(k.ex.y);
