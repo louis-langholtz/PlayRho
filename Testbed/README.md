@@ -2,7 +2,7 @@
 
 The Testbed GUI application provides a GUI interface to a bunch of visually
 presented demos. These may be helpful for testing and/or for learning how to use
-[this fork of the Box2D library](https://github.com/louis-langholtz/Box2D).
+[PlayRho](https://github.com/louis-langholtz/PlayRho).
 
 Here in this directory, are three sub-directories:
 1. [`Data`](Data/): For data for the application.
@@ -76,7 +76,7 @@ able to be built for Windows.
 
 Assuming that GLFW and GLEW are installed under `/usr/local`:
 
-    cd ${BUILD_DIR} && cmake -DBOX2D_BUILD_TESTBED=ON ${CMAKEFILE} && make
+    cd ${BUILD_DIR} && cmake -DPLAYRHO_BUILD_TESTBED=ON ${CMAKEFILE} && make
 
 See the [Travis-CI configuration file](../../.travis.yml) for how this has
 been done on the Linux CI build host.

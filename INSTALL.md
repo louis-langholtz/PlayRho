@@ -75,9 +75,13 @@ For Microsoft Visual Studio:
 - Set the Testbed or HelloWorld as your startup project.
 - Press F5 or Ctrl-F5 to run.
 
-For Unix platforms, say the following on a terminal: (Replace $PLAYRHOPATH with the directory where this file is located.)
-	cd $PLAYRHOPATH/Build
-	cmake -DPLAYRHO_INSTALL=ON -DPLAYRHO_BUILD_SHARED=ON ..
-	make
-	make install
-You might want to add -DCMAKE_INSTALL_PREFIX=/opt/PlayRho or similar to the cmake call to change the installation location. make install might need sudo.
+For Unix platforms, say the following on a terminal (replacing `$PLAYRHOPATH` with the directory
+where this file is located):
+
+    cd $PLAYRHOPATH/Build
+    cmake -DPLAYRHO_INSTALL=ON -DPLAYRHO_BUILD_SHARED=ON ..
+    make
+    make install
+
+You might want to add `-DCMAKE_INSTALL_PREFIX=/opt/PlayRho` or similar to the cmake call to change
+the installation location. make install might need sudo.
