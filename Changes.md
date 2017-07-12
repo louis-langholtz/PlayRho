@@ -1,8 +1,8 @@
 # Changes
 
-Here's a run-down of some of the changes
-[this fork of Box2D](https://github.com/louis-langholtz/PlayRho) introduces categorized
-as user-level changes or internal changes.
+Here's a run-down of some of the changes between
+[PlayRho](https://github.com/louis-langholtz/PlayRho) and Box2D 2.3.2, categorized
+as Application Programming Interface (API) changes and non-API (other) changes.
 
 ## API Changes
 

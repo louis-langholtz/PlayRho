@@ -48,7 +48,8 @@ on and for the Windows platform.
 
 ### premake
 
-For other platforms you need to run premake in this directory. You can get premake here:
+For other platforms you may be able to run premake in this directory.
+Premake can be obtained from:
 http://industriousone.com/premake
 
 For example, on Linux, you would type:
@@ -56,9 +57,6 @@ premake4 gmake
 
 This will create a gmake folder in the Build directory. From there you can run:
 make config="debug"
-
-If you have build problems, you can post a question here:
-http://box2d.org/forum/viewforum.php?f=7
 
 ### cmake
 
