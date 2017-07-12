@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+PlayRho﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -207,7 +207,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Box2D.vcxproj">
+    <ProjectReference Include="PlayRho.vcxproj">
       <Project>{98400d17-43a5-1a40-95be-c53ac78e7694}</Project>
     </ProjectReference>
   </ItemGroup>
