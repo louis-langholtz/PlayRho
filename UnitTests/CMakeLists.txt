@@ -10,7 +10,7 @@ add_subdirectory(googletest)
 
 # Add include directories to build...
 # For cmd details, see: https://cmake.org/cmake/help/v3.1/command/include_directories.html
-include_directories(${Box2D_SOURCE_DIR})
+include_directories(${PlayRho_SOURCE_DIR})
 
 file(GLOB UnitTest_SRCS *.cpp)
 
@@ -19,16 +19,16 @@ file(GLOB UnitTest_SRCS *.cpp)
 add_executable(UnitTests ${UnitTest_SRCS})
 
 # enable code coverage generation (only with GCC for now)
-if(${BOX2D_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+if(${PLAYRHO_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   message("UnitTests: Adding definitions for coverage analysis.")
   add_definitions(-fprofile-arcs -ftest-coverage)
 endif()
 
 # Link a target to given libraries.
 # See details at: https://cmake.org/cmake/help/v3.1/command/target_link_libraries.html
-target_link_libraries(UnitTests Box2D gtest)
+target_link_libraries(UnitTests PlayRho gtest)
 
 # link with coverage library
-if(${BOX2D_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+if(${PLAYRHO_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   target_link_libraries(UnitTests -fprofile-arcs -ftest-coverage)
 endif()

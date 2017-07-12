@@ -47,7 +47,7 @@ in the direction of the upper-left corner of the lower box. Instead, it's
 only seeing impulses that are in the directions of the edge normals.
 
 Not satisfied with squared off impulse responses, I introduced rounded corner
-collision handling into my fork of Box2D (like was being done for circle-circle
+collision handling into PlayRho (like was being done for circle-circle
 collisions). Rounded corner collision handling for a top rectangle dragged
 across the lower rectangles from the right of the image to the left, then
 instead looks like this (using the Testbed built from my fork of the project
@@ -89,7 +89,7 @@ And now, no stickiness at all!! Woot!!
 Someone asked me for more details. I love that! Even one person asking a question about
 what I've done is hugely encouraging for me. So here's more information...
 
-Code-wise, this now (as of around May, 2017) gets done in [`Manifold.cpp`](https://github.com/louis-langholtz/Box2D/blob/dev/Box2D/Collision/Manifold.cpp), by the `box2d::CollideShapes` function. It's full function signature is:
+Code-wise, this now (as of around May, 2017) gets done in [`Manifold.cpp`](https://github.com/louis-langholtz/PlayRho/blob/dev/PlayRho/Collision/Manifold.cpp), by the `box2d::CollideShapes` function. It's full function signature is:
 
     namespace box2d {
 
