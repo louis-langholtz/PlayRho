@@ -103,7 +103,7 @@ RayCastOutput playrho::RayCast(const AABB& aabb, const RayCastInput& input) noex
             
             if (t1 > t2)
             {
-                Swap(t1, t2);
+                std::swap(t1, t2);
                 s = 1;
             }
             

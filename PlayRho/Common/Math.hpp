@@ -630,14 +630,6 @@ constexpr inline T Clamp(T value, T low, T high) noexcept
     return (tmp < low)? low: tmp; // std::isnan(low)? b: Max(b, low);
 }
 
-template<typename T>
-constexpr inline void Swap(T& a, T& b)
-{
-    T tmp = a;
-    a = b;
-    b = tmp;
-}
-
 /// "Next Largest Power of 2
 /// Given a binary integer value x, the next largest power of 2 can be computed by a SWAR algorithm
 /// that recursively "folds" the upper bits into the lower bits. This process yields a bit vector with
