@@ -933,14 +933,14 @@ void Test::Step(const Settings& settings, Drawer& drawer)
     m_sumToiContactsSkippedTouching += stepStats.toi.contactsSkippedTouching;
     m_sumContactsAtMaxSubSteps += stepStats.toi.contactsAtMaxSubSteps;
 
-    m_maxDistIters = Max(m_maxDistIters, stepStats.toi.maxDistIters);
-    m_maxRootIters = Max(m_maxRootIters, stepStats.toi.maxRootIters);
-    m_maxToiIters = Max(m_maxToiIters, stepStats.toi.maxToiIters);
+    m_maxDistIters = std::max(m_maxDistIters, stepStats.toi.maxDistIters);
+    m_maxRootIters = std::max(m_maxRootIters, stepStats.toi.maxRootIters);
+    m_maxToiIters = std::max(m_maxToiIters, stepStats.toi.maxToiIters);
 
     if (stepStats.reg.minSeparation < std::numeric_limits<Real>::infinity() * Meter)
     {
-        m_minRegSep = Min(m_minRegSep, stepStats.reg.minSeparation);
-        m_maxRegSep = Max(m_maxRegSep, stepStats.reg.minSeparation);
+        m_minRegSep = std::min(m_minRegSep, stepStats.reg.minSeparation);
+        m_maxRegSep = std::max(m_maxRegSep, stepStats.reg.minSeparation);
     }
     
     const auto selectedFixture = GetSelectedFixture();
@@ -957,15 +957,15 @@ void Test::Step(const Settings& settings, Drawer& drawer)
         m_sumDeltaTime += settings.dt;
         ++m_stepCount;
         m_stepStats = stepStats;
-        m_minToiSep = Min(m_minToiSep, stepStats.toi.minSeparation);
+        m_minToiSep = std::min(m_minToiSep, stepStats.toi.minSeparation);
         
         m_curStepDuration = end - start;
-        m_maxStepDuration = Max(m_maxStepDuration, m_curStepDuration);
+        m_maxStepDuration = std::max(m_maxStepDuration, m_curStepDuration);
         m_sumStepDuration += m_curStepDuration;
     }
 
     m_numContacts = GetContactCount(*m_world);
-    m_maxContacts = Max(m_maxContacts, m_numContacts);
+    m_maxContacts = std::max(m_maxContacts, m_numContacts);
 
     if (settings.drawStats)
     {

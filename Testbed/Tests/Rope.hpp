@@ -62,12 +62,12 @@ public:
         switch (key)
         {
         case 'q':
-            m_angle = Max(-Pi, m_angle - 0.05f * Pi);
+            m_angle = std::max(-Pi, m_angle - 0.05f * Pi);
             m_rope.SetAngle(m_angle);
             break;
 
         case 'e':
-            m_angle = Min(Pi, m_angle + 0.05f * Pi);
+            m_angle = std::min(Pi, m_angle + 0.05f * Pi);
             m_rope.SetAngle(m_angle);
             break;
         }

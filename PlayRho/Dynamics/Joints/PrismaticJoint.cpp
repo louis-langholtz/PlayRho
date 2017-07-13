@@ -313,11 +313,11 @@ bool PrismaticJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const 
 
         if (m_limitState == e_atLowerLimit)
         {
-            m_impulse.z = Max(m_impulse.z, Real{0});
+            m_impulse.z = std::max(m_impulse.z, Real{0});
         }
         else if (m_limitState == e_atUpperLimit)
         {
-            m_impulse.z = Min(m_impulse.z, Real{0});
+            m_impulse.z = std::min(m_impulse.z, Real{0});
         }
 
         // f2(1:2) = invK(1:2,1:2) * (-Cdot(1:2) - K(1:2,3) * (f2(3) - f1(3))) + f1(1:2)
@@ -428,21 +428,21 @@ bool PrismaticJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const 
         {
             // Prevent large angular corrections
             C2 = StripUnit(Clamp(translation, -conf.maxLinearCorrection, conf.maxLinearCorrection));
-            linearError = Max(linearError, Abs(translation));
+            linearError = std::max(linearError, Abs(translation));
             active = true;
         }
         else if (translation <= m_lowerTranslation)
         {
             // Prevent large linear corrections and allow some slop.
             C2 = StripUnit(Clamp(translation - m_lowerTranslation + conf.linearSlop, -conf.maxLinearCorrection, Length{0}));
-            linearError = Max(linearError, m_lowerTranslation - translation);
+            linearError = std::max(linearError, m_lowerTranslation - translation);
             active = true;
         }
         else if (translation >= m_upperTranslation)
         {
             // Prevent large linear corrections and allow some slop.
             C2 = StripUnit(Clamp(translation - m_upperTranslation - conf.linearSlop, Length{0}, conf.maxLinearCorrection));
-            linearError = Max(linearError, translation - m_upperTranslation);
+            linearError = std::max(linearError, translation - m_upperTranslation);
             active = true;
         }
     }

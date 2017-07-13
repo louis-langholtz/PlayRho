@@ -386,12 +386,12 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
 
         case GLFW_KEY_Z:
             // Zoom out
-            camera.m_zoom = Min(1.1f * camera.m_zoom, 20.0f);
+            camera.m_zoom = std::min(1.1f * camera.m_zoom, 20.0f);
             break;
 
         case GLFW_KEY_X:
             // Zoom in
-            camera.m_zoom = Max(0.9f * camera.m_zoom, 0.02f);
+            camera.m_zoom = std::max(0.9f * camera.m_zoom, 0.02f);
             break;
 
         case GLFW_KEY_R:

@@ -88,7 +88,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
 
         ++stats.toi_iters;
         stats.sum_dist_iters += distanceInfo.iterations;
-        stats.max_dist_iters = Max(stats.max_dist_iters, distanceInfo.iterations);
+        stats.max_dist_iters = std::max(stats.max_dist_iters, distanceInfo.iterations);
 
         const auto witnessPoints = GetWitnessPoints(distanceInfo.simplex);
         const auto dwp = witnessPoints.a - witnessPoints.b;
@@ -209,7 +209,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
                     // (a1 + a2) / 2 results in a1! So bail from function.
                     stats.sum_finder_iters += pbIter;
                     stats.sum_root_iters += roots;
-                    stats.max_root_iters = Max(stats.max_root_iters, roots);
+                    stats.max_root_iters = std::max(stats.max_root_iters, roots);
                     return TOIOutput{TOIOutput::e_failed, a1, stats};
                 }
 
@@ -252,7 +252,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
 
             // Found a new t2: t2, t2xfA, and t2xfB have been updated.
             stats.sum_root_iters += roots;
-            stats.max_root_iters = Max(stats.max_root_iters, roots);
+            stats.max_root_iters = std::max(stats.max_root_iters, roots);
         }
         stats.sum_finder_iters += pbIter;
     }

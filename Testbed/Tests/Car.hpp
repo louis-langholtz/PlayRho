@@ -236,7 +236,7 @@ public:
             break;
 
         case Key_Q:
-            m_hz = Max(Real(0) * Hertz, m_hz - Real{1} * Hertz);
+            m_hz = std::max(Real(0) * Hertz, m_hz - Real{1} * Hertz);
             m_spring1->SetSpringFrequency(m_hz);
             m_spring2->SetSpringFrequency(m_hz);
             break;

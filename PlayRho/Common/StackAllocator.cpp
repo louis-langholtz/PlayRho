@@ -78,7 +78,7 @@ void* StackAllocator::Allocate(size_type size) noexcept
 
         entry->size = size;
         m_allocation += size;
-        m_maxAllocation = Max(m_maxAllocation, m_allocation);
+        m_maxAllocation = std::max(m_maxAllocation, m_allocation);
         ++m_entryCount;
 
         return entry->data;

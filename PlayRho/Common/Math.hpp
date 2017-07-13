@@ -619,18 +619,6 @@ inline Mat22 Abs(const Mat22& A)
     return Mat22{Abs(A.ex), Abs(A.ey)};
 }
 
-template <typename T>
-constexpr inline T Min(T a, T b) noexcept
-{
-    return (a < b) ? a : b;
-}
-
-template <typename T>
-constexpr inline T Max(T a, T b) noexcept
-{
-    return (a > b) ? a : b;
-}
-
 /// Clamps the given value within the given range (inclusive).
 /// @param value Value to clamp.
 /// @param low Lowest value to return or NaN to keep the low-end unbounded.

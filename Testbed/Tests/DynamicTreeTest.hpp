@@ -72,7 +72,7 @@ public:
 
         if (m_automated)
         {
-            const auto actionCount = Max(1, e_actorCount >> 2);
+            const auto actionCount = std::max(1, e_actorCount >> 2);
             for (auto i = decltype(actionCount){0}; i < actionCount; ++i)
             {
                 Action();

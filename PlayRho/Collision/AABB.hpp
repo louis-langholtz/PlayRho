@@ -68,8 +68,8 @@ namespace playrho
         
         /// @brief Non-throwing initializing constructor for two points.
         constexpr AABB(const Length2D a, const Length2D b) noexcept:
-            lowerBound{Length2D{Min(a.x, b.x), Min(a.y, b.y)}},
-            upperBound{Length2D{Max(a.x, b.x), Max(a.y, b.y)}}
+        lowerBound{Length2D{std::min(a.x, b.x), std::min(a.y, b.y)}},
+            upperBound{Length2D{std::max(a.x, b.x), std::max(a.y, b.y)}}
         {
             // Intentionally empty.
         }
@@ -110,16 +110,16 @@ namespace playrho
         /// @brief Includes an AABB into this one.
         constexpr AABB& Include(const AABB aabb) noexcept
         {
-            lowerBound = Length2D{Min(lowerBound.x, aabb.lowerBound.x), Min(lowerBound.y, aabb.lowerBound.y)};
-            upperBound = Length2D{Max(upperBound.x, aabb.upperBound.x), Max(upperBound.y, aabb.upperBound.y)};
+            lowerBound = Length2D{std::min(lowerBound.x, aabb.lowerBound.x), std::min(lowerBound.y, aabb.lowerBound.y)};
+            upperBound = Length2D{std::max(upperBound.x, aabb.upperBound.x), std::max(upperBound.y, aabb.upperBound.y)};
             return *this;
         }
         
         /// @brief Includes a point into this AABB.
         constexpr AABB& Include(const Length2D value) noexcept
         {
-            lowerBound = Length2D{Min(lowerBound.x, value.x), Min(lowerBound.y, value.y)};
-            upperBound = Length2D{Max(upperBound.x, value.x), Max(upperBound.y, value.y)};
+            lowerBound = Length2D{std::min(lowerBound.x, value.x), std::min(lowerBound.y, value.y)};
+            upperBound = Length2D{std::max(upperBound.x, value.x), std::max(upperBound.y, value.y)};
             return *this;
         }
 

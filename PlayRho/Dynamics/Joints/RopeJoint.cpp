@@ -134,7 +134,7 @@ bool RopeJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
 
     auto impulse = -m_mass * Cdot;
     const auto oldImpulse = m_impulse;
-    m_impulse = Min(Momentum{0}, m_impulse + impulse);
+    m_impulse = std::min(Momentum{0}, m_impulse + impulse);
     impulse = m_impulse - oldImpulse;
 
     const auto P = impulse * m_u;

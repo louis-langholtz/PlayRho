@@ -117,7 +117,7 @@ RayCastOutput playrho::RayCast(const AABB& aabb, const RayCastInput& input) noex
             }
             
             // Pull the max down
-            tmax = Min(tmax, t2);
+            tmax = std::min(tmax, t2);
             
             if (tmin > tmax)
             {

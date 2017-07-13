@@ -440,7 +440,7 @@ namespace {
             const auto res = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
             pc.GetBodyA()->SetPosition(res.pos_a);
             pc.GetBodyB()->SetPosition(res.pos_b);
-            minSeparation = Min(minSeparation, res.min_separation);
+            minSeparation = min(minSeparation, res.min_separation);
         });
         
         return minSeparation;
@@ -475,7 +475,7 @@ namespace {
             const auto res = SolvePositionConstraint(pc, moveA, moveB, conf);
             pc.GetBodyA()->SetPosition(res.pos_a);
             pc.GetBodyB()->SetPosition(res.pos_b);
-            minSeparation = Min(minSeparation, res.min_separation);
+            minSeparation = min(minSeparation, res.min_separation);
         });
         
         return minSeparation;
@@ -498,7 +498,7 @@ namespace {
             {
                 const auto underActiveTime = GetUnderActiveTime(*b, conf);
                 b->SetUnderActiveTime(underActiveTime);
-                minUnderActiveTime = Min(minUnderActiveTime, underActiveTime);
+                minUnderActiveTime = min(minUnderActiveTime, underActiveTime);
             }
         });
         return minUnderActiveTime;
@@ -1251,8 +1251,8 @@ RegStepStats World::SolveReg(const StepConf& conf)
                                          this, conf, island));
 #else
             const auto solverResults = SolveRegIslandViaGS(conf, island);
-            stats.maxIncImpulse = Max(stats.maxIncImpulse, solverResults.maxIncImpulse);
-            stats.minSeparation = Min(stats.minSeparation, solverResults.minSeparation);
+            stats.maxIncImpulse = max(stats.maxIncImpulse, solverResults.maxIncImpulse);
+            stats.minSeparation = min(stats.minSeparation, solverResults.minSeparation);
             if (solverResults.solved)
             {
                 ++stats.islandsSolved;
@@ -1268,8 +1268,8 @@ RegStepStats World::SolveReg(const StepConf& conf)
     for (auto&& future: futures)
     {
         const auto solverResults = future.get();
-        stats.maxIncImpulse = Max(stats.maxIncImpulse, solverResults.maxIncImpulse);
-        stats.minSeparation = Min(stats.minSeparation, solverResults.minSeparation);
+        stats.maxIncImpulse = max(stats.maxIncImpulse, solverResults.maxIncImpulse);
+        stats.minSeparation = min(stats.minSeparation, solverResults.minSeparation);
         if (solverResults.solved)
         {
             ++stats.islandsSolved;
@@ -1359,7 +1359,7 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
     for (auto i = decltype(conf.regPositionIterations){0}; i < conf.regPositionIterations; ++i)
     {
         const auto minSeparation = SolvePositionConstraintsViaGS(posConstraints, psConf);
-        results.minSeparation = Min(results.minSeparation, minSeparation);
+        results.minSeparation = min(results.minSeparation, minSeparation);
         const auto contactsOkay = (minSeparation >= conf.regMinSeparation);
 
         auto jointsOkay = true;
@@ -1467,7 +1467,7 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
          * So long as the least TOI of the contacts is always the first collision that gets dealt with,
          * this presumption is safe.
          */
-        const auto alpha0 = Max(bA->GetSweep().GetAlpha0(), bB->GetSweep().GetAlpha0());
+        const auto alpha0 = max(bA->GetSweep().GetAlpha0(), bB->GetSweep().GetAlpha0());
         assert(alpha0 >= 0 && alpha0 < 1);
         BodyAtty::Advance0(*bA, alpha0);
         BodyAtty::Advance0(*bB, alpha0);
@@ -1479,13 +1479,13 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
         // Use Min function to handle floating point imprecision which possibly otherwise
         // could provide a TOI that's greater than 1.
         const auto toi = IsValidForTime(output.get_state())?
-            Min(alpha0 + (1 - alpha0) * output.get_t(), Real{1}): Real{1};
+            min(alpha0 + (1 - alpha0) * output.get_t(), Real{1}): Real{1};
         assert(toi >= alpha0 && toi <= 1);
         ContactAtty::SetToi(c, toi);
         
-        results.maxDistIters = Max(results.maxDistIters, output.get_max_dist_iters());
-        results.maxToiIters = Max(results.maxToiIters, output.get_toi_iters());
-        results.maxRootIters = Max(results.maxRootIters, output.get_max_root_iters());
+        results.maxDistIters = max(results.maxDistIters, output.get_max_dist_iters());
+        results.maxToiIters = max(results.maxToiIters, output.get_toi_iters());
+        results.maxRootIters = max(results.maxRootIters, output.get_max_root_iters());
         ++results.numUpdatedTOI;
     }
 
@@ -1535,9 +1535,9 @@ ToiStepStats World::SolveToi(const StepConf& conf)
         const auto updateData = UpdateContactTOIs(conf);
         stats.contactsAtMaxSubSteps += updateData.numAtMaxSubSteps;
         stats.contactsUpdatedToi += updateData.numUpdatedTOI;
-        stats.maxDistIters = Max(stats.maxDistIters, updateData.maxDistIters);
-        stats.maxRootIters = Max(stats.maxRootIters, updateData.maxRootIters);
-        stats.maxToiIters = Max(stats.maxToiIters, updateData.maxToiIters);
+        stats.maxDistIters = max(stats.maxDistIters, updateData.maxDistIters);
+        stats.maxRootIters = max(stats.maxRootIters, updateData.maxRootIters);
+        stats.maxToiIters = max(stats.maxToiIters, updateData.maxToiIters);
         
         const auto next = GetSoonestContacts(updateData.numValidTOI + updateData.numUpdatedTOI);
         const auto ncount = next.contacts.size();
@@ -1566,8 +1566,8 @@ ToiStepStats World::SolveToi(const StepConf& conf)
                 assert(IsImpenetrable(*contact));
 
                 const auto solverResults = SolveToi(conf, *contact);
-                stats.minSeparation = Min(stats.minSeparation, solverResults.minSeparation);
-                stats.maxIncImpulse = Max(stats.maxIncImpulse, solverResults.maxIncImpulse);
+                stats.minSeparation = min(stats.minSeparation, solverResults.minSeparation);
+                stats.maxIncImpulse = max(stats.maxIncImpulse, solverResults.maxIncImpulse);
                 if (solverResults.solved)
                 {
                     ++stats.islandsSolved;
@@ -1815,7 +1815,7 @@ World::IslandSolverResults World::SolveToiViaGS(const StepConf& conf, Island& is
             //   then the non-selective function is the one to be calling here.
             //
             const auto minSeparation = SolvePositionConstraintsViaGS(posConstraints, psConf);
-            results.minSeparation = Min(results.minSeparation, minSeparation);
+            results.minSeparation = min(results.minSeparation, minSeparation);
             if (minSeparation >= conf.toiMinSeparation)
             {
                 // Reached tolerance, early out...

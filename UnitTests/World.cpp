@@ -2375,14 +2375,14 @@ TEST(World, MouseJointWontCauseTunnelling)
                 ASSERT_GT(bodies[i]->GetLocation().y, btm_edge_y * Meter);
             }
 
-            max_x = Max(Real{ball_body->GetLocation().x / Meter}, max_x);
-            min_x = Min(Real{ball_body->GetLocation().x / Meter}, min_x);
+            max_x = std::max(Real{ball_body->GetLocation().x / Meter}, max_x);
+            min_x = std::min(Real{ball_body->GetLocation().x / Meter}, min_x);
 
-            max_y = Max(Real{ball_body->GetLocation().y / Meter}, max_y);
-            min_y = Min(Real{ball_body->GetLocation().y / Meter}, min_y);
+            max_y = std::max(Real{ball_body->GetLocation().y / Meter}, max_y);
+            min_y = std::min(Real{ball_body->GetLocation().y / Meter}, min_y);
 
             const auto linVel = ball_body->GetVelocity().linear;
-            max_velocity = Max(GetLength(Vec2{linVel.x / MeterPerSecond, linVel.y / MeterPerSecond}), max_velocity);
+            max_velocity = std::max(GetLength(Vec2{linVel.x / MeterPerSecond, linVel.y / MeterPerSecond}), max_velocity);
 
             if (loops > 50)
             {
@@ -2470,11 +2470,11 @@ static void smaller_still_conserves_momentum(bool bullet, Real multiplier, Real 
             {
                 {
                     const auto count = impulse.GetCount();
-                    maxPoints = Max(maxPoints, decltype(maxPoints){count});
+                    maxPoints = std::max(maxPoints, decltype(maxPoints){count});
                     for (auto i = decltype(count){0}; i < count; ++i)
                     {
-                        maxNormalImpulse = Max(maxNormalImpulse, impulse.GetEntryNormal(i));
-                        maxTangentImpulse = Max(maxTangentImpulse, impulse.GetEntryTanget(i));
+                        maxNormalImpulse = std::max(maxNormalImpulse, impulse.GetEntryNormal(i));
+                        maxTangentImpulse = std::max(maxTangentImpulse, impulse.GetEntryTanget(i));
                     }
                 }
                 if (maxNormalImpulse == 0 && maxTangentImpulse == 0)

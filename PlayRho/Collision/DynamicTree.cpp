@@ -289,7 +289,7 @@ void DynamicTree::InsertLeaf(const size_type leaf)
         assert(child1 != InvalidIndex);
         assert(child2 != InvalidIndex);
 
-        m_nodes[index].height = 1 + Max(m_nodes[child1].height, m_nodes[child2].height);
+        m_nodes[index].height = 1 + std::max(m_nodes[child1].height, m_nodes[child2].height);
         m_nodes[index].aabb = GetEnclosingAABB(m_nodes[child1].aabb, m_nodes[child2].aabb);
 
         index = m_nodes[index].parent;
@@ -347,7 +347,7 @@ void DynamicTree::RemoveLeaf(const size_type leaf)
             m_nodes[index].aabb = GetEnclosingAABB(m_nodes[child1].aabb, m_nodes[child2].aabb);
             assert(m_nodes[child1].height != InvalidIndex);
             assert(m_nodes[child2].height != InvalidIndex);
-            m_nodes[index].height = 1 + Max(m_nodes[child1].height, m_nodes[child2].height);
+            m_nodes[index].height = 1 + std::max(m_nodes[child1].height, m_nodes[child2].height);
 
             index = m_nodes[index].parent;
         }
@@ -432,8 +432,8 @@ DynamicTree::size_type DynamicTree::Balance(const size_type iA)
             G->parent = iA;
             A->aabb = GetEnclosingAABB(B->aabb, G->aabb);
             C->aabb = GetEnclosingAABB(A->aabb, F->aabb);
-            A->height = 1 + Max(B->height, G->height);
-            C->height = 1 + Max(A->height, F->height);
+            A->height = 1 + std::max(B->height, G->height);
+            C->height = 1 + std::max(A->height, F->height);
         }
         else
         {
@@ -442,8 +442,8 @@ DynamicTree::size_type DynamicTree::Balance(const size_type iA)
             F->parent = iA;
             A->aabb = GetEnclosingAABB(B->aabb, F->aabb);
             C->aabb = GetEnclosingAABB(A->aabb, G->aabb);
-            A->height = 1 + Max(B->height, F->height);
-            C->height = 1 + Max(A->height, G->height);
+            A->height = 1 + std::max(B->height, F->height);
+            C->height = 1 + std::max(A->height, G->height);
         }
 
         return iC;
@@ -493,8 +493,8 @@ DynamicTree::size_type DynamicTree::Balance(const size_type iA)
             E->parent = iA;
             A->aabb = GetEnclosingAABB(C->aabb, E->aabb);
             B->aabb = GetEnclosingAABB(A->aabb, D->aabb);
-            A->height = 1 + Max(C->height, E->height);
-            B->height = 1 + Max(A->height, D->height);
+            A->height = 1 + std::max(C->height, E->height);
+            B->height = 1 + std::max(A->height, D->height);
         }
         else
         {
@@ -503,8 +503,8 @@ DynamicTree::size_type DynamicTree::Balance(const size_type iA)
             D->parent = iA;
             A->aabb = GetEnclosingAABB(C->aabb, D->aabb);
             B->aabb = GetEnclosingAABB(A->aabb, E->aabb);
-            A->height = 1 + Max(C->height, D->height);
-            B->height = 1 + Max(A->height, E->height);
+            A->height = 1 + std::max(C->height, D->height);
+            B->height = 1 + std::max(A->height, E->height);
         }
 
         return iB;
@@ -552,7 +552,7 @@ DynamicTree::size_type DynamicTree::ComputeHeight(const size_type index) const n
 
     const auto height1 = ComputeHeight(node->child1);
     const auto height2 = ComputeHeight(node->child2);
-    return 1 + Max(height1, height2);
+    return 1 + std::max(height1, height2);
 }
 
 void DynamicTree::ForEach(const AABB aabb, ForEachCallback callback) const
@@ -802,7 +802,7 @@ bool DynamicTree::ValidateMetrics(size_type index) const noexcept
     {
         const auto height1 = m_nodes[child1].height;
         const auto height2 = m_nodes[child2].height;
-        const auto height = 1 + Max(height1, height2);
+        const auto height = 1 + std::max(height1, height2);
         if (node->height != height)
         {
             return false;
@@ -898,7 +898,7 @@ DynamicTree::size_type DynamicTree::GetMaxBalance() const
         assert(height1 != InvalidIndex);
         assert(height2 != InvalidIndex);
         const auto balance = (height2 >= height1)? height2 - height1: height1 - height2;
-        maxBalance = Max(maxBalance, balance);
+        maxBalance = std::max(maxBalance, balance);
     }
 
     return maxBalance;
@@ -966,7 +966,7 @@ void DynamicTree::RebuildBottomUp()
         parent->child2 = index2;
         assert(child1->height != InvalidIndex);
         assert(child2->height != InvalidIndex);
-        parent->height = 1 + Max(child1->height, child2->height);
+        parent->height = 1 + std::max(child1->height, child2->height);
         parent->aabb = GetEnclosingAABB(child1->aabb, child2->aabb);
         parent->parent = InvalidIndex;
 

@@ -78,7 +78,7 @@ public:
             const auto count = impulse.GetCount();
             for (auto i = decltype(count){0}; i < count; ++i)
             {
-                maxImpulse = Max(maxImpulse, impulse.GetEntryNormal(i));
+                maxImpulse = std::max(maxImpulse, impulse.GetEntryNormal(i));
             }
         }
 
