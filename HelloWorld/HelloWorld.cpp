@@ -34,25 +34,25 @@ int main(int, char**)
     // Call the body factory which allocates memory for the ground body
     // from a pool and creates the ground box shape (also from a pool).
     // The body is also added to the world.
-    const auto groundBody = world.CreateBody(playrho::BodyDef{}
-                                             .UseLocation(playrho::Vec2(0.0, -10.0) * playrho::Meter));
+    const auto groundBody = world.CreateBody(
+        playrho::BodyDef{}.UseLocation(playrho::Vec2(0.0, -10.0) * playrho::Meter));
 
     // Define the ground box shape.
     // The extents are the half-widths of the box.
-    const auto groundBox = std::make_shared<playrho::PolygonShape>(playrho::Real(50) * playrho::Meter,
-                                                                 playrho::Real(10) * playrho::Meter);
+    const auto groundBox = std::make_shared<playrho::PolygonShape>(
+        playrho::Real(50) * playrho::Meter, playrho::Real(10) * playrho::Meter);
 
     // Add the ground fixture to the ground body.
     groundBody->CreateFixture(groundBox);
 
     // Define the dynamic body. We set its position and call the body factory.
     const auto body = world.CreateBody(playrho::BodyDef{}
-                                       .UseType(playrho::BodyType::Dynamic)
-                                       .UseLocation(playrho::Vec2(0.0, 4.0) * playrho::Meter));
+                                           .UseType(playrho::BodyType::Dynamic)
+                                           .UseLocation(playrho::Vec2(0.0, 4.0) * playrho::Meter));
 
     // Define another box shape for our dynamic body.
-    const auto dynamicBox = std::make_shared<playrho::PolygonShape>(playrho::Real(1) * playrho::Meter,
-                                                                  playrho::Real(1) * playrho::Meter);
+    const auto dynamicBox = std::make_shared<playrho::PolygonShape>(
+        playrho::Real(1) * playrho::Meter, playrho::Real(1) * playrho::Meter);
 
     // Set the box density to be non-zero, so it will be dynamic.
     dynamicBox->SetDensity(playrho::Real(1) * playrho::KilogramPerSquareMeter);

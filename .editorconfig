@@ -18,3 +18,5 @@ indent_style = space
 indent_size = 4
 # Remove whitespace characters at the end of line
 trim_trailing_whitespace = true
+# Maximum allowed line length
+max_line_length = 100
