@@ -1752,7 +1752,7 @@ World::IslandSolverResults World::SolveToi(const StepConf& conf, Contact& contac
     //   written as:
     //     SolveToi(StepConf{conf}.SetTime((1 - toi) * conf.GetTime()), island);
     //
-    StepConf subConf{conf};
+    auto subConf = StepConf{conf};
     auto results = SolveToiViaGS(subConf.SetTime((1 - toi) * conf.GetTime()), island);
     results.contactsUpdated += contactsUpdated;
     results.contactsSkipped += contactsSkipped;
@@ -2260,10 +2260,16 @@ World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
 
 World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepConf& conf)
 {
+#ifdef DO_PAR_UNSEQ
     atomic<uint32_t> ignored;
     atomic<uint32_t> updated;
     atomic<uint32_t> skipped;
-    
+#else
+    auto ignored = uint32_t(0);
+    auto updated = uint32_t(0);
+    auto skipped = uint32_t(0);
+#endif
+
     const auto updateConf = Contact::GetUpdateConf(conf);
     
 #if defined(DO_THREADED)
@@ -2279,7 +2285,7 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
         auto& contact = GetRef(c);
 #if 0
         ContactAtty::Update(contact, updateConf, m_contactListener);
-        ++stats.updated;
+        ++updated;
 #else
         const auto fixtureA = contact.GetFixtureA();
         const auto fixtureB = contact.GetFixtureB();
