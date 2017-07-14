@@ -68,7 +68,7 @@ namespace playrho
         /// @details
         /// A default constructed world manifold will gave a point count of zero, an invalid
         /// normal, invalid points, and invalid separations.
-        WorldManifold() noexcept = default;
+        WorldManifold() = default;
         
         constexpr explicit WorldManifold(UnitVec2 normal) noexcept:
             m_normal{normal}, m_count{0},

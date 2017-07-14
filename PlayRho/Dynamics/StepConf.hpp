@@ -126,6 +126,8 @@ public:
     /// @sa regPositionIterations.
     Length regMinSeparation = -DefaultLinearSlop * Real{3};
     
+    Momentum regMinMomentum = DefaultRegMinMomentum;
+
     /// @brief Time of impact resolution rate.
     /// @details
     /// This scale factor controls how fast positional overlap is resolved.
@@ -143,6 +145,8 @@ public:
     /// @note Used in the TOI phase of step processing.
     /// @sa toiPositionIterations.
     Length toiMinSeparation = -DefaultLinearSlop * Real(1.5f);
+
+    Momentum toiMinMomentum = DefaultToiMinMomentum;
 
     /// @brief Target depth.
     /// @details Target depth of overlap for calculating the TOI for CCD elligible bodies.

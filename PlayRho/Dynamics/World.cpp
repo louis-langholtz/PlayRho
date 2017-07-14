@@ -1340,7 +1340,7 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
         const auto newIncImpulse = SolveVelocityConstraintsViaGS(velConstraints);
         results.maxIncImpulse = max(results.maxIncImpulse, newIncImpulse);
 
-        if (jointsOkay && (newIncImpulse == Momentum{0}))
+        if (jointsOkay && (newIncImpulse <= conf.regMinMomentum))
         {
             // No joint related velocity constraints were out of tolerance.
             // No body related velocity constraints were out of tolerance.
@@ -1861,7 +1861,7 @@ World::IslandSolverResults World::SolveToiViaGS(const StepConf& conf, Island& is
     for (auto i = decltype(conf.toiVelocityIterations){0}; i < conf.toiVelocityIterations; ++i)
     {
         const auto newIncImpulse = SolveVelocityConstraintsViaGS(velConstraints);
-        if (newIncImpulse == Momentum(0))
+        if (newIncImpulse <= conf.toiMinMomentum)
         {
             // No body related velocity constraints were out of tolerance.
             // There does not appear to be any benefit to doing more loops now.

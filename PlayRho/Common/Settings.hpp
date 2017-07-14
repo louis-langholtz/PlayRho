@@ -170,6 +170,9 @@ constexpr auto DefaultMaxSubSteps = std::uint8_t{48};
 /// @brief Default velocity threshold.
 constexpr auto DefaultVelocityThreshold = (Real{8} / Real{10}) * MeterPerSecond;
 
+constexpr auto DefaultRegMinMomentum = Momentum{(Real(0) / Real(100)) * NewtonSecond};
+constexpr auto DefaultToiMinMomentum = Momentum{(Real(0) / Real(100)) * NewtonSecond};
+
 /// @brief Maximum number of bodies in a world.
 /// @note This is 65534 based off std::uint16_t and eliminating one value for invalid.
 constexpr auto MaxBodies = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -

@@ -126,7 +126,7 @@ inline Momentum BlockSolveNormalCase1(VelocityConstraint& vc, const Vec2 b_prime
     };
     if ((newImpulses[0] >= Momentum{0}) && (newImpulses[1] >= Momentum{0}))
     {
-        BlockSolveUpdate(vc, newImpulses);
+        const auto max = BlockSolveUpdate(vc, newImpulses);
 
 #if defined(B2_DEBUG_SOLVER)
         auto& vcp1 = vc.PointAt(0);
@@ -145,7 +145,7 @@ inline Momentum BlockSolveNormalCase1(VelocityConstraint& vc, const Vec2 b_prime
         assert(Abs(post_vn1 - vcp1.velocityBias) < k_errorTol);
         assert(Abs(post_vn2 - vcp2.velocityBias) < k_errorTol);
 #endif
-        return std::max(newImpulses[0], newImpulses[1]);
+        return max;
     }
     return GetInvalid<Momentum>();
 }
@@ -167,7 +167,7 @@ inline Momentum BlockSolveNormalCase2(VelocityConstraint& vc, const Vec2 b_prime
     const auto vn2 = K.ex.y * newImpulsesUnitless.x + b_prime.y;
     if ((newImpulsesUnitless.x >= 0) && (vn2 >= 0))
     {
-        BlockSolveUpdate(vc, newImpulses);
+        const auto max = BlockSolveUpdate(vc, newImpulses);
 
 #if defined(B2_DEBUG_SOLVER)
         auto& vcp1 = vc.PointAt(0);
@@ -181,7 +181,7 @@ inline Momentum BlockSolveNormalCase2(VelocityConstraint& vc, const Vec2 b_prime
         assert(Abs(post_vn1 - vcp1.velocityBias) < k_majorErrorTol);
         assert(Abs(post_vn1 - vcp1.velocityBias) < k_errorTol);
 #endif
-        return std::max(newImpulses[0], newImpulses[1]);
+        return max;
     }
     return GetInvalid<Momentum>();
 }
@@ -203,7 +203,7 @@ inline Momentum BlockSolveNormalCase3(VelocityConstraint& vc, const Vec2 b_prime
     const auto vn1 = K.ey.x * newImpulsesUnitless.y + b_prime.x;
     if ((newImpulsesUnitless.y >= 0) && (vn1 >= 0))
     {
-        BlockSolveUpdate(vc, newImpulses);
+        const auto max = BlockSolveUpdate(vc, newImpulses);
 
 #if defined(B2_DEBUG_SOLVER)
         auto& vcp2 = vc.PointAt(1);
@@ -217,7 +217,7 @@ inline Momentum BlockSolveNormalCase3(VelocityConstraint& vc, const Vec2 b_prime
         assert(Abs(post_vn2 - vcp2.velocityBias) < k_majorErrorTol);
         assert(Abs(post_vn2 - vcp2.velocityBias) < k_errorTol);
 #endif
-        return std::max(newImpulses[0], newImpulses[1]);
+        return max;
     }
     return GetInvalid<Momentum>();
 }
@@ -234,8 +234,7 @@ inline Momentum BlockSolveNormalCase4(VelocityConstraint& vc, const Vec2 b_prime
     if ((vn1 >= 0) && (vn2 >= 0))
     {
         const auto newImpulses = Momentum2D{0, 0};
-        BlockSolveUpdate(vc, newImpulses);
-        return std::max(newImpulses[0], newImpulses[1]);
+        return BlockSolveUpdate(vc, newImpulses);
     }
     return GetInvalid<Momentum>();
 }
