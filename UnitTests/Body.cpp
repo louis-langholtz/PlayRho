@@ -64,6 +64,8 @@ TEST(Body, ByteSize)
     const auto fixturesSize = sizeof(Body::Fixtures);
     const auto allSize = contactsSize + jointsSize + fixturesSize;
 
+    EXPECT_EQ(allSize, std::size_t(72));
+
     // architecture dependent...
     switch (sizeof(Real))
     {
