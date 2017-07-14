@@ -30,13 +30,13 @@ UnitVec2 UnitVec2::Get(const Real x, const Real y, Real& magnitude, const UnitVe
         // XXX perhaps this should use std::hypot() instead like so:
         //    magnitude = std::hypot(x, y);
         magnitude = Sqrt(Square(x) + Square(y));
-        return (!almost_zero(magnitude))? UnitVec2{x / magnitude, y / magnitude}: fallback;
+        return (!almost_zero(magnitude)) ? UnitVec2{x / magnitude, y / magnitude} : fallback;
     }
     return UnitVec2{};
 }
 
-UnitVec2::UnitVec2(const Angle angle) noexcept:
-    m_x{std::cos(angle / Radian)}, m_y{std::sin(angle / Radian)}
+UnitVec2::UnitVec2(const Angle angle) noexcept
+    : m_x{std::cos(angle / Radian)}, m_y{std::sin(angle / Radian)}
 {
     // Intentionally empty.
 }
