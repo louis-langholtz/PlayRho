@@ -81,8 +81,8 @@ void WheelJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     const auto invMassB = bodyConstraintB->GetInvMass();
     const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
 
-    const auto qA = UnitVec2{posA.angular};
-    const auto qB = UnitVec2{posB.angular};
+    const auto qA = UnitVec2::Get(posA.angular);
+    const auto qB = UnitVec2::Get(posB.angular);
 
     // Compute the effective masses.
     const auto rA = Length2D{Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA)};
@@ -273,8 +273,8 @@ bool WheelJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Cons
     const auto invMassB = bodyConstraintB->GetInvMass();
     const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
 
-    const auto qA = UnitVec2{posA.angular};
-    const auto qB = UnitVec2{posB.angular};
+    const auto qA = UnitVec2::Get(posA.angular);
+    const auto qB = UnitVec2::Get(posB.angular);
 
     const auto rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA);
     const auto rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB);

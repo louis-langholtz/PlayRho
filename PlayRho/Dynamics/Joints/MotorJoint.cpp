@@ -65,8 +65,8 @@ void MotorJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     const auto posB = bodyConstraintB->GetPosition();
     auto velB = bodyConstraintB->GetVelocity();
 
-    const auto qA = UnitVec2(posA.angular);
-    const auto qB = UnitVec2(posB.angular);
+    const auto qA = UnitVec2::Get(posA.angular);
+    const auto qB = UnitVec2::Get(posB.angular);
 
     // Compute the effective mass matrix.
     m_rA = Rotate(-bodyConstraintA->GetLocalCenter(), qA);

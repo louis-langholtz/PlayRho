@@ -75,8 +75,8 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     const auto aB = bodyConstraintB->GetPosition().angular;
     auto velB = bodyConstraintB->GetVelocity();
 
-    const auto qA = UnitVec2(aA);
-    const auto qB = UnitVec2(aB);
+    const auto qA = UnitVec2::Get(aA);
+    const auto qB = UnitVec2::Get(aB);
 
     m_rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA);
     m_rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB);
@@ -383,8 +383,8 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
     // Solve point-to-point constraint.
     auto positionError = Area{0};
     {
-        const auto qA = UnitVec2(posA.angular);
-        const auto qB = UnitVec2(posB.angular);
+        const auto qA = UnitVec2::Get(posA.angular);
+        const auto qB = UnitVec2::Get(posB.angular);
 
         const auto rA = Length2D{Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA)};
         const auto rB = Length2D{Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB)};

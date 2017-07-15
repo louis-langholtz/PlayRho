@@ -58,8 +58,8 @@ void RopeJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     const auto posB = bodyConstraintB->GetPosition();
     auto velB = bodyConstraintB->GetVelocity();
 
-    const auto qA = UnitVec2{posA.angular};
-    const auto qB = UnitVec2{posB.angular};
+    const auto qA = UnitVec2::Get(posA.angular);
+    const auto qB = UnitVec2::Get(posB.angular);
 
     m_rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA);
     m_rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB);
@@ -160,7 +160,8 @@ bool RopeJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
     auto posA = bodyConstraintA->GetPosition();
     auto posB = bodyConstraintB->GetPosition();
 
-    const UnitVec2 qA(posA.angular), qB(posB.angular);
+    const auto qA = UnitVec2::Get(posA.angular);
+    const auto qB = UnitVec2::Get(posB.angular);
 
     const auto rA = Length2D{Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA)};
     const auto rB = Length2D{Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB)};

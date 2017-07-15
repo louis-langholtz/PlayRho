@@ -79,7 +79,8 @@ void PulleyJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     const auto posB = bodyConstraintB->GetPosition();
     auto velB = bodyConstraintB->GetVelocity();
 
-    const UnitVec2 qA(posA.angular), qB(posB.angular);
+    const auto qA = UnitVec2::Get(posA.angular);
+    const auto qB = UnitVec2::Get(posB.angular);
 
     m_rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA);
     m_rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB);
@@ -176,8 +177,8 @@ bool PulleyJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Con
     auto posA = bodyConstraintA->GetPosition();
     auto posB = bodyConstraintB->GetPosition();
 
-    const auto rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), UnitVec2{posA.angular});
-    const auto rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), UnitVec2{posB.angular});
+    const auto rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), UnitVec2::Get(posA.angular));
+    const auto rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), UnitVec2::Get(posB.angular));
 
     // Get the pulley axes.
     const auto pA = Length2D{posA.linear + rA - m_groundAnchorA};

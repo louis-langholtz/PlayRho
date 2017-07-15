@@ -25,6 +25,7 @@
 /// Declarations of the UnitVec2 class and free functions associated with it.
 
 #include <PlayRho/Common/Settings.hpp>
+#include <cmath>
 
 namespace playrho
 {
@@ -66,12 +67,7 @@ public:
     static constexpr UnitVec2 GetDefaultFallback() noexcept { return UnitVec2{}; }
 
     static UnitVec2 Get(const Real x, const Real y, Real& magnitude,
-                        const UnitVec2 fallback = GetDefaultFallback());
-
-    constexpr UnitVec2() noexcept
-    {
-        // Intentionally empty.
-    }
+                        const UnitVec2 fallback = GetDefaultFallback()) noexcept;
 
     /// @brief Gets the given angled unit vector.
     ///
@@ -79,7 +75,15 @@ public:
     ///   better accuracy will be had by using one of the four oriented unit
     ///   vector returning methods - for the right, top, left, bottom orientations.
     ///
-    explicit UnitVec2(const Angle angle) noexcept;
+    static UnitVec2 Get(const Angle angle) noexcept
+    {
+        return UnitVec2{std::cos(angle / Radian), std::sin(angle / Radian)};
+    }
+
+    constexpr UnitVec2() noexcept
+    {
+        // Intentionally empty.
+    }
 
     constexpr auto GetX() const noexcept { return m_x; }
 

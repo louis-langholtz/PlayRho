@@ -65,8 +65,8 @@ void FrictionJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const St
     auto velB = bodyConstraintB->GetVelocity();
 
     // Compute the effective mass matrix.
-    m_rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), UnitVec2{posA.angular});
-    m_rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), UnitVec2{posB.angular});
+    m_rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), UnitVec2::Get(posA.angular));
+    m_rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), UnitVec2::Get(posB.angular));
 
     // J = [-I -r1_skew I r2_skew]
     //     [ 0       -1 0       1]

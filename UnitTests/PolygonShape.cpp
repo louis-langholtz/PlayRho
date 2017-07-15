@@ -147,7 +147,7 @@ TEST(PolygonShape, Translate)
     ASSERT_EQ(shape.GetNormal(3) * Real{1}, Vec2(0, -1));
     
     const auto new_ctr = Length2D{-Real(3) * Meter, Real(67) * Meter};
-    shape.Transform(Transformation{new_ctr, UnitVec2{Angle{0}}});
+    shape.Transform(Transformation{new_ctr, UnitVec2::GetRight()});
     
     EXPECT_EQ(shape.GetCentroid(), new_ctr);
     EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));

@@ -157,7 +157,7 @@ void PolygonShape::SetAsBox(Length hx, Length hy) noexcept
 void playrho::SetAsBox(PolygonShape& shape, Length hx, Length hy, const Length2D center, Angle angle) noexcept
 {
     shape.SetAsBox(hx, hy);
-    shape.Transform(Transformation{center, UnitVec2{angle}});
+    shape.Transform(Transformation{center, UnitVec2::Get(angle)});
 }
 
 void PolygonShape::Transform(playrho::Transformation xf) noexcept

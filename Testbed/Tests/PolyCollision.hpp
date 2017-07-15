@@ -32,7 +32,7 @@ public:
     {
         {
             m_polygonA.SetAsBox(Real{0.2f} * Meter, Real{0.4f} * Meter);
-            m_transformA = Transformation{Vec2(0.0f, 0.0f) * Meter, UnitVec2{Angle{0}}};
+            m_transformA = Transformation{Vec2(0.0f, 0.0f) * Meter, UnitVec2::GetRight()};
         }
 
         {

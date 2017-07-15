@@ -104,7 +104,7 @@ void MouseJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     const auto posB = bodyConstraintB->GetPosition();
     auto velB = bodyConstraintB->GetVelocity();
 
-    const UnitVec2 qB(posB.angular);
+    const auto qB = UnitVec2::Get(posB.angular);
 
     const auto mass = GetMass(*GetBodyB());
 

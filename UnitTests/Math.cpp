@@ -243,17 +243,17 @@ TEST(Math, Vec2NegationAndRotationIsOrderIndependent)
 {
     {
         const auto v = Vec2{Real(1), Real(1)};
-        const auto r = UnitVec2{Angle{0}};
+        const auto r = UnitVec2::GetRight();
         EXPECT_EQ(Rotate(-v, r), -Rotate(v, r));
     }
     {
         const auto v = Vec2{Real(1), Real(1)};
-        const auto r = UnitVec2{Angle{Real{33.0f} * Degree}};
+        const auto r = UnitVec2::Get(Angle{Real{33.0f} * Degree});
         EXPECT_EQ(Rotate(-v, r), -Rotate(v, r));
     }
     {
         const auto v = Vec2{Real(-3.2), Real(1.9)};
-        const auto r = UnitVec2{Angle{Real{33.0f} * Degree}};
+        const auto r = UnitVec2::Get(Angle{Real{33.0f} * Degree});
         EXPECT_EQ(Rotate(-v, r), -Rotate(v, r));
     }
     {
@@ -262,18 +262,18 @@ TEST(Math, Vec2NegationAndRotationIsOrderIndependent)
              angle < Angle{Real{360.0f} * Degree};
              angle += Angle{Real{15.0f} * Degree})
         {
-            const auto r = UnitVec2{angle};
+            const auto r = UnitVec2::Get(angle);
             EXPECT_EQ(Rotate(-v, r), -Rotate(v, r));
         }
     }
     {
         const auto v = Vec2{Real(-3.2), Real(1.9)};
-        const auto r = UnitVec2{Angle{Real{33.0f} * Degree}};
+        const auto r = UnitVec2::Get(Angle{Real{33.0f} * Degree});
         EXPECT_EQ(Rotate(v, r), -Rotate(-v, r));
     }
     {
         const auto v = Vec2{Real(-3.2), Real(1.9)};
-        const auto r = UnitVec2{Angle{Real{33.0f} * Degree}};
+        const auto r = UnitVec2::Get(Angle{Real{33.0f} * Degree});
         EXPECT_EQ(Rotate(v, r), -Rotate(v, -r));
     }
 }
@@ -286,7 +286,7 @@ TEST(Math, InverseRotationRevertsRotation)
              angle < Angle{Real{360.0f} * Degree};
              angle += Angle{Real{10.0f} * Degree})
         {
-            const auto unit_vec = UnitVec2{angle};
+            const auto unit_vec = UnitVec2::Get(angle);
             EXPECT_NEAR(double(GetX(InverseRotate(Rotate(vec, unit_vec), unit_vec))), double(GetX(vec)), 0.004);
             EXPECT_NEAR(double(GetY(InverseRotate(Rotate(vec, unit_vec), unit_vec))), double(GetY(vec)), 0.004);
         }
@@ -297,7 +297,7 @@ TEST(Math, TransformIsRotatePlusTranslate)
 {
     const auto vector = Length2D{Real(19) * Meter, Real(-0.5) * Meter};
     const auto translation = Length2D{Real(-3) * Meter, Real(+5) * Meter};
-    const auto rotation = UnitVec2{Angle{Real{90.0f} * Degree}};
+    const auto rotation = UnitVec2::GetTop();
     const auto transformation = Transformation{translation, rotation};
     
     const auto transformed_vector = Transform(vector, transformation);
@@ -311,7 +311,7 @@ TEST(Math, InverseTransformIsUntranslateAndInverseRotate)
 {
     const auto vector = Length2D{Real(19) * Meter, Real(-0.5) * Meter};
     const auto translation = Length2D{Real(-3) * Meter, Real(+5) * Meter};
-    const auto rotation = UnitVec2{Angle{Real{90.0f} * Degree}};
+    const auto rotation = UnitVec2::GetTop();
     const auto transformation = Transformation{translation, rotation};
     
     const auto inv_vector = InverseTransform(vector, transformation);
@@ -325,7 +325,7 @@ TEST(Math, InverseTransformTransformedIsOriginal)
 {
     const auto vector = Length2D{Real(19) * Meter, Real(-0.5) * Meter};
     const auto translation = Length2D{Real(-3) * Meter, Real(+5) * Meter};
-    const auto rotation = UnitVec2{Angle{Real{90.0f} * Degree}};
+    const auto rotation = UnitVec2::GetTop();
     const auto transformation = Transformation{translation, rotation};
 
     const auto transformed_vector = Transform(vector, transformation);
@@ -341,7 +341,7 @@ TEST(Math, TransformInverseTransformedIsOriginal)
 {
     const auto vector = Length2D{Real(19) * Meter, Real(-0.5) * Meter};
     const auto translation = Length2D{Real(-3) * Meter, Real(+5) * Meter};
-    const auto rotation = UnitVec2{Angle{Real{90.0f} * Degree}};
+    const auto rotation = UnitVec2::GetTop();
     const auto transformation = Transformation{translation, rotation};
 
     const auto inverse_transformed_vector = InverseTransform(vector, transformation);

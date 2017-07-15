@@ -78,7 +78,7 @@ Body::FlagsType Body::GetFlags(const BodyDef& bd) noexcept
 
 Body::Body(const BodyDef& bd, World* world):
     m_flags{GetFlags(bd)},
-    m_xf{bd.position, UnitVec2{bd.angle}},
+    m_xf{bd.position, UnitVec2::Get(bd.angle)},
     m_world{world},
     m_sweep{Position{bd.position, bd.angle}},
     m_invMass{(bd.type == BodyType::Dynamic)? InvMass{Real{1} / Kilogram}: InvMass{0}},
@@ -276,7 +276,7 @@ void Body::SetTransform(const Length2D position, Angle angle)
         throw World::LockedError();
     }
 
-    const auto xfm = Transformation{position, UnitVec2{angle}};
+    const auto xfm = Transformation{position, UnitVec2::Get(angle)};
     SetTransformation(xfm);
 
     const auto sweep = Sweep{Position{Transform(GetLocalCenter(), xfm), angle}, GetLocalCenter()};

@@ -655,7 +655,7 @@ inline Transformation GetTransformation(const Position pos, const Length2D local
 {
     assert(IsValid(pos));
     assert(IsValid(local_ctr));
-    return GetTransformation(pos.linear, UnitVec2{pos.angular}, local_ctr);
+    return GetTransformation(pos.linear, UnitVec2::Get(pos.angular), local_ctr);
 }
 
 /// Gets the interpolated transform at a specific time.

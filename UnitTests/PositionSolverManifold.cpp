@@ -72,8 +72,8 @@ TEST(PositionSolverManifold, GetPSM)
     ASSERT_EQ(shape1.GetVertex(3).x, Real(-2) * Meter); // left
     ASSERT_EQ(shape1.GetVertex(3).y, Real(-2) * Meter); // bottom
     
-    const auto xfm0 = Transformation{Length2D{-Real(2) * Meter, Real(0) * Meter}, UnitVec2{Angle{0}}}; // left
-    const auto xfm1 = Transformation{Length2D{+Real(2) * Meter, Real(0) * Meter}, UnitVec2{Angle{0}}}; // right
+    const auto xfm0 = Transformation{Length2D{-Real(2) * Meter, Real(0) * Meter}, UnitVec2::GetRight()}; // left
+    const auto xfm1 = Transformation{Length2D{+Real(2) * Meter, Real(0) * Meter}, UnitVec2::GetRight()}; // right
     
     // put wide rectangle on left, square on right
     const auto manifold = CollideShapes(shape0.GetChild(0), xfm0, shape1.GetChild(0), xfm1);

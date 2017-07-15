@@ -23,7 +23,8 @@
 
 using namespace playrho;
 
-UnitVec2 UnitVec2::Get(const Real x, const Real y, Real& magnitude, const UnitVec2 fallback)
+UnitVec2 UnitVec2::Get(const Real x, const Real y, Real& magnitude,
+                       const UnitVec2 fallback) noexcept
 {
     if (IsValid(x) && IsValid(y))
     {
@@ -33,10 +34,4 @@ UnitVec2 UnitVec2::Get(const Real x, const Real y, Real& magnitude, const UnitVe
         return (!almost_zero(magnitude)) ? UnitVec2{x / magnitude, y / magnitude} : fallback;
     }
     return UnitVec2{};
-}
-
-UnitVec2::UnitVec2(const Angle angle) noexcept
-    : m_x{std::cos(angle / Radian)}, m_y{std::sin(angle / Radian)}
-{
-    // Intentionally empty.
 }

@@ -37,8 +37,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
 
     const auto dim = Real(2) * Meter;
     const auto shape = PolygonShape(dim, dim);
-    const auto xfmA = Transformation{old_pA.linear, UnitVec2{old_pA.angular}};
-    const auto xfmB = Transformation{old_pB.linear, UnitVec2{old_pB.angular}};
+    const auto xfmA = Transformation{old_pA.linear, UnitVec2::Get(old_pA.angular)};
+    const auto xfmB = Transformation{old_pB.linear, UnitVec2::Get(old_pB.angular)};
     const auto manifold = CollideShapes(shape.GetChild(0), xfmA, shape.GetChild(0), xfmB);
     ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
     ASSERT_EQ(manifold.GetPointCount(), 2);
@@ -80,8 +80,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
     
     const auto dim = Real(2) * Meter;
     const auto shape = PolygonShape(dim, dim);
-    const auto xfmA = Transformation{old_pA.linear, UnitVec2{old_pA.angular}};
-    const auto xfmB = Transformation{old_pB.linear, UnitVec2{old_pB.angular}};
+    const auto xfmA = Transformation{old_pA.linear, UnitVec2::Get(old_pA.angular)};
+    const auto xfmB = Transformation{old_pB.linear, UnitVec2::Get(old_pB.angular)};
     const auto manifold = CollideShapes(shape.GetChild(0), xfmA, shape.GetChild(0), xfmB);
     ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
     ASSERT_EQ(manifold.GetPointCount(), 2);
@@ -118,8 +118,8 @@ TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
 {
     const auto dim = Real(2) * Meter;
     const auto shape = PolygonShape(dim, dim);
-    const auto xfmA = Transformation{Length2D(0, 0), UnitVec2{Angle{0}}};
-    const auto xfmB = Transformation{Length2D(0, 0), UnitVec2{Angle{0}}};
+    const auto xfmA = Transformation{Length2D(0, 0), UnitVec2::GetRight()};
+    const auto xfmB = Transformation{Length2D(0, 0), UnitVec2::GetRight()};
     const auto manifold = CollideShapes(shape.GetChild(0), xfmA, shape.GetChild(0), xfmB);
     ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
     ASSERT_EQ(manifold.GetPointCount(), 2);
@@ -170,8 +170,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
     
     const auto dim = Real(2) * Meter;
     const auto shape = PolygonShape(dim, dim);
-    const auto xfmA = Transformation{old_pA.linear, UnitVec2{old_pA.angular}};
-    const auto xfmB = Transformation{old_pB.linear, UnitVec2{old_pB.angular}};
+    const auto xfmA = Transformation{old_pA.linear, UnitVec2::Get(old_pA.angular)};
+    const auto xfmB = Transformation{old_pB.linear, UnitVec2::Get(old_pB.angular)};
     const auto manifold = CollideShapes(shape.GetChild(0), xfmA, shape.GetChild(0), xfmB);
     ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
     ASSERT_EQ(GetVec2(manifold.GetLocalNormal()), Vec2(+1, 0));
@@ -223,8 +223,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
 
     const auto dim = Real(2) * Meter;
     const auto shape = PolygonShape(dim, dim);
-    const auto xfmA = Transformation{old_pA.linear, UnitVec2{old_pA.angular}};
-    const auto xfmB = Transformation{old_pB.linear, UnitVec2{old_pB.angular}};
+    const auto xfmA = Transformation{old_pA.linear, UnitVec2::Get(old_pA.angular)};
+    const auto xfmB = Transformation{old_pB.linear, UnitVec2::Get(old_pB.angular)};
     const auto manifold = CollideShapes(shape.GetChild(0), xfmA, shape.GetChild(0), xfmB);
     ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
     ASSERT_EQ(GetVec2(manifold.GetLocalNormal()), Vec2(-1, 0));
@@ -276,8 +276,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
 
     const auto dim = Real(2) * Meter;
     const auto shape = PolygonShape(dim, dim);
-    const auto xfmA = Transformation{old_pA.linear, UnitVec2{old_pA.angular}};
-    const auto xfmB = Transformation{old_pB.linear, UnitVec2{old_pB.angular}};
+    const auto xfmA = Transformation{old_pA.linear, UnitVec2::Get(old_pA.angular)};
+    const auto xfmB = Transformation{old_pB.linear, UnitVec2::Get(old_pB.angular)};
     const auto manifold = CollideShapes(shape.GetChild(0), xfmA, shape.GetChild(0), xfmB);
     ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
     ASSERT_EQ(GetVec2(manifold.GetLocalNormal()), Vec2(0, 1));
@@ -341,8 +341,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
 
     const auto dim = Real(2) * Meter;
     const auto shape = PolygonShape(dim, dim);
-    const auto xfmA = Transformation{old_pA.linear, UnitVec2{old_pA.angular}};
-    const auto xfmB = Transformation{old_pB.linear, UnitVec2{old_pB.angular}};
+    const auto xfmA = Transformation{old_pA.linear, UnitVec2::Get(old_pA.angular)};
+    const auto xfmB = Transformation{old_pB.linear, UnitVec2::Get(old_pB.angular)};
     const auto manifold = CollideShapes(shape.GetChild(0), xfmA, shape.GetChild(0), xfmB);
     
     ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
@@ -399,8 +399,8 @@ TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
 {
     const auto dim = Real(2) * Meter;
     const auto shape = PolygonShape(dim, dim);
-    const auto xfmA = Transformation{Length2D(0, 0), UnitVec2{Angle{0}}};
-    const auto xfmB = Transformation{Length2D(0, 0), UnitVec2{Angle{0}}};
+    const auto xfmA = Transformation{Length2D(0, 0), UnitVec2::GetRight()};
+    const auto xfmB = Transformation{Length2D(0, 0), UnitVec2::GetRight()};
     const auto manifold = CollideShapes(shape.GetChild(0), xfmA, shape.GetChild(0), xfmB);
     ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
     ASSERT_EQ(manifold.GetPointCount(), 2);

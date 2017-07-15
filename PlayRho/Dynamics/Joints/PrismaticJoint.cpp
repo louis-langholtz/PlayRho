@@ -132,8 +132,8 @@ void PrismaticJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     const auto posB = bodyConstraintB->GetPosition();
     auto velB = bodyConstraintB->GetVelocity();
 
-    const auto qA = UnitVec2(posA.angular);
-    const auto qB = UnitVec2(posB.angular);
+    const auto qA = UnitVec2::Get(posA.angular);
+    const auto qB = UnitVec2::Get(posB.angular);
 
     // Compute the effective masses.
     const auto rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA); // Length2D
@@ -395,8 +395,8 @@ bool PrismaticJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const 
     const auto invMassB = bodyConstraintB->GetInvMass();
     const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
 
-    const auto qA = UnitVec2{posA.angular};
-    const auto qB = UnitVec2{posB.angular};
+    const auto qA = UnitVec2::Get(posA.angular);
+    const auto qB = UnitVec2::Get(posB.angular);
 
     // Compute fresh Jacobians
     const auto rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA);

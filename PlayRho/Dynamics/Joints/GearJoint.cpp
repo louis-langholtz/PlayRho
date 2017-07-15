@@ -148,10 +148,10 @@ void GearJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
     auto velD = bodyConstraintD->GetVelocity();
     const auto aD = bodyConstraintD->GetPosition().angular;
 
-    const auto qA = UnitVec2(aA);
-    const auto qB = UnitVec2(aB);
-    const auto qC = UnitVec2(aC);
-    const auto qD = UnitVec2(aD);
+    const auto qA = UnitVec2::Get(aA);
+    const auto qB = UnitVec2::Get(aB);
+    const auto qC = UnitVec2::Get(aC);
+    const auto qD = UnitVec2::Get(aD);
 
     auto invMass = Real{0}; // Unitless to double for either linear mass or angular mass.
 
@@ -293,7 +293,10 @@ bool GearJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
     auto posC = bodyConstraintC->GetPosition();
     auto posD = bodyConstraintD->GetPosition();
 
-    const UnitVec2 qA(posA.angular), qB(posB.angular), qC(posC.angular), qD(posD.angular);
+    const auto qA = UnitVec2::Get(posA.angular);
+    const auto qB = UnitVec2::Get(posB.angular);
+    const auto qC = UnitVec2::Get(posC.angular);
+    const auto qD = UnitVec2::Get(posD.angular);
 
     const auto linearError = Length{0};
 

@@ -77,26 +77,26 @@ TEST(UnitVec2, BottomIsFwdPerpOfRight)
 
 TEST(UnitVec2, ByAngleInDegreesNearOriented)
 {
-    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2(Angle(       0          )))), static_cast<double>(GetX(UnitVec2::GetRight())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2(Angle(       0          )))), static_cast<double>(GetY(UnitVec2::GetRight())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2(Angle{Real( 90) * Degree}))), static_cast<double>(GetX(UnitVec2::GetTop())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2(Angle{Real( 90) * Degree}))), static_cast<double>(GetY(UnitVec2::GetTop())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2(Angle{Real(180) * Degree}))), static_cast<double>(GetX(UnitVec2::GetLeft())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2(Angle{Real(180) * Degree}))), static_cast<double>(GetY(UnitVec2::GetLeft())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2(Angle{Real(270) * Degree}))), static_cast<double>(GetX(UnitVec2::GetBottom())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2(Angle{Real(270) * Degree}))), static_cast<double>(GetY(UnitVec2::GetBottom())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2::GetRight())), static_cast<double>(GetX(UnitVec2::GetRight())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2::GetRight())), static_cast<double>(GetY(UnitVec2::GetRight())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2::GetTop())), static_cast<double>(GetX(UnitVec2::GetTop())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2::GetTop())), static_cast<double>(GetY(UnitVec2::GetTop())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2::GetLeft())), static_cast<double>(GetX(UnitVec2::GetLeft())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2::GetLeft())), static_cast<double>(GetY(UnitVec2::GetLeft())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2::GetBottom())), static_cast<double>(GetX(UnitVec2::GetBottom())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2::GetBottom())), static_cast<double>(GetY(UnitVec2::GetBottom())), 0.0001);
 }
 
 TEST(UnitVec2, ByAngleInRadiansNearOriented)
 {
-    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2((Pi * Real(0) / Real(2)) * Radian))), static_cast<double>(GetX(UnitVec2::GetRight())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2((Pi * Real(0) / Real(2)) * Radian))), static_cast<double>(GetY(UnitVec2::GetRight())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2((Pi * Real(1) / Real(2)) * Radian))), static_cast<double>(GetX(UnitVec2::GetTop())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2((Pi * Real(1) / Real(2)) * Radian))), static_cast<double>(GetY(UnitVec2::GetTop())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2((Pi * Real(2) / Real(2)) * Radian))), static_cast<double>(GetX(UnitVec2::GetLeft())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2((Pi * Real(2) / Real(2)) * Radian))), static_cast<double>(GetY(UnitVec2::GetLeft())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2((Pi * Real(3) / Real(2)) * Radian))), static_cast<double>(GetX(UnitVec2::GetBottom())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2((Pi * Real(3) / Real(2)) * Radian))), static_cast<double>(GetY(UnitVec2::GetBottom())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2::Get((Pi * Real(0) / Real(2)) * Radian))), static_cast<double>(GetX(UnitVec2::GetRight())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2::Get((Pi * Real(0) / Real(2)) * Radian))), static_cast<double>(GetY(UnitVec2::GetRight())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2::Get((Pi * Real(1) / Real(2)) * Radian))), static_cast<double>(GetX(UnitVec2::GetTop())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2::Get((Pi * Real(1) / Real(2)) * Radian))), static_cast<double>(GetY(UnitVec2::GetTop())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2::Get((Pi * Real(2) / Real(2)) * Radian))), static_cast<double>(GetX(UnitVec2::GetLeft())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2::Get((Pi * Real(2) / Real(2)) * Radian))), static_cast<double>(GetY(UnitVec2::GetLeft())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2::Get((Pi * Real(3) / Real(2)) * Radian))), static_cast<double>(GetX(UnitVec2::GetBottom())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2::Get((Pi * Real(3) / Real(2)) * Radian))), static_cast<double>(GetY(UnitVec2::GetBottom())), 0.0001);
 }
 
 TEST(UnitVec2, GetForInvalid)
