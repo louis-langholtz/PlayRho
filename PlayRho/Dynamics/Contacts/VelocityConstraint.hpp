@@ -31,7 +31,7 @@ namespace playrho {
     /// Contact velocity constraint.
     ///
     /// @note A valid contact velocity constraint must have a point count of either 1 or 2.
-    /// @note This data structure is 168-bytes large (on at least one 64-bit platform).
+    /// @note This data structure is 160-bytes large (on at least one 64-bit platform).
     ///
     /// @invariant The "K" value cannot be changed independent of: the total inverse mass,
     ///   the normal, and the point relative positions.

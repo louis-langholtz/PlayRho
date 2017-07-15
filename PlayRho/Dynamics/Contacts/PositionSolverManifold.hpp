@@ -57,21 +57,7 @@ namespace playrho
     ///   the total vertex radius must be subtracted from this separation distance.
     PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type index,
                                   const Transformation& xfA, const Transformation& xfB);
-    
-    /// Gets the normal-point-separation data in world coordinates for the given inputs.
-    /// @note The returned normal is in the direction of shape A to shape B.
-    /// @note The returned separation distance does not account for vertex radiuses. It's simply
-    ///   the separation between the points of the manifold. To account for the vertex radiuses,
-    ///   the total vertex radius must be subtracted from this separation distance.
-    inline PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type index,
-                                         Position pos_a, Length2D lc_ctr_a,
-                                         Position pos_b, Length2D lc_ctr_b)
-    {
-        const auto xfA = GetTransformation(pos_a, lc_ctr_a);
-        const auto xfB = GetTransformation(pos_b, lc_ctr_b);
-        return GetPSM(manifold, index, xfA, xfB);
-    }
-    
+
 }; // namespace playrho
 
 #endif /* PositionSolverManifold_hpp */

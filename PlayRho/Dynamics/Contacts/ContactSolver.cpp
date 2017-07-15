@@ -540,14 +540,19 @@ PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
     {
         case 1:
         {
-            const auto psm0 = GetPSM(pc.manifold, 0, posA, localCenterA, posB, localCenterB);
+            const auto psm0 = GetPSM(pc.manifold, 0,
+                                     GetTransformation(posA, localCenterA),
+                                     GetTransformation(posB, localCenterB));
             return PositionSolution{posA, posB, 0} + solver_fn(psm0, posA.linear, posB.linear);
         }
         case 2:
         {
+            const auto xfA = GetTransformation(posA, localCenterA);
+            const auto xfB = GetTransformation(posB, localCenterB);
+            
             // solve most penatrating point first or solve simultaneously if about the same penetration
-            const auto psm0 = GetPSM(pc.manifold, 0, posA, localCenterA, posB, localCenterB);
-            const auto psm1 = GetPSM(pc.manifold, 1, posA, localCenterA, posB, localCenterB);
+            const auto psm0 = GetPSM(pc.manifold, 0, xfA, xfB);
+            const auto psm1 = GetPSM(pc.manifold, 1, xfA, xfB);
 
             assert(IsValid(psm0.m_separation) && IsValid(psm1.m_separation));
 
@@ -568,7 +573,9 @@ PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
                 const auto s0 = solver_fn(psm0, posA.linear, posB.linear);
                 posA += s0.pos_a;
                 posB += s0.pos_b;
-                const auto psm1_prime = GetPSM(pc.manifold, 1, posA, localCenterA, posB, localCenterB);
+                const auto psm1_prime = GetPSM(pc.manifold, 1,
+                                               GetTransformation(posA, localCenterA),
+                                               GetTransformation(posB, localCenterB));
                 const auto s1 = solver_fn(psm1_prime, posA.linear, posB.linear);
                 posA += s1.pos_a;
                 posB += s1.pos_b;
@@ -579,7 +586,9 @@ PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
                 const auto s1 = solver_fn(psm1, posA.linear, posB.linear);
                 posA += s1.pos_a;
                 posB += s1.pos_b;
-                const auto psm0_prime = GetPSM(pc.manifold, 0, posA, localCenterA, posB, localCenterB);
+                const auto psm0_prime = GetPSM(pc.manifold, 0,
+                                               GetTransformation(posA, localCenterA),
+                                               GetTransformation(posB, localCenterB));
                 const auto s0 = solver_fn(psm0_prime, posA.linear, posB.linear);
                 posA += s0.pos_a;
                 posB += s0.pos_b;
