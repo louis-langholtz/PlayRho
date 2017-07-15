@@ -35,14 +35,14 @@ static void DrawCorner(Drawer& drawer, Length2D p, Length r, Angle a0, Angle a1,
     auto lastAngle = Angle{0};
     for (auto angle = Degree * Real{5}; angle < angleDiff; angle += Degree * Real{5})
     {
-        const auto c0 = p + r * UnitVec2(a0 + lastAngle);
-        const auto c1 = p + r * UnitVec2(a0 + angle);
+        const auto c0 = p + r * UnitVec2::Get(a0 + lastAngle);
+        const auto c1 = p + r * UnitVec2::Get(a0 + angle);
         drawer.DrawSegment(c0, c1, color);
         lastAngle = angle;
     }
     {
-        const auto c0 = p + r * UnitVec2(a0 + lastAngle);
-        const auto c1 = p + r * UnitVec2(a1);
+        const auto c0 = p + r * UnitVec2::Get(a0 + lastAngle);
+        const auto c1 = p + r * UnitVec2::Get(a1);
         drawer.DrawSegment(c0, c1, color);
     }
 }

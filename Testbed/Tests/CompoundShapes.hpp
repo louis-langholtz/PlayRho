@@ -80,7 +80,7 @@ public:
 
         {
             Transformation xf1;
-            xf1.q = UnitVec2{Real{0.3524f} * Radian * Pi};
+            xf1.q = UnitVec2::Get(Real{0.3524f} * Radian * Pi);
             xf1.p = GetVec2(GetXAxis(xf1.q)) * Meter;
 
             auto triangle1 = std::make_shared<PolygonShape>();
@@ -92,7 +92,7 @@ public:
             triangle1->SetDensity(Real{2} * KilogramPerSquareMeter);
 
             Transformation xf2;
-            xf2.q = UnitVec2{Real{-0.3524f} * Radian * Pi};
+            xf2.q = UnitVec2::Get(Real{-0.3524f} * Radian * Pi);
             xf2.p = -GetVec2(GetXAxis(xf2.q)) * Meter;
 
             auto triangle2 = std::make_shared<PolygonShape>();

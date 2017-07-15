@@ -96,7 +96,7 @@ namespace playrho {
             for (auto i = 0; i < 2000; ++i)
             {
                 const auto radius = alpha + beta * angle;
-                const auto unitVector = UnitVec2(angle);
+                const auto unitVector = UnitVec2::Get(angle);
                 const auto location = radius * unitVector;
                 const auto body = m_world->CreateBody(BodyDef{}
                                                       .UseType(BodyType::Dynamic)

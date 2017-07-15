@@ -39,7 +39,7 @@ public:
             m_polygonB.SetAsBox(Real{0.5f} * Meter, Real{0.5f} * Meter);
             m_positionB = Vec2(19.345284f, 1.5632932f) * Meter;
             m_angleB = Real{1.9160721f} * Radian;
-            m_transformB = Transformation{m_positionB, UnitVec2{m_angleB}};
+            m_transformB = Transformation{m_positionB, UnitVec2::Get(m_angleB)};
         }
     }
 
@@ -120,7 +120,7 @@ public:
             break;
         }
 
-        m_transformB = Transformation{m_positionB, UnitVec2{m_angleB}};
+        m_transformB = Transformation{m_positionB, UnitVec2::Get(m_angleB)};
     }
 
     PolygonShape m_polygonA;

@@ -63,7 +63,7 @@ public:
 
         {
             Transformation xf1;
-            xf1.q = UnitVec2{0.3524f * Pi * Radian};
+            xf1.q = UnitVec2::Get(0.3524f * Pi * Radian);
             xf1.p = GetVec2(GetXAxis(xf1.q)) * Meter;
 
             Length2D vertices[3];
@@ -77,7 +77,7 @@ public:
             const auto poly1 = PolygonShape(Span<const Length2D>(vertices, 3), conf);
 
             Transformation xf2;
-            xf2.q = UnitVec2{-0.3524f * Pi * Radian};
+            xf2.q = UnitVec2::Get(-0.3524f * Pi * Radian);
             xf2.p = GetVec2(-GetXAxis(xf2.q)) * Meter;
 
             vertices[0] = Transform(Vec2(-1.0f, Real{0}) * Meter, xf2);
