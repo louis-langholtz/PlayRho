@@ -47,7 +47,6 @@ VelocityConstraint::VelocityConstraint(index_type contactIndex,
     const auto worldManifold = GetWorldManifold(manifold, xfA, radiusA, xfB, radiusB);
     m_normal = worldManifold.GetNormal();
     assert(IsValid(m_normal));
-    m_tangent = GetFwdPerpendicular(m_normal);
 
     const auto pointCount = manifold.GetPointCount();
     assert(pointCount > 0);

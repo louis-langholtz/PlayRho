@@ -76,7 +76,7 @@ namespace playrho {
         ///   otherwise.
         UnitVec2 GetNormal() const noexcept { return m_normal; }
         
-        UnitVec2 GetTangent() const noexcept { return m_tangent; }
+        UnitVec2 GetTangent() const noexcept { return GetFwdPerpendicular(m_normal); }
         
         InvMass GetInvMass() const noexcept { return m_invMass; }
         
@@ -271,7 +271,6 @@ namespace playrho {
         BodyConstraint* m_bodyB = nullptr; ///< Body B contact velocity constraint data.
         
         UnitVec2 m_normal = GetInvalid<UnitVec2>(); ///< Normal of the world manifold. 8-bytes.
-        UnitVec2 m_tangent = GetInvalid<UnitVec2>(); ///< Tangent of the world manifold. 8-bytes.
         
         InvMass m_invMass = GetInvalid<InvMass>(); ///< Total inverse mass.
         
