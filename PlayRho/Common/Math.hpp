@@ -305,11 +305,13 @@ constexpr inline auto Dot(const Vec3 a, const Vec3 b) noexcept
     return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
 }
 
-/// Performs the 2D analog of the cross product of two vectors.
+/// @brief Performs the 2D analog of the cross product of two vectors.
 ///
-/// @details
-/// This is defined as the result of: <code>(a.x * b.y) - (a.y * b.x)</code>.
+/// @details Defined as the result of: <code>(a.x * b.y) - (a.y * b.x)</code>.
 ///
+/// @note This operation is dimension squashing. I.e. A cross of a 2-D length by a 2-D unit
+///   vector results in a 1-D length value.
+/// @note The unit of the result is the 1-D product of the inputs.
 /// @note This operation is anti-commutative. I.e. Cross(a, b) == -Cross(b, a).
 /// @note The result will be 0 if any of the following are true:
 ///   vector A or vector B has a length of zero;

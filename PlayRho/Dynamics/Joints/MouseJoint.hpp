@@ -124,7 +124,7 @@ private:
 
     // Solver variables. These are only valid after InitVelocityConstraints called.
     Length2D m_rB;
-    Mat22 m_mass;
+    Mat22 m_mass; ///< 2x2 mass matrix in kilograms.
     LinearVelocity2D m_C;
 };
 

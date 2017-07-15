@@ -96,7 +96,7 @@ private:
     // Solver temp
     Length2D m_rA;
     Length2D m_rB;
-    Mat22 m_linearMass;
+    Mat22 m_linearMass; ///< 2x2 linear mass matrix in kilograms.
     RotInertia m_angularMass;
 };
 

@@ -106,6 +106,9 @@ namespace playrho
     using SecondMomentOfArea = boost::units::quantity<boost::units::si::second_moment_of_area, Real>;
     
     using RotInertia = boost::units::quantity<boost::units::si::moment_of_inertia, Real>;
+    
+    /// @brief Inverse rotational inertia.
+    /// @note Units of L^-2 M^-1 QP^2.
     using InvRotInertia = boost::units::quantity<boost::units::si::inverse_moment_of_inertia, Real>;
     
     using Momentum = boost::units::quantity<boost::units::si::momentum, Real>;

@@ -108,7 +108,7 @@ private:
     Length2D m_rB;
     Length2D m_linearError;
     Angle m_angularError;
-    Mat22 m_linearMass;
+    Mat22 m_linearMass; ///< 2x2 linear mass matrix in kilograms.
     RotInertia m_angularMass;
 };
 
