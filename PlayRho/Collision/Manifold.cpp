@@ -580,7 +580,7 @@ Manifold playrho::CollideCached(const DistanceProxy& shapeA, const Transformatio
 #endif
 
 Manifold playrho::GetManifold(const DistanceProxy& proxyA, const Transformation& transformA,
-                            const DistanceProxy& proxyB, const Transformation& transformB)
+                              const DistanceProxy& proxyB, const Transformation& transformB)
 {
     const auto distanceInfo = Distance(proxyA, transformA, proxyB, transformB);
     const auto totalRadius = proxyA.GetVertexRadius() + proxyB.GetVertexRadius();
