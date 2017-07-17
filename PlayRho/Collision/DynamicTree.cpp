@@ -558,12 +558,12 @@ DynamicTree::size_type DynamicTree::ComputeHeight(const size_type index) const n
 void DynamicTree::ForEach(const AABB aabb, ForEachCallback callback) const
 {
     GrowableStack<size_type, 256> stack;
-    stack.Push(m_root);
+    stack.push(m_root);
     
-    while (!stack.Empty())
+    while (!stack.empty())
     {
-        const auto index = stack.Top();
-        stack.Pop();
+        const auto index = stack.top();
+        stack.pop();
         if (index != InvalidIndex)
         {
             const auto node = m_nodes + index;
@@ -575,8 +575,8 @@ void DynamicTree::ForEach(const AABB aabb, ForEachCallback callback) const
                 }
                 else
                 {
-                    stack.Push(node->child1);
-                    stack.Push(node->child2);
+                    stack.push(node->child1);
+                    stack.push(node->child2);
                 }
             }
         }
@@ -586,12 +586,12 @@ void DynamicTree::ForEach(const AABB aabb, ForEachCallback callback) const
 void DynamicTree::Query(const AABB aabb, QueryCallback callback) const
 {
     GrowableStack<size_type, 256> stack;
-    stack.Push(m_root);
+    stack.push(m_root);
     
-    while (stack.GetCount() > 0)
+    while (stack.size() > 0)
     {
-        const auto index = stack.Top();
-        stack.Pop();
+        const auto index = stack.top();
+        stack.pop();
         if (index != InvalidIndex)
         {
             const auto node = m_nodes + index;
@@ -606,8 +606,8 @@ void DynamicTree::Query(const AABB aabb, QueryCallback callback) const
                 }
                 else
                 {
-                    stack.Push(node->child1);
-                    stack.Push(node->child2);
+                    stack.push(node->child1);
+                    stack.push(node->child2);
                 }
             }
         }
@@ -633,12 +633,12 @@ void DynamicTree::RayCast(const RayCastInput& input, RayCastCallback callback) c
     auto segmentAABB = AABB{p1, p1 + maxFraction * delta};
     
     GrowableStack<size_type, 256> stack;
-    stack.Push(m_root);
+    stack.push(m_root);
     
-    while (stack.GetCount() > 0)
+    while (stack.size() > 0)
     {
-        const auto index = stack.Top();
-        stack.Pop();
+        const auto index = stack.top();
+        stack.pop();
         if (index == InvalidIndex)
         {
             continue;
@@ -681,8 +681,8 @@ void DynamicTree::RayCast(const RayCastInput& input, RayCastCallback callback) c
         }
         else
         {
-            stack.Push(node->child1);
-            stack.Push(node->child2);
+            stack.push(node->child1);
+            stack.push(node->child2);
         }
     }
 }

@@ -36,31 +36,31 @@ TEST(GrowableStack, PushAndPop)
     ASSERT_EQ(T::GetInitialCapacity(), T::CountType(4));
 
     T foo;
-    ASSERT_EQ(foo.GetCount(), T::CountType(0));
-    ASSERT_EQ(foo.GetCapacity(), T::GetInitialCapacity());
+    ASSERT_EQ(foo.size(), T::CountType(0));
+    ASSERT_EQ(foo.capacity(), T::GetInitialCapacity());
 
-    foo.Push(104);
-    EXPECT_EQ(foo.GetCount(), T::CountType(1));
-    EXPECT_EQ(foo.GetCapacity(), T::GetInitialCapacity());
+    foo.push(104);
+    EXPECT_EQ(foo.size(), T::CountType(1));
+    EXPECT_EQ(foo.capacity(), T::GetInitialCapacity());
     
-    EXPECT_EQ(foo.Top(), 104);
-    foo.Pop();
-    EXPECT_EQ(foo.GetCount(), T::CountType(0));
-    EXPECT_EQ(foo.GetCapacity(), T::GetInitialCapacity());
+    EXPECT_EQ(foo.top(), 104);
+    foo.pop();
+    EXPECT_EQ(foo.size(), T::CountType(0));
+    EXPECT_EQ(foo.capacity(), T::GetInitialCapacity());
 
-    foo.Push(1);
-    foo.Push(2);
-    foo.Push(3);
-    foo.Push(4);
-    EXPECT_EQ(foo.GetCount(), T::CountType(4));
-    EXPECT_EQ(foo.GetCapacity(), T::GetInitialCapacity());
+    foo.push(1);
+    foo.push(2);
+    foo.push(3);
+    foo.push(4);
+    EXPECT_EQ(foo.size(), T::CountType(4));
+    EXPECT_EQ(foo.capacity(), T::GetInitialCapacity());
 
-    foo.Push(5);
-    EXPECT_EQ(foo.GetCount(), T::CountType(5));
-    EXPECT_EQ(foo.GetCapacity(), T::GetInitialCapacity() * T::GetBufferGrowthRate());
+    foo.push(5);
+    EXPECT_EQ(foo.size(), T::CountType(5));
+    EXPECT_EQ(foo.capacity(), T::GetInitialCapacity() * T::GetBufferGrowthRate());
     
-    EXPECT_EQ(foo.Top(), 5);
-    foo.Pop();
-    EXPECT_EQ(foo.GetCount(), T::CountType(4));
-    EXPECT_EQ(foo.GetCapacity(), T::GetInitialCapacity() * T::GetBufferGrowthRate());
+    EXPECT_EQ(foo.top(), 5);
+    foo.pop();
+    EXPECT_EQ(foo.size(), T::CountType(4));
+    EXPECT_EQ(foo.capacity(), T::GetInitialCapacity() * T::GetBufferGrowthRate());
 }

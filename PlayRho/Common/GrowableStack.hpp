@@ -55,7 +55,7 @@ public:
         }
     }
 
-    void Push(const ElementType& element)
+    void push(const ElementType& element)
     {
         if (m_count == m_capacity)
         {
@@ -73,29 +73,29 @@ public:
         ++m_count;
     }
 
-    ElementType Top() const
+    ElementType top() const
     {
         assert(m_count > 0);
         return m_stack[m_count - 1];
     }
 
-    void Pop() noexcept
+    void pop() noexcept
     {
         assert(m_count > 0);
         --m_count;
     }
 
-    constexpr CountType GetCount() const noexcept
+    constexpr CountType size() const noexcept
     {
         return m_count;
     }
     
-    constexpr CountType GetCapacity() const noexcept
+    constexpr CountType capacity() const noexcept
     {
         return m_capacity;
     }
 
-    constexpr bool Empty() const noexcept
+    constexpr bool empty() const noexcept
     {
         return m_count == 0;
     }
