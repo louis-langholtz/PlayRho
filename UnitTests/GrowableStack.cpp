@@ -43,7 +43,8 @@ TEST(GrowableStack, PushAndPop)
     EXPECT_EQ(foo.GetCount(), T::CountType(1));
     EXPECT_EQ(foo.GetCapacity(), T::GetInitialCapacity());
     
-    EXPECT_EQ(foo.Pop(), 104);
+    EXPECT_EQ(foo.Top(), 104);
+    foo.Pop();
     EXPECT_EQ(foo.GetCount(), T::CountType(0));
     EXPECT_EQ(foo.GetCapacity(), T::GetInitialCapacity());
 
@@ -58,7 +59,8 @@ TEST(GrowableStack, PushAndPop)
     EXPECT_EQ(foo.GetCount(), T::CountType(5));
     EXPECT_EQ(foo.GetCapacity(), T::GetInitialCapacity() * T::GetBufferGrowthRate());
     
-    EXPECT_EQ(foo.Pop(), 5);
+    EXPECT_EQ(foo.Top(), 5);
+    foo.Pop();
     EXPECT_EQ(foo.GetCount(), T::CountType(4));
     EXPECT_EQ(foo.GetCapacity(), T::GetInitialCapacity() * T::GetBufferGrowthRate());
 }

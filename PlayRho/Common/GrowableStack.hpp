@@ -73,11 +73,16 @@ public:
         ++m_count;
     }
 
-    ElementType Pop()
+    ElementType Top() const
+    {
+        assert(m_count > 0);
+        return m_stack[m_count - 1];
+    }
+
+    void Pop() noexcept
     {
         assert(m_count > 0);
         --m_count;
-        return m_stack[m_count];
     }
 
     constexpr CountType GetCount() const noexcept

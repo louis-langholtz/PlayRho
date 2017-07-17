@@ -562,7 +562,8 @@ void DynamicTree::ForEach(const AABB aabb, ForEachCallback callback) const
     
     while (!stack.Empty())
     {
-        const auto index = stack.Pop();
+        const auto index = stack.Top();
+        stack.Pop();
         if (index != InvalidIndex)
         {
             const auto node = m_nodes + index;
@@ -589,7 +590,8 @@ void DynamicTree::Query(const AABB aabb, QueryCallback callback) const
     
     while (stack.GetCount() > 0)
     {
-        const auto index = stack.Pop();
+        const auto index = stack.Top();
+        stack.Pop();
         if (index != InvalidIndex)
         {
             const auto node = m_nodes + index;
@@ -635,7 +637,8 @@ void DynamicTree::RayCast(const RayCastInput& input, RayCastCallback callback) c
     
     while (stack.GetCount() > 0)
     {
-        const auto index = stack.Pop();
+        const auto index = stack.Top();
+        stack.Pop();
         if (index == InvalidIndex)
         {
             continue;
