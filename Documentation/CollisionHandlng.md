@@ -89,15 +89,17 @@ And now, no stickiness at all!! Woot!!
 Someone asked me for more details. I love that! Even one person asking a question about
 what I've done is hugely encouraging for me. So here's more information...
 
-Code-wise, this now (as of around May, 2017) gets done in [`Manifold.cpp`](https://github.com/louis-langholtz/PlayRho/blob/dev/PlayRho/Collision/Manifold.cpp), by the `box2d::CollideShapes` function. It's full function signature is:
+Code-wise, this now (as of around May, 2017) gets done in
+[`Manifold.cpp`](https://github.com/louis-langholtz/PlayRho/blob/master/PlayRho/Collision/Manifold.cpp),
+by the `playrho::CollideShapes` function. It's full function signature is:
 
-    namespace box2d {
+    namespace playrho {
 
         Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
                                const DistanceProxy& shapeB, const Transformation& xfB,
                                const Manifold::Conf conf);
 
-    } // namespace box2d
+    } // namespace playrho
 
 What's relevant to note about the function signature is really only that it takes `DistanceProxy`
 objects and returns `Manifold` objects.

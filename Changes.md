@@ -17,8 +17,8 @@ as Application Programming Interface (API) changes and non-API (other) changes.
   All shapes can collide with any other shape now (chains can collide with other
   chains or edges or any other kind of shape).
 - All shapes support vertex-radius based corner rounding now. This enables
-  [*capsule shapes* and other visibly rounded shapes](https://github.com/louis-langholtz/PlayRho/blob/dev/Documentation/images/RoundedCornerShapes.png).
-- [Rounded and modified corner collisions](https://github.com/louis-langholtz/PlayRho/blob/dev/Documentation/CollisionHandlng.md).
+  [*capsule shapes* and other visibly rounded shapes](https://github.com/louis-langholtz/PlayRho/blob/master/Documentation/images/RoundedCornerShapes.png).
+- [Rounded and modified corner collisions](https://github.com/louis-langholtz/PlayRho/blob/master/Documentation/CollisionHandlng.md).
   This supports the physical behaviors expected of rounded corners, like
   increased roll-ability, while preventing dragged shapes from getting stuck
   on composite surfaces.
@@ -34,15 +34,15 @@ as Application Programming Interface (API) changes and non-API (other) changes.
 - Added compile-time support for zero-runtime strongly-typed physical units (using an
   interface to [`constexpr`-enhanced boost units](https://github.com/louis-langholtz/units)).
   For details on how to enable this, see
-  [Documentation/PhysicalUnits.md](https://github.com/louis-langholtz/PlayRho/blob/dev/Documentation/PhysicalUnits.md).
+  [Documentation/PhysicalUnits.md](https://github.com/louis-langholtz/PlayRho/blob/master/Documentation/PhysicalUnits.md).
 - Added compile-time support for `double` and `long double` floating-point types, and
   32-bit and 64-bit fixed-point types (in addition to `float`).
 - Fully per-step run-time configurable (via
-  [`StepConf`](https://github.com/louis-langholtz/PlayRho/blob/dev/PlayRho/Dynamics/StepConf.hpp)).
+  [`StepConf`](https://github.com/louis-langholtz/PlayRho/blob/master/PlayRho/Dynamics/StepConf.hpp)).
 - In-depth per-step return value statistics (via
-  [`StepStats`](https://github.com/louis-langholtz/PlayRho/blob/dev/PlayRho/Dynamics/StepStats.hpp)).
+  [`StepStats`](https://github.com/louis-langholtz/PlayRho/blob/master/PlayRho/Dynamics/StepStats.hpp)).
 - Increased construction-time configurability of world instances (via
-  [`World::Def`](https://github.com/louis-langholtz/PlayRho/blob/dev/PlayRho/Dynamics/World.hpp#L107)).
+  [`World::Def`](https://github.com/louis-langholtz/PlayRho/blob/master/PlayRho/Dynamics/World.hpp#L107)).
 - Refactored various methods to be
   [non-member non-friend functions](http://www.drdobbs.com/cpp/how-non-member-functions-improve-encapsu/184401197).
 - Refactored various functions and procedures to be
@@ -59,7 +59,7 @@ as Application Programming Interface (API) changes and non-API (other) changes.
 ## Other Changes
 
 - Unit tested via [Google Test](https://github.com/google/googletest/tree/aa148eb2b7f70ede0eb10de34b6254826bfb34f4)
-  and [over 400 tests](https://github.com/louis-langholtz/PlayRho/tree/dev/UnitTests).
+  and [over 400 tests](https://github.com/louis-langholtz/PlayRho/tree/master/UnitTests).
 - Added continuous integration (CI) building and unit testing of repository updates
   for the Linux and Windows platforms.
 - Configured use of [COVERALLS](https://coveralls.io/github/louis-langholtz/PlayRho?branch=dev)

@@ -1,7 +1,7 @@
 # The Physical Units Interface
 
 The *Physical Units Interface* for
-[this fork of Box2D](https://github.com/louis-langholtz/Box2D), is an interface
+[PlayRho](https://github.com/louis-langholtz/PlayRho), is an interface
 that ties physical values to their required types.
 
 The base implementation for the *physical units interface* simply uses
@@ -33,9 +33,9 @@ To build with this Boost units support:
   6. Make the directory containing the include headers from the modified units
      library accessible from the target destination directory as the directory
      named "units".
-  7. Go back to the Box2D project setup and add "USE_BOOST_UNITS" as a
+  7. Go back to the PlayRho project setup and add "USE_BOOST_UNITS" as a
      C pre-processor define so that the file
-     Box2D/Common/Settings.hpp can see that it's defined.
-  8. Now rebuild the Box2D library and any applications. If you've used the
+     `PlayRho/Common/Settings.hpp` can see that it's defined.
+  8. Now rebuild the PlayRho library and any applications. If you've used the
      physical units interface correctly everywhere, you should get no units
      related warnings or errors.
