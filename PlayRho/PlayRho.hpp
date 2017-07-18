@@ -27,9 +27,9 @@
 
 \section intro_sec Getting Started
 
-For user documentation, please see http://box2d.org/documentation.html
+For source code, please see: https://github.com/louis-langholtz/PlayRho .
 
-For discussion, please visit http://box2d.org/forum
+For issues, visit: https://github.com/louis-langholtz/PlayRho/issues .
 */
 
 // These include files constitute the main PlayRho API
