@@ -38,5 +38,5 @@ to see any kind of performance.
 - [Building Document](INSTALL.md):
   information on how to build this project and run the testbed.
 - [API Pages](http://louis-langholtz.github.io/PlayRho/API/index.html): documentation on the Application Programming Interface (API).
-- [Issues Web Interface](issues):
+- [Issues Web Interface](https://github.com/louis-langholtz/PlayRho/issues):
   for questions, bugs reports, or suggestions associated with this project.
