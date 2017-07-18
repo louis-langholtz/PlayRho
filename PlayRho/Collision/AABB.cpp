@@ -24,6 +24,9 @@
 #include <PlayRho/Dynamics/FixtureProxy.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 
+/// @file
+/// Definitions for the AABB class.
+
 using namespace playrho;
 
 AABB playrho::ComputeAABB(const DistanceProxy& proxy, const Transformation xf) noexcept
