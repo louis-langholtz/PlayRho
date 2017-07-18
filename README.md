@@ -7,8 +7,7 @@ PlayRho is a real-time oriented physics engine and library that's currently best
 
 This is a fork by [Louis Langholtz](https://github.com/louis-langholtz)
 of the Box2D 2.3.2 physics engine written by Erin Catto. It's
-[licensed](https://github.com/louis-langholtz/PlayRho/blob/dev/LICENSE.txt) under
-a [Zlib License](https://opensource.org/licenses/Zlib).
+[licensed](LICENSE.txt) under a [Zlib License](https://opensource.org/licenses/Zlib).
 
 General goals of this project are:
 - Using and supporting the newer features of the C++ language standards, particularly [C++14](https://en.wikipedia.org/wiki/C%2B%2B14);
@@ -34,10 +33,10 @@ to see any kind of performance.
 
 ## Additional Resources
 
-- [Changes Document](https://github.com/louis-langholtz/PlayRho/blob/dev/Changes.md):
+- [Changes Document](Changes.md):
   provides a run-down of changes between PlayRho and Box2D 2.3.2.
-- [Building Document](https://github.com/louis-langholtz/PlayRho/blob/dev/INSTALL.md):
+- [Building Document](INSTALL.md):
   information on how to build this project and run the testbed.
 - [API Pages](http://louis-langholtz.github.io/PlayRho/API/index.html): documentation on the Application Programming Interface (API).
-- [Issues Web Interface](https://github.com/louis-langholtz/PlayRho/issues):
+- [Issues Web Interface](issues):
   for questions, bugs reports, or suggestions associated with this project.
