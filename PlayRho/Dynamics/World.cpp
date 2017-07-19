@@ -1302,6 +1302,9 @@ RegStepStats World::SolveReg(const StepConf& conf)
 
 World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Island island)
 {
+    assert(island.m_bodies.size() > 0 || island.m_contacts.size() > 0 ||
+           island.m_joints.size() > 0);
+    
     auto results = IslandSolverResults{};
     results.positionIterations = conf.regPositionIterations;
     const auto h = conf.GetTime(); ///< Time step.
