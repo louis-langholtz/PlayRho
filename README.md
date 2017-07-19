@@ -1,6 +1,6 @@
 # PlayRho
 
-*A way to play with physical behaviors like the conservation of momentum.*.
+*A way to play with physical behaviors like the conservation of momentum.*
 
 PlayRho is a real-time oriented physics engine and library that's currently best suited for
 2D games. The project name is the composition of the verb *play* with the noun *rho* where
