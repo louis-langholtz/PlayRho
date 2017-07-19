@@ -24,12 +24,14 @@
 
 namespace playrho {
 
-/// Edge shape.
-/// @details
-/// A line segment (edge) shape. These can be connected in chains or loops
-/// to other edge shapes. The connectivity information is used to ensure
-/// correct contact normals.
-/// @note This data structure is 32-bytes.
+/// @brief Edge shape.
+///
+/// @details A line segment (edge) shape. These can be connected in chains or loops
+///   to other edge shapes. The connectivity information is used to ensure correct
+///   contact normals.
+///
+/// @note This data structure is 56-bytes.
+///
 class EdgeShape : public Shape
 {
 public:
@@ -83,7 +85,7 @@ public:
 
     EdgeShape(const EdgeShape&) = default;
 
-    /// Gets the number of child primitives.
+    /// @brief Gets the number of child primitives.
     /// @return Positive non-zero count.
     ChildCounter GetChildCount() const noexcept override;
 
@@ -91,14 +93,14 @@ public:
     /// @throws InvalidArgument if the index is out of range.
     DistanceProxy GetChild(ChildCounter index) const override;
 
-    /// Computes the mass properties of this shape using its dimensions and density.
-    /// The inertia tensor is computed about the local origin.
+    /// @brief Computes the mass properties of this shape using its dimensions and density.
+    /// @note The inertia tensor is computed about the local origin.
     /// @return Mass data for this shape.
     MassData GetMassData() const noexcept override;
     
     void Accept(Visitor& visitor) const override;
 
-    /// Set this as an isolated edge.
+    /// @brief Sets this as an isolated edge.
     void Set(const Length2D v1, const Length2D v2);
 
     Length2D GetVertex1() const noexcept { return m_vertices[0]; }
