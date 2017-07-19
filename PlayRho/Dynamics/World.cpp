@@ -62,7 +62,9 @@
 #include <vector>
 #include <unordered_map>
 #include <algorithm>
+#ifdef DO_PAR_UNSEQ
 #include <atomic>
+#endif
 
 //#define DO_THREADED
 #if defined(DO_THREADED)
