@@ -124,11 +124,9 @@ inline DistanceProxy EdgeShape::GetChild(ChildCounter index) const
 {
     if (index != 0)
     {
-        throw InvalidArgument("index out of range");
+        throw InvalidArgument("only index of 0 is supported");
     }
-    return (index == 0)?
-        DistanceProxy{GetVertexRadius(), 2, m_vertices, m_normals}:
-        DistanceProxy{};
+    return DistanceProxy{GetVertexRadius(), 2, m_vertices, m_normals};
 }
 
 inline void EdgeShape::Accept(playrho::Shape::Visitor &visitor) const

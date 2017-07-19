@@ -178,14 +178,13 @@ inline ChildCounter PolygonShape::GetChildCount() const noexcept
 
 inline DistanceProxy PolygonShape::GetChild(ChildCounter index) const
 {
-    if (index >= GetVertexCount())
+    if (index != 0)
     {
-        throw InvalidArgument("index out of range");
+        throw InvalidArgument("only index of 0 is supported");
     }
-    return (index == 0)?
-        DistanceProxy{GetVertexRadius(), static_cast<DistanceProxy::size_type>(m_vertices.size()),
-            &m_vertices[0], &m_normals[0]}:
-        DistanceProxy{};
+    return DistanceProxy{GetVertexRadius(),
+        static_cast<DistanceProxy::size_type>(m_vertices.size()), m_vertices.data(),
+        m_normals.data()};
 }
 
 inline void PolygonShape::Accept(playrho::Shape::Visitor &visitor) const
