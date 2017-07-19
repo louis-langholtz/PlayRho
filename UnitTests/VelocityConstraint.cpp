@@ -23,7 +23,7 @@
 
 using namespace playrho;
 
-TEST(VelocityConstraint, ByteSizeIs_168_or_304_or_576)
+TEST(VelocityConstraint, ByteSize)
 {
     switch (sizeof(Real))
     {
