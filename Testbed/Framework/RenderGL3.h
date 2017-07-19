@@ -1,5 +1,6 @@
 //
-// Copyright (c) 2009-2010 Mikko Mononen memon@inside.org
+// Original work Copyright (c) 2009-2010 Mikko Mononen memon@inside.org
+// Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
 //
 // This software is provided 'as-is', without any express or implied
 // warranty.  In no event will the authors be held liable for any damages
@@ -40,7 +41,8 @@ inline unsigned int SetRGBA(unsigned char r, unsigned char g, unsigned char b, u
 	return unsigned(r) | (unsigned(g) << 8u) | (unsigned(b) << 16u) | (unsigned(a) << 24u);
 }
 
-bool RenderGLInitFont(const char* fontpath);
+unsigned char* RenderGLGetFileData(const char* fontpath);
+bool RenderGLInitFont(unsigned char* ttfBuffer);
 bool RenderGLInit();
 void RenderGLDestroy();
 void RenderGLFlush(int width, int height);

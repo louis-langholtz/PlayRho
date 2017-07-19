@@ -22,6 +22,13 @@
 #include "DebugDraw.hpp"
 #include "Test.hpp"
 #include "TestEntry.hpp"
+
+// Uncomment the following define if you'd prefer to use an external file for font data.
+//#define DONT_EMBED_FONT_DATA
+#ifndef DONT_EMBED_FONT_DATA
+#include "DroidSansTtfData.h"
+#endif
+
 #include <sstream>
 #include <iostream>
 #include <iomanip>
@@ -185,6 +192,7 @@ namespace
     auto menuHeight = 0;
 }
 
+#ifdef DONT_EMBED_FONT_DATA
 static auto GetCwd()
 {
     // In C++17 this implementation should be replaced with fs::current_path()
@@ -205,6 +213,7 @@ static auto GetCwd()
 #endif
     return retval;
 }
+#endif
 
 static void CreateUI()
 {
@@ -215,6 +224,7 @@ static void CreateUI()
     ui.mouseOverMenu = false;
 
     // Init UI
+#ifdef DONT_EMBED_FONT_DATA
     const char* fontPaths[] = {
         // Path if Testbed running from MSVS or Xcode Build folder.
         "../../Testbed/Data/DroidSans.ttf",
@@ -237,16 +247,40 @@ static void CreateUI()
     {
         std::perror("GetCwd");
     }
+
+    auto fontLoaded = false;
     for (auto&& fontPath: fontPaths)
     {
         fprintf(stderr, "Attempting to load font from \"%s/%s\", ", cwd.c_str(), fontPath);
-	    if (RenderGLInitFont(fontPath))
+        const auto data = RenderGLGetFileData(fontPath);
+	    if (data)
     	{
-            fprintf(stderr, "succeeded.\n");
-            break;
+            fontLoaded = RenderGLInitFont(data);
+            std::free(data);
+            
+            if (fontLoaded)
+            {
+                fprintf(stderr, "succeeded.\n");
+                break;
+            }
     	}
         fprintf(stderr, " failed.\n");
     }
+    if (!fontLoaded)
+    {
+        fprintf(stderr, "Unable to find the font data file. GUI text support disabled.\n",
+                "http://www.kottke.org/plus/type/silkscreen/");
+    }
+#else
+    if (RenderGLInitFont(DroidSans_ttf))
+    {
+        printf("Using embedded DroidSans TTF data.\n");
+    }
+    else
+    {
+        fprintf(stderr, "Unable to use embedded font. GUI text support disabled.\n");
+    }
+#endif
 
     if (!RenderGLInit())
     {

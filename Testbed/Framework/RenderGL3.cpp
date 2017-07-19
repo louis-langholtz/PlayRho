@@ -479,13 +479,13 @@ static void sRenderLine(float x0, float y0, float x1, float y1, float r, float f
     sDrawPolygon(verts, 4, fth, col);
 }
 
-bool RenderGLInitFont(const char* fontpath)
+unsigned char* RenderGLGetFileData(const char* fontpath)
 {
     // Load font.
     FILE* fp = fopen(fontpath, "rb");
     if (!fp)
-        return false;
-
+        return NULL;
+    
     fseek(fp, 0, SEEK_END);
     int size = (int)ftell(fp);
     fseek(fp, 0, SEEK_SET);
@@ -494,17 +494,21 @@ bool RenderGLInitFont(const char* fontpath)
     if (!ttfBuffer)
     {
         fclose(fp);
-        return false;
+        return NULL;
     }
     
     std::fread(ttfBuffer, 1, static_cast<std::size_t>(size), fp);
     fclose(fp);
     fp = 0;
     
+    return ttfBuffer;
+}
+
+bool RenderGLInitFont(unsigned char* ttfBuffer)
+{
     unsigned char* bmap = (unsigned char*)std::malloc(512 * 512);
     if (!bmap)
     {
-        std::free(ttfBuffer);
         return false;
     }
     
@@ -517,7 +521,6 @@ bool RenderGLInitFont(const char* fontpath)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     
-    std::free(ttfBuffer);
     std::free(bmap);
     return true;
 }
