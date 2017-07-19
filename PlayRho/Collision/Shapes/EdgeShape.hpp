@@ -129,7 +129,7 @@ inline DistanceProxy EdgeShape::GetChild(ChildCounter index) const
     return DistanceProxy{GetVertexRadius(), 2, m_vertices, m_normals};
 }
 
-inline void EdgeShape::Accept(playrho::Shape::Visitor &visitor) const
+inline void EdgeShape::Accept(Visitor& visitor) const
 {
     visitor.Visit(*this);
 }

@@ -43,18 +43,18 @@ TEST(EdgeShape, GetInvalidChildThrows)
     EXPECT_THROW(foo.GetChild(1), InvalidArgument);
 }
 
-class Visitor: public Shape::Visitor
-{
-public:
-    void Visit(const EdgeShape&) override
-    {
-        visited = true;
-    }
-    bool visited = false;
-};
-
 TEST(EdgeShape, Accept)
 {
+    class Visitor: public Shape::Visitor
+    {
+    public:
+        void Visit(const EdgeShape&) override
+        {
+            visited = true;
+        }
+        bool visited = false;
+    };
+
     EdgeShape foo{};
     Visitor v;
     ASSERT_FALSE(v.visited);

@@ -187,7 +187,7 @@ inline DistanceProxy PolygonShape::GetChild(ChildCounter index) const
         m_normals.data()};
 }
 
-inline void PolygonShape::Accept(playrho::Shape::Visitor &visitor) const
+inline void PolygonShape::Accept(Visitor& visitor) const
 {
     visitor.Visit(*this);
 }

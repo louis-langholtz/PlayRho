@@ -52,18 +52,18 @@ TEST(PolygonShape, GetInvalidChildThrows)
     EXPECT_THROW(foo.GetChild(1), InvalidArgument);
 }
 
-class Visitor: public Shape::Visitor
-{
-public:
-    void Visit(const PolygonShape&) override
-    {
-        visited = true;
-    }
-    bool visited = false;
-};
-
 TEST(PolygonShape, Accept)
 {
+    class Visitor: public Shape::Visitor
+    {
+    public:
+        void Visit(const PolygonShape&) override
+        {
+            visited = true;
+        }
+        bool visited = false;
+    };
+
     PolygonShape foo{};
     Visitor v;
     ASSERT_FALSE(v.visited);

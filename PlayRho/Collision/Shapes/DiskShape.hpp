@@ -133,7 +133,7 @@ inline DistanceProxy DiskShape::GetChild(ChildCounter index) const
     return DistanceProxy{GetVertexRadius(), 1, &m_location, nullptr};
 }
 
-inline void DiskShape::Accept(playrho::Shape::Visitor &visitor) const
+inline void DiskShape::Accept(Visitor& visitor) const
 {
     visitor.Visit(*this);
 }
