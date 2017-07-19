@@ -37,6 +37,7 @@ struct ToiConf;
 class StepConf;
 
 /// @brief Mixes friction.
+///
 /// @details Friction mixing formula. The idea is to allow either fixture to drive the
 ///   resulting friction to zero. For example, anything slides on ice.
 ///
@@ -51,14 +52,17 @@ inline Real MixFriction(Real friction1, Real friction2)
     return Sqrt(friction1 * friction2);
 }
 
-/// Restitution mixing law. The idea is allow for anything to bounce off an inelastic surface.
-/// For example, a superball bounces on anything.
+/// @brief Mixes restitution.
+///
+/// @details Restitution mixing law. The idea is allow for anything to bounce off an inelastic
+///   surface. For example, a superball bounces on anything.
+///
 inline Real MixRestitution(Real restitution1, Real restitution2) noexcept
 {
     return (restitution1 > restitution2) ? restitution1 : restitution2;
 }
 
-/// A potential contact between the chidren of two Fixture objects.
+/// @brief A potential contact between the chidren of two Fixture objects.
 /// @details
 /// The class manages contact between two shapes. A contact exists for each overlapping
 /// AABB in the broad-phase (except if filtered). Therefore a contact object may exist
@@ -99,10 +103,10 @@ public:
     
     Contact(const Contact& copy) = default;
     
-    /// Gets the contact manifold.
+    /// @brief Gets the contact manifold.
     const Manifold& GetManifold() const noexcept;
 
-    /// Is this contact touching?
+    /// @brief Is this contact touching?
     /// @details
     /// Touching is defined as either:
     ///   1. This contact's manifold has more than 0 contact points, or
@@ -111,30 +115,31 @@ public:
     /// @return true if this contact is said to be touching, false otherwise.
     bool IsTouching() const noexcept;
 
-    /// Enable/disable this contact. This can be used inside the pre-solve
-    /// contact listener. The contact is only disabled for the current
-    /// time step (or sub-step in continuous collisions).
+    /// @brief Enables or disables this contact.
+    /// @note This can be used inside the pre-solve contact listener.
+    ///   The contact is only disabled for the current time step (or sub-step in continuous
+    ///   collisions).
     [[deprecated]] void SetEnabled(bool flag) noexcept;
 
-    /// Enables this contact.
+    /// @brief Enables this contact.
     void SetEnabled() noexcept;
 
-    /// Disables this contact.
+    /// @brief Disables this contact.
     void UnsetEnabled() noexcept;
 
-    /// Has this contact been disabled?
+    /// @brief Has this contact been disabled?
     bool IsEnabled() const noexcept;
 
-    /// Gets fixture A in this contact.
+    /// @brief Gets fixture A in this contact.
     Fixture* GetFixtureA() const noexcept;
 
-    /// Get the child primitive index for fixture A.
+    /// @brief Get the child primitive index for fixture A.
     ChildCounter GetChildIndexA() const noexcept;
 
-    /// Gets fixture B in this contact.
+    /// @brief Gets fixture B in this contact.
     Fixture* GetFixtureB() const noexcept;
 
-    /// Get the child primitive index for fixture B.
+    /// @brief Get the child primitive index for fixture B.
     ChildCounter GetChildIndexB() const noexcept;
 
     /// @brief Sets the friction value for this contact.
@@ -151,36 +156,45 @@ public:
     /// @sa MixFriction.
     Real GetFriction() const noexcept;
 
-    /// Override the default restitution mixture. You can call this in ContactListener::PreSolve.
-    /// The value persists until you set or reset.
+    /// @brief Sets the restitution.
+    /// @details This override the default restitution mixture.
+    /// @note You can call this in ContactListener::PreSolve.
+    /// @note The value persists until you set or reset.
     void SetRestitution(Real restitution) noexcept;
 
-    /// Get the restitution.
+    /// @brief Gets the restitution.
     Real GetRestitution() const noexcept;
 
-    /// Set the desired tangent speed for a conveyor belt behavior.
+    /// @brief Sets the desired tangent speed for a conveyor belt behavior.
     void SetTangentSpeed(LinearVelocity speed) noexcept;
 
-    /// Gets the desired tangent speed.
+    /// @brief Gets the desired tangent speed.
     LinearVelocity GetTangentSpeed() const noexcept;
 
+    /// @brief Gets the time of impact count.
     substep_type GetToiCount() const noexcept;
 
-    /// Gets whether a TOI is set.
+    /// @brief Gets whether a TOI is set.
     /// @return true if this object has a TOI set for it, false otherwise.
     bool HasValidToi() const noexcept;
 
-    /// Gets the time of impact (TOI) as a fraction.
+    /// @brief Gets the time of impact (TOI) as a fraction.
     /// @note This is only valid if a TOI has been set.
     /// @sa void SetToi(Real toi).
     /// @return Time of impact fraction in the range of 0 to 1 if set (where 1
     ///   means no actual impact in current time slot), otheriwse undefined.
     Real GetToi() const;
 
+    /// @brief Flags the contact for filtering.
     void FlagForFiltering() noexcept;
+
+    /// @brief Whether or not the contact needs filtering.
     bool NeedsFiltering() const noexcept;
 
+    /// @brief Flags the contact for updating.
     void FlagForUpdating() noexcept;
+
+    /// @brief Whether or not the contact needs updating.
     bool NeedsUpdating() const noexcept;
 
 private:
