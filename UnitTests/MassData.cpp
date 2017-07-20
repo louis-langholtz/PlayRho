@@ -220,3 +220,31 @@ TEST(MassData, GetForCenteredEdge)
     EXPECT_EQ(mass_data.center.x, Length(0));
     EXPECT_EQ(mass_data.center.y, Length(0));
 }
+
+TEST(MassData, Equals)
+{
+    const auto foo = MassData{};
+    EXPECT_TRUE(foo == foo);
+    
+    const auto boo = MassData{};
+    EXPECT_TRUE(foo == boo);
+    
+    const auto poo = MassData{
+        Real(4) * Kilogram, Length2D(Real(1) * Meter, Real(1) * Meter),
+        RotInertia{Real(1) * Kilogram * Real(2) * SquareMeter / SquareRadian}};
+    EXPECT_FALSE(foo == poo);
+}
+
+TEST(MassData, NotEquals)
+{
+    const auto foo = MassData{};
+    EXPECT_FALSE(foo != foo);
+    
+    const auto boo = MassData{};
+    EXPECT_FALSE(foo != boo);
+    
+    const auto poo = MassData{
+        Real(4) * Kilogram, Length2D(Real(1) * Meter, Real(1) * Meter),
+        RotInertia{Real(1) * Kilogram * Real(2) * SquareMeter / SquareRadian}};
+    EXPECT_TRUE(foo != poo);
+}
