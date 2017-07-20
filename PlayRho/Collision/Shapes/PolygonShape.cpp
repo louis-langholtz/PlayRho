@@ -191,7 +191,7 @@ void PolygonShape::Set(const VertexSet& point_set) noexcept
     m_vertices = GetConvexHullAsVector(point_set);
     assert(m_vertices.size() > 0 && m_vertices.size() < std::numeric_limits<vertex_count_t>::max());
     
-    const auto count = static_cast<vertex_count_t>(m_vertices.size());
+    const auto count = static_cast<VertexCounter>(m_vertices.size());
 
     m_normals.clear();
     if (count > 1)
@@ -226,7 +226,7 @@ void PolygonShape::Set(const VertexSet& point_set) noexcept
     }
 }
 
-Length2D playrho::GetEdge(const PolygonShape& shape, PolygonShape::vertex_count_t index)
+Length2D playrho::GetEdge(const PolygonShape& shape, PolygonShape::VertexCounter index)
 {
     assert(shape.GetVertexCount() > 1);
 

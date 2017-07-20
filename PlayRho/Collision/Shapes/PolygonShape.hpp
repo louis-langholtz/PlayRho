@@ -42,9 +42,10 @@ public:
     /// @note This type must not support more than 255 vertices as that would conflict
     ///   with the <code>ContactFeature::Index</code> type.
     ///
-    using vertex_count_t = std::uint8_t;
+    using VertexCounter = std::remove_const<decltype(MaxShapeVertices)>::type;
 
-    static constexpr auto InvalidVertex = static_cast<vertex_count_t>(-1);
+
+    static constexpr auto InvalidVertex = static_cast<VertexCounter>(-1);
 
     static constexpr Length GetDefaultVertexRadius() noexcept
     {
@@ -128,11 +129,11 @@ public:
     /// Gets the vertex count.
     /// @return value between 0 and MaxShapeVertices inclusive.
     /// @see MaxShapeVertices.
-    vertex_count_t GetVertexCount() const noexcept;
+    VertexCounter GetVertexCount() const noexcept;
 
     /// Gets a vertex by index.
     /// @details Vertices go counter-clockwise.
-    Length2D GetVertex(vertex_count_t index) const;
+    Length2D GetVertex(VertexCounter index) const;
 
     /// Gets a normal by index.
     /// @details
@@ -140,7 +141,7 @@ public:
     /// by consecutive pairs of vertices starting with vertex 0.
     /// @param index Index of the normal to get.
     /// @return Normal for the given index.
-    UnitVec2 GetNormal(vertex_count_t index) const;
+    UnitVec2 GetNormal(VertexCounter index) const;
 
     /// Gets the span of vertices.
     /// @details Vertices go counter-clockwise.
@@ -192,18 +193,18 @@ inline void PolygonShape::Accept(Visitor& visitor) const
     visitor.Visit(*this);
 }
 
-inline PolygonShape::vertex_count_t PolygonShape::GetVertexCount() const noexcept
+inline PolygonShape::VertexCounter PolygonShape::GetVertexCount() const noexcept
 {
-    return static_cast<vertex_count_t>(m_vertices.size());
+    return static_cast<VertexCounter>(m_vertices.size());
 }
 
-inline Length2D PolygonShape::GetVertex(vertex_count_t index) const
+inline Length2D PolygonShape::GetVertex(VertexCounter index) const
 {
     assert(0 <= index && index < GetVertexCount());
     return m_vertices[index];
 }
 
-inline UnitVec2 PolygonShape::GetNormal(vertex_count_t index) const
+inline UnitVec2 PolygonShape::GetNormal(VertexCounter index) const
 {
     assert(0 <= index && index < GetVertexCount());
     return m_normals[index];
@@ -212,7 +213,7 @@ inline UnitVec2 PolygonShape::GetNormal(vertex_count_t index) const
 /// Gets the identified edge of the given polygon shape.
 /// @note This must not be called for shapes with less than 2 vertices.
 /// @warning Behavior is undefined if called for a shape with less than 2 vertices.
-Length2D GetEdge(const PolygonShape& shape, PolygonShape::vertex_count_t index);
+Length2D GetEdge(const PolygonShape& shape, PolygonShape::VertexCounter index);
 
 /// Validate convexity of the given shape.
 /// @note This is a time consuming operation.
