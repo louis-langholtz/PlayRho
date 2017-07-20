@@ -89,6 +89,100 @@ MassData playrho::GetMassData(const Length r, const NonNegative<Density> density
     return MassData{totalMass, center, I};
 }
 
+MassData playrho::GetMassData(const Length vertexRadius, const NonNegative<Density> density,
+                              Span<const Length2D> vertices)
+{
+    // See: https://en.wikipedia.org/wiki/Centroid#Centroid_of_polygon
+    
+    // Polygon mass, centroid, and inertia.
+    // Let rho be the polygon density in mass per unit area.
+    // Then:
+    // mass = rho * int(dA)
+    // centroid.x = (1/mass) * rho * int(x * dA)
+    // centroid.y = (1/mass) * rho * int(y * dA)
+    // I = rho * int((x*x + y*y) * dA)
+    //
+    // We can compute these integrals by summing all the integrals
+    // for each triangle of the polygon. To evaluate the integral
+    // for a single triangle, we make a change of variables to
+    // the (u,v) coordinates of the triangle:
+    // x = x0 + e1x * u + e2x * v
+    // y = y0 + e1y * u + e2y * v
+    // where 0 <= u && 0 <= v && u + v <= 1.
+    //
+    // We integrate u from [0,1-v] and then v from [0,1].
+    // We also need to use the Jacobian of the transformation:
+    // D = cross(e1, e2)
+    //
+    // Simplification: triangle centroid = (1/3) * (p1 + p2 + p3)
+    //
+    // The rest of the derivation is handled by computer algebra.
+    
+    const auto count = vertices.size();
+    switch (count)
+    {
+        case 0:
+            return MassData{
+                Mass{Kilogram * GetInvalid<Real>()},
+                GetInvalid<Length2D>(),
+                RotInertia{SquareMeter * Kilogram * GetInvalid<Real>() / SquareRadian}
+            };
+        case 1:
+            return ::GetMassData(vertexRadius, density, vertices[0]);
+        case 2:
+            return ::GetMassData(vertexRadius, density, vertices[0], vertices[1]);;
+        default:
+            break;
+    }
+    
+    auto center = Length2D(0, 0);
+    auto area = Area{0};
+    auto I = SecondMomentOfArea{0};
+    
+    // s is the reference point for forming triangles.
+    // It's location doesn't change the result (except for rounding error).
+    // This code puts the reference point inside the polygon.
+    const auto s = Average(vertices);
+    
+    for (auto i = decltype(count){0}; i < count; ++i)
+    {
+        // Triangle vertices.
+        const auto e1 = vertices[i] - s;
+        const auto e2 = vertices[GetModuloNext(i, count)] - s;
+        
+        const auto D = Cross(e1, e2);
+        
+        const auto triangleArea = D / Real{2};
+        area += triangleArea;
+        
+        // Area weighted centroid
+        center += StripUnit(triangleArea) * (e1 + e2) / Real{3};
+        
+        const auto intx2 = e1.x * e1.x + e2.x * e1.x + e2.x * e2.x;
+        const auto inty2 = e1.y * e1.y + e2.y * e1.y + e2.y * e2.y;
+        
+        const auto triangleI = D * (intx2 + inty2) / Real{3 * 4};
+        I += triangleI;
+    }
+    
+    // Total mass
+    const auto mass = Mass{density * area};
+    
+    // Center of mass
+    assert((area > Area{0}) && !almost_zero(StripUnit(area)));
+    center /= StripUnit(area);
+    const auto massDataCenter = center + s;
+    
+    // Inertia tensor relative to the local origin (point s).
+    // Shift to center of mass then to original body origin.
+    const auto massCenterOffset = GetLengthSquared(massDataCenter);
+    const auto centerOffset = GetLengthSquared(center);
+    const auto intertialLever = massCenterOffset - centerOffset;
+    const auto massDataI = RotInertia{((density * I) + (mass * intertialLever)) / SquareRadian};
+    
+    return MassData{mass, massDataCenter, massDataI};
+}
+
 Area playrho::GetAreaOfCircle(Length radius)
 {
     return Area{radius * radius * Pi};

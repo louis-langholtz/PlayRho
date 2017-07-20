@@ -106,6 +106,9 @@ namespace playrho {
     MassData GetMassData(const Length r, const NonNegative<Density> density,
                          const Length2D v0, const Length2D v1);
 
+    MassData GetMassData(const Length vertexRadius, const NonNegative<Density> density,
+                         Span<const Length2D> vertices);
+    
     /// Computes the mass data for the given fixture.
     ///
     /// @details
