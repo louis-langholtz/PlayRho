@@ -58,6 +58,11 @@ namespace playrho
             m_elements.push_back(value);
             return true;
         }
+        
+        void clear() noexcept
+        {
+            m_elements.clear();
+        }
 
         std::size_t size() const noexcept { return m_elements.size(); }
         
