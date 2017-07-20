@@ -106,7 +106,9 @@ TEST(ChainShape, TwoVertexLikeEdge)
 {
     const auto vertexRadius = Real(1) * Meter;
     const auto density = Real(1) * KilogramPerSquareMeter;
-    const auto locations = std::array<Length2D, 2>{{Length2D(0, 0), Length2D(4, 0)}};
+    const auto locations = std::array<Length2D, 2>{{
+        Length2D(Real(0) * Meter, Real(0) * Meter), Length2D(Real(4) * Meter, Real(0) * Meter)
+    }};
     const auto normals = std::array<UnitVec2, 2>{{UnitVec2::GetTop(), UnitVec2::GetBottom()}};
     const auto expectedMassData = ::GetMassData(vertexRadius, density, locations[0], locations[1]);
     const auto expectedDistanceProxy = DistanceProxy{vertexRadius, 2, locations.data(), normals.data()};
@@ -133,7 +135,11 @@ TEST(ChainShape, FourVertex)
     const auto vertexRadius = Real(1) * Meter;
     const auto density = Real(1) * KilogramPerSquareMeter;
     const auto locations = std::array<Length2D, 5>{{
-        Length2D(-4, -4), Length2D(-4, 4), Length2D(4, 4), Length2D(4, -4), Length2D(-4, -4)
+        Length2D(Real(-4) * Meter, Real(-4) * Meter),
+        Length2D(Real(-4) * Meter, Real(+4) * Meter),
+        Length2D(Real(+4) * Meter, Real(+4) * Meter),
+        Length2D(Real(+4) * Meter, Real(-4) * Meter),
+        Length2D(Real(-4) * Meter, Real(-4) * Meter)
     }};
     const auto edgeMassData0 = ::GetMassData(vertexRadius, density, locations[0], locations[1]);
 
@@ -148,7 +154,8 @@ TEST(ChainShape, FourVertex)
     
     const auto massData = foo.GetMassData();
     EXPECT_EQ(massData.center, Length2D(0, 0));
-    EXPECT_EQ(massData.mass, edgeMassData0.mass * Real(4));
+    const auto expectedMass = Mass{edgeMassData0.mass} * Real(4);
+    EXPECT_EQ(massData.mass, NonNegative<Mass>{expectedMass});
 }
 
 TEST(ChainShape, WithCircleVertices)
@@ -168,6 +175,6 @@ TEST(ChainShape, WithCircleVertices)
     EXPECT_EQ(foo.GetVertexRadius(), vertexRadius);
     
     const auto massData = foo.GetMassData();
-    EXPECT_NEAR(massData.center.GetX(), Real(0) * Meter, Real(1) / Real(100));
-    EXPECT_NEAR(massData.center.GetY(), Real(2.4142134189605713) * Meter, Real(1) / Real(100));
+    EXPECT_NEAR(static_cast<double>(massData.center.GetX() / Meter), 0.0, 0.0001);
+    EXPECT_NEAR(static_cast<double>(massData.center.GetY() / Meter), 2.4142134189605713, 0.0001);
 }
