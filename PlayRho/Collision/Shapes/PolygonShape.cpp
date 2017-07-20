@@ -94,13 +94,8 @@ void PolygonShape::Set(Span<const Length2D> points) noexcept
 
 void PolygonShape::Set(const VertexSet& point_set) noexcept
 {
-#ifndef NDEBUG
-    const auto point_set_size = point_set.size();
-    assert(point_set_size > 0 && point_set_size < std::numeric_limits<vertex_count_t>::max());
-#endif
-
     m_vertices = GetConvexHullAsVector(point_set);
-    assert(m_vertices.size() > 0 && m_vertices.size() < std::numeric_limits<vertex_count_t>::max());
+    assert(m_vertices.size() > 0 && m_vertices.size() < std::numeric_limits<VertexCounter>::max());
     
     const auto count = static_cast<VertexCounter>(m_vertices.size());
 

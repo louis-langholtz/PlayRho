@@ -48,13 +48,8 @@ MassData MultiShape::GetMassData() const noexcept
 
 void MultiShape::AddConvexHull(const VertexSet& pointSet) noexcept
 {
-#ifndef NDEBUG
-    const auto point_set_size = pointSet.size();
-    assert(point_set_size > 0 && point_set_size < std::numeric_limits<vertex_count_t>::max());
-#endif
-    
     auto vertices = GetConvexHullAsVector(pointSet);
-    assert(vertices.size() > 0 && vertices.size() < std::numeric_limits<vertex_count_t>::max());
+    assert(vertices.size() > 0 && vertices.size() < std::numeric_limits<VertexCounter>::max());
     
     const auto count = static_cast<VertexCounter>(vertices.size());
     
