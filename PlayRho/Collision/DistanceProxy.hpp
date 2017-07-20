@@ -129,6 +129,13 @@ namespace playrho
         Length m_vertexRadius = Length{0}; ///< Radius of the vertices of the associated shape.
     };
     
+    bool operator== (const DistanceProxy& lhs, const DistanceProxy& rhs) noexcept;
+    
+    inline bool operator!= (const DistanceProxy& lhs, const DistanceProxy& rhs) noexcept
+    {
+        return !(lhs == rhs);
+    }
+    
     /// Gets the supporting vertex index in the given direction for the given distance proxy.
     /// @details This finds the vertex that's most significantly in the direction of the given
     ///   vector and returns its index.

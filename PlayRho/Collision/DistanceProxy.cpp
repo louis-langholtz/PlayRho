@@ -22,6 +22,37 @@
 
 namespace playrho {
 
+bool operator== (const DistanceProxy& lhs, const DistanceProxy& rhs) noexcept
+{
+    if (lhs.GetVertexRadius() != rhs.GetVertexRadius())
+    {
+        return false;
+    }
+    if (lhs.GetVertexCount() != rhs.GetVertexCount())
+    {
+        return false;
+    }
+    const auto vertexCount = lhs.GetVertexCount();
+    if (vertexCount > 1)
+    {
+        for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+        {
+            if (lhs.GetVertex(i) != rhs.GetVertex(i))
+            {
+                return false;
+            }
+        }
+    }
+    else if (vertexCount == 1)
+    {
+        if (lhs.GetVertex(0) != rhs.GetVertex(0))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
 DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, const Vec2 d) noexcept
 {
     auto index = DistanceProxy::InvalidIndex; ///< Index of vertex that when dotted with d has the max value.
