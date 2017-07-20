@@ -92,7 +92,7 @@ namespace playrho {
         /// @warning the points may be re-ordered, even if they form a convex polygon
         /// @warning collinear points are handled but not removed. Collinear points
         ///   may lead to poor stacking behavior.
-        void AddConvexHull(const VertexSet& points) noexcept;
+        void AddConvexHull(const VertexSet& pointSet) noexcept;
 
     private:
         struct ConvexHull

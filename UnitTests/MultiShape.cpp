@@ -20,6 +20,7 @@
 
 #include "gtest/gtest.h"
 #include <PlayRho/Collision/Shapes/MultiShape.hpp>
+#include <PlayRho/Common/VertexSet.hpp>
 #include <array>
 
 using namespace playrho;
@@ -77,4 +78,38 @@ TEST(MultiShape, Accept)
     ASSERT_FALSE(v.visited);
     foo.Accept(v);
     EXPECT_TRUE(v.visited);
+}
+
+TEST(MultiShape, AddConvexHullWithOnePointSameAsDisk)
+{
+    const auto defaultMassData = MassData{};
+    const auto center = Length2D(Real(1) * Meter, Real(-4) * Meter);
+
+    auto pointSet = VertexSet{};
+    ASSERT_EQ(pointSet.size(), std::size_t(0));
+    pointSet.add(center);
+    ASSERT_EQ(pointSet.size(), std::size_t(1));
+
+    auto conf = MultiShape::Conf{};
+    conf.density = Real(2.3f) * KilogramPerSquareMeter;
+    conf.vertexRadius = Real(0.7f) * Meter;
+
+    auto foo = MultiShape{conf};
+    ASSERT_EQ(foo.GetChildCount(), ChildCounter{0});
+    ASSERT_EQ(foo.GetMassData(), defaultMassData);
+    ASSERT_EQ(foo.GetVertexRadius(), conf.vertexRadius);
+    ASSERT_EQ(foo.GetDensity(), conf.density);
+
+    foo.AddConvexHull(pointSet);
+    EXPECT_EQ(foo.GetChildCount(), ChildCounter{1});
+
+    const auto child = foo.GetChild(0);
+    EXPECT_EQ(child.GetVertexCount(), DistanceProxy::size_type(1));
+    
+    const auto massData = foo.GetMassData();
+    EXPECT_NE(massData, defaultMassData);
+    EXPECT_EQ(massData.center, center);
+    
+    const auto diskMassData = playrho::GetMassData(conf.vertexRadius, conf.density, center);
+    EXPECT_EQ(massData, diskMassData);
 }

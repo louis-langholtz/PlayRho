@@ -20,6 +20,7 @@
 
 #include <PlayRho/Collision/Shapes/MultiShape.hpp>
 #include <PlayRho/Common/VertexSet.hpp>
+#include <algorithm>
 
 using namespace playrho;
 
@@ -28,18 +29,30 @@ using namespace playrho;
 /// @return Mass data for this shape.
 MassData MultiShape::GetMassData() const noexcept
 {
-    // TODO
-    return MassData{};
+    auto mass = Mass(Real(0) * Kilogram);
+    auto center = Length2D(Real(0) * Meter, Real(0) * Meter);
+    auto I = RotInertia(0);
+
+    std::for_each(std::begin(m_children), std::end(m_children), [&](const ConvexHull& ch) {
+        const auto md = ::GetMassData(GetVertexRadius(), GetDensity(),
+                                      Span<const Length2D>(ch.vertices.data(), ch.vertices.size()));
+        mass += md.mass;
+
+        center += md.center; // TODO: needs to be mass weighted
+        I += md.I;
+    });
+
+    return MassData{mass, center, I};
 }
 
-void MultiShape::AddConvexHull(const VertexSet& point_set) noexcept
+void MultiShape::AddConvexHull(const VertexSet& pointSet) noexcept
 {
 #ifndef NDEBUG
-    const auto point_set_size = point_set.size();
+    const auto point_set_size = pointSet.size();
     assert(point_set_size > 0 && point_set_size < std::numeric_limits<vertex_count_t>::max());
 #endif
     
-    auto vertices = GetConvexHullAsVector(point_set);
+    auto vertices = GetConvexHullAsVector(pointSet);
     assert(vertices.size() > 0 && vertices.size() < std::numeric_limits<vertex_count_t>::max());
     
     const auto count = static_cast<VertexCounter>(vertices.size());
@@ -52,12 +65,12 @@ void MultiShape::AddConvexHull(const VertexSet& point_set) noexcept
         {
             const auto nextIndex = GetModuloNext(i, count);
             const auto edge = vertices[nextIndex] - vertices[i];
-            normals.emplace_back(GetUnitVector(GetFwdPerpendicular(edge)));
+            normals.push_back(GetUnitVector(GetFwdPerpendicular(edge)));
         }
     }
     else if (count == 1)
     {
-        normals.emplace_back(UnitVec2{});
+        normals.push_back(UnitVec2{});
     }
     
     // TODO: Compute the polygon centroid.
