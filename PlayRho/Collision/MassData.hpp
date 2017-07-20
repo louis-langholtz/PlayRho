@@ -65,6 +65,16 @@ namespace playrho {
         NonNegative<RotInertia> I = RotInertia{0};
     };
     
+    constexpr bool operator== (MassData lhs, MassData rhs)
+    {
+        return lhs.center == rhs.center && lhs.mass == rhs.mass && lhs.I == rhs.I;
+    }
+    
+    constexpr bool operator!= (MassData lhs, MassData rhs)
+    {
+        return !(lhs == rhs);
+    }
+
     Area GetAreaOfCircle(Length radius);
 
     Area GetAreaOfPolygon(Span<const Length2D> vertices);
