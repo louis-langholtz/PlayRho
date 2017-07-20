@@ -128,7 +128,7 @@ namespace playrho {
         const auto& child = m_children.at(index);
         return DistanceProxy{
             GetVertexRadius(), static_cast<DistanceProxy::size_type>(child.vertices.size()),
-            &(child.vertices[0]), &(child.normals[0])
+            child.vertices.data(), child.normals.data()
         };
     }
     
