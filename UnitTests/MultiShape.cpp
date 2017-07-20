@@ -113,3 +113,92 @@ TEST(MultiShape, AddConvexHullWithOnePointSameAsDisk)
     const auto diskMassData = playrho::GetMassData(conf.vertexRadius, conf.density, center);
     EXPECT_EQ(massData, diskMassData);
 }
+
+TEST(MultiShape, AddConvexHullWithTwoPointsSameAsEdge)
+{
+    const auto defaultMassData = MassData{};
+    const auto p0 = Length2D(Real(1) * Meter, Real(-4) * Meter);
+    const auto p1 = Length2D(Real(1) * Meter, Real(+4) * Meter);
+    
+    auto pointSet = VertexSet{};
+    ASSERT_EQ(pointSet.size(), std::size_t(0));
+    pointSet.add(p0);
+    pointSet.add(p1);
+    ASSERT_EQ(pointSet.size(), std::size_t(2));
+    
+    auto conf = MultiShape::Conf{};
+    conf.density = Real(2.3f) * KilogramPerSquareMeter;
+    conf.vertexRadius = Real(0.7f) * Meter;
+    
+    auto foo = MultiShape{conf};
+    ASSERT_EQ(foo.GetChildCount(), ChildCounter{0});
+    ASSERT_EQ(foo.GetMassData(), defaultMassData);
+    ASSERT_EQ(foo.GetVertexRadius(), conf.vertexRadius);
+    ASSERT_EQ(foo.GetDensity(), conf.density);
+    
+    foo.AddConvexHull(pointSet);
+    EXPECT_EQ(foo.GetChildCount(), ChildCounter{1});
+    
+    const auto child = foo.GetChild(0);
+    EXPECT_EQ(child.GetVertexCount(), DistanceProxy::size_type(2));
+    
+    const auto massData = foo.GetMassData();
+    EXPECT_NE(massData, defaultMassData);
+    EXPECT_EQ(massData.center, (p0 + p1) / Real(2));
+    
+    const auto edgeMassData = playrho::GetMassData(conf.vertexRadius, conf.density, p0, p1);
+    EXPECT_EQ(massData, edgeMassData);
+}
+
+TEST(MultiShape, AddTwoConvexHullWithOnePoint)
+{
+    const auto defaultMassData = MassData{};
+    const auto p0 = Length2D(Real(1) * Meter, Real(-4) * Meter);
+    const auto p1 = Length2D(Real(1) * Meter, Real(+4) * Meter);
+
+    auto pointSet = VertexSet{};
+    ASSERT_EQ(pointSet.size(), std::size_t(0));
+
+    auto conf = MultiShape::Conf{};
+    conf.density = Real(2.3f) * KilogramPerSquareMeter;
+    conf.vertexRadius = Real(0.7f) * Meter;
+    
+    auto foo = MultiShape{conf};
+    ASSERT_EQ(foo.GetChildCount(), ChildCounter{0});
+    ASSERT_EQ(foo.GetMassData(), defaultMassData);
+    ASSERT_EQ(foo.GetVertexRadius(), conf.vertexRadius);
+    ASSERT_EQ(foo.GetDensity(), conf.density);
+    
+    pointSet.clear();
+    ASSERT_EQ(pointSet.size(), std::size_t(0));
+    pointSet.add(p0);
+    ASSERT_EQ(pointSet.size(), std::size_t(1));
+
+    foo.AddConvexHull(pointSet);
+    EXPECT_EQ(foo.GetChildCount(), ChildCounter{1});
+
+    const auto child0 = foo.GetChild(0);
+    EXPECT_EQ(child0.GetVertexCount(), DistanceProxy::size_type(1));
+    EXPECT_EQ(child0.GetVertex(0), p0);
+    
+    pointSet.clear();
+    ASSERT_EQ(pointSet.size(), std::size_t(0));
+    pointSet.add(p1);
+    ASSERT_EQ(pointSet.size(), std::size_t(1));
+    
+    foo.AddConvexHull(pointSet);
+    EXPECT_EQ(foo.GetChildCount(), ChildCounter{2});
+    
+    const auto child1 = foo.GetChild(1);
+    EXPECT_EQ(child1.GetVertexCount(), DistanceProxy::size_type(1));
+    EXPECT_EQ(child1.GetVertex(0), p1);
+
+    const auto massData = foo.GetMassData();
+    EXPECT_NE(massData, defaultMassData);
+    EXPECT_EQ(massData.center, (p0 + p1) / Real(2));
+    
+    const auto massDataP0 = playrho::GetMassData(conf.vertexRadius, conf.density, p0);
+    const auto massDataP1 = playrho::GetMassData(conf.vertexRadius, conf.density, p1);
+    EXPECT_EQ(massData.mass, Mass{massDataP0.mass} + Mass{massDataP1.mass});
+    EXPECT_EQ(massData.I, RotInertia{massDataP0.I} + RotInertia{massDataP1.I});
+}
