@@ -166,7 +166,7 @@ MassData playrho::GetMassData(const Length vertexRadius, const NonNegative<Densi
     }
     
     // Total mass
-    const auto mass = Mass{density * area};
+    const auto mass = Mass{Density{density} * area};
     
     // Center of mass
     assert((area > Area{0}) && !almost_zero(StripUnit(area)));
@@ -178,7 +178,7 @@ MassData playrho::GetMassData(const Length vertexRadius, const NonNegative<Densi
     const auto massCenterOffset = GetLengthSquared(massDataCenter);
     const auto centerOffset = GetLengthSquared(center);
     const auto intertialLever = massCenterOffset - centerOffset;
-    const auto massDataI = RotInertia{((density * I) + (mass * intertialLever)) / SquareRadian};
+    const auto massDataI = RotInertia{((Density{density} * I) + (mass * intertialLever)) / SquareRadian};
     
     return MassData{mass, massDataCenter, massDataI};
 }

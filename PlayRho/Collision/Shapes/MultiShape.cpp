@@ -30,18 +30,19 @@ using namespace playrho;
 MassData MultiShape::GetMassData() const noexcept
 {
     auto mass = Mass(Real(0) * Kilogram);
-    auto center = Length2D(Real(0) * Meter, Real(0) * Meter);
+    const auto origin = Length2D(Real(0) * Meter, Real(0) * Meter);
+    auto weightedCenter = origin * Kilogram;
     auto I = RotInertia(0);
 
     std::for_each(std::begin(m_children), std::end(m_children), [&](const ConvexHull& ch) {
         const auto md = ::GetMassData(GetVertexRadius(), GetDensity(),
                                       Span<const Length2D>(ch.vertices.data(), ch.vertices.size()));
-        mass += md.mass;
-
-        center += md.center; // TODO: needs to be mass weighted
-        I += md.I;
+        mass += Mass{md.mass};
+        weightedCenter += md.center * Mass{md.mass};
+        I += RotInertia{md.I};
     });
 
+    const auto center = (mass > Mass{0})? weightedCenter / mass: origin;
     return MassData{mass, center, I};
 }
 
@@ -72,8 +73,6 @@ void MultiShape::AddConvexHull(const VertexSet& pointSet) noexcept
     {
         normals.push_back(UnitVec2{});
     }
-    
-    // TODO: Compute the polygon centroid.
     
     m_children.push_back(ConvexHull{vertices, normals});
 }
