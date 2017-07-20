@@ -42,7 +42,7 @@ void MultiShape::AddConvexHull(const VertexSet& point_set) noexcept
     auto vertices = GetConvexHullAsVector(point_set);
     assert(vertices.size() > 0 && vertices.size() < std::numeric_limits<vertex_count_t>::max());
     
-    const auto count = static_cast<vertex_count_t>(vertices.size());
+    const auto count = static_cast<VertexCounter>(vertices.size());
     
     auto normals = std::vector<UnitVec2>();
     if (count > 1)

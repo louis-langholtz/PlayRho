@@ -158,6 +158,7 @@
 		47D61F761F1F1F2500E702BD /* DroidSansTtfData.h in Headers */ = {isa = PBXBuildFile; fileRef = 47D61F751F1F1F2500E702BD /* DroidSansTtfData.h */; };
 		47D61F781F1FE3B700E702BD /* EdgeShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47D61F771F1FE3B700E702BD /* EdgeShape.cpp */; };
 		47D61F7A1F20229A00E702BD /* ChainShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47D61F791F20229A00E702BD /* ChainShape.cpp */; };
+		47D61F7C1F21112000E702BD /* MultiShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47D61F7B1F21112000E702BD /* MultiShape.cpp */; };
 		47E841701DB3FDC400E5F311 /* WorldManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47E8416F1DB3FDC400E5F311 /* WorldManifold.cpp */; };
 		47E841721DB4018D00E5F311 /* VelocityConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47E841711DB4018D00E5F311 /* VelocityConstraint.cpp */; };
 		47F932A61D11C283006A193C /* AllocatedArray.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47F932A41D11C283006A193C /* AllocatedArray.hpp */; };
@@ -460,6 +461,7 @@
 		47D61F751F1F1F2500E702BD /* DroidSansTtfData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DroidSansTtfData.h; sourceTree = "<group>"; };
 		47D61F771F1FE3B700E702BD /* EdgeShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdgeShape.cpp; sourceTree = "<group>"; };
 		47D61F791F20229A00E702BD /* ChainShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChainShape.cpp; sourceTree = "<group>"; };
+		47D61F7B1F21112000E702BD /* MultiShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MultiShape.cpp; sourceTree = "<group>"; };
 		47E8416F1DB3FDC400E5F311 /* WorldManifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldManifold.cpp; sourceTree = "<group>"; };
 		47E841711DB4018D00E5F311 /* VelocityConstraint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VelocityConstraint.cpp; sourceTree = "<group>"; };
 		47F932A41D11C283006A193C /* AllocatedArray.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AllocatedArray.hpp; sourceTree = "<group>"; };
@@ -686,6 +688,7 @@
 				473971A71D9D9B4C00F7137F /* Math.cpp */,
 				470F9B531EF9666B007EF7B6 /* MotorJoint.cpp */,
 				47327E741E9F1E2A0048FCD8 /* MouseJoint.cpp */,
+				47D61F7B1F21112000E702BD /* MultiShape.cpp */,
 				474BC3FF1D41278800447DCD /* PolygonShape.cpp */,
 				47FFD0FC1DAC6235000D6D0E /* PositionConstraint.cpp */,
 				47AFC3041DAEBC120023E9D1 /* PositionSolverManifold.cpp */,
@@ -1294,6 +1297,7 @@
 				474BC4301D413DC200447DCD /* DistanceProxy.cpp in Sources */,
 				47C85D0A1EFA251B00F70C56 /* WheelJoint.cpp in Sources */,
 				475A945D1D959537000CA9A8 /* Joint.cpp in Sources */,
+				47D61F7C1F21112000E702BD /* MultiShape.cpp in Sources */,
 				474BC4311D413DC200447DCD /* Epsilon.cpp in Sources */,
 				470F9B521EF8E2C5007EF7B6 /* RayCastOutput.cpp in Sources */,
 				472724251E310C7600C64921 /* float.cpp in Sources */,
