@@ -83,7 +83,7 @@ public:
     void Accept(Visitor& visitor) const override;
 
     /// Get the vertex count.
-    ChildCounter GetVertexCount() const noexcept { return m_count; }
+    ChildCounter GetVertexCount() const noexcept;
 
     /// Get a vertex by index.
     Length2D GetVertex(ChildCounter index) const;
@@ -93,10 +93,12 @@ public:
 private:
     std::vector<Length2D> m_vertices;
     std::vector<UnitVec2> m_normals;
-
-    /// The vertex count.
-    ChildCounter m_count = 0;
 };
+
+inline ChildCounter ChainShape::GetVertexCount() const noexcept
+{
+    return static_cast<ChildCounter>(m_vertices.size());
+}
 
 inline void ChainShape::Accept(playrho::Shape::Visitor &visitor) const
 {
@@ -105,13 +107,13 @@ inline void ChainShape::Accept(playrho::Shape::Visitor &visitor) const
 
 inline Length2D ChainShape::GetVertex(ChildCounter index) const
 {
-    assert((0 <= index) && (index < m_count));
+    assert((0 <= index) && (index < GetVertexCount()));
     return m_vertices[index];
 }
 
 inline UnitVec2 ChainShape::GetNormal(ChildCounter index) const
 {
-    assert((0 <= index) && (index < m_count));
+    assert((0 <= index) && (index < GetVertexCount()));
     return m_normals[index];
 }
 

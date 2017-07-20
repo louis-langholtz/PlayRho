@@ -51,19 +51,21 @@ ChainShape::ChainShape(const Conf& conf):
     }
 
     const auto count = static_cast<ChildCounter>(conf.vertices.size());
-    m_count = count;
     m_vertices = conf.vertices;
     
-    auto vprev = m_vertices[0];
-    for (auto i = decltype(count){1}; i < count; ++i)
+    if (count > 1)
     {
-        // Get the normal and push it and its reverse.
-        // This "doubling up" of the normals, makes the GetChild() method work.
-        const auto v = m_vertices[i];
-        const auto normal = GetUnitVector(GetFwdPerpendicular(v - vprev));
-        m_normals.push_back(normal);
-        m_normals.push_back(-normal);
-        vprev = v;
+        auto vprev = m_vertices[0];
+        for (auto i = decltype(count){1}; i < count; ++i)
+        {
+            // Get the normal and push it and its reverse.
+            // This "doubling up" of the normals, makes the GetChild() method work.
+            const auto v = m_vertices[i];
+            const auto normal = GetUnitVector(GetFwdPerpendicular(v - vprev));
+            m_normals.push_back(normal);
+            m_normals.push_back(-normal);
+            vprev = v;
+        }
     }
 }
 
@@ -72,39 +74,60 @@ MassData ChainShape::GetMassData() const noexcept
     const auto density = GetDensity();
     if (density > Density(0))
     {
-        // XXX: This overcounts for the overlapping circle shape.
-        auto mass = Mass{0};
-        auto I = RotInertia{0};
-        auto center = Length2D(0, 0);
-        const auto vertexRadius = GetVertexRadius();
-        const auto childCount = GetChildCount();
-        auto vprev = GetVertex(0);
-        for (auto i = decltype(childCount){1}; i < childCount; ++i)
+        const auto vertexCount = GetVertexCount();
+        if (vertexCount > 1)
         {
-            const auto v = GetVertex(i);
-            const auto massData = ::GetMassData(vertexRadius, density, vprev, v);
-            mass += Mass{massData.mass};
-            center += Real{Mass{massData.mass} / Kilogram} * massData.center;
-            I += RotInertia{massData.I};
-            vprev = v;
+            // XXX: This overcounts for the overlapping circle shape.
+            auto mass = Mass{0};
+            auto I = RotInertia{0};
+            auto area = Area(0);
+            auto center = Length2D(0, 0);
+            const auto vertexRadius = GetVertexRadius();
+            auto vprev = GetVertex(0);
+            const auto circle_area = Square(vertexRadius) * Pi;
+            for (auto i = decltype(vertexCount){1}; i < vertexCount; ++i)
+            {
+                const auto v = GetVertex(i);
+                const auto massData = ::GetMassData(vertexRadius, density, vprev, v);
+                mass += Mass{massData.mass};
+                center += Real{Mass{massData.mass} / Kilogram} * massData.center;
+                I += RotInertia{massData.I};
+                
+                const auto d = v - vprev;
+                const auto b = GetLength(d);
+                const auto h = vertexRadius * Real{2};
+                area += b * h + circle_area;
+
+                vprev = v;
+            }
+            center /= StripUnit(area);
+            return MassData{mass, center, I};
         }
-        return MassData{mass, center, I};
+        if (vertexCount == 1)
+        {
+            return ::GetMassData(GetVertexRadius(), density, GetVertex(0));
+        }
     }
-    return MassData{NonNegative<Mass>{0}, Length2D(0, 0), NonNegative<RotInertia>{0}};
+    return MassData{};
 }
 
 ChildCounter ChainShape::GetChildCount() const noexcept
 {
     // edge count = vertex count - 1
     const auto count = GetVertexCount();
-    return (count > 1)? count - 1: 0;
+    return (count > 1)? count - 1: count;
 }
 
 DistanceProxy ChainShape::GetChild(ChildCounter index) const
 {
-    if (index >= GetVertexCount())
+    if (index >= GetChildCount())
     {
         throw InvalidArgument("index out of range");
     }
-    return DistanceProxy{GetVertexRadius(), 2, &m_vertices[index], &m_normals[index * 2]};
+    const auto vertexCount = GetVertexCount();
+    if (vertexCount > 1)
+    {
+        return DistanceProxy{GetVertexRadius(), 2, &m_vertices[index], &m_normals[index * 2]};
+    }
+    return DistanceProxy{GetVertexRadius(), 1, &m_vertices[0], nullptr};
 }

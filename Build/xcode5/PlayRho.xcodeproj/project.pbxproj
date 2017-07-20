@@ -157,6 +157,7 @@
 		47D61F741F1F148500E702BD /* SilkscreenTtfData.h in Headers */ = {isa = PBXBuildFile; fileRef = 47D61F731F1F148500E702BD /* SilkscreenTtfData.h */; };
 		47D61F761F1F1F2500E702BD /* DroidSansTtfData.h in Headers */ = {isa = PBXBuildFile; fileRef = 47D61F751F1F1F2500E702BD /* DroidSansTtfData.h */; };
 		47D61F781F1FE3B700E702BD /* EdgeShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47D61F771F1FE3B700E702BD /* EdgeShape.cpp */; };
+		47D61F7A1F20229A00E702BD /* ChainShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47D61F791F20229A00E702BD /* ChainShape.cpp */; };
 		47E841701DB3FDC400E5F311 /* WorldManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47E8416F1DB3FDC400E5F311 /* WorldManifold.cpp */; };
 		47E841721DB4018D00E5F311 /* VelocityConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47E841711DB4018D00E5F311 /* VelocityConstraint.cpp */; };
 		47F932A61D11C283006A193C /* AllocatedArray.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47F932A41D11C283006A193C /* AllocatedArray.hpp */; };
@@ -458,6 +459,7 @@
 		47D61F731F1F148500E702BD /* SilkscreenTtfData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SilkscreenTtfData.h; sourceTree = "<group>"; };
 		47D61F751F1F1F2500E702BD /* DroidSansTtfData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DroidSansTtfData.h; sourceTree = "<group>"; };
 		47D61F771F1FE3B700E702BD /* EdgeShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdgeShape.cpp; sourceTree = "<group>"; };
+		47D61F791F20229A00E702BD /* ChainShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChainShape.cpp; sourceTree = "<group>"; };
 		47E8416F1DB3FDC400E5F311 /* WorldManifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldManifold.cpp; sourceTree = "<group>"; };
 		47E841711DB4018D00E5F311 /* VelocityConstraint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VelocityConstraint.cpp; sourceTree = "<group>"; };
 		47F932A41D11C283006A193C /* AllocatedArray.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AllocatedArray.hpp; sourceTree = "<group>"; };
@@ -650,6 +652,7 @@
 				479039D01D5BB9ED001A2145 /* Body.cpp */,
 				47928F341E5FE19C00EE6E9E /* BodyConstraint.cpp */,
 				479B63C21ED9CAC300D49BC7 /* BoundedValue.cpp */,
+				47D61F791F20229A00E702BD /* ChainShape.cpp */,
 				474BC3F61D41278800447DCD /* CollideShapes.cpp */,
 				475A94601D9996B6000CA9A8 /* Contact.cpp */,
 				474BC3F71D41278800447DCD /* ContactFeature.cpp */,
@@ -1320,6 +1323,7 @@
 				4734B21C1DC1121900F15E29 /* ArrayList.cpp in Sources */,
 				474BAB2A1E5CBA010058E08A /* Velocity.cpp in Sources */,
 				474BC43A1D413DC200447DCD /* TimeOfImpact.cpp in Sources */,
+				47D61F7A1F20229A00E702BD /* ChainShape.cpp in Sources */,
 				474B67221E80466D00B6D126 /* functional.cpp in Sources */,
 				477D20061E32B6E80069D610 /* Fixed.cpp in Sources */,
 				472E301E1DBA98BC00DA821D /* VertexSet.cpp in Sources */,
