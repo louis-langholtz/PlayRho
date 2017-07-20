@@ -30,7 +30,7 @@ TEST(ChainShape, ByteSize)
     {
         case  4: EXPECT_EQ(sizeof(ChainShape), std::size_t(72)); break;
         case  8: EXPECT_EQ(sizeof(ChainShape), std::size_t(88)); break;
-        case 16: EXPECT_EQ(sizeof(ChainShape), std::size_t(102)); break;
+        case 16: EXPECT_EQ(sizeof(ChainShape), std::size_t(128)); break;
         default: FAIL(); break;
     }
 }
