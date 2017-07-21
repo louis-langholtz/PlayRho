@@ -418,11 +418,6 @@ void GearJoint::SetRatio(Real ratio)
     m_ratio = ratio;
 }
 
-Real GearJoint::GetRatio() const
-{
-    return m_ratio;
-}
-
 GearJointDef playrho::GetGearJointDef(const GearJoint& joint) noexcept
 {
     auto def = GearJointDef{};

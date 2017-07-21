@@ -77,7 +77,7 @@ public:
    
     /// Set/Get the gear ratio.
     void SetRatio(Real ratio);
-    Real GetRatio() const;
+    Real GetRatio() const noexcept;
 
 private:
 
@@ -122,6 +122,11 @@ private:
     Length m_JwD;
     Real m_mass; ///< Either linear mass or angular mass.
 };
+
+inline Real GearJoint::GetRatio() const noexcept
+{
+    return m_ratio;
+}
 
 GearJointDef GetGearJointDef(const GearJoint& joint) noexcept;
     

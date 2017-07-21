@@ -176,3 +176,23 @@ TEST(PrismaticJoint, GetJointTranslation)
     auto joint = PrismaticJoint{jd};
     EXPECT_EQ(GetJointTranslation(joint), Length(Real(2) * Meter));
 }
+
+TEST(PrismaticJoint, GetLinearVelocity)
+{
+    World world;
+    
+    const auto loc0 = Length2D{Real(+1) * Meter, Real(-3) * Meter};
+    const auto loc1 = Length2D{Real(+1) * Meter, Real(+3) * Meter};
+    
+    const auto b0 = world.CreateBody(BodyDef{}.UseLocation(loc0));
+    const auto b1 = world.CreateBody(BodyDef{}.UseLocation(loc1));
+    
+    auto jd = PrismaticJointDef{};
+    jd.bodyA = b0;
+    jd.bodyB = b1;
+    jd.localAnchorA = Length2D(Real(-1) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2D(Real(+1) * Meter, Real(5) * Meter);
+    
+    auto joint = PrismaticJoint{jd};
+    EXPECT_EQ(GetLinearVelocity(joint), LinearVelocity(0));
+}
