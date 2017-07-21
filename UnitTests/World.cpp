@@ -1651,7 +1651,7 @@ TEST(World, TilesComesToRest)
         const auto N = 200;
         const auto M = 10;
         Length2D position;
-        position.y = 0.0f * Meter;
+        position.y = Real(0.0f) * Meter;
         for (auto j = 0; j < M; ++j)
         {
             position.x = -N * a * Meter;
@@ -1671,10 +1671,10 @@ TEST(World, TilesComesToRest)
         const auto shape = std::make_shared<PolygonShape>(a * Meter, a * Meter);
         shape->SetDensity(Real{5} * KilogramPerSquareMeter);
         
-        Length2D x(-7.0f * Meter, 0.75f * Meter);
+        Length2D x(Real(-7.0f) * Meter, Real(0.75f) * Meter);
         Length2D y;
-        const auto deltaX = Length2D(0.5625f * Meter, 1.25f * Meter);
-        const auto deltaY = Length2D(1.125f * Meter, 0.0f * Meter);
+        const auto deltaX = Length2D(Real(0.5625f) * Meter, Real(1.25f) * Meter);
+        const auto deltaY = Length2D(Real(1.125f) * Meter, Real(0.0f) * Meter);
         
         for (auto i = 0; i < e_count; ++i)
         {
@@ -2596,7 +2596,7 @@ class VerticalStackTest: public ::testing::TestWithParam<Real>
 public:
     virtual void SetUp()
     {
-        const auto hw_ground = 40.0f * Meter;
+        const auto hw_ground = Real(40.0f) * Meter;
         const auto ground = world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Length2D{-hw_ground, 0}, Length2D{hw_ground, 0}));
         

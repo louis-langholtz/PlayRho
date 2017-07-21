@@ -1042,7 +1042,9 @@ TEST(CollideShapes, EdgeR180InsideSquare)
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
     switch (sizeof(Real))
     {
-        case 4: EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 0)); break;
+        case 4:
+            EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 0));
+            break;
         case 8:
 #if defined(__core2__)
          	EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 0));
@@ -1052,11 +1054,16 @@ TEST(CollideShapes, EdgeR180InsideSquare)
             EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 0));
 #endif
             break;
+        case 16:
+            EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 0));
+            break;
     }
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(1));
     switch (sizeof(Real))
     {
-        case 4: EXPECT_EQ(manifold.GetContactFeature(1), GetFaceVertexContactFeature(0, 1)); break;
+        case 4:
+            EXPECT_EQ(manifold.GetContactFeature(1), GetFaceVertexContactFeature(0, 1));
+            break;
         case 8:
 #if defined(__core2__)
             EXPECT_EQ(manifold.GetContactFeature(1), GetFaceVertexContactFeature(0, 1));
@@ -1065,6 +1072,9 @@ TEST(CollideShapes, EdgeR180InsideSquare)
 #else
             EXPECT_EQ(manifold.GetContactFeature(1), GetFaceVertexContactFeature(0, 1));
 #endif
+            break;
+        case 16:
+            EXPECT_EQ(manifold.GetContactFeature(1), GetFaceVertexContactFeature(0, 1));
             break;
     }
     
@@ -1089,7 +1099,9 @@ TEST(CollideShapes, EdgeTwiceR180Square)
     EXPECT_EQ(manifold.GetLocalPoint(), Length2D(0, 0));
     switch (sizeof(Real))
     {
-        case 4: EXPECT_EQ(GetVec2(manifold.GetLocalNormal()), Vec2(1, 0)); break;
+        case 4:
+            EXPECT_EQ(GetVec2(manifold.GetLocalNormal()), Vec2(1, 0));
+            break;
         case 8:
 #if defined(__core2__)
             EXPECT_EQ(GetVec2(manifold.GetLocalNormal()), Vec2(1, 0));
@@ -1098,6 +1110,9 @@ TEST(CollideShapes, EdgeTwiceR180Square)
 #else
             EXPECT_EQ(GetVec2(manifold.GetLocalNormal()), Vec2(1, 0));
 #endif
+            break;
+        case 16:
+            EXPECT_EQ(GetVec2(manifold.GetLocalNormal()), Vec2(1, 0));
             break;
     }
     EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
@@ -1116,6 +1131,9 @@ TEST(CollideShapes, EdgeTwiceR180Square)
             EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 0));
 #endif
             break;
+        case 16:
+            EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 0));
+            break;
     }
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(1));
     switch (sizeof(Real))
@@ -1131,6 +1149,9 @@ TEST(CollideShapes, EdgeTwiceR180Square)
 #else
             EXPECT_EQ(manifold.GetContactFeature(1), GetFaceVertexContactFeature(0, 1));
 #endif
+            break;
+        case 16:
+            EXPECT_EQ(manifold.GetContactFeature(1), GetFaceVertexContactFeature(0, 1));
             break;
     }
 }

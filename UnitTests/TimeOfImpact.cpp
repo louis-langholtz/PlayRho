@@ -429,8 +429,8 @@ TEST(TimeOfImpact, ForNonCollidingShapesFailsIn23)
         Position{Length2D{-Real(11) * Meter, Real(10) * Meter}, Real{2.95000005f} * Radian}
     };
     const auto sweepB = Sweep{
-        Position{Length2D{18.4742737f * Meter, 19.7474861f * Meter}, Real{513.36676f} * Radian},
-        Position{Length2D{19.5954781f * Meter, 18.9165268f * Meter}, Real{513.627808f} * Radian}
+        Position{Length2D{Real(18.4742737f) * Meter, Real(19.7474861f) * Meter}, Real{513.36676f} * Radian},
+        Position{Length2D{Real(19.5954781f) * Meter, Real(18.9165268f) * Meter}, Real{513.627808f} * Radian}
     };
     
     const auto conf = ToiConf{}
@@ -470,12 +470,12 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
     // separation has reached tolerance but t2 already equals t1.
 
     const auto sweepA = Sweep{
-        Position{Length2D{0.0f * Meter, -0.5f * Meter}, Angle{0}},
-        Position{Length2D{0.0f * Meter, -0.5f * Meter}, Angle{0}}
+        Position{Length2D{Real(0.0f) * Meter, Real(-0.5f) * Meter}, Angle{0}},
+        Position{Length2D{Real(0.0f) * Meter, Real(-0.5f) * Meter}, Angle{0}}
     };
     const auto sweepB = Sweep{
-        Position{Length2D{14.3689661f * Meter, 0.500306308f * Meter}, Real{0.0000139930862f} * Radian},
-        Position{Length2D{14.3689451f * Meter, 0.500254989f * Meter}, Real{0.000260060915f} * Radian}
+        Position{Length2D{Real(14.3689661f) * Meter, Real(0.500306308f) * Meter}, Real{0.0000139930862f} * Radian},
+        Position{Length2D{Real(14.3689451f) * Meter, Real(0.500254989f) * Meter}, Real{0.000260060915f} * Radian}
     };
 
     const Length2D vertices[] = {

@@ -91,7 +91,7 @@ TEST(Transformation, MulSameAsTransformTwice)
     const Transformation xfm{translation1, rotation1};
     const auto xfm2 = Mul(xfm, xfm);
 
-    const auto location = Length2D{-23.4f * Meter, 0.81f * Meter};
+    const auto location = Length2D{Real(-23.4f) * Meter, Real(0.81f) * Meter};
     const auto twice = Transform(Transform(location, xfm), xfm);
     const auto location2 = Transform(location, xfm2);
     EXPECT_NEAR(static_cast<double>(Real{GetX(twice) / Meter}),
