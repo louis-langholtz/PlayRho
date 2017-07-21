@@ -84,8 +84,6 @@ struct JointDef
         // Intentionally empty.
     }
 
-    constexpr JointDef(const JointDef& copy) = default;
-
     JointDef& UseBodyA(Body* body) { bodyA = body; return *this; }
     JointDef& UseBodyB(Body* body) { bodyB = body; return *this; }
 
