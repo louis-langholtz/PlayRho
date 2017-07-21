@@ -24,54 +24,55 @@
 
 namespace playrho {
 
-/// Revolute joint definition. This requires defining an
+/// @brief Revolute joint definition.
+/// @details This requires defining an
 /// anchor point where the bodies are joined. The definition
 /// uses local anchor points so that the initial configuration
 /// can violate the constraint slightly. You also need to
 /// specify the initial relative angle for joint limits. This
 /// helps when saving and loading a game.
-/// The local anchor points are measured from the body's origin
-/// rather than the center of mass because:
-/// 1. you might not know where the center of mass will be.
-/// 2. if you add/remove shapes from a body and recompute the mass,
-///    the joints will be broken.
+/// @note The local anchor points are measured from the body's origin
+///   rather than the center of mass because:
+///    1. you might not know where the center of mass will be;
+///    2. if you add/remove shapes from a body and recompute the mass,
+///       the joints will be broken.
 struct RevoluteJointDef : public JointDef
 {
     constexpr RevoluteJointDef() noexcept: JointDef{JointType::Revolute} {}
 
-    /// Initialize the bodies, anchors, and reference angle using a world
-    /// anchor point.
+    /// @brief Initialize the bodies, anchors, and reference angle using a world anchor point.
     RevoluteJointDef(Body* bodyA, Body* bodyB, const Length2D anchor, bool cc = false);
 
-    /// The local anchor point relative to bodyA's origin.
+    /// @brief Local anchor point relative to bodyA's origin.
     Length2D localAnchorA = Length2D(0, 0);
 
-    /// The local anchor point relative to bodyB's origin.
+    /// @brief Local anchor point relative to bodyB's origin.
     Length2D localAnchorB = Length2D(0, 0);
 
-    /// The bodyB angle minus bodyA angle in the reference state (radians).
+    /// @brief Reference angle.
+    /// @details This is the bodyB angle minus bodyA angle in the reference state (radians).
     Angle referenceAngle = Angle{0};
 
-    /// A flag to enable joint limits.
+    /// @brief Flag to enable joint limits.
     bool enableLimit = false;
 
-    /// The lower angle for the joint limit (radians).
+    /// @brief Lower angle for the joint limit.
     Angle lowerAngle = Angle{0};
 
-    /// The upper angle for the joint limit (radians).
+    /// @brief Upper angle for the joint limit.
     Angle upperAngle = Angle{0};
 
-    /// A flag to enable the joint motor.
+    /// @brief Flag to enable the joint motor.
     bool enableMotor = false;
 
-    /// The desired motor speed.
+    /// @brief Desired motor speed.
     AngularVelocity motorSpeed = AngularVelocity{0};
 
-    /// The maximum motor torque used to achieve the desired motor speed.
+    /// @brief Maximum motor torque used to achieve the desired motor speed.
     Torque maxMotorTorque = 0;
 };
 
-/// Revolute Joint.
+/// @brief Revolute Joint.
 ///
 /// @details A revolute joint constrains two bodies to share a common point while they
 /// are free to rotate about the point. The relative rotation about the shared
