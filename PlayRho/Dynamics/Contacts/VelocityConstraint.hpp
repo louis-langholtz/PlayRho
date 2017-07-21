@@ -62,9 +62,7 @@ namespace playrho {
         
         VelocityConstraint& operator= (const VelocityConstraint& copy) = default;
         
-        VelocityConstraint(index_type contactIndex,
-                           Real friction, Real restitution,
-                           LinearVelocity tangentSpeed,
+        VelocityConstraint(Real friction, Real restitution, LinearVelocity tangentSpeed,
                            const Manifold& manifold,
                            BodyConstraint& bA, Length rA,
                            BodyConstraint& bB, Length rB,
@@ -96,11 +94,6 @@ namespace playrho {
         /// @note This value is only valid if previously set.
         /// @return normal mass previously set or an invalid value.
         Mat22 GetNormalMass() const noexcept;
-        
-        /// Gets the contact index.
-        /// @note This value can only be set via the initializing constructor.
-        /// @return Index of the associated contact (the index of the contact that this constraint is for).
-        index_type GetContactIndex() const noexcept { return m_contactIndex; }
         
         /// Gets the combined friction of the associated contact.
         Real GetFriction() const noexcept { return m_friction; }
@@ -280,9 +273,6 @@ namespace playrho {
         Real m_restitution = GetInvalid<Real>(); ///< Restitution coefficient (4-bytes).
         
         LinearVelocity m_tangentSpeed = GetInvalid<decltype(m_tangentSpeed)>(); ///< Tangent speed (4-bytes).
-        
-        /// Index of the contact that this constraint is for (typically 8-bytes).
-        index_type m_contactIndex = GetInvalid<index_type>();
         
         size_type m_pointCount = 0; ///< Point count (at least 1-byte).
     };

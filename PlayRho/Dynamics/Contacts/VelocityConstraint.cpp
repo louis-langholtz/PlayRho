@@ -25,19 +25,16 @@
 
 using namespace playrho;
 
-VelocityConstraint::VelocityConstraint(index_type contactIndex,
-                                       Real friction, Real restitution,
+VelocityConstraint::VelocityConstraint(Real friction, Real restitution,
                                        LinearVelocity tangentSpeed,
                                        const Manifold& manifold,
                                        BodyConstraint& bA, Length radiusA,
                                        BodyConstraint& bB, Length radiusB,
                                        Conf conf):
-    m_contactIndex{contactIndex},
     m_friction{friction}, m_restitution{restitution}, m_tangentSpeed{tangentSpeed},
     m_bodyA{&bA}, m_bodyB{&bB},
     m_invMass{bA.GetInvMass() + bB.GetInvMass()}
 {
-    assert(IsValid(contactIndex));
     assert(IsValid(friction));
     assert(IsValid(restitution));
     assert(IsValid(tangentSpeed));

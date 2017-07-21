@@ -380,12 +380,7 @@ namespace {
         auto velConstraints = VelocityConstraints{};
         velConstraints.reserve(contacts.size());
         transform(cbegin(contacts), cend(contacts), back_inserter(velConstraints),
-                  [&](const ContactPtr& c) {
-            // Note: c *must* be passed by reference in order for following to work as intended!
-            const auto i = static_cast<size_t>(&c - contacts.data());
-            assert(i < contacts.size());
-            const auto contact = contacts[i];
-            
+                  [&](const ContactPtr& contact) {
             const auto& manifold = contact->GetManifold();
             const auto fixtureA = contact->GetFixtureA();
             const auto fixtureB = contact->GetFixtureB();
@@ -405,7 +400,7 @@ namespace {
             const auto radiusA = shapeA->GetVertexRadius();
             const auto radiusB = shapeB->GetVertexRadius();
             
-            return VelocityConstraint{i, friction, restitution, tangentSpeed, manifold,
+            return VelocityConstraint{friction, restitution, tangentSpeed, manifold,
                 *bodyConstraintA, radiusA, *bodyConstraintB, radiusB, conf};
         });
         return velConstraints;
@@ -1383,7 +1378,8 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
     
     // Update normal and tangent impulses of contacts' manifold points
     for_each(cbegin(velConstraints), cend(velConstraints), [&](const VelocityConstraint& vc) {
-        auto& manifold = ContactAtty::GetMutableManifold(*island.m_contacts[vc.GetContactIndex()]);
+        const auto i = static_cast<VelocityConstraints::size_type>(&vc - velConstraints.data());
+        auto& manifold = ContactAtty::GetMutableManifold(*island.m_contacts[i]);
         AssignImpulses(manifold, vc);
     });
     
