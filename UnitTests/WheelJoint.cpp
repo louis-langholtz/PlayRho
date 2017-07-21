@@ -91,6 +91,66 @@ TEST(WheelJoint, Construction)
     EXPECT_EQ(joint.GetSpringDampingRatio(), def.dampingRatio);
 }
 
+TEST(WheelJoint, EnableMotor)
+{
+    World world;
+    const auto b0 = world.CreateBody();
+    const auto b1 = world.CreateBody();
+    
+    auto jd = WheelJointDef{};
+    jd.bodyA = b0;
+    jd.bodyB = b1;
+    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    
+    auto joint = WheelJoint{jd};
+    EXPECT_FALSE(joint.IsMotorEnabled());
+    joint.EnableMotor(false);
+    EXPECT_FALSE(joint.IsMotorEnabled());
+    joint.EnableMotor(true);
+    EXPECT_TRUE(joint.IsMotorEnabled());
+}
+
+TEST(WheelJoint, MotorSpeed)
+{
+    World world;
+    const auto b0 = world.CreateBody();
+    const auto b1 = world.CreateBody();
+    
+    auto jd = WheelJointDef{};
+    jd.bodyA = b0;
+    jd.bodyB = b1;
+    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    
+    const auto newValue = Real(5) * RadianPerSecond;
+    auto joint = WheelJoint{jd};
+    ASSERT_NE(joint.GetMotorSpeed(), newValue);
+    EXPECT_EQ(joint.GetMotorSpeed(), jd.motorSpeed);
+    joint.SetMotorSpeed(newValue);
+    EXPECT_EQ(joint.GetMotorSpeed(), newValue);
+}
+
+TEST(WheelJoint, MaxMotorTorque)
+{
+    World world;
+    const auto b0 = world.CreateBody();
+    const auto b1 = world.CreateBody();
+    
+    auto jd = WheelJointDef{};
+    jd.bodyA = b0;
+    jd.bodyB = b1;
+    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    
+    const auto newValue = Real(5) * NewtonMeter;
+    auto joint = WheelJoint{jd};
+    ASSERT_NE(joint.GetMaxMotorTorque(), newValue);
+    EXPECT_EQ(joint.GetMaxMotorTorque(), jd.maxMotorTorque);
+    joint.SetMaxMotorTorque(newValue);
+    EXPECT_EQ(joint.GetMaxMotorTorque(), newValue);
+}
+
 TEST(WheelJoint, GetWheelJointDef)
 {
     WheelJointDef def;

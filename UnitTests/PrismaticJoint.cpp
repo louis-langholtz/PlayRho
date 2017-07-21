@@ -18,6 +18,8 @@
 
 #include "gtest/gtest.h"
 #include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
+#include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/Body.hpp>
 
 using namespace playrho;
 
@@ -30,4 +32,66 @@ TEST(PrismaticJoint, ByteSize)
         case 16: EXPECT_EQ(sizeof(PrismaticJoint), std::size_t(624)); break;
         default: FAIL(); break;
     }
+}
+
+TEST(PrismaticJoint, EnableMotor)
+{
+    World world;
+    const auto b0 = world.CreateBody();
+    const auto b1 = world.CreateBody();
+    
+    auto jd = PrismaticJointDef{};
+    jd.bodyA = b0;
+    jd.bodyB = b1;
+    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    
+    auto joint = PrismaticJoint{jd};
+    EXPECT_FALSE(joint.IsMotorEnabled());
+    joint.EnableMotor(false);
+    EXPECT_FALSE(joint.IsMotorEnabled());
+    joint.EnableMotor(true);
+    EXPECT_TRUE(joint.IsMotorEnabled());
+}
+
+TEST(PrismaticJoint, MotorSpeed)
+{
+    World world;
+    const auto b0 = world.CreateBody();
+    const auto b1 = world.CreateBody();
+    
+    auto jd = PrismaticJointDef{};
+    jd.bodyA = b0;
+    jd.bodyB = b1;
+    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    
+    const auto newValue = Real(5) * RadianPerSecond;
+    auto joint = PrismaticJoint{jd};
+    ASSERT_NE(joint.GetMotorSpeed(), newValue);
+    EXPECT_EQ(joint.GetMotorSpeed(), jd.motorSpeed);
+    joint.SetMotorSpeed(newValue);
+    EXPECT_EQ(joint.GetMotorSpeed(), newValue);
+}
+
+TEST(PrismaticJoint, SetLimits)
+{
+    World world;
+    const auto b0 = world.CreateBody();
+    const auto b1 = world.CreateBody();
+    
+    auto jd = PrismaticJointDef{};
+    jd.bodyA = b0;
+    jd.bodyB = b1;
+    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    
+    const auto upperValue = Real(+5) * Meter;
+    const auto lowerValue = Real(-8) * Meter;
+    auto joint = PrismaticJoint{jd};
+    ASSERT_NE(joint.GetUpperLimit(), upperValue);
+    ASSERT_NE(joint.GetLowerLimit(), lowerValue);
+    joint.SetLimits(lowerValue, upperValue);
+    EXPECT_EQ(joint.GetUpperLimit(), upperValue);
+    EXPECT_EQ(joint.GetLowerLimit(), lowerValue);
 }

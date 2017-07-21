@@ -42,10 +42,14 @@ TEST(RevoluteJoint, ByteSize)
 
 TEST(RevoluteJoint, Construction)
 {
+    World world;
+    const auto b0 = world.CreateBody();
+    const auto b1 = world.CreateBody();
+
     auto jd = RevoluteJointDef{};
 
-    jd.bodyA = reinterpret_cast<Body*>(0x04);
-    jd.bodyB = reinterpret_cast<Body*>(0x08);
+    jd.bodyA = b0;
+    jd.bodyB = b1;
     jd.collideConnected = true;
     jd.userData = reinterpret_cast<void*>(0x011);
 
@@ -76,6 +80,88 @@ TEST(RevoluteJoint, Construction)
     EXPECT_EQ(joint.IsMotorEnabled(), jd.enableMotor);
     EXPECT_EQ(joint.GetMaxMotorTorque(), jd.maxMotorTorque);
     EXPECT_EQ(joint.IsLimitEnabled(), jd.enableLimit);
+}
+
+TEST(RevoluteJoint, EnableMotor)
+{
+    World world;
+    const auto b0 = world.CreateBody();
+    const auto b1 = world.CreateBody();
+    
+    auto jd = RevoluteJointDef{};
+    jd.bodyA = b0;
+    jd.bodyB = b1;
+    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+
+    auto joint = RevoluteJoint{jd};
+    EXPECT_FALSE(joint.IsMotorEnabled());
+    joint.EnableMotor(false);
+    EXPECT_FALSE(joint.IsMotorEnabled());
+    joint.EnableMotor(true);
+    EXPECT_TRUE(joint.IsMotorEnabled());
+}
+
+TEST(RevoluteJoint, MotorSpeed)
+{
+    World world;
+    const auto b0 = world.CreateBody();
+    const auto b1 = world.CreateBody();
+    
+    auto jd = RevoluteJointDef{};
+    jd.bodyA = b0;
+    jd.bodyB = b1;
+    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    
+    const auto newValue = Real(5) * RadianPerSecond;
+    auto joint = RevoluteJoint{jd};
+    ASSERT_NE(joint.GetMotorSpeed(), newValue);
+    EXPECT_EQ(joint.GetMotorSpeed(), jd.motorSpeed);
+    joint.SetMotorSpeed(newValue);
+    EXPECT_EQ(joint.GetMotorSpeed(), newValue);
+}
+
+TEST(RevoluteJoint, SetLimits)
+{
+    World world;
+    const auto b0 = world.CreateBody();
+    const auto b1 = world.CreateBody();
+    
+    auto jd = RevoluteJointDef{};
+    jd.bodyA = b0;
+    jd.bodyB = b1;
+    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    
+    const auto upperValue = Real(+5) * Degree;
+    const auto lowerValue = Real(-8) * Degree;
+    auto joint = RevoluteJoint{jd};
+    ASSERT_NE(joint.GetUpperLimit(), upperValue);
+    ASSERT_NE(joint.GetLowerLimit(), lowerValue);
+    joint.SetLimits(lowerValue, upperValue);
+    EXPECT_EQ(joint.GetUpperLimit(), upperValue);
+    EXPECT_EQ(joint.GetLowerLimit(), lowerValue);
+}
+
+TEST(RevoluteJoint, MaxMotorTorque)
+{
+    World world;
+    const auto b0 = world.CreateBody();
+    const auto b1 = world.CreateBody();
+    
+    auto jd = RevoluteJointDef{};
+    jd.bodyA = b0;
+    jd.bodyB = b1;
+    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    
+    const auto newValue = Real(5) * NewtonMeter;
+    auto joint = RevoluteJoint{jd};
+    ASSERT_NE(joint.GetMaxMotorTorque(), newValue);
+    EXPECT_EQ(joint.GetMaxMotorTorque(), jd.maxMotorTorque);
+    joint.SetMaxMotorTorque(newValue);
+    EXPECT_EQ(joint.GetMaxMotorTorque(), newValue);
 }
 
 TEST(RevoluteJoint, MovesDynamicCircles)
