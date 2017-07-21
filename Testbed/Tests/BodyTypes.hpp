@@ -64,7 +64,7 @@ public:
             m_world->CreateJoint(rjd);
 
             PrismaticJointDef pjd(ground, m_platform, Vec2(0.0f, 5.0f) * Meter, UnitVec2::GetRight());
-            pjd.maxMotorTorque = Torque{Real{1000.0f} * NewtonMeter};
+            pjd.maxMotorForce = Real{1000.0f} * Newton;
             pjd.enableMotor = true;
             pjd.lowerTranslation = Real{-10.0f} * Meter;
             pjd.upperTranslation = Real{10.0f} * Meter;

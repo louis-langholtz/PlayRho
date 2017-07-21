@@ -523,7 +523,7 @@ Angle playrho::GetJointAngle(const RevoluteJoint& joint)
     return joint.GetBodyB()->GetAngle() - joint.GetBodyA()->GetAngle() - joint.GetReferenceAngle();
 }
 
-AngularVelocity playrho::GetJointSpeed(const RevoluteJoint& joint)
+AngularVelocity playrho::GetAngularVelocity(const RevoluteJoint& joint)
 {
     return joint.GetBodyB()->GetVelocity().angular - joint.GetBodyA()->GetVelocity().angular;
 }

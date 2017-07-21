@@ -208,7 +208,7 @@ inline AngularVelocity RevoluteJoint::GetMotorSpeed() const noexcept
 Angle GetJointAngle(const RevoluteJoint& joint);
     
 /// Gets the current joint angle speed.
-AngularVelocity GetJointSpeed(const RevoluteJoint& joint);
+AngularVelocity GetAngularVelocity(const RevoluteJoint& joint);
 
 RevoluteJointDef GetRevoluteJointDef(const RevoluteJoint& joint) noexcept;
 

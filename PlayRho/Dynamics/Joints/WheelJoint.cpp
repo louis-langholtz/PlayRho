@@ -327,20 +327,6 @@ Torque WheelJoint::GetReactionTorque(Frequency inv_dt) const
     return inv_dt * m_motorImpulse;
 }
 
-Length WheelJoint::GetJointTranslation() const
-{
-    const auto pA = GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
-    const auto pB = GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
-    const auto d = pB - pA;
-    const auto axis = GetWorldVector(*GetBodyA(), m_localXAxisA);
-    return Length{Dot(d, axis)};
-}
-
-AngularVelocity WheelJoint::GetJointSpeed() const
-{
-    return GetBodyB()->GetVelocity().angular - GetBodyA()->GetVelocity().angular;
-}
-
 void WheelJoint::EnableMotor(bool flag)
 {
     if (m_enableMotor != flag)
@@ -380,6 +366,20 @@ void WheelJoint::SetMaxMotorTorque(Torque torque)
 Torque WheelJoint::GetMotorTorque(Frequency inv_dt) const
 {
     return inv_dt * m_motorImpulse;
+}
+
+Length playrho::GetJointTranslation(const WheelJoint& joint) noexcept
+{
+    const auto pA = GetWorldPoint(*joint.GetBodyA(), joint.GetLocalAnchorA());
+    const auto pB = GetWorldPoint(*joint.GetBodyB(), joint.GetLocalAnchorB());
+    const auto d = pB - pA;
+    const auto axis = GetWorldVector(*joint.GetBodyA(), joint.GetLocalAxisA());
+    return Length{Dot(d, axis)};
+}
+
+AngularVelocity playrho::GetAngularVelocity(const WheelJoint& joint) noexcept
+{
+    return joint.GetBodyB()->GetVelocity().angular - joint.GetBodyA()->GetVelocity().angular;
 }
 
 WheelJointDef playrho::GetWheelJointDef(const WheelJoint& joint) noexcept

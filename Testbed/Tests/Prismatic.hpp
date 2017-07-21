@@ -53,7 +53,7 @@ public:
             //pjd.Initialize(ground, body, Vec2(-10.0f, 10.0f), Vec2(1.0f, 0.0f));
 
             pjd.motorSpeed = Real{10.0f} * RadianPerSecond;
-            pjd.maxMotorTorque = Real{10000.0f} * NewtonMeter;
+            pjd.maxMotorForce = Real{10000.0f} * Newton;
             pjd.enableMotor = true;
             pjd.lowerTranslation = Real{0.0f} * Meter;
             pjd.upperTranslation = Real{20.0f} * Meter;

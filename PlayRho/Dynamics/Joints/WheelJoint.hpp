@@ -87,12 +87,6 @@ public:
     /// The local joint axis relative to bodyA.
     UnitVec2 GetLocalAxisA() const { return m_localXAxisA; }
 
-    /// Get the current joint translation.
-    Length GetJointTranslation() const;
-
-    /// Get the current joint translation speed.
-    AngularVelocity GetJointSpeed() const;
-
     /// Is the joint motor enabled?
     bool IsMotorEnabled() const noexcept { return m_enableMotor; }
 
@@ -192,6 +186,14 @@ inline Real WheelJoint::GetSpringDampingRatio() const
 {
     return m_dampingRatio;
 }
+
+// Free functions on WheelJoint instances.
+
+/// Get the current joint translation.
+Length GetJointTranslation(const WheelJoint& joint) noexcept;
+
+/// Get the current joint translation speed.
+AngularVelocity GetAngularVelocity(const WheelJoint& joint) noexcept;
 
 WheelJointDef GetWheelJointDef(const WheelJoint& joint) noexcept;
 

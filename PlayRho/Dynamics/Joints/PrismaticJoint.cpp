@@ -111,7 +111,7 @@ PrismaticJoint::PrismaticJoint(const PrismaticJointDef& def):
     m_referenceAngle{def.referenceAngle},
     m_lowerTranslation{def.lowerTranslation},
     m_upperTranslation{def.upperTranslation},
-    m_maxMotorForce{Force{StripUnit(def.maxMotorTorque) * Newton}}, // TODO check this!!
+    m_maxMotorForce{def.maxMotorForce},
     m_motorSpeed{def.motorSpeed},
     m_enableLimit{def.enableLimit},
     m_enableMotor{def.enableMotor}
@@ -550,39 +550,6 @@ Torque PrismaticJoint::GetReactionTorque(Frequency inv_dt) const
     return inv_dt * m_impulse.y * SquareMeter * Kilogram / (Second * Radian);
 }
 
-Length PrismaticJoint::GetJointTranslation() const
-{
-    const auto pA = GetWorldPoint(*GetBodyA(), m_localAnchorA);
-    const auto pB = GetWorldPoint(*GetBodyB(), m_localAnchorB);
-    return Dot(pB - pA, GetWorldVector(*GetBodyA(), m_localXAxisA));
-}
-
-LinearVelocity PrismaticJoint::GetJointSpeed() const
-{
-    const auto bA = GetBodyA();
-    const auto bB = GetBodyB();
-
-    const auto rA = Rotate(m_localAnchorA - bA->GetLocalCenter(), bA->GetTransformation().q);
-    const auto rB = Rotate(m_localAnchorB - bB->GetLocalCenter(), bB->GetTransformation().q);
-    const auto p1 = bA->GetWorldCenter() + rA;
-    const auto p2 = bB->GetWorldCenter() + rB;
-    const auto d = p2 - p1;
-    const auto axis = Rotate(m_localXAxisA, bA->GetTransformation().q);
-
-    const auto vA = bA->GetVelocity().linear;
-    const auto vB = bB->GetVelocity().linear;
-    const auto wA = bA->GetVelocity().angular;
-    const auto wB = bB->GetVelocity().angular;
-
-    const auto vel = vB + (GetRevPerpendicular(rB) * (wB / Radian)) - (vA + (GetRevPerpendicular(rA) * (wA / Radian)));
-    return Dot(d, (GetRevPerpendicular(axis) * (wA / Radian))) + Dot(axis, vel);
-}
-
-bool PrismaticJoint::IsLimitEnabled() const noexcept
-{
-    return m_enableLimit;
-}
-
 void PrismaticJoint::EnableLimit(bool flag) noexcept
 {
     if (m_enableLimit != flag)
@@ -595,17 +562,7 @@ void PrismaticJoint::EnableLimit(bool flag) noexcept
     }
 }
 
-Length PrismaticJoint::GetLowerLimit() const noexcept
-{
-    return m_lowerTranslation;
-}
-
-Length PrismaticJoint::GetUpperLimit() const noexcept
-{
-    return m_upperTranslation;
-}
-
-void PrismaticJoint::SetLimits(Length lower, Length upper)
+void PrismaticJoint::SetLimits(Length lower, Length upper) noexcept
 {
     assert(lower <= upper);
     if ((lower != m_lowerTranslation) || (upper != m_upperTranslation))
@@ -617,11 +574,6 @@ void PrismaticJoint::SetLimits(Length lower, Length upper)
         GetBodyA()->SetAwake();
         GetBodyB()->SetAwake();
     }
-}
-
-bool PrismaticJoint::IsMotorEnabled() const noexcept
-{
-    return m_enableMotor;
 }
 
 void PrismaticJoint::EnableMotor(bool flag) noexcept
@@ -665,6 +617,35 @@ Force PrismaticJoint::GetMotorForce(Frequency inv_dt) const noexcept
     return inv_dt * m_motorImpulse;
 }
 
+Length playrho::GetJointTranslation(const PrismaticJoint& joint) noexcept
+{
+    const auto pA = GetWorldPoint(*joint.GetBodyA(), joint.GetLocalAnchorA());
+    const auto pB = GetWorldPoint(*joint.GetBodyB(), joint.GetLocalAnchorB());
+    return Dot(pB - pA, GetWorldVector(*joint.GetBodyA(), joint.GetLocalAxisA()));
+}
+
+LinearVelocity playrho::GetLinearVelocity(const PrismaticJoint& joint) noexcept
+{
+    const auto bA = joint.GetBodyA();
+    const auto bB = joint.GetBodyB();
+    
+    const auto rA = Rotate(joint.GetLocalAnchorA() - bA->GetLocalCenter(), bA->GetTransformation().q);
+    const auto rB = Rotate(joint.GetLocalAnchorB() - bB->GetLocalCenter(), bB->GetTransformation().q);
+    const auto p1 = bA->GetWorldCenter() + rA;
+    const auto p2 = bB->GetWorldCenter() + rB;
+    const auto d = p2 - p1;
+    const auto axis = Rotate(joint.GetLocalAxisA(), bA->GetTransformation().q);
+    
+    const auto vA = bA->GetVelocity().linear;
+    const auto vB = bB->GetVelocity().linear;
+    const auto wA = bA->GetVelocity().angular;
+    const auto wB = bB->GetVelocity().angular;
+    
+    const auto vel = (vB + (GetRevPerpendicular(rB) * (wB / Radian))) -
+    (vA + (GetRevPerpendicular(rA) * (wA / Radian)));
+    return Dot(d, (GetRevPerpendicular(axis) * (wA / Radian))) + Dot(axis, vel);
+}
+
 PrismaticJointDef playrho::GetPrismaticJointDef(const PrismaticJoint& joint) noexcept
 {
     auto def = PrismaticJointDef{};
@@ -680,7 +661,7 @@ PrismaticJointDef playrho::GetPrismaticJointDef(const PrismaticJoint& joint) noe
     def.upperTranslation = joint.GetUpperLimit();
     def.enableMotor = joint.IsMotorEnabled();
     def.motorSpeed = joint.GetMotorSpeed();
-    def.maxMotorTorque = Torque{StripUnit(joint.GetMaxMotorForce()) * NewtonMeter};
+    def.maxMotorForce = joint.GetMaxMotorForce();
     
     return def;
 }

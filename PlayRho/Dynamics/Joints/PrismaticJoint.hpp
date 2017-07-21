@@ -64,8 +64,8 @@ struct PrismaticJointDef : public JointDef
     /// Enable/disable the joint motor.
     bool enableMotor = false;
 
-    /// The maximum motor torque.
-    Torque maxMotorTorque = Torque{0};
+    /// The maximum motor force.
+    Force maxMotorForce = Force{0};
 
     /// The desired angular motor speed.
     AngularVelocity motorSpeed = AngularVelocity{0};
@@ -102,12 +102,6 @@ public:
     /// Get the reference angle.
     Angle GetReferenceAngle() const { return m_referenceAngle; }
 
-    /// Get the current joint translation.
-    Length GetJointTranslation() const;
-
-    /// Get the current joint translation speed.
-    LinearVelocity GetJointSpeed() const;
-
     /// Is the joint limit enabled?
     bool IsLimitEnabled() const noexcept;
 
@@ -121,7 +115,7 @@ public:
     Length GetUpperLimit() const noexcept;
 
     /// Set the joint limits.
-    void SetLimits(Length lower, Length upper);
+    void SetLimits(Length lower, Length upper) noexcept;
 
     /// Is the joint motor enabled?
     bool IsMotorEnabled() const noexcept;
@@ -143,9 +137,11 @@ public:
     Force GetMotorForce(Frequency inv_dt) const noexcept;
 
 private:
-    void InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
+    void InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
+                                 const ConstraintSolverConf& conf) override;
     bool SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step) override;
-    bool SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const override;
+    bool SolvePositionConstraints(BodyConstraintsMap& bodies,
+                                  const ConstraintSolverConf& conf) const override;
 
     // Solver shared
     Length2D m_localAnchorA;
@@ -174,10 +170,36 @@ private:
     Mass m_motorMass = Mass{0};
 };
 
+inline Length PrismaticJoint::GetLowerLimit() const noexcept
+{
+    return m_lowerTranslation;
+}
+
+inline Length PrismaticJoint::GetUpperLimit() const noexcept
+{
+    return m_upperTranslation;
+}
+
+inline bool PrismaticJoint::IsLimitEnabled() const noexcept
+{
+    return m_enableLimit;
+}
+
+inline bool PrismaticJoint::IsMotorEnabled() const noexcept
+{
+    return m_enableMotor;
+}
+
 inline AngularVelocity PrismaticJoint::GetMotorSpeed() const noexcept
 {
     return m_motorSpeed;
 }
+
+/// Get the current joint translation.
+Length GetJointTranslation(const PrismaticJoint& joint) noexcept;
+
+/// Get the current joint translation speed.
+LinearVelocity GetLinearVelocity(const PrismaticJoint& joint) noexcept;
 
 PrismaticJointDef GetPrismaticJointDef(const PrismaticJoint& joint) noexcept;
 

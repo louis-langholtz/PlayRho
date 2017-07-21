@@ -136,7 +136,7 @@ public:
 
         {
             const auto ratio = m_joint5->GetRatio();
-            const auto value = ratio * m_joint3->GetJointTranslation();
+            const auto value = ratio * GetJointTranslation(*m_joint3);
             drawer.DrawString(5, m_textLine, "theta2 + %4.2f * delta = %4.2f",
                               static_cast<double>(ratio),
                               static_cast<double>(Real{value / Meter}));

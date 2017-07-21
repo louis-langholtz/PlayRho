@@ -151,6 +151,49 @@ TEST(WheelJoint, MaxMotorTorque)
     EXPECT_EQ(joint.GetMaxMotorTorque(), newValue);
 }
 
+TEST(WheelJoint, GetAnchorAandB)
+{
+    World world;
+    
+    const auto loc0 = Length2D{Real(+1) * Meter, Real(-3) * Meter};
+    const auto loc1 = Length2D{Real(-2) * Meter, Real(+1.2f) * Meter};
+    
+    const auto b0 = world.CreateBody(BodyDef{}.UseLocation(loc0));
+    const auto b1 = world.CreateBody(BodyDef{}.UseLocation(loc1));
+    
+    auto jd = WheelJointDef{};
+    jd.bodyA = b0;
+    jd.bodyB = b1;
+    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    
+    auto joint = WheelJoint{jd};
+    ASSERT_EQ(joint.GetLocalAnchorA(), jd.localAnchorA);
+    ASSERT_EQ(joint.GetLocalAnchorB(), jd.localAnchorB);
+    EXPECT_EQ(joint.GetAnchorA(), loc0 + jd.localAnchorA);
+    EXPECT_EQ(joint.GetAnchorB(), loc1 + jd.localAnchorB);
+}
+
+TEST(WheelJoint, GetJointTranslation)
+{
+    World world;
+    
+    const auto loc0 = Length2D{Real(+1) * Meter, Real(-3) * Meter};
+    const auto loc1 = Length2D{Real(+1) * Meter, Real(+3) * Meter};
+    
+    const auto b0 = world.CreateBody(BodyDef{}.UseLocation(loc0));
+    const auto b1 = world.CreateBody(BodyDef{}.UseLocation(loc1));
+    
+    auto jd = WheelJointDef{};
+    jd.bodyA = b0;
+    jd.bodyB = b1;
+    jd.localAnchorA = Length2D(Real(-1) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2D(Real(+1) * Meter, Real(5) * Meter);
+    
+    auto joint = WheelJoint{jd};
+    EXPECT_EQ(GetJointTranslation(joint), Length(Real(2) * Meter));
+}
+
 TEST(WheelJoint, GetWheelJointDef)
 {
     WheelJointDef def;

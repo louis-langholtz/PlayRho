@@ -122,6 +122,26 @@ TEST(RevoluteJoint, MotorSpeed)
     EXPECT_EQ(joint.GetMotorSpeed(), newValue);
 }
 
+TEST(RevoluteJoint, EnableLimit)
+{
+    World world;
+    const auto b0 = world.CreateBody();
+    const auto b1 = world.CreateBody();
+    
+    auto jd = RevoluteJointDef{};
+    jd.bodyA = b0;
+    jd.bodyB = b1;
+    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    
+    auto joint = RevoluteJoint{jd};
+    EXPECT_FALSE(joint.IsLimitEnabled());
+    joint.EnableLimit(false);
+    EXPECT_FALSE(joint.IsLimitEnabled());
+    joint.EnableLimit(true);
+    EXPECT_TRUE(joint.IsLimitEnabled());
+}
+
 TEST(RevoluteJoint, SetLimits)
 {
     World world;
