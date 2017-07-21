@@ -27,30 +27,25 @@ using namespace playrho;
 
 VelocityConstraint::VelocityConstraint(Real friction, Real restitution,
                                        LinearVelocity tangentSpeed,
-                                       const Manifold& manifold,
-                                       BodyConstraint& bA, Length radiusA,
-                                       BodyConstraint& bB, Length radiusB,
+                                       const WorldManifold& worldManifold,
+                                       BodyConstraint& bA,
+                                       BodyConstraint& bB,
                                        Conf conf):
     m_friction{friction}, m_restitution{restitution}, m_tangentSpeed{tangentSpeed},
     m_bodyA{&bA}, m_bodyB{&bB},
-    m_invMass{bA.GetInvMass() + bB.GetInvMass()}
+    m_invMass{bA.GetInvMass() + bB.GetInvMass()},
+    m_normal{worldManifold.GetNormal()}
 {
     assert(IsValid(friction));
     assert(IsValid(restitution));
     assert(IsValid(tangentSpeed));
-    
-    const auto xfA = GetTransformation(bA.GetPosition(), bA.GetLocalCenter());
-    const auto xfB = GetTransformation(bB.GetPosition(), bB.GetLocalCenter());
-    const auto worldManifold = GetWorldManifold(manifold, xfA, radiusA, xfB, radiusB);
-    m_normal = worldManifold.GetNormal();
     assert(IsValid(m_normal));
-
-    const auto pointCount = manifold.GetPointCount();
+    
+    const auto pointCount = worldManifold.GetPointCount();
     assert(pointCount > 0);
     for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
     {
-        const auto ci = manifold.GetContactImpulses(j);
-        
+        const auto ci = worldManifold.GetImpulses(j);
         const auto worldPoint = worldManifold.GetPoint(j);
         const auto relA = worldPoint - bA.GetPosition().linear;
         const auto relB = worldPoint - bB.GetPosition().linear;

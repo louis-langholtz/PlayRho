@@ -26,7 +26,7 @@
 
 namespace playrho {
     
-    class Manifold;
+    class WorldManifold;
     
     /// Contact velocity constraint.
     ///
@@ -63,9 +63,9 @@ namespace playrho {
         VelocityConstraint& operator= (const VelocityConstraint& copy) = default;
         
         VelocityConstraint(Real friction, Real restitution, LinearVelocity tangentSpeed,
-                           const Manifold& manifold,
-                           BodyConstraint& bA, Length rA,
-                           BodyConstraint& bB, Length rB,
+                           const WorldManifold& worldManifold,
+                           BodyConstraint& bA,
+                           BodyConstraint& bB,
                            Conf conf);
         
         /// Gets the normal of the contact in world coordinates.

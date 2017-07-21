@@ -39,8 +39,9 @@ inline WorldManifold GetForCircles(const Manifold& manifold,
     const auto cA = pointA + (radiusA * normal);
     const auto cB = pointB - (radiusB * normal);
     const auto p0 = (cA + cB) / Real{2};
+    const auto c0 = manifold.GetContactImpulses(0);
     const auto s0 = Dot(cB - cA, normal);
-    return WorldManifold{normal, WorldManifold::PointSeparation{p0, s0}};
+    return WorldManifold{normal, WorldManifold::PointData{p0, c0, s0}};
 }
 
 inline WorldManifold GetForFaceA(const Manifold& manifold,
@@ -50,10 +51,11 @@ inline WorldManifold GetForFaceA(const Manifold& manifold,
     const auto normal = Rotate(manifold.GetLocalNormal(), xfA.q);
     const auto planePoint = Transform(manifold.GetLocalPoint(), xfA);
     const auto pointFn = [&](Manifold::size_type index) {
+        const auto impulses = manifold.GetContactImpulses(index);
         const auto clipPoint = Transform(manifold.GetPoint(index).localPoint, xfB);
         const auto cA = clipPoint + (radiusA - Dot(clipPoint - planePoint, normal)) * normal;
         const auto cB = clipPoint - (radiusB * normal);
-        return WorldManifold::PointSeparation{(cA + cB) / Real{2}, Dot(cB - cA, normal)};
+        return WorldManifold::PointData{(cA + cB) / Real{2}, impulses, Dot(cB - cA, normal)};
     };
     
     assert(manifold.GetPointCount() <= 2);
@@ -76,10 +78,11 @@ inline WorldManifold GetForFaceB(const Manifold& manifold,
     const auto normal = Rotate(manifold.GetLocalNormal(), xfB.q);
     const auto planePoint = Transform(manifold.GetLocalPoint(), xfB);
     const auto pointFn = [&](Manifold::size_type index) {
+        const auto impulses = manifold.GetContactImpulses(index);
         const auto clipPoint = Transform(manifold.GetPoint(index).localPoint, xfA);
         const auto cB = clipPoint + (radiusB - Dot(clipPoint - planePoint, normal)) * normal;
         const auto cA = clipPoint - (radiusA * normal);
-        return WorldManifold::PointSeparation{(cA + cB) / Real{2}, Dot(cA - cB, normal)};
+        return WorldManifold::PointData{(cA + cB) / Real{2}, impulses, Dot(cA - cB, normal)};
     };
     
     assert(manifold.GetPointCount() <= 2);

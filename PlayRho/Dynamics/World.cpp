@@ -399,9 +399,13 @@ namespace {
             
             const auto radiusA = shapeA->GetVertexRadius();
             const auto radiusB = shapeB->GetVertexRadius();
-            
-            return VelocityConstraint{friction, restitution, tangentSpeed, manifold,
-                *bodyConstraintA, radiusA, *bodyConstraintB, radiusB, conf};
+    
+            const auto xfA = GetTransformation(bodyConstraintA->GetPosition(), bodyConstraintA->GetLocalCenter());
+            const auto xfB = GetTransformation(bodyConstraintB->GetPosition(), bodyConstraintB->GetLocalCenter());
+            const auto worldManifold = GetWorldManifold(manifold, xfA, radiusA, xfB, radiusB);
+
+            return VelocityConstraint{friction, restitution, tangentSpeed, worldManifold,
+                *bodyConstraintA, *bodyConstraintB, conf};
         });
         return velConstraints;
     }
