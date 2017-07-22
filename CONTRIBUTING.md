@@ -85,18 +85,11 @@ project. Whether you are an individual writing original source code that you're
 sure you own the intellectual property, or you work for a company that wants to
 allow you to contribute your work, you'll need to sign the [CLA][].
 
-You generally only need to submit a CLA once, so if you've already submitted
-one (even if it was for a different project), you probably don't need to do it
-again.
+You generally only need to agree to the CLA once (unless it changes), so if
+you've already submitted one (even if it was for a different project), you
+probably don't need to do it again.
 
 [CLA]: https://cla-assistant.io/louis-langholtz/PlayRho
-
-Once your CLA is submitted, make a commit adding yourself to the
-[AUTHORS][] and [CONTRIBUTORS][] files. This commit can be part
-of your first [pull request][].
-
-[AUTHORS]: AUTHORS
-[CONTRIBUTORS]: CONTRIBUTORS
 
 ## Style Guides
 
