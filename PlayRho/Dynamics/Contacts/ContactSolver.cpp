@@ -233,17 +233,12 @@ inline Momentum BlockSolveNormalCase4(VelocityConstraint& vc, const Vec2 b_prime
     const auto vn2 = b_prime.y;
     if ((vn1 >= 0) && (vn2 >= 0))
     {
-        const auto newImpulses = Momentum2D{0, 0};
-        return BlockSolveUpdate(vc, newImpulses);
+        return BlockSolveUpdate(vc, Momentum2D{0, 0});
     }
     return GetInvalid<Momentum>();
 }
 
-}; // anonymous namespace
-
-namespace GaussSeidel {
-
-Momentum BlockSolveNormalConstraint(VelocityConstraint& vc)
+inline Momentum BlockSolveNormalConstraint(VelocityConstraint& vc)
 {
     assert(vc.GetPointCount() == 2);
 
@@ -280,7 +275,7 @@ Momentum BlockSolveNormalConstraint(VelocityConstraint& vc)
     //    = A * x + b'
     // b' = b - A * a;
     
-    const auto b_prime = [=]{
+    const auto b_prime = [=]() {
         const auto K = vc.GetK();
         
         const auto normal = vc.GetNormal();
@@ -327,7 +322,7 @@ Momentum BlockSolveNormalConstraint(VelocityConstraint& vc)
     return 0;
 }
 
-Momentum SeqSolveNormalConstraint(VelocityConstraint& vc)
+inline Momentum SeqSolveNormalConstraint(VelocityConstraint& vc)
 {
     auto maxIncImpulse = Momentum{0};
     
@@ -384,7 +379,7 @@ Momentum SeqSolveNormalConstraint(VelocityConstraint& vc)
     return maxIncImpulse;
 }
 
-Momentum SolveTangentConstraint(VelocityConstraint& vc)
+inline Momentum SolveTangentConstraint(VelocityConstraint& vc)
 {
     auto maxIncImpulse = Momentum{0};
     
@@ -444,7 +439,7 @@ Momentum SolveTangentConstraint(VelocityConstraint& vc)
     return maxIncImpulse;
 }
 
-Momentum SolveNormalConstraint(VelocityConstraint& vc)
+inline Momentum SolveNormalConstraint(VelocityConstraint& vc)
 {
 #if 1
     // Note: Block solving reduces World.TilesComesToRest iteration counts and is faster.
@@ -460,6 +455,23 @@ Momentum SolveNormalConstraint(VelocityConstraint& vc)
 #else
     return SeqSolveNormalConstraint(vc);
 #endif
+}
+
+}; // anonymous namespace
+    
+namespace GaussSeidel {
+
+Momentum SolveVelocityConstraint(VelocityConstraint& vc)
+{
+    auto maxIncImpulse = Momentum{0};
+    
+    // Applies frictional changes to velocity.
+    maxIncImpulse = std::max(maxIncImpulse, SolveTangentConstraint(vc));
+    
+    // Applies restitutional changes to velocity.
+    maxIncImpulse = std::max(maxIncImpulse, SolveNormalConstraint(vc));
+    
+    return maxIncImpulse;
 }
 
 PositionSolution SolvePositionConstraint(const PositionConstraint& pc,

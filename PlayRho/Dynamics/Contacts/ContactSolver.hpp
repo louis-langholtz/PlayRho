@@ -145,24 +145,6 @@ namespace playrho {
     
     namespace GaussSeidel {
 
-        Momentum BlockSolveNormalConstraint(VelocityConstraint& vc);
-
-        Momentum SeqSolveNormalConstraint(VelocityConstraint& vc);
-
-        /// Solves the tangential portion of the velocity constraint.
-        /// @details
-        /// This imposes friction on the velocity.
-        /// Specifically, this updates the tangent impulses on the velocity constraint points and
-        ///   updates the two given velocity structures.
-        /// @warning Behavior is undefined unless the velocity constraint point count is 1 or 2.
-        /// @param vc Velocity constraint.
-        Momentum SolveTangentConstraint(VelocityConstraint& vc);
-
-        /// Solves the normal portion of the velocity constraint.
-        /// @details
-        /// This prevents penetration and applies the contact restitution to the velocity.
-        Momentum SolveNormalConstraint(VelocityConstraint& vc);
-
         /// Solves the velocity constraint.
         ///
         /// @details This updates the tangent and normal impulses of the velocity constraint
@@ -178,18 +160,7 @@ namespace playrho {
         /// @pre The velocity constraint must have a valid normal, a valid tangent,
         ///   valid point relative positions, and valid velocity biases.
         ///
-        inline Momentum SolveVelocityConstraint(VelocityConstraint& vc)
-        {
-            auto maxIncImpulse = Momentum{0};
-            
-            // Applies frictional changes to velocity.
-            maxIncImpulse = std::max(maxIncImpulse, SolveTangentConstraint(vc));
-            
-            // Applies restitutional changes to velocity.
-            maxIncImpulse = std::max(maxIncImpulse, SolveNormalConstraint(vc));
-            
-            return maxIncImpulse;
-        }
+        Momentum SolveVelocityConstraint(VelocityConstraint& vc);
 
         /// Solves the given position constraint.
         /// @details
