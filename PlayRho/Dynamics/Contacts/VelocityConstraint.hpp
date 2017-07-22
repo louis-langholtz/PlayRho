@@ -85,8 +85,7 @@ namespace playrho {
         size_type GetPointCount() const noexcept { return m_pointCount; }
         
         /// Gets the "K" value.
-        /// @note This value is only valid if previously set.
-        /// @note Call the <code>SetK</code> method to set this value.
+        /// @note This value is only valid if previously set to a valid value.
         /// @return "K" value previously set or an invalid value.
         Mat22 GetK() const noexcept;
         
@@ -225,12 +224,6 @@ namespace playrho {
         Point GetPoint(Momentum normalImpulse, Momentum tangentImpulse,
                        Length2D relA, Length2D relB, Conf conf) const noexcept;
         
-        Mat22 ComputeK() const noexcept;
-        
-        /// Sets this object's K value.
-        /// @param value A position constraint dependent value or the zero matrix (Mat22_zero).
-        void SetK(const Mat22& value) noexcept;
-        
         /// Accesses the point identified by the given index.
         /// @warning Behavior is undefined if given index is not less than <code>MaxManifoldPoints</code>.
         /// @param index Index of the point to return. This should be a value less than returned by GetPointCount().
@@ -282,12 +275,6 @@ namespace playrho {
         assert(m_pointCount > 0);
         m_points[m_pointCount - 1] = Point{};
         --m_pointCount;
-    }
-    
-    inline void VelocityConstraint::SetK(const Mat22& value) noexcept
-    {
-        m_K = value;
-        m_normalMass = (IsValid(value))? Invert(value): GetInvalid<Mat22>();
     }
     
     /// Gets the "K" value.
