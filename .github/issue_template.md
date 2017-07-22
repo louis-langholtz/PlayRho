@@ -1,6 +1,7 @@
-*The text you see here is from the `issue_template.md` file.
+*Note: The text you see here is from the `issue_template.md` file.
 These are some optional guidelines for describing a new issue.
-Replace the italicized text with your own words.*
+Replace this text (the star enclosed text, i.e. the italicized text)
+with your own words.*
 
 ### Expected/Desired Behavior or Experience:
 *Replace this text with a description of the behavior that you had expected
