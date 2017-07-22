@@ -6,10 +6,6 @@ PlayRho project! :tada::+1:
 There are just some guidelines and rules that you need to follow. These are
 explained in this document.
 
-You're welcome to propose changes to this document in a
-[pull request](#submitting-file-changes-using-the-pull-requests-interface).
-
-
 ## How Can I Contribute?
 
 You can contribute by using the Issues interface and by possibly additionally
@@ -50,8 +46,9 @@ For starters...
 
 Steps to follow for making pull requests:
 
-1. Start by opening a new issue describing the bug or
-   feature you're intending to fix.  Even if you think it's relatively minor,
+1. Make sure that there's an open issue describing the bug or
+   feature you're intending to fix - creating a new issue for this if needed.
+   Even if you think the change is relatively minor,
    it's helpful to know what people are working on.  Mention in the initial
    issue that you are planning to work on that bug or feature so that it can
    be assigned to you.
@@ -92,7 +89,7 @@ You generally only need to submit a CLA once, so if you've already submitted
 one (even if it was for a different project), you probably don't need to do it
 again.
 
-[CLA]: https://gist.github.com/louis-langholtz/3c78799bd2196b41aa562eb5fa2e263f
+[CLA]: https://cla-assistant.io/louis-langholtz/PlayRho
 
 Once your CLA is submitted, make a commit adding yourself to the
 [AUTHORS][] and [CONTRIBUTORS][] files. This commit can be part
