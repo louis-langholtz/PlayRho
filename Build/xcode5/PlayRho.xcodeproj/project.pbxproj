@@ -113,12 +113,14 @@
 		4756CB9A1E0FAEF8009AD95C /* SeparationFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4756CB991E0FAEF8009AD95C /* SeparationFinder.cpp */; };
 		47578BE11D8869110078CD40 /* WorldManifold.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47578BDE1D8869110078CD40 /* WorldManifold.hpp */; };
 		47578BE41D886FED0078CD40 /* WorldManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47578BE31D886FED0078CD40 /* WorldManifold.cpp */; };
+		475931D01F254DDC009BACA3 /* BenchmarkMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475931CF1F254DDC009BACA3 /* BenchmarkMain.cpp */; };
 		475A94541D930503000CA9A8 /* BlockAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A94531D930503000CA9A8 /* BlockAllocator.cpp */; };
 		475A94561D930E6C000CA9A8 /* Fixture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A94551D930E6C000CA9A8 /* Fixture.cpp */; };
 		475A945B1D9593A4000CA9A8 /* Shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A945A1D9593A4000CA9A8 /* Shape.cpp */; };
 		475A945D1D959537000CA9A8 /* Joint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A945C1D959537000CA9A8 /* Joint.cpp */; };
 		475A945F1D95A15A000CA9A8 /* StackAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A945E1D95A15A000CA9A8 /* StackAllocator.cpp */; };
 		475A94611D9996B6000CA9A8 /* Contact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A94601D9996B6000CA9A8 /* Contact.cpp */; };
+		475CE1691F253C9C00456470 /* libPlayRho.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80FF01D2141C3D980059E59D /* libPlayRho.a */; };
 		476162C81E245C9D002C7FB0 /* CodeDumper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 476162C61E245C9D002C7FB0 /* CodeDumper.cpp */; };
 		476162C91E245C9D002C7FB0 /* CodeDumper.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 476162C71E245C9D002C7FB0 /* CodeDumper.hpp */; };
 		4768D3F51E3A7ACA00574143 /* Wider.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4768D3F21E3A7ACA00574143 /* Wider.hpp */; };
@@ -254,6 +256,13 @@
 			remoteGlobalIDString = 80FF01D1141C3D980059E59D;
 			remoteInfo = Box2D;
 		};
+		475CE16A1F253CD900456470 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 80FF01C9141C3D980059E59D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 80FF01D1141C3D980059E59D;
+			remoteInfo = PlayRho;
+		};
 		80BB8A6F141C3EA100F1753A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 80FF01C9141C3D980059E59D /* Project object */;
@@ -272,6 +281,15 @@
 
 /* Begin PBXCopyFilesBuildPhase section */
 		474BC41E1D413D5200447DCD /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		475CE1601F253B2F00456470 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -416,12 +434,14 @@
 		4756CB991E0FAEF8009AD95C /* SeparationFinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SeparationFinder.cpp; sourceTree = "<group>"; };
 		47578BDE1D8869110078CD40 /* WorldManifold.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorldManifold.hpp; sourceTree = "<group>"; };
 		47578BE31D886FED0078CD40 /* WorldManifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldManifold.cpp; sourceTree = "<group>"; };
+		475931CF1F254DDC009BACA3 /* BenchmarkMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BenchmarkMain.cpp; sourceTree = "<group>"; };
 		475A94531D930503000CA9A8 /* BlockAllocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BlockAllocator.cpp; sourceTree = "<group>"; };
 		475A94551D930E6C000CA9A8 /* Fixture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fixture.cpp; sourceTree = "<group>"; };
 		475A945A1D9593A4000CA9A8 /* Shape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shape.cpp; sourceTree = "<group>"; };
 		475A945C1D959537000CA9A8 /* Joint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Joint.cpp; sourceTree = "<group>"; };
 		475A945E1D95A15A000CA9A8 /* StackAllocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StackAllocator.cpp; sourceTree = "<group>"; };
 		475A94601D9996B6000CA9A8 /* Contact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Contact.cpp; sourceTree = "<group>"; };
+		475CE1621F253B2F00456470 /* Benchmark */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Benchmark; sourceTree = BUILT_PRODUCTS_DIR; };
 		476162C61E245C9D002C7FB0 /* CodeDumper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CodeDumper.cpp; sourceTree = "<group>"; };
 		476162C71E245C9D002C7FB0 /* CodeDumper.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CodeDumper.hpp; sourceTree = "<group>"; };
 		4768D3F21E3A7ACA00574143 /* Wider.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Wider.hpp; sourceTree = "<group>"; };
@@ -613,6 +633,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		475CE15F1F253B2F00456470 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				475CE1691F253C9C00456470 /* libPlayRho.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		80BB8907141C3E2600F1753A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -721,6 +749,15 @@
 			);
 			name = UnitTests;
 			path = ../../UnitTests;
+			sourceTree = "<group>";
+		};
+		475CE1631F253B2F00456470 /* Benchmark */ = {
+			isa = PBXGroup;
+			children = (
+				475931CF1F254DDC009BACA3 /* BenchmarkMain.cpp */,
+			);
+			name = Benchmark;
+			path = ../../Benchmark;
 			sourceTree = "<group>";
 		};
 		80BB8922141C3E5900F1753A /* PlayRho */ = {
@@ -1053,6 +1090,7 @@
 				80BB8922141C3E5900F1753A /* PlayRho */,
 				80FF01D3141C3D980059E59D /* Products */,
 				474BC3F31D41278800447DCD /* UnitTests */,
+				475CE1631F253B2F00456470 /* Benchmark */,
 			);
 			sourceTree = "<group>";
 			usesTabs = 0;
@@ -1064,6 +1102,7 @@
 				80BB890A141C3E2700F1753A /* HelloWorld */,
 				80BB8918141C3E3600F1753A /* Testbed */,
 				474BC4201D413D5200447DCD /* UnitTests */,
+				475CE1621F253B2F00456470 /* Benchmark */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1196,6 +1235,24 @@
 			productReference = 474BC4201D413D5200447DCD /* UnitTests */;
 			productType = "com.apple.product-type.tool";
 		};
+		475CE1611F253B2F00456470 /* Benchmark */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 475CE1681F253B2F00456470 /* Build configuration list for PBXNativeTarget "Benchmark" */;
+			buildPhases = (
+				475CE15E1F253B2F00456470 /* Sources */,
+				475CE15F1F253B2F00456470 /* Frameworks */,
+				475CE1601F253B2F00456470 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				475CE16B1F253CD900456470 /* PBXTargetDependency */,
+			);
+			name = Benchmark;
+			productName = Benchmark;
+			productReference = 475CE1621F253B2F00456470 /* Benchmark */;
+			productType = "com.apple.product-type.tool";
+		};
 		80BB8909141C3E2600F1753A /* HelloWorld */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 80BB8911141C3E2700F1753A /* Build configuration list for PBXNativeTarget "HelloWorld" */;
@@ -1260,6 +1317,10 @@
 					474BC41F1D413D5200447DCD = {
 						CreatedOnToolsVersion = 7.3.1;
 					};
+					475CE1611F253B2F00456470 = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 80FF01CC141C3D980059E59D /* Build configuration list for PBXProject "PlayRho" */;
@@ -1278,6 +1339,7 @@
 				80BB8909141C3E2600F1753A /* HelloWorld */,
 				80BB8917141C3E3600F1753A /* Testbed */,
 				474BC41F1D413D5200447DCD /* UnitTests */,
+				475CE1611F253B2F00456470 /* Benchmark */,
 			);
 		};
 /* End PBXProject section */
@@ -1358,6 +1420,14 @@
 				47AFC3051DAEBC120023E9D1 /* PositionSolverManifold.cpp in Sources */,
 				473971A81D9D9B4C00F7137F /* Math.cpp in Sources */,
 				47FFD0FD1DAC6235000D6D0E /* PositionConstraint.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		475CE15E1F253B2F00456470 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				475931D01F254DDC009BACA3 /* BenchmarkMain.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1451,6 +1521,11 @@
 			target = 80FF01D1141C3D980059E59D /* PlayRho */;
 			targetProxy = 474BC4271D413D6300447DCD /* PBXContainerItemProxy */;
 		};
+		475CE16B1F253CD900456470 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 80FF01D1141C3D980059E59D /* PlayRho */;
+			targetProxy = 475CE16A1F253CD900456470 /* PBXContainerItemProxy */;
+		};
 		80BB8A70141C3EA100F1753A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 80FF01D1141C3D980059E59D /* PlayRho */;
@@ -1504,6 +1579,36 @@
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-lgtest";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		475CE1661F253B2F00456470 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include,
+					/usr/local/boost_1_63_0,
+					../..,
+				);
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "-lbenchmark";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		475CE1671F253B2F00456470 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include,
+					/usr/local/boost_1_63_0,
+					../..,
+				);
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "-lbenchmark";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1747,6 +1852,15 @@
 			buildConfigurations = (
 				474BC4251D413D5200447DCD /* Debug */,
 				474BC4261D413D5200447DCD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		475CE1681F253B2F00456470 /* Build configuration list for PBXNativeTarget "Benchmark" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				475CE1661F253B2F00456470 /* Debug */,
+				475CE1671F253B2F00456470 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
