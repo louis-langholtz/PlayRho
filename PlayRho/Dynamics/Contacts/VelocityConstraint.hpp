@@ -47,11 +47,16 @@ namespace playrho {
         
         struct Conf
         {
-            Real dtRatio = 1;
+            Real dtRatio = Real(1);
             LinearVelocity velocityThreshold = DefaultVelocityThreshold;
             bool blockSolve = true;
         };
         
+        static constexpr Conf GetDefaultConf() noexcept
+        {
+            return Conf{};
+        }
+
         /// Default constructor.
         /// @details
         /// Initializes object with: a zero point count, an invalid K, an invalid normal mass,
@@ -66,7 +71,7 @@ namespace playrho {
                            const WorldManifold& worldManifold,
                            BodyConstraint& bA,
                            BodyConstraint& bB,
-                           Conf conf);
+                           Conf conf = GetDefaultConf());
         
         /// Gets the normal of the contact in world coordinates.
         /// @note This value is set on construction.
