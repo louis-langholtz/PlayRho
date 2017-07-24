@@ -45,7 +45,7 @@ void Free(void* mem)
 
 Version GetVersion() noexcept
 {
-    return Version{3, 0, 0};
+    return Version{0, 9, 0};
 }
 
 template <typename T>
