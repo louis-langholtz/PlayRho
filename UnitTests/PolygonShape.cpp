@@ -108,6 +108,8 @@ TEST(PolygonShape, BoxConstruction)
     EXPECT_EQ(shape.GetNormal(1) * Real{1}, Vec2(0, +1));
     EXPECT_EQ(shape.GetNormal(2) * Real{1}, Vec2(-1, 0));
     EXPECT_EQ(shape.GetNormal(3) * Real{1}, Vec2(0, -1));
+    
+    EXPECT_TRUE(Validate(shape));
 }
 
 TEST(PolygonShape, Copy)
@@ -333,6 +335,8 @@ TEST(PolygonShape, SetPoints)
     EXPECT_EQ(shape.GetVertex(2), points[4]);
     EXPECT_EQ(shape.GetVertex(3), points[3]);
     EXPECT_EQ(shape.GetVertex(4), points[2]);
+    
+    EXPECT_TRUE(Validate(shape));
 }
 
 TEST(PolygonShape, CanSetTwoPoints)
@@ -349,6 +353,8 @@ TEST(PolygonShape, CanSetTwoPoints)
     EXPECT_EQ(GetVec2(shape.GetNormal(1)), Vec2(0, -1));
     EXPECT_EQ(shape.GetCentroid(), Average(points));
     EXPECT_EQ(shape.GetVertexRadius(), vertexRadius);
+
+    EXPECT_TRUE(Validate(shape));
 }
 
 TEST(PolygonShape, CanSetOnePoint)
