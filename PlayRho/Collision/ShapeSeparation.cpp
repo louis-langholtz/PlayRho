@@ -23,13 +23,15 @@
 using namespace playrho;
 
 IndexPairSeparation playrho::GetMaxSeparation(const DistanceProxy& proxy1, const Transformation xf1,
-                                            const DistanceProxy& proxy2, const Transformation xf2,
-                                            Length stop)
+                                              const DistanceProxy& proxy2, const Transformation xf2,
+                                              Length stop)
 {
     // Find the max separation between proxy1 and proxy2 using edge normals from proxy1.
     
     auto indexPairSep = IndexPairSeparation{
-        -MaxFloat * Meter, IndexPairSeparation::InvalidIndex, IndexPairSeparation::InvalidIndex
+        -std::numeric_limits<Real>::infinity() * Meter,
+        IndexPairSeparation::InvalidIndex,
+        IndexPairSeparation::InvalidIndex
     };
     
     const auto xf = MulT(xf2, xf1);
@@ -44,7 +46,10 @@ IndexPairSeparation playrho::GetMaxSeparation(const DistanceProxy& proxy1, const
 
         // Search for the vector that's most anti-parallel to the normal.
         // See: https://en.wikipedia.org/wiki/Antiparallel_(mathematics)#Antiparallel_vectors
-        auto ap = IndexSeparation{};
+        auto ap = IndexSeparation{
+            std::numeric_limits<Real>::infinity() * Meter,
+            IndexSeparation::InvalidIndex
+        };
         for (auto j = decltype(count2){0}; j < count2; ++j)
         {
             // Get distance from offset to proxy2.GetVertex(j) in direction of normal.
