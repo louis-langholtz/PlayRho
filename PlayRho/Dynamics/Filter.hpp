@@ -58,6 +58,16 @@ namespace playrho {
         ///
         index_type groupIndex = 0;
     };
+    
+    inline bool ShouldCollide(const Filter filterA, const Filter filterB) noexcept
+    {
+        if ((filterA.groupIndex == filterB.groupIndex) && (filterA.groupIndex != 0))
+        {
+            return filterA.groupIndex > 0;
+        }
+        return ((filterA.maskBits & filterB.categoryBits) != 0) &&
+               ((filterB.maskBits & filterA.categoryBits) != 0);
+    }
 }
 
 #endif /* Filter_hpp */

@@ -55,8 +55,12 @@ class ContactFilter
 public:
     virtual ~ContactFilter() {}
 
-    /// Return true if contact calculations should be performed between these two shapes.
+    /// @brief Whether contact calculations should be performed between these two shapes.
     /// @warning for performance reasons this is only called when the AABBs begin to overlap.
+    /// @note If you implement your own collision filter you may want to build from the
+    ///   implementation of this method.
+    /// @return <code>true</code> if contact calculations should be performed between these
+    ///   two shapes; <code>false</code> otherwise.
     virtual bool ShouldCollide(const Fixture* fixtureA, const Fixture* fixtureB);
 };
 

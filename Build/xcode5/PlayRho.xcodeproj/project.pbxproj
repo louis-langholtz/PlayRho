@@ -114,6 +114,7 @@
 		47578BE11D8869110078CD40 /* WorldManifold.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47578BDE1D8869110078CD40 /* WorldManifold.hpp */; };
 		47578BE41D886FED0078CD40 /* WorldManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47578BE31D886FED0078CD40 /* WorldManifold.cpp */; };
 		475931D01F254DDC009BACA3 /* BenchmarkMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475931CF1F254DDC009BACA3 /* BenchmarkMain.cpp */; };
+		475931D21F26ABBD009BACA3 /* Filter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475931D11F26ABBD009BACA3 /* Filter.cpp */; };
 		475A94541D930503000CA9A8 /* BlockAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A94531D930503000CA9A8 /* BlockAllocator.cpp */; };
 		475A94561D930E6C000CA9A8 /* Fixture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A94551D930E6C000CA9A8 /* Fixture.cpp */; };
 		475A945B1D9593A4000CA9A8 /* Shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A945A1D9593A4000CA9A8 /* Shape.cpp */; };
@@ -435,6 +436,7 @@
 		47578BDE1D8869110078CD40 /* WorldManifold.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorldManifold.hpp; sourceTree = "<group>"; };
 		47578BE31D886FED0078CD40 /* WorldManifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldManifold.cpp; sourceTree = "<group>"; };
 		475931CF1F254DDC009BACA3 /* BenchmarkMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BenchmarkMain.cpp; sourceTree = "<group>"; };
+		475931D11F26ABBD009BACA3 /* Filter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Filter.cpp; sourceTree = "<group>"; };
 		475A94531D930503000CA9A8 /* BlockAllocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BlockAllocator.cpp; sourceTree = "<group>"; };
 		475A94551D930E6C000CA9A8 /* Fixture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fixture.cpp; sourceTree = "<group>"; };
 		475A945A1D9593A4000CA9A8 /* Shape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shape.cpp; sourceTree = "<group>"; };
@@ -696,6 +698,7 @@
 				4731DE1D1DDD0B8700E7F931 /* DynamicTree.cpp */,
 				47D61F771F1FE3B700E702BD /* EdgeShape.cpp */,
 				474BC3FA1D41278800447DCD /* Epsilon.cpp */,
+				475931D11F26ABBD009BACA3 /* Filter.cpp */,
 				477D20051E32B6E80069D610 /* Fixed.cpp */,
 				475A94551D930E6C000CA9A8 /* Fixture.cpp */,
 				4731DE151DDCD00100E7F931 /* FixtureProxy.cpp */,
@@ -1398,6 +1401,7 @@
 				47C85D241F112E2700F70C56 /* GrowableStack.cpp in Sources */,
 				474BC43C1D413DC200447DCD /* Vec2.cpp in Sources */,
 				47C85D101EFAE37B00F70C56 /* GearJoint.cpp in Sources */,
+				475931D21F26ABBD009BACA3 /* Filter.cpp in Sources */,
 				47327E751E9F1E2A0048FCD8 /* MouseJoint.cpp in Sources */,
 				47C85D121EFB0CD600F70C56 /* RopeJoint.cpp in Sources */,
 				47CF98501E0088ED0077F5F2 /* Angle.cpp in Sources */,
