@@ -157,3 +157,39 @@ TEST(UnitVec2, Absolute)
     EXPECT_EQ(UnitVec2::Get(Real(-1), Real(-1), magnitude).Absolute(),
               UnitVec2::Get(Real(+1), Real(+1), magnitude));
 }
+
+TEST(UnitVec2, RotateMethod)
+{
+    EXPECT_EQ(UnitVec2::GetRight().Rotate(UnitVec2::GetRight()), UnitVec2::GetRight());
+    EXPECT_EQ(UnitVec2::GetTop().Rotate(UnitVec2::GetRight()), UnitVec2::GetTop());
+    EXPECT_EQ(UnitVec2::GetLeft().Rotate(UnitVec2::GetRight()), UnitVec2::GetLeft());
+    EXPECT_EQ(UnitVec2::GetBottom().Rotate(UnitVec2::GetRight()), UnitVec2::GetBottom());
+
+    EXPECT_EQ(UnitVec2::GetRight().Rotate(UnitVec2::GetTop()), UnitVec2::GetTop());
+    EXPECT_EQ(UnitVec2::GetTop().Rotate(UnitVec2::GetTop()), UnitVec2::GetLeft());
+    EXPECT_EQ(UnitVec2::GetLeft().Rotate(UnitVec2::GetTop()), UnitVec2::GetBottom());
+    EXPECT_EQ(UnitVec2::GetBottom().Rotate(UnitVec2::GetTop()), UnitVec2::GetRight());
+    
+    EXPECT_EQ(UnitVec2::GetRight().Rotate(UnitVec2::GetLeft()), UnitVec2::GetLeft());
+    EXPECT_EQ(UnitVec2::GetTop().Rotate(UnitVec2::GetLeft()), UnitVec2::GetBottom());
+    EXPECT_EQ(UnitVec2::GetLeft().Rotate(UnitVec2::GetLeft()), UnitVec2::GetRight());
+    EXPECT_EQ(UnitVec2::GetBottom().Rotate(UnitVec2::GetLeft()), UnitVec2::GetTop());
+}
+
+TEST(UnitVec2, RotateFunction)
+{
+    EXPECT_EQ(Rotate(UnitVec2::GetRight(), UnitVec2::GetRight()), UnitVec2::GetRight());
+    EXPECT_EQ(Rotate(UnitVec2::GetTop(), UnitVec2::GetRight()), UnitVec2::GetTop());
+    EXPECT_EQ(Rotate(UnitVec2::GetLeft(), UnitVec2::GetRight()), UnitVec2::GetLeft());
+    EXPECT_EQ(Rotate(UnitVec2::GetBottom(), UnitVec2::GetRight()), UnitVec2::GetBottom());
+    
+    EXPECT_EQ(Rotate(UnitVec2::GetRight(), UnitVec2::GetTop()), UnitVec2::GetTop());
+    EXPECT_EQ(Rotate(UnitVec2::GetTop(), UnitVec2::GetTop()), UnitVec2::GetLeft());
+    EXPECT_EQ(Rotate(UnitVec2::GetLeft(), UnitVec2::GetTop()), UnitVec2::GetBottom());
+    EXPECT_EQ(Rotate(UnitVec2::GetBottom(), UnitVec2::GetTop()), UnitVec2::GetRight());
+    
+    EXPECT_EQ(Rotate(UnitVec2::GetRight(), UnitVec2::GetLeft()), UnitVec2::GetLeft());
+    EXPECT_EQ(Rotate(UnitVec2::GetTop(), UnitVec2::GetLeft()), UnitVec2::GetBottom());
+    EXPECT_EQ(Rotate(UnitVec2::GetLeft(), UnitVec2::GetLeft()), UnitVec2::GetRight());
+    EXPECT_EQ(Rotate(UnitVec2::GetBottom(), UnitVec2::GetLeft()), UnitVec2::GetTop());
+}

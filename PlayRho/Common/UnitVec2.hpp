@@ -99,6 +99,13 @@ public:
 
     constexpr inline UnitVec2 FlipY() const noexcept { return UnitVec2{GetX(), -GetY()}; }
 
+    /// @brief Rotates the unit vector by the given amount.
+    ///
+    /// @param amount Expresses the angular difference from the right-ward oriented unit
+    ///   vector to rotate this unit vector by.
+    ///
+    /// @return Result of rotating this unit vector by the given amount.
+    ///
     constexpr inline UnitVec2 Rotate(UnitVec2 amount) const noexcept
     {
         return UnitVec2{GetX() * amount.GetX() - GetY() * amount.GetY(),
@@ -182,7 +189,9 @@ constexpr inline UnitVec2 GetFwdPerpendicular(const UnitVec2 vector) noexcept
     return vector.GetFwdPerpendicular();
 }
 
-/// @brief Rotates a vector by a given angle.
+/// @brief Rotates a unit vector by the angle expressed by the second unit vector.
+/// @return Unit vector for the angle that's the sum of the two angles expressed by
+///   the input unit vectors.
 constexpr inline UnitVec2 Rotate(const UnitVec2 vector, const UnitVec2& angle) noexcept
 {
     return vector.Rotate(angle);
