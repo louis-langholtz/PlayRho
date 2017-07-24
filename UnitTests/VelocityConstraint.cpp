@@ -34,37 +34,37 @@ TEST(VelocityConstraint, ByteSize)
     }
 }
 
-#if 0
 TEST(VelocityConstraint, DefaultInit)
 {
-    VelocityConstraint vc;
+    const auto vc = VelocityConstraint{};
+
     EXPECT_FALSE(IsValid(vc.GetK()));
     EXPECT_FALSE(IsValid(vc.GetNormalMass()));
     EXPECT_FALSE(IsValid(vc.GetNormal()));
     EXPECT_FALSE(IsValid(vc.GetFriction()));
     EXPECT_FALSE(IsValid(vc.GetRestitution()));
     EXPECT_FALSE(IsValid(vc.GetTangentSpeed()));
-    EXPECT_FALSE(IsValid(vc.GetContactIndex()));
     
     EXPECT_EQ(vc.GetPointCount(), VelocityConstraint::size_type{0});
 
-    EXPECT_FALSE(IsValid(vc.GetNormalImpulseAtPoint(0)));
-    EXPECT_FALSE(IsValid(vc.GetTangentImpulseAtPoint(0)));
-    EXPECT_FALSE(IsValid(vc.GetNormalMassAtPoint(0)));
-    EXPECT_FALSE(IsValid(vc.GetTangentMassAtPoint(0)));
-    EXPECT_FALSE(IsValid(vc.GetVelocityBiasAtPoint(0)));
-    EXPECT_FALSE(IsValid(vc.GetPointRelPosA(0)));
-    EXPECT_FALSE(IsValid(vc.GetPointRelPosB(0)));
+    EXPECT_TRUE(IsValid(vc.GetNormalImpulseAtPoint(0)));
+    EXPECT_TRUE(IsValid(vc.GetTangentImpulseAtPoint(0)));
+    EXPECT_TRUE(IsValid(vc.GetNormalMassAtPoint(0)));
+    EXPECT_TRUE(IsValid(vc.GetTangentMassAtPoint(0)));
+    EXPECT_TRUE(IsValid(vc.GetVelocityBiasAtPoint(0)));
+    EXPECT_TRUE(IsValid(vc.GetPointRelPosA(0)));
+    EXPECT_TRUE(IsValid(vc.GetPointRelPosB(0)));
 
-    EXPECT_FALSE(IsValid(vc.GetNormalImpulseAtPoint(1)));
-    EXPECT_FALSE(IsValid(vc.GetTangentImpulseAtPoint(1)));
-    EXPECT_FALSE(IsValid(vc.GetNormalMassAtPoint(1)));
-    EXPECT_FALSE(IsValid(vc.GetTangentMassAtPoint(1)));    
-    EXPECT_FALSE(IsValid(vc.GetVelocityBiasAtPoint(1)));
-    EXPECT_FALSE(IsValid(vc.GetPointRelPosA(1)));
-    EXPECT_FALSE(IsValid(vc.GetPointRelPosB(1)));
+    EXPECT_TRUE(IsValid(vc.GetNormalImpulseAtPoint(1)));
+    EXPECT_TRUE(IsValid(vc.GetTangentImpulseAtPoint(1)));
+    EXPECT_TRUE(IsValid(vc.GetNormalMassAtPoint(1)));
+    EXPECT_TRUE(IsValid(vc.GetTangentMassAtPoint(1)));
+    EXPECT_TRUE(IsValid(vc.GetVelocityBiasAtPoint(1)));
+    EXPECT_TRUE(IsValid(vc.GetPointRelPosA(1)));
+    EXPECT_TRUE(IsValid(vc.GetPointRelPosB(1)));
 }
 
+#if 0
 TEST(VelocityConstraint, InitializingConstructor)
 {
     const auto contact_index = VelocityConstraint::index_type{3};
