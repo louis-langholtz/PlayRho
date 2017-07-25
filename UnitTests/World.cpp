@@ -199,6 +199,23 @@ TEST(World, InvalidArgumentInit)
     EXPECT_THROW(World{def}, InvalidArgument);
 }
 
+TEST(World, SetSubStepping)
+{
+    World world;
+    
+    ASSERT_FALSE(world.GetSubStepping());
+    world.SetSubStepping(true);
+    EXPECT_TRUE(world.GetSubStepping());
+    
+    auto stepConf = StepConf{};
+    stepConf.SetInvTime(Real(100) * Hertz);
+    world.Step(stepConf);
+    EXPECT_TRUE(world.GetSubStepping());
+
+    world.SetSubStepping(false);
+    EXPECT_FALSE(world.GetSubStepping());
+}
+
 TEST(World, CopyConstruction)
 {
     auto world = World{};
