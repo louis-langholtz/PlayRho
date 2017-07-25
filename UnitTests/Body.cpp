@@ -122,6 +122,17 @@ TEST(Body, WorldCreated)
     EXPECT_FALSE(body->IsSpeedable());
     EXPECT_FALSE(body->IsAccelerable());
     
+    EXPECT_FALSE(Awaken(*body));
+    const auto zeroAccel = LinearAcceleration2D{
+        Real(0) * MeterPerSquareSecond, Real(0) * MeterPerSquareSecond
+    };
+    const auto linAccel = LinearAcceleration2D{
+        Real(2) * MeterPerSquareSecond, Real(2) * MeterPerSquareSecond
+    };
+    ApplyLinearAcceleration(*body, linAccel);
+    EXPECT_NE(body->GetLinearAcceleration(), linAccel);
+    EXPECT_EQ(body->GetLinearAcceleration(), zeroAccel);
+
     EXPECT_TRUE(body->GetFixtures().empty());
     {
         int i = 0;
