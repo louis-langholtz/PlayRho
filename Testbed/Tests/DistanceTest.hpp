@@ -116,7 +116,9 @@ public:
         const auto maxIndicesBA = GetMaxSeparation(proxyB, xfmB, proxyA, xfmA);
 
         const auto manifold = CollideShapes(proxyA, xfmA, proxyB, xfmB);
+#ifdef DEFINE_GET_MANIFOLD
         const auto panifold = GetManifold(proxyA, xfmA, proxyB, xfmB);
+#endif
 
         DistanceConf distanceConf;
         const auto output = Distance(proxyA, xfmA, proxyB, xfmB, distanceConf);
@@ -247,7 +249,9 @@ public:
         }
 
         ShowManifold(drawer, manifold, "manifold");
+#ifdef DEFINE_GET_MANIFOLD
         ShowManifold(drawer, panifold, "wanifold");
+#endif
 
         if (m_drawManifoldInfo)
         {

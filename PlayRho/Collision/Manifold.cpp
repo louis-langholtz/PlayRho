@@ -36,6 +36,7 @@ using index_type = IndexPair::size_type;
 
 namespace {
 
+#ifdef DEFINE_GET_MANIFOLD
 inline index_type GetEdgeIndex(index_type i1, index_type i2, index_type count)
 {
     if (GetModuloNext(i1, count) == i2)
@@ -48,6 +49,7 @@ inline index_type GetEdgeIndex(index_type i1, index_type i2, index_type count)
     }
     return IndexPair::InvalidIndex;
 }
+#endif
 
 inline ClipList GetClipPoints(IndexSeparation::index_type iv1, Length sideOffset1, UnitVec2 normal1,
                                      IndexSeparation::index_type iv2, Length sideOffset2, UnitVec2 normal2,
@@ -579,6 +581,7 @@ Manifold playrho::CollideCached(const DistanceProxy& shapeA, const Transformatio
 }
 #endif
 
+#ifdef DEFINE_GET_MANIFOLD
 Manifold playrho::GetManifold(const DistanceProxy& proxyA, const Transformation& transformA,
                               const DistanceProxy& proxyB, const Transformation& transformB)
 {
@@ -800,6 +803,7 @@ Manifold playrho::GetManifold(const DistanceProxy& proxyA, const Transformation&
 
     return Manifold{};
 }
+#endif
 
 const char* playrho::GetName(Manifold::Type type) noexcept
 {

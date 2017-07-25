@@ -515,8 +515,10 @@ namespace playrho
                            const Manifold::Conf conf = GetDefaultManifoldConf());
 #endif
 
+#ifdef DEFINE_GET_MANIFOLD
     Manifold GetManifold(const DistanceProxy& proxyA, const Transformation& transformA,
                          const DistanceProxy& proxyB, const Transformation& transformB);
+#endif
 
     Length2D GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type type, ContactFeature::Index index);
 
