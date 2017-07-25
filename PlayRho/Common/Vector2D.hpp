@@ -23,6 +23,7 @@
 #define Vec2_hpp
 
 #include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Common/InvalidArgument.hpp>
 
 namespace playrho
 {
@@ -54,28 +55,26 @@ namespace playrho
         /// @param i Index (0 for x, 1 for y).
         auto operator[] (size_type i) const
         {
-            assert(i < max_size());
             switch (i)
             {
                 case 0: return x;
                 case 1: return y;
                 default: break;
             }
-            return x;
+            throw InvalidArgument("only 0 or 1 valid for index");
         }
         
         /// Accesses element by index.
         /// @param i Index (0 for x, 1 for y).
         auto& operator[] (size_type i)
         {
-            assert(i < max_size());
             switch (i)
             {
                 case 0: return x;
                 case 1: return y;
                 default: break;
             }
-            return x;
+            throw InvalidArgument("only 0 or 1 valid for index");
         }
         
         auto GetX() const noexcept
