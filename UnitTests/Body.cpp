@@ -123,15 +123,6 @@ TEST(Body, WorldCreated)
     EXPECT_FALSE(body->IsAccelerable());
     
     EXPECT_FALSE(Awaken(*body));
-    const auto zeroAccel = LinearAcceleration2D{
-        Real(0) * MeterPerSquareSecond, Real(0) * MeterPerSquareSecond
-    };
-    const auto linAccel = LinearAcceleration2D{
-        Real(2) * MeterPerSquareSecond, Real(2) * MeterPerSquareSecond
-    };
-    ApplyLinearAcceleration(*body, linAccel);
-    EXPECT_NE(body->GetLinearAcceleration(), linAccel);
-    EXPECT_EQ(body->GetLinearAcceleration(), zeroAccel);
 
     EXPECT_TRUE(body->GetFixtures().empty());
     {
@@ -404,4 +395,25 @@ TEST(Body, GetWorldIndex)
     ASSERT_EQ(world.GetBodies().size(), std::size_t(3));
     EXPECT_EQ(GetWorldIndex(body2), BodyCounter(2));
     EXPECT_EQ(GetWorldIndex(static_cast<const Body*>(nullptr)), BodyCounter(-1));
+}
+
+TEST(Body, ApplyLinearAccelDoesNothingToStatic)
+{
+    World world;
+    
+    auto body = world.CreateBody();
+    ASSERT_NE(body, nullptr);
+    ASSERT_FALSE(body->IsAwake());
+    ASSERT_FALSE(body->IsSpeedable());
+    ASSERT_FALSE(body->IsAccelerable());
+    
+    const auto zeroAccel = LinearAcceleration2D{
+        Real(0) * MeterPerSquareSecond, Real(0) * MeterPerSquareSecond
+    };
+    const auto linAccel = LinearAcceleration2D{
+        Real(2) * MeterPerSquareSecond, Real(2) * MeterPerSquareSecond
+    };
+    ApplyLinearAcceleration(*body, linAccel);
+    EXPECT_NE(body->GetLinearAcceleration(), linAccel);
+    EXPECT_EQ(body->GetLinearAcceleration(), zeroAccel);
 }
