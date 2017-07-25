@@ -113,6 +113,12 @@ TEST(World, Traits)
     EXPECT_FALSE(std::is_trivially_destructible<World>::value);
 }
 
+TEST(World, WorldLockedError)
+{
+    const auto value = World::LockedError{};
+    EXPECT_STREQ(value.what(), "world is locked");
+}
+
 TEST(World, DefaultInit)
 {
     World world;
