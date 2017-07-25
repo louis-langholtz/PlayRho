@@ -122,11 +122,7 @@ MassData playrho::GetMassData(const Length vertexRadius, const NonNegative<Densi
     switch (count)
     {
         case 0:
-            return MassData{
-                Mass{Kilogram * GetInvalid<Real>()},
-                GetInvalid<Length2D>(),
-                RotInertia{SquareMeter * Kilogram * GetInvalid<Real>() / SquareRadian}
-            };
+            return MassData{};
         case 1:
             return ::GetMassData(vertexRadius, density, vertices[0]);
         case 2:

@@ -43,6 +43,19 @@ TEST(MassData, DefaultConstruct)
     EXPECT_EQ(foo.I, RotInertia(0));
 }
 
+TEST(MassData, GetMassDataFreeFunctionForNoVertices)
+{
+    const auto vertexRadius = Length{Real(1) * Meter};
+    const auto density = NonNegative<Density>(Real(1) * KilogramPerSquareMeter);
+    const auto vertices = Span<const Length2D>{
+        static_cast<const Length2D*>(nullptr), Span<const Length2D>::size_type{0}
+    };
+    const auto massData = GetMassData(vertexRadius, density, vertices);
+    EXPECT_EQ(massData.center, Length2D(0, 0));
+    EXPECT_EQ(massData.mass, Mass(0));
+    EXPECT_EQ(massData.I, RotInertia(0));
+}
+
 TEST(MassData, GetForZeroVertexRadiusCircle)
 {
     auto shape = DiskShape(0);
