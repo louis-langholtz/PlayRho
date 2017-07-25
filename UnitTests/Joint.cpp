@@ -30,3 +30,8 @@ TEST(Joint, ByteSize)
         default: break;
     }
 }
+
+TEST(Joint, GetWorldIndexFreeFunction)
+{
+    EXPECT_EQ(GetWorldIndex(static_cast<const Joint*>(nullptr)), JointCounter(-1));
+}

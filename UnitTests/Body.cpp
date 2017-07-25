@@ -385,11 +385,12 @@ TEST(Body, GetWorldIndex)
     ASSERT_EQ(world.GetBodies().size(), std::size_t(0));
     const auto body0 = world.CreateBody();
     ASSERT_EQ(world.GetBodies().size(), std::size_t(1));
-    EXPECT_EQ(GetWorldIndex(body0), std::size_t(0));
+    EXPECT_EQ(GetWorldIndex(body0), BodyCounter(0));
     const auto body1 = world.CreateBody();
     ASSERT_EQ(world.GetBodies().size(), std::size_t(2));
-    EXPECT_EQ(GetWorldIndex(body1), std::size_t(1));
+    EXPECT_EQ(GetWorldIndex(body1), BodyCounter(1));
     const auto body2 = world.CreateBody();
     ASSERT_EQ(world.GetBodies().size(), std::size_t(3));
-    EXPECT_EQ(GetWorldIndex(body2), std::size_t(2));
+    EXPECT_EQ(GetWorldIndex(body2), BodyCounter(2));
+    EXPECT_EQ(GetWorldIndex(static_cast<const Body*>(nullptr)), BodyCounter(-1));
 }
