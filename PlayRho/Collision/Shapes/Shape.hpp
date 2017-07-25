@@ -109,7 +109,7 @@ public:
     ///   This uses the vistor design pattern.
     /// @sa https://en.wikipedia.org/wiki/Visitor_pattern .
     ///
-    struct Visitor;
+    class Visitor;
 
     /// @brief Default constructor is deleted.
     /// @details This is a base class that shouldn't ever be directly instantiated.
