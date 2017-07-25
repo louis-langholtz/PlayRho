@@ -817,7 +817,7 @@ const char* playrho::GetName(Manifold::Type type) noexcept
     return "unknown";
 }
 
-bool playrho::operator==(const Manifold::Point& lhs, const Manifold::Point& rhs)
+bool playrho::operator==(const Manifold::Point& lhs, const Manifold::Point& rhs) noexcept
 {
     if (lhs.localPoint != rhs.localPoint)
     {
@@ -838,73 +838,76 @@ bool playrho::operator==(const Manifold::Point& lhs, const Manifold::Point& rhs)
     return true;
 }
 
-bool playrho::operator!=(const Manifold::Point& lhs, const Manifold::Point& rhs)
+bool playrho::operator!=(const Manifold::Point& lhs, const Manifold::Point& rhs) noexcept
 {
     return !(lhs == rhs);
 }
 
-bool playrho::operator==(const Manifold& lhs, const Manifold& rhs)
+bool playrho::operator==(const Manifold& lhs, const Manifold& rhs) noexcept
 {
     if (lhs.GetType() != rhs.GetType())
     {
         return false;
     }
     
-    if (lhs.GetLocalPoint() != rhs.GetLocalPoint())
+    if (lhs.GetType() != Manifold::e_unset)
     {
-        return false;
-    }
-    
-    if (IsValid(lhs.GetLocalNormal()) != IsValid(rhs.GetLocalNormal()))
-    {
-        return false;
-    }
-
-    if (IsValid(lhs.GetLocalNormal()) && (lhs.GetLocalNormal() != rhs.GetLocalNormal()))
-    {
-        return false;
-    }
-    
-    if (lhs.GetPointCount() != rhs.GetPointCount())
-    {
-        return false;
-    }
-
-    const auto count = lhs.GetPointCount();
-    assert(count <= 2);
-    switch (count)
-    {
-        case 0:
-            break;
-        case 1:
-            if (lhs.GetPoint(0) != rhs.GetPoint(0))
-            {
-                return false;
-            }
-            break;
-        case 2:
-            if (lhs.GetPoint(0) != rhs.GetPoint(0))
-            {
-                if (lhs.GetPoint(0) != rhs.GetPoint(1))
+        if (lhs.GetLocalPoint() != rhs.GetLocalPoint())
+        {
+            return false;
+        }
+        
+        if (IsValid(lhs.GetLocalNormal()) != IsValid(rhs.GetLocalNormal()))
+        {
+            return false;
+        }
+        
+        if (IsValid(lhs.GetLocalNormal()) && (lhs.GetLocalNormal() != rhs.GetLocalNormal()))
+        {
+            return false;
+        }
+        
+        if (lhs.GetPointCount() != rhs.GetPointCount())
+        {
+            return false;
+        }
+        
+        const auto count = lhs.GetPointCount();
+        assert(count <= 2);
+        switch (count)
+        {
+            case 0:
+                break;
+            case 1:
+                if (lhs.GetPoint(0) != rhs.GetPoint(0))
                 {
                     return false;
                 }
-                if (lhs.GetPoint(1) != rhs.GetPoint(0))
+                break;
+            case 2:
+                if (lhs.GetPoint(0) != rhs.GetPoint(0))
+                {
+                    if (lhs.GetPoint(0) != rhs.GetPoint(1))
+                    {
+                        return false;
+                    }
+                    if (lhs.GetPoint(1) != rhs.GetPoint(0))
+                    {
+                        return false;
+                    }
+                }
+                else if (lhs.GetPoint(1) != rhs.GetPoint(1))
                 {
                     return false;
                 }
-            }
-            else if (lhs.GetPoint(1) != rhs.GetPoint(1))
-            {
-                return false;
-            }
-            break;
+                break;
+        }
     }
-
+    
     return true;
 }
 
-bool playrho::operator!=(const Manifold& lhs, const Manifold& rhs)
+bool playrho::operator!=(const Manifold& lhs, const Manifold& rhs) noexcept
 {
     return !(lhs == rhs);
 }

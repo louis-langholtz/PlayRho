@@ -435,16 +435,16 @@ namespace playrho
         return Manifold::Conf{};
     }
 
-    bool operator==(const Manifold::Point& lhs, const Manifold::Point& rhs);
+    bool operator==(const Manifold::Point& lhs, const Manifold::Point& rhs) noexcept;
     
-    bool operator!=(const Manifold::Point& lhs, const Manifold::Point& rhs);
+    bool operator!=(const Manifold::Point& lhs, const Manifold::Point& rhs) noexcept;
     
     /// Equality operator.
     /// @note In-so-far as manifold points are concerned, order doesn't matter;
     ///    only whether the two manifolds have the same point set.
-    bool operator==(const Manifold& lhs, const Manifold& rhs);
+    bool operator==(const Manifold& lhs, const Manifold& rhs) noexcept;
     
-    bool operator!=(const Manifold& lhs, const Manifold& rhs);
+    bool operator!=(const Manifold& lhs, const Manifold& rhs) noexcept;
 
     constexpr inline Manifold::Manifold(Type t, UnitVec2 ln, Length2D lp, size_type n,
                                               const PointArray& mpa) noexcept:

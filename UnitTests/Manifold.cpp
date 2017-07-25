@@ -171,6 +171,50 @@ TEST(Manifold, GetForFaceB)
     }
 }
 
+TEST(Manifold, EqualsFreeFunction)
+{
+    const auto ln0 = UnitVec2::GetLeft();
+    const auto ln1 = UnitVec2::GetRight();
+    const auto lp0 = Length2D(Real(0) * Meter, Real(0) * Meter);
+    const auto lp1 = Length2D(Real(1) * Meter, Real(1) * Meter);
+    const auto foo = Manifold::GetForFaceB(ln0, lp0);
+    const auto boo = Manifold::GetForFaceA(ln0, lp0);
+    const auto poo = Manifold::GetForFaceA(ln0, lp0);
+    const auto goo = Manifold::GetForFaceA(ln0, lp1);
+    const auto too = Manifold::GetForFaceA(ln1, lp0);
+    EXPECT_TRUE(Manifold{} == Manifold{});
+    EXPECT_TRUE(foo == foo);
+    EXPECT_TRUE(boo == boo);
+    EXPECT_TRUE(boo == poo);
+    EXPECT_TRUE(too == too);
+    EXPECT_FALSE(foo == Manifold{});
+    EXPECT_FALSE(foo == boo);
+    EXPECT_FALSE(poo == goo);
+    EXPECT_FALSE(poo == too);
+}
+
+TEST(Manifold, NotEqualsFreeFunction)
+{
+    const auto ln0 = UnitVec2::GetLeft();
+    const auto ln1 = UnitVec2::GetRight();
+    const auto lp0 = Length2D(Real(0) * Meter, Real(0) * Meter);
+    const auto lp1 = Length2D(Real(1) * Meter, Real(1) * Meter);
+    const auto foo = Manifold::GetForFaceB(ln0, lp0);
+    const auto boo = Manifold::GetForFaceA(ln0, lp0);
+    const auto poo = Manifold::GetForFaceA(ln0, lp0);
+    const auto goo = Manifold::GetForFaceA(ln0, lp1);
+    const auto too = Manifold::GetForFaceA(ln1, lp0);
+    EXPECT_FALSE(Manifold{} != Manifold{});
+    EXPECT_FALSE(foo != foo);
+    EXPECT_FALSE(boo != boo);
+    EXPECT_FALSE(boo != poo);
+    EXPECT_FALSE(too != too);
+    EXPECT_TRUE(foo != Manifold{});
+    EXPECT_TRUE(foo != boo);
+    EXPECT_TRUE(poo != goo);
+    EXPECT_TRUE(poo != too);
+}
+
 TEST(Manifold, GetNameFreeFunction)
 {
     EXPECT_STREQ(GetName(Manifold::e_unset), "unset");
