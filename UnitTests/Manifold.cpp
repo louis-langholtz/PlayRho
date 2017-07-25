@@ -171,6 +171,31 @@ TEST(Manifold, GetForFaceB)
     }
 }
 
+TEST(Manifold, PointEqualsFreeFunction)
+{
+    const auto localPoint1 = Length2D{Real(1) * Meter, Real(2) * Meter};
+    const auto localPoint2 = Length2D{Real(3) * Meter, Real(-1) * Meter};
+    const auto cf1 = ContactFeature{ContactFeature::e_vertex, 1, ContactFeature::e_vertex, 2};
+    const auto cf2 = ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 1};
+    const auto normalImpulse1 = Momentum{Real(1) * Kilogram * MeterPerSecond};
+    const auto normalImpulse2 = Momentum{Real(9) * Kilogram * MeterPerSecond};
+    const auto tangentImpulse1 = Momentum{Real(2) * Kilogram * MeterPerSecond};
+    const auto tangentImpulse2 = Momentum{Real(1.1) * Kilogram * MeterPerSecond};
+    const auto mp1 = Manifold::Point{localPoint1, cf1, normalImpulse1, tangentImpulse1};
+    const auto mp2 = Manifold::Point{localPoint1, cf1, normalImpulse1, tangentImpulse1};
+    const auto mp3 = Manifold::Point{localPoint2, cf1, normalImpulse1, tangentImpulse1};
+    const auto mp4 = Manifold::Point{localPoint1, cf2, normalImpulse1, tangentImpulse1};
+    const auto mp5 = Manifold::Point{localPoint1, cf1, normalImpulse2, tangentImpulse1};
+    const auto mp6 = Manifold::Point{localPoint1, cf1, normalImpulse1, tangentImpulse2};
+    
+    EXPECT_TRUE(mp1 == mp1);
+    EXPECT_TRUE(mp1 == mp2);
+    EXPECT_FALSE(mp1 == mp3);
+    EXPECT_FALSE(mp1 == mp4);
+    EXPECT_FALSE(mp1 == mp5);
+    EXPECT_FALSE(mp1 == mp6);
+}
+
 TEST(Manifold, EqualsFreeFunction)
 {
     const auto ln0 = UnitVec2::GetLeft();
