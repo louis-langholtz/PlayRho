@@ -25,6 +25,19 @@
 
 using namespace playrho;
 
+TEST(BoundedValue, NegativeFloat)
+{
+    EXPECT_EQ(float{Negative<float>(-1.0f)}, -1.0f);
+    EXPECT_EQ(float(Negative<float>(-1.0f)), float(Negative<float>(-1.0f)));
+    EXPECT_EQ(float(Negative<float>(-std::numeric_limits<float>::infinity())), -std::numeric_limits<float>::infinity());
+    
+    EXPECT_THROW(Negative<float>(-0.0f), Negative<float>::exception_type);
+    EXPECT_THROW(Negative<float>{+0.00001f}, Negative<float>::exception_type);
+    EXPECT_THROW(Negative<float>{+1.4f}, Negative<float>::exception_type);
+    EXPECT_THROW(Negative<float>{+std::numeric_limits<float>::infinity()}, Negative<float>::exception_type);
+    EXPECT_THROW(Negative<float>{std::numeric_limits<float>::quiet_NaN()}, Negative<float>::exception_type);
+}
+
 TEST(BoundedValue, NonNegativeFloat)
 {
     EXPECT_EQ(float{NonNegative<float>(1.0f)}, 1.0f);
@@ -59,6 +72,19 @@ TEST(BoundedValue, NonNegativeInt)
     
     EXPECT_THROW(NonNegative<int>{-1}, NonNegative<int>::exception_type);
     EXPECT_THROW(NonNegative<int>{-2}, NonNegative<int>::exception_type);
+}
+
+TEST(BoundedValue, PositiveFloat)
+{
+    EXPECT_EQ(float(Positive<float>(+1.0f)), +1.0f);
+    EXPECT_EQ(float(Positive<float>(+1.0f)), float(Positive<float>(+1.0f)));
+    EXPECT_EQ(float(Positive<float>(+std::numeric_limits<float>::infinity())), +std::numeric_limits<float>::infinity());
+    
+    EXPECT_THROW(Positive<float>(+0.0f), Positive<float>::exception_type);
+    EXPECT_THROW(Positive<float>{-0.00001f}, Positive<float>::exception_type);
+    EXPECT_THROW(Positive<float>{-1.4f}, NonPositive<float>::exception_type);
+    EXPECT_THROW(Positive<float>{-std::numeric_limits<float>::infinity()}, Positive<float>::exception_type);
+    EXPECT_THROW(Positive<float>{std::numeric_limits<float>::quiet_NaN()}, Positive<float>::exception_type);
 }
 
 TEST(BoundedValue, NonPositiveFloat)
