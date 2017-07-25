@@ -1534,6 +1534,8 @@ ToiStepStats World::SolveToi(const StepConf& conf)
         ResetContactsForSolveTOI();
     }
 
+    const auto subStepping = GetSubStepping();
+
     // Find TOI events and solve them.
     for (;;)
     {
@@ -1612,7 +1614,7 @@ ToiStepStats World::SolveToi(const StepConf& conf)
         // Also, some contacts can be destroyed.
         stats.contactsAdded += FindNewContacts();
 
-        if (GetSubStepping())
+        if (subStepping)
         {
             SetStepComplete(false);
             break;
