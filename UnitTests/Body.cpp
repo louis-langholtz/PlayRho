@@ -158,6 +158,31 @@ TEST(Body, WorldCreated)
     }
 }
 
+TEST(Body, SetVelocityDoesNothingToStatic)
+{
+    const auto zeroVelocity = Velocity{
+        LinearVelocity2D{Real(0) * MeterPerSecond, Real(0) * MeterPerSecond},
+        AngularVelocity{Real(0) * RadianPerSecond}
+    };
+
+    World world;
+
+    auto body = world.CreateBody();
+    ASSERT_NE(body, nullptr);
+    ASSERT_FALSE(body->IsAwake());
+    ASSERT_FALSE(body->IsSpeedable());
+    ASSERT_FALSE(body->IsAccelerable());
+    ASSERT_EQ(body->GetVelocity(), zeroVelocity);
+    
+    const auto velocity = Velocity{
+        LinearVelocity2D{Real(1.1) * MeterPerSecond, Real(1.1) * MeterPerSecond},
+        AngularVelocity{Real(1.1) * RadianPerSecond}
+    };
+    body->SetVelocity(velocity);
+    EXPECT_NE(body->GetVelocity(), velocity);
+    EXPECT_EQ(body->GetVelocity(), zeroVelocity);
+}
+
 TEST(Body, CreateFixture)
 {
     World world;
