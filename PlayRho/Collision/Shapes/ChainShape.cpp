@@ -45,12 +45,12 @@ namespace {
 ChainShape::ChainShape(const Conf& conf):
     Shape{conf}
 {
-    if (conf.vertices.size() > MaxChildCount)
+    const auto count = conf.vertices.size();
+    if (count > MaxChildCount)
     {
         throw InvalidArgument("too many vertices");
     }
 
-    const auto count = static_cast<ChildCounter>(conf.vertices.size());
     m_vertices = conf.vertices;
     
     if (count > 1)
