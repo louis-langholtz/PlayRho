@@ -76,8 +76,10 @@ TEST(ChainShape, Accept)
     ChainShape foo{};
     Visitor v;
     ASSERT_FALSE(v.visited);
+    ASSERT_FALSE(v.IsBaseVisited());
     foo.Accept(v);
     EXPECT_TRUE(v.visited);
+    EXPECT_FALSE(v.IsBaseVisited());
 }
 
 TEST(ChainShape, OneVertexLikeDisk)

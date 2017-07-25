@@ -57,7 +57,7 @@ namespace
         va_end(args);
     }
     
-    struct ShapeDumper: public Shape::Visitor
+    class ShapeDumper: public Shape::Visitor
     {
     public:
         void Visit(const DiskShape& shape) override;

@@ -235,35 +235,43 @@ Shape::Builder<ConcreteConf>::UseDensity(NonNegative<Density> value) noexcept
     return static_cast<ConcreteConf&>(*this);
 }
 
-struct Shape::Visitor
+class Shape::Visitor
 {
 public:
     virtual ~Visitor() = default;
     
     virtual void Visit(const DiskShape&)
     {
-        // Intentionally empty (no-op).
+        visited = true;
     }
     
     virtual void Visit(const EdgeShape&)
     {
-        // Intentionally empty (no-op).
+        visited = true;
     }
     
     virtual void Visit(const PolygonShape&)
     {
-        // Intentionally empty (no-op).
+        visited = true;
     }
     
     virtual void Visit(const ChainShape&)
     {
-        // Intentionally empty (no-op).
+        visited = true;
     }
     
     virtual void Visit(const MultiShape&)
     {
-        // Intentionally empty (no-op).
+        visited = true;
     }
+    
+    bool IsBaseVisited() const noexcept
+    {
+        return visited;
+    }
+    
+private:
+    bool visited = false;
 };
 
 inline Length Shape::GetVertexRadius() const noexcept

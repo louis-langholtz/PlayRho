@@ -47,7 +47,7 @@ static void DrawCorner(Drawer& drawer, Length2D p, Length r, Angle a0, Angle a1,
     }
 }
 
-struct ShapeDrawer: public Shape::Visitor
+class ShapeDrawer: public Shape::Visitor
 {
 public:
     ShapeDrawer(Drawer& d, Color c, bool s, Transformation t):

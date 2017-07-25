@@ -71,23 +71,25 @@ TEST(DiskShape, GetInvalidChildThrows)
     EXPECT_THROW(foo.GetChild(1), InvalidArgument);
 }
 
-class Visitor: public Shape::Visitor
-{
-public:
-    void Visit(const DiskShape&) override
-    {
-        visited = true;
-    }
-    bool visited = false;
-};
-
 TEST(DiskShape, Accept)
 {
+    class Visitor: public Shape::Visitor
+    {
+    public:
+        void Visit(const DiskShape&) override
+        {
+            visited = true;
+        }
+        bool visited = false;
+    };
+
     DiskShape foo{};
     Visitor v;
     ASSERT_FALSE(v.visited);
+    ASSERT_FALSE(v.IsBaseVisited());
     foo.Accept(v);
     EXPECT_TRUE(v.visited);
+    EXPECT_FALSE(v.IsBaseVisited());
 }
 
 TEST(DiskShape, TestPoint)
