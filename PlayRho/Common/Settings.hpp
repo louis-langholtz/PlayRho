@@ -88,7 +88,7 @@ struct Defaults<Fixed<std::int32_t,FRACTION_BITS>>
 }
 
 /// @brief Max child count.
-constexpr auto MaxChildCount = std::numeric_limits<std::uint32_t>::max() >> 4;
+constexpr auto MaxChildCount = std::numeric_limits<std::uint32_t>::max() >> 6;
 
 /// @brief Child counter type.
 /// @details Relating to "children" of shape where each child is a convex shape possibly
