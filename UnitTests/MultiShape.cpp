@@ -82,6 +82,15 @@ TEST(MultiShape, Accept)
     EXPECT_FALSE(v.IsBaseVisited());
 }
 
+TEST(MultiShape, BaseVisitorForDiskShape)
+{
+    const auto shape = MultiShape{};
+    auto visitor = Shape::Visitor{};
+    ASSERT_FALSE(visitor.IsBaseVisited());
+    shape.Accept(visitor);
+    EXPECT_TRUE(visitor.IsBaseVisited());
+}
+
 TEST(MultiShape, AddConvexHullWithOnePointSameAsDisk)
 {
     const auto defaultMassData = MassData{};

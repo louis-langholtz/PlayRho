@@ -63,3 +63,12 @@ TEST(EdgeShape, Accept)
     EXPECT_TRUE(v.visited);
     EXPECT_FALSE(v.IsBaseVisited());
 }
+
+TEST(EdgeShape, BaseVisitorForDiskShape)
+{
+    const auto shape = EdgeShape{};
+    auto visitor = Shape::Visitor{};
+    ASSERT_FALSE(visitor.IsBaseVisited());
+    shape.Accept(visitor);
+    EXPECT_TRUE(visitor.IsBaseVisited());
+}

@@ -82,6 +82,15 @@ TEST(ChainShape, Accept)
     EXPECT_FALSE(v.IsBaseVisited());
 }
 
+TEST(ChainShape, BaseVisitorForDiskShape)
+{
+    const auto shape = ChainShape{};
+    auto visitor = Shape::Visitor{};
+    ASSERT_FALSE(visitor.IsBaseVisited());
+    shape.Accept(visitor);
+    EXPECT_TRUE(visitor.IsBaseVisited());
+}
+
 TEST(ChainShape, OneVertexLikeDisk)
 {
     const auto vertexRadius = Real(1) * Meter;
@@ -179,4 +188,16 @@ TEST(ChainShape, WithCircleVertices)
     const auto massData = foo.GetMassData();
     EXPECT_NEAR(static_cast<double>(massData.center.GetX() / Meter), 0.0, 0.0001);
     EXPECT_NEAR(static_cast<double>(massData.center.GetY() / Meter), 2.4142134189605713, 0.0001);
+}
+
+TEST(ChainShape, TooManyVertices)
+{
+    const auto density = Real(1) * KilogramPerSquareMeter;
+    const auto vertexRadius = Meter / Real(10);
+    
+    auto conf = ChainShape::Conf{};
+    conf.density = density;
+    conf.vertexRadius = vertexRadius;
+    conf.vertices = std::vector<Length2D>(MaxChildCount + 1);
+    EXPECT_THROW(ChainShape{conf}, InvalidArgument);
 }

@@ -92,6 +92,15 @@ TEST(DiskShape, Accept)
     EXPECT_FALSE(v.IsBaseVisited());
 }
 
+TEST(DiskShape, BaseVisitorForDiskShape)
+{
+    const auto shape = DiskShape{Real{2} * Meter};
+    auto visitor = Shape::Visitor{};
+    ASSERT_FALSE(visitor.IsBaseVisited());
+    shape.Accept(visitor);
+    EXPECT_TRUE(visitor.IsBaseVisited());
+}
+
 TEST(DiskShape, TestPoint)
 {
     const auto radius = Real(1) * Meter;

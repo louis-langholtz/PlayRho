@@ -73,6 +73,15 @@ TEST(PolygonShape, Accept)
     EXPECT_FALSE(v.IsBaseVisited());
 }
 
+TEST(PolygonShape, BaseVisitorForDiskShape)
+{
+    const auto shape = PolygonShape{};
+    auto visitor = Shape::Visitor{};
+    ASSERT_FALSE(visitor.IsBaseVisited());
+    shape.Accept(visitor);
+    EXPECT_TRUE(visitor.IsBaseVisited());
+}
+
 TEST(PolygonShape, FindLowestRightMostVertex)
 {
     Length2D vertices[4];
