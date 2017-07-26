@@ -608,6 +608,47 @@ TEST(World, AwakenFreeFunction)
     EXPECT_TRUE(body->IsAwake());
 }
 
+TEST(World, GetTouchingCountFreeFunction)
+{
+    World world;
+    EXPECT_EQ(GetTouchingCount(world), ContactCounter(0));
+    auto stepConf = StepConf{};
+    world.Step(stepConf);
+    EXPECT_EQ(GetTouchingCount(world), ContactCounter(0));
+    stepConf.SetInvTime(Real(100) * Hertz);
+    world.Step(stepConf);
+    EXPECT_EQ(GetTouchingCount(world), ContactCounter(0));
+}
+
+TEST(World, IsValidShapeMethod)
+{
+    World world;
+    EXPECT_FALSE(world.IsValid(std::shared_ptr<const Shape>(nullptr)));
+
+    const auto radius = Real(1) * Meter;
+    const auto shape = std::make_shared<DiskShape>(radius);
+    EXPECT_TRUE(world.IsValid(shape));
+}
+
+TEST(World, ShiftOrigin)
+{
+    const auto origin = Length2D{Real(0) * Meter, Real(0) * Meter};
+    const auto location = Length2D{Real(1) * Meter, Real(1) * Meter};
+    
+    ASSERT_NE(origin, location);
+
+    World world;
+    EXPECT_NO_THROW(world.ShiftOrigin(origin));
+    
+    auto bodyDef = BodyDef{};
+    bodyDef.UseLocation(location);
+    const auto body = world.CreateBody(bodyDef);
+    EXPECT_EQ(body->GetLocation(), location);
+
+    EXPECT_NO_THROW(world.ShiftOrigin(location));
+    EXPECT_EQ(body->GetLocation(), origin);
+}
+
 TEST(World, DynamicEdgeBodyHasCorrectMass)
 {
     World world;

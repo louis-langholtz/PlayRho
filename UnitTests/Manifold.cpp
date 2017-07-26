@@ -207,6 +207,19 @@ TEST(Manifold, EqualsFreeFunction)
     const auto poo = Manifold::GetForFaceA(ln0, lp0);
     const auto goo = Manifold::GetForFaceA(ln0, lp1);
     const auto too = Manifold::GetForFaceA(ln1, lp0);
+    //const auto nottoo = Manifold::GetForFaceA(UnitVec2{}, lp0);
+    const auto localPoint1 = Length2D{Real(1) * Meter, Real(2) * Meter};
+    const auto cf1 = ContactFeature{ContactFeature::e_vertex, 1, ContactFeature::e_vertex, 2};
+    const auto cf2 = ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 1};
+    const auto normalImpulse1 = Momentum{Real(1) * Kilogram * MeterPerSecond};
+    const auto tangentImpulse1 = Momentum{Real(2) * Kilogram * MeterPerSecond};
+    const auto mp0 = Manifold::Point{localPoint1, cf1, normalImpulse1, tangentImpulse1};
+    const auto mp1 = Manifold::Point{localPoint1, cf2, normalImpulse1, tangentImpulse1};
+    const auto faceA000 = Manifold::GetForFaceA(ln0, lp0, mp0);
+    const auto faceA0001 = Manifold::GetForFaceA(ln0, lp0, mp0, mp1);
+    const auto faceA001 = Manifold::GetForFaceA(ln0, lp0, mp1);
+    const auto faceA0010 = Manifold::GetForFaceA(ln0, lp0, mp1, mp0);
+    const auto faceA0011 = Manifold::GetForFaceA(ln0, lp0, mp1, mp1);
     EXPECT_TRUE(Manifold{} == Manifold{});
     EXPECT_TRUE(foo == foo);
     EXPECT_TRUE(boo == boo);
@@ -216,6 +229,11 @@ TEST(Manifold, EqualsFreeFunction)
     EXPECT_FALSE(foo == boo);
     EXPECT_FALSE(poo == goo);
     EXPECT_FALSE(poo == too);
+    //EXPECT_FALSE(too == nottoo);
+    EXPECT_FALSE(faceA000 == foo);
+    EXPECT_FALSE(faceA000 == faceA001);
+    EXPECT_TRUE(faceA0001 == faceA0010);
+    EXPECT_FALSE(faceA0010 == faceA0011);
 }
 
 TEST(Manifold, NotEqualsFreeFunction)
