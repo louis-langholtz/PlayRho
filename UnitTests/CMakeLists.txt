@@ -20,7 +20,7 @@ add_executable(UnitTests ${UnitTest_SRCS})
 
 # enable code coverage generation (only with GCC for now)
 if(${PLAYRHO_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-  message("UnitTests: Adding definitions for coverage analysis.")
+  message(STATUS "UnitTests: Adding definitions for coverage analysis.")
   add_definitions(-fprofile-arcs -ftest-coverage)
 endif()
 

@@ -1,7 +1,7 @@
 if(NOT PLAYRHO_REALNUM_TYPE)
 	set(PLAYRHO_REALNUM_TYPE float)
 endif()
-message("PLAYRHO_REALNUM_TYPE=${PLAYRHO_REALNUM_TYPE}")
+message(STATUS "PLAYRHO_REALNUM_TYPE=${PLAYRHO_REALNUM_TYPE}")
 
 file(REMOVE "Common/RealNum.hpp")
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Common/RealNum.hpp.in" "${CMAKE_CURRENT_SOURCE_DIR}/Common/RealNum.hpp")
@@ -54,7 +54,7 @@ file(GLOB PLAYRHO_General_HDRS
 include_directories( ../ )
 
 if (${PLAYRHO_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-	message("lib: Adding definitions for coverage analysis.")
+	message(STATUS "lib: Adding definitions for coverage analysis.")
 	add_definitions(-fprofile-arcs -ftest-coverage)
 endif()
 
