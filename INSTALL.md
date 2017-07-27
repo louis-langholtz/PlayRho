@@ -4,14 +4,53 @@ This project can be built a few different ways depending on the target
 platform and what exactly is desired to be built. It can be installed then
 after being built.
 
-Specific instructions for building the `Testbed` GUI
-application is available in the [`Testbed/` folder's](Testbed/)
-`README.md` file.
+The following sections provide per-platform and per-tool build and
+install instructions specific to simply building the PlayRho library.
+The library can then be included and linked into your application(s).
 
-The following sections provide general per-platform and per-tool build and
-install instructions.
+Additionally, PlayRho provides some demo/test applications which may provide
+extra instructions for building those after getting the library built:
+- For the `Testbed` GUI application, see the [`Testbed/` folder's](Testbed/)
+  `README.md` file.
 
-## Linux
+## Prerequisite Tasks
+
+1. Make sure you have the tools that will be needed already available.
+  - C++14 Compiler (Installed for your platform).
+  - CMake (for Windows, OS X, or Linux),
+    Visual Studio 2017 (for Windows or OS X), and/or Xcode (for OS X).
+  - Git, if you want to do development work.
+2. Decide where you want to put the source code.
+3. Download the PlayRho source code to your chosen location.
+
+Here's instructions for some ways to download the source code to your computer.
+
+### Download Sources As A ZIP File From Your Browser
+
+This is an option if you have software for reading and expanding ZIP files.
+
+1. Click on the `Clone or download` button from https://github.com/louis-langholtz/PlayRho;
+2. Click on the `Download ZIP` link.
+3. Decide where you want to place the source code and then use your ZIP reading
+   and expanding software to put it there for you.
+
+### Open the Sources in Your Desktop From Your Browser
+
+This is an option if you have (or want to have) the GitHub Desktop Application
+installed on your system and you want to use it.
+
+### Download Sources Via A Command Line Prompt & Git Clone
+
+From a command prompt like a Bash Shell,
+enter code such as the following where `${YOUR_CHOSEN_PATH}`
+is the directory/folder you decided to hold the sources:
+    cd ${YOUR_CHOSEN_PATH}
+    git clone --recursive https://github.com/louis-langholtz/PlayRho.git
+
+This should download the sources into the `${YOUR_CHOSEN_PATH}` directory
+under the sub-directory of `PlayRho`.
+
+## Building On Linux Systems
 
 ### Using CMake
 
@@ -24,7 +63,7 @@ a tool like `sudo` to escalate your privileges in order to be able to install
 into the established folders. The CMake configuration file has a few options
 that can be modified to build different targets.
 
-## Mac OS X
+## Building On Mac OS X
 
 ### Using Xcode
 
@@ -36,13 +75,19 @@ application targets on and for the Mac OS X platform.
 
 This has not been tested. No further information is currently available.
 
-## Windows
+## Building On Windows
 
 ### Using Visual Studio 2017
 
 The [`Build/vs2017`](Build/vs2017) folder contains project files for
 Visual Studio 2017. These project files can be used to build the library
 on and for the Windows platform.
+
+### Using CMake
+
+Start CMake up with the location of the source code identified for it.
+By default, only `PLAYRHO_BUILD_STATIC` has a defined value and that should be
+all that's necessary for simply building the library itself.
 
 ## Older Build Instructions
 
