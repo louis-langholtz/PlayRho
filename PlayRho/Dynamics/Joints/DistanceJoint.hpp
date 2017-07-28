@@ -25,43 +25,45 @@
 
 namespace playrho {
 
-/// Distance joint definition. This requires defining an
-/// anchor point on both bodies and the non-zero length of the
-/// distance joint. The definition uses local anchor points
-/// so that the initial configuration can violate the constraint
-/// slightly. This helps when saving and loading a game.
+/// @brief Distance joint definition.
+/// @details This requires defining an anchor point on both bodies and the non-zero
+/// length of the distance joint. The definition uses local anchor points so that
+/// the initial configuration can violate the constraint slightly. This helps when
+//  saving and loading a game.
 /// @warning Do not use a zero or short length.
 struct DistanceJointDef : public JointDef
 {
     constexpr DistanceJointDef() noexcept: JointDef{JointType::Distance} {}
+
     DistanceJointDef(const DistanceJointDef& copy) = default;
 
-    /// Initialize the bodies, anchors, and length using the world anchors.
-    DistanceJointDef(Body* bodyA, Body* bodyB,
+    /// @brief Initializing constructor.
+    /// @details Initialize the bodies, anchors, and length using the world anchors.
+    DistanceJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB,
                      const Length2D anchorA = Length2D(0, 0),
                      const Length2D anchorB = Length2D(0, 0),
                      NonNegative<Frequency> freq = NonNegative<Frequency>{0},
                      Real damp = 0) noexcept;
 
-    /// The local anchor point relative to bodyA's origin.
+    /// @brief Local anchor point relative to bodyA's origin.
     Length2D localAnchorA = Length2D(0, 0);
 
-    /// The local anchor point relative to bodyB's origin.
+    /// @brief Local anchor point relative to bodyB's origin.
     Length2D localAnchorB = Length2D(0, 0);
 
-    /// The natural length between the anchor points.
+    /// @brief Natural length between the anchor points.
     Length length = Real{1} * Meter;
 
-    /// Mass-spring-damper frequency in Hertz.
+    /// @brief Mass-spring-damper frequency.
     /// @note 0 disables softness.
-    /// @note Should be 0 or greater.
     NonNegative<Frequency> frequency = NonNegative<Frequency>{0};
 
-    /// The damping ratio. 0 = no damping, 1 = critical damping.
+    /// @brief Damping ratio.
+    /// @note 0 = no damping, 1 = critical damping.
     Real dampingRatio = 0;
 };
 
-/// Distance Joint.
+/// @brief Distance Joint.
 /// @details
 /// A distance joint constrains two points on two bodies
 /// to remain at a fixed distance from each other. You can view
@@ -76,18 +78,17 @@ public:
     Length2D GetAnchorA() const override;
     Length2D GetAnchorB() const override;
 
-    /// Get the reaction force given the inverse time step.
-    /// Unit is N.
+    /// @brief Get the reaction force given the inverse time step.
     Force2D GetReactionForce(Frequency inv_dt) const override;
 
-    /// Get the reaction torque given the inverse time step.
-    /// Unit is N*m. This is always zero for a distance joint.
+    /// @brief Gets the reaction torque given the inverse time step.
+    /// @note This is always zero for a distance joint.
     Torque GetReactionTorque(Frequency inv_dt) const override;
 
-    /// The local anchor point relative to bodyA's origin.
+    /// @brief Gets the local anchor point relative to bodyA's origin.
     Length2D GetLocalAnchorA() const noexcept { return m_localAnchorA; }
 
-    /// The local anchor point relative to bodyB's origin.
+    /// @brief Gets the local anchor point relative to bodyB's origin.
     Length2D GetLocalAnchorB() const noexcept { return m_localAnchorB; }
 
     /// Set/get the natural length.

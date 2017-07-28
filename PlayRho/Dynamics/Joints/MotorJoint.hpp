@@ -21,6 +21,7 @@
 #define B2_MOTOR_JOINT_H
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Common/BoundedValue.hpp>
 
 namespace playrho {
 
@@ -30,7 +31,7 @@ struct MotorJointDef : public JointDef
     constexpr MotorJointDef() noexcept: JointDef(JointType::Motor) {}
 
     /// Initialize the bodies and offsets using the current transforms.
-    MotorJointDef(Body* bodyA, Body* bodyB) noexcept;
+    MotorJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB) noexcept;
 
     /// Position of bodyB minus the position of bodyA, in bodyA's frame.
     Length2D linearOffset = Length2D(0, 0);
@@ -48,7 +49,8 @@ struct MotorJointDef : public JointDef
     Real correctionFactor = Real(0.3);
 };
 
-/// A motor joint is used to control the relative motion
+/// @brief Motor joint.
+/// @details A motor joint is used to control the relative motion
 /// between two bodies. A typical usage is to control the movement
 /// of a dynamic body with respect to the ground.
 class MotorJoint : public Joint

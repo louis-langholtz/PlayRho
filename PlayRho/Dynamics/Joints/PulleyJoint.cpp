@@ -37,15 +37,15 @@ using namespace playrho;
 // K = J * invM * JT
 //   = invMass1 + invI1 * cross(r1, u1)^2 + ratio^2 * (invMass2 + invI2 * cross(r2, u2)^2)
 
-PulleyJointDef::PulleyJointDef(Body* bA, Body* bB,
+PulleyJointDef::PulleyJointDef(NonNull<Body*> bA, NonNull<Body*> bB,
                                const Length2D groundA, const Length2D groundB,
                                const Length2D anchorA, const Length2D anchorB,
                                Real r):
     JointDef{JointType::Pulley, bA, bB, true},
     groundAnchorA{groundA},
     groundAnchorB{groundB},
-    localAnchorA{GetLocalPoint(*bodyA, anchorA)},
-    localAnchorB{GetLocalPoint(*bodyB, anchorB)},
+    localAnchorA{GetLocalPoint(*bA, anchorA)},
+    localAnchorB{GetLocalPoint(*bB, anchorB)},
     lengthA{GetLength(anchorA - groundA)},
     lengthB{GetLength(anchorB - groundB)},
     ratio{r}

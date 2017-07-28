@@ -62,7 +62,7 @@ enum class JointType: std::uint8_t
     Motor
 };
 
-/// Abstract base Joint Definition class.
+/// @brief Abstract base Joint definition class.
 /// @details Joint definitions are used to construct joints.
 /// @note This class is not meant to be directly instantiated; it is meant
 ///   to be inherreted from.
@@ -90,10 +90,10 @@ struct JointDef
     /// The joint type is set automatically for concrete joint types.
     const JointType type;
 
-    /// The first attached body.
+    /// @brief First attached body.
     Body* bodyA = nullptr;
 
-    /// The second attached body.
+    /// @brief Second attached body.
     Body* bodyB = nullptr;
 
     /// Set this flag to true if the attached bodies should collide.
@@ -103,10 +103,9 @@ struct JointDef
     void* userData = nullptr;
 };
 
-/// Base Joint class.
-/// @details
-/// Joints are used to constraint two bodies together in various fashions.
-/// Some joints also feature limits and motors.
+/// @brief Base joint class.
+/// @details Joints are used to constraint two bodies together in various fashions.
+///   Some joints also feature limits and motors.
 class Joint
 {
 public:
@@ -120,13 +119,13 @@ public:
     
     static bool IsOkay(const JointDef& def) noexcept;
 
-    /// Get the type of the concrete joint.
+    /// @brief Gets the type of the concrete joint.
     JointType GetType() const noexcept;
 
-    /// Get the first body attached to this joint.
+    /// @brief Gets the first body attached to this joint.
     Body* GetBodyA() const noexcept;
 
-    /// Get the second body attached to this joint.
+    /// @brief Gets the second body attached to this joint.
     Body* GetBodyB() const noexcept;
 
     /// Get the anchor point on bodyA in world coordinates.
@@ -147,12 +146,12 @@ public:
     /// Set the user data pointer.
     void SetUserData(void* data) noexcept;
 
-    /// Get collide connected.
-    /// Note: modifying the collide connect flag won't work correctly because
-    /// the flag is only checked when fixture AABBs begin to overlap.
+    /// @brief Gets collide connected.
+    /// @note Modifying the collide connect flag won't work correctly because
+    ///   the flag is only checked when fixture AABBs begin to overlap.
     bool GetCollideConnected() const noexcept;
 
-    /// Shift the origin for any points stored in world coordinates.
+    /// @brief Shifts the origin for any points stored in world coordinates.
     virtual void ShiftOrigin(const Length2D newOrigin) { NOT_USED(newOrigin);  }
 
 protected:

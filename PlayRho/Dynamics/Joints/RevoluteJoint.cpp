@@ -38,7 +38,8 @@ using namespace playrho;
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-RevoluteJointDef::RevoluteJointDef(Body* bA, Body* bB, const Length2D anchor, bool cc):
+RevoluteJointDef::RevoluteJointDef(NonNull<Body*> bA, NonNull<Body*> bB, const Length2D anchor,
+                                   bool cc) noexcept:
     JointDef{JointType::Revolute, bA, bB, cc},
     localAnchorA{GetLocalPoint(*bA, anchor)},
     localAnchorB{GetLocalPoint(*bB, anchor)},

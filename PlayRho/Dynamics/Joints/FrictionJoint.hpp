@@ -24,7 +24,7 @@
 
 namespace playrho {
 
-/// Friction joint definition.
+/// @brief Friction joint definition.
 struct FrictionJointDef : public JointDef
 {
     constexpr FrictionJointDef() noexcept: JointDef(JointType::Friction) {}
@@ -34,20 +34,21 @@ struct FrictionJointDef : public JointDef
     ///   anchor and world axis.
     FrictionJointDef(Body* bodyA, Body* bodyB, const Length2D anchor) noexcept;
 
-    /// The local anchor point relative to bodyA's origin.
+    /// @brief Local anchor point relative to bodyA's origin.
     Length2D localAnchorA = Length2D(0, 0);
 
-    /// The local anchor point relative to bodyB's origin.
+    /// @brief Local anchor point relative to bodyB's origin.
     Length2D localAnchorB = Length2D(0, 0);
 
-    /// The maximum friction force in N.
+    /// @brief Maximum friction force.
     Force maxForce = Force{0};
 
-    /// The maximum friction torque in N-m.
+    /// @brief Maximum friction torque.
     Torque maxTorque = Torque{0};
 };
 
-/// Friction joint. This is used for top-down friction.
+/// @brief Friction joint.
+/// @details This is used for top-down friction.
 /// It provides 2D translational friction and angular friction.
 class FrictionJoint : public Joint
 {
@@ -86,12 +87,12 @@ private:
 
     Length2D m_localAnchorA;
     Length2D m_localAnchorB;
-
-    // Solver shared
-    Momentum2D m_linearImpulse = Momentum2D{0, 0};
-    AngularMomentum m_angularImpulse = AngularMomentum{0};
     Force m_maxForce;
     Torque m_maxTorque;
+
+    // Solver shared data - data saved & updated over multiple InitVelocityConstraints calls.
+    Momentum2D m_linearImpulse = Momentum2D{0, 0};
+    AngularMomentum m_angularImpulse = AngularMomentum{0};
 
     // Solver temp
     Length2D m_rA;

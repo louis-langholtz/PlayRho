@@ -40,7 +40,7 @@ using namespace playrho;
 // K = J * invM * JT
 //   = invMass1 + invI1 * cross(r1, u)^2 + invMass2 + invI2 * cross(r2, u)^2
 
-DistanceJointDef::DistanceJointDef(Body* bA, Body* bB,
+DistanceJointDef::DistanceJointDef(NonNull<Body*> bA, NonNull<Body*> bB,
                                    const Length2D anchor1, const Length2D anchor2,
                                    NonNegative<Frequency> freq, Real damp) noexcept:
     JointDef{JointType::Distance, bA, bB},

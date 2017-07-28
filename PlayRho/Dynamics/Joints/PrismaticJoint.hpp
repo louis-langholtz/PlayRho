@@ -21,10 +21,12 @@
 #define B2_PRISMATIC_JOINT_H
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Common/BoundedValue.hpp>
 
 namespace playrho {
 
-/// Prismatic joint definition. This requires defining a line of
+/// @brief Prismatic joint definition.
+/// @details This requires defining a line of
 /// motion using an axis and an anchor point. The definition uses local
 /// anchor points and a local axis so that the initial configuration
 /// can violate the constraint slightly. The joint translation is zero
@@ -36,9 +38,11 @@ struct PrismaticJointDef : public JointDef
 
     PrismaticJointDef(const PrismaticJointDef& copy) = default;
     
-    /// Initialize the bodies, anchors, axis, and reference angle using the world
-    /// anchor and unit world axis.
-    PrismaticJointDef(Body* bodyA, Body* bodyB, const Length2D anchor, const UnitVec2 axis) noexcept;
+    /// @brief Initializing constructor.
+    /// @details Initializes the bodies, anchors, axis, and reference angle using the world
+    ///   anchor and unit world axis.
+    PrismaticJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB, const Length2D anchor,
+                      const UnitVec2 axis) noexcept;
 
     /// The local anchor point relative to bodyA's origin.
     Length2D localAnchorA = Length2D(0, 0);
@@ -71,13 +75,13 @@ struct PrismaticJointDef : public JointDef
     AngularVelocity motorSpeed = AngularVelocity{0};
 };
 
-/// Prismatic Joint.
+/// @brief Prismatic Joint.
 ///
 /// @details This joint provides one degree of freedom: translation along an axis fixed
-/// in bodyA. Relative rotation is prevented.
+///   in bodyA. Relative rotation is prevented.
 ///
 /// @note You can use a joint limit to restrict the range of motion and a joint motor
-/// to drive the motion or to model joint friction.
+///   to drive the motion or to model joint friction.
 ///
 class PrismaticJoint : public Joint
 {
@@ -90,31 +94,31 @@ public:
     Force2D GetReactionForce(Frequency inv_dt) const override;
     Torque GetReactionTorque(Frequency inv_dt) const override;
 
-    /// The local anchor point relative to bodyA's origin.
+    /// @brief Gets the local anchor point relative to bodyA's origin.
     Length2D GetLocalAnchorA() const { return m_localAnchorA; }
 
-    /// The local anchor point relative to bodyB's origin.
+    /// @brief Gets the local anchor point relative to bodyB's origin.
     Length2D GetLocalAnchorB() const  { return m_localAnchorB; }
 
-    /// The local joint axis relative to bodyA.
+    /// @brief Gets local joint axis relative to bodyA.
     UnitVec2 GetLocalAxisA() const { return m_localXAxisA; }
 
-    /// Get the reference angle.
+    /// @brief Gets the reference angle.
     Angle GetReferenceAngle() const { return m_referenceAngle; }
 
-    /// Is the joint limit enabled?
+    /// @brief Is the joint limit enabled?
     bool IsLimitEnabled() const noexcept;
 
     /// Enable/disable the joint limit.
     void EnableLimit(bool flag) noexcept;
 
-    /// Get the lower joint limit.
+    /// @brief Gets the lower joint limit.
     Length GetLowerLimit() const noexcept;
 
-    /// Get the upper joint limit.
+    /// @brief Gets the upper joint limit.
     Length GetUpperLimit() const noexcept;
 
-    /// Set the joint limits.
+    /// @brief Sets the joint limits.
     void SetLimits(Length lower, Length upper) noexcept;
 
     /// Is the joint motor enabled?
@@ -123,17 +127,17 @@ public:
     /// Enable/disable the joint motor.
     void EnableMotor(bool flag) noexcept;
 
-    /// Set the motor speed.
+    /// @brief Sets the motor speed.
     void SetMotorSpeed(AngularVelocity speed) noexcept;
 
-    /// Get the motor speed.
+    /// @brief Gets the motor speed.
     AngularVelocity GetMotorSpeed() const noexcept;
 
-    /// Set the maximum motor force.
+    /// @brief Sets the maximum motor force.
     void SetMaxMotorForce(Force force) noexcept;
     Force GetMaxMotorForce() const noexcept { return m_maxMotorForce; }
 
-    /// Get the current motor force given the inverse time step.
+    /// @brief Gets the current motor force given the inverse time step.
     Force GetMotorForce(Frequency inv_dt) const noexcept;
 
 private:

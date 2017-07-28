@@ -21,22 +21,25 @@
 #define B2_WHEEL_JOINT_H
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Common/BoundedValue.hpp>
 
 namespace playrho {
 
-/// Wheel joint definition. This requires defining a line of
-/// motion using an axis and an anchor point. The definition uses local
-/// anchor points and a local axis so that the initial configuration
-/// can violate the constraint slightly. The joint translation is zero
-/// when the local anchor points coincide in world space. Using local
-/// anchors and a local axis helps when saving and loading a game.
+/// @brief Wheel joint definition.
+/// @details This requires defining a line of
+///   motion using an axis and an anchor point. The definition uses local
+///   anchor points and a local axis so that the initial configuration
+///   can violate the constraint slightly. The joint translation is zero
+///   when the local anchor points coincide in world space. Using local
+///   anchors and a local axis helps when saving and loading a game.
 struct WheelJointDef : public JointDef
 {
     constexpr WheelJointDef() noexcept: JointDef(JointType::Wheel) {}
 
     /// Initialize the bodies, anchors, axis, and reference angle using the world
     /// anchor and world axis.
-    WheelJointDef(Body* bodyA, Body* bodyB, const Length2D anchor, const UnitVec2 axis) noexcept;
+    WheelJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB, const Length2D anchor,
+                  const UnitVec2 axis) noexcept;
 
     /// The local anchor point relative to bodyA's origin.
     Length2D localAnchorA = Length2D(0, 0);
@@ -63,10 +66,11 @@ struct WheelJointDef : public JointDef
     Real dampingRatio = 0.7f;
 };
 
-/// A wheel joint. This joint provides two degrees of freedom: translation
-/// along an axis fixed in bodyA and rotation in the plane. In other words, it is a point to
-/// line constraint with a rotational motor and a linear spring/damper.
-/// This joint is designed for vehicle suspensions.
+/// @brief Wheel joint.
+/// @details This joint provides two degrees of freedom: translation
+///   along an axis fixed in bodyA and rotation in the plane. In other words, it is a point to
+///   line constraint with a rotational motor and a linear spring/damper.
+///   This joint is designed for vehicle suspensions.
 class WheelJoint : public Joint
 {
 public:

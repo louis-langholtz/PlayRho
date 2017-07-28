@@ -25,8 +25,8 @@
 
 namespace playrho {
 
-/// Mouse joint definition. This requires a world target point,
-/// tuning parameters, and the time step.
+/// @brief Mouse joint definition.
+/// @details This requires a world target point, tuning parameters, and the time step.
 struct MouseJointDef : public JointDef
 {
     constexpr MouseJointDef() noexcept: JointDef(JointType::Mouse) {}
@@ -52,10 +52,9 @@ struct MouseJointDef : public JointDef
     Real dampingRatio = 0.7f;
 };
 
-/// Mouse Joint.
+/// @brief Mouse Joint.
 ///
-/// @details
-/// A mouse joint is used to make a point on a body track a
+/// @details A mouse joint is used to make a point on a body track a
 ///   specified world point. This a soft constraint with a maximum
 ///   force. This allows the constraint to stretch and without
 ///   applying huge forces.

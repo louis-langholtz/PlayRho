@@ -92,7 +92,8 @@ using namespace playrho;
 // Now compute impulse to be applied:
 // df = f2 - f1
 
-PrismaticJointDef::PrismaticJointDef(Body* bA, Body* bB, const Length2D anchor, const UnitVec2 axis) noexcept:
+PrismaticJointDef::PrismaticJointDef(NonNull<Body*> bA, NonNull<Body*> bB, const Length2D anchor,
+                                     const UnitVec2 axis) noexcept:
     JointDef{JointType::Prismatic, bA, bB},
     localAnchorA{GetLocalPoint(*bA, anchor)},
     localAnchorB{GetLocalPoint(*bB, anchor)},

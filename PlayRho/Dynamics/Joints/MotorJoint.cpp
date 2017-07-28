@@ -36,11 +36,12 @@ using namespace playrho;
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-MotorJointDef::MotorJointDef(Body* bA, Body* bB) noexcept:
+MotorJointDef::MotorJointDef(NonNull<Body*> bA, NonNull<Body*> bB) noexcept:
     JointDef{JointType::Motor, bA, bB},
-    linearOffset{GetLocalPoint(*bodyA, bodyB->GetLocation())},
-    angularOffset{bodyB->GetAngle() - bodyA->GetAngle()}
+    linearOffset{GetLocalPoint(*bA, bB->GetLocation())},
+    angularOffset{bB->GetAngle() - bA->GetAngle()}
 {
+    // Intentionally empty.
 }
 
 MotorJoint::MotorJoint(const MotorJointDef& def):

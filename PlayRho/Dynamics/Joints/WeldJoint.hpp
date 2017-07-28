@@ -21,10 +21,12 @@
 #define B2_WELD_JOINT_H
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Common/BoundedValue.hpp>
 
 namespace playrho {
 
-/// Weld joint definition. You need to specify local anchor points
+/// @brief Weld joint definition.
+/// @details You need to specify local anchor points
 /// where they are attached and the relative body angle. The position
 /// of the anchor points is important for computing the reaction torque.
 struct WeldJointDef : public JointDef
@@ -33,7 +35,7 @@ struct WeldJointDef : public JointDef
 
     /// Initialize the bodies, anchors, and reference angle using a world
     /// anchor point.
-    WeldJointDef(Body* bodyA, Body* bodyB, const Length2D anchor) noexcept;
+    WeldJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB, const Length2D anchor) noexcept;
 
     /// The local anchor point relative to bodyA's origin.
     Length2D localAnchorA = Length2D(0, 0);
@@ -52,7 +54,8 @@ struct WeldJointDef : public JointDef
     Real dampingRatio = 0;
 };
 
-/// A weld joint essentially glues two bodies together. A weld joint may
+/// @brief Weld joint.
+/// @details A weld joint essentially glues two bodies together. A weld joint may
 /// distort somewhat because the island constraint solver is approximate.
 class WeldJoint : public Joint
 {

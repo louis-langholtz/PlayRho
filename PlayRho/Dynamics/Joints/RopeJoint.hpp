@@ -24,10 +24,10 @@
 
 namespace playrho {
 
-/// Rope joint definition. This requires two body anchor points and
-/// a maximum lengths.
-/// Note: by default the connected objects will not collide.
-/// see collideConnected in JointDef.
+/// @brief Rope joint definition.
+/// @details This requires two body anchor points and a maximum lengths.
+/// @note By default the connected objects will not collide.
+/// @see collideConnected in JointDef.
 struct RopeJointDef : public JointDef
 {
     constexpr RopeJointDef() noexcept: JointDef(JointType::Rope) {}
@@ -44,14 +44,15 @@ struct RopeJointDef : public JointDef
     Length maxLength = Length{0};
 };
 
-/// A rope joint enforces a maximum distance between two points
-/// on two bodies. It has no other effect.
-/// Warning: if you attempt to change the maximum length during
-/// the simulation you will get some non-physical behavior.
-/// A model that would allow you to dynamically modify the length
-/// would have some sponginess, so I chose not to implement it
-/// that way. See DistanceJoint if you want to dynamically
-/// control length.
+/// @brief Rope joint.
+/// @details A rope joint enforces a maximum distance between two points
+///   on two bodies. It has no other effect.
+/// @warning If you attempt to change the maximum length during
+///   the simulation you will get some non-physical behavior.
+///   A model that would allow you to dynamically modify the length
+///   would have some sponginess, so it was decided not to implement it
+///   that way. See DistanceJoint if you want to dynamically
+///   control length.
 class RopeJoint : public Joint
 {
 public:

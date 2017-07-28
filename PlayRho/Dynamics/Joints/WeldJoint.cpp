@@ -39,7 +39,7 @@ using namespace playrho;
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-WeldJointDef::WeldJointDef(Body* bA, Body* bB, const Length2D anchor) noexcept:
+WeldJointDef::WeldJointDef(NonNull<Body*> bA, NonNull<Body*> bB, const Length2D anchor) noexcept:
     JointDef{JointType::Weld, bA, bB},
     localAnchorA{GetLocalPoint(*bA, anchor)},
     localAnchorB{GetLocalPoint(*bB, anchor)},

@@ -21,11 +21,12 @@
 #define B2_PULLEY_JOINT_H
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Common/BoundedValue.hpp>
 
 namespace playrho {
 
-/// Pulley joint definition. This requires two ground anchors,
-/// two dynamic body anchor points, and a pulley ratio.
+/// @brief Pulley joint definition.
+/// @details This requires two ground anchors, two dynamic body anchor points, and a pulley ratio.
 struct PulleyJointDef : public JointDef
 {
     PulleyJointDef() noexcept: JointDef(JointType::Pulley)
@@ -34,7 +35,7 @@ struct PulleyJointDef : public JointDef
     }
 
     /// Initialize the bodies, anchors, lengths, max lengths, and ratio using the world anchors.
-    PulleyJointDef(Body* bodyA, Body* bodyB,
+    PulleyJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB,
                     const Length2D groundAnchorA, const Length2D groundAnchorB,
                     const Length2D anchorA, const Length2D anchorB,
                     Real ratio);
@@ -61,14 +62,14 @@ struct PulleyJointDef : public JointDef
     Real ratio = 1;
 };
 
-/// The pulley joint is connected to two bodies and two fixed ground points.
-/// The pulley supports a ratio such that:
-/// length1 + ratio * length2 <= constant
-/// Yes, the force transmitted is scaled by the ratio.
-/// Warning: the pulley joint can get a bit squirrelly by itself. They often
-/// work better when combined with prismatic joints. You should also cover the
-/// the anchor points with static shapes to prevent one side from going to
-/// zero length.
+/// @brief Pulley joint.
+/// @details The pulley joint is connected to two bodies and two fixed ground points.
+///   The pulley supports a ratio such that: length1 + ratio * length2 <= constant.
+/// @note The force transmitted is scaled by the ratio.
+/// @warning the pulley joint can get a bit squirrelly by itself. They often
+///   work better when combined with prismatic joints. You should also cover the
+///   the anchor points with static shapes to prevent one side from going to
+///   zero length.
 class PulleyJoint : public Joint
 {
 public:

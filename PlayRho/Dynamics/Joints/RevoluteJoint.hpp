@@ -21,6 +21,7 @@
 #define B2_REVOLUTE_JOINT_H
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Common/BoundedValue.hpp>
 
 namespace playrho {
 
@@ -41,7 +42,8 @@ struct RevoluteJointDef : public JointDef
     constexpr RevoluteJointDef() noexcept: JointDef{JointType::Revolute} {}
 
     /// @brief Initialize the bodies, anchors, and reference angle using a world anchor point.
-    RevoluteJointDef(Body* bodyA, Body* bodyB, const Length2D anchor, bool cc = false);
+    RevoluteJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB, const Length2D anchor,
+                     bool cc = false) noexcept;
 
     /// @brief Local anchor point relative to bodyA's origin.
     Length2D localAnchorA = Length2D(0, 0);

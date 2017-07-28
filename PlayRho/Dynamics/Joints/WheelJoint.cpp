@@ -41,7 +41,7 @@ using namespace playrho;
 // Cdot = wB - wA
 // J = [0 0 -1 0 0 1]
 
-WheelJointDef::WheelJointDef(Body* bA, Body* bB, const Length2D anchor,
+WheelJointDef::WheelJointDef(NonNull<Body*> bA, NonNull<Body*> bB, const Length2D anchor,
                              const UnitVec2 axis) noexcept:
     JointDef{JointType::Wheel, bA, bB},
     localAnchorA{GetLocalPoint(*bA, anchor)},

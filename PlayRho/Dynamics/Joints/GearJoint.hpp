@@ -25,7 +25,8 @@
 
 namespace playrho {
 
-/// Gear joint definition. This definition requires two existing
+/// @brief Gear joint definition.
+/// @details This definition requires two existing
 /// revolute or prismatic joints (any combination will work).
 struct GearJointDef : public JointDef
 {
@@ -47,7 +48,8 @@ struct GearJointDef : public JointDef
     Real ratio = Real{1};
 };
 
-/// A gear joint is used to connect two joints together. Either joint
+/// @brief Gear joint.
+/// @details A gear joint is used to connect two joints together. Either joint
 /// can be a revolute or prismatic joint. You specify a gear ratio
 /// to bind the motions together:
 /// coordinate1 + ratio * coordinate2 = constant
@@ -67,16 +69,16 @@ public:
     Force2D GetReactionForce(Frequency inv_dt) const override;
     Torque GetReactionTorque(Frequency inv_dt) const override;
 
-    /// The local anchor point relative to bodyA's origin.
+    /// @brief Gets the local anchor point relative to bodyA's origin.
     Length2D GetLocalAnchorA() const noexcept { return m_localAnchorA; }
     
-    /// The local anchor point relative to bodyB's origin.
+    /// @brief Gets the local anchor point relative to bodyB's origin.
     Length2D GetLocalAnchorB() const noexcept { return m_localAnchorB; }
 
-    /// Get the first joint.
+    /// @brief Gets the first joint.
     Joint* GetJoint1() const noexcept { return m_joint1; }
 
-    /// Get the second joint.
+    /// @brief Gets the second joint.
     Joint* GetJoint2() const noexcept { return m_joint2; }
    
     /// Set/Get the gear ratio.
