@@ -21,6 +21,7 @@
 #define B2_DISTANCE_JOINT_H
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Common/BoundedValue.hpp>
 
 namespace playrho {
 
@@ -39,7 +40,8 @@ struct DistanceJointDef : public JointDef
     DistanceJointDef(Body* bodyA, Body* bodyB,
                      const Length2D anchorA = Length2D(0, 0),
                      const Length2D anchorB = Length2D(0, 0),
-                     Frequency freq = Frequency{0}, Real damp = 0) noexcept;
+                     NonNegative<Frequency> freq = NonNegative<Frequency>{0},
+                     Real damp = 0) noexcept;
 
     /// The local anchor point relative to bodyA's origin.
     Length2D localAnchorA = Length2D(0, 0);
@@ -53,7 +55,7 @@ struct DistanceJointDef : public JointDef
     /// Mass-spring-damper frequency in Hertz.
     /// @note 0 disables softness.
     /// @note Should be 0 or greater.
-    Frequency frequency = Frequency{0};
+    NonNegative<Frequency> frequency = NonNegative<Frequency>{0};
 
     /// The damping ratio. 0 = no damping, 1 = critical damping.
     Real dampingRatio = 0;
@@ -93,8 +95,10 @@ public:
     void SetLength(Length length) noexcept;
     Length GetLength() const noexcept;
 
-    /// Set/get frequency.
-    void SetFrequency(Frequency frequency) noexcept;
+    /// @brief Sets frequency.
+    void SetFrequency(NonNegative<Frequency> frequency) noexcept;
+
+    /// @brief Gets the frequency.
     Frequency GetFrequency() const noexcept;
 
     /// Set/get damping ratio.
@@ -110,7 +114,7 @@ private:
     Length2D m_localAnchorA;
     Length2D m_localAnchorB;
     Length m_length;
-    Frequency m_frequency;
+    NonNegative<Frequency> m_frequency;
     Real m_dampingRatio;
 
     // Solver temp
@@ -133,7 +137,7 @@ inline Length DistanceJoint::GetLength() const noexcept
     return m_length;
 }
 
-inline void DistanceJoint::SetFrequency(Frequency hz) noexcept
+inline void DistanceJoint::SetFrequency(NonNegative<Frequency> hz) noexcept
 {
     m_frequency = hz;
 }

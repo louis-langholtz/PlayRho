@@ -194,6 +194,11 @@ bool MouseJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Cons
     return true;
 }
 
+Length2D MouseJoint::GetAnchorA() const
+{
+    return GetTarget();
+}
+
 Length2D MouseJoint::GetAnchorB() const
 {
     return GetBodyB()? GetWorldPoint(*GetBodyB(), GetLocalAnchorB()): GetInvalid<Length2D>();

@@ -42,12 +42,13 @@ using namespace playrho;
 
 DistanceJointDef::DistanceJointDef(Body* bA, Body* bB,
                                    const Length2D anchor1, const Length2D anchor2,
-                                   Frequency freq, Real damp) noexcept:
+                                   NonNegative<Frequency> freq, Real damp) noexcept:
     JointDef{JointType::Distance, bA, bB},
     localAnchorA{GetLocalPoint(*bA, anchor1)}, localAnchorB{GetLocalPoint(*bB, anchor2)},
     length{GetLength(anchor2 - anchor1)},
     frequency{freq}, dampingRatio{damp}
 {
+    // Intentionally empty.
 }
 
 bool DistanceJoint::IsOkay(const DistanceJointDef& def) noexcept
@@ -71,7 +72,7 @@ DistanceJoint::DistanceJoint(const DistanceJointDef& def):
     m_frequency(def.frequency),
     m_dampingRatio(def.dampingRatio)
 {
-    assert(def.frequency >= Frequency{0});
+    // Intentionally empty.
 }
 
 void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
@@ -100,7 +101,7 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     const auto deltaLocation = Length2D{(posB.linear + m_rB) - (posA.linear + m_rA)};
 
     // Handle singularity.
-    Length length = Length{0};
+    auto length = Length{0};
     m_u = GetUnitVector(deltaLocation, length);
     if (length <= conf.linearSlop)
     {
@@ -121,7 +122,7 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
         const auto C = length - m_length; // L
 
         // Frequency
-        const auto omega = Real{2} * Pi * m_frequency;
+        const auto omega = Real{2} * Pi * Frequency{m_frequency};
 
         // Damping coefficient
         const auto d = Real{2} * m_mass * m_dampingRatio * omega; // M T^-1

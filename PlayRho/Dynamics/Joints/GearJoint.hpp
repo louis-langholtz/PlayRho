@@ -21,6 +21,7 @@
 #define B2_GEAR_JOINT_H
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Common/BoundedValue.hpp>
 
 namespace playrho {
 
@@ -28,13 +29,18 @@ namespace playrho {
 /// revolute or prismatic joints (any combination will work).
 struct GearJointDef : public JointDef
 {
-    constexpr GearJointDef() noexcept: JointDef(JointType::Gear) {}
+    constexpr GearJointDef(NonNull<Joint*> j1, NonNull<Joint*> j2) noexcept:
+        JointDef{JointDef(JointType::Gear).UseBodyA(j1->GetBodyB()).UseBodyB(j2->GetBodyB())},
+        joint1{j1}, joint2{j2}
+    {
+        // Intentionally empty.
+    }
 
     /// The first revolute/prismatic joint attached to the gear joint.
-    Joint* joint1 = nullptr;
+    NonNull<Joint*> joint1;
 
     /// The second revolute/prismatic joint attached to the gear joint.
-    Joint* joint2 = nullptr;
+    NonNull<Joint*> joint2;
 
     /// The gear ratio.
     /// @see GearJoint for explanation.
@@ -53,8 +59,6 @@ struct GearJointDef : public JointDef
 class GearJoint : public Joint
 {
 public:
-    static bool IsOkay(const GearJointDef& data) noexcept;
-
     GearJoint(const GearJointDef& data);
     
     Length2D GetAnchorA() const override;
@@ -85,8 +89,8 @@ private:
     bool SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step) override;
     bool SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const override;
 
-    Joint* m_joint1;
-    Joint* m_joint2;
+    NonNull<Joint*> m_joint1;
+    NonNull<Joint*> m_joint2;
 
     JointType m_typeA;
     JointType m_typeB;

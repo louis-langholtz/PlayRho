@@ -40,87 +40,75 @@ public:
         box->SetDensity(Real{5} * KilogramPerSquareMeter);
     
         {
-            BodyDef bd1;
+            auto bd1 = BodyDef{};
             bd1.type = BodyType::Static;
             bd1.position = Vec2(10.0f, 9.0f) * Meter;
             const auto body1 = m_world->CreateBody(bd1);
 
-            BodyDef bd2;
+            auto bd2 = BodyDef{};
             bd2.type = BodyType::Dynamic;
             bd2.position = Vec2(10.0f, 8.0f) * Meter;
             const auto body2 = m_world->CreateBody(bd2);
             body2->CreateFixture(box);
 
-            BodyDef bd3;
+            auto bd3 = BodyDef{};
             bd3.type = BodyType::Dynamic;
             bd3.position = Vec2(10.0f, 6.0f) * Meter;
             const auto body3 = m_world->CreateBody(bd3);
             body3->CreateFixture(circle2);
 
-            Joint* joint1 = m_world->CreateJoint(RevoluteJointDef{body2, body1, bd1.position});
-            Joint* joint2 = m_world->CreateJoint(RevoluteJointDef{body2, body3, bd3.position});
+            auto joint1 = m_world->CreateJoint(RevoluteJointDef{body2, body1, bd1.position});
+            auto joint2 = m_world->CreateJoint(RevoluteJointDef{body2, body3, bd3.position});
 
-            GearJointDef jd4;
-            jd4.bodyA = body1;
-            jd4.bodyB = body3;
-            jd4.joint1 = joint1;
-            jd4.joint2 = joint2;
+            auto jd4 = GearJointDef{joint1, joint2};
             jd4.ratio = circle2->GetRadius() / circle1->GetRadius();
             m_world->CreateJoint(jd4);
         }
 
         {
-            BodyDef bd1;
+            auto bd1 = BodyDef{};
             bd1.type = BodyType::Dynamic;
             bd1.position = Vec2(-3.0f, 12.0f) * Meter;
             const auto body1 = m_world->CreateBody(bd1);
             body1->CreateFixture(circle1);
 
-            RevoluteJointDef jd1;
+            auto jd1 = RevoluteJointDef{};
             jd1.bodyA = ground;
             jd1.bodyB = body1;
             jd1.localAnchorA = GetLocalPoint(*ground, bd1.position);
             jd1.localAnchorB = GetLocalPoint(*body1, bd1.position);
             jd1.referenceAngle = body1->GetAngle() - ground->GetAngle();
-            m_joint1 = (RevoluteJoint*)m_world->CreateJoint(jd1);
+            m_joint1 = static_cast<RevoluteJoint*>(m_world->CreateJoint(jd1));
 
-            BodyDef bd2;
+            auto bd2 = BodyDef{};
             bd2.type = BodyType::Dynamic;
             bd2.position = Vec2(0.0f, 12.0f) * Meter;
             const auto body2 = m_world->CreateBody(bd2);
             body2->CreateFixture(circle2);
 
-            RevoluteJointDef jd2(ground, body2, bd2.position);
-            m_joint2 = (RevoluteJoint*)m_world->CreateJoint(jd2);
+            auto jd2 = RevoluteJointDef{ground, body2, bd2.position};
+            m_joint2 = static_cast<RevoluteJoint*>(m_world->CreateJoint(jd2));
 
-            BodyDef bd3;
+            auto bd3 = BodyDef{};
             bd3.type = BodyType::Dynamic;
             bd3.position = Vec2(2.5f, 12.0f) * Meter;
             const auto body3 = m_world->CreateBody(bd3);
             body3->CreateFixture(box);
 
-            PrismaticJointDef jd3(ground, body3, bd3.position, UnitVec2::GetTop());
+            auto jd3 = PrismaticJointDef{ground, body3, bd3.position, UnitVec2::GetTop()};
             jd3.lowerTranslation = Real{-5.0f} * Meter;
             jd3.upperTranslation = Real{5.0f} * Meter;
             jd3.enableLimit = true;
 
-            m_joint3 = (PrismaticJoint*)m_world->CreateJoint(jd3);
+            m_joint3 = static_cast<PrismaticJoint*>(m_world->CreateJoint(jd3));
 
-            GearJointDef jd4;
-            jd4.bodyA = body1;
-            jd4.bodyB = body2;
-            jd4.joint1 = m_joint1;
-            jd4.joint2 = m_joint2;
+            auto jd4 = GearJointDef{m_joint1, m_joint2};
             jd4.ratio = circle2->GetRadius() / circle1->GetRadius();
-            m_joint4 = (GearJoint*)m_world->CreateJoint(jd4);
+            m_joint4 = static_cast<GearJoint*>(m_world->CreateJoint(jd4));
 
-            GearJointDef jd5;
-            jd5.bodyA = body2;
-            jd5.bodyB = body3;
-            jd5.joint1 = m_joint2;
-            jd5.joint2 = m_joint3;
+            auto jd5 = GearJointDef{m_joint2, m_joint3};
             jd5.ratio = -1.0f / (circle2->GetRadius() / Meter);
-            m_joint5 = (GearJoint*)m_world->CreateJoint(jd5);
+            m_joint5 = static_cast<GearJoint*>(m_world->CreateJoint(jd5));
         }
     }
 

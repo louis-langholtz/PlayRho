@@ -133,11 +133,6 @@ inline Length2D MouseJoint::GetLocalAnchorB() const noexcept
     return m_localAnchorB;
 }
 
-inline Length2D MouseJoint::GetAnchorA() const
-{
-    return m_targetA;
-}
-
 inline Length2D MouseJoint::GetTarget() const noexcept
 {
     return m_targetA;

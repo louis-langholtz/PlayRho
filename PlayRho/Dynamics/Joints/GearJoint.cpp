@@ -46,11 +46,6 @@ using namespace playrho;
 // J = [ug cross(r, ug)]
 // K = J * invM * JT = invMass + invI * cross(r, ug)^2
 
-bool GearJoint::IsOkay(const GearJointDef& def) noexcept
-{
-    return def.joint1 && def.joint2;
-}
-
 GearJoint::GearJoint(const GearJointDef& def):
     Joint(JointDef(def).UseBodyA(def.joint1->GetBodyB()).UseBodyB(def.joint2->GetBodyB())),
     m_joint1(def.joint1),
@@ -75,7 +70,7 @@ GearJoint::GearJoint(const GearJointDef& def):
     Real coordinateA; // Duck-typed to handle m_typeA's type.
     if (m_typeA == JointType::Revolute)
     {
-        const auto revolute = static_cast<const RevoluteJoint*>(def.joint1);
+        const auto revolute = static_cast<const RevoluteJoint*>(static_cast<Joint*>(def.joint1));
         m_localAnchorC = revolute->GetLocalAnchorA();
         m_localAnchorA = revolute->GetLocalAnchorB();
         m_referenceAngleA = revolute->GetReferenceAngle();
@@ -84,7 +79,7 @@ GearJoint::GearJoint(const GearJointDef& def):
     }
     else // if (m_typeA != JointType::Revolute)
     {
-        const auto prismatic = static_cast<const PrismaticJoint*>(def.joint1);
+        const auto prismatic = static_cast<const PrismaticJoint*>(static_cast<Joint*>(def.joint1));
         m_localAnchorC = prismatic->GetLocalAnchorA();
         m_localAnchorA = prismatic->GetLocalAnchorB();
         m_referenceAngleA = prismatic->GetReferenceAngle();
@@ -106,7 +101,7 @@ GearJoint::GearJoint(const GearJointDef& def):
     Real coordinateB; // Duck-typed to handle m_typeB's type.
     if (m_typeB == JointType::Revolute)
     {
-        const auto revolute = static_cast<const RevoluteJoint*>(def.joint2);
+        const auto revolute = static_cast<const RevoluteJoint*>(static_cast<Joint*>(def.joint2));
         m_localAnchorD = revolute->GetLocalAnchorA();
         m_localAnchorB = revolute->GetLocalAnchorB();
         m_referenceAngleB = revolute->GetReferenceAngle();
@@ -115,7 +110,7 @@ GearJoint::GearJoint(const GearJointDef& def):
     }
     else
     {
-        const auto prismatic = static_cast<const PrismaticJoint*>(def.joint2);
+        const auto prismatic = static_cast<const PrismaticJoint*>(static_cast<Joint*>(def.joint2));
         m_localAnchorD = prismatic->GetLocalAnchorA();
         m_localAnchorB = prismatic->GetLocalAnchorB();
         m_referenceAngleB = prismatic->GetReferenceAngle();
@@ -420,12 +415,9 @@ void GearJoint::SetRatio(Real ratio)
 
 GearJointDef playrho::GetGearJointDef(const GearJoint& joint) noexcept
 {
-    auto def = GearJointDef{};
+    auto def = GearJointDef{joint.GetJoint1(), joint.GetJoint2()};
     
     Set(def, joint);
-
-    def.joint1 = joint.GetJoint1();
-    def.joint2 = joint.GetJoint2();
     def.ratio = joint.GetRatio();
 
     return def;
