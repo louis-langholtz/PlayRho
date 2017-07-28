@@ -66,8 +66,8 @@ namespace playrho
         
         // Public member variables...
         
-        /// The body type: static, kinematic, or dynamic.
-        /// Note: if a dynamic body would have zero mass, the mass is set to one.
+        /// @brief Type of the body: static, kinematic, or dynamic.
+        /// @note If a dynamic body would have zero mass, the mass is set to one.
         BodyType type = BodyType::Static;
         
         /// The world position of the body. Avoid creating bodies at the origin
