@@ -30,7 +30,7 @@ namespace playrho {
 /// revolute or prismatic joints (any combination will work).
 struct GearJointDef : public JointDef
 {
-    constexpr GearJointDef(NonNull<Joint*> j1, NonNull<Joint*> j2) noexcept:
+    GearJointDef(NonNull<Joint*> j1, NonNull<Joint*> j2) noexcept:
         JointDef{JointDef(JointType::Gear).UseBodyA(j1->GetBodyB()).UseBodyB(j2->GetBodyB())},
         joint1{j1}, joint2{j2}
     {
