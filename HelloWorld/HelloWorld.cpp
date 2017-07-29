@@ -29,13 +29,14 @@
 int main(int, char**)
 {
     // Construct a world object, which will hold and simulate the rigid bodies.
-    playrho::World world;
+    auto world = playrho::World{};
 
     // Call the body factory which allocates memory for the ground body
     // from a pool and creates the ground box shape (also from a pool).
     // The body is also added to the world.
-    const auto groundBody = world.CreateBody(
-        playrho::BodyDef{}.UseLocation(playrho::Vec2(0.0, -10.0) * playrho::Meter));
+    const auto groundBody = world.CreateBody(playrho::BodyDef{}.UseLocation(playrho::Length2D{
+        playrho::Real(0) * playrho::Meter, playrho::Real(-10) * playrho::Meter
+    }));
 
     // Define the ground box shape.
     // The extents are the half-widths of the box.
@@ -47,8 +48,10 @@ int main(int, char**)
 
     // Define the dynamic body. We set its position and call the body factory.
     const auto body = world.CreateBody(playrho::BodyDef{}
-                                           .UseType(playrho::BodyType::Dynamic)
-                                           .UseLocation(playrho::Vec2(0.0, 4.0) * playrho::Meter));
+                                       .UseType(playrho::BodyType::Dynamic)
+                                       .UseLocation(playrho::Length2D{
+        playrho::Real(0) * playrho::Meter, playrho::Real(4) * playrho::Meter
+    }));
 
     // Define another box shape for our dynamic body.
     const auto dynamicBox = std::make_shared<playrho::PolygonShape>(
@@ -58,18 +61,15 @@ int main(int, char**)
     dynamicBox->SetDensity(playrho::Real(1) * playrho::KilogramPerSquareMeter);
 
     // Override the default friction.
-    dynamicBox->SetFriction(playrho::Real(0.3));
+    dynamicBox->SetFriction(playrho::Real(0.3f));
 
     // Add the shape to the body.
     body->CreateFixture(dynamicBox);
 
     // Prepare for simulation. Typically we use a time step of 1/60 of a
-    // second (60Hz) and 10 iterations. This provides a high quality simulation
-    // in most game scenarios.
-    auto stepConf = playrho::StepConf{};
-    stepConf.SetInvTime(playrho::Real(60) * playrho::Hertz);
-    stepConf.regVelocityIterations = 6;
-    stepConf.regPositionIterations = 2;
+    // second (60Hz). The defaults are setup for that and to generally provide a
+    // high enough quality simulation in most game scenarios.
+    const auto stepConf = playrho::StepConf{};
 
     std::printf("%4.2s %4.2s %4.2s\n", "x", "y", "a");
 
