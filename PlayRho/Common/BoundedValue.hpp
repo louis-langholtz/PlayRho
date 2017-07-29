@@ -187,13 +187,14 @@ namespace playrho {
         }
 
         template <typename U = T>
-        typename std::enable_if<std::is_pointer<U>::value, U>::type operator-> () const
+        constexpr typename std::enable_if<std::is_pointer<U>::value, U>::type operator-> () const
         {
             return m_value;
         }
 
         template <typename U = T>
-        typename std::enable_if<std::is_pointer<U>::value, remove_pointer_type>::type& operator* () const
+        constexpr typename std::enable_if<std::is_pointer<U>::value, remove_pointer_type>::type&
+        operator* () const
         {
             return *m_value;
         }
@@ -205,37 +206,37 @@ namespace playrho {
     // Logical operations for BoundedValue<T, lo, hi> OP BoundedValue<T, lo, hi>
 
     template <typename T, LoValueCheck lo, HiValueCheck hi>
-    bool operator== (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
+    constexpr bool operator== (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return T{lhs} == T{rhs};
     }
     
     template <typename T, LoValueCheck lo, HiValueCheck hi>
-    bool operator!= (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
+    constexpr bool operator!= (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return T{lhs} != T{rhs};
     }
     
     template <typename T, LoValueCheck lo, HiValueCheck hi>
-    bool operator<= (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
+    constexpr bool operator<= (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return T{lhs} <= T{rhs};
     }
     
     template <typename T, LoValueCheck lo, HiValueCheck hi>
-    bool operator>= (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
+    constexpr bool operator>= (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return T{lhs} >= T{rhs};
     }
     
     template <typename T, LoValueCheck lo, HiValueCheck hi>
-    bool operator< (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
+    constexpr bool operator< (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return T{lhs} < T{rhs};
     }
     
     template <typename T, LoValueCheck lo, HiValueCheck hi>
-    bool operator> (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
+    constexpr bool operator> (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return T{lhs} > T{rhs};
     }
@@ -243,37 +244,37 @@ namespace playrho {
     // Logical operations for BoundedValue<T, lo, hi> OP T
 
     template <typename T, LoValueCheck lo, HiValueCheck hi>
-    bool operator== (const BoundedValue<T, lo, hi> lhs, const T rhs)
+    constexpr bool operator== (const BoundedValue<T, lo, hi> lhs, const T rhs)
     {
         return T{lhs} == T{rhs};
     }
     
     template <typename T, LoValueCheck lo, HiValueCheck hi>
-    bool operator!= (const BoundedValue<T, lo, hi> lhs, const T rhs)
+    constexpr bool operator!= (const BoundedValue<T, lo, hi> lhs, const T rhs)
     {
         return T{lhs} != T{rhs};
     }
     
     template <typename T, LoValueCheck lo, HiValueCheck hi>
-    bool operator<= (const BoundedValue<T, lo, hi> lhs, const T rhs)
+    constexpr bool operator<= (const BoundedValue<T, lo, hi> lhs, const T rhs)
     {
         return T{lhs} <= T{rhs};
     }
     
     template <typename T, LoValueCheck lo, HiValueCheck hi>
-    bool operator>= (const BoundedValue<T, lo, hi> lhs, const T rhs)
+    constexpr bool operator>= (const BoundedValue<T, lo, hi> lhs, const T rhs)
     {
         return T{lhs} >= T{rhs};
     }
     
     template <typename T, LoValueCheck lo, HiValueCheck hi>
-    bool operator< (const BoundedValue<T, lo, hi> lhs, const T rhs)
+    constexpr bool operator< (const BoundedValue<T, lo, hi> lhs, const T rhs)
     {
         return T{lhs} < T{rhs};
     }
     
     template <typename T, LoValueCheck lo, HiValueCheck hi>
-    bool operator> (const BoundedValue<T, lo, hi> lhs, const T rhs)
+    constexpr bool operator> (const BoundedValue<T, lo, hi> lhs, const T rhs)
     {
         return T{lhs} > T{rhs};
     }
@@ -281,37 +282,37 @@ namespace playrho {
     // Logical operations for T OP BoundedValue<T, lo, hi>
 
     template <typename T, LoValueCheck lo, HiValueCheck hi>
-    bool operator== (const T lhs, const BoundedValue<T, lo, hi> rhs)
+    constexpr bool operator== (const T lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return T{lhs} == T{rhs};
     }
     
     template <typename T, LoValueCheck lo, HiValueCheck hi>
-    bool operator!= (const T lhs, const BoundedValue<T, lo, hi> rhs)
+    constexpr bool operator!= (const T lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return T{lhs} != T{rhs};
     }
     
     template <typename T, LoValueCheck lo, HiValueCheck hi>
-    bool operator<= (const T lhs, const BoundedValue<T, lo, hi> rhs)
+    constexpr bool operator<= (const T lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return T{lhs} <= T{rhs};
     }
     
     template <typename T, LoValueCheck lo, HiValueCheck hi>
-    bool operator>= (const T lhs, const BoundedValue<T, lo, hi> rhs)
+    constexpr bool operator>= (const T lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return T{lhs} >= T{rhs};
     }
     
     template <typename T, LoValueCheck lo, HiValueCheck hi>
-    bool operator< (const T lhs, const BoundedValue<T, lo, hi> rhs)
+    constexpr bool operator< (const T lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return T{lhs} < T{rhs};
     }
     
     template <typename T, LoValueCheck lo, HiValueCheck hi>
-    bool operator> (const T lhs, const BoundedValue<T, lo, hi> rhs)
+    constexpr bool operator> (const T lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return T{lhs} > T{rhs};
     }

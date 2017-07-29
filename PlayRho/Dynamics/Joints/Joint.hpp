@@ -84,8 +84,8 @@ struct JointDef
         // Intentionally empty.
     }
 
-    JointDef& UseBodyA(Body* body) { bodyA = body; return *this; }
-    JointDef& UseBodyB(Body* body) { bodyB = body; return *this; }
+    constexpr JointDef& UseBodyA(Body* body) noexcept { bodyA = body; return *this; }
+    constexpr JointDef& UseBodyB(Body* body) noexcept { bodyB = body; return *this; }
 
     /// The joint type is set automatically for concrete joint types.
     const JointType type;
