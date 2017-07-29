@@ -63,8 +63,8 @@ addons:
       - gcc-6
       - xorg-dev
       - libx11-dev
-      - libXmu-dev
-      - libXi-dev
+      - libXmu
+      - libXi
       - libgl1-mesa-dev
       - libosmesa-dev
       - lcov
