@@ -7,6 +7,8 @@ os:
 # For details on building a C++ project see: https://docs.travis-ci.com/user/languages/cpp/
 language: cpp
 
+dist: trusty
+
 # Specifiy which compiler or compilers to test against.
 # For details, see https://docs.travis-ci.com/user/languages/cpp/#Choosing-compilers-to-test-against
 compiler:
