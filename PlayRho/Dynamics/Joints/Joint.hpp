@@ -154,9 +154,10 @@ public:
     /// @brief Shifts the origin for any points stored in world coordinates.
     virtual void ShiftOrigin(const Length2D newOrigin) { NOT_USED(newOrigin);  }
 
+    virtual ~Joint() = default;
+
 protected:
     constexpr Joint(const JointDef& def);
-    virtual ~Joint() noexcept {}
     
 private:
     friend class JointAtty;
