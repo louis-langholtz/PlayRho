@@ -120,13 +120,13 @@ public:
     static bool IsOkay(const JointDef& def) noexcept;
 
     /// @brief Gets the type of the concrete joint.
-    constexpr JointType GetType() const noexcept;
+    JointType GetType() const noexcept;
 
     /// @brief Gets the first body attached to this joint.
-    constexpr Body* GetBodyA() const noexcept;
+    Body* GetBodyA() const noexcept;
 
     /// @brief Gets the second body attached to this joint.
-    constexpr Body* GetBodyB() const noexcept;
+    Body* GetBodyB() const noexcept;
 
     /// Get the anchor point on bodyA in world coordinates.
     virtual Length2D GetAnchorA() const = 0;
@@ -157,7 +157,7 @@ public:
     virtual ~Joint() = default;
 
 protected:
-    constexpr Joint(const JointDef& def);
+    Joint(const JointDef& def);
     
 private:
     friend class JointAtty;
@@ -218,24 +218,24 @@ constexpr inline Joint::FlagsType Joint::GetFlags(const JointDef& def) noexcept
     return flags;
 }
 
-constexpr inline Joint::Joint(const JointDef& def):
+inline Joint::Joint(const JointDef& def):
     m_type{def.type}, m_bodyA{def.bodyA}, m_bodyB{def.bodyB},
     m_flags{GetFlags(def)}, m_userData{def.userData}
 {
     // Intentionally empty.
 }
 
-constexpr inline JointType Joint::GetType() const noexcept
+inline JointType Joint::GetType() const noexcept
 {
     return m_type;
 }
 
-constexpr inline Body* Joint::GetBodyA() const noexcept
+inline Body* Joint::GetBodyA() const noexcept
 {
     return m_bodyA;
 }
 
-constexpr inline Body* Joint::GetBodyB() const noexcept
+inline Body* Joint::GetBodyB() const noexcept
 {
     return m_bodyB;
 }
