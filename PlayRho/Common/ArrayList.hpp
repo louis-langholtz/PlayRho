@@ -36,13 +36,15 @@ namespace playrho
     public:
         using size_type = SIZE_TYPE;
         using value_type = VALUE_TYPE;
+        using reference = value_type&;
+        using const_reference = const value_type&;
         using pointer = value_type*;
         using const_pointer = const value_type*;
-        
+
         ArrayList() = default;
 
         template <std::size_t COPY_MAXSIZE, typename COPY_SIZE_TYPE, typename = std::enable_if_t< COPY_MAXSIZE <= MAXSIZE >>
-        PLAYRHO_CONSTEXPR ArrayList(const ArrayList<VALUE_TYPE, COPY_MAXSIZE, SIZE_TYPE>& copy):
+        constexpr ArrayList(const ArrayList<VALUE_TYPE, COPY_MAXSIZE, SIZE_TYPE>& copy):
             m_size{copy.size()},
             m_elements{copy.data()}
         {
@@ -105,13 +107,13 @@ namespace playrho
             return false;
         }
         
-        value_type& operator[](size_type index) noexcept
+        reference operator[](size_type index) noexcept
         {
             assert(index < MAXSIZE);
             return m_elements[index];
         }
         
-        const value_type& operator[](size_type index) const noexcept
+        constexpr const_reference operator[](size_type index) const noexcept
         {
             assert(index < MAXSIZE);
             return m_elements[index];
@@ -121,20 +123,20 @@ namespace playrho
         /// @details This is the number of elements that have been added to this collection.
         /// @return Value between 0 and the maximum size for this collection.
         /// @sa max_size().
-        PLAYRHO_CONSTEXPR size_type size() const noexcept { return m_size; }
+        constexpr size_type size() const noexcept { return m_size; }
         
         /// Gets the maximum size that this collection can be.
         /// @details This is the maximum number of elements that can be contained in this collection.
-        PLAYRHO_CONSTEXPR size_type max_size() const noexcept { return MAXSIZE; }
-        
+        constexpr size_type max_size() const noexcept { return MAXSIZE; }
+
+        auto data() const noexcept { return m_elements.data(); }
+
         pointer begin() noexcept { return m_elements.data(); }
         pointer end() noexcept { return m_elements.data() + m_size; }
         
         const_pointer begin() const noexcept { return m_elements.data(); }
         const_pointer end() const noexcept { return m_elements.data() + m_size; }
         
-        auto data() const noexcept { return m_elements; }
-
     private:
         size_type m_size = size_type{0};
         std::array<value_type,MAXSIZE> m_elements;
