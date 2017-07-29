@@ -120,13 +120,13 @@ public:
     static bool IsOkay(const JointDef& def) noexcept;
 
     /// @brief Gets the type of the concrete joint.
-    JointType GetType() const noexcept;
+    constexpr JointType GetType() const noexcept;
 
     /// @brief Gets the first body attached to this joint.
-    Body* GetBodyA() const noexcept;
+    constexpr Body* GetBodyA() const noexcept;
 
     /// @brief Gets the second body attached to this joint.
-    Body* GetBodyB() const noexcept;
+    constexpr Body* GetBodyB() const noexcept;
 
     /// Get the anchor point on bodyA in world coordinates.
     virtual Length2D GetAnchorA() const = 0;
@@ -155,7 +155,7 @@ public:
     virtual void ShiftOrigin(const Length2D newOrigin) { NOT_USED(newOrigin);  }
 
 protected:
-    Joint(const JointDef& def);
+    constexpr Joint(const JointDef& def);
     virtual ~Joint() noexcept {}
     
 private:
@@ -173,7 +173,7 @@ private:
         e_collideConnectedFlag = 0x02
     };
     
-    static FlagsType GetFlags(const JointDef& def) noexcept;
+    static constexpr FlagsType GetFlags(const JointDef& def) noexcept;
 
     static Joint* Create(const JointDef& def);
 
@@ -207,17 +207,34 @@ private:
     FlagsType m_flags = 0; ///< Flags. 1-byte.
 };
 
-inline JointType Joint::GetType() const noexcept
+constexpr inline Joint::FlagsType Joint::GetFlags(const JointDef& def) noexcept
+{
+    auto flags = Joint::FlagsType(0);
+    if (def.collideConnected)
+    {
+        flags |= e_collideConnectedFlag;
+    }
+    return flags;
+}
+
+constexpr inline Joint::Joint(const JointDef& def):
+    m_type{def.type}, m_bodyA{def.bodyA}, m_bodyB{def.bodyB},
+    m_flags{GetFlags(def)}, m_userData{def.userData}
+{
+    // Intentionally empty.
+}
+
+constexpr inline JointType Joint::GetType() const noexcept
 {
     return m_type;
 }
 
-inline Body* Joint::GetBodyA() const noexcept
+constexpr inline Body* Joint::GetBodyA() const noexcept
 {
     return m_bodyA;
 }
 
-inline Body* Joint::GetBodyB() const noexcept
+constexpr inline Body* Joint::GetBodyB() const noexcept
 {
     return m_bodyB;
 }

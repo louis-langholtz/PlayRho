@@ -142,16 +142,6 @@ namespace
     
 } // anonymous namespace
 
-Joint::FlagsType Joint::GetFlags(const JointDef& def) noexcept
-{
-    auto flags = Joint::FlagsType(0);
-    if (def.collideConnected)
-    {
-        flags |= e_collideConnectedFlag;
-    }
-    return flags;
-}
-
 Joint* Joint::Create(const JointDef& def)
 {
     switch (def.type)
@@ -199,13 +189,6 @@ bool Joint::IsOkay(const JointDef& def) noexcept
         return false;
     }
     return true;
-}
-
-Joint::Joint(const JointDef& def):
-    m_type{def.type}, m_bodyA{def.bodyA}, m_bodyB{def.bodyB},
-    m_flags{GetFlags(def)}, m_userData{def.userData}
-{
-    // Intentionally empty.
 }
 
 bool IsEnabled(const Joint& j) noexcept
