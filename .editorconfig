@@ -6,12 +6,20 @@ root = true
 
 # Configuration for all files
 [*]
-# Enforce Unix style line endings (\n only)
-end_of_line = lf
 # Always end files with a blank line
 insert_final_newline = true
 
+[*.sln]
+# Enforce Windows style line endings (\n only)
+end_of_line = crlf
+
+[*.{txt,md}]
+# Enforce Unix style line endings (\n only)
+end_of_line = lf
+
 [*.{cpp,hpp}]
+# Enforce Unix style line endings (\n only)
+end_of_line = lf
 # Force space characters for indentation
 indent_style = space
 # Always indent by 4 characters
