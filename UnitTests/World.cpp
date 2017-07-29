@@ -1902,8 +1902,8 @@ TEST(World, TilesComesToRest)
             EXPECT_EQ(numSteps,         1803ul);
             EXPECT_EQ(sumRegPosIters,  36528ul);
             EXPECT_EQ(sumRegVelIters,  46988ul);
-            EXPECT_EQ(sumToiPosIters,  44338ul);
-            EXPECT_EQ(sumToiVelIters, 115317ul);
+            EXPECT_EQ(sumToiPosIters,  44178ul);
+            EXPECT_EQ(sumToiVelIters, 114936ul);
 
             // From commit 04f9188c47961cafe76c55eb6b766a608593ee08 onward.
             //EXPECT_EQ(numSteps, 1855ul);
