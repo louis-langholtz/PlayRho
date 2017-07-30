@@ -208,7 +208,7 @@ namespace playrho {
         value_type m_value;
     };
     
-    // Logical operations for BoundedValue<T, lo, hi> OP BoundedValue<T, lo, hi>
+    // Common logical operations for BoundedValue<T, lo, hi> OP BoundedValue<T, lo, hi>
 
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     constexpr bool operator== (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
@@ -221,7 +221,9 @@ namespace playrho {
     {
         return T{lhs} != T{rhs};
     }
-    
+
+    // Logical operations for numerical BoundedValue<T, lo, hi> OP BoundedValue<T, lo, hi>
+
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     constexpr bool operator<= (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
     {
@@ -245,8 +247,8 @@ namespace playrho {
     {
         return T{lhs} > T{rhs};
     }
-
-    // Logical operations for BoundedValue<T, lo, hi> OP T
+    
+    // Commmon logical operations for BoundedValue<T, lo, hi> OP T
 
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     constexpr bool operator== (const BoundedValue<T, lo, hi> lhs, const T rhs)
@@ -260,6 +262,8 @@ namespace playrho {
         return T{lhs} != T{rhs};
     }
     
+    // Logical operations for numerical BoundedValue<T, lo, hi> OP T
+
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     constexpr bool operator<= (const BoundedValue<T, lo, hi> lhs, const T rhs)
     {
@@ -283,8 +287,32 @@ namespace playrho {
     {
         return T{lhs} > T{rhs};
     }
+    
+    template <typename T, typename U, LoValueCheck lo, HiValueCheck hi>
+    constexpr auto operator* (const BoundedValue<T, lo, hi> lhs, const U rhs)
+    {
+        return T{lhs} * rhs;
+    }
+    
+    template <typename T, typename U, LoValueCheck lo, HiValueCheck hi>
+    constexpr auto operator/ (const BoundedValue<T, lo, hi> lhs, const U rhs)
+    {
+        return T{lhs} / rhs;
+    }
+    
+    template <typename T, typename U, LoValueCheck lo, HiValueCheck hi>
+    constexpr auto operator+ (const BoundedValue<T, lo, hi> lhs, const U rhs)
+    {
+        return T{lhs} + rhs;
+    }
+    
+    template <typename T, typename U, LoValueCheck lo, HiValueCheck hi>
+    constexpr auto operator- (const BoundedValue<T, lo, hi> lhs, const U rhs)
+    {
+        return T{lhs} - T{rhs};
+    }
 
-    // Logical operations for T OP BoundedValue<T, lo, hi>
+    // Commmon logical operations for T OP BoundedValue<T, lo, hi>
 
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     constexpr bool operator== (const T lhs, const BoundedValue<T, lo, hi> rhs)
@@ -298,6 +326,8 @@ namespace playrho {
         return T{lhs} != T{rhs};
     }
     
+    // Logical operations for numerical T OP BoundedValue<T, lo, hi>
+
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     constexpr bool operator<= (const T lhs, const BoundedValue<T, lo, hi> rhs)
     {
@@ -321,13 +351,39 @@ namespace playrho {
     {
         return T{lhs} > T{rhs};
     }
+    
+    template <typename T, typename U, LoValueCheck lo, HiValueCheck hi>
+    constexpr auto operator* (const U lhs, const BoundedValue<T, lo, hi> rhs)
+    {
+        return lhs * T{rhs};
+    }
+    
+    template <typename T, typename U, LoValueCheck lo, HiValueCheck hi>
+    constexpr auto operator/ (const U lhs, const BoundedValue<T, lo, hi> rhs)
+    {
+        return lhs / T{rhs};
+    }
+    
+    template <typename T, typename U, LoValueCheck lo, HiValueCheck hi>
+    constexpr auto operator+ (const U lhs, const BoundedValue<T, lo, hi> rhs)
+    {
+        return lhs + T{rhs};
+    }
+    
+    template <typename T, typename U, LoValueCheck lo, HiValueCheck hi>
+    constexpr auto operator- (const U lhs, const BoundedValue<T, lo, hi> rhs)
+    {
+        return lhs - T{rhs};
+    }
 
     // Unary operations for BoundedValue<T, lo, hi>
     
     // Common useful aliases...
 
     template <typename T>
-    using NonNegative = BoundedValue<T, LoValueCheck::ZeroOrMore, HiValueCheck::Any>;
+    using NonNegative = typename std::enable_if<!std::is_pointer<T>::value,
+        BoundedValue<T, LoValueCheck::ZeroOrMore, HiValueCheck::Any>
+    >::type;
 
     template <typename T>
     using NonPositive = BoundedValue<T, LoValueCheck::Any, HiValueCheck::ZeroOrLess>;
@@ -345,6 +401,8 @@ namespace playrho {
     using NonZero = typename std::enable_if<!std::is_pointer<T>::value,
         BoundedValue<T, LoValueCheck::NonZero, HiValueCheck::Any>>::type;
 
+    /// @brief Non-null pointer type.
+    /// @note Clang will error with "no type named 'type'" if used to bound a non-pointer.
     template <typename T>
     using NonNull = typename std::enable_if<std::is_pointer<T>::value,
         BoundedValue<T, LoValueCheck::NonZero, HiValueCheck::Any>>::type;

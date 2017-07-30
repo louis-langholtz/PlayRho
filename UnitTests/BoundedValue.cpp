@@ -29,13 +29,16 @@ TEST(BoundedValue, NegativeFloat)
 {
     EXPECT_EQ(float{Negative<float>(-1.0f)}, -1.0f);
     EXPECT_EQ(float(Negative<float>(-1.0f)), float(Negative<float>(-1.0f)));
-    EXPECT_EQ(float(Negative<float>(-std::numeric_limits<float>::infinity())), -std::numeric_limits<float>::infinity());
+    EXPECT_EQ(float(Negative<float>(-std::numeric_limits<float>::infinity())),
+              -std::numeric_limits<float>::infinity());
     
     EXPECT_THROW(Negative<float>(-0.0f), Negative<float>::exception_type);
     EXPECT_THROW(Negative<float>{+0.00001f}, Negative<float>::exception_type);
     EXPECT_THROW(Negative<float>{+1.4f}, Negative<float>::exception_type);
-    EXPECT_THROW(Negative<float>{+std::numeric_limits<float>::infinity()}, Negative<float>::exception_type);
-    EXPECT_THROW(Negative<float>{std::numeric_limits<float>::quiet_NaN()}, Negative<float>::exception_type);
+    EXPECT_THROW(Negative<float>{+std::numeric_limits<float>::infinity()},
+                 Negative<float>::exception_type);
+    EXPECT_THROW(Negative<float>{std::numeric_limits<float>::quiet_NaN()},
+                 Negative<float>::exception_type);
 }
 
 TEST(BoundedValue, NonNegativeFloat)
@@ -43,12 +46,15 @@ TEST(BoundedValue, NonNegativeFloat)
     EXPECT_EQ(float{NonNegative<float>(1.0f)}, 1.0f);
     EXPECT_EQ(float(NonNegative<float>(1.0f)), float(NonNegative<float>(1.0f)));
     EXPECT_EQ(float(NonNegative<float>(0.0f)), 0.0f);
-    EXPECT_EQ(float(NonNegative<float>(std::numeric_limits<float>::infinity())), std::numeric_limits<float>::infinity());
+    EXPECT_EQ(float(NonNegative<float>(std::numeric_limits<float>::infinity())),
+              std::numeric_limits<float>::infinity());
 
     EXPECT_THROW(NonNegative<float>{-0.00001f}, NonNegative<float>::exception_type);
     EXPECT_THROW(NonNegative<float>{-1.4f}, NonNegative<float>::exception_type);
-    EXPECT_THROW(NonNegative<float>{-std::numeric_limits<float>::infinity()}, NonNegative<float>::exception_type);
-    EXPECT_THROW(NonNegative<float>{std::numeric_limits<float>::quiet_NaN()}, NonNegative<float>::exception_type);
+    EXPECT_THROW(NonNegative<float>{-std::numeric_limits<float>::infinity()},
+                 NonNegative<float>::exception_type);
+    EXPECT_THROW(NonNegative<float>{std::numeric_limits<float>::quiet_NaN()},
+                 NonNegative<float>::exception_type);
 }
 
 TEST(BoundedValue, NonNegativeDouble)
@@ -56,12 +62,15 @@ TEST(BoundedValue, NonNegativeDouble)
     EXPECT_EQ(double{NonNegative<double>(1.0f)}, 1.0f);
     EXPECT_EQ(double(NonNegative<double>(1.0f)), double(NonNegative<double>(1.0f)));
     EXPECT_EQ(double(NonNegative<double>(0.0f)), 0.0f);
-    EXPECT_EQ(double(NonNegative<double>(std::numeric_limits<double>::infinity())), std::numeric_limits<double>::infinity());
+    EXPECT_EQ(double(NonNegative<double>(std::numeric_limits<double>::infinity())),
+              std::numeric_limits<double>::infinity());
     
     EXPECT_THROW(NonNegative<double>{-0.00001f}, NonNegative<double>::exception_type);
     EXPECT_THROW(NonNegative<double>{-1.4f}, NonNegative<double>::exception_type);
-    EXPECT_THROW(NonNegative<double>{-std::numeric_limits<double>::infinity()}, NonNegative<double>::exception_type);
-    EXPECT_THROW(NonNegative<double>{std::numeric_limits<double>::quiet_NaN()}, NonNegative<double>::exception_type);
+    EXPECT_THROW(NonNegative<double>{-std::numeric_limits<double>::infinity()},
+                 NonNegative<double>::exception_type);
+    EXPECT_THROW(NonNegative<double>{std::numeric_limits<double>::quiet_NaN()},
+                 NonNegative<double>::exception_type);
 }
 
 TEST(BoundedValue, NonNegativeInt)
@@ -78,13 +87,16 @@ TEST(BoundedValue, PositiveFloat)
 {
     EXPECT_EQ(float(Positive<float>(+1.0f)), +1.0f);
     EXPECT_EQ(float(Positive<float>(+1.0f)), float(Positive<float>(+1.0f)));
-    EXPECT_EQ(float(Positive<float>(+std::numeric_limits<float>::infinity())), +std::numeric_limits<float>::infinity());
+    EXPECT_EQ(float(Positive<float>(+std::numeric_limits<float>::infinity())),
+              +std::numeric_limits<float>::infinity());
     
     EXPECT_THROW(Positive<float>(+0.0f), Positive<float>::exception_type);
     EXPECT_THROW(Positive<float>{-0.00001f}, Positive<float>::exception_type);
     EXPECT_THROW(Positive<float>{-1.4f}, NonPositive<float>::exception_type);
-    EXPECT_THROW(Positive<float>{-std::numeric_limits<float>::infinity()}, Positive<float>::exception_type);
-    EXPECT_THROW(Positive<float>{std::numeric_limits<float>::quiet_NaN()}, Positive<float>::exception_type);
+    EXPECT_THROW(Positive<float>{-std::numeric_limits<float>::infinity()},
+                 Positive<float>::exception_type);
+    EXPECT_THROW(Positive<float>{std::numeric_limits<float>::quiet_NaN()},
+                 Positive<float>::exception_type);
 }
 
 TEST(BoundedValue, NonPositiveFloat)
@@ -92,12 +104,15 @@ TEST(BoundedValue, NonPositiveFloat)
     EXPECT_EQ(float(NonPositive<float>(-1.0f)), -1.0f);
     EXPECT_EQ(float(NonPositive<float>(-1.0f)), float(NonPositive<float>(-1.0f)));
     EXPECT_EQ(float(NonPositive<float>(0.0f)), 0.0f);
-    EXPECT_EQ(float(NonPositive<float>(-std::numeric_limits<float>::infinity())), -std::numeric_limits<float>::infinity());
+    EXPECT_EQ(float(NonPositive<float>(-std::numeric_limits<float>::infinity())),
+              -std::numeric_limits<float>::infinity());
     
     EXPECT_THROW(NonPositive<float>{0.00001f}, NonPositive<float>::exception_type);
     EXPECT_THROW(NonPositive<float>{1.4f}, NonPositive<float>::exception_type);
-    EXPECT_THROW(NonPositive<float>{std::numeric_limits<float>::infinity()}, NonPositive<float>::exception_type);
-    EXPECT_THROW(NonPositive<float>{std::numeric_limits<float>::quiet_NaN()}, NonPositive<float>::exception_type);
+    EXPECT_THROW(NonPositive<float>{std::numeric_limits<float>::infinity()},
+                 NonPositive<float>::exception_type);
+    EXPECT_THROW(NonPositive<float>{std::numeric_limits<float>::quiet_NaN()},
+                 NonPositive<float>::exception_type);
 }
 
 TEST(BoundedValue, NonPositiveDouble)
@@ -105,12 +120,15 @@ TEST(BoundedValue, NonPositiveDouble)
     EXPECT_EQ(double(NonPositive<double>(-1.0f)), -1.0f);
     EXPECT_EQ(double(NonPositive<double>(-1.0f)), double(NonPositive<double>(-1.0f)));
     EXPECT_EQ(double(NonPositive<double>(0.0f)), 0.0f);
-    EXPECT_EQ(double(NonPositive<double>(-std::numeric_limits<double>::infinity())), -std::numeric_limits<double>::infinity());
+    EXPECT_EQ(double(NonPositive<double>(-std::numeric_limits<double>::infinity())),
+              -std::numeric_limits<double>::infinity());
     
     EXPECT_THROW(NonPositive<double>{0.00001f}, NonPositive<double>::exception_type);
     EXPECT_THROW(NonPositive<double>{1.4f}, NonPositive<double>::exception_type);
-    EXPECT_THROW(NonPositive<double>{std::numeric_limits<double>::infinity()}, NonPositive<double>::exception_type);
-    EXPECT_THROW(NonPositive<double>{std::numeric_limits<double>::quiet_NaN()}, NonPositive<double>::exception_type);
+    EXPECT_THROW(NonPositive<double>{std::numeric_limits<double>::infinity()},
+                 NonPositive<double>::exception_type);
+    EXPECT_THROW(NonPositive<double>{std::numeric_limits<double>::quiet_NaN()},
+                 NonPositive<double>::exception_type);
 }
 
 TEST(BoundedValue, NonPositiveInt)
@@ -129,8 +147,10 @@ TEST(BoundedValue, FiniteDouble)
     EXPECT_EQ(double(Finite<double>(-1.0)), -1.0);
     EXPECT_EQ(double(Finite<double>(+1.0)), +1.0);
 
-    EXPECT_THROW(Finite<double>{std::numeric_limits<double>::infinity()}, Finite<double>::exception_type);
-    EXPECT_THROW(Finite<double>{std::numeric_limits<double>::quiet_NaN()}, Finite<double>::exception_type);
+    EXPECT_THROW(Finite<double>{std::numeric_limits<double>::infinity()},
+                 Finite<double>::exception_type);
+    EXPECT_THROW(Finite<double>{std::numeric_limits<double>::quiet_NaN()},
+                 Finite<double>::exception_type);
 }
 
 TEST(BoundedValue, FloatUnitInterval)
@@ -145,7 +165,8 @@ TEST(BoundedValue, FloatUnitInterval)
     EXPECT_THROW(UnitInterval<float>(-1.0f), UnitInterval<float>::exception_type);
     EXPECT_THROW(UnitInterval<float>(1.00001f), UnitInterval<float>::exception_type);
     EXPECT_THROW(UnitInterval<float>(-0.00001f), UnitInterval<float>::exception_type);
-    EXPECT_THROW(UnitInterval<float>{std::numeric_limits<float>::infinity()}, UnitInterval<float>::exception_type);
+    EXPECT_THROW(UnitInterval<float>{std::numeric_limits<float>::infinity()},
+                 UnitInterval<float>::exception_type);
 }
 
 TEST(BoundedValue, IntUnitInterval)
