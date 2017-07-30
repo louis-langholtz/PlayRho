@@ -39,18 +39,16 @@ using namespace playrho;
 
 PulleyJointDef::PulleyJointDef(NonNull<Body*> bA, NonNull<Body*> bB,
                                const Length2D groundA, const Length2D groundB,
-                               const Length2D anchorA, const Length2D anchorB,
-                               Real r):
-    JointDef{JointType::Pulley, bA, bB, true},
+                               const Length2D anchorA, const Length2D anchorB):
+    super{super{JointType::Pulley}.UseBodyA(bA).UseBodyB(bB).UseCollideConnected(true)},
     groundAnchorA{groundA},
     groundAnchorB{groundB},
     localAnchorA{GetLocalPoint(*bA, anchorA)},
     localAnchorB{GetLocalPoint(*bB, anchorB)},
     lengthA{GetLength(anchorA - groundA)},
-    lengthB{GetLength(anchorB - groundB)},
-    ratio{r}
+    lengthB{GetLength(anchorB - groundB)}
 {
-    assert((r > 0) && !almost_zero(r));
+    // Intentionally empty.
 }
 
 PulleyJoint::PulleyJoint(const PulleyJointDef& def):

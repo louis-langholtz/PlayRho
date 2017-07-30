@@ -47,7 +47,7 @@ using namespace playrho;
 // K = J * invM * JT = invMass + invI * cross(r, ug)^2
 
 GearJoint::GearJoint(const GearJointDef& def):
-    Joint(JointDef(def).UseBodyA(def.joint1->GetBodyB()).UseBodyB(def.joint2->GetBodyB())),
+    Joint(def),
     m_joint1(def.joint1),
     m_joint2(def.joint2),
     m_typeA(def.joint1->GetType()),

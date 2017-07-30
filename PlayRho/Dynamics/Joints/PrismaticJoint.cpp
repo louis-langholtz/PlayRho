@@ -94,7 +94,7 @@ using namespace playrho;
 
 PrismaticJointDef::PrismaticJointDef(NonNull<Body*> bA, NonNull<Body*> bB, const Length2D anchor,
                                      const UnitVec2 axis) noexcept:
-    JointDef{JointType::Prismatic, bA, bB},
+    super{super{JointType::Prismatic}.UseBodyA(bA).UseBodyB(bB)},
     localAnchorA{GetLocalPoint(*bA, anchor)},
     localAnchorB{GetLocalPoint(*bB, anchor)},
     localAxisA{GetLocalVector(*bA, axis)},

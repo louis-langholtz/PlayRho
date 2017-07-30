@@ -40,7 +40,7 @@ using namespace playrho;
 // K = invI1 + invI2
 
 WeldJointDef::WeldJointDef(NonNull<Body*> bA, NonNull<Body*> bB, const Length2D anchor) noexcept:
-    JointDef{JointType::Weld, bA, bB},
+    super{super{JointType::Weld}.UseBodyA(bA).UseBodyB(bB)},
     localAnchorA{GetLocalPoint(*bA, anchor)},
     localAnchorB{GetLocalPoint(*bB, anchor)},
     referenceAngle{bB->GetAngle() - bA->GetAngle()}
@@ -59,7 +59,8 @@ WeldJoint::WeldJoint(const WeldJointDef& def):
     // Intentionally empty.
 }
 
-void WeldJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step, const ConstraintSolverConf&)
+void WeldJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
+                                        const ConstraintSolverConf&)
 {
     auto& bodyConstraintA = At(bodies, GetBodyA());
     auto& bodyConstraintB = At(bodies, GetBodyB());

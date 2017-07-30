@@ -32,9 +32,11 @@ namespace playrho {
 /// can violate the constraint slightly. The joint translation is zero
 /// when the local anchor points coincide in world space. Using local
 /// anchors and a local axis helps when saving and loading a game.
-struct PrismaticJointDef : public JointDef
+struct PrismaticJointDef : public JointBuilder<PrismaticJointDef>
 {
-    constexpr PrismaticJointDef() noexcept: JointDef(JointType::Prismatic) {}
+    using super = JointBuilder<PrismaticJointDef>;
+    
+    constexpr PrismaticJointDef() noexcept: super{JointType::Prismatic} {}
 
     PrismaticJointDef(const PrismaticJointDef& copy) = default;
     

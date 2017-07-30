@@ -31,7 +31,7 @@ using namespace playrho;
 // x2 = x1 + h * v2
 
 // 1-D mass-damper-spring system
-// m (v2 - v1) + h * d * v2 + h * k * 
+// m (v2 - v1) + h * d * v2 + h * k *
 
 // C = norm(p2 - p1) - L
 // u = (p2 - p1) / norm(p2 - p1)
@@ -41,12 +41,11 @@ using namespace playrho;
 //   = invMass1 + invI1 * cross(r1, u)^2 + invMass2 + invI2 * cross(r2, u)^2
 
 DistanceJointDef::DistanceJointDef(NonNull<Body*> bA, NonNull<Body*> bB,
-                                   const Length2D anchor1, const Length2D anchor2,
-                                   NonNegative<Frequency> freq, Real damp) noexcept:
-    JointDef{JointType::Distance, bA, bB},
-    localAnchorA{GetLocalPoint(*bA, anchor1)}, localAnchorB{GetLocalPoint(*bB, anchor2)},
-    length{GetLength(anchor2 - anchor1)},
-    frequency{freq}, dampingRatio{damp}
+                                   Length2D anchor1, Length2D anchor2) noexcept
+    : super{super{JointType::Distance}.UseBodyA(bA).UseBodyB(bB)},
+      localAnchorA{GetLocalPoint(*bA, anchor1)},
+      localAnchorB{GetLocalPoint(*bB, anchor2)},
+      length{GetLength(anchor2 - anchor1)}
 {
     // Intentionally empty.
 }
@@ -77,7 +76,7 @@ DistanceJoint::DistanceJoint(const DistanceJointDef& def):
 
 void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
                                             const StepConf& step,
-                                            const ConstraintSolverConf& conf)
+                                            const ConstraintSolverConf&)
 {
     auto& bodyConstraintA = At(bodies, static_cast<const Body*>(GetBodyA()));
     auto& bodyConstraintB = At(bodies, GetBodyB());
@@ -102,11 +101,7 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
 
     // Handle singularity.
     auto length = Length{0};
-    m_u = GetUnitVector(deltaLocation, length);
-    if (length <= conf.linearSlop)
-    {
-        m_u = UnitVec2::GetZero();
-    }
+    m_u = GetUnitVector(deltaLocation, length, UnitVec2::GetZero());
 
     const auto crAu = Length{Cross(m_rA, m_u)} / Radian;
     const auto crBu = Length{Cross(m_rB, m_u)} / Radian;
@@ -199,11 +194,12 @@ bool DistanceJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
 
     bodyConstraintA->SetVelocity(velA);
     bodyConstraintB->SetVelocity(velB);
-    
+
     return impulse == Momentum{0};
 }
 
-bool DistanceJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const
+bool DistanceJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
+                                             const ConstraintSolverConf& conf) const
 {
     if (m_frequency > Frequency{0})
     {
@@ -228,7 +224,7 @@ bool DistanceJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
     const auto rA = Length2D{Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA)};
     const auto rB = Length2D{Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB)};
     const auto relLoc = Length2D{(posB.linear + rB) - (posA.linear + rA)};
-    
+
     auto length = Length{0};
     const auto u = GetUnitVector(relLoc, length);
     const auto deltaLength = length - m_length;
@@ -270,7 +266,7 @@ Torque DistanceJoint::GetReactionTorque(Frequency inv_dt) const
 DistanceJointDef playrho::GetDistanceJointDef(const DistanceJoint& joint) noexcept
 {
     auto def = DistanceJointDef{};
-    
+
     Set(def, joint);
 
     def.localAnchorA = joint.GetLocalAnchorA();

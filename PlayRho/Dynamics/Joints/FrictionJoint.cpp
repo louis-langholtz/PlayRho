@@ -37,7 +37,7 @@ using namespace playrho;
 // K = invI1 + invI2
 
 FrictionJointDef::FrictionJointDef(Body* bA, Body* bB, const Length2D anchor) noexcept:
-    JointDef{JointType::Friction, bA, bB},
+    super{super{JointType::Friction}.UseBodyA(bA).UseBodyB(bB)},
     localAnchorA{GetLocalPoint(*bA, anchor)},
     localAnchorB{GetLocalPoint(*bB, anchor)}
 {

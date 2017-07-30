@@ -56,8 +56,8 @@ TEST(GearJointDef, Traits)
     EXPECT_TRUE(std::is_nothrow_copy_constructible<GearJointDef>::value);
     EXPECT_TRUE(std::is_trivially_copy_constructible<GearJointDef>::value);
     
-    EXPECT_FALSE(std::is_copy_assignable<GearJointDef>::value);
-    EXPECT_FALSE(std::is_nothrow_copy_assignable<GearJointDef>::value);
+    EXPECT_TRUE(std::is_copy_assignable<GearJointDef>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_assignable<GearJointDef>::value);
     EXPECT_FALSE(std::is_trivially_copy_assignable<GearJointDef>::value);
     
     EXPECT_TRUE(std::is_destructible<GearJointDef>::value);

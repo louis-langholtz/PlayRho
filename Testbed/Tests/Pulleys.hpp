@@ -67,9 +67,9 @@ public:
             const auto groundAnchor1 = Vec2(-10.0f, y + b + L) * Meter;
             const auto groundAnchor2 = Vec2(10.0f, y + b + L) * Meter;
             const auto pulleyDef = PulleyJointDef{body1, body2,
-                groundAnchor1, groundAnchor2, anchor1, anchor2, 1.5f};
+                groundAnchor1, groundAnchor2, anchor1, anchor2}.UseRatio(1.5f);
 
-            m_joint1 = (PulleyJoint*)m_world->CreateJoint(pulleyDef);
+            m_joint1 = static_cast<PulleyJoint*>(m_world->CreateJoint(pulleyDef));
         }
     }
 

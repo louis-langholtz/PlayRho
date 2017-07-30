@@ -28,11 +28,14 @@ namespace playrho {
 /// @details This requires two body anchor points and a maximum lengths.
 /// @note By default the connected objects will not collide.
 /// @see collideConnected in JointDef.
-struct RopeJointDef : public JointDef
+struct RopeJointDef : public JointBuilder<RopeJointDef>
 {
-    constexpr RopeJointDef() noexcept: JointDef(JointType::Rope) {}
+    using super = JointBuilder<RopeJointDef>;
 
-    constexpr RopeJointDef(Body* bodyA, Body* bodyB) noexcept: JointDef(JointType::Rope, bodyA, bodyB) {}
+    constexpr RopeJointDef() noexcept: super{JointType::Rope} {}
+
+    constexpr RopeJointDef(Body* bodyA, Body* bodyB) noexcept:
+        super{super{JointType::Rope}.UseBodyA(bodyA).UseBodyB(bodyB)} {}
 
     /// The local anchor point relative to bodyA's origin.
     Length2D localAnchorA = Length2D{Real(-1) * Meter, Real(0) * Meter};

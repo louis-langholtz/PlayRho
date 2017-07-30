@@ -76,18 +76,15 @@ public:
         // Using a soft distance constraint can reduce some jitter.
         // It also makes the structure seem a bit more fluid by
         // acting like a suspension system.
-        m_world->CreateJoint(DistanceJointDef{
-            body1, body2, p2 + m_offset, p5 + m_offset, Real(10) * Hertz, Real(0.5)
-        });
-        m_world->CreateJoint(DistanceJointDef{
-            body1, body2, p3 + m_offset, p4 + m_offset, Real(10) * Hertz, Real(0.5)
-        });
-        m_world->CreateJoint(DistanceJointDef{
-            body1, m_wheel, p3 + m_offset, wheelAnchor + m_offset, Real(10) * Hertz, Real(0.5)
-        });
-        m_world->CreateJoint(DistanceJointDef{
-            body2, m_wheel, p6 + m_offset, wheelAnchor + m_offset, Real(10) * Hertz, Real(0.5)
-        });
+
+        m_world->CreateJoint(DistanceJointDef{body1, body2, p2 + m_offset, p5 + m_offset}
+                             .UseFrequency(Real(10) * Hertz).UseDampingRatio(Real(0.5)));
+        m_world->CreateJoint(DistanceJointDef{body1, body2, p3 + m_offset, p4 + m_offset}
+                             .UseFrequency(Real(10) * Hertz).UseDampingRatio(Real(0.5)));
+        m_world->CreateJoint(DistanceJointDef{body1, m_wheel, p3 + m_offset, wheelAnchor + m_offset}
+                             .UseFrequency(Real(10) * Hertz).UseDampingRatio(Real(0.5)));
+        m_world->CreateJoint(DistanceJointDef{body2, m_wheel, p6 + m_offset, wheelAnchor + m_offset}
+                             .UseFrequency(Real(10) * Hertz).UseDampingRatio(Real(0.5)));
         m_world->CreateJoint(RevoluteJointDef{body2, m_chassis, p4 + m_offset});
     }
 

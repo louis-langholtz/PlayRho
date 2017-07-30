@@ -29,9 +29,11 @@ namespace playrho {
 /// @details You need to specify local anchor points
 /// where they are attached and the relative body angle. The position
 /// of the anchor points is important for computing the reaction torque.
-struct WeldJointDef : public JointDef
+struct WeldJointDef : public JointBuilder<WeldJointDef>
 {
-    constexpr WeldJointDef() noexcept: JointDef(JointType::Weld) {}
+    using super = JointBuilder<WeldJointDef>;
+
+    constexpr WeldJointDef() noexcept: super{JointType::Weld} {}
 
     /// Initialize the bodies, anchors, and reference angle using a world
     /// anchor point.
@@ -46,11 +48,13 @@ struct WeldJointDef : public JointDef
     /// The bodyB angle minus bodyA angle in the reference state (radians).
     Angle referenceAngle = Angle{0};
     
-    /// The mass-spring-damper frequency in Hertz. Rotation only.
-    /// Disable softness with a value of 0.
+    /// @brief Mass-spring-damper frequency.
+    /// @note Rotation only.
+    /// @note Disable softness with a value of 0.
     Frequency frequency = Frequency{0};
 
-    /// The damping ratio. 0 = no damping, 1 = critical damping.
+    /// @brief Damping ratio.
+    /// @note 0 = no damping, 1 = critical damping.
     Real dampingRatio = 0;
 };
 
@@ -77,8 +81,10 @@ public:
     /// Get the reference angle.
     Angle GetReferenceAngle() const { return m_referenceAngle; }
 
-    /// Set/get frequency.
+    /// @brief Sets frequency.
     void SetFrequency(Frequency frequency) { m_frequency = frequency; }
+
+    /// @brief Gets the frequency.
     Frequency GetFrequency() const { return m_frequency; }
 
     /// Set/get damping ratio.
@@ -88,23 +94,23 @@ public:
 private:
 
     void InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
-                                 const ConstraintSolverConf& conf) override;
+                                 const ConstraintSolverConf&) override;
     bool SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step) override;
     bool SolvePositionConstraints(BodyConstraintsMap& bodies,
                                   const ConstraintSolverConf& conf) const override;
 
-    Frequency m_frequency;
-    Real m_dampingRatio;
-    AngularVelocity m_bias;
-
-    // Solver shared
     Length2D m_localAnchorA;
     Length2D m_localAnchorB;
     Angle m_referenceAngle;
-    InvRotInertia m_gamma;
+    Frequency m_frequency;
+    Real m_dampingRatio;
+
+    // Solver shared
     Vec3 m_impulse = Vec3_zero;
 
     // Solver temp
+    InvRotInertia m_gamma;
+    AngularVelocity m_bias;
     Length2D m_rA;
     Length2D m_rB;
     Mat33 m_mass;

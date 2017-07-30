@@ -244,7 +244,7 @@ TEST(World, CopyConstruction)
     world.CreateJoint(RevoluteJointDef{b1, b2, Length2D(0, 0)});
     world.CreateJoint(PrismaticJointDef{b1, b2, Length2D(0, 0), UnitVec2::GetRight()});
     world.CreateJoint(PulleyJointDef{b1, b2, Length2D(0, 0), Length2D(0, 0),
-        Length2D(0, 0), Length2D(0, 0), Real(1)});
+        Length2D(0, 0), Length2D(0, 0)}.UseRatio(Real(1)));
     
     auto stepConf = StepConf{};
     world.Step(stepConf);
@@ -302,7 +302,7 @@ TEST(World, CopyAssignment)
     world.CreateJoint(RevoluteJointDef{b1, b2, Length2D(0, 0)});
     world.CreateJoint(PrismaticJointDef{b1, b2, Length2D(0, 0), UnitVec2::GetRight()});
     world.CreateJoint(PulleyJointDef{b1, b2, Length2D(0, 0), Length2D(0, 0),
-        Length2D(0, 0), Length2D(0, 0), Real(1)});
+        Length2D(0, 0), Length2D(0, 0)}.UseRatio(Real(1)));
     
     auto stepConf = StepConf{};
     world.Step(stepConf);

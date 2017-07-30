@@ -37,7 +37,7 @@ using namespace playrho;
 // K = invI1 + invI2
 
 MotorJointDef::MotorJointDef(NonNull<Body*> bA, NonNull<Body*> bB) noexcept:
-    JointDef{JointType::Motor, bA, bB},
+    super{super{JointType::Motor}.UseBodyA(bA).UseBodyB(bB)},
     linearOffset{GetLocalPoint(*bA, bB->GetLocation())},
     angularOffset{bB->GetAngle() - bA->GetAngle()}
 {

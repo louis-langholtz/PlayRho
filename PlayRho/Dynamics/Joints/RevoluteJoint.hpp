@@ -37,13 +37,14 @@ namespace playrho {
 ///    1. you might not know where the center of mass will be;
 ///    2. if you add/remove shapes from a body and recompute the mass,
 ///       the joints will be broken.
-struct RevoluteJointDef : public JointDef
+struct RevoluteJointDef : public JointBuilder<RevoluteJointDef>
 {
-    constexpr RevoluteJointDef() noexcept: JointDef{JointType::Revolute} {}
+    using super = JointBuilder<RevoluteJointDef>;
+    
+    constexpr RevoluteJointDef() noexcept: super{JointType::Revolute} {}
 
     /// @brief Initialize the bodies, anchors, and reference angle using a world anchor point.
-    RevoluteJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB, const Length2D anchor,
-                     bool cc = false) noexcept;
+    RevoluteJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB, const Length2D anchor) noexcept;
 
     /// @brief Local anchor point relative to bodyA's origin.
     Length2D localAnchorA = Length2D(0, 0);

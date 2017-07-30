@@ -28,10 +28,12 @@ namespace playrho {
 /// @brief Gear joint definition.
 /// @details This definition requires two existing
 /// revolute or prismatic joints (any combination will work).
-struct GearJointDef : public JointDef
+struct GearJointDef : public JointBuilder<GearJointDef>
 {
+    using super = JointBuilder<GearJointDef>;
+
     GearJointDef(NonNull<Joint*> j1, NonNull<Joint*> j2) noexcept:
-        JointDef{JointDef(JointType::Gear).UseBodyA(j1->GetBodyB()).UseBodyB(j2->GetBodyB())},
+        super{super{JointType::Gear}.UseBodyA(j1->GetBodyB()).UseBodyB(j2->GetBodyB())},
         joint1{j1}, joint2{j2}
     {
         // Intentionally empty.

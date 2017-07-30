@@ -1,21 +1,23 @@
 /*
-* Original work Copyright (c) 2006-2007 Erin Catto http://www.box2d.org
-* Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+ * Original work Copyright (c) 2006-2007 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty. In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ *
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ *
+ * 1. The origin of this software must not be misrepresented; you must not
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ *    misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/DistanceJoint.hpp>
@@ -39,140 +41,37 @@
 namespace playrho
 {
 
-namespace
-{
-    inline DistanceJoint* Create(const DistanceJointDef& def)
-    {
-        if (DistanceJoint::IsOkay(def))
-        {
-            return new DistanceJoint(def);
-        }
-        return nullptr;
-    }
-    
-    inline MouseJoint* Create(const MouseJointDef& def)
-    {
-        if (MouseJoint::IsOkay(static_cast<const MouseJointDef&>(def)))
-        {
-            return new MouseJoint(def);
-        }
-        return nullptr;
-    }
-    
-    inline PrismaticJoint* Create(const PrismaticJointDef& def)
-    {
-        if (PrismaticJoint::IsOkay(def))
-        {
-            return new PrismaticJoint(def);
-        }
-        return nullptr;
-    }
-    
-    inline RevoluteJoint* Create(const RevoluteJointDef& def)
-    {
-        if (RevoluteJoint::IsOkay(def))
-        {
-            return new RevoluteJoint(def);
-        }
-        return nullptr;
-    }
-    
-    inline PulleyJoint* Create(const PulleyJointDef& def)
-    {
-        if (PulleyJoint::IsOkay(def))
-        {
-            return new PulleyJoint(def);
-        }
-        return nullptr;
-    }
-    
-    inline GearJoint* Create(const GearJointDef& def)
-    {
-        if (GearJoint::IsOkay(def))
-        {
-            return new GearJoint(def);
-        }
-        return nullptr;
-    }
-    
-    inline WheelJoint* Create(const WheelJointDef& def)
-    {
-        if (WheelJoint::IsOkay(def))
-        {
-            return new WheelJoint(def);
-        }
-        return nullptr;
-    }
-    
-    inline WeldJoint* Create(const WeldJointDef& def)
-    {
-        if (WeldJoint::IsOkay(def))
-        {
-            return new WeldJoint(def);
-        }
-        return nullptr;
-    }
-    
-    inline FrictionJoint* Create(const FrictionJointDef& def)
-    {
-        if (FrictionJoint::IsOkay(def))
-        {
-            return new FrictionJoint(def);
-        }
-        return nullptr;
-    }
-    
-    inline RopeJoint* Create(const RopeJointDef& def)
-    {
-        if (RopeJoint::IsOkay(def))
-        {
-            return new RopeJoint(def);
-        }
-        return nullptr;
-    }
-    
-    inline MotorJoint* Create(const MotorJointDef& def)
-    {
-        if (MotorJoint::IsOkay(def))
-        {
-            return new MotorJoint(def);
-        }
-        return nullptr;
-    }
-    
-} // anonymous namespace
-
 Joint* Joint::Create(const JointDef& def)
 {
     switch (def.type)
     {
-    case JointType::Distance:
-        return playrho::Create(static_cast<const DistanceJointDef&>(def));
-    case JointType::Mouse:
-        return playrho::Create(static_cast<const MouseJointDef&>(def));
-    case JointType::Prismatic:
-        return playrho::Create(static_cast<const PrismaticJointDef&>(def));
-    case JointType::Revolute:
-        return playrho::Create(static_cast<const RevoluteJointDef&>(def));
-    case JointType::Pulley:
-        return playrho::Create(static_cast<const PulleyJointDef&>(def));
-    case JointType::Gear:
-        return playrho::Create(static_cast<const GearJointDef&>(def));
-    case JointType::Wheel:
-        return playrho::Create(static_cast<const WheelJointDef&>(def));
-    case JointType::Weld:
-        return playrho::Create(static_cast<const WeldJointDef&>(def));
-    case JointType::Friction:
-        return playrho::Create(static_cast<const FrictionJointDef&>(def));
-    case JointType::Rope:
-        return playrho::Create(static_cast<const RopeJointDef&>(def));
-    case JointType::Motor:
-        return playrho::Create(static_cast<const MotorJointDef&>(def));
-    case JointType::Unknown:
-        assert(false);
-        break;
-    default:
-        break;
+        case JointType::Distance:
+            return Create<DistanceJoint>(static_cast<const DistanceJointDef&>(def));
+        case JointType::Mouse:
+            return Create<MouseJoint>(static_cast<const MouseJointDef&>(def));
+        case JointType::Prismatic:
+            return Create<PrismaticJoint>(static_cast<const PrismaticJointDef&>(def));
+        case JointType::Revolute:
+            return Create<RevoluteJoint>(static_cast<const RevoluteJointDef&>(def));
+        case JointType::Pulley:
+            return Create<PulleyJoint>(static_cast<const PulleyJointDef&>(def));
+        case JointType::Gear:
+            return Create<GearJoint>(static_cast<const GearJointDef&>(def));
+        case JointType::Wheel:
+            return Create<WheelJoint>(static_cast<const WheelJointDef&>(def));
+        case JointType::Weld:
+            return Create<WeldJoint>(static_cast<const WeldJointDef&>(def));
+        case JointType::Friction:
+            return Create<FrictionJoint>(static_cast<const FrictionJointDef&>(def));
+        case JointType::Rope:
+            return Create<RopeJoint>(static_cast<const RopeJointDef&>(def));
+        case JointType::Motor:
+            return Create<MotorJoint>(static_cast<const MotorJointDef&>(def));
+        case JointType::Unknown:
+            assert(false);
+            break;
+        default:
+            break;
     }
     return nullptr;
 }
@@ -201,6 +100,8 @@ void SetAwake(Joint& j) noexcept
     j.GetBodyA()->SetAwake();
     j.GetBodyB()->SetAwake();
 }
+
+// Free functions...
 
 JointCounter GetWorldIndex(const Joint* joint)
 {
@@ -231,6 +132,26 @@ void Set(JointDef& def, const Joint& joint) noexcept
     def.bodyB = joint.GetBodyB();
     def.userData = joint.GetUserData();
     def.collideConnected = joint.GetCollideConnected();
+}
+
+BodyConstraintPtr& At(std::vector<BodyConstraintPair>& container, const Body* key)
+{
+    auto last = std::end(container);
+    auto first = std::begin(container);
+    first = std::lower_bound(first, last, key, [](const BodyConstraintPair &a, const Body* b){
+        return a.first < b;
+    });
+    if (first == last || key != (*first).first)
+    {
+        throw std::out_of_range{"invalid key"};
+    }
+    return (*first).second;
+}
+
+BodyConstraintPtr& At(std::unordered_map<const Body*, BodyConstraint*>& container,
+                      const Body* key)
+{
+    return container.at(key);
 }
 
 } // namespace playrho

@@ -26,9 +26,11 @@
 namespace playrho {
 
 /// Motor joint definition.
-struct MotorJointDef : public JointDef
+struct MotorJointDef : public JointBuilder<MotorJointDef>
 {
-    constexpr MotorJointDef() noexcept: JointDef(JointType::Motor) {}
+    using super = JointBuilder<MotorJointDef>;
+    
+    constexpr MotorJointDef() noexcept: super{JointType::Motor} {}
 
     /// Initialize the bodies and offsets using the current transforms.
     MotorJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB) noexcept;

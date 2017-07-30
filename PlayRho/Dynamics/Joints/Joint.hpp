@@ -1,21 +1,23 @@
 /*
-* Original work Copyright (c) 2006-2007 Erin Catto http://www.box2d.org
-* Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+ * Original work Copyright (c) 2006-2007 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty. In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ *
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ *
+ * 1. The origin of this software must not be misrepresented; you must not
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ *    misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
 
 #ifndef B2_JOINT_H
 #define B2_JOINT_H
@@ -46,7 +48,7 @@ using BodyConstraintsMap = std::vector<std::pair<const Body*, BodyConstraintPtr>
 using BodyConstraintsMap = std::unordered_map<const Body*, BodyConstraint*>;
 #endif
 
-enum class JointType: std::uint8_t
+enum class JointType : std::uint8_t
 {
     Unknown,
     Revolute,
@@ -71,24 +73,13 @@ struct JointDef
     /// Deleted default constructor for abstract base class.
     JointDef() = delete; // deleted to prevent direct instantiation.
 
-    constexpr JointDef(JointType t) noexcept:
-        type{t}
-    {
-        // Intentionally empty.        
-    }
-
-    constexpr JointDef(JointType t, Body* bA, Body* bB, bool cc = false,
-                       void* u = nullptr) noexcept:
-        type{t}, bodyA{bA}, bodyB{bB}, collideConnected{cc}, userData{u}
+    constexpr JointDef(JointType t) noexcept : type{t}
     {
         // Intentionally empty.
     }
 
-    constexpr JointDef& UseBodyA(Body* body) noexcept { bodyA = body; return *this; }
-    constexpr JointDef& UseBodyB(Body* body) noexcept { bodyB = body; return *this; }
-
     /// The joint type is set automatically for concrete joint types.
-    const JointType type;
+    JointType type;
 
     /// @brief First attached body.
     Body* bodyA = nullptr;
@@ -98,9 +89,45 @@ struct JointDef
 
     /// Set this flag to true if the attached bodies should collide.
     bool collideConnected = false;
-    
+
     /// Use this to attach application specific data to your joints.
     void* userData = nullptr;
+};
+
+template <class T>
+struct JointBuilder : JointDef
+{
+    using value_type = T;
+    using reference = value_type&;
+
+    constexpr JointBuilder(JointType t) noexcept : JointDef{t}
+    {
+        // Intentionally empty.
+    }
+
+    constexpr reference UseBodyA(Body* b) noexcept
+    {
+        bodyA = b;
+        return static_cast<reference>(*this);
+    }
+
+    constexpr reference UseBodyB(Body* b) noexcept
+    {
+        bodyB = b;
+        return static_cast<reference>(*this);
+    }
+
+    constexpr reference UseCollideConnected(bool v) noexcept
+    {
+        collideConnected = v;
+        return static_cast<reference>(*this);
+    }
+
+    constexpr reference UseUserData(void* v) noexcept
+    {
+        userData = v;
+        return static_cast<reference>(*this);
+    }
 };
 
 /// @brief Base joint class.
@@ -116,7 +143,7 @@ public:
         e_atUpperLimit,
         e_equalLimits
     };
-    
+
     static bool IsOkay(const JointDef& def) noexcept;
 
     /// @brief Gets the type of the concrete joint.
@@ -158,24 +185,34 @@ public:
 
 protected:
     Joint(const JointDef& def);
-    
+
 private:
     friend class JointAtty;
 
     /// Flags type data type.
     using FlagsType = std::uint8_t;
-    
+
     /// @brief Flags stored in m_flags
     enum Flag: FlagsType
     {
         // Used when crawling contact graph when forming islands.
         e_islandFlag = 0x01,
-        
+
         e_collideConnectedFlag = 0x02
     };
-    
+
     static constexpr FlagsType GetFlags(const JointDef& def) noexcept;
 
+    template <class OUT_TYPE, class IN_TYPE>
+    static OUT_TYPE* Create(IN_TYPE def)
+    {
+        if (OUT_TYPE::IsOkay(def))
+        {
+            return new OUT_TYPE(def);
+        }
+        return nullptr;
+    }
+    
     static Joint* Create(const JointDef& def);
 
     /// Destroys the given joint.
@@ -195,8 +232,9 @@ private:
     virtual bool SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step) = 0;
 
     // This returns true if the position errors are within tolerance.
-    virtual bool SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const = 0;
-    
+    virtual bool SolvePositionConstraints(BodyConstraintsMap& bodies,
+                                          const ConstraintSolverConf& conf) const = 0;
+
     bool IsIslanded() const noexcept;
     void SetIslanded() noexcept;
     void UnsetIslanded() noexcept;
@@ -271,7 +309,7 @@ inline void Joint::UnsetIslanded() noexcept
 }
 
 // Free functions...
-    
+
 /// @brief Short-cut function to determine if both bodies are enabled.
 bool IsEnabled(const Joint& j) noexcept;
 
@@ -282,25 +320,10 @@ JointCounter GetWorldIndex(const Joint* joint);
 
 void Set(JointDef& def, const Joint& joint) noexcept;
 
-inline BodyConstraintPtr& At(std::vector<BodyConstraintPair>& container, const Body* key)
-{
-    auto last = std::end(container);
-    auto first = std::begin(container);
-    first = std::lower_bound(first, last, key, [](const BodyConstraintPair &a, const Body* b){
-        return a.first < b;
-    });
-    if (first == last || key != (*first).first)
-    {
-        throw std::out_of_range{"invalid key"};
-    }
-    return (*first).second;
-}
+BodyConstraintPtr& At(std::vector<BodyConstraintPair>& container, const Body* key);
 
-inline BodyConstraintPtr& At(std::unordered_map<const Body*, BodyConstraint*>& container,
-                             const Body* key)
-{
-    return container.at(key);
-}
+BodyConstraintPtr& At(std::unordered_map<const Body*, BodyConstraint*>& container,
+                      const Body* key);
 
 } // namespace playrho
 

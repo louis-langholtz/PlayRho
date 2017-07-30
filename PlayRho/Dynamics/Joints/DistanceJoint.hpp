@@ -31,19 +31,37 @@ namespace playrho {
 /// the initial configuration can violate the constraint slightly. This helps when
 //  saving and loading a game.
 /// @warning Do not use a zero or short length.
-struct DistanceJointDef : public JointDef
+struct DistanceJointDef : public JointBuilder<DistanceJointDef>
 {
-    constexpr DistanceJointDef() noexcept: JointDef{JointType::Distance} {}
+    using super = JointBuilder<DistanceJointDef>;
+
+    constexpr DistanceJointDef() noexcept: super{JointType::Distance} {}
 
     DistanceJointDef(const DistanceJointDef& copy) = default;
 
     /// @brief Initializing constructor.
     /// @details Initialize the bodies, anchors, and length using the world anchors.
     DistanceJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB,
-                     const Length2D anchorA = Length2D(0, 0),
-                     const Length2D anchorB = Length2D(0, 0),
-                     NonNegative<Frequency> freq = NonNegative<Frequency>{0},
-                     Real damp = 0) noexcept;
+                     Length2D anchorA = Length2D(0, 0),
+                     Length2D anchorB = Length2D(0, 0)) noexcept;
+    
+    constexpr DistanceJointDef& UseLength(Length v) noexcept
+    {
+        length = v;
+        return *this;
+    }
+    
+    constexpr DistanceJointDef& UseFrequency(NonNegative<Frequency> v) noexcept
+    {
+        frequency = v;
+        return *this;
+    }
+    
+    constexpr DistanceJointDef& UseDampingRatio(Real v) noexcept
+    {
+        dampingRatio = v;
+        return *this;
+    }
 
     /// @brief Local anchor point relative to bodyA's origin.
     Length2D localAnchorA = Length2D(0, 0);
@@ -108,7 +126,8 @@ public:
 
 private:
 
-    void InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
+    void InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step, const
+                                 ConstraintSolverConf&) override;
     bool SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step) override;
     bool SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const override;
 
@@ -118,9 +137,11 @@ private:
     NonNegative<Frequency> m_frequency;
     Real m_dampingRatio;
 
+    // Solver shared
+    Momentum m_impulse = Momentum{0};
+
     // Solver temp
     InvMass m_invGamma;
-    Momentum m_impulse = Momentum{0};
     LinearVelocity m_bias;
     Mass m_mass;
     UnitVec2 m_u;

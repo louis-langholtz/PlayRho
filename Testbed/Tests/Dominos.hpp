@@ -77,10 +77,12 @@ public:
             b3 = m_world->CreateBody(bd);
             auto conf = PolygonShape::Conf{};
             conf.density = Real{10} * KilogramPerSquareMeter;
-            b3->CreateFixture(std::make_shared<PolygonShape>(Real{6.0f} * Meter, Real{0.125f} * Meter, conf));
+            b3->CreateFixture(std::make_shared<PolygonShape>(Real{6.0f} * Meter,
+                                                             Real{0.125f} * Meter, conf));
         }
 
-        m_world->CreateJoint(RevoluteJointDef{b1, b3, Vec2(-2.0f, 1.0f) * Meter, true});
+        m_world->CreateJoint(RevoluteJointDef{b1, b3, Vec2(-2.0f, 1.0f) * Meter}
+                             .UseCollideConnected(true));
 
         Body* b4;
         {
@@ -90,10 +92,12 @@ public:
             b4 = m_world->CreateBody(bd);
             auto conf = PolygonShape::Conf{};
             conf.density = Real{10} * KilogramPerSquareMeter;
-            b4->CreateFixture(std::make_shared<PolygonShape>(Real{0.25f} * Meter, Real{0.25f} * Meter, conf));
+            b4->CreateFixture(std::make_shared<PolygonShape>(Real{0.25f} * Meter,
+                                                             Real{0.25f} * Meter, conf));
         }
 
-        m_world->CreateJoint(RevoluteJointDef{b2, b4, Vec2(-7.0f, 15.0f) * Meter, true});
+        m_world->CreateJoint(RevoluteJointDef{b2, b4, Vec2(-7.0f, 15.0f) * Meter}
+                             .UseCollideConnected(true));
 
         Body* b5;
         {
@@ -108,17 +112,21 @@ public:
 
             PolygonShape shape{conf};
 
-            SetAsBox(shape, Real{1.0f} * Meter, Real{0.1f} * Meter, Vec2(0.0f, -0.9f) * Meter, Real{0.0f} * Radian);
+            SetAsBox(shape, Real{1.0f} * Meter, Real{0.1f} * Meter, Vec2(0.0f, -0.9f) * Meter,
+                     Real{0.0f} * Radian);
             b5->CreateFixture(std::make_shared<PolygonShape>(shape));
 
-            SetAsBox(shape, Real{0.1f} * Meter, Real{1.0f} * Meter, Vec2(-0.9f, 0.0f) * Meter, Real{0.0f} * Radian);
+            SetAsBox(shape, Real{0.1f} * Meter, Real{1.0f} * Meter, Vec2(-0.9f, 0.0f) * Meter,
+                     Real{0.0f} * Radian);
             b5->CreateFixture(std::make_shared<PolygonShape>(shape));
 
-            SetAsBox(shape, Real{0.1f} * Meter, Real{1.0f} * Meter, Vec2(0.9f, 0.0f) * Meter, Real{0.0f} * Radian);
+            SetAsBox(shape, Real{0.1f} * Meter, Real{1.0f} * Meter, Vec2(0.9f, 0.0f) * Meter,
+                     Real{0.0f} * Radian);
             b5->CreateFixture(std::make_shared<PolygonShape>(shape));
         }
 
-        m_world->CreateJoint(RevoluteJointDef{b1, b5, Vec2(6.0f, 2.0f) * Meter, true});
+        m_world->CreateJoint(RevoluteJointDef{b1, b5, Vec2(6.0f, 2.0f) * Meter}
+                             .UseCollideConnected(true));
 
         Body* b6;
         {
@@ -128,10 +136,12 @@ public:
             b6 = m_world->CreateBody(bd);
             auto conf = PolygonShape::Conf{};
             conf.density = Real{30} * KilogramPerSquareMeter;
-            b6->CreateFixture(std::make_shared<PolygonShape>(PolygonShape(Real{1.0f} * Meter, Real{0.1f} * Meter, conf)));
+            b6->CreateFixture(std::make_shared<PolygonShape>(PolygonShape(Real{1.0f} * Meter,
+                                                                          Real{0.1f} * Meter, conf)));
         }
 
-        m_world->CreateJoint(RevoluteJointDef{b5, b6, Vec2(7.5f, 4.0f) * Meter, true});
+        m_world->CreateJoint(RevoluteJointDef{b5, b6, Vec2(7.5f, 4.0f) * Meter}
+                             .UseCollideConnected(true));
 
         Body* b7;
         {
@@ -142,7 +152,8 @@ public:
             b7 = m_world->CreateBody(bd);
             auto conf = PolygonShape::Conf{};
             conf.density = Real{10} * KilogramPerSquareMeter;
-            b7->CreateFixture(std::make_shared<PolygonShape>(PolygonShape(Real{0.1f} * Meter, Real{1.0f} * Meter, conf)));
+            b7->CreateFixture(std::make_shared<PolygonShape>(PolygonShape(Real{0.1f} * Meter,
+                                                                          Real{1.0f} * Meter, conf)));
         }
 
         DistanceJointDef djd;
@@ -164,7 +175,10 @@ public:
             {
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
-                bd.position = Length2D(Real{5.9f} * Meter + Real{2.0f} * radius * static_cast<Real>(i), Real{2.4f} * Meter);
+                bd.position = Length2D{
+                    Real{5.9f} * Meter + Real{2.0f} * radius * static_cast<Real>(i),
+                    Real{2.4f} * Meter
+                };
                 const auto body = m_world->CreateBody(bd);
                 body->CreateFixture(shape);
             }

@@ -27,9 +27,11 @@ namespace playrho {
 
 /// @brief Pulley joint definition.
 /// @details This requires two ground anchors, two dynamic body anchor points, and a pulley ratio.
-struct PulleyJointDef : public JointDef
+struct PulleyJointDef : public JointBuilder<PulleyJointDef>
 {
-    PulleyJointDef() noexcept: JointDef(JointType::Pulley)
+    using super = JointBuilder<PulleyJointDef>;
+
+    PulleyJointDef() noexcept: super{JointType::Pulley}
     {
         collideConnected = true;
     }
@@ -37,8 +39,13 @@ struct PulleyJointDef : public JointDef
     /// Initialize the bodies, anchors, lengths, max lengths, and ratio using the world anchors.
     PulleyJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB,
                     const Length2D groundAnchorA, const Length2D groundAnchorB,
-                    const Length2D anchorA, const Length2D anchorB,
-                    Real ratio);
+                    const Length2D anchorA, const Length2D anchorB);
+
+    PulleyJointDef& UseRatio(Real v) noexcept
+    {
+        ratio = v;
+        return *this;
+    }
 
     /// The first ground anchor in world coordinates. This point never moves.
     Length2D groundAnchorA = Length2D{Real(-1) * Meter, Real(1) * Meter};

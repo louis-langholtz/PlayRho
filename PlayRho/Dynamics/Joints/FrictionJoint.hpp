@@ -25,9 +25,11 @@
 namespace playrho {
 
 /// @brief Friction joint definition.
-struct FrictionJointDef : public JointDef
+struct FrictionJointDef : public JointBuilder<FrictionJointDef>
 {
-    constexpr FrictionJointDef() noexcept: JointDef(JointType::Friction) {}
+    using super = JointBuilder<FrictionJointDef>;
+
+    constexpr FrictionJointDef() noexcept: super{JointType::Friction} {}
 
     /// @brief Initializing constructor.
     /// @details Initialize the bodies, anchors, axis, and reference angle using the world

@@ -32,9 +32,11 @@ namespace playrho {
 ///   can violate the constraint slightly. The joint translation is zero
 ///   when the local anchor points coincide in world space. Using local
 ///   anchors and a local axis helps when saving and loading a game.
-struct WheelJointDef : public JointDef
+struct WheelJointDef : public JointBuilder<WheelJointDef>
 {
-    constexpr WheelJointDef() noexcept: JointDef(JointType::Wheel) {}
+    using super = JointBuilder<WheelJointDef>;
+    
+    constexpr WheelJointDef() noexcept: super{JointType::Wheel} {}
 
     /// Initialize the bodies, anchors, axis, and reference angle using the world
     /// anchor and world axis.
