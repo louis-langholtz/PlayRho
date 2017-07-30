@@ -217,7 +217,8 @@ bool MotorJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
     return solved;
 }
 
-bool MotorJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const
+bool MotorJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
+                                          const ConstraintSolverConf& conf) const
 {
     NOT_USED(bodies);
     NOT_USED(conf);
@@ -243,28 +244,6 @@ Force2D MotorJoint::GetReactionForce(Frequency inv_dt) const
 Torque MotorJoint::GetReactionTorque(Frequency inv_dt) const
 {
     return inv_dt * m_angularImpulse;
-}
-
-void MotorJoint::SetMaxForce(Force force)
-{
-    assert(IsValid(force) && (force >= Force{0}));
-    m_maxForce = force;
-}
-
-Force MotorJoint::GetMaxForce() const
-{
-    return m_maxForce;
-}
-
-void MotorJoint::SetMaxTorque(Torque torque)
-{
-    assert(IsValid(torque) && (torque >= Torque{0}));
-    m_maxTorque = torque;
-}
-
-Torque MotorJoint::GetMaxTorque() const
-{
-    return m_maxTorque;
 }
 
 void MotorJoint::SetCorrectionFactor(Real factor)

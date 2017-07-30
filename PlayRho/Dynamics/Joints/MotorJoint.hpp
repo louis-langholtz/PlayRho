@@ -35,6 +35,18 @@ struct MotorJointDef : public JointBuilder<MotorJointDef>
     /// Initialize the bodies and offsets using the current transforms.
     MotorJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB) noexcept;
 
+    MotorJointDef& UseMaxForce(NonNegative<Force> v) noexcept
+    {
+        maxForce = v;
+        return *this;
+    }
+    
+    MotorJointDef& UseMaxTorque(NonNegative<Torque> v) noexcept
+    {
+        maxTorque = v;
+        return *this;
+    }
+
     /// Position of bodyB minus the position of bodyA, in bodyA's frame.
     Length2D linearOffset = Length2D(0, 0);
 
@@ -42,10 +54,10 @@ struct MotorJointDef : public JointBuilder<MotorJointDef>
     Angle angularOffset = Angle{0};
     
     /// The maximum motor force.
-    Force maxForce = Real{1} * Newton;
+    NonNegative<Force> maxForce = NonNegative<Force>(Real{1} * Newton);
 
     /// The maximum motor torque.
-    Torque maxTorque = Real{1} * NewtonMeter;
+    NonNegative<Torque> maxTorque = NonNegative<Torque>(Real{1} * NewtonMeter);
 
     /// Position correction factor in the range [0,1].
     Real correctionFactor = Real(0.3);
@@ -74,17 +86,17 @@ public:
     void SetAngularOffset(Angle angularOffset);
     Angle GetAngularOffset() const;
 
-    /// Set the maximum friction force.
-    void SetMaxForce(Force force);
+    /// @brief Sets the maximum friction force.
+    void SetMaxForce(NonNegative<Force> force);
 
-    /// Get the maximum friction force.
-    Force GetMaxForce() const;
+    /// @brief Gets the maximum friction force.
+    NonNegative<Force> GetMaxForce() const;
 
     /// Set the maximum friction torque.
-    void SetMaxTorque(Torque torque);
+    void SetMaxTorque(NonNegative<Torque> torque);
 
     /// Get the maximum friction torque.
-    Torque GetMaxTorque() const;
+    NonNegative<Torque> GetMaxTorque() const;
 
     /// Set the position correction factor in the range [0,1].
     void SetCorrectionFactor(Real factor);
@@ -103,8 +115,8 @@ private:
     Angle m_angularOffset;
     Momentum2D m_linearImpulse = Momentum2D{0, 0};
     AngularMomentum m_angularImpulse = AngularMomentum{0};
-    Force m_maxForce;
-    Torque m_maxTorque;
+    NonNegative<Force> m_maxForce;
+    NonNegative<Torque> m_maxTorque;
     Real m_correctionFactor;
 
     // Solver temp
@@ -115,6 +127,26 @@ private:
     Mat22 m_linearMass; ///< 2x2 linear mass matrix in kilograms.
     RotInertia m_angularMass;
 };
+
+inline void MotorJoint::SetMaxForce(NonNegative<Force> force)
+{
+    m_maxForce = force;
+}
+
+inline NonNegative<Force> MotorJoint::GetMaxForce() const
+{
+    return m_maxForce;
+}
+
+inline void MotorJoint::SetMaxTorque(NonNegative<Torque> torque)
+{
+    m_maxTorque = torque;
+}
+
+inline NonNegative<Torque> MotorJoint::GetMaxTorque() const
+{
+    return m_maxTorque;
+}
 
 MotorJointDef GetMotorJointDef(const MotorJoint& joint) noexcept;
 

@@ -27,9 +27,11 @@ namespace playrho {
 
 /// @brief Mouse joint definition.
 /// @details This requires a world target point, tuning parameters, and the time step.
-struct MouseJointDef : public JointDef
+struct MouseJointDef : public JointBuilder<MouseJointDef>
 {
-    constexpr MouseJointDef() noexcept: JointDef(JointType::Mouse) {}
+    using super = JointBuilder<MouseJointDef>;
+    
+    constexpr MouseJointDef() noexcept: super{JointType::Mouse} {}
 
     /// The initial world target point. This is assumed
     /// to coincide with the body anchor initially.
@@ -49,7 +51,7 @@ struct MouseJointDef : public JointDef
     NonNegative<Frequency> frequency = NonNegative<Frequency>(Real{5} * Hertz);
 
     /// The damping ratio. 0 = no damping, 1 = critical damping.
-    Real dampingRatio = 0.7f;
+    NonNegative<Real> dampingRatio = NonNegative<Real>(0.7f);
 };
 
 /// @brief Mouse Joint.
@@ -91,15 +93,15 @@ public:
 
     /// Set/get the maximum force in Newtons.
     void SetMaxForce(NonNegative<Force> force) noexcept;
-    Force GetMaxForce() const noexcept;
+    NonNegative<Force> GetMaxForce() const noexcept;
 
     /// Set/get the frequency in Hertz.
     void SetFrequency(NonNegative<Frequency> hz) noexcept;
-    Frequency GetFrequency() const noexcept;
+    NonNegative<Frequency> GetFrequency() const noexcept;
 
     /// Set/get the damping ratio (dimensionless).
-    void SetDampingRatio(Real ratio) noexcept;
-    Real GetDampingRatio() const noexcept;
+    void SetDampingRatio(NonNegative<Real> ratio) noexcept;
+    NonNegative<Real> GetDampingRatio() const noexcept;
 
     /// Implement Joint::ShiftOrigin
     void ShiftOrigin(const Length2D newOrigin) override;
@@ -114,7 +116,7 @@ private:
     Length2D m_targetA;
     Length2D m_localAnchorB;
     NonNegative<Frequency> m_frequency;
-    Real m_dampingRatio;
+    NonNegative<Real> m_dampingRatio;
     
     // Solver shared
     Momentum2D m_impulse = Momentum2D{0, 0};
@@ -142,7 +144,7 @@ inline void MouseJoint::SetMaxForce(NonNegative<Force> force) noexcept
     m_maxForce = force;
 }
 
-inline Force MouseJoint::GetMaxForce() const noexcept
+inline NonNegative<Force> MouseJoint::GetMaxForce() const noexcept
 {
     return m_maxForce;
 }
@@ -152,17 +154,17 @@ inline void MouseJoint::SetFrequency(NonNegative<Frequency> hz) noexcept
     m_frequency = hz;
 }
 
-inline Frequency MouseJoint::GetFrequency() const noexcept
+inline NonNegative<Frequency> MouseJoint::GetFrequency() const noexcept
 {
     return m_frequency;
 }
 
-inline void MouseJoint::SetDampingRatio(Real ratio) noexcept
+inline void MouseJoint::SetDampingRatio(NonNegative<Real> ratio) noexcept
 {
     m_dampingRatio = ratio;
 }
 
-inline Real MouseJoint::GetDampingRatio() const noexcept
+inline NonNegative<Real> MouseJoint::GetDampingRatio() const noexcept
 {
     return m_dampingRatio;
 }

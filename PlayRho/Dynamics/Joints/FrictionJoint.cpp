@@ -104,7 +104,8 @@ void FrictionJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const St
     }
 
     const auto invRotInertia = invRotInertiaA + invRotInertiaB;
-    m_angularMass = (invRotInertia > InvRotInertia{0})? RotInertia{Real{1} / invRotInertia}: RotInertia{0};
+    m_angularMass = (invRotInertia > InvRotInertia{0})?
+        RotInertia{Real{1} / invRotInertia}: RotInertia{0};
     
     if (step.doWarmStart)
     {
@@ -231,28 +232,6 @@ Force2D FrictionJoint::GetReactionForce(Frequency inv_dt) const
 Torque FrictionJoint::GetReactionTorque(Frequency inv_dt) const
 {
     return inv_dt * m_angularImpulse;
-}
-
-void FrictionJoint::SetMaxForce(Force force)
-{
-    assert(IsValid(force) && (force >= Force{0}));
-    m_maxForce = force;
-}
-
-Force FrictionJoint::GetMaxForce() const
-{
-    return m_maxForce;
-}
-
-void FrictionJoint::SetMaxTorque(Torque torque)
-{
-    assert(IsValid(torque) && (torque >= Torque{0}));
-    m_maxTorque = torque;
-}
-
-Torque FrictionJoint::GetMaxTorque() const
-{
-    return m_maxTorque;
 }
 
 FrictionJointDef playrho::GetFrictionJointDef(const FrictionJoint& joint) noexcept

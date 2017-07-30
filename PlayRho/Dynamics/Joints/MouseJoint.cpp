@@ -43,10 +43,6 @@ bool MouseJoint::IsOkay(const MouseJointDef& def) noexcept
     {
         return false;
     }
-    if (!(def.dampingRatio >= 0))
-    {
-        return false;
-    }
     return true;
 }
 
@@ -61,7 +57,7 @@ MouseJoint::MouseJoint(const MouseJointDef& def):
     m_dampingRatio{def.dampingRatio}
 {
     assert(IsValid(def.target));
-    assert(IsValid(def.dampingRatio) && (def.dampingRatio >= 0));
+    assert(IsValid(def.dampingRatio));
 }
 
 void MouseJoint::SetTarget(const Length2D target) noexcept
@@ -109,7 +105,7 @@ void MouseJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     const auto mass = GetMass(*GetBodyB());
 
     // Frequency
-    const auto omega = Real{2} * Pi * Frequency{m_frequency}; // T^-1
+    const auto omega = Real{2} * Pi * m_frequency; // T^-1
 
     // Damping coefficient
     const auto d = Real{2} * mass * m_dampingRatio * omega; // M T^-1

@@ -809,9 +809,10 @@ constexpr inline Angle GetRevRotationalAngle(Angle a1, Angle a2) noexcept
 /// @return value divided by its length if length not almost zero otherwise invalid value.
 /// @sa almost_equal.
 template <class T>
-inline UnitVec2 GetUnitVector(const Vector2D<T> value, const UnitVec2 fallback = UnitVec2::GetDefaultFallback())
+inline UnitVec2 GetUnitVector(const Vector2D<T> value,
+                              const UnitVec2 fallback = UnitVec2::GetDefaultFallback())
 {
-    Real magnitude = 1;
+    auto magnitude = Real(1);
     return UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), magnitude, fallback);
 }
 

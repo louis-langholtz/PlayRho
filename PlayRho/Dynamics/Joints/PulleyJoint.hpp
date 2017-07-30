@@ -111,25 +111,27 @@ public:
 
 private:
 
-    void InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
-    bool SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step) override;
-    bool SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const override;
+    void InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
+                                 const ConstraintSolverConf&) override;
+    bool SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf&) override;
+    bool SolvePositionConstraints(BodyConstraintsMap& bodies,
+                                  const ConstraintSolverConf& conf) const override;
 
     Length2D m_groundAnchorA;
     Length2D m_groundAnchorB;
     Length m_lengthA;
     Length m_lengthB;
-    
-    // Solver shared
     Length2D m_localAnchorA;
     Length2D m_localAnchorB;
-    Length m_constant;
     Real m_ratio;
+    Length m_constant;
+    
+    // Solver shared (between calls to InitVelocityConstraints).
     Momentum m_impulse = Momentum{0};
 
-    // Solver temp
-    Vec2 m_uA; ///< Unit vector A. Potentially candidate for UnitVec2.
-    Vec2 m_uB; ///< Unit vector B. Potentially candidate for UnitVec2.
+    // Solver temp (recalculated every call to InitVelocityConstraints).
+    UnitVec2 m_uA; ///< Unit vector A.
+    UnitVec2 m_uB; ///< Unit vector B.
     Length2D m_rA;
     Length2D m_rB;
     Mass m_mass;

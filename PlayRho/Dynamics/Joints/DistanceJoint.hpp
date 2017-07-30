@@ -118,7 +118,7 @@ public:
     void SetFrequency(NonNegative<Frequency> frequency) noexcept;
 
     /// @brief Gets the frequency.
-    Frequency GetFrequency() const noexcept;
+    NonNegative<Frequency> GetFrequency() const noexcept;
 
     /// Set/get damping ratio.
     void SetDampingRatio(Real ratio) noexcept;
@@ -164,7 +164,7 @@ inline void DistanceJoint::SetFrequency(NonNegative<Frequency> hz) noexcept
     m_frequency = hz;
 }
 
-inline Frequency DistanceJoint::GetFrequency() const noexcept
+inline NonNegative<Frequency> DistanceJoint::GetFrequency() const noexcept
 {
     return m_frequency;
 }

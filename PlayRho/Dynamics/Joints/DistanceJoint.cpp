@@ -56,10 +56,6 @@ bool DistanceJoint::IsOkay(const DistanceJointDef& def) noexcept
     {
         return false;
     }
-    if (!(def.frequency >= Frequency{0}))
-    {
-        return false;
-    }
     return true;
 }
 
@@ -78,7 +74,7 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
                                             const StepConf& step,
                                             const ConstraintSolverConf&)
 {
-    auto& bodyConstraintA = At(bodies, static_cast<const Body*>(GetBodyA()));
+    auto& bodyConstraintA = At(bodies, GetBodyA());
     auto& bodyConstraintB = At(bodies, GetBodyB());
 
     const auto invMassA = bodyConstraintA->GetInvMass();
@@ -117,7 +113,7 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
         const auto C = length - m_length; // L
 
         // Frequency
-        const auto omega = Real{2} * Pi * Frequency{m_frequency};
+        const auto omega = Real{2} * Pi * m_frequency;
 
         // Damping coefficient
         const auto d = Real{2} * m_mass * m_dampingRatio * omega; // M T^-1

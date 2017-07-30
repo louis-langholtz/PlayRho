@@ -21,6 +21,7 @@
 #define B2_FRICTION_JOINT_H
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Common/BoundedValue.hpp>
 
 namespace playrho {
 
@@ -36,6 +37,18 @@ struct FrictionJointDef : public JointBuilder<FrictionJointDef>
     ///   anchor and world axis.
     FrictionJointDef(Body* bodyA, Body* bodyB, const Length2D anchor) noexcept;
 
+    FrictionJointDef& UseMaxForce(NonNegative<Force> v) noexcept
+    {
+        maxForce = v;
+        return *this;
+    }
+    
+    FrictionJointDef& UseMaxTorque(NonNegative<Torque> v) noexcept
+    {
+        maxTorque = v;
+        return *this;
+    }
+
     /// @brief Local anchor point relative to bodyA's origin.
     Length2D localAnchorA = Length2D(0, 0);
 
@@ -43,10 +56,10 @@ struct FrictionJointDef : public JointBuilder<FrictionJointDef>
     Length2D localAnchorB = Length2D(0, 0);
 
     /// @brief Maximum friction force.
-    Force maxForce = Force{0};
+    NonNegative<Force> maxForce = NonNegative<Force>{0};
 
     /// @brief Maximum friction torque.
-    Torque maxTorque = Torque{0};
+    NonNegative<Torque> maxTorque = NonNegative<Torque>{0};
 };
 
 /// @brief Friction joint.
@@ -70,16 +83,16 @@ public:
     Length2D GetLocalAnchorB() const  { return m_localAnchorB; }
 
     /// Set the maximum friction force in N.
-    void SetMaxForce(Force force);
+    void SetMaxForce(NonNegative<Force> force);
 
     /// Get the maximum friction force in N.
-    Force GetMaxForce() const;
+    NonNegative<Force> GetMaxForce() const;
 
     /// Set the maximum friction torque in N*m.
-    void SetMaxTorque(Torque torque);
+    void SetMaxTorque(NonNegative<Torque> torque);
 
     /// Get the maximum friction torque in N*m.
-    Torque GetMaxTorque() const;
+    NonNegative<Torque> GetMaxTorque() const;
 
 private:
 
@@ -89,8 +102,8 @@ private:
 
     Length2D m_localAnchorA;
     Length2D m_localAnchorB;
-    Force m_maxForce;
-    Torque m_maxTorque;
+    NonNegative<Force> m_maxForce;
+    NonNegative<Torque> m_maxTorque;
 
     // Solver shared data - data saved & updated over multiple InitVelocityConstraints calls.
     Momentum2D m_linearImpulse = Momentum2D{0, 0};
@@ -102,6 +115,26 @@ private:
     Mat22 m_linearMass; ///< 2x2 linear mass matrix in kilograms.
     RotInertia m_angularMass;
 };
+
+inline void FrictionJoint::SetMaxForce(NonNegative<Force> force)
+{
+    m_maxForce = force;
+}
+
+inline NonNegative<Force> FrictionJoint::GetMaxForce() const
+{
+    return m_maxForce;
+}
+
+inline void FrictionJoint::SetMaxTorque(NonNegative<Torque> torque)
+{
+    m_maxTorque = torque;
+}
+
+inline NonNegative<Torque> FrictionJoint::GetMaxTorque() const
+{
+    return m_maxTorque;
+}
 
 FrictionJointDef GetFrictionJointDef(const FrictionJoint& joint) noexcept;
 

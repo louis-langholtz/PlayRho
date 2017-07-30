@@ -126,14 +126,6 @@ JointCounter GetWorldIndex(const Joint* joint)
     return JointCounter(-1);
 }
 
-void Set(JointDef& def, const Joint& joint) noexcept
-{
-    def.bodyA = joint.GetBodyA();
-    def.bodyB = joint.GetBodyB();
-    def.userData = joint.GetUserData();
-    def.collideConnected = joint.GetCollideConnected();
-}
-
 BodyConstraintPtr& At(std::vector<BodyConstraintPair>& container, const Body* key)
 {
     auto last = std::end(container);

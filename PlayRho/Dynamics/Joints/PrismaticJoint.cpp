@@ -128,9 +128,13 @@ void PrismaticJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     auto& bodyConstraintB = At(bodies, GetBodyB());
 
     const auto posA = bodyConstraintA->GetPosition();
+    const auto invMassA = bodyConstraintA->GetInvMass();
+    const auto invRotInertiaA = bodyConstraintA->GetInvRotInertia();
     auto velA = bodyConstraintA->GetVelocity();
 
     const auto posB = bodyConstraintB->GetPosition();
+    const auto invMassB = bodyConstraintB->GetInvMass();
+    const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
     auto velB = bodyConstraintB->GetVelocity();
 
     const auto qA = UnitVec2::Get(posA.angular);
@@ -140,11 +144,6 @@ void PrismaticJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     const auto rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA); // Length2D
     const auto rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB); // Length2D
     const auto d = (posB.linear - posA.linear) + rB - rA; // Length2D
-
-    const auto invMassA = bodyConstraintA->GetInvMass();
-    const auto invMassB = bodyConstraintB->GetInvMass();
-    const auto invRotInertiaA = bodyConstraintA->GetInvRotInertia();
-    const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
 
     // Compute motor Jacobian and effective mass.
     m_axis = Rotate(m_localXAxisA, qA);
@@ -376,13 +375,16 @@ bool PrismaticJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const 
     return true;
 }
 
-// A velocity based solver computes reaction forces(impulses) using the velocity constraint solver.Under this context,
-// the position solver is not there to resolve forces.It is only there to cope with integration error.
+// A velocity based solver computes reaction forces(impulses) using the velocity constraint solver.
+// Under this context, the position solver is not there to resolve forces. It is only there to cope
+// with integration error.
 //
-// Therefore, the pseudo impulses in the position solver do not have any physical meaning.Thus it is okay if they suck.
+// Therefore, the pseudo impulses in the position solver do not have any physical meaning. Thus it
+// is okay if they suck.
 //
-// We could take the active state from the velocity solver.However, the joint might push past the limit when the velocity
-// solver indicates the limit is inactive.
+// We could take the active state from the velocity solver. However, the joint might push past the
+// limit when the velocity solver indicates the limit is inactive.
+//
 bool PrismaticJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const
 {
     auto& bodyConstraintA = At(bodies, GetBodyA());
@@ -645,24 +647,4 @@ LinearVelocity playrho::GetLinearVelocity(const PrismaticJoint& joint) noexcept
     const auto vel = (vB + (GetRevPerpendicular(rB) * (wB / Radian))) -
     (vA + (GetRevPerpendicular(rA) * (wA / Radian)));
     return Dot(d, (GetRevPerpendicular(axis) * (wA / Radian))) + Dot(axis, vel);
-}
-
-PrismaticJointDef playrho::GetPrismaticJointDef(const PrismaticJoint& joint) noexcept
-{
-    auto def = PrismaticJointDef{};
-    
-    Set(def, joint);
-    
-    def.localAnchorA = joint.GetLocalAnchorA();
-    def.localAnchorB = joint.GetLocalAnchorB();
-    def.localAxisA = joint.GetLocalAxisA();
-    def.referenceAngle = joint.GetReferenceAngle();
-    def.enableLimit = joint.IsLimitEnabled();
-    def.lowerTranslation = joint.GetLowerLimit();
-    def.upperTranslation = joint.GetUpperLimit();
-    def.enableMotor = joint.IsMotorEnabled();
-    def.motorSpeed = joint.GetMotorSpeed();
-    def.maxMotorForce = joint.GetMaxMotorForce();
-    
-    return def;
 }

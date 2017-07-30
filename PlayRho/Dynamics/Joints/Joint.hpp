@@ -24,6 +24,8 @@
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/Span.hpp>
+#include <PlayRho/Dynamics/Joints/JointDef.hpp>
+
 #include <unordered_map>
 #include <vector>
 #include <utility>
@@ -47,88 +49,6 @@ using BodyConstraintsMap = std::vector<std::pair<const Body*, BodyConstraintPtr>
 #else
 using BodyConstraintsMap = std::unordered_map<const Body*, BodyConstraint*>;
 #endif
-
-enum class JointType : std::uint8_t
-{
-    Unknown,
-    Revolute,
-    Prismatic,
-    Distance,
-    Pulley,
-    Mouse,
-    Gear,
-    Wheel,
-    Weld,
-    Friction,
-    Rope,
-    Motor
-};
-
-/// @brief Abstract base Joint definition class.
-/// @details Joint definitions are used to construct joints.
-/// @note This class is not meant to be directly instantiated; it is meant
-///   to be inherreted from.
-struct JointDef
-{
-    /// Deleted default constructor for abstract base class.
-    JointDef() = delete; // deleted to prevent direct instantiation.
-
-    constexpr JointDef(JointType t) noexcept : type{t}
-    {
-        // Intentionally empty.
-    }
-
-    /// The joint type is set automatically for concrete joint types.
-    JointType type;
-
-    /// @brief First attached body.
-    Body* bodyA = nullptr;
-
-    /// @brief Second attached body.
-    Body* bodyB = nullptr;
-
-    /// Set this flag to true if the attached bodies should collide.
-    bool collideConnected = false;
-
-    /// Use this to attach application specific data to your joints.
-    void* userData = nullptr;
-};
-
-template <class T>
-struct JointBuilder : JointDef
-{
-    using value_type = T;
-    using reference = value_type&;
-
-    constexpr JointBuilder(JointType t) noexcept : JointDef{t}
-    {
-        // Intentionally empty.
-    }
-
-    constexpr reference UseBodyA(Body* b) noexcept
-    {
-        bodyA = b;
-        return static_cast<reference>(*this);
-    }
-
-    constexpr reference UseBodyB(Body* b) noexcept
-    {
-        bodyB = b;
-        return static_cast<reference>(*this);
-    }
-
-    constexpr reference UseCollideConnected(bool v) noexcept
-    {
-        collideConnected = v;
-        return static_cast<reference>(*this);
-    }
-
-    constexpr reference UseUserData(void* v) noexcept
-    {
-        userData = v;
-        return static_cast<reference>(*this);
-    }
-};
 
 /// @brief Base joint class.
 /// @details Joints are used to constraint two bodies together in various fashions.
@@ -317,8 +237,6 @@ bool IsEnabled(const Joint& j) noexcept;
 void SetAwake(Joint& j) noexcept;
 
 JointCounter GetWorldIndex(const Joint* joint);
-
-void Set(JointDef& def, const Joint& joint) noexcept;
 
 BodyConstraintPtr& At(std::vector<BodyConstraintPair>& container, const Body* key);
 

@@ -38,6 +38,12 @@ struct GearJointDef : public JointBuilder<GearJointDef>
     {
         // Intentionally empty.
     }
+    
+    GearJointDef& UseRatio(Real v) noexcept
+    {
+        ratio = v;
+        return *this;
+    }
 
     /// The first revolute/prismatic joint attached to the gear joint.
     NonNull<Joint*> joint1;
@@ -78,10 +84,10 @@ public:
     Length2D GetLocalAnchorB() const noexcept { return m_localAnchorB; }
 
     /// @brief Gets the first joint.
-    Joint* GetJoint1() const noexcept { return m_joint1; }
+    NonNull<Joint*> GetJoint1() const noexcept { return m_joint1; }
 
     /// @brief Gets the second joint.
-    Joint* GetJoint2() const noexcept { return m_joint2; }
+    NonNull<Joint*> GetJoint2() const noexcept { return m_joint2; }
    
     /// Set/Get the gear ratio.
     void SetRatio(Real ratio);

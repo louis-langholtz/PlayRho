@@ -124,7 +124,8 @@ GearJoint::GearJoint(const GearJointDef& def):
     m_constant = coordinateA + m_ratio * coordinateB;
 }
 
-void GearJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step, const ConstraintSolverConf&)
+void GearJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
+                                        const ConstraintSolverConf&)
 {
     auto& bodyConstraintA = At(bodies, GetBodyA());
     auto& bodyConstraintB = At(bodies, GetBodyB());
@@ -294,7 +295,6 @@ bool GearJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
     const auto qD = UnitVec2::Get(posD.angular);
 
     const auto linearError = Length{0};
-
 
     Vec2 JvAC, JvBD;
     Real JwA, JwB, JwC, JwD;

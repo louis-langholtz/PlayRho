@@ -70,9 +70,13 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     auto& bodyConstraintA = At(bodies, GetBodyA());
     auto& bodyConstraintB = At(bodies, GetBodyB());
 
+    const auto invMassA = bodyConstraintA->GetInvMass();
+    const auto invRotInertiaA = bodyConstraintA->GetInvRotInertia();
     const auto aA = bodyConstraintA->GetPosition().angular;
     auto velA = bodyConstraintA->GetVelocity();
 
+    const auto invMassB = bodyConstraintB->GetInvMass();
+    const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
     const auto aB = bodyConstraintB->GetPosition().angular;
     auto velB = bodyConstraintB->GetVelocity();
 
@@ -90,12 +94,6 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     // K = [ mA+r1y^2*iA+mB+r2y^2*iB,  -r1y*iA*r1x-r2y*iB*r2x,          -r1y*iA-r2y*iB]
     //     [  -r1y*iA*r1x-r2y*iB*r2x, mA+r1x^2*iA+mB+r2x^2*iB,           r1x*iA+r2x*iB]
     //     [          -r1y*iA-r2y*iB,           r1x*iA+r2x*iB,                   iA+iB]
-
-    const auto invMassA = bodyConstraintA->GetInvMass();
-    const auto invRotInertiaA = bodyConstraintA->GetInvRotInertia();
-
-    const auto invMassB = bodyConstraintB->GetInvMass();
-    const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
     
     const auto totInvI = invRotInertiaA + invRotInertiaB;
 
