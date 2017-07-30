@@ -140,6 +140,8 @@
 		4787D6BF1F2E968E008C115E /* JointDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6BD1F2E968E008C115E /* JointDef.hpp */; };
 		4787D6C21F2E9DC0008C115E /* DistanceJointDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4787D6C01F2E9DC0008C115E /* DistanceJointDef.cpp */; };
 		4787D6C31F2E9DC0008C115E /* DistanceJointDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6C11F2E9DC0008C115E /* DistanceJointDef.hpp */; };
+		4787D6C61F2EA1DB008C115E /* FrictionJointDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4787D6C41F2EA1DB008C115E /* FrictionJointDef.cpp */; };
+		4787D6C71F2EA1DB008C115E /* FrictionJointDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6C51F2EA1DB008C115E /* FrictionJointDef.hpp */; };
 		4788690A1D78BE2B00AEC7F1 /* PositionConstraint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */; };
 		478869101D78BF7200AEC7F1 /* VelocityConstraint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */; };
 		478E67C71E760AB7009B9AD5 /* BodyType.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 478E67C41E760AB7009B9AD5 /* BodyType.hpp */; };
@@ -470,6 +472,8 @@
 		4787D6BD1F2E968E008C115E /* JointDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JointDef.hpp; sourceTree = "<group>"; };
 		4787D6C01F2E9DC0008C115E /* DistanceJointDef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceJointDef.cpp; sourceTree = "<group>"; };
 		4787D6C11F2E9DC0008C115E /* DistanceJointDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DistanceJointDef.hpp; sourceTree = "<group>"; };
+		4787D6C41F2EA1DB008C115E /* FrictionJointDef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FrictionJointDef.cpp; sourceTree = "<group>"; };
+		4787D6C51F2EA1DB008C115E /* FrictionJointDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FrictionJointDef.hpp; sourceTree = "<group>"; };
 		478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PositionConstraint.hpp; sourceTree = "<group>"; };
 		4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VelocityConstraint.hpp; sourceTree = "<group>"; };
 		478E67C41E760AB7009B9AD5 /* BodyType.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyType.hpp; sourceTree = "<group>"; };
@@ -956,6 +960,8 @@
 				4787D6C11F2E9DC0008C115E /* DistanceJointDef.hpp */,
 				80BB8970141C3E5900F1753A /* FrictionJoint.cpp */,
 				80BB8971141C3E5900F1753A /* FrictionJoint.hpp */,
+				4787D6C41F2EA1DB008C115E /* FrictionJointDef.cpp */,
+				4787D6C51F2EA1DB008C115E /* FrictionJointDef.hpp */,
 				80BB8972141C3E5900F1753A /* GearJoint.cpp */,
 				80BB8973141C3E5900F1753A /* GearJoint.hpp */,
 				80BB8974141C3E5900F1753A /* Joint.cpp */,
@@ -1188,6 +1194,7 @@
 				47D61F741F1F148500E702BD /* SilkscreenTtfData.h in Headers */,
 				80BB89B2141C3E5900F1753A /* Island.hpp in Headers */,
 				47327E801EA585790048FCD8 /* Defines.hpp in Headers */,
+				4787D6C71F2EA1DB008C115E /* FrictionJointDef.hpp in Headers */,
 				470F9B3D1EE63515007EF7B6 /* InvalidArgument.hpp in Headers */,
 				80BB89B3141C3E5900F1753A /* StepConf.hpp in Headers */,
 				4734B2191DC00AFD00F15E29 /* ArrayList.hpp in Headers */,
@@ -1529,6 +1536,7 @@
 				4787D6C21F2E9DC0008C115E /* DistanceJointDef.cpp in Sources */,
 				80BB89CA141C3E5900F1753A /* DistanceJoint.cpp in Sources */,
 				80BB89CC141C3E5900F1753A /* FrictionJoint.cpp in Sources */,
+				4787D6C61F2EA1DB008C115E /* FrictionJointDef.cpp in Sources */,
 				80BB89CE141C3E5900F1753A /* GearJoint.cpp in Sources */,
 				4768D4001E54E7CC00574143 /* StepConf.cpp in Sources */,
 				80BB89D0141C3E5900F1753A /* Joint.cpp in Sources */,
