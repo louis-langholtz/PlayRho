@@ -181,7 +181,12 @@ namespace playrho {
             return *this;
         }
 
-        constexpr operator value_type () const
+        constexpr value_type get() const noexcept
+        {
+            return m_value;
+        }
+
+        constexpr operator value_type () const noexcept
         {
             return m_value;
         }
