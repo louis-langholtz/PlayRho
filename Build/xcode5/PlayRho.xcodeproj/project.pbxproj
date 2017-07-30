@@ -142,6 +142,8 @@
 		4787D6C31F2E9DC0008C115E /* DistanceJointDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6C11F2E9DC0008C115E /* DistanceJointDef.hpp */; };
 		4787D6C61F2EA1DB008C115E /* FrictionJointDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4787D6C41F2EA1DB008C115E /* FrictionJointDef.cpp */; };
 		4787D6C71F2EA1DB008C115E /* FrictionJointDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6C51F2EA1DB008C115E /* FrictionJointDef.hpp */; };
+		4787D6CA1F2EA3A1008C115E /* GearJointDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4787D6C81F2EA3A1008C115E /* GearJointDef.cpp */; };
+		4787D6CB1F2EA3A1008C115E /* GearJointDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6C91F2EA3A1008C115E /* GearJointDef.hpp */; };
 		4788690A1D78BE2B00AEC7F1 /* PositionConstraint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */; };
 		478869101D78BF7200AEC7F1 /* VelocityConstraint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */; };
 		478E67C71E760AB7009B9AD5 /* BodyType.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 478E67C41E760AB7009B9AD5 /* BodyType.hpp */; };
@@ -474,6 +476,8 @@
 		4787D6C11F2E9DC0008C115E /* DistanceJointDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DistanceJointDef.hpp; sourceTree = "<group>"; };
 		4787D6C41F2EA1DB008C115E /* FrictionJointDef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FrictionJointDef.cpp; sourceTree = "<group>"; };
 		4787D6C51F2EA1DB008C115E /* FrictionJointDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FrictionJointDef.hpp; sourceTree = "<group>"; };
+		4787D6C81F2EA3A1008C115E /* GearJointDef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GearJointDef.cpp; sourceTree = "<group>"; };
+		4787D6C91F2EA3A1008C115E /* GearJointDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GearJointDef.hpp; sourceTree = "<group>"; };
 		478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PositionConstraint.hpp; sourceTree = "<group>"; };
 		4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VelocityConstraint.hpp; sourceTree = "<group>"; };
 		478E67C41E760AB7009B9AD5 /* BodyType.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyType.hpp; sourceTree = "<group>"; };
@@ -964,6 +968,8 @@
 				4787D6C51F2EA1DB008C115E /* FrictionJointDef.hpp */,
 				80BB8972141C3E5900F1753A /* GearJoint.cpp */,
 				80BB8973141C3E5900F1753A /* GearJoint.hpp */,
+				4787D6C81F2EA3A1008C115E /* GearJointDef.cpp */,
+				4787D6C91F2EA3A1008C115E /* GearJointDef.hpp */,
 				80BB8974141C3E5900F1753A /* Joint.cpp */,
 				80BB8975141C3E5900F1753A /* Joint.hpp */,
 				4787D6BC1F2E968E008C115E /* JointDef.cpp */,
@@ -1177,6 +1183,7 @@
 				476162C91E245C9D002C7FB0 /* CodeDumper.hpp in Headers */,
 				80BB899D141C3E5900F1753A /* Shape.hpp in Headers */,
 				4751EE2F1CEDD7A300D459CB /* MobileBalanced.hpp in Headers */,
+				4787D6CB1F2EA3A1008C115E /* GearJointDef.hpp in Headers */,
 				4734B22D1DC2B11D00F15E29 /* Simplex.hpp in Headers */,
 				80BB899F141C3E5900F1753A /* BlockAllocator.hpp in Headers */,
 				4726DD381D387D630012A882 /* Manifold.hpp in Headers */,
@@ -1530,6 +1537,7 @@
 				80BB89B4141C3E5900F1753A /* World.cpp in Sources */,
 				470F9B4F1EF0C8B8007EF7B6 /* FixtureDef.cpp in Sources */,
 				4787D6BA1F2E946E008C115E /* PrismaticJointDef.cpp in Sources */,
+				4787D6CA1F2EA3A1008C115E /* GearJointDef.cpp in Sources */,
 				80BB89B6141C3E5900F1753A /* WorldCallbacks.cpp in Sources */,
 				80BB89BE141C3E5900F1753A /* Contact.cpp in Sources */,
 				80BB89C0141C3E5900F1753A /* ContactSolver.cpp in Sources */,
