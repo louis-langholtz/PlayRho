@@ -3,17 +3,19 @@
  * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
@@ -39,16 +41,6 @@ using namespace playrho;
 // J = [-u -cross(r1, u) u cross(r2, u)]
 // K = J * invM * JT
 //   = invMass1 + invI1 * cross(r1, u)^2 + invMass2 + invI2 * cross(r2, u)^2
-
-DistanceJointDef::DistanceJointDef(NonNull<Body*> bA, NonNull<Body*> bB,
-                                   Length2D anchor1, Length2D anchor2) noexcept
-    : super{super{JointType::Distance}.UseBodyA(bA).UseBodyB(bB)},
-      localAnchorA{GetLocalPoint(*bA, anchor1)},
-      localAnchorB{GetLocalPoint(*bB, anchor2)},
-      length{GetLength(anchor2 - anchor1)}
-{
-    // Intentionally empty.
-}
 
 bool DistanceJoint::IsOkay(const DistanceJointDef& def) noexcept
 {
@@ -257,19 +249,4 @@ Torque DistanceJoint::GetReactionTorque(Frequency inv_dt) const
 {
     NOT_USED(inv_dt);
     return Torque{0};
-}
-
-DistanceJointDef playrho::GetDistanceJointDef(const DistanceJoint& joint) noexcept
-{
-    auto def = DistanceJointDef{};
-
-    Set(def, joint);
-
-    def.localAnchorA = joint.GetLocalAnchorA();
-    def.localAnchorB = joint.GetLocalAnchorB();
-    def.length = joint.GetLength();
-    def.frequency = joint.GetFrequency();
-    def.dampingRatio = joint.GetDampingRatio();
-
-    return def;
 }

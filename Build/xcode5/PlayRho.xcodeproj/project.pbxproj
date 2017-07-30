@@ -138,6 +138,8 @@
 		4787D6BB1F2E946E008C115E /* PrismaticJointDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6B91F2E946E008C115E /* PrismaticJointDef.hpp */; };
 		4787D6BE1F2E968E008C115E /* JointDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4787D6BC1F2E968E008C115E /* JointDef.cpp */; };
 		4787D6BF1F2E968E008C115E /* JointDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6BD1F2E968E008C115E /* JointDef.hpp */; };
+		4787D6C21F2E9DC0008C115E /* DistanceJointDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4787D6C01F2E9DC0008C115E /* DistanceJointDef.cpp */; };
+		4787D6C31F2E9DC0008C115E /* DistanceJointDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6C11F2E9DC0008C115E /* DistanceJointDef.hpp */; };
 		4788690A1D78BE2B00AEC7F1 /* PositionConstraint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */; };
 		478869101D78BF7200AEC7F1 /* VelocityConstraint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */; };
 		478E67C71E760AB7009B9AD5 /* BodyType.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 478E67C41E760AB7009B9AD5 /* BodyType.hpp */; };
@@ -466,6 +468,8 @@
 		4787D6B91F2E946E008C115E /* PrismaticJointDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PrismaticJointDef.hpp; sourceTree = "<group>"; };
 		4787D6BC1F2E968E008C115E /* JointDef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JointDef.cpp; sourceTree = "<group>"; };
 		4787D6BD1F2E968E008C115E /* JointDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JointDef.hpp; sourceTree = "<group>"; };
+		4787D6C01F2E9DC0008C115E /* DistanceJointDef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceJointDef.cpp; sourceTree = "<group>"; };
+		4787D6C11F2E9DC0008C115E /* DistanceJointDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DistanceJointDef.hpp; sourceTree = "<group>"; };
 		478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PositionConstraint.hpp; sourceTree = "<group>"; };
 		4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VelocityConstraint.hpp; sourceTree = "<group>"; };
 		478E67C41E760AB7009B9AD5 /* BodyType.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyType.hpp; sourceTree = "<group>"; };
@@ -948,6 +952,8 @@
 			children = (
 				80BB896E141C3E5900F1753A /* DistanceJoint.cpp */,
 				80BB896F141C3E5900F1753A /* DistanceJoint.hpp */,
+				4787D6C01F2E9DC0008C115E /* DistanceJointDef.cpp */,
+				4787D6C11F2E9DC0008C115E /* DistanceJointDef.hpp */,
 				80BB8970141C3E5900F1753A /* FrictionJoint.cpp */,
 				80BB8971141C3E5900F1753A /* FrictionJoint.hpp */,
 				80BB8972141C3E5900F1753A /* GearJoint.cpp */,
@@ -1202,6 +1208,7 @@
 				4731DE291DDF84A900E7F931 /* RayCastInput.hpp in Headers */,
 				478E67C71E760AB7009B9AD5 /* BodyType.hpp in Headers */,
 				80BB89BF141C3E5900F1753A /* Contact.hpp in Headers */,
+				4787D6C31F2E9DC0008C115E /* DistanceJointDef.hpp in Headers */,
 				80BB89C1141C3E5900F1753A /* ContactSolver.hpp in Headers */,
 				47CF984D1DF9C4A30077F5F2 /* ShapeSeparation.hpp in Headers */,
 				80BB89CB141C3E5900F1753A /* DistanceJoint.hpp in Headers */,
@@ -1519,6 +1526,7 @@
 				80BB89B6141C3E5900F1753A /* WorldCallbacks.cpp in Sources */,
 				80BB89BE141C3E5900F1753A /* Contact.cpp in Sources */,
 				80BB89C0141C3E5900F1753A /* ContactSolver.cpp in Sources */,
+				4787D6C21F2E9DC0008C115E /* DistanceJointDef.cpp in Sources */,
 				80BB89CA141C3E5900F1753A /* DistanceJoint.cpp in Sources */,
 				80BB89CC141C3E5900F1753A /* FrictionJoint.cpp in Sources */,
 				80BB89CE141C3E5900F1753A /* GearJoint.cpp in Sources */,

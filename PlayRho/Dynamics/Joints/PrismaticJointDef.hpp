@@ -22,8 +22,9 @@
 #ifndef PrismaticJointDef_hpp
 #define PrismaticJointDef_hpp
 
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Dynamics/Joints/JointDef.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
+#include <PlayRho/Common/Math.hpp>
 
 namespace playrho {
 
