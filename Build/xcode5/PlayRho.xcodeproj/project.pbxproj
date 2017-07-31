@@ -146,6 +146,8 @@
 		4787D6CB1F2EA3A1008C115E /* GearJointDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6C91F2EA3A1008C115E /* GearJointDef.hpp */; };
 		4787D6CE1F2EC902008C115E /* MotorJointDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4787D6CC1F2EC902008C115E /* MotorJointDef.cpp */; };
 		4787D6CF1F2EC902008C115E /* MotorJointDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6CD1F2EC902008C115E /* MotorJointDef.hpp */; };
+		4787D6D21F2ECB8D008C115E /* MouseJointDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4787D6D01F2ECB8D008C115E /* MouseJointDef.cpp */; };
+		4787D6D31F2ECB8E008C115E /* MouseJointDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6D11F2ECB8D008C115E /* MouseJointDef.hpp */; };
 		4788690A1D78BE2B00AEC7F1 /* PositionConstraint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */; };
 		478869101D78BF7200AEC7F1 /* VelocityConstraint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */; };
 		478E67C71E760AB7009B9AD5 /* BodyType.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 478E67C41E760AB7009B9AD5 /* BodyType.hpp */; };
@@ -482,6 +484,8 @@
 		4787D6C91F2EA3A1008C115E /* GearJointDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GearJointDef.hpp; sourceTree = "<group>"; };
 		4787D6CC1F2EC902008C115E /* MotorJointDef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MotorJointDef.cpp; sourceTree = "<group>"; };
 		4787D6CD1F2EC902008C115E /* MotorJointDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MotorJointDef.hpp; sourceTree = "<group>"; };
+		4787D6D01F2ECB8D008C115E /* MouseJointDef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MouseJointDef.cpp; sourceTree = "<group>"; };
+		4787D6D11F2ECB8D008C115E /* MouseJointDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MouseJointDef.hpp; sourceTree = "<group>"; };
 		478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PositionConstraint.hpp; sourceTree = "<group>"; };
 		4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VelocityConstraint.hpp; sourceTree = "<group>"; };
 		478E67C41E760AB7009B9AD5 /* BodyType.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyType.hpp; sourceTree = "<group>"; };
@@ -986,6 +990,8 @@
 				4787D6CD1F2EC902008C115E /* MotorJointDef.hpp */,
 				80BB8976141C3E5900F1753A /* MouseJoint.cpp */,
 				80BB8977141C3E5900F1753A /* MouseJoint.hpp */,
+				4787D6D01F2ECB8D008C115E /* MouseJointDef.cpp */,
+				4787D6D11F2ECB8D008C115E /* MouseJointDef.hpp */,
 				80BB8978141C3E5900F1753A /* PrismaticJoint.cpp */,
 				80BB8979141C3E5900F1753A /* PrismaticJoint.hpp */,
 				4787D6B81F2E946E008C115E /* PrismaticJointDef.cpp */,
@@ -1228,6 +1234,7 @@
 				470F94DB1EC8C37500AA3C82 /* JointKey.hpp in Headers */,
 				4731DE291DDF84A900E7F931 /* RayCastInput.hpp in Headers */,
 				478E67C71E760AB7009B9AD5 /* BodyType.hpp in Headers */,
+				4787D6D31F2ECB8E008C115E /* MouseJointDef.hpp in Headers */,
 				80BB89BF141C3E5900F1753A /* Contact.hpp in Headers */,
 				4787D6C31F2E9DC0008C115E /* DistanceJointDef.hpp in Headers */,
 				80BB89C1141C3E5900F1753A /* ContactSolver.hpp in Headers */,
@@ -1525,6 +1532,7 @@
 				80BB8999141C3E5900F1753A /* EdgeShape.cpp in Sources */,
 				4731DE2C1DDF94A600E7F931 /* AABB.cpp in Sources */,
 				474FFC3B1F2CEE6C0037CCE0 /* Vector.cpp in Sources */,
+				4787D6D21F2ECB8D008C115E /* MouseJointDef.cpp in Sources */,
 				80BB899B141C3E5900F1753A /* PolygonShape.cpp in Sources */,
 				80BB899E141C3E5900F1753A /* BlockAllocator.cpp in Sources */,
 				80BB89A3141C3E5900F1753A /* Math.cpp in Sources */,
