@@ -150,6 +150,8 @@
 		4787D6D31F2ECB8E008C115E /* MouseJointDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6D11F2ECB8D008C115E /* MouseJointDef.hpp */; };
 		4787D6D61F2ECD87008C115E /* PulleyJointDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4787D6D41F2ECD87008C115E /* PulleyJointDef.cpp */; };
 		4787D6D71F2ECD87008C115E /* PulleyJointDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6D51F2ECD87008C115E /* PulleyJointDef.hpp */; };
+		4787D6DA1F2ECFFB008C115E /* RevoluteJointDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4787D6D81F2ECFFB008C115E /* RevoluteJointDef.cpp */; };
+		4787D6DB1F2ECFFB008C115E /* RevoluteJointDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6D91F2ECFFB008C115E /* RevoluteJointDef.hpp */; };
 		4788690A1D78BE2B00AEC7F1 /* PositionConstraint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */; };
 		478869101D78BF7200AEC7F1 /* VelocityConstraint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */; };
 		478E67C71E760AB7009B9AD5 /* BodyType.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 478E67C41E760AB7009B9AD5 /* BodyType.hpp */; };
@@ -490,6 +492,8 @@
 		4787D6D11F2ECB8D008C115E /* MouseJointDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MouseJointDef.hpp; sourceTree = "<group>"; };
 		4787D6D41F2ECD87008C115E /* PulleyJointDef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PulleyJointDef.cpp; sourceTree = "<group>"; };
 		4787D6D51F2ECD87008C115E /* PulleyJointDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PulleyJointDef.hpp; sourceTree = "<group>"; };
+		4787D6D81F2ECFFB008C115E /* RevoluteJointDef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RevoluteJointDef.cpp; sourceTree = "<group>"; };
+		4787D6D91F2ECFFB008C115E /* RevoluteJointDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RevoluteJointDef.hpp; sourceTree = "<group>"; };
 		478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PositionConstraint.hpp; sourceTree = "<group>"; };
 		4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VelocityConstraint.hpp; sourceTree = "<group>"; };
 		478E67C41E760AB7009B9AD5 /* BodyType.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyType.hpp; sourceTree = "<group>"; };
@@ -1006,6 +1010,8 @@
 				4787D6D51F2ECD87008C115E /* PulleyJointDef.hpp */,
 				80BB897C141C3E5900F1753A /* RevoluteJoint.cpp */,
 				80BB897D141C3E5900F1753A /* RevoluteJoint.hpp */,
+				4787D6D81F2ECFFB008C115E /* RevoluteJointDef.cpp */,
+				4787D6D91F2ECFFB008C115E /* RevoluteJointDef.hpp */,
 				80BB897E141C3E5900F1753A /* RopeJoint.cpp */,
 				80BB897F141C3E5900F1753A /* RopeJoint.hpp */,
 				80BB8980141C3E5900F1753A /* WeldJoint.cpp */,
@@ -1263,6 +1269,7 @@
 				80BB89DB141C3E5900F1753A /* RopeJoint.hpp in Headers */,
 				80BB89DD141C3E5900F1753A /* WeldJoint.hpp in Headers */,
 				80BB89DF141C3E5900F1753A /* WheelJoint.hpp in Headers */,
+				4787D6DB1F2ECFFB008C115E /* RevoluteJointDef.hpp in Headers */,
 				4751EE2E1CEDD7A300D459CB /* MotorJoint.hpp in Headers */,
 				470F94C61EC4D78300AA3C82 /* JointAtty.hpp in Headers */,
 				470F94D21EC6376F00AA3C82 /* ContactKey.hpp in Headers */,
@@ -1578,6 +1585,7 @@
 				80BB89D4141C3E5900F1753A /* PrismaticJoint.cpp in Sources */,
 				474AFBF81EB1B2CB002AA6C8 /* MultiShape.cpp in Sources */,
 				80BB89D6141C3E5900F1753A /* PulleyJoint.cpp in Sources */,
+				4787D6DA1F2ECFFB008C115E /* RevoluteJointDef.cpp in Sources */,
 				80BB89D8141C3E5900F1753A /* RevoluteJoint.cpp in Sources */,
 				477DB2AC1D1C4BE800846ED6 /* PositionSolverManifold.cpp in Sources */,
 				80BB89DA141C3E5900F1753A /* RopeJoint.cpp in Sources */,
