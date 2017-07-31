@@ -156,6 +156,8 @@
 		4787D6DF1F2ED2D6008C115E /* RopeJointDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6DD1F2ED2D6008C115E /* RopeJointDef.hpp */; };
 		4787D6E21F2ED461008C115E /* WeldJointDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4787D6E01F2ED461008C115E /* WeldJointDef.cpp */; };
 		4787D6E31F2ED461008C115E /* WeldJointDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6E11F2ED461008C115E /* WeldJointDef.hpp */; };
+		4787D6E61F2ED62C008C115E /* WheelJointDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4787D6E41F2ED62C008C115E /* WheelJointDef.cpp */; };
+		4787D6E71F2ED62C008C115E /* WheelJointDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6E51F2ED62C008C115E /* WheelJointDef.hpp */; };
 		4788690A1D78BE2B00AEC7F1 /* PositionConstraint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */; };
 		478869101D78BF7200AEC7F1 /* VelocityConstraint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */; };
 		478E67C71E760AB7009B9AD5 /* BodyType.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 478E67C41E760AB7009B9AD5 /* BodyType.hpp */; };
@@ -502,6 +504,8 @@
 		4787D6DD1F2ED2D6008C115E /* RopeJointDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RopeJointDef.hpp; sourceTree = "<group>"; };
 		4787D6E01F2ED461008C115E /* WeldJointDef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WeldJointDef.cpp; sourceTree = "<group>"; };
 		4787D6E11F2ED461008C115E /* WeldJointDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WeldJointDef.hpp; sourceTree = "<group>"; };
+		4787D6E41F2ED62C008C115E /* WheelJointDef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WheelJointDef.cpp; sourceTree = "<group>"; };
+		4787D6E51F2ED62C008C115E /* WheelJointDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WheelJointDef.hpp; sourceTree = "<group>"; };
 		478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PositionConstraint.hpp; sourceTree = "<group>"; };
 		4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VelocityConstraint.hpp; sourceTree = "<group>"; };
 		478E67C41E760AB7009B9AD5 /* BodyType.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyType.hpp; sourceTree = "<group>"; };
@@ -1030,6 +1034,8 @@
 				4787D6E11F2ED461008C115E /* WeldJointDef.hpp */,
 				80BB8982141C3E5900F1753A /* WheelJoint.cpp */,
 				80BB8983141C3E5900F1753A /* WheelJoint.hpp */,
+				4787D6E41F2ED62C008C115E /* WheelJointDef.cpp */,
+				4787D6E51F2ED62C008C115E /* WheelJointDef.hpp */,
 			);
 			path = Joints;
 			sourceTree = "<group>";
@@ -1248,6 +1254,7 @@
 				478869101D78BF7200AEC7F1 /* VelocityConstraint.hpp in Headers */,
 				80BB89B7141C3E5900F1753A /* WorldCallbacks.hpp in Headers */,
 				4768D3F51E3A7ACA00574143 /* Wider.hpp in Headers */,
+				4787D6E71F2ED62C008C115E /* WheelJointDef.hpp in Headers */,
 				470F94E31ECBB3A100AA3C82 /* Range.hpp in Headers */,
 				470F94B41EC4CB6C00AA3C82 /* Filter.hpp in Headers */,
 				4787D6CF1F2EC902008C115E /* MotorJointDef.hpp in Headers */,
@@ -1591,6 +1598,7 @@
 				80BB89CA141C3E5900F1753A /* DistanceJoint.cpp in Sources */,
 				80BB89CC141C3E5900F1753A /* FrictionJoint.cpp in Sources */,
 				4787D6C61F2EA1DB008C115E /* FrictionJointDef.cpp in Sources */,
+				4787D6E61F2ED62C008C115E /* WheelJointDef.cpp in Sources */,
 				80BB89CE141C3E5900F1753A /* GearJoint.cpp in Sources */,
 				4768D4001E54E7CC00574143 /* StepConf.cpp in Sources */,
 				80BB89D0141C3E5900F1753A /* Joint.cpp in Sources */,
