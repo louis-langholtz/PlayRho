@@ -78,6 +78,17 @@ static void FloatCos(benchmark::State& state)
     }
 }
 
+static void FloatAtan2(benchmark::State& state)
+{
+    while (state.KeepRunning())
+    {
+        const auto a = 15.91f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+        const auto b = -4.1092f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+        benchmark::DoNotOptimize(std::atan2(a, b));
+        benchmark::DoNotOptimize(std::atan2(b, a));
+    }
+}
+
 static void DoubleAddition(benchmark::State& state)
 {
     while (state.KeepRunning())
@@ -138,6 +149,17 @@ static void DoubleCos(benchmark::State& state)
         const auto b = -4.1092 * static_cast<double>(rand()) / static_cast<double>(RAND_MAX);
         benchmark::DoNotOptimize(std::cos(a));
         benchmark::DoNotOptimize(std::cos(b));
+    }
+}
+
+static void DoubleAtan2(benchmark::State& state)
+{
+    while (state.KeepRunning())
+    {
+        const auto a = 15.91 * static_cast<double>(rand()) / static_cast<double>(RAND_MAX);
+        const auto b = -4.1092 * static_cast<double>(rand()) / static_cast<double>(RAND_MAX);
+        benchmark::DoNotOptimize(std::atan2(a, b));
+        benchmark::DoNotOptimize(std::atan2(b, a));
     }
 }
 
@@ -484,11 +506,27 @@ static void DropTiles(int count)
     }
 }
 
-static void TilesComesToRest(benchmark::State& state)
+static void TilesComesToRest12(benchmark::State& state)
 {
     while (state.KeepRunning())
     {
         DropTiles(12);
+    }
+}
+
+static void TilesComesToRest20(benchmark::State& state)
+{
+    while (state.KeepRunning())
+    {
+        DropTiles(20);
+    }
+}
+
+static void TilesComesToRest36(benchmark::State& state)
+{
+    while (state.KeepRunning())
+    {
+        DropTiles(36);
     }
 }
 
@@ -500,6 +538,7 @@ BENCHMARK(FloatDivision);
 BENCHMARK(FloatSqrt);
 BENCHMARK(FloatSin);
 BENCHMARK(FloatCos);
+BENCHMARK(FloatAtan2);
 
 BENCHMARK(DoubleAddition);
 BENCHMARK(DoubleMultiplication);
@@ -507,6 +546,7 @@ BENCHMARK(DoubleDivision);
 BENCHMARK(DoubleSqrt);
 BENCHMARK(DoubleSin);
 BENCHMARK(DoubleCos);
+BENCHMARK(DoubleAtan2);
 
 BENCHMARK(LengthSquaredViaDotProduct);
 BENCHMARK(BM_GetLengthSquared);
@@ -525,6 +565,8 @@ BENCHMARK(GetMaxSeparation);
 BENCHMARK(ManifoldForTwoSquares1);
 BENCHMARK(ManifoldForTwoSquares2);
 
-BENCHMARK(TilesComesToRest);
+BENCHMARK(TilesComesToRest12);
+BENCHMARK(TilesComesToRest20);
+BENCHMARK(TilesComesToRest36);
 
 BENCHMARK_MAIN()
