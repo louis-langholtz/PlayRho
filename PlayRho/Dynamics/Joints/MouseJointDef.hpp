@@ -29,6 +29,7 @@
 namespace playrho {
 
 class MouseJoint;
+class Body;
 
 /// @brief Mouse joint definition.
 /// @details This requires a world target point, tuning parameters, and the time step.
@@ -37,7 +38,24 @@ struct MouseJointDef : public JointBuilder<MouseJointDef>
     using super = JointBuilder<MouseJointDef>;
     
     constexpr MouseJointDef() noexcept: super{JointType::Mouse} {}
+
+    constexpr MouseJointDef(NonNull<Body*> b) noexcept: super{super{JointType::Mouse}.UseBodyB(b)}
+    {
+        // Intentionally empty.
+    }
     
+    /// @brief Use value for target.
+    constexpr MouseJointDef& UseTarget(Length2D v) noexcept;
+
+    /// @brief Use value for max force.
+    constexpr MouseJointDef& UseMaxForce(NonNegative<Force> v) noexcept;
+
+    /// @brief Use value for frequency.
+    constexpr MouseJointDef& UseFrequency(NonNegative<Frequency> v) noexcept;
+
+    /// @brief Use value for damping ratio.
+    constexpr MouseJointDef& UseDampingRatio(NonNegative<Real> v) noexcept;
+
     /// The initial world target point. This is assumed
     /// to coincide with the body anchor initially.
     Length2D target = Length2D(0, 0);
@@ -58,6 +76,30 @@ struct MouseJointDef : public JointBuilder<MouseJointDef>
     /// The damping ratio. 0 = no damping, 1 = critical damping.
     NonNegative<Real> dampingRatio = NonNegative<Real>(0.7f);
 };
+
+constexpr MouseJointDef& MouseJointDef::UseTarget(Length2D v) noexcept
+{
+    target = v;
+    return *this;
+}
+
+constexpr MouseJointDef& MouseJointDef::UseMaxForce(NonNegative<Force> v) noexcept
+{
+    maxForce = v;
+    return *this;
+}
+
+constexpr MouseJointDef& MouseJointDef::UseFrequency(NonNegative<Frequency> v) noexcept
+{
+    frequency = v;
+    return *this;
+}
+
+constexpr MouseJointDef& MouseJointDef::UseDampingRatio(NonNegative<Real> v) noexcept
+{
+    dampingRatio = v;
+    return *this;
+}
 
 MouseJointDef GetMouseJointDef(const MouseJoint& joint) noexcept;
 

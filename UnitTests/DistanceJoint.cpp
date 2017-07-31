@@ -55,6 +55,27 @@ TEST(DistanceJointDef, DefaultConstruction)
     EXPECT_EQ(def.dampingRatio, Real(0));
 }
 
+TEST(DistanceJointDef, UseLength)
+{
+    const auto value = Length(Real(31) * Meter);
+    EXPECT_NE(DistanceJointDef{}.length, value);
+    EXPECT_EQ(DistanceJointDef{}.UseLength(value).length, value);
+}
+
+TEST(DistanceJointDef, UseFrequency)
+{
+    const auto value = Frequency(Real(19) * Hertz);
+    EXPECT_NE(DistanceJointDef{}.frequency, value);
+    EXPECT_EQ(DistanceJointDef{}.UseFrequency(value).frequency, value);
+}
+
+TEST(DistanceJointDef, UseDampingRatio)
+{
+    const auto value = Real(0.4);
+    EXPECT_NE(DistanceJointDef{}.dampingRatio, value);
+    EXPECT_EQ(DistanceJointDef{}.UseDampingRatio(value).dampingRatio, value);
+}
+
 TEST(DistanceJoint, Construction)
 {
     DistanceJointDef def;
@@ -183,4 +204,37 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
     
     EXPECT_NEAR(double(Real{oldDistance / Meter}),
                 double(Real{jointdef.length / Meter}), 0.1);
+}
+
+TEST(DistanceJointDef, GetDistanceJointDefFreeFunction)
+{
+    World world;
+    
+    const auto bA = world.CreateBody();
+    ASSERT_NE(bA, nullptr);
+    const auto bB = world.CreateBody();
+    ASSERT_NE(bB, nullptr);
+    
+    auto def = DistanceJointDef{};
+    def.bodyA = bA;
+    def.bodyB = bB;
+    def.collideConnected = false;
+    def.userData = reinterpret_cast<void*>(71);
+    def.localAnchorA = Length2D(Real(21) * Meter, Real(-2) * Meter);
+    def.localAnchorB = Length2D(Real(13) * Meter, Real(12) * Meter);
+    def.length = Real{5} * Meter;
+    def.frequency = Real(67) * Hertz;
+    def.dampingRatio = Real(0.8);
+    
+    const auto joint = DistanceJoint{def};
+    const auto got = GetDistanceJointDef(joint);
+    
+    EXPECT_EQ(def.bodyA, got.bodyA);
+    EXPECT_EQ(def.bodyB, got.bodyB);
+    EXPECT_EQ(def.userData, got.userData);
+    EXPECT_EQ(def.localAnchorA, got.localAnchorA);
+    EXPECT_EQ(def.localAnchorB, got.localAnchorB);
+    EXPECT_EQ(def.length, got.length);
+    EXPECT_EQ(def.frequency, got.frequency);
+    EXPECT_EQ(def.dampingRatio, got.dampingRatio);
 }

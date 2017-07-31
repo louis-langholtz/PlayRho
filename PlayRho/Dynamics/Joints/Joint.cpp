@@ -92,13 +92,23 @@ bool Joint::IsOkay(const JointDef& def) noexcept
 
 bool IsEnabled(const Joint& j) noexcept
 {
-    return j.GetBodyA()->IsEnabled() && j.GetBodyB()->IsEnabled();
+    const auto bA = j.GetBodyA();
+    const auto bB = j.GetBodyB();
+    return (!bA || bA->IsEnabled()) && (!bB || bB->IsEnabled());
 }
 
 void SetAwake(Joint& j) noexcept
 {
-    j.GetBodyA()->SetAwake();
-    j.GetBodyB()->SetAwake();
+    const auto bA = j.GetBodyA();
+    const auto bB = j.GetBodyB();
+    if (bA)
+    {
+        bA->SetAwake();
+    }
+    if (bB)
+    {
+        bB->SetAwake();
+    }
 }
 
 // Free functions...

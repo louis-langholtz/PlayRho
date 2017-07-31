@@ -61,7 +61,7 @@ struct JointDef
     }
     
     /// @brief Type of the joint is set automatically for concrete joint types.
-    JointType type;
+    JointType type = JointType::Unknown;
     
     /// @brief First attached body.
     Body* bodyA = nullptr;
