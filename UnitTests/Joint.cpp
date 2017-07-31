@@ -24,6 +24,45 @@
 
 using namespace playrho;
 
+TEST(JointBuilder, Construction)
+{
+    EXPECT_EQ(JointBuilder<JointDef>{JointType::Unknown}.type, JointType::Unknown);
+    EXPECT_EQ(JointBuilder<JointDef>{JointType::Unknown}.bodyA, nullptr);
+    EXPECT_EQ(JointBuilder<JointDef>{JointType::Unknown}.bodyB, nullptr);
+    EXPECT_EQ(JointBuilder<JointDef>{JointType::Unknown}.collideConnected, false);
+    EXPECT_EQ(JointBuilder<JointDef>{JointType::Unknown}.userData, nullptr);
+    EXPECT_EQ(JointBuilder<JointDef>{JointType::Gear}.type, JointType::Gear);
+    EXPECT_EQ(JointBuilder<JointDef>{JointType::Rope}.type, JointType::Rope);
+}
+
+TEST(JointBuilder, UseBodyA)
+{
+    const auto b = reinterpret_cast<Body*>(2);
+    EXPECT_NE(JointBuilder<JointDef>{JointType::Rope}.bodyA, b);
+    EXPECT_EQ(JointBuilder<JointDef>{JointType::Rope}.UseBodyA(b).bodyA, b);
+}
+
+TEST(JointBuilder, UseBodyB)
+{
+    const auto b = reinterpret_cast<Body*>(77);
+    EXPECT_NE(JointBuilder<JointDef>{JointType::Rope}.bodyB, b);
+    EXPECT_EQ(JointBuilder<JointDef>{JointType::Rope}.UseBodyB(b).bodyB, b);
+}
+
+TEST(JointBuilder, UseCollideConnected)
+{
+    const auto cc = true;
+    EXPECT_NE(JointBuilder<JointDef>{JointType::Rope}.collideConnected, cc);
+    EXPECT_EQ(JointBuilder<JointDef>{JointType::Rope}.UseCollideConnected(cc).collideConnected, cc);
+}
+
+TEST(JointBuilder, UseUserData)
+{
+    const auto d = reinterpret_cast<void*>(318);
+    EXPECT_NE(JointBuilder<JointDef>{JointType::Rope}.userData, d);
+    EXPECT_EQ(JointBuilder<JointDef>{JointType::Rope}.UseUserData(d).userData, d);
+}
+
 TEST(Joint, ByteSize)
 {
     switch (sizeof(void*))

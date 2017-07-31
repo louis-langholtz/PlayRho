@@ -29,6 +29,7 @@ namespace playrho {
 class Body;
 class Joint;
 
+/// @brief Enumeration of joint types.
 enum class JointType : std::uint8_t
 {
     Unknown,
@@ -59,7 +60,7 @@ struct JointDef
         // Intentionally empty.
     }
     
-    /// The joint type is set automatically for concrete joint types.
+    /// @brief Type of the joint is set automatically for concrete joint types.
     JointType type;
     
     /// @brief First attached body.
@@ -68,13 +69,22 @@ struct JointDef
     /// @brief Second attached body.
     Body* bodyB = nullptr;
     
-    /// Set this flag to true if the attached bodies should collide.
+    /// @brief Collide connected.
+    /// @details Set this flag to true if the attached bodies should collide.
     bool collideConnected = false;
     
-    /// Use this to attach application specific data to your joints.
+    /// @brief User data.
+    /// @details Use this to attach application specific data to your joints.
     void* userData = nullptr;
 };
 
+/// @brief Joint builder definition structure.
+/// @details This is a builder structure of chainable methods for building a shape
+///   configuration.
+/// @note This is a templated nested value class for initializing joints that
+///   uses the Curiously Recurring Template Pattern (CRTP) to provide method chaining
+///   via static polymorphism.
+/// @sa https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern
 template <class T>
 struct JointBuilder : JointDef
 {
@@ -86,24 +96,28 @@ struct JointBuilder : JointDef
         // Intentionally empty.
     }
     
+    /// @brief Use value for body A setting.
     constexpr reference UseBodyA(Body* b) noexcept
     {
         bodyA = b;
         return static_cast<reference>(*this);
     }
     
+    /// @brief Use value for body B setting.
     constexpr reference UseBodyB(Body* b) noexcept
     {
         bodyB = b;
         return static_cast<reference>(*this);
     }
     
+    /// @brief Use value for collide connected setting.
     constexpr reference UseCollideConnected(bool v) noexcept
     {
         collideConnected = v;
         return static_cast<reference>(*this);
     }
     
+    /// @brief Use value for user data setting.
     constexpr reference UseUserData(void* v) noexcept
     {
         userData = v;
