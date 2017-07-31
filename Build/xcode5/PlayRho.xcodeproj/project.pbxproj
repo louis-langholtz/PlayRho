@@ -152,6 +152,8 @@
 		4787D6D71F2ECD87008C115E /* PulleyJointDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6D51F2ECD87008C115E /* PulleyJointDef.hpp */; };
 		4787D6DA1F2ECFFB008C115E /* RevoluteJointDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4787D6D81F2ECFFB008C115E /* RevoluteJointDef.cpp */; };
 		4787D6DB1F2ECFFB008C115E /* RevoluteJointDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6D91F2ECFFB008C115E /* RevoluteJointDef.hpp */; };
+		4787D6DE1F2ED2D6008C115E /* RopeJointDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4787D6DC1F2ED2D6008C115E /* RopeJointDef.cpp */; };
+		4787D6DF1F2ED2D6008C115E /* RopeJointDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6DD1F2ED2D6008C115E /* RopeJointDef.hpp */; };
 		4788690A1D78BE2B00AEC7F1 /* PositionConstraint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */; };
 		478869101D78BF7200AEC7F1 /* VelocityConstraint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */; };
 		478E67C71E760AB7009B9AD5 /* BodyType.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 478E67C41E760AB7009B9AD5 /* BodyType.hpp */; };
@@ -494,6 +496,8 @@
 		4787D6D51F2ECD87008C115E /* PulleyJointDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PulleyJointDef.hpp; sourceTree = "<group>"; };
 		4787D6D81F2ECFFB008C115E /* RevoluteJointDef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RevoluteJointDef.cpp; sourceTree = "<group>"; };
 		4787D6D91F2ECFFB008C115E /* RevoluteJointDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RevoluteJointDef.hpp; sourceTree = "<group>"; };
+		4787D6DC1F2ED2D6008C115E /* RopeJointDef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RopeJointDef.cpp; sourceTree = "<group>"; };
+		4787D6DD1F2ED2D6008C115E /* RopeJointDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RopeJointDef.hpp; sourceTree = "<group>"; };
 		478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PositionConstraint.hpp; sourceTree = "<group>"; };
 		4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VelocityConstraint.hpp; sourceTree = "<group>"; };
 		478E67C41E760AB7009B9AD5 /* BodyType.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyType.hpp; sourceTree = "<group>"; };
@@ -1014,6 +1018,8 @@
 				4787D6D91F2ECFFB008C115E /* RevoluteJointDef.hpp */,
 				80BB897E141C3E5900F1753A /* RopeJoint.cpp */,
 				80BB897F141C3E5900F1753A /* RopeJoint.hpp */,
+				4787D6DC1F2ED2D6008C115E /* RopeJointDef.cpp */,
+				4787D6DD1F2ED2D6008C115E /* RopeJointDef.hpp */,
 				80BB8980141C3E5900F1753A /* WeldJoint.cpp */,
 				80BB8981141C3E5900F1753A /* WeldJoint.hpp */,
 				80BB8982141C3E5900F1753A /* WheelJoint.cpp */,
@@ -1260,6 +1266,7 @@
 				80BB89CF141C3E5900F1753A /* GearJoint.hpp in Headers */,
 				80BB89D1141C3E5900F1753A /* Joint.hpp in Headers */,
 				80BB89D3141C3E5900F1753A /* MouseJoint.hpp in Headers */,
+				4787D6DF1F2ED2D6008C115E /* RopeJointDef.hpp in Headers */,
 				474FFC3C1F2CEE6C0037CCE0 /* Vector.hpp in Headers */,
 				80BB89D5141C3E5900F1753A /* PrismaticJoint.hpp in Headers */,
 				80BB89D7141C3E5900F1753A /* PulleyJoint.hpp in Headers */,
@@ -1573,6 +1580,7 @@
 				80BB89BE141C3E5900F1753A /* Contact.cpp in Sources */,
 				80BB89C0141C3E5900F1753A /* ContactSolver.cpp in Sources */,
 				4787D6C21F2E9DC0008C115E /* DistanceJointDef.cpp in Sources */,
+				4787D6DE1F2ED2D6008C115E /* RopeJointDef.cpp in Sources */,
 				80BB89CA141C3E5900F1753A /* DistanceJoint.cpp in Sources */,
 				80BB89CC141C3E5900F1753A /* FrictionJoint.cpp in Sources */,
 				4787D6C61F2EA1DB008C115E /* FrictionJointDef.cpp in Sources */,
