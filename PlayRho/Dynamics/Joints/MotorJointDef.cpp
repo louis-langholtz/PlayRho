@@ -1,5 +1,5 @@
 /*
- * Original work Copyright (c) 2007-2011 Erin Catto http://www.box2d.org
+ * Original work Copyright (c) 2006-2012 Erin Catto http://www.box2d.org
  * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
@@ -19,24 +19,31 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/Joints/GearJointDef.hpp>
-#include <PlayRho/Dynamics/Joints/GearJoint.hpp>
+#include <PlayRho/Dynamics/Joints/MotorJointDef.hpp>
+#include <PlayRho/Dynamics/Joints/MotorJoint.hpp>
+#include <PlayRho/Dynamics/Body.hpp>
 
 using namespace playrho;
 
-GearJointDef::GearJointDef(NonNull<Joint*> j1, NonNull<Joint*> j2) noexcept:
-    super{super{JointType::Gear}.UseBodyA(j1->GetBodyB()).UseBodyB(j2->GetBodyB())},
-    joint1{j1}, joint2{j2}
+MotorJointDef::MotorJointDef(NonNull<Body*> bA, NonNull<Body*> bB) noexcept:
+    super{super{JointType::Motor}.UseBodyA(bA).UseBodyB(bB)},
+    linearOffset{GetLocalPoint(*bA, bB->GetLocation())},
+    angularOffset{bB->GetAngle() - bA->GetAngle()}
 {
     // Intentionally empty.
 }
 
-GearJointDef playrho::GetGearJointDef(const GearJoint& joint) noexcept
+MotorJointDef playrho::GetMotorJointDef(const MotorJoint& joint) noexcept
 {
-    auto def = GearJointDef{joint.GetJoint1(), joint.GetJoint2()};
+    auto def = MotorJointDef{};
     
     Set(def, joint);
-    def.ratio = joint.GetRatio();
+    
+    def.linearOffset = joint.GetLinearOffset();
+    def.angularOffset = joint.GetAngularOffset();
+    def.maxForce = joint.GetMaxForce();
+    def.maxTorque = joint.GetMaxTorque();
+    def.correctionFactor = joint.GetCorrectionFactor();
     
     return def;
 }

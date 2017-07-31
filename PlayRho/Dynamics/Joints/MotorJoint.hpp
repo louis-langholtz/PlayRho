@@ -1,67 +1,31 @@
 /*
-* Original work Copyright (c) 2006-2012 Erin Catto http://www.box2d.org
-* Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+ * Original work Copyright (c) 2006-2012 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty. In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ *
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ *
+ * 1. The origin of this software must not be misrepresented; you must not
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ *    misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
 
 #ifndef B2_MOTOR_JOINT_H
 #define B2_MOTOR_JOINT_H
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Common/BoundedValue.hpp>
+#include <PlayRho/Dynamics/Joints/MotorJointDef.hpp>
 
 namespace playrho {
-
-/// Motor joint definition.
-struct MotorJointDef : public JointBuilder<MotorJointDef>
-{
-    using super = JointBuilder<MotorJointDef>;
-    
-    constexpr MotorJointDef() noexcept: super{JointType::Motor} {}
-
-    /// Initialize the bodies and offsets using the current transforms.
-    MotorJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB) noexcept;
-
-    MotorJointDef& UseMaxForce(NonNegative<Force> v) noexcept
-    {
-        maxForce = v;
-        return *this;
-    }
-    
-    MotorJointDef& UseMaxTorque(NonNegative<Torque> v) noexcept
-    {
-        maxTorque = v;
-        return *this;
-    }
-
-    /// Position of bodyB minus the position of bodyA, in bodyA's frame.
-    Length2D linearOffset = Length2D(0, 0);
-
-    /// The bodyB angle minus bodyA angle.
-    Angle angularOffset = Angle{0};
-    
-    /// The maximum motor force.
-    NonNegative<Force> maxForce = NonNegative<Force>(Real{1} * Newton);
-
-    /// The maximum motor torque.
-    NonNegative<Torque> maxTorque = NonNegative<Torque>(Real{1} * NewtonMeter);
-
-    /// Position correction factor in the range [0,1].
-    Real correctionFactor = Real(0.3);
-};
 
 /// @brief Motor joint.
 /// @details A motor joint is used to control the relative motion
@@ -147,8 +111,6 @@ inline NonNegative<Torque> MotorJoint::GetMaxTorque() const
 {
     return m_maxTorque;
 }
-
-MotorJointDef GetMotorJointDef(const MotorJoint& joint) noexcept;
 
 } // namespace playrho
 

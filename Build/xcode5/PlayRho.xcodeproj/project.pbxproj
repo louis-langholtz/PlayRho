@@ -144,6 +144,8 @@
 		4787D6C71F2EA1DB008C115E /* FrictionJointDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6C51F2EA1DB008C115E /* FrictionJointDef.hpp */; };
 		4787D6CA1F2EA3A1008C115E /* GearJointDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4787D6C81F2EA3A1008C115E /* GearJointDef.cpp */; };
 		4787D6CB1F2EA3A1008C115E /* GearJointDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6C91F2EA3A1008C115E /* GearJointDef.hpp */; };
+		4787D6CE1F2EC902008C115E /* MotorJointDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4787D6CC1F2EC902008C115E /* MotorJointDef.cpp */; };
+		4787D6CF1F2EC902008C115E /* MotorJointDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6CD1F2EC902008C115E /* MotorJointDef.hpp */; };
 		4788690A1D78BE2B00AEC7F1 /* PositionConstraint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */; };
 		478869101D78BF7200AEC7F1 /* VelocityConstraint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */; };
 		478E67C71E760AB7009B9AD5 /* BodyType.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 478E67C41E760AB7009B9AD5 /* BodyType.hpp */; };
@@ -478,6 +480,8 @@
 		4787D6C51F2EA1DB008C115E /* FrictionJointDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FrictionJointDef.hpp; sourceTree = "<group>"; };
 		4787D6C81F2EA3A1008C115E /* GearJointDef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GearJointDef.cpp; sourceTree = "<group>"; };
 		4787D6C91F2EA3A1008C115E /* GearJointDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GearJointDef.hpp; sourceTree = "<group>"; };
+		4787D6CC1F2EC902008C115E /* MotorJointDef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MotorJointDef.cpp; sourceTree = "<group>"; };
+		4787D6CD1F2EC902008C115E /* MotorJointDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MotorJointDef.hpp; sourceTree = "<group>"; };
 		478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PositionConstraint.hpp; sourceTree = "<group>"; };
 		4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VelocityConstraint.hpp; sourceTree = "<group>"; };
 		478E67C41E760AB7009B9AD5 /* BodyType.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyType.hpp; sourceTree = "<group>"; };
@@ -978,6 +982,8 @@
 				470F94D81EC8C37500AA3C82 /* JointKey.hpp */,
 				80620F8D168B934600D46C8D /* MotorJoint.cpp */,
 				80620F8E168B934600D46C8D /* MotorJoint.hpp */,
+				4787D6CC1F2EC902008C115E /* MotorJointDef.cpp */,
+				4787D6CD1F2EC902008C115E /* MotorJointDef.hpp */,
 				80BB8976141C3E5900F1753A /* MouseJoint.cpp */,
 				80BB8977141C3E5900F1753A /* MouseJoint.hpp */,
 				80BB8978141C3E5900F1753A /* PrismaticJoint.cpp */,
@@ -1212,6 +1218,7 @@
 				4768D3F51E3A7ACA00574143 /* Wider.hpp in Headers */,
 				470F94E31ECBB3A100AA3C82 /* Range.hpp in Headers */,
 				470F94B41EC4CB6C00AA3C82 /* Filter.hpp in Headers */,
+				4787D6CF1F2EC902008C115E /* MotorJointDef.hpp in Headers */,
 				479B63C01ED8B64300D49BC7 /* BoundedValue.hpp in Headers */,
 				4751EE291CEDD78F00D459CB /* Mobile.hpp in Headers */,
 				470F9B2A1EDF4EA2007EF7B6 /* Mat33.hpp in Headers */,
@@ -1537,6 +1544,7 @@
 				80BB89B4141C3E5900F1753A /* World.cpp in Sources */,
 				470F9B4F1EF0C8B8007EF7B6 /* FixtureDef.cpp in Sources */,
 				4787D6BA1F2E946E008C115E /* PrismaticJointDef.cpp in Sources */,
+				4787D6CE1F2EC902008C115E /* MotorJointDef.cpp in Sources */,
 				4787D6CA1F2EA3A1008C115E /* GearJointDef.cpp in Sources */,
 				80BB89B6141C3E5900F1753A /* WorldCallbacks.cpp in Sources */,
 				80BB89BE141C3E5900F1753A /* Contact.cpp in Sources */,
