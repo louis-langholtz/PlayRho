@@ -201,16 +201,12 @@ constexpr inline UnitVec2 InverseRotate(const UnitVec2 vector, const UnitVec2& a
 {
     return vector.Rotate(angle.FlipY());
 }
-
-constexpr inline auto GetX(const UnitVec2 value) { return value.GetX(); }
-
-constexpr inline auto GetY(const UnitVec2 value) { return value.GetY(); }
-
+    
 template <> constexpr UnitVec2 GetInvalid() noexcept { return UnitVec2{}; }
 
 template <> constexpr inline bool IsValid(const UnitVec2& value) noexcept
 {
-    return IsValid(GetX(value)) && IsValid(GetY(value)) && (value != UnitVec2::GetZero());
+    return IsValid(value.GetX()) && IsValid(value.GetY()) && (value != UnitVec2::GetZero());
 }
 
 } // namespace playrho
