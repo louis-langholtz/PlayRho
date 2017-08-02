@@ -21,7 +21,6 @@
 #define ArrayList_hpp
 
 #include <PlayRho/Defines.hpp>
-#include <PlayRho/Common/LengthError.hpp>
 
 #include <type_traits>
 #include <initializer_list>
@@ -86,22 +85,16 @@ namespace playrho
             return *this;
         }
 
-        constexpr void push_back(const value_type& value)
+        constexpr void push_back(const value_type& value) noexcept
         {
-            if (m_size >= max_size())
-            {
-                throw LengthError("action would exceed max_size()");
-            }
+            assert(m_size < MAXSIZE);
             m_elements[m_size] = value;
             ++m_size;
         }
         
         void size(size_type value) noexcept
         {
-            if (value > max_size())
-            {
-                throw LengthError("action would exceed max_size()");
-            }
+            assert(value <= MAXSIZE);
             m_size = value;
         }
 

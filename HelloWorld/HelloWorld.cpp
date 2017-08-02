@@ -85,8 +85,8 @@ int main(int, char**)
         const auto angle = body->GetAngle();
 
         std::printf("%4.2f %4.2f %4.2f\n",
-                    double(playrho::Real(position.x / playrho::Meter)),
-                    double(playrho::Real(position.y / playrho::Meter)),
+                    double(playrho::Real(GetX(position) / playrho::Meter)),
+                    double(playrho::Real(GetY(position) / playrho::Meter)),
                     double(playrho::Real(angle / playrho::Degree)));
     }
 
