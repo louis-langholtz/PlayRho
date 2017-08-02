@@ -29,8 +29,7 @@
 #include <PlayRho/Common/Velocity.hpp>
 #include <PlayRho/Common/Transformation.hpp>
 #include <PlayRho/Common/Sweep.hpp>
-#include <PlayRho/Common/Mat22.hpp>
-#include <PlayRho/Common/Mat33.hpp>
+#include <PlayRho/Common/Matrix.hpp>
 
 #include <cmath>
 #include <iostream>
@@ -398,17 +397,22 @@ constexpr inline auto Cross(const Vec3 a, const Vec3 b) noexcept
 template <typename T>
 constexpr T Solve(const Mat22 mat, const T b) noexcept
 {
-    const auto cp = Cross(mat.ex, mat.ey);
+    const auto cp = Cross(std::get<0>(mat), std::get<1>(mat));
     return (cp != 0)?
-        T{(mat.ey[1] * b[0] - mat.ey[0] * b[1]) / cp, (mat.ex[0] * b[1] - mat.ex[1] * b[0]) / cp}:
-        T{};
+        T{
+            (std::get<1>(mat)[1] * b[0] - std::get<1>(mat)[0] * b[1]) / cp,
+            (std::get<0>(mat)[0] * b[1] - std::get<0>(mat)[1] * b[0]) / cp
+        }: T{};
 }
 
 constexpr Mat22 Invert(const Mat22 value) noexcept
 {
-    const auto cp = Cross(value.ex, value.ey);
+    const auto cp = Cross(std::get<0>(value), std::get<1>(value));
     return (cp != 0)?
-        Mat22{Vec2{value.ey[1] / cp, -value.ex[1] / cp}, Vec2{-value.ey[0] / cp, value.ex[0] / cp}}:
+        Mat22{
+            Vec2{ std::get<1>(value)[1] / cp, -std::get<0>(value)[1] / cp},
+            Vec2{-std::get<1>(value)[0] / cp,  std::get<0>(value)[0] / cp}
+        }:
         Mat22{Vec2{0, 0}, Vec2{0, 0}};
 }
 
@@ -416,11 +420,11 @@ constexpr Mat22 Invert(const Mat22 value) noexcept
 /// than computing the inverse in one-shot cases.
 constexpr Vec3 Solve33(const Mat33& mat, const Vec3 b) noexcept
 {
-    const auto dp = Dot(mat.ex, Cross(mat.ey, mat.ez));
+    const auto dp = Dot(GetX(mat), Cross(GetY(mat), GetZ(mat)));
     const auto det = (dp != 0)? 1 / dp: dp;
-    const auto x = det * Dot(b, Cross(mat.ey, mat.ez));
-    const auto y = det * Dot(mat.ex, Cross(b, mat.ez));
-    const auto z = det * Dot(mat.ex, Cross(mat.ey, b));
+    const auto x = det * Dot(b, Cross(GetY(mat), GetZ(mat)));
+    const auto y = det * Dot(GetX(mat), Cross(b, GetZ(mat)));
+    const auto z = det * Dot(GetX(mat), Cross(GetY(mat), b));
     return Vec3{x, y, z};
 }
     
@@ -430,10 +434,10 @@ constexpr Vec3 Solve33(const Mat33& mat, const Vec3 b) noexcept
     template <typename T>
 constexpr T Solve22(const Mat33& mat, const T b) noexcept
 {
-    const auto cp = GetX(mat.ex) * GetY(mat.ey) - GetX(mat.ey) * GetY(mat.ex);
+    const auto cp = GetX(GetX(mat)) * GetY(GetY(mat)) - GetX(GetY(mat)) * GetY(GetX(mat));
     const auto det = (cp != 0)? 1 / cp: cp;
-    const auto x = det * (GetY(mat.ey) * GetX(b) - GetX(mat.ey) * GetY(b));
-    const auto y = det * (GetX(mat.ex) * GetY(b) - GetY(mat.ex) * GetX(b));
+    const auto x = det * (GetY(GetY(mat)) * GetX(b) - GetX(GetY(mat)) * GetY(b));
+    const auto y = det * (GetX(GetX(mat)) * GetY(b) - GetY(GetX(mat)) * GetX(b));
     return T{x, y};
 }
 
@@ -441,7 +445,7 @@ constexpr T Solve22(const Mat33& mat, const T b) noexcept
 /// Returns the zero matrix if singular.
 constexpr inline Mat33 GetInverse22(const Mat33& value) noexcept
 {
-    const auto a = GetX(value.ex), b = GetX(value.ey), c = GetY(value.ex), d = GetY(value.ey);
+    const auto a = GetX(GetX(value)), b = GetX(GetY(value)), c = GetY(GetX(value)), d = GetY(GetY(value));
     auto det = (a * d) - (b * c);
     if (det != Real{0})
     {
@@ -454,15 +458,15 @@ constexpr inline Mat33 GetInverse22(const Mat33& value) noexcept
 /// Returns the zero matrix if singular.
 constexpr inline Mat33 GetSymInverse33(const Mat33& value) noexcept
 {
-    auto det = Dot(value.ex, Cross(value.ey, value.ez));
+    auto det = Dot(GetX(value), Cross(GetY(value), GetZ(value)));
     if (det != Real{0})
     {
         det = Real{1} / det;
     }
     
-    const auto a11 = GetX(value.ex), a12 = GetX(value.ey), a13 = GetX(value.ez);
-    const auto a22 = GetY(value.ey), a23 = GetY(value.ez);
-    const auto a33 = GetZ(value.ez);
+    const auto a11 = GetX(GetX(value)), a12 = GetX(GetY(value)), a13 = GetX(GetZ(value));
+    const auto a22 = GetY(GetY(value)), a23 = GetY(GetZ(value));
+    const auto a33 = GetZ(GetZ(value));
     
     const auto ex_y = det * (a13 * a23 - a12 * a33);
     const auto ey_z = det * (a13 * a12 - a11 * a23);
@@ -510,8 +514,8 @@ constexpr inline auto GetFwdPerpendicular(const T vector) noexcept
 constexpr inline Vec2 Transform(const Vec2 v, const Mat22& A) noexcept
 {
     return Vec2{
-        GetX(A.ex) * GetX(v) + GetX(A.ey) * GetY(v),
-        GetY(A.ex) * GetX(v) + GetY(A.ey) * GetY(v)
+        GetX(GetX(A)) * GetX(v) + GetX(GetY(A)) * GetY(v),
+        GetY(GetX(A)) * GetX(v) + GetY(GetY(A)) * GetY(v)
     };
 }
 
@@ -519,7 +523,7 @@ constexpr inline Vec2 Transform(const Vec2 v, const Mat22& A) noexcept
 /// then this transforms the vector from one frame to another (inverse transform).
 constexpr inline Vec2 InverseTransform(const Vec2 v, const Mat22& A) noexcept
 {
-    return Vec2{Dot(v, A.ex), Dot(v, A.ey)};
+    return Vec2{Dot(v, GetX(A)), Dot(v, GetY(A))};
 }
 
 constexpr inline Vec2 operator+ (const UnitVec2 lhs, const UnitVec2 rhs) noexcept
@@ -552,29 +556,29 @@ constexpr inline Vec2 operator/ (const UnitVec2 u, const UnitVec2::value_type s)
 // A * B
 constexpr inline Mat22 Mul(const Mat22& A, const Mat22& B) noexcept
 {
-    return Mat22{Transform(B.ex, A), Transform(B.ey, A)};
+    return Mat22{Transform(GetX(B), A), Transform(GetY(B), A)};
 }
 
 // A^T * B
 constexpr inline Mat22 MulT(const Mat22& A, const Mat22& B) noexcept
 {
-    const auto c1 = Vec2{Dot(A.ex, B.ex), Dot(A.ey, B.ex)};
-    const auto c2 = Vec2{Dot(A.ex, B.ey), Dot(A.ey, B.ey)};
+    const auto c1 = Vec2{Dot(GetX(A), GetX(B)), Dot(GetY(A), GetX(B))};
+    const auto c2 = Vec2{Dot(GetX(A), GetY(B)), Dot(GetY(A), GetY(B))};
     return Mat22{c1, c2};
 }
 
 /// Multiply a matrix times a vector.
 constexpr inline Vec3 Transform(const Vec3& v, const Mat33& A) noexcept
 {
-    return (GetX(v) * A.ex) + (GetY(v) * A.ey) + (GetZ(v) * A.ez);
+    return (GetX(v) * GetX(A)) + (GetY(v) * GetY(A)) + (GetZ(v) * GetZ(A));
 }
 
 /// Multiply a matrix times a vector.
 constexpr inline Vec2 Transform(const Vec2 v, const Mat33& A) noexcept
 {
     return Vec2{
-        GetX(A.ex) * v[0] + GetX(A.ey) * v[1],
-        GetY(A.ex) * v[0] + GetY(A.ey) * v[1]
+        GetX(GetX(A)) * v[0] + GetX(GetY(A)) * v[1],
+        GetY(GetX(A)) * v[0] + GetY(GetY(A)) * v[1]
     };
 }
 
@@ -660,7 +664,7 @@ inline UnitVec2 Abs(UnitVec2 a)
 
 inline Mat22 Abs(const Mat22& A)
 {
-    return Mat22{Abs(A.ex), Abs(A.ey)};
+    return Mat22{Abs(GetX(A)), Abs(GetY(A))};
 }
 
 /// Clamps the given value within the given range (inclusive).

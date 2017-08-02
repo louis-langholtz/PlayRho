@@ -106,15 +106,15 @@ void WeldJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
     };
     const auto ezz = InvMass{(invRotInertiaA + invRotInertiaB) * SquareMeter / SquareRadian};
 
-    GetX(K.ex) = StripUnit(exx);
-    GetX(K.ey) = StripUnit(eyx);
-    GetX(K.ez) = StripUnit(ezx);
-    GetY(K.ex) = GetX(K.ey);
-    GetY(K.ey) = StripUnit(eyy);
-    GetY(K.ez) = StripUnit(ezy);
-    GetZ(K.ex) = GetX(K.ez);
-    GetZ(K.ey) = GetY(K.ez);
-    GetZ(K.ez) = StripUnit(ezz);
+    GetX(GetX(K)) = StripUnit(exx);
+    GetX(GetY(K)) = StripUnit(eyx);
+    GetX(GetZ(K)) = StripUnit(ezx);
+    GetY(GetX(K)) = GetX(GetY(K));
+    GetY(GetY(K)) = StripUnit(eyy);
+    GetY(GetZ(K)) = StripUnit(ezy);
+    GetZ(GetX(K)) = GetX(GetZ(K));
+    GetZ(GetY(K)) = GetY(GetZ(K));
+    GetZ(GetZ(K)) = StripUnit(ezz);
 
     if (m_frequency > Frequency{0})
     {
@@ -140,9 +140,10 @@ void WeldJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
         m_bias = AngularVelocity{C * h * k * m_gamma};
 
         invRotInertia += m_gamma;
-        GetZ(m_mass.ez) = StripUnit((invRotInertia != InvRotInertia{0}) ? Real{1} / invRotInertia : RotInertia{0});
+        GetZ(GetZ(m_mass)) = StripUnit((invRotInertia != InvRotInertia{0}) ?
+                                       Real{1} / invRotInertia : RotInertia{0});
     }
-    else if (GetZ(K.ez) == 0)
+    else if (GetZ(GetZ(K)) == 0)
     {
         m_mass = GetInverse22(K);
         m_gamma = InvRotInertia{0};
@@ -205,7 +206,7 @@ bool WeldJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
         const auto gamma = AngularVelocity{m_gamma * GetZ(m_impulse) * SquareMeter * Kilogram / (Radian * Second)};
 
         // AngularMomentum is L^2 M T^-1 QP^-1.
-        const auto impulse2 = -GetZ(m_mass.ez) * StripUnit(Cdot2 + m_bias + gamma);
+        const auto impulse2 = -GetZ(GetZ(m_mass)) * StripUnit(Cdot2 + m_bias + gamma);
         GetZ(m_impulse) += impulse2;
 
         velA.angular -= AngularVelocity{invRotInertiaA * impulse2 * SquareMeter * Kilogram / (Second * Radian)};
@@ -310,15 +311,15 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
     const auto ezz = InvMass{(invRotInertiaA + invRotInertiaB) * SquareMeter / SquareRadian};
 
     Mat33 K;
-    GetX(K.ex) = StripUnit(exx);
-    GetX(K.ey) = StripUnit(eyx);
-    GetX(K.ez) = StripUnit(ezx);
-    GetY(K.ex) = GetX(K.ey);
-    GetY(K.ey) = StripUnit(eyy);
-    GetY(K.ez) = StripUnit(ezy);
-    GetZ(K.ex) = GetX(K.ez);
-    GetZ(K.ey) = GetY(K.ez);
-    GetZ(K.ez) = StripUnit(ezz);
+    GetX(GetX(K)) = StripUnit(exx);
+    GetX(GetY(K)) = StripUnit(eyx);
+    GetX(GetZ(K)) = StripUnit(ezx);
+    GetY(GetX(K)) = GetX(GetY(K));
+    GetY(GetY(K)) = StripUnit(eyy);
+    GetY(GetZ(K)) = StripUnit(ezy);
+    GetZ(GetX(K)) = GetX(GetZ(K));
+    GetZ(GetY(K)) = GetY(GetZ(K));
+    GetZ(GetZ(K)) = StripUnit(ezz);
 
     if (m_frequency > Frequency{0})
     {
@@ -345,7 +346,7 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
         const auto C = Vec3{StripUnit(GetX(C1)), StripUnit(GetY(C1)), StripUnit(C2)};
     
         Vec3 impulse;
-        if (GetZ(K.ez) > 0)
+        if (GetZ(GetZ(K)) > 0)
         {
             impulse = -Solve33(K, C);
         }

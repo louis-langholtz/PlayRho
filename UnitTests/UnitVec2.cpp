@@ -20,6 +20,7 @@
 
 #include "gtest/gtest.h"
 #include <PlayRho/Common/UnitVec2.hpp>
+#include <PlayRho/Common/Math.hpp>
 
 using namespace playrho;
 

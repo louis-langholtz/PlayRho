@@ -177,9 +177,9 @@ void PrismaticJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
         const auto k23 = (invRotInertiaA * m_a1 + invRotInertiaB * m_a2) * Meter * Kilogram / SquareRadian;
         const auto k33 = StripUnit(totalInvMass);
 
-        m_K.ex = Vec3{k11, k12, k13};
-        m_K.ey = Vec3{k12, k22, k23};
-        m_K.ez = Vec3{k13, k23, k33};
+        GetX(m_K) = Vec3{k11, k12, k13};
+        GetY(m_K) = Vec3{k12, k22, k23};
+        GetZ(m_K) = Vec3{k13, k23, k33};
     }
 
     // Compute motor and limit terms.
@@ -323,7 +323,7 @@ bool PrismaticJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const 
         }
 
         // f2(1:2) = invK(1:2,1:2) * (-Cdot(1:2) - K(1:2,3) * (f2(3) - f1(3))) + f1(1:2)
-        const auto b = -Cdot1 - (GetZ(m_impulse) - GetZ(f1)) * Vec2{GetX(m_K.ez), GetY(m_K.ez)};
+        const auto b = -Cdot1 - (GetZ(m_impulse) - GetZ(f1)) * Vec2{GetX(GetZ(m_K)), GetY(GetZ(m_K))};
         const auto f2r = Solve22(m_K, b) + Vec2{GetX(f1), GetY(f1)};
         GetX(m_impulse) = GetX(f2r);
         GetY(m_impulse) = GetY(f2r);

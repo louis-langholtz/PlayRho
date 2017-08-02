@@ -38,8 +38,8 @@
 #include <PlayRho/Defines.hpp>
 #include <PlayRho/Common/Templates.hpp>
 #include <PlayRho/Common/RealNum.hpp>
-#include <PlayRho/Common/Wider.hpp>
 #include <PlayRho/Common/Units.hpp>
+#include <PlayRho/Common/Wider.hpp>
 
 /**
  * @namespace playrho

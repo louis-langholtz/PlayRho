@@ -111,15 +111,15 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
         (GetX(m_rA) * invRotInertiaA * Meter / SquareRadian) +
         (GetX(m_rB) * invRotInertiaB * Meter / SquareRadian)
     };
-    GetX(m_mass.ex) = StripUnit(exx);
-    GetX(m_mass.ey) = StripUnit(eyx);
-    GetX(m_mass.ez) = StripUnit(ezx);
-    GetY(m_mass.ex) = GetX(m_mass.ey);
-    GetY(m_mass.ey) = StripUnit(eyy);
-    GetY(m_mass.ez) = StripUnit(ezy);
-    GetZ(m_mass.ex) = GetX(m_mass.ez);
-    GetZ(m_mass.ey) = GetY(m_mass.ez);
-    GetZ(m_mass.ez) = StripUnit(totInvI);
+    GetX(GetX(m_mass)) = StripUnit(exx);
+    GetX(GetY(m_mass)) = StripUnit(eyx);
+    GetX(GetZ(m_mass)) = StripUnit(ezx);
+    GetY(GetX(m_mass)) = GetX(GetY(m_mass));
+    GetY(GetY(m_mass)) = StripUnit(eyy);
+    GetY(GetZ(m_mass)) = StripUnit(ezy);
+    GetZ(GetX(m_mass)) = GetX(GetZ(m_mass));
+    GetZ(GetY(m_mass)) = GetY(GetZ(m_mass));
+    GetZ(GetZ(m_mass)) = StripUnit(totInvI);
 
     m_motorMass = (totInvI > InvRotInertia{0})? RotInertia{Real{1} / totInvI}: RotInertia{0};
 
@@ -241,7 +241,7 @@ bool RevoluteJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
             const auto rhs = -Vec2{
                 GetX(vDelta) / MeterPerSecond,
                 GetY(vDelta) / MeterPerSecond
-            } + GetZ(m_impulse) * Vec2{GetX(m_mass.ez), GetY(m_mass.ez)};
+            } + GetZ(m_impulse) * Vec2{GetX(GetZ(m_mass)), GetY(GetZ(m_mass))};
             const auto reduced = Solve22(m_mass, rhs);
             GetX(impulse) = GetX(reduced);
             GetY(impulse) = GetY(reduced);
@@ -403,10 +403,10 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
         };
         
         Mat22 K;
-        GetX(K.ex) = StripUnit(exx);
-        GetY(K.ex) = StripUnit(exy);
-        GetX(K.ey) = GetY(K.ex);
-        GetY(K.ey) = StripUnit(eyy);
+        GetX(GetX(K)) = StripUnit(exx);
+        GetY(GetX(K)) = StripUnit(exy);
+        GetX(GetY(K)) = GetY(GetX(K));
+        GetY(GetY(K)) = StripUnit(eyy);
         const auto P = -Solve(K, C) * (Real(1.0f) * Kilogram);
 
         posA -= Position{invMassA * P, invRotInertiaA * Cross(rA, P) / Radian};

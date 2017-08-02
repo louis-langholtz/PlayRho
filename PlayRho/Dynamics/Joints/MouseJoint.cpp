@@ -87,10 +87,10 @@ Mat22 MouseJoint::GetEffectiveMassMatrix(const BodyConstraint& body) const noexc
     const auto eyy = InvMass{invMass + (invRotInertia * Square(GetX(m_rB)) / SquareRadian) + m_gamma};
 
     Mat22 K;
-    GetX(K.ex) = StripUnit(exx);
-    GetY(K.ex) = StripUnit(exy);
-    GetX(K.ey) = GetY(K.ex);
-    GetY(K.ey) = StripUnit(eyy);
+    GetX(GetX(K)) = StripUnit(exx);
+    GetY(GetX(K)) = StripUnit(exy);
+    GetX(GetY(K)) = GetY(GetX(K));
+    GetY(GetY(K)) = StripUnit(eyy);
     return K;
 }
 

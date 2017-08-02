@@ -98,10 +98,10 @@ void FrictionJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const St
             invMassA + invRotInertiaA * Square(GetX(m_rA)) / SquareRadian +
             invMassB + invRotInertiaB * Square(GetX(m_rB)) / SquareRadian
         };
-        GetX(K.ex) = StripUnit(exx);
-        GetY(K.ex) = StripUnit(exy);
-        GetX(K.ey) = GetY(K.ex);
-        GetY(K.ey) = StripUnit(eyy);
+        GetX(GetX(K)) = StripUnit(exx);
+        GetY(GetX(K)) = StripUnit(exy);
+        GetX(GetY(K)) = GetY(GetX(K));
+        GetY(GetY(K)) = StripUnit(eyy);
         m_linearMass = Invert(K);
     }
 

@@ -37,8 +37,8 @@ TEST(Mat22, Init)
     Vec2 c1{1, 1};
     Vec2 c2{2, 2};
     const Mat22 foo{c1, c2};
-    EXPECT_EQ(c1, foo.ex);
-    EXPECT_EQ(c2, foo.ey);
+    EXPECT_EQ(c1, GetX(foo));
+    EXPECT_EQ(c2, GetY(foo));
 }
 
 TEST(Mat22, Invert)
@@ -46,23 +46,23 @@ TEST(Mat22, Invert)
     Vec2 ex{1, 2};
     Vec2 ey{3, 4};
     const Mat22 foo{ex, ey};
-    ASSERT_EQ(foo.ex, ex);
-    ASSERT_EQ(foo.ey, ey);
+    ASSERT_EQ(GetX(foo), ex);
+    ASSERT_EQ(GetY(foo), ey);
 
     const auto inverted = Invert(foo);
     const auto cp = Cross(ex, ey);
     ASSERT_EQ(cp, Real(-2));
     const auto det = (cp != 0)? Real(1)/cp : Real(0);
     
-    EXPECT_EQ(GetX(inverted.ex), det * GetY(foo.ey));
-    EXPECT_EQ(GetY(inverted.ex), -det * GetY(foo.ex));
-    EXPECT_EQ(GetX(inverted.ey), -det * GetX(foo.ey));
-    EXPECT_EQ(GetY(inverted.ey), det * GetX(foo.ex));
+    EXPECT_EQ(GetX(GetX(inverted)), det * GetY(GetY(foo)));
+    EXPECT_EQ(GetY(GetX(inverted)), -det * GetY(GetX(foo)));
+    EXPECT_EQ(GetX(GetY(inverted)), -det * GetX(GetY(foo)));
+    EXPECT_EQ(GetY(GetY(inverted)), det * GetX(GetX(foo)));
     
-    EXPECT_EQ(GetX(inverted.ex), Real(-2));
-    EXPECT_EQ(GetY(inverted.ex), Real(1));
-    EXPECT_EQ(GetX(inverted.ey), Real(1.5));
-    EXPECT_EQ(GetY(inverted.ey), Real(-0.5));
+    EXPECT_EQ(GetX(GetX(inverted)), Real(-2));
+    EXPECT_EQ(GetY(GetX(inverted)), Real(1));
+    EXPECT_EQ(GetX(GetY(inverted)), Real(1.5));
+    EXPECT_EQ(GetY(GetY(inverted)), Real(-0.5));
 }
 
 TEST(Mat22, InvertInvertedIsOriginal)
@@ -72,8 +72,8 @@ TEST(Mat22, InvertInvertedIsOriginal)
     const Mat22 foo{c1, c2};
     const auto inverted = Invert(foo);
     const auto inverted2 = Invert(inverted);
-    EXPECT_EQ(GetX(foo.ex), GetX(inverted2.ex));
-    EXPECT_EQ(GetY(foo.ex), GetY(inverted2.ex));
-    EXPECT_EQ(GetX(foo.ey), GetX(inverted2.ey));
-    EXPECT_EQ(GetY(foo.ey), GetY(inverted2.ey));
+    EXPECT_EQ(GetX(GetX(foo)), GetX(GetX(inverted2)));
+    EXPECT_EQ(GetY(GetX(foo)), GetY(GetX(inverted2)));
+    EXPECT_EQ(GetX(GetY(foo)), GetX(GetY(inverted2)));
+    EXPECT_EQ(GetY(GetY(foo)), GetY(GetY(inverted2)));
 }

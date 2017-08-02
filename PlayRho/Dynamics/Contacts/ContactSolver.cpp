@@ -164,7 +164,7 @@ inline Momentum BlockSolveNormalCase2(VelocityConstraint& vc, const Vec2 b_prime
         GetY(newImpulsesUnitless) * Kilogram * MeterPerSecond
     };
     const auto K = vc.GetK();
-    const auto vn2 = std::get<1>(K.ex) * std::get<0>(newImpulsesUnitless) + std::get<1>(b_prime);
+    const auto vn2 = std::get<1>(std::get<0>(K)) * std::get<0>(newImpulsesUnitless) + std::get<1>(b_prime);
     if ((std::get<0>(newImpulsesUnitless) >= 0) && (vn2 >= 0))
     {
         const auto max = BlockSolveUpdate(vc, newImpulses);
@@ -200,7 +200,7 @@ inline Momentum BlockSolveNormalCase3(VelocityConstraint& vc, const Vec2 b_prime
         GetY(newImpulsesUnitless) * Kilogram * MeterPerSecond
     };
     const auto K = vc.GetK();
-    const auto vn1 = std::get<0>(K.ey) * std::get<1>(newImpulsesUnitless) + std::get<0>(b_prime);
+    const auto vn1 = std::get<0>(std::get<1>(K)) * std::get<1>(newImpulsesUnitless) + std::get<0>(b_prime);
     if ((std::get<1>(newImpulsesUnitless) >= 0) && (vn1 >= 0))
     {
         const auto max = BlockSolveUpdate(vc, newImpulses);

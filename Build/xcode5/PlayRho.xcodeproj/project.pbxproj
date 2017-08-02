@@ -34,6 +34,7 @@
 		470F9B4F1EF0C8B8007EF7B6 /* FixtureDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 470F9B4E1EF0C8B8007EF7B6 /* FixtureDef.cpp */; };
 		470F9B521EF8E2C5007EF7B6 /* RayCastOutput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 470F9B511EF8E2C5007EF7B6 /* RayCastOutput.cpp */; };
 		470F9B541EF9666B007EF7B6 /* MotorJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 470F9B531EF9666B007EF7B6 /* MotorJoint.cpp */; };
+		471E7EAA1F32668E00DFF626 /* Matrix.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 471E7EA81F32668E00DFF626 /* Matrix.hpp */; };
 		4726DD0F1D3014990012A882 /* IndexPair.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD0C1D3014990012A882 /* IndexPair.hpp */; };
 		4726DD1F1D305E5D0012A882 /* ContactFeature.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */; };
 		4726DD2A1D31B4090012A882 /* RayCastOutput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD281D31B4090012A882 /* RayCastOutput.cpp */; };
@@ -376,6 +377,7 @@
 		470F9B4E1EF0C8B8007EF7B6 /* FixtureDef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FixtureDef.cpp; sourceTree = "<group>"; };
 		470F9B511EF8E2C5007EF7B6 /* RayCastOutput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RayCastOutput.cpp; sourceTree = "<group>"; };
 		470F9B531EF9666B007EF7B6 /* MotorJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MotorJoint.cpp; sourceTree = "<group>"; };
+		471E7EA81F32668E00DFF626 /* Matrix.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Matrix.hpp; sourceTree = "<group>"; };
 		4726DD0C1D3014990012A882 /* IndexPair.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IndexPair.hpp; sourceTree = "<group>"; };
 		4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactFeature.hpp; sourceTree = "<group>"; };
 		4726DD261D3180980012A882 /* NewtonsCradle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NewtonsCradle.hpp; sourceTree = "<group>"; };
@@ -900,6 +902,7 @@
 				80BB8943141C3E5900F1753A /* GrowableStack.hpp */,
 				470F9B3A1EE63515007EF7B6 /* InvalidArgument.hpp */,
 				4787D6E91F2FA0CA008C115E /* LengthError.hpp */,
+				471E7EA81F32668E00DFF626 /* Matrix.hpp */,
 				470F9B211EDF4D72007EF7B6 /* Mat22.hpp */,
 				470F9B271EDF4EA2007EF7B6 /* Mat33.hpp */,
 				80BB8944141C3E5900F1753A /* Math.cpp */,
@@ -1248,6 +1251,7 @@
 				4787D6C71F2EA1DB008C115E /* FrictionJointDef.hpp in Headers */,
 				470F9B3D1EE63515007EF7B6 /* InvalidArgument.hpp in Headers */,
 				4787D6E31F2ED461008C115E /* WeldJointDef.hpp in Headers */,
+				471E7EAA1F32668E00DFF626 /* Matrix.hpp in Headers */,
 				80BB89B3141C3E5900F1753A /* StepConf.hpp in Headers */,
 				4734B2191DC00AFD00F15E29 /* ArrayList.hpp in Headers */,
 				470F94A81EC4C79B00AA3C82 /* BodyDef.hpp in Headers */,

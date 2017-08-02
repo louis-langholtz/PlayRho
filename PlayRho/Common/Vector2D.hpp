@@ -25,7 +25,6 @@
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/InvalidArgument.hpp>
 #include <PlayRho/Common/Vector.hpp>
-#include <array>
 
 namespace playrho
 {
@@ -43,14 +42,28 @@ namespace playrho
     /// @see Vec2.
     constexpr auto Vec2_zero = Vec2{0, 0};
 
+    /// @brief 2D vector for the Length unit-type.
+    /// @details A 2-dimensional location vector.
     using Length2D = Vector2D<Length>;
+
+    /// @brief 2D vector for the LinearVelocity unit-type.
+    /// @details A 2-dimensional speed vector.
     using LinearVelocity2D = Vector2D<LinearVelocity>;
+    
+    /// @brief 2D vector for the LinearAcceleration unit-type.
+    /// @details A 2-dimensional acceleration vector.
     using LinearAcceleration2D = Vector2D<LinearAcceleration>;
+    
+    /// @brief 2D vector for the Force unit-type.
+    /// @details A 2-dimensional force vector.
     using Force2D = Vector2D<Force>;
+    
+    /// @brief 2D vector for the Momentum unit-type.
+    /// @details A 2-dimensional momentum vector.
     using Momentum2D = Vector2D<Momentum>;
         
     /// @brief Earthly gravity.
-    /// @details An approximation of Earth's average gravity at sea-level.
+    /// @details An approximation of Earth's average gravity at sea-level in 2-dimensions.
     constexpr auto EarthlyGravity = LinearAcceleration2D{
         Real{0} * MeterPerSquareSecond,
         Real{-9.8f} * MeterPerSquareSecond
@@ -158,7 +171,7 @@ namespace playrho
         return Vector2D<OUT_TYPE>{std::get<0>(a) * s, std::get<1>(a) * s};
     }
     
-    template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{0} / TYPE2{0})>
+    template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{} / TYPE2{})>
     constexpr Vector2D<OUT_TYPE> operator/ (Vector2D<TYPE1> a, const TYPE2 s) noexcept
     {
         return Vector2D<OUT_TYPE>{std::get<0>(a) / s, std::get<1>(a) / s};
@@ -191,12 +204,18 @@ namespace playrho
     
     constexpr inline Vec2 GetVec2(const Length2D value)
     {
-        return Vec2{std::get<0>(value) / Meter, std::get<1>(value) / Meter};
+        return Vec2{
+            std::get<0>(value) / Meter,
+            std::get<1>(value) / Meter
+        };
     }
     
     constexpr inline Vec2 GetVec2(const LinearVelocity2D value)
     {
-        return Vec2{std::get<0>(value) / MeterPerSecond, std::get<1>(value) / MeterPerSecond};
+        return Vec2{
+            std::get<0>(value) / MeterPerSecond,
+            std::get<1>(value) / MeterPerSecond
+        };
     }
     
     constexpr inline Vec2 GetVec2(const Momentum2D value)
@@ -209,7 +228,10 @@ namespace playrho
     
     constexpr inline Vec2 GetVec2(const Force2D value)
     {
-        return Vec2{std::get<0>(value) / Newton, std::get<1>(value) / Newton};
+        return Vec2{
+            std::get<0>(value) / Newton,
+            std::get<1>(value) / Newton
+        };
     }
 #endif
 } // namespace playrho

@@ -38,9 +38,9 @@ TEST(Mat33, Init)
     Vec3 c2{2, 2, 2};
     Vec3 c3{3, 3, 3};
     Mat33 foo{c1, c2, c3};
-    EXPECT_EQ(c1, foo.ex);
-    EXPECT_EQ(c2, foo.ey);
-    EXPECT_EQ(c3, foo.ez);
+    EXPECT_EQ(c1, GetX(foo));
+    EXPECT_EQ(c2, GetY(foo));
+    EXPECT_EQ(c3, GetZ(foo));
 }
 
 TEST(Mat33, GetInverse)
@@ -50,7 +50,7 @@ TEST(Mat33, GetInverse)
     Vec3 c3{3, 3, 3};
     const Mat33 foo{c1, c2, c3};
     
-    const auto a = GetX(foo.ex), b = GetX(foo.ey), c = GetY(foo.ex), d = GetY(foo.ey);
+    const auto a = GetX(GetX(foo)), b = GetX(GetY(foo)), c = GetY(GetX(foo)), d = GetY(GetY(foo));
     auto det = (a * d) - (b * c);
     if (det != Real{0})
     {
@@ -60,17 +60,17 @@ TEST(Mat33, GetInverse)
     Mat33 boo{c1, c2, c3};
     boo = GetInverse22(foo);
 
-    EXPECT_EQ(Real{0}, GetX(boo.ez));
-    EXPECT_EQ(Real{0}, GetY(boo.ez));
-    EXPECT_EQ(Real{0}, GetZ(boo.ez));
+    EXPECT_EQ(Real{0}, GetX(GetZ(boo)));
+    EXPECT_EQ(Real{0}, GetY(GetZ(boo)));
+    EXPECT_EQ(Real{0}, GetZ(GetZ(boo)));
     
-    EXPECT_EQ(Real{0}, GetZ(boo.ey));
-    EXPECT_EQ(Real{0}, GetZ(boo.ex));
+    EXPECT_EQ(Real{0}, GetZ(GetY(boo)));
+    EXPECT_EQ(Real{0}, GetZ(GetX(boo)));
     
-    EXPECT_EQ(GetX(boo.ex), det * d);
-    EXPECT_EQ(GetY(boo.ex), -det * c);
-    EXPECT_EQ(GetX(boo.ey), -det * b);
-    EXPECT_EQ(GetY(boo.ey), det * a);
+    EXPECT_EQ(GetX(GetX(boo)), det * d);
+    EXPECT_EQ(GetY(GetX(boo)), -det * c);
+    EXPECT_EQ(GetX(GetY(boo)), -det * b);
+    EXPECT_EQ(GetY(GetY(boo)), det * a);
 }
 
 TEST(Mat33, GetSymInverse33)
@@ -80,15 +80,15 @@ TEST(Mat33, GetSymInverse33)
     Vec3 c3{3, 3, 3};
     const Mat33 foo{c1, c2, c3};
     
-    auto det = Dot(foo.ex, Cross(foo.ey, foo.ez));
+    auto det = Dot(GetX(foo), Cross(GetY(foo), GetZ(foo)));
     if (det != Real{0})
     {
         det = Real{1} / det;
     }
     
-    const auto a11 = GetX(foo.ex), a12 = GetX(foo.ey), a13 = GetX(foo.ez);
-    const auto a22 = GetY(foo.ey), a23 = GetY(foo.ez);
-    const auto a33 = GetZ(foo.ez);
+    const auto a11 = GetX(GetX(foo)), a12 = GetX(GetY(foo)), a13 = GetX(GetZ(foo));
+    const auto a22 = GetY(GetY(foo)), a23 = GetY(GetZ(foo));
+    const auto a33 = GetZ(GetZ(foo));
     const auto ex_y = det * (a13 * a23 - a12 * a33);
     const auto ex_z = det * (a12 * a23 - a13 * a22);
     const auto ey_z = det * (a13 * a12 - a11 * a23);
@@ -96,15 +96,15 @@ TEST(Mat33, GetSymInverse33)
     Mat33 boo{c1, c2, c3};
     boo = GetSymInverse33(foo);
 
-    EXPECT_EQ(GetX(boo.ex), det * (a22 * a33 - a23 * a23));
-    EXPECT_EQ(GetY(boo.ex), ex_y);
-    EXPECT_EQ(GetZ(boo.ex), ex_z);
+    EXPECT_EQ(GetX(GetX(boo)), det * (a22 * a33 - a23 * a23));
+    EXPECT_EQ(GetY(GetX(boo)), ex_y);
+    EXPECT_EQ(GetZ(GetX(boo)), ex_z);
     
-    EXPECT_EQ(GetX(boo.ey), ex_y);
-    EXPECT_EQ(GetY(boo.ey), det * (a11 * a33 - a13 * a13));
-    EXPECT_EQ(GetZ(boo.ey), ey_z);
+    EXPECT_EQ(GetX(GetY(boo)), ex_y);
+    EXPECT_EQ(GetY(GetY(boo)), det * (a11 * a33 - a13 * a13));
+    EXPECT_EQ(GetZ(GetY(boo)), ey_z);
     
-    EXPECT_EQ(GetX(boo.ez), ex_z);
-    EXPECT_EQ(GetY(boo.ez), ey_z);
-    EXPECT_EQ(GetZ(boo.ez), det * (a11 * a22 - a12 * a12));
+    EXPECT_EQ(GetX(GetZ(boo)), ex_z);
+    EXPECT_EQ(GetY(GetZ(boo)), ey_z);
+    EXPECT_EQ(GetZ(GetZ(boo)), det * (a11 * a22 - a12 * a12));
 }
