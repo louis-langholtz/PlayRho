@@ -48,8 +48,8 @@ TEST(DistanceJointDef, DefaultConstruction)
     EXPECT_EQ(def.collideConnected, false);
     EXPECT_EQ(def.userData, nullptr);
     
-    EXPECT_EQ(def.localAnchorA, Length2D(0, 0));
-    EXPECT_EQ(def.localAnchorB, Length2D(0, 0));
+    EXPECT_EQ(def.localAnchorA, (Length2D{}));
+    EXPECT_EQ(def.localAnchorB, (Length2D{}));
     EXPECT_EQ(def.length, Real(1) * Meter);
     EXPECT_EQ(def.frequency, Frequency(0));
     EXPECT_EQ(def.dampingRatio, Real(0));
@@ -96,7 +96,7 @@ TEST(DistanceJoint, Construction)
 
 TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 {
-    World world{WorldDef{}.UseGravity(LinearAcceleration2D{0, 0})};
+    World world{WorldDef{}.UseGravity(LinearAcceleration2D{})};
 
     const auto shape = std::make_shared<DiskShape>(Real{0.2f} * Meter);
     
@@ -114,8 +114,8 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
     jointdef.bodyA = body1;
     jointdef.bodyB = body2;
     jointdef.collideConnected = false;
-    jointdef.localAnchorA = Length2D(0, 0);
-    jointdef.localAnchorB = Length2D(0, 0);
+    jointdef.localAnchorA = Length2D{};
+    jointdef.localAnchorB = Length2D{};
     jointdef.length = Real{5} * Meter;
     jointdef.frequency = 0;
     jointdef.dampingRatio = 0;
@@ -169,8 +169,8 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
     jointdef.bodyA = body1;
     jointdef.bodyB = body2;
     jointdef.collideConnected = false;
-    jointdef.localAnchorA = Length2D(0, 0);
-    jointdef.localAnchorB = Length2D(0, 0);
+    jointdef.localAnchorA = Length2D{};
+    jointdef.localAnchorB = Length2D{};
     jointdef.length = Real{5} * Meter;
     jointdef.frequency = Real{60} * Hertz;
     jointdef.dampingRatio = 0;

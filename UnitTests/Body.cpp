@@ -244,8 +244,7 @@ TEST(Body, CreateAndDestroyFixture)
         ASSERT_NE(fshape, nullptr);
         EXPECT_EQ(typeid(fshape.get()), typeid(const Shape*));
         EXPECT_EQ(GetVertexRadius(*fshape), GetVertexRadius(*shape));
-        EXPECT_EQ(static_cast<const DiskShape*>(fshape.get())->GetLocation().x, shape->GetLocation().x);
-        EXPECT_EQ(static_cast<const DiskShape*>(fshape.get())->GetLocation().y, shape->GetLocation().y);
+        EXPECT_EQ(static_cast<const DiskShape*>(fshape.get())->GetLocation(), shape->GetLocation());
         EXPECT_FALSE(body->GetFixtures().empty());
         {
             int i = 0;
@@ -277,8 +276,7 @@ TEST(Body, CreateAndDestroyFixture)
         ASSERT_NE(fshape, nullptr);
         EXPECT_EQ(typeid(fshape.get()), typeid(const Shape*));
         EXPECT_EQ(GetVertexRadius(*fshape), GetVertexRadius(*shape));
-        EXPECT_EQ(static_cast<const DiskShape*>(fshape.get())->GetLocation().x, shape->GetLocation().x);
-        EXPECT_EQ(static_cast<const DiskShape*>(fshape.get())->GetLocation().y, shape->GetLocation().y);
+        EXPECT_EQ(static_cast<const DiskShape*>(fshape.get())->GetLocation(), shape->GetLocation());
         EXPECT_FALSE(body->GetFixtures().empty());
         {
             int i = 0;

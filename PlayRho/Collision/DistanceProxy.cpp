@@ -76,11 +76,11 @@ std::size_t FindLowestRightMostVertex(Span<const Length2D> vertices)
     if (size > 0)
     {
         auto i0 = decltype(size){0};
-        auto max_x = vertices[0].x;
+        auto max_x = GetX(vertices[0]);
         for (auto i = decltype(vertices.size()){1}; i < vertices.size(); ++i)
         {
-            const auto x = vertices[i].x;
-            if ((max_x < x) || ((max_x == x) && (vertices[i].y < vertices[i0].y)))
+            const auto x = GetX(vertices[i]);
+            if ((max_x < x) || ((max_x == x) && (GetY(vertices[i]) < GetY(vertices[i0]))))
             {
                 max_x = x;
                 i0 = i;

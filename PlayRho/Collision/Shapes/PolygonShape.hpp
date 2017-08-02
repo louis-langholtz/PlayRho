@@ -169,7 +169,7 @@ private:
     std::vector<UnitVec2> m_normals;
 
     /// Centroid of this shape.
-    Length2D m_centroid = Length2D(0, 0);
+    Length2D m_centroid = Length2D{};
 };
 
 inline ChildCounter PolygonShape::GetChildCount() const noexcept

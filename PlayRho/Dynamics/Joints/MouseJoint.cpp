@@ -82,15 +82,15 @@ Mat22 MouseJoint::GetEffectiveMassMatrix(const BodyConstraint& body) const noexc
     const auto invMass = body.GetInvMass();
     const auto invRotInertia = body.GetInvRotInertia();
 
-    const auto exx = InvMass{invMass + (invRotInertia * Square(m_rB.y) / SquareRadian) + m_gamma};
-    const auto exy = InvMass{-invRotInertia * m_rB.x * m_rB.y / SquareRadian};
-    const auto eyy = InvMass{invMass + (invRotInertia * Square(m_rB.x) / SquareRadian) + m_gamma};
+    const auto exx = InvMass{invMass + (invRotInertia * Square(GetY(m_rB)) / SquareRadian) + m_gamma};
+    const auto exy = InvMass{-invRotInertia * GetX(m_rB) * GetY(m_rB) / SquareRadian};
+    const auto eyy = InvMass{invMass + (invRotInertia * Square(GetX(m_rB)) / SquareRadian) + m_gamma};
 
     Mat22 K;
-    K.ex.x = StripUnit(exx);
-    K.ex.y = StripUnit(exy);
-    K.ey.x = K.ex.y;
-    K.ey.y = StripUnit(eyy);
+    GetX(K.ex) = StripUnit(exx);
+    GetY(K.ex) = StripUnit(exy);
+    GetX(K.ey) = GetY(K.ex);
+    GetY(K.ey) = StripUnit(eyy);
     return K;
 }
 
@@ -146,7 +146,7 @@ void MouseJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     }
     else
     {
-        m_impulse = Momentum2D{0, 0};
+        m_impulse = Momentum2D{};
     }
 
     bodyConstraintB->SetVelocity(velB);
@@ -164,8 +164,8 @@ bool MouseJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
     const auto oldImpulse = m_impulse;
     const auto unitlessImpulse = Transform(GetVec2(-ev), m_mass);
     const auto addImpulse = Momentum2D{
-        unitlessImpulse.GetX() * Kilogram * MeterPerSecond,
-        unitlessImpulse.GetY() * Kilogram * MeterPerSecond
+        GetX(unitlessImpulse) * Kilogram * MeterPerSecond,
+        GetY(unitlessImpulse) * Kilogram * MeterPerSecond
     };
     assert(IsValid(addImpulse));
     m_impulse += addImpulse;
@@ -182,7 +182,7 @@ bool MouseJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
 
     bodyConstraintB->SetVelocity(velB);
     
-    return incImpulse == Momentum2D{0, 0};
+    return incImpulse == Momentum2D{};
 }
 
 bool MouseJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const

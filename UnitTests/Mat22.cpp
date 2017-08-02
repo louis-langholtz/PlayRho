@@ -54,15 +54,15 @@ TEST(Mat22, Invert)
     ASSERT_EQ(cp, Real(-2));
     const auto det = (cp != 0)? Real(1)/cp : Real(0);
     
-    EXPECT_EQ(inverted.ex.x, det * foo.ey.y);
-    EXPECT_EQ(inverted.ex.y, -det * foo.ex.y);
-    EXPECT_EQ(inverted.ey.x, -det * foo.ey.x);
-    EXPECT_EQ(inverted.ey.y, det * foo.ex.x);
+    EXPECT_EQ(GetX(inverted.ex), det * GetY(foo.ey));
+    EXPECT_EQ(GetY(inverted.ex), -det * GetY(foo.ex));
+    EXPECT_EQ(GetX(inverted.ey), -det * GetX(foo.ey));
+    EXPECT_EQ(GetY(inverted.ey), det * GetX(foo.ex));
     
-    EXPECT_EQ(inverted.ex.x, Real(-2));
-    EXPECT_EQ(inverted.ex.y, Real(1));
-    EXPECT_EQ(inverted.ey.x, Real(1.5));
-    EXPECT_EQ(inverted.ey.y, Real(-0.5));
+    EXPECT_EQ(GetX(inverted.ex), Real(-2));
+    EXPECT_EQ(GetY(inverted.ex), Real(1));
+    EXPECT_EQ(GetX(inverted.ey), Real(1.5));
+    EXPECT_EQ(GetY(inverted.ey), Real(-0.5));
 }
 
 TEST(Mat22, InvertInvertedIsOriginal)
@@ -72,8 +72,8 @@ TEST(Mat22, InvertInvertedIsOriginal)
     const Mat22 foo{c1, c2};
     const auto inverted = Invert(foo);
     const auto inverted2 = Invert(inverted);
-    EXPECT_EQ(foo.ex.x, inverted2.ex.x);
-    EXPECT_EQ(foo.ex.y, inverted2.ex.y);
-    EXPECT_EQ(foo.ey.x, inverted2.ey.x);
-    EXPECT_EQ(foo.ey.y, inverted2.ey.y);
+    EXPECT_EQ(GetX(foo.ex), GetX(inverted2.ex));
+    EXPECT_EQ(GetY(foo.ex), GetY(inverted2.ex));
+    EXPECT_EQ(GetX(foo.ey), GetX(inverted2.ey));
+    EXPECT_EQ(GetY(foo.ey), GetY(inverted2.ey));
 }

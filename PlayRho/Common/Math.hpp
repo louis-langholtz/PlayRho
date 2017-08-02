@@ -42,15 +42,39 @@ namespace playrho
 // Other templates.
 
 template <typename T>
-constexpr inline auto GetX(const T value)
+constexpr auto& GetX(T& value)
 {
-    return value.GetX();
+    return std::get<0>(value);
 }
 
 template <typename T>
-constexpr inline auto GetY(const T value)
+constexpr auto& GetY(T& value)
 {
-    return value.GetY();
+    return std::get<1>(value);
+}
+
+template <typename T>
+constexpr auto& GetZ(T& value)
+{
+    return std::get<2>(value);
+}
+
+template <typename T>
+constexpr inline auto GetX(const T& value)
+{
+    return std::get<0>(value);
+}
+
+template <typename T>
+constexpr inline auto GetY(const T& value)
+{
+    return std::get<1>(value);
+}
+
+template <typename T>
+constexpr inline auto GetZ(const T& value)
+{
+    return std::get<2>(value);
 }
 
 template<class TYPE>
@@ -91,10 +115,17 @@ constexpr inline T Abs(T a)
 template <typename T>
 inline auto Average(Span<const T> span)
 {
+    using value_type = typename std::remove_cv<T>::type;
+
+    // Relies on C++11 zero initialization to zero initialize value_type.
+    // See: http://en.cppreference.com/w/cpp/language/zero_initialization
+    constexpr auto zero = value_type{};
+    assert(zero * Real{2} == zero);
+    
     // For C++17, switch from using std::accumulate to using std::reduce.
-    const auto sum = std::accumulate(std::cbegin(span), std::cend(span), static_cast<T>(0));
-    const auto count = static_cast<Real>(span.size());
-    return (count > decltype(count){0})? sum / count: sum / Real(1);
+    const auto sum = std::accumulate(std::cbegin(span), std::cend(span), zero);
+    const auto count = std::max(span.size(), std::size_t{1});
+    return sum / static_cast<Real>(count);
 }
 
 template <typename T>
@@ -141,12 +172,12 @@ inline Fixed64 round(Fixed64 value, std::uint32_t precision)
 template <>
 inline Vec2 round(Vec2 value, std::uint32_t precision)
 {
-    return Vec2{round(value.x, precision), round(value.y, precision)};
+    return Vec2{round(value[0], precision), round(value[1], precision)};
 }
 
 constexpr inline Vec2 GetVec2(const UnitVec2 value)
 {
-    return Vec2{value.GetX(), value.GetY()};
+    return Vec2{std::get<0>(value), std::get<1>(value)};
 }
 
 /// Gets whether a given value is almost zero.
@@ -261,7 +292,7 @@ constexpr inline auto GetLengthSquared(T value) noexcept
 template <>
 constexpr inline auto GetLengthSquared(Vec3 value) noexcept
 {
-    return Square(value.x) + Square(value.y) + Square(value.z);        
+    return Square(GetX(value)) + Square(GetY(value)) + Square(GetZ(value));
 }
 
 template <typename T>
@@ -295,14 +326,15 @@ inline auto GetLength(T value)
 template <typename T1, typename T2>
 constexpr inline auto Dot(const T1 a, const T2 b) noexcept
 {
-    return (a.GetX() * b.GetX()) + (a.GetY() * b.GetY());
+    return (std::get<0>(a) * std::get<0>(b)) + (std::get<1>(a) * std::get<1>(b));
 }
 
 /// Perform the dot product on two vectors.
 template <>
 constexpr inline auto Dot(const Vec3 a, const Vec3 b) noexcept
 {
-    return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
+    return (std::get<0>(a) * std::get<0>(b)) + (std::get<1>(a) * std::get<1>(b))
+        + (std::get<2>(a) * std::get<2>(b));
 }
 
 /// @brief Performs the 2D analog of the cross product of two vectors.
@@ -348,13 +380,17 @@ constexpr inline auto Cross(const T1 a, const T2 b) noexcept
     //
     // Vectors between 0 and 180 degrees of each other excluding 90 degrees...
     // If a = Vec2{1, 2} and b = Vec2{-1, 2} then: a x b = 1 * 2 - 2 * (-1) = 2 + 2 = 4.
-    return (a.GetX() * b.GetY()) - (a.GetY() * b.GetX());
+    return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
 }
 
 template <>
 constexpr inline auto Cross(const Vec3 a, const Vec3 b) noexcept
 {
-    return Vec3{a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x};
+    return Vec3{
+        GetY(a) * GetZ(b) - GetZ(a) * GetY(b),
+        GetZ(a) * GetX(b) - GetX(a) * GetZ(b),
+        GetX(a) * GetY(b) - GetY(a) * GetX(b)
+    };
 }
 
 /// Solve A * x = b, where b is a column vector. This is more efficient
@@ -364,15 +400,15 @@ constexpr T Solve(const Mat22 mat, const T b) noexcept
 {
     const auto cp = Cross(mat.ex, mat.ey);
     return (cp != 0)?
-        T{(mat.ey.y * b.GetX() - mat.ey.x * b.GetY()) / cp, (mat.ex.x * b.GetY() - mat.ex.y * b.GetX()) / cp}:
-        T{0, 0};
+        T{(mat.ey[1] * b[0] - mat.ey[0] * b[1]) / cp, (mat.ex[0] * b[1] - mat.ex[1] * b[0]) / cp}:
+        T{};
 }
 
 constexpr Mat22 Invert(const Mat22 value) noexcept
 {
     const auto cp = Cross(value.ex, value.ey);
     return (cp != 0)?
-        Mat22{Vec2{value.ey.y / cp, -value.ex.y / cp}, Vec2{-value.ey.x / cp, value.ex.x / cp}}:
+        Mat22{Vec2{value.ey[1] / cp, -value.ex[1] / cp}, Vec2{-value.ey[0] / cp, value.ex[0] / cp}}:
         Mat22{Vec2{0, 0}, Vec2{0, 0}};
 }
 
@@ -394,10 +430,10 @@ constexpr Vec3 Solve33(const Mat33& mat, const Vec3 b) noexcept
     template <typename T>
 constexpr T Solve22(const Mat33& mat, const T b) noexcept
 {
-    const auto cp = mat.ex.x * mat.ey.y - mat.ey.x * mat.ex.y;
+    const auto cp = GetX(mat.ex) * GetY(mat.ey) - GetX(mat.ey) * GetY(mat.ex);
     const auto det = (cp != 0)? 1 / cp: cp;
-    const auto x = det * (mat.ey.y * b.GetX() - mat.ey.x * b.GetY());
-    const auto y = det * (mat.ex.x * b.GetY() - mat.ex.y * b.GetX());
+    const auto x = det * (GetY(mat.ey) * GetX(b) - GetX(mat.ey) * GetY(b));
+    const auto y = det * (GetX(mat.ex) * GetY(b) - GetY(mat.ex) * GetX(b));
     return T{x, y};
 }
 
@@ -405,7 +441,7 @@ constexpr T Solve22(const Mat33& mat, const T b) noexcept
 /// Returns the zero matrix if singular.
 constexpr inline Mat33 GetInverse22(const Mat33& value) noexcept
 {
-    const auto a = value.ex.x, b = value.ey.x, c = value.ex.y, d = value.ey.y;
+    const auto a = GetX(value.ex), b = GetX(value.ey), c = GetY(value.ex), d = GetY(value.ey);
     auto det = (a * d) - (b * c);
     if (det != Real{0})
     {
@@ -424,9 +460,9 @@ constexpr inline Mat33 GetSymInverse33(const Mat33& value) noexcept
         det = Real{1} / det;
     }
     
-    const auto a11 = value.ex.x, a12 = value.ey.x, a13 = value.ez.x;
-    const auto a22 = value.ey.y, a23 = value.ez.y;
-    const auto a33 = value.ez.z;
+    const auto a11 = GetX(value.ex), a12 = GetX(value.ey), a13 = GetX(value.ez);
+    const auto a22 = GetY(value.ey), a23 = GetY(value.ez);
+    const auto a33 = GetZ(value.ez);
     
     const auto ex_y = det * (a13 * a23 - a12 * a33);
     const auto ey_z = det * (a13 * a12 - a11 * a23);
@@ -473,7 +509,10 @@ constexpr inline auto GetFwdPerpendicular(const T vector) noexcept
 /// then this transforms the vector from one frame to another.
 constexpr inline Vec2 Transform(const Vec2 v, const Mat22& A) noexcept
 {
-    return Vec2{A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y};
+    return Vec2{
+        GetX(A.ex) * GetX(v) + GetX(A.ey) * GetY(v),
+        GetY(A.ex) * GetX(v) + GetY(A.ey) * GetY(v)
+    };
 }
 
 /// Multiply a matrix transpose times a vector. If a rotation matrix is provided,
@@ -505,9 +544,9 @@ constexpr inline Vector2D<T> operator* (const UnitVec2 u, const T s) noexcept
     return Vector2D<T>{u.GetX() * s, u.GetY() * s};
 }
 
-constexpr inline Vec2 operator/ (const UnitVec2 u, const UnitVec2::data_type s) noexcept
+constexpr inline Vec2 operator/ (const UnitVec2 u, const UnitVec2::value_type s) noexcept
 {
-    return Vec2{u.GetX() / s, u.GetY() / s};
+    return Vec2{GetX(u) / s, GetY(u) / s};
 }
 
 // A * B
@@ -527,13 +566,16 @@ constexpr inline Mat22 MulT(const Mat22& A, const Mat22& B) noexcept
 /// Multiply a matrix times a vector.
 constexpr inline Vec3 Transform(const Vec3& v, const Mat33& A) noexcept
 {
-    return (v.x * A.ex) + (v.y * A.ey) + (v.z * A.ez);
+    return (GetX(v) * A.ex) + (GetY(v) * A.ey) + (GetZ(v) * A.ez);
 }
 
 /// Multiply a matrix times a vector.
 constexpr inline Vec2 Transform(const Vec2 v, const Mat33& A) noexcept
 {
-    return Vec2{A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y};
+    return Vec2{
+        GetX(A.ex) * v[0] + GetX(A.ey) * v[1],
+        GetY(A.ex) * v[0] + GetY(A.ey) * v[1]
+    };
 }
 
 /// Rotates a vector by a given angle.
@@ -607,7 +649,7 @@ constexpr inline Transformation MulT(const Transformation& A, const Transformati
 template <>
 inline Vec2 Abs(Vec2 a)
 {
-    return Vec2{Abs(a.x), Abs(a.y)};
+    return Vec2{Abs(a[0]), Abs(a[1])};
 }
 
 template <>
@@ -717,8 +759,8 @@ inline Real Normalize(Vec2& vector)
     if (!almost_zero(length))
     {
         const auto invLength = 1 / length;
-        vector.x *= invLength;
-        vector.y *= invLength;
+        vector[0] *= invLength;
+        vector[1] *= invLength;
         return length;
     }
     return 0;

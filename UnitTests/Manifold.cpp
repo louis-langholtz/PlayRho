@@ -48,8 +48,8 @@ TEST(Manifold, PointInitializingConstructor)
     const auto ti = Real(2.4) * Kilogram * MeterPerSecond;
     const auto cf = ContactFeature{};
     const auto foo = Manifold::Point{lp, cf, ni, ti};
-    EXPECT_EQ(foo.localPoint.x, lp.x);
-    EXPECT_EQ(foo.localPoint.y, lp.y);
+    EXPECT_EQ(GetX(foo.localPoint), GetX(lp));
+    EXPECT_EQ(GetY(foo.localPoint), GetY(lp));
     EXPECT_EQ(foo.contactFeature, cf);
     EXPECT_EQ(foo.normalImpulse, ni);
     EXPECT_EQ(foo.tangentImpulse, ti);
@@ -70,7 +70,7 @@ TEST(Manifold, GetForCircles)
 TEST(Manifold, GetForFaceA)
 {
     const auto ln = UnitVec2::GetLeft();
-    const auto lp = Length2D(0, 0);
+    const auto lp = Length2D{};
     {
         Manifold foo = Manifold::GetForFaceA(ln, lp);
         EXPECT_EQ(foo.GetType(), Manifold::e_faceA);
@@ -122,7 +122,7 @@ TEST(Manifold, GetForFaceA)
 TEST(Manifold, GetForFaceB)
 {
     const auto ln = UnitVec2::GetLeft();
-    const auto lp = Length2D(0, 0);
+    const auto lp = Length2D{};
     {
         Manifold foo = Manifold::GetForFaceB(ln, lp);
         EXPECT_EQ(foo.GetType(), Manifold::e_faceB);
@@ -200,7 +200,7 @@ TEST(Manifold, EqualsFreeFunction)
 {
     const auto ln0 = UnitVec2::GetLeft();
     const auto ln1 = UnitVec2::GetRight();
-    const auto lp0 = Length2D(Real(0) * Meter, Real(0) * Meter);
+    const auto lp0 = Length2D{Real(0) * Meter, Real(0) * Meter};
     const auto lp1 = Length2D(Real(1) * Meter, Real(1) * Meter);
     const auto foo = Manifold::GetForFaceB(ln0, lp0);
     const auto boo = Manifold::GetForFaceA(ln0, lp0);
@@ -240,7 +240,7 @@ TEST(Manifold, NotEqualsFreeFunction)
 {
     const auto ln0 = UnitVec2::GetLeft();
     const auto ln1 = UnitVec2::GetRight();
-    const auto lp0 = Length2D(Real(0) * Meter, Real(0) * Meter);
+    const auto lp0 = Length2D{Real(0) * Meter, Real(0) * Meter};
     const auto lp1 = Length2D(Real(1) * Meter, Real(1) * Meter);
     const auto foo = Manifold::GetForFaceB(ln0, lp0);
     const auto boo = Manifold::GetForFaceA(ln0, lp0);

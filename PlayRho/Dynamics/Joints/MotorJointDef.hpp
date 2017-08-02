@@ -48,7 +48,7 @@ struct MotorJointDef : public JointBuilder<MotorJointDef>
     MotorJointDef& UseCorrectionFactor(Real v) noexcept;
     
     /// Position of bodyB minus the position of bodyA, in bodyA's frame.
-    Length2D linearOffset = Length2D(0, 0);
+    Length2D linearOffset = Length2D{};
     
     /// The bodyB angle minus bodyA angle.
     Angle angularOffset = Angle{0};

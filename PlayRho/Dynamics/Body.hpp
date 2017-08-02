@@ -464,7 +464,7 @@ private:
 
     /// @brief Linear acceleration.
     /// @note 8-bytes.
-    LinearAcceleration2D m_linearAcceleration = LinearAcceleration2D{0, 0};
+    LinearAcceleration2D m_linearAcceleration = LinearAcceleration2D{};
 
     World* const m_world; ///< World to which this body belongs. 8-bytes.
     void* m_userData; ///< User data. 8-bytes.
@@ -634,7 +634,7 @@ inline void Body::UnsetAwake() noexcept
     {
         UnsetAwakeFlag();
         m_underActiveTime = 0;
-        m_velocity = Velocity{LinearVelocity2D{0}, AngularVelocity{0}};
+        m_velocity = Velocity{LinearVelocity2D{}, AngularVelocity{0}};
     }
 }
 

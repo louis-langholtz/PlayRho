@@ -49,8 +49,8 @@ TEST(FrictionJointDef, DefaultConstruction)
     EXPECT_EQ(def.collideConnected, false);
     EXPECT_EQ(def.userData, nullptr);
     
-    EXPECT_EQ(def.localAnchorA, Length2D(0, 0));
-    EXPECT_EQ(def.localAnchorB, Length2D(0, 0));
+    EXPECT_EQ(def.localAnchorA, (Length2D{}));
+    EXPECT_EQ(def.localAnchorB, (Length2D{}));
     EXPECT_EQ(def.maxForce, Real(0) * Newton);
     EXPECT_EQ(def.maxTorque, Real{0} * NewtonMeter);
 }
@@ -95,8 +95,8 @@ TEST(FrictionJoint, GetFrictionJointDef)
     EXPECT_EQ(cdef.collideConnected, false);
     EXPECT_EQ(cdef.userData, nullptr);
     
-    EXPECT_EQ(cdef.localAnchorA, Length2D(0, 0));
-    EXPECT_EQ(cdef.localAnchorB, Length2D(0, 0));
+    EXPECT_EQ(cdef.localAnchorA, (Length2D{}));
+    EXPECT_EQ(cdef.localAnchorB, (Length2D{}));
     EXPECT_EQ(cdef.maxForce, Real(0) * Newton);
     EXPECT_EQ(cdef.maxTorque, Real{0} * NewtonMeter);
 }
@@ -104,7 +104,7 @@ TEST(FrictionJoint, GetFrictionJointDef)
 TEST(FrictionJoint, WithDynamicCircles)
 {
     const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
-    World world{WorldDef{}.UseGravity(LinearAcceleration2D{0, 0})};
+    World world{WorldDef{}.UseGravity(LinearAcceleration2D{})};
     const auto p1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
     const auto p2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
@@ -116,10 +116,10 @@ TEST(FrictionJoint, WithDynamicCircles)
     jd.bodyB = b2;
     world.CreateJoint(jd);
     Step(world, Time{Second * Real{1}});
-    EXPECT_NEAR(double(Real{b1->GetLocation().x / Meter}), -1.0, 0.001);
-    EXPECT_NEAR(double(Real{b1->GetLocation().y / Meter}), 0.0, 0.001);
-    EXPECT_NEAR(double(Real{b2->GetLocation().x / Meter}), +1.0, 0.01);
-    EXPECT_NEAR(double(Real{b2->GetLocation().y / Meter}), 0.0, 0.01);
+    EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
+    EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
+    EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);
+    EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / Meter}), 0.0, 0.01);
     EXPECT_EQ(b1->GetAngle(), Angle{0});
     EXPECT_EQ(b2->GetAngle(), Angle{0});
 }

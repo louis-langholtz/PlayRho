@@ -102,9 +102,9 @@ VelocityConstraint::VelocityConstraint(Real friction, Real restitution,
         
         // Ensure a reasonable condition number.
         constexpr auto maxCondNum = PLAYRHO_MAGIC(Real(1000));
-        const auto scaled_k11_squared = k.ex.x * (k.ex.x / maxCondNum);
-        const auto k11_times_k22 = k.ex.x * k.ey.y;
-        const auto k12_squared = Square(k.ex.y);
+        const auto scaled_k11_squared = std::get<0>(k.ex) * (std::get<0>(k.ex) / maxCondNum);
+        const auto k11_times_k22 = std::get<0>(k.ex) * std::get<1>(k.ey);
+        const auto k12_squared = Square(std::get<1>(k.ex));
         const auto k_diff = k11_times_k22 - k12_squared;
         if (scaled_k11_squared < k_diff)
         {

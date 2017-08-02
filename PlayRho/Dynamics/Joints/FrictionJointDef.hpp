@@ -48,10 +48,10 @@ struct FrictionJointDef : public JointBuilder<FrictionJointDef>
     constexpr FrictionJointDef& UseMaxTorque(NonNegative<Torque> v) noexcept;
     
     /// @brief Local anchor point relative to bodyA's origin.
-    Length2D localAnchorA = Length2D(0, 0);
+    Length2D localAnchorA = Length2D{};
     
     /// @brief Local anchor point relative to bodyB's origin.
-    Length2D localAnchorB = Length2D(0, 0);
+    Length2D localAnchorB = Length2D{};
     
     /// @brief Maximum friction force.
     NonNegative<Force> maxForce = NonNegative<Force>{0};

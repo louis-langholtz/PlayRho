@@ -88,12 +88,12 @@ namespace playrho
     
     constexpr inline Position operator* (const Position& pos, const Real scalar)
     {
-        return Position{{pos.linear.x * scalar, pos.linear.y * scalar}, pos.angular * scalar};
+        return Position{pos.linear * scalar, pos.angular * scalar};
     }
     
     constexpr inline Position operator* (const Real scalar, const Position& pos)
     {
-        return Position{{pos.linear.x * scalar, pos.linear.y * scalar}, pos.angular * scalar};
+        return Position{pos.linear * scalar, pos.angular * scalar};
     }
     
     /// Gets the position between two positions at a given unit interval.

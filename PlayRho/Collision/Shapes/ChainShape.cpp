@@ -81,7 +81,7 @@ MassData ChainShape::GetMassData() const noexcept
             auto mass = Mass{0};
             auto I = RotInertia{0};
             auto area = Area(0);
-            auto center = Length2D(0, 0);
+            auto center = Length2D{};
             const auto vertexRadius = GetVertexRadius();
             auto vprev = GetVertex(0);
             const auto circle_area = Square(vertexRadius) * Pi;

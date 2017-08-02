@@ -64,10 +64,40 @@ TEST(Vec2, Traits)
     EXPECT_TRUE(std::is_trivially_destructible<Vec2>::value);
 }
 
-TEST(Vec2, Constructor) {
+TEST(Vec2, ZeroInitialization)
+{
+    // Tests C++11 zero initialization.
+    // See: http://en.cppreference.com/w/cpp/language/zero_initialization
+    
+    {
+        Vec2 src{Real{-1.2f}, Real{42.5f}};
+        Vec2* foo = new (&src) Vec2;
+        ASSERT_NE(foo, nullptr);
+        ASSERT_EQ(foo->max_size(), std::size_t(2));
+        ASSERT_EQ(foo->size(), std::size_t(2));
+        ASSERT_NE(*foo, (Vec2{Real{0}, Real{0}}));
+        *foo = Vec2{};
+        EXPECT_EQ((*foo)[0], Real(0));
+        EXPECT_EQ((*foo)[1], Real(0));
+    }
+    {
+        Vec2 src{Real{-1.2f}, Real{42.5f}};
+        Vec2* foo = new (&src) Vec2;
+        ASSERT_NE(foo, nullptr);
+        ASSERT_EQ(foo->max_size(), std::size_t(2));
+        ASSERT_EQ(foo->size(), std::size_t(2));
+        ASSERT_NE(*foo, (Vec2{Real{0}, Real{0}}));
+        *foo = {};
+        EXPECT_EQ((*foo)[0], Real(0));
+        EXPECT_EQ((*foo)[1], Real(0));
+    }
+}
+
+TEST(Vec2, Constructor)
+{
     Vec2 vector{Real{5}, Real{-3}};
-    EXPECT_EQ(Real{5}, vector.x);
-    EXPECT_EQ(Real{-3}, vector.y);
+    EXPECT_EQ(Real{5}, GetX(vector));
+    EXPECT_EQ(Real{-3}, GetY(vector));
 }
 
 TEST(Vec2, OutputOperator)
@@ -91,8 +121,8 @@ TEST(Vec2, Indexing) {
 TEST(Vec2, Equality)
 {    
     Vec2 vector{Real{5}, Real{-3}};
-    EXPECT_EQ(vector.x, vector.x);
-    EXPECT_EQ(vector.y, vector.y);
+    EXPECT_EQ(GetX(vector), GetX(vector));
+    EXPECT_EQ(GetY(vector), GetY(vector));
     EXPECT_EQ(vector, vector);
 }
 
@@ -100,8 +130,8 @@ TEST(Vec2, Inequality)
 {    
     Vec2 vector1{Real{5}, Real{-3}};
     Vec2 vector2{Real{-5}, Real{+3}};
-    EXPECT_NE(vector1.x, vector2.x);
-    EXPECT_NE(vector1.y, vector2.y);
+    EXPECT_NE(GetX(vector1), GetX(vector2));
+    EXPECT_NE(GetY(vector1), GetY(vector2));
     EXPECT_NE(vector1, vector2);
 }
 
@@ -111,13 +141,13 @@ TEST(Vec2, Negate)
     Vec2 n10 = -v10;
     Vec2 v01{0, 1};
     Vec2 n01 = -v01;
-    EXPECT_EQ(-v10.x, n10.x);
-    EXPECT_EQ(-v10.y, n10.y);
-    EXPECT_EQ(-v01.x, n01.x);
-    EXPECT_EQ(-v01.y, n01.y);
+    EXPECT_EQ(-GetX(v10), GetX(n10));
+    EXPECT_EQ(-GetY(v10), GetY(n10));
+    EXPECT_EQ(-GetX(v01), GetX(n01));
+    EXPECT_EQ(-GetY(v01), GetY(n01));
     
-    EXPECT_EQ(Real{-22}, (-Vec2{22, 0}).x);
-    EXPECT_EQ(Real{-3}, (-Vec2{0, 3}).y);
+    EXPECT_EQ(Real{-22}, GetX(-Vec2{22, 0}));
+    EXPECT_EQ(Real{-3}, GetY(-Vec2{0, 3}));
 }
 
 TEST(Vec2, Rotate)
@@ -152,16 +182,16 @@ TEST(Vec2, InvalidIndex)
     const auto a = Vec2{0, 0};
     EXPECT_NO_THROW(a[0]);
     EXPECT_NO_THROW(a[1]);
-    EXPECT_THROW(a[2], InvalidArgument);
-    EXPECT_THROW(a[3], InvalidArgument);
+    EXPECT_NO_THROW(a[2]);
+    EXPECT_NO_THROW(a[3]);
     
     auto b = Vec2{Real(2), Real(1)};
     EXPECT_NO_THROW(b[0] = Real(3));
     EXPECT_NO_THROW(b[1] = Real(4));
     EXPECT_EQ(b[0], Real(3));
     EXPECT_EQ(b[1], Real(4));
-    EXPECT_THROW(b[2], InvalidArgument);
-    EXPECT_THROW(b[3], InvalidArgument);
-    EXPECT_THROW(b[2] = Real(5), InvalidArgument);
-    EXPECT_THROW(b[3] = Real(6), InvalidArgument);
+    EXPECT_NO_THROW(b[2]);
+    EXPECT_NO_THROW(b[3]);
+    EXPECT_NO_THROW(b[2] = Real(5));
+    EXPECT_NO_THROW(b[3] = Real(6));
 }

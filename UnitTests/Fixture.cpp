@@ -91,7 +91,7 @@ TEST(Fixture, TestPointFreeFunction)
     const auto body = world.CreateBody(BodyDef{}.UseLocation(bodyCtrPos));
     const auto fixture = body->CreateFixture(shapeA);
     EXPECT_TRUE(TestPoint(*fixture, bodyCtrPos));
-    EXPECT_FALSE(TestPoint(*fixture, Length2D(0, 0)));
+    EXPECT_FALSE(TestPoint(*fixture, Length2D{}));
 }
 
 TEST(Fixture, SetAwakeFreeFunction)

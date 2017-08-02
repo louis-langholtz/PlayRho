@@ -89,7 +89,7 @@ namespace playrho
             
             Cache(const Cache& copy) = default;
             
-            PLAYRHO_CONSTEXPR Cache(Real metric, IndexPairs indices) noexcept;
+            constexpr Cache(Real metric, IndexPairs indices) noexcept;
             
             /// Gets the metric that was set.
             /// @warning Behavior is undefined if metric was not previously set.
@@ -101,11 +101,11 @@ namespace playrho
             
             bool IsMetricSet() const noexcept;
             
-            PLAYRHO_CONSTEXPR IndexPairs GetIndices() const noexcept;
+            constexpr IndexPairs GetIndices() const noexcept;
             
-            PLAYRHO_CONSTEXPR size_type GetNumIndices() const noexcept;
+            constexpr size_type GetNumIndices() const noexcept;
             
-            PLAYRHO_CONSTEXPR IndexPair GetIndexPair(size_type index) const noexcept;
+            constexpr IndexPair GetIndexPair(size_type index) const noexcept;
             
         private:
             Real m_metric = GetInvalid<Real>(); ///< Metric. @details This is a length or area value.            
@@ -122,7 +122,7 @@ namespace playrho
         /// @param simplexEdges A one or two edge list.
         /// @warning Behavior is undefined if the given edge list has zero edges.
         /// @return "search direction" vector.
-        static PLAYRHO_CONSTEXPR Length2D CalcSearchDirection(const Edges& simplexEdges) noexcept;
+        static constexpr Length2D CalcSearchDirection(const Edges& simplexEdges) noexcept;
         
         /// Gets the given simplex's "metric".
         static inline Real CalcMetric(const Edges& simplexEdges);
@@ -156,16 +156,16 @@ namespace playrho
 
         Simplex() = default;
 
-        PLAYRHO_CONSTEXPR Edges GetEdges() const noexcept;
+        constexpr Edges GetEdges() const noexcept;
 
         const SimplexEdge& GetSimplexEdge(size_type index) const noexcept;
 
-        PLAYRHO_CONSTEXPR Real GetCoefficient(size_type index) const noexcept;
+        constexpr Real GetCoefficient(size_type index) const noexcept;
 
-        PLAYRHO_CONSTEXPR size_type GetSize() const noexcept;
+        constexpr size_type GetSize() const noexcept;
 
     private:
-        PLAYRHO_CONSTEXPR Simplex(const Edges& simplexEdges, const Coefficients& normalizedWeights) noexcept;
+        Simplex(const Edges& simplexEdges, const Coefficients& normalizedWeights) noexcept;
 
         /// Collection of valid simplex edges.
         ///
@@ -183,7 +183,7 @@ namespace playrho
         Coefficients m_normalizedWeights;
     };
 
-    PLAYRHO_CONSTEXPR inline Simplex::Cache::Cache(Real metric, IndexPairs indices) noexcept:
+    constexpr inline Simplex::Cache::Cache(Real metric, IndexPairs indices) noexcept:
         m_metric{metric}, m_indices{indices}
     {
         // Intentionally empty
@@ -200,17 +200,17 @@ namespace playrho
         return IsValid(m_metric);
     }
     
-    PLAYRHO_CONSTEXPR inline Simplex::IndexPairs Simplex::Cache::GetIndices() const noexcept
+    constexpr inline Simplex::IndexPairs Simplex::Cache::GetIndices() const noexcept
     {
         return m_indices;
     }
     
-    PLAYRHO_CONSTEXPR inline Simplex::size_type Simplex::Cache::GetNumIndices() const noexcept
+    constexpr inline Simplex::size_type Simplex::Cache::GetNumIndices() const noexcept
     {
         return m_indices.size();
     }
     
-    PLAYRHO_CONSTEXPR inline IndexPair Simplex::Cache::GetIndexPair(size_type index) const noexcept
+    constexpr inline IndexPair Simplex::Cache::GetIndexPair(size_type index) const noexcept
     {
         return m_indices[index];
     }
@@ -230,7 +230,7 @@ namespace playrho
         return list;
     }
 
-    PLAYRHO_CONSTEXPR inline Length2D Simplex::CalcSearchDirection(const Edges& simplexEdges) noexcept
+    constexpr inline Length2D Simplex::CalcSearchDirection(const Edges& simplexEdges) noexcept
     {
         assert((simplexEdges.size() == 1) || (simplexEdges.size() == 2));
         switch (simplexEdges.size())
@@ -250,7 +250,7 @@ namespace playrho
             }
                 
             default:
-                return Length2D(0, 0);
+                return Length2D{Real(0) * Meter, Real(0) * Meter};
         }
     }
 
@@ -277,7 +277,7 @@ namespace playrho
         return Real{0};
     }
 
-    PLAYRHO_CONSTEXPR inline Simplex::Simplex(const Edges& simplexEdges,
+    inline Simplex::Simplex(const Edges& simplexEdges,
                                             const Coefficients& normalizedWeights) noexcept:
         m_simplexEdges{simplexEdges}, m_normalizedWeights{normalizedWeights}
     {
@@ -289,7 +289,7 @@ namespace playrho
 #endif
     }
 
-    PLAYRHO_CONSTEXPR inline Simplex::Edges Simplex::GetEdges() const noexcept
+    constexpr inline Simplex::Edges Simplex::GetEdges() const noexcept
     {
         return m_simplexEdges;
     }
@@ -299,12 +299,12 @@ namespace playrho
         return m_simplexEdges[index];
     }
     
-    PLAYRHO_CONSTEXPR inline Real Simplex::GetCoefficient(size_type index) const noexcept
+    constexpr inline Real Simplex::GetCoefficient(size_type index) const noexcept
     {
         return m_normalizedWeights[index];
     }
     
-    PLAYRHO_CONSTEXPR inline Simplex::size_type Simplex::GetSize() const noexcept
+    constexpr inline Simplex::size_type Simplex::GetSize() const noexcept
     {
         return m_simplexEdges.size();
     }
@@ -315,14 +315,14 @@ namespace playrho
     }
 
     /// Gets the "closest point".
-    PLAYRHO_CONSTEXPR inline Length2D GetClosestPoint(const Simplex& simplex)
+    constexpr inline Length2D GetClosestPoint(const Simplex& simplex)
     {
         switch (simplex.GetSize())
         {
             case 1: return GetScaledDelta(simplex, 0);
             case 2: return GetScaledDelta(simplex, 0) + GetScaledDelta(simplex, 1);
-            case 3: return Length2D(0, 0);
-            default: return Length2D(0, 0);
+            case 3: return Length2D{Real(0) * Meter, Real(0) * Meter};
+            default: return Length2D{Real(0) * Meter, Real(0) * Meter};
         }
     }
 

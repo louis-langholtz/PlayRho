@@ -93,19 +93,19 @@ public:
         switch (key)
         {
         case Key_A:
-            m_positionB.x -= Real{0.1f} * Meter;
+            GetX(m_positionB) -= Real{0.1f} * Meter;
             break;
 
         case Key_D:
-            m_positionB.x += Real{0.1f} * Meter;
+            GetX(m_positionB) += Real{0.1f} * Meter;
             break;
 
         case Key_S:
-            m_positionB.y -= Real{0.1f} * Meter;
+            GetY(m_positionB) -= Real{0.1f} * Meter;
             break;
 
         case Key_W:
-            m_positionB.y += Real{0.1f} * Meter;
+            GetY(m_positionB) += Real{0.1f} * Meter;
             break;
 
         case Key_Q:

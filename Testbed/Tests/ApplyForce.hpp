@@ -29,7 +29,7 @@ class ApplyForce : public Test
 public:
     ApplyForce()
     {
-        m_world->SetGravity(LinearAcceleration2D{0, 0});
+        m_world->SetGravity(LinearAcceleration2D{});
 
         const auto k_restitution = Real(0.4);
 

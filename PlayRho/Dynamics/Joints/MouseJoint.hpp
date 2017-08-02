@@ -92,7 +92,7 @@ private:
     NonNegative<Real> m_dampingRatio;
     
     // Solver shared
-    Momentum2D m_impulse = Momentum2D{0, 0};
+    Momentum2D m_impulse = Momentum2D{};
     NonNegative<Force> m_maxForce;
     InvMass m_gamma = InvMass{0};
 

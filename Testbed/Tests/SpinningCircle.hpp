@@ -39,7 +39,7 @@ namespace playrho {
             auto bodyDef = BodyDef{};
             bodyDef.type = BodyType::Dynamic;
             bodyDef.angularVelocity = Real{45.0f} * Degree / Second;
-            bodyDef.linearVelocity = LinearVelocity2D{0, 0};
+            bodyDef.linearVelocity = LinearVelocity2D{};
             bodyDef.linearDamping = Real(0.8f) * Hertz;
             bodyDef.bullet = true;
 

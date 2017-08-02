@@ -38,7 +38,7 @@ TEST(MassData, ByteSizeIs_16_32_or_64)
 TEST(MassData, DefaultConstruct)
 {
     MassData foo;
-    EXPECT_EQ(foo.center, Length2D(0, 0));
+    EXPECT_EQ(foo.center, (Length2D{}));
     EXPECT_EQ(foo.mass, Mass(0));
     EXPECT_EQ(foo.I, RotInertia(0));
 }
@@ -51,7 +51,7 @@ TEST(MassData, GetMassDataFreeFunctionForNoVertices)
         static_cast<const Length2D*>(nullptr), Span<const Length2D>::size_type{0}
     };
     const auto massData = GetMassData(vertexRadius, density, vertices);
-    EXPECT_EQ(massData.center, Length2D(0, 0));
+    EXPECT_EQ(massData.center, (Length2D{}));
     EXPECT_EQ(massData.mass, Mass(0));
     EXPECT_EQ(massData.I, RotInertia(0));
 }
@@ -63,15 +63,15 @@ TEST(MassData, GetForZeroVertexRadiusCircle)
     const auto mass_data = shape.GetMassData();
     EXPECT_EQ(mass_data.mass, NonNegative<Mass>(Real{0} * Kilogram));
     EXPECT_EQ(mass_data.I, RotInertia{0});
-    EXPECT_EQ(mass_data.center.x, Real{0} * Meter);
-    EXPECT_EQ(mass_data.center.y, Real{0} * Meter);
+    EXPECT_EQ(GetX(mass_data.center), Real{0} * Meter);
+    EXPECT_EQ(GetY(mass_data.center), Real{0} * Meter);
 }
 
 TEST(MassData, GetForOriginCenteredCircle)
 {
     auto conf = DiskShape::Conf{};
     conf.vertexRadius = Real{1} * Meter;
-    conf.location = Length2D(0, 0);
+    conf.location = Length2D{};
     conf.density = Real{1} * KilogramPerSquareMeter;
     const auto foo = DiskShape{conf};
     const auto mass_data = foo.GetMassData();
@@ -110,16 +110,16 @@ TEST(MassData, GetForZeroVertexRadiusRectangle)
     conf.density = density;
     auto shape = PolygonShape(conf);
     shape.SetAsBox(Real{4} * Meter, Real{1} * Meter);
-    ASSERT_EQ(shape.GetCentroid().x, Real(0) * Meter);
-    ASSERT_EQ(shape.GetCentroid().y, Real(0) * Meter);
+    ASSERT_EQ(GetX(shape.GetCentroid()), Real(0) * Meter);
+    ASSERT_EQ(GetY(shape.GetCentroid()), Real(0) * Meter);
     const auto mass_data = shape.GetMassData();
     EXPECT_TRUE(almost_equal(Real(Mass{mass_data.mass} / Kilogram),
                              Real((density / KilogramPerSquareMeter) * (8 * 2))));
     EXPECT_NEAR(double(StripUnit(mass_data.I)),
                 90.666664 * double(StripUnit(density)),
                 0.008);
-    EXPECT_TRUE(almost_equal(mass_data.center.x / Meter, shape.GetCentroid().x / Meter));
-    EXPECT_TRUE(almost_equal(mass_data.center.y / Meter, shape.GetCentroid().y / Meter));
+    EXPECT_TRUE(almost_equal(GetX(mass_data.center) / Meter, GetX(shape.GetCentroid()) / Meter));
+    EXPECT_TRUE(almost_equal(GetY(mass_data.center) / Meter, GetY(shape.GetCentroid()) / Meter));
     
     // Area moment of inertia (I) for a rectangle is Ix + Iy = (b * h^3) / 12 + (b^3 * h) / 12....
     const auto i = 8.0 * 2.0 * 2.0 * 2.0 / 12.0 + 8.0 * 8.0 * 8.0 * 2.0 / 12.0;
@@ -151,8 +151,8 @@ TEST(MassData, GetForZeroVertexRadiusEdge)
     {
         EXPECT_NEAR(double(Real{RotInertia{mass_data.I} / (SquareMeter * Kilogram / SquareRadian)}), 0.0, 0.00001);
     }
-    EXPECT_EQ(mass_data.center.x, Length{0});
-    EXPECT_EQ(mass_data.center.y, Length{0});
+    EXPECT_EQ(GetX(mass_data.center), Length{0});
+    EXPECT_EQ(GetY(mass_data.center), Length{0});
 }
 
 TEST(MassData, GetForSamePointedEdgeIsSameAsCircle)
@@ -175,8 +175,8 @@ TEST(MassData, GetForSamePointedEdgeIsSameAsCircle)
         EXPECT_NEAR(double(Real{RotInertia{mass_data.I} / (SquareMeter * Kilogram / SquareRadian)}),
                     7.85398, 0.003);
     }
-    EXPECT_TRUE(almost_equal(StripUnit(mass_data.center.x), StripUnit(v1.x)));
-    EXPECT_TRUE(almost_equal(StripUnit(mass_data.center.y), StripUnit(v1.y)));
+    EXPECT_TRUE(almost_equal(StripUnit(GetX(mass_data.center)), StripUnit(GetX(v1))));
+    EXPECT_TRUE(almost_equal(StripUnit(GetY(mass_data.center)), StripUnit(GetY(v1))));
 }
 
 TEST(MassData, GetForCenteredEdge)
@@ -230,8 +230,8 @@ TEST(MassData, GetForCenteredEdge)
         EXPECT_GE(mass_data.I, (polarMoment * density) / SquareRadian);
     }
     EXPECT_NEAR(double(Real(polarMoment / (SquareMeter * SquareMeter))), 5.6666665, 0.0007);
-    EXPECT_EQ(mass_data.center.x, Length(0));
-    EXPECT_EQ(mass_data.center.y, Length(0));
+    EXPECT_EQ(GetX(mass_data.center), Length(0));
+    EXPECT_EQ(GetY(mass_data.center), Length(0));
 }
 
 TEST(MassData, Equals)

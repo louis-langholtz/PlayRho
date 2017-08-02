@@ -66,11 +66,11 @@ TEST(Distance, OpposingCircles)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(witnessPoints.a.x, pos1.x);
-    EXPECT_EQ(witnessPoints.a.y, pos1.y);
+    EXPECT_EQ(GetX(witnessPoints.a), GetX(pos1));
+    EXPECT_EQ(GetY(witnessPoints.a), GetY(pos1));
 
-    EXPECT_EQ(witnessPoints.b.x, pos2.x);
-    EXPECT_EQ(witnessPoints.b.y, pos2.y);
+    EXPECT_EQ(GetX(witnessPoints.b), GetX(pos2));
+    EXPECT_EQ(GetY(witnessPoints.b), GetY(pos2));
 
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
@@ -102,11 +102,11 @@ TEST(Distance, HorTouchingCircles)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(witnessPoints.a.x, pos1.x);
-    EXPECT_EQ(witnessPoints.a.y, pos1.y);
+    EXPECT_EQ(GetX(witnessPoints.a), GetX(pos1));
+    EXPECT_EQ(GetY(witnessPoints.a), GetY(pos1));
     
-    EXPECT_EQ(witnessPoints.b.x, pos2.x);
-    EXPECT_EQ(witnessPoints.b.y, pos2.y);
+    EXPECT_EQ(GetX(witnessPoints.b), GetX(pos2));
+    EXPECT_EQ(GetY(witnessPoints.b), GetY(pos2));
     
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
@@ -135,11 +135,11 @@ TEST(Distance, OverlappingCirclesPN)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(witnessPoints.a.x, pos1.x);
-    EXPECT_EQ(witnessPoints.a.y, pos1.y);
+    EXPECT_EQ(GetX(witnessPoints.a), GetX(pos1));
+    EXPECT_EQ(GetY(witnessPoints.a), GetY(pos1));
     
-    EXPECT_EQ(witnessPoints.b.x, pos2.x);
-    EXPECT_EQ(witnessPoints.b.y, pos2.y);
+    EXPECT_EQ(GetX(witnessPoints.b), GetX(pos2));
+    EXPECT_EQ(GetY(witnessPoints.b), GetY(pos2));
     
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
@@ -168,11 +168,11 @@ TEST(Distance, OverlappingCirclesNP)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(witnessPoints.a.x, pos1.x);
-    EXPECT_EQ(witnessPoints.a.y, pos1.y);
+    EXPECT_EQ(GetX(witnessPoints.a), GetX(pos1));
+    EXPECT_EQ(GetY(witnessPoints.a), GetY(pos1));
     
-    EXPECT_EQ(witnessPoints.b.x, pos2.x);
-    EXPECT_EQ(witnessPoints.b.y, pos2.y);
+    EXPECT_EQ(GetX(witnessPoints.b), GetX(pos2));
+    EXPECT_EQ(GetY(witnessPoints.b), GetY(pos2));
     
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
@@ -202,11 +202,11 @@ TEST(Distance, SeparatedCircles)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(witnessPoints.a.x, pos1.x);
-    EXPECT_EQ(witnessPoints.a.y, pos1.y);
+    EXPECT_EQ(GetX(witnessPoints.a), GetX(pos1));
+    EXPECT_EQ(GetY(witnessPoints.a), GetY(pos1));
     
-    EXPECT_EQ(witnessPoints.b.x, pos2.x);
-    EXPECT_EQ(witnessPoints.b.y, pos2.y);
+    EXPECT_EQ(GetX(witnessPoints.b), GetX(pos2));
+    EXPECT_EQ(GetY(witnessPoints.b), GetY(pos2));
     
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
@@ -241,11 +241,11 @@ TEST(Distance, EdgeCircleOverlapping)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(witnessPoints.a.x, pos3.x);
-    EXPECT_EQ(witnessPoints.a.y, pos3.y);
+    EXPECT_EQ(GetX(witnessPoints.a), GetX(pos3));
+    EXPECT_EQ(GetY(witnessPoints.a), GetY(pos3));
 
-    EXPECT_EQ(witnessPoints.b.x, pos3.x);
-    EXPECT_EQ(witnessPoints.b.y, pos3.y);
+    EXPECT_EQ(GetX(witnessPoints.b), GetX(pos3));
+    EXPECT_EQ(GetY(witnessPoints.b), GetY(pos3));
     
     EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
     
@@ -283,11 +283,11 @@ TEST(Distance, EdgeCircleOverlapping2)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(witnessPoints.a.x, pos3.x);
-    EXPECT_EQ(witnessPoints.a.y, pos3.y);
+    EXPECT_EQ(GetX(witnessPoints.a), GetX(pos3));
+    EXPECT_EQ(GetY(witnessPoints.a), GetY(pos3));
     
-    EXPECT_EQ(witnessPoints.b.x, pos3.x);
-    EXPECT_EQ(witnessPoints.b.y, pos3.y);
+    EXPECT_EQ(GetX(witnessPoints.b), GetX(pos3));
+    EXPECT_EQ(GetY(witnessPoints.b), GetY(pos3));
     
     EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
     
@@ -325,11 +325,11 @@ TEST(Distance, EdgeCircleTouching)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(witnessPoints.a.x, Real{2} * Meter);
-    EXPECT_EQ(witnessPoints.a.y, Real{3} * Meter);
+    EXPECT_EQ(GetX(witnessPoints.a), Real{2} * Meter);
+    EXPECT_EQ(GetY(witnessPoints.a), Real{3} * Meter);
     
-    EXPECT_EQ(witnessPoints.b.x, Real{2} * Meter);
-    EXPECT_EQ(witnessPoints.b.y, Real{1} * Meter);
+    EXPECT_EQ(GetX(witnessPoints.b), Real{2} * Meter);
+    EXPECT_EQ(GetY(witnessPoints.b), Real{1} * Meter);
     
     EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
     
@@ -376,11 +376,11 @@ TEST(Distance, HorEdgeSquareTouching)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(witnessPoints.a.x, Real{1} * Meter);
-    EXPECT_EQ(witnessPoints.a.y, Real{1} * Meter);
+    EXPECT_EQ(GetX(witnessPoints.a), Real{1} * Meter);
+    EXPECT_EQ(GetY(witnessPoints.a), Real{1} * Meter);
     
-    EXPECT_EQ(witnessPoints.b.x, Real{1} * Meter);
-    EXPECT_EQ(witnessPoints.b.y, Real{0} * Meter);
+    EXPECT_EQ(GetX(witnessPoints.b), Real{1} * Meter);
+    EXPECT_EQ(GetY(witnessPoints.b), Real{0} * Meter);
     
     EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
     
@@ -428,11 +428,11 @@ TEST(Distance, VerEdgeSquareTouching)
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
     EXPECT_EQ(Sqrt(GetLengthSquared(witnessPoints.a - witnessPoints.b)), Real(1) * Meter);
-    EXPECT_EQ(witnessPoints.a.x, Real{3} * Meter);
-    EXPECT_EQ(witnessPoints.a.y, Real{2} * Meter);
+    EXPECT_EQ(GetX(witnessPoints.a), Real{3} * Meter);
+    EXPECT_EQ(GetY(witnessPoints.a), Real{2} * Meter);
     
-    EXPECT_EQ(witnessPoints.b.x, Real{4} * Meter);
-    EXPECT_EQ(witnessPoints.b.y, Real{2} * Meter);
+    EXPECT_EQ(GetX(witnessPoints.b), Real{4} * Meter);
+    EXPECT_EQ(GetY(witnessPoints.b), Real{2} * Meter);
     
     EXPECT_EQ(decltype(output.iterations){3}, output.iterations);
     
@@ -471,11 +471,11 @@ TEST(Distance, SquareTwice)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(witnessPoints.a.x, Real{2} * Meter);
-    EXPECT_EQ(witnessPoints.a.y, Real{2} * Meter);
+    EXPECT_EQ(GetX(witnessPoints.a), Real{2} * Meter);
+    EXPECT_EQ(GetY(witnessPoints.a), Real{2} * Meter);
 
-    EXPECT_EQ(witnessPoints.b.x, Real{2} * Meter);
-    EXPECT_EQ(witnessPoints.b.y, Real{2} * Meter);
+    EXPECT_EQ(GetX(witnessPoints.b), Real{2} * Meter);
+    EXPECT_EQ(GetY(witnessPoints.b), Real{2} * Meter);
 
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
@@ -523,11 +523,11 @@ TEST(Distance, SquareSquareTouchingVertically)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(witnessPoints.a.x, Real{4} * Meter);
-    EXPECT_EQ(witnessPoints.a.y, Real{3} * Meter);
+    EXPECT_EQ(GetX(witnessPoints.a), Real{4} * Meter);
+    EXPECT_EQ(GetY(witnessPoints.a), Real{3} * Meter);
     
-    EXPECT_EQ(witnessPoints.b.x, Real{4} * Meter);
-    EXPECT_EQ(witnessPoints.b.y, Real{3} * Meter);
+    EXPECT_EQ(GetX(witnessPoints.b), Real{4} * Meter);
+    EXPECT_EQ(GetY(witnessPoints.b), Real{3} * Meter);
     
     EXPECT_EQ(decltype(output.iterations){3}, output.iterations);
     
@@ -574,11 +574,11 @@ TEST(Distance, SquareSquareDiagonally)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(witnessPoints.a.x, Real{-1} * Meter);
-    EXPECT_EQ(witnessPoints.a.y, Real{-1} * Meter);
+    EXPECT_EQ(GetX(witnessPoints.a), Real{-1} * Meter);
+    EXPECT_EQ(GetY(witnessPoints.a), Real{-1} * Meter);
     
-    EXPECT_EQ(witnessPoints.b.x, Real{1} * Meter);
-    EXPECT_EQ(witnessPoints.b.y, Real{1} * Meter);
+    EXPECT_EQ(GetX(witnessPoints.b), Real{1} * Meter);
+    EXPECT_EQ(GetY(witnessPoints.b), Real{1} * Meter);
     
     EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
     
@@ -649,11 +649,11 @@ TEST(Distance, SquareSquareOverlappingDiagnally)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(witnessPoints.a.x, Length{0});
-    EXPECT_EQ(witnessPoints.a.y, Real{0.5f} * Meter);
+    EXPECT_EQ(GetX(witnessPoints.a), Length{0});
+    EXPECT_EQ(GetY(witnessPoints.a), Real{0.5f} * Meter);
     
-    EXPECT_EQ(witnessPoints.b.x, Length{0});
-    EXPECT_EQ(witnessPoints.b.y, Real{0.5f} * Meter);
+    EXPECT_EQ(GetX(witnessPoints.b), Length{0});
+    EXPECT_EQ(GetY(witnessPoints.b), Real{0.5f} * Meter);
     
     EXPECT_EQ(decltype(output.iterations){3}, output.iterations);
     

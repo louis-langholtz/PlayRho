@@ -49,8 +49,8 @@ TEST(WeldJointDef, DefaultConstruction)
     EXPECT_EQ(def.collideConnected, false);
     EXPECT_EQ(def.userData, nullptr);
     
-    EXPECT_EQ(def.localAnchorA, Length2D(0, 0));
-    EXPECT_EQ(def.localAnchorB, Length2D(0, 0));
+    EXPECT_EQ(def.localAnchorA, (Length2D{}));
+    EXPECT_EQ(def.localAnchorB, (Length2D{}));
     EXPECT_EQ(def.referenceAngle, Angle(0));
     EXPECT_EQ(def.frequency, Real{0} * Hertz);
     EXPECT_EQ(def.dampingRatio, Real(0));
@@ -122,7 +122,7 @@ TEST(WeldJoint, GetWeldJointDef)
 TEST(WeldJoint, WithDynamicCircles)
 {
     const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
-    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2D{0, 0})};
+    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2D{})};
     const auto p1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
     const auto p2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
@@ -133,10 +133,10 @@ TEST(WeldJoint, WithDynamicCircles)
     const auto jd = WeldJointDef{b1, b2, anchor};
     world.CreateJoint(jd);
     Step(world, Time{Second * Real{1}});
-    EXPECT_NEAR(double(Real{b1->GetLocation().x / Meter}), -1.0, 0.001);
-    EXPECT_NEAR(double(Real{b1->GetLocation().y / Meter}), 0.0, 0.001);
-    EXPECT_NEAR(double(Real{b2->GetLocation().x / Meter}), +1.0, 0.01);
-    EXPECT_NEAR(double(Real{b2->GetLocation().y / Meter}), 0.0, 0.01);
+    EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
+    EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
+    EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);
+    EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / Meter}), 0.0, 0.01);
     EXPECT_EQ(b1->GetAngle(), Angle{0});
     EXPECT_EQ(b2->GetAngle(), Angle{0});
 }

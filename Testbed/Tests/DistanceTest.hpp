@@ -86,7 +86,7 @@ public:
             strbuf << ", ";
             strbuf << "mp={";
             const auto p = manifold.GetPoint(i);
-            strbuf << "lp={" << p.localPoint.x << "," << p.localPoint.y << "}";
+            strbuf << "lp={" << GetX(p.localPoint) << "," << GetY(p.localPoint) << "}";
             strbuf << ", ";
             strbuf << "cf=" << p.contactFeature;
             strbuf << "}";
@@ -226,10 +226,10 @@ public:
             const auto size = output.simplex.GetSize();
             drawer.DrawString(5, m_textLine, "Simplex info: size=%d, wpt-a={%g,%g}, wpt-b={%g,%g})",
                               size,
-                              static_cast<double>(Real{witnessPoints.a.x / Meter}),
-                              static_cast<double>(Real{witnessPoints.a.y / Meter}),
-                              static_cast<double>(Real{witnessPoints.b.x / Meter}),
-                              static_cast<double>(Real{witnessPoints.b.y / Meter}));
+                              static_cast<double>(Real{GetX(witnessPoints.a) / Meter}),
+                              static_cast<double>(Real{GetY(witnessPoints.a) / Meter}),
+                              static_cast<double>(Real{GetX(witnessPoints.b) / Meter}),
+                              static_cast<double>(Real{GetY(witnessPoints.b) / Meter}));
             m_textLine += DRAW_STRING_NEW_LINE;
             for (auto i = decltype(size){0}; i < size; ++i)
             {
@@ -238,11 +238,11 @@ public:
                 
                 drawer.DrawString(5, m_textLine, "  a[%d]={%g,%g} b[%d]={%g,%g} coef=%g",
                                   edge.GetIndexA(),
-                                  static_cast<double>(Real{edge.GetPointA().x / Meter}),
-                                  static_cast<double>(Real{edge.GetPointA().y / Meter}),
+                                  static_cast<double>(Real{GetX(edge.GetPointA()) / Meter}),
+                                  static_cast<double>(Real{GetY(edge.GetPointA()) / Meter}),
                                   edge.GetIndexB(),
-                                  static_cast<double>(Real{edge.GetPointB().x / Meter}),
-                                  static_cast<double>(Real{edge.GetPointB().y / Meter}),
+                                  static_cast<double>(Real{GetX(edge.GetPointB()) / Meter}),
+                                  static_cast<double>(Real{GetY(edge.GetPointB()) / Meter}),
                                   coef);
                 m_textLine += DRAW_STRING_NEW_LINE;
             }

@@ -61,16 +61,45 @@ TEST(Vec3, Traits)
 
 TEST(Vec3, Constructor) {
     Vec3 vector{Real{5}, Real{-3}, Real{11}};
-    EXPECT_EQ(Real{5}, vector.x);
-    EXPECT_EQ(Real{-3}, vector.y);
-    EXPECT_EQ(Real{11}, vector.z);
+    EXPECT_EQ(Real{5}, GetX(vector));
+    EXPECT_EQ(Real{-3}, GetY(vector));
+    EXPECT_EQ(Real{11}, GetZ(vector));
+}
+
+TEST(Vec3, ZeroInitialization)
+{
+    // Tests C++11 zero initialization.
+    // See: http://en.cppreference.com/w/cpp/language/zero_initialization
+    
+    {
+        Vec3 src{Real{-1.2f}, Real{42.5f}, Real{-91.2f}};
+        Vec3* foo = new (&src) Vec3;
+        ASSERT_NE(foo, nullptr);
+        ASSERT_EQ(foo->max_size(), std::size_t(3));
+        ASSERT_EQ(foo->size(), std::size_t(3));
+        ASSERT_NE(*foo, (Vec3{Real{0}, Real{0}, Real{0}}));
+        *foo = Vec3{};
+        EXPECT_EQ((*foo)[0], Real(0));
+        EXPECT_EQ((*foo)[1], Real(0));
+    }
+    {
+        Vec3 src{Real{-1.2f}, Real{42.5f}, Real{-91.2f}};
+        Vec3* foo = new (&src) Vec3;
+        ASSERT_NE(foo, nullptr);
+        ASSERT_EQ(foo->max_size(), std::size_t(3));
+        ASSERT_EQ(foo->size(), std::size_t(3));
+        ASSERT_NE(*foo, (Vec3{Real{0}, Real{0}, Real{0}}));
+        *foo = {};
+        EXPECT_EQ((*foo)[0], Real(0));
+        EXPECT_EQ((*foo)[1], Real(0));
+    }
 }
 
 TEST(Vec3, Equality)
 {
     Vec3 vector{Real{5}, Real{-3}, Real{11}};
-    EXPECT_EQ(vector.x, vector.x);
-    EXPECT_EQ(vector.y, vector.y);
+    EXPECT_EQ(GetX(vector), GetX(vector));
+    EXPECT_EQ(GetY(vector), GetY(vector));
     EXPECT_EQ(vector, vector);
 }
 
@@ -78,9 +107,9 @@ TEST(Vec3, Inequality)
 {
     Vec3 vector1{Real{5}, Real{-3}, Real{11}};
     Vec3 vector2{Real{-5}, Real{+3}, Real{-6}};
-    EXPECT_NE(vector1.x, vector2.x);
-    EXPECT_NE(vector1.y, vector2.y);
-    EXPECT_NE(vector1.z, vector2.z);
+    EXPECT_NE(GetX(vector1), GetX(vector2));
+    EXPECT_NE(GetY(vector1), GetY(vector2));
+    EXPECT_NE(GetZ(vector1), GetZ(vector2));
     EXPECT_NE(vector1, vector2);
 }
 
@@ -90,15 +119,15 @@ TEST(Vec3, Negate)
     Vec3 n10 = -v10;
     Vec3 v01{0, 1, 2};
     Vec3 n01 = -v01;
-    EXPECT_EQ(-v10.x, n10.x);
-    EXPECT_EQ(-v10.y, n10.y);
-    EXPECT_EQ(-v01.x, n01.x);
-    EXPECT_EQ(-v01.y, n01.y);
-    EXPECT_EQ(-v01.z, n01.z);
+    EXPECT_EQ(-GetX(v10), GetX(n10));
+    EXPECT_EQ(-GetY(v10), GetY(n10));
+    EXPECT_EQ(-GetX(v01), GetX(n01));
+    EXPECT_EQ(-GetY(v01), GetY(n01));
+    EXPECT_EQ(-GetZ(v01), GetZ(n01));
     
-    EXPECT_EQ(Real{-22}, (-Vec3{22, 0, 0}).x);
-    EXPECT_EQ(Real{-3}, (-Vec3{0, 3, 0}).y);
-    EXPECT_EQ(Real{5}, (-Vec3{0, 3, -5}).z);
+    EXPECT_EQ(Real{-22}, GetX(-Vec3{22, 0, 0}));
+    EXPECT_EQ(Real{-3}, GetY(-Vec3{0, 3, 0}));
+    EXPECT_EQ(Real{5}, GetZ(-Vec3{0, 3, -5}));
 }
 
 TEST(Vec3, IncrementOperator)

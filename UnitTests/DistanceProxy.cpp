@@ -70,8 +70,8 @@ TEST(DistanceProxy, OneVecSupportIndex)
     const auto normal0 = UnitVec2{};
     const DistanceProxy foo{radius, 1, &vertex0, &normal0};
     EXPECT_EQ(0, GetSupportIndex(foo, GetVec2(vertex0)));
-    EXPECT_EQ(0, GetSupportIndex(foo, GetVec2(Length2D(0, 0))));
-    EXPECT_EQ(0, GetSupportIndex(foo, GetVec2(Length2D{vertex0.y, vertex0.x})));
+    EXPECT_EQ(0, GetSupportIndex(foo, GetVec2(Length2D{})));
+    EXPECT_EQ(0, GetSupportIndex(foo, GetVec2(Length2D{GetY(vertex0), GetX(vertex0)})));
 }
 
 TEST(DistanceProxy, TwoVecInitialization)
@@ -99,10 +99,10 @@ TEST(DistanceProxy, TwoVecSupportIndex)
     const UnitVec2 normals[] = {normal0, -normal0};
     const DistanceProxy foo{radius, 2, vertices, normals};
     EXPECT_EQ(0, GetSupportIndex(foo, GetVec2(vertex0)));
-    EXPECT_EQ(0, GetSupportIndex(foo, GetVec2(Length2D{vertex0.y, vertex0.x})));
-    EXPECT_EQ(0, GetSupportIndex(foo, GetVec2(Length2D{Real(0) * Meter})));
+    EXPECT_EQ(0, GetSupportIndex(foo, GetVec2(Length2D{GetY(vertex0), GetX(vertex0)})));
+    EXPECT_EQ(0, GetSupportIndex(foo, GetVec2(Length2D{Real(0) * Meter, Real(0) * Meter})));
     EXPECT_EQ(1, GetSupportIndex(foo, GetVec2(vertex1)));
-    EXPECT_EQ(1, GetSupportIndex(foo, GetVec2(Length2D{vertex1.y, vertex1.x})));
+    EXPECT_EQ(1, GetSupportIndex(foo, GetVec2(Length2D{GetY(vertex1), GetX(vertex1)})));
 }
 
 TEST(DistanceProxy, ThreeVertices)
@@ -122,12 +122,12 @@ TEST(DistanceProxy, ThreeVertices)
     
     EXPECT_EQ(foo.GetVertexRadius(), radius);
     ASSERT_EQ(foo.GetVertexCount(), count);
-    EXPECT_EQ(foo.GetVertex(0).x, v0.x);
-    EXPECT_EQ(foo.GetVertex(0).y, v0.y);
-    EXPECT_EQ(foo.GetVertex(1).x, v1.x);
-    EXPECT_EQ(foo.GetVertex(1).y, v1.y);
-    EXPECT_EQ(foo.GetVertex(2).x, v2.x);
-    EXPECT_EQ(foo.GetVertex(2).y, v2.y);
+    EXPECT_EQ(GetX(foo.GetVertex(0)), GetX(v0));
+    EXPECT_EQ(GetY(foo.GetVertex(0)), GetY(v0));
+    EXPECT_EQ(GetX(foo.GetVertex(1)), GetX(v1));
+    EXPECT_EQ(GetY(foo.GetVertex(1)), GetY(v1));
+    EXPECT_EQ(GetX(foo.GetVertex(2)), GetX(v2));
+    EXPECT_EQ(GetY(foo.GetVertex(2)), GetY(v2));
 }
 
 TEST(DistanceProxy, FindLowestRightMostVertex)
@@ -142,7 +142,7 @@ TEST(DistanceProxy, TestPointWithEmptyProxyReturnsFalse)
 {
     const auto defaultDp = DistanceProxy{};
     ASSERT_EQ(defaultDp.GetVertexCount(), 0);
-    EXPECT_FALSE(TestPoint(defaultDp, Length2D(0, 0)));
+    EXPECT_FALSE(TestPoint(defaultDp, Length2D{}));
 }
 
 TEST(DistanceProxy, TestPoint)
@@ -168,10 +168,10 @@ TEST(DistanceProxy, TestPoint)
     EXPECT_TRUE(TestPoint(dp, pos2));
     EXPECT_TRUE(TestPoint(dp, pos3));
     EXPECT_TRUE(TestPoint(dp, pos4));
-    EXPECT_TRUE(TestPoint(dp, Length2D(Real(3.2f) * Meter, Real(3.2f) * Meter)));
-    EXPECT_TRUE(TestPoint(dp, pos2 + Length2D(radius, radius) / Real(2)));
-    EXPECT_FALSE(TestPoint(dp, pos2 + Length2D(radius, radius)));
-    EXPECT_FALSE(TestPoint(dp, Length2D(Real(10) * Meter, Real(10) * Meter)));
+    EXPECT_TRUE(TestPoint(dp, Length2D{Real(3.2f) * Meter, Real(3.2f) * Meter}));
+    EXPECT_TRUE(TestPoint(dp, pos2 + Length2D{radius, radius} / Real(2)));
+    EXPECT_FALSE(TestPoint(dp, pos2 + Length2D{radius, radius}));
+    EXPECT_FALSE(TestPoint(dp, Length2D{Real(10) * Meter, Real(10) * Meter}));
     EXPECT_FALSE(TestPoint(dp, Length2D{-Real(10) * Meter, Real(10) * Meter}));
     EXPECT_FALSE(TestPoint(dp, Length2D{Real(10) * Meter, -Real(10) * Meter}));
 }

@@ -79,8 +79,8 @@ Coord2D ConvertWorldToScreen(const Camera& camera, const Length2D pw)
     const auto lower = camera.m_center - extents;
     const auto upper = camera.m_center + extents;
 
-    const auto u = (float(Real{pw.x / Meter}) - lower.x) / (upper.x - lower.x);
-    const auto v = (float(Real{pw.y / Meter}) - lower.y) / (upper.y - lower.y);
+    const auto u = (float(Real{GetX(pw) / Meter}) - lower.x) / (upper.x - lower.x);
+    const auto v = (float(Real{GetY(pw) / Meter}) - lower.y) / (upper.y - lower.y);
 
     return Coord2D{u * w, (float(1) - v) * h};
 }
@@ -620,9 +620,9 @@ DebugDraw::~DebugDraw() noexcept
 
 void DebugDraw::DrawTriangle(const Length2D& p1, const Length2D& p2, const Length2D& p3, const Color& color)
 {
-    const auto c1 = Coord2D{static_cast<float>(StripUnit(p1.x)), static_cast<float>(StripUnit(p1.y))};
-    const auto c2 = Coord2D{static_cast<float>(StripUnit(p2.x)), static_cast<float>(StripUnit(p2.y))};
-    const auto c3 = Coord2D{static_cast<float>(StripUnit(p3.x)), static_cast<float>(StripUnit(p3.y))};
+    const auto c1 = Coord2D{static_cast<float>(StripUnit(GetX(p1))), static_cast<float>(StripUnit(GetY(p1)))};
+    const auto c2 = Coord2D{static_cast<float>(StripUnit(GetX(p2))), static_cast<float>(StripUnit(GetY(p2)))};
+    const auto c3 = Coord2D{static_cast<float>(StripUnit(GetX(p3))), static_cast<float>(StripUnit(GetY(p3)))};
     m_triangles->Vertex(m_camera, c1, color);
     m_triangles->Vertex(m_camera, c2, color);
     m_triangles->Vertex(m_camera, c3, color);
@@ -631,15 +631,15 @@ void DebugDraw::DrawTriangle(const Length2D& p1, const Length2D& p2, const Lengt
 //
 void DebugDraw::DrawSegment(const Length2D& p1, const Length2D& p2, const Color& color)
 {
-    const auto c1 = Coord2D{static_cast<float>(StripUnit(p1.x)), static_cast<float>(StripUnit(p1.y))};
-    const auto c2 = Coord2D{static_cast<float>(StripUnit(p2.x)), static_cast<float>(StripUnit(p2.y))};
+    const auto c1 = Coord2D{static_cast<float>(StripUnit(GetX(p1))), static_cast<float>(StripUnit(GetY(p1)))};
+    const auto c2 = Coord2D{static_cast<float>(StripUnit(GetX(p2))), static_cast<float>(StripUnit(GetY(p2)))};
     m_lines->Vertex(m_camera, c1, color);
     m_lines->Vertex(m_camera, c2, color);
 }
 
 void DebugDraw::DrawPoint(const Length2D& p, Length size, const Color& color)
 {
-    const auto c = Coord2D{static_cast<float>(StripUnit(p.x)), static_cast<float>(StripUnit(p.y))};
+    const auto c = Coord2D{static_cast<float>(StripUnit(GetX(p))), static_cast<float>(StripUnit(GetY(p)))};
     m_points->Vertex(m_camera, c, color, static_cast<float>(StripUnit(size)));
 }
 
@@ -670,7 +670,9 @@ void DebugDraw::DrawCircle(const Length2D& center, Length radius, const Color& c
     auto v1 = center + radius * r1;
     for (auto i = decltype(m_circleParts){0}; i < m_circleParts; ++i)
     {
-        const auto r2 = Vec2{m_cosInc * r1.x - m_sinInc * r1.y, m_sinInc * r1.x + m_cosInc * r1.y};
+        const auto r2 = Vec2{
+            m_cosInc * GetX(r1) - m_sinInc * GetY(r1), m_sinInc * GetX(r1) + m_cosInc * GetY(r1)
+        };
         const auto v2 = center + radius * r2;
         DrawSegment(v1, v2, color);
         r1 = r2;
@@ -696,7 +698,9 @@ void DebugDraw::DrawSolidCircle(const Length2D& center, Length radius, const Col
     for (auto i = decltype(m_circleParts){0}; i < m_circleParts; ++i)
     {
         // Perform rotation to avoid additional trigonometry.
-        const auto r2 = Vec2{m_cosInc * r1.x - m_sinInc * r1.y, m_sinInc * r1.x + m_cosInc * r1.y};
+        const auto r2 = Vec2{
+            m_cosInc * GetX(r1) - m_sinInc * GetY(r1), m_sinInc * GetX(r1) + m_cosInc * GetY(r1)
+        };
         const auto v2 = center + radius * r2;
         DrawTriangle(v0, v1, v2, color);
         r1 = r2;
@@ -744,8 +748,8 @@ Length2D DebugDraw::GetTranslation() const
 void DebugDraw::SetTranslation(Length2D value)
 {
     m_camera.m_center = Coord2D{
-        static_cast<float>(Real{value.x / Meter}),
-        static_cast<float>(Real{value.y / Meter})
+        static_cast<float>(Real{GetX(value) / Meter}),
+        static_cast<float>(Real{GetY(value) / Meter})
     };
 }
     

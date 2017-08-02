@@ -175,10 +175,10 @@ namespace playrho {
         struct Point
         {
             /// Position of body A relative to world manifold point.
-            Length2D relA = Length2D{0, 0};
+            Length2D relA = Length2D{};
             
             /// Position of body B relative to world manifold point.
-            Length2D relB = Length2D{0, 0};
+            Length2D relB = Length2D{};
             
             /// Normal impulse.
             Momentum normalImpulse = Momentum{0};

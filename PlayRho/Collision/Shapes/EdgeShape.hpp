@@ -58,8 +58,8 @@ public:
             return *this;
         }
 
-        Length2D vertex1 = Length2D(0, 0);
-        Length2D vertex2 = Length2D(0, 0);
+        Length2D vertex1 = Length2D{};
+        Length2D vertex2 = Length2D{};
     };
     
     static constexpr Conf GetDefaultConf() noexcept

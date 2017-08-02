@@ -49,10 +49,10 @@ struct WeldJointDef : public JointBuilder<WeldJointDef>
     constexpr WeldJointDef& UseDampingRatio(Real v) noexcept;
     
     /// The local anchor point relative to bodyA's origin.
-    Length2D localAnchorA = Length2D(0, 0);
+    Length2D localAnchorA = Length2D{};
     
     /// The local anchor point relative to bodyB's origin.
-    Length2D localAnchorB = Length2D(0, 0);
+    Length2D localAnchorB = Length2D{};
     
     /// The bodyB angle minus bodyA angle in the reference state (radians).
     Angle referenceAngle = Angle{0};

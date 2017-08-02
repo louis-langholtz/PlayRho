@@ -26,43 +26,16 @@
 
 namespace playrho
 {
-    /// Vector 3D.
-    template <typename TYPE>
-    struct Vector3D
-    {
-        using size_type = std::size_t;
-        using data_type = TYPE;
-
-        constexpr auto operator+ () const noexcept { return Vector3D<data_type>{+x, +y, +z}; }
-
-        /// Negate this vector.
-        constexpr auto operator- () const noexcept { return Vector3D<data_type>{-x, -y, -z}; }
-
-        data_type x, y, z;
-    };
-    
-    template <typename TYPE>
-    constexpr inline typename Vector3D<TYPE>::data_type GetX(const Vector3D<TYPE> value)
-    {
-        return value.x;
-    }
-    
-    template <typename TYPE>
-    constexpr inline typename Vector3D<TYPE>::data_type GetY(const Vector3D<TYPE> value)
-    {
-        return value.y;
-    }
-
-    template <typename TYPE>
-    constexpr inline typename Vector3D<TYPE>::data_type GetZ(const Vector3D<TYPE> value)
-    {
-        return value.z;
-    }
+    /// @brief Vector with 3-dimensions.
+    /// @note This is just a C++11 alias template for 3-dimensional uses of the Vector template.
+    template <typename T>
+    using Vector3D = Vector<3, T>;
     
     template <typename TYPE>
     constexpr inline bool operator == (const Vector3D<TYPE> a, const Vector3D<TYPE> b) noexcept
     {
-        return (a.x == b.x) && (a.y == b.y) && (a.z == b.z);
+        return (std::get<0>(a) == std::get<0>(b)) && (std::get<1>(a) == std::get<1>(b))
+            && (std::get<2>(a) == std::get<2>(b));
     }
     
     template <typename TYPE>
@@ -71,27 +44,13 @@ namespace playrho
         return !(a == b);
     }
     
-    /// Add two vectors component-wise.
-    template <typename TYPE>
-    constexpr inline Vector3D<TYPE> operator + (const Vector3D<TYPE> a, const Vector3D<TYPE> b) noexcept
-    {
-        return Vector3D<TYPE>{a.x + b.x, a.y + b.y, a.z + b.z};
-    }
-    
-    /// Subtract two vectors component-wise.
-    template <typename TYPE>
-    constexpr inline Vector3D<TYPE> operator - (const Vector3D<TYPE> a, const Vector3D<TYPE> b) noexcept
-    {
-        return Vector3D<TYPE>{a.x - b.x, a.y - b.y, a.z - b.z};
-    }
-    
     /// Increment the left hand side value by the right hand side value.
     template <typename TYPE>
     constexpr Vector3D<TYPE>& operator += (Vector3D<TYPE>& lhs, const Vector3D<TYPE> rhs) noexcept
     {
-        lhs.x += rhs.x;
-        lhs.y += rhs.y;
-        lhs.z += rhs.z;
+        std::get<0>(lhs) += std::get<0>(rhs);
+        std::get<1>(lhs) += std::get<1>(rhs);
+        std::get<2>(lhs) += std::get<2>(rhs);
         return lhs;
     }
     
@@ -99,46 +58,72 @@ namespace playrho
     template <typename TYPE>
     constexpr Vector3D<TYPE>& operator -= (Vector3D<TYPE>& lhs, const Vector3D<TYPE> rhs) noexcept
     {
-        lhs.x -= rhs.x;
-        lhs.y -= rhs.y;
-        lhs.z -= rhs.z;
+        std::get<0>(lhs) -= std::get<0>(rhs);
+        std::get<1>(lhs) -= std::get<1>(rhs);
+        std::get<2>(lhs) -= std::get<2>(rhs);
         return lhs;
     }
     
     template <typename TYPE>
     constexpr Vector3D<TYPE>& operator *= (Vector3D<TYPE>& lhs, const Real rhs) noexcept
     {
-        lhs.x *= rhs;
-        lhs.y *= rhs;
-        lhs.z *= rhs;
+        std::get<0>(lhs) *= rhs;
+        std::get<1>(lhs) *= rhs;
+        std::get<2>(lhs) *= rhs;
         return lhs;
     }
     
     template <typename TYPE>
     constexpr Vector3D<TYPE>& operator /= (Vector3D<TYPE>& lhs, const Real rhs) noexcept
     {
-        lhs.x /= rhs;
-        lhs.y /= rhs;
-        lhs.z /= rhs;
+        std::get<0>(lhs) /= rhs;
+        std::get<1>(lhs) /= rhs;
+        std::get<2>(lhs) /= rhs;
         return lhs;
     }
     
-    template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{0} * TYPE2{0})>
-    constexpr inline Vector3D<OUT_TYPE> operator * (const TYPE1 s, const Vector3D<TYPE2> a) noexcept
+    template <typename T>
+    constexpr auto operator+ (const Vector3D<T> v) noexcept
     {
-        return Vector3D<OUT_TYPE>{s * a.x, s * a.y, s * a.z};
+        return Vector3D<T>{+std::get<0>(v), +std::get<1>(v), +std::get<2>(v)};
+    }
+    
+    template <typename T>
+    constexpr auto operator- (const Vector3D<T> v) noexcept
+    {
+        return Vector3D<T>{-std::get<0>(v), -std::get<1>(v), -std::get<2>(v)};
+    }
+    
+    /// Add two vectors component-wise.
+    template <typename TYPE>
+    constexpr Vector3D<TYPE> operator + (Vector3D<TYPE> lhs, const Vector3D<TYPE> rhs) noexcept
+    {
+        return lhs += rhs;
+    }
+    
+    /// Subtract two vectors component-wise.
+    template <typename TYPE>
+    constexpr Vector3D<TYPE> operator - (Vector3D<TYPE> lhs, const Vector3D<TYPE> rhs) noexcept
+    {
+        return lhs -= rhs;
     }
     
     template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{0} * TYPE2{0})>
-    constexpr inline Vector3D<OUT_TYPE> operator * (const Vector3D<TYPE1> a, const TYPE2 s) noexcept
+    constexpr inline Vector3D<OUT_TYPE> operator * (const TYPE1 s, Vector3D<TYPE2> a) noexcept
     {
-        return Vector3D<OUT_TYPE>{a.x * s, a.y * s, a.z * s};
+        return a *= s;
+    }
+    
+    template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{0} * TYPE2{0})>
+    constexpr inline Vector3D<OUT_TYPE> operator * (Vector3D<TYPE1> a, const TYPE2 s) noexcept
+    {
+        return a *= s;
     }
     
     template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{0} / TYPE2{0})>
-    constexpr Vector3D<OUT_TYPE> operator/ (const Vector3D<TYPE1> a, const TYPE2 s) noexcept
+    constexpr Vector3D<OUT_TYPE> operator/ (Vector3D<TYPE1> a, const TYPE2 s) noexcept
     {
-        return Vector3D<OUT_TYPE>{a.x / s, a.y / s, a.z / s};
+        return a /= s;
     }
 
     /// A 3D column vector with 3 elements.
@@ -160,7 +145,7 @@ namespace playrho
     template <>
     constexpr inline bool IsValid(const Vec3& value) noexcept
     {
-        return IsValid(value.x) && IsValid(value.y) && IsValid(value.z);
+        return IsValid(std::get<0>(value)) && IsValid(std::get<1>(value)) && IsValid(std::get<2>(value));
     }
     
 } // namespace playrho

@@ -37,7 +37,7 @@ TEST(VertexSet, DefaultConstruction)
     const auto set = VertexSet{};
     EXPECT_EQ(set.size(), std::size_t(0));
     EXPECT_EQ(set.begin(), set.end());
-    EXPECT_EQ(set.find(Length2D(0, 0)), set.end());
+    EXPECT_EQ(set.find(Length2D{}), set.end());
 }
 
 TEST(VertexSet, Add)

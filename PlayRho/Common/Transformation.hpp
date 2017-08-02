@@ -40,12 +40,14 @@ namespace playrho
         UnitVec2 q; ///< Rotational portion of the transformation. 8-bytes.
     };
     
-    constexpr auto Transform_identity = Transformation{Length2D(0, 0), UnitVec2::GetRight()};
+    constexpr auto Transform_identity = Transformation{
+        Length2D{Real(0) * Meter, Real(0) * Meter}, UnitVec2::GetRight()
+    };
     
     template <>
     constexpr inline bool IsValid(const Transformation& value) noexcept
     {
-        return IsValid(value.p.x) && IsValid(value.p.y) && IsValid(value.q);
+        return IsValid(value.p) && IsValid(value.q);
     }
     
     constexpr inline bool operator == (Transformation lhs, Transformation rhs) noexcept

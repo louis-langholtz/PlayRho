@@ -103,9 +103,13 @@ public:
             }
 
             const auto p1 = actor->aabb.GetLowerBound();
-            const auto p2 = Length2D(actor->aabb.GetUpperBound().x, actor->aabb.GetLowerBound().y);
+            const auto p2 = Length2D{
+                GetX(actor->aabb.GetUpperBound()), GetY(actor->aabb.GetLowerBound())
+            };
             const auto p3 = actor->aabb.GetUpperBound();
-            const auto p4 = Length2D(actor->aabb.GetLowerBound().x, actor->aabb.GetUpperBound().y);
+            const auto p4 = Length2D{
+                GetX(actor->aabb.GetLowerBound()), GetY(actor->aabb.GetUpperBound())
+            };
             
             drawer.DrawSegment(p1, p2, c);
             drawer.DrawSegment(p2, p3, c);
@@ -118,9 +122,13 @@ public:
             // Draw the AABB.
 
             const auto p1 = m_queryAABB.GetLowerBound();
-            const auto p2 = Length2D(m_queryAABB.GetUpperBound().x, m_queryAABB.GetLowerBound().y);
+            const auto p2 = Length2D{
+                GetX(m_queryAABB.GetUpperBound()), GetY(m_queryAABB.GetLowerBound())
+            };
             const auto p3 = m_queryAABB.GetUpperBound();
-            const auto p4 = Length2D(m_queryAABB.GetLowerBound().x, m_queryAABB.GetUpperBound().y);
+            const auto p4 = Length2D{
+                GetX(m_queryAABB.GetLowerBound()), GetY(m_queryAABB.GetUpperBound())
+            };
             
             drawer.DrawSegment(p1, p2, c);
             drawer.DrawSegment(p2, p3, c);
@@ -230,7 +238,9 @@ private:
         const auto c0 = GetCenter(*aabb);
         const auto min = Vec2(-m_worldExtent, Real(0)) * Meter;
         const auto max = Vec2(m_worldExtent, 2.0f * m_worldExtent) * Meter;
-        const auto c = Length2D{Clamp(c0.x, min.x, max.x), Clamp(c0.y, min.y, max.y)};
+        const auto c = Length2D{
+            Clamp(GetX(c0), GetX(min), GetX(max)), Clamp(GetY(c0), GetY(min), GetY(max))
+        };
 
         aabb->Move(c - c0);
     }

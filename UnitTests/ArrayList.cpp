@@ -18,6 +18,8 @@
 
 #include "gtest/gtest.h"
 #include <PlayRho/Common/ArrayList.hpp>
+#include <PlayRho/Common/Vector.hpp>
+//#include <PlayRho/Common/Math.hpp>
 
 using namespace playrho;
 
@@ -54,6 +56,40 @@ TEST(ArrayList, ArrayConstruction)
         EXPECT_EQ(list.max_size(), decltype(list.size()){max_size});
         EXPECT_FALSE(list.empty());
         EXPECT_EQ(std::distance(list.begin(), list.end()), array_size);
+    }
+    {
+        constexpr auto maxsize = std::size_t{10};
+        ArrayList<int, maxsize> list = { 1, 2, 3 };
+        EXPECT_EQ(list.size(), decltype(list.size()){3});
+        EXPECT_EQ(list.max_size(), maxsize);
+    }
+    {
+        constexpr auto maxsize = std::size_t{10};
+        constexpr auto list = std::array<int, maxsize>{{5, 4, 3}};
+        EXPECT_EQ(list.size(), decltype(list.size()){maxsize});
+        EXPECT_EQ(list.max_size(), maxsize);
+        EXPECT_EQ(list[0], 5);
+        EXPECT_EQ(list[1], 4);
+        EXPECT_EQ(list[2], 3);
+    }
+    {
+        constexpr auto maxsize = std::size_t{10};
+        
+        // Note: list cannot be constexpr.
+        const auto list = ArrayList<int, maxsize>{1, 2, 3};
+
+        EXPECT_EQ(list.size(), decltype(list.size()){3});
+        EXPECT_EQ(list.max_size(), maxsize);
+        EXPECT_EQ(list[0], 1);
+        EXPECT_EQ(list[1], 2);
+        EXPECT_EQ(list[2], 3);
+    }
+    {
+        constexpr auto list = Vector<3, int>{1, 2, 3};
+        EXPECT_EQ(list.size(), decltype(list.size()){3});
+        EXPECT_EQ(list[0], 1);
+        EXPECT_EQ(list[1], 2);
+        EXPECT_EQ(list[2], 3);
     }
 }
 

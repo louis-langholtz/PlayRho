@@ -77,8 +77,8 @@ TEST(Transformation, Mul)
     const auto Ap = xfm.p;
     const auto Bp = xfm.p;
     const auto newP = Ap + Rotate(Bp, xfm.q);
-    EXPECT_EQ(xfm2.p.x, newP.x);
-    EXPECT_EQ(xfm2.p.y, newP.y);
+    EXPECT_EQ(GetX(xfm2.p), GetX(newP));
+    EXPECT_EQ(GetY(xfm2.p), GetY(newP));
     
     EXPECT_NEAR(double(xfm2.q.cos()), double(rotation2.cos()), 0.0001);
     EXPECT_NEAR(double(xfm2.q.sin()), double(rotation2.sin()), 0.0001);

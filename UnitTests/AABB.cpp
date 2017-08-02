@@ -67,13 +67,13 @@ TEST(AABB, DefaultAabbAddsToOther)
 {
     const auto default_aabb = AABB{};
     {
-        const auto other_aabb = AABB{Length2D(0, 0), Length2D(0, 0)};
+        const auto other_aabb = AABB{Length2D{}, Length2D{}};
         const auto sum_aabb = GetEnclosingAABB(default_aabb, other_aabb);
         EXPECT_EQ(sum_aabb.GetLowerBound(), other_aabb.GetLowerBound());
         EXPECT_EQ(sum_aabb.GetUpperBound(), other_aabb.GetUpperBound());
     }
     {
-        const auto other_aabb = AABB{Length2D(0, 0), Length2D(0, 0)};
+        const auto other_aabb = AABB{Length2D{}, Length2D{}};
         const auto sum_aabb = GetEnclosingAABB(other_aabb, default_aabb);
         EXPECT_EQ(sum_aabb.GetLowerBound(), other_aabb.GetLowerBound());
         EXPECT_EQ(sum_aabb.GetUpperBound(), other_aabb.GetUpperBound());
@@ -93,7 +93,7 @@ TEST(AABB, DefaultAabbIncrementsToOther)
 {
     {
         auto default_aabb = AABB{};
-        const auto other_aabb = AABB{Length2D(0, 0), Length2D(0, 0)};
+        const auto other_aabb = AABB{Length2D{}, Length2D{}};
         default_aabb.Include(other_aabb);
         EXPECT_EQ(default_aabb.GetLowerBound(), other_aabb.GetLowerBound());
         EXPECT_EQ(default_aabb.GetUpperBound(), other_aabb.GetUpperBound());
@@ -125,21 +125,21 @@ TEST(AABB, InitializingConstruction)
     
     {
         AABB foo{v0, v1};
-        EXPECT_EQ(GetCenter(foo).x, center_x);
-        EXPECT_EQ(GetCenter(foo).y, center_y);
-        EXPECT_EQ(foo.GetLowerBound().x, lower_x);
-        EXPECT_EQ(foo.GetLowerBound().y, lower_y);
-        EXPECT_EQ(foo.GetUpperBound().x, upper_x);
-        EXPECT_EQ(foo.GetUpperBound().y, upper_y);
+        EXPECT_EQ(GetX(GetCenter(foo)), center_x);
+        EXPECT_EQ(GetY(GetCenter(foo)), center_y);
+        EXPECT_EQ(GetX(foo.GetLowerBound()), lower_x);
+        EXPECT_EQ(GetY(foo.GetLowerBound()), lower_y);
+        EXPECT_EQ(GetX(foo.GetUpperBound()), upper_x);
+        EXPECT_EQ(GetY(foo.GetUpperBound()), upper_y);
     }
     {
         AABB foo{v1, v0};
-        EXPECT_EQ(GetCenter(foo).x, center_x);
-        EXPECT_EQ(GetCenter(foo).y, center_y);
-        EXPECT_EQ(foo.GetLowerBound().x, lower_x);
-        EXPECT_EQ(foo.GetLowerBound().y, lower_y);
-        EXPECT_EQ(foo.GetUpperBound().x, upper_x);
-        EXPECT_EQ(foo.GetUpperBound().y, upper_y);
+        EXPECT_EQ(GetX(GetCenter(foo)), center_x);
+        EXPECT_EQ(GetY(GetCenter(foo)), center_y);
+        EXPECT_EQ(GetX(foo.GetLowerBound()), lower_x);
+        EXPECT_EQ(GetY(foo.GetLowerBound()), lower_y);
+        EXPECT_EQ(GetX(foo.GetUpperBound()), upper_x);
+        EXPECT_EQ(GetY(foo.GetUpperBound()), upper_y);
     }
 }
 
@@ -255,29 +255,30 @@ TEST(AABB, ComputeAabbForDefaultDistanceProxy)
 
 TEST(AABB, Move)
 {
+    const auto zeroLoc = Length2D{};
+    const auto zeroAabb = AABB{zeroLoc};
     {
         auto aabb = AABB{};
-        EXPECT_EQ(aabb.Move(Length2D(0, 0)), AABB{});
-        EXPECT_EQ(aabb.Move(Length2D(Real(10) * Meter, Real(-4) * Meter)), AABB{});
+        EXPECT_EQ(aabb.Move(zeroLoc), AABB{});
+        EXPECT_EQ(aabb.Move(Length2D{Real(10) * Meter, Real(-4) * Meter}), AABB{});
     }
     {
-        auto aabb = AABB{Length2D(0, 0)};
-        EXPECT_EQ(aabb.Move(Length2D(0, 0)), AABB{Length2D(0, 0)});
+        auto aabb = AABB{Length2D{}};
+        EXPECT_EQ(aabb.Move(Length2D{}), zeroAabb);
     }
     {
-        auto aabb = AABB{Length2D(0, 0)};
-        EXPECT_EQ(aabb.Move(Length2D(Real(1) * Meter, Real(1) * Meter)),
-                  AABB{Length2D(Real(1) * Meter, Real(1) * Meter)});
-        EXPECT_EQ(aabb.Move(Length2D(Real(-1) * Meter, Real(-1) * Meter)),
-                  AABB{Length2D(0, 0)});
-        EXPECT_EQ(aabb.Move(Length2D(Real(-10) * Meter, Real(11) * Meter)),
-                  AABB{Length2D(Real(-10) * Meter, Real(11) * Meter)});
+        const auto aabb1 = AABB{Length2D{Real(1) * Meter, Real(1) * Meter}};
+        const auto aabb2 = AABB{Length2D{Real(-10) * Meter, Real(11) * Meter}};
+        auto aabb = zeroAabb;
+        EXPECT_EQ(aabb.Move(Length2D{Real(1) * Meter, Real(1) * Meter}), aabb1);
+        EXPECT_EQ(aabb.Move(Length2D{Real(-1) * Meter, Real(-1) * Meter}), zeroAabb);
+        EXPECT_EQ(aabb.Move(Length2D{Real(-10) * Meter, Real(11) * Meter}), aabb2);
     }
     {
-        const auto lower = Length2D(Real(-1) * Meter, Real(-1) * Meter);
-        const auto upper = Length2D(Real(+3) * Meter, Real(+9) * Meter);
+        const auto lower = Length2D{Real(-1) * Meter, Real(-1) * Meter};
+        const auto upper = Length2D{Real(+3) * Meter, Real(+9) * Meter};
         auto aabb = AABB{lower, upper};
-        const auto moveby = Length2D(Real(1) * Meter, Real(1) * Meter);
+        const auto moveby = Length2D{Real(1) * Meter, Real(1) * Meter};
         EXPECT_EQ(aabb.Move(moveby), AABB(lower + moveby, upper + moveby));
     }
 }

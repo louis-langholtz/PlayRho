@@ -131,7 +131,7 @@ MassData playrho::GetMassData(const Length vertexRadius, const NonNegative<Densi
             break;
     }
     
-    auto center = Length2D(0, 0);
+    auto center = Length2D{};
     auto area = Area{0};
     auto I = SecondMomentOfArea{0};
     
@@ -154,8 +154,8 @@ MassData playrho::GetMassData(const Length vertexRadius, const NonNegative<Densi
         // Area weighted centroid
         center += StripUnit(triangleArea) * (e1 + e2) / Real{3};
         
-        const auto intx2 = e1.x * e1.x + e2.x * e1.x + e2.x * e2.x;
-        const auto inty2 = e1.y * e1.y + e2.y * e1.y + e2.y * e2.y;
+        const auto intx2 = Square(GetX(e1)) + GetX(e2) * GetX(e1) + Square(GetX(e2));
+        const auto inty2 = Square(GetY(e1)) + GetY(e2) * GetY(e1) + Square(GetY(e2));
         
         const auto triangleI = D * (intx2 + inty2) / Real{3 * 4};
         I += triangleI;
@@ -195,7 +195,7 @@ Area playrho::GetAreaOfPolygon(Span<const Length2D> vertices)
         const auto last_v = vertices[GetModuloPrev(i, count)];
         const auto this_v = vertices[i];
         const auto next_v = vertices[GetModuloNext(i, count)];
-        sum += this_v.x * (next_v.y - last_v.y);
+        sum += GetX(this_v) * (GetY(next_v) - GetY(last_v));
     }
     return sum / Real{2};
 }
@@ -217,13 +217,13 @@ SecondMomentOfArea playrho::GetPolarMoment(Span<const Length2D> vertices)
     {
         const auto this_v = vertices[i];
         const auto next_v = vertices[GetModuloNext(i, count)];
-        const auto fact_b = this_v.x * next_v.y - next_v.x * this_v.y;
+        const auto fact_b = Cross(this_v, next_v);
         sum_x += [&]() {
-            const auto fact_a = Square(this_v.y) + this_v.y * next_v.y + Square(next_v.y);
+            const auto fact_a = Square(GetY(this_v)) + GetY(this_v) * GetY(next_v) + Square(GetY(next_v));
             return fact_a * fact_b;
         }();
         sum_y += [&]() {
-            const auto fact_a = Square(this_v.x) + this_v.x * next_v.x + Square(next_v.x);
+            const auto fact_a = Square(GetX(this_v)) + GetX(this_v) * GetX(next_v) + Square(GetX(next_v));
             return fact_a * fact_b;
         }();
     }
@@ -241,7 +241,7 @@ MassData playrho::ComputeMassData(const Body& body) noexcept
 {
     auto mass = Mass{0};
     auto I = RotInertia{0};
-    auto center = Length2D(0, 0);
+    auto center = Length2D{};
     for (auto&& f: body.GetFixtures())
     {
         const auto& fixture = GetRef(f);

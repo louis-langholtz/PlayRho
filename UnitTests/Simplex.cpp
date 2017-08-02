@@ -304,24 +304,24 @@ TEST(Simplex, Get2_rot45_half)
     
     const auto va1 = Rotate(va0, UnitVec2::Get(Angle{Real{45.0f} * Degree})) / Real{2}; // Vec2{-13.081475, 10.253049}
     const auto vb1 = Rotate(vb0, UnitVec2::Get(Angle{Real{45.0f} * Degree})) / Real{2}; // Vec2{316.4303, 320.67291}
-    EXPECT_NEAR(double(Real{va1.x / Meter}), -13.081475, 0.001);
-    EXPECT_NEAR(double(Real{va1.y / Meter}),  10.253049, 0.001);
-    EXPECT_NEAR(double(Real{vb1.x / Meter}), 316.4303,   0.001);
-    EXPECT_NEAR(double(Real{vb1.y / Meter}), 320.67291,  0.001);
+    EXPECT_NEAR(double(Real{GetX(va1) / Meter}), -13.081475, 0.001);
+    EXPECT_NEAR(double(Real{GetY(va1) / Meter}),  10.253049, 0.001);
+    EXPECT_NEAR(double(Real{GetX(vb1) / Meter}), 316.4303,   0.001);
+    EXPECT_NEAR(double(Real{GetY(vb1) / Meter}), 320.67291,  0.001);
     const auto ia1 = SimplexEdge::index_type{4};
     const auto ib1 = SimplexEdge::index_type{1};
     const auto sv1 = SimplexEdge{va1, ia1, vb1, ib1};
 
     const auto w1 = vb0 - va0; // Vec2{901, 6} - Vec2{-4, 33} = Vec2{905, -27}
-    EXPECT_TRUE(almost_equal(w1.x / Meter, Real(905)));
-    EXPECT_TRUE(almost_equal(w1.y / Meter, Real(-27)));
+    EXPECT_TRUE(almost_equal(GetX(w1) / Meter, Real(905)));
+    EXPECT_TRUE(almost_equal(GetY(w1) / Meter, Real(-27)));
     const auto w2 = vb1 - va1; // Vec2{316.4303, 320.67291} - Vec2{-13.081475, 10.253049} = Vec2{329.51178, 310.41986}
-    EXPECT_NEAR(double(Real{w2.x / Meter}), 329.51178, 0.001);
-    EXPECT_NEAR(double(Real{w2.y / Meter}), 310.41986, 0.001);
+    EXPECT_NEAR(double(Real{GetX(w2) / Meter}), 329.51178, 0.001);
+    EXPECT_NEAR(double(Real{GetY(w2) / Meter}), 310.41986, 0.001);
     
     const auto e12 = w2 - w1; // Vec2{329.51178, 310.41986} - Vec2{905, -27} = Vec2{-575.48822, 337.41986}
-    EXPECT_NEAR(double(Real{e12.x / Meter}), -575.48822, 0.001);
-    EXPECT_NEAR(double(Real{e12.y / Meter}),  337.41986, 0.001);
+    EXPECT_NEAR(double(Real{GetX(e12) / Meter}), -575.48822, 0.001);
+    EXPECT_NEAR(double(Real{GetY(e12) / Meter}),  337.41986, 0.001);
 
     const auto d12_2 = Area{-Dot(w1, e12)}; // -Dot(Vec2{905, -27}, Vec2{-575.48822, 337.41986}) = 529927.19
     EXPECT_NEAR(double(Real{d12_2 / SquareMeter}), 529927.19, 1.0);

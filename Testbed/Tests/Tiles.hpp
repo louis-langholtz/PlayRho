@@ -42,25 +42,25 @@ public:
         {
             const auto a = Real{0.5f};
             BodyDef bd;
-            bd.position.y = -a * Meter;
+            GetY(bd.position) = -a * Meter;
             const auto ground = m_world->CreateBody(bd);
 
             const auto N = 200;
             const auto M = 10;
             Vec2 position;
-            position.y = 0.0f;
+            GetY(position) = 0.0f;
             for (auto j = 0; j < M; ++j)
             {
-                position.x = -N * a;
+                GetX(position) = -N * a;
                 for (auto i = 0; i < N; ++i)
                 {
                     PolygonShape shape;
                     SetAsBox(shape, a * Meter, a * Meter, position * Meter, Angle{0});
                     ground->CreateFixture(std::make_shared<PolygonShape>(shape));
                     ++m_fixtureCount;
-                    position.x += 2.0f * a;
+                    GetX(position) += 2.0f * a;
                 }
-                position.y -= 2.0f * a;
+                GetY(position) -= 2.0f * a;
             }
         }
 

@@ -23,30 +23,90 @@
 #define Vector_hpp
 
 #include <cstddef>
+#include <type_traits>
 
 namespace playrho
 {
-    /// @brief Vector.
-    /// @details Basically a constexpr enhanced std::array for C++14.
-    /// @note This type should be drop-in replacable with std::array in C++17.
-    template <typename T, std::size_t N>
-    struct Vector
+
+/// @brief Vector.
+/// @details Basically a constexpr and constructor enhanced std::array for C++14.
+/// @note This type is trivially default constructible - i.e. default construction
+///   performs no actions (no initialization).
+/// @note This type should be drop-in replacable with std::array in C++17.
+template <std::size_t N, typename T>
+struct Vector
+{
+    static_assert(N > 0, "Dimension must be greater than 0");
+
+    using value_type = T;
+    using size_type = std::size_t;
+    using difference_type = std::ptrdiff_t;
+    using reference = value_type&;
+    using const_reference = const value_type&;
+    using pointer = value_type*;
+    using const_pointer = const value_type*;
+    using iterator = value_type*;
+    using const_iterator = const value_type*;
+    
+    /// @brief Default constructor.
+    /// @note Defaulted explicitly.
+    /// @note This constructor performs no action.
+    constexpr Vector() = default;
+    
+    template<typename... Tail>
+    constexpr Vector(typename std::enable_if<sizeof...(Tail)+1 == N, T>::type
+                     head, Tail... tail) noexcept: elements{head, T(tail)...}
     {
-        using value_type = T;
-        using size_type = std::size_t;
-        using difference_type = std::ptrdiff_t;
-        using reference = value_type&;
-        using const_reference = const value_type&;
-        using pointer = value_type*;
-        using const_pointer = const value_type*;
-        
-        constexpr size_type max_size() const noexcept { return N; }
-        constexpr size_type size() const noexcept { return N; }
-        constexpr size_type empty() const noexcept { return N == 0; }
-        
-        constexpr reference operator[](size_type pos);
-        constexpr const_reference operator[](size_type pos) const;
-    };
+        //static_assert(sizeof...(args) == N, "Invalid number of arguments");
+    }
+
+    constexpr size_type max_size() const noexcept { return N; }
+    constexpr size_type size() const noexcept { return N; }
+    constexpr size_type empty() const noexcept { return N == 0; }
+    
+    iterator begin() noexcept { return iterator(elements); }
+    iterator end() noexcept { return iterator(elements + N); }
+    const_iterator begin() const noexcept { return const_iterator(elements); }
+    const_iterator end() const noexcept { return const_iterator(elements + N); }
+    const_iterator cbegin() const noexcept { return begin(); }
+    const_iterator cend() const noexcept { return end(); }
+
+    constexpr reference operator[](size_type pos) noexcept
+    {
+        return elements[pos];
+    }
+
+    constexpr const_reference operator[](size_type pos) const noexcept
+    {
+        return elements[pos];
+    }
+    
+    /// @brief Elements.
+    /// @warning Don't access this directly!
+    /// @warning Data is not initialized on default construction. This is intentional
+    ///   to avoid any performance overhead that default initialization might incur.
+    value_type elements[N];
+};
+
+} // namespace playrho
+
+namespace std
+{
+
+template <size_t I, size_t N, typename T>
+constexpr auto& get(playrho::Vector<N, T>& v) noexcept
+{
+    static_assert(I < N, "Index out of bounds in std::get<> (playrho::Vector)");
+    return v[I];
 }
+
+template <size_t I, size_t N, typename T>
+constexpr auto get(const playrho::Vector<N, T>& v) noexcept
+{
+    static_assert(I < N, "Index out of bounds in std::get<> (playrho::Vector)");
+    return v[I];
+}
+
+} // namespace std
 
 #endif /* Vector_hpp */

@@ -51,7 +51,7 @@ public:
         
         constexpr Conf& UseLocation(Length2D value) noexcept;
 
-        Length2D location = Length2D(0, 0);
+        Length2D location = Length2D{};
     };
 
     static constexpr Conf GetDefaultConf() noexcept
@@ -110,7 +110,7 @@ public:
 
 private:
     /// Linear position of the shape as initialized on construction or as assigned using the SetPosition method.
-    Length2D m_location = Length2D(0, 0);
+    Length2D m_location = Length2D{};
 };
 
 constexpr DiskShape::Conf& DiskShape::Conf::UseLocation(Length2D value) noexcept

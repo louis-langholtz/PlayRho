@@ -121,8 +121,8 @@ inline Momentum BlockSolveNormalCase1(VelocityConstraint& vc, const Vec2 b_prime
     const auto normalMass = vc.GetNormalMass();
     const auto newImpulsesUnitless = -Transform(b_prime, normalMass);
     const auto newImpulses = Momentum2D{
-        newImpulsesUnitless.GetX() * Kilogram * MeterPerSecond,
-        newImpulsesUnitless.GetY() * Kilogram * MeterPerSecond
+        GetX(newImpulsesUnitless) * Kilogram * MeterPerSecond,
+        GetY(newImpulsesUnitless) * Kilogram * MeterPerSecond
     };
     if ((newImpulses[0] >= Momentum{0}) && (newImpulses[1] >= Momentum{0}))
     {
@@ -158,14 +158,14 @@ inline Momentum BlockSolveNormalCase2(VelocityConstraint& vc, const Vec2 b_prime
     //   0 = a11 * x1 + a12 * 0 + b1'
     // vn2 = a21 * x1 + a22 * 0 + b2'
     //
-    const auto newImpulsesUnitless = Vec2{-StripUnit(GetNormalMassAtPoint(vc, 0)) * b_prime.x, 0};
+    const auto newImpulsesUnitless = Vec2{-StripUnit(GetNormalMassAtPoint(vc, 0)) * std::get<0>(b_prime), 0};
     const auto newImpulses = Momentum2D{
-        newImpulsesUnitless.GetX() * Kilogram * MeterPerSecond,
-        newImpulsesUnitless.GetY() * Kilogram * MeterPerSecond
+        GetX(newImpulsesUnitless) * Kilogram * MeterPerSecond,
+        GetY(newImpulsesUnitless) * Kilogram * MeterPerSecond
     };
     const auto K = vc.GetK();
-    const auto vn2 = K.ex.y * newImpulsesUnitless.x + b_prime.y;
-    if ((newImpulsesUnitless.x >= 0) && (vn2 >= 0))
+    const auto vn2 = std::get<1>(K.ex) * std::get<0>(newImpulsesUnitless) + std::get<1>(b_prime);
+    if ((std::get<0>(newImpulsesUnitless) >= 0) && (vn2 >= 0))
     {
         const auto max = BlockSolveUpdate(vc, newImpulses);
 
@@ -194,14 +194,14 @@ inline Momentum BlockSolveNormalCase3(VelocityConstraint& vc, const Vec2 b_prime
     // vn1 = a11 * 0 + a12 * x2 + b1'
     //   0 = a21 * 0 + a22 * x2 + b2'
     //
-    const auto newImpulsesUnitless = Vec2{0, -StripUnit(GetNormalMassAtPoint(vc, 1)) * b_prime.y};
+    const auto newImpulsesUnitless = Vec2{0, -StripUnit(GetNormalMassAtPoint(vc, 1)) * std::get<1>(b_prime)};
     const auto newImpulses = Momentum2D{
-        newImpulsesUnitless.GetX() * Kilogram * MeterPerSecond,
-        newImpulsesUnitless.GetY() * Kilogram * MeterPerSecond
+        GetX(newImpulsesUnitless) * Kilogram * MeterPerSecond,
+        GetY(newImpulsesUnitless) * Kilogram * MeterPerSecond
     };
     const auto K = vc.GetK();
-    const auto vn1 = K.ey.x * newImpulsesUnitless.y + b_prime.x;
-    if ((newImpulsesUnitless.y >= 0) && (vn1 >= 0))
+    const auto vn1 = std::get<0>(K.ey) * std::get<1>(newImpulsesUnitless) + std::get<0>(b_prime);
+    if ((std::get<1>(newImpulsesUnitless) >= 0) && (vn1 >= 0))
     {
         const auto max = BlockSolveUpdate(vc, newImpulses);
 
@@ -229,11 +229,11 @@ inline Momentum BlockSolveNormalCase4(VelocityConstraint& vc, const Vec2 b_prime
     //
     // vn1 = b1
     // vn2 = b2;
-    const auto vn1 = b_prime.x;
-    const auto vn2 = b_prime.y;
+    const auto vn1 = std::get<0>(b_prime);
+    const auto vn2 = std::get<1>(b_prime);
     if ((vn1 >= 0) && (vn2 >= 0))
     {
-        return BlockSolveUpdate(vc, Momentum2D{0, 0});
+        return BlockSolveUpdate(vc, Momentum2D{});
     }
     return GetInvalid<Momentum>();
 }

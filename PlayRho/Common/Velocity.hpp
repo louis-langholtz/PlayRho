@@ -38,7 +38,7 @@ namespace playrho
     template <>
     constexpr inline bool IsValid(const Velocity& value) noexcept
     {
-        return IsValid(value.linear.x) && IsValid(value.linear.y) && IsValid(value.angular);
+        return IsValid(value.linear) && IsValid(value.angular);
     }
     
     constexpr inline bool operator==(const Velocity& lhs, const Velocity& rhs)

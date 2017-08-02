@@ -24,161 +24,15 @@
 
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/InvalidArgument.hpp>
+#include <PlayRho/Common/Vector.hpp>
+#include <array>
 
 namespace playrho
 {
-    /// Vector 2D.
-    template <typename TYPE>
-    struct Vector2D
-    {
-        using size_type = std::size_t;
-        using data_type = TYPE;
-        
-        /// Default constructor does nothing (for performance).
-        Vector2D() = default;
-        
-        Vector2D(const Vector2D& copy) = default;
-
-        constexpr explicit Vector2D(data_type value) noexcept : x{value}, y{value} {}
-
-        /// Construct using coordinates.
-        constexpr Vector2D(data_type x_, data_type y_) noexcept : x{x_}, y{y_} {}
-        
-        /// Negate this vector.
-        constexpr auto operator- () const noexcept { return Vector2D{-x, -y}; }
-        
-        /// Maximum size.
-        /// @details This is this vector type's dimensionality.
-        constexpr size_type max_size() const noexcept { return 2; }
-        
-        /// Accesses element by index.
-        /// @param i Index (0 for x, 1 for y).
-        auto operator[] (size_type i) const
-        {
-            switch (i)
-            {
-                case 0: return x;
-                case 1: return y;
-                default: break;
-            }
-            throw InvalidArgument("only 0 or 1 valid for index");
-        }
-        
-        /// Accesses element by index.
-        /// @param i Index (0 for x, 1 for y).
-        auto& operator[] (size_type i)
-        {
-            switch (i)
-            {
-                case 0: return x;
-                case 1: return y;
-                default: break;
-            }
-            throw InvalidArgument("only 0 or 1 valid for index");
-        }
-        
-        auto GetX() const noexcept
-        {
-            return x;
-        }
-
-        auto GetY() const noexcept
-        {
-            return y;
-        }
-
-        data_type x, y;
-    };
-#if 0
-    template <typename TYPE>
-    constexpr inline typename Vector2D<TYPE>::data_type GetX(const Vector2D<TYPE> value)
-    {
-        return value.x;
-    }
-    
-    template <typename TYPE>
-    constexpr inline typename Vector2D<TYPE>::data_type GetY(const Vector2D<TYPE> value)
-    {
-        return value.y;
-    }
-#endif
-    template <typename TYPE>
-    constexpr inline bool operator == (const Vector2D<TYPE> a, const Vector2D<TYPE> b) noexcept
-    {
-        return (a.x == b.x) && (a.y == b.y);
-    }
-    
-    template <typename TYPE>
-    constexpr inline bool operator != (const Vector2D<TYPE> a, const Vector2D<TYPE> b) noexcept
-    {
-        return (a.x != b.x) || (a.y != b.y);
-    }
-
-    /// Add two vectors component-wise.
-    template <typename TYPE>
-    constexpr inline Vector2D<TYPE> operator + (const Vector2D<TYPE> a, const Vector2D<TYPE> b) noexcept
-    {
-        return Vector2D<TYPE>{a.x + b.x, a.y + b.y};
-    }
-    
-    /// Subtract two vectors component-wise.
-    template <typename TYPE>
-    constexpr inline Vector2D<TYPE> operator - (const Vector2D<TYPE> a, const Vector2D<TYPE> b) noexcept
-    {
-        return Vector2D<TYPE>{a.x - b.x, a.y - b.y};
-    }
-    
-    /// Increment the left hand side value by the right hand side value.
-    template <typename TYPE>
-    constexpr Vector2D<TYPE>& operator += (Vector2D<TYPE>& lhs, const Vector2D<TYPE> rhs) noexcept
-    {
-        lhs.x += rhs.x;
-        lhs.y += rhs.y;
-        return lhs;
-    }
-    
-    /// Decrement the left hand side value by the right hand side value.
-    template <typename TYPE>
-    constexpr Vector2D<TYPE>& operator -= (Vector2D<TYPE>& lhs, const Vector2D<TYPE> rhs) noexcept
-    {
-        lhs.x -= rhs.x;
-        lhs.y -= rhs.y;
-        return lhs;
-    }
-    
-    template <typename TYPE>
-    constexpr Vector2D<TYPE>& operator *= (Vector2D<TYPE>& lhs, const Real rhs) noexcept
-    {
-        lhs.x *= rhs;
-        lhs.y *= rhs;
-        return lhs;
-    }
-    
-    template <typename TYPE>
-    constexpr Vector2D<TYPE>& operator /= (Vector2D<TYPE>& lhs, const Real rhs) noexcept
-    {
-        lhs.x /= rhs;
-        lhs.y /= rhs;
-        return lhs;
-    }
-    
-    template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{0} * TYPE2{0})>
-    constexpr inline Vector2D<OUT_TYPE> operator * (const TYPE1 s, const Vector2D<TYPE2> a) noexcept
-    {
-        return Vector2D<OUT_TYPE>{s * a.x, s * a.y};
-    }
-    
-    template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{0} * TYPE2{0})>
-    constexpr inline Vector2D<OUT_TYPE> operator * (const Vector2D<TYPE1> a, const TYPE2 s) noexcept
-    {
-        return Vector2D<OUT_TYPE>{a.x * s, a.y * s};
-    }
-    
-    template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{0} / TYPE2{0})>
-    constexpr Vector2D<OUT_TYPE> operator/ (const Vector2D<TYPE1> a, const TYPE2 s) noexcept
-    {
-        return Vector2D<OUT_TYPE>{a.x / s, a.y / s};
-    }
+    /// @brief Vector with 2-dimensions.
+    /// @note This is just a C++11 alias template for 2-dimensional uses of the Vector template.
+    template <typename T>
+    using Vector2D = Vector<2, T>;
     
     /// @brief Vector 2D of Real.
     /// @note This data structure is two-times the size of the <code>Real</code> type
@@ -204,7 +58,7 @@ namespace playrho
 
     constexpr inline Vec2 GetVec2(const Vector2D<Real> value)
     {
-        return value;
+        return Vec2(value);
     }
 
     template <>
@@ -217,9 +71,99 @@ namespace playrho
     template <typename TYPE>
     constexpr inline bool IsValid(const Vector2D<TYPE>& value) noexcept
     {
-        return IsValid(value.x) && IsValid(value.y);
+        return IsValid(std::get<0>(value)) && IsValid(std::get<1>(value));
+    }
+    
+    template <typename TYPE>
+    constexpr bool operator == (const Vector2D<TYPE> a, const Vector2D<TYPE> b) noexcept
+    {
+        return (std::get<0>(a) == std::get<0>(b)) && (std::get<1>(a) == std::get<1>(b));
+    }
+    
+    template <typename TYPE>
+    constexpr bool operator != (const Vector2D<TYPE> a, const Vector2D<TYPE> b) noexcept
+    {
+        return !(a == b);
+    }
+    
+    /// Increment the left hand side value by the right hand side value.
+    template <typename TYPE>
+    constexpr Vector2D<TYPE>& operator += (Vector2D<TYPE>& lhs, const Vector2D<TYPE> rhs) noexcept
+    {
+        std::get<0>(lhs) += std::get<0>(rhs);
+        std::get<1>(lhs) += std::get<1>(rhs);
+        return lhs;
+    }
+    
+    /// Decrement the left hand side value by the right hand side value.
+    template <typename TYPE>
+    constexpr Vector2D<TYPE>& operator -= (Vector2D<TYPE>& lhs, const Vector2D<TYPE> rhs) noexcept
+    {
+        std::get<0>(lhs) -= std::get<0>(rhs);
+        std::get<1>(lhs) -= std::get<1>(rhs);
+        return lhs;
     }
 
+    template <typename TYPE>
+    constexpr Vector2D<TYPE>& operator *= (Vector2D<TYPE>& lhs, const Real rhs) noexcept
+    {
+        std::get<0>(lhs) *= rhs;
+        std::get<1>(lhs) *= rhs;
+        return lhs;
+    }
+    
+    template <typename TYPE>
+    constexpr Vector2D<TYPE>& operator /= (Vector2D<TYPE>& lhs, const Real rhs) noexcept
+    {
+        std::get<0>(lhs) /= rhs;
+        std::get<1>(lhs) /= rhs;
+        return lhs;
+    }
+    
+    template <typename T>
+    constexpr auto operator+ (const Vector2D<T> v) noexcept
+    {
+        return Vector2D<T>{+std::get<0>(v), +std::get<1>(v)};
+    }
+
+    template <typename T>
+    constexpr auto operator- (const Vector2D<T> v) noexcept
+    {
+        return Vector2D<T>{-std::get<0>(v), -std::get<1>(v)};
+    }
+
+    /// Add two vectors component-wise.
+    template <typename TYPE>
+    constexpr Vector2D<TYPE> operator + (Vector2D<TYPE> lhs, const Vector2D<TYPE> rhs) noexcept
+    {
+        return lhs += rhs;
+    }
+    
+    /// Subtract two vectors component-wise.
+    template <typename TYPE>
+    constexpr Vector2D<TYPE> operator - (Vector2D<TYPE> lhs, const Vector2D<TYPE> rhs) noexcept
+    {
+        return lhs -= rhs;
+    }
+    
+    template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{} * TYPE2{})>
+    constexpr inline Vector2D<OUT_TYPE> operator * (const TYPE1 s, Vector2D<TYPE2> a) noexcept
+    {
+        return Vector2D<OUT_TYPE>{std::get<0>(a) * s, std::get<1>(a) * s};
+    }
+    
+    template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{} * TYPE2{})>
+    constexpr inline Vector2D<OUT_TYPE> operator * (Vector2D<TYPE1> a, const TYPE2 s) noexcept
+    {
+        return Vector2D<OUT_TYPE>{std::get<0>(a) * s, std::get<1>(a) * s};
+    }
+    
+    template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{0} / TYPE2{0})>
+    constexpr Vector2D<OUT_TYPE> operator/ (Vector2D<TYPE1> a, const TYPE2 s) noexcept
+    {
+        return Vector2D<OUT_TYPE>{std::get<0>(a) / s, std::get<1>(a) / s};
+    }
+    
 #ifdef USE_BOOST_UNITS
     template <>
     constexpr Length2D GetInvalid() noexcept
@@ -232,7 +176,7 @@ namespace playrho
     {
         return LinearVelocity2D{GetInvalid<LinearVelocity>(), GetInvalid<LinearVelocity>()};
     }
-
+    
     template <>
     constexpr Force2D GetInvalid() noexcept
     {
@@ -247,25 +191,27 @@ namespace playrho
     
     constexpr inline Vec2 GetVec2(const Length2D value)
     {
-        return Vec2{value.x / Meter, value.y / Meter};
+        return Vec2{std::get<0>(value) / Meter, std::get<1>(value) / Meter};
     }
     
     constexpr inline Vec2 GetVec2(const LinearVelocity2D value)
     {
-        return Vec2{value.x / MeterPerSecond, value.y / MeterPerSecond};
+        return Vec2{std::get<0>(value) / MeterPerSecond, std::get<1>(value) / MeterPerSecond};
     }
     
     constexpr inline Vec2 GetVec2(const Momentum2D value)
     {
-        return Vec2{value.x / (Kilogram * MeterPerSecond), value.y / (Kilogram * MeterPerSecond)};
+        return Vec2{
+            std::get<0>(value) / (Kilogram * MeterPerSecond),
+            std::get<1>(value) / (Kilogram * MeterPerSecond)
+        };
     }
-
+    
     constexpr inline Vec2 GetVec2(const Force2D value)
     {
-        return Vec2{value.x / Newton, value.y / Newton};
+        return Vec2{std::get<0>(value) / Newton, std::get<1>(value) / Newton};
     }
 #endif
-
 } // namespace playrho
 
 #endif /* Vec2_hpp */

@@ -117,7 +117,7 @@ TEST(RopeJoint, GetRopeJointDef)
 TEST(RopeJoint, WithDynamicCircles)
 {
     const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
-    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2D{0, 0})};
+    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2D{})};
     const auto p1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
     const auto p2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
@@ -127,10 +127,10 @@ TEST(RopeJoint, WithDynamicCircles)
     const auto jd = RopeJointDef{b1, b2};
     world.CreateJoint(jd);
     Step(world, Time{Second * Real{1}});
-    EXPECT_GT(b1->GetLocation().x, Real(-1) * Meter);
-    EXPECT_EQ(b1->GetLocation().y, Real(0) * Meter);
-    EXPECT_LT(b2->GetLocation().x, Real(+1) * Meter);
-    EXPECT_EQ(b2->GetLocation().y, Real(0) * Meter);
+    EXPECT_GT(GetX(b1->GetLocation()), Real(-1) * Meter);
+    EXPECT_EQ(GetY(b1->GetLocation()), Real(0) * Meter);
+    EXPECT_LT(GetX(b2->GetLocation()), Real(+1) * Meter);
+    EXPECT_EQ(GetY(b2->GetLocation()), Real(0) * Meter);
     EXPECT_EQ(b1->GetAngle(), Angle{0});
     EXPECT_EQ(b2->GetAngle(), Angle{0});
 }

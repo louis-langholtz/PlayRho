@@ -77,7 +77,7 @@ private:
     // Solver shared
     Length2D m_linearOffset;
     Angle m_angularOffset;
-    Momentum2D m_linearImpulse = Momentum2D{0, 0};
+    Momentum2D m_linearImpulse = Momentum2D{};
     AngularMomentum m_angularImpulse = AngularMomentum{0};
     NonNegative<Force> m_maxForce;
     NonNegative<Torque> m_maxTorque;

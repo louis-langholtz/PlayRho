@@ -21,6 +21,7 @@
 #define ArrayList_hpp
 
 #include <PlayRho/Defines.hpp>
+#include <PlayRho/Common/LengthError.hpp>
 
 #include <type_traits>
 #include <initializer_list>
@@ -41,7 +42,10 @@ namespace playrho
         using pointer = value_type*;
         using const_pointer = const value_type*;
 
-        ArrayList() = default;
+        constexpr ArrayList() noexcept
+        {
+            // Intentionally empty.
+        }
 
         template <std::size_t COPY_MAXSIZE, typename COPY_SIZE_TYPE, typename = std::enable_if_t< COPY_MAXSIZE <= MAXSIZE >>
         constexpr ArrayList(const ArrayList<VALUE_TYPE, COPY_MAXSIZE, SIZE_TYPE>& copy):
@@ -60,9 +64,9 @@ namespace playrho
         }
 
         template <std::size_t SIZE, typename = std::enable_if_t< SIZE <= MAXSIZE >>
-        ArrayList(value_type (&array)[SIZE]) noexcept
+        ArrayList(value_type (&value)[SIZE]) noexcept
         {
-            for (auto&& elem: array)
+            for (auto&& elem: value)
             {
                 push_back(elem);
             }
@@ -76,16 +80,28 @@ namespace playrho
             }
         }
         
-        void push_back(const value_type& value)
+        constexpr ArrayList& Append(const value_type& value)
         {
-            assert(m_size < MAXSIZE);
+            push_back(value);
+            return *this;
+        }
+
+        constexpr void push_back(const value_type& value)
+        {
+            if (m_size >= max_size())
+            {
+                throw LengthError("action would exceed max_size()");
+            }
             m_elements[m_size] = value;
             ++m_size;
         }
         
         void size(size_type value) noexcept
         {
-            assert(value <= MAXSIZE);
+            if (value > max_size())
+            {
+                throw LengthError("action would exceed max_size()");
+            }
             m_size = value;
         }
 

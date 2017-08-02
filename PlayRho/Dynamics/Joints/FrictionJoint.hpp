@@ -72,7 +72,7 @@ private:
     NonNegative<Torque> m_maxTorque;
 
     // Solver shared data - data saved & updated over multiple InitVelocityConstraints calls.
-    Momentum2D m_linearImpulse = Momentum2D{0, 0};
+    Momentum2D m_linearImpulse = Momentum2D{};
     AngularMomentum m_angularImpulse = AngularMomentum{0};
 
     // Solver temp

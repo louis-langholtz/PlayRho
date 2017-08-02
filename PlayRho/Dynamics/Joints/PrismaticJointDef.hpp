@@ -60,10 +60,10 @@ struct PrismaticJointDef : public JointBuilder<PrismaticJointDef>
     PrismaticJointDef& UseEnableMotor(bool v) noexcept;
     
     /// The local anchor point relative to bodyA's origin.
-    Length2D localAnchorA = Length2D(0, 0);
+    Length2D localAnchorA = Length2D{};
     
     /// The local anchor point relative to bodyB's origin.
-    Length2D localAnchorB = Length2D(0, 0);
+    Length2D localAnchorB = Length2D{};
     
     /// The local translation unit axis in bodyA.
     UnitVec2 localAxisA = UnitVec2::GetRight();

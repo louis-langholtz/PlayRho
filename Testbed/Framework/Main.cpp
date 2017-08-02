@@ -184,7 +184,7 @@ namespace
     Length2D lastp;
     
     Coord2D mouseScreen = Coord2D{0.0, 0.0};
-    Length2D mouseWorld = Length2D{0, 0};
+    Length2D mouseWorld = Length2D{};
     
     const auto menuY = 10;
     const auto menuWidth = 200;
@@ -543,8 +543,8 @@ static void MouseMotion(GLFWwindow*, double xd, double yd)
     if (rightMouseDown)
     {
         const auto movement = mouseWorld - lastp;
-        camera.m_center.x -= static_cast<float>(Real{movement.x / Meter});
-        camera.m_center.y -= static_cast<float>(Real{movement.y / Meter});
+        camera.m_center.x -= static_cast<float>(Real{GetX(movement) / Meter});
+        camera.m_center.y -= static_cast<float>(Real{GetY(movement) / Meter});
         lastp = ConvertScreenToWorld(camera, mouseScreen);
     }
 }
@@ -744,9 +744,9 @@ static void ShowFrameInfo(double frameTime, double fps)
     stream << "{" << camera.m_center.x << "," << camera.m_center.y << "}";
     stream << " Viewport=";
     stream << "{";
-    stream << viewport.GetLowerBound().x << "..." << viewport.GetUpperBound().x;
+    stream << GetX(viewport.GetLowerBound()) << "..." << GetX(viewport.GetUpperBound());
     stream << ", ";
-    stream << viewport.GetLowerBound().y << "..." << viewport.GetUpperBound().y;
+    stream << GetY(viewport.GetLowerBound()) << "..." << GetY(viewport.GetUpperBound());
     stream << "}";
     stream << std::setprecision(1);
     stream << std::fixed;

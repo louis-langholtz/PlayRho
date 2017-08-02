@@ -72,7 +72,7 @@ public:
     void Launch()
     {
         m_body->SetTransform(Vec2(0.0f, 4.0f) * Meter, Real{0.0f} * Radian);
-        m_body->SetVelocity(Velocity{LinearVelocity2D{0, 0}, AngularVelocity{0}});
+        m_body->SetVelocity(Velocity{LinearVelocity2D{}, AngularVelocity{0}});
 
         m_x = RandomFloat(-1.0f, 1.0f);
         m_bullet->SetTransform(Vec2(m_x, 10.0f) * Meter, Real{0.0f} * Radian);

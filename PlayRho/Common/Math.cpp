@@ -25,7 +25,7 @@ Length2D playrho::ComputeCentroid(const Span<const Length2D>& vertices)
 {
     assert(vertices.size() >= 3);
     
-    auto c = Length2D(0, 0) * Area{0};
+    auto c = Length2D{} * Area{0};
     auto area = Area{0};
     
     // pRef is the reference point for forming triangles.
@@ -91,12 +91,12 @@ std::vector<Length2D> playrho::GetCircleVertices(const Length radius, unsigned s
 
 ::std::ostream& playrho::operator<<(::std::ostream& os, const Vec2& value)
 {
-    return os << "Vec2(" << value.x << "," << value.y << ")";
+    return os << "Vec2(" << std::get<0>(value) << "," << std::get<1>(value) << ")";
 }
 
 ::std::ostream& playrho::operator<<(::std::ostream& os, const UnitVec2& value)
 {
-    return os << "UnitVec2(" << value.GetX() << "," << value.GetY() << ")";
+    return os << "UnitVec2(" << std::get<0>(value) << "," << std::get<1>(value) << ")";
 }
 
 ::std::ostream& playrho::operator<<(::std::ostream& os, const Fixed32& value)

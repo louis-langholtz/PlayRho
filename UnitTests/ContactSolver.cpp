@@ -32,8 +32,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
 {
     const auto old_pA = Position{Vec2{-2, 0} * (Real(1) * Meter), Angle{0}};
     const auto old_pB = Position{Vec2{+2, 0} * (Real(1) * Meter), Angle{0}};
-    const auto old_vA = Velocity{LinearVelocity2D{0, 0}, Angle{0} / Second};
-    const auto old_vB = Velocity{LinearVelocity2D{0, 0}, Angle{0} / Second};
+    const auto old_vA = Velocity{LinearVelocity2D{}, Angle{0} / Second};
+    const auto old_vB = Velocity{LinearVelocity2D{}, Angle{0} / Second};
 
     const auto dim = Real(2) * Meter;
     const auto shape = PolygonShape(dim, dim);
@@ -43,8 +43,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
     ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
     ASSERT_EQ(manifold.GetPointCount(), 2);
 
-    const auto lcA = Length2D(0, 0);
-    const auto lcB = Length2D(0, 0);
+    const auto lcA = Length2D{};
+    const auto lcB = Length2D{};
     auto bA = BodyConstraint{
         Real(1) / Kilogram,
         InvRotInertia{Real{1} * SquareRadian / (SquareMeter * Kilogram)},
@@ -62,12 +62,12 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
     
     EXPECT_EQ(solution.min_separation, Length{0});
     
-    EXPECT_EQ(old_pA.linear.x, solution.pos_a.linear.x);
-    EXPECT_EQ(old_pA.linear.y, solution.pos_a.linear.y);
+    EXPECT_EQ(GetX(old_pA.linear), GetX(solution.pos_a.linear));
+    EXPECT_EQ(GetY(old_pA.linear), GetY(solution.pos_a.linear));
     EXPECT_EQ(old_pA.angular, solution.pos_a.angular);
 
-    EXPECT_EQ(old_pB.linear.x, solution.pos_b.linear.x);
-    EXPECT_EQ(old_pB.linear.y, solution.pos_b.linear.y);
+    EXPECT_EQ(GetX(old_pB.linear), GetX(solution.pos_b.linear));
+    EXPECT_EQ(GetY(old_pB.linear), GetY(solution.pos_b.linear));
     EXPECT_EQ(old_pB.angular, solution.pos_b.angular);
 }
 
@@ -86,8 +86,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
     ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
     ASSERT_EQ(manifold.GetPointCount(), 2);
     
-    const auto lcA = Length2D(0, 0);
-    const auto lcB = Length2D(0, 0);
+    const auto lcA = Length2D{};
+    const auto lcB = Length2D{};
     auto bA = BodyConstraint{
         Real(1) / Kilogram,
         InvRotInertia{Real{1} * SquareRadian / (SquareMeter * Kilogram)},
@@ -105,12 +105,12 @@ TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
     
     EXPECT_EQ(solution.min_separation, Length{0});
     
-    EXPECT_EQ(old_pA.linear.x, solution.pos_a.linear.x);
-    EXPECT_EQ(old_pA.linear.y, solution.pos_a.linear.y);
+    EXPECT_EQ(GetX(old_pA.linear), GetX(solution.pos_a.linear));
+    EXPECT_EQ(GetY(old_pA.linear), GetY(solution.pos_a.linear));
     EXPECT_EQ(old_pA.angular, solution.pos_a.angular);
     
-    EXPECT_EQ(old_pB.linear.x, solution.pos_b.linear.x);
-    EXPECT_EQ(old_pB.linear.y, solution.pos_b.linear.y);
+    EXPECT_EQ(GetX(old_pB.linear), GetX(solution.pos_b.linear));
+    EXPECT_EQ(GetY(old_pB.linear), GetY(solution.pos_b.linear));
     EXPECT_EQ(old_pB.angular, solution.pos_b.angular);
 }
 
@@ -118,16 +118,16 @@ TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
 {
     const auto dim = Real(2) * Meter;
     const auto shape = PolygonShape(dim, dim);
-    const auto xfmA = Transformation{Length2D(0, 0), UnitVec2::GetRight()};
-    const auto xfmB = Transformation{Length2D(0, 0), UnitVec2::GetRight()};
+    const auto xfmA = Transformation{Length2D{}, UnitVec2::GetRight()};
+    const auto xfmB = Transformation{Length2D{}, UnitVec2::GetRight()};
     const auto manifold = CollideShapes(shape.GetChild(0), xfmA, shape.GetChild(0), xfmB);
     ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
     ASSERT_EQ(manifold.GetPointCount(), 2);
     
     const auto lcA = Vec2{} * (Real(1) * Meter);
     const auto lcB = Vec2{} * (Real(1) * Meter);
-    const auto old_pA = Position{Length2D(0, 0), Angle{0}};
-    const auto old_pB = Position{Length2D(0, 0), Angle{0}};
+    const auto old_pA = Position{Length2D{}, Angle{0}};
+    const auto old_pB = Position{Length2D{}, Angle{0}};
     const auto old_vA = Velocity{};
     const auto old_vB = Velocity{};
     auto bA = BodyConstraint{
@@ -148,12 +148,12 @@ TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
 
     EXPECT_EQ(solution.min_separation, Real{-2} * dim);
     
-    EXPECT_EQ(old_pA.linear.x, solution.pos_a.linear.x);
-    EXPECT_EQ(old_pA.linear.y, solution.pos_a.linear.y);
+    EXPECT_EQ(GetX(old_pA.linear), GetX(solution.pos_a.linear));
+    EXPECT_EQ(GetY(old_pA.linear), GetY(solution.pos_a.linear));
     EXPECT_EQ(old_pA.angular, solution.pos_a.angular);
     
-    EXPECT_EQ(old_pB.linear.x, solution.pos_b.linear.x);
-    EXPECT_EQ(old_pB.linear.y, solution.pos_b.linear.y);
+    EXPECT_EQ(GetX(old_pB.linear), GetX(solution.pos_b.linear));
+    EXPECT_EQ(GetY(old_pB.linear), GetY(solution.pos_b.linear));
     EXPECT_EQ(old_pB.angular, solution.pos_b.angular);
 }
 
@@ -180,8 +180,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
     ASSERT_EQ(manifold.GetPoint(0).localPoint, Vec2(-2, +2) * (Real(1) * Meter));
     ASSERT_EQ(manifold.GetPoint(1).localPoint, Vec2(-2, -2) * (Real(1) * Meter));
     
-    const auto lcA = Length2D(0, 0);
-    const auto lcB = Length2D(0, 0);
+    const auto lcA = Length2D{};
+    const auto lcB = Length2D{};
     auto bA = BodyConstraint{
         Real(1) / Kilogram,
         InvRotInertia{Real{1} * SquareRadian / (SquareMeter * Kilogram)},
@@ -201,13 +201,13 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
     EXPECT_TRUE(almost_equal(solution.min_separation / Meter, Real(-2))); // -2.002398
         
     // object a just moves left
-    EXPECT_LT(solution.pos_a.linear.x, old_pA.linear.x);
-    EXPECT_EQ(solution.pos_a.linear.y, old_pA.linear.y);
+    EXPECT_LT(GetX(solution.pos_a.linear), GetX(old_pA.linear));
+    EXPECT_EQ(GetY(solution.pos_a.linear), GetY(old_pA.linear));
     EXPECT_EQ(solution.pos_a.angular, old_pA.angular);
     
     // object b just moves right
-    EXPECT_GT(solution.pos_b.linear.x, old_pB.linear.x);
-    EXPECT_EQ(solution.pos_b.linear.y, old_pB.linear.y);
+    EXPECT_GT(GetX(solution.pos_b.linear), GetX(old_pB.linear));
+    EXPECT_EQ(GetY(solution.pos_b.linear), GetY(old_pB.linear));
     EXPECT_EQ(solution.pos_b.angular, old_pB.angular);
 }
 
@@ -233,8 +233,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
     ASSERT_EQ(manifold.GetPoint(0).localPoint, Vec2(+2, -2) * (Real(1) * Meter));
     ASSERT_EQ(manifold.GetPoint(1).localPoint, Vec2(+2, +2) * (Real(1) * Meter));
     
-    const auto lcA = Length2D(0, 0);
-    const auto lcB = Length2D(0, 0);
+    const auto lcA = Length2D{};
+    const auto lcB = Length2D{};
     auto bA = BodyConstraint{
         Real(1) / Kilogram,
         InvRotInertia{Real{1} * SquareRadian / (SquareMeter * Kilogram)},
@@ -254,13 +254,13 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
     EXPECT_TRUE(almost_equal(solution.min_separation / Meter, Real(-2))); // -2.002398
     
     // square A just moves right
-    EXPECT_GT(solution.pos_a.linear.x, old_pA.linear.x);
-    EXPECT_EQ(solution.pos_a.linear.y, old_pA.linear.y);
+    EXPECT_GT(GetX(solution.pos_a.linear), GetX(old_pA.linear));
+    EXPECT_EQ(GetY(solution.pos_a.linear), GetY(old_pA.linear));
     EXPECT_EQ(solution.pos_a.angular, old_pA.angular);
     
     // square B just moves left
-    EXPECT_LT(solution.pos_b.linear.x, old_pB.linear.x);
-    EXPECT_EQ(solution.pos_b.linear.y, old_pB.linear.y);
+    EXPECT_LT(GetX(solution.pos_b.linear), GetX(old_pB.linear));
+    EXPECT_EQ(GetY(solution.pos_b.linear), GetY(old_pB.linear));
     EXPECT_EQ(solution.pos_b.angular, old_pB.angular);
 }
 
@@ -286,8 +286,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
     ASSERT_EQ(manifold.GetPoint(0).localPoint, Vec2(-2, -2) * (Real(1) * Meter));
     ASSERT_EQ(manifold.GetPoint(1).localPoint, Vec2(+2, -2) * (Real(1) * Meter));
     
-    const auto lcA = Length2D(0, 0);
-    const auto lcB = Length2D(0, 0);
+    const auto lcA = Length2D{};
+    const auto lcB = Length2D{};
     auto bA = BodyConstraint{
         Real(1) / Kilogram,
         InvRotInertia{Real{1} * SquareRadian / (SquareMeter * Kilogram)},
@@ -307,25 +307,25 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
     EXPECT_TRUE(almost_equal(solution.min_separation / Meter, Real(-2))); // -2.002398
     
     // object a just moves down only
-    EXPECT_EQ(solution.pos_a.linear.x, old_pA.linear.x);
-    EXPECT_LT(solution.pos_a.linear.y, old_pA.linear.y);
+    EXPECT_EQ(GetX(solution.pos_a.linear), GetX(old_pA.linear));
+    EXPECT_LT(GetY(solution.pos_a.linear), GetY(old_pA.linear));
     EXPECT_EQ(solution.pos_a.angular, old_pA.angular);
     
     {
         // confirm object a moves more in x direction than in y direction.
         const auto mov_a = solution.pos_a - old_pA;    
-        EXPECT_LT(Abs(mov_a.linear.x), Abs(mov_a.linear.y));
+        EXPECT_LT(Abs(GetX(mov_a.linear)), Abs(GetY(mov_a.linear)));
     }
     
     // object b just moves up only
-    EXPECT_EQ(solution.pos_b.linear.x, old_pB.linear.x);
-    EXPECT_GT(solution.pos_b.linear.y, old_pB.linear.y);
+    EXPECT_EQ(GetX(solution.pos_b.linear), GetX(old_pB.linear));
+    EXPECT_GT(GetY(solution.pos_b.linear), GetY(old_pB.linear));
     EXPECT_EQ(solution.pos_b.angular, old_pB.angular);
     
     {
         // confirm object a moves more in x direction than in y direction.
         const auto mov_b = solution.pos_b - old_pB;
-        EXPECT_LT(Abs(mov_b.linear.x), Abs(mov_b.linear.y));
+        EXPECT_LT(Abs(GetX(mov_b.linear)), Abs(GetY(mov_b.linear)));
     }
 }
 
@@ -352,8 +352,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
     ASSERT_EQ(manifold.GetPoint(0).localPoint, Vec2(+2, +2) * (Real(1) * Meter));
     ASSERT_EQ(manifold.GetPoint(1).localPoint, Vec2(-2, +2) * (Real(1) * Meter));
     
-    const auto lcA = Length2D(0, 0);
-    const auto lcB = Length2D(0, 0);
+    const auto lcA = Length2D{};
+    const auto lcB = Length2D{};
     auto bA = BodyConstraint{
         Real(1) / Kilogram,
         InvRotInertia{Real{1} * SquareRadian / (SquareMeter * Kilogram)},
@@ -373,25 +373,25 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
     EXPECT_TRUE(almost_equal(solution.min_separation / Meter, Real(-2))); // -2.002398
     
     // square A just moves up only
-    EXPECT_EQ(solution.pos_a.linear.x, old_pA.linear.x);
-    EXPECT_GT(solution.pos_a.linear.y, old_pA.linear.y);
+    EXPECT_EQ(GetX(solution.pos_a.linear), GetX(old_pA.linear));
+    EXPECT_GT(GetY(solution.pos_a.linear), GetY(old_pA.linear));
     EXPECT_EQ(solution.pos_a.angular, old_pA.angular);
     
     {
         // confirm object a moves more in x direction than in y direction.
         const auto mov_a = solution.pos_a - old_pA;    
-        EXPECT_LT(Abs(mov_a.linear.x), Abs(mov_a.linear.y));
+        EXPECT_LT(Abs(GetX(mov_a.linear)), Abs(GetY(mov_a.linear)));
     }
     
     // square B just moves down only
-    EXPECT_EQ(solution.pos_b.linear.x, old_pB.linear.x);
-    EXPECT_LT(solution.pos_b.linear.y, old_pB.linear.y);
+    EXPECT_EQ(GetX(solution.pos_b.linear), GetX(old_pB.linear));
+    EXPECT_LT(GetY(solution.pos_b.linear), GetY(old_pB.linear));
     EXPECT_EQ(solution.pos_b.angular, old_pB.angular);
     
     {
         // confirm object a moves more in x direction than in y direction.
         const auto mov_b = solution.pos_b - old_pB;
-        EXPECT_LT(Abs(mov_b.linear.x), Abs(mov_b.linear.y));
+        EXPECT_LT(Abs(GetX(mov_b.linear)), Abs(GetY(mov_b.linear)));
     }
 }
 
@@ -399,14 +399,14 @@ TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
 {
     const auto dim = Real(2) * Meter;
     const auto shape = PolygonShape(dim, dim);
-    const auto xfmA = Transformation{Length2D(0, 0), UnitVec2::GetRight()};
-    const auto xfmB = Transformation{Length2D(0, 0), UnitVec2::GetRight()};
+    const auto xfmA = Transformation{Length2D{}, UnitVec2::GetRight()};
+    const auto xfmB = Transformation{Length2D{}, UnitVec2::GetRight()};
     const auto manifold = CollideShapes(shape.GetChild(0), xfmA, shape.GetChild(0), xfmB);
     ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
     ASSERT_EQ(manifold.GetPointCount(), 2);
 
-    const auto old_pA = Position{Length2D(0, 0), Angle{0}};
-    const auto old_pB = Position{Length2D(0, 0), Angle{0}};
+    const auto old_pA = Position{Length2D{}, Angle{0}};
+    const auto old_pB = Position{Length2D{}, Angle{0}};
     const auto old_vA = Velocity{};
     const auto old_vB = Velocity{};
 
@@ -430,13 +430,13 @@ TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
     EXPECT_LT(solution.min_separation, -conf.linearSlop);
     
     // object a moves left only
-    EXPECT_LT(solution.pos_a.linear.x, old_pA.linear.x);
-    EXPECT_EQ(solution.pos_a.linear.y, old_pA.linear.y);
+    EXPECT_LT(GetX(solution.pos_a.linear), GetX(old_pA.linear));
+    EXPECT_EQ(GetY(solution.pos_a.linear), GetY(old_pA.linear));
     EXPECT_EQ(solution.pos_a.angular, old_pA.angular);
     
     // object b moves right only.
-    EXPECT_GT(solution.pos_b.linear.x, old_pB.linear.x);
-    EXPECT_EQ(solution.pos_b.linear.y, old_pB.linear.y);
+    EXPECT_GT(GetX(solution.pos_b.linear), GetX(old_pB.linear));
+    EXPECT_EQ(GetY(solution.pos_b.linear), GetY(old_pB.linear));
     EXPECT_EQ(solution.pos_b.angular, old_pB.angular);
 }
 

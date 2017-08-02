@@ -58,7 +58,7 @@ struct MouseJointDef : public JointBuilder<MouseJointDef>
 
     /// The initial world target point. This is assumed
     /// to coincide with the body anchor initially.
-    Length2D target = Length2D(0, 0);
+    Length2D target = Length2D{};
     
     /// Max force.
     /// @details

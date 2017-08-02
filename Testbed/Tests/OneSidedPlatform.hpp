@@ -87,7 +87,7 @@ public:
 #if 1
         const auto position = m_character->GetBody()->GetLocation();
 
-        if (position.y < m_top + m_radius - m_platform->GetShape()->GetVertexRadius())
+        if (GetY(position) < m_top + m_radius - m_platform->GetShape()->GetVertexRadius())
         {
             contact.UnsetEnabled();
         }
@@ -107,7 +107,7 @@ public:
 
         const auto v = GetLinearVelocity(*(m_character->GetBody()));
         drawer.DrawString(5, m_textLine, "Character Linear Velocity: %f",
-                          static_cast<double>(Real{v.y / MeterPerSecond}));
+                          static_cast<double>(Real{GetY(v) / MeterPerSecond}));
         m_textLine += DRAW_STRING_NEW_LINE;
     }
 

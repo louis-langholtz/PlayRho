@@ -331,10 +331,10 @@ static bool Draw(Drawer& drawer, const World& world, const Settings& settings, F
                     const auto proxy = f.GetProxy(i);
                     const auto aabb = world.GetFatAABB(proxy->proxyId);
                     Length2D vs[4];
-                    vs[0] = Length2D{aabb.GetLowerBound().x, aabb.GetLowerBound().y};
-                    vs[1] = Length2D{aabb.GetUpperBound().x, aabb.GetLowerBound().y};
-                    vs[2] = Length2D{aabb.GetUpperBound().x, aabb.GetUpperBound().y};
-                    vs[3] = Length2D{aabb.GetLowerBound().x, aabb.GetUpperBound().y};
+                    vs[0] = Length2D{GetX(aabb.GetLowerBound()), GetY(aabb.GetLowerBound())};
+                    vs[1] = Length2D{GetX(aabb.GetUpperBound()), GetY(aabb.GetLowerBound())};
+                    vs[2] = Length2D{GetX(aabb.GetUpperBound()), GetY(aabb.GetUpperBound())};
+                    vs[3] = Length2D{GetX(aabb.GetLowerBound()), GetY(aabb.GetUpperBound())};
                     
                     drawer.DrawPolygon(vs, 4, color);
                 }
@@ -522,8 +522,8 @@ void Test::CompleteBombSpawn(const Length2D& p)
 
     const auto relP = m_bombSpawnPoint - p;
     const auto vel = LinearVelocity2D{
-        Real{30} * relP.GetX() / Second,
-        Real{30} * relP.GetY() / Second
+        Real{30} * GetX(relP) / Second,
+        Real{30} * GetY(relP) / Second
     };
     LaunchBomb(m_bombSpawnPoint, vel);
     m_bombSpawning = false;
@@ -569,8 +569,8 @@ void Test::LaunchBomb()
 {
     const auto p = Length2D(RandomFloat(-15.0f, 15.0f) * Meter, 40.0f * Meter);
     const auto v = LinearVelocity2D{
-        Real{-100} * p.GetX() / Second,
-        Real{-100} * p.GetY() / Second
+        Real{-100} * GetX(p) / Second,
+        Real{-100} * GetY(p) / Second
     };
     LaunchBomb(p, v);
 }

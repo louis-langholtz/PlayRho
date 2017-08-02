@@ -257,7 +257,7 @@ public:
     void PreStep(const Settings&, Drawer&) override
     {
         auto velocity = m_character->GetVelocity();
-        velocity.linear.x = Real{-5.0f} * MeterPerSecond;
+        GetX(velocity.linear) = Real{-5.0f} * MeterPerSecond;
         m_character->SetVelocity(velocity);
     }
 

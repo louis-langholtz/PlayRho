@@ -119,10 +119,12 @@ public:
             const auto p = m_platform->GetLocation();
             const auto velocity = m_platform->GetVelocity();
 
-            if ((p.x < Real{-10.0f} * Meter && velocity.linear.x < Real{0.0f} * MeterPerSecond) ||
-                (p.x > Real{10.0f} * Meter && velocity.linear.x > Real{0.0f} * MeterPerSecond))
+            if ((GetX(p) < Real{-10.0f} * Meter && GetX(velocity.linear) < Real{0.0f} * MeterPerSecond) ||
+                (GetX(p) > Real{10.0f} * Meter && GetX(velocity.linear) > Real{0.0f} * MeterPerSecond))
             {
-                m_platform->SetVelocity(Velocity{{-velocity.linear.x, velocity.linear.y}, velocity.angular});
+                m_platform->SetVelocity(Velocity{
+                    {-GetX(velocity.linear), GetY(velocity.linear)}, velocity.angular
+                });
             }
         }
     }

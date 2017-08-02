@@ -87,21 +87,21 @@ void FrictionJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const St
     {
         Mat22 K;
         const auto exx = InvMass{
-            invMassA + invRotInertiaA * Square(m_rA.y) / SquareRadian +
-            invMassB + invRotInertiaB * Square(m_rB.y) / SquareRadian
+            invMassA + invRotInertiaA * Square(GetY(m_rA)) / SquareRadian +
+            invMassB + invRotInertiaB * Square(GetY(m_rB)) / SquareRadian
         };
         const auto exy = InvMass{
-            -invRotInertiaA * m_rA.x * m_rA.y / SquareRadian +
-            -invRotInertiaB * m_rB.x * m_rB.y / SquareRadian
+            -invRotInertiaA * GetX(m_rA) * GetY(m_rA) / SquareRadian +
+            -invRotInertiaB * GetX(m_rB) * GetY(m_rB) / SquareRadian
         };
         const auto eyy = InvMass{
-            invMassA + invRotInertiaA * Square(m_rA.x) / SquareRadian +
-            invMassB + invRotInertiaB * Square(m_rB.x) / SquareRadian
+            invMassA + invRotInertiaA * Square(GetX(m_rA)) / SquareRadian +
+            invMassB + invRotInertiaB * Square(GetX(m_rB)) / SquareRadian
         };
-        K.ex.x = StripUnit(exx);
-        K.ex.y = StripUnit(exy);
-        K.ey.x = K.ex.y;
-        K.ey.y = StripUnit(eyy);
+        GetX(K.ex) = StripUnit(exx);
+        GetY(K.ex) = StripUnit(exy);
+        GetX(K.ey) = GetY(K.ex);
+        GetY(K.ey) = StripUnit(eyy);
         m_linearMass = Invert(K);
     }
 
@@ -126,7 +126,7 @@ void FrictionJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const St
     }
     else
     {
-        m_linearImpulse = Momentum2D{0, 0};
+        m_linearImpulse = Momentum2D{};
         m_angularImpulse = AngularMomentum{0};
     }
 
@@ -176,8 +176,8 @@ bool FrictionJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
 
         const auto unitlessImpulse = -Transform(GetVec2(vb - va), m_linearMass);
         const auto impulse = Momentum2D{
-            unitlessImpulse.GetX() * Kilogram * MeterPerSecond,
-            unitlessImpulse.GetY() * Kilogram * MeterPerSecond
+            GetX(unitlessImpulse) * Kilogram * MeterPerSecond,
+            GetY(unitlessImpulse) * Kilogram * MeterPerSecond
         };
         const auto oldImpulse = m_linearImpulse;
         m_linearImpulse += impulse;
@@ -193,7 +193,7 @@ bool FrictionJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
         const auto angImpulseA = AngularMomentum{Cross(m_rA, incImpulse) / Radian};
         const auto angImpulseB = AngularMomentum{Cross(m_rB, incImpulse) / Radian};
 
-        if (incImpulse != Momentum2D{0, 0})
+        if (incImpulse != Momentum2D{})
         {
             solved = false;
         }

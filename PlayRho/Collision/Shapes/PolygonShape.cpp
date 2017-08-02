@@ -43,7 +43,7 @@ MassData PolygonShape::GetMassData() const noexcept
 
 void PolygonShape::SetAsBox(Length hx, Length hy) noexcept
 {
-    m_centroid = Length2D(0, 0);
+    m_centroid = Length2D{};
 
     // vertices must be counter-clockwise
 

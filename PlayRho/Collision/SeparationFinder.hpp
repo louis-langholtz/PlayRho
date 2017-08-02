@@ -111,12 +111,12 @@ namespace playrho {
             return Length{0};
         }
         
-        PLAYRHO_CONSTEXPR Type GetType() const noexcept;
-        PLAYRHO_CONSTEXPR UnitVec2 GetAxis() const noexcept;
-        PLAYRHO_CONSTEXPR Length2D GetLocalPoint() const noexcept;
+        constexpr Type GetType() const noexcept;
+        constexpr UnitVec2 GetAxis() const noexcept;
+        constexpr Length2D GetLocalPoint() const noexcept;
 
     private:
-        PLAYRHO_CONSTEXPR SeparationFinder(const DistanceProxy& dpA, const DistanceProxy& dpB,
+        constexpr SeparationFinder(const DistanceProxy& dpA, const DistanceProxy& dpB,
                                          const UnitVec2 axis, const Length2D lp, const Type type):
             m_proxyA{dpA}, m_proxyB{dpB}, m_axis{axis}, m_localPoint{lp}, m_type{type}
         {
@@ -142,17 +142,17 @@ namespace playrho {
         const Type m_type;
     };
 
-    PLAYRHO_CONSTEXPR inline SeparationFinder::Type SeparationFinder::GetType() const noexcept
+    constexpr inline SeparationFinder::Type SeparationFinder::GetType() const noexcept
     {
         return m_type;
     }
     
-    PLAYRHO_CONSTEXPR inline UnitVec2 SeparationFinder::GetAxis() const noexcept
+    constexpr inline UnitVec2 SeparationFinder::GetAxis() const noexcept
     {
         return m_axis;
     }
     
-    PLAYRHO_CONSTEXPR inline Length2D SeparationFinder::GetLocalPoint() const noexcept
+    constexpr inline Length2D SeparationFinder::GetLocalPoint() const noexcept
     {
         return m_localPoint;
     }

@@ -85,7 +85,7 @@ TEST(DynamicTree, CopyConstruction)
         EXPECT_EQ(copy.GetMaxBalance(), orig.GetMaxBalance());
     }
 
-    const auto pid = orig.CreateProxy(AABB{Length2D(Real(0) * Meter, Real(0) * Meter), Length2D(Real(1) * Meter, Real(1) * Meter)}, &orig);
+    const auto pid = orig.CreateProxy(AABB{Length2D{Real(0) * Meter, Real(0) * Meter}, Length2D(Real(1) * Meter, Real(1) * Meter)}, &orig);
     {
         DynamicTree copy{orig};
         EXPECT_EQ(copy.GetRootIndex(), orig.GetRootIndex());
@@ -112,7 +112,7 @@ TEST(DynamicTree, CopyAssignment)
         EXPECT_EQ(copy.GetMaxBalance(), orig.GetMaxBalance());
     }
     
-    const auto pid = orig.CreateProxy(AABB{Length2D(Real(0) * Meter, Real(0) * Meter), Length2D(Real(1) * Meter, Real(1) * Meter)}, &orig);
+    const auto pid = orig.CreateProxy(AABB{Length2D{Real(0) * Meter, Real(0) * Meter}, Length2D(Real(1) * Meter, Real(1) * Meter)}, &orig);
     {
         DynamicTree copy;
         copy = orig;

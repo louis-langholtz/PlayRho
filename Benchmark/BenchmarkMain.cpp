@@ -458,18 +458,18 @@ static void DropTiles(int count)
         const auto N = 200;
         const auto M = 10;
         Length2D position;
-        position.y = Real(0.0f) * Meter;
+        GetY(position) = Real(0.0f) * Meter;
         for (auto j = 0; j < M; ++j)
         {
-            position.x = -N * a * Meter;
+            GetX(position) = -N * a * Meter;
             for (auto i = 0; i < N; ++i)
             {
                 PolygonShape shape;
                 SetAsBox(shape, a * Meter, a * Meter, position, Angle{0});
                 ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-                position.x += 2.0f * a * Meter;
+                GetX(position) += 2.0f * a * Meter;
             }
-            position.y -= 2.0f * a * Meter;
+            GetY(position) -= 2.0f * a * Meter;
         }
     }
     

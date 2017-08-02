@@ -163,7 +163,7 @@ TEST(RayCastOutput, RayCastDistanceProxyFF)
         EXPECT_NEAR(static_cast<double>(output.fraction), 0.05, 0.002);
     }
     
-    const auto p0 = Length2D(0, 0);
+    const auto p0 = Length2D{};
     input = RayCastInput{p0, p1, maxFraction};
     {
         const auto output = RayCast(dp, input, Transform_identity);

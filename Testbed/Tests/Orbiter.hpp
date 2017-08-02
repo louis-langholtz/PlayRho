@@ -42,7 +42,7 @@ namespace playrho {
             ctrBody->CreateFixture(ctrShape);
 
             bd.type = BodyType::Dynamic;
-            bd.position = Length2D{m_center.x, m_center.y + radius * Meter};
+            bd.position = Length2D{GetX(m_center), GetY(m_center) + radius * Meter};
             m_orbiter = m_world->CreateBody(bd);
             const auto ballShape = std::make_shared<DiskShape>();
             ballShape->SetRadius(Real{0.5f} * Meter);

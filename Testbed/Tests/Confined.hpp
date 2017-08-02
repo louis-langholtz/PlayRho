@@ -153,7 +153,9 @@ public:
             if (b.GetType() == BodyType::Dynamic)
             {
                 const auto position = b.GetLocation();
-                const auto centerPos = Length2D{position.x, position.y - (wall_length / Real{2})};
+                const auto centerPos = Length2D{
+                    GetX(position), GetY(position) - (wall_length / Real{2})
+                };
                 const auto angle_from_center = GetAngle(centerPos);
                 const auto direction = angle_from_center + Pi * Radian;
                 const auto magnitude = Sqrt(Square(StripUnit(wall_length)) * Real{2}) *

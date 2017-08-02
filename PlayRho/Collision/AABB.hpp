@@ -61,22 +61,22 @@ namespace playrho
         
         /// @brief Non-throwing initializing constructor for a single point.
         constexpr AABB(const Length2D p) noexcept:
-            lowerBound{p}, upperBound{p}
+            m_lowerBound{p}, m_upperBound{p}
         {
             // Intentionally empty.
         }
         
         /// @brief Non-throwing initializing constructor for two points.
         constexpr AABB(const Length2D a, const Length2D b) noexcept:
-        lowerBound{Length2D{std::min(a.x, b.x), std::min(a.y, b.y)}},
-            upperBound{Length2D{std::max(a.x, b.x), std::max(a.y, b.y)}}
+            m_lowerBound{Length2D{std::min(GetX(a), GetX(b)), std::min(GetY(a), GetY(b))}},
+            m_upperBound{Length2D{std::max(GetX(a), GetX(b)), std::max(GetY(a), GetY(b))}}
         {
             // Intentionally empty.
         }
         
         /// @brief Explicitly defined non-throwing copy constructor.
         constexpr AABB(const AABB& copy) noexcept:
-            lowerBound{copy.lowerBound}, upperBound{copy.upperBound}
+            m_lowerBound{copy.m_lowerBound}, m_upperBound{copy.m_upperBound}
         {
             // Intentionally empty.
         }
@@ -84,16 +84,16 @@ namespace playrho
         /// @brief Explicitly defined non-throwing copy assignment operator.
         constexpr AABB& operator= (const AABB copy) noexcept
         {
-            lowerBound = copy.lowerBound;
-            upperBound = copy.upperBound;
+            m_lowerBound = copy.m_lowerBound;
+            m_upperBound = copy.m_upperBound;
             return *this;
         }
 
         /// @brief Gets the lower bound.
-        constexpr Length2D GetLowerBound() const noexcept { return lowerBound; }
+        constexpr Length2D GetLowerBound() const noexcept { return m_lowerBound; }
         
         /// @brief Gets the upper bound.
-        constexpr Length2D GetUpperBound() const noexcept { return upperBound; }
+        constexpr Length2D GetUpperBound() const noexcept { return m_upperBound; }
         
         /// @brief Checks whether this AABB fully contains the given AABB.
         constexpr bool Contains(const AABB aabb) const noexcept
@@ -103,53 +103,65 @@ namespace playrho
             const auto other_lower = aabb.GetLowerBound();
             const auto other_upper = aabb.GetUpperBound();
             return
-            (lower.x <= other_lower.x) && (lower.y <= other_lower.y) &&
-            (other_upper.x <= upper.x) && (other_upper.y <= upper.y);
+            (GetX(lower) <= GetX(other_lower)) && (GetY(lower) <= GetY(other_lower)) &&
+            (GetX(other_upper) <= GetX(upper)) && (GetY(other_upper) <= GetY(upper));
         }
         
         /// @brief Includes an AABB into this one.
         constexpr AABB& Include(const AABB aabb) noexcept
         {
-            lowerBound = Length2D{std::min(lowerBound.x, aabb.lowerBound.x), std::min(lowerBound.y, aabb.lowerBound.y)};
-            upperBound = Length2D{std::max(upperBound.x, aabb.upperBound.x), std::max(upperBound.y, aabb.upperBound.y)};
+            m_lowerBound = Length2D{
+                std::min(GetX(m_lowerBound), GetX(aabb.m_lowerBound)),
+                std::min(GetY(m_lowerBound), GetY(aabb.m_lowerBound))
+            };
+            m_upperBound = Length2D{
+                std::max(GetX(m_upperBound), GetX(aabb.m_upperBound)),
+                std::max(GetY(m_upperBound), GetY(aabb.m_upperBound))
+            };
             return *this;
         }
         
         /// @brief Includes a point into this AABB.
         constexpr AABB& Include(const Length2D value) noexcept
         {
-            lowerBound = Length2D{std::min(lowerBound.x, value.x), std::min(lowerBound.y, value.y)};
-            upperBound = Length2D{std::max(upperBound.x, value.x), std::max(upperBound.y, value.y)};
+            m_lowerBound = Length2D{
+                std::min(GetX(m_lowerBound), GetX(value)),
+                std::min(GetY(m_lowerBound), GetY(value))
+            };
+            m_upperBound = Length2D{
+                std::max(GetX(m_upperBound), GetX(value)),
+                std::max(GetY(m_upperBound), GetY(value))
+            };
             return *this;
         }
 
         /// @brief Moves this AABB by the given value.
         constexpr AABB& Move(const Length2D value) noexcept
         {
-            lowerBound += value;
-            upperBound += value;
+            m_lowerBound += value;
+            m_upperBound += value;
             return *this;
         }
         
         /// @brief Displaces this AABB by the given value.
         constexpr AABB& Displace(const Length2D value) noexcept
         {
-            if (value.x < decltype(value.x){0})
+            if (GetX(value) < decltype(GetX(value)){0})
             {
-                lowerBound.x += value.x;
+                GetX(m_lowerBound) += GetX(value);
             }
             else
             {
-                upperBound.x += value.x;
+                GetX(m_upperBound) += GetX(value);
             }
             
-            if (value.y < decltype(value.y){0})
+            if (GetY(value) < decltype(GetY(value)){0})
             {
-                lowerBound.y += value.y;
+                GetY(m_lowerBound) += GetY(value);
             }
             else
             {
-                upperBound.y += value.y;
+                GetY(m_upperBound) += GetY(value);
             }
             return *this;
         }
@@ -158,23 +170,23 @@ namespace playrho
         constexpr AABB& Fatten(const NonNegative<Length> amount) noexcept
         {
             const auto value = Length{amount};
-            lowerBound.x -= value;
-            lowerBound.y -= value;
-            upperBound.x += value;
-            upperBound.y += value;
+            GetX(m_lowerBound) -= value;
+            GetY(m_lowerBound) -= value;
+            GetX(m_upperBound) += value;
+            GetY(m_upperBound) += value;
             return *this;
         }
         
     private:
         
         /// @brief Lower vertex.
-        Length2D lowerBound = Length2D{
+        Length2D m_lowerBound = Length2D{
             std::numeric_limits<Real>::infinity() * Meter,
             std::numeric_limits<Real>::infinity() * Meter
         };
 
         /// @brief Upper vertex.
-        Length2D upperBound = Length2D{
+        Length2D m_upperBound = Length2D{
             -std::numeric_limits<Real>::infinity() * Meter,
             -std::numeric_limits<Real>::infinity() * Meter
         };
@@ -209,8 +221,8 @@ namespace playrho
     {
         const auto upper = aabb.GetUpperBound();
         const auto lower = aabb.GetLowerBound();
-        const auto wx = upper.x - lower.x;
-        const auto wy = upper.y - lower.y;
+        const auto wx = GetX(upper) - GetX(lower);
+        const auto wy = GetY(upper) - GetY(lower);
         return (wx + wy) * Real{2};
     }
 
@@ -248,7 +260,8 @@ namespace playrho
         const auto d1 = b.GetLowerBound() - a.GetUpperBound();
         const auto d2 = a.GetLowerBound() - b.GetUpperBound();
 
-        return (d1.x <= Length{0}) && (d1.y <= Length{0}) && (d2.x <= Length{0}) && (d2.y <= Length{0});
+        return (GetX(d1) <= Length{0}) && (GetY(d1) <= Length{0})
+            && (GetX(d2) <= Length{0}) && (GetY(d2) <= Length{0});
     }
 
     /// @brief Computes the AABB.

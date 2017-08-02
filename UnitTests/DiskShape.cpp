@@ -42,8 +42,8 @@ TEST(DiskShape, DefaultConstruction)
     EXPECT_EQ(typeid(foo), typeid(DiskShape));
     EXPECT_EQ(foo.GetChildCount(), ChildCounter{1});
     EXPECT_EQ(foo.GetRadius(), DiskShape::GetDefaultRadius());
-    EXPECT_EQ(foo.GetLocation().x, Length{0});
-    EXPECT_EQ(foo.GetLocation().y, Length{0});
+    EXPECT_EQ(GetX(foo.GetLocation()), Length{0});
+    EXPECT_EQ(GetY(foo.GetLocation()), Length{0});
 }
 
 TEST(DiskShape, InitConstruction)
@@ -58,8 +58,8 @@ TEST(DiskShape, InitConstruction)
     EXPECT_EQ(typeid(foo), typeid(DiskShape));
     EXPECT_EQ(foo.GetChildCount(), ChildCounter{1});
     EXPECT_EQ(foo.GetRadius(), radius);
-    EXPECT_EQ(foo.GetLocation().x, position.x);
-    EXPECT_EQ(foo.GetLocation().y, position.y);
+    EXPECT_EQ(GetX(foo.GetLocation()), GetX(position));
+    EXPECT_EQ(GetY(foo.GetLocation()), GetY(position));
 }
 
 TEST(DiskShape, GetInvalidChildThrows)
@@ -104,7 +104,7 @@ TEST(DiskShape, BaseVisitorForDiskShape)
 TEST(DiskShape, TestPoint)
 {
     const auto radius = Real(1) * Meter;
-    const auto position = Length2D(0, 0);
+    const auto position = Length2D{};
     auto conf = DiskShape::Conf{};
     conf.vertexRadius = radius;
     conf.location = position;
@@ -128,12 +128,12 @@ TEST(DiskShape, ComputeAABB)
     conf.location = position;
     DiskShape foo{conf};
     const auto aabb = ComputeAABB(foo, Transform_identity);
-    EXPECT_EQ(aabb.GetLowerBound().x, position.x - radius);
-    EXPECT_EQ(aabb.GetLowerBound().y, position.y - radius);
-    EXPECT_EQ(aabb.GetUpperBound().x, position.x + radius);
-    EXPECT_EQ(aabb.GetUpperBound().y, position.y + radius);
-    EXPECT_TRUE(almost_equal(StripUnit(GetExtents(aabb).x), StripUnit(radius)));
-    EXPECT_TRUE(almost_equal(StripUnit(GetExtents(aabb).y), StripUnit(radius)));
-    EXPECT_EQ(GetCenter(aabb).x, position.x);
-    EXPECT_EQ(GetCenter(aabb).y, position.y);
+    EXPECT_EQ(GetX(aabb.GetLowerBound()), GetX(position) - radius);
+    EXPECT_EQ(GetY(aabb.GetLowerBound()), GetY(position) - radius);
+    EXPECT_EQ(GetX(aabb.GetUpperBound()), GetX(position) + radius);
+    EXPECT_EQ(GetY(aabb.GetUpperBound()), GetY(position) + radius);
+    EXPECT_TRUE(almost_equal(StripUnit(GetX(GetExtents(aabb))), StripUnit(radius)));
+    EXPECT_TRUE(almost_equal(StripUnit(GetY(GetExtents(aabb))), StripUnit(radius)));
+    EXPECT_EQ(GetX(GetCenter(aabb)), GetX(position));
+    EXPECT_EQ(GetY(GetCenter(aabb)), GetY(position));
 }

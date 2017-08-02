@@ -87,7 +87,7 @@ Body::Body(const BodyDef& bd, World* world):
     m_userData{bd.userData}
 {
     assert(::IsValid(bd.position));
-    assert(::IsValid(bd.linearVelocity.x) && ::IsValid(bd.linearVelocity.y));
+    assert(::IsValid(bd.linearVelocity));
     assert(::IsValid(bd.angle));
     assert(::IsValid(bd.angularVelocity));
 
@@ -225,7 +225,7 @@ void Body::SetMassData(const MassData& massData)
 
 void Body::SetVelocity(const Velocity& velocity) noexcept
 {
-    if ((velocity.linear != LinearVelocity2D{0, 0}) || (velocity.angular != AngularVelocity{0}))
+    if ((velocity.linear != LinearVelocity2D{}) || (velocity.angular != AngularVelocity{0}))
     {
         if (!IsSpeedable())
         {
@@ -239,10 +239,10 @@ void Body::SetVelocity(const Velocity& velocity) noexcept
 
 void Body::SetAcceleration(const LinearAcceleration2D linear, const AngularAcceleration angular) noexcept
 {
-    assert(::IsValid(linear.x) && ::IsValid(linear.y));
+    assert(::IsValid(linear));
     assert(::IsValid(angular));
 
-    if ((linear != LinearAcceleration2D{0, 0}) || (angular != AngularAcceleration{0}))
+    if ((linear != LinearAcceleration2D{}) || (angular != AngularAcceleration{0}))
     {
         if (!IsAccelerable())
         {
@@ -473,8 +473,8 @@ void playrho::RotateAboutWorldPoint(Body& body, Angle amount, Length2D worldPoin
     const auto p = xfm.p - worldPoint;
     const auto c = Real{std::cos(amount / Radian)};
     const auto s = Real{std::sin(amount / Radian)};
-    const auto x = p.x * c - p.y * s;
-    const auto y = p.x * s + p.y * c;
+    const auto x = GetX(p) * c - GetY(p) * s;
+    const auto y = GetX(p) * s + GetY(p) * c;
     const auto pos = Length2D{x, y} + worldPoint;
     const auto angle = GetAngle(xfm.q) + amount;
     body.SetTransform(pos, angle);
@@ -498,5 +498,5 @@ Force2D playrho::GetCentripetalForce(const Body& body, const Length2D axis)
     const auto delta = Length2D{axis - location};
     const auto radius = GetLength(delta);
     const auto dir = delta / radius;
-    return Force2D{Vec2{dir.x, dir.y} * mass * Square(magnitude) / radius};
+    return Force2D{dir * mass * Square(magnitude) / radius};
 }

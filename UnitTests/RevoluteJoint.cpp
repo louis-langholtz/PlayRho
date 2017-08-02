@@ -199,10 +199,10 @@ TEST(RevoluteJoint, MovesDynamicCircles)
     jd.bodyB = b2;
     world.CreateJoint(jd);
     Step(world, Time{Second * Real{1}});
-    EXPECT_NEAR(double(Real{b1->GetLocation().x / Meter}), 0, 0.001);
-    EXPECT_NEAR(double(Real{b1->GetLocation().y / Meter}), -4, 0.001);
-    EXPECT_NEAR(double(Real{b2->GetLocation().x / Meter}), 0, 0.01);
-    EXPECT_NEAR(double(Real{b2->GetLocation().y / Meter}), -4, 0.01);
+    EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), 0, 0.001);
+    EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), -4, 0.001);
+    EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), 0, 0.01);
+    EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / Meter}), -4, 0.01);
     EXPECT_EQ(b1->GetAngle(), Angle{0});
     EXPECT_EQ(b2->GetAngle(), Angle{0});
 }
@@ -219,15 +219,15 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
-    auto jd = RevoluteJointDef{b1, b2, Length2D(0, 0)};
+    auto jd = RevoluteJointDef{b1, b2, Length2D{}};
     jd.enableLimit = true;
     const auto joint = world.CreateJoint(jd);
     EXPECT_NE(joint, nullptr);
     Step(world, Time{Second * Real{1}});
-    EXPECT_NEAR(double(Real{b1->GetLocation().x / Meter}), -1.0, 0.001);
-    EXPECT_NEAR(double(Real{b1->GetLocation().y / Meter}), -4, 0.001);
-    EXPECT_NEAR(double(Real{b2->GetLocation().x / Meter}), +1.0, 0.01);
-    EXPECT_NEAR(double(Real{b2->GetLocation().y / Meter}), -4, 0.01);
+    EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
+    EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), -4, 0.001);
+    EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);
+    EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / Meter}), -4, 0.01);
     EXPECT_EQ(b1->GetAngle(), Angle{0});
     EXPECT_EQ(b2->GetAngle(), Angle{0});
     EXPECT_TRUE(IsEnabled(*joint));
@@ -263,17 +263,17 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
     shape2->SetDensity(Real{1} * KilogramPerSquareMeter);
     b2->CreateFixture(shape2);
     
-    auto jd = RevoluteJointDef{b1, b2, Length2D(0, 0)};
+    auto jd = RevoluteJointDef{b1, b2, Length2D{}};
     const auto joint = world.CreateJoint(jd);
     
     for (auto i = 0; i < 1000; ++i)
     {
         Step(world, Second * Real{0.1f});
         EXPECT_EQ(b1->GetLocation(), p1);
-        EXPECT_NEAR(double(Real{b2->GetLocation().x / Meter}),
-                    double(Real{p2.x / Meter}), 0.0001);
-        EXPECT_NEAR(double(Real{b2->GetLocation().y / Meter}),
-                    double(Real{p2.y / Meter}), 0.0001);
+        EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}),
+                    double(Real{GetX(p2) / Meter}), 0.0001);
+        EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / Meter}),
+                    double(Real{GetY(p2) / Meter}), 0.0001);
         EXPECT_EQ(b2->GetAngle(), Angle{0});
     }
     

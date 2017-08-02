@@ -34,8 +34,8 @@ namespace playrho
 class UnitVec2
 {
 public:
-    /// @brief Data type used for the coordinate values of this vector.
-    using data_type = Real;
+    /// @brief Value type used for the coordinate values of this vector.
+    using value_type = Real;
 
     /// @brief Gets the right-ward oriented unit vector.
     /// @note This is the value for the 0/4 turned (0 angled) unit vector.
@@ -85,13 +85,13 @@ public:
         // Intentionally empty.
     }
 
-    constexpr auto GetX() const noexcept { return m_x; }
+    constexpr auto GetX() const noexcept { return m_elems[0]; }
 
-    constexpr auto GetY() const noexcept { return m_y; }
+    constexpr auto GetY() const noexcept { return m_elems[1]; }
 
-    constexpr auto cos() const noexcept { return m_x; }
+    constexpr auto cos() const noexcept { return m_elems[0]; }
 
-    constexpr auto sin() const noexcept { return m_y; }
+    constexpr auto sin() const noexcept { return m_elems[1]; }
 
     constexpr inline UnitVec2 FlipXY() const noexcept { return UnitVec2{-GetX(), -GetY()}; }
 
@@ -119,7 +119,7 @@ public:
     constexpr inline UnitVec2 GetRevPerpendicular() const noexcept
     {
         // See http://mathworld.wolfram.com/PerpendicularVector.html
-        return UnitVec2{-m_y, m_x};
+        return UnitVec2{-GetY(), GetX()};
     }
 
     /// @brief Gets a vector clockwise (forward-clockwise) perpendicular to this vector.
@@ -129,26 +129,25 @@ public:
     constexpr inline UnitVec2 GetFwdPerpendicular() const noexcept
     {
         // See http://mathworld.wolfram.com/PerpendicularVector.html
-        return UnitVec2{m_y, -m_x};
+        return UnitVec2{GetY(), -GetX()};
     }
 
-    constexpr inline UnitVec2 operator-() const noexcept { return UnitVec2{-m_x, -m_y}; }
+    constexpr inline UnitVec2 operator-() const noexcept { return UnitVec2{-GetX(), -GetY()}; }
 
-    constexpr inline UnitVec2 operator+() const noexcept { return UnitVec2{+m_x, +m_y}; }
+    constexpr inline UnitVec2 operator+() const noexcept { return UnitVec2{+GetX(), +GetY()}; }
 
     constexpr inline UnitVec2 Absolute() const noexcept
     {
-        return UnitVec2{std::abs(m_x), std::abs(m_y)};
+        return UnitVec2{std::abs(GetX()), std::abs(GetY())};
     }
 
 private:
-    constexpr UnitVec2(data_type x, data_type y) noexcept : m_x{x}, m_y{y}
+    constexpr UnitVec2(value_type x, value_type y) noexcept : m_elems{x, y}
     {
         // Intentionally empty.
     }
 
-    data_type m_x = GetInvalid<data_type>();
-    data_type m_y = GetInvalid<data_type>();
+    value_type m_elems[2] = { GetInvalid<value_type>(), GetInvalid<value_type>() };
 };
 
 /// @brief Gets the "X-axis".
@@ -203,15 +202,43 @@ constexpr inline UnitVec2 InverseRotate(const UnitVec2 vector, const UnitVec2& a
     return vector.Rotate(angle.FlipY());
 }
 
-constexpr inline UnitVec2::data_type GetX(const UnitVec2 value) { return value.GetX(); }
+constexpr inline auto GetX(const UnitVec2 value) { return value.GetX(); }
 
-constexpr inline UnitVec2::data_type GetY(const UnitVec2 value) { return value.GetY(); }
+constexpr inline auto GetY(const UnitVec2 value) { return value.GetY(); }
 
 template <> constexpr UnitVec2 GetInvalid() noexcept { return UnitVec2{}; }
 
 template <> constexpr inline bool IsValid(const UnitVec2& value) noexcept
 {
     return IsValid(GetX(value)) && IsValid(GetY(value)) && (value != UnitVec2::GetZero());
+}
+
+} // namespace playrho
+
+namespace std
+{
+
+template <size_t I>
+constexpr playrho::UnitVec2::value_type get(playrho::UnitVec2 v) noexcept
+{
+    static_assert(I < 2, "Index out of bounds in std::get<> (playrho::UnitVec2)");
+    switch (I)
+    {
+        case 0: return v.GetX();
+        case 1: return v.GetY();
+    }
+}
+
+template <>
+constexpr playrho::UnitVec2::value_type get<0>(playrho::UnitVec2 v) noexcept
+{
+    return v.GetX();
+}
+
+template <>
+constexpr playrho::UnitVec2::value_type get<1>(playrho::UnitVec2 v) noexcept
+{
+    return v.GetY();
 }
 }
 
