@@ -275,7 +275,7 @@ constexpr inline bool almost_equal(Fixed64 x, Fixed64 y, int ulp = 2)
 /// Gets the angle.
 /// @return Anglular value in the range of -Pi to +Pi radians.
 template <class T>
-inline Angle GetAngle(T value)
+inline Angle GetAngle(const T value)
 {
     return Atan2(GetY(value), GetX(value));
 }
