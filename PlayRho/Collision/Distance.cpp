@@ -46,15 +46,26 @@ namespace {
                                           const DistanceProxy& proxyA, const Transformation& xfA,
                                           const DistanceProxy& proxyB, const Transformation& xfB)
     {
+        using size_type = std::remove_const<decltype(MaxSimplexEdges)>::type;
+
         Simplex::Edges simplexEdges;
-        for (auto&& indexpair: indexPairs)
+        const auto count = GetNumIndices(indexPairs);
+        switch (count)
         {
-            if (indexpair == InvalidIndexPair)
-            {
-                break;
-            }
-            simplexEdges.push_back(GetSimplexEdge(proxyA, xfA, indexpair.a, proxyB, xfB, indexpair.b));
+            case 3:
+                simplexEdges[2] = GetSimplexEdge(proxyA, xfA, indexPairs[2].a,
+                                                 proxyB, xfB, indexPairs[2].b);
+                // fallthrough
+            case 2:
+                simplexEdges[1] = GetSimplexEdge(proxyA, xfA, indexPairs[1].a,
+                                                 proxyB, xfB, indexPairs[1].b);
+                // fallthrough
+            case 1:
+                simplexEdges[0] = GetSimplexEdge(proxyA, xfA, indexPairs[0].a,
+                                                 proxyB, xfB, indexPairs[0].b);
+                // fallthrough
         }
+        simplexEdges.size(static_cast<size_type>(count));
         return simplexEdges;
     }
 
