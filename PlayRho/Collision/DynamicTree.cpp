@@ -47,7 +47,7 @@ DynamicTree::DynamicTree(const DynamicTree& copy):
     m_nodeCapacity{copy.m_nodeCapacity},
     m_freeListIndex{copy.m_freeListIndex}
 {
-    for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
+    for (auto i = decltype(copy.m_nodeCapacity){0}; i < copy.m_nodeCapacity; ++i)
     {
         m_nodes[i] = copy.m_nodes[i];
     }
@@ -64,7 +64,7 @@ DynamicTree& DynamicTree::operator=(const DynamicTree& copy)
         m_nodeCount = copy.m_nodeCount;
         m_nodeCapacity = copy.m_nodeCapacity;
         m_freeListIndex = copy.m_freeListIndex;
-        for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
+        for (auto i = decltype(copy.m_nodeCapacity){0}; i < copy.m_nodeCapacity; ++i)
         {
             m_nodes[i] = copy.m_nodes[i];
         }
