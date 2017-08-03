@@ -25,16 +25,9 @@ namespace playrho {
 
 namespace {
 
-    inline bool Find(Span<const IndexPair> pairs, IndexPair key)
+    inline bool Find(IndexPair3 pairs, IndexPair key)
     {
-        for (auto&& elem: pairs)
-        {
-            if (elem == key)
-            {
-                return true;
-            }
-        }
-        return false;
+        return pairs[0] == key || pairs[1] == key || pairs[2] == key;
     }
 
     inline SimplexEdge GetSimplexEdge(const DistanceProxy& proxyA,
@@ -49,13 +42,17 @@ namespace {
         return SimplexEdge{wA, idxA, wB, idxB};
     }
     
-    inline Simplex::Edges GetSimplexEdges(const Simplex::IndexPairs& indexPairs,
+    inline Simplex::Edges GetSimplexEdges(const IndexPair3 indexPairs,
                                           const DistanceProxy& proxyA, const Transformation& xfA,
                                           const DistanceProxy& proxyB, const Transformation& xfB)
     {
         Simplex::Edges simplexEdges;
         for (auto&& indexpair: indexPairs)
         {
+            if (indexpair == InvalidIndexPair)
+            {
+                break;
+            }
             simplexEdges.push_back(GetSimplexEdge(proxyA, xfA, indexpair.a, proxyB, xfB, indexpair.b));
         }
         return simplexEdges;

@@ -87,6 +87,9 @@ struct Defaults<Fixed<std::int32_t,FRACTION_BITS>>
 
 }
 
+/// @brief Maximum number of supportable edges in a simplex.
+constexpr auto MaxSimplexEdges = std::uint8_t{3};
+
 /// @brief Max child count.
 constexpr auto MaxChildCount = std::numeric_limits<std::uint32_t>::max() >> 6;
 

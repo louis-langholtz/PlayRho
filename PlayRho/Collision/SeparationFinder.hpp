@@ -68,7 +68,7 @@ namespace playrho {
         /// @param proxyB Proxy B.
         /// @param xfB Transformation B.
         ///
-        static SeparationFinder Get(Span<const IndexPair> indices,
+        static SeparationFinder Get(IndexPair3 indices,
                                     const DistanceProxy& proxyA, const Transformation& xfA,
                                     const DistanceProxy& proxyB, const Transformation& xfB);
         

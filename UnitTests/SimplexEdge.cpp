@@ -21,13 +21,13 @@
 
 using namespace playrho;
 
-TEST(SimplexEdge, ByteSizeIs_28_56_or_112)
+TEST(SimplexEdge, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(SimplexEdge), std::size_t(28)); break;
-        case  8: EXPECT_EQ(sizeof(SimplexEdge), std::size_t(56)); break;
-        case 16: EXPECT_EQ(sizeof(SimplexEdge), std::size_t(112)); break;
+        case  4: EXPECT_EQ(sizeof(SimplexEdge), std::size_t(20)); break;
+        case  8: EXPECT_EQ(sizeof(SimplexEdge), std::size_t(40)); break;
+        case 16: EXPECT_EQ(sizeof(SimplexEdge), std::size_t(80)); break;
         default: FAIL(); break;
     }
 }
@@ -45,5 +45,5 @@ TEST(SimplexEdge, InitializingConstructor)
     EXPECT_EQ(sv.GetPointB(), pB);
     EXPECT_EQ(sv.GetIndexA(), iA);
     EXPECT_EQ(sv.GetIndexB(), iB);
-    EXPECT_EQ(sv.GetPointDelta(), pB - pA);
+    EXPECT_EQ(GetPointDelta(sv), pB - pA);
 }

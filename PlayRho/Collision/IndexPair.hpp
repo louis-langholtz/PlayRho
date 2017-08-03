@@ -21,6 +21,7 @@
 #define IndexPair_hpp
 
 #include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Common/Vector.hpp>
 
 namespace playrho
 {
@@ -39,6 +40,8 @@ namespace playrho
         size_type b; ///< Index of vertex from shape B.
     };
     
+    constexpr auto InvalidIndexPair = IndexPair{IndexPair::InvalidIndex, IndexPair::InvalidIndex};
+    
     constexpr inline bool operator == (IndexPair lhs, IndexPair rhs)
     {
         return (lhs.a == rhs.a) && (lhs.b == rhs.b);
@@ -47,6 +50,20 @@ namespace playrho
     constexpr inline bool operator != (IndexPair lhs, IndexPair rhs)
     {
         return (lhs.a != rhs.a) || (lhs.b != rhs.b);
+    }
+    
+    /// @brief Index pairs.
+    /// @note This data type is 6-bytes large (on at least one 64-bit platform).
+    using IndexPair3 = Vector<MaxSimplexEdges, IndexPair>;
+    
+    static_assert(MaxSimplexEdges == 3, "Invalid assumption about size of MaxSimplexEdges");
+
+    constexpr inline std::size_t GetNumIndices(IndexPair3 pairs) noexcept
+    {
+        return std::size_t{3}
+        - ((pairs[0] == InvalidIndexPair) & 0x1)
+        - ((pairs[1] == InvalidIndexPair) & 0x1)
+        - ((pairs[2] == InvalidIndexPair) & 0x1);
     }
 
 };

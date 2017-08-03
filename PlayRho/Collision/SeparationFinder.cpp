@@ -22,7 +22,7 @@
 
 using namespace playrho;
 
-SeparationFinder SeparationFinder::Get(Span<const IndexPair> indices,
+SeparationFinder SeparationFinder::Get(IndexPair3 indices,
                                        const DistanceProxy& proxyA, const Transformation& xfA,
                                        const DistanceProxy& proxyB, const Transformation& xfB)
 {
@@ -31,7 +31,8 @@ SeparationFinder SeparationFinder::Get(Span<const IndexPair> indices,
     assert(proxyA.GetVertexCount() > 0);
     assert(proxyB.GetVertexCount() > 0);
     
-    const auto type = (indices.size() == 1)? e_points: ((indices[0].a == indices[1].a)? e_faceB: e_faceA);
+    const auto numIndices = GetNumIndices(indices);
+    const auto type = (numIndices == 1)? e_points: ((indices[0].a == indices[1].a)? e_faceB: e_faceA);
     
     switch (type)
     {

@@ -34,14 +34,22 @@ TEST(Distance, MatchingCircles)
     DistanceProxy dp2{Real{1} * Meter, 1, &pos2, &normal};
 
     const auto output = Distance(dp1, xf1, dp2, xf2, conf);
-    conf.cache = Simplex::GetCache(output.simplex.GetEdges());
+    const auto edges = output.simplex.GetEdges();
+    ASSERT_EQ(edges.size(), std::uint8_t(1));
+
+    const auto ips = Simplex::GetIndexPairs(edges);
+    EXPECT_EQ(ips[0], (IndexPair{0, 0}));
+    EXPECT_EQ(ips[1], InvalidIndexPair);
+    EXPECT_EQ(ips[2], InvalidIndexPair);
+
+    conf.cache = Simplex::GetCache(edges);
+    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{1});
+
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
     EXPECT_EQ(witnessPoints.a, pos1);
     EXPECT_EQ(witnessPoints.b, pos1);
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
-    
-    EXPECT_EQ(conf.cache.GetNumIndices(), decltype(conf.cache.GetNumIndices()){1});
     
     const auto ip = conf.cache.GetIndexPair(0);
     EXPECT_EQ(ip.a, IndexPair::size_type{0});
@@ -74,7 +82,7 @@ TEST(Distance, OpposingCircles)
 
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
-    EXPECT_EQ(conf.cache.GetNumIndices(), decltype(conf.cache.GetNumIndices()){1});
+    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{1});
     
     const auto ip = conf.cache.GetIndexPair(0);
     EXPECT_EQ(ip.a, IndexPair::size_type{0});
@@ -110,7 +118,7 @@ TEST(Distance, HorTouchingCircles)
     
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
-    EXPECT_EQ(conf.cache.GetNumIndices(), decltype(conf.cache.GetNumIndices()){1});
+    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{1});
     
     const auto ip = conf.cache.GetIndexPair(0);
     EXPECT_EQ(ip.a, IndexPair::size_type{0});
@@ -143,7 +151,7 @@ TEST(Distance, OverlappingCirclesPN)
     
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
-    EXPECT_EQ(conf.cache.GetNumIndices(), decltype(conf.cache.GetNumIndices()){1});
+    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{1});
     
     const auto ip = conf.cache.GetIndexPair(0);
     EXPECT_EQ(ip.a, IndexPair::size_type{0});
@@ -176,7 +184,7 @@ TEST(Distance, OverlappingCirclesNP)
     
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
-    EXPECT_EQ(conf.cache.GetNumIndices(), decltype(conf.cache.GetNumIndices()){1});
+    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{1});
     
     const auto ip = conf.cache.GetIndexPair(0);
     EXPECT_EQ(ip.a, IndexPair::size_type{0});
@@ -210,7 +218,7 @@ TEST(Distance, SeparatedCircles)
     
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
-    EXPECT_EQ(conf.cache.GetNumIndices(), decltype(conf.cache.GetNumIndices()){1});
+    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{1});
     
     const auto ip = conf.cache.GetIndexPair(0);
     EXPECT_EQ(ip.a, IndexPair::size_type{0});
@@ -249,7 +257,7 @@ TEST(Distance, EdgeCircleOverlapping)
     
     EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
     
-    EXPECT_EQ(conf.cache.GetNumIndices(), decltype(conf.cache.GetNumIndices()){2});
+    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{2});
     
     const auto ip0 = conf.cache.GetIndexPair(0);
     EXPECT_EQ(ip0.a, IndexPair::size_type{0});
@@ -291,7 +299,7 @@ TEST(Distance, EdgeCircleOverlapping2)
     
     EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
     
-    EXPECT_EQ(conf.cache.GetNumIndices(), decltype(conf.cache.GetNumIndices()){2});
+    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{2});
     
     const auto ip0 = conf.cache.GetIndexPair(0);
     EXPECT_EQ(ip0.a, IndexPair::size_type{0});
@@ -333,7 +341,7 @@ TEST(Distance, EdgeCircleTouching)
     
     EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
     
-    EXPECT_EQ(conf.cache.GetNumIndices(), decltype(conf.cache.GetNumIndices()){2});
+    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{2});
     
     const auto ip0 = conf.cache.GetIndexPair(0);
     EXPECT_EQ(ip0.a, IndexPair::size_type{0});
@@ -384,7 +392,7 @@ TEST(Distance, HorEdgeSquareTouching)
     
     EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
     
-    EXPECT_EQ(conf.cache.GetNumIndices(), decltype(conf.cache.GetNumIndices()){2});
+    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{2});
     
     const auto ip0 = conf.cache.GetIndexPair(0);
     EXPECT_EQ(ip0.a, IndexPair::size_type{0});
@@ -436,7 +444,7 @@ TEST(Distance, VerEdgeSquareTouching)
     
     EXPECT_EQ(decltype(output.iterations){3}, output.iterations);
     
-    EXPECT_EQ(conf.cache.GetNumIndices(), decltype(conf.cache.GetNumIndices()){2});
+    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{2});
     
     const auto ip0 = conf.cache.GetIndexPair(0);
     EXPECT_EQ(ip0.a, IndexPair::size_type{2});
@@ -479,7 +487,7 @@ TEST(Distance, SquareTwice)
 
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
-    EXPECT_EQ(conf.cache.GetNumIndices(), decltype(conf.cache.GetNumIndices()){1});
+    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{1});
     
     const auto ip = conf.cache.GetIndexPair(0);
     EXPECT_EQ(ip.a, IndexPair::size_type{0});
@@ -531,7 +539,7 @@ TEST(Distance, SquareSquareTouchingVertically)
     
     EXPECT_EQ(decltype(output.iterations){3}, output.iterations);
     
-    EXPECT_EQ(conf.cache.GetNumIndices(), decltype(conf.cache.GetNumIndices()){2});
+    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{2});
     
     const auto ip = conf.cache.GetIndexPair(0);
     EXPECT_EQ(ip.a, IndexPair::size_type{3});
@@ -582,7 +590,7 @@ TEST(Distance, SquareSquareDiagonally)
     
     EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
     
-    EXPECT_EQ(conf.cache.GetNumIndices(), decltype(conf.cache.GetNumIndices()){1});
+    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{1});
     
     const auto ip = conf.cache.GetIndexPair(0);
     EXPECT_EQ(ip.a, IndexPair::size_type{2});
@@ -657,7 +665,7 @@ TEST(Distance, SquareSquareOverlappingDiagnally)
     
     EXPECT_EQ(decltype(output.iterations){3}, output.iterations);
     
-    EXPECT_EQ(conf.cache.GetNumIndices(), decltype(conf.cache.GetNumIndices()){3});
+    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{3});
     
     const auto ip = conf.cache.GetIndexPair(0);
     EXPECT_EQ(ip.a, IndexPair::size_type{0});

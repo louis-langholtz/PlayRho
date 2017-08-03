@@ -54,11 +54,6 @@ namespace playrho
         
         /// Gets point B (in world coordinates).
         constexpr auto GetPointB() const noexcept { return m_wB; }
-        
-        /// Gets the point delta.
-        /// @details This is the difference between points A and B.
-        /// @return Point B minus point A.
-        constexpr Length2D GetPointDelta() const noexcept;
 
         constexpr auto GetIndexA() const noexcept { return m_indexPair.a; }
         
@@ -69,35 +64,19 @@ namespace playrho
     private:
         Length2D m_wA; ///< Point A in world coordinates. This is the support point in proxy A. 8-bytes.
         Length2D m_wB; ///< Point B in world coordinates. This is the support point in proxy B. 8-bytes.
-#ifndef DONT_CACHE
-        Length2D m_delta; ///< Edge defined wB - wA. 8-bytes.
-#endif
         IndexPair m_indexPair; ///< Index pair. @details Indices of points A and B. 2-bytes.
     };
     
     constexpr inline SimplexEdge::SimplexEdge(Length2D pA, index_type iA, Length2D pB, index_type iB) noexcept:
-        m_wA{pA}, m_wB{pB},
-#ifndef DONT_CACHE
-        m_delta{pB - pA},
-#endif    
-        m_indexPair{iA,iB}
+        m_wA{pA}, m_wB{pB}, m_indexPair{iA, iB}
     {
     }
-
-    constexpr inline Length2D SimplexEdge::GetPointDelta() const noexcept
-    {
-#ifndef DONT_CACHE
-        return m_delta;
-#else
-        return m_wB - m_wA;
-#endif            
-    }
-
+    
     /// Gets "w".
     /// @return 2D vector value of wB minus wA.
     constexpr inline Length2D GetPointDelta(const SimplexEdge& sv)
     {
-        return sv.GetPointDelta();
+        return sv.GetPointB() - sv.GetPointA();
     }
     
     constexpr inline bool operator == (const SimplexEdge& lhs, const SimplexEdge& rhs)
