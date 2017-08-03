@@ -304,6 +304,8 @@ namespace playrho
         return m_normalizedWeights[index];
     }
     
+    /// @brief Gets the size in number of valid edges of this Simplex.
+    /// @return Value between 0 and <code>MaxEdges</code> (inclusive).
     constexpr inline Simplex::size_type Simplex::GetSize() const noexcept
     {
         return m_simplexEdges.size();
