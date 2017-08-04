@@ -55,15 +55,15 @@ namespace {
             case 3:
                 simplexEdges[2] = GetSimplexEdge(proxyA, xfA, indexPairs[2].a,
                                                  proxyB, xfB, indexPairs[2].b);
-                // fallthrough
+                // [[fallthrough]]
             case 2:
                 simplexEdges[1] = GetSimplexEdge(proxyA, xfA, indexPairs[1].a,
                                                  proxyB, xfB, indexPairs[1].b);
-                // fallthrough
+                // [[fallthrough]]
             case 1:
                 simplexEdges[0] = GetSimplexEdge(proxyA, xfA, indexPairs[0].a,
                                                  proxyB, xfB, indexPairs[0].b);
-                // fallthrough
+                // [[fallthrough]]
         }
         simplexEdges.size(static_cast<size_type>(count));
         return simplexEdges;
