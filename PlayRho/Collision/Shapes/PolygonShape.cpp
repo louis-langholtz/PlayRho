@@ -71,7 +71,7 @@ void playrho::SetAsBox(PolygonShape& shape, Length hx, Length hy, const Length2D
     shape.Transform(Transformation{center, UnitVec2::Get(angle)});
 }
 
-void PolygonShape::Transform(playrho::Transformation xf) noexcept
+PolygonShape& PolygonShape::Transform(playrho::Transformation xf) noexcept
 {
     for (auto i = decltype(GetVertexCount()){0}; i < GetVertexCount(); ++i)
     {
@@ -79,6 +79,7 @@ void PolygonShape::Transform(playrho::Transformation xf) noexcept
         m_normals[i] = Rotate(m_normals[i], xf.q);
     }
     m_centroid = playrho::Transform(m_centroid, xf);
+    return *this;
 }
 
 void PolygonShape::Set(Span<const Length2D> points) noexcept

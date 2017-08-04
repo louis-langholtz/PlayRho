@@ -124,7 +124,7 @@ public:
     /// @param hy the half-height.
     void SetAsBox(Length hx, Length hy) noexcept;
     
-    void Transform(Transformation xfm) noexcept;
+    PolygonShape& Transform(Transformation xfm) noexcept;
 
     /// Gets the vertex count.
     /// @return value between 0 and MaxShapeVertices inclusive.
@@ -230,8 +230,7 @@ void SetAsBox(PolygonShape& shape, Length hx, Length hy, const Length2D center, 
 
 inline PolygonShape Transform(PolygonShape value, Transformation xfm) noexcept
 {
-    value.Transform(xfm);
-    return value;
+    return value.Transform(xfm);
 }
 
 } // namespace playrho
