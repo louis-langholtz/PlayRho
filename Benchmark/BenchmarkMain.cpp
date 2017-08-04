@@ -686,7 +686,10 @@ static void SolveVC(benchmark::State& state)
 
 static void DropTiles(int count)
 {
-    const auto m_world = std::make_unique<playrho::World>();
+    const auto linearSlop = playrho::Real(0.001f) * playrho::Meter;
+    const auto vertexRadius = playrho::Length{linearSlop * playrho::Real(2)};
+    const auto conf = playrho::PolygonShape::Conf{}.UseVertexRadius(vertexRadius);
+    const auto m_world = std::make_unique<playrho::World>(playrho::WorldDef{}.UseMinVertexRadius(vertexRadius));
     
     {
         const auto a = playrho::Real{0.5f};
@@ -701,7 +704,7 @@ static void DropTiles(int count)
             GetX(position) = -N * a * playrho::Meter;
             for (auto i = 0; i < N; ++i)
             {
-                playrho::PolygonShape shape;
+                auto shape = playrho::PolygonShape{conf};
                 SetAsBox(shape, a * playrho::Meter, a * playrho::Meter, position, playrho::Angle{0});
                 ground->CreateFixture(std::make_shared<playrho::PolygonShape>(shape));
                 GetX(position) += 2.0f * a * playrho::Meter;
@@ -712,7 +715,7 @@ static void DropTiles(int count)
     
     {
         const auto a = playrho::Real{0.5f};
-        const auto shape = std::make_shared<playrho::PolygonShape>(a * playrho::Meter, a * playrho::Meter);
+        const auto shape = std::make_shared<playrho::PolygonShape>(a * playrho::Meter, a * playrho::Meter, conf);
         shape->SetDensity(playrho::Real{5} * playrho::KilogramPerSquareMeter);
         
         playrho::Length2D x(playrho::Real(-7.0f) * playrho::Meter, playrho::Real(0.75f) * playrho::Meter);
@@ -737,6 +740,17 @@ static void DropTiles(int count)
     
     auto step = playrho::StepConf{};
     step.SetTime(playrho::Time{playrho::Second / playrho::Real{60}});
+    step.linearSlop = linearSlop;
+    step.regMinSeparation = -linearSlop * playrho::Real(3);
+    step.toiMinSeparation = -linearSlop * playrho::Real(1.5f);
+    step.targetDepth = linearSlop * playrho::Real(3);
+    step.tolerance = linearSlop / playrho::Real(4);
+    step.maxLinearCorrection = linearSlop * playrho::Real(40);
+    step.aabbExtension = linearSlop * playrho::Real(20);
+    step.maxTranslation = playrho::Length{playrho::Meter * playrho::Real(4)};
+    step.velocityThreshold = (playrho::Real{8} / playrho::Real{10}) * playrho::MeterPerSecond;
+    step.maxSubSteps = std::uint8_t{48};
+
     while (GetAwakeCount(*m_world) > 0)
     {
         m_world->Step(step);

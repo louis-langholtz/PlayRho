@@ -43,7 +43,7 @@ public:
         {
             const auto shape = std::make_shared<PolygonShape>(Real{0.1f} * Meter, Real{1.0f} * Meter);
             shape->SetDensity(Real{20} * KilogramPerSquareMeter);
-            shape->SetFriction(0.05f);
+            shape->SetFriction(Real(0.05f));
 
             for (auto i = 0; i < 10; ++i)
             {

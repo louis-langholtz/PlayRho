@@ -567,7 +567,7 @@ void Test::MouseMove(const Length2D& p)
 
 void Test::LaunchBomb()
 {
-    const auto p = Length2D(RandomFloat(-15.0f, 15.0f) * Meter, 40.0f * Meter);
+    const auto p = Length2D(RandomFloat(-15.0f, 15.0f) * Meter, Real(40.0f) * Meter);
     const auto v = LinearVelocity2D{
         Real{-100} * GetX(p) / Second,
         Real{-100} * GetY(p) / Second

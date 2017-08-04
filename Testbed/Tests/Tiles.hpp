@@ -95,7 +95,7 @@ public:
         }
 
         const auto end = std::chrono::high_resolution_clock::now();
-        const auto elapsed_secs = std::chrono::duration<Real>{end - start};
+        const auto elapsed_secs = std::chrono::duration<double>{end - start};
         m_createTime = elapsed_secs.count();
     }
 
@@ -113,7 +113,7 @@ public:
         }
 
         drawer.DrawString(5, m_textLine, "create time = %6.2f ms, fixture count = %d",
-            static_cast<double>(m_createTime * Real(1000)), m_fixtureCount);
+            m_createTime * 1000, m_fixtureCount);
         m_textLine += DRAW_STRING_NEW_LINE;
 
         //DynamicTree* tree = &m_world->m_contactManager.m_broadPhase.m_tree;
@@ -143,7 +143,7 @@ public:
     }
     
     int m_fixtureCount;
-    Real m_createTime;
+    double m_createTime;
     World m_snapshot;
 };
 

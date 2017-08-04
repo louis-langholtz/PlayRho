@@ -40,7 +40,7 @@ public:
 
             shape.Set(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter);
             shape.SetDensity(Real{0} * KilogramPerSquareMeter);
-            shape.SetFriction(0.6f);
+            shape.SetFriction(Real(0.6f));
             ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
             Real hs[10] = {0.25f, 1.0f, 4.0f, 0.0f, 0.0f, -1.0f, -2.0f, -2.0f, -1.25f, 0.0f};
@@ -113,7 +113,7 @@ public:
             const auto N = 20;
             const auto shape = std::make_shared<PolygonShape>(Real{1.0f} * Meter, Real{0.125f} * Meter);
             shape->SetDensity(Real{1} * KilogramPerSquareMeter);
-            shape->SetFriction(0.6f);
+            shape->SetFriction(Real(0.6f));
 
             auto prevBody = ground;
             for (auto i = 0; i < N; ++i)
@@ -180,7 +180,7 @@ public:
 
             const auto circle = std::make_shared<DiskShape>(Real(0.4) * Meter);
             circle->SetDensity(Real{1} * KilogramPerSquareMeter);
-            circle->SetFriction(0.9f);
+            circle->SetFriction(Real(0.9f));
 
             BodyDef bd;
             bd.type = BodyType::Dynamic;

@@ -56,8 +56,8 @@ struct Defaults
 {
     static constexpr auto GetLinearSlop() noexcept
     {
-        // Used to be 0.005m. Now uses 0.001m.
-        return Length{Meter / Real(1000)};
+        // Return the value used by Box2D 2.3.2 b2_linearSlop define....
+        return Length{Real(0.005f) * Meter};
     }
     
     static constexpr auto GetMaxVertexRadius() noexcept
@@ -145,11 +145,13 @@ constexpr auto DefaultAngularSlop = (Pi * Real{2} * Radian) / Real{180};
 /// @details The maximum linear position correction used when solving constraints.
 ///   This helps to prevent overshoot.
 /// @note This value should be greater than the linear slop value.
-constexpr auto DefaultMaxLinearCorrection = DefaultLinearSlop * Real{40}; // aka 0.04f
+constexpr auto DefaultMaxLinearCorrection = Real{0.2f} * Meter;
 
 /// @brief Default maximum angular correction.
 /// @note This value should be greater than the angular slop value.
-constexpr auto DefaultMaxAngularCorrection = DefaultAngularSlop * Real{4};
+constexpr auto DefaultMaxAngularCorrection = Real(8.0f / 180.0f) * Pi * Radian;
+
+constexpr auto DefaultMaxTranslation = Length{Real(2.0f) * Meter};
 
 /// @brief Default maximum rotation per world step.
 /// @warning This value should be less than Pi * Radian.
@@ -172,12 +174,12 @@ constexpr auto DefaultMaxDistanceIters = std::uint8_t{20};
 /// In other words, this is the default maximum number of times in a world step that a contact will
 /// have continuous collision resolution done for it.
 /// @note Used in the TOI phase of step processing.
-constexpr auto DefaultMaxSubSteps = std::uint8_t{48};
+constexpr auto DefaultMaxSubSteps = std::uint8_t{8};
     
 // Dynamics
 
 /// @brief Default velocity threshold.
-constexpr auto DefaultVelocityThreshold = (Real{8} / Real{10}) * MeterPerSecond;
+constexpr auto DefaultVelocityThreshold = Real(1) * MeterPerSecond;
 
 constexpr auto DefaultRegMinMomentum = Momentum{(Real(0) / Real(100)) * NewtonSecond};
 constexpr auto DefaultToiMinMomentum = Momentum{(Real(0) / Real(100)) * NewtonSecond};

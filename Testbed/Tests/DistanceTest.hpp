@@ -445,7 +445,7 @@ public:
     }
 
 private:
-    const Length RadiusIncrement = DefaultLinearSlop * Real{200};
+    const Length RadiusIncrement = (Meter / Real(1000)) * Real{200};
     const Color simplexSegmentColor = Color{0.0f, 0.5f, 0.5f}; // dark cyan
     const Color simplexPointColor = Color{0, 1, 1, 0.6f}; // semi-transparent cyan
     const Color witnessPointColor = Color{1, 1, 0, 0.5}; // semi-transparent yellow

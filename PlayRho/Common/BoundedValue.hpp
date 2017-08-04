@@ -248,18 +248,42 @@ namespace playrho {
         return T{lhs} > T{rhs};
     }
     
+    template <typename T, LoValueCheck lo, HiValueCheck hi>
+    constexpr auto operator* (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
+    {
+        return T{lhs} * T{rhs};
+    }
+    
+    template <typename T, LoValueCheck lo, HiValueCheck hi>
+    constexpr auto operator/ (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
+    {
+        return T{lhs} / T{rhs};
+    }
+    
+    template <typename T, LoValueCheck lo, HiValueCheck hi>
+    constexpr auto operator+ (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
+    {
+        return T{lhs} + T{rhs};
+    }
+    
+    template <typename T, LoValueCheck lo, HiValueCheck hi>
+    constexpr auto operator- (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
+    {
+        return T{lhs} - T{rhs};
+    }
+
     // Commmon logical operations for BoundedValue<T, lo, hi> OP T
 
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     constexpr bool operator== (const BoundedValue<T, lo, hi> lhs, const T rhs)
     {
-        return T{lhs} == T{rhs};
+        return T{lhs} == rhs;
     }
     
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     constexpr bool operator!= (const BoundedValue<T, lo, hi> lhs, const T rhs)
     {
-        return T{lhs} != T{rhs};
+        return T{lhs} != rhs;
     }
     
     // Logical operations for numerical BoundedValue<T, lo, hi> OP T
@@ -267,25 +291,25 @@ namespace playrho {
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     constexpr bool operator<= (const BoundedValue<T, lo, hi> lhs, const T rhs)
     {
-        return T{lhs} <= T{rhs};
+        return T{lhs} <= rhs;
     }
     
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     constexpr bool operator>= (const BoundedValue<T, lo, hi> lhs, const T rhs)
     {
-        return T{lhs} >= T{rhs};
+        return T{lhs} >= rhs;
     }
     
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     constexpr bool operator< (const BoundedValue<T, lo, hi> lhs, const T rhs)
     {
-        return T{lhs} < T{rhs};
+        return T{lhs} < rhs;
     }
     
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     constexpr bool operator> (const BoundedValue<T, lo, hi> lhs, const T rhs)
     {
-        return T{lhs} > T{rhs};
+        return T{lhs} > rhs;
     }
     
     template <typename T, typename U, LoValueCheck lo, HiValueCheck hi>
@@ -317,13 +341,13 @@ namespace playrho {
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     constexpr bool operator== (const T lhs, const BoundedValue<T, lo, hi> rhs)
     {
-        return T{lhs} == T{rhs};
+        return lhs == T{rhs};
     }
     
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     constexpr bool operator!= (const T lhs, const BoundedValue<T, lo, hi> rhs)
     {
-        return T{lhs} != T{rhs};
+        return lhs != T{rhs};
     }
     
     // Logical operations for numerical T OP BoundedValue<T, lo, hi>
@@ -331,25 +355,25 @@ namespace playrho {
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     constexpr bool operator<= (const T lhs, const BoundedValue<T, lo, hi> rhs)
     {
-        return T{lhs} <= T{rhs};
+        return lhs <= T{rhs};
     }
     
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     constexpr bool operator>= (const T lhs, const BoundedValue<T, lo, hi> rhs)
     {
-        return T{lhs} >= T{rhs};
+        return lhs >= T{rhs};
     }
     
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     constexpr bool operator< (const T lhs, const BoundedValue<T, lo, hi> rhs)
     {
-        return T{lhs} < T{rhs};
+        return lhs < T{rhs};
     }
     
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     constexpr bool operator> (const T lhs, const BoundedValue<T, lo, hi> rhs)
     {
-        return T{lhs} > T{rhs};
+        return lhs > T{rhs};
     }
     
     template <typename T, typename U, LoValueCheck lo, HiValueCheck hi>

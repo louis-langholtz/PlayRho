@@ -71,7 +71,7 @@ public:
     PolyShapes()
     {
         m_circle->SetDensity(Real{1} * KilogramPerSquareMeter);
-        m_circle->SetFriction(0.3f);
+        m_circle->SetFriction(Real(0.3f));
 
         // Ground body
         {
@@ -83,7 +83,7 @@ public:
         {
             p = std::make_shared<PolygonShape>();
             p->SetDensity(Real{1} * KilogramPerSquareMeter);
-            p->SetFriction(0.3f);
+            p->SetFriction(Real(0.3f));
         }
 
         m_polygons[0]->Set({Vec2(-0.5f, 0.0f) * Meter, Vec2(0.5f, 0.0f) * Meter, Vec2(0.0f, 1.5f) * Meter});

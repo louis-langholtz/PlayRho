@@ -32,7 +32,7 @@ namespace playrho {
             const auto pipeBody = m_world->CreateBody(BodyDef{}.UseLocation(Vec2(0, 20) * Meter));
             {
                 auto conf = ChainShape::Conf{};
-                conf.UseFriction(1.0f);
+                conf.UseFriction(Real(1));
                 conf.vertices = GetCircleVertices(Real{20.0f} * Meter, 90,
                                                   Real(180) * Degree, Real(0.5f));
                 pipeBody->CreateFixture(std::make_shared<ChainShape>(conf));
@@ -44,7 +44,7 @@ namespace playrho {
             ballBody->CreateFixture(std::make_shared<DiskShape>(DiskShape::Conf{}
                                     .UseDensity(Real{0.01f} * KilogramPerSquareMeter)
                                     .UseVertexRadius(Real{1} * Meter)
-                                    .UseFriction(1.0f)));
+                                    .UseFriction(Real(1))));
         }
     };
     

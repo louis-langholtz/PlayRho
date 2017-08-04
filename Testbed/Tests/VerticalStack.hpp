@@ -43,7 +43,7 @@ public:
     {
         m_bulletshape->SetVertexRadius(Real{0.25f} * Meter);
         m_bulletshape->SetDensity(Real{20} * KilogramPerSquareMeter);
-        m_bulletshape->SetRestitution(0.05f);
+        m_bulletshape->SetRestitution(Real(0.05f));
 
         const auto ground = m_world->CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
@@ -55,7 +55,7 @@ public:
         const auto hdim = Real{0.1f}; // 0.5f is less stable than 1.0f for boxes not at origin (x of 0)
         const auto shape = std::make_shared<PolygonShape>(hdim * Meter, hdim * Meter);
         shape->SetDensity(Real{1} * KilogramPerSquareMeter);
-        shape->SetFriction(0.3f);
+        shape->SetFriction(Real(0.3f));
         for (auto j = 0; j < e_columnCount; ++j)
         {
             for (auto i = 0; i < e_rowCount; ++i)

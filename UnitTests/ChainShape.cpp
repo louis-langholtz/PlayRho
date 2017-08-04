@@ -186,8 +186,8 @@ TEST(ChainShape, WithCircleVertices)
     EXPECT_EQ(foo.GetVertexRadius(), vertexRadius);
     
     const auto massData = foo.GetMassData();
-    EXPECT_NEAR(static_cast<double>(GetX(massData.center) / Meter), 0.0, 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetY(massData.center) / Meter), 2.4142134189605713, 0.0001);
+    EXPECT_NEAR(static_cast<double>(Real(GetX(massData.center) / Meter)), 0.0, 0.0001);
+    EXPECT_NEAR(static_cast<double>(Real(GetY(massData.center) / Meter)), 2.4142134189605713, 0.0001);
 }
 
 TEST(ChainShape, TooManyVertices)

@@ -463,7 +463,7 @@ Manifold playrho::CollideShapes(const DistanceProxy& shapeA, const Transformatio
         return Manifold{};
     }
     
-    constexpr auto k_tol = PLAYRHO_MAGIC(DefaultLinearSlop / Real{10});
+    const auto k_tol = PLAYRHO_MAGIC(conf.linearSlop / Real{10});
     return (edgeSepB.separation > (edgeSepA.separation + k_tol))?
         GetFaceManifold(Manifold::e_faceB,
                         shapeB, xfB, edgeSepB.index1,

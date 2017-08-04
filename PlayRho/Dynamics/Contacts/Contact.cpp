@@ -36,6 +36,7 @@ namespace
     inline Manifold::Conf GetManifoldConf(const StepConf& conf)
     {
         auto manifoldConf = Manifold::Conf{};
+        manifoldConf.linearSlop = conf.linearSlop;
         manifoldConf.tolerance = conf.tolerance;
         manifoldConf.targetDepth = conf.targetDepth;
         manifoldConf.maxCirclesRatio = conf.maxCirclesRatio;

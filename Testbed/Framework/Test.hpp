@@ -32,16 +32,23 @@ namespace playrho {
 /// Test settings. Some can be controlled in the GUI.
 struct Settings
 {
-    float maxTranslation = 4;
+    float maxTranslation = static_cast<float>(Real{DefaultMaxTranslation / Meter});
     float maxRotation = 90; // in degrees
     float hz = 60;
     float dt = 1 / hz;
-    float maxLinearCorrection = static_cast<float>(StripUnit(DefaultMaxLinearCorrection)); // in meters
+    float maxLinearCorrection = static_cast<float>(Real{DefaultMaxLinearCorrection / Meter}); // in meters
     float maxAngularCorrection = static_cast<float>(Real{DefaultMaxAngularCorrection / Degree}); // in degrees
-    float linearSlop = static_cast<float>(StripUnit(DefaultLinearSlop));
+
+    /// @brief Linear slop.
+    /// @note Explicily coded to default to the same value as used in Erin's Box2D 2.3.2
+    float linearSlop = static_cast<float>(Real{DefaultLinearSlop / Meter});
+    
+    /// @brief Angular slop.
+    /// @note Explicily coded to default to the same value as used in Erin's Box2D 2.3.2
     float angularSlop = static_cast<float>(Real{DefaultAngularSlop / Radian});
-    float regMinSeparation = static_cast<float>(StripUnit(DefaultLinearSlop) * -3);
-    float toiMinSeparation = static_cast<float>(StripUnit(DefaultLinearSlop) * -1.5f);
+    
+    float regMinSeparation = static_cast<float>(Real{DefaultLinearSlop / Meter}) * -3.0f;
+    float toiMinSeparation = static_cast<float>(Real{DefaultLinearSlop / Meter}) * -1.5f;
     int regPosResRate = 20; // in percent
     int toiPosResRate = 75; // in percent
     int regVelocityIterations = 8;
@@ -80,8 +87,8 @@ public:
     };
     
     Test(const WorldDef& config = WorldDef{}.UseGravity(LinearAcceleration2D{
-        0.0f * MeterPerSquareSecond, -10.0f * MeterPerSquareSecond
-    }));
+        Real(0.0f) * MeterPerSquareSecond, -Real(10.0f) * MeterPerSquareSecond
+    }).UseMinVertexRadius(Real(0.0001f) * Real{2} * Meter));
     virtual ~Test();
 
     void DrawTitle(Drawer& drawer, const char *string);

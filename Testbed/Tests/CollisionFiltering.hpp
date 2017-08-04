@@ -116,7 +116,7 @@ public:
         // Small box
         polygon.SetAsBox(Real{1.0f} * Meter, Real{0.5f} * Meter);
         polygon.SetDensity(Real{1} * KilogramPerSquareMeter);
-        polygon.SetRestitution(0.1f);
+        polygon.SetRestitution(Real(0.1f));
 
         FixtureDef boxShapeDef;
 

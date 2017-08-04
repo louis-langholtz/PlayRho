@@ -417,6 +417,8 @@ namespace playrho
     
     struct Manifold::Conf
     {
+        Length linearSlop = DefaultLinearSlop;
+
         /// Targetted depth of impact.
         /// @note Value must be less than twice the minimum vertex radius of any shape.
         Length targetDepth = DefaultLinearSlop * Real{3};

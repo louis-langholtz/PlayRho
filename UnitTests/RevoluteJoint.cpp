@@ -22,6 +22,7 @@
 #include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/BodyDef.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Collision/Shapes/DiskShape.hpp>
@@ -198,7 +199,12 @@ TEST(RevoluteJoint, MovesDynamicCircles)
     jd.bodyA = b1;
     jd.bodyB = b2;
     world.CreateJoint(jd);
-    Step(world, Time{Second * Real{1}});
+
+    auto step = StepConf{};
+    step.SetTime(Second * Real{1});
+    step.maxTranslation = Meter * Real(4);
+    world.Step(step);
+    
     EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), 0, 0.001);
     EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), -4, 0.001);
     EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), 0, 0.01);
@@ -223,7 +229,12 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
     jd.enableLimit = true;
     const auto joint = world.CreateJoint(jd);
     EXPECT_NE(joint, nullptr);
-    Step(world, Time{Second * Real{1}});
+    
+    auto step = StepConf{};
+    step.SetTime(Second * Real{1});
+    step.maxTranslation = Meter * Real(4);
+    world.Step(step);
+
     EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
     EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), -4, 0.001);
     EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);

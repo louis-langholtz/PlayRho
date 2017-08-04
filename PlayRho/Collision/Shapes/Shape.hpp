@@ -59,7 +59,7 @@ public:
         ///   therefore will be more prone to rolling or having other shapes more prone
         ///   to roll off of them.
         ///
-        /// @note This should be a value greater than zero.
+        /// @note This should be a non-negative value.
         ///
         NonNegative<Length> vertexRadius = NonNegative<Length>{DefaultLinearSlop};
 
@@ -147,7 +147,7 @@ public:
     virtual void Accept(Visitor& visitor) const = 0;
     
     /// @brief Gets the vertex radius.
-    Length GetVertexRadius() const noexcept;
+    NonNegative<Length> GetVertexRadius() const noexcept;
 
     /// @brief Sets the vertex radius.
     ///
@@ -158,7 +158,7 @@ public:
     ///   therefore will be more prone to rolling or having other shapes more prone
     ///   to roll off of them.
     ///
-    /// @note This should be a value greater than zero.
+    /// @note This should be a non-negative value.
     ///
     void SetVertexRadius(NonNegative<Length> vertexRadius) noexcept;
 
@@ -274,7 +274,7 @@ private:
     bool visited = false;
 };
 
-inline Length Shape::GetVertexRadius() const noexcept
+inline NonNegative<Length> Shape::GetVertexRadius() const noexcept
 {
     return m_vertexRadius;
 }
@@ -320,7 +320,7 @@ inline void Shape::SetRestitution(Finite<Real> restitution) noexcept
 /// @details Gets the radius of every vertex of this shape.
 /// This is used for collision handling.
 /// @note This value should never be less than zero.
-inline Length GetVertexRadius(const Shape& shape) noexcept
+inline NonNegative<Length> GetVertexRadius(const Shape& shape) noexcept
 {
     return shape.GetVertexRadius();
 }

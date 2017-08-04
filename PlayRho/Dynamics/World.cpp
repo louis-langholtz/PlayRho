@@ -2640,34 +2640,26 @@ void World::SetType(Body& body, BodyType type)
     }
 }
 
-bool World::IsValid(shared_ptr<const Shape> shape) const noexcept
-{
-    if (!shape)
-    {
-        return false;
-    }
-    const auto vr = GetVertexRadius(*shape);
-    if (!(vr >= GetMinVertexRadius()))
-    {
-        return false;
-    }
-    if (!(vr <= GetMaxVertexRadius()))
-    {
-        return false;
-    }
-    return true;
-}
-
 Fixture* World::CreateFixture(Body& body, shared_ptr<const Shape> shape,
                               const FixtureDef& def, bool resetMassData)
 {
     if (body.GetWorld() != this)
     {
-        return nullptr;
+        throw InvalidArgument("World::CreateFixture: invalid body");
     }
-    if (!IsValid(shape))
+
+    if (!shape)
     {
-        return nullptr;
+        throw InvalidArgument("World::CreateFixture: null shape");
+    }
+    const auto vr = GetVertexRadius(*shape);
+    if (!(vr >= GetMinVertexRadius()))
+    {
+        throw InvalidArgument("World::CreateFixture: vertex radius < min");
+    }
+    if (!(vr <= GetMaxVertexRadius()))
+    {
+        throw InvalidArgument("World::CreateFixture: vertex radius > max");
     }
     
     if (IsLocked())

@@ -48,8 +48,8 @@ public:
     RayCast()
     {
         m_circle->SetVertexRadius(Real{0.5f} * Meter);
-        m_circle->SetFriction(0.3f);
-        m_edge->SetFriction(0.3f);
+        m_circle->SetFriction(Real(0.3f));
+        m_edge->SetFriction(Real(0.3f));
         
         // Ground body
         const auto ground = m_world->CreateBody();
@@ -59,7 +59,7 @@ public:
         for (auto&& p: m_polygons)
         {
             p = std::make_shared<PolygonShape>();
-            p->SetFriction(0.3f);
+            p->SetFriction(Real(0.3f));
         }
 
         m_polygons[0]->Set({

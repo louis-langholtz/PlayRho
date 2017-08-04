@@ -39,50 +39,48 @@ public:
         {
             PolygonShape shape;
 
-            shape.SetVertexRadius(Real(0.006f) * Meter);
             SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
-                     Vec2(20.01f, 0.545f) * Meter, Real{0.0f} * Radian);
+                     Vec2(20.015f, 0.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
             SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
-                     Vec2(20.01f, 1.545f) * Meter, Real{0.0f} * Radian);
+                     Vec2(20.015f, 1.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
             SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
-                     Vec2(20.01f, 2.545f) * Meter, Real{0.0f} * Radian);
+                     Vec2(20.015f, 2.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
             SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
-                     Vec2(20.01f, 3.545f) * Meter, Real{0.0f} * Radian);
+                     Vec2(20.015f, 3.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
             SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
-                     Vec2(20.01f, 4.545f) * Meter, Real{0.0f} * Radian);
+                     Vec2(20.015f, 4.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
             SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
-                     Vec2(20.01f, 5.545f) * Meter, Real{0.0f} * Radian);
+                     Vec2(20.015f, 5.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
             SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
-                     Vec2(20.01f, 6.545f) * Meter, Real{0.0f} * Radian);
+                     Vec2(20.015f, 6.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
 
-            shape.SetVertexRadius(Real(0.006f) * Meter);
             SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
-                     Vec2(17.99f, 0.545f) * Meter, Real{0.0f} * Radian);
+                     Vec2(17.985f, 0.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
             SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
-                     Vec2(17.99f, 1.545f) * Meter, Real{0.0f} * Radian);
+                     Vec2(17.985f, 1.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
             SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
-                     Vec2(17.99f, 2.545f) * Meter, Real{0.0f} * Radian);
+                     Vec2(17.985f, 2.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
             SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
-                     Vec2(17.99f, 3.545f) * Meter, Real{0.0f} * Radian);
+                     Vec2(17.985f, 3.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
             SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
-                     Vec2(17.99f, 4.545f) * Meter, Real{0.0f} * Radian);
+                     Vec2(17.985f, 4.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
             SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
-                     Vec2(17.99f, 5.545f) * Meter, Real{0.0f} * Radian);
+                     Vec2(17.985f, 5.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
             SetAsBox(shape, Real(0.5) * Meter, Real(0.5) * Meter,
-                     Vec2(17.99f, 6.545f) * Meter, Real{0.0f} * Radian);
+                     Vec2(17.985f, 6.545f) * Meter, Real{0.0f} * Radian);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
         }
 
@@ -172,7 +170,6 @@ public:
             auto conf = PolygonShape::Conf{};
             conf.friction = Real(0);
             conf.density = Real{20} * KilogramPerSquareMeter;
-            conf.vertexRadius = Real(0.006f) * Meter;
             const auto square = std::make_shared<PolygonShape>(Real{0.5f} * Meter, Real{0.5f} * Meter, conf);
             body->CreateFixture(square);
             

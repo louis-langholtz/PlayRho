@@ -311,8 +311,6 @@ public:
     ///
     bool DestroyFixture(Fixture* fixture, bool resetMassData = true);
     
-    bool IsValid(std::shared_ptr<const Shape> shape) const noexcept;
-    
     /// @brief Touches each proxy of the given fixture.
     /// @note Fixture must belong to a body that belongs to this world or this method will
     ///   return false.

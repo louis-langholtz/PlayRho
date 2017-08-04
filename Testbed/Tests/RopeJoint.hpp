@@ -43,11 +43,11 @@ public:
         {
             const auto rectangle = std::make_shared<PolygonShape>(Real{0.5f} * Meter, Real{0.125f} * Meter);
             rectangle->SetDensity(Real{20} * KilogramPerSquareMeter);
-            rectangle->SetFriction(0.2f);
+            rectangle->SetFriction(Real(0.2f));
 
             const auto square = std::make_shared<PolygonShape>(Real{1.5f} * Meter, Real{1.5f} * Meter);
             square->SetDensity(Real{100} * KilogramPerSquareMeter);
-            square->SetFriction(0.2f);
+            square->SetFriction(Real(0.2f));
 
             FixtureDef fd;
             fd.filter.categoryBits = 0x0001;

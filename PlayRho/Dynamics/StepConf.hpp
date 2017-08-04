@@ -183,7 +183,7 @@ public:
     ///   isn't advised.
     /// @note Used in both the regular and TOI phases of step processing.
     ///
-    Length maxTranslation = Meter * Real(4); // originally 2
+    Length maxTranslation = DefaultMaxTranslation;
     
     /// @brief Maximum rotation.
     ///

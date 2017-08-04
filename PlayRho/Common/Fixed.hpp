@@ -473,6 +473,22 @@ namespace playrho
             return *this;
         }
         
+        constexpr bool isfinite() const noexcept
+        {
+            return (m_value > GetNegativeInfinity().m_value)
+            && (m_value < GetInfinity().m_value);
+        }
+        
+        constexpr bool isnan() const noexcept
+        {
+            return m_value == GetNaN().m_value;
+        }
+        
+        constexpr int getsign() const noexcept
+        {
+            return (m_value >= 0)? +1: -1;
+        }
+
     private:
         
         using wider_type = typename Wider<value_type>::type;
@@ -489,22 +505,6 @@ namespace playrho
             m_value{val * scalar.value}
         {
             // Intentionally empty.
-        }
-        
-        constexpr bool isfinite() const noexcept
-        {
-            return (m_value > GetNegativeInfinity().m_value)
-                && (m_value < GetInfinity().m_value);
-        }
-
-        constexpr bool isnan() const noexcept
-        {
-            return m_value == GetNaN().m_value;
-        }
-        
-        constexpr int getsign() const noexcept
-        {
-            return (m_value >= 0)? +1: -1;
         }
         
         value_type m_value;
@@ -746,6 +746,14 @@ namespace playrho
 
 namespace std
 {
+    // Generic Fixed
+    
+    template <typename BT, unsigned int FB>
+    constexpr bool isnormal(playrho::Fixed<BT, FB> arg)
+    {
+        return arg != playrho::Fixed<BT, FB>{0} && arg.isfinite();
+    }
+    
     // Fixed32
 
     template <>

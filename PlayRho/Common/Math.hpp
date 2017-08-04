@@ -21,6 +21,7 @@
 #define PLAYRHO_MATH_H
 
 #include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Common/BoundedValue.hpp>
 #include <PlayRho/Common/Span.hpp>
 #include <PlayRho/Common/UnitVec2.hpp>
 #include <PlayRho/Common/Vector2D.hpp>
@@ -536,10 +537,22 @@ constexpr inline Vec2 operator- (const UnitVec2 lhs, const UnitVec2 rhs) noexcep
     return Vec2{lhs.GetX() - rhs.GetX(), lhs.GetY() - rhs.GetY()};
 }
 
+template <class T, LoValueCheck lo, HiValueCheck hi>
+constexpr inline Vector2D<T> operator* (BoundedValue<T, lo, hi> s, UnitVec2 u) noexcept
+{
+    return Vector2D<T>{u.GetX() * s, u.GetY() * T{s}};
+}
+
 template <class T>
 constexpr inline Vector2D<T> operator* (const T s, const UnitVec2 u) noexcept
 {
     return Vector2D<T>{u.GetX() * s, u.GetY() * s};
+}
+
+template <class T, LoValueCheck lo, HiValueCheck hi>
+constexpr inline Vector2D<T> operator* (UnitVec2 u, BoundedValue<T, lo, hi> s) noexcept
+{
+    return Vector2D<T>{u.GetX() * s, u.GetY() * T{s}};
 }
 
 template <class T>

@@ -64,8 +64,8 @@ AABB ConvertScreenToWorld(const Camera& camera)
     const auto upper = camera.m_center + extents;
 
     return AABB{
-        Length2D{lower.x * Meter, lower.y * Meter},
-        Length2D{upper.x * Meter, upper.y * Meter}
+        Length2D{Real{lower.x} * Meter, Real{lower.y} * Meter},
+        Length2D{Real{upper.x} * Meter, Real{upper.y} * Meter}
     };
 }
 

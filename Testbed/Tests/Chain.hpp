@@ -35,7 +35,7 @@ public:
         {
             const auto shape = std::make_shared<PolygonShape>(Real{0.6f} * Meter, Real{0.125f} * Meter);
             shape->SetDensity(Real{20} * KilogramPerSquareMeter);
-            shape->SetFriction(0.2f);
+            shape->SetFriction(Real(0.2f));
 
             const auto y = 25.0f;
             auto prevBody = ground;

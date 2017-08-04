@@ -620,16 +620,6 @@ TEST(World, GetTouchingCountFreeFunction)
     EXPECT_EQ(GetTouchingCount(world), ContactCounter(0));
 }
 
-TEST(World, IsValidShapeMethod)
-{
-    World world;
-    EXPECT_FALSE(world.IsValid(std::shared_ptr<const Shape>(nullptr)));
-
-    const auto radius = Real(1) * Meter;
-    const auto shape = std::make_shared<DiskShape>(radius);
-    EXPECT_TRUE(world.IsValid(shape));
-}
-
 TEST(World, ShiftOrigin)
 {
     const auto origin = Length2D{Real(0) * Meter, Real(0) * Meter};
@@ -1073,6 +1063,187 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
     EXPECT_GE(steps, 199u);
     EXPECT_LE(steps, 201u);
     //EXPECT_EQ(int64_t(steps), static_cast<int64_t>(std::round(((x * 2) / x) / time_inc)));
+}
+
+TEST(World, HeavyOnLight)
+{
+    constexpr auto AngularSlop = (Pi * Real{2} * Radian) / Real{180};
+    constexpr auto LargerLinearSlop = playrho::Meter / playrho::Real(200);
+    constexpr auto SmallerLinearSlop = playrho::Meter / playrho::Real(1000);
+
+    const auto bd = BodyDef{}.UseType(BodyType::Dynamic);
+    const auto upperBodyDef = BodyDef{bd}.UseLocation(Vec2(0.0f, 6.0f) * Meter);
+    const auto lowerBodyDef = BodyDef{bd}.UseLocation(Vec2(0.0f, 0.5f) * Meter);
+
+    const auto groundConf = EdgeShape::Conf{}
+        .UseVertex1(Vec2(-40.0f, 0.0f) * Meter)
+        .UseVertex2(Vec2(40.0f, 0.0f) * Meter);
+    
+    const auto diskConf = DiskShape::Conf{}.UseDensity(Real(10) * KilogramPerSquareMeter);
+    const auto smallerDiskConf = DiskShape::Conf{diskConf}.UseVertexRadius(Real{0.5f} * Meter);
+    const auto biggerDiskConf = DiskShape::Conf{diskConf}.UseVertexRadius(Real{5.0f} * Meter);
+    
+    const auto baseStepConf = []() {
+        auto step = StepConf{}.SetInvTime(Real(60) * Hertz);
+        return step;
+    }();
+    const auto largerStepConf = [=](StepConf step) {
+        step.linearSlop = LargerLinearSlop;
+        step.regMinSeparation = -LargerLinearSlop * Real(3);
+        step.toiMinSeparation = -LargerLinearSlop * Real(1.5f);
+        step.targetDepth = LargerLinearSlop * Real(3);
+        step.tolerance = LargerLinearSlop / Real(4);
+        step.maxLinearCorrection = LargerLinearSlop * Real(40);
+        step.maxAngularCorrection = AngularSlop * Real{4};
+        step.aabbExtension = LargerLinearSlop * Real(20);
+        step.maxTranslation = Length{Meter * Real(4)};
+        step.velocityThreshold = (Real{8} / Real{10}) * MeterPerSecond;
+        step.maxSubSteps = std::uint8_t{48};
+        return step;
+    }(baseStepConf);
+    const auto smallerStepConf = [=](StepConf step) {
+        step.linearSlop = SmallerLinearSlop;
+        step.regMinSeparation = -SmallerLinearSlop * Real(3);
+        step.toiMinSeparation = -SmallerLinearSlop * Real(1.5f);
+        step.targetDepth = SmallerLinearSlop * Real(3);
+        step.tolerance = SmallerLinearSlop / Real(4);
+        step.maxLinearCorrection = SmallerLinearSlop * Real(40);
+        step.maxAngularCorrection = AngularSlop * Real{4};
+        step.aabbExtension = SmallerLinearSlop * Real(20);
+        step.maxTranslation = Length{Meter * Real(4)};
+        step.velocityThreshold = (Real{8} / Real{10}) * MeterPerSecond;
+        step.maxSubSteps = std::uint8_t{48};
+        return step;
+    }(baseStepConf);
+    
+    // Create lower body, then upper body using the larger step conf
+    {
+        auto world = World{WorldDef{}.UseMinVertexRadius(SmallerLinearSlop)};
+        const auto ground = world.CreateBody();
+        ground->CreateFixture(std::make_shared<EdgeShape>(groundConf));
+
+        const auto lowerBody = world.CreateBody(lowerBodyDef);
+        const auto upperBody = world.CreateBody(upperBodyDef);
+        ASSERT_LT(GetY(lowerBody->GetLocation()), GetY(upperBody->GetLocation()));
+
+        lowerBody->CreateFixture(std::make_shared<DiskShape>(smallerDiskConf));
+        upperBody->CreateFixture(std::make_shared<DiskShape>(biggerDiskConf));
+        ASSERT_LT(GetMass(*lowerBody), GetMass(*upperBody));
+        
+        auto upperBodysLowestPoint = GetY(upperBody->GetLocation());
+        auto numSteps = 0ul;
+        while (GetAwakeCount(world) > 0)
+        {
+            world.Step(largerStepConf);
+            upperBodysLowestPoint = std::min(upperBodysLowestPoint, GetY(upperBody->GetLocation()));
+            ++numSteps;
+        }
+        
+        // The least num steps is 145
+        EXPECT_EQ(numSteps, 145ul);
+        EXPECT_NEAR(static_cast<double>(Real(upperBodysLowestPoint / Meter)), 5.9475154876708984, 0.001);
+    }
+    
+    // Create upper body, then lower body using the larger step conf
+    {
+        auto world = World{WorldDef{}.UseMinVertexRadius(SmallerLinearSlop)};
+        const auto ground = world.CreateBody();
+        ground->CreateFixture(std::make_shared<EdgeShape>(groundConf));
+        
+        const auto upperBody = world.CreateBody(upperBodyDef);
+        const auto lowerBody = world.CreateBody(lowerBodyDef);
+        ASSERT_LT(GetY(lowerBody->GetLocation()), GetY(upperBody->GetLocation()));
+
+        lowerBody->CreateFixture(std::make_shared<DiskShape>(smallerDiskConf));
+        upperBody->CreateFixture(std::make_shared<DiskShape>(biggerDiskConf));
+        ASSERT_LT(GetMass(*lowerBody), GetMass(*upperBody));
+        
+        auto upperBodysLowestPoint = GetY(upperBody->GetLocation());
+        auto numSteps = 0ul;
+        while (GetAwakeCount(world) > 0)
+        {
+            world.Step(largerStepConf);
+            upperBodysLowestPoint = std::min(upperBodysLowestPoint, GetY(upperBody->GetLocation()));
+            ++numSteps;
+        }
+        
+        // Here we see that creating the upper body after the lower body, results in
+        // a different step count, and a higher count at that.
+        EXPECT_EQ(numSteps, 152ul);
+        EXPECT_NEAR(static_cast<double>(Real(upperBodysLowestPoint / Meter)), 5.9470911026000977, 0.001);
+    }
+    
+    // Create lower body, then upper body using the smaller step conf
+    {
+        auto world = World{WorldDef{}.UseMinVertexRadius(SmallerLinearSlop)};
+        const auto ground = world.CreateBody();
+        ground->CreateFixture(std::make_shared<EdgeShape>(groundConf));
+        
+        const auto lowerBody = world.CreateBody(lowerBodyDef);
+        const auto upperBody = world.CreateBody(upperBodyDef);
+        ASSERT_LT(GetY(lowerBody->GetLocation()), GetY(upperBody->GetLocation()));
+
+        lowerBody->CreateFixture(std::make_shared<DiskShape>(smallerDiskConf));
+        upperBody->CreateFixture(std::make_shared<DiskShape>(biggerDiskConf));
+        ASSERT_LT(GetMass(*lowerBody), GetMass(*upperBody));
+        
+        auto upperBodysLowestPoint = GetY(upperBody->GetLocation());
+        auto numSteps = 0ul;
+        while (GetAwakeCount(world) > 0)
+        {
+            world.Step(smallerStepConf);
+            upperBodysLowestPoint = std::min(upperBodysLowestPoint, GetY(upperBody->GetLocation()));
+            ++numSteps;
+        }
+        
+        // This here is the highest step count.
+        // XXX Is this a bug or did the algorithm just work least well here?
+        switch (sizeof(Real))
+        {
+            case 4: EXPECT_EQ(numSteps, 1823ul); break;
+            case 8: EXPECT_EQ(numSteps, 1826ul); break;
+        }
+
+        // Here we see that the upper body at some point sunk into most of the lower body.
+        EXPECT_NEAR(static_cast<double>(Real(upperBodysLowestPoint / Meter)), 5.0089659690856934, 0.001);
+    }
+    
+    // Create upper body, then lower body using the smaller step conf
+    {
+        auto world = World{WorldDef{}.UseMinVertexRadius(SmallerLinearSlop)};
+        const auto ground = world.CreateBody();
+        ground->CreateFixture(std::make_shared<EdgeShape>(groundConf));
+        
+        const auto upperBody = world.CreateBody(upperBodyDef);
+        const auto lowerBody = world.CreateBody(lowerBodyDef);
+        ASSERT_LT(GetY(lowerBody->GetLocation()), GetY(upperBody->GetLocation()));
+
+        lowerBody->CreateFixture(std::make_shared<DiskShape>(smallerDiskConf));
+        upperBody->CreateFixture(std::make_shared<DiskShape>(biggerDiskConf));
+        ASSERT_LT(GetMass(*lowerBody), GetMass(*upperBody));
+        
+        auto upperBodysLowestPoint = GetY(upperBody->GetLocation());
+        auto numSteps = 0ul;
+        while (GetAwakeCount(world) > 0)
+        {
+            world.Step(smallerStepConf);
+            upperBodysLowestPoint = std::min(upperBodysLowestPoint, GetY(upperBody->GetLocation()));
+            ++numSteps;
+        }
+
+        // Given that this section of code is one of the two sections that
+        // uses the smaller linear slop, I expect this block of code's step
+        // count to be higher than either block using the larger linear slop.
+        // I guess a step count of some 3.5 times higher is reasonable for
+        // the step conf that's five times smaller.
+        switch (sizeof(Real))
+        {
+            case 4: EXPECT_EQ(numSteps, 512ul); break;
+            case 8: EXPECT_EQ(numSteps, 513ul); break;
+        }
+
+        EXPECT_NEAR(static_cast<double>(Real(upperBodysLowestPoint / Meter)), 5.9476470947265625, 0.001);
+    }
 }
 
 TEST(World, PerfectlyOverlappedSameCirclesStayPut)
@@ -1686,7 +1857,12 @@ TEST(World, CollidingDynamicBodies)
 
 TEST(World, TilesComesToRest)
 {
-    const auto m_world = std::make_unique<World>();
+    constexpr auto LinearSlop = playrho::Meter / playrho::Real(1000);
+    constexpr auto AngularSlop = (Pi * Real{2} * Radian) / Real{180};
+    constexpr auto VertexRadius = playrho::Length{LinearSlop * playrho::Real(2)};
+    const auto conf = PolygonShape::Conf{}.UseVertexRadius(VertexRadius);
+
+    const auto m_world = std::make_unique<World>(WorldDef{}.UseMinVertexRadius(VertexRadius));
     
     constexpr auto e_count = 36;
     
@@ -1703,7 +1879,7 @@ TEST(World, TilesComesToRest)
             GetX(position) = -N * a * Meter;
             for (auto i = 0; i < N; ++i)
             {
-                PolygonShape shape;
+                auto shape = PolygonShape{conf};
                 SetAsBox(shape, a * Meter, a * Meter, position, Angle{0});
                 ground->CreateFixture(std::make_shared<PolygonShape>(shape));
                 GetX(position) += 2.0f * a * Meter;
@@ -1714,7 +1890,7 @@ TEST(World, TilesComesToRest)
     
     {
         const auto a = Real{0.5f};
-        const auto shape = std::make_shared<PolygonShape>(a * Meter, a * Meter);
+        const auto shape = std::make_shared<PolygonShape>(a * Meter, a * Meter, conf);
         shape->SetDensity(Real{5} * KilogramPerSquareMeter);
         
         Length2D x(Real(-7.0f) * Meter, Real(0.75f) * Meter);
@@ -1739,6 +1915,17 @@ TEST(World, TilesComesToRest)
     
     StepConf step;
     step.SetTime(Time{Second / Real{60}});
+    step.linearSlop = LinearSlop;
+    step.regMinSeparation = -LinearSlop * Real(3);
+    step.toiMinSeparation = -LinearSlop * Real(1.5f);
+    step.targetDepth = LinearSlop * Real(3);
+    step.tolerance = LinearSlop / Real(4);
+    step.maxLinearCorrection = LinearSlop * Real(40);
+    step.maxAngularCorrection = AngularSlop * Real{4};
+    step.aabbExtension = LinearSlop * Real(20);
+    step.maxTranslation = Length{Meter * Real(4)};
+    step.velocityThreshold = (Real{8} / Real{10}) * MeterPerSecond;
+    step.maxSubSteps = std::uint8_t{48};
 
     auto numSteps = 0ul;
     auto sumRegPosIters = 0ul;
@@ -1944,7 +2131,11 @@ TEST(World, TilesComesToRest)
 
 TEST(World, SpeedingBulletBallWontTunnel)
 {
-    World world{WorldDef{}.UseGravity(LinearAcceleration2D{})};
+    constexpr auto LinearSlop = playrho::Meter / playrho::Real(1000);
+    constexpr auto AngularSlop = (Pi * Real{2} * Radian) / Real{180};
+    constexpr auto VertexRadius = playrho::Length{LinearSlop * playrho::Real(2)};
+    
+    World world{WorldDef{}.UseGravity(LinearAcceleration2D{}).UseMinVertexRadius(VertexRadius)};
 
     MyContactListener listener{
         [](Contact&, const Manifold&) {},
@@ -1958,10 +2149,14 @@ TEST(World, SpeedingBulletBallWontTunnel)
     const auto left_edge_x = Real(-0.1) * Meter;
     const auto right_edge_x = Real(+0.1) * Meter;
 
-    BodyDef body_def;
-    const auto edge_shape = std::make_shared<EdgeShape>(Length2D{Real(0) * Meter, +Real(10) * Meter}, Length2D{Real(0) * Meter, -Real(10) * Meter});
-    edge_shape->SetRestitution(Real(1));
+    const auto edgeConf = EdgeShape::Conf{}
+        .UseVertexRadius(VertexRadius)
+        .UseRestitution(Real(1))
+        .UseVertex1(Length2D{Real(0) * Meter, +Real(10) * Meter})
+        .UseVertex2(Length2D{Real(0) * Meter, -Real(10) * Meter});
+    const auto edge_shape = std::make_shared<EdgeShape>(edgeConf);
 
+    BodyDef body_def;
     body_def.type = BodyType::Static;
 
     body_def.position = Length2D{left_edge_x, Real{0} * Meter};
@@ -1999,10 +2194,21 @@ TEST(World, SpeedingBulletBallWontTunnel)
     ball_body->SetVelocity(Velocity{velocity, Angle{0} / Second});
 
     const auto time_inc = Real(.01) * Second;
-    auto stepConf = StepConf{};
-    stepConf.SetTime(time_inc);
-    const auto max_velocity = stepConf.maxTranslation / time_inc;
-    world.Step(stepConf);
+    auto step = StepConf{};
+    step.SetTime(time_inc);
+    step.linearSlop = LinearSlop;
+    step.regMinSeparation = -LinearSlop * Real(3);
+    step.toiMinSeparation = -LinearSlop * Real(1.5f);
+    step.targetDepth = LinearSlop * Real(3);
+    step.tolerance = LinearSlop / Real(4);
+    step.maxLinearCorrection = LinearSlop * Real(40);
+    step.maxAngularCorrection = AngularSlop * Real{4};
+    step.aabbExtension = LinearSlop * Real(20);
+    step.velocityThreshold = (Real{8} / Real{10}) * MeterPerSecond;
+    step.maxSubSteps = std::uint8_t{48};
+    world.Step(step);
+
+    const auto max_velocity = step.maxTranslation / time_inc;
 
     ASSERT_EQ(listener.begin_contacts, unsigned{0});
 
@@ -2026,7 +2232,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
             }
 
             const auto last_contact_count = listener.begin_contacts;
-            world.Step(stepConf);
+            world.Step(step);
 
             EXPECT_LT(GetX(ball_body->GetLocation()), right_edge_x - (ball_radius/Real{2}));
             EXPECT_GT(GetX(ball_body->GetLocation()), left_edge_x + (ball_radius/Real{2}));
@@ -2068,7 +2274,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
             }
             
             const auto last_contact_count = listener.begin_contacts;
-            world.Step(stepConf);
+            world.Step(step);
             
             EXPECT_LT(GetX(ball_body->GetLocation()), right_edge_x - (ball_radius/Real{2}));
             EXPECT_GT(GetX(ball_body->GetLocation()), left_edge_x + (ball_radius/Real{2}));

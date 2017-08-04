@@ -93,7 +93,7 @@ public:
                 bd.position = Vec2(-15.0f + 4.0f * i, 28.0f) * Meter;
                 const auto body = m_world->CreateBody(bd);
 
-                shape.SetFriction(friction[i]);
+                shape.SetFriction(Real(friction[i]));
                 body->CreateFixture(std::make_shared<PolygonShape>(shape));
             }
         }

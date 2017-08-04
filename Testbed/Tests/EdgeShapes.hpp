@@ -37,7 +37,7 @@ public:
 
     EdgeShapes()
     {
-        m_circle->SetFriction(0.3f);
+        m_circle->SetFriction(Real(0.3f));
         m_circle->SetDensity(Real{20} * KilogramPerSquareMeter);
 
         // Ground body
@@ -58,7 +58,7 @@ public:
         for (auto i = 0; i < 4; ++i)
         {
             m_polygons[i] = std::make_shared<PolygonShape>();
-            m_polygons[i]->SetFriction(0.3f);
+            m_polygons[i]->SetFriction(Real(0.3f));
             m_polygons[i]->SetDensity(Real{20} * KilogramPerSquareMeter);
         }
         
