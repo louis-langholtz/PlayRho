@@ -56,7 +56,6 @@
 		4731DE2F1DDF9B6900E7F931 /* MassData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE2E1DDF9B6900E7F931 /* MassData.cpp */; };
 		4731DE441DE2570900E7F931 /* Collision.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE431DE2570900E7F931 /* Collision.hpp */; };
 		4731DE4D1DE90D8200E7F931 /* MassData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE4C1DE90D8200E7F931 /* MassData.cpp */; };
-		4731DE561DEC908600E7F931 /* UnitVec2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE541DEC908600E7F931 /* UnitVec2.cpp */; };
 		4731DE581DEC908600E7F931 /* UnitVec2.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE551DEC908600E7F931 /* UnitVec2.hpp */; };
 		4731DE5E1DEE3F0600E7F931 /* SeparationFinder.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE5B1DEE3F0600E7F931 /* SeparationFinder.hpp */; };
 		4731DE611DEF7B5100E7F931 /* Simplex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE601DEF7B5100E7F931 /* Simplex.cpp */; };
@@ -398,7 +397,6 @@
 		4731DE2E1DDF9B6900E7F931 /* MassData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MassData.cpp; sourceTree = "<group>"; };
 		4731DE431DE2570900E7F931 /* Collision.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Collision.hpp; sourceTree = "<group>"; };
 		4731DE4C1DE90D8200E7F931 /* MassData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MassData.cpp; sourceTree = "<group>"; };
-		4731DE541DEC908600E7F931 /* UnitVec2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitVec2.cpp; sourceTree = "<group>"; };
 		4731DE551DEC908600E7F931 /* UnitVec2.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = UnitVec2.hpp; sourceTree = "<group>"; };
 		4731DE5B1DEE3F0600E7F931 /* SeparationFinder.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SeparationFinder.hpp; sourceTree = "<group>"; };
 		4731DE601DEF7B5100E7F931 /* Simplex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Simplex.cpp; sourceTree = "<group>"; };
@@ -914,7 +912,6 @@
 				47C85D1E1F0DA14500F70C56 /* Templates.hpp */,
 				470F9B151EDF2959007EF7B6 /* Transformation.hpp */,
 				47C85D181F0D9D8D00F70C56 /* Units.hpp */,
-				4731DE541DEC908600E7F931 /* UnitVec2.cpp */,
 				4731DE551DEC908600E7F931 /* UnitVec2.hpp */,
 				474FFC3A1F2CEE6C0037CCE0 /* Vector.hpp */,
 				4768D3FA1E414A0100574143 /* Vector2D.hpp */,
@@ -1599,7 +1596,6 @@
 				4768D4001E54E7CC00574143 /* StepConf.cpp in Sources */,
 				80BB89D0141C3E5900F1753A /* Joint.cpp in Sources */,
 				80BB89D2141C3E5900F1753A /* MouseJoint.cpp in Sources */,
-				4731DE561DEC908600E7F931 /* UnitVec2.cpp in Sources */,
 				470F9B061EDB8F62007EF7B6 /* Shape.cpp in Sources */,
 				80BB89D4141C3E5900F1753A /* PrismaticJoint.cpp in Sources */,
 				474AFBF81EB1B2CB002AA6C8 /* MultiShape.cpp in Sources */,
@@ -1834,11 +1830,7 @@
 				LD_GENERATE_MAP_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CPLUSPLUSFLAGS = (
-					"$(OTHER_CFLAGS)",
-					"-mllvm",
-					"-inline-threshold=1000",
-				);
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				SDKROOT = macosx;
 				USE_HEADERMAP = NO;
 			};
@@ -1904,11 +1896,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_GENERATE_MAP_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				OTHER_CPLUSPLUSFLAGS = (
-					"$(OTHER_CFLAGS)",
-					"-mllvm",
-					"-inline-threshold=1000",
-				);
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				SDKROOT = macosx;
 				USE_HEADERMAP = NO;
 			};
@@ -1928,6 +1916,11 @@
 					"DO_GJK_PROFILING=1",
 					"$(inherited)",
 				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-mllvm",
+					"-inline-threshold=10000",
+					"-Rpass=loop-vectorize",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
 			};
@@ -1944,6 +1937,11 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DO_GJK_PROFILING=1",
 					"NDEBUG=1",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-mllvm",
+					"-inline-threshold=10000",
+					"-Rpass=loop-vectorize",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

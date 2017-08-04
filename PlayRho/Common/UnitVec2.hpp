@@ -67,7 +67,13 @@ public:
     static constexpr UnitVec2 GetDefaultFallback() noexcept { return UnitVec2{}; }
 
     static UnitVec2 Get(const Real x, const Real y, Real& magnitude,
-                        const UnitVec2 fallback = GetDefaultFallback()) noexcept;
+                        const UnitVec2 fallback = GetDefaultFallback()) noexcept
+    {
+        // XXX perhaps this should use std::hypot() instead like so:
+        //    magnitude = std::hypot(x, y);
+        magnitude = std::sqrt(x * x + y * y);
+        return (std::isnormal(magnitude)) ? UnitVec2{x / magnitude, y / magnitude} : fallback;
+    }
 
     /// @brief Gets the given angled unit vector.
     ///
