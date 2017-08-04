@@ -18,23 +18,12 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef MovementConf_hpp
-#define MovementConf_hpp
+#include <PlayRho/Dynamics/MovementConf.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
 
-#include <PlayRho/Common/Units.hpp>
+using namespace playrho;
 
-namespace playrho
+MovementConf playrho::GetMovementConf(const StepConf& conf) noexcept
 {
-    class StepConf;
-    
-    struct MovementConf
-    {
-        Length maxTranslation;
-        Angle maxRotation;
-    };
-    
-    MovementConf GetMovementConf(const StepConf& conf) noexcept;
-
-} // namespace playrho
-
-#endif /* MovementConf_hpp */
+    return MovementConf{conf.maxTranslation, conf.maxRotation};
+}
