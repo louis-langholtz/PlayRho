@@ -132,26 +132,32 @@ constexpr auto DefaultMaxVertexRadius = details::Defaults<Real>::GetMaxVertexRad
 /// @brief Default AABB extension amount.
 constexpr auto DefaultAabbExtension = DefaultLinearSlop * Real{20};
 
-/// Default distance multiplier.
+/// @brief Default distance multiplier.
 constexpr auto DefaultDistanceMultiplier = Real{2};
 
-/// Default angular slop.
+/// @brief Default angular slop.
 /// @details
 /// A small angle used as a collision and constraint tolerance. Usually it is
 /// chosen to be numerically significant, but visually insignificant.
 constexpr auto DefaultAngularSlop = (Pi * Real{2} * Radian) / Real{180};
 
-/// Default maximum linear correction.
+/// @brief Default maximum linear correction.
 /// @details The maximum linear position correction used when solving constraints.
 ///   This helps to prevent overshoot.
 /// @note This value should be greater than the linear slop value.
 constexpr auto DefaultMaxLinearCorrection = DefaultLinearSlop * Real{40}; // aka 0.04f
 
-/// Default maximum angular correction.
+/// @brief Default maximum angular correction.
 /// @note This value should be greater than the angular slop value.
 constexpr auto DefaultMaxAngularCorrection = DefaultAngularSlop * Real{4};
 
-/// Default maximum time of impact iterations.
+/// @brief Default maximum rotation per world step.
+/// @warning This value should be less than Pi * Radian.
+/// @note This limit is meant to prevent numerical problems. Adjusting this value isn't advised.
+/// @sa StepConf::maxRotation.
+constexpr auto DefaultMaxRotation = Angle{Pi * Radian / Real(2)};
+
+/// @brief Default maximum time of impact iterations.
 constexpr auto DefaultMaxToiIters = std::uint8_t{20};
 
 /// Default maximum time of impact root iterator count.
