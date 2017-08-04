@@ -14,14 +14,24 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 
-# Tell C++ compiler to optimize release builds for speed.
-# In clang++, the optimize for speed flag is '-Ot'. This option isn't supported on g++
-# however and it'd be nice to use an option that works for both compilers. So use '-O3'.
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
+# Semicolon separated list of supported configuration types, only
+# supports Debug, Release, MinSizeRel, and RelWithDebInfo, anything
+# else will be ignored. PlayRho only supports Debug and Release
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release;" CACHE STRING "Semicolon separated list of supported configuration types. PlayRho only supports Debug and Release configurations.")
 
 # Set name for entire project.
 # Details at: https://cmake.org/cmake/help/v3.1/command/project.html
 project(PlayRho)
+
+# Tell C++ compiler to optimize release builds for speed.
+# In clang++, the optimize for speed flag is '-Ot'. This option isn't supported on g++
+# however and it'd be nice to use an option that works for both compilers. So use '-O3'.
+# For Visual Studio Compilers, the speed optimization flag is /O2, which is the default setting for release builds
+if(MSVC)
+	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
+else()
+	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
+endif()
 
 # Provide options that user can optionally select.
 # Details at: https://cmake.org/cmake/help/v3.1/command/option.html

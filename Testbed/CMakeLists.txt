@@ -37,7 +37,7 @@ include_directories (
 )
 
 link_directories (
-  ${GLFW_LIBRARY_DIRS}
+	${GLFW_LIBRARY_DIRS}
 )
 
 if(APPLE)
@@ -53,6 +53,11 @@ add_executable(Testbed
 	${Testbed_Framework_SRCS}
 	${Testbed_Tests_SRCS}
 )
+
+#Resolve Linker error LNK4098; make sure default libcmt doesn't clash with other libraries
+if(MSVC)
+	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB:libcmt.lib")
+endif()
 
 target_link_libraries (
 	Testbed
