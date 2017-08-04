@@ -438,7 +438,7 @@ BodyCounter playrho::GetWorldIndex(const Body* body)
     return BodyCounter(-1);
 }
 
-Velocity playrho::GetVelocity(const Body& body, const Time h) noexcept
+Velocity playrho::GetVelocity(const Body& body, const Time h, MovementConf conf) noexcept
 {
     // Integrate velocity and apply damping.
     auto velocity = body.GetVelocity();
@@ -458,6 +458,26 @@ Velocity playrho::GetVelocity(const Body& body, const Time h) noexcept
         velocity.linear  /= Real{1 + h * body.GetLinearDamping()};
         velocity.angular /= Real{1 + h * body.GetAngularDamping()};
     }
+
+    // Enforce maximums...
+
+    const auto translation = h * velocity.linear;
+    const auto lsquared = GetLengthSquared(translation);
+    if (lsquared > Square(conf.maxTranslation))
+    {
+        // Scale back linear velocity so max translation not exceeded.
+        const auto ratio = conf.maxTranslation / Sqrt(lsquared);
+        velocity.linear *= ratio;
+    }
+    
+    const auto absRotation = Abs(h * velocity.angular);
+    if (absRotation > conf.maxRotation)
+    {
+        // Scale back angular velocity so max rotation not exceeded.
+        const auto ratio = conf.maxRotation / absRotation;
+        velocity.angular *= ratio;
+    }
+
     return velocity;
 }
 

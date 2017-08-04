@@ -21,10 +21,10 @@
 #define BodyConstraint_hpp
 
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Dynamics/MovementConf.hpp>
+#include <PlayRho/Dynamics/Body.hpp>
 
 namespace playrho {
-    
-    class Body;
     
     /// @brief Body Constraint.
     /// @details Body data related to constraint processing.
@@ -87,7 +87,10 @@ namespace playrho {
         Velocity m_velocity; ///< Body velocity data.
         Length2D m_localCenter; ///< Local center of the associated body's sweep.
         InvMass m_invMass; ///< Inverse mass of associated body (a non-negative value).
-        InvRotInertia m_invRotI; ///< Inverse rotational inertia about the center of mass of the associated body (a non-negative value).
+
+        /// Inverse rotational inertia about the center of mass of the associated body
+        /// (a non-negative value).
+        InvRotInertia m_invRotI;
     };
     
     inline InvMass BodyConstraint::GetInvMass() const noexcept
@@ -129,8 +132,18 @@ namespace playrho {
         return *this;
     }
     
-    BodyConstraint GetBodyConstraint(const Body& body, Time time = 0) noexcept;
-    
+    inline BodyConstraint GetBodyConstraint(const Body& body, Time time,
+                                            MovementConf conf) noexcept
+    {
+        return BodyConstraint{
+            body.GetInvMass(),
+            body.GetInvRotInertia(),
+            body.GetLocalCenter(),
+            GetPosition1(body),
+            GetVelocity(body, time, conf)
+        };
+    }
+
 } // namespace playrho
 
 #endif /* BodyConstraint_hpp */

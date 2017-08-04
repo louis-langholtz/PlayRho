@@ -30,6 +30,7 @@
 #include <PlayRho/Dynamics/Island.hpp>
 #include <PlayRho/Dynamics/JointAtty.hpp>
 #include <PlayRho/Dynamics/ContactAtty.hpp>
+#include <PlayRho/Dynamics/MovementConf.hpp>
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
@@ -83,12 +84,6 @@ using BodyConstraintsPair = pair<const Body* const, BodyConstraint*>;
 using BodyConstraints = vector<BodyConstraint>;
 using PositionConstraints = vector<PositionConstraint>;
 using VelocityConstraints = vector<VelocityConstraint>;
-    
-struct MovementConf
-{
-    Length maxTranslation;
-    Angle maxRotation;
-};
 
 template <typename T>
 class FlagGuard
@@ -133,11 +128,6 @@ namespace {
         Velocity velocity;
     };
 
-    inline MovementConf GetMovementConf(const StepConf& conf)
-    {
-        return MovementConf{conf.maxTranslation, conf.maxRotation};
-    }
-
     inline ConstraintSolverConf GetRegConstraintSolverConf(const StepConf& conf)
     {
         return ConstraintSolverConf{}
@@ -169,41 +159,13 @@ namespace {
             .UseMaxDistIters(conf.maxDistanceIters);
     }
     
-    /// Calculates movement.
-    /// @details Calculate the positional displacement based on the given velocity
-    ///    that's possibly clamped to the maximum translation and rotation.
-    inline PositionAndVelocity CalculateMovement(const BodyConstraint& body, Time h, MovementConf conf)
-    {
-        assert(IsValid(h));
-        
-        auto velocity = body.GetVelocity();
-        auto translation = h * velocity.linear;
-        const auto lsquared = GetLengthSquared(translation);
-        if (lsquared > Square(conf.maxTranslation))
-        {
-            const auto ratio = conf.maxTranslation / Sqrt(lsquared);
-            velocity.linear *= ratio;
-            translation = h * velocity.linear;
-        }
-        
-        auto rotation = h * velocity.angular;
-        if (Abs(rotation) > conf.maxRotation)
-        {
-            const auto ratio = conf.maxRotation / Abs(rotation);
-            velocity.angular *= ratio;
-            rotation = h * velocity.angular;
-        }
-        
-        return PositionAndVelocity{body.GetPosition() + Position{translation, rotation}, velocity};
-    }
-    
-    inline void IntegratePositions(BodyConstraints& bodies,
-                                   Time h, MovementConf conf)
+    inline void IntegratePositions(BodyConstraints& bodies, Time h)
     {
         for_each(begin(bodies), end(bodies), [&](BodyConstraint& bc) {
-            const auto newPosAndVel = CalculateMovement(bc, h, conf);
-            bc.SetPosition(newPosAndVel.position);
-            bc.SetVelocity(newPosAndVel.velocity);
+            const auto velocity = bc.GetVelocity();
+            const auto translation = h * velocity.linear;
+            const auto rotation = h * velocity.angular;
+            bc.SetPosition(bc.GetPosition() + Position{translation, rotation});
         });
     }
     
@@ -326,13 +288,14 @@ namespace {
         return map;
     }
     
-    BodyConstraints GetBodyConstraints(const Island::Bodies& bodies, Time h)
+    BodyConstraints GetBodyConstraints(const Island::Bodies& bodies, Time h, MovementConf conf)
     {
-        auto bodyConstraints = BodyConstraints{};
-        bodyConstraints.reserve(bodies.size());
-        transform(cbegin(bodies), cend(bodies), back_inserter(bodyConstraints),
-                  [&](const BodyPtr &body) { return GetBodyConstraint(*body, h); });
-        return bodyConstraints;
+        auto constraints = BodyConstraints{};
+        constraints.reserve(bodies.size());
+        transform(cbegin(bodies), cend(bodies), back_inserter(constraints), [&](const BodyPtr &b) {
+            return GetBodyConstraint(*b, h, conf);
+        });
+        return constraints;
     }
 
     PositionConstraints GetPositionConstraints(const Island::Contacts& contacts,
@@ -1312,9 +1275,9 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
     for_each(cbegin(island.m_bodies), cend(island.m_bodies), [&](Body* body) {
         BodyAtty::SetPosition0(*body, GetPosition1(*body)); // like Advance0(1) on the sweep.
     });
-
+    
     // Copy bodies' pos1 and velocity data into local arrays.
-    auto bodyConstraints = GetBodyConstraints(island.m_bodies, h);
+    auto bodyConstraints = GetBodyConstraints(island.m_bodies, h, GetMovementConf(conf));
     auto bodyConstraintsMap = GetBodyConstraintsMap(island.m_bodies, bodyConstraints);
     auto posConstraints = GetPositionConstraints(island.m_contacts, bodyConstraintsMap);
     auto velConstraints = GetVelocityConstraints(island.m_contacts, bodyConstraintsMap,
@@ -1357,7 +1320,7 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
     }
     
     // updates array of tentative new body positions per the velocities as if there were no obstacles...
-    IntegratePositions(bodyConstraints, h, GetMovementConf(conf));
+    IntegratePositions(bodyConstraints, h);
     
     // Solve position constraints
     for (auto i = decltype(conf.regPositionIterations){0}; i < conf.regPositionIterations; ++i)
@@ -1783,7 +1746,7 @@ World::IslandSolverResults World::SolveToiViaGS(const StepConf& conf, Island& is
      * the body constraint doesn't need to pass an elapsed time (and doesn't need to
      * update the velocity from what it already is).
      */
-    auto bodyConstraints = GetBodyConstraints(island.m_bodies, Time(0));
+    auto bodyConstraints = GetBodyConstraints(island.m_bodies, Time(0), GetMovementConf(conf));
     auto bodyConstraintsMap = GetBodyConstraintsMap(island.m_bodies, bodyConstraints);
 
     // Initialize the body state.
@@ -1882,7 +1845,7 @@ World::IslandSolverResults World::SolveToiViaGS(const StepConf& conf, Island& is
     
     // Don't store TOI contact forces for warm starting because they can be quite large.
     
-    IntegratePositions(bodyConstraints, conf.GetTime(), GetMovementConf(conf));
+    IntegratePositions(bodyConstraints, conf.GetTime());
     
     for_each(cbegin(bodyConstraints), cend(bodyConstraints), [&](const BodyConstraint& bc) {
         const auto i = static_cast<size_t>(&bc - bodyConstraints.data());

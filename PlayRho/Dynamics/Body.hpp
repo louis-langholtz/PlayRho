@@ -32,6 +32,7 @@
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
 #include <PlayRho/Dynamics/Joints/JointKey.hpp>
+#include <PlayRho/Dynamics/MovementConf.hpp>
 
 #include <vector>
 #include <memory>
@@ -1072,11 +1073,13 @@ inline Torque GetTorque(const Body& body) noexcept
     return body.GetAngularAcceleration() * GetRotInertia(body);
 }
 
-/// Gets the velocity of the body after the given time accounting for the body's acceleration.
+/// @brief Gets the velocity of the body after the given time accounting for the body's
+///   acceleration and capped by the given configuration.
 /// @warning Behavior is undefined if the given elapsed time is an invalid value (like NaN).
 /// @param body Body to get the velocity for.
 /// @param h Time elapsed to get velocity for. Behavior is undefined if this value is invalid.
-Velocity GetVelocity(const Body& body, const Time h) noexcept;
+/// @param conf Movement configuration. This defines caps on linear and angular speeds.
+Velocity GetVelocity(const Body& body, const Time h, MovementConf conf) noexcept;
 
 BodyCounter GetWorldIndex(const Body* body);
 

@@ -22,13 +22,15 @@
 
 using namespace playrho;
 
-BodyConstraint playrho::GetBodyConstraint(const Body& body, Time time) noexcept
+#if 0
+BodyConstraint playrho::GetBodyConstraint(const Body& body, Time time, MovementConf conf) noexcept
 {
     return BodyConstraint{
         body.GetInvMass(),
         body.GetInvRotInertia(),
         body.GetLocalCenter(),
         GetPosition1(body),
-        GetVelocity(body, time)
+        GetVelocity(body, time, conf)
     };
 }
+#endif
