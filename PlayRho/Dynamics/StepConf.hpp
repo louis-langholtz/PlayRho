@@ -171,18 +171,43 @@ public:
     LinearVelocity velocityThreshold = DefaultVelocityThreshold;
 
     /// @brief Maximum translation.
-    /// @details The maximum linear velocity of a body.
-    /// @note This limit is very large and is used to prevent numerical problems.
-    /// You shouldn't need to adjust this.
+    ///
+    /// @details The maximum amount a body can translate in a single step. This represents
+    ///   an upper bound on the maximum linear velocity of a body of maxTranslation / time.
+    ///
+    /// @note If you want or need to support a higher maximum linear speed, then instead
+    ///   of changing this value, decrease the step's time value. So for example, rather
+    ///   than simulating 1/60th of a second steps, simulating 1/120th of a second steps
+    ///   will double the maximum linear speed any body can have.
+    /// @note This limit is meant to prevent numerical problems. Adjusting this value
+    ///   isn't advised.
     /// @note Used in both the regular and TOI phases of step processing.
+    ///
     Length maxTranslation = Meter * Real(4); // originally 2
     
     /// @brief Maximum rotation.
-    /// @details The maximum angular velocity of a body.
-    /// @note This limit is very large and is used to prevent numerical problems.
-    /// You shouldn't need to adjust this.
+    ///
+    /// @details The maximum amount a body can rotate in a single step. This represents
+    ///   an upper bound on the maximum angular speed of a body of maxRotation / time.
+    ///
+    /// @warning This value should be less than Pi * Radian.
+    ///
+    /// @note If you want or need to support a higher maximum angular speed, then instead
+    ///   of changing this value, decrease the step's time value. So for example, rather
+    ///   than simulating 1/60th of a second steps, simulating 1/120th of a second steps
+    ///   will double the maximum angular rotation any body can have.
+    /// @note This limit is meant to prevent numerical problems. Adjusting this value
+    ///   isn't advised.
+    /// @note If this value is less than half a turn (less than Pi), then the turning
+    ///   direction will be the direction of the smaller change in angular orientation.
+    ///   This is an appealing property as it means that a body's angular position
+    ///   can be represented by a unit vector rather than an angular quantity. The
+    ///   benefit of using a unit vector is potentially two-fold: (a) unit vectors
+    ///   have well-defined and understood wrap-around semantics, (b) unit vectors
+    ///   can cache sine/cosine calculations thereby reducing their costs in time.
     /// @note Used in both the regular and TOI phases of step processing.
-    Angle maxRotation = Radian * (Pi / 2);
+    ///
+    Angle maxRotation = DefaultMaxRotation;
 
     /// @brief Maximum linear correction.
     /// @note Must be greater than 0 for any positional resolution to get done.
