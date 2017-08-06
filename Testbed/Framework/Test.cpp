@@ -802,7 +802,7 @@ void Test::DrawStats(Drawer& drawer, const Fixture& fixture)
     m_textLine += DRAW_STRING_NEW_LINE;
 }
 
-void Test::DrawContactPoints(const Settings& settings, Drawer& drawer)
+void Test::DrawContactInfo(const Settings& settings, Drawer& drawer)
 {
     const auto k_impulseScale = Real(0.1) * Second / Kilogram;
     const auto k_axisScale = (Real(3) / Real(10)) * Meter;
@@ -811,24 +811,28 @@ void Test::DrawContactPoints(const Settings& settings, Drawer& drawer)
     const auto contactNormalColor = Color{0.7f, 0.7f, 0.7f}; // light gray
     const auto normalImpulseColor = Color{0.9f, 0.9f, 0.3f}; // yellowish
     const auto frictionImpulseColor = Color{0.9f, 0.9f, 0.3f}; // yellowish
-    const auto lighten = 1.3f;
-    const auto darken = 0.9f;
 
     const auto selectedFixture = GetSelectedFixture();
-
+    const auto lighten = 1.3f;
+    const auto darken = 1.0f;
+    
     for (auto& point: m_points)
     {
         const auto selected = HasFixture(point, selectedFixture);
-        if (point.state == PointState::AddState)
+
+        if (settings.drawContactPoints)
         {
-            drawer.DrawPoint(point.position, Real{7} * Meter,
-                             Brighten(addStateColor, selected? lighten: darken));
-        }
-        else if (point.state == PointState::PersistState)
-        {
-            // Persist
-            drawer.DrawPoint(point.position, Real{5} * Meter,
-                             Brighten(persistStateColor, selected? lighten: darken));
+            if (point.state == PointState::AddState)
+            {
+                drawer.DrawPoint(point.position, Real{7} * Meter,
+                                 Brighten(addStateColor, selected? lighten: darken));
+            }
+            else if (point.state == PointState::PersistState)
+            {
+                // Persist
+                drawer.DrawPoint(point.position, Real{5} * Meter,
+                                 Brighten(persistStateColor, selected? lighten: darken));
+            }
         }
  
         if (settings.drawContactImpulse)
@@ -986,10 +990,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
         drawer.DrawSegment(m_mouseWorld, m_bombSpawnPoint, Color{0.8f, 0.8f, 0.8f});
     }
 
-    if (settings.drawContactPoints)
-    {
-        DrawContactPoints(settings, drawer);
-    }
+    DrawContactInfo(settings, drawer);
     
     PostStep(settings, drawer);
     
