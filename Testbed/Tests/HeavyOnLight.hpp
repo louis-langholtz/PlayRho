@@ -30,25 +30,26 @@ public:
     
     HeavyOnLight()
     {
+        const auto bd = BodyDef{}.UseType(BodyType::Dynamic);
+        const auto upperBodyDef = BodyDef{bd}.UseLocation(Vec2(0.0f, 6.0f) * Meter);
+        const auto lowerBodyDef = BodyDef{bd}.UseLocation(Vec2(0.0f, 0.5f) * Meter);
+        
+        const auto groundConf = EdgeShape::Conf{}
+            .UseVertex1(Vec2(-40.0f, 0.0f) * Meter)
+            .UseVertex2(Vec2(40.0f, 0.0f) * Meter);
+        
+        const auto diskConf = DiskShape::Conf{}.UseDensity(Real(10) * KilogramPerSquareMeter);
+        const auto smallerDiskConf = DiskShape::Conf{diskConf}.UseVertexRadius(Real{0.5f} * Meter);
+        const auto biggerDiskConf = DiskShape::Conf{diskConf}.UseVertexRadius(Real{5.0f} * Meter);
+
         const auto ground = m_world->CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
+        ground->CreateFixture(std::make_shared<EdgeShape>(groundConf));
         
-        auto conf = DiskShape::Conf{};
+        const auto lowerBody = m_world->CreateBody(lowerBodyDef);
+        const auto upperBody = m_world->CreateBody(upperBodyDef);
 
-        BodyDef bd;
-        bd.type = BodyType::Dynamic;
-
-        bd.position = Vec2(0.0f, 0.5f) * Meter;
-        const auto body1 = m_world->CreateBody(bd);
-        conf.vertexRadius = Real{0.5f} * Meter;
-        conf.density = Real(10) * KilogramPerSquareMeter;
-        body1->CreateFixture(std::make_shared<DiskShape>(conf));
-        
-        bd.position = Vec2(0.0f, 6.0f) * Meter;
-        const auto body2 = m_world->CreateBody(bd);
-        conf.vertexRadius = Real{5.0f} * Meter;
-        conf.density = Real(10) * KilogramPerSquareMeter;
-        m_top = body2->CreateFixture(std::make_shared<DiskShape>(conf));
+        lowerBody->CreateFixture(std::make_shared<DiskShape>(smallerDiskConf));
+        m_top = upperBody->CreateFixture(std::make_shared<DiskShape>(biggerDiskConf));
     }
 
     void ChangeDensity(Density change)
