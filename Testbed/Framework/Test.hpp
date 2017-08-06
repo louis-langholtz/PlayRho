@@ -146,6 +146,11 @@ protected:
         Momentum tangentImpulse;
         Length separation;
     };
+    
+    static inline bool HasFixture(const ContactPoint& cp, const Fixture* fixture) noexcept
+    {
+        return fixture == cp.fixtureA || fixture == cp.fixtureB;
+    }
 
     using ContactPoints = std::vector<ContactPoint>;
 

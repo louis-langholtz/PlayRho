@@ -806,30 +806,36 @@ void Test::DrawContactPoints(const Settings& settings, Drawer& drawer)
 {
     const auto k_impulseScale = Real(0.1) * Second / Kilogram;
     const auto k_axisScale = (Real(3) / Real(10)) * Meter;
-    const auto addStateColor = Color{0.3f, 0.95f, 0.3f}; // greenish
-    const auto persistStateColor = Color{0.3f, 0.3f, 0.95f}; // blueish
-    const auto contactNormalColor = Color{0.8f, 0.8f, 0.8f}; // light gray
-    const auto contactImpulseColor = Color{1.0f, 1.0f, 0.3f}; // yellowish
-    const auto frictionImpulseColor = Color{1.0f, 1.0f, 0.3f}; // yellowish
-    
+    const auto addStateColor = Color{0.3f, 0.9f, 0.3f}; // greenish
+    const auto persistStateColor = Color{0.3f, 0.3f, 0.9f}; // blueish
+    const auto contactNormalColor = Color{0.7f, 0.7f, 0.7f}; // light gray
+    const auto normalImpulseColor = Color{0.9f, 0.9f, 0.3f}; // yellowish
+    const auto frictionImpulseColor = Color{0.9f, 0.9f, 0.3f}; // yellowish
+    const auto lighten = 1.3f;
+    const auto darken = 0.9f;
+
+    const auto selectedFixture = GetSelectedFixture();
+
     for (auto& point: m_points)
     {
+        const auto selected = HasFixture(point, selectedFixture);
         if (point.state == PointState::AddState)
         {
-            // Add
-            drawer.DrawPoint(point.position, Real{7} * Meter, addStateColor);
+            drawer.DrawPoint(point.position, Real{7} * Meter,
+                             Brighten(addStateColor, selected? lighten: darken));
         }
         else if (point.state == PointState::PersistState)
         {
             // Persist
-            drawer.DrawPoint(point.position, Real{5} * Meter, persistStateColor);
+            drawer.DrawPoint(point.position, Real{5} * Meter,
+                             Brighten(persistStateColor, selected? lighten: darken));
         }
  
         if (settings.drawContactImpulse)
         {
             const auto p1 = point.position;
             const auto p2 = p1 + k_impulseScale * point.normalImpulse * point.normal;
-            drawer.DrawSegment(p1, p2, contactImpulseColor);
+            drawer.DrawSegment(p1, p2, Brighten(normalImpulseColor, selected? lighten: darken));
         }
         
         if (settings.drawFrictionImpulse)
@@ -837,14 +843,14 @@ void Test::DrawContactPoints(const Settings& settings, Drawer& drawer)
             const auto tangent = GetFwdPerpendicular(point.normal);
             const auto p1 = point.position;
             const auto p2 = p1 + k_impulseScale * point.tangentImpulse * tangent;
-            drawer.DrawSegment(p1, p2, frictionImpulseColor);
+            drawer.DrawSegment(p1, p2, Brighten(frictionImpulseColor, selected? lighten: darken));
         }
         
         if (settings.drawContactNormals)
         {
             const auto p1 = point.position;
             const auto p2 = p1 + k_axisScale * point.normal;
-            drawer.DrawSegment(p1, p2, contactNormalColor);
+            drawer.DrawSegment(p1, p2, Brighten(contactNormalColor, selected? lighten: darken));
         }
     }
 }
