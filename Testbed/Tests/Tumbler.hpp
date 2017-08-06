@@ -69,7 +69,7 @@ public:
         m_joint = static_cast<RevoluteJoint*>(m_world->CreateJoint(jd));
     }
 
-    void PostStep(const Settings&, Drawer& drawer) override
+    void PostStep(const Settings& settings, Drawer& drawer) override
     {
         drawer.DrawString(5, m_textLine,
                           "Press C to clear and re-emit shapes. "
@@ -78,7 +78,7 @@ public:
         drawer.DrawString(5, m_textLine, "Press '+' or '-' to speed up or slow down rotation.");
         m_textLine += DRAW_STRING_NEW_LINE;
 
-        if (m_count < Count)
+        if ((!settings.pause || settings.singleStep) && (m_count < Count))
         {
             const auto body = m_world->CreateBody(BodyDef{}
                                                   .UseType(BodyType::Dynamic)
