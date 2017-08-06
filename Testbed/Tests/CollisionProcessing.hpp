@@ -117,13 +117,10 @@ public:
 
         // Traverse the contact results. Destroy bodies that
         // are touching heavier bodies.
-        const auto pointCount = GetPointCount();
-        for (auto i = decltype(pointCount){0}; i < pointCount; ++i)
+        for (auto& point: GetPoints())
         {
-            auto point = GetPoints() + i;
-
-            const auto body1 = point->fixtureA->GetBody();
-            const auto body2 = point->fixtureB->GetBody();
+            const auto body1 = point.fixtureA->GetBody();
+            const auto body2 = point.fixtureB->GetBody();
             const auto mass1 = GetMass(*body1);
             const auto mass2 = GetMass(*body2);
 

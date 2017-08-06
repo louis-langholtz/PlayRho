@@ -24,8 +24,11 @@
 #include <PlayRho/Collision/RayCastOutput.hpp>
 #include <PlayRho/Collision/ShapeSeparation.hpp>
 #include <PlayRho/Dynamics/Contacts/PositionSolverManifold.hpp>
+#include <PlayRho/Common/Range.hpp>
 #include "Drawer.hpp"
 #include <chrono>
+#include <vector>
+#include <iterator>
 
 namespace playrho {
 
@@ -131,7 +134,7 @@ public:
     }
 
 protected:
-
+    
     struct ContactPoint
     {
         Fixture* fixtureA;
@@ -143,7 +146,9 @@ protected:
         Momentum tangentImpulse;
         Length separation;
     };
-    
+
+    using ContactPoints = std::vector<ContactPoint>;
+
     // This is called when a joint in the world is implicitly destroyed
     // because an attached body is destroyed. This gives us a chance to
     // nullify the mouse joint.
@@ -176,8 +181,14 @@ protected:
     void ResetWorld(const World& saved);
 
     int GetStepCount() const noexcept { return m_stepCount; }
-    PointCount GetPointCount() const noexcept { return m_pointCount; }
-    const ContactPoint* GetPoints() const noexcept { return m_points; }
+
+    SizedRange<ContactPoints::const_iterator> GetPoints() const noexcept
+    {
+        return SizedRange<ContactPoints::const_iterator>(std::cbegin(m_points),
+                                                         std::cend(m_points),
+                                                         m_points.size());
+    }
+
     const Body* GetBomb() const noexcept { return m_bomb; }
     void SetBomb(Body* body) noexcept { m_bomb = body; }
     void SetGroundBody(Body* body) noexcept { m_groundBody = body; }
@@ -189,8 +200,7 @@ private:
     Body* m_groundBody;
     Fixture* m_selectedFixture = nullptr;
     AABB m_worldAABB;
-    ContactPoint m_points[k_maxContactPoints];
-    PointCount m_pointCount = 0;
+    ContactPoints m_points;
     DestructionListenerImpl m_destructionListener;
     Body* m_bomb = nullptr;
     MouseJoint* m_mouseJoint = nullptr;

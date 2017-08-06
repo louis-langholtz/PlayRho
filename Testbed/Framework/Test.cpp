@@ -435,28 +435,24 @@ void Test::ResetWorld(const playrho::World &saved)
 
 void Test::PreSolve(Contact& contact, const Manifold& oldManifold)
 {
-    const auto& manifold = contact.GetManifold();
-    const auto manifoldPointCount = manifold.GetPointCount();
-    if (manifoldPointCount > 0)
+    const auto pointStates = GetPointStates(oldManifold, contact.GetManifold());
+    const auto worldManifold = GetWorldManifold(contact);
+    
+    ContactPoint cp;
+    cp.fixtureA = contact.GetFixtureA();
+    cp.fixtureB = contact.GetFixtureB();
+    cp.normal = worldManifold.GetNormal();
+
+    const auto count = worldManifold.GetPointCount();
+    for (auto i = decltype(count){0}; i < count; ++i)
     {
-        const auto fixtureA = contact.GetFixtureA();
-        const auto fixtureB = contact.GetFixtureB();
-        const auto pointStates = GetPointStates(oldManifold, manifold);
-        const auto worldManifold = GetWorldManifold(contact);
-        for (auto i = decltype(manifoldPointCount){0}; (i < manifoldPointCount) && (m_pointCount < k_maxContactPoints); ++i)
-        {
-            auto& cp = m_points[m_pointCount];
-            cp.fixtureA = fixtureA;
-            cp.fixtureB = fixtureB;
-            cp.position = worldManifold.GetPoint(i);
-            cp.normal = worldManifold.GetNormal();
-            cp.state = pointStates.state2[i];
-            const auto ci = manifold.GetContactImpulses(i);
-            cp.normalImpulse = ci.m_normal;
-            cp.tangentImpulse = ci.m_tangent;
-            cp.separation = worldManifold.GetSeparation(i);
-            ++m_pointCount;
-        }
+        const auto ci = worldManifold.GetImpulses(i);
+        cp.normalImpulse = ci.m_normal;
+        cp.tangentImpulse = ci.m_tangent;
+        cp.state = pointStates.state2[i];
+        cp.position = worldManifold.GetPoint(i);
+        cp.separation = worldManifold.GetSeparation(i);
+        m_points.push_back(cp);
     }
 }
 
@@ -810,41 +806,45 @@ void Test::DrawContactPoints(const Settings& settings, Drawer& drawer)
 {
     const auto k_impulseScale = Real(0.1) * Second / Kilogram;
     const auto k_axisScale = (Real(3) / Real(10)) * Meter;
+    const auto addStateColor = Color{0.3f, 0.95f, 0.3f}; // greenish
+    const auto persistStateColor = Color{0.3f, 0.3f, 0.95f}; // blueish
+    const auto contactNormalColor = Color{0.8f, 0.8f, 0.8f}; // light gray
+    const auto contactImpulseColor = Color{1.0f, 1.0f, 0.3f}; // yellowish
+    const auto frictionImpulseColor = Color{1.0f, 1.0f, 0.3f}; // yellowish
     
-    for (auto i = decltype(m_pointCount){0}; i < m_pointCount; ++i)
+    for (auto& point: m_points)
     {
-        const auto point = m_points + i;
-        
-        if (point->state == PointState::AddState)
+        if (point.state == PointState::AddState)
         {
             // Add
-            drawer.DrawPoint(point->position, Real{10} * Meter, Color{0.3f, 0.95f, 0.3f});
+            drawer.DrawPoint(point.position, Real{7} * Meter, addStateColor);
         }
-        else if (point->state == PointState::PersistState)
+        else if (point.state == PointState::PersistState)
         {
             // Persist
-            drawer.DrawPoint(point->position, Real{5} * Meter, Color{0.3f, 0.3f, 0.95f});
+            drawer.DrawPoint(point.position, Real{5} * Meter, persistStateColor);
         }
-        
-        if (settings.drawContactNormals)
+ 
+        if (settings.drawContactImpulse)
         {
-            const auto p1 = point->position;
-            const auto p2 = p1 + k_axisScale * point->normal;
-            drawer.DrawSegment(p1, p2, Color{0.9f, 0.9f, 0.9f});
-        }
-        else if (settings.drawContactImpulse)
-        {
-            const auto p1 = point->position;
-            const auto p2 = p1 + k_impulseScale * point->normalImpulse * point->normal;
-            drawer.DrawSegment(p1, p2, Color{0.9f, 0.9f, 0.3f});
+            const auto p1 = point.position;
+            const auto p2 = p1 + k_impulseScale * point.normalImpulse * point.normal;
+            drawer.DrawSegment(p1, p2, contactImpulseColor);
         }
         
         if (settings.drawFrictionImpulse)
         {
-            const auto tangent = GetFwdPerpendicular(point->normal);
-            const auto p1 = point->position;
-            const auto p2 = p1 + k_impulseScale * point->tangentImpulse * tangent;
-            drawer.DrawSegment(p1, p2, Color{0.9f, 0.9f, 0.3f});
+            const auto tangent = GetFwdPerpendicular(point.normal);
+            const auto p1 = point.position;
+            const auto p2 = p1 + k_impulseScale * point.tangentImpulse * tangent;
+            drawer.DrawSegment(p1, p2, frictionImpulseColor);
+        }
+        
+        if (settings.drawContactNormals)
+        {
+            const auto p1 = point.position;
+            const auto p2 = p1 + k_axisScale * point.normal;
+            drawer.DrawSegment(p1, p2, contactNormalColor);
         }
     }
 }
@@ -871,7 +871,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
     if (settings.dt != 0)
     {
         // Resets point count for contact point accumalation.
-        m_pointCount = 0;
+        m_points.clear();
     }
 
     m_world->SetSubStepping(settings.enableSubStepping);
@@ -885,7 +885,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
     stepConf.toiVelocityIterations = static_cast<StepConf::iteration_type>(settings.toiVelocityIterations);
     stepConf.toiPositionIterations = static_cast<StepConf::iteration_type>(settings.toiPositionIterations);
 
-    stepConf.maxSubSteps           = static_cast<StepConf::iteration_type>(settings.maxSubSteps);
+    stepConf.maxSubSteps = static_cast<StepConf::iteration_type>(settings.maxSubSteps);
     
     stepConf.maxTranslation = static_cast<Real>(settings.maxTranslation) * Meter;
     stepConf.maxRotation = Real{settings.maxRotation} * Degree;
@@ -943,15 +943,6 @@ void Test::Step(const Settings& settings, Drawer& drawer)
         m_maxRegSep = std::max(m_maxRegSep, stepStats.reg.minSeparation);
     }
     
-    const auto selectedFixture = GetSelectedFixture();
-    const auto selectedFound = Draw(drawer, *m_world, settings, selectedFixture);
-    if (selectedFixture && !selectedFound)
-    {
-        SetSelectedFixture(nullptr);
-    }
-
-    drawer.Flush();
-
     if (settings.dt != 0)
     {
         m_sumDeltaTime += settings.dt;
@@ -995,6 +986,15 @@ void Test::Step(const Settings& settings, Drawer& drawer)
     }
     
     PostStep(settings, drawer);
+    
+    const auto selectedFixture = GetSelectedFixture();
+    const auto selectedFound = Draw(drawer, *m_world, settings, selectedFixture);
+    if (selectedFixture && !selectedFound)
+    {
+        SetSelectedFixture(nullptr);
+    }
+    
+    drawer.Flush();
 }
 
 void Test::ShiftOrigin(const Length2D& newOrigin)
