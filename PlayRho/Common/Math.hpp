@@ -527,16 +527,6 @@ constexpr inline Vec2 InverseTransform(const Vec2 v, const Mat22& A) noexcept
     return Vec2{Dot(v, GetX(A)), Dot(v, GetY(A))};
 }
 
-constexpr inline Vec2 operator+ (const UnitVec2 lhs, const UnitVec2 rhs) noexcept
-{
-    return Vec2{lhs.GetX() + rhs.GetX(), lhs.GetY() + rhs.GetY()};
-}
-
-constexpr inline Vec2 operator- (const UnitVec2 lhs, const UnitVec2 rhs) noexcept
-{
-    return Vec2{lhs.GetX() - rhs.GetX(), lhs.GetY() - rhs.GetY()};
-}
-
 template <class T, LoValueCheck lo, HiValueCheck hi>
 constexpr inline Vector2D<T> operator* (BoundedValue<T, lo, hi> s, UnitVec2 u) noexcept
 {
