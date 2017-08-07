@@ -447,6 +447,10 @@ private:
     void ClearContacts();
     void ClearJoints();
 
+    /// @brief Sets the transformation for this body.
+    /// @details If value is different than the current transformation, then this
+    ///   method updates the current transformation and flags each associated contact
+    ///   for updating.
     void SetTransformation(const Transformation value) noexcept;
 
     //

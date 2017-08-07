@@ -279,9 +279,8 @@ void Body::SetTransform(const Length2D position, Angle angle)
     const auto xfm = Transformation{position, UnitVec2::Get(angle)};
     SetTransformation(xfm);
 
-    const auto sweep = Sweep{Position{Transform(GetLocalCenter(), xfm), angle}, GetLocalCenter()};
-    m_sweep = sweep;
-
+    m_sweep = Sweep{Position{Transform(GetLocalCenter(), xfm), angle}, GetLocalCenter()};
+    
     GetWorld()->RegisterForProxies(this);
 }
 
