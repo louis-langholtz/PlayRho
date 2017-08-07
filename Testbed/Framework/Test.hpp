@@ -83,8 +83,9 @@ public:
     enum Key {
         Key_Space, Key_Comma, Key_Minus, Key_Period, Key_Equal,
         Key_0, Key_1, Key_2, Key_3, Key_4, Key_5, Key_6, Key_7, Key_8, Key_9,
-        Key_A, Key_B, Key_C, Key_D, Key_E, Key_F, Key_G, Key_H, Key_I, Key_J, Key_K, Key_L, Key_M,
-        Key_N, Key_O, Key_P, Key_Q, Key_R, Key_S, Key_T, Key_U, Key_V, Key_W, Key_X, Key_Y, Key_Z,
+        Key_A, Key_B, Key_C, Key_D, Key_E, Key_F, Key_G, Key_H, Key_I, Key_J,
+        Key_K, Key_L, Key_M, Key_N, Key_O, Key_P, Key_Q, Key_R, Key_S, Key_T,
+        Key_U, Key_V, Key_W, Key_X, Key_Y, Key_Z,
         Key_Backspace, Key_Subtract, Key_Add,
         Key_Unknown
     };
@@ -116,15 +117,11 @@ public:
     virtual void JointDestroyed(Joint* joint) { NOT_USED(joint); }
 
     // Callbacks for derived classes.
-    virtual void BeginContact(Contact& contact) override { NOT_USED(contact); }
-    virtual void EndContact(Contact& contact) override { NOT_USED(contact); }
+    virtual void BeginContact(Contact&) override { }
+    virtual void EndContact(Contact&) override { }
     virtual void PreSolve(Contact& contact, const Manifold& oldManifold) override;
-    virtual void PostSolve(Contact& contact, const ContactImpulsesList& impulse, ContactListener::iteration_type solved) override
-    {
-        NOT_USED(contact);
-        NOT_USED(impulse);
-        NOT_USED(solved);
-    }
+    virtual void PostSolve(Contact&, const ContactImpulsesList&,
+                           ContactListener::iteration_type) override { }
 
     Fixture* GetSelectedFixture() const noexcept { return m_selectedFixture; }
 
