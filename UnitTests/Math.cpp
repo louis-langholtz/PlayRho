@@ -33,6 +33,12 @@ TEST(Math, Sqrt)
 
     EXPECT_NE(std::sqrt(std::numeric_limits<double>::min()), double(0));
     EXPECT_EQ(Square(std::sqrt(std::numeric_limits<double>::min())), std::numeric_limits<double>::min());
+
+    // The sin/cos of a 45 degree angle...
+    EXPECT_EQ(std::sqrt(1.0 / 2.0), 0.70710678118654752440);
+    EXPECT_EQ(std::sqrt(1.0l / 2.0l), 0.70710678118654752440l);
+    EXPECT_EQ(std::sqrt(2.0L) / 2.0L, 0.70710678118654752440L);
+    EXPECT_EQ(std::sqrt(2.0L), 1.414213562373095048801688724209698078569671875376948073176679737990732478462L);
 }
 
 TEST(Math, Square)

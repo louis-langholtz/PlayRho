@@ -239,6 +239,9 @@ constexpr auto DefaultAngularSleepTolerance = Real{(Pi * 2) / 180} * RadianPerSe
 ///   biased normal collisions.
 constexpr auto DefaultCirclesRatio = Real{10};
 
+// Mathematical constants
+constexpr auto SquareRootTwo = Real(1.414213562373095048801688724209698078569671875376948073176679737990732478462);
+
 // Memory Allocation
 
 /// Implement this function to use your own memory allocator.

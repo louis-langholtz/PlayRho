@@ -64,6 +64,21 @@ public:
     /// @brief Gets the non-oriented unit vector.
     static constexpr UnitVec2 GetZero() noexcept { return UnitVec2{0, 0}; }
 
+    /// @brief Gets the 45 degree unit vector.
+    /// @details This is the unit vector in the positive X and Y quadrant where X == Y.
+    static constexpr UnitVec2 GetTopRight() noexcept
+    {
+        return UnitVec2{+SquareRootTwo/Real(2), +SquareRootTwo/Real(2)};
+    }
+    
+    /// @brief Gets the -45 degree unit vector.
+    /// @details This is the unit vector in the positive X and negative Y quadrant
+    ///   where |X| == |Y|.
+    static constexpr UnitVec2 GetBottomRight() noexcept
+    {
+        return UnitVec2{+SquareRootTwo/Real(2), -SquareRootTwo/Real(2)};
+    }
+    
     static constexpr UnitVec2 GetDefaultFallback() noexcept { return UnitVec2{}; }
 
     static UnitVec2 Get(const Real x, const Real y, Real& magnitude,
