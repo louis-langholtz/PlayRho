@@ -84,7 +84,7 @@ public:
                                                     m_transformB, GetVertexRadius(m_polygonB));
         for (auto i = decltype(pointCount){0}; i < pointCount; ++i)
         {
-            drawer.DrawPoint(worldManifold.GetPoint(i), Real{4.0f} * Meter, Color(0.9f, 0.3f, 0.3f));
+            drawer.DrawPoint(worldManifold.GetPoint(i), 4.0f, Color(0.9f, 0.3f, 0.3f));
         }
     }
 

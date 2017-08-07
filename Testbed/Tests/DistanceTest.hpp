@@ -324,21 +324,21 @@ public:
 
             if (adjustedWitnessPoints.a != adjustedWitnessPoints.b)
             {
-                drawer.DrawPoint(adjustedWitnessPoints.a, Real{4.0f} * Meter, adjustedPointColor);
-                drawer.DrawPoint(adjustedWitnessPoints.b, Real{4.0f} * Meter, adjustedPointColor);
+                drawer.DrawPoint(adjustedWitnessPoints.a, 4.0f, adjustedPointColor);
+                drawer.DrawPoint(adjustedWitnessPoints.b, 4.0f, adjustedPointColor);
             }
             else
             {
-                drawer.DrawPoint(adjustedWitnessPoints.a, Real{4.0f} * Meter, matchingPointColor);
+                drawer.DrawPoint(adjustedWitnessPoints.a, 4.0f, matchingPointColor);
             }
 
-            drawer.DrawPoint(witnessPoints.a, Real{4.0f} * Meter, witnessPointColor);
-            drawer.DrawPoint(witnessPoints.b, Real{4.0f} * Meter, witnessPointColor);
+            drawer.DrawPoint(witnessPoints.a, 4.0f, witnessPointColor);
+            drawer.DrawPoint(witnessPoints.b, 4.0f, witnessPointColor);
             
             for (auto&& edge: output.simplex.GetEdges())
             {
-                drawer.DrawPoint(edge.GetPointA(), Real{6.0f} * Meter, simplexPointColor);
-                drawer.DrawPoint(edge.GetPointB(), Real{6.0f} * Meter, simplexPointColor);
+                drawer.DrawPoint(edge.GetPointA(), 6.0f, simplexPointColor);
+                drawer.DrawPoint(edge.GetPointB(), 6.0f, simplexPointColor);
                 drawer.DrawString(edge.GetPointA(), "%d", edge.GetIndexA());
                 drawer.DrawString(edge.GetPointB(), "%d", edge.GetIndexB());
             }

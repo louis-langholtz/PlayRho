@@ -219,7 +219,7 @@ struct GLRenderPoints
         "{\n"
         "    f_color = v_color;\n"
         "    gl_Position = projectionMatrix * vec4(v_position, 0.0f, 1.0f);\n"
-        "   gl_PointSize = v_size;\n"
+        "    gl_PointSize = v_size;\n"
         "}\n";
         
         static constexpr char fs[] = \
@@ -637,10 +637,10 @@ void DebugDraw::DrawSegment(const Length2D& p1, const Length2D& p2, const Color&
     m_lines->Vertex(m_camera, c2, color);
 }
 
-void DebugDraw::DrawPoint(const Length2D& p, Length size, const Color& color)
+void DebugDraw::DrawPoint(const Length2D& p, float size, const Color& color)
 {
     const auto c = Coord2D{static_cast<float>(StripUnit(GetX(p))), static_cast<float>(StripUnit(GetY(p)))};
-    m_points->Vertex(m_camera, c, color, static_cast<float>(StripUnit(size)));
+    m_points->Vertex(m_camera, c, color, size);
 }
 
 //

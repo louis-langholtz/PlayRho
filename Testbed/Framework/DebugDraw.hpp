@@ -101,7 +101,7 @@ public:
 
     void DrawSegment(const Length2D& p1, const Length2D& p2, const Color& color) override;
 
-    void DrawPoint(const Length2D& p, Length size, const Color& color) override;
+    void DrawPoint(const Length2D& p, float size, const Color& color) override;
 
     void DrawString(int x, int y, const char* string, ...) override; 
 

@@ -79,7 +79,7 @@ public:
         m_joint->SetLinearOffset(linearOffset);
         m_joint->SetAngularOffset(Real{4} * Radian * m_time);
 
-        drawer.DrawPoint(linearOffset, Real{4} * Meter, Color(0.9f, 0.9f, 0.9f));
+        drawer.DrawPoint(linearOffset, 4.0f, Color(0.9f, 0.9f, 0.9f));
     }
 
     void PostStep(const Settings&, Drawer& drawer) override

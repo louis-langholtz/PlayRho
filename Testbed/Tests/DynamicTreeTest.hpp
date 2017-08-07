@@ -140,14 +140,14 @@ public:
 
         Color c1(0.2f, 0.9f, 0.2f);
         Color c2(0.9f, 0.2f, 0.2f);
-        drawer.DrawPoint(m_rayCastInput.p1, Real{6} * Meter, c1);
-        drawer.DrawPoint(m_rayCastInput.p2, Real{6} * Meter, c2);
+        drawer.DrawPoint(m_rayCastInput.p1, 6.0f, c1);
+        drawer.DrawPoint(m_rayCastInput.p2, 6.0f, c2);
 
         if (m_rayActor)
         {
             Color cr(0.2f, 0.2f, 0.9f);
             const auto p = m_rayCastInput.p1 + m_rayActor->fraction * (m_rayCastInput.p2 - m_rayCastInput.p1);
-            drawer.DrawPoint(p, Real{6} * Meter, cr);
+            drawer.DrawPoint(p, 6.0f, cr);
         }
 
         {

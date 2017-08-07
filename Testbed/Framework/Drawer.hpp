@@ -77,7 +77,7 @@ public:
     /// Draw a line segment.
     virtual void DrawSegment(const Length2D& p1, const Length2D& p2, const Color& color) = 0;
 
-    virtual void DrawPoint(const Length2D& p, Length size, const Color& color) = 0;
+    virtual void DrawPoint(const Length2D& p, float size, const Color& color) = 0;
     
     /// Draws a string at the given screen coordinates.
     virtual void DrawString(int x, int y, const char* string, ...) = 0; 

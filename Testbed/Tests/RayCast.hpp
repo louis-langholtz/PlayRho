@@ -248,7 +248,7 @@ public:
 
             if (hit)
             {
-                drawer.DrawPoint(point, Real{5.0f} * Meter, Color(0.4f, 0.9f, 0.4f));
+                drawer.DrawPoint(point, 5.0f, Color(0.4f, 0.9f, 0.4f));
                 drawer.DrawSegment(point1, point, Color(0.8f, 0.8f, 0.8f));
                 const auto head = point + Real{0.5f} * normal * Meter;
                 drawer.DrawSegment(point, head, Color(0.9f, 0.9f, 0.4f));
@@ -293,7 +293,7 @@ public:
 
             if (hit)
             {
-                drawer.DrawPoint(point, Real{5.0f} * Meter, Color(0.4f, 0.9f, 0.4f));
+                drawer.DrawPoint(point, 5.0f, Color(0.4f, 0.9f, 0.4f));
                 drawer.DrawSegment(point1, point, Color(0.8f, 0.8f, 0.8f));
                 const auto head = point + Real{0.5f} * normal * Meter;
                 drawer.DrawSegment(point, head, Color(0.9f, 0.9f, 0.4f));
@@ -326,7 +326,7 @@ public:
                     }
                 }
                 
-                drawer.DrawPoint(p, Real{5.0f} * Meter, Color(0.4f, 0.9f, 0.4f));
+                drawer.DrawPoint(p, 5.0f, Color(0.4f, 0.9f, 0.4f));
                 drawer.DrawSegment(point1, p, Color(0.8f, 0.8f, 0.8f));
                 const auto head = p + Real{0.5f} * n * Meter;
                 drawer.DrawSegment(p, head, Color(0.9f, 0.9f, 0.4f));

@@ -814,7 +814,7 @@ void Test::DrawContactInfo(const Settings& settings, Drawer& drawer)
 
     const auto selectedFixture = GetSelectedFixture();
     const auto lighten = 1.3f;
-    const auto darken = 1.0f;
+    const auto darken = 0.9f;
     
     for (auto& point: m_points)
     {
@@ -824,22 +824,28 @@ void Test::DrawContactInfo(const Settings& settings, Drawer& drawer)
         {
             if (point.state == PointState::AddState)
             {
-                drawer.DrawPoint(point.position, Real{7} * Meter,
+                drawer.DrawPoint(point.position, 7.0f,
                                  Brighten(addStateColor, selected? lighten: darken));
             }
             else if (point.state == PointState::PersistState)
             {
                 // Persist
-                drawer.DrawPoint(point.position, Real{5} * Meter,
+                drawer.DrawPoint(point.position, 5.0f,
                                  Brighten(persistStateColor, selected? lighten: darken));
             }
         }
  
         if (settings.drawContactImpulse)
         {
+            const auto length = k_impulseScale * point.normalImpulse;
+            const auto headLength = length / Real(10);
             const auto p1 = point.position;
-            const auto p2 = p1 + k_impulseScale * point.normalImpulse * point.normal;
+            const auto p2 = p1 + length * point.normal;
+            const auto p2_left = p2 - headLength * Rotate(point.normal, UnitVec2::GetTopRight());
+            const auto p2_right = p2 - headLength * Rotate(point.normal, UnitVec2::GetBottomRight());
             drawer.DrawSegment(p1, p2, Brighten(normalImpulseColor, selected? lighten: darken));
+            drawer.DrawSegment(p2, p2_left, Brighten(normalImpulseColor, selected? lighten: darken));
+            drawer.DrawSegment(p2, p2_right, Brighten(normalImpulseColor, selected? lighten: darken));
         }
         
         if (settings.drawFrictionImpulse)
@@ -874,6 +880,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
             const auto anchorB = m_mouseJoint->GetAnchorB();
             const auto centerB = bodyB->GetLocation();
             const auto destB = m_mouseJoint->GetTarget();
+            //m_points.clear();
             bodyB->SetTransform(destB - (anchorB - centerB), bodyB->GetAngle());
         }
     }
@@ -978,15 +985,15 @@ void Test::Step(const Settings& settings, Drawer& drawer)
         const auto p1 = m_mouseJoint->GetAnchorB();
         const auto p2 = m_mouseJoint->GetTarget();
 
-        drawer.DrawPoint(p1, Real{4} * Meter, Color{0.0f, 1.0f, 0.0f});
-        drawer.DrawPoint(p2, Real{4} * Meter, Color{0.0f, 1.0f, 0.0f});
+        drawer.DrawPoint(p1, 4.0f, Color{0.0f, 1.0f, 0.0f});
+        drawer.DrawPoint(p2, 4.0f, Color{0.0f, 1.0f, 0.0f});
 
         drawer.DrawSegment(p1, p2, Color{0.8f, 0.8f, 0.8f});
     }
     
     if (m_bombSpawning)
     {
-        drawer.DrawPoint(m_bombSpawnPoint, Real{4} * Meter, Color{0.0f, 0.0f, 1.0f});
+        drawer.DrawPoint(m_bombSpawnPoint, 4.0f, Color{0.0f, 0.0f, 1.0f});
         drawer.DrawSegment(m_mouseWorld, m_bombSpawnPoint, Color{0.8f, 0.8f, 0.8f});
     }
 
