@@ -585,7 +585,10 @@ constexpr inline Vec2 Transform(const Vec2 v, const Mat33& A) noexcept
     };
 }
 
-/// Rotates a vector by a given angle.
+/// @brief Rotates a vector by a given angle.
+/// @details This rotates a vector by the angle expressed by the angle parameter.
+/// @param vector Vector to forward rotate.
+/// @param angle Expresses the angle to forward rotate the given vector by.
 /// @sa InverseRotate.
 template <class T>
 constexpr inline auto Rotate(const Vector2D<T> vector, const UnitVec2& angle) noexcept
@@ -595,8 +598,12 @@ constexpr inline auto Rotate(const Vector2D<T> vector, const UnitVec2& angle) no
     return Vector2D<T>{newX, newY};
 }
 
-/// Inverse rotate a vector.
-/// @details This is the inverse of rotating a vector - it undoes what rotate does.
+/// @brief Inverse rotates a vector.
+/// @details This is the inverse of rotating a vector - it undoes what rotate does. I.e.
+///   this effectively subtracts from the angle of the given vector the angle that's
+///   expressed by the angle parameter.
+/// @param vector Vector to reverse rotate.
+/// @param angle Expresses the angle to reverse rotate the given vector by.
 /// @sa Rotate.
 template <class T>
 constexpr inline auto InverseRotate(const Vector2D<T> vector, const UnitVec2& angle) noexcept
