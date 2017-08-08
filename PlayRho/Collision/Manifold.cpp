@@ -426,11 +426,11 @@ Manifold playrho::CollideShapes(const DistanceProxy& shapeA, const Transformatio
     // Find incident edge
     // Clip
     
-    const auto vertexCountShapeA = shapeA.GetVertexCount();
-    const auto vertexCountShapeB = shapeB.GetVertexCount();
-    if (vertexCountShapeA == 1)
+    const auto countA = shapeA.GetVertexCount();
+    const auto countB = shapeB.GetVertexCount();
+    if (countA == 1)
     {
-        if (vertexCountShapeB > 1)
+        if (countB > 1)
         {
             return ::CollideShapes(Manifold::e_faceB, shapeB, xfB,
                                    shapeA.GetVertex(0), shapeA.GetVertexRadius(), xfA);
@@ -438,9 +438,9 @@ Manifold playrho::CollideShapes(const DistanceProxy& shapeA, const Transformatio
         return ::CollideShapes(shapeA.GetVertex(0), shapeA.GetVertexRadius(), xfA,
                                shapeB.GetVertex(0), shapeB.GetVertexRadius(), xfB);
     }
-    if (vertexCountShapeB == 1)
+    if (countB == 1)
     {
-        if (vertexCountShapeA > 1)
+        if (countA > 1)
         {
             return ::CollideShapes(Manifold::e_faceA, shapeA, xfA,
                                    shapeB.GetVertex(0), shapeB.GetVertexRadius(), xfB);
@@ -451,13 +451,17 @@ Manifold playrho::CollideShapes(const DistanceProxy& shapeA, const Transformatio
     
     const auto totalRadius = shapeA.GetVertexRadius() + shapeB.GetVertexRadius();
     
-    const auto edgeSepA = ::GetMaxSeparation(shapeA, xfA, shapeB, xfB, totalRadius);
+    const auto edgeSepA = (countA == 4 && countB ==4)?
+        ::GetMaxSeparation4x4(shapeA, xfA, shapeB, xfB):
+        ::GetMaxSeparation(shapeA, xfA, shapeB, xfB, totalRadius);
     if (edgeSepA.separation > totalRadius)
     {
         return Manifold{};
     }
     
-    const auto edgeSepB = ::GetMaxSeparation(shapeB, xfB, shapeA, xfA, totalRadius);
+    const auto edgeSepB = (countA == 4 && countB ==4)?
+        ::GetMaxSeparation4x4(shapeB, xfB, shapeA, xfA):
+        ::GetMaxSeparation(shapeB, xfB, shapeA, xfA, totalRadius);
     if (edgeSepB.separation > totalRadius)
     {
         return Manifold{};

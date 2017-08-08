@@ -19,8 +19,60 @@
 
 #include <PlayRho/Collision/ShapeSeparation.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
+#include <algorithm>
 
 using namespace playrho;
+
+IndexPairSeparation playrho::GetMaxSeparation4x4(const DistanceProxy& proxy1,
+                                                 const Transformation xf1,
+                                                 const DistanceProxy& proxy2,
+                                                 const Transformation xf2)
+{
+    // Find the max separation between proxy1 and proxy2 using edge normals from proxy1.
+    using CounterType = IndexSeparation::index_type;
+    
+    auto indexPairSep = IndexPairSeparation{
+        -std::numeric_limits<Real>::infinity() * Meter,
+        IndexPairSeparation::InvalidIndex,
+        IndexPairSeparation::InvalidIndex
+    };
+    
+    const auto xf = MulT(xf1, xf2);
+    const Length2D p2vertices[4] = {
+        Transform(proxy2.GetVertex(0), xf),
+        Transform(proxy2.GetVertex(1), xf),
+        Transform(proxy2.GetVertex(2), xf),
+        Transform(proxy2.GetVertex(3), xf),
+    };
+        
+    for (auto i = CounterType{0}; i < CounterType{4}; ++i)
+    {
+        // Get proxy1 normal and vertex relative to proxy2.
+        const auto normal = proxy1.GetNormal(i);
+        const auto offset = proxy1.GetVertex(i);
+        
+        // Search for the vector that's most anti-parallel to the normal.
+        // See: https://en.wikipedia.org/wiki/Antiparallel_(mathematics)#Antiparallel_vectors
+        auto ap_separation = std::numeric_limits<Real>::infinity() * Meter;
+        auto ap_index = IndexSeparation::InvalidIndex;
+        for (auto j = CounterType{0}; j < CounterType{4}; ++j)
+        {
+            const auto s = Dot(normal, p2vertices[j] - offset);
+            if (ap_separation > s)
+            {
+                ap_separation = s;
+                ap_index = j;
+            }
+        }
+        if (indexPairSep.separation < ap_separation)
+        {
+            indexPairSep.separation = ap_separation;
+            indexPairSep.index1 = i;
+            indexPairSep.index2 = ap_index;
+        }
+    }
+    return indexPairSep;
+}
 
 IndexPairSeparation playrho::GetMaxSeparation(const DistanceProxy& proxy1, const Transformation xf1,
                                               const DistanceProxy& proxy2, const Transformation xf2,
@@ -34,10 +86,10 @@ IndexPairSeparation playrho::GetMaxSeparation(const DistanceProxy& proxy1, const
         IndexPairSeparation::InvalidIndex
     };
     
-    const auto xf = MulT(xf2, xf1);
     const auto count1 = proxy1.GetVertexCount();
     const auto count2 = proxy2.GetVertexCount();
 
+    const auto xf = MulT(xf2, xf1);
     for (auto i = decltype(count1){0}; i < count1; ++i)
     {
         // Get proxy1 normal and vertex relative to proxy2.
@@ -74,6 +126,7 @@ IndexPairSeparation playrho::GetMaxSeparation(const DistanceProxy& proxy1, const
             indexPairSep.index2 = ap.index;
         }
     }
+    
     return indexPairSep;
 }
 

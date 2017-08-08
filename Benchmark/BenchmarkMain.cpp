@@ -489,6 +489,92 @@ static void MaxSepBetweenRelRectangles(benchmark::State& state)
     }
 }
 
+static void MaxSepBetweenRelRectangles2(benchmark::State& state)
+{
+    const auto dim = playrho::Real(2) * playrho::Meter;
+    const auto shape = playrho::PolygonShape(dim, dim);
+    
+    const auto xfm0 = playrho::Transformation{
+        playrho::Vec2{0, -1} * (playrho::Real(1) * playrho::Meter),
+        playrho::UnitVec2::GetRight()
+    }; // bottom
+    const auto xfm1 = playrho::Transformation{
+        playrho::Vec2{0, +1} * (playrho::Real(1) * playrho::Meter),
+        playrho::UnitVec2::GetRight()
+    }; // top
+    
+    const auto child0 = shape.GetChild(0);
+    const auto totalRadius = child0.GetVertexRadius() * playrho::Real(2);
+    while (state.KeepRunning())
+    {
+        benchmark::DoNotOptimize(playrho::GetMaxSeparation(child0, xfm0, child0, xfm1, totalRadius));
+        benchmark::DoNotOptimize(playrho::GetMaxSeparation(child0, xfm1, child0, xfm0, totalRadius));
+    }
+}
+
+static void MaxSepBetweenRel4x4(benchmark::State& state)
+{
+    const auto rot0 = playrho::Angle{playrho::Real{45.0f} * playrho::Degree};
+    const auto xfm0 = playrho::Transformation{playrho::Vec2{0, -2} * (playrho::Real(1) * playrho::Meter), playrho::UnitVec2::Get(rot0)}; // bottom
+    const auto xfm1 = playrho::Transformation{playrho::Vec2{0, +2} * (playrho::Real(1) * playrho::Meter), playrho::UnitVec2::GetRight()}; // top
+    
+    const auto dim = playrho::Real(2) * playrho::Meter;
+    const auto shape0 = playrho::PolygonShape(dim, dim);
+    const auto shape1 = playrho::PolygonShape(dim, dim);
+    
+    // Rotate square A and put it below square B.
+    // In ASCII art terms:
+    //
+    //   +---4---+
+    //   |   |   |
+    //   | B 3   |
+    //   |   |   |
+    //   |   2   |
+    //   |   |   |
+    //   |   1   |
+    //   |  /+\  |
+    //   2-1-*-1-2
+    //    /  1  \
+    //   / A |   \
+    //  +    2    +
+    //   \   |   /
+    //    \  3  /
+    //     \ | /
+    //      \4/
+    //       +
+    
+    const auto child0 = shape0.GetChild(0);
+    const auto child1 = shape1.GetChild(0);
+
+    while (state.KeepRunning())
+    {
+        benchmark::DoNotOptimize(playrho::GetMaxSeparation4x4(child0, xfm0, child1, xfm1));
+        benchmark::DoNotOptimize(playrho::GetMaxSeparation4x4(child1, xfm1, child0, xfm0));
+    }
+}
+
+static void MaxSepBetweenRel2_4x4(benchmark::State& state)
+{
+    const auto dim = playrho::Real(2) * playrho::Meter;
+    const auto shape = playrho::PolygonShape(dim, dim);
+    
+    const auto xfm0 = playrho::Transformation{
+        playrho::Vec2{0, -1} * (playrho::Real(1) * playrho::Meter),
+        playrho::UnitVec2::GetRight()
+    }; // bottom
+    const auto xfm1 = playrho::Transformation{
+        playrho::Vec2{0, +1} * (playrho::Real(1) * playrho::Meter),
+        playrho::UnitVec2::GetRight()
+    }; // top
+    
+    const auto child0 = shape.GetChild(0);
+    while (state.KeepRunning())
+    {
+        benchmark::DoNotOptimize(playrho::GetMaxSeparation4x4(child0, xfm0, child0, xfm1));
+        benchmark::DoNotOptimize(playrho::GetMaxSeparation4x4(child0, xfm1, child0, xfm0));
+    }
+}
+
 static void MaxSepBetweenAbsRectangles(benchmark::State& state)
 {
     const auto rot0 = playrho::Angle{playrho::Real{45.0f} * playrho::Degree};
@@ -840,7 +926,11 @@ BENCHMARK(ConstructAndAssignVC);
 BENCHMARK(SolveVC);
 
 BENCHMARK(MaxSepBetweenAbsRectangles);
+BENCHMARK(MaxSepBetweenRel4x4);
+BENCHMARK(MaxSepBetweenRel2_4x4);
 BENCHMARK(MaxSepBetweenRelRectangles);
+BENCHMARK(MaxSepBetweenRelRectangles2);
+
 BENCHMARK(ManifoldForTwoSquares1);
 BENCHMARK(ManifoldForTwoSquares2);
 

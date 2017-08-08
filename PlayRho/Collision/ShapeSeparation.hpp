@@ -71,6 +71,16 @@ namespace playrho
     IndexPairSeparation GetMaxSeparation(const DistanceProxy& proxy1, const Transformation xf1,
                                          const DistanceProxy& proxy2, const Transformation xf2,
                                          Length stop = MaxFloat * Meter);
+    
+    /// @brief Gets the max separation information for the first four vertices of the two
+    ///   given shapes.
+    /// @details This is a version of the get-max-separation functions that is optimzed for
+    ///   two quadrilateral (4-vertice) polygons.
+    /// @return Index of the vertex and normal from <code>proxy1</code>,
+    ///   index of the vertex from <code>proxy2</code> (that had the maximum separation
+    ///   distance from each other in the direction of that normal), and the maximal distance.
+    IndexPairSeparation GetMaxSeparation4x4(const DistanceProxy& proxy1, const Transformation xf1,
+                                            const DistanceProxy& proxy2, const Transformation xf2);
 
     /// @brief Gets the max separation information.
     /// @return Index of the vertex and normal from <code>proxy1</code>,
