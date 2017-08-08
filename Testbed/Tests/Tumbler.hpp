@@ -99,7 +99,8 @@ public:
 
     void KeyboardDown(Key key) override
     {
-        const auto selectedFixture = GetSelectedFixture();
+        const auto selectedFixtures = GetSelectedFixtures();
+        const auto selectedFixture = selectedFixtures.size() == 1? selectedFixtures[0]: nullptr;
         const auto selectedShape = selectedFixture?
             selectedFixture->GetShape().get(): static_cast<Shape*>(nullptr);
 

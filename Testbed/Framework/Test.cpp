@@ -226,7 +226,7 @@ static Color GetColor(const Body& body)
     return Color{0.9f, 0.7f, 0.7f};
 }
 
-static bool Draw(Drawer& drawer, const Body& body, bool skins, Fixture* selected)
+static bool Draw(Drawer& drawer, const Body& body, bool skins, const Test::Fixtures& selected)
 {
     auto found = false;
     const auto bodyColor = GetColor(body);
@@ -235,7 +235,7 @@ static bool Draw(Drawer& drawer, const Body& body, bool skins, Fixture* selected
     {
         const auto& f = GetRef(fixture);
         auto color = bodyColor;
-        if (&f == selected)
+        if (Test::Contains(selected, &f))
         {
             color = selectedColor;
             found = true;
@@ -286,7 +286,8 @@ static void Draw(Drawer& drawer, const Joint& joint)
     }
 }
 
-static bool Draw(Drawer& drawer, const World& world, const Settings& settings, Fixture* selected)
+static bool Draw(Drawer& drawer, const World& world, const Settings& settings,
+                 const Test::Fixtures& selected)
 {
     auto found = false;
 
@@ -361,6 +362,18 @@ static bool Draw(Drawer& drawer, const World& world, const Settings& settings, F
     return found;
 }
 
+bool Test::Contains(const Fixtures& fixtures, const Fixture* f) noexcept
+{
+    for (auto fixture: fixtures)
+    {
+        if (fixture == f)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 void Test::DestructionListenerImpl::SayGoodbye(Joint& joint)
 {
     if (test->m_mouseJoint == &joint)
@@ -391,7 +404,7 @@ Test::~Test()
 
 void Test::ResetWorld(const playrho::World &saved)
 {
-    SetSelectedFixture(nullptr);
+    SetSelectedFixtures(Fixtures{});
 
     auto bombIndex = static_cast<decltype(m_world->GetBodies().size())>(-1);
     auto groundIndex = static_cast<decltype(m_world->GetBodies().size())>(-1);
@@ -474,22 +487,21 @@ void Test::MouseDown(const Length2D& p)
     // Make a small box.
     const auto aabb = GetFattenedAABB(AABB{p}, Meter / Real{1000});
     
-    auto fixture = static_cast<Fixture*>(nullptr);
+    auto fixtures = std::vector<Fixture*>();
     
     // Query the world for overlapping shapes.
     m_world->QueryAABB(aabb, [&](Fixture* f, const ChildCounter) {
         if (TestPoint(*f, p))
         {
-            fixture = f;
-            return false; // We are done, terminate the query.
+            fixtures.push_back(f);
         }
         return true; // Continue the query.
     });
     
-    SetSelectedFixture(fixture);
-    if (fixture)
+    SetSelectedFixtures(fixtures);
+    if (fixtures.size() == 1)
     {
-        const auto body = fixture->GetBody();
+        const auto body = fixtures[0]->GetBody();
         if (body->GetType() == BodyType::Dynamic)
         {
             MouseJointDef md;
@@ -738,10 +750,10 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
                       proxyCount, height, balance, quality);
     m_textLine += DRAW_STRING_NEW_LINE;
     
-    const auto selectedFixture = GetSelectedFixture();
-    if (selectedFixture)
+    const auto selectedFixtures = GetSelectedFixtures();
+    for (auto fixture: selectedFixtures)
     {
-        DrawStats(drawer, *selectedFixture);
+        DrawStats(drawer, *fixture);
     }
 }
 
@@ -812,13 +824,13 @@ void Test::DrawContactInfo(const Settings& settings, Drawer& drawer)
     const auto normalImpulseColor = Color{0.9f, 0.9f, 0.3f}; // yellowish
     const auto frictionImpulseColor = Color{0.9f, 0.9f, 0.3f}; // yellowish
 
-    const auto selectedFixture = GetSelectedFixture();
+    const auto selectedFixtures = GetSelectedFixtures();
     const auto lighten = 1.3f;
     const auto darken = 0.9f;
     
     for (auto& point: m_points)
     {
-        const auto selected = HasFixture(point, selectedFixture);
+        const auto selected = HasFixture(point, selectedFixtures);
 
         if (settings.drawContactPoints)
         {
@@ -1001,11 +1013,11 @@ void Test::Step(const Settings& settings, Drawer& drawer)
     
     PostStep(settings, drawer);
     
-    const auto selectedFixture = GetSelectedFixture();
-    const auto selectedFound = Draw(drawer, *m_world, settings, selectedFixture);
-    if (selectedFixture && !selectedFound)
+    const auto selectedFixtures = GetSelectedFixtures();
+    const auto selectedFound = Draw(drawer, *m_world, settings, selectedFixtures);
+    if (!selectedFixtures.empty() && !selectedFound)
     {
-        SetSelectedFixture(nullptr);
+        SetSelectedFixtures(Fixtures{});
     }
     
     drawer.Flush();

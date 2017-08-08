@@ -58,7 +58,9 @@ public:
         const auto newDensity = std::max(oldDensity + change, KilogramPerSquareMeter);
         if (newDensity != oldDensity)
         {
-            const auto wasSelected = GetSelectedFixture() == m_top;
+            auto selectedFixtures = GetSelectedFixtures();
+            const auto selectedFixture = selectedFixtures.size() == 1? selectedFixtures[0]: nullptr;
+            const auto wasSelected = selectedFixture == m_top;
             const auto body = m_top->GetBody();
             body->DestroyFixture(m_top);
             auto conf = DiskShape::Conf{};
@@ -67,7 +69,8 @@ public:
             m_top = body->CreateFixture(std::make_shared<DiskShape>(conf));
             if (wasSelected)
             {
-                SetSelectedFixture(m_top);
+                selectedFixtures[0] = m_top;
+                SetSelectedFixtures(selectedFixtures);
             }
         }
     }

@@ -90,6 +90,8 @@ public:
         Key_Unknown
     };
     
+    using Fixtures = std::vector<Fixture*>;
+    
     Test(const WorldDef& config = WorldDef{}.UseGravity(LinearAcceleration2D{
         Real(0.0f) * MeterPerSquareSecond, -Real(10.0f) * MeterPerSquareSecond
     }).UseMinVertexRadius(Real(0.0001f) * Real{2} * Meter));
@@ -123,11 +125,13 @@ public:
     virtual void PostSolve(Contact&, const ContactImpulsesList&,
                            ContactListener::iteration_type) override { }
 
-    Fixture* GetSelectedFixture() const noexcept { return m_selectedFixture; }
+    static bool Contains(const Fixtures& fixtures, const Fixture* f) noexcept;
 
-    void SetSelectedFixture(Fixture* value) noexcept
+    Fixtures GetSelectedFixtures() const noexcept { return m_selectedFixtures; }
+
+    void SetSelectedFixtures(Fixtures value) noexcept
     {
-        m_selectedFixture = value;
+        m_selectedFixtures = value;
     }
 
 protected:
@@ -144,9 +148,16 @@ protected:
         Length separation;
     };
     
-    static inline bool HasFixture(const ContactPoint& cp, const Fixture* fixture) noexcept
+    static inline bool HasFixture(const ContactPoint& cp, const Fixtures& fixtures) noexcept
     {
-        return fixture == cp.fixtureA || fixture == cp.fixtureB;
+        for (auto fixture: fixtures)
+        {
+            if (fixture == cp.fixtureA || fixture == cp.fixtureB)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     using ContactPoints = std::vector<ContactPoint>;
@@ -200,7 +211,7 @@ protected:
     
 private:
     Body* m_groundBody;
-    Fixture* m_selectedFixture = nullptr;
+    Fixtures m_selectedFixtures;
     AABB m_worldAABB;
     ContactPoints m_points;
     DestructionListenerImpl m_destructionListener;

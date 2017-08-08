@@ -347,7 +347,8 @@ public:
 
     void KeyboardDown(Key key) override
     {
-        const auto fixture = GetSelectedFixture();
+        auto fixtures = GetSelectedFixtures();
+        const auto fixture = fixtures.size() == 1? fixtures[0]: nullptr;
         const auto body = fixture? fixture->GetBody(): nullptr;
 
         switch (key)
@@ -406,7 +407,9 @@ public:
                 const auto shape = fixture->GetShape();
                 auto polygon = *static_cast<const PolygonShape*>(shape.get());
                 polygon.SetVertexRadius(shape->GetVertexRadius() + RadiusIncrement);
-                SetSelectedFixture(body->CreateFixture(std::make_shared<PolygonShape>(polygon)));
+                const auto newf = body->CreateFixture(std::make_shared<PolygonShape>(polygon));
+                fixtures[0] = newf;
+                SetSelectedFixtures(fixtures);
                 body->DestroyFixture(fixture);
             }
             break;
@@ -421,10 +424,11 @@ public:
                 {
                     PolygonShape polygon{*static_cast<const PolygonShape*>(shape.get())};
                     polygon.SetVertexRadius(newVertexRadius);
-                    auto newFixture = body->CreateFixture(std::make_shared<PolygonShape>(polygon));
-                    if (newFixture)
+                    auto newf = body->CreateFixture(std::make_shared<PolygonShape>(polygon));
+                    if (newf)
                     {
-                        SetSelectedFixture(newFixture);
+                        fixtures[0] = newf;
+                        SetSelectedFixtures(fixtures);
                         body->DestroyFixture(fixture);
                     }
                 }
