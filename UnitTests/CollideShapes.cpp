@@ -19,6 +19,7 @@
 #include "gtest/gtest.h"
 #include <PlayRho/Collision/Manifold.hpp>
 #include <PlayRho/Collision/WorldManifold.hpp>
+#include <PlayRho/Collision/ShapeSeparation.hpp>
 #include <PlayRho/Collision/Shapes/DiskShape.hpp>
 #include <PlayRho/Collision/Shapes/PolygonShape.hpp>
 #include <PlayRho/Collision/Shapes/EdgeShape.hpp>
@@ -500,6 +501,123 @@ TEST(CollideShapes, IdenticalHorizontalTouchingSquares)
     EXPECT_EQ(manifold.GetPoint(1).contactFeature.indexA, 0);
     EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeB, ContactFeature::e_vertex);
     EXPECT_EQ(manifold.GetPoint(1).contactFeature.indexB, 3);
+}
+
+TEST(CollideShapes, GetMaxSeparationFreeFunction1)
+{
+    const auto rot0 = Angle{Real{45.0f} * Degree};
+    const auto xfm0 = Transformation{Vec2{0, -2} * (Real(1) * Meter), UnitVec2::Get(rot0)}; // bottom
+    const auto xfm1 = Transformation{Vec2{0, +2} * (Real(1) * Meter), UnitVec2::GetRight()}; // top
+    
+    const auto dim = Real(2) * Meter;
+    const auto shape0 = PolygonShape(dim, dim);
+    const auto shape1 = PolygonShape(dim, dim);
+    ASSERT_EQ(shape0.GetVertex(0), Vec2(+2, -2) * (Real(1) * Meter)); // bottom right
+    ASSERT_EQ(shape0.GetVertex(1), Vec2(+2, +2) * (Real(1) * Meter)); // top right
+    ASSERT_EQ(shape0.GetVertex(2), Vec2(-2, +2) * (Real(1) * Meter)); // top left
+    ASSERT_EQ(shape0.GetVertex(3), Vec2(-2, -2) * (Real(1) * Meter)); // bottom left
+
+    // Rotate square A and put it below square B.
+    // In ASCII art terms:
+    //
+    //          +---4---+ <----- v1 of shape1
+    //          |   |   |
+    //          | B 3   |
+    //          |   |   |
+    //          |   2   |
+    //          |   |   |
+    //          |   1   |
+    //          |  /|\  |
+    //  v3 ---> 2-1-0-1-2 <----- v0 of shape1
+    //           /  |  \
+    //          /   1   \
+    //         / A  |    \
+    //        +     2     + <----- v0 of shape0
+    //         \    |    /
+    //          \   3   /
+    //           \  |  /
+    //            \ 4 /
+    //             \|/
+    //              + <----- v3 of shape0
+    
+    const auto child0 = shape0.GetChild(0);
+    const auto child1 = shape1.GetChild(0);
+    const auto totalRadius = shape0.GetVertexRadius() + shape1.GetVertexRadius();
+
+    const auto maxSep01_4x4 = GetMaxSeparation4x4(child0, xfm0, child1, xfm1);
+    const auto maxSep10_4x4 = GetMaxSeparation4x4(child1, xfm1, child0, xfm0);
+    const auto maxSep01_NxN = GetMaxSeparation(child0, xfm0, child1, xfm1, totalRadius);
+    const auto maxSep10_NxN = GetMaxSeparation(child1, xfm1, child0, xfm0, totalRadius);
+
+    switch (sizeof(Real))
+    {
+        case 4:
+            EXPECT_EQ(maxSep01_4x4.index1, decltype(maxSep01_4x4.index1){0}); // v0 of shape0
+            EXPECT_EQ(maxSep01_4x4.index2, decltype(maxSep01_4x4.index1){3}); // v3 of shape1
+            break;
+        case 8:
+            EXPECT_EQ(maxSep01_4x4.index1, decltype(maxSep01_4x4.index1){1}); // v1 of shape0
+            EXPECT_EQ(maxSep01_4x4.index2, decltype(maxSep01_4x4.index1){0}); // v0 of shape1
+            break;
+    }
+    EXPECT_EQ(maxSep01_4x4.index1, maxSep01_NxN.index1);
+    EXPECT_EQ(maxSep01_4x4.index2, maxSep01_NxN.index2);
+    EXPECT_NEAR(static_cast<double>(Real(maxSep01_4x4.separation / Meter)),
+                -2.0, std::abs(-2.0) / 1000000.0);
+    EXPECT_NEAR(static_cast<double>(Real(maxSep01_4x4.separation / Meter)),
+                static_cast<double>(Real(maxSep01_NxN.separation / Meter)),
+                std::abs(static_cast<double>(Real(maxSep01_4x4.separation / Meter)) / 1000000.0));
+    
+    EXPECT_EQ(maxSep10_4x4.index1, decltype(maxSep10_4x4.index1){3}); // v3 of shape1
+    EXPECT_EQ(maxSep10_4x4.index2, decltype(maxSep10_4x4.index1){1}); // v1 of shape0
+    EXPECT_EQ(maxSep10_4x4.index1, maxSep10_NxN.index1);
+    EXPECT_EQ(maxSep10_4x4.index2, maxSep10_NxN.index2);
+    EXPECT_NEAR(static_cast<double>(Real(maxSep10_4x4.separation / Meter)),
+                -0.82842707633972168, std::abs(-0.82842707633972168) / 1000000.0);
+    EXPECT_NEAR(static_cast<double>(Real(maxSep10_4x4.separation / Meter)),
+                static_cast<double>(Real(maxSep10_NxN.separation / Meter)),
+                std::abs(static_cast<double>(Real(maxSep10_4x4.separation / Meter)) / 1000000.0));
+}
+
+TEST(CollideShapes, GetMaxSeparationFreeFunction2)
+{
+    const auto dim = Real(2) * Meter;
+    const auto shape = PolygonShape(dim, dim);
+    ASSERT_EQ(shape.GetVertex(0), Vec2(+2, -2) * (Real(1) * Meter)); // bottom right
+    ASSERT_EQ(shape.GetVertex(1), Vec2(+2, +2) * (Real(1) * Meter)); // top right
+    ASSERT_EQ(shape.GetVertex(2), Vec2(-2, +2) * (Real(1) * Meter)); // top left
+    ASSERT_EQ(shape.GetVertex(3), Vec2(-2, -2) * (Real(1) * Meter)); // bottom left
+
+    const auto xfm0 = Transformation{Vec2{0, -1} * (Real(1) * Meter), UnitVec2::GetRight()}; // bottom
+    const auto xfm1 = Transformation{Vec2{0, +1} * (Real(1) * Meter), UnitVec2::GetRight()}; // top
+    const auto totalRadius = shape.GetVertexRadius() * Real(2);
+
+    const auto child0 = shape.GetChild(0);
+    const auto maxSep01_4x4 = GetMaxSeparation4x4(child0, xfm0, child0, xfm1);
+    const auto maxSep10_4x4 = GetMaxSeparation4x4(child0, xfm1, child0, xfm0);
+    const auto maxSep01_NxN = GetMaxSeparation(child0, xfm0, child0, xfm1, totalRadius);
+    const auto maxSep10_NxN = GetMaxSeparation(child0, xfm1, child0, xfm0, totalRadius);
+    
+    
+    EXPECT_EQ(maxSep01_4x4.index1, decltype(maxSep01_4x4.index1){1}); // v0 of shape0
+    EXPECT_EQ(maxSep01_4x4.index1, maxSep01_NxN.index1);
+    EXPECT_EQ(maxSep01_4x4.index2, decltype(maxSep01_4x4.index1){0}); // v3 of shape1
+    EXPECT_EQ(maxSep01_4x4.index2, maxSep01_NxN.index2);
+    EXPECT_NEAR(static_cast<double>(Real(maxSep01_4x4.separation / Meter)),
+                -2.0, 0.0);
+    EXPECT_NEAR(static_cast<double>(Real(maxSep01_4x4.separation / Meter)),
+                static_cast<double>(Real(maxSep01_NxN.separation / Meter)),
+                std::abs(static_cast<double>(Real(maxSep01_4x4.separation / Meter)) / 1000000.0));
+    
+    EXPECT_EQ(maxSep10_4x4.index1, decltype(maxSep10_4x4.index1){3}); // v3 of shape1
+    EXPECT_EQ(maxSep10_4x4.index1, maxSep10_NxN.index1);
+    EXPECT_EQ(maxSep10_4x4.index2, decltype(maxSep10_4x4.index1){1}); // v1 of shape0
+    EXPECT_EQ(maxSep10_4x4.index2, maxSep10_NxN.index2);
+    EXPECT_NEAR(static_cast<double>(Real(maxSep10_4x4.separation / Meter)),
+                -2.0, 0.0);
+    EXPECT_NEAR(static_cast<double>(Real(maxSep10_4x4.separation / Meter)),
+                static_cast<double>(Real(maxSep10_NxN.separation / Meter)),
+                std::abs(static_cast<double>(Real(maxSep10_4x4.separation / Meter)) / 1000000.0));
 }
 
 TEST(CollideShapes, SquareCornerTouchingSquareFaceAbove)

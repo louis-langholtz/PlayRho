@@ -450,8 +450,9 @@ Manifold playrho::CollideShapes(const DistanceProxy& shapeA, const Transformatio
     }
     
     const auto totalRadius = shapeA.GetVertexRadius() + shapeB.GetVertexRadius();
+    const auto do4x4 = (countA == 4) && (countB == 4);
     
-    const auto edgeSepA = (countA == 4 && countB ==4)?
+    const auto edgeSepA = do4x4?
         ::GetMaxSeparation4x4(shapeA, xfA, shapeB, xfB):
         ::GetMaxSeparation(shapeA, xfA, shapeB, xfB, totalRadius);
     if (edgeSepA.separation > totalRadius)
@@ -459,7 +460,7 @@ Manifold playrho::CollideShapes(const DistanceProxy& shapeA, const Transformatio
         return Manifold{};
     }
     
-    const auto edgeSepB = (countA == 4 && countB ==4)?
+    const auto edgeSepB = do4x4?
         ::GetMaxSeparation4x4(shapeB, xfB, shapeA, xfA):
         ::GetMaxSeparation(shapeB, xfB, shapeA, xfA, totalRadius);
     if (edgeSepB.separation > totalRadius)
