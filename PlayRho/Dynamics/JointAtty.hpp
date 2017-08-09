@@ -40,6 +40,8 @@ namespace playrho
 class JointAtty
 {
 private:
+    /// @brief Creates a new joint based on the given definition.
+    /// @throws InvalidArgument if given a joint definition with a type that's not recognized.
     static Joint* Create(const playrho::JointDef &def)
     {
         return Joint::Create(def);

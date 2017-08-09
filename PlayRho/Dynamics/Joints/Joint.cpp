@@ -73,7 +73,7 @@ Joint* Joint::Create(const JointDef& def)
         default:
             break;
     }
-    return nullptr;
+    throw InvalidArgument("Joint::Create: unknown joint type");
 }
 
 void Joint::Destroy(const Joint* joint)

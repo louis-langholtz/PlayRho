@@ -121,6 +121,8 @@ public:
     /// @brief Creates a rigid body given a definition.
     /// @note No reference to the definition is retained.
     /// @warning This function is locked during callbacks.
+    /// @return Pointer to newly created body.
+    /// @throws LengthError if this operation would create more than MaxBodies.
     Body* CreateBody(const BodyDef& def = GetDefaultBodyDef());
 
     /// @brief Destroys the given body.
@@ -130,11 +132,11 @@ public:
     void Destroy(Body* body);
 
     /// @brief Creates a joint to constrain bodies together.
-    /// @details No reference to the definition
-    /// is retained. This may cause the connected bodies to cease colliding.
+    /// @details No reference to the definition is retained. This may cause the
+    ///   connected bodies to cease colliding.
     /// @warning This function is locked during callbacks.
-    /// @return <code>nullptr</code> if world has <code>MaxJoints</code>,
-    ///   else pointer to newly created joint.
+    /// @return Pointer to newly created joint.
+    /// @throws LengthError if this operation would create more than MaxJoints.
     Joint* CreateJoint(const JointDef& def);
 
     /// @brief Destroys a joint.

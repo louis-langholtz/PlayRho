@@ -182,16 +182,20 @@ TEST(Vec2, InvalidIndex)
     const auto a = Vec2{0, 0};
     EXPECT_NO_THROW(a[0]);
     EXPECT_NO_THROW(a[1]);
-    EXPECT_NO_THROW(a[2]);
-    EXPECT_NO_THROW(a[3]);
+    EXPECT_NO_THROW(a.at(0));
+    EXPECT_NO_THROW(a.at(1));
+    EXPECT_THROW(a.at(2), InvalidArgument);
+    EXPECT_THROW(a.at(3), InvalidArgument);
     
     auto b = Vec2{Real(2), Real(1)};
     EXPECT_NO_THROW(b[0] = Real(3));
     EXPECT_NO_THROW(b[1] = Real(4));
+    EXPECT_NO_THROW(b.at(0) = Real(3));
+    EXPECT_NO_THROW(b.at(1) = Real(4));
     EXPECT_EQ(b[0], Real(3));
     EXPECT_EQ(b[1], Real(4));
-    EXPECT_NO_THROW(b[2]);
-    EXPECT_NO_THROW(b[3]);
-    EXPECT_NO_THROW(b[2] = Real(5));
-    EXPECT_NO_THROW(b[3] = Real(6));
+    EXPECT_THROW(b.at(2), InvalidArgument);
+    EXPECT_THROW(b.at(3), InvalidArgument);
+    EXPECT_THROW(b.at(2) = Real(5), InvalidArgument);
+    EXPECT_THROW(b.at(3) = Real(6), InvalidArgument);
 }

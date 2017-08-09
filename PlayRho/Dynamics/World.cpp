@@ -55,6 +55,8 @@
 #include <PlayRho/Collision/RayCastOutput.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 
+#include <PlayRho/Common/LengthError.hpp>
+
 #include <new>
 #include <functional>
 #include <type_traits>
@@ -884,7 +886,7 @@ Body* World::CreateBody(const BodyDef& def)
 
     if (m_bodies.size() >= MaxBodies)
     {
-        return nullptr;
+        throw LengthError("World::CreateBody: operation would exceed MaxBodies");
     }
     
     auto& b = *(new Body(def, this));
@@ -956,16 +958,16 @@ void World::Destroy(Body* body)
 
 Joint* World::CreateJoint(const JointDef& def)
 {
-    if (m_joints.size() >= MaxJoints)
-    {
-        return nullptr;
-    }
-
     if (IsLocked())
     {
         throw LockedError();
     }
-
+    
+    if (m_joints.size() >= MaxJoints)
+    {
+        throw LengthError("World::CreateJoint: operation would exceed MaxJoints");
+    }
+    
     // Note: creating a joint doesn't wake the bodies.
     const auto j = JointAtty::Create(def);
     if (j)

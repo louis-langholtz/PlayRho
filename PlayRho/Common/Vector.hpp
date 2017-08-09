@@ -24,6 +24,7 @@
 
 #include <cstddef>
 #include <type_traits>
+#include <PlayRho/Common/InvalidArgument.hpp>
 
 namespace playrho
 {
@@ -71,13 +72,44 @@ struct Vector
     const_iterator cbegin() const noexcept { return begin(); }
     const_iterator cend() const noexcept { return end(); }
 
+    /// @brief Gets a reference to the requested element.
+    /// @note No bounds checking is performed.
+    /// @warning Behavior is undefined if given a position equal to or greater than size().
     constexpr reference operator[](size_type pos) noexcept
     {
+        assert(pos < size());
         return elements[pos];
     }
 
+    
+    /// @brief Gets a constant reference to the requested element.
+    /// @note No bounds checking is performed.
+    /// @warning Behavior is undefined if given a position equal to or greater than size().
     constexpr const_reference operator[](size_type pos) const noexcept
     {
+        assert(pos < size());
+        return elements[pos];
+    }
+    
+    /// @brief Gets a reference to the requested element.
+    /// @throws InvalidArgument if given a position that's >= size().
+    constexpr reference at(size_type pos)
+    {
+        if (pos >= size())
+        {
+            throw InvalidArgument("Vector::at: position >= size()");
+        }
+        return elements[pos];
+    }
+    
+    /// @brief Gets a constant reference to the requested element.
+    /// @throws InvalidArgument if given a position that's >= size().
+    constexpr const_reference at(size_type pos) const
+    {
+        if (pos >= size())
+        {
+            throw InvalidArgument("Vector::at: position >= size()");
+        }
         return elements[pos];
     }
     

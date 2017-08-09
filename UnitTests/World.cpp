@@ -35,6 +35,7 @@
 #include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
 #include <PlayRho/Dynamics/Joints/DistanceJoint.hpp>
 #include <PlayRho/Dynamics/Joints/PulleyJoint.hpp>
+#include <PlayRho/Common/LengthError.hpp>
 #include <chrono>
 #include <type_traits>
 
@@ -713,8 +714,7 @@ TEST(World, MaxBodies)
         ASSERT_NE(body, nullptr);
     }
     {
-        const auto body = world.CreateBody();
-        EXPECT_EQ(body, nullptr);        
+        EXPECT_THROW(world.CreateBody(), LengthError);
     }
 }
 
@@ -733,8 +733,7 @@ TEST(World, MaxJoints)
         ASSERT_NE(joint, nullptr);
     }
     {
-        const auto joint = world.CreateJoint(RopeJointDef{body1, body2});
-        EXPECT_EQ(joint, nullptr);
+        EXPECT_THROW(world.CreateJoint(RopeJointDef{body1, body2}), LengthError);
     }
 }
 

@@ -133,6 +133,8 @@ private:
         return nullptr;
     }
     
+    /// @brief Creates a new joint based on the given definition.
+    /// @throws InvalidArgument if given a joint definition with a type that's not recognized.
     static Joint* Create(const JointDef& def);
 
     /// Destroys the given joint.
