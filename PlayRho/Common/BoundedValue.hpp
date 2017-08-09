@@ -68,7 +68,7 @@ namespace playrho {
         {
             if (!(value > -std::numeric_limits<T>::infinity()))
             {
-                throw InvalidArgument{"value not > -inf"};;
+                throw InvalidArgument{"BoundedValue: value not > -inf"};;
             }
         }
     }
@@ -100,13 +100,13 @@ namespace playrho {
                 case LoValueCheck::AboveZero:
                     if (!(value > value_type(0)))
                     {
-                        throw exception_type{"value not > 0"};
+                        throw exception_type{"BoundedValue: value not > 0"};
                     }
                     return;
                 case LoValueCheck::ZeroOrMore:
                     if (!(value >= value_type(0)))
                     {
-                        throw exception_type{"value not >= 0"};
+                        throw exception_type{"BoundedValue: value not >= 0"};
                     }
                     return;
                 case LoValueCheck::AboveNegInf:
@@ -115,7 +115,7 @@ namespace playrho {
                 case LoValueCheck::NonZero:
                     if (value == static_cast<value_type>(0))
                     {
-                        throw exception_type{"value may not be 0"};
+                        throw exception_type{"BoundedValue: value may not be 0"};
                     }
                     return;
             }
@@ -130,23 +130,23 @@ namespace playrho {
                 case HiValueCheck::BelowZero:
                     if (!(value < value_type(0)))
                     {
-                        throw exception_type{"value not < 0"};
+                        throw exception_type{"BoundedValue: value not < 0"};
                     }
                     return;
                 case HiValueCheck::ZeroOrLess:
                     if (!(value <= value_type(0)))
                     {
-                        throw exception_type{"value not <= 0"};
+                        throw exception_type{"BoundedValue: value not <= 0"};
                     }
                     return;
                 case HiValueCheck::OneOrLess:
                     if (!ValueCheckHelper<value_type>::has_one)
                     {
-                        throw exception_type{"value's type does not have a trivial 1"};
+                        throw exception_type{"BoundedValue: value's type does not have a trivial 1"};
                     }
                     if (!(value <= ValueCheckHelper<value_type>::one()))
                     {
-                        throw exception_type{"value not <= 1"};
+                        throw exception_type{"BoundedValue: value not <= 1"};
                     }
                     return;
                 case HiValueCheck::BelowPosInf:
@@ -154,7 +154,7 @@ namespace playrho {
                     {
                         if (!(value < +std::numeric_limits<value_type>::infinity()))
                         {
-                            throw exception_type{"value not < +inf"};;
+                            throw exception_type{"BoundedValue: value not < +inf"};;
                         }
                     }
                     return;

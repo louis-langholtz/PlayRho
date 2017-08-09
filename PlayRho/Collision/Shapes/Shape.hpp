@@ -164,7 +164,7 @@ public:
 
     /// @brief Gets the density of this fixture.
     /// @return Non-negative density (in mass per area).
-    Density GetDensity() const noexcept;
+    NonNegative<Density> GetDensity() const noexcept;
 
     /// @brief Sets the density of this fixture.
     /// @note This will _not_ automatically adjust the mass of the body.
@@ -191,7 +191,7 @@ public:
 private:
     
     /// @brief Vertex radius.
-    NonNegative<Length> m_vertexRadius;
+    NonNegative<Length> m_vertexRadius = NonNegative<Length>{Real(0) * Meter};
     
     /// @brief Density.
     NonNegative<Density> m_density = NonNegative<Density>{KilogramPerSquareMeter * Real{0}};
@@ -284,7 +284,7 @@ inline void Shape::SetVertexRadius(NonNegative<Length> vertexRadius) noexcept
     m_vertexRadius = vertexRadius;
 }
 
-inline Density Shape::GetDensity() const noexcept
+inline NonNegative<Density> Shape::GetDensity() const noexcept
 {
     return m_density;
 }
