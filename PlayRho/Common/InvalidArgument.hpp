@@ -25,11 +25,12 @@
 
 namespace playrho {
     
+    /// @brief Invalid argument.
+    /// @details Indicates that an argument to a function or method was invalid.
     class InvalidArgument: public std::invalid_argument
     {
     public:
-        explicit InvalidArgument(const std::string& s): std::invalid_argument(s) {}
-        explicit InvalidArgument(const char* s): std::invalid_argument(s) {}
+        using std::invalid_argument::invalid_argument;
     };
     
 } // namespace playrho

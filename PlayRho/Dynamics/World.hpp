@@ -666,11 +666,7 @@ private:
 class World::LockedError: public std::logic_error
 {
 public:
-    LockedError():
-    	std::logic_error{"world is locked"}
-    {
-        // Intentionally empty.
-    }
+    using std::logic_error::logic_error;
 };
 
 enum class World::RayCastOpcode

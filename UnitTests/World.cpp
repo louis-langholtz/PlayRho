@@ -116,7 +116,7 @@ TEST(World, Traits)
 
 TEST(World, WorldLockedError)
 {
-    const auto value = World::LockedError{};
+    const auto value = World::LockedError{"world is locked"};
     EXPECT_STREQ(value.what(), "world is locked");
 }
 

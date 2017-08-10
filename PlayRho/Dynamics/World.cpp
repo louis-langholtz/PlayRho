@@ -881,7 +881,7 @@ Body* World::CreateBody(const BodyDef& def)
 {
     if (IsLocked())
     {
-        throw LockedError();
+        throw LockedError("World::CreateBody: world is locked");
     }
 
     if (m_bodies.size() >= MaxBodies)
@@ -926,7 +926,7 @@ void World::Destroy(Body* body)
     
     if (IsLocked())
     {
-        throw LockedError();
+        throw LockedError("World::Destroy: world is locked");
     }
     
     // Delete the attached joints.
@@ -960,7 +960,7 @@ Joint* World::CreateJoint(const JointDef& def)
 {
     if (IsLocked())
     {
-        throw LockedError();
+        throw LockedError("World::CreateJoint: world is locked");
     }
     
     if (m_joints.size() >= MaxJoints)
@@ -1014,7 +1014,7 @@ void World::Destroy(Joint* joint)
     }
     if (IsLocked())
     {
-        throw LockedError();
+        throw LockedError("World::Destroy: world is locked");
     }
     InternalDestroy(joint);
 }
@@ -2002,7 +2002,7 @@ StepStats World::Step(const StepConf& conf)
     
     if (IsLocked())
     {
-        throw LockedError();
+        throw LockedError("World::Step: world is locked");
     }
 
     auto stepStats = StepStats{};
@@ -2114,7 +2114,7 @@ void World::ShiftOrigin(const Length2D newOrigin)
 {
     if (IsLocked())
     {
-        throw LockedError();
+        throw LockedError("World::ShiftOrigin: world is locked");
     }
 
     for (auto&& body: GetBodies())
@@ -2609,7 +2609,7 @@ void World::SetType(Body& body, BodyType type)
 
     if (IsLocked())
     {
-        throw LockedError();
+        throw LockedError("World::SetType: world is locked");
     }
     
     BodyAtty::SetTypeFlags(body, type);
@@ -2666,7 +2666,7 @@ Fixture* World::CreateFixture(Body& body, shared_ptr<const Shape> shape,
     
     if (IsLocked())
     {
-        throw LockedError();
+        throw LockedError("World::CreateFixture: world is locked");
     }
     
     const auto fixture = BodyAtty::CreateFixture(body, shape, def);
@@ -2706,7 +2706,7 @@ bool World::DestroyFixture(Fixture* fixture, bool resetMassData)
     }
     if (IsLocked())
     {
-        throw LockedError();
+        throw LockedError("World::DestroyFixture: world is locked");
     }
     
 #if 0

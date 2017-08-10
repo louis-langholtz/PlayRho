@@ -184,7 +184,7 @@ void Body::SetMassData(const MassData& massData)
 {
     if (m_world->IsLocked())
     {
-        throw World::LockedError();
+        throw World::LockedError("Body::SetMassData: world is locked");
     }
 
     if (!IsAccelerable())
@@ -273,7 +273,7 @@ void Body::SetTransform(const Length2D position, Angle angle)
 
     if (GetWorld()->IsLocked())
     {
-        throw World::LockedError();
+        throw World::LockedError("Body::SetTransform: world is locked");
     }
 
     const auto xfm = Transformation{position, UnitVec2::Get(angle)};
@@ -293,7 +293,7 @@ void Body::SetEnabled(bool flag)
 
     if (m_world->IsLocked())
     {
-        throw World::LockedError();
+        throw World::LockedError("Body::SetEnabled: world is locked");
     }
 
     if (flag)
