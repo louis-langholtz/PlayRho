@@ -158,7 +158,9 @@ TEST(MultiShape, AddConvexHullWithTwoPointsSameAsEdge)
     EXPECT_EQ(massData.center, (p0 + p1) / Real(2));
     
     const auto edgeMassData = playrho::GetMassData(conf.vertexRadius, conf.density, p0, p1);
-    EXPECT_EQ(massData, edgeMassData);
+    EXPECT_EQ(massData.center, edgeMassData.center);
+    EXPECT_EQ(massData.I, edgeMassData.I);
+    EXPECT_EQ(massData.mass, edgeMassData.mass);
 }
 
 TEST(MultiShape, AddTwoConvexHullWithOnePoint)
