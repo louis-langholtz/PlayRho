@@ -296,7 +296,12 @@ TEST(MassData, GetForCenteredEdge)
     };
     const auto polarMoment = GetPolarMoment(vertices);
     ASSERT_GE(polarMoment, SecondMomentOfArea(0));
-    const auto area = GetAreaOfPolygon(vertices) + GetAreaOfCircle(radius);
+    const auto areaOfPolygon = GetAreaOfPolygon(vertices);
+    ASSERT_NEAR(static_cast<double>(Real{areaOfPolygon / SquareMeter}), 4.0, 0.0);
+    const auto areaOfCircle = GetAreaOfCircle(radius);
+    ASSERT_NEAR(static_cast<double>(Real{areaOfCircle / SquareMeter}),
+                0.78539818525314331, 0.78539818525314331 / 1000000.0);
+    const auto area = areaOfPolygon + areaOfCircle;
 
     const auto halfCircleArea = circleArea / Real{2};
     const auto halfRSquared = radiusSquared / Real{2};
