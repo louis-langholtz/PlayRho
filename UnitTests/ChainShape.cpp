@@ -116,7 +116,7 @@ TEST(ChainShape, OneVertexLikeDisk)
 TEST(ChainShape, TwoVertexLikeEdge)
 {
     const auto vertexRadius = Real(1) * Meter;
-    const auto density = Real(1) * KilogramPerSquareMeter;
+    const auto density = NonNegative<Density>(Real(1) * KilogramPerSquareMeter);
     const auto locations = std::array<Length2D, 2>{{
         Length2D{Real(0) * Meter, Real(0) * Meter}, Length2D(Real(4) * Meter, Real(0) * Meter)
     }};

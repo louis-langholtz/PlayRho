@@ -43,6 +43,94 @@ TEST(MassData, DefaultConstruct)
     EXPECT_EQ(foo.I, RotInertia(0));
 }
 
+TEST(MassData, GetAreaOfPolygon)
+{
+    {
+        // empty
+        const auto vertices = Span<const Length2D>{};
+        const auto area = GetAreaOfPolygon(vertices);
+        EXPECT_NEAR(static_cast<double>(Real{area / SquareMeter}), 0.0, 0.0);
+    }
+    {
+        // point
+        const auto vertices = Span<const Length2D>{
+            Length2D(Real(-2) * Meter, Real(+0.5) * Meter),
+        };
+        const auto area = GetAreaOfPolygon(vertices);
+        EXPECT_NEAR(static_cast<double>(Real{area / SquareMeter}), 0.0, 0.0);
+    }
+    {
+        // edge
+        const auto vertices = Span<const Length2D>{
+            Length2D(Real(-2) * Meter, Real(+0.5) * Meter),
+            Length2D(Real(+2) * Meter, Real(+0.5) * Meter),
+        };
+        const auto area = GetAreaOfPolygon(vertices);
+        EXPECT_NEAR(static_cast<double>(Real{area / SquareMeter}), 0.0, 0.0);
+    }
+    {
+        // CCW triangle
+        const auto vertices = Span<const Length2D>{
+            Length2D(Real(-2) * Meter, Real(+1.0) * Meter),
+            Length2D(Real(-2) * Meter, Real(-1.0) * Meter),
+            Length2D(Real(+2) * Meter, Real(+0.0) * Meter),
+        };
+        const auto area = GetAreaOfPolygon(vertices);
+        EXPECT_NEAR(static_cast<double>(Real{area / SquareMeter}), 4.0, 0.0);
+    }
+    {
+        // CCW triangle
+        const auto vertices = Span<const Length2D>{
+            Length2D(Real(-2) * Meter, Real(-1.0) * Meter),
+            Length2D(Real(+2) * Meter, Real(+0.0) * Meter),
+            Length2D(Real(-2) * Meter, Real(+1.0) * Meter),
+        };
+        const auto area = GetAreaOfPolygon(vertices);
+        EXPECT_NEAR(static_cast<double>(Real{area / SquareMeter}), 4.0, 0.0);
+    }
+    {
+        // CCW triangle
+        const auto vertices = Span<const Length2D>{
+            Length2D(Real(+2) * Meter, Real(+0.0) * Meter),
+            Length2D(Real(-2) * Meter, Real(+1.0) * Meter),
+            Length2D(Real(-2) * Meter, Real(-1.0) * Meter),
+        };
+        const auto area = GetAreaOfPolygon(vertices);
+        EXPECT_NEAR(static_cast<double>(Real{area / SquareMeter}), 4.0, 0.0);
+    }
+    {
+        // CW triangle
+        const auto vertices = Span<const Length2D>{
+            Length2D(Real(+2) * Meter, Real(+0.0) * Meter),
+            Length2D(Real(-2) * Meter, Real(-1.0) * Meter),
+            Length2D(Real(-2) * Meter, Real(+1.0) * Meter),
+        };
+        const auto area = GetAreaOfPolygon(vertices);
+        EXPECT_NEAR(static_cast<double>(Real{area / SquareMeter}), 4.0, 0.0);
+    }
+    {
+        // CCW triangle
+        const auto vertices = Span<const Length2D>{
+            Length2D(Real(+0) * Meter, Real(-2.0) * Meter),
+            Length2D(Real(-4) * Meter, Real(-1.0) * Meter),
+            Length2D(Real(-4) * Meter, Real(-3.0) * Meter),
+        };
+        const auto area = GetAreaOfPolygon(vertices);
+        EXPECT_NEAR(static_cast<double>(Real{area / SquareMeter}), 4.0, 0.0);
+    }
+    {
+        // CCW quadrilateral
+        const auto vertices = Span<const Length2D>{
+            Length2D(Real(-2) * Meter, Real(+0.5) * Meter),
+            Length2D(Real(-2) * Meter, Real(-0.5) * Meter),
+            Length2D(Real(+2) * Meter, Real(-0.5) * Meter),
+            Length2D(Real(+2) * Meter, Real(+0.5) * Meter)
+        };
+        const auto area = GetAreaOfPolygon(vertices);
+        EXPECT_NEAR(static_cast<double>(Real{area / SquareMeter}), 4.0, 0.0);
+    }
+}
+
 TEST(MassData, GetMassDataFreeFunctionForNoVertices)
 {
     const auto vertexRadius = Length{Real(1) * Meter};
@@ -188,7 +276,7 @@ TEST(MassData, GetForCenteredEdge)
     
     const auto radiusSquared = Area{radius * radius};
     const auto circleArea = radiusSquared * Pi;
-    EXPECT_EQ(double(Real{circleArea / SquareMeter}), 0.5f * 0.5f * Pi);
+    ASSERT_EQ(double(Real{circleArea / SquareMeter}), 0.5f * 0.5f * Pi);
 
     auto conf = EdgeShape::Conf{};
     conf.vertexRadius = radius;

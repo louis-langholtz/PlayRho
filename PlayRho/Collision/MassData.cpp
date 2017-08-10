@@ -179,12 +179,12 @@ MassData playrho::GetMassData(const Length vertexRadius, const NonNegative<Densi
     return MassData{mass, massDataCenter, massDataI};
 }
 
-Area playrho::GetAreaOfCircle(Length radius)
+NonNegative<Area> playrho::GetAreaOfCircle(Length radius)
 {
     return Area{radius * radius * Pi};
 }
 
-Area playrho::GetAreaOfPolygon(Span<const Length2D> vertices)
+NonNegative<Area> playrho::GetAreaOfPolygon(Span<const Length2D> vertices)
 {
     // Uses the "Shoelace formula".
     // See: https://en.wikipedia.org/wiki/Shoelace_formula
@@ -197,7 +197,10 @@ Area playrho::GetAreaOfPolygon(Span<const Length2D> vertices)
         const auto next_v = vertices[GetModuloNext(i, count)];
         sum += GetX(this_v) * (GetY(next_v) - GetY(last_v));
     }
-    return sum / Real{2};
+    
+    // Note that using the absolute value isn't necessary for vertices in counter-clockwise
+    // ordering; only needed for clockwise ordering.
+    return std::abs(sum) / Real{2};
 }
 
 SecondMomentOfArea playrho::GetPolarMoment(Span<const Length2D> vertices)

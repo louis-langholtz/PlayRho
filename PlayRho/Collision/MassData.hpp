@@ -3,17 +3,19 @@
  * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
@@ -36,7 +38,7 @@ namespace playrho {
     class DiskShape;
     class ChainShape;
 
-    /// Mass data.
+    /// @brief Mass data.
     /// @details This holds the mass data computed for a shape.
     /// @note This data structure is 16-bytes large (on at least one 64-bit platform).
     struct MassData
@@ -75,11 +77,16 @@ namespace playrho {
         return !(lhs == rhs);
     }
 
-    Area GetAreaOfCircle(Length radius);
+    /// @brief Gets the area of a cirlce.
+    NonNegative<Area> GetAreaOfCircle(Length radius);
 
-    Area GetAreaOfPolygon(Span<const Length2D> vertices);
+    /// @brief Gets the area of a polygon.
+    /// @note This function is valid for any non-self-intersecting (simple) polygon,
+    ///   which can be convex or concave.
+    /// @note Winding order doesn't matter.
+    NonNegative<Area> GetAreaOfPolygon(Span<const Length2D> vertices);
     
-    /// Gets the polar moment of the area enclosed by the given vertices.
+    /// @brief Gets the polar moment of the area enclosed by the given vertices.
     ///
     /// @warning Behavior is undefined if given collection has less than 3 vertices.
     ///
@@ -87,7 +94,7 @@ namespace playrho {
     ///
     SecondMomentOfArea GetPolarMoment(Span<const Length2D> vertices);
 
-    /// Computes the mass data for a circular shape.
+    /// @brief Computes the mass data for a circular shape.
     ///
     /// @param r Radius of the circlular shape.
     /// @param density Areal density of mass.
@@ -96,7 +103,7 @@ namespace playrho {
     MassData GetMassData(const Length r, const NonNegative<Density> density,
                          const Length2D location);
 
-    /// Computes the mass data for a linear shape.
+    /// @brief Computes the mass data for a linear shape.
     ///
     /// @param r Radius of the vertices of the linear shape.
     /// @param density Areal density of mass.
@@ -109,7 +116,7 @@ namespace playrho {
     MassData GetMassData(const Length vertexRadius, const NonNegative<Density> density,
                          Span<const Length2D> vertices);
     
-    /// Computes the mass data for the given fixture.
+    /// @brief Computes the mass data for the given fixture.
     ///
     /// @details
     /// The mass data is based on the density and the shape of the fixture.
@@ -120,7 +127,7 @@ namespace playrho {
     ///
     MassData GetMassData(const Fixture& f);
     
-    /// Computes the body's mass data.
+    /// @brief Computes the body's mass data.
     /// @details This basically accumulates the mass data over all fixtures.
     /// @note The center is the mass weighted sum of all fixture centers. Divide it by the
     ///   mass to get the averaged center.
@@ -128,7 +135,7 @@ namespace playrho {
     MassData ComputeMassData(const Body& body) noexcept;
     
     
-    /// Gets the mass data of the body.
+    /// @brief Gets the mass data of the body.
     /// @return a struct containing the mass, inertia and center of the body.
     MassData GetMassData(const Body& body) noexcept;
     
