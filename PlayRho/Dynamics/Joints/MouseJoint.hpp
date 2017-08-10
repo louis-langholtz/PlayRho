@@ -88,12 +88,12 @@ private:
 
     Length2D m_targetA;
     Length2D m_localAnchorB;
-    NonNegative<Frequency> m_frequency;
-    NonNegative<Real> m_dampingRatio;
+    NonNegative<Frequency> m_frequency = NonNegative<Frequency>{0};
+    NonNegative<Real> m_dampingRatio = NonNegative<Real>{0};
     
     // Solver shared
     Momentum2D m_impulse = Momentum2D{};
-    NonNegative<Force> m_maxForce;
+    NonNegative<Force> m_maxForce = NonNegative<Force>{0};
     InvMass m_gamma = InvMass{0};
 
     // Solver variables. These are only valid after InitVelocityConstraints called.

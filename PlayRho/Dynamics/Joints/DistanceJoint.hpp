@@ -81,7 +81,7 @@ private:
     Length2D m_localAnchorA;
     Length2D m_localAnchorB;
     Length m_length;
-    NonNegative<Frequency> m_frequency;
+    NonNegative<Frequency> m_frequency = NonNegative<Frequency>{0};
     Real m_dampingRatio;
 
     // Solver shared

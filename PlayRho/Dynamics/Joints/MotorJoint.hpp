@@ -79,8 +79,8 @@ private:
     Angle m_angularOffset;
     Momentum2D m_linearImpulse = Momentum2D{};
     AngularMomentum m_angularImpulse = AngularMomentum{0};
-    NonNegative<Force> m_maxForce;
-    NonNegative<Torque> m_maxTorque;
+    NonNegative<Force> m_maxForce = NonNegative<Force>{0};
+    NonNegative<Torque> m_maxTorque = NonNegative<Torque>{0};
     Real m_correctionFactor;
 
     // Solver temp
