@@ -754,3 +754,30 @@ TEST(Math, GetCircleVertices)
         EXPECT_EQ(vertices[2], Length2D(Real(1) * Meter, Real(0) * Meter));
     }
 }
+
+TEST(Math, almost_zero)
+{
+    EXPECT_TRUE(almost_zero(0.0f));
+    EXPECT_TRUE(almost_zero(std::nextafter(0.0f, +1.0f)));
+    EXPECT_TRUE(almost_zero(std::nextafter(0.0f, -1.0f)));
+    EXPECT_TRUE(almost_zero(std::nextafter(std::numeric_limits<float>::min(), 0.0f)));
+    EXPECT_FALSE(almost_zero(std::numeric_limits<float>::min()));
+    EXPECT_FALSE(almost_zero(+1.0f));
+    EXPECT_FALSE(almost_zero(-1.0f));
+
+    EXPECT_TRUE(almost_zero(0.0));
+    EXPECT_TRUE(almost_zero(std::nextafter(0.0, +1.0)));
+    EXPECT_TRUE(almost_zero(std::nextafter(0.0, -1.0)));
+    EXPECT_TRUE(almost_zero(std::nextafter(std::numeric_limits<double>::min(), 0.0)));
+    EXPECT_FALSE(almost_zero(std::numeric_limits<double>::min()));
+    EXPECT_FALSE(almost_zero(+1.0));
+    EXPECT_FALSE(almost_zero(-1.0));
+
+    EXPECT_TRUE(almost_zero(0.0l));
+    EXPECT_TRUE(almost_zero(std::nextafter(0.0l, +1.0l)));
+    EXPECT_TRUE(almost_zero(std::nextafter(0.0l, -1.0l)));
+    EXPECT_TRUE(almost_zero(std::nextafter(std::numeric_limits<long double>::min(), 0.0l)));
+    EXPECT_FALSE(almost_zero(std::numeric_limits<long double>::min()));
+    EXPECT_FALSE(almost_zero(+1.0l));
+    EXPECT_FALSE(almost_zero(-1.0l));
+}
