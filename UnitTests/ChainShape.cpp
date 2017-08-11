@@ -120,9 +120,6 @@ TEST(ChainShape, TwoVertexLikeEdge)
     const auto locations = std::array<Length2D, 2>{{
         Length2D{Real(0) * Meter, Real(0) * Meter}, Length2D(Real(4) * Meter, Real(0) * Meter)
     }};
-    const auto normals = std::array<UnitVec2, 2>{{UnitVec2::GetTop(), UnitVec2::GetBottom()}};
-    const auto expectedMassData = ::GetMassData(vertexRadius, density, locations[0], locations[1]);
-    const auto expectedDistanceProxy = DistanceProxy{vertexRadius, 2, locations.data(), normals.data()};
     
     auto conf = ChainShape::Conf{};
     conf.density = density;
@@ -133,12 +130,48 @@ TEST(ChainShape, TwoVertexLikeEdge)
     EXPECT_EQ(foo.GetChildCount(), ChildCounter{1});
     EXPECT_EQ(foo.GetVertexCount(), ChildCounter{2});
     EXPECT_EQ(foo.GetVertexRadius(), vertexRadius);
+}
+
+TEST(ChainShape, TwoVertexDpLikeEdgeDp)
+{
+    const auto vertexRadius = Real(1) * Meter;
+    const auto density = NonNegative<Density>(Real(1) * KilogramPerSquareMeter);
+    const auto locations = std::array<Length2D, 2>{{
+        Length2D{Real(0) * Meter, Real(0) * Meter}, Length2D(Real(4) * Meter, Real(0) * Meter)
+    }};
+    const auto normals = std::array<UnitVec2, 2>{{UnitVec2::GetTop(), UnitVec2::GetBottom()}};
+    const auto expectedDistanceProxy = DistanceProxy{vertexRadius, 2, locations.data(), normals.data()};
     
-    const auto massData = foo.GetMassData();
-    EXPECT_EQ(massData, expectedMassData);
+    auto conf = ChainShape::Conf{};
+    conf.density = density;
+    conf.vertexRadius = vertexRadius;
+    conf.vertices.push_back(locations[0]);
+    conf.vertices.push_back(locations[1]);
+    auto foo = ChainShape{conf};
+    ASSERT_EQ(foo.GetChildCount(), ChildCounter{1});
     
     const auto child = foo.GetChild(0);
     EXPECT_EQ(child, expectedDistanceProxy);
+}
+
+TEST(ChainShape, TwoVertexMassLikeEdgeMass)
+{
+    const auto vertexRadius = Real(1) * Meter;
+    const auto density = NonNegative<Density>(Real(1) * KilogramPerSquareMeter);
+    const auto locations = std::array<Length2D, 2>{{
+        Length2D{Real(0) * Meter, Real(0) * Meter}, Length2D(Real(4) * Meter, Real(0) * Meter)
+    }};
+    const auto expectedMassData = ::GetMassData(vertexRadius, density, locations[0], locations[1]);
+    
+    auto conf = ChainShape::Conf{};
+    conf.density = density;
+    conf.vertexRadius = vertexRadius;
+    conf.vertices.push_back(locations[0]);
+    conf.vertices.push_back(locations[1]);
+    auto foo = ChainShape{conf};
+    
+    const auto massData = foo.GetMassData();
+    EXPECT_EQ(massData, expectedMassData);
 }
 
 TEST(ChainShape, FourVertex)
