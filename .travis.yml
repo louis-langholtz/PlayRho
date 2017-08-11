@@ -53,12 +53,12 @@ addons:
       - deadsnakes
       - ubuntu-toolchain-r-test
       - george-edison55-precise-backports
-      - llvm-toolchain-precise-3.7
+      - llvm-toolchain-precise-4.0
     packages:
       - build-essential
       - cmake
       - cmake-data
-      - clang-3.7
+      - clang-4.0
       - g++-6
       - gcc-6
       - xorg-dev
@@ -94,7 +94,7 @@ install:
       mkdir -p /tmp/usr
       make -C lcov-1.13/ PREFIX=/tmp/usr install
     fi
-  - if [ "$CXX" = "clang++" ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
+  - if [ "$CXX" = "clang++" ]; then export CXX="clang++-4.0" CC="clang-4.0"; fi
   - |
     echo CXX=$CXX HOME=$HOME TRAVIS_BUILD_DIR=$TRAVIS_BUILD_DIR
     cmake --version
@@ -114,7 +114,7 @@ install:
     mkdir /tmp/glew && pushd /tmp/glew && curl --location --remote-name $GLEW_URL && md5sum *.zip && echo "Expect MD5 hash of 54c913d0c00726fb028d089ad1664ede" && unzip -q *.zip && rm *.zip && cd * && make && make DESTDIR=/tmp install && popd
 
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "clang++-3.7" ]]; then (pwd && mkdir -p $BUILD_ROOT && cd $BUILD_ROOT && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib $PLAYRHO_BUILD_OPTIONS $SOURCE_ROOT && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:StackAllocator.slower_than_mallocfree ); fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "clang++-4.0" ]]; then (pwd && mkdir -p $BUILD_ROOT && cd $BUILD_ROOT && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib $PLAYRHO_BUILD_OPTIONS $SOURCE_ROOT && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:StackAllocator.slower_than_mallocfree ); fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-6" ]]; then (pwd && mkdir -p $BUILD_ROOT && cd $BUILD_ROOT && cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib -DPLAYRHO_ENABLE_COVERAGE=ON $PLAYRHO_BUILD_OPTIONS $SOURCE_ROOT && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:StackAllocator.slower_than_mallocfree:Math.LengthFasterThanHypot ); fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then (cd PlayRho && xcodebuild -project Build/xcode5/PlayRho.xcodeproj -list); fi
 
