@@ -53,7 +53,7 @@ addons:
       - deadsnakes
       - ubuntu-toolchain-r-test
       - george-edison55-precise-backports
-      - llvm-toolchain-precise-4.0
+      - llvm-toolchain-trusty-4.0
     packages:
       - build-essential
       - cmake
