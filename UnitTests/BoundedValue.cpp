@@ -22,8 +22,37 @@
 #include <PlayRho/Common/BoundedValue.hpp>
 #include <limits>
 #include <cmath>
+#include <type_traits>
 
 using namespace playrho;
+
+TEST(BoundedValue, NonNegativeFloatTraits)
+{
+    using type = NonNegative<float>;
+    
+    EXPECT_FALSE(std::is_default_constructible<type>::value);
+    EXPECT_FALSE(std::is_nothrow_default_constructible<type>::value);
+    EXPECT_FALSE(std::is_trivially_default_constructible<type>::value);
+    
+    EXPECT_TRUE((std::is_constructible<type, type::value_type>::value));
+    EXPECT_FALSE((std::is_nothrow_constructible<type, type::value_type>::value));
+    EXPECT_FALSE((std::is_trivially_constructible<type, type::value_type>::value));
+    
+    EXPECT_TRUE(std::is_copy_constructible<type>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_constructible<type>::value);
+    EXPECT_TRUE(std::is_trivially_copy_constructible<type>::value);
+    
+    EXPECT_TRUE(std::is_copy_assignable<type>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_assignable<type>::value);
+    EXPECT_FALSE(std::is_trivially_copy_assignable<type>::value);
+    
+    EXPECT_TRUE(std::is_destructible<type>::value);
+    EXPECT_TRUE(std::is_nothrow_destructible<type>::value);
+    EXPECT_TRUE(std::is_trivially_destructible<type>::value);
+    
+    EXPECT_TRUE((std::is_convertible<type, type::value_type>::value));
+    EXPECT_TRUE((std::is_convertible<type::value_type, type>::value));
+}
 
 TEST(BoundedValue, NegativeFloat)
 {

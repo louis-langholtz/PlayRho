@@ -50,10 +50,16 @@ TEST(MassData, Traits)
     // EXPECT_TRUE(std::is_nothrow_default_constructible<MassData>::value); // gcc 6.3
     EXPECT_FALSE(std::is_trivially_default_constructible<MassData>::value);
     
-    EXPECT_TRUE(std::is_constructible<MassData>::value);
+    EXPECT_FALSE((std::is_constructible<MassData, Length2D, Mass, RotInertia>::value));
+    EXPECT_FALSE((std::is_constructible<MassData, Length2D, Mass>::value));
+    EXPECT_FALSE((std::is_constructible<MassData, Length2D>::value));
+    EXPECT_FALSE((std::is_constructible<MassData, Length2D, NonNegative<Mass>, NonNegative<RotInertia>>::value));
+    EXPECT_FALSE((std::is_constructible<MassData, Length2D, NonNegative<Mass>>::value));
+    EXPECT_FALSE((std::is_constructible<MassData, Length2D>::value));
+    EXPECT_TRUE((std::is_constructible<MassData>::value));
     // EXPECT_FALSE(std::is_nothrow_constructible<MassData>::value); // clang 3.7 and 4.0
     // EXPECT_TRUE(std::is_nothrow_constructible<MassData>::value); // gcc 6.3
-    EXPECT_FALSE(std::is_trivially_constructible<MassData>::value);
+    EXPECT_FALSE((std::is_trivially_constructible<MassData, Length2D, Mass, RotInertia>::value));
     
     EXPECT_TRUE(std::is_copy_constructible<MassData>::value);
     // EXPECT_TRUE(std::is_nothrow_copy_constructible<MassData>::value); // with clang-4.0 gcc 6.3
@@ -262,11 +268,8 @@ TEST(MassData, GetForZeroVertexRadiusEdge)
     const auto shape = EdgeShape(v1, v2, conf);
     const auto mass_data = shape.GetMassData();
     EXPECT_EQ(Real(Mass{mass_data.mass} / Kilogram), Real(0));
-    EXPECT_TRUE(IsValid(mass_data.I));
-    if (IsValid(mass_data.I))
-    {
-        EXPECT_NEAR(double(Real{RotInertia{mass_data.I} / (SquareMeter * Kilogram / SquareRadian)}), 0.0, 0.00001);
-    }
+    EXPECT_NEAR(double(Real{RotInertia{mass_data.I} / (SquareMeter * Kilogram / SquareRadian)}),
+                0.0, 0.00001);
     EXPECT_EQ(GetX(mass_data.center), Length{0});
     EXPECT_EQ(GetY(mass_data.center), Length{0});
 }

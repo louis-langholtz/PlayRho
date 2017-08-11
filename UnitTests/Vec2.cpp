@@ -47,9 +47,15 @@ TEST(Vec2, Traits)
     EXPECT_TRUE(std::is_nothrow_default_constructible<Vec2>::value);
     EXPECT_TRUE(std::is_trivially_default_constructible<Vec2>::value);
     
-    EXPECT_TRUE(std::is_constructible<Vec2>::value);
-    EXPECT_TRUE(std::is_nothrow_constructible<Vec2>::value);
-    EXPECT_TRUE(std::is_trivially_constructible<Vec2>::value);
+    EXPECT_TRUE((std::is_constructible<Vec2, Real, Real>::value));
+    EXPECT_FALSE((std::is_constructible<Vec2, Real>::value));
+    EXPECT_TRUE((std::is_constructible<Vec2>::value));
+    EXPECT_TRUE((std::is_nothrow_constructible<Vec2, Real, Real>::value));
+    EXPECT_FALSE((std::is_nothrow_constructible<Vec2, Real>::value));
+    EXPECT_TRUE((std::is_nothrow_constructible<Vec2>::value));
+    EXPECT_FALSE((std::is_trivially_constructible<Vec2, Real, Real>::value));
+    EXPECT_FALSE((std::is_trivially_constructible<Vec2, Real>::value));
+    EXPECT_TRUE((std::is_trivially_constructible<Vec2>::value));
     
     EXPECT_TRUE(std::is_copy_constructible<Vec2>::value);
     EXPECT_TRUE(std::is_nothrow_copy_constructible<Vec2>::value);
