@@ -43,28 +43,16 @@ namespace playrho {
     /// @note This data structure is 16-bytes large (on at least one 64-bit platform).
     struct MassData
     {
-        MassData() = default;
-        
-        /// @brief Initializing constructor.
-        /// @param m Non-negative mass in kg.
-        /// @param c Position of the shape's centroid relative to the shape's origin.
-        /// @param i Non-negative rotational inertia of the shape about the local origin.
-        constexpr MassData(NonNegative<Mass> m, Length2D c, NonNegative<RotInertia> i) noexcept:
-            mass{m}, center{c}, I{i}
-        {
-            // Intentionally empty.
-        }
-                
         /// @brief Position of the shape's centroid relative to the shape's origin.
         Length2D center = Length2D{};
         
         /// @brief Mass of the shape in kilograms.
-        NonNegative<Mass> mass = Mass{0};
+        NonNegative<Mass> mass = NonNegative<Mass>{0};
 
         /// @brief Rotational inertia, a.k.a. moment of inertia.
         /// @details This is the rotational inertia of the shape about the local origin.
         /// @sa https://en.wikipedia.org/wiki/Moment_of_inertia
-        NonNegative<RotInertia> I = RotInertia{0};
+        NonNegative<RotInertia> I = NonNegative<RotInertia>{0};
     };
     
     constexpr bool operator== (MassData lhs, MassData rhs)

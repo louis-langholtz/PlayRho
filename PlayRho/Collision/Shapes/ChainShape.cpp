@@ -101,7 +101,7 @@ MassData ChainShape::GetMassData() const noexcept
                 vprev = v;
             }
             center /= StripUnit(area);
-            return MassData{mass, center, I};
+            return MassData{center, mass, I};
         }
         if (vertexCount == 1)
         {

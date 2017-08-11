@@ -43,7 +43,7 @@ MassData MultiShape::GetMassData() const noexcept
     });
 
     const auto center = (mass > Mass{0})? weightedCenter / mass: origin;
-    return MassData{mass, center, I};
+    return MassData{center, mass, I};
 }
 
 void MultiShape::AddConvexHull(const VertexSet& pointSet) noexcept

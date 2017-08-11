@@ -24,7 +24,7 @@
 
 using namespace playrho;
 
-TEST(MassData, ByteSizeIs_16_32_or_64)
+TEST(MassData, ByteSize)
 {
     switch (sizeof(Real))
     {
@@ -41,6 +41,29 @@ TEST(MassData, DefaultConstruct)
     EXPECT_EQ(foo.center, (Length2D{}));
     EXPECT_EQ(foo.mass, Mass(0));
     EXPECT_EQ(foo.I, RotInertia(0));
+}
+
+TEST(MassData, Traits)
+{
+    EXPECT_TRUE(std::is_default_constructible<MassData>::value);
+    EXPECT_FALSE(std::is_nothrow_default_constructible<MassData>::value);
+    EXPECT_FALSE(std::is_trivially_default_constructible<MassData>::value);
+    
+    EXPECT_TRUE(std::is_constructible<MassData>::value);
+    EXPECT_FALSE(std::is_nothrow_constructible<MassData>::value);
+    EXPECT_FALSE(std::is_trivially_constructible<MassData>::value);
+    
+    EXPECT_TRUE(std::is_copy_constructible<MassData>::value);
+    EXPECT_FALSE(std::is_nothrow_copy_constructible<MassData>::value);
+    EXPECT_FALSE(std::is_trivially_copy_constructible<MassData>::value);
+    
+    EXPECT_TRUE(std::is_copy_assignable<MassData>::value);
+    EXPECT_FALSE(std::is_nothrow_copy_assignable<MassData>::value);
+    EXPECT_FALSE(std::is_trivially_copy_assignable<MassData>::value);
+    
+    EXPECT_TRUE(std::is_destructible<MassData>::value);
+    EXPECT_TRUE(std::is_nothrow_destructible<MassData>::value);
+    EXPECT_TRUE(std::is_trivially_destructible<MassData>::value);
 }
 
 TEST(MassData, GetAreaOfPolygon)
@@ -336,7 +359,8 @@ TEST(MassData, Equals)
     EXPECT_TRUE(foo == boo);
     
     const auto poo = MassData{
-        Real(4) * Kilogram, Length2D(Real(1) * Meter, Real(1) * Meter),
+        Length2D(Real(1) * Meter, Real(1) * Meter),
+        Real(4) * Kilogram,
         RotInertia{Real(1) * Kilogram * Real(2) * SquareMeter / SquareRadian}};
     EXPECT_FALSE(foo == poo);
 }
@@ -350,7 +374,8 @@ TEST(MassData, NotEquals)
     EXPECT_FALSE(foo != boo);
     
     const auto poo = MassData{
-        Real(4) * Kilogram, Length2D(Real(1) * Meter, Real(1) * Meter),
+        Length2D(Real(1) * Meter, Real(1) * Meter),
+        Real(4) * Kilogram,
         RotInertia{Real(1) * Kilogram * Real(2) * SquareMeter / SquareRadian}};
     EXPECT_TRUE(foo != poo);
 }

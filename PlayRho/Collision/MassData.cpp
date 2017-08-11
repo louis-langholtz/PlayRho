@@ -50,7 +50,7 @@ MassData playrho::GetMassData(const Length r, const NonNegative<Density> density
     const auto mass = Mass{Density{density} * area};
     const auto Iz = SecondMomentOfArea{area * ((r_squared / Real{2}) + GetLengthSquared(location))};
     const auto I = RotInertia{Iz * Density{density} / SquareRadian};
-    return MassData{mass, location, I};
+    return MassData{location, mass, I};
 }
 
 MassData playrho::GetMassData(const Length r, const NonNegative<Density> density,
@@ -86,7 +86,7 @@ MassData playrho::GetMassData(const Length r, const NonNegative<Density> density
     assert(I1 >= SecondMomentOfArea{0});
     assert(I_z >= SecondMomentOfArea{0});
     const auto I = RotInertia{(I0 + I1 + I_z) * Density{density} / SquareRadian};
-    return MassData{totalMass, center, I};
+    return MassData{center, totalMass, I};
 }
 
 MassData playrho::GetMassData(const Length vertexRadius, const NonNegative<Density> density,
@@ -176,7 +176,7 @@ MassData playrho::GetMassData(const Length vertexRadius, const NonNegative<Densi
     const auto intertialLever = massCenterOffset - centerOffset;
     const auto massDataI = RotInertia{((Density{density} * I) + (mass * intertialLever)) / SquareRadian};
     
-    return MassData{mass, massDataCenter, massDataI};
+    return MassData{massDataCenter, mass, massDataI};
 }
 
 NonNegative<Area> playrho::GetAreaOfCircle(Length radius)
@@ -200,7 +200,7 @@ NonNegative<Area> playrho::GetAreaOfPolygon(Span<const Length2D> vertices)
     
     // Note that using the absolute value isn't necessary for vertices in counter-clockwise
     // ordering; only needed for clockwise ordering.
-    return std::abs(sum) / Real{2};
+    return Abs(sum) / Real{2};
 }
 
 SecondMomentOfArea playrho::GetPolarMoment(Span<const Length2D> vertices)
@@ -256,11 +256,11 @@ MassData playrho::ComputeMassData(const Body& body) noexcept
             I += RotInertia{massData.I};
         }
     }
-    return MassData{mass, center, I};
+    return MassData{center, mass, I};
 }
 
 MassData playrho::GetMassData(const Body& body) noexcept
 {
     const auto I = GetLocalInertia(body);
-    return MassData{GetMass(body), body.GetLocalCenter(), I};
+    return MassData{body.GetLocalCenter(), GetMass(body), I};
 }
