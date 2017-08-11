@@ -46,19 +46,24 @@ TEST(MassData, DefaultConstruct)
 TEST(MassData, Traits)
 {
     EXPECT_TRUE(std::is_default_constructible<MassData>::value);
-    EXPECT_FALSE(std::is_nothrow_default_constructible<MassData>::value);
+    // EXPECT_FALSE(std::is_nothrow_default_constructible<MassData>::value); // clang-3.7 and 4.0
+    // EXPECT_TRUE(std::is_nothrow_default_constructible<MassData>::value); // gcc 6.3
     EXPECT_FALSE(std::is_trivially_default_constructible<MassData>::value);
     
     EXPECT_TRUE(std::is_constructible<MassData>::value);
-    EXPECT_FALSE(std::is_nothrow_constructible<MassData>::value);
+    // EXPECT_FALSE(std::is_nothrow_constructible<MassData>::value); // clang 3.7 and 4.0
+    // EXPECT_TRUE(std::is_nothrow_constructible<MassData>::value); // gcc 6.3
     EXPECT_FALSE(std::is_trivially_constructible<MassData>::value);
     
     EXPECT_TRUE(std::is_copy_constructible<MassData>::value);
-    EXPECT_FALSE(std::is_nothrow_copy_constructible<MassData>::value);
-    EXPECT_FALSE(std::is_trivially_copy_constructible<MassData>::value);
+    // EXPECT_TRUE(std::is_nothrow_copy_constructible<MassData>::value); // with clang-4.0 gcc 6.3
+    // EXPECT_FALSE(std::is_nothrow_copy_constructible<MassData>::value); // with clang-3.7
+    // EXPECT_TRUE(std::is_trivially_copy_constructible<MassData>::value); // with clang-4.0
+    // EXPECT_FALSE(std::is_trivially_copy_constructible<MassData>::value); // with clang-3.7
     
     EXPECT_TRUE(std::is_copy_assignable<MassData>::value);
-    EXPECT_FALSE(std::is_nothrow_copy_assignable<MassData>::value);
+    // EXPECT_TRUE(std::is_nothrow_copy_assignable<MassData>::value); // with clang-4.0 gcc 6.3
+    // EXPECT_FALSE(std::is_nothrow_copy_assignable<MassData>::value); // with clang-3.7
     EXPECT_FALSE(std::is_trivially_copy_assignable<MassData>::value);
     
     EXPECT_TRUE(std::is_destructible<MassData>::value);
@@ -300,6 +305,8 @@ TEST(MassData, GetForCenteredEdge)
     const auto radiusSquared = Area{radius * radius};
     const auto circleArea = radiusSquared * Pi;
     ASSERT_EQ(double(Real{circleArea / SquareMeter}), 0.5f * 0.5f * Pi);
+    ASSERT_NEAR(static_cast<double>(Real{circleArea / SquareMeter}),
+                0.78539818525314331, 0.78539818525314331 / 1000000.0);
 
     auto conf = EdgeShape::Conf{};
     conf.vertexRadius = radius;
@@ -318,27 +325,38 @@ TEST(MassData, GetForCenteredEdge)
         Length2D(Real(+2) * Meter, Real(+0.5) * Meter)
     };
     const auto polarMoment = GetPolarMoment(vertices);
-    ASSERT_GE(polarMoment, SecondMomentOfArea(0));
+    EXPECT_NEAR(static_cast<double>(Real{polarMoment / (SquareMeter * SquareMeter)}),
+                5.6666665077209473, 5.6666665077209473 / 1000000.0);
+
     const auto areaOfPolygon = GetAreaOfPolygon(vertices);
-    ASSERT_NEAR(static_cast<double>(Real{areaOfPolygon / SquareMeter}), 4.0, 0.0);
+    EXPECT_NEAR(static_cast<double>(Real{areaOfPolygon / SquareMeter}), 4.0, 0.0);
+    
     const auto areaOfCircle = GetAreaOfCircle(radius);
-    ASSERT_NEAR(static_cast<double>(Real{areaOfCircle / SquareMeter}),
+    EXPECT_NEAR(static_cast<double>(Real{areaOfCircle / SquareMeter}),
                 0.78539818525314331, 0.78539818525314331 / 1000000.0);
+    EXPECT_NEAR(static_cast<double>(Real{areaOfCircle / SquareMeter}),
+                static_cast<double>(Real{circleArea / SquareMeter}),
+                0.0);
+    
     const auto area = areaOfPolygon + areaOfCircle;
 
     const auto halfCircleArea = circleArea / Real{2};
     const auto halfRSquared = radiusSquared / Real{2};
     const auto I1 = SecondMomentOfArea{halfCircleArea * (halfRSquared + GetLengthSquared(v1))};
     const auto I2 = SecondMomentOfArea{halfCircleArea * (halfRSquared + GetLengthSquared(v2))};
-    EXPECT_GE(I1, SecondMomentOfArea(0));
-    EXPECT_GE(I2, SecondMomentOfArea(0));
+    EXPECT_NEAR(static_cast<double>(Real{I1 / (SquareMeter * SquareMeter)}),
+                1.6198837757110596, 1.6198837757110596 / 1000000.0);
+    EXPECT_NEAR(static_cast<double>(Real{I2 / (SquareMeter * SquareMeter)}),
+                1.6198837757110596, 1.6198837757110596 / 1000000.0);
+
+    const auto totalMoment = polarMoment + I1 + I2;
+    const auto I = totalMoment * density / SquareRadian;
+    EXPECT_NEAR(static_cast<double>(Real{I / (Kilogram * SquareMeter / SquareRadian)}),
+                18.703510284423828, 18.703510284423828 / 1000000.0);
 
     const auto mass_data = shape.GetMassData();
     EXPECT_EQ(mass_data.mass, density * area);
-    EXPECT_TRUE(IsValid(mass_data.I));
-    if (IsValid(mass_data.I))
     {
-        const auto I = (polarMoment + I1 + I2) * density / SquareRadian;
         EXPECT_EQ(double(Real{RotInertia{mass_data.I} / (SquareMeter * Kilogram / SquareRadian)}),
                   double(Real{I / (SquareMeter * Kilogram / SquareRadian)}));
         EXPECT_NEAR(double(Real{RotInertia{mass_data.I} / (SquareMeter * Kilogram / SquareRadian)}),
