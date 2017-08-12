@@ -41,63 +41,9 @@ TEST(StackAllocator, DefaultConstruction)
     EXPECT_EQ(foo.GetAllocation(), decltype(foo.GetAllocation()){0});
 }
 
-TEST(StackAllocator, slower_than_mallocfree)
-{
-    // If this test fails, the question arrises of whether the stack allocator code should be
-    // replaced with instead using malloc/free.
-
-    const auto ptr_val = reinterpret_cast<Body*>(0x768ea);
-    constexpr auto iterations = unsigned(500000);
-    
-    std::chrono::duration<double> elapsed_secs_custom;
-    std::chrono::duration<double> elapsed_secs_malloc;
-
-    {
-        StackAllocator foo;
-        
-        std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
-        start = std::chrono::high_resolution_clock::now();
-        {
-            for (auto i = decltype(iterations){0}; i < iterations; ++i)
-            {
-                for (auto num_body_ptrs = std::size_t(1); num_body_ptrs < 200; ++num_body_ptrs)
-                {
-                    const auto elem_to_poke = num_body_ptrs / 2;
-                    auto buf = static_cast<Body**>(foo.Allocate(num_body_ptrs * sizeof(Body*)));
-                    buf[elem_to_poke] = ptr_val;
-                    ASSERT_EQ(buf[elem_to_poke], ptr_val);
-                    foo.Free(buf);
-                }
-            }
-        }
-        end = std::chrono::high_resolution_clock::now();
-        elapsed_secs_custom = end - start;
-    }
-    
-    {
-        std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
-        start = std::chrono::high_resolution_clock::now();
-        for (auto i = decltype(iterations){0}; i < iterations; ++i)
-        {
-            for (auto num_body_ptrs = std::size_t(1); num_body_ptrs < 200; ++num_body_ptrs)
-            {
-                const auto elem_to_poke = num_body_ptrs / 2;
-                auto buf = static_cast<Body**>(std::malloc(num_body_ptrs * sizeof(Body*)));
-                buf[elem_to_poke] = ptr_val;
-                ASSERT_EQ(buf[elem_to_poke], ptr_val);
-                std::free(buf);
-            }
-        }
-        end = std::chrono::high_resolution_clock::now();
-        elapsed_secs_malloc = end - start;
-    }
-
-    EXPECT_GT(elapsed_secs_custom.count(), elapsed_secs_malloc.count());
-}
-
 static inline bool is_aligned(void* ptr, std::size_t siz)
 {
-    return reinterpret_cast<std::uintptr_t>(static_cast<void*>(ptr)) % siz == 0;
+    return reinterpret_cast<std::uintptr_t>(ptr) % siz == 0;
 }
 
 TEST(StackAllocator, aligns_data)
