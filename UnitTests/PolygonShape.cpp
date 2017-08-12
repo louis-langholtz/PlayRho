@@ -328,7 +328,7 @@ TEST(PolygonShape, SetAsBoxAngledDegrees90)
 TEST(PolygonShape, SetPoints)
 {
     PolygonShape shape;
-    const auto points = Span<const Length2D>{
+    const auto points = Vector<5, const Length2D>{
         Vec2{-1, +2} * (Real(1) * Meter),
         Vec2{+3, +3} * (Real(1) * Meter),
         Vec2{+2, -1} * (Real(1) * Meter),
@@ -352,7 +352,10 @@ TEST(PolygonShape, SetPoints)
 
 TEST(PolygonShape, CanSetTwoPoints)
 {
-    const auto points = Span<const Length2D>{Vec2{-1, +0} * (Real(1) * Meter), Vec2{+1, +0} * (Real(1) * Meter)};
+    const auto points = Vector<2, const Length2D>{
+        Vec2{-1, +0} * (Real(1) * Meter),
+        Vec2{+1, +0} * (Real(1) * Meter)
+    };
     const auto vertexRadius = Real(2) * Meter;
     PolygonShape shape;
     shape.SetVertexRadius(vertexRadius);
@@ -362,7 +365,7 @@ TEST(PolygonShape, CanSetTwoPoints)
     EXPECT_EQ(shape.GetVertex(1), points[0]);
     EXPECT_EQ(GetVec2(shape.GetNormal(0)), Vec2(0, +1));
     EXPECT_EQ(GetVec2(shape.GetNormal(1)), Vec2(0, -1));
-    EXPECT_EQ(shape.GetCentroid(), Average(points));
+    EXPECT_EQ(shape.GetCentroid(), Average(Span<const Length2D>(points.data(), points.size())));
     EXPECT_EQ(shape.GetVertexRadius(), vertexRadius);
 
     EXPECT_TRUE(Validate(shape));
@@ -370,7 +373,7 @@ TEST(PolygonShape, CanSetTwoPoints)
 
 TEST(PolygonShape, CanSetOnePoint)
 {
-    const auto points = Span<const Length2D>{Length2D{}};
+    const auto points = Vector<1, const Length2D>{Length2D{}};
     const auto vertexRadius = Real(2) * Meter;
     PolygonShape shape;
     shape.SetVertexRadius(vertexRadius);

@@ -125,8 +125,8 @@ TEST(Math, Atan2)
 TEST(Math, Span)
 {
     {
-        // check aggragate initialization
-        const Span<const int> foo = {1, 2, 4};
+        const auto vector = Vector<3, int>{1, 2, 4};
+        const Span<const int> foo = Span<const int>(vector.data(), vector.size());
         EXPECT_EQ(foo.size(), std::size_t(3));
         EXPECT_EQ(foo[0], 1);
         EXPECT_EQ(foo[1], 2);
@@ -134,7 +134,8 @@ TEST(Math, Span)
     }
     {
         // check initialization from explicit initializer list
-        const auto foo = Span<const int>(std::initializer_list<int>{1, 2, 4});
+        const auto initList = std::initializer_list<int>{1, 2, 4};
+        const auto foo = Span<const int>(initList);
         EXPECT_EQ(foo.size(), std::size_t(3));
         EXPECT_EQ(foo[0], 1);
         EXPECT_EQ(foo[1], 2);

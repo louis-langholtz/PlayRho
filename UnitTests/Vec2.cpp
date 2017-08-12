@@ -124,6 +124,34 @@ TEST(Vec2, Indexing) {
     EXPECT_EQ(Real{-2}, vector[1]);
 }
 
+TEST(Vec2, At) {
+    Vec2 vector{Real{5}, Real{-3}};
+    EXPECT_EQ(Real{5}, vector.at(0));
+    EXPECT_EQ(Real{-3}, vector.at(1));
+    vector[0] = Real{4};
+    EXPECT_EQ(Real{4}, vector.at(0));
+    vector[1] = Real{-2};
+    EXPECT_EQ(Real{-2}, vector.at(1));
+}
+
+TEST(Vec2, data)
+{
+    {
+        Vec2 vector{Real{5}, Real{-3}};
+        EXPECT_EQ(vector.data(), vector.elements);
+        EXPECT_EQ(vector.data()[0], vector[0]);
+        EXPECT_EQ(vector.data()[1], vector[1]);
+        vector.data()[0] = Real(2);
+        EXPECT_EQ(vector.data()[0], Real(2));
+    }
+    {
+        const Vec2 vector{Real{5}, Real{-3}};
+        EXPECT_EQ(vector.data(), vector.elements);
+        EXPECT_EQ(vector.data()[0], vector[0]);
+        EXPECT_EQ(vector.data()[1], vector[1]);
+    }
+}
+
 TEST(Vec2, Equality)
 {    
     Vec2 vector{Real{5}, Real{-3}};

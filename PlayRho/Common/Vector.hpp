@@ -113,6 +113,16 @@ struct Vector
         return elements[pos];
     }
     
+    constexpr pointer data() noexcept
+    {
+        return elements;
+    }
+    
+    constexpr const_pointer data() const noexcept
+    {
+        return elements;
+    }
+    
     /// @brief Elements.
     /// @warning Don't access this directly!
     /// @warning Data is not initialized on default construction. This is intentional

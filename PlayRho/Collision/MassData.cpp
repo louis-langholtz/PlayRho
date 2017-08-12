@@ -58,12 +58,12 @@ MassData playrho::GetMassData(const Length r, const NonNegative<Density> density
 {
     const auto r_squared = Area{r * r};
     const auto circle_area = r_squared * Pi;
-    const auto circle_mass = Density{density} * circle_area;
+    const auto circle_mass = density * circle_area;
     const auto d = v1 - v0;
     const auto offset = GetRevPerpendicular(GetUnitVector(d, UnitVec2::GetZero())) * r;
     const auto b = GetLength(d);
     const auto h = r * Real{2};
-    const auto rect_mass = Density{density} * b * h;
+    const auto rect_mass = density * b * h;
     const auto totalMass = circle_mass + rect_mass;
     const auto center = (v0 + v1) / Real{2};
 
@@ -72,7 +72,7 @@ MassData playrho::GetMassData(const Length r, const NonNegative<Density> density
     const auto halfCircleArea = circle_area / Real{2};
     const auto halfRSquared = r_squared / Real{2};
     
-    const auto vertices = Span<const Length2D>{
+    const auto vertices = Vector<4, const Length2D>{
         Length2D{v0 + offset},
         Length2D{v0 - offset},
         Length2D{v1 - offset},
@@ -85,7 +85,7 @@ MassData playrho::GetMassData(const Length r, const NonNegative<Density> density
     assert(I0 >= SecondMomentOfArea{0});
     assert(I1 >= SecondMomentOfArea{0});
     assert(I_z >= SecondMomentOfArea{0});
-    const auto I = RotInertia{(I0 + I1 + I_z) * Density{density} / SquareRadian};
+    const auto I = RotInertia{(I0 + I1 + I_z) * density / SquareRadian};
     return MassData{center, totalMass, I};
 }
 
