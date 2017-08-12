@@ -21,7 +21,6 @@
 #define VelocityConstraint_hpp
 
 #include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/Span.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
 namespace playrho {

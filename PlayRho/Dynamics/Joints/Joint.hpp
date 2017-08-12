@@ -23,7 +23,6 @@
 #define B2_JOINT_H
 
 #include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/Span.hpp>
 #include <PlayRho/Dynamics/Joints/JointDef.hpp>
 
 #include <unordered_map>

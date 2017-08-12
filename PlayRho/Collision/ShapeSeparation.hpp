@@ -21,7 +21,6 @@
 #define ShapeSeparation_hpp
 
 #include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/Span.hpp>
 
 namespace playrho
 {

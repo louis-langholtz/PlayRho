@@ -21,7 +21,6 @@
 #define B2_CONTACT_SOLVER_H
 
 #include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/Span.hpp>
 
 namespace playrho {
 
