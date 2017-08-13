@@ -478,9 +478,6 @@ PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
                                                 const bool moveA, const bool moveB,
                                                 ConstraintSolverConf conf)
 {
-    assert(moveA == 0 || moveA == 1);
-    assert(moveB == 0 || moveB == 1);
-
     assert(IsValid(conf.resolutionRate));
     assert(IsValid(conf.linearSlop));
     assert(IsValid(conf.maxLinearCorrection));
@@ -524,6 +521,8 @@ PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
             return invMassTotal + invRotMassA + invRotMassB;
         }()};
 
+        assert(K >= InvMass{0});
+        
         // Prevent large corrections & don't push separation above -conf.linearSlop.
         const auto C = -Clamp(conf.resolutionRate * (separation + conf.linearSlop),
                               -conf.maxLinearCorrection, Length{0});
