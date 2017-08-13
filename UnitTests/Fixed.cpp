@@ -27,10 +27,20 @@ TEST(Fixed32, ByteSizeIs4)
     EXPECT_EQ(sizeof(Fixed32), std::size_t(4));
 }
 
+TEST(Fixed32, GetTypeName)
+{
+    EXPECT_EQ(GetTypeName<Fixed32>(), "Fixed32");
+}
+
 #ifndef _WIN32
 TEST(Fixed64, ByteSizeIs8)
 {
     EXPECT_EQ(sizeof(Fixed64), std::size_t(8));
+}
+
+TEST(Fixed64, GetTypeName)
+{
+    EXPECT_EQ(GetTypeName<Fixed64>(), "Fixed64");
 }
 #endif
 

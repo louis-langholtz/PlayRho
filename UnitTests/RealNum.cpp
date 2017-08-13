@@ -17,7 +17,9 @@
  */
 
 #include "gtest/gtest.h"
+#include <PlayRho/Common/RealNum.hpp>
 #include <PlayRho/Common/Settings.hpp>
+#include <string>
 
 using namespace playrho;
 
@@ -25,6 +27,43 @@ TEST(Real, ByteSizeIs_4_8_or_16)
 {
     const auto size = sizeof(Real);
     EXPECT_TRUE(size == std::size_t(4) || size == std::size_t(8) || size == std::size_t(16));
+}
+
+TEST(Real, GetTypeName)
+{
+    const auto name = std::string(GetTypeName<Real>());
+    
+    auto is_expected = false;
+    do
+    {
+        if (name == "float")
+        {
+            is_expected = true;
+            break;
+        }
+        if (name == "double")
+        {
+            is_expected = true;
+            break;
+        }
+        if (name == "long double")
+        {
+            is_expected = true;
+            break;
+        }
+        if (name == "Fixed32")
+        {
+            is_expected = true;
+            break;
+        }
+        if (name == "Fixed64")
+        {
+            is_expected = true;
+            break;
+        }
+    } while (false);
+    
+    EXPECT_TRUE(is_expected);
 }
 
 #if 0

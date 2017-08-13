@@ -663,6 +663,16 @@ namespace playrho
         return Fixed32::GetNaN();
     }
     
+    /// @brief Gets the specialized name for the Fixed32 type.
+    /// @details Provides an interface to a specialized function for getting C-style
+    ///   null-terminated array of characters that names the Fixed32 type.
+    /// @return Non-null pointer to C-style string name of specified type.
+    template <>
+    inline const char* GetTypeName<Fixed32>() noexcept
+    {
+        return "Fixed32";
+    }
+
 #ifndef _WIN32
     // Fixed64 free functions.
 
@@ -739,7 +749,17 @@ namespace playrho
     {
         return Fixed64::GetNaN();
     }
-
+    
+    /// @brief Gets the specialized name for the Fixed64 type.
+    /// @details Provides an interface to a specialized function for getting C-style
+    ///   null-terminated array of characters that names the Fixed64 type.
+    /// @return Non-null pointer to C-style string name of specified type.
+    template <>
+    inline const char* GetTypeName<Fixed64>() noexcept
+    {
+        return "Fixed64";
+    }
+    
 #endif /* !_WIN32 */
 
 } // namespace playrho
