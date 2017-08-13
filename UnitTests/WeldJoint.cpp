@@ -140,3 +140,28 @@ TEST(WeldJoint, WithDynamicCircles)
     EXPECT_EQ(b1->GetAngle(), Angle{0});
     EXPECT_EQ(b2->GetAngle(), Angle{0});
 }
+
+TEST(WeldJoint, WithDynamicCircles2)
+{
+    const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
+    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2D{})};
+    const auto p1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
+    const auto p2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
+    const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    b1->CreateFixture(circle);
+    b2->CreateFixture(circle);
+    const auto anchor = Length2D(Real(2) * Meter, Real(1) * Meter);
+    const auto jd = WeldJointDef{b1, b2, anchor}.UseFrequency(Real(10) * Hertz);
+    const auto joint = static_cast<WeldJoint*>(world.CreateJoint(jd));
+    ASSERT_NE(joint, nullptr);
+    ASSERT_EQ(joint->GetFrequency(), Real(10) * Hertz);
+
+    Step(world, Time{Second * Real{1}});
+    EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
+    EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
+    EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);
+    EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / Meter}), 0.0, 0.01);
+    EXPECT_EQ(b1->GetAngle(), Angle{0});
+    EXPECT_EQ(b2->GetAngle(), Angle{0});
+}

@@ -83,7 +83,6 @@ void WeldJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
     //     [  -r1y*invRotInertiaA*r1x-r2y*invRotInertiaB*r2x, invMassA+r1x^2*invRotInertiaA+invMassB+r2x^2*invRotInertiaB,           r1x*invRotInertiaA+r2x*invRotInertiaB]
     //     [          -r1y*invRotInertiaA-r2y*invRotInertiaB,           r1x*invRotInertiaA+r2x*invRotInertiaB,                   invRotInertiaA+invRotInertiaB]
 
-    Mat33 K;
     const auto exx = InvMass{
         invMassA + Square(GetY(m_rA)) * invRotInertiaA / SquareRadian +
         invMassB + Square(GetY(m_rB)) * invRotInertiaB / SquareRadian
@@ -106,6 +105,7 @@ void WeldJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
     };
     const auto ezz = InvMass{(invRotInertiaA + invRotInertiaB) * SquareMeter / SquareRadian};
 
+    Mat33 K;
     GetX(GetX(K)) = StripUnit(exx);
     GetX(GetY(K)) = StripUnit(eyx);
     GetX(GetZ(K)) = StripUnit(ezx);
