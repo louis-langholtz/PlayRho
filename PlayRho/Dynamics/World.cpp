@@ -237,21 +237,27 @@ namespace {
         const auto tangent = vc.GetTangent();
         const auto pointCount = vc.GetPointCount();
 
-        // inverse moment of inertia : L^-2 M^-1 QP^2
-        const auto invRotInertiaA = vc.GetBodyA()->GetInvRotInertia();
-        const auto invRotInertiaB = vc.GetBodyB()->GetInvRotInertia();
-
+        const auto bodyA = vc.GetBodyA();
+        const auto invMassA = bodyA->GetInvMass();
+        const auto invRotInertiaA = bodyA->GetInvRotInertia();
+        
+        const auto bodyB = vc.GetBodyB();
+        const auto invMassB = bodyB->GetInvMass();
+        const auto invRotInertiaB = bodyB->GetInvRotInertia();
+        
         for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
         {
+            // inverse moment of inertia : L^-2 M^-1 QP^2
             // P is M L T^-2
             // GetPointRelPosA() is Length2D
             // Cross(Length2D, P) is: M L^2 T^-2
             // L^-2 M^-1 QP^2 M L^2 T^-2 is: QP^2 T^-2
-            const auto P = (GetNormalImpulseAtPoint(vc, j) * normal + GetTangentImpulseAtPoint(vc, j) * tangent);
-            const auto LA = Cross(GetPointRelPosA(vc, j), P) / Radian;
-            const auto LB = Cross(GetPointRelPosB(vc, j), P) / Radian;
-            vp.a -= Velocity{vc.GetBodyA()->GetInvMass() * P, invRotInertiaA * LA};
-            vp.b += Velocity{vc.GetBodyB()->GetInvMass() * P, invRotInertiaB * LB};
+            const auto& vcp = vc.GetPointAt(j);
+            const auto P = vcp.normalImpulse * normal + vcp.tangentImpulse * tangent;
+            const auto LA = Cross(vcp.relA, P) / Radian;
+            const auto LB = Cross(vcp.relB, P) / Radian;
+            vp.a -= Velocity{invMassA * P, invRotInertiaA * LA};
+            vp.b += Velocity{invMassB * P, invRotInertiaB * LB};
         }
         return vp;
     }
