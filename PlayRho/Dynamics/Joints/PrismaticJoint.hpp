@@ -93,6 +93,11 @@ public:
     /// @brief Gets the current motor force given the inverse time step.
     Force GetMotorForce(Frequency inv_dt) const noexcept;
 
+    /// @brief Gets the current limit state.
+    /// @note This will be <code>e_inactiveLimit</code> unless the joint limit has been
+    ///   enabled.
+    LimitState GetLimitState() const noexcept;
+    
 private:
     void InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
                                  const ConstraintSolverConf& conf) override;
@@ -150,6 +155,11 @@ inline bool PrismaticJoint::IsMotorEnabled() const noexcept
 inline AngularVelocity PrismaticJoint::GetMotorSpeed() const noexcept
 {
     return m_motorSpeed;
+}
+
+inline Joint::LimitState PrismaticJoint::GetLimitState() const noexcept
+{
+    return m_limitState;
 }
 
 /// Get the current joint translation.

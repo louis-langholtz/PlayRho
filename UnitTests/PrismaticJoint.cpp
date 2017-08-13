@@ -20,6 +20,7 @@
 #include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Collision/Shapes/DiskShape.hpp>
 
 using namespace playrho;
 
@@ -195,4 +196,46 @@ TEST(PrismaticJoint, GetLinearVelocity)
     
     auto joint = PrismaticJoint{jd};
     EXPECT_EQ(GetLinearVelocity(joint), LinearVelocity(0));
+}
+
+TEST(PrismaticJoint, WithDynamicCirclesAndLimitEnabled)
+{
+    const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
+    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2D{})};
+    const auto p1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
+    const auto p2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
+    const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    b1->CreateFixture(circle);
+    b2->CreateFixture(circle);
+    const auto anchor = Length2D(Real(2) * Meter, Real(1) * Meter);
+    const auto jd = PrismaticJointDef{b1, b2, anchor, UnitVec2::GetRight()}.UseEnableLimit(true);
+    const auto joint = static_cast<PrismaticJoint*>(world.CreateJoint(jd));
+    ASSERT_NE(joint, nullptr);
+    ASSERT_EQ(joint->GetLimitState(), Joint::e_inactiveLimit);
+    ASSERT_EQ(joint->GetLowerLimit(), Length(0));
+    ASSERT_EQ(joint->GetUpperLimit(), Length(0));
+
+    Step(world, Time{Second * Real{1}});
+    EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
+    EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
+    EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);
+    EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / Meter}), 0.0, 0.01);
+    EXPECT_EQ(b1->GetAngle(), Angle{0});
+    EXPECT_EQ(b2->GetAngle(), Angle{0});
+    EXPECT_EQ(joint->GetLowerLimit(), Length(0));
+    EXPECT_EQ(joint->GetUpperLimit(), Length(0));
+    EXPECT_EQ(joint->GetLimitState(), Joint::e_equalLimits);
+    
+    joint->SetLimits(Real(0) * Meter, Real(2) * Meter);
+    Step(world, Time{Second * Real{1}});
+    EXPECT_EQ(joint->GetLowerLimit(), Length(0));
+    EXPECT_EQ(joint->GetUpperLimit(), Real(2) * Meter);
+    EXPECT_EQ(joint->GetLimitState(), Joint::e_atLowerLimit);
+    
+    joint->SetLimits(Real(-2) * Meter, Real(0) * Meter);
+    Step(world, Time{Second * Real{1}});
+    EXPECT_EQ(joint->GetLowerLimit(), Real(-2) * Meter);
+    EXPECT_EQ(joint->GetUpperLimit(), Real(0) * Meter);
+    EXPECT_EQ(joint->GetLimitState(), Joint::e_atUpperLimit);
 }
