@@ -794,6 +794,47 @@ static void ConstructAndAssignVC(benchmark::State& state)
     }
 }
 
+static void malloc_free_random_size(benchmark::State& state)
+{
+    auto sizes = std::array<size_t, 100>();
+    for (auto& size: sizes)
+    {
+        size = (static_cast<std::size_t>(std::rand()) % std::size_t{1ul << 18ul}) + std::size_t{1ul};
+    }
+
+    auto i = std::size_t{0};
+    auto p = static_cast<void*>(nullptr);
+    while (state.KeepRunning())
+    {
+        benchmark::DoNotOptimize(p = std::malloc(sizes[i]));
+        std::free(p);
+        i = (i < (sizes.max_size() - 1ul))? i + 1: 0;
+    }
+}
+
+static void random_malloc_free_100(benchmark::State& state)
+{
+    auto sizes = std::array<size_t, 100>();
+    for (auto& size: sizes)
+    {
+        size = (static_cast<std::size_t>(std::rand()) % std::size_t{1ul << 18ul}) + std::size_t{1ul};
+    }
+    auto pointers = std::array<void*, 100>();
+    while (state.KeepRunning())
+    {
+        auto ptr = std::begin(pointers);
+        for (auto size: sizes)
+        {
+            benchmark::DoNotOptimize(*ptr = std::malloc(size));
+            ++ptr;
+        }
+        for (auto& p: pointers)
+        {
+            std::free(p);
+        }
+    }
+}
+
 static void SolveVC(benchmark::State& state)
 {
     const auto friction = playrho::Real(0.5);
@@ -998,6 +1039,9 @@ BENCHMARK(MaxSepBetweenRelRectangles2);
 
 BENCHMARK(ManifoldForTwoSquares1);
 BENCHMARK(ManifoldForTwoSquares2);
+
+BENCHMARK(malloc_free_random_size);
+BENCHMARK(random_malloc_free_100);
 
 BENCHMARK(TilesComesToRest12);
 BENCHMARK(TilesComesToRest20);
