@@ -771,7 +771,7 @@ inline bool World::HasNewFixtures() const noexcept
 
 inline void World::SetNewFixtures() noexcept
 {
-    m_flags |= World::e_newFixture;
+    m_flags |= e_newFixture;
 }
 
 inline void World::UnsetNewFixtures() noexcept
