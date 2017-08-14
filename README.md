@@ -30,8 +30,8 @@ to see any kind of performance.
 
 ## Continuous Integration Status
 
-|iOS|Linux CMake|OS X Xcode|Windows VS2017|Coverage|
-|---|-----------|----------|--------------|--------|
+|iOS|Linux CMake|macOS Xcode|Windows VS2017|Coverage|
+|---|-----------|-----------|--------------|--------|
 |[![Build Status](https://travis-ci.org/louis-langholtz/PlayRho.svg?branch=iosfoo)](https://travis-ci.org/louis-langholtz/PlayRho)|[![Build Status](https://travis-ci.org/louis-langholtz/PlayRho.svg?branch=master)](https://travis-ci.org/louis-langholtz/PlayRho)|[![Build Status](https://travis-ci.org/louis-langholtz/PlayRho.svg?branch=macosxfoo)](https://travis-ci.org/louis-langholtz/PlayRho)|[![Build status](https://ci.appveyor.com/api/projects/status/buoix7kumafgsjtu/branch/master?svg=true)](https://ci.appveyor.com/project/louis-langholtz/playrho/branch/master)|[![Coverage Status](https://coveralls.io/repos/github/louis-langholtz/PlayRho/badge.svg?branch=master)](https://coveralls.io/github/louis-langholtz/PlayRho?branch=master)|
 
 ## Additional Resources
