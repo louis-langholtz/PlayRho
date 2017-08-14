@@ -139,17 +139,17 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
         {
             if (m_limitState != e_atLowerLimit)
             {
+                m_limitState = e_atLowerLimit;
                 GetZ(m_impulse) = 0;
             }
-            m_limitState = e_atLowerLimit;
         }
         else if (jointAngle >= m_upperAngle)
         {
             if (m_limitState != e_atUpperLimit)
             {
+                m_limitState = e_atUpperLimit;
                 GetZ(m_impulse) = 0;
             }
-            m_limitState = e_atUpperLimit;
         }
         else
         {

@@ -227,14 +227,25 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
     b2->CreateFixture(circle);
     auto jd = RevoluteJointDef{b1, b2, Length2D{}};
     jd.enableLimit = true;
-    const auto joint = world.CreateJoint(jd);
-    EXPECT_NE(joint, nullptr);
+    ASSERT_EQ(jd.lowerAngle, Angle(0));
+    ASSERT_EQ(jd.upperAngle, Angle(0));
+
+    const auto joint = static_cast<RevoluteJoint*>(world.CreateJoint(jd));
+    ASSERT_NE(joint, nullptr);
+    ASSERT_EQ(joint->GetLimitState(), Joint::e_inactiveLimit);
+    ASSERT_EQ(joint->GetLowerLimit(), jd.lowerAngle);
+    ASSERT_EQ(joint->GetUpperLimit(), jd.upperAngle);
+    ASSERT_EQ(joint->GetReferenceAngle(), Angle(0));
+    ASSERT_EQ(GetJointAngle(*joint), Angle(0));
     
     auto step = StepConf{};
     step.SetTime(Second * Real{1});
     step.maxTranslation = Meter * Real(4);
     world.Step(step);
 
+    EXPECT_EQ(GetJointAngle(*joint), Angle(0));
+    EXPECT_EQ(joint->GetReferenceAngle(), Angle(0));
+    EXPECT_EQ(joint->GetLimitState(), Joint::e_equalLimits);
     EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
     EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), -4, 0.001);
     EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);
@@ -251,6 +262,26 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
     EXPECT_TRUE(b2->IsAwake());
     
     EXPECT_EQ(GetWorldIndex(joint), std::size_t(0));
+    
+    joint->SetLimits(Real(45) * Degree, Real(90) * Degree);
+    EXPECT_EQ(joint->GetLowerLimit(), Real(45) * Degree);
+    EXPECT_EQ(joint->GetUpperLimit(), Real(90) * Degree);
+
+    world.Step(step);
+    EXPECT_EQ(joint->GetReferenceAngle(), Angle(0));
+    EXPECT_EQ(joint->GetLimitState(), Joint::e_atLowerLimit);
+    EXPECT_NEAR(static_cast<double>(Real(GetJointAngle(*joint)/Radian)),
+                0.28610128164291382, 0.000001);
+
+    joint->SetLimits(-Real(90) * Degree, -Real(45) * Degree);
+    EXPECT_EQ(joint->GetLowerLimit(), -Real(90) * Degree);
+    EXPECT_EQ(joint->GetUpperLimit(), -Real(45) * Degree);
+    
+    world.Step(step);
+    EXPECT_EQ(joint->GetReferenceAngle(), Angle(0));
+    EXPECT_EQ(joint->GetLimitState(), Joint::e_atUpperLimit);
+    EXPECT_NEAR(static_cast<double>(Real(GetJointAngle(*joint)/Radian)),
+                -0.082102291285991669, 0.000001);
 }
 
 TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)

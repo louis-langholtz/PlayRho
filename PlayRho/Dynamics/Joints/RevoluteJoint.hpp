@@ -98,6 +98,11 @@ public:
     /// Get the current motor torque given the inverse time step.
     /// Unit is N*m.
     Torque GetMotorTorque(Frequency inv_dt) const;
+    
+    /// @brief Gets the current limit state.
+    /// @note This will be <code>e_inactiveLimit</code> unless the joint limit has been
+    ///   enabled.
+    LimitState GetLimitState() const noexcept;
 
 private:
     
@@ -155,6 +160,11 @@ inline bool RevoluteJoint::IsMotorEnabled() const noexcept
 inline AngularVelocity RevoluteJoint::GetMotorSpeed() const noexcept
 {
     return m_motorSpeed;
+}
+
+inline Joint::LimitState RevoluteJoint::GetLimitState() const noexcept
+{
+    return m_limitState;
 }
 
 // Free functions...

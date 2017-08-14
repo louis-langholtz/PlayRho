@@ -85,6 +85,18 @@ TEST(MotorJoint, Construction)
     EXPECT_EQ(joint.GetCorrectionFactor(), def.correctionFactor);
 }
 
+TEST(MotorJoint, SetCorrectionFactor)
+{
+    MotorJointDef def;
+    MotorJoint joint{def};
+    
+    ASSERT_EQ(joint.GetCorrectionFactor(), def.correctionFactor);
+    ASSERT_EQ(Real(0.3), def.correctionFactor);
+    
+    joint.SetCorrectionFactor(Real(0.9));
+    EXPECT_EQ(joint.GetCorrectionFactor(), Real(0.9));
+}
+
 TEST(MotorJoint, GetMotorJointDef)
 {
     MotorJointDef def;
@@ -128,7 +140,11 @@ TEST(MotorJoint, WithDynamicCircles)
     b2->CreateFixture(circle);
     //const auto anchor = Length2D(Real(2) * Meter, Real(1) * Meter);
     const auto jd = MotorJointDef{b1, b2};
-    world.CreateJoint(jd);
+    const auto joint = static_cast<MotorJoint*>(world.CreateJoint(jd));
+    ASSERT_NE(joint, nullptr);
+    EXPECT_EQ(joint->GetAnchorA(), p1);
+    EXPECT_EQ(joint->GetAnchorB(), p2);
+
     Step(world, Time{Second * Real{1}});
     EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
     EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
