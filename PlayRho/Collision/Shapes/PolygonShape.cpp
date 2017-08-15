@@ -18,7 +18,6 @@
  */
 
 #include <PlayRho/Collision/Shapes/PolygonShape.hpp>
-#include <PlayRho/Collision/RayCastInput.hpp>
 #include <PlayRho/Common/VertexSet.hpp>
 
 using namespace playrho;

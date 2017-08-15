@@ -18,7 +18,6 @@
  */
 
 #include <PlayRho/Collision/Shapes/DiskShape.hpp>
-#include <PlayRho/Collision/RayCastInput.hpp>
 
 using namespace playrho;
 

@@ -18,7 +18,6 @@
  */
 
 #include <PlayRho/Collision/Shapes/EdgeShape.hpp>
-#include <PlayRho/Collision/RayCastInput.hpp>
 
 using namespace playrho;
 
