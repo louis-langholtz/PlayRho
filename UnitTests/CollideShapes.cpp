@@ -693,8 +693,10 @@ TEST(CollideShapes, SquareCornerTouchingSquareFaceAbove)
     const auto world_manifold = GetWorldManifold(manifold, xfm0, Real(0) * Meter, xfm1, Real(0) * Meter);
     EXPECT_EQ(world_manifold.GetPointCount(), manifold.GetPointCount());
     
-    EXPECT_NEAR(GetX(GetVec2(world_manifold.GetNormal())), +0.0, 1.0/100000.0);
-    EXPECT_NEAR(GetY(GetVec2(world_manifold.GetNormal())), +1.0, 1.0/100000.0);
+    EXPECT_NEAR(static_cast<double>(GetX(GetVec2(world_manifold.GetNormal()))),
+                +0.0, 1.0/100000.0);
+    EXPECT_NEAR(static_cast<double>(GetY(GetVec2(world_manifold.GetNormal()))),
+                +1.0, 1.0/100000.0);
 
     const auto corner_point = Rotate(Length2D{dim, dim}, UnitVec2::Get(rot0)) + xfm0.p;
     EXPECT_NEAR(double(Real{GetX(corner_point) / Meter}), 0.0,        0.02);
