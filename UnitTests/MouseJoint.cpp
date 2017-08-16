@@ -82,6 +82,28 @@ TEST(MouseJoint, DefaultInitialized)
     EXPECT_EQ(joint.GetDampingRatio(), def.dampingRatio);
 }
 
+TEST(MouseJoint, GetLocalAnchorB)
+{
+    World world;
+    
+    const auto bA = world.CreateBody();
+    ASSERT_NE(bA, nullptr);
+    const auto bB = world.CreateBody();
+    ASSERT_NE(bB, nullptr);
+    
+    auto def = MouseJointDef{};
+    def.bodyA = bA;
+    def.bodyB = bB;
+    def.userData = reinterpret_cast<void*>(71);
+    def.target = Length2D(Real(-1.4) * Meter, Real(-2) * Meter);
+    def.maxForce = Real(3) * Newton;
+    def.frequency = Real(67) * Hertz;
+    def.dampingRatio = Real(0.8);
+    
+    const auto joint = MouseJoint{def};
+    EXPECT_EQ(joint.GetLocalAnchorB(), def.target);
+}
+
 TEST(MouseJointDef, GetMouseJointDefFreeFunction)
 {
     World world;

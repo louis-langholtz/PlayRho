@@ -43,6 +43,8 @@ namespace playrho
 
 Joint* Joint::Create(const JointDef& def)
 {
+    assert(def.type != JointType::Unknown);
+
     switch (def.type)
     {
         case JointType::Distance:
@@ -68,12 +70,9 @@ Joint* Joint::Create(const JointDef& def)
         case JointType::Motor:
             return Create<MotorJoint>(static_cast<const MotorJointDef&>(def));
         case JointType::Unknown:
-            assert(false);
-            break;
-        default:
-            break;
+            throw InvalidArgument("Joint::Create: Unknown joint type");
     }
-    throw InvalidArgument("Joint::Create: unknown joint type");
+    // [[unreachable]]
 }
 
 void Joint::Destroy(const Joint* joint)

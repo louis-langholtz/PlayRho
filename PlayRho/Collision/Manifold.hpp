@@ -528,8 +528,11 @@ namespace playrho
                          const DistanceProxy& proxyB, const Transformation& transformB);
 #endif
 
-    Length2D GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type type, ContactFeature::Index index);
-
+#if 0
+    Length2D GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type type,
+                           ContactFeature::Index index);
+#endif
+    
     const char* GetName(Manifold::Type) noexcept;
     
 } // namespace playrho

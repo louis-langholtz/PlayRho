@@ -96,6 +96,19 @@ TEST(Joint, Traits)
     EXPECT_FALSE(std::is_trivially_destructible<Joint>::value);
 }
 
+TEST(Joint, StaticIsOkay)
+{
+    using Builder = JointBuilder<JointDef>;
+    EXPECT_FALSE(Joint::IsOkay(Builder{JointType::Unknown}));
+    EXPECT_FALSE(Joint::IsOkay(Builder{JointType::Friction}));
+    const auto b1 = reinterpret_cast<Body*>(0x1);
+    const auto b2 = reinterpret_cast<Body*>(0x2);
+    EXPECT_TRUE(Joint::IsOkay(Builder{JointType::Friction}.UseBodyA(b1)));
+    EXPECT_TRUE(Joint::IsOkay(Builder{JointType::Friction}.UseBodyA(b2)));
+    EXPECT_TRUE(Joint::IsOkay(Builder{JointType::Friction}.UseBodyB(b1)));
+    EXPECT_TRUE(Joint::IsOkay(Builder{JointType::Friction}.UseBodyB(b2)));
+}
+
 TEST(Joint, GetWorldIndexFreeFunction)
 {
     EXPECT_EQ(GetWorldIndex(static_cast<const Joint*>(nullptr)), JointCounter(-1));

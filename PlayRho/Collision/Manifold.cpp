@@ -819,7 +819,7 @@ const char* playrho::GetName(Manifold::Type type) noexcept
         case Manifold::e_faceA: return "face-a";
         case Manifold::e_faceB: return "face-b";
     }
-    return "unknown";
+    // [[unreachable]]
 }
 
 bool playrho::operator==(const Manifold::Point& lhs, const Manifold::Point& rhs) noexcept
@@ -938,7 +938,9 @@ bool playrho::operator!=(const Manifold& lhs, const Manifold& rhs) noexcept
     return !(lhs == rhs);
 }
 
-Length2D playrho::GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type type, ContactFeature::Index index)
+#if 0
+Length2D playrho::GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type type,
+                                ContactFeature::Index index)
 {
     switch (type)
     {
@@ -951,3 +953,4 @@ Length2D playrho::GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type
     }
     return GetInvalid<Length2D>();
 }
+#endif
