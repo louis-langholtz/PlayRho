@@ -43,11 +43,13 @@ TEST(RayCastOutput, ByteSize)
 TEST(RayCastOutput, Traits)
 {
     EXPECT_TRUE(std::is_default_constructible<RayCastOutput>::value);
-    EXPECT_FALSE(std::is_nothrow_default_constructible<RayCastOutput>::value);
+    //EXPECT_FALSE(std::is_nothrow_default_constructible<RayCastOutput>::value); // on clang 4.0 or older
+    //EXPECT_TRUE(std::is_nothrow_default_constructible<RayCastOutput>::value); // on gcc 6
     EXPECT_FALSE(std::is_trivially_default_constructible<RayCastOutput>::value);
     
     EXPECT_TRUE(std::is_constructible<RayCastOutput>::value);
-    EXPECT_FALSE(std::is_nothrow_constructible<RayCastOutput>::value);
+    //EXPECT_FALSE(std::is_nothrow_constructible<RayCastOutput>::value); // on clang 4.0 or older
+    //EXPECT_TRUE(std::is_nothrow_constructible<RayCastOutput>::value); // on gcc 6
     EXPECT_FALSE(std::is_trivially_constructible<RayCastOutput>::value);
     
     EXPECT_TRUE(std::is_copy_constructible<RayCastOutput>::value);
