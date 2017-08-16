@@ -819,7 +819,7 @@ const char* playrho::GetName(Manifold::Type type) noexcept
         case Manifold::e_faceA: return "face-a";
         case Manifold::e_faceB: return "face-b";
     }
-    // [[unreachable]]
+    PLAYRHO_UNREACHABLE;
 }
 
 bool playrho::operator==(const Manifold::Point& lhs, const Manifold::Point& rhs) noexcept

@@ -72,7 +72,8 @@ Joint* Joint::Create(const JointDef& def)
         case JointType::Unknown:
             throw InvalidArgument("Joint::Create: Unknown joint type");
     }
-    // [[unreachable]]
+
+    PLAYRHO_UNREACHABLE;
 }
 
 void Joint::Destroy(const Joint* joint)
