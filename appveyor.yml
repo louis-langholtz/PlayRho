@@ -1,4 +1,20 @@
+# For information on these settings, see:
+#    https://www.appveyor.com/docs/build-configuration/
+#    https://www.appveyor.com/docs/appveyor-yml/
+#
+# Notes:
+#   - Minimal appveyor.yml file is an empty file. All sections are optional.
+#   - Indent each level of configuration with 2 spaces. Do not use tabs!
+#   - All section names are case-sensitive.
+#   - Section names should be unique on each level.
+
 image: Visual Studio 2017
 build:
   project: Build/vs2017/PlayRho.sln
   verbosity: normal
+platform:
+  - x86
+  - x64
+configuration:
+  - Debug
+  - Release
