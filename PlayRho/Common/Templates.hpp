@@ -84,7 +84,9 @@ namespace playrho
     {
         return x != GetInvalid<std::size_t>();
     }
-
+    
+    // Other templates.
+    
     template <class T>
     constexpr const T* GetPtr(const T* value) noexcept
     {

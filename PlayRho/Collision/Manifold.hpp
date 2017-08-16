@@ -357,23 +357,29 @@ namespace playrho
 
         void AddPoint(cf_t type, sidx_t index, Length2D point) noexcept;
 
-        /// Gets the local normal for a face-type manifold.
+        /// @brief Gets the local normal for a face-type manifold.
+        /// @note Only valid for face-A or face-B type manifolds.
+        /// @warning Behavior is undefined for unset (e_unset) type manifolds.
+        /// @warning Behavior is undefined for circles (e_circles) type manifolds.
         /// @return Local normal if the manifold type is face A or face B, else invalid value.
         constexpr UnitVec2 GetLocalNormal() const noexcept
         {
+            assert(m_type != e_unset);
+            assert(m_type != e_circles);
             return m_localNormal;
         }
         
-        /// Gets the local point.
+        /// @brief Gets the local point.
         /// @details
-        /// This is the:
-        /// local center of "circle" A for circles-type manifolds,
-        /// the center of face A for face-A-type manifolds, and
+        /// This is the: local center of "circle" A for circles-type manifolds;
+        /// the center of face A for face-A-type manifolds; or
         /// the center of face B for face-B-type manifolds.
-        /// @note Value invalid for unset (e_unset) type manifolds.
+        /// @note Only valid for circle, face-A, or face-B type manifolds.
+        /// @warning Behavior is undefined for unset (e_unset) type manifolds.
         /// @return Local point.
         constexpr Length2D GetLocalPoint() const noexcept
         {
+            assert(m_type != e_unset);
             return m_localPoint;
         }
         

@@ -24,6 +24,7 @@
 /// Declaration of the RayCastOutput struct and related free functions.
 
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/BoundedValue.hpp>
 
 namespace playrho
 {
@@ -34,36 +35,20 @@ namespace playrho
 
     /// @brief Ray-cast output data.
     /// @details The ray hits at p1 + fraction * (p2 - p1), where p1 and p2 come from RayCastInput.
+    /// @note This class should be refactored for C++17 to remove the hit field and update
+    ///   callers/references to use a std::optional of this class.
     struct RayCastOutput
-    {
-        RayCastOutput() = default;
-        
-        /// @brief Initializing constructor.
-        ///
-        /// @note This intentionally default initializes the hit parameter as <code>true</code>.
-        ///
-        /// @param n Normal.
-        /// @param f Fraction. A unit interval value or NaN (a value between 0 and 1 inclusive
-        ///   or NaN).
-        /// @param h Hit (or not).
-        ///
-        constexpr RayCastOutput(UnitVec2 n, Real f, bool h = true) noexcept:
-            normal{n}, fraction{f}, hit{h}
-        {
-            // Check against out-of-range values of f while accepting NaN.
-            assert(!(f < 0) && !(f > 1));
-        }
-        
+    {        
         /// @brief Surface normal in world coordinates at the point of contact.
         /// @note This value is meaningless unless the ray hit.
         /// @sa hit.
-        UnitVec2 normal = GetInvalid<decltype(normal)>();
+        UnitVec2 normal = UnitVec2::GetZero();
 
         /// @brief Fraction.
         /// @note This is a unit interval value - a value between 0 and 1 - or it's invalid.
         /// @note This value is meaningless unless the ray hit.
         /// @sa hit.
-        Real fraction = GetInvalid<decltype(fraction)>();
+        UnitInterval<Real> fraction = UnitInterval<Real>{0};
         
         /// @brief Hit flag.
         /// @note <code>true</code> if the ray hit and the normal and fraction values should be

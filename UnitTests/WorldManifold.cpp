@@ -91,7 +91,8 @@ TEST(WorldManifold, GetWorldManifoldForCirclesTouchingManifold)
     
     EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){1});
     EXPECT_TRUE(IsValid(wm.GetNormal()));
-    EXPECT_EQ(wm.GetNormal() * Real{1}, Vec2(1, 0));
+    EXPECT_NEAR(static_cast<double>(GetX(GetVec2(wm.GetNormal()))), 1.0, 0.00001);
+    EXPECT_NEAR(static_cast<double>(GetY(GetVec2(wm.GetNormal()))), 0.0, 0.00001);
     EXPECT_EQ(wm.GetSeparation(0), Real{0} * Meter);
     EXPECT_EQ(wm.GetPoint(0), Length2D(Real(4) * Meter, Real(0) * Meter));
 }
@@ -111,8 +112,9 @@ TEST(WorldManifold, GetWorldManifoldForCirclesHalfOverlappingManifold)
     
     EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){1});
     EXPECT_TRUE(IsValid(wm.GetNormal()));
-    EXPECT_EQ(wm.GetNormal() * Real{1}, Vec2(1, 0));
-    EXPECT_EQ(wm.GetSeparation(0), Real{-1} * Meter);
+    EXPECT_NEAR(static_cast<double>(GetX(GetVec2(wm.GetNormal()))), 1.0, 0.00001);
+    EXPECT_NEAR(static_cast<double>(GetY(GetVec2(wm.GetNormal()))), 0.0, 0.00001);
+    EXPECT_NEAR(static_cast<double>(Real{wm.GetSeparation(0)/Meter}), -1.0, 0.00001);
     EXPECT_EQ(wm.GetPoint(0), Length2D(Real(7) * Meter, Real(0) * Meter));
 }
 

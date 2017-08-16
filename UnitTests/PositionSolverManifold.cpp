@@ -83,8 +83,8 @@ TEST(PositionSolverManifold, GetPSM)
     ASSERT_EQ(GetX(manifold.GetLocalPoint()), Real(+3) * Meter);
     ASSERT_EQ(GetY(manifold.GetLocalPoint()), Real(0) * Meter);
     
-    ASSERT_EQ(manifold.GetLocalNormal().GetX(), Real(+1));
-    ASSERT_EQ(manifold.GetLocalNormal().GetY(), Real(0));
+    ASSERT_NEAR(static_cast<double>(manifold.GetLocalNormal().GetX()), +1.0, 0.00001);
+    ASSERT_NEAR(static_cast<double>(manifold.GetLocalNormal().GetY()), +0.0, 0.00001);
     
     ASSERT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
     
@@ -129,17 +129,17 @@ TEST(PositionSolverManifold, GetPSM)
     
     {
         const auto psm0 = GetPSM(manifold, 0, xfm0, xfm1);
-        EXPECT_EQ(psm0.m_normal.GetX(), Real(1));
-        EXPECT_EQ(psm0.m_normal.GetY(), Real(0));
-        EXPECT_EQ(psm0.m_separation, Real(-1) * Meter);
+        EXPECT_NEAR(static_cast<double>(psm0.m_normal.GetX()), 1.0, 0.00001);
+        EXPECT_NEAR(static_cast<double>(psm0.m_normal.GetY()), 0.0, 0.00001);
+        EXPECT_NEAR(static_cast<double>(Real{psm0.m_separation/Meter}), -1.0, 0.00001);
         EXPECT_TRUE(almost_equal(GetX(psm0.m_point) / Meter, Real(0)));
         EXPECT_TRUE(almost_equal(GetY(psm0.m_point) / Meter, Real(-1.5)));
     }
     {
         const auto psm1 = GetPSM(manifold, 1, xfm0, xfm1);
-        EXPECT_EQ(psm1.m_normal.GetX(), Real(1));
-        EXPECT_EQ(psm1.m_normal.GetY(), Real(0));
-        EXPECT_EQ(psm1.m_separation, Real(-1) * Meter);
+        EXPECT_NEAR(static_cast<double>(psm1.m_normal.GetX()), 1.0, 0.0001);
+        EXPECT_NEAR(static_cast<double>(psm1.m_normal.GetY()), 0.0, 0.0001);
+        EXPECT_NEAR(static_cast<double>(Real{psm1.m_separation/Meter}), -1.0, 0.00001);
         EXPECT_TRUE(almost_equal(GetX(psm1.m_point) / Meter, Real(0)));
         EXPECT_TRUE(almost_equal(GetY(psm1.m_point) / Meter, Real(+1.5)));
     }

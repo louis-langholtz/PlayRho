@@ -100,6 +100,8 @@ TEST(float, max)
 
 TEST(float, infinity)
 {
+    ASSERT_TRUE(std::numeric_limits<float>::has_infinity);
+    
     EXPECT_EQ(std::numeric_limits<float>::infinity() * 2, std::numeric_limits<float>::infinity());
     EXPECT_EQ(std::numeric_limits<float>::infinity() * 0.5f, std::numeric_limits<float>::infinity());
     EXPECT_EQ(std::numeric_limits<float>::infinity() * -1, -std::numeric_limits<float>::infinity());
@@ -123,8 +125,13 @@ TEST(float, infinity)
     EXPECT_EQ(1.0f / std::numeric_limits<float>::infinity(), 0.0f);
     EXPECT_EQ(-1.0f / std::numeric_limits<float>::infinity(), 0.0f);
 
-    EXPECT_TRUE(std::isnan(std::numeric_limits<float>::infinity() * 0));
-    EXPECT_TRUE(std::isnan(std::numeric_limits<float>::infinity() / std::numeric_limits<float>::infinity()));
+    EXPECT_TRUE(std::numeric_limits<float>::is_iec559);
+    EXPECT_TRUE(std::numeric_limits<float>::has_quiet_NaN);
+
+    EXPECT_TRUE(std::isnan(std::numeric_limits<float>::infinity() * 0) ||
+                ((std::numeric_limits<float>::infinity() * 0) == 0.0f));
+    EXPECT_TRUE(std::isnan(std::numeric_limits<float>::infinity() / std::numeric_limits<float>::infinity()) ||
+                (std::numeric_limits<float>::infinity() / std::numeric_limits<float>::infinity()) == 1.0f);
     EXPECT_TRUE(std::isnan(std::numeric_limits<float>::infinity() / -std::numeric_limits<float>::infinity()));
     EXPECT_TRUE(std::isnan(std::numeric_limits<float>::infinity() - std::numeric_limits<float>::infinity()));
     EXPECT_TRUE(std::isnan(-std::numeric_limits<float>::infinity() - -std::numeric_limits<float>::infinity()));
@@ -141,13 +148,16 @@ TEST(float, infinity)
     EXPECT_EQ(static_cast<double>(-std::numeric_limits<float>::infinity()), -std::numeric_limits<double>::infinity());
 }
 
-TEST(float, nan)
+TEST(float, quiet_NaN)
 {
-    EXPECT_TRUE(std::isnan(std::numeric_limits<float>::quiet_NaN() * 0));
+    ASSERT_TRUE(std::numeric_limits<float>::has_quiet_NaN);
+
+    EXPECT_TRUE(std::isnan(std::numeric_limits<float>::quiet_NaN() * 0) || (std::numeric_limits<float>::quiet_NaN() * 0 == 0.0f));
     EXPECT_TRUE(std::isnan(std::numeric_limits<float>::quiet_NaN() * 1));
     EXPECT_TRUE(std::isnan(std::numeric_limits<float>::quiet_NaN() * std::numeric_limits<float>::infinity()));
     EXPECT_TRUE(std::isnan(std::numeric_limits<float>::quiet_NaN() / 1));
-    EXPECT_TRUE(std::isnan(0.0f / std::numeric_limits<float>::quiet_NaN()));
+    EXPECT_TRUE(std::isnan(0.0f / std::numeric_limits<float>::quiet_NaN()) ||
+                (0.0f / std::numeric_limits<float>::quiet_NaN() == 0.0f));
     EXPECT_TRUE(std::isnan(1.0f / std::numeric_limits<float>::quiet_NaN()));
     EXPECT_TRUE(std::isnan(std::numeric_limits<float>::quiet_NaN() / std::numeric_limits<float>::infinity()));
     EXPECT_FALSE(std::numeric_limits<float>::quiet_NaN() > 0.0f);
@@ -158,11 +168,17 @@ TEST(float, nan)
     EXPECT_TRUE(std::isnan(std::numeric_limits<float>::quiet_NaN() + 0.0f));
     EXPECT_TRUE(std::isnan(std::numeric_limits<float>::quiet_NaN() + 0));
     EXPECT_TRUE(std::isnan(0 + std::numeric_limits<float>::quiet_NaN()));
+    float value = std::numeric_limits<float>::quiet_NaN();
+    EXPECT_TRUE(std::isnan(value+0));
+}
+
+TEST(float, signaling_NaN)
+{
+    ASSERT_TRUE(std::numeric_limits<float>::has_signaling_NaN);
+    
     EXPECT_TRUE(std::isnan(std::numeric_limits<float>::signaling_NaN() + 0.0f));
     EXPECT_TRUE(std::isnan(std::numeric_limits<float>::signaling_NaN() + 0));
     EXPECT_TRUE(std::isnan(0 + std::numeric_limits<float>::signaling_NaN()));
-    float value = std::numeric_limits<float>::quiet_NaN();
-    EXPECT_TRUE(std::isnan(value+0));
 }
 
 TEST(float, sqrt)
@@ -171,7 +187,12 @@ TEST(float, sqrt)
     EXPECT_EQ(std::sqrt(1.0f), 1.0f);
     EXPECT_EQ(std::sqrt(0.0f), 0.0f);
     EXPECT_EQ(std::sqrt(std::numeric_limits<float>::infinity()), std::numeric_limits<float>::infinity());
-    EXPECT_TRUE(std::isnan(std::sqrt(-1.0f)));
+    const float v = std::sqrt(-1.0f);
+    const auto fastBitValue = std::uint32_t(0x7f800000);
+    //const auto p = *reinterpret_cast<const std::uint32_t *>(&v);
+    //std::cout << "0x" << std::setfill ('0') << std::setw(8) << std::hex << p << std::dec << "\n";
+    //EXPECT_EQ(p, std::uint32_t(0x7f800000));
+    EXPECT_TRUE(std::isnan(std::sqrt(-1.0f)) || (std::memcmp(&v, &fastBitValue, sizeof(float)) == 0));
     EXPECT_TRUE(std::isnan(std::sqrt(std::numeric_limits<float>::quiet_NaN())));
 }
 

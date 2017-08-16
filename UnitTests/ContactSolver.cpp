@@ -146,7 +146,9 @@ TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
     const auto conf = ConstraintSolverConf{}.UseResolutionRate(0).UseMaxLinearCorrection(maxLinearCorrection);
     const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
 
-    EXPECT_EQ(solution.min_separation, Real{-2} * dim);
+    EXPECT_NEAR(static_cast<double>(Real{solution.min_separation / Meter}),
+                static_cast<double>(Real{-2} * dim / Meter),
+                0.0001);
     
     EXPECT_EQ(GetX(old_pA.linear), GetX(solution.pos_a.linear));
     EXPECT_EQ(GetY(old_pA.linear), GetY(solution.pos_a.linear));
@@ -174,7 +176,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
     const auto xfmB = Transformation{old_pB.linear, UnitVec2::Get(old_pB.angular)};
     const auto manifold = CollideShapes(shape.GetChild(0), xfmA, shape.GetChild(0), xfmB);
     ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
-    ASSERT_EQ(GetVec2(manifold.GetLocalNormal()), Vec2(+1, 0));
+    ASSERT_NEAR(static_cast<double>(GetX(GetVec2(manifold.GetLocalNormal()))), +1.0, 0.00001);
+    ASSERT_NEAR(static_cast<double>(GetY(GetVec2(manifold.GetLocalNormal()))), +0.0, 0.00001);
     ASSERT_EQ(manifold.GetLocalPoint(), Vec2(+2, 0) * (Real(1) * Meter));
     ASSERT_EQ(manifold.GetPointCount(), 2);
     ASSERT_EQ(manifold.GetPoint(0).localPoint, Vec2(-2, +2) * (Real(1) * Meter));
@@ -227,7 +230,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
     const auto xfmB = Transformation{old_pB.linear, UnitVec2::Get(old_pB.angular)};
     const auto manifold = CollideShapes(shape.GetChild(0), xfmA, shape.GetChild(0), xfmB);
     ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
-    ASSERT_EQ(GetVec2(manifold.GetLocalNormal()), Vec2(-1, 0));
+    ASSERT_NEAR(static_cast<double>(GetX(GetVec2(manifold.GetLocalNormal()))), -1.0, 0.00001);
+    ASSERT_NEAR(static_cast<double>(GetY(GetVec2(manifold.GetLocalNormal()))), +0.0, 0.00001);
     ASSERT_EQ(manifold.GetLocalPoint(), Vec2(-2, 0) * (Real(1) * Meter));
     ASSERT_EQ(manifold.GetPointCount(), 2);
     ASSERT_EQ(manifold.GetPoint(0).localPoint, Vec2(+2, -2) * (Real(1) * Meter));
@@ -280,7 +284,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
     const auto xfmB = Transformation{old_pB.linear, UnitVec2::Get(old_pB.angular)};
     const auto manifold = CollideShapes(shape.GetChild(0), xfmA, shape.GetChild(0), xfmB);
     ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
-    ASSERT_EQ(GetVec2(manifold.GetLocalNormal()), Vec2(0, 1));
+    ASSERT_NEAR(static_cast<double>(GetX(GetVec2(manifold.GetLocalNormal()))), +0.0, 0.00001);
+    ASSERT_NEAR(static_cast<double>(GetY(GetVec2(manifold.GetLocalNormal()))), +1.0, 0.00001);
     ASSERT_EQ(manifold.GetLocalPoint(), Vec2(0, 2) * (Real(1) * Meter));
     ASSERT_EQ(manifold.GetPointCount(), 2);
     ASSERT_EQ(manifold.GetPoint(0).localPoint, Vec2(-2, -2) * (Real(1) * Meter));
@@ -346,7 +351,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
     const auto manifold = CollideShapes(shape.GetChild(0), xfmA, shape.GetChild(0), xfmB);
     
     ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
-    ASSERT_EQ(GetVec2(manifold.GetLocalNormal()), Vec2(0, -1));
+    ASSERT_NEAR(static_cast<double>(GetX(GetVec2(manifold.GetLocalNormal()))), +0.0, 0.00001);
+    ASSERT_NEAR(static_cast<double>(GetY(GetVec2(manifold.GetLocalNormal()))), -1.0, 0.00001);
     ASSERT_EQ(manifold.GetLocalPoint(), Vec2(0, -2) * (Real(1) * Meter));
     ASSERT_EQ(manifold.GetPointCount(), 2);
     ASSERT_EQ(manifold.GetPoint(0).localPoint, Vec2(+2, +2) * (Real(1) * Meter));

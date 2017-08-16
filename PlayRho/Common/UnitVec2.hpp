@@ -168,7 +168,7 @@ private:
         // Intentionally empty.
     }
 
-    value_type m_elems[2] = { GetInvalid<value_type>(), GetInvalid<value_type>() };
+    value_type m_elems[2] = { value_type{0}, value_type{0} };
 };
 
 /// @brief Gets the "X-axis".

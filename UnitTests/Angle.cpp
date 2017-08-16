@@ -50,8 +50,9 @@ TEST(Angle, GetRevRotationalAngle)
                 double(350), 0.0001);
     EXPECT_EQ(GetRevRotationalAngle(Angle{-Real{10.0f} * Degree}, Angle{0}),
               Angle{Real{10.0f} * Degree});
-    EXPECT_EQ(GetRevRotationalAngle(Angle{Real{90.0f} * Degree}, Angle{-Real{90.0f} * Degree}),
-              Angle{Real{180.0f} * Degree});
+    EXPECT_NEAR(static_cast<double>(Real{GetRevRotationalAngle(Angle{Real{90.0f} * Degree}, Angle{-Real{90.0f} * Degree})/Radian}),
+                static_cast<double>(Real{Angle{Real{180.0f} * Degree}/Radian}),
+                0.0001);
 }
 
 TEST(Angle, GetNormalized)

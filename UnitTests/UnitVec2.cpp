@@ -78,26 +78,42 @@ TEST(UnitVec2, BottomIsFwdPerpOfRight)
 
 TEST(UnitVec2, ByAngleInDegreesNearOriented)
 {
-    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2::GetRight())), static_cast<double>(GetX(UnitVec2::GetRight())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2::GetRight())), static_cast<double>(GetY(UnitVec2::GetRight())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2::GetTop())), static_cast<double>(GetX(UnitVec2::GetTop())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2::GetTop())), static_cast<double>(GetY(UnitVec2::GetTop())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2::GetLeft())), static_cast<double>(GetX(UnitVec2::GetLeft())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2::GetLeft())), static_cast<double>(GetY(UnitVec2::GetLeft())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2::GetBottom())), static_cast<double>(GetX(UnitVec2::GetBottom())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2::GetBottom())), static_cast<double>(GetY(UnitVec2::GetBottom())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2::GetRight())),
+                static_cast<double>(GetX(UnitVec2::GetRight())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2::GetRight())),
+                static_cast<double>(GetY(UnitVec2::GetRight())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2::GetTop())),
+                static_cast<double>(GetX(UnitVec2::GetTop())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2::GetTop())),
+                static_cast<double>(GetY(UnitVec2::GetTop())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2::GetLeft())),
+                static_cast<double>(GetX(UnitVec2::GetLeft())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2::GetLeft())),
+                static_cast<double>(GetY(UnitVec2::GetLeft())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2::GetBottom())),
+                static_cast<double>(GetX(UnitVec2::GetBottom())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2::GetBottom())),
+                static_cast<double>(GetY(UnitVec2::GetBottom())), 0.0001);
 }
 
 TEST(UnitVec2, ByAngleInRadiansNearOriented)
 {
-    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2::Get((Pi * Real(0) / Real(2)) * Radian))), static_cast<double>(GetX(UnitVec2::GetRight())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2::Get((Pi * Real(0) / Real(2)) * Radian))), static_cast<double>(GetY(UnitVec2::GetRight())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2::Get((Pi * Real(1) / Real(2)) * Radian))), static_cast<double>(GetX(UnitVec2::GetTop())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2::Get((Pi * Real(1) / Real(2)) * Radian))), static_cast<double>(GetY(UnitVec2::GetTop())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2::Get((Pi * Real(2) / Real(2)) * Radian))), static_cast<double>(GetX(UnitVec2::GetLeft())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2::Get((Pi * Real(2) / Real(2)) * Radian))), static_cast<double>(GetY(UnitVec2::GetLeft())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2::Get((Pi * Real(3) / Real(2)) * Radian))), static_cast<double>(GetX(UnitVec2::GetBottom())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2::Get((Pi * Real(3) / Real(2)) * Radian))), static_cast<double>(GetY(UnitVec2::GetBottom())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2::Get((Pi * Real(0) / Real(2)) * Radian))),
+                static_cast<double>(GetX(UnitVec2::GetRight())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2::Get((Pi * Real(0) / Real(2)) * Radian))),
+                static_cast<double>(GetY(UnitVec2::GetRight())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2::Get((Pi * Real(1) / Real(2)) * Radian))),
+                static_cast<double>(GetX(UnitVec2::GetTop())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2::Get((Pi * Real(1) / Real(2)) * Radian))),
+                static_cast<double>(GetY(UnitVec2::GetTop())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2::Get((Pi * Real(2) / Real(2)) * Radian))),
+                static_cast<double>(GetX(UnitVec2::GetLeft())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2::Get((Pi * Real(2) / Real(2)) * Radian))),
+                static_cast<double>(GetY(UnitVec2::GetLeft())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetX(UnitVec2::Get((Pi * Real(3) / Real(2)) * Radian))),
+                static_cast<double>(GetX(UnitVec2::GetBottom())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetY(UnitVec2::Get((Pi * Real(3) / Real(2)) * Radian))),
+                static_cast<double>(GetY(UnitVec2::GetBottom())), 0.0001);
 }
 
 TEST(UnitVec2, GetForInvalid)
@@ -107,24 +123,18 @@ TEST(UnitVec2, GetForInvalid)
         const auto y = GetInvalid<Real>();
         auto magnitude = GetInvalid<Real>();
         EXPECT_FALSE(IsValid(UnitVec2::Get(x, y, magnitude)));
-        EXPECT_FALSE(IsValid(GetX(UnitVec2::Get(x, y, magnitude))));
-        EXPECT_FALSE(IsValid(GetY(UnitVec2::Get(x, y, magnitude))));
     }
     {
         const auto x = GetInvalid<Real>();
         const auto y = Real(0);
         auto magnitude = GetInvalid<Real>();
         EXPECT_FALSE(IsValid(UnitVec2::Get(x, y, magnitude)));
-        EXPECT_FALSE(IsValid(GetX(UnitVec2::Get(x, y, magnitude))));
-        EXPECT_FALSE(IsValid(GetY(UnitVec2::Get(x, y, magnitude))));
     }
     {
         const auto x = Real(0);
         const auto y = GetInvalid<Real>();
         auto magnitude = GetInvalid<Real>();
         EXPECT_FALSE(IsValid(UnitVec2::Get(x, y, magnitude)));
-        EXPECT_FALSE(IsValid(GetX(UnitVec2::Get(x, y, magnitude))));
-        EXPECT_FALSE(IsValid(GetY(UnitVec2::Get(x, y, magnitude))));
     }
     {
         const auto x = Real(0);
@@ -132,8 +142,6 @@ TEST(UnitVec2, GetForInvalid)
         auto magnitude = GetInvalid<Real>();
         EXPECT_FALSE(IsValid(UnitVec2::Get(x, y, magnitude, UnitVec2::GetDefaultFallback())));
         EXPECT_EQ(magnitude, Real(0));
-        EXPECT_FALSE(IsValid(GetX(UnitVec2::Get(x, y, magnitude, UnitVec2::GetDefaultFallback()))));
-        EXPECT_FALSE(IsValid(GetY(UnitVec2::Get(x, y, magnitude, UnitVec2::GetDefaultFallback()))));
     }
     {
         const auto x = Real(0);

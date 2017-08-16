@@ -65,8 +65,8 @@ TEST(SimplexCache, InitializingConstructor)
         Simplex::Cache foo{metric, indices};
         
         EXPECT_EQ(GetNumIndices(foo.GetIndices()), decltype(GetNumIndices(foo.GetIndices())){0});
-        EXPECT_TRUE(foo.IsMetricSet());
-        EXPECT_EQ(foo.GetMetric(), metric);
+        EXPECT_FALSE(foo.IsMetricSet());
+        //EXPECT_EQ(foo.GetMetric(), metric);
     }
     {
         const auto ip0 = IndexPair{0, 0};
@@ -103,8 +103,8 @@ TEST(SimplexCache, Assignment)
     Simplex::Cache foo{metric, indices};
     
     ASSERT_EQ(GetNumIndices(foo.GetIndices()), decltype(GetNumIndices(foo.GetIndices())){0});
-    ASSERT_TRUE(foo.IsMetricSet());
-    ASSERT_EQ(foo.GetMetric(), metric);
+    ASSERT_FALSE(foo.IsMetricSet());
+    //ASSERT_EQ(foo.GetMetric(), metric);
     
     const auto ip0 = IndexPair{0, 0};
     const auto ip1 = IndexPair{1, 0};

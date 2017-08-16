@@ -183,13 +183,13 @@ namespace playrho
 
     inline Real Simplex::Cache::GetMetric() const noexcept
     {
-        assert(IsValid(m_metric));
+        assert(IsMetricSet());
         return m_metric;
     }
     
     inline bool Simplex::Cache::IsMetricSet() const noexcept
     {
-        return IsValid(m_metric);
+        return GetNumIndices(m_indices) > std::size_t{0};
     }
     
     constexpr inline IndexPair3 Simplex::Cache::GetIndices() const noexcept

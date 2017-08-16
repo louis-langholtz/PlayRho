@@ -62,7 +62,8 @@ TEST(SeparationFinder, BehavesAsExpected)
     conf.cache = Simplex::GetCache(distanceInfo.simplex.GetEdges());
     const auto fcn = SeparationFinder::Get(conf.cache.GetIndices(), distproxy, xfA, distproxy, xfB);
     EXPECT_EQ(fcn.GetType(), SeparationFinder::e_faceA);
-    EXPECT_EQ(GetVec2(fcn.GetAxis()), Vec2(1, 0));
+    EXPECT_NEAR(static_cast<double>(GetX(GetVec2(fcn.GetAxis()))), 1.0, 0.000001);
+    EXPECT_NEAR(static_cast<double>(GetY(GetVec2(fcn.GetAxis()))), 0.0, 0.000001);
     EXPECT_EQ(fcn.GetLocalPoint(), Length2D(Real(0.5f) * Meter, Real(0) * Meter));
 
     auto last_min_sep = MaxFloat * Meter;
@@ -79,8 +80,9 @@ TEST(SeparationFinder, BehavesAsExpected)
         if (minSeparation.distance > Length{0})
         {
             EXPECT_LT(distance, last_distance);
-            EXPECT_NEAR(double(Real{minSeparation.distance / Meter}),
-                        double(Real{distance / Meter}), 0.00001);
+            EXPECT_NEAR(static_cast<double>(Real{minSeparation.distance / Meter}),
+                        static_cast<double>(Real{distance / Meter}),
+                        0.0001);
         }
         else if (minSeparation.distance < Length{0})
         {

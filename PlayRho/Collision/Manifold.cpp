@@ -854,56 +854,80 @@ bool playrho::operator==(const Manifold& lhs, const Manifold& rhs) noexcept
     {
         return false;
     }
-    
-    if (lhs.GetType() != Manifold::e_unset)
+
+    switch (lhs.GetType())
     {
-        if (lhs.GetLocalPoint() != rhs.GetLocalPoint())
-        {
-            return false;
-        }
-        
-        assert(IsValid(lhs.GetLocalNormal()) == IsValid(rhs.GetLocalNormal()));
-        
-        if (IsValid(lhs.GetLocalNormal()) && (lhs.GetLocalNormal() != rhs.GetLocalNormal()))
-        {
-            return false;
-        }
-        
-        if (lhs.GetPointCount() != rhs.GetPointCount())
-        {
-            return false;
-        }
-        
-        const auto count = lhs.GetPointCount();
-        assert(count <= 2);
-        switch (count)
-        {
-            case 0:
-                break;
-            case 1:
-                if (lhs.GetPoint(0) != rhs.GetPoint(0))
+        case Manifold::e_unset:
+            break;
+        case Manifold::e_circles:
+            if (lhs.GetPointCount() != rhs.GetPointCount())
+            {
+                return false;
+            }
+            if (lhs.GetLocalPoint() != rhs.GetLocalPoint())
+            {
+                return false;
+            }
+            break;
+        case Manifold::e_faceA:
+            if (lhs.GetPointCount() != rhs.GetPointCount())
+            {
+                return false;
+            }
+            if (lhs.GetLocalPoint() != rhs.GetLocalPoint())
+            {
+                return false;
+            }
+            if (lhs.GetLocalNormal() != rhs.GetLocalNormal())
+            {
+                return false;
+            }
+            break;
+        case Manifold::e_faceB:
+            if (lhs.GetPointCount() != rhs.GetPointCount())
+            {
+                return false;
+            }
+            if (lhs.GetLocalPoint() != rhs.GetLocalPoint())
+            {
+                return false;
+            }
+            if (lhs.GetLocalNormal() != rhs.GetLocalNormal())
+            {
+                return false;
+            }
+            break;
+    }
+
+    const auto count = lhs.GetPointCount();
+    assert(count <= 2);
+    switch (count)
+    {
+        case 0:
+            break;
+        case 1:
+            if (lhs.GetPoint(0) != rhs.GetPoint(0))
+            {
+                return false;
+            }
+            break;
+        case 2:
+            if (lhs.GetPoint(0) != rhs.GetPoint(0))
+            {
+                if (lhs.GetPoint(0) != rhs.GetPoint(1))
                 {
                     return false;
                 }
-                break;
-            case 2:
-                if (lhs.GetPoint(0) != rhs.GetPoint(0))
-                {
-                    if (lhs.GetPoint(0) != rhs.GetPoint(1))
-                    {
-                        return false;
-                    }
-                    if (lhs.GetPoint(1) != rhs.GetPoint(0))
-                    {
-                        return false;
-                    }
-                }
-                else if (lhs.GetPoint(1) != rhs.GetPoint(1))
+                if (lhs.GetPoint(1) != rhs.GetPoint(0))
                 {
                     return false;
                 }
-                break;
-        }
+            }
+            else if (lhs.GetPoint(1) != rhs.GetPoint(1))
+            {
+                return false;
+            }
+            break;
     }
     
     return true;

@@ -171,7 +171,14 @@ TEST(ChainShape, TwoVertexMassLikeEdgeMass)
     auto foo = ChainShape{conf};
     
     const auto massData = foo.GetMassData();
-    EXPECT_EQ(massData, expectedMassData);
+    EXPECT_NEAR(static_cast<double>(Real{GetX(massData.center)/Meter}),
+                static_cast<double>(Real{GetX(expectedMassData.center)/Meter}),
+                0.000001);
+    EXPECT_NEAR(static_cast<double>(Real{GetY(massData.center)/Meter}),
+                static_cast<double>(Real{GetY(expectedMassData.center)/Meter}),
+                0.000001);
+    EXPECT_EQ(massData.mass, expectedMassData.mass);
+    EXPECT_EQ(massData.I, expectedMassData.I);
 }
 
 TEST(ChainShape, FourVertex)

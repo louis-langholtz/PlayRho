@@ -2108,11 +2108,11 @@ void World::RayCast(Length2D point1, Length2D point2, RayCastCallback callback)
             {
                 case RayCastOpcode::Terminate: return Real(0);
                 case RayCastOpcode::IgnoreFixture: return Real(-1);
-                case RayCastOpcode::ClipRay: return fraction;
-                case RayCastOpcode::ResetRay: return input.maxFraction;
+                case RayCastOpcode::ClipRay: return Real{fraction};
+                case RayCastOpcode::ResetRay: return Real{input.maxFraction};
             }
         }
-        return input.maxFraction;
+        return Real{input.maxFraction};
     });
 }
 

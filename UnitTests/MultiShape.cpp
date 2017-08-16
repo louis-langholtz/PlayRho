@@ -159,7 +159,11 @@ TEST(MultiShape, AddConvexHullWithTwoPointsSameAsEdge)
     
     const auto edgeMassData = playrho::GetMassData(conf.vertexRadius, conf.density, p0, p1);
     EXPECT_EQ(massData.center, edgeMassData.center);
-    EXPECT_EQ(massData.I, edgeMassData.I);
+    /// @note Units of L^-2 M^-1 QP^2.
+
+    EXPECT_NEAR(static_cast<double>(Real{massData.I / (SquareMeter*Kilogram/SquareRadian)}),
+                static_cast<double>(Real{edgeMassData.I / (SquareMeter*Kilogram/SquareRadian)}),
+                228.4113/1000000.0);
     EXPECT_EQ(massData.mass, edgeMassData.mass);
 }
 

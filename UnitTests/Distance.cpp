@@ -268,7 +268,7 @@ TEST(Distance, EdgeCircleOverlapping)
     EXPECT_EQ(ip1.b, IndexPair::size_type{0});
     
     EXPECT_EQ(true, conf.cache.IsMetricSet());
-    EXPECT_EQ(conf.cache.GetMetric(), Real{4});
+    EXPECT_NEAR(static_cast<double>(conf.cache.GetMetric()), 4.0, 0.000001);
 }
 
 TEST(Distance, EdgeCircleOverlapping2)
@@ -352,7 +352,7 @@ TEST(Distance, EdgeCircleTouching)
     EXPECT_EQ(ip1.b, IndexPair::size_type{0});
     
     EXPECT_EQ(true, conf.cache.IsMetricSet());
-    EXPECT_EQ(conf.cache.GetMetric(), Real{4});
+    EXPECT_NEAR(static_cast<double>(conf.cache.GetMetric()), 4.0, 0.000001);
 }
 
 TEST(Distance, HorEdgeSquareTouching)
@@ -403,7 +403,7 @@ TEST(Distance, HorEdgeSquareTouching)
     EXPECT_EQ(ip1.b, IndexPair::size_type{1});
     
     EXPECT_EQ(true, conf.cache.IsMetricSet());
-    EXPECT_EQ(conf.cache.GetMetric(), Real{8});
+    EXPECT_NEAR(static_cast<double>(conf.cache.GetMetric()), 8.0, 0.000001);
 }
 
 TEST(Distance, VerEdgeSquareTouching)
@@ -435,7 +435,8 @@ TEST(Distance, VerEdgeSquareTouching)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(Sqrt(GetLengthSquared(witnessPoints.a - witnessPoints.b)), Real(1) * Meter);
+    EXPECT_NEAR(static_cast<double>(Real{Sqrt(GetLengthSquared(witnessPoints.a - witnessPoints.b)) / Meter}),
+                1.0, 0.000001);
     EXPECT_EQ(GetX(witnessPoints.a), Real{3} * Meter);
     EXPECT_EQ(GetY(witnessPoints.a), Real{2} * Meter);
     
@@ -546,7 +547,7 @@ TEST(Distance, SquareSquareTouchingVertically)
     EXPECT_EQ(ip.b, IndexPair::size_type{1});
     
     EXPECT_EQ(true, conf.cache.IsMetricSet());
-    EXPECT_EQ(conf.cache.GetMetric(), Real{4});
+    EXPECT_NEAR(static_cast<double>(conf.cache.GetMetric()), 4.0, 0.000001);
 }
 
 TEST(Distance, SquareSquareDiagonally)

@@ -52,15 +52,13 @@ RayCastOutput playrho::RayCast(const Length radius, const Length2D location,
     
     // Find the point of intersection of the line with the circle.
     const auto a = -(c + Sqrt(sigma) * SquareMeter);
-    const auto fraction = a / rr;
+    const auto fraction = Real{a / rr};
 
     // Is the intersection point on the segment?
     if ((fraction >= Real{0}) && (fraction <= input.maxFraction))
     {
-        return RayCastOutput{
-            GetUnitVector(s + fraction * raySegment, UnitVec2::GetZero()),
-            fraction
-        };
+        const auto normal = GetUnitVector(s + fraction * raySegment, UnitVec2::GetZero());
+        return RayCastOutput{normal, fraction, true};
     }
     
     return RayCastOutput{};
@@ -134,7 +132,7 @@ RayCastOutput playrho::RayCast(const AABB& aabb, const RayCastInput& input) noex
     }
     
     // Intersection.
-    return RayCastOutput{normal, tmin};
+    return RayCastOutput{normal, tmin, true};
 }
 
 RayCastOutput playrho::RayCast(const DistanceProxy& proxy, const RayCastInput& input,
@@ -174,13 +172,13 @@ RayCastOutput playrho::RayCast(const DistanceProxy& proxy, const RayCastInput& i
     const auto ray0 = transformedInput.p1;
     const auto ray = transformedInput.p2 - transformedInput.p1; // Ray delta (p2 - p1)
     
-    auto minT = std::nextafter(input.maxFraction, Real(2));
+    auto minT = std::nextafter(Real{input.maxFraction}, Real(2));
     auto normalFound = GetInvalid<UnitVec2>();
     
     for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
     {
         const auto circleResult = ::RayCast(radius, v0, transformedInput);
-        if (minT > circleResult.fraction)
+        if (circleResult.hit && (minT > circleResult.fraction))
         {
             minT = circleResult.fraction;
             normalFound = circleResult.normal;
@@ -190,7 +188,7 @@ RayCastOutput playrho::RayCast(const DistanceProxy& proxy, const RayCastInput& i
         const auto edge = v1 - v0; // Vertex delta
         const auto ray_cross_edge = Cross(ray, edge);
         
-        if (ray_cross_edge != Area{0})
+        if (!almost_zero(Real{ray_cross_edge / SquareMeter}))
         {
             const auto normal = proxy.GetNormal(i);
             const auto offset = normal * radius;
@@ -220,7 +218,7 @@ RayCastOutput playrho::RayCast(const DistanceProxy& proxy, const RayCastInput& i
         }
         else
         {
-            // The two lines are parallel, igonred.
+            // The two lines are parallel, ignored.
         }
         
         v0 = v1;
@@ -228,7 +226,7 @@ RayCastOutput playrho::RayCast(const DistanceProxy& proxy, const RayCastInput& i
     
     if (minT <= input.maxFraction)
     {
-        return RayCastOutput{Rotate(normalFound, transform.q), minT};
+        return RayCastOutput{Rotate(normalFound, transform.q), minT, true};
     }
     return RayCastOutput{};
 }

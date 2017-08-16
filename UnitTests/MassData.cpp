@@ -360,9 +360,10 @@ TEST(MassData, GetForCenteredEdge)
     const auto mass_data = shape.GetMassData();
     EXPECT_EQ(mass_data.mass, density * area);
     {
-        EXPECT_EQ(double(Real{RotInertia{mass_data.I} / (SquareMeter * Kilogram / SquareRadian)}),
-                  double(Real{I / (SquareMeter * Kilogram / SquareRadian)}));
-        EXPECT_NEAR(double(Real{RotInertia{mass_data.I} / (SquareMeter * Kilogram / SquareRadian)}),
+        EXPECT_NEAR(static_cast<double>(Real{RotInertia{mass_data.I} / (SquareMeter * Kilogram / SquareRadian)}),
+                    static_cast<double>(Real{I / (SquareMeter * Kilogram / SquareRadian)}),
+                    0.0001);
+        EXPECT_NEAR(static_cast<double>(Real{RotInertia{mass_data.I} / (SquareMeter * Kilogram / SquareRadian)}),
                     18.70351, 0.009);
         EXPECT_GE(mass_data.I, (polarMoment * density) / SquareRadian);
     }

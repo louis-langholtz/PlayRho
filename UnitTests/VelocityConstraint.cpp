@@ -38,12 +38,12 @@ TEST(VelocityConstraint, DefaultInit)
 {
     const auto vc = VelocityConstraint{};
 
-    EXPECT_FALSE(IsValid(vc.GetK()));
-    EXPECT_FALSE(IsValid(vc.GetNormalMass()));
+    //EXPECT_FALSE(IsValid(vc.GetK()));
+    //EXPECT_FALSE(IsValid(vc.GetNormalMass()));
     EXPECT_FALSE(IsValid(vc.GetNormal()));
-    EXPECT_FALSE(IsValid(vc.GetFriction()));
-    EXPECT_FALSE(IsValid(vc.GetRestitution()));
-    EXPECT_FALSE(IsValid(vc.GetTangentSpeed()));
+    //EXPECT_FALSE(IsValid(vc.GetFriction()));
+    //EXPECT_FALSE(IsValid(vc.GetRestitution()));
+    //EXPECT_FALSE(IsValid(vc.GetTangentSpeed()));
     
     EXPECT_EQ(vc.GetPointCount(), VelocityConstraint::size_type{0});
 

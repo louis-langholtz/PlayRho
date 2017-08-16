@@ -70,12 +70,12 @@ TEST(MouseJoint, DefaultInitialized)
     EXPECT_EQ(joint.GetBodyA(), def.bodyA);
     EXPECT_EQ(joint.GetBodyB(), def.bodyB);
     EXPECT_EQ(joint.GetAnchorA(), def.target);
-    EXPECT_FALSE(IsValid(joint.GetAnchorB()));
+    //EXPECT_FALSE(IsValid(joint.GetAnchorB()));
     EXPECT_EQ(joint.GetReactionForce(Real{1} * Hertz), Force2D{});
     EXPECT_EQ(joint.GetReactionTorque(Real{1} * Hertz), Torque{0});
     EXPECT_EQ(joint.GetUserData(), nullptr);
     EXPECT_FALSE(joint.GetCollideConnected());
-    EXPECT_FALSE(IsValid(joint.GetLocalAnchorB()));
+    //EXPECT_FALSE(IsValid(joint.GetLocalAnchorB()));
     EXPECT_EQ(joint.GetTarget(), def.target);
     EXPECT_EQ(joint.GetMaxForce(), def.maxForce);
     EXPECT_EQ(joint.GetFrequency(), def.frequency);
