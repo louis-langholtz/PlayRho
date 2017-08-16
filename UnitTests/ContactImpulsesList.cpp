@@ -25,7 +25,13 @@ using namespace playrho;
 
 TEST(ContactImpulsesList, ByteSize)
 {
-    EXPECT_EQ(sizeof(ContactImpulsesList), std::size_t(20));
+    switch (sizeof(Real))
+    {
+        case  4: EXPECT_EQ(sizeof(ContactImpulsesList), std::size_t(20)); break;
+        case  8: EXPECT_EQ(sizeof(ContactImpulsesList), std::size_t(40)); break;
+        case 16: EXPECT_EQ(sizeof(ContactImpulsesList), std::size_t(80)); break;
+        default: FAIL(); break;
+    }
 }
 
 TEST(ContactImpulsesList, DefaultConstruction)
