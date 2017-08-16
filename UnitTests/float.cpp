@@ -20,6 +20,7 @@
 #include <cmath>
 #include <limits>
 #include <iostream>
+#include <cstring>
 
 TEST(float, BiggerValsIncreasinglyInaccurate)
 {
