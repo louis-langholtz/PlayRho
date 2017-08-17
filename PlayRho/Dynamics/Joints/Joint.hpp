@@ -239,7 +239,9 @@ void SetAwake(Joint& j) noexcept;
 
 JointCounter GetWorldIndex(const Joint* joint);
 
+#ifdef PLAYRHO_PROVIDE_VECTOR_AT
 BodyConstraintPtr& At(std::vector<BodyConstraintPair>& container, const Body* key);
+#endif
 
 BodyConstraintPtr& At(std::unordered_map<const Body*, BodyConstraint*>& container,
                       const Body* key);

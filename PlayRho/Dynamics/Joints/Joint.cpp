@@ -136,6 +136,7 @@ JointCounter GetWorldIndex(const Joint* joint)
     return JointCounter(-1);
 }
 
+#ifdef PLAYRHO_PROVIDE_VECTOR_AT
 BodyConstraintPtr& At(std::vector<BodyConstraintPair>& container, const Body* key)
 {
     auto last = std::end(container);
@@ -149,6 +150,7 @@ BodyConstraintPtr& At(std::vector<BodyConstraintPair>& container, const Body* ke
     }
     return (*first).second;
 }
+#endif
 
 BodyConstraintPtr& At(std::unordered_map<const Body*, BodyConstraint*>& container,
                       const Body* key)
