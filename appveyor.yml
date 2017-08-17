@@ -37,10 +37,10 @@ before_test:
 
 test_script:
 - ps: |
-  If ($env:PLATFORM -Match "Win32") {
-    $env:PLAYRHO_EXE="x32"
-  }
-  If ($env:PLATFORM -Match "x64") {
-    $env:PLAYRHO_EXE="x64"
-  }
-  Start-Process -FilePath "\projects\playrho\Build\vs2017\bin\$env:PLAYRHO_EXE\$env:CONFIGURATION\HelloWorld.exe" -RedirectStandardOutput "Hello.txt"
+    If ($env:PLATFORM -Match "Win32") {
+      $env:PLAYRHO_EXE="x32"
+    }
+    If ($env:PLATFORM -Match "x64") {
+      $env:PLAYRHO_EXE="x64"
+    }
+    Start-Process -FilePath "\projects\playrho\Build\vs2017\bin\$env:PLAYRHO_EXE\$env:CONFIGURATION\HelloWorld.exe" -RedirectStandardOutput "Hello.txt"
