@@ -20,8 +20,17 @@
  */
 
 #include <PlayRho/Dynamics/Joints/FrictionJoint.hpp>
+#include <PlayRho/Dynamics/Body.hpp>
 
 using namespace playrho;
+
+FrictionJointDef::FrictionJointDef(Body* bA, Body* bB, const Length2D anchor) noexcept:
+    super{super{JointType::Friction}.UseBodyA(bA).UseBodyB(bB)},
+    localAnchorA{GetLocalPoint(*bA, anchor)},
+    localAnchorB{GetLocalPoint(*bB, anchor)}
+{
+    // Intentionally empty.
+}
 
 FrictionJointDef playrho::GetFrictionJointDef(const FrictionJoint& joint) noexcept
 {
