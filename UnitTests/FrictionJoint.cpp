@@ -55,6 +55,21 @@ TEST(FrictionJointDef, DefaultConstruction)
     EXPECT_EQ(def.maxTorque, Real{0} * NewtonMeter);
 }
 
+TEST(FrictionJointDef, InitializingConstructor)
+{
+    World world{WorldDef{}.UseGravity(LinearAcceleration2D{})};
+    const auto p1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
+    const auto p2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
+    const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto anchor = Length2D{Real(0) * Meter, Real(0) * Meter};
+    const auto def = FrictionJointDef{b1, b2, anchor};
+    EXPECT_EQ(def.bodyA, b1);
+    EXPECT_EQ(def.bodyB, b2);
+    EXPECT_EQ(def.localAnchorA, GetLocalPoint(*b1, anchor));
+    EXPECT_EQ(def.localAnchorB, GetLocalPoint(*b2, anchor));
+}
+
 TEST(FrictionJoint, Construction)
 {
     FrictionJointDef def;
