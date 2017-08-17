@@ -28,5 +28,9 @@ configuration:
   - Debug
   - Release
 
+before_test:
+  - if "%platform%"=="Win32" (set "PLAYRHO_EXE=x32")
+  - if "%platform%"=="x64" (set "PLAYRHO_EXE=x64")
+
 test_script:
-  - ps: Start-Process -FilePath "bin\x32\Debug\HelloWorld.exe"
+  - ps: Start-Process -FilePath "\projects\playrho\Build\vs2017\bin\%PLAYRHO_EXE%\%configuration%\HelloWorld.exe"
