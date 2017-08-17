@@ -28,13 +28,6 @@ configuration:
   - Debug
   - Release
 
-before_test:
-  - if "%platform%"=="Win32" (set "PLAYRHO_EXE=x32")
-  - if "%platform%"=="x64" (set "PLAYRHO_EXE=x64")
-  - echo "PLAYRHO_EXE=\"$(PLAYRHO_EXE)\""
-  - echo "PLAYRHO_EXE=\"$env:PLAYRHO_EXE\""
-  - echo "platform=\"{platform}\""
-
 test_script:
 - ps: |
     If ($env:PLATFORM -Match "Win32") {
@@ -43,4 +36,4 @@ test_script:
     If ($env:PLATFORM -Match "x64") {
       $env:PLAYRHO_EXE="x64"
     }
-    Start-Process -FilePath "\projects\playrho\Build\vs2017\bin\$env:PLAYRHO_EXE\$env:CONFIGURATION\HelloWorld.exe" -RedirectStandardOutput "Hello.txt"
+    Start-Process -FilePath "\projects\playrho\Build\vs2017\bin\$env:PLAYRHO_EXE\$env:CONFIGURATION\HelloWorld.exe" -RedirectStandardOutput "Hello.txt" -Wait -NoNewWindow
