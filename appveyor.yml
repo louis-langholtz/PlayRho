@@ -38,4 +38,4 @@ before_test:
 test_script:
   - if "%platform%"=="Win32" cmd: \projects\playrho\Build\vs2017\bin\x32\Debug\HelloWorld.exe
   - if "%platform%"=="x64" cmd: \projects\playrho\Build\vs2017\bin\x64\Debug\HelloWorld.exe
-  - ps: Start-Process -FilePath "\projects\playrho\Build\vs2017\bin\$(PLAYRHO_EXE)\%configuration%\HelloWorld.exe"
+  - ps: Start-Process -FilePath "\projects\playrho\Build\vs2017\bin\x64\Debug\HelloWorld.exe"
