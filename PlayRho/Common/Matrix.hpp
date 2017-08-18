@@ -39,6 +39,10 @@ namespace playrho {
     using Matrix33 = Matrix<3, 3, T>;
     
     using Mat22 = Matrix22<Real>;
+    
+    using Mass22 = Matrix22<Mass>;
+    using InvMass22 = Matrix22<InvMass>;
+    
     using Mat33 = Matrix33<Real>;
     
     template <>

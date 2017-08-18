@@ -77,6 +77,12 @@ constexpr inline auto GetZ(const T& value)
     return std::get<2>(value);
 }
 
+template <typename T, LoValueCheck lo, HiValueCheck hi>
+constexpr inline auto StripUnit(const BoundedValue<T, lo, hi>& v)
+{
+    return StripUnit(v.get());
+}
+
 template<class TYPE>
 constexpr inline auto Square(TYPE t) noexcept { return t * t; }
 
@@ -406,15 +412,17 @@ constexpr T Solve(const Mat22 mat, const T b) noexcept
         }: T{};
 }
 
-constexpr Mat22 Invert(const Mat22 value) noexcept
+template <class IN_TYPE>
+constexpr auto Invert(const Matrix22<IN_TYPE> value) noexcept
 {
     const auto cp = Cross(std::get<0>(value), std::get<1>(value));
-    return (cp != 0)?
-        Mat22{
-            Vec2{ std::get<1>(value)[1] / cp, -std::get<0>(value)[1] / cp},
-            Vec2{-std::get<1>(value)[0] / cp,  std::get<0>(value)[0] / cp}
+    using OutType = decltype(std::get<0>(value)[0] / cp);
+    return (!almost_zero(StripUnit(cp)))?
+        Matrix22<OutType>{
+            Vector2D<OutType>{ std::get<1>(std::get<1>(value)) / cp, -std::get<1>(std::get<0>(value)) / cp},
+            Vector2D<OutType>{-std::get<0>(std::get<1>(value)) / cp,  std::get<0>(std::get<0>(value)) / cp}
         }:
-        Mat22{Vec2{0, 0}, Vec2{0, 0}};
+        Matrix22<OutType>{};
 }
 
 /// Solve A * x = b, where b is a column vector. This is more efficient
@@ -519,6 +527,16 @@ constexpr inline Vec2 Transform(const Vec2 v, const Mat22& A) noexcept
         GetY(GetX(A)) * GetX(v) + GetY(GetY(A)) * GetY(v)
     };
 }
+
+#ifdef USE_BOOST_UNITS
+constexpr inline Momentum2D Transform(const LinearVelocity2D v, const Mass22& A) noexcept
+{
+    return Momentum2D{
+        GetX(GetX(A)) * GetX(v) + GetX(GetY(A)) * GetY(v),
+        GetY(GetX(A)) * GetX(v) + GetY(GetY(A)) * GetY(v)
+    };
+}
+#endif
 
 /// Multiply a matrix transpose times a vector. If a rotation matrix is provided,
 /// then this transforms the vector from one frame to another (inverse transform).

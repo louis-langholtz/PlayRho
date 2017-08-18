@@ -77,7 +77,7 @@ void FrictionJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const St
     const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
 
     {
-        Mat22 K;
+        InvMass22 K;
         const auto exx = InvMass{
             invMassA + invRotInertiaA * Square(GetY(m_rA)) / SquareRadian +
             invMassB + invRotInertiaB * Square(GetY(m_rB)) / SquareRadian
@@ -90,10 +90,10 @@ void FrictionJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const St
             invMassA + invRotInertiaA * Square(GetX(m_rA)) / SquareRadian +
             invMassB + invRotInertiaB * Square(GetX(m_rB)) / SquareRadian
         };
-        GetX(GetX(K)) = StripUnit(exx);
-        GetY(GetX(K)) = StripUnit(exy);
+        GetX(GetX(K)) = exx;
+        GetY(GetX(K)) = exy;
         GetX(GetY(K)) = GetY(GetX(K));
-        GetY(GetY(K)) = StripUnit(eyy);
+        GetY(GetY(K)) = eyy;
         m_linearMass = Invert(K);
     }
 
@@ -166,11 +166,7 @@ bool FrictionJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
         const auto vb = LinearVelocity2D{velB.linear + (GetRevPerpendicular(m_rB) * (velB.angular / Radian))};
         const auto va = LinearVelocity2D{velA.linear + (GetRevPerpendicular(m_rA) * (velA.angular / Radian))};
 
-        const auto unitlessImpulse = -Transform(GetVec2(vb - va), m_linearMass);
-        const auto impulse = Momentum2D{
-            GetX(unitlessImpulse) * Kilogram * MeterPerSecond,
-            GetY(unitlessImpulse) * Kilogram * MeterPerSecond
-        };
+        const auto impulse = -Transform(vb - va, m_linearMass);
         const auto oldImpulse = m_linearImpulse;
         m_linearImpulse += impulse;
 

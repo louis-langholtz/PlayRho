@@ -183,76 +183,12 @@ namespace playrho
     
 #ifdef USE_BOOST_UNITS
     
-    constexpr inline Real StripUnit(const Angle value)
+    template<typename Y>
+    inline constexpr auto StripUnit(const boost::units::quantity<Y, Real> source)
     {
-        return Real{value / Radian};
+        return source.value();
     }
-    
-    constexpr inline Real StripUnit(const Length value)
-    {
-        return Real{value / Meter};
-    }
-    
-    constexpr inline Real StripUnit(const Area value)
-    {
-        return Real{value / SquareMeter};
-    }
-    
-    constexpr inline Real StripUnit(const Mass value)
-    {
-        // InvMass has units of M^-1
-        return Real{value / Kilogram};
-    }
-    
-    constexpr inline Real StripUnit(const InvMass value)
-    {
-        // InvMass has units of M^-1
-        return Real{value * Kilogram};
-    }
-    
-    constexpr inline Real StripUnit(const RotInertia value)
-    {
-        return Real{value * SquareRadian / (SquareMeter * Kilogram)};
-    }
-    
-    constexpr inline Real StripUnit(const InvRotInertia value)
-    {
-        // InvRotInertia has units of L^-2 M^-1 QP^2
-        return Real{value * SquareMeter * Kilogram / SquareRadian};
-    }
-    
-    constexpr inline Real StripUnit(const Momentum value)
-    {
-        // Momentum has units of M L T^-1
-        return Real{value * Second / (Kilogram * Meter)};
-    }
-    
-    constexpr inline Real StripUnit(const LinearVelocity value)
-    {
-        return Real{value / MeterPerSecond};
-    }
-    
-    constexpr inline Real StripUnit(const AngularVelocity value)
-    {
-        return Real{value / RadianPerSecond};
-    }
-    
-    constexpr inline Real StripUnit(const Density value)
-    {
-        return Real{value / KilogramPerSquareMeter};
-    }
-    
-    constexpr inline Real StripUnit(const Force value)
-    {
-        // Force has units of Newtons - which are M L T^2
-        return Real{value / Newton};
-    }
-    
-    constexpr inline Real StripUnit(const Torque value)
-    {
-        return Real{value / NewtonMeter};
-    }
-        
+
     template <>
     constexpr Angle GetInvalid() noexcept
     {
