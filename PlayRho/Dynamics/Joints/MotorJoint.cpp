@@ -82,7 +82,7 @@ void MotorJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
 
     {
-        Mat22 K;
+        InvMass22 K;
         const auto exx = InvMass{
             invMassA + invMassB +
             invRotInertiaA * Square(GetY(m_rA)) / SquareRadian +
@@ -97,10 +97,10 @@ void MotorJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
             invRotInertiaA * Square(GetX(m_rA)) / SquareRadian +
             invRotInertiaB * Square(GetX(m_rB)) / SquareRadian
         };
-        GetX(GetX(K)) = StripUnit(exx);
-        GetY(GetX(K)) = StripUnit(exy);
+        GetX(GetX(K)) = exx;
+        GetY(GetX(K)) = exy;
         GetX(GetY(K)) = GetY(GetX(K));
-        GetY(GetY(K)) = StripUnit(eyy);
+        GetY(GetY(K)) = eyy;
         m_linearMass = Invert(K);
     }
     
@@ -177,11 +177,7 @@ bool MotorJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
 
         const auto Cdot = LinearVelocity2D{(vb - va) + inv_h * m_correctionFactor * m_linearError};
 
-        const auto ulImp = -Transform(GetVec2(Cdot), m_linearMass);
-        const auto impulse = Momentum2D{
-            GetX(ulImp) * Kilogram * MeterPerSecond,
-            GetY(ulImp) * Kilogram * MeterPerSecond
-        };
+        const auto impulse = -Transform(Cdot, m_linearMass);
         const auto oldImpulse = m_linearImpulse;
         m_linearImpulse += impulse;
 

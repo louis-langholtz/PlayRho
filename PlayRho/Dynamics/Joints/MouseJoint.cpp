@@ -73,7 +73,7 @@ void MouseJoint::SetTarget(const Length2D target) noexcept
     }
 }
 
-Mat22 MouseJoint::GetEffectiveMassMatrix(const BodyConstraint& body) const noexcept
+Mass22 MouseJoint::GetEffectiveMassMatrix(const BodyConstraint& body) const noexcept
 {
     // K    = [(1/m1 + 1/m2) * eye(2) - skew(r1) * invI1 * skew(r1) - skew(r2) * invI2 * skew(r2)]
     //      = [1/m1+1/m2     0    ] + invI1 * [r1.y*r1.y -r1.x*r1.y] + invI2 * [r1.y*r1.y -r1.x*r1.y]
@@ -86,12 +86,12 @@ Mat22 MouseJoint::GetEffectiveMassMatrix(const BodyConstraint& body) const noexc
     const auto exy = InvMass{-invRotInertia * GetX(m_rB) * GetY(m_rB) / SquareRadian};
     const auto eyy = InvMass{invMass + (invRotInertia * Square(GetX(m_rB)) / SquareRadian) + m_gamma};
 
-    Mat22 K;
-    GetX(GetX(K)) = StripUnit(exx);
-    GetY(GetX(K)) = StripUnit(exy);
+    InvMass22 K;
+    GetX(GetX(K)) = exx;
+    GetY(GetX(K)) = exy;
     GetX(GetY(K)) = GetY(GetX(K));
-    GetY(GetY(K)) = StripUnit(eyy);
-    return K;
+    GetY(GetY(K)) = eyy;
+    return Invert(K);
 }
 
 void MouseJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
@@ -129,7 +129,7 @@ void MouseJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     // Compute the effective mass matrix.
     m_rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB);
 
-    m_mass = Invert(GetEffectiveMassMatrix(*bodyConstraintB));
+    m_mass = GetEffectiveMassMatrix(*bodyConstraintB);
 
     m_C = LinearVelocity2D{((posB.linear + m_rB) - m_targetA) * beta};
     assert(IsValid(m_C));
@@ -162,11 +162,7 @@ bool MouseJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
     const auto Cdot = LinearVelocity2D{velB.linear + (GetRevPerpendicular(m_rB) * (velB.angular / Radian))};
     const auto ev = Cdot + LinearVelocity2D{m_C + (m_gamma * m_impulse)};
     const auto oldImpulse = m_impulse;
-    const auto unitlessImpulse = Transform(GetVec2(-ev), m_mass);
-    const auto addImpulse = Momentum2D{
-        GetX(unitlessImpulse) * Kilogram * MeterPerSecond,
-        GetY(unitlessImpulse) * Kilogram * MeterPerSecond
-    };
+    const auto addImpulse = Transform(-ev, m_mass);
     assert(IsValid(addImpulse));
     m_impulse += addImpulse;
     const auto maxImpulse = step.GetTime() * Force{m_maxForce};

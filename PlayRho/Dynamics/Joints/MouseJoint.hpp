@@ -84,7 +84,7 @@ private:
     bool SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step) override;
     bool SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const override;
 
-    Mat22 GetEffectiveMassMatrix(const BodyConstraint& body) const noexcept;
+    Mass22 GetEffectiveMassMatrix(const BodyConstraint& body) const noexcept;
 
     Length2D m_targetA;
     Length2D m_localAnchorB;
@@ -98,7 +98,7 @@ private:
 
     // Solver variables. These are only valid after InitVelocityConstraints called.
     Length2D m_rB;
-    Mat22 m_mass; ///< 2x2 mass matrix in kilograms.
+    Mass22 m_mass; ///< 2x2 mass matrix in kilograms.
     LinearVelocity2D m_C;
 };
 
