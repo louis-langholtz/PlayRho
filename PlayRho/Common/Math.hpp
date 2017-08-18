@@ -401,15 +401,16 @@ constexpr inline auto Cross(const Vec3 a, const Vec3 b) noexcept
 
 /// Solve A * x = b, where b is a column vector. This is more efficient
 /// than computing the inverse in one-shot cases.
-template <typename T>
-constexpr T Solve(const Mat22 mat, const T b) noexcept
+template <typename T, typename U>
+constexpr auto Solve(const Matrix22<U> mat, const Vector2D<T> b) noexcept
 {
     const auto cp = Cross(std::get<0>(mat), std::get<1>(mat));
-    return (cp != 0)?
-        T{
+    using OutType = decltype((U{} * T{}) / cp);
+    return (!almost_zero(StripUnit(cp)))?
+        Vector2D<OutType>{
             (std::get<1>(mat)[1] * b[0] - std::get<1>(mat)[0] * b[1]) / cp,
             (std::get<0>(mat)[0] * b[1] - std::get<0>(mat)[1] * b[0]) / cp
-        }: T{};
+        }: Vector2D<OutType>{};
 }
 
 template <class IN_TYPE>

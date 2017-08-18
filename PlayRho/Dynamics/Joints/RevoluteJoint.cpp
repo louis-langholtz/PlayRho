@@ -402,12 +402,12 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
             invMassB + (invRotInertiaB * Square(GetX(rB)) / SquareRadian)
         };
         
-        Mat22 K;
-        GetX(GetX(K)) = StripUnit(exx);
-        GetY(GetX(K)) = StripUnit(exy);
+        InvMass22 K;
+        GetX(GetX(K)) = exx;
+        GetY(GetX(K)) = exy;
         GetX(GetY(K)) = GetY(GetX(K));
-        GetY(GetY(K)) = StripUnit(eyy);
-        const auto P = -Solve(K, C) * (Real(1.0f) * Kilogram);
+        GetY(GetY(K)) = eyy;
+        const auto P = -Solve(K, C);
 
         posA -= Position{invMassA * P, invRotInertiaA * Cross(rA, P) / Radian};
         posB += Position{invMassB * P, invRotInertiaB * Cross(rB, P) / Radian};
