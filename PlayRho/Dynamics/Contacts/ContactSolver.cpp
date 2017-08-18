@@ -23,6 +23,7 @@
 #include <PlayRho/Dynamics/Contacts/PositionSolverManifold.hpp>
 #include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
 #include <PlayRho/Dynamics/Contacts/PositionConstraint.hpp>
+#include <PlayRho/Common/OptionalValue.hpp>
 
 #include <algorithm>
 
@@ -68,7 +69,7 @@ struct ImpulseChange
     UnitVec2 direction; ///< Direction.
 };
 
-inline VelocityPair ApplyImpulses(const VelocityConstraint& vc, const Momentum2D impulses)
+VelocityPair ApplyImpulses(const VelocityConstraint& vc, const Momentum2D impulses)
 {
     assert(IsValid(impulses));
 
@@ -107,7 +108,8 @@ Momentum BlockSolveUpdate(VelocityConstraint& vc, const Momentum2D newImpulses)
     return std::max(Abs(newImpulses[0]), Abs(newImpulses[1]));
 }
 
-inline Momentum BlockSolveNormalCase1(VelocityConstraint& vc, const LinearVelocity2D b_prime)
+Optional<Momentum> BlockSolveNormalCase1(VelocityConstraint& vc,
+                                         const LinearVelocity2D b_prime)
 {
     //
     // Case 1: vn = 0
@@ -143,12 +145,12 @@ inline Momentum BlockSolveNormalCase1(VelocityConstraint& vc, const LinearVeloci
         assert(Abs(post_vn1 - vcp1.velocityBias) < k_errorTol);
         assert(Abs(post_vn2 - vcp2.velocityBias) < k_errorTol);
 #endif
-        return max;
+        return Optional<Momentum>{max};
     }
-    return GetInvalid<Momentum>();
+    return Optional<Momentum>{};
 }
 
-inline Momentum BlockSolveNormalCase2(VelocityConstraint& vc, const LinearVelocity2D b_prime)
+Optional<Momentum> BlockSolveNormalCase2(VelocityConstraint& vc, const LinearVelocity2D b_prime)
 {
     //
     // Case 2: vn1 = 0 and x2 = 0
@@ -179,12 +181,12 @@ inline Momentum BlockSolveNormalCase2(VelocityConstraint& vc, const LinearVeloci
         assert(Abs(post_vn1 - vcp1.velocityBias) < k_majorErrorTol);
         assert(Abs(post_vn1 - vcp1.velocityBias) < k_errorTol);
 #endif
-        return max;
+        return Optional<Momentum>{max};
     }
-    return GetInvalid<Momentum>();
+    return Optional<Momentum>{};
 }
 
-inline Momentum BlockSolveNormalCase3(VelocityConstraint& vc, const LinearVelocity2D b_prime)
+Optional<Momentum> BlockSolveNormalCase3(VelocityConstraint& vc, const LinearVelocity2D b_prime)
 {
     //
     // Case 3: vn2 = 0 and x1 = 0
@@ -215,12 +217,12 @@ inline Momentum BlockSolveNormalCase3(VelocityConstraint& vc, const LinearVeloci
         assert(Abs(post_vn2 - vcp2.velocityBias) < k_majorErrorTol);
         assert(Abs(post_vn2 - vcp2.velocityBias) < k_errorTol);
 #endif
-        return max;
+        return Optional<Momentum>{max};
     }
-    return GetInvalid<Momentum>();
+    return Optional<Momentum>{};
 }
 
-inline Momentum BlockSolveNormalCase4(VelocityConstraint& vc, const LinearVelocity2D b_prime)
+Optional<Momentum> BlockSolveNormalCase4(VelocityConstraint& vc, const LinearVelocity2D b_prime)
 {
     //
     // Case 4: x1 = 0 and x2 = 0
@@ -231,9 +233,9 @@ inline Momentum BlockSolveNormalCase4(VelocityConstraint& vc, const LinearVeloci
     const auto vn2 = Get<1>(b_prime);
     if ((vn1 >= LinearVelocity{0}) && (vn2 >= LinearVelocity{0}))
     {
-        return BlockSolveUpdate(vc, Momentum2D{});
+        return Optional<Momentum>{BlockSolveUpdate(vc, Momentum2D{})};
     }
-    return GetInvalid<Momentum>();
+    return Optional<Momentum>{};
 }
 
 inline Momentum BlockSolveNormalConstraint(VelocityConstraint& vc)
@@ -301,19 +303,19 @@ inline Momentum BlockSolveNormalConstraint(VelocityConstraint& vc)
         return b - Transform(GetNormalImpulses(vc), K);
     }();
     
-    auto maxIncImpulse = Momentum{0};
+    auto maxIncImpulse = Optional<Momentum>{};
     maxIncImpulse = BlockSolveNormalCase1(vc, b_prime);
-    if (IsValid(maxIncImpulse))
-        return maxIncImpulse;
+    if (maxIncImpulse.has_value())
+        return *maxIncImpulse;
     maxIncImpulse = BlockSolveNormalCase2(vc, b_prime);
-    if (IsValid(maxIncImpulse))
-        return maxIncImpulse;
+    if (maxIncImpulse.has_value())
+        return *maxIncImpulse;
     maxIncImpulse = BlockSolveNormalCase3(vc, b_prime);
-    if (IsValid(maxIncImpulse))
-        return maxIncImpulse;
+    if (maxIncImpulse.has_value())
+        return *maxIncImpulse;
     maxIncImpulse = BlockSolveNormalCase4(vc, b_prime);
-    if (IsValid(maxIncImpulse))
-        return maxIncImpulse;
+    if (maxIncImpulse.has_value())
+        return *maxIncImpulse;
     
     // No solution, give up. This is hit sometimes, but it doesn't seem to matter.
     return 0;
