@@ -281,17 +281,11 @@ namespace playrho {
         --m_pointCount;
     }
     
-    /// Gets the "K" value.
-    /// @return "K" value or an invalid Mat22 if no other value has been set.
-    /// @sa SetK.
     inline InvMass22 VelocityConstraint::GetK() const noexcept
     {
         return m_K;
     }
     
-    /// Gets the "normal mass" value.
-    /// @return "normal mass" value or the invalid Mat22 if no other value has been set.
-    /// @sa SetK.
     inline Mass22 VelocityConstraint::GetNormalMass() const noexcept
     {
         return m_normalMass;
