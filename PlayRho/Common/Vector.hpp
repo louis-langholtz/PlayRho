@@ -130,25 +130,20 @@ struct Vector
     value_type elements[N];
 };
 
+template <size_t I, size_t N, typename T>
+constexpr auto& Get(Vector<N, T>& v) noexcept
+{
+    static_assert(I < N, "Index out of bounds in playrho::Get<> (playrho::Vector)");
+    return v[I];
+}
+
+template <size_t I, size_t N, typename T>
+constexpr auto Get(const Vector<N, T>& v) noexcept
+{
+    static_assert(I < N, "Index out of bounds in playrho::Get<> (playrho::Vector)");
+    return v[I];
+}
+
 } // namespace playrho
-
-namespace std
-{
-
-template <size_t I, size_t N, typename T>
-constexpr auto& get(playrho::Vector<N, T>& v) noexcept
-{
-    static_assert(I < N, "Index out of bounds in std::get<> (playrho::Vector)");
-    return v[I];
-}
-
-template <size_t I, size_t N, typename T>
-constexpr auto get(const playrho::Vector<N, T>& v) noexcept
-{
-    static_assert(I < N, "Index out of bounds in std::get<> (playrho::Vector)");
-    return v[I];
-}
-
-} // namespace std
 
 #endif /* Vector_hpp */

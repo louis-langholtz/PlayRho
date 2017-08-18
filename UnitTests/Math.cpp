@@ -787,18 +787,18 @@ TEST(Math, InvertZeroIsZero)
 {
     const auto mat = Mat22{};
     const auto out = Invert(mat);
-    EXPECT_EQ(std::get<0>(std::get<0>(out)), std::get<0>(std::get<0>(mat)));
-    EXPECT_EQ(std::get<0>(std::get<1>(out)), std::get<0>(std::get<1>(mat)));
-    EXPECT_EQ(std::get<1>(std::get<0>(out)), std::get<1>(std::get<0>(mat)));
-    EXPECT_EQ(std::get<1>(std::get<1>(out)), std::get<1>(std::get<1>(mat)));
+    EXPECT_EQ(Get<0>(Get<0>(out)), Get<0>(Get<0>(mat)));
+    EXPECT_EQ(Get<0>(Get<1>(out)), Get<0>(Get<1>(mat)));
+    EXPECT_EQ(Get<1>(Get<0>(out)), Get<1>(Get<0>(mat)));
+    EXPECT_EQ(Get<1>(Get<1>(out)), Get<1>(Get<1>(mat)));
 }
 
 TEST(Math, InvertOneIsZero)
 {
     const auto mat = Mat22{Vec2{Real(1), Real(1)}, Vec2{Real(1), Real(1)}};
     const auto out = Invert(mat);
-    EXPECT_EQ(std::get<0>(std::get<0>(out)), Real(0));
-    EXPECT_EQ(std::get<0>(std::get<1>(out)), Real(0));
-    EXPECT_EQ(std::get<1>(std::get<0>(out)), Real(0));
-    EXPECT_EQ(std::get<1>(std::get<1>(out)), Real(0));
+    EXPECT_EQ(Get<0>(Get<0>(out)), Real(0));
+    EXPECT_EQ(Get<0>(Get<1>(out)), Real(0));
+    EXPECT_EQ(Get<1>(Get<0>(out)), Real(0));
+    EXPECT_EQ(Get<1>(Get<1>(out)), Real(0));
 }

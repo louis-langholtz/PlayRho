@@ -230,15 +230,10 @@ template <> constexpr inline bool IsValid(const UnitVec2& value) noexcept
     return IsValid(value.GetX()) && IsValid(value.GetY()) && (value != UnitVec2::GetZero());
 }
 
-} // namespace playrho
-
-namespace std
-{
-
 template <size_t I>
-constexpr playrho::UnitVec2::value_type get(playrho::UnitVec2 v) noexcept
+constexpr UnitVec2::value_type Get(UnitVec2 v) noexcept
 {
-    static_assert(I < 2, "Index out of bounds in std::get<> (playrho::UnitVec2)");
+    static_assert(I < 2, "Index out of bounds in playrho::Get<> (playrho::UnitVec2)");
     switch (I)
     {
         case 0: return v.GetX();
@@ -247,16 +242,17 @@ constexpr playrho::UnitVec2::value_type get(playrho::UnitVec2 v) noexcept
 }
 
 template <>
-constexpr playrho::UnitVec2::value_type get<0>(playrho::UnitVec2 v) noexcept
+constexpr UnitVec2::value_type Get<0>(UnitVec2 v) noexcept
 {
     return v.GetX();
 }
 
 template <>
-constexpr playrho::UnitVec2::value_type get<1>(playrho::UnitVec2 v) noexcept
+constexpr UnitVec2::value_type Get<1>(UnitVec2 v) noexcept
 {
     return v.GetY();
 }
-}
+
+} // namespace playrho
 
 #endif /* UnitVec2_hpp */

@@ -34,8 +34,8 @@ namespace playrho
     template <typename TYPE>
     constexpr inline bool operator == (const Vector3D<TYPE> a, const Vector3D<TYPE> b) noexcept
     {
-        return (std::get<0>(a) == std::get<0>(b)) && (std::get<1>(a) == std::get<1>(b))
-            && (std::get<2>(a) == std::get<2>(b));
+        return (Get<0>(a) == Get<0>(b)) && (Get<1>(a) == Get<1>(b))
+            && (Get<2>(a) == Get<2>(b));
     }
     
     template <typename TYPE>
@@ -48,9 +48,9 @@ namespace playrho
     template <typename TYPE>
     constexpr Vector3D<TYPE>& operator += (Vector3D<TYPE>& lhs, const Vector3D<TYPE> rhs) noexcept
     {
-        std::get<0>(lhs) += std::get<0>(rhs);
-        std::get<1>(lhs) += std::get<1>(rhs);
-        std::get<2>(lhs) += std::get<2>(rhs);
+        Get<0>(lhs) += Get<0>(rhs);
+        Get<1>(lhs) += Get<1>(rhs);
+        Get<2>(lhs) += Get<2>(rhs);
         return lhs;
     }
     
@@ -58,40 +58,40 @@ namespace playrho
     template <typename TYPE>
     constexpr Vector3D<TYPE>& operator -= (Vector3D<TYPE>& lhs, const Vector3D<TYPE> rhs) noexcept
     {
-        std::get<0>(lhs) -= std::get<0>(rhs);
-        std::get<1>(lhs) -= std::get<1>(rhs);
-        std::get<2>(lhs) -= std::get<2>(rhs);
+        Get<0>(lhs) -= Get<0>(rhs);
+        Get<1>(lhs) -= Get<1>(rhs);
+        Get<2>(lhs) -= Get<2>(rhs);
         return lhs;
     }
     
     template <typename TYPE>
     constexpr Vector3D<TYPE>& operator *= (Vector3D<TYPE>& lhs, const Real rhs) noexcept
     {
-        std::get<0>(lhs) *= rhs;
-        std::get<1>(lhs) *= rhs;
-        std::get<2>(lhs) *= rhs;
+        Get<0>(lhs) *= rhs;
+        Get<1>(lhs) *= rhs;
+        Get<2>(lhs) *= rhs;
         return lhs;
     }
     
     template <typename TYPE>
     constexpr Vector3D<TYPE>& operator /= (Vector3D<TYPE>& lhs, const Real rhs) noexcept
     {
-        std::get<0>(lhs) /= rhs;
-        std::get<1>(lhs) /= rhs;
-        std::get<2>(lhs) /= rhs;
+        Get<0>(lhs) /= rhs;
+        Get<1>(lhs) /= rhs;
+        Get<2>(lhs) /= rhs;
         return lhs;
     }
     
     template <typename T>
     constexpr auto operator+ (const Vector3D<T> v) noexcept
     {
-        return Vector3D<T>{+std::get<0>(v), +std::get<1>(v), +std::get<2>(v)};
+        return Vector3D<T>{+Get<0>(v), +Get<1>(v), +Get<2>(v)};
     }
     
     template <typename T>
     constexpr auto operator- (const Vector3D<T> v) noexcept
     {
-        return Vector3D<T>{-std::get<0>(v), -std::get<1>(v), -std::get<2>(v)};
+        return Vector3D<T>{-Get<0>(v), -Get<1>(v), -Get<2>(v)};
     }
     
     /// Add two vectors component-wise.
@@ -145,7 +145,7 @@ namespace playrho
     template <>
     constexpr inline bool IsValid(const Vec3& value) noexcept
     {
-        return IsValid(std::get<0>(value)) && IsValid(std::get<1>(value)) && IsValid(std::get<2>(value));
+        return IsValid(Get<0>(value)) && IsValid(Get<1>(value)) && IsValid(Get<2>(value));
     }
     
 } // namespace playrho

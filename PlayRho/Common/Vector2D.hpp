@@ -84,13 +84,13 @@ namespace playrho
     template <typename TYPE>
     constexpr inline bool IsValid(const Vector2D<TYPE>& value) noexcept
     {
-        return IsValid(std::get<0>(value)) && IsValid(std::get<1>(value));
+        return IsValid(Get<0>(value)) && IsValid(Get<1>(value));
     }
     
     template <typename TYPE>
     constexpr bool operator == (const Vector2D<TYPE> a, const Vector2D<TYPE> b) noexcept
     {
-        return (std::get<0>(a) == std::get<0>(b)) && (std::get<1>(a) == std::get<1>(b));
+        return (Get<0>(a) == Get<0>(b)) && (Get<1>(a) == Get<1>(b));
     }
     
     template <typename TYPE>
@@ -103,8 +103,8 @@ namespace playrho
     template <typename TYPE>
     constexpr Vector2D<TYPE>& operator += (Vector2D<TYPE>& lhs, const Vector2D<TYPE> rhs) noexcept
     {
-        std::get<0>(lhs) += std::get<0>(rhs);
-        std::get<1>(lhs) += std::get<1>(rhs);
+        Get<0>(lhs) += Get<0>(rhs);
+        Get<1>(lhs) += Get<1>(rhs);
         return lhs;
     }
     
@@ -112,37 +112,37 @@ namespace playrho
     template <typename TYPE>
     constexpr Vector2D<TYPE>& operator -= (Vector2D<TYPE>& lhs, const Vector2D<TYPE> rhs) noexcept
     {
-        std::get<0>(lhs) -= std::get<0>(rhs);
-        std::get<1>(lhs) -= std::get<1>(rhs);
+        Get<0>(lhs) -= Get<0>(rhs);
+        Get<1>(lhs) -= Get<1>(rhs);
         return lhs;
     }
 
     template <typename TYPE>
     constexpr Vector2D<TYPE>& operator *= (Vector2D<TYPE>& lhs, const Real rhs) noexcept
     {
-        std::get<0>(lhs) *= rhs;
-        std::get<1>(lhs) *= rhs;
+        Get<0>(lhs) *= rhs;
+        Get<1>(lhs) *= rhs;
         return lhs;
     }
     
     template <typename TYPE>
     constexpr Vector2D<TYPE>& operator /= (Vector2D<TYPE>& lhs, const Real rhs) noexcept
     {
-        std::get<0>(lhs) /= rhs;
-        std::get<1>(lhs) /= rhs;
+        Get<0>(lhs) /= rhs;
+        Get<1>(lhs) /= rhs;
         return lhs;
     }
     
     template <typename T>
     constexpr auto operator+ (const Vector2D<T> v) noexcept
     {
-        return Vector2D<T>{+std::get<0>(v), +std::get<1>(v)};
+        return Vector2D<T>{+Get<0>(v), +Get<1>(v)};
     }
 
     template <typename T>
     constexpr auto operator- (const Vector2D<T> v) noexcept
     {
-        return Vector2D<T>{-std::get<0>(v), -std::get<1>(v)};
+        return Vector2D<T>{-Get<0>(v), -Get<1>(v)};
     }
 
     /// Add two vectors component-wise.
@@ -162,19 +162,19 @@ namespace playrho
     template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{} * TYPE2{})>
     constexpr inline Vector2D<OUT_TYPE> operator * (const TYPE1 s, Vector2D<TYPE2> a) noexcept
     {
-        return Vector2D<OUT_TYPE>{std::get<0>(a) * s, std::get<1>(a) * s};
+        return Vector2D<OUT_TYPE>{Get<0>(a) * s, Get<1>(a) * s};
     }
     
     template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{} * TYPE2{})>
     constexpr inline Vector2D<OUT_TYPE> operator * (Vector2D<TYPE1> a, const TYPE2 s) noexcept
     {
-        return Vector2D<OUT_TYPE>{std::get<0>(a) * s, std::get<1>(a) * s};
+        return Vector2D<OUT_TYPE>{Get<0>(a) * s, Get<1>(a) * s};
     }
     
     template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{} / TYPE2{})>
     constexpr Vector2D<OUT_TYPE> operator/ (Vector2D<TYPE1> a, const TYPE2 s) noexcept
     {
-        return Vector2D<OUT_TYPE>{std::get<0>(a) / s, std::get<1>(a) / s};
+        return Vector2D<OUT_TYPE>{Get<0>(a) / s, Get<1>(a) / s};
     }
     
 #ifdef USE_BOOST_UNITS
@@ -205,32 +205,32 @@ namespace playrho
     constexpr inline Vec2 GetVec2(const Length2D value)
     {
         return Vec2{
-            std::get<0>(value) / Meter,
-            std::get<1>(value) / Meter
+            Get<0>(value) / Meter,
+            Get<1>(value) / Meter
         };
     }
     
     constexpr inline Vec2 GetVec2(const LinearVelocity2D value)
     {
         return Vec2{
-            std::get<0>(value) / MeterPerSecond,
-            std::get<1>(value) / MeterPerSecond
+            Get<0>(value) / MeterPerSecond,
+            Get<1>(value) / MeterPerSecond
         };
     }
     
     constexpr inline Vec2 GetVec2(const Momentum2D value)
     {
         return Vec2{
-            std::get<0>(value) / (Kilogram * MeterPerSecond),
-            std::get<1>(value) / (Kilogram * MeterPerSecond)
+            Get<0>(value) / (Kilogram * MeterPerSecond),
+            Get<1>(value) / (Kilogram * MeterPerSecond)
         };
     }
     
     constexpr inline Vec2 GetVec2(const Force2D value)
     {
         return Vec2{
-            std::get<0>(value) / Newton,
-            std::get<1>(value) / Newton
+            Get<0>(value) / Newton,
+            Get<1>(value) / Newton
         };
     }
 #endif

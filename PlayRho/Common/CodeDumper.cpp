@@ -72,8 +72,8 @@ namespace
         log("    DiskShape shape;\n");
         log("    shape.m_radius = %.15lef;\n", static_cast<double>(StripUnit(s.GetRadius())));
         log("    shape.m_p = Vec2(%.15lef, %.15lef);\n",
-            static_cast<double>(StripUnit(std::get<0>(s.GetLocation()))),
-            static_cast<double>(StripUnit(std::get<1>(s.GetLocation()))));
+            static_cast<double>(StripUnit(Get<0>(s.GetLocation()))),
+            static_cast<double>(StripUnit(Get<1>(s.GetLocation()))));
     }
     
     void ShapeDumper::Visit(const playrho::EdgeShape& s)
@@ -81,11 +81,11 @@ namespace
         log("    EdgeShape shape;\n");
         log("    shape.m_radius = %.15lef;\n", static_cast<double>(StripUnit(GetVertexRadius(s))));
         log("    shape.m_vertex1.Set(%.15lef, %.15lef);\n",
-            static_cast<double>(StripUnit(std::get<0>(s.GetVertex1()))),
-            static_cast<double>(StripUnit(std::get<1>(s.GetVertex1()))));
+            static_cast<double>(StripUnit(Get<0>(s.GetVertex1()))),
+            static_cast<double>(StripUnit(Get<1>(s.GetVertex1()))));
         log("    shape.m_vertex2.Set(%.15lef, %.15lef);\n",
-            static_cast<double>(StripUnit(std::get<0>(s.GetVertex2()))),
-            static_cast<double>(StripUnit(std::get<1>(s.GetVertex2()))));
+            static_cast<double>(StripUnit(Get<0>(s.GetVertex2()))),
+            static_cast<double>(StripUnit(Get<1>(s.GetVertex2()))));
     }
     
     void ShapeDumper::Visit(const playrho::PolygonShape& s)
@@ -96,8 +96,8 @@ namespace
         for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
         {
             log("    vs[%d].Set(%.15lef, %.15lef);\n", i,
-                static_cast<double>(StripUnit(std::get<0>(s.GetVertex(i)))),
-                static_cast<double>(StripUnit(std::get<1>(s.GetVertex(i)))));
+                static_cast<double>(StripUnit(Get<0>(s.GetVertex(i)))),
+                static_cast<double>(StripUnit(Get<1>(s.GetVertex(i)))));
         }
         log("    shape.Set(vs, %d);\n", vertexCount);
     }
@@ -109,8 +109,8 @@ namespace
         for (auto i = decltype(s.GetVertexCount()){0}; i < s.GetVertexCount(); ++i)
         {
             log("    vs[%d].Set(%.15lef, %.15lef);\n", i,
-                static_cast<double>(StripUnit(std::get<0>(s.GetVertex(i)))),
-                static_cast<double>(StripUnit(std::get<1>(s.GetVertex(i)))));
+                static_cast<double>(StripUnit(Get<0>(s.GetVertex(i)))),
+                static_cast<double>(StripUnit(Get<1>(s.GetVertex(i)))));
         }
         log("    shape.CreateChain(vs, %d);\n", s.GetVertexCount());
     }
@@ -125,8 +125,8 @@ void playrho::Dump(const World& world)
 {
     const auto gravity = world.GetGravity();
     log("Vec2 g(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{std::get<0>(gravity) / MeterPerSquareSecond}),
-        static_cast<double>(Real{std::get<1>(gravity) / MeterPerSquareSecond}));
+        static_cast<double>(Real{Get<0>(gravity) / MeterPerSquareSecond}),
+        static_cast<double>(Real{Get<1>(gravity) / MeterPerSquareSecond}));
     log("m_world->SetGravity(g);\n");
     
     const auto& bodies = world.GetBodies();
@@ -162,12 +162,12 @@ void playrho::Dump(const Body& body, std::size_t bodyIndex)
     log("  BodyDef bd;\n");
     log("  bd.type = BodyType(%d);\n", body.GetType());
     log("  bd.position = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real(std::get<0>(body.GetLocation()) / Meter)),
-        static_cast<double>(Real(std::get<1>(body.GetLocation()) / Meter)));
+        static_cast<double>(Real(Get<0>(body.GetLocation()) / Meter)),
+        static_cast<double>(Real(Get<1>(body.GetLocation()) / Meter)));
     log("  bd.angle = %.15lef;\n", static_cast<double>(Real{body.GetAngle() / Radian}));
     log("  bd.linearVelocity = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{std::get<0>(body.GetVelocity().linear) / MeterPerSecond}),
-        static_cast<double>(Real{std::get<1>(body.GetVelocity().linear) / MeterPerSecond}));
+        static_cast<double>(Real{Get<0>(body.GetVelocity().linear) / MeterPerSecond}),
+        static_cast<double>(Real{Get<1>(body.GetVelocity().linear) / MeterPerSecond}));
     log("  bd.angularVelocity = %.15lef;\n",
         static_cast<double>(Real{body.GetVelocity().angular / RadianPerSecond}));
     log("  bd.linearDamping = %.15lef;\n",
@@ -265,11 +265,11 @@ void playrho::Dump(const DistanceJoint& joint, std::size_t index)
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{std::get<0>(joint.GetLocalAnchorA()) / Meter}),
-        static_cast<double>(Real{std::get<1>(joint.GetLocalAnchorA()) / Meter}));
+        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorA()) / Meter}),
+        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorA()) / Meter}));
     log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{std::get<0>(joint.GetLocalAnchorB()) / Meter}),
-        static_cast<double>(Real{std::get<1>(joint.GetLocalAnchorB()) / Meter}));
+        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorB()) / Meter}),
+        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorB()) / Meter}));
     log("  jd.length = %.15lef;\n",
         static_cast<double>(Real{joint.GetLength() / Meter}));
     log("  jd.frequency = %.15lef;\n",
@@ -285,11 +285,11 @@ void playrho::Dump(const FrictionJoint& joint, std::size_t index)
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{std::get<0>(joint.GetLocalAnchorA()) / Meter}),
-        static_cast<double>(Real{std::get<1>(joint.GetLocalAnchorA()) / Meter}));
+        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorA()) / Meter}),
+        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorA()) / Meter}));
     log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{std::get<0>(joint.GetLocalAnchorB()) / Meter}),
-        static_cast<double>(Real{std::get<1>(joint.GetLocalAnchorB()) / Meter}));
+        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorB()) / Meter}),
+        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorB()) / Meter}));
     log("  jd.maxForce = %.15lef;\n",
         static_cast<double>(Real{joint.GetMaxForce() / Newton}));
     log("  jd.maxTorque = %.15lef;\n",
@@ -316,8 +316,8 @@ void playrho::Dump(const MotorJoint& joint, std::size_t index)
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.linearOffset = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{std::get<0>(joint.GetLinearOffset()) / Meter}),
-        static_cast<double>(Real{std::get<1>(joint.GetLinearOffset()) / Meter}));
+        static_cast<double>(Real{Get<0>(joint.GetLinearOffset()) / Meter}),
+        static_cast<double>(Real{Get<1>(joint.GetLinearOffset()) / Meter}));
     log("  jd.angularOffset = %.15lef;\n",
         static_cast<double>(Real{joint.GetAngularOffset() / Radian}));
     log("  jd.maxForce = %.15lef;\n",
@@ -335,8 +335,8 @@ void playrho::Dump(const MouseJoint& joint, std::size_t index)
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{std::get<0>(joint.GetLocalAnchorB()) / Meter}),
-        static_cast<double>(Real{std::get<1>(joint.GetLocalAnchorB()) / Meter}));
+        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorB()) / Meter}),
+        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorB()) / Meter}));
     log("  jd.frequency = %.15lef;\n",
         static_cast<double>(Real{joint.GetFrequency() / Hertz}));
     log("  jd.dampingRatio = %.15lef;\n", joint.GetDampingRatio());
@@ -352,11 +352,11 @@ void playrho::Dump(const PrismaticJoint& joint, std::size_t index)
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{std::get<0>(joint.GetLocalAnchorA()) / Meter}),
-        static_cast<double>(Real{std::get<1>(joint.GetLocalAnchorA()) / Meter}));
+        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorA()) / Meter}),
+        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorA()) / Meter}));
     log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{std::get<0>(joint.GetLocalAnchorB()) / Meter}),
-        static_cast<double>(Real{std::get<1>(joint.GetLocalAnchorB()) / Meter}));
+        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorB()) / Meter}),
+        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorB()) / Meter}));
     log("  jd.localAxisA = Vec2(%.15lef, %.15lef);\n",
         GetX(joint.GetLocalAxisA()), GetY(joint.GetLocalAxisA()));
     log("  jd.referenceAngle = %.15lef;\n",
@@ -381,17 +381,17 @@ void playrho::Dump(const PulleyJoint& joint, std::size_t index)
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.groundAnchorA = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{std::get<0>(joint.GetGroundAnchorA()) / Meter}),
-        static_cast<double>(Real{std::get<1>(joint.GetGroundAnchorA()) / Meter}));
+        static_cast<double>(Real{Get<0>(joint.GetGroundAnchorA()) / Meter}),
+        static_cast<double>(Real{Get<1>(joint.GetGroundAnchorA()) / Meter}));
     log("  jd.groundAnchorB = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{std::get<0>(joint.GetGroundAnchorB()) / Meter}),
-        static_cast<double>(Real{std::get<1>(joint.GetGroundAnchorB()) / Meter}));
+        static_cast<double>(Real{Get<0>(joint.GetGroundAnchorB()) / Meter}),
+        static_cast<double>(Real{Get<1>(joint.GetGroundAnchorB()) / Meter}));
     log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{std::get<0>(joint.GetLocalAnchorA()) / Meter}),
-        static_cast<double>(Real{std::get<1>(joint.GetLocalAnchorA()) / Meter}));
+        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorA()) / Meter}),
+        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorA()) / Meter}));
     log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{std::get<0>(joint.GetLocalAnchorB()) / Meter}),
-        static_cast<double>(Real{std::get<1>(joint.GetLocalAnchorB()) / Meter}));
+        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorB()) / Meter}),
+        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorB()) / Meter}));
     log("  jd.lengthA = %.15lef;\n",
         static_cast<double>(Real{joint.GetLengthA() / Meter}));
     log("  jd.lengthB = %.15lef;\n",
@@ -407,11 +407,11 @@ void playrho::Dump(const RevoluteJoint& joint, std::size_t index)
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{std::get<0>(joint.GetLocalAnchorA()) / Meter}),
-        static_cast<double>(Real{std::get<1>(joint.GetLocalAnchorA()) / Meter}));
+        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorA()) / Meter}),
+        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorA()) / Meter}));
     log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{std::get<0>(joint.GetLocalAnchorB()) / Meter}),
-        static_cast<double>(Real{std::get<1>(joint.GetLocalAnchorB()) / Meter}));
+        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorB()) / Meter}),
+        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorB()) / Meter}));
     log("  jd.referenceAngle = %.15lef;\n",
         static_cast<double>(Real{joint.GetReferenceAngle() / Radian}));
     log("  jd.enableLimit = bool(%d);\n", joint.IsLimitEnabled());
@@ -434,11 +434,11 @@ void playrho::Dump(const RopeJoint& joint, std::size_t index)
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{std::get<0>(joint.GetLocalAnchorA()) / Meter}),
-        static_cast<double>(Real{std::get<1>(joint.GetLocalAnchorA()) / Meter}));
+        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorA()) / Meter}),
+        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorA()) / Meter}));
     log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{std::get<0>(joint.GetLocalAnchorB()) / Meter}),
-        static_cast<double>(Real{std::get<1>(joint.GetLocalAnchorB()) / Meter}));
+        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorB()) / Meter}),
+        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorB()) / Meter}));
     log("  jd.maxLength = %.15lef;\n",
         static_cast<double>(Real{joint.GetMaxLength() / Meter}));
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
@@ -451,11 +451,11 @@ void playrho::Dump(const WeldJoint& joint, std::size_t index)
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{std::get<0>(joint.GetLocalAnchorA()) / Meter}),
-        static_cast<double>(Real{std::get<1>(joint.GetLocalAnchorA()) / Meter}));
+        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorA()) / Meter}),
+        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorA()) / Meter}));
     log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{std::get<0>(joint.GetLocalAnchorB()) / Meter}),
-        static_cast<double>(Real{std::get<1>(joint.GetLocalAnchorB()) / Meter}));
+        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorB()) / Meter}),
+        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorB()) / Meter}));
     log("  jd.referenceAngle = %.15lef;\n",
         static_cast<double>(Real{joint.GetReferenceAngle() / Radian}));
     log("  jd.frequency = %.15lef;\n",
@@ -471,11 +471,11 @@ void playrho::Dump(const WheelJoint& joint, std::size_t index)
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{std::get<0>(joint.GetLocalAnchorA()) / Meter}),
-        static_cast<double>(Real{std::get<1>(joint.GetLocalAnchorA()) / Meter}));
+        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorA()) / Meter}),
+        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorA()) / Meter}));
     log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{std::get<0>(joint.GetLocalAnchorB()) / Meter}),
-        static_cast<double>(Real{std::get<1>(joint.GetLocalAnchorB()) / Meter}));
+        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorB()) / Meter}),
+        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorB()) / Meter}));
     log("  jd.localAxisA = Vec2(%.15lef, %.15lef);\n",
         static_cast<double>(GetX(joint.GetLocalAxisA())),
         static_cast<double>(GetY(joint.GetLocalAxisA())));

@@ -295,7 +295,7 @@ bool RevoluteJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
     {
         // Solve point-to-point constraint
         const auto impulse = Solve22(m_mass, -Vec2{
-            std::get<0>(vDelta) / MeterPerSecond, std::get<1>(vDelta) / MeterPerSecond
+            Get<0>(vDelta) / MeterPerSecond, Get<1>(vDelta) / MeterPerSecond
         });
 
         GetX(m_impulse) += GetX(impulse);

@@ -44,37 +44,37 @@ namespace playrho
 template <typename T>
 constexpr auto& GetX(T& value)
 {
-    return std::get<0>(value);
+    return Get<0>(value);
 }
 
 template <typename T>
 constexpr auto& GetY(T& value)
 {
-    return std::get<1>(value);
+    return Get<1>(value);
 }
 
 template <typename T>
 constexpr auto& GetZ(T& value)
 {
-    return std::get<2>(value);
+    return Get<2>(value);
 }
 
 template <typename T>
 constexpr inline auto GetX(const T& value)
 {
-    return std::get<0>(value);
+    return Get<0>(value);
 }
 
 template <typename T>
 constexpr inline auto GetY(const T& value)
 {
-    return std::get<1>(value);
+    return Get<1>(value);
 }
 
 template <typename T>
 constexpr inline auto GetZ(const T& value)
 {
-    return std::get<2>(value);
+    return Get<2>(value);
 }
 
 template <typename T, LoValueCheck lo, HiValueCheck hi>
@@ -183,7 +183,7 @@ inline Vec2 round(Vec2 value, std::uint32_t precision)
 
 constexpr inline Vec2 GetVec2(const UnitVec2 value)
 {
-    return Vec2{std::get<0>(value), std::get<1>(value)};
+    return Vec2{Get<0>(value), Get<1>(value)};
 }
 
 /// Gets whether a given value is almost zero.
@@ -332,15 +332,15 @@ inline auto GetLength(T value)
 template <typename T1, typename T2>
 constexpr inline auto Dot(const T1 a, const T2 b) noexcept
 {
-    return (std::get<0>(a) * std::get<0>(b)) + (std::get<1>(a) * std::get<1>(b));
+    return (Get<0>(a) * Get<0>(b)) + (Get<1>(a) * Get<1>(b));
 }
 
 /// Perform the dot product on two vectors.
 template <>
 constexpr inline auto Dot(const Vec3 a, const Vec3 b) noexcept
 {
-    return (std::get<0>(a) * std::get<0>(b)) + (std::get<1>(a) * std::get<1>(b))
-        + (std::get<2>(a) * std::get<2>(b));
+    return (Get<0>(a) * Get<0>(b)) + (Get<1>(a) * Get<1>(b))
+        + (Get<2>(a) * Get<2>(b));
 }
 
 /// @brief Performs the 2D analog of the cross product of two vectors.
@@ -404,24 +404,24 @@ constexpr inline auto Cross(const Vec3 a, const Vec3 b) noexcept
 template <typename T, typename U>
 constexpr auto Solve(const Matrix22<U> mat, const Vector2D<T> b) noexcept
 {
-    const auto cp = Cross(std::get<0>(mat), std::get<1>(mat));
+    const auto cp = Cross(Get<0>(mat), Get<1>(mat));
     using OutType = decltype((U{} * T{}) / cp);
     return (!almost_zero(StripUnit(cp)))?
         Vector2D<OutType>{
-            (std::get<1>(mat)[1] * b[0] - std::get<1>(mat)[0] * b[1]) / cp,
-            (std::get<0>(mat)[0] * b[1] - std::get<0>(mat)[1] * b[0]) / cp
+            (Get<1>(mat)[1] * b[0] - Get<1>(mat)[0] * b[1]) / cp,
+            (Get<0>(mat)[0] * b[1] - Get<0>(mat)[1] * b[0]) / cp
         }: Vector2D<OutType>{};
 }
 
 template <class IN_TYPE>
 constexpr auto Invert(const Matrix22<IN_TYPE> value) noexcept
 {
-    const auto cp = Cross(std::get<0>(value), std::get<1>(value));
-    using OutType = decltype(std::get<0>(value)[0] / cp);
+    const auto cp = Cross(Get<0>(value), Get<1>(value));
+    using OutType = decltype(Get<0>(value)[0] / cp);
     return (!almost_zero(StripUnit(cp)))?
         Matrix22<OutType>{
-            Vector2D<OutType>{ std::get<1>(std::get<1>(value)) / cp, -std::get<1>(std::get<0>(value)) / cp},
-            Vector2D<OutType>{-std::get<0>(std::get<1>(value)) / cp,  std::get<0>(std::get<0>(value)) / cp}
+            Vector2D<OutType>{ Get<1>(Get<1>(value)) / cp, -Get<1>(Get<0>(value)) / cp},
+            Vector2D<OutType>{-Get<0>(Get<1>(value)) / cp,  Get<0>(Get<0>(value)) / cp}
         }:
         Matrix22<OutType>{};
 }

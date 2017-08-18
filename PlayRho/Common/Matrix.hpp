@@ -48,7 +48,7 @@ namespace playrho {
     template <>
     constexpr inline bool IsValid(const Mat22& value) noexcept
     {
-        return IsValid(std::get<0>(value)) && IsValid(std::get<1>(value));
+        return IsValid(Get<0>(value)) && IsValid(Get<1>(value));
     }
     
     template <>
