@@ -90,13 +90,13 @@ namespace playrho {
         
         /// Gets the "K" value.
         /// @note This value is only valid if previously set to a valid value.
-        /// @return "K" value previously set or an invalid value.
-        Mat22 GetK() const noexcept;
+        /// @return "K" value previously set or the zero initialized value.
+        InvMass22 GetK() const noexcept;
         
         /// Gets the normal mass.
         /// @note This value is only valid if previously set.
-        /// @return normal mass previously set or an invalid value.
-        Mat22 GetNormalMass() const noexcept;
+        /// @return normal mass previously set or the zero initialized value.
+        Mass22 GetNormalMass() const noexcept;
         
         /// Gets the combined friction of the associated contact.
         Real GetFriction() const noexcept { return m_friction; }
@@ -248,14 +248,14 @@ namespace playrho {
         /// @note Depends on the total inverse mass, the normal, and the point relative positions.
         /// @note Only used by block solver.
         /// @note This field is 16-bytes (on at least one 64-bit platform).
-        Mat22 m_K = GetInvalid<Mat22>();
+        InvMass22 m_K = InvMass22{};
         
         /// Normal mass information.
-        /// @details This is the cached inverse of the K value or an invalid value.
+        /// @details This is the cached inverse of the K value or the zero initialized value.
         /// @note Depends on the K value.
         /// @note Only used by block solver.
         /// @note This field is 16-bytes (on at least one 64-bit platform).
-        Mat22 m_normalMass = GetInvalid<Mat22>();
+        Mass22 m_normalMass = Mass22{};
         
         BodyConstraint* m_bodyA = nullptr; ///< Body A contact velocity constraint data.
         BodyConstraint* m_bodyB = nullptr; ///< Body B contact velocity constraint data.
@@ -284,7 +284,7 @@ namespace playrho {
     /// Gets the "K" value.
     /// @return "K" value or an invalid Mat22 if no other value has been set.
     /// @sa SetK.
-    inline Mat22 VelocityConstraint::GetK() const noexcept
+    inline InvMass22 VelocityConstraint::GetK() const noexcept
     {
         return m_K;
     }
@@ -292,7 +292,7 @@ namespace playrho {
     /// Gets the "normal mass" value.
     /// @return "normal mass" value or the invalid Mat22 if no other value has been set.
     /// @sa SetK.
-    inline Mat22 VelocityConstraint::GetNormalMass() const noexcept
+    inline Mass22 VelocityConstraint::GetNormalMass() const noexcept
     {
         return m_normalMass;
     }

@@ -27,7 +27,7 @@ using namespace playrho;
 
 namespace {
 
-inline Mat22 ComputeK(const VelocityConstraint& vc) noexcept
+inline InvMass22 ComputeK(const VelocityConstraint& vc) noexcept
 {
     assert(vc.GetPointCount() == 2);
 
@@ -52,6 +52,7 @@ inline Mat22 ComputeK(const VelocityConstraint& vc) noexcept
     const auto rn2B = Length{Cross(relB1, normal)};
     
     const auto invMass = invMassA + invMassB;
+    assert(invMass > InvMass{0});
     
     const auto invRotMassA1 = InvMass{(invRotInertiaA * Square(rn1A)) / SquareRadian};
     const auto invRotMassA2 = InvMass{(invRotInertiaA * Square(rn2A)) / SquareRadian};
@@ -60,11 +61,11 @@ inline Mat22 ComputeK(const VelocityConstraint& vc) noexcept
     const auto invRotMassB2 = InvMass{(invRotInertiaB * Square(rn2B)) / SquareRadian};
     const auto invRotMassB = InvMass{(invRotInertiaB * rn1B * rn2B) / SquareRadian};
     
-    const auto k11 = StripUnit(invMass + invRotMassA1 + invRotMassB1);
-    const auto k22 = StripUnit(invMass + invRotMassA2 + invRotMassB2);
-    const auto k12 = StripUnit(invMass + invRotMassA + invRotMassB);
+    const auto k11 = invMass + invRotMassA1 + invRotMassB1;
+    const auto k22 = invMass + invRotMassA2 + invRotMassB2;
+    const auto k12 = invMass + invRotMassA + invRotMassB;
     
-    return Mat22{Vec2{k11, k12}, Vec2{k12, k22}};
+    return InvMass22{Vector2D<InvMass>{k11, k12}, Vector2D<InvMass>{k12, k22}};
 }
 
 } // anonymous namespace
@@ -102,11 +103,11 @@ VelocityConstraint::VelocityConstraint(Real friction, Real restitution,
         
         // Ensure a reasonable condition number.
         constexpr auto maxCondNum = PLAYRHO_MAGIC(Real(1000));
-        const auto scaled_k11_squared = std::get<0>(std::get<0>(k)) * (std::get<0>(std::get<0>(k)) / maxCondNum);
-        const auto k11_times_k22 = std::get<0>(std::get<0>(k)) * std::get<1>(std::get<1>(k));
-        const auto k12_squared = Square(std::get<1>(std::get<0>(k)));
-        const auto k_diff = k11_times_k22 - k12_squared;
-        if (scaled_k11_squared < k_diff)
+        const auto scaled_k00_squared = std::get<0>(std::get<0>(k)) * (std::get<0>(std::get<0>(k)) / maxCondNum);
+        const auto k00_times_k11 = std::get<0>(std::get<0>(k)) * std::get<1>(std::get<1>(k));
+        const auto k01_squared = Square(std::get<1>(std::get<0>(k)));
+        const auto k_diff = k00_times_k11 - k01_squared;
+        if (scaled_k00_squared < k_diff)
         {
             // K is safe to invert.
             // Prepare the block solver.

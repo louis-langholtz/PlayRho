@@ -529,9 +529,17 @@ constexpr inline Vec2 Transform(const Vec2 v, const Mat22& A) noexcept
 }
 
 #ifdef USE_BOOST_UNITS
-constexpr inline Momentum2D Transform(const LinearVelocity2D v, const Mass22& A) noexcept
+constexpr inline auto Transform(const LinearVelocity2D v, const Mass22& A) noexcept
 {
     return Momentum2D{
+        GetX(GetX(A)) * GetX(v) + GetX(GetY(A)) * GetY(v),
+        GetY(GetX(A)) * GetX(v) + GetY(GetY(A)) * GetY(v)
+    };
+}
+
+constexpr inline auto Transform(const Momentum2D v, const InvMass22 A) noexcept
+{
+    return LinearVelocity2D{
         GetX(GetX(A)) * GetX(v) + GetX(GetY(A)) * GetY(v),
         GetY(GetX(A)) * GetX(v) + GetY(GetY(A)) * GetY(v)
     };

@@ -41,8 +41,8 @@ namespace
 {
 
 #if defined(B2_DEBUG_SOLVER)
-static constexpr auto k_errorTol = Real(2e-3); ///< error tolerance
-static constexpr auto k_majorErrorTol = Real(1e-2); ///< error tolerance
+static constexpr auto k_errorTol = Real(2e-3) * MeterPerSecond; ///< error tolerance
+static constexpr auto k_majorErrorTol = Real(1e-2) * MeterPerSecond; ///< error tolerance
 #endif
 
 struct VelocityPair
@@ -107,7 +107,7 @@ Momentum BlockSolveUpdate(VelocityConstraint& vc, const Momentum2D newImpulses)
     return std::max(Abs(newImpulses[0]), Abs(newImpulses[1]));
 }
 
-inline Momentum BlockSolveNormalCase1(VelocityConstraint& vc, const Vec2 b_prime)
+inline Momentum BlockSolveNormalCase1(VelocityConstraint& vc, const LinearVelocity2D b_prime)
 {
     //
     // Case 1: vn = 0
@@ -119,26 +119,24 @@ inline Momentum BlockSolveNormalCase1(VelocityConstraint& vc, const Vec2 b_prime
     // x = -inv(A) * b'
     //
     const auto normalMass = vc.GetNormalMass();
-    const auto newImpulsesUnitless = -Transform(b_prime, normalMass);
-    const auto newImpulses = Momentum2D{
-        GetX(newImpulsesUnitless) * Kilogram * MeterPerSecond,
-        GetY(newImpulsesUnitless) * Kilogram * MeterPerSecond
-    };
+    const auto newImpulses = -Transform(b_prime, normalMass);
     if ((newImpulses[0] >= Momentum{0}) && (newImpulses[1] >= Momentum{0}))
     {
         const auto max = BlockSolveUpdate(vc, newImpulses);
 
 #if defined(B2_DEBUG_SOLVER)
-        auto& vcp1 = vc.PointAt(0);
-        auto& vcp2 = vc.PointAt(1);
+        auto& vcp1 = vc.GetPointAt(0);
+        auto& vcp2 = vc.GetPointAt(1);
+        const auto velA = vc.GetBodyA()->GetVelocity();
+        const auto velB = vc.GetBodyB()->GetVelocity();
 
         // Postconditions
-        const auto post_dv1 = (velB.linear + (velB.angular * GetRevPerpendicular(vcp1.relB))) - (velA.linear + (velA.angular * GetRevPerpendicular(vcp1.relA)));
-        const auto post_dv2 = (velB.linear + (velB.angular * GetRevPerpendicular(vcp2.relB))) - (velA.linear + (velA.angular * GetRevPerpendicular(vcp2.relA)));
+        const auto post_dv1 = GetContactRelVelocity(velA, vcp1.relA, velB, vcp1.relB);
+        const auto post_dv2 = GetContactRelVelocity(velA, vcp2.relA, velB, vcp2.relB);
 
         // Compute normal velocity
-        const auto post_vn1 = Dot(post_dv1, vc.normal);
-        const auto post_vn2 = Dot(post_dv2, vc.normal);
+        const auto post_vn1 = Dot(post_dv1, vc.GetNormal());
+        const auto post_vn2 = Dot(post_dv2, vc.GetNormal());
 
         assert(Abs(post_vn1 - vcp1.velocityBias) < k_majorErrorTol);
         assert(Abs(post_vn2 - vcp2.velocityBias) < k_majorErrorTol);
@@ -150,7 +148,7 @@ inline Momentum BlockSolveNormalCase1(VelocityConstraint& vc, const Vec2 b_prime
     return GetInvalid<Momentum>();
 }
 
-inline Momentum BlockSolveNormalCase2(VelocityConstraint& vc, const Vec2 b_prime)
+inline Momentum BlockSolveNormalCase2(VelocityConstraint& vc, const LinearVelocity2D b_prime)
 {
     //
     // Case 2: vn1 = 0 and x2 = 0
@@ -158,25 +156,25 @@ inline Momentum BlockSolveNormalCase2(VelocityConstraint& vc, const Vec2 b_prime
     //   0 = a11 * x1 + a12 * 0 + b1'
     // vn2 = a21 * x1 + a22 * 0 + b2'
     //
-    const auto newImpulsesUnitless = Vec2{-StripUnit(GetNormalMassAtPoint(vc, 0)) * std::get<0>(b_prime), 0};
     const auto newImpulses = Momentum2D{
-        GetX(newImpulsesUnitless) * Kilogram * MeterPerSecond,
-        GetY(newImpulsesUnitless) * Kilogram * MeterPerSecond
+        -GetNormalMassAtPoint(vc, 0) * std::get<0>(b_prime), Momentum{0}
     };
     const auto K = vc.GetK();
-    const auto vn2 = std::get<1>(std::get<0>(K)) * std::get<0>(newImpulsesUnitless) + std::get<1>(b_prime);
-    if ((std::get<0>(newImpulsesUnitless) >= 0) && (vn2 >= 0))
+    const auto vn2 = std::get<1>(std::get<0>(K)) * std::get<0>(newImpulses) + std::get<1>(b_prime);
+    if ((std::get<0>(newImpulses) >= Momentum{0}) && (vn2 >= LinearVelocity{0}))
     {
         const auto max = BlockSolveUpdate(vc, newImpulses);
 
 #if defined(B2_DEBUG_SOLVER)
-        auto& vcp1 = vc.PointAt(0);
+        auto& vcp1 = vc.GetPointAt(0);
+        const auto velA = vc.GetBodyA()->GetVelocity();
+        const auto velB = vc.GetBodyB()->GetVelocity();
 
         // Postconditions
-        const auto post_dv1 = (velB.linear + (velB.angular * GetRevPerpendicular(vcp1.relB))) - (velA.linear + (velA.angular * GetRevPerpendicular(vcp1.relA)));
-
+        const auto post_dv1 = GetContactRelVelocity(velA, vcp1.relA, velB, vcp1.relB);
+        
         // Compute normal velocity
-        const auto post_vn1 = Dot(post_dv1, vc.normal);
+        const auto post_vn1 = Dot(post_dv1, vc.GetNormal());
 
         assert(Abs(post_vn1 - vcp1.velocityBias) < k_majorErrorTol);
         assert(Abs(post_vn1 - vcp1.velocityBias) < k_errorTol);
@@ -186,7 +184,7 @@ inline Momentum BlockSolveNormalCase2(VelocityConstraint& vc, const Vec2 b_prime
     return GetInvalid<Momentum>();
 }
 
-inline Momentum BlockSolveNormalCase3(VelocityConstraint& vc, const Vec2 b_prime)
+inline Momentum BlockSolveNormalCase3(VelocityConstraint& vc, const LinearVelocity2D b_prime)
 {
     //
     // Case 3: vn2 = 0 and x1 = 0
@@ -194,25 +192,25 @@ inline Momentum BlockSolveNormalCase3(VelocityConstraint& vc, const Vec2 b_prime
     // vn1 = a11 * 0 + a12 * x2 + b1'
     //   0 = a21 * 0 + a22 * x2 + b2'
     //
-    const auto newImpulsesUnitless = Vec2{0, -StripUnit(GetNormalMassAtPoint(vc, 1)) * std::get<1>(b_prime)};
     const auto newImpulses = Momentum2D{
-        GetX(newImpulsesUnitless) * Kilogram * MeterPerSecond,
-        GetY(newImpulsesUnitless) * Kilogram * MeterPerSecond
+        Momentum{0}, -GetNormalMassAtPoint(vc, 1) * std::get<1>(b_prime)
     };
     const auto K = vc.GetK();
-    const auto vn1 = std::get<0>(std::get<1>(K)) * std::get<1>(newImpulsesUnitless) + std::get<0>(b_prime);
-    if ((std::get<1>(newImpulsesUnitless) >= 0) && (vn1 >= 0))
+    const auto vn1 = std::get<0>(std::get<1>(K)) * std::get<1>(newImpulses) + std::get<0>(b_prime);
+    if ((std::get<1>(newImpulses) >= Momentum{0}) && (vn1 >= LinearVelocity{0}))
     {
         const auto max = BlockSolveUpdate(vc, newImpulses);
 
 #if defined(B2_DEBUG_SOLVER)
-        auto& vcp2 = vc.PointAt(1);
+        auto& vcp2 = vc.GetPointAt(1);
+        const auto velA = vc.GetBodyA()->GetVelocity();
+        const auto velB = vc.GetBodyB()->GetVelocity();
 
         // Postconditions
-        const auto post_dv2 = (velB.linear + (velB.angular * GetRevPerpendicular(vcp2.relB))) - (velA.linear + (velA.angular * GetRevPerpendicular(vcp2.relA)));
+        const auto post_dv2 = GetContactRelVelocity(velA, vcp2.relA, velB, vcp2.relB);
 
         // Compute normal velocity
-        const auto post_vn2 = Dot(post_dv2, vc.normal);
+        const auto post_vn2 = Dot(post_dv2, vc.GetNormal());
 
         assert(Abs(post_vn2 - vcp2.velocityBias) < k_majorErrorTol);
         assert(Abs(post_vn2 - vcp2.velocityBias) < k_errorTol);
@@ -222,7 +220,7 @@ inline Momentum BlockSolveNormalCase3(VelocityConstraint& vc, const Vec2 b_prime
     return GetInvalid<Momentum>();
 }
 
-inline Momentum BlockSolveNormalCase4(VelocityConstraint& vc, const Vec2 b_prime)
+inline Momentum BlockSolveNormalCase4(VelocityConstraint& vc, const LinearVelocity2D b_prime)
 {
     //
     // Case 4: x1 = 0 and x2 = 0
@@ -231,7 +229,7 @@ inline Momentum BlockSolveNormalCase4(VelocityConstraint& vc, const Vec2 b_prime
     // vn2 = b2;
     const auto vn1 = std::get<0>(b_prime);
     const auto vn2 = std::get<1>(b_prime);
-    if ((vn1 >= 0) && (vn2 >= 0))
+    if ((vn1 >= LinearVelocity{0}) && (vn2 >= LinearVelocity{0}))
     {
         return BlockSolveUpdate(vc, Momentum2D{});
     }
@@ -276,8 +274,6 @@ inline Momentum BlockSolveNormalConstraint(VelocityConstraint& vc)
     // b' = b - A * a;
     
     const auto b_prime = [=]() {
-        const auto K = vc.GetK();
-        
         const auto normal = vc.GetNormal();
         
         const auto velA = vc.GetBodyA()->GetVelocity();
@@ -301,7 +297,8 @@ inline Momentum BlockSolveNormalConstraint(VelocityConstraint& vc)
         };
         
         // Return b'
-        return GetVec2(b) - Transform(GetVec2(GetNormalImpulses(vc)), K);
+        const auto K = vc.GetK();
+        return b - Transform(GetNormalImpulses(vc), K);
     }();
     
     auto maxIncImpulse = Momentum{0};
@@ -447,7 +444,7 @@ inline Momentum SolveNormalConstraint(VelocityConstraint& vc)
     //   The difference is especially pronounced in the Vertical Stack Testbed demo.
     const auto count = vc.GetPointCount();
     assert((count == 1) || (count == 2));
-    if ((count == 1) || (!IsValid(vc.GetK())))
+    if ((count == 1) || (vc.GetK() == InvMass22{}))
     {
         return SeqSolveNormalConstraint(vc);
     }
@@ -558,9 +555,26 @@ PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
         }
         case 2:
         {
+#if 0
+            const auto psm0 = GetPSM(pc.manifold, 0,
+                                     GetTransformation(posA, localCenterA),
+                                     GetTransformation(posB, localCenterB));
+            const auto s0 = solver_fn(psm0, posA.linear, posB.linear);
+            posA += s0.pos_a;
+            posB += s0.pos_b;
+
+            const auto psm1 = GetPSM(pc.manifold, 1,
+                                     GetTransformation(posA, localCenterA),
+                                     GetTransformation(posB, localCenterB));
+            const auto s1 = solver_fn(psm1, posA.linear, posB.linear);
+            posA += s1.pos_a;
+            posB += s1.pos_b;
+
+            return PositionSolution{posA, posB, std::min(s0.min_separation, s1.min_separation)};
+#else
             const auto xfA = GetTransformation(posA, localCenterA);
             const auto xfB = GetTransformation(posB, localCenterB);
-            
+
             // solve most penatrating point first or solve simultaneously if about the same penetration
             const auto psm0 = GetPSM(pc.manifold, 0, xfA, xfB);
             const auto psm1 = GetPSM(pc.manifold, 1, xfA, xfB);
@@ -605,7 +619,7 @@ PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
                 posB += s0.pos_b;
                 return PositionSolution{posA, posB, s1.min_separation};
             }
-
+#endif
             // reaches here if one or both psm separation values was NaN (and NDEBUG is defined).
         }
         default: break;
