@@ -555,35 +555,49 @@ TEST(CollideShapes, GetMaxSeparationFreeFunction1)
     const auto maxSep10_4x4 = GetMaxSeparation4x4(child1, xfm1, child0, xfm0);
     const auto maxSep01_NxN = GetMaxSeparation(child0, xfm0, child1, xfm1, totalRadius);
     const auto maxSep10_NxN = GetMaxSeparation(child1, xfm1, child0, xfm0, totalRadius);
+    const auto maxSep01_nos = GetMaxSeparation(child0, xfm0, child1, xfm1);
+    const auto maxSep10_nos = GetMaxSeparation(child1, xfm1, child0, xfm0);
 
     switch (sizeof(Real))
     {
         case 4:
             EXPECT_EQ(maxSep01_4x4.index1, decltype(maxSep01_4x4.index1){0}); // v0 of shape0
-            EXPECT_EQ(maxSep01_4x4.index2, decltype(maxSep01_4x4.index1){3}); // v3 of shape1
+            EXPECT_EQ(maxSep01_NxN.index1, decltype(maxSep01_NxN.index1){0}); // v0 of shape0
+            EXPECT_EQ(maxSep01_nos.index1, decltype(maxSep01_nos.index1){0}); // v0 of shape0
+            EXPECT_EQ(maxSep01_4x4.index2, decltype(maxSep01_4x4.index2){3}); // v3 of shape1
+            EXPECT_EQ(maxSep01_NxN.index2, decltype(maxSep01_NxN.index2){3}); // v3 of shape1
+            EXPECT_EQ(maxSep01_nos.index2, decltype(maxSep01_nos.index2){3}); // v3 of shape1
             break;
         case 8:
             EXPECT_EQ(maxSep01_4x4.index1, decltype(maxSep01_4x4.index1){1}); // v1 of shape0
+            EXPECT_EQ(maxSep01_NxN.index1, decltype(maxSep01_NxN.index1){1}); // v1 of shape0
+            EXPECT_EQ(maxSep01_nos.index1, decltype(maxSep01_nos.index1){1}); // v1 of shape0
             EXPECT_EQ(maxSep01_4x4.index2, decltype(maxSep01_4x4.index1){0}); // v0 of shape1
+            EXPECT_EQ(maxSep01_NxN.index2, decltype(maxSep01_NxN.index1){0}); // v0 of shape1
+            EXPECT_EQ(maxSep01_nos.index2, decltype(maxSep01_nos.index2){0}); // v0 of shape1
             break;
     }
-    EXPECT_EQ(maxSep01_4x4.index1, maxSep01_NxN.index1);
-    EXPECT_EQ(maxSep01_4x4.index2, maxSep01_NxN.index2);
-    EXPECT_NEAR(static_cast<double>(Real(maxSep01_4x4.separation / Meter)),
-                -2.0, std::abs(-2.0) / 1000000.0);
-    EXPECT_NEAR(static_cast<double>(Real(maxSep01_4x4.separation / Meter)),
-                static_cast<double>(Real(maxSep01_NxN.separation / Meter)),
-                std::abs(static_cast<double>(Real(maxSep01_4x4.separation / Meter)) / 1000000.0));
     
     EXPECT_EQ(maxSep10_4x4.index1, decltype(maxSep10_4x4.index1){3}); // v3 of shape1
+    EXPECT_EQ(maxSep10_NxN.index1, decltype(maxSep10_NxN.index1){3}); // v3 of shape1
+    EXPECT_EQ(maxSep10_nos.index1, decltype(maxSep10_nos.index1){3}); // v3 of shape1
     EXPECT_EQ(maxSep10_4x4.index2, decltype(maxSep10_4x4.index1){1}); // v1 of shape0
-    EXPECT_EQ(maxSep10_4x4.index1, maxSep10_NxN.index1);
-    EXPECT_EQ(maxSep10_4x4.index2, maxSep10_NxN.index2);
+    EXPECT_EQ(maxSep10_NxN.index2, decltype(maxSep10_NxN.index1){1}); // v1 of shape0
+    EXPECT_EQ(maxSep10_nos.index2, decltype(maxSep10_nos.index2){1}); // v1 of shape0
+    
+    EXPECT_NEAR(static_cast<double>(Real(maxSep01_4x4.separation / Meter)),
+                -2.0, std::abs(-2.0) / 1000000.0);
+    EXPECT_NEAR(static_cast<double>(Real(maxSep01_NxN.separation / Meter)),
+                -2.0, std::abs(-2.0) / 1000000.0);
+    EXPECT_NEAR(static_cast<double>(Real(maxSep01_nos.separation / Meter)),
+                -2.0, std::abs(-2.0) / 1000000.0);
+
     EXPECT_NEAR(static_cast<double>(Real(maxSep10_4x4.separation / Meter)),
                 -0.82842707633972168, std::abs(-0.82842707633972168) / 1000000.0);
-    EXPECT_NEAR(static_cast<double>(Real(maxSep10_4x4.separation / Meter)),
-                static_cast<double>(Real(maxSep10_NxN.separation / Meter)),
-                std::abs(static_cast<double>(Real(maxSep10_4x4.separation / Meter)) / 1000000.0));
+    EXPECT_NEAR(static_cast<double>(Real(maxSep10_NxN.separation / Meter)),
+                -0.82842707633972168, std::abs(-0.82842707633972168) / 1000000.0);
+    EXPECT_NEAR(static_cast<double>(Real(maxSep10_nos.separation / Meter)),
+                -0.82842707633972168, std::abs(-0.82842707633972168) / 1000000.0);
 }
 
 TEST(CollideShapes, GetMaxSeparationFreeFunction2)
