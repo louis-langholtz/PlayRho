@@ -82,7 +82,6 @@ void MotorJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
 
     {
-        InvMass22 K;
         const auto exx = InvMass{
             invMassA + invMassB +
             invRotInertiaA * Square(GetY(m_rA)) / SquareRadian +
@@ -97,9 +96,10 @@ void MotorJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
             invRotInertiaA * Square(GetX(m_rA)) / SquareRadian +
             invRotInertiaB * Square(GetX(m_rB)) / SquareRadian
         };
+        InvMass22 K;
         GetX(GetX(K)) = exx;
         GetY(GetX(K)) = exy;
-        GetX(GetY(K)) = GetY(GetX(K));
+        GetX(GetY(K)) = exy;
         GetY(GetY(K)) = eyy;
         m_linearMass = Invert(K);
     }

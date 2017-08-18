@@ -89,7 +89,7 @@ Mass22 MouseJoint::GetEffectiveMassMatrix(const BodyConstraint& body) const noex
     InvMass22 K;
     GetX(GetX(K)) = exx;
     GetY(GetX(K)) = exy;
-    GetX(GetY(K)) = GetY(GetX(K));
+    GetX(GetY(K)) = exy;
     GetY(GetY(K)) = eyy;
     return Invert(K);
 }

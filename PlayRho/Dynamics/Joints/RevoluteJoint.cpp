@@ -405,7 +405,7 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
         InvMass22 K;
         GetX(GetX(K)) = exx;
         GetY(GetX(K)) = exy;
-        GetX(GetY(K)) = GetY(GetX(K));
+        GetX(GetY(K)) = exy;
         GetY(GetY(K)) = eyy;
         const auto P = -Solve(K, C);
 
