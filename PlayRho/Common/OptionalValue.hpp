@@ -33,10 +33,12 @@ namespace playrho {
         
         constexpr OptionalValue() noexcept = default;
         constexpr OptionalValue(const OptionalValue& other) = default;
-        constexpr explicit OptionalValue(const T v);
-
+        constexpr OptionalValue(const T v);
+        
         constexpr const T& operator*() const;
         constexpr T& operator*();
+        constexpr const T* operator->() const;
+        constexpr T* operator->();
 
         constexpr explicit operator bool() const noexcept;
         constexpr bool has_value() const noexcept;
@@ -56,7 +58,7 @@ namespace playrho {
     
     template<typename T>
     constexpr OptionalValue<T>::OptionalValue(const T v): m_value{v}, m_set{true} {}
-
+    
     template<typename T>
     constexpr bool OptionalValue<T>::has_value() const noexcept
     {
@@ -75,6 +77,20 @@ namespace playrho {
         m_value = v;
         m_set = true;
         return *this;
+    }
+    
+    template<typename T>
+    constexpr const T* OptionalValue<T>::operator->() const
+    {
+        assert(m_set);
+        return &m_value;
+    }
+    
+    template<typename T>
+    constexpr T* OptionalValue<T>::operator->()
+    {
+        assert(m_set);
+        return &m_value;
     }
 
     template<typename T>
