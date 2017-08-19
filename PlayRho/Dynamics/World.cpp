@@ -2082,9 +2082,9 @@ void World::RayCast(Length2D point1, Length2D point2, RayCastCallback callback)
         const auto child = shape->GetChild(index);
         const auto transformation = body->GetTransformation();
         const auto output = playrho::RayCast(child, input, transformation);
-        if (output.hit)
+        if (output.has_value())
         {
-            const auto fraction = output.fraction;
+            const auto fraction = output->fraction;
             assert(fraction >= 0 && fraction <= 1);
          
             // Here point can be calculated these two ways:
@@ -2103,7 +2103,7 @@ void World::RayCast(Length2D point1, Length2D point2, RayCastCallback callback)
             const auto point = input.p1 + (input.p2 - input.p1) * fraction;
             
             // Callback return states: terminate (0), ignore (< 0), clip (< 1), reset (1).
-            const auto opcode = callback(fixture, index, point, output.normal);
+            const auto opcode = callback(fixture, index, point, output->normal);
             switch (opcode)
             {
                 case RayCastOpcode::Terminate: return Real(0);

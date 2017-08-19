@@ -40,45 +40,20 @@ TEST(RayCastOutput, ByteSize)
     }
 }
 
-TEST(RayCastOutput, Traits)
-{
-    EXPECT_TRUE(std::is_default_constructible<RayCastOutput>::value);
-    //EXPECT_FALSE(std::is_nothrow_default_constructible<RayCastOutput>::value); // on clang 4.0 or older
-    //EXPECT_TRUE(std::is_nothrow_default_constructible<RayCastOutput>::value); // on gcc 6
-    EXPECT_FALSE(std::is_trivially_default_constructible<RayCastOutput>::value);
-    
-    EXPECT_TRUE(std::is_constructible<RayCastOutput>::value);
-    //EXPECT_FALSE(std::is_nothrow_constructible<RayCastOutput>::value); // on clang 4.0 or older
-    //EXPECT_TRUE(std::is_nothrow_constructible<RayCastOutput>::value); // on gcc 6
-    EXPECT_FALSE(std::is_trivially_constructible<RayCastOutput>::value);
-    
-    EXPECT_TRUE(std::is_copy_constructible<RayCastOutput>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_constructible<RayCastOutput>::value);
-    EXPECT_TRUE(std::is_trivially_copy_constructible<RayCastOutput>::value);
-    
-    EXPECT_TRUE(std::is_copy_assignable<RayCastOutput>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_assignable<RayCastOutput>::value);
-    EXPECT_FALSE(std::is_trivially_copy_assignable<RayCastOutput>::value);
-    
-    EXPECT_TRUE(std::is_destructible<RayCastOutput>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<RayCastOutput>::value);
-    EXPECT_TRUE(std::is_trivially_destructible<RayCastOutput>::value);
-}
-
 TEST(RayCastOutput, DefaultConstruction)
 {
     RayCastOutput foo{};
-    EXPECT_FALSE(foo.hit);
+    EXPECT_FALSE(foo.has_value());
 }
 
 TEST(RayCastOutput, InitConstruction)
 {
     const auto normal = UnitVec2::GetLeft();
     const auto fraction = Real(0.8f);
-    RayCastOutput foo{normal, fraction, true};
-    EXPECT_TRUE(foo.hit);
-    EXPECT_EQ(foo.normal, normal);
-    EXPECT_EQ(foo.fraction, fraction);
+    RayCastOutput foo{{normal, fraction}};
+    EXPECT_TRUE(foo.has_value());
+    EXPECT_EQ(foo->normal, normal);
+    EXPECT_EQ(foo->fraction, fraction);
 }
 
 TEST(RayCastOutput, RayCastFreeFunctionHits)
@@ -90,10 +65,14 @@ TEST(RayCastOutput, RayCastFreeFunctionHits)
     const auto maxFraction = Real(1);
     auto input = RayCastInput{p1, p2, maxFraction};
     const auto output = RayCast(radius, location, input);
-    EXPECT_TRUE(output.hit);
-    EXPECT_NEAR(static_cast<double>(output.normal.GetX()), static_cast<double>(UnitVec2::GetRight().GetX()), 0.02);
-    EXPECT_NEAR(static_cast<double>(output.normal.GetY()), static_cast<double>(UnitVec2::GetRight().GetY()), 0.02);
-    EXPECT_NEAR(static_cast<double>(output.fraction), 0.49, 0.01);
+    ASSERT_TRUE(output.has_value());
+    EXPECT_NEAR(static_cast<double>(output->normal.GetX()),
+                static_cast<double>(UnitVec2::GetRight().GetX()),
+                0.02);
+    EXPECT_NEAR(static_cast<double>(output->normal.GetY()),
+                static_cast<double>(UnitVec2::GetRight().GetY()),
+                0.02);
+    EXPECT_NEAR(static_cast<double>(output->fraction), 0.49, 0.01);
 }
 
 TEST(RayCastOutput, RayCastLocationFreeFunctionMisses)
@@ -106,7 +85,7 @@ TEST(RayCastOutput, RayCastLocationFreeFunctionMisses)
         const auto maxFraction = Real(1);
         auto input = RayCastInput{p1, p2, maxFraction};
         const auto output = RayCast(radius, location, input);
-        EXPECT_FALSE(output.hit);
+        EXPECT_FALSE(output.has_value());
     }
     {
         const auto radius = Real(0.1) * Meter;
@@ -116,7 +95,7 @@ TEST(RayCastOutput, RayCastLocationFreeFunctionMisses)
         const auto maxFraction = Real(1);
         auto input = RayCastInput{p1, p2, maxFraction};
         const auto output = RayCast(radius, location, input);
-        EXPECT_FALSE(output.hit);
+        EXPECT_FALSE(output.has_value());
     }
 }
 
@@ -128,7 +107,7 @@ TEST(RayCastOutput, RayCastAabbFreeFunction)
     const auto maxFraction = Real(1);
     RayCastInput input{p1, p2, maxFraction};
     const auto output = RayCast(aabb, input);
-    EXPECT_FALSE(output.hit);
+    EXPECT_FALSE(output.has_value());
 }
 
 TEST(RayCastOutput, RayCastDistanceProxyFF)
@@ -152,11 +131,11 @@ TEST(RayCastOutput, RayCastDistanceProxyFF)
     const auto input0 = RayCastInput{p1, p2, maxFraction};
     {
         const auto output = RayCast(dp, input0, Transform_identity);
-        EXPECT_TRUE(output.hit);
-        if (output.hit)
+        EXPECT_TRUE(output.has_value());
+        if (output.has_value())
         {
-            EXPECT_EQ(output.normal, UnitVec2::GetLeft());
-            EXPECT_NEAR(static_cast<double>(output.fraction), 0.05, 0.002);
+            EXPECT_EQ(output->normal, UnitVec2::GetLeft());
+            EXPECT_NEAR(static_cast<double>(output->fraction), 0.05, 0.002);
         }
     }
     
@@ -164,6 +143,58 @@ TEST(RayCastOutput, RayCastDistanceProxyFF)
     const auto input1 = RayCastInput{p0, p1, maxFraction};
     {
         const auto output = RayCast(dp, input1, Transform_identity);
-        EXPECT_FALSE(output.hit);
+        EXPECT_FALSE(output.has_value());
     }
 }
+
+TEST(RayCastHit, ByteSize)
+{
+    switch (sizeof(Real))
+    {
+        case  4: EXPECT_EQ(sizeof(RayCastHit), std::size_t(12)); break;
+        case  8: EXPECT_EQ(sizeof(RayCastHit), std::size_t(24)); break;
+        case 16: EXPECT_EQ(sizeof(RayCastHit), std::size_t(48)); break;
+        default: FAIL(); break;
+    }
+}
+
+TEST(RayCastHit, Traits)
+{
+    EXPECT_TRUE(std::is_default_constructible<RayCastHit>::value);
+    //EXPECT_FALSE(std::is_nothrow_default_constructible<RayCastHit>::value); // on clang 4.0 or older
+    //EXPECT_TRUE(std::is_nothrow_default_constructible<RayCastHit>::value); // on gcc 6
+    EXPECT_FALSE(std::is_trivially_default_constructible<RayCastHit>::value);
+
+    EXPECT_TRUE(std::is_constructible<RayCastHit>::value);
+    //EXPECT_FALSE(std::is_nothrow_constructible<RayCastHit>::value); // on clang 4.0 or older
+    //EXPECT_TRUE(std::is_nothrow_constructible<RayCastHit>::value); // on gcc 6
+    EXPECT_FALSE(std::is_trivially_constructible<RayCastHit>::value);
+
+    EXPECT_TRUE(std::is_copy_constructible<RayCastHit>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_constructible<RayCastHit>::value);
+    EXPECT_TRUE(std::is_trivially_copy_constructible<RayCastHit>::value);
+
+    EXPECT_TRUE(std::is_copy_assignable<RayCastHit>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_assignable<RayCastHit>::value);
+    EXPECT_FALSE(std::is_trivially_copy_assignable<RayCastHit>::value);
+
+    EXPECT_TRUE(std::is_destructible<RayCastHit>::value);
+    EXPECT_TRUE(std::is_nothrow_destructible<RayCastHit>::value);
+    EXPECT_TRUE(std::is_trivially_destructible<RayCastHit>::value);
+}
+
+TEST(RayCastHit, DefaultConstruction)
+{
+    RayCastHit foo{};
+    EXPECT_FALSE(IsValid(foo.normal));
+}
+
+TEST(RayCastHit, InitConstruction)
+{
+    const auto normal = UnitVec2::GetLeft();
+    const auto fraction = Real(0.8f);
+    RayCastHit foo{normal, fraction};
+    EXPECT_EQ(foo.normal, normal);
+    EXPECT_EQ(foo.fraction, fraction);
+}
+

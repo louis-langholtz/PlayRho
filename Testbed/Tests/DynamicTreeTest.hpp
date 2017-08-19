@@ -197,12 +197,12 @@ public:
 
         const auto output = playrho::RayCast(actor->aabb, input);
 
-        if (output.hit)
+        if (output.has_value())
         {
             m_rayCastOutput = output;
             m_rayActor = actor;
-            m_rayActor->fraction = output.fraction;
-            return output.fraction;
+            m_rayActor->fraction = output->fraction;
+            return output->fraction;
         }
 
         return input.maxFraction;
@@ -350,7 +350,7 @@ private:
 
         // Brute force ray cast.
         Actor* bruteActor = nullptr;
-        RayCastOutput bruteOutput;
+        RayCastHit bruteOutput;
         for (auto i = decltype(e_actorCount){0}; i < e_actorCount; ++i)
         {
             if (m_actors[i].proxyId == DynamicTree::InvalidIndex)
@@ -359,17 +359,17 @@ private:
             }
 
             const auto output = playrho::RayCast(m_actors[i].aabb, input);
-            if (output.hit)
+            if (output.has_value())
             {
                 bruteActor = m_actors + i;
-                bruteOutput = output;
-                input.maxFraction = output.fraction;
+                bruteOutput = *output;
+                input.maxFraction = output->fraction;
             }
         }
 
         if (bruteActor)
         {
-            assert(bruteOutput.fraction == m_rayCastOutput.fraction);
+            assert(bruteOutput.fraction == m_rayCastOutput->fraction);
         }
     }
 

@@ -365,7 +365,7 @@ public:
             xf.SetIdentity();
             xf.position = Vec2(23.0f, 5.0f);
 
-            RayCastOutput output;
+            RayCastHit output;
             bool hit;
             hit = shape.RayCast(&output, input, xf);
             hit = false;

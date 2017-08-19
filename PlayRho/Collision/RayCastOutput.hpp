@@ -25,6 +25,7 @@
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
+#include <PlayRho/Common/OptionalValue.hpp>
 
 namespace playrho
 {
@@ -33,29 +34,20 @@ namespace playrho
     class Shape;
     class DistanceProxy;
 
-    /// @brief Ray-cast output data.
+    /// @brief Ray-cast hit data.
     /// @details The ray hits at p1 + fraction * (p2 - p1), where p1 and p2 come from RayCastInput.
-    /// @note This class should be refactored for C++17 to remove the hit field and update
-    ///   callers/references to use a std::optional of this class.
-    struct RayCastOutput
+    struct RayCastHit
     {        
         /// @brief Surface normal in world coordinates at the point of contact.
-        /// @note This value is meaningless unless the ray hit.
-        /// @sa hit.
-        UnitVec2 normal = UnitVec2::GetZero();
+        UnitVec2 normal;
 
         /// @brief Fraction.
         /// @note This is a unit interval value - a value between 0 and 1 - or it's invalid.
-        /// @note This value is meaningless unless the ray hit.
-        /// @sa hit.
         UnitInterval<Real> fraction = UnitInterval<Real>{0};
-        
-        /// @brief Hit flag.
-        /// @note <code>true</code> if the ray hit and the normal and fraction values should be
-        ///   valid, <code>false</code> otherwise.
-        bool hit = false;
     };
 
+    using RayCastOutput = Optional<RayCastHit>;
+    
     /// @brief Cast a ray against a circle of a given radius at the given location.
     /// @param radius Radius of the circle.
     /// @param location Location in world coordinates of the circle.

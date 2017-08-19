@@ -28,7 +28,7 @@
 using namespace playrho;
 
 RayCastOutput playrho::RayCast(const Length radius, const Length2D location,
-                             const RayCastInput& input) noexcept
+                               const RayCastInput& input) noexcept
 {
     // Collision Detection in Interactive 3D Environments by Gino van den Bergen
     // From Section 3.1.2
@@ -58,7 +58,7 @@ RayCastOutput playrho::RayCast(const Length radius, const Length2D location,
     if ((fraction >= Real{0}) && (fraction <= input.maxFraction))
     {
         const auto normal = GetUnitVector(s + fraction * raySegment, UnitVec2::GetZero());
-        return RayCastOutput{normal, fraction, true};
+        return RayCastOutput{{normal, fraction}};
     }
     
     return RayCastOutput{};
@@ -132,11 +132,11 @@ RayCastOutput playrho::RayCast(const AABB& aabb, const RayCastInput& input) noex
     }
     
     // Intersection.
-    return RayCastOutput{normal, tmin, true};
+    return RayCastOutput{{normal, tmin}};
 }
 
 RayCastOutput playrho::RayCast(const DistanceProxy& proxy, const RayCastInput& input,
-                             const Transformation& transform) noexcept
+                               const Transformation& transform) noexcept
 {
     const auto vertexCount = proxy.GetVertexCount();
     assert(vertexCount > 0);
@@ -178,10 +178,10 @@ RayCastOutput playrho::RayCast(const DistanceProxy& proxy, const RayCastInput& i
     for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
     {
         const auto circleResult = ::RayCast(radius, v0, transformedInput);
-        if (circleResult.hit && (minT > circleResult.fraction))
+        if (circleResult.has_value() && (minT > circleResult->fraction))
         {
-            minT = circleResult.fraction;
-            normalFound = circleResult.normal;
+            minT = circleResult->fraction;
+            normalFound = circleResult->normal;
         }
 
         const auto v1 = proxy.GetVertex(GetModuloNext(i, vertexCount));
@@ -226,7 +226,7 @@ RayCastOutput playrho::RayCast(const DistanceProxy& proxy, const RayCastInput& i
     
     if (minT <= input.maxFraction)
     {
-        return RayCastOutput{Rotate(normalFound, transform.q), minT, true};
+        return RayCastOutput{{Rotate(normalFound, transform.q), minT}};
     }
     return RayCastOutput{};
 }
