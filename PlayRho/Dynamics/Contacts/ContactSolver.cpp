@@ -42,8 +42,7 @@ namespace
 {
 
 #if defined(B2_DEBUG_SOLVER)
-static constexpr auto k_errorTol = Real(2e-3) * MeterPerSecond; ///< error tolerance
-static constexpr auto k_majorErrorTol = Real(1e-2) * MeterPerSecond; ///< error tolerance
+static constexpr auto k_errorTol = Real(1e-3f) * MeterPerSecond; ///< error tolerance
 #endif
 
 struct VelocityPair
@@ -69,7 +68,7 @@ struct ImpulseChange
     UnitVec2 direction; ///< Direction.
 };
 
-VelocityPair ApplyImpulses(const VelocityConstraint& vc, const Momentum2D impulses)
+VelocityPair GetVelocityDelta(const VelocityConstraint& vc, const Momentum2D impulses)
 {
     assert(IsValid(impulses));
 
@@ -101,7 +100,7 @@ VelocityPair ApplyImpulses(const VelocityConstraint& vc, const Momentum2D impuls
 
 Momentum BlockSolveUpdate(VelocityConstraint& vc, const Momentum2D newImpulses)
 {
-    const auto delta_v = ApplyImpulses(vc, newImpulses - GetNormalImpulses(vc));
+    const auto delta_v = GetVelocityDelta(vc, newImpulses - GetNormalImpulses(vc));
     vc.GetBodyA()->SetVelocity(vc.GetBodyA()->GetVelocity() + delta_v.vel_a);
     vc.GetBodyB()->SetVelocity(vc.GetBodyB()->GetVelocity() + delta_v.vel_b);
     SetNormalImpulses(vc, newImpulses);
@@ -127,23 +126,21 @@ Optional<Momentum> BlockSolveNormalCase1(VelocityConstraint& vc,
         const auto max = BlockSolveUpdate(vc, newImpulses);
 
 #if defined(B2_DEBUG_SOLVER)
-        auto& vcp1 = vc.GetPointAt(0);
-        auto& vcp2 = vc.GetPointAt(1);
+        auto& vcp0 = vc.GetPointAt(0);
+        auto& vcp1 = vc.GetPointAt(1);
         const auto velA = vc.GetBodyA()->GetVelocity();
         const auto velB = vc.GetBodyB()->GetVelocity();
 
         // Postconditions
-        const auto post_dv1 = GetContactRelVelocity(velA, vcp1.relA, velB, vcp1.relB);
-        const auto post_dv2 = GetContactRelVelocity(velA, vcp2.relA, velB, vcp2.relB);
+        const auto dv0 = GetContactRelVelocity(velA, vcp0.relA, velB, vcp0.relB);
+        const auto dv1 = GetContactRelVelocity(velA, vcp1.relA, velB, vcp1.relB);
 
         // Compute normal velocity
-        const auto post_vn1 = Dot(post_dv1, vc.GetNormal());
-        const auto post_vn2 = Dot(post_dv2, vc.GetNormal());
+        const auto vn0 = Dot(dv0, vc.GetNormal());
+        const auto vn1 = Dot(dv1, vc.GetNormal());
 
-        assert(Abs(post_vn1 - vcp1.velocityBias) < k_majorErrorTol);
-        assert(Abs(post_vn2 - vcp2.velocityBias) < k_majorErrorTol);
-        assert(Abs(post_vn1 - vcp1.velocityBias) < k_errorTol);
-        assert(Abs(post_vn2 - vcp2.velocityBias) < k_errorTol);
+        assert(Abs(vn0 - vcp0.velocityBias) < k_errorTol);
+        assert(Abs(vn1 - vcp1.velocityBias) < k_errorTol);
 #endif
         return Optional<Momentum>{max};
     }
@@ -173,13 +170,12 @@ Optional<Momentum> BlockSolveNormalCase2(VelocityConstraint& vc, const LinearVel
         const auto velB = vc.GetBodyB()->GetVelocity();
 
         // Postconditions
-        const auto post_dv1 = GetContactRelVelocity(velA, vcp1.relA, velB, vcp1.relB);
+        const auto dv1 = GetContactRelVelocity(velA, vcp1.relA, velB, vcp1.relB);
         
         // Compute normal velocity
-        const auto post_vn1 = Dot(post_dv1, vc.GetNormal());
+        const auto vn1 = Dot(dv1, vc.GetNormal());
 
-        assert(Abs(post_vn1 - vcp1.velocityBias) < k_majorErrorTol);
-        assert(Abs(post_vn1 - vcp1.velocityBias) < k_errorTol);
+        assert(Abs(vn1 - vcp1.velocityBias) < k_errorTol);
 #endif
         return Optional<Momentum>{max};
     }
@@ -209,13 +205,12 @@ Optional<Momentum> BlockSolveNormalCase3(VelocityConstraint& vc, const LinearVel
         const auto velB = vc.GetBodyB()->GetVelocity();
 
         // Postconditions
-        const auto post_dv2 = GetContactRelVelocity(velA, vcp2.relA, velB, vcp2.relB);
+        const auto dv2 = GetContactRelVelocity(velA, vcp2.relA, velB, vcp2.relB);
 
         // Compute normal velocity
-        const auto post_vn2 = Dot(post_dv2, vc.GetNormal());
+        const auto vn2 = Dot(dv2, vc.GetNormal());
 
-        assert(Abs(post_vn2 - vcp2.velocityBias) < k_majorErrorTol);
-        assert(Abs(post_vn2 - vcp2.velocityBias) < k_errorTol);
+        assert(Abs(vn2 - vcp2.velocityBias) < k_errorTol);
 #endif
         return Optional<Momentum>{max};
     }
@@ -233,7 +228,7 @@ Optional<Momentum> BlockSolveNormalCase4(VelocityConstraint& vc, const LinearVel
     const auto vn2 = Get<1>(b_prime);
     if ((vn1 >= LinearVelocity{0}) && (vn2 >= LinearVelocity{0}))
     {
-        return Optional<Momentum>{BlockSolveUpdate(vc, Momentum2D{})};
+        return Optional<Momentum>{BlockSolveUpdate(vc, Momentum2D{Momentum(0), Momentum(0)})};
     }
     return Optional<Momentum>{};
 }
@@ -289,13 +284,13 @@ inline Momentum BlockSolveNormalConstraint(VelocityConstraint& vc)
         const auto dv1 = GetContactRelVelocity(velA, ra1, velB, rb1);
         
         // Compute normal velocities
-        const auto vn1 = Dot(dv0, normal);
-        const auto vn2 = Dot(dv1, normal);
+        const auto vn0 = Dot(dv0, normal);
+        const auto vn1 = Dot(dv1, normal);
         
         // Compute b
         const auto b = LinearVelocity2D{
-            vn1 - vc.GetVelocityBiasAtPoint(0),
-            vn2 - vc.GetVelocityBiasAtPoint(1)
+            vn0 - vc.GetVelocityBiasAtPoint(0),
+            vn1 - vc.GetVelocityBiasAtPoint(1)
         };
         
         // Return b'
@@ -595,31 +590,34 @@ PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
                     s0.min_separation
                 };
             }
-            if (psm0.m_separation < psm1.m_separation)
+            else
             {
-                const auto s0 = solver_fn(psm0, posA.linear, posB.linear);
-                posA += s0.pos_a;
-                posB += s0.pos_b;
-                const auto psm1_prime = GetPSM(pc.manifold, 1,
-                                               GetTransformation(posA, localCenterA),
-                                               GetTransformation(posB, localCenterB));
-                const auto s1 = solver_fn(psm1_prime, posA.linear, posB.linear);
-                posA += s1.pos_a;
-                posB += s1.pos_b;
-                return PositionSolution{posA, posB, s0.min_separation};
-            }
-            if (psm1.m_separation < psm0.m_separation)
-            {
-                const auto s1 = solver_fn(psm1, posA.linear, posB.linear);
-                posA += s1.pos_a;
-                posB += s1.pos_b;
-                const auto psm0_prime = GetPSM(pc.manifold, 0,
-                                               GetTransformation(posA, localCenterA),
-                                               GetTransformation(posB, localCenterB));
-                const auto s0 = solver_fn(psm0_prime, posA.linear, posB.linear);
-                posA += s0.pos_a;
-                posB += s0.pos_b;
-                return PositionSolution{posA, posB, s1.min_separation};
+                if (psm0.m_separation < psm1.m_separation)
+                {
+                    const auto s0 = solver_fn(psm0, posA.linear, posB.linear);
+                    posA += s0.pos_a;
+                    posB += s0.pos_b;
+                    const auto psm1_prime = GetPSM(pc.manifold, 1,
+                                                   GetTransformation(posA, localCenterA),
+                                                   GetTransformation(posB, localCenterB));
+                    const auto s1 = solver_fn(psm1_prime, posA.linear, posB.linear);
+                    posA += s1.pos_a;
+                    posB += s1.pos_b;
+                    return PositionSolution{posA, posB, s0.min_separation};
+                }
+                else if (psm1.m_separation < psm0.m_separation)
+                {
+                    const auto s1 = solver_fn(psm1, posA.linear, posB.linear);
+                    posA += s1.pos_a;
+                    posB += s1.pos_b;
+                    const auto psm0_prime = GetPSM(pc.manifold, 0,
+                                                   GetTransformation(posA, localCenterA),
+                                                   GetTransformation(posB, localCenterB));
+                    const auto s0 = solver_fn(psm0_prime, posA.linear, posB.linear);
+                    posA += s0.pos_a;
+                    posB += s0.pos_b;
+                    return PositionSolution{posA, posB, s1.min_separation};
+                }
             }
 #endif
             // reaches here if one or both psm separation values was NaN (and NDEBUG is defined).

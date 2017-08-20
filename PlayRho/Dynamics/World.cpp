@@ -236,12 +236,12 @@ namespace {
         const auto normal = vc.GetNormal();
         const auto tangent = vc.GetTangent();
         const auto pointCount = vc.GetPointCount();
-
         const auto bodyA = vc.GetBodyA();
+        const auto bodyB = vc.GetBodyB();
+
         const auto invMassA = bodyA->GetInvMass();
         const auto invRotInertiaA = bodyA->GetInvRotInertia();
         
-        const auto bodyB = vc.GetBodyB();
         const auto invMassB = bodyB->GetInvMass();
         const auto invRotInertiaB = bodyB->GetInvRotInertia();
         
@@ -345,8 +345,8 @@ namespace {
     /// @post Velocity constraints will have their constraint points set.
     /// @sa SolveVelocityConstraints.
     VelocityConstraints GetVelocityConstraints(const Island::Contacts& contacts,
-                                                        BodyConstraintsMap& bodies,
-                                                        const VelocityConstraint::Conf conf)
+                                               BodyConstraintsMap& bodies,
+                                               const VelocityConstraint::Conf conf)
     {
         auto velConstraints = VelocityConstraints{};
         velConstraints.reserve(contacts.size());
@@ -371,8 +371,10 @@ namespace {
             const auto radiusA = shapeA->GetVertexRadius();
             const auto radiusB = shapeB->GetVertexRadius();
     
-            const auto xfA = GetTransformation(bodyConstraintA->GetPosition(), bodyConstraintA->GetLocalCenter());
-            const auto xfB = GetTransformation(bodyConstraintB->GetPosition(), bodyConstraintB->GetLocalCenter());
+            const auto xfA = GetTransformation(bodyConstraintA->GetPosition(),
+                                               bodyConstraintA->GetLocalCenter());
+            const auto xfB = GetTransformation(bodyConstraintB->GetPosition(),
+                                               bodyConstraintB->GetLocalCenter());
             const auto worldManifold = GetWorldManifold(manifold, xfA, radiusA, xfB, radiusB);
 
             return VelocityConstraint{friction, restitution, tangentSpeed, worldManifold,

@@ -34,38 +34,38 @@ inline InvMass22 ComputeK(const VelocityConstraint& vc) noexcept
     const auto normal = vc.GetNormal();
     const auto bodyA = vc.GetBodyA();
     const auto bodyB = vc.GetBodyB();
+
+    const auto relA0 = vc.GetPointRelPosA(0);
+    const auto relB0 = vc.GetPointRelPosB(0);
+    const auto relA1 = vc.GetPointRelPosA(1);
+    const auto relB1 = vc.GetPointRelPosB(1);
     
+    const auto rnA0 = Length{Cross(relA0, normal)};
+    const auto rnB0 = Length{Cross(relB0, normal)};
+    const auto rnA1 = Length{Cross(relA1, normal)};
+    const auto rnB1 = Length{Cross(relB1, normal)};
+
     const auto invRotInertiaA = bodyA->GetInvRotInertia();
     const auto invMassA = bodyA->GetInvMass();
     
     const auto invRotInertiaB = bodyB->GetInvRotInertia();
     const auto invMassB = bodyB->GetInvMass();
     
-    const auto relA0 = vc.GetPointRelPosA(0);
-    const auto relB0 = vc.GetPointRelPosB(0);
-    const auto relA1 = vc.GetPointRelPosA(1);
-    const auto relB1 = vc.GetPointRelPosB(1);
-
-    const auto rn1A = Length{Cross(relA0, normal)};
-    const auto rn1B = Length{Cross(relB0, normal)};
-    const auto rn2A = Length{Cross(relA1, normal)};
-    const auto rn2B = Length{Cross(relB1, normal)};
-    
     const auto invMass = invMassA + invMassB;
     assert(invMass > InvMass{0});
     
-    const auto invRotMassA1 = InvMass{(invRotInertiaA * Square(rn1A)) / SquareRadian};
-    const auto invRotMassA2 = InvMass{(invRotInertiaA * Square(rn2A)) / SquareRadian};
-    const auto invRotMassA = InvMass{(invRotInertiaA * rn1A * rn2A) / SquareRadian};
-    const auto invRotMassB1 = InvMass{(invRotInertiaB * Square(rn1B)) / SquareRadian};
-    const auto invRotMassB2 = InvMass{(invRotInertiaB * Square(rn2B)) / SquareRadian};
-    const auto invRotMassB = InvMass{(invRotInertiaB * rn1B * rn2B) / SquareRadian};
+    const auto invRotMassA0 = InvMass{(invRotInertiaA * Square(rnA0)) / SquareRadian};
+    const auto invRotMassA1 = InvMass{(invRotInertiaA * Square(rnA1)) / SquareRadian};
+    const auto invRotMassB0 = InvMass{(invRotInertiaB * Square(rnB0)) / SquareRadian};
+    const auto invRotMassB1 = InvMass{(invRotInertiaB * Square(rnB1)) / SquareRadian};
+    const auto invRotMassA = InvMass{(invRotInertiaA * rnA0 * rnA1) / SquareRadian};
+    const auto invRotMassB = InvMass{(invRotInertiaB * rnB0 * rnB1) / SquareRadian};
     
+    const auto k00 = invMass + invRotMassA0 + invRotMassB0;
     const auto k11 = invMass + invRotMassA1 + invRotMassB1;
-    const auto k22 = invMass + invRotMassA2 + invRotMassB2;
-    const auto k12 = invMass + invRotMassA + invRotMassB;
+    const auto k01 = invMass + invRotMassA + invRotMassB;
     
-    return InvMass22{Vector2D<InvMass>{k11, k12}, Vector2D<InvMass>{k12, k22}};
+    return InvMass22{Vector2D<InvMass>{k00, k01}, Vector2D<InvMass>{k01, k11}};
 }
 
 } // anonymous namespace
@@ -102,12 +102,12 @@ VelocityConstraint::VelocityConstraint(Real friction, Real restitution,
         const auto k = ComputeK(*this);
         
         // Ensure a reasonable condition number.
-        constexpr auto maxCondNum = PLAYRHO_MAGIC(Real(1000));
-        const auto scaled_k00_squared = Get<0>(Get<0>(k)) * (Get<0>(Get<0>(k)) / maxCondNum);
+        const auto k00_squared = Square(Get<0>(Get<0>(k)));
         const auto k00_times_k11 = Get<0>(Get<0>(k)) * Get<1>(Get<1>(k));
         const auto k01_squared = Square(Get<1>(Get<0>(k)));
         const auto k_diff = k00_times_k11 - k01_squared;
-        if (scaled_k00_squared < k_diff)
+        constexpr auto maxCondNum = PLAYRHO_MAGIC(Real(1000.0f));
+        if (k00_squared < maxCondNum * k_diff)
         {
             // K is safe to invert.
             // Prepare the block solver.
