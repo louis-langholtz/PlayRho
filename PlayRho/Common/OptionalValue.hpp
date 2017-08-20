@@ -31,7 +31,7 @@ namespace playrho {
     public:
         using value_type = T;
         
-        constexpr OptionalValue() noexcept = default;
+        constexpr OptionalValue() = default;
         constexpr OptionalValue(const OptionalValue& other) = default;
         constexpr OptionalValue(const T v);
         
