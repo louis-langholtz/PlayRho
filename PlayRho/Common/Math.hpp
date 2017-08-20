@@ -524,8 +524,8 @@ constexpr inline auto GetFwdPerpendicular(const T vector) noexcept
 constexpr inline Vec2 Transform(const Vec2 v, const Mat22& A) noexcept
 {
     return Vec2{
-        GetX(GetX(A)) * GetX(v) + GetX(GetY(A)) * GetY(v),
-        GetY(GetX(A)) * GetX(v) + GetY(GetY(A)) * GetY(v)
+        Get<0>(Get<0>(A)) * Get<0>(v) + Get<0>(Get<1>(A)) * Get<1>(v),
+        Get<1>(Get<0>(A)) * Get<0>(v) + Get<1>(Get<1>(A)) * Get<1>(v)
     };
 }
 
@@ -533,16 +533,16 @@ constexpr inline Vec2 Transform(const Vec2 v, const Mat22& A) noexcept
 constexpr inline auto Transform(const LinearVelocity2D v, const Mass22& A) noexcept
 {
     return Momentum2D{
-        GetX(GetX(A)) * GetX(v) + GetX(GetY(A)) * GetY(v),
-        GetY(GetX(A)) * GetX(v) + GetY(GetY(A)) * GetY(v)
+        Get<0>(Get<0>(A)) * Get<0>(v) + Get<0>(Get<1>(A)) * Get<1>(v),
+        Get<1>(Get<0>(A)) * Get<0>(v) + Get<1>(Get<1>(A)) * Get<1>(v)
     };
 }
 
 constexpr inline auto Transform(const Momentum2D v, const InvMass22 A) noexcept
 {
     return LinearVelocity2D{
-        GetX(GetX(A)) * GetX(v) + GetX(GetY(A)) * GetY(v),
-        GetY(GetX(A)) * GetX(v) + GetY(GetY(A)) * GetY(v)
+        Get<0>(Get<0>(A)) * Get<0>(v) + Get<0>(Get<1>(A)) * Get<1>(v),
+        Get<1>(Get<0>(A)) * Get<0>(v) + Get<1>(Get<1>(A)) * Get<1>(v)
     };
 }
 #endif
