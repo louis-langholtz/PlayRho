@@ -31,16 +31,16 @@ public:
     HeavyOnLight()
     {
         const auto bd = BodyDef{}.UseType(BodyType::Dynamic);
-        const auto upperBodyDef = BodyDef{bd}.UseLocation(Vec2(0.0f, 6.0f) * Meter);
-        const auto lowerBodyDef = BodyDef{bd}.UseLocation(Vec2(0.0f, 0.5f) * Meter);
+        const auto upperBodyDef = BodyDef(bd).UseLocation(Vec2(0.0f, 6.0f) * Meter);
+        const auto lowerBodyDef = BodyDef(bd).UseLocation(Vec2(0.0f, 0.5f) * Meter);
         
         const auto groundConf = EdgeShape::Conf{}
             .UseVertex1(Vec2(-40.0f, 0.0f) * Meter)
             .UseVertex2(Vec2(40.0f, 0.0f) * Meter);
         
         const auto diskConf = DiskShape::Conf{}.UseDensity(Real(10) * KilogramPerSquareMeter);
-        const auto smallerDiskConf = DiskShape::Conf{diskConf}.UseVertexRadius(Real{0.5f} * Meter);
-        const auto biggerDiskConf = DiskShape::Conf{diskConf}.UseVertexRadius(Real{5.0f} * Meter);
+        const auto smallerDiskConf = DiskShape::Conf(diskConf).UseVertexRadius(Real{0.5f} * Meter);
+        const auto biggerDiskConf = DiskShape::Conf(diskConf).UseVertexRadius(Real{5.0f} * Meter);
 
         const auto ground = m_world->CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(groundConf));
