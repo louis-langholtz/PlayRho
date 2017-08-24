@@ -255,7 +255,7 @@ constexpr inline bool almost_equal(float x, float y, int ulp = 2)
     int nY = *(int*)&nY;    
     if (nY < 0)    
         nY = 0x80000000 - nY;    
-    int nDiff = abs(nX - nY);    
+    int nDiff = Abs(nX - nY);    
     return (nDiff <= ulp);  
 }
 
