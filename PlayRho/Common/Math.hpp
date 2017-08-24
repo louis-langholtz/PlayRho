@@ -235,13 +235,28 @@ constexpr inline bool almost_zero(Fixed64 value)
 
 constexpr inline bool almost_equal(float x, float y, int ulp = 2)
 {
-    // From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
-    //   "the machine epsilon has to be scaled to the magnitude of the values used
-    //    and multiplied by the desired precision in ULPs (units in the last place)
-    //    unless the result is subnormal".
-    // Where "subnormal" means almost zero.
-    //
-    return (Abs(x - y) < (std::numeric_limits<float>::epsilon() * Abs(x + y) * ulp)) || almost_zero(x - y);
+    // From https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/ :
+    //   "If you subtract the integer representations and get one, 
+    //   then the two floats are as close as they can be without being equal. 
+    //   If you get two then they are still really close, with just one float between them.
+    //   The difference between the integer representations tells us 
+    //   how many Units in the Last Place the numbers differ by.
+    //   This is usually shortened to ULP, as in “these two floats differ by two ULPs."
+    // 
+    
+    // Make sure ulp is non-negative and small enough that the    
+    // default NAN won't compare as equal to anything.    
+    assert(ulp > 0 && ulp < 4 * 1024 * 1024);    
+    int nX = *(int*)&x;    
+    // Make nX lexicographically ordered as a twos-complement int    
+    if (nX < 0)    
+        nX = 0x80000000 - nX;    
+    // Make bInt lexicographically ordered as a twos-complement int    
+    int nY = *(int*)&nY;    
+    if (nY < 0)    
+        nY = 0x80000000 - nY;    
+    int nDiff = abs(nX - nY);    
+    return (nDiff <= ulp);  
 }
 
 constexpr inline bool almost_equal(double x, double y, int ulp = 2)
