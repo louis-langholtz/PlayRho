@@ -91,6 +91,18 @@ static void FloatAlmostEqual1(benchmark::State& state)
     }
 }
 
+static void FloatAlmostEqual2(benchmark::State& state)
+{
+    const auto x = static_cast<float>(rand() - (RAND_MAX / 2)) / static_cast<float>(RAND_MAX / 2);
+    const auto y = static_cast<float>(rand() - (RAND_MAX / 2)) / static_cast<float>(RAND_MAX / 2);
+    const auto ulp = static_cast<int>(rand() % 8);
+    while (state.KeepRunning())
+    {
+        benchmark::DoNotOptimize(ulp > 0 && ulp < 4 * 1024 * 1024 ? (playrho::Abs((int nX = *((int*)&x) < 0 ? 0x80000000 - nX : nX) - (int nY = *((int*)&y) < 0 ? 0x80000000 - nY : nY)) <= ulp) : false);
+    }
+}
+
+
 // ----
 
 static void LengthSquaredViaDotProduct(benchmark::State& state)
