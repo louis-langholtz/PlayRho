@@ -51,7 +51,7 @@ Length2D playrho::ComputeCentroid(const Span<const Length2D>& vertices)
     }
     
     // Centroid
-    assert((area > Area{0}) && !almost_zero(area / SquareMeter));
+    assert((area > Area{0}) && !AlmostZero(area / SquareMeter));
     return c / area;
 }
 

@@ -153,7 +153,7 @@ TEST(TimeOfImpact, CollideCirclesHorizontally)
     const auto approx_time_of_collision = ((x * Meter - radius) + limits.targetDepth / Real{2}) / (x * Meter);
 
     EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
-    EXPECT_TRUE(almost_equal(output.get_t(), approx_time_of_collision));
+    EXPECT_TRUE(AlmostEqual(output.get_t(), approx_time_of_collision));
     EXPECT_EQ(output.get_toi_iters(), 2);
 }
 
@@ -212,7 +212,7 @@ TEST(TimeOfImpact, CirclesPassingParallelSeparatedPathsDontCollide)
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, limits);
     
     EXPECT_EQ(output.get_state(), TOIOutput::e_separated);
-    EXPECT_TRUE(almost_equal(output.get_t(), Real(1.0)));
+    EXPECT_TRUE(AlmostEqual(output.get_t(), Real(1.0)));
     EXPECT_EQ(output.get_toi_iters(), 7);
 }
 
@@ -246,7 +246,7 @@ TEST(TimeOfImpact, RodCircleMissAt360)
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, limits);
     
     EXPECT_EQ(output.get_state(), TOIOutput::e_separated);
-    EXPECT_TRUE(almost_equal(output.get_t(), Real(1.0)));
+    EXPECT_TRUE(AlmostEqual(output.get_t(), Real(1.0)));
     EXPECT_EQ(output.get_toi_iters(), 4);
 }
 
@@ -511,7 +511,7 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
     const auto output = GetToiViaSat(dpA, sweepA, dpB, sweepB, conf);
 
     EXPECT_TRUE(output.get_state() == TOIOutput::e_separated || output.get_state() == TOIOutput::e_touching);
-    EXPECT_TRUE(almost_equal(output.get_t(), Real{1.0f}));
+    EXPECT_TRUE(AlmostEqual(output.get_t(), Real{1.0f}));
     EXPECT_TRUE(output.get_toi_iters() == 1 || output.get_toi_iters() == 2);
     EXPECT_EQ(output.get_max_dist_iters(), 4);
     EXPECT_EQ(output.get_max_root_iters(), 0);

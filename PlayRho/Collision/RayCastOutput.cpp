@@ -45,7 +45,7 @@ RayCastOutput playrho::RayCast(const Length radius, const Length2D location,
     const auto sigma = (Square(c) - rr * b) / (SquareMeter * SquareMeter);
     
     // Check for negative discriminant and short segment.
-    if ((sigma < Real{0}) || almost_zero(Real{rr / SquareMeter}))
+    if ((sigma < Real{0}) || AlmostZero(Real{rr / SquareMeter}))
     {
         return RayCastOutput{};
     }
@@ -83,7 +83,7 @@ RayCastOutput playrho::RayCast(const AABB& aabb, const RayCastInput& input) noex
         const auto lbi = aabb.GetLowerBound()[i];
         const auto ubi = aabb.GetUpperBound()[i];
 
-        if (almost_zero(pdi / Meter))
+        if (AlmostZero(pdi / Meter))
         {
             // Parallel.
             if ((p1i < lbi) || (ubi < p1i))
@@ -188,7 +188,7 @@ RayCastOutput playrho::RayCast(const DistanceProxy& proxy, const RayCastInput& i
         const auto edge = v1 - v0; // Vertex delta
         const auto ray_cross_edge = Cross(ray, edge);
         
-        if (!almost_zero(Real{ray_cross_edge / SquareMeter}))
+        if (!AlmostZero(Real{ray_cross_edge / SquareMeter}))
         {
             const auto normal = proxy.GetNormal(i);
             const auto offset = normal * radius;
