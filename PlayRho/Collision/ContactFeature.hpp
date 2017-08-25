@@ -86,14 +86,13 @@ constexpr ContactFeature Flip(ContactFeature val) noexcept
 
 constexpr bool operator==(ContactFeature lhs, ContactFeature rhs) noexcept
 {
-    return (lhs.typeA == rhs.typeA) && (lhs.typeB == rhs.typeB) && (lhs.indexA == rhs.indexA) &&
-           (lhs.indexB == rhs.indexB);
+    return (lhs.typeA == rhs.typeA) && (lhs.indexA == rhs.indexA)
+        && (lhs.typeB == rhs.typeB) && (lhs.indexB == rhs.indexB);
 }
 
 constexpr bool operator!=(ContactFeature lhs, ContactFeature rhs) noexcept
 {
-    return (lhs.typeA != rhs.typeA) || (lhs.typeB != rhs.typeB) || (lhs.indexA != rhs.indexA) ||
-           (lhs.indexB != rhs.indexB);
+    return !(lhs == rhs);
 }
 
 }; // namespace playrho
