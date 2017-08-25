@@ -87,7 +87,7 @@ static void FloatAlmostEqual1(benchmark::State& state)
     const auto ulp = static_cast<int>(rand() % 8);
     while (state.KeepRunning())
     {
-        benchmark::DoNotOptimize((playrho::Abs(x - y) < (std::numeric_limits<float>::epsilon() * playrho::Abs(x + y) * ulp)) || playrho::almost_zero(x - y));
+        benchmark::DoNotOptimize((playrho::Abs(x - y) < (std::numeric_limits<float>::epsilon() * playrho::Abs(x + y) * ulp)) || playrho::AlmostZero(x - y));
     }
 }
 
@@ -248,7 +248,7 @@ static void FloatAlmostEqualThreeRand1(benchmark::State& state)
         const auto ulp = static_cast<int>(rand() % 8);
         benchmark::DoNotOptimize((playrho::Abs(x - y) <
                                   (std::numeric_limits<float>::epsilon() *
-                                   playrho::Abs(x + y) * ulp)) || playrho::almost_zero(x - y));
+                                   playrho::Abs(x + y) * ulp)) || playrho::AlmostZero(x - y));
     }
 }
 

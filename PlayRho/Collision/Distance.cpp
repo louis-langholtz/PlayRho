@@ -115,7 +115,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
     {
         const auto metric1 = conf.cache.GetMetric();
         const auto metric2 = Simplex::CalcMetric(simplexEdges);
-        if ((metric2 < (metric1 / 2)) || (metric2 > (metric1 * 2)) || (metric2 < 0) || almost_zero(metric2))
+        if ((metric2 < (metric1 / 2)) || (metric2 > (metric1 * 2)) || (metric2 < 0) || AlmostZero(metric2))
         {
             simplexEdges.clear();
         }
@@ -169,7 +169,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
         assert(IsValid(d));
 
         // Ensure the search direction is numerically fit.
-        if (almost_zero(StripUnit(GetLengthSquared(d))))
+        if (AlmostZero(StripUnit(GetLengthSquared(d))))
         {
             state = DistanceOutput::UnfitSearchDir;
 

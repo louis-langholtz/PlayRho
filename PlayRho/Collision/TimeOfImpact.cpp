@@ -64,7 +64,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
     const auto minTarget = target - conf.tolerance;
     assert(minTarget != target);
     assert(minTarget < maxTarget);
-    assert(minTarget > Length{0} && !almost_zero(minTarget / Meter));
+    assert(minTarget > Length{0} && !AlmostZero(minTarget / Meter));
     
     const auto maxTargetSquared = Square(maxTarget);
 
@@ -198,7 +198,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
             auto roots = decltype(conf.maxRootIters){0}; // counts # times f(t) checked
             for (;;)
             {
-                assert(!almost_zero((s2 - s1) / Meter));
+                assert(!AlmostZero((s2 - s1) / Meter));
                 assert(a1 <= a2);
 
                 if ((roots == conf.maxRootIters) || (a1 == a2) || (std::nextafter(a1, a2) >= a2))

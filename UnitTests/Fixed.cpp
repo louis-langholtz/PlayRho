@@ -314,8 +314,8 @@ TEST(Fixed32, Multiplication)
     EXPECT_EQ(Fixed32(9) * Fixed32(3), Fixed32(27));
     EXPECT_EQ(Fixed32(-5) * Fixed32(-4), Fixed32(20));
     EXPECT_EQ(Fixed32(0.5) * Fixed32(0.5), Fixed32(0.25));
-    EXPECT_EQ(round(Fixed32(-0.05) * Fixed32(0.05), 1000), round(Fixed32(-0.0025), 1000));
-    EXPECT_EQ(round(Fixed32(Pi) * 2, 100), round(Fixed32(Pi * 2), 100));
+    EXPECT_EQ(Round(Fixed32(-0.05) * Fixed32(0.05), 1000), Round(Fixed32(-0.0025), 1000));
+    EXPECT_EQ(Round(Fixed32(Pi) * 2, 100), Round(Fixed32(Pi * 2), 100));
     EXPECT_EQ(Fixed32(181) * Fixed32(181), Fixed32(32761));
 }
 

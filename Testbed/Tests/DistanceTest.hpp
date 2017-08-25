@@ -132,7 +132,7 @@ public:
         
         auto adjustedWitnessPoints = witnessPoints;
         auto adjustedDistance = outputDistance;
-        if ((outputDistance > totalRadius) && !almost_zero(StripUnit(outputDistance)))
+        if ((outputDistance > totalRadius) && !AlmostZero(StripUnit(outputDistance)))
         {
             // Shapes are still not overlapped.
             // Move the witness points to the outer surface.
@@ -180,7 +180,7 @@ public:
                           maxIndicesBA.index2);
         m_textLine += DRAW_STRING_NEW_LINE;
 
-        if (almost_equal(static_cast<double>(Real{maxIndicesAB.separation / Meter}),
+        if (AlmostEqual(static_cast<double>(Real{maxIndicesAB.separation / Meter}),
                          static_cast<double>(Real{maxIndicesBA.separation / Meter})))
         {
             //assert(maxIndicesAB.index1 == maxIndicesBA.index2);

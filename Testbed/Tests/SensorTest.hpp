@@ -149,7 +149,7 @@ public:
             const auto position = body->GetLocation();
 
             const auto d = center - position;
-            if (almost_zero(GetLengthSquared(d) / SquareMeter))
+            if (AlmostZero(GetLengthSquared(d) / SquareMeter))
             {
                 continue;
             }

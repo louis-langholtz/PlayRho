@@ -50,7 +50,7 @@ PulleyJoint::PulleyJoint(const PulleyJointDef& def):
     m_ratio(def.ratio),
     m_constant(def.lengthA + def.ratio * def.lengthB)
 {
-    assert(!almost_zero(def.ratio));
+    assert(!AlmostZero(def.ratio));
 }
 
 void PulleyJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
