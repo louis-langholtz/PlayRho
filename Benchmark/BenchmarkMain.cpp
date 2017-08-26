@@ -98,7 +98,7 @@ static void FloatAlmostEqual2(benchmark::State& state)
     const auto ulp = static_cast<int>(rand() % 8);
     while (state.KeepRunning())
     {
-        benchmark::DoNotOptimize(ulp > 0 && ulp < 4 * 1024 * 1024 ? (playrho::Abs((int nX = *((int*)&x) < 0 ? 0x80000000 - nX : nX) - (int nY = *((int*)&y) < 0 ? 0x80000000 - nY : nY)) <= ulp) : false);
+        benchmark::DoNotOptimize(playrho::Abs((int nX = *((int*)&x) < 0 ? 0x80000000 - nX : nX) - (int nY = *((int*)&y) < 0 ? 0x80000000 - nY : nY)) <= ulp);
     }
 }
 
