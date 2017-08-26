@@ -132,8 +132,8 @@ TEST(DiskShape, ComputeAABB)
     EXPECT_EQ(GetY(aabb.GetLowerBound()), GetY(position) - radius);
     EXPECT_EQ(GetX(aabb.GetUpperBound()), GetX(position) + radius);
     EXPECT_EQ(GetY(aabb.GetUpperBound()), GetY(position) + radius);
-    EXPECT_TRUE(almost_equal(StripUnit(GetX(GetExtents(aabb))), StripUnit(radius)));
-    EXPECT_TRUE(almost_equal(StripUnit(GetY(GetExtents(aabb))), StripUnit(radius)));
+    EXPECT_TRUE(AlmostEqual(StripUnit(GetX(GetExtents(aabb))), StripUnit(radius)));
+    EXPECT_TRUE(AlmostEqual(StripUnit(GetY(GetExtents(aabb))), StripUnit(radius)));
     EXPECT_EQ(GetX(GetCenter(aabb)), GetX(position));
     EXPECT_EQ(GetY(GetCenter(aabb)), GetY(position));
 }

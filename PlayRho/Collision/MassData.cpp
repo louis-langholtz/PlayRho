@@ -165,7 +165,7 @@ MassData playrho::GetMassData(const Length vertexRadius, const NonNegative<Densi
     const auto mass = Mass{Density{density} * area};
     
     // Center of mass
-    assert((area > Area{0}) && !almost_zero(StripUnit(area)));
+    assert((area > Area{0}) && !AlmostZero(StripUnit(area)));
     center /= StripUnit(area);
     const auto massDataCenter = center + s;
     

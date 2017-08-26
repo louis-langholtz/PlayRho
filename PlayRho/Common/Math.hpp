@@ -135,24 +135,24 @@ inline auto Average(Span<const T> span)
 }
 
 template <typename T>
-inline T round(T value, unsigned precision = 100000);
+inline T Round(T value, unsigned precision = 100000);
 
 template <>
-inline float round(float value, std::uint32_t precision)
+inline float Round(float value, std::uint32_t precision)
 {
     const auto factor = float(static_cast<std::int64_t>(precision));
     return std::round(value * factor) / factor;
 }
 
 template <>
-inline double round(double value, std::uint32_t precision)
+inline double Round(double value, std::uint32_t precision)
 {
     const auto factor = double(static_cast<std::int64_t>(precision));
     return std::round(value * factor) / factor;
 }
 
 template <>
-inline long double round(long double value, std::uint32_t precision)
+inline long double Round(long double value, std::uint32_t precision)
 {
     using ldouble = long double;
     const auto factor = ldouble(static_cast<std::int64_t>(precision));
@@ -160,7 +160,7 @@ inline long double round(long double value, std::uint32_t precision)
 }
 
 template <>
-inline Fixed32 round(Fixed32 value, std::uint32_t precision)
+inline Fixed32 Round(Fixed32 value, std::uint32_t precision)
 {
     const auto factor = Fixed32(precision);
     return std::round(value * factor) / factor;
@@ -168,7 +168,7 @@ inline Fixed32 round(Fixed32 value, std::uint32_t precision)
 
 #ifndef _WIN32
 template <>
-inline Fixed64 round(Fixed64 value, std::uint32_t precision)
+inline Fixed64 Round(Fixed64 value, std::uint32_t precision)
 {
     const auto factor = Fixed64(precision);
     return std::round(value * factor) / factor;
@@ -176,9 +176,9 @@ inline Fixed64 round(Fixed64 value, std::uint32_t precision)
 #endif
 
 template <>
-inline Vec2 round(Vec2 value, std::uint32_t precision)
+inline Vec2 Round(Vec2 value, std::uint32_t precision)
 {
-    return Vec2{round(value[0], precision), round(value[1], precision)};
+    return Vec2{Round(value[0], precision), Round(value[1], precision)};
 }
 
 constexpr inline Vec2 GetVec2(const UnitVec2 value)
@@ -190,7 +190,7 @@ constexpr inline Vec2 GetVec2(const UnitVec2 value)
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
 /// odd results like a divide by zero trap occuring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
-constexpr inline bool almost_zero(float value)
+constexpr inline bool AlmostZero(float value)
 {
     return Abs(value) < std::numeric_limits<decltype(value)>::min();
 }
@@ -199,7 +199,7 @@ constexpr inline bool almost_zero(float value)
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
 /// odd results like a divide by zero trap occuring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
-constexpr inline bool almost_zero(double value)
+constexpr inline bool AlmostZero(double value)
 {
     return Abs(value) < std::numeric_limits<decltype(value)>::min();
 }
@@ -208,7 +208,7 @@ constexpr inline bool almost_zero(double value)
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
 /// odd results like a divide by zero trap occuring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
-constexpr inline bool almost_zero(long double value)
+constexpr inline bool AlmostZero(long double value)
 {
     return Abs(value) < std::numeric_limits<decltype(value)>::min();
 }
@@ -217,7 +217,7 @@ constexpr inline bool almost_zero(long double value)
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
 /// odd results like a divide by zero trap occuring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
-constexpr inline bool almost_zero(Fixed32 value)
+constexpr inline bool AlmostZero(Fixed32 value)
 {
     return value == 0;
 }
@@ -227,13 +227,13 @@ constexpr inline bool almost_zero(Fixed32 value)
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
 /// odd results like a divide by zero trap occuring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
-constexpr inline bool almost_zero(Fixed64 value)
+constexpr inline bool AlmostZero(Fixed64 value)
 {
     return value == 0;
 }
 #endif
 
-constexpr inline bool almost_equal(float x, float y, int ulp = 2)
+constexpr inline bool AlmostEqual(float x, float y, int ulp = 2)
 {
     // From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
     //   "the machine epsilon has to be scaled to the magnitude of the values used
@@ -241,10 +241,10 @@ constexpr inline bool almost_equal(float x, float y, int ulp = 2)
     //    unless the result is subnormal".
     // Where "subnormal" means almost zero.
     //
-    return (Abs(x - y) < (std::numeric_limits<float>::epsilon() * Abs(x + y) * ulp)) || almost_zero(x - y);
+    return (Abs(x - y) < (std::numeric_limits<float>::epsilon() * Abs(x + y) * ulp)) || AlmostZero(x - y);
 }
 
-constexpr inline bool almost_equal(double x, double y, int ulp = 2)
+constexpr inline bool AlmostEqual(double x, double y, int ulp = 2)
 {
     // From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
     //   "the machine epsilon has to be scaled to the magnitude of the values used
@@ -252,10 +252,10 @@ constexpr inline bool almost_equal(double x, double y, int ulp = 2)
     //    unless the result is subnormal".
     // Where "subnormal" means almost zero.
     //
-    return (Abs(x - y) < (std::numeric_limits<double>::epsilon() * Abs(x + y) * ulp)) || almost_zero(x - y);
+    return (Abs(x - y) < (std::numeric_limits<double>::epsilon() * Abs(x + y) * ulp)) || AlmostZero(x - y);
 }
 
-constexpr inline bool almost_equal(long double x, long double y, int ulp = 2)
+constexpr inline bool AlmostEqual(long double x, long double y, int ulp = 2)
 {
     // From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
     //   "the machine epsilon has to be scaled to the magnitude of the values used
@@ -263,16 +263,16 @@ constexpr inline bool almost_equal(long double x, long double y, int ulp = 2)
     //    unless the result is subnormal".
     // Where "subnormal" means almost zero.
     //
-    return (Abs(x - y) < (std::numeric_limits<long double>::epsilon() * Abs(x + y) * ulp)) || almost_zero(x - y);
+    return (Abs(x - y) < (std::numeric_limits<long double>::epsilon() * Abs(x + y) * ulp)) || AlmostZero(x - y);
 }
 
-constexpr inline bool almost_equal(Fixed32 x, Fixed32 y, int ulp = 2)
+constexpr inline bool AlmostEqual(Fixed32 x, Fixed32 y, int ulp = 2)
 {
     return Abs(x - y) <= Fixed32{0, static_cast<std::uint32_t>(ulp)};
 }
 
 #ifndef _WIN32
-constexpr inline bool almost_equal(Fixed64 x, Fixed64 y, int ulp = 2)
+constexpr inline bool AlmostEqual(Fixed64 x, Fixed64 y, int ulp = 2)
 {
     return Abs(x - y) <= Fixed64{0, static_cast<std::uint32_t>(ulp)};
 }
@@ -406,7 +406,7 @@ constexpr auto Solve(const Matrix22<U> mat, const Vector2D<T> b) noexcept
 {
     const auto cp = Cross(Get<0>(mat), Get<1>(mat));
     using OutType = decltype((U{} * T{}) / cp);
-    return (!almost_zero(StripUnit(cp)))?
+    return (!AlmostZero(StripUnit(cp)))?
         Vector2D<OutType>{
             (Get<1>(mat)[1] * b[0] - Get<1>(mat)[0] * b[1]) / cp,
             (Get<0>(mat)[0] * b[1] - Get<0>(mat)[1] * b[0]) / cp
@@ -418,7 +418,7 @@ constexpr auto Invert(const Matrix22<IN_TYPE> value) noexcept
 {
     const auto cp = Cross(Get<0>(value), Get<1>(value));
     using OutType = decltype(Get<0>(value)[0] / cp);
-    return (!almost_zero(StripUnit(cp)))?
+    return (!AlmostZero(StripUnit(cp)))?
         Matrix22<OutType>{
             Vector2D<OutType>{ Get<1>(Get<1>(value)) / cp, -Get<1>(Get<0>(value)) / cp},
             Vector2D<OutType>{-Get<0>(Get<1>(value)) / cp,  Get<0>(Get<0>(value)) / cp}
@@ -797,7 +797,7 @@ inline Sweep GetAnglesNormalized(Sweep sweep) noexcept
 inline Real Normalize(Vec2& vector)
 {
     const auto length = GetLength(vector);
-    if (!almost_zero(length))
+    if (!AlmostZero(length))
     {
         const auto invLength = 1 / length;
         vector[0] *= invLength;
@@ -890,7 +890,7 @@ constexpr inline Angle GetRevRotationalAngle(Angle a1, Angle a2) noexcept
 /// @param fallback Fallback unit vector value to use in case a unit vector can't effectively be
 ///   calculated from the given value.
 /// @return value divided by its length if length not almost zero otherwise invalid value.
-/// @sa almost_equal.
+/// @sa AlmostEqual.
 template <class T>
 inline UnitVec2 GetUnitVector(const Vector2D<T> value,
                               const UnitVec2 fallback = UnitVec2::GetDefaultFallback())
@@ -905,7 +905,7 @@ inline UnitVec2 GetUnitVector(const Vector2D<T> value,
 /// @param fallback Fallback unit vector value to use in case a unit vector can't effectively be
 ///   calculated from the given value.
 /// @return value divided by its length if length not almost zero otherwise invalid value.
-/// @sa almost_equal.
+/// @sa AlmostEqual.
 template <class T>
 inline UnitVec2 GetUnitVector(const Vector2D<T> value, T& magnitude,
                               const UnitVec2 fallback = UnitVec2::GetDefaultFallback());

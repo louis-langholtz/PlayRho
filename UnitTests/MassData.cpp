@@ -204,7 +204,7 @@ TEST(MassData, GetForOriginCenteredCircle)
         // L^2 M QP^-2
         Density{conf.density} * squareVertexRadius * squareVertexRadius * Pi / (Real{2} * Radian * Radian)
     };
-    EXPECT_TRUE(almost_equal(StripUnit(mass_data.I), StripUnit(expectedI)));
+    EXPECT_TRUE(AlmostEqual(StripUnit(mass_data.I), StripUnit(expectedI)));
     EXPECT_EQ(mass_data.center, conf.location);
 }
 
@@ -235,13 +235,13 @@ TEST(MassData, GetForZeroVertexRadiusRectangle)
     ASSERT_EQ(GetX(shape.GetCentroid()), Real(0) * Meter);
     ASSERT_EQ(GetY(shape.GetCentroid()), Real(0) * Meter);
     const auto mass_data = shape.GetMassData();
-    EXPECT_TRUE(almost_equal(Real(Mass{mass_data.mass} / Kilogram),
+    EXPECT_TRUE(AlmostEqual(Real(Mass{mass_data.mass} / Kilogram),
                              Real((density / KilogramPerSquareMeter) * (8 * 2))));
     EXPECT_NEAR(double(StripUnit(mass_data.I)),
                 90.666664 * double(StripUnit(density)),
                 0.008);
-    EXPECT_TRUE(almost_equal(GetX(mass_data.center) / Meter, GetX(shape.GetCentroid()) / Meter));
-    EXPECT_TRUE(almost_equal(GetY(mass_data.center) / Meter, GetY(shape.GetCentroid()) / Meter));
+    EXPECT_TRUE(AlmostEqual(GetX(mass_data.center) / Meter, GetX(shape.GetCentroid()) / Meter));
+    EXPECT_TRUE(AlmostEqual(GetY(mass_data.center) / Meter, GetY(shape.GetCentroid()) / Meter));
     
     // Area moment of inertia (I) for a rectangle is Ix + Iy = (b * h^3) / 12 + (b^3 * h) / 12....
     const auto i = 8.0 * 2.0 * 2.0 * 2.0 / 12.0 + 8.0 * 8.0 * 8.0 * 2.0 / 12.0;
@@ -254,7 +254,7 @@ TEST(MassData, GetForZeroVertexRadiusRectangle)
                 double(Real{density * i_z / (SquareMeter * Kilogram)}),
                 0.004);
     
-    EXPECT_TRUE(almost_equal(Real(GetAreaOfPolygon(shape.GetVertices()) / SquareMeter), Real(16)));
+    EXPECT_TRUE(AlmostEqual(Real(GetAreaOfPolygon(shape.GetVertices()) / SquareMeter), Real(16)));
 }
 
 TEST(MassData, GetForZeroVertexRadiusEdge)
@@ -287,15 +287,15 @@ TEST(MassData, GetForSamePointedEdgeIsSameAsCircle)
     
     const auto circleMass = density * Pi * Square(shape.GetVertexRadius());
 
-    EXPECT_TRUE(almost_equal(StripUnit(mass_data.mass), StripUnit(circleMass)));
+    EXPECT_TRUE(AlmostEqual(StripUnit(mass_data.mass), StripUnit(circleMass)));
     EXPECT_TRUE(IsValid(mass_data.I));
     if (IsValid(mass_data.I))
     {
         EXPECT_NEAR(double(Real{RotInertia{mass_data.I} / (SquareMeter * Kilogram / SquareRadian)}),
                     7.85398, 0.003);
     }
-    EXPECT_TRUE(almost_equal(StripUnit(GetX(mass_data.center)), StripUnit(GetX(v1))));
-    EXPECT_TRUE(almost_equal(StripUnit(GetY(mass_data.center)), StripUnit(GetY(v1))));
+    EXPECT_TRUE(AlmostEqual(StripUnit(GetX(mass_data.center)), StripUnit(GetX(v1))));
+    EXPECT_TRUE(AlmostEqual(StripUnit(GetY(mass_data.center)), StripUnit(GetY(v1))));
 }
 
 TEST(MassData, GetForCenteredEdge)

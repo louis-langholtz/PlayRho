@@ -344,8 +344,8 @@ inline Momentum SeqSolveNormalConstraint(VelocityConstraint& vc)
         const auto oldImpulse = vcp.normalImpulse;
         const auto newImpulse = std::max(oldImpulse + lambda, Momentum{0});
 #if 0
-        // Note: using almost_equal here results in increased iteration counts and is slower.
-        const auto incImpulse = almost_equal(newImpulse, oldImpulse)? Momentum{0}: newImpulse - oldImpulse;
+        // Note: using AlmostEqual here results in increased iteration counts and is slower.
+        const auto incImpulse = AlmostEqual(newImpulse, oldImpulse)? Momentum{0}: newImpulse - oldImpulse;
 #else
         const auto incImpulse = newImpulse - oldImpulse;
 #endif
@@ -404,8 +404,8 @@ inline Momentum SolveTangentConstraint(VelocityConstraint& vc)
         const auto oldImpulse = vcp.tangentImpulse;
         const auto newImpulse = Clamp(oldImpulse + lambda, -maxImpulse, maxImpulse);
 #if 0
-        // Note: using almost_equal here results in increased iteration counts and is slower.
-        const auto incImpulse = almost_equal(newImpulse, oldImpulse)? Momentum{0}: newImpulse - oldImpulse;
+        // Note: using AlmostEqual here results in increased iteration counts and is slower.
+        const auto incImpulse = AlmostEqual(newImpulse, oldImpulse)? Momentum{0}: newImpulse - oldImpulse;
 #else
         const auto incImpulse = newImpulse - oldImpulse;
 #endif
@@ -578,7 +578,7 @@ PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
 
             assert(IsValid(psm0.m_separation) && IsValid(psm1.m_separation));
 
-            if (almost_equal(StripUnit(psm0.m_separation), StripUnit(psm1.m_separation)))
+            if (AlmostEqual(StripUnit(psm0.m_separation), StripUnit(psm1.m_separation)))
             {
                 const auto s0 = solver_fn(psm0, posA.linear, posB.linear);
                 const auto s1 = solver_fn(psm1, posA.linear, posB.linear);

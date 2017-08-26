@@ -108,12 +108,12 @@ TEST(Math, Square)
 #endif
     
     // What is the smallest float a for which:
-    // almost_equal(sqrt(square(a)), a) and almost_equal(square(sqrt(a)), a)
+    // AlmostEqual(sqrt(square(a)), a) and AlmostEqual(square(sqrt(a)), a)
     // hold true?
     
     const auto a = Sqrt(std::numeric_limits<float>::min());
-    EXPECT_TRUE(almost_equal(Square(Sqrt(a)), a));
-    EXPECT_TRUE(almost_equal(Sqrt(Square(a)), a));
+    EXPECT_TRUE(AlmostEqual(Square(Sqrt(a)), a));
+    EXPECT_TRUE(AlmostEqual(Sqrt(Square(a)), a));
 }
 
 TEST(Math, Atan2)
@@ -559,9 +559,9 @@ TEST(Math, Subtracting2UlpAlmostEqualNumbersNotAlmostZero)
     const auto a = 0.863826155f;
     const auto b = 0.863826453f;
     ASSERT_NE(a, b);
-    ASSERT_TRUE(almost_equal(a, b, 2));
-    ASSERT_FALSE(almost_equal(a, b, 1));
-    EXPECT_FALSE(almost_zero((a >= b)? a - b: b - a));
+    ASSERT_TRUE(AlmostEqual(a, b, 2));
+    ASSERT_FALSE(AlmostEqual(a, b, 1));
+    EXPECT_FALSE(AlmostZero((a >= b)? a - b: b - a));
 }
 
 TEST(Math, Subtracting1UlpAlmostEqualNumbersIsNotAlmostZero)
@@ -569,9 +569,9 @@ TEST(Math, Subtracting1UlpAlmostEqualNumbersIsNotAlmostZero)
     const auto a = 0.8638264550000f;
     const auto b = 0.8638264238828f;
     ASSERT_NE(a, b);
-    ASSERT_TRUE(almost_equal(a, b, 1));
-    ASSERT_FALSE(almost_equal(a, b, 0));
-    EXPECT_FALSE(almost_zero((a >= b)? a - b: b - a));
+    ASSERT_TRUE(AlmostEqual(a, b, 1));
+    ASSERT_FALSE(AlmostEqual(a, b, 0));
+    EXPECT_FALSE(AlmostZero((a >= b)? a - b: b - a));
 }
 
 TEST(Math, nextafter)
@@ -580,7 +580,7 @@ TEST(Math, nextafter)
     const auto b = float(0.863826453);
     
     ASSERT_NE(a, b);
-    ASSERT_TRUE(almost_equal(a, b, 2));
+    ASSERT_TRUE(AlmostEqual(a, b, 2));
 
     const auto ap = std::nextafter(a, a + 1);
     
@@ -593,21 +593,21 @@ TEST(Math, nextafter2)
 {
     const auto a = 0.863826155f;
     const auto b = std::nextafter(a, 1.0f);
-    ASSERT_TRUE(almost_equal(a, b, 2));
-    ASSERT_TRUE(almost_equal(a, b, 1));
-    ASSERT_FALSE(almost_equal(a, b, 0));
+    ASSERT_TRUE(AlmostEqual(a, b, 2));
+    ASSERT_TRUE(AlmostEqual(a, b, 1));
+    ASSERT_FALSE(AlmostEqual(a, b, 0));
     ASSERT_TRUE(a != b);
     const auto d = b - a;
-    ASSERT_FALSE(almost_zero(d));
+    ASSERT_FALSE(AlmostZero(d));
     EXPECT_EQ(a + d, b);
     EXPECT_EQ(b - d, a);
     const auto minfloat = std::numeric_limits<float>::min();
     ASSERT_NE(minfloat, 0.0f);
     ASSERT_TRUE(minfloat > 0.0f);
     ASSERT_NE(minfloat, d);
-    ASSERT_FALSE(almost_zero(minfloat));
+    ASSERT_FALSE(AlmostZero(minfloat));
     const auto subnormal = minfloat / 2;
-    ASSERT_TRUE(almost_zero(subnormal));
+    ASSERT_TRUE(AlmostZero(subnormal));
     ASSERT_NE(minfloat, subnormal);
     EXPECT_EQ(a + subnormal, a);
     EXPECT_EQ(b + subnormal, b);
@@ -756,31 +756,31 @@ TEST(Math, GetCircleVertices)
     }
 }
 
-TEST(Math, almost_zero)
+TEST(Math, AlmostZero)
 {
-    EXPECT_TRUE(almost_zero(0.0f));
-    EXPECT_TRUE(almost_zero(std::nextafter(0.0f, +1.0f)));
-    EXPECT_TRUE(almost_zero(std::nextafter(0.0f, -1.0f)));
-    EXPECT_TRUE(almost_zero(std::nextafter(std::numeric_limits<float>::min(), 0.0f)));
-    EXPECT_FALSE(almost_zero(std::numeric_limits<float>::min()));
-    EXPECT_FALSE(almost_zero(+1.0f));
-    EXPECT_FALSE(almost_zero(-1.0f));
+    EXPECT_TRUE(AlmostZero(0.0f));
+    EXPECT_TRUE(AlmostZero(std::nextafter(0.0f, +1.0f)));
+    EXPECT_TRUE(AlmostZero(std::nextafter(0.0f, -1.0f)));
+    EXPECT_TRUE(AlmostZero(std::nextafter(std::numeric_limits<float>::min(), 0.0f)));
+    EXPECT_FALSE(AlmostZero(std::numeric_limits<float>::min()));
+    EXPECT_FALSE(AlmostZero(+1.0f));
+    EXPECT_FALSE(AlmostZero(-1.0f));
 
-    EXPECT_TRUE(almost_zero(0.0));
-    EXPECT_TRUE(almost_zero(std::nextafter(0.0, +1.0)));
-    EXPECT_TRUE(almost_zero(std::nextafter(0.0, -1.0)));
-    EXPECT_TRUE(almost_zero(std::nextafter(std::numeric_limits<double>::min(), 0.0)));
-    EXPECT_FALSE(almost_zero(std::numeric_limits<double>::min()));
-    EXPECT_FALSE(almost_zero(+1.0));
-    EXPECT_FALSE(almost_zero(-1.0));
+    EXPECT_TRUE(AlmostZero(0.0));
+    EXPECT_TRUE(AlmostZero(std::nextafter(0.0, +1.0)));
+    EXPECT_TRUE(AlmostZero(std::nextafter(0.0, -1.0)));
+    EXPECT_TRUE(AlmostZero(std::nextafter(std::numeric_limits<double>::min(), 0.0)));
+    EXPECT_FALSE(AlmostZero(std::numeric_limits<double>::min()));
+    EXPECT_FALSE(AlmostZero(+1.0));
+    EXPECT_FALSE(AlmostZero(-1.0));
 
-    EXPECT_TRUE(almost_zero(0.0l));
-    EXPECT_TRUE(almost_zero(std::nextafter(0.0l, +1.0l)));
-    EXPECT_TRUE(almost_zero(std::nextafter(0.0l, -1.0l)));
-    EXPECT_TRUE(almost_zero(std::nextafter(std::numeric_limits<long double>::min(), 0.0l)));
-    EXPECT_FALSE(almost_zero(std::numeric_limits<long double>::min()));
-    EXPECT_FALSE(almost_zero(+1.0l));
-    EXPECT_FALSE(almost_zero(-1.0l));
+    EXPECT_TRUE(AlmostZero(0.0l));
+    EXPECT_TRUE(AlmostZero(std::nextafter(0.0l, +1.0l)));
+    EXPECT_TRUE(AlmostZero(std::nextafter(0.0l, -1.0l)));
+    EXPECT_TRUE(AlmostZero(std::nextafter(std::numeric_limits<long double>::min(), 0.0l)));
+    EXPECT_FALSE(AlmostZero(std::numeric_limits<long double>::min()));
+    EXPECT_FALSE(AlmostZero(+1.0l));
+    EXPECT_FALSE(AlmostZero(-1.0l));
 }
 
 TEST(Math, InvertZeroIsZero)

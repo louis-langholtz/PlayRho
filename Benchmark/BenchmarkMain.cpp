@@ -80,6 +80,17 @@ static void FloatAtan2(benchmark::State& state)
     }
 }
 
+static void FloatAlmostEqual1(benchmark::State& state)
+{
+    const auto x = static_cast<float>(rand() - (RAND_MAX / 2)) / static_cast<float>(RAND_MAX / 2);
+    const auto y = static_cast<float>(rand() - (RAND_MAX / 2)) / static_cast<float>(RAND_MAX / 2);
+    const auto ulp = static_cast<int>(rand() % 8);
+    while (state.KeepRunning())
+    {
+        benchmark::DoNotOptimize((playrho::Abs(x - y) < (std::numeric_limits<float>::epsilon() * playrho::Abs(x + y) * ulp)) || playrho::AlmostZero(x - y));
+    }
+}
+
 // ----
 
 static void LengthSquaredViaDotProduct(benchmark::State& state)
@@ -228,6 +239,19 @@ static void FloatAtan2TwoRand(benchmark::State& state)
     }
 }
 
+static void FloatAlmostEqualThreeRand1(benchmark::State& state)
+{
+    while (state.KeepRunning())
+    {
+        const auto x = static_cast<float>(rand() - (RAND_MAX / 2)) / static_cast<float>(RAND_MAX / 2);
+        const auto y = static_cast<float>(rand() - (RAND_MAX / 2)) / static_cast<float>(RAND_MAX / 2);
+        const auto ulp = static_cast<int>(rand() % 8);
+        benchmark::DoNotOptimize((playrho::Abs(x - y) <
+                                  (std::numeric_limits<float>::epsilon() *
+                                   playrho::Abs(x + y) * ulp)) || playrho::AlmostZero(x - y));
+    }
+}
+
 static void DoubleAddTwoRand(benchmark::State& state)
 {
     while (state.KeepRunning())
@@ -373,6 +397,19 @@ static void TwoRandValues(benchmark::State& state)
     {
         benchmark::DoNotOptimize(playrho::Real(15.91) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX));
         benchmark::DoNotOptimize(playrho::Real(-4.1092) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX));
+    }
+}
+
+static void ThreeRandValues(benchmark::State& state)
+{
+    while (state.KeepRunning())
+    {
+        benchmark::DoNotOptimize(playrho::Real(15.91) * static_cast<playrho::Real>(rand()) /
+                                 static_cast<playrho::Real>(RAND_MAX));
+        benchmark::DoNotOptimize(playrho::Real(-4.1092) * static_cast<playrho::Real>(rand()) /
+                                 static_cast<playrho::Real>(RAND_MAX));
+        benchmark::DoNotOptimize(static_cast<float>(rand() - (RAND_MAX / 2)) /
+                                 static_cast<float>(RAND_MAX / 2));
     }
 }
 
@@ -986,6 +1023,8 @@ BENCHMARK(FloatSin);
 BENCHMARK(FloatCos);
 BENCHMARK(FloatAtan2);
 
+BENCHMARK(FloatAlmostEqual1);
+
 BENCHMARK(DotProduct);
 BENCHMARK(CrossProduct);
 BENCHMARK(LengthSquaredViaDotProduct);
@@ -1005,6 +1044,9 @@ BENCHMARK(FloatSqrtTwoRand);
 BENCHMARK(FloatSinTwoRand);
 BENCHMARK(FloatCosTwoRand);
 BENCHMARK(FloatAtan2TwoRand);
+
+BENCHMARK(ThreeRandValues);
+BENCHMARK(FloatAlmostEqualThreeRand1);
 
 BENCHMARK(DoubleAddTwoRand);
 BENCHMARK(DoubleMultTwoRand);
