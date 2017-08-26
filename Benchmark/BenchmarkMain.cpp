@@ -1036,6 +1036,7 @@ BENCHMARK(FloatCos);
 BENCHMARK(FloatAtan2);
 
 BENCHMARK(FloatAlmostEqual1);
+BENCHMARK(FloatAlmostEqual2);
 
 BENCHMARK(DotProduct);
 BENCHMARK(CrossProduct);
