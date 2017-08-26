@@ -196,21 +196,9 @@ namespace playrho
     }
     
     template <>
-    constexpr inline bool IsValid(const Angle& x) noexcept
-    {
-        return IsValid(Real{x / Radian});
-    }
-    
-    template <>
     constexpr Frequency GetInvalid() noexcept
     {
         return GetInvalid<Real>() * Hertz;
-    }
-    
-    template <>
-    constexpr inline bool IsValid(const Frequency& x) noexcept
-    {
-        return IsValid(Real{x / Hertz});
     }
     
     template <>
@@ -220,21 +208,9 @@ namespace playrho
     }
     
     template <>
-    constexpr inline bool IsValid(const AngularVelocity& x) noexcept
-    {
-        return IsValid(Real{x / RadianPerSecond});
-    }
-    
-    template <>
     constexpr Time GetInvalid() noexcept
     {
         return GetInvalid<Real>() * Second;
-    }
-    
-    template <>
-    constexpr inline bool IsValid(const Time& x) noexcept
-    {
-        return IsValid(Real{x / Second});
     }
     
     template <>
@@ -244,21 +220,9 @@ namespace playrho
     }
     
     template <>
-    constexpr inline bool IsValid(const Length& x) noexcept
-    {
-        return IsValid(Real{x / Meter});
-    }
-    
-    template <>
     constexpr Mass GetInvalid() noexcept
     {
         return GetInvalid<Real>() * Kilogram;
-    }
-    
-    template <>
-    constexpr inline bool IsValid(const Mass& x) noexcept
-    {
-        return IsValid(Real{x / Kilogram});
     }
     
     template <>
@@ -268,21 +232,9 @@ namespace playrho
     }
     
     template <>
-    constexpr inline bool IsValid(const InvMass& x) noexcept
-    {
-        return IsValid(Real{x * Kilogram});
-    }
-    
-    template <>
     constexpr Momentum GetInvalid() noexcept
     {
         return GetInvalid<Real>() * Kilogram * MeterPerSecond;
-    }
-    
-    template <>
-    constexpr inline bool IsValid(const Momentum& x) noexcept
-    {
-        return IsValid(Real{x / (Kilogram * MeterPerSecond)});
     }
     
     template <>
@@ -292,21 +244,9 @@ namespace playrho
     }
     
     template <>
-    constexpr inline bool IsValid(const Force& x) noexcept
-    {
-        return IsValid(Real{x / Newton});
-    }
-    
-    template <>
     constexpr Torque GetInvalid() noexcept
     {
         return GetInvalid<Real>() * NewtonMeter;
-    }
-    
-    template <>
-    constexpr inline bool IsValid(const Torque& x) noexcept
-    {
-        return IsValid(Real{x / NewtonMeter});
     }
     
     template <>
@@ -316,21 +256,9 @@ namespace playrho
     }
     
     template <>
-    constexpr inline bool IsValid(const LinearVelocity& x) noexcept
-    {
-        return IsValid(Real{x / MeterPerSecond});
-    }
-    
-    template <>
     constexpr LinearAcceleration GetInvalid() noexcept
     {
         return GetInvalid<Real>() * MeterPerSquareSecond;
-    }
-    
-    template <>
-    constexpr inline bool IsValid(const LinearAcceleration& x) noexcept
-    {
-        return IsValid(Real{x / MeterPerSquareSecond});
     }
     
     template <>
@@ -340,22 +268,10 @@ namespace playrho
     }
     
     template <>
-    constexpr inline bool IsValid(const AngularAcceleration& x) noexcept
-    {
-        return IsValid(Real{x / RadianPerSquareSecond});
-    }
-    
-    template <>
     constexpr RotInertia GetInvalid() noexcept
     {
         // RotInertia is L^2  M    QP^-2
         return GetInvalid<Real>() * SquareMeter * Kilogram / SquareRadian;
-    }
-    
-    template <>
-    constexpr inline bool IsValid(const RotInertia& value) noexcept
-    {
-        return IsValid(Real{value / (SquareMeter * Kilogram / SquareRadian)});
     }
     
 #endif
