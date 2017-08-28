@@ -26,10 +26,10 @@
 #ifndef Units_hpp
 #define Units_hpp
 
-#include <PlayRho/Common/RealNum.hpp>
+#include <PlayRho/Common/Numbers.hpp>
 #include <PlayRho/Common/Templates.hpp>
 
-// #define USE_BOOST_UNITS
+#define USE_BOOST_UNITS
 #ifdef USE_BOOST_UNITS
 #include <boost/units/io.hpp>
 #include <boost/units/systems/si/length.hpp>

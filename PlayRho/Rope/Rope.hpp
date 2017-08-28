@@ -32,7 +32,7 @@ struct RopeDef
     constexpr RopeDef() = default;
 
     ///
-    Vec2* vertices = nullptr;
+    Real2* vertices = nullptr;
 
     ///
     size_type count = 0;
@@ -41,7 +41,7 @@ struct RopeDef
     Real* masses = nullptr;
 
     ///
-    Vec2 gravity = Vec2_zero;
+    Real2 gravity = Real2Zero;
 
     ///
     Real damping = Real{1} / Real(10);
@@ -75,12 +75,12 @@ public:
     }
 
     ///
-    const Vec2* GetVertices() const noexcept
+    const Real2* GetVertices() const noexcept
     {
         return m_ps;
     }
 
-    Vec2 GetVertex(size_type index) const noexcept
+    Real2 GetVertex(size_type index) const noexcept
     {
         assert(index < m_count);
         return m_ps[index];
@@ -95,16 +95,16 @@ private:
     void SolveC3();
 
     size_type m_count = 0;
-    Vec2* m_ps = nullptr;
-    Vec2* m_p0s = nullptr;
-    Vec2* m_vs = nullptr;
+    Real2* m_ps = nullptr;
+    Real2* m_p0s = nullptr;
+    Real2* m_vs = nullptr;
 
     Real* m_ims = nullptr;
 
     Real* m_Ls = nullptr;
     Angle* m_as = nullptr;
 
-    Vec2 m_gravity = Vec2_zero;
+    Real2 m_gravity = Real2Zero;
     Real m_damping = Real{0};
 
     Real m_k2 = Real{1};

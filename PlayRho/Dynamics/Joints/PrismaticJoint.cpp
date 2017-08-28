@@ -177,9 +177,9 @@ void PrismaticJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
         const auto k23 = (invRotInertiaA * m_a1 + invRotInertiaB * m_a2) * Meter * Kilogram / SquareRadian;
         const auto k33 = StripUnit(totalInvMass);
 
-        GetX(m_K) = Vec3{k11, k12, k13};
-        GetY(m_K) = Vec3{k12, k22, k23};
-        GetZ(m_K) = Vec3{k13, k23, k33};
+        GetX(m_K) = Real3{k11, k12, k13};
+        GetY(m_K) = Real3{k12, k22, k23};
+        GetZ(m_K) = Real3{k13, k23, k33};
     }
 
     // Compute motor and limit terms.
@@ -251,7 +251,7 @@ void PrismaticJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     }
     else
     {
-        m_impulse = Vec3_zero;
+        m_impulse = Real3Zero;
         m_motorImpulse = 0;
     }
 
@@ -297,7 +297,7 @@ bool PrismaticJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const 
 
     const auto velDelta = velB.linear - velA.linear;
     const auto sRotSpeed = LinearVelocity{(m_s2 * velB.angular - m_s1 * velA.angular) / Radian};
-    const auto Cdot1 = Vec2{
+    const auto Cdot1 = Real2{
         StripUnit(Dot(m_perp, velDelta) + sRotSpeed),
         StripUnit(velB.angular - velA.angular)
     };
@@ -308,7 +308,7 @@ bool PrismaticJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const 
         const auto deltaDot = LinearVelocity{Dot(m_axis, velDelta)};
         const auto aRotSpeed = LinearVelocity{(m_a2 * velB.angular - m_a1 * velA.angular) / Radian};
         const auto Cdot2 = StripUnit(deltaDot + aRotSpeed);
-        const auto Cdot = Vec3{GetX(Cdot1), GetY(Cdot1), Cdot2};
+        const auto Cdot = Real3{GetX(Cdot1), GetY(Cdot1), Cdot2};
 
         const auto f1 = m_impulse;
         m_impulse += Solve33(m_K, -Cdot);
@@ -323,8 +323,8 @@ bool PrismaticJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const 
         }
 
         // f2(1:2) = invK(1:2,1:2) * (-Cdot(1:2) - K(1:2,3) * (f2(3) - f1(3))) + f1(1:2)
-        const auto b = -Cdot1 - (GetZ(m_impulse) - GetZ(f1)) * Vec2{GetX(GetZ(m_K)), GetY(GetZ(m_K))};
-        const auto f2r = Solve22(m_K, b) + Vec2{GetX(f1), GetY(f1)};
+        const auto b = -Cdot1 - (GetZ(m_impulse) - GetZ(f1)) * Real2{GetX(GetZ(m_K)), GetY(GetZ(m_K))};
+        const auto f2r = Solve22(m_K, b) + Real2{GetX(f1), GetY(f1)};
         GetX(m_impulse) = GetX(f2r);
         GetY(m_impulse) = GetY(f2r);
 
@@ -418,7 +418,7 @@ bool PrismaticJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const 
     const auto s1 = Length{Cross(d + rA, perp)};
     const auto s2 = Length{Cross(rB, perp)};
 
-    const auto C1 = Vec2{
+    const auto C1 = Real2{
         Dot(perp, d) / Meter,
         (posB.angular - posA.angular - m_referenceAngle) / Radian
     };
@@ -454,7 +454,7 @@ bool PrismaticJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const 
         }
     }
 
-    Vec3 impulse;
+    Real3 impulse;
     if (active)
     {
         const auto k11 = StripUnit(InvMass{
@@ -486,8 +486,8 @@ bool PrismaticJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const 
             invMassB + invRotInertiaB * Square(a2) / SquareRadian
         });
 
-        const auto K = Mat33{Vec3{k11, k12, k13}, Vec3{k12, k22, k23}, Vec3{k13, k23, k33}};
-        const auto C = Vec3{GetX(C1), GetY(C1), C2};
+        const auto K = Mat33{Real3{k11, k12, k13}, Real3{k12, k22, k23}, Real3{k13, k23, k33}};
+        const auto C = Real3{GetX(C1), GetY(C1), C2};
 
         impulse = Solve33(K, -C);
     }
@@ -507,7 +507,7 @@ bool PrismaticJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const 
             k22 = 1;
         }
 
-        const auto K = Mat22{Vec2{k11, k12}, Vec2{k12, k22}};
+        const auto K = Mat22{Real2{k11, k12}, Real2{k12, k22}};
 
         const auto impulse1 = Solve(K, -C1);
         GetX(impulse) = GetX(impulse1);

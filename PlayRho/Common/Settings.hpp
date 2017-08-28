@@ -37,7 +37,7 @@
 
 #include <PlayRho/Defines.hpp>
 #include <PlayRho/Common/Templates.hpp>
-#include <PlayRho/Common/RealNum.hpp>
+#include <PlayRho/Common/Numbers.hpp>
 #include <PlayRho/Common/Units.hpp>
 #include <PlayRho/Common/Wider.hpp>
 

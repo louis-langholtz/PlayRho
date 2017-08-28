@@ -155,7 +155,7 @@ void GearJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
 
     if (m_typeA == JointType::Revolute)
     {
-        m_JvAC = Vec2_zero;
+        m_JvAC = Real2Zero;
         m_JwA = Real{1} * Meter;
         m_JwC = Real{1} * Meter;
         const auto invAngMass = bodyConstraintA->GetInvRotInertia() + bodyConstraintC->GetInvRotInertia();
@@ -177,7 +177,7 @@ void GearJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
 
     if (m_typeB == JointType::Revolute)
     {
-        m_JvBD = Vec2_zero;
+        m_JvBD = Real2Zero;
         m_JwB = m_ratio * Meter;
         m_JwD = m_ratio * Meter;
         const auto invAngMass = InvRotInertia{Square(m_ratio) * (bodyConstraintB->GetInvRotInertia() + bodyConstraintD->GetInvRotInertia())};
@@ -298,7 +298,7 @@ bool GearJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
 
     const auto linearError = Length{0};
 
-    Vec2 JvAC, JvBD;
+    Real2 JvAC, JvBD;
     Real JwA, JwB, JwC, JwD;
 
     auto coordinateA = Real{0}; // Angle or length.
@@ -307,7 +307,7 @@ bool GearJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
 
     if (m_typeA == JointType::Revolute)
     {
-        JvAC = Vec2_zero;
+        JvAC = Real2Zero;
         JwA = 1;
         JwC = 1;
         const auto invAngMass = bodyConstraintA->GetInvRotInertia() + bodyConstraintC->GetInvRotInertia();
@@ -333,7 +333,7 @@ bool GearJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
 
     if (m_typeB == JointType::Revolute)
     {
-        JvBD = Vec2_zero;
+        JvBD = Real2Zero;
         JwB = m_ratio;
         JwD = m_ratio;
         const auto invAngMass = InvRotInertia{

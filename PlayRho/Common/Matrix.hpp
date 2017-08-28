@@ -24,7 +24,7 @@
 
 #include <PlayRho/Common/Vector.hpp>
 #include <PlayRho/Common/Templates.hpp>
-#include <PlayRho/Common/RealNum.hpp>
+#include <PlayRho/Common/Numbers.hpp>
 #include <PlayRho/Common/Units.hpp>
 
 namespace playrho {
@@ -54,7 +54,7 @@ namespace playrho {
     template <>
     constexpr inline Mat22 GetInvalid() noexcept
     {
-        return Mat22{GetInvalid<Vec2>(), GetInvalid<Vec2>()};
+        return Mat22{GetInvalid<Real2>(), GetInvalid<Real2>()};
     }
 
 } // namespace playrho

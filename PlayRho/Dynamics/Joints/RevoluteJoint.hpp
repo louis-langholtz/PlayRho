@@ -116,7 +116,7 @@ private:
     // Solver shared
     Length2D m_localAnchorA;
     Length2D m_localAnchorB;
-    Vec3 m_impulse = Vec3_zero; ///< Impulse. Mofified by: InitVelocityConstraints, SolveVelocityConstraints.
+    Real3 m_impulse = Real3Zero; ///< Impulse. Mofified by: InitVelocityConstraints, SolveVelocityConstraints.
     AngularMomentum m_motorImpulse = 0; ///< Motor impulse. Modified by: InitVelocityConstraints, SolveVelocityConstraints.
 
     bool m_enableMotor;

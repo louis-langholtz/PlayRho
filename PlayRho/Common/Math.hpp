@@ -26,6 +26,7 @@
 #include <PlayRho/Common/UnitVec2.hpp>
 #include <PlayRho/Common/Vector2D.hpp>
 #include <PlayRho/Common/Vector3D.hpp>
+#include <PlayRho/Common/Vector4D.hpp>
 #include <PlayRho/Common/Position.hpp>
 #include <PlayRho/Common/Velocity.hpp>
 #include <PlayRho/Common/Transformation.hpp>
@@ -176,19 +177,19 @@ inline Fixed64 Round(Fixed64 value, std::uint32_t precision)
 #endif
 
 template <>
-inline Vec2 Round(Vec2 value, std::uint32_t precision)
+inline Real2 Round(Real2 value, std::uint32_t precision)
 {
-    return Vec2{Round(value[0], precision), Round(value[1], precision)};
+    return Real2{Round(value[0], precision), Round(value[1], precision)};
 }
 
-constexpr inline Vec2 GetVec2(const UnitVec2 value)
+constexpr inline Real2 GetVec2(const UnitVec2 value)
 {
-    return Vec2{Get<0>(value), Get<1>(value)};
+    return Real2{Get<0>(value), Get<1>(value)};
 }
 
 /// Gets whether a given value is almost zero.
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
-/// odd results like a divide by zero trap occuring.
+/// odd results like a divide by zero trap occurring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool AlmostZero(float value)
 {
@@ -197,7 +198,7 @@ constexpr inline bool AlmostZero(float value)
 
 /// Gets whether a given value is almost zero.
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
-/// odd results like a divide by zero trap occuring.
+/// odd results like a divide by zero trap occurring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool AlmostZero(double value)
 {
@@ -206,7 +207,7 @@ constexpr inline bool AlmostZero(double value)
 
 /// Gets whether a given value is almost zero.
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
-/// odd results like a divide by zero trap occuring.
+/// odd results like a divide by zero trap occurring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool AlmostZero(long double value)
 {
@@ -215,7 +216,7 @@ constexpr inline bool AlmostZero(long double value)
 
 /// Gets whether a given value is almost zero.
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
-/// odd results like a divide by zero trap occuring.
+/// odd results like a divide by zero trap occurring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool AlmostZero(Fixed32 value)
 {
@@ -225,7 +226,7 @@ constexpr inline bool AlmostZero(Fixed32 value)
 #ifndef _WIN32
 /// Gets whether a given value is almost zero.
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
-/// odd results like a divide by zero trap occuring.
+/// odd results like a divide by zero trap occurring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool AlmostZero(Fixed64 value)
 {
@@ -279,7 +280,7 @@ constexpr inline bool AlmostEqual(Fixed64 x, Fixed64 y, int ulp = 2)
 #endif
 
 /// Gets the angle.
-/// @return Anglular value in the range of -Pi to +Pi radians.
+/// @return Angular value in the range of -Pi to +Pi radians.
 template <class T>
 inline Angle GetAngle(const T value)
 {
@@ -296,7 +297,7 @@ constexpr inline auto GetLengthSquared(T value) noexcept
 }
 
 template <>
-constexpr inline auto GetLengthSquared(Vec3 value) noexcept
+constexpr inline auto GetLengthSquared(Real3 value) noexcept
 {
     return Square(GetX(value)) + Square(GetY(value)) + Square(GetZ(value));
 }
@@ -337,7 +338,7 @@ constexpr inline auto Dot(const T1 a, const T2 b) noexcept
 
 /// Perform the dot product on two vectors.
 template <>
-constexpr inline auto Dot(const Vec3 a, const Vec3 b) noexcept
+constexpr inline auto Dot(const Real3 a, const Real3 b) noexcept
 {
     return (Get<0>(a) * Get<0>(b)) + (Get<1>(a) * Get<1>(b))
         + (Get<2>(a) * Get<2>(b));
@@ -390,9 +391,9 @@ constexpr inline auto Cross(const T1 a, const T2 b) noexcept
 }
 
 template <>
-constexpr inline auto Cross(const Vec3 a, const Vec3 b) noexcept
+constexpr inline auto Cross(const Real3 a, const Real3 b) noexcept
 {
-    return Vec3{
+    return Real3{
         GetY(a) * GetZ(b) - GetZ(a) * GetY(b),
         GetZ(a) * GetX(b) - GetX(a) * GetZ(b),
         GetX(a) * GetY(b) - GetY(a) * GetX(b)
@@ -428,14 +429,14 @@ constexpr auto Invert(const Matrix22<IN_TYPE> value) noexcept
 
 /// Solve A * x = b, where b is a column vector. This is more efficient
 /// than computing the inverse in one-shot cases.
-constexpr Vec3 Solve33(const Mat33& mat, const Vec3 b) noexcept
+constexpr Real3 Solve33(const Mat33& mat, const Real3 b) noexcept
 {
     const auto dp = Dot(GetX(mat), Cross(GetY(mat), GetZ(mat)));
     const auto det = (dp != 0)? 1 / dp: dp;
     const auto x = det * Dot(b, Cross(GetY(mat), GetZ(mat)));
     const auto y = det * Dot(GetX(mat), Cross(b, GetZ(mat)));
     const auto z = det * Dot(GetX(mat), Cross(GetY(mat), b));
-    return Vec3{x, y, z};
+    return Real3{x, y, z};
 }
     
 /// Solve A * x = b, where b is a column vector. This is more efficient
@@ -461,7 +462,7 @@ constexpr inline Mat33 GetInverse22(const Mat33& value) noexcept
     {
         det = Real{1} / det;
     }
-    return Mat33{Vec3{det * d, -det * c, Real{0}}, Vec3{-det * b, det * a, 0}, Vec3{0, 0, 0}};
+    return Mat33{Real3{det * d, -det * c, Real{0}}, Real3{-det * b, det * a, 0}, Real3{0, 0, 0}};
 }
     
 /// Get the symmetric inverse of this matrix as a 3-by-3.
@@ -483,9 +484,9 @@ constexpr inline Mat33 GetSymInverse33(const Mat33& value) noexcept
     const auto ex_z = det * (a12 * a23 - a13 * a22);
     
     return Mat33{
-        Vec3{det * (a22 * a33 - a23 * a23), ex_y, ex_z},
-        Vec3{ex_y, det * (a11 * a33 - a13 * a13), ey_z},
-        Vec3{ex_z, ey_z, det * (a11 * a22 - a12 * a12)}
+        Real3{det * (a22 * a33 - a23 * a23), ex_y, ex_z},
+        Real3{ex_y, det * (a11 * a33 - a13 * a13), ey_z},
+        Real3{ex_z, ey_z, det * (a11 * a22 - a12 * a12)}
     };
 }
 
@@ -521,9 +522,9 @@ constexpr inline auto GetFwdPerpendicular(const T vector) noexcept
 
 /// Multiply a matrix times a vector. If a rotation matrix is provided,
 /// then this transforms the vector from one frame to another.
-constexpr inline Vec2 Transform(const Vec2 v, const Mat22& A) noexcept
+constexpr inline Real2 Transform(const Real2 v, const Mat22& A) noexcept
 {
-    return Vec2{
+    return Real2{
         Get<0>(Get<0>(A)) * Get<0>(v) + Get<0>(Get<1>(A)) * Get<1>(v),
         Get<1>(Get<0>(A)) * Get<0>(v) + Get<1>(Get<1>(A)) * Get<1>(v)
     };
@@ -549,9 +550,9 @@ constexpr inline auto Transform(const Momentum2D v, const InvMass22 A) noexcept
 
 /// Multiply a matrix transpose times a vector. If a rotation matrix is provided,
 /// then this transforms the vector from one frame to another (inverse transform).
-constexpr inline Vec2 InverseTransform(const Vec2 v, const Mat22& A) noexcept
+constexpr inline Real2 InverseTransform(const Real2 v, const Mat22& A) noexcept
 {
-    return Vec2{Dot(v, GetX(A)), Dot(v, GetY(A))};
+    return Real2{Dot(v, GetX(A)), Dot(v, GetY(A))};
 }
 
 template <class T, LoValueCheck lo, HiValueCheck hi>
@@ -578,9 +579,9 @@ constexpr inline Vector2D<T> operator* (const UnitVec2 u, const T s) noexcept
     return Vector2D<T>{u.GetX() * s, u.GetY() * s};
 }
 
-constexpr inline Vec2 operator/ (const UnitVec2 u, const UnitVec2::value_type s) noexcept
+constexpr inline Real2 operator/ (const UnitVec2 u, const UnitVec2::value_type s) noexcept
 {
-    return Vec2{GetX(u) / s, GetY(u) / s};
+    return Real2{GetX(u) / s, GetY(u) / s};
 }
 
 // A * B
@@ -592,21 +593,21 @@ constexpr inline Mat22 Mul(const Mat22& A, const Mat22& B) noexcept
 // A^T * B
 constexpr inline Mat22 MulT(const Mat22& A, const Mat22& B) noexcept
 {
-    const auto c1 = Vec2{Dot(GetX(A), GetX(B)), Dot(GetY(A), GetX(B))};
-    const auto c2 = Vec2{Dot(GetX(A), GetY(B)), Dot(GetY(A), GetY(B))};
+    const auto c1 = Real2{Dot(GetX(A), GetX(B)), Dot(GetY(A), GetX(B))};
+    const auto c2 = Real2{Dot(GetX(A), GetY(B)), Dot(GetY(A), GetY(B))};
     return Mat22{c1, c2};
 }
 
 /// Multiply a matrix times a vector.
-constexpr inline Vec3 Transform(const Vec3& v, const Mat33& A) noexcept
+constexpr inline Real3 Transform(const Real3& v, const Mat33& A) noexcept
 {
     return (GetX(v) * GetX(A)) + (GetY(v) * GetY(A)) + (GetZ(v) * GetZ(A));
 }
 
 /// Multiply a matrix times a vector.
-constexpr inline Vec2 Transform(const Vec2 v, const Mat33& A) noexcept
+constexpr inline Real2 Transform(const Real2 v, const Mat33& A) noexcept
 {
-    return Vec2{
+    return Real2{
         GetX(GetX(A)) * v[0] + GetX(GetY(A)) * v[1],
         GetY(GetX(A)) * v[0] + GetY(GetY(A)) * v[1]
     };
@@ -688,9 +689,9 @@ constexpr inline Transformation MulT(const Transformation& A, const Transformati
 }
 
 template <>
-inline Vec2 Abs(Vec2 a)
+inline Real2 Abs(Real2 a)
 {
-    return Vec2{Abs(a[0]), Abs(a[1])};
+    return Real2{Abs(a[0]), Abs(a[1])};
 }
 
 template <>
@@ -794,7 +795,7 @@ inline Sweep GetAnglesNormalized(Sweep sweep) noexcept
 }
 
 /// Converts the given vector into a unit vector and returns its original length.
-inline Real Normalize(Vec2& vector)
+inline Real Normalize(Real2& vector)
 {
     const auto length = GetLength(vector);
     if (!AlmostZero(length))
@@ -942,7 +943,7 @@ inline UnitVec2 GetUnitVector(const Vector2D<LinearVelocity> value, LinearVeloci
 std::vector<Length2D> GetCircleVertices(const Length radius, unsigned slices,
                                         Angle start = Angle{0}, Real turns = Real{1});
 
-::std::ostream& operator<<(::std::ostream& os, const Vec2& value);
+::std::ostream& operator<<(::std::ostream& os, const Real2& value);
 
 ::std::ostream& operator<<(::std::ostream& os, const UnitVec2& value);
 

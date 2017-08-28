@@ -34,13 +34,31 @@ namespace playrho
     using Vector2D = Vector<2, T>;
     
     /// @brief Vector 2D of Real.
-    /// @note This data structure is two-times the size of the <code>Real</code> type
+    /// @note This data structure is 2-times the size of the <code>Real</code> type
     ///   (or 8 using Real of float).
-    using Vec2 = Vector2D<Real>;
-    
-    /// An all zero Vec2 value.
-    /// @see Vec2.
-    constexpr auto Vec2_zero = Vec2{0, 0};
+    using Real2 = Vector2D<Real>;
+
+    /// @brief Vector 2D of Precise.
+    /// @note This data structure is 2-times the size of the <code>Precise</code> type
+    ///   (or 16 using Precise of double).
+    using Precise2 = Vector2D<Precise>;
+
+    /// @brief Vector 2D of Integer.
+    /// @note This data structure is 2-times the size of the <code>Integer</code> type
+    ///   (or 8 using Integer of long).
+    using Integer2 = Vector2D<Integer>;
+
+    /// An all zero Real2 value.
+    /// @see Real2.
+    constexpr auto Real2Zero = Real2{ 0, 0 };
+
+    /// An all zero Precise2 value.
+    /// @see Precise2.
+    constexpr auto Precise2Zero = Precise2{ 0, 0 };
+
+    /// An all zero Integer2 value.
+    /// @see Integer2.
+    constexpr auto Integer2Zero = Integer2{ 0, 0 };
 
     /// @brief 2D vector for the Length unit-type.
     /// @details A 2-dimensional location vector.
@@ -69,15 +87,15 @@ namespace playrho
         Real{-9.8f} * MeterPerSquareSecond
     };
 
-    constexpr inline Vec2 GetVec2(const Vector2D<Real> value)
+    constexpr inline Real2 GetVec2(const Vector2D<Real> value)
     {
-        return Vec2(value);
+        return Real2(value);
     }
 
     template <>
-    constexpr inline Vec2 GetInvalid() noexcept
+    constexpr inline Real2 GetInvalid() noexcept
     {
-        return Vec2{GetInvalid<Real>(), GetInvalid<Real>()};
+        return Real2{GetInvalid<Real>(), GetInvalid<Real>()};
     }
 
     /// Does this vector contain finite coordinates?
@@ -202,33 +220,33 @@ namespace playrho
         return Momentum2D{GetInvalid<Momentum>(), GetInvalid<Momentum>()};
     }
     
-    constexpr inline Vec2 GetVec2(const Length2D value)
+    constexpr inline Real2 GetVec2(const Length2D value)
     {
-        return Vec2{
+        return Real2{
             Get<0>(value) / Meter,
             Get<1>(value) / Meter
         };
     }
     
-    constexpr inline Vec2 GetVec2(const LinearVelocity2D value)
+    constexpr inline Real2 GetVec2(const LinearVelocity2D value)
     {
-        return Vec2{
+        return Real2{
             Get<0>(value) / MeterPerSecond,
             Get<1>(value) / MeterPerSecond
         };
     }
     
-    constexpr inline Vec2 GetVec2(const Momentum2D value)
+    constexpr inline Real2 GetVec2(const Momentum2D value)
     {
-        return Vec2{
+        return Real2{
             Get<0>(value) / (Kilogram * MeterPerSecond),
             Get<1>(value) / (Kilogram * MeterPerSecond)
         };
     }
     
-    constexpr inline Vec2 GetVec2(const Force2D value)
+    constexpr inline Real2 GetVec2(const Force2D value)
     {
-        return Vec2{
+        return Real2{
             Get<0>(value) / Newton,
             Get<1>(value) / Newton
         };

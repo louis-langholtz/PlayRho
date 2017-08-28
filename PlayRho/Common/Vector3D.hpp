@@ -30,6 +30,34 @@ namespace playrho
     /// @note This is just a C++11 alias template for 3-dimensional uses of the Vector template.
     template <typename T>
     using Vector3D = Vector<3, T>;
+
+
+    /// @brief Vector 3D of Real.
+    /// @note This data structure is 3-times the size of the <code>Real</code> type
+    ///   (or 12 using Real of float).
+    using Real3 = Vector3D<Real>;
+
+    /// @brief Vector 3D of Precise.
+    /// @note This data structure is 3-times the size of the <code>Precise</code> type
+    ///   (or 24 using Precise of double).
+    using Precise3 = Vector3D<Precise>;
+
+    /// @brief Vector 3D of Integer.
+    /// @note This data structure is 3-times the size of the <code>Integer</code> type
+    ///   (or 12 using Integer of long).
+    using Integer3 = Vector3D<Integer>;
+
+    /// An all zero Real3 value.
+    /// @see Real3.
+    constexpr auto Real3Zero = Real3{ 0, 0, 0 };
+
+    /// An all zero Precise3 value.
+    /// @see Precise3.
+    constexpr auto Precise3Zero = Precise3{ 0, 0, 0 };
+
+    /// An all zero Integer3 value.
+    /// @see Integer3.
+    constexpr auto Integer3Zero = Integer3{ 0, 0, 0 };
     
     template <typename TYPE>
     constexpr inline bool operator == (const Vector3D<TYPE> a, const Vector3D<TYPE> b) noexcept
@@ -125,25 +153,16 @@ namespace playrho
     {
         return a /= s;
     }
-
-    /// A 3D column vector with 3 elements.
-    /// @note This data structure is 3 times the size of <code>Real</code> -
-    ///   i.e. 12-bytes (with 4-byte Real).
-    using Vec3 = Vector3D<Real>;
-
-    /// An all zero Vec3 value.
-    /// @see Vec3.
-    constexpr auto Vec3_zero = Vec3{0, 0, 0};
     
     template <>
-    constexpr inline Vec3 GetInvalid() noexcept
+    constexpr inline Real3 GetInvalid() noexcept
     {
-        return Vec3{GetInvalid<Real>(), GetInvalid<Real>(), GetInvalid<Real>()};
+        return Real3{GetInvalid<Real>(), GetInvalid<Real>(), GetInvalid<Real>()};
     }
     
     /// Does this vector contain finite coordinates?
     template <>
-    constexpr inline bool IsValid(const Vec3& value) noexcept
+    constexpr inline bool IsValid(const Real3& value) noexcept
     {
         return IsValid(Get<0>(value)) && IsValid(Get<1>(value)) && IsValid(Get<2>(value));
     }
