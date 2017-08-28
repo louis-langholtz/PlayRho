@@ -104,6 +104,9 @@ install:
     if [ "${REALNUM_TYPE}foo" != "foo" ]; then
       PLAYRHO_BUILD_OPTIONS="$PLAYRHO_BUILD_OPTIONS -DPLAYRHO_REALNUM_TYPE=$REALNUM_TYPE"
     fi
+    if [ "$CXX" = "clang++" ]; then
+      PLAYRHO_BUILD_OPTIONS="$PLAYRHO_BUILD_OPTIONS -DPLAYRHO_BUILD_BENCHMARK=ON"
+    fi
     echo $PLAYRHO_BUILD_OPTIONS
   - git clone https://github.com/louis-langholtz/units.git && wget https://sourceforge.net/projects/boost/files/boost/1.63.0/boost_1_63_0.tar.bz2 -O /tmp/boost_1_63_0.tar.bz2 && sha256sum /tmp/boost_1_63_0.tar.bz2 && echo "Expect SHA256 Hash of beae2529f759f6b3bf3f4969a19c2e9d6f0c503edcb2de4a61d1428519fcb3b0" && export BOOST_INC_DST=/tmp/boost_1_63_0/include/boost BOOST_SRC=$HOME/boost-src && mkdir -p $BOOST_SRC $BOOST_INC_DST && pushd $BOOST_SRC && tar --bzip2 -xf /tmp/boost_1_63_0.tar.bz2 && cp -a boost_1_63_0/boost/* $BOOST_INC_DST && popd && pushd $BOOST_INC_DST && mv units units.old && ln -s $HOME/units/include/boost/units . && popd
   - |
