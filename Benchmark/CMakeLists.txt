@@ -5,6 +5,7 @@
 # Add subdirectory to build.
 # For cmd details, see: https://cmake.org/cmake/help/v3.1/command/add_subdirectory.html
 # Adds benchmark here...
+set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "Enable testing of the benchmark library.")
 add_subdirectory(benchmark)
 
 # Add include directories to build...
