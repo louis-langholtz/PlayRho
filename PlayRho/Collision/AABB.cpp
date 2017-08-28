@@ -31,6 +31,7 @@ using namespace playrho;
 
 AABB playrho::ComputeAABB(const DistanceProxy& proxy, const Transformation xf) noexcept
 {
+    assert(IsValid(xf));
     const auto count = proxy.GetVertexCount();
     if (count > 0)
     {

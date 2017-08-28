@@ -451,6 +451,7 @@ private:
     /// @details If value is different than the current transformation, then this
     ///   method updates the current transformation and flags each associated contact
     ///   for updating.
+    /// @warning Behavior is undefined if value is invalid.
     void SetTransformation(const Transformation value) noexcept;
 
     //

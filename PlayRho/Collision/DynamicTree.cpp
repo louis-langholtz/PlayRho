@@ -139,6 +139,7 @@ void DynamicTree::FreeNode(const size_type index) noexcept
 // the node pool.
 DynamicTree::size_type DynamicTree::CreateProxy(const AABB aabb, void* userData)
 {
+    assert(IsValid(aabb));
     const auto index = AllocateNode();
     m_nodes[index].aabb = aabb;
     m_nodes[index].userData = userData;
@@ -171,33 +172,33 @@ void DynamicTree::UpdateProxy(const size_type index, const AABB newAabb)
 DynamicTree::size_type DynamicTree::FindLowestCostNode(const AABB leafAABB) const noexcept
 {
     assert(m_root != InvalidIndex);
+    assert(IsValid(leafAABB));
 
     auto index = m_root;
     while (!m_nodes[index].IsLeaf())
     {
         const auto child1 = m_nodes[index].child1;
         const auto child2 = m_nodes[index].child2;
+        const auto aabb = m_nodes[index].aabb;
         
-        const auto area = GetPerimeter(GetAABB(index));
+        const auto perimeter = GetPerimeter(aabb);
+        const auto combinedPerimeter = GetPerimeter(GetEnclosingAABB(aabb, leafAABB));
         
-        const auto combinedAABB = GetEnclosingAABB(GetAABB(index), leafAABB);
-        const auto combinedArea = GetPerimeter(combinedAABB);
-        
-        assert(combinedArea >= area);
+        assert(combinedPerimeter >= perimeter);
         
         // Cost of creating a new parent for this node and the new leaf
-        const auto cost = combinedArea * Real{2};
+        const auto cost = combinedPerimeter * Real{2};
         
         // Minimum cost of pushing the leaf further down the tree
-        const auto inheritanceCost = (combinedArea - area) * Real{2};
+        const auto inheritanceCost = (combinedPerimeter - perimeter) * Real{2};
         
         assert(child1 != InvalidIndex);
         assert(child1 < m_nodeCapacity);
         
         // Cost of descending into child1
         const auto cost1 = [&]() {
-            const auto aabb = GetEnclosingAABB(leafAABB, m_nodes[child1].aabb);
-            const auto perimeter = GetPerimeter(aabb);
+            const auto enclosingAABB = GetEnclosingAABB(leafAABB, m_nodes[child1].aabb);
+            const auto perimeter = GetPerimeter(enclosingAABB);
             return (m_nodes[child1].IsLeaf())?
             perimeter + inheritanceCost:
             perimeter - GetPerimeter(m_nodes[child1].aabb) + inheritanceCost;
@@ -205,8 +206,8 @@ DynamicTree::size_type DynamicTree::FindLowestCostNode(const AABB leafAABB) cons
         
         // Cost of descending into child2
         const auto cost2 = [&]() {
-            const auto aabb = GetEnclosingAABB(leafAABB, m_nodes[child2].aabb);
-            const auto perimeter = GetPerimeter(aabb);
+            const auto enclosingAABB = GetEnclosingAABB(leafAABB, m_nodes[child2].aabb);
+            const auto perimeter = GetPerimeter(enclosingAABB);
             return (m_nodes[child2].IsLeaf())?
             perimeter + inheritanceCost:
             perimeter - GetPerimeter(m_nodes[child2].aabb) + inheritanceCost;

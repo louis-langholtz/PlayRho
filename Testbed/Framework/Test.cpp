@@ -932,7 +932,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
     stepConf.toiResolutionRate = settings.toiPosResRate / 100.0f;
     if (!settings.enableSleep)
     {
-        stepConf.minStillTimeToSleep = Second * GetInvalid<Real>();
+        stepConf.minStillTimeToSleep = Second * std::numeric_limits<Real>::infinity();
         Awaken(*m_world);
     }
     stepConf.doToi = settings.enableContinuous;

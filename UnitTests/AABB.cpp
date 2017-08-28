@@ -143,6 +143,19 @@ TEST(AABB, InitializingConstruction)
     }
 }
 
+TEST(AABB, GetPerimeterOfPoint)
+{
+    EXPECT_EQ(GetPerimeter(AABB{Length2D{}}), Real(0) * Meter);
+    EXPECT_EQ(GetPerimeter(AABB{Length2D{Real(-1) * Meter, Real(-2) * Meter}}), Real(0) * Meter);
+    EXPECT_EQ(GetPerimeter(AABB{Length2D{Real(+99) * Meter, Real(+3) * Meter}}), Real(0) * Meter);
+    EXPECT_TRUE(std::isnan(StripUnit(GetPerimeter(AABB{
+        Length2D{
+            Real(+std::numeric_limits<Real>::infinity()) * Meter,
+            Real(+std::numeric_limits<Real>::infinity()) * Meter
+        }
+    }))));
+}
+
 TEST(AABB, Include)
 {
     const auto p1 = Length2D{Real{2} * Meter, Real{3} * Meter};

@@ -1,3 +1,36 @@
+/*
+ * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty. In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ *
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ *
+ * 1. The origin of this software must not be misrepresented; you must not
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ *    misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
+
+/*
+ * Notes:
+ *   - Any code in here must, for now, be C++14 standard compliant code.
+ *   - I'm of the opinion that short of looking at the resultant assembly, it's hard
+ *     to say/know/tell what the compiler actually optimzies or doesn't.
+ *   - `benchmark::DoNotOptimize` seemingly only prevents enclosed expressions from
+ *     being totally optimized away and has no effect on avoiding sub-expression
+ *     optimization especially in regards to output from constexpr functions.
+ *   - I've opted to use "random" data to help prevent optimizations that might make
+ *     timing meaningless. This incurs the time overhead of generating the random value
+ *     which then must be factored in to analysis of the output results.
+ */
+
 #include <benchmark/benchmark.h>
 
 #include <PlayRho/Common/Math.hpp>
@@ -95,10 +128,15 @@ static void FloatAlmostEqual2(benchmark::State& state)
 {
     const auto x = static_cast<float>(rand() - (RAND_MAX / 2)) / static_cast<float>(RAND_MAX / 2);
     const auto y = static_cast<float>(rand() - (RAND_MAX / 2)) / static_cast<float>(RAND_MAX / 2);
-    const auto ulp = static_cast<int>(rand() % 8);
+    const auto ulp = static_cast<unsigned>(rand() % 8);
     while (state.KeepRunning())
     {
-        benchmark::DoNotOptimize(playrho::Abs((int nX = *((int*)&x) < 0 ? 0x80000000 - nX : nX) - (int nY = *((int*)&y) < 0 ? 0x80000000 - nY : nY)) <= ulp);
+        // Accesses the floats as unsigned 32 bit ints and strips off the signbits.
+        const auto nX = (*reinterpret_cast<const std::uint32_t*>(&x)) & 0x7FFFFFF;
+        const auto nY = (*reinterpret_cast<const std::uint32_t*>(&y)) & 0x7FFFFFF;
+        // Checks if difference between the greater 32-bit unsigned int and the lesser is
+        // less than or equal to the ULP value.
+        benchmark::DoNotOptimize(((nX >= nY)? nX - nY: nY - nX) <= ulp);
     }
 }
 
@@ -1030,13 +1068,13 @@ BENCHMARK(FloatAdd);
 BENCHMARK(FloatMult);
 BENCHMARK(FloatDiv);
 
+BENCHMARK(FloatAlmostEqual1);
+BENCHMARK(FloatAlmostEqual2);
+
 BENCHMARK(FloatSqrt);
 BENCHMARK(FloatSin);
 BENCHMARK(FloatCos);
 BENCHMARK(FloatAtan2);
-
-BENCHMARK(FloatAlmostEqual1);
-BENCHMARK(FloatAlmostEqual2);
 
 BENCHMARK(DotProduct);
 BENCHMARK(CrossProduct);

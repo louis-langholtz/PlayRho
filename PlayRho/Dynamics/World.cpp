@@ -163,6 +163,7 @@ namespace {
     
     inline void IntegratePositions(BodyConstraints& bodies, Time h)
     {
+        assert(IsValid(h));
         for_each(begin(bodies), end(bodies), [&](BodyConstraint& bc) {
             const auto velocity = bc.GetVelocity();
             const auto translation = h * velocity.linear;
@@ -458,9 +459,11 @@ namespace {
     
     inline Time GetUnderActiveTime(const Body& b, const StepConf& conf) noexcept
     {
-        const auto underactive = IsUnderActive(b.GetVelocity(), conf.linearSleepTolerance, conf.angularSleepTolerance);
+        const auto underactive = IsUnderActive(b.GetVelocity(), conf.linearSleepTolerance,
+                                               conf.angularSleepTolerance);
         const auto sleepable = b.IsSleepingAllowed();
-        return (sleepable && underactive)? b.GetUnderActiveTime() + conf.GetTime(): Second * Real{0};
+        return (sleepable && underactive)?
+            b.GetUnderActiveTime() + conf.GetTime(): Second * Real{0};
     }
 
     inline Time UpdateUnderActiveTimes(Island::Bodies& bodies, const StepConf& conf)
@@ -1375,13 +1378,10 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
     }
     
     results.bodiesSlept = BodyCounter{0};
-    if (::playrho::IsValid(Real{conf.minStillTimeToSleep / Second}))
+    const auto minUnderActiveTime = UpdateUnderActiveTimes(island.m_bodies, conf);
+    if ((minUnderActiveTime >= conf.minStillTimeToSleep) && results.solved)
     {
-        const auto minUnderActiveTime = UpdateUnderActiveTimes(island.m_bodies, conf);
-        if ((minUnderActiveTime >= conf.minStillTimeToSleep) && results.solved)
-        {
-            results.bodiesSlept = static_cast<decltype(results.bodiesSlept)>(Sleepem(island.m_bodies));
-        }
+        results.bodiesSlept = static_cast<decltype(results.bodiesSlept)>(Sleepem(island.m_bodies));
     }
 
     return results;
@@ -1741,6 +1741,8 @@ World::IslandSolverResults World::SolveToi(const StepConf& conf, Contact& contac
 
 void World::UpdateBody(Body& body, const Position& pos, const Velocity& vel)
 {
+    assert(IsValid(pos));
+    assert(IsValid(vel));
     BodyAtty::SetVelocity(body, vel);
     BodyAtty::SetPosition1(body, pos);
     BodyAtty::SetTransformation(body, GetTransformation(GetPosition1(body), body.GetLocalCenter()));
@@ -1830,7 +1832,7 @@ World::IslandSolverResults World::SolveToiViaGS(const StepConf& conf, Island& is
 #endif
     
     auto velConstraints = GetVelocityConstraints(island.m_contacts, bodyConstraintsMap,
-                                                      GetToiVelocityConstraintConf(conf));
+                                                 GetToiVelocityConstraintConf(conf));
 
     // No warm starting is needed for TOI events because warm
     // starting impulses were applied in the discrete solver.

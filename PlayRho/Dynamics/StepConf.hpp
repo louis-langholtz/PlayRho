@@ -93,7 +93,7 @@ public:
 
     /// @brief Minimum still time to sleep.
     /// @details The time that a body must be still before it will be put to sleep.
-    /// @note Set to an invalid value to disable sleeping.
+    /// @note Set to infinity to disable sleeping.
     /// @note Used in the regular phase processing of the step.
     Time minStillTimeToSleep = DefaultMinStillTimeToSleep;
 

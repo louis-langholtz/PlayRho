@@ -65,7 +65,8 @@ public:
 
         /// @brief Friction coefficient.
         ///
-        /// @note This must be a value between 0 and +infinity.
+        /// @note This must be a value between 0 and +infinity. It is safer however to
+        ///   keep the value below the square root of the max value of a Real.
         /// @note This is usually in the range [0,1].
         /// @note The square-root of the product of this value multiplied by a touching
         ///   fixture's friction becomes the friction coefficient for the contact.
