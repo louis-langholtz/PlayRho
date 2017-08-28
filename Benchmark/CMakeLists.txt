@@ -4,9 +4,8 @@
 
 # Add subdirectory to build.
 # For cmd details, see: https://cmake.org/cmake/help/v3.1/command/add_subdirectory.html
-# googletest build instructions at: https://github.com/google/googletest/blob/master/googletest/README.md
-# Adds googletest here...
-#add_subdirectory(benchmark)
+# Adds benchmark here...
+add_subdirectory(benchmark)
 
 # Add include directories to build...
 # For cmd details, see: https://cmake.org/cmake/help/v3.1/command/include_directories.html
