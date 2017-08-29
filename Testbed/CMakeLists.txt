@@ -1,25 +1,42 @@
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 
-find_package(PkgConfig REQUIRED)
-pkg_search_module(GLFW REQUIRED glfw3)
-message(STATUS "GLFW_FOUND=${GLFW_FOUND}")
+if(GLFW_INCLUDE_DIRS AND GLFW_LIBRARY_DIRS AND GLFW_STATIC_LIBRARIES AND OPENGL_INCLUDE_DIR)
+	message(STATUS "Values found for header and library paths.")
+else()
 
-find_library(GLFW_LIBRARY NAMES glfw3)
-message(STATUS "GLFW_LIBRARY=${GLFW_LIBRARY}")
-message(STATUS "GLFW_LIBRARY_DIRS=${GLFW_LIBRARY_DIRS}")
+	find_package(GLFW3 QUIET) #Find package assuming config file can be located
+	message(STATUS "GLFW3_FOUND=${GLFW_FOUND}")
+	
+	if(GLFW3_FOUND)
+		set(GLFW_TARGET ON)
+	else() #Find package using pkg-config
+		set(GLFW_TARGET OFF)
+		
+		message(STATUS "GLFW3 not found yet... Searching using pkg-config")
+		find_package(PkgConfig REQUIRED)
+		pkg_search_module(GLFW REQUIRED glfw3)
+
+		find_library(GLFW_LIBRARY NAMES glfw3)
+		message(STATUS "GLFW_STATIC_LIBRARIES=${GLFW_STATIC_LIBRARIES}")
+		message(STATUS "GLFW_LIBRARY_DIRS=${GLFW_LIBRARY_DIRS}")
+		message(STATUS "GLFW_INCLUDE_DIRS=${GLFW_INCLUDE_DIRS}")
+		message(STATUS "GLFW_LIBRARY_DIRS=${GLFW_LIBRARY_DIRS}")
+		message(STATUS "OPENGL_INCLUDE_DIR=${OPENGL_INCLUDE_DIR}")
+	endif()
+	
+endif()
 
 # Some flags for Freeglut and GLUI.
 add_definitions( -DGLEW_STATIC -D_CRT_SECURE_NO_WARNINGS )
 
 # Define the framework files.
-
 file(GLOB Testbed_Framework_SRCS
 	"Framework/*.cpp"
 	"Framework/*.hpp"
 )
 
-#define the test files.
+# define the test files.
 file(GLOB Testbed_Tests_SRCS
 	"Tests/*.cpp"
 	"Tests/*.hpp"
@@ -28,17 +45,6 @@ file(GLOB Testbed_Tests_SRCS
 # These are used to create visual studio folders.
 source_group(Framework FILES ${Testbed_Framework_SRCS})
 source_group(Tests FILES ${Testbed_Tests_SRCS})
-
-include_directories (
-	${OPENGL_INCLUDE_DIR}
-	${GLEW_INCLUDE_DIRS}
-	${GLFW_INCLUDE_DIRS}
-	${PlayRho_SOURCE_DIR}
-)
-
-link_directories (
-	${GLFW_LIBRARY_DIRS}
-)
 
 if(APPLE)
 	# We are not using the Apple's framework version, but X11's
@@ -49,24 +55,46 @@ elseif(WIN32)
 	set (ADDITIONAL_LIBRARIES winmm)
 endif(APPLE)
 
+# Resolve Linker error LNK4098; make sure default libcmt doesn't clash with other libraries
+if(MSVC)
+	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB:libcmt.lib")
+endif()
+
 add_executable(Testbed
 	${Testbed_Framework_SRCS}
 	${Testbed_Tests_SRCS}
 )
 
-#Resolve Linker error LNK4098; make sure default libcmt doesn't clash with other libraries
-if(MSVC)
-	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB:libcmt.lib")
-endif()
-
-target_link_libraries (
-	Testbed
-	PlayRho
-	${GLEW_LIBRARY}
-	${GLFW_STATIC_LIBRARIES}
-	${ADDITIONAL_LIBRARIES}
-	${OPENGL_LIBRARIES}
+include_directories(
+	${OPENGL_INCLUDE_DIR}
+	${GLEW_INCLUDE_DIRS}
+	${GLFW_INCLUDE_DIRS}
+	${PlayRho_SOURCE_DIR}
 )
+
+if(GLFW_TARGET)
+	target_link_libraries(
+		Testbed
+		PlayRho
+		glfw
+		${GLEW_LIBRARY}
+		${ADDITIONAL_LIBRARIES}
+		${OPENGL_LIBRARIES}
+	)
+else()
+	link_directories (
+		${GLFW_LIBRARY_DIRS}
+	)
+	
+	target_link_libraries(
+		Testbed
+		PlayRho
+		${GLEW_LIBRARY}
+		${GLFW_STATIC_LIBRARIES}
+		${ADDITIONAL_LIBRARIES}
+		${OPENGL_LIBRARIES}
+	)
+endif()
 
 # link with coverage library
 if(${PLAYRHO_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
