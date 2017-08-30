@@ -178,7 +178,7 @@
 		47B58F591F57218400354C34 /* Version.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47B58F571F57218400354C34 /* Version.cpp */; };
 		47B58F5A1F57218400354C34 /* Version.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47B58F581F57218400354C34 /* Version.hpp */; };
 		47C85D0A1EFA251B00F70C56 /* WheelJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47C85D091EFA251B00F70C56 /* WheelJoint.cpp */; };
-		47C85D0C1EFA2C1C00F70C56 /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47C85D0B1EFA2C1C00F70C56 /* Settings.cpp */; };
+		47C85D0C1EFA2C1C00F70C56 /* Version.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47C85D0B1EFA2C1C00F70C56 /* Version.cpp */; };
 		47C85D0E1EFAE03700F70C56 /* WeldJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47C85D0D1EFAE03700F70C56 /* WeldJoint.cpp */; };
 		47C85D101EFAE37B00F70C56 /* GearJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47C85D0F1EFAE37B00F70C56 /* GearJoint.cpp */; };
 		47C85D121EFB0CD600F70C56 /* RopeJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47C85D111EFB0CD600F70C56 /* RopeJoint.cpp */; };
@@ -532,7 +532,7 @@
 		47B58F571F57218400354C34 /* Version.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Version.cpp; sourceTree = "<group>"; };
 		47B58F581F57218400354C34 /* Version.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Version.hpp; sourceTree = "<group>"; };
 		47C85D091EFA251B00F70C56 /* WheelJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WheelJoint.cpp; sourceTree = "<group>"; };
-		47C85D0B1EFA2C1C00F70C56 /* Settings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Settings.cpp; sourceTree = "<group>"; };
+		47C85D0B1EFA2C1C00F70C56 /* Version.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Version.cpp; sourceTree = "<group>"; };
 		47C85D0D1EFAE03700F70C56 /* WeldJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WeldJoint.cpp; sourceTree = "<group>"; };
 		47C85D0F1EFAE37B00F70C56 /* GearJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GearJoint.cpp; sourceTree = "<group>"; };
 		47C85D111EFB0CD600F70C56 /* RopeJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RopeJoint.cpp; sourceTree = "<group>"; };
@@ -796,7 +796,6 @@
 				47C85D111EFB0CD600F70C56 /* RopeJoint.cpp */,
 				474BC4001D41278800447DCD /* Rot.cpp */,
 				4756CB991E0FAEF8009AD95C /* SeparationFinder.cpp */,
-				47C85D0B1EFA2C1C00F70C56 /* Settings.cpp */,
 				475A945A1D9593A4000CA9A8 /* Shape.cpp */,
 				4731DDF91DC7C9B000E7F931 /* Simplex.cpp */,
 				4734B2351DC39F3E00F15E29 /* SimplexEdge.cpp */,
@@ -810,6 +809,7 @@
 				4736DE881DB7DB3B003993CB /* Vec3.cpp */,
 				474BAB291E5CBA010058E08A /* Velocity.cpp */,
 				47FFD0FA1DAC3EFC000D6D0E /* VelocityConstraint.cpp */,
+				47C85D0B1EFA2C1C00F70C56 /* Version.cpp */,
 				472E301D1DBA98BC00DA821D /* VertexSet.cpp */,
 				47C85D0D1EFAE03700F70C56 /* WeldJoint.cpp */,
 				47C85D091EFA251B00F70C56 /* WheelJoint.cpp */,
@@ -1520,7 +1520,7 @@
 				47327E751E9F1E2A0048FCD8 /* MouseJoint.cpp in Sources */,
 				47C85D121EFB0CD600F70C56 /* RopeJoint.cpp in Sources */,
 				47CF98501E0088ED0077F5F2 /* Angle.cpp in Sources */,
-				47C85D0C1EFA2C1C00F70C56 /* Settings.cpp in Sources */,
+				47C85D0C1EFA2C1C00F70C56 /* Version.cpp in Sources */,
 				4731DE0A1DD7A4E000E7F931 /* ContactFilter.cpp in Sources */,
 				47C85D0E1EFAE03700F70C56 /* WeldJoint.cpp in Sources */,
 				47315E041E28A66100DDA856 /* RevoluteJoint.cpp in Sources */,
