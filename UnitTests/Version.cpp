@@ -23,7 +23,7 @@
 
 using namespace playrho;
 
-TEST(Settings, GetVersion)
+TEST(Version, GetVersion)
 {
     const auto version = Version{0, 9, 0};
     EXPECT_EQ(GetVersion().major, version.major);
@@ -32,7 +32,7 @@ TEST(Settings, GetVersion)
     EXPECT_EQ(GetVersion(), version);
 }
 
-TEST(Settings, GetBuildDetails)
+TEST(Version, GetBuildDetails)
 {
     EXPECT_FALSE(GetBuildDetails().empty());
     const auto result = GetBuildDetails();
