@@ -19,7 +19,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Common/Version.hpp>
 
 using namespace playrho;
 

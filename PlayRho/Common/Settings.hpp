@@ -31,7 +31,6 @@
 #include <cassert>
 #include <cfloat>
 #include <cmath>
-#include <string>
 #include <cstdint>
 #include <algorithm>
 
@@ -241,31 +240,6 @@ constexpr auto DefaultCirclesRatio = Real{10};
 
 // Mathematical constants
 constexpr auto SquareRootTwo = Real(1.414213562373095048801688724209698078569671875376948073176679737990732478462);
-
-/// Version numbering scheme.
-/// See http://en.wikipedia.org/wiki/Software_versioning
-struct Version
-{
-    using revnum_type = std::int32_t;
-
-    revnum_type major;        ///< significant changes
-    revnum_type minor;        ///< incremental changes
-    revnum_type revision;        ///< bug fixes
-};
-
-constexpr inline bool operator== (Version lhs, Version rhs)
-{
-    return lhs.major == rhs.major && lhs.minor == rhs.minor && lhs.revision == rhs.revision;
-}
-
-constexpr inline bool operator!= (Version lhs, Version rhs)
-{
-    return !(lhs == rhs);
-}
-
-Version GetVersion() noexcept;
-
-std::string GetBuildDetails() noexcept;
 
 }
 

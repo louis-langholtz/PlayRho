@@ -19,8 +19,39 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Common/Settings.hpp>
+#ifndef Version_hpp
+#define Version_hpp
+
+#include <cstdint>
+#include <string>
 
 namespace playrho {
+    
+    /// Version numbering scheme.
+    /// See http://en.wikipedia.org/wiki/Software_versioning
+    struct Version
+    {
+        using revnum_type = std::int32_t;
+        
+        revnum_type major;        ///< significant changes
+        revnum_type minor;        ///< incremental changes
+        revnum_type revision;        ///< bug fixes
+    };
+    
+    constexpr inline bool operator== (Version lhs, Version rhs)
+    {
+        return lhs.major == rhs.major && lhs.minor == rhs.minor && lhs.revision == rhs.revision;
+    }
+    
+    constexpr inline bool operator!= (Version lhs, Version rhs)
+    {
+        return !(lhs == rhs);
+    }
+    
+    Version GetVersion() noexcept;
+    
+    std::string GetBuildDetails() noexcept;
 
-} // namespace playrho
+} // namepsace playrho
+
+#endif /* Version_hpp */
