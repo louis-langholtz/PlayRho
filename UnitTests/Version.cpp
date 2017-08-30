@@ -1,6 +1,5 @@
 /*
- * Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
- * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -19,8 +18,24 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Common/Settings.hpp>
+#include "gtest/gtest.h"
+#include <PlayRho/Common/Version.hpp>
 
-namespace playrho {
+using namespace playrho;
 
-} // namespace playrho
+TEST(Version, GetVersion)
+{
+    const auto version = Version{0, 9, 0};
+    EXPECT_EQ(GetVersion().major, version.major);
+    EXPECT_EQ(GetVersion().minor, version.minor);
+    EXPECT_EQ(GetVersion().revision, version.revision);
+    EXPECT_EQ(GetVersion(), version);
+}
+
+TEST(Version, GetBuildDetails)
+{
+    EXPECT_FALSE(GetBuildDetails().empty());
+    const auto result = GetBuildDetails();
+    EXPECT_NE(result.find_first_of("asserts="), result.npos);
+    EXPECT_NE(result.find_first_of("Real="), result.npos);
+}

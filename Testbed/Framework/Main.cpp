@@ -17,6 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
+#include <PlayRho/Common/Version.hpp>
+
 #include "imgui.h"
 #include "RenderGL3.h"
 #include "DebugDraw.hpp"
