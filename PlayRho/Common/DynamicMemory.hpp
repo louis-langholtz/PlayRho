@@ -19,32 +19,36 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Common/Settings.hpp>
+#ifndef DynamicMemory_hpp
+#define DynamicMemory_hpp
 
-#include <cstdio>
-#include <cstdarg>
-#include <cstdlib>
-#include <typeinfo>
-#include <sstream>
+#include <cstddef>
 
-namespace playrho {
-
-Version GetVersion() noexcept
+namespace playrho
 {
-    return Version{0, 9, 0};
-}
-
-std::string GetBuildDetails() noexcept
-{
-    std::stringstream stream;
-    stream << "asserts=";
-#ifdef NDEBUG
-    stream << "off";
-#else
-    stream << "on";
-#endif
-    stream << ", Real='" << GetTypeName<Real>() << "'";
-    return stream.str();
-}
+    // Memory Allocation
+    
+    /// Implement this function to use your own memory allocator.
+    void* Alloc(std::size_t size);
+    
+    template <typename T>
+    T* Alloc(std::size_t size)
+    {
+        return static_cast<T*>(Alloc(size * sizeof(T)));
+    }
+    
+    /// Implement this function to use your own memory allocator.
+    void* Realloc(void* ptr, std::size_t new_size);
+    
+    template <typename T>
+    T* Realloc(T* ptr, std::size_t size)
+    {
+        return static_cast<T*>(Realloc(static_cast<void *>(ptr), size * sizeof(T)));
+    }
+    
+    /// If you implement Alloc, you should also implement this function.
+    void Free(void* mem);
 
 } // namespace playrho
+
+#endif /* DynamicMemory_hpp */

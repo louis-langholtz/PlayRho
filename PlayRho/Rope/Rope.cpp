@@ -18,6 +18,7 @@
 */
 
 #include <PlayRho/Rope/Rope.hpp>
+#include <PlayRho/Common/DynamicMemory.hpp>
 
 using namespace playrho;
 

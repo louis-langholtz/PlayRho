@@ -242,29 +242,6 @@ constexpr auto DefaultCirclesRatio = Real{10};
 // Mathematical constants
 constexpr auto SquareRootTwo = Real(1.414213562373095048801688724209698078569671875376948073176679737990732478462);
 
-// Memory Allocation
-
-/// Implement this function to use your own memory allocator.
-void* Alloc(std::size_t size);
-
-template <typename T>
-T* Alloc(std::size_t size)
-{
-    return static_cast<T*>(Alloc(size * sizeof(T)));
-}
-    
-/// Implement this function to use your own memory allocator.
-void* Realloc(void* ptr, std::size_t new_size);
-
-template <typename T>
-T* Realloc(T* ptr, std::size_t size)
-{
-    return static_cast<T*>(Realloc(static_cast<void *>(ptr), size * sizeof(T)));
-}
-
-/// If you implement Alloc, you should also implement this function.
-void Free(void* mem);
-
 /// Version numbering scheme.
 /// See http://en.wikipedia.org/wiki/Software_versioning
 struct Version
