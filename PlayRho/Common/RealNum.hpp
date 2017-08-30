@@ -73,6 +73,10 @@ namespace playrho
     ///
     constexpr auto Pi = Real(3.14159265358979323846264338327950288);
 
+    /// @brief SquareRootTwo.
+    ///
+    constexpr auto SquareRootTwo = Real(1.414213562373095048801688724209698078569671875376948073176679737990732478462);
+
 }
 
 #endif /* RealNum_hpp */
