@@ -19,6 +19,7 @@
 
 #include <PlayRho/Common/StackAllocator.hpp>
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/DynamicMemory.hpp>
 
 #include <memory>
 

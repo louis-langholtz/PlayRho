@@ -21,6 +21,7 @@
 #define DUMP_SHELL_H
 
 #include "../Framework/Test.hpp"
+#include <PlayRho/Common/DynamicMemory.hpp>
 
 namespace playrho {
 

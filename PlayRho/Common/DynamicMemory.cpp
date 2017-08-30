@@ -19,32 +19,25 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Common/Settings.hpp>
-
-#include <cstdio>
-#include <cstdarg>
+#include <PlayRho/Common/DynamicMemory.hpp>
 #include <cstdlib>
-#include <typeinfo>
-#include <sstream>
 
 namespace playrho {
-
-Version GetVersion() noexcept
-{
-    return Version{0, 9, 0};
-}
-
-std::string GetBuildDetails() noexcept
-{
-    std::stringstream stream;
-    stream << "asserts=";
-#ifdef NDEBUG
-    stream << "off";
-#else
-    stream << "on";
-#endif
-    stream << ", Real='" << GetTypeName<Real>() << "'";
-    return stream.str();
-}
+    
+    // Memory allocators. Modify these to use your own allocator.
+    void* Alloc(std::size_t size)
+    {
+        return std::malloc(size);
+    }
+    
+    void* Realloc(void* ptr, std::size_t new_size)
+    {
+        return std::realloc(ptr, new_size);
+    }
+    
+    void Free(void* mem)
+    {
+        std::free(mem);
+    }
 
 } // namespace playrho

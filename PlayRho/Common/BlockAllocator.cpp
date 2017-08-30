@@ -18,6 +18,7 @@
  */
 
 #include <PlayRho/Common/BlockAllocator.hpp>
+#include <PlayRho/Common/DynamicMemory.hpp>
 #include <limits>
 #include <cstring>
 #include <cstddef>

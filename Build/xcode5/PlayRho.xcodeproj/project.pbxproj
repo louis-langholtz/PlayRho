@@ -173,6 +173,8 @@
 		479B63C31ED9CAC300D49BC7 /* BoundedValue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 479B63C21ED9CAC300D49BC7 /* BoundedValue.cpp */; };
 		47AB01BA1D6FA40C0084D721 /* Dump.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AB01B91D6FA40C0084D721 /* Dump.cpp */; };
 		47AFC3051DAEBC120023E9D1 /* PositionSolverManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AFC3041DAEBC120023E9D1 /* PositionSolverManifold.cpp */; };
+		47B58F551F570E2C00354C34 /* DynamicMemory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47B58F531F570E2C00354C34 /* DynamicMemory.cpp */; };
+		47B58F561F570E2C00354C34 /* DynamicMemory.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47B58F541F570E2C00354C34 /* DynamicMemory.hpp */; };
 		47C85D0A1EFA251B00F70C56 /* WheelJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47C85D091EFA251B00F70C56 /* WheelJoint.cpp */; };
 		47C85D0C1EFA2C1C00F70C56 /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47C85D0B1EFA2C1C00F70C56 /* Settings.cpp */; };
 		47C85D0E1EFAE03700F70C56 /* WeldJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47C85D0D1EFAE03700F70C56 /* WeldJoint.cpp */; };
@@ -523,6 +525,8 @@
 		479B63C21ED9CAC300D49BC7 /* BoundedValue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BoundedValue.cpp; sourceTree = "<group>"; };
 		47AB01B91D6FA40C0084D721 /* Dump.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dump.cpp; sourceTree = "<group>"; };
 		47AFC3041DAEBC120023E9D1 /* PositionSolverManifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PositionSolverManifold.cpp; sourceTree = "<group>"; };
+		47B58F531F570E2C00354C34 /* DynamicMemory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicMemory.cpp; sourceTree = "<group>"; };
+		47B58F541F570E2C00354C34 /* DynamicMemory.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DynamicMemory.hpp; sourceTree = "<group>"; };
 		47C85D091EFA251B00F70C56 /* WheelJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WheelJoint.cpp; sourceTree = "<group>"; };
 		47C85D0B1EFA2C1C00F70C56 /* Settings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Settings.cpp; sourceTree = "<group>"; };
 		47C85D0D1EFAE03700F70C56 /* WeldJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WeldJoint.cpp; sourceTree = "<group>"; };
@@ -902,6 +906,8 @@
 				479B63BD1ED8B64300D49BC7 /* BoundedValue.hpp */,
 				476162C61E245C9D002C7FB0 /* CodeDumper.cpp */,
 				476162C71E245C9D002C7FB0 /* CodeDumper.hpp */,
+				47B58F531F570E2C00354C34 /* DynamicMemory.cpp */,
+				47B58F541F570E2C00354C34 /* DynamicMemory.hpp */,
 				4727242D1E315E1A00C64921 /* Fixed.hpp */,
 				80BB8943141C3E5900F1753A /* GrowableStack.hpp */,
 				470F9B3A1EE63515007EF7B6 /* InvalidArgument.hpp */,
@@ -1289,6 +1295,7 @@
 				80BB89CF141C3E5900F1753A /* GearJoint.hpp in Headers */,
 				80BB89D1141C3E5900F1753A /* Joint.hpp in Headers */,
 				80BB89D3141C3E5900F1753A /* MouseJoint.hpp in Headers */,
+				47B58F561F570E2C00354C34 /* DynamicMemory.hpp in Headers */,
 				4787D6DF1F2ED2D6008C115E /* RopeJointDef.hpp in Headers */,
 				474FFC3C1F2CEE6C0037CCE0 /* Vector.hpp in Headers */,
 				80BB89D5141C3E5900F1753A /* PrismaticJoint.hpp in Headers */,
@@ -1580,6 +1587,7 @@
 				80BB899B141C3E5900F1753A /* PolygonShape.cpp in Sources */,
 				80BB899E141C3E5900F1753A /* BlockAllocator.cpp in Sources */,
 				80BB89A3141C3E5900F1753A /* Math.cpp in Sources */,
+				47B58F551F570E2C00354C34 /* DynamicMemory.cpp in Sources */,
 				470F94D91EC8C37500AA3C82 /* JointKey.cpp in Sources */,
 				80BB89A5141C3E5900F1753A /* Settings.cpp in Sources */,
 				476162C81E245C9D002C7FB0 /* CodeDumper.cpp in Sources */,
