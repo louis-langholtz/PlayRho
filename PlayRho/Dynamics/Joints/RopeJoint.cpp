@@ -199,15 +199,14 @@ Length2D RopeJoint::GetAnchorB() const
     return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Force2D RopeJoint::GetReactionForce(Frequency inv_dt) const
+Momentum2D RopeJoint::GetLinearReaction() const
 {
-    return (inv_dt * m_impulse) * m_u;
+    return m_impulse * m_u;
 }
 
-Torque RopeJoint::GetReactionTorque(Frequency inv_dt) const
+AngularMomentum RopeJoint::GetAngularReaction() const
 {
-    NOT_USED(inv_dt);
-    return Torque{0};
+    return AngularMomentum{0};
 }
 
 Length RopeJoint::GetMaxLength() const

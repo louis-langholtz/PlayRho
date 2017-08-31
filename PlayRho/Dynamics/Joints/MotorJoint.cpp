@@ -226,14 +226,14 @@ Length2D MotorJoint::GetAnchorB() const
     return GetBodyB()->GetLocation();
 }
 
-Force2D MotorJoint::GetReactionForce(Frequency inv_dt) const
+Momentum2D MotorJoint::GetLinearReaction() const
 {
-    return inv_dt * m_linearImpulse;
+    return m_linearImpulse;
 }
 
-Torque MotorJoint::GetReactionTorque(Frequency inv_dt) const
+AngularMomentum MotorJoint::GetAngularReaction() const
 {
-    return inv_dt * m_angularImpulse;
+    return m_angularImpulse;
 }
 
 void MotorJoint::SetCorrectionFactor(Real factor)

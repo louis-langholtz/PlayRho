@@ -309,14 +309,14 @@ Length2D WheelJoint::GetAnchorB() const
     return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Force2D WheelJoint::GetReactionForce(Frequency inv_dt) const
+Momentum2D WheelJoint::GetLinearReaction() const
 {
-    return inv_dt * (m_impulse * m_ay + m_springImpulse * m_ax);
+    return m_impulse * m_ay + m_springImpulse * m_ax;
 }
 
-Torque WheelJoint::GetReactionTorque(Frequency inv_dt) const
+AngularMomentum WheelJoint::GetAngularReaction() const
 {
-    return inv_dt * m_motorImpulse;
+    return m_motorImpulse;
 }
 
 void WheelJoint::EnableMotor(bool flag)
