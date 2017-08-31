@@ -25,7 +25,7 @@
 
 namespace playrho {
     
-    /// @brief Invalid argument.
+    /// @brief Invalid argument logic error.
     /// @details Indicates that an argument to a function or method was invalid.
     class InvalidArgument: public std::invalid_argument
     {
