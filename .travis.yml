@@ -23,9 +23,9 @@ env:
 
 # Specify explicitly which branches to build or not build
 # For details see: https://docs.travis-ci.com/user/customizing-the-build/#Building-Specific-Branches
-#branches:
-#  only:
-#  - master
+branches:
+  only:
+    - master
 
 # Specify which OS X image to use.
 # "xcode8" is supposed to provide a macosx10.11 SK preinstalled.
