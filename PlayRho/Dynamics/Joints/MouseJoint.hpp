@@ -46,17 +46,13 @@ public:
 
     MouseJoint(const MouseJointDef& def);
 
-    /// Implements Joint.
     Length2D GetAnchorA() const override;
 
-    /// Implements Joint.
     Length2D GetAnchorB() const override;
 
-    /// Implements Joint.
-    Force2D GetReactionForce(Frequency inv_dt) const override;
+    Momentum2D GetLinearReaction() const override;
 
-    /// Implements Joint.
-    Torque GetReactionTorque(Frequency inv_dt) const override;
+    AngularMomentum GetAngularReaction() const override;
 
     Length2D GetLocalAnchorB() const noexcept;
 

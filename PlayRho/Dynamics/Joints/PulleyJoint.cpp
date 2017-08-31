@@ -211,15 +211,14 @@ Length2D PulleyJoint::GetAnchorB() const
     return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Force2D PulleyJoint::GetReactionForce(Frequency inv_dt) const
+Momentum2D PulleyJoint::GetLinearReaction() const
 {
-    return inv_dt * m_impulse * m_uB;
+    return m_impulse * m_uB;
 }
 
-Torque PulleyJoint::GetReactionTorque(Frequency inv_dt) const
+AngularMomentum PulleyJoint::GetAngularReaction() const
 {
-    NOT_USED(inv_dt);
-    return Torque{0};
+    return AngularMomentum{0};
 }
 
 Length playrho::GetCurrentLengthA(const PulleyJoint& joint)

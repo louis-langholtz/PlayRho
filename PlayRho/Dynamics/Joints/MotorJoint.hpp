@@ -39,8 +39,8 @@ public:
     Length2D GetAnchorA() const override;
     Length2D GetAnchorB() const override;
 
-    Force2D GetReactionForce(Frequency inv_dt) const override;
-    Torque GetReactionTorque(Frequency inv_dt) const override;
+    Momentum2D GetLinearReaction() const override;
+    AngularMomentum GetAngularReaction() const override;
 
     /// Set/get the target linear offset, in frame A.
     void SetLinearOffset(const Length2D linearOffset);

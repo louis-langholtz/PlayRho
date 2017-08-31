@@ -399,14 +399,14 @@ Length2D GearJoint::GetAnchorB() const
     return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Force2D GearJoint::GetReactionForce(Frequency inv_dt) const
+Momentum2D GearJoint::GetLinearReaction() const
 {
-    return inv_dt * m_impulse * m_JvAC;
+    return m_impulse * m_JvAC;
 }
 
-Torque GearJoint::GetReactionTorque(Frequency inv_dt) const
+AngularMomentum GearJoint::GetAngularReaction() const
 {
-    return inv_dt * m_impulse * m_JwA / Radian;
+    return m_impulse * m_JwA / Radian;
 }
 
 void GearJoint::SetRatio(Real ratio)

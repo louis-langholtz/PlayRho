@@ -87,16 +87,13 @@ public:
 
     Torque GetMaxMotorTorque() const noexcept { return m_maxMotorTorque; }
 
-    /// Get the reaction force given the inverse time step.
-    /// Unit is N.
-    Force2D GetReactionForce(Frequency inv_dt) const override;
+    /// Get the linear reaction.
+    Momentum2D GetLinearReaction() const override;
 
-    /// Get the reaction torque due to the joint limit given the inverse time step.
-    /// Unit is N*m.
-    Torque GetReactionTorque(Frequency inv_dt) const override;
+    /// Get the angular reaction due to the joint limit.
+    AngularMomentum GetAngularReaction() const override;
 
     /// Get the current motor torque given the inverse time step.
-    /// Unit is N*m.
     Torque GetMotorTorque(Frequency inv_dt) const;
     
     /// @brief Gets the current limit state.

@@ -214,12 +214,12 @@ Length2D FrictionJoint::GetAnchorB() const
     return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Force2D FrictionJoint::GetReactionForce(Frequency inv_dt) const
+Momentum2D FrictionJoint::GetLinearReaction() const
 {
-    return inv_dt * m_linearImpulse;
+    return m_linearImpulse;
 }
 
-Torque FrictionJoint::GetReactionTorque(Frequency inv_dt) const
+AngularMomentum FrictionJoint::GetAngularReaction() const
 {
-    return inv_dt * m_angularImpulse;
+    return m_angularImpulse;
 }
