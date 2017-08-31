@@ -75,7 +75,8 @@ public:
                           "Press C to clear and re-emit shapes. "
                           "Press 0 or 1 for remaining emitted shapes to be disks or squares.");
         m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, "Press '+' or '-' to speed up or slow down rotation.");
+        drawer.DrawString(5, m_textLine,
+                          "Press '+' or '-' to speed up or slow down rotation. '=' to stop it.");
         m_textLine += DRAW_STRING_NEW_LINE;
 
         if ((!settings.pause || settings.singleStep) && (m_count < Count))
@@ -116,7 +117,11 @@ public:
             case Key_Subtract:
                 m_joint->SetMotorSpeed(m_joint->GetMotorSpeed() - 0.01f * Pi * RadianPerSecond);
                 break;
-                
+            
+            case Key_Equal:
+                m_joint->SetMotorSpeed(Real(0) * RadianPerSecond);
+                break;
+            
             case Key_0:
                 m_shapeType = ShapeType::Disk;
                 break;
