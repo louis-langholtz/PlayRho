@@ -57,6 +57,7 @@
 
 #include <PlayRho/Common/LengthError.hpp>
 #include <PlayRho/Common/DynamicMemory.hpp>
+#include <PlayRho/Common/FlagGuard.hpp>
 
 #include <new>
 #include <functional>
@@ -88,48 +89,7 @@ using BodyConstraints = vector<BodyConstraint>;
 using PositionConstraints = vector<PositionConstraint>;
 using VelocityConstraints = vector<VelocityConstraint>;
 
-template <typename T>
-class FlagGuard
-{
-public:
-    FlagGuard(T& flag, T value) : m_flag(flag), m_value(value)
-    {
-        static_assert(is_unsigned<T>::value, "Unsigned integer required");
-        m_flag |= m_value;
-    }
-
-    ~FlagGuard() noexcept
-    {
-        m_flag &= ~m_value;
-    }
-
-    FlagGuard() = delete;
-
-private:
-    T& m_flag;
-    T m_value;
-};
-
-template <class T>
-class RaiiWrapper
-{
-public:
-    RaiiWrapper() = delete;
-    explicit RaiiWrapper(function<void(T&)> on_destruction): m_on_destruction(on_destruction) {}
-    ~RaiiWrapper() { m_on_destruction(m_wrapped); }
-    T m_wrapped;
-
-private:
-    function<void(T&)> m_on_destruction;
-};
-
 namespace {
-    
-    struct PositionAndVelocity
-    {
-        Position position;
-        Velocity velocity;
-    };
 
     inline ConstraintSolverConf GetRegConstraintSolverConf(const StepConf& conf)
     {
