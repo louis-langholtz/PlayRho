@@ -71,12 +71,7 @@ namespace playrho
     ///
     /// @note Any narrowing is intentional.
     ///
-    constexpr auto Pi = Radian * Real(3.14159265358979323846264338327950288);
-
-    /// @brief Other types
-    using Integer = long;
-
-    using Precise = double;
+    constexpr auto Pi = Real(3.14159265358979323846264338327950288);
 
 }
 

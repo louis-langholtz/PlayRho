@@ -40,8 +40,8 @@ namespace playrho
         UnitVec2 q; ///< Rotational portion of the transformation. 8-bytes.
     };
     
-    constexpr auto Transform_identity = Transformation{
-        Length2D{Real(0) * Meter, Real(0) * Meter}, UnitVec2::GetRight()
+    auto Transform_identity = Transformation{
+        Length2D{ Real(0) * Meter, Real(0) * Meter }, UnitVec2::GetRight()
     };
     
     template <>

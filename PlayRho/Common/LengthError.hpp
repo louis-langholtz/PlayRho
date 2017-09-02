@@ -31,6 +31,7 @@ namespace playrho {
     class LengthError: public std::length_error
     {
     public:
+
         using std::length_error::length_error;
     };
     

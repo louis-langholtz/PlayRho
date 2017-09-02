@@ -230,7 +230,7 @@ bool RevoluteJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
     // Solve limit constraint.
     if (m_enableLimit && (m_limitState != e_inactiveLimit) && !fixedRotation)
     {
-        const auto Cdot = Real3{
+        const auto Cdot = Vec3{
             GetX(vDelta) / MeterPerSecond,
             GetY(vDelta) / MeterPerSecond,
             (velB.angular - velA.angular) / RadianPerSecond
@@ -238,10 +238,10 @@ bool RevoluteJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
         auto impulse = -Solve33(m_mass, Cdot);
 
         auto UpdateImpulseProc = [&]() {
-            const auto rhs = -Real2{
+            const auto rhs = -Vec2{
                 GetX(vDelta) / MeterPerSecond,
                 GetY(vDelta) / MeterPerSecond
-            } + GetZ(m_impulse) * Real2{GetX(GetZ(m_mass)), GetY(GetZ(m_mass))};
+            } + GetZ(m_impulse) * Vec2{GetX(GetZ(m_mass)), GetY(GetZ(m_mass))};
             const auto reduced = Solve22(m_mass, rhs);
             GetX(impulse) = GetX(reduced);
             GetY(impulse) = GetY(reduced);
@@ -294,7 +294,7 @@ bool RevoluteJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
     else
     {
         // Solve point-to-point constraint
-        const auto impulse = Solve22(m_mass, -Real2{
+        const auto impulse = Solve22(m_mass, -Vec2{
             Get<0>(vDelta) / MeterPerSecond, Get<1>(vDelta) / MeterPerSecond
         });
 

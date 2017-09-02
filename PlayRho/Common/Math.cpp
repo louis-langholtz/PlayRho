@@ -89,7 +89,7 @@ std::vector<Length2D> playrho::GetCircleVertices(const Length radius, unsigned s
     return vertices;
 }
 
-::std::ostream& playrho::operator<<(::std::ostream& os, const Real2& value)
+::std::ostream& playrho::operator<<(::std::ostream& os, const Vec2& value)
 {
     return os << "Vec2(" << Get<0>(value) << "," << Get<1>(value) << ")";
 }

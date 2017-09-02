@@ -38,7 +38,7 @@ namespace playrho
 
         static Area GetDefaultMinSeparationSquared()
         {
-            return Sqrt(std::numeric_limits<Real2::value_type>::min()) * SquareMeter;
+            return Sqrt(std::numeric_limits<Vec2::value_type>::min()) * SquareMeter;
         }
         
         VertexSet(Area minSepSquared = GetDefaultMinSeparationSquared()):

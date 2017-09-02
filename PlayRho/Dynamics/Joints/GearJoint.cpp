@@ -298,7 +298,7 @@ bool GearJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
 
     const auto linearError = Length{0};
 
-    Real2 JvAC, JvBD;
+    Vec2 JvAC, JvBD;
     Real JwA, JwB, JwC, JwD;
 
     auto coordinateA = Real{0}; // Angle or length.

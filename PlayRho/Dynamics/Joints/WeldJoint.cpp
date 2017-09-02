@@ -217,7 +217,7 @@ bool WeldJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
 
         const auto Cdot1 = vb - va;
 
-        const auto impulse1 = -Transform(Real2{GetX(Cdot1) / MeterPerSecond, GetY(Cdot1) / MeterPerSecond}, m_mass);
+        const auto impulse1 = -Transform(Vec2{GetX(Cdot1) / MeterPerSecond, GetY(Cdot1) / MeterPerSecond}, m_mass);
         GetX(m_impulse) += GetX(impulse1);
         GetY(m_impulse) += GetY(impulse1);
 
@@ -238,7 +238,7 @@ bool WeldJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
 
         const auto Cdot1 = vb - va;
         const auto Cdot2 = Real{(velB.angular - velA.angular) / RadianPerSecond};
-        const auto Cdot = Real3{GetX(Cdot1) / MeterPerSecond, GetY(Cdot1) / MeterPerSecond, Cdot2};
+        const auto Cdot = Vec3{GetX(Cdot1) / MeterPerSecond, GetY(Cdot1) / MeterPerSecond, Cdot2};
 
         const auto impulse = -Transform(Cdot, m_mass);
         m_impulse += impulse;
@@ -343,9 +343,9 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
         positionError = GetLength(C1);
         angularError = Abs(C2);
 
-        const auto C = Real3{StripUnit(GetX(C1)), StripUnit(GetY(C1)), StripUnit(C2)};
+        const auto C = Vec3{StripUnit(GetX(C1)), StripUnit(GetY(C1)), StripUnit(C2)};
     
-        Real3 impulse;
+        Vec3 impulse;
         if (GetZ(GetZ(K)) > 0)
         {
             impulse = -Solve33(K, C);
@@ -353,7 +353,7 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
         else
         {
             const auto impulse2 = -Solve22(K, GetVec2(C1));
-            impulse = Real3{GetX(impulse2), GetY(impulse2), 0};
+            impulse = Vec3{GetX(impulse2), GetY(impulse2), 0};
         }
 
         const auto P = Length2D{GetX(impulse) * Meter, GetY(impulse) * Meter} * (Real(1) * Kilogram);
