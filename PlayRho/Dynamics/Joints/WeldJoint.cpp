@@ -381,18 +381,16 @@ Length2D WeldJoint::GetAnchorB() const
     return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Force2D WeldJoint::GetReactionForce(Frequency inv_dt) const
+Momentum2D WeldJoint::GetLinearReaction() const
 {
-    const auto P = Momentum2D{
+    return Momentum2D{
         GetX(m_impulse) * Kilogram * MeterPerSecond,
         GetY(m_impulse) * Kilogram * MeterPerSecond
     };
-    return inv_dt * P;
 }
 
-Torque WeldJoint::GetReactionTorque(Frequency inv_dt) const
+AngularMomentum WeldJoint::GetAngularReaction() const
 {
     // AngularMomentum is L^2 M T^-1 QP^-1
-    const auto angMomentum = AngularMomentum{GetZ(m_impulse) * SquareMeter * Kilogram / (Second * Radian)};
-    return inv_dt * angMomentum;
+    return AngularMomentum{GetZ(m_impulse) * SquareMeter * Kilogram / (Second * Radian)};
 }

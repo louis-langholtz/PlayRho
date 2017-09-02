@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -18,24 +19,34 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "gtest/gtest.h"
-#include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Common/Version.hpp>
+#include <PlayRho/Common/Templates.hpp>
+#include <PlayRho/Common/RealNum.hpp>
 
-using namespace playrho;
+#include <cstdio>
+#include <cstdarg>
+#include <cstdlib>
+#include <typeinfo>
+#include <sstream>
 
-TEST(Settings, GetVersion)
-{
-    const auto version = Version{0, 9, 0};
-    EXPECT_EQ(GetVersion().major, version.major);
-    EXPECT_EQ(GetVersion().minor, version.minor);
-    EXPECT_EQ(GetVersion().revision, version.revision);
-    EXPECT_EQ(GetVersion(), version);
-}
-
-TEST(Settings, GetBuildDetails)
-{
-    EXPECT_FALSE(GetBuildDetails().empty());
-    const auto result = GetBuildDetails();
-    EXPECT_NE(result.find_first_of("asserts="), result.npos);
-    EXPECT_NE(result.find_first_of("Real="), result.npos);
-}
+namespace playrho {
+    
+    Version GetVersion() noexcept
+    {
+        return Version{0, 9, 0};
+    }
+    
+    std::string GetBuildDetails() noexcept
+    {
+        std::stringstream stream;
+        stream << "asserts=";
+#ifdef NDEBUG
+        stream << "off";
+#else
+        stream << "on";
+#endif
+        stream << ", Real='" << GetTypeName<Real>() << "'";
+        return stream.str();
+    }
+        
+} // namespace playrho

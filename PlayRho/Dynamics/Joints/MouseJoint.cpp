@@ -198,14 +198,14 @@ Length2D MouseJoint::GetAnchorB() const
     return GetBodyB()? GetWorldPoint(*GetBodyB(), GetLocalAnchorB()): GetInvalid<Length2D>();
 }
 
-Force2D MouseJoint::GetReactionForce(Frequency inv_dt) const
+Momentum2D MouseJoint::GetLinearReaction() const
 {
-    return inv_dt * m_impulse;
+    return m_impulse;
 }
 
-Torque MouseJoint::GetReactionTorque(Frequency inv_dt) const
+AngularMomentum MouseJoint::GetAngularReaction() const
 {
-    return inv_dt * AngularMomentum{0};
+    return AngularMomentum{0};
 }
 
 void MouseJoint::ShiftOrigin(const Length2D newOrigin)

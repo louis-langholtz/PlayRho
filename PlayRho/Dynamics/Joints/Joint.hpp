@@ -80,11 +80,11 @@ public:
     /// Get the anchor point on bodyB in world coordinates.
     virtual Length2D GetAnchorB() const = 0;
 
-    /// Get the reaction force on bodyB at the joint anchor in Newtons.
-    virtual Force2D GetReactionForce(Frequency inv_dt) const = 0;
+    /// Get the linear reaction on bodyB at the joint anchor.
+    virtual Momentum2D GetLinearReaction() const = 0;
 
-    /// Get the reaction torque on bodyB in N*m.
-    virtual Torque GetReactionTorque(Frequency inv_dt) const = 0;
+    /// Get the angular reaction on bodyB.
+    virtual AngularMomentum GetAngularReaction() const = 0;
 
     /// Get the user data pointer.
     void* GetUserData() const noexcept;

@@ -42,12 +42,12 @@ public:
     Length2D GetAnchorA() const override;
     Length2D GetAnchorB() const override;
 
-    /// @brief Get the reaction force given the inverse time step.
-    Force2D GetReactionForce(Frequency inv_dt) const override;
+    /// @brief Get the linear reaction.
+    Momentum2D GetLinearReaction() const override;
 
-    /// @brief Gets the reaction torque given the inverse time step.
+    /// @brief Gets the angular reaction.
     /// @note This is always zero for a distance joint.
-    Torque GetReactionTorque(Frequency inv_dt) const override;
+    AngularMomentum GetAngularReaction() const override;
 
     /// @brief Gets the local anchor point relative to bodyA's origin.
     Length2D GetLocalAnchorA() const noexcept { return m_localAnchorA; }

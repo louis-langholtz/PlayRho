@@ -429,19 +429,18 @@ Length2D RevoluteJoint::GetAnchorB() const
     return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Force2D RevoluteJoint::GetReactionForce(Frequency inv_dt) const
+Momentum2D RevoluteJoint::GetLinearReaction() const
 {
-    const auto P = Momentum2D{
+    return Momentum2D{
         GetX(m_impulse) * Kilogram * MeterPerSecond,
         GetY(m_impulse) * Kilogram * MeterPerSecond
     };
-    return inv_dt * P;
 }
 
-Torque RevoluteJoint::GetReactionTorque(Frequency inv_dt) const
+AngularMomentum RevoluteJoint::GetAngularReaction() const
 {
     // AngularMomentum is L^2 M T^-1 QP^-1.
-    return inv_dt * GetZ(m_impulse) * SquareMeter * Kilogram / (Second * Radian);
+    return GetZ(m_impulse) * SquareMeter * Kilogram / (Second * Radian);
 }
 
 void RevoluteJoint::EnableMotor(bool flag)

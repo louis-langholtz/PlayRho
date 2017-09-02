@@ -538,23 +538,21 @@ Length2D PrismaticJoint::GetAnchorB() const
     return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Force2D PrismaticJoint::GetReactionForce(Frequency inv_dt) const
+Momentum2D PrismaticJoint::GetLinearReaction() const
 {
     const auto ulImpulse = GetX(m_impulse) * m_perp;
     const auto impulse = Momentum2D{
         GetX(ulImpulse) * Kilogram * MeterPerSecond,
         GetY(ulImpulse) * Kilogram * MeterPerSecond
     };
-    const auto P = Momentum2D{
+    return Momentum2D{
         impulse + (m_motorImpulse + GetZ(m_impulse) * Kilogram * MeterPerSecond) * m_axis
     };
-    return inv_dt * P;
 }
 
-Torque PrismaticJoint::GetReactionTorque(Frequency inv_dt) const
+AngularMomentum PrismaticJoint::GetAngularReaction() const
 {
-    // Torque is L^2 M T^-2 QP^-1.
-    return inv_dt * GetY(m_impulse) * SquareMeter * Kilogram / (Second * Radian);
+    return GetY(m_impulse) * SquareMeter * Kilogram / (Second * Radian);
 }
 
 void PrismaticJoint::EnableLimit(bool flag) noexcept

@@ -25,6 +25,10 @@
 
 namespace playrho {
     
+    /// @brief Optional value template class.
+    /// @details An implementation of the optional value type idea.
+    /// @note This is meant to be functionally compatible with C++17's std::optional.
+    /// @note Use of this type directly is discouraged. Use the Optional type alias instead.
     template<typename T>
     class OptionalValue
     {
@@ -125,6 +129,10 @@ namespace playrho {
         return m_set? m_value: alt;
     }
     
+    /// @brief Optional type alias.
+    /// @details An alias setup to facilitate switching between implementations of the
+    ///   optional type idea.
+    /// @note This is meant to be used directly for optional values.
     template <typename T>
     using Optional = OptionalValue<T>;
     

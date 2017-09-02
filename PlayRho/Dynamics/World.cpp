@@ -56,6 +56,7 @@
 #include <PlayRho/Collision/DistanceProxy.hpp>
 
 #include <PlayRho/Common/LengthError.hpp>
+#include <PlayRho/Common/DynamicMemory.hpp>
 
 #include <new>
 #include <functional>

@@ -16,25 +16,17 @@
  * 2. Altered source versions must be plainly marked as such, and must not be
  *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
- */
+    const auto version = Version{0, 9, 0};
+    EXPECT_EQ(GetVersion().major, version.major);
+    EXPECT_EQ(GetVersion().minor, version.minor);
+    EXPECT_EQ(GetVersion().revision, version.revision);
+    EXPECT_EQ(GetVersion(), version);
+}
 
-#ifndef LengthError_hpp
-#define LengthError_hpp
-
-#include <stdexcept>
-
-namespace playrho {
-    
-    /// @brief Length based logic error.
-    /// @detail The exception used to indicate that an operation would produce a
-    ///   result that exceeded an object's maximum size.
-    class LengthError: public std::length_error
-    {
-    public:
-        using std::length_error::length_error;
-    };
-    
-} // namespace playrho
-
-
-#endif /* LengthError_hpp */
+TEST(Version, GetBuildDetails)
+{
+    EXPECT_FALSE(GetBuildDetails().empty());
+    const auto result = GetBuildDetails();
+    EXPECT_NE(result.find_first_of("asserts="), result.npos);
+    EXPECT_NE(result.find_first_of("Real="), result.npos);
+}

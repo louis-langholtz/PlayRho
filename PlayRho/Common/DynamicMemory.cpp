@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -18,23 +19,25 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef LengthError_hpp
-#define LengthError_hpp
-
-#include <stdexcept>
+#include <PlayRho/Common/DynamicMemory.hpp>
+#include <cstdlib>
 
 namespace playrho {
     
-    /// @brief Length based logic error.
-    /// @detail The exception used to indicate that an operation would produce a
-    ///   result that exceeded an object's maximum size.
-    class LengthError: public std::length_error
+    // Memory allocators. Modify these to use your own allocator.
+    void* Alloc(std::size_t size)
     {
-    public:
-        using std::length_error::length_error;
-    };
+        return std::malloc(size);
+    }
     
+    void* Realloc(void* ptr, std::size_t new_size)
+    {
+        return std::realloc(ptr, new_size);
+    }
+    
+    void Free(void* mem)
+    {
+        std::free(mem);
+    }
+
 } // namespace playrho
-
-
-#endif /* LengthError_hpp */

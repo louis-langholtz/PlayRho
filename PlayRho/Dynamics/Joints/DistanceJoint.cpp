@@ -240,13 +240,12 @@ Length2D DistanceJoint::GetAnchorB() const
     return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Force2D DistanceJoint::GetReactionForce(Frequency inv_dt) const
+Momentum2D DistanceJoint::GetLinearReaction() const
 {
-    return inv_dt * m_impulse * m_u;
+    return m_impulse * m_u;
 }
 
-Torque DistanceJoint::GetReactionTorque(Frequency inv_dt) const
+AngularMomentum DistanceJoint::GetAngularReaction() const
 {
-    NOT_USED(inv_dt);
-    return Torque{0};
+    return AngularMomentum{0};
 }

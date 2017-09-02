@@ -18,6 +18,9 @@ For more specifics, see the relevant directory.
 
 Building the *Testbed* requires some library dependencies to be available:
 the project library, the GLFW version 3 library, and the GLEW version 2 library.
+These libraries may be installed from source, as described below, or they can be
+installed using a package manager such as `apt-get`, `yum`, NuGet, or `vcpkg`.
+On Windows, [`vcpkg`](https://github.com/Microsoft/vcpkg) is recommended, as the build system is equipped to find and link the libraries cleanly (see below).
 
 ### GLFW
 
@@ -68,9 +71,8 @@ from source code using a command line environment:
 
 When the GLFW 3 and GLEW 2 libraries are installed along with any specific
 dependencies that they might have for your platform, the Testbed can be built.
-The Testbed GUI application is currently building for Linux using CMake
-and for Mac OS X using Xcode. With a little more work, the Testbed should be
-able to be built for Windows.
+The Testbed GUI application is currently building for Windows and Linux using CMake
+and for Mac OS X using Xcode.
 
 #### Linux Using CMake
 
@@ -98,11 +100,53 @@ TODO.
 
 #### Windows Using VS2017 and CMake
 
-TODO.
+Windows is less intelligent about locating GLFW and GLEW. There are at least two
+ways to handle this issue: use `vcpkg` or specify the library location using CMake variables.
+
+##### Using `vcpkg`
+
+ 1. Install [`vcpkg`](https://github.com/Microsoft/vcpkg) if necessary.
+ 2. Run `vcpkg integrate install`, and copy the command line option starting from `-DCMAKE_TOOLCHAIN_FILE=[...]` to a notepad file or elsewhere.
+ 3. Install the libraries using:
+     `vcpkg install glew:x64-windows-static`
+     `vcpkg install glfw3:x64-windows-static`
+  or use `x86` if running on a 32-bit platform.
+ 4. Create a build directory somewhere on your PC if you haven't already, and navigate to it within a command prompt.
+ 5. Run `cmake -DCMAKE_TOOLCHAIN_FILE=[...] -DVCPKG_TARGET_TRIPLET=x64-windows-static -DPLAYRHO_BUILD_TESTBED=ON [source code directory]`, inserting the command line option copied from step 2, and specifying a relative or absolute path to the source code directory. You may use any additional command line options as described in the [CMake documentation](https://cmake.org/cmake/help/v3.9/manual/cmake.1.html) to further customize your build.
+ 6. Build the generated project.
+
+#### Other installations
+
+If you have installed from source, or used a package manager other than `vcpkg` on Windows, you will likely need to explicitly specify library locations using CMake variables. While this method was tested on Windows 10, a similar procedure should work on Linux and OS X. The CMake variables may be set using the `-D` command line option, using a CMake cache file, or from within the CMake-gui. The variables which must be specified are:
+
+ - `GLEW_INCLUDE_DIR` : the path to the GLEW include directory, ending with `\include`
+ - `GLEW_LIBRARY` : the full filepath to the `glew.lib` file
+ - `GLFW_INCLUDE_DIRS` : the path to the GLFW include directory, ending with `\include`
+ - `GLFW_LIBRARY_DIRS` : the path to the folder containing the `glfw.lib` file
+ - `OPENGL_INCLUDE_DIR` : the path to the OpenGL include directory, ending with `\include`
+ - `GLFW_STATIC_LIBRARIES` : `glfw.lib`
+
+If the libraries were installed using the NuGet package manager, a CMake cache file setting these variables might resemble the following:
+
+    set(GLEW_INCLUDE_DIR "$ENV{NUGET_PATH}/glew.1.9.0.1/build/native/include" CACHE PATH "glew header directory")
+    set(GLEW_LIBRARY "$ENV{NUGET_PATH}/glew.1.9.0.1/build/native/lib/v110/x64/Release/static/glew.lib" CACHE FILEPATH "glew library")
+    set(GLFW_INCLUDE_DIRS "$ENV{NUGET_PATH}/glfw.3.2.1/build/native/include" CACHE PATH "glfw header directory")
+    set(GLFW_LIBRARY_DIRS "$ENV{NUGET_PATH}/glfw.3.2.1/build/native/lib/v140/x64/static" CACHE PATH "glfw directory")
+    set(OPENGL_INCLUDE_DIR "$ENV{NUGET_PATH}/glfw.3.2.1/build/native/include" CACHE PATH "opengl header directory")
+    set(GLFW_STATIC_LIBRARIES "glfw3.lib" CACHE FILEPATH "glfw library")
+    set(PLAYRHO_BUILD_TESTBED ON CACHE BOOL "Build PlayRho Testbed GUI application")
+
+where the environment variable `NUGET_PATH` has been set to the NuGet root folder. The project may be built using the following steps, assuming we start in a directory containing `MyCacheFile.cmake`:
+	
+    mkdir PlayRhoBuild
+    cd PlayRhoBuild
+    cmake ../MyCacheFile.cmake [source code directory]
+
+You may use any additional command line options as described in the [CMake documentation](https://cmake.org/cmake/help/v3.9/manual/cmake.1.html) to further customize your build.
 
 ## Usage Instructions
 
-To run the demos under MS Visual Studio, set `Testbed` as your startup project and press <kbd>F5</kbd>.
+To run the demos under MS Visual Studio, set `Testbed` as your startup project and press <kbd>F5</kbd> to debug (can step through the code) or <kbd>Ctrl</kbd>+<kbd>F5</kbd> to run without debugging (runs faster).
 
 Once the Testbed is up and running, here are some keyboard and mouse commands
 that can be used:
