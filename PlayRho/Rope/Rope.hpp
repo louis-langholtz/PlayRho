@@ -41,7 +41,7 @@ struct RopeDef
     Real* masses = nullptr;
 
     ///
-    Vec2 gravity = Real2Zero;
+    Vec2 gravity = Vec2_zero;
 
     ///
     Real damping = Real{1} / Real(10);
@@ -104,7 +104,7 @@ private:
     Real* m_Ls = nullptr;
     Angle* m_as = nullptr;
 
-    Vec2 m_gravity = Real2Zero;
+    Vec2 m_gravity = Vec2_zero;
     Real m_damping = Real{0};
 
     Real m_k2 = Real{1};

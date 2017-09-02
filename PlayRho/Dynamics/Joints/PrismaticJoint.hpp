@@ -111,7 +111,7 @@ private:
     UnitVec2 m_localXAxisA;
     UnitVec2 m_localYAxisA;
     Angle m_referenceAngle;
-    Vec3 m_impulse = Real3Zero;
+    Vec3 m_impulse = Vec3_zero;
     Momentum m_motorImpulse = 0;
     Length m_lowerTranslation;
     Length m_upperTranslation;

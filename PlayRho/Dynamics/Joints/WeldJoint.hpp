@@ -75,7 +75,7 @@ private:
     Real m_dampingRatio;
 
     // Solver shared
-    Vec3 m_impulse = Real3Zero;
+    Vec3 m_impulse = Vec3_zero;
 
     // Solver temp
     InvRotInertia m_gamma;

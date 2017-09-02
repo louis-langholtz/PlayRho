@@ -176,7 +176,7 @@ void WeldJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
     }
     else
     {
-        m_impulse = Real3Zero;
+        m_impulse = Vec3_zero;
     }
 
     bodyConstraintA->SetVelocity(velA);

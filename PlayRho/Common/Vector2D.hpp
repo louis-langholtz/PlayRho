@@ -38,9 +38,9 @@ namespace playrho
     ///   (or 8 using Real of float).
     using Vec2 = Vector2D<Real>;
 
-    /// An all zero Real2 value.
-    /// @see Real2.
-    constexpr auto Real2Zero = Vec2{ 0, 0 };
+    /// An all zero Vec2 value.
+    /// @see Vec2.
+    constexpr auto Vec2_zero = Vec2{ 0, 0 };
 
     /// @brief 2D vector for the Length unit-type.
     /// @details A 2-dimensional location vector.

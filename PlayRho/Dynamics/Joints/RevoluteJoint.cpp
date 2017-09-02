@@ -185,7 +185,7 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     }
     else
     {
-        m_impulse = Real3Zero;
+        m_impulse = Vec3_zero;
         m_motorImpulse = 0;
     }
 

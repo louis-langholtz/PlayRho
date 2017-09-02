@@ -45,7 +45,7 @@ void Rope::Initialize(const RopeDef* def)
     {
         m_ps[i] = def->vertices[i];
         m_p0s[i] = def->vertices[i];
-        m_vs[i] = Real2Zero;
+        m_vs[i] = Vec2_zero;
 
         const auto m = def->masses[i];
         if (m > Real{0})

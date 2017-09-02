@@ -36,9 +36,9 @@ namespace playrho
     ///   (or 12 using Real of float).
     using Vec3 = Vector3D<Real>;
 
-    /// An all zero Real3 value.
-    /// @see Real3.
-    constexpr auto Real3Zero = Vec3{ 0, 0, 0 };
+    /// An all zero Vec3 value.
+    /// @see Vec3.
+    constexpr auto Vec3_zero = Vec3{ 0, 0, 0 };
     
     template <typename TYPE>
     constexpr inline bool operator == (const Vector3D<TYPE> a, const Vector3D<TYPE> b) noexcept
