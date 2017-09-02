@@ -65,12 +65,12 @@ namespace playrho
         constexpr size_type size() const noexcept { return N; }
         constexpr size_type empty() const noexcept { return N == 0; }
 
-        constexpr iterator begin() noexcept { return iterator(elements); }
-        constexpr iterator end() noexcept { return iterator(elements + N); }
-        constexpr const_iterator begin() const noexcept { return const_iterator(elements); }
-        constexpr const_iterator end() const noexcept { return const_iterator(elements + N); }
-        constexpr const_iterator cbegin() const noexcept { return begin(); }
-        constexpr const_iterator cend() const noexcept { return end(); }
+        iterator begin() noexcept { return iterator(elements); }
+        iterator end() noexcept { return iterator(elements + N); }
+        const_iterator begin() const noexcept { return const_iterator(elements); }
+        const_iterator end() const noexcept { return const_iterator(elements + N); }
+        const_iterator cbegin() const noexcept { return begin(); }
+        const_iterator cend() const noexcept { return end(); }
 
         /// @brief Gets a reference to the requested element.
         /// @note No bounds checking is performed.
@@ -90,15 +90,6 @@ namespace playrho
             assert(pos < size());
             return elements[pos];
         }
-
-        constexpr const_reference x() const noexcept { return operator[](0) };
-        constexpr const_reference y() const noexcept { return operator[](1) };
-        constexpr const_reference z() const noexcept { return operator[](2) };
-        constexpr const_reference w() const noexcept { return operator[](3) };
-        constexpr void x(const_reference value) const noexcept { operator[](0) = value; };
-        constexpr void y(const_reference value) const noexcept { operator[](1) = value; };
-        constexpr void z(const_reference value) const noexcept { operator[](2) = value; };
-        constexpr void w(const_reference value) const noexcept { operator[](3) = value; };
 
         /// @brief Gets a reference to the requested element.
         /// @throws InvalidArgument if given a position that's >= size().

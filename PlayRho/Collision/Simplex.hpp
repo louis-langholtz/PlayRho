@@ -70,8 +70,8 @@ namespace playrho
         /// Caches particular information from a simplex - a related metric and up-to 3 index pairs.
         ///
         /// @invariant As the metric and list of index pairs should be values from a snapshot of a
-        ///   simplex, the mertic and list of index pairs must not vary independent of each other.
-        ///   As such, this data structure only allows these values to be changed in unision via object
+        ///   simplex, the metric and list of index pairs must not vary independent of each other.
+        ///   As such, this data structure only allows these values to be changed in unison via object
         ///   construction or object assignment.
         ///
         /// @note This data structure is 12-bytes large.

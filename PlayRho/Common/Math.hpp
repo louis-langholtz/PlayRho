@@ -26,7 +26,6 @@
 #include <PlayRho/Common/UnitVec2.hpp>
 #include <PlayRho/Common/Vector2D.hpp>
 #include <PlayRho/Common/Vector3D.hpp>
-#include <PlayRho/Common/Vector4D.hpp>
 #include <PlayRho/Common/Position.hpp>
 #include <PlayRho/Common/Velocity.hpp>
 #include <PlayRho/Common/Transformation.hpp>
@@ -88,7 +87,7 @@ template<class TYPE>
 constexpr inline auto Square(TYPE t) noexcept { return t * t; }
 
 template<typename T>
-inline auto Sqrt(T t)
+inline constexpr auto Sqrt(T t)
 {
     return std::sqrt(StripUnit(t));
 }

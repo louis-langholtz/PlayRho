@@ -22,11 +22,11 @@
 /**
  * @file
  * @brief Real number definition file.
- * @details This file may have been auto generated from the Numbers.hpp.in file.
+ * @details This file may have been auto generated from the RealNum.hpp.in file.
  */
 
-#ifndef Numbers_hpp
-#define Numbers_hpp
+#ifndef RealNum_hpp
+#define RealNum_hpp
 
 #include <PlayRho/Common/Fixed.hpp>
 
@@ -75,4 +75,4 @@ namespace playrho
 
 }
 
-#endif /* Numbers_hpp */
+#endif /* RealNum_hpp */

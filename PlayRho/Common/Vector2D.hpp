@@ -65,8 +65,8 @@ namespace playrho
     /// @brief Earthly gravity.
     /// @details An approximation of Earth's average gravity at sea-level in 2-dimensions.
     constexpr auto EarthlyGravity = LinearAcceleration2D{
-        Real{0} * MeterPerSquareSecond,
-        Real{-9.8} * MeterPerSquareSecond
+        Real(0) * MeterPerSquareSecond,
+        Real(-9.8) * MeterPerSquareSecond
     };
 
     constexpr inline Vec2 GetVec2(const Vector2D<Real> value)

@@ -41,7 +41,7 @@ namespace playrho
     };
     
     auto Transform_identity = Transformation{
-        Length2D{ Real(0) * Meter, Real(0) * Meter }, UnitVec2::GetRight()
+        Length2D{Real(0) * Meter, Real(0) * Meter}, UnitVec2::GetRight()
     };
     
     template <>

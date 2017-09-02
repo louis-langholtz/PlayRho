@@ -100,7 +100,7 @@ namespace playrho
     using ChildCounter = std::remove_const<decltype(MaxChildCount)>::type;
 
     /// Time step iterations type.
-    /// @details A type for countining iterations per time-step.
+    /// @details A type for counting iterations per time-step.
     using ts_iters_t = std::uint8_t;
 
     constexpr auto MaxFloat = (std::numeric_limits<Real>::max)(); // FLT_MAX
