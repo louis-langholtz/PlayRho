@@ -90,7 +90,7 @@ struct Defaults<Fixed<std::int32_t, FRACTION_BITS>>
 constexpr auto MaxSimplexEdges = std::uint8_t{ 3 };
 
 /// @brief Max child count.
-constexpr auto MaxChildCount = std::numeric_limits<std::uint32_t>::max() >> 6;
+constexpr auto MaxChildCount = (std::numeric_limits<std::uint32_t>::max)() >> 6;
 
 /// @brief Child counter type.
 /// @details Relating to "children" of shape where each child is a convex shape possibly
@@ -99,10 +99,10 @@ constexpr auto MaxChildCount = std::numeric_limits<std::uint32_t>::max() >> 6;
 using ChildCounter = std::remove_const<decltype(MaxChildCount)>::type;
 
 /// Time step iterations type.
-/// @details A type for countining iterations per time-step.
+/// @details A type for counting iterations per time-step.
 using ts_iters_t = std::uint8_t;
 
-constexpr auto MaxFloat = std::numeric_limits<Real>::max(); // FLT_MAX
+constexpr auto MaxFloat = (std::numeric_limits<Real>::max)(); // FLT_MAX
 
                                                             // Collision
 
@@ -185,7 +185,7 @@ constexpr auto DefaultToiMinMomentum = Momentum{ (Real(0) / Real(100)) * NewtonS
 
 /// @brief Maximum number of bodies in a world.
 /// @note This is 65534 based off std::uint16_t and eliminating one value for invalid.
-constexpr auto MaxBodies = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
+constexpr auto MaxBodies = static_cast<std::uint16_t>((std::numeric_limits<std::uint16_t>::max)() -
     std::uint16_t{ 1 });
 
 /// @brief Body count type.
@@ -200,13 +200,13 @@ using ContactCounter = Wider<BodyCounter>::type;
 constexpr auto InvalidContactIndex = static_cast<ContactCounter>(-1);
 
 /// @brief Maximum number of contacts in a world (2147319811).
-/// @details Uses the formula for the maximum number of edges in an undirectional graph of MaxBodies nodes. 
+/// @details Uses the formula for the maximum number of edges in an unidirectional graph of MaxBodies nodes. 
 /// This occurs when every possible body is connected to every other body.
 constexpr auto MaxContacts = ContactCounter{ MaxBodies } *ContactCounter{ MaxBodies - 1 } / ContactCounter{ 2 };
 
 /// @brief Maximum number of joints in a world.
 /// @note This is 65534 based off std::uint16_t and eliminating one value for invalid.
-constexpr auto MaxJoints = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
+constexpr auto MaxJoints = static_cast<std::uint16_t>((std::numeric_limits<std::uint16_t>::max)() -
     std::uint16_t{ 1 });
 
 /// @brief Joint count type.
