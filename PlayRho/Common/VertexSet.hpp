@@ -26,72 +26,72 @@
 
 namespace playrho
 {
-    /// Vertex Set.
-    ///
-    /// @details This is a container that enforces the invariant that no two
-    /// vertices can be closer together than the minimum separation distance.
-    ///
-    class VertexSet
+/// Vertex Set.
+///
+/// @details This is a container that enforces the invariant that no two
+/// vertices can be closer together than the minimum separation distance.
+///
+class VertexSet
+{
+public:
+    using const_pointer = const Length2D*;
+
+    static Area GetDefaultMinSeparationSquared()
     {
-    public:
-        using const_pointer = const Length2D*;
+        return Sqrt((std::numeric_limits<Vec2::value_type>::min)()) * SquareMeter;
+    }
 
-        static Area GetDefaultMinSeparationSquared()
+    VertexSet(Area minSepSquared = GetDefaultMinSeparationSquared()) :
+        m_minSepSquared{ minSepSquared }
+    {
+        assert(minSepSquared >= Area{ 0 });
+    }
+
+    Area GetMinSeparationSquared() const noexcept { return m_minSepSquared; }
+
+    bool add(Length2D value)
+    {
+        if (find(value) != end())
         {
-            return Sqrt((std::numeric_limits<Vec2::value_type>::min)()) * SquareMeter;
+            return false;
         }
-        
-        VertexSet(Area minSepSquared = GetDefaultMinSeparationSquared()):
-            m_minSepSquared{minSepSquared}
-        {
-            assert(minSepSquared >= Area{0});
-        }
+        m_elements.push_back(value);
+        return true;
+    }
 
-        Area GetMinSeparationSquared() const noexcept { return m_minSepSquared; }
+    void clear() noexcept
+    {
+        m_elements.clear();
+    }
 
-        bool add(Length2D value)
-        {
-            if (find(value) != end())
-            {
-                return false;
-            }
-            m_elements.push_back(value);
-            return true;
-        }
-        
-        void clear() noexcept
-        {
-            m_elements.clear();
-        }
+    std::size_t size() const noexcept { return m_elements.size(); }
 
-        std::size_t size() const noexcept { return m_elements.size(); }
-        
-        const_pointer begin() const { return m_elements.data(); }
-        
-        const_pointer end() const { return m_elements.data() + m_elements.size(); }
+    const_pointer begin() const { return m_elements.data(); }
 
-        /// Finds contained point whose delta with the given point has a squared length less
-        /// than or equal to this set's minimum length squared value.
-        const_pointer find(Length2D value) const
-        {
-            // squaring anything smaller than the sqrt(std::numeric_limits<Vec2::data_type>::min())
-            // won't be reversible.
-            // i.e. won't obey the property that square(sqrt(a)) == a and sqrt(square(a)) == a.
-            return std::find_if(begin(), end(), [&](Length2D elem) {
-                // length squared must be large enough to have a reasonable enough unit vector.
-                return GetLengthSquared(value - elem) <= m_minSepSquared;
-            });
-        }
+    const_pointer end() const { return m_elements.data() + m_elements.size(); }
 
-        Length2D operator[](std::size_t index) const noexcept
-        {
-            return m_elements[index];
-        }
+    /// Finds contained point whose delta with the given point has a squared length less
+    /// than or equal to this set's minimum length squared value.
+    const_pointer find(Length2D value) const
+    {
+        // squaring anything smaller than the sqrt(std::numeric_limits<Vec2::data_type>::min())
+        // won't be reversible.
+        // i.e. won't obey the property that square(sqrt(a)) == a and sqrt(square(a)) == a.
+        return std::find_if(begin(), end(), [&](Length2D elem) {
+            // length squared must be large enough to have a reasonable enough unit vector.
+            return GetLengthSquared(value - elem) <= m_minSepSquared;
+        });
+    }
 
-    private:
-        std::vector<Length2D> m_elements; ///< Elements.
-        const Area m_minSepSquared; ///< Minimum length squared. sizeof(Vec2)/2 or 4-bytes.
-    };
+    Length2D operator[](std::size_t index) const noexcept
+    {
+        return m_elements[index];
+    }
+
+private:
+    std::vector<Length2D> m_elements; ///< Elements.
+    const Area m_minSepSquared; ///< Minimum length squared. sizeof(Vec2)/2 or 4-bytes.
+};
 }
 
 #endif /* VertexSet_hpp */
