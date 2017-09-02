@@ -16,6 +16,15 @@
  * 2. Altered source versions must be plainly marked as such, and must not be
  *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
+ */
+
+#include "gtest/gtest.h"
+#include <PlayRho/Common/Version.hpp>
+
+using namespace playrho;
+
+TEST(Version, GetVersion)
+{
     const auto version = Version{0, 9, 0};
     EXPECT_EQ(GetVersion().major, version.major);
     EXPECT_EQ(GetVersion().minor, version.minor);

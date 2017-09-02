@@ -204,42 +204,6 @@ namespace playrho
     /// This occurs when every possible body is connected to every other body.
     constexpr auto MaxContacts = ContactCounter{ MaxBodies } *ContactCounter{ MaxBodies - 1 } / ContactCounter{ 2 };
 
-    /// @brief Maximum number of joints in a world.
-    /// @note This is 65534 based off std::uint16_t and eliminating one value for invalid.
-    constexpr auto MaxJoints = static_cast<std::uint16_t>((std::numeric_limits<std::uint16_t>::max)() -
-        std::uint16_t{ 1 });
-
-    /// @brief Joint count type.
-    /// @note This type must be able to contain the <code>MaxJoints</code> value.
-    using JointCounter = std::remove_const<decltype(MaxJoints)>::type;
-
-    /// @brief Default step time.
-    constexpr auto DefaultStepTime = Time{ Second / Real{ 60 } };
-
-    /// @brief Default step frequency.
-    constexpr auto DefaultStepFrequency = Frequency{ Hertz * Real{ 60 } };
-
-    // Sleep
-
-    /// Default minimum still time to sleep.
-    /// @details The default minimum time bodies must be still for bodies to be put to sleep.
-    constexpr auto DefaultMinStillTimeToSleep = Time{ Second / Real{ 2 } }; // aka 0.5 secs
-
-                                                                            /// Default linear sleep tolerance.
-                                                                            /// @details A body cannot sleep if the magnitude of its linear velocity is above this amount.
-    constexpr auto DefaultLinearSleepTolerance = Real{ 0.01f } *MeterPerSecond; // aka 0.01
-
-                                                                                /// Default angular sleep tolerance.
-                                                                                /// @details A body cannot sleep if its angular velocity is above this amount.
-    constexpr auto DefaultAngularSleepTolerance = Real{ (Pi * 2) / 180 } *RadianPerSecond;
-
-    /// Default circles ratio.
-    /// @details Ratio used for switching between rounded-corner collisions and closest-face
-    ///   biased normal collisions.
-    constexpr auto DefaultCirclesRatio = Real{ 10 };
-
-    // Mathematical constants
-    constexpr auto SquareRootTwo = Real(1.414213562373095048801688724209698078569671875376948073176679737990732478462);
 
 }
 
