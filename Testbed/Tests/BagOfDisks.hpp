@@ -56,13 +56,13 @@ namespace playrho {
             const auto shape = std::make_shared<EdgeShape>(conf);
             auto prevBody = static_cast<Body*>(nullptr);
             auto firstBody = static_cast<Body*>(nullptr);
-            auto prevVertex = GetInvalid<Length2D>();
+            auto prevVertex = Optional<Length2D>{};
             for (const auto& vertex: vertices)
             {
-                if (IsValid(prevVertex))
+                if (prevVertex.has_value())
                 {
-                    const auto midPoint = (vertex + prevVertex) / Real(2);
-                    const auto angle = GetAngle(vertex - prevVertex);
+                    const auto midPoint = (vertex + *prevVertex) / Real(2);
+                    const auto angle = GetAngle(vertex - *prevVertex);
                     const auto body = m_world->CreateBody(BodyDef{}
                                                           .UseType(BodyType::Dynamic)
                                                           .UseBullet(true)
@@ -71,7 +71,7 @@ namespace playrho {
                     body->CreateFixture(shape);
                     if (prevBody)
                     {
-	                    m_world->CreateJoint(RevoluteJointDef{body, prevBody, prevVertex + vertexOffset});
+	                    m_world->CreateJoint(RevoluteJointDef{body, prevBody, *prevVertex + vertexOffset});
                     }
                     else
                     {

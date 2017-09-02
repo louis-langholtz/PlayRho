@@ -590,34 +590,31 @@ PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
                     s0.min_separation
                 };
             }
-            else
+            if (psm0.m_separation < psm1.m_separation)
             {
-                if (psm0.m_separation < psm1.m_separation)
-                {
-                    const auto s0 = solver_fn(psm0, posA.linear, posB.linear);
-                    posA += s0.pos_a;
-                    posB += s0.pos_b;
-                    const auto psm1_prime = GetPSM(pc.manifold, 1,
-                                                   GetTransformation(posA, localCenterA),
-                                                   GetTransformation(posB, localCenterB));
-                    const auto s1 = solver_fn(psm1_prime, posA.linear, posB.linear);
-                    posA += s1.pos_a;
-                    posB += s1.pos_b;
-                    return PositionSolution{posA, posB, s0.min_separation};
-                }
-                else if (psm1.m_separation < psm0.m_separation)
-                {
-                    const auto s1 = solver_fn(psm1, posA.linear, posB.linear);
-                    posA += s1.pos_a;
-                    posB += s1.pos_b;
-                    const auto psm0_prime = GetPSM(pc.manifold, 0,
-                                                   GetTransformation(posA, localCenterA),
-                                                   GetTransformation(posB, localCenterB));
-                    const auto s0 = solver_fn(psm0_prime, posA.linear, posB.linear);
-                    posA += s0.pos_a;
-                    posB += s0.pos_b;
-                    return PositionSolution{posA, posB, s1.min_separation};
-                }
+                const auto s0 = solver_fn(psm0, posA.linear, posB.linear);
+                posA += s0.pos_a;
+                posB += s0.pos_b;
+                const auto psm1_prime = GetPSM(pc.manifold, 1,
+                                               GetTransformation(posA, localCenterA),
+                                               GetTransformation(posB, localCenterB));
+                const auto s1 = solver_fn(psm1_prime, posA.linear, posB.linear);
+                posA += s1.pos_a;
+                posB += s1.pos_b;
+                return PositionSolution{posA, posB, s0.min_separation};
+            }
+            if (psm1.m_separation < psm0.m_separation)
+            {
+                const auto s1 = solver_fn(psm1, posA.linear, posB.linear);
+                posA += s1.pos_a;
+                posB += s1.pos_b;
+                const auto psm0_prime = GetPSM(pc.manifold, 0,
+                                               GetTransformation(posA, localCenterA),
+                                               GetTransformation(posB, localCenterB));
+                const auto s0 = solver_fn(psm0_prime, posA.linear, posB.linear);
+                posA += s0.pos_a;
+                posB += s0.pos_b;
+                return PositionSolution{posA, posB, s1.min_separation};
             }
 #endif
             // reaches here if one or both psm separation values was NaN (and NDEBUG is defined).

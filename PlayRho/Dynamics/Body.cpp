@@ -77,19 +77,20 @@ Body::FlagsType Body::GetFlags(const BodyDef& bd) noexcept
 }
 
 Body::Body(const BodyDef& bd, World* world):
-    m_flags{GetFlags(bd)},
     m_xf{bd.position, UnitVec2::Get(bd.angle)},
-    m_world{world},
     m_sweep{Position{bd.position, bd.angle}},
+    m_flags{GetFlags(bd)},
+    m_world{world},
     m_invMass{(bd.type == BodyType::Dynamic)? InvMass{Real{1} / Kilogram}: InvMass{0}},
     m_linearDamping{bd.linearDamping},
     m_angularDamping{bd.angularDamping},
     m_userData{bd.userData}
 {
     assert(::IsValid(bd.position));
-    assert(::IsValid(bd.linearVelocity));
     assert(::IsValid(bd.angle));
+    assert(::IsValid(bd.linearVelocity));
     assert(::IsValid(bd.angularVelocity));
+    assert(::IsValid(m_xf));
 
     SetVelocity(Velocity{bd.linearVelocity, bd.angularVelocity});
     SetAcceleration(bd.linearAcceleration, bd.angularAcceleration);
@@ -257,6 +258,7 @@ void Body::SetAcceleration(const LinearAcceleration2D linear, const AngularAccel
 
 void Body::SetTransformation(const Transformation value) noexcept
 {
+    assert(IsValid(value));
     if (m_xf != value)
     {
         m_xf = value;

@@ -52,8 +52,8 @@ namespace playrho
     public:
         
         /// @brief Non-throwing default constructor.
-        /// @details Constructs an empty AABB. If an empty AABB is added to another AABB, the
-        ///   result will always be the other AABB.
+        /// @details Constructs an empty AABB.
+        /// @note If an empty AABB is added to another AABB, the result will be the other AABB.
         constexpr AABB() noexcept
         {
             // Intentionally empty.
@@ -181,8 +181,8 @@ namespace playrho
         
         /// @brief Lower vertex.
         Length2D m_lowerBound = Length2D{
-            std::numeric_limits<Real>::infinity() * Meter,
-            std::numeric_limits<Real>::infinity() * Meter
+            +std::numeric_limits<Real>::infinity() * Meter,
+            +std::numeric_limits<Real>::infinity() * Meter
         };
 
         /// @brief Upper vertex.
@@ -215,15 +215,13 @@ namespace playrho
         return GetDimensions(aabb) / Real{2};
     }
     
-    /// Gets the perimeter length of the AABB.
+    /// @brief Gets the perimeter length of the AABB.
+    /// @warning Behavior is undefined for an invalid AABB.
     /// @return Twice the sum of the width and height.
     constexpr Length GetPerimeter(const AABB aabb) noexcept
     {
-        const auto upper = aabb.GetUpperBound();
-        const auto lower = aabb.GetLowerBound();
-        const auto wx = GetX(upper) - GetX(lower);
-        const auto wy = GetY(upper) - GetY(lower);
-        return (wx + wy) * Real{2};
+        const auto dimensions = GetDimensions(aabb);
+        return (GetX(dimensions) + GetY(dimensions)) * Real{2};
     }
 
     constexpr AABB GetEnclosingAABB(AABB a, AABB b)
@@ -267,6 +265,7 @@ namespace playrho
     /// @brief Computes the AABB.
     /// @details Computes the Axis Aligned Bounding Box (AABB) for the given child shape
     ///   at a given a transform.
+    /// @warning Behavior is undefined if the given transformation is invalid.
     /// @param proxy Distance proxy for the child shape.
     /// @param xf World transform of the shape.
     /// @return AABB for the proxy shape or the default AABB if the proxy has a zero vertex count.

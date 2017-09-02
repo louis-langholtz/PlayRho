@@ -279,10 +279,15 @@ constexpr inline bool AlmostEqual(Fixed64 x, Fixed64 y, int ulp = 2)
 }
 #endif
 
+inline Angle GetAngle(const UnitVec2 value)
+{
+    return Atan2(GetY(value), GetX(value));
+}
+
 /// Gets the angle.
 /// @return Angular value in the range of -Pi to +Pi radians.
 template <class T>
-inline Angle GetAngle(const T value)
+inline Angle GetAngle(const Vector2D<T> value)
 {
     return Atan2(GetY(value), GetX(value));
 }
@@ -732,8 +737,10 @@ inline std::uint64_t NextPowerOfTwo(std::uint64_t x)
     return x + 1;
 }
 
-constexpr inline Transformation GetTransformation(const Length2D ctr, const UnitVec2 rot, const Length2D localCtr) noexcept
+constexpr inline Transformation GetTransformation(const Length2D ctr, const UnitVec2 rot,
+                                                  const Length2D localCtr) noexcept
 {
+    assert(IsValid(rot));
     return Transformation{ctr - (Rotate(localCtr, rot)), rot};
 }
 
