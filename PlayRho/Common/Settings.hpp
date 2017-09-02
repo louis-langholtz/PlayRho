@@ -31,7 +31,6 @@
 #include <cassert>
 #include <cfloat>
 #include <cmath>
-#include <string>
 #include <cstdint>
 #include <algorithm>
 
@@ -207,7 +206,7 @@ namespace playrho
 
     /// @brief Maximum number of joints in a world.
     /// @note This is 65534 based off std::uint16_t and eliminating one value for invalid.
-    constexpr auto MaxJoints = (static_cast<std::uint16_t>((std::numeric_limits<std::uint16_t>::max)()) -
+    constexpr auto MaxJoints = static_cast<std::uint16_t>((std::numeric_limits<std::uint16_t>::max)() -
         std::uint16_t{ 1 });
 
     /// @brief Joint count type.
@@ -241,54 +240,6 @@ namespace playrho
 
     // Mathematical constants
     constexpr auto SquareRootTwo = Real(1.414213562373095048801688724209698078569671875376948073176679737990732478462);
-
-    // Memory Allocation
-
-    /// Implement this function to use your own memory allocator.
-    void* Alloc(std::size_t size);
-
-    template <typename T>
-    T* Alloc(std::size_t size)
-    {
-        return static_cast<T*>(Alloc(size * sizeof(T)));
-    }
-
-    /// Implement this function to use your own memory allocator.
-    void* Realloc(void* ptr, std::size_t new_size);
-
-    template <typename T>
-    T* Realloc(T* ptr, std::size_t size)
-    {
-        return static_cast<T*>(Realloc(static_cast<void *>(ptr), size * sizeof(T)));
-    }
-
-    /// If you implement Alloc, you should also implement this function.
-    void Free(void* mem);
-
-    /// Version numbering scheme.
-    /// See http://en.wikipedia.org/wiki/Software_versioning
-    struct Version
-    {
-        using revnum_type = std::int32_t;
-
-        revnum_type major;        ///< significant changes
-        revnum_type minor;        ///< incremental changes
-        revnum_type revision;        ///< bug fixes
-    };
-
-    constexpr inline bool operator== (Version lhs, Version rhs)
-    {
-        return lhs.major == rhs.major && lhs.minor == rhs.minor && lhs.revision == rhs.revision;
-    }
-
-    constexpr inline bool operator!= (Version lhs, Version rhs)
-    {
-        return !(lhs == rhs);
-    }
-
-    Version GetVersion() noexcept;
-
-    std::string GetBuildDetails() noexcept;
 
 }
 
