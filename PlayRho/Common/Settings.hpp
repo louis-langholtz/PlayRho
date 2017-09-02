@@ -104,12 +104,13 @@ using ts_iters_t = std::uint8_t;
 
 constexpr auto MaxFloat = (std::numeric_limits<Real>::max)(); // FLT_MAX
 
-                                                            // Collision
+// Collision
 
-                                                            /// Maximum manifold points.
-                                                            /// This is the maximum number of contact points between two convex shapes.
-                                                            /// Do not change this value.
-                                                            /// @note For memory efficiency, uses the smallest integral type that can hold the value. 
+/// Maximum manifold points.
+/// This is the maximum number of contact points between two convex shapes.
+
+/// Do not change this value.
+/// @note For memory efficiency, uses the smallest integral type that can hold the value. 
 constexpr auto MaxManifoldPoints = std::uint8_t{ 2 };
 
 /// Maximum number of vertices for any shape type.
@@ -225,13 +226,13 @@ constexpr auto DefaultStepFrequency = Frequency{ Hertz * Real{ 60 } };
 /// @details The default minimum time bodies must be still for bodies to be put to sleep.
 constexpr auto DefaultMinStillTimeToSleep = Time{ Second / Real{ 2 } }; // aka 0.5 secs
 
-                                                                        /// Default linear sleep tolerance.
-                                                                        /// @details A body cannot sleep if the magnitude of its linear velocity is above this amount.
-constexpr auto DefaultLinearSleepTolerance = Real{ 0.01f } *MeterPerSecond; // aka 0.01
+/// Default linear sleep tolerance.
+/// @details A body cannot sleep if the magnitude of its linear velocity is above this amount.
+constexpr auto DefaultLinearSleepTolerance = Real{ 0.01f } * MeterPerSecond; // aka 0.01
 
-                                                                            /// Default angular sleep tolerance.
-                                                                            /// @details A body cannot sleep if its angular velocity is above this amount.
-constexpr auto DefaultAngularSleepTolerance = Real{ (Pi * 2) / 180 } *RadianPerSecond;
+/// Default angular sleep tolerance.
+/// @details A body cannot sleep if its angular velocity is above this amount.
+constexpr auto DefaultAngularSleepTolerance = Real{ (Pi * 2) / 180 } * RadianPerSecond;
 
 /// Default circles ratio.
 /// @details Ratio used for switching between rounded-corner collisions and closest-face
