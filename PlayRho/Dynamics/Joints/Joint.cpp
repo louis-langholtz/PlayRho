@@ -34,6 +34,7 @@
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
+#include <PlayRho/Defines.hpp>
 
 #include <new>
 #include <algorithm>
