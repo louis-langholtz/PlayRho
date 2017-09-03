@@ -30,12 +30,19 @@ namespace playrho {
     class FlagGuard
     {
     public:
+        /// @brief Initializing constructor.
+        /// @details Sets the given flag variable to the bitwise or of it with the
+        ///   given value and then unsets those bits on destruction of this instance.
+        /// @param flag Flag variable to set until the destruction of this instance.
+        /// @param value Bit value to or with the flag variable on construction.
         FlagGuard(T& flag, T value) : m_flag(flag), m_value(value)
         {
             static_assert(std::is_unsigned<T>::value, "Unsigned type required");
             m_flag |= m_value;
         }
         
+        /// @brief Destructor.
+        /// @details Unsets the bits that were set on construction.
         ~FlagGuard() noexcept
         {
             m_flag &= ~m_value;
