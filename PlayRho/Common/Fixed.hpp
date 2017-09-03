@@ -781,9 +781,14 @@ namespace std
     {
     public:
         static constexpr bool is_specialized = true;
-        
-        static constexpr playrho::Fixed32 minimum() noexcept { return playrho::Fixed32::GetMin(); }
-        static constexpr playrho::Fixed32 maximum() noexcept    { return playrho::Fixed32::GetMax(); }
+#pragma push_macro("min") 
+#pragma push_macro("max") 
+#undef min
+#undef max
+        static constexpr playrho::Fixed32 min() noexcept { return playrho::Fixed32::GetMin(); }
+        static constexpr playrho::Fixed32 max() noexcept    { return playrho::Fixed32::GetMax(); }
+#pragma pop_macro("min") 
+#pragma pop_macro("max") 
         static constexpr playrho::Fixed32 lowest() noexcept { return playrho::Fixed32::GetLowest(); }
         
         static constexpr int digits = 31 - playrho::Fixed32::FractionBits;
@@ -845,11 +850,11 @@ namespace std
     {
         if (from < to)
         {
-            return from + numeric_limits<playrho::Fixed32>::minimum();
+            return from + (numeric_limits<playrho::Fixed32>::min)();
         }
         if (from > to)
         {
-            return from - numeric_limits<playrho::Fixed32>::minimum();
+            return from - (numeric_limits<playrho::Fixed32>::min)();
         }
         return to;
     }
