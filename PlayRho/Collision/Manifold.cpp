@@ -23,6 +23,7 @@
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/Collision.hpp>
 #include <PlayRho/Collision/ShapeSeparation.hpp>
+#include <PlayRho/Defines.hpp>
 
 #include <array>
 #include <bitset>

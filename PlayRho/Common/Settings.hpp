@@ -34,7 +34,6 @@
 #include <cstdint>
 #include <algorithm>
 
-#include <PlayRho/Defines.hpp>
 #include <PlayRho/Common/Templates.hpp>
 #include <PlayRho/Common/RealNum.hpp>
 #include <PlayRho/Common/Units.hpp>
