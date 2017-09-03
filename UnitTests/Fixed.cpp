@@ -357,7 +357,7 @@ TEST(Fixed32, Cos)
 
 TEST(Fixed32, Max)
 {
-    const auto max_internal_val = std::numeric_limits<int32_t>::max() - 1;
+    const auto max_internal_val = (std::numeric_limits<int32_t>::max)() - 1;
     const auto max_fixed32 = *reinterpret_cast<const Fixed32*>(&max_internal_val);
     
     EXPECT_EQ(Fixed32::GetMax(), Fixed32::GetMax());
@@ -402,7 +402,7 @@ TEST(Fixed32, Min)
 
 TEST(Fixed32, Lowest)
 {
-    const auto lowest_internal_val = std::numeric_limits<int32_t>::min() + 2;
+    const auto lowest_internal_val = (std::numeric_limits<int32_t>::min)() + 2;
     const auto lowest_fixed32 = *reinterpret_cast<const Fixed32*>(&lowest_internal_val);
 
     EXPECT_EQ(Fixed32::GetLowest(), Fixed32::GetLowest());
@@ -530,7 +530,7 @@ TEST(Fixed32, BiggerValsIdenticallyInaccurate)
     const auto max = sizeof(Fixed32) * 8 - Fixed32::FractionBits - 1;
     for (auto i = decltype(max){0}; i < max; ++i)
     {
-        const auto next = std::nextafter(val, std::numeric_limits<Fixed32>::max());
+        const auto next = std::nextafter(val, (std::numeric_limits<Fixed32>::max)());
         const auto delta = static_cast<float>(next - val);
         ASSERT_EQ(val + (delta / 2.0f), val);
 #if 0

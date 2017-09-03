@@ -63,13 +63,13 @@ namespace playrho
         
         static constexpr Fixed GetInfinity() noexcept
         {
-            return Fixed{numeric_limits::max(), scalar_type{1}};
+            return Fixed{(numeric_limits::max)(), scalar_type{1}};
         }
         
         static constexpr Fixed GetMax() noexcept
         {
             // max reserved for +inf
-            return Fixed{numeric_limits::max() - 1, scalar_type{1}};
+            return Fixed{(numeric_limits::max)() - 1, scalar_type{1}};
         }
 
         static constexpr Fixed GetNaN() noexcept
@@ -781,9 +781,14 @@ namespace std
     {
     public:
         static constexpr bool is_specialized = true;
-        
+#pragma push_macro("min") 
+#pragma push_macro("max") 
+#undef min
+#undef max
         static constexpr playrho::Fixed32 min() noexcept { return playrho::Fixed32::GetMin(); }
         static constexpr playrho::Fixed32 max() noexcept    { return playrho::Fixed32::GetMax(); }
+#pragma pop_macro("min") 
+#pragma pop_macro("max") 
         static constexpr playrho::Fixed32 lowest() noexcept { return playrho::Fixed32::GetLowest(); }
         
         static constexpr int digits = 31 - playrho::Fixed32::FractionBits;
@@ -845,11 +850,11 @@ namespace std
     {
         if (from < to)
         {
-            return from + numeric_limits<playrho::Fixed32>::min();
+            return from + (numeric_limits<playrho::Fixed32>::min)();
         }
         if (from > to)
         {
-            return from - numeric_limits<playrho::Fixed32>::min();
+            return from - (numeric_limits<playrho::Fixed32>::min)();
         }
         return to;
     }
@@ -891,9 +896,16 @@ namespace std
     {
     public:
         static constexpr bool is_specialized = true;
-        
+
+#pragma push_macro("min") 
+#pragma push_macro("max") 
+#undef min
+#undef max
         static constexpr playrho::Fixed64 min() noexcept { return playrho::Fixed64::GetMin(); }
-        static constexpr playrho::Fixed64 max() noexcept    { return playrho::Fixed64::GetMax(); }
+        static constexpr playrho::Fixed64 max() noexcept { return playrho::Fixed64::GetMax(); }
+#pragma pop_macro("min") 
+#pragma pop_macro("max") 
+        
         static constexpr playrho::Fixed64 lowest() noexcept { return playrho::Fixed64::GetLowest(); }
         
         static constexpr int digits = 63 - playrho::Fixed64::FractionBits;
@@ -957,11 +969,11 @@ namespace std
     {
         if (from < to)
         {
-            return from + numeric_limits<playrho::Fixed64>::min();
+            return from + (numeric_limits<playrho::Fixed64>::min)();
         }
         if (from > to)
         {
-            return from - numeric_limits<playrho::Fixed64>::min();
+            return from - (numeric_limits<playrho::Fixed64>::min)();
         }
         return to;
     }

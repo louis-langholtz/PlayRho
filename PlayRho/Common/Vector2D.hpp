@@ -28,211 +28,211 @@
 
 namespace playrho
 {
-    /// @brief Vector with 2-dimensions.
-    /// @note This is just a C++11 alias template for 2-dimensional uses of the Vector template.
-    template <typename T>
-    using Vector2D = Vector<2, T>;
-    
-    /// @brief Vector 2D of Real.
-    /// @note This data structure is two-times the size of the <code>Real</code> type
-    ///   (or 8 using Real of float).
-    using Vec2 = Vector2D<Real>;
-    
-    /// An all zero Vec2 value.
-    /// @see Vec2.
-    constexpr auto Vec2_zero = Vec2{0, 0};
+/// @brief Vector with 2-dimensions.
+/// @note This is just a C++11 alias template for 2-dimensional uses of the Vector template.
+template <typename T>
+using Vector2D = Vector<2, T>;
 
-    /// @brief 2D vector for the Length unit-type.
-    /// @details A 2-dimensional location vector.
-    using Length2D = Vector2D<Length>;
+/// @brief Vector 2D of Real.
+/// @note This data structure is 2-times the size of the <code>Real</code> type
+///   (or 8 using Real of float).
+using Vec2 = Vector2D<Real>;
 
-    /// @brief 2D vector for the LinearVelocity unit-type.
-    /// @details A 2-dimensional speed vector.
-    using LinearVelocity2D = Vector2D<LinearVelocity>;
-    
-    /// @brief 2D vector for the LinearAcceleration unit-type.
-    /// @details A 2-dimensional acceleration vector.
-    using LinearAcceleration2D = Vector2D<LinearAcceleration>;
-    
-    /// @brief 2D vector for the Force unit-type.
-    /// @details A 2-dimensional force vector.
-    using Force2D = Vector2D<Force>;
-    
-    /// @brief 2D vector for the Momentum unit-type.
-    /// @details A 2-dimensional momentum vector.
-    using Momentum2D = Vector2D<Momentum>;
-        
-    /// @brief Earthly gravity.
-    /// @details An approximation of Earth's average gravity at sea-level in 2-dimensions.
-    constexpr auto EarthlyGravity = LinearAcceleration2D{
-        Real{0} * MeterPerSquareSecond,
-        Real{-9.8f} * MeterPerSquareSecond
-    };
+/// An all zero Vec2 value.
+/// @see Vec2.
+constexpr auto Vec2_zero = Vec2{ 0, 0 };
 
-    constexpr inline Vec2 GetVec2(const Vector2D<Real> value)
-    {
-        return Vec2(value);
-    }
+/// @brief 2D vector for the Length unit-type.
+/// @details A 2-dimensional location vector.
+using Length2D = Vector2D<Length>;
 
-    template <>
-    constexpr inline Vec2 GetInvalid() noexcept
-    {
-        return Vec2{GetInvalid<Real>(), GetInvalid<Real>()};
-    }
+/// @brief 2D vector for the LinearVelocity unit-type.
+/// @details A 2-dimensional speed vector.
+using LinearVelocity2D = Vector2D<LinearVelocity>;
 
-    /// Does this vector contain finite coordinates?
-    template <typename TYPE>
-    constexpr inline bool IsValid(const Vector2D<TYPE>& value) noexcept
-    {
-        return IsValid(Get<0>(value)) && IsValid(Get<1>(value));
-    }
-    
-    template <typename TYPE>
-    constexpr bool operator == (const Vector2D<TYPE> a, const Vector2D<TYPE> b) noexcept
-    {
-        return (Get<0>(a) == Get<0>(b)) && (Get<1>(a) == Get<1>(b));
-    }
-    
-    template <typename TYPE>
-    constexpr bool operator != (const Vector2D<TYPE> a, const Vector2D<TYPE> b) noexcept
-    {
-        return !(a == b);
-    }
-    
-    /// Increment the left hand side value by the right hand side value.
-    template <typename TYPE>
-    constexpr Vector2D<TYPE>& operator += (Vector2D<TYPE>& lhs, const Vector2D<TYPE> rhs) noexcept
-    {
-        Get<0>(lhs) += Get<0>(rhs);
-        Get<1>(lhs) += Get<1>(rhs);
-        return lhs;
-    }
-    
-    /// Decrement the left hand side value by the right hand side value.
-    template <typename TYPE>
-    constexpr Vector2D<TYPE>& operator -= (Vector2D<TYPE>& lhs, const Vector2D<TYPE> rhs) noexcept
-    {
-        Get<0>(lhs) -= Get<0>(rhs);
-        Get<1>(lhs) -= Get<1>(rhs);
-        return lhs;
-    }
+/// @brief 2D vector for the LinearAcceleration unit-type.
+/// @details A 2-dimensional acceleration vector.
+using LinearAcceleration2D = Vector2D<LinearAcceleration>;
 
-    template <typename TYPE>
-    constexpr Vector2D<TYPE>& operator *= (Vector2D<TYPE>& lhs, const Real rhs) noexcept
-    {
-        Get<0>(lhs) *= rhs;
-        Get<1>(lhs) *= rhs;
-        return lhs;
-    }
-    
-    template <typename TYPE>
-    constexpr Vector2D<TYPE>& operator /= (Vector2D<TYPE>& lhs, const Real rhs) noexcept
-    {
-        Get<0>(lhs) /= rhs;
-        Get<1>(lhs) /= rhs;
-        return lhs;
-    }
-    
-    template <typename T>
-    constexpr auto operator+ (const Vector2D<T> v) noexcept
-    {
-        return Vector2D<T>{+Get<0>(v), +Get<1>(v)};
-    }
+/// @brief 2D vector for the Force unit-type.
+/// @details A 2-dimensional force vector.
+using Force2D = Vector2D<Force>;
 
-    template <typename T>
-    constexpr auto operator- (const Vector2D<T> v) noexcept
-    {
-        return Vector2D<T>{-Get<0>(v), -Get<1>(v)};
-    }
+/// @brief 2D vector for the Momentum unit-type.
+/// @details A 2-dimensional momentum vector.
+using Momentum2D = Vector2D<Momentum>;
 
-    /// Add two vectors component-wise.
-    template <typename TYPE>
-    constexpr Vector2D<TYPE> operator + (Vector2D<TYPE> lhs, const Vector2D<TYPE> rhs) noexcept
-    {
-        return lhs += rhs;
-    }
-    
-    /// Subtract two vectors component-wise.
-    template <typename TYPE>
-    constexpr Vector2D<TYPE> operator - (Vector2D<TYPE> lhs, const Vector2D<TYPE> rhs) noexcept
-    {
-        return lhs -= rhs;
-    }
-    
-    template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{} * TYPE2{})>
-    constexpr inline Vector2D<OUT_TYPE> operator * (const TYPE1 s, Vector2D<TYPE2> a) noexcept
-    {
-        return Vector2D<OUT_TYPE>{Get<0>(a) * s, Get<1>(a) * s};
-    }
-    
-    template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{} * TYPE2{})>
-    constexpr inline Vector2D<OUT_TYPE> operator * (Vector2D<TYPE1> a, const TYPE2 s) noexcept
-    {
-        return Vector2D<OUT_TYPE>{Get<0>(a) * s, Get<1>(a) * s};
-    }
-    
-    template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{} / TYPE2{})>
-    constexpr Vector2D<OUT_TYPE> operator/ (Vector2D<TYPE1> a, const TYPE2 s) noexcept
-    {
-        return Vector2D<OUT_TYPE>{Get<0>(a) / s, Get<1>(a) / s};
-    }
-    
+/// @brief Earthly gravity.
+/// @details An approximation of Earth's average gravity at sea-level in 2-dimensions.
+constexpr auto EarthlyGravity = LinearAcceleration2D{
+    Real(0) * MeterPerSquareSecond,
+    Real(-9.8) * MeterPerSquareSecond
+};
+
+constexpr inline Vec2 GetVec2(const Vector2D<Real> value)
+{
+    return Vec2(value);
+}
+
+template <>
+constexpr inline Vec2 GetInvalid() noexcept
+{
+    return Vec2{ GetInvalid<Real>(), GetInvalid<Real>() };
+}
+
+/// Does this vector contain finite coordinates?
+template <typename TYPE>
+constexpr inline bool IsValid(const Vector2D<TYPE>& value) noexcept
+{
+    return IsValid(Get<0>(value)) && IsValid(Get<1>(value));
+}
+
+template <typename TYPE>
+constexpr bool operator == (const Vector2D<TYPE> a, const Vector2D<TYPE> b) noexcept
+{
+    return (Get<0>(a) == Get<0>(b)) && (Get<1>(a) == Get<1>(b));
+}
+
+template <typename TYPE>
+constexpr bool operator != (const Vector2D<TYPE> a, const Vector2D<TYPE> b) noexcept
+{
+    return !(a == b);
+}
+
+/// Increment the left hand side value by the right hand side value.
+template <typename TYPE>
+constexpr Vector2D<TYPE>& operator += (Vector2D<TYPE>& lhs, const Vector2D<TYPE> rhs) noexcept
+{
+    Get<0>(lhs) += Get<0>(rhs);
+    Get<1>(lhs) += Get<1>(rhs);
+    return lhs;
+}
+
+/// Decrement the left hand side value by the right hand side value.
+template <typename TYPE>
+constexpr Vector2D<TYPE>& operator -= (Vector2D<TYPE>& lhs, const Vector2D<TYPE> rhs) noexcept
+{
+    Get<0>(lhs) -= Get<0>(rhs);
+    Get<1>(lhs) -= Get<1>(rhs);
+    return lhs;
+}
+
+template <typename TYPE>
+constexpr Vector2D<TYPE>& operator *= (Vector2D<TYPE>& lhs, const Real rhs) noexcept
+{
+    Get<0>(lhs) *= rhs;
+    Get<1>(lhs) *= rhs;
+    return lhs;
+}
+
+template <typename TYPE>
+constexpr Vector2D<TYPE>& operator /= (Vector2D<TYPE>& lhs, const Real rhs) noexcept
+{
+    Get<0>(lhs) /= rhs;
+    Get<1>(lhs) /= rhs;
+    return lhs;
+}
+
+template <typename T>
+constexpr auto operator+ (const Vector2D<T> v) noexcept
+{
+    return Vector2D<T>{+Get<0>(v), +Get<1>(v)};
+}
+
+template <typename T>
+constexpr auto operator- (const Vector2D<T> v) noexcept
+{
+    return Vector2D<T>{-Get<0>(v), -Get<1>(v)};
+}
+
+/// Add two vectors component-wise.
+template <typename TYPE>
+constexpr Vector2D<TYPE> operator + (Vector2D<TYPE> lhs, const Vector2D<TYPE> rhs) noexcept
+{
+    return lhs += rhs;
+}
+
+/// Subtract two vectors component-wise.
+template <typename TYPE>
+constexpr Vector2D<TYPE> operator - (Vector2D<TYPE> lhs, const Vector2D<TYPE> rhs) noexcept
+{
+    return lhs -= rhs;
+}
+
+template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{} *TYPE2{}) >
+constexpr inline Vector2D<OUT_TYPE> operator * (const TYPE1 s, Vector2D<TYPE2> a) noexcept
+{
+    return Vector2D<OUT_TYPE>{Get<0>(a) * s, Get<1>(a) * s};
+}
+
+template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{} *TYPE2{}) >
+constexpr inline Vector2D<OUT_TYPE> operator * (Vector2D<TYPE1> a, const TYPE2 s) noexcept
+{
+    return Vector2D<OUT_TYPE>{Get<0>(a) * s, Get<1>(a) * s};
+}
+
+template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{} / TYPE2{}) >
+constexpr Vector2D<OUT_TYPE> operator/ (Vector2D<TYPE1> a, const TYPE2 s) noexcept
+{
+    return Vector2D<OUT_TYPE>{Get<0>(a) / s, Get<1>(a) / s};
+}
+
 #ifdef USE_BOOST_UNITS
-    template <>
-    constexpr Length2D GetInvalid() noexcept
-    {
-        return Length2D{GetInvalid<Length>(), GetInvalid<Length>()};
-    }
-    
-    template <>
-    constexpr LinearVelocity2D GetInvalid() noexcept
-    {
-        return LinearVelocity2D{GetInvalid<LinearVelocity>(), GetInvalid<LinearVelocity>()};
-    }
-    
-    template <>
-    constexpr Force2D GetInvalid() noexcept
-    {
-        return Force2D{GetInvalid<Force>(), GetInvalid<Force>()};
-    }
-    
-    template <>
-    constexpr Momentum2D GetInvalid() noexcept
-    {
-        return Momentum2D{GetInvalid<Momentum>(), GetInvalid<Momentum>()};
-    }
-    
-    constexpr inline Vec2 GetVec2(const Length2D value)
-    {
-        return Vec2{
-            Get<0>(value) / Meter,
-            Get<1>(value) / Meter
-        };
-    }
-    
-    constexpr inline Vec2 GetVec2(const LinearVelocity2D value)
-    {
-        return Vec2{
-            Get<0>(value) / MeterPerSecond,
-            Get<1>(value) / MeterPerSecond
-        };
-    }
-    
-    constexpr inline Vec2 GetVec2(const Momentum2D value)
-    {
-        return Vec2{
-            Get<0>(value) / (Kilogram * MeterPerSecond),
-            Get<1>(value) / (Kilogram * MeterPerSecond)
-        };
-    }
-    
-    constexpr inline Vec2 GetVec2(const Force2D value)
-    {
-        return Vec2{
-            Get<0>(value) / Newton,
-            Get<1>(value) / Newton
-        };
-    }
+template <>
+constexpr Length2D GetInvalid() noexcept
+{
+    return Length2D{ GetInvalid<Length>(), GetInvalid<Length>() };
+}
+
+template <>
+constexpr LinearVelocity2D GetInvalid() noexcept
+{
+    return LinearVelocity2D{ GetInvalid<LinearVelocity>(), GetInvalid<LinearVelocity>() };
+}
+
+template <>
+constexpr Force2D GetInvalid() noexcept
+{
+    return Force2D{ GetInvalid<Force>(), GetInvalid<Force>() };
+}
+
+template <>
+constexpr Momentum2D GetInvalid() noexcept
+{
+    return Momentum2D{ GetInvalid<Momentum>(), GetInvalid<Momentum>() };
+}
+
+constexpr inline Vec2 GetVec2(const Length2D value)
+{
+    return Vec2{
+        Get<0>(value) / Meter,
+        Get<1>(value) / Meter
+    };
+}
+
+constexpr inline Vec2 GetVec2(const LinearVelocity2D value)
+{
+    return Vec2{
+        Get<0>(value) / MeterPerSecond,
+        Get<1>(value) / MeterPerSecond
+    };
+}
+
+constexpr inline Vec2 GetVec2(const Momentum2D value)
+{
+    return Vec2{
+        Get<0>(value) / (Kilogram * MeterPerSecond),
+        Get<1>(value) / (Kilogram * MeterPerSecond)
+    };
+}
+
+constexpr inline Vec2 GetVec2(const Force2D value)
+{
+    return Vec2{
+        Get<0>(value) / Newton,
+        Get<1>(value) / Newton
+    };
+}
 #endif
 } // namespace playrho
 

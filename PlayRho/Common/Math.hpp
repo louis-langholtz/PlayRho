@@ -87,7 +87,7 @@ template<class TYPE>
 constexpr inline auto Square(TYPE t) noexcept { return t * t; }
 
 template<typename T>
-inline auto Sqrt(T t)
+inline constexpr auto Sqrt(T t)
 {
     return std::sqrt(StripUnit(t));
 }
@@ -188,34 +188,34 @@ constexpr inline Vec2 GetVec2(const UnitVec2 value)
 
 /// Gets whether a given value is almost zero.
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
-/// odd results like a divide by zero trap occuring.
+/// odd results like a divide by zero trap occurring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool AlmostZero(float value)
 {
-    return Abs(value) < std::numeric_limits<decltype(value)>::min();
+    return Abs(value) < (std::numeric_limits<decltype(value)>::min)();
 }
 
 /// Gets whether a given value is almost zero.
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
-/// odd results like a divide by zero trap occuring.
+/// odd results like a divide by zero trap occurring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool AlmostZero(double value)
 {
-    return Abs(value) < std::numeric_limits<decltype(value)>::min();
+    return Abs(value) < (std::numeric_limits<decltype(value)>::min)();
 }
 
 /// Gets whether a given value is almost zero.
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
-/// odd results like a divide by zero trap occuring.
+/// odd results like a divide by zero trap occurring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool AlmostZero(long double value)
 {
-    return Abs(value) < std::numeric_limits<decltype(value)>::min();
+    return Abs(value) < (std::numeric_limits<decltype(value)>::min)();
 }
 
 /// Gets whether a given value is almost zero.
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
-/// odd results like a divide by zero trap occuring.
+/// odd results like a divide by zero trap occurring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool AlmostZero(Fixed32 value)
 {
@@ -225,7 +225,7 @@ constexpr inline bool AlmostZero(Fixed32 value)
 #ifndef _WIN32
 /// Gets whether a given value is almost zero.
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
-/// odd results like a divide by zero trap occuring.
+/// odd results like a divide by zero trap occurring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool AlmostZero(Fixed64 value)
 {
@@ -284,7 +284,7 @@ inline Angle GetAngle(const UnitVec2 value)
 }
 
 /// Gets the angle.
-/// @return Anglular value in the range of -Pi to +Pi radians.
+/// @return Angular value in the range of -Pi to +Pi radians.
 template <class T>
 inline Angle GetAngle(const Vector2D<T> value)
 {
