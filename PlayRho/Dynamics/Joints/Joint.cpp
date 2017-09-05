@@ -36,7 +36,6 @@
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 #include <PlayRho/Defines.hpp>
 
-#include <new>
 #include <algorithm>
 
 namespace playrho
