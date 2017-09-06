@@ -213,6 +213,26 @@ static void UnitVecFromAngle(benchmark::State& state)
     }
 }
 
+static void DifferentSignsViaSignbit(benchmark::State& state)
+{
+    const auto a = static_cast<float>(rand() - (RAND_MAX / 2));
+    const auto b = static_cast<float>(rand() - (RAND_MAX / 2));
+    while (state.KeepRunning())
+    {
+        benchmark::DoNotOptimize(std::signbit(a) != std::signbit(b));
+    }
+}
+
+static void DifferentSignsViaMultiplication(benchmark::State& state)
+{
+    const auto a = static_cast<float>(rand() - (RAND_MAX / 2));
+    const auto b = static_cast<float>(rand() - (RAND_MAX / 2));
+    while (state.KeepRunning())
+    {
+        benchmark::DoNotOptimize(a * b < 0.0f);
+    }
+}
+
 // ----
 
 static void FloatAddTwoRand(benchmark::State& state)
@@ -1070,6 +1090,9 @@ BENCHMARK(FloatDiv);
 
 BENCHMARK(FloatAlmostEqual1);
 BENCHMARK(FloatAlmostEqual2);
+
+BENCHMARK(DifferentSignsViaSignbit);
+BENCHMARK(DifferentSignsViaMultiplication);
 
 BENCHMARK(FloatSqrt);
 BENCHMARK(FloatSin);
