@@ -23,6 +23,8 @@
 #include <vector>
 #include <sstream>
 #include <chrono>
+#include <map>
+#include <utility>
 
 #include <PlayRho/Rope/Rope.hpp>
 #include <PlayRho/Dynamics/FixtureProxy.hpp>
@@ -750,10 +752,83 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
                       proxyCount, height, balance, quality);
     m_textLine += DRAW_STRING_NEW_LINE;
     
+    auto cts = std::map<Contact*,int>();
     const auto selectedFixtures = GetSelectedFixtures();
     for (auto fixture: selectedFixtures)
     {
+        const auto b = fixture->GetBody();
+        for (const auto contact: b->GetContacts())
+        {
+            const auto c = GetContactPtr(contact);
+            const auto iter = cts.find(c);
+            if (iter == cts.end())
+            {
+                cts.insert(std::make_pair(c, 1));
+            }
+            else
+            {
+                ++(iter->second);
+            }
+        }
         DrawStats(drawer, *fixture);
+    }
+
+    for (const auto contact: cts)
+    {
+        const auto c = contact.first;
+        if ((contact.second > 1) && (c->IsTouching()))
+        {
+            const auto m = c->GetManifold();
+            stream = std::stringstream();
+            stream << "Selected manifold: lp=" << m.GetLocalPoint();
+            switch (m.GetType())
+            {
+                case Manifold::e_circles:
+                    stream << " circles";
+                    break;
+                case Manifold::e_faceA:
+                {
+                    const auto count = m.GetPointCount();
+                    stream << " faceA=" << int{count};
+                    for (auto i = decltype(count){0}; i < count; ++i)
+                    {
+                        const auto mp = m.GetPoint(i);
+                        stream << " p[" << int{i} << "]={";
+                        stream << mp.contactFeature;
+                        stream << ",";
+                        stream << mp.localPoint;
+                        stream << ",";
+                        stream << mp.normalImpulse;
+                        stream << ",";
+                        stream << mp.tangentImpulse;
+                        stream << "}";
+                    }
+                    break;
+                }
+                case Manifold::e_faceB:
+                {
+                    const auto count = m.GetPointCount();
+                    stream << " faceB=" << int{count};
+                    for (auto i = decltype(count){0}; i < count; ++i)
+                    {
+                        const auto mp = m.GetPoint(i);
+                        stream << " p[" << int{i} << "]={";
+                        stream << mp.contactFeature;
+                        stream << ",";
+                        stream << mp.localPoint;
+                        stream << ",";
+                        stream << mp.normalImpulse;
+                        stream << ",";
+                        stream << mp.tangentImpulse;
+                        stream << "}";
+                    }
+                    break;
+                }
+                default: break;
+            }
+            drawer.DrawString(5, m_textLine, stream.str().c_str());
+            m_textLine += DRAW_STRING_NEW_LINE;
+        }
     }
 }
 

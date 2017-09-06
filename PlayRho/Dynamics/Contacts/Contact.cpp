@@ -128,9 +128,10 @@ void Contact::Update(const UpdateConf& conf, ContactListener* listener)
                Abs(overlapping) < tolerance);
 #endif
 #endif
-
-        // Match old contact ids to new contact ids and copy the
-        // stored impulses to warm start the solver.
+        // Match old contact ids to new contact ids and copy the stored impulses to warm
+        // start the solver. Note: missing any opportunities to warm start the solver
+        // results in squishier stacking and less stable simulations.
+        bool found[2] = {false, new_point_count < 2};
         for (auto i = decltype(new_point_count){0}; i < new_point_count; ++i)
         {
             const auto new_cf = newManifold.GetContactFeature(i);
@@ -138,8 +139,30 @@ void Contact::Update(const UpdateConf& conf, ContactListener* listener)
             {
                 if (new_cf == oldManifold.GetContactFeature(j))
                 {
+                    found[i] = true;
                     newManifold.SetContactImpulses(i, oldManifold.GetContactImpulses(j));
                     break;
+                }
+            }
+        }
+        // If warm starting data wasn't found for a manifold point via contact feature
+        // matching, it's better to just set the data to whatever old point is closest
+        // to the new one.
+        for (auto i = decltype(new_point_count){0}; i < new_point_count; ++i)
+        {
+            if (!found[i])
+            {
+                auto leastSquareDiff = std::numeric_limits<Real>::infinity() * SquareMeter;
+                const auto newPt = newManifold.GetPoint(i);
+                for (auto j = decltype(old_point_count){0}; j < old_point_count; ++j)
+                {
+                    const auto oldPt = oldManifold.GetPoint(j);
+                    const auto squareDiff = GetLengthSquared(oldPt.localPoint - newPt.localPoint);
+                    if (leastSquareDiff > squareDiff)
+                    {
+                        leastSquareDiff = squareDiff;
+                        newManifold.SetContactImpulses(i, oldManifold.GetContactImpulses(j));
+                    }
                 }
             }
         }
