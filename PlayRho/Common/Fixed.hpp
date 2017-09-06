@@ -884,6 +884,16 @@ namespace std
         return playrho::Fixed32(fmod(static_cast<double>(x), static_cast<double>(y)));
     }
 
+    inline bool signbit(playrho::Fixed32 value) noexcept
+    {
+        return value.getsign() < 0;
+    }
+    
+    inline double hypot(playrho::Fixed32 x, playrho::Fixed32 y)
+    {
+        return hypot(static_cast<double>(x), static_cast<double>(y));
+    }
+
 #ifndef _WIN32
 
     template <>
@@ -994,6 +1004,16 @@ namespace std
     inline playrho::Fixed64 fmod(playrho::Fixed64 x, playrho::Fixed64 y)
     {
         return playrho::Fixed64(fmod(static_cast<double>(x), static_cast<double>(y)));
+    }
+    
+    inline bool signbit(playrho::Fixed64 value) noexcept
+    {
+        return value.getsign() < 0;
+    }
+    
+    inline double hypot(playrho::Fixed64 x, playrho::Fixed64 y)
+    {
+        return hypot(static_cast<double>(x), static_cast<double>(y));
     }
 
 #endif /* _WIN32 */

@@ -19,6 +19,7 @@
 
 #include <PlayRho/Collision/Collision.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
+#include <cmath>
 
 namespace playrho {
 
@@ -77,18 +78,22 @@ ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, Length o
         const auto distance0 = Dot(normal, vIn[0].v) - offset;
         const auto distance1 = Dot(normal, vIn[1].v) - offset;
 
-        // If the points are behind the plane
-        if (distance0 <= Length{0})
+        // If the points are behind the plane...
+        // Ideally they are. Then we get face-vertex contact features which are simpler to
+        // calculate. Note that it also helps to avoid changing the contact feature from the
+        // given clip vertices. So the code here also accepts distances that are just slightly
+        // over zero.
+        if (distance0 <= Length{0} || AlmostZero(StripUnit(distance0)))
         {
             vOut.push_back(vIn[0]);
         }
-        if (distance1 <= Length{0})
+        if (distance1 <= Length{0} || AlmostZero(StripUnit(distance1)))
         {
             vOut.push_back(vIn[1]);
         }
 
-        // If the points are on different sides of the plane
-        if ((distance0 * distance1) < Real{0} * SquareMeter)
+        // If we didn't already find two points & the points are on different sides of the plane...
+        if (vOut.size() < 2 && std::signbit(StripUnit(distance0)) != std::signbit(StripUnit(distance1)))
         {
             // Neither distance0 nor distance1 is 0 and either one or the other is negative (but not both).
             // Find intersection point of edge and plane
