@@ -42,6 +42,7 @@ public:
         return DefaultLinearSlop * Real{2};
     }
 
+    /// @brief Configuration data for disk shapes.
     struct Conf: public Builder<Conf>
     {
         constexpr Conf(): Builder<Conf>{Builder<Conf>{}.UseVertexRadius(GetDefaultRadius())}
@@ -49,15 +50,16 @@ public:
             // Intentionally empty.
         }
         
-        constexpr Conf& UseLocation(Length2D value) noexcept;
+        constexpr Conf& UseLocation(Length2D value) noexcept
+        {
+            location = value;
+            return *this;
+        }
 
         Length2D location = Length2D{};
     };
 
-    static constexpr Conf GetDefaultConf() noexcept
-    {
-        return Conf{};
-    }
+    static constexpr Conf GetDefaultConf() noexcept;
 
     /// Initializing constructor.
     explicit DiskShape(const Conf& conf = GetDefaultConf()) noexcept:
@@ -113,10 +115,9 @@ private:
     Length2D m_location = Length2D{};
 };
 
-constexpr DiskShape::Conf& DiskShape::Conf::UseLocation(Length2D value) noexcept
+constexpr DiskShape::Conf DiskShape::GetDefaultConf() noexcept
 {
-    location = value;
-    return *this;
+    return Conf{};
 }
 
 inline ChildCounter DiskShape::GetChildCount() const noexcept

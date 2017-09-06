@@ -133,6 +133,7 @@ namespace playrho {
         using dist_sum_type = Wider<dist_iter_type>::type;
         using root_sum_type = Wider<root_iter_type>::type;
 
+        /// @brief Time of impact statistics.
         struct Stats
         {
             // 3-bytes

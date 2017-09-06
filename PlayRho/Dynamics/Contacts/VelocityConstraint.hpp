@@ -44,6 +44,7 @@ namespace playrho {
         using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
         using index_type = std::size_t;
         
+        /// @brief Configuration data for velocity constraints.
         struct Conf
         {
             Real dtRatio = Real(1);

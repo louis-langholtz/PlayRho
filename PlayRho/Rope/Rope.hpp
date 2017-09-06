@@ -24,7 +24,7 @@
 
 namespace playrho {
 
-/// 
+/// @brief Rope definition.
 struct RopeDef
 {
     using size_type = std::size_t;
@@ -53,7 +53,7 @@ struct RopeDef
     Real k3 = Real{1} / Real(10);
 };
 
-/// 
+/// @brief Rope.
 class Rope
 {
 public:

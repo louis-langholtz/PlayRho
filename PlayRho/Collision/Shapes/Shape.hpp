@@ -104,12 +104,6 @@ public:
         constexpr ConcreteConf& UseDensity(NonNegative<Density> value) noexcept;
     };
 
-    /// @brief Visitor interface.
-    ///
-    /// @details Interface to inerit from for objects wishing to "visit" shapes.
-    ///   This uses the vistor design pattern.
-    /// @sa https://en.wikipedia.org/wiki/Visitor_pattern .
-    ///
     class Visitor;
 
     /// @brief Default constructor is deleted.
@@ -236,6 +230,12 @@ Shape::Builder<ConcreteConf>::UseDensity(NonNegative<Density> value) noexcept
     return static_cast<ConcreteConf&>(*this);
 }
 
+/// @brief Visitor interface.
+///
+/// @details Interface to inerit from for objects wishing to "visit" shapes.
+///   This uses the vistor design pattern.
+/// @sa https://en.wikipedia.org/wiki/Visitor_pattern .
+///
 class Shape::Visitor
 {
 public:

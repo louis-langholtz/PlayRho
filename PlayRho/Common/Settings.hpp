@@ -49,6 +49,8 @@ namespace playrho
 
 namespace details
 {
+
+/// @brief Defaults object for real types.
 template <typename T>
 struct Defaults
 {
@@ -66,6 +68,7 @@ struct Defaults
     }
 };
 
+/// @brief Specialization of defaults object for fixed point types.
 template <unsigned int FRACTION_BITS>
 struct Defaults<Fixed<std::int32_t,FRACTION_BITS>>
 {

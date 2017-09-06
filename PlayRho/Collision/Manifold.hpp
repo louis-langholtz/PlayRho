@@ -421,6 +421,7 @@ namespace playrho
         PointArray m_points; ///< Points of contact (at least 40-bytes). @sa pointCount.
     };
     
+    /// @brief Configuration data for manifold calculation.
     struct Manifold::Conf
     {
         Length linearSlop = DefaultLinearSlop;

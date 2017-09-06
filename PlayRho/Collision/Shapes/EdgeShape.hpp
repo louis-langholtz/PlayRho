@@ -40,6 +40,7 @@ public:
         return DefaultLinearSlop * Real{2};
     }
 
+    /// @brief Configuration data for edge shapes.
     struct Conf: public Builder<Conf>
     {
         constexpr Conf(): Builder<Conf>{Builder<Conf>{}.UseVertexRadius(GetDefaultVertexRadius())}

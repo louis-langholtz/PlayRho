@@ -494,6 +494,7 @@ constexpr inline Mat33 GetSymInverse33(const Mat33& value) noexcept
     };
 }
 
+/// @brief Contact impulses data.
 struct ContactImpulses
 {
     Momentum m_normal; ///< Normal impulse. This is the non-penetration impulse (4-bytes).

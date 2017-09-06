@@ -73,6 +73,7 @@ class Contact
 public:
     using substep_type = ts_iters_t;
 
+    /// @brief Update configuration.
     struct UpdateConf
     {
         DistanceConf distance;
