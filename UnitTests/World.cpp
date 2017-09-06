@@ -2003,7 +2003,7 @@ TEST(World, TilesComesToRest)
         case  4:
         {
 #ifndef __FAST_MATH__
-            // From commit ee74290c17422ccbd6a73f07d6fd9abe960da84a onward:
+            // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 onward:
             EXPECT_EQ(numSteps, 1912ul);
             EXPECT_EQ(sumRegPosIters, 36657ul);
             EXPECT_EQ(sumRegVelIters, 47843ul);
@@ -2056,7 +2056,7 @@ TEST(World, TilesComesToRest)
         }
         case  8:
         {
-            // From commit 6b16f3722d5daac80ebaefd1dfda424939498dd4 onward:
+            // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 onward:
             EXPECT_EQ(numSteps,         1828ul);
             EXPECT_EQ(sumRegPosIters,  36540ul);
             EXPECT_EQ(sumRegVelIters,  47173ul);
@@ -2098,12 +2098,19 @@ TEST(World, TilesComesToRest)
     {
         case  4:
         {
+            // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 onward:
+            EXPECT_EQ(numSteps,         1799ul);
+            EXPECT_EQ(sumRegPosIters,  36515ul);
+            EXPECT_EQ(sumRegVelIters,  46964ul);
+            EXPECT_EQ(sumToiPosIters,  43999ul);
+            EXPECT_EQ(sumToiVelIters, 113153ul);
+            
             // From commit ee74290c17422ccbd6a73f07d6fd9abe960da84a onward:
-            EXPECT_EQ(numSteps,         1803ul);
-            EXPECT_EQ(sumRegPosIters,  36673ul);
-            EXPECT_EQ(sumRegVelIters,  48148ul);
-            EXPECT_EQ(sumToiPosIters,  43959ul);
-            EXPECT_EQ(sumToiVelIters, 113189ul);
+            //EXPECT_EQ(numSteps,         1803ul);
+            //EXPECT_EQ(sumRegPosIters,  36673ul);
+            //EXPECT_EQ(sumRegVelIters,  48148ul);
+            //EXPECT_EQ(sumToiPosIters,  43959ul);
+            //EXPECT_EQ(sumToiVelIters, 113189ul);
 
             // From commit 6b16f3722d5daac80ebaefd1dfda424939498dd4 onward:
             //EXPECT_EQ(numSteps,         1803ul);
@@ -2123,12 +2130,19 @@ TEST(World, TilesComesToRest)
         }
         case  8:
         {
+            // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 onward:
+            EXPECT_EQ(numSteps,         1828ul);
+            EXPECT_EQ(sumRegPosIters,  36540ul);
+            EXPECT_EQ(sumRegVelIters,  47173ul);
+            EXPECT_EQ(sumToiPosIters,  44005ul);
+            EXPECT_EQ(sumToiVelIters, 114259ul);
+            
             // From commit 6b16f3722d5daac80ebaefd1dfda424939498dd4 onward:
-            EXPECT_EQ(numSteps,         1807ul);
-            EXPECT_EQ(sumRegPosIters,  36584ul);
-            EXPECT_EQ(sumRegVelIters,  47380ul);
-            EXPECT_EQ(sumToiPosIters,  44552ul);
-            EXPECT_EQ(sumToiVelIters, 115406ul);
+            //EXPECT_EQ(numSteps,         1807ul);
+            //EXPECT_EQ(sumRegPosIters,  36584ul);
+            //EXPECT_EQ(sumRegVelIters,  47380ul);
+            //EXPECT_EQ(sumToiPosIters,  44552ul);
+            //EXPECT_EQ(sumToiVelIters, 115406ul);
             
             // From commit 04f9188c47961cafe76c55eb6b766a608593ee08 onward.
             //EXPECT_EQ(numSteps, 1808ul);
