@@ -91,15 +91,32 @@ public:
             strbuf << "cf=" << p.contactFeature;
             strbuf << "}";
         }
-        drawer.DrawString(5, m_textLine, "%s %s: lp={%g,%g}, ln={%g,%g}, #=%d%s",
-                          GetName(manifold.GetType()),
-                          name,
-                          static_cast<double>(Real{GetX(manifold.GetLocalPoint()) / Meter}),
-                          static_cast<double>(Real{GetY(manifold.GetLocalPoint()) / Meter}),
-                          static_cast<double>(GetX(manifold.GetLocalNormal())),
-                          static_cast<double>(GetY(manifold.GetLocalNormal())),
-                          count, strbuf.str().c_str());
-        m_textLine += DRAW_STRING_NEW_LINE;
+        switch (manifold.GetType())
+        {
+            case Manifold::e_circles:
+                drawer.DrawString(5, m_textLine, "%s %s: lp={%g,%g}, #=%d%s",
+                                  GetName(manifold.GetType()),
+                                  name,
+                                  static_cast<double>(Real{GetX(manifold.GetLocalPoint()) / Meter}),
+                                  static_cast<double>(Real{GetY(manifold.GetLocalPoint()) / Meter}),
+                                  count, strbuf.str().c_str());
+                m_textLine += DRAW_STRING_NEW_LINE;
+                break;
+            case Manifold::e_faceA:
+            case Manifold::e_faceB:
+                drawer.DrawString(5, m_textLine, "%s %s: lp={%g,%g}, ln={%g,%g}, #=%d%s",
+                                  GetName(manifold.GetType()),
+                                  name,
+                                  static_cast<double>(Real{GetX(manifold.GetLocalPoint()) / Meter}),
+                                  static_cast<double>(Real{GetY(manifold.GetLocalPoint()) / Meter}),
+                                  static_cast<double>(GetX(manifold.GetLocalNormal())),
+                                  static_cast<double>(GetY(manifold.GetLocalNormal())),
+                                  count, strbuf.str().c_str());
+                m_textLine += DRAW_STRING_NEW_LINE;
+                break;
+            default:
+                break;
+        }
     }
 
     void PostStep(const Settings&, Drawer& drawer) override
