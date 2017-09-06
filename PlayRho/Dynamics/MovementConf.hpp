@@ -27,6 +27,7 @@ namespace playrho
 {
     class StepConf;
     
+    /// @brief Movement configuration.
     struct MovementConf
     {
         Length maxTranslation;

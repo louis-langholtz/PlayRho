@@ -114,6 +114,7 @@ namespace playrho
 
 namespace std
 {
+    /// @brief Hash function object specialization for ContactKey.
     template <>
     struct hash<playrho::ContactKey>
     {

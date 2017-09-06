@@ -46,6 +46,7 @@ public:
         return DefaultLinearSlop * Real{2};
     }
     
+    /// @brief Configuration data for chain shapes.
     struct Conf: public Builder<Conf>
     {
         Conf(): Builder<Conf>{Builder<Conf>{}.UseVertexRadius(GetDefaultVertexRadius())}

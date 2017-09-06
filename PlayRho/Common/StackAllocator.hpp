@@ -36,6 +36,7 @@ class StackAllocator
 public:
     using size_type = std::size_t;
 
+    /// @brief Stack allocator configuration data.
     struct Configuration
     {
         size_type preallocation_size = 100 * 1024;

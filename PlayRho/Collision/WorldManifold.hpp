@@ -55,6 +55,7 @@ namespace playrho
 
     public:
         
+        /// @brief Point data for world manifold.
         struct PointData
         {
             Length2D location; ///< Location of point.

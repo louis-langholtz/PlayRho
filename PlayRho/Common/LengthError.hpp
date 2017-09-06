@@ -26,7 +26,7 @@
 namespace playrho {
     
     /// @brief Length based logic error.
-    /// @detail The exception used to indicate that an operation would produce a
+    /// @details The exception used to indicate that an operation would produce a
     ///   result that exceeded an object's maximum size.
     class LengthError: public std::length_error
     {

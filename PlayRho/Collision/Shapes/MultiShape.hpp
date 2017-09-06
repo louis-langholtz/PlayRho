@@ -28,12 +28,12 @@ namespace playrho {
     
     class VertexSet;
     
-    /// Concave shape.
+    /// @brief Concave shape.
     class MultiShape: public Shape
     {
     public:
         
-        /// Vertex count type.
+        /// @brief Vertex count type.
         ///
         /// @note This type must not support more than 255 vertices as that would conflict
         ///   with the <code>ContactFeature::Index</code> type.
@@ -47,6 +47,7 @@ namespace playrho {
             return DefaultLinearSlop * Real{2};
         }
         
+        /// @brief Configuration data for multi-shape shapes.
         struct Conf: public Builder<Conf>
         {
             constexpr Conf(): Builder<Conf>{Builder<Conf>{}.UseVertexRadius(GetDefaultVertexRadius())}
@@ -60,7 +61,7 @@ namespace playrho {
             return Conf{};
         }
         
-        /// Default constructor.
+        /// @brief Default constructor.
         /// @details Constructs a polygon shape with a 0,0 centroid and vertex count of 0.
         /// @note Polygons with a vertex count less than 1 are "degenerate" and should be
         ///   treated as invalid.
@@ -72,7 +73,7 @@ namespace playrho {
         
         MultiShape(const MultiShape&) = default;
         
-        /// Gets the number of child primitives.
+        /// @brief Gets the number of child primitives.
         /// @return Positive non-zero count.
         ChildCounter GetChildCount() const noexcept override;
         
@@ -80,6 +81,7 @@ namespace playrho {
         /// @throws InvalidArgument if the index is out of range.
         DistanceProxy GetChild(ChildCounter index) const override;
         
+        /// @brief Gets mass data.
         /// Computes the mass properties of this shape using its dimensions and density.
         /// The inertia tensor is computed about the local origin.
         /// @return Mass data for this shape.

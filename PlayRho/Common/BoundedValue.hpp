@@ -47,6 +47,7 @@ namespace playrho {
         BelowPosInf
     };
 
+    /// @brief Value check helper.
     template <typename T, class Enable = void>
     struct ValueCheckHelper
     {
@@ -54,6 +55,7 @@ namespace playrho {
         static constexpr T one() noexcept { return T(0); }
     };
     
+    /// @brief Specialization of the value check helper.
     template <typename T>
     struct ValueCheckHelper<T, typename std::enable_if<std::is_arithmetic<T>::value>::type>
     {
@@ -79,6 +81,7 @@ namespace playrho {
         // Intentionally empty.
     }
 
+    /// @brief Bounded value.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     class BoundedValue
     {

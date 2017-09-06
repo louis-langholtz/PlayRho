@@ -25,6 +25,8 @@
 
 namespace playrho
 {
+    
+    /// @brief Template range value class.
     template <typename IT>
     class Range
     {
@@ -57,6 +59,7 @@ namespace playrho
         iterator_type m_end;
     };
 
+    /// @brief Template sized range value class.
     template <typename IT>
     class SizedRange: public Range<IT>
     {

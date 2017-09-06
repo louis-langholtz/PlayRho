@@ -742,6 +742,7 @@ namespace playrho
         return result == Fixed64::CmpResult::GreaterThan;
     }
 
+    /// @brief Specialization of the Wider trait for Fixed32 type.
     template<> struct Wider<Fixed32> { using type = Fixed64; };
 
     template <>
@@ -776,6 +777,7 @@ namespace std
     
     // Fixed32
 
+    /// @brief Template specialization of numeric limits for Fixed32.
     template <>
     class numeric_limits<playrho::Fixed32>
     {
@@ -896,6 +898,7 @@ namespace std
 
 #ifndef _WIN32
 
+    /// @brief Template specialization of numeric limits for Fixed64.
     template <>
     class numeric_limits<playrho::Fixed64>
     {

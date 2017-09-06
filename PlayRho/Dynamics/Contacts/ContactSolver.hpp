@@ -28,6 +28,7 @@ namespace playrho {
     class PositionConstraint;
     class BodyConstraint;
     
+    /// @brief Solution for position constraint.
     struct PositionSolution
     {
         Position pos_a;
