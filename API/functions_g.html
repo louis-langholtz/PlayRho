@@ -67,13 +67,16 @@ $(function() {
 : <a class="el" href="classplayrho_1_1_gear_joint.html#ab997fe9d1184138b92d7fa7bdb6a0bde">playrho::GearJoint</a>
 </li>
 <li>GearJointDef()
-: <a class="el" href="structplayrho_1_1_gear_joint_def.html#a8bc444970845ae7fbd0c585e66d14adc">playrho::GearJointDef</a>
+: <a class="el" href="structplayrho_1_1_gear_joint_def.html#a004e4466e3ca0ed934e8fb2cb3d45eab">playrho::GearJointDef</a>
+</li>
+<li>get()
+: <a class="el" href="classplayrho_1_1_bounded_value.html#a0061a6f9d53e4bccf5f4d5e0e3c2d1a4">playrho::BoundedValue&lt; T, lo, hi &gt;</a>
 </li>
 <li>Get()
 : <a class="el" href="classplayrho_1_1_joint_key.html#afd1fdb498992828bc55ef828494afcbc">playrho::JointKey</a>
-, <a class="el" href="classplayrho_1_1_separation_finder.html#a319248a587b6b5725a71b53faf49921b">playrho::SeparationFinder</a>
+, <a class="el" href="classplayrho_1_1_separation_finder.html#ae0a5656cac47375cfa8b4de1e2d71c3e">playrho::SeparationFinder</a>
 , <a class="el" href="classplayrho_1_1_simplex.html#a6170d516d1a4c64b114a555f9d15a2c5">playrho::Simplex</a>
-, <a class="el" href="classplayrho_1_1_unit_vec2.html#a68fbdc8d2ed32ac93246c16ea499b72f">playrho::UnitVec2</a>
+, <a class="el" href="classplayrho_1_1_unit_vec2.html#a90bb8077ab9bf3e48311aeadb1ac88e1">playrho::UnitVec2</a>
 </li>
 <li>get_max_dist_iters()
 : <a class="el" href="classplayrho_1_1_t_o_i_output.html#a042e88d16460ab6e7c64db746dac4bbc">playrho::TOIOutput</a>
@@ -111,7 +114,7 @@ $(function() {
 , <a class="el" href="classplayrho_1_1_gear_joint.html#a1805a92fb6cd36424ade22b7feae2c00">playrho::GearJoint</a>
 , <a class="el" href="classplayrho_1_1_joint.html#a7aa944fd2abcb329c2de2b42a298b190">playrho::Joint</a>
 , <a class="el" href="classplayrho_1_1_motor_joint.html#ad4b08be1c439665b0aad459dcfcf3f10">playrho::MotorJoint</a>
-, <a class="el" href="classplayrho_1_1_mouse_joint.html#a41262d8c7b8dfd795a1610d048d6baba">playrho::MouseJoint</a>
+, <a class="el" href="classplayrho_1_1_mouse_joint.html#a0d8ff58823df04d7f531af21245b293a">playrho::MouseJoint</a>
 , <a class="el" href="classplayrho_1_1_prismatic_joint.html#a2fb5a847e32f531af7fe4cd5e7065647">playrho::PrismaticJoint</a>
 , <a class="el" href="classplayrho_1_1_pulley_joint.html#ab9211d3e07e8e3e76f69f5d70f8bda64">playrho::PulleyJoint</a>
 , <a class="el" href="classplayrho_1_1_revolute_joint.html#a0de613cbe50c7fed87016e1e5d2c6347">playrho::RevoluteJoint</a>
@@ -145,11 +148,25 @@ $(function() {
 <li>GetAngularOffset()
 : <a class="el" href="classplayrho_1_1_motor_joint.html#a497ff1069f9a541c2bb5228ee3e22e1d">playrho::MotorJoint</a>
 </li>
+<li>GetAngularReaction()
+: <a class="el" href="classplayrho_1_1_distance_joint.html#a00a8557053a3fed1d94cbb972775348e">playrho::DistanceJoint</a>
+, <a class="el" href="classplayrho_1_1_friction_joint.html#a584d831606db6cba3dc2a0f1716ebaf4">playrho::FrictionJoint</a>
+, <a class="el" href="classplayrho_1_1_gear_joint.html#adfe26378808839fa6ad1f51cc3a67b6d">playrho::GearJoint</a>
+, <a class="el" href="classplayrho_1_1_joint.html#ab162525e3375b19b74dd2fcfa4bd56c5">playrho::Joint</a>
+, <a class="el" href="classplayrho_1_1_motor_joint.html#ac481e1c0ee25825e0803b7055126c98e">playrho::MotorJoint</a>
+, <a class="el" href="classplayrho_1_1_mouse_joint.html#a2c0774862bcb0a5e0e560d3b1b5380b9">playrho::MouseJoint</a>
+, <a class="el" href="classplayrho_1_1_prismatic_joint.html#a78c9abcb5c97917991a6a13cd8b46552">playrho::PrismaticJoint</a>
+, <a class="el" href="classplayrho_1_1_pulley_joint.html#a543d0dfa47c2339d888b6daa985055e3">playrho::PulleyJoint</a>
+, <a class="el" href="classplayrho_1_1_revolute_joint.html#a40cb5c9a90031fb07da755fe0eacd846">playrho::RevoluteJoint</a>
+, <a class="el" href="classplayrho_1_1_rope_joint.html#a60eb6d1c2116068bec592dee80c6ba8a">playrho::RopeJoint</a>
+, <a class="el" href="classplayrho_1_1_weld_joint.html#a9770d062d6df5c802fc6359c3f1e602b">playrho::WeldJoint</a>
+, <a class="el" href="classplayrho_1_1_wheel_joint.html#ab1ff3f25e4c5dfd9c5b4ed2b64073899">playrho::WheelJoint</a>
+</li>
 <li>GetAreaRatio()
 : <a class="el" href="classplayrho_1_1_dynamic_tree.html#a7731e80337b19630f8159cbca047d08a">playrho::DynamicTree</a>
 </li>
 <li>GetAxis()
-: <a class="el" href="classplayrho_1_1_separation_finder.html#ae3936b32c3ed88fcb777564573ab6ad0">playrho::SeparationFinder</a>
+: <a class="el" href="classplayrho_1_1_separation_finder.html#a329607f47ed819ce3809403663f74d48">playrho::SeparationFinder</a>
 </li>
 <li>GetBodies()
 : <a class="el" href="classplayrho_1_1_world.html#a580be845339aab4100e616395a71c238">playrho::World</a>
@@ -175,6 +192,9 @@ $(function() {
 </li>
 <li>GetBottom()
 : <a class="el" href="classplayrho_1_1_unit_vec2.html#a100e7b87a549878bb23ec983f53f60ce">playrho::UnitVec2</a>
+</li>
+<li>GetBottomRight()
+: <a class="el" href="classplayrho_1_1_unit_vec2.html#ae1790001c2e5c8d31fe34852bafaa8c7">playrho::UnitVec2</a>
 </li>
 <li>GetBufferGrowthRate()
 : <a class="el" href="classplayrho_1_1_growable_stack.html#ab5480a28afc168d0a61c19cbcb0b870c">playrho::GrowableStack&lt; T, N &gt;</a>
@@ -211,7 +231,7 @@ $(function() {
 : <a class="el" href="classplayrho_1_1_block_allocator.html#a8bec3ad25a09721b7e4ec1bac8b4325c">playrho::BlockAllocator</a>
 </li>
 <li>GetCoefficient()
-: <a class="el" href="classplayrho_1_1_simplex.html#a0278b8b6d1b88d299e0970dacb3ea32d">playrho::Simplex</a>
+: <a class="el" href="classplayrho_1_1_simplex.html#a4349d78238f1e0e1746f69b9c9861aa7">playrho::Simplex</a>
 </li>
 <li>GetCollideConnected()
 : <a class="el" href="classplayrho_1_1_joint.html#a942f7d4bfe99e7dcc9ddbed75d67f30d">playrho::Joint</a>
@@ -221,9 +241,6 @@ $(function() {
 </li>
 <li>GetContactImpulses()
 : <a class="el" href="classplayrho_1_1_manifold.html#af9e81a590939ea15d574d7173c39b4d6">playrho::Manifold</a>
-</li>
-<li>GetContactIndex()
-: <a class="el" href="classplayrho_1_1_velocity_constraint.html#a2f98e7d9d0d88290e87a005873853317">playrho::VelocityConstraint</a>
 </li>
 <li>GetContacts()
 : <a class="el" href="classplayrho_1_1_body.html#acd6a9f8bacc19367798a526836662f53">playrho::Body</a>
@@ -237,15 +254,16 @@ $(function() {
 </li>
 <li>GetDampingRatio()
 : <a class="el" href="classplayrho_1_1_distance_joint.html#a26edf13cdf252bfd014ff95672fe5d97">playrho::DistanceJoint</a>
-, <a class="el" href="classplayrho_1_1_mouse_joint.html#a020b270d1312ff5eadfdbf24b4977638">playrho::MouseJoint</a>
+, <a class="el" href="classplayrho_1_1_mouse_joint.html#aec278aa83097b7805b9256f57f884671">playrho::MouseJoint</a>
 , <a class="el" href="classplayrho_1_1_weld_joint.html#a594a749757eedd105b07b36e7ba4495f">playrho::WeldJoint</a>
 </li>
 <li>GetDefaultConf()
 : <a class="el" href="classplayrho_1_1_chain_shape.html#abbd2ed2ce553b36fc4f8d34c2773b856">playrho::ChainShape</a>
-, <a class="el" href="classplayrho_1_1_disk_shape.html#a53e71667ba2497cc4444f70a434c06eb">playrho::DiskShape</a>
+, <a class="el" href="classplayrho_1_1_disk_shape.html#abea69138f9212539f2ce86ce195faf0b">playrho::DiskShape</a>
 , <a class="el" href="classplayrho_1_1_edge_shape.html#a3b0a2223f77e0b6057ebe66fea7c1a8c">playrho::EdgeShape</a>
 , <a class="el" href="classplayrho_1_1_multi_shape.html#a78bb79f900de4da2b985182e71a60124">playrho::MultiShape</a>
 , <a class="el" href="classplayrho_1_1_polygon_shape.html#acafeade4fe5ea84381ba377600efe297">playrho::PolygonShape</a>
+, <a class="el" href="classplayrho_1_1_velocity_constraint.html#a2830bb5404dbd6bd30c4427a3f2c56a8">playrho::VelocityConstraint</a>
 </li>
 <li>GetDefaultConfiguration()
 : <a class="el" href="classplayrho_1_1_stack_allocator.html#a37ad7f80d4e88ea590e62d96750bf168">playrho::StackAllocator</a>
@@ -270,10 +288,10 @@ $(function() {
 </li>
 <li>GetDensity()
 : <a class="el" href="classplayrho_1_1_fixture.html#ace38ba8b560e38833604864a2bf74714">playrho::Fixture</a>
-, <a class="el" href="classplayrho_1_1_shape.html#aca49011b15a828c550d656951d53b392">playrho::Shape</a>
+, <a class="el" href="classplayrho_1_1_shape.html#ae3a8b49c00c095124f93b9d4dd0b0bce">playrho::Shape</a>
 </li>
 <li>GetEdges()
-: <a class="el" href="classplayrho_1_1_simplex.html#a275001428b0b1f31018ad07f22986f2d">playrho::Simplex</a>
+: <a class="el" href="classplayrho_1_1_simplex.html#ad5735b61f402ad09fb9a22b1fd5af64c">playrho::Simplex</a>
 </li>
 <li>GetEntryCount()
 : <a class="el" href="classplayrho_1_1_stack_allocator.html#a1d9b7f75f4b0e9f03723023a051196b2">playrho::StackAllocator</a>
@@ -312,8 +330,8 @@ $(function() {
 : <a class="el" href="classplayrho_1_1_manifold.html#a2dc58d8d36388baace268a6fa4281f9b">playrho::Manifold</a>
 </li>
 <li>GetFrequency()
-: <a class="el" href="classplayrho_1_1_distance_joint.html#add30bb880aea087155aa6e3ccf561dc5">playrho::DistanceJoint</a>
-, <a class="el" href="classplayrho_1_1_mouse_joint.html#a2ef14d08eb5826562e9ec44db56ae670">playrho::MouseJoint</a>
+: <a class="el" href="classplayrho_1_1_distance_joint.html#a9a931b144024429c5336e5441d982a8d">playrho::DistanceJoint</a>
+, <a class="el" href="classplayrho_1_1_mouse_joint.html#ac668acf5a7504fd40d4a75dada0650b0">playrho::MouseJoint</a>
 , <a class="el" href="classplayrho_1_1_weld_joint.html#a8b1054dec85649cf02fa354e5d84ccec">playrho::WeldJoint</a>
 </li>
 <li>GetFriction()
@@ -349,6 +367,9 @@ $(function() {
 <li>GetHiCheck()
 : <a class="el" href="classplayrho_1_1_bounded_value.html#ac0238ea56353f96e484f8a5dd9b8a196">playrho::BoundedValue&lt; T, lo, hi &gt;</a>
 </li>
+<li>GetImpulses()
+: <a class="el" href="classplayrho_1_1_world_manifold.html#a048989601b87c025b34d52a3fe2f4b6a">playrho::WorldManifold</a>
+</li>
 <li>GetIndex()
 : <a class="el" href="classplayrho_1_1_stack_allocator.html#afdba831ecea6d5cc6d44a4051a65e6a4">playrho::StackAllocator</a>
 </li>
@@ -359,14 +380,14 @@ $(function() {
 : <a class="el" href="classplayrho_1_1_simplex_edge.html#ae39ffc912c86f0e1600539fb7b8814b1">playrho::SimplexEdge</a>
 </li>
 <li>GetIndexPair()
-: <a class="el" href="classplayrho_1_1_simplex_1_1_cache.html#a322143ed687e6c94a57421bde67ab96f">playrho::Simplex::Cache</a>
+: <a class="el" href="classplayrho_1_1_simplex_1_1_cache.html#a7f18ed8b900e034bb1899c8a570ac1fd">playrho::Simplex::Cache</a>
 , <a class="el" href="classplayrho_1_1_simplex_edge.html#acb1a66fd94cacf48bf428913dccf8599">playrho::SimplexEdge</a>
 </li>
 <li>GetIndexPairs()
-: <a class="el" href="classplayrho_1_1_simplex.html#a3c74247538601d942d510a1451526e7a">playrho::Simplex</a>
+: <a class="el" href="classplayrho_1_1_simplex.html#ac97e5bc42a351525d4d484bc06abd365">playrho::Simplex</a>
 </li>
 <li>GetIndices()
-: <a class="el" href="classplayrho_1_1_simplex_1_1_cache.html#a8ea1659d35d17639ed9c7332dd2097b0">playrho::Simplex::Cache</a>
+: <a class="el" href="classplayrho_1_1_simplex_1_1_cache.html#a4f1f511a14ea02d3804d0a53ab04bb9d">playrho::Simplex::Cache</a>
 </li>
 <li>GetInfinity()
 : <a class="el" href="classplayrho_1_1_fixed.html#a53788cab95bd0c406f58026e647beda9">playrho::Fixed&lt; BASE_TYPE, FRACTION_BITS &gt;</a>
@@ -394,25 +415,17 @@ $(function() {
 : <a class="el" href="classplayrho_1_1_step_conf.html#abb06f6542373de2b0d452e0a1ad7e1cd">playrho::StepConf</a>
 </li>
 <li>GetJoint1()
-: <a class="el" href="classplayrho_1_1_gear_joint.html#a757a78b89b12d11072a152702eaa1656">playrho::GearJoint</a>
+: <a class="el" href="classplayrho_1_1_gear_joint.html#afd968f7c9550d9bbea9068be002b7f41">playrho::GearJoint</a>
 </li>
 <li>GetJoint2()
-: <a class="el" href="classplayrho_1_1_gear_joint.html#a489f8c6e61ee0dae026ecfd9390228c5">playrho::GearJoint</a>
+: <a class="el" href="classplayrho_1_1_gear_joint.html#a149ef3caf228dd880e578a13ab6b1229">playrho::GearJoint</a>
 </li>
 <li>GetJoints()
 : <a class="el" href="classplayrho_1_1_body.html#a8b655d9d1678dc8c0031bd574c23f585">playrho::Body</a>
 , <a class="el" href="classplayrho_1_1_world.html#a779e200abb9ae5258560dd58be0bce19">playrho::World</a>
 </li>
-<li>GetJointSpeed()
-: <a class="el" href="classplayrho_1_1_prismatic_joint.html#ab1f5a563905322a83cc165bfe77f044f">playrho::PrismaticJoint</a>
-, <a class="el" href="classplayrho_1_1_wheel_joint.html#a889c5d4ef4d2eb0ac9d19ecfece1fa3f">playrho::WheelJoint</a>
-</li>
-<li>GetJointTranslation()
-: <a class="el" href="classplayrho_1_1_prismatic_joint.html#a86249365baafc59dce439836ad2e019c">playrho::PrismaticJoint</a>
-, <a class="el" href="classplayrho_1_1_wheel_joint.html#ab171a02a82378ec2a03562db8409f3c5">playrho::WheelJoint</a>
-</li>
 <li>GetK()
-: <a class="el" href="classplayrho_1_1_velocity_constraint.html#a08f8802738c4af1a50f3338ac510ae1f">playrho::VelocityConstraint</a>
+: <a class="el" href="classplayrho_1_1_velocity_constraint.html#aaf991459ac367d7eae1b7b2defc38368">playrho::VelocityConstraint</a>
 </li>
 <li>GetLeft()
 : <a class="el" href="classplayrho_1_1_unit_vec2.html#a1f4bf91b0e6cc0ea192b0dc7904437d0">playrho::UnitVec2</a>
@@ -427,7 +440,9 @@ $(function() {
 : <a class="el" href="classplayrho_1_1_pulley_joint.html#a0035423444f2eef07746d159d2fb18a6">playrho::PulleyJoint</a>
 </li>
 <li>GetLimitState()
-: <a class="el" href="classplayrho_1_1_rope_joint.html#ae314310ec6a654457d36be48291bf8dd">playrho::RopeJoint</a>
+: <a class="el" href="classplayrho_1_1_prismatic_joint.html#a752bd828c0f2c5d3f03c2f8d9abf6ce6">playrho::PrismaticJoint</a>
+, <a class="el" href="classplayrho_1_1_revolute_joint.html#ab112f7e639db9e59ae154e027e886621">playrho::RevoluteJoint</a>
+, <a class="el" href="classplayrho_1_1_rope_joint.html#ae314310ec6a654457d36be48291bf8dd">playrho::RopeJoint</a>
 </li>
 <li>GetLinearAcceleration()
 : <a class="el" href="classplayrho_1_1_body.html#a1e30643f78cf1ad1e135a7c0776ac77a">playrho::Body</a>
@@ -437,6 +452,20 @@ $(function() {
 </li>
 <li>GetLinearOffset()
 : <a class="el" href="classplayrho_1_1_motor_joint.html#aa6bfb92f53cfe14123654d1d7e679f52">playrho::MotorJoint</a>
+</li>
+<li>GetLinearReaction()
+: <a class="el" href="classplayrho_1_1_distance_joint.html#a1e938558c21e01b02a5092de71b379b3">playrho::DistanceJoint</a>
+, <a class="el" href="classplayrho_1_1_friction_joint.html#af9dafa7758f038f25ae45f4771127973">playrho::FrictionJoint</a>
+, <a class="el" href="classplayrho_1_1_gear_joint.html#ae335f37d6e7d5898471baf27f548ff94">playrho::GearJoint</a>
+, <a class="el" href="classplayrho_1_1_joint.html#afde5ab198074d87e93e8061b2887716a">playrho::Joint</a>
+, <a class="el" href="classplayrho_1_1_motor_joint.html#ab497ed8009c1c77da4b4e4183eea4329">playrho::MotorJoint</a>
+, <a class="el" href="classplayrho_1_1_mouse_joint.html#ab2a6be4eabb57aa16c0296a85248db2d">playrho::MouseJoint</a>
+, <a class="el" href="classplayrho_1_1_prismatic_joint.html#ad705d32fd5a002b8767390a39a3feea8">playrho::PrismaticJoint</a>
+, <a class="el" href="classplayrho_1_1_pulley_joint.html#ac7aae03b9068e61eea643e7c86af7746">playrho::PulleyJoint</a>
+, <a class="el" href="classplayrho_1_1_revolute_joint.html#ab6bd05209c56876b278aec94a4da27de">playrho::RevoluteJoint</a>
+, <a class="el" href="classplayrho_1_1_rope_joint.html#a198e81c11ff571f64e36684b19c5f36b">playrho::RopeJoint</a>
+, <a class="el" href="classplayrho_1_1_weld_joint.html#a4d30dc7e1a38ca4a822fa9ce4954a5d8">playrho::WeldJoint</a>
+, <a class="el" href="classplayrho_1_1_wheel_joint.html#a58c8a06119c569b52b757aa170ebc635">playrho::WheelJoint</a>
 </li>
 <li>GetLinearSlop()
 : <a class="el" href="structplayrho_1_1details_1_1_defaults.html#ad93eb2d33ff575b9afc5ea2a613edfd5">playrho::details::Defaults&lt; T &gt;</a>
@@ -479,7 +508,7 @@ $(function() {
 </li>
 <li>GetLocalPoint()
 : <a class="el" href="classplayrho_1_1_manifold.html#a4043a200d9e6037f9319bdb9a233eb32">playrho::Manifold</a>
-, <a class="el" href="classplayrho_1_1_separation_finder.html#acd58593d27ff6dbd1f1edf3554f653ed">playrho::SeparationFinder</a>
+, <a class="el" href="classplayrho_1_1_separation_finder.html#a6e28ad96da7f8ad6fa32f689b9ac6205">playrho::SeparationFinder</a>
 </li>
 <li>GetLocation()
 : <a class="el" href="classplayrho_1_1_body.html#a9b40b730940bd7ca226377dfb1532efe">playrho::Body</a>
@@ -492,7 +521,7 @@ $(function() {
 : <a class="el" href="classplayrho_1_1_a_a_b_b.html#ab1175c41f991e7ae64e7e0fbb15c4269">playrho::AABB</a>
 </li>
 <li>GetLowerLimit()
-: <a class="el" href="classplayrho_1_1_prismatic_joint.html#aeaca6f660200a1d06648a98afac8f9bb">playrho::PrismaticJoint</a>
+: <a class="el" href="classplayrho_1_1_prismatic_joint.html#a17ea1bfad0c2b249b73627dedaac5267">playrho::PrismaticJoint</a>
 , <a class="el" href="classplayrho_1_1_revolute_joint.html#a36b76cde6923e6b0b80e95a1a804c4da">playrho::RevoluteJoint</a>
 </li>
 <li>GetLowest()
@@ -523,9 +552,9 @@ $(function() {
 : <a class="el" href="classplayrho_1_1_stack_allocator.html#a2314cc547523157f10b1afe5e53105f6">playrho::StackAllocator</a>
 </li>
 <li>GetMaxForce()
-: <a class="el" href="classplayrho_1_1_friction_joint.html#abc890a72e5da80403d592f1e68a75d96">playrho::FrictionJoint</a>
-, <a class="el" href="classplayrho_1_1_motor_joint.html#a9a9e583a073aad8d795de10d8f03e29d">playrho::MotorJoint</a>
-, <a class="el" href="classplayrho_1_1_mouse_joint.html#a2eda7090023fc81c4ff13715cb152fea">playrho::MouseJoint</a>
+: <a class="el" href="classplayrho_1_1_friction_joint.html#ac6c7f0bdf177fd038c6cfd3b7fd2779d">playrho::FrictionJoint</a>
+, <a class="el" href="classplayrho_1_1_motor_joint.html#a107d6650d22b9da61b7f432a90bc7dcc">playrho::MotorJoint</a>
+, <a class="el" href="classplayrho_1_1_mouse_joint.html#ae7376465b53e064c1d3d744ab65b444a">playrho::MouseJoint</a>
 </li>
 <li>GetMaxLength()
 : <a class="el" href="classplayrho_1_1_rope_joint.html#a9b3ba323eff555b3ecaa25cc37c96510">playrho::RopeJoint</a>
@@ -538,8 +567,8 @@ $(function() {
 , <a class="el" href="classplayrho_1_1_wheel_joint.html#a9b5721a0490615c6d094542b5ef575cc">playrho::WheelJoint</a>
 </li>
 <li>GetMaxTorque()
-: <a class="el" href="classplayrho_1_1_friction_joint.html#a8bdf23ee4f1ef23c0b4feb19257808b4">playrho::FrictionJoint</a>
-, <a class="el" href="classplayrho_1_1_motor_joint.html#aa0db59943e0409b6332466cebec2821f">playrho::MotorJoint</a>
+: <a class="el" href="classplayrho_1_1_friction_joint.html#adbd8ebca684786a828edf4f151f28689">playrho::FrictionJoint</a>
+, <a class="el" href="classplayrho_1_1_motor_joint.html#a2f059eb813b4261a720747a034c41e81">playrho::MotorJoint</a>
 </li>
 <li>GetMaxVertexRadius()
 : <a class="el" href="structplayrho_1_1details_1_1_defaults.html#a68944781404b8ae60f4f8c4e5b63190d">playrho::details::Defaults&lt; T &gt;</a>
@@ -586,7 +615,7 @@ $(function() {
 <li>GetNormal()
 : <a class="el" href="classplayrho_1_1_chain_shape.html#a5617f2b8c51cb1e30f2ed6655dd041a8">playrho::ChainShape</a>
 , <a class="el" href="classplayrho_1_1_distance_proxy.html#a8a84084e277f8549e0443c8f8b0c2635">playrho::DistanceProxy</a>
-, <a class="el" href="classplayrho_1_1_polygon_shape.html#afae1bd6966e12e1922b53f50901fb91e">playrho::PolygonShape</a>
+, <a class="el" href="classplayrho_1_1_polygon_shape.html#afb25ef3d127db369e5c5fe4ff2a18197">playrho::PolygonShape</a>
 , <a class="el" href="classplayrho_1_1_velocity_constraint.html#a6794a8d1f9aca092ebff7b0d9050b074">playrho::VelocityConstraint</a>
 , <a class="el" href="classplayrho_1_1_world_manifold.html#a429d3d77b4d571565d51021b539d6153">playrho::WorldManifold</a>
 </li>
@@ -600,16 +629,13 @@ $(function() {
 : <a class="el" href="classplayrho_1_1_velocity_constraint.html#a805bb47bfb0a2157d3a2d4e3cf1765e1">playrho::VelocityConstraint</a>
 </li>
 <li>GetNormalMass()
-: <a class="el" href="classplayrho_1_1_velocity_constraint.html#ae0787029614b8d04b5dc8a2f615b745b">playrho::VelocityConstraint</a>
+: <a class="el" href="classplayrho_1_1_velocity_constraint.html#a168019cd9607f52b99f0b39a0399cb8b">playrho::VelocityConstraint</a>
 </li>
 <li>GetNormalMassAtPoint()
 : <a class="el" href="classplayrho_1_1_velocity_constraint.html#a55d00ce71116dd4e62445100ec142737">playrho::VelocityConstraint</a>
 </li>
 <li>GetNormals()
 : <a class="el" href="classplayrho_1_1_polygon_shape.html#a54a2a4339b46469957ea6bb82be0623b">playrho::PolygonShape</a>
-</li>
-<li>GetNumIndices()
-: <a class="el" href="classplayrho_1_1_simplex_1_1_cache.html#aeb4360543059762c38b9a54669c769b7">playrho::Simplex::Cache</a>
 </li>
 <li>GetOpposingPoint()
 : <a class="el" href="classplayrho_1_1_manifold.html#a20493b4daaf1980dc8e80eeefeabb331">playrho::Manifold</a>
@@ -631,9 +657,6 @@ $(function() {
 : <a class="el" href="classplayrho_1_1_manifold.html#aba0592128f8876ac5d49e0e9fede6eb1">playrho::Manifold</a>
 , <a class="el" href="classplayrho_1_1_velocity_constraint.html#a8dfbf383ece3b6c053bd083df251e3b5">playrho::VelocityConstraint</a>
 , <a class="el" href="classplayrho_1_1_world_manifold.html#ab854dde143faa620c0d16c7be9a4e401">playrho::WorldManifold</a>
-</li>
-<li>GetPointDelta()
-: <a class="el" href="classplayrho_1_1_simplex_edge.html#a04cdcc0ce17dcbf00a699dc4df550bb0">playrho::SimplexEdge</a>
 </li>
 <li>GetPointRelPosA()
 : <a class="el" href="classplayrho_1_1_velocity_constraint.html#a5f739d86751851b0eabeb7f019b90565">playrho::VelocityConstraint</a>
@@ -664,36 +687,8 @@ $(function() {
 : <a class="el" href="classplayrho_1_1_position_constraint.html#ab7d5b0c3000cb1e86b2df3ab215e8501">playrho::PositionConstraint</a>
 </li>
 <li>GetRatio()
-: <a class="el" href="classplayrho_1_1_gear_joint.html#a841c5e5a34c8beedc07f53f45a135dc6">playrho::GearJoint</a>
+: <a class="el" href="classplayrho_1_1_gear_joint.html#a066275eeb74e13672aec614897081671">playrho::GearJoint</a>
 , <a class="el" href="classplayrho_1_1_pulley_joint.html#a5dd29d8838fcbe1106edccd85e62cf5e">playrho::PulleyJoint</a>
-</li>
-<li>GetReactionForce()
-: <a class="el" href="classplayrho_1_1_distance_joint.html#a05e471d2b63262cf383f6161a287adbf">playrho::DistanceJoint</a>
-, <a class="el" href="classplayrho_1_1_friction_joint.html#a0907b65d5ff4379293e1da00ccd209f0">playrho::FrictionJoint</a>
-, <a class="el" href="classplayrho_1_1_gear_joint.html#a4cf61033b1fe0fb1a5e18e68925c4576">playrho::GearJoint</a>
-, <a class="el" href="classplayrho_1_1_joint.html#abc8702bba75fe067f3669ca739cbacff">playrho::Joint</a>
-, <a class="el" href="classplayrho_1_1_motor_joint.html#a639554c80083fc9836ed8a30ebe023b3">playrho::MotorJoint</a>
-, <a class="el" href="classplayrho_1_1_mouse_joint.html#a06dc74e973b38ffadf15f1d9d6435c1f">playrho::MouseJoint</a>
-, <a class="el" href="classplayrho_1_1_prismatic_joint.html#a7ae2e2ea6dbfb419f6fce04e8cfa1460">playrho::PrismaticJoint</a>
-, <a class="el" href="classplayrho_1_1_pulley_joint.html#ab35bac7f464b57a737504a145e70bd7b">playrho::PulleyJoint</a>
-, <a class="el" href="classplayrho_1_1_revolute_joint.html#a45738964f56b3fda32d12ce2850a897a">playrho::RevoluteJoint</a>
-, <a class="el" href="classplayrho_1_1_rope_joint.html#ac4039c66acdf98d8295c37b1c2ad9b2d">playrho::RopeJoint</a>
-, <a class="el" href="classplayrho_1_1_weld_joint.html#a55ffd3c061de4cef4a2593f4f634d243">playrho::WeldJoint</a>
-, <a class="el" href="classplayrho_1_1_wheel_joint.html#a4514f2f3c479f60b275f7a7a1bc8900c">playrho::WheelJoint</a>
-</li>
-<li>GetReactionTorque()
-: <a class="el" href="classplayrho_1_1_distance_joint.html#af47d8baac3ff6a2d70459df5670e0bd0">playrho::DistanceJoint</a>
-, <a class="el" href="classplayrho_1_1_friction_joint.html#a826b9560f1f2db0da4e35a71c2af0021">playrho::FrictionJoint</a>
-, <a class="el" href="classplayrho_1_1_gear_joint.html#a5af6ebb4c1697a84b78742a94bc1da7e">playrho::GearJoint</a>
-, <a class="el" href="classplayrho_1_1_joint.html#ac8d5a5f709ce513efb28484d70a68c5a">playrho::Joint</a>
-, <a class="el" href="classplayrho_1_1_motor_joint.html#a99752b6833078a4d36068a079e7da281">playrho::MotorJoint</a>
-, <a class="el" href="classplayrho_1_1_mouse_joint.html#ae8af23a1a136dce1297a798def5b4628">playrho::MouseJoint</a>
-, <a class="el" href="classplayrho_1_1_prismatic_joint.html#aedd14591bf668ff9a138751aeaf3d7ef">playrho::PrismaticJoint</a>
-, <a class="el" href="classplayrho_1_1_pulley_joint.html#acafba732e784e07db24229f1884b7636">playrho::PulleyJoint</a>
-, <a class="el" href="classplayrho_1_1_revolute_joint.html#a84474c903c93504e99e8196e6ad932e2">playrho::RevoluteJoint</a>
-, <a class="el" href="classplayrho_1_1_rope_joint.html#a14dd3abf456d24e01357861ca78c01a2">playrho::RopeJoint</a>
-, <a class="el" href="classplayrho_1_1_weld_joint.html#ac5664406d85383725635b934177f25e8">playrho::WeldJoint</a>
-, <a class="el" href="classplayrho_1_1_wheel_joint.html#a9266377b3fe65e8be2a4fdbd88c5e549">playrho::WheelJoint</a>
 </li>
 <li>GetReferenceAngle()
 : <a class="el" href="classplayrho_1_1_prismatic_joint.html#a57f73abb205b5ffc0c6cc4fdb823acf3">playrho::PrismaticJoint</a>
@@ -721,11 +716,14 @@ $(function() {
 <li>GetShape()
 : <a class="el" href="classplayrho_1_1_fixture.html#adbb67db2d9e1542b7d2923b294165e20">playrho::Fixture</a>
 </li>
+<li>getsign()
+: <a class="el" href="classplayrho_1_1_fixed.html#acab0e81520ba5aebe0254ef1d78058b9">playrho::Fixed&lt; BASE_TYPE, FRACTION_BITS &gt;</a>
+</li>
 <li>GetSimplexEdge()
 : <a class="el" href="classplayrho_1_1_simplex.html#ae745a112c1aed790b9c3137c098d94c1">playrho::Simplex</a>
 </li>
 <li>GetSize()
-: <a class="el" href="classplayrho_1_1_simplex.html#a3828326fdd437a0fed1637cea706c2c1">playrho::Simplex</a>
+: <a class="el" href="classplayrho_1_1_simplex.html#acd7a3b148cd312a7b4023a2895df7a39">playrho::Simplex</a>
 </li>
 <li>GetSpringDampingRatio()
 : <a class="el" href="classplayrho_1_1_wheel_joint.html#aac56133d271014f6b7ee7492045e2419">playrho::WheelJoint</a>
@@ -767,6 +765,9 @@ $(function() {
 <li>GetTop()
 : <a class="el" href="classplayrho_1_1_unit_vec2.html#adaf24c8aad01aeb6423c2442f5e3a346">playrho::UnitVec2</a>
 </li>
+<li>GetTopRight()
+: <a class="el" href="classplayrho_1_1_unit_vec2.html#a6aaa92b9c7262c4b569299663c9a8bac">playrho::UnitVec2</a>
+</li>
 <li>GetTransformation()
 : <a class="el" href="classplayrho_1_1_body.html#a5d9ade3336e2d3f19c62ffea5747586d">playrho::Body</a>
 </li>
@@ -783,7 +784,7 @@ $(function() {
 : <a class="el" href="classplayrho_1_1_body.html#a6eb53144a8676d8bb71a7a249b020c89">playrho::Body</a>
 , <a class="el" href="classplayrho_1_1_joint.html#a37e4692de19d7a13eb22248d83c29e5f">playrho::Joint</a>
 , <a class="el" href="classplayrho_1_1_manifold.html#a70e9bf520e52fea511bd9dba651f09ec">playrho::Manifold</a>
-, <a class="el" href="classplayrho_1_1_separation_finder.html#ad17297348d3a00ca7f249661a9f25de0">playrho::SeparationFinder</a>
+, <a class="el" href="classplayrho_1_1_separation_finder.html#ae6f9b70444ae3c498246b19a6af95c04">playrho::SeparationFinder</a>
 </li>
 <li>GetUnderActiveTime()
 : <a class="el" href="classplayrho_1_1_body.html#aadb9578b7217bb7f77549b600bb01c24">playrho::Body</a>
@@ -795,7 +796,7 @@ $(function() {
 : <a class="el" href="classplayrho_1_1_a_a_b_b.html#af1083fab263e18bda7b2182fb64b8eb3">playrho::AABB</a>
 </li>
 <li>GetUpperLimit()
-: <a class="el" href="classplayrho_1_1_prismatic_joint.html#a6c69cebf1aa3fe15c085fd0df51f7404">playrho::PrismaticJoint</a>
+: <a class="el" href="classplayrho_1_1_prismatic_joint.html#ab3102379131f5fbc02eaf09efaf94825">playrho::PrismaticJoint</a>
 , <a class="el" href="classplayrho_1_1_revolute_joint.html#acf5f39c2180f4df68fb64bedc0bf2be5">playrho::RevoluteJoint</a>
 </li>
 <li>GetUserData()
@@ -814,7 +815,7 @@ $(function() {
 <li>GetVertex()
 : <a class="el" href="classplayrho_1_1_chain_shape.html#a39df29bac7cd4416983c5c86077f6869">playrho::ChainShape</a>
 , <a class="el" href="classplayrho_1_1_distance_proxy.html#aae5879468b189e5ffcda04abafeaa922">playrho::DistanceProxy</a>
-, <a class="el" href="classplayrho_1_1_polygon_shape.html#a1696714519278f0bc4bd7be6109ce6d3">playrho::PolygonShape</a>
+, <a class="el" href="classplayrho_1_1_polygon_shape.html#ab56b1c9c9e21f9ccc01104e075a71ace">playrho::PolygonShape</a>
 , <a class="el" href="classplayrho_1_1_rope.html#afdfc56eec2df9719656dd557128cf3df">playrho::Rope</a>
 </li>
 <li>GetVertex1()
@@ -826,12 +827,12 @@ $(function() {
 <li>GetVertexCount()
 : <a class="el" href="classplayrho_1_1_chain_shape.html#a5ced8a2973d7a473003fc2d09dceb2a4">playrho::ChainShape</a>
 , <a class="el" href="classplayrho_1_1_distance_proxy.html#a938c6d80992f2e31b81a631c7169b74a">playrho::DistanceProxy</a>
-, <a class="el" href="classplayrho_1_1_polygon_shape.html#aa184432eb4313a9dfec0e3d736a44933">playrho::PolygonShape</a>
+, <a class="el" href="classplayrho_1_1_polygon_shape.html#a6b373f9589097743ea04da93040df537">playrho::PolygonShape</a>
 , <a class="el" href="classplayrho_1_1_rope.html#a9495306e4d31167ee4fe66026014ad2c">playrho::Rope</a>
 </li>
 <li>GetVertexRadius()
 : <a class="el" href="classplayrho_1_1_distance_proxy.html#a4250838aed73631f4176494fa403c2cb">playrho::DistanceProxy</a>
-, <a class="el" href="classplayrho_1_1_shape.html#a4a2fe8e1a44ca6151ff279e2e9b9f51a">playrho::Shape</a>
+, <a class="el" href="classplayrho_1_1_shape.html#a6b76df853ba0a82c33c9535cae23c850">playrho::Shape</a>
 </li>
 <li>GetVertices()
 : <a class="el" href="classplayrho_1_1_polygon_shape.html#ad944dd20c5ecb2eb11a29dfabfbdec23">playrho::PolygonShape</a>
@@ -845,11 +846,9 @@ $(function() {
 </li>
 <li>GetX()
 : <a class="el" href="classplayrho_1_1_unit_vec2.html#a0f1315121e40e0cccd07e112444e8c6f">playrho::UnitVec2</a>
-, <a class="el" href="structplayrho_1_1_vector2_d.html#a241ca73dd94f9c2e3fd47541225049a6">playrho::Vector2D&lt; TYPE &gt;</a>
 </li>
 <li>GetY()
 : <a class="el" href="classplayrho_1_1_unit_vec2.html#aa7837686e3fd5e9073fac7ef581ba591">playrho::UnitVec2</a>
-, <a class="el" href="structplayrho_1_1_vector2_d.html#ad553351eadc0af0d4f531c8987d9de75">playrho::Vector2D&lt; TYPE &gt;</a>
 </li>
 <li>GetZero()
 : <a class="el" href="classplayrho_1_1_unit_vec2.html#adaf7f6fc2482074a7e32341ae15c3774">playrho::UnitVec2</a>
@@ -874,7 +873,7 @@ $(function() {
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 18 2017 17:08:33 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Sep 6 2017 12:29:47 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

@@ -72,8 +72,8 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>The pulley joint is connected to two bodies and two fixed ground points. The pulley supports a ratio such that: length1 + ratio * length2 &lt;= constant Yes, the force transmitted is scaled by the ratio. Warning: the pulley joint can get a bit squirrelly by itself. They often work better when combined with prismatic joints. You should also cover the the anchor points with static shapes to prevent one side from going to zero length.  
-</p>
+<p>Pulley joint.  
+ <a href="classplayrho_1_1_pulley_joint.html#details">More...</a></p>
 
 <p><code>#include &lt;PulleyJoint.hpp&gt;</code></p>
 <div class="dynheader">
@@ -82,7 +82,7 @@ Inheritance diagram for playrho::PulleyJoint:</div>
  <div class="center">
   <img src="classplayrho_1_1_pulley_joint.png" usemap="#playrho::PulleyJoint_map" alt=""/>
   <map id="playrho::PulleyJoint_map" name="playrho::PulleyJoint_map">
-<area href="classplayrho_1_1_joint.html" title="Base Joint class. " alt="playrho::Joint" shape="rect" coords="0,0,123,24"/>
+<area href="classplayrho_1_1_joint.html" title="Base joint class. " alt="playrho::Joint" shape="rect" coords="0,0,123,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -100,12 +100,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a511ec95159551a5d9b3f745ef3738391"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_pulley_joint.html#a511ec95159551a5d9b3f745ef3738391">GetAnchorB</a> () const override</td></tr>
 <tr class="memdesc:a511ec95159551a5d9b3f745ef3738391"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the anchor point on bodyB in world coordinates.  <a href="#a511ec95159551a5d9b3f745ef3738391">More...</a><br /></td></tr>
 <tr class="separator:a511ec95159551a5d9b3f745ef3738391"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab35bac7f464b57a737504a145e70bd7b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#ad409812375f6863156f08f4db02629b1">Force2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_pulley_joint.html#ab35bac7f464b57a737504a145e70bd7b">GetReactionForce</a> (<a class="el" href="namespaceplayrho.html#a806622c0e45a364b6466827256eae233">Frequency</a> inv_dt) const override</td></tr>
-<tr class="memdesc:ab35bac7f464b57a737504a145e70bd7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the reaction force on bodyB at the joint anchor in Newtons.  <a href="#ab35bac7f464b57a737504a145e70bd7b">More...</a><br /></td></tr>
-<tr class="separator:ab35bac7f464b57a737504a145e70bd7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acafba732e784e07db24229f1884b7636"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#ada1764fa6f02f44b8fdc4597a3f5d75b">Torque</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_pulley_joint.html#acafba732e784e07db24229f1884b7636">GetReactionTorque</a> (<a class="el" href="namespaceplayrho.html#a806622c0e45a364b6466827256eae233">Frequency</a> inv_dt) const override</td></tr>
-<tr class="memdesc:acafba732e784e07db24229f1884b7636"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the reaction torque on bodyB in N*m.  <a href="#acafba732e784e07db24229f1884b7636">More...</a><br /></td></tr>
-<tr class="separator:acafba732e784e07db24229f1884b7636"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7aae03b9068e61eea643e7c86af7746"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a7eb9e589bb14ae24300d375db57b13d6">Momentum2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_pulley_joint.html#ac7aae03b9068e61eea643e7c86af7746">GetLinearReaction</a> () const override</td></tr>
+<tr class="memdesc:ac7aae03b9068e61eea643e7c86af7746"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the linear reaction on bodyB at the joint anchor.  <a href="#ac7aae03b9068e61eea643e7c86af7746">More...</a><br /></td></tr>
+<tr class="separator:ac7aae03b9068e61eea643e7c86af7746"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a543d0dfa47c2339d888b6daa985055e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a046a590415bf76223f073db93b7eabf9">AngularMomentum</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_pulley_joint.html#a543d0dfa47c2339d888b6daa985055e3">GetAngularReaction</a> () const override</td></tr>
+<tr class="memdesc:a543d0dfa47c2339d888b6daa985055e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the angular reaction on bodyB.  <a href="#a543d0dfa47c2339d888b6daa985055e3">More...</a><br /></td></tr>
+<tr class="separator:a543d0dfa47c2339d888b6daa985055e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a309c2cde0b5a36ad89c4d54efc9911a1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_pulley_joint.html#a309c2cde0b5a36ad89c4d54efc9911a1">GetGroundAnchorA</a> () const noexcept</td></tr>
 <tr class="memdesc:a309c2cde0b5a36ad89c4d54efc9911a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the first ground anchor.  <a href="#a309c2cde0b5a36ad89c4d54efc9911a1">More...</a><br /></td></tr>
 <tr class="separator:a309c2cde0b5a36ad89c4d54efc9911a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -122,17 +122,17 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a5dd29d8838fcbe1106edccd85e62cf5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the pulley ratio.  <a href="#a5dd29d8838fcbe1106edccd85e62cf5e">More...</a><br /></td></tr>
 <tr class="separator:a5dd29d8838fcbe1106edccd85e62cf5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2acd559bbdd3137cb9b91fb22bda594"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_pulley_joint.html#ae2acd559bbdd3137cb9b91fb22bda594">ShiftOrigin</a> (const <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> newOrigin) override</td></tr>
-<tr class="memdesc:ae2acd559bbdd3137cb9b91fb22bda594"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implement <a class="el" href="classplayrho_1_1_joint.html#a9165429ac068539210c8c1eafaf7529f" title="Shift the origin for any points stored in world coordinates. ">Joint::ShiftOrigin</a>.  <a href="#ae2acd559bbdd3137cb9b91fb22bda594">More...</a><br /></td></tr>
+<tr class="memdesc:ae2acd559bbdd3137cb9b91fb22bda594"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implement <a class="el" href="classplayrho_1_1_joint.html#a9165429ac068539210c8c1eafaf7529f" title="Shifts the origin for any points stored in world coordinates. ">Joint::ShiftOrigin</a>.  <a href="#ae2acd559bbdd3137cb9b91fb22bda594">More...</a><br /></td></tr>
 <tr class="separator:ae2acd559bbdd3137cb9b91fb22bda594"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classplayrho_1_1_joint"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classplayrho_1_1_joint')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classplayrho_1_1_joint.html">playrho::Joint</a></td></tr>
 <tr class="memitem:a37e4692de19d7a13eb22248d83c29e5f inherit pub_methods_classplayrho_1_1_joint"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#aae8d7c50e25778ece4347bd63586c485">JointType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_joint.html#a37e4692de19d7a13eb22248d83c29e5f">GetType</a> () const noexcept</td></tr>
-<tr class="memdesc:a37e4692de19d7a13eb22248d83c29e5f inherit pub_methods_classplayrho_1_1_joint"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the type of the concrete joint.  <a href="classplayrho_1_1_joint.html#a37e4692de19d7a13eb22248d83c29e5f">More...</a><br /></td></tr>
+<tr class="memdesc:a37e4692de19d7a13eb22248d83c29e5f inherit pub_methods_classplayrho_1_1_joint"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the type of the concrete joint.  <a href="classplayrho_1_1_joint.html#a37e4692de19d7a13eb22248d83c29e5f">More...</a><br /></td></tr>
 <tr class="separator:a37e4692de19d7a13eb22248d83c29e5f inherit pub_methods_classplayrho_1_1_joint"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af130f5dd0e858542726d9166c0c7cd00 inherit pub_methods_classplayrho_1_1_joint"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1_body.html">Body</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_joint.html#af130f5dd0e858542726d9166c0c7cd00">GetBodyA</a> () const noexcept</td></tr>
-<tr class="memdesc:af130f5dd0e858542726d9166c0c7cd00 inherit pub_methods_classplayrho_1_1_joint"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the first body attached to this joint.  <a href="classplayrho_1_1_joint.html#af130f5dd0e858542726d9166c0c7cd00">More...</a><br /></td></tr>
+<tr class="memdesc:af130f5dd0e858542726d9166c0c7cd00 inherit pub_methods_classplayrho_1_1_joint"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the first body attached to this joint.  <a href="classplayrho_1_1_joint.html#af130f5dd0e858542726d9166c0c7cd00">More...</a><br /></td></tr>
 <tr class="separator:af130f5dd0e858542726d9166c0c7cd00 inherit pub_methods_classplayrho_1_1_joint"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4da7432fcc1329fd19648569f14b6603 inherit pub_methods_classplayrho_1_1_joint"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1_body.html">Body</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_joint.html#a4da7432fcc1329fd19648569f14b6603">GetBodyB</a> () const noexcept</td></tr>
-<tr class="memdesc:a4da7432fcc1329fd19648569f14b6603 inherit pub_methods_classplayrho_1_1_joint"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the second body attached to this joint.  <a href="classplayrho_1_1_joint.html#a4da7432fcc1329fd19648569f14b6603">More...</a><br /></td></tr>
+<tr class="memdesc:a4da7432fcc1329fd19648569f14b6603 inherit pub_methods_classplayrho_1_1_joint"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the second body attached to this joint.  <a href="classplayrho_1_1_joint.html#a4da7432fcc1329fd19648569f14b6603">More...</a><br /></td></tr>
 <tr class="separator:a4da7432fcc1329fd19648569f14b6603 inherit pub_methods_classplayrho_1_1_joint"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9456e35253a9b93e5189c73b30836f9 inherit pub_methods_classplayrho_1_1_joint"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_joint.html#ab9456e35253a9b93e5189c73b30836f9">GetUserData</a> () const noexcept</td></tr>
 <tr class="memdesc:ab9456e35253a9b93e5189c73b30836f9 inherit pub_methods_classplayrho_1_1_joint"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the user data pointer.  <a href="classplayrho_1_1_joint.html#ab9456e35253a9b93e5189c73b30836f9">More...</a><br /></td></tr>
@@ -141,8 +141,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a13266ded2258b678d917594198d20b5a inherit pub_methods_classplayrho_1_1_joint"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the user data pointer.  <a href="classplayrho_1_1_joint.html#a13266ded2258b678d917594198d20b5a">More...</a><br /></td></tr>
 <tr class="separator:a13266ded2258b678d917594198d20b5a inherit pub_methods_classplayrho_1_1_joint"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a942f7d4bfe99e7dcc9ddbed75d67f30d inherit pub_methods_classplayrho_1_1_joint"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_joint.html#a942f7d4bfe99e7dcc9ddbed75d67f30d">GetCollideConnected</a> () const noexcept</td></tr>
-<tr class="memdesc:a942f7d4bfe99e7dcc9ddbed75d67f30d inherit pub_methods_classplayrho_1_1_joint"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get collide connected. Note: modifying the collide connect flag won't work correctly because the flag is only checked when fixture AABBs begin to overlap.  <a href="classplayrho_1_1_joint.html#a942f7d4bfe99e7dcc9ddbed75d67f30d">More...</a><br /></td></tr>
+<tr class="memdesc:a942f7d4bfe99e7dcc9ddbed75d67f30d inherit pub_methods_classplayrho_1_1_joint"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets collide connected.  <a href="classplayrho_1_1_joint.html#a942f7d4bfe99e7dcc9ddbed75d67f30d">More...</a><br /></td></tr>
 <tr class="separator:a942f7d4bfe99e7dcc9ddbed75d67f30d inherit pub_methods_classplayrho_1_1_joint"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a353f5c7885b0761c760f8c09c5110cb6 inherit pub_methods_classplayrho_1_1_joint"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_joint.html#a353f5c7885b0761c760f8c09c5110cb6">~Joint</a> ()=default</td></tr>
+<tr class="separator:a353f5c7885b0761c760f8c09c5110cb6 inherit pub_methods_classplayrho_1_1_joint"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -159,10 +161,11 @@ Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_classplayrho_1_1_joint"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classplayrho_1_1_joint')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classplayrho_1_1_joint.html">playrho::Joint</a></td></tr>
 <tr class="memitem:a3fbad2bf749917df9826e65f65b4e7f2 inherit pro_methods_classplayrho_1_1_joint"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_joint.html#a3fbad2bf749917df9826e65f65b4e7f2">Joint</a> (const <a class="el" href="structplayrho_1_1_joint_def.html">JointDef</a> &amp;def)</td></tr>
 <tr class="separator:a3fbad2bf749917df9826e65f65b4e7f2 inherit pro_methods_classplayrho_1_1_joint"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afaad7531c4f4e03d43a5881e439fadc3 inherit pro_methods_classplayrho_1_1_joint"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_joint.html#afaad7531c4f4e03d43a5881e439fadc3">~Joint</a> () noexcept</td></tr>
-<tr class="separator:afaad7531c4f4e03d43a5881e439fadc3 inherit pro_methods_classplayrho_1_1_joint"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The pulley joint is connected to two bodies and two fixed ground points. The pulley supports a ratio such that: length1 + ratio * length2 &lt;= constant. </p><dl class="section note"><dt>Note</dt><dd>The force transmitted is scaled by the ratio. </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>the pulley joint can get a bit squirrelly by itself. They often work better when combined with prismatic joints. You should also cover the the anchor points with static shapes to prevent one side from going to zero length. </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a76ef1c39ae5797aeae15e5a7c42fe269"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a76ef1c39ae5797aeae15e5a7c42fe269">&#9670;&nbsp;</a></span>PulleyJoint()</h2>
 
@@ -233,6 +236,33 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="classplayrho_1_1_joint.html#ad035a7539a1edbda449108239424294a">playrho::Joint</a>.</p>
+
+</div>
+</div>
+<a id="a543d0dfa47c2339d888b6daa985055e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a543d0dfa47c2339d888b6daa985055e3">&#9670;&nbsp;</a></span>GetAngularReaction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceplayrho.html#a046a590415bf76223f073db93b7eabf9">AngularMomentum</a> PulleyJoint::GetAngularReaction </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classplayrho_1_1_joint.html#ab162525e3375b19b74dd2fcfa4bd56c5">playrho::Joint</a>.</p>
 
 </div>
 </div>
@@ -336,6 +366,33 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="ac7aae03b9068e61eea643e7c86af7746"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7aae03b9068e61eea643e7c86af7746">&#9670;&nbsp;</a></span>GetLinearReaction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceplayrho.html#a7eb9e589bb14ae24300d375db57b13d6">Momentum2D</a> PulleyJoint::GetLinearReaction </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classplayrho_1_1_joint.html#afde5ab198074d87e93e8061b2887716a">playrho::Joint</a>.</p>
+
+</div>
+</div>
 <a id="afab3705a3942d2141f8dcdab381f6a89"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afab3705a3942d2141f8dcdab381f6a89">&#9670;&nbsp;</a></span>GetLocalAnchorA()</h2>
 
@@ -411,62 +468,6 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="ab35bac7f464b57a737504a145e70bd7b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab35bac7f464b57a737504a145e70bd7b">&#9670;&nbsp;</a></span>GetReactionForce()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespaceplayrho.html#ad409812375f6863156f08f4db02629b1">Force2D</a> PulleyJoint::GetReactionForce </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a806622c0e45a364b6466827256eae233">Frequency</a>&#160;</td>
-          <td class="paramname"><em>inv_dt</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Implements <a class="el" href="classplayrho_1_1_joint.html#abc8702bba75fe067f3669ca739cbacff">playrho::Joint</a>.</p>
-
-</div>
-</div>
-<a id="acafba732e784e07db24229f1884b7636"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acafba732e784e07db24229f1884b7636">&#9670;&nbsp;</a></span>GetReactionTorque()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespaceplayrho.html#ada1764fa6f02f44b8fdc4597a3f5d75b">Torque</a> PulleyJoint::GetReactionTorque </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a806622c0e45a364b6466827256eae233">Frequency</a>&#160;</td>
-          <td class="paramname"><em>inv_dt</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Implements <a class="el" href="classplayrho_1_1_joint.html#ac8d5a5f709ce513efb28484d70a68c5a">playrho::Joint</a>.</p>
-
-</div>
-</div>
 <a id="ae2acd559bbdd3137cb9b91fb22bda594"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae2acd559bbdd3137cb9b91fb22bda594">&#9670;&nbsp;</a></span>ShiftOrigin()</h2>
 
@@ -502,7 +503,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 18 2017 17:08:33 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Sep 6 2017 12:29:47 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

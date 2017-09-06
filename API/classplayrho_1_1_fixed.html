@@ -164,6 +164,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a14c68cc3fc0dbb7c4439d125376d3b5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0ff5cb746a54cd30f2233f7d60bb91b"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classplayrho_1_1_fixed.html">Fixed</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_fixed.html#aa0ff5cb746a54cd30f2233f7d60bb91b">operator%=</a> (<a class="el" href="classplayrho_1_1_fixed.html">Fixed</a> val) noexcept</td></tr>
 <tr class="separator:aa0ff5cb746a54cd30f2233f7d60bb91b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0fd7ab7953ba4fd1db70c5b6f2c9890"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_fixed.html#ac0fd7ab7953ba4fd1db70c5b6f2c9890">isfinite</a> () const noexcept</td></tr>
+<tr class="separator:ac0fd7ab7953ba4fd1db70c5b6f2c9890"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a848e394f6641a7d95421f346a02086ae"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_fixed.html#a848e394f6641a7d95421f346a02086ae">isnan</a> () const noexcept</td></tr>
+<tr class="separator:a848e394f6641a7d95421f346a02086ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acab0e81520ba5aebe0254ef1d78058b9"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_fixed.html#acab0e81520ba5aebe0254ef1d78058b9">getsign</a> () const noexcept</td></tr>
+<tr class="separator:acab0e81520ba5aebe0254ef1d78058b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -936,6 +942,87 @@ template&lt;typename BASE_TYPE , unsigned int FRACTION_BITS&gt; </div>
 
 </div>
 </div>
+<a id="acab0e81520ba5aebe0254ef1d78058b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acab0e81520ba5aebe0254ef1d78058b9">&#9670;&nbsp;</a></span>getsign()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename BASE_TYPE , unsigned int FRACTION_BITS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr int <a class="el" href="classplayrho_1_1_fixed.html">playrho::Fixed</a>&lt; BASE_TYPE, FRACTION_BITS &gt;::getsign </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac0fd7ab7953ba4fd1db70c5b6f2c9890"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0fd7ab7953ba4fd1db70c5b6f2c9890">&#9670;&nbsp;</a></span>isfinite()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename BASE_TYPE , unsigned int FRACTION_BITS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool <a class="el" href="classplayrho_1_1_fixed.html">playrho::Fixed</a>&lt; BASE_TYPE, FRACTION_BITS &gt;::isfinite </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a848e394f6641a7d95421f346a02086ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a848e394f6641a7d95421f346a02086ae">&#9670;&nbsp;</a></span>isnan()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename BASE_TYPE , unsigned int FRACTION_BITS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool <a class="el" href="classplayrho_1_1_fixed.html">playrho::Fixed</a>&lt; BASE_TYPE, FRACTION_BITS &gt;::isnan </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ae5709dfd2f07e7129c9488e6e918353d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae5709dfd2f07e7129c9488e6e918353d">&#9670;&nbsp;</a></span>operator bool()</h2>
 
@@ -1509,7 +1596,7 @@ template&lt;typename BASE_TYPE , unsigned int FRACTION_BITS&gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 18 2017 17:08:32 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Sep 6 2017 12:29:47 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

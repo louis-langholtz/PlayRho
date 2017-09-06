@@ -1,7 +1,7 @@
 var searchData=
 [
   ['damping',['damping',['../structplayrho_1_1_rope_def.html#a34732ef511cc74be36fdfdba5899edfd',1,'playrho::RopeDef']]],
-  ['dampingratio',['dampingRatio',['../structplayrho_1_1_distance_joint_def.html#ac887d539abccca66a4e98bd446a8bdf7',1,'playrho::DistanceJointDef::dampingRatio()'],['../structplayrho_1_1_mouse_joint_def.html#a8d66e501431338706ebe295545094df3',1,'playrho::MouseJointDef::dampingRatio()'],['../structplayrho_1_1_weld_joint_def.html#a0474e4d3efa5452ebaf36241bede203c',1,'playrho::WeldJointDef::dampingRatio()'],['../structplayrho_1_1_wheel_joint_def.html#a61e2e9a833c37c0335f9b3b66fd09cc3',1,'playrho::WheelJointDef::dampingRatio()']]],
+  ['dampingratio',['dampingRatio',['../structplayrho_1_1_distance_joint_def.html#ac887d539abccca66a4e98bd446a8bdf7',1,'playrho::DistanceJointDef::dampingRatio()'],['../structplayrho_1_1_mouse_joint_def.html#a0fad622e3ebdda8a4ca243f8df6cf107',1,'playrho::MouseJointDef::dampingRatio()'],['../structplayrho_1_1_weld_joint_def.html#a0474e4d3efa5452ebaf36241bede203c',1,'playrho::WeldJointDef::dampingRatio()'],['../structplayrho_1_1_wheel_joint_def.html#a61e2e9a833c37c0335f9b3b66fd09cc3',1,'playrho::WheelJointDef::dampingRatio()']]],
   ['defaultaabbextension',['DefaultAabbExtension',['../namespaceplayrho.html#a3dd06178e859667c8f65b26c4e91972e',1,'playrho']]],
   ['defaultangularsleeptolerance',['DefaultAngularSleepTolerance',['../namespaceplayrho.html#a31907e80be5889667f03ef86ee3bbf0a',1,'playrho']]],
   ['defaultangularslop',['DefaultAngularSlop',['../namespaceplayrho.html#adfccbc3cd8cc0bb78701f62e041acdba',1,'playrho']]],
@@ -12,9 +12,11 @@ var searchData=
   ['defaultmaxangularcorrection',['DefaultMaxAngularCorrection',['../namespaceplayrho.html#ac8fea4a93f741aa800e943957fd23656',1,'playrho']]],
   ['defaultmaxdistanceiters',['DefaultMaxDistanceIters',['../namespaceplayrho.html#adea893c840466088049edc292dcc9dcb',1,'playrho']]],
   ['defaultmaxlinearcorrection',['DefaultMaxLinearCorrection',['../namespaceplayrho.html#aa7d2cfbedb9200e2ed973eb18cc3b23b',1,'playrho']]],
+  ['defaultmaxrotation',['DefaultMaxRotation',['../namespaceplayrho.html#a36c3a1adc34421b07e930a06ce905db1',1,'playrho']]],
   ['defaultmaxsubsteps',['DefaultMaxSubSteps',['../namespaceplayrho.html#aa678e38c906502e06a90f31e2acc952a',1,'playrho']]],
   ['defaultmaxtoiiters',['DefaultMaxToiIters',['../namespaceplayrho.html#ab6c87be197db81dde7d9f64ddd888bae',1,'playrho']]],
   ['defaultmaxtoirootiters',['DefaultMaxToiRootIters',['../namespaceplayrho.html#ad369e106022da8a461ed8a515014ee17',1,'playrho']]],
+  ['defaultmaxtranslation',['DefaultMaxTranslation',['../namespaceplayrho.html#a6b71ffce08877ce941d29616eb907114',1,'playrho']]],
   ['defaultmaxvertexradius',['DefaultMaxVertexRadius',['../namespaceplayrho.html#a7beadf6067bdf66f48ee9b94c337d252',1,'playrho']]],
   ['defaultminstilltimetosleep',['DefaultMinStillTimeToSleep',['../namespaceplayrho.html#a0e76508577c61a5bc9cc3107d60f3c1b',1,'playrho']]],
   ['defaultminvertexradius',['DefaultMinVertexRadius',['../namespaceplayrho.html#a174cfa632eb92c15bc2e48e7d09d216a',1,'playrho']]],

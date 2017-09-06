@@ -2,7 +2,7 @@ var searchData=
 [
   ['b',['b',['../structplayrho_1_1_witness_points.html#adb1cb3dbec6ea4ef427206633a5d0a41',1,'playrho::WitnessPoints::b()'],['../structplayrho_1_1_index_pair.html#a35db30e2d77104fb9c8c4c9a861097eb',1,'playrho::IndexPair::b()']]],
   ['back',['back',['../classplayrho_1_1_allocated_array.html#a3540320bd294a745acc8e09858b82d06',1,'playrho::AllocatedArray::back() noexcept'],['../classplayrho_1_1_allocated_array.html#ac086330d25d5b7b1ae2f9259a03717f9',1,'playrho::AllocatedArray::back() const noexcept']]],
-  ['begin',['begin',['../classplayrho_1_1_allocated_array.html#af9e21faf6a718b406e479284f3c0ad24',1,'playrho::AllocatedArray::begin()'],['../classplayrho_1_1_allocated_array.html#a1ff45f28211a17d0d04f8e40aec2a69d',1,'playrho::AllocatedArray::begin() const'],['../classplayrho_1_1_range.html#a32cbfc221110f65da76adbb318d8e9d8',1,'playrho::Range::begin()'],['../classplayrho_1_1_span.html#a3a5b487c1f1bd3836229446ee1cbb5b8',1,'playrho::Span::begin()'],['../classplayrho_1_1_vertex_set.html#af0a94312ff2a350fe191fea21af8b841',1,'playrho::VertexSet::begin()']]],
+  ['begin',['begin',['../classplayrho_1_1_allocated_array.html#af9e21faf6a718b406e479284f3c0ad24',1,'playrho::AllocatedArray::begin()'],['../classplayrho_1_1_allocated_array.html#a1ff45f28211a17d0d04f8e40aec2a69d',1,'playrho::AllocatedArray::begin() const'],['../classplayrho_1_1_range.html#a32cbfc221110f65da76adbb318d8e9d8',1,'playrho::Range::begin()'],['../classplayrho_1_1_span.html#a3a5b487c1f1bd3836229446ee1cbb5b8',1,'playrho::Span::begin()'],['../structplayrho_1_1_vector.html#ad9824fbd50d0f7e10de09463c06bdef3',1,'playrho::Vector::begin() noexcept'],['../structplayrho_1_1_vector.html#a8c258d644caf092481bca73788e33ce9',1,'playrho::Vector::begin() const noexcept'],['../classplayrho_1_1_vertex_set.html#af0a94312ff2a350fe191fea21af8b841',1,'playrho::VertexSet::begin()']]],
   ['begincontact',['BeginContact',['../classplayrho_1_1_contact_listener.html#a4905fa2b52163148647698b0ca821726',1,'playrho::ContactListener']]],
   ['belowposinf',['BelowPosInf',['../namespaceplayrho.html#a1f31f7e3449c760decd7f664e16b0390ad921987a0929f408ce3d9c1f5297f60e',1,'playrho']]],
   ['belowzero',['BelowZero',['../namespaceplayrho.html#a1f31f7e3449c760decd7f664e16b0390aa0b070c9fcba92b81efd9133622cab5a',1,'playrho']]],
@@ -14,7 +14,6 @@ var searchData=
   ['blocksize',['blockSize',['../struct_block_allocator_1_1_chunk.html#a9f089d6471c64f144bfd554b13bb215e',1,'BlockAllocator::Chunk']]],
   ['blocksizes',['BlockSizes',['../classplayrho_1_1_block_allocator.html#a23e7f083753aa14c4489206790f1cfa2',1,'playrho::BlockAllocator']]],
   ['blocksolve',['blockSolve',['../structplayrho_1_1_velocity_constraint_1_1_conf.html#a893642aed20d169784175630970e38d4',1,'playrho::VelocityConstraint::Conf']]],
-  ['blocksolvenormalconstraint',['BlockSolveNormalConstraint',['../namespaceplayrho_1_1_gauss_seidel.html#a33e4a5099d83fe67500aaf52a93d1d94',1,'playrho::GaussSeidel']]],
   ['bodies',['Bodies',['../classplayrho_1_1_island.html#a13856b7b6793fd23ff2dfe6356413eb0',1,'playrho::Island::Bodies()'],['../classplayrho_1_1_world.html#a43efb1f5fccb24379ab0f6b044923aa9',1,'playrho::World::Bodies()']]],
   ['bodiesslept',['bodiesSlept',['../structplayrho_1_1_reg_step_stats.html#ae8a6352918620a06c09a7801badc8f74',1,'playrho::RegStepStats']]],
   ['body',['Body',['../classplayrho_1_1_body.html',1,'playrho::Body'],['../classplayrho_1_1_body.html#aae69cb56627731b1687cc129c41b586c',1,'playrho::Body::Body()']]],
@@ -33,13 +32,8 @@ var searchData=
   ['bodytype',['BodyType',['../namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7',1,'playrho']]],
   ['boundedvalue',['BoundedValue',['../classplayrho_1_1_bounded_value.html',1,'playrho::BoundedValue&lt; T, lo, hi &gt;'],['../classplayrho_1_1_bounded_value.html#a33d97da9df72149de7af80326b99cfca',1,'playrho::BoundedValue::BoundedValue()']]],
   ['boundedvalue_3c_20angle_20_3e',['BoundedValue&lt; Angle &gt;',['../classplayrho_1_1_bounded_value.html',1,'playrho']]],
-  ['boundedvalue_3c_20density_20_3e',['BoundedValue&lt; Density &gt;',['../classplayrho_1_1_bounded_value.html',1,'playrho']]],
-  ['boundedvalue_3c_20force_20_3e',['BoundedValue&lt; Force &gt;',['../classplayrho_1_1_bounded_value.html',1,'playrho']]],
-  ['boundedvalue_3c_20frequency_20_3e',['BoundedValue&lt; Frequency &gt;',['../classplayrho_1_1_bounded_value.html',1,'playrho']]],
   ['boundedvalue_3c_20length_20_3e',['BoundedValue&lt; Length &gt;',['../classplayrho_1_1_bounded_value.html',1,'playrho']]],
-  ['boundedvalue_3c_20mass_20_3e',['BoundedValue&lt; Mass &gt;',['../classplayrho_1_1_bounded_value.html',1,'playrho']]],
   ['boundedvalue_3c_20real_20_3e',['BoundedValue&lt; Real &gt;',['../classplayrho_1_1_bounded_value.html',1,'playrho']]],
-  ['boundedvalue_3c_20rotinertia_20_3e',['BoundedValue&lt; RotInertia &gt;',['../classplayrho_1_1_bounded_value.html',1,'playrho']]],
   ['builder',['Builder',['../structplayrho_1_1_shape_1_1_builder.html',1,'playrho::Shape']]],
   ['bullet',['bullet',['../structplayrho_1_1_body_def.html#a3460b263dd82bc00cc245f067c9f9769',1,'playrho::BodyDef']]]
 ];

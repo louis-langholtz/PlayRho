@@ -83,6 +83,7 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_manifold_1_1_conf.html">Conf</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configuration data for manifold calculation.  <a href="structplayrho_1_1_manifold_1_1_conf.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_manifold_1_1_point.html">Point</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structplayrho_1_1_manifold_1_1_point.html" title="Point data for a manifold. ">Point</a> data for a manifold.  <a href="structplayrho_1_1_manifold_1_1_point.html#details">More...</a><br /></td></tr>
@@ -1183,6 +1184,10 @@ Behavior is undefined if this is called more than twice. </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section note"><dt>Note</dt><dd>Only valid for face-A or face-B type manifolds. </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Behavior is undefined for unset (e_unset) type manifolds. </dd>
+<dd>
+Behavior is undefined for circles (e_circles) type manifolds. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Local normal if the manifold type is face A or face B, else invalid value. </dd></dl>
 
 </div>
@@ -1209,7 +1214,8 @@ Behavior is undefined if this is called more than twice. </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This is the: local center of "circle" A for circles-type manifolds, the center of face A for face-A-type manifolds, and the center of face B for face-B-type manifolds. </p><dl class="section note"><dt>Note</dt><dd>Value invalid for unset (e_unset) type manifolds. </dd></dl>
+<p>This is the: local center of "circle" A for circles-type manifolds; the center of face A for face-A-type manifolds; or the center of face B for face-B-type manifolds. </p><dl class="section note"><dt>Note</dt><dd>Only valid for circle, face-A, or face-B type manifolds. </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Behavior is undefined for unset (e_unset) type manifolds. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Local point. </dd></dl>
 
 </div>
@@ -1408,7 +1414,7 @@ Behavior is undefined if this is called more than twice. </dd></dl>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 18 2017 17:08:33 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Sep 6 2017 12:29:47 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

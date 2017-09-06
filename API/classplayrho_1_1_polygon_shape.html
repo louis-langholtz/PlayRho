@@ -93,13 +93,14 @@ Inheritance diagram for playrho::PolygonShape:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_polygon_shape_1_1_conf.html">Conf</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configuration data for polygon shapes.  <a href="structplayrho_1_1_polygon_shape_1_1_conf.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a15667e8587f92f237e28cebc281f3c0f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_polygon_shape.html#a15667e8587f92f237e28cebc281f3c0f">vertex_count_t</a> = std::uint8_t</td></tr>
-<tr class="memdesc:a15667e8587f92f237e28cebc281f3c0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vertex count type.  <a href="#a15667e8587f92f237e28cebc281f3c0f">More...</a><br /></td></tr>
-<tr class="separator:a15667e8587f92f237e28cebc281f3c0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae97e9ffaaae21ad914d52fd5473680a2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_polygon_shape.html#ae97e9ffaaae21ad914d52fd5473680a2">VertexCounter</a> = std::remove_const&lt; decltype(<a class="el" href="namespaceplayrho.html#a0774f630ff2e5b9ed9e5f322700d44e4">MaxShapeVertices</a>)&gt;::type</td></tr>
+<tr class="memdesc:ae97e9ffaaae21ad914d52fd5473680a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vertex count type.  <a href="#ae97e9ffaaae21ad914d52fd5473680a2">More...</a><br /></td></tr>
+<tr class="separator:ae97e9ffaaae21ad914d52fd5473680a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -123,7 +124,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a41854f4b73e102832e5fd5cb15bc814a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1_mass_data.html">MassData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_polygon_shape.html#a41854f4b73e102832e5fd5cb15bc814a">GetMassData</a> () const noexcept override</td></tr>
 <tr class="memdesc:a41854f4b73e102832e5fd5cb15bc814a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the mass properties of this shape using its dimensions and density. The inertia tensor is computed about the local origin.  <a href="#a41854f4b73e102832e5fd5cb15bc814a">More...</a><br /></td></tr>
 <tr class="separator:a41854f4b73e102832e5fd5cb15bc814a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51dc777b237e21256d7974da77c31b20"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_polygon_shape.html#a51dc777b237e21256d7974da77c31b20">Accept</a> (<a class="el" href="structplayrho_1_1_shape_1_1_visitor.html">Visitor</a> &amp;visitor) const override</td></tr>
+<tr class="memitem:a51dc777b237e21256d7974da77c31b20"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_polygon_shape.html#a51dc777b237e21256d7974da77c31b20">Accept</a> (<a class="el" href="classplayrho_1_1_shape_1_1_visitor.html">Visitor</a> &amp;visitor) const override</td></tr>
 <tr class="memdesc:a51dc777b237e21256d7974da77c31b20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accepts a visitor.  <a href="#a51dc777b237e21256d7974da77c31b20">More...</a><br /></td></tr>
 <tr class="separator:a51dc777b237e21256d7974da77c31b20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add83315f6856539212db62cdae714742"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_polygon_shape.html#add83315f6856539212db62cdae714742">Set</a> (<a class="el" href="classplayrho_1_1_span.html">Span</a>&lt; const <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> &gt; points) noexcept</td></tr>
@@ -135,17 +136,17 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5ba8a4e47a1e6660e2d23c9a16f3cedd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_polygon_shape.html#a5ba8a4e47a1e6660e2d23c9a16f3cedd">SetAsBox</a> (<a class="el" href="namespaceplayrho.html#aa5947c843e4cc6f4a2e79cf3145a857c">Length</a> hx, <a class="el" href="namespaceplayrho.html#aa5947c843e4cc6f4a2e79cf3145a857c">Length</a> hy) noexcept</td></tr>
 <tr class="memdesc:a5ba8a4e47a1e6660e2d23c9a16f3cedd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build vertices to represent an axis-aligned box centered on the local origin.  <a href="#a5ba8a4e47a1e6660e2d23c9a16f3cedd">More...</a><br /></td></tr>
 <tr class="separator:a5ba8a4e47a1e6660e2d23c9a16f3cedd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77c612d9cc5fee10c2ad33d3f3b5838a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_polygon_shape.html#a77c612d9cc5fee10c2ad33d3f3b5838a">Transform</a> (<a class="el" href="structplayrho_1_1_transformation.html">Transformation</a> xfm) noexcept</td></tr>
-<tr class="separator:a77c612d9cc5fee10c2ad33d3f3b5838a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa184432eb4313a9dfec0e3d736a44933"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1_polygon_shape.html#a15667e8587f92f237e28cebc281f3c0f">vertex_count_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_polygon_shape.html#aa184432eb4313a9dfec0e3d736a44933">GetVertexCount</a> () const noexcept</td></tr>
-<tr class="memdesc:aa184432eb4313a9dfec0e3d736a44933"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the vertex count.  <a href="#aa184432eb4313a9dfec0e3d736a44933">More...</a><br /></td></tr>
-<tr class="separator:aa184432eb4313a9dfec0e3d736a44933"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1696714519278f0bc4bd7be6109ce6d3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_polygon_shape.html#a1696714519278f0bc4bd7be6109ce6d3">GetVertex</a> (<a class="el" href="classplayrho_1_1_polygon_shape.html#a15667e8587f92f237e28cebc281f3c0f">vertex_count_t</a> index) const</td></tr>
-<tr class="memdesc:a1696714519278f0bc4bd7be6109ce6d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a vertex by index.  <a href="#a1696714519278f0bc4bd7be6109ce6d3">More...</a><br /></td></tr>
-<tr class="separator:a1696714519278f0bc4bd7be6109ce6d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afae1bd6966e12e1922b53f50901fb91e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1_unit_vec2.html">UnitVec2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_polygon_shape.html#afae1bd6966e12e1922b53f50901fb91e">GetNormal</a> (<a class="el" href="classplayrho_1_1_polygon_shape.html#a15667e8587f92f237e28cebc281f3c0f">vertex_count_t</a> index) const</td></tr>
-<tr class="memdesc:afae1bd6966e12e1922b53f50901fb91e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a normal by index.  <a href="#afae1bd6966e12e1922b53f50901fb91e">More...</a><br /></td></tr>
-<tr class="separator:afae1bd6966e12e1922b53f50901fb91e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f4737e78b97ff56b585ef695ffbc30e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1_polygon_shape.html">PolygonShape</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_polygon_shape.html#a3f4737e78b97ff56b585ef695ffbc30e">Transform</a> (<a class="el" href="structplayrho_1_1_transformation.html">Transformation</a> xfm) noexcept</td></tr>
+<tr class="separator:a3f4737e78b97ff56b585ef695ffbc30e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b373f9589097743ea04da93040df537"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1_polygon_shape.html#ae97e9ffaaae21ad914d52fd5473680a2">VertexCounter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_polygon_shape.html#a6b373f9589097743ea04da93040df537">GetVertexCount</a> () const noexcept</td></tr>
+<tr class="memdesc:a6b373f9589097743ea04da93040df537"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the vertex count.  <a href="#a6b373f9589097743ea04da93040df537">More...</a><br /></td></tr>
+<tr class="separator:a6b373f9589097743ea04da93040df537"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab56b1c9c9e21f9ccc01104e075a71ace"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_polygon_shape.html#ab56b1c9c9e21f9ccc01104e075a71ace">GetVertex</a> (<a class="el" href="classplayrho_1_1_polygon_shape.html#ae97e9ffaaae21ad914d52fd5473680a2">VertexCounter</a> index) const</td></tr>
+<tr class="memdesc:ab56b1c9c9e21f9ccc01104e075a71ace"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a vertex by index.  <a href="#ab56b1c9c9e21f9ccc01104e075a71ace">More...</a><br /></td></tr>
+<tr class="separator:ab56b1c9c9e21f9ccc01104e075a71ace"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb25ef3d127db369e5c5fe4ff2a18197"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1_unit_vec2.html">UnitVec2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_polygon_shape.html#afb25ef3d127db369e5c5fe4ff2a18197">GetNormal</a> (<a class="el" href="classplayrho_1_1_polygon_shape.html#ae97e9ffaaae21ad914d52fd5473680a2">VertexCounter</a> index) const</td></tr>
+<tr class="memdesc:afb25ef3d127db369e5c5fe4ff2a18197"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a normal by index.  <a href="#afb25ef3d127db369e5c5fe4ff2a18197">More...</a><br /></td></tr>
+<tr class="separator:afb25ef3d127db369e5c5fe4ff2a18197"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad944dd20c5ecb2eb11a29dfabfbdec23"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1_span.html">Span</a>&lt; const <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_polygon_shape.html#ad944dd20c5ecb2eb11a29dfabfbdec23">GetVertices</a> () const noexcept</td></tr>
 <tr class="memdesc:ad944dd20c5ecb2eb11a29dfabfbdec23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the span of vertices.  <a href="#ad944dd20c5ecb2eb11a29dfabfbdec23">More...</a><br /></td></tr>
 <tr class="separator:ad944dd20c5ecb2eb11a29dfabfbdec23"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -164,22 +165,22 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a5c3b7add0873731605d41527c2ff17ad inherit pub_methods_classplayrho_1_1_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e34b0aef28342579e125bc02c796796 inherit pub_methods_classplayrho_1_1_shape"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_shape.html#a1e34b0aef28342579e125bc02c796796">~Shape</a> ()=default</td></tr>
 <tr class="separator:a1e34b0aef28342579e125bc02c796796 inherit pub_methods_classplayrho_1_1_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a2fe8e1a44ca6151ff279e2e9b9f51a inherit pub_methods_classplayrho_1_1_shape"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#aa5947c843e4cc6f4a2e79cf3145a857c">Length</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_shape.html#a4a2fe8e1a44ca6151ff279e2e9b9f51a">GetVertexRadius</a> () const noexcept</td></tr>
-<tr class="memdesc:a4a2fe8e1a44ca6151ff279e2e9b9f51a inherit pub_methods_classplayrho_1_1_shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the vertex radius.  <a href="classplayrho_1_1_shape.html#a4a2fe8e1a44ca6151ff279e2e9b9f51a">More...</a><br /></td></tr>
-<tr class="separator:a4a2fe8e1a44ca6151ff279e2e9b9f51a inherit pub_methods_classplayrho_1_1_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5c54d73365babc9969f9c0578f03d47 inherit pub_methods_classplayrho_1_1_shape"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_shape.html#ab5c54d73365babc9969f9c0578f03d47">SetVertexRadius</a> (<a class="el" href="namespaceplayrho.html#a9fe18ede8dde5668e26074f42298daa6">NonNegative</a>&lt; <a class="el" href="namespaceplayrho.html#aa5947c843e4cc6f4a2e79cf3145a857c">Length</a> &gt; vertexRadius) noexcept</td></tr>
+<tr class="memitem:a6b76df853ba0a82c33c9535cae23c850 inherit pub_methods_classplayrho_1_1_shape"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#afc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="namespaceplayrho.html#aa5947c843e4cc6f4a2e79cf3145a857c">Length</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_shape.html#a6b76df853ba0a82c33c9535cae23c850">GetVertexRadius</a> () const noexcept</td></tr>
+<tr class="memdesc:a6b76df853ba0a82c33c9535cae23c850 inherit pub_methods_classplayrho_1_1_shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the vertex radius.  <a href="classplayrho_1_1_shape.html#a6b76df853ba0a82c33c9535cae23c850">More...</a><br /></td></tr>
+<tr class="separator:a6b76df853ba0a82c33c9535cae23c850 inherit pub_methods_classplayrho_1_1_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5c54d73365babc9969f9c0578f03d47 inherit pub_methods_classplayrho_1_1_shape"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_shape.html#ab5c54d73365babc9969f9c0578f03d47">SetVertexRadius</a> (<a class="el" href="namespaceplayrho.html#afc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="namespaceplayrho.html#aa5947c843e4cc6f4a2e79cf3145a857c">Length</a> &gt; vertexRadius) noexcept</td></tr>
 <tr class="memdesc:ab5c54d73365babc9969f9c0578f03d47 inherit pub_methods_classplayrho_1_1_shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the vertex radius.  <a href="classplayrho_1_1_shape.html#ab5c54d73365babc9969f9c0578f03d47">More...</a><br /></td></tr>
 <tr class="separator:ab5c54d73365babc9969f9c0578f03d47 inherit pub_methods_classplayrho_1_1_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca49011b15a828c550d656951d53b392 inherit pub_methods_classplayrho_1_1_shape"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a956998debb1f72fdba51cb5fd9ce889b">Density</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_shape.html#aca49011b15a828c550d656951d53b392">GetDensity</a> () const noexcept</td></tr>
-<tr class="memdesc:aca49011b15a828c550d656951d53b392 inherit pub_methods_classplayrho_1_1_shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the density of this fixture.  <a href="classplayrho_1_1_shape.html#aca49011b15a828c550d656951d53b392">More...</a><br /></td></tr>
-<tr class="separator:aca49011b15a828c550d656951d53b392 inherit pub_methods_classplayrho_1_1_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b22421777f881a8ab07987a729863ae inherit pub_methods_classplayrho_1_1_shape"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_shape.html#a3b22421777f881a8ab07987a729863ae">SetDensity</a> (<a class="el" href="namespaceplayrho.html#a9fe18ede8dde5668e26074f42298daa6">NonNegative</a>&lt; <a class="el" href="namespaceplayrho.html#a956998debb1f72fdba51cb5fd9ce889b">Density</a> &gt; density) noexcept</td></tr>
+<tr class="memitem:ae3a8b49c00c095124f93b9d4dd0b0bce inherit pub_methods_classplayrho_1_1_shape"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#afc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="namespaceplayrho.html#a956998debb1f72fdba51cb5fd9ce889b">Density</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_shape.html#ae3a8b49c00c095124f93b9d4dd0b0bce">GetDensity</a> () const noexcept</td></tr>
+<tr class="memdesc:ae3a8b49c00c095124f93b9d4dd0b0bce inherit pub_methods_classplayrho_1_1_shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the density of this fixture.  <a href="classplayrho_1_1_shape.html#ae3a8b49c00c095124f93b9d4dd0b0bce">More...</a><br /></td></tr>
+<tr class="separator:ae3a8b49c00c095124f93b9d4dd0b0bce inherit pub_methods_classplayrho_1_1_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b22421777f881a8ab07987a729863ae inherit pub_methods_classplayrho_1_1_shape"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_shape.html#a3b22421777f881a8ab07987a729863ae">SetDensity</a> (<a class="el" href="namespaceplayrho.html#afc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="namespaceplayrho.html#a956998debb1f72fdba51cb5fd9ce889b">Density</a> &gt; density) noexcept</td></tr>
 <tr class="memdesc:a3b22421777f881a8ab07987a729863ae inherit pub_methods_classplayrho_1_1_shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the density of this fixture.  <a href="classplayrho_1_1_shape.html#a3b22421777f881a8ab07987a729863ae">More...</a><br /></td></tr>
 <tr class="separator:a3b22421777f881a8ab07987a729863ae inherit pub_methods_classplayrho_1_1_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16f8a5e215e8b451f776ff4864d4fbc9 inherit pub_methods_classplayrho_1_1_shape"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_shape.html#a16f8a5e215e8b451f776ff4864d4fbc9">GetFriction</a> () const noexcept</td></tr>
 <tr class="memdesc:a16f8a5e215e8b451f776ff4864d4fbc9 inherit pub_methods_classplayrho_1_1_shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the coefficient of friction.  <a href="classplayrho_1_1_shape.html#a16f8a5e215e8b451f776ff4864d4fbc9">More...</a><br /></td></tr>
 <tr class="separator:a16f8a5e215e8b451f776ff4864d4fbc9 inherit pub_methods_classplayrho_1_1_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a380019249a4073deae3534447cfc143b inherit pub_methods_classplayrho_1_1_shape"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_shape.html#a380019249a4073deae3534447cfc143b">SetFriction</a> (<a class="el" href="namespaceplayrho.html#a9fe18ede8dde5668e26074f42298daa6">NonNegative</a>&lt; <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> &gt; friction) noexcept</td></tr>
+<tr class="memitem:a380019249a4073deae3534447cfc143b inherit pub_methods_classplayrho_1_1_shape"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_shape.html#a380019249a4073deae3534447cfc143b">SetFriction</a> (<a class="el" href="namespaceplayrho.html#afc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> &gt; friction) noexcept</td></tr>
 <tr class="memdesc:a380019249a4073deae3534447cfc143b inherit pub_methods_classplayrho_1_1_shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the coefficient of friction.  <a href="classplayrho_1_1_shape.html#a380019249a4073deae3534447cfc143b">More...</a><br /></td></tr>
 <tr class="separator:a380019249a4073deae3534447cfc143b inherit pub_methods_classplayrho_1_1_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0219ee78b382d1749f3dd691a6e39425 inherit pub_methods_classplayrho_1_1_shape"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_shape.html#a0219ee78b382d1749f3dd691a6e39425">GetRestitution</a> () const noexcept</td></tr>
@@ -198,20 +199,20 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a72f46ac2954bf2533a81246a327f1de4"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_polygon_shape.html#a72f46ac2954bf2533a81246a327f1de4">InvalidVertex</a> = static_cast&lt;<a class="el" href="classplayrho_1_1_polygon_shape.html#a15667e8587f92f237e28cebc281f3c0f">vertex_count_t</a>&gt;(-1)</td></tr>
+<tr class="memitem:a72f46ac2954bf2533a81246a327f1de4"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_polygon_shape.html#a72f46ac2954bf2533a81246a327f1de4">InvalidVertex</a> = static_cast&lt;<a class="el" href="classplayrho_1_1_polygon_shape.html#ae97e9ffaaae21ad914d52fd5473680a2">VertexCounter</a>&gt;(-1)</td></tr>
 <tr class="separator:a72f46ac2954bf2533a81246a327f1de4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A convex polygon. The interior of the polygon is to the left of each edge. Polygons have a maximum number of vertices equal to MaxShapeVertices. In most cases you should not need many vertices for a convex polygon. </p><dl class="section note"><dt>Note</dt><dd>This data structure is 64-bytes large (with 4-byte Real). </dd></dl>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a15667e8587f92f237e28cebc281f3c0f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a15667e8587f92f237e28cebc281f3c0f">&#9670;&nbsp;</a></span>vertex_count_t</h2>
+<a id="ae97e9ffaaae21ad914d52fd5473680a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae97e9ffaaae21ad914d52fd5473680a2">&#9670;&nbsp;</a></span>VertexCounter</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classplayrho_1_1_polygon_shape.html#a15667e8587f92f237e28cebc281f3c0f">playrho::PolygonShape::vertex_count_t</a> =  std::uint8_t</td>
+          <td class="memname">using <a class="el" href="classplayrho_1_1_polygon_shape.html#ae97e9ffaaae21ad914d52fd5473680a2">playrho::PolygonShape::VertexCounter</a> =  std::remove_const&lt;decltype(<a class="el" href="namespaceplayrho.html#a0774f630ff2e5b9ed9e5f322700d44e4">MaxShapeVertices</a>)&gt;::type</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -375,7 +376,7 @@ collinear points are handled but not removed. Collinear points may lead to poor 
         <tr>
           <td class="memname">void playrho::PolygonShape::Accept </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structplayrho_1_1_shape_1_1_visitor.html">Visitor</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1_shape_1_1_visitor.html">Visitor</a> &amp;&#160;</td>
           <td class="paramname"><em>visitor</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -441,7 +442,7 @@ collinear points are handled but not removed. Collinear points may lead to poor 
 </div><div class="memdoc">
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classplayrho_1_1_invalid_argument.html">InvalidArgument</a></td><td>if the index is out of range. </td></tr>
+    <tr><td class="paramname"><a class="el" href="classplayrho_1_1_invalid_argument.html" title="Invalid argument logic error. ">InvalidArgument</a></td><td>if the index is out of range. </td></tr>
   </table>
   </dd>
 </dl>
@@ -556,8 +557,8 @@ collinear points are handled but not removed. Collinear points may lead to poor 
 
 </div>
 </div>
-<a id="afae1bd6966e12e1922b53f50901fb91e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afae1bd6966e12e1922b53f50901fb91e">&#9670;&nbsp;</a></span>GetNormal()</h2>
+<a id="afb25ef3d127db369e5c5fe4ff2a18197"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb25ef3d127db369e5c5fe4ff2a18197">&#9670;&nbsp;</a></span>GetNormal()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -568,7 +569,7 @@ collinear points are handled but not removed. Collinear points may lead to poor 
         <tr>
           <td class="memname"><a class="el" href="classplayrho_1_1_unit_vec2.html">UnitVec2</a> playrho::PolygonShape::GetNormal </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1_polygon_shape.html#a15667e8587f92f237e28cebc281f3c0f">vertex_count_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1_polygon_shape.html#ae97e9ffaaae21ad914d52fd5473680a2">VertexCounter</a>&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -614,8 +615,8 @@ collinear points are handled but not removed. Collinear points may lead to poor 
 
 </div>
 </div>
-<a id="a1696714519278f0bc4bd7be6109ce6d3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1696714519278f0bc4bd7be6109ce6d3">&#9670;&nbsp;</a></span>GetVertex()</h2>
+<a id="ab56b1c9c9e21f9ccc01104e075a71ace"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab56b1c9c9e21f9ccc01104e075a71ace">&#9670;&nbsp;</a></span>GetVertex()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -626,7 +627,7 @@ collinear points are handled but not removed. Collinear points may lead to poor 
         <tr>
           <td class="memname"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> playrho::PolygonShape::GetVertex </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1_polygon_shape.html#a15667e8587f92f237e28cebc281f3c0f">vertex_count_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1_polygon_shape.html#ae97e9ffaaae21ad914d52fd5473680a2">VertexCounter</a>&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -641,8 +642,8 @@ collinear points are handled but not removed. Collinear points may lead to poor 
 
 </div>
 </div>
-<a id="aa184432eb4313a9dfec0e3d736a44933"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa184432eb4313a9dfec0e3d736a44933">&#9670;&nbsp;</a></span>GetVertexCount()</h2>
+<a id="a6b373f9589097743ea04da93040df537"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b373f9589097743ea04da93040df537">&#9670;&nbsp;</a></span>GetVertexCount()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -651,7 +652,7 @@ collinear points are handled but not removed. Collinear points may lead to poor 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classplayrho_1_1_polygon_shape.html#a15667e8587f92f237e28cebc281f3c0f">PolygonShape::vertex_count_t</a> playrho::PolygonShape::GetVertexCount </td>
+          <td class="memname"><a class="el" href="classplayrho_1_1_polygon_shape.html#ae97e9ffaaae21ad914d52fd5473680a2">PolygonShape::VertexCounter</a> playrho::PolygonShape::GetVertexCount </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -795,8 +796,8 @@ collinear points are handled but not removed. Collinear points may lead to poor 
 
 </div>
 </div>
-<a id="a77c612d9cc5fee10c2ad33d3f3b5838a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a77c612d9cc5fee10c2ad33d3f3b5838a">&#9670;&nbsp;</a></span>Transform()</h2>
+<a id="a3f4737e78b97ff56b585ef695ffbc30e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f4737e78b97ff56b585ef695ffbc30e">&#9670;&nbsp;</a></span>Transform()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -805,7 +806,7 @@ collinear points are handled but not removed. Collinear points may lead to poor 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void PolygonShape::Transform </td>
+          <td class="memname"><a class="el" href="classplayrho_1_1_polygon_shape.html">PolygonShape</a> &amp; PolygonShape::Transform </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structplayrho_1_1_transformation.html">playrho::Transformation</a>&#160;</td>
           <td class="paramname"><em>xf</em></td><td>)</td>
@@ -832,7 +833,7 @@ collinear points are handled but not removed. Collinear points may lead to poor 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto playrho::PolygonShape::InvalidVertex = static_cast&lt;<a class="el" href="classplayrho_1_1_polygon_shape.html#a15667e8587f92f237e28cebc281f3c0f">vertex_count_t</a>&gt;(-1)</td>
+          <td class="memname">constexpr auto playrho::PolygonShape::InvalidVertex = static_cast&lt;<a class="el" href="classplayrho_1_1_polygon_shape.html#ae97e9ffaaae21ad914d52fd5473680a2">VertexCounter</a>&gt;(-1)</td>
         </tr>
       </table>
   </td>
@@ -851,7 +852,7 @@ collinear points are handled but not removed. Collinear points may lead to poor 
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 18 2017 17:08:33 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Sep 6 2017 12:29:47 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

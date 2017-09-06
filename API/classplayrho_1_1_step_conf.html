@@ -140,10 +140,10 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a1df1b4fee721cf88f35fc08879027033"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#ac3d39e514c48e6844b96f446a2b2c0bd">LinearVelocity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_step_conf.html#a1df1b4fee721cf88f35fc08879027033">velocityThreshold</a> = <a class="el" href="namespaceplayrho.html#a6497dbff92f4140c03fb29f7dc80093d">DefaultVelocityThreshold</a></td></tr>
 <tr class="memdesc:a1df1b4fee721cf88f35fc08879027033"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structplayrho_1_1_velocity.html" title="Velocity related data structure. ">Velocity</a> threshold.  <a href="#a1df1b4fee721cf88f35fc08879027033">More...</a><br /></td></tr>
 <tr class="separator:a1df1b4fee721cf88f35fc08879027033"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3d3dd18627b28b89a94eb32bb0763f7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#aa5947c843e4cc6f4a2e79cf3145a857c">Length</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_step_conf.html#ac3d3dd18627b28b89a94eb32bb0763f7">maxTranslation</a> = <a class="el" href="namespaceplayrho.html#ab5d1d9c70d11cff5fb552e939de39b9c">Meter</a> * <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(4)</td></tr>
+<tr class="memitem:ac3d3dd18627b28b89a94eb32bb0763f7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#aa5947c843e4cc6f4a2e79cf3145a857c">Length</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_step_conf.html#ac3d3dd18627b28b89a94eb32bb0763f7">maxTranslation</a> = <a class="el" href="namespaceplayrho.html#a6b71ffce08877ce941d29616eb907114">DefaultMaxTranslation</a></td></tr>
 <tr class="memdesc:ac3d3dd18627b28b89a94eb32bb0763f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum translation.  <a href="#ac3d3dd18627b28b89a94eb32bb0763f7">More...</a><br /></td></tr>
 <tr class="separator:ac3d3dd18627b28b89a94eb32bb0763f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ab48d76f772682e5d2d2d937eacdde4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a522e22aca3e8c6d497a6308995337bac">Angle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_step_conf.html#a0ab48d76f772682e5d2d2d937eacdde4">maxRotation</a> = <a class="el" href="namespaceplayrho.html#aebbe3f5282db32af8292500e505e21e5">Radian</a> * (<a class="el" href="namespaceplayrho.html#a3fe0bdbb0ea9c449b7504f7c75840993">Pi</a> / 2)</td></tr>
+<tr class="memitem:a0ab48d76f772682e5d2d2d937eacdde4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a522e22aca3e8c6d497a6308995337bac">Angle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_step_conf.html#a0ab48d76f772682e5d2d2d937eacdde4">maxRotation</a> = <a class="el" href="namespaceplayrho.html#a36c3a1adc34421b07e930a06ce905db1">DefaultMaxRotation</a></td></tr>
 <tr class="memdesc:a0ab48d76f772682e5d2d2d937eacdde4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum rotation.  <a href="#a0ab48d76f772682e5d2d2d937eacdde4">More...</a><br /></td></tr>
 <tr class="separator:a0ab48d76f772682e5d2d2d937eacdde4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24913ef211ff767753c1eb318e0514da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#aa5947c843e4cc6f4a2e79cf3145a857c">Length</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_step_conf.html#a24913ef211ff767753c1eb318e0514da">maxLinearCorrection</a> = <a class="el" href="namespaceplayrho.html#aa7d2cfbedb9200e2ed973eb18cc3b23b">DefaultMaxLinearCorrection</a></td></tr>
@@ -607,11 +607,17 @@ Used in both the regular and TOI phases of step processing. </dd></dl>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceplayrho.html#a522e22aca3e8c6d497a6308995337bac">Angle</a> playrho::StepConf::maxRotation = <a class="el" href="namespaceplayrho.html#aebbe3f5282db32af8292500e505e21e5">Radian</a> * (<a class="el" href="namespaceplayrho.html#a3fe0bdbb0ea9c449b7504f7c75840993">Pi</a> / 2)</td>
+          <td class="memname"><a class="el" href="namespaceplayrho.html#a522e22aca3e8c6d497a6308995337bac">Angle</a> playrho::StepConf::maxRotation = <a class="el" href="namespaceplayrho.html#a36c3a1adc34421b07e930a06ce905db1">DefaultMaxRotation</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>The maximum angular velocity of a body. </p><dl class="section note"><dt>Note</dt><dd>This limit is very large and is used to prevent numerical problems. You shouldn't need to adjust this. </dd>
+<p>The maximum amount a body can rotate in a single step. This represents an upper bound on the maximum angular speed of a body of maxRotation / time.</p>
+<dl class="section warning"><dt>Warning</dt><dd>This value should be less than Pi * Radian.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>If you want or need to support a higher maximum angular speed, then instead of changing this value, decrease the step's time value. So for example, rather than simulating 1/60th of a second steps, simulating 1/120th of a second steps will double the maximum angular rotation any body can have. </dd>
+<dd>
+This limit is meant to prevent numerical problems. Adjusting this value isn't advised. </dd>
+<dd>
+If this value is less than half a turn (less than Pi), then the turning direction will be the direction of the smaller change in angular orientation. This is an appealing property as it means that a body's angular position can be represented by a unit vector rather than an angular quantity. The benefit of using a unit vector is potentially two-fold: (a) unit vectors have well-defined and understood wrap-around semantics, (b) unit vectors can cache sine/cosine calculations thereby reducing their costs in time. </dd>
 <dd>
 Used in both the regular and TOI phases of step processing. </dd></dl>
 
@@ -669,11 +675,14 @@ Used in both the regular and TOI phases of step processing. </dd></dl>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceplayrho.html#aa5947c843e4cc6f4a2e79cf3145a857c">Length</a> playrho::StepConf::maxTranslation = <a class="el" href="namespaceplayrho.html#ab5d1d9c70d11cff5fb552e939de39b9c">Meter</a> * <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(4)</td>
+          <td class="memname"><a class="el" href="namespaceplayrho.html#aa5947c843e4cc6f4a2e79cf3145a857c">Length</a> playrho::StepConf::maxTranslation = <a class="el" href="namespaceplayrho.html#a6b71ffce08877ce941d29616eb907114">DefaultMaxTranslation</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>The maximum linear velocity of a body. </p><dl class="section note"><dt>Note</dt><dd>This limit is very large and is used to prevent numerical problems. You shouldn't need to adjust this. </dd>
+<p>The maximum amount a body can translate in a single step. This represents an upper bound on the maximum linear velocity of a body of maxTranslation / time.</p>
+<dl class="section note"><dt>Note</dt><dd>If you want or need to support a higher maximum linear speed, then instead of changing this value, decrease the step's time value. So for example, rather than simulating 1/60th of a second steps, simulating 1/120th of a second steps will double the maximum linear speed any body can have. </dd>
+<dd>
+This limit is meant to prevent numerical problems. Adjusting this value isn't advised. </dd>
 <dd>
 Used in both the regular and TOI phases of step processing. </dd></dl>
 
@@ -690,7 +699,7 @@ Used in both the regular and TOI phases of step processing. </dd></dl>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>The time that a body must be still before it will be put to sleep. </p><dl class="section note"><dt>Note</dt><dd>Set to an invalid value to disable sleeping. </dd>
+<p>The time that a body must be still before it will be put to sleep. </p><dl class="section note"><dt>Note</dt><dd>Set to infinity to disable sleeping. </dd>
 <dd>
 Used in the regular phase processing of the step. </dd></dl>
 
@@ -915,7 +924,7 @@ Used in the TOI phase of step processing. </dd></dl>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 18 2017 17:08:33 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Sep 6 2017 12:29:47 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

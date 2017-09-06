@@ -12,11 +12,10 @@ var searchData=
   ['_7eflagguard',['~FlagGuard',['../classplayrho_1_1_flag_guard.html#a1649a18e1024ccbc6e8704b2f381f31e',1,'playrho::FlagGuard']]],
   ['_7egrowablestack',['~GrowableStack',['../classplayrho_1_1_growable_stack.html#a1b8cf90e8ed8c94408746c241e5d0fb6',1,'playrho::GrowableStack']]],
   ['_7eisland',['~Island',['../classplayrho_1_1_island.html#a37d352188865d77ab9aed261ac679c56',1,'playrho::Island']]],
-  ['_7ejoint',['~Joint',['../classplayrho_1_1_joint.html#afaad7531c4f4e03d43a5881e439fadc3',1,'playrho::Joint']]],
-  ['_7eraiiwrapper',['~RaiiWrapper',['../classplayrho_1_1_raii_wrapper.html#a252ebab4f936bb809ae90388cdb5f6be',1,'playrho::RaiiWrapper']]],
+  ['_7ejoint',['~Joint',['../classplayrho_1_1_joint.html#a353f5c7885b0761c760f8c09c5110cb6',1,'playrho::Joint']]],
   ['_7erope',['~Rope',['../classplayrho_1_1_rope.html#a4f79ce3cdb606debb298c3a0f81153ef',1,'playrho::Rope']]],
   ['_7eshape',['~Shape',['../classplayrho_1_1_shape.html#a1e34b0aef28342579e125bc02c796796',1,'playrho::Shape']]],
   ['_7estackallocator',['~StackAllocator',['../classplayrho_1_1_stack_allocator.html#a95796512a425aa969779c894694f31d4',1,'playrho::StackAllocator']]],
-  ['_7evisitor',['~Visitor',['../structplayrho_1_1_shape_1_1_visitor.html#ab9fa088c366fd51c7719191dcac60c83',1,'playrho::Shape::Visitor']]],
+  ['_7evisitor',['~Visitor',['../classplayrho_1_1_shape_1_1_visitor.html#ab9fa088c366fd51c7719191dcac60c83',1,'playrho::Shape::Visitor']]],
   ['_7eworld',['~World',['../classplayrho_1_1_world.html#a2e1b0a8c5c030be501818fd6a663b328',1,'playrho::World']]]
 ];

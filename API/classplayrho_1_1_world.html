@@ -227,8 +227,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa8a796752528d2eebbd8c42079465ad1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_world.html#aa8a796752528d2eebbd8c42079465ad1">DestroyFixture</a> (<a class="el" href="classplayrho_1_1_fixture.html">Fixture</a> *fixture, bool resetMassData=true)</td></tr>
 <tr class="memdesc:aa8a796752528d2eebbd8c42079465ad1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys a fixture.  <a href="#aa8a796752528d2eebbd8c42079465ad1">More...</a><br /></td></tr>
 <tr class="separator:aa8a796752528d2eebbd8c42079465ad1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4fb08c52262a068d200768035a3f9f63"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_world.html#a4fb08c52262a068d200768035a3f9f63">IsValid</a> (std::shared_ptr&lt; const <a class="el" href="classplayrho_1_1_shape.html">Shape</a> &gt; shape) const noexcept</td></tr>
-<tr class="separator:a4fb08c52262a068d200768035a3f9f63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77df3e750753b4f0baf0136c5fb14af5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_world.html#a77df3e750753b4f0baf0136c5fb14af5">TouchProxies</a> (<a class="el" href="classplayrho_1_1_fixture.html">Fixture</a> &amp;fixture) noexcept</td></tr>
 <tr class="memdesc:a77df3e750753b4f0baf0136c5fb14af5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Touches each proxy of the given fixture.  <a href="#a77df3e750753b4f0baf0136c5fb14af5">More...</a><br /></td></tr>
 <tr class="separator:a77df3e750753b4f0baf0136c5fb14af5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -237,7 +235,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The world class manages all physics entities, dynamic simulation, and queries.</p>
-<dl class="section note"><dt>Note</dt><dd>From a memory management perspective, world instances own <a class="el" href="classplayrho_1_1_body.html" title="A physical entity that exists within a World. ">Body</a>, <a class="el" href="classplayrho_1_1_joint.html" title="Base Joint class. ">Joint</a>, and <a class="el" href="classplayrho_1_1_contact.html" title="A potential contact between the chidren of two Fixture objects. ">Contact</a> instances. </dd>
+<dl class="section note"><dt>Note</dt><dd>From a memory management perspective, world instances own <a class="el" href="classplayrho_1_1_body.html" title="A physical entity that exists within a World. ">Body</a>, <a class="el" href="classplayrho_1_1_joint.html" title="Base joint class. ">Joint</a>, and <a class="el" href="classplayrho_1_1_contact.html" title="A potential contact between the chidren of two Fixture objects. ">Contact</a> instances. </dd>
 <dd>
 This data structure is 352-bytes large (with 4-byte Real on at least one 64-bit platform). </dd></dl>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
@@ -280,7 +278,7 @@ This data structure is 352-bytes large (with 4-byte Real on at least one 64-bit 
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section note"><dt>Note</dt><dd>Cannot be container of <a class="el" href="classplayrho_1_1_joint.html" title="Base Joint class. ">Joint</a> instances since joints are polymorphic types. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Cannot be container of <a class="el" href="classplayrho_1_1_joint.html" title="Base joint class. ">Joint</a> instances since joints are polymorphic types. </dd></dl>
 
 </div>
 </div>
@@ -396,7 +394,7 @@ This data structure is 352-bytes large (with 4-byte Real on at least one 64-bit 
 </div><div class="memdoc">
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classplayrho_1_1_invalid_argument.html">InvalidArgument</a></td><td>if the given max vertex radius is less than the min. </td></tr>
+    <tr><td class="paramname"><a class="el" href="classplayrho_1_1_invalid_argument.html" title="Invalid argument logic error. ">InvalidArgument</a></td><td>if the given max vertex radius is less than the min. </td></tr>
   </table>
   </dd>
 </dl>
@@ -482,6 +480,13 @@ This data structure is 352-bytes large (with 4-byte Real on at least one 64-bit 
 </div><div class="memdoc">
 <dl class="section note"><dt>Note</dt><dd>No reference to the definition is retained. </dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>This function is locked during callbacks. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to newly created body. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classplayrho_1_1_length_error.html" title="Length based logic error. ">LengthError</a></td><td>if this operation would create more than MaxBodies. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -541,7 +546,13 @@ This data structure is 352-bytes large (with 4-byte Real on at least one 64-bit 
       </table>
 </div><div class="memdoc">
 <p>No reference to the definition is retained. This may cause the connected bodies to cease colliding. </p><dl class="section warning"><dt>Warning</dt><dd>This function is locked during callbacks. </dd></dl>
-<dl class="section return"><dt>Returns</dt><dd><code>nullptr</code> if world has <code>MaxJoints</code>, else pointer to newly created joint. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to newly created joint. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classplayrho_1_1_length_error.html" title="Length based logic error. ">LengthError</a></td><td>if this operation would create more than MaxJoints. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -588,7 +599,7 @@ This function is locked during callbacks. </dd></dl>
 Behavior is undefined if the passed joint was not created by this world.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">joint</td><td><a class="el" href="classplayrho_1_1_joint.html" title="Base Joint class. ">Joint</a>, created by this world, to destroy. </td></tr>
+    <tr><td class="paramname">joint</td><td><a class="el" href="classplayrho_1_1_joint.html" title="Base joint class. ">Joint</a>, created by this world, to destroy. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1043,32 +1054,6 @@ Behavior is undefined if the passed joint was not created by this world.</dd></d
 
 </div>
 </div>
-<a id="a4fb08c52262a068d200768035a3f9f63"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4fb08c52262a068d200768035a3f9f63">&#9670;&nbsp;</a></span>IsValid()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool playrho::World::IsValid </td>
-          <td>(</td>
-          <td class="paramtype">std::shared_ptr&lt; const <a class="el" href="classplayrho_1_1_shape.html">Shape</a> &gt;&#160;</td>
-          <td class="paramname"><em>shape</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="aec444f6f4e5e24052d12efacdbed41a6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aec444f6f4e5e24052d12efacdbed41a6">&#9670;&nbsp;</a></span>operator=()</h2>
 
@@ -1487,7 +1472,7 @@ This sets things up so that pairs may be created for potentially new contacts. <
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 18 2017 17:08:33 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Sep 6 2017 12:29:47 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

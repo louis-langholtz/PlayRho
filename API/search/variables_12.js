@@ -16,7 +16,7 @@ var searchData=
   ['tolerance',['tolerance',['../structplayrho_1_1_manifold_1_1_conf.html#a307776b35f34436d03801d840042d3a0',1,'playrho::Manifold::Conf::tolerance()'],['../structplayrho_1_1_toi_conf.html#aded32e8f84ef055fb9c3c20cdbd76a83',1,'playrho::ToiConf::tolerance()'],['../classplayrho_1_1_step_conf.html#ad5819614ffc090f37721fbc35c2f6459',1,'playrho::StepConf::tolerance()']]],
   ['transform_5fidentity',['Transform_identity',['../namespaceplayrho.html#a2359d30531cd966a49a40e893cbd94af',1,'playrho']]],
   ['traps',['traps',['../classstd_1_1numeric__limits_3_01playrho_1_1_fixed32_01_4.html#a85d30e1310aa1269f40f12b02c8c0c12',1,'std::numeric_limits&lt; playrho::Fixed32 &gt;::traps()'],['../classstd_1_1numeric__limits_3_01playrho_1_1_fixed64_01_4.html#a8420717041df828f0010312556b82cfd',1,'std::numeric_limits&lt; playrho::Fixed64 &gt;::traps()']]],
-  ['type',['type',['../structplayrho_1_1_body_def.html#ac66acf00436a0125a8b566fedc37afdb',1,'playrho::BodyDef::type()'],['../structplayrho_1_1_joint_def.html#a8d0081742ddcb1ba560a2b044851b859',1,'playrho::JointDef::type()']]],
+  ['type',['type',['../structplayrho_1_1_body_def.html#ac66acf00436a0125a8b566fedc37afdb',1,'playrho::BodyDef::type()'],['../structplayrho_1_1_joint_def.html#a5048aa19278e5f89219ed73c3a54e7a0',1,'playrho::JointDef::type()']]],
   ['typea',['typeA',['../structplayrho_1_1_contact_feature.html#a5c088ec7e1896a2b461674065d195dad',1,'playrho::ContactFeature']]],
   ['typeb',['typeB',['../structplayrho_1_1_contact_feature.html#aeed0a48d9b920fc4a044d12f506905f0',1,'playrho::ContactFeature']]]
 ];

@@ -1,8 +1,14 @@
 var searchData=
 [
-  ['toiconf',['ToiConf',['../structplayrho_1_1_toi_conf.html',1,'playrho']]],
-  ['toioutput',['TOIOutput',['../classplayrho_1_1_t_o_i_output.html',1,'playrho']]],
-  ['toistepstats',['ToiStepStats',['../structplayrho_1_1_toi_step_stats.html',1,'playrho']]],
-  ['transformation',['Transformation',['../structplayrho_1_1_transformation.html',1,'playrho']]],
-  ['tuple_5fsize_3c_20playrho_3a_3aarraylist_3c_20t_2c_20n_2c_20size_5ftype_20_3e_20_3e',['tuple_size&lt; playrho::ArrayList&lt; T, N, SIZE_TYPE &gt; &gt;',['../classstd_1_1tuple__size_3_01playrho_1_1_array_list_3_01_t_00_01_n_00_01_s_i_z_e___t_y_p_e_01_4_01_4.html',1,'std']]]
+  ['separationfinder',['SeparationFinder',['../classplayrho_1_1_separation_finder.html',1,'playrho']]],
+  ['shape',['Shape',['../classplayrho_1_1_shape.html',1,'playrho']]],
+  ['simplex',['Simplex',['../classplayrho_1_1_simplex.html',1,'playrho']]],
+  ['simplexedge',['SimplexEdge',['../classplayrho_1_1_simplex_edge.html',1,'playrho']]],
+  ['sizedrange',['SizedRange',['../classplayrho_1_1_sized_range.html',1,'playrho']]],
+  ['span',['Span',['../classplayrho_1_1_span.html',1,'playrho']]],
+  ['stackallocator',['StackAllocator',['../classplayrho_1_1_stack_allocator.html',1,'playrho']]],
+  ['stats',['Stats',['../structplayrho_1_1_t_o_i_output_1_1_stats.html',1,'playrho::TOIOutput']]],
+  ['stepconf',['StepConf',['../classplayrho_1_1_step_conf.html',1,'playrho']]],
+  ['stepstats',['StepStats',['../structplayrho_1_1_step_stats.html',1,'playrho']]],
+  ['sweep',['Sweep',['../classplayrho_1_1_sweep.html',1,'playrho']]]
 ];

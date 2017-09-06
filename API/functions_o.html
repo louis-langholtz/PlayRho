@@ -69,6 +69,7 @@ $(function() {
 </li>
 <li>operator bool()
 : <a class="el" href="classplayrho_1_1_fixed.html#ae5709dfd2f07e7129c9488e6e918353d">playrho::Fixed&lt; BASE_TYPE, FRACTION_BITS &gt;</a>
+, <a class="el" href="classplayrho_1_1_optional_value.html#a55dd00c633efbc101da5289f530d7baa">playrho::OptionalValue&lt; T &gt;</a>
 </li>
 <li>operator double()
 : <a class="el" href="classplayrho_1_1_fixed.html#ad3ba72907e86d63b812e666231a601fc">playrho::Fixed&lt; BASE_TYPE, FRACTION_BITS &gt;</a>
@@ -101,7 +102,7 @@ $(function() {
 : <a class="el" href="classplayrho_1_1_fixed.html#a2af07f2b5055a07f22368fe836ef1453">playrho::Fixed&lt; BASE_TYPE, FRACTION_BITS &gt;</a>
 </li>
 <li>operator value_type()
-: <a class="el" href="classplayrho_1_1_bounded_value.html#a516de823de79645983bd24321aef54db">playrho::BoundedValue&lt; T, lo, hi &gt;</a>
+: <a class="el" href="classplayrho_1_1_bounded_value.html#a339dce884e52dbf9aaac843c566a53c3">playrho::BoundedValue&lt; T, lo, hi &gt;</a>
 </li>
 <li>operator!()
 : <a class="el" href="classplayrho_1_1_fixed.html#abbb2f31d378da7ae7536aca6abfb0606">playrho::Fixed&lt; BASE_TYPE, FRACTION_BITS &gt;</a>
@@ -117,7 +118,8 @@ $(function() {
 , <a class="el" href="structstd_1_1less_3_01playrho_1_1_joint_key_01_4.html#ad19b8705c232115ddd502ec6b87ff239">std::less&lt; playrho::JointKey &gt;</a>
 </li>
 <li>operator*()
-: <a class="el" href="classplayrho_1_1_bounded_value.html#a8a6f5f1d8e731611fead172dc71b85d1">playrho::BoundedValue&lt; T, lo, hi &gt;</a>
+: <a class="el" href="classplayrho_1_1_bounded_value.html#ae8e737c58f96b4e1e2b0a56963b748bd">playrho::BoundedValue&lt; T, lo, hi &gt;</a>
+, <a class="el" href="classplayrho_1_1_optional_value.html#a85f2b90b8500433aec494bd1ca94bc93">playrho::OptionalValue&lt; T &gt;</a>
 </li>
 <li>operator*=()
 : <a class="el" href="classplayrho_1_1_fixed.html#a47b9aa9664387ebf269ffc073e7fbe7b">playrho::Fixed&lt; BASE_TYPE, FRACTION_BITS &gt;</a>
@@ -125,7 +127,6 @@ $(function() {
 <li>operator+()
 : <a class="el" href="classplayrho_1_1_fixed.html#a5f378df30e254120e594223e9801a281">playrho::Fixed&lt; BASE_TYPE, FRACTION_BITS &gt;</a>
 , <a class="el" href="classplayrho_1_1_unit_vec2.html#a0d8f840d551b0a6be2e026e71ce8c932">playrho::UnitVec2</a>
-, <a class="el" href="structplayrho_1_1_vector3_d.html#af9bd1e45cf7a42397d6752068076b53b">playrho::Vector3D&lt; TYPE &gt;</a>
 </li>
 <li>operator+=()
 : <a class="el" href="classplayrho_1_1_fixed.html#a5b68036c517ccebcb91d7137570993ed">playrho::Fixed&lt; BASE_TYPE, FRACTION_BITS &gt;</a>
@@ -133,14 +134,13 @@ $(function() {
 <li>operator-()
 : <a class="el" href="classplayrho_1_1_fixed.html#a75b6c941518b707b47d7402c8c5a46c8">playrho::Fixed&lt; BASE_TYPE, FRACTION_BITS &gt;</a>
 , <a class="el" href="classplayrho_1_1_unit_vec2.html#aa0044fd4a9d80ae844db1071fcf386c2">playrho::UnitVec2</a>
-, <a class="el" href="structplayrho_1_1_vector2_d.html#a57b594c21fb4998e152273910d0a72d6">playrho::Vector2D&lt; TYPE &gt;</a>
-, <a class="el" href="structplayrho_1_1_vector3_d.html#aef503189329ac9562f6fdcceca6d8216">playrho::Vector3D&lt; TYPE &gt;</a>
 </li>
 <li>operator-=()
 : <a class="el" href="classplayrho_1_1_fixed.html#aa3c1e6b5cfe89b1c156116a6c8d85e21">playrho::Fixed&lt; BASE_TYPE, FRACTION_BITS &gt;</a>
 </li>
 <li>operator-&gt;()
-: <a class="el" href="classplayrho_1_1_bounded_value.html#a7e8fd7eddb394cb9e66b21d1c7e17410">playrho::BoundedValue&lt; T, lo, hi &gt;</a>
+: <a class="el" href="classplayrho_1_1_bounded_value.html#a66df83856ea889e6bdfeea18df52bb3d">playrho::BoundedValue&lt; T, lo, hi &gt;</a>
+, <a class="el" href="classplayrho_1_1_optional_value.html#a6ed5de0a73711a080f310778ac7bde7f">playrho::OptionalValue&lt; T &gt;</a>
 </li>
 <li>operator/=()
 : <a class="el" href="classplayrho_1_1_fixed.html#a14c68cc3fc0dbb7c4439d125376d3b5c">playrho::Fixed&lt; BASE_TYPE, FRACTION_BITS &gt;</a>
@@ -151,20 +151,24 @@ $(function() {
 , <a class="el" href="classplayrho_1_1_disk_shape.html#a5bf6fd7cfe2c5b006601c4e2a0f8d0c2">playrho::DiskShape</a>
 , <a class="el" href="classplayrho_1_1_dynamic_tree.html#a373eb201bbd03995c868a890534cc619">playrho::DynamicTree</a>
 , <a class="el" href="classplayrho_1_1_island.html#abe7c277618d89866ffd6c1dff5029f28">playrho::Island</a>
+, <a class="el" href="classplayrho_1_1_optional_value.html#a6fb2468b7cebcb512239348dc49a9bbe">playrho::OptionalValue&lt; T &gt;</a>
 , <a class="el" href="classplayrho_1_1_velocity_constraint.html#aee601c99a937161e445095f6d9df683c">playrho::VelocityConstraint</a>
 , <a class="el" href="classplayrho_1_1_world.html#aec444f6f4e5e24052d12efacdbed41a6">playrho::World</a>
 </li>
 <li>operator[]()
 : <a class="el" href="classplayrho_1_1_allocated_array.html#a9491c00891d7a2346bcbb49098914963">playrho::AllocatedArray&lt; T, Deleter &gt;</a>
 , <a class="el" href="classplayrho_1_1_span.html#af9975d64194fada4d335663c9b64ce8d">playrho::Span&lt; T &gt;</a>
-, <a class="el" href="structplayrho_1_1_vector2_d.html#a45fe751ae4ac200258948005430a0f10">playrho::Vector2D&lt; TYPE &gt;</a>
+, <a class="el" href="structplayrho_1_1_vector.html#a7d6cee469e8b0c06567f83feda2ce65d">playrho::Vector&lt; N, T &gt;</a>
 , <a class="el" href="classplayrho_1_1_vertex_set.html#aa4113bd96f7eb0aa6f7e59723451e5f1">playrho::VertexSet</a>
+</li>
+<li>OptionalValue()
+: <a class="el" href="classplayrho_1_1_optional_value.html#a9b18e64a19f349e5761f40d500ed702f">playrho::OptionalValue&lt; T &gt;</a>
 </li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 18 2017 17:08:33 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Sep 6 2017 12:29:47 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

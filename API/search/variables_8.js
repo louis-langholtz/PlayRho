@@ -2,6 +2,7 @@ var searchData=
 [
   ['i',['I',['../structplayrho_1_1_mass_data.html#a534cbe3ce9ccdef681e05600ff40ffdc',1,'playrho::MassData']]],
   ['ignored',['ignored',['../structplayrho_1_1_pre_step_stats.html#a935bdc19edba8c3a8e4e83203d5ff534',1,'playrho::PreStepStats']]],
+  ['impulse',['impulse',['../structplayrho_1_1_world_manifold_1_1_point_data.html#a1d7cf8221af78d83d06edb808224abb5',1,'playrho::WorldManifold::PointData']]],
   ['index',['index',['../structplayrho_1_1_index_separation.html#a60ce84789b2800019a9e52fbd3d2a171',1,'playrho::IndexSeparation']]],
   ['index1',['index1',['../structplayrho_1_1_index_pair_separation.html#a9fc8a3891efe9e3ec871dfa3137fbcd8',1,'playrho::IndexPairSeparation']]],
   ['index2',['index2',['../structplayrho_1_1_index_pair_separation.html#ad2d62f0f57eb3489f810836e7f4151e4',1,'playrho::IndexPairSeparation']]],
@@ -10,6 +11,7 @@ var searchData=
   ['indexpair',['indexPair',['../structplayrho_1_1_separation_finder_1_1_data.html#a3fa7bb779f4619ac122d71e107fb592f',1,'playrho::SeparationFinder::Data']]],
   ['invalidcontactindex',['InvalidContactIndex',['../namespaceplayrho.html#a4ecc8cc059a2a3fa056888a1d405e4bc',1,'playrho']]],
   ['invalidindex',['InvalidIndex',['../classplayrho_1_1_distance_proxy.html#a6b70c4ae80fb1f4d543f6263ecf35bb3',1,'playrho::DistanceProxy::InvalidIndex()'],['../classplayrho_1_1_dynamic_tree.html#a62a7c2bbb4617df1e9f745948e85a99c',1,'playrho::DynamicTree::InvalidIndex()'],['../structplayrho_1_1_index_pair.html#a4b708b34612006a2fe4bbbf33b6a052a',1,'playrho::IndexPair::InvalidIndex()'],['../structplayrho_1_1_index_separation.html#a29bf3c0f2484707ee526b145d38c6b80',1,'playrho::IndexSeparation::InvalidIndex()'],['../structplayrho_1_1_index_pair_separation.html#aa76bd9b291ad786714a8783e9fd9ad9d',1,'playrho::IndexPairSeparation::InvalidIndex()']]],
+  ['invalidindexpair',['InvalidIndexPair',['../namespaceplayrho.html#a6fb9d11a6fadb62b0e68aee9797059ad',1,'playrho']]],
   ['invalidislandindex',['InvalidIslandIndex',['../classplayrho_1_1_body.html#a46c9a16685f41a9dd5d69d9a12a0cd03',1,'playrho::Body']]],
   ['invaliditeration',['InvalidIteration',['../classplayrho_1_1_step_conf.html#a50f4d886787a88a1e353637e78e0a8f7',1,'playrho::StepConf']]],
   ['invalidvertex',['InvalidVertex',['../classplayrho_1_1_multi_shape.html#a1126b0d6184a35f15ab47f77e40805ff',1,'playrho::MultiShape::InvalidVertex()'],['../classplayrho_1_1_polygon_shape.html#a72f46ac2954bf2533a81246a327f1de4',1,'playrho::PolygonShape::InvalidVertex()']]],

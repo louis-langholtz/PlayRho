@@ -65,6 +65,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="structplayrho_1_1_friction_joint_def-members.html">List of all members</a>  </div>
@@ -76,17 +77,28 @@ $(function() {
 <p>Friction joint definition.  
 </p>
 
-<p><code>#include &lt;FrictionJoint.hpp&gt;</code></p>
+<p><code>#include &lt;FrictionJointDef.hpp&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for playrho::FrictionJointDef:</div>
 <div class="dyncontent">
  <div class="center">
   <img src="structplayrho_1_1_friction_joint_def.png" usemap="#playrho::FrictionJointDef_map" alt=""/>
   <map id="playrho::FrictionJointDef_map" name="playrho::FrictionJointDef_map">
-<area href="structplayrho_1_1_joint_def.html" title="Abstract base Joint Definition class. " alt="playrho::JointDef" shape="rect" coords="0,0,151,24"/>
+<area href="structplayrho_1_1_joint_builder.html" alt="playrho::JointBuilder&lt; FrictionJointDef &gt;" shape="rect" coords="0,56,242,80"/>
+<area href="structplayrho_1_1_joint_def.html" title="Abstract base Joint definition class. " alt="playrho::JointDef" shape="rect" coords="0,0,242,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a42b1ef3405e74f6165ddec8055ed4209"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_friction_joint_def.html#a42b1ef3405e74f6165ddec8055ed4209">super</a> = <a class="el" href="structplayrho_1_1_joint_builder.html">JointBuilder</a>&lt; <a class="el" href="structplayrho_1_1_friction_joint_def.html">FrictionJointDef</a> &gt;</td></tr>
+<tr class="separator:a42b1ef3405e74f6165ddec8055ed4209"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_structplayrho_1_1_joint_builder"><td colspan="2" onclick="javascript:toggleInherit('pub_types_structplayrho_1_1_joint_builder')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="structplayrho_1_1_joint_builder.html">playrho::JointBuilder&lt; FrictionJointDef &gt;</a></td></tr>
+<tr class="memitem:a9d7e42b4b113bbda95ffb69bb5486ac5 inherit pub_types_structplayrho_1_1_joint_builder"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_builder.html#a9d7e42b4b113bbda95ffb69bb5486ac5">value_type</a> = <a class="el" href="structplayrho_1_1_friction_joint_def.html">FrictionJointDef</a></td></tr>
+<tr class="separator:a9d7e42b4b113bbda95ffb69bb5486ac5 inherit pub_types_structplayrho_1_1_joint_builder"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77aa74bd4f7c97fcb4fc0132340f0985 inherit pub_types_structplayrho_1_1_joint_builder"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_builder.html#a77aa74bd4f7c97fcb4fc0132340f0985">reference</a> = <a class="el" href="structplayrho_1_1_joint_builder.html#a9d7e42b4b113bbda95ffb69bb5486ac5">value_type</a> &amp;</td></tr>
+<tr class="separator:a77aa74bd4f7c97fcb4fc0132340f0985 inherit pub_types_structplayrho_1_1_joint_builder"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:acde49a8a63d54c0c3b05cb7d9be75420"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_friction_joint_def.html#acde49a8a63d54c0c3b05cb7d9be75420">FrictionJointDef</a> () noexcept</td></tr>
@@ -94,52 +106,78 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afb3d9cb8fc58f4c0fe76a74cd4f70b9d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_friction_joint_def.html#afb3d9cb8fc58f4c0fe76a74cd4f70b9d">FrictionJointDef</a> (<a class="el" href="classplayrho_1_1_body.html">Body</a> *<a class="el" href="structplayrho_1_1_joint_def.html#a9e277814a6485e9a35762fbeb8814728">bodyA</a>, <a class="el" href="classplayrho_1_1_body.html">Body</a> *<a class="el" href="structplayrho_1_1_joint_def.html#a3f9f82ba398430a27249ac744d7f7b69">bodyB</a>, const <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> anchor) noexcept</td></tr>
 <tr class="memdesc:afb3d9cb8fc58f4c0fe76a74cd4f70b9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor.  <a href="#afb3d9cb8fc58f4c0fe76a74cd4f70b9d">More...</a><br /></td></tr>
 <tr class="separator:afb3d9cb8fc58f4c0fe76a74cd4f70b9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7007e52a6f6ec25f83376cf756c3c81"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structplayrho_1_1_friction_joint_def.html">FrictionJointDef</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_friction_joint_def.html#ae7007e52a6f6ec25f83376cf756c3c81">UseMaxForce</a> (<a class="el" href="namespaceplayrho.html#afc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="namespaceplayrho.html#a920644fe369135f5b207d6f492d41504">Force</a> &gt; v) noexcept</td></tr>
+<tr class="separator:ae7007e52a6f6ec25f83376cf756c3c81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7c8d8f524307ada95d82fee990413fa"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structplayrho_1_1_friction_joint_def.html">FrictionJointDef</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_friction_joint_def.html#ad7c8d8f524307ada95d82fee990413fa">UseMaxTorque</a> (<a class="el" href="namespaceplayrho.html#afc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="namespaceplayrho.html#ada1764fa6f02f44b8fdc4597a3f5d75b">Torque</a> &gt; v) noexcept</td></tr>
+<tr class="separator:ad7c8d8f524307ada95d82fee990413fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_structplayrho_1_1_joint_builder"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structplayrho_1_1_joint_builder')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structplayrho_1_1_joint_builder.html">playrho::JointBuilder&lt; FrictionJointDef &gt;</a></td></tr>
+<tr class="memitem:af391a57064ea12f354f242903f0343aa inherit pub_methods_structplayrho_1_1_joint_builder"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_builder.html#af391a57064ea12f354f242903f0343aa">JointBuilder</a> (<a class="el" href="namespaceplayrho.html#aae8d7c50e25778ece4347bd63586c485">JointType</a> t) noexcept</td></tr>
+<tr class="separator:af391a57064ea12f354f242903f0343aa inherit pub_methods_structplayrho_1_1_joint_builder"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59f4aadc29d0cdb10ecc8ef5c93ed277 inherit pub_methods_structplayrho_1_1_joint_builder"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structplayrho_1_1_joint_builder.html#a77aa74bd4f7c97fcb4fc0132340f0985">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_builder.html#a59f4aadc29d0cdb10ecc8ef5c93ed277">UseBodyA</a> (<a class="el" href="classplayrho_1_1_body.html">Body</a> *b) noexcept</td></tr>
+<tr class="memdesc:a59f4aadc29d0cdb10ecc8ef5c93ed277 inherit pub_methods_structplayrho_1_1_joint_builder"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use value for body A setting.  <a href="structplayrho_1_1_joint_builder.html#a59f4aadc29d0cdb10ecc8ef5c93ed277">More...</a><br /></td></tr>
+<tr class="separator:a59f4aadc29d0cdb10ecc8ef5c93ed277 inherit pub_methods_structplayrho_1_1_joint_builder"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66e469fa277364ee12deb41a8b4fcac0 inherit pub_methods_structplayrho_1_1_joint_builder"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structplayrho_1_1_joint_builder.html#a77aa74bd4f7c97fcb4fc0132340f0985">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_builder.html#a66e469fa277364ee12deb41a8b4fcac0">UseBodyB</a> (<a class="el" href="classplayrho_1_1_body.html">Body</a> *b) noexcept</td></tr>
+<tr class="memdesc:a66e469fa277364ee12deb41a8b4fcac0 inherit pub_methods_structplayrho_1_1_joint_builder"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use value for body B setting.  <a href="structplayrho_1_1_joint_builder.html#a66e469fa277364ee12deb41a8b4fcac0">More...</a><br /></td></tr>
+<tr class="separator:a66e469fa277364ee12deb41a8b4fcac0 inherit pub_methods_structplayrho_1_1_joint_builder"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e09cded9b09950de737df0e4f4d07cf inherit pub_methods_structplayrho_1_1_joint_builder"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structplayrho_1_1_joint_builder.html#a77aa74bd4f7c97fcb4fc0132340f0985">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_builder.html#a5e09cded9b09950de737df0e4f4d07cf">UseCollideConnected</a> (bool v) noexcept</td></tr>
+<tr class="memdesc:a5e09cded9b09950de737df0e4f4d07cf inherit pub_methods_structplayrho_1_1_joint_builder"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use value for collide connected setting.  <a href="structplayrho_1_1_joint_builder.html#a5e09cded9b09950de737df0e4f4d07cf">More...</a><br /></td></tr>
+<tr class="separator:a5e09cded9b09950de737df0e4f4d07cf inherit pub_methods_structplayrho_1_1_joint_builder"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9947506e176e03fe649fe439a0db512 inherit pub_methods_structplayrho_1_1_joint_builder"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structplayrho_1_1_joint_builder.html#a77aa74bd4f7c97fcb4fc0132340f0985">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_builder.html#aa9947506e176e03fe649fe439a0db512">UseUserData</a> (void *v) noexcept</td></tr>
+<tr class="memdesc:aa9947506e176e03fe649fe439a0db512 inherit pub_methods_structplayrho_1_1_joint_builder"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use value for user data setting.  <a href="structplayrho_1_1_joint_builder.html#aa9947506e176e03fe649fe439a0db512">More...</a><br /></td></tr>
+<tr class="separator:aa9947506e176e03fe649fe439a0db512 inherit pub_methods_structplayrho_1_1_joint_builder"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structplayrho_1_1_joint_def"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structplayrho_1_1_joint_def')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structplayrho_1_1_joint_def.html">playrho::JointDef</a></td></tr>
 <tr class="memitem:a2b4b35fb0b40505d758de0ba484abeac inherit pub_methods_structplayrho_1_1_joint_def"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_def.html#a2b4b35fb0b40505d758de0ba484abeac">JointDef</a> ()=delete</td></tr>
 <tr class="memdesc:a2b4b35fb0b40505d758de0ba484abeac inherit pub_methods_structplayrho_1_1_joint_def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deleted default constructor for abstract base class.  <a href="structplayrho_1_1_joint_def.html#a2b4b35fb0b40505d758de0ba484abeac">More...</a><br /></td></tr>
 <tr class="separator:a2b4b35fb0b40505d758de0ba484abeac inherit pub_methods_structplayrho_1_1_joint_def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12140b02482e26eec4291bace4494bfe inherit pub_methods_structplayrho_1_1_joint_def"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_def.html#a12140b02482e26eec4291bace4494bfe">JointDef</a> (<a class="el" href="namespaceplayrho.html#aae8d7c50e25778ece4347bd63586c485">JointType</a> t) noexcept</td></tr>
 <tr class="separator:a12140b02482e26eec4291bace4494bfe inherit pub_methods_structplayrho_1_1_joint_def"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f9aa4a9f55365c228282e248408ad16 inherit pub_methods_structplayrho_1_1_joint_def"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_def.html#a2f9aa4a9f55365c228282e248408ad16">JointDef</a> (<a class="el" href="namespaceplayrho.html#aae8d7c50e25778ece4347bd63586c485">JointType</a> t, <a class="el" href="classplayrho_1_1_body.html">Body</a> *bA, <a class="el" href="classplayrho_1_1_body.html">Body</a> *bB, bool cc=false, void *u=nullptr) noexcept</td></tr>
-<tr class="separator:a2f9aa4a9f55365c228282e248408ad16 inherit pub_methods_structplayrho_1_1_joint_def"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0fa5ba377af0616987e215a8a3d2ec2b inherit pub_methods_structplayrho_1_1_joint_def"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_def.html#a0fa5ba377af0616987e215a8a3d2ec2b">JointDef</a> (const <a class="el" href="structplayrho_1_1_joint_def.html">JointDef</a> &amp;copy)=default</td></tr>
-<tr class="separator:a0fa5ba377af0616987e215a8a3d2ec2b inherit pub_methods_structplayrho_1_1_joint_def"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6dc6e5f8e89def538a808b1f2892954d inherit pub_methods_structplayrho_1_1_joint_def"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1_joint_def.html">JointDef</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_def.html#a6dc6e5f8e89def538a808b1f2892954d">UseBodyA</a> (<a class="el" href="classplayrho_1_1_body.html">Body</a> *body)</td></tr>
-<tr class="separator:a6dc6e5f8e89def538a808b1f2892954d inherit pub_methods_structplayrho_1_1_joint_def"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a071eab0639192fb226af5d8cb109cff6 inherit pub_methods_structplayrho_1_1_joint_def"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1_joint_def.html">JointDef</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_def.html#a071eab0639192fb226af5d8cb109cff6">UseBodyB</a> (<a class="el" href="classplayrho_1_1_body.html">Body</a> *body)</td></tr>
-<tr class="separator:a071eab0639192fb226af5d8cb109cff6 inherit pub_methods_structplayrho_1_1_joint_def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a4b002bbdc4bc684ef475da51aa9697d8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_friction_joint_def.html#a4b002bbdc4bc684ef475da51aa9697d8">localAnchorA</a> = <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>(0, 0)</td></tr>
-<tr class="memdesc:a4b002bbdc4bc684ef475da51aa9697d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The local anchor point relative to bodyA's origin.  <a href="#a4b002bbdc4bc684ef475da51aa9697d8">More...</a><br /></td></tr>
+<tr class="memitem:a4b002bbdc4bc684ef475da51aa9697d8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_friction_joint_def.html#a4b002bbdc4bc684ef475da51aa9697d8">localAnchorA</a> = <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>{}</td></tr>
+<tr class="memdesc:a4b002bbdc4bc684ef475da51aa9697d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Local anchor point relative to bodyA's origin.  <a href="#a4b002bbdc4bc684ef475da51aa9697d8">More...</a><br /></td></tr>
 <tr class="separator:a4b002bbdc4bc684ef475da51aa9697d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2bf610461f54a0a2c71601526edef76f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_friction_joint_def.html#a2bf610461f54a0a2c71601526edef76f">localAnchorB</a> = <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>(0, 0)</td></tr>
-<tr class="memdesc:a2bf610461f54a0a2c71601526edef76f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The local anchor point relative to bodyB's origin.  <a href="#a2bf610461f54a0a2c71601526edef76f">More...</a><br /></td></tr>
+<tr class="memitem:a2bf610461f54a0a2c71601526edef76f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_friction_joint_def.html#a2bf610461f54a0a2c71601526edef76f">localAnchorB</a> = <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>{}</td></tr>
+<tr class="memdesc:a2bf610461f54a0a2c71601526edef76f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Local anchor point relative to bodyB's origin.  <a href="#a2bf610461f54a0a2c71601526edef76f">More...</a><br /></td></tr>
 <tr class="separator:a2bf610461f54a0a2c71601526edef76f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aadf4b7bf0d45a33848a1c78a327cb42c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a920644fe369135f5b207d6f492d41504">Force</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_friction_joint_def.html#aadf4b7bf0d45a33848a1c78a327cb42c">maxForce</a> = <a class="el" href="namespaceplayrho.html#a920644fe369135f5b207d6f492d41504">Force</a>{0}</td></tr>
-<tr class="memdesc:aadf4b7bf0d45a33848a1c78a327cb42c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum friction force in N.  <a href="#aadf4b7bf0d45a33848a1c78a327cb42c">More...</a><br /></td></tr>
-<tr class="separator:aadf4b7bf0d45a33848a1c78a327cb42c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3dd6cfac113a4dab4606e1fbedfdf5d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#ada1764fa6f02f44b8fdc4597a3f5d75b">Torque</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_friction_joint_def.html#a3dd6cfac113a4dab4606e1fbedfdf5d1">maxTorque</a> = <a class="el" href="namespaceplayrho.html#ada1764fa6f02f44b8fdc4597a3f5d75b">Torque</a>{0}</td></tr>
-<tr class="memdesc:a3dd6cfac113a4dab4606e1fbedfdf5d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum friction torque in N-m.  <a href="#a3dd6cfac113a4dab4606e1fbedfdf5d1">More...</a><br /></td></tr>
-<tr class="separator:a3dd6cfac113a4dab4606e1fbedfdf5d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b88b53db21f1917570f38e069eb58b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#afc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="namespaceplayrho.html#a920644fe369135f5b207d6f492d41504">Force</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_friction_joint_def.html#a2b88b53db21f1917570f38e069eb58b1">maxForce</a> = <a class="el" href="namespaceplayrho.html#afc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt;<a class="el" href="namespaceplayrho.html#a920644fe369135f5b207d6f492d41504">Force</a>&gt;{0}</td></tr>
+<tr class="memdesc:a2b88b53db21f1917570f38e069eb58b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum friction force.  <a href="#a2b88b53db21f1917570f38e069eb58b1">More...</a><br /></td></tr>
+<tr class="separator:a2b88b53db21f1917570f38e069eb58b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cb4a2086fc1b7abeaea05d6ca1da414"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#afc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="namespaceplayrho.html#ada1764fa6f02f44b8fdc4597a3f5d75b">Torque</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_friction_joint_def.html#a7cb4a2086fc1b7abeaea05d6ca1da414">maxTorque</a> = <a class="el" href="namespaceplayrho.html#afc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt;<a class="el" href="namespaceplayrho.html#ada1764fa6f02f44b8fdc4597a3f5d75b">Torque</a>&gt;{0}</td></tr>
+<tr class="memdesc:a7cb4a2086fc1b7abeaea05d6ca1da414"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum friction torque.  <a href="#a7cb4a2086fc1b7abeaea05d6ca1da414">More...</a><br /></td></tr>
+<tr class="separator:a7cb4a2086fc1b7abeaea05d6ca1da414"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_structplayrho_1_1_joint_def"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_structplayrho_1_1_joint_def')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="structplayrho_1_1_joint_def.html">playrho::JointDef</a></td></tr>
-<tr class="memitem:a8d0081742ddcb1ba560a2b044851b859 inherit pub_attribs_structplayrho_1_1_joint_def"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceplayrho.html#aae8d7c50e25778ece4347bd63586c485">JointType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_def.html#a8d0081742ddcb1ba560a2b044851b859">type</a></td></tr>
-<tr class="memdesc:a8d0081742ddcb1ba560a2b044851b859 inherit pub_attribs_structplayrho_1_1_joint_def"><td class="mdescLeft">&#160;</td><td class="mdescRight">The joint type is set automatically for concrete joint types.  <a href="structplayrho_1_1_joint_def.html#a8d0081742ddcb1ba560a2b044851b859">More...</a><br /></td></tr>
-<tr class="separator:a8d0081742ddcb1ba560a2b044851b859 inherit pub_attribs_structplayrho_1_1_joint_def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5048aa19278e5f89219ed73c3a54e7a0 inherit pub_attribs_structplayrho_1_1_joint_def"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#aae8d7c50e25778ece4347bd63586c485">JointType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_def.html#a5048aa19278e5f89219ed73c3a54e7a0">type</a> = <a class="el" href="namespaceplayrho.html#aae8d7c50e25778ece4347bd63586c485a88183b946cc5f0e8c96b2e66e1c74a7e">JointType::Unknown</a></td></tr>
+<tr class="memdesc:a5048aa19278e5f89219ed73c3a54e7a0 inherit pub_attribs_structplayrho_1_1_joint_def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the joint is set automatically for concrete joint types.  <a href="structplayrho_1_1_joint_def.html#a5048aa19278e5f89219ed73c3a54e7a0">More...</a><br /></td></tr>
+<tr class="separator:a5048aa19278e5f89219ed73c3a54e7a0 inherit pub_attribs_structplayrho_1_1_joint_def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e277814a6485e9a35762fbeb8814728 inherit pub_attribs_structplayrho_1_1_joint_def"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1_body.html">Body</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_def.html#a9e277814a6485e9a35762fbeb8814728">bodyA</a> = nullptr</td></tr>
-<tr class="memdesc:a9e277814a6485e9a35762fbeb8814728 inherit pub_attribs_structplayrho_1_1_joint_def"><td class="mdescLeft">&#160;</td><td class="mdescRight">The first attached body.  <a href="structplayrho_1_1_joint_def.html#a9e277814a6485e9a35762fbeb8814728">More...</a><br /></td></tr>
+<tr class="memdesc:a9e277814a6485e9a35762fbeb8814728 inherit pub_attribs_structplayrho_1_1_joint_def"><td class="mdescLeft">&#160;</td><td class="mdescRight">First attached body.  <a href="structplayrho_1_1_joint_def.html#a9e277814a6485e9a35762fbeb8814728">More...</a><br /></td></tr>
 <tr class="separator:a9e277814a6485e9a35762fbeb8814728 inherit pub_attribs_structplayrho_1_1_joint_def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f9f82ba398430a27249ac744d7f7b69 inherit pub_attribs_structplayrho_1_1_joint_def"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1_body.html">Body</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_def.html#a3f9f82ba398430a27249ac744d7f7b69">bodyB</a> = nullptr</td></tr>
-<tr class="memdesc:a3f9f82ba398430a27249ac744d7f7b69 inherit pub_attribs_structplayrho_1_1_joint_def"><td class="mdescLeft">&#160;</td><td class="mdescRight">The second attached body.  <a href="structplayrho_1_1_joint_def.html#a3f9f82ba398430a27249ac744d7f7b69">More...</a><br /></td></tr>
+<tr class="memdesc:a3f9f82ba398430a27249ac744d7f7b69 inherit pub_attribs_structplayrho_1_1_joint_def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Second attached body.  <a href="structplayrho_1_1_joint_def.html#a3f9f82ba398430a27249ac744d7f7b69">More...</a><br /></td></tr>
 <tr class="separator:a3f9f82ba398430a27249ac744d7f7b69 inherit pub_attribs_structplayrho_1_1_joint_def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acafd0b10dfb458f30198ee9a307fc913 inherit pub_attribs_structplayrho_1_1_joint_def"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_def.html#acafd0b10dfb458f30198ee9a307fc913">collideConnected</a> = false</td></tr>
-<tr class="memdesc:acafd0b10dfb458f30198ee9a307fc913 inherit pub_attribs_structplayrho_1_1_joint_def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this flag to true if the attached bodies should collide.  <a href="structplayrho_1_1_joint_def.html#acafd0b10dfb458f30198ee9a307fc913">More...</a><br /></td></tr>
+<tr class="memdesc:acafd0b10dfb458f30198ee9a307fc913 inherit pub_attribs_structplayrho_1_1_joint_def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collide connected.  <a href="structplayrho_1_1_joint_def.html#acafd0b10dfb458f30198ee9a307fc913">More...</a><br /></td></tr>
 <tr class="separator:acafd0b10dfb458f30198ee9a307fc913 inherit pub_attribs_structplayrho_1_1_joint_def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99628daf706d03ca66f4db66250d9c73 inherit pub_attribs_structplayrho_1_1_joint_def"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_def.html#a99628daf706d03ca66f4db66250d9c73">userData</a> = nullptr</td></tr>
-<tr class="memdesc:a99628daf706d03ca66f4db66250d9c73 inherit pub_attribs_structplayrho_1_1_joint_def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to attach application specific data to your joints.  <a href="structplayrho_1_1_joint_def.html#a99628daf706d03ca66f4db66250d9c73">More...</a><br /></td></tr>
+<tr class="memdesc:a99628daf706d03ca66f4db66250d9c73 inherit pub_attribs_structplayrho_1_1_joint_def"><td class="mdescLeft">&#160;</td><td class="mdescRight">User data.  <a href="structplayrho_1_1_joint_def.html#a99628daf706d03ca66f4db66250d9c73">More...</a><br /></td></tr>
 <tr class="separator:a99628daf706d03ca66f4db66250d9c73 inherit pub_attribs_structplayrho_1_1_joint_def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a42b1ef3405e74f6165ddec8055ed4209"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42b1ef3405e74f6165ddec8055ed4209">&#9670;&nbsp;</a></span>super</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="structplayrho_1_1_friction_joint_def.html#a42b1ef3405e74f6165ddec8055ed4209">playrho::FrictionJointDef::super</a> =  <a class="el" href="structplayrho_1_1_joint_builder.html">JointBuilder</a>&lt;<a class="el" href="structplayrho_1_1_friction_joint_def.html">FrictionJointDef</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="acde49a8a63d54c0c3b05cb7d9be75420"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acde49a8a63d54c0c3b05cb7d9be75420">&#9670;&nbsp;</a></span>FrictionJointDef() <span class="overload">[1/2]</span></h2>
@@ -209,6 +247,59 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae7007e52a6f6ec25f83376cf756c3c81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7007e52a6f6ec25f83376cf756c3c81">&#9670;&nbsp;</a></span>UseMaxForce()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structplayrho_1_1_friction_joint_def.html">FrictionJointDef</a> &amp; playrho::FrictionJointDef::UseMaxForce </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#afc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="namespaceplayrho.html#a920644fe369135f5b207d6f492d41504">Force</a> &gt;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad7c8d8f524307ada95d82fee990413fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7c8d8f524307ada95d82fee990413fa">&#9670;&nbsp;</a></span>UseMaxTorque()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structplayrho_1_1_friction_joint_def.html">FrictionJointDef</a> &amp; playrho::FrictionJointDef::UseMaxTorque </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#afc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="namespaceplayrho.html#ada1764fa6f02f44b8fdc4597a3f5d75b">Torque</a> &gt;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a4b002bbdc4bc684ef475da51aa9697d8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4b002bbdc4bc684ef475da51aa9697d8">&#9670;&nbsp;</a></span>localAnchorA</h2>
@@ -217,7 +308,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> playrho::FrictionJointDef::localAnchorA = <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>(0, 0)</td>
+          <td class="memname"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> playrho::FrictionJointDef::localAnchorA = <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>{}</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -231,35 +322,35 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> playrho::FrictionJointDef::localAnchorB = <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>(0, 0)</td>
+          <td class="memname"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> playrho::FrictionJointDef::localAnchorB = <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>{}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="aadf4b7bf0d45a33848a1c78a327cb42c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aadf4b7bf0d45a33848a1c78a327cb42c">&#9670;&nbsp;</a></span>maxForce</h2>
+<a id="a2b88b53db21f1917570f38e069eb58b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b88b53db21f1917570f38e069eb58b1">&#9670;&nbsp;</a></span>maxForce</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceplayrho.html#a920644fe369135f5b207d6f492d41504">Force</a> playrho::FrictionJointDef::maxForce = <a class="el" href="namespaceplayrho.html#a920644fe369135f5b207d6f492d41504">Force</a>{0}</td>
+          <td class="memname"><a class="el" href="namespaceplayrho.html#afc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt;<a class="el" href="namespaceplayrho.html#a920644fe369135f5b207d6f492d41504">Force</a>&gt; playrho::FrictionJointDef::maxForce = <a class="el" href="namespaceplayrho.html#afc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt;<a class="el" href="namespaceplayrho.html#a920644fe369135f5b207d6f492d41504">Force</a>&gt;{0}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a3dd6cfac113a4dab4606e1fbedfdf5d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3dd6cfac113a4dab4606e1fbedfdf5d1">&#9670;&nbsp;</a></span>maxTorque</h2>
+<a id="a7cb4a2086fc1b7abeaea05d6ca1da414"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7cb4a2086fc1b7abeaea05d6ca1da414">&#9670;&nbsp;</a></span>maxTorque</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceplayrho.html#ada1764fa6f02f44b8fdc4597a3f5d75b">Torque</a> playrho::FrictionJointDef::maxTorque = <a class="el" href="namespaceplayrho.html#ada1764fa6f02f44b8fdc4597a3f5d75b">Torque</a>{0}</td>
+          <td class="memname"><a class="el" href="namespaceplayrho.html#afc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt;<a class="el" href="namespaceplayrho.html#ada1764fa6f02f44b8fdc4597a3f5d75b">Torque</a>&gt; playrho::FrictionJointDef::maxTorque = <a class="el" href="namespaceplayrho.html#afc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt;<a class="el" href="namespaceplayrho.html#ada1764fa6f02f44b8fdc4597a3f5d75b">Torque</a>&gt;{0}</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -267,13 +358,13 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following files:<ul>
-<li>FrictionJoint.hpp</li>
-<li>FrictionJoint.cpp</li>
+<li>FrictionJointDef.hpp</li>
+<li>FrictionJointDef.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 18 2017 17:08:33 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Sep 6 2017 12:29:47 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

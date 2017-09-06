@@ -74,6 +74,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Bounded value.  
+</p>
+
 <p><code>#include &lt;BoundedValue.hpp&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
@@ -95,14 +98,16 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab63cf51474b5fa78cdbb336d259adff0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f20c4a3d1a80c5fbb4000bbe8689d4c"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classplayrho_1_1_bounded_value.html">BoundedValue</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_bounded_value.html#a7f20c4a3d1a80c5fbb4000bbe8689d4c">operator=</a> (const T &amp;value)</td></tr>
 <tr class="separator:a7f20c4a3d1a80c5fbb4000bbe8689d4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a516de823de79645983bd24321aef54db"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_bounded_value.html#a516de823de79645983bd24321aef54db">operator value_type</a> () const</td></tr>
-<tr class="separator:a516de823de79645983bd24321aef54db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e8fd7eddb394cb9e66b21d1c7e17410"><td class="memTemplParams" colspan="2">template&lt;typename U  = T&gt; </td></tr>
-<tr class="memitem:a7e8fd7eddb394cb9e66b21d1c7e17410"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt; std::is_pointer&lt; U &gt;::value, U &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_bounded_value.html#a7e8fd7eddb394cb9e66b21d1c7e17410">operator-&gt;</a> () const</td></tr>
-<tr class="separator:a7e8fd7eddb394cb9e66b21d1c7e17410"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a6f5f1d8e731611fead172dc71b85d1"><td class="memTemplParams" colspan="2">template&lt;typename U  = T&gt; </td></tr>
-<tr class="memitem:a8a6f5f1d8e731611fead172dc71b85d1"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt; std::is_pointer&lt; U &gt;::value, <a class="el" href="classplayrho_1_1_bounded_value.html#a608ca75421cfc6a0b16ab89f7582c528">remove_pointer_type</a> &gt;::type &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_bounded_value.html#a8a6f5f1d8e731611fead172dc71b85d1">operator*</a> () const</td></tr>
-<tr class="separator:a8a6f5f1d8e731611fead172dc71b85d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0061a6f9d53e4bccf5f4d5e0e3c2d1a4"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classplayrho_1_1_bounded_value.html#a9827d832b667fb6f833f6040686b44bc">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_bounded_value.html#a0061a6f9d53e4bccf5f4d5e0e3c2d1a4">get</a> () const noexcept</td></tr>
+<tr class="separator:a0061a6f9d53e4bccf5f4d5e0e3c2d1a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a339dce884e52dbf9aaac843c566a53c3"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_bounded_value.html#a339dce884e52dbf9aaac843c566a53c3">operator value_type</a> () const noexcept</td></tr>
+<tr class="separator:a339dce884e52dbf9aaac843c566a53c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66df83856ea889e6bdfeea18df52bb3d"><td class="memTemplParams" colspan="2">template&lt;typename U  = T&gt; </td></tr>
+<tr class="memitem:a66df83856ea889e6bdfeea18df52bb3d"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::enable_if&lt; std::is_pointer&lt; U &gt;::value, U &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_bounded_value.html#a66df83856ea889e6bdfeea18df52bb3d">operator-&gt;</a> () const</td></tr>
+<tr class="separator:a66df83856ea889e6bdfeea18df52bb3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8e737c58f96b4e1e2b0a56963b748bd"><td class="memTemplParams" colspan="2">template&lt;typename U  = T&gt; </td></tr>
+<tr class="memitem:ae8e737c58f96b4e1e2b0a56963b748bd"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::enable_if&lt; std::is_pointer&lt; U &gt;::value, <a class="el" href="classplayrho_1_1_bounded_value.html#a608ca75421cfc6a0b16ab89f7582c528">remove_pointer_type</a> &gt;::type &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_bounded_value.html#ae8e737c58f96b4e1e2b0a56963b748bd">operator*</a> () const</td></tr>
+<tr class="separator:ae8e737c58f96b4e1e2b0a56963b748bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -266,6 +271,33 @@ template&lt;typename T, LoValueCheck lo, HiValueCheck hi&gt; </div>
 
 </div>
 </div>
+<a id="a0061a6f9d53e4bccf5f4d5e0e3c2d1a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0061a6f9d53e4bccf5f4d5e0e3c2d1a4">&#9670;&nbsp;</a></span>get()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, LoValueCheck lo, HiValueCheck hi&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classplayrho_1_1_bounded_value.html#a9827d832b667fb6f833f6040686b44bc">value_type</a> <a class="el" href="classplayrho_1_1_bounded_value.html">playrho::BoundedValue</a>&lt; T, lo, hi &gt;::get </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ac0238ea56353f96e484f8a5dd9b8a196"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac0238ea56353f96e484f8a5dd9b8a196">&#9670;&nbsp;</a></span>GetHiCheck()</h2>
 
@@ -320,8 +352,8 @@ template&lt;typename T, LoValueCheck lo, HiValueCheck hi&gt; </div>
 
 </div>
 </div>
-<a id="a516de823de79645983bd24321aef54db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a516de823de79645983bd24321aef54db">&#9670;&nbsp;</a></span>operator value_type()</h2>
+<a id="a339dce884e52dbf9aaac843c566a53c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a339dce884e52dbf9aaac843c566a53c3">&#9670;&nbsp;</a></span>operator value_type()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -340,15 +372,15 @@ template&lt;typename T, LoValueCheck lo, HiValueCheck hi&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a8a6f5f1d8e731611fead172dc71b85d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8a6f5f1d8e731611fead172dc71b85d1">&#9670;&nbsp;</a></span>operator*()</h2>
+<a id="ae8e737c58f96b4e1e2b0a56963b748bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8e737c58f96b4e1e2b0a56963b748bd">&#9670;&nbsp;</a></span>operator*()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -361,7 +393,7 @@ template&lt;typename U  = T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::enable_if&lt;std::is_pointer&lt;U&gt;::value, <a class="el" href="classplayrho_1_1_bounded_value.html#a608ca75421cfc6a0b16ab89f7582c528">remove_pointer_type</a>&gt;::type&amp; <a class="el" href="classplayrho_1_1_bounded_value.html">playrho::BoundedValue</a>&lt; T, lo, hi &gt;::operator* </td>
+          <td class="memname">constexpr std::enable_if&lt;std::is_pointer&lt;U&gt;::value, <a class="el" href="classplayrho_1_1_bounded_value.html#a608ca75421cfc6a0b16ab89f7582c528">remove_pointer_type</a>&gt;::type&amp; <a class="el" href="classplayrho_1_1_bounded_value.html">playrho::BoundedValue</a>&lt; T, lo, hi &gt;::operator* </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -376,8 +408,8 @@ template&lt;typename U  = T&gt; </div>
 
 </div>
 </div>
-<a id="a7e8fd7eddb394cb9e66b21d1c7e17410"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e8fd7eddb394cb9e66b21d1c7e17410">&#9670;&nbsp;</a></span>operator->()</h2>
+<a id="a66df83856ea889e6bdfeea18df52bb3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66df83856ea889e6bdfeea18df52bb3d">&#9670;&nbsp;</a></span>operator->()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -390,7 +422,7 @@ template&lt;typename U  = T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::enable_if&lt;std::is_pointer&lt;U&gt;::value, U&gt;::type <a class="el" href="classplayrho_1_1_bounded_value.html">playrho::BoundedValue</a>&lt; T, lo, hi &gt;::operator-&gt; </td>
+          <td class="memname">constexpr std::enable_if&lt;std::is_pointer&lt;U&gt;::value, U&gt;::type <a class="el" href="classplayrho_1_1_bounded_value.html">playrho::BoundedValue</a>&lt; T, lo, hi &gt;::operator-&gt; </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -467,7 +499,7 @@ template&lt;typename T, LoValueCheck lo, HiValueCheck hi&gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 18 2017 17:08:32 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Sep 6 2017 12:29:46 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

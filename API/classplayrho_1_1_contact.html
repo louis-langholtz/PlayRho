@@ -84,6 +84,7 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_contact_1_1_update_conf.html">UpdateConf</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update configuration.  <a href="structplayrho_1_1_contact_1_1_update_conf.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
@@ -107,7 +108,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a8090236c99fe26214fd86eebe25258b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this contact touching?  <a href="#a8090236c99fe26214fd86eebe25258b8">More...</a><br /></td></tr>
 <tr class="separator:a8090236c99fe26214fd86eebe25258b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f11ac1c08489ae5b470690c1293f059"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_contact.html#a9f11ac1c08489ae5b470690c1293f059">SetEnabled</a> (bool flag) noexcept</td></tr>
-<tr class="memdesc:a9f11ac1c08489ae5b470690c1293f059"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable/disable this contact. This can be used inside the pre-solve contact listener. The contact is only disabled for the current time step (or sub-step in continuous collisions).  <a href="#a9f11ac1c08489ae5b470690c1293f059">More...</a><br /></td></tr>
+<tr class="memdesc:a9f11ac1c08489ae5b470690c1293f059"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables or disables this contact.  <a href="#a9f11ac1c08489ae5b470690c1293f059">More...</a><br /></td></tr>
 <tr class="separator:a9f11ac1c08489ae5b470690c1293f059"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48fc30fedb8d3e050648a7bedebb7963"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_contact.html#a48fc30fedb8d3e050648a7bedebb7963">SetEnabled</a> () noexcept</td></tr>
 <tr class="memdesc:a48fc30fedb8d3e050648a7bedebb7963"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables this contact.  <a href="#a48fc30fedb8d3e050648a7bedebb7963">More...</a><br /></td></tr>
@@ -137,18 +138,19 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a48a00dfe3ae28cc9de9be9030c03e662"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the coefficient of friction.  <a href="#a48a00dfe3ae28cc9de9be9030c03e662">More...</a><br /></td></tr>
 <tr class="separator:a48a00dfe3ae28cc9de9be9030c03e662"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab14b0379dfa5daca8c9c03fa06bc7c62"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_contact.html#ab14b0379dfa5daca8c9c03fa06bc7c62">SetRestitution</a> (<a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> restitution) noexcept</td></tr>
-<tr class="memdesc:ab14b0379dfa5daca8c9c03fa06bc7c62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override the default restitution mixture. You can call this in <a class="el" href="classplayrho_1_1_contact_listener.html#af1506f44f18a2125461507ab33cd20b1" title="Pre-solve callback. ">ContactListener::PreSolve</a>. The value persists until you set or reset.  <a href="#ab14b0379dfa5daca8c9c03fa06bc7c62">More...</a><br /></td></tr>
+<tr class="memdesc:ab14b0379dfa5daca8c9c03fa06bc7c62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the restitution.  <a href="#ab14b0379dfa5daca8c9c03fa06bc7c62">More...</a><br /></td></tr>
 <tr class="separator:ab14b0379dfa5daca8c9c03fa06bc7c62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a830d701be2067916a70ee29c20fc7f72"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_contact.html#a830d701be2067916a70ee29c20fc7f72">GetRestitution</a> () const noexcept</td></tr>
-<tr class="memdesc:a830d701be2067916a70ee29c20fc7f72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the restitution.  <a href="#a830d701be2067916a70ee29c20fc7f72">More...</a><br /></td></tr>
+<tr class="memdesc:a830d701be2067916a70ee29c20fc7f72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the restitution.  <a href="#a830d701be2067916a70ee29c20fc7f72">More...</a><br /></td></tr>
 <tr class="separator:a830d701be2067916a70ee29c20fc7f72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02bb1fdac36954fc37dd08faecaf76ed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_contact.html#a02bb1fdac36954fc37dd08faecaf76ed">SetTangentSpeed</a> (<a class="el" href="namespaceplayrho.html#ac3d39e514c48e6844b96f446a2b2c0bd">LinearVelocity</a> speed) noexcept</td></tr>
-<tr class="memdesc:a02bb1fdac36954fc37dd08faecaf76ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the desired tangent speed for a conveyor belt behavior.  <a href="#a02bb1fdac36954fc37dd08faecaf76ed">More...</a><br /></td></tr>
+<tr class="memdesc:a02bb1fdac36954fc37dd08faecaf76ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the desired tangent speed for a conveyor belt behavior.  <a href="#a02bb1fdac36954fc37dd08faecaf76ed">More...</a><br /></td></tr>
 <tr class="separator:a02bb1fdac36954fc37dd08faecaf76ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6092bcdbb58167b37455558343296f65"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#ac3d39e514c48e6844b96f446a2b2c0bd">LinearVelocity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_contact.html#a6092bcdbb58167b37455558343296f65">GetTangentSpeed</a> () const noexcept</td></tr>
 <tr class="memdesc:a6092bcdbb58167b37455558343296f65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the desired tangent speed.  <a href="#a6092bcdbb58167b37455558343296f65">More...</a><br /></td></tr>
 <tr class="separator:a6092bcdbb58167b37455558343296f65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4d899066f4f5bfb5e9a5821b6b4fb46"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1_contact.html#abb18b81a6d27e17b215f8decbabf1d91">substep_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_contact.html#ae4d899066f4f5bfb5e9a5821b6b4fb46">GetToiCount</a> () const noexcept</td></tr>
+<tr class="memdesc:ae4d899066f4f5bfb5e9a5821b6b4fb46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the time of impact count.  <a href="#ae4d899066f4f5bfb5e9a5821b6b4fb46">More...</a><br /></td></tr>
 <tr class="separator:ae4d899066f4f5bfb5e9a5821b6b4fb46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46a1a8eaf5990f9dddba23589e3ec058"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_contact.html#a46a1a8eaf5990f9dddba23589e3ec058">HasValidToi</a> () const noexcept</td></tr>
 <tr class="memdesc:a46a1a8eaf5990f9dddba23589e3ec058"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether a TOI is set.  <a href="#a46a1a8eaf5990f9dddba23589e3ec058">More...</a><br /></td></tr>
@@ -157,12 +159,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:af243b997368bdb89de21e8bab1ebaa92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the time of impact (TOI) as a fraction.  <a href="#af243b997368bdb89de21e8bab1ebaa92">More...</a><br /></td></tr>
 <tr class="separator:af243b997368bdb89de21e8bab1ebaa92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d8c07c9812a85b8fb5356c55b07aa85"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_contact.html#a7d8c07c9812a85b8fb5356c55b07aa85">FlagForFiltering</a> () noexcept</td></tr>
+<tr class="memdesc:a7d8c07c9812a85b8fb5356c55b07aa85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flags the contact for filtering.  <a href="#a7d8c07c9812a85b8fb5356c55b07aa85">More...</a><br /></td></tr>
 <tr class="separator:a7d8c07c9812a85b8fb5356c55b07aa85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cb1e71fc3982de38da0f3e579d79aa0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_contact.html#a4cb1e71fc3982de38da0f3e579d79aa0">NeedsFiltering</a> () const noexcept</td></tr>
+<tr class="memdesc:a4cb1e71fc3982de38da0f3e579d79aa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the contact needs filtering.  <a href="#a4cb1e71fc3982de38da0f3e579d79aa0">More...</a><br /></td></tr>
 <tr class="separator:a4cb1e71fc3982de38da0f3e579d79aa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2a72c7c95ae6790860a467629a23ef5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_contact.html#ae2a72c7c95ae6790860a467629a23ef5">FlagForUpdating</a> () noexcept</td></tr>
+<tr class="memdesc:ae2a72c7c95ae6790860a467629a23ef5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flags the contact for updating.  <a href="#ae2a72c7c95ae6790860a467629a23ef5">More...</a><br /></td></tr>
 <tr class="separator:ae2a72c7c95ae6790860a467629a23ef5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96e06cc5b961ef731100c458957618d6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_contact.html#a96e06cc5b961ef731100c458957618d6">NeedsUpdating</a> () const noexcept</td></tr>
+<tr class="memdesc:a96e06cc5b961ef731100c458957618d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the contact needs updating.  <a href="#a96e06cc5b961ef731100c458957618d6">More...</a><br /></td></tr>
 <tr class="separator:a96e06cc5b961ef731100c458957618d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
@@ -790,6 +796,7 @@ Behavior is undefined if both fixtures have the same body. </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section note"><dt>Note</dt><dd>This can be used inside the pre-solve contact listener. The contact is only disabled for the current time step (or sub-step in continuous collisions). </dd></dl>
 
 </div>
 </div>
@@ -877,6 +884,9 @@ This value persists until set or reset. </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>This override the default restitution mixture. </p><dl class="section note"><dt>Note</dt><dd>You can call this in <a class="el" href="classplayrho_1_1_contact_listener.html#af1506f44f18a2125461507ab33cd20b1" title="Pre-solve callback. ">ContactListener::PreSolve</a>. </dd>
+<dd>
+The value persists until you set or reset. </dd></dl>
 
 </div>
 </div>
@@ -961,7 +971,7 @@ This value persists until set or reset. </dd></dl>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 18 2017 17:08:32 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Sep 6 2017 12:29:46 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

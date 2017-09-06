@@ -73,27 +73,28 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Abstract base <a class="el" href="classplayrho_1_1_joint.html" title="Base Joint class. ">Joint</a> Definition class.  
+<p>Abstract base <a class="el" href="classplayrho_1_1_joint.html" title="Base joint class. ">Joint</a> definition class.  
  <a href="structplayrho_1_1_joint_def.html#details">More...</a></p>
 
-<p><code>#include &lt;Joint.hpp&gt;</code></p>
+<p><code>#include &lt;JointDef.hpp&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for playrho::JointDef:</div>
 <div class="dyncontent">
  <div class="center">
   <img src="structplayrho_1_1_joint_def.png" usemap="#playrho::JointDef_map" alt=""/>
   <map id="playrho::JointDef_map" name="playrho::JointDef_map">
-<area href="structplayrho_1_1_distance_joint_def.html" title="Distance joint definition. This requires defining an anchor point on both bodies and the non-zero len..." alt="playrho::DistanceJointDef" shape="rect" coords="169,56,328,80"/>
-<area href="structplayrho_1_1_friction_joint_def.html" title="Friction joint definition. " alt="playrho::FrictionJointDef" shape="rect" coords="169,112,328,136"/>
-<area href="structplayrho_1_1_gear_joint_def.html" title="Gear joint definition. This definition requires two existing revolute or prismatic joints (any combin..." alt="playrho::GearJointDef" shape="rect" coords="169,168,328,192"/>
-<area href="structplayrho_1_1_motor_joint_def.html" title="Motor joint definition. " alt="playrho::MotorJointDef" shape="rect" coords="169,224,328,248"/>
-<area href="structplayrho_1_1_mouse_joint_def.html" title="Mouse joint definition. This requires a world target point, tuning parameters, and the time step..." alt="playrho::MouseJointDef" shape="rect" coords="169,280,328,304"/>
-<area href="structplayrho_1_1_prismatic_joint_def.html" title="Prismatic joint definition. This requires defining a line of motion using an axis and an anchor point..." alt="playrho::PrismaticJointDef" shape="rect" coords="169,336,328,360"/>
-<area href="structplayrho_1_1_pulley_joint_def.html" title="Pulley joint definition. This requires two ground anchors, two dynamic body anchor points..." alt="playrho::PulleyJointDef" shape="rect" coords="169,392,328,416"/>
-<area href="structplayrho_1_1_revolute_joint_def.html" title="Revolute joint definition. This requires defining an anchor point where the bodies are joined..." alt="playrho::RevoluteJointDef" shape="rect" coords="169,448,328,472"/>
-<area href="structplayrho_1_1_rope_joint_def.html" title="Rope joint definition. This requires two body anchor points and a maximum lengths. Note: by default the connected objects will not collide. see collideConnected in JointDef. " alt="playrho::RopeJointDef" shape="rect" coords="169,504,328,528"/>
-<area href="structplayrho_1_1_weld_joint_def.html" title="Weld joint definition. You need to specify local anchor points where they are attached and the relati..." alt="playrho::WeldJointDef" shape="rect" coords="169,560,328,584"/>
-<area href="structplayrho_1_1_wheel_joint_def.html" title="Wheel joint definition. This requires defining a line of motion using an axis and an anchor point..." alt="playrho::WheelJointDef" shape="rect" coords="169,616,328,640"/>
+<area href="structplayrho_1_1_joint_builder.html" alt="playrho::JointBuilder&lt; DistanceJointDef &gt;" shape="rect" coords="260,56,510,80"/>
+<area href="structplayrho_1_1_joint_builder.html" alt="playrho::JointBuilder&lt; FrictionJointDef &gt;" shape="rect" coords="260,112,510,136"/>
+<area href="structplayrho_1_1_joint_builder.html" alt="playrho::JointBuilder&lt; GearJointDef &gt;" shape="rect" coords="260,168,510,192"/>
+<area href="structplayrho_1_1_joint_builder.html" alt="playrho::JointBuilder&lt; MotorJointDef &gt;" shape="rect" coords="260,224,510,248"/>
+<area href="structplayrho_1_1_joint_builder.html" alt="playrho::JointBuilder&lt; MouseJointDef &gt;" shape="rect" coords="260,280,510,304"/>
+<area href="structplayrho_1_1_joint_builder.html" alt="playrho::JointBuilder&lt; PrismaticJointDef &gt;" shape="rect" coords="260,336,510,360"/>
+<area href="structplayrho_1_1_joint_builder.html" alt="playrho::JointBuilder&lt; PulleyJointDef &gt;" shape="rect" coords="260,392,510,416"/>
+<area href="structplayrho_1_1_joint_builder.html" alt="playrho::JointBuilder&lt; RevoluteJointDef &gt;" shape="rect" coords="260,448,510,472"/>
+<area href="structplayrho_1_1_joint_builder.html" alt="playrho::JointBuilder&lt; RopeJointDef &gt;" shape="rect" coords="260,504,510,528"/>
+<area href="structplayrho_1_1_joint_builder.html" alt="playrho::JointBuilder&lt; WeldJointDef &gt;" shape="rect" coords="260,560,510,584"/>
+<area href="structplayrho_1_1_joint_builder.html" alt="playrho::JointBuilder&lt; WheelJointDef &gt;" shape="rect" coords="260,616,510,640"/>
+<area href="structplayrho_1_1_joint_builder.html" title="Joint builder definition structure. " alt="playrho::JointBuilder&lt; T &gt;" shape="rect" coords="260,672,510,696"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -104,38 +105,30 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2b4b35fb0b40505d758de0ba484abeac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12140b02482e26eec4291bace4494bfe"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_def.html#a12140b02482e26eec4291bace4494bfe">JointDef</a> (<a class="el" href="namespaceplayrho.html#aae8d7c50e25778ece4347bd63586c485">JointType</a> t) noexcept</td></tr>
 <tr class="separator:a12140b02482e26eec4291bace4494bfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f9aa4a9f55365c228282e248408ad16"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_def.html#a2f9aa4a9f55365c228282e248408ad16">JointDef</a> (<a class="el" href="namespaceplayrho.html#aae8d7c50e25778ece4347bd63586c485">JointType</a> t, <a class="el" href="classplayrho_1_1_body.html">Body</a> *bA, <a class="el" href="classplayrho_1_1_body.html">Body</a> *bB, bool cc=false, void *u=nullptr) noexcept</td></tr>
-<tr class="separator:a2f9aa4a9f55365c228282e248408ad16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0fa5ba377af0616987e215a8a3d2ec2b"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_def.html#a0fa5ba377af0616987e215a8a3d2ec2b">JointDef</a> (const <a class="el" href="structplayrho_1_1_joint_def.html">JointDef</a> &amp;copy)=default</td></tr>
-<tr class="separator:a0fa5ba377af0616987e215a8a3d2ec2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6dc6e5f8e89def538a808b1f2892954d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1_joint_def.html">JointDef</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_def.html#a6dc6e5f8e89def538a808b1f2892954d">UseBodyA</a> (<a class="el" href="classplayrho_1_1_body.html">Body</a> *body)</td></tr>
-<tr class="separator:a6dc6e5f8e89def538a808b1f2892954d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a071eab0639192fb226af5d8cb109cff6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1_joint_def.html">JointDef</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_def.html#a071eab0639192fb226af5d8cb109cff6">UseBodyB</a> (<a class="el" href="classplayrho_1_1_body.html">Body</a> *body)</td></tr>
-<tr class="separator:a071eab0639192fb226af5d8cb109cff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a8d0081742ddcb1ba560a2b044851b859"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceplayrho.html#aae8d7c50e25778ece4347bd63586c485">JointType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_def.html#a8d0081742ddcb1ba560a2b044851b859">type</a></td></tr>
-<tr class="memdesc:a8d0081742ddcb1ba560a2b044851b859"><td class="mdescLeft">&#160;</td><td class="mdescRight">The joint type is set automatically for concrete joint types.  <a href="#a8d0081742ddcb1ba560a2b044851b859">More...</a><br /></td></tr>
-<tr class="separator:a8d0081742ddcb1ba560a2b044851b859"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5048aa19278e5f89219ed73c3a54e7a0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#aae8d7c50e25778ece4347bd63586c485">JointType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_def.html#a5048aa19278e5f89219ed73c3a54e7a0">type</a> = <a class="el" href="namespaceplayrho.html#aae8d7c50e25778ece4347bd63586c485a88183b946cc5f0e8c96b2e66e1c74a7e">JointType::Unknown</a></td></tr>
+<tr class="memdesc:a5048aa19278e5f89219ed73c3a54e7a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the joint is set automatically for concrete joint types.  <a href="#a5048aa19278e5f89219ed73c3a54e7a0">More...</a><br /></td></tr>
+<tr class="separator:a5048aa19278e5f89219ed73c3a54e7a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e277814a6485e9a35762fbeb8814728"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1_body.html">Body</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_def.html#a9e277814a6485e9a35762fbeb8814728">bodyA</a> = nullptr</td></tr>
-<tr class="memdesc:a9e277814a6485e9a35762fbeb8814728"><td class="mdescLeft">&#160;</td><td class="mdescRight">The first attached body.  <a href="#a9e277814a6485e9a35762fbeb8814728">More...</a><br /></td></tr>
+<tr class="memdesc:a9e277814a6485e9a35762fbeb8814728"><td class="mdescLeft">&#160;</td><td class="mdescRight">First attached body.  <a href="#a9e277814a6485e9a35762fbeb8814728">More...</a><br /></td></tr>
 <tr class="separator:a9e277814a6485e9a35762fbeb8814728"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f9f82ba398430a27249ac744d7f7b69"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1_body.html">Body</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_def.html#a3f9f82ba398430a27249ac744d7f7b69">bodyB</a> = nullptr</td></tr>
-<tr class="memdesc:a3f9f82ba398430a27249ac744d7f7b69"><td class="mdescLeft">&#160;</td><td class="mdescRight">The second attached body.  <a href="#a3f9f82ba398430a27249ac744d7f7b69">More...</a><br /></td></tr>
+<tr class="memdesc:a3f9f82ba398430a27249ac744d7f7b69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Second attached body.  <a href="#a3f9f82ba398430a27249ac744d7f7b69">More...</a><br /></td></tr>
 <tr class="separator:a3f9f82ba398430a27249ac744d7f7b69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acafd0b10dfb458f30198ee9a307fc913"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_def.html#acafd0b10dfb458f30198ee9a307fc913">collideConnected</a> = false</td></tr>
-<tr class="memdesc:acafd0b10dfb458f30198ee9a307fc913"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this flag to true if the attached bodies should collide.  <a href="#acafd0b10dfb458f30198ee9a307fc913">More...</a><br /></td></tr>
+<tr class="memdesc:acafd0b10dfb458f30198ee9a307fc913"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collide connected.  <a href="#acafd0b10dfb458f30198ee9a307fc913">More...</a><br /></td></tr>
 <tr class="separator:acafd0b10dfb458f30198ee9a307fc913"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99628daf706d03ca66f4db66250d9c73"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_joint_def.html#a99628daf706d03ca66f4db66250d9c73">userData</a> = nullptr</td></tr>
-<tr class="memdesc:a99628daf706d03ca66f4db66250d9c73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to attach application specific data to your joints.  <a href="#a99628daf706d03ca66f4db66250d9c73">More...</a><br /></td></tr>
+<tr class="memdesc:a99628daf706d03ca66f4db66250d9c73"><td class="mdescLeft">&#160;</td><td class="mdescRight">User data.  <a href="#a99628daf706d03ca66f4db66250d9c73">More...</a><br /></td></tr>
 <tr class="separator:a99628daf706d03ca66f4db66250d9c73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="classplayrho_1_1_joint.html" title="Base Joint class. ">Joint</a> definitions are used to construct joints. </p><dl class="section note"><dt>Note</dt><dd>This class is not meant to be directly instantiated; it is meant to be inherreted from. </dd></dl>
+<div class="textblock"><p><a class="el" href="classplayrho_1_1_joint.html" title="Base joint class. ">Joint</a> definitions are used to construct joints. </p><dl class="section note"><dt>Note</dt><dd>This class is not meant to be directly instantiated; it is meant to be inherreted from. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2b4b35fb0b40505d758de0ba484abeac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b4b35fb0b40505d758de0ba484abeac">&#9670;&nbsp;</a></span>JointDef() <span class="overload">[1/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b4b35fb0b40505d758de0ba484abeac">&#9670;&nbsp;</a></span>JointDef() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -160,7 +153,7 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <a id="a12140b02482e26eec4291bace4494bfe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12140b02482e26eec4291bace4494bfe">&#9670;&nbsp;</a></span>JointDef() <span class="overload">[2/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a12140b02482e26eec4291bace4494bfe">&#9670;&nbsp;</a></span>JointDef() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -179,139 +172,6 @@ Public Attributes</h2></td></tr>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a2f9aa4a9f55365c228282e248408ad16"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f9aa4a9f55365c228282e248408ad16">&#9670;&nbsp;</a></span>JointDef() <span class="overload">[3/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr playrho::JointDef::JointDef </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceplayrho.html#aae8d7c50e25778ece4347bd63586c485">JointType</a>&#160;</td>
-          <td class="paramname"><em>t</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1_body.html">Body</a> *&#160;</td>
-          <td class="paramname"><em>bA</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1_body.html">Body</a> *&#160;</td>
-          <td class="paramname"><em>bB</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>cc</em> = <code>false</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>u</em> = <code>nullptr</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a0fa5ba377af0616987e215a8a3d2ec2b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0fa5ba377af0616987e215a8a3d2ec2b">&#9670;&nbsp;</a></span>JointDef() <span class="overload">[4/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr playrho::JointDef::JointDef </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structplayrho_1_1_joint_def.html">JointDef</a> &amp;&#160;</td>
-          <td class="paramname"><em>copy</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="a6dc6e5f8e89def538a808b1f2892954d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6dc6e5f8e89def538a808b1f2892954d">&#9670;&nbsp;</a></span>UseBodyA()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structplayrho_1_1_joint_def.html">JointDef</a>&amp; playrho::JointDef::UseBodyA </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1_body.html">Body</a> *&#160;</td>
-          <td class="paramname"><em>body</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a071eab0639192fb226af5d8cb109cff6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a071eab0639192fb226af5d8cb109cff6">&#9670;&nbsp;</a></span>UseBodyB()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structplayrho_1_1_joint_def.html">JointDef</a>&amp; playrho::JointDef::UseBodyB </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1_body.html">Body</a> *&#160;</td>
-          <td class="paramname"><em>body</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -358,17 +218,18 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Set this flag to true if the attached bodies should collide. </p>
 
 </div>
 </div>
-<a id="a8d0081742ddcb1ba560a2b044851b859"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d0081742ddcb1ba560a2b044851b859">&#9670;&nbsp;</a></span>type</h2>
+<a id="a5048aa19278e5f89219ed73c3a54e7a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5048aa19278e5f89219ed73c3a54e7a0">&#9670;&nbsp;</a></span>type</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="namespaceplayrho.html#aae8d7c50e25778ece4347bd63586c485">JointType</a> playrho::JointDef::type</td>
+          <td class="memname"><a class="el" href="namespaceplayrho.html#aae8d7c50e25778ece4347bd63586c485">JointType</a> playrho::JointDef::type = <a class="el" href="namespaceplayrho.html#aae8d7c50e25778ece4347bd63586c485a88183b946cc5f0e8c96b2e66e1c74a7e">JointType::Unknown</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -386,16 +247,17 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Use this to attach application specific data to your joints. </p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>Joint.hpp</li>
+<li>JointDef.hpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 18 2017 17:08:33 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Sep 6 2017 12:29:47 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>
