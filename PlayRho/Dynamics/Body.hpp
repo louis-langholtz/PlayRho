@@ -70,6 +70,7 @@ public:
     /// @brief Container type for fixtures.
     using Fixtures = std::vector<Fixture*>;
 
+    /// @brief Keyed joint pointer.
     using KeyedJointPtr = std::pair<Body*, Joint*>;
 
     /// @brief Container type for joints.
@@ -78,6 +79,7 @@ public:
     /// @brief Container type for contacts.
     using Contacts = std::vector<std::pair<ContactKey,Contact*>>;
 
+    /// @brief Invalid island index.
     static constexpr auto InvalidIslandIndex = static_cast<BodyCounter>(-1);
 
     /// @brief Flags type.
@@ -122,7 +124,10 @@ public:
         e_massDataDirtyFlag = 0x0200,
     };
     
+    /// @brief Gets the flags for the given value.
     static FlagsType GetFlags(const BodyType type) noexcept;
+
+    /// @brief Gets the flags for the given value.
     static FlagsType GetFlags(const BodyDef& bd) noexcept;
     
     /// @brief Initializing constructor for unit testing purposes.
@@ -167,6 +172,7 @@ public:
     ///
     bool DestroyFixture(Fixture* fixture, bool resetMassData = true);
     
+    /// @brief Destory fixtures.
     void DestroyFixtures();
     
     /// @brief Sets the position of the body's origin and rotation.
@@ -194,6 +200,7 @@ public:
     /// @return World location of the body's origin.
     Length2D GetLocation() const noexcept;
 
+    /// @brief Gets the body's sweep.
     const Sweep& GetSweep() const noexcept;
 
     /// @brief Get the angle.
@@ -206,6 +213,7 @@ public:
     /// @brief Gets the local position of the center of mass.
     Length2D GetLocalCenter() const noexcept;
 
+    /// @brief Gets the velocity.
     Velocity GetVelocity() const noexcept;
 
     /// @brief Sets the body's velocity (linear and angular velocity).
@@ -841,6 +849,7 @@ inline bool Unawaken(Body& body) noexcept
 /// @return true if either body is dynamic and no joint prevents collision, false otherwise.
 bool ShouldCollide(const Body& lhs, const Body& rhs) noexcept;
 
+/// @brief Gets the "position 1" Position information for the given body.
 inline Position GetPosition1(const Body& body) noexcept
 {
     return body.GetSweep().pos1;
@@ -856,11 +865,13 @@ inline Mass GetMass(const Body& body) noexcept
     return (invMass != InvMass{0})? Mass{Real{1} / invMass}: Mass{0};
 }
 
+/// @brief Applies the given linear acceleration to the given body.
 inline void ApplyLinearAcceleration(Body& body, const LinearAcceleration2D amount)
 {
     body.SetAcceleration(body.GetLinearAcceleration() + amount, body.GetAngularAcceleration());
 }
 
+/// @brief Sets the given amount of force at the given point to the given body.
 inline void SetForce(Body& body, const Force2D force, const Length2D point) noexcept
 {
     const auto linAccel = LinearAcceleration2D{force * body.GetInvMass()};
@@ -902,6 +913,7 @@ inline void ApplyForceToCenter(Body& body, const Force2D force) noexcept
     body.SetAcceleration(linAccel, angAccel);
 }
 
+/// @brief Sets the given amount of torque to the given body.
 inline void SetTorque(Body& body, const Torque torque) noexcept
 {
     const auto linAccel = body.GetLinearAcceleration();
@@ -953,6 +965,8 @@ inline void ApplyAngularImpulse(Body& body, AngularMomentum impulse) noexcept
     body.SetVelocity(velocity);
 }
 
+/// @brief Gets the centripetal force necessary to put the body into an orbit having
+///    the given radius.
 Force2D GetCentripetalForce(const Body& body, const Length2D axis);
 
 /// Gets the rotational inertia of the body.
@@ -1021,6 +1035,7 @@ inline Length2D GetWorldVector(const Body& body, const Length2D localVector) noe
     return Rotate(localVector, body.GetTransformation().q);
 }
 
+/// @brief Gets the world vector for the given local vector from the given body's transformation.
 inline UnitVec2 GetWorldVector(const Body& body, const UnitVec2 localVector) noexcept
 {
     return Rotate(localVector, body.GetTransformation().q);
@@ -1068,11 +1083,13 @@ inline LinearVelocity2D GetLinearVelocityFromLocalPoint(const Body& body,
     return GetLinearVelocityFromWorldPoint(body, GetWorldPoint(body, localPoint));
 }
 
+/// @brief Gets the net force that the given body is currently experiencing.
 inline Force2D GetForce(const Body& body) noexcept
 {
     return body.GetLinearAcceleration() * GetMass(body);
 }
 
+/// @brief Gets the net torque that the given body is currently experiencing.
 inline Torque GetTorque(const Body& body) noexcept
 {
     return body.GetAngularAcceleration() * GetRotInertia(body);
@@ -1086,8 +1103,10 @@ inline Torque GetTorque(const Body& body) noexcept
 /// @param conf Movement configuration. This defines caps on linear and angular speeds.
 Velocity GetVelocity(const Body& body, const Time h, MovementConf conf) noexcept;
 
+/// @brief Gets the world index for the given body.
 BodyCounter GetWorldIndex(const Body* body);
 
+/// @brief Gets the fixture count of the given body.
 std::size_t GetFixtureCount(const Body& body);
 
 /// Rotates a body a given amount around a point in world coordinates.

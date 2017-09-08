@@ -34,24 +34,29 @@ namespace playrho {
 class StackAllocator
 {
 public:
+
+    /// @brief Size type.
     using size_type = std::size_t;
 
     /// @brief Stack allocator configuration data.
     struct Configuration
     {
-        size_type preallocation_size = 100 * 1024;
-        size_type allocation_records = 32;
+        size_type preallocation_size = 100 * 1024; ///< Preallocation size.
+        size_type allocation_records = 32; ///< Allocation records.
     };
 
+    /// @brief Gets the default configuration.
     static constexpr Configuration GetDefaultConfiguration()
     {
         return Configuration{};
     }
 
+    /// @brief Initializing constructor.
     StackAllocator(Configuration config = GetDefaultConfiguration()) noexcept;
 
     ~StackAllocator() noexcept;
 
+    /// @brief Copy constructor.
     StackAllocator(const StackAllocator& copy) = delete;
 
     /// Allocates an aligned block of memory of the given size.
@@ -60,8 +65,10 @@ public:
     /// @sa GetEntryCount.
     void* Allocate(size_type size) noexcept;
 
+    /// @brief Frees the given pointer.
     void Free(void* p) noexcept;
 
+    /// @brief Allocates and array of the given size number of elements.
     template <typename T>
     T* AllocateArray(size_type size) noexcept
     {
@@ -76,6 +83,7 @@ public:
         Free(p);
     }
 
+    /// @brief Gets the max allocation.
     auto GetMaxAllocation() const noexcept
     {
         return m_maxAllocation;
@@ -105,11 +113,13 @@ public:
         return m_allocation;
     }
     
+    /// @brief Gets the preallocated size.
     auto GetPreallocatedSize() const noexcept
     {
         return m_size;
     }
     
+    /// @brief Gets the max entries.
     auto GetMaxEntries() const noexcept
     {
         return m_max_entries;

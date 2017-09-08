@@ -45,10 +45,12 @@ namespace playrho
         /// @details Must be big enough to hold max posible count of vertices.
         using size_type = std::remove_const<decltype(MaxShapeVertices)>::type;
         
+        /// @brief Invalid index.
         static constexpr size_type InvalidIndex = static_cast<size_type>(-1);
         
         DistanceProxy() = default;
         
+        /// @brief Copy constructor.
         constexpr DistanceProxy(const DistanceProxy& copy) noexcept:
             m_vertices{copy.m_vertices},
             m_normals{copy.m_normals},
@@ -114,6 +116,7 @@ namespace playrho
             return m_vertices[index];
         }
         
+        /// @brief Gets the normal for the given index.
         auto GetNormal(size_type index) const noexcept
         {
             assert(index != InvalidIndex);
@@ -129,8 +132,10 @@ namespace playrho
         Length m_vertexRadius = Length{0}; ///< Radius of the vertices of the associated shape.
     };
     
+    /// @brief Determines with the two given distance proxies are equal.
     bool operator== (const DistanceProxy& lhs, const DistanceProxy& rhs) noexcept;
     
+    /// @brief Determines with the two given distance proxies are not equal.
     inline bool operator!= (const DistanceProxy& lhs, const DistanceProxy& rhs) noexcept
     {
         return !(lhs == rhs);
@@ -146,8 +151,10 @@ namespace playrho
     /// @sa GetVertexCount().
     DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, const Vec2 d) noexcept;
 
+    /// @brief Finds the lowest right most vertex in the given collection.
     std::size_t FindLowestRightMostVertex(Span<const Length2D> vertices);
     
+    /// @brief Gets the convex hull for the given collection of vertices as a vector.
     std::vector<Length2D> GetConvexHullAsVector(Span<const Length2D> vertices);
 
     /// Tests a point for containment in the given distance proxy.

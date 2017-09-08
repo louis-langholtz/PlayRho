@@ -59,23 +59,31 @@ namespace playrho
     /// Dump joint to the log file.
     void Dump(const FrictionJoint& joint, std::size_t index);
 
+    /// @brief Dumps the joint to the log file.
     void Dump(const GearJoint& joint, std::size_t index);
     
+    /// @brief Dumps the joint to the log file.
     void Dump(const MotorJoint& joint, std::size_t index);
 
+    /// @brief Dumps the joint to the log file.
     void Dump(const MouseJoint& joint, std::size_t index);
 
+    /// @brief Dumps the joint to the log file.
     void Dump(const PrismaticJoint& joint, std::size_t index);
 
     /// Dump joint to dmLog
     void Dump(const PulleyJoint& joint, std::size_t index);
 
+    /// @brief Dumps the joint to the log file.
     void Dump(const RevoluteJoint& joint, std::size_t index);
 
+    /// @brief Dumps the joint to the log file.
     void Dump(const RopeJoint& joint, std::size_t index);
 
+    /// @brief Dumps the joint to the log file.
     void Dump(const WeldJoint& joint, std::size_t index);
 
+    /// @brief Dumps the joint to the log file.
     void Dump(const WheelJoint& joint, std::size_t index);
     
 } // namespace playrho

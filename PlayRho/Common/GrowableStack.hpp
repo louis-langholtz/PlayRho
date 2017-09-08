@@ -34,14 +34,20 @@ template <typename T, std::size_t N>
 class GrowableStack
 {
 public:
+    
+    /// @brief Element type.
     using ElementType = T;
+
+    /// @brief Count type.
     using CountType = std::size_t;
 
+    /// @brief Gets the initial capacity.
     static constexpr auto GetInitialCapacity() noexcept
     {
         return CountType(N);
     }
     
+    /// @brief Gets the buffer growth rate.
     static constexpr auto GetBufferGrowthRate() noexcept
     {
         return CountType{2};
@@ -58,6 +64,7 @@ public:
         }
     }
 
+    /// @brief Pushes the given elements onto this stack.
     void push(const ElementType& element)
     {
         if (m_count == m_capacity)
@@ -76,28 +83,35 @@ public:
         ++m_count;
     }
 
+    /// @brief Accesses the "top" element.
+    /// @warning Behavior is undefined if this stack doesn't already have at least
+    ///   one value pushed onto it.
     ElementType top() const
     {
         assert(m_count > 0);
         return m_stack[m_count - 1];
     }
 
+    /// @brief Pops the "top" element.
     void pop() noexcept
     {
         assert(m_count > 0);
         --m_count;
     }
 
+    /// @brief Gets the current size in numbers of elements.
     constexpr CountType size() const noexcept
     {
         return m_count;
     }
     
+    /// @brief Gets the capacity in number of elements.
     constexpr CountType capacity() const noexcept
     {
         return m_capacity;
     }
 
+    /// @brief Whether this stack is empty.
     constexpr bool empty() const noexcept
     {
         return m_count == 0;

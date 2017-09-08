@@ -44,9 +44,10 @@ public:
     ///
     using VertexCounter = std::remove_const<decltype(MaxShapeVertices)>::type;
 
-
+    /// @brief Invalid vertex.
     static constexpr auto InvalidVertex = static_cast<VertexCounter>(-1);
 
+    /// @brief Gets the default vertex radius for the PolygonShape.
     static constexpr Length GetDefaultVertexRadius() noexcept
     {
         return DefaultLinearSlop * Real{2};
@@ -61,6 +62,7 @@ public:
         }
     };
     
+    /// @brief Gets the default configuration for a PolygonShape.
     static constexpr Conf GetDefaultConf() noexcept
     {
         return Conf{};
@@ -76,6 +78,7 @@ public:
         // Intentionally empty.
     }
 
+    /// @brief Copy constructor.
     PolygonShape(const PolygonShape&) = default;
     
     /// Initializing constructor for rectangles.
@@ -125,6 +128,7 @@ public:
     /// @param hy the half-height.
     void SetAsBox(Length hx, Length hy) noexcept;
     
+    /// @brief Transforms this polygon by the given transformation.
     PolygonShape& Transform(Transformation xfm) noexcept;
 
     /// Gets the vertex count.
@@ -151,11 +155,13 @@ public:
         return Span<const Length2D>(&m_vertices[0], GetVertexCount());
     }
 
+    /// @brief Gets the span of normals.
     Span<const UnitVec2> GetNormals() const noexcept
     {
         return Span<const UnitVec2>(&m_normals[0], GetVertexCount());
     }
     
+    /// @brief Gets the centroid.
     Length2D GetCentroid() const noexcept { return m_centroid; }
     
 private:
@@ -229,6 +235,7 @@ bool Validate(const PolygonShape& shape);
 /// @param angle the rotation of the box in local coordinates.
 void SetAsBox(PolygonShape& shape, Length hx, Length hy, const Length2D center, Angle angle) noexcept;
 
+/// @brief Transforms the given shape by the given transformation.
 inline PolygonShape Transform(PolygonShape value, Transformation xfm) noexcept
 {
     return value.Transform(xfm);

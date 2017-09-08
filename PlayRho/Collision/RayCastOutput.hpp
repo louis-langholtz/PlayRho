@@ -46,6 +46,7 @@ namespace playrho
         UnitInterval<Real> fraction = UnitInterval<Real>{0};
     };
 
+    /// @brief Ray cast output.
     using RayCastOutput = Optional<RayCastHit>;
     
     /// @brief Cast a ray against a circle of a given radius at the given location.

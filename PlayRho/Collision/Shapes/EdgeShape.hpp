@@ -35,6 +35,8 @@ namespace playrho {
 class EdgeShape : public Shape
 {
 public:
+    
+    /// @brief Gets the default vertex radius.
     static constexpr Length GetDefaultVertexRadius() noexcept
     {
         return DefaultLinearSlop * Real{2};
@@ -59,15 +61,17 @@ public:
             return *this;
         }
 
-        Length2D vertex1 = Length2D{};
-        Length2D vertex2 = Length2D{};
+        Length2D vertex1 = Length2D{}; ///< Vertex 1.
+        Length2D vertex2 = Length2D{}; ///< Vertex 2.
     };
     
+    /// @brief Gets the default configuration for an EdgeShape.
     static constexpr Conf GetDefaultConf() noexcept
     {
         return Conf{};
     }
 
+    /// @brief Initializing constructor.
     EdgeShape(const Conf& conf = GetDefaultConf()) noexcept:
         Shape{conf},
         m_vertices{conf.vertex1, conf.vertex2}
@@ -76,6 +80,7 @@ public:
         m_normals[1] = -m_normals[0];
     }
 
+    /// @brief Initializing constructor.
     EdgeShape(Length2D v1, Length2D v2, const Conf& conf = GetDefaultConf()) noexcept:
         Shape{conf},
         m_vertices{v1, v2}
@@ -84,6 +89,7 @@ public:
         m_normals[1] = -m_normals[0];
     }
 
+    /// @brief Copy constructor.
     EdgeShape(const EdgeShape&) = default;
 
     /// @brief Gets the number of child primitives.
@@ -104,10 +110,16 @@ public:
     /// @brief Sets this as an isolated edge.
     void Set(const Length2D v1, const Length2D v2);
 
+    /// @brief Gets vertex number 1 (of 2).
     Length2D GetVertex1() const noexcept { return m_vertices[0]; }
+
+    /// @brief Gets vertex number 2 (of 2).
     Length2D GetVertex2() const noexcept { return m_vertices[1]; }
 
+    /// @brief Gets normal number 1 (of 2).
     UnitVec2 GetNormal1() const noexcept { return m_normals[0]; }
+
+    /// @brief Gets normal number 2 (of 2).
     UnitVec2 GetNormal2() const noexcept { return m_normals[1]; }
 
 private:

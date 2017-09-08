@@ -32,11 +32,22 @@ namespace playrho
     class ArrayList
     {
     public:
+        /// @brief Size type.
         using size_type = SIZE_TYPE;
+
+        /// @brief Value type.
         using value_type = VALUE_TYPE;
+        
+        /// @brief Reference type.
         using reference = value_type&;
+        
+        /// @brief Constant reference type.
         using const_reference = const value_type&;
+        
+        /// @brief Pointer type.
         using pointer = value_type*;
+        
+        /// @brief Constant pointer type.
         using const_pointer = const value_type*;
 
         constexpr ArrayList() noexcept
@@ -52,6 +63,7 @@ namespace playrho
             // Intentionally empty
         }
 
+        /// @brief Assignment operator.
         template <std::size_t COPY_MAXSIZE, typename COPY_SIZE_TYPE, typename = std::enable_if_t< COPY_MAXSIZE <= MAXSIZE >>
         ArrayList& operator= (const ArrayList<VALUE_TYPE, COPY_MAXSIZE, COPY_SIZE_TYPE>& copy)
         {
@@ -149,6 +161,7 @@ namespace playrho
         std::array<value_type,MAXSIZE> m_elements;
     };
     
+    /// @brief ArrayList append operator.
     template <typename T, std::size_t S>
     ArrayList<T, S>& operator+= (ArrayList<T, S>& lhs, const typename ArrayList<T, S>::data_type& rhs)
     {
@@ -156,6 +169,7 @@ namespace playrho
         return lhs;
     }
 
+    /// @brief ArrayList add operator.
     template <typename T, std::size_t S>
     ArrayList<T, S> operator+ (ArrayList<T, S> lhs, const typename ArrayList<T, S>::data_type& rhs)
     {

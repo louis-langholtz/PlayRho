@@ -41,51 +41,60 @@ namespace playrho
 {
 // Other templates.
 
+/// @brief Gets the "X" element of the given value - i.e. the first element.
 template <typename T>
 constexpr auto& GetX(T& value)
 {
     return Get<0>(value);
 }
 
+/// @brief Gets the "Y" element of the given value - i.e. the second element.
 template <typename T>
 constexpr auto& GetY(T& value)
 {
     return Get<1>(value);
 }
 
+/// @brief Gets the "Z" element of the given value - i.e. the third element.
 template <typename T>
 constexpr auto& GetZ(T& value)
 {
     return Get<2>(value);
 }
 
+/// @brief Gets the "X" element of the given value - i.e. the first element.
 template <typename T>
 constexpr inline auto GetX(const T& value)
 {
     return Get<0>(value);
 }
 
+/// @brief Gets the "Y" element of the given value - i.e. the second element.
 template <typename T>
 constexpr inline auto GetY(const T& value)
 {
     return Get<1>(value);
 }
 
+/// @brief Gets the "Z" element of the given value - i.e. the third element.
 template <typename T>
 constexpr inline auto GetZ(const T& value)
 {
     return Get<2>(value);
 }
 
+/// @brief Strips the unit from the given value.
 template <typename T, LoValueCheck lo, HiValueCheck hi>
 constexpr inline auto StripUnit(const BoundedValue<T, lo, hi>& v)
 {
     return StripUnit(v.get());
 }
 
+/// @brief Squares the given value.
 template<class TYPE>
 constexpr inline auto Square(TYPE t) noexcept { return t * t; }
 
+/// @brief Square root's the given value.
 template<typename T>
 inline auto Sqrt(T t)
 {
@@ -100,24 +109,28 @@ inline auto Sqrt(Area t)
 }
 #endif
 
+/// @brief Computes the arc-tangent of the given y and x values.
 template<typename T>
 inline auto Atan2(T y, T x)
 {
     return Angle{static_cast<Real>(std::atan2(StripUnit(y), StripUnit(x))) * Radian};
 }
 
+/// @brief Computes the arc-tangent of the given y and x values.
 template<>
 inline auto Atan2(double y, double x)
 {
     return Angle{static_cast<Real>(std::atan2(y, x)) * Radian};
 }
 
+/// @brief Computes the absolute value of the given value.
 template <typename T>
 constexpr inline T Abs(T a)
 {
     return (a >= T{0}) ? a : -a;
 }
 
+/// @brief Computes the average of the given values.
 template <typename T>
 inline auto Average(Span<const T> span)
 {
@@ -134,9 +147,11 @@ inline auto Average(Span<const T> span)
     return sum / static_cast<Real>(count);
 }
 
+/// @brief Computes the rounded value of the given value.
 template <typename T>
 inline T Round(T value, unsigned precision = 100000);
 
+/// @brief Computes the rounded value of the given value.
 template <>
 inline float Round(float value, std::uint32_t precision)
 {
@@ -144,6 +159,7 @@ inline float Round(float value, std::uint32_t precision)
     return std::round(value * factor) / factor;
 }
 
+/// @brief Computes the rounded value of the given value.
 template <>
 inline double Round(double value, std::uint32_t precision)
 {
@@ -151,6 +167,7 @@ inline double Round(double value, std::uint32_t precision)
     return std::round(value * factor) / factor;
 }
 
+/// @brief Computes the rounded value of the given value.
 template <>
 inline long double Round(long double value, std::uint32_t precision)
 {
@@ -159,6 +176,7 @@ inline long double Round(long double value, std::uint32_t precision)
     return std::round(value * factor) / factor;
 }
 
+/// @brief Computes the rounded value of the given value.
 template <>
 inline Fixed32 Round(Fixed32 value, std::uint32_t precision)
 {
@@ -167,6 +185,7 @@ inline Fixed32 Round(Fixed32 value, std::uint32_t precision)
 }
 
 #ifndef _WIN32
+/// @brief Computes the rounded value of the given value.
 template <>
 inline Fixed64 Round(Fixed64 value, std::uint32_t precision)
 {
@@ -175,18 +194,20 @@ inline Fixed64 Round(Fixed64 value, std::uint32_t precision)
 }
 #endif
 
+/// @brief Computes the rounded value of the given value.
 template <>
 inline Vec2 Round(Vec2 value, std::uint32_t precision)
 {
     return Vec2{Round(value[0], precision), Round(value[1], precision)};
 }
 
+/// @brief Gets a Vec2 representation of the given value.
 constexpr inline Vec2 GetVec2(const UnitVec2 value)
 {
     return Vec2{Get<0>(value), Get<1>(value)};
 }
 
-/// Gets whether a given value is almost zero.
+/// @brief Gets whether a given value is almost zero.
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
 /// odd results like a divide by zero trap occuring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
@@ -195,7 +216,7 @@ constexpr inline bool AlmostZero(float value)
     return Abs(value) < std::numeric_limits<decltype(value)>::min();
 }
 
-/// Gets whether a given value is almost zero.
+/// @brief Gets whether a given value is almost zero.
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
 /// odd results like a divide by zero trap occuring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
@@ -204,7 +225,7 @@ constexpr inline bool AlmostZero(double value)
     return Abs(value) < std::numeric_limits<decltype(value)>::min();
 }
 
-/// Gets whether a given value is almost zero.
+/// @brief Gets whether a given value is almost zero.
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
 /// odd results like a divide by zero trap occuring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
@@ -213,7 +234,7 @@ constexpr inline bool AlmostZero(long double value)
     return Abs(value) < std::numeric_limits<decltype(value)>::min();
 }
 
-/// Gets whether a given value is almost zero.
+/// @brief Gets whether a given value is almost zero.
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
 /// odd results like a divide by zero trap occuring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
@@ -223,7 +244,7 @@ constexpr inline bool AlmostZero(Fixed32 value)
 }
 
 #ifndef _WIN32
-/// Gets whether a given value is almost zero.
+/// @brief Gets whether a given value is almost zero.
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
 /// odd results like a divide by zero trap occuring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
@@ -233,6 +254,7 @@ constexpr inline bool AlmostZero(Fixed64 value)
 }
 #endif
 
+/// @brief Determines whether the given two values are "almost equal".
 constexpr inline bool AlmostEqual(float x, float y, int ulp = 2)
 {
     // From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
@@ -244,6 +266,7 @@ constexpr inline bool AlmostEqual(float x, float y, int ulp = 2)
     return (Abs(x - y) < (std::numeric_limits<float>::epsilon() * Abs(x + y) * ulp)) || AlmostZero(x - y);
 }
 
+/// @brief Determines whether the given two values are "almost equal".
 constexpr inline bool AlmostEqual(double x, double y, int ulp = 2)
 {
     // From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
@@ -255,6 +278,7 @@ constexpr inline bool AlmostEqual(double x, double y, int ulp = 2)
     return (Abs(x - y) < (std::numeric_limits<double>::epsilon() * Abs(x + y) * ulp)) || AlmostZero(x - y);
 }
 
+/// @brief Determines whether the given two values are "almost equal".
 constexpr inline bool AlmostEqual(long double x, long double y, int ulp = 2)
 {
     // From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
@@ -266,24 +290,27 @@ constexpr inline bool AlmostEqual(long double x, long double y, int ulp = 2)
     return (Abs(x - y) < (std::numeric_limits<long double>::epsilon() * Abs(x + y) * ulp)) || AlmostZero(x - y);
 }
 
+/// @brief Determines whether the given two values are "almost equal".
 constexpr inline bool AlmostEqual(Fixed32 x, Fixed32 y, int ulp = 2)
 {
     return Abs(x - y) <= Fixed32{0, static_cast<std::uint32_t>(ulp)};
 }
 
 #ifndef _WIN32
+/// @brief Determines whether the given two values are "almost equal".
 constexpr inline bool AlmostEqual(Fixed64 x, Fixed64 y, int ulp = 2)
 {
     return Abs(x - y) <= Fixed64{0, static_cast<std::uint32_t>(ulp)};
 }
 #endif
 
+/// @brief Gets the angle of the given unit vector.
 inline Angle GetAngle(const UnitVec2 value)
 {
     return Atan2(GetY(value), GetX(value));
 }
 
-/// Gets the angle.
+/// @brief Gets the angle.
 /// @return Anglular value in the range of -Pi to +Pi radians.
 template <class T>
 inline Angle GetAngle(const Vector2D<T> value)
@@ -291,8 +318,8 @@ inline Angle GetAngle(const Vector2D<T> value)
     return Atan2(GetY(value), GetX(value));
 }
 
-/// Gets the square of the length/magnitude of the given value.
-/// For performance, use this instead of GetLength(T value) (if possible).
+/// @brief Gets the square of the length/magnitude of the given value.
+/// @note For performance, use this instead of GetLength(T value) (if possible).
 /// @return Non-negative value.
 template <typename T>
 constexpr inline auto GetLengthSquared(T value) noexcept
@@ -300,19 +327,21 @@ constexpr inline auto GetLengthSquared(T value) noexcept
     return Square(GetX(value)) + Square(GetY(value));
 }
 
+/// @brief Gets the square of the length/magnitude of the given value.
 template <>
 constexpr inline auto GetLengthSquared(Vec3 value) noexcept
 {
     return Square(GetX(value)) + Square(GetY(value)) + Square(GetZ(value));
 }
 
+/// @brief Gets the length/magnitude of the given value.
 template <typename T>
 inline auto GetLength(T value)
 {
     return Sqrt(GetLengthSquared(value));
 }
 
-/// Performs the dot product on two vectors (A and B).
+/// @brief Performs the dot product on two vectors (A and B).
 ///
 /// @details The dot product of two vectors is defined as:
 ///   the magnitude of vector A, mulitiplied by, the magnitude of vector B,
@@ -340,7 +369,7 @@ constexpr inline auto Dot(const T1 a, const T2 b) noexcept
     return (Get<0>(a) * Get<0>(b)) + (Get<1>(a) * Get<1>(b));
 }
 
-/// Perform the dot product on two vectors.
+/// @brief Performs the dot product on two vectors.
 template <>
 constexpr inline auto Dot(const Vec3 a, const Vec3 b) noexcept
 {
@@ -394,6 +423,7 @@ constexpr inline auto Cross(const T1 a, const T2 b) noexcept
     return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
 }
 
+/// @brief Cross-products the given two values.
 template <>
 constexpr inline auto Cross(const Vec3 a, const Vec3 b) noexcept
 {
@@ -404,8 +434,8 @@ constexpr inline auto Cross(const Vec3 a, const Vec3 b) noexcept
     };
 }
 
-/// Solve A * x = b, where b is a column vector. This is more efficient
-/// than computing the inverse in one-shot cases.
+/// @brief Solves A * x = b, where b is a column vector.
+/// @note This is more efficient than computing the inverse in one-shot cases.
 template <typename T, typename U>
 constexpr auto Solve(const Matrix22<U> mat, const Vector2D<T> b) noexcept
 {
@@ -418,6 +448,7 @@ constexpr auto Solve(const Matrix22<U> mat, const Vector2D<T> b) noexcept
         }: Vector2D<OutType>{};
 }
 
+/// @brief Inverts the given value.
 template <class IN_TYPE>
 constexpr auto Invert(const Matrix22<IN_TYPE> value) noexcept
 {
@@ -431,8 +462,8 @@ constexpr auto Invert(const Matrix22<IN_TYPE> value) noexcept
         Matrix22<OutType>{};
 }
 
-/// Solve A * x = b, where b is a column vector. This is more efficient
-/// than computing the inverse in one-shot cases.
+/// @brief Solves A * x = b, where b is a column vector.
+/// @note This is more efficient than computing the inverse in one-shot cases.
 constexpr Vec3 Solve33(const Mat33& mat, const Vec3 b) noexcept
 {
     const auto dp = Dot(GetX(mat), Cross(GetY(mat), GetZ(mat)));
@@ -443,10 +474,10 @@ constexpr Vec3 Solve33(const Mat33& mat, const Vec3 b) noexcept
     return Vec3{x, y, z};
 }
     
-/// Solve A * x = b, where b is a column vector. This is more efficient
-/// than computing the inverse in one-shot cases. Solve only the upper
-/// 2-by-2 matrix equation.
-    template <typename T>
+/// @brief Solves A * x = b, where b is a column vector.
+/// @note This is more efficient than computing the inverse in one-shot cases.
+/// @note Solves only the upper 2-by-2 matrix equation.
+template <typename T>
 constexpr T Solve22(const Mat33& mat, const T b) noexcept
 {
     const auto cp = GetX(GetX(mat)) * GetY(GetY(mat)) - GetX(GetY(mat)) * GetY(GetX(mat));
@@ -456,8 +487,8 @@ constexpr T Solve22(const Mat33& mat, const T b) noexcept
     return T{x, y};
 }
 
-/// Get the inverse of this matrix as a 2-by-2.
-/// Returns the zero matrix if singular.
+/// @brief Gets the inverse of the given matrix as a 2-by-2.
+/// @return Zero matrix if singular.
 constexpr inline Mat33 GetInverse22(const Mat33& value) noexcept
 {
     const auto a = GetX(GetX(value)), b = GetX(GetY(value)), c = GetY(GetX(value)), d = GetY(GetY(value));
@@ -469,8 +500,8 @@ constexpr inline Mat33 GetInverse22(const Mat33& value) noexcept
     return Mat33{Vec3{det * d, -det * c, Real{0}}, Vec3{-det * b, det * a, 0}, Vec3{0, 0, 0}};
 }
     
-/// Get the symmetric inverse of this matrix as a 3-by-3.
-/// Returns the zero matrix if singular.
+/// @brief Gets the symmetric inverse of this matrix as a 3-by-3.
+/// @return Zero matrix if singular.
 constexpr inline Mat33 GetSymInverse33(const Mat33& value) noexcept
 {
     auto det = Dot(GetX(value), Cross(GetY(value), GetZ(value)));
@@ -501,7 +532,7 @@ struct ContactImpulses
     Momentum m_tangent; ///< Tangent impulse. This is the friction impulse (4-bytes).
 };
 
-/// Gets a vector counter-clockwise (reverse-clockwise) perpendicular to the given vector.
+/// @brief Gets a vector counter-clockwise (reverse-clockwise) perpendicular to the given vector.
 /// @details This takes a vector of form (x, y) and returns the vector (-y, x).
 /// @param vector Vector to return a counter-clockwise perpendicular equivalent for.
 /// @return A counter-clockwise 90-degree rotation of the given vector.
@@ -513,7 +544,7 @@ constexpr inline auto GetRevPerpendicular(const T vector) noexcept
     return T{-GetY(vector), GetX(vector)};
 }
     
-/// Gets a vector clockwise (forward-clockwise) perpendicular to the given vector.
+/// @brief Gets a vector clockwise (forward-clockwise) perpendicular to the given vector.
 /// @details This takes a vector of form (x, y) and returns the vector (y, -x).
 /// @param vector Vector to return a clockwise perpendicular equivalent for.
 /// @return A clockwise 90-degree rotation of the given vector.
@@ -560,42 +591,47 @@ constexpr inline Vec2 InverseTransform(const Vec2 v, const Mat22& A) noexcept
     return Vec2{Dot(v, GetX(A)), Dot(v, GetY(A))};
 }
 
+/// @brief Multiplication operator.
 template <class T, LoValueCheck lo, HiValueCheck hi>
 constexpr inline Vector2D<T> operator* (BoundedValue<T, lo, hi> s, UnitVec2 u) noexcept
 {
     return Vector2D<T>{u.GetX() * s, u.GetY() * T{s}};
 }
 
+/// @brief Multiplication operator.
 template <class T>
 constexpr inline Vector2D<T> operator* (const T s, const UnitVec2 u) noexcept
 {
     return Vector2D<T>{u.GetX() * s, u.GetY() * s};
 }
 
+/// @brief Multiplication operator.
 template <class T, LoValueCheck lo, HiValueCheck hi>
 constexpr inline Vector2D<T> operator* (UnitVec2 u, BoundedValue<T, lo, hi> s) noexcept
 {
     return Vector2D<T>{u.GetX() * s, u.GetY() * T{s}};
 }
 
+/// @brief Multiplication operator.
 template <class T>
 constexpr inline Vector2D<T> operator* (const UnitVec2 u, const T s) noexcept
 {
     return Vector2D<T>{u.GetX() * s, u.GetY() * s};
 }
 
+/// @brief Division operator.
 constexpr inline Vec2 operator/ (const UnitVec2 u, const UnitVec2::value_type s) noexcept
 {
     return Vec2{GetX(u) / s, GetY(u) / s};
 }
 
-// A * B
+/// @brief Computes A * B.
 constexpr inline Mat22 Mul(const Mat22& A, const Mat22& B) noexcept
 {
     return Mat22{Transform(GetX(B), A), Transform(GetY(B), A)};
 }
 
-// A^T * B
+/// @brief Computes A^T * B.
 constexpr inline Mat22 MulT(const Mat22& A, const Mat22& B) noexcept
 {
     const auto c1 = Vec2{Dot(GetX(A), GetX(B)), Dot(GetY(A), GetX(B))};
@@ -603,13 +639,13 @@ constexpr inline Mat22 MulT(const Mat22& A, const Mat22& B) noexcept
     return Mat22{c1, c2};
 }
 
-/// Multiply a matrix times a vector.
+/// @brief Multiplies a matrix by a vector.
 constexpr inline Vec3 Transform(const Vec3& v, const Mat33& A) noexcept
 {
     return (GetX(v) * GetX(A)) + (GetY(v) * GetY(A)) + (GetZ(v) * GetZ(A));
 }
 
-/// Multiply a matrix times a vector.
+/// @brief Multiplies a matrix by a vector.
 constexpr inline Vec2 Transform(const Vec2 v, const Mat33& A) noexcept
 {
     return Vec2{
@@ -646,7 +682,7 @@ constexpr inline auto InverseRotate(const Vector2D<T> vector, const UnitVec2& an
     return Vector2D<T>{newX, newY};
 }
 
-/// Transforms the given 2-D vector with the given transformation.
+/// @brief Transforms the given 2-D vector with the given transformation.
 /// @details
 /// Rotate and translate the given 2-D linear position according to the rotation and translation
 /// defined by the given transformation.
@@ -662,7 +698,7 @@ constexpr inline Length2D Transform(const Length2D v, const Transformation T) no
     return Rotate(v, T.q) + T.p;
 }
 
-/// Inverse transforms the given 2-D vector with the given transformation.
+/// @brief Inverse transforms the given 2-D vector with the given transformation.
 /// @details
 /// Inverse translate and rotate the given 2-D vector according to the translation and rotation
 /// defined by the given transformation.
@@ -678,39 +714,44 @@ constexpr inline Length2D InverseTransform(const Length2D v, const Transformatio
     return InverseRotate(v2, T.q);
 }
 
-// v2 = A.q.Rot(B.q.Rot(v1) + B.p) + A.p
-//    = (A.q * B.q).Rot(v1) + A.q.Rot(B.p) + A.p
+/// @brief Multiplies a given transformation by another given transformation.
+/// @note v2 = A.q.Rot(B.q.Rot(v1) + B.p) + A.p
+///          = (A.q * B.q).Rot(v1) + A.q.Rot(B.p) + A.p
 constexpr inline Transformation Mul(const Transformation& A, const Transformation& B) noexcept
 {
     return Transformation{A.p + Rotate(B.p, A.q), A.q.Rotate(B.q)};
 }
 
-// v2 = A.q' * (B.q * v1 + B.p - A.p)
-//    = A.q' * B.q * v1 + A.q' * (B.p - A.p)
+/// @brief Inverse multiplies a given transformation by another given transformation.
+/// @note v2 = A.q' * (B.q * v1 + B.p - A.p)
+///          = A.q' * B.q * v1 + A.q' * (B.p - A.p)
 constexpr inline Transformation MulT(const Transformation& A, const Transformation& B) noexcept
 {
     const auto dp = B.p - A.p;
     return Transformation{InverseRotate(dp, A.q), B.q.Rotate(A.q.FlipY())};
 }
 
+/// @brief Gets the absolute value of the given value.
 template <>
 inline Vec2 Abs(Vec2 a)
 {
     return Vec2{Abs(a[0]), Abs(a[1])};
 }
 
+/// @brief Gets the absolute value of the given value.
 template <>
 inline UnitVec2 Abs(UnitVec2 a)
 {
     return a.Absolute();
 }
 
+/// @brief Gets the absolute value of the given value.
 inline Mat22 Abs(const Mat22& A)
 {
     return Mat22{Abs(GetX(A)), Abs(GetY(A))};
 }
 
-/// Clamps the given value within the given range (inclusive).
+/// @brief Clamps the given value within the given range (inclusive).
 /// @param value Value to clamp.
 /// @param low Lowest value to return or NaN to keep the low-end unbounded.
 /// @param high Highest value to return or NaN to keep the high-end unbounded.
@@ -721,7 +762,8 @@ constexpr inline T Clamp(T value, T low, T high) noexcept
     return (tmp < low)? low: tmp; // std::isnan(low)? b: Max(b, low);
 }
 
-/// "Next Largest Power of 2
+/// @brief Gets the next largest power of 2
+/// @details
 /// Given a binary integer value x, the next largest power of 2 can be computed by a SWAR algorithm
 /// that recursively "folds" the upper bits into the lower bits. This process yields a bit vector with
 /// the same most significant 1 as x, but all 1's below it. Adding 1 to that value yields the next
@@ -737,6 +779,7 @@ inline std::uint64_t NextPowerOfTwo(std::uint64_t x)
     return x + 1;
 }
 
+/// @brief Gets the transformation for the given values.
 constexpr inline Transformation GetTransformation(const Length2D ctr, const UnitVec2 rot,
                                                   const Length2D localCtr) noexcept
 {
@@ -744,6 +787,7 @@ constexpr inline Transformation GetTransformation(const Length2D ctr, const Unit
     return Transformation{ctr - (Rotate(localCtr, rot)), rot};
 }
 
+/// @brief Gets the transformation for the given values.
 inline Transformation GetTransformation(const Position pos, const Length2D local_ctr) noexcept
 {
     assert(IsValid(pos));
@@ -751,7 +795,7 @@ inline Transformation GetTransformation(const Position pos, const Length2D local
     return GetTransformation(pos.linear, UnitVec2::Get(pos.angular), local_ctr);
 }
 
-/// Gets the interpolated transform at a specific time.
+/// @brief Gets the interpolated transform at a specific time.
 /// @param sweep Sweep data to get the transform from.
 /// @param beta Time factor in [0,1], where 0 indicates alpha0.
 /// @return Transformation of the given sweep at the specified time.
@@ -762,7 +806,7 @@ inline Transformation GetTransformation(const Sweep& sweep, const Real beta) noe
     return GetTransformation(GetPosition(sweep.pos0, sweep.pos1, beta), sweep.GetLocalCenter());
 }
 
-/// Gets the transform at "time" zero.
+/// @brief Gets the transform at "time" zero.
 /// @note This is like calling GetTransformation(sweep, 0), except more efficiently.
 /// @sa GetTransformation(const Sweep& sweep, Real beta).
 /// @param sweep Sweep data to get the transform from.
@@ -772,7 +816,7 @@ inline Transformation GetTransform0(const Sweep& sweep) noexcept
     return GetTransformation(sweep.pos0, sweep.GetLocalCenter());
 }
 
-/// Gets the transform at "time" one.
+/// @brief Gets the transform at "time" one.
 /// @note This is like calling GetTransformation(sweep, 1.0), except more efficiently.
 /// @sa GetTransformation(const Sweep& sweep, Real beta).
 /// @param sweep Sweep data to get the transform from.
@@ -782,13 +826,14 @@ inline Transformation GetTransform1(const Sweep& sweep) noexcept
     return GetTransformation(sweep.pos1, sweep.GetLocalCenter());
 }
 
+/// @brief Gets the "normalized" value of the given angle.
 inline Angle GetNormalized(Angle value)
 {
     const auto angleInRadians = Real(value / Radian);
     return Angle{std::fmod(angleInRadians, Real(2 * Pi)) * Radian};
 }
 
-/// Gets a sweep with the given sweep's angles normalized.
+/// @brief Gets a sweep with the given sweep's angles normalized.
 /// @param sweep Sweep to return with its angles normalized.
 /// @return Sweep with its pos0 angle to be between -2 pi and 2 pi
 ///    and its pos1 angle reduced by the amount pos0's angle was reduced by.
@@ -801,7 +846,7 @@ inline Sweep GetAnglesNormalized(Sweep sweep) noexcept
     return sweep;
 }
 
-/// Converts the given vector into a unit vector and returns its original length.
+/// @brief Converts the given vector into a unit vector and returns its original length.
 inline Real Normalize(Vec2& vector)
 {
     const auto length = GetLength(vector);
@@ -815,6 +860,7 @@ inline Real Normalize(Vec2& vector)
     return 0;
 }
 
+/// @brief Gets whether the given velocity is "under active" based on the given tolerances.
 inline bool IsUnderActive(Velocity velocity,
                           LinearVelocity linSleepTol, AngularVelocity angSleepTol) noexcept
 {
@@ -824,7 +870,8 @@ inline bool IsUnderActive(Velocity velocity,
 }
 
 /// @brief Gets the contact relative velocity.
-/// @note If relA and relB are the zero vectors, the resulting value is simply velB.linear - velA.linear.
+/// @note If relA and relB are the zero vectors, the resulting value is simply
+///    velB.linear - velA.linear.
 inline LinearVelocity2D
 GetContactRelVelocity(const Velocity velA, const Length2D relA,
                       const Velocity velB, const Length2D relB) noexcept
@@ -859,11 +906,12 @@ GetContactRelVelocity(const Velocity velA, const Length2D relA,
 #endif
 }
 
-/// Computes the centroid of a counter-clockwise array of 3 or more vertices.
+/// @brief Computes the centroid of a counter-clockwise array of 3 or more vertices.
 /// @note Behavior is undefined if there are less than 3 vertices or the vertices don't
 ///   go counter-clockwise.
 Length2D ComputeCentroid(const Span<const Length2D>& vertices);
 
+/// @brief Gets the modulo next value.
 template <typename T>
 constexpr inline T GetModuloNext(T value, T count) noexcept
 {
@@ -871,6 +919,7 @@ constexpr inline T GetModuloNext(T value, T count) noexcept
     return (value + 1) % count;
 }
 
+/// @brief Gets the modulo previous value.
 template <typename T>
 constexpr inline T GetModuloPrev(T value, T count) noexcept
 {
@@ -918,6 +967,7 @@ template <class T>
 inline UnitVec2 GetUnitVector(const Vector2D<T> value, T& magnitude,
                               const UnitVec2 fallback = UnitVec2::GetDefaultFallback());
 
+/// @brief Gets the unit vector of the given value.
 template <>
 inline UnitVec2 GetUnitVector(const Vector2D<Real> value, Real& magnitude, const UnitVec2 fallback)
 {
@@ -926,6 +976,7 @@ inline UnitVec2 GetUnitVector(const Vector2D<Real> value, Real& magnitude, const
 
 #ifdef USE_BOOST_UNITS
 
+/// @brief Gets the unit vector of the given value.
 template <>
 inline UnitVec2 GetUnitVector(const Vector2D<Length> value, Length& magnitude, const UnitVec2 fallback)
 {
@@ -935,6 +986,7 @@ inline UnitVec2 GetUnitVector(const Vector2D<Length> value, Length& magnitude, c
     return uv;
 }
 
+/// @brief Gets the unit vector of the given value.
 template <>
 inline UnitVec2 GetUnitVector(const Vector2D<LinearVelocity> value, LinearVelocity& magnitude,
                               const UnitVec2 fallback)
@@ -947,16 +999,21 @@ inline UnitVec2 GetUnitVector(const Vector2D<LinearVelocity> value, LinearVeloci
 
 #endif
 
+/// @brief Gets the vertices for a circle described by the given parameters.
 std::vector<Length2D> GetCircleVertices(const Length radius, unsigned slices,
                                         Angle start = Angle{0}, Real turns = Real{1});
 
+/// @brief Output stream operator.
 ::std::ostream& operator<<(::std::ostream& os, const Vec2& value);
 
+/// @brief Output stream operator.
 ::std::ostream& operator<<(::std::ostream& os, const UnitVec2& value);
 
+/// @brief Output stream operator.
 ::std::ostream& operator<<(::std::ostream& os, const Fixed32& value);
 
 #ifndef _WIN32
+/// @brief Output stream operator.
 ::std::ostream& operator<<(::std::ostream& os, const Fixed64& value);
 #endif
 

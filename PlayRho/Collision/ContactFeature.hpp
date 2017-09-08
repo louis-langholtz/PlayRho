@@ -40,6 +40,7 @@ struct ContactFeature
 {
     using Index = std::uint8_t; ///< Index type.
 
+    /// @brief Type of the associated index value.
     enum Type : std::uint8_t
     {
         e_vertex = 0,
@@ -54,42 +55,48 @@ struct ContactFeature
     Index indexB; ///< Feature index on shape B
 };
 
+/// @brief Gets the vertex vertex contact feature for the given indices.
 constexpr ContactFeature GetVertexVertexContactFeature(ContactFeature::Index a,
                                                        ContactFeature::Index b) noexcept
 {
     return ContactFeature{ContactFeature::e_vertex, a, ContactFeature::e_vertex, b};
 }
 
+/// @brief Gets the vertex face contact feature for the given indices.
 constexpr ContactFeature GetVertexFaceContactFeature(ContactFeature::Index a,
                                                      ContactFeature::Index b) noexcept
 {
     return ContactFeature{ContactFeature::e_vertex, a, ContactFeature::e_face, b};
 }
 
+/// @brief Gets the face vertex contact feature for the given indices.
 constexpr ContactFeature GetFaceVertexContactFeature(ContactFeature::Index a,
                                                      ContactFeature::Index b) noexcept
 {
     return ContactFeature{ContactFeature::e_face, a, ContactFeature::e_vertex, b};
 }
 
+/// @brief Gets the face face contact feature for the given indices.
 constexpr ContactFeature GetFaceFaceContactFeature(ContactFeature::Index a,
                                                    ContactFeature::Index b) noexcept
 {
     return ContactFeature{ContactFeature::e_face, a, ContactFeature::e_face, b};
 }
 
-/// Flips contact features information.
+/// @brief Flips contact features information.
 constexpr ContactFeature Flip(ContactFeature val) noexcept
 {
     return ContactFeature{val.typeB, val.indexB, val.typeA, val.indexA};
 }
 
+/// @brief Determines if the given two contact features are equal.
 constexpr bool operator==(ContactFeature lhs, ContactFeature rhs) noexcept
 {
     return (lhs.typeA == rhs.typeA) && (lhs.indexA == rhs.indexA)
         && (lhs.typeB == rhs.typeB) && (lhs.indexB == rhs.indexB);
 }
 
+/// @brief Determines if the given two contact features are not equal.
 constexpr bool operator!=(ContactFeature lhs, ContactFeature rhs) noexcept
 {
     return !(lhs == rhs);

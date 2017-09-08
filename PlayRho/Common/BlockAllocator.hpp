@@ -34,11 +34,20 @@ namespace playrho {
     class BlockAllocator
     {
     public:
+        
+        /// @brief Size type.
         using size_type = std::size_t;
         
-        static constexpr auto ChunkSize = size_type{16 * 1024}; ///< Chunk size.
-        static constexpr auto MaxBlockSize = size_type{640}; ///< Max block size (before using external allocator).
+        /// @brief Chunk size.
+        static constexpr auto ChunkSize = size_type{16 * 1024};
+        
+        /// @brief Max block size (before using external allocator).
+        static constexpr auto MaxBlockSize = size_type{640};
+
+        /// @brief Block sizes.
         static constexpr auto BlockSizes = size_type{14};
+        
+        /// @brief Chunk array increment.
         static constexpr auto ChunkArrayIncrement = size_type{128};
         
         BlockAllocator();
@@ -52,7 +61,8 @@ namespace playrho {
         ///   memory is returned.
         /// @sa Alloc.
         void* Allocate(size_type n);
-        
+
+        /// @brief Allocates an array.
         template <typename T>
         T* AllocateArray(size_type n)
         {
@@ -67,6 +77,7 @@ namespace playrho {
         /// @note This resets the chunk-count back to zero.
         void Clear();
         
+        /// @brief Gets the chunk count.
         auto GetChunkCount() const noexcept
         {
             return m_chunkCount;
@@ -82,6 +93,8 @@ namespace playrho {
         Block* m_freeLists[BlockSizes];
     };
     
+    /// @brief Deletes the given pointer by calling the pointed-to object's destructor and
+    ///    returning it to the given allocator.
     template <typename T>
     inline void Delete(const T* p, BlockAllocator& allocator)
     {
@@ -92,26 +105,35 @@ namespace playrho {
     /// Blockl Deallocator.
     struct BlockDeallocator
     {
+        /// @brief Size type.
         using size_type = BlockAllocator::size_type;
         
         BlockDeallocator() = default;
+
+        /// @brief Initializing constructor.
+        constexpr BlockDeallocator(BlockAllocator* a, size_type n) noexcept:
+            allocator{a}, nelem{n}
+        {
+            // Intentionally empty.
+        }
         
-        constexpr BlockDeallocator(BlockAllocator* a, size_type n) noexcept: allocator{a}, nelem{n} {} 
-        
+        /// @brief Default operator.
         void operator()(void *p) noexcept
         {
             allocator->Free(p, nelem);
         }
         
-        BlockAllocator* allocator;
-        size_type nelem;
+        BlockAllocator* allocator; ///< Allocator pointer.
+        size_type nelem; ///< Number of elements.
     };
     
+    /// @brief BlockAllocator equality operator.
     inline bool operator==(const BlockAllocator& a, const BlockAllocator& b)
     {
         return &a == &b;
     }
     
+    /// @brief BlockAllocator inequality operator.
     inline bool operator!=(const BlockAllocator& a, const BlockAllocator& b)
     {
         return &a != &b;

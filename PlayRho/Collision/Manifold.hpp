@@ -59,11 +59,14 @@ namespace playrho
     class Manifold
     {
     public:
+        
+        /// @brief Size type.
         using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
 
         /// Shape index type.
         using sidx_t = std::remove_const<decltype(MaxShapeVertices)>::type;
         
+        /// @brief Contact feature type.
         using cf_t = ContactFeature::Type;
 
         struct Conf;
@@ -231,6 +234,7 @@ namespace playrho
             return Manifold{e_faceB, ln, lp, 2, {{mp1, mp2}}};
         }
         
+        /// @brief Gets the face A manifold for the given data.
         static inline Manifold GetForFaceA(UnitVec2 na, sidx_t ia, Length2D pa) noexcept
         {
             return Manifold{e_faceA, na, pa, 0, {{
@@ -239,6 +243,7 @@ namespace playrho
             }}};
         }
         
+        /// @brief Gets the face B manifold for the given data.
         static inline Manifold GetForFaceB(UnitVec2 nb, sidx_t ib, Length2D pb) noexcept
         {
             return Manifold{e_faceB, nb, pb, 0, {{
@@ -247,6 +252,7 @@ namespace playrho
             }}};
         }
 
+        /// @brief Gets the face A manifold for the given data.
         static inline Manifold GetForFaceA(UnitVec2 na, sidx_t ia, Length2D pa,
                                               cf_t tb0, sidx_t ib0, Length2D pb0) noexcept
         {
@@ -256,6 +262,7 @@ namespace playrho
             }}};
         }
         
+        /// @brief Gets the face B manifold for the given data.
         static inline Manifold GetForFaceB(UnitVec2 nb, sidx_t ib, Length2D pb,
                                               cf_t ta0, sidx_t ia0, Length2D pa0) noexcept
         {
@@ -265,6 +272,7 @@ namespace playrho
             }}};
         }
         
+        /// @brief Gets the face A manifold for the given data.
         static inline Manifold GetForFaceA(UnitVec2 na, sidx_t ia, Length2D pa,
                                               cf_t tb0, sidx_t ib0, Length2D pb0,
                                               cf_t tb1, sidx_t ib1, Length2D pb1) noexcept
@@ -275,6 +283,7 @@ namespace playrho
             }}};
         }
 
+        /// @brief Gets the face B manifold for the given data.
         static inline Manifold GetForFaceB(UnitVec2 nb, sidx_t ib, Length2D pb,
                                               cf_t ta0, sidx_t ia0, Length2D pa0,
                                               cf_t ta1, sidx_t ia1, Length2D pa1) noexcept
@@ -292,6 +301,7 @@ namespace playrho
         /// point count is zero, point data is undefined, and all other properties are invalid.
         Manifold() = default;
         
+        /// @brief Copy constructor.
         Manifold(const Manifold& copy) = default;
         
         /// Gets the type of this manifold.
@@ -315,18 +325,21 @@ namespace playrho
         ///
         constexpr size_type GetPointCount() const noexcept { return m_pointCount; }
         
+        /// @brief Gets the contact feature for the given index.
         constexpr ContactFeature GetContactFeature(size_type index) const noexcept
         {
             assert(index < m_pointCount);
             return m_points[index].contactFeature;
         }
 
+        /// @brief Gets the contact impulses for the given index.
         constexpr ContactImpulses GetContactImpulses(size_type index) const noexcept
         {
             assert(index < m_pointCount);
             return ContactImpulses{m_points[index].normalImpulse, m_points[index].tangentImpulse};
         }
 
+        /// @brief Sets the contact impulses for the given index.
         void SetContactImpulses(size_type index, ContactImpulses value) noexcept
         {
             assert(index < m_pointCount);
@@ -334,12 +347,14 @@ namespace playrho
             m_points[index].tangentImpulse = value.m_tangent;
         }
 
+        /// @brief Gets the point identified by the given index.
         const Point& GetPoint(size_type index) const noexcept
         {
             assert((0 <= index) && (index < m_pointCount));
             return m_points[index];
         }
         
+        /// @brief Sets the point impulses for the given index.
         void SetPointImpulses(size_type index, Momentum n, Momentum t)
         {
             assert((index < m_pointCount) || (index < MaxManifoldPoints && n == Momentum{0} && t == Momentum{0}));
@@ -355,6 +370,7 @@ namespace playrho
         /// @warning Behavior is undefined if this is called more than twice.
         void AddPoint(const Point& mp) noexcept;
 
+        /// @brief Adds a new point with the given data.
         void AddPoint(cf_t type, sidx_t index, Length2D point) noexcept;
 
         /// @brief Gets the local normal for a face-type manifold.
@@ -383,6 +399,7 @@ namespace playrho
             return m_localPoint;
         }
         
+        /// @brief Gets the opposing point.
         constexpr Length2D GetOpposingPoint(size_type index) const noexcept
         {
             assert((0 <= index) && (index < m_pointCount));
@@ -424,12 +441,14 @@ namespace playrho
     /// @brief Configuration data for manifold calculation.
     struct Manifold::Conf
     {
+        /// @brief Linear slop.
         Length linearSlop = DefaultLinearSlop;
 
         /// Targetted depth of impact.
         /// @note Value must be less than twice the minimum vertex radius of any shape.
         Length targetDepth = DefaultLinearSlop * Real{3};
         
+        /// @brief Tolerance.
         Length tolerance = DefaultLinearSlop / Real{4}; ///< Tolerance.
         
         /// Max. circles ratio.
@@ -439,20 +458,25 @@ namespace playrho
         Real maxCirclesRatio = DefaultCirclesRatio;
     };
     
+    /// @brief Gets the default manifold configuration.
     constexpr inline Manifold::Conf GetDefaultManifoldConf() noexcept
     {
         return Manifold::Conf{};
     }
 
+    /// @brief Determines whether the two given manifold points are equal.
     bool operator==(const Manifold::Point& lhs, const Manifold::Point& rhs) noexcept;
     
+    /// @brief Determines whether the two given manifold points are not equal.
     bool operator!=(const Manifold::Point& lhs, const Manifold::Point& rhs) noexcept;
     
-    /// Equality operator.
+    /// @brief Manifold equality operator.
     /// @note In-so-far as manifold points are concerned, order doesn't matter;
     ///    only whether the two manifolds have the same point set.
     bool operator==(const Manifold& lhs, const Manifold& rhs) noexcept;
     
+    /// @brief Manifold inequality operator.
+    /// @details Determines whether the two given manifolds are not equal.
     bool operator!=(const Manifold& lhs, const Manifold& rhs) noexcept;
 
     constexpr inline Manifold::Manifold(Type t, UnitVec2 ln, Length2D lp, size_type n,
@@ -503,6 +527,7 @@ namespace playrho
         }
     }
 
+    /// @brief Gets whether the given manifold is valid.
     template <>
     constexpr inline bool IsValid(const Manifold& value) noexcept
     {
@@ -534,6 +559,7 @@ namespace playrho
                            ContactFeature::Index index);
 #endif
     
+    /// @brief Gets a unique name for the given manifold type.
     const char* GetName(Manifold::Type) noexcept;
     
 } // namespace playrho

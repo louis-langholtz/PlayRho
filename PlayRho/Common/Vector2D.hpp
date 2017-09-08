@@ -69,32 +69,36 @@ namespace playrho
         Real{-9.8f} * MeterPerSquareSecond
     };
 
+    /// @brief Gets the given value as a Vec2.
     constexpr inline Vec2 GetVec2(const Vector2D<Real> value)
     {
         return Vec2(value);
     }
 
+    /// @brief Gets an invalid value for the Vec2 type.
     template <>
     constexpr inline Vec2 GetInvalid() noexcept
     {
         return Vec2{GetInvalid<Real>(), GetInvalid<Real>()};
     }
 
-    /// Does this vector contain finite coordinates?
+    /// @brief Determines whether the given vector contains finite coordinates.
     template <typename TYPE>
     constexpr inline bool IsValid(const Vector2D<TYPE>& value) noexcept
     {
         return IsValid(Get<0>(value)) && IsValid(Get<1>(value));
     }
     
+    /// @brief Equality operator.
     template <typename TYPE>
-    constexpr bool operator == (const Vector2D<TYPE> a, const Vector2D<TYPE> b) noexcept
+    constexpr bool operator== (const Vector2D<TYPE> a, const Vector2D<TYPE> b) noexcept
     {
         return (Get<0>(a) == Get<0>(b)) && (Get<1>(a) == Get<1>(b));
     }
     
+    /// @brief Inequality operator.
     template <typename TYPE>
-    constexpr bool operator != (const Vector2D<TYPE> a, const Vector2D<TYPE> b) noexcept
+    constexpr bool operator!= (const Vector2D<TYPE> a, const Vector2D<TYPE> b) noexcept
     {
         return !(a == b);
     }
@@ -117,28 +121,32 @@ namespace playrho
         return lhs;
     }
 
+    /// @brief Multiplication assignment operator.
     template <typename TYPE>
-    constexpr Vector2D<TYPE>& operator *= (Vector2D<TYPE>& lhs, const Real rhs) noexcept
+    constexpr Vector2D<TYPE>& operator*= (Vector2D<TYPE>& lhs, const Real rhs) noexcept
     {
         Get<0>(lhs) *= rhs;
         Get<1>(lhs) *= rhs;
         return lhs;
     }
     
+    /// @brief Division assignment operator.
     template <typename TYPE>
-    constexpr Vector2D<TYPE>& operator /= (Vector2D<TYPE>& lhs, const Real rhs) noexcept
+    constexpr Vector2D<TYPE>& operator/= (Vector2D<TYPE>& lhs, const Real rhs) noexcept
     {
         Get<0>(lhs) /= rhs;
         Get<1>(lhs) /= rhs;
         return lhs;
     }
     
+    /// @brief Positive operator.
     template <typename T>
     constexpr auto operator+ (const Vector2D<T> v) noexcept
     {
         return Vector2D<T>{+Get<0>(v), +Get<1>(v)};
     }
 
+    /// @brief Negation operator.
     template <typename T>
     constexpr auto operator- (const Vector2D<T> v) noexcept
     {
@@ -159,18 +167,21 @@ namespace playrho
         return lhs -= rhs;
     }
     
+    /// @brief Multiplication operator.
     template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{} * TYPE2{})>
-    constexpr inline Vector2D<OUT_TYPE> operator * (const TYPE1 s, Vector2D<TYPE2> a) noexcept
+    constexpr inline Vector2D<OUT_TYPE> operator* (const TYPE1 s, Vector2D<TYPE2> a) noexcept
     {
         return Vector2D<OUT_TYPE>{Get<0>(a) * s, Get<1>(a) * s};
     }
     
+    /// @brief Multiplication operator.
     template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{} * TYPE2{})>
-    constexpr inline Vector2D<OUT_TYPE> operator * (Vector2D<TYPE1> a, const TYPE2 s) noexcept
+    constexpr inline Vector2D<OUT_TYPE> operator* (Vector2D<TYPE1> a, const TYPE2 s) noexcept
     {
         return Vector2D<OUT_TYPE>{Get<0>(a) * s, Get<1>(a) * s};
     }
     
+    /// @brief Division operator.
     template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{} / TYPE2{})>
     constexpr Vector2D<OUT_TYPE> operator/ (Vector2D<TYPE1> a, const TYPE2 s) noexcept
     {
@@ -178,24 +189,28 @@ namespace playrho
     }
     
 #ifdef USE_BOOST_UNITS
+    /// @brief Gets an invalid value for the Length2D type.
     template <>
     constexpr Length2D GetInvalid() noexcept
     {
         return Length2D{GetInvalid<Length>(), GetInvalid<Length>()};
     }
     
+    /// @brief Gets an invalid value for the LinearVelocity2D type.
     template <>
     constexpr LinearVelocity2D GetInvalid() noexcept
     {
         return LinearVelocity2D{GetInvalid<LinearVelocity>(), GetInvalid<LinearVelocity>()};
     }
     
+    /// @brief Gets an invalid value for the Force2D type.
     template <>
     constexpr Force2D GetInvalid() noexcept
     {
         return Force2D{GetInvalid<Force>(), GetInvalid<Force>()};
     }
     
+    /// @brief Gets an invalid value for the Momentum2D type.
     template <>
     constexpr Momentum2D GetInvalid() noexcept
     {

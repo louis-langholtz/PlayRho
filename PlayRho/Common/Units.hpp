@@ -55,127 +55,129 @@
 #include <boost/units/systems/angle/degrees.hpp>
 #endif
 
-namespace playrho
-{    
 #ifdef USE_BOOST_UNITS
+#define PLAYRHO_QUANTITY(BoostDimension) boost::units::quantity<BoostDimension, Real>
+#define PLAYRHO_UNIT(Quantity, BoostUnit) Quantity{BoostUnit * Real{1}}
+#define PLAYRHO_DERIVED_UNIT(Quantity, BoostUnit, Ratio) Quantity{BoostUnit * Real{Ratio}}
+#else
+#define PLAYRHO_QUANTITY(BoostDimension) Real
+#define PLAYRHO_UNIT(Quantity, BoostUnit) Real{1}
+#define PLAYRHO_DERIVED_UNIT(Quantity, BoostUnit, Ratio) Real{Ratio}}
+#endif
+
+namespace playrho
+{
+    /// @brief Time quantity.
+    using Time = PLAYRHO_QUANTITY(boost::units::si::time);
+
+    /// @brief Second unit of Time.
+    constexpr auto Second = PLAYRHO_UNIT(Time, boost::units::si::second);
+
+    /// @brief Frequency quantity.
+    using Frequency = PLAYRHO_QUANTITY(boost::units::si::frequency);
+
+    /// @brief Hertz unit of Frequency.
+    constexpr auto Hertz = PLAYRHO_UNIT(Frequency, boost::units::si::hertz);
+
+    /// @brief Length type.
+    using Length = PLAYRHO_QUANTITY(boost::units::si::length);
+
+    /// @brief Meter unit of Length.
+    constexpr auto Meter = PLAYRHO_UNIT(Length, boost::units::si::meter);
+
+    /// @brief Linear velocity quantity.
+    using LinearVelocity = PLAYRHO_QUANTITY(boost::units::si::velocity);
+
+    /// @brief Meter per second unit of LinearVelocity.
+    constexpr auto MeterPerSecond = PLAYRHO_UNIT(LinearVelocity, boost::units::si::meter_per_second);
+
+    /// @brief Linear acceleration quantity.
+    using LinearAcceleration = PLAYRHO_QUANTITY(boost::units::si::acceleration);
+
+    /// @brief Meter per square second unit of LinearAcceleration.
+    constexpr auto MeterPerSquareSecond = PLAYRHO_UNIT(LinearAcceleration, boost::units::si::meter_per_second_squared);
+
+    /// @brief Mass quantity.
+    using Mass = PLAYRHO_QUANTITY(boost::units::si::mass);
+
+    /// @brief Kilogram unit of Mass.
+    constexpr auto Kilogram = PLAYRHO_UNIT(Mass, boost::units::si::kilogram);
+
+    /// @brief Inverse mass quantity.
+    using InvMass = PLAYRHO_QUANTITY(boost::units::si::inverse_mass);
     
-    using Time = boost::units::quantity<boost::units::si::time, Real>;
-    constexpr auto Second = Time{boost::units::si::second * Real{1}};
+    /// @brief Area quantity.
+    using Area = PLAYRHO_QUANTITY(boost::units::si::area);
+
+    /// @brief Square meter unit of Area.
+    constexpr auto SquareMeter = PLAYRHO_UNIT(Area, boost::units::si::square_meter);
     
-    using Frequency = boost::units::quantity<boost::units::si::frequency, Real>;
-    constexpr auto Hertz = Frequency{boost::units::si::hertz * Real{1}};
+    /// @brief Aereal/surface density quantity.
+    using Density = PLAYRHO_QUANTITY(boost::units::si::surface_density);
+
+    /// @brief Kilogram per square meter unit of Density.
+    constexpr auto KilogramPerSquareMeter = PLAYRHO_UNIT(Density, boost::units::si::kilogram_per_square_meter);
     
-    using Length = boost::units::quantity<boost::units::si::length, Real>;
-    constexpr auto Meter = Length{boost::units::si::meter * Real{1}};
+    /// @brief Angle quantity.
+    using Angle = PLAYRHO_QUANTITY(boost::units::si::plane_angle);
+
+    /// @brief Radian unit of Angle.
+    constexpr auto Radian = PLAYRHO_UNIT(Angle, boost::units::si::radian);
     
-    using LinearVelocity = boost::units::quantity<boost::units::si::velocity, Real>;
-    constexpr auto MeterPerSecond = LinearVelocity{boost::units::si::meter_per_second * Real{1}};
+    /// @brief Degree unit of Angle quantity.
+    constexpr auto Degree = Angle{Radian * Pi / Real{180}};
     
-    using LinearAcceleration = boost::units::quantity<boost::units::si::acceleration, Real>;
-    constexpr auto MeterPerSquareSecond = LinearAcceleration{boost::units::si::meter_per_second_squared * Real{1}};
-    
-    using Mass = boost::units::quantity<boost::units::si::mass, Real>;
-    constexpr auto Kilogram = Mass{boost::units::si::kilogram * Real{1}};
-    
-    using InvMass = boost::units::quantity<boost::units::si::inverse_mass, Real>;
-    
-    using Area = boost::units::quantity<boost::units::si::area, Real>;
-    constexpr auto SquareMeter = Area{boost::units::si::square_meter * Real{1}};
-    
-    using Density = boost::units::quantity<boost::units::si::surface_density, Real>;
-    constexpr auto KilogramPerSquareMeter = Density{boost::units::si::kilogram_per_square_meter * Real{1}};
-    
-    using Angle = boost::units::quantity<boost::units::si::plane_angle, Real>;
-    constexpr auto Radian = Angle{boost::units::si::radian * Real{1}};
-    constexpr auto Degree = Angle{boost::units::degree::degree * Real{1}};
+    /// @brief Square radian unit type.
     constexpr auto SquareRadian = Radian * Radian;
     
-    using AngularVelocity = boost::units::quantity<boost::units::si::angular_velocity, Real>;
-    constexpr auto RadianPerSecond = AngularVelocity{boost::units::si::radian_per_second * Real{1}};
+    /// @brief Angular velocity quantity.
+    using AngularVelocity = PLAYRHO_QUANTITY(boost::units::si::angular_velocity);
+
+    /// @brief Radian per second unit of AngularVelocity.
+    constexpr auto RadianPerSecond = PLAYRHO_UNIT(AngularVelocity, boost::units::si::radian_per_second);
+    
+    /// @brief Degree per second unit of AngularVelocity.
     constexpr auto DegreePerSecond = AngularVelocity{RadianPerSecond * Degree / Radian};
     
-    using AngularAcceleration = boost::units::quantity<boost::units::si::angular_acceleration, Real>;
+    /// @brief Angular acceleration quantity.
+    using AngularAcceleration = PLAYRHO_QUANTITY(boost::units::si::angular_acceleration);
+
+    /// @brief Radian per square second unit of AngularAcceleration.
     constexpr auto RadianPerSquareSecond = Radian / (Second * Second);
     
-    using Force = boost::units::quantity<boost::units::si::force, Real>;
-    constexpr auto Newton = Force{boost::units::si::newton * Real{1}};
+    /// @brief Force quantity.
+    using Force = PLAYRHO_QUANTITY(boost::units::si::force);
+
+    /// @brief Newton unit of Force.
+    constexpr auto Newton = PLAYRHO_UNIT(Force, boost::units::si::newton);
     
-    using Torque = boost::units::quantity<boost::units::si::torque, Real>;
-    constexpr auto NewtonMeter = Torque{boost::units::si::newton_meter * Real{1}};
+    /// @brief Torque quantity.
+    using Torque = PLAYRHO_QUANTITY(boost::units::si::torque);
+
+    /// @brief Newton meter unit of Torque.
+    constexpr auto NewtonMeter = PLAYRHO_UNIT(Torque, boost::units::si::newton_meter);
     
-    using SecondMomentOfArea = boost::units::quantity<boost::units::si::second_moment_of_area, Real>;
+    /// @brief Second moment of area quantity.
+    using SecondMomentOfArea = PLAYRHO_QUANTITY(boost::units::si::second_moment_of_area);
     
-    using RotInertia = boost::units::quantity<boost::units::si::moment_of_inertia, Real>;
+    /// @brief Rotational inertia quantity.
+    using RotInertia = PLAYRHO_QUANTITY(boost::units::si::moment_of_inertia);
     
-    /// @brief Inverse rotational inertia.
+    /// @brief Inverse rotational inertia quantity.
     /// @note Units of L^-2 M^-1 QP^2.
-    using InvRotInertia = boost::units::quantity<boost::units::si::inverse_moment_of_inertia, Real>;
+    using InvRotInertia = PLAYRHO_QUANTITY(boost::units::si::inverse_moment_of_inertia);
     
-    using Momentum = boost::units::quantity<boost::units::si::momentum, Real>;
+    /// @brief Momentum quantity.
+    using Momentum = PLAYRHO_QUANTITY(boost::units::si::momentum);
+
+    /// @brief Newton second unit.
     constexpr auto NewtonSecond = Newton * Second;
     
-    /// @brief Angular momentum.
+    /// @brief Angular momentum quantity.
     /// @note Units of L^2 M T^-1 QP^-1.
-    using AngularMomentum = boost::units::quantity<boost::units::si::angular_momentum, Real>;
+    using AngularMomentum = PLAYRHO_QUANTITY(boost::units::si::angular_momentum);
     
-#else // USE_BOOST_UNITS
-    
-    using Time = Real;
-    constexpr auto Second = Real{1};
-    
-    using Frequency = Real;
-    constexpr auto Hertz = Real{1};
-    
-    using Length = Real;
-    constexpr auto Meter = Real{1};
-    
-    using LinearVelocity = Real;
-    constexpr auto MeterPerSecond = Real{1};
-    
-    using LinearAcceleration = Real;
-    constexpr auto MeterPerSquareSecond = Real{1};
-    
-    using Mass = Real;
-    constexpr auto Kilogram = Real{1};
-    
-    using InvMass = Real;
-    
-    using Area = Real;
-    constexpr auto SquareMeter = Real{1};
-    
-    using Density = Real;
-    constexpr auto KilogramPerSquareMeter = Real{1};
-    
-    using Angle = Real;
-    constexpr auto Radian = Real{1};
-    constexpr auto Degree = Pi / Real{180};
-    constexpr auto SquareRadian = Radian * Radian;
-    
-    using AngularVelocity = Real;
-    constexpr auto RadianPerSecond = Real{1};
-    constexpr auto DegreePerSecond = Degree;
-    
-    using AngularAcceleration = Real;
-    constexpr auto RadianPerSquareSecond = Real{1};
-    
-    using Force = Real;
-    constexpr auto Newton = Real{1};
-    
-    using Torque = Real;
-    constexpr auto NewtonMeter = Real{1};
-    
-    using SecondMomentOfArea = Real;
-    
-    using RotInertia = Real;
-    using InvRotInertia = Real;
-    
-    using Momentum = Real;
-    constexpr auto NewtonSecond = Real{1};
-    
-    using AngularMomentum = Real;
-    
-#endif // USE_BOOST_UNITS
-    
+    /// @brief Strips the units off of the given value.
     constexpr inline Real StripUnit(const Real value)
     {
         return value;
@@ -183,90 +185,105 @@ namespace playrho
     
 #ifdef USE_BOOST_UNITS
     
+    /// @brief Strips the units off of the given value.
     template<typename Y>
     inline constexpr auto StripUnit(const boost::units::quantity<Y, Real> source)
     {
         return source.value();
     }
 
+    /// @brief Gets an invalid value for the Angle type.
     template <>
     constexpr Angle GetInvalid() noexcept
     {
         return GetInvalid<Real>() * Radian;
     }
     
+    /// @brief Gets an invalid value for the Frequency type.
     template <>
     constexpr Frequency GetInvalid() noexcept
     {
         return GetInvalid<Real>() * Hertz;
     }
     
+    /// @brief Gets an invalid value for the AngularVelocity type.
     template <>
     constexpr AngularVelocity GetInvalid() noexcept
     {
         return GetInvalid<Real>() * RadianPerSecond;
     }
     
+    /// @brief Gets an invalid value for the Time type.
     template <>
     constexpr Time GetInvalid() noexcept
     {
         return GetInvalid<Real>() * Second;
     }
     
+    /// @brief Gets an invalid value for the Length type.
     template <>
     constexpr Length GetInvalid() noexcept
     {
         return GetInvalid<Real>() * Meter;
     }
     
+    /// @brief Gets an invalid value for the Mass type.
     template <>
     constexpr Mass GetInvalid() noexcept
     {
         return GetInvalid<Real>() * Kilogram;
     }
     
+    /// @brief Gets an invalid value for the InvMass type.
     template <>
     constexpr InvMass GetInvalid() noexcept
     {
         return GetInvalid<Real>() / Kilogram;
     }
     
+    /// @brief Gets an invalid value for the Momentum type.
     template <>
     constexpr Momentum GetInvalid() noexcept
     {
         return GetInvalid<Real>() * Kilogram * MeterPerSecond;
     }
     
+    /// @brief Gets an invalid value for the Force type.
     template <>
     constexpr Force GetInvalid() noexcept
     {
         return GetInvalid<Real>() * Newton;
     }
     
+    /// @brief Gets an invalid value for the Torque type.
     template <>
     constexpr Torque GetInvalid() noexcept
     {
         return GetInvalid<Real>() * NewtonMeter;
     }
     
+    /// @brief Gets an invalid value for the LinearVelocity type.
     template <>
     constexpr LinearVelocity GetInvalid() noexcept
     {
         return GetInvalid<Real>() * MeterPerSecond;
     }
     
+    /// @brief Gets an invalid value for the LinearAcceleration type.
     template <>
     constexpr LinearAcceleration GetInvalid() noexcept
     {
         return GetInvalid<Real>() * MeterPerSquareSecond;
     }
     
+    /// @brief Gets an invalid value for the AngularAcceleration type.
     template <>
     constexpr AngularAcceleration GetInvalid() noexcept
     {
         return GetInvalid<Real>() * RadianPerSquareSecond;
     }
     
+    /// @brief Gets an invalid value for the RotInertia type.
     template <>
     constexpr RotInertia GetInvalid() noexcept
     {
@@ -277,5 +294,8 @@ namespace playrho
 #endif
 
 } // namespace playrho
+
+#undef PLAYRHO_QUANTITY
+#undef PLAYRHO_UNIT
 
 #endif /* Units_hpp */

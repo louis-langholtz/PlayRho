@@ -29,25 +29,34 @@ class Body;
 class Contact;
 class Joint;
 
-/// Island.
+/// @brief Island.
 /// @details A container of bodies contacts and joints relavent to handling world dynamics.
 /// @note This is an internal class.
 /// @note This data structure is 72-bytes large (on at least one 64-bit platform).
 class Island
 {
 public:
+    
+    /// @brief Body container type.
     using Bodies = std::vector<Body*>;
+
+    /// @brief Contact container type.
     using Contacts = std::vector<Contact*>;
+    
+    /// @brief Joint container type.
     using Joints = std::vector<Joint*>;
     
+    /// @brief Initializing constructor.
     Island(Bodies::size_type bodyCapacity, Contacts::size_type contactCapacity, Joints::size_type jointCapacity);
 
+    /// @brief Copy constructor.
     Island(const Island& copy) noexcept:
         m_bodies(copy.m_bodies),
         m_contacts(copy.m_contacts),
         m_joints(copy.m_joints)
     {}
 
+    /// @brief Move constructor.
     Island(Island&& other) noexcept:
         m_bodies{std::move(other.m_bodies)},
         m_contacts{std::move(other.m_contacts)},
@@ -57,6 +66,7 @@ public:
     /// Destructor.
     ~Island() = default;
 
+    /// @brief Assignment operator.
     Island& operator= (Island&& other) noexcept
     {
         m_bodies = std::move(other.m_bodies);
@@ -65,23 +75,30 @@ public:
         return *this;
     }
 
-    Bodies m_bodies;
-    Contacts m_contacts;
-    Joints m_joints;
+    Bodies m_bodies; ///< Body container.
+    Contacts m_contacts; ///< Contact container.
+    Joints m_joints; ///< Joint container.
 };
 
+/// @brief Determines whether the given island is full of bodies.
 inline bool IsFullOfBodies(const Island& island)
 {
     return island.m_bodies.size() == island.m_bodies.max_size();
 }
 
+/// @brief Determines whether the given island is full of contacts.
 inline bool IsFullOfContacts(const Island& island)
 {
     return island.m_contacts.size() == island.m_contacts.max_size();
 }
 
+/// @brief Counts the number of occurrances of the given entry in the given island.
 std::size_t Count(const Island& island, const Body* entry);
+
+/// @brief Counts the number of occurrances of the given entry in the given island.
 std::size_t Count(const Island& island, const Contact* entry);
+
+/// @brief Counts the number of occurrances of the given entry in the given island.
 std::size_t Count(const Island& island, const Joint* entry);
 
 } // namespace playrho

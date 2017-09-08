@@ -31,15 +31,17 @@ namespace playrho
     template <typename T>
     using Vector3D = Vector<3, T>;
     
+    /// @brief Equality operator.
     template <typename TYPE>
-    constexpr inline bool operator == (const Vector3D<TYPE> a, const Vector3D<TYPE> b) noexcept
+    constexpr inline bool operator== (const Vector3D<TYPE> a, const Vector3D<TYPE> b) noexcept
     {
         return (Get<0>(a) == Get<0>(b)) && (Get<1>(a) == Get<1>(b))
             && (Get<2>(a) == Get<2>(b));
     }
     
+    /// @brief Inequality operator.
     template <typename TYPE>
-    constexpr inline bool operator != (const Vector3D<TYPE> a, const Vector3D<TYPE> b) noexcept
+    constexpr inline bool operator!= (const Vector3D<TYPE> a, const Vector3D<TYPE> b) noexcept
     {
         return !(a == b);
     }
@@ -64,8 +66,9 @@ namespace playrho
         return lhs;
     }
     
+    /// @brief Multiplication assignment operator.
     template <typename TYPE>
-    constexpr Vector3D<TYPE>& operator *= (Vector3D<TYPE>& lhs, const Real rhs) noexcept
+    constexpr Vector3D<TYPE>& operator*= (Vector3D<TYPE>& lhs, const Real rhs) noexcept
     {
         Get<0>(lhs) *= rhs;
         Get<1>(lhs) *= rhs;
@@ -73,8 +76,9 @@ namespace playrho
         return lhs;
     }
     
+    /// @brief Division assignment operator.
     template <typename TYPE>
-    constexpr Vector3D<TYPE>& operator /= (Vector3D<TYPE>& lhs, const Real rhs) noexcept
+    constexpr Vector3D<TYPE>& operator/= (Vector3D<TYPE>& lhs, const Real rhs) noexcept
     {
         Get<0>(lhs) /= rhs;
         Get<1>(lhs) /= rhs;
@@ -82,12 +86,14 @@ namespace playrho
         return lhs;
     }
     
+    /// @brief Positive operator.
     template <typename T>
     constexpr auto operator+ (const Vector3D<T> v) noexcept
     {
         return Vector3D<T>{+Get<0>(v), +Get<1>(v), +Get<2>(v)};
     }
     
+    /// @brief Negation operator.
     template <typename T>
     constexpr auto operator- (const Vector3D<T> v) noexcept
     {
@@ -108,18 +114,21 @@ namespace playrho
         return lhs -= rhs;
     }
     
+    /// @brief Multiplication operator.
     template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{0} * TYPE2{0})>
-    constexpr inline Vector3D<OUT_TYPE> operator * (const TYPE1 s, Vector3D<TYPE2> a) noexcept
+    constexpr inline Vector3D<OUT_TYPE> operator* (const TYPE1 s, Vector3D<TYPE2> a) noexcept
     {
         return a *= s;
     }
     
+    /// @brief Multiplication operator.
     template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{0} * TYPE2{0})>
-    constexpr inline Vector3D<OUT_TYPE> operator * (Vector3D<TYPE1> a, const TYPE2 s) noexcept
+    constexpr inline Vector3D<OUT_TYPE> operator* (Vector3D<TYPE1> a, const TYPE2 s) noexcept
     {
         return a *= s;
     }
     
+    /// @brief Division operator.
     template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{0} / TYPE2{0})>
     constexpr Vector3D<OUT_TYPE> operator/ (Vector3D<TYPE1> a, const TYPE2 s) noexcept
     {
@@ -135,13 +144,14 @@ namespace playrho
     /// @see Vec3.
     constexpr auto Vec3_zero = Vec3{0, 0, 0};
     
+    /// @brief Gets an invalid value for the Vec3 type.
     template <>
     constexpr inline Vec3 GetInvalid() noexcept
     {
         return Vec3{GetInvalid<Real>(), GetInvalid<Real>(), GetInvalid<Real>()};
     }
     
-    /// Does this vector contain finite coordinates?
+    /// @brief Determines whether the given vector contains finite coordinates.
     template <>
     constexpr inline bool IsValid(const Vec3& value) noexcept
     {

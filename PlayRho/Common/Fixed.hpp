@@ -44,10 +44,17 @@ namespace playrho
     class Fixed
     {
     public:
+        
+        /// @brief Value type.
         using value_type = BASE_TYPE;
+        
+        /// @brief Fraction bits.
         static constexpr unsigned int FractionBits = FRACTION_BITS;
+        
+        /// @brief Scale factor.
         static constexpr value_type ScaleFactor = static_cast<value_type>(1u << FractionBits);
 
+        /// @brief Compare result enumeration.
         enum class CmpResult
         {
             Incomparable,
@@ -56,33 +63,39 @@ namespace playrho
             GreaterThan
         };
 
+        /// @brief Gets the min value this type is capable of expressing.
         static constexpr Fixed GetMin() noexcept
         {
             return Fixed{1, scalar_type{1}};
         }
         
+        /// @brief Gets an infinite value for this type.
         static constexpr Fixed GetInfinity() noexcept
         {
             return Fixed{numeric_limits::max(), scalar_type{1}};
         }
         
+        /// @brief Gets the max value this type is capable of expressing.
         static constexpr Fixed GetMax() noexcept
         {
             // max reserved for +inf
             return Fixed{numeric_limits::max() - 1, scalar_type{1}};
         }
 
+        /// @brief Gets a NaN value for this type.
         static constexpr Fixed GetNaN() noexcept
         {
             return Fixed{numeric_limits::lowest(), scalar_type{1}};
         }
 
+        /// @brief Gets the negative infinity value for this type.
         static constexpr Fixed GetNegativeInfinity() noexcept
         {
             // lowest reserved for NaN
             return Fixed{numeric_limits::lowest() + 1, scalar_type{1}};
         }
         
+        /// @brief Gets the lowest value this type is capable of expressing.
         static constexpr Fixed GetLowest() noexcept
         {
             // lowest reserved for NaN
@@ -90,6 +103,7 @@ namespace playrho
             return Fixed{numeric_limits::lowest() + 2, scalar_type{1}};
         }
 
+        /// @brief Gets the value from a floating point value.
         template <typename T>
         static constexpr value_type GetFromFloat(T val) noexcept
         {
@@ -101,6 +115,7 @@ namespace playrho
                 static_cast<value_type>(val * ScaleFactor);
         }
         
+        /// @brief Gets the value from a signed integral value.
         template <typename T>
         static constexpr value_type GetFromSignedInt(T val) noexcept
         {
@@ -111,6 +126,7 @@ namespace playrho
                 static_cast<value_type>(val * ScaleFactor);
         }
         
+        /// @brief Gets the value from an unsigned integral value.
         template <typename T>
         static constexpr value_type GetFromUnsignedInt(T val) noexcept
         {
@@ -122,72 +138,84 @@ namespace playrho
         
         Fixed() = default;
         
+        /// @brief Initializing constructor.
         constexpr Fixed(long double val) noexcept:
             m_value{GetFromFloat(val)}
         {
             // Intentionally empty
         }
         
+        /// @brief Initializing constructor.
         constexpr Fixed(double val) noexcept:
             m_value{GetFromFloat(val)}
         {
             // Intentionally empty
         }
 
+        /// @brief Initializing constructor.
         constexpr Fixed(float val) noexcept:
             m_value{GetFromFloat(val)}
         {
             // Intentionally empty
         }
         
+        /// @brief Initializing constructor.
         constexpr Fixed(unsigned long long val) noexcept:
             m_value{GetFromUnsignedInt(val)}
         {
             // Intentionally empty.
         }
 
+        /// @brief Initializing constructor.
         constexpr Fixed(unsigned long val) noexcept:
             m_value{GetFromUnsignedInt(val)}
         {
             // Intentionally empty.
         }
         
+        /// @brief Initializing constructor.
         constexpr Fixed(unsigned int val) noexcept:
             m_value{GetFromUnsignedInt(val)}
         {
             // Intentionally empty.
         }
 
+        /// @brief Initializing constructor.
         constexpr Fixed(long long val) noexcept:
             m_value{GetFromSignedInt(val)}
         {
             // Intentionally empty.
         }
 
+        /// @brief Initializing constructor.
         constexpr Fixed(long val) noexcept:
-        m_value{GetFromSignedInt(val)}
+            m_value{GetFromSignedInt(val)}
         {
             // Intentionally empty.
         }
         
+        /// @brief Initializing constructor.
         constexpr Fixed(int val) noexcept:
             m_value{GetFromSignedInt(val)}
         {
             // Intentionally empty.
         }
         
+        /// @brief Initializing constructor.
         constexpr Fixed(short val) noexcept:
             m_value{GetFromSignedInt(val)}
         {
             // Intentionally empty.
         }
         
+        /// @brief Initializing constructor.
         constexpr Fixed(value_type val, unsigned int fraction) noexcept:
             m_value{static_cast<value_type>(static_cast<std::uint32_t>(val * ScaleFactor) | fraction)}
         {
             // Intentionally empty.
         }
         
+        /// @brief Initializing constructor.
         template <typename BT, unsigned int FB>
         constexpr Fixed(const Fixed<BT, FB> val) noexcept:
             Fixed(static_cast<long double>(val))
@@ -197,6 +225,7 @@ namespace playrho
         
         // Methods
         
+        /// @brief Converts the value to the expressed type.
         template <typename T>
         constexpr T ConvertTo() const noexcept
         {
@@ -205,6 +234,7 @@ namespace playrho
                     m_value / static_cast<T>(ScaleFactor);
         }
 
+        /// @brief Compares this value to the given one.
         constexpr CmpResult Compare(const Fixed other) const noexcept
         {
             if (isnan() || other.isnan())
@@ -224,79 +254,94 @@ namespace playrho
 
         // Unary operations
 
+        /// @brief Long double operator.
         explicit constexpr operator long double() const noexcept
         {
             return ConvertTo<long double>();
         }
         
+        /// @brief Double operator.
         explicit constexpr operator double() const noexcept
         {
             return ConvertTo<double>();
         }
         
+        /// @brief Float operator.
         explicit constexpr operator float() const noexcept
         {
             return ConvertTo<float>();
         }
     
+        /// @brief Long long operator.
         explicit constexpr operator long long() const noexcept
         {
             return m_value / ScaleFactor;
         }
         
+        /// @brief Long operator.
         explicit constexpr operator long() const noexcept
         {
             return m_value / ScaleFactor;
         }
 
+        /// @brief Unsigned long long operator.
         explicit constexpr operator unsigned long long() const noexcept
         {
             // Behavior is undefined if m_value is negative
             return static_cast<unsigned long long>(m_value / ScaleFactor);
         }
 
+        /// @brief Unsigned long operator.
         explicit constexpr operator unsigned long() const noexcept
         {
             // Behavior is undefined if m_value is negative
             return static_cast<unsigned long>(m_value / ScaleFactor);
         }
         
+        /// @brief Unsigned int operator.
         explicit constexpr operator unsigned int() const noexcept
         {
             // Behavior is undefined if m_value is negative
             return static_cast<unsigned int>(m_value / ScaleFactor);
         }
 
+        /// @brief int operator.
         explicit constexpr operator int() const noexcept
         {
             return static_cast<int>(m_value / ScaleFactor);
         }
         
+        /// @brief short operator.
         explicit constexpr operator short() const noexcept
         {
             return static_cast<short>(m_value / ScaleFactor);
         }
         
+        /// @brief Negation operator.
         constexpr Fixed operator- () const noexcept
         {
             return (isnan())? *this: Fixed{-m_value, scalar_type{1}};
         }
         
+        /// @brief Positive operator.
         constexpr Fixed operator+ () const noexcept
         {
             return *this;
         }
         
+        /// @brief bool operator.
         explicit constexpr operator bool() const noexcept
         {
             return m_value != 0;
         }
         
+        /// @brief Logical not operator.
         constexpr bool operator! () const noexcept
         {
             return m_value == 0;
         }
         
+        /// @brief Addition assignment operator.
         constexpr Fixed& operator+= (Fixed val) noexcept
         {
             if (isnan() || val.isnan()
@@ -335,6 +380,7 @@ namespace playrho
             return *this;
         }
 
+        /// @brief Subtraction assignment operator.
         constexpr Fixed& operator-= (Fixed val) noexcept
         {
             if (isnan() || val.isnan()
@@ -373,6 +419,7 @@ namespace playrho
             return *this;
         }
 
+        /// @brief Multiplication assignment operator.
         constexpr Fixed& operator*= (Fixed val) noexcept
         {
             if (isnan() || val.isnan())
@@ -418,6 +465,7 @@ namespace playrho
             return *this;
         }
 
+        /// @brief Division assignment operator.
         constexpr Fixed& operator/= (Fixed val) noexcept
         {
             if (isnan() || val.isnan())
@@ -464,6 +512,7 @@ namespace playrho
             return *this;
         }
         
+        /// @brief Modulo operator.
         constexpr Fixed& operator%= (Fixed val) noexcept
         {
             assert(!isnan());
@@ -473,17 +522,20 @@ namespace playrho
             return *this;
         }
         
+        /// @brief Is finite.
         constexpr bool isfinite() const noexcept
         {
             return (m_value > GetNegativeInfinity().m_value)
             && (m_value < GetInfinity().m_value);
         }
         
+        /// @brief Is NaN.
         constexpr bool isnan() const noexcept
         {
             return m_value == GetNaN().m_value;
         }
         
+        /// @brief Gets this value's sign.
         constexpr int getsign() const noexcept
         {
             return (m_value >= 0)? +1: -1;
@@ -510,37 +562,44 @@ namespace playrho
         value_type m_value;
     };
 
+    /// @brief Equality operator.
     template <typename BT, unsigned int FB>
     constexpr bool operator== (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
     {
         return lhs.Compare(rhs) == Fixed<BT, FB>::CmpResult::Equal;
     }
     
+    /// @brief Inequality operator.
     template <typename BT, unsigned int FB>
     constexpr bool operator!= (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
     {
         return lhs.Compare(rhs) != Fixed<BT, FB>::CmpResult::Equal;
     }
     
+    /// @brief Less-than operator.
     template <typename BT, unsigned int FB>
     constexpr bool operator< (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
     {
         return lhs.Compare(rhs) == Fixed<BT, FB>::CmpResult::LessThan;
     }
 
+    /// @brief Greater-than operator.
     template <typename BT, unsigned int FB>
     constexpr bool operator> (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
     {
         return lhs.Compare(rhs) == Fixed<BT, FB>::CmpResult::GreaterThan;
     }
     
+    /// @brief Less-than or equal-to operator.
     template <typename BT, unsigned int FB>
     constexpr bool operator<= (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
     {
         const auto result = lhs.Compare(rhs);
-        return result == Fixed<BT, FB>::CmpResult::LessThan || result == Fixed<BT, FB>::CmpResult::Equal;
+        return result == Fixed<BT, FB>::CmpResult::LessThan ||
+               result == Fixed<BT, FB>::CmpResult::Equal;
     }
     
+    /// @brief Greater-than or equal-to operator.
     template <typename BT, unsigned int FB>
     constexpr bool operator>= (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
     {
@@ -548,6 +607,7 @@ namespace playrho
         return result == Fixed<BT, FB>::CmpResult::GreaterThan || result == Fixed<BT, FB>::CmpResult::Equal;
     }
 
+    /// @brief Addition operator.
     template <typename BT, unsigned int FB>
     constexpr Fixed<BT, FB> operator+ (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
     {
@@ -555,6 +615,7 @@ namespace playrho
         return lhs;
     }
     
+    /// @brief Subtraction operator.
     template <typename BT, unsigned int FB>
     constexpr Fixed<BT, FB> operator- (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
     {
@@ -562,6 +623,7 @@ namespace playrho
         return lhs;
     }
     
+    /// @brief Multiplication operator.
     template <typename BT, unsigned int FB>
     constexpr Fixed<BT, FB> operator* (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
     {
@@ -569,6 +631,7 @@ namespace playrho
         return lhs;
     }
     
+    /// @brief Division operator.
     template <typename BT, unsigned int FB>
     constexpr Fixed<BT, FB> operator/ (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
     {
@@ -576,6 +639,7 @@ namespace playrho
         return lhs;
     }
     
+    /// @brief Modulo operator.
     template <typename BT, unsigned int FB>
     constexpr Fixed<BT, FB> operator% (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
     {
@@ -593,70 +657,82 @@ namespace playrho
 
     // Fixed32 free functions.
     
+    /// @brief Addition operator.
     constexpr Fixed32 operator+ (Fixed32 lhs, Fixed32 rhs) noexcept
     {
         lhs += rhs;
         return lhs;
     }
 
+    /// @brief Subtraction operator.
     constexpr Fixed32 operator- (Fixed32 lhs, Fixed32 rhs) noexcept
     {
         lhs -= rhs;
         return lhs;
     }
     
+    /// @brief Multiplication operator.
     constexpr Fixed32 operator* (Fixed32 lhs, Fixed32 rhs) noexcept
     {
         lhs *= rhs;
         return lhs;
     }
     
+    /// @brief Division operator.
     constexpr Fixed32 operator/ (Fixed32 lhs, Fixed32 rhs) noexcept
     {
         lhs /= rhs;
         return lhs;
     }
     
+    /// @brief Modulo operator.
     constexpr Fixed32 operator% (Fixed32 lhs, Fixed32 rhs) noexcept
     {
         lhs %= rhs;
         return lhs;
     }    
     
+    /// @brief Equality operator.
     constexpr bool operator== (Fixed32 lhs, Fixed32 rhs) noexcept
     {
         return lhs.Compare(rhs) == Fixed32::CmpResult::Equal;
     }
     
+    /// @brief Inequality operator.
     constexpr bool operator!= (Fixed32 lhs, Fixed32 rhs) noexcept
     {
         return lhs.Compare(rhs) != Fixed32::CmpResult::Equal;
     }
     
+    /// @brief Less-than or equal-to operator.
     constexpr bool operator <= (Fixed32 lhs, Fixed32 rhs) noexcept
     {
         const auto result = lhs.Compare(rhs);
         return (result == Fixed32::CmpResult::LessThan) || (result == Fixed32::CmpResult::Equal);
     }
     
+    /// @brief Greater-than or equal-to operator.
     constexpr bool operator >= (Fixed32 lhs, Fixed32 rhs) noexcept
     {
         const auto result = lhs.Compare(rhs);
         return (result == Fixed32::CmpResult::GreaterThan) || (result == Fixed32::CmpResult::Equal);
     }
     
+    /// @brief Less-than operator.
     constexpr bool operator < (Fixed32 lhs, Fixed32 rhs) noexcept
     {
         const auto result = lhs.Compare(rhs);
         return result == Fixed32::CmpResult::LessThan;
     }
     
+    /// @brief Greater-than operator.
     constexpr bool operator > (Fixed32 lhs, Fixed32 rhs) noexcept
     {
         const auto result = lhs.Compare(rhs);
         return result == Fixed32::CmpResult::GreaterThan;
     }
 
+    /// @brief Gets an invalid value.
     template <>
     constexpr Fixed32 GetInvalid() noexcept
     {
@@ -676,26 +752,31 @@ namespace playrho
 #ifndef _WIN32
     // Fixed64 free functions.
 
+    /// @brief 64-bit fixed precision type.
     using Fixed64 = Fixed<std::int64_t,24>;
 
+    /// @brief Addition operator.
     constexpr Fixed64 operator+ (Fixed64 lhs, Fixed64 rhs) noexcept
     {
         lhs += rhs;
         return lhs;
     }
     
+    /// @brief Subtraction operator.
     constexpr Fixed64 operator- (Fixed64 lhs, Fixed64 rhs) noexcept
     {
         lhs -= rhs;
         return lhs;
     }
     
+    /// @brief Multiplication operator.
     constexpr Fixed64 operator* (Fixed64 lhs, Fixed64 rhs) noexcept
     {
         lhs *= rhs;
         return lhs;
     }
     
+    /// @brief Division operator.
     constexpr Fixed64 operator/ (Fixed64 lhs, Fixed64 rhs) noexcept
     {
         lhs /= rhs;
@@ -708,11 +789,13 @@ namespace playrho
         return lhs;
     }
     
+    /// @brief Equality operator.
     constexpr bool operator== (Fixed64 lhs, Fixed64 rhs) noexcept
     {
         return lhs.Compare(rhs) == Fixed64::CmpResult::Equal;
     }
     
+    /// @brief Inequality operator.
     constexpr bool operator!= (Fixed64 lhs, Fixed64 rhs) noexcept
     {
         return lhs.Compare(rhs) != Fixed64::CmpResult::Equal;
@@ -743,8 +826,11 @@ namespace playrho
     }
 
     /// @brief Specialization of the Wider trait for Fixed32 type.
-    template<> struct Wider<Fixed32> { using type = Fixed64; };
+    template<> struct Wider<Fixed32> {
+        using type = Fixed64; ///< Wider type.
+    };
 
+    /// @brief Gets an invalid value.
     template <>
     constexpr Fixed64 GetInvalid() noexcept
     {
@@ -778,49 +864,81 @@ namespace std
     // Fixed32
 
     /// @brief Template specialization of numeric limits for Fixed32.
+    /// @sa http://en.cppreference.com/w/cpp/types/numeric_limits
     template <>
     class numeric_limits<playrho::Fixed32>
     {
     public:
-        static constexpr bool is_specialized = true;
+        static constexpr bool is_specialized = true; ///< Type is specialized.
         
+        /// @brief Gets the min value available for the type.
         static constexpr playrho::Fixed32 min() noexcept { return playrho::Fixed32::GetMin(); }
+
+        /// @brief Gets the max value available for the type.
         static constexpr playrho::Fixed32 max() noexcept    { return playrho::Fixed32::GetMax(); }
+
+        /// @brief Gets the lowest value available for the type.
         static constexpr playrho::Fixed32 lowest() noexcept { return playrho::Fixed32::GetLowest(); }
         
+        /// @brief Number of radix digits that can be represented.
         static constexpr int digits = 31 - playrho::Fixed32::FractionBits;
+
+        /// @brief Number of decimal digits that can be represented.
         static constexpr int digits10 = 31 - playrho::Fixed32::FractionBits;
+        
+        /// @brief Number of decimal digits necessary to differentiate all values.
         static constexpr int max_digits10 = 5; // TODO: check this
         
-        static constexpr bool is_signed = true;
-        static constexpr bool is_integer = false;
-        static constexpr bool is_exact = true;
-        static constexpr int radix = 0;
+        static constexpr bool is_signed = true; ///< Identifies signed types.
+        static constexpr bool is_integer = false; ///< Identifies integer types.
+        static constexpr bool is_exact = true; ///< Identifies exact type.
+        static constexpr int radix = 0; ///< Radix used by the type.
+
+        /// @brief Gets the epsilon value for the type.
         static constexpr playrho::Fixed32 epsilon() noexcept { return playrho::Fixed32{0}; } // TODO
+        
+        /// @brief Gets the round error value for the type.
         static constexpr playrho::Fixed32 round_error() noexcept { return playrho::Fixed32{0}; } // TODO
         
+        /// @brief One more than smallest negative power of the radix that's a valid
+        ///    normalized floating-point value.
         static constexpr int min_exponent = 0;
+
+        /// @brief Smallest negative power of ten that's a valid normalized floating-point value.
         static constexpr int min_exponent10 = 0;
+        
+        /// @brief One more than largest integer power of radix that's a valid finite
+        ///   floating-point value.
         static constexpr int max_exponent = 0;
+        
+        /// @brief Largest integer power of 10 that's a valid finite floating-point value.
         static constexpr int max_exponent10 = 0;
         
-        static constexpr bool has_infinity = true;
-        static constexpr bool has_quiet_NaN = true;
-        static constexpr bool has_signaling_NaN = false;
-        static constexpr float_denorm_style has_denorm = denorm_absent;
-        static constexpr bool has_denorm_loss = false;
+        static constexpr bool has_infinity = true; ///< Whether can represent infinity.
+        static constexpr bool has_quiet_NaN = true; ///< Whether can represent quiet-NaN.
+        static constexpr bool has_signaling_NaN = false; ///< Whether can represent signaling-NaN.
+        static constexpr float_denorm_style has_denorm = denorm_absent; ///< Denorm style used.
+        static constexpr bool has_denorm_loss = false; ///< Has denorm loss amount.
+
+        /// @brief Gets the infinite value for the type.
         static constexpr playrho::Fixed32 infinity() noexcept { return playrho::Fixed32::GetInfinity(); }
+        
+        /// @brief Gets the quiet NaN value for the type.
         static constexpr playrho::Fixed32 quiet_NaN() noexcept { return playrho::Fixed32::GetNaN(); }
+
+        /// @brief Gets the signaling NaN value for the type.
         static constexpr playrho::Fixed32 signaling_NaN() noexcept { return playrho::Fixed32{0}; }
+        
+        /// @brief Gets the denorm value for the type.
         static constexpr playrho::Fixed32 denorm_min() noexcept { return playrho::Fixed32{0}; }
         
-        static constexpr bool is_iec559 = false;
-        static constexpr bool is_bounded = true;
-        static constexpr bool is_modulo = false;
+        static constexpr bool is_iec559 = false; ///< @brief Not an IEEE 754 floating-point type.
+        static constexpr bool is_bounded = true; ///< Type bounded: has limited precision.
+        static constexpr bool is_modulo = false; ///< Doesn't modulo arithmetic overflows.
         
-        static constexpr bool traps = false;
-        static constexpr bool tinyness_before = false;
-        static constexpr float_round_style round_style = round_toward_zero;
+        static constexpr bool traps = false; ///< Doesn't do traps.
+        static constexpr bool tinyness_before = false; ///< Doesn't detect tinyness before rounding.
+        static constexpr float_round_style round_style = round_toward_zero; ///< Rounds down.
     };
 
     inline playrho::Fixed32 abs(playrho::Fixed32 value) noexcept
@@ -899,49 +1017,81 @@ namespace std
 #ifndef _WIN32
 
     /// @brief Template specialization of numeric limits for Fixed64.
+    /// @sa http://en.cppreference.com/w/cpp/types/numeric_limits
     template <>
     class numeric_limits<playrho::Fixed64>
     {
     public:
-        static constexpr bool is_specialized = true;
+        static constexpr bool is_specialized = true; ///< Type is specialized.
         
+        /// @brief Gets the min value available for the type.
         static constexpr playrho::Fixed64 min() noexcept { return playrho::Fixed64::GetMin(); }
+
+        /// @brief Gets the max value available for the type.
         static constexpr playrho::Fixed64 max() noexcept    { return playrho::Fixed64::GetMax(); }
+        
+        /// @brief Gets the lowest value available for the type.
         static constexpr playrho::Fixed64 lowest() noexcept { return playrho::Fixed64::GetLowest(); }
         
+        /// @brief Number of radix digits that can be represented.
         static constexpr int digits = 63 - playrho::Fixed64::FractionBits;
+
+        /// @brief Number of decimal digits that can be represented.
         static constexpr int digits10 = 63 - playrho::Fixed64::FractionBits;
+
+        /// @brief Number of decimal digits necessary to differentiate all values.
         static constexpr int max_digits10 = 10; // TODO: check this
         
-        static constexpr bool is_signed = true;
-        static constexpr bool is_integer = false;
-        static constexpr bool is_exact = true;
-        static constexpr int radix = 0;
+        static constexpr bool is_signed = true; ///< Identifies signed types.
+        static constexpr bool is_integer = false; ///< Identifies integer types.
+        static constexpr bool is_exact = true; ///< Identifies exact type.
+        static constexpr int radix = 0; ///< Radix used by the type.
+
+        /// @brief Gets the epsilon value for the type.
         static constexpr playrho::Fixed64 epsilon() noexcept { return playrho::Fixed64{0}; } // TODO
+        
+        /// @brief Gets the round error value for the type.
         static constexpr playrho::Fixed64 round_error() noexcept { return playrho::Fixed64{0}; } // TODO
         
+        /// @brief One more than smallest negative power of the radix that's a valid
+        ///    normalized floating-point value.
         static constexpr int min_exponent = 0;
+
+        /// @brief Smallest negative power of ten that's a valid normalized floating-point value.
         static constexpr int min_exponent10 = 0;
+        
+        /// @brief One more than largest integer power of radix that's a valid finite
+        ///   floating-point value.
         static constexpr int max_exponent = 0;
+        
+        /// @brief Largest integer power of 10 that's a valid finite floating-point value.
         static constexpr int max_exponent10 = 0;
         
-        static constexpr bool has_infinity = true;
-        static constexpr bool has_quiet_NaN = true;
-        static constexpr bool has_signaling_NaN = false;
-        static constexpr float_denorm_style has_denorm = denorm_absent;
-        static constexpr bool has_denorm_loss = false;
+        static constexpr bool has_infinity = true; ///< Whether can represent infinity.
+        static constexpr bool has_quiet_NaN = true; ///< Whether can represent quiet-NaN.
+        static constexpr bool has_signaling_NaN = false; ///< Whether can represent signaling-NaN.
+        static constexpr float_denorm_style has_denorm = denorm_absent; ///< Denorm style used.
+        static constexpr bool has_denorm_loss = false; ///< Has denorm loss amount.
+
+        /// @brief Gets the infinite value for the type.
         static constexpr playrho::Fixed64 infinity() noexcept { return playrho::Fixed64::GetInfinity(); }
+
+        /// @brief Gets the quiet NaN value for the type.
         static constexpr playrho::Fixed64 quiet_NaN() noexcept { return playrho::Fixed64::GetNaN(); }
+        
+        /// @brief Gets the signaling NaN value for the type.
         static constexpr playrho::Fixed64 signaling_NaN() noexcept { return playrho::Fixed64{0}; }
+
+        /// @brief Gets the denorm value for the type.
         static constexpr playrho::Fixed64 denorm_min() noexcept { return playrho::Fixed64{0}; }
         
-        static constexpr bool is_iec559 = false;
-        static constexpr bool is_bounded = true;
-        static constexpr bool is_modulo = false;
+        static constexpr bool is_iec559 = false; ///< Not an IEEE 754 floating-point type.
+        static constexpr bool is_bounded = true; ///< Type bounded: has limited precision.
+        static constexpr bool is_modulo = false; ///< Doesn't modulo arithmetic overflows.
         
-        static constexpr bool traps = false;
-        static constexpr bool tinyness_before = false;
-        static constexpr float_round_style round_style = round_toward_zero;
+        static constexpr bool traps = false; ///< Doesn't do traps.
+        static constexpr bool tinyness_before = false; ///< Doesn't detect tinyness before rounding.
+        static constexpr float_round_style round_style = round_toward_zero; ///< Rounds down.
     };
 
     inline playrho::Fixed64 abs(playrho::Fixed64 value) noexcept

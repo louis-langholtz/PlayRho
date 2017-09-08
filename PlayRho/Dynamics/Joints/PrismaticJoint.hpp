@@ -39,6 +39,8 @@ namespace playrho {
 class PrismaticJoint : public Joint
 {
 public:
+    
+    /// @brief Copy constructor.
     PrismaticJoint(const PrismaticJointDef& def);
 
     Length2D GetAnchorA() const override;
@@ -88,6 +90,8 @@ public:
 
     /// @brief Sets the maximum motor force.
     void SetMaxMotorForce(Force force) noexcept;
+
+    /// @brief Gets the maximum motor force.
     Force GetMaxMotorForce() const noexcept { return m_maxMotorForce; }
 
     /// @brief Gets the current motor force given the inverse time step.

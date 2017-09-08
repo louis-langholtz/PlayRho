@@ -79,8 +79,10 @@ public:
         return UnitVec2{+SquareRootTwo/Real(2), -SquareRootTwo/Real(2)};
     }
     
+    /// @brief Gets the default fallback.
     static constexpr UnitVec2 GetDefaultFallback() noexcept { return UnitVec2{}; }
 
+    /// @brief Gets the unit vector from the given parameters.
     static UnitVec2 Get(const Real x, const Real y, Real& magnitude,
                         const UnitVec2 fallback = GetDefaultFallback()) noexcept
     {
@@ -106,18 +108,25 @@ public:
         // Intentionally empty.
     }
 
+    /// @brief Gets the "X" value.
     constexpr auto GetX() const noexcept { return m_elems[0]; }
 
+    /// @brief Gets the "Y" value.
     constexpr auto GetY() const noexcept { return m_elems[1]; }
 
+    /// @brief Gets the cosine value.
     constexpr auto cos() const noexcept { return m_elems[0]; }
 
+    /// @brief Gets the sine value.
     constexpr auto sin() const noexcept { return m_elems[1]; }
 
+    /// @brief Flips the X and Y values.
     constexpr inline UnitVec2 FlipXY() const noexcept { return UnitVec2{-GetX(), -GetY()}; }
 
+    /// @brief Flips the X value.
     constexpr inline UnitVec2 FlipX() const noexcept { return UnitVec2{-GetX(), GetY()}; }
 
+    /// @brief Flips the Y value.
     constexpr inline UnitVec2 FlipY() const noexcept { return UnitVec2{GetX(), -GetY()}; }
 
     /// @brief Rotates the unit vector by the given amount.
@@ -153,10 +162,13 @@ public:
         return UnitVec2{GetY(), -GetX()};
     }
 
+    /// @brief Negation operator.
     constexpr inline UnitVec2 operator-() const noexcept { return UnitVec2{-GetX(), -GetY()}; }
 
+    /// @brief Positive operator.
     constexpr inline UnitVec2 operator+() const noexcept { return UnitVec2{+GetX(), +GetY()}; }
 
+    /// @brief Gets the absolute value.
     constexpr inline UnitVec2 Absolute() const noexcept
     {
         return UnitVec2{std::abs(GetX()), std::abs(GetY())};
@@ -178,11 +190,13 @@ constexpr inline UnitVec2 GetXAxis(UnitVec2 rot) noexcept { return rot; }
 /// @note This is the reverse perpendicular vector of the given unit vector.
 constexpr inline UnitVec2 GetYAxis(UnitVec2 rot) noexcept { return rot.GetRevPerpendicular(); }
 
+/// @brief Equality operator.
 constexpr inline bool operator==(const UnitVec2 a, const UnitVec2 b) noexcept
 {
     return (a.GetX() == b.GetX()) && (a.GetY() == b.GetY());
 }
 
+/// @brief Inequality operator.
 constexpr inline bool operator!=(const UnitVec2 a, const UnitVec2 b) noexcept
 {
     return (a.GetX() != b.GetX()) || (a.GetY() != b.GetY());
@@ -223,13 +237,16 @@ constexpr inline UnitVec2 InverseRotate(const UnitVec2 vector, const UnitVec2& a
     return vector.Rotate(angle.FlipY());
 }
     
+/// @brief Gets an invalid value for the UnitVec2 type.
 template <> constexpr UnitVec2 GetInvalid() noexcept { return UnitVec2{}; }
 
+/// @brief Determines if the given value is valid.
 template <> constexpr inline bool IsValid(const UnitVec2& value) noexcept
 {
     return IsValid(value.GetX()) && IsValid(value.GetY()) && (value != UnitVec2::GetZero());
 }
 
+/// @brief Gets the I'th element of the given collection.
 template <size_t I>
 constexpr UnitVec2::value_type Get(UnitVec2 v) noexcept
 {
@@ -241,12 +258,14 @@ constexpr UnitVec2::value_type Get(UnitVec2 v) noexcept
     }
 }
 
+/// @brief Gets the 0'th element of the given collection.
 template <>
 constexpr UnitVec2::value_type Get<0>(UnitVec2 v) noexcept
 {
     return v.GetX();
 }
 
+/// @brief Gets the 1'st element of the given collection.
 template <>
 constexpr UnitVec2::value_type Get<1>(UnitVec2 v) noexcept
 {

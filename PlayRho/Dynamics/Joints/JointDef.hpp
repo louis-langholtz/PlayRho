@@ -55,6 +55,7 @@ struct JointDef
     /// Deleted default constructor for abstract base class.
     JointDef() = delete; // deleted to prevent direct instantiation.
     
+    /// @brief Initializing constructor.
     constexpr JointDef(JointType t) noexcept : type{t}
     {
         // Intentionally empty.
@@ -88,9 +89,14 @@ struct JointDef
 template <class T>
 struct JointBuilder : JointDef
 {
+    
+    /// @brief Value type.
     using value_type = T;
+
+    /// @brief Reference type.
     using reference = value_type&;
     
+    /// @brief Initializing constructor.
     constexpr JointBuilder(JointType t) noexcept : JointDef{t}
     {
         // Intentionally empty.
@@ -125,6 +131,7 @@ struct JointBuilder : JointDef
     }
 };
 
+/// @brief Sets the joint definition data for the given joint.
 void Set(JointDef& def, const Joint& joint) noexcept;
 
 } // namespace playrho

@@ -29,28 +29,38 @@
 
 namespace playrho {
     
+    /// @brief Generic N by M matrix.
     template <std::size_t N, std::size_t M, typename T>
     using Matrix = Vector<N, Vector<M, T>>;
     
+    /// @brief 2 by 2 matrix.
     template <typename T>
     using Matrix22 = Matrix<2, 2, T>;
     
+    /// @brief 3 by 3 matrix.
     template <typename T>
     using Matrix33 = Matrix<3, 3, T>;
     
+    /// @brief 2 by 2 matrix of Real elements.
     using Mat22 = Matrix22<Real>;
     
+    /// @brief 2 by 2 matrix of Mass elements.
     using Mass22 = Matrix22<Mass>;
+
+    /// @brief 2 by 2 matrix of InvMass elements.
     using InvMass22 = Matrix22<InvMass>;
     
+    /// @brief 3 by 3 matrix of Real elements.
     using Mat33 = Matrix33<Real>;
     
+    /// @brief Determines if the given value is valid.
     template <>
     constexpr inline bool IsValid(const Mat22& value) noexcept
     {
         return IsValid(Get<0>(value)) && IsValid(Get<1>(value));
     }
     
+    /// @brief Gets an invalid value for a Mat22.
     template <>
     constexpr inline Mat22 GetInvalid() noexcept
     {

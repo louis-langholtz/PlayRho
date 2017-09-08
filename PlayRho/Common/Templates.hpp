@@ -27,14 +27,17 @@
 namespace playrho
 {
 
+    /// @brief "Not used" annotator.
     template<class... T> void NOT_USED(T&&...){}
 
+    /// @brief Gets an invalid value for the type.
     template <typename T>
     constexpr T GetInvalid() noexcept
     {
         static_assert(sizeof(T) == 0, "No available specialization");
     }
 
+    /// @brief Determines if the given value is valid.
     template <typename T>
     constexpr bool IsValid(const T& value) noexcept
     {
@@ -53,24 +56,28 @@ namespace playrho
 
     // GetInvalid template specializations.
     
+    /// @brief Gets an invalid value for the float type.
     template <>
     constexpr float GetInvalid() noexcept
     {
         return std::numeric_limits<float>::signaling_NaN();
     }
     
+    /// @brief Gets an invalid value for the double type.
     template <>
     constexpr double GetInvalid() noexcept
     {
         return std::numeric_limits<double>::signaling_NaN();
     }
     
+    /// @brief Gets an invalid value for the long double type.
     template <>
     constexpr long double GetInvalid() noexcept
     {
         return std::numeric_limits<long double>::signaling_NaN();
     }
     
+    /// @brief Gets an invalid value for the std::size_t type.
     template <>
     constexpr std::size_t GetInvalid() noexcept
     {
@@ -79,6 +86,7 @@ namespace playrho
     
     // IsValid template specializations.
     
+    /// @brief Determines if the given value is valid.
     template <>
     constexpr inline bool IsValid(const std::size_t& x) noexcept
     {
@@ -87,48 +95,56 @@ namespace playrho
     
     // Other templates.
     
+    /// @brief Gets a pointer for the given variable.
     template <class T>
     constexpr const T* GetPtr(const T* value) noexcept
     {
         return value;
     }
     
+    /// @brief Gets a pointer for the given variable.
     template <class T>
     constexpr T* GetPtr(T* value) noexcept
     {
         return value;
     }
     
+    /// @brief Gets a pointer for the given variable.
     template <class T>
     constexpr const T* GetPtr(const T& value) noexcept
     {
         return &value;
     }
     
+    /// @brief Gets a pointer for the given variable.
     template <class T>
     constexpr T* GetPtr(T& value) noexcept
     {
         return &value;
     }
 
+    /// @brief Gets a reference for the given variable.
     template <class T>
     constexpr const T& GetRef(const T* value) noexcept
     {
         return *value;
     }
     
+    /// @brief Gets a reference for the given variable.
     template <class T>
     constexpr T& GetRef(T* value) noexcept
     {
         return *value;
     }
     
+    /// @brief Gets a reference for the given variable.
     template <class T>
     constexpr const T& GetRef(const T& value) noexcept
     {
         return value;
     }
     
+    /// @brief Gets a reference for the given variable.
     template <class T>
     constexpr T& GetRef(T& value) noexcept
     {
@@ -147,18 +163,21 @@ namespace playrho
         return typeid(T).name();
     }
     
+    /// @brief Gets a human recognizable name for the float type.
     template <>
     inline const char* GetTypeName<float>() noexcept
     {
         return "float";
     }
     
+    /// @brief Gets a human recognizable name for the double type.
     template <>
     inline const char* GetTypeName<double>() noexcept
     {
         return "double";
     }
     
+    /// @brief Gets a human recognizable name for the long double type.
     template <>
     inline const char* GetTypeName<long double>() noexcept
     {

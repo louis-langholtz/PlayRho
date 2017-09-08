@@ -35,6 +35,8 @@ namespace playrho {
 class WheelJoint : public Joint
 {
 public:
+    
+    /// @brief Initializing constructor.
     WheelJoint(const WheelJointDef& def);
     
     Length2D GetAnchorA() const override;
@@ -64,8 +66,10 @@ public:
     /// Get the angular motor speed.
     AngularVelocity GetMotorSpeed() const;
 
-    /// Set/Get the maximum motor force.
+    /// @brief Sets the maximum motor torque.
     void SetMaxMotorTorque(Torque torque);
+
+    /// @brief Gets the maximum motor torque.
     Torque GetMaxMotorTorque() const;
 
     /// Get the current motor torque given the inverse time step.
@@ -78,8 +82,10 @@ public:
     /// @brief Gets the spring frequency.
     Frequency GetSpringFrequency() const;
 
-    /// Set/Get the spring damping ratio
+    /// @brief Sets the spring damping ratio
     void SetSpringDampingRatio(Real ratio);
+
+    /// @brief Gets the spring damping ratio
     Real GetSpringDampingRatio() const;
 
 private:

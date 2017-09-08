@@ -30,37 +30,49 @@ namespace playrho
     /// @details This structure is used to keep track of the best separating axis.
     struct IndexSeparation
     {
+        
+        /// @brief Distance type.
         using distance_type = Length;
+
+        /// @brief Index type.
         using index_type = std::remove_const<decltype(MaxShapeVertices)>::type;
         
+        /// @brief Gets the invalid distance.
         static constexpr distance_type GetInvalidDistance() noexcept
         {
             return std::numeric_limits<Real>::max() * Meter;
         }
 
+        /// @brief Index type.
         static constexpr index_type InvalidIndex = static_cast<index_type>(-1);
         
-        distance_type separation = GetInvalidDistance();
-        index_type index = InvalidIndex;
+        distance_type separation = GetInvalidDistance(); ///< Separation.
+        index_type index = InvalidIndex; ///< Index.
     };
     
     /// Index pair separation.
     /// @details This structure is used to keep track of the best separating axis.
     struct IndexPairSeparation
     {
+        
+        /// @brief Distance type.
         using distance_type = Length;
+        
+        /// @brief Index type.
         using index_type = std::remove_const<decltype(MaxShapeVertices)>::type;
         
+        /// @brief Gets the invalid distance.
         static constexpr distance_type GetInvalidDistance() noexcept
         {
             return std::numeric_limits<Real>::max() * Meter;
         }
 
+        /// @brief Invalid index.
         static constexpr index_type InvalidIndex = static_cast<index_type>(-1);
         
-        distance_type separation = GetInvalidDistance();
-        index_type index1 = InvalidIndex;
-        index_type index2 = InvalidIndex;
+        distance_type separation = GetInvalidDistance(); ///< Separation.
+        index_type index1 = InvalidIndex; ///< Index 1.
+        index_type index2 = InvalidIndex; ///< Index 2.
     };
     
     /// @brief Gets the max separation information.

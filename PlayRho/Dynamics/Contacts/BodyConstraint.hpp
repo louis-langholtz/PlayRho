@@ -36,10 +36,12 @@ namespace playrho {
     public:
         // Note: Seeing World.TilesComesToRest times of around 5686 ms with this setup.
 
+        /// @brief Index type.
         using index_type = std::remove_const<decltype(MaxBodies)>::type;
         
         BodyConstraint() = default;
         
+        /// @brief Initializing constructor.
         constexpr BodyConstraint(InvMass invMass, InvRotInertia invRotI, Length2D localCenter,
                                  Position position, Velocity velocity) noexcept:
             m_position{position},
@@ -132,6 +134,7 @@ namespace playrho {
         return *this;
     }
     
+    /// @brief Gets the BodyConstraint based on the given parameters.
     inline BodyConstraint GetBodyConstraint(const Body& body, Time time,
                                             MovementConf conf) noexcept
     {

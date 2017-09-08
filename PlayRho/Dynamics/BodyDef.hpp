@@ -47,21 +47,52 @@ namespace playrho
     {
         // Builder-styled methods...
 
+        /// @brief Use the given type.
         constexpr BodyDef& UseType(BodyType t) noexcept;
+
+        /// @brief Use the given location.
         constexpr BodyDef& UseLocation(Length2D l) noexcept;
+        
+        /// @brief Use the given angle.
         constexpr BodyDef& UseAngle(Angle a) noexcept;
+        
+        /// @brief Use the given linear velocity.
         constexpr BodyDef& UseLinearVelocity(LinearVelocity2D v) noexcept;
+        
+        /// @brief Use the given angular velocity.
         constexpr BodyDef& UseAngularVelocity(AngularVelocity v) noexcept;
+        
+        /// @brief Use the given linear acceleration.
         constexpr BodyDef& UseLinearAcceleration(LinearAcceleration2D v) noexcept;
+        
+        /// @brief Use the given angular acceleration.
         constexpr BodyDef& UseAngularAcceleration(AngularAcceleration v) noexcept;
+        
+        /// @brief Use the given linear damping.
         constexpr BodyDef& UseLinearDamping(NonNegative<Frequency> v) noexcept;
+        
+        /// @brief Use the given angular damping.
         constexpr BodyDef& UseAngularDamping(NonNegative<Frequency> v) noexcept;
+        
+        /// @brief Use the given under active time.
         constexpr BodyDef& UseUnderActiveTime(Time v) noexcept;
+        
+        /// @brief Use the given allow sleep value.
         constexpr BodyDef& UseAllowSleep(bool value) noexcept;
+        
+        /// @brief Use the given awake value.
         constexpr BodyDef& UseAwake(bool value) noexcept;
+        
+        /// @brief Use the given fixed rotation state.
         constexpr BodyDef& UseFixedRotation(bool value) noexcept;
+        
+        /// @brief Use the given bullet state.
         constexpr BodyDef& UseBullet(bool value) noexcept;
+        
+        /// @brief Use the given enabled state.
         constexpr BodyDef& UseEnabled(bool value) noexcept;
+        
+        /// @brief Use the given user data.
         constexpr BodyDef& UseUserData(void* value) noexcept;
         
         // Public member variables...
@@ -224,11 +255,13 @@ namespace playrho
         return *this;
     }
     
+    /// @brief Gets the default body definition.
     constexpr BodyDef GetDefaultBodyDef() noexcept
     {
         return BodyDef{};
     }
 
+    /// @brief Gets the body definition for the given body.
     BodyDef GetBodyDef(const Body& body) noexcept;
 
 } // namespace playrho

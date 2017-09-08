@@ -41,6 +41,8 @@ class EdgeShape;
 class ChainShape: public Shape
 {
 public:
+
+    /// @brief Gets the default vertex radius.
     static constexpr Length GetDefaultVertexRadius() noexcept
     {
         return DefaultLinearSlop * Real{2};
@@ -57,13 +59,16 @@ public:
         std::vector<Length2D> vertices;
     };
 
+    /// @brief Gets the default configuration.
     static Conf GetDefaultConf() noexcept
     {
         return Conf{};
     }
     
+    /// @brief Initializing constructor.
     ChainShape(const Conf& conf = GetDefaultConf());
 
+    /// @brief Copy constructor.
     ChainShape(const ChainShape& other) = default;
 
     virtual ~ChainShape() = default;
@@ -89,6 +94,7 @@ public:
     /// Get a vertex by index.
     Length2D GetVertex(ChildCounter index) const;
 
+    /// @brief Gets the normal at the given index.
     UnitVec2 GetNormal(ChildCounter index) const;
 
 private:
@@ -118,12 +124,14 @@ inline UnitVec2 ChainShape::GetNormal(ChildCounter index) const
     return m_normals[index];
 }
 
+/// @brief Determines whether the given shape is looped.
 inline bool IsLooped(const ChainShape& shape) noexcept
 {
     const auto count = shape.GetVertexCount();
     return (count > 1)? (shape.GetVertex(count - 1) == shape.GetVertex(0)): false;
 }
 
+/// @brief Gets the next index after the given index for the given shape.
 inline ChildCounter GetNextIndex(const ChainShape& shape, ChildCounter index) noexcept
 {
     return GetModuloNext(index, shape.GetVertexCount());

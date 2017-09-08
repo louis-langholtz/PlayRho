@@ -98,9 +98,16 @@ public:
     template <typename ConcreteConf>
     struct Builder: Conf
     {
+        /// @brief Uses the given vertex radius.
         constexpr ConcreteConf& UseVertexRadius(NonNegative<Length> value) noexcept;
+
+        /// @brief Uses the given friction.
         constexpr ConcreteConf& UseFriction(NonNegative<Real> value) noexcept;
+        
+        /// @brief Uses the given restitution.
         constexpr ConcreteConf& UseRestitution(Finite<Real> value) noexcept;
+        
+        /// @brief Uses the given density.
         constexpr ConcreteConf& UseDensity(NonNegative<Density> value) noexcept;
     };
 
@@ -121,6 +128,7 @@ public:
         // Intentionally empty.
     }
 
+    /// @brief Copy constructor.
     Shape(const Shape&) = default;
 
     virtual ~Shape() = default;
@@ -241,31 +249,37 @@ class Shape::Visitor
 public:
     virtual ~Visitor() = default;
     
+    /// @brief Visits a DiskShape.
     virtual void Visit(const DiskShape&)
     {
         visited = true;
     }
     
+    /// @brief Visits an EdgeShape.
     virtual void Visit(const EdgeShape&)
     {
         visited = true;
     }
     
+    /// @brief Visits a PolygonShape.
     virtual void Visit(const PolygonShape&)
     {
         visited = true;
     }
     
+    /// @brief Visits a ChainShape.
     virtual void Visit(const ChainShape&)
     {
         visited = true;
     }
     
+    /// @brief Visits a MultiShape.
     virtual void Visit(const MultiShape&)
     {
         visited = true;
     }
     
+    /// @brief Is base visited.
     bool IsBaseVisited() const noexcept
     {
         return visited;

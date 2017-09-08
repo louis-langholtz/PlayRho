@@ -59,6 +59,7 @@ namespace playrho {
         index_type groupIndex = 0;
     };
     
+    /// @brief Determines whether collision processing should be performed.
     inline bool ShouldCollide(const Filter filterA, const Filter filterB) noexcept
     {
         if ((filterA.groupIndex == filterB.groupIndex) && (filterA.groupIndex != 0))

@@ -111,8 +111,13 @@ namespace playrho {
             return Length{0};
         }
         
+        /// @brief Gets the type.
         constexpr Type GetType() const noexcept;
+
+        /// @brief Gets the axis.
         constexpr UnitVec2 GetAxis() const noexcept;
+        
+        /// @brief Gets the local point.
         constexpr Length2D GetLocalPoint() const noexcept;
 
     private:

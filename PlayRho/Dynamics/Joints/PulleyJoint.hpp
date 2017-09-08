@@ -38,9 +38,14 @@ namespace playrho {
 class PulleyJoint : public Joint
 {
 public:
+    
+    /// @brief Initializing constructor.
     PulleyJoint(const PulleyJointDef& data);
 
+    /// @brief Gets the local anchor A.
     Length2D GetLocalAnchorA() const noexcept;
+
+    /// @brief Gets the local anchor B.
     Length2D GetLocalAnchorB() const noexcept;
 
     Length2D GetAnchorA() const override;

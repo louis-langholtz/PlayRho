@@ -27,60 +27,75 @@ namespace playrho {
     /// @brief Pre-phase per-step statistics.
     struct PreStepStats
     {
+        /// @brief Counter type.
         using counter_type = std::uint32_t;
-        counter_type proxiesMoved = 0;
-        counter_type ignored = 0;
-        counter_type destroyed = 0;
-        counter_type updated = 0;
-        counter_type skipped = 0;
-        counter_type added = 0;
+
+        counter_type proxiesMoved = 0; ///< Proxies moved count.
+        counter_type ignored = 0; ///< Ignored count.
+        counter_type destroyed = 0; ///< Destroyed count.
+        counter_type updated = 0; ///< Updated count.
+        counter_type skipped = 0; ///< Skipped count.
+        counter_type added = 0; ///< Added count.
     };
     
     /// @brief Regular-phase per-step statistics.
     struct RegStepStats
     {
+        /// @brief Counter type.
         using counter_type = std::uint32_t;
 
+        /// @brief Min separation.
         Length minSeparation = std::numeric_limits<Real>::infinity() * Meter;
+
+        /// @brief Max incremental impulse.
         Momentum maxIncImpulse = 0;
         
-        counter_type islandsFound = 0;
-        counter_type islandsSolved = 0;
-        counter_type contactsAdded = 0;
-        counter_type bodiesSlept = 0;
-        counter_type proxiesMoved = 0;
-        counter_type sumPosIters = 0;
-        counter_type sumVelIters = 0;
+        counter_type islandsFound = 0; ///< Islands found count.
+        counter_type islandsSolved = 0; ///< Islands solved count.
+        counter_type contactsAdded = 0; ///< Contacts added count.
+        counter_type bodiesSlept = 0; ///< Bodies slept count.
+        counter_type proxiesMoved = 0; ///< Proxies moved count.
+        counter_type sumPosIters = 0; ///< Sum of the position iterations.
+        counter_type sumVelIters = 0; ///< Sum of the velocity iterations.
     };
     
     /// @brief TOI-phase per-step statistics.
     struct ToiStepStats
     {
+        /// @brief Counter type.
         using counter_type = std::uint32_t;
 
+        /// @brief Min separation.
         Length minSeparation = std::numeric_limits<Real>::infinity() * Meter;
+
+        /// @brief Max incremental impulse.
         Momentum maxIncImpulse = 0;
         
-        counter_type islandsFound = 0;
-        counter_type islandsSolved = 0;
-        counter_type contactsFound = 0;
-        counter_type contactsAtMaxSubSteps = 0;
-        counter_type contactsUpdatedToi = 0;
-        counter_type contactsUpdatedTouching = 0;
-        counter_type contactsSkippedTouching = 0;
-        counter_type contactsAdded = 0;
-        counter_type proxiesMoved = 0;
-        counter_type sumPosIters = 0;
-        counter_type sumVelIters = 0;
+        counter_type islandsFound = 0; ///< Islands found count.
+        counter_type islandsSolved = 0; ///< Islands solved count.
+        counter_type contactsFound = 0; ///< Contacts found count.
+        counter_type contactsAtMaxSubSteps = 0; ///< Contacts at max substeps count.
+        counter_type contactsUpdatedToi = 0; ///< Contacts updated TOI count.
+        counter_type contactsUpdatedTouching = 0; ///< Contacts updated touching count.
+        counter_type contactsSkippedTouching = 0; ///< Contacts skipped touching count.
+        counter_type contactsAdded = 0; ///< Contacts added count.
+        counter_type proxiesMoved = 0; ///< Proxies moved count.
+        counter_type sumPosIters = 0; ///< Sum position iterations count.
+        counter_type sumVelIters = 0; ///< Sum velocity iterations count.
         counter_type maxSimulContacts = 0; ///< Max contacts occuring simultaneously.
         
+        /// @brief Distance iteration type.
         using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
+
+        /// @brief TOI iteration type.
         using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
+        
+        /// @brief Root iteration type.
         using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
         
-        dist_iter_type maxDistIters = 0;
-        toi_iter_type maxToiIters = 0;
-        root_iter_type maxRootIters = 0;
+        dist_iter_type maxDistIters = 0; ///< Max distance iterations.
+        toi_iter_type maxToiIters = 0; ///< Max TOI iterations.
+        root_iter_type maxRootIters = 0; ///< Max root iterations.
     };
     
     /// @brief Per-step statistics.

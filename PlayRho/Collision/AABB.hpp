@@ -192,6 +192,7 @@ namespace playrho
         };
     };
     
+    /// @brief Gets an invalid AABB value.
     template <>
     constexpr AABB GetInvalid() noexcept
     {
@@ -204,6 +205,7 @@ namespace playrho
         return (aabb.GetLowerBound() + aabb.GetUpperBound()) / Real{2};
     }
     
+    /// @brief Gets dimensions of the given AABB.
     constexpr Length2D GetDimensions(const AABB aabb) noexcept
     {
         return aabb.GetUpperBound() - aabb.GetLowerBound();
@@ -224,35 +226,41 @@ namespace playrho
         return (GetX(dimensions) + GetY(dimensions)) * Real{2};
     }
 
+    /// @brief Gets the AABB that minimally encloses the given AABBs.
     constexpr AABB GetEnclosingAABB(AABB a, AABB b)
     {
         return a.Include(b);
     }
     
+    /// @brief Gets the AABB that the result of displacing the given AABB by the given
+    ///   displacement amount.
     constexpr AABB GetDisplacedAABB(AABB aabb, const Length2D displacement)
     {
         aabb.Displace(displacement);
         return aabb;
     }
-        
+
+    /// @brief Gets the fattened AABB result.
     constexpr AABB GetFattenedAABB(AABB aabb, const Length amount)
     {
         aabb.Fatten(amount);
         return aabb;
     }
 
+    /// @brief Gets whether the two AABB objects are equal.
     constexpr bool operator== (const AABB lhs, const AABB rhs)
     {
         return (lhs.GetLowerBound() == rhs.GetLowerBound()) && (lhs.GetUpperBound() == rhs.GetUpperBound());
     }
     
+    /// @brief Gets whether the two AABB objects are not equal.
     constexpr bool operator!= (const AABB lhs, const AABB rhs)
     {
         return !(lhs == rhs);
     }
 
-    // Tests for overlap between two axis aligned bounding boxes.
-    // @note This function's complexity is constant.
+    /// @brief Tests for overlap between two axis aligned bounding boxes.
+    /// @note This function's complexity is constant.
     constexpr bool TestOverlap(const AABB a, const AABB b) noexcept
     {
         const auto d1 = b.GetLowerBound() - a.GetUpperBound();
@@ -271,8 +279,10 @@ namespace playrho
     /// @return AABB for the proxy shape or the default AABB if the proxy has a zero vertex count.
     AABB ComputeAABB(const DistanceProxy& proxy, const Transformation xf) noexcept;
     
+    /// @brief Computes the AABB for the given shape with the given transformation.
     AABB ComputeAABB(const Shape& shape, const Transformation xf);
 
+    /// @brief Computes the AABB for the given body.
     AABB ComputeAABB(const Body& body);
 
     /// Gets the fixture's AABB.

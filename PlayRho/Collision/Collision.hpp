@@ -34,8 +34,9 @@
 namespace playrho
 {
 class Manifold;
-    
-/// This is used for determining the state of contact points.
+
+/// @brief Point state enumeration.
+/// @note This is used for determining the state of contact points.
 enum class PointState
 {
     NullState, ///< point does not exist
@@ -49,14 +50,18 @@ enum class PointState
 ///   So state1 is either persist or remove while state2 is either add or persist.
 struct PointStates
 {
+    /// @brief State 1.
     PointState state1[MaxManifoldPoints] = {PointState::NullState, PointState::NullState};
+    
+    /// @brief State 2.
     PointState state2[MaxManifoldPoints] = {PointState::NullState, PointState::NullState};
 };
     
 /// @brief Computes the point states given two manifolds.
 PointStates GetPointStates(const Manifold& manifold1, const Manifold& manifold2) noexcept;
 
-/// Used for computing contact manifolds.
+/// @brief Clip vertex.
+/// @details Used for computing contact manifolds.
 /// @note This data structure is 12-bytes large (on at least one 64-bit platform).
 struct ClipVertex
 {
@@ -64,7 +69,7 @@ struct ClipVertex
     ContactFeature cf; ///< Contact feature information. 4-bytes.
 };
 
-/// Clip list for ClipSegmentToLine.
+/// @brief Clip list for ClipSegmentToLine.
 /// @sa ClipSegmentToLine.
 /// @note This data structure is at least 24-bytes large.
 using ClipList = ArrayList<ClipVertex, MaxManifoldPoints>;

@@ -94,8 +94,10 @@ public:
     /// @throws InvalidArgument if the given max vertex radius is less than the min.
     World(const WorldDef& def = GetDefaultWorldDef());
 
+    /// @brief Copy constructor.
     World(const World& other);
 
+    /// @brief Assignment operator.
     World& operator= (const World& other);
 
     /// @brief Destructor.
@@ -103,6 +105,7 @@ public:
     /// All physics entities are destroyed and all dynamically allocated memory is released.
     ~World();
 
+    /// @brief Clears this world.
     void Clear() noexcept;
 
     /// Register a destruction listener. The listener is owned by you and must
@@ -290,9 +293,13 @@ public:
     /// @note This may alter the body's mass and velocity.
     void SetType(Body& body, BodyType type);
 
+    /// @brief Register for proxies for the given fixture.
     bool RegisterForProxies(Fixture* fixture);
+    
+    /// @brief Register for proxies for the given body.
     bool RegisterForProxies(Body* body);
 
+    /// @brief Creates a fixture with the given parameters.
     Fixture* CreateFixture(Body& body, std::shared_ptr<const Shape> shape,
                            const FixtureDef& def = GetDefaultFixtureDef(),
                            bool resetMassData = true);
@@ -319,6 +326,7 @@ public:
     /// @note This sets things up so that pairs may be created for potentially new contacts.
     bool TouchProxies(Fixture& fixture) noexcept;
     
+    /// @brief Sets new fixtures flag.
     void SetNewFixtures() noexcept;
 
 private:
@@ -669,6 +677,7 @@ public:
     using std::logic_error::logic_error;
 };
 
+/// @brief World ray cast opcode enumeration.
 enum class World::RayCastOpcode
 {
     /// @brief End the ray-cast search for fixtures.
@@ -909,6 +918,7 @@ inline ContactCounter GetContactCount(const World& world) noexcept
     return static_cast<ContactCounter>(world.GetContacts().size());
 }
 
+/// @brief Gets the touching count for the given world.
 ContactCounter GetTouchingCount(const World& world) noexcept;
 
 /// @brief Steps the world ahead by a given time amount.
@@ -962,6 +972,7 @@ BodyCounter Awaken(World& world) noexcept;
 /// @details Manually clear the force buffer on all bodies.
 void ClearForces(World& world) noexcept;
 
+/// @brief Determines whether the given contact is "active".
 bool IsActive(const Contact& contact) noexcept;
 
 } // namespace playrho
