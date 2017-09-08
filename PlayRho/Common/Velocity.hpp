@@ -35,22 +35,26 @@ namespace playrho
         AngularVelocity angular; ///< Angular velocity.
     };
     
+    /// @brief Determines if the given value is valid.
     template <>
     constexpr inline bool IsValid(const Velocity& value) noexcept
     {
         return IsValid(value.linear) && IsValid(value.angular);
     }
     
+    /// @brief Equality operator.
     constexpr inline bool operator==(const Velocity& lhs, const Velocity& rhs)
     {
         return (lhs.linear == rhs.linear) && (lhs.angular == rhs.angular);
     }
     
+    /// @brief Inequality operator.
     constexpr inline bool operator!=(const Velocity& lhs, const Velocity& rhs)
     {
         return (lhs.linear != rhs.linear) || (lhs.angular != rhs.angular);
     }
     
+    /// @brief Multiplication assignment operator.
     constexpr inline Velocity& operator*= (Velocity& lhs, const Real rhs)
     {
         lhs.linear *= rhs;
@@ -58,6 +62,7 @@ namespace playrho
         return lhs;
     }
     
+    /// @brief Division assignment operator.
     constexpr inline Velocity& operator/= (Velocity& lhs, const Real rhs)
     {
         lhs.linear /= rhs;
@@ -65,6 +70,7 @@ namespace playrho
         return lhs;
     }
     
+    /// @brief Addition assignment operator.
     constexpr inline Velocity& operator+= (Velocity& lhs, const Velocity& rhs)
     {
         lhs.linear += rhs.linear;
@@ -72,11 +78,13 @@ namespace playrho
         return lhs;
     }
     
+    /// @brief Addition operator.
     constexpr inline Velocity operator+ (const Velocity& lhs, const Velocity& rhs)
     {
         return Velocity{lhs.linear + rhs.linear, lhs.angular + rhs.angular};
     }
     
+    /// @brief Subtraction assignment operator.
     constexpr inline Velocity& operator-= (Velocity& lhs, const Velocity& rhs)
     {
         lhs.linear -= rhs.linear;
@@ -84,31 +92,37 @@ namespace playrho
         return lhs;
     }
     
+    /// @brief Subtraction operator.
     constexpr inline Velocity operator- (const Velocity& lhs, const Velocity& rhs)
     {
         return Velocity{lhs.linear - rhs.linear, lhs.angular - rhs.angular};
     }
     
+    /// @brief Negation operator.
     constexpr inline Velocity operator- (const Velocity& value)
     {
         return Velocity{-value.linear, -value.angular};
     }
     
+    /// @brief Positive operator.
     constexpr inline Velocity operator+ (const Velocity& value)
     {
         return value;
     }
     
+    /// @brief Multiplication operator.
     constexpr inline Velocity operator* (const Velocity& lhs, const Real rhs)
     {
         return Velocity{lhs.linear * rhs, lhs.angular * rhs};
     }
     
+    /// @brief Multiplication operator.
     constexpr inline Velocity operator* (const Real lhs, const Velocity& rhs)
     {
         return Velocity{rhs.linear * lhs, rhs.angular * lhs};
     }
     
+    /// @brief Division operator.
     constexpr inline Velocity operator/ (const Velocity& lhs, const Real rhs)
     {
         /*

@@ -37,32 +37,38 @@ namespace playrho
         Angle angular; ///< Angular position.
     };
     
+    /// @brief Determines if the given value is valid.
     template <>
     constexpr inline bool IsValid(const Position& value) noexcept
     {
         return IsValid(value.linear) && IsValid(value.angular);
     }
     
+    /// @brief Equality operator.
     constexpr inline bool operator==(const Position& lhs, const Position& rhs)
     {
         return (lhs.linear == rhs.linear) && (lhs.angular == rhs.angular);
     }
     
+    /// @brief Inequality operator.
     constexpr inline bool operator!=(const Position& lhs, const Position& rhs)
     {
         return (lhs.linear != rhs.linear) || (lhs.angular != rhs.angular);
     }
     
+    /// @brief Negation operator.
     constexpr inline Position operator- (const Position& value)
     {
         return Position{-value.linear, -value.angular};
     }
     
+    /// @brief Positive operator.
     constexpr inline Position operator+ (const Position& value)
     {
         return value;
     }
     
+    /// @brief Addition assignment operator.
     constexpr inline Position& operator+= (Position& lhs, const Position& rhs)
     {
         lhs.linear += rhs.linear;
@@ -70,11 +76,13 @@ namespace playrho
         return lhs;
     }
     
+    /// @brief Addition operator.
     constexpr inline Position operator+ (const Position& lhs, const Position& rhs)
     {
         return Position{lhs.linear + rhs.linear, lhs.angular + rhs.angular};
     }
     
+    /// @brief Subtraction assignment operator.
     constexpr inline Position& operator-= (Position& lhs, const Position& rhs)
     {
         lhs.linear -= rhs.linear;
@@ -82,16 +90,19 @@ namespace playrho
         return lhs;
     }
     
+    /// @brief Subtraction operator.
     constexpr inline Position operator- (const Position& lhs, const Position& rhs)
     {
         return Position{lhs.linear - rhs.linear, lhs.angular - rhs.angular};
     }
     
+    /// @brief Multiplication operator.
     constexpr inline Position operator* (const Position& pos, const Real scalar)
     {
         return Position{pos.linear * scalar, pos.angular * scalar};
     }
     
+    /// @brief Multiplication operator.
     constexpr inline Position operator* (const Real scalar, const Position& pos)
     {
         return Position{pos.linear * scalar, pos.angular * scalar};

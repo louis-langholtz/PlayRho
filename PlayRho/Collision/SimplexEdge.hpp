@@ -35,11 +35,14 @@ namespace playrho
     class SimplexEdge
     {
     public:
+        
+        /// @brief Index type.
         using index_type = IndexPair::size_type;
         
         /// Default constructor.
         SimplexEdge() = default;
         
+        /// @brief Copy constructor.
         constexpr SimplexEdge(const SimplexEdge& copy) = default;
         
         /// Initializing constructor.
@@ -55,10 +58,13 @@ namespace playrho
         /// Gets point B (in world coordinates).
         constexpr auto GetPointB() const noexcept { return m_wB; }
 
+        /// @brief Gets index A.
         constexpr auto GetIndexA() const noexcept { return m_indexPair.a; }
         
+        /// @brief Gets index B.
         constexpr auto GetIndexB() const noexcept { return m_indexPair.b; }
 
+        /// @brief Gets the index pair.
         constexpr auto GetIndexPair() const noexcept { return m_indexPair; }
 
     private:
@@ -79,14 +85,16 @@ namespace playrho
         return sv.GetPointB() - sv.GetPointA();
     }
     
-    constexpr inline bool operator == (const SimplexEdge& lhs, const SimplexEdge& rhs)
+    /// @brief SimplexEdge equality operator.
+    constexpr inline bool operator== (const SimplexEdge& lhs, const SimplexEdge& rhs)
     {
         return (lhs.GetPointA() == rhs.GetPointA())
             && (lhs.GetPointB() == rhs.GetPointB())
             && (lhs.GetIndexPair() == rhs.GetIndexPair());
     }
     
-    constexpr inline bool operator != (const SimplexEdge& lhs, const SimplexEdge& rhs)
+    /// @brief SimplexEdge inequality operator.
+    constexpr inline bool operator!= (const SimplexEdge& lhs, const SimplexEdge& rhs)
     {
         return !(lhs == rhs);
     }

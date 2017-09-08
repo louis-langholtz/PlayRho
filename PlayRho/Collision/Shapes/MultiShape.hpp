@@ -40,8 +40,10 @@ namespace playrho {
         ///
         using VertexCounter = std::remove_const<decltype(MaxShapeVertices)>::type;
         
+        /// @brief Invalid vertex.
         static constexpr auto InvalidVertex = static_cast<VertexCounter>(-1);
         
+        /// @brief Gets the default vertex radius for the MultiShape.
         static constexpr Length GetDefaultVertexRadius() noexcept
         {
             return DefaultLinearSlop * Real{2};
@@ -56,6 +58,7 @@ namespace playrho {
             }
         };
         
+        /// @brief Gets the default configuration for a MultiShape.
         static constexpr Conf GetDefaultConf() noexcept
         {
             return Conf{};
@@ -71,6 +74,7 @@ namespace playrho {
             // Intentionally empty.
         }
         
+        /// @brief Copy constructor.
         MultiShape(const MultiShape&) = default;
         
         /// @brief Gets the number of child primitives.

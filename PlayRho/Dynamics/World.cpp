@@ -82,11 +82,19 @@ using namespace std;
 
 namespace playrho
 {
-
+/// @brief Body pointer alias.
 using BodyPtr = Body*;
+
+/// @brief A body pointer and body constraint pointer pair.
 using BodyConstraintsPair = pair<const Body* const, BodyConstraint*>;
+
+/// @brief Collection of body constraints.
 using BodyConstraints = vector<BodyConstraint>;
+
+/// @brief Collection of position constraints.
 using PositionConstraints = vector<PositionConstraint>;
+
+/// @brief Collection of velocity constraints.
 using VelocityConstraints = vector<VelocityConstraint>;
 
 namespace {

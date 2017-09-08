@@ -39,14 +39,20 @@ struct Velocity;
 struct ConstraintSolverConf;
 class BodyConstraint;
 
+/// @brief A body constraint pointer alias.
 using BodyConstraintPtr = BodyConstraint*;
+
+/// @brief A body pointer and body constraint pointer pair alias.
 using BodyConstraintPair = std::pair<const Body*, BodyConstraintPtr>;
 
 // #define USE_VECTOR_MAP
+
+/// @brief A body constraints map alias.
+using BodyConstraintsMap =
 #ifdef USE_VECTOR_MAP
-using BodyConstraintsMap = std::vector<std::pair<const Body*, BodyConstraintPtr>>;
+    std::vector<std::pair<const Body*, BodyConstraintPtr>>;
 #else
-using BodyConstraintsMap = std::unordered_map<const Body*, BodyConstraint*>;
+    std::unordered_map<const Body*, BodyConstraint*>;
 #endif
 
 /// @brief Base joint class.
@@ -55,6 +61,8 @@ using BodyConstraintsMap = std::unordered_map<const Body*, BodyConstraint*>;
 class Joint
 {
 public:
+    
+    /// @brief Limit state.
     enum LimitState
     {
         e_inactiveLimit,
@@ -63,6 +71,7 @@ public:
         e_equalLimits
     };
 
+    /// @brief Is the given definition okay.
     static bool IsOkay(const JointDef& def) noexcept;
 
     /// @brief Gets the type of the concrete joint.
@@ -103,6 +112,8 @@ public:
     virtual ~Joint() = default;
 
 protected:
+    
+    /// @brief Initializing constructor.
     Joint(const JointDef& def);
 
 private:
@@ -234,15 +245,18 @@ inline void Joint::UnsetIslanded() noexcept
 /// @brief Short-cut function to determine if both bodies are enabled.
 bool IsEnabled(const Joint& j) noexcept;
 
-// @brief Wakes up the joined bodies.
+/// @brief Wakes up the joined bodies.
 void SetAwake(Joint& j) noexcept;
 
+/// @brief Gets the world index of the given joint.
 JointCounter GetWorldIndex(const Joint* joint);
 
 #ifdef PLAYRHO_PROVIDE_VECTOR_AT
+/// @brief Provides referenced access to the identified element of the given container.
 BodyConstraintPtr& At(std::vector<BodyConstraintPair>& container, const Body* key);
 #endif
 
+/// @brief Provides referenced access to the identified element of the given container.
 BodyConstraintPtr& At(std::unordered_map<const Body*, BodyConstraint*>& container,
                       const Body* key);
 

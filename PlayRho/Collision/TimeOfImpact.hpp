@@ -28,7 +28,7 @@ namespace playrho {
     class Shape;
     class DistanceProxy;
 
-    /// Time of impact configuration.
+    /// @brief Time of impact configuration.
     ///
     /// @details These parameters effect time of impact calculations by limiting the definitions
     ///    of time and impact. If total radius is expressed as TR, and target depth as TD, then:
@@ -48,26 +48,43 @@ namespace playrho {
     ///
     struct ToiConf
     {
+        /// @brief Root iteration type.
         using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
+        
+        /// @brief TOI iteration type.
         using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
+
+        /// @brief Distance iteration type.
         using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
 
+        /// @brief Uses the given time max value.
         constexpr ToiConf& UseTimeMax(Real value) noexcept;
+
+        /// @brief Uses the given target depth value.
         constexpr ToiConf& UseTargetDepth(Length value) noexcept;
+        
+        /// @brief Uses the given tolerance value.
         constexpr ToiConf& UseTolerance(Length value) noexcept;
+        
+        /// @brief Uses the given max root iterations value.
         constexpr ToiConf& UseMaxRootIters(root_iter_type value) noexcept;
+        
+        /// @brief Uses the given max TOI iterations value.
         constexpr ToiConf& UseMaxToiIters(toi_iter_type value) noexcept;
+        
+        /// @brief Uses the given max distance iterations value.
         constexpr ToiConf& UseMaxDistIters(dist_iter_type value) noexcept;
 
+        /// @brief T-Max.
         Real tMax = 1;
         
-        /// Targetted depth of impact.
+        /// @brief Targetted depth of impact.
         /// @note Value must be less than twice the minimum vertex radius of any shape.
         Length targetDepth = DefaultLinearSlop * Real{3};
 
         Length tolerance = DefaultLinearSlop / Real{4}; ///< Tolerance.
         
-        /// Maximum number of root finder iterations.
+        /// @brief Maximum number of root finder iterations.
         /// @details This is the maximum number of iterations for calculating the 1D root of
         ///    <code>f(t) - (totalRadius - targetDepth) < tolerance</code>
         /// where <code>f(t)</code> is the distance between the shapes at time <code>t</code>,
@@ -78,9 +95,10 @@ namespace playrho {
         
         toi_iter_type maxToiIters = DefaultMaxToiIters; ///< Max time of impact iterations.
         
-        dist_iter_type maxDistIters = DefaultMaxDistanceIters;
+        dist_iter_type maxDistIters = DefaultMaxDistanceIters; ///< Max distance iterations.
     };
 
+    /// @brief Gets the default time of impact configuration.
     constexpr auto GetDefaultToiConf()
     {
         return ToiConf{};
@@ -122,15 +140,27 @@ namespace playrho {
         return *this;
     }
 
-    /// TimeOfImpact Output data.
+    /// @brief TimeOfImpact Output data.
     class TOIOutput
     {
     public:
+        
+        /// @brief TOI iterations type.
         using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
+
+        /// @brief Distance iterations type.
         using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
+        
+        /// @brief Root iterations type.
         using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
+        
+        /// @brief TOI iterations sum type.
         using toi_sum_type = Wider<toi_iter_type>::type;
+        
+        /// @brief Distance iterations sum type.
         using dist_sum_type = Wider<dist_iter_type>::type;
+        
+        /// @brief Root iterations sum type.
         using root_sum_type = Wider<root_iter_type>::type;
 
         /// @brief Time of impact statistics.
@@ -147,6 +177,7 @@ namespace playrho {
             root_sum_type sum_root_iters = 0; ///< Sum total of root finder iterations.
         };
 
+        /// @brief State.
         enum State: std::uint16_t
         {
             e_unknown,
@@ -158,27 +189,33 @@ namespace playrho {
 
         TOIOutput() = default;
         
+        /// @brief Initializing constructor.
         constexpr TOIOutput(State state, Real time, Stats stats): m_state(state), m_time(time), m_stats(stats)
         {
             assert(time >= 0);
             assert(time <= 1);
         }
 
-        /// Gets the state at time factor.
+        /// @brief Gets the state at time factor.
         State get_state() const noexcept { return m_state; }
 
-        /// Gets time factor at which state occurs.
+        /// @brief Gets time factor at which state occurs.
         /// @return Time factor in range of [0,1] into the future.
         Real get_t() const noexcept { return m_time; }
 
+        /// @brief Gets the TOI iterations.
         toi_iter_type get_toi_iters() const noexcept { return m_stats.toi_iters; }
         
+        /// @brief Gets the sum distance iterations.
         dist_sum_type get_sum_dist_iters() const noexcept { return m_stats.sum_dist_iters; }
         
+        /// @brief Gets the max distance iterations.
         dist_iter_type get_max_dist_iters() const noexcept { return m_stats.max_dist_iters; }
 
+        /// @brief Gets the sum root iterations.
         root_sum_type get_sum_root_iters() const noexcept { return m_stats.sum_root_iters; }
         
+        /// @brief Gets the max root iterations.
         root_iter_type get_max_root_iters() const noexcept { return m_stats.max_root_iters; }
         
     private:
@@ -187,7 +224,8 @@ namespace playrho {
         Stats m_stats;
     };
 
-    /// Gets the time of impact for two disjoint convex sets using the Separating Axis Theorem.
+    /// @brief Gets the time of impact for two disjoint convex sets using the
+    ///    Separating Axis Theorem.
     ///
     /// @details
     /// Computes the upper bound on time before two shapes penetrate too much.

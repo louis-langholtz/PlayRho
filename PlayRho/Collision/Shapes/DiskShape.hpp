@@ -37,6 +37,7 @@ class DiskShape : public Shape
 {
 public:
     
+    /// @brief Gets the default radius.
     static constexpr Length GetDefaultRadius() noexcept
     {
         return DefaultLinearSlop * Real{2};
@@ -59,6 +60,7 @@ public:
         Length2D location = Length2D{};
     };
 
+    /// @brief Gets the default configuration.
     static constexpr Conf GetDefaultConf() noexcept;
 
     /// Initializing constructor.
@@ -68,15 +70,18 @@ public:
         // Intentionally empty.
     }
 
+    /// @brief Initializing constructor.
     explicit DiskShape(const Length radius, const Conf& conf = GetDefaultConf()) noexcept:
         Shape{conf}, m_location{conf.location}
     {
         SetVertexRadius(radius);
     }
 
+    /// @brief Copy constructor.
     DiskShape(const DiskShape&) = default;
 
-    DiskShape& operator=(const DiskShape& other) = default;
+    /// @brief Assignment operator.
+    DiskShape& operator= (const DiskShape& other) = default;
     
     /// Gets the number of child primitives.
     /// @return Positive non-zero count.
@@ -91,12 +96,14 @@ public:
     /// @return Mass data for this shape.
     MassData GetMassData() const noexcept override;
     
+    /// @brief Accepts the given visitor.
     void Accept(Visitor& visitor) const override;
 
     /// Gets the "radius" of the shape.
     /// @return Non-negative distance.
     Length GetRadius() const noexcept { return GetVertexRadius(); }
     
+    /// @brief Sets the radius to the given value.
     void SetRadius(Length radius) noexcept
     {
         SetVertexRadius(radius);
@@ -108,6 +115,7 @@ public:
     /// @sa SetPosition.
     Length2D GetLocation() const noexcept { return m_location; }
     
+    /// @brief Sets the location to the given value.
     void SetLocation(const Length2D value) noexcept { m_location = value; }
 
 private:

@@ -31,24 +31,30 @@ namespace playrho
     class Range
     {
     public:
+        
+        /// @brief Iterator type.
         using iterator_type = IT;
 
+        /// @brief Initializing constructor.
         constexpr Range(iterator_type iter_begin, iterator_type iter_end) noexcept:
         	m_begin{iter_begin}, m_end{iter_end}
         {
             // Intentionally empty.
         }
 
+        /// @brief Gets the "begin" index value.
         iterator_type begin() const noexcept
         {
             return m_begin;
         }
 
+        /// @brief Gets the "end" index value.
         iterator_type end() const noexcept
         {
             return m_end;
         }
 
+        /// @brief Whether this range is empty.
         bool empty() const noexcept
         {
             return m_begin == m_end;
@@ -64,8 +70,10 @@ namespace playrho
     class SizedRange: public Range<IT>
     {
     public:
+        /// @brief Size type.
         using size_type = std::size_t;
 
+        /// @brief Initializing constructor.
         constexpr SizedRange(typename Range<IT>::iterator_type iter_begin,
                              typename Range<IT>::iterator_type iter_end,
                              size_type size) noexcept:
@@ -74,13 +82,14 @@ namespace playrho
             // Intentionally empty.
         }
 
+        /// @brief Gets the size of this range.
         size_type size() const noexcept
         {
             return m_size;
         }
 
     private:
-        size_type m_size;
+        size_type m_size; ///< Size in number of elements in the range.
     };
 
 }

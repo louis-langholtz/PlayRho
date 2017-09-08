@@ -90,6 +90,8 @@ bool Joint::IsOkay(const JointDef& def) noexcept
     return true;
 }
 
+// Free functions...
+
 bool IsEnabled(const Joint& j) noexcept
 {
     const auto bA = j.GetBodyA();
@@ -110,8 +112,6 @@ void SetAwake(Joint& j) noexcept
         bB->SetAwake();
     }
 }
-
-// Free functions...
 
 JointCounter GetWorldIndex(const Joint* joint)
 {

@@ -34,20 +34,24 @@ namespace playrho
         /// @details Must be big enough to hold max posible count of vertices.
         using size_type = std::remove_const<decltype(MaxShapeVertices)>::type;
         
+        /// @brief Invalid index.
         static constexpr size_type InvalidIndex = static_cast<size_type>(-1);
         
         size_type a; ///< Index of vertex from shape A.
         size_type b; ///< Index of vertex from shape B.
     };
     
+    /// @brief Invalid index pair value.
     constexpr auto InvalidIndexPair = IndexPair{IndexPair::InvalidIndex, IndexPair::InvalidIndex};
     
-    constexpr inline bool operator == (IndexPair lhs, IndexPair rhs)
+    /// @brief Determines whether the two given index pairs are equal.
+    constexpr inline bool operator== (IndexPair lhs, IndexPair rhs)
     {
         return (lhs.a == rhs.a) && (lhs.b == rhs.b);
     }
     
-    constexpr inline bool operator != (IndexPair lhs, IndexPair rhs)
+    /// @brief Determines whether the two given index pairs are not equal.
+    constexpr inline bool operator!= (IndexPair lhs, IndexPair rhs)
     {
         return (lhs.a != rhs.a) || (lhs.b != rhs.b);
     }
@@ -58,6 +62,7 @@ namespace playrho
     
     static_assert(MaxSimplexEdges == 3, "Invalid assumption about size of MaxSimplexEdges");
 
+    /// @brief Gets the number of valid indices in the given collection of index pairs.
     constexpr inline std::size_t GetNumIndices(IndexPair3 pairs) noexcept
     {
         return std::size_t{3}

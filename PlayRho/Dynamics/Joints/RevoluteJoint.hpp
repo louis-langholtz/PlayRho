@@ -41,6 +41,8 @@ namespace playrho {
 class RevoluteJoint : public Joint
 {
 public:
+    
+    /// @brief Initializing constructor.
     RevoluteJoint(const RevoluteJointDef& def);
 
     Length2D GetAnchorA() const override;
@@ -85,6 +87,7 @@ public:
     /// Set the maximum motor torque.
     void SetMaxMotorTorque(Torque torque);
 
+    /// @brief Gets the max motor torque.
     Torque GetMaxMotorTorque() const noexcept { return m_maxMotorTorque; }
 
     /// Get the linear reaction.

@@ -31,25 +31,30 @@ namespace playrho {
     /// See http://en.wikipedia.org/wiki/Software_versioning
     struct Version
     {
+        /// @brief Revision number type.
         using revnum_type = std::int32_t;
         
-        revnum_type major;        ///< significant changes
-        revnum_type minor;        ///< incremental changes
-        revnum_type revision;        ///< bug fixes
+        revnum_type major; ///< significant changes
+        revnum_type minor; ///< incremental changes
+        revnum_type revision; ///< bug fixes
     };
     
+    /// @brief Equality operator.
     constexpr inline bool operator== (Version lhs, Version rhs)
     {
         return lhs.major == rhs.major && lhs.minor == rhs.minor && lhs.revision == rhs.revision;
     }
     
+    /// @brief Inequality operator.
     constexpr inline bool operator!= (Version lhs, Version rhs)
     {
         return !(lhs == rhs);
     }
     
+    /// @brief Gets the version information of the library.
     Version GetVersion() noexcept;
     
+    /// @brief Gets the build details of the library.
     std::string GetBuildDetails() noexcept;
 
 } // namepsace playrho

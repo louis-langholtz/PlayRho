@@ -31,11 +31,12 @@ namespace playrho {
     /// @brief Solution for position constraint.
     struct PositionSolution
     {
-        Position pos_a;
-        Position pos_b;
-        Length min_separation;
+        Position pos_a; ///< Position A.
+        Position pos_b; ///< Position B.
+        Length min_separation; ///< Min separation.
     };
 
+    /// @brief Addition operator.
     inline PositionSolution operator+ (PositionSolution lhs, PositionSolution rhs)
     {
         return PositionSolution{
@@ -45,6 +46,7 @@ namespace playrho {
         };
     }
 
+    /// @brief Subtraction operator.
     inline PositionSolution operator- (PositionSolution lhs, PositionSolution rhs)
     {
         return PositionSolution{
@@ -60,14 +62,19 @@ namespace playrho {
     /// @sa SolvePositionConstraint.
     struct ConstraintSolverConf
     {
+        /// @brief Uses the given resolution rate.
         ConstraintSolverConf& UseResolutionRate(Real value) noexcept;
 
+        /// @brief Uses the given linear slop.
         ConstraintSolverConf& UseLinearSlop(Length value) noexcept;
         
+        /// @brief Uses the given angular slop.
         ConstraintSolverConf& UseAngularSlop(Angle value) noexcept;
 
+        /// @brief Uses the given max linear correction.
         ConstraintSolverConf& UseMaxLinearCorrection(Length value) noexcept;
 
+        /// @brief Uses the given max angular correction.
         ConstraintSolverConf& UseMaxAngularCorrection(Angle value) noexcept;
 
         /// Resolution rate.
@@ -132,11 +139,13 @@ namespace playrho {
         return *this;
     }
 
+    /// @brief Gets the default position solver configuration.
     inline ConstraintSolverConf GetDefaultPositionSolverConf()
     {
         return ConstraintSolverConf{}.UseResolutionRate(Real(0.2));
     }
     
+    /// @brief Gets the default TOI position solver configuration.
     inline ConstraintSolverConf GetDefaultToiPositionSolverConf()
     {
         // For solving TOI events, use a faster/higher resolution rate than normally used.

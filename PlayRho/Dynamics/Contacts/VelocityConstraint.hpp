@@ -41,17 +41,22 @@ namespace playrho {
     class VelocityConstraint
     {
     public:
+        
+        /// @brief Size type.
         using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
+
+        /// @brief Index type.
         using index_type = std::size_t;
         
         /// @brief Configuration data for velocity constraints.
         struct Conf
         {
-            Real dtRatio = Real(1);
-            LinearVelocity velocityThreshold = DefaultVelocityThreshold;
-            bool blockSolve = true;
+            Real dtRatio = Real(1); ///< Delta time ratio.
+            LinearVelocity velocityThreshold = DefaultVelocityThreshold; ///< Velocity threshold.
+            bool blockSolve = true; ///< Whether to block solve.
         };
         
+        /// @brief Gets the default configuration for a VelocityConstraint.
         static constexpr Conf GetDefaultConf() noexcept
         {
             return Conf{};
@@ -63,10 +68,13 @@ namespace playrho {
         /// an invalid normal, invalid friction, invalid restitution, an invalid tangent speed.
         VelocityConstraint() = default;
         
+        /// @brief Copy constructor.
         VelocityConstraint(const VelocityConstraint& copy) = default;
         
+        /// @brief Assignment operator.
         VelocityConstraint& operator= (const VelocityConstraint& copy) = default;
         
+        /// @brief Initializing constructor.
         VelocityConstraint(Real friction, Real restitution, LinearVelocity tangentSpeed,
                            const WorldManifold& worldManifold,
                            BodyConstraint& bA,
@@ -79,8 +87,10 @@ namespace playrho {
         ///   otherwise.
         UnitVec2 GetNormal() const noexcept { return m_normal; }
         
+        /// @brief Gets the tangent.
         UnitVec2 GetTangent() const noexcept { return GetFwdPerpendicular(m_normal); }
         
+        /// @brief Gets the inverse mass.
         InvMass GetInvMass() const noexcept { return m_invMass; }
         
         /// Gets the count of points added to this object.
@@ -108,8 +118,10 @@ namespace playrho {
         /// Gets the tangent speed of the associated contact.
         LinearVelocity GetTangentSpeed() const noexcept { return m_tangentSpeed; }
         
+        /// @brief Gets body A.
         BodyConstraint* GetBodyA() const noexcept { return m_bodyA; }
         
+        /// @brief Gets body B.
         BodyConstraint* GetBodyB() const noexcept { return m_bodyB; }
         
         /// Gets the normal impulse at the given point.
@@ -159,8 +171,10 @@ namespace playrho {
         /// @return Previously set value or an invalid value.
         Length2D GetPointRelPosB(size_type index) const noexcept;
         
+        /// @brief Sets the normal impulse at the given point.
         void SetNormalImpulseAtPoint(size_type index, Momentum value);
         
+        /// @brief Sets the tangent impulse at the given point.
         void SetTangentImpulseAtPoint(size_type index, Momentum value);
         
         /// @brief Velocity constraint point.
@@ -302,43 +316,9 @@ namespace playrho {
         return GetPointAt(index).relB;
     }
     
-    /// Gets the normal of the velocity constraint contact in world coordinates.
-    /// @note This value is set via the velocity constraint's <code>SetNormal</code> method.
-    /// @return Contact normal (in world coordinates) if previously set, an invalid value
-    ///   otherwise.
-    inline UnitVec2 GetNormal(const VelocityConstraint& vc) noexcept
-    {
-        return vc.GetNormal();
-    }
-    
-    inline UnitVec2 GetTangent(const VelocityConstraint& vc) noexcept
-    {
-        return vc.GetTangent();
-    }
-    
-    inline InvMass GetInvMass(const VelocityConstraint& vc) noexcept
-    {
-        return vc.GetBodyA()->GetInvMass() + vc.GetBodyB()->GetInvMass();
-    }
-    
-    inline Length2D GetPointRelPosA(const VelocityConstraint& vc, VelocityConstraint::size_type index)
-    {
-        return vc.GetPointRelPosA(index);
-    }
-    
-    inline Length2D GetPointRelPosB(const VelocityConstraint& vc, VelocityConstraint::size_type index)
-    {
-        return vc.GetPointRelPosB(index);
-    }
-    
     inline LinearVelocity VelocityConstraint::GetVelocityBiasAtPoint(size_type index) const noexcept
     {
         return GetPointAt(index).velocityBias;
-    }
-    
-    inline LinearVelocity GetVelocityBiasAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
-    {
-        return vc.GetVelocityBiasAtPoint(index);
     }
     
     inline Mass VelocityConstraint::GetNormalMassAtPoint(VelocityConstraint::size_type index) const noexcept
@@ -351,16 +331,6 @@ namespace playrho {
         return GetPointAt(index).tangentMass;
     }
     
-    inline Mass GetNormalMassAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
-    {
-        return vc.GetNormalMassAtPoint(index);
-    }
-    
-    inline Mass GetTangentMassAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
-    {
-        return vc.GetTangentMassAtPoint(index);
-    }
-    
     inline Momentum VelocityConstraint::GetNormalImpulseAtPoint(VelocityConstraint::size_type index) const noexcept
     {
         return GetPointAt(index).normalImpulse;
@@ -371,26 +341,6 @@ namespace playrho {
         return GetPointAt(index).tangentImpulse;
     }
     
-    inline Momentum GetNormalImpulseAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
-    {
-        return vc.GetNormalImpulseAtPoint(index);
-    }
-    
-    inline Momentum GetTangentImpulseAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
-    {
-        return vc.GetTangentImpulseAtPoint(index);
-    }
-    
-    inline Momentum2D GetNormalImpulses(const VelocityConstraint& vc)
-    {
-        return Momentum2D{GetNormalImpulseAtPoint(vc, 0), GetNormalImpulseAtPoint(vc, 1)};
-    }
-    
-    inline Momentum2D GetTangentImpulses(const VelocityConstraint& vc)
-    {
-        return Momentum2D{GetTangentImpulseAtPoint(vc, 0), GetTangentImpulseAtPoint(vc, 1)};
-    }
-    
     inline void VelocityConstraint::SetNormalImpulseAtPoint(VelocityConstraint::size_type index, Momentum value)
     {
         PointAt(index).normalImpulse = value;
@@ -398,25 +348,112 @@ namespace playrho {
     
     inline void VelocityConstraint::SetTangentImpulseAtPoint(VelocityConstraint::size_type index, Momentum value)
     {
-        PointAt(index).tangentImpulse = value;        
+        PointAt(index).tangentImpulse = value;
+    }
+
+    // Free functions...
+    
+    /// Gets the normal of the velocity constraint contact in world coordinates.
+    /// @note This value is set via the velocity constraint's <code>SetNormal</code> method.
+    /// @return Contact normal (in world coordinates) if previously set, an invalid value
+    ///   otherwise.
+    inline UnitVec2 GetNormal(const VelocityConstraint& vc) noexcept
+    {
+        return vc.GetNormal();
     }
     
+    /// @brief Gets the tangent from the given velocity constraint data.
+    inline UnitVec2 GetTangent(const VelocityConstraint& vc) noexcept
+    {
+        return vc.GetTangent();
+    }
+    
+    /// @brief Gets the inverse mass from the given velocity constraint data.
+    inline InvMass GetInvMass(const VelocityConstraint& vc) noexcept
+    {
+        return vc.GetBodyA()->GetInvMass() + vc.GetBodyB()->GetInvMass();
+    }
+    
+    /// @brief Gets the point relative position A data.
+    inline Length2D GetPointRelPosA(const VelocityConstraint& vc,
+                                    VelocityConstraint::size_type index)
+    {
+        return vc.GetPointRelPosA(index);
+    }
+    
+    /// @brief Gets the point relative position B data.
+    inline Length2D GetPointRelPosB(const VelocityConstraint& vc,
+                                    VelocityConstraint::size_type index)
+    {
+        return vc.GetPointRelPosB(index);
+    }
+    
+    /// @brief Gets the velocity bias at the given point from the given velocity constraint.
+    inline LinearVelocity GetVelocityBiasAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
+    {
+        return vc.GetVelocityBiasAtPoint(index);
+    }
+    
+    /// @brief Gets the normal mass at the given point from the given velocity constraint.
+    inline Mass GetNormalMassAtPoint(const VelocityConstraint& vc,
+                                     VelocityConstraint::size_type index)
+    {
+        return vc.GetNormalMassAtPoint(index);
+    }
+    
+    /// @brief Gets the tangent mass at the given point from the given velocity constraint.
+    inline Mass GetTangentMassAtPoint(const VelocityConstraint& vc,
+                                      VelocityConstraint::size_type index)
+    {
+        return vc.GetTangentMassAtPoint(index);
+    }
+    
+    /// @brief Gets the normal impulse at the given point from the given velocity constraint.
+    inline Momentum GetNormalImpulseAtPoint(const VelocityConstraint& vc,
+                                            VelocityConstraint::size_type index)
+    {
+        return vc.GetNormalImpulseAtPoint(index);
+    }
+    
+    /// @brief Gets the tangent impulse at the given point from the given velocity constraint.
+    inline Momentum GetTangentImpulseAtPoint(const VelocityConstraint& vc,
+                                             VelocityConstraint::size_type index)
+    {
+        return vc.GetTangentImpulseAtPoint(index);
+    }
+    
+    /// @brief Gets the normal impulses of the given velocity constraint.
+    inline Momentum2D GetNormalImpulses(const VelocityConstraint& vc)
+    {
+        return Momentum2D{GetNormalImpulseAtPoint(vc, 0), GetNormalImpulseAtPoint(vc, 1)};
+    }
+    
+    /// @brief Gets the tangent impulses of the given velocity constraint.
+    inline Momentum2D GetTangentImpulses(const VelocityConstraint& vc)
+    {
+        return Momentum2D{GetTangentImpulseAtPoint(vc, 0), GetTangentImpulseAtPoint(vc, 1)};
+    }
+    
+    /// @brief Sets the normal impulse at the given point of the given velocity constraint.
     inline void SetNormalImpulseAtPoint(VelocityConstraint& vc, VelocityConstraint::size_type index, Momentum value)
     {
         vc.SetNormalImpulseAtPoint(index, value);
     }
     
+    /// @brief Sets the tangent impulse at the given point of the given velocity constraint.
     inline void SetTangentImpulseAtPoint(VelocityConstraint& vc, VelocityConstraint::size_type index, Momentum value)
     {
         vc.SetTangentImpulseAtPoint(index, value);        
     }
     
+    /// @brief Sets the normal impulses of the given velocity constraint.
     inline void SetNormalImpulses(VelocityConstraint& vc, const Momentum2D impulses)
     {
         SetNormalImpulseAtPoint(vc, 0, impulses[0]);
         SetNormalImpulseAtPoint(vc, 1, impulses[1]);
     }
     
+    /// @brief Sets the tangent impulses of the given velocity constraint.
     inline void SetTangentImpulses(VelocityConstraint& vc, const Momentum2D impulses)
     {
         SetTangentImpulseAtPoint(vc, 0, impulses[0]);

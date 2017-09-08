@@ -30,10 +30,11 @@ namespace playrho
     /// @brief Movement configuration.
     struct MovementConf
     {
-        Length maxTranslation;
-        Angle maxRotation;
+        Length maxTranslation; ///< Max translation.
+        Angle maxRotation; ///< Max rotation.
     };
     
+    /// @brief Gets the movement configuration from the given value.
     MovementConf GetMovementConf(const StepConf& conf) noexcept;
 
 } // namespace playrho

@@ -46,6 +46,7 @@ namespace {
                                           const DistanceProxy& proxyA, const Transformation& xfA,
                                           const DistanceProxy& proxyB, const Transformation& xfB)
     {
+        /// @brief Size type.
         using size_type = std::remove_const<decltype(MaxSimplexEdges)>::type;
 
         Simplex::Edges simplexEdges;

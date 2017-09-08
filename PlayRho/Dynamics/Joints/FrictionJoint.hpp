@@ -34,6 +34,8 @@ namespace playrho {
 class FrictionJoint : public Joint
 {
 public:
+    
+    /// @brief Initializing constructor.
     FrictionJoint(const FrictionJointDef& def);
 
     Length2D GetAnchorA() const override;

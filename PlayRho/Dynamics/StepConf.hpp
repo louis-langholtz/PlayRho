@@ -126,6 +126,7 @@ public:
     /// @sa regPositionIterations.
     Length regMinSeparation = -DefaultLinearSlop * Real{3};
     
+    /// @brief Regular-phase min momentum.
     Momentum regMinMomentum = DefaultRegMinMomentum;
 
     /// @brief Time of impact resolution rate.
@@ -146,6 +147,7 @@ public:
     /// @sa toiPositionIterations.
     Length toiMinSeparation = -DefaultLinearSlop * Real(1.5f);
 
+    /// @brief TOI-phase min momentum.
     Momentum toiMinMomentum = DefaultToiMinMomentum;
 
     /// @brief Target depth.
@@ -320,11 +322,13 @@ private:
     Frequency invTime = DefaultStepFrequency;
 };
 
+/// @brief Gets the maximum regular linear correction from the given value.
 inline Length GetMaxRegLinearCorrection(const StepConf& conf) noexcept
 {
     return conf.maxLinearCorrection * static_cast<Real>(conf.regPositionIterations);
 }
 
+/// @brief Determines whether the maximum translation is within tolerance.
 bool IsMaxTranslationWithinTolerance(const StepConf& conf) noexcept;
 
 } // namespace playrho

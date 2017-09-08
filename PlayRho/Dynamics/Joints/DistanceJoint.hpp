@@ -35,11 +35,15 @@ namespace playrho {
 class DistanceJoint : public Joint
 {
 public:
+    
+    /// @brief Is the given definition okay.
     static bool IsOkay(const DistanceJointDef& data) noexcept;
 
+    /// @brief Initializing constructor.
     DistanceJoint(const DistanceJointDef& data);
 
     Length2D GetAnchorA() const override;
+
     Length2D GetAnchorB() const override;
 
     /// @brief Get the linear reaction.
@@ -55,9 +59,11 @@ public:
     /// @brief Gets the local anchor point relative to bodyB's origin.
     Length2D GetLocalAnchorB() const noexcept { return m_localAnchorB; }
 
-    /// Set/get the natural length.
-    /// Manipulating the length can lead to non-physical behavior when the frequency is zero.
+    /// @brief Sets the natural length.
+    /// @note Manipulating the length can lead to non-physical behavior when the frequency is zero.
     void SetLength(Length length) noexcept;
+    
+    /// @brief Gets the length.
     Length GetLength() const noexcept;
 
     /// @brief Sets frequency.
@@ -66,8 +72,10 @@ public:
     /// @brief Gets the frequency.
     NonNegative<Frequency> GetFrequency() const noexcept;
 
-    /// Set/get damping ratio.
+    /// @brief Sets the damping ratio.
     void SetDampingRatio(Real ratio) noexcept;
+
+    /// @brief Gets damping ratio.
     Real GetDampingRatio() const noexcept;
 
 private:

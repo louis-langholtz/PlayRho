@@ -139,8 +139,10 @@ public:
     /// @note This will _not_ change the restitution of existing contacts.
     void SetRestitution(Real restitution) noexcept;
 
+    /// @brief Gets the proxy count.
     ChildCounter GetProxyCount() const noexcept;
 
+    /// @brief Gets the proxy for the given index.
     const FixtureProxy* GetProxy(ChildCounter index) const noexcept;
 
 private:

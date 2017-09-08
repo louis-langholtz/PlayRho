@@ -35,10 +35,12 @@ class Body;
 /// @details This requires a world target point, tuning parameters, and the time step.
 struct MouseJointDef : public JointBuilder<MouseJointDef>
 {
+    /// @brief Super type.
     using super = JointBuilder<MouseJointDef>;
     
     constexpr MouseJointDef() noexcept: super{JointType::Mouse} {}
 
+    /// @brief Initializing constructor.
     constexpr MouseJointDef(NonNull<Body*> b) noexcept: super{super{JointType::Mouse}.UseBodyB(b)}
     {
         // Intentionally empty.
@@ -101,6 +103,7 @@ constexpr MouseJointDef& MouseJointDef::UseDampingRatio(NonNegative<Real> v) noe
     return *this;
 }
 
+/// @brief Gets the definition data for the given joint.
 MouseJointDef GetMouseJointDef(const MouseJoint& joint) noexcept;
 
 } // namespace playrho

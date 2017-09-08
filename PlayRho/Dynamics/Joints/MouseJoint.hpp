@@ -42,8 +42,11 @@ namespace playrho {
 class MouseJoint : public Joint
 {
 public:
+
+    /// @brief Is the given definition okay.
     static bool IsOkay(const MouseJointDef& def) noexcept;
 
+    /// @brief Initializing constructor.
     MouseJoint(const MouseJointDef& def);
 
     Length2D GetAnchorA() const override;
@@ -54,22 +57,31 @@ public:
 
     AngularMomentum GetAngularReaction() const override;
 
+    /// @brief Gets the local anchor B.
     Length2D GetLocalAnchorB() const noexcept;
 
-    /// Use this to update the target point.
+    /// @brief Sets the target point.
     void SetTarget(const Length2D target) noexcept;
+
+    /// @brief Gets the target point.
     Length2D GetTarget() const noexcept;
 
-    /// Set/get the maximum force in Newtons.
+    /// @brief Sets the maximum force.
     void SetMaxForce(NonNegative<Force> force) noexcept;
+
+    /// @brief Gets the maximum force.
     NonNegative<Force> GetMaxForce() const noexcept;
 
-    /// Set/get the frequency in Hertz.
+    /// @brief Sets the frequency.
     void SetFrequency(NonNegative<Frequency> hz) noexcept;
+
+    /// @brief Gets the frequency.
     NonNegative<Frequency> GetFrequency() const noexcept;
 
-    /// Set/get the damping ratio (dimensionless).
+    /// @brief Sets the damping ratio.
     void SetDampingRatio(NonNegative<Real> ratio) noexcept;
+
+    /// @brief Gets the damping ratio.
     NonNegative<Real> GetDampingRatio() const noexcept;
 
     /// Implement Joint::ShiftOrigin

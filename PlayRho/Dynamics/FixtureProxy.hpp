@@ -32,12 +32,16 @@ namespace playrho
     /// @note This data structure is 32-bytes large (on at least one 64-bit platform).
     struct FixtureProxy
     {
+        
+        /// @brief Size type.
         using size_type = std::remove_const<decltype(MaxContacts)>::type;
         
         FixtureProxy() = default;
         
+        /// @brief Copy constructor.
         FixtureProxy(const FixtureProxy& copy) = default;
         
+        /// @brief Initializing constructor.
         FixtureProxy(const AABB bb, size_type pid, Fixture* f, ChildCounter ci):
             aabb{bb}, fixture{f}, proxyId{pid}, childIndex{ci} {}
         

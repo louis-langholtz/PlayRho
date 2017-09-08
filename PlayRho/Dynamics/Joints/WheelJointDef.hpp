@@ -39,6 +39,7 @@ class WheelJoint;
 ///   anchors and a local axis helps when saving and loading a game.
 struct WheelJointDef : public JointBuilder<WheelJointDef>
 {
+    /// @brief Super type.
     using super = JointBuilder<WheelJointDef>;
     
     constexpr WheelJointDef() noexcept: super{JointType::Wheel} {}
@@ -48,14 +49,19 @@ struct WheelJointDef : public JointBuilder<WheelJointDef>
     WheelJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB, const Length2D anchor,
                   const UnitVec2 axis) noexcept;
     
+    /// @brief Uses the given enable motor state value.
     constexpr WheelJointDef& UseEnableMotor(bool v) noexcept;
     
+    /// @brief Uses the given max motor toque value.
     constexpr WheelJointDef& UseMaxMotorTorque(Torque v) noexcept;
     
+    /// @brief Uses the given motor speed value.
     constexpr WheelJointDef& UseMotorSpeed(AngularVelocity v) noexcept;
     
+    /// @brief Uses the given frequency value.
     constexpr WheelJointDef& UseFrequency(Frequency v) noexcept;
     
+    /// @brief Uses the given damping ratio value.
     constexpr WheelJointDef& UseDampingRatio(Real v) noexcept;
     
     /// The local anchor point relative to bodyA's origin.
@@ -113,6 +119,7 @@ constexpr WheelJointDef& WheelJointDef::UseDampingRatio(Real v) noexcept
     return *this;
 }
 
+/// @brief Gets the definition data for the given joint.
 WheelJointDef GetWheelJointDef(const WheelJoint& joint) noexcept;
 
 } // namespace playrho

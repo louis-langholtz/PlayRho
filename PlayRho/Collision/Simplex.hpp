@@ -81,8 +81,10 @@ namespace playrho
         public:
             Cache() = default;
             
+            /// @brief Copy constructor.
             Cache(const Cache& copy) = default;
             
+            /// @brief Initializing constructor.
             constexpr Cache(Real metric, IndexPair3 indices) noexcept;
             
             /// Gets the metric that was set.
@@ -93,10 +95,13 @@ namespace playrho
             /// @return Value previously set.
             Real GetMetric() const noexcept;
             
+            /// @brief Is metric set.
             bool IsMetricSet() const noexcept;
             
+            /// @brief Gets indices.
             constexpr IndexPair3 GetIndices() const noexcept;
             
+            /// @brief Gets the index pair for the given index.
             constexpr IndexPair GetIndexPair(size_type index) const noexcept;
             
         private:
@@ -104,6 +109,7 @@ namespace playrho
             IndexPair3 m_indices{InvalidIndexPair, InvalidIndexPair, InvalidIndexPair}; ///< Indices. @details Collection of index-pairs.
         };
 
+        /// @brief Gets the cache value for the given edges.
         static Cache GetCache(const Simplex::Edges& edges) noexcept;
         
         /// Gets index pairs for the given edges collection.
@@ -119,6 +125,7 @@ namespace playrho
         /// Gets the given simplex's "metric".
         static inline Real CalcMetric(const Edges& simplexEdges);
 
+        /// @brief Gets the Simplex for the given simplex edge.
         static Simplex Get(const SimplexEdge& s0) noexcept;
 
         /// Gets the simplex for the given 2 edges.
@@ -148,12 +155,16 @@ namespace playrho
 
         Simplex() = default;
 
+        /// @brief Gets the edges.
         constexpr Edges GetEdges() const noexcept;
 
+        /// @brief Gets the give indexed simplex edge.
         const SimplexEdge& GetSimplexEdge(size_type index) const noexcept;
 
+        /// @brief Gets the coefficient for the given index.
         constexpr Real GetCoefficient(size_type index) const noexcept;
 
+        /// @brief Gets the size in number of simplex edges that this instance is made up of.
         constexpr size_type GetSize() const noexcept;
 
     private:
@@ -300,6 +311,7 @@ namespace playrho
         return m_simplexEdges.size();
     }
 
+    /// @brief Gets the scaled delta for the given indexed element of the given simplex.
     inline Length2D GetScaledDelta(const Simplex& simplex, Simplex::size_type index)
     {
         return GetPointDelta(simplex.GetSimplexEdge(index)) * simplex.GetCoefficient(index);

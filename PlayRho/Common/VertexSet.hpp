@@ -34,21 +34,27 @@ namespace playrho
     class VertexSet
     {
     public:
+        
+        /// @brief Constant pointer type.
         using const_pointer = const Length2D*;
 
+        /// @brief Gets the default minimum separation squared value.
         static Area GetDefaultMinSeparationSquared()
         {
             return Sqrt(std::numeric_limits<Vec2::value_type>::min()) * SquareMeter;
         }
         
+        /// @brief Initializing constructor.
         VertexSet(Area minSepSquared = GetDefaultMinSeparationSquared()):
             m_minSepSquared{minSepSquared}
         {
             assert(minSepSquared >= Area{0});
         }
 
+        /// @brief Gets the min separation squared.
         Area GetMinSeparationSquared() const noexcept { return m_minSepSquared; }
 
+        /// @brief Adds the given vertex into the set if allowed.
         bool add(Length2D value)
         {
             if (find(value) != end())
@@ -59,15 +65,19 @@ namespace playrho
             return true;
         }
         
+        /// @brief Clear this set.
         void clear() noexcept
         {
             m_elements.clear();
         }
 
+        /// @brief Gets the current size of this set.
         std::size_t size() const noexcept { return m_elements.size(); }
         
+        /// @brief Gets the "begin" iterator value.
         const_pointer begin() const { return m_elements.data(); }
         
+        /// @brief Gets the "end" iterator value.
         const_pointer end() const { return m_elements.data() + m_elements.size(); }
 
         /// Finds contained point whose delta with the given point has a squared length less
@@ -83,6 +93,7 @@ namespace playrho
             });
         }
 
+        /// @brief Indexed access.
         Length2D operator[](std::size_t index) const noexcept
         {
             return m_elements[index];

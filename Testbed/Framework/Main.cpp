@@ -73,6 +73,7 @@ struct UIState
 class Selection
 {
 public:
+    /// @brief Size type.
     using size_type = std::size_t;
     
     Selection(size_type size, size_type selection = 0):
@@ -116,6 +117,7 @@ private:
 class TestSuite
 {
 public:
+    /// @brief Size type.
     using size_type = std::size_t;
     
     TestSuite(Span<const TestEntry> testEntries, size_type index = 0):

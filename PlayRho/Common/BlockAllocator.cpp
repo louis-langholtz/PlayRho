@@ -72,16 +72,16 @@ static constexpr std::uint8_t s_blockSizeLookup[BlockAllocator::MaxBlockSize + 1
 /// @brief Chunk.
 struct BlockAllocator::Chunk
 {
-    using size_type = std::size_t;
+    using size_type = std::size_t; ///< Size type.
 
-    size_type blockSize;
-    Block* blocks;
+    size_type blockSize; ///< Block size.
+    Block* blocks; ///< Pointer to blocks.
 };
 
 /// @brief Block.
 struct BlockAllocator::Block
 {
-    Block* next;
+    Block* next; ///< Next block.
 };
 
 BlockAllocator::BlockAllocator():

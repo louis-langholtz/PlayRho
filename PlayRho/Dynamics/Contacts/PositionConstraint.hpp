@@ -30,10 +30,12 @@ namespace playrho {
     class PositionConstraint
     {
     public:
+        /// @brief Size type.
         using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
         
         PositionConstraint() = default;
         
+        /// @brief Initializing constructor.
         PositionConstraint(const Manifold& m,
                            BodyConstraint& bA, Length rA,
                            BodyConstraint& bB, Length rB):
@@ -47,12 +49,16 @@ namespace playrho {
         
         Manifold manifold; ///< Copy of contact's manifold with 1 or more contact points (60-bytes).
 
+        /// @brief Gets body A.
         BodyConstraint* GetBodyA() const noexcept { return m_bodyA; }
         
+        /// @brief Gets body B.
         BodyConstraint* GetBodyB() const noexcept { return m_bodyB; }
 
+        /// @brief Gets radius A.
         Length GetRadiusA() const noexcept { return m_radiusA; }
         
+        /// @brief Gets radius B.
         Length GetRadiusB() const noexcept { return m_radiusB; }
 
     private:

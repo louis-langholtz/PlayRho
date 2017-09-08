@@ -34,6 +34,8 @@ class FrictionJoint;
 /// @brief Friction joint definition.
 struct FrictionJointDef : public JointBuilder<FrictionJointDef>
 {
+    
+    /// @brief Super type.
     using super = JointBuilder<FrictionJointDef>;
     
     constexpr FrictionJointDef() noexcept: super{JointType::Friction} {}
@@ -43,8 +45,10 @@ struct FrictionJointDef : public JointBuilder<FrictionJointDef>
     ///   anchor and world axis.
     FrictionJointDef(Body* bodyA, Body* bodyB, const Length2D anchor) noexcept;
     
+    /// @brief Uses the given maximum force value.
     constexpr FrictionJointDef& UseMaxForce(NonNegative<Force> v) noexcept;
     
+    /// @brief Uses the given maximum torque value.
     constexpr FrictionJointDef& UseMaxTorque(NonNegative<Torque> v) noexcept;
     
     /// @brief Local anchor point relative to bodyA's origin.
@@ -72,6 +76,7 @@ constexpr FrictionJointDef& FrictionJointDef::UseMaxTorque(NonNegative<Torque> v
     return *this;
 }
 
+/// @brief Gets the definition data for the given joint.
 FrictionJointDef GetFrictionJointDef(const FrictionJoint& joint) noexcept;
 
 } // namespace playrho

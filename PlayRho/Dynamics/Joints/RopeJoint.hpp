@@ -39,6 +39,8 @@ namespace playrho {
 class RopeJoint : public Joint
 {
 public:
+    
+    /// @brief Initializing constructor.
     RopeJoint(const RopeJointDef& data);
 
     Length2D GetAnchorA() const override;
@@ -53,10 +55,13 @@ public:
     /// The local anchor point relative to bodyB's origin.
     Length2D GetLocalAnchorB() const  { return m_localAnchorB; }
 
-    /// Set/Get the maximum length of the rope.
+    /// @brief Sets the maximum length of the rope.
     void SetMaxLength(Length length) { m_maxLength = length; }
+
+    /// @brief Gets the maximum length of the rope.
     Length GetMaxLength() const;
 
+    /// @brief Gets the limit state.
     LimitState GetLimitState() const;
 
 private:

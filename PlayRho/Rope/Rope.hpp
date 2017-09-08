@@ -27,29 +27,20 @@ namespace playrho {
 /// @brief Rope definition.
 struct RopeDef
 {
+
+    /// @brief Size type.
     using size_type = std::size_t;
 
     constexpr RopeDef() = default;
 
-    ///
-    Vec2* vertices = nullptr;
+    Vec2* vertices = nullptr; ///< Vertices.
+    size_type count = 0; ///< Count.
+    Real* masses = nullptr; ///< Masses.
+    Vec2 gravity = Vec2_zero; ///< Gravity.
+    Real damping = Real{1} / Real(10); ///< Damping.
+    Real k2 = Real(9) / Real(10); ///< Stretching stiffness
 
-    ///
-    size_type count = 0;
-
-    ///
-    Real* masses = nullptr;
-
-    ///
-    Vec2 gravity = Vec2_zero;
-
-    ///
-    Real damping = Real{1} / Real(10);
-
-    /// Stretching stiffness
-    Real k2 = Real(9) / Real(10);
-
-    /// Bending stiffness. Values above 0.5 can make the simulation blow up.
+    /// @brief Bending stiffness. Values above 0.5 can make the simulation blow up.
     Real k3 = Real{1} / Real(10);
 };
 
@@ -57,36 +48,39 @@ struct RopeDef
 class Rope
 {
 public:
+
+    /// @brief Size type.
     using size_type = std::size_t;
 
     constexpr Rope() = default;
     ~Rope();
 
-    ///
+    /// @brief Initializes this object.
     void Initialize(const RopeDef* def);
 
-    ///
+    /// @brief Steps this object.
     void Step(Real timeStep, int iterations);
 
-    ///
+    /// @brief Gets the vertex count for this object.
     size_type GetVertexCount() const noexcept
     {
         return m_count;
     }
 
-    ///
+    /// @brief Gets the vertices for this object.
     const Vec2* GetVertices() const noexcept
     {
         return m_ps;
     }
 
+    /// @brief Gets the vertex for this object that's at the given index.
     Vec2 GetVertex(size_type index) const noexcept
     {
         assert(index < m_count);
         return m_ps[index];
     }
 
-    ///
+    /// @brief Sets the angle.
     void SetAngle(Angle angle);
 
 private:

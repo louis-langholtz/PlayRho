@@ -36,6 +36,7 @@ class WeldJoint;
 /// of the anchor points is important for computing the reaction torque.
 struct WeldJointDef : public JointBuilder<WeldJointDef>
 {
+    /// @brief Super type.
     using super = JointBuilder<WeldJointDef>;
     
     constexpr WeldJointDef() noexcept: super{JointType::Weld} {}
@@ -44,8 +45,10 @@ struct WeldJointDef : public JointBuilder<WeldJointDef>
     /// anchor point.
     WeldJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB, const Length2D anchor) noexcept;
     
+    /// @brief Uses the given frequency value.
     constexpr WeldJointDef& UseFrequency(Frequency v) noexcept;
     
+    /// @brief Uses the given damping ratio.
     constexpr WeldJointDef& UseDampingRatio(Real v) noexcept;
     
     /// The local anchor point relative to bodyA's origin.
@@ -79,6 +82,7 @@ constexpr WeldJointDef& WeldJointDef::UseDampingRatio(Real v) noexcept
     return *this;
 }
 
+/// @brief Gets the definition data for the given joint.
 WeldJointDef GetWeldJointDef(const WeldJoint& joint) noexcept;
 
 } // namespace playrho

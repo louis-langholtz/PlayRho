@@ -37,16 +37,20 @@ namespace playrho
     class JointKey
     {
     public:
+        
+        /// @brief Gets the JointKey for the given bodies.
         static constexpr JointKey Get(const Body* bodyA, const Body* bodyB) noexcept
         {
             return (bodyA < bodyB)? JointKey{bodyA, bodyB}: JointKey{bodyB, bodyA};
         }
         
+        /// @brief Gets body 1.
         constexpr const Body* GetBody1() const noexcept
         {
             return m_body1;
         }
         
+        /// @brief Gets body 2.
         constexpr const Body* GetBody2() const
         {
             return m_body2;
@@ -63,8 +67,10 @@ namespace playrho
         const Body* m_body2;
     };
     
+    /// @brief Gets the JointKey for the given joint.
     JointKey GetJointKey(const Joint& joint) noexcept;
 
+    /// @brief Compares the given joint keys.
     constexpr int Compare(const JointKey& lhs, const JointKey& rhs) noexcept
     {
         if (lhs.GetBody1() < rhs.GetBody1())
@@ -86,12 +92,19 @@ namespace playrho
         return 0;
     }
     
+    /// @brief Determines whether the given key is for the given body.
     constexpr bool IsFor(const JointKey key, const Body* body) noexcept
     {
         return body == key.GetBody1() || body == key.GetBody2();
     }
     
-}
+    /// @brief Gets the joint pointer from the given value.
+    inline Joint* GetJointPtr(std::pair<JointKey, Joint*> value)
+    {
+        return value.second;
+    }
+    
+} // namespace playrho
 
 namespace std
 {
@@ -99,6 +112,7 @@ namespace std
     template <>
     struct less<playrho::JointKey>
     {
+        /// @brief Function object operator.
         constexpr bool operator()(const playrho::JointKey& lhs,
                                   const playrho::JointKey& rhs) const
         {
@@ -110,20 +124,14 @@ namespace std
     template <>
     struct equal_to<playrho::JointKey>
     {
+        
+        /// @brief Function object operator.
         constexpr bool operator()( const playrho::JointKey& lhs, const playrho::JointKey& rhs ) const
         {
             return playrho::Compare(lhs, rhs) == 0;
         }
     };
 
-}
-
-namespace playrho
-{
-    inline Joint* GetJointPtr(std::pair<JointKey, Joint*> value)
-    {
-        return value.second;
-    }
 }
 
 #endif /* JointKey_hpp */

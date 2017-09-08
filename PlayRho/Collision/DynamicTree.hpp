@@ -43,8 +43,13 @@ class DynamicTree
 {
 public:
 
+    /// @brief Size type.
     using size_type = std::remove_const<decltype(MaxContacts)>::type;
+
+    /// @brief Query callback type.
     using QueryCallback = std::function<bool(size_type)>;
+    
+    /// @brief For each callback type.
     using ForEachCallback = std::function<void(size_type)>;
 
     /// @brief Ray cast callback function.
@@ -54,6 +59,7 @@ public:
     /// @brief Invalid index value.
     static constexpr size_type InvalidIndex = static_cast<size_type>(-1);
 
+    /// @brief Gets the default initial node capacity.
     static constexpr size_type GetDefaultInitialNodeCapacity() noexcept;
 
     /// @brief Constructing the tree initializes the node pool.
@@ -62,9 +68,11 @@ public:
     /// @brief Destroys the tree, freeing the node pool.
     ~DynamicTree() noexcept;
 
+    /// @brief Copy constructor.
     DynamicTree(const DynamicTree& copy);
 
-    DynamicTree& operator=(const DynamicTree& copy);
+    /// @brief Assignment operator.
+    DynamicTree& operator= (const DynamicTree& copy);
 
     /// @brief Creates a new proxy.
     /// @details Creates a proxy for a tight fitting AABB and a userData pointer.
@@ -88,6 +96,7 @@ public:
     /// @return User data for the specified node.
     void* GetUserData(const size_type index) const noexcept;
 
+    /// @brief Sets the user data for the element at the given index to the given value.
     void SetUserData(const size_type index, void* value) noexcept;
 
     /// @brief Gets the AABB for a proxy.
@@ -99,6 +108,7 @@ public:
     /// @note The callback instance is called for each proxy that overlaps the supplied AABB.
     void Query(const AABB aabb, QueryCallback callback) const;
 
+    /// @brief Calls the given callback for each of the entries overlapping the given AABB.
     void ForEach(const AABB aabb, ForEachCallback callback) const;
 
     /// @brief Ray-cast against the proxies in the tree.
@@ -131,6 +141,7 @@ public:
     /// @return <code>true</code> if valid, <code>false</code> otherwise.
     bool ValidateMetrics(size_type index) const noexcept;
 
+    /// @brief Gets the root index.
     size_type GetRootIndex() const noexcept;
 
     /// @brief Gets the height of the binary tree.
@@ -170,6 +181,7 @@ public:
     /// @brief Gets the current node capacity of this tree.
     size_type GetNodeCapacity() const noexcept;
     
+    /// @brief Sets the node capacity to the given value.
     void SetNodeCapacity(size_type value);
 
     /// @brief Gets the current node count.
@@ -292,6 +304,7 @@ inline DynamicTree::size_type DynamicTree::ComputeHeight() const noexcept
     return ComputeHeight(GetRootIndex());
 }
 
+/// @brief Tests for overlap of the elements identified in the given dynamic tree.
 inline bool TestOverlap(const DynamicTree& tree,
                         DynamicTree::size_type proxyIdA, DynamicTree::size_type proxyIdB)
 {

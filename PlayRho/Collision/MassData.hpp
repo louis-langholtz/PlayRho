@@ -55,11 +55,13 @@ namespace playrho {
         NonNegative<RotInertia> I = NonNegative<RotInertia>{0};
     };
     
+    /// @brief MassData equality operator.
     constexpr bool operator== (MassData lhs, MassData rhs)
     {
         return lhs.center == rhs.center && lhs.mass == rhs.mass && lhs.I == rhs.I;
     }
     
+    /// @brief MassData inequality operator.
     constexpr bool operator!= (MassData lhs, MassData rhs)
     {
         return !(lhs == rhs);
@@ -101,6 +103,8 @@ namespace playrho {
     MassData GetMassData(const Length r, const NonNegative<Density> density,
                          const Length2D v0, const Length2D v1);
 
+    /// @brief Gets the mass data for the given collection of vertices with the given
+    ///    properties.
     MassData GetMassData(const Length vertexRadius, const NonNegative<Density> density,
                          Span<const Length2D> vertices);
     

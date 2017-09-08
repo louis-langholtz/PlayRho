@@ -72,13 +72,20 @@ public:
 class ContactImpulsesList
 {
 public:
+    
+    /// @brief Count type.
     using count_t = std::remove_const<decltype(MaxManifoldPoints)>::type;
 
+    /// @brief Gets the count.
     count_t GetCount() const noexcept { return count; }
 
+    /// @brief Gets the given indexed entry normal.
     Momentum GetEntryNormal(count_t index) const noexcept { return normalImpulses[index]; }
+
+    /// @brief Gets the given indexed entry tangent.
     Momentum GetEntryTanget(count_t index) const noexcept { return tangentImpulses[index]; }
     
+    /// @brief Adds an entry of the given data.
     void AddEntry(Momentum normal, Momentum tangent) noexcept
     {
         assert(count < MaxManifoldPoints);
@@ -109,6 +116,8 @@ private:
 class ContactListener
 {
 public:
+    
+    /// @brief Iteration type.
     using iteration_type = unsigned;
 
     virtual ~ContactListener() = default;

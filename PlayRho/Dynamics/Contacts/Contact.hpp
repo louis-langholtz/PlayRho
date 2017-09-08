@@ -71,15 +71,18 @@ inline Real MixRestitution(Real restitution1, Real restitution2) noexcept
 class Contact
 {
 public:
+    
+    /// @brief Substep type.
     using substep_type = ts_iters_t;
 
     /// @brief Update configuration.
     struct UpdateConf
     {
-        DistanceConf distance;
-        Manifold::Conf manifold;
+        DistanceConf distance; ///< Distance configuration data.
+        Manifold::Conf manifold; ///< Manifold configuration data.
     };
     
+    /// @brief Gets the update configuration from the given step configuration data.
     static UpdateConf GetUpdateConf(const StepConf& conf) noexcept;
 
     /// @brief Initializing constructor.
@@ -100,8 +103,10 @@ public:
     ///
     Contact(Fixture* fixtureA, ChildCounter indexA, Fixture* fixtureB, ChildCounter indexB);
     
+    /// @brief Default construction not allowed.
     Contact() = delete;
     
+    /// @brief Copy constructor.
     Contact(const Contact& copy) = default;
     
     /// @brief Gets the contact manifold.
@@ -487,13 +492,17 @@ inline void Contact::UnsetIslanded() noexcept
 }
 
 // Free functions...
-    
+
+/// @brief Contact pointer type.
 using ContactPtr = Contact*;
 
+/// @brief Whether the given contact has a sensor.
 bool HasSensor(const Contact& contact) noexcept;
 
+/// @brief Whether the given contact is "impenetrable".
 bool IsImpenetrable(const Contact& contact) noexcept;
 
+/// @brief Sets awake the fixtures of the given contact.
 void SetAwake(const Contact& c) noexcept;
 
 /// Resets the friction mixture to the default value.
@@ -502,6 +511,7 @@ void ResetFriction(Contact& contact);
 /// Reset the restitution to the default value.
 void ResetRestitution(Contact& contact) noexcept;
 
+/// @brief Calculates the Time Of Impact for the given contact with the given configuration.
 TOIOutput CalcToi(const Contact& contact, const ToiConf conf);
 
 } // namespace playrho
