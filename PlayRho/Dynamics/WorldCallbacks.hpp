@@ -73,17 +73,17 @@ class ContactImpulsesList
 {
 public:
     
-    /// @brief Count type.
-    using count_t = std::remove_const<decltype(MaxManifoldPoints)>::type;
+    /// @brief Counter type.
+    using Counter = std::remove_const<decltype(MaxManifoldPoints)>::type;
 
     /// @brief Gets the count.
-    count_t GetCount() const noexcept { return count; }
+    Counter GetCount() const noexcept { return count; }
 
     /// @brief Gets the given indexed entry normal.
-    Momentum GetEntryNormal(count_t index) const noexcept { return normalImpulses[index]; }
+    Momentum GetEntryNormal(Counter index) const noexcept { return normalImpulses[index]; }
 
     /// @brief Gets the given indexed entry tangent.
-    Momentum GetEntryTanget(count_t index) const noexcept { return tangentImpulses[index]; }
+    Momentum GetEntryTanget(Counter index) const noexcept { return tangentImpulses[index]; }
     
     /// @brief Adds an entry of the given data.
     void AddEntry(Momentum normal, Momentum tangent) noexcept
@@ -97,7 +97,7 @@ public:
 private:
     Momentum normalImpulses[MaxManifoldPoints];
     Momentum tangentImpulses[MaxManifoldPoints];
-    count_t count = 0;
+    Counter count = 0;
 };
 
 /// @brief A pure-virtual interface for "listeners" for contacts.

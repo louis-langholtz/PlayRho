@@ -76,7 +76,7 @@ public:
     using proxy_size_type = std::remove_const<decltype(MaxContacts)>::type;
 
     /// @brief Time step iteration type.
-    using ts_iters_type = ts_iters_t;
+    using ts_iters_type = TimestepIters;
     
     /// @brief Bodies container type.
     using Bodies = std::vector<Body*>;
@@ -365,8 +365,8 @@ private:
         ContactCounter contactsUpdated = 0;
         ContactCounter contactsSkipped = 0;
         bool solved = false; ///< Solved. <code>true</code> if position constraints solved, <code>false</code> otherwise.
-        ts_iters_t positionIterations = 0; ///< Position iterations actually performed.
-        ts_iters_t velocityIterations = 0; ///< Velocity iterations actually performed.
+        TimestepIters positionIterations = 0; ///< Position iterations actually performed.
+        TimestepIters velocityIterations = 0; ///< Velocity iterations actually performed.
     };
     
     void CopyBodies(std::map<const Body*, Body*>& bodyMap,

@@ -37,24 +37,24 @@ TEST(ContactImpulsesList, ByteSize)
 TEST(ContactImpulsesList, DefaultConstruction)
 {
     const auto v = ContactImpulsesList{};
-    EXPECT_EQ(v.GetCount(), ContactImpulsesList::count_t(0));
+    EXPECT_EQ(v.GetCount(), ContactImpulsesList::Counter(0));
 }
 
 TEST(ContactImpulsesList, AddEntry)
 {
     auto v = ContactImpulsesList{};
-    EXPECT_EQ(v.GetCount(), ContactImpulsesList::count_t(0));
+    EXPECT_EQ(v.GetCount(), ContactImpulsesList::Counter(0));
     
     const auto normalMomentum = Momentum{Real(3) * Kilogram * MeterPerSecond};
     const auto tangentMomentum = Momentum{Real(1) * Kilogram * MeterPerSecond};
 
     v.AddEntry(normalMomentum, tangentMomentum);
-    EXPECT_EQ(v.GetCount(), ContactImpulsesList::count_t(1));
+    EXPECT_EQ(v.GetCount(), ContactImpulsesList::Counter(1));
     EXPECT_EQ(v.GetEntryNormal(0), normalMomentum);
     EXPECT_EQ(v.GetEntryTanget(0), tangentMomentum);
     
     v.AddEntry(normalMomentum * Real(2), tangentMomentum * Real(2));
-    EXPECT_EQ(v.GetCount(), ContactImpulsesList::count_t(2));
+    EXPECT_EQ(v.GetCount(), ContactImpulsesList::Counter(2));
     EXPECT_EQ(v.GetEntryNormal(0), normalMomentum);
     EXPECT_EQ(v.GetEntryTanget(0), tangentMomentum);
     EXPECT_EQ(v.GetEntryNormal(1), normalMomentum * Real(2));

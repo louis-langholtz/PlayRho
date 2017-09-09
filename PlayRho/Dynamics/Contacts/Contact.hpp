@@ -73,7 +73,7 @@ class Contact
 public:
     
     /// @brief Substep type.
-    using substep_type = ts_iters_t;
+    using substep_type = TimestepIters;
 
     /// @brief Update configuration.
     struct UpdateConf
