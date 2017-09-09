@@ -117,6 +117,6 @@ probably don't need to do it again.
     * :arrow_down: `:arrow_down:` when downgrading dependencies.
     * :shirt: `:shirt:` when removing linter warnings.
 
-### C++ Style Guide
+### C++ Coding Style Guide
 
-Generally speaking, follow the style of the existing code.
+Generally speaking, follow the style of the existing code. More specifically though, see the [Style Guide](Documentation/StyleGuide.md).
