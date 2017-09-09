@@ -107,7 +107,7 @@ using ChildCounter = std::remove_const<decltype(MaxChildCount)>::type;
 
 /// Time step iterations type.
 /// @details A type for countining iterations per time-step.
-using ts_iters_t = std::uint8_t;
+using TimestepIters = std::uint8_t;
 
 /// @brief Maximum float value.
 constexpr auto MaxFloat = std::numeric_limits<Real>::max(); // FLT_MAX

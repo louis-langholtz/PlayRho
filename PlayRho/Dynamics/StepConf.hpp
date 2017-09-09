@@ -42,7 +42,7 @@ public:
     /// @brief Step iterations type.
     /// @details A type for countining iterations per-step.
     /// @note The special value of -1 is reserved for signifying an invalid iteration value.
-    using iteration_type = ts_iters_t;
+    using iteration_type = TimestepIters;
 
     /// @brief Invalid iteration value.
     static constexpr auto InvalidIteration = static_cast<iteration_type>(-1);
