@@ -16,8 +16,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef HalfPipe_hpp
-#define HalfPipe_hpp
+#ifndef PLAYRHO_HALF_PIPE_HPP
+#define PLAYRHO_HALF_PIPE_HPP
 
 #include "../Framework/Test.hpp"
 
@@ -50,4 +50,4 @@ namespace playrho {
     
 }
 
-#endif /* HalfPipe_hpp */
+#endif /* PLAYRHO_HALF_PIPE_HPP */

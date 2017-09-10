@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef BagOfDisks_hpp
-#define BagOfDisks_hpp
+#ifndef PLAYRHO_BAG_OF_DISKS_HPP
+#define PLAYRHO_BAG_OF_DISKS_HPP
 
 #include "../Framework/Test.hpp"
 
@@ -140,4 +140,4 @@ namespace playrho {
 
 }
 
-#endif /* BagOfDisks_hpp */
+#endif /* PLAYRHO_BAG_OF_DISKS_HPP */

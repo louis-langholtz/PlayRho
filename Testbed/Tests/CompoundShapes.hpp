@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef COMPOUND_SHAPES_H
-#define COMPOUND_SHAPES_H
+#ifndef PLAYRHO_COMPOUND_SHAPES_HPP
+#define  PLAYRHO_COMPOUND_SHAPES_HPP
 
 #include "../Framework/Test.hpp"
 

@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef CHARACTER_COLLISION_H
-#define CHARACTER_COLLISION_H
+#ifndef PLAYRHO_CHARACTER_COLLISION_HPP
+#define  PLAYRHO_CHARACTER_COLLISION_HPP
 
 #include "../Framework/Test.hpp"
 

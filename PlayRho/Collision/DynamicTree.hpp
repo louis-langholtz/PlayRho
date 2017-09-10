@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef B2_DYNAMIC_TREE_H
-#define B2_DYNAMIC_TREE_H
+#ifndef PLAYRHO_DYNAMIC_TREE_HPP
+#define PLAYRHO_DYNAMIC_TREE_HPP
 
 /// @file
 /// Declaration of the DynamicTree class.

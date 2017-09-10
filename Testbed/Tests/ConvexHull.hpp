@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef CONVEX_HULL_H
-#define CONVEX_HULL_H
+#ifndef PLAYRHO_CONVEX_HULL_HPP
+#define  PLAYRHO_CONVEX_HULL_HPP
 
 #include "../Framework/Test.hpp"
 #include <vector>

@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef RayCastInput_hpp
-#define RayCastInput_hpp
+#ifndef PLAYRHO_RAY_CAST_INPUT_HPP
+#define PLAYRHO_RAY_CAST_INPUT_HPP
 
 /// @file
 /// Declaration of the RayCastInput struct.
@@ -45,4 +45,4 @@ namespace playrho
     
 } // namespace playrho
 
-#endif /* RayCastInput_hpp */
+#endif /* PLAYRHO_RAY_CAST_INPUT_HPP */

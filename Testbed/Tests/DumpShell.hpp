@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef DUMP_SHELL_H
-#define DUMP_SHELL_H
+#ifndef PLAYRHO_DUMP_SHELL_HPP
+#define  PLAYRHO_DUMP_SHELL_HPP
 
 #include "../Framework/Test.hpp"
 #include <PlayRho/Common/DynamicMemory.hpp>

@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef B2_GROWABLE_STACK_H
-#define B2_GROWABLE_STACK_H
+#ifndef PLAYRHO_GROWABLE_STACK_HPP
+#define PLAYRHO_GROWABLE_STACK_HPP
 
 #include <PlayRho/Common/DynamicMemory.hpp>
 #include <cstring>

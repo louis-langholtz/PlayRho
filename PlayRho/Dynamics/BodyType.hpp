@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef BodyType_hpp
-#define BodyType_hpp
+#ifndef PLAYRHO_BODY_TYPE_HPP
+#define PLAYRHO_BODY_TYPE_HPP
 
 namespace playrho
 {
@@ -59,4 +59,4 @@ enum class BodyType
 
 } // namespace playrho
 
-#endif /* BodyType_hpp */
+#endif /* PLAYRHO_BODY_TYPE_HPP */

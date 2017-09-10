@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef MovementConf_hpp
-#define MovementConf_hpp
+#ifndef PLAYRHO_MOVEMENT_CONF_HPP
+#define PLAYRHO_MOVEMENT_CONF_HPP
 
 #include <PlayRho/Common/Units.hpp>
 
@@ -39,4 +39,4 @@ namespace playrho
 
 } // namespace playrho
 
-#endif /* MovementConf_hpp */
+#endif /* PLAYRHO_MOVEMENT_CONF_HPP */

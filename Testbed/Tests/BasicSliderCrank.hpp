@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef BASIC_SLIDER_CRANK_H
-#define BASIC_SLIDER_CRANK_H
+#ifndef PLAYRHO_BASIC_SLIDER_CRANK_HPP
+#define  PLAYRHO_BASIC_SLIDER_CRANK_HPP
 
 #include "../Framework/Test.hpp"
 

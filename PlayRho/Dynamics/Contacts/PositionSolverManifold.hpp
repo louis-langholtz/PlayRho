@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PositionSolverManifold_hpp
-#define PositionSolverManifold_hpp
+#ifndef PLAYRHO_POSITION_SOLVER_MANIFOLD_HPP
+#define PLAYRHO_POSITION_SOLVER_MANIFOLD_HPP
 
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/Math.hpp>
@@ -60,4 +60,4 @@ namespace playrho
 
 }; // namespace playrho
 
-#endif /* PositionSolverManifold_hpp */
+#endif /* PLAYRHO_POSITION_SOLVER_MANIFOLD_HPP */

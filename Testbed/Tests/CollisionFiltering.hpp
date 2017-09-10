@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef COLLISION_FILTERING_H
-#define COLLISION_FILTERING_H
+#ifndef PLAYRHO_COLLISION_FILTERING_HPP
+#define  PLAYRHO_COLLISION_FILTERING_HPP
 
 #include "../Framework/Test.hpp"
 

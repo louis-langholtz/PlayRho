@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef Wider_hpp
-#define Wider_hpp
+#ifndef PLAYRHO_WIDER_HPP
+#define PLAYRHO_WIDER_HPP
 
 #include <cstdint>
 #include <type_traits>
@@ -108,4 +108,4 @@ template <> struct make_unsigned<__int128_t> {
 
 // clang-format on
 
-#endif /* Wider_hpp */
+#endif /* PLAYRHO_WIDER_HPP */

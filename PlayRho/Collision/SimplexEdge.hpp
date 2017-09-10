@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef SimplexEdge_hpp
-#define SimplexEdge_hpp
+#ifndef PLAYRHO_SIMPLEX_EDGE_HPP
+#define PLAYRHO_SIMPLEX_EDGE_HPP
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/IndexPair.hpp>
@@ -100,4 +100,4 @@ namespace playrho
     }
 }
 
-#endif /* SimplexEdge_hpp */
+#endif /* PLAYRHO_SIMPLEX_EDGE_HPP */

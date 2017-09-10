@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef B2_DRAWER_H
-#define B2_DRAWER_H
+#ifndef PLAYRHO_DRAWER_HPP
+#define PLAYRHO_DRAWER_HPP
 
 #include <PlayRho/Common/Math.hpp>
 

@@ -16,8 +16,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef VertexSet_hpp
-#define VertexSet_hpp
+#ifndef PLAYRHO_VERTEX_SET_HPP
+#define PLAYRHO_VERTEX_SET_HPP
 
 #include <PlayRho/Common/Math.hpp>
 
@@ -105,4 +105,4 @@ namespace playrho
     };
 }
 
-#endif /* VertexSet_hpp */
+#endif /* PLAYRHO_VERTEX_SET_HPP */

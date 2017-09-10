@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef CANTILEVER_H
-#define CANTILEVER_H
+#ifndef PLAYRHO_CANTILEVER_HPP
+#define  PLAYRHO_CANTILEVER_HPP
 
 #include "../Framework/Test.hpp"
 

@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef COLLISION_PROCESSING_H
-#define COLLISION_PROCESSING_H
+#ifndef PLAYRHO_COLLISION_PROCESSING_HPP
+#define  PLAYRHO_COLLISION_PROCESSING_HPP
 
 #include "../Framework/Test.hpp"
 #include <algorithm>

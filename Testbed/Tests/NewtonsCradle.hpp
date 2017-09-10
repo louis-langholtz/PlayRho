@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef NewtonsCradle_hpp
-#define NewtonsCradle_hpp
+#ifndef PLAYRHO_NEWTONS_CRADLE_HPP
+#define PLAYRHO_NEWTONS_CRADLE_HPP
 
 #include "../Framework/Test.hpp"
 
@@ -274,4 +274,4 @@ namespace playrho {
 
 } // namespace playrho
         
-#endif /* NewtonsCradle_hpp */
+#endif /* PLAYRHO_NEWTONS_CRADLE_HPP */

@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef ShapeSeparation_hpp
-#define ShapeSeparation_hpp
+#ifndef PLAYRHO_SHAPE_SEPARATION_HPP
+#define PLAYRHO_SHAPE_SEPARATION_HPP
 
 #include <PlayRho/Common/Math.hpp>
 
@@ -110,4 +110,4 @@ namespace playrho
     
 } // namespace playrho
 
-#endif /* ShapeSeparation_hpp */
+#endif /* PLAYRHO_SHAPE_SEPARATION_HPP */

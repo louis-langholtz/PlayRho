@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef Range_hpp
-#define Range_hpp
+#ifndef PLAYRHO_RANGE_HPP
+#define PLAYRHO_RANGE_HPP
 
 #include <cstddef>
 
@@ -94,4 +94,4 @@ namespace playrho
 
 }
 
-#endif /* Range_hpp */
+#endif /* PLAYRHO_RANGE_HPP */

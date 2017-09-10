@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef MOTOR_JOINT_H
-#define MOTOR_JOINT_H
+#ifndef PLAYRHO_TESTS_MOTOR_JOINT_HPP
+#define PLAYRHO_TESTS_MOTOR_JOINT_HPP
 
 #include "../Framework/Test.hpp"
 
@@ -95,4 +95,4 @@ public:
 
 } // namespace playrho
 
-#endif
+#endif /* PLAYRHO_TESTS_MOTOR_JOINT_HPP */

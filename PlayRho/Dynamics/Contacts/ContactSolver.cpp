@@ -33,7 +33,7 @@ using std::end;
 #if !defined(NDEBUG)
 // Solver debugging is normally disabled because the block solver sometimes has to deal with a
 // poorly conditioned effective mass matrix.
-//#define B2_DEBUG_SOLVER 1
+//#define PLAYRHO_DEBUG_SOLVER 1
 #endif
 
 namespace playrho {

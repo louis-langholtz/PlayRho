@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef IndexPair_hpp
-#define IndexPair_hpp
+#ifndef PLAYRHO_INDEX_PAIR_HPP
+#define PLAYRHO_INDEX_PAIR_HPP
 
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/Vector.hpp>
@@ -73,4 +73,4 @@ namespace playrho
 
 };
 
-#endif /* IndexPair_hpp */
+#endif /* PLAYRHO_INDEX_PAIR_HPP */

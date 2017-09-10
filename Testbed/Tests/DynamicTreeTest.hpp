@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef DYNAMIC_TREE_TEST_H
-#define DYNAMIC_TREE_TEST_H
+#ifndef PLAYRHO_DYNAMIC_TREE_TEST_HPP
+#define  PLAYRHO_DYNAMIC_TREE_TEST_HPP
 
 #include "../Framework/Test.hpp"
 

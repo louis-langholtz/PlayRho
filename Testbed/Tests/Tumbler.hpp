@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef TUMBLER_H
-#define TUMBLER_H
+#ifndef PLAYRHO_TUMBLER_HPP
+#define PLAYRHO_TUMBLER_HPP
 
 #include "../Framework/Test.hpp"
 

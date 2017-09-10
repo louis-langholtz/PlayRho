@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef REVOLUTE_H
-#define REVOLUTE_H
+#ifndef PLAYRHO_REVOLUTE_HPP
+#define PLAYRHO_REVOLUTE_HPP
 
 #include "../Framework/Test.hpp"
 

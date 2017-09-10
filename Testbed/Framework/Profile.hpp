@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef Profile_hpp
-#define Profile_hpp
+#ifndef PLAYRHO_PROFILE_HPP
+#define PLAYRHO_PROFILE_HPP
 
 #include <PlayRho/Common/Math.hpp>
 
@@ -38,4 +38,4 @@ namespace playrho {
     };
 }
 
-#endif /* Profile_hpp */
+#endif /* PLAYRHO_PROFILE_HPP */

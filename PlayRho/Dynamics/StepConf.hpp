@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef B2_STEP_CONF_HPP
-#define B2_STEP_CONF_HPP
+#ifndef PLAYRHO_STEP_CONF_HPP
+#define PLAYRHO_STEP_CONF_HPP
 
 /// @file
 /// Declarations of the StepConf class, and free functions associated with it.

@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef B2_MASS_DATA_HPP
-#define B2_MASS_DATA_HPP
+#ifndef PLAYRHO_MASS_DATA_HPP
+#define PLAYRHO_MASS_DATA_HPP
 
 /// @file
 /// Declaration of the MassData structure and associated free functions.

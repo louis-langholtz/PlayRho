@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef B2_JOINT_H
-#define B2_JOINT_H
+#ifndef PLAYRHO_JOINT_HPP
+#define PLAYRHO_JOINT_HPP
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Dynamics/Joints/JointDef.hpp>

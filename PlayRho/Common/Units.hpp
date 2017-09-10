@@ -23,8 +23,8 @@
  * @brief Units file.
  */
 
-#ifndef Units_hpp
-#define Units_hpp
+#ifndef PLAYRHO_UNITS_HPP
+#define PLAYRHO_UNITS_HPP
 
 #include <PlayRho/Common/RealConstants.hpp>
 #include <PlayRho/Common/Templates.hpp>
@@ -298,4 +298,4 @@ namespace playrho
 #undef PLAYRHO_QUANTITY
 #undef PLAYRHO_UNIT
 
-#endif /* Units_hpp */
+#endif /* PLAYRHO_UNITS_HPP */

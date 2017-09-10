@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef B2_DISTANCE_H
-#define B2_DISTANCE_H
+#ifndef PLAYRHO_DISTANCE_HPP
+#define PLAYRHO_DISTANCE_HPP
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/Simplex.hpp>

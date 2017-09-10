@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef BodyAtty_hpp
-#define BodyAtty_hpp
+#ifndef PLAYRHO_BODY_ATTY_HPP
+#define PLAYRHO_BODY_ATTY_HPP
 
 /// @file
 /// Declaration of the BodyAtty class.
@@ -260,4 +260,4 @@ namespace playrho
 
 } // namespace playrho
 
-#endif /* BodyAtty_hpp */
+#endif /* PLAYRHO_BODY_ATTY_HPP */

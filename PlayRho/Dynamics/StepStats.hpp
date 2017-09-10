@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef StepStats_hpp
-#define StepStats_hpp
+#ifndef PLAYRHO_STEP_STATS_HPP
+#define PLAYRHO_STEP_STATS_HPP
 
 #include <PlayRho/Common/Settings.hpp>
 
@@ -117,4 +117,4 @@ namespace playrho {
     
 } // namespace playrho
 
-#endif /* StepStats_hpp */
+#endif /* PLAYRHO_STEP_STATS_HPP */

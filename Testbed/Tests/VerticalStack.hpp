@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef VERTICAL_STACK_H
-#define VERTICAL_STACK_H
+#ifndef PLAYRHO_VERTICAL_STACK_HPP
+#define PLAYRHO_VERTICAL_STACK_HPP
 
 #include "../Framework/Test.hpp"
 #include <array>

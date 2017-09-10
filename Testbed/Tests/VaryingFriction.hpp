@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef VARYING_FRICTION_H
-#define VARYING_FRICTION_H
+#ifndef PLAYRHO_VARYING_FRICTION_HPP
+#define PLAYRHO_VARYING_FRICTION_HPP
 
 #include "../Framework/Test.hpp"
 

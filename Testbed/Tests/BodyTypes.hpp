@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BODY_TYPES_H
-#define BODY_TYPES_H
+#ifndef PLAYRHO_BODY_TYPES_HPP
+#define PLAYRHO_BODY_TYPES_HPP
 
 #include "../Framework/Test.hpp"
 

@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef GEARS_H
-#define GEARS_H
+#ifndef PLAYRHO_GEARS_HPP
+#define  PLAYRHO_GEARS_HPP
 
 #include "../Framework/Test.hpp"
 

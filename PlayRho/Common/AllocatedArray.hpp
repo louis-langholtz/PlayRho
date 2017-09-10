@@ -6,8 +6,8 @@
 //
 //
 
-#ifndef Array_hpp
-#define Array_hpp
+#ifndef PLAYRHO_ALLOCATED_ARRAY_HPP
+#define PLAYRHO_ALLOCATED_ARRAY_HPP
 
 #include <PlayRho/Common/Settings.hpp>
 
@@ -171,4 +171,4 @@ private:
 
 }; // namespace playrho
 
-#endif /* AllocatedArray_hpp */
+#endif /* PLAYRHO_ALLOCATED_ARRAY_HPP */

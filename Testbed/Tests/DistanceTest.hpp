@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef DISTANCE_TEST_H
-#define DISTANCE_TEST_H
+#ifndef PLAYRHO_DISTANCE_TEST_HPP
+#define  PLAYRHO_DISTANCE_TEST_HPP
 
 #include "../Framework/Test.hpp"
 #include <sstream>

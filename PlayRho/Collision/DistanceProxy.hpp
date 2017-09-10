@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef DistanceProxy_hpp
-#define DistanceProxy_hpp
+#ifndef PLAYRHO_DISTANCE_PROXY_HPP
+#define PLAYRHO_DISTANCE_PROXY_HPP
 
 #include <PlayRho/Common/Math.hpp>
 #include <vector>
@@ -165,4 +165,4 @@ namespace playrho
     
 }; // namespace playrho
 
-#endif /* DistanceProxy_hpp */
+#endif /* PLAYRHO_DISTANCE_PROXY_HPP */

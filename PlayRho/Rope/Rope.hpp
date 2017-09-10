@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef B2_ROPE_H
-#define B2_ROPE_H
+#ifndef PLAYRHO_ROPE_HPP
+#define PLAYRHO_ROPE_HPP
 
 #include <PlayRho/Common/Math.hpp>
 

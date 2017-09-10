@@ -43,6 +43,17 @@ Globally accessible definitions should generally be composed of full words that 
 ### Conjoin Multi Word Names With The First Letter Of New Words Capitalized
 Unless the definition is meant to be replaceable with a Standard Library definition, names should be camel-case separated. Definitions meant to be replaceable with Standard Library definitions meanwhile should mimic the naming style of the definitions they're meant to be interchangeable with.
 
+### Start All Include Guard Macros With `PLAYRHO_`
+This &mdash; in a sense &mdash; keeps the include guard macros in their own namespace.
+
+### End All Include Guard Macros For `.hpp` Files With `_HPP`
+
+### Capitalize All Letters Of Macro Names
+So for example a macro called "one" would be spelled like `ONE`.
+
+### Separate Words In Macro Names With Underscores
+Thus a macro called "this is a macro" would appear as: `THIS_IS_A_MACRO`. Or an include guard might be written as: `PLAYRHO_BODY_TYPE_HPP`.
+
 ## Functions
 
 ### Function Names Usually Begin With Capitalized Letter

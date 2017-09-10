@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef MotorJointDef_hpp
-#define MotorJointDef_hpp
+#ifndef PLAYRHO_MOTOR_JOINT_DEF_HPP
+#define PLAYRHO_MOTOR_JOINT_DEF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointDef.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
@@ -90,4 +90,4 @@ MotorJointDef GetMotorJointDef(const MotorJoint& joint) noexcept;
 
 } // namespace playrho
 
-#endif /* MotorJointDef_hpp */
+#endif /* PLAYRHO_MOTOR_JOINT_DEF_HPP */

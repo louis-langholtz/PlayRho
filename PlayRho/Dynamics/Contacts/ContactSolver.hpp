@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef B2_CONTACT_SOLVER_H
-#define B2_CONTACT_SOLVER_H
+#ifndef PLAYRHO_CONTACT_SOLVER_HPP
+#define PLAYRHO_CONTACT_SOLVER_HPP
 
 #include <PlayRho/Common/Math.hpp>
 

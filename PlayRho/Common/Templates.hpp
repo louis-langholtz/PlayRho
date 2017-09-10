@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef Templates_hpp
-#define Templates_hpp
+#ifndef PLAYRHO_TEMPLATES_HPP
+#define PLAYRHO_TEMPLATES_HPP
 
 #include <limits>
 #include <typeinfo>
@@ -186,4 +186,4 @@ namespace playrho
 
 } // namespace playrho
 
-#endif /* Templates_hpp */
+#endif /* PLAYRHO_TEMPLATES_HPP */

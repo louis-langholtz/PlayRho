@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef DEBUGDRAW_H
-#define DEBUGDRAW_H
+#ifndef PLAYRHO_DEBUGDRAW_HPP
+#define  PLAYRHO_DEBUGDRAW_HPP
 
 #include <PlayRho/PlayRho.hpp>
 #include "Drawer.hpp"

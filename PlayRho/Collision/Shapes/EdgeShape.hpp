@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef B2_EDGE_SHAPE_H
-#define B2_EDGE_SHAPE_H
+#ifndef PLAYRHO_EDGE_SHAPE_HPP
+#define PLAYRHO_EDGE_SHAPE_HPP
 
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 

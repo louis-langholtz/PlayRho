@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef B2_REVOLUTE_JOINT_H
-#define B2_REVOLUTE_JOINT_H
+#ifndef PLAYRHO_REVOLUTE_JOINT_HPP
+#define PLAYRHO_REVOLUTE_JOINT_HPP
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJointDef.hpp>

@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef Simplex_hpp
-#define Simplex_hpp
+#ifndef PLAYRHO_SIMPLEX_HPP
+#define PLAYRHO_SIMPLEX_HPP
 
 #include <PlayRho/Common/ArrayList.hpp>
 #include <PlayRho/Common/Vector.hpp>
@@ -330,4 +330,4 @@ namespace playrho
     }
 }
 
-#endif /* Simplex_hpp */
+#endif /* PLAYRHO_SIMPLEX_HPP */

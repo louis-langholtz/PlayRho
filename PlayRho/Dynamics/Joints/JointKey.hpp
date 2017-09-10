@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef JointKey_hpp
-#define JointKey_hpp
+#ifndef PLAYRHO_JOINT_KEY_HPP
+#define PLAYRHO_JOINT_KEY_HPP
 
 /// @file
 /// Definition of the JointKey class and any associated free functions.
@@ -134,4 +134,4 @@ namespace std
 
 }
 
-#endif /* JointKey_hpp */
+#endif /* PLAYRHO_JOINT_KEY_HPP */

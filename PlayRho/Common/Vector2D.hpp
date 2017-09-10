@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef Vec2_hpp
-#define Vec2_hpp
+#ifndef PLAYRHO_VEC2_HPP
+#define PLAYRHO_VEC2_HPP
 
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/InvalidArgument.hpp>
@@ -251,4 +251,4 @@ namespace playrho
 #endif
 } // namespace playrho
 
-#endif /* Vec2_hpp */
+#endif /* PLAYRHO_VEC2_HPP */

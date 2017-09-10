@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef B2_FIXTURE_H
-#define B2_FIXTURE_H
+#ifndef PLAYRHO_FIXTURE_HPP
+#define PLAYRHO_FIXTURE_HPP
 
 /// @file
 /// Declarations of the Fixture class, and free functions associated with it.

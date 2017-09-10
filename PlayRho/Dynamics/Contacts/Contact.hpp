@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef B2_CONTACT_H
-#define B2_CONTACT_H
+#ifndef PLAYRHO_CONTACT_HPP
+#define PLAYRHO_CONTACT_HPP
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/Manifold.hpp>

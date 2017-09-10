@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef Version_hpp
-#define Version_hpp
+#ifndef PLAYRHO_VERSION_HPP
+#define PLAYRHO_VERSION_HPP
 
 #include <cstdint>
 #include <string>
@@ -59,4 +59,4 @@ namespace playrho {
 
 } // namepsace playrho
 
-#endif /* Version_hpp */
+#endif /* PLAYRHO_VERSION_HPP */

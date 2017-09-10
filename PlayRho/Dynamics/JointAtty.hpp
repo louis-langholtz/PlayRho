@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef JointAtty_hpp
-#define JointAtty_hpp
+#ifndef PLAYRHO_JOINT_ATTY_HPP
+#define PLAYRHO_JOINT_ATTY_HPP
 
 /// @file
 /// Declaration of the JointAtty class.
@@ -91,4 +91,4 @@ private:
 
 }
 
-#endif /* JointAtty_hpp */
+#endif /* PLAYRHO_JOINT_ATTY_HPP */

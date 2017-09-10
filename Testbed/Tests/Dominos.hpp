@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef DOMINOS_H
-#define DOMINOS_H
+#ifndef PLAYRHO_DOMINOS_HPP
+#define  PLAYRHO_DOMINOS_HPP
 
 #include "../Framework/Test.hpp"
 

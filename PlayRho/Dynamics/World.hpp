@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef B2_WORLD_H
-#define B2_WORLD_H
+#ifndef PLAYRHO_WORLD_HPP
+#define PLAYRHO_WORLD_HPP
 
 /// @file
 /// Declarations of the World class and associated free functions.

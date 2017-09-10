@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef POLYCOLLISION_H
-#define POLYCOLLISION_H
+#ifndef PLAYRHO_POLYCOLLISION_HPP
+#define PLAYRHO_POLYCOLLISION_HPP
 
 #include "../Framework/Test.hpp"
 #include <vector>

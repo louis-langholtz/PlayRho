@@ -20,8 +20,8 @@
 // Inspired by a contribution by roman_m
 // Dimensions scooped from APE (http://www.cove.org/ape/index.htm)
 
-#ifndef THEO_JANSEN_H
-#define THEO_JANSEN_H
+#ifndef THEO_JANSEN_HPP
+#define THEO_JANSEN_HPP
 
 #include "../Framework/Test.hpp"
 
@@ -216,4 +216,4 @@ public:
 
 } // namespace playrho
 
-#endif // THEO_JANSEN_H
+#endif // THEO_JANSEN_HPP

@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef MOBILE_H
-#define MOBILE_H
+#ifndef PLAYRHO_MOBILE_HPP
+#define PLAYRHO_MOBILE_HPP
 
 #include "../Framework/Test.hpp"
 

@@ -16,8 +16,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef Orbiter_hpp
-#define Orbiter_hpp
+#ifndef PLAYRHO_ORBITER_HPP
+#define PLAYRHO_ORBITER_HPP
 
 #include "../Framework/Test.hpp"
 
@@ -84,4 +84,4 @@ namespace playrho {
     
 }
 
-#endif /* Orbiter_hpp */
+#endif /* PLAYRHO_ORBITER_HPP */

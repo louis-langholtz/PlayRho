@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef APPLY_FORCE_H
-#define APPLY_FORCE_H
+#ifndef PLAYRHO_APPLY_FORCE_HPP
+#define  PLAYRHO_APPLY_FORCE_HPP
 
 #include "../Framework/Test.hpp"
 

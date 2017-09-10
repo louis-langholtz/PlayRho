@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef AABB_hpp
-#define AABB_hpp
+#ifndef PLAYRHO_AABB_HPP
+#define PLAYRHO_AABB_HPP
 
 /// @file
 /// Declaration of the AABB class and free functions that return instances of it.
@@ -294,4 +294,4 @@ namespace playrho
 
 } // namespace playrho
 
-#endif /* AABB_hpp */
+#endif /* PLAYRHO_AABB_HPP */
