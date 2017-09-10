@@ -88,25 +88,3 @@ std::vector<Length2D> playrho::GetCircleVertices(const Length radius, unsigned s
     }
     return vertices;
 }
-
-::std::ostream& playrho::operator<<(::std::ostream& os, const Vec2& value)
-{
-    return os << "Vec2(" << Get<0>(value) << "," << Get<1>(value) << ")";
-}
-
-::std::ostream& playrho::operator<<(::std::ostream& os, const UnitVec2& value)
-{
-    return os << "UnitVec2(" << Get<0>(value) << "," << Get<1>(value) << ")";
-}
-
-::std::ostream& playrho::operator<<(::std::ostream& os, const Fixed32& value)
-{
-    return os << static_cast<double>(value);
-}
-
-#ifndef _WIN32
-::std::ostream& playrho::operator<<(::std::ostream& os, const Fixed64& value)
-{
-    return os << static_cast<double>(value);
-}
-#endif

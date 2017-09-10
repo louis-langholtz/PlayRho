@@ -111,7 +111,7 @@ TEST(Vec2, OutputOperator)
     std::stringstream os;
     const Vec2 value{Real(1.5), Real(-2.3)};
     os << value;
-    EXPECT_EQ(os.str(), "Vec2(1.5,-2.3)");
+    EXPECT_EQ(os.str(), "{1.5,-2.3}");
 }
 
 TEST(Vec2, Indexing) {

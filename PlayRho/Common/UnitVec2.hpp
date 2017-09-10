@@ -26,6 +26,7 @@
 
 #include <PlayRho/Common/Settings.hpp>
 #include <cmath>
+#include <iostream>
 
 namespace playrho
 {
@@ -270,6 +271,12 @@ template <>
 constexpr UnitVec2::value_type Get<1>(UnitVec2 v) noexcept
 {
     return v.GetY();
+}
+
+/// @brief Output stream operator.
+inline ::std::ostream& operator<<(::std::ostream& os, const UnitVec2& value)
+{
+    return os << "UnitVec2(" << Get<0>(value) << "," << Get<1>(value) << ")";
 }
 
 } // namespace playrho
