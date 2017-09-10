@@ -29,7 +29,7 @@
 #ifndef RealConstants_hpp
 #define RealConstants_hpp
 
-#include <PlayRho/Common/RealNum.hpp>
+#include <PlayRho/Common/Real.hpp>
 
 namespace playrho {
 
