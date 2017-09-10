@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef CONVEYOR_BELT_H
-#define CONVEYOR_BELT_H
+#ifndef PLAYRHO_CONVEYOR_BELT_HPP
+#define  PLAYRHO_CONVEYOR_BELT_HPP
 
 #include "../Framework/Test.hpp"
 

@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef EDGE_SHAPES_H
-#define EDGE_SHAPES_H
+#ifndef PLAYRHO_EDGE_SHAPES_HPP
+#define  PLAYRHO_EDGE_SHAPES_HPP
 
 #include "../Framework/Test.hpp"
 #include <cmath>

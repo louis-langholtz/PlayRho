@@ -16,8 +16,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef SPINNING_CIRCLE_HPP
-#define SPINNING_CIRCLE_HPP
+#ifndef PLAYRHO_SPINNING_CIRCLE_HPP
+#define PLAYRHO_SPINNING_CIRCLE_HPP
 
 #include "../Framework/Test.hpp"
 

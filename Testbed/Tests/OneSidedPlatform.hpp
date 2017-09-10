@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef ONE_SIDED_PLATFORM_H
-#define ONE_SIDED_PLATFORM_H
+#ifndef PLAYRHO_ONE_SIDED_PLATFORM_HPP
+#define PLAYRHO_ONE_SIDED_PLATFORM_HPP
 
 #include "../Framework/Test.hpp"
 

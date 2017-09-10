@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef TIME_OF_IMPACT_H
-#define TIME_OF_IMPACT_H
+#ifndef PLAYRHO_TESTS_TIME_OF_IMPACT_HPP
+#define PLAYRHO_TESTS_TIME_OF_IMPACT_HPP
 
 #include "../Framework/Test.hpp"
 #include <vector>
@@ -134,4 +134,4 @@ public:
 
 } // namespace playrho
 
-#endif
+#endif /* PLAYRHO_TESTS_TIME_OF_IMPACT_HPP */

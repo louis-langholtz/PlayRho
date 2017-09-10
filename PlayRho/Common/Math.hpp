@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_MATH_H
-#define PLAYRHO_MATH_H
+#ifndef PLAYRHO_MATH_HPP
+#define PLAYRHO_MATH_HPP
 
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>

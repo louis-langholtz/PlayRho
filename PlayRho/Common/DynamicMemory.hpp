@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef DynamicMemory_hpp
-#define DynamicMemory_hpp
+#ifndef PLAYRHO_DYNAMIC_MEMORY_HPP
+#define PLAYRHO_DYNAMIC_MEMORY_HPP
 
 #include <cstddef>
 
@@ -56,4 +56,4 @@ namespace playrho
 
 } // namespace playrho
 
-#endif /* DynamicMemory_hpp */
+#endif /* PLAYRHO_DYNAMIC_MEMORY_HPP */

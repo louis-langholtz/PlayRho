@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef PRISMATIC_H
-#define PRISMATIC_H
+#ifndef PLAYRHO_PRISMATIC_HPP
+#define PLAYRHO_PRISMATIC_HPP
 
 #include "../Framework/Test.hpp"
 

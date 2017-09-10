@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef RayCastOutput_hpp
-#define RayCastOutput_hpp
+#ifndef PLAYRHO_RAY_CAST_OUTPUT_HPP
+#define PLAYRHO_RAY_CAST_OUTPUT_HPP
 
 /// @file
 /// Declaration of the RayCastOutput struct and related free functions.
@@ -79,4 +79,4 @@ namespace playrho
 
 } // namespace playrho
 
-#endif /* RayCastOutput_hpp */
+#endif /* PLAYRHO_RAY_CAST_OUTPUT_HPP */

@@ -16,8 +16,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef Span_hpp
-#define Span_hpp
+#ifndef PLAYRHO_SPAN_HPP
+#define PLAYRHO_SPAN_HPP
 
 #include <cstddef>
 #include <cassert>
@@ -125,4 +125,4 @@ namespace playrho
     
 } // namespace playrho
 
-#endif /* Span_hpp */
+#endif /* PLAYRHO_SPAN_HPP */

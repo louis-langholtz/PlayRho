@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef VARYING_RESTITUTION_H
-#define VARYING_RESTITUTION_H
+#ifndef PLAYRHO_VARYING_RESTITUTION_HPP
+#define PLAYRHO_VARYING_RESTITUTION_HPP
 
 #include "../Framework/Test.hpp"
 

@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef TILES_H
-#define TILES_H
+#ifndef PLAYRHO_TILES_HPP
+#define PLAYRHO_TILES_HPP
 
 #include "../Framework/Test.hpp"
 

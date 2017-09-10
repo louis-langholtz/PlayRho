@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef AddPair_H
-#define AddPair_H
+#ifndef PLAYRHO_ADDPAIR_HPP
+#define PLAYRHO_ADDPAIR_HPP
 
 #include "../Framework/Test.hpp"
 

@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef IFORCE2D_TOPDOWN_CAR_H
-#define IFORCE2D_TOPDOWN_CAR_H
+#ifndef IFORCE2D_TOPDOWN_CAR_HPP
+#define IFORCE2D_TOPDOWN_CAR_HPP
 
 #include "../Framework/Test.hpp"
 #include <vector>

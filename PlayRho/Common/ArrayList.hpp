@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef ArrayList_hpp
-#define ArrayList_hpp
+#ifndef PLAYRHO_ARRAY_LIST_HPP
+#define PLAYRHO_ARRAY_LIST_HPP
 
 #include <type_traits>
 #include <initializer_list>
@@ -189,4 +189,4 @@ namespace std
     };
 }
 
-#endif /* ArrayList_hpp */
+#endif /* PLAYRHO_ARRAY_LIST_HPP */

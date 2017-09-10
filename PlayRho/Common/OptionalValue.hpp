@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef OptionalValue_hpp
-#define OptionalValue_hpp
+#ifndef PLAYRHO_OPTIONAL_VALUE_HPP
+#define PLAYRHO_OPTIONAL_VALUE_HPP
 
 #include <cassert>
 
@@ -161,4 +161,4 @@ namespace playrho {
     
 } // namespace playrho
 
-#endif /* OptionalValue_hpp */
+#endif /* PLAYRHO_OPTIONAL_VALUE_HPP */

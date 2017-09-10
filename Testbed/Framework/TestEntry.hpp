@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef TestEntry_hpp
-#define TestEntry_hpp
+#ifndef PLAYRHO_TEST_ENTRY_HPP
+#define PLAYRHO_TEST_ENTRY_HPP
 
 #include <PlayRho/Common/Span.hpp>
 #include <memory>
@@ -58,4 +58,4 @@ Span<const TestEntry> GetTestEntries();
 
 } // namespace playrho
 
-#endif /* TestEntry_hpp */
+#endif /* PLAYRHO_TEST_ENTRY_HPP */

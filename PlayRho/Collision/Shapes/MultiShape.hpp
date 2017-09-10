@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef ConcaveShape_hpp
-#define ConcaveShape_hpp
+#ifndef PLAYRHO_MULTI_SHAPE_HPP
+#define PLAYRHO_MULTI_SHAPE_HPP
 
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <vector>
@@ -142,4 +142,4 @@ namespace playrho {
 
 }
 
-#endif /* ConcaveShape_hpp */
+#endif /* PLAYRHO_MULTI_SHAPE_HPP */

@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef WorldManifold_hpp
-#define WorldManifold_hpp
+#ifndef PLAYRHO_WORLD_MANIFOLD_HPP
+#define PLAYRHO_WORLD_MANIFOLD_HPP
 
 #include <PlayRho/Common/Math.hpp>
 
@@ -191,4 +191,4 @@ namespace playrho
     
 }
 
-#endif /* WorldManifold_hpp */
+#endif /* PLAYRHO_WORLD_MANIFOLD_HPP */

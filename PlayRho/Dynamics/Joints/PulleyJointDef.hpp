@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PulleyJointDef_hpp
-#define PulleyJointDef_hpp
+#ifndef PLAYRHO_PULLEY_JOINT_DEF_HPP
+#define PLAYRHO_PULLEY_JOINT_DEF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointDef.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
@@ -83,4 +83,4 @@ PulleyJointDef GetPulleyJointDef(const PulleyJoint& joint) noexcept;
 
 } // namespace playrho
 
-#endif /* PulleyJointDef_hpp */
+#endif /* PLAYRHO_PULLEY_JOINT_DEF_HPP */

@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef VelocityConstraint_hpp
-#define VelocityConstraint_hpp
+#ifndef PLAYRHO_VELOCITY_CONSTRAINT_HPP
+#define PLAYRHO_VELOCITY_CONSTRAINT_HPP
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
@@ -462,4 +462,4 @@ namespace playrho {
 
 } // namespace playrho
 
-#endif /* VelocityConstraint_hpp */
+#endif /* PLAYRHO_VELOCITY_CONSTRAINT_HPP */

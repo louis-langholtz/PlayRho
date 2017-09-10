@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef Manifold_hpp
-#define Manifold_hpp
+#ifndef PLAYRHO_MANIFOLD_HPP
+#define PLAYRHO_MANIFOLD_HPP
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/ContactFeature.hpp>
@@ -564,4 +564,4 @@ namespace playrho
     
 } // namespace playrho
 
-#endif /* Manifold_hpp */
+#endif /* PLAYRHO_MANIFOLD_HPP */

@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef Velocity_hpp
-#define Velocity_hpp
+#ifndef PLAYRHO_VELOCITY_HPP
+#define PLAYRHO_VELOCITY_HPP
 
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/Vector2D.hpp>
@@ -140,4 +140,4 @@ namespace playrho
     
 }
 
-#endif /* Velocity_hpp */
+#endif /* PLAYRHO_VELOCITY_HPP */

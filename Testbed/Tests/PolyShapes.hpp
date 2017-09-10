@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef POLY_SHAPES_H
-#define POLY_SHAPES_H
+#ifndef PLAYRHO_POLY_SHAPES_HPP
+#define PLAYRHO_POLY_SHAPES_HPP
 
 #include "../Framework/Test.hpp"
 #include <vector>

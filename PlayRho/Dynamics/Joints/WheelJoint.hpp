@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef B2_WHEEL_JOINT_H
-#define B2_WHEEL_JOINT_H
+#ifndef PLAYRHO_WHEEL_JOINT_HPP
+#define PLAYRHO_WHEEL_JOINT_HPP
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/WheelJointDef.hpp>

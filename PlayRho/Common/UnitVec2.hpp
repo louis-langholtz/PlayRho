@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef UnitVec2_hpp
-#define UnitVec2_hpp
+#ifndef PLAYRHO_UNIT_VEC_2_HPP
+#define PLAYRHO_UNIT_VEC_2_HPP
 
 /// @file
 /// Declarations of the UnitVec2 class and free functions associated with it.
@@ -274,4 +274,4 @@ constexpr UnitVec2::value_type Get<1>(UnitVec2 v) noexcept
 
 } // namespace playrho
 
-#endif /* UnitVec2_hpp */
+#endif /* PLAYRHO_UNIT_VEC_2_HPP */

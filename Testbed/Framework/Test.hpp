@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef TEST_H
-#define TEST_H
+#ifndef PLAYRHO_TEST_HPP
+#define PLAYRHO_TEST_HPP
 
 #include <PlayRho/PlayRho.hpp>
 #include <PlayRho/Collision/RayCastOutput.hpp>

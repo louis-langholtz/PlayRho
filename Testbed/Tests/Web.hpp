@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef WEB_H
-#define WEB_H
+#ifndef PLAYRHO_WEB_HPP
+#define PLAYRHO_WEB_HPP
 
 #include "../Framework/Test.hpp"
 

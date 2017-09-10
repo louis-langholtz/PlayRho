@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef SHAPE_EDITING_H
-#define SHAPE_EDITING_H
+#ifndef PLAYRHO_SHAPE_EDITING_HPP
+#define PLAYRHO_SHAPE_EDITING_HPP
 
 #include "../Framework/Test.hpp"
 

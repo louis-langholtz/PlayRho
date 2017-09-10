@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef B2_TIME_OF_IMPACT_H
-#define B2_TIME_OF_IMPACT_H
+#ifndef PLAYRHO_TIME_OF_IMPACT_HPP
+#define PLAYRHO_TIME_OF_IMPACT_HPP
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/Wider.hpp>

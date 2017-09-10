@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef PINBALL_H
-#define PINBALL_H
+#ifndef PLAYRHO_PINBALL_HPP
+#define PLAYRHO_PINBALL_HPP
 
 #include "../Framework/Test.hpp"
 

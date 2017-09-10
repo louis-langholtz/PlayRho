@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef B2_STACK_ALLOCATOR_H
-#define B2_STACK_ALLOCATOR_H
+#ifndef PLAYRHO_STACK_ALLOCATOR_HPP
+#define PLAYRHO_STACK_ALLOCATOR_HPP
 
 #include <PlayRho/Common/Settings.hpp>
 

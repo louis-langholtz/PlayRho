@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef FixtureProxy_hpp
-#define FixtureProxy_hpp
+#ifndef PLAYRHO_FIXTURE_PROXY_HPP
+#define PLAYRHO_FIXTURE_PROXY_HPP
 
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Collision/AABB.hpp>
@@ -53,4 +53,4 @@ namespace playrho
     
 } // namespace playrho
 
-#endif /* FixtureProxy_hpp */
+#endif /* PLAYRHO_FIXTURE_PROXY_HPP */

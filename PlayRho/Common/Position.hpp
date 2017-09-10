@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef Position_hpp
-#define Position_hpp
+#ifndef PLAYRHO_POSITION_HPP
+#define PLAYRHO_POSITION_HPP
 
 #include <PlayRho/Common/Templates.hpp>
 #include <PlayRho/Common/Settings.hpp>
@@ -130,4 +130,4 @@ namespace playrho
 
 }
 
-#endif /* Position_hpp */
+#endif /* PLAYRHO_POSITION_HPP */

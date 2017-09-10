@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef FrictionJointDef_hpp
-#define FrictionJointDef_hpp
+#ifndef PLAYRHO_FRICTION_JOINT_DEF_HPP
+#define PLAYRHO_FRICTION_JOINT_DEF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointDef.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
@@ -81,4 +81,4 @@ FrictionJointDef GetFrictionJointDef(const FrictionJoint& joint) noexcept;
 
 } // namespace playrho
 
-#endif /* FrictionJointDef_hpp */
+#endif /* PLAYRHO_FRICTION_JOINT_DEF_HPP */

@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef B2_ISLAND_H
-#define B2_ISLAND_H
+#ifndef PLAYRHO_ISLAND_HPP
+#define PLAYRHO_ISLAND_HPP
 
 #include <PlayRho/Common/Math.hpp>
 #include <vector>

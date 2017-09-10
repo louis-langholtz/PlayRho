@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef B2_CHAIN_SHAPE_H
-#define B2_CHAIN_SHAPE_H
+#ifndef PLAYRHO_CHAIN_SHAPE_HPP
+#define PLAYRHO_CHAIN_SHAPE_HPP
 
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <vector>

@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef CONFINED_H
-#define CONFINED_H
+#ifndef PLAYRHO_CONFINED_HPP
+#define  PLAYRHO_CONFINED_HPP
 
 #include "../Framework/Test.hpp"
 

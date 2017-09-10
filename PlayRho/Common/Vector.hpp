@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef Vector_hpp
-#define Vector_hpp
+#ifndef PLAYRHO_VECTOR_HPP
+#define PLAYRHO_VECTOR_HPP
 
 #include <cstddef>
 #include <type_traits>
@@ -185,4 +185,4 @@ constexpr auto Get(const Vector<N, T>& v) noexcept
 
 } // namespace playrho
 
-#endif /* Vector_hpp */
+#endif /* PLAYRHO_VECTOR_HPP */

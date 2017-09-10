@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef B2_BODY_H
-#define B2_BODY_H
+#ifndef PLAYRHO_BODY_HPP
+#define PLAYRHO_BODY_HPP
 
 /// @file
 /// Declarations of the Body class, and free functions associated with it.

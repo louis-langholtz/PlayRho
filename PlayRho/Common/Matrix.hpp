@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef Matrix_hpp
-#define Matrix_hpp
+#ifndef PLAYRHO_MATRIX_HPP
+#define PLAYRHO_MATRIX_HPP
 
 #include <PlayRho/Common/Vector.hpp>
 #include <PlayRho/Common/Templates.hpp>
@@ -69,4 +69,4 @@ namespace playrho {
 
 } // namespace playrho
 
-#endif /* Matrix_hpp */
+#endif /* PLAYRHO_MATRIX_HPP */

@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef FlagGuard_hpp
-#define FlagGuard_hpp
+#ifndef PLAYRHO_FLAG_GUARD_HPP
+#define PLAYRHO_FLAG_GUARD_HPP
 
 #include <type_traits>
 
@@ -57,4 +57,4 @@ namespace playrho {
 
 } // namespace playrho
 
-#endif /* FlagGuard_hpp */
+#endif /* PLAYRHO_FLAG_GUARD_HPP */

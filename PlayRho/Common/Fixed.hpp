@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef Fixed_hpp
-#define Fixed_hpp
+#ifndef PLAYRHO_FIXED_HPP
+#define PLAYRHO_FIXED_HPP
 
 #include <PlayRho/Common/Wider.hpp>
 #include <PlayRho/Common/Templates.hpp>
@@ -1173,4 +1173,4 @@ namespace std
 
 } // namespace std
 
-#endif /* Fixed_hpp */
+#endif /* PLAYRHO_FIXED_HPP */

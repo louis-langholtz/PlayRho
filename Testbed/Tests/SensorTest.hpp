@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef SENSOR_TEST_H
-#define SENSOR_TEST_H
+#ifndef PLAYRHO_SENSOR_TEST_HPP
+#define PLAYRHO_SENSOR_TEST_HPP
 
 #include "../Framework/Test.hpp"
 

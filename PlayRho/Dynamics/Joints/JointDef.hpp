@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef JointDef_hpp
-#define JointDef_hpp
+#ifndef PLAYRHO_JOINT_DEF_HPP
+#define PLAYRHO_JOINT_DEF_HPP
 
 #include <cstdint>
 
@@ -136,4 +136,4 @@ void Set(JointDef& def, const Joint& joint) noexcept;
 
 } // namespace playrho
 
-#endif /* JointDef_hpp */
+#endif /* PLAYRHO_JOINT_DEF_HPP */

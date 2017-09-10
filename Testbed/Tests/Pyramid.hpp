@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef PYRAMID_H
-#define PYRAMID_H
+#ifndef PLAYRHO_PYRAMID_HPP
+#define PLAYRHO_PYRAMID_HPP
 
 #include "../Framework/Test.hpp"
 

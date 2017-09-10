@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef B2_WORLD_CALLBACKS_H
-#define B2_WORLD_CALLBACKS_H
+#ifndef PLAYRHO_WORLD_CALLBACKS_HPP
+#define PLAYRHO_WORLD_CALLBACKS_HPP
 
 #include <PlayRho/Common/Settings.hpp>
 

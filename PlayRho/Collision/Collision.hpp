@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef B2_COLLISION_H
-#define B2_COLLISION_H
+#ifndef PLAYRHO_COLLISION_HPP
+#define PLAYRHO_COLLISION_HPP
 
 /// @file
 /// Structures and functions used for computing contact points, distance

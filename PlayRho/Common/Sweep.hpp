@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef Sweep_hpp
-#define Sweep_hpp
+#ifndef PLAYRHO_SWEEP_HPP
+#define PLAYRHO_SWEEP_HPP
 
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/Position.hpp>
@@ -126,4 +126,4 @@ namespace playrho
     
 }
 
-#endif /* Sweep_hpp */
+#endif /* PLAYRHO_SWEEP_HPP */

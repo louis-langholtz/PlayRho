@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef HEAVY_ON_LIGHT_TWO_H
-#define HEAVY_ON_LIGHT_TWO_H
+#ifndef PLAYRHO_HEAVY_ON_LIGHT_TWO_HPP
+#define  PLAYRHO_HEAVY_ON_LIGHT_TWO_HPP
 
 #include "../Framework/Test.hpp"
 

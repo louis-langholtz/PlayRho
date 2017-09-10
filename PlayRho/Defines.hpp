@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef Defines_hpp
-#define Defines_hpp
+#ifndef PLAYRHO_DEFINES_HPP
+#define PLAYRHO_DEFINES_HPP
 
 // Setup a define for unreachable code.
 //
@@ -42,4 +42,4 @@
 #define PLAYRHO_UNREACHABLE std::abort()
 #endif
 
-#endif /* Defines_hpp */
+#endif /* PLAYRHO_DEFINES_HPP */

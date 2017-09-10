@@ -24,8 +24,8 @@
  * @brief Types and default settings file.
  */
 
-#ifndef PLAYRHO_SETTINGS_H
-#define PLAYRHO_SETTINGS_H
+#ifndef PLAYRHO_SETTINGS_HPP
+#define PLAYRHO_SETTINGS_HPP
 
 #include <cstddef>
 #include <cassert>

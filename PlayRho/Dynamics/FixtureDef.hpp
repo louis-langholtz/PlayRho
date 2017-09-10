@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef FixtureDef_hpp
-#define FixtureDef_hpp
+#ifndef PLAYRHO_FIXTURE_DEF_HPP
+#define PLAYRHO_FIXTURE_DEF_HPP
 
 /// @file
 /// Declarations of the FixtureDef struct and any free functions associated with it.
@@ -88,4 +88,4 @@ namespace playrho {
 
 } // namespace playrho
 
-#endif /* FixtureDef_hpp */
+#endif /* PLAYRHO_FIXTURE_DEF_HPP */

@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef RopeJointDef_hpp
-#define RopeJointDef_hpp
+#ifndef PLAYRHO_ROPE_JOINT_DEF_HPP
+#define PLAYRHO_ROPE_JOINT_DEF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointDef.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
@@ -73,4 +73,4 @@ RopeJointDef GetRopeJointDef(const RopeJoint& joint) noexcept;
 } // namespace playrho
 
 
-#endif /* RopeJointDef_hpp */
+#endif /* PLAYRHO_ROPE_JOINT_DEF_HPP */

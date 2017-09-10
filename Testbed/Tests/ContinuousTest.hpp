@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef CONTINUOUS_TEST_H
-#define CONTINUOUS_TEST_H
+#ifndef PLAYRHO_CONTINUOUS_TEST_HPP
+#define  PLAYRHO_CONTINUOUS_TEST_HPP
 
 #include "../Framework/Test.hpp"
 

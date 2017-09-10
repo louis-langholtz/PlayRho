@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef PULLEYS_H
-#define PULLEYS_H
+#ifndef PLAYRHO_PULLEYS_HPP
+#define PLAYRHO_PULLEYS_HPP
 
 #include "../Framework/Test.hpp"
 

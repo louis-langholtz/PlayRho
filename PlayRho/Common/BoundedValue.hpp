@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef BoundedValue_hpp
-#define BoundedValue_hpp
+#ifndef PLAYRHO_BOUNDED_VALUE_HPP
+#define PLAYRHO_BOUNDED_VALUE_HPP
 
 #include <PlayRho/Common/InvalidArgument.hpp>
 
@@ -513,4 +513,4 @@ namespace playrho {
     }
 }
 
-#endif /* BoundedValue_hpp */
+#endif /* PLAYRHO_BOUNDED_VALUE_HPP */

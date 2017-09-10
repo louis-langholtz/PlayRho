@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef FixtureAtty_hpp
-#define FixtureAtty_hpp
+#ifndef PLAYRHO_FIXTURE_ATTY_HPP
+#define PLAYRHO_FIXTURE_ATTY_HPP
 
 /// @file
 /// Declaration of the FixtureAtty class.
@@ -59,4 +59,4 @@ namespace playrho
 
 } // namespace playrho
 
-#endif /* FixtureAtty_hpp */
+#endif /* PLAYRHO_FIXTURE_ATTY_HPP */

@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef ContactAtty_hpp
-#define ContactAtty_hpp
+#ifndef PLAYRHO_CONTACT_ATTY_HPP
+#define PLAYRHO_CONTACT_ATTY_HPP
 
 /// @file
 /// Declaration of the ContactAtty class.
@@ -105,4 +105,4 @@ namespace playrho
 
 } // namespace playrho
 
-#endif /* ContactAtty_hpp */
+#endif /* PLAYRHO_CONTACT_ATTY_HPP */
