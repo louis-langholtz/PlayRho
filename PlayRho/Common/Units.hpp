@@ -26,7 +26,7 @@
 #ifndef Units_hpp
 #define Units_hpp
 
-#include <PlayRho/Common/RealNum.hpp>
+#include <PlayRho/Common/RealConstants.hpp>
 #include <PlayRho/Common/Templates.hpp>
 
 // #define USE_BOOST_UNITS

@@ -18,8 +18,8 @@ compiler:
 # Define build environment variables.
 # Each variable causes an individual build.
 env:
-  - REALNUM_TYPE=float
-  - REALNUM_TYPE=double
+  - REAL_TYPE=float
+  - REAL_TYPE=double
 
 # Specify explicitly which branches to build or not build
 # For details see: https://docs.travis-ci.com/user/customizing-the-build/#Building-Specific-Branches
@@ -101,8 +101,8 @@ install:
     export SOURCE_ROOT="${TRAVIS_BUILD_DIR}" BUILD_ROOT="${TRAVIS_BUILD_DIR}-Build"
     PLAYRHO_BUILD_OPTIONS="-DPLAYRHO_BUILD_UNIT_TESTS=ON -DPLAYRHO_BUILD_HELLOWORLD=ON -DPLAYRHO_BUILD_TESTBED=ON"
   - |
-    if [ "${REALNUM_TYPE}foo" != "foo" ]; then
-      PLAYRHO_BUILD_OPTIONS="$PLAYRHO_BUILD_OPTIONS -DPLAYRHO_REALNUM_TYPE=$REALNUM_TYPE"
+    if [ "${REAL_TYPE}foo" != "foo" ]; then
+      PLAYRHO_BUILD_OPTIONS="$PLAYRHO_BUILD_OPTIONS -DPLAYRHO_REAL_TYPE=$REAL_TYPE"
     fi
     if [ "$CXX" = "clang++" ]; then
       PLAYRHO_BUILD_OPTIONS="$PLAYRHO_BUILD_OPTIONS -DPLAYRHO_BUILD_BENCHMARK=ON"

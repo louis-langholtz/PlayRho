@@ -35,7 +35,7 @@
 #include <algorithm>
 
 #include <PlayRho/Common/Templates.hpp>
-#include <PlayRho/Common/RealNum.hpp>
+#include <PlayRho/Common/RealConstants.hpp>
 #include <PlayRho/Common/Units.hpp>
 #include <PlayRho/Common/Wider.hpp>
 
@@ -252,9 +252,6 @@ constexpr auto DefaultAngularSleepTolerance = Real{(Pi * 2) / 180} * RadianPerSe
 /// @details Ratio used for switching between rounded-corner collisions and closest-face
 ///   biased normal collisions.
 constexpr auto DefaultCirclesRatio = Real{10};
-
-/// @brief Square root two value.
-constexpr auto SquareRootTwo = Real(1.414213562373095048801688724209698078569671875376948073176679737990732478462);
 
 }
 

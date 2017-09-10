@@ -17,7 +17,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <PlayRho/Common/RealNum.hpp>
+#include <PlayRho/Common/Real.hpp>
 #include <PlayRho/Common/Settings.hpp>
 #include <string>
 
