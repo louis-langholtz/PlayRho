@@ -1,7 +1,7 @@
-if(NOT PLAYRHO_REALNUM_TYPE)
-	set(PLAYRHO_REALNUM_TYPE float)
+if(NOT PLAYRHO_REAL_TYPE)
+	set(PLAYRHO_REAL_TYPE float)
 endif()
-message(STATUS "PLAYRHO_REALNUM_TYPE=${PLAYRHO_REALNUM_TYPE}")
+message(STATUS "PLAYRHO_REAL_TYPE=${PLAYRHO_REAL_TYPE}")
 
 file(REMOVE "Common/RealNum.hpp")
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Common/RealNum.hpp.in" "${CMAKE_CURRENT_SOURCE_DIR}/Common/RealNum.hpp")

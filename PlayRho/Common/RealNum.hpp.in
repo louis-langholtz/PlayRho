@@ -33,45 +33,31 @@
 namespace playrho
 {
 
-    /// @brief Real-number type.
-    ///
-    /// @details This is the number type underlying numerical calculations conceptually involving
-    /// real-numbers. Ideally the implementation of this type doesn't suffer from things like:
-    /// catastrophic cancellation, catastrophic division, overflows, nor underflows.
-    ///
-    /// @note This can be implemented using float, double, long double, Fixed64, or Fixed32
-    ///   (though the use of Fixed32 is discouraged).
-    ///
-    /// @note Regarding division:
-    ///
-    ///   While dividing 1 by a Real, caching the result, and then doing multiplications with the
-    ///   result may well be faster (than repeatedly dividing), dividing 1 by Real can also result
-    ///   in an underflow situation that's then compounded every time it's multiplied with other
-    ///   values.
-    ///
-    ///   Meanwhile, dividing every value by Real isolates any underflows to the particular
-    ///   division where underflow occurs.
-    ///
-    /// @warning Using Fixed32 is not advised as it's numerical limitations are more likely to
-    ///   result in problems like overflows or underflows.
-    /// @warning The note regarding division applies even more so when using a fixed-point type
-    ///   (for Real).
-    ///
-    using Real = @PLAYRHO_REALNUM_TYPE@;
-
-    /// @brief Pi.
-    ///
-    /// @details While the include file definition of M_PI may be a POSIX compliance requirement
-    ///   and initially attractive to use, it's apparently not a C++ standards requirement
-    ///   and casually including it pollutes the namespace of all code that uses this library.
-    ///   Whatever the case, MSVS2017 doesn't make it part of the cmath include without enabling
-    ///   _USE_MATH_DEFINES. So rather than add yet more C-preprocessor macros to all
-    ///   sources that this library may be compiled with, it's simply hard-coded in here
-    ///   instead using a C++ mechanism that also keeps it with the enclosing namespace.
-    ///
-    /// @note Any narrowing is intentional.
-    ///
-    constexpr auto Pi = Real(3.14159265358979323846264338327950288);
+/// @brief Real-number type.
+///
+/// @details This is the number type underlying numerical calculations conceptually involving
+/// real-numbers. Ideally the implementation of this type doesn't suffer from things like:
+/// catastrophic cancellation, catastrophic division, overflows, nor underflows.
+///
+/// @note This can be implemented using float, double, long double, Fixed64, or Fixed32
+///   (though the use of Fixed32 is discouraged).
+///
+/// @note Regarding division:
+///
+///   While dividing 1 by a Real, caching the result, and then doing multiplications with the
+///   result may well be faster (than repeatedly dividing), dividing 1 by Real can also result
+///   in an underflow situation that's then compounded every time it's multiplied with other
+///   values.
+///
+///   Meanwhile, dividing every value by Real isolates any underflows to the particular
+///   division where underflow occurs.
+///
+/// @warning Using Fixed32 is not advised as it's numerical limitations are more likely to
+///   result in problems like overflows or underflows.
+/// @warning The note regarding division applies even more so when using a fixed-point type
+///   (for Real).
+///
+using Real = @PLAYRHO_REAL_TYPE@;
 
 }
 

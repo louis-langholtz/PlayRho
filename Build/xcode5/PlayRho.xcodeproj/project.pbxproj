@@ -179,6 +179,7 @@
 		47B58F5A1F57218400354C34 /* Version.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47B58F581F57218400354C34 /* Version.hpp */; };
 		47B58F5E1F5B314400354C34 /* FlagGuard.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47B58F5C1F5B314400354C34 /* FlagGuard.hpp */; };
 		47B58F601F5B791500354C34 /* FlagGuard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47B58F5F1F5B791500354C34 /* FlagGuard.cpp */; };
+		47B58F641F64C19600354C34 /* RealConstants.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47B58F621F64C19600354C34 /* RealConstants.hpp */; };
 		47C85D0A1EFA251B00F70C56 /* WheelJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47C85D091EFA251B00F70C56 /* WheelJoint.cpp */; };
 		47C85D0C1EFA2C1C00F70C56 /* Version.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47C85D0B1EFA2C1C00F70C56 /* Version.cpp */; };
 		47C85D0E1EFAE03700F70C56 /* WeldJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47C85D0D1EFAE03700F70C56 /* WeldJoint.cpp */; };
@@ -535,6 +536,7 @@
 		47B58F581F57218400354C34 /* Version.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Version.hpp; sourceTree = "<group>"; };
 		47B58F5C1F5B314400354C34 /* FlagGuard.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FlagGuard.hpp; sourceTree = "<group>"; };
 		47B58F5F1F5B791500354C34 /* FlagGuard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FlagGuard.cpp; sourceTree = "<group>"; };
+		47B58F621F64C19600354C34 /* RealConstants.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RealConstants.hpp; sourceTree = "<group>"; };
 		47C85D091EFA251B00F70C56 /* WheelJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WheelJoint.cpp; sourceTree = "<group>"; };
 		47C85D0B1EFA2C1C00F70C56 /* Version.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Version.cpp; sourceTree = "<group>"; };
 		47C85D0D1EFAE03700F70C56 /* WeldJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WeldJoint.cpp; sourceTree = "<group>"; };
@@ -928,6 +930,7 @@
 				473273231F476C1D00E22AE2 /* OptionalValue.hpp */,
 				470F9B0F1EDF2890007EF7B6 /* Position.hpp */,
 				470F94E01ECBB3A100AA3C82 /* Range.hpp */,
+				47B58F621F64C19600354C34 /* RealConstants.hpp */,
 				470F9B331EDF6C82007EF7B6 /* RealNum.hpp */,
 				470F9B381EDF6F0D007EF7B6 /* RealNum.hpp.in */,
 				80BB8946141C3E5900F1753A /* Settings.cpp */,
@@ -1223,6 +1226,7 @@
 				80BB8987141C3E5900F1753A /* PlayRho.hpp in Headers */,
 				4731DE581DEC908600E7F931 /* UnitVec2.hpp in Headers */,
 				474AFBFA1EB1B2CB002AA6C8 /* MultiShape.hpp in Headers */,
+				47B58F641F64C19600354C34 /* RealConstants.hpp in Headers */,
 				4787D6EB1F2FA0CA008C115E /* LengthError.hpp in Headers */,
 				80BB8990141C3E5900F1753A /* Distance.hpp in Headers */,
 				47CB34401D6F3A8500828126 /* MassData.hpp in Headers */,
