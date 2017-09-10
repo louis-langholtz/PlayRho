@@ -3,8 +3,8 @@ if(NOT PLAYRHO_REAL_TYPE)
 endif()
 message(STATUS "PLAYRHO_REAL_TYPE=${PLAYRHO_REAL_TYPE}")
 
-file(REMOVE "Common/RealNum.hpp")
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Common/RealNum.hpp.in" "${CMAKE_CURRENT_SOURCE_DIR}/Common/RealNum.hpp")
+file(REMOVE "Common/Real.hpp")
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Common/Real.hpp.in" "${CMAKE_CURRENT_SOURCE_DIR}/Common/Real.hpp")
 
 file(GLOB PLAYRHO_Collision_SRCS
 	"Collision/*.cpp"
