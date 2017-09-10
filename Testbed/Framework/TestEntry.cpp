@@ -60,7 +60,6 @@
 #include "../Tests/RayCast.hpp"
 #include "../Tests/Revolute.hpp"
 #include "../Tests/RopeJoint.hpp"
-//#include "../Tests/Rope.hpp"
 #include "../Tests/SensorTest.hpp"
 #include "../Tests/ShapeEditing.hpp"
 #include "../Tests/SliderCrank.hpp"
@@ -121,7 +120,6 @@ static const TestEntry testEntries[] =
     {"Pulleys", MakeUniqueTest<Pulleys>},
     {"Polygon Shapes", MakeUniqueTest<PolyShapes>},
     {"Web", MakeUniqueTest<Web>},
-    // {"Rope", MakeUniqueTest<RopeTest>},
     {"RopeJoint", MakeUniqueTest<RopeJointTest>},
     {"Pinball", MakeUniqueTest<Pinball>},
     {"Bullet Test", MakeUniqueTest<BulletTest>},

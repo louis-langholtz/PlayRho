@@ -29,6 +29,7 @@
 #include <cassert>
 #include <cmath>
 #include <type_traits>
+#include <iostream>
 
 namespace playrho
 {
@@ -748,6 +749,12 @@ namespace playrho
     {
         return "Fixed32";
     }
+    
+    /// @brief Output stream operator.
+    inline ::std::ostream& operator<<(::std::ostream& os, const Fixed32& value)
+    {
+        return os << static_cast<double>(value);
+    }
 
 #ifndef _WIN32
     // Fixed64 free functions.
@@ -846,7 +853,13 @@ namespace playrho
     {
         return "Fixed64";
     }
-    
+                
+    /// @brief Output stream operator.
+    inline ::std::ostream& operator<<(::std::ostream& os, const Fixed64& value)
+    {
+        return os << static_cast<double>(value);
+    }
+
 #endif /* !_WIN32 */
 
 } // namespace playrho

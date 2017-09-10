@@ -33,7 +33,6 @@
 #include <PlayRho/Common/Matrix.hpp>
 
 #include <cmath>
-#include <iostream>
 #include <vector>
 #include <numeric>
 
@@ -1002,20 +1001,6 @@ inline UnitVec2 GetUnitVector(const Vector2D<LinearVelocity> value, LinearVeloci
 /// @brief Gets the vertices for a circle described by the given parameters.
 std::vector<Length2D> GetCircleVertices(const Length radius, unsigned slices,
                                         Angle start = Angle{0}, Real turns = Real{1});
-
-/// @brief Output stream operator.
-::std::ostream& operator<<(::std::ostream& os, const Vec2& value);
-
-/// @brief Output stream operator.
-::std::ostream& operator<<(::std::ostream& os, const UnitVec2& value);
-
-/// @brief Output stream operator.
-::std::ostream& operator<<(::std::ostream& os, const Fixed32& value);
-
-#ifndef _WIN32
-/// @brief Output stream operator.
-::std::ostream& operator<<(::std::ostream& os, const Fixed64& value);
-#endif
 
 }
 #endif
