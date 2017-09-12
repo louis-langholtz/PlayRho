@@ -77,6 +77,8 @@ public:
     /// @brief Creates a new proxy.
     /// @details Creates a proxy for a tight fitting AABB and a userData pointer.
     /// @note The indices of proxies that have been destroyed get reused for new proxies.
+    /// @post If the root index had been the InvalidIndex, then it will be set to the index
+    ///   returned from this method.
     /// @return Index of the created proxy.
     size_type CreateProxy(const AABB aabb, void* userData);
 
@@ -229,9 +231,10 @@ private:
     /// @warning Behavior is undefined if the given index is not valid.
     void FreeNode(const size_type node) noexcept;
 
-    /// Inserts the specified node.
-    /// Does a leaf insertion of the node with the given index.
+    /// @brief Inserts the specified node.
+    /// @details Does a leaf insertion of the node with the given index.
     /// @warning Behavior is undefined if the given index is not valid.
+    /// @post The root index is set to the given index if the root index had been InvalidIndex.
     void InsertLeaf(const size_type index);
 
     /// Removes the specified node.

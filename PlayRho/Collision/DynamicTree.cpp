@@ -316,6 +316,8 @@ void DynamicTree::RemoveLeaf(const size_type leaf)
     const auto grandParent = m_nodes[parent].parent;
     
     const auto sibling = (m_nodes[parent].child1 == leaf)? m_nodes[parent].child2: m_nodes[parent].child1;
+    assert(sibling != InvalidIndex);
+    assert(sibling < m_nodeCapacity);
 
     if (grandParent != InvalidIndex)
     {
