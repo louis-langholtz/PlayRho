@@ -160,8 +160,8 @@ RayCastOutput playrho::RayCast(const DistanceProxy& proxy, const RayCastInput& i
     // q is the offset vertex
     // s is vertexDelta
     // r is rayDelta
-    // t = (q − p) × s / (r × s)
-    // u = (q − p) × r / (r × s)
+    // t = (q - p) x s / (r x s)
+    // u = (q - p) x r / (r x s)
 
     // Put the ray into the polygon's frame of reference.
     const auto transformedInput = RayCastInput{
@@ -195,10 +195,10 @@ RayCastOutput playrho::RayCast(const DistanceProxy& proxy, const RayCastInput& i
             const auto v0off = v0 + offset;
             const auto q_sub_p = v0off - ray0;
             
-            // t = ((q − p) × s) / (r × s)
+            // t = ((q - p) x s) / (r x s)
             const auto t = Cross(q_sub_p, edge) / ray_cross_edge;
             
-            // u = ((q − p) × r) / (r × s)
+            // u = ((q - p) x r) / (r x s)
             const auto u = Cross(q_sub_p, ray) / ray_cross_edge;
 
             if ((t >= Real(0)) && (t <= Real(1)) &&
