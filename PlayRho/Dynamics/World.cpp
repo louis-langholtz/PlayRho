@@ -310,7 +310,7 @@ namespace {
     /// @brief Gets the velocity constraints for the given inputs.
     /// @details Inializes the velocity constraints with the position dependent portions of
     ///   the current position constraints.
-    /// @post Velocity constraints will have their "normal" field set to the world manifold
+    /// @post Velocity constraints will have their "normal" field set to the world manifold
     ///   normal for them.
     /// @post Velocity constraints will have their constraint points set.
     /// @sa SolveVelocityConstraints.
