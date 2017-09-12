@@ -208,7 +208,7 @@ constexpr inline Vec2 GetVec2(const UnitVec2 value)
 
 /// @brief Gets whether a given value is almost zero.
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
-/// odd results like a divide by zero trap occuring.
+/// odd results like a divide by zero trap occurring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool AlmostZero(float value)
 {
@@ -217,7 +217,7 @@ constexpr inline bool AlmostZero(float value)
 
 /// @brief Gets whether a given value is almost zero.
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
-/// odd results like a divide by zero trap occuring.
+/// odd results like a divide by zero trap occurring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool AlmostZero(double value)
 {
@@ -226,7 +226,7 @@ constexpr inline bool AlmostZero(double value)
 
 /// @brief Gets whether a given value is almost zero.
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
-/// odd results like a divide by zero trap occuring.
+/// odd results like a divide by zero trap occurring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool AlmostZero(long double value)
 {
@@ -235,7 +235,7 @@ constexpr inline bool AlmostZero(long double value)
 
 /// @brief Gets whether a given value is almost zero.
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
-/// odd results like a divide by zero trap occuring.
+/// odd results like a divide by zero trap occurring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool AlmostZero(Fixed32 value)
 {
@@ -245,7 +245,7 @@ constexpr inline bool AlmostZero(Fixed32 value)
 #ifndef _WIN32
 /// @brief Gets whether a given value is almost zero.
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
-/// odd results like a divide by zero trap occuring.
+/// odd results like a divide by zero trap occurring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool AlmostZero(Fixed64 value)
 {
@@ -310,7 +310,7 @@ inline Angle GetAngle(const UnitVec2 value)
 }
 
 /// @brief Gets the angle.
-/// @return Anglular value in the range of -Pi to +Pi radians.
+/// @return Angular value in the range of -Pi to +Pi radians.
 template <class T>
 inline Angle GetAngle(const Vector2D<T> value)
 {
@@ -343,7 +343,7 @@ inline auto GetLength(T value)
 /// @brief Performs the dot product on two vectors (A and B).
 ///
 /// @details The dot product of two vectors is defined as:
-///   the magnitude of vector A, mulitiplied by, the magnitude of vector B,
+///   the magnitude of vector A, multiplied by, the magnitude of vector B,
 ///   multiplied by, the cosine of the angle between the two vectors (A and B).
 ///   Thus the dot product of two vectors is a value ranging between plus and minus the
 ///   magnitudes of each vector times each other.
@@ -705,7 +705,7 @@ constexpr inline Length2D Transform(const Length2D v, const Transformation T) no
 /// transformation again) will result in the original vector being returned.
 /// @sa <code>Transform</code>.
 /// @param v 2-D vector to inverse transform (inverse translate and inverse rotate).
-/// @param T Transformation (a translation and rotation) to invertedly apply to the given vector.
+/// @param T Transformation (a translation and rotation) to inversely apply to the given vector.
 /// @return Inverse transformed vector.
 constexpr inline Length2D InverseTransform(const Length2D v, const Transformation T) noexcept
 {
@@ -832,7 +832,7 @@ inline Angle GetNormalized(Angle value)
     return Angle{std::fmod(angleInRadians, Real(2 * Pi)) * Radian};
 }
 
-/// @brief Gets a sweep with the given sweep's angles normalized.
+/// @brief Gets a sweep with the given sweeps's angles normalized.
 /// @param sweep Sweep to return with its angles normalized.
 /// @return Sweep with its pos0 angle to be between -2 pi and 2 pi
 ///    and its pos1 angle reduced by the amount pos0's angle was reduced by.

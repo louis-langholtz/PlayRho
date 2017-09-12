@@ -70,8 +70,8 @@ namespace playrho
         /// Caches particular information from a simplex - a related metric and up-to 3 index pairs.
         ///
         /// @invariant As the metric and list of index pairs should be values from a snapshot of a
-        ///   simplex, the mertic and list of index pairs must not vary independent of each other.
-        ///   As such, this data structure only allows these values to be changed in unision via object
+        ///   simplex, the metric and list of index pairs must not vary independent of each other.
+        ///   As such, this data structure only allows these values to be changed in unison via object
         ///   construction or object assignment.
         ///
         /// @note This data structure is 12-bytes large.
@@ -223,9 +223,9 @@ namespace playrho
         auto list = IndexPair3{InvalidIndexPair, InvalidIndexPair, InvalidIndexPair};
         switch (collection.size())
         {
-            case 3: list[2] = collection[2].GetIndexPair(); // fallthrough
-            case 2: list[1] = collection[1].GetIndexPair(); // fallthrough
-            case 1: list[0] = collection[0].GetIndexPair(); // fallthrough
+            case 3: list[2] = collection[2].GetIndexPair(); // fall through
+            case 2: list[1] = collection[1].GetIndexPair(); // fall through
+            case 1: list[0] = collection[0].GetIndexPair(); // fall through
         }
         return list;
     }

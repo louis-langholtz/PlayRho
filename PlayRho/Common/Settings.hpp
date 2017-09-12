@@ -106,7 +106,7 @@ constexpr auto MaxChildCount = std::numeric_limits<std::uint32_t>::max() >> 6;
 using ChildCounter = std::remove_const<decltype(MaxChildCount)>::type;
 
 /// Time step iterations type.
-/// @details A type for countining iterations per time-step.
+/// @details A type for counting iterations per time-step.
 using TimestepIters = std::uint8_t;
 
 /// @brief Maximum float value.
@@ -215,7 +215,7 @@ using ContactCounter = Wider<BodyCounter>::type;
 constexpr auto InvalidContactIndex = static_cast<ContactCounter>(-1);
 
 /// @brief Maximum number of contacts in a world (2147319811).
-/// @details Uses the formula for the maximum number of edges in an undirectional graph of MaxBodies nodes. 
+/// @details Uses the formula for the maximum number of edges in an unidirectional graph of MaxBodies nodes. 
 /// This occurs when every possible body is connected to every other body.
 constexpr auto MaxContacts = ContactCounter{MaxBodies} * ContactCounter{MaxBodies - 1} / ContactCounter{2};
 
