@@ -78,7 +78,7 @@ namespace playrho {
         /// @brief T-Max.
         Real tMax = 1;
         
-        /// @brief Targetted depth of impact.
+        /// @brief Targeted depth of impact.
         /// @note Value must be less than twice the minimum vertex radius of any shape.
         Length targetDepth = DefaultLinearSlop * Real{3};
 
@@ -244,7 +244,7 @@ namespace playrho {
     /// @param sweepA Sweep A. Sweep of motion for shape represented by proxy A.
     /// @param proxyB Proxy B. The proxy's vertex count must be 1 or more.
     /// @param sweepB Sweep B. Sweep of motion for shape represented by proxy B.
-    /// @param conf Configuration details for on calculation. Like the targetted depth of penetration.
+    /// @param conf Configuration details for on calculation. Like the targeted depth of penetration.
     ///
     /// @return Time of impact output data.
     ///
