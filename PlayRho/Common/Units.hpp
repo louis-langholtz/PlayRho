@@ -28,6 +28,7 @@
 
 #include <PlayRho/Common/RealConstants.hpp>
 #include <PlayRho/Common/Templates.hpp>
+#include <type_traits>
 
 // #define USE_BOOST_UNITS
 #ifdef USE_BOOST_UNITS
@@ -294,6 +295,81 @@ namespace playrho
 #endif
 
 } // namespace playrho
+
+#if defined(USE_BOOST_UNITS)
+namespace boost {
+namespace units {
+
+// Define division and multiplication templated operators in boost::units namespace since
+//   boost::units is the consistent namespace of operands for these and this aids with
+//   argument dependent lookup (ADL).
+//
+// Note that while boost::units already defines division and multiplication operator support,
+//   that's only for division or multiplication with the same type that the quantity is based
+//   on. For example when Real is float, Length{0.0f} * 2.0f is already supported but
+//   Length{0.0f} * 2 is not.
+
+/// @brief Division operator.
+///
+/// @details Supports the division of a playrho::Real based boost::units::quantity
+///   by any arithmetic type except playrho::Real.
+/// @note This intentionally excludes the playrho::Real type since the playrho::Real
+///   type is already supported and supporting it again in this template causes
+///   ambiguous overload support.
+///
+template <class Dimension, typename X, typename = std::enable_if_t<
+    std::is_arithmetic<X>::value && !std::is_same<X, playrho::Real>::value &&
+    std::is_same<decltype(playrho::Real{} / X{}), playrho::Real>::value >
+>
+auto operator/ (quantity<Dimension, playrho::Real> lhs, X rhs)
+{
+    return lhs / playrho::Real(rhs);
+}
+
+template <class Dimension, typename X, typename = std::enable_if_t<
+    std::is_arithmetic<X>::value && !std::is_same<X, playrho::Real>::value &&
+    std::is_same<decltype(X{} / playrho::Real{}), playrho::Real>::value >
+>
+auto operator/ (X lhs, quantity<Dimension, playrho::Real> rhs)
+{
+    return playrho::Real(lhs) / rhs;
+}
+
+/// @brief Multiplication operator.
+///
+/// @details Supports the multiplication of a playrho::Real based boost::units::quantity
+///   by any arithmetic type except playrho::Real.
+/// @note This intentionally excludes the playrho::Real type since the playrho::Real
+///   type is already supported and supporting it again in this template causes
+///   ambiguous overload support.
+///
+template <class Dimension, typename X, typename = std::enable_if_t<
+    std::is_arithmetic<X>::value && !std::is_same<X, playrho::Real>::value &&
+    std::is_same<decltype(playrho::Real{} * X{}), playrho::Real>::value> >
+auto operator* (quantity<Dimension, playrho::Real> lhs, X rhs)
+{
+    return lhs * playrho::Real(rhs);
+}
+
+/// @brief Multiplication operator.
+///
+/// @details Supports the multiplication of a playrho::Real based boost::units::quantity
+///   by any arithmetic type except playrho::Real.
+/// @note This intentionally excludes the playrho::Real type since the playrho::Real
+///   type is already supported and supporting it again in this template causes
+///   ambiguous overload support.
+///
+template <class Dimension, typename X, typename = std::enable_if_t<
+    std::is_arithmetic<X>::value && !std::is_same<X, playrho::Real>::value &&
+    std::is_same<decltype(playrho::Real{} * X{}), playrho::Real>::value> >
+auto operator* (X lhs, quantity<Dimension, playrho::Real> rhs)
+{
+    return playrho::Real(lhs) * rhs;
+}
+
+} // namespace units
+} // namespace boost
+#endif // defined(USE_BOOST_UNITS)
 
 #undef PLAYRHO_QUANTITY
 #undef PLAYRHO_UNIT
