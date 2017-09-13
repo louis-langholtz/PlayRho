@@ -35,13 +35,13 @@ int main(int, char**)
     // from a pool and creates the ground box shape (also from a pool).
     // The body is also added to the world.
     const auto groundBody = world.CreateBody(playrho::BodyDef{}.UseLocation(playrho::Length2D{
-        playrho::Real(0) * playrho::Meter, playrho::Real(-10) * playrho::Meter
+        0 * playrho::Meter, -10 * playrho::Meter
     }));
 
     // Define the ground box shape.
     // The extents are the half-widths of the box.
     const auto groundBox = std::make_shared<playrho::PolygonShape>(
-        playrho::Real(50) * playrho::Meter, playrho::Real(10) * playrho::Meter);
+        50 * playrho::Meter, 10 * playrho::Meter);
 
     // Add the ground fixture to the ground body.
     groundBody->CreateFixture(groundBox);
@@ -50,18 +50,18 @@ int main(int, char**)
     const auto body = world.CreateBody(playrho::BodyDef{}
                                        .UseType(playrho::BodyType::Dynamic)
                                        .UseLocation(playrho::Length2D{
-        playrho::Real(0) * playrho::Meter, playrho::Real(4) * playrho::Meter
+        0 * playrho::Meter, 4 * playrho::Meter
     }));
 
     // Define another box shape for our dynamic body.
     const auto dynamicBox = std::make_shared<playrho::PolygonShape>(
-        playrho::Real(1) * playrho::Meter, playrho::Real(1) * playrho::Meter);
+        1 * playrho::Meter, 1 * playrho::Meter);
 
     // Set the box density to be non-zero, so it will be dynamic.
-    dynamicBox->SetDensity(playrho::Real(1) * playrho::KilogramPerSquareMeter);
+    dynamicBox->SetDensity(1 * playrho::KilogramPerSquareMeter);
 
     // Override the default friction.
-    dynamicBox->SetFriction(playrho::Real(0.3f));
+    dynamicBox->SetFriction(0.3f);
 
     // Add the shape to the body.
     body->CreateFixture(dynamicBox);
