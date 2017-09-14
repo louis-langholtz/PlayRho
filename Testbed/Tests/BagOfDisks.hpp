@@ -35,23 +35,23 @@ namespace playrho {
         {
             m_ground = m_world->CreateBody(BodyDef{}.UseType(BodyType::Kinematic));
             
-            auto boundaryConf = ChainShape::Conf{}.UseFriction(Real(100));
-            boundaryConf.UseVertexRadius(Real(0.04) * Meter);
-            boundaryConf.vertices.push_back(Vec2(-12.0f, +20.0f) * Meter);
-            boundaryConf.vertices.push_back(Vec2(-12.0f,  +0.0f) * Meter);
-            boundaryConf.vertices.push_back(Vec2(+12.0f,  +0.0f) * Meter);
-            boundaryConf.vertices.push_back(Vec2(+12.0f, +20.0f) * Meter);
+            auto boundaryConf = ChainShape::Conf{}.UseFriction(100);
+            boundaryConf.UseVertexRadius(0.04f * Meter);
+            boundaryConf.vertices.push_back(Vec2(-12, +20) * Meter);
+            boundaryConf.vertices.push_back(Vec2(-12,  +0) * Meter);
+            boundaryConf.vertices.push_back(Vec2(+12,  +0) * Meter);
+            boundaryConf.vertices.push_back(Vec2(+12, +20) * Meter);
             m_ground->CreateFixture(std::make_shared<ChainShape>(boundaryConf));
             
-            const auto vertices = GetCircleVertices(Real(10.0f) * Meter, 90);
-            const auto halfSegmentLength = GetLength(vertices[1] - vertices[0]) / Real(2);
+            const auto vertices = GetCircleVertices(10 * Meter, 90);
+            const auto halfSegmentLength = GetLength(vertices[1] - vertices[0]) / 2;
 
             auto conf = EdgeShape::Conf{};
-            conf.vertexRadius = Real(0.125) * Meter;
-            conf.density = Real{10} * KilogramPerSquareMeter;
+            conf.vertexRadius = 0.125f * Meter;
+            conf.density = 10 * KilogramPerSquareMeter;
             conf.friction = 0.2f;
-            conf.vertex1 = Length2D{-halfSegmentLength, Real(0) * Meter};
-            conf.vertex2 = Length2D{+halfSegmentLength, Real(0) * Meter};
+            conf.vertex1 = Length2D{-halfSegmentLength, 0 * Meter};
+            conf.vertex2 = Length2D{+halfSegmentLength, 0 * Meter};
             const auto vertexOffset = Vec2(0, 14) * Meter;
             const auto shape = std::make_shared<EdgeShape>(conf);
             auto prevBody = static_cast<Body*>(nullptr);
@@ -61,7 +61,7 @@ namespace playrho {
             {
                 if (prevVertex.has_value())
                 {
-                    const auto midPoint = (vertex + *prevVertex) / Real(2);
+                    const auto midPoint = (vertex + *prevVertex) / 2;
                     const auto angle = GetAngle(vertex - *prevVertex);
                     const auto body = m_world->CreateBody(BodyDef{}
                                                           .UseType(BodyType::Dynamic)
@@ -83,16 +83,16 @@ namespace playrho {
             }
             m_world->CreateJoint(RevoluteJointDef{prevBody, firstBody, vertices[0] + vertexOffset});
 
-            const auto diskRadius = Real(0.15) * Meter;
+            const auto diskRadius = 0.15f * Meter;
             const auto diskShape = std::make_shared<DiskShape>(DiskShape::Conf{}
                                                                .UseVertexRadius(diskRadius)
-                                                               .UseDensity(Real(10) * KilogramPerSquareMeter)
-                                                               .UseFriction(Real(0)));
+                                                               .UseDensity(10 * KilogramPerSquareMeter)
+                                                               .UseFriction(0));
             
-            auto angleIncrement = Real(90) * Degree;
+            auto angleIncrement = 90 * Degree;
             auto angle = Angle(0);
             const auto alpha = diskRadius;
-            const auto beta = Real(0.000125) * Meter / Degree;
+            const auto beta = 0.000125f * Meter / Degree;
             for (auto i = 0; i < 2000; ++i)
             {
                 const auto radius = alpha + beta * angle;
@@ -103,7 +103,7 @@ namespace playrho {
                                                       .UseLocation(location + vertexOffset));
                 body->CreateFixture(diskShape);
                 angle += angleIncrement;
-                angleIncrement *= Real(0.999);
+                angleIncrement *= 0.999f;
             }
         }
         
@@ -114,12 +114,12 @@ namespace playrho {
             {
                 case Key_A:
                 {
-                    SetAngularVelocity(*m_ground, angularVelocity + Real(0.1) * RadianPerSecond);
+                    SetAngularVelocity(*m_ground, angularVelocity + 0.1f * RadianPerSecond);
                     break;
                 }
                 case Key_D:
                 {
-                    SetAngularVelocity(*m_ground, angularVelocity - Real(0.1) * RadianPerSecond);
+                    SetAngularVelocity(*m_ground, angularVelocity - 0.1f * RadianPerSecond);
                     break;
                 }
                 default:

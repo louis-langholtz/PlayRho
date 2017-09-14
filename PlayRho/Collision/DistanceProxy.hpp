@@ -159,9 +159,9 @@ namespace playrho
 
     /// Tests a point for containment in the given distance proxy.
     /// @param proxy Distance proxy to check if point is within.
-    /// @param pLocal Point in local coordinates.
+    /// @param point Point in local coordinates.
     /// @return <code>true</code> if point is contained in the proxy, <code>false</code> otherwise.
-    bool TestPoint(const DistanceProxy& proxy, const Length2D pLocal) noexcept;
+    bool TestPoint(const DistanceProxy& proxy, const Length2D point) noexcept;
     
 }; // namespace playrho
 

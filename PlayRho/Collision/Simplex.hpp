@@ -27,7 +27,7 @@
 namespace playrho
 {
 
-    /// Simplex.
+    /// @brief An encapsulation of a point, line segment, or triangle.
     ///
     /// @details An encapsulation of a point, line segment, or triangle.
     ///   These are defined respectively as: a 0-simplex, a 1-simplex, and a 2-simplex.
@@ -49,7 +49,8 @@ namespace playrho
         ///
         /// @note This data is 28 * 3 + 4 = 88-bytes large (on at least one 64-bit platform).
         ///
-        using Edges = ArrayList<SimplexEdge, MaxSimplexEdges, std::remove_const<decltype(MaxSimplexEdges)>::type>;
+        using Edges = ArrayList<SimplexEdge, MaxSimplexEdges,
+            std::remove_const<decltype(MaxSimplexEdges)>::type>;
 
         /// Size type.
         ///
@@ -62,7 +63,8 @@ namespace playrho
         ///
         /// @note This data structure is 4 * 3 + 4 = 16-bytes large.
         ///
-        using Coefficients = ArrayList<Real, MaxSimplexEdges, std::remove_const<decltype(MaxSimplexEdges)>::type>;
+        using Coefficients = ArrayList<Real, MaxSimplexEdges,
+            std::remove_const<decltype(MaxSimplexEdges)>::type>;
         
         /// Simplex cache.
         ///
@@ -106,7 +108,10 @@ namespace playrho
             
         private:
             Real m_metric = GetInvalid<Real>(); ///< Metric. @details This is a length or area value.            
-            IndexPair3 m_indices{InvalidIndexPair, InvalidIndexPair, InvalidIndexPair}; ///< Indices. @details Collection of index-pairs.
+
+            /// @brief Indices.
+            /// @details Collection of index-pairs.
+            IndexPair3 m_indices{InvalidIndexPair, InvalidIndexPair, InvalidIndexPair};
         };
 
         /// @brief Gets the cache value for the given edges.

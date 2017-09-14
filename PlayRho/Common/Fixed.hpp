@@ -33,7 +33,7 @@
 
 namespace playrho
 {
-    /// @brief Fixed point template class.
+    /// @brief A fixed-point template class.
     ///
     /// @details This is a fixed point type template for a given base type using a given number
     ///   of fraction bits.

@@ -468,6 +468,15 @@ namespace playrho {
     
     // Common useful aliases...
 
+    /// @defgroup BoundedAliases Bounded value type aliases.
+    /// @details Type aliases for bounding values via on-construction checks that
+    ///   throw the <code>InvalidArgument</code> exception if an attempt is made
+    ///   to construct the bounded value type with a value not allowed by the specific
+    ///   alias.
+    /// @sa BoundedValue.
+    /// @sa InvalidArgument.
+    /// @{
+    
     /// @brief Non negative bounded value type.
     template <typename T>
     using NonNegative = typename std::enable_if<!std::is_pointer<T>::value,
@@ -505,6 +514,8 @@ namespace playrho {
     template <typename T>
     using UnitInterval = BoundedValue<T, LoValueCheck::ZeroOrMore, HiValueCheck::OneOrLess>;
     
+    /// @}
+ 
     /// @brief BoundedValue stream output operator.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     ::std::ostream& operator<<(::std::ostream& os, const BoundedValue<T, lo, hi>& value)

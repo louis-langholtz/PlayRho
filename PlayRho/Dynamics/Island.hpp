@@ -29,7 +29,7 @@ class Body;
 class Contact;
 class Joint;
 
-/// @brief Island.
+/// @brief Definition of a self-contained collision "island".
 /// @details A container of bodies contacts and joints relavent to handling world dynamics.
 /// @note This is an internal class.
 /// @note This data structure is 72-bytes large (on at least one 64-bit platform).

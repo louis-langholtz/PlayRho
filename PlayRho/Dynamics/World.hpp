@@ -59,9 +59,11 @@ class StepConf;
 class Shape;
 enum class BodyType;
 
-/// @brief World.
+/// @brief Definition of an independent and simulatable "world".
 ///
 /// @details The world class manages all physics entities, dynamic simulation, and queries.
+///   In a physical sense, perhaps this is more like a universe. In any case, there's
+///   precedence, from a physics-engine standpoint, for this being called a world.
 ///
 /// @note From a memory management perspective, world instances own Body, Joint, and Contact
 ///   instances.

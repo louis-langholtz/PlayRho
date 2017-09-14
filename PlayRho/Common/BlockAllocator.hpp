@@ -102,7 +102,7 @@ namespace playrho {
         allocator.Free(const_cast<T*>(p), sizeof(T));
     }
     
-    /// Blockl Deallocator.
+    /// Block deallocator.
     struct BlockDeallocator
     {
         /// @brief Size type.

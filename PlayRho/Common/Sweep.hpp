@@ -29,7 +29,7 @@
 namespace playrho
 {
     
-    /// @brief Sweep.
+    /// @brief Description of a "sweep" of motion.
     ///
     /// @details This describes the motion of a body/shape for TOI computation.
     ///   Shapes are defined with respect to the body origin, which may

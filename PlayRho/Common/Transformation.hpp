@@ -26,10 +26,13 @@
 #include <PlayRho/Common/Vector2D.hpp>
 #include <PlayRho/Common/UnitVec2.hpp>
 
+/// @file
+/// Definition of the Transformation class and free functions directly associated with it.
+
 namespace playrho
 {
     
-    /// Transformation.
+    /// @brief Describes a geometric transformation.
     /// @details
     /// A transform contains translation and rotation. It is used to represent
     /// the position and orientation of rigid frames.
