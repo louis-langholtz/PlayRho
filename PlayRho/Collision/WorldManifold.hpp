@@ -27,7 +27,7 @@ namespace playrho
     class Manifold;
     class Contact;
 
-    /// @brief World Manifold.
+    /// @brief Essentially a Manifold expressed in world coordinate terms.
     ///
     /// @details Used to recoginze the current state of a contact manifold in world coordinates.
     ///

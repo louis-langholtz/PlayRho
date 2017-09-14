@@ -28,7 +28,7 @@ namespace playrho
     class DistanceProxy;
     struct Transformation;
     
-    /// Manifold for two convex shapes.
+    /// A collision description for the collision two convex shapes.
     ///
     /// @details
     /// This describes zero, one, or two points of contact for which impulses should be applied to
@@ -107,7 +107,7 @@ namespace playrho
             e_faceB
         };
         
-        /// @brief Point data for a manifold.
+        /// @brief Data for a point of collision in a Manifold.
         ///
         /// @details This is a contact point belonging to a contact manifold. It holds details
         /// related to the geometry and dynamics of the contact points.

@@ -38,6 +38,13 @@
 
 namespace playrho
 {
+/// @brief Contact impulses data.
+struct ContactImpulses
+{
+    Momentum m_normal; ///< Normal impulse. This is the non-penetration impulse (4-bytes).
+    Momentum m_tangent; ///< Tangent impulse. This is the friction impulse (4-bytes).
+};
+
 // Other templates.
 
 /// @brief Gets the "X" element of the given value - i.e. the first element.
@@ -88,6 +95,11 @@ constexpr inline auto StripUnit(const BoundedValue<T, lo, hi>& v)
 {
     return StripUnit(v.get());
 }
+
+/// @defgroup Math Mathematical functions.
+/// @details These are non-member non-friend functions for mathematical operations
+///   especially those with mixed input and output types.
+/// @{
 
 /// @brief Squares the given value.
 template<class TYPE>
@@ -524,13 +536,6 @@ constexpr inline Mat33 GetSymInverse33(const Mat33& value) noexcept
     };
 }
 
-/// @brief Contact impulses data.
-struct ContactImpulses
-{
-    Momentum m_normal; ///< Normal impulse. This is the non-penetration impulse (4-bytes).
-    Momentum m_tangent; ///< Tangent impulse. This is the friction impulse (4-bytes).
-};
-
 /// @brief Gets a vector counter-clockwise (reverse-clockwise) perpendicular to the given vector.
 /// @details This takes a vector of form (x, y) and returns the vector (-y, x).
 /// @param vector Vector to return a counter-clockwise perpendicular equivalent for.
@@ -859,15 +864,6 @@ inline Real Normalize(Vec2& vector)
     return 0;
 }
 
-/// @brief Gets whether the given velocity is "under active" based on the given tolerances.
-inline bool IsUnderActive(Velocity velocity,
-                          LinearVelocity linSleepTol, AngularVelocity angSleepTol) noexcept
-{
-    const auto linVelSquared = GetLengthSquared(velocity.linear);
-    const auto angVelSquared = Square(velocity.angular);
-    return (angVelSquared <= Square(angSleepTol)) && (linVelSquared <= Square(linSleepTol));
-}
-
 /// @brief Gets the contact relative velocity.
 /// @note If relA and relB are the zero vectors, the resulting value is simply
 ///    velB.linear - velA.linear.
@@ -996,11 +992,22 @@ inline UnitVec2 GetUnitVector(const Vector2D<LinearVelocity> value, LinearVeloci
     return uv;
 }
 
-#endif
+#endif // USE_BOOST_UNITS
 
 /// @brief Gets the vertices for a circle described by the given parameters.
 std::vector<Length2D> GetCircleVertices(const Length radius, unsigned slices,
                                         Angle start = Angle{0}, Real turns = Real{1});
+
+/// @}
+
+/// @brief Gets whether the given velocity is "under active" based on the given tolerances.
+inline bool IsUnderActive(Velocity velocity,
+                          LinearVelocity linSleepTol, AngularVelocity angSleepTol) noexcept
+{
+    const auto linVelSquared = GetLengthSquared(velocity.linear);
+    const auto angVelSquared = Square(velocity.angular);
+    return (angVelSquared <= Square(angSleepTol)) && (linVelSquared <= Square(linSleepTol));
+}
 
 }
 #endif

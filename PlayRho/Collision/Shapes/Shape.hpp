@@ -33,7 +33,7 @@ class PolygonShape;
 class ChainShape;
 class MultiShape;
 
-/// @brief Shape.
+/// @brief A base abstract class for describing a type of shape.
 ///
 /// @details This is a polymorphic abstract base class for shapes.
 /// A shape is used for collision detection. You can create a shape however you like.
@@ -342,8 +342,10 @@ inline NonNegative<Length> GetVertexRadius(const Shape& shape) noexcept
 
 /// @brief Test a point for containment in the given shape.
 /// @param shape Shape to use for test.
-/// @param pLocal Point in local coordinates.
-bool TestPoint(const Shape& shape, const Length2D pLocal) noexcept;
+/// @param point Point in local coordinates.
+/// @return <code>true</code> if the given point is contained by the given shape,
+///   <code>false</code> otherwise.
+bool TestPoint(const Shape& shape, const Length2D point) noexcept;
 
 } // namespace playrho
 

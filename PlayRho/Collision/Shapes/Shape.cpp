@@ -21,12 +21,12 @@
 
 using namespace playrho;
 
-bool playrho::TestPoint(const Shape& shape, const Length2D pLocal) noexcept
+bool playrho::TestPoint(const Shape& shape, const Length2D point) noexcept
 {
     const auto childCount = shape.GetChildCount();
     for (auto i = decltype(childCount){0}; i < childCount; ++i)
     {
-        if (playrho::TestPoint(shape.GetChild(i), pLocal))
+        if (playrho::TestPoint(shape.GetChild(i), point))
         {
             return true;
         }
