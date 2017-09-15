@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_VEC2_HPP
-#define PLAYRHO_VEC2_HPP
+#ifndef PLAYRHO_COMMON_VECTOR2D_HPP
+#define PLAYRHO_COMMON_VECTOR2D_HPP
 
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/InvalidArgument.hpp>
@@ -80,7 +80,7 @@ namespace playrho
     /// @brief Gets the given value as a Vec2.
     constexpr inline Vec2 GetVec2(const Vector2D<Real> value)
     {
-        return Vec2(value);
+        return {value};
     }
 
     /// @brief Gets an invalid value for the Vec2 type.
@@ -259,4 +259,4 @@ namespace playrho
 #endif
 } // namespace playrho
 
-#endif /* PLAYRHO_VEC2_HPP */
+#endif // PLAYRHO_COMMON_VECTOR2D_HPP

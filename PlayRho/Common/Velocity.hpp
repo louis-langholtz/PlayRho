@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_VELOCITY_HPP
-#define PLAYRHO_VELOCITY_HPP
+#ifndef PLAYRHO_COMMON_VELOCITY_HPP
+#define PLAYRHO_COMMON_VELOCITY_HPP
 
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/Vector2D.hpp>
@@ -138,6 +138,6 @@ namespace playrho
         return Velocity{lhs.linear / rhs, lhs.angular / rhs};
     }
     
-}
+} // namespace playrho
 
-#endif /* PLAYRHO_VELOCITY_HPP */
+#endif // PLAYRHO_COMMON_VELOCITY_HPP

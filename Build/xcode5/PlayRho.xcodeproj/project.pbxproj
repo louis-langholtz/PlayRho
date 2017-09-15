@@ -233,7 +233,6 @@
 		80BB89A2141C3E5900F1753A /* GrowableStack.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8943141C3E5900F1753A /* GrowableStack.hpp */; };
 		80BB89A3141C3E5900F1753A /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8944141C3E5900F1753A /* Math.cpp */; };
 		80BB89A4141C3E5900F1753A /* Math.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8945141C3E5900F1753A /* Math.hpp */; };
-		80BB89A5141C3E5900F1753A /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8946141C3E5900F1753A /* Settings.cpp */; };
 		80BB89A6141C3E5900F1753A /* Settings.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8947141C3E5900F1753A /* Settings.hpp */; };
 		80BB89A7141C3E5900F1753A /* StackAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8948141C3E5900F1753A /* StackAllocator.cpp */; };
 		80BB89A8141C3E5900F1753A /* StackAllocator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8949141C3E5900F1753A /* StackAllocator.hpp */; };
@@ -598,7 +597,6 @@
 		80BB8943141C3E5900F1753A /* GrowableStack.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GrowableStack.hpp; sourceTree = "<group>"; };
 		80BB8944141C3E5900F1753A /* Math.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Math.cpp; sourceTree = "<group>"; };
 		80BB8945141C3E5900F1753A /* Math.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Math.hpp; sourceTree = "<group>"; };
-		80BB8946141C3E5900F1753A /* Settings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Settings.cpp; sourceTree = "<group>"; };
 		80BB8947141C3E5900F1753A /* Settings.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Settings.hpp; sourceTree = "<group>"; };
 		80BB8948141C3E5900F1753A /* StackAllocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StackAllocator.cpp; sourceTree = "<group>"; };
 		80BB8949141C3E5900F1753A /* StackAllocator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StackAllocator.hpp; sourceTree = "<group>"; };
@@ -927,7 +925,6 @@
 				47B58F651F64D2B500354C34 /* Real.hpp */,
 				47B58F671F64D2D200354C34 /* Real.hpp.in */,
 				47B58F621F64C19600354C34 /* RealConstants.hpp */,
-				80BB8946141C3E5900F1753A /* Settings.cpp */,
 				80BB8947141C3E5900F1753A /* Settings.hpp */,
 				4734B21E1DC1340500F15E29 /* Span.hpp */,
 				80BB8948141C3E5900F1753A /* StackAllocator.cpp */,
@@ -1591,7 +1588,6 @@
 				80BB89A3141C3E5900F1753A /* Math.cpp in Sources */,
 				47B58F551F570E2C00354C34 /* DynamicMemory.cpp in Sources */,
 				470F94D91EC8C37500AA3C82 /* JointKey.cpp in Sources */,
-				80BB89A5141C3E5900F1753A /* Settings.cpp in Sources */,
 				476162C81E245C9D002C7FB0 /* CodeDumper.cpp in Sources */,
 				80BB89A7141C3E5900F1753A /* StackAllocator.cpp in Sources */,
 				80BB89AB141C3E5900F1753A /* Body.cpp in Sources */,

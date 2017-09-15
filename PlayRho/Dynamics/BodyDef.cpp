@@ -24,6 +24,7 @@
 
 namespace playrho
 {
+
     BodyDef GetBodyDef(const Body& body) noexcept
     {
         auto def = BodyDef{};
@@ -45,4 +46,5 @@ namespace playrho
         def.userData = body.GetUserData();
         return def;
     }
-}
+
+} // namespace playrho

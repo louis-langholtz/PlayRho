@@ -19,9 +19,10 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_VECTOR_HPP
-#define PLAYRHO_VECTOR_HPP
+#ifndef PLAYRHO_COMMON_VECTOR_HPP
+#define PLAYRHO_COMMON_VECTOR_HPP
 
+#include <cassert>
 #include <cstddef>
 #include <type_traits>
 #include <PlayRho/Common/InvalidArgument.hpp>
@@ -87,7 +88,7 @@ struct Vector
     
     /// @brief Whether empty.
     /// @note Always false for N > 0.
-    constexpr size_type empty() const noexcept { return N == 0; }
+    constexpr bool empty() const noexcept { return N == 0; }
     
     /// @brief Gets a "begin" iterator.
     iterator begin() noexcept { return iterator(elements); }
@@ -185,4 +186,4 @@ constexpr auto Get(const Vector<N, T>& v) noexcept
 
 } // namespace playrho
 
-#endif /* PLAYRHO_VECTOR_HPP */
+#endif // PLAYRHO_COMMON_VECTOR_HPP

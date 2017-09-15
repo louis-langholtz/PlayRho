@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_WIDER_HPP
-#define PLAYRHO_WIDER_HPP
+#ifndef PLAYRHO_COMMON_WIDER_HPP
+#define PLAYRHO_COMMON_WIDER_HPP
 
 #include <cstdint>
 #include <type_traits>
@@ -100,12 +100,12 @@ namespace std {
 
 /// @brief Make unsigned specialization for the __int128_t type.
 template <> struct make_unsigned<__int128_t> {
-    typedef __uint128_t type; ///< Wider type.
+    using type = __uint128_t; ///< Wider type.
 };
 #endif
 
-}
+} // namespace std
 
 // clang-format on
 
-#endif /* PLAYRHO_WIDER_HPP */
+#endif // PLAYRHO_COMMON_WIDER_HPP

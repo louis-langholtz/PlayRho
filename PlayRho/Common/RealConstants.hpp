@@ -26,8 +26,8 @@
  * @sa https://en.wikipedia.org/wiki/Dimensionless_quantity
  */
 
-#ifndef PLAYRHO_REAL_CONSTANTS_HPP
-#define PLAYRHO_REAL_CONSTANTS_HPP
+#ifndef PLAYRHO_COMMON_REALCONSTANTS_HPP
+#define PLAYRHO_COMMON_REALCONSTANTS_HPP
 
 #include <PlayRho/Common/Real.hpp>
 
@@ -60,4 +60,4 @@ constexpr auto SquareRootTwo =
 
 } // namespace playrho
 
-#endif /* PLAYRHO_REAL_CONSTANTS_HPP */
+#endif // PLAYRHO_COMMON_REALCONSTANTS_HPP

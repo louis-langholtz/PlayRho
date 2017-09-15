@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_TRANSFORMATION_HPP
-#define PLAYRHO_TRANSFORMATION_HPP
+#ifndef PLAYRHO_COMMON_TRANSFORMATION_HPP
+#define PLAYRHO_COMMON_TRANSFORMATION_HPP
 
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/Vector2D.hpp>
@@ -67,6 +67,6 @@ namespace playrho
         return (lhs.p != rhs.p) || (lhs.q != rhs.q);
     }
 
-}
+} // namespace playrho
 
-#endif /* PLAYRHO_TRANSFORMATION_HPP */
+#endif // PLAYRHO_COMMON_TRANSFORMATION_HPP

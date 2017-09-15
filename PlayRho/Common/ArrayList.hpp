@@ -17,13 +17,13 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_ARRAY_LIST_HPP
-#define PLAYRHO_ARRAY_LIST_HPP
+#ifndef PLAYRHO_COMMON_ARRAYLIST_HPP
+#define PLAYRHO_COMMON_ARRAYLIST_HPP
 
-#include <type_traits>
-#include <initializer_list>
-#include <cassert>
 #include <array>
+#include <cassert>
+#include <initializer_list>
+#include <type_traits>
 
 namespace playrho
 {
@@ -50,13 +50,10 @@ namespace playrho
         /// @brief Constant pointer type.
         using const_pointer = const value_type*;
 
-        constexpr ArrayList() noexcept
-        {
-            // Intentionally empty.
-        }
+        constexpr ArrayList() noexcept = default;
 
         template <std::size_t COPY_MAXSIZE, typename COPY_SIZE_TYPE, typename = std::enable_if_t< COPY_MAXSIZE <= MAXSIZE >>
-        constexpr ArrayList(const ArrayList<VALUE_TYPE, COPY_MAXSIZE, SIZE_TYPE>& copy):
+        constexpr explicit ArrayList(const ArrayList<VALUE_TYPE, COPY_MAXSIZE, SIZE_TYPE>& copy):
             m_size{copy.size()},
             m_elements{copy.data()}
         {
@@ -73,7 +70,7 @@ namespace playrho
         }
 
         template <std::size_t SIZE, typename = std::enable_if_t< SIZE <= MAXSIZE >>
-        ArrayList(value_type (&value)[SIZE]) noexcept
+        explicit ArrayList(value_type (&value)[SIZE]) noexcept
         {
             for (auto&& elem: value)
             {
@@ -179,14 +176,15 @@ namespace playrho
 
 } /* namespace playrho */
 
-namespace std
-{
+namespace std {
+
     /// Tuple size specialization for ArrayList classes.
     template< class T, size_t N, typename SIZE_TYPE >
     class tuple_size< playrho::ArrayList<T, N, SIZE_TYPE> >: public integral_constant<size_t, N>
     {
         // Intentionally empty.
     };
-}
 
-#endif /* PLAYRHO_ARRAY_LIST_HPP */
+} // namespace std
+
+#endif // PLAYRHO_COMMON_ARRAYLIST_HPP

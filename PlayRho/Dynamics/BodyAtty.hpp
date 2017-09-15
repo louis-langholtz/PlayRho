@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_BODY_ATTY_HPP
-#define PLAYRHO_BODY_ATTY_HPP
+#ifndef PLAYRHO_DYNAMICS_BODYATTY_HPP
+#define PLAYRHO_DYNAMICS_BODYATTY_HPP
 
 /// @file
 /// Declaration of the BodyAtty class.
@@ -30,6 +30,7 @@
 #include <PlayRho/Dynamics/Joints/JointKey.hpp>
 
 #include <algorithm>
+#include <utility>
 
 namespace playrho
 {
@@ -47,7 +48,7 @@ namespace playrho
         
         static Fixture* CreateFixture(Body& b, std::shared_ptr<const Shape> shape, const FixtureDef& def)
         {
-            const auto fixture = new Fixture{&b, def, shape};
+            const auto fixture = new Fixture{&b, def, std::move(shape)};
             b.m_fixtures.push_back(fixture);
             return fixture;
         }
@@ -134,7 +135,7 @@ namespace playrho
 
         static bool Insert(Body* b, Joint* value)
         {
-            if (b)
+            if (b != nullptr)
             {
                 return Insert(*b, value);
             }
@@ -218,7 +219,7 @@ namespace playrho
             });
         }
         
-        static void EraseContacts(Body& b, std::function<bool(Contact&)> callback)
+        static void EraseContacts(Body& b, const std::function<bool(Contact&)>& callback)
         {
             auto end = b.m_contacts.end();
             auto iter = b.m_contacts.begin();
@@ -260,4 +261,4 @@ namespace playrho
 
 } // namespace playrho
 
-#endif /* PLAYRHO_BODY_ATTY_HPP */
+#endif // PLAYRHO_DYNAMICS_BODYATTY_HPP

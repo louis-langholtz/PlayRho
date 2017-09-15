@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_FILTER_HPP
-#define PLAYRHO_FILTER_HPP
+#ifndef PLAYRHO_DYNAMICS_FILTER_HPP
+#define PLAYRHO_DYNAMICS_FILTER_HPP
 
 /// @file
 /// Declarations of the Filter struct and any free functions associated with it.
@@ -69,6 +69,7 @@ namespace playrho {
         return ((filterA.maskBits & filterB.categoryBits) != 0) &&
                ((filterB.maskBits & filterA.categoryBits) != 0);
     }
-}
 
-#endif /* PLAYRHO_FILTER_HPP */
+} // namespace playrho
+
+#endif // PLAYRHO_DYNAMICS_FILTER_HPP

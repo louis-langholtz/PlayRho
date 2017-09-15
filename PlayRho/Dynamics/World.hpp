@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_WORLD_HPP
-#define PLAYRHO_WORLD_HPP
+#ifndef PLAYRHO_DYNAMICS_WORLD_HPP
+#define PLAYRHO_DYNAMICS_WORLD_HPP
 
 /// @file
 /// Declarations of the World class and associated free functions.
@@ -54,7 +54,7 @@ class Body;
 class Contact;
 class Fixture;
 class Joint;
-class Island;
+struct Island;
 class StepConf;
 class Shape;
 enum class BodyType;
@@ -69,6 +69,8 @@ enum class BodyType;
 ///   instances.
 /// @note This data structure is 352-bytes large (with 4-byte Real on at least one 64-bit
 ///   platform).
+///
+/// @sa WorldFreeFunctions
 ///
 class World
 {
@@ -94,7 +96,7 @@ public:
 
     /// @brief Constructs a world object.
     /// @throws InvalidArgument if the given max vertex radius is less than the min.
-    World(const WorldDef& def = GetDefaultWorldDef());
+    explicit World(const WorldDef& def = GetDefaultWorldDef());
 
     /// @brief Copy constructor.
     World(const World& other);
@@ -194,7 +196,7 @@ public:
     /// @brief Queries the world for all fixtures that potentially overlap the provided AABB.
     /// @param aabb the query box.
     /// @param callback User implemented callback function.
-    void QueryAABB(AABB aabb, QueryFixtureCallback callback);
+    void QueryAABB(const AABB& aabb, QueryFixtureCallback callback);
 
     /// @brief Ray-cast operation code.
     ///
@@ -265,7 +267,7 @@ public:
     Real GetTreeQuality() const;
 
     /// @brief Changes the global gravity vector.
-    void SetGravity(const LinearAcceleration2D gravity) noexcept;
+    void SetGravity(LinearAcceleration2D gravity) noexcept;
     
     /// @brief Gets the global gravity vector.
     LinearAcceleration2D GetGravity() const noexcept;
@@ -276,7 +278,7 @@ public:
     /// Shift the world origin. Useful for large worlds.
     /// The body shift formula is: position -= newOrigin
     /// @param newOrigin the new origin with respect to the old origin
-    void ShiftOrigin(const Length2D newOrigin);
+    void ShiftOrigin(Length2D newOrigin);
 
     /// @brief Gets the minimum vertex radius that shapes in this world can be.
     Length GetMinVertexRadius() const noexcept;
@@ -302,7 +304,7 @@ public:
     bool RegisterForProxies(Body* body);
 
     /// @brief Creates a fixture with the given parameters.
-    Fixture* CreateFixture(Body& body, std::shared_ptr<const Shape> shape,
+    Fixture* CreateFixture(Body& body, const std::shared_ptr<const Shape>& shape,
                            const FixtureDef& def = GetDefaultFixtureDef(),
                            bool resetMassData = true);
 
@@ -380,11 +382,14 @@ private:
                       const std::map<const Fixture*, Fixture*>& fixtureMap,
                       SizedRange<World::Contacts::const_iterator> range);
 
+    /// @brief Internal destroy.
+    /// @warning Behavior is undefined if passed a null pointer for the joint.
     void InternalDestroy(Joint* joint);
 
     /// @brief Solves the step.
     /// @details Finds islands, integrates and solves constraints, solves position constraints.
-    /// @note This may miss collisions involving fast moving bodies and allow them to tunnel through each other.
+    /// @note This may miss collisions involving fast moving bodies and allow them to tunnel
+    ///   through each other.
     RegStepStats SolveReg(const StepConf& conf);
 
     /// @brief Solves the given island (regularly).
@@ -392,16 +397,22 @@ private:
     /// @details This:
     ///   1. Updates every island-body's sweep.pos0 to its sweep.pos1.
     ///   2. Updates every island-body's sweep.pos1 to the new "solved" position for it.
-    ///   3. Updates every island-body's velocity to the new accelerated, dampened, and "solved" velocity for it.
-    ///   4. Synchronizes every island-body's transform (by updating it to transform one of the body's sweep).
+    ///   3. Updates every island-body's velocity to the new accelerated, dampened, and "solved"
+    ///      velocity for it.
+    ///   4. Synchronizes every island-body's transform (by updating it to transform one of the
+    ///      body's sweep).
     ///   5. Reports to the listener (if non-null).
     ///
-    /// @param step Time step information.
-    /// @param island Island of bodies, contacts, and joints to solve for.
+    /// @param conf Time step configuration information.
+    /// @param island Island of bodies, contacts, and joints to solve for. Must contain at least
+    ///   one body, contact, or joint.
+    ///
+    /// @warning Behavior is undefined if the given island doesn't have at least one body,
+    ///   contact, or joint.
     ///
     /// @return Island solver results.
     ///
-    IslandSolverResults SolveRegIslandViaGS(const StepConf& step, Island island);
+    IslandSolverResults SolveRegIslandViaGS(const StepConf& conf, Island island);
     
     /// @brief Adds to the island based off of a given "seed" body.
     /// @post Contacts are listed in the island in the order that bodies provide those contacts.
@@ -415,37 +426,44 @@ private:
 
     /// @brief Solves the step using successive time of impact (TOI) events.
     /// @details Used for continuous physics.
-    /// @note This is intended to detect and prevent the tunneling that the faster Solve method may miss.
+    /// @note This is intended to detect and prevent the tunneling that the faster Solve method
+    ///    may miss.
     /// @param conf Time step configuration to use.
     ToiStepStats SolveToi(const StepConf& conf);
 
     /// @brief Solves collisions for the given time of impact.
     ///
-    /// @param step Time step to solve for.
+    /// @param conf Time step configuration to solve for.
     /// @param contact Contact.
     ///
-    /// @note Precondition 1: there is no contact having a lower TOI in this time step that has not already been solved for.
-    /// @note Precondition 2: there is not a lower TOI in the time step for which collisions have not already been processed.
+    /// @note Precondition 1: there is no contact having a lower TOI in this time step that has
+    ///   not already been solved for.
+    /// @note Precondition 2: there is not a lower TOI in the time step for which collisions have
+    ///   not already been processed.
     ///
-    IslandSolverResults SolveToi(const StepConf& step, Contact& contact);
+    IslandSolverResults SolveToi(const StepConf& conf, Contact& contact);
     
     /// @brief Solves the time of impact for bodies 0 and 1 of the given island.
     ///
     /// @details This:
     ///   1. Updates pos0 of the sweeps of bodies 0 and 1.
-    ///   2. Updates pos1 of the sweeps, the transforms, and the velocities of the other bodies in this island.
+    ///   2. Updates pos1 of the sweeps, the transforms, and the velocities of the other bodies
+    ///      in this island.
     ///
-    /// @pre <code>island.m_bodies</code> contains at least two bodies, the first two of which are bodies 0 and 1.
-    /// @pre <code>island.m_bodies</code> contains appropriate other bodies of the contacts of the two bodies.
-    /// @pre <code>island.m_contacts</code> contains the contact that specified the two identified bodies.
+    /// @pre <code>island.m_bodies</code> contains at least two bodies, the first two of which
+    ///   are bodies 0 and 1.
+    /// @pre <code>island.m_bodies</code> contains appropriate other bodies of the contacts of
+    ///   the two bodies.
+    /// @pre <code>island.m_contacts</code> contains the contact that specified the two identified
+    ///   bodies.
     /// @pre <code>island.m_contacts</code> contains appropriate other contacts of the two bodies.
     ///
-    /// @param step Time step information.
+    /// @param conf Time step configuration information.
     /// @param island Island to do time of impact solving for.
     ///
     /// @return Island solver results.
     ///
-    IslandSolverResults SolveToiViaGS(const StepConf& step, Island& island);
+    IslandSolverResults SolveToiViaGS(const StepConf& conf, Island& island);
 
     static void UpdateBody(Body& body, const Position& pos, const Velocity& vel);
 
@@ -537,7 +555,7 @@ private:
     /// @details This finds the contact with the lowest (soonest) time of impact.
     /// @return Contacts with the least time of impact and its time of impact, or null contact.
     ///  These contacts will all be enabled, not have sensors, be active, and impenetrable.
-    ContactToiData GetSoonestContacts(const std::size_t reserveSize);
+    ContactToiData GetSoonestContacts(std::size_t reserveSize);
 
     bool HasNewFixtures() const noexcept;
     
@@ -588,7 +606,7 @@ private:
 
     /// @brief Creates proxies for every child of the given fixture's shape.
     /// @note This sets the proxy count to the child count of the shape.
-    void CreateProxies(Fixture& fixture, const Length aabbExtension);
+    void CreateProxies(Fixture& fixture, Length aabbExtension);
 
     /// @brief Destroys the given fixture's proxies.
     /// @note This resets the proxy count to 0.
@@ -599,12 +617,12 @@ private:
     void InternalTouchProxies(Fixture& fixture) noexcept;
 
     ChildCounter Synchronize(Fixture& fixture,
-                              const Transformation xfm1, const Transformation xfm2,
-                              const Real multiplier, const Length extension);
+                             Transformation xfm1, Transformation xfm2,
+                             Real multiplier, Length extension);
 
     ContactCounter Synchronize(Body& body,
-                                const Transformation& xfm1, const Transformation& xfm2,
-                                const Real multiplier, const Length aabbExtension);
+                               Transformation xfm1, Transformation xfm2,
+                               Real multiplier, Length aabbExtension);
     
     void CreateAndDestroyProxies(const StepConf& conf);
     void CreateAndDestroyProxies(Fixture& fixture, const StepConf& conf);
@@ -703,32 +721,27 @@ enum class World::RayCastOpcode
 
 inline SizedRange<World::Bodies::iterator> World::GetBodies() noexcept
 {
-    return SizedRange<World::Bodies::iterator>(m_bodies.begin(), m_bodies.end(),
-                                               m_bodies.size());
+    return {m_bodies.begin(), m_bodies.end(), m_bodies.size()};
 }
 
 inline SizedRange<World::Bodies::const_iterator> World::GetBodies() const noexcept
 {
-    return SizedRange<World::Bodies::const_iterator>(m_bodies.begin(), m_bodies.end(),
-                                                     m_bodies.size());
+    return {m_bodies.begin(), m_bodies.end(), m_bodies.size()};
 }
 
 inline SizedRange<World::Joints::const_iterator> World::GetJoints() const noexcept
 {
-    return SizedRange<World::Joints::const_iterator>(m_joints.begin(), m_joints.end(),
-                                                     m_joints.size());
+    return {m_joints.begin(), m_joints.end(), m_joints.size()};
 }
 
 inline SizedRange<World::Joints::iterator> World::GetJoints() noexcept
 {
-    return SizedRange<World::Joints::iterator>(m_joints.begin(), m_joints.end(),
-                                               m_joints.size());
+    return {m_joints.begin(), m_joints.end(), m_joints.size()};
 }
 
 inline SizedRange<World::Contacts::const_iterator> World::GetContacts() const noexcept
 {
-    return SizedRange<World::Contacts::const_iterator>(m_contacts.begin(), m_contacts.end(),
-                                                       m_contacts.size());
+    return {m_contacts.begin(), m_contacts.end(), m_contacts.size()};
 }
 
 inline LinearAcceleration2D World::GetGravity() const noexcept
@@ -743,7 +756,7 @@ inline bool World::IsLocked() const noexcept
 
 inline bool World::IsStepComplete() const noexcept
 {
-    return m_flags & e_stepComplete;
+    return (m_flags & e_stepComplete) != 0u;
 }
 
 inline void World::SetStepComplete(bool value) noexcept
@@ -760,7 +773,7 @@ inline void World::SetStepComplete(bool value) noexcept
 
 inline bool World::GetSubStepping() const noexcept
 {
-    return m_flags & e_substepping;
+    return (m_flags & e_substepping) != 0u;
 }
 
 inline void World::SetSubStepping(bool flag) noexcept
@@ -777,7 +790,7 @@ inline void World::SetSubStepping(bool flag) noexcept
 
 inline bool World::HasNewFixtures() const noexcept
 {
-    return m_flags & e_newFixture;
+    return (m_flags & e_newFixture) != 0u;
 }
 
 inline void World::SetNewFixtures() noexcept
@@ -847,55 +860,60 @@ inline void World::SetContactListener(ContactListener* listener) noexcept
 
 inline bool World::ShouldCollide(const Fixture *fixtureA, const Fixture *fixtureB)
 {
-    return !m_contactFilter || m_contactFilter->ShouldCollide(fixtureA, fixtureB);
+    return (m_contactFilter == nullptr) || m_contactFilter->ShouldCollide(fixtureA, fixtureB);
 }
 
-inline bool World::IsIslanded(const Body* key) const noexcept
+inline bool World::IsIslanded(const Body* body) const noexcept
 {
-    return BodyAtty::IsIslanded(*key);
+    return BodyAtty::IsIslanded(*body);
 }
 
-inline bool World::IsIslanded(const Contact* key) const noexcept
+inline bool World::IsIslanded(const Contact* contact) const noexcept
 {
-    return ContactAtty::IsIslanded(*key);
+    return ContactAtty::IsIslanded(*contact);
 }
 
-inline bool World::IsIslanded(const Joint* key) const noexcept
+inline bool World::IsIslanded(const Joint* joint) const noexcept
 {
-    return JointAtty::IsIslanded(*key);
+    return JointAtty::IsIslanded(*joint);
 }
 
-inline void World::SetIslanded(Body* key) noexcept
+inline void World::SetIslanded(Body* body) noexcept
 {
-    BodyAtty::SetIslanded(*key);
+    BodyAtty::SetIslanded(*body);
 }
 
-inline void World::SetIslanded(Contact* key) noexcept
+inline void World::SetIslanded(Contact* contact) noexcept
 {
-    ContactAtty::SetIslanded(*key);
+    ContactAtty::SetIslanded(*contact);
 }
 
-inline void World::SetIslanded(Joint* key) noexcept
+inline void World::SetIslanded(Joint* joint) noexcept
 {
-    JointAtty::SetIslanded(*key);
+    JointAtty::SetIslanded(*joint);
 }
 
-inline void World::UnsetIslanded(Body* key) noexcept
+inline void World::UnsetIslanded(Body* body) noexcept
 {
-    BodyAtty::UnsetIslanded(*key);
+    BodyAtty::UnsetIslanded(*body);
 }
 
-inline void World::UnsetIslanded(Contact* key) noexcept
+inline void World::UnsetIslanded(Contact* contact) noexcept
 {
-    ContactAtty::UnsetIslanded(*key);
+    ContactAtty::UnsetIslanded(*contact);
 }
 
-inline void World::UnsetIslanded(Joint* key) noexcept
+inline void World::UnsetIslanded(Joint* joint) noexcept
 {
-    JointAtty::UnsetIslanded(*key);
+    JointAtty::UnsetIslanded(*joint);
 }
 
 // Free functions.
+
+/// @defgroup WorldFreeFunctions World free functions.
+/// @details A collection of non-member, non-friend functions that operate on World objects.
+/// @sa World.
+/// @{
 
 /// @brief Gets the body count in the given world.
 /// @return 0 or higher.
@@ -946,12 +964,12 @@ ContactCounter GetTouchingCount(const World& world) noexcept;
 /// of their fixtures when they experience collisions.
 ///
 /// @param world World to step.
-/// @param timeStep Amount of time to simulate (in seconds). This should not vary.
+/// @param delta Time to simulate as a delta from the current state. This should not vary.
 /// @param velocityIterations Number of iterations for the velocity constraint solver.
 /// @param positionIterations Number of iterations for the position constraint solver.
 ///   The position constraint solver resolves the positions of bodies that overlap.
 ///
-StepStats Step(World& world, Time timeStep,
+StepStats Step(World& world, Time delta,
                World::ts_iters_type velocityIterations = 8,
                World::ts_iters_type positionIterations = 3);
 
@@ -974,9 +992,8 @@ BodyCounter Awaken(World& world) noexcept;
 /// @details Manually clear the force buffer on all bodies.
 void ClearForces(World& world) noexcept;
 
-/// @brief Determines whether the given contact is "active".
-bool IsActive(const Contact& contact) noexcept;
+/// @}
 
 } // namespace playrho
 
-#endif
+#endif // PLAYRHO_DYNAMICS_WORLD_HPP

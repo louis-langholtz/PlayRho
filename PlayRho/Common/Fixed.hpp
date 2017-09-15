@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_FIXED_HPP
-#define PLAYRHO_FIXED_HPP
+#ifndef PLAYRHO_COMMON_FIXED_HPP
+#define PLAYRHO_COMMON_FIXED_HPP
 
 #include <PlayRho/Common/Wider.hpp>
 #include <PlayRho/Common/Templates.hpp>
@@ -900,7 +900,7 @@ namespace std
         static constexpr int digits10 = 31 - playrho::Fixed32::FractionBits;
         
         /// @brief Number of decimal digits necessary to differentiate all values.
-        static constexpr int max_digits10 = 5; // TODO: check this
+        static constexpr int max_digits10 = 5; // TODO(lou): check this
         
         static constexpr bool is_signed = true; ///< Identifies signed types.
         static constexpr bool is_integer = false; ///< Identifies integer types.
@@ -908,10 +908,10 @@ namespace std
         static constexpr int radix = 0; ///< Radix used by the type.
 
         /// @brief Gets the epsilon value for the type.
-        static constexpr playrho::Fixed32 epsilon() noexcept { return playrho::Fixed32{0}; } // TODO
+        static constexpr playrho::Fixed32 epsilon() noexcept { return playrho::Fixed32{0}; } // TODO(lou)
         
         /// @brief Gets the round error value for the type.
-        static constexpr playrho::Fixed32 round_error() noexcept { return playrho::Fixed32{0}; } // TODO
+        static constexpr playrho::Fixed32 round_error() noexcept { return playrho::Fixed32{0}; } // TODO(lou)
         
         /// @brief One more than smallest negative power of the radix that's a valid
         ///    normalized floating-point value.
@@ -1053,7 +1053,7 @@ namespace std
         static constexpr int digits10 = 63 - playrho::Fixed64::FractionBits;
 
         /// @brief Number of decimal digits necessary to differentiate all values.
-        static constexpr int max_digits10 = 10; // TODO: check this
+        static constexpr int max_digits10 = 10; // TODO(lou): check this
         
         static constexpr bool is_signed = true; ///< Identifies signed types.
         static constexpr bool is_integer = false; ///< Identifies integer types.
@@ -1061,10 +1061,10 @@ namespace std
         static constexpr int radix = 0; ///< Radix used by the type.
 
         /// @brief Gets the epsilon value for the type.
-        static constexpr playrho::Fixed64 epsilon() noexcept { return playrho::Fixed64{0}; } // TODO
+        static constexpr playrho::Fixed64 epsilon() noexcept { return playrho::Fixed64{0}; } // TODO(lou)
         
         /// @brief Gets the round error value for the type.
-        static constexpr playrho::Fixed64 round_error() noexcept { return playrho::Fixed64{0}; } // TODO
+        static constexpr playrho::Fixed64 round_error() noexcept { return playrho::Fixed64{0}; } // TODO(lou)
         
         /// @brief One more than smallest negative power of the radix that's a valid
         ///    normalized floating-point value.
@@ -1186,4 +1186,4 @@ namespace std
 
 } // namespace std
 
-#endif /* PLAYRHO_FIXED_HPP */
+#endif // PLAYRHO_COMMON_FIXED_HPP

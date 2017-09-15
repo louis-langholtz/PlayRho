@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_TEMPLATES_HPP
-#define PLAYRHO_TEMPLATES_HPP
+#ifndef PLAYRHO_COMMON_TEMPLATES_HPP
+#define PLAYRHO_COMMON_TEMPLATES_HPP
 
 #include <limits>
 #include <typeinfo>
@@ -88,9 +88,9 @@ namespace playrho
     
     /// @brief Determines if the given value is valid.
     template <>
-    constexpr inline bool IsValid(const std::size_t& x) noexcept
+    constexpr inline bool IsValid(const std::size_t& value) noexcept
     {
-        return x != GetInvalid<std::size_t>();
+        return value != GetInvalid<std::size_t>();
     }
     
     // Other templates.
@@ -186,4 +186,4 @@ namespace playrho
 
 } // namespace playrho
 
-#endif /* PLAYRHO_TEMPLATES_HPP */
+#endif // PLAYRHO_COMMON_TEMPLATES_HPP

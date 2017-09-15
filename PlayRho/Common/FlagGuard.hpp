@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_FLAG_GUARD_HPP
-#define PLAYRHO_FLAG_GUARD_HPP
+#ifndef PLAYRHO_COMMON_FLAGGUARD_HPP
+#define PLAYRHO_COMMON_FLAGGUARD_HPP
 
 #include <type_traits>
 
@@ -41,6 +41,18 @@ namespace playrho {
             m_flag |= m_value;
         }
         
+        /// @brief Copy constructor.
+        FlagGuard(const FlagGuard<T>& value) = default;
+
+        /// @brief Move constructor.
+        FlagGuard(FlagGuard<T>&& value) noexcept = default;
+
+        /// @brief Copy assignment operator.
+        FlagGuard<T>& operator= (const FlagGuard<T>& value) = default;
+
+        /// @brief Move assignment operator.
+        FlagGuard<T>& operator= (FlagGuard<T>&& value) noexcept = default;
+
         /// @brief Destructor.
         /// @details Unsets the bits that were set on construction.
         ~FlagGuard() noexcept
@@ -57,4 +69,4 @@ namespace playrho {
 
 } // namespace playrho
 
-#endif /* PLAYRHO_FLAG_GUARD_HPP */
+#endif // PLAYRHO_COMMON_FLAGGUARD_HPP

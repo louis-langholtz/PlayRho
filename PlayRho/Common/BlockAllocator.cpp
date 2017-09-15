@@ -87,7 +87,7 @@ struct BlockAllocator::Block
 BlockAllocator::BlockAllocator():
     m_chunks(Alloc<Chunk>(m_chunkSpace))
 {
-    assert(BlockSizes < std::numeric_limits<std::uint8_t>::max());
+    static_assert(BlockSizes < std::numeric_limits<std::uint8_t>::max(), "BlockSizes too big");
     std::memset(m_chunks, 0, m_chunkSpace * sizeof(Chunk));
     std::memset(m_freeLists, 0, sizeof(m_freeLists));
 }
@@ -121,7 +121,7 @@ void* BlockAllocator::Allocate(size_type n)
 
     {
         const auto block = m_freeLists[index];
-        if (block)
+        if (block != nullptr)
         {
             m_freeLists[index] = block->next;
             return block;
@@ -147,11 +147,14 @@ void* BlockAllocator::Allocate(size_type n)
     assert((blockCount * blockSize) <= ChunkSize);
     for (auto i = decltype(blockCount){0}; i < blockCount - 1; ++i)
     {
-        const auto block = (Block*)((std::int8_t*)chunk->blocks + blockSize * i);
-        const auto next = (Block*)((std::int8_t*)chunk->blocks + blockSize * (i + 1));
+        const auto block = reinterpret_cast<Block*>(reinterpret_cast<std::int8_t*>(chunk->blocks)
+                                                    + blockSize * i);
+        const auto next = reinterpret_cast<Block*>(reinterpret_cast<std::int8_t*>(chunk->blocks)
+                                                   + blockSize * (i + 1));
         block->next = next;
     }
-    const auto last = (Block*)((std::int8_t*)chunk->blocks + blockSize * (blockCount - 1));
+    const auto last = reinterpret_cast<Block*>(reinterpret_cast<std::int8_t*>(chunk->blocks)
+                                               + blockSize * (blockCount - 1));
     last->next = nullptr;
 
     m_freeLists[index] = chunk->blocks->next;

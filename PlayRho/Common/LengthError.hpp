@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_LENGTH_ERROR_HPP
-#define PLAYRHO_LENGTH_ERROR_HPP
+#ifndef PLAYRHO_COMMON_LENGTHERROR_HPP
+#define PLAYRHO_COMMON_LENGTHERROR_HPP
 
 #include <stdexcept>
 
@@ -37,4 +37,4 @@ namespace playrho {
 } // namespace playrho
 
 
-#endif /* PLAYRHO_LENGTH_ERROR_HPP */
+#endif // PLAYRHO_COMMON_LENGTHERROR_HPP

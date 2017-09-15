@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_FIXTURE_HPP
-#define PLAYRHO_FIXTURE_HPP
+#ifndef PLAYRHO_DYNAMICS_FIXTURE_HPP
+#define PLAYRHO_DYNAMICS_FIXTURE_HPP
 
 /// @file
 /// Declarations of the Fixture class, and free functions associated with it.
@@ -50,6 +50,10 @@ class Shape;
 /// @note This structure is 56-bytes large (using a 4-byte Real on at least one 64-bit
 ///   architecture/build).
 ///
+/// @sa Body
+/// @sa Shape
+/// @sa FixtureFreeFunctions
+///
 class Fixture
 {
 public:
@@ -68,7 +72,7 @@ public:
     ///    Density must be greater-than-or-equal-to zero.
     /// @param shape Sharable shape to associate fixture with. Must be non-null.
     ///
-    Fixture(NonNull<Body*> body, const FixtureDef& def, std::shared_ptr<const Shape> shape):
+    Fixture(NonNull<Body*> body, const FixtureDef& def, const std::shared_ptr<const Shape>& shape):
         m_body{body},
         m_shape{shape},
         m_filter{def.filter},
@@ -106,7 +110,7 @@ public:
     /// @note This won't update contacts until the next time step when either parent body
     ///    is speedable and awake.
     /// @note This automatically calls Refilter.
-    void SetFilterData(const Filter filter);
+    void SetFilterData(Filter filter);
 
     /// @brief Gets the contact filtering data.
     Filter GetFilterData() const noexcept;
@@ -212,7 +216,7 @@ inline ChildCounter Fixture::GetProxyCount() const noexcept
     return m_proxyCount;
 }
 
-inline void Fixture::SetFilterData(const Filter filter)
+inline void Fixture::SetFilterData(Filter filter)
 {
     m_filter = filter;
     Refilter();
@@ -232,10 +236,15 @@ inline void Fixture::SetProxies(Span<FixtureProxy> value) noexcept
 
 // Free functions...
 
+/// @defgroup FixtureFreeFunctions Fixture free functions.
+/// @details A collection of non-member, non-friend functions that operate on Fixture objects.
+/// @sa Fixture.
+/// @{
+
 /// @brief Tests a point for containment in a fixture.
 /// @param f Fixture to use for test.
 /// @param p Point in world coordinates.
-bool TestPoint(const Fixture& f, const Length2D p) noexcept;
+bool TestPoint(const Fixture& f, Length2D p) noexcept;
 
 /// @brief Sets the associated body's sleep status to awake.
 /// @note This is a convenience function that simply looks up the fixture's body and
@@ -247,7 +256,9 @@ void SetAwake(const Fixture& f) noexcept;
 /// @warning Behavior is undefined if the fixture doesn't have an associated body - i.e.
 ///   behavior is undefined if the fixture has <code>nullptr</code> as its associated body.
 Transformation GetTransformation(const Fixture& f) noexcept;
-    
+
+/// @}
+
 } // namespace playrho
 
-#endif
+#endif // PLAYRHO_DYNAMICS_FIXTURE_HPP

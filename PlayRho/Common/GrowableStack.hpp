@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_GROWABLE_STACK_HPP
-#define PLAYRHO_GROWABLE_STACK_HPP
+#ifndef PLAYRHO_COMMON_GROWABLESTACK_HPP
+#define PLAYRHO_COMMON_GROWABLESTACK_HPP
 
 #include <PlayRho/Common/DynamicMemory.hpp>
 #include <cstring>
@@ -54,6 +54,10 @@ public:
     }
 
     GrowableStack() = default;
+    
+    GrowableStack(const GrowableStack& other) = delete;
+
+    GrowableStack(GrowableStack&& other) = delete;
 
     ~GrowableStack() noexcept
     {
@@ -64,6 +68,10 @@ public:
         }
     }
 
+    GrowableStack& operator= (const GrowableStack& copy) = delete;
+
+    GrowableStack& operator= (GrowableStack&& copy) = delete;
+    
     /// @brief Pushes the given elements onto this stack.
     void push(const ElementType& element)
     {
@@ -79,7 +87,7 @@ public:
             }
         }
 
-        m_stack[m_count] = element;
+        *(m_stack + m_count) = element;
         ++m_count;
     }
 
@@ -124,6 +132,6 @@ private:
     CountType m_capacity = N;
 };
 
-} /* namespace playrho */
+} // namespace playrho
 
-#endif
+#endif // PLAYRHO_COMMON_GROWABLESTACK_HPP

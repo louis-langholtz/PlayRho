@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_CODE_DUMPER_HPP
-#define PLAYRHO_CODE_DUMPER_HPP
+#ifndef PLAYRHO_COMMON_CODEDUMPER_HPP
+#define PLAYRHO_COMMON_CODEDUMPER_HPP
 
 #include <PlayRho/Common/Settings.hpp>
 
@@ -88,4 +88,4 @@ namespace playrho
     
 } // namespace playrho
 
-#endif /* PLAYRHO_CODE_DUMPER_HPP */
+#endif // PLAYRHO_COMMON_CODEDUMPER_HPP

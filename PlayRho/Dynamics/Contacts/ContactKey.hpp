@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_CONTACT_KEY_HPP
-#define PLAYRHO_CONTACT_KEY_HPP
+#ifndef PLAYRHO_DYNAMICS_CONTACTS_CONTACTKEY_HPP
+#define PLAYRHO_DYNAMICS_CONTACTS_CONTACTKEY_HPP
 
 /// @file
 /// Declaration of the ContactKey class.
@@ -154,6 +154,6 @@ namespace std
             return a ^ b;
         }
     };
-}
+} // namespace std
 
-#endif /* PLAYRHO_CONTACT_KEY_HPP */
+#endif // PLAYRHO_DYNAMICS_CONTACTS_CONTACTKEY_HPP

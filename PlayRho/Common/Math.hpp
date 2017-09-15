@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_MATH_HPP
-#define PLAYRHO_MATH_HPP
+#ifndef PLAYRHO_COMMON_MATH_HPP
+#define PLAYRHO_COMMON_MATH_HPP
 
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
@@ -774,12 +774,12 @@ constexpr inline T Clamp(T value, T low, T high) noexcept
 /// largest power of 2. For a 64-bit value:"
 inline std::uint64_t NextPowerOfTwo(std::uint64_t x)
 {
-    x |= (x >> 1);
-    x |= (x >> 2);
-    x |= (x >> 4);
-    x |= (x >> 8);
-    x |= (x >> 16);
-    x |= (x >> 32);
+    x |= (x >>  1u);
+    x |= (x >>  2u);
+    x |= (x >>  4u);
+    x |= (x >>  8u);
+    x |= (x >> 16u);
+    x |= (x >> 32u);
     return x + 1;
 }
 
@@ -959,12 +959,12 @@ inline UnitVec2 GetUnitVector(const Vector2D<T> value,
 /// @return value divided by its length if length not almost zero otherwise invalid value.
 /// @sa AlmostEqual.
 template <class T>
-inline UnitVec2 GetUnitVector(const Vector2D<T> value, T& magnitude,
-                              const UnitVec2 fallback = UnitVec2::GetDefaultFallback());
+inline UnitVec2 GetUnitVector(Vector2D<T> value, T& magnitude,
+                              UnitVec2 fallback = UnitVec2::GetDefaultFallback());
 
 /// @brief Gets the unit vector of the given value.
 template <>
-inline UnitVec2 GetUnitVector(const Vector2D<Real> value, Real& magnitude, const UnitVec2 fallback)
+inline UnitVec2 GetUnitVector(Vector2D<Real> value, Real& magnitude, UnitVec2 fallback)
 {
     return UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), magnitude, fallback);
 }
@@ -973,7 +973,7 @@ inline UnitVec2 GetUnitVector(const Vector2D<Real> value, Real& magnitude, const
 
 /// @brief Gets the unit vector of the given value.
 template <>
-inline UnitVec2 GetUnitVector(const Vector2D<Length> value, Length& magnitude, const UnitVec2 fallback)
+inline UnitVec2 GetUnitVector(Vector2D<Length> value, Length& magnitude, UnitVec2 fallback)
 {
     auto tmp = Real{0};
     const auto uv = UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), tmp, fallback);
@@ -983,8 +983,8 @@ inline UnitVec2 GetUnitVector(const Vector2D<Length> value, Length& magnitude, c
 
 /// @brief Gets the unit vector of the given value.
 template <>
-inline UnitVec2 GetUnitVector(const Vector2D<LinearVelocity> value, LinearVelocity& magnitude,
-                              const UnitVec2 fallback)
+inline UnitVec2 GetUnitVector(Vector2D<LinearVelocity> value, LinearVelocity& magnitude,
+                              UnitVec2 fallback)
 {
     auto tmp = Real{0};
     const auto uv = UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), tmp, fallback);
@@ -995,7 +995,7 @@ inline UnitVec2 GetUnitVector(const Vector2D<LinearVelocity> value, LinearVeloci
 #endif // USE_BOOST_UNITS
 
 /// @brief Gets the vertices for a circle described by the given parameters.
-std::vector<Length2D> GetCircleVertices(const Length radius, unsigned slices,
+std::vector<Length2D> GetCircleVertices(Length radius, unsigned slices,
                                         Angle start = Angle{0}, Real turns = Real{1});
 
 /// @}
@@ -1009,5 +1009,6 @@ inline bool IsUnderActive(Velocity velocity,
     return (angVelSquared <= Square(angSleepTol)) && (linVelSquared <= Square(linSleepTol));
 }
 
-}
-#endif
+} // namespace playrho
+
+#endif // PLAYRHO_COMMON_MATH_HPP

@@ -20,11 +20,13 @@
 #include <PlayRho/Dynamics/WorldCallbacks.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 
-using namespace playrho;
+namespace playrho {
 
 // Return true if contact calculations should be performed between these two shapes.
 // If you implement your own collision filter you may want to build from this implementation.
 bool ContactFilter::ShouldCollide(const Fixture* fixtureA, const Fixture* fixtureB)
 {
-    return ::ShouldCollide(fixtureA->GetFilterData(), fixtureB->GetFilterData());
+    return playrho::ShouldCollide(fixtureA->GetFilterData(), fixtureB->GetFilterData());
 }
+
+} // namespace playrho

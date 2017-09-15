@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_WORLD_DEF_HPP
-#define PLAYRHO_WORLD_DEF_HPP
+#ifndef PLAYRHO_DYNAMICS_WORLDDEF_HPP
+#define PLAYRHO_DYNAMICS_WORLDDEF_HPP
 
 /// @file
 /// Declarations of the WorldDef class.
@@ -93,5 +93,6 @@ namespace playrho {
         return WorldDef{};
     }
 
-}
-#endif /* PLAYRHO_WORLD_DEF_HPP */
+} // namespace playrho
+
+#endif // PLAYRHO_DYNAMICS_WORLDDEF_HPP

@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_FIXTURE_ATTY_HPP
-#define PLAYRHO_FIXTURE_ATTY_HPP
+#ifndef PLAYRHO_DYNAMICS_FIXTUREATTY_HPP
+#define PLAYRHO_DYNAMICS_FIXTUREATTY_HPP
 
 /// @file
 /// Declaration of the FixtureAtty class.
@@ -49,7 +49,8 @@ namespace playrho
             fixture.SetProxies(value);
         }
         
-        static Fixture* Create(Body* body, const FixtureDef& def, std::shared_ptr<const Shape> shape)
+        static Fixture* Create(Body* body, const FixtureDef& def,
+                               const std::shared_ptr<const Shape>& shape)
         {
             return new Fixture{body, def, shape};
         }
@@ -59,4 +60,4 @@ namespace playrho
 
 } // namespace playrho
 
-#endif /* PLAYRHO_FIXTURE_ATTY_HPP */
+#endif // PLAYRHO_DYNAMICS_FIXTUREATTY_HPP

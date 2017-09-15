@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_BODY_TYPE_HPP
-#define PLAYRHO_BODY_TYPE_HPP
+#ifndef PLAYRHO_DYNAMICS_BODYTYPE_HPP
+#define PLAYRHO_DYNAMICS_BODYTYPE_HPP
 
 namespace playrho
 {
@@ -52,11 +52,8 @@ enum class BodyType
     /// They may be penetrable.
     /// @note Physics applied: velocity, acceleration.
     Dynamic
-    
-    // TODO_ERIN
-    //BulletBody,
 };
 
 } // namespace playrho
 
-#endif /* PLAYRHO_BODY_TYPE_HPP */
+#endif // PLAYRHO_DYNAMICS_BODYTYPE_HPP

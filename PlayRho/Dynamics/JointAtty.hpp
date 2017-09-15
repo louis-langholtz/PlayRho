@@ -18,16 +18,15 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_JOINT_ATTY_HPP
-#define PLAYRHO_JOINT_ATTY_HPP
+#ifndef PLAYRHO_DYNAMICS_JOINTATTY_HPP
+#define PLAYRHO_DYNAMICS_JOINTATTY_HPP
 
 /// @file
 /// Declaration of the JointAtty class.
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
-namespace playrho
-{
+namespace playrho {
 
 /// @brief Joint attorney.
 ///
@@ -89,6 +88,6 @@ private:
     friend class World;
 };
 
-}
+} // namespace playrho
 
-#endif /* PLAYRHO_JOINT_ATTY_HPP */
+#endif // PLAYRHO_DYNAMICS_JOINTATTY_HPP

@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_BLOCK_ALLOCATOR_HPP
-#define PLAYRHO_BLOCK_ALLOCATOR_HPP
+#ifndef PLAYRHO_COMMON_BLOCKALLOCATOR_HPP
+#define PLAYRHO_COMMON_BLOCKALLOCATOR_HPP
 
 #include <PlayRho/Common/Settings.hpp>
 
@@ -51,8 +51,17 @@ namespace playrho {
         static constexpr auto ChunkArrayIncrement = size_type{128};
         
         BlockAllocator();
+        
+        BlockAllocator(const BlockAllocator& other) = delete;
+
+        BlockAllocator(BlockAllocator&& other) = delete;
+
         ~BlockAllocator() noexcept;
         
+        BlockAllocator& operator= (const BlockAllocator& other) = delete;
+
+        BlockAllocator& operator= (BlockAllocator&& other) = delete;
+
         /// Allocates memory.
         /// @details Allocates uninitialized storage.
         ///   Uses <code>Alloc</code> if the size is larger than <code>MaxBlockSize</code>.
@@ -141,4 +150,4 @@ namespace playrho {
     
 } // namespace playrho
 
-#endif
+#endif // PLAYRHO_COMMON_BLOCKALLOCATOR_HPP

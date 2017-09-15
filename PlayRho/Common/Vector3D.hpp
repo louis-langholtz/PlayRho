@@ -19,10 +19,11 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_VECTOR_3D_HPP
-#define PLAYRHO_VECTOR_3D_HPP
+#ifndef PLAYRHO_COMMON_VECTOR3D_HPP
+#define PLAYRHO_COMMON_VECTOR3D_HPP
 
 #include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Common/Vector.hpp>
 
 namespace playrho
 {
@@ -160,4 +161,4 @@ namespace playrho
     
 } // namespace playrho
 
-#endif /* PLAYRHO_VECTOR_3D_HPP */
+#endif // PLAYRHO_COMMON_VECTOR3D_HPP

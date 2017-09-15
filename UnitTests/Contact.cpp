@@ -57,8 +57,8 @@ TEST(Contact, IsNotCopyAssignable)
 TEST(Contact, SetAwake)
 {
     const auto shape = std::make_shared<DiskShape>();
-    auto bA = Body{BodyDef{}.UseType(BodyType::Dynamic)};
-    auto bB = Body{BodyDef{}.UseType(BodyType::Dynamic)};
+    auto bA = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
+    auto bB = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
     auto fA = Fixture{&bA, FixtureDef{}, shape};
     auto fB = Fixture{&bB, FixtureDef{}, shape};
     const auto c = Contact{&fA, 0, &fB, 0};
@@ -78,8 +78,8 @@ TEST(Contact, SetAwake)
 TEST(Contact, ResetFriction)
 {
     const auto shape = std::make_shared<DiskShape>();
-    auto bA = Body{BodyDef{}.UseType(BodyType::Dynamic)};
-    auto bB = Body{BodyDef{}.UseType(BodyType::Dynamic)};
+    auto bA = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
+    auto bB = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
     auto fA = Fixture{&bA, FixtureDef{}, shape};
     auto fB = Fixture{&bB, FixtureDef{}, shape};
     auto c = Contact{&fA, 0, &fB, 0};
@@ -95,8 +95,8 @@ TEST(Contact, ResetFriction)
 TEST(Contact, ResetRestitution)
 {
     const auto shape = std::make_shared<DiskShape>();
-    auto bA = Body{BodyDef{}.UseType(BodyType::Dynamic)};
-    auto bB = Body{BodyDef{}.UseType(BodyType::Dynamic)};
+    auto bA = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
+    auto bB = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
     auto fA = Fixture{&bA, FixtureDef{}, shape};
     auto fB = Fixture{&bB, FixtureDef{}, shape};
     auto c = Contact{&fA, 0, &fB, 0};

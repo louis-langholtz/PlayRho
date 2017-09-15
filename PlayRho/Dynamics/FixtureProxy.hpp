@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_FIXTURE_PROXY_HPP
-#define PLAYRHO_FIXTURE_PROXY_HPP
+#ifndef PLAYRHO_DYNAMICS_FIXTUREPROXY_HPP
+#define PLAYRHO_DYNAMICS_FIXTUREPROXY_HPP
 
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Collision/AABB.hpp>
@@ -36,15 +36,24 @@ namespace playrho
         /// @brief Size type.
         using size_type = std::remove_const<decltype(MaxContacts)>::type;
         
-        FixtureProxy() = default;
+        FixtureProxy() = delete;
         
         /// @brief Copy constructor.
         FixtureProxy(const FixtureProxy& copy) = default;
-        
+
+        /// @brief Move constructor.
+        FixtureProxy(FixtureProxy&& copy) = default;
+
         /// @brief Initializing constructor.
-        FixtureProxy(const AABB bb, size_type pid, Fixture* f, ChildCounter ci):
+        FixtureProxy(const AABB& bb, size_type pid, Fixture* f, ChildCounter ci):
             aabb{bb}, fixture{f}, proxyId{pid}, childIndex{ci} {}
         
+        ~FixtureProxy() = default;
+        
+        FixtureProxy& operator= (const FixtureProxy& other) = delete;
+
+        FixtureProxy& operator= (FixtureProxy&& other) noexcept = delete;
+
         AABB aabb; ///< Axis Aligned Bounding Box. 16-bytes.
         Fixture* const fixture; ///< Fixture. 8-bytes.
         const size_type proxyId; ///< Proxy ID. 4-bytes.
@@ -53,4 +62,4 @@ namespace playrho
     
 } // namespace playrho
 
-#endif /* PLAYRHO_FIXTURE_PROXY_HPP */
+#endif // PLAYRHO_DYNAMICS_FIXTUREPROXY_HPP

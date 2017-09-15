@@ -121,7 +121,7 @@ arrays to increase the number of cache hits. Linear and angular velocity are
 stored in a single array since multiple arrays lead to multiple misses.
 */
 
-using namespace playrho;
+namespace playrho {
 
 using std::count;
 using std::cbegin;
@@ -136,20 +136,22 @@ Island::Island(Bodies::size_type bodyCapacity,
     m_joints.reserve(jointCapacity);
 }
 
-std::size_t playrho::Count(const Island& island, const Body* entry)
+std::size_t Count(const Island& island, const Body* entry)
 {
     return static_cast<std::size_t>(count(cbegin(island.m_bodies), cend(island.m_bodies),
                                           entry));
 }
 
-std::size_t playrho::Count(const Island& island, const Contact* entry)
+std::size_t Count(const Island& island, const Contact* entry)
 {
     return static_cast<std::size_t>(count(cbegin(island.m_contacts), cend(island.m_contacts),
                                           entry));
 }
 
-std::size_t playrho::Count(const Island& island, const Joint* entry)
+std::size_t Count(const Island& island, const Joint* entry)
 {
     return static_cast<std::size_t>(count(cbegin(island.m_joints), cend(island.m_joints),
                                           entry));
 }
+
+} // namespace playrho
