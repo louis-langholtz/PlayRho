@@ -27,9 +27,9 @@
 /// @file
 /// Definitions for the AABB class.
 
-using namespace playrho;
+namespace playrho {
 
-AABB playrho::ComputeAABB(const DistanceProxy& proxy, const Transformation xf) noexcept
+AABB ComputeAABB(const DistanceProxy& proxy, const Transformation& xf) noexcept
 {
     assert(IsValid(xf));
     const auto count = proxy.GetVertexCount();
@@ -45,7 +45,7 @@ AABB playrho::ComputeAABB(const DistanceProxy& proxy, const Transformation xf) n
     return AABB{};
 }
 
-AABB playrho::ComputeAABB(const Shape& shape, const Transformation xf)
+AABB ComputeAABB(const Shape& shape, const Transformation& xf)
 {
     const auto childCount = shape.GetChildCount();
     auto sum = AABB{};
@@ -56,7 +56,7 @@ AABB playrho::ComputeAABB(const Shape& shape, const Transformation xf)
     return sum;
 }
 
-AABB playrho::ComputeAABB(const Body& body)
+AABB ComputeAABB(const Body& body)
 {
     auto sum = AABB{};
     const auto xf = body.GetTransformation();
@@ -67,7 +67,9 @@ AABB playrho::ComputeAABB(const Body& body)
     return sum;
 }
 
-AABB playrho::GetAABB(const Fixture& fixture, ChildCounter childIndex) noexcept
+AABB GetAABB(const Fixture& fixture, ChildCounter childIndex) noexcept
 {
     return fixture.GetProxy(childIndex)->aabb;
 }
+
+} // namespace playrho

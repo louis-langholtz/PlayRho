@@ -42,14 +42,14 @@ namespace {
         return SimplexEdge{wA, idxA, wB, idxB};
     }
     
-    inline Simplex::Edges GetSimplexEdges(const IndexPair3 indexPairs,
+    inline SimplexEdges GetSimplexEdges(const IndexPair3 indexPairs,
                                           const DistanceProxy& proxyA, const Transformation& xfA,
                                           const DistanceProxy& proxyB, const Transformation& xfB)
     {
         /// @brief Size type.
         using size_type = std::remove_const<decltype(MaxSimplexEdges)>::type;
 
-        Simplex::Edges simplexEdges;
+        SimplexEdges simplexEdges;
         const auto count = GetNumIndices(indexPairs);
         switch (count)
         {

@@ -27,10 +27,9 @@
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 
-using namespace playrho;
+namespace playrho {
 
-MassData playrho::GetMassData(const Length r, const NonNegative<Density> density,
-                            const Length2D location)
+MassData GetMassData(Length r, NonNegative<Density> density, Length2D location)
 {
     // Uses parallel axis theorem, perpendicular axis theorem, and the second moment of area.
     // See: https://en.wikipedia.org/wiki/Second_moment_of_area
@@ -53,8 +52,7 @@ MassData playrho::GetMassData(const Length r, const NonNegative<Density> density
     return MassData{location, mass, I};
 }
 
-MassData playrho::GetMassData(const Length r, const NonNegative<Density> density,
-                            const Length2D v0, const Length2D v1)
+MassData GetMassData(Length r, NonNegative<Density> density, Length2D v0, Length2D v1)
 {
     const auto r_squared = Area{r * r};
     const auto circle_area = r_squared * Pi;
@@ -78,7 +76,6 @@ MassData playrho::GetMassData(const Length r, const NonNegative<Density> density
         Length2D{v1 - offset},
         Length2D{v1 + offset}
     };
-    assert(vertices.size() == 4);
     const auto I_z = GetPolarMoment(vertices);
     const auto I0 = SecondMomentOfArea{halfCircleArea * (halfRSquared + GetLengthSquared(v0))};
     const auto I1 = SecondMomentOfArea{halfCircleArea * (halfRSquared + GetLengthSquared(v1))};
@@ -89,7 +86,7 @@ MassData playrho::GetMassData(const Length r, const NonNegative<Density> density
     return MassData{center, totalMass, I};
 }
 
-MassData playrho::GetMassData(const Length vertexRadius, const NonNegative<Density> density,
+MassData GetMassData(Length vertexRadius, NonNegative<Density> density,
                               Span<const Length2D> vertices)
 {
     // See: https://en.wikipedia.org/wiki/Centroid#Centroid_of_polygon
@@ -124,9 +121,9 @@ MassData playrho::GetMassData(const Length vertexRadius, const NonNegative<Densi
         case 0:
             return MassData{};
         case 1:
-            return ::GetMassData(vertexRadius, density, vertices[0]);
+            return playrho::GetMassData(vertexRadius, density, vertices[0]);
         case 2:
-            return ::GetMassData(vertexRadius, density, vertices[0], vertices[1]);;
+            return playrho::GetMassData(vertexRadius, density, vertices[0], vertices[1]);;
         default:
             break;
     }
@@ -179,12 +176,12 @@ MassData playrho::GetMassData(const Length vertexRadius, const NonNegative<Densi
     return MassData{massDataCenter, mass, massDataI};
 }
 
-NonNegative<Area> playrho::GetAreaOfCircle(Length radius)
+NonNegative<Area> GetAreaOfCircle(Length radius)
 {
     return Area{radius * radius * Pi};
 }
 
-NonNegative<Area> playrho::GetAreaOfPolygon(Span<const Length2D> vertices)
+NonNegative<Area> GetAreaOfPolygon(Span<const Length2D> vertices)
 {
     // Uses the "Shoelace formula".
     // See: https://en.wikipedia.org/wiki/Shoelace_formula
@@ -203,7 +200,7 @@ NonNegative<Area> playrho::GetAreaOfPolygon(Span<const Length2D> vertices)
     return Abs(sum) / Real{2};
 }
 
-SecondMomentOfArea playrho::GetPolarMoment(Span<const Length2D> vertices)
+SecondMomentOfArea GetPolarMoment(Span<const Length2D> vertices)
 {
     assert(vertices.size() > 2);
 
@@ -235,12 +232,12 @@ SecondMomentOfArea playrho::GetPolarMoment(Span<const Length2D> vertices)
     return (secondMomentOfAreaX + secondMomentOfAreaY) / Real{12};
 }
 
-MassData playrho::GetMassData(const Fixture& f)
+MassData GetMassData(const Fixture& f)
 {
     return f.GetShape()->GetMassData();
 }
 
-MassData playrho::ComputeMassData(const Body& body) noexcept
+MassData ComputeMassData(const Body& body) noexcept
 {
     auto mass = Mass{0};
     auto I = RotInertia{0};
@@ -259,8 +256,10 @@ MassData playrho::ComputeMassData(const Body& body) noexcept
     return MassData{center, mass, I};
 }
 
-MassData playrho::GetMassData(const Body& body) noexcept
+MassData GetMassData(const Body& body) noexcept
 {
     const auto I = GetLocalInertia(body);
     return MassData{body.GetLocalCenter(), GetMass(body), I};
 }
+
+} // namespace playrho

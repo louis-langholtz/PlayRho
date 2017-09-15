@@ -50,7 +50,12 @@ namespace playrho
         /// @brief Constant pointer type.
         using const_pointer = const value_type*;
 
-        constexpr ArrayList() noexcept = default;
+        constexpr ArrayList() noexcept
+        {
+            // Intentionally empty.
+            // Note that defaulting this method instead of writing it out here,
+            // causes issues with gcc.
+        }
 
         template <std::size_t COPY_MAXSIZE, typename COPY_SIZE_TYPE, typename = std::enable_if_t< COPY_MAXSIZE <= MAXSIZE >>
         constexpr explicit ArrayList(const ArrayList<VALUE_TYPE, COPY_MAXSIZE, SIZE_TYPE>& copy):
