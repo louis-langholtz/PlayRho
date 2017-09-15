@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_STACK_ALLOCATOR_HPP
-#define PLAYRHO_STACK_ALLOCATOR_HPP
+#ifndef PLAYRHO_COMMON_STACKALLOCATOR_HPP
+#define PLAYRHO_COMMON_STACKALLOCATOR_HPP
 
 #include <PlayRho/Common/Settings.hpp>
 
@@ -52,12 +52,19 @@ public:
     }
 
     /// @brief Initializing constructor.
-    StackAllocator(Configuration config = GetDefaultConfiguration()) noexcept;
+    explicit StackAllocator(Configuration config = GetDefaultConfiguration()) noexcept;
 
     ~StackAllocator() noexcept;
 
     /// @brief Copy constructor.
     StackAllocator(const StackAllocator& copy) = delete;
+
+    StackAllocator(StackAllocator&& other) = delete;
+
+    /// @brief Copy assignment operator.
+    StackAllocator& operator= (const StackAllocator& other) = delete;
+
+    StackAllocator& operator= (StackAllocator&& other) = delete;
 
     /// Allocates an aligned block of memory of the given size.
     /// @return Pointer to memory if the allocator has allocation records left,
@@ -147,4 +154,4 @@ private:
     
 } // namespace playrho
 
-#endif
+#endif // PLAYRHO_COMMON_STACKALLOCATOR_HPP

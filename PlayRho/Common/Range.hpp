@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_RANGE_HPP
-#define PLAYRHO_RANGE_HPP
+#ifndef PLAYRHO_COMMON_RANGE_HPP
+#define PLAYRHO_COMMON_RANGE_HPP
 
 #include <cstddef>
 
@@ -92,6 +92,6 @@ namespace playrho
         size_type m_size; ///< Size in number of elements in the range.
     };
 
-}
+} // namespace playrho
 
-#endif /* PLAYRHO_RANGE_HPP */
+#endif // PLAYRHO_COMMON_RANGE_HPP

@@ -19,7 +19,7 @@
 
 #include <PlayRho/Collision/Simplex.hpp>
 
-using namespace playrho;
+namespace playrho {
 
 Simplex Simplex::Get(const SimplexEdge& s0) noexcept
 {
@@ -170,7 +170,7 @@ Simplex Simplex::Get(const SimplexEdge& s0, const SimplexEdge& s1, const Simplex
     return Simplex{{s0, s1, s2}, {d123_1 / d123_sum, d123_2 / d123_sum, d123_3 / d123_sum}};
 }
 
-Simplex Simplex::Get(const Simplex::Edges& edges) noexcept
+Simplex Simplex::Get(const SimplexEdges& edges) noexcept
 {
     const auto count = edges.size();
     assert(count < 4);
@@ -184,3 +184,5 @@ Simplex Simplex::Get(const Simplex::Edges& edges) noexcept
     }
     return Simplex{};
 }
+
+} // namespace playrho

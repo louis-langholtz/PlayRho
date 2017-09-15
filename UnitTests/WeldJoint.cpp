@@ -87,8 +87,8 @@ TEST(WeldJoint, Construction)
 
 TEST(WeldJoint, GetWeldJointDef)
 {
-    auto bodyA = Body{BodyDef{}};
-    auto bodyB = Body{BodyDef{}};
+    auto bodyA = Body{nullptr, BodyDef{}};
+    auto bodyB = Body{nullptr, BodyDef{}};
     const auto anchor = Length2D(Real(2) * Meter, Real(1) * Meter);
     WeldJointDef def{&bodyA, &bodyB, anchor};
     WeldJoint joint{def};

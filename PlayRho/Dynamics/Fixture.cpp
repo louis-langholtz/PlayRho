@@ -29,8 +29,8 @@
 
 using namespace playrho;
 
-using std::begin;
-using std::end;
+using std::cbegin;
+using std::cend;
 
 Density Fixture::GetDensity() const noexcept
 {
@@ -80,7 +80,7 @@ void Fixture::SetSensor(bool sensor) noexcept
         // sensor state is changing...
         m_isSensor = sensor;
         const auto body = GetBody();
-        if (body)
+        if (body != nullptr)
         {
             body->SetAwake();
 
@@ -93,7 +93,7 @@ void Fixture::SetSensor(bool sensor) noexcept
     }
 }
 
-bool playrho::TestPoint(const Fixture& f, const Length2D p) noexcept
+bool playrho::TestPoint(const Fixture& f, Length2D p) noexcept
 {
     return TestPoint(*f.GetShape(), InverseTransform(p, GetTransformation(f)));
 }

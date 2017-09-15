@@ -26,7 +26,7 @@
 // Here we create a large ground box and a small dynamic box.
 // There are no graphics for this example. PlayRho is meant to be used with your
 // rendering engine in your game engine.
-int main(int, char**)
+int main(int /*unused*/, char** /*unused*/)
 {
     // Construct a world object, which will hold and simulate the rigid bodies.
     auto world = playrho::World{};

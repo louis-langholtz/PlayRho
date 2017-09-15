@@ -16,8 +16,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_SPAN_HPP
-#define PLAYRHO_SPAN_HPP
+#ifndef PLAYRHO_COMMON_SPAN_HPP
+#define PLAYRHO_COMMON_SPAN_HPP
 
 #include <cstddef>
 #include <cassert>
@@ -25,8 +25,8 @@
 #include <iterator>
 #include <vector>
 
-namespace playrho
-{
+namespace playrho {
+    
     /// @brief A C++ encapsulation of an array and its size.
     ///
     /// @note This is conceptually like the GSL's span template class.
@@ -125,4 +125,4 @@ namespace playrho
     
 } // namespace playrho
 
-#endif /* PLAYRHO_SPAN_HPP */
+#endif // PLAYRHO_COMMON_SPAN_HPP

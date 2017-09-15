@@ -27,6 +27,7 @@
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
 #include <iterator>
+#include <type_traits>
 #include <utility>
 
 using namespace playrho;
@@ -57,14 +58,14 @@ Body::FlagsType Body::GetFlags(const BodyDef& bd) noexcept
     }
     if (bd.awake)
     {
-        if (flags & e_velocityFlag)
+        if ((flags & e_velocityFlag) != 0)
         {
             flags |= e_awakeFlag;
         }
     }
     else
     {
-        if (!bd.allowSleep && (flags & e_velocityFlag))
+        if (!bd.allowSleep && ((flags & e_velocityFlag) != 0))
         {
             flags |= e_awakeFlag;
         }
@@ -76,7 +77,7 @@ Body::FlagsType Body::GetFlags(const BodyDef& bd) noexcept
     return flags;
 }
 
-Body::Body(const BodyDef& bd, World* world):
+Body::Body(World* world, const BodyDef& bd):
     m_xf{bd.position, UnitVec2::Get(bd.angle)},
     m_sweep{Position{bd.position, bd.angle}},
     m_flags{GetFlags(bd)},
@@ -109,7 +110,8 @@ void Body::SetType(BodyType type)
     m_world->SetType(*this, type);
 }
 
-Fixture* Body::CreateFixture(std::shared_ptr<const Shape> shape, const FixtureDef& def, bool resetMassData)
+Fixture* Body::CreateFixture(const std::shared_ptr<const Shape>& shape, const FixtureDef& def,
+                             bool resetMassData)
 {
     return m_world->CreateFixture(*this, shape, def, resetMassData);
 }
@@ -238,7 +240,7 @@ void Body::SetVelocity(const Velocity& velocity) noexcept
     m_velocity = velocity;
 }
 
-void Body::SetAcceleration(const LinearAcceleration2D linear, const AngularAcceleration angular) noexcept
+void Body::SetAcceleration(LinearAcceleration2D linear, AngularAcceleration angular) noexcept
 {
     assert(::IsValid(linear));
     assert(::IsValid(angular));
@@ -256,7 +258,7 @@ void Body::SetAcceleration(const LinearAcceleration2D linear, const AngularAccel
     m_angularAcceleration = angular;
 }
 
-void Body::SetTransformation(const Transformation value) noexcept
+void Body::SetTransformation(Transformation value) noexcept
 {
     assert(IsValid(value));
     if (m_xf != value)
@@ -268,7 +270,7 @@ void Body::SetTransformation(const Transformation value) noexcept
     }
 }
 
-void Body::SetTransform(const Length2D position, Angle angle)
+void Body::SetTransform(Length2D position, Angle angle)
 {
     assert(::IsValid(position));
     assert(::IsValid(angle));
@@ -335,17 +337,17 @@ void Body::SetFixedRotation(bool flag)
     ResetMassData();
 }
 
-bool Body::Insert(Joint* j)
+bool Body::Insert(Joint* joint)
 {
-    const auto bodyA = j->GetBodyA();
-    const auto bodyB = j->GetBodyB();
+    const auto bodyA = joint->GetBodyA();
+    const auto bodyB = joint->GetBodyB();
     
     const auto other = (this == bodyA)? bodyB: (this == bodyB)? bodyA: nullptr;
-    if (!other)
+    if (other == nullptr)
     {
         return false;
     }
-    m_joints.push_back(std::make_pair(other, j));
+    m_joints.push_back(std::make_pair(other, joint));
     return true;
 }
 
@@ -367,7 +369,7 @@ bool Body::Insert(Contact* contact)
     return true;
 }
 
-bool Body::Erase(const Joint* const joint)
+bool Body::Erase(const Joint* joint)
 {
     const auto it = std::find_if(begin(m_joints), end(m_joints), [&](KeyedJointPtr ji) {
         return ji.second == joint;
@@ -380,7 +382,7 @@ bool Body::Erase(const Joint* const joint)
     return false;
 }
 
-bool Body::Erase(const Contact* const contact)
+bool Body::Erase(const Contact* contact)
 {
     const auto it = std::find_if(begin(m_contacts), end(m_contacts), [&](KeyedContactPtr ci) {
         return ci.second == contact;
@@ -423,7 +425,7 @@ bool playrho::ShouldCollide(const Body& lhs, const Body& rhs) noexcept
 
 BodyCounter playrho::GetWorldIndex(const Body* body)
 {
-    if (body)
+    if (body != nullptr)
     {
         const auto world = body->GetWorld();
         const auto bodies = world->GetBodies();
@@ -439,7 +441,7 @@ BodyCounter playrho::GetWorldIndex(const Body* body)
     return BodyCounter(-1);
 }
 
-Velocity playrho::GetVelocity(const Body& body, const Time h, MovementConf conf) noexcept
+Velocity playrho::GetVelocity(const Body& body, Time h, MovementConf conf) noexcept
 {
     // Integrate velocity and apply damping.
     auto velocity = body.GetVelocity();
@@ -506,7 +508,7 @@ void playrho::RotateAboutLocalPoint(Body& body, Angle amount, Length2D localPoin
     RotateAboutWorldPoint(body, amount, GetWorldPoint(body, localPoint));
 }
 
-Force2D playrho::GetCentripetalForce(const Body& body, const Length2D axis)
+Force2D playrho::GetCentripetalForce(const Body& body, Length2D axis)
 {
     // For background on centripetal force, see:
     //   https://en.wikipedia.org/wiki/Centripetal_force

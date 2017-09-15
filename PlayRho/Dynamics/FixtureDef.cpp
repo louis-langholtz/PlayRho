@@ -22,9 +22,11 @@
 #include <PlayRho/Dynamics/FixtureDef.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 
-using namespace playrho;
+namespace playrho {
 
-FixtureDef playrho::GetFixtureDef(const Fixture& fixture) noexcept
+FixtureDef GetFixtureDef(const Fixture& fixture) noexcept
 {
     return FixtureDef{fixture.GetUserData(), fixture.IsSensor(), fixture.GetFilterData()};
 }
+
+} // namespace playrho

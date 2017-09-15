@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_MASS_DATA_HPP
-#define PLAYRHO_MASS_DATA_HPP
+#ifndef PLAYRHO_COLLISION_MASSDATA_HPP
+#define PLAYRHO_COLLISION_MASSDATA_HPP
 
 /// @file
 /// Declaration of the MassData structure and associated free functions.
@@ -90,8 +90,7 @@ namespace playrho {
     /// @param density Areal density of mass.
     /// @param location Location of the center of the shape.
     ///
-    MassData GetMassData(const Length r, const NonNegative<Density> density,
-                         const Length2D location);
+    MassData GetMassData(Length r, NonNegative<Density> density, Length2D location);
 
     /// @brief Computes the mass data for a linear shape.
     ///
@@ -100,12 +99,11 @@ namespace playrho {
     /// @param v0 Location of vertex zero.
     /// @param v1 Location of vertex one.
     ///
-    MassData GetMassData(const Length r, const NonNegative<Density> density,
-                         const Length2D v0, const Length2D v1);
+    MassData GetMassData(Length r, NonNegative<Density> density, Length2D v0, Length2D v1);
 
     /// @brief Gets the mass data for the given collection of vertices with the given
     ///    properties.
-    MassData GetMassData(const Length vertexRadius, const NonNegative<Density> density,
+    MassData GetMassData(Length vertexRadius, NonNegative<Density> density,
                          Span<const Length2D> vertices);
     
     /// @brief Computes the mass data for the given fixture.
@@ -131,6 +129,6 @@ namespace playrho {
     /// @return a struct containing the mass, inertia and center of the body.
     MassData GetMassData(const Body& body) noexcept;
     
-}
+} // namespace playrho
 
-#endif /* B2_MASS_DATA_HPP */
+#endif // PLAYRHO_COLLISION_MASSDATA_HPP

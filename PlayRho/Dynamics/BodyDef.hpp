@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_BODY_DEF_HPP
-#define PLAYRHO_BODY_DEF_HPP
+#ifndef PLAYRHO_DYNAMICS_BODYDEF_HPP
+#define PLAYRHO_DYNAMICS_BODYDEF_HPP
 
 /// @file
 /// Declarations of the BodyDef struct and free functions associated with it.
@@ -266,4 +266,4 @@ namespace playrho
 
 } // namespace playrho
 
-#endif /* PLAYRHO_BODY_DEF_HPP */
+#endif // PLAYRHO_DYNAMICS_BODYDEF_HPP

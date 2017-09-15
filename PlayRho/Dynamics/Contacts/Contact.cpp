@@ -29,7 +29,7 @@
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 
-using namespace playrho;
+namespace playrho {
 
 namespace
 {
@@ -49,7 +49,7 @@ namespace
         distanceConf.maxIterations = conf.maxDistanceIters;
         return distanceConf;
     }
-}
+} // namespace
 
 Contact::UpdateConf Contact::GetUpdateConf(const StepConf& conf) noexcept
 {
@@ -200,7 +200,7 @@ void Contact::Update(const UpdateConf& conf, ContactListener* listener)
     if (!oldTouching && newTouching)
     {
         SetTouching();
-        if (listener)
+        if (listener != nullptr)
         {
             listener->BeginContact(*this);
         }
@@ -208,7 +208,7 @@ void Contact::Update(const UpdateConf& conf, ContactListener* listener)
     else if (oldTouching && !newTouching)
     {
         UnsetTouching();
-        if (listener)
+        if (listener != nullptr)
         {
             listener->EndContact(*this);
         }
@@ -216,7 +216,7 @@ void Contact::Update(const UpdateConf& conf, ContactListener* listener)
 
     if (!sensor && newTouching)
     {
-        if (listener)
+        if (listener != nullptr)
         {
             listener->PreSolve(*this, oldManifold);
         }
@@ -225,39 +225,54 @@ void Contact::Update(const UpdateConf& conf, ContactListener* listener)
 
 // Free functions...
 
-bool playrho::HasSensor(const Contact& contact) noexcept
+bool HasSensor(const Contact& contact) noexcept
 {
     return contact.GetFixtureA()->IsSensor() || contact.GetFixtureB()->IsSensor();
 }
 
-bool playrho::IsImpenetrable(const Contact& contact) noexcept
+bool IsImpenetrable(const Contact& contact) noexcept
 {
     const auto bA = contact.GetFixtureA()->GetBody();
     const auto bB = contact.GetFixtureB()->GetBody();
     return bA->IsImpenetrable() || bB->IsImpenetrable();
 }
 
-void playrho::SetAwake(const Contact& c) noexcept
+bool IsActive(const Contact& contact) noexcept
+{
+    const auto bA = contact.GetFixtureA()->GetBody();
+    const auto bB = contact.GetFixtureB()->GetBody();
+    
+    assert(!bA->IsAwake() || bA->IsSpeedable());
+    assert(!bB->IsAwake() || bB->IsSpeedable());
+    
+    const auto activeA = bA->IsAwake();
+    const auto activeB = bB->IsAwake();
+    
+    // Is at least one body active (awake and dynamic or kinematic)?
+    return activeA || activeB;
+}
+
+void SetAwake(const Contact& c) noexcept
 {
     SetAwake(*c.GetFixtureA());
     SetAwake(*c.GetFixtureB());
 }
 
 /// Resets the friction mixture to the default value.
-void playrho::ResetFriction(Contact& contact)
+void ResetFriction(Contact& contact)
 {
     contact.SetFriction(MixFriction(contact.GetFixtureA()->GetFriction(), contact.GetFixtureB()->GetFriction()));
 }
 
 /// Reset the restitution to the default value.
-void playrho::ResetRestitution(Contact& contact) noexcept
+void ResetRestitution(Contact& contact) noexcept
 {
     const auto restitutionA = contact.GetFixtureA()->GetRestitution();
     const auto restitutionB = contact.GetFixtureB()->GetRestitution();
     contact.SetRestitution(MixRestitution(restitutionA, restitutionB));
 }
 
-TOIOutput playrho::CalcToi(const Contact& contact, const ToiConf conf)
+TOIOutput CalcToi(const Contact& contact, ToiConf conf)
 {
     const auto fA = contact.GetFixtureA();
     const auto fB = contact.GetFixtureB();
@@ -276,3 +291,5 @@ TOIOutput playrho::CalcToi(const Contact& contact, const ToiConf conf)
     // Large rotations can make the root finder of TimeOfImpact fail, so normalize the sweep angles.
     return GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
 }
+
+} // namespace playrho

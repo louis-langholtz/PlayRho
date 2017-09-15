@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_CONTACT_HPP
-#define PLAYRHO_CONTACT_HPP
+#ifndef PLAYRHO_DYNAMICS_CONTACTS_CONTACT_HPP
+#define PLAYRHO_DYNAMICS_CONTACTS_CONTACT_HPP
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
@@ -63,11 +63,15 @@ inline Real MixRestitution(Real restitution1, Real restitution2) noexcept
 }
 
 /// @brief A potential contact between the chidren of two Fixture objects.
-/// @details
-/// The class manages contact between two shapes. A contact exists for each overlapping
-/// AABB in the broad-phase (except if filtered). Therefore a contact object may exist
-/// that has no contact points.
+///
+/// @details The class manages contact between two shapes. A contact exists for each overlapping
+///   AABB in the broad-phase (except if filtered). Therefore a contact object may exist
+///   that has no contact points.
+///
 /// @note This data structure is 104-bytes large (on at least one 64-bit platform).
+///
+/// @sa ContactFreeFunctions
+///
 class Contact
 {
 public:
@@ -87,12 +91,12 @@ public:
 
     /// @brief Initializing constructor.
     ///
-    /// @param fixtureA Fixture A. A non-null pointer to fixture A that must have a shape
+    /// @param fA Fixture A. A non-null pointer to fixture A that must have a shape
     ///   and may not be the same fixture or have the same body as the other fixture.
-    /// @param indexA Index of child A (from fixture A).
-    /// @param fixtureB Fixture B. A non-null pointer to fixture B that must have a shape
+    /// @param iA Index of child A (from fixture A).
+    /// @param fB Fixture B. A non-null pointer to fixture B that must have a shape
     ///   and may not be the same fixture or have the same body as the other fixture.
-    /// @param indexB Index of child B (from fixture B).
+    /// @param iB Index of child B (from fixture B).
     ///
     /// @warning Behavior is undefined if <code>fixtureA</code> is null.
     /// @warning Behavior is undefined if <code>fixtureB</code> is null.
@@ -101,7 +105,7 @@ public:
     /// @warning Behavior is undefined if <code>fixtureB</code> has no associated shape.
     /// @warning Behavior is undefined if both fixtures have the same body.
     ///
-    Contact(Fixture* fixtureA, ChildCounter indexA, Fixture* fixtureB, ChildCounter indexB);
+    Contact(Fixture* fA, ChildCounter iA, Fixture* fB, ChildCounter iB);
     
     /// @brief Default construction not allowed.
     Contact() = delete;
@@ -325,9 +329,13 @@ inline Manifold& Contact::GetMutableManifold() noexcept
 inline void Contact::SetEnabled(bool flag) noexcept
 {
     if (flag)
+    {
         SetEnabled();
+    }
     else
+    {
         UnsetEnabled();
+    }
 }
 
 inline void Contact::SetEnabled() noexcept
@@ -394,7 +402,7 @@ inline void Contact::UnflagForFiltering() noexcept
 
 inline bool Contact::NeedsFiltering() const noexcept
 {
-    return m_flags & Contact::e_filterFlag;
+    return (m_flags & Contact::e_filterFlag) != 0;
 }
 
 inline void Contact::FlagForUpdating() noexcept
@@ -409,7 +417,7 @@ inline void Contact::UnflagForUpdating() noexcept
 
 inline bool Contact::NeedsUpdating() const noexcept
 {
-    return m_flags & Contact::e_dirtyFlag;
+    return (m_flags & Contact::e_dirtyFlag) != 0;
 }
 
 inline void Contact::SetFriction(Real friction) noexcept
@@ -478,7 +486,7 @@ inline Contact::substep_type Contact::GetToiCount() const noexcept
 
 inline bool Contact::IsIslanded() const noexcept
 {
-    return m_flags & e_islandFlag;
+    return (m_flags & e_islandFlag) != 0;
 }
 
 inline void Contact::SetIslanded() noexcept
@@ -496,11 +504,19 @@ inline void Contact::UnsetIslanded() noexcept
 /// @brief Contact pointer type.
 using ContactPtr = Contact*;
 
+/// @defgroup ContactFreeFunctions Contact free functions.
+/// @details A collection of non-member, non-friend functions that operate on Contact objects.
+/// @sa Contact.
+/// @{
+
 /// @brief Whether the given contact has a sensor.
 bool HasSensor(const Contact& contact) noexcept;
 
 /// @brief Whether the given contact is "impenetrable".
 bool IsImpenetrable(const Contact& contact) noexcept;
+
+/// @brief Determines whether the given contact is "active".
+bool IsActive(const Contact& contact) noexcept;
 
 /// @brief Sets awake the fixtures of the given contact.
 void SetAwake(const Contact& c) noexcept;
@@ -512,8 +528,10 @@ void ResetFriction(Contact& contact);
 void ResetRestitution(Contact& contact) noexcept;
 
 /// @brief Calculates the Time Of Impact for the given contact with the given configuration.
-TOIOutput CalcToi(const Contact& contact, const ToiConf conf);
+TOIOutput CalcToi(const Contact& contact, ToiConf conf);
+    
+/// @}
 
 } // namespace playrho
 
-#endif
+#endif // PLAYRHO_DYNAMICS_CONTACTS_CONTACT_HPP

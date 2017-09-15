@@ -21,9 +21,11 @@
 #include <PlayRho/Dynamics/MovementConf.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 
-using namespace playrho;
+namespace playrho {
 
-MovementConf playrho::GetMovementConf(const StepConf& conf) noexcept
+MovementConf GetMovementConf(const StepConf& conf) noexcept
 {
     return MovementConf{conf.maxTranslation, conf.maxRotation};
 }
+
+} // namespace playrho

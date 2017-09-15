@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_UNIT_VEC_2_HPP
-#define PLAYRHO_UNIT_VEC_2_HPP
+#ifndef PLAYRHO_COMMON_UNITVEC2_HPP
+#define PLAYRHO_COMMON_UNITVEC2_HPP
 
 /// @file
 /// Declarations of the UnitVec2 class and free functions associated with it.
@@ -104,10 +104,7 @@ public:
         return UnitVec2{std::cos(angle / Radian), std::sin(angle / Radian)};
     }
 
-    constexpr UnitVec2() noexcept
-    {
-        // Intentionally empty.
-    }
+    constexpr UnitVec2() noexcept = default;
 
     /// @brief Gets the "X" value.
     constexpr auto GetX() const noexcept { return m_elems[0]; }
@@ -281,4 +278,4 @@ inline ::std::ostream& operator<<(::std::ostream& os, const UnitVec2& value)
 
 } // namespace playrho
 
-#endif /* PLAYRHO_UNIT_VEC_2_HPP */
+#endif // PLAYRHO_COMMON_UNITVEC2_HPP

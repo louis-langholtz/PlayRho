@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_BODY_HPP
-#define PLAYRHO_BODY_HPP
+#ifndef PLAYRHO_DYNAMICS_BODY_HPP
+#define PLAYRHO_DYNAMICS_BODY_HPP
 
 /// @file
 /// Declarations of the Body class, and free functions associated with it.
@@ -63,6 +63,8 @@ struct MassData;
 /// @note On a 64-bit architecture with 4-byte Real, this data structure is at least
 ///   192-bytes large.
 ///
+/// @sa BodyFreeFunctions
+///
 class Body
 {
 public:
@@ -91,49 +93,51 @@ public:
     enum Flag: FlagsType
     {
         /// @brief Island flag.
-        e_islandFlag = 0x0001,
+        e_islandFlag = FlagsType(0x0001),
 
         /// @brief Awake flag.
-        e_awakeFlag = 0x0002,
+        e_awakeFlag = FlagsType(0x0002),
         
         /// @brief Auto sleep flag.
-        e_autoSleepFlag = 0x0004,
+        e_autoSleepFlag = FlagsType(0x0004),
         
         /// @brief Impenetrable flag.
         /// @details Indicates whether CCD should be done for this body.
         /// All static and kinematic bodies have this flag enabled.
-        e_impenetrableFlag = 0x0008,
+        e_impenetrableFlag = FlagsType(0x0008),
         
         /// @brief Fixed rotation flag.
-        e_fixedRotationFlag = 0x0010,
+        e_fixedRotationFlag = FlagsType(0x0010),
         
         /// @brief Enabled flag.
-        e_enabledFlag = 0x0020,
+        e_enabledFlag = FlagsType(0x0020),
         
         /// @brief Velocity flag.
         /// @details Set this to enable changes in position due to velocity.
         /// Bodies with this set are "speedable" - either kinematic or dynamic bodies.
-        e_velocityFlag = 0x0080,
+        e_velocityFlag = FlagsType(0x0080),
         
         /// @brief Acceleration flag.
         /// @details Set this to enable changes in velocity due to physical properties (like forces).
         /// Bodies with this set are "accelerable" - dynamic bodies.
-        e_accelerationFlag = 0x0100,
+        e_accelerationFlag = FlagsType(0x0100),
         
         /// @brief Mass Data Dirty Flag.
-        e_massDataDirtyFlag = 0x0200,
+        e_massDataDirtyFlag = FlagsType(0x0200),
     };
     
     /// @brief Gets the flags for the given value.
-    static FlagsType GetFlags(const BodyType type) noexcept;
+    static FlagsType GetFlags(BodyType type) noexcept;
 
     /// @brief Gets the flags for the given value.
     static FlagsType GetFlags(const BodyDef& bd) noexcept;
     
+    Body() = delete;
+
     /// @brief Initializing constructor for unit testing purposes.
     /// @note This is not meant to be called directly by users of the library API. Call
     ///   a world instance's <code>CreateBody</code> method instead.
-    Body(const BodyDef& bd, World* world = nullptr);
+    Body(World* world, const BodyDef& bd);
 
     ~Body();
     
@@ -153,7 +157,7 @@ public:
     /// @return <code>nullptr</code> if the world is locked or a parameter is dissallowed.
     ///   A pointer to the created fixture otherwise.
     ///
-    Fixture* CreateFixture(std::shared_ptr<const Shape> shape,
+    Fixture* CreateFixture(const std::shared_ptr<const Shape>& shape,
                            const FixtureDef& def = GetDefaultFixtureDef(),
                            bool resetMassData = true);
 
@@ -182,7 +186,7 @@ public:
     /// @param position Valid world position of the body's local origin. Behavior is undefined
     ///   if value is invalid.
     /// @param angle Valid world rotation. Behavior is undefined if value is invalid.
-    void SetTransform(const Length2D position, Angle angle);
+    void SetTransform(Length2D position, Angle angle);
 
     /// @brief Gets the body transform for the body's origin.
     /// @return the world transform of the body's origin.
@@ -221,15 +225,14 @@ public:
     /// @note A non-zero velocity will awaken this body.
     /// @sa SetAwake.
     /// @sa SetUnderActiveTime.
-    void SetVelocity(const Velocity& v) noexcept;
+    void SetVelocity(const Velocity& velocity) noexcept;
 
     /// @brief Sets the linear and rotational accelerations on this body.
     /// @note This has no effect on non-accelerable bodies.
     /// @note A non-zero acceleration will also awaken the body.
     /// @param linear Linear acceleration.
     /// @param angular Angular acceleration.
-    void SetAcceleration(const LinearAcceleration2D linear,
-                         const AngularAcceleration angular) noexcept;
+    void SetAcceleration(LinearAcceleration2D linear, AngularAcceleration angular) noexcept;
 
     /// @brief Gets this body's linear acceleration.
     LinearAcceleration2D GetLinearAcceleration() const noexcept;
@@ -258,8 +261,8 @@ public:
     /// @note This changes the center of mass position.
     /// @note Creating or destroying fixtures can also alter the mass.
     /// @note This function has no effect if the body isn't dynamic.
-    /// @param data the mass properties.
-    void SetMassData(const MassData& data);
+    /// @param massData the mass properties.
+    void SetMassData(const MassData& massData);
 
     /// @brief Resets the mass data properties.
     /// @details This resets the mass data to the sum of the mass properties of the fixtures.
@@ -437,8 +440,8 @@ private:
     ///    1. advances the body's sweep to the given time ratio;
     ///    2. updates the body's sweep positions (linear and angular) to the advanced ones; and
     ///    3. updates the body's transform to the new sweep one settings.
-    /// @param t Valid new time factor in [0,1) to advance the sweep to.
-    void Advance(Real t) noexcept;
+    /// @param alpha Valid new time factor in [0,1) to advance the sweep to.
+    void Advance(Real alpha) noexcept;
 
     void SetMassDataDirty() noexcept;
     void UnsetMassDataDirty() noexcept;
@@ -449,8 +452,8 @@ private:
     bool Insert(Contact* contact);
     bool Insert(Joint* joint);
 
-    bool Erase(const Contact* const contact);
-    bool Erase(const Joint* const joint);
+    bool Erase(const Contact* contact);
+    bool Erase(const Joint* joint);
 
     void ClearContacts();
     void ClearJoints();
@@ -460,7 +463,7 @@ private:
     ///   method updates the current transformation and flags each associated contact
     ///   for updating.
     /// @warning Behavior is undefined if value is invalid.
-    void SetTransformation(const Transformation value) noexcept;
+    void SetTransformation(Transformation value) noexcept;
 
     //
     // Member variables. Try to keep total size small.
@@ -512,7 +515,7 @@ private:
     Time m_underActiveTime = 0;
 };
 
-inline Body::FlagsType Body::GetFlags(const BodyType type) noexcept
+inline Body::FlagsType Body::GetFlags(BodyType type) noexcept
 {
     auto flags = FlagsType{0};
     switch (type)
@@ -716,32 +719,27 @@ inline bool Body::IsSleepingAllowed() const noexcept
 
 inline SizedRange<Body::Fixtures::const_iterator> Body::GetFixtures() const noexcept
 {
-    return SizedRange<Body::Fixtures::const_iterator>(m_fixtures.begin(), m_fixtures.end(),
-                                                      m_fixtures.size());
+    return {m_fixtures.begin(), m_fixtures.end(), m_fixtures.size()};
 }
 
 inline SizedRange<Body::Fixtures::iterator> Body::GetFixtures() noexcept
 {
-    return SizedRange<Body::Fixtures::iterator>(m_fixtures.begin(), m_fixtures.end(),
-                                                m_fixtures.size());
+    return {m_fixtures.begin(), m_fixtures.end(), m_fixtures.size()};
 }
 
 inline SizedRange<Body::Joints::const_iterator> Body::GetJoints() const noexcept
 {
-    return SizedRange<Body::Joints::const_iterator>(m_joints.begin(), m_joints.end(),
-                                                    m_joints.size());
+    return {m_joints.begin(), m_joints.end(), m_joints.size()};
 }
 
 inline SizedRange<Body::Joints::iterator> Body::GetJoints() noexcept
 {
-    return SizedRange<Body::Joints::iterator>(m_joints.begin(), m_joints.end(), m_joints.size());
+    return {m_joints.begin(), m_joints.end(), m_joints.size()};
 }
 
 inline SizedRange<Body::Contacts::const_iterator> Body::GetContacts() const noexcept
 {
-    return SizedRange<Body::Contacts::const_iterator>(std::begin(m_contacts),
-                                                      std::end(m_contacts),
-                                                      m_contacts.size());
+    return {std::begin(m_contacts), std::end(m_contacts), m_contacts.size()};
 }
 
 inline void Body::SetUserData(void* data) noexcept
@@ -792,7 +790,7 @@ inline void Body::UnsetMassDataDirty() noexcept
 
 inline bool Body::IsMassDataDirty() const noexcept
 {
-    return m_flags & e_massDataDirtyFlag;
+    return (m_flags & e_massDataDirtyFlag) != 0;
 }
 
 inline void Body::SetEnabledFlag() noexcept
@@ -807,7 +805,7 @@ inline void Body::UnsetEnabledFlag() noexcept
 
 inline bool Body::IsIslanded() const noexcept
 {
-    return m_flags & e_islandFlag;
+    return (m_flags & e_islandFlag) != 0;
 }
 
 inline void Body::SetIslandedFlag() noexcept
@@ -821,6 +819,11 @@ inline void Body::UnsetIslandedFlag() noexcept
 }
 
 // Free functions...
+
+/// @defgroup BodyFreeFunctions Body free functions.
+/// @details A collection of non-member, non-friend functions that operate on Body objects.
+/// @sa Body.
+/// @{
 
 /// Awakens the body if it's asleep.
 inline bool Awaken(Body& body) noexcept
@@ -866,13 +869,13 @@ inline Mass GetMass(const Body& body) noexcept
 }
 
 /// @brief Applies the given linear acceleration to the given body.
-inline void ApplyLinearAcceleration(Body& body, const LinearAcceleration2D amount)
+inline void ApplyLinearAcceleration(Body& body, LinearAcceleration2D amount)
 {
     body.SetAcceleration(body.GetLinearAcceleration() + amount, body.GetAngularAcceleration());
 }
 
 /// @brief Sets the given amount of force at the given point to the given body.
-inline void SetForce(Body& body, const Force2D force, const Length2D point) noexcept
+inline void SetForce(Body& body, Force2D force, Length2D point) noexcept
 {
     const auto linAccel = LinearAcceleration2D{force * body.GetInvMass()};
     const auto invRotI = body.GetInvRotInertia();
@@ -889,7 +892,7 @@ inline void SetForce(Body& body, const Force2D force, const Length2D point) noex
 /// @param body Body to apply the force to.
 /// @param force World force vector.
 /// @param point World position of the point of application.
-inline void ApplyForce(Body& body, const Force2D force, const Length2D point) noexcept
+inline void ApplyForce(Body& body, Force2D force, Length2D point) noexcept
 {
     // Torque is L^2 M T^-2 QP^-1.
     const auto linAccel = LinearAcceleration2D{force * body.GetInvMass()};
@@ -906,7 +909,7 @@ inline void ApplyForce(Body& body, const Force2D force, const Length2D point) no
 /// @note Non-zero forces wakes up the body.
 /// @param body Body to apply the force to.
 /// @param force World force vector.
-inline void ApplyForceToCenter(Body& body, const Force2D force) noexcept
+inline void ApplyForceToCenter(Body& body, Force2D force) noexcept
 {
     const auto linAccel = body.GetLinearAcceleration() + force * body.GetInvMass();
     const auto angAccel = body.GetAngularAcceleration();
@@ -914,7 +917,7 @@ inline void ApplyForceToCenter(Body& body, const Force2D force) noexcept
 }
 
 /// @brief Sets the given amount of torque to the given body.
-inline void SetTorque(Body& body, const Torque torque) noexcept
+inline void SetTorque(Body& body, Torque torque) noexcept
 {
     const auto linAccel = body.GetLinearAcceleration();
     const auto invRotI = body.GetInvRotInertia();
@@ -928,7 +931,7 @@ inline void SetTorque(Body& body, const Torque torque) noexcept
 /// @note Non-zero forces wakes up the body.
 /// @param body Body to apply the torque to.
 /// @param torque about the z-axis (out of the screen).
-inline void ApplyTorque(Body& body, const Torque torque) noexcept
+inline void ApplyTorque(Body& body, Torque torque) noexcept
 {
     const auto linAccel = body.GetLinearAcceleration();
     const auto invRotI = body.GetInvRotInertia();
@@ -944,7 +947,7 @@ inline void ApplyTorque(Body& body, const Torque torque) noexcept
 /// @param body Body to apply the impulse to.
 /// @param impulse the world impulse vector.
 /// @param point the world position of the point of application.
-inline void ApplyLinearImpulse(Body& body, const Momentum2D impulse, const Length2D point) noexcept
+inline void ApplyLinearImpulse(Body& body, Momentum2D impulse, Length2D point) noexcept
 {
     auto velocity = body.GetVelocity();
     velocity.linear += body.GetInvMass() * impulse;
@@ -967,7 +970,7 @@ inline void ApplyAngularImpulse(Body& body, AngularMomentum impulse) noexcept
 
 /// @brief Gets the centripetal force necessary to put the body into an orbit having
 ///    the given radius.
-Force2D GetCentripetalForce(const Body& body, const Length2D axis);
+Force2D GetCentripetalForce(const Body& body, Length2D axis);
 
 /// Gets the rotational inertia of the body.
 /// @param body Body to get the rotational inertia for.
@@ -1101,7 +1104,7 @@ inline Torque GetTorque(const Body& body) noexcept
 /// @param body Body to get the velocity for.
 /// @param h Time elapsed to get velocity for. Behavior is undefined if this value is invalid.
 /// @param conf Movement configuration. This defines caps on linear and angular speeds.
-Velocity GetVelocity(const Body& body, const Time h, MovementConf conf) noexcept;
+Velocity GetVelocity(const Body& body, Time h, MovementConf conf) noexcept;
 
 /// @brief Gets the world index for the given body.
 BodyCounter GetWorldIndex(const Body* body);
@@ -1127,6 +1130,8 @@ void RotateAboutWorldPoint(Body& body, Angle amount, Length2D worldPoint);
 /// @param localPoint Point in local coordinates.
 void RotateAboutLocalPoint(Body& body, Angle amount, Length2D localPoint);
 
+/// @}
+
 } // namespace playrho
 
-#endif
+#endif // PLAYRHO_DYNAMICS_BODY_HPP

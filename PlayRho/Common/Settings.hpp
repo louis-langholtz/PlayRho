@@ -24,8 +24,8 @@
  * @brief Types and default settings file.
  */
 
-#ifndef PLAYRHO_SETTINGS_HPP
-#define PLAYRHO_SETTINGS_HPP
+#ifndef PLAYRHO_COMMON_SETTINGS_HPP
+#define PLAYRHO_COMMON_SETTINGS_HPP
 
 #include <cstddef>
 #include <cassert>
@@ -44,11 +44,8 @@
  *
  * Namespace for all PlayRho related names.
  */
-namespace playrho
-{   
-
-namespace details
-{
+namespace playrho {
+namespace details {
 
 /// @brief Defaults object for real types.
 template <typename T>
@@ -80,18 +77,18 @@ struct Defaults<Fixed<std::int32_t,FRACTION_BITS>>
     {
         // Needs to be big enough that the step tolerance doesn't go to zero.
         // ex: FRACTION_BITS==10, then divisor==256
-        return Length{Meter / Real{(1 << (FRACTION_BITS - 2))}};
+        return Length{Meter / Real{(1u << (FRACTION_BITS - 2))}};
     }
     
     /// @brief Gets the max vertex radius.
     static constexpr auto GetMaxVertexRadius() noexcept
     {
         // linearSlop * 2550000
-        return Length{Real(1 << (28 - FRACTION_BITS)) * Meter};
+        return Length{Real(1u << (28 - FRACTION_BITS)) * Meter};
     }
 };
 
-}
+} // namespace details
 
 /// @brief Maximum number of supportable edges in a simplex.
 constexpr auto MaxSimplexEdges = std::uint8_t{3};
@@ -253,6 +250,6 @@ constexpr auto DefaultAngularSleepTolerance = Real{(Pi * 2) / 180} * RadianPerSe
 ///   biased normal collisions.
 constexpr auto DefaultCirclesRatio = Real{10};
 
-}
+} // namespace playrho
 
-#endif
+#endif // PLAYRHO_COMMON_SETTINGS_HPP

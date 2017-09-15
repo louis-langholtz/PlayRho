@@ -17,15 +17,15 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_SIMPLEX_EDGE_HPP
-#define PLAYRHO_SIMPLEX_EDGE_HPP
+#ifndef PLAYRHO_COLLISION_SIMPLEXEDGE_HPP
+#define PLAYRHO_COLLISION_SIMPLEXEDGE_HPP
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/IndexPair.hpp>
 
-namespace playrho
-{
-    /// Simplex edge.
+namespace playrho {
+
+    /// @brief Simplex edge.
     ///
     /// @details This is the locations (in world coordinates) and indices of a pair of vertices
     /// from two shapes (shape A and shape B).
@@ -39,23 +39,23 @@ namespace playrho
         /// @brief Index type.
         using index_type = IndexPair::size_type;
         
-        /// Default constructor.
+        /// @brief Default constructor.
         SimplexEdge() = default;
         
         /// @brief Copy constructor.
         constexpr SimplexEdge(const SimplexEdge& copy) = default;
         
-        /// Initializing constructor.
+        /// @brief Initializing constructor.
         /// @param pA Point A in world coordinates.
         /// @param iA Index of point A within the shape that it comes from.
         /// @param pB Point B in world coordinates.
         /// @param iB Index of point B within the shape that it comes from.
         constexpr SimplexEdge(Length2D pA, index_type iA, Length2D pB, index_type iB) noexcept;
         
-        /// Gets point A (in world coordinates).
+        /// @brief Gets point A (in world coordinates).
         constexpr auto GetPointA() const noexcept { return m_wA; }
         
-        /// Gets point B (in world coordinates).
+        /// @brief Gets point B (in world coordinates).
         constexpr auto GetPointB() const noexcept { return m_wB; }
 
         /// @brief Gets index A.
@@ -73,20 +73,22 @@ namespace playrho
         IndexPair m_indexPair; ///< Index pair. @details Indices of points A and B. 2-bytes.
     };
     
-    constexpr inline SimplexEdge::SimplexEdge(Length2D pA, index_type iA, Length2D pB, index_type iB) noexcept:
+    constexpr inline SimplexEdge::SimplexEdge(Length2D pA, index_type iA,
+                                              Length2D pB, index_type iB) noexcept:
         m_wA{pA}, m_wB{pB}, m_indexPair{iA, iB}
     {
+        // Intentionally empty.
     }
     
-    /// Gets "w".
+    /// @brief Gets "w".
     /// @return 2D vector value of wB minus wA.
-    constexpr inline Length2D GetPointDelta(const SimplexEdge& sv)
+    constexpr inline Length2D GetPointDelta(const SimplexEdge& sv) noexcept
     {
         return sv.GetPointB() - sv.GetPointA();
     }
     
     /// @brief SimplexEdge equality operator.
-    constexpr inline bool operator== (const SimplexEdge& lhs, const SimplexEdge& rhs)
+    constexpr inline bool operator== (const SimplexEdge& lhs, const SimplexEdge& rhs) noexcept
     {
         return (lhs.GetPointA() == rhs.GetPointA())
             && (lhs.GetPointB() == rhs.GetPointB())
@@ -94,10 +96,11 @@ namespace playrho
     }
     
     /// @brief SimplexEdge inequality operator.
-    constexpr inline bool operator!= (const SimplexEdge& lhs, const SimplexEdge& rhs)
+    constexpr inline bool operator!= (const SimplexEdge& lhs, const SimplexEdge& rhs) noexcept
     {
         return !(lhs == rhs);
     }
-}
 
-#endif /* PLAYRHO_SIMPLEX_EDGE_HPP */
+} // namespace playrho
+
+#endif // PLAYRHO_COLLISION_SIMPLEXEDGE_HPP

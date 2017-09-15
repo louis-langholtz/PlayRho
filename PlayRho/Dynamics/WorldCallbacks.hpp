@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_WORLD_CALLBACKS_HPP
-#define PLAYRHO_WORLD_CALLBACKS_HPP
+#ifndef PLAYRHO_DYNAMICS_WORLDCALLBACKS_HPP
+#define PLAYRHO_DYNAMICS_WORLDCALLBACKS_HPP
 
 #include <PlayRho/Common/Settings.hpp>
 
@@ -36,7 +36,7 @@ class Manifold;
 class DestructionListener
 {
 public:
-    virtual ~DestructionListener() noexcept {}
+    virtual ~DestructionListener() noexcept = default;
 
     /// Called when any joint is about to be destroyed due
     /// to the destruction of one of its attached bodies.
@@ -53,7 +53,7 @@ public:
 class ContactFilter
 {
 public:
-    virtual ~ContactFilter() {}
+    virtual ~ContactFilter() = default;
 
     /// @brief Whether contact calculations should be performed between these two shapes.
     /// @warning for performance reasons this is only called when the AABBs begin to overlap.
@@ -174,4 +174,4 @@ public:
 
 } // namespace playrho
 
-#endif
+#endif // PLAYRHO_DYNAMICS_WORLDCALLBACKS_HPP

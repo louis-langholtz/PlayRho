@@ -17,15 +17,21 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_SIMPLEX_HPP
-#define PLAYRHO_SIMPLEX_HPP
+#ifndef PLAYRHO_COLLISION_SIMPLEX_HPP
+#define PLAYRHO_COLLISION_SIMPLEX_HPP
 
 #include <PlayRho/Common/ArrayList.hpp>
 #include <PlayRho/Common/Vector.hpp>
 #include <PlayRho/Collision/SimplexEdge.hpp>
 
-namespace playrho
-{
+namespace playrho {
+
+    /// Simplex edge collection.
+    ///
+    /// @note This data is 28 * 3 + 4 = 88-bytes large (on at least one 64-bit platform).
+    ///
+    using SimplexEdges = ArrayList<SimplexEdge, MaxSimplexEdges,
+        std::remove_const<decltype(MaxSimplexEdges)>::type>;
 
     /// @brief An encapsulation of a point, line segment, or triangle.
     ///
@@ -45,17 +51,10 @@ namespace playrho
     {
     public:
 
-        /// Simplex edge collection.
-        ///
-        /// @note This data is 28 * 3 + 4 = 88-bytes large (on at least one 64-bit platform).
-        ///
-        using Edges = ArrayList<SimplexEdge, MaxSimplexEdges,
-            std::remove_const<decltype(MaxSimplexEdges)>::type>;
-
         /// Size type.
         ///
         /// @note This data type is explicitly set to 1-byte large.
-        using size_type = Edges::size_type;
+        using size_type = SimplexEdges::size_type;
 
         /// Coefficients.
         ///
@@ -89,16 +88,18 @@ namespace playrho
             /// @brief Initializing constructor.
             constexpr Cache(Real metric, IndexPair3 indices) noexcept;
             
+            ~Cache() noexcept = default;
+
             /// Gets the metric that was set.
             /// @warning Behavior is undefined if metric was not previously set.
             ///   The IsMetricSet() method can be used to check dynamically if unsure.
             /// @sa SetMetric.
             /// @sa IsMetricSet.
             /// @return Value previously set.
-            Real GetMetric() const noexcept;
+            constexpr Real GetMetric() const noexcept;
             
             /// @brief Is metric set.
-            bool IsMetricSet() const noexcept;
+            constexpr bool IsMetricSet() const noexcept;
             
             /// @brief Gets indices.
             constexpr IndexPair3 GetIndices() const noexcept;
@@ -115,20 +116,20 @@ namespace playrho
         };
 
         /// @brief Gets the cache value for the given edges.
-        static Cache GetCache(const Simplex::Edges& edges) noexcept;
+        static Cache GetCache(const SimplexEdges& edges) noexcept;
         
         /// Gets index pairs for the given edges collection.
         ///
-        static IndexPair3 GetIndexPairs(const Edges& collection) noexcept;
+        static IndexPair3 GetIndexPairs(const SimplexEdges& collection) noexcept;
 
         /// Calculates the "search direction" for the given simplex edge list.
         /// @param simplexEdges A one or two edge list.
         /// @warning Behavior is undefined if the given edge list has zero edges.
         /// @return "search direction" vector.
-        static constexpr Length2D CalcSearchDirection(const Edges& simplexEdges) noexcept;
+        static constexpr Length2D CalcSearchDirection(const SimplexEdges& simplexEdges) noexcept;
         
         /// Gets the given simplex's "metric".
-        static inline Real CalcMetric(const Edges& simplexEdges);
+        static inline Real CalcMetric(const SimplexEdges& simplexEdges);
 
         /// @brief Gets the Simplex for the given simplex edge.
         static Simplex Get(const SimplexEdge& s0) noexcept;
@@ -156,12 +157,12 @@ namespace playrho
         /// @param edges Collection of zero, one, two, or three simplex edges.
         /// @warning Behavior is undefined if the given collection has more than 3 edges.
         /// @return Zero, one, two, or three edge simplex.
-        static Simplex Get(const Edges& edges) noexcept;
+        static Simplex Get(const SimplexEdges& edges) noexcept;
 
         Simplex() = default;
 
         /// @brief Gets the edges.
-        constexpr Edges GetEdges() const noexcept;
+        constexpr SimplexEdges GetEdges() const noexcept;
 
         /// @brief Gets the give indexed simplex edge.
         const SimplexEdge& GetSimplexEdge(size_type index) const noexcept;
@@ -173,13 +174,13 @@ namespace playrho
         constexpr size_type GetSize() const noexcept;
 
     private:
-        Simplex(const Edges& simplexEdges, const Coefficients& normalizedWeights) noexcept;
+        Simplex(const SimplexEdges& simplexEdges, const Coefficients& normalizedWeights) noexcept;
 
         /// Collection of valid simplex edges.
         ///
         /// @note This member variable is 88-bytes.
         ///
-        Edges m_simplexEdges;
+        SimplexEdges m_simplexEdges;
 
         /// Normalized weights.
         ///
@@ -197,13 +198,13 @@ namespace playrho
         // Intentionally empty
     }
 
-    inline Real Simplex::Cache::GetMetric() const noexcept
+    constexpr inline Real Simplex::Cache::GetMetric() const noexcept
     {
         assert(IsMetricSet());
         return m_metric;
     }
     
-    inline bool Simplex::Cache::IsMetricSet() const noexcept
+    constexpr inline bool Simplex::Cache::IsMetricSet() const noexcept
     {
         return GetNumIndices(m_indices) > std::size_t{0};
     }
@@ -218,12 +219,12 @@ namespace playrho
         return m_indices[index];
     }
 
-    inline Simplex::Cache Simplex::GetCache(const Simplex::Edges& edges) noexcept
+    inline Simplex::Cache Simplex::GetCache(const SimplexEdges& edges) noexcept
     {
         return Simplex::Cache{Simplex::CalcMetric(edges), Simplex::GetIndexPairs(edges)};
     }
 
-    inline IndexPair3 Simplex::GetIndexPairs(const Edges& collection) noexcept
+    inline IndexPair3 Simplex::GetIndexPairs(const SimplexEdges& collection) noexcept
     {
         auto list = IndexPair3{InvalidIndexPair, InvalidIndexPair, InvalidIndexPair};
         switch (collection.size())
@@ -235,7 +236,7 @@ namespace playrho
         return list;
     }
 
-    constexpr inline Length2D Simplex::CalcSearchDirection(const Edges& simplexEdges) noexcept
+    constexpr inline Length2D Simplex::CalcSearchDirection(const SimplexEdges& simplexEdges) noexcept
     {
         assert((simplexEdges.size() == 1) || (simplexEdges.size() == 2));
         switch (simplexEdges.size())
@@ -259,7 +260,7 @@ namespace playrho
         }
     }
 
-    inline Real Simplex::CalcMetric(const Edges& simplexEdges)
+    inline Real Simplex::CalcMetric(const SimplexEdges& simplexEdges)
     {
         assert(simplexEdges.size() < 4);
         switch (simplexEdges.size())
@@ -282,8 +283,8 @@ namespace playrho
         return Real{0};
     }
 
-    inline Simplex::Simplex(const Edges& simplexEdges,
-                                            const Coefficients& normalizedWeights) noexcept:
+    inline Simplex::Simplex(const SimplexEdges& simplexEdges,
+                            const Coefficients& normalizedWeights) noexcept:
         m_simplexEdges{simplexEdges}, m_normalizedWeights{normalizedWeights}
     {
         assert(simplexEdges.size() == normalizedWeights.size());
@@ -294,7 +295,7 @@ namespace playrho
 #endif
     }
 
-    constexpr inline Simplex::Edges Simplex::GetEdges() const noexcept
+    constexpr inline SimplexEdges Simplex::GetEdges() const noexcept
     {
         return m_simplexEdges;
     }
@@ -333,6 +334,7 @@ namespace playrho
             default: return Length2D{Real(0) * Meter, Real(0) * Meter};
         }
     }
-}
 
-#endif /* PLAYRHO_SIMPLEX_HPP */
+} // namespace playrho
+
+#endif // PLAYRHO_COLLISION_SIMPLEX_HPP

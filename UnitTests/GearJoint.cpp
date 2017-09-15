@@ -83,7 +83,7 @@ TEST(GearJoint, ByteSize)
 
 TEST(GearJoint, Construction)
 {
-    Body body{BodyDef{}};
+    Body body{nullptr, BodyDef{}};
     RevoluteJointDef rdef{&body, &body, Length2D{}};
     RevoluteJoint revJoint1{rdef};
     RevoluteJoint revJoint2{rdef};
@@ -105,7 +105,7 @@ TEST(GearJoint, Construction)
 
 TEST(GearJoint, SetRatio)
 {
-    Body body{BodyDef{}};
+    Body body{nullptr, BodyDef{}};
     RevoluteJointDef rdef{&body, &body, Length2D{}};
     RevoluteJoint revJoint1{rdef};
     RevoluteJoint revJoint2{rdef};
@@ -118,7 +118,7 @@ TEST(GearJoint, SetRatio)
 
 TEST(GearJoint, GetGearJointDef)
 {
-    Body body{BodyDef{}};
+    Body body{nullptr, BodyDef{}};
     RevoluteJointDef rdef{&body, &body, Length2D{}};
     RevoluteJoint revJoint1{rdef};
     RevoluteJoint revJoint2{rdef};

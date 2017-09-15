@@ -19,11 +19,11 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_SWEEP_HPP
-#define PLAYRHO_SWEEP_HPP
+#ifndef PLAYRHO_COMMON_SWEEP_HPP
+#define PLAYRHO_COMMON_SWEEP_HPP
 
-#include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/Position.hpp>
+#include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/Vector2D.hpp>
 
 namespace playrho
@@ -124,6 +124,6 @@ namespace playrho
         alpha0 = 0;
     }
     
-}
+} // namespace playrho
 
-#endif /* PLAYRHO_SWEEP_HPP */
+#endif // PLAYRHO_COMMON_SWEEP_HPP

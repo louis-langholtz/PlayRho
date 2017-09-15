@@ -83,8 +83,8 @@ TEST(RopeJoint, Construction)
 
 TEST(RopeJoint, GetRopeJointDef)
 {
-    auto bodyA = Body{BodyDef{}};
-    auto bodyB = Body{BodyDef{}};
+    auto bodyA = Body{nullptr, BodyDef{}};
+    auto bodyB = Body{nullptr, BodyDef{}};
     RopeJointDef def{&bodyA, &bodyB};
     const auto localAnchorA = Length2D{-Real(2) * Meter, Real(0) * Meter};
     const auto localAnchorB = Length2D{+Real(2) * Meter, Real(0) * Meter};

@@ -17,14 +17,13 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_INDEX_PAIR_HPP
-#define PLAYRHO_INDEX_PAIR_HPP
+#ifndef PLAYRHO_COLLISION_INDEXPAIR_HPP
+#define PLAYRHO_COLLISION_INDEXPAIR_HPP
 
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/Vector.hpp>
 
-namespace playrho
-{
+namespace playrho {
     
     /// Index pair.
     /// @note This data structure is at least 2-bytes large.
@@ -66,11 +65,11 @@ namespace playrho
     constexpr inline std::size_t GetNumIndices(IndexPair3 pairs) noexcept
     {
         return std::size_t{3}
-        - ((pairs[0] == InvalidIndexPair) & 0x1)
-        - ((pairs[1] == InvalidIndexPair) & 0x1)
-        - ((pairs[2] == InvalidIndexPair) & 0x1);
+        - ((pairs[0] == InvalidIndexPair) & 0x1u)
+        - ((pairs[1] == InvalidIndexPair) & 0x1u)
+        - ((pairs[2] == InvalidIndexPair) & 0x1u);
     }
 
-};
+} // namespace playrho
 
-#endif /* PLAYRHO_INDEX_PAIR_HPP */
+#endif // PLAYRHO_COLLISION_INDEXPAIR_HPP

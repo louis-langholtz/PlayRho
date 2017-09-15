@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_AABB_HPP
-#define PLAYRHO_AABB_HPP
+#ifndef PLAYRHO_COLLISION_AABB_HPP
+#define PLAYRHO_COLLISION_AABB_HPP
 
 /// @file
 /// Declaration of the AABB class and free functions that return instances of it.
@@ -28,8 +28,8 @@
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
 
-namespace playrho
-{
+namespace playrho {
+
     class Shape;
     class Fixture;
     class Body;
@@ -60,7 +60,7 @@ namespace playrho
         }
         
         /// @brief Non-throwing initializing constructor for a single point.
-        constexpr AABB(const Length2D p) noexcept:
+        constexpr explicit AABB(const Length2D p) noexcept:
             m_lowerBound{p}, m_upperBound{p}
         {
             // Intentionally empty.
@@ -96,7 +96,7 @@ namespace playrho
         constexpr Length2D GetUpperBound() const noexcept { return m_upperBound; }
         
         /// @brief Checks whether this AABB fully contains the given AABB.
-        constexpr bool Contains(const AABB aabb) const noexcept
+        constexpr bool Contains(const AABB& aabb) const noexcept
         {
             const auto lower = GetLowerBound();
             const auto upper = GetUpperBound();
@@ -200,19 +200,19 @@ namespace playrho
     }
     
     /// Gets the center of the AABB.
-    constexpr Length2D GetCenter(const AABB aabb) noexcept
+    constexpr Length2D GetCenter(const AABB& aabb) noexcept
     {
         return (aabb.GetLowerBound() + aabb.GetUpperBound()) / Real{2};
     }
     
     /// @brief Gets dimensions of the given AABB.
-    constexpr Length2D GetDimensions(const AABB aabb) noexcept
+    constexpr Length2D GetDimensions(const AABB& aabb) noexcept
     {
         return aabb.GetUpperBound() - aabb.GetLowerBound();
     }
 
     /// Gets the extents of the AABB (half-widths).
-    constexpr Length2D GetExtents(const AABB aabb) noexcept
+    constexpr Length2D GetExtents(const AABB& aabb) noexcept
     {
         return GetDimensions(aabb) / Real{2};
     }
@@ -220,14 +220,14 @@ namespace playrho
     /// @brief Gets the perimeter length of the AABB.
     /// @warning Behavior is undefined for an invalid AABB.
     /// @return Twice the sum of the width and height.
-    constexpr Length GetPerimeter(const AABB aabb) noexcept
+    constexpr Length GetPerimeter(const AABB& aabb) noexcept
     {
         const auto dimensions = GetDimensions(aabb);
         return (GetX(dimensions) + GetY(dimensions)) * Real{2};
     }
 
     /// @brief Gets the AABB that minimally encloses the given AABBs.
-    constexpr AABB GetEnclosingAABB(AABB a, AABB b)
+    constexpr AABB GetEnclosingAABB(AABB a, const AABB& b)
     {
         return a.Include(b);
     }
@@ -248,20 +248,20 @@ namespace playrho
     }
 
     /// @brief Gets whether the two AABB objects are equal.
-    constexpr bool operator== (const AABB lhs, const AABB rhs)
+    constexpr bool operator== (const AABB& lhs, const AABB& rhs)
     {
         return (lhs.GetLowerBound() == rhs.GetLowerBound()) && (lhs.GetUpperBound() == rhs.GetUpperBound());
     }
     
     /// @brief Gets whether the two AABB objects are not equal.
-    constexpr bool operator!= (const AABB lhs, const AABB rhs)
+    constexpr bool operator!= (const AABB& lhs, const AABB& rhs)
     {
         return !(lhs == rhs);
     }
 
     /// @brief Tests for overlap between two axis aligned bounding boxes.
     /// @note This function's complexity is constant.
-    constexpr bool TestOverlap(const AABB a, const AABB b) noexcept
+    constexpr bool TestOverlap(const AABB& a, const AABB& b) noexcept
     {
         const auto d1 = b.GetLowerBound() - a.GetUpperBound();
         const auto d2 = a.GetLowerBound() - b.GetUpperBound();
@@ -277,10 +277,10 @@ namespace playrho
     /// @param proxy Distance proxy for the child shape.
     /// @param xf World transform of the shape.
     /// @return AABB for the proxy shape or the default AABB if the proxy has a zero vertex count.
-    AABB ComputeAABB(const DistanceProxy& proxy, const Transformation xf) noexcept;
+    AABB ComputeAABB(const DistanceProxy& proxy, const Transformation& xf) noexcept;
     
     /// @brief Computes the AABB for the given shape with the given transformation.
-    AABB ComputeAABB(const Shape& shape, const Transformation xf);
+    AABB ComputeAABB(const Shape& shape, const Transformation& xf);
 
     /// @brief Computes the AABB for the given body.
     AABB ComputeAABB(const Body& body);
@@ -294,4 +294,4 @@ namespace playrho
 
 } // namespace playrho
 
-#endif /* PLAYRHO_AABB_HPP */
+#endif // PLAYRHO_COLLISION_AABB_HPP

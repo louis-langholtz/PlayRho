@@ -126,9 +126,9 @@ TEST(SimplexEdgeList, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(Simplex::Edges), std::size_t(64)); break;
-        case  8: EXPECT_EQ(sizeof(Simplex::Edges), std::size_t(128)); break;
-        case 16: EXPECT_EQ(sizeof(Simplex::Edges), std::size_t(256)); break;
+        case  4: EXPECT_EQ(sizeof(SimplexEdges), std::size_t(64)); break;
+        case  8: EXPECT_EQ(sizeof(SimplexEdges), std::size_t(128)); break;
+        case 16: EXPECT_EQ(sizeof(SimplexEdges), std::size_t(256)); break;
         default: FAIL();
     }
 }

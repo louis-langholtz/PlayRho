@@ -20,10 +20,12 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Common/Math.hpp>
 
-using namespace playrho;
+namespace playrho {
 
-bool playrho::IsMaxTranslationWithinTolerance(const StepConf& conf) noexcept
+bool IsMaxTranslationWithinTolerance(const StepConf& conf) noexcept
 {
     const auto delta = Real(1) - std::nextafter(Real(1), Real(0));
     return (conf.maxTranslation * delta) < Length{conf.tolerance};
 }
+
+} // namespace playrho

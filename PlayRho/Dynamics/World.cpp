@@ -581,7 +581,7 @@ void World::Clear() noexcept
         BodyAtty::ClearContacts(b);
         BodyAtty::ClearJoints(b);
         BodyAtty::ClearFixtures(b, [&](Fixture& fixture) {
-            if (m_destructionListener)
+            if (m_destructionListener != nullptr)
             {
                 m_destructionListener->SayGoodbye(fixture);
             }
@@ -649,7 +649,7 @@ void World::CopyContacts(const map<const Body*, Body*>& bodyMap,
         
         const auto newContact = new Contact{newFixtureA, childIndexA, newFixtureB, childIndexB};
         assert(newContact);
-        if (newContact)
+        if (newContact != nullptr)
         {
             m_contacts.push_back(newContact);
 
@@ -690,7 +690,7 @@ void World::CopyJoints(const map<const Body*, Body*>& bodyMap,
                 def.bodyA = bodyMap.at(def.bodyA);
                 def.bodyB = bodyMap.at(def.bodyB);
                 const auto j = JointAtty::Create(def);
-                if (j)
+                if (j != nullptr)
                 {
                     Add(j, def.bodyA, def.bodyB);
                     jointMap[oJoint] = j;
@@ -704,7 +704,7 @@ void World::CopyJoints(const map<const Body*, Body*>& bodyMap,
                 def.bodyA = bodyMap.at(def.bodyA);
                 def.bodyB = bodyMap.at(def.bodyB);
                 const auto j = JointAtty::Create(def);
-                if (j)
+                if (j != nullptr)
                 {
                     Add(j, def.bodyA, def.bodyB);
                     jointMap[oJoint] = j;
@@ -718,7 +718,7 @@ void World::CopyJoints(const map<const Body*, Body*>& bodyMap,
                 def.bodyA = bodyMap.at(def.bodyA);
                 def.bodyB = bodyMap.at(def.bodyB);
                 const auto j = JointAtty::Create(def);
-                if (j)
+                if (j != nullptr)
                 {
                     Add(j, def.bodyA, def.bodyB);
                     jointMap[oJoint] = j;
@@ -732,7 +732,7 @@ void World::CopyJoints(const map<const Body*, Body*>& bodyMap,
                 def.bodyA = bodyMap.at(def.bodyA);
                 def.bodyB = bodyMap.at(def.bodyB);
                 const auto j = JointAtty::Create(def);
-                if (j)
+                if (j != nullptr)
                 {
                     Add(j, def.bodyA, def.bodyB);
                     jointMap[oJoint] = j;
@@ -746,7 +746,7 @@ void World::CopyJoints(const map<const Body*, Body*>& bodyMap,
                 def.bodyA = bodyMap.at(def.bodyA);
                 def.bodyB = bodyMap.at(def.bodyB);
                 const auto j = JointAtty::Create(def);
-                if (j)
+                if (j != nullptr)
                 {
                     Add(j, def.bodyA, def.bodyB);
                     jointMap[oJoint] = j;
@@ -762,7 +762,7 @@ void World::CopyJoints(const map<const Body*, Body*>& bodyMap,
                 def.joint1 = jointMap.at(def.joint1);
                 def.joint2 = jointMap.at(def.joint2);
                 const auto j = JointAtty::Create(def);
-                if (j)
+                if (j != nullptr)
                 {
                     Add(j, def.bodyA, def.bodyB);
                     jointMap[oJoint] = j;
@@ -776,7 +776,7 @@ void World::CopyJoints(const map<const Body*, Body*>& bodyMap,
                 def.bodyA = bodyMap.at(def.bodyA);
                 def.bodyB = bodyMap.at(def.bodyB);
                 const auto j = JointAtty::Create(def);
-                if (j)
+                if (j != nullptr)
                 {
                     Add(j, def.bodyA, def.bodyB);
                     jointMap[oJoint] = j;
@@ -790,7 +790,7 @@ void World::CopyJoints(const map<const Body*, Body*>& bodyMap,
                 def.bodyA = bodyMap.at(def.bodyA);
                 def.bodyB = bodyMap.at(def.bodyB);
                 const auto j = JointAtty::Create(def);
-                if (j)
+                if (j != nullptr)
                 {
                     Add(j, def.bodyA, def.bodyB);
                     jointMap[oJoint] = j;
@@ -804,7 +804,7 @@ void World::CopyJoints(const map<const Body*, Body*>& bodyMap,
                 def.bodyA = bodyMap.at(def.bodyA);
                 def.bodyB = bodyMap.at(def.bodyB);
                 const auto j = JointAtty::Create(def);
-                if (j)
+                if (j != nullptr)
                 {
                     Add(j, def.bodyA, def.bodyB);
                     jointMap[oJoint] = j;
@@ -818,7 +818,7 @@ void World::CopyJoints(const map<const Body*, Body*>& bodyMap,
                 def.bodyA = bodyMap.at(def.bodyA);
                 def.bodyB = bodyMap.at(def.bodyB);
                 const auto j = JointAtty::Create(def);
-                if (j)
+                if (j != nullptr)
                 {
                     Add(j, def.bodyA, def.bodyB);
                     jointMap[oJoint] = j;
@@ -832,7 +832,7 @@ void World::CopyJoints(const map<const Body*, Body*>& bodyMap,
                 def.bodyA = bodyMap.at(def.bodyA);
                 def.bodyB = bodyMap.at(def.bodyB);
                 const auto j = JointAtty::Create(def);
-                if (j)
+                if (j != nullptr)
                 {
                     Add(j, def.bodyA, def.bodyB);
                     jointMap[oJoint] = j;
@@ -843,7 +843,7 @@ void World::CopyJoints(const map<const Body*, Body*>& bodyMap,
     }
 }
 
-void World::SetGravity(const LinearAcceleration2D gravity) noexcept
+void World::SetGravity(LinearAcceleration2D gravity) noexcept
 {
     if (m_gravity != gravity)
     {
@@ -869,7 +869,7 @@ Body* World::CreateBody(const BodyDef& def)
         throw LengthError("World::CreateBody: operation would exceed MaxBodies");
     }
     
-    auto& b = *(new Body(def, this));
+    auto& b = *(new Body(this, def));
 
     // Add to world bodies collection.
     //
@@ -911,7 +911,7 @@ void World::Destroy(Body* body)
     
     // Delete the attached joints.
     BodyAtty::ClearJoints(*body, [&](Joint& joint) {
-        if (m_destructionListener)
+        if (m_destructionListener != nullptr)
         {
             m_destructionListener->SayGoodbye(joint);
         }
@@ -926,7 +926,7 @@ void World::Destroy(Body* body)
     
     // Delete the attached fixtures. This destroys broad-phase proxies.
     BodyAtty::ClearFixtures(*body, [&](Fixture& fixture) {
-        if (m_destructionListener)
+        if (m_destructionListener != nullptr)
         {
             m_destructionListener->SayGoodbye(fixture);
         }
@@ -950,7 +950,7 @@ Joint* World::CreateJoint(const JointDef& def)
     
     // Note: creating a joint doesn't wake the bodies.
     const auto j = JointAtty::Create(def);
-    if (j)
+    if (j != nullptr)
     {
         const auto bodyA = j->GetBodyA();
         const auto bodyB = j->GetBodyB();
@@ -958,7 +958,7 @@ Joint* World::CreateJoint(const JointDef& def)
         Add(j, bodyA, bodyB);
         
         // If the joint prevents collisions, then flag any contacts for filtering.
-        if ((!def.collideConnected) && bodyA && bodyB)
+        if ((!def.collideConnected) && (bodyA != nullptr) && (bodyB != nullptr))
         {
             FlagContactsForFiltering(*bodyA, *bodyB);
         }
@@ -988,19 +988,20 @@ bool World::Remove(Joint& j)
 
 void World::Destroy(Joint* joint)
 {
-    if (!joint)
+    if (joint != nullptr)
     {
-        return;
+        if (IsLocked())
+        {
+            throw LockedError("World::Destroy: world is locked");
+        }
+        InternalDestroy(joint);
     }
-    if (IsLocked())
-    {
-        throw LockedError("World::Destroy: world is locked");
-    }
-    InternalDestroy(joint);
 }
     
 void World::InternalDestroy(Joint* joint)
 {
+    assert(joint != nullptr);
+
     if (!Remove(*joint))
     {
         return;
@@ -1011,12 +1012,12 @@ void World::InternalDestroy(Joint* joint)
     const auto bodyB = joint->GetBodyB();
 
     // Wake up connected bodies.
-    if (bodyA)
+    if (bodyA != nullptr)
     {
         bodyA->SetAwake();
         BodyAtty::Erase(*bodyA, joint);
     }
-    if (bodyB)
+    if (bodyB != nullptr)
     {
         bodyB->SetAwake();
         BodyAtty::Erase(*bodyB, joint);
@@ -1027,7 +1028,7 @@ void World::InternalDestroy(Joint* joint)
     JointAtty::Destroy(joint);
 
     // If the joint prevented collisions, then flag any contacts for filtering.
-    if ((!collideConnected) && bodyA && bodyB)
+    if ((!collideConnected) && (bodyA != nullptr) && (bodyB != nullptr))
     {
         FlagContactsForFiltering(*bodyA, *bodyB);
     }
@@ -1246,8 +1247,7 @@ RegStepStats World::SolveReg(const StepConf& conf)
 
 World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Island island)
 {
-    assert(island.m_bodies.size() > 0 || island.m_contacts.size() > 0 ||
-           island.m_joints.size() > 0);
+    assert(!island.m_bodies.empty() || !island.m_contacts.empty() || !island.m_joints.empty());
     
     auto results = IslandSolverResults{};
     results.positionIterations = conf.regPositionIterations;
@@ -1340,7 +1340,7 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
     
     // XXX: Should contacts needing updating be updated now??
 
-    if (m_contactListener)
+    if (m_contactListener != nullptr)
     {
         Report(*m_contactListener, island.m_contacts, velConstraints,
                results.solved? results.positionIterations - 1: StepConf::InvalidIteration);
@@ -1439,7 +1439,7 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
     return results;
 }
     
-World::ContactToiData World::GetSoonestContacts(const size_t reserveSize)
+World::ContactToiData World::GetSoonestContacts(size_t reserveSize)
 {
     auto minToi = nextafter(Real{1}, Real{0});
     auto minContacts = vector<Contact*>();
@@ -1529,7 +1529,7 @@ ToiStepStats World::SolveToi(const StepConf& conf)
                 }
                 stats.contactsUpdatedTouching += solverResults.contactsUpdated;
                 stats.contactsSkippedTouching += solverResults.contactsSkipped;
-                break; // TODO: get working without breaking.
+                break; // TODO(lou): get working without breaking.
             }
         }
         stats.islandsFound += islandsFound;
@@ -1834,7 +1834,7 @@ World::IslandSolverResults World::SolveToiViaGS(const StepConf& conf, Island& is
         UpdateBody(*island.m_bodies[i], bc.GetPosition(), bc.GetVelocity());
     });
 
-    if (m_contactListener)
+    if (m_contactListener != nullptr)
     {
         Report(*m_contactListener, island.m_contacts, velConstraints, results.positionIterations);
     }
@@ -2033,7 +2033,7 @@ StepStats World::Step(const StepConf& conf)
     return stepStats;
 }
 
-void World::QueryAABB(AABB aabb, QueryFixtureCallback callback)
+void World::QueryAABB(const AABB& aabb, QueryFixtureCallback callback)
 {
     m_tree.Query(aabb, [&](DynamicTree::size_type proxyId) {
         const auto proxy = static_cast<FixtureProxy*>(m_tree.GetUserData(proxyId));
@@ -2089,7 +2089,7 @@ void World::RayCast(Length2D point1, Length2D point2, RayCastCallback callback)
     });
 }
 
-void World::ShiftOrigin(const Length2D newOrigin)
+void World::ShiftOrigin(Length2D newOrigin)
 {
     if (IsLocked())
     {
@@ -2119,7 +2119,7 @@ void World::ShiftOrigin(const Length2D newOrigin)
 
 void World::InternalDestroy(Contact* contact, Body* from)
 {
-    if (m_contactListener && contact->IsTouching())
+    if ((m_contactListener != nullptr) && contact->IsTouching())
     {
         // EndContact hadn't been called in DestroyOrUpdateContacts() since is-touching, so call it now
         m_contactListener->EndContact(*contact);
@@ -2492,10 +2492,10 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 
 bool World::RegisterForProxies(Fixture* fixture)
 {
-    if (fixture)
+    if (fixture != nullptr)
     {
         const auto body = fixture->GetBody();
-        if (body)
+        if (body != nullptr)
         {
             const auto world = body->GetWorld();
             if (world == this)
@@ -2510,7 +2510,7 @@ bool World::RegisterForProxies(Fixture* fixture)
 
 bool World::RegisterForProxies(Body* body)
 {
-    if (body)
+    if (body != nullptr)
     {
         const auto world = body->GetWorld();
         if (world == this)
@@ -2621,7 +2621,7 @@ void World::SetType(Body& body, BodyType type)
     }
 }
 
-Fixture* World::CreateFixture(Body& body, shared_ptr<const Shape> shape,
+Fixture* World::CreateFixture(Body& body, const shared_ptr<const Shape>& shape,
                               const FixtureDef& def, bool resetMassData)
 {
     if (body.GetWorld() != this)
@@ -2674,7 +2674,7 @@ Fixture* World::CreateFixture(Body& body, shared_ptr<const Shape> shape,
 
 bool World::DestroyFixture(Fixture* fixture, bool resetMassData)
 {
-    if (!fixture)
+    if (fixture == nullptr)
     {
         return false;
     }
@@ -2729,7 +2729,7 @@ bool World::DestroyFixture(Fixture* fixture, bool resetMassData)
     return true;
 }
 
-void World::CreateProxies(Fixture& fixture, const Length aabbExtension)
+void World::CreateProxies(Fixture& fixture, Length aabbExtension)
 {
     assert(fixture.GetProxyCount() == 0);
     
@@ -2775,7 +2775,7 @@ void World::DestroyProxies(Fixture& fixture)
 bool World::TouchProxies(Fixture& fixture) noexcept
 {
     const auto body = fixture.GetBody();
-    if (body)
+    if (body != nullptr)
     {
         const auto world = body->GetWorld();
         if (world == this)
@@ -2797,8 +2797,8 @@ void World::InternalTouchProxies(Fixture& fixture) noexcept
 }
 
 ChildCounter World::Synchronize(Fixture& fixture,
-                                 const Transformation xfm1, const Transformation xfm2,
-                                 const Real multiplier, const Length extension)
+                                 Transformation xfm1, Transformation xfm2,
+                                 Real multiplier, Length extension)
 {
     assert(::playrho::IsValid(xfm1));
     assert(::playrho::IsValid(xfm2));
@@ -2829,8 +2829,8 @@ ChildCounter World::Synchronize(Fixture& fixture,
 }
 
 ContactCounter World::Synchronize(Body& body,
-                                   const Transformation& xfm1, const Transformation& xfm2,
-                                   const Real multiplier, const Length aabbExtension)
+                                  Transformation xfm1, Transformation xfm2,
+                                  Real multiplier, Length aabbExtension)
 {
     auto updatedCount = ContactCounter{0};
     for_each(begin(body.GetFixtures()), end(body.GetFixtures()), [&](Body::Fixtures::value_type& f) {
@@ -2841,11 +2841,11 @@ ContactCounter World::Synchronize(Body& body,
 
 // Free functions...
 
-StepStats Step(World& world, Time dt, World::ts_iters_type velocityIterations,
+StepStats Step(World& world, Time delta, World::ts_iters_type velocityIterations,
                World::ts_iters_type positionIterations)
 {
     StepConf conf;
-    conf.SetTime(dt);
+    conf.SetTime(delta);
     conf.regVelocityIterations = velocityIterations;
     conf.regPositionIterations = positionIterations;
     conf.toiVelocityIterations = velocityIterations;
@@ -2853,7 +2853,7 @@ StepStats Step(World& world, Time dt, World::ts_iters_type velocityIterations,
     {
         conf.toiPositionIterations = 0;
     }
-    conf.dtRatio = dt * world.GetInvDeltaTime();
+    conf.dtRatio = delta * world.GetInvDeltaTime();
     return world.Step(conf);
 }
 
@@ -2914,21 +2914,6 @@ void ClearForces(World& world) noexcept
     for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](World::Bodies::value_type &b) {
         GetRef(b).SetAcceleration(g, AngularAcceleration{0});
     });
-}
-
-bool IsActive(const Contact& contact) noexcept
-{
-    const auto bA = contact.GetFixtureA()->GetBody();
-    const auto bB = contact.GetFixtureB()->GetBody();
-    
-    assert(!bA->IsAwake() || bA->IsSpeedable());
-    assert(!bB->IsAwake() || bB->IsSpeedable());
-
-    const auto activeA = bA->IsAwake();
-    const auto activeB = bB->IsAwake();
-    
-    // Is at least one body active (awake and dynamic or kinematic)?
-    return activeA || activeB;
 }
 
 } // namespace playrho

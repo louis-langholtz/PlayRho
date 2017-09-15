@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_BOUNDED_VALUE_HPP
-#define PLAYRHO_BOUNDED_VALUE_HPP
+#ifndef PLAYRHO_COMMON_BOUNDEDVALUE_HPP
+#define PLAYRHO_COMMON_BOUNDEDVALUE_HPP
 
 #include <PlayRho/Common/InvalidArgument.hpp>
 
@@ -195,6 +195,14 @@ namespace playrho {
             DoHiCheck(value);
         }
         
+        /// @brief Copy constructor.
+        constexpr BoundedValue(const this_type& value) = default;
+
+        /// @brief Move constructor.
+        constexpr BoundedValue(this_type&& value) noexcept = default;
+
+        ~BoundedValue() noexcept = default;
+
         /// @brief Assignment operator.
         constexpr BoundedValue& operator= (const this_type& other) noexcept
         {
@@ -210,6 +218,9 @@ namespace playrho {
             m_value = value;
             return *this;
         }
+
+        /// @brief Move assignment operator.
+        constexpr BoundedValue& operator= (this_type&& value) noexcept = default;
 
         /// @brief Gets the underlying value.
         constexpr value_type get() const noexcept
@@ -522,6 +533,7 @@ namespace playrho {
     {
         return os << T(value);
     }
-}
 
-#endif /* PLAYRHO_BOUNDED_VALUE_HPP */
+} // namespace playrho
+
+#endif // PLAYRHO_COMMON_BOUNDEDVALUE_HPP

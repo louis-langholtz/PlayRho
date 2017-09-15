@@ -55,7 +55,7 @@ Length2D playrho::ComputeCentroid(const Span<const Length2D>& vertices)
     return c / area;
 }
 
-std::vector<Length2D> playrho::GetCircleVertices(const Length radius, unsigned slices,
+std::vector<Length2D> playrho::GetCircleVertices(Length radius, unsigned slices,
                                                Angle start, Real turns)
 {
     std::vector<Length2D> vertices;
@@ -70,7 +70,7 @@ std::vector<Length2D> playrho::GetCircleVertices(const Length radius, unsigned s
             const auto angleInRadians = Real{(start + (Real(i) * deltaAngle)) / Radian};
             const auto x = radius * static_cast<Real>(std::cos(angleInRadians));
             const auto y = radius * static_cast<Real>(std::sin(angleInRadians));
-            vertices.push_back(Length2D{x, y});
+            vertices.emplace_back(x, y);
             ++i;
         }
         if (wholeNum)
@@ -83,7 +83,7 @@ std::vector<Length2D> playrho::GetCircleVertices(const Length radius, unsigned s
             const auto angleInRadians = Real{(start + (Real(i) * deltaAngle)) / Radian};
             const auto x = radius * static_cast<Real>(std::cos(angleInRadians));
             const auto y = radius * static_cast<Real>(std::sin(angleInRadians));
-            vertices.push_back(Length2D{x, y});
+            vertices.emplace_back(x, y);
         }
     }
     return vertices;

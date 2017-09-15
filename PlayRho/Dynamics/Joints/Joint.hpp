@@ -56,8 +56,12 @@ using BodyConstraintsMap =
 #endif
 
 /// @brief Base joint class.
+///
 /// @details Joints are used to constraint two bodies together in various fashions.
 ///   Some joints also feature limits and motors.
+///
+/// @sa JointFreeFunctions
+///
 class Joint
 {
 public:
@@ -242,6 +246,11 @@ inline void Joint::UnsetIslanded() noexcept
 
 // Free functions...
 
+/// @defgroup JointFreeFunctions Joint free functions.
+/// @details A collection of non-member, non-friend functions that operate on Joint objects.
+/// @sa Joint.
+/// @{
+
 /// @brief Short-cut function to determine if both bodies are enabled.
 bool IsEnabled(const Joint& j) noexcept;
 
@@ -250,6 +259,8 @@ void SetAwake(Joint& j) noexcept;
 
 /// @brief Gets the world index of the given joint.
 JointCounter GetWorldIndex(const Joint* joint);
+
+/// @}
 
 #ifdef PLAYRHO_PROVIDE_VECTOR_AT
 /// @brief Provides referenced access to the identified element of the given container.

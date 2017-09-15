@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_VERSION_HPP
-#define PLAYRHO_VERSION_HPP
+#ifndef PLAYRHO_COMMON_VERSION_HPP
+#define PLAYRHO_COMMON_VERSION_HPP
 
 #include <cstdint>
 #include <string>
@@ -57,6 +57,6 @@ namespace playrho {
     /// @brief Gets the build details of the library.
     std::string GetBuildDetails() noexcept;
 
-} // namepsace playrho
+} // namespace playrho
 
-#endif /* PLAYRHO_VERSION_HPP */
+#endif // PLAYRHO_COMMON_VERSION_HPP

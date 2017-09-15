@@ -16,16 +16,16 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_VERTEX_SET_HPP
-#define PLAYRHO_VERTEX_SET_HPP
+#ifndef PLAYRHO_COMMON_VERTEXSET_HPP
+#define PLAYRHO_COMMON_VERTEXSET_HPP
 
 #include <PlayRho/Common/Math.hpp>
 
 #include <vector>
 #include <algorithm>
 
-namespace playrho
-{
+namespace playrho {
+
     /// Vertex Set.
     ///
     /// @details This is a container that enforces the invariant that no two
@@ -45,7 +45,7 @@ namespace playrho
         }
         
         /// @brief Initializing constructor.
-        VertexSet(Area minSepSquared = GetDefaultMinSeparationSquared()):
+        explicit VertexSet(Area minSepSquared = GetDefaultMinSeparationSquared()):
             m_minSepSquared{minSepSquared}
         {
             assert(minSepSquared >= Area{0});
@@ -103,6 +103,7 @@ namespace playrho
         std::vector<Length2D> m_elements; ///< Elements.
         const Area m_minSepSquared; ///< Minimum length squared. sizeof(Vec2)/2 or 4-bytes.
     };
-}
 
-#endif /* PLAYRHO_VERTEX_SET_HPP */
+} // namespace playrho
+
+#endif // PLAYRHO_COMMON_VERTEXSET_HPP

@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_HPP
-#define PLAYRHO_HPP
+#ifndef PLAYRHO_PLAYRHO_HPP
+#define PLAYRHO_PLAYRHO_HPP
 
 /**
 \mainpage PlayRho API Documentation
@@ -69,4 +69,4 @@ For issues, visit: https://github.com/louis-langholtz/PlayRho/issues .
 #include <PlayRho/Dynamics/Joints/WeldJoint.hpp>
 #include <PlayRho/Dynamics/Joints/WheelJoint.hpp>
 
-#endif
+#endif // PLAYRHO_PLAYRHO_HPP

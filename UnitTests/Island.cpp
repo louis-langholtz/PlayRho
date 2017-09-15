@@ -63,9 +63,9 @@ TEST(Island, IsMoveAssignable)
     EXPECT_TRUE(std::is_move_assignable<Island>::value);
 }
 
-TEST(Island, NotCopyAssignable)
+TEST(Island, CopyAssignable)
 {
-    EXPECT_FALSE(std::is_copy_assignable<Island>::value);
+    EXPECT_TRUE(std::is_copy_assignable<Island>::value);
 }
 
 TEST(Island, IsNothrowDestructible)

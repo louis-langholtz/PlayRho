@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_ISLAND_HPP
-#define PLAYRHO_ISLAND_HPP
+#ifndef PLAYRHO_DYNAMICS_ISLAND_HPP
+#define PLAYRHO_DYNAMICS_ISLAND_HPP
 
 #include <PlayRho/Common/Math.hpp>
 #include <vector>
@@ -33,10 +33,8 @@ class Joint;
 /// @details A container of bodies contacts and joints relavent to handling world dynamics.
 /// @note This is an internal class.
 /// @note This data structure is 72-bytes large (on at least one 64-bit platform).
-class Island
-{
-public:
-    
+struct Island
+{   
     /// @brief Body container type.
     using Bodies = std::vector<Body*>;
 
@@ -47,33 +45,23 @@ public:
     using Joints = std::vector<Joint*>;
     
     /// @brief Initializing constructor.
-    Island(Bodies::size_type bodyCapacity, Contacts::size_type contactCapacity, Joints::size_type jointCapacity);
+    Island(Bodies::size_type bodyCapacity, Contacts::size_type contactCapacity,
+           Joints::size_type jointCapacity);
 
     /// @brief Copy constructor.
-    Island(const Island& copy) noexcept:
-        m_bodies(copy.m_bodies),
-        m_contacts(copy.m_contacts),
-        m_joints(copy.m_joints)
-    {}
+    Island(const Island& copy) = default;
 
     /// @brief Move constructor.
-    Island(Island&& other) noexcept:
-        m_bodies{std::move(other.m_bodies)},
-        m_contacts{std::move(other.m_contacts)},
-        m_joints{std::move(other.m_joints)}
-    {}
+    Island(Island&& other) noexcept = default;
 
     /// Destructor.
     ~Island() = default;
 
+    /// @brief Copy assignment operator.
+    Island& operator= (const Island& other) = default;
+
     /// @brief Assignment operator.
-    Island& operator= (Island&& other) noexcept
-    {
-        m_bodies = std::move(other.m_bodies);
-        m_contacts = std::move(other.m_contacts);
-        m_joints = std::move(other.m_joints);
-        return *this;
-    }
+    Island& operator= (Island&& other) noexcept = default;
 
     Bodies m_bodies; ///< Body container.
     Contacts m_contacts; ///< Contact container.
@@ -103,4 +91,4 @@ std::size_t Count(const Island& island, const Joint* entry);
 
 } // namespace playrho
 
-#endif
+#endif // PLAYRHO_DYNAMICS_ISLAND_HPP

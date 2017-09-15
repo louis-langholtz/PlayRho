@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_OPTIONAL_VALUE_HPP
-#define PLAYRHO_OPTIONAL_VALUE_HPP
+#ifndef PLAYRHO_COMMON_OPTIONALVALUE_HPP
+#define PLAYRHO_COMMON_OPTIONALVALUE_HPP
 
 #include <cassert>
 
@@ -41,10 +41,15 @@ namespace playrho {
         
         /// @brief Copy constructor.
         constexpr OptionalValue(const OptionalValue& other) = default;
-        
+
+        /// @brief Move constructor.
+        constexpr OptionalValue(OptionalValue&& other) noexcept = default;
+
         /// @brief Initializing constructor.
-        constexpr OptionalValue(const T v);
-        
+        constexpr OptionalValue(T v);
+
+        ~OptionalValue() = default;
+
         /// @brief Indirection operator.
         constexpr const T& operator* () const;
 
@@ -66,8 +71,11 @@ namespace playrho {
         /// @brief Assignment operator.
         OptionalValue& operator= (const OptionalValue& other) = default;
 
+        /// @brief Move assignment operator.
+        OptionalValue& operator= (OptionalValue&& other) noexcept = default;
+
         /// @brief Assignment operator.
-        OptionalValue& operator= (const T v);
+        OptionalValue& operator= (T v);
 
         /// @brief Accesses the value.
         constexpr T& value();
@@ -84,7 +92,7 @@ namespace playrho {
     };
     
     template<typename T>
-    constexpr OptionalValue<T>::OptionalValue(const T v): m_value{v}, m_set{true} {}
+    constexpr OptionalValue<T>::OptionalValue(T v): m_value{v}, m_set{true} {}
     
     template<typename T>
     constexpr bool OptionalValue<T>::has_value() const noexcept
@@ -99,7 +107,7 @@ namespace playrho {
     }
     
     template<typename T>
-    OptionalValue<T>& OptionalValue<T>::operator=(const T v)
+    OptionalValue<T>& OptionalValue<T>::operator=(T v)
     {
         m_value = v;
         m_set = true;
@@ -161,4 +169,4 @@ namespace playrho {
     
 } // namespace playrho
 
-#endif /* PLAYRHO_OPTIONAL_VALUE_HPP */
+#endif // PLAYRHO_COMMON_OPTIONALVALUE_HPP
