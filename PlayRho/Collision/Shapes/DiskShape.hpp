@@ -97,7 +97,7 @@ public:
     MassData GetMassData() const noexcept override;
     
     /// @brief Accepts the given visitor.
-    void Accept(Visitor& visitor) const override;
+    void Accept(ShapeVisitor& visitor) const override;
 
     /// Gets the "radius" of the shape.
     /// @return Non-negative distance.
@@ -140,11 +140,6 @@ inline DistanceProxy DiskShape::GetChild(ChildCounter index) const
         throw InvalidArgument("only index of 0 is supported");
     }
     return DistanceProxy{GetVertexRadius(), 1, &m_location, nullptr};
-}
-
-inline void DiskShape::Accept(Visitor& visitor) const
-{
-    visitor.Visit(*this);
 }
 
 } // namespace playrho

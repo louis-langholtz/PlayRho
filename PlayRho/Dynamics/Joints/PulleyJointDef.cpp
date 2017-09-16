@@ -23,7 +23,7 @@
 #include <PlayRho/Dynamics/Joints/PulleyJoint.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 
-using namespace playrho;
+namespace playrho {
 
 PulleyJointDef::PulleyJointDef(NonNull<Body*> bA, NonNull<Body*> bB,
                                const Length2D groundA, const Length2D groundB,
@@ -39,7 +39,7 @@ PulleyJointDef::PulleyJointDef(NonNull<Body*> bA, NonNull<Body*> bB,
     // Intentionally empty.
 }
 
-PulleyJointDef playrho::GetPulleyJointDef(const PulleyJoint& joint) noexcept
+PulleyJointDef GetPulleyJointDef(const PulleyJoint& joint) noexcept
 {
     auto def = PulleyJointDef{};
     
@@ -55,3 +55,5 @@ PulleyJointDef playrho::GetPulleyJointDef(const PulleyJoint& joint) noexcept
     
     return def;
 }
+
+} // namespace playrho

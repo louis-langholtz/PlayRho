@@ -19,6 +19,7 @@
  */
 
 #include <PlayRho/Collision/Shapes/MultiShape.hpp>
+#include <PlayRho/Collision/Shapes/ShapeVisitor.hpp>
 #include <PlayRho/Common/VertexSet.hpp>
 #include <algorithm>
 
@@ -70,6 +71,11 @@ void MultiShape::AddConvexHull(const VertexSet& pointSet) noexcept
     }
     
     m_children.push_back(ConvexHull{vertices, normals});
+}
+
+void MultiShape::Accept(ShapeVisitor &visitor) const
+{
+    visitor.Visit(*this);
 }
 
 } // namespace playrho

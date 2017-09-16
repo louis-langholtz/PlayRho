@@ -1,5 +1,5 @@
 /*
- * Original work Copyright (c) 2007-2011 Erin Catto http://www.box2d.org
+ * Original work Copyright (c) 2006-2007 Erin Catto http://www.box2d.org
  * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
@@ -19,26 +19,35 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/Joints/GearJointDef.hpp>
-#include <PlayRho/Dynamics/Joints/GearJoint.hpp>
+#ifndef PLAYRHO_DYNAMICS_JOINTS_JOINTTYPE_HPP
+#define PLAYRHO_DYNAMICS_JOINTS_JOINTTYPE_HPP
+
+#include <cstdint>
 
 namespace playrho {
 
-GearJointDef::GearJointDef(NonNull<Joint*> j1, NonNull<Joint*> j2) noexcept:
-    super{super{JointType::Gear}.UseBodyA(j1->GetBodyB()).UseBodyB(j2->GetBodyB())},
-    joint1{j1}, joint2{j2}
+/// @brief Enumeration of joint types.
+enum class JointType : std::uint8_t
 {
-    // Intentionally empty.
-}
+    Unknown,
+    Revolute,
+    Prismatic,
+    Distance,
+    Pulley,
+    Mouse,
+    Gear,
+    Wheel,
+    Weld,
+    Friction,
+    Rope,
+    Motor
+};
 
-GearJointDef GetGearJointDef(const GearJoint& joint) noexcept
-{
-    auto def = GearJointDef{joint.GetJoint1(), joint.GetJoint2()};
-    
-    Set(def, joint);
-    def.ratio = joint.GetRatio();
-    
-    return def;
-}
+class Joint;
+
+/// @brief Gets the type of the given joint.
+JointType GetType(const Joint& joint) noexcept;
 
 } // namespace playrho
+
+#endif // PLAYRHO_DYNAMICS_JOINTS_JOINTTYPE_HPP

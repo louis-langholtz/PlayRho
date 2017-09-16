@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_ROPE_JOINT_HPP
-#define PLAYRHO_ROPE_JOINT_HPP
+#ifndef PLAYRHO_DYNAMICS_JOINTS_ROPEJOINT_HPP
+#define PLAYRHO_DYNAMICS_JOINTS_ROPEJOINT_HPP
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/RopeJointDef.hpp>
@@ -42,6 +42,8 @@ public:
     
     /// @brief Initializing constructor.
     RopeJoint(const RopeJointDef& data);
+    
+    void Accept(JointVisitor& visitor) const override;
 
     Length2D GetAnchorA() const override;
     Length2D GetAnchorB() const override;
@@ -89,4 +91,4 @@ private:
 
 } // namespace playrho
 
-#endif
+#endif // PLAYRHO_DYNAMICS_JOINTS_ROPEJOINT_HPP

@@ -20,12 +20,13 @@
  */
 
 #include <PlayRho/Dynamics/Joints/PulleyJoint.hpp>
+#include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
-using namespace playrho;
+namespace playrho {
 
 // Pulley:
 // length1 = norm(p1 - s1)
@@ -51,6 +52,11 @@ PulleyJoint::PulleyJoint(const PulleyJointDef& def):
     m_constant(def.lengthA + def.ratio * def.lengthB)
 {
     assert(!AlmostZero(def.ratio));
+}
+
+void PulleyJoint::Accept(JointVisitor& visitor) const
+{
+    visitor.Visit(*this);
 }
 
 void PulleyJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
@@ -221,20 +227,22 @@ AngularMomentum PulleyJoint::GetAngularReaction() const
     return AngularMomentum{0};
 }
 
-Length playrho::GetCurrentLengthA(const PulleyJoint& joint)
-{
-    return GetLength(GetWorldPoint(*joint.GetBodyA(),
-                                   joint.GetLocalAnchorA()) - joint.GetGroundAnchorA());
-}
-
-Length playrho::GetCurrentLengthB(const PulleyJoint& joint)
-{
-    return GetLength(GetWorldPoint(*joint.GetBodyB(),
-                                   joint.GetLocalAnchorB()) - joint.GetGroundAnchorB());
-}
-
 void PulleyJoint::ShiftOrigin(const Length2D newOrigin)
 {
     m_groundAnchorA -= newOrigin;
     m_groundAnchorB -= newOrigin;
 }
+
+Length GetCurrentLengthA(const PulleyJoint& joint)
+{
+    return GetLength(GetWorldPoint(*joint.GetBodyA(),
+                                   joint.GetLocalAnchorA()) - joint.GetGroundAnchorA());
+}
+
+Length GetCurrentLengthB(const PulleyJoint& joint)
+{
+    return GetLength(GetWorldPoint(*joint.GetBodyB(),
+                                   joint.GetLocalAnchorB()) - joint.GetGroundAnchorB());
+}
+
+} // namespace playrho

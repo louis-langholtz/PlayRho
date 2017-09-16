@@ -81,7 +81,7 @@ TEST(DistanceJoint, Construction)
     DistanceJointDef def;
     DistanceJoint joint{def};
     
-    EXPECT_EQ(joint.GetType(), def.type);
+    EXPECT_EQ(GetType(joint), def.type);
     EXPECT_EQ(joint.GetBodyA(), def.bodyA);
     EXPECT_EQ(joint.GetBodyB(), def.bodyB);
     EXPECT_EQ(joint.GetCollideConnected(), def.collideConnected);

@@ -107,7 +107,7 @@ public:
     /// @return Mass data for this shape.
     MassData GetMassData() const noexcept override;
     
-    void Accept(Visitor& visitor) const override;
+    void Accept(ShapeVisitor& visitor) const override;
 
     /// Creates a convex hull from the given array of local points.
     /// The size of the span must be in the range [1, MaxShapeVertices].
@@ -193,11 +193,6 @@ inline DistanceProxy PolygonShape::GetChild(ChildCounter index) const
     return DistanceProxy{GetVertexRadius(),
         static_cast<DistanceProxy::size_type>(m_vertices.size()), m_vertices.data(),
         m_normals.data()};
-}
-
-inline void PolygonShape::Accept(Visitor& visitor) const
-{
-    visitor.Visit(*this);
 }
 
 inline PolygonShape::VertexCounter PolygonShape::GetVertexCount() const noexcept

@@ -20,12 +20,12 @@
  */
 
 #include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
-using namespace playrho;
+namespace playrho {
 
 // Linear constraint (point-to-line)
 // d = p2 - p1 = x2 + r2 - x1 - r1
@@ -94,17 +94,6 @@ using namespace playrho;
 // Now compute impulse to be applied:
 // df = f2 - f1
 
-PrismaticJointDef::PrismaticJointDef(NonNull<Body*> bA, NonNull<Body*> bB, const Length2D anchor,
-                                     const UnitVec2 axis) noexcept:
-    super{super{JointType::Prismatic}.UseBodyA(bA).UseBodyB(bB)},
-    localAnchorA{GetLocalPoint(*bA, anchor)},
-    localAnchorB{GetLocalPoint(*bB, anchor)},
-    localAxisA{GetLocalVector(*bA, axis)},
-    referenceAngle{bB->GetAngle() - bA->GetAngle()}    
-{
-    // Intentionally empty.
-}
-
 PrismaticJoint::PrismaticJoint(const PrismaticJointDef& def):
     Joint(def),
     m_localAnchorA{def.localAnchorA},
@@ -120,6 +109,11 @@ PrismaticJoint::PrismaticJoint(const PrismaticJointDef& def):
     m_enableMotor{def.enableMotor}
 {
     // Intentionally empty.
+}
+
+void PrismaticJoint::Accept(JointVisitor& visitor) const
+{
+    visitor.Visit(*this);
 }
 
 void PrismaticJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
@@ -622,14 +616,14 @@ Force PrismaticJoint::GetMotorForce(Frequency inv_dt) const noexcept
     return inv_dt * m_motorImpulse;
 }
 
-Length playrho::GetJointTranslation(const PrismaticJoint& joint) noexcept
+Length GetJointTranslation(const PrismaticJoint& joint) noexcept
 {
     const auto pA = GetWorldPoint(*joint.GetBodyA(), joint.GetLocalAnchorA());
     const auto pB = GetWorldPoint(*joint.GetBodyB(), joint.GetLocalAnchorB());
     return Dot(pB - pA, GetWorldVector(*joint.GetBodyA(), joint.GetLocalAxisA()));
 }
 
-LinearVelocity playrho::GetLinearVelocity(const PrismaticJoint& joint) noexcept
+LinearVelocity GetLinearVelocity(const PrismaticJoint& joint) noexcept
 {
     const auto bA = joint.GetBodyA();
     const auto bB = joint.GetBodyB();
@@ -650,3 +644,5 @@ LinearVelocity playrho::GetLinearVelocity(const PrismaticJoint& joint) noexcept
     (vA + (GetRevPerpendicular(rA) * (wA / Radian)));
     return Dot(d, (GetRevPerpendicular(axis) * (wA / Radian))) + Dot(axis, vel);
 }
+    
+} // namespace playrho

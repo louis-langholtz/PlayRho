@@ -20,11 +20,12 @@
  */
 
 #include <PlayRho/Dynamics/Joints/FrictionJoint.hpp>
+#include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
-using namespace playrho;
+namespace playrho {
 
 // Point-to-point constraint
 // Cdot = v2 - v1
@@ -46,6 +47,11 @@ FrictionJoint::FrictionJoint(const FrictionJointDef& def):
     m_maxTorque(def.maxTorque)
 {
     // Intentionally empty.
+}
+
+void FrictionJoint::Accept(JointVisitor& visitor) const
+{
+    visitor.Visit(*this);
 }
 
 void FrictionJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
@@ -223,3 +229,5 @@ AngularMomentum FrictionJoint::GetAngularReaction() const
 {
     return m_angularImpulse;
 }
+
+} // namespace playrho

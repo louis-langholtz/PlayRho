@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_REVOLUTE_JOINT_HPP
-#define PLAYRHO_REVOLUTE_JOINT_HPP
+#ifndef PLAYRHO_DYNAMICS_JOINTS_REVOLUTEJOINT_HPP
+#define PLAYRHO_DYNAMICS_JOINTS_REVOLUTEJOINT_HPP
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJointDef.hpp>
@@ -44,6 +44,8 @@ public:
     
     /// @brief Initializing constructor.
     RevoluteJoint(const RevoluteJointDef& def);
+    
+    void Accept(JointVisitor& visitor) const override;
 
     Length2D GetAnchorA() const override;
     Length2D GetAnchorB() const override;
@@ -177,4 +179,4 @@ AngularVelocity GetAngularVelocity(const RevoluteJoint& joint);
 
 } // namespace playrho
 
-#endif
+#endif // PLAYRHO_DYNAMICS_JOINTS_REVOLUTEJOINT_HPP

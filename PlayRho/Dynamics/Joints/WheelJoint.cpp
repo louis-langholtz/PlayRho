@@ -20,12 +20,13 @@
  */
 
 #include <PlayRho/Dynamics/Joints/WheelJoint.hpp>
+#include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
-using namespace playrho;
+namespace playrho {
 
 // Linear constraint (point-to-line)
 // d = pB - pA = xB + rB - xA - rA
@@ -56,6 +57,11 @@ WheelJoint::WheelJoint(const WheelJointDef& def):
     m_dampingRatio(def.dampingRatio)
 {
     // Intentionally empty.
+}
+
+void WheelJoint::Accept(JointVisitor& visitor) const
+{
+    visitor.Visit(*this);
 }
 
 void WheelJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step, const ConstraintSolverConf&)
@@ -360,7 +366,7 @@ Torque WheelJoint::GetMotorTorque(Frequency inv_dt) const
     return inv_dt * m_motorImpulse;
 }
 
-Length playrho::GetJointTranslation(const WheelJoint& joint) noexcept
+Length GetJointTranslation(const WheelJoint& joint) noexcept
 {
     const auto pA = GetWorldPoint(*joint.GetBodyA(), joint.GetLocalAnchorA());
     const auto pB = GetWorldPoint(*joint.GetBodyB(), joint.GetLocalAnchorB());
@@ -369,7 +375,9 @@ Length playrho::GetJointTranslation(const WheelJoint& joint) noexcept
     return Length{Dot(d, axis)};
 }
 
-AngularVelocity playrho::GetAngularVelocity(const WheelJoint& joint) noexcept
+AngularVelocity GetAngularVelocity(const WheelJoint& joint) noexcept
 {
     return joint.GetBodyB()->GetVelocity().angular - joint.GetBodyA()->GetVelocity().angular;
 }
+
+} // namespace playrho

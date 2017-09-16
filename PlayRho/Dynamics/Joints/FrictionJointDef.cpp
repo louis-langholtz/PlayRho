@@ -22,7 +22,7 @@
 #include <PlayRho/Dynamics/Joints/FrictionJoint.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 
-using namespace playrho;
+namespace playrho {
 
 FrictionJointDef::FrictionJointDef(Body* bA, Body* bB, const Length2D anchor) noexcept:
     super{super{JointType::Friction}.UseBodyA(bA).UseBodyB(bB)},
@@ -32,7 +32,7 @@ FrictionJointDef::FrictionJointDef(Body* bA, Body* bB, const Length2D anchor) no
     // Intentionally empty.
 }
 
-FrictionJointDef playrho::GetFrictionJointDef(const FrictionJoint& joint) noexcept
+FrictionJointDef GetFrictionJointDef(const FrictionJoint& joint) noexcept
 {
     auto def = FrictionJointDef{};
     
@@ -45,3 +45,5 @@ FrictionJointDef playrho::GetFrictionJointDef(const FrictionJoint& joint) noexce
     
     return def;
 }
+
+} // namespace playrho

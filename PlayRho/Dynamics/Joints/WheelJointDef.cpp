@@ -23,7 +23,7 @@
 #include <PlayRho/Dynamics/Joints/WheelJoint.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 
-using namespace playrho;
+namespace playrho {
 
 WheelJointDef::WheelJointDef(NonNull<Body*> bA, NonNull<Body*> bB, const Length2D anchor,
                              const UnitVec2 axis) noexcept:
@@ -35,7 +35,7 @@ WheelJointDef::WheelJointDef(NonNull<Body*> bA, NonNull<Body*> bB, const Length2
     // Intentionally empty.
 }
 
-WheelJointDef playrho::GetWheelJointDef(const WheelJoint& joint) noexcept
+WheelJointDef GetWheelJointDef(const WheelJoint& joint) noexcept
 {
     auto def = WheelJointDef{};
     
@@ -52,3 +52,5 @@ WheelJointDef playrho::GetWheelJointDef(const WheelJoint& joint) noexcept
     
     return def;
 }
+
+} // namespace playrho

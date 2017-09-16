@@ -22,15 +22,14 @@
 #include <PlayRho/Dynamics/Joints/JointDef.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
-namespace playrho
+namespace playrho {
+
+void Set(JointDef& def, const Joint& joint) noexcept
 {
-    
-    void Set(JointDef& def, const Joint& joint) noexcept
-    {
-        def.bodyA = joint.GetBodyA();
-        def.bodyB = joint.GetBodyB();
-        def.userData = joint.GetUserData();
-        def.collideConnected = joint.GetCollideConnected();
-    }
+    def.bodyA = joint.GetBodyA();
+    def.bodyB = joint.GetBodyB();
+    def.userData = joint.GetUserData();
+    def.collideConnected = joint.GetCollideConnected();
+}
 
 } // namespace playrho

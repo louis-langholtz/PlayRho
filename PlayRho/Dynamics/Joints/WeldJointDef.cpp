@@ -23,7 +23,7 @@
 #include <PlayRho/Dynamics/Joints/WeldJoint.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 
-using namespace playrho;
+namespace playrho {
 
 WeldJointDef::WeldJointDef(NonNull<Body*> bA, NonNull<Body*> bB, const Length2D anchor) noexcept:
     super{super{JointType::Weld}.UseBodyA(bA).UseBodyB(bB)},
@@ -34,7 +34,7 @@ WeldJointDef::WeldJointDef(NonNull<Body*> bA, NonNull<Body*> bB, const Length2D 
     // Intentionally empty.
 }
 
-WeldJointDef playrho::GetWeldJointDef(const WeldJoint& joint) noexcept
+WeldJointDef GetWeldJointDef(const WeldJoint& joint) noexcept
 {
     auto def = WeldJointDef{};
     
@@ -48,3 +48,5 @@ WeldJointDef playrho::GetWeldJointDef(const WeldJoint& joint) noexcept
     
     return def;
 }
+
+} // namespace playrho

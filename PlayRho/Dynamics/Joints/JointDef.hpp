@@ -22,29 +22,13 @@
 #ifndef PLAYRHO_DYNAMICS_JOINTS_JOINTDEF_HPP
 #define PLAYRHO_DYNAMICS_JOINTS_JOINTDEF_HPP
 
+#include <PlayRho/Dynamics/Joints/JointType.hpp>
 #include <cstdint>
 
 namespace playrho {
 
 class Body;
 class Joint;
-
-/// @brief Enumeration of joint types.
-enum class JointType : std::uint8_t
-{
-    Unknown,
-    Revolute,
-    Prismatic,
-    Distance,
-    Pulley,
-    Mouse,
-    Gear,
-    Wheel,
-    Weld,
-    Friction,
-    Rope,
-    Motor
-};
 
 /// @brief Abstract base Joint definition class.
 /// @details Joint definitions are used to construct joints.

@@ -18,6 +18,7 @@
  */
 
 #include <PlayRho/Collision/Shapes/EdgeShape.hpp>
+#include <PlayRho/Collision/Shapes/ShapeVisitor.hpp>
 
 namespace playrho {
 
@@ -33,6 +34,11 @@ void EdgeShape::Set(Length2D v1, Length2D v2)
 
     m_normals[0] = GetUnitVector(GetFwdPerpendicular(v2 - v1));
     m_normals[1] = -m_normals[0];
+}
+
+void EdgeShape::Accept(ShapeVisitor& visitor) const
+{
+    visitor.Visit(*this);
 }
 
 } // namespace playrho

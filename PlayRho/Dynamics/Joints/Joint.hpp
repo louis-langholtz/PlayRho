@@ -33,11 +33,11 @@
 namespace playrho {
 
 class Body;
-class Joint;
 class StepConf;
 struct Velocity;
 struct ConstraintSolverConf;
 class BodyConstraint;
+class JointVisitor;
 
 /// @brief A body constraint pointer alias.
 using BodyConstraintPtr = BodyConstraint*;
@@ -78,8 +78,7 @@ public:
     /// @brief Is the given definition okay.
     static bool IsOkay(const JointDef& def) noexcept;
 
-    /// @brief Gets the type of the concrete joint.
-    JointType GetType() const noexcept;
+    virtual ~Joint() = default;
 
     /// @brief Gets the first body attached to this joint.
     Body* GetBodyA() const noexcept;
@@ -98,6 +97,9 @@ public:
 
     /// Get the angular reaction on bodyB.
     virtual AngularMomentum GetAngularReaction() const = 0;
+    
+    /// @brief Accepts a visitor.
+    virtual void Accept(JointVisitor& visitor) const = 0;
 
     /// Get the user data pointer.
     void* GetUserData() const noexcept;
@@ -112,8 +114,6 @@ public:
 
     /// @brief Shifts the origin for any points stored in world coordinates.
     virtual void ShiftOrigin(const Length2D newOrigin) { NOT_USED(newOrigin);  }
-
-    virtual ~Joint() = default;
 
 protected:
     
@@ -178,7 +178,6 @@ private:
     Body* const m_bodyA;
     Body* const m_bodyB;
     void* m_userData;
-    const JointType m_type;
     FlagsType m_flags = 0u; ///< Flags. 1-byte.
 };
 
@@ -193,15 +192,10 @@ constexpr inline Joint::FlagsType Joint::GetFlags(const JointDef& def) noexcept
 }
 
 inline Joint::Joint(const JointDef& def):
-    m_type{def.type}, m_bodyA{def.bodyA}, m_bodyB{def.bodyB},
+    m_bodyA{def.bodyA}, m_bodyB{def.bodyB},
     m_flags{GetFlags(def)}, m_userData{def.userData}
 {
     // Intentionally empty.
-}
-
-inline JointType Joint::GetType() const noexcept
-{
-    return m_type;
 }
 
 inline Body* Joint::GetBodyA() const noexcept

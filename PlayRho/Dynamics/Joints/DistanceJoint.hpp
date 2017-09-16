@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DISTANCE_JOINT_HPP
-#define PLAYRHO_DISTANCE_JOINT_HPP
+#ifndef PLAYRHO_DYNAMICS_JOINTS_DISTANCEJOINT_HPP
+#define PLAYRHO_DYNAMICS_JOINTS_DISTANCEJOINT_HPP
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/DistanceJointDef.hpp>
@@ -41,6 +41,8 @@ public:
 
     /// @brief Initializing constructor.
     DistanceJoint(const DistanceJointDef& data);
+
+    void Accept(JointVisitor& visitor) const override;
 
     Length2D GetAnchorA() const override;
 
@@ -136,4 +138,4 @@ inline Real DistanceJoint::GetDampingRatio() const noexcept
 
 } // namespace playrho
 
-#endif
+#endif // PLAYRHO_DYNAMICS_JOINTS_DISTANCEJOINT_HPP

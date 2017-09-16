@@ -39,6 +39,8 @@ public:
     /// @brief Initializing constructor.
     WheelJoint(const WheelJointDef& def);
     
+    void Accept(JointVisitor& visitor) const override;
+
     Length2D GetAnchorA() const override;
     Length2D GetAnchorB() const override;
 

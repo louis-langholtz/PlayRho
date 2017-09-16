@@ -93,7 +93,7 @@ namespace playrho {
         /// @return Mass data for this shape.
         MassData GetMassData() const noexcept override;
                 
-        void Accept(Visitor& visitor) const override;
+        void Accept(ShapeVisitor& visitor) const override;
         
         /// Creates a convex hull from the given set of local points.
         /// The size of the set must be in the range [1, MaxShapeVertices].
@@ -135,11 +135,6 @@ namespace playrho {
             GetVertexRadius(), static_cast<DistanceProxy::size_type>(child.vertices.size()),
             child.vertices.data(), child.normals.data()
         };
-    }
-    
-    inline void MultiShape::Accept(playrho::Shape::Visitor &visitor) const
-    {
-        visitor.Visit(*this);
     }
 
 } // namespace playrho

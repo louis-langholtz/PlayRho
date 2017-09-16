@@ -20,6 +20,7 @@
 
 #include "gtest/gtest.h"
 #include <PlayRho/Collision/Shapes/PolygonShape.hpp>
+#include <PlayRho/Collision/Shapes/ShapeVisitor.hpp>
 
 using namespace playrho;
 
@@ -54,7 +55,7 @@ TEST(PolygonShape, GetInvalidChildThrows)
 
 TEST(PolygonShape, Accept)
 {
-    class Visitor: public Shape::Visitor
+    class Visitor: public IsVisitedShapeVisitor
     {
     public:
         void Visit(const PolygonShape&) override
@@ -67,19 +68,19 @@ TEST(PolygonShape, Accept)
     PolygonShape foo{};
     Visitor v;
     ASSERT_FALSE(v.visited);
-    ASSERT_FALSE(v.IsBaseVisited());
+    ASSERT_FALSE(v.IsVisited());
     foo.Accept(v);
     EXPECT_TRUE(v.visited);
-    EXPECT_FALSE(v.IsBaseVisited());
+    EXPECT_FALSE(v.IsVisited());
 }
 
 TEST(PolygonShape, BaseVisitorForDiskShape)
 {
     const auto shape = PolygonShape{};
-    auto visitor = Shape::Visitor{};
-    ASSERT_FALSE(visitor.IsBaseVisited());
+    auto visitor = IsVisitedShapeVisitor{};
+    ASSERT_FALSE(visitor.IsVisited());
     shape.Accept(visitor);
-    EXPECT_TRUE(visitor.IsBaseVisited());
+    EXPECT_TRUE(visitor.IsVisited());
 }
 
 TEST(PolygonShape, FindLowestRightMostVertex)

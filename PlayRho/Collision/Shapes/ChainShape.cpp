@@ -20,6 +20,7 @@
  */
 
 #include <PlayRho/Collision/Shapes/ChainShape.hpp>
+#include <PlayRho/Collision/Shapes/ShapeVisitor.hpp>
 
 namespace playrho {
 
@@ -130,6 +131,11 @@ DistanceProxy ChainShape::GetChild(ChildCounter index) const
         return DistanceProxy{GetVertexRadius(), 2, &m_vertices[index], &m_normals[index * 2]};
     }
     return DistanceProxy{GetVertexRadius(), 1, &m_vertices[0], nullptr};
+}
+
+void ChainShape::Accept(ShapeVisitor &visitor) const
+{
+    visitor.Visit(*this);
 }
 
 } // namespace playrho

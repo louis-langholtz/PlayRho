@@ -381,7 +381,7 @@ private:
     void CopyContacts(const std::map<const Body*, Body*>& bodyMap,
                       const std::map<const Fixture*, Fixture*>& fixtureMap,
                       SizedRange<World::Contacts::const_iterator> range);
-
+    
     /// @brief Internal destroy.
     /// @warning Behavior is undefined if passed a null pointer for the joint.
     void InternalDestroy(Joint* joint);
@@ -418,10 +418,18 @@ private:
     /// @post Contacts are listed in the island in the order that bodies provide those contacts.
     /// @post Joints are listed the island in the order that bodies provide those joints.
     void AddToIsland(Island& island, Body& seed,
-                       Bodies::size_type& remNumBodies,
-                       Contacts::size_type& remNumContacts,
-                       Joints::size_type& remNumJoints);
+                     Bodies::size_type& remNumBodies,
+                     Contacts::size_type& remNumContacts,
+                     Joints::size_type& remNumJoints);
 
+    void AddToIsland(Island& island, std::vector<Body*>& stack,
+                     Bodies::size_type& remNumBodies,
+                     Contacts::size_type& remNumContacts,
+                     Joints::size_type& remNumJoints);
+    
+    void AddContactsToIsland(Island& island, std::vector<Body*>& stack, const Body* b);
+    void AddJointsToIsland(Island& island, std::vector<Body*>& stack, const Body* b);
+    
     Bodies::size_type RemoveUnspeedablesFromIslanded(const std::vector<Body*>& bodies);
 
     /// @brief Solves the step using successive time of impact (TOI) events.
@@ -492,7 +500,7 @@ private:
     /// @param[in] toi Time of impact (TOI). Value between 0 and 1.
     ProcessContactsOutput ProcessContactsForTOI(Island& island, Body& body, Real toi,
                                                 const StepConf& conf);
-    
+
     bool Add(Joint* j, Body* bodyA, Body* bodyB);
 
     bool Remove(const Body& b);

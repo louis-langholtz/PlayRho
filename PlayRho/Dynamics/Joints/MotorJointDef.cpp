@@ -23,7 +23,7 @@
 #include <PlayRho/Dynamics/Joints/MotorJoint.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 
-using namespace playrho;
+namespace playrho {
 
 MotorJointDef::MotorJointDef(NonNull<Body*> bA, NonNull<Body*> bB) noexcept:
     super{super{JointType::Motor}.UseBodyA(bA).UseBodyB(bB)},
@@ -33,7 +33,7 @@ MotorJointDef::MotorJointDef(NonNull<Body*> bA, NonNull<Body*> bB) noexcept:
     // Intentionally empty.
 }
 
-MotorJointDef playrho::GetMotorJointDef(const MotorJoint& joint) noexcept
+MotorJointDef GetMotorJointDef(const MotorJoint& joint) noexcept
 {
     auto def = MotorJointDef{};
     
@@ -47,3 +47,5 @@ MotorJointDef playrho::GetMotorJointDef(const MotorJoint& joint) noexcept
     
     return def;
 }
+
+} // namespace playrho

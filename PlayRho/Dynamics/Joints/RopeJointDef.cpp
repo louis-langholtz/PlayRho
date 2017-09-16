@@ -23,9 +23,9 @@
 #include <PlayRho/Dynamics/Joints/RopeJoint.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 
-using namespace playrho;
+namespace playrho {
 
-RopeJointDef playrho::GetRopeJointDef(const RopeJoint& joint) noexcept
+RopeJointDef GetRopeJointDef(const RopeJoint& joint) noexcept
 {
     auto def = RopeJointDef{};
     
@@ -37,3 +37,5 @@ RopeJointDef playrho::GetRopeJointDef(const RopeJoint& joint) noexcept
     
     return def;
 }
+    
+} // namespace playrho

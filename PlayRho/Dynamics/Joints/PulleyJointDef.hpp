@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_PULLEY_JOINT_DEF_HPP
-#define PLAYRHO_PULLEY_JOINT_DEF_HPP
+#ifndef PLAYRHO_DYNAMICS_JOINTS_PULLEYJOINTDEF_HPP
+#define PLAYRHO_DYNAMICS_JOINTS_PULLEYJOINTDEF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointDef.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
@@ -60,7 +60,7 @@ struct PulleyJointDef : public JointBuilder<PulleyJointDef>
     Length2D localAnchorA = Length2D{Real(-1) * Meter, Real(0) * Meter};
     
     /// The local anchor point relative to bodyB's origin.
-    Length2D localAnchorB = Length2D{Real(1) * Meter, Real(0) * Meter};
+    Length2D localAnchorB = Length2D{Real(+1) * Meter, Real(0) * Meter};
     
     /// The a reference length for the segment attached to bodyA.
     Length lengthA = Length{0};
@@ -83,4 +83,4 @@ PulleyJointDef GetPulleyJointDef(const PulleyJoint& joint) noexcept;
 
 } // namespace playrho
 
-#endif /* PLAYRHO_PULLEY_JOINT_DEF_HPP */
+#endif // PLAYRHO_DYNAMICS_JOINTS_PULLEYJOINTDEF_HPP

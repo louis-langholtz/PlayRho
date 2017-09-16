@@ -20,12 +20,13 @@
  */
 
 #include <PlayRho/Dynamics/Joints/DistanceJoint.hpp>
+#include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
-using namespace playrho;
+namespace playrho {
 
 // 1-D constrained system
 // m (v2 - v1) = lambda
@@ -60,6 +61,11 @@ DistanceJoint::DistanceJoint(const DistanceJointDef& def):
     m_dampingRatio(def.dampingRatio)
 {
     // Intentionally empty.
+}
+
+void DistanceJoint::Accept(JointVisitor& visitor) const
+{
+    visitor.Visit(*this);
 }
 
 void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
@@ -249,3 +255,5 @@ AngularMomentum DistanceJoint::GetAngularReaction() const
 {
     return AngularMomentum{0};
 }
+
+} // namespace playrho

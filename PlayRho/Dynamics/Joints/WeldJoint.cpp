@@ -20,12 +20,13 @@
  */
 
 #include <PlayRho/Dynamics/Joints/WeldJoint.hpp>
+#include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
-using namespace playrho;
+namespace playrho {
 
 // Point-to-point constraint
 // C = p2 - p1
@@ -50,6 +51,11 @@ WeldJoint::WeldJoint(const WeldJointDef& def):
     m_dampingRatio(def.dampingRatio)
 {
     // Intentionally empty.
+}
+
+void WeldJoint::Accept(JointVisitor& visitor) const
+{
+    visitor.Visit(*this);
 }
 
 void WeldJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
@@ -394,3 +400,5 @@ AngularMomentum WeldJoint::GetAngularReaction() const
     // AngularMomentum is L^2 M T^-1 QP^-1
     return AngularMomentum{GetZ(m_impulse) * SquareMeter * Kilogram / (Second * Radian)};
 }
+
+} // namespace playrho

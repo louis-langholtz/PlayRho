@@ -23,7 +23,7 @@
 #include <PlayRho/Dynamics/Joints/DistanceJoint.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 
-using namespace playrho;
+namespace playrho {
 
 DistanceJointDef::DistanceJointDef(NonNull<Body*> bA, NonNull<Body*> bB,
                                    Length2D anchor1, Length2D anchor2) noexcept :
@@ -35,7 +35,7 @@ DistanceJointDef::DistanceJointDef(NonNull<Body*> bA, NonNull<Body*> bB,
     // Intentionally empty.
 }
 
-DistanceJointDef playrho::GetDistanceJointDef(const DistanceJoint& joint) noexcept
+DistanceJointDef GetDistanceJointDef(const DistanceJoint& joint) noexcept
 {
     auto def = DistanceJointDef{};
     
@@ -49,3 +49,5 @@ DistanceJointDef playrho::GetDistanceJointDef(const DistanceJoint& joint) noexce
     
     return def;
 }
+
+} // namespace playrho

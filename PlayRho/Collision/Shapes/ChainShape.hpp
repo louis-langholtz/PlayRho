@@ -86,7 +86,7 @@ public:
     /// @return Mass data for this shape.
     MassData GetMassData() const noexcept override;
     
-    void Accept(Visitor& visitor) const override;
+    void Accept(ShapeVisitor& visitor) const override;
 
     /// Get the vertex count.
     ChildCounter GetVertexCount() const noexcept;
@@ -105,11 +105,6 @@ private:
 inline ChildCounter ChainShape::GetVertexCount() const noexcept
 {
     return static_cast<ChildCounter>(m_vertices.size());
-}
-
-inline void ChainShape::Accept(playrho::Shape::Visitor &visitor) const
-{
-    visitor.Visit(*this);
 }
 
 inline Length2D ChainShape::GetVertex(ChildCounter index) const

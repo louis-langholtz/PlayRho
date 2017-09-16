@@ -18,6 +18,7 @@
  */
 
 #include <PlayRho/Collision/Shapes/PolygonShape.hpp>
+#include <PlayRho/Collision/Shapes/ShapeVisitor.hpp>
 #include <PlayRho/Common/VertexSet.hpp>
 
 namespace playrho {
@@ -130,6 +131,11 @@ void PolygonShape::Set(const VertexSet& points) noexcept
             m_centroid = ComputeCentroid(GetVertices());
             break;
     }
+}
+
+void PolygonShape::Accept(ShapeVisitor& visitor) const
+{
+    visitor.Visit(*this);
 }
 
 Length2D GetEdge(const PolygonShape& shape, PolygonShape::VertexCounter index)

@@ -75,7 +75,7 @@ TEST(FrictionJoint, Construction)
     FrictionJointDef def;
     FrictionJoint joint{def};
     
-    EXPECT_EQ(joint.GetType(), def.type);
+    EXPECT_EQ(GetType(joint), def.type);
     EXPECT_EQ(joint.GetBodyA(), def.bodyA);
     EXPECT_EQ(joint.GetBodyB(), def.bodyB);
     EXPECT_EQ(joint.GetCollideConnected(), def.collideConnected);
@@ -92,7 +92,7 @@ TEST(FrictionJoint, GetFrictionJointDef)
     FrictionJointDef def;
     FrictionJoint joint{def};
     
-    ASSERT_EQ(joint.GetType(), def.type);
+    ASSERT_EQ(GetType(joint), def.type);
     ASSERT_EQ(joint.GetBodyA(), def.bodyA);
     ASSERT_EQ(joint.GetBodyB(), def.bodyB);
     ASSERT_EQ(joint.GetCollideConnected(), def.collideConnected);
