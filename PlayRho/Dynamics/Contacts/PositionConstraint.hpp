@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_POSITION_CONSTRAINT_HPP
-#define PLAYRHO_POSITION_CONSTRAINT_HPP
+#ifndef PLAYRHO_DYNAMICS_CONTACTS_POSITIONCONSTRAINT_HPP
+#define PLAYRHO_DYNAMICS_CONTACTS_POSITIONCONSTRAINT_HPP
 
 #include <PlayRho/Collision/Manifold.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
@@ -78,4 +78,4 @@ namespace playrho {
 
 } // namespace playrho
 
-#endif /* PLAYRHO_POSITION_CONSTRAINT_HPP */
+#endif // PLAYRHO_DYNAMICS_CONTACTS_POSITIONCONSTRAINT_HPP

@@ -998,6 +998,23 @@ inline UnitVec2 GetUnitVector(Vector2D<LinearVelocity> value, LinearVelocity& ma
 std::vector<Length2D> GetCircleVertices(Length radius, unsigned slices,
                                         Angle start = Angle{0}, Real turns = Real{1});
 
+/// @brief Gets the area of a cirlce.
+NonNegative<Area> GetAreaOfCircle(Length radius);
+
+/// @brief Gets the area of a polygon.
+/// @note This function is valid for any non-self-intersecting (simple) polygon,
+///   which can be convex or concave.
+/// @note Winding order doesn't matter.
+NonNegative<Area> GetAreaOfPolygon(Span<const Length2D> vertices);
+
+/// @brief Gets the polar moment of the area enclosed by the given vertices.
+///
+/// @warning Behavior is undefined if given collection has less than 3 vertices.
+///
+/// @param vertices Collection of three or more vertices.
+///
+SecondMomentOfArea GetPolarMoment(Span<const Length2D> vertices);
+
 /// @}
 
 /// @brief Gets whether the given velocity is "under active" based on the given tolerances.

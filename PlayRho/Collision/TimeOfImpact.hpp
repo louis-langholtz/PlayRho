@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_TIME_OF_IMPACT_HPP
-#define PLAYRHO_TIME_OF_IMPACT_HPP
+#ifndef PLAYRHO_COLLISION_TIMEOFIMPACT_HPP
+#define PLAYRHO_COLLISION_TIMEOFIMPACT_HPP
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/Wider.hpp>
@@ -44,7 +44,7 @@ namespace playrho {
     ///   significantly more than 0.
     ///
     /// @sa SolvePositionConstraints
-     /// @sa SolveTOIPositionConstraints
+    /// @sa SolveTOIPositionConstraints
     ///
     struct ToiConf
     {
@@ -250,8 +250,8 @@ namespace playrho {
     ///
     TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
                            const DistanceProxy& proxyB, const Sweep& sweepB,
-                           const ToiConf conf = GetDefaultToiConf());
+                           ToiConf conf = GetDefaultToiConf());
 
 } // namespace playrho
 
-#endif
+#endif // PLAYRHO_COLLISION_TIMEOFIMPACT_HPP

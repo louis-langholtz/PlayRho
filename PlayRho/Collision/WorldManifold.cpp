@@ -102,8 +102,8 @@ inline WorldManifold GetForFaceB(const Manifold& manifold,
 } // anonymous namespace
 
 WorldManifold GetWorldManifold(const Manifold& manifold,
-                               const Transformation xfA, const Length radiusA,
-                               const Transformation xfB, const Length radiusB)
+                               Transformation xfA, Length radiusA,
+                               Transformation xfB, Length radiusB)
 {
     const auto type = manifold.GetType();
 

@@ -17,14 +17,14 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DISTANCE_HPP
-#define PLAYRHO_DISTANCE_HPP
+#ifndef PLAYRHO_COLLISION_DISTANCE_HPP
+#define PLAYRHO_COLLISION_DISTANCE_HPP
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/Simplex.hpp>
 
-namespace playrho
-{
+namespace playrho {
+
     class DistanceProxy;
 
     /// Witness Points.
@@ -82,7 +82,7 @@ namespace playrho
     ///   <code>DefaultMaxDistanceIters</code> is zero.
     DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& transformA,
                             const DistanceProxy& proxyB, const Transformation& transformB,
-                            const DistanceConf conf = DistanceConf{});
+                            DistanceConf conf = DistanceConf{});
  
     /// @brief Determine if two generic shapes overlap.
     ///
@@ -92,8 +92,8 @@ namespace playrho
     ///
     Area TestOverlap(const DistanceProxy& proxyA, const Transformation& xfA,
                      const DistanceProxy& proxyB, const Transformation& xfB,
-                     const DistanceConf conf = DistanceConf{});
+                     DistanceConf conf = DistanceConf{});
 
-} /* namespace playrho */
+} // namespace playrho
 
-#endif
+#endif // PLAYRHO_COLLISION_DISTANCE_HPP

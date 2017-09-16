@@ -19,9 +19,9 @@
 
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 
-using namespace playrho;
+namespace playrho {
 
-bool playrho::TestPoint(const Shape& shape, const Length2D point) noexcept
+bool TestPoint(const Shape& shape, Length2D point) noexcept
 {
     const auto childCount = shape.GetChildCount();
     for (auto i = decltype(childCount){0}; i < childCount; ++i)
@@ -33,3 +33,5 @@ bool playrho::TestPoint(const Shape& shape, const Length2D point) noexcept
     }
     return false;
 }
+
+} // namespace playrho

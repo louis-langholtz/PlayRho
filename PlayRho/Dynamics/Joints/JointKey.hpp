@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_JOINT_KEY_HPP
-#define PLAYRHO_JOINT_KEY_HPP
+#ifndef PLAYRHO_DYNAMICS_JOINTS_JOINTKEY_HPP
+#define PLAYRHO_DYNAMICS_JOINTS_JOINTKEY_HPP
 
 /// @file
 /// Definition of the JointKey class and any associated free functions.
@@ -28,8 +28,8 @@
 #include <utility>
 #include <functional>
 
-namespace playrho
-{
+namespace playrho {
+
     class Joint;
     class Body;
 
@@ -132,6 +132,6 @@ namespace std
         }
     };
 
-}
+} // namespace std
 
-#endif /* PLAYRHO_JOINT_KEY_HPP */
+#endif // PLAYRHO_DYNAMICS_JOINTS_JOINTKEY_HPP

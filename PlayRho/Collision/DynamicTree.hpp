@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMIC_TREE_HPP
-#define PLAYRHO_DYNAMIC_TREE_HPP
+#ifndef PLAYRHO_COLLISION_DYNAMICTREE_HPP
+#define PLAYRHO_COLLISION_DYNAMICTREE_HPP
 
 /// @file
 /// Declaration of the DynamicTree class.
@@ -63,16 +63,22 @@ public:
     static constexpr size_type GetDefaultInitialNodeCapacity() noexcept;
 
     /// @brief Constructing the tree initializes the node pool.
-    DynamicTree(const size_type nodeCapacity = GetDefaultInitialNodeCapacity());
+    explicit DynamicTree(size_type nodeCapacity = GetDefaultInitialNodeCapacity());
 
     /// @brief Destroys the tree, freeing the node pool.
     ~DynamicTree() noexcept;
 
     /// @brief Copy constructor.
-    DynamicTree(const DynamicTree& copy);
+    DynamicTree(const DynamicTree& other);
+    
+    /// @brief Move constructor.
+    DynamicTree(DynamicTree&& other) noexcept;
 
-    /// @brief Assignment operator.
-    DynamicTree& operator= (const DynamicTree& copy);
+    /// @brief Copy assignment operator.
+    DynamicTree& operator= (const DynamicTree& other);
+
+    /// @brief Move assignment operator.
+    DynamicTree& operator= (DynamicTree&& other) noexcept;
 
     /// @brief Creates a new proxy.
     /// @details Creates a proxy for a tight fitting AABB and a userData pointer.
@@ -80,38 +86,38 @@ public:
     /// @post If the root index had been the InvalidIndex, then it will be set to the index
     ///   returned from this method.
     /// @return Index of the created proxy.
-    size_type CreateProxy(const AABB aabb, void* userData);
+    size_type CreateProxy(const AABB& aabb, void* userData);
 
     /// @brief Destroys a proxy.
     /// @warning Behavior is undefined if the given index is not valid.
-    void DestroyProxy(const size_type index);
+    void DestroyProxy(size_type index);
 
     /// @brief Updates a proxy with a new AABB value.
     /// @warning Behavior is undefined if the given index is not valid.
     /// @param index Proxy ID. Behavior is undefined if this is not a valid ID.
     /// @param aabb New axis aligned bounding box of the proxy.
-    void UpdateProxy(const size_type index, const AABB aabb);
+    void UpdateProxy(size_type index, const AABB& aabb);
 
     /// @brief Gets the user data for the node identified by the given identifier.
     /// @warning Behavior is undefined if the given index is not valid.
     /// @param index Identifier of node to get the user data for.
     /// @return User data for the specified node.
-    void* GetUserData(const size_type index) const noexcept;
+    void* GetUserData(size_type index) const noexcept;
 
     /// @brief Sets the user data for the element at the given index to the given value.
-    void SetUserData(const size_type index, void* value) noexcept;
+    void SetUserData(size_type index, void* value) noexcept;
 
     /// @brief Gets the AABB for a proxy.
     /// @warning Behavior is undefined if the given index is not valid.
     /// @param index Proxy ID. Must be a valid ID.
-    AABB GetAABB(const size_type index) const noexcept;
+    AABB GetAABB(size_type index) const noexcept;
 
     /// @brief Query an AABB for overlapping proxies.
     /// @note The callback instance is called for each proxy that overlaps the supplied AABB.
-    void Query(const AABB aabb, QueryCallback callback) const;
+    void Query(const AABB& aabb, const QueryCallback& callback) const;
 
     /// @brief Calls the given callback for each of the entries overlapping the given AABB.
-    void ForEach(const AABB aabb, ForEachCallback callback) const;
+    void ForEach(const AABB& aabb, const ForEachCallback& callback) const;
 
     /// @brief Ray-cast against the proxies in the tree.
     ///
@@ -126,7 +132,7 @@ public:
     ///   by the ray. The callback should return 0 to terminate raycasting, or greater than 0
     ///   to update the segment bounding box. Values less than zero are ignored.
     ///
-    void RayCast(const RayCastInput& input, RayCastCallback callback) const;
+    void RayCast(const RayCastInput& input, const RayCastCallback& callback) const;
 
     /// @brief Validates this tree.
     /// @note Meant for testing.
@@ -136,7 +142,7 @@ public:
     /// @brief Validates the structure of this tree from the given index.
     /// @note Meant for testing.
     /// @return <code>true</code> if valid, <code>false</code> otherwise.
-    bool ValidateStructure(const size_type index) const noexcept;
+    bool ValidateStructure(size_type index) const noexcept;
 
     /// @brief Validates the metrics of this tree from the given index.
     /// @note Meant for testing.
@@ -169,12 +175,12 @@ public:
     /// @note Useful for large worlds.
     /// @note The shift formula is: position -= newOrigin
     /// @param newOrigin the new origin with respect to the old origin
-    void ShiftOrigin(const Length2D newOrigin);
+    void ShiftOrigin(Length2D newOrigin);
 
     /// @brief Computes the height of the tree from a given node.
     /// @warning Behavior is undefined if the given index is not valid.
-    /// @param nodeId ID of node to compute height from.
-    size_type ComputeHeight(const size_type nodeId) const noexcept;
+    /// @param index ID of node to compute height from.
+    size_type ComputeHeight(size_type index) const noexcept;
 
     /// @brief Computes the height of the tree from its root.
     /// @warning Behavior is undefined if the tree doesn't have a valid root.
@@ -192,59 +198,54 @@ public:
 
     /// @brief Finds the lowest cost node.
     /// @warning Behavior is undefined if the tree doesn't have a valid root.
-    size_type FindLowestCostNode(const AABB leafAABB) const noexcept;
+    size_type FindLowestCostNode(AABB leafAABB) const noexcept;
 
 private:
 
     /// A node in the dynamic tree. The client does not interact with this directly.
     struct TreeNode
     {
-        /// Whether or not this node is a leaf node.
-        /// @note This has constant complexity.
-        /// @return <code>true</code> if this is a leaf node, <code>false</code> otherwise.
-        bool IsLeaf() const noexcept
-        {
-            return child1 == InvalidIndex;
-        }
-        
         /// Enlarged AABB
         AABB aabb;
         
         void* userData;
         
-        union
-        {
-            size_type parent;
-            size_type next;
-        };
-        
+        size_type next; ///< Index of next which is sometimes the parent.
         size_type child1; ///< Index of child 1 in DynamicTree::m_nodes or InvalidIndex.
         size_type child2; ///< Index of child 2 in DynamicTree::m_nodes or InvalidIndex.
         
         size_type height; ///< Height - for tree balancing. 0 if leaf node. InvalidIndex if free node.
     };
 
+    /// Whether or not this node is a leaf node.
+    /// @note This has constant complexity.
+    /// @return <code>true</code> if this is a leaf node, <code>false</code> otherwise.
+    static bool IsLeaf(const TreeNode& node) noexcept
+    {
+        return node.child1 == InvalidIndex;
+    }
+
     /// Allocates a new node.
     size_type AllocateNode();
     
     /// Frees the specified node.
     /// @warning Behavior is undefined if the given index is not valid.
-    void FreeNode(const size_type node) noexcept;
+    void FreeNode(size_type index) noexcept;
 
     /// @brief Inserts the specified node.
     /// @details Does a leaf insertion of the node with the given index.
     /// @warning Behavior is undefined if the given index is not valid.
     /// @post The root index is set to the given index if the root index had been InvalidIndex.
-    void InsertLeaf(const size_type index);
+    void InsertLeaf(size_type index);
 
     /// Removes the specified node.
     /// Does a leaf removal of the node with the given index.
     /// @warning Behavior is undefined if the given index is not valid.
-    void RemoveLeaf(const size_type index);
+    void RemoveLeaf(size_type leaf);
 
     /// Balances the tree from the given index.
     /// @warning Behavior is undefined if the given index is not valid.
-    size_type Balance(const size_type index);
+    size_type Balance(size_type index);
 
     TreeNode* m_nodes; ///< Nodes. @details Initialized on construction.
 
@@ -276,21 +277,21 @@ inline DynamicTree::size_type DynamicTree::GetNodeCount() const noexcept
     return m_nodeCount;
 }
 
-inline void* DynamicTree::GetUserData(const size_type index) const noexcept
+inline void* DynamicTree::GetUserData(size_type index) const noexcept
 {
     assert(index != InvalidIndex);
     assert(index < m_nodeCapacity);
     return m_nodes[index].userData;
 }
 
-inline void DynamicTree::SetUserData(const size_type index, void* value) noexcept
+inline void DynamicTree::SetUserData(size_type index, void* value) noexcept
 {
     assert(index != InvalidIndex);
     assert(index < m_nodeCapacity);
     m_nodes[index].userData = value;
 }
 
-inline AABB DynamicTree::GetAABB(const size_type index) const noexcept
+inline AABB DynamicTree::GetAABB(size_type index) const noexcept
 {
     assert(index != InvalidIndex);
     assert(index < m_nodeCapacity);
@@ -314,6 +315,6 @@ inline bool TestOverlap(const DynamicTree& tree,
     return TestOverlap(tree.GetAABB(proxyIdA), tree.GetAABB(proxyIdB));
 }
 
-} /* namespace playrho */
+} // namespace playrho
 
-#endif
+#endif // PLAYRHO_COLLISION_DYNAMICTREE_HPP

@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_MULTI_SHAPE_HPP
-#define PLAYRHO_MULTI_SHAPE_HPP
+#ifndef PLAYRHO_COLLISION_SHAPES_MULTISHAPE_HPP
+#define PLAYRHO_COLLISION_SHAPES_MULTISHAPE_HPP
 
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <vector>
@@ -76,6 +76,8 @@ namespace playrho {
         
         /// @brief Copy constructor.
         MultiShape(const MultiShape&) = default;
+        
+        ~MultiShape() override = default;
         
         /// @brief Gets the number of child primitives.
         /// @return Positive non-zero count.
@@ -140,6 +142,6 @@ namespace playrho {
         visitor.Visit(*this);
     }
 
-}
+} // namespace playrho
 
-#endif /* PLAYRHO_MULTI_SHAPE_HPP */
+#endif // PLAYRHO_COLLISION_SHAPES_MULTISHAPE_HPP

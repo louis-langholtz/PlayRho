@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_RAY_CAST_OUTPUT_HPP
-#define PLAYRHO_RAY_CAST_OUTPUT_HPP
+#ifndef PLAYRHO_COLLISION_RAYCASTOUTPUT_HPP
+#define PLAYRHO_COLLISION_RAYCASTOUTPUT_HPP
 
 /// @file
 /// Declaration of the RayCastOutput struct and related free functions.
@@ -53,8 +53,7 @@ namespace playrho
     /// @param radius Radius of the circle.
     /// @param location Location in world coordinates of the circle.
     /// @param input Ray-cast input parameters.
-    RayCastOutput RayCast(const Length radius, const Length2D location,
-                          const RayCastInput& input) noexcept;
+    RayCastOutput RayCast(Length radius, Length2D location, const RayCastInput& input) noexcept;
 
     /// @brief Cast a ray against the given AABB.
     /// @param aabb Axis Aligned Bounding Box.
@@ -79,4 +78,4 @@ namespace playrho
 
 } // namespace playrho
 
-#endif /* PLAYRHO_RAY_CAST_OUTPUT_HPP */
+#endif // PLAYRHO_COLLISION_RAYCASTOUTPUT_HPP

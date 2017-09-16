@@ -20,7 +20,7 @@
 #include <PlayRho/Collision/Shapes/PolygonShape.hpp>
 #include <PlayRho/Common/VertexSet.hpp>
 
-using namespace playrho;
+namespace playrho {
 
 PolygonShape::PolygonShape(Length hx, Length hy, const Conf& conf) noexcept:
     Shape{conf}
@@ -64,20 +64,20 @@ void PolygonShape::SetAsBox(Length hx, Length hy) noexcept
     m_normals.emplace_back(UnitVec2::GetBottom());
 }
 
-void playrho::SetAsBox(PolygonShape& shape, Length hx, Length hy, const Length2D center, Angle angle) noexcept
+void SetAsBox(PolygonShape& shape, Length hx, Length hy, Length2D center, Angle angle) noexcept
 {
     shape.SetAsBox(hx, hy);
     shape.Transform(Transformation{center, UnitVec2::Get(angle)});
 }
 
-PolygonShape& PolygonShape::Transform(playrho::Transformation xf) noexcept
+PolygonShape& PolygonShape::Transform(Transformation xfm) noexcept
 {
     for (auto i = decltype(GetVertexCount()){0}; i < GetVertexCount(); ++i)
     {
-        m_vertices[i] = playrho::Transform(m_vertices[i], xf);
-        m_normals[i] = Rotate(m_normals[i], xf.q);
+        m_vertices[i] = playrho::Transform(m_vertices[i], xfm);
+        m_normals[i] = Rotate(m_normals[i], xfm.q);
     }
-    m_centroid = playrho::Transform(m_centroid, xf);
+    m_centroid = playrho::Transform(m_centroid, xfm);
     return *this;
 }
 
@@ -92,10 +92,10 @@ void PolygonShape::Set(Span<const Length2D> points) noexcept
     Set(point_set);
 }
 
-void PolygonShape::Set(const VertexSet& point_set) noexcept
+void PolygonShape::Set(const VertexSet& points) noexcept
 {
-    m_vertices = GetConvexHullAsVector(point_set);
-    assert(m_vertices.size() > 0 && m_vertices.size() < std::numeric_limits<VertexCounter>::max());
+    m_vertices = GetConvexHullAsVector(points);
+    assert(!m_vertices.empty() && m_vertices.size() < std::numeric_limits<VertexCounter>::max());
     
     const auto count = static_cast<VertexCounter>(m_vertices.size());
 
@@ -132,7 +132,7 @@ void PolygonShape::Set(const VertexSet& point_set) noexcept
     }
 }
 
-Length2D playrho::GetEdge(const PolygonShape& shape, PolygonShape::VertexCounter index)
+Length2D GetEdge(const PolygonShape& shape, PolygonShape::VertexCounter index)
 {
     assert(shape.GetVertexCount() > 1);
 
@@ -141,7 +141,7 @@ Length2D playrho::GetEdge(const PolygonShape& shape, PolygonShape::VertexCounter
     return shape.GetVertex(i1) - shape.GetVertex(i0);
 }
 
-bool playrho::Validate(const PolygonShape& shape)
+bool Validate(const PolygonShape& shape)
 {
     const auto count = shape.GetVertexCount();
     for (auto i = decltype(count){0}; i < count; ++i)
@@ -170,3 +170,4 @@ bool playrho::Validate(const PolygonShape& shape)
     return true;
 }
 
+} // namespace playrho

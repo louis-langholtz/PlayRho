@@ -22,6 +22,7 @@
 #define PLAYRHO_COMMON_OPTIONALVALUE_HPP
 
 #include <cassert>
+#include <utility>
 
 namespace playrho {
     
@@ -43,10 +44,16 @@ namespace playrho {
         constexpr OptionalValue(const OptionalValue& other) = default;
 
         /// @brief Move constructor.
-        constexpr OptionalValue(OptionalValue&& other) noexcept = default;
+        constexpr OptionalValue(OptionalValue&& other) noexcept:
+            m_value{std::move(other.m_value)}, m_set{other.m_set}
+        {
+            // Intentionally empty.
+            // Note that the exception specification of this constructor
+            //   doesn't match the defaulted one (when built with boost units).
+        }
 
         /// @brief Initializing constructor.
-        constexpr OptionalValue(T v);
+        constexpr explicit OptionalValue(T v);
 
         ~OptionalValue() = default;
 
@@ -72,7 +79,14 @@ namespace playrho {
         OptionalValue& operator= (const OptionalValue& other) = default;
 
         /// @brief Move assignment operator.
-        OptionalValue& operator= (OptionalValue&& other) noexcept = default;
+        OptionalValue& operator= (OptionalValue&& other) noexcept
+        {
+            // Note that the exception specification of this method
+            //   doesn't match the defaulted one (when built with boost units).
+            m_value = std::move(other.m_value);
+            m_set = other.m_set;
+            return *this;
+        }
 
         /// @brief Assignment operator.
         OptionalValue& operator= (T v);

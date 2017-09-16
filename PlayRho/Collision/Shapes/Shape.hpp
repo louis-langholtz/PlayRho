@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_SHAPE_HPP
-#define PLAYRHO_SHAPE_HPP
+#ifndef PLAYRHO_COLLISION_SHAPES_SHAPE_HPP
+#define PLAYRHO_COLLISION_SHAPES_SHAPE_HPP
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
@@ -121,7 +121,7 @@ public:
 
     /// @brief Initializing constructor.
     ///
-    Shape(const Conf& conf) noexcept:
+    explicit Shape(const Conf& conf) noexcept:
         m_vertexRadius{conf.vertexRadius},
         m_density{conf.density},
         m_friction{conf.friction},
@@ -252,31 +252,31 @@ public:
     virtual ~Visitor() = default;
     
     /// @brief Visits a DiskShape.
-    virtual void Visit(const DiskShape&)
+    virtual void Visit(const DiskShape& /*shape*/)
     {
         visited = true;
     }
     
     /// @brief Visits an EdgeShape.
-    virtual void Visit(const EdgeShape&)
+    virtual void Visit(const EdgeShape& /*shape*/)
     {
         visited = true;
     }
     
     /// @brief Visits a PolygonShape.
-    virtual void Visit(const PolygonShape&)
+    virtual void Visit(const PolygonShape& /*shape*/)
     {
         visited = true;
     }
     
     /// @brief Visits a ChainShape.
-    virtual void Visit(const ChainShape&)
+    virtual void Visit(const ChainShape& /*shape*/)
     {
         visited = true;
     }
     
     /// @brief Visits a MultiShape.
-    virtual void Visit(const MultiShape&)
+    virtual void Visit(const MultiShape& /*shape*/)
     {
         visited = true;
     }
@@ -352,10 +352,10 @@ inline NonNegative<Length> GetVertexRadius(const Shape& shape) noexcept
 /// @param point Point in local coordinates.
 /// @return <code>true</code> if the given point is contained by the given shape,
 ///   <code>false</code> otherwise.
-bool TestPoint(const Shape& shape, const Length2D point) noexcept;
+bool TestPoint(const Shape& shape, Length2D point) noexcept;
 
 /// @}
 
 } // namespace playrho
 
-#endif
+#endif // PLAYRHO_COLLISION_SHAPES_SHAPE_HPP

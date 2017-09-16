@@ -22,7 +22,7 @@
 #include <PlayRho/Common/VertexSet.hpp>
 #include <algorithm>
 
-using namespace playrho;
+namespace playrho {
 
 /// Computes the mass properties of this shape using its dimensions and density.
 /// The inertia tensor is computed about the local origin.
@@ -35,7 +35,7 @@ MassData MultiShape::GetMassData() const noexcept
     auto I = RotInertia(0);
 
     std::for_each(std::begin(m_children), std::end(m_children), [&](const ConvexHull& ch) {
-        const auto md = ::GetMassData(GetVertexRadius(), GetDensity(),
+        const auto md = playrho::GetMassData(GetVertexRadius(), GetDensity(),
                                       Span<const Length2D>(ch.vertices.data(), ch.vertices.size()));
         mass += Mass{md.mass};
         weightedCenter += md.center * Mass{md.mass};
@@ -49,7 +49,7 @@ MassData MultiShape::GetMassData() const noexcept
 void MultiShape::AddConvexHull(const VertexSet& pointSet) noexcept
 {
     auto vertices = GetConvexHullAsVector(pointSet);
-    assert(vertices.size() > 0 && vertices.size() < std::numeric_limits<VertexCounter>::max());
+    assert(!vertices.empty() && vertices.size() < std::numeric_limits<VertexCounter>::max());
     
     const auto count = static_cast<VertexCounter>(vertices.size());
     
@@ -71,3 +71,5 @@ void MultiShape::AddConvexHull(const VertexSet& pointSet) noexcept
     
     m_children.push_back(ConvexHull{vertices, normals});
 }
+
+} // namespace playrho

@@ -31,13 +31,13 @@
 
 #define PLAYRHO_MAGIC(x) (x)
 
-using namespace playrho;
-
-using index_type = IndexPair::size_type;
+namespace playrho {
 
 namespace {
 
 #ifdef DEFINE_GET_MANIFOLD
+using index_type = IndexPair::size_type;
+
 inline index_type GetEdgeIndex(index_type i1, index_type i2, index_type count)
 {
     if (GetModuloNext(i1, count) == i2)
@@ -53,8 +53,8 @@ inline index_type GetEdgeIndex(index_type i1, index_type i2, index_type count)
 #endif
 
 inline ClipList GetClipPoints(IndexSeparation::index_type iv1, Length sideOffset1, UnitVec2 normal1,
-                                     IndexSeparation::index_type iv2, Length sideOffset2, UnitVec2 normal2,
-                                     const ClipList& incidentEdge)
+                              IndexSeparation::index_type iv2, Length sideOffset2, UnitVec2 normal2,
+                              const ClipList& incidentEdge)
 {
     const auto points = ClipSegmentToLine(incidentEdge, normal1, sideOffset1, iv1);
     return ClipSegmentToLine(points, normal2, sideOffset2, iv2);
@@ -328,10 +328,10 @@ Manifold CollideShapes(Manifold::Type type,
         // Circle's center is inside the polygon and closest to edge[indexOfMax].
         switch (type)
         {
-            case playrho::Manifold::e_faceA:
+            case Manifold::e_faceA:
                 return Manifold::GetForFaceA(shape.GetNormal(indexOfMax), indexOfMax, faceCenter,
                                              ContactFeature::e_vertex, 0, point);
-            case playrho::Manifold::e_faceB:
+            case Manifold::e_faceB:
                 return Manifold::GetForFaceB(shape.GetNormal(indexOfMax), indexOfMax, faceCenter,
                                              ContactFeature::e_vertex, 0, point);
             default: break;
@@ -352,9 +352,9 @@ Manifold CollideShapes(Manifold::Type type,
         }
         switch (type)
         {
-            case playrho::Manifold::e_faceA:
+            case Manifold::e_faceA:
                 return Manifold::GetForCircles(v1, indexOfMax, point, 0);
-            case playrho::Manifold::e_faceB:
+            case Manifold::e_faceB:
                 return Manifold::GetForCircles(point, 0, v1, indexOfMax);
             default: break;
         }
@@ -371,9 +371,9 @@ Manifold CollideShapes(Manifold::Type type,
         }
         switch (type)
         {
-            case playrho::Manifold::e_faceA:
+            case Manifold::e_faceA:
                 return Manifold::GetForCircles(v2, indexOfMax2, point, 0);
-            case playrho::Manifold::e_faceB:
+            case Manifold::e_faceB:
                 return Manifold::GetForCircles(point, 0, v2, indexOfMax2);
             default: break;
         }
@@ -388,10 +388,10 @@ Manifold CollideShapes(Manifold::Type type,
     }
     switch (type)
     {
-        case playrho::Manifold::e_faceA:
+        case Manifold::e_faceA:
             return Manifold::GetForFaceA(shape.GetNormal(indexOfMax), indexOfMax, faceCenter,
                                          ContactFeature::e_vertex, 0, point);
-        case playrho::Manifold::e_faceB:
+        case Manifold::e_faceB:
             return Manifold::GetForFaceB(shape.GetNormal(indexOfMax), indexOfMax, faceCenter,
                                          ContactFeature::e_vertex, 0, point);
         default: break;
@@ -416,9 +416,9 @@ Manifold CollideShapes(Length2D locationA, Length radiusA, const Transformation&
  * All CollideShapes functions return a Manifold object.
  */
 
-Manifold playrho::CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
+Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
                               const DistanceProxy& shapeB, const Transformation& xfB,
-                              const Manifold::Conf conf)
+                              Manifold::Conf conf)
 {
     // Find edge normal of max separation on A - return if separating axis is found
     // Find edge normal of max separation on B - return if separation axis is found
@@ -432,37 +432,37 @@ Manifold playrho::CollideShapes(const DistanceProxy& shapeA, const Transformatio
     {
         if (countB > 1)
         {
-            return ::CollideShapes(Manifold::e_faceB, shapeB, xfB,
-                                   shapeA.GetVertex(0), shapeA.GetVertexRadius(), xfA);
+            return CollideShapes(Manifold::e_faceB, shapeB, xfB,
+                                 shapeA.GetVertex(0), shapeA.GetVertexRadius(), xfA);
         }
-        return ::CollideShapes(shapeA.GetVertex(0), shapeA.GetVertexRadius(), xfA,
-                               shapeB.GetVertex(0), shapeB.GetVertexRadius(), xfB);
+        return CollideShapes(shapeA.GetVertex(0), shapeA.GetVertexRadius(), xfA,
+                             shapeB.GetVertex(0), shapeB.GetVertexRadius(), xfB);
     }
     if (countB == 1)
     {
         if (countA > 1)
         {
-            return ::CollideShapes(Manifold::e_faceA, shapeA, xfA,
-                                   shapeB.GetVertex(0), shapeB.GetVertexRadius(), xfB);
+            return CollideShapes(Manifold::e_faceA, shapeA, xfA,
+                                 shapeB.GetVertex(0), shapeB.GetVertexRadius(), xfB);
         }
-        return ::CollideShapes(shapeA.GetVertex(0), shapeA.GetVertexRadius(), xfA,
-                               shapeB.GetVertex(0), shapeB.GetVertexRadius(), xfB);
+        return CollideShapes(shapeA.GetVertex(0), shapeA.GetVertexRadius(), xfA,
+                             shapeB.GetVertex(0), shapeB.GetVertexRadius(), xfB);
     }
     
     const auto totalRadius = shapeA.GetVertexRadius() + shapeB.GetVertexRadius();
     const auto do4x4 = (countA == 4) && (countB == 4);
     
     const auto edgeSepA = do4x4?
-        ::GetMaxSeparation4x4(shapeA, xfA, shapeB, xfB):
-        ::GetMaxSeparation(shapeA, xfA, shapeB, xfB, totalRadius);
+        GetMaxSeparation4x4(shapeA, xfA, shapeB, xfB):
+        GetMaxSeparation(shapeA, xfA, shapeB, xfB, totalRadius);
     if (edgeSepA.separation > totalRadius)
     {
         return Manifold{};
     }
     
     const auto edgeSepB = do4x4?
-        ::GetMaxSeparation4x4(shapeB, xfB, shapeA, xfA):
-        ::GetMaxSeparation(shapeB, xfB, shapeA, xfA, totalRadius);
+        GetMaxSeparation4x4(shapeB, xfB, shapeA, xfA):
+        GetMaxSeparation(shapeB, xfB, shapeA, xfA, totalRadius);
     if (edgeSepB.separation > totalRadius)
     {
         return Manifold{};
@@ -481,9 +481,9 @@ Manifold playrho::CollideShapes(const DistanceProxy& shapeA, const Transformatio
 }
 
 #if 0
-Manifold playrho::CollideCached(const DistanceProxy& shapeA, const Transformation& xfA,
+Manifold CollideCached(const DistanceProxy& shapeA, const Transformation& xfA,
                               const DistanceProxy& shapeB, const Transformation& xfB,
-                              const Manifold::Conf conf)
+                              Manifold::Conf conf)
 {
     // Find edge normal of max separation on A - return if separating axis is found
     // Find edge normal of max separation on B - return if separation axis is found
@@ -497,20 +497,20 @@ Manifold playrho::CollideCached(const DistanceProxy& shapeA, const Transformatio
     {
         if (vertexCountShapeB > 1)
         {
-            return ::CollideShapes(Manifold::e_faceB, shapeB, xfB,
+            return CollideShapes(Manifold::e_faceB, shapeB, xfB,
                                    shapeA.GetVertex(0), shapeA.GetVertexRadius(), xfA);
         }
-        return ::CollideShapes(shapeA.GetVertex(0), shapeA.GetVertexRadius(), xfA,
+        return CollideShapes(shapeA.GetVertex(0), shapeA.GetVertexRadius(), xfA,
                                shapeB.GetVertex(0), shapeB.GetVertexRadius(), xfB);
     }
     if (vertexCountShapeB == 1)
     {
         if (vertexCountShapeA > 1)
         {
-            return ::CollideShapes(Manifold::e_faceA, shapeA, xfA,
+            return CollideShapes(Manifold::e_faceA, shapeA, xfA,
                                    shapeB.GetVertex(0), shapeB.GetVertexRadius(), xfB);
         }
-        return ::CollideShapes(shapeA.GetVertex(0), shapeA.GetVertexRadius(), xfA,
+        return CollideShapes(shapeA.GetVertex(0), shapeA.GetVertexRadius(), xfA,
                                shapeB.GetVertex(0), shapeB.GetVertexRadius(), xfB);
     }
 
@@ -548,12 +548,12 @@ Manifold playrho::CollideCached(const DistanceProxy& shapeA, const Transformatio
         
         const auto dpA = DistanceProxy{shapeA.GetVertexRadius(), vertexCountShapeA, verticesA, normalsA};
         const auto dpB = DistanceProxy{shapeB.GetVertexRadius(), vertexCountShapeB, verticesB, normalsB};
-        edgeSepA = ::GetMaxSeparation(dpA, dpB, totalRadius);
+        edgeSepA = GetMaxSeparation(dpA, dpB, totalRadius);
         if (edgeSepA.separation > totalRadius)
         {
             return Manifold{};
         }
-        edgeSepB = ::GetMaxSeparation(dpB, dpA, totalRadius);
+        edgeSepB = GetMaxSeparation(dpB, dpA, totalRadius);
         if (edgeSepB.separation > totalRadius)
         {
             return Manifold{};
@@ -561,12 +561,12 @@ Manifold playrho::CollideCached(const DistanceProxy& shapeA, const Transformatio
     }
     else
     {
-        edgeSepA = ::GetMaxSeparation(shapeA, xfA, shapeB, xfB, totalRadius);
+        edgeSepA = GetMaxSeparation(shapeA, xfA, shapeB, xfB, totalRadius);
         if (edgeSepA.separation > totalRadius)
         {
             return Manifold{};
         }
-        edgeSepB = ::GetMaxSeparation(shapeB, xfB, shapeA, xfA, totalRadius);
+        edgeSepB = GetMaxSeparation(shapeB, xfB, shapeA, xfA, totalRadius);
         if (edgeSepB.separation > totalRadius)
         {
             return Manifold{};
@@ -587,7 +587,7 @@ Manifold playrho::CollideCached(const DistanceProxy& shapeA, const Transformatio
 #endif
 
 #ifdef DEFINE_GET_MANIFOLD
-Manifold playrho::GetManifold(const DistanceProxy& proxyA, const Transformation& transformA,
+Manifold GetManifold(const DistanceProxy& proxyA, const Transformation& transformA,
                               const DistanceProxy& proxyB, const Transformation& transformB)
 {
     const auto distanceInfo = Distance(proxyA, transformA, proxyB, transformB);
@@ -810,7 +810,7 @@ Manifold playrho::GetManifold(const DistanceProxy& proxyA, const Transformation&
 }
 #endif
 
-const char* playrho::GetName(Manifold::Type type) noexcept
+const char* GetName(Manifold::Type type) noexcept
 {
     switch (type)
     {
@@ -822,7 +822,7 @@ const char* playrho::GetName(Manifold::Type type) noexcept
     PLAYRHO_UNREACHABLE;
 }
 
-bool playrho::operator==(const Manifold::Point& lhs, const Manifold::Point& rhs) noexcept
+bool operator==(const Manifold::Point& lhs, const Manifold::Point& rhs) noexcept
 {
     if (lhs.localPoint != rhs.localPoint)
     {
@@ -843,12 +843,12 @@ bool playrho::operator==(const Manifold::Point& lhs, const Manifold::Point& rhs)
     return true;
 }
 
-bool playrho::operator!=(const Manifold::Point& lhs, const Manifold::Point& rhs) noexcept
+bool operator!=(const Manifold::Point& lhs, const Manifold::Point& rhs) noexcept
 {
     return !(lhs == rhs);
 }
 
-bool playrho::operator==(const Manifold& lhs, const Manifold& rhs) noexcept
+bool operator==(const Manifold& lhs, const Manifold& rhs) noexcept
 {
     if (lhs.GetType() != rhs.GetType())
     {
@@ -933,13 +933,13 @@ bool playrho::operator==(const Manifold& lhs, const Manifold& rhs) noexcept
     return true;
 }
 
-bool playrho::operator!=(const Manifold& lhs, const Manifold& rhs) noexcept
+bool operator!=(const Manifold& lhs, const Manifold& rhs) noexcept
 {
     return !(lhs == rhs);
 }
 
 #if 0
-Length2D playrho::GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type type,
+Length2D GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type type,
                                 ContactFeature::Index index)
 {
     switch (type)
@@ -954,3 +954,5 @@ Length2D playrho::GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type
     return GetInvalid<Length2D>();
 }
 #endif
+
+} // namespace playrho

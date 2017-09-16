@@ -17,13 +17,13 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_WORLD_MANIFOLD_HPP
-#define PLAYRHO_WORLD_MANIFOLD_HPP
+#ifndef PLAYRHO_COLLISION_WORLDMANIFOLD_HPP
+#define PLAYRHO_COLLISION_WORLDMANIFOLD_HPP
 
 #include <PlayRho/Common/Math.hpp>
 
-namespace playrho
-{
+namespace playrho {
+
     class Manifold;
     class Contact;
 
@@ -172,8 +172,8 @@ namespace playrho
     ///   manifold intersection.
     ///
     WorldManifold GetWorldManifold(const Manifold& manifold,
-                                   const Transformation xfA, const Length radiusA,
-                                   const Transformation xfB, const Length radiusB);
+                                   Transformation xfA, Length radiusA,
+                                   Transformation xfB, Length radiusB);
     
     /// Gets the world manifold for the given data.
     ///
@@ -189,6 +189,6 @@ namespace playrho
     ///
     WorldManifold GetWorldManifold(const Contact& contact);
     
-}
+} // namespace playrho
 
-#endif /* PLAYRHO_WORLD_MANIFOLD_HPP */
+#endif // PLAYRHO_COLLISION_WORLDMANIFOLD_HPP

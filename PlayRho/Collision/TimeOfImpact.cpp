@@ -37,7 +37,7 @@ inline DistanceConf GetDistanceConf(const ToiConf& conf)
 
 TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
                        const DistanceProxy& proxyB, const Sweep& sweepB,
-                       const ToiConf conf)
+                       ToiConf conf)
 {
     assert(sweepA.GetAlpha0() == sweepB.GetAlpha0());
 
@@ -215,7 +215,8 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
 
                 // Uses secant method to improve convergence (see https://en.wikipedia.org/wiki/Secant_method ).
                 // Uses bisection method to guarantee progress (see https://en.wikipedia.org/wiki/Bisection_method ).
-                const auto t = (roots & 1)? a1 + (target - s1) * (a2 - a1) / (s2 - s1): (a1 + a2) / 2;
+                const auto t = ((roots & 1u) != 0u)?
+                    a1 + (target - s1) * (a2 - a1) / (s2 - s1): (a1 + a2) / 2;
                 
                 // Using secant method, t may equal a2 now.
                 //assert(t != a1);

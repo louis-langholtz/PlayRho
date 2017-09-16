@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_SEPARATION_FINDER_HPP
-#define PLAYRHO_SEPARATION_FINDER_HPP
+#ifndef PLAYRHO_COLLISION_SEPARATIONFINDER_HPP
+#define PLAYRHO_COLLISION_SEPARATIONFINDER_HPP
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/IndexPair.hpp>
@@ -162,6 +162,6 @@ namespace playrho {
         return m_localPoint;
     }
 
-}
+} // namespace playrho
 
-#endif /* PLAYRHO_SEPARATION_FINDER_HPP */
+#endif // PLAYRHO_COLLISION_SEPARATIONFINDER_HPP

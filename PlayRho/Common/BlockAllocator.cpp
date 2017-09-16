@@ -23,7 +23,7 @@
 #include <cstring>
 #include <cstddef>
 
-using namespace playrho;
+namespace playrho {
 
 static constexpr std::size_t s_blockSizes[BlockAllocator::BlockSizes] =
 {
@@ -96,10 +96,10 @@ BlockAllocator::~BlockAllocator() noexcept
 {
     for (auto i = decltype(m_chunkCount){0}; i < m_chunkCount; ++i)
     {
-        ::Free(m_chunks[i].blocks);
+        playrho::Free(m_chunks[i].blocks);
     }
 
-    ::Free(m_chunks);
+    playrho::Free(m_chunks);
 }
 
 void* BlockAllocator::Allocate(size_type n)
@@ -174,7 +174,7 @@ void BlockAllocator::Free(void* p, size_type n)
 
     if (n > MaxBlockSize)
     {
-        ::Free(p);
+        playrho::Free(p);
         return;
     }
 
@@ -215,10 +215,12 @@ void BlockAllocator::Clear()
 {
     for (auto i = decltype(m_chunkCount){0}; i < m_chunkCount; ++i)
     {
-        ::Free(m_chunks[i].blocks);
+        playrho::Free(m_chunks[i].blocks);
     }
 
     m_chunkCount = 0;
     std::memset(m_chunks, 0, m_chunkSpace * sizeof(Chunk));
     std::memset(m_freeLists, 0, sizeof(m_freeLists));
 }
+
+} // namespace playrho

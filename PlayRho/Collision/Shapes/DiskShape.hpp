@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_CIRCLE_SHAPE_HPP
-#define PLAYRHO_CIRCLE_SHAPE_HPP
+#ifndef PLAYRHO_COLLISION_SHAPES_DISKSHAPE_HPP
+#define PLAYRHO_COLLISION_SHAPES_DISKSHAPE_HPP
 
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 
@@ -149,4 +149,4 @@ inline void DiskShape::Accept(Visitor& visitor) const
 
 } // namespace playrho
 
-#endif
+#endif // PLAYRHO_COLLISION_SHAPES_DISKSHAPE_HPP
