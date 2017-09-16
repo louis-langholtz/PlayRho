@@ -21,10 +21,11 @@
 #include <PlayRho/Dynamics/Joints/JointKey.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
-using namespace playrho;
+namespace playrho {
 
-JointKey playrho::GetJointKey(const Joint& joint) noexcept
+JointKey GetJointKey(const Joint& joint) noexcept
 {
     return JointKey::Get(joint.GetBodyA(), joint.GetBodyB());
 }
 
+} // namespace playrho

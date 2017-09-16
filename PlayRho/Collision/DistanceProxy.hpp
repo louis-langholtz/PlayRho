@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DISTANCE_PROXY_HPP
-#define PLAYRHO_DISTANCE_PROXY_HPP
+#ifndef PLAYRHO_COLLISION_DISTANCEPROXY_HPP
+#define PLAYRHO_COLLISION_DISTANCEPROXY_HPP
 
 #include <PlayRho/Common/Math.hpp>
 #include <vector>
@@ -113,7 +113,7 @@ namespace playrho
         {
             assert(index != InvalidIndex);
             assert(index < m_count);
-            return m_vertices[index];
+            return *(m_vertices + index);
         }
         
         /// @brief Gets the normal for the given index.
@@ -121,7 +121,7 @@ namespace playrho
         {
             assert(index != InvalidIndex);
             assert(index < m_count);
-            return m_normals[index];
+            return *(m_normals + index);
         }
 
     private:
@@ -147,9 +147,10 @@ namespace playrho
     /// @note 0 is returned for a given zero length direction vector.
     /// @param proxy Distance proxy object to find index in if a valid index exists for it.
     /// @param d Direction vector to find index for.
-    /// @return InvalidIndex if d is invalid or the count of vertices is zero, otherwise a value from 0 to one less than count.
+    /// @return InvalidIndex if d is invalid or the count of vertices is zero, otherwise a
+    ///   value from 0 to one less than count.
     /// @sa GetVertexCount().
-    DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, const Vec2 d) noexcept;
+    DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, Vec2 d) noexcept;
 
     /// @brief Finds the lowest right most vertex in the given collection.
     std::size_t FindLowestRightMostVertex(Span<const Length2D> vertices);
@@ -161,8 +162,8 @@ namespace playrho
     /// @param proxy Distance proxy to check if point is within.
     /// @param point Point in local coordinates.
     /// @return <code>true</code> if point is contained in the proxy, <code>false</code> otherwise.
-    bool TestPoint(const DistanceProxy& proxy, const Length2D point) noexcept;
+    bool TestPoint(const DistanceProxy& proxy, Length2D point) noexcept;
     
-}; // namespace playrho
+} // namespace playrho
 
-#endif /* PLAYRHO_DISTANCE_PROXY_HPP */
+#endif // PLAYRHO_COLLISION_DISTANCEPROXY_HPP

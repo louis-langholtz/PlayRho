@@ -21,10 +21,9 @@
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <algorithm>
 
-using namespace playrho;
+namespace playrho {
 
-namespace
-{
+namespace {
 
 inline IndexSeparation GetMinIndexSeparation(const DistanceProxy& proxy,
                                              UnitVec2 normal, Length2D offset)
@@ -54,10 +53,8 @@ inline IndexSeparation GetMinIndexSeparation(const DistanceProxy& proxy,
 
 } // anonymous namespace
 
-IndexPairSeparation playrho::GetMaxSeparation4x4(const DistanceProxy& proxy1,
-                                                 const Transformation xf1,
-                                                 const DistanceProxy& proxy2,
-                                                 const Transformation xf2)
+IndexPairSeparation GetMaxSeparation4x4(const DistanceProxy& proxy1, Transformation xf1,
+                                        const DistanceProxy& proxy2, Transformation xf2)
 {
     // Find the max separation between proxy1 and proxy2 using edge normals from proxy1.
     using CounterType = IndexSeparation::index_type;
@@ -105,8 +102,8 @@ IndexPairSeparation playrho::GetMaxSeparation4x4(const DistanceProxy& proxy1,
     return indexPairSep;
 }
 
-IndexPairSeparation playrho::GetMaxSeparation(const DistanceProxy& proxy1, const Transformation xf1,
-                                              const DistanceProxy& proxy2, const Transformation xf2)
+IndexPairSeparation GetMaxSeparation(const DistanceProxy& proxy1, Transformation xf1,
+                                     const DistanceProxy& proxy2, Transformation xf2)
 {
     // Find the max separation between proxy1 and proxy2 using edge normals from proxy1.
     using CounterType = IndexSeparation::index_type;
@@ -134,9 +131,9 @@ IndexPairSeparation playrho::GetMaxSeparation(const DistanceProxy& proxy1, const
     return indexPairSep;
 }
 
-IndexPairSeparation playrho::GetMaxSeparation(const DistanceProxy& proxy1, const Transformation xf1,
-                                              const DistanceProxy& proxy2, const Transformation xf2,
-                                              Length stop)
+IndexPairSeparation GetMaxSeparation(const DistanceProxy& proxy1, Transformation xf1,
+                                     const DistanceProxy& proxy2, Transformation xf2,
+                                     Length stop)
 {
     // Find the max separation between proxy1 and proxy2 using edge normals from proxy1.
     using CounterType = IndexSeparation::index_type;
@@ -168,9 +165,8 @@ IndexPairSeparation playrho::GetMaxSeparation(const DistanceProxy& proxy1, const
     return indexPairSep;
 }
 
-IndexPairSeparation playrho::GetMaxSeparation(const DistanceProxy& proxy1,
-                                              const DistanceProxy& proxy2,
-                                              Length stop)
+IndexPairSeparation GetMaxSeparation(const DistanceProxy& proxy1, const DistanceProxy& proxy2,
+                                     Length stop)
 {
     // Find the max separation between proxy1 and proxy2 using edge normals from proxy1.
     
@@ -197,3 +193,5 @@ IndexPairSeparation playrho::GetMaxSeparation(const DistanceProxy& proxy1,
     }
     return indexPairSep;
 }
+    
+} // namespace playrho

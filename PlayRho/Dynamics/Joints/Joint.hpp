@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_JOINT_HPP
-#define PLAYRHO_JOINT_HPP
+#ifndef PLAYRHO_DYNAMICS_JOINTS_JOINT_HPP
+#define PLAYRHO_DYNAMICS_JOINTS_JOINT_HPP
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Dynamics/Joints/JointDef.hpp>
@@ -118,7 +118,7 @@ public:
 protected:
     
     /// @brief Initializing constructor.
-    Joint(const JointDef& def);
+    explicit Joint(const JointDef& def);
 
 private:
     friend class JointAtty;
@@ -130,9 +130,9 @@ private:
     enum Flag: FlagsType
     {
         // Used when crawling contact graph when forming islands.
-        e_islandFlag = 0x01,
+        e_islandFlag = 0x01u,
 
-        e_collideConnectedFlag = 0x02
+        e_collideConnectedFlag = 0x02u
     };
 
     static constexpr FlagsType GetFlags(const JointDef& def) noexcept;
@@ -179,7 +179,7 @@ private:
     Body* const m_bodyB;
     void* m_userData;
     const JointType m_type;
-    FlagsType m_flags = 0; ///< Flags. 1-byte.
+    FlagsType m_flags = 0u; ///< Flags. 1-byte.
 };
 
 constexpr inline Joint::FlagsType Joint::GetFlags(const JointDef& def) noexcept
@@ -226,12 +226,12 @@ inline void Joint::SetUserData(void* data) noexcept
 
 inline bool Joint::GetCollideConnected() const noexcept
 {
-    return m_flags & e_collideConnectedFlag;
+    return (m_flags & e_collideConnectedFlag) != 0u;
 }
 
 inline bool Joint::IsIslanded() const noexcept
 {
-    return m_flags & e_islandFlag;
+    return (m_flags & e_islandFlag) != 0u;
 }
 
 inline void Joint::SetIslanded() noexcept
@@ -273,4 +273,4 @@ BodyConstraintPtr& At(std::unordered_map<const Body*, BodyConstraint*>& containe
 
 } // namespace playrho
 
-#endif
+#endif // PLAYRHO_DYNAMICS_JOINTS_JOINT_HPP

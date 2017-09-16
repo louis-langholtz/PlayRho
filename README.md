@@ -3,13 +3,13 @@
 *A way to play with physical behaviors like the conservation of momentum.*
 
 PlayRho is a real-time oriented physics engine and library that's currently best suited for
-2D games. The project name is the composition of the verb *play* with the noun *rho* where
+2-D games. The project name is the composition of the verb *play* with the noun *rho* where
 *rho* is the Greek letter often used to represent physical quantities like momentum.
 
 ## Background
 
 This is a fork by [Louis Langholtz](https://github.com/louis-langholtz)
-of the Box2D 2.3.2 physics engine written by Erin Catto. It's
+of the Box2D 2.3.2 physics engine originally written by Erin Catto. It's
 [licensed](LICENSE.txt) under a [Zlib License](https://opensource.org/licenses/Zlib).
 
 General goals of this project are:
@@ -25,7 +25,7 @@ General goals of this project are:
 **NOTE**: These sources make heavy use of the standard C++ library
 [`assert`](http://en.cppreference.com/w/cpp/error/assert) macro to help confirm
 correctness of the code logic. As such, this library *must* be compiled with
-the `NDEBUG` preprocessor macro enabled, and of course optimization turned on,
+the `NDEBUG` pre-processor macro enabled, and of course optimization turned on,
 to see any kind of performance.
 
 ## Continuous Integration Status
@@ -39,7 +39,7 @@ to see any kind of performance.
 - [Changes Document](Changes.md):
   provides a run-down of changes between PlayRho and Box2D 2.3.2.
 - [Building Document](INSTALL.md):
-  information on how to build this project and run the testbed.
+  information on how to build this project and run the Testbed.
 - [API Pages](http://louis-langholtz.github.io/PlayRho/API/index.html): documentation on the Application Programming Interface (API).
 - [Issues Web Interface](https://github.com/louis-langholtz/PlayRho/issues):
   for questions, bugs reports, or suggestions associated with this project.

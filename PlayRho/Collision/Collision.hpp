@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_HPP
-#define PLAYRHO_COLLISION_HPP
+#ifndef PLAYRHO_COLLISION_COLLISION_HPP
+#define PLAYRHO_COLLISION_COLLISION_HPP
 
 /// @file
 /// Structures and functions used for computing contact points, distance
@@ -31,8 +31,8 @@
 #include <array>
 #include <type_traits>
 
-namespace playrho
-{
+namespace playrho {
+
 class Manifold;
 
 /// @brief Point state enumeration.
@@ -87,6 +87,6 @@ ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, Length o
 
 // ---------------- Inline Functions ------------------------------------------
 
-} /* namespace playrho */
+} // namespace playrho
 
-#endif
+#endif // PLAYRHO_COLLISION_COLLISION_HPP

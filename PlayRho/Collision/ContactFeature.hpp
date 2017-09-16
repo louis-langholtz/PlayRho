@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_CONTACT_FEATURE_HPP
-#define PLAYRHO_CONTACT_FEATURE_HPP
+#ifndef PLAYRHO_COLLISION_CONTACTFEATURE_HPP
+#define PLAYRHO_COLLISION_CONTACTFEATURE_HPP
 
 #include <PlayRho/Common/Math.hpp>
 
@@ -104,4 +104,4 @@ constexpr bool operator!=(ContactFeature lhs, ContactFeature rhs) noexcept
 
 }; // namespace playrho
 
-#endif /* PLAYRHO_CONTACT_FEATURE_HPP */
+#endif // PLAYRHO_COLLISION_CONTACTFEATURE_HPP

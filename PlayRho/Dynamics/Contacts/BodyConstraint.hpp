@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_BODY_CONSTRAINT_HPP
-#define PLAYRHO_BODY_CONSTRAINT_HPP
+#ifndef PLAYRHO_DYNAMICS_CONTACTS_BODYCONSTRAINT_HPP
+#define PLAYRHO_DYNAMICS_CONTACTS_BODYCONSTRAINT_HPP
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Dynamics/MovementConf.hpp>
@@ -149,4 +149,4 @@ namespace playrho {
 
 } // namespace playrho
 
-#endif /* PLAYRHO_BODY_CONSTRAINT_HPP */
+#endif // PLAYRHO_DYNAMICS_CONTACTS_BODYCONSTRAINT_HPP

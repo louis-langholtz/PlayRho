@@ -20,14 +20,13 @@
 #include <PlayRho/Collision/SeparationFinder.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 
-using namespace playrho;
+namespace playrho {
 
 SeparationFinder SeparationFinder::Get(IndexPair3 indices,
                                        const DistanceProxy& proxyA, const Transformation& xfA,
                                        const DistanceProxy& proxyB, const Transformation& xfB)
 {
-    assert(indices.size() > 0);
-    assert(indices.size() <= 3); // < 3 or <= 3?
+    assert(GetNumIndices(indices) > 0);
     assert(proxyA.GetVertexCount() > 0);
     assert(proxyB.GetVertexCount() > 0);
     
@@ -167,3 +166,5 @@ Length SeparationFinder::EvaluateForFaceB(IndexPair indexPair, const Transformat
     const auto delta = pointA - pointB;
     return Dot(delta, normal);
 }
+
+} // namespace playrho

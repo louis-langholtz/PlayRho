@@ -17,14 +17,14 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_MANIFOLD_HPP
-#define PLAYRHO_MANIFOLD_HPP
+#ifndef PLAYRHO_COLLISION_MANIFOLD_HPP
+#define PLAYRHO_COLLISION_MANIFOLD_HPP
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/ContactFeature.hpp>
 
-namespace playrho
-{
+namespace playrho {
+
     class DistanceProxy;
     struct Transformation;
     
@@ -542,11 +542,11 @@ namespace playrho
     ///
     Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
                            const DistanceProxy& shapeB, const Transformation& xfB,
-                           const Manifold::Conf conf = GetDefaultManifoldConf());
+                           Manifold::Conf conf = GetDefaultManifoldConf());
 #if 0
     Manifold CollideCached(const DistanceProxy& shapeA, const Transformation& xfA,
                            const DistanceProxy& shapeB, const Transformation& xfB,
-                           const Manifold::Conf conf = GetDefaultManifoldConf());
+                           Manifold::Conf conf = GetDefaultManifoldConf());
 #endif
 
 #ifdef DEFINE_GET_MANIFOLD
@@ -560,8 +560,8 @@ namespace playrho
 #endif
     
     /// @brief Gets a unique name for the given manifold type.
-    const char* GetName(Manifold::Type) noexcept;
+    const char* GetName(Manifold::Type type) noexcept;
     
 } // namespace playrho
 
-#endif /* PLAYRHO_MANIFOLD_HPP */
+#endif // PLAYRHO_COLLISION_MANIFOLD_HPP

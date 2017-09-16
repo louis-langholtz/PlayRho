@@ -53,7 +53,7 @@ bool operator== (const DistanceProxy& lhs, const DistanceProxy& rhs) noexcept
     return true;
 }
 
-DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, const Vec2 d) noexcept
+DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, Vec2 d) noexcept
 {
     auto index = DistanceProxy::InvalidIndex; ///< Index of vertex that when dotted with d has the max value.
     auto maxValue = -MaxFloat * Meter; ///< Max dot value.
@@ -144,7 +144,7 @@ std::vector<Length2D> GetConvexHullAsVector(Span<const Length2D> vertices)
     return result;
 }
 
-bool TestPoint(const DistanceProxy& proxy, const Length2D point) noexcept
+bool TestPoint(const DistanceProxy& proxy, Length2D point) noexcept
 {
     const auto count = proxy.GetVertexCount();
     const auto vr = proxy.GetVertexRadius();

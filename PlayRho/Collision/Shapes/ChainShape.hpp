@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_CHAIN_SHAPE_HPP
-#define PLAYRHO_CHAIN_SHAPE_HPP
+#ifndef PLAYRHO_COLLISION_SHAPES_CHAINSHAPE_HPP
+#define PLAYRHO_COLLISION_SHAPES_CHAINSHAPE_HPP
 
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <vector>
@@ -66,12 +66,12 @@ public:
     }
     
     /// @brief Initializing constructor.
-    ChainShape(const Conf& conf = GetDefaultConf());
+    explicit ChainShape(const Conf& conf = GetDefaultConf());
 
     /// @brief Copy constructor.
     ChainShape(const ChainShape& other) = default;
 
-    virtual ~ChainShape() = default;
+    ~ChainShape() override = default;
 
     /// Gets the number of child primitives.
     /// @return Positive non-zero count.
@@ -139,4 +139,4 @@ inline ChildCounter GetNextIndex(const ChainShape& shape, ChildCounter index) no
 
 } // namespace playrho
 
-#endif
+#endif // PLAYRHO_COLLISION_SHAPES_CHAINSHAPE_HPP

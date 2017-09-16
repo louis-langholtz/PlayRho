@@ -19,9 +19,11 @@
 
 #include <PlayRho/Collision/Shapes/DiskShape.hpp>
 
-using namespace playrho;
+namespace playrho {
 
 MassData DiskShape::GetMassData() const noexcept
 {
-    return ::GetMassData(GetVertexRadius(), GetDensity(), GetLocation());
+    return playrho::GetMassData(GetVertexRadius(), GetDensity(), GetLocation());
 }
+
+} // namespace playrho

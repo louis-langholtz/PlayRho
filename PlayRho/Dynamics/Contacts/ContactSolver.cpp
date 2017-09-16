@@ -27,9 +27,6 @@
 
 #include <algorithm>
 
-using std::begin;
-using std::end;
-
 #if !defined(NDEBUG)
 // Solver debugging is normally disabled because the block solver sometimes has to deal with a
 // poorly conditioned effective mass matrix.
@@ -38,8 +35,7 @@ using std::end;
 
 namespace playrho {
 
-namespace
-{
+namespace {
 
 #if defined(B2_DEBUG_SOLVER)
 static constexpr auto k_errorTol = Real(1e-3f) * MeterPerSecond; ///< error tolerance
@@ -301,16 +297,24 @@ inline Momentum BlockSolveNormalConstraint(VelocityConstraint& vc)
     auto maxIncImpulse = Optional<Momentum>{};
     maxIncImpulse = BlockSolveNormalCase1(vc, b_prime);
     if (maxIncImpulse.has_value())
+    {
         return *maxIncImpulse;
+    }
     maxIncImpulse = BlockSolveNormalCase2(vc, b_prime);
     if (maxIncImpulse.has_value())
+    {
         return *maxIncImpulse;
+    }
     maxIncImpulse = BlockSolveNormalCase3(vc, b_prime);
     if (maxIncImpulse.has_value())
+    {
         return *maxIncImpulse;
+    }
     maxIncImpulse = BlockSolveNormalCase4(vc, b_prime);
     if (maxIncImpulse.has_value())
+    {
         return *maxIncImpulse;
+    }
     
     // No solution, give up. This is hit sometimes, but it doesn't seem to matter.
     return 0;

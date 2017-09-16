@@ -17,16 +17,16 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_POSITION_SOLVER_MANIFOLD_HPP
-#define PLAYRHO_POSITION_SOLVER_MANIFOLD_HPP
+#ifndef PLAYRHO_DYNAMICS_CONTACTS_POSITIONSOLVERMANIFOLD_HPP
+#define PLAYRHO_DYNAMICS_CONTACTS_POSITIONSOLVERMANIFOLD_HPP
 
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/Math.hpp>
 
 #include <PlayRho/Collision/Manifold.hpp>
 
-namespace playrho
-{
+namespace playrho {
+
     /// Position solver manifold.
     /// @details
     /// This is a normal-point-separation composition of data for position constraint resolution.
@@ -58,6 +58,6 @@ namespace playrho
     PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type index,
                                   const Transformation& xfA, const Transformation& xfB);
 
-}; // namespace playrho
+} // namespace playrho
 
-#endif /* PLAYRHO_POSITION_SOLVER_MANIFOLD_HPP */
+#endif // PLAYRHO_DYNAMICS_CONTACTS_POSITIONSOLVERMANIFOLD_HPP

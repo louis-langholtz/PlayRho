@@ -23,7 +23,7 @@
 
 #define PLAYRHO_MAGIC(x) (x)
 
-using namespace playrho;
+namespace playrho {
 
 namespace {
 
@@ -117,7 +117,7 @@ VelocityConstraint::VelocityConstraint(Real friction, Real restitution,
         else
         {
             // The constraints are redundant, just use one.
-            // TODO_ERIN use deepest?
+            // TODO(lou) use deepest?
             RemovePoint();
         }
     }
@@ -179,3 +179,5 @@ void VelocityConstraint::AddPoint(Momentum normalImpulse, Momentum tangentImpuls
                                       relA, relB, conf);
     ++m_pointCount;
 }
+
+} // namespace playrho

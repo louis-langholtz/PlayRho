@@ -25,10 +25,9 @@
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <utility>
 
-using namespace playrho;
+namespace playrho {
 
-RayCastOutput playrho::RayCast(const Length radius, const Length2D location,
-                               const RayCastInput& input) noexcept
+RayCastOutput RayCast(Length radius, Length2D location, const RayCastInput& input) noexcept
 {
     // Collision Detection in Interactive 3D Environments by Gino van den Bergen
     // From Section 3.1.2
@@ -64,7 +63,7 @@ RayCastOutput playrho::RayCast(const Length radius, const Length2D location,
     return RayCastOutput{};
 }
 
-RayCastOutput playrho::RayCast(const AABB& aabb, const RayCastInput& input) noexcept
+RayCastOutput RayCast(const AABB& aabb, const RayCastInput& input) noexcept
 {
     // From Real-time Collision Detection, p179.
 
@@ -135,8 +134,8 @@ RayCastOutput playrho::RayCast(const AABB& aabb, const RayCastInput& input) noex
     return RayCastOutput{{normal, tmin}};
 }
 
-RayCastOutput playrho::RayCast(const DistanceProxy& proxy, const RayCastInput& input,
-                               const Transformation& transform) noexcept
+RayCastOutput RayCast(const DistanceProxy& proxy, const RayCastInput& input,
+                      const Transformation& transform) noexcept
 {
     const auto vertexCount = proxy.GetVertexCount();
     assert(vertexCount > 0);
@@ -145,7 +144,7 @@ RayCastOutput playrho::RayCast(const DistanceProxy& proxy, const RayCastInput& i
     auto v0 = proxy.GetVertex(0);
     if (vertexCount == 1)
     {
-        return ::RayCast(radius, Transform(v0, transform), input);
+        return RayCast(radius, Transform(v0, transform), input);
     }
 
     // Uses algorithm described at http://stackoverflow.com/a/565282/7410358
@@ -177,7 +176,7 @@ RayCastOutput playrho::RayCast(const DistanceProxy& proxy, const RayCastInput& i
     
     for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
     {
-        const auto circleResult = ::RayCast(radius, v0, transformedInput);
+        const auto circleResult = RayCast(radius, v0, transformedInput);
         if (circleResult.has_value() && (minT > circleResult->fraction))
         {
             minT = circleResult->fraction;
@@ -231,8 +230,10 @@ RayCastOutput playrho::RayCast(const DistanceProxy& proxy, const RayCastInput& i
     return RayCastOutput{};
 }
 
-RayCastOutput playrho::RayCast(const Shape& shape, ChildCounter childIndex,
-                             const RayCastInput& input, const Transformation& transform) noexcept
+RayCastOutput RayCast(const Shape& shape, ChildCounter childIndex,
+                      const RayCastInput& input, const Transformation& transform) noexcept
 {
     return RayCast(shape.GetChild(childIndex), input, transform);
 }
+
+} // namespace playrho

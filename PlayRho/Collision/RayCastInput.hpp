@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_RAY_CAST_INPUT_HPP
-#define PLAYRHO_RAY_CAST_INPUT_HPP
+#ifndef PLAYRHO_COLLISION_RAYCASTINPUT_HPP
+#define PLAYRHO_COLLISION_RAYCASTINPUT_HPP
 
 /// @file
 /// Declaration of the RayCastInput struct.
@@ -28,8 +28,8 @@
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
 
-namespace playrho
-{
+namespace playrho {
+
     /// @brief Ray-cast input data.
     /// @details The ray extends from p1 to p1 + maxFraction * (p2 - p1).
     struct RayCastInput
@@ -45,4 +45,4 @@ namespace playrho
     
 } // namespace playrho
 
-#endif /* PLAYRHO_RAY_CAST_INPUT_HPP */
+#endif // PLAYRHO_COLLISION_RAYCASTINPUT_HPP

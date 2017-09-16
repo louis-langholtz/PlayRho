@@ -26,6 +26,7 @@
 #include <limits>
 #include <type_traits>
 #include <iostream>
+#include <utility>
 
 namespace playrho {
     
@@ -73,7 +74,8 @@ namespace playrho {
 
     /// @brief Checks if the given value is above negative infinity.
     template <typename T>
-    constexpr void CheckIfAboveNegInf(typename std::enable_if<!std::is_pointer<T>::value, T>::type value)
+    constexpr void CheckIfAboveNegInf(typename std::enable_if<!std::is_pointer<T>::value, T>::type
+                                      value)
     {
         if (std::numeric_limits<T>::has_infinity)
         {
@@ -86,7 +88,8 @@ namespace playrho {
     
     /// @brief Checks if the given value is above negative infinity.
     template <typename T>
-    constexpr void CheckIfAboveNegInf(typename std::enable_if<std::is_pointer<T>::value, T>::type )
+    constexpr void CheckIfAboveNegInf(typename std::enable_if<std::is_pointer<T>::value, T>::type
+                                      /*value*/)
     {
         // Intentionally empty.
     }
@@ -169,7 +172,7 @@ namespace playrho {
                 case HiValueCheck::OneOrLess:
                     if (!ValueCheckHelper<value_type>::has_one)
                     {
-                        throw exception_type{"BoundedValue: value's type does not have a trivial 1"};
+                        throw exception_type{"BoundedValue: value's type does not have trivial 1"};
                     }
                     if (!(value <= ValueCheckHelper<value_type>::one()))
                     {
@@ -199,7 +202,13 @@ namespace playrho {
         constexpr BoundedValue(const this_type& value) = default;
 
         /// @brief Move constructor.
-        constexpr BoundedValue(this_type&& value) noexcept = default;
+        constexpr BoundedValue(this_type&& value) noexcept:
+            m_value{std::move(value.m_value)}
+        {
+            // Intentionally empty.
+            // Note that the exception specification of this constructor
+            //   doesn't match the defaulted one (when built with boost units).
+        }
 
         ~BoundedValue() noexcept = default;
 
@@ -220,7 +229,13 @@ namespace playrho {
         }
 
         /// @brief Move assignment operator.
-        constexpr BoundedValue& operator= (this_type&& value) noexcept = default;
+        constexpr BoundedValue& operator= (this_type&& value) noexcept
+        {
+            // Note that the exception specification of this method
+            //   doesn't match the defaulted one (when built with boost units).
+            m_value = std::move(value.m_value);
+            return *this;
+        }
 
         /// @brief Gets the underlying value.
         constexpr value_type get() const noexcept

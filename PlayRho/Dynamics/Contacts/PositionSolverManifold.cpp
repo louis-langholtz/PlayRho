@@ -19,11 +19,9 @@
 
 #include <PlayRho/Dynamics/Contacts/PositionSolverManifold.hpp>
 
-namespace playrho
-{
+namespace playrho {
 
-namespace
-{
+namespace {
 
 /// Gets the position solver manifold in world coordinates for a circles-type manifold.
 /// @param xfA Transformation for body A.
@@ -85,20 +83,23 @@ inline PositionSolverManifold GetForFaceB(const Transformation& xfB, Length2D lp
 
 } // unnamed namespace
 
-PositionSolverManifold GetPSM(const Manifold& m, Manifold::size_type idx,
+PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type index,
                               const Transformation& xfA, const Transformation& xfB)
 {
-    assert(m.GetType() != Manifold::e_unset);
-    assert(m.GetPointCount() > 0);
+    assert(manifold.GetType() != Manifold::e_unset);
+    assert(manifold.GetPointCount() > 0);
     
-    switch (m.GetType())
+    switch (manifold.GetType())
     {
     case Manifold::e_circles:
-        return GetForCircles(xfA, m.GetLocalPoint(), xfB, m.GetPoint(idx).localPoint);
+        return GetForCircles(xfA, manifold.GetLocalPoint(),
+                             xfB, manifold.GetPoint(index).localPoint);
     case Manifold::e_faceA:
-        return GetForFaceA(xfA, m.GetLocalPoint(), m.GetLocalNormal(), xfB, m.GetPoint(idx).localPoint);
+        return GetForFaceA(xfA, manifold.GetLocalPoint(), manifold.GetLocalNormal(),
+                           xfB, manifold.GetPoint(index).localPoint);
     case Manifold::e_faceB:
-        return GetForFaceB(xfB, m.GetLocalPoint(), m.GetLocalNormal(), xfA, m.GetPoint(idx).localPoint);
+        return GetForFaceB(xfB, manifold.GetLocalPoint(), manifold.GetLocalNormal(),
+                           xfA, manifold.GetPoint(index).localPoint);
     case Manifold::e_unset:
         break;
     }
@@ -107,4 +108,4 @@ PositionSolverManifold GetPSM(const Manifold& m, Manifold::size_type idx,
     return PositionSolverManifold{GetInvalid<UnitVec2>(), GetInvalid<Length2D>(), GetInvalid<Length>()};
 }
 
-}; // namespace playrho
+} // namespace playrho

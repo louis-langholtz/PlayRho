@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_CONTACT_SOLVER_HPP
-#define PLAYRHO_CONTACT_SOLVER_HPP
+#ifndef PLAYRHO_DYNAMICS_CONTACTS_CONTACTSOLVER_HPP
+#define PLAYRHO_DYNAMICS_CONTACTS_CONTACTSOLVER_HPP
 
 #include <PlayRho/Common/Math.hpp>
 
@@ -186,5 +186,5 @@ namespace playrho {
     
 } // namespace playrho
 
-#endif
+#endif // PLAYRHO_DYNAMICS_CONTACTS_CONTACTSOLVER_HPP
 

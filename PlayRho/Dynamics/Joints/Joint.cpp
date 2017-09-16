@@ -38,8 +38,7 @@
 
 #include <algorithm>
 
-namespace playrho
-{
+namespace playrho {
 
 Joint* Joint::Create(const JointDef& def)
 {
@@ -83,11 +82,7 @@ void Joint::Destroy(const Joint* joint)
 
 bool Joint::IsOkay(const JointDef& def) noexcept
 {
-    if (def.bodyA == def.bodyB)
-    {
-        return false;
-    }
-    return true;
+    return def.bodyA != def.bodyB;
 }
 
 // Free functions...
@@ -96,18 +91,18 @@ bool IsEnabled(const Joint& j) noexcept
 {
     const auto bA = j.GetBodyA();
     const auto bB = j.GetBodyB();
-    return (!bA || bA->IsEnabled()) && (!bB || bB->IsEnabled());
+    return ((bA == nullptr) || bA->IsEnabled()) && ((bB == nullptr) || bB->IsEnabled());
 }
 
 void SetAwake(Joint& j) noexcept
 {
     const auto bA = j.GetBodyA();
     const auto bB = j.GetBodyB();
-    if (bA)
+    if (bA != nullptr)
     {
         bA->SetAwake();
     }
-    if (bB)
+    if (bB != nullptr)
     {
         bB->SetAwake();
     }
@@ -115,12 +110,13 @@ void SetAwake(Joint& j) noexcept
 
 JointCounter GetWorldIndex(const Joint* joint)
 {
-    if (joint)
+    if (joint != nullptr)
     {
         const auto bA = joint->GetBodyA();
         const auto bB = joint->GetBodyB();
-        const auto world = bA? bA->GetWorld(): bB? bB->GetWorld(): static_cast<const World*>(nullptr);
-        if (world)
+        const auto world = (bA != nullptr)? bA->GetWorld():
+            (bB != nullptr)? bB->GetWorld(): static_cast<const World*>(nullptr);
+        if (world != nullptr)
         {
             auto i = JointCounter{0};
             const auto joints = world->GetJoints();
