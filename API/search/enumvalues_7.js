@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hitmaxiters',['HitMaxIters',['../structplayrho_1_1_distance_output.html#a020464bfb7306e881540dbc2cce090d9a311e9de7c9a3361e8e01eedda505001e',1,'playrho::DistanceOutput']]]
+  ['persiststate',['PersistState',['../namespaceplayrho.html#a06f67e158a928ef59e4263facac8fb0ba60a7f32dd91e5f33a4ca2bc7b7255343',1,'playrho']]]
 ];

@@ -1,5 +1,6 @@
 var menudata={children:[
 {text:"Main Page",url:"index.html"},
+{text:"Modules",url:"modules.html"},
 {text:"Namespaces",url:"namespaces.html",children:[
 {text:"Namespace List",url:"namespaces.html"},
 {text:"Namespace Members",url:"namespacemembers.html",children:[
@@ -29,7 +30,6 @@ var menudata={children:[
 {text:"a",url:"namespacemembers_func.html#index_a"},
 {text:"c",url:"namespacemembers_func_c.html#index_c"},
 {text:"d",url:"namespacemembers_func_d.html#index_d"},
-{text:"e",url:"namespacemembers_func_e.html#index_e"},
 {text:"f",url:"namespacemembers_func_f.html#index_f"},
 {text:"g",url:"namespacemembers_func_g.html#index_g"},
 {text:"h",url:"namespacemembers_func_h.html#index_h"},
@@ -140,7 +140,6 @@ var menudata={children:[
 {text:"h",url:"functions_vars_h.html#index_h"},
 {text:"i",url:"functions_vars_i.html#index_i"},
 {text:"j",url:"functions_vars_j.html#index_j"},
-{text:"k",url:"functions_vars_k.html#index_k"},
 {text:"l",url:"functions_vars_l.html#index_l"},
 {text:"m",url:"functions_vars_m.html#index_m"},
 {text:"n",url:"functions_vars_n.html#index_n"},
@@ -168,10 +167,4 @@ var menudata={children:[
 {text:"t",url:"functions_type.html#index_t"},
 {text:"v",url:"functions_type.html#index_v"}]},
 {text:"Enumerations",url:"functions_enum.html"},
-{text:"Enumerator",url:"functions_eval.html",children:[
-{text:"d",url:"functions_eval.html#index_d"},
-{text:"e",url:"functions_eval.html#index_e"},
-{text:"h",url:"functions_eval.html#index_h"},
-{text:"m",url:"functions_eval.html#index_m"},
-{text:"u",url:"functions_eval.html#index_u"}]},
-{text:"Related Functions",url:"functions_rela.html"}]}]}]}
+{text:"Enumerator",url:"functions_eval.html"}]}]}]}

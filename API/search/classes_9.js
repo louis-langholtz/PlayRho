@@ -15,5 +15,6 @@ var searchData=
   ['jointbuilder_3c_20weldjointdef_20_3e',['JointBuilder&lt; WeldJointDef &gt;',['../structplayrho_1_1_joint_builder.html',1,'playrho']]],
   ['jointbuilder_3c_20wheeljointdef_20_3e',['JointBuilder&lt; WheelJointDef &gt;',['../structplayrho_1_1_joint_builder.html',1,'playrho']]],
   ['jointdef',['JointDef',['../structplayrho_1_1_joint_def.html',1,'playrho']]],
-  ['jointkey',['JointKey',['../classplayrho_1_1_joint_key.html',1,'playrho']]]
+  ['jointkey',['JointKey',['../classplayrho_1_1_joint_key.html',1,'playrho']]],
+  ['jointvisitor',['JointVisitor',['../classplayrho_1_1_joint_visitor.html',1,'playrho']]]
 ];

@@ -2,6 +2,7 @@ var searchData=
 [
   ['separationfinder',['SeparationFinder',['../classplayrho_1_1_separation_finder.html',1,'playrho']]],
   ['shape',['Shape',['../classplayrho_1_1_shape.html',1,'playrho']]],
+  ['shapevisitor',['ShapeVisitor',['../classplayrho_1_1_shape_visitor.html',1,'playrho']]],
   ['simplex',['Simplex',['../classplayrho_1_1_simplex.html',1,'playrho']]],
   ['simplexedge',['SimplexEdge',['../classplayrho_1_1_simplex_edge.html',1,'playrho']]],
   ['sizedrange',['SizedRange',['../classplayrho_1_1_sized_range.html',1,'playrho']]],

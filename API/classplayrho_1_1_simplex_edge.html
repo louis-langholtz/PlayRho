@@ -73,111 +73,58 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="classplayrho_1_1_simplex.html" title="Simplex. ">Simplex</a> edge.  
+<p><a class="el" href="classplayrho_1_1_simplex.html" title="An encapsulation of a point, line segment, or triangle. ">Simplex</a> edge.  
  <a href="classplayrho_1_1_simplex_edge.html#details">More...</a></p>
 
 <p><code>#include &lt;SimplexEdge.hpp&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:aca640c3895cb60a994a3a0326760becc"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex_edge.html#aca640c3895cb60a994a3a0326760becc">index_type</a> = <a class="el" href="structplayrho_1_1_index_pair.html#acc9dd36bd6170c0ba210edba694a5d3b">IndexPair::size_type</a></td></tr>
+<tr class="memitem:aca640c3895cb60a994a3a0326760becc"><td class="memItemLeft" align="right" valign="top"><a id="aca640c3895cb60a994a3a0326760becc"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex_edge.html#aca640c3895cb60a994a3a0326760becc">index_type</a> = <a class="el" href="structplayrho_1_1_index_pair.html#acc9dd36bd6170c0ba210edba694a5d3b">IndexPair::size_type</a></td></tr>
+<tr class="memdesc:aca640c3895cb60a994a3a0326760becc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index type. <br /></td></tr>
 <tr class="separator:aca640c3895cb60a994a3a0326760becc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8cc295c9df223526abea66ac403ae968"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex_edge.html#a8cc295c9df223526abea66ac403ae968">SimplexEdge</a> ()=default</td></tr>
-<tr class="memdesc:a8cc295c9df223526abea66ac403ae968"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a8cc295c9df223526abea66ac403ae968">More...</a><br /></td></tr>
+<tr class="memitem:a8cc295c9df223526abea66ac403ae968"><td class="memItemLeft" align="right" valign="top"><a id="a8cc295c9df223526abea66ac403ae968"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex_edge.html#a8cc295c9df223526abea66ac403ae968">SimplexEdge</a> ()=default</td></tr>
+<tr class="memdesc:a8cc295c9df223526abea66ac403ae968"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
 <tr class="separator:a8cc295c9df223526abea66ac403ae968"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7be93051a6d1eb442446dd19b881d95a"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex_edge.html#a7be93051a6d1eb442446dd19b881d95a">SimplexEdge</a> (const <a class="el" href="classplayrho_1_1_simplex_edge.html">SimplexEdge</a> &amp;copy)=default</td></tr>
+<tr class="memitem:a7be93051a6d1eb442446dd19b881d95a"><td class="memItemLeft" align="right" valign="top"><a id="a7be93051a6d1eb442446dd19b881d95a"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex_edge.html#a7be93051a6d1eb442446dd19b881d95a">SimplexEdge</a> (const <a class="el" href="classplayrho_1_1_simplex_edge.html">SimplexEdge</a> &amp;copy)=default</td></tr>
+<tr class="memdesc:a7be93051a6d1eb442446dd19b881d95a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
 <tr class="separator:a7be93051a6d1eb442446dd19b881d95a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7aee66bed25d27d5e9365dbcd0fa52e2"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex_edge.html#a7aee66bed25d27d5e9365dbcd0fa52e2">SimplexEdge</a> (<a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> pA, <a class="el" href="classplayrho_1_1_simplex_edge.html#aca640c3895cb60a994a3a0326760becc">index_type</a> iA, <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> pB, <a class="el" href="classplayrho_1_1_simplex_edge.html#aca640c3895cb60a994a3a0326760becc">index_type</a> iB) noexcept</td></tr>
 <tr class="memdesc:a7aee66bed25d27d5e9365dbcd0fa52e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor.  <a href="#a7aee66bed25d27d5e9365dbcd0fa52e2">More...</a><br /></td></tr>
 <tr class="separator:a7aee66bed25d27d5e9365dbcd0fa52e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa731b1c1fc4273edc8703ad7933c83fd"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex_edge.html#aa731b1c1fc4273edc8703ad7933c83fd">GetPointA</a> () const noexcept</td></tr>
-<tr class="memdesc:aa731b1c1fc4273edc8703ad7933c83fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets point A (in world coordinates).  <a href="#aa731b1c1fc4273edc8703ad7933c83fd">More...</a><br /></td></tr>
+<tr class="memitem:aa731b1c1fc4273edc8703ad7933c83fd"><td class="memItemLeft" align="right" valign="top"><a id="aa731b1c1fc4273edc8703ad7933c83fd"></a>
+constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex_edge.html#aa731b1c1fc4273edc8703ad7933c83fd">GetPointA</a> () const noexcept</td></tr>
+<tr class="memdesc:aa731b1c1fc4273edc8703ad7933c83fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets point A (in world coordinates). <br /></td></tr>
 <tr class="separator:aa731b1c1fc4273edc8703ad7933c83fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aceaef30310ea3382d4d174a1153ce217"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex_edge.html#aceaef30310ea3382d4d174a1153ce217">GetPointB</a> () const noexcept</td></tr>
-<tr class="memdesc:aceaef30310ea3382d4d174a1153ce217"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets point B (in world coordinates).  <a href="#aceaef30310ea3382d4d174a1153ce217">More...</a><br /></td></tr>
+<tr class="memitem:aceaef30310ea3382d4d174a1153ce217"><td class="memItemLeft" align="right" valign="top"><a id="aceaef30310ea3382d4d174a1153ce217"></a>
+constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex_edge.html#aceaef30310ea3382d4d174a1153ce217">GetPointB</a> () const noexcept</td></tr>
+<tr class="memdesc:aceaef30310ea3382d4d174a1153ce217"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets point B (in world coordinates). <br /></td></tr>
 <tr class="separator:aceaef30310ea3382d4d174a1153ce217"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb037f78b26c03cac482974397666596"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex_edge.html#afb037f78b26c03cac482974397666596">GetIndexA</a> () const noexcept</td></tr>
+<tr class="memitem:afb037f78b26c03cac482974397666596"><td class="memItemLeft" align="right" valign="top"><a id="afb037f78b26c03cac482974397666596"></a>
+constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex_edge.html#afb037f78b26c03cac482974397666596">GetIndexA</a> () const noexcept</td></tr>
+<tr class="memdesc:afb037f78b26c03cac482974397666596"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets index A. <br /></td></tr>
 <tr class="separator:afb037f78b26c03cac482974397666596"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae39ffc912c86f0e1600539fb7b8814b1"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex_edge.html#ae39ffc912c86f0e1600539fb7b8814b1">GetIndexB</a> () const noexcept</td></tr>
+<tr class="memitem:ae39ffc912c86f0e1600539fb7b8814b1"><td class="memItemLeft" align="right" valign="top"><a id="ae39ffc912c86f0e1600539fb7b8814b1"></a>
+constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex_edge.html#ae39ffc912c86f0e1600539fb7b8814b1">GetIndexB</a> () const noexcept</td></tr>
+<tr class="memdesc:ae39ffc912c86f0e1600539fb7b8814b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets index B. <br /></td></tr>
 <tr class="separator:ae39ffc912c86f0e1600539fb7b8814b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb1a66fd94cacf48bf428913dccf8599"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex_edge.html#acb1a66fd94cacf48bf428913dccf8599">GetIndexPair</a> () const noexcept</td></tr>
+<tr class="memitem:acb1a66fd94cacf48bf428913dccf8599"><td class="memItemLeft" align="right" valign="top"><a id="acb1a66fd94cacf48bf428913dccf8599"></a>
+constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex_edge.html#acb1a66fd94cacf48bf428913dccf8599">GetIndexPair</a> () const noexcept</td></tr>
+<tr class="memdesc:acb1a66fd94cacf48bf428913dccf8599"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the index pair. <br /></td></tr>
 <tr class="separator:acb1a66fd94cacf48bf428913dccf8599"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This is the locations (in world coordinates) and indices of a pair of vertices from two shapes (shape A and shape B).</p>
 <dl class="section note"><dt>Note</dt><dd>This data structure is 28-bytes large (on at least one 64-bit platform). </dd></dl>
-</div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="aca640c3895cb60a994a3a0326760becc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca640c3895cb60a994a3a0326760becc">&#9670;&nbsp;</a></span>index_type</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classplayrho_1_1_simplex_edge.html#aca640c3895cb60a994a3a0326760becc">playrho::SimplexEdge::index_type</a> =  <a class="el" href="structplayrho_1_1_index_pair.html#acc9dd36bd6170c0ba210edba694a5d3b">IndexPair::size_type</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a8cc295c9df223526abea66ac403ae968"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8cc295c9df223526abea66ac403ae968">&#9670;&nbsp;</a></span>SimplexEdge() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">playrho::SimplexEdge::SimplexEdge </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a7be93051a6d1eb442446dd19b881d95a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7be93051a6d1eb442446dd19b881d95a">&#9670;&nbsp;</a></span>SimplexEdge() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr playrho::SimplexEdge::SimplexEdge </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classplayrho_1_1_simplex_edge.html">SimplexEdge</a> &amp;&#160;</td>
-          <td class="paramname"><em>copy</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7aee66bed25d27d5e9365dbcd0fa52e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7aee66bed25d27d5e9365dbcd0fa52e2">&#9670;&nbsp;</a></span>SimplexEdge() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7aee66bed25d27d5e9365dbcd0fa52e2">&#9670;&nbsp;</a></span>SimplexEdge()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -233,139 +180,13 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="afb037f78b26c03cac482974397666596"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb037f78b26c03cac482974397666596">&#9670;&nbsp;</a></span>GetIndexA()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr auto playrho::SimplexEdge::GetIndexA </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ae39ffc912c86f0e1600539fb7b8814b1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae39ffc912c86f0e1600539fb7b8814b1">&#9670;&nbsp;</a></span>GetIndexB()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr auto playrho::SimplexEdge::GetIndexB </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="acb1a66fd94cacf48bf428913dccf8599"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acb1a66fd94cacf48bf428913dccf8599">&#9670;&nbsp;</a></span>GetIndexPair()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr auto playrho::SimplexEdge::GetIndexPair </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="aa731b1c1fc4273edc8703ad7933c83fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa731b1c1fc4273edc8703ad7933c83fd">&#9670;&nbsp;</a></span>GetPointA()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr auto playrho::SimplexEdge::GetPointA </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="aceaef30310ea3382d4d174a1153ce217"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aceaef30310ea3382d4d174a1153ce217">&#9670;&nbsp;</a></span>GetPointB()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr auto playrho::SimplexEdge::GetPointB </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>SimplexEdge.hpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 6 2017 12:29:47 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Sep 16 2017 23:07:50 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

@@ -8,10 +8,8 @@ var searchData=
   ['has_5fsignaling_5fnan',['has_signaling_NaN',['../classstd_1_1numeric__limits_3_01playrho_1_1_fixed32_01_4.html#a2078cbd6487d64c2fb4ad46d2e2c90ff',1,'std::numeric_limits&lt; playrho::Fixed32 &gt;::has_signaling_NaN()'],['../classstd_1_1numeric__limits_3_01playrho_1_1_fixed64_01_4.html#a02b355366fba7ea8f137c4ca06b84dd0',1,'std::numeric_limits&lt; playrho::Fixed64 &gt;::has_signaling_NaN()']]],
   ['has_5fvalue',['has_value',['../classplayrho_1_1_optional_value.html#ad76bbf666ea6e9aec5e9a8a3188f154d',1,'playrho::OptionalValue']]],
   ['hash_3c_20playrho_3a_3acontactkey_20_3e',['hash&lt; playrho::ContactKey &gt;',['../structstd_1_1hash_3_01playrho_1_1_contact_key_01_4.html',1,'std']]],
-  ['hassensor',['HasSensor',['../namespaceplayrho.html#ad2430c3260942f088fc3a2ec726ea847',1,'playrho']]],
+  ['hassensor',['HasSensor',['../group___contact_free_functions.html#gad2430c3260942f088fc3a2ec726ea847',1,'playrho']]],
   ['hasvalidtoi',['HasValidToi',['../classplayrho_1_1_contact.html#a46a1a8eaf5990f9dddba23589e3ec058',1,'playrho::Contact']]],
-  ['hertz',['Hertz',['../namespaceplayrho.html#adef54036b9480e0cf730100688e20570',1,'playrho']]],
-  ['hitmaxiters',['HitMaxIters',['../structplayrho_1_1_distance_output.html#a020464bfb7306e881540dbc2cce090d9a311e9de7c9a3361e8e01eedda505001e',1,'playrho::DistanceOutput']]],
-  ['hivaluecheck',['HiValueCheck',['../namespaceplayrho.html#a1f31f7e3449c760decd7f664e16b0390',1,'playrho']]],
-  ['hypot',['hypot',['../namespacestd.html#afd0336207c57399ea0f6d7737633d060',1,'std']]]
+  ['hertz',['Hertz',['../group___units.html#gadef54036b9480e0cf730100688e20570',1,'playrho']]],
+  ['hivaluecheck',['HiValueCheck',['../namespaceplayrho.html#a1f31f7e3449c760decd7f664e16b0390',1,'playrho']]]
 ];

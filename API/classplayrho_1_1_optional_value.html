@@ -80,38 +80,72 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:aa47474e3410a8bb405046cd6054a0ed3"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#aa47474e3410a8bb405046cd6054a0ed3">value_type</a> = T</td></tr>
+<tr class="memitem:aa47474e3410a8bb405046cd6054a0ed3"><td class="memItemLeft" align="right" valign="top"><a id="aa47474e3410a8bb405046cd6054a0ed3"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#aa47474e3410a8bb405046cd6054a0ed3">value_type</a> = T</td></tr>
+<tr class="memdesc:aa47474e3410a8bb405046cd6054a0ed3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value type. <br /></td></tr>
 <tr class="separator:aa47474e3410a8bb405046cd6054a0ed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac17541e93750c72d669292f94b0fb0fc"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#ac17541e93750c72d669292f94b0fb0fc">OptionalValue</a> ()=default</td></tr>
-<tr class="separator:ac17541e93750c72d669292f94b0fb0fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0aebd725a9f6ac2a24858c11462c7eeb"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#a0aebd725a9f6ac2a24858c11462c7eeb">OptionalValue</a> (const <a class="el" href="classplayrho_1_1_optional_value.html">OptionalValue</a> &amp;other)=default</td></tr>
+<tr class="memitem:a0aebd725a9f6ac2a24858c11462c7eeb"><td class="memItemLeft" align="right" valign="top"><a id="a0aebd725a9f6ac2a24858c11462c7eeb"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#a0aebd725a9f6ac2a24858c11462c7eeb">OptionalValue</a> (const <a class="el" href="classplayrho_1_1_optional_value.html">OptionalValue</a> &amp;other)=default</td></tr>
+<tr class="memdesc:a0aebd725a9f6ac2a24858c11462c7eeb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
 <tr class="separator:a0aebd725a9f6ac2a24858c11462c7eeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b18e64a19f349e5761f40d500ed702f"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#a9b18e64a19f349e5761f40d500ed702f">OptionalValue</a> (const T v)</td></tr>
-<tr class="separator:a9b18e64a19f349e5761f40d500ed702f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85f2b90b8500433aec494bd1ca94bc93"><td class="memItemLeft" align="right" valign="top">constexpr const T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#a85f2b90b8500433aec494bd1ca94bc93">operator*</a> () const</td></tr>
+<tr class="memitem:ad21d38d850aaa989ed3bc711f75370d6"><td class="memItemLeft" align="right" valign="top"><a id="ad21d38d850aaa989ed3bc711f75370d6"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#ad21d38d850aaa989ed3bc711f75370d6">OptionalValue</a> (<a class="el" href="classplayrho_1_1_optional_value.html">OptionalValue</a> &amp;&amp;other) noexcept</td></tr>
+<tr class="memdesc:ad21d38d850aaa989ed3bc711f75370d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:ad21d38d850aaa989ed3bc711f75370d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d56e38cae37dba061d15107d1a99843"><td class="memItemLeft" align="right" valign="top"><a id="a9d56e38cae37dba061d15107d1a99843"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#a9d56e38cae37dba061d15107d1a99843">OptionalValue</a> (T v)</td></tr>
+<tr class="memdesc:a9d56e38cae37dba061d15107d1a99843"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor. <br /></td></tr>
+<tr class="separator:a9d56e38cae37dba061d15107d1a99843"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85f2b90b8500433aec494bd1ca94bc93"><td class="memItemLeft" align="right" valign="top"><a id="a85f2b90b8500433aec494bd1ca94bc93"></a>
+constexpr const T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#a85f2b90b8500433aec494bd1ca94bc93">operator*</a> () const</td></tr>
+<tr class="memdesc:a85f2b90b8500433aec494bd1ca94bc93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indirection operator. <br /></td></tr>
 <tr class="separator:a85f2b90b8500433aec494bd1ca94bc93"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae249bfcf473480a5a7e412706a12e797"><td class="memItemLeft" align="right" valign="top">constexpr T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#ae249bfcf473480a5a7e412706a12e797">operator*</a> ()</td></tr>
+<tr class="memitem:ae249bfcf473480a5a7e412706a12e797"><td class="memItemLeft" align="right" valign="top"><a id="ae249bfcf473480a5a7e412706a12e797"></a>
+constexpr T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#ae249bfcf473480a5a7e412706a12e797">operator*</a> ()</td></tr>
+<tr class="memdesc:ae249bfcf473480a5a7e412706a12e797"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indirection operator. <br /></td></tr>
 <tr class="separator:ae249bfcf473480a5a7e412706a12e797"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af05da1a44cfacaffcbadfb3732df3338"><td class="memItemLeft" align="right" valign="top">constexpr const T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#af05da1a44cfacaffcbadfb3732df3338">operator-&gt;</a> () const</td></tr>
+<tr class="memitem:af05da1a44cfacaffcbadfb3732df3338"><td class="memItemLeft" align="right" valign="top"><a id="af05da1a44cfacaffcbadfb3732df3338"></a>
+constexpr const T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#af05da1a44cfacaffcbadfb3732df3338">operator-&gt;</a> () const</td></tr>
+<tr class="memdesc:af05da1a44cfacaffcbadfb3732df3338"><td class="mdescLeft">&#160;</td><td class="mdescRight">Member of pointer operator. <br /></td></tr>
 <tr class="separator:af05da1a44cfacaffcbadfb3732df3338"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ed5de0a73711a080f310778ac7bde7f"><td class="memItemLeft" align="right" valign="top">constexpr T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#a6ed5de0a73711a080f310778ac7bde7f">operator-&gt;</a> ()</td></tr>
+<tr class="memitem:a6ed5de0a73711a080f310778ac7bde7f"><td class="memItemLeft" align="right" valign="top"><a id="a6ed5de0a73711a080f310778ac7bde7f"></a>
+constexpr T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#a6ed5de0a73711a080f310778ac7bde7f">operator-&gt;</a> ()</td></tr>
+<tr class="memdesc:a6ed5de0a73711a080f310778ac7bde7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Member of pointer operator. <br /></td></tr>
 <tr class="separator:a6ed5de0a73711a080f310778ac7bde7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55dd00c633efbc101da5289f530d7baa"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#a55dd00c633efbc101da5289f530d7baa">operator bool</a> () const noexcept</td></tr>
+<tr class="memitem:a55dd00c633efbc101da5289f530d7baa"><td class="memItemLeft" align="right" valign="top"><a id="a55dd00c633efbc101da5289f530d7baa"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#a55dd00c633efbc101da5289f530d7baa">operator bool</a> () const noexcept</td></tr>
+<tr class="memdesc:a55dd00c633efbc101da5289f530d7baa"><td class="mdescLeft">&#160;</td><td class="mdescRight">bool operator. <br /></td></tr>
 <tr class="separator:a55dd00c633efbc101da5289f530d7baa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad76bbf666ea6e9aec5e9a8a3188f154d"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#ad76bbf666ea6e9aec5e9a8a3188f154d">has_value</a> () const noexcept</td></tr>
+<tr class="memitem:ad76bbf666ea6e9aec5e9a8a3188f154d"><td class="memItemLeft" align="right" valign="top"><a id="ad76bbf666ea6e9aec5e9a8a3188f154d"></a>
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#ad76bbf666ea6e9aec5e9a8a3188f154d">has_value</a> () const noexcept</td></tr>
+<tr class="memdesc:ad76bbf666ea6e9aec5e9a8a3188f154d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this optional value has a value. <br /></td></tr>
 <tr class="separator:ad76bbf666ea6e9aec5e9a8a3188f154d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6fb2468b7cebcb512239348dc49a9bbe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1_optional_value.html">OptionalValue</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#a6fb2468b7cebcb512239348dc49a9bbe">operator=</a> (const <a class="el" href="classplayrho_1_1_optional_value.html">OptionalValue</a> &amp;other)=default</td></tr>
+<tr class="memitem:a6fb2468b7cebcb512239348dc49a9bbe"><td class="memItemLeft" align="right" valign="top"><a id="a6fb2468b7cebcb512239348dc49a9bbe"></a>
+<a class="el" href="classplayrho_1_1_optional_value.html">OptionalValue</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#a6fb2468b7cebcb512239348dc49a9bbe">operator=</a> (const <a class="el" href="classplayrho_1_1_optional_value.html">OptionalValue</a> &amp;other)=default</td></tr>
+<tr class="memdesc:a6fb2468b7cebcb512239348dc49a9bbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
 <tr class="separator:a6fb2468b7cebcb512239348dc49a9bbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0cb45853a7d3a70dfa85b415e76e84d2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1_optional_value.html">OptionalValue</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#a0cb45853a7d3a70dfa85b415e76e84d2">operator=</a> (const T v)</td></tr>
-<tr class="separator:a0cb45853a7d3a70dfa85b415e76e84d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3db1d9604a0626c1d6c0a59545872d3"><td class="memItemLeft" align="right" valign="top">constexpr T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#ae3db1d9604a0626c1d6c0a59545872d3">value</a> ()</td></tr>
+<tr class="memitem:a379368ae4e2b7e08706b4a40de5d2194"><td class="memItemLeft" align="right" valign="top"><a id="a379368ae4e2b7e08706b4a40de5d2194"></a>
+<a class="el" href="classplayrho_1_1_optional_value.html">OptionalValue</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#a379368ae4e2b7e08706b4a40de5d2194">operator=</a> (<a class="el" href="classplayrho_1_1_optional_value.html">OptionalValue</a> &amp;&amp;other) noexcept</td></tr>
+<tr class="memdesc:a379368ae4e2b7e08706b4a40de5d2194"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment operator. <br /></td></tr>
+<tr class="separator:a379368ae4e2b7e08706b4a40de5d2194"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3629c06e8ae4d8bc2402ee2a9ae98f0c"><td class="memItemLeft" align="right" valign="top"><a id="a3629c06e8ae4d8bc2402ee2a9ae98f0c"></a>
+<a class="el" href="classplayrho_1_1_optional_value.html">OptionalValue</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#a3629c06e8ae4d8bc2402ee2a9ae98f0c">operator=</a> (T v)</td></tr>
+<tr class="memdesc:a3629c06e8ae4d8bc2402ee2a9ae98f0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
+<tr class="separator:a3629c06e8ae4d8bc2402ee2a9ae98f0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3db1d9604a0626c1d6c0a59545872d3"><td class="memItemLeft" align="right" valign="top"><a id="ae3db1d9604a0626c1d6c0a59545872d3"></a>
+constexpr T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#ae3db1d9604a0626c1d6c0a59545872d3">value</a> ()</td></tr>
+<tr class="memdesc:ae3db1d9604a0626c1d6c0a59545872d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accesses the value. <br /></td></tr>
 <tr class="separator:ae3db1d9604a0626c1d6c0a59545872d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f505b84935dce0801c5e0a00f84f403"><td class="memItemLeft" align="right" valign="top">constexpr const T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#a9f505b84935dce0801c5e0a00f84f403">value</a> () const</td></tr>
+<tr class="memitem:a9f505b84935dce0801c5e0a00f84f403"><td class="memItemLeft" align="right" valign="top"><a id="a9f505b84935dce0801c5e0a00f84f403"></a>
+constexpr const T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#a9f505b84935dce0801c5e0a00f84f403">value</a> () const</td></tr>
+<tr class="memdesc:a9f505b84935dce0801c5e0a00f84f403"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accesses the value. <br /></td></tr>
 <tr class="separator:a9f505b84935dce0801c5e0a00f84f403"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff28b5c0e06460d988723473c6a36233"><td class="memItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#aff28b5c0e06460d988723473c6a36233">value_or</a> (const T &amp;alt) const</td></tr>
+<tr class="memitem:aff28b5c0e06460d988723473c6a36233"><td class="memItemLeft" align="right" valign="top"><a id="aff28b5c0e06460d988723473c6a36233"></a>
+constexpr T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_optional_value.html#aff28b5c0e06460d988723473c6a36233">value_or</a> (const T &amp;alt) const</td></tr>
+<tr class="memdesc:aff28b5c0e06460d988723473c6a36233"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the value or provides the alternate given value instead. <br /></td></tr>
 <tr class="separator:aff28b5c0e06460d988723473c6a36233"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -121,343 +155,13 @@ class playrho::OptionalValue&lt; T &gt;</h3>
 <p>An implementation of the optional value type idea. </p><dl class="section note"><dt>Note</dt><dd>This is meant to be functionally compatible with C++17's std::optional. </dd>
 <dd>
 Use of this type directly is discouraged. Use the Optional type alias instead. </dd></dl>
-</div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="aa47474e3410a8bb405046cd6054a0ed3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa47474e3410a8bb405046cd6054a0ed3">&#9670;&nbsp;</a></span>value_type</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classplayrho_1_1_optional_value.html">playrho::OptionalValue</a>&lt; T &gt;::<a class="el" href="classplayrho_1_1_optional_value.html#aa47474e3410a8bb405046cd6054a0ed3">value_type</a> =  T</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ac17541e93750c72d669292f94b0fb0fc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac17541e93750c72d669292f94b0fb0fc">&#9670;&nbsp;</a></span>OptionalValue() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="classplayrho_1_1_optional_value.html">playrho::OptionalValue</a>&lt; T &gt;::<a class="el" href="classplayrho_1_1_optional_value.html">OptionalValue</a> </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a0aebd725a9f6ac2a24858c11462c7eeb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0aebd725a9f6ac2a24858c11462c7eeb">&#9670;&nbsp;</a></span>OptionalValue() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="classplayrho_1_1_optional_value.html">playrho::OptionalValue</a>&lt; T &gt;::<a class="el" href="classplayrho_1_1_optional_value.html">OptionalValue</a> </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classplayrho_1_1_optional_value.html">OptionalValue</a>&lt; T &gt; &amp;&#160;</td>
-          <td class="paramname"><em>other</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a9b18e64a19f349e5761f40d500ed702f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b18e64a19f349e5761f40d500ed702f">&#9670;&nbsp;</a></span>OptionalValue() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="classplayrho_1_1_optional_value.html">playrho::OptionalValue</a>&lt; T &gt;::<a class="el" href="classplayrho_1_1_optional_value.html">OptionalValue</a> </td>
-          <td>(</td>
-          <td class="paramtype">const T&#160;</td>
-          <td class="paramname"><em>v</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="ad76bbf666ea6e9aec5e9a8a3188f154d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad76bbf666ea6e9aec5e9a8a3188f154d">&#9670;&nbsp;</a></span>has_value()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr bool <a class="el" href="classplayrho_1_1_optional_value.html">playrho::OptionalValue</a>&lt; T &gt;::has_value </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a55dd00c633efbc101da5289f530d7baa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a55dd00c633efbc101da5289f530d7baa">&#9670;&nbsp;</a></span>operator bool()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="classplayrho_1_1_optional_value.html">playrho::OptionalValue</a>&lt; T &gt;::operator bool </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">explicit</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a85f2b90b8500433aec494bd1ca94bc93"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a85f2b90b8500433aec494bd1ca94bc93">&#9670;&nbsp;</a></span>operator*() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr const T &amp; <a class="el" href="classplayrho_1_1_optional_value.html">playrho::OptionalValue</a>&lt; T &gt;::operator* </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ae249bfcf473480a5a7e412706a12e797"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae249bfcf473480a5a7e412706a12e797">&#9670;&nbsp;</a></span>operator*() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr T &amp; <a class="el" href="classplayrho_1_1_optional_value.html">playrho::OptionalValue</a>&lt; T &gt;::operator* </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="af05da1a44cfacaffcbadfb3732df3338"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af05da1a44cfacaffcbadfb3732df3338">&#9670;&nbsp;</a></span>operator->() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr const T * <a class="el" href="classplayrho_1_1_optional_value.html">playrho::OptionalValue</a>&lt; T &gt;::operator-&gt; </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a6ed5de0a73711a080f310778ac7bde7f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ed5de0a73711a080f310778ac7bde7f">&#9670;&nbsp;</a></span>operator->() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr T * <a class="el" href="classplayrho_1_1_optional_value.html">playrho::OptionalValue</a>&lt; T &gt;::operator-&gt; </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a6fb2468b7cebcb512239348dc49a9bbe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6fb2468b7cebcb512239348dc49a9bbe">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classplayrho_1_1_optional_value.html">OptionalValue</a>&amp; <a class="el" href="classplayrho_1_1_optional_value.html">playrho::OptionalValue</a>&lt; T &gt;::operator= </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classplayrho_1_1_optional_value.html">OptionalValue</a>&lt; T &gt; &amp;&#160;</td>
-          <td class="paramname"><em>other</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a0cb45853a7d3a70dfa85b415e76e84d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0cb45853a7d3a70dfa85b415e76e84d2">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classplayrho_1_1_optional_value.html">OptionalValue</a>&lt; T &gt; &amp; <a class="el" href="classplayrho_1_1_optional_value.html">playrho::OptionalValue</a>&lt; T &gt;::operator= </td>
-          <td>(</td>
-          <td class="paramtype">const T&#160;</td>
-          <td class="paramname"><em>v</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ae3db1d9604a0626c1d6c0a59545872d3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae3db1d9604a0626c1d6c0a59545872d3">&#9670;&nbsp;</a></span>value() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr T &amp; <a class="el" href="classplayrho_1_1_optional_value.html">playrho::OptionalValue</a>&lt; T &gt;::value </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a9f505b84935dce0801c5e0a00f84f403"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9f505b84935dce0801c5e0a00f84f403">&#9670;&nbsp;</a></span>value() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr const T &amp; <a class="el" href="classplayrho_1_1_optional_value.html">playrho::OptionalValue</a>&lt; T &gt;::value </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="aff28b5c0e06460d988723473c6a36233"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aff28b5c0e06460d988723473c6a36233">&#9670;&nbsp;</a></span>value_or()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr T <a class="el" href="classplayrho_1_1_optional_value.html">playrho::OptionalValue</a>&lt; T &gt;::value_or </td>
-          <td>(</td>
-          <td class="paramtype">const T &amp;&#160;</td>
-          <td class="paramname"><em>alt</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>OptionalValue.hpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 6 2017 12:29:47 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Sep 16 2017 23:07:50 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

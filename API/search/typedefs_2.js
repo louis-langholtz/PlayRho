@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['cf_5ft',['cf_t',['../classplayrho_1_1_manifold.html#af0594192cf24bcf0b344c48cc5ac9870',1,'playrho::Manifold']]],
+  ['cfindex',['CfIndex',['../classplayrho_1_1_manifold.html#a5c09bf97520b942a1dd309a9af74ed58',1,'playrho::Manifold']]],
+  ['cftype',['CfType',['../classplayrho_1_1_manifold.html#a8fed08a849195425952d2afd2314819e',1,'playrho::Manifold']]],
   ['childcounter',['ChildCounter',['../namespaceplayrho.html#aed352724e203ca09595faf0dc6a76e5c',1,'playrho']]],
   ['cliplist',['ClipList',['../namespaceplayrho.html#ae293095cbbf270437df924eee28ae7c7',1,'playrho']]],
   ['coefficients',['Coefficients',['../classplayrho_1_1_simplex.html#a82764c43bab3f51a3dda856be839cd64',1,'playrho::Simplex']]],
@@ -10,8 +11,8 @@ var searchData=
   ['const_5fvalue_5ftype',['const_value_type',['../classplayrho_1_1_allocated_array.html#ad4c58287e44fbe5dff42c43459328138',1,'playrho::AllocatedArray']]],
   ['contactcounter',['ContactCounter',['../namespaceplayrho.html#a2bf0674233f83e8b83b30db98332e129',1,'playrho']]],
   ['contactptr',['ContactPtr',['../namespaceplayrho.html#a1d4bfca7808bdec9bd073fec226692e6',1,'playrho']]],
-  ['contacts',['Contacts',['../classplayrho_1_1_body.html#a8181d7c972687eb5777ba7f8e821ddc5',1,'playrho::Body::Contacts()'],['../classplayrho_1_1_island.html#aa2c479a8bdbca51d85d2d794eab893aa',1,'playrho::Island::Contacts()'],['../classplayrho_1_1_world.html#ade7d1939acabb84dcf8b1696b023ae2d',1,'playrho::World::Contacts()']]],
-  ['count_5ft',['count_t',['../classplayrho_1_1_contact_impulses_list.html#ad6bd800d2f5337201fd4b822c832a9da',1,'playrho::ContactImpulsesList']]],
+  ['contacts',['Contacts',['../classplayrho_1_1_body.html#a9eb7250e5b45bcc026490fe25610f898',1,'playrho::Body::Contacts()'],['../structplayrho_1_1_island.html#aa2c479a8bdbca51d85d2d794eab893aa',1,'playrho::Island::Contacts()'],['../classplayrho_1_1_world.html#ade7d1939acabb84dcf8b1696b023ae2d',1,'playrho::World::Contacts()']]],
+  ['counter',['Counter',['../classplayrho_1_1_contact_impulses_list.html#ac5a2e4c66755b4ab352c7d5680078360',1,'playrho::ContactImpulsesList']]],
   ['counter_5ftype',['counter_type',['../structplayrho_1_1_pre_step_stats.html#a3d2ba1ef027e1612d7631cc1a3c0de33',1,'playrho::PreStepStats::counter_type()'],['../structplayrho_1_1_reg_step_stats.html#a28c54150b3b815b281bf5edeeea9a531',1,'playrho::RegStepStats::counter_type()'],['../structplayrho_1_1_toi_step_stats.html#ac6751bb15f4e9ac864f105551c2d6daa',1,'playrho::ToiStepStats::counter_type()']]],
   ['counttype',['CountType',['../classplayrho_1_1_growable_stack.html#a7d7f4c80b39831539b8f978700087ddc',1,'playrho::GrowableStack']]]
 ];

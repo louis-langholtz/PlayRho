@@ -75,7 +75,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="classplayrho_1_1_simplex.html" title="Simplex. ">Simplex</a>.  
+<p>An encapsulation of a point, line segment, or triangle.  
  <a href="classplayrho_1_1_simplex.html#details">More...</a></p>
 
 <p><code>#include &lt;Simplex.hpp&gt;</code></p>
@@ -83,59 +83,66 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex_1_1_cache.html">Cache</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classplayrho_1_1_simplex.html" title="Simplex. ">Simplex</a> cache.  <a href="classplayrho_1_1_simplex_1_1_cache.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classplayrho_1_1_simplex.html" title="An encapsulation of a point, line segment, or triangle. ">Simplex</a> cache.  <a href="classplayrho_1_1_simplex_1_1_cache.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a1f5a6ea900063d258605a98c2dfc4009"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#a1f5a6ea900063d258605a98c2dfc4009">Edges</a> = <a class="el" href="classplayrho_1_1_array_list.html">ArrayList</a>&lt; <a class="el" href="classplayrho_1_1_simplex_edge.html">SimplexEdge</a>, <a class="el" href="namespaceplayrho.html#a95591102a273a4d301f3f795d463b9ba">MaxSimplexEdges</a>, std::remove_const&lt; decltype(<a class="el" href="namespaceplayrho.html#a95591102a273a4d301f3f795d463b9ba">MaxSimplexEdges</a>)&gt;::type &gt;</td></tr>
-<tr class="memdesc:a1f5a6ea900063d258605a98c2dfc4009"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classplayrho_1_1_simplex.html" title="Simplex. ">Simplex</a> edge collection.  <a href="#a1f5a6ea900063d258605a98c2dfc4009">More...</a><br /></td></tr>
-<tr class="separator:a1f5a6ea900063d258605a98c2dfc4009"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a082dc8b89e393dba8f0b9851f31a99d3"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#a082dc8b89e393dba8f0b9851f31a99d3">size_type</a> = Edges::size_type</td></tr>
-<tr class="memdesc:a082dc8b89e393dba8f0b9851f31a99d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size type.  <a href="#a082dc8b89e393dba8f0b9851f31a99d3">More...</a><br /></td></tr>
-<tr class="separator:a082dc8b89e393dba8f0b9851f31a99d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a922b8cc214d74a5c775ebcf0f976ff85"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#a922b8cc214d74a5c775ebcf0f976ff85">size_type</a> = SimplexEdges::size_type</td></tr>
+<tr class="memdesc:a922b8cc214d74a5c775ebcf0f976ff85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size type.  <a href="#a922b8cc214d74a5c775ebcf0f976ff85">More...</a><br /></td></tr>
+<tr class="separator:a922b8cc214d74a5c775ebcf0f976ff85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82764c43bab3f51a3dda856be839cd64"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#a82764c43bab3f51a3dda856be839cd64">Coefficients</a> = <a class="el" href="classplayrho_1_1_array_list.html">ArrayList</a>&lt; <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>, <a class="el" href="namespaceplayrho.html#a95591102a273a4d301f3f795d463b9ba">MaxSimplexEdges</a>, std::remove_const&lt; decltype(<a class="el" href="namespaceplayrho.html#a95591102a273a4d301f3f795d463b9ba">MaxSimplexEdges</a>)&gt;::type &gt;</td></tr>
 <tr class="memdesc:a82764c43bab3f51a3dda856be839cd64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Coefficients.  <a href="#a82764c43bab3f51a3dda856be839cd64">More...</a><br /></td></tr>
 <tr class="separator:a82764c43bab3f51a3dda856be839cd64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae5347e9504250aaef4ac806f6132b5fb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#ae5347e9504250aaef4ac806f6132b5fb">Simplex</a> ()=default</td></tr>
-<tr class="separator:ae5347e9504250aaef4ac806f6132b5fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5735b61f402ad09fb9a22b1fd5af64c"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classplayrho_1_1_simplex.html#a1f5a6ea900063d258605a98c2dfc4009">Edges</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#ad5735b61f402ad09fb9a22b1fd5af64c">GetEdges</a> () const noexcept</td></tr>
-<tr class="separator:ad5735b61f402ad09fb9a22b1fd5af64c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae745a112c1aed790b9c3137c098d94c1"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classplayrho_1_1_simplex_edge.html">SimplexEdge</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#ae745a112c1aed790b9c3137c098d94c1">GetSimplexEdge</a> (<a class="el" href="classplayrho_1_1_simplex.html#a082dc8b89e393dba8f0b9851f31a99d3">size_type</a> index) const noexcept</td></tr>
+<tr class="memitem:a2995a17ac6734864a184e533c46e6d61"><td class="memItemLeft" align="right" valign="top"><a id="a2995a17ac6734864a184e533c46e6d61"></a>
+constexpr <a class="el" href="namespaceplayrho.html#a71e19fb87dba30315647147d5f63d491">SimplexEdges</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#a2995a17ac6734864a184e533c46e6d61">GetEdges</a> () const noexcept</td></tr>
+<tr class="memdesc:a2995a17ac6734864a184e533c46e6d61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the edges. <br /></td></tr>
+<tr class="separator:a2995a17ac6734864a184e533c46e6d61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae745a112c1aed790b9c3137c098d94c1"><td class="memItemLeft" align="right" valign="top"><a id="ae745a112c1aed790b9c3137c098d94c1"></a>
+const <a class="el" href="classplayrho_1_1_simplex_edge.html">SimplexEdge</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#ae745a112c1aed790b9c3137c098d94c1">GetSimplexEdge</a> (<a class="el" href="classplayrho_1_1_simplex.html#a922b8cc214d74a5c775ebcf0f976ff85">size_type</a> index) const noexcept</td></tr>
+<tr class="memdesc:ae745a112c1aed790b9c3137c098d94c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the give indexed simplex edge. <br /></td></tr>
 <tr class="separator:ae745a112c1aed790b9c3137c098d94c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4349d78238f1e0e1746f69b9c9861aa7"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#a4349d78238f1e0e1746f69b9c9861aa7">GetCoefficient</a> (<a class="el" href="classplayrho_1_1_simplex.html#a082dc8b89e393dba8f0b9851f31a99d3">size_type</a> index) const noexcept</td></tr>
+<tr class="memitem:a4349d78238f1e0e1746f69b9c9861aa7"><td class="memItemLeft" align="right" valign="top"><a id="a4349d78238f1e0e1746f69b9c9861aa7"></a>
+constexpr <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#a4349d78238f1e0e1746f69b9c9861aa7">GetCoefficient</a> (<a class="el" href="classplayrho_1_1_simplex.html#a922b8cc214d74a5c775ebcf0f976ff85">size_type</a> index) const noexcept</td></tr>
+<tr class="memdesc:a4349d78238f1e0e1746f69b9c9861aa7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the coefficient for the given index. <br /></td></tr>
 <tr class="separator:a4349d78238f1e0e1746f69b9c9861aa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd7a3b148cd312a7b4023a2895df7a39"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classplayrho_1_1_simplex.html#a082dc8b89e393dba8f0b9851f31a99d3">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#acd7a3b148cd312a7b4023a2895df7a39">GetSize</a> () const noexcept</td></tr>
-<tr class="memdesc:acd7a3b148cd312a7b4023a2895df7a39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the size in number of valid edges of this <a class="el" href="classplayrho_1_1_simplex.html" title="Simplex. ">Simplex</a>.  <a href="#acd7a3b148cd312a7b4023a2895df7a39">More...</a><br /></td></tr>
+<tr class="memitem:acd7a3b148cd312a7b4023a2895df7a39"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classplayrho_1_1_simplex.html#a922b8cc214d74a5c775ebcf0f976ff85">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#acd7a3b148cd312a7b4023a2895df7a39">GetSize</a> () const noexcept</td></tr>
+<tr class="memdesc:acd7a3b148cd312a7b4023a2895df7a39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the size in number of simplex edges that this instance is made up of.  <a href="#acd7a3b148cd312a7b4023a2895df7a39">More...</a><br /></td></tr>
 <tr class="separator:acd7a3b148cd312a7b4023a2895df7a39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a508eaed94442f63859805a0366c685bc"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classplayrho_1_1_simplex_1_1_cache.html">Cache</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#a508eaed94442f63859805a0366c685bc">GetCache</a> (const <a class="el" href="classplayrho_1_1_simplex.html#a1f5a6ea900063d258605a98c2dfc4009">Simplex::Edges</a> &amp;edges) noexcept</td></tr>
-<tr class="separator:a508eaed94442f63859805a0366c685bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac97e5bc42a351525d4d484bc06abd365"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespaceplayrho.html#ac11a249a7050826a28b8e457b321b58b">IndexPair3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#ac97e5bc42a351525d4d484bc06abd365">GetIndexPairs</a> (const <a class="el" href="classplayrho_1_1_simplex.html#a1f5a6ea900063d258605a98c2dfc4009">Edges</a> &amp;collection) noexcept</td></tr>
-<tr class="memdesc:ac97e5bc42a351525d4d484bc06abd365"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets index pairs for the given edges collection.  <a href="#ac97e5bc42a351525d4d484bc06abd365">More...</a><br /></td></tr>
-<tr class="separator:ac97e5bc42a351525d4d484bc06abd365"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13d97c89f37840a4911df3c7ff0681de"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#a13d97c89f37840a4911df3c7ff0681de">CalcSearchDirection</a> (const <a class="el" href="classplayrho_1_1_simplex.html#a1f5a6ea900063d258605a98c2dfc4009">Edges</a> &amp;simplexEdges) noexcept</td></tr>
-<tr class="memdesc:a13d97c89f37840a4911df3c7ff0681de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the "search direction" for the given simplex edge list.  <a href="#a13d97c89f37840a4911df3c7ff0681de">More...</a><br /></td></tr>
-<tr class="separator:a13d97c89f37840a4911df3c7ff0681de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a230845e515fceefaa1a2a8cec2afb69f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#a230845e515fceefaa1a2a8cec2afb69f">CalcMetric</a> (const <a class="el" href="classplayrho_1_1_simplex.html#a1f5a6ea900063d258605a98c2dfc4009">Edges</a> &amp;simplexEdges)</td></tr>
-<tr class="memdesc:a230845e515fceefaa1a2a8cec2afb69f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the given simplex's "metric".  <a href="#a230845e515fceefaa1a2a8cec2afb69f">More...</a><br /></td></tr>
-<tr class="separator:a230845e515fceefaa1a2a8cec2afb69f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6170d516d1a4c64b114a555f9d15a2c5"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classplayrho_1_1_simplex.html">Simplex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#a6170d516d1a4c64b114a555f9d15a2c5">Get</a> (const <a class="el" href="classplayrho_1_1_simplex_edge.html">SimplexEdge</a> &amp;s0) noexcept</td></tr>
-<tr class="separator:a6170d516d1a4c64b114a555f9d15a2c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6472ab8d235dac4cd12ba4ae05fcb5c6"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classplayrho_1_1_simplex.html">Simplex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#a6472ab8d235dac4cd12ba4ae05fcb5c6">Get</a> (const <a class="el" href="classplayrho_1_1_simplex_edge.html">SimplexEdge</a> &amp;s0, const <a class="el" href="classplayrho_1_1_simplex_edge.html">SimplexEdge</a> &amp;s1) noexcept</td></tr>
-<tr class="memdesc:a6472ab8d235dac4cd12ba4ae05fcb5c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the simplex for the given 2 edges.  <a href="#a6472ab8d235dac4cd12ba4ae05fcb5c6">More...</a><br /></td></tr>
-<tr class="separator:a6472ab8d235dac4cd12ba4ae05fcb5c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a9bfe57f232340efc7c103a38907595"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classplayrho_1_1_simplex.html">Simplex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#a7a9bfe57f232340efc7c103a38907595">Get</a> (const <a class="el" href="classplayrho_1_1_simplex_edge.html">SimplexEdge</a> &amp;s0, const <a class="el" href="classplayrho_1_1_simplex_edge.html">SimplexEdge</a> &amp;s1, const <a class="el" href="classplayrho_1_1_simplex_edge.html">SimplexEdge</a> &amp;s2) noexcept</td></tr>
-<tr class="memdesc:a7a9bfe57f232340efc7c103a38907595"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the simplex for the given 3 edges.  <a href="#a7a9bfe57f232340efc7c103a38907595">More...</a><br /></td></tr>
-<tr class="separator:a7a9bfe57f232340efc7c103a38907595"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2add5d144cf93598a33d54b0bb8ba40"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classplayrho_1_1_simplex.html">Simplex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#af2add5d144cf93598a33d54b0bb8ba40">Get</a> (const <a class="el" href="classplayrho_1_1_simplex.html#a1f5a6ea900063d258605a98c2dfc4009">Edges</a> &amp;edges) noexcept</td></tr>
-<tr class="memdesc:af2add5d144cf93598a33d54b0bb8ba40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the simplex for the given collection of vertices.  <a href="#af2add5d144cf93598a33d54b0bb8ba40">More...</a><br /></td></tr>
-<tr class="separator:af2add5d144cf93598a33d54b0bb8ba40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a798ecca0a58dc6bbba7145ec43299725"><td class="memItemLeft" align="right" valign="top"><a id="a798ecca0a58dc6bbba7145ec43299725"></a>
+static <a class="el" href="classplayrho_1_1_simplex_1_1_cache.html">Cache</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#a798ecca0a58dc6bbba7145ec43299725">GetCache</a> (const <a class="el" href="namespaceplayrho.html#a71e19fb87dba30315647147d5f63d491">SimplexEdges</a> &amp;edges) noexcept</td></tr>
+<tr class="memdesc:a798ecca0a58dc6bbba7145ec43299725"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the cache value for the given edges. <br /></td></tr>
+<tr class="separator:a798ecca0a58dc6bbba7145ec43299725"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a599fa880fb60c45d96692cbb5eaf6185"><td class="memItemLeft" align="right" valign="top"><a id="a599fa880fb60c45d96692cbb5eaf6185"></a>
+static <a class="el" href="namespaceplayrho.html#ac11a249a7050826a28b8e457b321b58b">IndexPair3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#a599fa880fb60c45d96692cbb5eaf6185">GetIndexPairs</a> (const <a class="el" href="namespaceplayrho.html#a71e19fb87dba30315647147d5f63d491">SimplexEdges</a> &amp;collection) noexcept</td></tr>
+<tr class="memdesc:a599fa880fb60c45d96692cbb5eaf6185"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets index pairs for the given edges collection. <br /></td></tr>
+<tr class="separator:a599fa880fb60c45d96692cbb5eaf6185"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84ca8848759035d883a8d35d84d8e892"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#a84ca8848759035d883a8d35d84d8e892">CalcSearchDirection</a> (const <a class="el" href="namespaceplayrho.html#a71e19fb87dba30315647147d5f63d491">SimplexEdges</a> &amp;simplexEdges) noexcept</td></tr>
+<tr class="memdesc:a84ca8848759035d883a8d35d84d8e892"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the "search direction" for the given simplex edge list.  <a href="#a84ca8848759035d883a8d35d84d8e892">More...</a><br /></td></tr>
+<tr class="separator:a84ca8848759035d883a8d35d84d8e892"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59fece7b429a7012a6009e7cc2e19fa7"><td class="memItemLeft" align="right" valign="top"><a id="a59fece7b429a7012a6009e7cc2e19fa7"></a>
+static <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#a59fece7b429a7012a6009e7cc2e19fa7">CalcMetric</a> (const <a class="el" href="namespaceplayrho.html#a71e19fb87dba30315647147d5f63d491">SimplexEdges</a> &amp;simplexEdges)</td></tr>
+<tr class="memdesc:a59fece7b429a7012a6009e7cc2e19fa7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the given simplex's "metric". <br /></td></tr>
+<tr class="separator:a59fece7b429a7012a6009e7cc2e19fa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb2b17d2e3cd1b9c3dd6ea7038802d9d"><td class="memItemLeft" align="right" valign="top"><a id="abb2b17d2e3cd1b9c3dd6ea7038802d9d"></a>
+static <a class="el" href="classplayrho_1_1_simplex.html">Simplex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#abb2b17d2e3cd1b9c3dd6ea7038802d9d">Get</a> (const <a class="el" href="classplayrho_1_1_simplex_edge.html">SimplexEdge</a> &amp;s0) noexcept</td></tr>
+<tr class="memdesc:abb2b17d2e3cd1b9c3dd6ea7038802d9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the <a class="el" href="classplayrho_1_1_simplex.html" title="An encapsulation of a point, line segment, or triangle. ">Simplex</a> for the given simplex edge. <br /></td></tr>
+<tr class="separator:abb2b17d2e3cd1b9c3dd6ea7038802d9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e9bc4ff4fb2e08dc656ec80c1199e74"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classplayrho_1_1_simplex.html">Simplex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#a1e9bc4ff4fb2e08dc656ec80c1199e74">Get</a> (const <a class="el" href="classplayrho_1_1_simplex_edge.html">SimplexEdge</a> &amp;s0, const <a class="el" href="classplayrho_1_1_simplex_edge.html">SimplexEdge</a> &amp;s1) noexcept</td></tr>
+<tr class="memdesc:a1e9bc4ff4fb2e08dc656ec80c1199e74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the simplex for the given 2 edges.  <a href="#a1e9bc4ff4fb2e08dc656ec80c1199e74">More...</a><br /></td></tr>
+<tr class="separator:a1e9bc4ff4fb2e08dc656ec80c1199e74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae184255348982095084062a7cdd3b983"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classplayrho_1_1_simplex.html">Simplex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#ae184255348982095084062a7cdd3b983">Get</a> (const <a class="el" href="classplayrho_1_1_simplex_edge.html">SimplexEdge</a> &amp;s0, const <a class="el" href="classplayrho_1_1_simplex_edge.html">SimplexEdge</a> &amp;s1, const <a class="el" href="classplayrho_1_1_simplex_edge.html">SimplexEdge</a> &amp;s2) noexcept</td></tr>
+<tr class="memdesc:ae184255348982095084062a7cdd3b983"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the simplex for the given 3 edges.  <a href="#ae184255348982095084062a7cdd3b983">More...</a><br /></td></tr>
+<tr class="separator:ae184255348982095084062a7cdd3b983"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0af964b32a43584a8fbf65e4dd807636"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classplayrho_1_1_simplex.html">Simplex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_simplex.html#a0af964b32a43584a8fbf65e4dd807636">Get</a> (const <a class="el" href="namespaceplayrho.html#a71e19fb87dba30315647147d5f63d491">SimplexEdges</a> &amp;edges) noexcept</td></tr>
+<tr class="memdesc:a0af964b32a43584a8fbf65e4dd807636"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the simplex for the given collection of vertices.  <a href="#a0af964b32a43584a8fbf65e4dd807636">More...</a><br /></td></tr>
+<tr class="separator:a0af964b32a43584a8fbf65e4dd807636"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>An encapsulation of a point, line segment, or triangle. These are defined respectively as: a 0-simplex, a 1-simplex, and a 2-simplex. Used in doing GJK collision detection.</p>
@@ -163,29 +170,14 @@ There may not be more than one entry for the same index pair.</dd></dl>
 
 </div>
 </div>
-<a id="a1f5a6ea900063d258605a98c2dfc4009"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f5a6ea900063d258605a98c2dfc4009">&#9670;&nbsp;</a></span>Edges</h2>
+<a id="a922b8cc214d74a5c775ebcf0f976ff85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a922b8cc214d74a5c775ebcf0f976ff85">&#9670;&nbsp;</a></span>size_type</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classplayrho_1_1_simplex.html#a1f5a6ea900063d258605a98c2dfc4009">playrho::Simplex::Edges</a> =  <a class="el" href="classplayrho_1_1_array_list.html">ArrayList</a>&lt;<a class="el" href="classplayrho_1_1_simplex_edge.html">SimplexEdge</a>, <a class="el" href="namespaceplayrho.html#a95591102a273a4d301f3f795d463b9ba">MaxSimplexEdges</a>, std::remove_const&lt;decltype(<a class="el" href="namespaceplayrho.html#a95591102a273a4d301f3f795d463b9ba">MaxSimplexEdges</a>)&gt;::type&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section note"><dt>Note</dt><dd>This data is 28 * 3 + 4 = 88-bytes large (on at least one 64-bit platform). </dd></dl>
-
-</div>
-</div>
-<a id="a082dc8b89e393dba8f0b9851f31a99d3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a082dc8b89e393dba8f0b9851f31a99d3">&#9670;&nbsp;</a></span>size_type</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classplayrho_1_1_simplex.html#a082dc8b89e393dba8f0b9851f31a99d3">playrho::Simplex::size_type</a> =  Edges::size_type</td>
+          <td class="memname">using <a class="el" href="classplayrho_1_1_simplex.html#a922b8cc214d74a5c775ebcf0f976ff85">playrho::Simplex::size_type</a> =  SimplexEdges::size_type</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -193,61 +185,9 @@ There may not be more than one entry for the same index pair.</dd></dl>
 
 </div>
 </div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ae5347e9504250aaef4ac806f6132b5fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5347e9504250aaef4ac806f6132b5fb">&#9670;&nbsp;</a></span>Simplex()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">playrho::Simplex::Simplex </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a230845e515fceefaa1a2a8cec2afb69f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a230845e515fceefaa1a2a8cec2afb69f">&#9670;&nbsp;</a></span>CalcMetric()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> playrho::Simplex::CalcMetric </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classplayrho_1_1_simplex.html#a1f5a6ea900063d258605a98c2dfc4009">Edges</a> &amp;&#160;</td>
-          <td class="paramname"><em>simplexEdges</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a13d97c89f37840a4911df3c7ff0681de"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13d97c89f37840a4911df3c7ff0681de">&#9670;&nbsp;</a></span>CalcSearchDirection()</h2>
+<a id="a84ca8848759035d883a8d35d84d8e892"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84ca8848759035d883a8d35d84d8e892">&#9670;&nbsp;</a></span>CalcSearchDirection()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -258,7 +198,7 @@ There may not be more than one entry for the same index pair.</dd></dl>
         <tr>
           <td class="memname">constexpr <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> playrho::Simplex::CalcSearchDirection </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classplayrho_1_1_simplex.html#a1f5a6ea900063d258605a98c2dfc4009">Edges</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceplayrho.html#a71e19fb87dba30315647147d5f63d491">SimplexEdges</a> &amp;&#160;</td>
           <td class="paramname"><em>simplexEdges</em></td><td>)</td>
           <td></td>
         </tr>
@@ -280,8 +220,8 @@ There may not be more than one entry for the same index pair.</dd></dl>
 
 </div>
 </div>
-<a id="a6170d516d1a4c64b114a555f9d15a2c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6170d516d1a4c64b114a555f9d15a2c5">&#9670;&nbsp;</a></span>Get() <span class="overload">[1/4]</span></h2>
+<a id="a1e9bc4ff4fb2e08dc656ec80c1199e74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e9bc4ff4fb2e08dc656ec80c1199e74">&#9670;&nbsp;</a></span>Get() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -290,33 +230,7 @@ There may not be more than one entry for the same index pair.</dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classplayrho_1_1_simplex.html">Simplex</a> Simplex::Get </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classplayrho_1_1_simplex_edge.html">SimplexEdge</a> &amp;&#160;</td>
-          <td class="paramname"><em>s0</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a6472ab8d235dac4cd12ba4ae05fcb5c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6472ab8d235dac4cd12ba4ae05fcb5c6">&#9670;&nbsp;</a></span>Get() <span class="overload">[2/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classplayrho_1_1_simplex.html">Simplex</a> Simplex::Get </td>
+          <td class="memname"><a class="el" href="classplayrho_1_1_simplex.html">Simplex</a> playrho::Simplex::Get </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classplayrho_1_1_simplex_edge.html">SimplexEdge</a> &amp;&#160;</td>
           <td class="paramname"><em>s0</em>, </td>
@@ -343,8 +257,8 @@ There may not be more than one entry for the same index pair.</dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>Behavior is undefined if the given simplex edges index pairs are the same and the whole edges values are not also the same.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">s0</td><td><a class="el" href="classplayrho_1_1_simplex.html" title="Simplex. ">Simplex</a> edge 0. </td></tr>
-    <tr><td class="paramname">s1</td><td><a class="el" href="classplayrho_1_1_simplex.html" title="Simplex. ">Simplex</a> edge 1.</td></tr>
+    <tr><td class="paramname">s0</td><td><a class="el" href="classplayrho_1_1_simplex.html" title="An encapsulation of a point, line segment, or triangle. ">Simplex</a> edge 0. </td></tr>
+    <tr><td class="paramname">s1</td><td><a class="el" href="classplayrho_1_1_simplex.html" title="An encapsulation of a point, line segment, or triangle. ">Simplex</a> edge 1.</td></tr>
   </table>
   </dd>
 </dl>
@@ -352,8 +266,8 @@ There may not be more than one entry for the same index pair.</dd></dl>
 
 </div>
 </div>
-<a id="a7a9bfe57f232340efc7c103a38907595"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7a9bfe57f232340efc7c103a38907595">&#9670;&nbsp;</a></span>Get() <span class="overload">[3/4]</span></h2>
+<a id="ae184255348982095084062a7cdd3b983"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae184255348982095084062a7cdd3b983">&#9670;&nbsp;</a></span>Get() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -362,7 +276,7 @@ There may not be more than one entry for the same index pair.</dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classplayrho_1_1_simplex.html">Simplex</a> Simplex::Get </td>
+          <td class="memname"><a class="el" href="classplayrho_1_1_simplex.html">Simplex</a> playrho::Simplex::Get </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classplayrho_1_1_simplex_edge.html">SimplexEdge</a> &amp;&#160;</td>
           <td class="paramname"><em>s0</em>, </td>
@@ -395,8 +309,8 @@ There may not be more than one entry for the same index pair.</dd></dl>
 
 </div>
 </div>
-<a id="af2add5d144cf93598a33d54b0bb8ba40"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af2add5d144cf93598a33d54b0bb8ba40">&#9670;&nbsp;</a></span>Get() <span class="overload">[4/4]</span></h2>
+<a id="a0af964b32a43584a8fbf65e4dd807636"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0af964b32a43584a8fbf65e4dd807636">&#9670;&nbsp;</a></span>Get() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -405,9 +319,9 @@ There may not be more than one entry for the same index pair.</dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classplayrho_1_1_simplex.html">Simplex</a> Simplex::Get </td>
+          <td class="memname"><a class="el" href="classplayrho_1_1_simplex.html">Simplex</a> playrho::Simplex::Get </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classplayrho_1_1_simplex.html#a1f5a6ea900063d258605a98c2dfc4009">Edges</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceplayrho.html#a71e19fb87dba30315647147d5f63d491">SimplexEdges</a> &amp;&#160;</td>
           <td class="paramname"><em>edges</em></td><td>)</td>
           <td></td>
         </tr>
@@ -429,135 +343,6 @@ There may not be more than one entry for the same index pair.</dd></dl>
 
 </div>
 </div>
-<a id="a508eaed94442f63859805a0366c685bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a508eaed94442f63859805a0366c685bc">&#9670;&nbsp;</a></span>GetCache()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classplayrho_1_1_simplex_1_1_cache.html">Simplex::Cache</a> playrho::Simplex::GetCache </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classplayrho_1_1_simplex.html#a1f5a6ea900063d258605a98c2dfc4009">Simplex::Edges</a> &amp;&#160;</td>
-          <td class="paramname"><em>edges</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a4349d78238f1e0e1746f69b9c9861aa7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4349d78238f1e0e1746f69b9c9861aa7">&#9670;&nbsp;</a></span>GetCoefficient()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> playrho::Simplex::GetCoefficient </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1_simplex.html#a082dc8b89e393dba8f0b9851f31a99d3">size_type</a>&#160;</td>
-          <td class="paramname"><em>index</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ad5735b61f402ad09fb9a22b1fd5af64c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad5735b61f402ad09fb9a22b1fd5af64c">&#9670;&nbsp;</a></span>GetEdges()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="classplayrho_1_1_simplex.html#a1f5a6ea900063d258605a98c2dfc4009">Simplex::Edges</a> playrho::Simplex::GetEdges </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ac97e5bc42a351525d4d484bc06abd365"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac97e5bc42a351525d4d484bc06abd365">&#9670;&nbsp;</a></span>GetIndexPairs()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespaceplayrho.html#ac11a249a7050826a28b8e457b321b58b">IndexPair3</a> playrho::Simplex::GetIndexPairs </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classplayrho_1_1_simplex.html#a1f5a6ea900063d258605a98c2dfc4009">Edges</a> &amp;&#160;</td>
-          <td class="paramname"><em>collection</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ae745a112c1aed790b9c3137c098d94c1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae745a112c1aed790b9c3137c098d94c1">&#9670;&nbsp;</a></span>GetSimplexEdge()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="classplayrho_1_1_simplex_edge.html">SimplexEdge</a> &amp; playrho::Simplex::GetSimplexEdge </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1_simplex.html#a082dc8b89e393dba8f0b9851f31a99d3">size_type</a>&#160;</td>
-          <td class="paramname"><em>index</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="acd7a3b148cd312a7b4023a2895df7a39"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acd7a3b148cd312a7b4023a2895df7a39">&#9670;&nbsp;</a></span>GetSize()</h2>
 
@@ -568,7 +353,7 @@ There may not be more than one entry for the same index pair.</dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="classplayrho_1_1_simplex.html#a082dc8b89e393dba8f0b9851f31a99d3">Simplex::size_type</a> playrho::Simplex::GetSize </td>
+          <td class="memname">constexpr <a class="el" href="classplayrho_1_1_simplex.html#a922b8cc214d74a5c775ebcf0f976ff85">Simplex::size_type</a> playrho::Simplex::GetSize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -580,6 +365,7 @@ There may not be more than one entry for the same index pair.</dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Gets the size in number of valid edges of this <a class="el" href="classplayrho_1_1_simplex.html" title="An encapsulation of a point, line segment, or triangle. ">Simplex</a>.</p>
 <dl class="section return"><dt>Returns</dt><dd>Value between 0 and <code>MaxEdges</code> (inclusive). </dd></dl>
 
 </div>
@@ -591,7 +377,7 @@ There may not be more than one entry for the same index pair.</dd></dl>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 6 2017 12:29:47 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Sep 16 2017 23:07:50 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

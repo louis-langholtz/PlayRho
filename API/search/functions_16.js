@@ -1,21 +1,9 @@
 var searchData=
 [
   ['_7eallocatedarray',['~AllocatedArray',['../classplayrho_1_1_allocated_array.html#a341342cabbb7a14b8dc39d0f7024cbfa',1,'playrho::AllocatedArray']]],
-  ['_7eblockallocator',['~BlockAllocator',['../classplayrho_1_1_block_allocator.html#a29c335e64eb8014fe740ac16514b2ba2',1,'playrho::BlockAllocator']]],
-  ['_7ebody',['~Body',['../classplayrho_1_1_body.html#abe1c4da65568cf7978b6247affc461e3',1,'playrho::Body']]],
-  ['_7echainshape',['~ChainShape',['../classplayrho_1_1_chain_shape.html#acad455bad80226e769c15d3bd32fc063',1,'playrho::ChainShape']]],
-  ['_7econtactfilter',['~ContactFilter',['../classplayrho_1_1_contact_filter.html#ac526c564b340e894b4d8554504ce6131',1,'playrho::ContactFilter']]],
-  ['_7econtactlistener',['~ContactListener',['../classplayrho_1_1_contact_listener.html#a8db29a0c6d335363bc596f0ce5edfe4f',1,'playrho::ContactListener']]],
-  ['_7edestructionlistener',['~DestructionListener',['../classplayrho_1_1_destruction_listener.html#a06896c346e90bf83e26eb3c19cd32a1a',1,'playrho::DestructionListener']]],
-  ['_7edynamictree',['~DynamicTree',['../classplayrho_1_1_dynamic_tree.html#a0e88f220283e4e4b7ebfdaadfd70f1e5',1,'playrho::DynamicTree']]],
+  ['_7edynamictree',['~DynamicTree',['../classplayrho_1_1_dynamic_tree.html#a0578d970e58b2e0747b07b42550a7504',1,'playrho::DynamicTree']]],
   ['_7efixture',['~Fixture',['../classplayrho_1_1_fixture.html#a627b4b3f424af655430c8cf3a97ca96c',1,'playrho::Fixture']]],
   ['_7eflagguard',['~FlagGuard',['../classplayrho_1_1_flag_guard.html#a1649a18e1024ccbc6e8704b2f381f31e',1,'playrho::FlagGuard']]],
-  ['_7egrowablestack',['~GrowableStack',['../classplayrho_1_1_growable_stack.html#a1b8cf90e8ed8c94408746c241e5d0fb6',1,'playrho::GrowableStack']]],
-  ['_7eisland',['~Island',['../classplayrho_1_1_island.html#a37d352188865d77ab9aed261ac679c56',1,'playrho::Island']]],
-  ['_7ejoint',['~Joint',['../classplayrho_1_1_joint.html#a353f5c7885b0761c760f8c09c5110cb6',1,'playrho::Joint']]],
-  ['_7erope',['~Rope',['../classplayrho_1_1_rope.html#a4f79ce3cdb606debb298c3a0f81153ef',1,'playrho::Rope']]],
-  ['_7eshape',['~Shape',['../classplayrho_1_1_shape.html#a1e34b0aef28342579e125bc02c796796',1,'playrho::Shape']]],
-  ['_7estackallocator',['~StackAllocator',['../classplayrho_1_1_stack_allocator.html#a95796512a425aa969779c894694f31d4',1,'playrho::StackAllocator']]],
-  ['_7evisitor',['~Visitor',['../classplayrho_1_1_shape_1_1_visitor.html#ab9fa088c366fd51c7719191dcac60c83',1,'playrho::Shape::Visitor']]],
+  ['_7eisland',['~Island',['../structplayrho_1_1_island.html#a37d352188865d77ab9aed261ac679c56',1,'playrho::Island']]],
   ['_7eworld',['~World',['../classplayrho_1_1_world.html#a2e1b0a8c5c030be501818fd6a663b328',1,'playrho::World']]]
 ];

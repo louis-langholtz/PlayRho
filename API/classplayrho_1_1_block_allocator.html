@@ -75,129 +75,91 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Block allocator.  
+<p><a class="el" href="structplayrho_1_1_block_allocator_1_1_block.html" title="Block. ">Block</a> allocator.  
  <a href="classplayrho_1_1_block_allocator.html#details">More...</a></p>
 
 <p><code>#include &lt;BlockAllocator.hpp&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_block_allocator_1_1_block.html">Block</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="struct_block_allocator_1_1_block.html" title="Block. ">Block</a>.  <a href="struct_block_allocator_1_1_block.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_block_allocator_1_1_block.html">Block</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structplayrho_1_1_block_allocator_1_1_block.html" title="Block. ">Block</a>.  <a href="structplayrho_1_1_block_allocator_1_1_block.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_block_allocator_1_1_chunk.html">Chunk</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="struct_block_allocator_1_1_chunk.html" title="Chunk. ">Chunk</a>.  <a href="struct_block_allocator_1_1_chunk.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_block_allocator_1_1_chunk.html">Chunk</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structplayrho_1_1_block_allocator_1_1_chunk.html" title="Chunk. ">Chunk</a>.  <a href="structplayrho_1_1_block_allocator_1_1_chunk.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:ae039f1fd9e0cdafe92d108cf5dc3d663"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_block_allocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a> = std::size_t</td></tr>
+<tr class="memitem:ae039f1fd9e0cdafe92d108cf5dc3d663"><td class="memItemLeft" align="right" valign="top"><a id="ae039f1fd9e0cdafe92d108cf5dc3d663"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_block_allocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a> = std::size_t</td></tr>
+<tr class="memdesc:ae039f1fd9e0cdafe92d108cf5dc3d663"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size type. <br /></td></tr>
 <tr class="separator:ae039f1fd9e0cdafe92d108cf5dc3d663"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae5c8dc75fda381139b1bf79943e24709"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_block_allocator.html#ae5c8dc75fda381139b1bf79943e24709">BlockAllocator</a> ()</td></tr>
-<tr class="separator:ae5c8dc75fda381139b1bf79943e24709"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29c335e64eb8014fe740ac16514b2ba2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_block_allocator.html#a29c335e64eb8014fe740ac16514b2ba2">~BlockAllocator</a> () noexcept</td></tr>
-<tr class="separator:a29c335e64eb8014fe740ac16514b2ba2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abab4c5f0b6463b9896e301f1e7036f44"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_block_allocator.html#abab4c5f0b6463b9896e301f1e7036f44">Allocate</a> (<a class="el" href="classplayrho_1_1_block_allocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a> n)</td></tr>
-<tr class="memdesc:abab4c5f0b6463b9896e301f1e7036f44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates memory.  <a href="#abab4c5f0b6463b9896e301f1e7036f44">More...</a><br /></td></tr>
-<tr class="separator:abab4c5f0b6463b9896e301f1e7036f44"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10c24f4502f0aedf3195da11635e241f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a6cef07ba848cfabe2dc11b27eac6fb49"><td class="memItemLeft" align="right" valign="top"><a id="a6cef07ba848cfabe2dc11b27eac6fb49"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>BlockAllocator</b> (const <a class="el" href="classplayrho_1_1_block_allocator.html">BlockAllocator</a> &amp;other)=delete</td></tr>
+<tr class="separator:a6cef07ba848cfabe2dc11b27eac6fb49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8172c45553e06b2475c34e85842aa31a"><td class="memItemLeft" align="right" valign="top"><a id="a8172c45553e06b2475c34e85842aa31a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>BlockAllocator</b> (<a class="el" href="classplayrho_1_1_block_allocator.html">BlockAllocator</a> &amp;&amp;other)=delete</td></tr>
+<tr class="separator:a8172c45553e06b2475c34e85842aa31a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c1a78be162d81d5a915d33fffd4bd99"><td class="memItemLeft" align="right" valign="top"><a id="a4c1a78be162d81d5a915d33fffd4bd99"></a>
+<a class="el" href="classplayrho_1_1_block_allocator.html">BlockAllocator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classplayrho_1_1_block_allocator.html">BlockAllocator</a> &amp;other)=delete</td></tr>
+<tr class="separator:a4c1a78be162d81d5a915d33fffd4bd99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f4069da97f35158e2a2dff6e59b5088"><td class="memItemLeft" align="right" valign="top"><a id="a2f4069da97f35158e2a2dff6e59b5088"></a>
+<a class="el" href="classplayrho_1_1_block_allocator.html">BlockAllocator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classplayrho_1_1_block_allocator.html">BlockAllocator</a> &amp;&amp;other)=delete</td></tr>
+<tr class="separator:a2f4069da97f35158e2a2dff6e59b5088"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbb25555e5d25ed67a4748136ff7b8ed"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_block_allocator.html#abbb25555e5d25ed67a4748136ff7b8ed">Allocate</a> (<a class="el" href="classplayrho_1_1_block_allocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a> n)</td></tr>
+<tr class="memdesc:abbb25555e5d25ed67a4748136ff7b8ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates memory.  <a href="#abbb25555e5d25ed67a4748136ff7b8ed">More...</a><br /></td></tr>
+<tr class="separator:abbb25555e5d25ed67a4748136ff7b8ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10c24f4502f0aedf3195da11635e241f"><td class="memTemplParams" colspan="2"><a id="a10c24f4502f0aedf3195da11635e241f"></a>
+template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a10c24f4502f0aedf3195da11635e241f"><td class="memTemplItemLeft" align="right" valign="top">T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_block_allocator.html#a10c24f4502f0aedf3195da11635e241f">AllocateArray</a> (<a class="el" href="classplayrho_1_1_block_allocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a> n)</td></tr>
+<tr class="memdesc:a10c24f4502f0aedf3195da11635e241f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates an array. <br /></td></tr>
 <tr class="separator:a10c24f4502f0aedf3195da11635e241f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca3ea1fccceaf88dff9403ff060f6833"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_block_allocator.html#aca3ea1fccceaf88dff9403ff060f6833">Free</a> (void *p, <a class="el" href="classplayrho_1_1_block_allocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a> n)</td></tr>
-<tr class="memdesc:aca3ea1fccceaf88dff9403ff060f6833"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free memory.  <a href="#aca3ea1fccceaf88dff9403ff060f6833">More...</a><br /></td></tr>
-<tr class="separator:aca3ea1fccceaf88dff9403ff060f6833"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9efff7d8667adb09d915834c3b9ac15c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_block_allocator.html#a9efff7d8667adb09d915834c3b9ac15c">Clear</a> ()</td></tr>
-<tr class="memdesc:a9efff7d8667adb09d915834c3b9ac15c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears this allocator.  <a href="#a9efff7d8667adb09d915834c3b9ac15c">More...</a><br /></td></tr>
-<tr class="separator:a9efff7d8667adb09d915834c3b9ac15c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8bec3ad25a09721b7e4ec1bac8b4325c"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_block_allocator.html#a8bec3ad25a09721b7e4ec1bac8b4325c">GetChunkCount</a> () const noexcept</td></tr>
+<tr class="memitem:a06536ee49cdb1a8c2f79de7522c8bd33"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_block_allocator.html#a06536ee49cdb1a8c2f79de7522c8bd33">Free</a> (void *p, <a class="el" href="classplayrho_1_1_block_allocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a> n)</td></tr>
+<tr class="memdesc:a06536ee49cdb1a8c2f79de7522c8bd33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free memory.  <a href="#a06536ee49cdb1a8c2f79de7522c8bd33">More...</a><br /></td></tr>
+<tr class="separator:a06536ee49cdb1a8c2f79de7522c8bd33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12d8426f4a31b8ed042b2a62699d04e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_block_allocator.html#a12d8426f4a31b8ed042b2a62699d04e4">Clear</a> ()</td></tr>
+<tr class="memdesc:a12d8426f4a31b8ed042b2a62699d04e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears this allocator.  <a href="#a12d8426f4a31b8ed042b2a62699d04e4">More...</a><br /></td></tr>
+<tr class="separator:a12d8426f4a31b8ed042b2a62699d04e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bec3ad25a09721b7e4ec1bac8b4325c"><td class="memItemLeft" align="right" valign="top"><a id="a8bec3ad25a09721b7e4ec1bac8b4325c"></a>
+auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_block_allocator.html#a8bec3ad25a09721b7e4ec1bac8b4325c">GetChunkCount</a> () const noexcept</td></tr>
+<tr class="memdesc:a8bec3ad25a09721b7e4ec1bac8b4325c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the chunk count. <br /></td></tr>
 <tr class="separator:a8bec3ad25a09721b7e4ec1bac8b4325c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a81416ab2b8d29effab799523726c9cef"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_block_allocator.html#a81416ab2b8d29effab799523726c9cef">ChunkSize</a> = <a class="el" href="classplayrho_1_1_block_allocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a>{16 * 1024}</td></tr>
-<tr class="memdesc:a81416ab2b8d29effab799523726c9cef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Chunk size.  <a href="#a81416ab2b8d29effab799523726c9cef">More...</a><br /></td></tr>
+<tr class="memitem:a81416ab2b8d29effab799523726c9cef"><td class="memItemLeft" align="right" valign="top"><a id="a81416ab2b8d29effab799523726c9cef"></a>
+static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_block_allocator.html#a81416ab2b8d29effab799523726c9cef">ChunkSize</a> = <a class="el" href="classplayrho_1_1_block_allocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a>{16 * 1024}</td></tr>
+<tr class="memdesc:a81416ab2b8d29effab799523726c9cef"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structplayrho_1_1_block_allocator_1_1_chunk.html" title="Chunk. ">Chunk</a> size. <br /></td></tr>
 <tr class="separator:a81416ab2b8d29effab799523726c9cef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a376b463ce4d321fe5564358d463185cd"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_block_allocator.html#a376b463ce4d321fe5564358d463185cd">MaxBlockSize</a> = <a class="el" href="classplayrho_1_1_block_allocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a>{640}</td></tr>
-<tr class="memdesc:a376b463ce4d321fe5564358d463185cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max block size (before using external allocator).  <a href="#a376b463ce4d321fe5564358d463185cd">More...</a><br /></td></tr>
+<tr class="memitem:a376b463ce4d321fe5564358d463185cd"><td class="memItemLeft" align="right" valign="top"><a id="a376b463ce4d321fe5564358d463185cd"></a>
+static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_block_allocator.html#a376b463ce4d321fe5564358d463185cd">MaxBlockSize</a> = <a class="el" href="classplayrho_1_1_block_allocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a>{640}</td></tr>
+<tr class="memdesc:a376b463ce4d321fe5564358d463185cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max block size (before using external allocator). <br /></td></tr>
 <tr class="separator:a376b463ce4d321fe5564358d463185cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23e7f083753aa14c4489206790f1cfa2"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_block_allocator.html#a23e7f083753aa14c4489206790f1cfa2">BlockSizes</a> = <a class="el" href="classplayrho_1_1_block_allocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a>{14}</td></tr>
+<tr class="memitem:a23e7f083753aa14c4489206790f1cfa2"><td class="memItemLeft" align="right" valign="top"><a id="a23e7f083753aa14c4489206790f1cfa2"></a>
+static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_block_allocator.html#a23e7f083753aa14c4489206790f1cfa2">BlockSizes</a> = <a class="el" href="classplayrho_1_1_block_allocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a>{14}</td></tr>
+<tr class="memdesc:a23e7f083753aa14c4489206790f1cfa2"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structplayrho_1_1_block_allocator_1_1_block.html" title="Block. ">Block</a> sizes. <br /></td></tr>
 <tr class="separator:a23e7f083753aa14c4489206790f1cfa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac18179ec3684a0ea35d0a8461083f51d"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_block_allocator.html#ac18179ec3684a0ea35d0a8461083f51d">ChunkArrayIncrement</a> = <a class="el" href="classplayrho_1_1_block_allocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a>{128}</td></tr>
+<tr class="memitem:ac18179ec3684a0ea35d0a8461083f51d"><td class="memItemLeft" align="right" valign="top"><a id="ac18179ec3684a0ea35d0a8461083f51d"></a>
+static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_block_allocator.html#ac18179ec3684a0ea35d0a8461083f51d">ChunkArrayIncrement</a> = <a class="el" href="classplayrho_1_1_block_allocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a>{128}</td></tr>
+<tr class="memdesc:ac18179ec3684a0ea35d0a8461083f51d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structplayrho_1_1_block_allocator_1_1_chunk.html" title="Chunk. ">Chunk</a> array increment. <br /></td></tr>
 <tr class="separator:ac18179ec3684a0ea35d0a8461083f51d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This is a small object allocator used for allocating small objects that persist for more than one time step. </p><dl class="section note"><dt>Note</dt><dd>This data structure is 136-bytes large (on at least one 64-bit platform). </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a href="http://www.codeproject.com/useritems/Small_Block_Allocator.asp">http://www.codeproject.com/useritems/Small_Block_Allocator.asp</a> </dd></dl>
-</div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="ae039f1fd9e0cdafe92d108cf5dc3d663"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae039f1fd9e0cdafe92d108cf5dc3d663">&#9670;&nbsp;</a></span>size_type</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="abbb25555e5d25ed67a4748136ff7b8ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbb25555e5d25ed67a4748136ff7b8ed">&#9670;&nbsp;</a></span>Allocate()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classplayrho_1_1_block_allocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">playrho::BlockAllocator::size_type</a> =  std::size_t</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ae5c8dc75fda381139b1bf79943e24709"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5c8dc75fda381139b1bf79943e24709">&#9670;&nbsp;</a></span>BlockAllocator()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">BlockAllocator::BlockAllocator </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a29c335e64eb8014fe740ac16514b2ba2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a29c335e64eb8014fe740ac16514b2ba2">&#9670;&nbsp;</a></span>~BlockAllocator()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">BlockAllocator::~BlockAllocator </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="abab4c5f0b6463b9896e301f1e7036f44"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abab4c5f0b6463b9896e301f1e7036f44">&#9670;&nbsp;</a></span>Allocate()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void * BlockAllocator::Allocate </td>
+          <td class="memname">void * playrho::BlockAllocator::Allocate </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classplayrho_1_1_block_allocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a>&#160;</td>
           <td class="paramname"><em>n</em></td><td>)</td>
@@ -205,46 +167,18 @@ Static Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Allocates uninitialized storage. Uses <code>Alloc</code> if the size is larger than <code>MaxBlockSize</code>. Otherwise looks for an appropriately sized block from the free list. Failing that, <code>Alloc</code> is used to grow the free list from which memory is returned. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#a5908a18311a865763d65130dcdf40052" title="Implement this function to use your own memory allocator. ">Alloc</a>. </dd></dl>
+<p>Allocates uninitialized storage. Uses <code>Alloc</code> if the size is larger than <code>MaxBlockSize</code>. Otherwise looks for an appropriately sized block from the free list. Failing that, <code>Alloc</code> is used to grow the free list from which memory is returned. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#a5908a18311a865763d65130dcdf40052" title="Allocates memory. ">Alloc</a>. </dd></dl>
 
 </div>
 </div>
-<a id="a10c24f4502f0aedf3195da11635e241f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a10c24f4502f0aedf3195da11635e241f">&#9670;&nbsp;</a></span>AllocateArray()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">T* playrho::BlockAllocator::AllocateArray </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1_block_allocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a>&#160;</td>
-          <td class="paramname"><em>n</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a9efff7d8667adb09d915834c3b9ac15c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9efff7d8667adb09d915834c3b9ac15c">&#9670;&nbsp;</a></span>Clear()</h2>
+<a id="a12d8426f4a31b8ed042b2a62699d04e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12d8426f4a31b8ed042b2a62699d04e4">&#9670;&nbsp;</a></span>Clear()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void BlockAllocator::Clear </td>
+          <td class="memname">void playrho::BlockAllocator::Clear </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -255,14 +189,14 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="aca3ea1fccceaf88dff9403ff060f6833"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca3ea1fccceaf88dff9403ff060f6833">&#9670;&nbsp;</a></span>Free()</h2>
+<a id="a06536ee49cdb1a8c2f79de7522c8bd33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06536ee49cdb1a8c2f79de7522c8bd33">&#9670;&nbsp;</a></span>Free()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void BlockAllocator::Free </td>
+          <td class="memname">void playrho::BlockAllocator::Free </td>
           <td>(</td>
           <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>p</em>, </td>
@@ -284,120 +218,6 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a8bec3ad25a09721b7e4ec1bac8b4325c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8bec3ad25a09721b7e4ec1bac8b4325c">&#9670;&nbsp;</a></span>GetChunkCount()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto playrho::BlockAllocator::GetChunkCount </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a23e7f083753aa14c4489206790f1cfa2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a23e7f083753aa14c4489206790f1cfa2">&#9670;&nbsp;</a></span>BlockSizes</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr auto playrho::BlockAllocator::BlockSizes = <a class="el" href="classplayrho_1_1_block_allocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a>{14}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ac18179ec3684a0ea35d0a8461083f51d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac18179ec3684a0ea35d0a8461083f51d">&#9670;&nbsp;</a></span>ChunkArrayIncrement</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr auto playrho::BlockAllocator::ChunkArrayIncrement = <a class="el" href="classplayrho_1_1_block_allocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a>{128}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a81416ab2b8d29effab799523726c9cef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a81416ab2b8d29effab799523726c9cef">&#9670;&nbsp;</a></span>ChunkSize</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr auto playrho::BlockAllocator::ChunkSize = <a class="el" href="classplayrho_1_1_block_allocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a>{16 * 1024}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a376b463ce4d321fe5564358d463185cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a376b463ce4d321fe5564358d463185cd">&#9670;&nbsp;</a></span>MaxBlockSize</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr auto playrho::BlockAllocator::MaxBlockSize = <a class="el" href="classplayrho_1_1_block_allocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a>{640}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>BlockAllocator.hpp</li>
 <li>BlockAllocator.cpp</li>
@@ -405,7 +225,7 @@ template&lt;typename T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 6 2017 12:29:46 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Sep 16 2017 23:07:50 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

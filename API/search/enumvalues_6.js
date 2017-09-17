@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['gear',['Gear',['../namespaceplayrho.html#aae8d7c50e25778ece4347bd63586c485afb845762a66c26782f477febab5344dc',1,'playrho']]],
-  ['greaterthan',['GreaterThan',['../classplayrho_1_1_fixed.html#a17b16b2f06f99d0e941d7e8d9bff4e77af6d044fe1f01fb0c956b80099e2a3072',1,'playrho::Fixed']]]
+  ['nullstate',['NullState',['../namespaceplayrho.html#a06f67e158a928ef59e4263facac8fb0ba5ac8cf2fb7a90ff2d0829f5fca4db5b8',1,'playrho']]]
 ];

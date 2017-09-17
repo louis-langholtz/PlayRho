@@ -14,6 +14,5 @@ var searchData=
   ['velocity',['Velocity',['../structplayrho_1_1_velocity.html',1,'playrho']]],
   ['velocityconstraint',['VelocityConstraint',['../classplayrho_1_1_velocity_constraint.html',1,'playrho']]],
   ['version',['Version',['../structplayrho_1_1_version.html',1,'playrho']]],
-  ['vertexset',['VertexSet',['../classplayrho_1_1_vertex_set.html',1,'playrho']]],
-  ['visitor',['Visitor',['../classplayrho_1_1_shape_1_1_visitor.html',1,'playrho::Shape']]]
+  ['vertexset',['VertexSet',['../classplayrho_1_1_vertex_set.html',1,'playrho']]]
 ];

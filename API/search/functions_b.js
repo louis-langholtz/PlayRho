@@ -6,12 +6,12 @@ var searchData=
   ['min',['min',['../classstd_1_1numeric__limits_3_01playrho_1_1_fixed32_01_4.html#ae846f31085c3001a91152104fdeda526',1,'std::numeric_limits&lt; playrho::Fixed32 &gt;::min()'],['../classstd_1_1numeric__limits_3_01playrho_1_1_fixed64_01_4.html#aed1b28908f618a52e0ad22ff0d314175',1,'std::numeric_limits&lt; playrho::Fixed64 &gt;::min()']]],
   ['mixfriction',['MixFriction',['../namespaceplayrho.html#a50d46e6e45df1f7049decee120ce9922',1,'playrho']]],
   ['mixrestitution',['MixRestitution',['../namespaceplayrho.html#abdd2574637d4c8869ae345d3975829cc',1,'playrho']]],
-  ['motorjoint',['MotorJoint',['../classplayrho_1_1_motor_joint.html#a38e25ec4bddb3c6080aa442537704a0d',1,'playrho::MotorJoint']]],
-  ['motorjointdef',['MotorJointDef',['../structplayrho_1_1_motor_joint_def.html#a748aae5f09c37c692cfe3b73ea75f27d',1,'playrho::MotorJointDef::MotorJointDef() noexcept'],['../structplayrho_1_1_motor_joint_def.html#a038ef794f5a5196f80c040f5824d780b',1,'playrho::MotorJointDef::MotorJointDef(NonNull&lt; Body *&gt; bodyA, NonNull&lt; Body *&gt; bodyB) noexcept']]],
-  ['mousejoint',['MouseJoint',['../classplayrho_1_1_mouse_joint.html#a4b2dedc25164aec2e422c4a7a7c8230e',1,'playrho::MouseJoint']]],
-  ['mousejointdef',['MouseJointDef',['../structplayrho_1_1_mouse_joint_def.html#a1e135c6c3bebdc5afd1f8648b87ce200',1,'playrho::MouseJointDef::MouseJointDef() noexcept'],['../structplayrho_1_1_mouse_joint_def.html#a30664eac3883a4aa272b5d2ace4f8210',1,'playrho::MouseJointDef::MouseJointDef(NonNull&lt; Body *&gt; b) noexcept']]],
+  ['motorjoint',['MotorJoint',['../classplayrho_1_1_motor_joint.html#a35f65f0a5d13af960cf4f029128e9cab',1,'playrho::MotorJoint']]],
+  ['motorjointdef',['MotorJointDef',['../structplayrho_1_1_motor_joint_def.html#aa3a9aef25de17a27e3185df8dbc1766e',1,'playrho::MotorJointDef']]],
+  ['mousejoint',['MouseJoint',['../classplayrho_1_1_mouse_joint.html#a3f185103f1e8280045415c20ae19df53',1,'playrho::MouseJoint']]],
+  ['mousejointdef',['MouseJointDef',['../structplayrho_1_1_mouse_joint_def.html#a30664eac3883a4aa272b5d2ace4f8210',1,'playrho::MouseJointDef']]],
   ['move',['Move',['../classplayrho_1_1_a_a_b_b.html#a1b85f0fedb29408fd5afa0effd3daf5c',1,'playrho::AABB']]],
-  ['mul',['Mul',['../namespaceplayrho.html#aca7fc7e2730184d22b620c4f1f607611',1,'playrho::Mul(const Mat22 &amp;A, const Mat22 &amp;B) noexcept'],['../namespaceplayrho.html#ad76b0dc85088e062731fd7868aa78a57',1,'playrho::Mul(const Transformation &amp;A, const Transformation &amp;B) noexcept']]],
-  ['mult',['MulT',['../namespaceplayrho.html#ab471bae6413067374ab8d8262533e402',1,'playrho::MulT(const Mat22 &amp;A, const Mat22 &amp;B) noexcept'],['../namespaceplayrho.html#af6af2739f6bfd0ec9d1e0824c960c3f6',1,'playrho::MulT(const Transformation &amp;A, const Transformation &amp;B) noexcept']]],
+  ['mul',['Mul',['../group___math.html#gaca7fc7e2730184d22b620c4f1f607611',1,'playrho::Mul(const Mat22 &amp;A, const Mat22 &amp;B) noexcept'],['../group___math.html#gad76b0dc85088e062731fd7868aa78a57',1,'playrho::Mul(const Transformation &amp;A, const Transformation &amp;B) noexcept']]],
+  ['mult',['MulT',['../group___math.html#gab471bae6413067374ab8d8262533e402',1,'playrho::MulT(const Mat22 &amp;A, const Mat22 &amp;B) noexcept'],['../group___math.html#gaf6af2739f6bfd0ec9d1e0824c960c3f6',1,'playrho::MulT(const Transformation &amp;A, const Transformation &amp;B) noexcept']]],
   ['multishape',['MultiShape',['../classplayrho_1_1_multi_shape.html#a1609401d404f98fe11e7aeb43d9a40a3',1,'playrho::MultiShape::MultiShape(const Conf &amp;conf=GetDefaultConf()) noexcept'],['../classplayrho_1_1_multi_shape.html#af3a1e5431a13522c2de7511e187dd795',1,'playrho::MultiShape::MultiShape(const MultiShape &amp;)=default']]]
 ];

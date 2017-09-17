@@ -1,12 +1,12 @@
 var searchData=
 [
   ['scalefactor',['ScaleFactor',['../classplayrho_1_1_fixed.html#ac333cfc99aca9e1268122ddd0d04271b',1,'playrho::Fixed']]],
-  ['second',['Second',['../namespaceplayrho.html#a6dacec03532687e9bac4ac6a882b35ad',1,'playrho']]],
+  ['second',['Second',['../group___units.html#ga6dacec03532687e9bac4ac6a882b35ad',1,'playrho']]],
   ['separation',['separation',['../structplayrho_1_1_index_separation.html#ac9cfdd8ee0d114e812d31d2b2eaad80b',1,'playrho::IndexSeparation::separation()'],['../structplayrho_1_1_index_pair_separation.html#a6d67cffed127e901fba5e11985693e68',1,'playrho::IndexPairSeparation::separation()'],['../structplayrho_1_1_world_manifold_1_1_point_data.html#a7b4ada2173e32d95a72ce1bf73bf8680',1,'playrho::WorldManifold::PointData::separation()']]],
   ['simplex',['simplex',['../structplayrho_1_1_distance_output.html#aabe65a4354490ebcfb91c0924cab1dd4',1,'playrho::DistanceOutput']]],
   ['skipped',['skipped',['../structplayrho_1_1_pre_step_stats.html#a4ac67155c97fe89e223375eb442ebfba',1,'playrho::PreStepStats']]],
-  ['squaremeter',['SquareMeter',['../namespaceplayrho.html#a1fb0acbda4409a1a132baf7df83b9870',1,'playrho']]],
-  ['squareradian',['SquareRadian',['../namespaceplayrho.html#a941b3913fd0dd86a33e695cd9b73318f',1,'playrho']]],
+  ['squaremeter',['SquareMeter',['../group___units.html#ga1fb0acbda4409a1a132baf7df83b9870',1,'playrho']]],
+  ['squareradian',['SquareRadian',['../group___units.html#ga941b3913fd0dd86a33e695cd9b73318f',1,'playrho']]],
   ['squareroottwo',['SquareRootTwo',['../namespaceplayrho.html#aae1bd392cbafcb91d60633c893ff0742',1,'playrho']]],
   ['state',['state',['../structplayrho_1_1_distance_output.html#ae2111b951e4f7b8bb8f377638d56be5d',1,'playrho::DistanceOutput']]],
   ['state1',['state1',['../structplayrho_1_1_point_states.html#afdb16526dc8ff9695d14b2ca4f7abc0d',1,'playrho::PointStates']]],

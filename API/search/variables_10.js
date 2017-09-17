@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['radian',['Radian',['../namespaceplayrho.html#aebbe3f5282db32af8292500e505e21e5',1,'playrho']]],
-  ['radianpersecond',['RadianPerSecond',['../namespaceplayrho.html#a446e46852ff69dee446aadc44635865c',1,'playrho']]],
-  ['radianpersquaresecond',['RadianPerSquareSecond',['../namespaceplayrho.html#a0da7c45fe3ebc86d397e684154033742',1,'playrho']]],
+  ['radian',['Radian',['../group___units.html#gaebbe3f5282db32af8292500e505e21e5',1,'playrho']]],
+  ['radianpersecond',['RadianPerSecond',['../group___units.html#ga446e46852ff69dee446aadc44635865c',1,'playrho']]],
+  ['radianpersquaresecond',['RadianPerSquareSecond',['../group___units.html#ga0da7c45fe3ebc86d397e684154033742',1,'playrho']]],
   ['radix',['radix',['../classstd_1_1numeric__limits_3_01playrho_1_1_fixed32_01_4.html#a1f275132e25677e2adcc89bca9d19974',1,'std::numeric_limits&lt; playrho::Fixed32 &gt;::radix()'],['../classstd_1_1numeric__limits_3_01playrho_1_1_fixed64_01_4.html#a95bef78e001721a72a46952b94877d96',1,'std::numeric_limits&lt; playrho::Fixed64 &gt;::radix()']]],
   ['ratio',['ratio',['../structplayrho_1_1_gear_joint_def.html#aa3b020f32a2781db1412c7edfa3a4996',1,'playrho::GearJointDef::ratio()'],['../structplayrho_1_1_pulley_joint_def.html#a4bd2065ec348af76c2f2b84c5e132a3b',1,'playrho::PulleyJointDef::ratio()']]],
   ['referenceangle',['referenceAngle',['../structplayrho_1_1_prismatic_joint_def.html#abed1f62af76ccc0c6dcf3861c52d7b79',1,'playrho::PrismaticJointDef::referenceAngle()'],['../structplayrho_1_1_revolute_joint_def.html#adf6bf9fc60db1d39ad4fd9a971a68cca',1,'playrho::RevoluteJointDef::referenceAngle()'],['../structplayrho_1_1_weld_joint_def.html#a3e5fb594169bd4da0570f7b56f54e394',1,'playrho::WeldJointDef::referenceAngle()']]],

@@ -80,15 +80,16 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:aa4fd6a0776472a78483f4357f630e426"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_contact_listener.html#aa4fd6a0776472a78483f4357f630e426">iteration_type</a> = unsigned</td></tr>
+<tr class="memitem:aa4fd6a0776472a78483f4357f630e426"><td class="memItemLeft" align="right" valign="top"><a id="aa4fd6a0776472a78483f4357f630e426"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_contact_listener.html#aa4fd6a0776472a78483f4357f630e426">iteration_type</a> = unsigned</td></tr>
+<tr class="memdesc:aa4fd6a0776472a78483f4357f630e426"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iteration type. <br /></td></tr>
 <tr class="separator:aa4fd6a0776472a78483f4357f630e426"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8db29a0c6d335363bc596f0ce5edfe4f"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_contact_listener.html#a8db29a0c6d335363bc596f0ce5edfe4f">~ContactListener</a> ()=default</td></tr>
-<tr class="separator:a8db29a0c6d335363bc596f0ce5edfe4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4905fa2b52163148647698b0ca821726"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_contact_listener.html#a4905fa2b52163148647698b0ca821726">BeginContact</a> (<a class="el" href="classplayrho_1_1_contact.html">Contact</a> &amp;contact)=0</td></tr>
-<tr class="memdesc:a4905fa2b52163148647698b0ca821726"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when two fixtures begin to touch.  <a href="#a4905fa2b52163148647698b0ca821726">More...</a><br /></td></tr>
+<tr class="memitem:a4905fa2b52163148647698b0ca821726"><td class="memItemLeft" align="right" valign="top"><a id="a4905fa2b52163148647698b0ca821726"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_contact_listener.html#a4905fa2b52163148647698b0ca821726">BeginContact</a> (<a class="el" href="classplayrho_1_1_contact.html">Contact</a> &amp;contact)=0</td></tr>
+<tr class="memdesc:a4905fa2b52163148647698b0ca821726"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when two fixtures begin to touch. <br /></td></tr>
 <tr class="separator:a4905fa2b52163148647698b0ca821726"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73e1fc92933aa8f86f6da1467e3d1d04"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_contact_listener.html#a73e1fc92933aa8f86f6da1467e3d1d04">EndContact</a> (<a class="el" href="classplayrho_1_1_contact.html">Contact</a> &amp;contact)=0</td></tr>
 <tr class="memdesc:a73e1fc92933aa8f86f6da1467e3d1d04"><td class="mdescLeft">&#160;</td><td class="mdescRight">End contact callback.  <a href="#a73e1fc92933aa8f86f6da1467e3d1d04">More...</a><br /></td></tr>
@@ -103,74 +104,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implement this class to get contact information. You can use these results for things like sounds and game logic. You can also get contact results by traversing the contact lists after the time step. However, you might miss some contacts because continuous physics leads to sub-stepping. Additionally you may receive multiple callbacks for the same contact in a single time step. You should strive to make your callbacks efficient because there may be many callbacks per time step.</p>
 <dl class="section warning"><dt>Warning</dt><dd>You cannot create/destroy PlayRho entities inside these callbacks. </dd></dl>
-</div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="aa4fd6a0776472a78483f4357f630e426"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4fd6a0776472a78483f4357f630e426">&#9670;&nbsp;</a></span>iteration_type</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classplayrho_1_1_contact_listener.html#aa4fd6a0776472a78483f4357f630e426">playrho::ContactListener::iteration_type</a> =  unsigned</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a8db29a0c6d335363bc596f0ce5edfe4f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8db29a0c6d335363bc596f0ce5edfe4f">&#9670;&nbsp;</a></span>~ContactListener()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual playrho::ContactListener::~ContactListener </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4905fa2b52163148647698b0ca821726"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4905fa2b52163148647698b0ca821726">&#9670;&nbsp;</a></span>BeginContact()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void playrho::ContactListener::BeginContact </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1_contact.html">Contact</a> &amp;&#160;</td>
-          <td class="paramname"><em>contact</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a73e1fc92933aa8f86f6da1467e3d1d04"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a73e1fc92933aa8f86f6da1467e3d1d04">&#9670;&nbsp;</a></span>EndContact()</h2>
 
@@ -304,7 +238,7 @@ If you set the number of contact points to zero, you will not get an EndContact 
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 6 2017 12:29:46 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Sep 16 2017 23:07:50 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

@@ -15,6 +15,5 @@ var searchData=
   ['contactsskippedtouching',['contactsSkippedTouching',['../structplayrho_1_1_toi_step_stats.html#a58dfb912213be2db96c30613441e7f94',1,'playrho::ToiStepStats']]],
   ['contactsupdatedtoi',['contactsUpdatedToi',['../structplayrho_1_1_toi_step_stats.html#a29e709023574e867b53672010c5c9fb1',1,'playrho::ToiStepStats']]],
   ['contactsupdatedtouching',['contactsUpdatedTouching',['../structplayrho_1_1_toi_step_stats.html#ab0204469cd47268bd459ea7141ec26e9',1,'playrho::ToiStepStats']]],
-  ['correctionfactor',['correctionFactor',['../structplayrho_1_1_motor_joint_def.html#a6b05aae5f6533e8ed9ac465ff863db75',1,'playrho::MotorJointDef']]],
-  ['count',['count',['../structplayrho_1_1_rope_def.html#af2e7257263f5a9c82c7d3d458a214dd1',1,'playrho::RopeDef']]]
+  ['correctionfactor',['correctionFactor',['../structplayrho_1_1_motor_joint_def.html#a6b05aae5f6533e8ed9ac465ff863db75',1,'playrho::MotorJointDef']]]
 ];

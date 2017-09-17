@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['damping',['damping',['../structplayrho_1_1_rope_def.html#a34732ef511cc74be36fdfdba5899edfd',1,'playrho::RopeDef']]],
   ['dampingratio',['dampingRatio',['../structplayrho_1_1_distance_joint_def.html#ac887d539abccca66a4e98bd446a8bdf7',1,'playrho::DistanceJointDef::dampingRatio()'],['../structplayrho_1_1_mouse_joint_def.html#a0fad622e3ebdda8a4ca243f8df6cf107',1,'playrho::MouseJointDef::dampingRatio()'],['../structplayrho_1_1_weld_joint_def.html#a0474e4d3efa5452ebaf36241bede203c',1,'playrho::WeldJointDef::dampingRatio()'],['../structplayrho_1_1_wheel_joint_def.html#a61e2e9a833c37c0335f9b3b66fd09cc3',1,'playrho::WheelJointDef::dampingRatio()']]],
   ['defaultaabbextension',['DefaultAabbExtension',['../namespaceplayrho.html#a3dd06178e859667c8f65b26c4e91972e',1,'playrho']]],
   ['defaultangularsleeptolerance',['DefaultAngularSleepTolerance',['../namespaceplayrho.html#a31907e80be5889667f03ef86ee3bbf0a',1,'playrho']]],
@@ -25,8 +24,8 @@ var searchData=
   ['defaultsteptime',['DefaultStepTime',['../namespaceplayrho.html#a51e5b3bf0a53f853c75244a15b08caee',1,'playrho']]],
   ['defaulttoiminmomentum',['DefaultToiMinMomentum',['../namespaceplayrho.html#a88e51d5b5ce397624e803df05ff1c013',1,'playrho']]],
   ['defaultvelocitythreshold',['DefaultVelocityThreshold',['../namespaceplayrho.html#a6497dbff92f4140c03fb29f7dc80093d',1,'playrho']]],
-  ['degree',['Degree',['../namespaceplayrho.html#af0840a4c6fcfa4ed0f1e25820fea0ca3',1,'playrho']]],
-  ['degreepersecond',['DegreePerSecond',['../namespaceplayrho.html#a987ba57899c87b7d6734d046d1c854b8',1,'playrho']]],
+  ['degree',['Degree',['../group___units.html#gaf0840a4c6fcfa4ed0f1e25820fea0ca3',1,'playrho']]],
+  ['degreepersecond',['DegreePerSecond',['../group___units.html#ga987ba57899c87b7d6734d046d1c854b8',1,'playrho']]],
   ['density',['density',['../structplayrho_1_1_shape_1_1_conf.html#aa9db52f71379cb481377b81fac34b135',1,'playrho::Shape::Conf']]],
   ['destroyed',['destroyed',['../structplayrho_1_1_pre_step_stats.html#a62ba523ddae45bd7f16766075b5d71ee',1,'playrho::PreStepStats']]],
   ['digits',['digits',['../classstd_1_1numeric__limits_3_01playrho_1_1_fixed32_01_4.html#af8c07a5fc17242e78ca53d97e70bd071',1,'std::numeric_limits&lt; playrho::Fixed32 &gt;::digits()'],['../classstd_1_1numeric__limits_3_01playrho_1_1_fixed64_01_4.html#aba59d2cb54602f1b067ca35258fc4ce6',1,'std::numeric_limits&lt; playrho::Fixed64 &gt;::digits()']]],

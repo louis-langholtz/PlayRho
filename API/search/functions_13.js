@@ -1,10 +1,9 @@
 var searchData=
 [
-  ['unawaken',['Unawaken',['../namespaceplayrho.html#a67211a311e376d3a461adda14ee95459',1,'playrho']]],
-  ['unitvec2',['UnitVec2',['../classplayrho_1_1_unit_vec2.html#ae3f842b03f836f674777d14b7ef391ee',1,'playrho::UnitVec2']]],
+  ['unawaken',['Unawaken',['../group___body_free_functions.html#ga67211a311e376d3a461adda14ee95459',1,'playrho']]],
   ['unsetawake',['UnsetAwake',['../classplayrho_1_1_body.html#a65da2f0a7a870b136d494b9e4b608f88',1,'playrho::Body']]],
   ['unsetenabled',['UnsetEnabled',['../classplayrho_1_1_contact.html#aa2e90afe0ed6793a4f03815f9c1790bc',1,'playrho::Contact']]],
-  ['updateproxy',['UpdateProxy',['../classplayrho_1_1_dynamic_tree.html#ac7c6c60552dc27f5ec4df0c9b6d0e883',1,'playrho::DynamicTree']]],
+  ['updateproxy',['UpdateProxy',['../classplayrho_1_1_dynamic_tree.html#a8c37c6f7c201c897a524a8cde672a7e9',1,'playrho::DynamicTree']]],
   ['useallowsleep',['UseAllowSleep',['../structplayrho_1_1_body_def.html#a831d35301b9013f284e7ea22d92b19a5',1,'playrho::BodyDef']]],
   ['useangle',['UseAngle',['../structplayrho_1_1_body_def.html#a8a53108d4dfa974cd68d43ef433f47d1',1,'playrho::BodyDef']]],
   ['useangularacceleration',['UseAngularAcceleration',['../structplayrho_1_1_body_def.html#a9befb1da847ce899e3a89192ef05166f',1,'playrho::BodyDef']]],

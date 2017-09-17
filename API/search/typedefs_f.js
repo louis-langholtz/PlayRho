@@ -9,5 +9,5 @@ var searchData=
   ['revnum_5ftype',['revnum_type',['../structplayrho_1_1_version.html#a3715adc461352f8400df3b5289e277e4',1,'playrho::Version']]],
   ['root_5fiter_5ftype',['root_iter_type',['../structplayrho_1_1_toi_conf.html#a56e0a09ccf175d198fc9d666e38aeeda',1,'playrho::ToiConf::root_iter_type()'],['../classplayrho_1_1_t_o_i_output.html#acbddd991d4a8a08c4e16eec2b24858c8',1,'playrho::TOIOutput::root_iter_type()'],['../structplayrho_1_1_toi_step_stats.html#a726b6ee05b91f66b20971afb7e89209b',1,'playrho::ToiStepStats::root_iter_type()']]],
   ['root_5fsum_5ftype',['root_sum_type',['../classplayrho_1_1_t_o_i_output.html#a215515287c57e62df1c91ab6da3d89cd',1,'playrho::TOIOutput']]],
-  ['rotinertia',['RotInertia',['../namespaceplayrho.html#a1da3ffa9b709bb3bc2afffefbb040819',1,'playrho']]]
+  ['rotinertia',['RotInertia',['../group___quantities.html#ga67bbb3e4938321efec8d939636bf988e',1,'playrho']]]
 ];
