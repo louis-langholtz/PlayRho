@@ -20,12 +20,13 @@
  */
 
 #include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
+#include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
-using namespace playrho;
+namespace playrho {
 
 // Point-to-point constraint
 // C = p2 - p1
@@ -53,6 +54,11 @@ RevoluteJoint::RevoluteJoint(const RevoluteJointDef& def):
     m_upperAngle{def.upperAngle}
 {
     // Intentionally empty.
+}
+
+void RevoluteJoint::Accept(JointVisitor& visitor) const
+{
+    visitor.Visit(*this);
 }
 
 void RevoluteJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
@@ -511,12 +517,14 @@ void RevoluteJoint::SetLimits(Angle lower, Angle upper)
     }
 }
 
-Angle playrho::GetJointAngle(const RevoluteJoint& joint)
+Angle GetJointAngle(const RevoluteJoint& joint)
 {
     return joint.GetBodyB()->GetAngle() - joint.GetBodyA()->GetAngle() - joint.GetReferenceAngle();
 }
 
-AngularVelocity playrho::GetAngularVelocity(const RevoluteJoint& joint)
+AngularVelocity GetAngularVelocity(const RevoluteJoint& joint)
 {
     return joint.GetBodyB()->GetVelocity().angular - joint.GetBodyA()->GetVelocity().angular;
 }
+
+} // namespace playrho

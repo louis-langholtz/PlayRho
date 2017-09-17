@@ -79,7 +79,7 @@ public:
     using Joints = std::vector<KeyedJointPtr>;
     
     /// @brief Container type for contacts.
-    using Contacts = std::vector<std::pair<ContactKey,Contact*>>;
+    using Contacts = std::vector<KeyedContactPtr>;
 
     /// @brief Invalid island index.
     static constexpr auto InvalidIslandIndex = static_cast<BodyCounter>(-1);

@@ -48,7 +48,7 @@ static void DrawCorner(Drawer& drawer, Length2D p, Length r, Angle a0, Angle a1,
     }
 }
 
-class ShapeDrawer: public Shape::Visitor
+class ShapeDrawer: public ShapeVisitor
 {
 public:
     ShapeDrawer(Drawer& d, Color c, bool s, Transformation t):
@@ -259,7 +259,7 @@ static void Draw(Drawer& drawer, const Joint& joint)
 
     const Color color{0.5f, 0.8f, 0.8f};
 
-    switch (joint.GetType())
+    switch (GetType(joint))
     {
         case JointType::Distance:
             drawer.DrawSegment(p1, p2, color);

@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_REVOLUTE_JOINT_DEF_HPP
-#define PLAYRHO_REVOLUTE_JOINT_DEF_HPP
+#ifndef PLAYRHO_DYNAMICS_JOINTS_REVOLUTEJOINTDEF_HPP
+#define PLAYRHO_DYNAMICS_JOINTS_REVOLUTEJOINTDEF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointDef.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
@@ -122,4 +122,4 @@ RevoluteJointDef GetRevoluteJointDef(const RevoluteJoint& joint) noexcept;
 
 } // namespace playrho
 
-#endif /* PLAYRHO_REVOLUTE_JOINT_DEF_HPP */
+#endif // PLAYRHO_DYNAMICS_JOINTS_REVOLUTEJOINTDEF_HPP

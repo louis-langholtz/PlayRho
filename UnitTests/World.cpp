@@ -262,7 +262,7 @@ TEST(World, CopyConstruction)
         auto copyJointIter = copy.GetJoints().begin();
         for (auto i = decltype(minJoints){0}; i < minJoints; ++i)
         {
-            EXPECT_EQ((*worldJointIter)->GetType(), (*copyJointIter)->GetType());
+            EXPECT_EQ(GetType(*(*worldJointIter)), GetType(*(*copyJointIter)));
             ++worldJointIter;
             ++copyJointIter;
         }
@@ -321,7 +321,7 @@ TEST(World, CopyAssignment)
         auto copyJointIter = copy.GetJoints().begin();
         for (auto i = decltype(minJoints){0}; i < minJoints; ++i)
         {
-            EXPECT_EQ((*worldJointIter)->GetType(), (*copyJointIter)->GetType());
+            EXPECT_EQ(GetType(*(*worldJointIter)), GetType(*(*copyJointIter)));
             ++worldJointIter;
             ++copyJointIter;
         }
@@ -694,7 +694,7 @@ TEST(World, CreateAndDestroyJoint)
     EXPECT_NE(world.GetJoints().begin(), world.GetJoints().end());
     const auto first = *world.GetJoints().begin();
     EXPECT_EQ(joint, first);
-    EXPECT_EQ(joint->GetType(), JointType::Distance);
+    EXPECT_EQ(GetType(*joint), JointType::Distance);
     EXPECT_EQ(joint->GetBodyA(), body1);
     EXPECT_EQ(joint->GetBodyB(), body2);
     EXPECT_EQ(joint->GetAnchorA(), anchorA);

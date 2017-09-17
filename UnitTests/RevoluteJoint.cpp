@@ -66,7 +66,7 @@ TEST(RevoluteJoint, Construction)
     
     const auto joint = RevoluteJoint{jd};
 
-    EXPECT_EQ(joint.GetType(), jd.type);
+    EXPECT_EQ(GetType(joint), jd.type);
     EXPECT_EQ(joint.GetBodyA(), jd.bodyA);
     EXPECT_EQ(joint.GetBodyB(), jd.bodyB);
     EXPECT_EQ(joint.GetCollideConnected(), jd.collideConnected);

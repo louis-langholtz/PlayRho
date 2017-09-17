@@ -90,7 +90,7 @@ TEST(GearJoint, Construction)
     GearJointDef def{&revJoint1, &revJoint2};
     GearJoint joint{def};
     
-    EXPECT_EQ(joint.GetType(), def.type);
+    EXPECT_EQ(GetType(joint), def.type);
     EXPECT_EQ(joint.GetBodyA(), def.joint1->GetBodyB());
     EXPECT_EQ(joint.GetBodyB(), def.joint2->GetBodyB());
     EXPECT_EQ(joint.GetCollideConnected(), def.collideConnected);
@@ -125,7 +125,7 @@ TEST(GearJoint, GetGearJointDef)
     GearJointDef def{&revJoint1, &revJoint2};
     GearJoint joint{def};
     
-    ASSERT_EQ(joint.GetType(), def.type);
+    ASSERT_EQ(GetType(joint), def.type);
     ASSERT_EQ(joint.GetBodyA(), def.joint1->GetBodyB());
     ASSERT_EQ(joint.GetBodyB(), def.joint2->GetBodyB());
     ASSERT_EQ(joint.GetCollideConnected(), def.collideConnected);

@@ -72,7 +72,7 @@ TEST(MotorJoint, Construction)
     MotorJointDef def;
     MotorJoint joint{def};
     
-    EXPECT_EQ(joint.GetType(), def.type);
+    EXPECT_EQ(GetType(joint), def.type);
     EXPECT_EQ(joint.GetBodyA(), def.bodyA);
     EXPECT_EQ(joint.GetBodyB(), def.bodyB);
     EXPECT_EQ(joint.GetCollideConnected(), def.collideConnected);
@@ -102,7 +102,7 @@ TEST(MotorJoint, GetMotorJointDef)
     MotorJointDef def;
     MotorJoint joint{def};
     
-    ASSERT_EQ(joint.GetType(), def.type);
+    ASSERT_EQ(GetType(joint), def.type);
     ASSERT_EQ(joint.GetBodyA(), def.bodyA);
     ASSERT_EQ(joint.GetBodyB(), def.bodyB);
     ASSERT_EQ(joint.GetCollideConnected(), def.collideConnected);

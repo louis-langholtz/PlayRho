@@ -11,7 +11,7 @@ WarningsAsErrors: ''
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
 FormatStyle:     none
-CheckOptions:    
+CheckOptions:
   - key:             cert-dcl59-cpp.HeaderFileExtensions
     value:           ',h,hh,hpp,hxx'
   - key:             cert-err09-cpp.CheckThrowTemporaries
@@ -185,7 +185,7 @@ CheckOptions:
   - key:             modernize-replace-random-shuffle.IncludeStyle
     value:           llvm
   - key:             modernize-use-auto.RemoveStars
-    value:           '0'
+    value:           '1'
   - key:             modernize-use-default-member-init.IgnoreMacros
     value:           '1'
   - key:             modernize-use-default-member-init.UseAssignment
@@ -225,15 +225,15 @@ CheckOptions:
   - key:             readability-braces-around-statements.ShortStatementLines
     value:           '0'
   - key:             readability-function-size.BranchThreshold
-    value:           '4294967295'
+    value:           '13'
   - key:             readability-function-size.LineThreshold
-    value:           '4294967295'
+    value:           '200'
   - key:             readability-function-size.NestingThreshold
-    value:           '4294967295'
+    value:           '5'
   - key:             readability-function-size.ParameterThreshold
-    value:           '4294967295'
+    value:           '6'
   - key:             readability-function-size.StatementThreshold
-    value:           '800'
+    value:           '100'
   - key:             readability-identifier-naming.IgnoreFailedSplit
     value:           '0'
   - key:             readability-implicit-bool-conversion.AllowIntegerConditions
@@ -247,4 +247,3 @@ CheckOptions:
   - key:             readability-static-accessed-through-instance.NameSpecifierNestingThreshold
     value:           '3'
 ...
-

@@ -23,6 +23,7 @@
 #include <PlayRho/PlayRho.hpp>
 #include <PlayRho/Collision/RayCastOutput.hpp>
 #include <PlayRho/Collision/ShapeSeparation.hpp>
+#include <PlayRho/Collision/Shapes/ShapeVisitor.hpp>
 #include <PlayRho/Dynamics/Contacts/PositionSolverManifold.hpp>
 #include <PlayRho/Common/Range.hpp>
 #include "Drawer.hpp"

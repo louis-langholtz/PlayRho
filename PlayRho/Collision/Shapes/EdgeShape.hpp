@@ -105,7 +105,7 @@ public:
     /// @return Mass data for this shape.
     MassData GetMassData() const noexcept override;
     
-    void Accept(Visitor& visitor) const override;
+    void Accept(ShapeVisitor& visitor) const override;
 
     /// @brief Sets this as an isolated edge.
     void Set(Length2D v1, Length2D v2);
@@ -140,11 +140,6 @@ inline DistanceProxy EdgeShape::GetChild(ChildCounter index) const
         throw InvalidArgument("only index of 0 is supported");
     }
     return DistanceProxy{GetVertexRadius(), 2, m_vertices, m_normals};
-}
-
-inline void EdgeShape::Accept(Visitor& visitor) const
-{
-    visitor.Visit(*this);
 }
 
 } // namespace playrho

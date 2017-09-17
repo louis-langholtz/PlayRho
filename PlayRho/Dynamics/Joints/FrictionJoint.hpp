@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_FRICTION_JOINT_HPP
-#define PLAYRHO_FRICTION_JOINT_HPP
+#ifndef PLAYRHO_DYNAMICS_JOINTS_FRICTIONJOINT_HPP
+#define PLAYRHO_DYNAMICS_JOINTS_FRICTIONJOINT_HPP
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/FrictionJointDef.hpp>
@@ -37,6 +37,8 @@ public:
     
     /// @brief Initializing constructor.
     FrictionJoint(const FrictionJointDef& def);
+
+    void Accept(JointVisitor& visitor) const override;
 
     Length2D GetAnchorA() const override;
     Length2D GetAnchorB() const override;
@@ -106,4 +108,4 @@ inline NonNegative<Torque> FrictionJoint::GetMaxTorque() const
 
 } // namespace playrho
 
-#endif
+#endif // PLAYRHO_DYNAMICS_JOINTS_FRICTIONJOINT_HPP

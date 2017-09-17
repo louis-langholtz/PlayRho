@@ -20,11 +20,12 @@
  */
 
 #include <PlayRho/Dynamics/Joints/MotorJoint.hpp>
+#include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
-using namespace playrho;
+namespace playrho {
 
 // Point-to-point constraint
 // Cdot = v2 - v1
@@ -47,6 +48,11 @@ MotorJoint::MotorJoint(const MotorJointDef& def):
     m_correctionFactor(def.correctionFactor)
 {
     // Intentionally empty.
+}
+
+void MotorJoint::Accept(JointVisitor& visitor) const
+{
+    visitor.Visit(*this);
 }
 
 void MotorJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step, const ConstraintSolverConf&)
@@ -278,3 +284,5 @@ Angle MotorJoint::GetAngularOffset() const
 {
     return m_angularOffset;
 }
+
+} // namespace playrho

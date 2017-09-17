@@ -22,9 +22,9 @@
 #include <PlayRho/Dynamics/Joints/MouseJointDef.hpp>
 #include <PlayRho/Dynamics/Joints/MouseJoint.hpp>
 
-using namespace playrho;
+namespace playrho {
 
-MouseJointDef playrho::GetMouseJointDef(const MouseJoint& joint) noexcept
+MouseJointDef GetMouseJointDef(const MouseJoint& joint) noexcept
 {
     auto def = MouseJointDef{};
     
@@ -37,3 +37,5 @@ MouseJointDef playrho::GetMouseJointDef(const MouseJoint& joint) noexcept
     
     return def;
 }
+
+} // namespace playrho

@@ -22,12 +22,13 @@
 #include <PlayRho/Dynamics/Joints/GearJoint.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
 #include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
+#include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
-using namespace playrho;
+namespace playrho {
 
 // Gear Joint:
 // C0 = (coordinate1 + ratio * coordinate2)_initial
@@ -52,8 +53,8 @@ GearJoint::GearJoint(const GearJointDef& def):
     Joint(def),
     m_joint1(def.joint1),
     m_joint2(def.joint2),
-    m_typeA(def.joint1->GetType()),
-    m_typeB(def.joint2->GetType()),
+    m_typeA(GetType(*def.joint1)),
+    m_typeB(GetType(*def.joint2)),
     m_ratio(def.ratio)
 {
     assert(m_typeA == JointType::Revolute || m_typeA == JointType::Prismatic);
@@ -124,6 +125,11 @@ GearJoint::GearJoint(const GearJointDef& def):
     }
 
     m_constant = coordinateA + m_ratio * coordinateB;
+}
+
+void GearJoint::Accept(JointVisitor& visitor) const
+{
+    visitor.Visit(*this);
 }
 
 void GearJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
@@ -414,3 +420,5 @@ void GearJoint::SetRatio(Real ratio)
     assert(IsValid(ratio));
     m_ratio = ratio;
 }
+
+} // namespace playrho

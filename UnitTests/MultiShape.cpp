@@ -20,6 +20,7 @@
 
 #include "gtest/gtest.h"
 #include <PlayRho/Collision/Shapes/MultiShape.hpp>
+#include <PlayRho/Collision/Shapes/ShapeVisitor.hpp>
 #include <PlayRho/Common/VertexSet.hpp>
 #include <array>
 
@@ -63,7 +64,7 @@ TEST(MultiShape, GetInvalidChildThrows)
 
 TEST(MultiShape, Accept)
 {
-    class Visitor: public Shape::Visitor
+    class Visitor: public IsVisitedShapeVisitor
     {
     public:
         void Visit(const MultiShape&) override
@@ -76,19 +77,19 @@ TEST(MultiShape, Accept)
     MultiShape foo{};
     Visitor v;
     ASSERT_FALSE(v.visited);
-    ASSERT_FALSE(v.IsBaseVisited());
+    ASSERT_FALSE(v.IsVisited());
     foo.Accept(v);
     EXPECT_TRUE(v.visited);
-    EXPECT_FALSE(v.IsBaseVisited());
+    EXPECT_FALSE(v.IsVisited());
 }
 
 TEST(MultiShape, BaseVisitorForDiskShape)
 {
     const auto shape = MultiShape{};
-    auto visitor = Shape::Visitor{};
-    ASSERT_FALSE(visitor.IsBaseVisited());
+    auto visitor = IsVisitedShapeVisitor{};
+    ASSERT_FALSE(visitor.IsVisited());
     shape.Accept(visitor);
-    EXPECT_TRUE(visitor.IsBaseVisited());
+    EXPECT_TRUE(visitor.IsVisited());
 }
 
 TEST(MultiShape, AddConvexHullWithOnePointSameAsDisk)

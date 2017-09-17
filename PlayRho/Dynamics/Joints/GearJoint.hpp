@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_GEAR_JOINT_HPP
-#define PLAYRHO_GEAR_JOINT_HPP
+#ifndef PLAYRHO_DYNAMICS_JOINTS_GEARJOINT_HPP
+#define PLAYRHO_DYNAMICS_JOINTS_GEARJOINT_HPP
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/GearJointDef.hpp>
@@ -45,6 +45,8 @@ public:
     /// @brief Initializing constructor.
     GearJoint(const GearJointDef& data);
     
+    void Accept(JointVisitor& visitor) const override;
+
     Length2D GetAnchorA() const override;
     Length2D GetAnchorB() const override;
 
@@ -120,4 +122,4 @@ inline Real GearJoint::GetRatio() const noexcept
     
 } // namespace playrho
 
-#endif
+#endif // PLAYRHO_DYNAMICS_JOINTS_GEARJOINT_HPP

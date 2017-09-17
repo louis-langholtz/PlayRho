@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_PRISMATIC_JOINT_DEF_HPP
-#define PLAYRHO_PRISMATIC_JOINT_DEF_HPP
+#ifndef PLAYRHO_DYNAMICS_JOINTS_PRISMATICJOINTDEF_HPP
+#define PLAYRHO_DYNAMICS_JOINTS_PRISMATICJOINTDEF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointDef.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
@@ -125,4 +125,4 @@ PrismaticJointDef GetPrismaticJointDef(const PrismaticJoint& joint) noexcept;
 
 } // namespace playrho
 
-#endif /* PLAYRHO_PRISMATIC_JOINT_DEF_HPP */
+#endif // PLAYRHO_DYNAMICS_JOINTS_PRISMATICJOINTDEF_HPP

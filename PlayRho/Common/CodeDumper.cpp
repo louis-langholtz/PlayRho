@@ -41,6 +41,7 @@
 #include <PlayRho/Collision/Shapes/PolygonShape.hpp>
 #include <PlayRho/Collision/Shapes/ChainShape.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <PlayRho/Collision/Shapes/ShapeVisitor.hpp>
 
 #include <cstdarg>
 
@@ -57,7 +58,7 @@ namespace
         va_end(args);
     }
     
-    class ShapeDumper: public Shape::Visitor
+    class ShapeDumper: public ShapeVisitor
     {
     public:
         void Visit(const DiskShape& shape) override;
@@ -192,7 +193,7 @@ void playrho::Dump(const Body& body, std::size_t bodyIndex)
 
 void playrho::Dump(const Joint& joint, std::size_t index)
 {
-    switch (joint.GetType())
+    switch (GetType(joint))
     {
         case JointType::Pulley:
             Dump(static_cast<const PulleyJoint&>(joint), index);

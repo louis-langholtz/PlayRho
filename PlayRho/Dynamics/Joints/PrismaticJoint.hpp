@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_PRISMATIC_JOINT_HPP
-#define PLAYRHO_PRISMATIC_JOINT_HPP
+#ifndef PLAYRHO_DYNAMICS_JOINTS_PRISMATICJOINT_HPP
+#define PLAYRHO_DYNAMICS_JOINTS_PRISMATICJOINT_HPP
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/PrismaticJointDef.hpp>
@@ -42,6 +42,8 @@ public:
     
     /// @brief Copy constructor.
     PrismaticJoint(const PrismaticJointDef& def);
+    
+    void Accept(JointVisitor& visitor) const override;
 
     Length2D GetAnchorA() const override;
     Length2D GetAnchorB() const override;
@@ -174,4 +176,4 @@ LinearVelocity GetLinearVelocity(const PrismaticJoint& joint) noexcept;
 
 } // namespace playrho
 
-#endif
+#endif // PLAYRHO_DYNAMICS_JOINTS_PRISMATICJOINT_HPP

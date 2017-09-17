@@ -20,12 +20,13 @@
  */
 
 #include <PlayRho/Dynamics/Joints/RopeJoint.hpp>
+#include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
-using namespace playrho;
+namespace playrho {
 
 // Limit:
 // C = norm(pB - pA) - L
@@ -41,6 +42,11 @@ RopeJoint::RopeJoint(const RopeJointDef& def):
     m_localAnchorB(def.localAnchorB),
     m_maxLength(def.maxLength)
 {
+}
+
+void RopeJoint::Accept(JointVisitor& visitor) const
+{
+    visitor.Visit(*this);
 }
 
 void RopeJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
@@ -218,3 +224,5 @@ Joint::LimitState RopeJoint::GetLimitState() const
 {
     return m_state;
 }
+
+} // namespace playrho

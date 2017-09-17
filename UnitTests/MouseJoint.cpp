@@ -66,7 +66,7 @@ TEST(MouseJoint, DefaultInitialized)
     const auto def = MouseJointDef{};
     const auto joint = MouseJoint{def};
     
-    EXPECT_EQ(joint.GetType(), JointType::Mouse);
+    EXPECT_EQ(GetType(joint), JointType::Mouse);
     EXPECT_EQ(joint.GetBodyA(), def.bodyA);
     EXPECT_EQ(joint.GetBodyB(), def.bodyB);
     EXPECT_EQ(joint.GetAnchorA(), def.target);

@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_MOUSE_JOINT_DEF_HPP
-#define PLAYRHO_MOUSE_JOINT_DEF_HPP
+#ifndef PLAYRHO_DYNAMICS_JOINTS_MOUSEJOINTDEF_HPP
+#define PLAYRHO_DYNAMICS_JOINTS_MOUSEJOINTDEF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointDef.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
@@ -108,4 +108,4 @@ MouseJointDef GetMouseJointDef(const MouseJoint& joint) noexcept;
 
 } // namespace playrho
 
-#endif /* PLAYRHO_MOUSE_JOINT_DEF_HPP */
+#endif // PLAYRHO_DYNAMICS_JOINTS_MOUSEJOINTDEF_HPP

@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_MOUSE_JOINT_HPP
-#define PLAYRHO_MOUSE_JOINT_HPP
+#ifndef PLAYRHO_DYNAMICS_JOINTS_MOUSEJOINT_HPP
+#define PLAYRHO_DYNAMICS_JOINTS_MOUSEJOINT_HPP
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/MouseJointDef.hpp>
@@ -48,6 +48,8 @@ public:
 
     /// @brief Initializing constructor.
     MouseJoint(const MouseJointDef& def);
+    
+    void Accept(JointVisitor& visitor) const override;
 
     Length2D GetAnchorA() const override;
 
@@ -152,4 +154,4 @@ inline NonNegative<Real> MouseJoint::GetDampingRatio() const noexcept
 
 } // namespace playrho
 
-#endif
+#endif // PLAYRHO_DYNAMICS_JOINTS_MOUSEJOINT_HPP

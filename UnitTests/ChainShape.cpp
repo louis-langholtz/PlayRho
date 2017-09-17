@@ -20,6 +20,7 @@
 
 #include "gtest/gtest.h"
 #include <PlayRho/Collision/Shapes/ChainShape.hpp>
+#include <PlayRho/Collision/Shapes/ShapeVisitor.hpp>
 #include <array>
 
 using namespace playrho;
@@ -63,7 +64,7 @@ TEST(ChainShape, GetInvalidChildThrows)
 
 TEST(ChainShape, Accept)
 {
-    class Visitor: public Shape::Visitor
+    class Visitor: public IsVisitedShapeVisitor
     {
     public:
         void Visit(const ChainShape&) override
@@ -76,19 +77,19 @@ TEST(ChainShape, Accept)
     ChainShape foo{};
     Visitor v;
     ASSERT_FALSE(v.visited);
-    ASSERT_FALSE(v.IsBaseVisited());
+    ASSERT_FALSE(v.IsVisited());
     foo.Accept(v);
     EXPECT_TRUE(v.visited);
-    EXPECT_FALSE(v.IsBaseVisited());
+    EXPECT_FALSE(v.IsVisited());
 }
 
 TEST(ChainShape, BaseVisitorForDiskShape)
 {
     const auto shape = ChainShape{};
-    auto visitor = Shape::Visitor{};
-    ASSERT_FALSE(visitor.IsBaseVisited());
+    auto visitor = IsVisitedShapeVisitor{};
+    ASSERT_FALSE(visitor.IsVisited());
     shape.Accept(visitor);
-    EXPECT_TRUE(visitor.IsBaseVisited());
+    EXPECT_TRUE(visitor.IsVisited());
 }
 
 TEST(ChainShape, OneVertexLikeDisk)

@@ -23,7 +23,7 @@
 #include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 
-using namespace playrho;
+namespace playrho {
 
 RevoluteJointDef::RevoluteJointDef(NonNull<Body*> bA, NonNull<Body*> bB,
                                    const Length2D anchor) noexcept:
@@ -35,7 +35,7 @@ RevoluteJointDef::RevoluteJointDef(NonNull<Body*> bA, NonNull<Body*> bB,
     // Intentionally empty.
 }
 
-RevoluteJointDef playrho::GetRevoluteJointDef(const RevoluteJoint& joint) noexcept
+RevoluteJointDef GetRevoluteJointDef(const RevoluteJoint& joint) noexcept
 {
     auto def = RevoluteJointDef{};
     
@@ -53,3 +53,5 @@ RevoluteJointDef playrho::GetRevoluteJointDef(const RevoluteJoint& joint) noexce
     
     return def;
 }
+
+} // namespace playrho

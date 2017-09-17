@@ -20,11 +20,12 @@
  */
 
 #include <PlayRho/Dynamics/Joints/MouseJoint.hpp>
+#include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
-using namespace playrho;
+namespace playrho {
 
 // p = attached point, m = mouse point
 // C = p - m
@@ -60,6 +61,11 @@ MouseJoint::MouseJoint(const MouseJointDef& def):
 {
     assert(IsValid(def.target));
     assert(IsValid(def.dampingRatio));
+}
+
+void MouseJoint::Accept(JointVisitor& visitor) const
+{
+    visitor.Visit(*this);
 }
 
 void MouseJoint::SetTarget(const Length2D target) noexcept
@@ -212,3 +218,5 @@ void MouseJoint::ShiftOrigin(const Length2D newOrigin)
 {
     m_targetA -= newOrigin;
 }
+
+} // namespace playrho

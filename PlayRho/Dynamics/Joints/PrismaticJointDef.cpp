@@ -21,10 +21,22 @@
 
 #include <PlayRho/Dynamics/Joints/PrismaticJointDef.hpp>
 #include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
+#include <PlayRho/Dynamics/Body.hpp>
 
-using namespace playrho;
+namespace playrho {
 
-PrismaticJointDef playrho::GetPrismaticJointDef(const PrismaticJoint& joint) noexcept
+PrismaticJointDef::PrismaticJointDef(NonNull<Body*> bA, NonNull<Body*> bB, const Length2D anchor,
+                                     const UnitVec2 axis) noexcept:
+    super{super{JointType::Prismatic}.UseBodyA(bA).UseBodyB(bB)},
+    localAnchorA{GetLocalPoint(*bA, anchor)},
+    localAnchorB{GetLocalPoint(*bB, anchor)},
+    localAxisA{GetLocalVector(*bA, axis)},
+    referenceAngle{bB->GetAngle() - bA->GetAngle()}
+{
+    // Intentionally empty.
+}
+
+PrismaticJointDef GetPrismaticJointDef(const PrismaticJoint& joint) noexcept
 {
     auto def = PrismaticJointDef{};
     
@@ -43,3 +55,5 @@ PrismaticJointDef playrho::GetPrismaticJointDef(const PrismaticJoint& joint) noe
     
     return def;
 }
+
+} // namespace playrho
