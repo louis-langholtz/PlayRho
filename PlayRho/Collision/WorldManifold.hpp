@@ -155,7 +155,7 @@ namespace playrho {
         }
     };
     
-    /// Gets the world manifold for the given data.
+    /// @brief Gets the world manifold for the given data.
     ///
     /// @pre The given manifold input has between 0 and 2 points.
     ///
@@ -171,6 +171,9 @@ namespace playrho {
     ///   the given manifold has. The returned world manifold points will be the mid-points of the
     ///   manifold intersection.
     ///
+    /// @relatedalso WorldManifold
+    /// @relatedalso Manifold
+    ///
     WorldManifold GetWorldManifold(const Manifold& manifold,
                                    Transformation xfA, Length radiusA,
                                    Transformation xfB, Length radiusB);
@@ -178,7 +181,8 @@ namespace playrho {
     /// Gets the world manifold for the given data.
     ///
     /// @note This is a convenience function that in turn calls the
-    ///    <code>GetWorldManifold(const Manifold&, const Transformation&, const Real, const Transformation& xfB, const Real)</code>
+    ///    <code>GetWorldManifold(const Manifold&, const Transformation&, const Real,
+    ///                           const Transformation& xfB, const Real)</code>
     ///    function.
     ///
     /// @param contact Contact to return a world manifold for.
@@ -186,6 +190,9 @@ namespace playrho {
     /// @return World manifold value for the given inputs which will have the same number of points as
     ///   the given manifold has. The returned world manifold points will be the mid-points of the
     ///   contact's intersection.
+    ///
+    /// @relatedalso WorldManifold
+    /// @relatedalso Contact
     ///
     WorldManifold GetWorldManifold(const Contact& contact);
     

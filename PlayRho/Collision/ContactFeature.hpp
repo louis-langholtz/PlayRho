@@ -56,6 +56,7 @@ struct ContactFeature
 };
 
 /// @brief Gets the vertex vertex contact feature for the given indices.
+/// @relatedalso ContactFeature
 constexpr ContactFeature GetVertexVertexContactFeature(ContactFeature::Index a,
                                                        ContactFeature::Index b) noexcept
 {
@@ -63,6 +64,7 @@ constexpr ContactFeature GetVertexVertexContactFeature(ContactFeature::Index a,
 }
 
 /// @brief Gets the vertex face contact feature for the given indices.
+/// @relatedalso ContactFeature
 constexpr ContactFeature GetVertexFaceContactFeature(ContactFeature::Index a,
                                                      ContactFeature::Index b) noexcept
 {
@@ -70,6 +72,7 @@ constexpr ContactFeature GetVertexFaceContactFeature(ContactFeature::Index a,
 }
 
 /// @brief Gets the face vertex contact feature for the given indices.
+/// @relatedalso ContactFeature
 constexpr ContactFeature GetFaceVertexContactFeature(ContactFeature::Index a,
                                                      ContactFeature::Index b) noexcept
 {
@@ -77,6 +80,7 @@ constexpr ContactFeature GetFaceVertexContactFeature(ContactFeature::Index a,
 }
 
 /// @brief Gets the face face contact feature for the given indices.
+/// @relatedalso ContactFeature
 constexpr ContactFeature GetFaceFaceContactFeature(ContactFeature::Index a,
                                                    ContactFeature::Index b) noexcept
 {
@@ -84,12 +88,14 @@ constexpr ContactFeature GetFaceFaceContactFeature(ContactFeature::Index a,
 }
 
 /// @brief Flips contact features information.
+/// @relatedalso ContactFeature
 constexpr ContactFeature Flip(ContactFeature val) noexcept
 {
     return ContactFeature{val.typeB, val.indexB, val.typeA, val.indexA};
 }
 
 /// @brief Determines if the given two contact features are equal.
+/// @relatedalso ContactFeature
 constexpr bool operator==(ContactFeature lhs, ContactFeature rhs) noexcept
 {
     return (lhs.typeA == rhs.typeA) && (lhs.indexA == rhs.indexA)
@@ -97,6 +103,7 @@ constexpr bool operator==(ContactFeature lhs, ContactFeature rhs) noexcept
 }
 
 /// @brief Determines if the given two contact features are not equal.
+/// @relatedalso ContactFeature
 constexpr bool operator!=(ContactFeature lhs, ContactFeature rhs) noexcept
 {
     return !(lhs == rhs);

@@ -88,6 +88,7 @@ namespace playrho {
     ///   value without otherwise getting a compiler error such as:
     ///     "cannot use defaulted constructor of 'Def' within 'World' outside of member functions
     ///      because 'gravity' has an initializer"
+    /// @relatedalso WorldDef
     constexpr WorldDef GetDefaultWorldDef() noexcept
     {
         return WorldDef{};

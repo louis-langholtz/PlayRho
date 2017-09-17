@@ -69,24 +69,29 @@ struct Island
 };
 
 /// @brief Determines whether the given island is full of bodies.
+/// @relatedalso Island
 inline bool IsFullOfBodies(const Island& island)
 {
     return island.m_bodies.size() == island.m_bodies.max_size();
 }
 
 /// @brief Determines whether the given island is full of contacts.
+/// @relatedalso Island
 inline bool IsFullOfContacts(const Island& island)
 {
     return island.m_contacts.size() == island.m_contacts.max_size();
 }
 
 /// @brief Counts the number of occurrances of the given entry in the given island.
+/// @relatedalso Island
 std::size_t Count(const Island& island, const Body* entry);
 
 /// @brief Counts the number of occurrances of the given entry in the given island.
+/// @relatedalso Island
 std::size_t Count(const Island& island, const Contact* entry);
 
 /// @brief Counts the number of occurrances of the given entry in the given island.
+/// @relatedalso Island
 std::size_t Count(const Island& island, const Joint* entry);
 
 } // namespace playrho

@@ -23,43 +23,43 @@
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Collision/AABB.hpp>
 
-namespace playrho
+namespace playrho {
+
+class Fixture;
+
+/// @brief Fixture proxy.
+/// @details This proxy is used internally to connect fixtures to the broad-phase.
+/// @note This data structure is 32-bytes large (on at least one 64-bit platform).
+struct FixtureProxy
 {
-    class Fixture;
-
-    /// @brief Fixture proxy.
-    /// @details This proxy is used internally to connect fixtures to the broad-phase.
-    /// @note This data structure is 32-bytes large (on at least one 64-bit platform).
-    struct FixtureProxy
-    {
-        
-        /// @brief Size type.
-        using size_type = std::remove_const<decltype(MaxContacts)>::type;
-        
-        FixtureProxy() = delete;
-        
-        /// @brief Copy constructor.
-        FixtureProxy(const FixtureProxy& copy) = default;
-
-        /// @brief Move constructor.
-        FixtureProxy(FixtureProxy&& copy) = default;
-
-        /// @brief Initializing constructor.
-        FixtureProxy(const AABB& bb, size_type pid, Fixture* f, ChildCounter ci):
-            aabb{bb}, fixture{f}, proxyId{pid}, childIndex{ci} {}
-        
-        ~FixtureProxy() = default;
-        
-        FixtureProxy& operator= (const FixtureProxy& other) = delete;
-
-        FixtureProxy& operator= (FixtureProxy&& other) noexcept = delete;
-
-        AABB aabb; ///< Axis Aligned Bounding Box. 16-bytes.
-        Fixture* const fixture; ///< Fixture. 8-bytes.
-        const size_type proxyId; ///< Proxy ID. 4-bytes.
-        const ChildCounter childIndex; ///< Child index. 4-bytes.
-    };
     
+    /// @brief Size type.
+    using size_type = std::remove_const<decltype(MaxContacts)>::type;
+    
+    FixtureProxy() = delete;
+    
+    /// @brief Copy constructor.
+    FixtureProxy(const FixtureProxy& copy) = default;
+
+    /// @brief Move constructor.
+    FixtureProxy(FixtureProxy&& copy) = default;
+
+    /// @brief Initializing constructor.
+    FixtureProxy(const AABB& bb, size_type pid, Fixture* f, ChildCounter ci):
+        aabb{bb}, fixture{f}, proxyId{pid}, childIndex{ci} {}
+    
+    ~FixtureProxy() = default;
+    
+    FixtureProxy& operator= (const FixtureProxy& other) = delete;
+
+    FixtureProxy& operator= (FixtureProxy&& other) noexcept = delete;
+
+    AABB aabb; ///< Axis Aligned Bounding Box. 16-bytes.
+    Fixture* const fixture; ///< Fixture. 8-bytes.
+    const size_type proxyId; ///< Proxy ID. 4-bytes.
+    const ChildCounter childIndex; ///< Child index. 4-bytes.
+};
+
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_FIXTUREPROXY_HPP

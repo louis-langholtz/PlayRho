@@ -80,3 +80,14 @@ Code missing Doxygen documentation won't pass all of the Pull Request checks and
 
 ### Every `class`-class Should Document Its Invariants
 This is especially the case for any new classes. Lots of existing `class`-class definitions don't document any invariants but they should. Make it a habit to document invariants in a class definition or use the `struct`-class if the class is not supposed to have any invariants.
+
+## Classes
+
+### Use `struct` For C++ Classes That Have No Invariants
+Classes that have no invariants should be declared using the `struct` *class-key*.
+
+### Use `class` For C++ Classes That Have One Or More Invariants
+Classes that have one or more invariants should be declared using the `class` *class-key*.
+
+### Document Invariants Using `@invariant` Doxygen Command
+PlayRho library classes that are declared using the `class` *class-key* should have one or more `@invariant` Doxygen commands in their class comments.

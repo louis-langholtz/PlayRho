@@ -133,15 +133,17 @@ namespace playrho
     };
     
     /// @brief Determines with the two given distance proxies are equal.
+    /// @relatedalso DistanceProxy
     bool operator== (const DistanceProxy& lhs, const DistanceProxy& rhs) noexcept;
     
     /// @brief Determines with the two given distance proxies are not equal.
+    /// @relatedalso DistanceProxy
     inline bool operator!= (const DistanceProxy& lhs, const DistanceProxy& rhs) noexcept
     {
         return !(lhs == rhs);
     }
     
-    /// Gets the supporting vertex index in the given direction for the given distance proxy.
+    /// @brief Gets the supporting vertex index in the given direction for the given distance proxy.
     /// @details This finds the vertex that's most significantly in the direction of the given
     ///   vector and returns its index.
     /// @note 0 is returned for a given zero length direction vector.
@@ -150,6 +152,7 @@ namespace playrho
     /// @return InvalidIndex if d is invalid or the count of vertices is zero, otherwise a
     ///   value from 0 to one less than count.
     /// @sa GetVertexCount().
+    /// @relatedalso DistanceProxy
     DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, Vec2 d) noexcept;
 
     /// @brief Finds the lowest right most vertex in the given collection.
@@ -158,10 +161,12 @@ namespace playrho
     /// @brief Gets the convex hull for the given collection of vertices as a vector.
     std::vector<Length2D> GetConvexHullAsVector(Span<const Length2D> vertices);
 
-    /// Tests a point for containment in the given distance proxy.
+    /// @brief Tests a point for containment in the given distance proxy.
     /// @param proxy Distance proxy to check if point is within.
     /// @param point Point in local coordinates.
     /// @return <code>true</code> if point is contained in the proxy, <code>false</code> otherwise.
+    /// @relatedalso DistanceProxy
+    /// @ingroup TestPointGroup
     bool TestPoint(const DistanceProxy& proxy, Length2D point) noexcept;
     
 } // namespace playrho

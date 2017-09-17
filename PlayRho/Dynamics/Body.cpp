@@ -25,6 +25,7 @@
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Common/WrongState.hpp>
 
 #include <iterator>
 #include <type_traits>
@@ -187,7 +188,7 @@ void Body::SetMassData(const MassData& massData)
 {
     if (m_world->IsLocked())
     {
-        throw World::LockedError("Body::SetMassData: world is locked");
+        throw WrongState("Body::SetMassData: world is locked");
     }
 
     if (!IsAccelerable())
@@ -270,17 +271,17 @@ void Body::SetTransformation(Transformation value) noexcept
     }
 }
 
-void Body::SetTransform(Length2D position, Angle angle)
+void Body::SetTransform(Length2D location, Angle angle)
 {
-    assert(IsValid(position));
+    assert(IsValid(location));
     assert(IsValid(angle));
 
     if (GetWorld()->IsLocked())
     {
-        throw World::LockedError("Body::SetTransform: world is locked");
+        throw WrongState("Body::SetTransform: world is locked");
     }
 
-    const auto xfm = Transformation{position, UnitVec2::Get(angle)};
+    const auto xfm = Transformation{location, UnitVec2::Get(angle)};
     SetTransformation(xfm);
 
     m_sweep = Sweep{Position{Transform(GetLocalCenter(), xfm), angle}, GetLocalCenter()};
@@ -297,7 +298,7 @@ void Body::SetEnabled(bool flag)
 
     if (m_world->IsLocked())
     {
-        throw World::LockedError("Body::SetEnabled: world is locked");
+        throw WrongState("Body::SetEnabled: world is locked");
     }
 
     if (flag)
@@ -423,7 +424,7 @@ bool ShouldCollide(const Body& lhs, const Body& rhs) noexcept
     return it == end(joints);
 }
 
-BodyCounter GetWorldIndex(const Body* body)
+BodyCounter GetWorldIndex(const Body* body) noexcept
 {
     if (body != nullptr)
     {
@@ -484,7 +485,7 @@ Velocity GetVelocity(const Body& body, Time h, MovementConf conf) noexcept
     return velocity;
 }
 
-std::size_t GetFixtureCount(const Body& body)
+std::size_t GetFixtureCount(const Body& body) noexcept
 {
     const auto& fixtures = body.GetFixtures();
     return fixtures.size();

@@ -30,8 +30,8 @@
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Dynamics/BodyType.hpp>
 
-namespace playrho
-{
+namespace playrho {
+
     class Body;
 
     /// @brief Body Definition.
@@ -256,12 +256,16 @@ namespace playrho
     }
     
     /// @brief Gets the default body definition.
+    /// @relatedalso BodyDef
     constexpr BodyDef GetDefaultBodyDef() noexcept
     {
         return BodyDef{};
     }
 
     /// @brief Gets the body definition for the given body.
+    /// @param body Body to get the BodyDef for.
+    /// @relatedalso Body
+    /// @relatedalso BodyDef
     BodyDef GetBodyDef(const Body& body) noexcept;
 
 } // namespace playrho

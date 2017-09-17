@@ -23,9 +23,9 @@
 #define PLAYRHO_PLAYRHO_HPP
 
 /**
-\mainpage PlayRho API Documentation
+@mainpage PlayRho API Documentation
 
-\section intro_sec Getting Started
+@section intro_sec Getting Started
 
 For source code, please see: https://github.com/louis-langholtz/PlayRho .
 
@@ -33,6 +33,13 @@ For issues, visit: https://github.com/louis-langholtz/PlayRho/issues .
 */
 
 // These include files constitute the main PlayRho API
+
+/// @defgroup TestPointGroup Functions Testing For Point Containment
+
+/// @defgroup ExceptionsGroup Library Defined Exceptions
+/// @details The PlayRho library defines its own exception classes to recognize errors.
+///    These classes are all sub-classed from sub-classes of the C++ Standard Library
+///    std::exception class.
 
 #include <PlayRho/Common/Settings.hpp>
 

@@ -52,7 +52,6 @@ class Shape;
 ///
 /// @sa Body
 /// @sa Shape
-/// @sa FixtureFreeFunctions
 ///
 class Fixture
 {
@@ -236,28 +235,26 @@ inline void Fixture::SetProxies(Span<FixtureProxy> value) noexcept
 
 // Free functions...
 
-/// @defgroup FixtureFreeFunctions Fixture free functions.
-/// @details A collection of non-member, non-friend functions that operate on Fixture objects.
-/// @sa Fixture.
-/// @{
-
 /// @brief Tests a point for containment in a fixture.
 /// @param f Fixture to use for test.
 /// @param p Point in world coordinates.
+/// @relatedalso Fixture
+/// @ingroup TestPointGroup
 bool TestPoint(const Fixture& f, Length2D p) noexcept;
 
 /// @brief Sets the associated body's sleep status to awake.
 /// @note This is a convenience function that simply looks up the fixture's body and
 ///   calls that body' SetAwake method.
 /// @param f Fixture whose body should be awoken.
+/// @relatedalso Fixture
 void SetAwake(const Fixture& f) noexcept;
 
 /// @brief Gets the transformation associated with the given fixture.
 /// @warning Behavior is undefined if the fixture doesn't have an associated body - i.e.
 ///   behavior is undefined if the fixture has <code>nullptr</code> as its associated body.
+/// @relatedalso Fixture
+/// @relatedalso Transformation
 Transformation GetTransformation(const Fixture& f) noexcept;
-
-/// @}
 
 } // namespace playrho
 

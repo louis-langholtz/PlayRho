@@ -93,6 +93,7 @@ namespace playrho {
     }
     
     /// @brief Determines whether the given key is for the given body.
+    /// @relatedalso JointKey
     constexpr bool IsFor(const JointKey key, const Body* body) noexcept
     {
         return body == key.GetBody1() || body == key.GetBody2();

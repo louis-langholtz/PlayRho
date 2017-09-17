@@ -98,12 +98,6 @@ namespace playrho {
         dist_iter_type maxDistIters = DefaultMaxDistanceIters; ///< Max distance iterations.
     };
 
-    /// @brief Gets the default time of impact configuration.
-    constexpr auto GetDefaultToiConf()
-    {
-        return ToiConf{};
-    }
-
     constexpr ToiConf& ToiConf::UseTimeMax(Real value) noexcept
     {
         tMax = value;
@@ -139,8 +133,15 @@ namespace playrho {
         maxDistIters = value;
         return *this;
     }
+    
+    /// @brief Gets the default time of impact configuration.
+    /// @relatedalso ToiConf
+    constexpr auto GetDefaultToiConf()
+    {
+        return ToiConf{};
+    }
 
-    /// @brief TimeOfImpact Output data.
+    /// @brief Output data for time of impact.
     class TOIOutput
     {
     public:
@@ -190,7 +191,8 @@ namespace playrho {
         TOIOutput() = default;
         
         /// @brief Initializing constructor.
-        constexpr TOIOutput(State state, Real time, Stats stats): m_state(state), m_time(time), m_stats(stats)
+        constexpr TOIOutput(State state, Real time, Stats stats):
+            m_state(state), m_time(time), m_stats(stats)
         {
             assert(time >= 0);
             assert(time <= 1);
@@ -247,6 +249,8 @@ namespace playrho {
     /// @param conf Configuration details for on calculation. Like the targeted depth of penetration.
     ///
     /// @return Time of impact output data.
+    ///
+    /// @relatedalso TOIOutput
     ///
     TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
                            const DistanceProxy& proxyB, const Sweep& sweepB,

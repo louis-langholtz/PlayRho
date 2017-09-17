@@ -323,12 +323,14 @@ private:
 };
 
 /// @brief Gets the maximum regular linear correction from the given value.
+/// @relatedalso StepConf
 inline Length GetMaxRegLinearCorrection(const StepConf& conf) noexcept
 {
     return conf.maxLinearCorrection * static_cast<Real>(conf.regPositionIterations);
 }
 
 /// @brief Determines whether the maximum translation is within tolerance.
+/// @relatedalso StepConf
 bool IsMaxTranslationWithinTolerance(const StepConf& conf) noexcept;
 
 } // namespace playrho

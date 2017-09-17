@@ -193,25 +193,29 @@ namespace playrho {
     };
     
     /// @brief Gets an invalid AABB value.
+    /// @relatedalso AABB
     template <>
     constexpr AABB GetInvalid() noexcept
     {
         return AABB{GetInvalid<Length2D>(), GetInvalid<Length2D>()};
     }
     
-    /// Gets the center of the AABB.
+    /// @brief Gets the center of the AABB.
+    /// @relatedalso AABB
     constexpr Length2D GetCenter(const AABB& aabb) noexcept
     {
         return (aabb.GetLowerBound() + aabb.GetUpperBound()) / Real{2};
     }
     
     /// @brief Gets dimensions of the given AABB.
+    /// @relatedalso AABB
     constexpr Length2D GetDimensions(const AABB& aabb) noexcept
     {
         return aabb.GetUpperBound() - aabb.GetLowerBound();
     }
 
-    /// Gets the extents of the AABB (half-widths).
+    /// @brief Gets the extents of the AABB (half-widths).
+    /// @relatedalso AABB
     constexpr Length2D GetExtents(const AABB& aabb) noexcept
     {
         return GetDimensions(aabb) / Real{2};
@@ -220,6 +224,7 @@ namespace playrho {
     /// @brief Gets the perimeter length of the AABB.
     /// @warning Behavior is undefined for an invalid AABB.
     /// @return Twice the sum of the width and height.
+    /// @relatedalso AABB
     constexpr Length GetPerimeter(const AABB& aabb) noexcept
     {
         const auto dimensions = GetDimensions(aabb);
@@ -227,6 +232,7 @@ namespace playrho {
     }
 
     /// @brief Gets the AABB that minimally encloses the given AABBs.
+    /// @relatedalso AABB
     constexpr AABB GetEnclosingAABB(AABB a, const AABB& b)
     {
         return a.Include(b);
@@ -234,6 +240,7 @@ namespace playrho {
     
     /// @brief Gets the AABB that the result of displacing the given AABB by the given
     ///   displacement amount.
+    /// @relatedalso AABB
     constexpr AABB GetDisplacedAABB(AABB aabb, const Length2D displacement)
     {
         aabb.Displace(displacement);
@@ -241,6 +248,7 @@ namespace playrho {
     }
 
     /// @brief Gets the fattened AABB result.
+    /// @relatedalso AABB
     constexpr AABB GetFattenedAABB(AABB aabb, const Length amount)
     {
         aabb.Fatten(amount);
@@ -248,12 +256,15 @@ namespace playrho {
     }
 
     /// @brief Gets whether the two AABB objects are equal.
+    /// @relatedalso AABB
     constexpr bool operator== (const AABB& lhs, const AABB& rhs)
     {
-        return (lhs.GetLowerBound() == rhs.GetLowerBound()) && (lhs.GetUpperBound() == rhs.GetUpperBound());
+        return (lhs.GetLowerBound() == rhs.GetLowerBound()) &&
+               (lhs.GetUpperBound() == rhs.GetUpperBound());
     }
     
     /// @brief Gets whether the two AABB objects are not equal.
+    /// @relatedalso AABB
     constexpr bool operator!= (const AABB& lhs, const AABB& rhs)
     {
         return !(lhs == rhs);
@@ -261,6 +272,7 @@ namespace playrho {
 
     /// @brief Tests for overlap between two axis aligned bounding boxes.
     /// @note This function's complexity is constant.
+    /// @relatedalso AABB
     constexpr bool TestOverlap(const AABB& a, const AABB& b) noexcept
     {
         const auto d1 = b.GetLowerBound() - a.GetUpperBound();
@@ -277,19 +289,27 @@ namespace playrho {
     /// @param proxy Distance proxy for the child shape.
     /// @param xf World transform of the shape.
     /// @return AABB for the proxy shape or the default AABB if the proxy has a zero vertex count.
+    /// @relatedalso AABB
+    /// @relatedalso DistanceProxy
     AABB ComputeAABB(const DistanceProxy& proxy, const Transformation& xf) noexcept;
     
     /// @brief Computes the AABB for the given shape with the given transformation.
+    /// @relatedalso AABB
+    /// @relatedalso Shape
     AABB ComputeAABB(const Shape& shape, const Transformation& xf);
 
     /// @brief Computes the AABB for the given body.
+    /// @relatedalso AABB
+    /// @relatedalso Body
     AABB ComputeAABB(const Body& body);
 
-    /// Gets the fixture's AABB.
+    /// @brief Gets the fixture's AABB.
     /// @note This AABB may be enlarged and/or stale. If you need a more accurate AABB,
     ///   compute it using the shape and the body transform.
     /// @warning Behavior is undefined is child index is not a valid proxy index.
     /// @sa Fixture::GetProxy.
+    /// @relatedalso AABB
+    /// @relatedalso Fixture
     AABB GetAABB(const Fixture& fixture, ChildCounter childIndex) noexcept;
 
 } // namespace playrho

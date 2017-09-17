@@ -308,7 +308,10 @@ inline DynamicTree::size_type DynamicTree::ComputeHeight() const noexcept
     return ComputeHeight(GetRootIndex());
 }
 
+// Free functions...
+
 /// @brief Tests for overlap of the elements identified in the given dynamic tree.
+/// @relatedalso DynamicTree
 inline bool TestOverlap(const DynamicTree& tree,
                         DynamicTree::size_type proxyIdA, DynamicTree::size_type proxyIdB)
 {
