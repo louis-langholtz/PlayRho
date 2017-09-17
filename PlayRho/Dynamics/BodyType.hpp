@@ -20,10 +20,9 @@
 #ifndef PLAYRHO_DYNAMICS_BODYTYPE_HPP
 #define PLAYRHO_DYNAMICS_BODYTYPE_HPP
 
-namespace playrho
-{
+namespace playrho {
 
-/// Body Type.
+/// @brief Body Type.
 ///
 /// @note static: zero mass, zero velocity, may be manually moved
 /// @note kinematic: zero mass, non-zero velocity set by user, moved by solver

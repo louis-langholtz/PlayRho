@@ -52,18 +52,15 @@ namespace playrho {
     
     // Free functions...
     
-    /// @defgroup MassDataFreeFunctions MassData free functions.
-    /// @details A collection of non-member, non-friend, MassData related functions.
-    /// @sa MassData.
-    /// @{
-    
     /// @brief MassData equality operator.
+    /// @relatedalso MassData
     constexpr bool operator== (MassData lhs, MassData rhs)
     {
         return lhs.center == rhs.center && lhs.mass == rhs.mass && lhs.I == rhs.I;
     }
     
     /// @brief MassData inequality operator.
+    /// @relatedalso MassData
     constexpr bool operator!= (MassData lhs, MassData rhs)
     {
         return !(lhs == rhs);
@@ -75,6 +72,8 @@ namespace playrho {
     /// @param density Areal density of mass.
     /// @param location Location of the center of the shape.
     ///
+    /// @relatedalso MassData
+    ///
     MassData GetMassData(Length r, NonNegative<Density> density, Length2D location);
 
     /// @brief Computes the mass data for a linear shape.
@@ -84,10 +83,13 @@ namespace playrho {
     /// @param v0 Location of vertex zero.
     /// @param v1 Location of vertex one.
     ///
+    /// @relatedalso MassData
+    ///
     MassData GetMassData(Length r, NonNegative<Density> density, Length2D v0, Length2D v1);
 
     /// @brief Gets the mass data for the given collection of vertices with the given
     ///    properties.
+    /// @relatedalso MassData
     MassData GetMassData(Length vertexRadius, NonNegative<Density> density,
                          Span<const Length2D> vertices);
     
@@ -100,6 +102,9 @@ namespace playrho {
     ///
     /// @param f Fixture to compute the mass data for.
     ///
+    /// @relatedalso MassData
+    /// @relatedalso Fixture
+    ///
     MassData GetMassData(const Fixture& f);
     
     /// @brief Computes the body's mass data.
@@ -107,15 +112,17 @@ namespace playrho {
     /// @note The center is the mass weighted sum of all fixture centers. Divide it by the
     ///   mass to get the averaged center.
     /// @return accumalated mass data for all fixtures associated with the given body.
+    /// @relatedalso MassData
+    /// @relatedalso Body
     MassData ComputeMassData(const Body& body) noexcept;
     
     
     /// @brief Gets the mass data of the body.
     /// @return a struct containing the mass, inertia and center of the body.
+    /// @relatedalso MassData
+    /// @relatedalso Body
     MassData GetMassData(const Body& body) noexcept;
     
-    /// @}
-
 } // namespace playrho
 
 #endif // PLAYRHO_COLLISION_MASSDATA_HPP

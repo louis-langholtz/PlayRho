@@ -46,6 +46,7 @@ enum class JointType : std::uint8_t
 class Joint;
 
 /// @brief Gets the type of the given joint.
+/// @relatedalso Joint
 JointType GetType(const Joint& joint) noexcept;
 
 } // namespace playrho

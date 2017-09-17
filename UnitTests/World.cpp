@@ -36,6 +36,7 @@
 #include <PlayRho/Dynamics/Joints/DistanceJoint.hpp>
 #include <PlayRho/Dynamics/Joints/PulleyJoint.hpp>
 #include <PlayRho/Common/LengthError.hpp>
+#include <PlayRho/Common/WrongState.hpp>
 #include <chrono>
 #include <type_traits>
 
@@ -116,7 +117,7 @@ TEST(World, Traits)
 
 TEST(World, WorldLockedError)
 {
-    const auto value = World::LockedError{"world is locked"};
+    const auto value = WrongState{"world is locked"};
     EXPECT_STREQ(value.what(), "world is locked");
 }
 

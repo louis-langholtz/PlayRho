@@ -26,37 +26,37 @@
 #include <PlayRho/Common/Span.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 
-namespace playrho
+namespace playrho {
+
+/// @brief Fixture attorney.
+///
+/// @details This class uses the "attorney-client" idiom to control the granularity of
+///   friend-based access to the Fixture class. This is meant to help preserve and enforce
+///   the invariants of the Fixture class.
+///
+/// @sa https://en.wikibooks.org/wiki/More_C++_Idioms/Friendship_and_the_Attorney-Client
+///
+class FixtureAtty
 {
-    /// @brief Fixture attorney.
-    ///
-    /// @details This class uses the "attorney-client" idiom to control the granularity of
-    ///   friend-based access to the Fixture class. This is meant to help preserve and enforce
-    ///   the invariants of the Fixture class.
-    ///
-    /// @sa https://en.wikibooks.org/wiki/More_C++_Idioms/Friendship_and_the_Attorney-Client
-    ///
-    class FixtureAtty
+private:
+    static Span<FixtureProxy> GetProxies(const Fixture& fixture)
     {
-    private:
-        static Span<FixtureProxy> GetProxies(const Fixture& fixture)
-        {
-            return fixture.GetProxies();
-        }
-        
-        static void SetProxies(Fixture& fixture, Span<FixtureProxy> value)
-        {
-            fixture.SetProxies(value);
-        }
-        
-        static Fixture* Create(Body* body, const FixtureDef& def,
-                               const std::shared_ptr<const Shape>& shape)
-        {
-            return new Fixture{body, def, shape};
-        }
-        
-        friend class World;
-    };
+        return fixture.GetProxies();
+    }
+    
+    static void SetProxies(Fixture& fixture, Span<FixtureProxy> value)
+    {
+        fixture.SetProxies(value);
+    }
+    
+    static Fixture* Create(Body* body, const FixtureDef& def,
+                           const std::shared_ptr<const Shape>& shape)
+    {
+        return new Fixture{body, def, shape};
+    }
+    
+    friend class World;
+};
 
 } // namespace playrho
 

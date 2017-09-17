@@ -48,9 +48,10 @@ class Shape;
 struct BodyDef;
 struct MassData;
 
-/// @brief A physical entity that exists within a World.
+/// @brief Physical entity that exists within a World.
 ///
-/// @details A rigid body entity created or destroyed through a World instance.
+/// @details A rigid body entity created or destroyed through a World instance. These have
+///   physical properties like: position, velocity, acceleration, and mass.
 ///
 /// @invariant Only bodies that allow sleeping, can be put to sleep.
 /// @invariant Only "speedable" bodies can be awake.
@@ -62,8 +63,6 @@ struct MassData;
 /// @note From a memory management perspective, bodies own Fixture instances.
 /// @note On a 64-bit architecture with 4-byte Real, this data structure is at least
 ///   192-bytes large.
-///
-/// @sa BodyFreeFunctions
 ///
 class Body
 {
@@ -183,10 +182,10 @@ public:
     /// @details This instantly adjusts the body to be at the new position and new orientation.
     /// @warning Manipulating a body's transform can cause non-physical behavior!
     /// @note Contacts are updated on the next call to World::Step.
-    /// @param position Valid world position of the body's local origin. Behavior is undefined
+    /// @param location Valid world location of the body's local origin. Behavior is undefined
     ///   if value is invalid.
     /// @param angle Valid world rotation. Behavior is undefined if value is invalid.
-    void SetTransform(Length2D position, Angle angle);
+    void SetTransform(Length2D location, Angle angle);
 
     /// @brief Gets the body transform for the body's origin.
     /// @return the world transform of the body's origin.
@@ -820,12 +819,8 @@ inline void Body::UnsetIslandedFlag() noexcept
 
 // Free functions...
 
-/// @defgroup BodyFreeFunctions Body free functions.
-/// @details A collection of non-member, non-friend functions that operate on Body objects.
-/// @sa Body.
-/// @{
-
-/// Awakens the body if it's asleep.
+/// @brief Awakens the body if it's asleep.
+/// @relatedalso Body
 inline bool Awaken(Body& body) noexcept
 {
     if (!body.IsAwake() && body.IsSpeedable())
@@ -836,7 +831,8 @@ inline bool Awaken(Body& body) noexcept
     return false;
 }
 
-/// Puts the body to sleep if it's awake.
+/// @brief Puts the body to sleep if it's awake.
+/// @relatedalso Body
 inline bool Unawaken(Body& body) noexcept
 {
     if (body.IsAwake() && body.IsSleepingAllowed())
@@ -847,21 +843,24 @@ inline bool Unawaken(Body& body) noexcept
     return false;
 }
 
-/// Should collide.
+/// @brief Should collide.
 /// @details Determines whether a body should possibly be able to collide with the other body.
 /// @return true if either body is dynamic and no joint prevents collision, false otherwise.
 bool ShouldCollide(const Body& lhs, const Body& rhs) noexcept;
 
 /// @brief Gets the "position 1" Position information for the given body.
+/// @relatedalso Body
+/// @relatedalso Position
 inline Position GetPosition1(const Body& body) noexcept
 {
     return body.GetSweep().pos1;
 }
 
-/// Gets the total mass of the body.
+/// @brief Gets the total mass of the body.
 /// @return Value of zero or more representing the body's mass (in kg).
 /// @sa GetInvMass.
 /// @sa SetMassData.
+/// @relatedalso Body
 inline Mass GetMass(const Body& body) noexcept
 {
     const auto invMass = body.GetInvMass();
@@ -869,12 +868,14 @@ inline Mass GetMass(const Body& body) noexcept
 }
 
 /// @brief Applies the given linear acceleration to the given body.
+/// @relatedalso Body
 inline void ApplyLinearAcceleration(Body& body, LinearAcceleration2D amount)
 {
     body.SetAcceleration(body.GetLinearAcceleration() + amount, body.GetAngularAcceleration());
 }
 
 /// @brief Sets the given amount of force at the given point to the given body.
+/// @relatedalso Body
 inline void SetForce(Body& body, Force2D force, Length2D point) noexcept
 {
     const auto linAccel = LinearAcceleration2D{force * body.GetInvMass()};
@@ -885,13 +886,14 @@ inline void SetForce(Body& body, Force2D force, Length2D point) noexcept
     body.SetAcceleration(linAccel, angAccel);
 }
 
-/// Apply a force at a world point.
+/// @brief Apply a force at a world point.
 /// @note If the force is not applied at the center of mass, it will generate a torque and
 ///   affect the angular velocity.
 /// @note Non-zero forces wakes up the body.
 /// @param body Body to apply the force to.
 /// @param force World force vector.
 /// @param point World position of the point of application.
+/// @relatedalso Body
 inline void ApplyForce(Body& body, Force2D force, Length2D point) noexcept
 {
     // Torque is L^2 M T^-2 QP^-1.
@@ -905,10 +907,11 @@ inline void ApplyForce(Body& body, Force2D force, Length2D point) noexcept
                          body.GetAngularAcceleration() + angAccel);
 }
 
-/// Apply a force to the center of mass.
+/// @brief Apply a force to the center of mass.
 /// @note Non-zero forces wakes up the body.
 /// @param body Body to apply the force to.
 /// @param force World force vector.
+/// @relatedalso Body
 inline void ApplyForceToCenter(Body& body, Force2D force) noexcept
 {
     const auto linAccel = body.GetLinearAcceleration() + force * body.GetInvMass();
@@ -917,6 +920,7 @@ inline void ApplyForceToCenter(Body& body, Force2D force) noexcept
 }
 
 /// @brief Sets the given amount of torque to the given body.
+/// @relatedalso Body
 inline void SetTorque(Body& body, Torque torque) noexcept
 {
     const auto linAccel = body.GetLinearAcceleration();
@@ -925,12 +929,13 @@ inline void SetTorque(Body& body, Torque torque) noexcept
     body.SetAcceleration(linAccel, angAccel);
 }
 
-/// Apply a torque.
+/// @brief Applies a torque.
 /// @note This affects the angular velocity without affecting the linear velocity of the
 ///   center of mass.
 /// @note Non-zero forces wakes up the body.
 /// @param body Body to apply the torque to.
 /// @param torque about the z-axis (out of the screen).
+/// @relatedalso Body
 inline void ApplyTorque(Body& body, Torque torque) noexcept
 {
     const auto linAccel = body.GetLinearAcceleration();
@@ -939,7 +944,7 @@ inline void ApplyTorque(Body& body, Torque torque) noexcept
     body.SetAcceleration(linAccel, angAccel);
 }
 
-/// Apply an impulse at a point.
+/// @brief Applies an impulse at a point.
 /// @note This immediately modifies the velocity.
 /// @note This also modifies the angular velocity if the point of application
 ///   is not at the center of mass.
@@ -947,6 +952,7 @@ inline void ApplyTorque(Body& body, Torque torque) noexcept
 /// @param body Body to apply the impulse to.
 /// @param impulse the world impulse vector.
 /// @param point the world position of the point of application.
+/// @relatedalso Body
 inline void ApplyLinearImpulse(Body& body, Momentum2D impulse, Length2D point) noexcept
 {
     auto velocity = body.GetVelocity();
@@ -957,9 +963,10 @@ inline void ApplyLinearImpulse(Body& body, Momentum2D impulse, Length2D point) n
     body.SetVelocity(velocity);
 }
 
-/// Apply an angular impulse.
+/// @brief Applies an angular impulse.
 /// @param body Body to apply the angular impulse to.
 /// @param impulse Angular impulse to be applied.
+/// @relatedalso Body
 inline void ApplyAngularImpulse(Body& body, AngularMomentum impulse) noexcept
 {
     auto velocity = body.GetVelocity();
@@ -970,102 +977,117 @@ inline void ApplyAngularImpulse(Body& body, AngularMomentum impulse) noexcept
 
 /// @brief Gets the centripetal force necessary to put the body into an orbit having
 ///    the given radius.
+/// @relatedalso Body
 Force2D GetCentripetalForce(const Body& body, Length2D axis);
 
-/// Gets the rotational inertia of the body.
+/// @brief Gets the rotational inertia of the body.
 /// @param body Body to get the rotational inertia for.
 /// @return the rotational inertia.
+/// @relatedalso Body
 inline RotInertia GetRotInertia(const Body& body) noexcept
 {
     return Real{1} / body.GetInvRotInertia();
 }
 
-/// Gets the rotational inertia of the body about the local origin.
+/// @brief Gets the rotational inertia of the body about the local origin.
 /// @return the rotational inertia.
+/// @relatedalso Body
 inline RotInertia GetLocalInertia(const Body& body) noexcept
 {
     return GetRotInertia(body)
          + GetMass(body) * GetLengthSquared(body.GetLocalCenter()) / SquareRadian;
 }
 
-/// Gets the linear velocity of the center of mass.
+/// @brief Gets the linear velocity of the center of mass.
 /// @param body Body to get the linear velocity for.
 /// @return the linear velocity of the center of mass.
+/// @relatedalso Body
 inline LinearVelocity2D GetLinearVelocity(const Body& body) noexcept
 {
     return body.GetVelocity().linear;
 }
 
-/// Gets the angular velocity.
+/// @brief Gets the angular velocity.
 /// @param body Body to get the angular velocity for.
 /// @return the angular velocity.
+/// @relatedalso Body
 inline AngularVelocity GetAngularVelocity(const Body& body) noexcept
 {
     return body.GetVelocity().angular;
 }
 
-/// Sets the linear velocity of the center of mass.
+/// @brief Sets the linear velocity of the center of mass.
 /// @param body Body to set the linear velocity of.
 /// @param v the new linear velocity of the center of mass.
+/// @relatedalso Body
 inline void SetLinearVelocity(Body& body, const LinearVelocity2D v) noexcept
 {
     body.SetVelocity(Velocity{v, GetAngularVelocity(body)});
 }
 
-/// Sets the angular velocity.
+/// @brief Sets the angular velocity.
 /// @param body Body to set the angular velocity of.
 /// @param omega the new angular velocity.
+/// @relatedalso Body
 inline void SetAngularVelocity(Body& body, AngularVelocity omega) noexcept
 {
     body.SetVelocity(Velocity{GetLinearVelocity(body), omega});
 }
 
-/// Gets the world coordinates of a point given in coordinates relative to the body's origin.
+/// @brief Gets the world coordinates of a point given in coordinates relative to the body's origin.
 /// @param body Body that the given point is relative to.
 /// @param localPoint a point measured relative the the body's origin.
 /// @return the same point expressed in world coordinates.
+/// @relatedalso Body
 inline Length2D GetWorldPoint(const Body& body, const Length2D localPoint) noexcept
 {
     return Transform(localPoint, body.GetTransformation());
 }
 
-/// Gets the world coordinates of a vector given the local coordinates.
+/// @brief Gets the world coordinates of a vector given the local coordinates.
 /// @param body Body that the given vector is relative to.
 /// @param localVector a vector fixed in the body.
 /// @return the same vector expressed in world coordinates.
+/// @relatedalso Body
 inline Length2D GetWorldVector(const Body& body, const Length2D localVector) noexcept
 {
     return Rotate(localVector, body.GetTransformation().q);
 }
 
 /// @brief Gets the world vector for the given local vector from the given body's transformation.
+/// @relatedalso Body
+/// @relatedalso UnitVec2
 inline UnitVec2 GetWorldVector(const Body& body, const UnitVec2 localVector) noexcept
 {
     return Rotate(localVector, body.GetTransformation().q);
 }
 
-/// Gets a local point relative to the body's origin given a world point.
+/// @brief Gets a local point relative to the body's origin given a world point.
 /// @param body Body that the returned point should be relative to.
 /// @param worldPoint point in world coordinates.
 /// @return the corresponding local point relative to the body's origin.
+/// @relatedalso Body
 inline Length2D GetLocalPoint(const Body& body, const Length2D worldPoint) noexcept
 {
     return InverseTransform(worldPoint, body.GetTransformation());
 }
 
-/// Gets a locally oriented unit vector given a world oriented unit vector.
+/// @brief Gets a locally oriented unit vector given a world oriented unit vector.
 /// @param body Body that the returned vector should be relative to.
 /// @param uv Unit vector in world orientation.
 /// @return the corresponding local vector.
+/// @relatedalso Body
+/// @relatedalso UnitVec2
 inline UnitVec2 GetLocalVector(const Body& body, const UnitVec2 uv) noexcept
 {
     return InverseRotate(uv, body.GetTransformation().q);
 }
 
-/// Gets the linear velocity from a world point attached to this body.
+/// @brief Gets the linear velocity from a world point attached to this body.
 /// @param body Body to get the linear velocity for.
 /// @param worldPoint point in world coordinates.
 /// @return the world velocity of a point.
+/// @relatedalso Body
 inline LinearVelocity2D GetLinearVelocityFromWorldPoint(const Body& body,
                                                         const Length2D worldPoint) noexcept
 {
@@ -1076,10 +1098,11 @@ inline LinearVelocity2D GetLinearVelocityFromWorldPoint(const Body& body,
     return velocity.linear + rlv;
 }
 
-/// Gets the linear velocity from a local point.
+/// @brief Gets the linear velocity from a local point.
 /// @param body Body to get the linear velocity for.
 /// @param localPoint point in local coordinates.
 /// @return the world velocity of a point.
+/// @relatedalso Body
 inline LinearVelocity2D GetLinearVelocityFromLocalPoint(const Body& body,
                                                         const Length2D localPoint) noexcept
 {
@@ -1087,12 +1110,14 @@ inline LinearVelocity2D GetLinearVelocityFromLocalPoint(const Body& body,
 }
 
 /// @brief Gets the net force that the given body is currently experiencing.
+/// @relatedalso Body
 inline Force2D GetForce(const Body& body) noexcept
 {
     return body.GetLinearAcceleration() * GetMass(body);
 }
 
 /// @brief Gets the net torque that the given body is currently experiencing.
+/// @relatedalso Body
 inline Torque GetTorque(const Body& body) noexcept
 {
     return body.GetAngularAcceleration() * GetRotInertia(body);
@@ -1104,23 +1129,28 @@ inline Torque GetTorque(const Body& body) noexcept
 /// @param body Body to get the velocity for.
 /// @param h Time elapsed to get velocity for. Behavior is undefined if this value is invalid.
 /// @param conf Movement configuration. This defines caps on linear and angular speeds.
+/// @relatedalso Body
+/// @relatedalso Velocity
 Velocity GetVelocity(const Body& body, Time h, MovementConf conf) noexcept;
 
 /// @brief Gets the world index for the given body.
-BodyCounter GetWorldIndex(const Body* body);
+/// @relatedalso Body
+BodyCounter GetWorldIndex(const Body* body) noexcept;
 
 /// @brief Gets the fixture count of the given body.
-std::size_t GetFixtureCount(const Body& body);
+/// @relatedalso Body
+std::size_t GetFixtureCount(const Body& body) noexcept;
 
-/// Rotates a body a given amount around a point in world coordinates.
+/// @brief Rotates a body a given amount around a point in world coordinates.
 /// @details This changes both the linear and angular positions of the body.
 /// @note Manipulating a body's position this way may cause non-physical behavior.
 /// @param body Body to rotate.
 /// @param amount Amount to rotate body by (in counter-clockwise direction).
 /// @param worldPoint Point in world coordinates.
+/// @relatedalso Body
 void RotateAboutWorldPoint(Body& body, Angle amount, Length2D worldPoint);
 
-/// Rotates a body a given amount around a point in body local coordinates.
+/// @brief Rotates a body a given amount around a point in body local coordinates.
 /// @details This changes both the linear and angular positions of the body.
 /// @note Manipulating a body's position this way may cause non-physical behavior.
 /// @note This is a convenience function that translates the local point into world coordinates
@@ -1128,9 +1158,8 @@ void RotateAboutWorldPoint(Body& body, Angle amount, Length2D worldPoint);
 /// @param body Body to rotate.
 /// @param amount Amount to rotate body by (in counter-clockwise direction).
 /// @param localPoint Point in local coordinates.
+/// @relatedalso Body
 void RotateAboutLocalPoint(Body& body, Angle amount, Length2D localPoint);
-
-/// @}
 
 } // namespace playrho
 

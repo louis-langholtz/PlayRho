@@ -44,12 +44,14 @@ namespace playrho {
     constexpr auto InvalidIndexPair = IndexPair{IndexPair::InvalidIndex, IndexPair::InvalidIndex};
     
     /// @brief Determines whether the two given index pairs are equal.
+    /// @relatedalso IndexPair
     constexpr inline bool operator== (IndexPair lhs, IndexPair rhs)
     {
         return (lhs.a == rhs.a) && (lhs.b == rhs.b);
     }
     
     /// @brief Determines whether the two given index pairs are not equal.
+    /// @relatedalso IndexPair
     constexpr inline bool operator!= (IndexPair lhs, IndexPair rhs)
     {
         return (lhs.a != rhs.a) || (lhs.b != rhs.b);

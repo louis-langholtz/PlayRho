@@ -23,19 +23,21 @@
 
 #include <PlayRho/Common/Units.hpp>
 
-namespace playrho
+namespace playrho {
+
+class StepConf;
+
+/// @brief Movement configuration.
+struct MovementConf
 {
-    class StepConf;
-    
-    /// @brief Movement configuration.
-    struct MovementConf
-    {
-        Length maxTranslation; ///< Max translation.
-        Angle maxRotation; ///< Max rotation.
-    };
-    
-    /// @brief Gets the movement configuration from the given value.
-    MovementConf GetMovementConf(const StepConf& conf) noexcept;
+    Length maxTranslation; ///< Max translation.
+    Angle maxRotation; ///< Max rotation.
+};
+
+/// @brief Gets the movement configuration from the given value.
+/// @relatedalso StepConf
+/// @relatedalso MovementConf
+MovementConf GetMovementConf(const StepConf& conf) noexcept;
 
 } // namespace playrho
 

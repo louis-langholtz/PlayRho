@@ -70,8 +70,6 @@ inline Real MixRestitution(Real restitution1, Real restitution2) noexcept
 ///
 /// @note This data structure is 104-bytes large (on at least one 64-bit platform).
 ///
-/// @sa ContactFreeFunctions
-///
 class Contact
 {
 public:
@@ -504,33 +502,34 @@ inline void Contact::UnsetIslanded() noexcept
 /// @brief Contact pointer type.
 using ContactPtr = Contact*;
 
-/// @defgroup ContactFreeFunctions Contact free functions.
-/// @details A collection of non-member, non-friend functions that operate on Contact objects.
-/// @sa Contact.
-/// @{
-
 /// @brief Whether the given contact has a sensor.
+/// @relatedalso Contact
 bool HasSensor(const Contact& contact) noexcept;
 
 /// @brief Whether the given contact is "impenetrable".
+/// @relatedalso Contact
 bool IsImpenetrable(const Contact& contact) noexcept;
 
 /// @brief Determines whether the given contact is "active".
+/// @relatedalso Contact
 bool IsActive(const Contact& contact) noexcept;
 
 /// @brief Sets awake the fixtures of the given contact.
+/// @relatedalso Contact
 void SetAwake(const Contact& c) noexcept;
 
 /// Resets the friction mixture to the default value.
+/// @relatedalso Contact
 void ResetFriction(Contact& contact);
 
 /// Reset the restitution to the default value.
+/// @relatedalso Contact
 void ResetRestitution(Contact& contact) noexcept;
 
 /// @brief Calculates the Time Of Impact for the given contact with the given configuration.
+/// @relatedalso Contact
+/// @relatedalso TOIOutput
 TOIOutput CalcToi(const Contact& contact, ToiConf conf);
-    
-/// @}
 
 } // namespace playrho
 

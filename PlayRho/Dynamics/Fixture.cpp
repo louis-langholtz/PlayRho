@@ -27,7 +27,7 @@
 
 #include <algorithm>
 
-using namespace playrho;
+namespace playrho {
 
 using std::cbegin;
 using std::cend;
@@ -93,17 +93,17 @@ void Fixture::SetSensor(bool sensor) noexcept
     }
 }
 
-bool playrho::TestPoint(const Fixture& f, Length2D p) noexcept
+bool TestPoint(const Fixture& f, Length2D p) noexcept
 {
     return TestPoint(*f.GetShape(), InverseTransform(p, GetTransformation(f)));
 }
 
-void playrho::SetAwake(const Fixture& f) noexcept
+void SetAwake(const Fixture& f) noexcept
 {
     f.GetBody()->SetAwake();
 }
 
-Transformation playrho::GetTransformation(const Fixture& f) noexcept
+Transformation GetTransformation(const Fixture& f) noexcept
 {
     assert(f.GetBody() != nullptr);
 
@@ -116,3 +116,5 @@ Transformation playrho::GetTransformation(const Fixture& f) noexcept
      */
     return f.GetBody()->GetTransformation();
 }
+
+} // namespace playrho

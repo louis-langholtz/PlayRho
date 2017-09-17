@@ -38,8 +38,6 @@ class ShapeVisitor;
 ///
 /// @note This data structure is 32-bytes large (on at least one 64-bit platform).
 ///
-/// @sa ShapeFreeFunctions
-///
 class Shape
 {
 public:
@@ -287,15 +285,11 @@ inline void Shape::SetRestitution(Finite<Real> restitution) noexcept
 
 // Free functions...
 
-/// @defgroup ShapeFreeFunctions Shape free functions.
-/// @details A collection of non-member, non-friend functions that operate on Shape objects.
-/// @sa Shape.
-/// @{
-
 /// @brief Gets the vertex radius of the given shape.
 /// @details Gets the radius of every vertex of this shape.
 /// This is used for collision handling.
 /// @note This value should never be less than zero.
+/// @relatedalso Shape
 inline NonNegative<Length> GetVertexRadius(const Shape& shape) noexcept
 {
     return shape.GetVertexRadius();
@@ -306,9 +300,9 @@ inline NonNegative<Length> GetVertexRadius(const Shape& shape) noexcept
 /// @param point Point in local coordinates.
 /// @return <code>true</code> if the given point is contained by the given shape,
 ///   <code>false</code> otherwise.
+/// @relatedalso Shape
+/// @ingroup TestPointGroup
 bool TestPoint(const Shape& shape, Length2D point) noexcept;
-
-/// @}
 
 } // namespace playrho
 

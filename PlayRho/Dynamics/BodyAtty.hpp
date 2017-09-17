@@ -32,232 +32,232 @@
 #include <algorithm>
 #include <utility>
 
-namespace playrho
+namespace playrho {
+
+/// @brief Body attorney.
+///
+/// @details This class uses the "attorney-client" idiom to control the granularity of
+///   friend-based access to the Body class. This is meant to help preserve and enforce
+///   the invariants of the Body class.
+///
+/// @sa https://en.wikibooks.org/wiki/More_C++_Idioms/Friendship_and_the_Attorney-Client
+///
+class BodyAtty
 {
-    /// @brief Body attorney.
-    ///
-    /// @details This class uses the "attorney-client" idiom to control the granularity of
-    ///   friend-based access to the Body class. This is meant to help preserve and enforce
-    ///   the invariants of the Body class.
-    ///
-    /// @sa https://en.wikibooks.org/wiki/More_C++_Idioms/Friendship_and_the_Attorney-Client
-    ///
-    class BodyAtty
+private:
+    
+    static Fixture* CreateFixture(Body& b, std::shared_ptr<const Shape> shape, const FixtureDef& def)
     {
-    private:
-        
-        static Fixture* CreateFixture(Body& b, std::shared_ptr<const Shape> shape, const FixtureDef& def)
+        const auto fixture = new Fixture{&b, def, std::move(shape)};
+        b.m_fixtures.push_back(fixture);
+        return fixture;
+    }
+    
+    static bool DestroyFixture(Body& b, Fixture* value)
+    {
+        const auto endIter = end(b.m_fixtures);
+        const auto it = std::find_if(begin(b.m_fixtures), endIter, [&](Body::Fixtures::value_type& f) {
+            return GetPtr(f) == value;
+        });
+        if (it != endIter)
         {
-            const auto fixture = new Fixture{&b, def, std::move(shape)};
-            b.m_fixtures.push_back(fixture);
-            return fixture;
+            delete GetPtr(*it);
+            b.m_fixtures.erase(it);
+            return true;
         }
+        return false;
+    }
+
+    static void ClearFixtures(Body& b, std::function<void(Fixture&)> callback)
+    {
+        std::for_each(std::begin(b.m_fixtures), std::end(b.m_fixtures), [&](Body::Fixtures::value_type& f) {
+            const auto fixture = GetPtr(f);
+            callback(*fixture);
+            delete fixture;
+        });
+        b.m_fixtures.clear();
+    }
+
+    static void SetTypeFlags(Body& b, BodyType type) noexcept
+    {
+        b.m_flags &= ~(Body::e_impenetrableFlag|Body::e_velocityFlag|Body::e_accelerationFlag);
+        b.m_flags |= Body::GetFlags(type);
         
-        static bool DestroyFixture(Body& b, Fixture* value)
+        switch (type)
         {
-            const auto endIter = end(b.m_fixtures);
-            const auto it = std::find_if(begin(b.m_fixtures), endIter, [&](Body::Fixtures::value_type& f) {
-                return GetPtr(f) == value;
-            });
-            if (it != endIter)
+            case BodyType::Dynamic:
+                break;
+            case BodyType::Kinematic:
+                break;
+            case BodyType::Static:
+                b.UnsetAwakeFlag();
+                b.m_underActiveTime = 0;
+                b.m_velocity = Velocity{LinearVelocity2D{}, AngularVelocity{0}};
+                b.m_sweep.pos0 = b.m_sweep.pos1;
+                break;
+        }
+    }
+    
+    static void SetAwakeFlag(Body& b) noexcept
+    {
+        b.SetAwakeFlag();
+    }
+    
+    static void SetMassDataDirty(Body& b) noexcept
+    {
+        b.SetMassDataDirty();
+    }
+    
+    static bool Erase(Body& b, const Contact* value)
+    {
+        return b.Erase(value);
+    }
+    
+    static bool Erase(Body& b, const Joint* value)
+    {
+        return b.Erase(value);
+    }
+    
+    static void ClearContacts(Body &b)
+    {
+        b.ClearContacts();
+    }
+
+    static void ClearJoints(Body &b)
+    {
+        b.ClearJoints();
+    }
+
+    static bool Insert(Body& b, Joint* value)
+    {
+        return b.Insert(value);
+    }
+
+    static bool Insert(Body* b, Joint* value)
+    {
+        if (b != nullptr)
+        {
+            return Insert(*b, value);
+        }
+        return false;
+    }
+
+    static bool Insert(Body& b, Contact* value)
+    {
+        return b.Insert(value);
+    }
+    
+    static void SetPosition0(Body& b, const Position value) noexcept
+    {
+        assert(b.IsSpeedable() || b.m_sweep.pos0 == value);
+        b.m_sweep.pos0 = value;
+    }
+    
+    /// Sets the body sweep's position 1 value.
+    /// @note This sets what Body::GetWorldCenter returns.
+    static void SetPosition1(Body& b, const Position value) noexcept
+    {
+        assert(b.IsSpeedable() || b.m_sweep.pos1 == value);
+        b.m_sweep.pos1 = value;
+    }
+    
+    static void ResetAlpha0(Body& b)
+    {
+        b.m_sweep.ResetAlpha0();
+    }
+    
+    static void SetSweep(Body& b, const Sweep value) noexcept
+    {
+        assert(b.IsSpeedable() || value.pos0 == value.pos1);
+        b.m_sweep = value;
+    }
+    
+    /// Sets the body's transformation.
+    /// @note This sets what Body::GetLocation returns.
+    static void SetTransformation(Body& b, const Transformation value) noexcept
+    {
+        b.SetTransformation(value);
+    }
+    
+    /// Sets the body's velocity.
+    /// @note This sets what Body::GetVelocity returns.
+    static void SetVelocity(Body& b, Velocity value) noexcept
+    {
+        b.m_velocity = value;
+    }
+    
+    static void Advance0(Body& b, Real value) noexcept
+    {
+        // Note: Static bodies must **never** have different sweep position values.
+        
+        // Confirm bodies don't have different sweep positions to begin with...
+        assert(b.IsSpeedable() || b.m_sweep.pos1 == b.m_sweep.pos0);
+        
+        b.m_sweep.Advance0(value);
+        
+        // Confirm bodies don't have different sweep positions to end with...
+        assert(b.IsSpeedable() || b.m_sweep.pos1 == b.m_sweep.pos0);
+    }
+    
+    static void Advance(Body& b, Real toi) noexcept
+    {
+        b.Advance(toi);
+    }
+    
+    static void Restore(Body& b, const Sweep value) noexcept
+    {
+        BodyAtty::SetSweep(b, value);
+        BodyAtty::SetTransformation(b, GetTransform1(value));
+    }
+    
+    static void ClearJoints(Body& b, std::function<void(Joint&)> callback)
+    {
+        auto joints = std::move(b.m_joints);
+        assert(b.m_joints.empty());
+        std::for_each(cbegin(joints), cend(joints), [&](Body::KeyedJointPtr j) {
+            callback(*(j.second));
+        });
+    }
+    
+    static void EraseContacts(Body& b, const std::function<bool(Contact&)>& callback)
+    {
+        auto end = b.m_contacts.end();
+        auto iter = b.m_contacts.begin();
+        auto index = Body::Contacts::difference_type{0};
+        while (iter != end)
+        {
+            const auto contact = GetContactPtr(*iter);
+            if (callback(*contact))
             {
-                delete GetPtr(*it);
-                b.m_fixtures.erase(it);
-                return true;
+                b.m_contacts.erase(iter);
+                iter = b.m_contacts.begin() + index;
+                end = b.m_contacts.end();
             }
-            return false;
-        }
-
-        static void ClearFixtures(Body& b, std::function<void(Fixture&)> callback)
-        {
-            std::for_each(std::begin(b.m_fixtures), std::end(b.m_fixtures), [&](Body::Fixtures::value_type& f) {
-                const auto fixture = GetPtr(f);
-                callback(*fixture);
-                delete fixture;
-            });
-            b.m_fixtures.clear();
-        }
-
-        static void SetTypeFlags(Body& b, BodyType type) noexcept
-        {
-            b.m_flags &= ~(Body::e_impenetrableFlag|Body::e_velocityFlag|Body::e_accelerationFlag);
-            b.m_flags |= Body::GetFlags(type);
-            
-            switch (type)
+            else
             {
-                case BodyType::Dynamic:
-                    break;
-                case BodyType::Kinematic:
-                    break;
-                case BodyType::Static:
-                    b.UnsetAwakeFlag();
-                    b.m_underActiveTime = 0;
-                    b.m_velocity = Velocity{LinearVelocity2D{}, AngularVelocity{0}};
-                    b.m_sweep.pos0 = b.m_sweep.pos1;
-                    break;
-            }
-        }
-        
-        static void SetAwakeFlag(Body& b) noexcept
-        {
-            b.SetAwakeFlag();
-        }
-        
-        static void SetMassDataDirty(Body& b) noexcept
-        {
-            b.SetMassDataDirty();
-        }
-        
-        static bool Erase(Body& b, const Contact* value)
-        {
-            return b.Erase(value);
-        }
-        
-        static bool Erase(Body& b, const Joint* value)
-        {
-            return b.Erase(value);
-        }
-        
-        static void ClearContacts(Body &b)
-        {
-            b.ClearContacts();
-        }
-
-        static void ClearJoints(Body &b)
-        {
-            b.ClearJoints();
-        }
-
-        static bool Insert(Body& b, Joint* value)
-        {
-            return b.Insert(value);
-        }
-
-        static bool Insert(Body* b, Joint* value)
-        {
-            if (b != nullptr)
-            {
-                return Insert(*b, value);
-            }
-            return false;
-        }
-
-        static bool Insert(Body& b, Contact* value)
-        {
-            return b.Insert(value);
-        }
-        
-        static void SetPosition0(Body& b, const Position value) noexcept
-        {
-            assert(b.IsSpeedable() || b.m_sweep.pos0 == value);
-            b.m_sweep.pos0 = value;
-        }
-        
-        /// Sets the body sweep's position 1 value.
-        /// @note This sets what Body::GetWorldCenter returns.
-        static void SetPosition1(Body& b, const Position value) noexcept
-        {
-            assert(b.IsSpeedable() || b.m_sweep.pos1 == value);
-            b.m_sweep.pos1 = value;
-        }
-        
-        static void ResetAlpha0(Body& b)
-        {
-            b.m_sweep.ResetAlpha0();
-        }
-        
-        static void SetSweep(Body& b, const Sweep value) noexcept
-        {
-            assert(b.IsSpeedable() || value.pos0 == value.pos1);
-            b.m_sweep = value;
-        }
-        
-        /// Sets the body's transformation.
-        /// @note This sets what Body::GetLocation returns.
-        static void SetTransformation(Body& b, const Transformation value) noexcept
-        {
-            b.SetTransformation(value);
-        }
-        
-        /// Sets the body's velocity.
-        /// @note This sets what Body::GetVelocity returns.
-        static void SetVelocity(Body& b, Velocity value) noexcept
-        {
-            b.m_velocity = value;
-        }
-        
-        static void Advance0(Body& b, Real value) noexcept
-        {
-            // Note: Static bodies must **never** have different sweep position values.
-            
-            // Confirm bodies don't have different sweep positions to begin with...
-            assert(b.IsSpeedable() || b.m_sweep.pos1 == b.m_sweep.pos0);
-            
-            b.m_sweep.Advance0(value);
-            
-            // Confirm bodies don't have different sweep positions to end with...
-            assert(b.IsSpeedable() || b.m_sweep.pos1 == b.m_sweep.pos0);
-        }
-        
-        static void Advance(Body& b, Real toi) noexcept
-        {
-            b.Advance(toi);
-        }
-        
-        static void Restore(Body& b, const Sweep value) noexcept
-        {
-            BodyAtty::SetSweep(b, value);
-            BodyAtty::SetTransformation(b, GetTransform1(value));
-        }
-        
-        static void ClearJoints(Body& b, std::function<void(Joint&)> callback)
-        {
-            auto joints = std::move(b.m_joints);
-            assert(b.m_joints.empty());
-            std::for_each(cbegin(joints), cend(joints), [&](Body::KeyedJointPtr j) {
-                callback(*(j.second));
-            });
-        }
-        
-        static void EraseContacts(Body& b, const std::function<bool(Contact&)>& callback)
-        {
-            auto end = b.m_contacts.end();
-            auto iter = b.m_contacts.begin();
-            auto index = Body::Contacts::difference_type{0};
-            while (iter != end)
-            {
-                const auto contact = GetContactPtr(*iter);
-                if (callback(*contact))
-                {
-                    b.m_contacts.erase(iter);
-                    iter = b.m_contacts.begin() + index;
-                    end = b.m_contacts.end();
-                }
-                else
-                {
-                    iter = std::next(iter);
-                    ++index;
-                }
+                iter = std::next(iter);
+                ++index;
             }
         }
-        
-        static bool IsIslanded(const Body& b) noexcept
-        {
-            return b.IsIslanded();
-        }
-        
-        static void SetIslanded(Body& b) noexcept
-        {
-            b.SetIslandedFlag();
-        }
-        
-        static void UnsetIslanded(Body& b) noexcept
-        {
-            b.UnsetIslandedFlag();
-        }
-        
-        friend class World;
-    };
+    }
+    
+    static bool IsIslanded(const Body& b) noexcept
+    {
+        return b.IsIslanded();
+    }
+    
+    static void SetIslanded(Body& b) noexcept
+    {
+        b.SetIslandedFlag();
+    }
+    
+    static void UnsetIslanded(Body& b) noexcept
+    {
+        b.UnsetIslandedFlag();
+    }
+    
+    friend class World;
+};
 
 } // namespace playrho
 

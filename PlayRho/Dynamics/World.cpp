@@ -59,6 +59,7 @@
 #include <PlayRho/Common/LengthError.hpp>
 #include <PlayRho/Common/DynamicMemory.hpp>
 #include <PlayRho/Common/FlagGuard.hpp>
+#include <PlayRho/Common/WrongState.hpp>
 
 #include <new>
 #include <functional>
@@ -683,8 +684,8 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
     {
     public:
         
-        JointCopier(World& w, const std::map<const Body*, Body*>& bodies):
-            world{w}, bodyMap{bodies} {}
+        JointCopier(World& w, std::map<const Body*, Body*> bodies):
+        world{w}, bodyMap{std::move(bodies)} {}
 
         /// @brief Visits a RevoluteJoint.
         void Visit(const RevoluteJoint& oldJoint) override
@@ -873,7 +874,7 @@ Body* World::CreateBody(const BodyDef& def)
 {
     if (IsLocked())
     {
-        throw LockedError("World::CreateBody: world is locked");
+        throw WrongState("World::CreateBody: world is locked");
     }
 
     if (m_bodies.size() >= MaxBodies)
@@ -918,7 +919,7 @@ void World::Destroy(Body* body)
     
     if (IsLocked())
     {
-        throw LockedError("World::Destroy: world is locked");
+        throw WrongState("World::Destroy: world is locked");
     }
     
     // Delete the attached joints.
@@ -952,7 +953,7 @@ Joint* World::CreateJoint(const JointDef& def)
 {
     if (IsLocked())
     {
-        throw LockedError("World::CreateJoint: world is locked");
+        throw WrongState("World::CreateJoint: world is locked");
     }
     
     if (m_joints.size() >= MaxJoints)
@@ -1004,7 +1005,7 @@ void World::Destroy(Joint* joint)
     {
         if (IsLocked())
         {
-            throw LockedError("World::Destroy: world is locked");
+            throw WrongState("World::Destroy: world is locked");
         }
         InternalDestroy(joint);
     }
@@ -1990,7 +1991,7 @@ StepStats World::Step(const StepConf& conf)
     
     if (IsLocked())
     {
-        throw LockedError("World::Step: world is locked");
+        throw WrongState("World::Step: world is locked");
     }
 
     auto stepStats = StepStats{};
@@ -2042,7 +2043,7 @@ StepStats World::Step(const StepConf& conf)
     return stepStats;
 }
 
-void World::QueryAABB(const AABB& aabb, QueryFixtureCallback callback)
+void World::QueryAABB(const AABB& aabb, QueryFixtureCallback callback) const
 {
     m_tree.Query(aabb, [&](DynamicTree::size_type proxyId) {
         const auto proxy = static_cast<FixtureProxy*>(m_tree.GetUserData(proxyId));
@@ -2050,7 +2051,7 @@ void World::QueryAABB(const AABB& aabb, QueryFixtureCallback callback)
     });
 }
 
-void World::RayCast(Length2D point1, Length2D point2, RayCastCallback callback)
+void World::RayCast(Length2D point1, Length2D point2, RayCastCallback callback) const
 {
     m_tree.RayCast(RayCastInput{point1, point2, Real{1}},
                    [&](const RayCastInput& input, DynamicTree::size_type proxyId)
@@ -2102,7 +2103,7 @@ void World::ShiftOrigin(Length2D newOrigin)
 {
     if (IsLocked())
     {
-        throw LockedError("World::ShiftOrigin: world is locked");
+        throw WrongState("World::ShiftOrigin: world is locked");
     }
 
     for (auto&& body: GetBodies())
@@ -2597,7 +2598,7 @@ void World::SetType(Body& body, BodyType type)
 
     if (IsLocked())
     {
-        throw LockedError("World::SetType: world is locked");
+        throw WrongState("World::SetType: world is locked");
     }
     
     BodyAtty::SetTypeFlags(body, type);
@@ -2654,7 +2655,7 @@ Fixture* World::CreateFixture(Body& body, const std::shared_ptr<const Shape>& sh
     
     if (IsLocked())
     {
-        throw LockedError("World::CreateFixture: world is locked");
+        throw WrongState("World::CreateFixture: world is locked");
     }
     
     const auto fixture = BodyAtty::CreateFixture(body, shape, def);
@@ -2694,7 +2695,7 @@ bool World::DestroyFixture(Fixture* fixture, bool resetMassData)
     }
     if (IsLocked())
     {
-        throw LockedError("World::DestroyFixture: world is locked");
+        throw WrongState("World::DestroyFixture: world is locked");
     }
     
 #if 0

@@ -18,24 +18,23 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_LENGTHERROR_HPP
-#define PLAYRHO_COMMON_LENGTHERROR_HPP
+#ifndef PLAYRHO_COMMON_WRONGSTATE_HPP
+#define PLAYRHO_COMMON_WRONGSTATE_HPP
 
 #include <stdexcept>
 
 namespace playrho {
 
-/// @brief Length based logic error.
-/// @details The exception used to indicate that an operation would produce a
-///   result that exceeded an object's maximum size.
-/// @ingroup ExceptionsGroup
-class LengthError: public std::length_error
-{
-public:
-    using std::length_error::length_error;
-};
+    /// @brief Wrong state logic error.
+    /// @details Indicates that a method was called on an object in the wrong state for
+    ///   its operation.
+    /// @ingroup ExceptionsGroup
+    class WrongState: public std::logic_error
+    {
+    public:
+        using std::logic_error::logic_error;
+    };
 
 } // namespace playrho
 
-
-#endif // PLAYRHO_COMMON_LENGTHERROR_HPP
+#endif // PLAYRHO_COMMON_WRONGSTATE_HPP

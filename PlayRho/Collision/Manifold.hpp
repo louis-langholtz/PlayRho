@@ -459,24 +459,29 @@ namespace playrho {
     };
     
     /// @brief Gets the default manifold configuration.
+    /// @relatedalso Manifold::Conf
     constexpr inline Manifold::Conf GetDefaultManifoldConf() noexcept
     {
         return Manifold::Conf{};
     }
 
     /// @brief Determines whether the two given manifold points are equal.
+    /// @relatedalso Manifold::Point
     bool operator==(const Manifold::Point& lhs, const Manifold::Point& rhs) noexcept;
     
     /// @brief Determines whether the two given manifold points are not equal.
+    /// @relatedalso Manifold::Point
     bool operator!=(const Manifold::Point& lhs, const Manifold::Point& rhs) noexcept;
     
     /// @brief Manifold equality operator.
     /// @note In-so-far as manifold points are concerned, order doesn't matter;
     ///    only whether the two manifolds have the same point set.
+    /// @relatedalso Manifold
     bool operator==(const Manifold& lhs, const Manifold& rhs) noexcept;
     
     /// @brief Manifold inequality operator.
     /// @details Determines whether the two given manifolds are not equal.
+    /// @relatedalso Manifold
     bool operator!=(const Manifold& lhs, const Manifold& rhs) noexcept;
 
     constexpr inline Manifold::Manifold(Type t, UnitVec2 ln, Length2D lp, size_type n,
@@ -528,6 +533,7 @@ namespace playrho {
     }
 
     /// @brief Gets whether the given manifold is valid.
+    /// @relatedalso Manifold
     template <>
     constexpr inline bool IsValid(const Manifold& value) noexcept
     {
@@ -539,6 +545,8 @@ namespace playrho {
     /// @note The returned touching state information typically agrees with that returned from
     ///   the DistanceProxy-based TestOverlap function. This is not always the case however
     ///   especially when the separation or overlap distance is closer to zero.
+    ///
+    /// @relatedalso Manifold
     ///
     Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
                            const DistanceProxy& shapeB, const Transformation& xfB,
