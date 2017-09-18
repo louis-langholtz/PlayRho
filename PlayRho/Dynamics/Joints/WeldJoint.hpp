@@ -28,8 +28,12 @@
 namespace playrho {
 
 /// @brief Weld joint.
+///
 /// @details A weld joint essentially glues two bodies together. A weld joint may
-/// distort somewhat because the island constraint solver is approximate.
+///   distort somewhat because the island constraint solver is approximate.
+///
+/// @ingroup JointsGroup
+///
 class WeldJoint : public Joint
 {
 public:

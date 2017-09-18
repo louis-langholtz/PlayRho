@@ -34,9 +34,13 @@ namespace playrho {
 /// point is the joint angle.
 ///
 /// @note You can limit the relative rotation with a joint limit that specifies a
-/// lower and upper angle. You can use a motor
-/// to drive the relative rotation about the shared point. A maximum motor torque
-/// is provided so that infinite forces are not generated.
+///   lower and upper angle. You can use a motor to drive the relative rotation about
+///   the shared point. A maximum motor torque is provided so that infinite forces are
+///   not generated.
+///
+/// @ingroup JointsGroup
+///
+/// @image html revoluteJoint.gif
 ///
 class RevoluteJoint : public Joint
 {
@@ -171,10 +175,12 @@ inline Joint::LimitState RevoluteJoint::GetLimitState() const noexcept
 
 // Free functions...
 
-/// Gets the current joint angle.
+/// @brief Gets the current joint angle.
+/// @relatedalso RevoluteJoint
 Angle GetJointAngle(const RevoluteJoint& joint);
     
-/// Gets the current joint angle speed.
+/// @brief Gets the current joint angle speed.
+/// @relatedalso RevoluteJoint
 AngularVelocity GetAngularVelocity(const RevoluteJoint& joint);
 
 } // namespace playrho

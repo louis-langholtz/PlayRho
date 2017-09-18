@@ -120,6 +120,7 @@ constexpr WheelJointDef& WheelJointDef::UseDampingRatio(Real v) noexcept
 }
 
 /// @brief Gets the definition data for the given joint.
+/// @relatedalso WheelJoint
 WheelJointDef GetWheelJointDef(const WheelJoint& joint) noexcept;
 
 } // namespace playrho

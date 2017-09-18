@@ -27,12 +27,12 @@
 
 namespace playrho {
 
-/// Polygon shape.
-/// @details
-/// A convex polygon. The interior of the polygon is to the left of each edge.
-/// Polygons have a maximum number of vertices equal to MaxShapeVertices.
-/// In most cases you should not need many vertices for a convex polygon.
+/// @brief Polygon shape.
+/// @details A convex polygon. The interior of the polygon is to the left of each edge.
+///   Polygons have a maximum number of vertices equal to MaxShapeVertices.
+///   In most cases you should not need many vertices for a convex polygon.
 /// @note This data structure is 64-bytes large (with 4-byte Real).
+/// @ingroup PartsGroup
 class PolygonShape : public Shape
 {
 public:

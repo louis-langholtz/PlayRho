@@ -104,6 +104,7 @@ constexpr MouseJointDef& MouseJointDef::UseDampingRatio(NonNegative<Real> v) noe
 }
 
 /// @brief Gets the definition data for the given joint.
+/// @relatedalso MouseJoint
 MouseJointDef GetMouseJointDef(const MouseJoint& joint) noexcept;
 
 } // namespace playrho

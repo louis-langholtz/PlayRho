@@ -63,6 +63,7 @@ inline GearJointDef& GearJointDef::UseRatio(Real v) noexcept
 }
 
 /// @brief Gets the definition data for the given joint.
+/// @relatedalso GearJoint
 GearJointDef GetGearJointDef(const GearJoint& joint) noexcept;
 
 } // namespace playrho

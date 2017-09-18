@@ -32,6 +32,8 @@ namespace playrho {
 ///
 /// @note This data structure is 56-bytes.
 ///
+/// @ingroup PartsGroup
+///
 class EdgeShape : public Shape
 {
 public:

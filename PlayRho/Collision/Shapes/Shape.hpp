@@ -27,16 +27,24 @@
 
 namespace playrho {
 
+/// @defgroup PartsGroup Shape Classes
+/// @details These are classes that specify physical characteristics of: shape,
+///   friction, density and restitution. They've historically been called shape classes
+///   but are now -- with the other properties like friction and density having been
+///   moved into them -- maybe better thought of as "parts".
+
 class ShapeVisitor;
 
 /// @brief A base abstract class for describing a type of shape.
 ///
 /// @details This is a polymorphic abstract base class for shapes.
-/// A shape is used for collision detection. You can create a shape however you like.
-/// Shapes used for simulation in World are created automatically when a Fixture
-/// is created. Shapes may encapsulate one or more child shapes.
+///   A shape is used for collision detection. You can create a shape however you like.
+///   Shapes used for simulation in World are created automatically when a Fixture
+///   is created. Shapes may encapsulate zero or more child shapes.
 ///
 /// @note This data structure is 32-bytes large (on at least one 64-bit platform).
+///
+/// @ingroup PartsGroup
 ///
 class Shape
 {
@@ -110,12 +118,13 @@ public:
     virtual ~Shape() = default;
 
     /// @brief Gets the number of child primitives of the shape.
-    /// @return Positive non-zero count.
+    /// @return Non-negative count.
     virtual ChildCounter GetChildCount() const noexcept = 0;
 
     /// @brief Gets the child for the given index.
     /// @note The shape must remain in scope while the proxy is in use.
     /// @throws InvalidArgument if the index is out of range.
+    /// @sa GetChildCount
     virtual DistanceProxy GetChild(ChildCounter index) const = 0;
     
     /// @brief Gets the mass properties of this shape using its dimensions and density.

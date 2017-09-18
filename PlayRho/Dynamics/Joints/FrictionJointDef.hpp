@@ -77,6 +77,7 @@ constexpr FrictionJointDef& FrictionJointDef::UseMaxTorque(NonNegative<Torque> v
 }
 
 /// @brief Gets the definition data for the given joint.
+/// @relatedalso FrictionJoint
 FrictionJointDef GetFrictionJointDef(const FrictionJoint& joint) noexcept;
 
 } // namespace playrho

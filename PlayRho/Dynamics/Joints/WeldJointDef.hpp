@@ -83,6 +83,7 @@ constexpr WeldJointDef& WeldJointDef::UseDampingRatio(Real v) noexcept
 }
 
 /// @brief Gets the definition data for the given joint.
+/// @relatedalso WeldJoint
 WeldJointDef GetWeldJointDef(const WeldJoint& joint) noexcept;
 
 } // namespace playrho

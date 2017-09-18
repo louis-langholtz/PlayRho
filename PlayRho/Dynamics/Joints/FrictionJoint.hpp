@@ -29,8 +29,12 @@
 namespace playrho {
 
 /// @brief Friction joint.
-/// @details This is used for top-down friction.
-/// It provides 2D translational friction and angular friction.
+///
+/// @details This is used for top-down friction. It provides 2D translational friction
+///   and angular friction.
+///
+/// @ingroup JointsGroup
+///
 class FrictionJoint : public Joint
 {
 public:

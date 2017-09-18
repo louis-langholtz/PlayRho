@@ -68,6 +68,7 @@ constexpr RopeJointDef& RopeJointDef::UseMaxLength(Length v) noexcept
 }
 
 /// @brief Gets the definition data for the given joint.
+/// @relatedalso RopeJoint
 RopeJointDef GetRopeJointDef(const RopeJoint& joint) noexcept;
 
 } // namespace playrho

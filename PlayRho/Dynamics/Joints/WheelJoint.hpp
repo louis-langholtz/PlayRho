@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_WHEEL_JOINT_HPP
-#define PLAYRHO_WHEEL_JOINT_HPP
+#ifndef PLAYRHO_DYNAMICS_JOINTS_WHEELJOINT_HPP
+#define PLAYRHO_DYNAMICS_JOINTS_WHEELJOINT_HPP
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/WheelJointDef.hpp>
@@ -28,10 +28,17 @@
 namespace playrho {
 
 /// @brief Wheel joint.
-/// @details This joint provides two degrees of freedom: translation
-///   along an axis fixed in bodyA and rotation in the plane. In other words, it is a point to
+///
+/// @details This joint provides two degrees of freedom: translation along an axis
+///   fixed in bodyA and rotation in the plane. In other words, it is a point to
 ///   line constraint with a rotational motor and a linear spring/damper.
-///   This joint is designed for vehicle suspensions.
+///
+/// @note This joint is designed for vehicle suspensions.
+///
+/// @ingroup JointsGroup
+///
+/// @image html WheelJoint.png
+///
 class WheelJoint : public Joint
 {
 public:
@@ -164,12 +171,14 @@ inline Real WheelJoint::GetSpringDampingRatio() const
 
 // Free functions on WheelJoint instances.
 
-/// Get the current joint translation.
+/// @brief Get the current joint translation.
+/// @relatedalso WheelJoint
 Length GetJointTranslation(const WheelJoint& joint) noexcept;
 
-/// Get the current joint translation speed.
+/// @brief Get the current joint translation speed.
+/// @relatedalso WheelJoint
 AngularVelocity GetAngularVelocity(const WheelJoint& joint) noexcept;
 
 } // namespace playrho
 
-#endif
+#endif // PLAYRHO_DYNAMICS_JOINTS_WHEELJOINT_HPP

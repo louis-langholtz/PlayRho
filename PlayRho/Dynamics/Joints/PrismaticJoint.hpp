@@ -36,6 +36,10 @@ namespace playrho {
 /// @note You can use a joint limit to restrict the range of motion and a joint motor
 ///   to drive the motion or to model joint friction.
 ///
+/// @ingroup JointsGroup
+///
+/// @image html prismaticJoint.gif
+///
 class PrismaticJoint : public Joint
 {
 public:
@@ -168,10 +172,12 @@ inline Joint::LimitState PrismaticJoint::GetLimitState() const noexcept
     return m_limitState;
 }
 
-/// Get the current joint translation.
+/// @brief Get the current joint translation.
+/// @relatedalso PrismaticJoint
 Length GetJointTranslation(const PrismaticJoint& joint) noexcept;
 
-/// Get the current joint translation speed.
+/// @brief Get the current joint translation speed.
+/// @relatedalso PrismaticJoint
 LinearVelocity GetLinearVelocity(const PrismaticJoint& joint) noexcept;
 
 } // namespace playrho

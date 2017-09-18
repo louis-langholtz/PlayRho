@@ -121,6 +121,7 @@ inline PrismaticJointDef& PrismaticJointDef::UseEnableMotor(bool v) noexcept
 }
 
 /// @brief Gets the definition data for the given joint.
+/// @relatedalso PrismaticJoint
 PrismaticJointDef GetPrismaticJointDef(const PrismaticJoint& joint) noexcept;
 
 } // namespace playrho

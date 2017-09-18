@@ -278,8 +278,9 @@ public:
     /// @brief Is the world locked (in the middle of a time step).
     bool IsLocked() const noexcept;
 
-    /// Shift the world origin. Useful for large worlds.
-    /// The body shift formula is: position -= newOrigin
+    /// @brief Shifts the world origin.
+    /// @note Useful for large worlds.
+    /// @note The body shift formula is: position -= newOrigin
     /// @param newOrigin the new origin with respect to the old origin
     /// @throws WrongState if this method is called while the world is locked.
     void ShiftOrigin(Length2D newOrigin);

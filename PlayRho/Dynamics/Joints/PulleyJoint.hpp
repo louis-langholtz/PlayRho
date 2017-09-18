@@ -28,13 +28,21 @@
 namespace playrho {
 
 /// @brief Pulley joint.
+///
 /// @details The pulley joint is connected to two bodies and two fixed ground points.
 ///   The pulley supports a ratio such that: length1 + ratio * length2 <= constant.
+///
 /// @note The force transmitted is scaled by the ratio.
+///
 /// @warning the pulley joint can get a bit squirrelly by itself. They often
 ///   work better when combined with prismatic joints. You should also cover the
 ///   the anchor points with static shapes to prevent one side from going to
 ///   zero length.
+///
+/// @ingroup JointsGroup
+///
+/// @image html pulleyJoint.gif
+///
 class PulleyJoint : public Joint
 {
 public:
@@ -137,10 +145,12 @@ inline Real PulleyJoint::GetRatio() const noexcept
     return m_ratio;
 }
 
-/// Get the current length of the segment attached to bodyA.
+/// @brief Get the current length of the segment attached to bodyA.
+/// @relatedalso PulleyJoint
 Length GetCurrentLengthA(const PulleyJoint& joint);
 
-/// Get the current length of the segment attached to bodyB.
+/// @brief Get the current length of the segment attached to bodyB.
+/// @relatedalso PulleyJoint
 Length GetCurrentLengthB(const PulleyJoint& joint);
 
 } // namespace playrho

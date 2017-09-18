@@ -29,15 +29,19 @@
 namespace playrho {
 
 /// @brief Gear joint.
-/// @details A gear joint is used to connect two joints together. Either joint
-/// can be a revolute or prismatic joint. You specify a gear ratio
-/// to bind the motions together:
-/// coordinate1 + ratio * coordinate2 = constant
-/// The ratio can be negative or positive. If one joint is a revolute joint
-/// and the other joint is a prismatic joint, then the ratio will have units
-/// of length or units of 1/length.
-/// @warning You have to manually destroy the gear joint if joint1 or joint2
-/// is destroyed.
+///
+/// @details A gear joint is used to connect two joints together. Either joint can be
+///   a revolute or prismatic joint. You specify a gear ratio to bind the motions together:
+///      coordinate1 + ratio * coordinate2 = constant
+///   The ratio can be negative or positive. If one joint is a revolute joint and the other
+///   joint is a prismatic joint, then the ratio will have units of length or units of 1/length.
+///
+/// @warning You have to manually destroy the gear joint if joint1 or joint2 is destroyed.
+///
+/// @ingroup JointsGroup
+///
+/// @image html gearJoint.gif
+///
 class GearJoint : public Joint
 {
 public:

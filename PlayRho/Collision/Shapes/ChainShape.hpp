@@ -38,6 +38,8 @@ class EdgeShape;
 ///
 /// @warning The chain will not collide properly if there are self-intersections.
 ///
+/// @ingroup PartsGroup
+///
 class ChainShape: public Shape
 {
 public:
