@@ -26,7 +26,6 @@ var searchData=
   ['bodyconstraintspair',['BodyConstraintsPair',['../namespaceplayrho.html#a56ca03f95a9e2cd1be0cdce6cd161c50',1,'playrho']]],
   ['bodycounter',['BodyCounter',['../namespaceplayrho.html#a4106d8a0e998a2485196534514527a5a',1,'playrho']]],
   ['bodydef',['BodyDef',['../structplayrho_1_1_body_def.html',1,'playrho']]],
-  ['body_20free_20functions_2e',['Body free functions.',['../group___body_free_functions.html',1,'']]],
   ['bodyptr',['BodyPtr',['../namespaceplayrho.html#a6b95f01f8ccaa781df94b7d38d328d47',1,'playrho']]],
   ['bodytype',['BodyType',['../namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7',1,'playrho']]],
   ['bounded_20value_20type_20aliases_2e',['Bounded value type aliases.',['../group___bounded_aliases.html',1,'']]],

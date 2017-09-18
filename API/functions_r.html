@@ -75,8 +75,11 @@ $(function() {
 , <a class="el" href="structplayrho_1_1_pulley_joint_def.html#a4bd2065ec348af76c2f2b84c5e132a3b">playrho::PulleyJointDef</a>
 </li>
 <li>RayCast()
-: <a class="el" href="classplayrho_1_1_dynamic_tree.html#ab42d66fc6068d25db9c7499296aa29e4">playrho::DynamicTree</a>
-, <a class="el" href="classplayrho_1_1_world.html#a626b943a1550cc28d8ca209ba4c0abbf">playrho::World</a>
+: <a class="el" href="group___ray_cast_group.html#ga6006702fe97a6e9af3fcab01df3138a8">playrho::AABB</a>
+, <a class="el" href="group___ray_cast_group.html#gabc2e992343e201f48c1956753a530247">playrho::DistanceProxy</a>
+, <a class="el" href="classplayrho_1_1_dynamic_tree.html#ab42d66fc6068d25db9c7499296aa29e4">playrho::DynamicTree</a>
+, <a class="el" href="group___ray_cast_group.html#gaada5f6c5635166baaf1bc81636d8b93a">playrho::Shape</a>
+, <a class="el" href="classplayrho_1_1_world.html#a6918644502a60d959cf21c7e21fe3176">playrho::World</a>
 </li>
 <li>RayCastCallback
 : <a class="el" href="classplayrho_1_1_dynamic_tree.html#ae5cf50aeb7730712864c392191ad999d">playrho::DynamicTree</a>
@@ -100,7 +103,7 @@ $(function() {
 , <a class="el" href="structplayrho_1_1_weld_joint_def.html#a3e5fb594169bd4da0570f7b56f54e394">playrho::WeldJointDef</a>
 </li>
 <li>Refilter()
-: <a class="el" href="classplayrho_1_1_fixture.html#ad6c764bf9c4e15cbcaa43839a659eda1">playrho::Fixture</a>
+: <a class="el" href="classplayrho_1_1_fixture.html#a5cba7e82e7fdc608add29750a6453c37">playrho::Fixture</a>
 </li>
 <li>reg
 : <a class="el" href="structplayrho_1_1_step_stats.html#aefbc7755ee10149deec23d10ab7de550">playrho::StepStats</a>
@@ -135,8 +138,14 @@ $(function() {
 <li>ResetAlpha0()
 : <a class="el" href="classplayrho_1_1_sweep.html#a69664f27e57e1b6f74283c0b37144cf2">playrho::Sweep</a>
 </li>
+<li>ResetFriction()
+: <a class="el" href="classplayrho_1_1_contact.html#a6364ce32adb82c7dd45b80e8b0c9bfd5">playrho::Contact</a>
+</li>
 <li>ResetMassData()
 : <a class="el" href="classplayrho_1_1_body.html#a1da721b67ed4d0643c9c20ce27ff8aa0">playrho::Body</a>
+</li>
+<li>ResetRestitution()
+: <a class="el" href="classplayrho_1_1_contact.html#ae7c83e82f89844199f5c06c5cda3749d">playrho::Contact</a>
 </li>
 <li>ResetUnderActiveTime()
 : <a class="el" href="classplayrho_1_1_body.html#a0fa145b797092eb2437272cf2b6ffbcd">playrho::Body</a>
@@ -179,6 +188,12 @@ $(function() {
 <li>Rotate()
 : <a class="el" href="classplayrho_1_1_unit_vec2.html#a2e0e54306cebdb40ba144a9d87e4531e">playrho::UnitVec2</a>
 </li>
+<li>RotateAboutLocalPoint()
+: <a class="el" href="classplayrho_1_1_body.html#a53a1eb9e99f03edf7b9cc3ed2b004f4b">playrho::Body</a>
+</li>
+<li>RotateAboutWorldPoint()
+: <a class="el" href="classplayrho_1_1_body.html#a8921f8ac511d5841e5fb30e32fbb9220">playrho::Body</a>
+</li>
 <li>round_error()
 : <a class="el" href="classstd_1_1numeric__limits_3_01playrho_1_1_fixed32_01_4.html#a40526f962d9327fc84465683d31e9f29">std::numeric_limits&lt; playrho::Fixed32 &gt;</a>
 , <a class="el" href="classstd_1_1numeric__limits_3_01playrho_1_1_fixed64_01_4.html#a6c747e6d1dd8a26d57306b345304eabe">std::numeric_limits&lt; playrho::Fixed64 &gt;</a>
@@ -191,7 +206,7 @@ $(function() {
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Sep 16 2017 23:07:51 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 18 2017 12:19:10 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

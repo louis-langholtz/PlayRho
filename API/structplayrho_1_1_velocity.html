@@ -66,6 +66,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#related">Related Functions</a> &#124;
 <a href="structplayrho_1_1_velocity-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">playrho::Velocity Struct Reference</div>  </div>
@@ -87,16 +88,77 @@ Public Attributes</h2></td></tr>
 <a class="el" href="group___quantities.html#gac33f92018f7e8821550296aece465028">AngularVelocity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_velocity.html#a9432ff8ea8f5cd2403d57d13f5847614">angular</a></td></tr>
 <tr class="memdesc:a9432ff8ea8f5cd2403d57d13f5847614"><td class="mdescLeft">&#160;</td><td class="mdescRight">Angular velocity. <br /></td></tr>
 <tr class="separator:a9432ff8ea8f5cd2403d57d13f5847614"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
+Related Functions</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
+</td></tr>
+<tr class="memitem:a486a4af37125ad1fc95d541ff34f0321"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1_velocity.html">Velocity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_velocity.html#a486a4af37125ad1fc95d541ff34f0321">GetVelocity</a> (const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body, <a class="el" href="group___quantities.html#ga250898c9929b0e6eaf56a1967c568888">Time</a> h, <a class="el" href="structplayrho_1_1_movement_conf.html">MovementConf</a> conf) noexcept</td></tr>
+<tr class="memdesc:a486a4af37125ad1fc95d541ff34f0321"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the velocity of the body after the given time accounting for the body's acceleration and capped by the given configuration.  <a href="#a486a4af37125ad1fc95d541ff34f0321">More...</a><br /></td></tr>
+<tr class="separator:a486a4af37125ad1fc95d541ff34f0321"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section note"><dt>Note</dt><dd>This data structure is 12-bytes (with 4-byte Real on at least one 64-bit platform). </dd></dl>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="a486a4af37125ad1fc95d541ff34f0321"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a486a4af37125ad1fc95d541ff34f0321">&#9670;&nbsp;</a></span>GetVelocity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> GetVelocity </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group___quantities.html#ga250898c9929b0e6eaf56a1967c568888">Time</a>&#160;</td>
+          <td class="paramname"><em>h</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structplayrho_1_1_movement_conf.html">MovementConf</a>&#160;</td>
+          <td class="paramname"><em>conf</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section warning"><dt>Warning</dt><dd>Behavior is undefined if the given elapsed time is an invalid value (like NaN). </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">body</td><td><a class="el" href="classplayrho_1_1_body.html" title="Physical entity that exists within a World. ">Body</a> to get the velocity for. </td></tr>
+    <tr><td class="paramname">h</td><td>Time elapsed to get velocity for. Behavior is undefined if this value is invalid. </td></tr>
+    <tr><td class="paramname">conf</td><td>Movement configuration. This defines caps on linear and angular speeds. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following files:<ul>
 <li>Velocity.hpp</li>
+<li>Body.hpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Sep 16 2017 23:07:50 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 18 2017 12:19:10 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

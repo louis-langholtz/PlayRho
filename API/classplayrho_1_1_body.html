@@ -70,13 +70,14 @@ $(function() {
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
+<a href="#related">Related Functions</a> &#124;
 <a href="classplayrho_1_1_body-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">playrho::Body Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>A physical entity that exists within a <a class="el" href="classplayrho_1_1_world.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a>.  
+<p>Physical entity that exists within a <a class="el" href="classplayrho_1_1_world.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a>.  
  <a href="classplayrho_1_1_body.html#details">More...</a></p>
 
 <p><code>#include &lt;Body.hpp&gt;</code></p>
@@ -124,7 +125,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a18857c8bcdb0587edf41a05e097301a1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a18857c8bcdb0587edf41a05e097301a1">Body</a> (<a class="el" href="classplayrho_1_1_world.html">World</a> *world, const <a class="el" href="structplayrho_1_1_body_def.html">BodyDef</a> &amp;bd)</td></tr>
 <tr class="memdesc:a18857c8bcdb0587edf41a05e097301a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor for unit testing purposes.  <a href="#a18857c8bcdb0587edf41a05e097301a1">More...</a><br /></td></tr>
 <tr class="separator:a18857c8bcdb0587edf41a05e097301a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c41613a76f61520797a7bd2a1fab1c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1_fixture.html">Fixture</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a9c41613a76f61520797a7bd2a1fab1c2">CreateFixture</a> (const std::shared_ptr&lt; const <a class="el" href="classplayrho_1_1_shape.html">Shape</a> &gt; &amp;shape, const <a class="el" href="structplayrho_1_1_fixture_def.html">FixtureDef</a> &amp;def=<a class="el" href="namespaceplayrho.html#ada6d2bd29dae05327b5142c712c691d9">GetDefaultFixtureDef</a>(), bool resetMassData=true)</td></tr>
+<tr class="memitem:a9c41613a76f61520797a7bd2a1fab1c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1_fixture.html">Fixture</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a9c41613a76f61520797a7bd2a1fab1c2">CreateFixture</a> (const std::shared_ptr&lt; const <a class="el" href="classplayrho_1_1_shape.html">Shape</a> &gt; &amp;shape, const <a class="el" href="structplayrho_1_1_fixture_def.html">FixtureDef</a> &amp;def=<a class="el" href="namespaceplayrho.html#ad5b6f84e039d8f1c713fbf25b3953b8a">GetDefaultFixtureDef</a>(), bool resetMassData=true)</td></tr>
 <tr class="memdesc:a9c41613a76f61520797a7bd2a1fab1c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a fixture and attaches it to this body.  <a href="#a9c41613a76f61520797a7bd2a1fab1c2">More...</a><br /></td></tr>
 <tr class="separator:a9c41613a76f61520797a7bd2a1fab1c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a211c816480f91d74fa46d51f584e2a50"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a211c816480f91d74fa46d51f584e2a50">DestroyFixture</a> (<a class="el" href="classplayrho_1_1_fixture.html">Fixture</a> *fixture, bool resetMassData=true)</td></tr>
@@ -134,9 +135,9 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#aa4011a1e6d6f7fdd0cfb1e88333b7405">DestroyFixtures</a> ()</td></tr>
 <tr class="memdesc:aa4011a1e6d6f7fdd0cfb1e88333b7405"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destory fixtures. <br /></td></tr>
 <tr class="separator:aa4011a1e6d6f7fdd0cfb1e88333b7405"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc5f785dad3dcd08f7800fd74a122f68"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#adc5f785dad3dcd08f7800fd74a122f68">SetTransform</a> (<a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> position, <a class="el" href="group___quantities.html#gab999341c050df340ff56a65816a63da9">Angle</a> angle)</td></tr>
-<tr class="memdesc:adc5f785dad3dcd08f7800fd74a122f68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the position of the body's origin and rotation.  <a href="#adc5f785dad3dcd08f7800fd74a122f68">More...</a><br /></td></tr>
-<tr class="separator:adc5f785dad3dcd08f7800fd74a122f68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae85743c3918ec0218b94815e60a123d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#ae85743c3918ec0218b94815e60a123d5">SetTransform</a> (<a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> location, <a class="el" href="group___quantities.html#gab999341c050df340ff56a65816a63da9">Angle</a> angle)</td></tr>
+<tr class="memdesc:ae85743c3918ec0218b94815e60a123d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the position of the body's origin and rotation.  <a href="#ae85743c3918ec0218b94815e60a123d5">More...</a><br /></td></tr>
+<tr class="separator:ae85743c3918ec0218b94815e60a123d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d9ade3336e2d3f19c62ffea5747586d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1_transformation.html">Transformation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a5d9ade3336e2d3f19c62ffea5747586d">GetTransformation</a> () const noexcept</td></tr>
 <tr class="memdesc:a5d9ade3336e2d3f19c62ffea5747586d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the body transform for the body's origin.  <a href="#a5d9ade3336e2d3f19c62ffea5747586d">More...</a><br /></td></tr>
 <tr class="separator:a5d9ade3336e2d3f19c62ffea5747586d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -323,9 +324,111 @@ Friends</h2></td></tr>
 <tr class="memitem:a8a01c09dc474a30ae26a4e09d55265df"><td class="memItemLeft" align="right" valign="top"><a id="a8a01c09dc474a30ae26a4e09d55265df"></a>
 class&#160;</td><td class="memItemRight" valign="bottom"><b>BodyAtty</b></td></tr>
 <tr class="separator:a8a01c09dc474a30ae26a4e09d55265df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
+Related Functions</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
+</td></tr>
+<tr class="memitem:a4c86a617058eada4a474b501f0844b76"><td class="memItemLeft" align="right" valign="top"><a id="a4c86a617058eada4a474b501f0844b76"></a>
+<a class="el" href="classplayrho_1_1_a_a_b_b.html">AABB</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a4c86a617058eada4a474b501f0844b76">ComputeAABB</a> (const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body)</td></tr>
+<tr class="memdesc:a4c86a617058eada4a474b501f0844b76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the <a class="el" href="classplayrho_1_1_a_a_b_b.html" title="Axis Aligned Bounding Box. ">AABB</a> for the given body. <br /></td></tr>
+<tr class="separator:a4c86a617058eada4a474b501f0844b76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e9574d95e6dfa6f32a405cf40ebbf79"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1_mass_data.html">MassData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a2e9574d95e6dfa6f32a405cf40ebbf79">ComputeMassData</a> (const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:a2e9574d95e6dfa6f32a405cf40ebbf79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the body's mass data.  <a href="#a2e9574d95e6dfa6f32a405cf40ebbf79">More...</a><br /></td></tr>
+<tr class="separator:a2e9574d95e6dfa6f32a405cf40ebbf79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcf7fe1ea0d3ef041d4f7847ef5871e4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1_mass_data.html">MassData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#adcf7fe1ea0d3ef041d4f7847ef5871e4">GetMassData</a> (const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:adcf7fe1ea0d3ef041d4f7847ef5871e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the mass data of the body.  <a href="#adcf7fe1ea0d3ef041d4f7847ef5871e4">More...</a><br /></td></tr>
+<tr class="separator:adcf7fe1ea0d3ef041d4f7847ef5871e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4834708af29bcc9ae39ebfc2b9f580f6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a4834708af29bcc9ae39ebfc2b9f580f6">Awaken</a> (<a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:a4834708af29bcc9ae39ebfc2b9f580f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Awakens the body if it's asleep.  <a href="#a4834708af29bcc9ae39ebfc2b9f580f6">More...</a><br /></td></tr>
+<tr class="separator:a4834708af29bcc9ae39ebfc2b9f580f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdfbff06306e4ecb71f6d4b2136eea7c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#abdfbff06306e4ecb71f6d4b2136eea7c">Unawaken</a> (<a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:abdfbff06306e4ecb71f6d4b2136eea7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Puts the body to sleep if it's awake.  <a href="#abdfbff06306e4ecb71f6d4b2136eea7c">More...</a><br /></td></tr>
+<tr class="separator:abdfbff06306e4ecb71f6d4b2136eea7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c355eb58981b97e5901fa7d04052507"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___quantities.html#ga5edfc295416b7690b4f949223b551bc1">Mass</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a3c355eb58981b97e5901fa7d04052507">GetMass</a> (const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:a3c355eb58981b97e5901fa7d04052507"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the total mass of the body.  <a href="#a3c355eb58981b97e5901fa7d04052507">More...</a><br /></td></tr>
+<tr class="separator:a3c355eb58981b97e5901fa7d04052507"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4223a9983a3edd43133bacb9ca4e3a43"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a4223a9983a3edd43133bacb9ca4e3a43">ApplyLinearAcceleration</a> (<a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body, <a class="el" href="namespaceplayrho.html#af58ac53167963bf12700cb3af210bba9">LinearAcceleration2D</a> amount)</td></tr>
+<tr class="memdesc:a4223a9983a3edd43133bacb9ca4e3a43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the given linear acceleration to the given body.  <a href="#a4223a9983a3edd43133bacb9ca4e3a43">More...</a><br /></td></tr>
+<tr class="separator:a4223a9983a3edd43133bacb9ca4e3a43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd1e5b4d7aefdf91abeb8ee3c191c342"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#abd1e5b4d7aefdf91abeb8ee3c191c342">SetForce</a> (<a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body, <a class="el" href="namespaceplayrho.html#ad409812375f6863156f08f4db02629b1">Force2D</a> force, <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> point) noexcept</td></tr>
+<tr class="memdesc:abd1e5b4d7aefdf91abeb8ee3c191c342"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the given amount of force at the given point to the given body.  <a href="#abd1e5b4d7aefdf91abeb8ee3c191c342">More...</a><br /></td></tr>
+<tr class="separator:abd1e5b4d7aefdf91abeb8ee3c191c342"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe8814150b7999bb7e5c242d7d7c0711"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#afe8814150b7999bb7e5c242d7d7c0711">ApplyForce</a> (<a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body, <a class="el" href="namespaceplayrho.html#ad409812375f6863156f08f4db02629b1">Force2D</a> force, <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> point) noexcept</td></tr>
+<tr class="memdesc:afe8814150b7999bb7e5c242d7d7c0711"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply a force at a world point.  <a href="#afe8814150b7999bb7e5c242d7d7c0711">More...</a><br /></td></tr>
+<tr class="separator:afe8814150b7999bb7e5c242d7d7c0711"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53e87828fccc6c70c2bcf2d97058e623"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a53e87828fccc6c70c2bcf2d97058e623">ApplyForceToCenter</a> (<a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body, <a class="el" href="namespaceplayrho.html#ad409812375f6863156f08f4db02629b1">Force2D</a> force) noexcept</td></tr>
+<tr class="memdesc:a53e87828fccc6c70c2bcf2d97058e623"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply a force to the center of mass.  <a href="#a53e87828fccc6c70c2bcf2d97058e623">More...</a><br /></td></tr>
+<tr class="separator:a53e87828fccc6c70c2bcf2d97058e623"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c8061050b56df681bde8a6bf28aefa2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a0c8061050b56df681bde8a6bf28aefa2">SetTorque</a> (<a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body, <a class="el" href="group___quantities.html#gaa13e620479b6e4a34fae5a90bcaf9355">Torque</a> torque) noexcept</td></tr>
+<tr class="memdesc:a0c8061050b56df681bde8a6bf28aefa2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the given amount of torque to the given body.  <a href="#a0c8061050b56df681bde8a6bf28aefa2">More...</a><br /></td></tr>
+<tr class="separator:a0c8061050b56df681bde8a6bf28aefa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f848e079efd1b4e7d7a926cdb146d0b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a9f848e079efd1b4e7d7a926cdb146d0b">ApplyTorque</a> (<a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body, <a class="el" href="group___quantities.html#gaa13e620479b6e4a34fae5a90bcaf9355">Torque</a> torque) noexcept</td></tr>
+<tr class="memdesc:a9f848e079efd1b4e7d7a926cdb146d0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies a torque.  <a href="#a9f848e079efd1b4e7d7a926cdb146d0b">More...</a><br /></td></tr>
+<tr class="separator:a9f848e079efd1b4e7d7a926cdb146d0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9e007324d03c57cded9d40351b56dde"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#ac9e007324d03c57cded9d40351b56dde">ApplyLinearImpulse</a> (<a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body, <a class="el" href="namespaceplayrho.html#a7eb9e589bb14ae24300d375db57b13d6">Momentum2D</a> impulse, <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> point) noexcept</td></tr>
+<tr class="memdesc:ac9e007324d03c57cded9d40351b56dde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies an impulse at a point.  <a href="#ac9e007324d03c57cded9d40351b56dde">More...</a><br /></td></tr>
+<tr class="separator:ac9e007324d03c57cded9d40351b56dde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d1467095e23488ca1344a26336aae8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a5d1467095e23488ca1344a26336aae8f">ApplyAngularImpulse</a> (<a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body, <a class="el" href="group___quantities.html#ga3537d441743bb2f96c612296424f1e43">AngularMomentum</a> impulse) noexcept</td></tr>
+<tr class="memdesc:a5d1467095e23488ca1344a26336aae8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies an angular impulse.  <a href="#a5d1467095e23488ca1344a26336aae8f">More...</a><br /></td></tr>
+<tr class="separator:a5d1467095e23488ca1344a26336aae8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0311d70f8d1be2d260db520d58c73c8b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#ad409812375f6863156f08f4db02629b1">Force2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a0311d70f8d1be2d260db520d58c73c8b">GetCentripetalForce</a> (const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body, <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> axis)</td></tr>
+<tr class="memdesc:a0311d70f8d1be2d260db520d58c73c8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the centripetal force necessary to put the body into an orbit having the given radius.  <a href="#a0311d70f8d1be2d260db520d58c73c8b">More...</a><br /></td></tr>
+<tr class="separator:a0311d70f8d1be2d260db520d58c73c8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c4c855f042444d0122919f8c1559ccb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___quantities.html#ga67bbb3e4938321efec8d939636bf988e">RotInertia</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a4c4c855f042444d0122919f8c1559ccb">GetRotInertia</a> (const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:a4c4c855f042444d0122919f8c1559ccb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the rotational inertia of the body.  <a href="#a4c4c855f042444d0122919f8c1559ccb">More...</a><br /></td></tr>
+<tr class="separator:a4c4c855f042444d0122919f8c1559ccb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a465059e7b1cc90c4e605185b611d8fc0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___quantities.html#ga67bbb3e4938321efec8d939636bf988e">RotInertia</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a465059e7b1cc90c4e605185b611d8fc0">GetLocalInertia</a> (const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:a465059e7b1cc90c4e605185b611d8fc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the rotational inertia of the body about the local origin.  <a href="#a465059e7b1cc90c4e605185b611d8fc0">More...</a><br /></td></tr>
+<tr class="separator:a465059e7b1cc90c4e605185b611d8fc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ec2378f3e8f680f21c97a766bf31b32"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#ac0ff68214afc679c84744ef5316134b9">LinearVelocity2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a1ec2378f3e8f680f21c97a766bf31b32">GetLinearVelocity</a> (const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:a1ec2378f3e8f680f21c97a766bf31b32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the linear velocity of the center of mass.  <a href="#a1ec2378f3e8f680f21c97a766bf31b32">More...</a><br /></td></tr>
+<tr class="separator:a1ec2378f3e8f680f21c97a766bf31b32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a306635dbd11f92ad1020a386fce7b7c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___quantities.html#gac33f92018f7e8821550296aece465028">AngularVelocity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a306635dbd11f92ad1020a386fce7b7c2">GetAngularVelocity</a> (const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:a306635dbd11f92ad1020a386fce7b7c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the angular velocity.  <a href="#a306635dbd11f92ad1020a386fce7b7c2">More...</a><br /></td></tr>
+<tr class="separator:a306635dbd11f92ad1020a386fce7b7c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd8b51aef3bece3688f0d7c57bd0dfbb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#afd8b51aef3bece3688f0d7c57bd0dfbb">SetLinearVelocity</a> (<a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body, const <a class="el" href="namespaceplayrho.html#ac0ff68214afc679c84744ef5316134b9">LinearVelocity2D</a> v) noexcept</td></tr>
+<tr class="memdesc:afd8b51aef3bece3688f0d7c57bd0dfbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the linear velocity of the center of mass.  <a href="#afd8b51aef3bece3688f0d7c57bd0dfbb">More...</a><br /></td></tr>
+<tr class="separator:afd8b51aef3bece3688f0d7c57bd0dfbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfac2d00a05141d4bcfdd0a3dd443765"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#acfac2d00a05141d4bcfdd0a3dd443765">SetAngularVelocity</a> (<a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body, <a class="el" href="group___quantities.html#gac33f92018f7e8821550296aece465028">AngularVelocity</a> omega) noexcept</td></tr>
+<tr class="memdesc:acfac2d00a05141d4bcfdd0a3dd443765"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the angular velocity.  <a href="#acfac2d00a05141d4bcfdd0a3dd443765">More...</a><br /></td></tr>
+<tr class="separator:acfac2d00a05141d4bcfdd0a3dd443765"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a696834b23dac8a7c4ef6614dc16ed06a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a696834b23dac8a7c4ef6614dc16ed06a">GetWorldPoint</a> (const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body, const <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> localPoint) noexcept</td></tr>
+<tr class="memdesc:a696834b23dac8a7c4ef6614dc16ed06a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the world coordinates of a point given in coordinates relative to the body's origin.  <a href="#a696834b23dac8a7c4ef6614dc16ed06a">More...</a><br /></td></tr>
+<tr class="separator:a696834b23dac8a7c4ef6614dc16ed06a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07b2dbc4c22397032f7c87cbb3d9c33c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a07b2dbc4c22397032f7c87cbb3d9c33c">GetWorldVector</a> (const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body, const <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> localVector) noexcept</td></tr>
+<tr class="memdesc:a07b2dbc4c22397032f7c87cbb3d9c33c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the world coordinates of a vector given the local coordinates.  <a href="#a07b2dbc4c22397032f7c87cbb3d9c33c">More...</a><br /></td></tr>
+<tr class="separator:a07b2dbc4c22397032f7c87cbb3d9c33c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5830c223ea716b6034cf012a40514fad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a5830c223ea716b6034cf012a40514fad">GetLocalPoint</a> (const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body, const <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> worldPoint) noexcept</td></tr>
+<tr class="memdesc:a5830c223ea716b6034cf012a40514fad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a local point relative to the body's origin given a world point.  <a href="#a5830c223ea716b6034cf012a40514fad">More...</a><br /></td></tr>
+<tr class="separator:a5830c223ea716b6034cf012a40514fad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d6117de3c0ffb295137009922200da8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#ac0ff68214afc679c84744ef5316134b9">LinearVelocity2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a4d6117de3c0ffb295137009922200da8">GetLinearVelocityFromWorldPoint</a> (const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body, const <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> worldPoint) noexcept</td></tr>
+<tr class="memdesc:a4d6117de3c0ffb295137009922200da8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the linear velocity from a world point attached to this body.  <a href="#a4d6117de3c0ffb295137009922200da8">More...</a><br /></td></tr>
+<tr class="separator:a4d6117de3c0ffb295137009922200da8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0762a904b4d16bf77268099b4cd6866"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#ac0ff68214afc679c84744ef5316134b9">LinearVelocity2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#ad0762a904b4d16bf77268099b4cd6866">GetLinearVelocityFromLocalPoint</a> (const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body, const <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> localPoint) noexcept</td></tr>
+<tr class="memdesc:ad0762a904b4d16bf77268099b4cd6866"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the linear velocity from a local point.  <a href="#ad0762a904b4d16bf77268099b4cd6866">More...</a><br /></td></tr>
+<tr class="separator:ad0762a904b4d16bf77268099b4cd6866"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa3b0c0c32c230bb34e22bdcb727ec1c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#ad409812375f6863156f08f4db02629b1">Force2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#afa3b0c0c32c230bb34e22bdcb727ec1c">GetForce</a> (const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:afa3b0c0c32c230bb34e22bdcb727ec1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the net force that the given body is currently experiencing.  <a href="#afa3b0c0c32c230bb34e22bdcb727ec1c">More...</a><br /></td></tr>
+<tr class="separator:afa3b0c0c32c230bb34e22bdcb727ec1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18e2ece8e057b22c240cf681aca400b5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___quantities.html#gaa13e620479b6e4a34fae5a90bcaf9355">Torque</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a18e2ece8e057b22c240cf681aca400b5">GetTorque</a> (const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:a18e2ece8e057b22c240cf681aca400b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the net torque that the given body is currently experiencing.  <a href="#a18e2ece8e057b22c240cf681aca400b5">More...</a><br /></td></tr>
+<tr class="separator:a18e2ece8e057b22c240cf681aca400b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c6a1ec2274053b6d4cdece776faaad4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a4106d8a0e998a2485196534514527a5a">BodyCounter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a2c6a1ec2274053b6d4cdece776faaad4">GetWorldIndex</a> (const <a class="el" href="classplayrho_1_1_body.html">Body</a> *body) noexcept</td></tr>
+<tr class="memdesc:a2c6a1ec2274053b6d4cdece776faaad4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the world index for the given body.  <a href="#a2c6a1ec2274053b6d4cdece776faaad4">More...</a><br /></td></tr>
+<tr class="separator:a2c6a1ec2274053b6d4cdece776faaad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b995406bae81c78866c12b59432a931"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a2b995406bae81c78866c12b59432a931">GetFixtureCount</a> (const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:a2b995406bae81c78866c12b59432a931"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the fixture count of the given body.  <a href="#a2b995406bae81c78866c12b59432a931">More...</a><br /></td></tr>
+<tr class="separator:a2b995406bae81c78866c12b59432a931"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8921f8ac511d5841e5fb30e32fbb9220"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a8921f8ac511d5841e5fb30e32fbb9220">RotateAboutWorldPoint</a> (<a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body, <a class="el" href="group___quantities.html#gab999341c050df340ff56a65816a63da9">Angle</a> amount, <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> worldPoint)</td></tr>
+<tr class="memdesc:a8921f8ac511d5841e5fb30e32fbb9220"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotates a body a given amount around a point in world coordinates.  <a href="#a8921f8ac511d5841e5fb30e32fbb9220">More...</a><br /></td></tr>
+<tr class="separator:a8921f8ac511d5841e5fb30e32fbb9220"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53a1eb9e99f03edf7b9cc3ed2b004f4b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_body.html#a53a1eb9e99f03edf7b9cc3ed2b004f4b">RotateAboutLocalPoint</a> (<a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body, <a class="el" href="group___quantities.html#gab999341c050df340ff56a65816a63da9">Angle</a> amount, <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> localPoint)</td></tr>
+<tr class="memdesc:a53a1eb9e99f03edf7b9cc3ed2b004f4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotates a body a given amount around a point in body local coordinates.  <a href="#a53a1eb9e99f03edf7b9cc3ed2b004f4b">More...</a><br /></td></tr>
+<tr class="separator:a53a1eb9e99f03edf7b9cc3ed2b004f4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A rigid body entity created or destroyed through a <a class="el" href="classplayrho_1_1_world.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a> instance.</p>
+<div class="textblock"><p>A rigid body entity created or destroyed through a <a class="el" href="classplayrho_1_1_world.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a> instance. These have physical properties like: position, velocity, acceleration, and mass.</p>
 <dl class="section invariant"><dt>Invariant</dt><dd>Only bodies that allow sleeping, can be put to sleep. </dd>
 <dd>
 Only "speedable" bodies can be awake. </dd>
@@ -339,8 +442,7 @@ Only "accelerable" bodies can have non-zero "under-active" times.</dd></dl>
 <dd>
 From a memory management perspective, bodies own <a class="el" href="classplayrho_1_1_fixture.html" title="An association between a body and a shape. ">Fixture</a> instances. </dd>
 <dd>
-On a 64-bit architecture with 4-byte Real, this data structure is at least 192-bytes large.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group___body_free_functions.html">Body free functions.</a> </dd></dl>
+On a 64-bit architecture with 4-byte Real, this data structure is at least 192-bytes large. </dd></dl>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="aeea820d5f1eb504acd52aeef5c18ef69"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aeea820d5f1eb504acd52aeef5c18ef69">&#9670;&nbsp;</a></span>FlagsType</h2>
@@ -443,7 +545,7 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="structplayrho_1_1_fixture_def.html">FixtureDef</a> &amp;&#160;</td>
-          <td class="paramname"><em>def</em> = <code><a class="el" href="namespaceplayrho.html#ada6d2bd29dae05327b5142c712c691d9">GetDefaultFixtureDef</a>()</code>, </td>
+          <td class="paramname"><em>def</em> = <code><a class="el" href="namespaceplayrho.html#ad5b6f84e039d8f1c713fbf25b3953b8a">GetDefaultFixtureDef</a>()</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1001,8 +1103,8 @@ This function has no effect if the body isn't dynamic. </dd></dl>
 
 </div>
 </div>
-<a id="adc5f785dad3dcd08f7800fd74a122f68"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adc5f785dad3dcd08f7800fd74a122f68">&#9670;&nbsp;</a></span>SetTransform()</h2>
+<a id="ae85743c3918ec0218b94815e60a123d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae85743c3918ec0218b94815e60a123d5">&#9670;&nbsp;</a></span>SetTransform()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1011,7 +1113,7 @@ This function has no effect if the body isn't dynamic. </dd></dl>
           <td class="memname">void playrho::Body::SetTransform </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>&#160;</td>
-          <td class="paramname"><em>position</em>, </td>
+          <td class="paramname"><em>location</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1030,7 +1132,7 @@ This function has no effect if the body isn't dynamic. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Contacts are updated on the next call to <a class="el" href="classplayrho_1_1_world.html#a589dcfb165ba8f1841de18b231b472d8" title="Steps the world simulation according to the given configuration. ">World::Step</a>. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">position</td><td>Valid world position of the body's local origin. Behavior is undefined if value is invalid. </td></tr>
+    <tr><td class="paramname">location</td><td>Valid world location of the body's local origin. Behavior is undefined if value is invalid. </td></tr>
     <tr><td class="paramname">angle</td><td>Valid world rotation. Behavior is undefined if value is invalid. </td></tr>
   </table>
   </dd>
@@ -1149,14 +1251,1185 @@ This body's GetVelocity method returns zero linear and zero angular speed. </dd>
 
 </div>
 </div>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="a5d1467095e23488ca1344a26336aae8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d1467095e23488ca1344a26336aae8f">&#9670;&nbsp;</a></span>ApplyAngularImpulse()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ApplyAngularImpulse </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group___quantities.html#ga3537d441743bb2f96c612296424f1e43">AngularMomentum</a>&#160;</td>
+          <td class="paramname"><em>impulse</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">body</td><td><a class="el" href="classplayrho_1_1_body.html" title="Physical entity that exists within a World. ">Body</a> to apply the angular impulse to. </td></tr>
+    <tr><td class="paramname">impulse</td><td>Angular impulse to be applied. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="afe8814150b7999bb7e5c242d7d7c0711"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe8814150b7999bb7e5c242d7d7c0711">&#9670;&nbsp;</a></span>ApplyForce()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ApplyForce </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#ad409812375f6863156f08f4db02629b1">Force2D</a>&#160;</td>
+          <td class="paramname"><em>force</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>&#160;</td>
+          <td class="paramname"><em>point</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section note"><dt>Note</dt><dd>If the force is not applied at the center of mass, it will generate a torque and affect the angular velocity. </dd>
+<dd>
+Non-zero forces wakes up the body. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">body</td><td><a class="el" href="classplayrho_1_1_body.html" title="Physical entity that exists within a World. ">Body</a> to apply the force to. </td></tr>
+    <tr><td class="paramname">force</td><td><a class="el" href="classplayrho_1_1_world.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a> force vector. </td></tr>
+    <tr><td class="paramname">point</td><td><a class="el" href="classplayrho_1_1_world.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a> position of the point of application. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a53e87828fccc6c70c2bcf2d97058e623"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53e87828fccc6c70c2bcf2d97058e623">&#9670;&nbsp;</a></span>ApplyForceToCenter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ApplyForceToCenter </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#ad409812375f6863156f08f4db02629b1">Force2D</a>&#160;</td>
+          <td class="paramname"><em>force</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section note"><dt>Note</dt><dd>Non-zero forces wakes up the body. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">body</td><td><a class="el" href="classplayrho_1_1_body.html" title="Physical entity that exists within a World. ">Body</a> to apply the force to. </td></tr>
+    <tr><td class="paramname">force</td><td><a class="el" href="classplayrho_1_1_world.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a> force vector. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a4223a9983a3edd43133bacb9ca4e3a43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4223a9983a3edd43133bacb9ca4e3a43">&#9670;&nbsp;</a></span>ApplyLinearAcceleration()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ApplyLinearAcceleration </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#af58ac53167963bf12700cb3af210bba9">LinearAcceleration2D</a>&#160;</td>
+          <td class="paramname"><em>amount</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac9e007324d03c57cded9d40351b56dde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9e007324d03c57cded9d40351b56dde">&#9670;&nbsp;</a></span>ApplyLinearImpulse()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ApplyLinearImpulse </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a7eb9e589bb14ae24300d375db57b13d6">Momentum2D</a>&#160;</td>
+          <td class="paramname"><em>impulse</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>&#160;</td>
+          <td class="paramname"><em>point</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section note"><dt>Note</dt><dd>This immediately modifies the velocity. </dd>
+<dd>
+This also modifies the angular velocity if the point of application is not at the center of mass. </dd>
+<dd>
+Non-zero impulses wakes up the body. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">body</td><td><a class="el" href="classplayrho_1_1_body.html" title="Physical entity that exists within a World. ">Body</a> to apply the impulse to. </td></tr>
+    <tr><td class="paramname">impulse</td><td>the world impulse vector. </td></tr>
+    <tr><td class="paramname">point</td><td>the world position of the point of application. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a9f848e079efd1b4e7d7a926cdb146d0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f848e079efd1b4e7d7a926cdb146d0b">&#9670;&nbsp;</a></span>ApplyTorque()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ApplyTorque </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group___quantities.html#gaa13e620479b6e4a34fae5a90bcaf9355">Torque</a>&#160;</td>
+          <td class="paramname"><em>torque</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section note"><dt>Note</dt><dd>This affects the angular velocity without affecting the linear velocity of the center of mass. </dd>
+<dd>
+Non-zero forces wakes up the body. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">body</td><td><a class="el" href="classplayrho_1_1_body.html" title="Physical entity that exists within a World. ">Body</a> to apply the torque to. </td></tr>
+    <tr><td class="paramname">torque</td><td>about the z-axis (out of the screen). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a4834708af29bcc9ae39ebfc2b9f580f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4834708af29bcc9ae39ebfc2b9f580f6">&#9670;&nbsp;</a></span>Awaken()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Awaken </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2e9574d95e6dfa6f32a405cf40ebbf79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e9574d95e6dfa6f32a405cf40ebbf79">&#9670;&nbsp;</a></span>ComputeMassData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structplayrho_1_1_mass_data.html">MassData</a> ComputeMassData </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This basically accumulates the mass data over all fixtures. </p><dl class="section note"><dt>Note</dt><dd>The center is the mass weighted sum of all fixture centers. Divide it by the mass to get the averaged center. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>accumalated mass data for all fixtures associated with the given body. </dd></dl>
+
+</div>
+</div>
+<a id="a306635dbd11f92ad1020a386fce7b7c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a306635dbd11f92ad1020a386fce7b7c2">&#9670;&nbsp;</a></span>GetAngularVelocity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___quantities.html#gac33f92018f7e8821550296aece465028">AngularVelocity</a> GetAngularVelocity </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">body</td><td><a class="el" href="classplayrho_1_1_body.html" title="Physical entity that exists within a World. ">Body</a> to get the angular velocity for. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the angular velocity. </dd></dl>
+
+</div>
+</div>
+<a id="a0311d70f8d1be2d260db520d58c73c8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0311d70f8d1be2d260db520d58c73c8b">&#9670;&nbsp;</a></span>GetCentripetalForce()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceplayrho.html#ad409812375f6863156f08f4db02629b1">Force2D</a> GetCentripetalForce </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>&#160;</td>
+          <td class="paramname"><em>axis</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2b995406bae81c78866c12b59432a931"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b995406bae81c78866c12b59432a931">&#9670;&nbsp;</a></span>GetFixtureCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t GetFixtureCount </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afa3b0c0c32c230bb34e22bdcb727ec1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa3b0c0c32c230bb34e22bdcb727ec1c">&#9670;&nbsp;</a></span>GetForce()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceplayrho.html#ad409812375f6863156f08f4db02629b1">Force2D</a> GetForce </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1ec2378f3e8f680f21c97a766bf31b32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ec2378f3e8f680f21c97a766bf31b32">&#9670;&nbsp;</a></span>GetLinearVelocity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceplayrho.html#ac0ff68214afc679c84744ef5316134b9">LinearVelocity2D</a> GetLinearVelocity </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">body</td><td><a class="el" href="classplayrho_1_1_body.html" title="Physical entity that exists within a World. ">Body</a> to get the linear velocity for. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the linear velocity of the center of mass. </dd></dl>
+
+</div>
+</div>
+<a id="ad0762a904b4d16bf77268099b4cd6866"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0762a904b4d16bf77268099b4cd6866">&#9670;&nbsp;</a></span>GetLinearVelocityFromLocalPoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceplayrho.html#ac0ff68214afc679c84744ef5316134b9">LinearVelocity2D</a> GetLinearVelocityFromLocalPoint </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>&#160;</td>
+          <td class="paramname"><em>localPoint</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">body</td><td><a class="el" href="classplayrho_1_1_body.html" title="Physical entity that exists within a World. ">Body</a> to get the linear velocity for. </td></tr>
+    <tr><td class="paramname">localPoint</td><td>point in local coordinates. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the world velocity of a point. </dd></dl>
+
+</div>
+</div>
+<a id="a4d6117de3c0ffb295137009922200da8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d6117de3c0ffb295137009922200da8">&#9670;&nbsp;</a></span>GetLinearVelocityFromWorldPoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceplayrho.html#ac0ff68214afc679c84744ef5316134b9">LinearVelocity2D</a> GetLinearVelocityFromWorldPoint </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>&#160;</td>
+          <td class="paramname"><em>worldPoint</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">body</td><td><a class="el" href="classplayrho_1_1_body.html" title="Physical entity that exists within a World. ">Body</a> to get the linear velocity for. </td></tr>
+    <tr><td class="paramname">worldPoint</td><td>point in world coordinates. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the world velocity of a point. </dd></dl>
+
+</div>
+</div>
+<a id="a465059e7b1cc90c4e605185b611d8fc0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a465059e7b1cc90c4e605185b611d8fc0">&#9670;&nbsp;</a></span>GetLocalInertia()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___quantities.html#ga67bbb3e4938321efec8d939636bf988e">RotInertia</a> GetLocalInertia </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the rotational inertia. </dd></dl>
+
+</div>
+</div>
+<a id="a5830c223ea716b6034cf012a40514fad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5830c223ea716b6034cf012a40514fad">&#9670;&nbsp;</a></span>GetLocalPoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> GetLocalPoint </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>&#160;</td>
+          <td class="paramname"><em>worldPoint</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">body</td><td><a class="el" href="classplayrho_1_1_body.html" title="Physical entity that exists within a World. ">Body</a> that the returned point should be relative to. </td></tr>
+    <tr><td class="paramname">worldPoint</td><td>point in world coordinates. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the corresponding local point relative to the body's origin. </dd></dl>
+
+</div>
+</div>
+<a id="a3c355eb58981b97e5901fa7d04052507"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c355eb58981b97e5901fa7d04052507">&#9670;&nbsp;</a></span>GetMass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___quantities.html#ga5edfc295416b7690b4f949223b551bc1">Mass</a> GetMass </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>Value of zero or more representing the body's mass (in kg). </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1_body.html#a4a28aef308264e1d2d0c5547e9288ce0" title="Gets the inverse total mass of the body. ">GetInvMass</a>. </dd>
+<dd>
+<a class="el" href="classplayrho_1_1_body.html#aa29406774e358385944e32900ad5d4b0" title="Set the mass properties to override the mass properties of the fixtures. ">SetMassData</a>. </dd></dl>
+
+</div>
+</div>
+<a id="adcf7fe1ea0d3ef041d4f7847ef5871e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adcf7fe1ea0d3ef041d4f7847ef5871e4">&#9670;&nbsp;</a></span>GetMassData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structplayrho_1_1_mass_data.html">MassData</a> GetMassData </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>a struct containing the mass, inertia and center of the body. </dd></dl>
+
+</div>
+</div>
+<a id="a4c4c855f042444d0122919f8c1559ccb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c4c855f042444d0122919f8c1559ccb">&#9670;&nbsp;</a></span>GetRotInertia()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___quantities.html#ga67bbb3e4938321efec8d939636bf988e">RotInertia</a> GetRotInertia </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">body</td><td><a class="el" href="classplayrho_1_1_body.html" title="Physical entity that exists within a World. ">Body</a> to get the rotational inertia for. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the rotational inertia. </dd></dl>
+
+</div>
+</div>
+<a id="a18e2ece8e057b22c240cf681aca400b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18e2ece8e057b22c240cf681aca400b5">&#9670;&nbsp;</a></span>GetTorque()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___quantities.html#gaa13e620479b6e4a34fae5a90bcaf9355">Torque</a> GetTorque </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2c6a1ec2274053b6d4cdece776faaad4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c6a1ec2274053b6d4cdece776faaad4">&#9670;&nbsp;</a></span>GetWorldIndex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceplayrho.html#a4106d8a0e998a2485196534514527a5a">BodyCounter</a> GetWorldIndex </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_body.html">Body</a> *&#160;</td>
+          <td class="paramname"><em>body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a696834b23dac8a7c4ef6614dc16ed06a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a696834b23dac8a7c4ef6614dc16ed06a">&#9670;&nbsp;</a></span>GetWorldPoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> GetWorldPoint </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>&#160;</td>
+          <td class="paramname"><em>localPoint</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">body</td><td><a class="el" href="classplayrho_1_1_body.html" title="Physical entity that exists within a World. ">Body</a> that the given point is relative to. </td></tr>
+    <tr><td class="paramname">localPoint</td><td>a point measured relative the the body's origin. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the same point expressed in world coordinates. </dd></dl>
+
+</div>
+</div>
+<a id="a07b2dbc4c22397032f7c87cbb3d9c33c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07b2dbc4c22397032f7c87cbb3d9c33c">&#9670;&nbsp;</a></span>GetWorldVector()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> GetWorldVector </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>&#160;</td>
+          <td class="paramname"><em>localVector</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">body</td><td><a class="el" href="classplayrho_1_1_body.html" title="Physical entity that exists within a World. ">Body</a> that the given vector is relative to. </td></tr>
+    <tr><td class="paramname">localVector</td><td>a vector fixed in the body. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the same vector expressed in world coordinates. </dd></dl>
+
+</div>
+</div>
+<a id="a53a1eb9e99f03edf7b9cc3ed2b004f4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53a1eb9e99f03edf7b9cc3ed2b004f4b">&#9670;&nbsp;</a></span>RotateAboutLocalPoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void RotateAboutLocalPoint </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group___quantities.html#gab999341c050df340ff56a65816a63da9">Angle</a>&#160;</td>
+          <td class="paramname"><em>amount</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>&#160;</td>
+          <td class="paramname"><em>localPoint</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This changes both the linear and angular positions of the body. </p><dl class="section note"><dt>Note</dt><dd>Manipulating a body's position this way may cause non-physical behavior. </dd>
+<dd>
+This is a convenience function that translates the local point into world coordinates and then calls the <code>RotateAboutWorldPoint</code> function. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">body</td><td><a class="el" href="classplayrho_1_1_body.html" title="Physical entity that exists within a World. ">Body</a> to rotate. </td></tr>
+    <tr><td class="paramname">amount</td><td>Amount to rotate body by (in counter-clockwise direction). </td></tr>
+    <tr><td class="paramname">localPoint</td><td>Point in local coordinates. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8921f8ac511d5841e5fb30e32fbb9220"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8921f8ac511d5841e5fb30e32fbb9220">&#9670;&nbsp;</a></span>RotateAboutWorldPoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void RotateAboutWorldPoint </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group___quantities.html#gab999341c050df340ff56a65816a63da9">Angle</a>&#160;</td>
+          <td class="paramname"><em>amount</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>&#160;</td>
+          <td class="paramname"><em>worldPoint</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This changes both the linear and angular positions of the body. </p><dl class="section note"><dt>Note</dt><dd>Manipulating a body's position this way may cause non-physical behavior. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">body</td><td><a class="el" href="classplayrho_1_1_body.html" title="Physical entity that exists within a World. ">Body</a> to rotate. </td></tr>
+    <tr><td class="paramname">amount</td><td>Amount to rotate body by (in counter-clockwise direction). </td></tr>
+    <tr><td class="paramname">worldPoint</td><td>Point in world coordinates. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="acfac2d00a05141d4bcfdd0a3dd443765"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfac2d00a05141d4bcfdd0a3dd443765">&#9670;&nbsp;</a></span>SetAngularVelocity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SetAngularVelocity </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group___quantities.html#gac33f92018f7e8821550296aece465028">AngularVelocity</a>&#160;</td>
+          <td class="paramname"><em>omega</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">body</td><td><a class="el" href="classplayrho_1_1_body.html" title="Physical entity that exists within a World. ">Body</a> to set the angular velocity of. </td></tr>
+    <tr><td class="paramname">omega</td><td>the new angular velocity. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="abd1e5b4d7aefdf91abeb8ee3c191c342"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd1e5b4d7aefdf91abeb8ee3c191c342">&#9670;&nbsp;</a></span>SetForce()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SetForce </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#ad409812375f6863156f08f4db02629b1">Force2D</a>&#160;</td>
+          <td class="paramname"><em>force</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a>&#160;</td>
+          <td class="paramname"><em>point</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afd8b51aef3bece3688f0d7c57bd0dfbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd8b51aef3bece3688f0d7c57bd0dfbb">&#9670;&nbsp;</a></span>SetLinearVelocity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SetLinearVelocity </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceplayrho.html#ac0ff68214afc679c84744ef5316134b9">LinearVelocity2D</a>&#160;</td>
+          <td class="paramname"><em>v</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">body</td><td><a class="el" href="classplayrho_1_1_body.html" title="Physical entity that exists within a World. ">Body</a> to set the linear velocity of. </td></tr>
+    <tr><td class="paramname">v</td><td>the new linear velocity of the center of mass. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a0c8061050b56df681bde8a6bf28aefa2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c8061050b56df681bde8a6bf28aefa2">&#9670;&nbsp;</a></span>SetTorque()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SetTorque </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group___quantities.html#gaa13e620479b6e4a34fae5a90bcaf9355">Torque</a>&#160;</td>
+          <td class="paramname"><em>torque</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abdfbff06306e4ecb71f6d4b2136eea7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdfbff06306e4ecb71f6d4b2136eea7c">&#9670;&nbsp;</a></span>Unawaken()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Unawaken </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>Body.hpp</li>
+<li>AABB.hpp</li>
+<li>MassData.hpp</li>
 <li>Body.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Sep 16 2017 23:07:50 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 18 2017 12:19:09 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

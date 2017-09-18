@@ -23,5 +23,6 @@ var searchData=
   ['witnesspoints',['WitnessPoints',['../structplayrho_1_1_witness_points.html',1,'playrho']]],
   ['world',['World',['../classplayrho_1_1_world.html',1,'playrho']]],
   ['worlddef',['WorldDef',['../structplayrho_1_1_world_def.html',1,'playrho']]],
-  ['worldmanifold',['WorldManifold',['../classplayrho_1_1_world_manifold.html',1,'playrho']]]
+  ['worldmanifold',['WorldManifold',['../classplayrho_1_1_world_manifold.html',1,'playrho']]],
+  ['wrongstate',['WrongState',['../classplayrho_1_1_wrong_state.html',1,'playrho']]]
 ];

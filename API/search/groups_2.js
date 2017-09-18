@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['fixture_20free_20functions_2e',['Fixture free functions.',['../group___fixture_free_functions.html',1,'']]]
+  ['joint_20classes',['Joint Classes',['../group___joints_group.html',1,'']]]
 ];

@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['library_20defined_20exceptions',['Library Defined Exceptions',['../group___exceptions_group.html',1,'']]],
   ['length',['length',['../structplayrho_1_1_distance_joint_def.html#ae581bbefb1cbde412f477dca1aea57a0',1,'playrho::DistanceJointDef::length()'],['../group___quantities.html#ga7361ef2e10e7853a05b64aa433651014',1,'playrho::Length()']]],
   ['length2d',['Length2D',['../namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba',1,'playrho']]],
   ['lengtha',['lengthA',['../structplayrho_1_1_pulley_joint_def.html#a687d2367668ef68317cfe85a0d327469',1,'playrho::PulleyJointDef']]],
@@ -21,7 +22,6 @@ var searchData=
   ['localaxisa',['localAxisA',['../structplayrho_1_1_prismatic_joint_def.html#a70aaca7c999bc40f35c6f643ebdd9e17',1,'playrho::PrismaticJointDef::localAxisA()'],['../structplayrho_1_1_wheel_joint_def.html#abb8fad9d276699f893cd2df9d089ff13',1,'playrho::WheelJointDef::localAxisA()']]],
   ['localpoint',['localPoint',['../structplayrho_1_1_manifold_1_1_point.html#afb1ec47d4c801383fe3dedf168aaff1f',1,'playrho::Manifold::Point']]],
   ['location',['location',['../structplayrho_1_1_world_manifold_1_1_point_data.html#ac0fdff8054ecc80cc37b477289b304c5',1,'playrho::WorldManifold::PointData']]],
-  ['lockederror',['LockedError',['../classplayrho_1_1_world_1_1_locked_error.html',1,'playrho::World']]],
   ['lovaluecheck',['LoValueCheck',['../namespaceplayrho.html#a57593cac21168ed673c77a11d18a35ec',1,'playrho']]],
   ['lowerangle',['lowerAngle',['../structplayrho_1_1_revolute_joint_def.html#abf733cf9074bb75ae172c7a5a2f81a82',1,'playrho::RevoluteJointDef']]],
   ['lowertranslation',['lowerTranslation',['../structplayrho_1_1_prismatic_joint_def.html#ac0a4c0b0bac7cc1b738cfe88db76538c',1,'playrho::PrismaticJointDef']]],

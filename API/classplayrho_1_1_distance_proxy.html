@@ -68,6 +68,7 @@ $(function() {
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#related">Related Functions</a> &#124;
 <a href="classplayrho_1_1_distance_proxy-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">playrho::DistanceProxy Class Reference</div>  </div>
@@ -114,6 +115,29 @@ Static Public Attributes</h2></td></tr>
 static constexpr <a class="el" href="classplayrho_1_1_distance_proxy.html#ab2173f59547e2b22afe0050d787ae15f">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_distance_proxy.html#a6b70c4ae80fb1f4d543f6263ecf35bb3">InvalidIndex</a> = static_cast&lt;<a class="el" href="classplayrho_1_1_distance_proxy.html#ab2173f59547e2b22afe0050d787ae15f">size_type</a>&gt;(-1)</td></tr>
 <tr class="memdesc:a6b70c4ae80fb1f4d543f6263ecf35bb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid index. <br /></td></tr>
 <tr class="separator:a6b70c4ae80fb1f4d543f6263ecf35bb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
+Related Functions</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
+</td></tr>
+<tr class="memitem:a44cc65808fd89570707b3af1bc87eb36"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1_a_a_b_b.html">AABB</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_distance_proxy.html#a44cc65808fd89570707b3af1bc87eb36">ComputeAABB</a> (const <a class="el" href="classplayrho_1_1_distance_proxy.html">DistanceProxy</a> &amp;proxy, const <a class="el" href="structplayrho_1_1_transformation.html">Transformation</a> &amp;xf) noexcept</td></tr>
+<tr class="memdesc:a44cc65808fd89570707b3af1bc87eb36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the <a class="el" href="classplayrho_1_1_a_a_b_b.html" title="Axis Aligned Bounding Box. ">AABB</a>.  <a href="#a44cc65808fd89570707b3af1bc87eb36">More...</a><br /></td></tr>
+<tr class="separator:a44cc65808fd89570707b3af1bc87eb36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1311c8979a6d955fa240491cbf239e99"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_distance_proxy.html#a1311c8979a6d955fa240491cbf239e99">operator==</a> (const <a class="el" href="classplayrho_1_1_distance_proxy.html">DistanceProxy</a> &amp;lhs, const <a class="el" href="classplayrho_1_1_distance_proxy.html">DistanceProxy</a> &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:a1311c8979a6d955fa240491cbf239e99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines with the two given distance proxies are equal.  <a href="#a1311c8979a6d955fa240491cbf239e99">More...</a><br /></td></tr>
+<tr class="separator:a1311c8979a6d955fa240491cbf239e99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c65d94d98dea8f68c3dd32e90b888bb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_distance_proxy.html#a1c65d94d98dea8f68c3dd32e90b888bb">operator!=</a> (const <a class="el" href="classplayrho_1_1_distance_proxy.html">DistanceProxy</a> &amp;lhs, const <a class="el" href="classplayrho_1_1_distance_proxy.html">DistanceProxy</a> &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:a1c65d94d98dea8f68c3dd32e90b888bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines with the two given distance proxies are not equal.  <a href="#a1c65d94d98dea8f68c3dd32e90b888bb">More...</a><br /></td></tr>
+<tr class="separator:a1c65d94d98dea8f68c3dd32e90b888bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13e620b55097d3179e73ac14e5256591"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1_distance_proxy.html#ab2173f59547e2b22afe0050d787ae15f">DistanceProxy::size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_distance_proxy.html#a13e620b55097d3179e73ac14e5256591">GetSupportIndex</a> (const <a class="el" href="classplayrho_1_1_distance_proxy.html">DistanceProxy</a> &amp;proxy, <a class="el" href="namespaceplayrho.html#a2f167875642767a3c687d78feb01c731">Vec2</a> d) noexcept</td></tr>
+<tr class="memdesc:a13e620b55097d3179e73ac14e5256591"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the supporting vertex index in the given direction for the given distance proxy.  <a href="#a13e620b55097d3179e73ac14e5256591">More...</a><br /></td></tr>
+<tr class="separator:a13e620b55097d3179e73ac14e5256591"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga99925a275dc2969eb884f09f3f23897a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___test_point_group.html#ga99925a275dc2969eb884f09f3f23897a">TestPoint</a> (const <a class="el" href="classplayrho_1_1_distance_proxy.html">DistanceProxy</a> &amp;proxy, <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> point) noexcept</td></tr>
+<tr class="memdesc:ga99925a275dc2969eb884f09f3f23897a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests a point for containment in the given distance proxy.  <a href="group___test_point_group.html#ga99925a275dc2969eb884f09f3f23897a">More...</a><br /></td></tr>
+<tr class="separator:ga99925a275dc2969eb884f09f3f23897a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabc2e992343e201f48c1956753a530247"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a591831bdaa7b9d1f786607c9333f1a02">RayCastOutput</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___ray_cast_group.html#gabc2e992343e201f48c1956753a530247">RayCast</a> (const <a class="el" href="classplayrho_1_1_distance_proxy.html">DistanceProxy</a> &amp;proxy, const <a class="el" href="structplayrho_1_1_ray_cast_input.html">RayCastInput</a> &amp;input, const <a class="el" href="structplayrho_1_1_transformation.html">Transformation</a> &amp;transform) noexcept</td></tr>
+<tr class="memdesc:gabc2e992343e201f48c1956753a530247"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cast a ray against the distance proxy.  <a href="group___ray_cast_group.html#gabc2e992343e201f48c1956753a530247">More...</a><br /></td></tr>
+<tr class="separator:gabc2e992343e201f48c1956753a530247"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A distance proxy aggragates a convex set of vertices and a vertexRadius of those vertices. This can be visualized as a convex N-gon with rounded corners. It's meant to represent any single portion of a shape identified by its child-index. These are used by the GJK algorithm: "a method for determining the minimium distance between two convex sets".</p>
@@ -287,13 +311,179 @@ Behavior is undefined if InvalidIndex is given as the index value.</dd></dl>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="a44cc65808fd89570707b3af1bc87eb36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44cc65808fd89570707b3af1bc87eb36">&#9670;&nbsp;</a></span>ComputeAABB()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classplayrho_1_1_a_a_b_b.html">AABB</a> ComputeAABB </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_distance_proxy.html">DistanceProxy</a> &amp;&#160;</td>
+          <td class="paramname"><em>proxy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1_transformation.html">Transformation</a> &amp;&#160;</td>
+          <td class="paramname"><em>xf</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Computes the Axis Aligned Bounding Box (<a class="el" href="classplayrho_1_1_a_a_b_b.html" title="Axis Aligned Bounding Box. ">AABB</a>) for the given child shape at a given a transform. </p><dl class="section warning"><dt>Warning</dt><dd>Behavior is undefined if the given transformation is invalid. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">proxy</td><td>Distance proxy for the child shape. </td></tr>
+    <tr><td class="paramname">xf</td><td><a class="el" href="classplayrho_1_1_world.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a> transform of the shape. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classplayrho_1_1_a_a_b_b.html" title="Axis Aligned Bounding Box. ">AABB</a> for the proxy shape or the default <a class="el" href="classplayrho_1_1_a_a_b_b.html" title="Axis Aligned Bounding Box. ">AABB</a> if the proxy has a zero vertex count. </dd></dl>
+
+</div>
+</div>
+<a id="a13e620b55097d3179e73ac14e5256591"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13e620b55097d3179e73ac14e5256591">&#9670;&nbsp;</a></span>GetSupportIndex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classplayrho_1_1_distance_proxy.html#ab2173f59547e2b22afe0050d787ae15f">DistanceProxy::size_type</a> GetSupportIndex </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_distance_proxy.html">DistanceProxy</a> &amp;&#160;</td>
+          <td class="paramname"><em>proxy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a2f167875642767a3c687d78feb01c731">Vec2</a>&#160;</td>
+          <td class="paramname"><em>d</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This finds the vertex that's most significantly in the direction of the given vector and returns its index. </p><dl class="section note"><dt>Note</dt><dd>0 is returned for a given zero length direction vector. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">proxy</td><td>Distance proxy object to find index in if a valid index exists for it. </td></tr>
+    <tr><td class="paramname">d</td><td>Direction vector to find index for. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>InvalidIndex if d is invalid or the count of vertices is zero, otherwise a value from 0 to one less than count. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1_distance_proxy.html#a938c6d80992f2e31b81a631c7169b74a" title="Gets the vertex count. ">GetVertexCount()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a1c65d94d98dea8f68c3dd32e90b888bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c65d94d98dea8f68c3dd32e90b888bb">&#9670;&nbsp;</a></span>operator!=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_distance_proxy.html">DistanceProxy</a> &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_distance_proxy.html">DistanceProxy</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1311c8979a6d955fa240491cbf239e99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1311c8979a6d955fa240491cbf239e99">&#9670;&nbsp;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_distance_proxy.html">DistanceProxy</a> &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_distance_proxy.html">DistanceProxy</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>DistanceProxy.hpp</li>
+<li>AABB.hpp</li>
+<li>RayCastOutput.hpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Sep 16 2017 23:07:50 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 18 2017 12:19:09 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

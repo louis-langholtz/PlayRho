@@ -70,6 +70,7 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#related">Related Functions</a> &#124;
 <a href="classplayrho_1_1_dynamic_tree-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">playrho::DynamicTree Class Reference</div>  </div>
@@ -216,6 +217,14 @@ Static Public Attributes</h2></td></tr>
 static constexpr <a class="el" href="classplayrho_1_1_dynamic_tree.html#a7b864a17016c8bb03f62f8d8f0370315">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_dynamic_tree.html#a62a7c2bbb4617df1e9f745948e85a99c">InvalidIndex</a> = static_cast&lt;<a class="el" href="classplayrho_1_1_dynamic_tree.html#a7b864a17016c8bb03f62f8d8f0370315">size_type</a>&gt;(-1)</td></tr>
 <tr class="memdesc:a62a7c2bbb4617df1e9f745948e85a99c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid index value. <br /></td></tr>
 <tr class="separator:a62a7c2bbb4617df1e9f745948e85a99c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
+Related Functions</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
+</td></tr>
+<tr class="memitem:a846a79a66e31b92c7ec5fb309bb15265"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_dynamic_tree.html#a846a79a66e31b92c7ec5fb309bb15265">TestOverlap</a> (const <a class="el" href="classplayrho_1_1_dynamic_tree.html">DynamicTree</a> &amp;tree, <a class="el" href="classplayrho_1_1_dynamic_tree.html#a7b864a17016c8bb03f62f8d8f0370315">DynamicTree::size_type</a> proxyIdA, <a class="el" href="classplayrho_1_1_dynamic_tree.html#a7b864a17016c8bb03f62f8d8f0370315">DynamicTree::size_type</a> proxyIdB)</td></tr>
+<tr class="memdesc:a846a79a66e31b92c7ec5fb309bb15265"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests for overlap of the elements identified in the given dynamic tree.  <a href="#a846a79a66e31b92c7ec5fb309bb15265">More...</a><br /></td></tr>
+<tr class="separator:a846a79a66e31b92c7ec5fb309bb15265"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A dynamic tree arranges data in a binary tree to accelerate queries such as volume queries and ray casts. Leafs are proxies with an <a class="el" href="classplayrho_1_1_a_a_b_b.html" title="Axis Aligned Bounding Box. ">AABB</a>.</p>
@@ -766,6 +775,49 @@ The shift formula is: position -= newOrigin </dd></dl>
 
 </div>
 </div>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="a846a79a66e31b92c7ec5fb309bb15265"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a846a79a66e31b92c7ec5fb309bb15265">&#9670;&nbsp;</a></span>TestOverlap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TestOverlap </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_dynamic_tree.html">DynamicTree</a> &amp;&#160;</td>
+          <td class="paramname"><em>tree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1_dynamic_tree.html#a7b864a17016c8bb03f62f8d8f0370315">DynamicTree::size_type</a>&#160;</td>
+          <td class="paramname"><em>proxyIdA</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1_dynamic_tree.html#a7b864a17016c8bb03f62f8d8f0370315">DynamicTree::size_type</a>&#160;</td>
+          <td class="paramname"><em>proxyIdB</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>DynamicTree.hpp</li>
 <li>DynamicTree.cpp</li>
@@ -773,7 +825,7 @@ The shift formula is: position -= newOrigin </dd></dl>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Sep 16 2017 23:07:50 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 18 2017 12:19:09 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

@@ -11,7 +11,7 @@ var searchData=
   ['flagforfiltering',['FlagForFiltering',['../classplayrho_1_1_contact.html#a7d8c07c9812a85b8fb5356c55b07aa85',1,'playrho::Contact']]],
   ['flagforupdating',['FlagForUpdating',['../classplayrho_1_1_contact.html#ae2a72c7c95ae6790860a467629a23ef5',1,'playrho::Contact']]],
   ['flagguard',['FlagGuard',['../classplayrho_1_1_flag_guard.html#ac104fceea41a9806de0fda376f3d39df',1,'playrho::FlagGuard::FlagGuard(T &amp;flag, T value)'],['../classplayrho_1_1_flag_guard.html#a3dce2bda9da65a2f7caacaa28dc7e37b',1,'playrho::FlagGuard::FlagGuard(const FlagGuard&lt; T &gt; &amp;value)=default'],['../classplayrho_1_1_flag_guard.html#af487c3ee0e823dce4c17ef7e4663f6a3',1,'playrho::FlagGuard::FlagGuard(FlagGuard&lt; T &gt; &amp;&amp;value) noexcept=default']]],
-  ['flip',['Flip',['../namespaceplayrho.html#aa2570cb922a0489e1dce4c32cd0bd4e2',1,'playrho']]],
+  ['flip',['Flip',['../structplayrho_1_1_contact_feature.html#a43951f69f7ead57450bac66cbb76b0e1',1,'playrho::ContactFeature::Flip()'],['../namespaceplayrho.html#a43951f69f7ead57450bac66cbb76b0e1',1,'playrho::Flip()']]],
   ['flipx',['FlipX',['../classplayrho_1_1_unit_vec2.html#a6f9d598f74445d8696c5b154ebdc4df1',1,'playrho::UnitVec2']]],
   ['flipxy',['FlipXY',['../classplayrho_1_1_unit_vec2.html#a9eae0a2de17bbb12b3be28c50a1fb9a3',1,'playrho::UnitVec2']]],
   ['flipy',['FlipY',['../classplayrho_1_1_unit_vec2.html#abf91801b936656c56d21266c58cb4b02',1,'playrho::UnitVec2']]],

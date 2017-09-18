@@ -67,6 +67,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#related">Related Functions</a> &#124;
 <a href="structplayrho_1_1_world_def-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">playrho::WorldDef Struct Reference</div>  </div>
@@ -104,7 +105,43 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a6f9f95a2a8acf03f6b559f81b0024785"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bounded_aliases.html#gae492ff78381a7dc66d271d0ee3b1189d">Positive</a>&lt; <a class="el" href="group___quantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_world_def.html#a6f9f95a2a8acf03f6b559f81b0024785">maxVertexRadius</a> = <a class="el" href="namespaceplayrho.html#a7beadf6067bdf66f48ee9b94c337d252">DefaultMaxVertexRadius</a></td></tr>
 <tr class="memdesc:a6f9f95a2a8acf03f6b559f81b0024785"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum vertex radius.  <a href="#a6f9f95a2a8acf03f6b559f81b0024785">More...</a><br /></td></tr>
 <tr class="separator:a6f9f95a2a8acf03f6b559f81b0024785"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
+Related Functions</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
+</td></tr>
+<tr class="memitem:a312e75d40e3b1e47fe066721df05ae5c"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structplayrho_1_1_world_def.html">WorldDef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_world_def.html#a312e75d40e3b1e47fe066721df05ae5c">GetDefaultWorldDef</a> () noexcept</td></tr>
+<tr class="memdesc:a312e75d40e3b1e47fe066721df05ae5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the default definitions value.  <a href="#a312e75d40e3b1e47fe066721df05ae5c">More...</a><br /></td></tr>
+<tr class="separator:a312e75d40e3b1e47fe066721df05ae5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="a312e75d40e3b1e47fe066721df05ae5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a312e75d40e3b1e47fe066721df05ae5c">&#9670;&nbsp;</a></span>GetDefaultWorldDef()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structplayrho_1_1_world_def.html">WorldDef</a> GetDefaultWorldDef </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section note"><dt>Note</dt><dd>This method exists as a work-around for providing the <a class="el" href="classplayrho_1_1_world.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a> constructor a default value without otherwise getting a compiler error such as: "cannot use defaulted constructor of 'Def' within 'World' outside of member functions
+     because 'gravity' has an initializer" </dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="ab2d4bd686a2dedc2ec3687f525453d6e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab2d4bd686a2dedc2ec3687f525453d6e">&#9670;&nbsp;</a></span>gravity</h2>
@@ -161,7 +198,7 @@ Making it larger may create artifacts for vertex collision. </dd></dl>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Sep 16 2017 23:07:50 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 18 2017 12:19:10 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

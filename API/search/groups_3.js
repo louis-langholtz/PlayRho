@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['joint_20free_20functions_2e',['Joint free functions.',['../group___joint_free_functions.html',1,'']]]
+  ['library_20defined_20exceptions',['Library Defined Exceptions',['../group___exceptions_group.html',1,'']]]
 ];

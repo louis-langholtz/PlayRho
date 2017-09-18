@@ -68,13 +68,14 @@ $(function() {
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#related">Related Functions</a> &#124;
 <a href="classplayrho_1_1_t_o_i_output-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">playrho::TOIOutput Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>TimeOfImpact Output data.  
+<p>Output data for time of impact.  
 </p>
 
 <p><code>#include &lt;TimeOfImpact.hpp&gt;</code></p>
@@ -156,6 +157,18 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 <a class="el" href="classplayrho_1_1_t_o_i_output.html#acbddd991d4a8a08c4e16eec2b24858c8">root_iter_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_t_o_i_output.html#a10a125f9757171b0b6f4f5d76aa8619b">get_max_root_iters</a> () const noexcept</td></tr>
 <tr class="memdesc:a10a125f9757171b0b6f4f5d76aa8619b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the max root iterations. <br /></td></tr>
 <tr class="separator:a10a125f9757171b0b6f4f5d76aa8619b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
+Related Functions</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
+</td></tr>
+<tr class="memitem:acad38ef6ac1537641203f3eb15225235"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1_t_o_i_output.html">TOIOutput</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_t_o_i_output.html#acad38ef6ac1537641203f3eb15225235">GetToiViaSat</a> (const <a class="el" href="classplayrho_1_1_distance_proxy.html">DistanceProxy</a> &amp;proxyA, const <a class="el" href="classplayrho_1_1_sweep.html">Sweep</a> &amp;sweepA, const <a class="el" href="classplayrho_1_1_distance_proxy.html">DistanceProxy</a> &amp;proxyB, const <a class="el" href="classplayrho_1_1_sweep.html">Sweep</a> &amp;sweepB, <a class="el" href="structplayrho_1_1_toi_conf.html">ToiConf</a> conf=<a class="el" href="namespaceplayrho.html#a4dd2e3047d7ac0836f8921a496e8d432">GetDefaultToiConf</a>())</td></tr>
+<tr class="memdesc:acad38ef6ac1537641203f3eb15225235"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the time of impact for two disjoint convex sets using the Separating Axis Theorem.  <a href="#acad38ef6ac1537641203f3eb15225235">More...</a><br /></td></tr>
+<tr class="separator:acad38ef6ac1537641203f3eb15225235"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68f3d6b8ed4709b6b99bd8e096a9960e"><td class="memItemLeft" align="right" valign="top"><a id="a68f3d6b8ed4709b6b99bd8e096a9960e"></a>
+<a class="el" href="classplayrho_1_1_t_o_i_output.html">TOIOutput</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_t_o_i_output.html#a68f3d6b8ed4709b6b99bd8e096a9960e">CalcToi</a> (const <a class="el" href="classplayrho_1_1_contact.html">Contact</a> &amp;contact, <a class="el" href="structplayrho_1_1_toi_conf.html">ToiConf</a> conf)</td></tr>
+<tr class="memdesc:a68f3d6b8ed4709b6b99bd8e096a9960e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the Time Of Impact for the given contact with the given configuration. <br /></td></tr>
+<tr class="separator:a68f3d6b8ed4709b6b99bd8e096a9960e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="ac2c391637e4e4f00a8d4b57532cb4ebb"></a>
@@ -184,13 +197,87 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="acad38ef6ac1537641203f3eb15225235"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acad38ef6ac1537641203f3eb15225235">&#9670;&nbsp;</a></span>GetToiViaSat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classplayrho_1_1_t_o_i_output.html">TOIOutput</a> GetToiViaSat </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_distance_proxy.html">DistanceProxy</a> &amp;&#160;</td>
+          <td class="paramname"><em>proxyA</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_sweep.html">Sweep</a> &amp;&#160;</td>
+          <td class="paramname"><em>sweepA</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_distance_proxy.html">DistanceProxy</a> &amp;&#160;</td>
+          <td class="paramname"><em>proxyB</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_sweep.html">Sweep</a> &amp;&#160;</td>
+          <td class="paramname"><em>sweepB</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structplayrho_1_1_toi_conf.html">ToiConf</a>&#160;</td>
+          <td class="paramname"><em>conf</em> = <code><a class="el" href="namespaceplayrho.html#a4dd2e3047d7ac0836f8921a496e8d432">GetDefaultToiConf</a>()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Computes the upper bound on time before two shapes penetrate too much. Time is represented as a fraction between [0,tMax]. This uses a swept separating axis and may miss some intermediate, non-tunneling collision. If you change the time interval, you should call this function again.</p>
+<dl class="section see"><dt>See also</dt><dd><a href="https://en.wikipedia.org/wiki/Hyperplane_separation_theorem">https://en.wikipedia.org/wiki/Hyperplane_separation_theorem</a> </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>The given sweeps are both at the same alpha0. </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Behavior is undefined if the given sweeps are not at the same alpha0. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Uses Distance to compute the contact point and normal at the time of impact. </dd>
+<dd>
+This only works for two disjoint convex sets.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">proxyA</td><td>Proxy A. The proxy's vertex count must be 1 or more. </td></tr>
+    <tr><td class="paramname">sweepA</td><td><a class="el" href="classplayrho_1_1_sweep.html" title="Description of a &quot;sweep&quot; of motion. ">Sweep</a> A. <a class="el" href="classplayrho_1_1_sweep.html" title="Description of a &quot;sweep&quot; of motion. ">Sweep</a> of motion for shape represented by proxy A. </td></tr>
+    <tr><td class="paramname">proxyB</td><td>Proxy B. The proxy's vertex count must be 1 or more. </td></tr>
+    <tr><td class="paramname">sweepB</td><td><a class="el" href="classplayrho_1_1_sweep.html" title="Description of a &quot;sweep&quot; of motion. ">Sweep</a> B. <a class="el" href="classplayrho_1_1_sweep.html" title="Description of a &quot;sweep&quot; of motion. ">Sweep</a> of motion for shape represented by proxy B. </td></tr>
+    <tr><td class="paramname">conf</td><td>Configuration details for on calculation. Like the targeted depth of penetration.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Time of impact output data. </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>TimeOfImpact.hpp</li>
+<li>Contact.hpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Sep 16 2017 23:07:50 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 18 2017 12:19:10 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

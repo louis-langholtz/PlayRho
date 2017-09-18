@@ -18,9 +18,9 @@ var searchData=
   ['jointbuilder_3c_20wheeljointdef_20_3e',['JointBuilder&lt; WheelJointDef &gt;',['../structplayrho_1_1_joint_builder.html',1,'playrho']]],
   ['jointcounter',['JointCounter',['../namespaceplayrho.html#aeb8ea60dc388d1e92e2e6fa277a32495',1,'playrho']]],
   ['jointdef',['JointDef',['../structplayrho_1_1_joint_def.html',1,'playrho::JointDef'],['../structplayrho_1_1_joint_def.html#a2b4b35fb0b40505d758de0ba484abeac',1,'playrho::JointDef::JointDef()=delete'],['../structplayrho_1_1_joint_def.html#a12140b02482e26eec4291bace4494bfe',1,'playrho::JointDef::JointDef(JointType t) noexcept']]],
-  ['joint_20free_20functions_2e',['Joint free functions.',['../group___joint_free_functions.html',1,'']]],
   ['jointkey',['JointKey',['../classplayrho_1_1_joint_key.html',1,'playrho']]],
   ['joints',['Joints',['../classplayrho_1_1_body.html#a80a0dc4435ecb9436ac69c23f60569b6',1,'playrho::Body::Joints()'],['../structplayrho_1_1_island.html#a346e27e2faccfb6a60db423c3cfe13db',1,'playrho::Island::Joints()'],['../classplayrho_1_1_world.html#a72fb813f9b11602479ba59773bbe7de9',1,'playrho::World::Joints()']]],
+  ['joint_20classes',['Joint Classes',['../group___joints_group.html',1,'']]],
   ['jointtype',['JointType',['../namespaceplayrho.html#aae8d7c50e25778ece4347bd63586c485',1,'playrho']]],
   ['jointvisitor',['JointVisitor',['../classplayrho_1_1_joint_visitor.html',1,'playrho::JointVisitor'],['../classplayrho_1_1_joint_visitor.html#ac96b403c9496f3c69ecc5f4fa2a1330f',1,'playrho::JointVisitor::JointVisitor(const JointVisitor &amp;other)=default'],['../classplayrho_1_1_joint_visitor.html#ae7f44e5c0af093cb8193701b315026ed',1,'playrho::JointVisitor::JointVisitor(JointVisitor &amp;&amp;other)=default']]]
 ];

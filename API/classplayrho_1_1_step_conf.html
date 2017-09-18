@@ -69,6 +69,7 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#related">Related Functions</a> &#124;
 <a href="classplayrho_1_1_step_conf-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">playrho::StepConf Class Reference</div>  </div>
@@ -213,6 +214,17 @@ Static Public Attributes</h2></td></tr>
 static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_step_conf.html#a50f4d886787a88a1e353637e78e0a8f7">InvalidIteration</a> = static_cast&lt;<a class="el" href="classplayrho_1_1_step_conf.html#a8e5a2fa02589f5bdd860ce232242cdc5">iteration_type</a>&gt;(-1)</td></tr>
 <tr class="memdesc:a50f4d886787a88a1e353637e78e0a8f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid iteration value. <br /></td></tr>
 <tr class="separator:a50f4d886787a88a1e353637e78e0a8f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
+Related Functions</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
+</td></tr>
+<tr class="memitem:a396f543b42eadf60ef9e730edc77912c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___quantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_step_conf.html#a396f543b42eadf60ef9e730edc77912c">GetMaxRegLinearCorrection</a> (const <a class="el" href="classplayrho_1_1_step_conf.html">StepConf</a> &amp;conf) noexcept</td></tr>
+<tr class="memdesc:a396f543b42eadf60ef9e730edc77912c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the maximum regular linear correction from the given value.  <a href="#a396f543b42eadf60ef9e730edc77912c">More...</a><br /></td></tr>
+<tr class="separator:a396f543b42eadf60ef9e730edc77912c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05d21c386ca6d39d5cc35cbad350a8c9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_step_conf.html#a05d21c386ca6d39d5cc35cbad350a8c9">IsMaxTranslationWithinTolerance</a> (const <a class="el" href="classplayrho_1_1_step_conf.html">StepConf</a> &amp;conf) noexcept</td></tr>
+<tr class="memdesc:a05d21c386ca6d39d5cc35cbad350a8c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the maximum translation is within tolerance.  <a href="#a05d21c386ca6d39d5cc35cbad350a8c9">More...</a><br /></td></tr>
+<tr class="separator:a05d21c386ca6d39d5cc35cbad350a8c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Provides the primary means for configuring the per-step world physics simulation. All the values have defaults. These defaults are intended to most likely be the values desired. </p><dl class="section note"><dt>Note</dt><dd>Be sure to confirm that the delta time (the time-per-step i.e. <code>dt</code>) is correct for your use. </dd>
@@ -365,6 +377,59 @@ The inverse delta time value is the inverse of the given value or zero if the va
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="a396f543b42eadf60ef9e730edc77912c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a396f543b42eadf60ef9e730edc77912c">&#9670;&nbsp;</a></span>GetMaxRegLinearCorrection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___quantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> GetMaxRegLinearCorrection </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_step_conf.html">StepConf</a> &amp;&#160;</td>
+          <td class="paramname"><em>conf</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a05d21c386ca6d39d5cc35cbad350a8c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05d21c386ca6d39d5cc35cbad350a8c9">&#9670;&nbsp;</a></span>IsMaxTranslationWithinTolerance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool IsMaxTranslationWithinTolerance </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_step_conf.html">StepConf</a> &amp;&#160;</td>
+          <td class="paramname"><em>conf</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -853,7 +918,7 @@ Used in the TOI phase of step processing. </dd></dl>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Sep 16 2017 23:07:50 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 18 2017 12:19:10 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

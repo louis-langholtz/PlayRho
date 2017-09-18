@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['world_20free_20functions_2e',['World free functions.',['../group___world_free_functions.html',1,'']]]
+  ['unit_20definitions_20for_20expressing_20quantities_2e',['Unit definitions for expressing quantities.',['../group___units.html',1,'']]]
 ];

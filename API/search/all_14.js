@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['unawaken',['Unawaken',['../group___body_free_functions.html#ga67211a311e376d3a461adda14ee95459',1,'playrho']]],
+  ['unawaken',['Unawaken',['../classplayrho_1_1_body.html#abdfbff06306e4ecb71f6d4b2136eea7c',1,'playrho::Body::Unawaken()'],['../namespaceplayrho.html#abdfbff06306e4ecb71f6d4b2136eea7c',1,'playrho::Unawaken()']]],
   ['underactivetime',['underActiveTime',['../structplayrho_1_1_body_def.html#ab44b94dd428a9c3019d010d1be69bfe0',1,'playrho::BodyDef']]],
   ['unitinterval',['UnitInterval',['../group___bounded_aliases.html#ga434227c634b0a1b975979d4dbc242346',1,'playrho']]],
   ['unit_20definitions_20for_20expressing_20quantities_2e',['Unit definitions for expressing quantities.',['../group___units.html',1,'']]],

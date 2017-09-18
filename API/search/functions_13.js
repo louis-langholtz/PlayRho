@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['unawaken',['Unawaken',['../group___body_free_functions.html#ga67211a311e376d3a461adda14ee95459',1,'playrho']]],
+  ['unawaken',['Unawaken',['../classplayrho_1_1_body.html#abdfbff06306e4ecb71f6d4b2136eea7c',1,'playrho::Body::Unawaken()'],['../namespaceplayrho.html#abdfbff06306e4ecb71f6d4b2136eea7c',1,'playrho::Unawaken()']]],
   ['unsetawake',['UnsetAwake',['../classplayrho_1_1_body.html#a65da2f0a7a870b136d494b9e4b608f88',1,'playrho::Body']]],
   ['unsetenabled',['UnsetEnabled',['../classplayrho_1_1_contact.html#aa2e90afe0ed6793a4f03815f9c1790bc',1,'playrho::Contact']]],
   ['updateproxy',['UpdateProxy',['../classplayrho_1_1_dynamic_tree.html#a8c37c6f7c201c897a524a8cde672a7e9',1,'playrho::DynamicTree']]],

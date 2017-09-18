@@ -66,6 +66,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#related">Related Functions</a> &#124;
 <a href="structplayrho_1_1_manifold_1_1_point-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">playrho::Manifold::Point Struct Reference</div>  </div>
@@ -91,13 +92,97 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ab0d51c43df2fa664e982a602aa39dd87"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___quantities.html#ga1d281ffd7cf8e2c8897d03a1cae9f1f8">Momentum</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_manifold_1_1_point.html#ab0d51c43df2fa664e982a602aa39dd87">tangentImpulse</a> = 0</td></tr>
 <tr class="memdesc:ab0d51c43df2fa664e982a602aa39dd87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tangent impulse.  <a href="#ab0d51c43df2fa664e982a602aa39dd87">More...</a><br /></td></tr>
 <tr class="separator:ab0d51c43df2fa664e982a602aa39dd87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
+Related Functions</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
+</td></tr>
+<tr class="memitem:a30d3152820c6a35af37c2139d316d1da"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_manifold_1_1_point.html#a30d3152820c6a35af37c2139d316d1da">operator==</a> (const <a class="el" href="structplayrho_1_1_manifold_1_1_point.html">Manifold::Point</a> &amp;lhs, const <a class="el" href="structplayrho_1_1_manifold_1_1_point.html">Manifold::Point</a> &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:a30d3152820c6a35af37c2139d316d1da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the two given manifold points are equal.  <a href="#a30d3152820c6a35af37c2139d316d1da">More...</a><br /></td></tr>
+<tr class="separator:a30d3152820c6a35af37c2139d316d1da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72a1cdedaec111016d79f96aa4970cef"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_manifold_1_1_point.html#a72a1cdedaec111016d79f96aa4970cef">operator!=</a> (const <a class="el" href="structplayrho_1_1_manifold_1_1_point.html">Manifold::Point</a> &amp;lhs, const <a class="el" href="structplayrho_1_1_manifold_1_1_point.html">Manifold::Point</a> &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:a72a1cdedaec111016d79f96aa4970cef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the two given manifold points are not equal.  <a href="#a72a1cdedaec111016d79f96aa4970cef">More...</a><br /></td></tr>
+<tr class="separator:a72a1cdedaec111016d79f96aa4970cef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This is a contact point belonging to a contact manifold. It holds details related to the geometry and dynamics of the contact points.</p>
 <dl class="section note"><dt>Note</dt><dd>The impulses are used for internal caching and may not provide reliable contact forces especially for high speed collisions.</dd>
 <dd>
 This structure is at least 20-bytes large. </dd></dl>
-</div><h2 class="groupheader">Member Data Documentation</h2>
+</div><h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="a72a1cdedaec111016d79f96aa4970cef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72a1cdedaec111016d79f96aa4970cef">&#9670;&nbsp;</a></span>operator!=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1_manifold_1_1_point.html">Manifold::Point</a> &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1_manifold_1_1_point.html">Manifold::Point</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a30d3152820c6a35af37c2139d316d1da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30d3152820c6a35af37c2139d316d1da">&#9670;&nbsp;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1_manifold_1_1_point.html">Manifold::Point</a> &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1_manifold_1_1_point.html">Manifold::Point</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
 <a id="ae7ca465a7cb914e14748d6f04348d789"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae7ca465a7cb914e14748d6f04348d789">&#9670;&nbsp;</a></span>contactFeature</h2>
 
@@ -175,7 +260,7 @@ For face-B type manifolds, this is the local center of "circle" A or a clip poin
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Sep 16 2017 23:07:50 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 18 2017 12:19:10 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

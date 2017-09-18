@@ -68,6 +68,7 @@ $(function() {
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#related">Related Functions</a> &#124;
 <a href="structplayrho_1_1_toi_conf-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">playrho::ToiConf Struct Reference</div>  </div>
@@ -145,6 +146,14 @@ Public Attributes</h2></td></tr>
 <a class="el" href="structplayrho_1_1_toi_conf.html#a4f756e01422799774afa985e0d1015d7">dist_iter_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_toi_conf.html#a888c7b7e3b1da157e13e5ffe3e8d2fc0">maxDistIters</a> = <a class="el" href="namespaceplayrho.html#adea893c840466088049edc292dcc9dcb">DefaultMaxDistanceIters</a></td></tr>
 <tr class="memdesc:a888c7b7e3b1da157e13e5ffe3e8d2fc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max distance iterations. <br /></td></tr>
 <tr class="separator:a888c7b7e3b1da157e13e5ffe3e8d2fc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
+Related Functions</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
+</td></tr>
+<tr class="memitem:a4dd2e3047d7ac0836f8921a496e8d432"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_toi_conf.html#a4dd2e3047d7ac0836f8921a496e8d432">GetDefaultToiConf</a> ()</td></tr>
+<tr class="memdesc:a4dd2e3047d7ac0836f8921a496e8d432"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the default time of impact configuration.  <a href="#a4dd2e3047d7ac0836f8921a496e8d432">More...</a><br /></td></tr>
+<tr class="separator:a4dd2e3047d7ac0836f8921a496e8d432"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>These parameters effect time of impact calculations by limiting the definitions of time and impact. If total radius is expressed as TR, and target depth as TD, then: the max target distance is (TR - TD) + tolerance; and the min target distance is (TR - TD) - tolerance.</p>
@@ -156,7 +165,33 @@ Min target distance needs to be significantly less than the max target distance 
 <dl class="section see"><dt>See also</dt><dd>SolvePositionConstraints </dd>
 <dd>
 SolveTOIPositionConstraints </dd></dl>
-</div><h2 class="groupheader">Member Data Documentation</h2>
+</div><h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="a4dd2e3047d7ac0836f8921a496e8d432"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4dd2e3047d7ac0836f8921a496e8d432">&#9670;&nbsp;</a></span>GetDefaultToiConf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto GetDefaultToiConf </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
 <a id="ae0b64b5021ec7955f14bd38a110da96d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae0b64b5021ec7955f14bd38a110da96d">&#9670;&nbsp;</a></span>maxRootIters</h2>
 
@@ -193,7 +228,7 @@ SolveTOIPositionConstraints </dd></dl>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Sep 16 2017 23:07:50 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 18 2017 12:19:10 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

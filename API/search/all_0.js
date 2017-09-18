@@ -1,7 +1,7 @@
 var searchData=
 [
   ['a',['a',['../structplayrho_1_1_witness_points.html#a8e711c25eb4d3b3881ecf6b7d065ae28',1,'playrho::WitnessPoints::a()'],['../structplayrho_1_1_index_pair.html#a06334874699e650d55816369951a4ccb',1,'playrho::IndexPair::a()']]],
-  ['aabb',['AABB',['../classplayrho_1_1_a_a_b_b.html',1,'playrho::AABB'],['../classplayrho_1_1_a_a_b_b.html#aaf4618ae3b705ad2aca3b5fb6e531af4',1,'playrho::AABB::AABB() noexcept'],['../classplayrho_1_1_a_a_b_b.html#a50317a9aea19519e210af8a6f2526ee6',1,'playrho::AABB::AABB(const Length2D p) noexcept'],['../classplayrho_1_1_a_a_b_b.html#a0a7ce52bd0943be6b01771254c877ec7',1,'playrho::AABB::AABB(const Length2D a, const Length2D b) noexcept'],['../classplayrho_1_1_a_a_b_b.html#a2e2cf2b5fe3a119106e34fd6bc49a78b',1,'playrho::AABB::AABB(const AABB &amp;copy) noexcept'],['../structplayrho_1_1_fixture_proxy.html#adf1941e4478a85413de33862699bad6d',1,'playrho::FixtureProxy::aabb()']]],
+  ['aabb',['AABB',['../classplayrho_1_1_a_a_b_b.html',1,'playrho::AABB'],['../classplayrho_1_1_a_a_b_b.html#a06afc89714d846f8f89c0c99a7471e26',1,'playrho::AABB::AABB() noexcept=default'],['../classplayrho_1_1_a_a_b_b.html#a50317a9aea19519e210af8a6f2526ee6',1,'playrho::AABB::AABB(const Length2D p) noexcept'],['../classplayrho_1_1_a_a_b_b.html#a0a7ce52bd0943be6b01771254c877ec7',1,'playrho::AABB::AABB(const Length2D a, const Length2D b) noexcept'],['../classplayrho_1_1_a_a_b_b.html#a5b4428191788568ecc41a15517aac3ab',1,'playrho::AABB::AABB(const AABB &amp;copy) noexcept=default'],['../classplayrho_1_1_a_a_b_b.html#a81b5424b077f4a40144c35ddee1e5493',1,'playrho::AABB::AABB(AABB &amp;&amp;copy) noexcept=default'],['../structplayrho_1_1_fixture_proxy.html#adf1941e4478a85413de33862699bad6d',1,'playrho::FixtureProxy::aabb()']]],
   ['aabbextension',['aabbExtension',['../classplayrho_1_1_step_conf.html#a2843eaacd8bc5a99f9764d734deb5399',1,'playrho::StepConf']]],
   ['abs',['Abs',['../group___math.html#gaec6c1bdecbda95a4bacb7d1a84b7e641',1,'playrho::Abs(T a)'],['../group___math.html#ga8c5b7f3e28aa844cad21eb801d081cd3',1,'playrho::Abs(Vec2 a)'],['../group___math.html#gad9842d9af8def4938c227e4256f42975',1,'playrho::Abs(UnitVec2 a)'],['../group___math.html#gaa726d0bc106afc7a490573f3d008f6bc',1,'playrho::Abs(const Mat22 &amp;A)']]],
   ['absolute',['Absolute',['../classplayrho_1_1_unit_vec2.html#afdb4951e8be928d624589bc2311e0e12',1,'playrho::UnitVec2']]],
@@ -31,12 +31,12 @@ var searchData=
   ['angularsleeptolerance',['angularSleepTolerance',['../classplayrho_1_1_step_conf.html#afc71be34f8fdc86f38a743b939445747',1,'playrho::StepConf']]],
   ['angularslop',['angularSlop',['../structplayrho_1_1_constraint_solver_conf.html#adddb08435179020d3da74422d611d4e9',1,'playrho::ConstraintSolverConf::angularSlop()'],['../classplayrho_1_1_step_conf.html#a7c61d899e596d1fb07b1cc80ada0efbe',1,'playrho::StepConf::angularSlop()']]],
   ['angularvelocity',['angularVelocity',['../structplayrho_1_1_body_def.html#a651540b413c85978b64c5729e637cf44',1,'playrho::BodyDef::angularVelocity()'],['../group___quantities.html#gac33f92018f7e8821550296aece465028',1,'playrho::AngularVelocity()']]],
-  ['applyangularimpulse',['ApplyAngularImpulse',['../group___body_free_functions.html#gaacbf4239da6899fef38a997850687c01',1,'playrho']]],
-  ['applyforce',['ApplyForce',['../group___body_free_functions.html#ga3833303ecc17b59df54226146a7f98a8',1,'playrho']]],
-  ['applyforcetocenter',['ApplyForceToCenter',['../group___body_free_functions.html#ga4e0ca21b09a11783fb2885a9dcbfe829',1,'playrho']]],
-  ['applylinearacceleration',['ApplyLinearAcceleration',['../group___body_free_functions.html#ga07342ea3ae7e59a8a36052b5a9c819ec',1,'playrho']]],
-  ['applylinearimpulse',['ApplyLinearImpulse',['../group___body_free_functions.html#ga350073eda47a0ccf31ab34c394d04afb',1,'playrho']]],
-  ['applytorque',['ApplyTorque',['../group___body_free_functions.html#ga2c69303f34a079edf2823cef1160977e',1,'playrho']]],
+  ['applyangularimpulse',['ApplyAngularImpulse',['../classplayrho_1_1_body.html#a5d1467095e23488ca1344a26336aae8f',1,'playrho::Body::ApplyAngularImpulse()'],['../namespaceplayrho.html#a5d1467095e23488ca1344a26336aae8f',1,'playrho::ApplyAngularImpulse()']]],
+  ['applyforce',['ApplyForce',['../classplayrho_1_1_body.html#afe8814150b7999bb7e5c242d7d7c0711',1,'playrho::Body::ApplyForce()'],['../namespaceplayrho.html#afe8814150b7999bb7e5c242d7d7c0711',1,'playrho::ApplyForce()']]],
+  ['applyforcetocenter',['ApplyForceToCenter',['../classplayrho_1_1_body.html#a53e87828fccc6c70c2bcf2d97058e623',1,'playrho::Body::ApplyForceToCenter()'],['../namespaceplayrho.html#a53e87828fccc6c70c2bcf2d97058e623',1,'playrho::ApplyForceToCenter()']]],
+  ['applylinearacceleration',['ApplyLinearAcceleration',['../classplayrho_1_1_body.html#a4223a9983a3edd43133bacb9ca4e3a43',1,'playrho::Body::ApplyLinearAcceleration()'],['../namespaceplayrho.html#a4223a9983a3edd43133bacb9ca4e3a43',1,'playrho::ApplyLinearAcceleration()']]],
+  ['applylinearimpulse',['ApplyLinearImpulse',['../classplayrho_1_1_body.html#ac9e007324d03c57cded9d40351b56dde',1,'playrho::Body::ApplyLinearImpulse()'],['../namespaceplayrho.html#ac9e007324d03c57cded9d40351b56dde',1,'playrho::ApplyLinearImpulse()']]],
+  ['applytorque',['ApplyTorque',['../classplayrho_1_1_body.html#a9f848e079efd1b4e7d7a926cdb146d0b',1,'playrho::Body::ApplyTorque()'],['../namespaceplayrho.html#a9f848e079efd1b4e7d7a926cdb146d0b',1,'playrho::ApplyTorque()']]],
   ['area',['Area',['../group___quantities.html#ga3ea2a7de91fdafccb2e49c3a84117ab5',1,'playrho']]],
   ['argument_5ftype',['argument_type',['../structstd_1_1hash_3_01playrho_1_1_contact_key_01_4.html#ac19c78e4d7df44d45e71d6eaca2235da',1,'std::hash&lt; playrho::ContactKey &gt;']]],
   ['arraylist',['ArrayList',['../classplayrho_1_1_array_list.html',1,'playrho']]],
@@ -46,5 +46,5 @@ var searchData=
   ['atan2',['Atan2',['../group___math.html#gab870a9188fcc77c905807fa718a8268d',1,'playrho::Atan2(T y, T x)'],['../group___math.html#gab938c6a06d9b25eae154d0197a7ac78f',1,'playrho::Atan2(double y, double x)']]],
   ['average',['Average',['../group___math.html#ga7b2db834a9d392a7e63660f5dca67c73',1,'playrho']]],
   ['awake',['awake',['../structplayrho_1_1_body_def.html#a2bf08f11692ece8256eddd2df8ab7c53',1,'playrho::BodyDef']]],
-  ['awaken',['Awaken',['../group___body_free_functions.html#gac32d9026ee0c6e239cb5328d9050b03e',1,'playrho::Awaken(Body &amp;body) noexcept'],['../group___world_free_functions.html#gaf407edcdb4922446cff6fdc1192c9f00',1,'playrho::Awaken(World &amp;world) noexcept']]]
+  ['awaken',['Awaken',['../classplayrho_1_1_body.html#a4834708af29bcc9ae39ebfc2b9f580f6',1,'playrho::Body::Awaken()'],['../classplayrho_1_1_world.html#a1539463268cf6db572823eb1a195dc70',1,'playrho::World::Awaken()'],['../namespaceplayrho.html#a4834708af29bcc9ae39ebfc2b9f580f6',1,'playrho::Awaken(Body &amp;body) noexcept'],['../namespaceplayrho.html#a1539463268cf6db572823eb1a195dc70',1,'playrho::Awaken(World &amp;world) noexcept']]]
 ];
