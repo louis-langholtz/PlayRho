@@ -79,6 +79,7 @@ inline PulleyJointDef& PulleyJointDef::UseRatio(Real v) noexcept
 }
 
 /// @brief Gets the definition data for the given joint.
+/// @relatedalso PulleyJoint
 PulleyJointDef GetPulleyJointDef(const PulleyJoint& joint) noexcept;
 
 } // namespace playrho

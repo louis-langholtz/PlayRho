@@ -39,6 +39,10 @@ struct ConstraintSolverConf;
 class BodyConstraint;
 class JointVisitor;
 
+/// @defgroup JointsGroup Joint Classes
+/// @details These are user creatable classes that specify constraints on one or more
+///   Body instances.
+
 /// @brief A body constraint pointer alias.
 using BodyConstraintPtr = BodyConstraint*;
 
@@ -59,6 +63,8 @@ using BodyConstraintsMap =
 ///
 /// @details Joints are used to constraint two bodies together in various fashions.
 ///   Some joints also feature limits and motors.
+///
+/// @ingroup JointsGroup
 ///
 class Joint
 {

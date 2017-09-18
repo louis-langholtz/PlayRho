@@ -28,7 +28,9 @@ namespace playrho {
     
     class VertexSet;
     
-    /// @brief Concave shape.
+    /// @brief The "multi-shape" shape.
+    /// @details Composes zero or more convex shapes into what can be a concave shape.
+    /// @ingroup PartsGroup
     class MultiShape: public Shape
     {
     public:

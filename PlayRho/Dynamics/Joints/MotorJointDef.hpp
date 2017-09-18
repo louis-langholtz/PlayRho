@@ -86,6 +86,7 @@ inline MotorJointDef& MotorJointDef::UseCorrectionFactor(Real v) noexcept
 }
 
 /// @brief Gets the definition data for the given joint.
+/// @relatedalso MotorJoint
 MotorJointDef GetMotorJointDef(const MotorJoint& joint) noexcept;
 
 } // namespace playrho

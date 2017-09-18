@@ -33,6 +33,8 @@ namespace playrho {
 /// @sa https://en.wikipedia.org/wiki/Disk_(mathematics)
 /// @sa CircleShape.
 ///
+/// @ingroup PartsGroup
+///
 class DiskShape : public Shape
 {
 public:

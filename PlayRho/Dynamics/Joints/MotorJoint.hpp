@@ -28,9 +28,12 @@
 namespace playrho {
 
 /// @brief Motor joint.
-/// @details A motor joint is used to control the relative motion
-/// between two bodies. A typical usage is to control the movement
-/// of a dynamic body with respect to the ground.
+///
+/// @details A motor joint is used to control the relative motion between two bodies. A
+///   typical usage is to control the movement of a dynamic body with respect to the ground.
+///
+/// @ingroup JointsGroup
+///
 class MotorJoint : public Joint
 {
 public:

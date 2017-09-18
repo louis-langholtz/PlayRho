@@ -118,6 +118,7 @@ constexpr RevoluteJointDef& RevoluteJointDef::UseEnableMotor(bool v) noexcept
 }
 
 /// @brief Gets the definition data for the given joint.
+/// @relatedalso RevoluteJoint
 RevoluteJointDef GetRevoluteJointDef(const RevoluteJoint& joint) noexcept;
 
 } // namespace playrho

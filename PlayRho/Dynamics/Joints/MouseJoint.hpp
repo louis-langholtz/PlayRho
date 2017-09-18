@@ -39,6 +39,8 @@ namespace playrho {
 /// @note This structure is 120-bytes large (using a 4-byte Real on at least one 64-bit
 ///   architecture/build).
 ///
+/// @ingroup JointsGroup
+///
 class MouseJoint : public Joint
 {
 public:

@@ -27,17 +27,17 @@ namespace playrho {
 
     class DistanceProxy;
 
-    /// Witness Points.
+    /// @brief Witness Points.
     struct WitnessPoints
     {
         Length2D a; ///< Point A.
         Length2D b; ///< Point B.
     };
     
-    /// Gets the witness points of the given simplex.
+    /// @brief Gets the witness points of the given simplex.
     WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept;
     
-    /// Distance Configuration.
+    /// @brief Distance Configuration.
     struct DistanceConf
     {
         /// @brief Iteration type.

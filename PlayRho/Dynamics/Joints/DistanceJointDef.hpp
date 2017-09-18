@@ -100,6 +100,7 @@ constexpr DistanceJointDef& DistanceJointDef::UseDampingRatio(Real v) noexcept
 }
 
 /// @brief Gets the definition data for the given joint.
+/// @relatedalso DistanceJoint
 DistanceJointDef GetDistanceJointDef(const DistanceJoint& joint) noexcept;
 
 } // namespace playrho

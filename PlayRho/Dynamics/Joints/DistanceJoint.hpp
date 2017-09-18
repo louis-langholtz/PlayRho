@@ -28,10 +28,14 @@
 namespace playrho {
 
 /// @brief Distance Joint.
-/// @details
-/// A distance joint constrains two points on two bodies
-/// to remain at a fixed distance from each other. You can view
-/// this as a massless, rigid rod.
+///
+/// @details A distance joint constrains two points on two bodies to remain at a
+///   fixed distance from each other. You can view this as a massless, rigid rod.
+///
+/// @ingroup JointsGroup
+///
+/// @image html distanceJoint.gif
+///
 class DistanceJoint : public Joint
 {
 public:
