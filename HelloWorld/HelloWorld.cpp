@@ -1,6 +1,6 @@
 /*
- * Original work Copyright (c) 2006-2007 Erin Catto http://www.box2d.org
- * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2006-2007 Erin Catto http://www.box2d.org
+ * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -20,78 +20,66 @@
  */
 
 #include <PlayRho/PlayRho.hpp>
-#include <cstdio>
+#include <iostream>
+#include <iomanip>
+
+using namespace playrho;
 
 // This is a simple example of building and running a simulation using PlayRho.
-// Here we create a large ground box and a small dynamic box.
-// There are no graphics for this example. PlayRho is meant to be used with your
-// rendering engine in your game engine.
-int main(int /*unused*/, char** /*unused*/)
+// The code creates a large box to be the ground and a small disk to be a ball
+// above the ground. There are no graphics for this example. PlayRho is meant
+// to be used with your rendering engine in your game engine.
+int main()
 {
-    // Construct a world object, which will hold and simulate the rigid bodies.
-    auto world = playrho::World{};
+    // Construct a world object, which will hold and simulate bodies.
+    auto world = World{};
 
-    // Call the body factory which allocates memory for the ground body
-    // from a pool and creates the ground box shape (also from a pool).
+    // Call the body factory which allocates memory for the ground body.
     // The body is also added to the world.
-    const auto groundBody = world.CreateBody(playrho::BodyDef{}.UseLocation(playrho::Length2D{
-        0 * playrho::Meter, -10 * playrho::Meter
-    }));
+    const auto ground = world.CreateBody(BodyDef{}
+                                         .UseLocation(Length2D{0 * Meter, -10 * Meter}));
 
-    // Define the ground box shape.
-    // The extents are the half-widths of the box.
-    const auto groundBox = std::make_shared<playrho::PolygonShape>(
-        50 * playrho::Meter, 10 * playrho::Meter);
+    // Define the ground shape. Use a polygon configured as a box for this.
+    // The extents are the half-width and half-height of the box.
+    const auto box = std::make_shared<PolygonShape>(50 * Meter, 10 * Meter);
 
-    // Add the ground fixture to the ground body.
-    groundBody->CreateFixture(groundBox);
+    // Add the box shape to the ground body.
+    ground->CreateFixture(box);
 
-    // Define the dynamic body. We set its position and call the body factory.
-    const auto body = world.CreateBody(playrho::BodyDef{}
-                                       .UseType(playrho::BodyType::Dynamic)
-                                       .UseLocation(playrho::Length2D{
-        0 * playrho::Meter, 4 * playrho::Meter
-    }));
+    // Define a location above the ground for a "dynamic" body and call the body factory.
+    const auto ball = world.CreateBody(BodyDef{}
+                                       .UseLocation(Length2D{0 * Meter, 4 * Meter})
+                                       .UseType(BodyType::Dynamic));
 
-    // Define another box shape for our dynamic body.
-    const auto dynamicBox = std::make_shared<playrho::PolygonShape>(
-        1 * playrho::Meter, 1 * playrho::Meter);
+    // Define a disk shape for the ball body.
+    const auto disk = std::make_shared<DiskShape>(1 * Meter);
 
-    // Set the box density to be non-zero, so it will be dynamic.
-    dynamicBox->SetDensity(1 * playrho::KilogramPerSquareMeter);
+    // Add the disk shape to the ball body.
+    ball->CreateFixture(disk);
 
-    // Override the default friction.
-    dynamicBox->SetFriction(0.3f);
+    // Prepare for simulation. Typically code uses a time step of 1/60 of a second
+    // (60Hz). The defaults are setup for that and to generally provide a high
+    // enough quality simulation in most game scenarios.
+    const auto stepConf = StepConf{};
 
-    // Add the shape to the body.
-    body->CreateFixture(dynamicBox);
+    // Setup the C++ stream output format.
+    std::cout << std::fixed << std::setprecision(2);
 
-    // Prepare for simulation. Typically we use a time step of 1/60 of a
-    // second (60Hz). The defaults are setup for that and to generally provide a
-    // high enough quality simulation in most game scenarios.
-    const auto stepConf = playrho::StepConf{};
-
-    std::printf("%4.2s %4.2s %4.2s\n", "x", "y", "a");
-
-    // This is our little game loop.
+    // A little game-like loop.
     for (auto i = 0; i < 60; ++i)
     {
-        // Instruct the world to perform a single step of simulation.
-        // It is generally best to keep the time step and iterations fixed.
+        // Perform a single step of simulation. Keep the time step & iterations fixed.
         world.Step(stepConf);
 
-        // Now print the position and angle of the body.
-        const auto position = body->GetLocation();
-        const auto angle = body->GetAngle();
+        const auto location = ball->GetLocation();
+        const auto angle = ball->GetAngle();
 
-        std::printf("%4.2f %4.2f %4.2f\n",
-                    double(playrho::Real(GetX(position) / playrho::Meter)),
-                    double(playrho::Real(GetY(position) / playrho::Meter)),
-                    double(playrho::Real(angle / playrho::Degree)));
+        // Now print the location and angle of the body.
+        std::cout << std::setw(5) << GetX(location);
+        std::cout << std::setw(5) << GetY(location);
+        std::cout << std::setw(5) << angle;
+        std::cout << '\n';
     }
-
-    // When the world destructor is called, all bodies and joints are freed. This can
-    // create orphaned pointers, so be careful about your world management.
 
     return 0;
 }

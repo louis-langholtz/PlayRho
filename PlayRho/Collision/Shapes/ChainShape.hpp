@@ -36,6 +36,8 @@ class EdgeShape;
 /// Therefore, you may use any winding order.
 /// Since there may be many vertices, they are allocated on the memory heap.
 ///
+/// @image html Chain1.png
+///
 /// @warning The chain will not collide properly if there are self-intersections.
 ///
 /// @ingroup PartsGroup
@@ -75,25 +77,18 @@ public:
 
     ~ChainShape() override = default;
 
-    /// Gets the number of child primitives.
-    /// @return Positive non-zero count.
     ChildCounter GetChildCount() const noexcept override;
     
-    /// @brief Gets the child for the given index.
-    /// @throws InvalidArgument if the index is out of range.
     DistanceProxy GetChild(ChildCounter index) const override;
 
-    /// Computes the mass properties of this shape using its dimensions and density.
-    /// The inertia tensor is computed about the local origin.
-    /// @return Mass data for this shape.
     MassData GetMassData() const noexcept override;
     
     void Accept(ShapeVisitor& visitor) const override;
 
-    /// Get the vertex count.
+    /// @brief Gets the vertex count.
     ChildCounter GetVertexCount() const noexcept;
 
-    /// Get a vertex by index.
+    /// @brief Gets a vertex by index.
     Length2D GetVertex(ChildCounter index) const;
 
     /// @brief Gets the normal at the given index.

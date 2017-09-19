@@ -225,15 +225,15 @@ CheckOptions:
   - key:             readability-braces-around-statements.ShortStatementLines
     value:           '0'
   - key:             readability-function-size.BranchThreshold
-    value:           '13'
+    value:           '14'
   - key:             readability-function-size.LineThreshold
-    value:           '200'
+    value:           '240'
   - key:             readability-function-size.NestingThreshold
     value:           '5'
   - key:             readability-function-size.ParameterThreshold
     value:           '6'
   - key:             readability-function-size.StatementThreshold
-    value:           '100'
+    value:           '120'
   - key:             readability-identifier-naming.IgnoreFailedSplit
     value:           '0'
   - key:             readability-implicit-bool-conversion.AllowIntegerConditions

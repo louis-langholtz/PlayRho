@@ -52,14 +52,6 @@ inline index_type GetEdgeIndex(index_type i1, index_type i2, index_type count)
 }
 #endif
 
-inline ClipList GetClipPoints(IndexSeparation::index_type iv1, Length sideOffset1, UnitVec2 normal1,
-                              IndexSeparation::index_type iv2, Length sideOffset2, UnitVec2 normal2,
-                              const ClipList& incidentEdge)
-{
-    const auto points = ClipSegmentToLine(incidentEdge, normal1, sideOffset1, iv1);
-    return ClipSegmentToLine(points, normal2, sideOffset2, iv2);
-}
-
 /// @param shape0 Shape 0. This should be shape A for face-A type manifold or shape B for face-B type manifold.
 /// @param xf0 Transform 1. This should be transform A for face-A type manifold or transform B for face-B type manifold.
 /// @param idx0 Index 0. This should be the index of the vertex and normal of shape0 that had the maximal
@@ -102,7 +94,7 @@ Manifold GetFaceManifold(const Manifold::Type type,
     const auto shape1_s0 = Dot(shape0_normal, shape1_rel_n0);
     const auto shape1_s1 = Dot(shape0_normal, shape1_rel_n1);
     const auto shape1_i0 = (shape1_s0 < shape1_s1)? shape1_idx0: shape1_idx1;
-    const auto shape1_i1 = GetModuloNext(shape1_i0, shape1.GetVertexCount()); /// XXX is this correct?
+    const auto shape1_i1 = GetModuloNext(shape1_i0, shape1.GetVertexCount()); /// XXX is correct?
     const auto shape1_rel_v0 = shape1.GetVertex(shape1_i0);
     const auto shape1_abs_v0 = Transform(shape1_rel_v0, xf1);
     const auto shape1_rel_v1 = shape1.GetVertex(shape1_i1);
@@ -113,21 +105,21 @@ Manifold GetFaceManifold(const Manifold::Type type,
         {
             // Gets the two vertices in world coordinates and their face-vertex contact features
             // of the incident edge of shape1
-            const auto incidentEdge = ClipList{
+            const auto ie = ClipList{
                 ClipVertex{shape1_abs_v0, GetFaceVertexContactFeature(idx0, shape1_i0)},
                 ClipVertex{shape1_abs_v1, GetFaceVertexContactFeature(idx0, shape1_i1)}
             };
-            //const auto incidentEdge = GetIncidentEdgeClipList(idx0, shape0_rel_n0, xf0, shape1, xf1, idx1);
-            assert(incidentEdge[0].cf.indexB == idx1 || incidentEdge[1].cf.indexB == idx1);
+            //const auto ie = GetIncidentEdgeClipList(idx0, shape0_rel_n0, xf0, shape1, xf1, idx1);
+            assert(ie[0].cf.indexB == idx1 || ie[1].cf.indexB == idx1);
             const auto shape0_dp_v0_e0 = -Dot(shape0_abs_e0_dir, shape0_abs_v0);
             const auto shape0_dp_v1_e0 = +Dot(shape0_abs_e0_dir, shape0_abs_v1);
-            return GetClipPoints(idx0,     shape0_dp_v0_e0, -shape0_abs_e0_dir,
-                                 idx0Next, shape0_dp_v1_e0,  shape0_abs_e0_dir,
-                                 incidentEdge);
+            
+            const auto points = ClipSegmentToLine(ie, -shape0_abs_e0_dir, shape0_dp_v0_e0, idx0);
+            return ClipSegmentToLine(points, +shape0_abs_e0_dir, shape0_dp_v1_e0, idx0Next);
         }();
         if (clipPoints.size() == 2)
         {
-            const auto abs_normal = GetFwdPerpendicular(shape0_abs_e0_dir); // Normal points from 1 to 2
+            const auto abs_normal = GetFwdPerpendicular(shape0_abs_e0_dir);
             const auto rel_midpoint = (shape0_rel_v0 + shape0_rel_v1) / Real{2};
             const auto abs_offset = Dot(abs_normal, shape0_abs_v0); ///< Face offset.
             
@@ -854,26 +846,22 @@ bool operator==(const Manifold& lhs, const Manifold& rhs) noexcept
     {
         return false;
     }
+    if (lhs.GetPointCount() != rhs.GetPointCount())
+    {
+        return false;
+    }
 
     switch (lhs.GetType())
     {
         case Manifold::e_unset:
             break;
         case Manifold::e_circles:
-            if (lhs.GetPointCount() != rhs.GetPointCount())
-            {
-                return false;
-            }
             if (lhs.GetLocalPoint() != rhs.GetLocalPoint())
             {
                 return false;
             }
             break;
         case Manifold::e_faceA:
-            if (lhs.GetPointCount() != rhs.GetPointCount())
-            {
-                return false;
-            }
             if (lhs.GetLocalPoint() != rhs.GetLocalPoint())
             {
                 return false;
@@ -884,10 +872,6 @@ bool operator==(const Manifold& lhs, const Manifold& rhs) noexcept
             }
             break;
         case Manifold::e_faceB:
-            if (lhs.GetPointCount() != rhs.GetPointCount())
-            {
-                return false;
-            }
             if (lhs.GetLocalPoint() != rhs.GetLocalPoint())
             {
                 return false;

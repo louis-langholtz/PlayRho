@@ -81,18 +81,10 @@ namespace playrho {
         
         ~MultiShape() override = default;
         
-        /// @brief Gets the number of child primitives.
-        /// @return Positive non-zero count.
         ChildCounter GetChildCount() const noexcept override;
         
-        /// @brief Gets the child for the given index.
-        /// @throws InvalidArgument if the index is out of range.
         DistanceProxy GetChild(ChildCounter index) const override;
         
-        /// @brief Gets mass data.
-        /// Computes the mass properties of this shape using its dimensions and density.
-        /// The inertia tensor is computed about the local origin.
-        /// @return Mass data for this shape.
         MassData GetMassData() const noexcept override;
                 
         void Accept(ShapeVisitor& visitor) const override;

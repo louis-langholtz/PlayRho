@@ -52,11 +52,19 @@ TEST(AABB, Traits)
     
     EXPECT_TRUE(std::is_copy_constructible<AABB>::value);
     EXPECT_TRUE(std::is_nothrow_copy_constructible<AABB>::value);
-    EXPECT_FALSE(std::is_trivially_copy_constructible<AABB>::value);
+    EXPECT_TRUE(std::is_trivially_copy_constructible<AABB>::value);
+
+    EXPECT_TRUE(std::is_move_constructible<AABB>::value);
+    EXPECT_TRUE(std::is_trivially_move_constructible<AABB>::value);
+    EXPECT_TRUE(std::is_nothrow_move_constructible<AABB>::value);
 
     EXPECT_TRUE(std::is_copy_assignable<AABB>::value);
     EXPECT_TRUE(std::is_nothrow_copy_assignable<AABB>::value);
-    EXPECT_FALSE(std::is_trivially_copy_assignable<AABB>::value);
+    EXPECT_TRUE(std::is_trivially_copy_assignable<AABB>::value);
+
+    EXPECT_TRUE(std::is_move_assignable<AABB>::value);
+    EXPECT_TRUE(std::is_nothrow_move_assignable<AABB>::value);
+    EXPECT_TRUE(std::is_trivially_move_assignable<AABB>::value);
 
     EXPECT_TRUE(std::is_destructible<AABB>::value);
     EXPECT_TRUE(std::is_nothrow_destructible<AABB>::value);

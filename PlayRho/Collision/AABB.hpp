@@ -54,13 +54,10 @@ namespace playrho {
         /// @brief Non-throwing default constructor.
         /// @details Constructs an empty AABB.
         /// @note If an empty AABB is added to another AABB, the result will be the other AABB.
-        constexpr AABB() noexcept
-        {
-            // Intentionally empty.
-        }
+        constexpr AABB() = default;
         
         /// @brief Non-throwing initializing constructor for a single point.
-        constexpr explicit AABB(const Length2D p) noexcept:
+        constexpr explicit AABB(const Length2D p):
             m_lowerBound{p}, m_upperBound{p}
         {
             // Intentionally empty.
@@ -74,20 +71,19 @@ namespace playrho {
             // Intentionally empty.
         }
         
-        /// @brief Explicitly defined non-throwing copy constructor.
-        constexpr AABB(const AABB& copy) noexcept:
-            m_lowerBound{copy.m_lowerBound}, m_upperBound{copy.m_upperBound}
-        {
-            // Intentionally empty.
-        }
+        /// @brief Copy constructor.
+        constexpr AABB(const AABB& other) = default;
 
-        /// @brief Explicitly defined non-throwing copy assignment operator.
-        constexpr AABB& operator= (const AABB copy) noexcept
-        {
-            m_lowerBound = copy.m_lowerBound;
-            m_upperBound = copy.m_upperBound;
-            return *this;
-        }
+        /// @brief Move constructor.
+        constexpr AABB(AABB&& other) = default;
+
+        ~AABB() noexcept = default;
+
+        /// @brief Copy assignment operator.
+        constexpr AABB& operator= (const AABB& other) = default;
+        
+        /// @brief Move assignment operator.
+        constexpr AABB& operator= (AABB&& other) = default;
 
         /// @brief Gets the lower bound.
         constexpr Length2D GetLowerBound() const noexcept { return m_lowerBound; }
@@ -192,12 +188,31 @@ namespace playrho {
         };
     };
     
-    /// @brief Gets an invalid AABB value.
+    /// @brief Gets whether the two AABB objects are equal.
     /// @relatedalso AABB
-    template <>
-    constexpr AABB GetInvalid() noexcept
+    constexpr bool operator== (const AABB& lhs, const AABB& rhs)
     {
-        return AABB{GetInvalid<Length2D>(), GetInvalid<Length2D>()};
+        return (lhs.GetLowerBound() == rhs.GetLowerBound()) &&
+               (lhs.GetUpperBound() == rhs.GetUpperBound());
+    }
+    
+    /// @brief Gets whether the two AABB objects are not equal.
+    /// @relatedalso AABB
+    constexpr bool operator!= (const AABB& lhs, const AABB& rhs)
+    {
+        return !(lhs == rhs);
+    }
+    
+    /// @brief Tests for overlap between two axis aligned bounding boxes.
+    /// @note This function's complexity is constant.
+    /// @relatedalso AABB
+    constexpr bool TestOverlap(const AABB& a, const AABB& b) noexcept
+    {
+        const auto d1 = b.GetLowerBound() - a.GetUpperBound();
+        const auto d2 = a.GetLowerBound() - b.GetUpperBound();
+        
+        return (GetX(d1) <= Length{0}) && (GetY(d1) <= Length{0})
+        && (GetX(d2) <= Length{0}) && (GetY(d2) <= Length{0});
     }
     
     /// @brief Gets the center of the AABB.
@@ -230,6 +245,14 @@ namespace playrho {
         const auto dimensions = GetDimensions(aabb);
         return (GetX(dimensions) + GetY(dimensions)) * Real{2};
     }
+    
+    /// @brief Gets an invalid AABB value.
+    /// @relatedalso AABB
+    template <>
+    constexpr AABB GetInvalid() noexcept
+    {
+        return AABB{GetInvalid<Length2D>(), GetInvalid<Length2D>()};
+    }
 
     /// @brief Gets the AABB that minimally encloses the given AABBs.
     /// @relatedalso AABB
@@ -255,33 +278,6 @@ namespace playrho {
         return aabb;
     }
 
-    /// @brief Gets whether the two AABB objects are equal.
-    /// @relatedalso AABB
-    constexpr bool operator== (const AABB& lhs, const AABB& rhs)
-    {
-        return (lhs.GetLowerBound() == rhs.GetLowerBound()) &&
-               (lhs.GetUpperBound() == rhs.GetUpperBound());
-    }
-    
-    /// @brief Gets whether the two AABB objects are not equal.
-    /// @relatedalso AABB
-    constexpr bool operator!= (const AABB& lhs, const AABB& rhs)
-    {
-        return !(lhs == rhs);
-    }
-
-    /// @brief Tests for overlap between two axis aligned bounding boxes.
-    /// @note This function's complexity is constant.
-    /// @relatedalso AABB
-    constexpr bool TestOverlap(const AABB& a, const AABB& b) noexcept
-    {
-        const auto d1 = b.GetLowerBound() - a.GetUpperBound();
-        const auto d2 = a.GetLowerBound() - b.GetUpperBound();
-
-        return (GetX(d1) <= Length{0}) && (GetY(d1) <= Length{0})
-            && (GetX(d2) <= Length{0}) && (GetY(d2) <= Length{0});
-    }
-
     /// @brief Computes the AABB.
     /// @details Computes the Axis Aligned Bounding Box (AABB) for the given child shape
     ///   at a given a transform.
@@ -289,17 +285,14 @@ namespace playrho {
     /// @param proxy Distance proxy for the child shape.
     /// @param xf World transform of the shape.
     /// @return AABB for the proxy shape or the default AABB if the proxy has a zero vertex count.
-    /// @relatedalso AABB
     /// @relatedalso DistanceProxy
     AABB ComputeAABB(const DistanceProxy& proxy, const Transformation& xf) noexcept;
     
     /// @brief Computes the AABB for the given shape with the given transformation.
-    /// @relatedalso AABB
     /// @relatedalso Shape
     AABB ComputeAABB(const Shape& shape, const Transformation& xf);
 
     /// @brief Computes the AABB for the given body.
-    /// @relatedalso AABB
     /// @relatedalso Body
     AABB ComputeAABB(const Body& body);
 
@@ -308,7 +301,6 @@ namespace playrho {
     ///   compute it using the shape and the body transform.
     /// @warning Behavior is undefined is child index is not a valid proxy index.
     /// @sa Fixture::GetProxy.
-    /// @relatedalso AABB
     /// @relatedalso Fixture
     AABB GetAABB(const Fixture& fixture, ChildCounter childIndex) noexcept;
 

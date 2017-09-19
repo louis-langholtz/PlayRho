@@ -29,10 +29,11 @@ namespace playrho
 
     /// @brief Distance Proxy.
     ///
-    /// @details A distance proxy aggragates a convex set of vertices and a vertexRadius of those vertices.
-    /// This can be visualized as a convex N-gon with rounded corners. It's meant to represent
-    /// any single portion of a shape identified by its child-index. These are used by the GJK
-    /// algorithm: "a method for determining the minimium distance between two convex sets".
+    /// @details A distance proxy aggragates a convex set of vertices and a vertexRadius
+    ///   of those vertices. This can be visualized as a convex N-gon with rounded corners.
+    ///   It's meant to represent any single portion of a shape identified by its child-index.
+    ///   These are used by the GJK algorithm: "a method for determining the minimium distance
+    ///   between two convex sets".
     ///
     /// @note This data structure is 24-bytes.
     ///
@@ -41,7 +42,7 @@ namespace playrho
     class DistanceProxy
     {
     public:
-        /// Size type.
+        /// @brief Size type.
         /// @details Must be big enough to hold max posible count of vertices.
         using size_type = std::remove_const<decltype(MaxShapeVertices)>::type;
         

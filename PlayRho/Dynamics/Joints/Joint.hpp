@@ -66,6 +66,8 @@ using BodyConstraintsMap =
 ///
 /// @ingroup JointsGroup
 ///
+/// @sa World
+///
 class Joint
 {
 public:

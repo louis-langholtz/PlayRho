@@ -47,9 +47,15 @@ namespace playrho
     };
 
     /// @brief Ray cast output.
+    /// @details This is a type alias for an optional RayCastHit instance.
+    /// @sa RayCast
+    /// @sa Optional
+    /// @sa RayCastHit
     using RayCastOutput = Optional<RayCastHit>;
     
     /// @defgroup RayCastGroup Ray Casting Functions
+    /// @details Collection of functions that do ray casting.
+    /// @image html raycast.png
     /// @{
 
     /// @brief Cast a ray against a circle of a given radius at the given location.

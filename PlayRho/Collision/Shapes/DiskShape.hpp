@@ -85,23 +85,15 @@ public:
     /// @brief Assignment operator.
     DiskShape& operator= (const DiskShape& other) = default;
     
-    /// Gets the number of child primitives.
-    /// @return Positive non-zero count.
     ChildCounter GetChildCount() const noexcept override;
 
-    /// @brief Gets the child for the given index.
-    /// @throws InvalidArgument if the index is out of range.
     DistanceProxy GetChild(ChildCounter index) const override;
 
-    /// Computes the mass properties of this shape using its dimensions and density.
-    /// The inertia tensor is computed about the local origin.
-    /// @return Mass data for this shape.
     MassData GetMassData() const noexcept override;
     
-    /// @brief Accepts the given visitor.
     void Accept(ShapeVisitor& visitor) const override;
 
-    /// Gets the "radius" of the shape.
+    /// @brief Gets the "radius" of the shape.
     /// @return Non-negative distance.
     Length GetRadius() const noexcept { return GetVertexRadius(); }
     
@@ -111,7 +103,7 @@ public:
         SetVertexRadius(radius);
     }
 
-    /// Gets the location of the center of this circle shape.
+    /// @brief Gets the location of the center of this circle shape.
     /// @return The origin (0, 0) unless explicitly set otherwise on construction or via
     ///   the set location method.
     /// @sa SetPosition.
@@ -121,7 +113,8 @@ public:
     void SetLocation(const Length2D value) noexcept { m_location = value; }
 
 private:
-    /// Linear position of the shape as initialized on construction or as assigned using the SetPosition method.
+    /// Location of the shape as initialized on construction or as assigned using the
+    ///   SetPosition method.
     Length2D m_location = Length2D{};
 };
 

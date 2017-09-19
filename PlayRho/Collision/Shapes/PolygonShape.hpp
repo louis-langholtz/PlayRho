@@ -31,6 +31,7 @@ namespace playrho {
 /// @details A convex polygon. The interior of the polygon is to the left of each edge.
 ///   Polygons have a maximum number of vertices equal to MaxShapeVertices.
 ///   In most cases you should not need many vertices for a convex polygon.
+/// @image html convex_concave.gif
 /// @note This data structure is 64-bytes large (with 4-byte Real).
 /// @ingroup PartsGroup
 class PolygonShape : public Shape
@@ -94,17 +95,10 @@ public:
     /// may lead to poor stacking behavior.
     explicit PolygonShape(Span<const Length2D> points, const Conf& conf = GetDefaultConf()) noexcept;
     
-    /// Gets the number of child primitives.
-    /// @return Positive non-zero count.
     ChildCounter GetChildCount() const noexcept override;
 
-    /// @brief Gets the child for the given index.
-    /// @throws InvalidArgument if the index is out of range.
     DistanceProxy GetChild(ChildCounter index) const override;
     
-    /// Computes the mass properties of this shape using its dimensions and density.
-    /// The inertia tensor is computed about the local origin.
-    /// @return Mass data for this shape.
     MassData GetMassData() const noexcept override;
     
     void Accept(ShapeVisitor& visitor) const override;
