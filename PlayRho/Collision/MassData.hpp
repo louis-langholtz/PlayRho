@@ -102,7 +102,6 @@ namespace playrho {
     ///
     /// @param f Fixture to compute the mass data for.
     ///
-    /// @relatedalso MassData
     /// @relatedalso Fixture
     ///
     MassData GetMassData(const Fixture& f);
@@ -112,14 +111,12 @@ namespace playrho {
     /// @note The center is the mass weighted sum of all fixture centers. Divide it by the
     ///   mass to get the averaged center.
     /// @return accumalated mass data for all fixtures associated with the given body.
-    /// @relatedalso MassData
     /// @relatedalso Body
     MassData ComputeMassData(const Body& body) noexcept;
     
     
     /// @brief Gets the mass data of the body.
     /// @return a struct containing the mass, inertia and center of the body.
-    /// @relatedalso MassData
     /// @relatedalso Body
     MassData GetMassData(const Body& body) noexcept;
     

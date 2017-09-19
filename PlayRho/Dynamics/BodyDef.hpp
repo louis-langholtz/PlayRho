@@ -265,7 +265,6 @@ namespace playrho {
     /// @brief Gets the body definition for the given body.
     /// @param body Body to get the BodyDef for.
     /// @relatedalso Body
-    /// @relatedalso BodyDef
     BodyDef GetBodyDef(const Body& body) noexcept;
 
 } // namespace playrho

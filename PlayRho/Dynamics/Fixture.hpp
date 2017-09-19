@@ -253,7 +253,6 @@ void SetAwake(const Fixture& f) noexcept;
 /// @warning Behavior is undefined if the fixture doesn't have an associated body - i.e.
 ///   behavior is undefined if the fixture has <code>nullptr</code> as its associated body.
 /// @relatedalso Fixture
-/// @relatedalso Transformation
 Transformation GetTransformation(const Fixture& f) noexcept;
 
 } // namespace playrho

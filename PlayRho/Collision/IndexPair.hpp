@@ -54,7 +54,7 @@ namespace playrho {
     /// @relatedalso IndexPair
     constexpr inline bool operator!= (IndexPair lhs, IndexPair rhs)
     {
-        return (lhs.a != rhs.a) || (lhs.b != rhs.b);
+        return !(lhs == rhs);
     }
     
     /// @brief Index pairs.
@@ -67,9 +67,9 @@ namespace playrho {
     constexpr inline std::size_t GetNumIndices(IndexPair3 pairs) noexcept
     {
         return std::size_t{3}
-        - ((pairs[0] == InvalidIndexPair) & 0x1u)
-        - ((pairs[1] == InvalidIndexPair) & 0x1u)
-        - ((pairs[2] == InvalidIndexPair) & 0x1u);
+        - ((pairs[0] == InvalidIndexPair)? 1u: 0u)
+        - ((pairs[1] == InvalidIndexPair)? 1u: 0u)
+        - ((pairs[2] == InvalidIndexPair)? 1u: 0u);
     }
 
 } // namespace playrho

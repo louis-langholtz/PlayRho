@@ -64,6 +64,8 @@ struct MassData;
 /// @note On a 64-bit architecture with 4-byte Real, this data structure is at least
 ///   192-bytes large.
 ///
+/// @sa World
+///
 class Body
 {
 public:
@@ -850,7 +852,6 @@ bool ShouldCollide(const Body& lhs, const Body& rhs) noexcept;
 
 /// @brief Gets the "position 1" Position information for the given body.
 /// @relatedalso Body
-/// @relatedalso Position
 inline Position GetPosition1(const Body& body) noexcept
 {
     return body.GetSweep().pos1;
@@ -1056,7 +1057,6 @@ inline Length2D GetWorldVector(const Body& body, const Length2D localVector) noe
 
 /// @brief Gets the world vector for the given local vector from the given body's transformation.
 /// @relatedalso Body
-/// @relatedalso UnitVec2
 inline UnitVec2 GetWorldVector(const Body& body, const UnitVec2 localVector) noexcept
 {
     return Rotate(localVector, body.GetTransformation().q);
@@ -1077,7 +1077,6 @@ inline Length2D GetLocalPoint(const Body& body, const Length2D worldPoint) noexc
 /// @param uv Unit vector in world orientation.
 /// @return the corresponding local vector.
 /// @relatedalso Body
-/// @relatedalso UnitVec2
 inline UnitVec2 GetLocalVector(const Body& body, const UnitVec2 uv) noexcept
 {
     return InverseRotate(uv, body.GetTransformation().q);
@@ -1130,7 +1129,6 @@ inline Torque GetTorque(const Body& body) noexcept
 /// @param h Time elapsed to get velocity for. Behavior is undefined if this value is invalid.
 /// @param conf Movement configuration. This defines caps on linear and angular speeds.
 /// @relatedalso Body
-/// @relatedalso Velocity
 Velocity GetVelocity(const Body& body, Time h, MovementConf conf) noexcept;
 
 /// @brief Gets the world index for the given body.

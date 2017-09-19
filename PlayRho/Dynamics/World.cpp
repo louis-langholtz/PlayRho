@@ -685,7 +685,10 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
     public:
         
         JointCopier(World& w, std::map<const Body*, Body*> bodies):
-        world{w}, bodyMap{std::move(bodies)} {}
+            world{w}, bodyMap{std::move(bodies)}
+        {
+            // Intentionally empty.
+        }
 
         /// @brief Visits a RevoluteJoint.
         void Visit(const RevoluteJoint& oldJoint) override
@@ -2851,8 +2854,8 @@ ContactCounter World::Synchronize(Body& body,
 
 // Free functions...
 
-StepStats Step(World& world, Time delta, World::ts_iters_type velocityIterations,
-               World::ts_iters_type positionIterations)
+StepStats Step(World& world, Time delta, TimestepIters velocityIterations,
+               TimestepIters positionIterations)
 {
     StepConf conf;
     conf.SetTime(delta);

@@ -33,6 +33,8 @@ namespace playrho {
     ///
     /// @note This data structure is 52-bytes large (on at least one 64-bit platform).
     ///
+    /// @sa GetWorldManifold
+    ///
     class WorldManifold
     {
     public:
@@ -171,7 +173,6 @@ namespace playrho {
     ///   the given manifold has. The returned world manifold points will be the mid-points of the
     ///   manifold intersection.
     ///
-    /// @relatedalso WorldManifold
     /// @relatedalso Manifold
     ///
     WorldManifold GetWorldManifold(const Manifold& manifold,
@@ -191,7 +192,6 @@ namespace playrho {
     ///   the given manifold has. The returned world manifold points will be the mid-points of the
     ///   contact's intersection.
     ///
-    /// @relatedalso WorldManifold
     /// @relatedalso Contact
     ///
     WorldManifold GetWorldManifold(const Contact& contact);

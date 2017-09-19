@@ -528,7 +528,6 @@ void ResetRestitution(Contact& contact) noexcept;
 
 /// @brief Calculates the Time Of Impact for the given contact with the given configuration.
 /// @relatedalso Contact
-/// @relatedalso TOIOutput
 TOIOutput CalcToi(const Contact& contact, ToiConf conf);
 
 } // namespace playrho

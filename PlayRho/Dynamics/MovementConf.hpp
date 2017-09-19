@@ -36,7 +36,6 @@ struct MovementConf
 
 /// @brief Gets the movement configuration from the given value.
 /// @relatedalso StepConf
-/// @relatedalso MovementConf
 MovementConf GetMovementConf(const StepConf& conf) noexcept;
 
 } // namespace playrho

@@ -61,8 +61,9 @@ enum class BodyType;
 
 /// @brief Definition of an independent and simulatable "world".
 ///
-/// @details The world class manages all physics entities, dynamic simulation, and queries.
-///   In a physical sense, perhaps this is more like a universe. In any case, there's
+/// @details The world class manages physics entities, dynamic simulation, and queries.
+///   In a physical sense, perhaps this is more like a universe in that entities in a
+///   world have no interaction with entities in other worlds. In any case, there's
 ///   precedence, from a physics-engine standpoint, for this being called a world.
 ///
 /// @note From a memory management perspective, world instances own Body, Joint, and Contact
@@ -76,9 +77,6 @@ public:
     
     /// @brief Proxy size type.
     using proxy_size_type = std::remove_const<decltype(MaxContacts)>::type;
-
-    /// @brief Time step iteration type.
-    using ts_iters_type = TimestepIters;
     
     /// @brief Bodies container type.
     using Bodies = std::vector<Body*>;
@@ -180,9 +178,9 @@ public:
     ///
     /// @post Static bodies are unmoved.
     /// @post Kinetic bodies are moved based on their previous velocities.
-    /// @post Dynamic bodies are moved based on their previous velocities, gravity,
-    /// applied forces, applied impulses, masses, damping, and the restitution and friction values
-    /// of their fixtures when they experience collisions.
+    /// @post Dynamic bodies are moved based on their previous velocities, gravity, applied
+    ///   forces, applied impulses, masses, damping, and the restitution and friction values
+    ///   of their fixtures when they experience collisions.
     ///
     /// @param conf Configuration for the simulation step.
     ///
@@ -714,6 +712,10 @@ private:
     Positive<Length> m_maxVertexRadius;
 };
 
+/// @example HelloWorld.cpp
+///   This is an example of how to use the World class.
+///
+
 /// @brief World ray cast opcode enumeration.
 enum class World::RayCastOpcode
 {
@@ -988,8 +990,8 @@ ContactCounter GetTouchingCount(const World& world) noexcept;
 /// @relatedalso World
 ///
 StepStats Step(World& world, Time delta,
-               World::ts_iters_type velocityIterations = 8,
-               World::ts_iters_type positionIterations = 3);
+               TimestepIters velocityIterations = 8,
+               TimestepIters positionIterations = 3);
 
 /// @brief Gets the count of fixtures in the given world.
 /// @relatedalso World

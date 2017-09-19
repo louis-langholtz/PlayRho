@@ -122,8 +122,10 @@ public:
     virtual ChildCounter GetChildCount() const noexcept = 0;
 
     /// @brief Gets the child for the given index.
+    /// @param index Index to a child element of the shape. Value must be less
+    ///   than the number of child primitives of the shape.
     /// @note The shape must remain in scope while the proxy is in use.
-    /// @throws InvalidArgument if the index is out of range.
+    /// @throws InvalidArgument if the given index is out of range.
     /// @sa GetChildCount
     virtual DistanceProxy GetChild(ChildCounter index) const = 0;
     
@@ -135,6 +137,20 @@ public:
     virtual void Accept(ShapeVisitor& visitor) const = 0;
     
     /// @brief Gets the vertex radius.
+    ///
+    /// @details This gets the radius from the vertex that the shape's "skin" should
+    ///   extend outward by. While any edges - line segments between multiple vertices -
+    ///   are straight, corners between them (the vertices) are rounded and treated
+    ///   as rounded. Shapes with larger vertex radiuses compared to edge lengths
+    ///   therefore will be more prone to rolling or having other shapes more prone
+    ///   to roll off of them. Here's an image of a PolygonShape with it's skin drawn:
+    ///
+    /// @image html SkinnedPolygon.png
+    ///
+    /// @note This must be a non-negative value.
+    ///
+    /// @sa SetVertexRadius
+    ///
     NonNegative<Length> GetVertexRadius() const noexcept;
 
     /// @brief Sets the vertex radius.
@@ -147,6 +163,8 @@ public:
     ///   to roll off of them.
     ///
     /// @note This should be a non-negative value.
+    ///
+    /// @sa GetVertexRadius
     ///
     void SetVertexRadius(NonNegative<Length> vertexRadius) noexcept;
 
@@ -299,6 +317,7 @@ inline void Shape::SetRestitution(Finite<Real> restitution) noexcept
 /// This is used for collision handling.
 /// @note This value should never be less than zero.
 /// @relatedalso Shape
+/// @sa Shape::GetVertexRadius
 inline NonNegative<Length> GetVertexRadius(const Shape& shape) noexcept
 {
     return shape.GetVertexRadius();
