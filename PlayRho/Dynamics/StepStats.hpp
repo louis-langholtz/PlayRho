@@ -45,7 +45,7 @@ namespace playrho {
         using counter_type = std::uint32_t;
 
         /// @brief Min separation.
-        Length minSeparation = std::numeric_limits<Real>::infinity() * Meter;
+        Length minSeparation = std::numeric_limits<Length>::infinity();
 
         /// @brief Max incremental impulse.
         Momentum maxIncImpulse = 0;
@@ -66,7 +66,7 @@ namespace playrho {
         using counter_type = std::uint32_t;
 
         /// @brief Min separation.
-        Length minSeparation = std::numeric_limits<Real>::infinity() * Meter;
+        Length minSeparation = std::numeric_limits<Length>::infinity();
 
         /// @brief Max incremental impulse.
         Momentum maxIncImpulse = 0;

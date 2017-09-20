@@ -140,6 +140,25 @@ static void FloatAlmostEqual2(benchmark::State& state)
     }
 }
 
+static void AABB(benchmark::State& state)
+{
+    const auto pui0 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+    const auto pui1 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+    const auto pui2 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+    const auto pui3 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+    const auto p0 = playrho::Length2D{pui0 * playrho::Meter, 1.0f * playrho::Meter};
+    const auto p1 = playrho::Length2D{pui1 * playrho::Meter, 2.0f * playrho::Meter};
+    const auto p2 = playrho::Length2D{pui2 * playrho::Meter, 1.0f * playrho::Meter};
+    const auto p3 = playrho::Length2D{pui3 * playrho::Meter, 2.0f * playrho::Meter};
+    
+    while (state.KeepRunning())
+    {
+        const auto aabb0 = playrho::AABB{p0, p1};
+        const auto aabb1 = playrho::AABB{p2, p3};
+        benchmark::DoNotOptimize(playrho::TestOverlap(aabb0, aabb1));
+        benchmark::DoNotOptimize(playrho::Contains(aabb0, aabb1));
+    }
+}
 
 // ----
 
@@ -1098,6 +1117,8 @@ BENCHMARK(FloatSqrt);
 BENCHMARK(FloatSin);
 BENCHMARK(FloatCos);
 BENCHMARK(FloatAtan2);
+
+BENCHMARK(AABB);
 
 BENCHMARK(DotProduct);
 BENCHMARK(CrossProduct);

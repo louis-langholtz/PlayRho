@@ -45,6 +45,7 @@
 // #define USE_BOOST_UNITS
 #if defined(USE_BOOST_UNITS)
 #include <boost/units/io.hpp>
+#include <boost/units/limits.hpp>
 #include <boost/units/systems/si/length.hpp>
 #include <boost/units/systems/si/time.hpp>
 #include <boost/units/systems/si/velocity.hpp>

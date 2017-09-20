@@ -199,6 +199,7 @@
 		47D28D931F6E2D8A0094C032 /* TypeJointVisitor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47D28D911F6E2D8A0094C032 /* TypeJointVisitor.hpp */; };
 		47D28D951F6E32720094C032 /* PulleyJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47D28D941F6E32720094C032 /* PulleyJoint.cpp */; };
 		47D28D9D1F6F28C70094C032 /* WrongState.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47D28D9B1F6F28C70094C032 /* WrongState.hpp */; };
+		47D28DA11F72B9340094C032 /* ValueRange.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47D28D9F1F72B9340094C032 /* ValueRange.hpp */; };
 		47D61F741F1F148500E702BD /* SilkscreenTtfData.h in Headers */ = {isa = PBXBuildFile; fileRef = 47D61F731F1F148500E702BD /* SilkscreenTtfData.h */; };
 		47D61F761F1F1F2500E702BD /* DroidSansTtfData.h in Headers */ = {isa = PBXBuildFile; fileRef = 47D61F751F1F1F2500E702BD /* DroidSansTtfData.h */; };
 		47D61F781F1FE3B700E702BD /* EdgeShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47D61F771F1FE3B700E702BD /* EdgeShape.cpp */; };
@@ -560,6 +561,7 @@
 		47D28D911F6E2D8A0094C032 /* TypeJointVisitor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TypeJointVisitor.hpp; sourceTree = "<group>"; };
 		47D28D941F6E32720094C032 /* PulleyJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PulleyJoint.cpp; sourceTree = "<group>"; };
 		47D28D9B1F6F28C70094C032 /* WrongState.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WrongState.hpp; sourceTree = "<group>"; };
+		47D28D9F1F72B9340094C032 /* ValueRange.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ValueRange.hpp; sourceTree = "<group>"; };
 		47D61F731F1F148500E702BD /* SilkscreenTtfData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SilkscreenTtfData.h; sourceTree = "<group>"; };
 		47D61F751F1F1F2500E702BD /* DroidSansTtfData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DroidSansTtfData.h; sourceTree = "<group>"; };
 		47D61F771F1FE3B700E702BD /* EdgeShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdgeShape.cpp; sourceTree = "<group>"; };
@@ -950,6 +952,7 @@
 				470F9B151EDF2959007EF7B6 /* Transformation.hpp */,
 				47C85D181F0D9D8D00F70C56 /* Units.hpp */,
 				4731DE551DEC908600E7F931 /* UnitVec2.hpp */,
+				47D28D9F1F72B9340094C032 /* ValueRange.hpp */,
 				474FFC3A1F2CEE6C0037CCE0 /* Vector.hpp */,
 				4768D3FA1E414A0100574143 /* Vector2D.hpp */,
 				470F9B091EDE6340007EF7B6 /* Vector3D.hpp */,
@@ -1257,6 +1260,7 @@
 				476162C91E245C9D002C7FB0 /* CodeDumper.hpp in Headers */,
 				4787D6D71F2ECD87008C115E /* PulleyJointDef.hpp in Headers */,
 				471E7EAE1F34CA4D00DFF626 /* MovementConf.hpp in Headers */,
+				47D28DA11F72B9340094C032 /* ValueRange.hpp in Headers */,
 				80BB899D141C3E5900F1753A /* Shape.hpp in Headers */,
 				4751EE2F1CEDD7A300D459CB /* MobileBalanced.hpp in Headers */,
 				4787D6CB1F2EA3A1008C115E /* GearJointDef.hpp in Headers */,

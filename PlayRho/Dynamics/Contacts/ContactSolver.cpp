@@ -625,7 +625,7 @@ PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
         }
         default: break;
     }
-    return PositionSolution{posA, posB, std::numeric_limits<Real>::infinity() * Meter};
+    return PositionSolution{posA, posB, std::numeric_limits<Length>::infinity()};
 }
 
 } // namespace GaussSeidel

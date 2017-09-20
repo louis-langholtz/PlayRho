@@ -842,11 +842,7 @@ bool DynamicTree::ValidateMetrics(size_type index) const noexcept
     }
     {
         const auto aabb = GetEnclosingAABB(m_nodes[child1].aabb, m_nodes[child2].aabb);
-        if (aabb.GetLowerBound() != node->aabb.GetLowerBound())
-        {
-            return false;
-        }
-        if (aabb.GetUpperBound() != node->aabb.GetUpperBound())
+        if (aabb != node->aabb)
         {
             return false;
         }
@@ -964,7 +960,7 @@ void DynamicTree::RebuildBottomUp()
 
     while (count > 1)
     {
-        auto minCost = Length{std::numeric_limits<Real>::infinity() * Meter};
+        auto minCost = std::numeric_limits<Length>::infinity();
         auto iMin = InvalidIndex;
         auto jMin = InvalidIndex;
         for (auto i = decltype(count){0}; i < count; ++i)

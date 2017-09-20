@@ -32,7 +32,7 @@ inline IndexSeparation GetMinIndexSeparation(const DistanceProxy& proxy,
     // See: https://en.wikipedia.org/wiki/Antiparallel_(mathematics)#Antiparallel_vectors
     
     auto ap = IndexSeparation{
-        std::numeric_limits<Real>::infinity() * Meter,
+        std::numeric_limits<Length>::infinity(),
         IndexSeparation::InvalidIndex
     };
 
@@ -60,7 +60,7 @@ IndexPairSeparation GetMaxSeparation4x4(const DistanceProxy& proxy1, Transformat
     using CounterType = IndexSeparation::index_type;
     
     auto indexPairSep = IndexPairSeparation{
-        -std::numeric_limits<Real>::infinity() * Meter,
+        -std::numeric_limits<Length>::infinity(),
         IndexPairSeparation::InvalidIndex,
         IndexPairSeparation::InvalidIndex
     };
@@ -81,7 +81,7 @@ IndexPairSeparation GetMaxSeparation4x4(const DistanceProxy& proxy1, Transformat
         
         // Search for the vector that's most anti-parallel to the normal.
         // See: https://en.wikipedia.org/wiki/Antiparallel_(mathematics)#Antiparallel_vectors
-        auto ap_separation = std::numeric_limits<Real>::infinity() * Meter;
+        auto ap_separation = std::numeric_limits<Length>::infinity();
         auto ap_index = IndexSeparation::InvalidIndex;
         for (auto j = CounterType{0}; j < CounterType{4}; ++j)
         {
@@ -109,7 +109,7 @@ IndexPairSeparation GetMaxSeparation(const DistanceProxy& proxy1, Transformation
     using CounterType = IndexSeparation::index_type;
     
     auto indexPairSep = IndexPairSeparation{
-        -std::numeric_limits<Real>::infinity() * Meter,
+        -std::numeric_limits<Length>::infinity(),
         IndexPairSeparation::InvalidIndex,
         IndexPairSeparation::InvalidIndex
     };
@@ -139,7 +139,7 @@ IndexPairSeparation GetMaxSeparation(const DistanceProxy& proxy1, Transformation
     using CounterType = IndexSeparation::index_type;
 
     auto indexPairSep = IndexPairSeparation{
-        -std::numeric_limits<Real>::infinity() * Meter,
+        -std::numeric_limits<Length>::infinity(),
         IndexPairSeparation::InvalidIndex,
         IndexPairSeparation::InvalidIndex
     };

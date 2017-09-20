@@ -625,7 +625,7 @@ TEST(Distance, SquareSquareOverlappingDiagnally)
     const auto n3 = GetUnitVector(pos4 - pos3);
     const auto n4 = GetUnitVector(pos1 - pos4);
     const UnitVec2 normals1[] = {n1, n2, n3, n4};
-    DistanceProxy dp1{0, 4, square1, normals1};
+    DistanceProxy dp1{NonNegative<Length>{0}, 4, square1, normals1};
     
     /*
      *  +-3-----+
@@ -649,7 +649,7 @@ TEST(Distance, SquareSquareOverlappingDiagnally)
     const auto n7 = GetUnitVector(pos8 - pos7);
     const auto n8 = GetUnitVector(pos5 - pos8);
     const UnitVec2 normals2[] = {n5, n6, n7, n8};
-    DistanceProxy dp2{0, 4, square2, normals2};
+    DistanceProxy dp2{NonNegative<Length>{0}, 4, square2, normals2};
     
     DistanceConf conf;
     Transformation xfm = Transform_identity;

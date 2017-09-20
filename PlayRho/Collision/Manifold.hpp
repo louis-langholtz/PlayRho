@@ -51,9 +51,7 @@ namespace playrho {
     ///   express collision manifolds with one point if possible instead of two.
     /// @note This data structure is at least 58-bytes large (60-bytes on one 64-bit platform).
     ///
-    /// @sa Contact.
-    /// @sa PositionConstraint.
-    /// @sa VelocityConstraint.
+    /// @sa Contact, PositionConstraint, VelocityConstraint
     /// @sa https://en.wikipedia.org/wiki/Convex_set
     ///
     class Manifold

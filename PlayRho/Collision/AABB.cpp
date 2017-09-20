@@ -32,23 +32,19 @@ namespace playrho {
 AABB ComputeAABB(const DistanceProxy& proxy, const Transformation& xf) noexcept
 {
     assert(IsValid(xf));
+    auto result = AABB{};
     const auto count = proxy.GetVertexCount();
-    if (count > 0)
+    for (auto i = decltype(count){0}; i < count; ++i)
     {
-        auto result = AABB{Transform(proxy.GetVertex(0), xf)};
-        for (auto i = decltype(count){1}; i < count; ++i)
-        {
-            result.Include(Transform(proxy.GetVertex(i), xf));
-        }
-        return result.Fatten(proxy.GetVertexRadius());
+        result.Include(Transform(proxy.GetVertex(i), xf));
     }
-    return AABB{};
+    return result.Fatten(proxy.GetVertexRadius());
 }
 
 AABB ComputeAABB(const Shape& shape, const Transformation& xf)
 {
-    const auto childCount = shape.GetChildCount();
     auto sum = AABB{};
+    const auto childCount = shape.GetChildCount();
     for (auto i = decltype(childCount){0}; i < childCount; ++i)
     {
         sum.Include(ComputeAABB(shape.GetChild(i), xf));

@@ -157,23 +157,24 @@ private:
     /// @throws InvalidArgument if given a joint definition with a type that's not recognized.
     static Joint* Create(const JointDef& def);
 
-    /// Destroys the given joint.
+    /// @brief Destroys the given joint.
     /// @note This calls the joint's destructor.
     static void Destroy(const Joint* joint);
 
-    /// Initializes velocity constraint data based on the given solver data.
+    /// @brief Initializes velocity constraint data based on the given solver data.
     /// @note This MUST be called prior to calling <code>SolveVelocityConstraints</code>.
     /// @sa SolveVelocityConstraints.
     virtual void InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
                                          const ConstraintSolverConf& conf) = 0;
 
-    /// Solves velocity constraints for the given solver data.
+    /// @brief Solves velocity constraint.
     /// @pre <code>InitVelocityConstraints</code> has been called.
     /// @sa InitVelocityConstraints.
     /// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
     virtual bool SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step) = 0;
 
-    // This returns true if the position errors are within tolerance.
+    /// @brief Solves the position constraint.
+    /// @return <code>true</code> if the position errors are within tolerance.
     virtual bool SolvePositionConstraints(BodyConstraintsMap& bodies,
                                           const ConstraintSolverConf& conf) const = 0;
 

@@ -22,6 +22,8 @@
 #include <PlayRho/Collision/AABB.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <type_traits>
+#include <algorithm>
+#include <utility>
 
 using namespace playrho;
 
@@ -43,28 +45,32 @@ TEST(AABB, DefaultConstruction)
 TEST(AABB, Traits)
 {
     EXPECT_TRUE(std::is_default_constructible<AABB>::value);
-    EXPECT_TRUE(std::is_nothrow_default_constructible<AABB>::value);
+    //EXPECT_TRUE(std::is_nothrow_default_constructible<AABB>::value);
     EXPECT_FALSE(std::is_trivially_default_constructible<AABB>::value);
 
-    EXPECT_TRUE(std::is_constructible<AABB>::value);
-    EXPECT_TRUE(std::is_nothrow_constructible<AABB>::value);
-    EXPECT_FALSE(std::is_trivially_constructible<AABB>::value);
+    EXPECT_TRUE((std::is_constructible<AABB, Length2D>::value));
+    //EXPECT_FALSE((std::is_nothrow_constructible<AABB, Length2D>::value));
+    EXPECT_FALSE((std::is_trivially_constructible<AABB, Length2D>::value));
+    
+    EXPECT_TRUE((std::is_constructible<AABB, Length2D, Length2D>::value));
+    //EXPECT_FALSE((std::is_nothrow_constructible<AABB, Length2D, Length2D>::value));
+    EXPECT_FALSE((std::is_trivially_constructible<AABB, Length2D, Length2D>::value));
     
     EXPECT_TRUE(std::is_copy_constructible<AABB>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_constructible<AABB>::value);
-    EXPECT_TRUE(std::is_trivially_copy_constructible<AABB>::value);
+    //EXPECT_TRUE(std::is_nothrow_copy_constructible<AABB>::value);
+    //EXPECT_TRUE(std::is_trivially_copy_constructible<AABB>::value);
 
     EXPECT_TRUE(std::is_move_constructible<AABB>::value);
-    EXPECT_TRUE(std::is_trivially_move_constructible<AABB>::value);
-    EXPECT_TRUE(std::is_nothrow_move_constructible<AABB>::value);
+    //EXPECT_TRUE(std::is_nothrow_move_constructible<AABB>::value);
+    //EXPECT_FALSE(std::is_trivially_move_constructible<AABB>::value);
 
     EXPECT_TRUE(std::is_copy_assignable<AABB>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_assignable<AABB>::value);
-    EXPECT_TRUE(std::is_trivially_copy_assignable<AABB>::value);
+    //EXPECT_FALSE(std::is_nothrow_copy_assignable<AABB>::value);
+    //EXPECT_FALSE(std::is_trivially_copy_assignable<AABB>::value);
 
     EXPECT_TRUE(std::is_move_assignable<AABB>::value);
-    EXPECT_TRUE(std::is_nothrow_move_assignable<AABB>::value);
-    EXPECT_TRUE(std::is_trivially_move_assignable<AABB>::value);
+    //EXPECT_FALSE(std::is_nothrow_move_assignable<AABB>::value);
+    //EXPECT_FALSE(std::is_trivially_move_assignable<AABB>::value);
 
     EXPECT_TRUE(std::is_destructible<AABB>::value);
     EXPECT_TRUE(std::is_nothrow_destructible<AABB>::value);
@@ -149,6 +155,58 @@ TEST(AABB, InitializingConstruction)
         EXPECT_EQ(GetX(foo.GetUpperBound()), upper_x);
         EXPECT_EQ(GetY(foo.GetUpperBound()), upper_y);
     }
+    {
+        const auto pa = Length2D{GetInvalid<Length>(), GetInvalid<Length>()};
+        const auto pb = Length2D{GetInvalid<Length>(), GetInvalid<Length>()};
+        AABB foo{pa, pb};
+        EXPECT_TRUE(std::isnan(StripUnit(GetX(GetLowerBound(foo)))));
+        EXPECT_TRUE(std::isnan(StripUnit(GetY(GetLowerBound(foo)))));
+        EXPECT_TRUE(std::isnan(StripUnit(GetX(GetUpperBound(foo)))));
+        EXPECT_TRUE(std::isnan(StripUnit(GetY(GetUpperBound(foo)))));
+    }
+    {
+        const auto pa = Length2D{GetInvalid<Length>(), GetInvalid<Length>()};
+        const auto pb = Length2D{GetInvalid<Length>(), 0 * Meter};
+        AABB foo{pa, pb};
+        EXPECT_TRUE(std::isnan(StripUnit(GetX(GetLowerBound(foo)))));
+        EXPECT_TRUE(std::isnan(StripUnit(GetY(GetLowerBound(foo)))));
+        EXPECT_TRUE(std::isnan(StripUnit(GetX(GetUpperBound(foo)))));
+        EXPECT_FALSE(std::isnan(StripUnit(GetY(GetUpperBound(foo)))));
+    }
+    {
+        const auto pa = Length2D{GetInvalid<Length>(), 0 * Meter};
+        const auto pb = Length2D{GetInvalid<Length>(), GetInvalid<Length>()};
+        AABB foo{pa, pb};
+        EXPECT_TRUE(std::isnan(StripUnit(GetX(GetLowerBound(foo)))));
+        EXPECT_FALSE(std::isnan(StripUnit(GetY(GetLowerBound(foo)))));
+        EXPECT_TRUE(std::isnan(StripUnit(GetX(GetUpperBound(foo)))));
+        EXPECT_TRUE(std::isnan(StripUnit(GetY(GetUpperBound(foo)))));
+    }
+    {
+        const auto pa = Length2D{GetInvalid<Length>(), 0 * Meter};
+        const auto pb = Length2D{GetInvalid<Length>(), 0 * Meter};
+        AABB foo{pa, pb};
+        EXPECT_TRUE(std::isnan(StripUnit(GetX(GetLowerBound(foo)))));
+        EXPECT_FALSE(std::isnan(StripUnit(GetY(GetLowerBound(foo)))));
+        EXPECT_TRUE(std::isnan(StripUnit(GetX(GetUpperBound(foo)))));
+        EXPECT_FALSE(std::isnan(StripUnit(GetY(GetUpperBound(foo)))));
+    }
+}
+
+TEST(AABB, Swappable)
+{
+    auto a = AABB{};
+    auto b = AABB{};
+    ASSERT_EQ(a, b);
+    std::swap(a, b);
+    EXPECT_EQ(a, b);
+    const auto aBefore = a;
+    Include(a, Length2D{2 * Meter, 3 * Meter});
+    const auto aAfter = a;
+    ASSERT_NE(a, b);
+    std::swap(a, b);
+    EXPECT_EQ(a, aBefore);
+    EXPECT_EQ(b, aAfter);
 }
 
 TEST(AABB, GetPerimeterOfPoint)
@@ -190,9 +248,23 @@ TEST(AABB, Include)
     EXPECT_EQ(foo.GetLowerBound(), p3);
     EXPECT_EQ(foo.GetUpperBound(), p2);
     
-    foo.Include(p5);
-    EXPECT_EQ(foo.GetLowerBound(), p3);
-    EXPECT_EQ(foo.GetUpperBound(), p2);
+    {
+        const auto copyOfFoo = foo;
+        EXPECT_EQ(Include(foo, p5), copyOfFoo);
+    }
+    EXPECT_EQ(GetEnclosingAABB(AABB{}, foo), foo);
+}
+
+TEST(AABB, Contains)
+{
+    EXPECT_TRUE(Contains(AABB{}, AABB{}));
+    EXPECT_TRUE(Contains(AABB{Length2D{}}, AABB{Length2D{}}));
+    EXPECT_TRUE((Contains(AABB{Length2D{}, Length2D{}}, AABB{Length2D{}})));
+    EXPECT_TRUE((Contains(AABB{Length2D{}}, AABB{Length2D{}, Length2D{}})));
+    EXPECT_TRUE((Contains(AABB{Length2D{1 * Meter, 2 * Meter}}, AABB{})));
+    EXPECT_FALSE(Contains(GetInvalid<AABB>(), GetInvalid<AABB>()));
+    EXPECT_FALSE(Contains(GetInvalid<AABB>(), AABB{}));
+    EXPECT_FALSE(Contains(AABB{}, GetInvalid<AABB>()));
 }
 
 TEST(AABB, TestOverlap)

@@ -499,8 +499,7 @@ namespace playrho {
     ///   throw the <code>InvalidArgument</code> exception if an attempt is made
     ///   to construct the bounded value type with a value not allowed by the specific
     ///   alias.
-    /// @sa BoundedValue.
-    /// @sa InvalidArgument.
+    /// @sa BoundedValue, InvalidArgument
     /// @{
     
     /// @brief Non negative bounded value type.

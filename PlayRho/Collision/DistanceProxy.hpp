@@ -75,7 +75,7 @@ namespace playrho
         /// @warning Behavior is undefined if the vertices collection has less than one element or
         ///   more than <code>MaxShapeVertices</code> elements.
         ///
-        constexpr DistanceProxy(const Length vertexRadius, const size_type count,
+        constexpr DistanceProxy(const NonNegative<Length> vertexRadius, const size_type count,
                                 const Length2D* vertices, const UnitVec2* normals) noexcept:
             m_vertices{vertices},
             m_normals{normals},
@@ -130,7 +130,7 @@ namespace playrho
         const Length2D* m_vertices = nullptr;
         const UnitVec2* m_normals = nullptr;
         size_type m_count = 0; ///< Count of valid elements of m_vertices.
-        Length m_vertexRadius = Length{0}; ///< Radius of the vertices of the associated shape.
+        NonNegative<Length> m_vertexRadius = Length{0}; ///< Radius of the vertices of the associated shape.
     };
     
     /// @brief Determines with the two given distance proxies are equal.

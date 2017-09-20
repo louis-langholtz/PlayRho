@@ -33,7 +33,7 @@ namespace playrho
     class AABB;
     class Shape;
     class DistanceProxy;
-
+    
     /// @brief Ray-cast hit data.
     /// @details The ray hits at p1 + fraction * (p2 - p1), where p1 and p2 come from RayCastInput.
     struct RayCastHit
@@ -48,9 +48,7 @@ namespace playrho
 
     /// @brief Ray cast output.
     /// @details This is a type alias for an optional RayCastHit instance.
-    /// @sa RayCast
-    /// @sa Optional
-    /// @sa RayCastHit
+    /// @sa RayCast, Optional, RayCastHit
     using RayCastOutput = Optional<RayCastHit>;
     
     /// @defgroup RayCastGroup Ray Casting Functions
