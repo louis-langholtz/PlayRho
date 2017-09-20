@@ -20,6 +20,7 @@
 
 #include "gtest/gtest.h"
 #include <cmath>
+#include <algorithm>
 #include <limits>
 #include <iostream>
 #include <cstring>
@@ -249,6 +250,11 @@ TEST(float, quiet_NaN)
     EXPECT_TRUE(std::isnan(0 + std::numeric_limits<float>::quiet_NaN()));
     float value = std::numeric_limits<float>::quiet_NaN();
     EXPECT_TRUE(std::isnan(value+0));
+    
+    EXPECT_TRUE(std::isnan(std::min (std::numeric_limits<float>::quiet_NaN(), 0.0f)));
+    EXPECT_EQ(       0.0f, std::min (0.0f, std::numeric_limits<float>::quiet_NaN()));
+    EXPECT_EQ(       0.0f, std::fmin(0.0f, std::numeric_limits<float>::quiet_NaN()));
+    EXPECT_EQ(       0.0f, std::fmin(std::numeric_limits<float>::quiet_NaN(), 0.0f));
 }
 
 TEST(float, signaling_NaN)

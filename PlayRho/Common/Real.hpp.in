@@ -30,14 +30,13 @@
 
 #include <PlayRho/Common/Fixed.hpp>
 
-namespace playrho
-{
+namespace playrho {
 
 /// @brief Real-number type.
 ///
 /// @details This is the number type underlying numerical calculations conceptually involving
-/// real-numbers. Ideally the implementation of this type doesn't suffer from things like:
-/// catastrophic cancellation, catastrophic division, overflows, nor underflows.
+///   real-numbers. Ideally the implementation of this type doesn't suffer from things like:
+///   catastrophic cancellation, catastrophic division, overflows, nor underflows.
 ///
 /// @note This can be implemented using float, double, long double, Fixed64, or Fixed32
 ///   (though the use of Fixed32 is discouraged).

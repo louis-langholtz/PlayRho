@@ -96,10 +96,20 @@ public:
     Test(const WorldDef& config = WorldDef{}.UseGravity(LinearAcceleration2D{
         Real(0.0f) * MeterPerSquareSecond, -Real(10.0f) * MeterPerSquareSecond
     }).UseMinVertexRadius(Real(0.0001f) * Real{2} * Meter));
+
     virtual ~Test();
 
     void DrawTitle(Drawer& drawer, const char *string);
+
+    /// @brief Steps this test's world forward and visualizes what's going on.
+    /// @note This method calls the PreStep and PostStep methods which give
+    ///   sub-classes a way to augment some of what this operation does.
+    /// @note This uses Non-Virtual Interface idiom/pattern related to the
+    ///   Template Method pattern.
+    /// @sa https://en.wikipedia.org/wiki/Non-virtual_interface_pattern
+    /// @sa https://en.wikipedia.org/wiki/Template_method_pattern
     void Step(const Settings& settings, Drawer& drawer);
+    
     void DrawStats(Drawer& drawer, const StepConf& stepConf);
     void DrawStats(Drawer& drawer, const Fixture& fixture);
     void DrawContactInfo(const Settings& settings, Drawer& drawer);

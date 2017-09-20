@@ -385,7 +385,7 @@ namespace {
     Length SolvePositionConstraintsViaGS(PositionConstraints& posConstraints,
                                     ConstraintSolverConf conf)
     {
-        auto minSeparation = std::numeric_limits<Real>::infinity() * Meter;
+        auto minSeparation = std::numeric_limits<Length>::infinity();
         
         for_each(begin(posConstraints), end(posConstraints), [&](PositionConstraint &pc) {
             assert(pc.GetBodyA() != pc.GetBodyB()); // Confirms ContactManager::Add() did its job.
@@ -419,7 +419,7 @@ namespace {
                                     const BodyConstraint* bodyConstraintA, const BodyConstraint* bodyConstraintB,
                                     ConstraintSolverConf conf)
     {
-        auto minSeparation = std::numeric_limits<Real>::infinity() * Meter;
+        auto minSeparation = std::numeric_limits<Length>::infinity();
         
         for_each(begin(posConstraints), end(posConstraints), [&](PositionConstraint &pc) {
             const auto moveA = (pc.GetBodyA() == bodyConstraintA) || (pc.GetBodyA() == bodyConstraintB);
@@ -445,7 +445,7 @@ namespace {
 
     inline Time UpdateUnderActiveTimes(Island::Bodies& bodies, const StepConf& conf)
     {
-        auto minUnderActiveTime = Second * std::numeric_limits<Real>::infinity();
+        auto minUnderActiveTime = std::numeric_limits<Time>::infinity();
         for_each(cbegin(bodies), cend(bodies), [&](Body *b)
         {
             if (b->IsSpeedable())
@@ -1782,7 +1782,7 @@ World::IslandSolverResults World::SolveToiViaGS(const StepConf& conf, Island& is
     auto posConstraints = GetPositionConstraints(island.m_contacts, bodyConstraintsMap);
     
     // Solve TOI-based position constraints.
-    assert(results.minSeparation == std::numeric_limits<Real>::infinity() * Meter);
+    assert(results.minSeparation == std::numeric_limits<Length>::infinity());
     assert(results.solved == false);
     results.positionIterations = conf.toiPositionIterations;
     {

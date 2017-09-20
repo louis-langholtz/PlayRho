@@ -152,7 +152,7 @@ void Contact::Update(const UpdateConf& conf, ContactListener* listener)
         {
             if (!found[i])
             {
-                auto leastSquareDiff = std::numeric_limits<Real>::infinity() * SquareMeter;
+                auto leastSquareDiff = std::numeric_limits<Area>::infinity();
                 const auto newPt = newManifold.GetPoint(i);
                 for (auto j = decltype(old_point_count){0}; j < old_point_count; ++j)
                 {

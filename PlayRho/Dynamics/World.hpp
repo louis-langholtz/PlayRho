@@ -66,10 +66,12 @@ enum class BodyType;
 ///   world have no interaction with entities in other worlds. In any case, there's
 ///   precedence, from a physics-engine standpoint, for this being called a world.
 ///
-/// @note From a memory management perspective, world instances own Body, Joint, and Contact
-///   instances.
+/// @note World instances are composed of &mdash; i.e. contain and own &mdash; Body, Joint,
+///   and Contact instances.
 /// @note This data structure is 352-bytes large (with 4-byte Real on at least one 64-bit
 ///   platform).
+///
+/// @sa Body, Joint, Contact
 ///
 class World
 {
@@ -376,7 +378,7 @@ private:
     /// @brief Island solver results.
     struct IslandSolverResults
     {
-        Length minSeparation = std::numeric_limits<Real>::infinity() * Meter; ///< Minimum separation.
+        Length minSeparation = std::numeric_limits<Length>::infinity(); ///< Minimum separation.
         Momentum maxIncImpulse = 0; ///< Maximum incremental impulse.
         BodyCounter bodiesSlept = 0;
         ContactCounter contactsUpdated = 0;

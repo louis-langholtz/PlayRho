@@ -251,8 +251,7 @@ private:
     /// @param conf Per-step configuration information.
     /// @param listener Listener that if non-null is called with status information.
     ///
-    /// @sa GetManifold.
-    /// @sa IsTouching.
+    /// @sa GetManifold, IsTouching
     ///
     void Update(const UpdateConf& conf, ContactListener* listener = nullptr);
 

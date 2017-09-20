@@ -40,7 +40,7 @@ namespace playrho
         /// @brief Gets the invalid distance.
         static constexpr distance_type GetInvalidDistance() noexcept
         {
-            return std::numeric_limits<Real>::max() * Meter;
+            return std::numeric_limits<Length>::max();
         }
 
         /// @brief Index type.
@@ -64,7 +64,7 @@ namespace playrho
         /// @brief Gets the invalid distance.
         static constexpr distance_type GetInvalidDistance() noexcept
         {
-            return std::numeric_limits<Real>::max() * Meter;
+            return std::numeric_limits<Length>::max();
         }
 
         /// @brief Invalid index.

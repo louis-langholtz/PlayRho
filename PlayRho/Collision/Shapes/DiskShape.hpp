@@ -94,8 +94,8 @@ public:
     void Accept(ShapeVisitor& visitor) const override;
 
     /// @brief Gets the "radius" of the shape.
-    /// @return Non-negative distance.
-    Length GetRadius() const noexcept { return GetVertexRadius(); }
+    /// @return Non-negative radius.
+    NonNegative<Length> GetRadius() const noexcept { return GetVertexRadius(); }
     
     /// @brief Sets the radius to the given value.
     void SetRadius(Length radius) noexcept

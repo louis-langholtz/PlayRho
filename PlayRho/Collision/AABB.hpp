@@ -26,7 +26,7 @@
 /// Declaration of the AABB class and free functions that return instances of it.
 
 #include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/BoundedValue.hpp>
+#include <PlayRho/Common/ValueRange.hpp>
 
 namespace playrho {
 
@@ -37,166 +37,133 @@ namespace playrho {
     
     /// @brief Axis Aligned Bounding Box.
     ///
-    /// @details This is a value class for an axis aligned bounding box which is a type
-    ///   of bounding volume.
+    /// @details This is a concrete value class for an axis aligned bounding box (AABB)
+    ///   which is a type of bounding volume.
     ///
+    /// @note This class satisfies at least the following concepts: all the basic concepts,
+    ///   EqualityComparable, and Swappable.
+    /// @note This class is composed of &mdash; as in contains and owns &mdash two
+    ///   <code>ValueRange<Length></code> variables.
+    /// @note Non-defaulted methods of this class are marked noexcept and expect that
+    ///   the Length type doesn't throw.
     /// @note This data structure is 16-bytes large (on at least one 64-bit platform).
     ///
-    /// @invariant The lower bound always has lower x and y values than the upper bound's
-    ///   x and y values for any non-empty valid AABB.
-    ///
     /// @sa https://en.wikipedia.org/wiki/Bounding_volume
+    /// @sa http://en.cppreference.com/w/cpp/concept
     ///
-    class AABB
+    struct AABB
     {
-    public:
-        
-        /// @brief Non-throwing default constructor.
-        /// @details Constructs an empty AABB.
-        /// @note If an empty AABB is added to another AABB, the result will be the other AABB.
+        /// @brief Default constructor.
+        /// @details Constructs an "unset" AABB.
+        /// @note If an unset AABB is added to another AABB, the result will be the other AABB.
         constexpr AABB() = default;
         
-        /// @brief Non-throwing initializing constructor for a single point.
-        constexpr explicit AABB(const Length2D p):
-            m_lowerBound{p}, m_upperBound{p}
+        /// @brief Initializing constructor.
+        constexpr AABB(ValueRange<Length>&& x, ValueRange<Length>&& y) noexcept:
+            rangeX{std::move(x)}, rangeY{std::move(y)}
         {
             // Intentionally empty.
         }
         
-        /// @brief Non-throwing initializing constructor for two points.
+        /// @brief Initializing constructor for a single point.
+        /// @param p Point location to initialize this AABB with.
+        /// @post <code>rangeX</code> will have its min and max values both set to the
+        ///   given point's X value.
+        /// @post <code>rangeY</code> will have its min and max values both set to the
+        ///   given point's Y value.
+        constexpr explicit AABB(const Length2D p) noexcept:
+            rangeX{GetX(p)}, rangeY{GetY(p)}
+        {
+            // Intentionally empty.
+        }
+        
+        /// @brief Initializing constructor for two points.
+        /// @param a Point location "A" to initialize this AABB with.
+        /// @param b Point location "B" to initialize this AABB with.
         constexpr AABB(const Length2D a, const Length2D b) noexcept:
-            m_lowerBound{Length2D{std::min(GetX(a), GetX(b)), std::min(GetY(a), GetY(b))}},
-            m_upperBound{Length2D{std::max(GetX(a), GetX(b)), std::max(GetY(a), GetY(b))}}
+            rangeX{GetX(a), GetX(b)}, rangeY{GetY(a), GetY(b)}
         {
             // Intentionally empty.
         }
         
-        /// @brief Copy constructor.
-        constexpr AABB(const AABB& other) = default;
-
-        /// @brief Move constructor.
-        constexpr AABB(AABB&& other) = default;
-
-        ~AABB() noexcept = default;
-
-        /// @brief Copy assignment operator.
-        constexpr AABB& operator= (const AABB& other) = default;
-        
-        /// @brief Move assignment operator.
-        constexpr AABB& operator= (AABB&& other) = default;
-
         /// @brief Gets the lower bound.
-        constexpr Length2D GetLowerBound() const noexcept { return m_lowerBound; }
+        constexpr Length2D GetLowerBound() const noexcept
+        {
+            return {rangeX.GetMin(), rangeY.GetMin()};
+        }
         
         /// @brief Gets the upper bound.
-        constexpr Length2D GetUpperBound() const noexcept { return m_upperBound; }
-        
+        constexpr Length2D GetUpperBound() const noexcept
+        {
+            return {rangeX.GetMax(), rangeY.GetMax()};
+        }
+
         /// @brief Checks whether this AABB fully contains the given AABB.
         constexpr bool Contains(const AABB& aabb) const noexcept
         {
-            const auto lower = GetLowerBound();
-            const auto upper = GetUpperBound();
-            const auto other_lower = aabb.GetLowerBound();
-            const auto other_upper = aabb.GetUpperBound();
-            return
-            (GetX(lower) <= GetX(other_lower)) && (GetY(lower) <= GetY(other_lower)) &&
-            (GetX(other_upper) <= GetX(upper)) && (GetY(other_upper) <= GetY(upper));
+            return IsWithin(rangeX, aabb.rangeX) && IsWithin(rangeY, aabb.rangeY);
         }
         
         /// @brief Includes an AABB into this one.
+        /// @note If an unset AABB is added to this AABB, the result will be this AABB.
+        /// @note If this AABB is unset and another AABB is added to it, the result will be
+        ///   the other AABB.
         constexpr AABB& Include(const AABB aabb) noexcept
         {
-            m_lowerBound = Length2D{
-                std::min(GetX(m_lowerBound), GetX(aabb.m_lowerBound)),
-                std::min(GetY(m_lowerBound), GetY(aabb.m_lowerBound))
-            };
-            m_upperBound = Length2D{
-                std::max(GetX(m_upperBound), GetX(aabb.m_upperBound)),
-                std::max(GetY(m_upperBound), GetY(aabb.m_upperBound))
-            };
+            rangeX.Include(aabb.rangeX);
+            rangeY.Include(aabb.rangeY);
             return *this;
         }
         
         /// @brief Includes a point into this AABB.
         constexpr AABB& Include(const Length2D value) noexcept
         {
-            m_lowerBound = Length2D{
-                std::min(GetX(m_lowerBound), GetX(value)),
-                std::min(GetY(m_lowerBound), GetY(value))
-            };
-            m_upperBound = Length2D{
-                std::max(GetX(m_upperBound), GetX(value)),
-                std::max(GetY(m_upperBound), GetY(value))
-            };
+            rangeX.Include(GetX(value));
+            rangeY.Include(GetY(value));
             return *this;
         }
-
+        
         /// @brief Moves this AABB by the given value.
         constexpr AABB& Move(const Length2D value) noexcept
         {
-            m_lowerBound += value;
-            m_upperBound += value;
+            rangeX.Move(GetX(value));
+            rangeY.Move(GetY(value));
             return *this;
         }
-        
+
         /// @brief Displaces this AABB by the given value.
         constexpr AABB& Displace(const Length2D value) noexcept
         {
-            if (GetX(value) < decltype(GetX(value)){0})
-            {
-                GetX(m_lowerBound) += GetX(value);
-            }
-            else
-            {
-                GetX(m_upperBound) += GetX(value);
-            }
-            
-            if (GetY(value) < decltype(GetY(value)){0})
-            {
-                GetY(m_lowerBound) += GetY(value);
-            }
-            else
-            {
-                GetY(m_upperBound) += GetY(value);
-            }
+            rangeX.Expand(GetX(value));
+            rangeY.Expand(GetY(value));
             return *this;
         }
         
-        /// @brief Fattens an AABB by the given amount.
+        /// @brief Fattens this AABB by the given amount.
         constexpr AABB& Fatten(const NonNegative<Length> amount) noexcept
         {
-            const auto value = Length{amount};
-            GetX(m_lowerBound) -= value;
-            GetY(m_lowerBound) -= value;
-            GetX(m_upperBound) += value;
-            GetY(m_upperBound) += value;
+            rangeX.ExpandEqually(amount);
+            rangeY.ExpandEqually(amount);
             return *this;
         }
-        
-    private:
-        
-        /// @brief Lower vertex.
-        Length2D m_lowerBound = Length2D{
-            +std::numeric_limits<Real>::infinity() * Meter,
-            +std::numeric_limits<Real>::infinity() * Meter
-        };
 
-        /// @brief Upper vertex.
-        Length2D m_upperBound = Length2D{
-            -std::numeric_limits<Real>::infinity() * Meter,
-            -std::numeric_limits<Real>::infinity() * Meter
-        };
+        /// @brief Holds the value range of "X".
+        ValueRange<Length> rangeX;
+        
+        /// @brief Holds the value range of "Y".
+        ValueRange<Length> rangeY;
     };
     
     /// @brief Gets whether the two AABB objects are equal.
+    /// @return <code>true</code> if the two values are equal, <code>false</code> otherwise.
     /// @relatedalso AABB
     constexpr bool operator== (const AABB& lhs, const AABB& rhs)
     {
-        return (lhs.GetLowerBound() == rhs.GetLowerBound()) &&
-               (lhs.GetUpperBound() == rhs.GetUpperBound());
+        return (lhs.rangeX == rhs.rangeX) && (lhs.rangeY == rhs.rangeY);
     }
     
     /// @brief Gets whether the two AABB objects are not equal.
+    /// @return <code>true</code> if the two values are not equal, <code>false</code> otherwise.
     /// @relatedalso AABB
     constexpr bool operator!= (const AABB& lhs, const AABB& rhs)
     {
@@ -208,59 +175,54 @@ namespace playrho {
     /// @relatedalso AABB
     constexpr bool TestOverlap(const AABB& a, const AABB& b) noexcept
     {
-        const auto d1 = b.GetLowerBound() - a.GetUpperBound();
-        const auto d2 = a.GetLowerBound() - b.GetUpperBound();
-        
-        return (GetX(d1) <= Length{0}) && (GetY(d1) <= Length{0})
-        && (GetX(d2) <= Length{0}) && (GetY(d2) <= Length{0});
+        return IsIntersecting(a.rangeX, b.rangeX) && IsIntersecting(a.rangeY, b.rangeY);
     }
     
     /// @brief Gets the center of the AABB.
     /// @relatedalso AABB
     constexpr Length2D GetCenter(const AABB& aabb) noexcept
     {
-        return (aabb.GetLowerBound() + aabb.GetUpperBound()) / Real{2};
+        return {GetCenter(aabb.rangeX), GetCenter(aabb.rangeY)};
     }
     
     /// @brief Gets dimensions of the given AABB.
     /// @relatedalso AABB
     constexpr Length2D GetDimensions(const AABB& aabb) noexcept
     {
-        return aabb.GetUpperBound() - aabb.GetLowerBound();
+        return {GetSize(aabb.rangeX), GetSize(aabb.rangeY)};
     }
-
+    
     /// @brief Gets the extents of the AABB (half-widths).
     /// @relatedalso AABB
     constexpr Length2D GetExtents(const AABB& aabb) noexcept
     {
         return GetDimensions(aabb) / Real{2};
     }
-    
+
     /// @brief Gets the perimeter length of the AABB.
     /// @warning Behavior is undefined for an invalid AABB.
     /// @return Twice the sum of the width and height.
     /// @relatedalso AABB
     constexpr Length GetPerimeter(const AABB& aabb) noexcept
     {
-        const auto dimensions = GetDimensions(aabb);
-        return (GetX(dimensions) + GetY(dimensions)) * Real{2};
+        return (GetSize(aabb.rangeX) + GetSize(aabb.rangeY)) * Real{2};
     }
-    
+
     /// @brief Gets an invalid AABB value.
     /// @relatedalso AABB
     template <>
     constexpr AABB GetInvalid() noexcept
     {
-        return AABB{GetInvalid<Length2D>(), GetInvalid<Length2D>()};
+        return {ValueRange<Length>{GetInvalid<Length>()}, ValueRange<Length>{GetInvalid<Length>()}};
     }
-
+    
     /// @brief Gets the AABB that minimally encloses the given AABBs.
     /// @relatedalso AABB
     constexpr AABB GetEnclosingAABB(AABB a, const AABB& b)
     {
         return a.Include(b);
     }
-    
+
     /// @brief Gets the AABB that the result of displacing the given AABB by the given
     ///   displacement amount.
     /// @relatedalso AABB
@@ -269,7 +231,7 @@ namespace playrho {
         aabb.Displace(displacement);
         return aabb;
     }
-
+    
     /// @brief Gets the fattened AABB result.
     /// @relatedalso AABB
     constexpr AABB GetFattenedAABB(AABB aabb, const Length amount)
@@ -278,6 +240,56 @@ namespace playrho {
         return aabb;
     }
 
+    /// @brief Checks whether the first AABB fully contains the second AABB.
+    /// @details Whether the first AABB contains the entirety of the second AABB where
+    ///   containment is defined as being equal-to or within an AABB.
+    /// @note The "unset" AABB is contained by all valid AABBs including the "unset"
+    ///   AABB itself.
+    /// @param a AABB to test whether it constains the second AABB.
+    /// @param b AABB to test whether it's contained by the first AABB.
+    /// @relatedalso AABB
+    constexpr bool Contains(const AABB& a, const AABB& b) noexcept
+    {
+        return IsWithin(a.rangeX, b.rangeX) && IsWithin(a.rangeY, b.rangeY);
+    }
+
+    /// @brief Includes the given location into the given AABB.
+    constexpr AABB& Include(AABB& var, const Length2D& val) noexcept
+    {
+        return var.Include(val);
+    }
+
+    /// @brief Includes another AABB into this one.
+    /// @note If an unset AABB is added to this AABB, the result will be this AABB.
+    /// @note If this AABB is unset and another AABB is added to it, the result will be
+    ///   the other AABB.
+    constexpr AABB& Include(AABB& var, const AABB& val) noexcept
+    {
+        return var.Include(val);
+    }
+    
+    /// @brief Fattens an AABB by the given amount.
+    constexpr AABB& Fatten(AABB& var, const NonNegative<Length> amount) noexcept
+    {
+        var.rangeX.ExpandEqually(amount);
+        var.rangeY.ExpandEqually(amount);
+        return var;
+    }
+
+    /// @brief Gets the lower bound.
+    /// @relatedalso AABB
+    constexpr Length2D GetLowerBound(const AABB& aabb) noexcept
+    {
+        return {aabb.rangeX.GetMin(), aabb.rangeY.GetMin()};
+    }
+    
+    /// @brief Gets the upper bound.
+    /// @relatedalso AABB
+    constexpr Length2D GetUpperBound(const AABB& aabb) noexcept
+    {
+        return {aabb.rangeX.GetMax(), aabb.rangeY.GetMax()};
+    }
+    
     /// @brief Computes the AABB.
     /// @details Computes the Axis Aligned Bounding Box (AABB) for the given child shape
     ///   at a given a transform.

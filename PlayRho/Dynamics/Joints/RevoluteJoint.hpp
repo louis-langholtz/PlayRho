@@ -117,7 +117,8 @@ private:
 
     bool SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step) override;
     
-    bool SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const override;
+    bool SolvePositionConstraints(BodyConstraintsMap& bodies,
+                                  const ConstraintSolverConf& conf) const override;
 
     // Solver shared
     Length2D m_localAnchorA;

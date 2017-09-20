@@ -64,7 +64,7 @@ struct MassData;
 /// @note On a 64-bit architecture with 4-byte Real, this data structure is at least
 ///   192-bytes large.
 ///
-/// @sa World
+/// @sa World, Fixture
 ///
 class Body
 {
@@ -224,8 +224,7 @@ public:
     /// @brief Sets the body's velocity (linear and angular velocity).
     /// @note This method does nothing if this body is not speedable.
     /// @note A non-zero velocity will awaken this body.
-    /// @sa SetAwake.
-    /// @sa SetUnderActiveTime.
+    /// @sa SetAwake, SetUnderActiveTime.
     void SetVelocity(const Velocity& velocity) noexcept;
 
     /// @brief Sets the linear and rotational accelerations on this body.
@@ -859,8 +858,7 @@ inline Position GetPosition1(const Body& body) noexcept
 
 /// @brief Gets the total mass of the body.
 /// @return Value of zero or more representing the body's mass (in kg).
-/// @sa GetInvMass.
-/// @sa SetMassData.
+/// @sa GetInvMass, SetMassData
 /// @relatedalso Body
 inline Mass GetMass(const Body& body) noexcept
 {
