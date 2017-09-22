@@ -29,7 +29,7 @@ struct GLRenderPoints;
 struct GLRenderLines;
 struct GLRenderTriangles;
 
-class AABB;
+struct AABB;
 
 struct ProjectionMatrix
 {

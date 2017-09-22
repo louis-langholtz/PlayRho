@@ -30,6 +30,7 @@ configuration:
 
 install:
   - ps: choco install doxygen.portable
+  - ps: choco install graphviz
 
 test_script:
 - ps: |
