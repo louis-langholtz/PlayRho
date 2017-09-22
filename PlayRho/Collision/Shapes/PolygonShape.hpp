@@ -80,7 +80,10 @@ public:
     }
 
     /// @brief Copy constructor.
-    PolygonShape(const PolygonShape&) = default;
+    PolygonShape(const PolygonShape& other) = default;
+    
+    /// @brief Move constructor.
+    PolygonShape(PolygonShape&& other) = default;
     
     /// Initializing constructor for rectangles.
     /// @param hx the half-width.
@@ -94,6 +97,14 @@ public:
     /// @warning collinear points are handled but not removed. Collinear points
     /// may lead to poor stacking behavior.
     explicit PolygonShape(Span<const Length2D> points, const Conf& conf = GetDefaultConf()) noexcept;
+    
+    ~PolygonShape() override = default;
+    
+    /// @brief Copy assignment operator.
+    PolygonShape& operator= (const PolygonShape& other) = default;
+    
+    /// @brief Move assignment operator.
+    PolygonShape& operator= (PolygonShape&& other) = default;
     
     ChildCounter GetChildCount() const noexcept override;
 

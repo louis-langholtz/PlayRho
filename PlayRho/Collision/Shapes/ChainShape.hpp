@@ -47,7 +47,7 @@ class ChainShape: public Shape
 public:
 
     /// @brief Gets the default vertex radius.
-    static constexpr Length GetDefaultVertexRadius() noexcept
+    static constexpr NonNegative<Length> GetDefaultVertexRadius() noexcept
     {
         return DefaultLinearSlop * Real{2};
     }
@@ -60,6 +60,7 @@ public:
             // Intentionally empty.
         }
         
+        /// @brief Vertices that define a chain shape.
         std::vector<Length2D> vertices;
     };
 
@@ -74,8 +75,17 @@ public:
 
     /// @brief Copy constructor.
     ChainShape(const ChainShape& other) = default;
+    
+    /// @brief Move constructor.
+    ChainShape(ChainShape&& other) = default;
 
     ~ChainShape() override = default;
+    
+    /// @brief Copy assignment operator.
+    ChainShape& operator= (const ChainShape& other) = default;
+    
+    /// @brief Move assignment operator.
+    ChainShape& operator= (ChainShape&& other) = default;
 
     ChildCounter GetChildCount() const noexcept override;
     

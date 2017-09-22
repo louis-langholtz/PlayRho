@@ -110,6 +110,8 @@ CheckOptions:
     value:           '1'
   - key:             llvm-namespace-comment.SpacesBeforeComments
     value:           '1'
+  - key:             llvm-header-guard.RfindString
+    value:           'PlayRho/'
   - key:             misc-argument-comment.StrictMode
     value:           '0'
   - key:             misc-assert-side-effect.AssertMacros
@@ -222,6 +224,12 @@ CheckOptions:
     value:           llvm
   - key:             performance-unnecessary-value-param.IncludeStyle
     value:           llvm
+  - key: performance-unnecessary-copy-initialization
+    value: '1'
+  - key: performance-implicit-conversion-in-loop
+    value: '1'
+  - key: performance-for-range-copy.WarnOnAllAutoCopies
+    value: '1'
   - key:             readability-braces-around-statements.ShortStatementLines
     value:           '0'
   - key:             readability-function-size.BranchThreshold
@@ -234,6 +242,10 @@ CheckOptions:
     value:           '6'
   - key:             readability-function-size.StatementThreshold
     value:           '120'
+  - key:             readability-identifier-naming.ClassCase
+    value:           CamelCase
+  - key:             readability-identifier-naming.ClassMethodCase
+    value:           CamelCase
   - key:             readability-identifier-naming.IgnoreFailedSplit
     value:           '0'
   - key:             readability-implicit-bool-conversion.AllowIntegerConditions
@@ -246,4 +258,10 @@ CheckOptions:
     value:           '0'
   - key:             readability-static-accessed-through-instance.NameSpecifierNestingThreshold
     value:           '3'
+  - key:             readability-non-const-parameter
+    value:           '1'
+  - key: readability-else-after-return
+    value: '1'
+  - key: readability-deleted-default
+    value: '1'
 ...

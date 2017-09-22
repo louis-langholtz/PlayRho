@@ -52,11 +52,14 @@ public:
             // Intentionally empty.
         }
         
+        /// @brief Uses the given value for vertex 1.
         constexpr Conf& UseVertex1(Length2D value) noexcept
         {
             vertex1 = value;
             return *this;
         }
+
+        /// @brief Uses the given value for vertex 2.
         constexpr Conf& UseVertex2(Length2D value) noexcept
         {
             vertex2 = value;
@@ -92,7 +95,18 @@ public:
     }
 
     /// @brief Copy constructor.
-    EdgeShape(const EdgeShape&) = default;
+    EdgeShape(const EdgeShape& other) = default;
+    
+    /// @brief Move constructor.
+    EdgeShape(EdgeShape&& other) = default;
+    
+    ~EdgeShape() override = default;
+    
+    /// @brief Copy assignment operator.
+    EdgeShape& operator= (const EdgeShape& other) = default;
+    
+    /// @brief Move assignment operator.
+    EdgeShape& operator= (EdgeShape&& other) = default;
 
     ChildCounter GetChildCount() const noexcept override;
 

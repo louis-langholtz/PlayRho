@@ -20,6 +20,7 @@
  */
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Dynamics/Joints/JointDef.hpp>
 #include <PlayRho/Dynamics/Joints/DistanceJoint.hpp>
 #include <PlayRho/Dynamics/Joints/WheelJoint.hpp>
 #include <PlayRho/Dynamics/Joints/MouseJoint.hpp>
@@ -73,6 +74,22 @@ Joint* Joint::Create(const JointDef& def)
     }
 
     PLAYRHO_UNREACHABLE;
+}
+
+Joint::FlagsType Joint::GetFlags(const JointDef& def) noexcept
+{
+    auto flags = Joint::FlagsType(0);
+    if (def.collideConnected)
+    {
+        flags |= e_collideConnectedFlag;
+    }
+    return flags;
+}
+
+Joint::Joint(const JointDef& def):
+    m_bodyA{def.bodyA}, m_bodyB{def.bodyB}, m_flags{GetFlags(def)}, m_userData{def.userData}
+{
+    // Intentionally empty.
 }
 
 void Joint::Destroy(const Joint* joint)
