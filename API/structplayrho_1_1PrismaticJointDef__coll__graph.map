@@ -1,0 +1,9 @@
+<map id="playrho::PrismaticJointDef" name="playrho::PrismaticJointDef">
+<area shape="rect" id="node2" href="$structplayrho_1_1JointBuilder.html" title="playrho::JointBuilder\l\&lt; PrismaticJointDef \&gt;" alt="" coords="1156,74,1304,113"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1JointDef.html" title="Abstract base Joint definition class. " alt="" coords="564,121,686,146"/>
+<area shape="rect" id="node9" href="$structplayrho_1_1JointBuilder.html" title="Joint builder definition structure. " alt="" coords="791,81,964,106"/>
+<area shape="rect" id="node4" href="$classplayrho_1_1Body.html" title="Physical entity that exists within a World. " alt="" coords="307,105,410,130"/>
+<area shape="rect" id="node10" href="$classplayrho_1_1UnitVec2.html" title="2&#45;D unit vector. " alt="" coords="1167,137,1293,162"/>
+<area shape="rect" id="node11" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="1143,190,1317,215"/>
+<area shape="rect" id="node13" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="799,247,957,273"/>
+</map>

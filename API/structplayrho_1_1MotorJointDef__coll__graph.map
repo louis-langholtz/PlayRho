@@ -1,0 +1,8 @@
+<map id="playrho::MotorJointDef" name="playrho::MotorJointDef">
+<area shape="rect" id="node2" href="$structplayrho_1_1JointBuilder.html" title="playrho::JointBuilder\l\&lt; MotorJointDef \&gt;" alt="" coords="1138,105,1280,143"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1JointDef.html" title="Abstract base Joint definition class. " alt="" coords="564,81,686,106"/>
+<area shape="rect" id="node9" href="$structplayrho_1_1JointBuilder.html" title="Joint builder definition structure. " alt="" coords="791,114,964,139"/>
+<area shape="rect" id="node4" href="$classplayrho_1_1Body.html" title="Physical entity that exists within a World. " alt="" coords="307,6,410,31"/>
+<area shape="rect" id="node10" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="1122,167,1296,193"/>
+<area shape="rect" id="node12" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="799,229,957,254"/>
+</map>

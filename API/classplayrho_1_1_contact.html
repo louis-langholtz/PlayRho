@@ -232,9 +232,12 @@ Related Functions</h2></td></tr>
 <tr class="memitem:ae7c83e82f89844199f5c06c5cda3749d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_contact.html#ae7c83e82f89844199f5c06c5cda3749d">ResetRestitution</a> (<a class="el" href="classplayrho_1_1_contact.html">Contact</a> &amp;contact) noexcept</td></tr>
 <tr class="memdesc:ae7c83e82f89844199f5c06c5cda3749d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset the restitution to the default value.  <a href="#ae7c83e82f89844199f5c06c5cda3749d">More...</a><br /></td></tr>
 <tr class="separator:ae7c83e82f89844199f5c06c5cda3749d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68f3d6b8ed4709b6b99bd8e096a9960e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1_t_o_i_output.html">TOIOutput</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_contact.html#a68f3d6b8ed4709b6b99bd8e096a9960e">CalcToi</a> (const <a class="el" href="classplayrho_1_1_contact.html">Contact</a> &amp;contact, <a class="el" href="structplayrho_1_1_toi_conf.html">ToiConf</a> conf)</td></tr>
+<tr class="memdesc:a68f3d6b8ed4709b6b99bd8e096a9960e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the Time Of Impact for the given contact with the given configuration.  <a href="#a68f3d6b8ed4709b6b99bd8e096a9960e">More...</a><br /></td></tr>
+<tr class="separator:a68f3d6b8ed4709b6b99bd8e096a9960e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The class manages contact between two shapes. A contact exists for each overlapping <a class="el" href="classplayrho_1_1_a_a_b_b.html" title="Axis Aligned Bounding Box. ">AABB</a> in the broad-phase (except if filtered). Therefore a contact object may exist that has no contact points.</p>
+<div class="textblock"><p>The class manages contact between two shapes. A contact exists for each overlapping <a class="el" href="structplayrho_1_1_a_a_b_b.html" title="Axis Aligned Bounding Box. ">AABB</a> in the broad-phase (except if filtered). Therefore a contact object may exist that has no contact points.</p>
 <dl class="section note"><dt>Note</dt><dd>This data structure is 104-bytes large (on at least one 64-bit platform). </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a922f647815a205874bc710d426a5b55e"></a>
@@ -502,6 +505,42 @@ The value persists until you set or reset. </dd></dl>
 </div>
 </div>
 <h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="a68f3d6b8ed4709b6b99bd8e096a9960e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68f3d6b8ed4709b6b99bd8e096a9960e">&#9670;&nbsp;</a></span>CalcToi()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classplayrho_1_1_t_o_i_output.html">TOIOutput</a> CalcToi </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1_contact.html">Contact</a> &amp;&#160;</td>
+          <td class="paramname"><em>contact</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structplayrho_1_1_toi_conf.html">ToiConf</a>&#160;</td>
+          <td class="paramname"><em>conf</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a160a129552c387fc8462398d95b5d39b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a160a129552c387fc8462398d95b5d39b">&#9670;&nbsp;</a></span>GetWorldManifold()</h2>
 
@@ -700,7 +739,7 @@ The value persists until you set or reset. </dd></dl>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Sep 18 2017 12:19:09 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Sep 21 2017 15:05:54 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

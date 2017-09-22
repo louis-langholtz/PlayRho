@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['bits_5ftype',['bits_type',['../structplayrho_1_1_filter.html#afc7787e34f2ba644f3b3e135225647a6',1,'playrho::Filter']]],
-  ['bodies',['Bodies',['../structplayrho_1_1_island.html#a13856b7b6793fd23ff2dfe6356413eb0',1,'playrho::Island::Bodies()'],['../classplayrho_1_1_world.html#a43efb1f5fccb24379ab0f6b044923aa9',1,'playrho::World::Bodies()']]],
+  ['bits_5ftype',['bits_type',['../structplayrho_1_1Filter.html#afc7787e34f2ba644f3b3e135225647a6',1,'playrho::Filter']]],
+  ['bodies',['Bodies',['../structplayrho_1_1Island.html#a13856b7b6793fd23ff2dfe6356413eb0',1,'playrho::Island::Bodies()'],['../classplayrho_1_1World.html#a43efb1f5fccb24379ab0f6b044923aa9',1,'playrho::World::Bodies()']]],
   ['bodyconstraintpair',['BodyConstraintPair',['../namespaceplayrho.html#a3ed269d70771c28e68263fd3ebfa5d56',1,'playrho']]],
   ['bodyconstraintptr',['BodyConstraintPtr',['../namespaceplayrho.html#a14a0d7ff0c174ead9993a583e3b84fcf',1,'playrho']]],
   ['bodyconstraints',['BodyConstraints',['../namespaceplayrho.html#a1852d5e732fec1badb9822c7fd52a5e5',1,'playrho']]],

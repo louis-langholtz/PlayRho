@@ -1,0 +1,8 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classplayrho_1_1Shape.html" title="A base abstract class for describing a type of shape. " alt="" coords="5,104,116,129"/>
+<area shape="rect" id="node2" href="$classplayrho_1_1ChainShape.html" title="Chain shape. " alt="" coords="171,5,317,31"/>
+<area shape="rect" id="node3" href="$classplayrho_1_1DiskShape.html" title="Disk shape. " alt="" coords="175,55,312,80"/>
+<area shape="rect" id="node4" href="$classplayrho_1_1EdgeShape.html" title="Edge shape. " alt="" coords="173,104,315,129"/>
+<area shape="rect" id="node5" href="$classplayrho_1_1MultiShape.html" title="The &quot;multi&#45;shape&quot; shape. " alt="" coords="174,153,314,179"/>
+<area shape="rect" id="node6" href="$classplayrho_1_1PolygonShape.html" title="Polygon shape. " alt="" coords="164,203,324,228"/>
+</map>

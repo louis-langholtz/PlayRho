@@ -93,15 +93,55 @@ Public Attributes</h2></td></tr>
 Related Functions</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
 </td></tr>
-<tr class="memitem:a486a4af37125ad1fc95d541ff34f0321"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1_velocity.html">Velocity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_velocity.html#a486a4af37125ad1fc95d541ff34f0321">GetVelocity</a> (const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body, <a class="el" href="group___quantities.html#ga250898c9929b0e6eaf56a1967c568888">Time</a> h, <a class="el" href="structplayrho_1_1_movement_conf.html">MovementConf</a> conf) noexcept</td></tr>
-<tr class="memdesc:a486a4af37125ad1fc95d541ff34f0321"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the velocity of the body after the given time accounting for the body's acceleration and capped by the given configuration.  <a href="#a486a4af37125ad1fc95d541ff34f0321">More...</a><br /></td></tr>
-<tr class="separator:a486a4af37125ad1fc95d541ff34f0321"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae55f5448e2cfbafd6f175f5cb7b2d265"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
+<tr class="memitem:ae55f5448e2cfbafd6f175f5cb7b2d265"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_velocity.html#ae55f5448e2cfbafd6f175f5cb7b2d265">IsValid</a> (const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;value) noexcept</td></tr>
+<tr class="memdesc:ae55f5448e2cfbafd6f175f5cb7b2d265"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given value is valid.  <a href="#ae55f5448e2cfbafd6f175f5cb7b2d265">More...</a><br /></td></tr>
+<tr class="separator:ae55f5448e2cfbafd6f175f5cb7b2d265"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe4f2bcd98877c4562293dfe2dbcfa8b"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_velocity.html#afe4f2bcd98877c4562293dfe2dbcfa8b">operator==</a> (const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;lhs, const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;rhs)</td></tr>
+<tr class="memdesc:afe4f2bcd98877c4562293dfe2dbcfa8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator.  <a href="#afe4f2bcd98877c4562293dfe2dbcfa8b">More...</a><br /></td></tr>
+<tr class="separator:afe4f2bcd98877c4562293dfe2dbcfa8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50aa6c2021393ced745d056c34b3bc07"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_velocity.html#a50aa6c2021393ced745d056c34b3bc07">operator!=</a> (const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;lhs, const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;rhs)</td></tr>
+<tr class="memdesc:a50aa6c2021393ced745d056c34b3bc07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator.  <a href="#a50aa6c2021393ced745d056c34b3bc07">More...</a><br /></td></tr>
+<tr class="separator:a50aa6c2021393ced745d056c34b3bc07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7083f8551c8713a94d38f614a7ebc3b5"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_velocity.html#a7083f8551c8713a94d38f614a7ebc3b5">operator*=</a> (<a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;lhs, const <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> rhs)</td></tr>
+<tr class="memdesc:a7083f8551c8713a94d38f614a7ebc3b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplication assignment operator.  <a href="#a7083f8551c8713a94d38f614a7ebc3b5">More...</a><br /></td></tr>
+<tr class="separator:a7083f8551c8713a94d38f614a7ebc3b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afafe86dc357999a8933a71f73dcce818"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_velocity.html#afafe86dc357999a8933a71f73dcce818">operator/=</a> (<a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;lhs, const <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> rhs)</td></tr>
+<tr class="memdesc:afafe86dc357999a8933a71f73dcce818"><td class="mdescLeft">&#160;</td><td class="mdescRight">Division assignment operator.  <a href="#afafe86dc357999a8933a71f73dcce818">More...</a><br /></td></tr>
+<tr class="separator:afafe86dc357999a8933a71f73dcce818"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3be07a7714bf76d380af60fa8ef623d3"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_velocity.html#a3be07a7714bf76d380af60fa8ef623d3">operator+=</a> (<a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;lhs, const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;rhs)</td></tr>
+<tr class="memdesc:a3be07a7714bf76d380af60fa8ef623d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Addition assignment operator.  <a href="#a3be07a7714bf76d380af60fa8ef623d3">More...</a><br /></td></tr>
+<tr class="separator:a3be07a7714bf76d380af60fa8ef623d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7608d9d4b5ffcc571a17bacf9faa411e"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_velocity.html#a7608d9d4b5ffcc571a17bacf9faa411e">operator+</a> (const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;lhs, const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;rhs)</td></tr>
+<tr class="memdesc:a7608d9d4b5ffcc571a17bacf9faa411e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Addition operator.  <a href="#a7608d9d4b5ffcc571a17bacf9faa411e">More...</a><br /></td></tr>
+<tr class="separator:a7608d9d4b5ffcc571a17bacf9faa411e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2577d7502ee2442b81d0e6570c00d6f"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_velocity.html#ad2577d7502ee2442b81d0e6570c00d6f">operator-=</a> (<a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;lhs, const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;rhs)</td></tr>
+<tr class="memdesc:ad2577d7502ee2442b81d0e6570c00d6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subtraction assignment operator.  <a href="#ad2577d7502ee2442b81d0e6570c00d6f">More...</a><br /></td></tr>
+<tr class="separator:ad2577d7502ee2442b81d0e6570c00d6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2f3370383aaf9a8443cacef7841c5a0"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_velocity.html#ab2f3370383aaf9a8443cacef7841c5a0">operator-</a> (const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;lhs, const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;rhs)</td></tr>
+<tr class="memdesc:ab2f3370383aaf9a8443cacef7841c5a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subtraction operator.  <a href="#ab2f3370383aaf9a8443cacef7841c5a0">More...</a><br /></td></tr>
+<tr class="separator:ab2f3370383aaf9a8443cacef7841c5a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9cbc07fb71929600cae9ef2f69e35ac"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_velocity.html#ab9cbc07fb71929600cae9ef2f69e35ac">operator-</a> (const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;value)</td></tr>
+<tr class="memdesc:ab9cbc07fb71929600cae9ef2f69e35ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Negation operator.  <a href="#ab9cbc07fb71929600cae9ef2f69e35ac">More...</a><br /></td></tr>
+<tr class="separator:ab9cbc07fb71929600cae9ef2f69e35ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf1a262569fd1d300ef359200d514d6a"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_velocity.html#acf1a262569fd1d300ef359200d514d6a">operator+</a> (const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;value)</td></tr>
+<tr class="memdesc:acf1a262569fd1d300ef359200d514d6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Positive operator.  <a href="#acf1a262569fd1d300ef359200d514d6a">More...</a><br /></td></tr>
+<tr class="separator:acf1a262569fd1d300ef359200d514d6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d52ed09352bfd1dd80dc6b138a19f55"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_velocity.html#a5d52ed09352bfd1dd80dc6b138a19f55">operator*</a> (const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;lhs, const <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> rhs)</td></tr>
+<tr class="memdesc:a5d52ed09352bfd1dd80dc6b138a19f55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplication operator.  <a href="#a5d52ed09352bfd1dd80dc6b138a19f55">More...</a><br /></td></tr>
+<tr class="separator:a5d52ed09352bfd1dd80dc6b138a19f55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a285d8d7bdef58a4c7210516b1060beef"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_velocity.html#a285d8d7bdef58a4c7210516b1060beef">operator*</a> (const <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> lhs, const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;rhs)</td></tr>
+<tr class="memdesc:a285d8d7bdef58a4c7210516b1060beef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplication operator.  <a href="#a285d8d7bdef58a4c7210516b1060beef">More...</a><br /></td></tr>
+<tr class="separator:a285d8d7bdef58a4c7210516b1060beef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec5f4967a3c7e58ccf6c9fb4aafa90a1"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1_velocity.html#aec5f4967a3c7e58ccf6c9fb4aafa90a1">operator/</a> (const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;lhs, const <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> rhs)</td></tr>
+<tr class="memdesc:aec5f4967a3c7e58ccf6c9fb4aafa90a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Division operator.  <a href="#aec5f4967a3c7e58ccf6c9fb4aafa90a1">More...</a><br /></td></tr>
+<tr class="separator:aec5f4967a3c7e58ccf6c9fb4aafa90a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section note"><dt>Note</dt><dd>This data structure is 12-bytes (with 4-byte Real on at least one 64-bit platform). </dd></dl>
 </div><h2 class="groupheader">Friends And Related Function Documentation</h2>
-<a id="a486a4af37125ad1fc95d541ff34f0321"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a486a4af37125ad1fc95d541ff34f0321">&#9670;&nbsp;</a></span>GetVelocity()</h2>
+<a id="ae55f5448e2cfbafd6f175f5cb7b2d265"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae55f5448e2cfbafd6f175f5cb7b2d265">&#9670;&nbsp;</a></span>IsValid()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -110,22 +150,42 @@ Related Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> GetVelocity </td>
+          <td class="memname">constexpr bool IsValid </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
-          <td class="paramname"><em>body</em>, </td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a50aa6c2021393ced745d056c34b3bc07"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50aa6c2021393ced745d056c34b3bc07">&#9670;&nbsp;</a></span>operator!=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group___quantities.html#ga250898c9929b0e6eaf56a1967c568888">Time</a>&#160;</td>
-          <td class="paramname"><em>h</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structplayrho_1_1_movement_conf.html">MovementConf</a>&#160;</td>
-          <td class="paramname"><em>conf</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -139,26 +199,428 @@ Related Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section warning"><dt>Warning</dt><dd>Behavior is undefined if the given elapsed time is an invalid value (like NaN). </dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">body</td><td><a class="el" href="classplayrho_1_1_body.html" title="Physical entity that exists within a World. ">Body</a> to get the velocity for. </td></tr>
-    <tr><td class="paramname">h</td><td>Time elapsed to get velocity for. Behavior is undefined if this value is invalid. </td></tr>
-    <tr><td class="paramname">conf</td><td>Movement configuration. This defines caps on linear and angular speeds. </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
-<hr/>The documentation for this struct was generated from the following files:<ul>
+<a id="a5d52ed09352bfd1dd80dc6b138a19f55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d52ed09352bfd1dd80dc6b138a19f55">&#9670;&nbsp;</a></span>operator*() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> operator* </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a285d8d7bdef58a4c7210516b1060beef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a285d8d7bdef58a4c7210516b1060beef">&#9670;&nbsp;</a></span>operator*() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> operator* </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7083f8551c8713a94d38f614a7ebc3b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7083f8551c8713a94d38f614a7ebc3b5">&#9670;&nbsp;</a></span>operator*=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp; operator*= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7608d9d4b5ffcc571a17bacf9faa411e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7608d9d4b5ffcc571a17bacf9faa411e">&#9670;&nbsp;</a></span>operator+() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> operator+ </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acf1a262569fd1d300ef359200d514d6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf1a262569fd1d300ef359200d514d6a">&#9670;&nbsp;</a></span>operator+() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> operator+ </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3be07a7714bf76d380af60fa8ef623d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3be07a7714bf76d380af60fa8ef623d3">&#9670;&nbsp;</a></span>operator+=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp; operator+= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab2f3370383aaf9a8443cacef7841c5a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2f3370383aaf9a8443cacef7841c5a0">&#9670;&nbsp;</a></span>operator-() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> operator- </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab9cbc07fb71929600cae9ef2f69e35ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9cbc07fb71929600cae9ef2f69e35ac">&#9670;&nbsp;</a></span>operator-() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> operator- </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad2577d7502ee2442b81d0e6570c00d6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2577d7502ee2442b81d0e6570c00d6f">&#9670;&nbsp;</a></span>operator-=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp; operator-= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aec5f4967a3c7e58ccf6c9fb4aafa90a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec5f4967a3c7e58ccf6c9fb4aafa90a1">&#9670;&nbsp;</a></span>operator/()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> operator/ </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afafe86dc357999a8933a71f73dcce818"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afafe86dc357999a8933a71f73dcce818">&#9670;&nbsp;</a></span>operator/=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp; operator/= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afe4f2bcd98877c4562293dfe2dbcfa8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe4f2bcd98877c4562293dfe2dbcfa8b">&#9670;&nbsp;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1_velocity.html">Velocity</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>Velocity.hpp</li>
-<li>Body.hpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Sep 18 2017 12:19:10 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Sep 21 2017 15:05:55 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

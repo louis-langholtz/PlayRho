@@ -1,0 +1,6 @@
+<map id="playrho::GearJointDef" name="playrho::GearJointDef">
+<area shape="rect" id="node2" href="$structplayrho_1_1JointBuilder.html" title="playrho::JointBuilder\l\&lt; GearJointDef \&gt;" alt="" coords="178,353,320,392"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1JointDef.html" title="Abstract base Joint definition class. " alt="" coords="183,192,305,217"/>
+<area shape="rect" id="node9" href="$structplayrho_1_1JointBuilder.html" title="Joint builder definition structure. " alt="" coords="265,267,438,292"/>
+<area shape="rect" id="node4" href="$classplayrho_1_1Body.html" title="Physical entity that exists within a World. " alt="" coords="26,92,129,117"/>
+</map>

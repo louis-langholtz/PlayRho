@@ -93,10 +93,6 @@ Public Types</h2></td></tr>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_world.html#a7dc8e68f3345d1fc92b55f48232a0e92">proxy_size_type</a> = std::remove_const&lt; decltype(<a class="el" href="namespaceplayrho.html#a5ac18ab5fe22782c56d7ab92b397468e">MaxContacts</a>)&gt;::type</td></tr>
 <tr class="memdesc:a7dc8e68f3345d1fc92b55f48232a0e92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Proxy size type. <br /></td></tr>
 <tr class="separator:a7dc8e68f3345d1fc92b55f48232a0e92"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af174f4fdb6b3303a6f76e76d87a0b177"><td class="memItemLeft" align="right" valign="top"><a id="af174f4fdb6b3303a6f76e76d87a0b177"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_world.html#af174f4fdb6b3303a6f76e76d87a0b177">ts_iters_type</a> = <a class="el" href="namespaceplayrho.html#a3898807006fd29cd5c4fc2e1a9cf5536">TimestepIters</a></td></tr>
-<tr class="memdesc:af174f4fdb6b3303a6f76e76d87a0b177"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time step iteration type. <br /></td></tr>
-<tr class="separator:af174f4fdb6b3303a6f76e76d87a0b177"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43efb1f5fccb24379ab0f6b044923aa9"><td class="memItemLeft" align="right" valign="top"><a id="a43efb1f5fccb24379ab0f6b044923aa9"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_world.html#a43efb1f5fccb24379ab0f6b044923aa9">Bodies</a> = std::vector&lt; <a class="el" href="classplayrho_1_1_body.html">Body</a> * &gt;</td></tr>
 <tr class="memdesc:a43efb1f5fccb24379ab0f6b044923aa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bodies container type. <br /></td></tr>
@@ -109,7 +105,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 <tr class="memdesc:a72fb813f9b11602479ba59773bbe7de9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joints container type.  <a href="#a72fb813f9b11602479ba59773bbe7de9">More...</a><br /></td></tr>
 <tr class="separator:a72fb813f9b11602479ba59773bbe7de9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51db5639439203692311c8322bbef0c7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_world.html#a51db5639439203692311c8322bbef0c7">QueryFixtureCallback</a> = std::function&lt; bool(<a class="el" href="classplayrho_1_1_fixture.html">Fixture</a> *fixture, <a class="el" href="namespaceplayrho.html#aed352724e203ca09595faf0dc6a76e5c">ChildCounter</a> child)&gt;</td></tr>
-<tr class="memdesc:a51db5639439203692311c8322bbef0c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query <a class="el" href="classplayrho_1_1_a_a_b_b.html" title="Axis Aligned Bounding Box. ">AABB</a> for fixtures callback function type.  <a href="#a51db5639439203692311c8322bbef0c7">More...</a><br /></td></tr>
+<tr class="memdesc:a51db5639439203692311c8322bbef0c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query <a class="el" href="structplayrho_1_1_a_a_b_b.html" title="Axis Aligned Bounding Box. ">AABB</a> for fixtures callback function type.  <a href="#a51db5639439203692311c8322bbef0c7">More...</a><br /></td></tr>
 <tr class="separator:a51db5639439203692311c8322bbef0c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1bb6a43e7d49b1d024d3ae326fcbdd1"><td class="memItemLeft" align="right" valign="top"><a id="ab1bb6a43e7d49b1d024d3ae326fcbdd1"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_world.html#ab1bb6a43e7d49b1d024d3ae326fcbdd1">RayCastCallback</a> = std::function&lt; <a class="el" href="classplayrho_1_1_world.html#a7313e2ea49a3e895ef51a1d2a45b69a8">RayCastOpcode</a>(<a class="el" href="classplayrho_1_1_fixture.html">Fixture</a> *fixture, <a class="el" href="namespaceplayrho.html#aed352724e203ca09595faf0dc6a76e5c">ChildCounter</a> child, <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> point, <a class="el" href="classplayrho_1_1_unit_vec2.html">UnitVec2</a> normal)&gt;</td></tr>
@@ -163,8 +159,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a589dcfb165ba8f1841de18b231b472d8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1_step_stats.html">StepStats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_world.html#a589dcfb165ba8f1841de18b231b472d8">Step</a> (const <a class="el" href="classplayrho_1_1_step_conf.html">StepConf</a> &amp;conf)</td></tr>
 <tr class="memdesc:a589dcfb165ba8f1841de18b231b472d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Steps the world simulation according to the given configuration.  <a href="#a589dcfb165ba8f1841de18b231b472d8">More...</a><br /></td></tr>
 <tr class="separator:a589dcfb165ba8f1841de18b231b472d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7e22798b132cf73a451632031be6a5d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_world.html#ae7e22798b132cf73a451632031be6a5d">QueryAABB</a> (const <a class="el" href="classplayrho_1_1_a_a_b_b.html">AABB</a> &amp;aabb, <a class="el" href="classplayrho_1_1_world.html#a51db5639439203692311c8322bbef0c7">QueryFixtureCallback</a> callback) const</td></tr>
-<tr class="memdesc:ae7e22798b132cf73a451632031be6a5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queries the world for all fixtures that potentially overlap the provided <a class="el" href="classplayrho_1_1_a_a_b_b.html" title="Axis Aligned Bounding Box. ">AABB</a>.  <a href="#ae7e22798b132cf73a451632031be6a5d">More...</a><br /></td></tr>
+<tr class="memitem:ae7e22798b132cf73a451632031be6a5d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_world.html#ae7e22798b132cf73a451632031be6a5d">QueryAABB</a> (const <a class="el" href="structplayrho_1_1_a_a_b_b.html">AABB</a> &amp;aabb, <a class="el" href="classplayrho_1_1_world.html#a51db5639439203692311c8322bbef0c7">QueryFixtureCallback</a> callback) const</td></tr>
+<tr class="memdesc:ae7e22798b132cf73a451632031be6a5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queries the world for all fixtures that potentially overlap the provided <a class="el" href="structplayrho_1_1_a_a_b_b.html" title="Axis Aligned Bounding Box. ">AABB</a>.  <a href="#ae7e22798b132cf73a451632031be6a5d">More...</a><br /></td></tr>
 <tr class="separator:ae7e22798b132cf73a451632031be6a5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6918644502a60d959cf21c7e21fe3176"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_world.html#a6918644502a60d959cf21c7e21fe3176">RayCast</a> (<a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> point1, <a class="el" href="namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba">Length2D</a> point2, <a class="el" href="classplayrho_1_1_world.html#ab1bb6a43e7d49b1d024d3ae326fcbdd1">RayCastCallback</a> callback) const</td></tr>
 <tr class="memdesc:a6918644502a60d959cf21c7e21fe3176"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ray-cast the world for all fixtures in the path of the ray.  <a href="#a6918644502a60d959cf21c7e21fe3176">More...</a><br /></td></tr>
@@ -233,8 +229,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <a class="el" href="group___quantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_world.html#ad71427f019ecb28ecae59d7f7640812e">GetInvDeltaTime</a> () const noexcept</td></tr>
 <tr class="memdesc:ad71427f019ecb28ecae59d7f7640812e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the inverse delta time. <br /></td></tr>
 <tr class="separator:ad71427f019ecb28ecae59d7f7640812e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f23384a8b6b4efd2ffd32de3cc7c366"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1_a_a_b_b.html">AABB</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_world.html#a9f23384a8b6b4efd2ffd32de3cc7c366">GetFatAABB</a> (<a class="el" href="classplayrho_1_1_world.html#a7dc8e68f3345d1fc92b55f48232a0e92">proxy_size_type</a> proxyId) const</td></tr>
-<tr class="memdesc:a9f23384a8b6b4efd2ffd32de3cc7c366"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the fat <a class="el" href="classplayrho_1_1_a_a_b_b.html" title="Axis Aligned Bounding Box. ">AABB</a> for a proxy.  <a href="#a9f23384a8b6b4efd2ffd32de3cc7c366">More...</a><br /></td></tr>
+<tr class="memitem:a9f23384a8b6b4efd2ffd32de3cc7c366"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1_a_a_b_b.html">AABB</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_world.html#a9f23384a8b6b4efd2ffd32de3cc7c366">GetFatAABB</a> (<a class="el" href="classplayrho_1_1_world.html#a7dc8e68f3345d1fc92b55f48232a0e92">proxy_size_type</a> proxyId) const</td></tr>
+<tr class="memdesc:a9f23384a8b6b4efd2ffd32de3cc7c366"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the fat <a class="el" href="structplayrho_1_1_a_a_b_b.html" title="Axis Aligned Bounding Box. ">AABB</a> for a proxy.  <a href="#a9f23384a8b6b4efd2ffd32de3cc7c366">More...</a><br /></td></tr>
 <tr class="separator:a9f23384a8b6b4efd2ffd32de3cc7c366"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a184fb6c487005cc114adca655ea0a629"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_world.html#a184fb6c487005cc114adca655ea0a629">SetType</a> (<a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body, <a class="el" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7">BodyType</a> type)</td></tr>
 <tr class="memdesc:a184fb6c487005cc114adca655ea0a629"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the type of the given body.  <a href="#a184fb6c487005cc114adca655ea0a629">More...</a><br /></td></tr>
@@ -277,9 +273,9 @@ Related Functions</h2></td></tr>
 <tr class="memitem:af8aabfb6390fed1c549e81700b0cd80e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a2bf0674233f83e8b83b30db98332e129">ContactCounter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_world.html#af8aabfb6390fed1c549e81700b0cd80e">GetTouchingCount</a> (const <a class="el" href="classplayrho_1_1_world.html">World</a> &amp;world) noexcept</td></tr>
 <tr class="memdesc:af8aabfb6390fed1c549e81700b0cd80e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the touching count for the given world.  <a href="#af8aabfb6390fed1c549e81700b0cd80e">More...</a><br /></td></tr>
 <tr class="separator:af8aabfb6390fed1c549e81700b0cd80e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4308ea5425632ce3df30a753816bae6c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1_step_stats.html">StepStats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_world.html#a4308ea5425632ce3df30a753816bae6c">Step</a> (<a class="el" href="classplayrho_1_1_world.html">World</a> &amp;world, <a class="el" href="group___quantities.html#ga250898c9929b0e6eaf56a1967c568888">Time</a> delta, <a class="el" href="classplayrho_1_1_world.html#af174f4fdb6b3303a6f76e76d87a0b177">World::ts_iters_type</a> velocityIterations=8, <a class="el" href="classplayrho_1_1_world.html#af174f4fdb6b3303a6f76e76d87a0b177">World::ts_iters_type</a> positionIterations=3)</td></tr>
-<tr class="memdesc:a4308ea5425632ce3df30a753816bae6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Steps the world ahead by a given time amount.  <a href="#a4308ea5425632ce3df30a753816bae6c">More...</a><br /></td></tr>
-<tr class="separator:a4308ea5425632ce3df30a753816bae6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a035ee60a3274619546a2cee7b982b894"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1_step_stats.html">StepStats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_world.html#a035ee60a3274619546a2cee7b982b894">Step</a> (<a class="el" href="classplayrho_1_1_world.html">World</a> &amp;world, <a class="el" href="group___quantities.html#ga250898c9929b0e6eaf56a1967c568888">Time</a> delta, <a class="el" href="namespaceplayrho.html#a3898807006fd29cd5c4fc2e1a9cf5536">TimestepIters</a> velocityIterations=8, <a class="el" href="namespaceplayrho.html#a3898807006fd29cd5c4fc2e1a9cf5536">TimestepIters</a> positionIterations=3)</td></tr>
+<tr class="memdesc:a035ee60a3274619546a2cee7b982b894"><td class="mdescLeft">&#160;</td><td class="mdescRight">Steps the world ahead by a given time amount.  <a href="#a035ee60a3274619546a2cee7b982b894">More...</a><br /></td></tr>
+<tr class="separator:a035ee60a3274619546a2cee7b982b894"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad07495876f7627e4c0b347fd08ce5346"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_world.html#ad07495876f7627e4c0b347fd08ce5346">GetFixtureCount</a> (const <a class="el" href="classplayrho_1_1_world.html">World</a> &amp;world) noexcept</td></tr>
 <tr class="memdesc:ad07495876f7627e4c0b347fd08ce5346"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the count of fixtures in the given world.  <a href="#ad07495876f7627e4c0b347fd08ce5346">More...</a><br /></td></tr>
 <tr class="separator:ad07495876f7627e4c0b347fd08ce5346"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -297,11 +293,13 @@ Related Functions</h2></td></tr>
 <tr class="separator:aa8a757a3ee66fa157cbf1ffafdf556d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The world class manages all physics entities, dynamic simulation, and queries. In a physical sense, perhaps this is more like a universe. In any case, there's precedence, from a physics-engine standpoint, for this being called a world.</p>
-<dl class="section note"><dt>Note</dt><dd>From a memory management perspective, world instances own <a class="el" href="classplayrho_1_1_body.html" title="Physical entity that exists within a World. ">Body</a>, <a class="el" href="classplayrho_1_1_joint.html" title="Base joint class. ">Joint</a>, and <a class="el" href="classplayrho_1_1_contact.html" title="A potential contact between the chidren of two Fixture objects. ">Contact</a> instances. </dd>
+<div class="textblock"><p>The world class manages physics entities, dynamic simulation, and queries. In a physical sense, perhaps this is more like a universe in that entities in a world have no interaction with entities in other worlds. In any case, there's precedence, from a physics-engine standpoint, for this being called a world.</p>
+<dl class="section note"><dt>Note</dt><dd><a class="el" href="classplayrho_1_1_world.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a> instances are composed of &mdash; i.e. contain and own &mdash; <a class="el" href="classplayrho_1_1_body.html" title="Physical entity that exists within a World. ">Body</a>, <a class="el" href="classplayrho_1_1_joint.html" title="Base joint class. ">Joint</a>, and <a class="el" href="classplayrho_1_1_contact.html" title="A potential contact between the chidren of two Fixture objects. ">Contact</a> instances. </dd>
 <dd>
-This data structure is 352-bytes large (with 4-byte Real on at least one 64-bit platform). </dd></dl>
-</div><h2 class="groupheader">Member Typedef Documentation</h2>
+This data structure is 352-bytes large (with 4-byte Real on at least one 64-bit platform).</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1_body.html" title="Physical entity that exists within a World. ">Body</a>, <a class="el" href="classplayrho_1_1_joint.html" title="Base joint class. ">Joint</a>, <a class="el" href="classplayrho_1_1_contact.html" title="A potential contact between the chidren of two Fixture objects. ">Contact</a> </dd></dl>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="_hello_world_8cpp-example.html#_a0">HelloWorld.cpp</a>.</dd>
+</dl></div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a72fb813f9b11602479ba59773bbe7de9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a72fb813f9b11602479ba59773bbe7de9">&#9670;&nbsp;</a></span>Joints</h2>
 
@@ -446,7 +444,8 @@ This data structure is 352-bytes large (with 4-byte Real on at least one 64-bit 
   </table>
   </dd>
 </dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="_hello_world_8cpp-example.html#a1">HelloWorld.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a7ecb30796f76238297392f3e776126ce"></a>
@@ -722,7 +721,7 @@ Behavior is undefined if the passed joint was not created by this world.</dd></d
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classplayrho_1_1_a_a_b_b.html">AABB</a> playrho::World::GetFatAABB </td>
+          <td class="memname"><a class="el" href="structplayrho_1_1_a_a_b_b.html">AABB</a> playrho::World::GetFatAABB </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classplayrho_1_1_world.html#a7dc8e68f3345d1fc92b55f48232a0e92">proxy_size_type</a>&#160;</td>
           <td class="paramname"><em>proxyId</em></td><td>)</td>
@@ -826,7 +825,7 @@ Behavior is undefined if the passed joint was not created by this world.</dd></d
         <tr>
           <td class="memname">void playrho::World::QueryAABB </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classplayrho_1_1_a_a_b_b.html">AABB</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1_a_a_b_b.html">AABB</a> &amp;&#160;</td>
           <td class="paramname"><em>aabb</em>, </td>
         </tr>
         <tr>
@@ -1308,8 +1307,8 @@ This sets things up so that pairs may be created for potentially new contacts. <
 
 </div>
 </div>
-<a id="a4308ea5425632ce3df30a753816bae6c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4308ea5425632ce3df30a753816bae6c">&#9670;&nbsp;</a></span>Step()</h2>
+<a id="a035ee60a3274619546a2cee7b982b894"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a035ee60a3274619546a2cee7b982b894">&#9670;&nbsp;</a></span>Step()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1332,13 +1331,13 @@ This sets things up so that pairs may be created for potentially new contacts. <
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1_world.html#af174f4fdb6b3303a6f76e76d87a0b177">World::ts_iters_type</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a3898807006fd29cd5c4fc2e1a9cf5536">TimestepIters</a>&#160;</td>
           <td class="paramname"><em>velocityIterations</em> = <code>8</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1_world.html#af174f4fdb6b3303a6f76e76d87a0b177">World::ts_iters_type</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a3898807006fd29cd5c4fc2e1a9cf5536">TimestepIters</a>&#160;</td>
           <td class="paramname"><em>positionIterations</em> = <code>3</code>&#160;</td>
         </tr>
         <tr>
@@ -1380,7 +1379,7 @@ Dynamic bodies are moved based on their previous velocities, gravity, applied fo
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Sep 18 2017 12:19:10 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Sep 21 2017 15:05:55 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

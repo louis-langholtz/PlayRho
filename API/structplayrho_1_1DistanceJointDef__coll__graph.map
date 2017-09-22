@@ -1,0 +1,8 @@
+<map id="playrho::DistanceJointDef" name="playrho::DistanceJointDef">
+<area shape="rect" id="node2" href="$structplayrho_1_1JointBuilder.html" title="playrho::JointBuilder\l\&lt; DistanceJointDef \&gt;" alt="" coords="1159,82,1304,121"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1JointDef.html" title="Abstract base Joint definition class. " alt="" coords="564,81,686,106"/>
+<area shape="rect" id="node9" href="$structplayrho_1_1JointBuilder.html" title="Joint builder definition structure. " alt="" coords="791,114,964,139"/>
+<area shape="rect" id="node4" href="$classplayrho_1_1Body.html" title="Physical entity that exists within a World. " alt="" coords="307,6,410,31"/>
+<area shape="rect" id="node11" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="1145,197,1319,222"/>
+<area shape="rect" id="node13" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="799,242,957,267"/>
+</map>

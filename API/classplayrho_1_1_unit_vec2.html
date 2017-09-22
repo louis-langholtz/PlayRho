@@ -68,7 +68,6 @@ $(function() {
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#related">Related Functions</a> &#124;
 <a href="classplayrho_1_1_unit_vec2-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">playrho::UnitVec2 Class Reference</div>  </div>
@@ -174,18 +173,6 @@ static <a class="el" href="classplayrho_1_1_unit_vec2.html">UnitVec2</a>&#160;</
 <tr class="memitem:abef07339d7bf7e700af414eb68a7301d"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classplayrho_1_1_unit_vec2.html">UnitVec2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_unit_vec2.html#abef07339d7bf7e700af414eb68a7301d">Get</a> (const <a class="el" href="group___quantities.html#gab999341c050df340ff56a65816a63da9">Angle</a> angle) noexcept</td></tr>
 <tr class="memdesc:abef07339d7bf7e700af414eb68a7301d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the given angled unit vector.  <a href="#abef07339d7bf7e700af414eb68a7301d">More...</a><br /></td></tr>
 <tr class="separator:abef07339d7bf7e700af414eb68a7301d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
-Related Functions</h2></td></tr>
-<tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
-</td></tr>
-<tr class="memitem:a9846fa84c828623327a69e6ccd38ca8d"><td class="memItemLeft" align="right" valign="top"><a id="a9846fa84c828623327a69e6ccd38ca8d"></a>
-<a class="el" href="classplayrho_1_1_unit_vec2.html">UnitVec2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_unit_vec2.html#a9846fa84c828623327a69e6ccd38ca8d">GetWorldVector</a> (const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body, const <a class="el" href="classplayrho_1_1_unit_vec2.html">UnitVec2</a> localVector) noexcept</td></tr>
-<tr class="memdesc:a9846fa84c828623327a69e6ccd38ca8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the world vector for the given local vector from the given body's transformation. <br /></td></tr>
-<tr class="separator:a9846fa84c828623327a69e6ccd38ca8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a04f9943fad8b814d21f753d7b8c7e5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1_unit_vec2.html">UnitVec2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1_unit_vec2.html#a5a04f9943fad8b814d21f753d7b8c7e5">GetLocalVector</a> (const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;body, const <a class="el" href="classplayrho_1_1_unit_vec2.html">UnitVec2</a> uv) noexcept</td></tr>
-<tr class="memdesc:a5a04f9943fad8b814d21f753d7b8c7e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a locally oriented unit vector given a world oriented unit vector.  <a href="#a5a04f9943fad8b814d21f753d7b8c7e5">More...</a><br /></td></tr>
-<tr class="separator:a5a04f9943fad8b814d21f753d7b8c7e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This is a 2-dimensional directional vector. </p>
@@ -476,59 +463,13 @@ This is the forward perpendicular unit vector of the left oriented vector. </dd>
 
 </div>
 </div>
-<h2 class="groupheader">Friends And Related Function Documentation</h2>
-<a id="a5a04f9943fad8b814d21f753d7b8c7e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a04f9943fad8b814d21f753d7b8c7e5">&#9670;&nbsp;</a></span>GetLocalVector()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classplayrho_1_1_unit_vec2.html">UnitVec2</a> GetLocalVector </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classplayrho_1_1_body.html">Body</a> &amp;&#160;</td>
-          <td class="paramname"><em>body</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classplayrho_1_1_unit_vec2.html">UnitVec2</a>&#160;</td>
-          <td class="paramname"><em>uv</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">related</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">body</td><td><a class="el" href="classplayrho_1_1_body.html" title="Physical entity that exists within a World. ">Body</a> that the returned vector should be relative to. </td></tr>
-    <tr><td class="paramname">uv</td><td>Unit vector in world orientation. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the corresponding local vector. </dd></dl>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following files:<ul>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>UnitVec2.hpp</li>
-<li>Body.hpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Sep 18 2017 12:19:10 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Sep 21 2017 15:05:55 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

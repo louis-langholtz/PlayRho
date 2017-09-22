@@ -1,0 +1,6 @@
+<map id="playrho::BodyDef" name="playrho::BodyDef">
+<area shape="rect" id="node4" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="528,127,702,153"/>
+<area shape="rect" id="node6" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="150,185,308,210"/>
+<area shape="rect" id="node7" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearVelocity \&gt;" alt="" coords="507,177,723,202"/>
+<area shape="rect" id="node9" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearAcceleration \&gt;" alt="" coords="493,275,737,301"/>
+</map>
