@@ -41,19 +41,19 @@ public:
     virtual ~ShapeVisitor() = default;
     
     /// @brief Visits a DiskShape.
-    virtual void Visit(const DiskShape& /*shape*/) = 0;
+    virtual void Visit(const DiskShape& shape) = 0;
     
     /// @brief Visits an EdgeShape.
-    virtual void Visit(const EdgeShape& /*shape*/) = 0;
+    virtual void Visit(const EdgeShape& shape) = 0;
     
     /// @brief Visits a PolygonShape.
-    virtual void Visit(const PolygonShape& /*shape*/) = 0;
+    virtual void Visit(const PolygonShape& shape) = 0;
     
     /// @brief Visits a ChainShape.
-    virtual void Visit(const ChainShape& /*shape*/) = 0;
+    virtual void Visit(const ChainShape& shape) = 0;
     
     /// @brief Visits a MultiShape.
-    virtual void Visit(const MultiShape& /*shape*/) = 0;
+    virtual void Visit(const MultiShape& shape) = 0;
     
 protected:
     ShapeVisitor() = default;

@@ -202,3 +202,12 @@ TEST(UnitVec2, RotateFunction)
     EXPECT_EQ(Rotate(UnitVec2::GetLeft(), UnitVec2::GetLeft()), UnitVec2::GetRight());
     EXPECT_EQ(Rotate(UnitVec2::GetBottom(), UnitVec2::GetLeft()), UnitVec2::GetTop());
 }
+
+TEST(UnitVec2, Copy)
+{
+    const auto a = UnitVec2{};
+    auto b = a;
+    auto c = UnitVec2{};
+    c = a;
+    EXPECT_EQ(a, b);
+}

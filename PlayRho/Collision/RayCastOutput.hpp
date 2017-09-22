@@ -30,7 +30,7 @@
 namespace playrho
 {
     struct RayCastInput;
-    class AABB;
+    struct AABB;
     class Shape;
     class DistanceProxy;
     

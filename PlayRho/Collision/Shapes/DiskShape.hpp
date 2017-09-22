@@ -53,12 +53,14 @@ public:
             // Intentionally empty.
         }
         
+        /// @brief Uses the given value as the location.
         constexpr Conf& UseLocation(Length2D value) noexcept
         {
             location = value;
             return *this;
         }
 
+        /// @brief Location for the disk shape to be centered at.
         Length2D location = Length2D{};
     };
 
@@ -80,10 +82,18 @@ public:
     }
 
     /// @brief Copy constructor.
-    DiskShape(const DiskShape&) = default;
+    DiskShape(const DiskShape& other) = default;
 
-    /// @brief Assignment operator.
+    /// @brief Move constructor.
+    DiskShape(DiskShape&& other) = default;
+    
+    ~DiskShape() override = default;
+
+    /// @brief Copy assignment operator.
     DiskShape& operator= (const DiskShape& other) = default;
+    
+    /// @brief Move assignment operator.
+    DiskShape& operator= (DiskShape&& other) = default;
     
     ChildCounter GetChildCount() const noexcept override;
 

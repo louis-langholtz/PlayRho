@@ -1208,7 +1208,7 @@ RegStepStats World::SolveReg(const StepConf& conf)
     });
 
 #if defined(DO_THREADED)
-    std::vector<future<World::IslandSolverResults>> futures;
+    std::vector<std::future<World::IslandSolverResults>> futures;
     futures.reserve(remNumBodies);
 #endif
     // Build and simulate all awake islands.
@@ -1229,7 +1229,7 @@ RegStepStats World::SolveReg(const StepConf& conf)
 
 #if defined(DO_THREADED)
             // Updates bodies' sweep.pos0 to current sweep.pos1 and bodies' sweep.pos1 to new positions
-            futures.push_back(async(launch::async, &World::SolveRegIslandViaGS,
+            futures.push_back(std::async(std::launch::async, &World::SolveRegIslandViaGS,
                                          this, conf, island));
 #else
             const auto solverResults = SolveRegIslandViaGS(conf, island);
@@ -2239,7 +2239,7 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
 #if defined(DO_THREADED)
     std::vector<Contact*> contactsNeedingUpdate;
     contactsNeedingUpdate.reserve(contacts.size());
-    std::vector<future<void>> futures;
+    std::vector<std::future<void>> futures;
     futures.reserve(contacts.size());
 #endif
 
@@ -2303,7 +2303,7 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
     const auto jobsPerCore = numJobs / 4;
     for (auto i = decltype(numJobs){0}; numJobs > 0 && i < 3; ++i)
     {
-        futures.push_back(async(launch::async, [=]{
+        futures.push_back(std::async(std::launch::async, [=]{
             const auto offset = jobsPerCore * i;
             for (auto j = decltype(jobsPerCore){0}; j < jobsPerCore; ++j)
             {
@@ -2314,7 +2314,7 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
     }
     if (numJobs > 0)
     {
-        futures.push_back(async(launch::async, [=]{
+        futures.push_back(std::async(std::launch::async, [=]{
             const auto offset = jobsPerCore * 3;
             for (auto j = decltype(numJobs){0}; j < numJobs; ++j)
             {

@@ -30,6 +30,7 @@ configuration:
 
 install:
   - ps: choco install doxygen.portable
+  - ps: choco install graphviz
 
 test_script:
 - ps: |
@@ -42,6 +43,7 @@ test_script:
     Start-Process -FilePath "\projects\playrho\Build\vs2017\bin\$env:PLAYRHO_EXE\$env:CONFIGURATION\HelloWorld.exe" -RedirectStandardOutput "Hello.txt" -Wait -NoNewWindow
 
 after_build:
+  - set PATH=c:\Program Files (x86)\graphviz2.38\bin;%PATH%
   - cd Documentation
   - doxygen Doxyfile
   - cd ..

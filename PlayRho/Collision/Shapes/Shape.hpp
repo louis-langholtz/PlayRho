@@ -30,8 +30,8 @@ namespace playrho {
 /// @defgroup PartsGroup Shape Classes
 /// @details These are classes that specify physical characteristics of: shape,
 ///   friction, density and restitution. They've historically been called shape classes
-///   but are now -- with the other properties like friction and density having been
-///   moved into them -- maybe better thought of as "parts".
+///   but are now &mdash; with the other properties like friction and density having been
+///   moved into them &mdash; maybe better thought of as "parts".
 
 class ShapeVisitor;
 
@@ -50,18 +50,18 @@ class Shape
 {
 public:
     
-    /// @brief Configuration for initializing shapes.
+    /// @brief Base configuration for initializing shapes.
     /// @note This is a nested base value class for initializing shapes.
-    struct Conf
+    struct BaseConf
     {
         /// @brief Vertex radius.
         ///
         /// @details This is the radius from the vertex that the shape's "skin" should
-        ///   extend outward by. While any edges - line segments between multiple vertices -
-        ///   are straight, corners between them (the vertices) are rounded and treated
-        ///   as rounded. Shapes with larger vertex radiuses compared to edge lengths
-        ///   therefore will be more prone to rolling or having other shapes more prone
-        ///   to roll off of them.
+        ///   extend outward by. While any edges &mdash; line segments between multiple
+        ///   vertices &mdash; are straight, corners between them (the vertices) are
+        ///   rounded and treated as rounded. Shapes with larger vertex radiuses compared
+        ///   to edge lengths therefore will be more prone to rolling or having other
+        ///   shapes more prone to roll off of them.
         ///
         /// @note This should be a non-negative value.
         ///
@@ -100,7 +100,7 @@ public:
     ///   via static polymorphism.
     /// @sa https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern
     template <typename ConcreteConf>
-    struct Builder: Conf
+    struct Builder: BaseConf
     {
         /// @brief Uses the given vertex radius.
         constexpr ConcreteConf& UseVertexRadius(NonNegative<Length> value) noexcept;
@@ -202,7 +202,7 @@ protected:
     
     /// @brief Initializing constructor.
     ///
-    explicit Shape(const Conf& conf) noexcept:
+    explicit Shape(const BaseConf& conf) noexcept:
         m_vertexRadius{conf.vertexRadius},
         m_density{conf.density},
         m_friction{conf.friction},
