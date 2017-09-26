@@ -745,7 +745,7 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
 
     const auto proxyCount = m_world->GetTree().GetProxyCount();
     const auto nodeCount = m_world->GetTree().GetNodeCount();
-    const auto height = m_world->GetTree().GetHeight();
+    const auto height = GetHeight(m_world->GetTree());
     const auto balance = m_world->GetTree().GetMaxBalance();
     const auto quality = ComputePerimeterRatio(m_world->GetTree());
     const auto capacity = m_world->GetTree().GetNodeCapacity();

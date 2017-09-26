@@ -338,7 +338,7 @@ private:
     /// @brief Flags type data type.
     using FlagsType = std::uint32_t;
 
-    using ProxyId = DynamicTree::size_type;
+    using ProxyId = DynamicTree::Size;
     using ContactKeyQueue = std::vector<ContactKey>;
     using ProxyQueue = std::vector<ProxyId>;
     using FixtureQueue = std::vector<Fixture*>;

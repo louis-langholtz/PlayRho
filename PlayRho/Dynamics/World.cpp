@@ -2048,7 +2048,7 @@ StepStats World::Step(const StepConf& conf)
 
 void World::QueryAABB(const AABB& aabb, QueryFixtureCallback callback) const
 {
-    m_tree.Query(aabb, [&](DynamicTree::size_type proxyId) {
+    m_tree.Query(aabb, [&](DynamicTree::Size proxyId) {
         const auto proxy = static_cast<FixtureProxy*>(m_tree.GetUserData(proxyId));
         return callback(proxy->fixture, proxy->childIndex);
     });
@@ -2057,7 +2057,7 @@ void World::QueryAABB(const AABB& aabb, QueryFixtureCallback callback) const
 void World::RayCast(Length2D point1, Length2D point2, RayCastCallback callback) const
 {
     m_tree.RayCast(RayCastInput{point1, point2, Real{1}},
-                   [&](const RayCastInput& input, DynamicTree::size_type proxyId)
+                   [&](const RayCastInput& input, DynamicTree::Size proxyId)
     {
         const auto userData = m_tree.GetUserData(proxyId);
         const auto proxy = static_cast<FixtureProxy*>(userData);
@@ -2337,7 +2337,7 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
 
 void World::RegisterForProcessing(ProxyId pid) noexcept
 {
-    assert(pid != DynamicTree::InvalidIndex);
+    assert(pid != DynamicTree::GetInvalidSize());
     m_proxies.push_back(pid);
 }
 
@@ -2347,7 +2347,7 @@ void World::UnregisterForProcessing(ProxyId pid) noexcept
     auto it = find(/*execution::par_unseq,*/ begin(m_proxies), itEnd, pid);
     if (it != itEnd)
     {
-        *it = DynamicTree::InvalidIndex;
+        *it = DynamicTree::GetInvalidSize();
     }
 }
 
@@ -2357,7 +2357,7 @@ ContactCounter World::FindNewContacts()
 
     for_each(cbegin(m_proxies), cend(m_proxies), [&](ProxyId pid) {
         const auto aabb = m_tree.GetAABB(pid);
-        m_tree.ForEach(aabb, [&](DynamicTree::size_type nodeId) {
+        m_tree.ForEach(aabb, [&](DynamicTree::Size nodeId) {
             // A proxy cannot form a pair with itself.
             if (nodeId != pid)
             {
