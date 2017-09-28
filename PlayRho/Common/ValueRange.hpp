@@ -62,21 +62,21 @@ namespace playrho {
         /// @post <code>GetMin()</code> returns the value of <code>v</code>.
         /// @post <code>GetMax()</code> returns the value of <code>v</code>.
         constexpr explicit ValueRange(const value_type& v) noexcept:
-            m_value{v, v}
+            ValueRange(pair_type{v, v})
         {
             // Intentionally empty.
         }
         
         /// @brief Initializing constructor.
         constexpr ValueRange(const value_type& a, const value_type& b) noexcept:
-            m_value(std::minmax(a, b))
+            ValueRange(std::minmax(a, b))
         {
             // Intentionally empty.
         }
         
         /// @brief Initializing constructor.
         constexpr ValueRange(const std::initializer_list<T> ilist) noexcept:
-            m_value(std::minmax(ilist))
+            ValueRange(std::minmax(ilist))
         {
             // Intentionally empty.
         }
@@ -96,36 +96,36 @@ namespace playrho {
         /// @brief Moves the value range by the given amount.
         constexpr ValueRange& Move(const value_type& v) noexcept
         {
-            m_value.first += v;
-            m_value.second += v;
+            m_min += v;
+            m_max += v;
             return *this;
         }
 
         /// @brief Gets the minimum value of this range.
         constexpr value_type GetMin() const noexcept
         {
-            return m_value.first;
+            return m_min;
         }
 
         /// @brief Gets the maximum value of this range.
         constexpr value_type GetMax() const noexcept
         {
-            return m_value.second;
+            return m_max;
         }
         
         /// @brief Includes the given value into this value range.
         constexpr ValueRange& Include(const value_type& v) noexcept
         {
-            m_value.first = std::min(v, GetMin());
-            m_value.second = std::max(v, GetMax());
+            m_min = std::min(v, GetMin());
+            m_max = std::max(v, GetMax());
             return *this;
         }
         
         /// @brief Includes the given value range into this value range.
         constexpr ValueRange& Include(const ValueRange& v) noexcept
         {
-            m_value.first = std::min(v.GetMin(), GetMin());
-            m_value.second = std::max(v.GetMax(), GetMax());
+            m_min = std::min(v.GetMin(), GetMin());
+            m_max = std::max(v.GetMax(), GetMax());
             return *this;
         }
         
@@ -134,7 +134,7 @@ namespace playrho {
         {
             const auto min = std::max(v.GetMin(), GetMin());
             const auto max = std::min(v.GetMax(), GetMax());
-            m_value = (min <= max)? pair_type{min, max}: GetDefaultValue();
+            *this = (min <= max)? pair_type{min, max}: ValueRange{};
             return *this;
         }
         
@@ -147,11 +147,11 @@ namespace playrho {
         {
             if (v < value_type{})
             {
-                m_value.first += v;
+                m_min += v;
             }
             else
             {
-                m_value.second += v;
+                m_max += v;
             }
             return *this;
         }
@@ -164,23 +164,24 @@ namespace playrho {
         constexpr ValueRange& ExpandEqually(const NonNegative<value_type>& v) noexcept
         {
             const auto amount = value_type{v};
-            m_value.first -= amount;
-            m_value.second += amount;
+            m_min -= amount;
+            m_max += amount;
             return *this;
         }
         
     private:
+        /// @brief Internal pair type.
         using pair_type = std::pair<value_type, value_type>;
-
-        static constexpr pair_type GetDefaultValue()
+        
+        /// @brief Internal pair type accepting constructor.
+        constexpr ValueRange(pair_type pair) noexcept:
+            m_min{pair.first}, m_max{pair.second}
         {
-            return {
-                +std::numeric_limits<value_type>::infinity(),
-                -std::numeric_limits<value_type>::infinity()
-            };
+            // Intentionally empty.
         }
-
-        pair_type m_value = GetDefaultValue();
+        
+        value_type m_min = +std::numeric_limits<value_type>::infinity();
+        value_type m_max = -std::numeric_limits<value_type>::infinity();
     };
 
     /// @brief Equality operator.
