@@ -169,7 +169,7 @@ public:
 
     void PostStep(const Settings& settings, Drawer& drawer) override
     {
-        drawer.DrawString(5, m_textLine, "Press 1-5 to drop stuff");
+        drawer.DrawString(5, m_textLine, Drawer::Left, "Press 1-5 to drop stuff");
         m_textLine += DRAW_STRING_NEW_LINE;
 
         const auto L = Real(25);

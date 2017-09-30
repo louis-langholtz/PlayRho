@@ -94,7 +94,8 @@ public:
         switch (manifold.GetType())
         {
             case Manifold::e_circles:
-                drawer.DrawString(5, m_textLine, "%s %s: lp={%g,%g}, #=%d%s",
+                drawer.DrawString(5, m_textLine, Drawer::Left,
+                                  "%s %s: lp={%g,%g}, #=%d%s",
                                   GetName(manifold.GetType()),
                                   name,
                                   static_cast<double>(Real{GetX(manifold.GetLocalPoint()) / Meter}),
@@ -104,7 +105,8 @@ public:
                 break;
             case Manifold::e_faceA:
             case Manifold::e_faceB:
-                drawer.DrawString(5, m_textLine, "%s %s: lp={%g,%g}, ln={%g,%g}, #=%d%s",
+                drawer.DrawString(5, m_textLine, Drawer::Left,
+                                  "%s %s: lp={%g,%g}, ln={%g,%g}, #=%d%s",
                                   GetName(manifold.GetType()),
                                   name,
                                   static_cast<double>(Real{GetX(manifold.GetLocalPoint()) / Meter}),
@@ -168,26 +170,26 @@ public:
             adjustedDistance = 0;
         }
         
-        drawer.DrawString(xfmA.p, "Shape A");
-        drawer.DrawString(xfmB.p, "Shape B");
+        drawer.DrawString(xfmA.p, Drawer::Left, "Shape A");
+        drawer.DrawString(xfmB.p, Drawer::Left, "Shape B");
 
-        drawer.DrawString(5, m_textLine,
+        drawer.DrawString(5, m_textLine, Drawer::Left,
                           "Press 'A', 'D', 'W', 'S', 'Q', 'E' to move selected shape left, right, up, down, counter-clockwise, or clockwise.");
         m_textLine += DRAW_STRING_NEW_LINE;
 
-        drawer.DrawString(5, m_textLine,
+        drawer.DrawString(5, m_textLine, Drawer::Left,
                           "Press num-pad '+'/'-' to increase/decrease vertex radius of selected shape (%g & %g).",
                           static_cast<double>(Real{rA / Meter}),
                           static_cast<double>(Real{rB / Meter}));
         m_textLine += DRAW_STRING_NEW_LINE;
         
-        drawer.DrawString(5, m_textLine,
+        drawer.DrawString(5, m_textLine, Drawer::Left,
                           "Press '=', or '-' to toggle drawing simplex, or manifold info (%s, %s).",
                           m_drawSimplexInfo? "on": "off",
                           m_drawManifoldInfo? "on": "off");
         m_textLine += DRAW_STRING_NEW_LINE;
 
-        drawer.DrawString(5, m_textLine,
+        drawer.DrawString(5, m_textLine, Drawer::Left,
                           "Max separation: %g for a-face[%i] b-vert[%i]; %g for b-face[%i] a-vert[%i]",
                           static_cast<double>(Real{maxIndicesAB.separation / Meter}),
                           maxIndicesAB.index1,
@@ -233,7 +235,8 @@ public:
             // Circles or Face-B manifold type.
         }
 
-        drawer.DrawString(5, m_textLine, "distance = %g (from %g), iterations = %d",
+        drawer.DrawString(5, m_textLine, Drawer::Left,
+                          "distance = %g (from %g), iterations = %d",
                           static_cast<double>(Real{adjustedDistance / Meter}),
                           static_cast<double>(Real{outputDistance / Meter}),
                           output.iterations);
@@ -241,7 +244,8 @@ public:
         
         {
             const auto size = output.simplex.GetSize();
-            drawer.DrawString(5, m_textLine, "Simplex info: size=%d, wpt-a={%g,%g}, wpt-b={%g,%g})",
+            drawer.DrawString(5, m_textLine, Drawer::Left,
+                              "Simplex info: size=%d, wpt-a={%g,%g}, wpt-b={%g,%g})",
                               size,
                               static_cast<double>(Real{GetX(witnessPoints.a) / Meter}),
                               static_cast<double>(Real{GetY(witnessPoints.a) / Meter}),
@@ -253,7 +257,8 @@ public:
                 const auto& edge = output.simplex.GetSimplexEdge(i);
                 const auto coef = output.simplex.GetCoefficient(i);
                 
-                drawer.DrawString(5, m_textLine, "  a[%d]={%g,%g} b[%d]={%g,%g} coef=%g",
+                drawer.DrawString(5, m_textLine, Drawer::Left,
+                                  "  a[%d]={%g,%g} b[%d]={%g,%g} coef=%g",
                                   edge.GetIndexA(),
                                   static_cast<double>(Real{GetX(edge.GetPointA()) / Meter}),
                                   static_cast<double>(Real{GetY(edge.GetPointA()) / Meter}),
@@ -356,8 +361,8 @@ public:
             {
                 drawer.DrawPoint(edge.GetPointA(), 6.0f, simplexPointColor);
                 drawer.DrawPoint(edge.GetPointB(), 6.0f, simplexPointColor);
-                drawer.DrawString(edge.GetPointA(), "%d", edge.GetIndexA());
-                drawer.DrawString(edge.GetPointB(), "%d", edge.GetIndexB());
+                drawer.DrawString(edge.GetPointA(), Drawer::Left, "%d", edge.GetIndexA());
+                drawer.DrawString(edge.GetPointB(), Drawer::Left, "%d", edge.GetIndexB());
             }
         }
     }

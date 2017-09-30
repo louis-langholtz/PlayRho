@@ -92,7 +92,7 @@ public:
 
     void PostStep(const Settings&, Drawer& drawer) override
     {
-        drawer.DrawString(5, m_textLine,
+        drawer.DrawString(5, m_textLine, Drawer::Left,
                           "Press '+'/'-' to increase/decrease density of top shape (%f kg/m^2)",
                           double(Real{m_top->GetShape()->GetDensity() / KilogramPerSquareMeter}));
         m_textLine += DRAW_STRING_NEW_LINE;

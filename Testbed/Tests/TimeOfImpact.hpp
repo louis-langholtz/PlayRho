@@ -62,10 +62,13 @@ public:
         const auto output = GetToiViaSat(m_shapeA.GetChild(0), sweepA,
                                          m_shapeB.GetChild(0), sweepB);
 
-        drawer.DrawString(5, m_textLine, "at toi=%g, state=%s", static_cast<float>(output.get_t()), GetName(output.get_state()));
+        drawer.DrawString(5, m_textLine, Drawer::Left,
+                          "at toi=%g, state=%s",
+                          static_cast<float>(output.get_t()), GetName(output.get_state()));
         m_textLine += DRAW_STRING_NEW_LINE;
 
-        drawer.DrawString(5, m_textLine, "TOI iters = %d, max root iters = %d",
+        drawer.DrawString(5, m_textLine, Drawer::Left,
+                          "TOI iters = %d, max root iters = %d",
                           output.get_toi_iters(), output.get_max_root_iters());
         m_textLine += DRAW_STRING_NEW_LINE;
 

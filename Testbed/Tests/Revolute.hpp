@@ -127,7 +127,7 @@ public:
 
     void PostStep(const Settings&, Drawer& drawer) override
     {
-        drawer.DrawString(5, m_textLine, "Keys: (l) limits, (m) motor");
+        drawer.DrawString(5, m_textLine, Drawer::Left, "Keys: (l) limits, (m) motor");
         m_textLine += DRAW_STRING_NEW_LINE;
 
         //if (GetStepCount() == 360)

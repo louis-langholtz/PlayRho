@@ -197,14 +197,14 @@ public:
 
     void PostStep(const Settings& settings, Drawer& drawer) override
     {
-        drawer.DrawString(5, m_textLine,
+        drawer.DrawString(5, m_textLine, Drawer::Left,
                           "Press '1' to drop triangles that should be ignored by the ray.");
         m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine,
+        drawer.DrawString(5, m_textLine, Drawer::Left,
                           "Press '2'-'6' to drop shapes that should not be ignored by the ray.");
         m_textLine += DRAW_STRING_NEW_LINE;
 
-        drawer.DrawString(5, m_textLine,
+        drawer.DrawString(5, m_textLine, Drawer::Left,
                           "Press 'm' to change the mode of the raycast test (currently: %s).",
                           GetModeName(m_mode));
         m_textLine += DRAW_STRING_NEW_LINE;

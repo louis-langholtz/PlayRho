@@ -115,15 +115,16 @@ public:
 
     void PostStep(const Settings&, Drawer& drawer) override
     {
-        drawer.DrawString(5, m_textLine, "Press (j) to toggle the rope joint.");
+        drawer.DrawString(5, m_textLine, Drawer::Left,
+                          "Press (j) to toggle the rope joint.");
         m_textLine += DRAW_STRING_NEW_LINE;
         if (m_rope)
         {
-            drawer.DrawString(5, m_textLine, "Rope ON");
+            drawer.DrawString(5, m_textLine, Drawer::Left, "Rope ON");
         }
         else
         {
-            drawer.DrawString(5, m_textLine, "Rope OFF");
+            drawer.DrawString(5, m_textLine, Drawer::Left, "Rope OFF");
         }
         m_textLine += DRAW_STRING_NEW_LINE;
     }

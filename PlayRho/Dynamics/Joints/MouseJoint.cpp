@@ -180,7 +180,10 @@ bool MouseJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
     const auto incImpulse = (m_impulse - oldImpulse);
     const auto angImpulseB = AngularMomentum{Cross(m_rB, incImpulse) / Radian};
 
-    velB += Velocity{bodyConstraintB->GetInvMass() * incImpulse, bodyConstraintB->GetInvRotInertia() * angImpulseB};
+    velB += Velocity{
+        bodyConstraintB->GetInvMass() * incImpulse,
+        bodyConstraintB->GetInvRotInertia() * angImpulseB
+    };
 
     bodyConstraintB->SetVelocity(velB);
     

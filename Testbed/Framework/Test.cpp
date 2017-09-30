@@ -248,12 +248,6 @@ static bool Draw(Drawer& drawer, const Body& body, bool skins, const Test::Fixtu
 
 static void Draw(Drawer& drawer, const Joint& joint)
 {
-    const auto bodyA = joint.GetBodyA();
-    const auto bodyB = joint.GetBodyB();
-    const auto xf1 = bodyA->GetTransformation();
-    const auto xf2 = bodyB->GetTransformation();
-    const auto x1 = xf1.p;
-    const auto x2 = xf2.p;
     const auto p1 = joint.GetAnchorA();
     const auto p2 = joint.GetAnchorB();
 
@@ -281,9 +275,15 @@ static void Draw(Drawer& drawer, const Joint& joint)
             break;
 
         default:
+        {
+            const auto bodyA = joint.GetBodyA();
+            const auto bodyB = joint.GetBodyB();
+            const auto x1 = bodyA->GetTransformation().p;
+            const auto x2 = bodyB->GetTransformation().p;
             drawer.DrawSegment(x1, p1, color);
             drawer.DrawSegment(p1, p2, color);
             drawer.DrawSegment(x2, p2, color);
+        }
     }
 }
 
@@ -300,6 +300,11 @@ static bool Draw(Drawer& drawer, const World& world, const Settings& settings,
             if (Draw(drawer, *b, settings.drawSkins, selected))
             {
                 found = true;
+            }
+            if (settings.drawLabels)
+            {
+                const auto location = b->GetLocation();
+                drawer.DrawString(location, Drawer::Center, "B%d", GetWorldIndex(b));
             }
         }
     }
@@ -393,8 +398,6 @@ Test::Test(const WorldDef& conf):
     m_destructionListener.test = this;
     m_world->SetDestructionListener(&m_destructionListener);
     m_world->SetContactListener(this);
-
-    m_groundBody = m_world->CreateBody();
 }
 
 Test::~Test()
@@ -408,7 +411,6 @@ void Test::ResetWorld(const playrho::World &saved)
     SetSelectedFixtures(Fixtures{});
 
     auto bombIndex = static_cast<decltype(m_world->GetBodies().size())>(-1);
-    auto groundIndex = static_cast<decltype(m_world->GetBodies().size())>(-1);
 
     {
         auto i = decltype(m_world->GetBodies().size()){0};
@@ -418,10 +420,6 @@ void Test::ResetWorld(const playrho::World &saved)
             if (body == m_bomb)
             {
                 bombIndex = i;
-            }
-            if (body == m_groundBody)
-            {
-                groundIndex = i;
             }
             ++i;
         }
@@ -437,10 +435,6 @@ void Test::ResetWorld(const playrho::World &saved)
             if (i == bombIndex)
             {
                 m_bomb = body;
-            }
-            if (i == groundIndex)
-            {
-                m_groundBody = body;
             }
             ++i;
         }
@@ -472,7 +466,7 @@ void Test::PreSolve(Contact& contact, const Manifold& oldManifold)
 
 void Test::DrawTitle(Drawer& drawer, const char *string)
 {
-    drawer.DrawString(5, DRAW_STRING_NEW_LINE, string);
+    drawer.DrawString(5, DRAW_STRING_NEW_LINE, Drawer::Left, string);
     m_textLine = 3 * DRAW_STRING_NEW_LINE;
 }
 
@@ -505,8 +499,7 @@ void Test::MouseDown(const Length2D& p)
         const auto body = fixtures[0]->GetBody();
         if (body->GetType() == BodyType::Dynamic)
         {
-            MouseJointDef md;
-            md.bodyA = m_groundBody;
+            auto md = MouseJointDef{};
             md.bodyB = body;
             md.target = p;
             md.maxForce = Real(10000.0f) * GetMass(*body) * MeterPerSquareSecond;
@@ -616,7 +609,8 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
 
     std::stringstream stream;
 
-    drawer.DrawString(5, m_textLine, "step#=%d (@%fs):", m_stepCount, m_sumDeltaTime);
+    drawer.DrawString(5, m_textLine, Drawer::Left,
+                      "step#=%d (@%fs):", m_stepCount, m_sumDeltaTime);
     m_textLine += DRAW_STRING_NEW_LINE;
 
     stream = std::stringstream();
@@ -624,7 +618,7 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     stream << " cur=" << m_curStepDuration.count();
     stream << " max=" << m_maxStepDuration.count();
     stream << " sum=" << m_sumStepDuration.count();
-    drawer.DrawString(5, m_textLine, stream.str().c_str());
+    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
 
     stream = std::stringstream();
@@ -635,7 +629,7 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     stream << " contacts=" << m_numContacts;
     stream << " (" << touchingCount << " touching, " << m_maxContacts << " max),";
     stream << " joints=" << jointCount;
-    drawer.DrawString(5, m_textLine, stream.str().c_str());
+    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
 
     stream = std::stringstream();
@@ -644,10 +638,10 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     stream << " cts-ignor=" << m_stepStats.pre.ignored;
     stream << " cts-del=" << m_stepStats.pre.destroyed;
     stream << " cts-upd=" << m_stepStats.pre.updated;
-    drawer.DrawString(5, m_textLine, stream.str().c_str());
+    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
 
-    drawer.DrawString(5, m_textLine, "  reg-info:");
+    drawer.DrawString(5, m_textLine, Drawer::Left, "  reg-info:");
     m_textLine += DRAW_STRING_NEW_LINE;
 
     stream = std::stringstream();
@@ -658,7 +652,7 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     stream << " pos-iter=" << m_stepStats.reg.sumPosIters;
     stream << " vel-iter=" << m_stepStats.reg.sumVelIters;
     stream << " proxy-moved=" << m_stepStats.toi.proxiesMoved;
-    drawer.DrawString(5, m_textLine, stream.str().c_str());
+    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
 
     stream = std::stringstream();
@@ -666,10 +660,10 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     stream << " bod-slept=" << m_stepStats.reg.bodiesSlept;
     stream << " min-sep=" << static_cast<double>(Real{m_stepStats.reg.minSeparation / Meter});
     stream << " max-inc-imp=" << static_cast<double>(Real{m_stepStats.reg.maxIncImpulse / (Kilogram * MeterPerSecond)});
-    drawer.DrawString(5, m_textLine, stream.str().c_str());
+    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
 
-    drawer.DrawString(5, m_textLine, "  toi-info:");
+    drawer.DrawString(5, m_textLine, Drawer::Left, "  toi-info:");
     m_textLine += DRAW_STRING_NEW_LINE;
 
     stream = std::stringstream();
@@ -680,7 +674,7 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     stream << " pos-iter=" << m_stepStats.toi.sumPosIters;
     stream << " vel-iter=" << m_stepStats.toi.sumVelIters;
     stream << " proxy-moved=" << m_stepStats.toi.proxiesMoved;
-    drawer.DrawString(5, m_textLine, stream.str().c_str());
+    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
 
     stream = std::stringstream();
@@ -692,7 +686,7 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     stream << " max-toi-iter=" << unsigned{m_stepStats.toi.maxToiIters};
     stream << " min-sep=" << static_cast<double>(Real{m_stepStats.toi.minSeparation / Meter});
     stream << " max-inc-imp=" << static_cast<double>(Real{m_stepStats.toi.maxIncImpulse / (Kilogram * MeterPerSecond)});
-    drawer.DrawString(5, m_textLine, stream.str().c_str());
+    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
 
     stream = std::stringstream();
@@ -700,7 +694,7 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     // stream << " cts-ignored=" << m_sumContactsIgnoredPre;
     stream << " cts-upd=" << m_sumContactsUpdatedPre;
     stream << " cts-skipped=" << m_sumContactsSkippedPre;
-    drawer.DrawString(5, m_textLine, stream.str().c_str());
+    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
 
     stream = std::stringstream();
@@ -710,7 +704,7 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     stream << " pos-iter=" << m_sumRegPosIters;
     stream << " vel-iter=" << m_sumRegVelIters;
     stream << " proxy-moved=" << m_sumRegProxiesMoved;
-    drawer.DrawString(5, m_textLine, stream.str().c_str());
+    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
 
     stream = std::stringstream();
@@ -724,14 +718,14 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     stream << " cts-touch-skipped=" << m_sumToiContactsSkippedTouching;
     stream << " cts-upd-toi=" << m_sumContactsUpdatedToi;
     stream << " cts-maxstep=" << m_sumContactsAtMaxSubSteps;
-    drawer.DrawString(5, m_textLine, stream.str().c_str());
+    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
 
     stream = std::stringstream();
     stream << "  Reg ranges:";
     stream << " min-sep=" << static_cast<double>(Real{m_minRegSep / Meter});
     stream << " max-sep=" << static_cast<double>(Real{m_maxRegSep / Meter});
-    drawer.DrawString(5, m_textLine, stream.str().c_str());
+    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
 
     stream = std::stringstream();
@@ -740,7 +734,7 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     stream << " max-dist-iter=" << unsigned{m_maxDistIters} << "/" << unsigned{stepConf.maxDistanceIters};
     stream << " max-toi-iter=" << unsigned{m_maxToiIters} << "/" << unsigned{stepConf.maxToiIters};
     stream << " max-root-iter=" << unsigned{m_maxRootIters} << "/" << unsigned{stepConf.maxToiRootIters};
-    drawer.DrawString(5, m_textLine, stream.str().c_str());
+    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
 
     const auto proxyCount = m_world->GetTree().GetProxyCount();
@@ -757,7 +751,7 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     stream << " height=" << unsigned{height};
     stream << " balance=" << unsigned{balance};
     stream << " perim-ratio=" << static_cast<double>(quality);
-    drawer.DrawString(5, m_textLine, stream.str().c_str());
+    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
 
     auto cts = std::map<Contact*,int>();
@@ -834,7 +828,7 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
                 }
                 default: break;
             }
-            drawer.DrawString(5, m_textLine, stream.str().c_str());
+            drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
             m_textLine += DRAW_STRING_NEW_LINE;
         }
     }
@@ -893,7 +887,7 @@ void Test::DrawStats(Drawer& drawer, const Fixture& fixture)
     stream << " b-cts=" << numTouching;
     stream << "/" << numContacts;
     stream << " b-impulses=" << numImpulses;
-    drawer.DrawString(5, m_textLine, stream.str().c_str());
+    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
 }
 
@@ -966,7 +960,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 
     if (settings.pause)
     {
-        drawer.DrawString(5, m_textLine, "****PAUSED****");
+        drawer.DrawString(5, m_textLine, Drawer::Left, "****PAUSED****");
         m_textLine += DRAW_STRING_NEW_LINE;
 
         if ((settings.dt == 0) && m_mouseJoint)

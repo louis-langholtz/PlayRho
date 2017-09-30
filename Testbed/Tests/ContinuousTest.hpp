@@ -77,7 +77,8 @@ public:
 
         if (gjkCalls > 0)
         {
-            drawer.DrawString(5, m_textLine, "gjk calls = %d, ave gjk iters = %3.1f, max gjk iters = %d",
+            drawer.DrawString(5, m_textLine, Drawer::Left,
+                              "gjk calls = %d, ave gjk iters = %3.1f, max gjk iters = %d",
                 gjkCalls, float(gjkIters) / gjkCalls, gjkMaxIters);
             m_textLine += DRAW_STRING_NEW_LINE;
         }
@@ -87,11 +88,13 @@ public:
 
         if (toiCalls > 0)
         {
-            drawer.DrawString(5, m_textLine, "toi calls = %d, ave [max] toi iters = %3.1f [%d]",
+            drawer.DrawString(5, m_textLine, Drawer::Left,
+                              "toi calls = %d, ave [max] toi iters = %3.1f [%d]",
                                 toiCalls, float(toiIters) / toiCalls, toiMaxRootIters);
             m_textLine += DRAW_STRING_NEW_LINE;
             
-            drawer.DrawString(5, m_textLine, "ave [max] toi root iters = %3.1f [%d]",
+            drawer.DrawString(5, m_textLine, Drawer::Left,
+                              "ave [max] toi root iters = %3.1f [%d]",
                 float(toiRootIters) / toiCalls, toiMaxRootIters);
             m_textLine += DRAW_STRING_NEW_LINE;
 

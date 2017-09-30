@@ -111,9 +111,11 @@ public:
 
     void PostStep(const Settings&, Drawer& drawer) override
     {
-        drawer.DrawString(5, m_textLine, "Press: (,) to launch a bullet.");
+        drawer.DrawString(5, m_textLine, Drawer::Left,
+                          "Press: (,) to launch a bullet.");
         m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, "Blocksolve = %d", g_blockSolve);
+        drawer.DrawString(5, m_textLine, Drawer::Left,
+                          "Blocksolve = %d", g_blockSolve);
         m_textLine += DRAW_STRING_NEW_LINE;
 
         //if (GetStepCount() == 300)

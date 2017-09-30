@@ -131,7 +131,8 @@ public:
 
     void PostStep(const Settings&, Drawer& drawer) override
     {
-        drawer.DrawString(5, m_textLine, "Keys: (d) dynamic, (s) static, (k) kinematic");
+        drawer.DrawString(5, m_textLine, Drawer::Left,
+                          "Keys: (d) dynamic, (s) static, (k) kinematic");
         m_textLine += DRAW_STRING_NEW_LINE;
     }
 

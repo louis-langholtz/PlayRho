@@ -680,6 +680,8 @@ static bool UserInterface(int mousex, int mousey, unsigned char mousebutton, int
             settings.drawSkins = !settings.drawSkins;
         if (imguiCheck("AABBs", settings.drawAABBs, true))
             settings.drawAABBs = !settings.drawAABBs;
+        if (imguiCheck("Labels", settings.drawLabels, true))
+            settings.drawLabels = !settings.drawLabels;
         if (imguiCheck("Contact Points", settings.drawContactPoints, true))
             settings.drawContactPoints = !settings.drawContactPoints;
         if (imguiCheck("Contact Normals", settings.drawContactNormals, true))
@@ -773,7 +775,7 @@ int main()
 #endif
 
     camera.m_width = 1280; // 1152;
-    camera.m_height = 960; // 864;
+    camera.m_height = 980; // 864;
     menuX = camera.m_width - menuWidth - 10;
     menuHeight = camera.m_height - 20;
 

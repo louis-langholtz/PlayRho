@@ -259,10 +259,11 @@ public:
 
     void PostStep(const Settings&, Drawer& drawer) override
     {
-        drawer.DrawString(5, m_textLine,
+        drawer.DrawString(5, m_textLine, Drawer::Left,
                           "Keys: left = a, brake = s, right = d, hz down = q, hz up = e");
         m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, "frequency = %g hz, damping ratio = %g",
+        drawer.DrawString(5, m_textLine, Drawer::Left,
+                          "frequency = %g hz, damping ratio = %g",
                           static_cast<double>(Real{m_hz / Hertz}), m_zeta);
         m_textLine += DRAW_STRING_NEW_LINE;
     }

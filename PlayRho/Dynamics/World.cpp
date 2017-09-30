@@ -1151,12 +1151,12 @@ void World::AddJointsToIsland(Island& island, std::vector<Body*>& stack, const B
         // Use data of ji before dereferencing its pointers.
         const auto other = ji.first;
         const auto joint = ji.second;
-        assert(other->IsEnabled() || !other->IsAwake());
-        if (!IsIslanded(joint) && other->IsEnabled())
+        assert(other == nullptr || other->IsEnabled() || !other->IsAwake());
+        if (!IsIslanded(joint) && ((other == nullptr) || other->IsEnabled()))
         {
             island.m_joints.push_back(joint);
             SetIslanded(joint);
-            if (!IsIslanded(other))
+            if ((other != nullptr) && !IsIslanded(other))
             {
                 // Only now dereference ji's pointers.
                 const auto bodyA = joint->GetBodyA();

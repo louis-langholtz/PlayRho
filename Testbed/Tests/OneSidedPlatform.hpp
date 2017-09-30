@@ -102,11 +102,13 @@ public:
 
     void PostStep(const Settings&, Drawer& drawer) override
     {
-        drawer.DrawString(5, m_textLine, "Press: (c) create a shape, (d) destroy a shape.");
+        drawer.DrawString(5, m_textLine, Drawer::Left,
+                          "Press: (c) create a shape, (d) destroy a shape.");
         m_textLine += DRAW_STRING_NEW_LINE;
 
         const auto v = GetLinearVelocity(*(m_character->GetBody()));
-        drawer.DrawString(5, m_textLine, "Character Linear Velocity: %f",
+        drawer.DrawString(5, m_textLine, Drawer::Left,
+                          "Character Linear Velocity: %f",
                           static_cast<double>(Real{GetY(v) / MeterPerSecond}));
         m_textLine += DRAW_STRING_NEW_LINE;
     }

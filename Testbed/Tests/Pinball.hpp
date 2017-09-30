@@ -119,7 +119,7 @@ public:
 
     void PostStep(const Settings&, Drawer& drawer) override
     {
-        drawer.DrawString(5, m_textLine, "Press 'a' to control the flippers");
+        drawer.DrawString(5, m_textLine, Drawer::Left, "Press 'a' to control the flippers");
         m_textLine += DRAW_STRING_NEW_LINE;
     }
     

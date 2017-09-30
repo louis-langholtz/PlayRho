@@ -129,7 +129,7 @@ namespace playrho {
         
         void PostStep(const Settings&, Drawer& drawer) override
         {
-            drawer.DrawString(5, m_textLine,
+            drawer.DrawString(5, m_textLine, Drawer::Left,
                               "Press 'A' or 'D' to increase angular velocity counter-clockwise or clockwise respectively.");
             m_textLine += DRAW_STRING_NEW_LINE;
         }

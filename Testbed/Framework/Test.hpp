@@ -62,6 +62,7 @@ struct Settings
     int maxSubSteps = DefaultMaxSubSteps;
     bool drawShapes = true;
     bool drawSkins = false;
+    bool drawLabels = false;
     bool drawJoints = true;
     bool drawAABBs = false;
     bool drawContactPoints = false;
@@ -215,13 +216,11 @@ protected:
 
     const Body* GetBomb() const noexcept { return m_bomb; }
     void SetBomb(Body* body) noexcept { m_bomb = body; }
-    void SetGroundBody(Body* body) noexcept { m_groundBody = body; }
     
     World* const m_world;
     TextLinePos m_textLine = TextLinePos{30};
     
 private:
-    Body* m_groundBody;
     Fixtures m_selectedFixtures;
     AABB m_worldAABB;
     ContactPoints m_points;
