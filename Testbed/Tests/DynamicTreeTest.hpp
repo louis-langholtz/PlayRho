@@ -85,7 +85,7 @@ public:
         for (auto i = 0; i < e_actorCount; ++i)
         {
             const auto actor = m_actors + i;
-            if (actor->proxyId == DynamicTree::InvalidIndex)
+            if (actor->proxyId == DynamicTree::GetInvalidSize())
                 continue;
 
             Color c(0.9f, 0.9f, 0.9f);
@@ -151,7 +151,7 @@ public:
         }
 
         {
-            DynamicTree::size_type height = m_tree.GetHeight();
+            const auto height = GetHeight(m_tree);
             drawer.DrawString(5, m_textLine, "dynamic tree height = %d", height);
             m_textLine += DRAW_STRING_NEW_LINE;
         }
@@ -184,14 +184,14 @@ public:
         }
     }
 
-    bool QueryCallback(DynamicTree::size_type proxyId)
+    bool QueryCallback(DynamicTree::Size proxyId)
     {
         Actor* actor = (Actor*)m_tree.GetUserData(proxyId);
         actor->overlap = TestOverlap(m_queryAABB, actor->aabb);
         return true;
     }
 
-    Real RayCastCallback(const RayCastInput& input, DynamicTree::size_type proxyId)
+    Real RayCastCallback(const RayCastInput& input, DynamicTree::Size proxyId)
     {
         auto actor = static_cast<Actor*>(m_tree.GetUserData(proxyId));
 
@@ -215,7 +215,7 @@ private:
         AABB aabb;
         Real fraction;
         bool overlap;
-        DynamicTree::size_type proxyId;
+        DynamicTree::Size proxyId;
     };
 
     AABB GetRandomAABB()
@@ -225,7 +225,7 @@ private:
         //aabb->lowerBound.y = -m_proxyExtent + m_worldExtent;
         const auto lowerBound = Vec2(RandomFloat(-m_worldExtent, m_worldExtent), RandomFloat(0.0f, 2.0f * m_worldExtent)) * Meter;
         const auto upperBound = lowerBound + w;
-        return AABB(lowerBound, upperBound);
+        return AABB{lowerBound, upperBound};
     }
 
     void MoveAABB(AABB* aabb)
@@ -252,7 +252,7 @@ private:
         {
             const auto j = rand() % e_actorCount;
             const auto actor = m_actors + j;
-            if (actor->proxyId == DynamicTree::InvalidIndex)
+            if (actor->proxyId == DynamicTree::GetInvalidSize())
             {
                 actor->aabb = GetRandomAABB();
                 actor->proxyId = m_tree.CreateProxy(GetFattenedAABB(actor->aabb, extension), actor);
@@ -267,10 +267,10 @@ private:
         {
             const auto j = rand() % e_actorCount;
             const auto actor = m_actors + j;
-            if (actor->proxyId != DynamicTree::InvalidIndex)
+            if (actor->proxyId != DynamicTree::GetInvalidSize())
             {
                 m_tree.DestroyProxy(actor->proxyId);
-                actor->proxyId = DynamicTree::InvalidIndex;
+                actor->proxyId = DynamicTree::GetInvalidSize();
                 return;
             }
         }
@@ -284,7 +284,7 @@ private:
         {
             const auto j = rand() % e_actorCount;
             const auto actor = m_actors + j;
-            if (actor->proxyId == DynamicTree::InvalidIndex)
+            if (actor->proxyId == DynamicTree::GetInvalidSize())
             {
                 continue;
             }
@@ -322,11 +322,11 @@ private:
 
     void Query()
     {
-        m_tree.Query(m_queryAABB, [&](DynamicTree::size_type nodeId){ return QueryCallback(nodeId); });
+        m_tree.Query(m_queryAABB, [&](DynamicTree::Size nodeId){ return QueryCallback(nodeId); });
 
         for (auto i = decltype(e_actorCount){0}; i < e_actorCount; ++i)
         {
-            if (m_actors[i].proxyId == DynamicTree::InvalidIndex)
+            if (m_actors[i].proxyId == DynamicTree::GetInvalidSize())
             {
                 continue;
             }
@@ -344,7 +344,7 @@ private:
         auto input = m_rayCastInput;
 
         // Ray cast against the dynamic tree.
-        m_tree.RayCast(input, [&](const RayCastInput& rci, DynamicTree::size_type proxyId) {
+        m_tree.RayCast(input, [&](const RayCastInput& rci, DynamicTree::Size proxyId) {
             return RayCastCallback(rci, proxyId);
         });
 
@@ -353,7 +353,7 @@ private:
         RayCastHit bruteOutput;
         for (auto i = decltype(e_actorCount){0}; i < e_actorCount; ++i)
         {
-            if (m_actors[i].proxyId == DynamicTree::InvalidIndex)
+            if (m_actors[i].proxyId == DynamicTree::GetInvalidSize())
             {
                 continue;
             }

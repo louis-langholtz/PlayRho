@@ -60,7 +60,7 @@ namespace playrho {
         
         /// @brief Initializing constructor.
         constexpr AABB(ValueRange<Length>&& x, ValueRange<Length>&& y) noexcept:
-            rangeX{std::move(x)}, rangeY{std::move(y)}
+            rangeX{x}, rangeY{y}
         {
             // Intentionally empty.
         }
