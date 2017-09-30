@@ -30,8 +30,13 @@ TEST(DynamicTree, ByteSize)
 }
 
 TEST(DynamicTree, TreeNodeByteSize)
-{
-    EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(32));
+{    
+    switch (sizeof(Real))
+    {
+        case  4: EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(32)); break;
+        case  8: EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(48)); break;
+        default: FAIL(); break;
+    }
 }
 
 TEST(DynamicTree, Traits)

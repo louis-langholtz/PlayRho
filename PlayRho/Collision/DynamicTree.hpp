@@ -51,7 +51,7 @@ public:
     /// @brief Size type.
     using Size = ContactCounter;
 
-    struct TreeNode;
+    class TreeNode;
     struct UnusedNode;
     struct LeafNode;
     struct BranchNode;
@@ -376,19 +376,19 @@ union DynamicTree::VariantData
 /// @brief Is unused.
 /// @details Determines whether the given DynamicTree node is an unused node.
 /// @relatedalso DynamicTree::TreeNode
-bool IsUnused(const DynamicTree::TreeNode& node) noexcept;
+constexpr bool IsUnused(const DynamicTree::TreeNode& node) noexcept;
 
 /// @brief Is leaf.
 /// @details Determines whether the given DynamicTree node is a leaf node.
 ///   Leaf nodes have a pointer to user data.
 /// @relatedalso DynamicTree::TreeNode
-bool IsLeaf(const DynamicTree::TreeNode& node) noexcept;
+constexpr bool IsLeaf(const DynamicTree::TreeNode& node) noexcept;
 
 /// @brief Is branch.
 /// @details Determines whether the given DynamicTree node is a branch node.
 ///   Branch nodes have 2 indices to child nodes.
 /// @relatedalso DynamicTree::TreeNode
-bool IsBranch(const DynamicTree::TreeNode& node) noexcept;
+constexpr bool IsBranch(const DynamicTree::TreeNode& node) noexcept;
 
 /// @brief A node in the dynamic tree.
 /// @note Users do not interact with this directly.
@@ -403,10 +403,10 @@ public:
     ~TreeNode() = default;
     
     /// @brief Copy constructor.
-    TreeNode(const TreeNode& other) noexcept = default;
+    constexpr TreeNode(const TreeNode& other) noexcept = default;
 
     /// @brief Move constructor.
-    TreeNode(TreeNode&& other) = default;
+    constexpr TreeNode(TreeNode&& other) = default;
 
     /// @brief Initializing constructor.
     constexpr TreeNode(Size other = DynamicTree::GetInvalidSize()) noexcept:
@@ -438,88 +438,88 @@ public:
     TreeNode& operator= (TreeNode&& other) noexcept = default;
     
     /// @brief Gets the node "height".
-    Height GetHeight() const noexcept
+    constexpr Height GetHeight() const noexcept
     {
         return m_height;
     }
     
     /// @brief Sets the node "height" to the given value.
-    TreeNode& SetHeight(Height value) noexcept
+    constexpr TreeNode& SetHeight(Height value) noexcept
     {
         m_height = value;
         return *this;
     }
     
     /// @brief Gets the node's "other" index.
-    Size GetOther() const noexcept
+    constexpr Size GetOther() const noexcept
     {
         return m_other;
     }
                 
     /// @brief Sets the node's "other" index to the given value.
-    TreeNode& SetOther(Size other) noexcept
+    constexpr TreeNode& SetOther(Size other) noexcept
     {
         m_other = other;
         return *this;
     }
 
     /// @brief Gets the node's AABB.
-    AABB GetAABB() const noexcept
+    constexpr AABB GetAABB() const noexcept
     {
         return m_aabb;
     }
 
     /// @brief Sets the node's AABB.
-    TreeNode& SetAABB(AABB value) noexcept
+    constexpr TreeNode& SetAABB(AABB value) noexcept
     {
         m_aabb = value;
         return *this;
     }
     
     /// @brief Gets the node as an "unused" value.
-    UnusedNode AsUnused() const noexcept
+    constexpr UnusedNode AsUnused() const noexcept
     {
         assert(IsUnused(*this));
         return m_variant.unused;
     }
     
     /// @brief Gets the node as a "leaf" value.
-    LeafNode AsLeaf() const noexcept
+    constexpr LeafNode AsLeaf() const noexcept
     {
         assert(IsLeaf(*this));
         return m_variant.leaf;
     }
     
     /// @brief Gets the node as a "branch" value.
-    BranchNode AsBranch() const noexcept
+    constexpr BranchNode AsBranch() const noexcept
     {
         assert(IsBranch(*this));
         return m_variant.branch;
     }
 
     /// @brief Gets the node as an "unused" value.
-    UnusedNode& AsUnused() noexcept
+    constexpr UnusedNode& AsUnused() noexcept
     {
         assert(IsUnused(*this));
         return m_variant.unused;
     }
     
     /// @brief Gets the node as a "leaf" value.
-    LeafNode& AsLeaf() noexcept
+    constexpr LeafNode& AsLeaf() noexcept
     {
         assert(IsLeaf(*this));
         return m_variant.leaf;
     }
     
     /// @brief Gets the node as a "branch" value.
-    BranchNode& AsBranch() noexcept
+    constexpr BranchNode& AsBranch() noexcept
     {
         assert(IsBranch(*this));
         return m_variant.branch;
     }
 
     /// @brief Assign's the node's value.
-    TreeNode& Assign(Size height, const UnusedNode& value) noexcept
+    constexpr TreeNode& Assign(Size height, const UnusedNode& value) noexcept
     {
         assert(height == DynamicTree::GetInvalidHeight());
         m_height = height;
@@ -528,7 +528,7 @@ public:
     }
     
     /// @brief Assign's the node's value.
-    TreeNode& Assign(Size height, const LeafNode& value) noexcept
+    constexpr TreeNode& Assign(Size height, const LeafNode& value) noexcept
     {
         assert(height == 0);
         m_height = height;
@@ -537,7 +537,7 @@ public:
     }
     
     /// @brief Assign's the node's value.
-    TreeNode& Assign(Size height, const BranchNode& value) noexcept
+    constexpr TreeNode& Assign(Size height, const BranchNode& value) noexcept
     {
         assert(height > 0);
         m_height = height;
@@ -564,7 +564,7 @@ private:
 
 /// @brief Whether this node is free (or allocated).
 /// @relatedalso DynamicTree::TreeNode
-inline bool IsUnused(const DynamicTree::TreeNode& node) noexcept
+constexpr inline bool IsUnused(const DynamicTree::TreeNode& node) noexcept
 {
     return node.GetHeight() == DynamicTree::GetInvalidHeight();
 }
@@ -573,7 +573,7 @@ inline bool IsUnused(const DynamicTree::TreeNode& node) noexcept
 /// @note This has constant complexity.
 /// @return <code>true</code> if this is a leaf node, <code>false</code> otherwise.
 /// @relatedalso DynamicTree::TreeNode
-inline bool IsLeaf(const DynamicTree::TreeNode& node) noexcept
+constexpr inline bool IsLeaf(const DynamicTree::TreeNode& node) noexcept
 {
     return node.GetHeight() == 0;
 }
@@ -581,14 +581,14 @@ inline bool IsLeaf(const DynamicTree::TreeNode& node) noexcept
 /// @brief Is branch.
 /// @details Determines whether the given node is a "branch" node.
 /// @relatedalso DynamicTree::TreeNode
-inline bool IsBranch(const DynamicTree::TreeNode& node) noexcept
+constexpr inline bool IsBranch(const DynamicTree::TreeNode& node) noexcept
 {
     return (node.GetHeight() != DynamicTree::GetInvalidSize()) && (node.GetHeight() > 0);
 }
 
 /// @brief Gets the AABB of the given DynamicTree node.
 /// @relatedalso DynamicTree::TreeNode
-inline AABB GetAABB(const DynamicTree::TreeNode& node) noexcept
+constexpr inline AABB GetAABB(const DynamicTree::TreeNode& node) noexcept
 {
     assert(!IsUnused(node));
     return node.GetAABB();
@@ -597,7 +597,7 @@ inline AABB GetAABB(const DynamicTree::TreeNode& node) noexcept
 /// @brief Gets the next index of the given node.
 /// @warning Behavior is undefined if the given node is not an "unused" node.
 /// @relatedalso DynamicTree::TreeNode
-inline DynamicTree::Size GetNext(const DynamicTree::TreeNode& node) noexcept
+constexpr inline DynamicTree::Size GetNext(const DynamicTree::TreeNode& node) noexcept
 {
     assert(IsUnused(node));
     return node.GetOther();
@@ -615,7 +615,7 @@ inline DynamicTree::TreeNode& SetParent(DynamicTree::TreeNode& node,
 
 /// @brief Gets the height of the binary tree.
 /// @return Height of the tree (as stored in the root node) or 0 if the root node is not valid.
-inline DynamicTree::Height GetHeight(const DynamicTree& tree) noexcept
+constexpr inline DynamicTree::Height GetHeight(const DynamicTree& tree) noexcept
 {
     const auto index = tree.GetRootIndex();
     return (index != DynamicTree::GetInvalidSize())? tree.GetHeight(index): DynamicTree::Height{0};
@@ -624,7 +624,7 @@ inline DynamicTree::Height GetHeight(const DynamicTree& tree) noexcept
 /// @brief Tests for overlap of the elements identified in the given dynamic tree.
 /// @relatedalso DynamicTree
 inline bool TestOverlap(const DynamicTree& tree,
-                        DynamicTree::Size proxyIdA, DynamicTree::Size proxyIdB)
+                        DynamicTree::Size proxyIdA, DynamicTree::Size proxyIdB) noexcept
 {
     return TestOverlap(tree.GetAABB(proxyIdA), tree.GetAABB(proxyIdB));
 }
@@ -632,7 +632,7 @@ inline bool TestOverlap(const DynamicTree& tree,
 /// @brief Gets the ratio of the sum of the perimeters of nodes to the root perimeter.
 /// @note Zero is returned if no proxies exist at the time of the call.
 /// @return Value of zero or more.
-inline Real ComputePerimeterRatio(const DynamicTree& tree)
+inline Real ComputePerimeterRatio(const DynamicTree& tree) noexcept
 {
     const auto root = tree.GetRootIndex();
     if (root != DynamicTree::GetInvalidSize())
