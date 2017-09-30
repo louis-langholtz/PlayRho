@@ -2771,15 +2771,19 @@ void World::CreateProxies(Fixture& fixture, Length aabbExtension)
 void World::DestroyProxies(Fixture& fixture)
 {
     const auto proxies = FixtureAtty::GetProxies(fixture);
+    const auto childCount = proxies.size();
 
-    // Destroy proxies in reverse order from what they were created in.
-    for (auto i = proxies.size() - 1; i < proxies.size(); --i)
+    if (childCount > 0)
     {
-        UnregisterForProcessing(proxies[i].proxyId);
-        m_tree.DestroyProxy(proxies[i].proxyId);
-        proxies[i].~FixtureProxy();
+        // Destroy proxies in reverse order from what they were created in.
+        for (auto i = childCount - 1; i < childCount; --i)
+        {
+            UnregisterForProcessing(proxies[i].proxyId);
+            m_tree.DestroyProxy(proxies[i].proxyId);
+            proxies[i].~FixtureProxy();
+        }
     }
-    Free(proxies.begin());
+    Free(proxies.data());
 
     const auto emptyArray = static_cast<FixtureProxy*>(nullptr);
     FixtureAtty::SetProxies(fixture, Span<FixtureProxy>(emptyArray, size_t{0}));

@@ -24,9 +24,9 @@
 
 using namespace playrho;
 
-TEST(DynamicTree, ByteSizeIs24)
+TEST(DynamicTree, ByteSize)
 {
-    EXPECT_EQ(sizeof(DynamicTree), std::size_t(24));
+    EXPECT_EQ(sizeof(DynamicTree), std::size_t(32));
 }
 
 TEST(DynamicTree, Traits)
@@ -59,7 +59,7 @@ TEST(DynamicTree, DefaultConstruction)
     EXPECT_EQ(foo.GetNodeCount(), DynamicTree::size_type(0));
     EXPECT_EQ(foo.GetHeight(), DynamicTree::size_type(0));
     EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::size_type(0));
-    EXPECT_EQ(foo.GetAreaRatio(), Real(0));    
+    EXPECT_EQ(ComputePerimeterRatio(foo), Real(0));
     EXPECT_TRUE(foo.Validate());
 }
 
@@ -80,7 +80,7 @@ TEST(DynamicTree, CopyConstruction)
         EXPECT_EQ(copy.GetRootIndex(), orig.GetRootIndex());
         EXPECT_EQ(copy.GetNodeCapacity(), orig.GetNodeCapacity());
         EXPECT_EQ(copy.GetHeight(), orig.GetHeight());
-        EXPECT_EQ(copy.GetAreaRatio(), orig.GetAreaRatio());
+        EXPECT_EQ(ComputePerimeterRatio(copy), ComputePerimeterRatio(orig));
         EXPECT_EQ(copy.GetNodeCount(), orig.GetNodeCount());
         EXPECT_EQ(copy.GetMaxBalance(), orig.GetMaxBalance());
     }
@@ -91,7 +91,7 @@ TEST(DynamicTree, CopyConstruction)
         EXPECT_EQ(copy.GetRootIndex(), orig.GetRootIndex());
         EXPECT_EQ(copy.GetNodeCapacity(), orig.GetNodeCapacity());
         EXPECT_EQ(copy.GetHeight(), orig.GetHeight());
-        EXPECT_EQ(copy.GetAreaRatio(), orig.GetAreaRatio());
+        EXPECT_EQ(ComputePerimeterRatio(copy), ComputePerimeterRatio(orig));
         EXPECT_EQ(copy.GetNodeCount(), orig.GetNodeCount());
         EXPECT_EQ(copy.GetMaxBalance(), orig.GetMaxBalance());
         EXPECT_EQ(copy.GetUserData(pid), orig.GetUserData(pid));
@@ -107,7 +107,7 @@ TEST(DynamicTree, CopyAssignment)
         EXPECT_EQ(copy.GetRootIndex(), orig.GetRootIndex());
         EXPECT_EQ(copy.GetNodeCapacity(), orig.GetNodeCapacity());
         EXPECT_EQ(copy.GetHeight(), orig.GetHeight());
-        EXPECT_EQ(copy.GetAreaRatio(), orig.GetAreaRatio());
+        EXPECT_EQ(ComputePerimeterRatio(copy), ComputePerimeterRatio(orig));
         EXPECT_EQ(copy.GetNodeCount(), orig.GetNodeCount());
         EXPECT_EQ(copy.GetMaxBalance(), orig.GetMaxBalance());
     }
@@ -119,7 +119,7 @@ TEST(DynamicTree, CopyAssignment)
         EXPECT_EQ(copy.GetRootIndex(), orig.GetRootIndex());
         EXPECT_EQ(copy.GetNodeCapacity(), orig.GetNodeCapacity());
         EXPECT_EQ(copy.GetHeight(), orig.GetHeight());
-        EXPECT_EQ(copy.GetAreaRatio(), orig.GetAreaRatio());
+        EXPECT_EQ(ComputePerimeterRatio(copy), ComputePerimeterRatio(orig));
         EXPECT_EQ(copy.GetNodeCount(), orig.GetNodeCount());
         EXPECT_EQ(copy.GetMaxBalance(), orig.GetMaxBalance());
         EXPECT_EQ(copy.GetUserData(pid), orig.GetUserData(pid));
@@ -146,7 +146,7 @@ TEST(DynamicTree, CreateAndDestroyProxy)
     EXPECT_EQ(foo.GetUserData(pid), userdata);
     EXPECT_EQ(foo.GetHeight(), DynamicTree::size_type(0));
     EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::size_type(0));
-    EXPECT_EQ(foo.GetAreaRatio(), Real(1));
+    EXPECT_EQ(ComputePerimeterRatio(foo), Real(1));
 
     EXPECT_EQ(foo.ComputeHeight(), DynamicTree::size_type(0));
 
@@ -155,7 +155,7 @@ TEST(DynamicTree, CreateAndDestroyProxy)
     EXPECT_EQ(foo.GetNodeCount(), DynamicTree::size_type(0));
     EXPECT_EQ(foo.GetHeight(), DynamicTree::size_type(0));
     EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::size_type(0));
-    EXPECT_EQ(foo.GetAreaRatio(), Real(0));
+    EXPECT_EQ(ComputePerimeterRatio(foo), Real(0));
 }
 
 TEST(DynamicTree, FourIdenticalProxies)
@@ -181,7 +181,7 @@ TEST(DynamicTree, FourIdenticalProxies)
     EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
     EXPECT_EQ(foo.GetHeight(), DynamicTree::size_type(0));
     EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::size_type(0));
-    EXPECT_EQ(foo.GetAreaRatio(), Real(1));
+    EXPECT_EQ(ComputePerimeterRatio(foo), Real(1));
     EXPECT_EQ(foo.ComputeHeight(), DynamicTree::size_type(0));
 
     {
@@ -194,7 +194,7 @@ TEST(DynamicTree, FourIdenticalProxies)
     EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
     EXPECT_EQ(foo.GetHeight(), DynamicTree::size_type(1));
     EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::size_type(0));
-    EXPECT_EQ(foo.GetAreaRatio(), Real(3));
+    EXPECT_EQ(ComputePerimeterRatio(foo), Real(3));
     EXPECT_EQ(foo.ComputeHeight(), DynamicTree::size_type(1));
     
     {
@@ -207,7 +207,7 @@ TEST(DynamicTree, FourIdenticalProxies)
     EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
     EXPECT_EQ(foo.GetHeight(), DynamicTree::size_type(2));
     EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::size_type(1));
-    EXPECT_EQ(foo.GetAreaRatio(), Real(5));
+    EXPECT_EQ(ComputePerimeterRatio(foo), Real(5));
     EXPECT_EQ(foo.ComputeHeight(), DynamicTree::size_type(2));
     
     {
@@ -220,7 +220,7 @@ TEST(DynamicTree, FourIdenticalProxies)
     EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
     EXPECT_EQ(foo.GetHeight(), DynamicTree::size_type(2));
     EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::size_type(0));
-    EXPECT_EQ(foo.GetAreaRatio(), Real(7));
+    EXPECT_EQ(ComputePerimeterRatio(foo), Real(7));
     EXPECT_EQ(foo.ComputeHeight(), DynamicTree::size_type(2));
     
     foo.RebuildBottomUp();
@@ -229,6 +229,6 @@ TEST(DynamicTree, FourIdenticalProxies)
     EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
     EXPECT_EQ(foo.GetHeight(), DynamicTree::size_type(3));
     EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::size_type(2));
-    EXPECT_EQ(foo.GetAreaRatio(), Real(7));
+    EXPECT_EQ(ComputePerimeterRatio(foo), Real(7));
     EXPECT_EQ(foo.ComputeHeight(), DynamicTree::size_type(3));
 }

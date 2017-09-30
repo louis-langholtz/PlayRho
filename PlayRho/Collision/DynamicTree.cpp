@@ -43,6 +43,7 @@ DynamicTree::DynamicTree(const DynamicTree& other):
     m_root{other.m_root},
     m_nodeCount{other.m_nodeCount},
     m_nodeCapacity{other.m_nodeCapacity},
+    m_proxyCount{other.m_proxyCount},
     m_freeListIndex{other.m_freeListIndex}
 {
     for (auto i = decltype(other.m_nodeCapacity){0}; i < other.m_nodeCapacity; ++i)
@@ -56,6 +57,7 @@ DynamicTree::DynamicTree(DynamicTree&& other) noexcept:
     m_root{other.m_root},
     m_nodeCount{other.m_nodeCount},
     m_nodeCapacity{other.m_nodeCapacity},
+    m_proxyCount{other.m_proxyCount},
     m_freeListIndex{other.m_freeListIndex}
 {
     other.m_nodes = nullptr;
@@ -73,6 +75,7 @@ DynamicTree& DynamicTree::operator=(const DynamicTree& other)
         m_root = other.m_root;
         m_nodeCount = other.m_nodeCount;
         m_nodeCapacity = other.m_nodeCapacity;
+        m_proxyCount = other.m_proxyCount;
         m_freeListIndex = other.m_freeListIndex;
         for (auto i = decltype(other.m_nodeCapacity){0}; i < other.m_nodeCapacity; ++i)
         {
@@ -90,6 +93,7 @@ DynamicTree& DynamicTree::operator=(DynamicTree&& other) noexcept
         m_root = other.m_root;
         m_nodeCount = other.m_nodeCount;
         m_nodeCapacity = other.m_nodeCapacity;
+        m_proxyCount = other.m_proxyCount;
         m_freeListIndex = other.m_freeListIndex;
         other.m_nodes = nullptr;
         other.m_nodeCapacity = 0u;
@@ -171,6 +175,7 @@ DynamicTree::size_type DynamicTree::CreateProxy(const AABB& aabb, void* userData
     m_nodes[index].userData = userData;
     m_nodes[index].height = 0;
     InsertLeaf(index);
+    m_proxyCount++;
     return index;
 }
 
@@ -179,7 +184,9 @@ void DynamicTree::DestroyProxy(size_type index)
     assert(index != InvalidIndex);
     assert(index < m_nodeCapacity);
     assert(IsLeaf(m_nodes[index]));
+    assert(m_proxyCount > 0);
 
+    m_proxyCount--;
     RemoveLeaf(index);
     FreeNode(index);
 }
@@ -542,30 +549,21 @@ DynamicTree::size_type DynamicTree::Balance(size_type index)
     return index;
 }
 
-Real DynamicTree::GetAreaRatio() const noexcept
+Real DynamicTree::ComputeTotalPerimeter() const noexcept
 {
-    if (m_root == InvalidIndex)
+    auto totalPerimeter = Length{0};
+    if (m_root != InvalidIndex)
     {
-        return Real{0};
-    }
-
-    const auto root = m_nodes + m_root;
-    const auto rootArea = GetPerimeter(root->aabb);
-
-    auto totalArea = Length{0};
-    for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
-    {
-        const auto node = m_nodes + i;
-        if (node->height == InvalidIndex)
+        for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
         {
-            // Free node in pool
-            continue;
+            const auto node = m_nodes + i;
+            if (node->height != InvalidIndex)
+            {
+                totalPerimeter += GetPerimeter(node->aabb);
+            }
         }
-
-        totalArea += GetPerimeter(node->aabb);
     }
-
-    return Real{totalArea / rootArea};
+    return totalPerimeter;
 }
 
 // Compute the height of a sub-tree.
@@ -896,7 +894,7 @@ bool DynamicTree::Validate() const
     return true;
 }
 
-DynamicTree::size_type DynamicTree::GetMaxBalance() const
+DynamicTree::size_type DynamicTree::GetMaxBalance() const noexcept
 {
     auto maxBalance = size_type{0};
     for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)

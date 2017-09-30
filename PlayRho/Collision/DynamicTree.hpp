@@ -37,7 +37,7 @@ namespace playrho {
 /// with an AABB.
 ///
 /// @note Nodes are pooled and relocatable, so we use node indices rather than pointers.
-/// @note This data structure is 24-bytes large (on at least one 64-bit platform).
+/// @note This data structure is 32-bytes large (on at least one 64-bit platform).
 ///
 class DynamicTree
 {
@@ -159,12 +159,12 @@ public:
     /// @brief Gets the maximum balance.
     /// @details This gets the maximum balance of nodes in the tree.
     /// @note The balance is the difference in height of the two children of a node.
-    size_type GetMaxBalance() const;
+    size_type GetMaxBalance() const noexcept;
 
     /// @brief Gets the ratio of the sum of the perimeters of nodes to the root perimeter.
     /// @note Zero is returned if no proxies exist at the time of the call.
     /// @return Value of zero or more.
-    Real GetAreaRatio() const noexcept;
+    Real ComputeTotalPerimeter() const noexcept;
 
     /// @brief Builds an optimal tree.
     /// @note This operation is very expensive.
@@ -195,6 +195,10 @@ public:
     /// @brief Gets the current node count.
     /// @return Count of existing proxies (count of nodes currently allocated).
     size_type GetNodeCount() const noexcept;
+    
+    /// @brief Gets the current proxy count.
+    /// @details Gets the current proxy count which is also the current leaf node count.
+    size_type GetProxyCount() const noexcept;
 
     /// @brief Finds the lowest cost node.
     /// @warning Behavior is undefined if the tree doesn't have a valid root.
@@ -254,6 +258,8 @@ private:
     size_type m_nodeCount = 0; ///< Node count. @details Count of currently allocated nodes.
     size_type m_nodeCapacity; ///< Node capacity. @details Size of buffer allocated for nodes.
 
+    size_type m_proxyCount = 0; ///< Proxy count. @details Count of currently allocated leaf nodes.
+
     size_type m_freeListIndex = 0; ///< Free list. @details Index to free nodes.
 };
 
@@ -275,6 +281,11 @@ inline DynamicTree::size_type DynamicTree::GetNodeCapacity() const noexcept
 inline DynamicTree::size_type DynamicTree::GetNodeCount() const noexcept
 {
     return m_nodeCount;
+}
+
+inline DynamicTree::size_type DynamicTree::GetProxyCount() const noexcept
+{
+    return m_proxyCount;
 }
 
 inline void* DynamicTree::GetUserData(size_type index) const noexcept
@@ -316,6 +327,21 @@ inline bool TestOverlap(const DynamicTree& tree,
                         DynamicTree::size_type proxyIdA, DynamicTree::size_type proxyIdB)
 {
     return TestOverlap(tree.GetAABB(proxyIdA), tree.GetAABB(proxyIdB));
+}
+
+/// @brief Gets the ratio of the sum of the perimeters of nodes to the root perimeter.
+/// @note Zero is returned if no proxies exist at the time of the call.
+/// @return Value of zero or more.
+inline Real ComputePerimeterRatio(const DynamicTree& tree)
+{
+    const auto root = tree.GetRootIndex();
+    if (root != DynamicTree::InvalidIndex)
+    {
+        const auto rootPerimeter = GetPerimeter(tree.GetAABB(root));
+        const auto total = tree.ComputeTotalPerimeter();
+        return total / rootPerimeter;
+    }
+    return 0;
 }
 
 } // namespace playrho

@@ -331,7 +331,7 @@ static bool Draw(Drawer& drawer, const World& world, const Settings& settings,
                 for (auto i = decltype(proxy_count){0}; i < proxy_count; ++i)
                 {
                     const auto proxy = f.GetProxy(i);
-                    const auto aabb = world.GetFatAABB(proxy->proxyId);
+                    const auto aabb = world.GetTree().GetAABB(proxy->proxyId);
                     Length2D vs[4];
                     vs[0] = Length2D{GetX(aabb.GetLowerBound()), GetY(aabb.GetLowerBound())};
                     vs[1] = Length2D{GetX(aabb.GetUpperBound()), GetY(aabb.GetLowerBound())};
@@ -743,12 +743,21 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     drawer.DrawString(5, m_textLine, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
 
-    const auto proxyCount = m_world->GetProxyCount();
-    const auto height = m_world->GetTreeHeight();
-    const auto balance = m_world->GetTreeBalance();
-    const auto quality = m_world->GetTreeQuality();
-    drawer.DrawString(5, m_textLine, "  proxies/height/balance/quality = %d/%d/%d/%g",
-                      proxyCount, height, balance, quality);
+    const auto proxyCount = m_world->GetTree().GetProxyCount();
+    const auto nodeCount = m_world->GetTree().GetNodeCount();
+    const auto height = m_world->GetTree().GetHeight();
+    const auto balance = m_world->GetTree().GetMaxBalance();
+    const auto quality = ComputePerimeterRatio(m_world->GetTree());
+    const auto capacity = m_world->GetTree().GetNodeCapacity();
+    stream = std::stringstream();
+    stream << "  Dynamic tree:";
+    stream << " proxies=" << unsigned{proxyCount};
+    stream << " nodes=" << unsigned{nodeCount};
+    stream << " capacity=" << unsigned{capacity};
+    stream << " height=" << unsigned{height};
+    stream << " balance=" << unsigned{balance};
+    stream << " perim-ratio=" << static_cast<double>(quality);
+    drawer.DrawString(5, m_textLine, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
 
     auto cts = std::map<Contact*,int>();
