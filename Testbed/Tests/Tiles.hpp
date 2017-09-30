@@ -101,8 +101,8 @@ public:
 
     void PostStep(const Settings&, Drawer& drawer) override
     {
-        const auto height = m_world->GetTreeHeight();
-        const auto leafCount = m_world->GetProxyCount();
+        const auto height = m_world->GetTree().GetHeight();
+        const auto leafCount = m_world->GetTree().GetProxyCount();
         if (leafCount > 0)
         {
             const auto minimumNodeCount = 2 * leafCount - 1;

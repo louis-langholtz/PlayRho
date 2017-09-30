@@ -255,20 +255,9 @@ public:
     /// @note This is for testing.
     void SetSubStepping(bool flag) noexcept;
 
-    /// @brief Gets the number of broad-phase proxies.
-    proxy_size_type GetProxyCount() const noexcept;
-
-    /// @brief Gets the height of the dynamic tree.
-    proxy_size_type GetTreeHeight() const noexcept;
-
-    /// @brief Gets the balance of the dynamic tree.
-    proxy_size_type GetTreeBalance() const;
-
-    /// @brief Gets the quality metric of the dynamic tree.
-    /// @details The smaller the better.
-    /// @return Value of zero or more.
-    Real GetTreeQuality() const;
-
+    /// @brief Gets access to the broad-phase dynamic tree information.
+    const DynamicTree& GetTree() const noexcept;
+    
     /// @brief Changes the global gravity vector.
     void SetGravity(LinearAcceleration2D gravity) noexcept;
     
@@ -293,10 +282,6 @@ public:
 
     /// @brief Gets the inverse delta time.
     Frequency GetInvDeltaTime() const noexcept;
-
-    /// @brief Gets the fat AABB for a proxy.
-    /// @warning Behavior is undefined if the given proxy ID is not a valid ID.
-    AABB GetFatAABB(proxy_size_type proxyId) const;
     
     /// @brief Sets the type of the given body.
     /// @note This may alter the body's mass and velocity.
@@ -839,29 +824,9 @@ inline Frequency World::GetInvDeltaTime() const noexcept
     return m_inv_dt0;
 }
 
-inline AABB World::GetFatAABB(proxy_size_type proxyId) const
+inline const DynamicTree& World::GetTree() const noexcept
 {
-    return m_tree.GetAABB(proxyId);
-}
-
-inline World::proxy_size_type World::GetProxyCount() const noexcept
-{
-    return m_tree.GetNodeCount();
-}
-
-inline World::proxy_size_type World::GetTreeHeight() const noexcept
-{
-    return m_tree.GetHeight();
-}
-
-inline World::proxy_size_type World::GetTreeBalance() const
-{
-    return m_tree.GetMaxBalance();
-}
-
-inline Real World::GetTreeQuality() const
-{
-    return m_tree.GetAreaRatio();
+    return m_tree;
 }
 
 inline void World::SetDestructionListener(DestructionListener* listener) noexcept

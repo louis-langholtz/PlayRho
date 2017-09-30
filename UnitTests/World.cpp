@@ -51,20 +51,20 @@ TEST(World, ByteSize)
             // Size is OS dependent.
             // Seems linux containers are bigger in size...
 #ifdef __APPLE__
-            EXPECT_EQ(sizeof(World), std::size_t(248));
+            EXPECT_EQ(sizeof(World), std::size_t(256));
 #endif
 #ifdef __linux__
-            EXPECT_EQ(sizeof(World), std::size_t(248));
+            EXPECT_EQ(sizeof(World), std::size_t(256));
 #endif
             break;
         }
         case  8:
         {
 #ifdef __APPLE__
-            EXPECT_EQ(sizeof(World), std::size_t(272));
+            EXPECT_EQ(sizeof(World), std::size_t(280));
 #endif
 #ifdef __linux__
-            EXPECT_EQ(sizeof(World), std::size_t(272));
+            EXPECT_EQ(sizeof(World), std::size_t(280));
 #endif
             break;
         }
@@ -126,11 +126,11 @@ TEST(World, DefaultInit)
     World world;
 
     EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
-    EXPECT_EQ(world.GetProxyCount(), World::proxy_size_type(0));
+    EXPECT_EQ(world.GetTree().GetProxyCount(), World::proxy_size_type(0));
     EXPECT_EQ(GetJointCount(world), JointCounter(0));
     EXPECT_EQ(GetContactCount(world), ContactCounter(0));
-    EXPECT_EQ(world.GetTreeHeight(), World::proxy_size_type(0));
-    EXPECT_EQ(world.GetTreeQuality(), Real(0));
+    EXPECT_EQ(world.GetTree().GetHeight(), World::proxy_size_type(0));
+    EXPECT_EQ(ComputePerimeterRatio(world.GetTree()), Real(0));
 
     EXPECT_EQ(world.GetGravity(), EarthlyGravity);
 
@@ -230,9 +230,9 @@ TEST(World, CopyConstruction)
         EXPECT_EQ(world.GetJoints().size(), copy.GetJoints().size());
         EXPECT_EQ(world.GetBodies().size(), copy.GetBodies().size());
         EXPECT_EQ(world.GetContacts().size(), copy.GetContacts().size());
-        EXPECT_EQ(world.GetTreeHeight(), copy.GetTreeHeight());
-        EXPECT_EQ(world.GetProxyCount(), copy.GetProxyCount());
-        EXPECT_EQ(world.GetTreeBalance(), copy.GetTreeBalance());
+        EXPECT_EQ(world.GetTree().GetHeight(), copy.GetTree().GetHeight());
+        EXPECT_EQ(world.GetTree().GetProxyCount(), copy.GetTree().GetProxyCount());
+        EXPECT_EQ(world.GetTree().GetMaxBalance(), copy.GetTree().GetMaxBalance());
     }
     
     const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}
@@ -269,9 +269,9 @@ TEST(World, CopyConstruction)
         }
         EXPECT_EQ(world.GetBodies().size(), copy.GetBodies().size());
         EXPECT_EQ(world.GetContacts().size(), copy.GetContacts().size());
-        EXPECT_EQ(world.GetTreeHeight(), copy.GetTreeHeight());
-        EXPECT_EQ(world.GetProxyCount(), copy.GetProxyCount());
-        EXPECT_EQ(world.GetTreeBalance(), copy.GetTreeBalance());
+        EXPECT_EQ(world.GetTree().GetHeight(), copy.GetTree().GetHeight());
+        EXPECT_EQ(world.GetTree().GetProxyCount(), copy.GetTree().GetProxyCount());
+        EXPECT_EQ(world.GetTree().GetMaxBalance(), copy.GetTree().GetMaxBalance());
     }
 }
 
@@ -288,9 +288,9 @@ TEST(World, CopyAssignment)
         EXPECT_EQ(world.GetJoints().size(), copy.GetJoints().size());
         EXPECT_EQ(world.GetBodies().size(), copy.GetBodies().size());
         EXPECT_EQ(world.GetContacts().size(), copy.GetContacts().size());
-        EXPECT_EQ(world.GetTreeHeight(), copy.GetTreeHeight());
-        EXPECT_EQ(world.GetProxyCount(), copy.GetProxyCount());
-        EXPECT_EQ(world.GetTreeBalance(), copy.GetTreeBalance());
+        EXPECT_EQ(world.GetTree().GetHeight(), copy.GetTree().GetHeight());
+        EXPECT_EQ(world.GetTree().GetProxyCount(), copy.GetTree().GetProxyCount());
+        EXPECT_EQ(world.GetTree().GetMaxBalance(), copy.GetTree().GetMaxBalance());
     }
     
     const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}
@@ -328,9 +328,9 @@ TEST(World, CopyAssignment)
         }
         EXPECT_EQ(world.GetBodies().size(), copy.GetBodies().size());
         EXPECT_EQ(world.GetContacts().size(), copy.GetContacts().size());
-        EXPECT_EQ(world.GetTreeHeight(), copy.GetTreeHeight());
-        EXPECT_EQ(world.GetProxyCount(), copy.GetProxyCount());
-        EXPECT_EQ(world.GetTreeBalance(), copy.GetTreeBalance());
+        EXPECT_EQ(world.GetTree().GetHeight(), copy.GetTree().GetHeight());
+        EXPECT_EQ(world.GetTree().GetProxyCount(), copy.GetTree().GetProxyCount());
+        EXPECT_EQ(world.GetTree().GetMaxBalance(), copy.GetTree().GetMaxBalance());
     }
 }
 
