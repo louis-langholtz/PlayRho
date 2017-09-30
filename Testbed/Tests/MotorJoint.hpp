@@ -84,7 +84,7 @@ public:
 
     void PostStep(const Settings&, Drawer& drawer) override
     {
-        drawer.DrawString(5, m_textLine, "Keys: (s) pause");
+        drawer.DrawString(5, m_textLine, Drawer::Left, "Keys: (s) pause");
         m_textLine += 15;
     }
 

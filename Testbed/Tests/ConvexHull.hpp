@@ -82,7 +82,8 @@ public:
         const auto conf = PolygonShape::Conf{};
         const auto shape = PolygonShape{Span<const Length2D>{&m_points[0], m_points.size()}, conf};
 
-        drawer.DrawString(5, m_textLine, "Press g to generate a new random convex hull");
+        drawer.DrawString(5, m_textLine, Drawer::Left,
+                          "Press g to generate a new random convex hull");
         m_textLine += DRAW_STRING_NEW_LINE;
 
         drawer.DrawPolygon(shape.GetVertices().begin(), shape.GetVertexCount(), Color(0.9f, 0.9f, 0.9f));
@@ -90,12 +91,13 @@ public:
         for (auto i = std::size_t{0}; i < m_points.size(); ++i)
         {
             drawer.DrawPoint(m_points[i], 3.0f, Color(0.3f, 0.9f, 0.3f));
-            drawer.DrawString(m_points[i] + Vec2(0.05f, 0.05f) * Meter, "%d", i);
+            drawer.DrawString(m_points[i] + Vec2(0.05f, 0.05f) * Meter, Drawer::Left,
+                              "%d", i);
         }
 
         if (!Validate(shape))
         {
-            drawer.DrawString(5, m_textLine, "Note: Invalid convex hull");
+            drawer.DrawString(5, m_textLine, Drawer::Left, "Note: Invalid convex hull");
             m_textLine += DRAW_STRING_NEW_LINE;
         }
 

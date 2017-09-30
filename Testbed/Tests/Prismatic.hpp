@@ -86,10 +86,10 @@ public:
 
     void PostStep(const Settings& settings, Drawer& drawer) override
     {
-        drawer.DrawString(5, m_textLine, "Keys: (l) limits, (m) motors, (s) speed");
+        drawer.DrawString(5, m_textLine, Drawer::Left, "Keys: (l) limits, (m) motors, (s) speed");
         m_textLine += DRAW_STRING_NEW_LINE;
         const auto force = m_joint->GetMotorForce(Real{settings.hz} * Hertz);
-        drawer.DrawString(5, m_textLine, "Motor Force = %4.0f",
+        drawer.DrawString(5, m_textLine, Drawer::Left, "Motor Force = %4.0f",
                           static_cast<double>(Real{force / Newton}));
         m_textLine += DRAW_STRING_NEW_LINE;
     }

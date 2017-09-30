@@ -53,7 +53,7 @@ public:
         const auto manifold = CollideShapes(proxyA, m_transformA, proxyB, m_transformB);
         const auto pointCount = manifold.GetPointCount();
 
-        drawer.DrawString(5, m_textLine, "point count = %d", pointCount);
+        drawer.DrawString(5, m_textLine, Drawer::Left, "point count = %d", pointCount);
         m_textLine += DRAW_STRING_NEW_LINE;
 
         {

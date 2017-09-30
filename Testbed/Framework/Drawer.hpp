@@ -59,6 +59,13 @@ public:
     /// @brief Size type.
     using size_type = std::size_t;
 
+    enum TextAlign
+    {
+        Left,
+        Center,
+        Right,
+    };
+
     Drawer() = default;
 
     virtual ~Drawer() noexcept = 0;
@@ -81,10 +88,10 @@ public:
     virtual void DrawPoint(const Length2D& p, float size, const Color& color) = 0;
     
     /// Draws a string at the given screen coordinates.
-    virtual void DrawString(int x, int y, const char* string, ...) = 0; 
+    virtual void DrawString(int x, int y, TextAlign align, const char* string, ...) = 0;
     
     /// Draws a string at the given world coordinates.
-    virtual void DrawString(const Length2D& p, const char* string, ...) = 0;
+    virtual void DrawString(const Length2D& p, TextAlign align, const char* string, ...) = 0;
         
     virtual void Flush() = 0;
     

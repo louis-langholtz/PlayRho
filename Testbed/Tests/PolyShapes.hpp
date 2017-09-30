@@ -230,11 +230,11 @@ public:
         const auto color = Color(0.4f, 0.7f, 0.8f);
         drawer.DrawCircle(circle.GetLocation(), circle.GetRadius(), color);
 
-        drawer.DrawString(5, m_textLine, "Press 1-5 to drop stuff");
+        drawer.DrawString(5, m_textLine, Drawer::Left, "Press 1-5 to drop stuff");
         m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, "Press 'a' to (de)activate some bodies");
+        drawer.DrawString(5, m_textLine, Drawer::Left, "Press 'a' to (de)activate some bodies");
         m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, "Press 'd' to destroy a body");
+        drawer.DrawString(5, m_textLine, Drawer::Left, "Press 'd' to destroy a body");
         m_textLine += DRAW_STRING_NEW_LINE;
     }
 

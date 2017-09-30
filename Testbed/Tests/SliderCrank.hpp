@@ -127,10 +127,12 @@ public:
 
     void PostStep(const Settings& settings, Drawer& drawer) override
     {
-        drawer.DrawString(5, m_textLine, "Keys: (f) toggle friction, (m) toggle motor");
+        drawer.DrawString(5, m_textLine, Drawer::Left,
+                          "Keys: (f) toggle friction, (m) toggle motor");
         m_textLine += DRAW_STRING_NEW_LINE;
         const auto torque = m_joint1->GetMotorTorque(Real{settings.hz} * Hertz);
-        drawer.DrawString(5, m_textLine, "Motor Torque = %5.0f",
+        drawer.DrawString(5, m_textLine, Drawer::Left,
+                          "Motor Torque = %5.0f",
                           static_cast<double>(Real{torque / NewtonMeter}));
         m_textLine += DRAW_STRING_NEW_LINE;
     }

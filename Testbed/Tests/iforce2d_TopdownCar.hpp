@@ -469,7 +469,8 @@ public:
     void PostStep(const Settings&, Drawer& drawer) override
     {
         //show some useful info
-        drawer.DrawString(5, m_textLine, "Press w/a/s/d to control the car");
+        drawer.DrawString(5, m_textLine, Drawer::Left,
+                          "Press w/a/s/d to control the car");
         m_textLine += 15;
         
         //drawer.DrawString(5, m_textLine, "Tire traction: %.2f", m_tire->m_currentTraction);

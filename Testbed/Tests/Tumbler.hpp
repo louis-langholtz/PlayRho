@@ -71,11 +71,11 @@ public:
 
     void PostStep(const Settings& settings, Drawer& drawer) override
     {
-        drawer.DrawString(5, m_textLine,
+        drawer.DrawString(5, m_textLine, Drawer::Left,
                           "Press C to clear and re-emit shapes. "
                           "Press 0 or 1 for remaining emitted shapes to be disks or squares.");
         m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine,
+        drawer.DrawString(5, m_textLine, Drawer::Left,
                           "Press '+' or '-' to speed up or slow down rotation. '=' to stop it.");
         m_textLine += DRAW_STRING_NEW_LINE;
 

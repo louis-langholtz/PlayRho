@@ -152,7 +152,8 @@ public:
 
         {
             const auto height = GetHeight(m_tree);
-            drawer.DrawString(5, m_textLine, "dynamic tree height = %d", height);
+            drawer.DrawString(5, m_textLine, Drawer::Left,
+                              "dynamic tree height = %d", height);
             m_textLine += DRAW_STRING_NEW_LINE;
         }
 

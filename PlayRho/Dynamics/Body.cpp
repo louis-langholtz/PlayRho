@@ -344,10 +344,6 @@ bool Body::Insert(Joint* joint)
     const auto bodyB = joint->GetBodyB();
     
     const auto other = (this == bodyA)? bodyB: (this == bodyB)? bodyA: nullptr;
-    if (other == nullptr)
-    {
-        return false;
-    }
     m_joints.push_back(std::make_pair(other, joint));
     return true;
 }

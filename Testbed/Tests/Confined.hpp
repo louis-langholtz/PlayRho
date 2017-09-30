@@ -27,7 +27,7 @@ namespace playrho {
 class Confined : public Test
 {
 public:
-    const Length wall_length = Real(0.15f) * Meter; // DefaultLinearSlop * 1000
+    const Length wall_length = DefaultLinearSlop * 80;
     const Length vertexRadiusIncrement = wall_length / Real{40};
     
     enum
@@ -98,7 +98,6 @@ public:
         bd.bullet = m_bullet_mode;
         const auto wl = StripUnit(wall_length);
         bd.position = Vec2(RandomFloat(-wl / Real{2}, +wl / Real{2}), RandomFloat(0, wl)) * Meter;
-        bd.userData = reinterpret_cast<void*>(m_sequence);
         //bd.allowSleep = false;
 
         const auto body = m_world->CreateBody(bd);
@@ -108,8 +107,6 @@ public:
         conf.restitution = 0.8f;
         conf.vertexRadius = radius;
         body->CreateFixture(std::make_shared<DiskShape>(conf));
-
-        ++m_sequence;
     }
 
     void CreateBox()
@@ -125,11 +122,8 @@ public:
         bd.bullet = m_bullet_mode;
         const auto wl = StripUnit(wall_length);
         bd.position = Vec2(RandomFloat(-wl / Real{2}, +wl / Real{2}), RandomFloat(0, wl)) * Meter;
-        bd.userData = reinterpret_cast<void*>(m_sequence);
         const auto body = m_world->CreateBody(bd);
         body->CreateFixture(std::make_shared<PolygonShape>(side_length/Real{2}, side_length/Real{2}, conf));
-
-        ++m_sequence;
     }
 
     void ToggleBulletMode()
@@ -227,33 +221,21 @@ public:
 
     void PostStep(const Settings&, Drawer& drawer) override
     {
-        for (auto& body: m_world->GetBodies())
-        {
-            auto& b = GetRef(body);
-            if (b.GetType() != BodyType::Dynamic)
-            {
-                continue;
-            }
-            
-            const auto location = b.GetLocation();
-            const auto userData = b.GetUserData();
-            drawer.DrawString(location, "B%d", reinterpret_cast<decltype(m_sequence)>(userData));
-        }
-        
-        drawer.DrawString(5, m_textLine, "Press 'c' to create a circle.");
+        drawer.DrawString(5, m_textLine, Drawer::Left, "Press 'c' to create a circle.");
         m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, "Press 'b' to create a box.");
+        drawer.DrawString(5, m_textLine, Drawer::Left, "Press 'b' to create a box.");
         m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, "Press '.' to toggle bullet mode (currently %s).", m_bullet_mode? "on": "off");
+        drawer.DrawString(5, m_textLine, Drawer::Left,
+                          "Press '.' to toggle bullet mode (currently %s).", m_bullet_mode? "on": "off");
         m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, "Press 'i' to impart impulses.");
+        drawer.DrawString(5, m_textLine, Drawer::Left,
+                          "Press 'i' to impart impulses.");
         m_textLine += DRAW_STRING_NEW_LINE;
     }
     
     bool m_bullet_mode = false;
     Length m_enclosureVertexRadius = vertexRadiusIncrement;
     Body* m_enclosure = nullptr;
-    std::size_t m_sequence = 0;
 };
 
 } // namespace playrho
