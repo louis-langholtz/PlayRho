@@ -615,7 +615,7 @@ inline DynamicTree::TreeNode& SetParent(DynamicTree::TreeNode& node,
 
 /// @brief Gets the height of the binary tree.
 /// @return Height of the tree (as stored in the root node) or 0 if the root node is not valid.
-constexpr inline DynamicTree::Height GetHeight(const DynamicTree& tree) noexcept
+inline DynamicTree::Height GetHeight(const DynamicTree& tree) noexcept
 {
     const auto index = tree.GetRootIndex();
     return (index != DynamicTree::GetInvalidSize())? tree.GetHeight(index): DynamicTree::Height{0};
