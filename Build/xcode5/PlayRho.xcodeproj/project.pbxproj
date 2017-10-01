@@ -77,6 +77,7 @@
 		473971A81D9D9B4C00F7137F /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 473971A71D9D9B4C00F7137F /* Math.cpp */; };
 		473971AA1D9F0E4E00F7137F /* ContactSolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 473971A91D9F0E4E00F7137F /* ContactSolver.cpp */; };
 		473971B01DA6C8DE00F7137F /* Drawer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 473971AC1DA45C4C00F7137F /* Drawer.cpp */; };
+		473E019E1F80ACBE00D58CC8 /* ShapeDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 473E019C1F80ACBE00D58CC8 /* ShapeDef.hpp */; };
 		47440F0D1EDA365400AB3F51 /* WorldDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47440F0A1EDA365400AB3F51 /* WorldDef.hpp */; };
 		474AFBF51EB19BB6002AA6C8 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 474AFBF41EB19BB6002AA6C8 /* CoreVideo.framework */; };
 		474AFBF81EB1B2CB002AA6C8 /* MultiShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474AFBF61EB1B2CB002AA6C8 /* MultiShape.cpp */; };
@@ -435,6 +436,7 @@
 		473971AC1DA45C4C00F7137F /* Drawer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drawer.cpp; sourceTree = "<group>"; };
 		473971AD1DA45C4C00F7137F /* Drawer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Drawer.hpp; sourceTree = "<group>"; };
 		473E01991F805D0F00D58CC8 /* FifteenPuzzle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FifteenPuzzle.hpp; sourceTree = "<group>"; };
+		473E019C1F80ACBE00D58CC8 /* ShapeDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ShapeDef.hpp; sourceTree = "<group>"; };
 		47440F0A1EDA365400AB3F51 /* WorldDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorldDef.hpp; sourceTree = "<group>"; };
 		474527361E86E903002E28FB /* HalfPipe.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = HalfPipe.hpp; sourceTree = "<group>"; };
 		474527391E8877DD002E28FB /* Orbiter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Orbiter.hpp; sourceTree = "<group>"; };
@@ -913,6 +915,7 @@
 				80BB893C141C3E5900F1753A /* PolygonShape.hpp */,
 				470F9B051EDB8F62007EF7B6 /* Shape.cpp */,
 				80BB893D141C3E5900F1753A /* Shape.hpp */,
+				473E019C1F80ACBE00D58CC8 /* ShapeDef.hpp */,
 				47D28D851F6DD9540094C032 /* ShapeVisitor.hpp */,
 			);
 			path = Shapes;
@@ -1313,6 +1316,7 @@
 				80BB89BF141C3E5900F1753A /* Contact.hpp in Headers */,
 				4787D6C31F2E9DC0008C115E /* DistanceJointDef.hpp in Headers */,
 				80BB89C1141C3E5900F1753A /* ContactSolver.hpp in Headers */,
+				473E019E1F80ACBE00D58CC8 /* ShapeDef.hpp in Headers */,
 				47D28D8F1F6E2C7C0094C032 /* JointType.hpp in Headers */,
 				47CF984D1DF9C4A30077F5F2 /* ShapeSeparation.hpp in Headers */,
 				80BB89CB141C3E5900F1753A /* DistanceJoint.hpp in Headers */,

@@ -22,6 +22,7 @@
 #define PLAYRHO_COLLISION_SHAPES_MULTISHAPE_HPP
 
 #include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <PlayRho/Collision/Shapes/ShapeDef.hpp>
 #include <vector>
 
 namespace playrho {
@@ -52,9 +53,9 @@ namespace playrho {
         }
         
         /// @brief Configuration data for multi-shape shapes.
-        struct Conf: public Builder<Conf>
+        struct Conf: public ShapeDefBuilder<Conf>
         {
-            constexpr Conf(): Builder<Conf>{Builder<Conf>{}.UseVertexRadius(GetDefaultVertexRadius())}
+            constexpr Conf(): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}
             {
                 // Intentionally empty.
             }

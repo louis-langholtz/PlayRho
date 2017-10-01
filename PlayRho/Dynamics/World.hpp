@@ -984,6 +984,18 @@ BodyCounter Awaken(World& world) noexcept;
 /// @relatedalso World
 void ClearForces(World& world) noexcept;
 
+/// @brief Creates a rectanglular enclosure.
+/// @relatedalso World
+Body* CreateRectangularEnclosingBody(World& world, Length2D dimensions,
+                                     const ShapeDef& baseConf);
+
+/// @brief Creates a square enclosure.
+/// @relatedalso World
+inline Body* CreateSquareEnclosingBody(World& world, Length size, const ShapeDef& baseConf)
+{
+    return CreateRectangularEnclosingBody(world, Length2D{size, size}, baseConf);
+}
+
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_WORLD_HPP
