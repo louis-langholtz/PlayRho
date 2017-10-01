@@ -269,6 +269,8 @@ private:
     std::chrono::duration<double> m_sumStepDuration{0};
 };
 
+// Free functions...
+
 /// Random number in range [-1,1]
 Real RandomFloat();
 

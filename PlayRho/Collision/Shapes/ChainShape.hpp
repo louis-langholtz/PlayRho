@@ -23,6 +23,7 @@
 #define PLAYRHO_COLLISION_SHAPES_CHAINSHAPE_HPP
 
 #include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <PlayRho/Collision/Shapes/ShapeDef.hpp>
 #include <vector>
 
 namespace playrho {
@@ -53,9 +54,9 @@ public:
     }
     
     /// @brief Configuration data for chain shapes.
-    struct Conf: public Builder<Conf>
+    struct Conf: public ShapeDefBuilder<Conf>
     {
-        Conf(): Builder<Conf>{Builder<Conf>{}.UseVertexRadius(GetDefaultVertexRadius())}
+        Conf(): ShapeDefBuilder{ShapeDef{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}}
         {
             // Intentionally empty.
         }

@@ -21,6 +21,7 @@
 #define PLAYRHO_COLLISION_SHAPES_POLYGONSHAPE_HPP
 
 #include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <PlayRho/Collision/Shapes/ShapeDef.hpp>
 #include <PlayRho/Common/VertexSet.hpp>
 #include <type_traits>
 #include <vector>
@@ -55,9 +56,9 @@ public:
     }
 
     /// @brief Configuration data for polygon shapes.
-    struct Conf: public Builder<Conf>
+    struct Conf: public ShapeDefBuilder<Conf>
     {
-        constexpr Conf(): Builder<Conf>{Builder<Conf>{}.UseVertexRadius(GetDefaultVertexRadius())}
+        constexpr Conf(): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}
         {
             // Intentionally empty.
         }

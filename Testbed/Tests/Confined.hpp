@@ -64,29 +64,19 @@ public:
 
         m_world->SetGravity(Vec2(0.0f, 0.0f) * MeterPerSquareSecond);
     }
-
+    
     Body* CreateEnclosure(Length vertexRadius, Length wallLength)
     {
-        const auto ground = m_world->CreateBody();
-        
-        auto conf = ChainShape::Conf{};
-        conf.restitution = 0; // originally 0.9
-        conf.vertexRadius = vertexRadius;
-        
-        const auto btmLeft = Length2D(-wallLength / Real{2}, Real{0} * Meter);
-        const auto btmRight = Length2D(wallLength / Real{2}, Real{0} * Meter);
-        const auto topLeft = Length2D(-wallLength / Real{2}, wallLength);
-        const auto topRight = Length2D(wallLength / Real{2}, wallLength);
-        
-        conf.vertices.push_back(btmRight);
-        conf.vertices.push_back(topRight);
-        conf.vertices.push_back(topLeft);
-        conf.vertices.push_back(btmLeft);
-        conf.vertices.push_back(conf.vertices[0]);
+        const auto body = CreateSquareEnclosingBody(*m_world, wallLength, ShapeConf{
+            }.UseVertexRadius(vertexRadius).UseRestitution(Finite<Real>(0)));
+        SetLocation(*body, Length2D{Real(0) * Meter, Real(20) * Meter});
+        return body;
+    }
 
-        ground->CreateFixture(std::make_shared<ChainShape>(conf));
-        
-        return ground;
+    Length2D GetRandomOffset() const
+    {
+        const auto halfWL = StripUnit(wall_length) / Real{2};
+        return Vec2{RandomFloat(-halfWL, +halfWL), RandomFloat(-halfWL, +halfWL)};
     }
     
     void CreateCircle()
@@ -96,8 +86,7 @@ public:
         BodyDef bd;
         bd.type = BodyType::Dynamic;
         bd.bullet = m_bullet_mode;
-        const auto wl = StripUnit(wall_length);
-        bd.position = Vec2(RandomFloat(-wl / Real{2}, +wl / Real{2}), RandomFloat(0, wl)) * Meter;
+        bd.position = (Vec2{0, 20} + GetRandomOffset()) * Meter;
         //bd.allowSleep = false;
 
         const auto body = m_world->CreateBody(bd);
@@ -120,8 +109,7 @@ public:
         BodyDef bd;
         bd.type = BodyType::Dynamic;
         bd.bullet = m_bullet_mode;
-        const auto wl = StripUnit(wall_length);
-        bd.position = Vec2(RandomFloat(-wl / Real{2}, +wl / Real{2}), RandomFloat(0, wl)) * Meter;
+        bd.position = (Vec2{0, 20} + GetRandomOffset()) * Meter;
         const auto body = m_world->CreateBody(bd);
         body->CreateFixture(std::make_shared<PolygonShape>(side_length/Real{2}, side_length/Real{2}, conf));
     }

@@ -55,6 +55,8 @@
 #include <PlayRho/Collision/TimeOfImpact.hpp>
 #include <PlayRho/Collision/RayCastOutput.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
+#include <PlayRho/Collision/Shapes/ShapeDef.hpp>
+#include <PlayRho/Collision/Shapes/ChainShape.hpp>
 
 #include <PlayRho/Common/LengthError.hpp>
 #include <PlayRho/Common/DynamicMemory.hpp>
@@ -2931,6 +2933,34 @@ void ClearForces(World& world) noexcept
     for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](World::Bodies::value_type &b) {
         GetRef(b).SetAcceleration(g, AngularAcceleration{0});
     });
+}
+
+Body* CreateRectangularEnclosingBody(World& world, Length2D dimensions, const ShapeDef& baseConf)
+{
+    const auto body = world.CreateBody();
+    
+    auto conf = ChainShape::Conf{};
+    conf.restitution = baseConf.restitution;
+    conf.vertexRadius = baseConf.vertexRadius;
+    conf.friction = baseConf.friction;
+    conf.density = baseConf.density;
+    
+    const auto halfWidth = GetX(dimensions) / Real{2};
+    const auto halfHeight = GetY(dimensions) / Real{2};
+    const auto btmLeft  = Length2D(-halfWidth, -halfHeight);
+    const auto btmRight = Length2D(+halfWidth, -halfHeight);
+    const auto topLeft  = Length2D(-halfWidth, +halfHeight);
+    const auto topRight = Length2D(+halfWidth, +halfHeight);
+    
+    conf.vertices.push_back(btmRight);
+    conf.vertices.push_back(topRight);
+    conf.vertices.push_back(topLeft);
+    conf.vertices.push_back(btmLeft);
+    conf.vertices.push_back(conf.vertices[0]);
+    
+    body->CreateFixture(std::make_shared<ChainShape>(conf));
+    
+    return body;
 }
 
 } // namespace playrho

@@ -21,6 +21,7 @@
 #define PLAYRHO_COLLISION_SHAPES_DISKSHAPE_HPP
 
 #include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <PlayRho/Collision/Shapes/ShapeDef.hpp>
 
 namespace playrho {
 
@@ -46,9 +47,9 @@ public:
     }
 
     /// @brief Configuration data for disk shapes.
-    struct Conf: public Builder<Conf>
+    struct Conf: public ShapeDefBuilder<Conf>
     {
-        constexpr Conf(): Builder<Conf>{Builder<Conf>{}.UseVertexRadius(GetDefaultRadius())}
+        constexpr Conf(): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultRadius())}
         {
             // Intentionally empty.
         }
