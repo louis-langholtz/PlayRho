@@ -44,6 +44,7 @@
 #include "../Tests/DynamicTreeTest.hpp"
 #include "../Tests/EdgeShapes.hpp"
 #include "../Tests/EdgeTest.hpp"
+#include "../Tests/FifteenPuzzle.hpp"
 #include "../Tests/Gears.hpp"
 #include "../Tests/HeavyOnLight.hpp"
 #include "../Tests/HeavyOnLightTwo.hpp"
@@ -111,6 +112,7 @@ static const TestEntry testEntries[] =
     {"Varying Restitution", MakeUniqueTest<VaryingRestitution>},
     {"Cantilever", MakeUniqueTest<Cantilever>},
     {"Character Collision", MakeUniqueTest<CharacterCollision>},
+    {"Fifteen Puzzle", MakeUniqueTest<FifteenPuzzle>},
     {"Edge Test", MakeUniqueTest<EdgeTest>},
     {"Body Types", MakeUniqueTest<BodyTypes>},
     {"Shape Editing", MakeUniqueTest<ShapeEditing>},

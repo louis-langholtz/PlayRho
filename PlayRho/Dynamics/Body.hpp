@@ -191,6 +191,7 @@ public:
 
     /// @brief Gets the body transform for the body's origin.
     /// @return the world transform of the body's origin.
+    /// @sa GetLocation.
     Transformation GetTransformation() const noexcept;
 
     /// @brief Gets the world body origin location.
@@ -203,6 +204,7 @@ public:
     ///   4. Damping of the body.
     ///   5. Restitution and friction values of the body's fixtures when they experience collisions.
     /// @return World location of the body's origin.
+    /// @sa GetTransformation.
     Length2D GetLocation() const noexcept;
 
     /// @brief Gets the body's sweep.
@@ -1156,6 +1158,57 @@ void RotateAboutWorldPoint(Body& body, Angle amount, Length2D worldPoint);
 /// @param localPoint Point in local coordinates.
 /// @relatedalso Body
 void RotateAboutLocalPoint(Body& body, Angle amount, Length2D localPoint);
+
+/// @brief Gets the body's origin location.
+/// @details This is the location of the body's origin relative to its world.
+/// The location of the body after stepping the world's physics simulations is dependent on
+/// a number of factors:
+///   1. Location at the last time step.
+///   2. Forces acting on the body (gravity, applied force, applied impulse).
+///   3. The mass data of the body.
+///   4. Damping of the body.
+///   5. Restitution and friction values of the body's fixtures when they experience collisions.
+/// @return World location of the body's origin.
+/// @sa GetAngle.
+/// @relatedalso Body
+inline Length2D GetLocation(const Body& body) noexcept
+{
+    return body.GetTransformation().p;
+}
+
+/// @brief Gets the body's angle.
+/// @return Body's angle relative to its World.
+/// @relatedalso Body
+inline Angle GetAngle(const Body& body) noexcept
+{
+    return body.GetSweep().pos1.angular;
+}
+
+/// @brief Sets the body's location.
+/// @details This instantly adjusts the body to be at the new location.
+/// @warning Manipulating a body's location this way can cause non-physical behavior!
+/// @param body Body to move.
+/// @param value Valid world location of the body's local origin. Behavior is undefined
+///   if value is invalid.
+/// @sa Body::SetTransform
+/// @relatedalso Body
+inline void SetLocation(Body& body, Length2D value) noexcept
+{
+    body.SetTransform(value, GetAngle(body));
+}
+
+/// @brief Sets the body's angular orientation.
+/// @details This instantly adjusts the body to be at the new angular orientation.
+/// @warning Manipulating a body's angle this way can cause non-physical behavior!
+/// @param body Body to move.
+/// @param value Valid world angle of the body's local origin. Behavior is undefined
+///   if value is invalid.
+/// @sa Body::SetTransform
+/// @relatedalso Body
+inline void SetAngle(Body& body, Angle value) noexcept
+{
+    body.SetTransform(GetLocation(body), value);
+}
 
 } // namespace playrho
 

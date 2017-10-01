@@ -222,7 +222,7 @@ static Color GetColor(const Body& body)
     }
     if (!body.IsAwake())
     {
-        return Color{0.6f, 0.6f, 0.6f};
+        return Color{0.75f, 0.75f, 0.75f};
     }
     return Color{0.9f, 0.7f, 0.7f};
 }
@@ -304,7 +304,7 @@ static bool Draw(Drawer& drawer, const World& world, const Settings& settings,
             if (settings.drawLabels)
             {
                 const auto location = b->GetLocation();
-                drawer.DrawString(location, Drawer::Center, "B%d", GetWorldIndex(b));
+                drawer.DrawString(location, Drawer::Center, "%d", GetWorldIndex(b));
             }
         }
     }

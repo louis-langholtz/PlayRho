@@ -434,6 +434,7 @@
 		473971A91D9F0E4E00F7137F /* ContactSolver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactSolver.cpp; sourceTree = "<group>"; };
 		473971AC1DA45C4C00F7137F /* Drawer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drawer.cpp; sourceTree = "<group>"; };
 		473971AD1DA45C4C00F7137F /* Drawer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Drawer.hpp; sourceTree = "<group>"; };
+		473E01991F805D0F00D58CC8 /* FifteenPuzzle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FifteenPuzzle.hpp; sourceTree = "<group>"; };
 		47440F0A1EDA365400AB3F51 /* WorldDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorldDef.hpp; sourceTree = "<group>"; };
 		474527361E86E903002E28FB /* HalfPipe.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = HalfPipe.hpp; sourceTree = "<group>"; };
 		474527391E8877DD002E28FB /* Orbiter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Orbiter.hpp; sourceTree = "<group>"; };
@@ -1153,6 +1154,7 @@
 				80BB8A50141C3E8600F1753A /* DynamicTreeTest.hpp */,
 				80BB8A51141C3E8600F1753A /* EdgeShapes.hpp */,
 				80BB8A52141C3E8600F1753A /* EdgeTest.hpp */,
+				473E01991F805D0F00D58CC8 /* FifteenPuzzle.hpp */,
 				80BB8A53141C3E8600F1753A /* Gears.hpp */,
 				474527361E86E903002E28FB /* HalfPipe.hpp */,
 				809BC10118B855CB00F5D9F0 /* HeavyOnLight.hpp */,

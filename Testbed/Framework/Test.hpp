@@ -269,6 +269,42 @@ private:
     std::chrono::duration<double> m_sumStepDuration{0};
 };
 
+// Free functions...
+
+inline Body* CreateRectangularEnclosure(World& world, Length2D dimensions,
+                                        const Shape::BaseConf& baseConf)
+{
+    const auto body = world.CreateBody();
+    
+    auto conf = ChainShape::Conf{};
+    conf.restitution = baseConf.restitution;
+    conf.vertexRadius = baseConf.vertexRadius;
+    conf.friction = baseConf.friction;
+    conf.density = baseConf.density;
+    
+    const auto halfWidth = GetX(dimensions) / Real{2};
+    const auto halfHeight = GetY(dimensions) / Real{2};
+    const auto btmLeft  = Length2D(-halfWidth, -halfHeight);
+    const auto btmRight = Length2D(+halfWidth, -halfHeight);
+    const auto topLeft  = Length2D(-halfWidth, +halfHeight);
+    const auto topRight = Length2D(+halfWidth, +halfHeight);
+    
+    conf.vertices.push_back(btmRight);
+    conf.vertices.push_back(topRight);
+    conf.vertices.push_back(topLeft);
+    conf.vertices.push_back(btmLeft);
+    conf.vertices.push_back(conf.vertices[0]);
+    
+    body->CreateFixture(std::make_shared<ChainShape>(conf));
+    
+    return body;
+}
+
+inline Body* CreateSquareEnclosure(World& world, Length size, const Shape::BaseConf& baseConf)
+{
+    return CreateRectangularEnclosure(world, Length2D{size, size}, baseConf);
+}
+
 /// Random number in range [-1,1]
 Real RandomFloat();
 

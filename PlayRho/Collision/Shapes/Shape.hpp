@@ -114,6 +114,9 @@ public:
         /// @brief Uses the given density.
         constexpr ConcreteConf& UseDensity(NonNegative<Density> value) noexcept;
     };
+    
+    /// @brief Shape configuration structure.
+    struct Conf: public Shape::Builder<Conf> {};
 
     virtual ~Shape() = default;
 
