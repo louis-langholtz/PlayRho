@@ -73,6 +73,11 @@ TEST(DynamicTree, DefaultConstruction)
     EXPECT_TRUE(foo.Validate());
 }
 
+TEST(DynamicTree, ZeroCapacityConstructionThrows)
+{
+    EXPECT_THROW(DynamicTree{DynamicTree::Size{0}}, InvalidArgument);
+}
+
 TEST(DynamicTree, InitializingConstruction)
 {
     constexpr auto initCapacity = DynamicTree::GetDefaultInitialNodeCapacity() * 2;

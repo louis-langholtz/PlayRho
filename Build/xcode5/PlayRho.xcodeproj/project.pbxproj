@@ -78,6 +78,7 @@
 		473971AA1D9F0E4E00F7137F /* ContactSolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 473971A91D9F0E4E00F7137F /* ContactSolver.cpp */; };
 		473971B01DA6C8DE00F7137F /* Drawer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 473971AC1DA45C4C00F7137F /* Drawer.cpp */; };
 		473E019E1F80ACBE00D58CC8 /* ShapeDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 473E019C1F80ACBE00D58CC8 /* ShapeDef.hpp */; };
+		473E01A01F81705100D58CC8 /* Vector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 473E019F1F81705100D58CC8 /* Vector.cpp */; };
 		47440F0D1EDA365400AB3F51 /* WorldDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47440F0A1EDA365400AB3F51 /* WorldDef.hpp */; };
 		474AFBF51EB19BB6002AA6C8 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 474AFBF41EB19BB6002AA6C8 /* CoreVideo.framework */; };
 		474AFBF81EB1B2CB002AA6C8 /* MultiShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474AFBF61EB1B2CB002AA6C8 /* MultiShape.cpp */; };
@@ -437,6 +438,7 @@
 		473971AD1DA45C4C00F7137F /* Drawer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Drawer.hpp; sourceTree = "<group>"; };
 		473E01991F805D0F00D58CC8 /* FifteenPuzzle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FifteenPuzzle.hpp; sourceTree = "<group>"; };
 		473E019C1F80ACBE00D58CC8 /* ShapeDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ShapeDef.hpp; sourceTree = "<group>"; };
+		473E019F1F81705100D58CC8 /* Vector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vector.cpp; sourceTree = "<group>"; };
 		47440F0A1EDA365400AB3F51 /* WorldDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorldDef.hpp; sourceTree = "<group>"; };
 		474527361E86E903002E28FB /* HalfPipe.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = HalfPipe.hpp; sourceTree = "<group>"; };
 		474527391E8877DD002E28FB /* Orbiter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Orbiter.hpp; sourceTree = "<group>"; };
@@ -827,6 +829,7 @@
 				470F94DD1ECB94D600AA3C82 /* UnitVec2.cpp */,
 				474BC4051D41278800447DCD /* Vec2.cpp */,
 				4736DE881DB7DB3B003993CB /* Vec3.cpp */,
+				473E019F1F81705100D58CC8 /* Vector.cpp */,
 				474BAB291E5CBA010058E08A /* Velocity.cpp */,
 				47FFD0FA1DAC3EFC000D6D0E /* VelocityConstraint.cpp */,
 				47C85D0B1EFA2C1C00F70C56 /* Version.cpp */,
@@ -1563,6 +1566,7 @@
 				479B63C31ED9CAC300D49BC7 /* BoundedValue.cpp in Sources */,
 				475A94561D930E6C000CA9A8 /* Fixture.cpp in Sources */,
 				4731DE161DDCD00100E7F931 /* FixtureProxy.cpp in Sources */,
+				473E01A01F81705100D58CC8 /* Vector.cpp in Sources */,
 				479039D11D5BB9ED001A2145 /* Body.cpp in Sources */,
 				4775A9381E05B032001C2332 /* StepConf.cpp in Sources */,
 				47AFC3051DAEBC120023E9D1 /* PositionSolverManifold.cpp in Sources */,

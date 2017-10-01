@@ -25,6 +25,9 @@
 #include <cassert>
 #include <cstddef>
 #include <type_traits>
+#include <iterator>
+#include <algorithm>
+#include <functional>
 #include <PlayRho/Common/InvalidArgument.hpp>
 
 namespace playrho
@@ -67,6 +70,12 @@ struct Vector
     /// @brief Constant iterator type.
     using const_iterator = const value_type*;
     
+    /// @brief Reverse iterator type.
+    using reverse_iterator = std::reverse_iterator<iterator>;
+    
+    /// @brief Constant reverse iterator type.
+    using const_reverse_iterator = std::reverse_iterator<const_iterator>;
+    
     /// @brief Default constructor.
     /// @note Defaulted explicitly.
     /// @note This constructor performs no action.
@@ -107,6 +116,36 @@ struct Vector
     
     /// @brief Gets an "end" iterator.
     const_iterator cend() const noexcept { return end(); }
+
+    /// @brief Gets a reverse "begin" iterator.
+    reverse_iterator rbegin() noexcept { return reverse_iterator{elements + N}; }
+
+    /// @brief Gets a reverse "end" iterator.
+    reverse_iterator rend() noexcept { return reverse_iterator{elements}; }
+    
+    /// @brief Gets a reverse "begin" iterator.
+    const_reverse_iterator crbegin() const noexcept
+    {
+        return const_reverse_iterator{elements + N};
+    }
+    
+    /// @brief Gets a reverse "end" iterator.
+    const_reverse_iterator crend() const noexcept
+    {
+        return const_reverse_iterator{elements};
+    }
+
+    /// @brief Gets a reverse "begin" iterator.
+    const_reverse_iterator rbegin() const noexcept
+    {
+        return crbegin();
+    }
+    
+    /// @brief Gets a reverse "end" iterator.
+    const_reverse_iterator rend() const noexcept
+    {
+        return crend();
+    }
 
     /// @brief Gets a reference to the requested element.
     /// @note No bounds checking is performed.
@@ -167,6 +206,59 @@ struct Vector
     ///   to avoid any performance overhead that default initialization might incur.
     value_type elements[N];
 };
+
+/// @brief Equality operator.
+template <std::size_t N, typename T>
+constexpr bool operator== (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noexcept
+{
+    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    {
+        if (lhs[i] != rhs[i])
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+/// @brief Inequality operator.
+template <std::size_t N, typename T>
+constexpr bool operator!= (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noexcept
+{
+    return !(lhs == rhs);
+}
+
+/// @brief Lexicographical less-than operator.
+template <std::size_t N, typename T>
+constexpr bool operator< (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noexcept
+{
+    return std::lexicographical_compare(lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend(),
+                                        std::less<T>{});
+}
+
+/// @brief Lexicographical less-than or equal-to operator.
+template <std::size_t N, typename T>
+constexpr bool operator<= (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noexcept
+{
+    return std::lexicographical_compare(lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend(),
+                                        std::less_equal<T>{});
+}
+
+/// @brief Lexicographical greater-than operator.
+template <std::size_t N, typename T>
+constexpr bool operator> (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noexcept
+{
+    return std::lexicographical_compare(lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend(),
+                                        std::greater<T>{});
+}
+
+/// @brief Lexicographical greater-than or equal-to operator.
+template <std::size_t N, typename T>
+constexpr bool operator>= (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noexcept
+{
+    return std::lexicographical_compare(lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend(),
+                                        std::greater_equal<T>{});
+}
 
 /// @brief Gets the I'th element of the given collection.
 template <size_t I, size_t N, typename T>

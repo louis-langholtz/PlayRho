@@ -43,7 +43,7 @@ struct ShapeDef
     ///
     /// @note This should be a non-negative value.
     ///
-    NonNegative<Length> vertexRadius = NonNegative<Length>{DefaultLinearSlop};
+    NonNegative<Length> vertexRadius = NonNegative<Length>{DefaultLinearSlop * Real{2}};
     
     /// @brief Friction coefficient.
     ///

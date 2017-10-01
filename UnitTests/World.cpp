@@ -610,6 +610,32 @@ TEST(World, AwakenFreeFunction)
     EXPECT_TRUE(body->IsAwake());
 }
 
+TEST(World, CreateSquareEnclosingBody)
+{
+    World world;
+    Body* body = nullptr;
+    EXPECT_NO_THROW(body = CreateSquareEnclosingBody(world, 2 * Meter, ShapeDef{}));
+    ASSERT_NE(body, nullptr);
+    EXPECT_EQ(body->GetType(), BodyType::Static);
+    const auto fixtures = body->GetFixtures();
+    EXPECT_GT(fixtures.size(), decltype(fixtures.size()){0});
+    auto vertices = std::set<Length2D>();
+    for (auto& f: fixtures)
+    {
+        const auto s = f->GetShape();
+        for (auto i = ChildCounter{0}; i < s->GetChildCount(); ++i)
+        {
+            const auto child = s->GetChild(i);
+            const auto numVertices = child.GetVertexCount();
+            for (auto j = decltype(numVertices){0}; j < numVertices; ++j)
+            {
+                vertices.insert(child.GetVertex(j));
+            }
+        }
+    }
+    EXPECT_EQ(vertices.size(), decltype(vertices.size()){4});
+}
+
 TEST(World, GetTouchingCountFreeFunction)
 {
     World world;
@@ -620,6 +646,28 @@ TEST(World, GetTouchingCountFreeFunction)
     stepConf.SetInvTime(Real(100) * Hertz);
     world.Step(stepConf);
     EXPECT_EQ(GetTouchingCount(world), ContactCounter(0));
+    
+    
+    const auto groundConf = EdgeShape::Conf{}
+        .UseVertex1(Vec2(-40.0f, 0.0f) * Meter)
+        .UseVertex2(Vec2(40.0f, 0.0f) * Meter);
+
+    const auto ground = world.CreateBody();
+    ground->CreateFixture(std::make_shared<EdgeShape>(groundConf));
+
+    const auto bd = BodyDef{}.UseType(BodyType::Dynamic);
+    const auto lowerBodyDef = BodyDef(bd).UseLocation(Vec2(0.0f, 0.5f) * Meter);
+    const auto diskConf = DiskShape::Conf{}.UseDensity(Real(10) * KilogramPerSquareMeter);
+    const auto smallerDiskConf = DiskShape::Conf(diskConf).UseVertexRadius(Real{0.5f} * Meter);
+
+    const auto lowerBody = world.CreateBody(lowerBodyDef);
+    lowerBody->CreateFixture(std::make_shared<DiskShape>(smallerDiskConf));
+    
+    while (GetAwakeCount(world) > 0)
+    {
+        world.Step(stepConf);
+        EXPECT_EQ(GetTouchingCount(world), ContactCounter(1));
+    }
 }
 
 TEST(World, ShiftOrigin)
