@@ -76,7 +76,7 @@ public:
     Length2D GetRandomOffset() const
     {
         const auto halfWL = StripUnit(wall_length) / Real{2};
-        return Vec2{RandomFloat(-halfWL, +halfWL), RandomFloat(-halfWL, +halfWL)};
+        return Vec2{RandomFloat(-halfWL, +halfWL), RandomFloat(-halfWL, +halfWL)} * Meter;
     }
     
     void CreateCircle()
@@ -86,7 +86,7 @@ public:
         BodyDef bd;
         bd.type = BodyType::Dynamic;
         bd.bullet = m_bullet_mode;
-        bd.position = (Vec2{0, 20} + GetRandomOffset()) * Meter;
+        bd.position = Vec2{0, 20} * Meter + GetRandomOffset();
         //bd.allowSleep = false;
 
         const auto body = m_world->CreateBody(bd);
@@ -109,7 +109,7 @@ public:
         BodyDef bd;
         bd.type = BodyType::Dynamic;
         bd.bullet = m_bullet_mode;
-        bd.position = (Vec2{0, 20} + GetRandomOffset()) * Meter;
+        bd.position = Vec2{0, 20} * Meter + GetRandomOffset();
         const auto body = m_world->CreateBody(bd);
         body->CreateFixture(std::make_shared<PolygonShape>(side_length/Real{2}, side_length/Real{2}, conf));
     }

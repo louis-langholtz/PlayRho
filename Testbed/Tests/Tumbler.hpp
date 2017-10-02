@@ -34,39 +34,67 @@ public:
     {
         Square, Disk
     };
-
-    Tumbler()
+    
+    static Body* CreateEnclosure(World& world)
     {
-        m_square->SetDensity(Real(1) * KilogramPerSquareMeter);
-        m_disk->SetDensity(Real(0.1) * KilogramPerSquareMeter);
-
-        const auto g = m_world->CreateBody(BodyDef{}.UseType(BodyType::Static));
-
-        const auto b = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic)
-                                           .UseLocation(Vec2(0, 10) * Meter)
-                                           .UseAllowSleep(false));
-
+        const auto b = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic)
+                                        .UseLocation(Vec2(0, 10) * Meter)
+                                        .UseAllowSleep(false));
+        
         PolygonShape shape;
-        shape.SetDensity(Real{5} * KilogramPerSquareMeter);
-        SetAsBox(shape, Real{0.5f} * Meter, Real{10.0f} * Meter, Vec2( 10.0f, 0.0f) * Meter, Angle{0});
+        shape.SetDensity(5 * KilogramPerSquareMeter);
+        SetAsBox(shape, 0.5f * Meter, 10.0f * Meter, Vec2( 10.0f, 0.0f) * Meter, Angle{0});
         b->CreateFixture(std::make_shared<PolygonShape>(shape));
-        SetAsBox(shape, Real{0.5f} * Meter, Real{10.0f} * Meter, Vec2(-10.0f, 0.0f) * Meter, Angle{0});
+        SetAsBox(shape, 0.5f * Meter, 10.0f * Meter, Vec2(-10.0f, 0.0f) * Meter, Angle{0});
         b->CreateFixture(std::make_shared<PolygonShape>(shape));
-        SetAsBox(shape, Real{10.0f} * Meter, Real{0.5f} * Meter, Vec2(0.0f, 10.0f) * Meter, Angle{0});
+        SetAsBox(shape, 10.0f * Meter, 0.5f * Meter, Vec2(0.0f, 10.0f) * Meter, Angle{0});
         b->CreateFixture(std::make_shared<PolygonShape>(shape));
-        SetAsBox(shape, Real{10.0f} * Meter, Real{0.5f} * Meter, Vec2(0.0f, -10.0f) * Meter, Angle{0});
+        SetAsBox(shape, 10.0f * Meter, 0.5f * Meter, Vec2(0.0f, -10.0f) * Meter, Angle{0});
         b->CreateFixture(std::make_shared<PolygonShape>(shape));
 
+        return b;
+    }
+
+    static RevoluteJoint* CreateRevoluteJoint(World& world, Body* stable, Body* turn)
+    {
         RevoluteJointDef jd;
-        jd.bodyA = g;
-        jd.bodyB = b;
+        jd.bodyA = stable;
+        jd.bodyB = turn;
         jd.localAnchorA = Vec2(0.0f, 10.0f) * Meter;
         jd.localAnchorB = Vec2(0.0f, 0.0f) * Meter;
         jd.referenceAngle = Angle{0};
         jd.motorSpeed = 0.05f * Pi * RadianPerSecond;
         jd.maxMotorTorque = Real{100000} * NewtonMeter; // 1e8f;
         jd.enableMotor = true;
-        m_joint = static_cast<RevoluteJoint*>(m_world->CreateJoint(jd));
+        return static_cast<RevoluteJoint*>(world.CreateJoint(jd));
+    }
+    
+    Tumbler()
+    {
+        m_square->SetDensity(Real(1) * KilogramPerSquareMeter);
+        m_disk->SetDensity(Real(0.1) * KilogramPerSquareMeter);
+
+        const auto g = m_world->CreateBody(BodyDef{}.UseType(BodyType::Static));
+        const auto b = CreateEnclosure(*m_world);
+        m_joint = CreateRevoluteJoint(*m_world, g, b);
+    }
+
+    Body* CreateBody()
+    {
+        return m_world->CreateBody(BodyDef{}
+                            .UseType(BodyType::Dynamic)
+                            .UseLocation(Vec2(0, 10) * Meter)
+                            .UseUserData(reinterpret_cast<void*>(1)));
+    }
+
+    void AddSquare()
+    {
+        CreateBody()->CreateFixture(m_square);
+    }
+    
+    void AddDisk()
+    {
+        CreateBody()->CreateFixture(m_disk);
     }
 
     void PostStep(const Settings& settings, Drawer& drawer) override
@@ -81,17 +109,13 @@ public:
 
         if ((!settings.pause || settings.singleStep) && (m_count < Count))
         {
-            const auto body = m_world->CreateBody(BodyDef{}
-                                                  .UseType(BodyType::Dynamic)
-                                                  .UseLocation(Vec2(0, 10) * Meter)
-                                                  .UseUserData(reinterpret_cast<void*>(1)));
             switch (m_shapeType)
             {
                 case ShapeType::Square:
-                    body->CreateFixture(m_square);
+                    AddSquare();
                     break;
                 case ShapeType::Disk:
-                    body->CreateFixture(m_disk);
+                    AddDisk();
                     break;
             }
             ++m_count;

@@ -40,6 +40,7 @@
 
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
+#include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
 
 #include <PlayRho/Collision/Manifold.hpp>
 #include <PlayRho/Collision/WorldManifold.hpp>
@@ -1097,6 +1098,118 @@ static void TilesComesToRest36(benchmark::State& state)
     }
 }
 
+class Tumbler
+{
+public:
+    Tumbler();
+    void Step();
+    void AddSquare();
+    bool IsWithin(const playrho::AABB& aabb) const;
+
+private:
+    static playrho::Body* CreateEnclosure(playrho::World& world);
+    static playrho::RevoluteJoint* CreateRevoluteJoint(playrho::World& world,
+                                                       playrho::Body* stable, playrho::Body* turn);
+
+    playrho::World m_world;
+    playrho::StepConf m_stepConf;
+    playrho::Length m_squareLen = 0.125f * playrho::Meter;
+    std::shared_ptr<playrho::PolygonShape> m_square =
+        std::make_shared<playrho::PolygonShape>(m_squareLen, m_squareLen);
+};
+
+Tumbler::Tumbler()
+{
+    const auto g = m_world.CreateBody(playrho::BodyDef{}.UseType(playrho::BodyType::Static));
+    const auto b = CreateEnclosure(m_world);
+    CreateRevoluteJoint(m_world, g, b);
+}
+
+playrho::Body* Tumbler::CreateEnclosure(playrho::World& world)
+{
+    const auto b = world.CreateBody(playrho::BodyDef{}.UseType(playrho::BodyType::Dynamic)
+                                    .UseLocation(playrho::Vec2(0, 10) * playrho::Meter)
+                                    .UseAllowSleep(false));
+    
+    playrho::PolygonShape shape;
+    shape.SetDensity(5 * playrho::KilogramPerSquareMeter);
+    playrho::SetAsBox(shape, 0.5f * playrho::Meter, 10.0f * playrho::Meter, playrho::Vec2( 10.0f, 0.0f) * playrho::Meter, playrho::Angle{0});
+    b->CreateFixture(std::make_shared<playrho::PolygonShape>(shape));
+    playrho::SetAsBox(shape, 0.5f * playrho::Meter, 10.0f * playrho::Meter, playrho::Vec2(-10.0f, 0.0f) * playrho::Meter, playrho::Angle{0});
+    b->CreateFixture(std::make_shared<playrho::PolygonShape>(shape));
+    playrho::SetAsBox(shape, 10.0f * playrho::Meter, 0.5f * playrho::Meter, playrho::Vec2(0.0f, 10.0f) * playrho::Meter, playrho::Angle{0});
+    b->CreateFixture(std::make_shared<playrho::PolygonShape>(shape));
+    playrho::SetAsBox(shape, 10.0f * playrho::Meter, 0.5f * playrho::Meter, playrho::Vec2(0.0f, -10.0f) * playrho::Meter, playrho::Angle{0});
+    b->CreateFixture(std::make_shared<playrho::PolygonShape>(shape));
+    
+    return b;
+}
+
+playrho::RevoluteJoint* Tumbler::CreateRevoluteJoint(playrho::World& world,
+                                                     playrho::Body* stable, playrho::Body* turn)
+{
+    playrho::RevoluteJointDef jd;
+    jd.bodyA = stable;
+    jd.bodyB = turn;
+    jd.localAnchorA = playrho::Vec2(0.0f, 10.0f) * playrho::Meter;
+    jd.localAnchorB = playrho::Vec2(0.0f, 0.0f) * playrho::Meter;
+    jd.referenceAngle = playrho::Angle{0};
+    
+    // Make it turn 4 times faster than Testbed Tumbler demo
+    jd.motorSpeed = 0.2f * playrho::Pi * playrho::RadianPerSecond;
+
+    jd.maxMotorTorque = playrho::Real{100000} * playrho::NewtonMeter; // 1e8f;
+    jd.enableMotor = true;
+    return static_cast<playrho::RevoluteJoint*>(world.CreateJoint(jd));
+}
+
+void Tumbler::Step()
+{
+    m_world.Step(m_stepConf);
+}
+
+void Tumbler::AddSquare()
+{
+    const auto b = m_world.CreateBody(playrho::BodyDef{}
+                                      .UseType(playrho::BodyType::Dynamic)
+                                      .UseLocation(playrho::Vec2(0, 10) * playrho::Meter));
+    b->CreateFixture(m_square);
+}
+
+bool Tumbler::IsWithin(const playrho::AABB& aabb) const
+{
+    return playrho::Contains(aabb, GetAABB(m_world.GetTree()));
+}
+
+static void TumblerAdd100Squares200Steps(benchmark::State& state)
+{
+    const auto rangeX = playrho::ValueRange<playrho::Length>{
+        -15 * playrho::Meter, +15 * playrho::Meter
+    };
+    const auto rangeY = playrho::ValueRange<playrho::Length>{
+        -5 * playrho::Meter, +25 * playrho::Meter
+    };
+    const auto aabb = playrho::AABB{rangeX, rangeY};
+    while (state.KeepRunning())
+    {
+        Tumbler tumbler;
+        for (auto i = 0; i < 100; ++i)
+        {
+            tumbler.Step();
+            tumbler.AddSquare();
+        }
+        for (auto i = 0; i < 100; ++i)
+        {
+            tumbler.Step();
+        }
+        if (!tumbler.IsWithin(aabb))
+        {
+            std::cout << "escaped!" << std::endl;
+            continue;
+        }
+    }
+}
+
 #if 0
 #define ADD_BM(n, f) \
     BENCHMARK_PRIVATE_DECLARE(f) = \
@@ -1179,6 +1292,8 @@ BENCHMARK(ManifoldForTwoSquares2);
 
 BENCHMARK(malloc_free_random_size);
 BENCHMARK(random_malloc_free_100);
+
+BENCHMARK(TumblerAdd100Squares200Steps);
 
 BENCHMARK(TilesComesToRest12);
 BENCHMARK(TilesComesToRest20);

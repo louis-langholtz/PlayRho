@@ -191,6 +191,13 @@ TEST(AABB, InitializingConstruction)
         EXPECT_TRUE(std::isnan(StripUnit(GetX(GetUpperBound(foo)))));
         EXPECT_FALSE(std::isnan(StripUnit(GetY(GetUpperBound(foo)))));
     }
+    {
+        const auto rangeX = ValueRange<Length>{-2 * Meter, +3 * Meter};
+        const auto rangeY = ValueRange<Length>{-8 * Meter, -4 * Meter};
+        AABB foo{rangeX, rangeY};
+        EXPECT_EQ(foo.rangeX, rangeX);
+        EXPECT_EQ(foo.rangeY, rangeY);
+    }
 }
 
 TEST(AABB, Swappable)

@@ -72,7 +72,7 @@ namespace playrho {
             bd.type = BodyType::Dynamic;
             bd.bullet = true;
             bd.position = GetCenter() + relPos + Length2D{sideLength / 2, sideLength / 2};
-            bd.linearDamping = 20.0f;
+            bd.linearDamping = 20.0f * Hertz;
             const auto body = m_world->CreateBody(bd);
             body->CreateFixture(std::make_shared<PolygonShape>(halfSide, halfSide, conf));
             

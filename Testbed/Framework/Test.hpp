@@ -222,7 +222,7 @@ protected:
     
 private:
     Fixtures m_selectedFixtures;
-    AABB m_worldAABB;
+    AABB m_maxAABB;
     ContactPoints m_points;
     DestructionListenerImpl m_destructionListener;
     Body* m_bomb = nullptr;

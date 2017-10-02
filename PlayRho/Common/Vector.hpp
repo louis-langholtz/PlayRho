@@ -28,6 +28,7 @@
 #include <iterator>
 #include <algorithm>
 #include <functional>
+#include <iostream>
 #include <PlayRho/Common/InvalidArgument.hpp>
 
 namespace playrho
@@ -83,7 +84,7 @@ struct Vector
     
     /// @brief Initializing constructor.
     template<typename... Tail>
-    constexpr Vector(typename std::enable_if<sizeof...(Tail)+1 == N, T>::type
+    constexpr explicit Vector(typename std::enable_if<sizeof...(Tail)+1 == N, T>::type
                      head, Tail... tail) noexcept: elements{head, T(tail)...}
     {
         //static_assert(sizeof...(args) == N, "Invalid number of arguments");
@@ -274,6 +275,24 @@ constexpr auto Get(const Vector<N, T>& v) noexcept
 {
     static_assert(I < N, "Index out of bounds in playrho::Get<> (playrho::Vector)");
     return v[I];
+}
+
+/// @brief Output stream operator.
+/// @relatedalso Vector
+template <std::size_t N, typename T>
+::std::ostream& operator<< (::std::ostream& os, const Vector<N, T>& value)
+{
+    os << "{";
+    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    {
+        if (i > static_cast<size_t>(0))
+        {
+            os << ',';
+        }
+        os << value[i];
+    }
+    os << "}";
+    return os;
 }
 
 } // namespace playrho

@@ -2352,7 +2352,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
             {
                 ++increments;
                 ball_body->SetVelocity(Velocity{
-                    {
+                    LinearVelocity2D{
                         static_cast<Real>(increments) * GetX(velocity),
                         GetY(ball_body->GetVelocity().linear)
                     }, ball_body->GetVelocity().angular});
@@ -2394,7 +2394,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
             {
                 ++increments;
                 ball_body->SetVelocity(Velocity{
-                    {
+                    LinearVelocity2D{
                         -static_cast<Real>(increments) * GetX(velocity),
                         GetY(ball_body->GetVelocity().linear)
                     }, ball_body->GetVelocity().angular});
@@ -2408,7 +2408,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
         
         ++increments;
         ball_body->SetVelocity(Velocity{
-            {
+            LinearVelocity2D{
                 static_cast<Real>(increments) * GetX(velocity),
                 GetY(ball_body->GetVelocity().linear)
             }, ball_body->GetVelocity().angular});

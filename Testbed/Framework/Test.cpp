@@ -287,6 +287,16 @@ static void Draw(Drawer& drawer, const Joint& joint)
     }
 }
 
+static void Draw(Drawer& drawer, const AABB& aabb, const Color& color)
+{
+    Length2D vs[4];
+    vs[0] = Length2D{aabb.rangeX.GetMin(), aabb.rangeY.GetMin()};
+    vs[1] = Length2D{aabb.rangeX.GetMax(), aabb.rangeY.GetMin()};
+    vs[2] = Length2D{aabb.rangeX.GetMax(), aabb.rangeY.GetMax()};
+    vs[3] = Length2D{aabb.rangeX.GetMin(), aabb.rangeY.GetMax()};
+    drawer.DrawPolygon(vs, 4, color);
+}
+
 static bool Draw(Drawer& drawer, const World& world, const Settings& settings,
                  const Test::Fixtures& selected)
 {
@@ -336,16 +346,14 @@ static bool Draw(Drawer& drawer, const World& world, const Settings& settings,
                 for (auto i = decltype(proxy_count){0}; i < proxy_count; ++i)
                 {
                     const auto proxy = f.GetProxy(i);
-                    const auto aabb = world.GetTree().GetAABB(proxy->proxyId);
-                    Length2D vs[4];
-                    vs[0] = Length2D{GetX(aabb.GetLowerBound()), GetY(aabb.GetLowerBound())};
-                    vs[1] = Length2D{GetX(aabb.GetUpperBound()), GetY(aabb.GetLowerBound())};
-                    vs[2] = Length2D{GetX(aabb.GetUpperBound()), GetY(aabb.GetUpperBound())};
-                    vs[3] = Length2D{GetX(aabb.GetLowerBound()), GetY(aabb.GetUpperBound())};
-
-                    drawer.DrawPolygon(vs, 4, color);
+                    Draw(drawer, world.GetTree().GetAABB(proxy->proxyId), color);
                 }
             }
+        }
+        const auto root = world.GetTree().GetRootIndex();
+        if (root != DynamicTree::GetInvalidSize())
+        {
+            Draw(drawer, world.GetTree().GetAABB(root), color);
         }
     }
 
@@ -751,6 +759,7 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     stream << " height=" << unsigned{height};
     stream << " balance=" << unsigned{balance};
     stream << " perim-ratio=" << static_cast<double>(quality);
+    stream << " max-aabb=" << m_maxAABB;
     drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
 
@@ -1019,6 +1028,8 @@ void Test::Step(const Settings& settings, Drawer& drawer)
     const auto stepStats = m_world->Step(stepConf);
     const auto end = std::chrono::system_clock::now();
 
+    m_maxAABB = GetEnclosingAABB(m_maxAABB, GetAABB(m_world->GetTree()));
+    
     m_sumContactsUpdatedPre += stepStats.pre.updated;
     m_sumContactsIgnoredPre += stepStats.pre.ignored;
     m_sumContactsSkippedPre += stepStats.pre.skipped;

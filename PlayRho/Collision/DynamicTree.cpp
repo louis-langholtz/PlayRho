@@ -531,7 +531,7 @@ void DynamicTree::Rebalance(Size index)
     }
 }
 
-Real DynamicTree::ComputeTotalPerimeter() const noexcept
+Length DynamicTree::ComputeTotalPerimeter() const noexcept
 {
     auto totalPerimeter = Length{0};
     if (m_root != GetInvalidSize())

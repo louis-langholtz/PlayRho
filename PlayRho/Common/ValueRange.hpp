@@ -24,6 +24,7 @@
 #include <PlayRho/Common/BoundedValue.hpp>
 #include <algorithm>
 #include <limits>
+#include <iostream>
 
 namespace playrho {
     
@@ -236,6 +237,13 @@ namespace playrho {
     constexpr bool IsWithin(const ValueRange<T>& a, const ValueRange<T>& b)
     {
         return b.GetMin() >= a.GetMin() && b.GetMax() <= a.GetMax();
+    }
+
+    /// @brief Output stream operator.
+    template <typename T>
+    ::std::ostream& operator<< (::std::ostream& os, const ValueRange<T>& value)
+    {
+        return os << '{' << value.GetMin() << "..." << value.GetMax() << '}';
     }
 
 } // namespace playrho

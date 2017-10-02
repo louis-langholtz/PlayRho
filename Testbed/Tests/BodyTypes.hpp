@@ -123,7 +123,8 @@ public:
                 (GetX(p) > Real{10.0f} * Meter && GetX(velocity.linear) > Real{0.0f} * MeterPerSecond))
             {
                 m_platform->SetVelocity(Velocity{
-                    {-GetX(velocity.linear), GetY(velocity.linear)}, velocity.angular
+                    LinearVelocity2D{-GetX(velocity.linear), GetY(velocity.linear)},
+                    velocity.angular
                 });
             }
         }
