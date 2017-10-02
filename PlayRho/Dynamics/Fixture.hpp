@@ -142,9 +142,12 @@ public:
     void SetRestitution(Real restitution) noexcept;
 
     /// @brief Gets the proxy count.
+    /// @note This will be zero until a world step has been run since this fixture's
+    ///   creation.
     ChildCounter GetProxyCount() const noexcept;
 
     /// @brief Gets the proxy for the given index.
+    /// @return Pointer to fixture proxy or <code>nullptr</code> if not given a valid index.
     const FixtureProxy* GetProxy(ChildCounter index) const noexcept;
 
 private:

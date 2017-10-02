@@ -102,13 +102,13 @@ public:
                 c = Color(0.6f, 0.6f, 0.9f);
             }
 
-            const auto p1 = actor->aabb.GetLowerBound();
+            const auto p1 = GetLowerBound(actor->aabb);
             const auto p2 = Length2D{
-                GetX(actor->aabb.GetUpperBound()), GetY(actor->aabb.GetLowerBound())
+                GetX(GetUpperBound(actor->aabb)), GetY(GetLowerBound(actor->aabb))
             };
-            const auto p3 = actor->aabb.GetUpperBound();
+            const auto p3 = GetUpperBound(actor->aabb);
             const auto p4 = Length2D{
-                GetX(actor->aabb.GetLowerBound()), GetY(actor->aabb.GetUpperBound())
+                GetX(GetLowerBound(actor->aabb)), GetY(GetUpperBound(actor->aabb))
             };
             
             drawer.DrawSegment(p1, p2, c);
@@ -121,13 +121,13 @@ public:
         {
             // Draw the AABB.
 
-            const auto p1 = m_queryAABB.GetLowerBound();
+            const auto p1 = GetLowerBound(m_queryAABB);
             const auto p2 = Length2D{
-                GetX(m_queryAABB.GetUpperBound()), GetY(m_queryAABB.GetLowerBound())
+                GetX(GetUpperBound(m_queryAABB)), GetY(GetLowerBound(m_queryAABB))
             };
-            const auto p3 = m_queryAABB.GetUpperBound();
+            const auto p3 = GetUpperBound(m_queryAABB);
             const auto p4 = Length2D{
-                GetX(m_queryAABB.GetLowerBound()), GetY(m_queryAABB.GetUpperBound())
+                GetX(GetLowerBound(m_queryAABB)), GetY(GetUpperBound(m_queryAABB))
             };
             
             drawer.DrawSegment(p1, p2, c);
@@ -234,7 +234,7 @@ private:
         const auto d = Vec2{RandomFloat(-0.5f, 0.5f), RandomFloat(-0.5f, 0.5f)} * Meter;
         //d.x = 2.0f;
         //d.y = 0.0f;
-        aabb->Move(d);
+        Move(*aabb, d);
 
         const auto c0 = GetCenter(*aabb);
         const auto min = Vec2(-m_worldExtent, Real(0)) * Meter;
@@ -243,7 +243,7 @@ private:
             Clamp(GetX(c0), GetX(min), GetX(max)), Clamp(GetY(c0), GetY(min), GetY(max))
         };
 
-        aabb->Move(c - c0);
+        Move(*aabb, c - c0);
     }
 
     void CreateProxy()
@@ -293,7 +293,7 @@ private:
             const auto aabb0 = actor->aabb;
             MoveAABB(&actor->aabb);
             const auto displacement = GetCenter(actor->aabb) - GetCenter(aabb0);
-            if (!m_tree.GetAABB(actor->proxyId).Contains(actor->aabb))
+            if (!playrho::Contains(m_tree.GetAABB(actor->proxyId), actor->aabb))
             {
                 const auto newAabb = GetDisplacedAABB(GetFattenedAABB(actor->aabb, extension), multiplier * displacement);
                 m_tree.UpdateProxy(actor->proxyId, newAabb);

@@ -129,10 +129,10 @@ TEST(DiskShape, ComputeAABB)
     conf.location = position;
     DiskShape foo{conf};
     const auto aabb = ComputeAABB(foo, Transform_identity);
-    EXPECT_EQ(GetX(aabb.GetLowerBound()), GetX(position) - radius);
-    EXPECT_EQ(GetY(aabb.GetLowerBound()), GetY(position) - radius);
-    EXPECT_EQ(GetX(aabb.GetUpperBound()), GetX(position) + radius);
-    EXPECT_EQ(GetY(aabb.GetUpperBound()), GetY(position) + radius);
+    EXPECT_EQ(GetX(GetLowerBound(aabb)), GetX(position) - radius);
+    EXPECT_EQ(GetY(GetLowerBound(aabb)), GetY(position) - radius);
+    EXPECT_EQ(GetX(GetUpperBound(aabb)), GetX(position) + radius);
+    EXPECT_EQ(GetY(GetUpperBound(aabb)), GetY(position) + radius);
     EXPECT_TRUE(AlmostEqual(StripUnit(GetX(GetExtents(aabb))), StripUnit(radius)));
     EXPECT_TRUE(AlmostEqual(StripUnit(GetY(GetExtents(aabb))), StripUnit(radius)));
     EXPECT_EQ(GetX(GetCenter(aabb)), GetX(position));

@@ -79,8 +79,8 @@ RayCastOutput RayCast(const AABB& aabb, const RayCastInput& input) noexcept
     {
         const auto p1i = p1[i];
         const auto pdi = pDelta[i];
-        const auto lbi = aabb.GetLowerBound()[i];
-        const auto ubi = aabb.GetUpperBound()[i];
+        const auto lbi = GetLowerBound(aabb)[i];
+        const auto ubi = GetUpperBound(aabb)[i];
 
         if (AlmostZero(pdi / Meter))
         {

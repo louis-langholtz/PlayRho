@@ -43,7 +43,7 @@ public:
     /// @brief Gets the default radius.
     static constexpr Length GetDefaultRadius() noexcept
     {
-        return DefaultLinearSlop * Real{2};
+        return DefaultLinearSlop * 2;
     }
 
     /// @brief Configuration data for disk shapes.

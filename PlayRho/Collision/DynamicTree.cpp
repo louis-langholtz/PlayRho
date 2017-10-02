@@ -954,7 +954,7 @@ void DynamicTree::ShiftOrigin(Length2D newOrigin)
     // Build array of leaves. Free the rest.
     for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
     {
-        m_nodes[i].SetAABB(m_nodes[i].GetAABB().Move(-newOrigin));
+        m_nodes[i].SetAABB(GetMovedAABB(m_nodes[i].GetAABB(), -newOrigin));
     }
 }
 

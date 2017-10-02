@@ -748,12 +748,7 @@ static void ShowFrameInfo(double frameTime, double fps)
     stream << "Zoom=" << camera.m_zoom;
     stream << " Center=";
     stream << "{" << camera.m_center.x << "," << camera.m_center.y << "}";
-    stream << " Viewport=";
-    stream << "{";
-    stream << GetX(viewport.GetLowerBound()) << "..." << GetX(viewport.GetUpperBound());
-    stream << ", ";
-    stream << GetY(viewport.GetLowerBound()) << "..." << GetY(viewport.GetUpperBound());
-    stream << "}";
+    stream << " Viewport=" << viewport;
     stream << std::setprecision(1);
     stream << std::fixed;
     stream << " Refresh=" << (1000.0 * frameTime) << "ms";
