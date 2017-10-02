@@ -24,6 +24,7 @@
 #include <type_traits>
 #include <algorithm>
 #include <utility>
+#include <string>
 
 using namespace playrho;
 
@@ -190,6 +191,13 @@ TEST(AABB, InitializingConstruction)
         EXPECT_FALSE(std::isnan(StripUnit(GetY(GetLowerBound(foo)))));
         EXPECT_TRUE(std::isnan(StripUnit(GetX(GetUpperBound(foo)))));
         EXPECT_FALSE(std::isnan(StripUnit(GetY(GetUpperBound(foo)))));
+    }
+    {
+        const auto rangeX = ValueRange<Length>{-2 * Meter, +3 * Meter};
+        const auto rangeY = ValueRange<Length>{-8 * Meter, -4 * Meter};
+        AABB foo{rangeX, rangeY};
+        EXPECT_EQ(foo.rangeX, rangeX);
+        EXPECT_EQ(foo.rangeY, rangeY);
     }
 }
 
@@ -374,4 +382,32 @@ TEST(AABB, Move)
         const auto moveby = Length2D{Real(1) * Meter, Real(1) * Meter};
         EXPECT_EQ(aabb.Move(moveby), AABB(lower + moveby, upper + moveby));
     }
+}
+
+TEST(AABB, StreamOutputOperator)
+{
+    const auto rangeX = ValueRange<Length>{-2 * Meter, +3 * Meter};
+    const auto rangeY = ValueRange<Length>{-8 * Meter, -4 * Meter};
+    AABB foo{rangeX, rangeY};
+    ASSERT_EQ(foo.rangeX, rangeX);
+    ASSERT_EQ(foo.rangeY, rangeY);
+    
+    std::stringstream aabbStream;
+    ASSERT_TRUE(aabbStream.str().empty());
+    aabbStream << foo;
+    ASSERT_FALSE(aabbStream.str().empty());
+    
+    std::stringstream xRangeStream;
+    xRangeStream << foo.rangeX;
+    
+    std::stringstream yRangeStream;
+    yRangeStream << foo.rangeY;
+    
+    std::string comp;
+    comp += '{';
+    comp += xRangeStream.str();
+    comp += ',';
+    comp += yRangeStream.str();
+    comp += '}';
+    EXPECT_STREQ(aabbStream.str().c_str(), comp.c_str());
 }

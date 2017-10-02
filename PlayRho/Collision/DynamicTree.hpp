@@ -183,7 +183,7 @@ public:
     /// @brief Gets the ratio of the sum of the perimeters of nodes to the root perimeter.
     /// @note Zero is returned if no proxies exist at the time of the call.
     /// @return Value of zero or more.
-    Real ComputeTotalPerimeter() const noexcept;
+    Length ComputeTotalPerimeter() const noexcept;
 
     /// @brief Builds an optimal tree.
     /// @note This operation is very expensive.
@@ -403,7 +403,7 @@ public:
     ~TreeNode() = default;
     
     /// @brief Copy constructor.
-    constexpr TreeNode(const TreeNode& other) noexcept = default;
+    constexpr TreeNode(const TreeNode& other) = default;
 
     /// @brief Move constructor.
     constexpr TreeNode(TreeNode&& other) = default;
@@ -432,10 +432,10 @@ public:
     }
     
     /// @brief Copy assignment operator.
-    TreeNode& operator= (const TreeNode& other) noexcept = default;
+    TreeNode& operator= (const TreeNode& other) = default;
     
     /// @brief Move assignment operator.
-    TreeNode& operator= (TreeNode&& other) noexcept = default;
+    TreeNode& operator= (TreeNode&& other) = default;
     
     /// @brief Gets the node "height".
     constexpr Height GetHeight() const noexcept
@@ -615,10 +615,22 @@ inline DynamicTree::TreeNode& SetParent(DynamicTree::TreeNode& node,
 
 /// @brief Gets the height of the binary tree.
 /// @return Height of the tree (as stored in the root node) or 0 if the root node is not valid.
+/// @relatedalso DynamicTree
 inline DynamicTree::Height GetHeight(const DynamicTree& tree) noexcept
 {
     const auto index = tree.GetRootIndex();
     return (index != DynamicTree::GetInvalidSize())? tree.GetHeight(index): DynamicTree::Height{0};
+}
+
+/// @brief Gets the AABB for the given DynamicTree.
+/// @details Gets the AABB that encloses all other AABB instances that are within the
+///   given DynamicTree.
+/// @return Enclosing AABB or the "unset" AABB.
+/// @relatedalso DynamicTree
+inline AABB GetAABB(const DynamicTree& tree) noexcept
+{
+    const auto index = tree.GetRootIndex();
+    return (index != DynamicTree::GetInvalidSize())? tree.GetAABB(index): AABB{};
 }
 
 /// @brief Tests for overlap of the elements identified in the given dynamic tree.

@@ -58,7 +58,14 @@ namespace playrho {
         /// @note If an unset AABB is added to another AABB, the result will be the other AABB.
         constexpr AABB() = default;
         
-        /// @brief Initializing constructor.
+        /// @brief Initializing copy constructor.
+        constexpr AABB(const ValueRange<Length>& x, const ValueRange<Length>& y) noexcept:
+            rangeX{x}, rangeY{y}
+        {
+            // Intentionally empty.
+        }
+
+        /// @brief Initializing move constructor.
         constexpr AABB(ValueRange<Length>&& x, ValueRange<Length>&& y) noexcept:
             rangeX{x}, rangeY{y}
         {
@@ -89,13 +96,13 @@ namespace playrho {
         /// @brief Gets the lower bound.
         constexpr Length2D GetLowerBound() const noexcept
         {
-            return {rangeX.GetMin(), rangeY.GetMin()};
+            return Length2D{rangeX.GetMin(), rangeY.GetMin()};
         }
         
         /// @brief Gets the upper bound.
         constexpr Length2D GetUpperBound() const noexcept
         {
-            return {rangeX.GetMax(), rangeY.GetMax()};
+            return Length2D{rangeX.GetMax(), rangeY.GetMax()};
         }
 
         /// @brief Checks whether this AABB fully contains the given AABB.
@@ -182,14 +189,14 @@ namespace playrho {
     /// @relatedalso AABB
     constexpr Length2D GetCenter(const AABB& aabb) noexcept
     {
-        return {GetCenter(aabb.rangeX), GetCenter(aabb.rangeY)};
+        return Length2D{GetCenter(aabb.rangeX), GetCenter(aabb.rangeY)};
     }
     
     /// @brief Gets dimensions of the given AABB.
     /// @relatedalso AABB
     constexpr Length2D GetDimensions(const AABB& aabb) noexcept
     {
-        return {GetSize(aabb.rangeX), GetSize(aabb.rangeY)};
+        return Length2D{GetSize(aabb.rangeX), GetSize(aabb.rangeY)};
     }
     
     /// @brief Gets the extents of the AABB (half-widths).
@@ -280,14 +287,14 @@ namespace playrho {
     /// @relatedalso AABB
     constexpr Length2D GetLowerBound(const AABB& aabb) noexcept
     {
-        return {aabb.rangeX.GetMin(), aabb.rangeY.GetMin()};
+        return Length2D{aabb.rangeX.GetMin(), aabb.rangeY.GetMin()};
     }
     
     /// @brief Gets the upper bound.
     /// @relatedalso AABB
     constexpr Length2D GetUpperBound(const AABB& aabb) noexcept
     {
-        return {aabb.rangeX.GetMax(), aabb.rangeY.GetMax()};
+        return Length2D{aabb.rangeX.GetMax(), aabb.rangeY.GetMax()};
     }
     
     /// @brief Computes the AABB.
@@ -315,6 +322,17 @@ namespace playrho {
     /// @sa Fixture::GetProxy.
     /// @relatedalso Fixture
     AABB GetAABB(const Fixture& fixture, ChildCounter childIndex) noexcept;
+
+    /// @brief Output stream operator.
+    inline ::std::ostream& operator<< (::std::ostream& os, const AABB& value)
+    {
+        os << "{";
+        os << value.rangeX;
+        os << ',';
+        os << value.rangeY;
+        os << "}";
+        return os;
+    }
 
 } // namespace playrho
 

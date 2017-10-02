@@ -25,7 +25,6 @@
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/InvalidArgument.hpp>
 #include <PlayRho/Common/Vector.hpp>
-#include <iostream>
 
 namespace playrho
 {
@@ -69,13 +68,6 @@ namespace playrho
         Real{0} * MeterPerSquareSecond,
         Real{-9.8f} * MeterPerSquareSecond
     };
-    
-    /// @brief Output stream operator.
-    template <typename T>
-    inline ::std::ostream& operator<<(::std::ostream& os, const Vector2D<T>& value)
-    {
-        return os << "{" << Get<0>(value) << "," << Get<1>(value) << "}";
-    }
 
     /// @brief Gets the given value as a Vec2.
     constexpr inline Vec2 GetVec2(const Vector2D<Real> value)
