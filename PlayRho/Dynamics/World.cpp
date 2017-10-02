@@ -2835,7 +2835,7 @@ ChildCounter World::Synchronize(Fixture& fixture,
         const auto aabb2 = ComputeAABB(dp, xfm2);
         proxy.aabb = GetEnclosingAABB(aabb1, aabb2);
         
-        if (!m_tree.GetAABB(proxy.proxyId).Contains(proxy.aabb))
+        if (!Contains(m_tree.GetAABB(proxy.proxyId), proxy.aabb))
         {
             const auto newAabb = GetDisplacedAABB(GetFattenedAABB(proxy.aabb, extension),
                                                   expandedDisplacement);

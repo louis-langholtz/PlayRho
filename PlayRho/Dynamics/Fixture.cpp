@@ -49,7 +49,6 @@ Real Fixture::GetRestitution() const noexcept
 
 const FixtureProxy* Fixture::GetProxy(ChildCounter index) const noexcept
 {
-    assert(index < m_proxyCount);
     return (index < m_proxyCount)? m_proxies + index: nullptr;
 }
 

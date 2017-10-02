@@ -2447,7 +2447,7 @@ TEST(World, MouseJointWontCauseTunnelling)
             const auto wall_fixture = left_wall_body->CreateFixture(std::make_shared<EdgeShape>(edge_shape));
             ASSERT_NE(wall_fixture, nullptr);
         }
-        container_aabb.Include(ComputeAABB(*left_wall_body));
+        Include(container_aabb, ComputeAABB(*left_wall_body));
     }
     
     body_def.position = Length2D{right_edge_x * Meter, Real(0) * Meter};
@@ -2458,7 +2458,7 @@ TEST(World, MouseJointWontCauseTunnelling)
             const auto wall_fixture = right_wall_body->CreateFixture(std::make_shared<EdgeShape>(edge_shape));
             ASSERT_NE(wall_fixture, nullptr);
         }
-        container_aabb.Include(ComputeAABB(*right_wall_body));
+        Include(container_aabb, ComputeAABB(*right_wall_body));
     }
 
     // Setup horizontal bounderies
@@ -2473,7 +2473,7 @@ TEST(World, MouseJointWontCauseTunnelling)
             const auto wall_fixture = btm_wall_body->CreateFixture(std::make_shared<EdgeShape>(edge_shape));
             ASSERT_NE(wall_fixture, nullptr);
         }
-        container_aabb.Include(ComputeAABB(*btm_wall_body));
+        Include(container_aabb, ComputeAABB(*btm_wall_body));
     }
     
     body_def.position = Length2D{0, top_edge_y * Meter};
@@ -2484,7 +2484,7 @@ TEST(World, MouseJointWontCauseTunnelling)
             const auto wall_fixture = top_wall_body->CreateFixture(std::make_shared<EdgeShape>(edge_shape));
             ASSERT_NE(wall_fixture, nullptr);
         }
-        container_aabb.Include(ComputeAABB(*top_wall_body));
+        Include(container_aabb, ComputeAABB(*top_wall_body));
     }
 
     body_def.type = BodyType::Dynamic;

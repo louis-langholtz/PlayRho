@@ -93,67 +93,6 @@ namespace playrho {
             // Intentionally empty.
         }
         
-        /// @brief Gets the lower bound.
-        constexpr Length2D GetLowerBound() const noexcept
-        {
-            return Length2D{rangeX.GetMin(), rangeY.GetMin()};
-        }
-        
-        /// @brief Gets the upper bound.
-        constexpr Length2D GetUpperBound() const noexcept
-        {
-            return Length2D{rangeX.GetMax(), rangeY.GetMax()};
-        }
-
-        /// @brief Checks whether this AABB fully contains the given AABB.
-        constexpr bool Contains(const AABB& aabb) const noexcept
-        {
-            return IsWithin(rangeX, aabb.rangeX) && IsWithin(rangeY, aabb.rangeY);
-        }
-        
-        /// @brief Includes an AABB into this one.
-        /// @note If an unset AABB is added to this AABB, the result will be this AABB.
-        /// @note If this AABB is unset and another AABB is added to it, the result will be
-        ///   the other AABB.
-        constexpr AABB& Include(const AABB aabb) noexcept
-        {
-            rangeX.Include(aabb.rangeX);
-            rangeY.Include(aabb.rangeY);
-            return *this;
-        }
-        
-        /// @brief Includes a point into this AABB.
-        constexpr AABB& Include(const Length2D value) noexcept
-        {
-            rangeX.Include(GetX(value));
-            rangeY.Include(GetY(value));
-            return *this;
-        }
-        
-        /// @brief Moves this AABB by the given value.
-        constexpr AABB& Move(const Length2D value) noexcept
-        {
-            rangeX.Move(GetX(value));
-            rangeY.Move(GetY(value));
-            return *this;
-        }
-
-        /// @brief Displaces this AABB by the given value.
-        constexpr AABB& Displace(const Length2D value) noexcept
-        {
-            rangeX.Expand(GetX(value));
-            rangeY.Expand(GetY(value));
-            return *this;
-        }
-        
-        /// @brief Fattens this AABB by the given amount.
-        constexpr AABB& Fatten(const NonNegative<Length> amount) noexcept
-        {
-            rangeX.ExpandEqually(amount);
-            rangeY.ExpandEqually(amount);
-            return *this;
-        }
-
         /// @brief Holds the value range of "X".
         ValueRange<Length> rangeX;
         
@@ -222,30 +161,6 @@ namespace playrho {
     {
         return {ValueRange<Length>{GetInvalid<Length>()}, ValueRange<Length>{GetInvalid<Length>()}};
     }
-    
-    /// @brief Gets the AABB that minimally encloses the given AABBs.
-    /// @relatedalso AABB
-    constexpr AABB GetEnclosingAABB(AABB a, const AABB& b)
-    {
-        return a.Include(b);
-    }
-
-    /// @brief Gets the AABB that the result of displacing the given AABB by the given
-    ///   displacement amount.
-    /// @relatedalso AABB
-    constexpr AABB GetDisplacedAABB(AABB aabb, const Length2D displacement)
-    {
-        aabb.Displace(displacement);
-        return aabb;
-    }
-    
-    /// @brief Gets the fattened AABB result.
-    /// @relatedalso AABB
-    constexpr AABB GetFattenedAABB(AABB aabb, const Length amount)
-    {
-        aabb.Fatten(amount);
-        return aabb;
-    }
 
     /// @brief Checks whether the first AABB fully contains the second AABB.
     /// @details Whether the first AABB contains the entirety of the second AABB where
@@ -261,26 +176,72 @@ namespace playrho {
     }
 
     /// @brief Includes the given location into the given AABB.
-    constexpr AABB& Include(AABB& var, const Length2D& val) noexcept
+    /// @relatedalso AABB
+    constexpr AABB& Include(AABB& var, const Length2D& value) noexcept
     {
-        return var.Include(val);
+        var.rangeX.Include(GetX(value));
+        var.rangeY.Include(GetY(value));
+        return var;
     }
 
-    /// @brief Includes another AABB into this one.
-    /// @note If an unset AABB is added to this AABB, the result will be this AABB.
-    /// @note If this AABB is unset and another AABB is added to it, the result will be
+    /// @brief Includes the second AABB into the first one.
+    /// @note If an unset AABB is added to the first AABB, the result will be the first AABB.
+    /// @note If the first AABB is unset and another AABB is added to it, the result will be
     ///   the other AABB.
+    /// @relatedalso AABB
     constexpr AABB& Include(AABB& var, const AABB& val) noexcept
     {
-        return var.Include(val);
+        var.rangeX.Include(val.rangeX);
+        var.rangeY.Include(val.rangeY);
+        return var;
+    }
+    
+    /// @brief Moves the given AABB by the given value.
+    constexpr AABB& Move(AABB& var, const Length2D value) noexcept
+    {
+        var.rangeX.Move(GetX(value));
+        var.rangeY.Move(GetY(value));
+        return var;
     }
     
     /// @brief Fattens an AABB by the given amount.
+    /// @relatedalso AABB
     constexpr AABB& Fatten(AABB& var, const NonNegative<Length> amount) noexcept
     {
         var.rangeX.ExpandEqually(amount);
         var.rangeY.ExpandEqually(amount);
         return var;
+    }
+    
+    /// @brief Gets the AABB that the result of displacing the given AABB by the given
+    ///   displacement amount.
+    /// @relatedalso AABB
+    constexpr AABB GetDisplacedAABB(AABB aabb, const Length2D displacement)
+    {
+        aabb.rangeX.Expand(GetX(displacement));
+        aabb.rangeY.Expand(GetY(displacement));
+        return aabb;
+    }
+
+    /// @brief Gets the fattened AABB result.
+    /// @relatedalso AABB
+    constexpr AABB GetFattenedAABB(AABB aabb, const Length amount)
+    {
+        return Fatten(aabb, amount);
+    }
+
+    /// @brief Gets the result of moving the given AABB by the given value.
+    /// @relatedalso AABB
+    constexpr AABB GetMovedAABB(AABB aabb, const Length2D value) noexcept
+    {
+        return Move(aabb, value);
+    }
+
+    /// @brief Gets the AABB that minimally encloses the given AABBs.
+    /// @relatedalso AABB
+    constexpr AABB GetEnclosingAABB(AABB a, const AABB& b)
+    {
+        return Include(a, b);
     }
 
     /// @brief Gets the lower bound.

@@ -36,9 +36,9 @@ AABB ComputeAABB(const DistanceProxy& proxy, const Transformation& xf) noexcept
     const auto count = proxy.GetVertexCount();
     for (auto i = decltype(count){0}; i < count; ++i)
     {
-        result.Include(Transform(proxy.GetVertex(i), xf));
+        Include(result, Transform(proxy.GetVertex(i), xf));
     }
-    return result.Fatten(proxy.GetVertexRadius());
+    return GetFattenedAABB(result, proxy.GetVertexRadius());
 }
 
 AABB ComputeAABB(const Shape& shape, const Transformation& xf)
@@ -47,7 +47,7 @@ AABB ComputeAABB(const Shape& shape, const Transformation& xf)
     const auto childCount = shape.GetChildCount();
     for (auto i = decltype(childCount){0}; i < childCount; ++i)
     {
-        sum.Include(ComputeAABB(shape.GetChild(i), xf));
+        Include(sum, ComputeAABB(shape.GetChild(i), xf));
     }
     return sum;
 }
@@ -58,14 +58,15 @@ AABB ComputeAABB(const Body& body)
     const auto xf = body.GetTransformation();
     for (auto&& f: body.GetFixtures())
     {
-        sum.Include(ComputeAABB(*(GetRef(f).GetShape()), xf));
+        Include(sum, ComputeAABB(*(GetRef(f).GetShape()), xf));
     }
     return sum;
 }
 
 AABB GetAABB(const Fixture& fixture, ChildCounter childIndex) noexcept
 {
-    return fixture.GetProxy(childIndex)->aabb;
+    const auto proxy = fixture.GetProxy(childIndex);
+    return proxy? proxy->aabb: AABB{};
 }
 
 } // namespace playrho
