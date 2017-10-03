@@ -26,7 +26,7 @@
 /// Declaration of the AABB class and free functions that return instances of it.
 
 #include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/ValueRange.hpp>
+#include <PlayRho/Common/Interval.hpp>
 
 namespace playrho {
 

@@ -19,7 +19,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <PlayRho/Common/ValueRange.hpp>
+#include <PlayRho/Common/Interval.hpp>
 #include <PlayRho/Common/OptionalValue.hpp>
 #include <limits>
 
