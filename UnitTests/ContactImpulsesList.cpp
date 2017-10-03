@@ -60,3 +60,26 @@ TEST(ContactImpulsesList, AddEntry)
     EXPECT_EQ(v.GetEntryNormal(1), normalMomentum * Real(2));
     EXPECT_EQ(v.GetEntryTanget(1), tangentMomentum * Real(2));
 }
+
+TEST(ContactImpulsesList, GetMaxNormalImpulseFF)
+{
+    EXPECT_EQ(GetMaxNormalImpulse(ContactImpulsesList{}), 0 * NewtonSecond);
+    {
+        auto impulses = ContactImpulsesList{};
+        impulses.AddEntry(10 * NewtonSecond, 2 * NewtonSecond);
+        EXPECT_EQ(GetMaxNormalImpulse(impulses), 10 * NewtonSecond);
+    }
+    {
+        auto impulses = ContactImpulsesList{};
+        impulses.AddEntry(10 * NewtonSecond, 2 * NewtonSecond);
+        impulses.AddEntry(66 * NewtonSecond, 2 * NewtonSecond);
+        EXPECT_EQ(GetMaxNormalImpulse(impulses), 66 * NewtonSecond);
+    }
+    {
+        auto impulses = ContactImpulsesList{};
+        impulses.AddEntry(66 * NewtonSecond, 2 * NewtonSecond);
+        impulses.AddEntry(10 * NewtonSecond, 2 * NewtonSecond);
+        EXPECT_EQ(GetMaxNormalImpulse(impulses), 66 * NewtonSecond);
+    }
+}
+

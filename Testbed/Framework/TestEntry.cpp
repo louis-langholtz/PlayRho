@@ -25,6 +25,7 @@
 #include "../Tests/BasicSliderCrank.hpp"
 #include "../Tests/BodyTypes.hpp"
 #include "../Tests/Breakable.hpp"
+#include "../Tests/BreakableTwo.hpp"
 #include "../Tests/Bridge.hpp"
 #include "../Tests/BulletTest.hpp"
 #include "../Tests/Cantilever.hpp"
@@ -132,6 +133,7 @@ static const TestEntry testEntries[] =
     {"PolyCollision", MakeUniqueTest<PolyCollision>},
     {"Bridge", MakeUniqueTest<Bridge>},
     {"Breakable", MakeUniqueTest<Breakable>},
+    {"Breakable Two", MakeUniqueTest<BreakableTwo>},
     {"Chain", MakeUniqueTest<Chain>},
     {"Collision Filtering", MakeUniqueTest<CollisionFiltering>},
     {"Collision Processing", MakeUniqueTest<CollisionProcessing>},

@@ -21,6 +21,7 @@
 #define PLAYRHO_DYNAMICS_WORLDCALLBACKS_HPP
 
 #include <PlayRho/Common/Settings.hpp>
+#include <algorithm>
 
 namespace playrho {
 
@@ -99,6 +100,18 @@ private:
     Momentum tangentImpulses[MaxManifoldPoints];
     Counter count = 0;
 };
+
+/// @brief Gets the maximum normal impulse from the given contact impulses list.
+inline Momentum GetMaxNormalImpulse(const ContactImpulsesList& impulses) noexcept
+{
+    auto maxImpulse = Momentum(0);
+    const auto count = impulses.GetCount();
+    for (auto i = decltype(count){0}; i < count; ++i)
+    {
+        maxImpulse = std::max(maxImpulse, impulses.GetEntryNormal(i));
+    }
+    return maxImpulse;
+}
 
 /// @brief A pure-virtual interface for "listeners" for contacts.
 ///

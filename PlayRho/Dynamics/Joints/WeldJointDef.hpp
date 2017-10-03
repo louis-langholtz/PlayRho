@@ -31,9 +31,12 @@ namespace playrho {
 class WeldJoint;
 
 /// @brief Weld joint definition.
-/// @details You need to specify local anchor points
-/// where they are attached and the relative body angle. The position
-/// of the anchor points is important for computing the reaction torque.
+/// @note A weld joint essentially glues two bodies together. A weld joint may
+///   distort somewhat because the island constraint solver is approximate.
+/// @note You need to specify local anchor points where they are attached and the
+///   relative body angle.
+/// @note The position of the anchor points is important for computing the reaction torque.
+/// @sa WeldJoint
 struct WeldJointDef : public JointBuilder<WeldJointDef>
 {
     /// @brief Super type.
@@ -41,8 +44,12 @@ struct WeldJointDef : public JointBuilder<WeldJointDef>
     
     constexpr WeldJointDef() noexcept: super{JointType::Weld} {}
     
-    /// Initialize the bodies, anchors, and reference angle using a world
-    /// anchor point.
+    /// @brief Initializing constructor.
+    /// @details Initializes the bodies, anchors, and reference angle using a world
+    ///   anchor point.
+    /// @param bodyA Body A.
+    /// @param bodyB Body B.
+    /// @param anchor Anchor location in world coordinates.
     WeldJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB, const Length2D anchor) noexcept;
     
     /// @brief Uses the given frequency value.
