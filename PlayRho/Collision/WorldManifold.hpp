@@ -31,7 +31,7 @@ namespace playrho {
     ///
     /// @details Used to recoginze the current state of a contact manifold in world coordinates.
     ///
-    /// @note This data structure is 52-bytes large (on at least one 64-bit platform).
+    /// @note This data structure is 48-bytes large (on at least one 64-bit platform).
     ///
     /// @sa GetWorldManifold
     ///
@@ -47,24 +47,26 @@ namespace playrho {
         
         /// @brief Points.
         /// @details Manifold's contact points in world coordinates (mid-point of intersection)
+        /// @note 16-bytes.
         Length2D m_points[MaxManifoldPoints] = {GetInvalid<Length2D>(), GetInvalid<Length2D>()};
+
+        /// @brief Impulses.
+        /// @note 16-bytes.
+        Momentum2D m_impulses[MaxManifoldPoints] = {Momentum2D{0, 0}, Momentum2D{0, 0}};
         
         /// @brief Separations.
         /// @details A negative value indicates overlap.
         Length m_separations[MaxManifoldPoints] = {GetInvalid<Length>(), GetInvalid<Length>()};
-
-        Momentum2D m_impulses[MaxManifoldPoints] = {Momentum2D{0, 0}, Momentum2D{0, 0}};
-
-        size_type m_count = 0;
-
+        
     public:
         
         /// @brief Point data for world manifold.
+        /// @note This data structure is 20-bytes large at least on one 64-bit architecture.
         struct PointData
         {
-            Length2D location; ///< Location of point.
+            Length2D location; ///< Location of point or the invalid Length2D value.
             Momentum2D impulse; ///< "Normal" and "tangent" impulses at the point.
-            Length separation; ///< Separation at point.
+            Length separation; ///< Separation at point or the invalid Length value.
         };
         
         /// Default constructor.
@@ -75,7 +77,7 @@ namespace playrho {
         
         /// @brief Initializing constructor.
         constexpr explicit WorldManifold(UnitVec2 normal) noexcept:
-            m_normal{normal}, m_count{0}
+            m_normal{normal}
         {
             assert(IsValid(normal));
             // Intentionally empty.
@@ -83,10 +85,10 @@ namespace playrho {
         
         /// @brief Initializing constructor.
         constexpr explicit WorldManifold(UnitVec2 normal, PointData ps0) noexcept:
-            m_normal{normal}, m_count{1},
+            m_normal{normal},
             m_points{ps0.location, GetInvalid<Length2D>()},
-            m_separations{ps0.separation, GetInvalid<Length>()},
-            m_impulses{ps0.impulse, Momentum2D{0, 0}}
+            m_impulses{ps0.impulse, Momentum2D{0, 0}},
+            m_separations{ps0.separation, GetInvalid<Length>()}
         {
             assert(IsValid(normal));
             // Intentionally empty.
@@ -94,23 +96,26 @@ namespace playrho {
         
         /// @brief Initializing constructor.
         constexpr explicit WorldManifold(UnitVec2 normal, PointData ps0, PointData ps1) noexcept:
-            m_normal{normal}, m_count{2},
+            m_normal{normal},
             m_points{ps0.location, ps1.location},
-            m_separations{ps0.separation, ps1.separation},
-            m_impulses{ps0.impulse, ps1.impulse}
+            m_impulses{ps0.impulse, ps1.impulse},
+            m_separations{ps0.separation, ps1.separation}
         {
             assert(IsValid(normal));
             // Intentionally empty.
         }
         
-        /// Gets the point count.
+        /// @brief Gets the point count.
         ///
         /// @details This is the maximum index value that can be used to access valid point or
         ///   separation information.
         ///
         /// @return Value between 0 and 2.
         ///
-        size_type GetPointCount() const noexcept { return m_count; }
+        size_type GetPointCount() const noexcept
+        {
+            return (IsValid(m_separations[0])? 1: 0) + (IsValid(m_separations[1])? 1: 0);
+        }
         
         /// Gets the normal of the contact.
         /// @details This is a directional unit-vector.
