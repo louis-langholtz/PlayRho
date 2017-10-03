@@ -116,6 +116,38 @@ namespace playrho {
         return !(lhs == rhs);
     }
     
+    /// @brief Less-than operator.
+    /// @relatedalso AABB
+    constexpr bool operator< (const AABB& lhs, const AABB& rhs) noexcept
+    {
+        return (lhs.rangeX < rhs.rangeX) ||
+            ((lhs.rangeX == rhs.rangeX) && (lhs.rangeY < rhs.rangeY));
+    }
+    
+    /// @brief Less-than or equal-to operator.
+    /// @relatedalso AABB
+    constexpr bool operator<= (const AABB& lhs, const AABB& rhs) noexcept
+    {
+        return (lhs.rangeX < rhs.rangeX) ||
+            ((lhs.rangeX == rhs.rangeX) && (lhs.rangeY <= rhs.rangeY));
+    }
+    
+    /// @brief Greater-than operator.
+    /// @relatedalso AABB
+    constexpr bool operator> (const AABB& lhs, const AABB& rhs) noexcept
+    {
+        return (lhs.rangeX > rhs.rangeX) ||
+            ((lhs.rangeX == rhs.rangeX) && (lhs.rangeY > rhs.rangeY));
+    }
+    
+    /// @brief Greater-than or equal-to operator.
+    /// @relatedalso AABB
+    constexpr bool operator>= (const AABB& lhs, const AABB& rhs) noexcept
+    {
+        return (lhs.rangeX > rhs.rangeX) ||
+            ((lhs.rangeX == rhs.rangeX) && (lhs.rangeY >= rhs.rangeY));
+    }
+
     /// @brief Tests for overlap between two axis aligned bounding boxes.
     /// @note This function's complexity is constant.
     /// @relatedalso AABB
@@ -172,7 +204,7 @@ namespace playrho {
     /// @relatedalso AABB
     constexpr bool Contains(const AABB& a, const AABB& b) noexcept
     {
-        return IsWithin(a.rangeX, b.rangeX) && IsWithin(a.rangeY, b.rangeY);
+        return IsEntirelyEnclosing(a.rangeX, b.rangeX) && IsEntirelyEnclosing(a.rangeY, b.rangeY);
     }
 
     /// @brief Includes the given location into the given AABB.

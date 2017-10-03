@@ -417,6 +417,42 @@ TEST(AABB, GetAABBForFixtureChild)
     EXPECT_EQ(aabb.rangeY.GetMax(), 3 * Meter);
 }
 
+TEST(AABB, ComparisonOperators)
+{
+    EXPECT_TRUE(AABB{} == AABB{});
+    EXPECT_FALSE(AABB{} != AABB{});
+    EXPECT_TRUE(AABB{} <= AABB{});
+    EXPECT_TRUE(AABB{} >= AABB{});
+    EXPECT_FALSE(AABB{} < AABB{});
+    EXPECT_FALSE(AABB{} > AABB{});
+    
+    const auto vr0 = ValueRange<Length>{1 * Meter, 2 * Meter};
+    const auto vr1 = ValueRange<Length>{3 * Meter, 4 * Meter};
+    const auto vr2 = ValueRange<Length>{5 * Meter, 6 * Meter};
+    const auto vr3 = ValueRange<Length>{7 * Meter, 8 * Meter};
+
+    EXPECT_FALSE(AABB(vr0, vr1) == AABB{});
+    EXPECT_TRUE(AABB(vr0, vr1) != AABB{});
+    EXPECT_TRUE(AABB(vr0, vr1) <= AABB{});
+    EXPECT_FALSE(AABB(vr0, vr1) >= AABB{});
+    EXPECT_TRUE(AABB(vr0, vr1) < AABB{});
+    EXPECT_FALSE(AABB(vr0, vr1) > AABB{});
+
+    EXPECT_FALSE(AABB{} == AABB(vr0, vr1));
+    EXPECT_TRUE(AABB{} != AABB(vr0, vr1));
+    EXPECT_FALSE(AABB{} <= AABB(vr0, vr1));
+    EXPECT_TRUE(AABB{} >= AABB(vr0, vr1));
+    EXPECT_FALSE(AABB{} < AABB(vr0, vr1));
+    EXPECT_TRUE(AABB{} > AABB(vr0, vr1));
+
+    EXPECT_FALSE(AABB(vr0, vr1) == AABB(vr2, vr3));
+    EXPECT_TRUE(AABB(vr0, vr1) != AABB(vr2, vr3));
+    EXPECT_TRUE(AABB(vr0, vr1) <= AABB(vr2, vr3));
+    EXPECT_FALSE(AABB(vr0, vr1) >= AABB(vr2, vr3));
+    EXPECT_TRUE(AABB(vr0, vr1) < AABB(vr2, vr3));
+    EXPECT_FALSE(AABB(vr0, vr1) > AABB(vr2, vr3));
+}
+
 TEST(AABB, StreamOutputOperator)
 {
     const auto rangeX = ValueRange<Length>{-2 * Meter, +3 * Meter};

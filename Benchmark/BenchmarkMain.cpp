@@ -114,6 +114,18 @@ static void FloatAtan2(benchmark::State& state)
     }
 }
 
+static void FloatSinCos(benchmark::State& state)
+{
+    const auto b = -4.1092f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+    while (state.KeepRunning())
+    {
+        // If runtime of sin + cos = sin or cos then seemingly hardware
+        //   calculates both at same time and compiler knows that.
+        benchmark::DoNotOptimize(std::sin(b));
+        benchmark::DoNotOptimize(std::cos(b));
+    }
+}
+
 static void FloatAlmostEqual1(benchmark::State& state)
 {
     const auto x = static_cast<float>(rand() - (RAND_MAX / 2)) / static_cast<float>(RAND_MAX / 2);
@@ -1229,6 +1241,7 @@ BENCHMARK(DifferentSignsViaMultiplication);
 BENCHMARK(FloatSqrt);
 BENCHMARK(FloatSin);
 BENCHMARK(FloatCos);
+BENCHMARK(FloatSinCos);
 BENCHMARK(FloatAtan2);
 
 BENCHMARK(AABB);
