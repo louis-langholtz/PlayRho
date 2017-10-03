@@ -23,10 +23,10 @@
 #include <PlayRho/Common/OptionalValue.hpp>
 #include <limits>
 
-class ValueRange: public ::testing::Test
+class Interval: public ::testing::Test
 {
 protected:
-    using type = playrho::ValueRange<int>;
+    using type = playrho::Interval<int>;
 
     virtual void SetUp()
     {
@@ -52,7 +52,7 @@ protected:
     std::vector<type> m_ranges;
 };
 
-TEST_F(ValueRange, Equality)
+TEST_F(Interval, Equality)
 {
     for (auto& v: m_ranges)
     {
@@ -89,7 +89,7 @@ TEST_F(ValueRange, Equality)
     }
 }
 
-TEST_F(ValueRange, Inequality)
+TEST_F(Interval, Inequality)
 {
     for (auto& v: m_ranges)
     {
@@ -126,7 +126,7 @@ TEST_F(ValueRange, Inequality)
     }
 }
 
-TEST_F(ValueRange, LessThan)
+TEST_F(Interval, LessThan)
 {
     // Establish irreflexivity.
     // See: https://en.wikipedia.org/wiki/Reflexive_relation
@@ -169,7 +169,7 @@ TEST_F(ValueRange, LessThan)
     }
 }
 
-TEST_F(ValueRange, GreaterThan)
+TEST_F(Interval, GreaterThan)
 {
     // Establish irreflexivity.
     // See: https://en.wikipedia.org/wiki/Reflexive_relation
@@ -212,7 +212,7 @@ TEST_F(ValueRange, GreaterThan)
     }
 }
 
-TEST_F(ValueRange, LessThanOrEqualTo)
+TEST_F(Interval, LessThanOrEqualTo)
 {
     {
         type last = type{std::numeric_limits<int>::lowest()};
@@ -265,7 +265,7 @@ TEST_F(ValueRange, LessThanOrEqualTo)
     }
 }
 
-TEST_F(ValueRange, GreaterThanOrEqualTo)
+TEST_F(Interval, GreaterThanOrEqualTo)
 {
     {
         type last = type{std::numeric_limits<int>::lowest()};

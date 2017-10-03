@@ -43,7 +43,7 @@ namespace playrho {
     /// @note This class satisfies at least the following concepts: all the basic concepts,
     ///   EqualityComparable, and Swappable.
     /// @note This class is composed of &mdash; as in contains and owns &mdash two
-    ///   <code>ValueRange<Length></code> variables.
+    ///   <code>Interval<Length></code> variables.
     /// @note Non-defaulted methods of this class are marked noexcept and expect that
     ///   the Length type doesn't throw.
     /// @note This data structure is 16-bytes large (on at least one 64-bit platform).
@@ -59,14 +59,14 @@ namespace playrho {
         constexpr AABB() = default;
         
         /// @brief Initializing copy constructor.
-        constexpr AABB(const ValueRange<Length>& x, const ValueRange<Length>& y) noexcept:
+        constexpr AABB(const Interval<Length>& x, const Interval<Length>& y) noexcept:
             rangeX{x}, rangeY{y}
         {
             // Intentionally empty.
         }
 
         /// @brief Initializing move constructor.
-        constexpr AABB(ValueRange<Length>&& x, ValueRange<Length>&& y) noexcept:
+        constexpr AABB(Interval<Length>&& x, Interval<Length>&& y) noexcept:
             rangeX{x}, rangeY{y}
         {
             // Intentionally empty.
@@ -94,10 +94,10 @@ namespace playrho {
         }
         
         /// @brief Holds the value range of "X".
-        ValueRange<Length> rangeX;
+        Interval<Length> rangeX;
         
         /// @brief Holds the value range of "Y".
-        ValueRange<Length> rangeY;
+        Interval<Length> rangeY;
     };
     
     /// @brief Gets whether the two AABB objects are equal.
@@ -191,7 +191,7 @@ namespace playrho {
     template <>
     constexpr AABB GetInvalid() noexcept
     {
-        return {ValueRange<Length>{GetInvalid<Length>()}, ValueRange<Length>{GetInvalid<Length>()}};
+        return {Interval<Length>{GetInvalid<Length>()}, Interval<Length>{GetInvalid<Length>()}};
     }
 
     /// @brief Checks whether the first AABB fully contains the second AABB.
