@@ -42,7 +42,7 @@
 		472724231E310BB400C64921 /* Real.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 472724221E310BB400C64921 /* Real.cpp */; };
 		472724251E310C7600C64921 /* float.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 472724241E310C7600C64921 /* float.cpp */; };
 		472724301E315E1A00C64921 /* Fixed.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4727242D1E315E1A00C64921 /* Fixed.hpp */; };
-		472E24661F82C4EA0051E192 /* ValueRange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 472E24651F82C4EA0051E192 /* ValueRange.cpp */; };
+		472E24661F82C4EA0051E192 /* Interval.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 472E24651F82C4EA0051E192 /* Interval.cpp */; };
 		472E301B1DBA925500DA821D /* VertexSet.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 472E30181DBA925500DA821D /* VertexSet.hpp */; };
 		472E301E1DBA98BC00DA821D /* VertexSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 472E301D1DBA98BC00DA821D /* VertexSet.cpp */; };
 		47315E041E28A66100DDA856 /* RevoluteJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47315E031E28A66100DDA856 /* RevoluteJoint.cpp */; };
@@ -401,7 +401,7 @@
 		472724221E310BB400C64921 /* Real.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Real.cpp; sourceTree = "<group>"; };
 		472724241E310C7600C64921 /* float.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = float.cpp; sourceTree = "<group>"; };
 		4727242D1E315E1A00C64921 /* Fixed.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Fixed.hpp; sourceTree = "<group>"; };
-		472E24651F82C4EA0051E192 /* ValueRange.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ValueRange.cpp; sourceTree = "<group>"; };
+		472E24651F82C4EA0051E192 /* Interval.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Interval.cpp; sourceTree = "<group>"; };
 		472E30181DBA925500DA821D /* VertexSet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VertexSet.hpp; sourceTree = "<group>"; };
 		472E301D1DBA98BC00DA821D /* VertexSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexSet.cpp; sourceTree = "<group>"; };
 		47315E031E28A66100DDA856 /* RevoluteJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RevoluteJoint.cpp; sourceTree = "<group>"; };
@@ -797,6 +797,7 @@
 				47C85D0F1EFAE37B00F70C56 /* GearJoint.cpp */,
 				47C85D231F112E2700F70C56 /* GrowableStack.cpp */,
 				474BC3FB1D41278800447DCD /* IndexPair.cpp */,
+				472E24651F82C4EA0051E192 /* Interval.cpp */,
 				4731DDFB1DC8FBEE00E7F931 /* Island.cpp */,
 				475A945C1D959537000CA9A8 /* Joint.cpp */,
 				474BC3FC1D41278800447DCD /* main.cpp */,
@@ -829,7 +830,6 @@
 				474BC4031D41278800447DCD /* TimeOfImpact.cpp */,
 				474BC4041D41278800447DCD /* Transformation.cpp */,
 				470F94DD1ECB94D600AA3C82 /* UnitVec2.cpp */,
-				472E24651F82C4EA0051E192 /* ValueRange.cpp */,
 				474BC4051D41278800447DCD /* Vec2.cpp */,
 				4736DE881DB7DB3B003993CB /* Vec3.cpp */,
 				473E019F1F81705100D58CC8 /* Vector.cpp */,
@@ -1571,7 +1571,7 @@
 				4731DE161DDCD00100E7F931 /* FixtureProxy.cpp in Sources */,
 				473E01A01F81705100D58CC8 /* Vector.cpp in Sources */,
 				479039D11D5BB9ED001A2145 /* Body.cpp in Sources */,
-				472E24661F82C4EA0051E192 /* ValueRange.cpp in Sources */,
+				472E24661F82C4EA0051E192 /* Interval.cpp in Sources */,
 				4775A9381E05B032001C2332 /* StepConf.cpp in Sources */,
 				47AFC3051DAEBC120023E9D1 /* PositionSolverManifold.cpp in Sources */,
 				473971A81D9D9B4C00F7137F /* Math.cpp in Sources */,
