@@ -34,9 +34,20 @@ TEST(WorldManifold, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(WorldManifold), std::size_t(52)); break;
-        case  8: EXPECT_EQ(sizeof(WorldManifold), std::size_t(104)); break;
-        case 16: EXPECT_EQ(sizeof(WorldManifold), std::size_t(208)); break;
+        case  4: EXPECT_EQ(sizeof(WorldManifold), std::size_t(48)); break;
+        case  8: EXPECT_EQ(sizeof(WorldManifold), std::size_t(96)); break;
+        case 16: EXPECT_EQ(sizeof(WorldManifold), std::size_t(192)); break;
+        default: FAIL(); break;
+    }
+}
+
+TEST(WorldManifold, PointDataByteSize)
+{
+    switch (sizeof(Real))
+    {
+        case  4: EXPECT_EQ(sizeof(WorldManifold::PointData), std::size_t(20)); break;
+        case  8: EXPECT_EQ(sizeof(WorldManifold::PointData), std::size_t(40)); break;
+        case 16: EXPECT_EQ(sizeof(WorldManifold::PointData), std::size_t(80)); break;
         default: FAIL(); break;
     }
 }
