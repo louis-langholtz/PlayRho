@@ -94,7 +94,7 @@ VelocityConstraint::VelocityConstraint(Real friction, Real restitution,
         const auto worldPoint = worldManifold.GetPoint(j);
         const auto relA = worldPoint - bA.GetPosition().linear;
         const auto relB = worldPoint - bB.GetPosition().linear;
-        AddPoint(ci.m_normal, ci.m_tangent, relA, relB, conf);
+        AddPoint(Get<0>(ci), Get<1>(ci), relA, relB, conf);
     }
     
     if (conf.blockSolve && (pointCount == 2))

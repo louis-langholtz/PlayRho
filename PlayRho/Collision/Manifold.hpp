@@ -331,18 +331,22 @@ namespace playrho {
         }
 
         /// @brief Gets the contact impulses for the given index.
-        constexpr ContactImpulses GetContactImpulses(size_type index) const noexcept
+        /// @return Pair of impulses where the first impulse is the "normal impulse"
+        ///   and the second impulse is the "tangent impulse".
+        constexpr Momentum2D GetContactImpulses(size_type index) const noexcept
         {
             assert(index < m_pointCount);
-            return ContactImpulses{m_points[index].normalImpulse, m_points[index].tangentImpulse};
+            return Momentum2D{m_points[index].normalImpulse, m_points[index].tangentImpulse};
         }
 
         /// @brief Sets the contact impulses for the given index.
-        void SetContactImpulses(size_type index, ContactImpulses value) noexcept
+        /// @details Sets the contact impulses for the given index where the first impulse
+        ///   is the "normal impulse" and the second impulse is the "tangent impulse".
+        void SetContactImpulses(size_type index, Momentum2D value) noexcept
         {
             assert(index < m_pointCount);
-            m_points[index].normalImpulse = value.m_normal;
-            m_points[index].tangentImpulse = value.m_tangent;
+            m_points[index].normalImpulse = Get<0>(value);
+            m_points[index].tangentImpulse = Get<1>(value);
         }
 
         /// @brief Gets the point identified by the given index.

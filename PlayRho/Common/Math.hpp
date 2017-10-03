@@ -38,12 +38,6 @@
 
 namespace playrho
 {
-/// @brief Contact impulses data.
-struct ContactImpulses
-{
-    Momentum m_normal; ///< Normal impulse. This is the non-penetration impulse (4-bytes).
-    Momentum m_tangent; ///< Tangent impulse. This is the friction impulse (4-bytes).
-};
 
 // Other templates.
 
