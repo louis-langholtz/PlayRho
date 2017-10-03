@@ -1907,11 +1907,10 @@ TEST(World, CollidingDynamicBodies)
 
 TEST(World, TilesComesToRest)
 {
-    constexpr auto LinearSlop = playrho::Meter / playrho::Real(1000);
-    constexpr auto AngularSlop = (Pi * Real{2} * Radian) / Real{180};
-    constexpr auto VertexRadius = playrho::Length{LinearSlop * playrho::Real(2)};
+    constexpr auto LinearSlop = Meter / 1000;
+    constexpr auto AngularSlop = (Pi * 2 * Radian) / 180;
+    constexpr auto VertexRadius = LinearSlop * 2;
     const auto conf = PolygonShape::Conf{}.UseVertexRadius(VertexRadius);
-
     const auto m_world = std::make_unique<World>(WorldDef{}.UseMinVertexRadius(VertexRadius));
     
     constexpr auto e_count = 36;

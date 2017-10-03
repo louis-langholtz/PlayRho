@@ -904,7 +904,7 @@ static void ConstructAndAssignVC(benchmark::State& state)
     const auto invRotI = playrho::Real(1) / ((playrho::SquareMeter * playrho::Kilogram) / playrho::SquareRadian);
     const auto normal = playrho::UnitVec2::GetRight();
     const auto location = playrho::Length2D{playrho::Real(0) * playrho::Meter, playrho::Real(0) * playrho::Meter};
-    const auto impulse = playrho::ContactImpulses{playrho::Momentum{0}, playrho::Momentum{0}};
+    const auto impulse = playrho::Momentum2D{playrho::Momentum{0}, playrho::Momentum{0}};
     const auto separation = playrho::Length{playrho::Real(-0.001) * playrho::Meter};
     const auto ps0 = playrho::WorldManifold::PointData{location, impulse, separation};
     const auto worldManifold = playrho::WorldManifold{normal, ps0};
@@ -983,7 +983,7 @@ static void SolveVC(benchmark::State& state)
     const auto invRotI = playrho::Real(1) / ((playrho::SquareMeter * playrho::Kilogram) / playrho::SquareRadian);
     const auto normal = playrho::UnitVec2::GetRight();
     const auto location = playrho::Length2D{playrho::Real(0) * playrho::Meter, playrho::Real(0) * playrho::Meter};
-    const auto impulse = playrho::ContactImpulses{playrho::Momentum{0}, playrho::Momentum{0}};
+    const auto impulse = playrho::Momentum2D{playrho::Momentum{0}, playrho::Momentum{0}};
     const auto separation = playrho::Length{playrho::Real(-0.001) * playrho::Meter};
     const auto ps0 = playrho::WorldManifold::PointData{location, impulse, separation};
     const auto worldManifold = playrho::WorldManifold{normal, ps0};
@@ -1015,8 +1015,9 @@ static void SolveVC(benchmark::State& state)
 
 static void DropTiles(int count)
 {
-    const auto linearSlop = playrho::Real(0.001f) * playrho::Meter;
-    const auto vertexRadius = playrho::Length{linearSlop * playrho::Real(2)};
+    const auto linearSlop = playrho::Meter / 1000;
+    const auto angularSlop = (playrho::Pi * 2 * playrho::Radian) / 180;
+    const auto vertexRadius = linearSlop * 2;
     const auto conf = playrho::PolygonShape::Conf{}.UseVertexRadius(vertexRadius);
     const auto m_world = std::make_unique<playrho::World>(playrho::WorldDef{}.UseMinVertexRadius(vertexRadius));
     
@@ -1075,6 +1076,7 @@ static void DropTiles(int count)
     step.targetDepth = linearSlop * playrho::Real(3);
     step.tolerance = linearSlop / playrho::Real(4);
     step.maxLinearCorrection = linearSlop * playrho::Real(40);
+    step.maxAngularCorrection = angularSlop * playrho::Real{4};
     step.aabbExtension = linearSlop * playrho::Real(20);
     step.maxTranslation = playrho::Length{playrho::Meter * playrho::Real(4)};
     step.velocityThreshold = (playrho::Real{8} / playrho::Real{10}) * playrho::MeterPerSecond;

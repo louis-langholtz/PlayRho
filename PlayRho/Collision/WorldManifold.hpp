@@ -53,7 +53,7 @@ namespace playrho {
         /// @details A negative value indicates overlap.
         Length m_separations[MaxManifoldPoints] = {GetInvalid<Length>(), GetInvalid<Length>()};
 
-        ContactImpulses m_impulses[MaxManifoldPoints] = {{0, 0}, {0, 0}};
+        Momentum2D m_impulses[MaxManifoldPoints] = {Momentum2D{0, 0}, Momentum2D{0, 0}};
 
         size_type m_count = 0;
 
@@ -63,7 +63,7 @@ namespace playrho {
         struct PointData
         {
             Length2D location; ///< Location of point.
-            ContactImpulses impulse; ///< Impulses at point.
+            Momentum2D impulse; ///< "Normal" and "tangent" impulses at the point.
             Length separation; ///< Separation at point.
         };
         
@@ -86,7 +86,7 @@ namespace playrho {
             m_normal{normal}, m_count{1},
             m_points{ps0.location, GetInvalid<Length2D>()},
             m_separations{ps0.separation, GetInvalid<Length>()},
-            m_impulses{ps0.impulse, ContactImpulses{0, 0}}
+            m_impulses{ps0.impulse, Momentum2D{0, 0}}
         {
             assert(IsValid(normal));
             // Intentionally empty.
@@ -150,7 +150,8 @@ namespace playrho {
         }
         
         /// @brief Gets the given index contact impulses.
-        ContactImpulses GetImpulses(size_type index) const noexcept
+        /// @return "Normal impulse" and "tangent impulse" pair.
+        Momentum2D GetImpulses(size_type index) const noexcept
         {
             assert(index < MaxManifoldPoints);
             return m_impulses[index];

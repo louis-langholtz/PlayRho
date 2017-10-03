@@ -463,8 +463,8 @@ void Test::PreSolve(Contact& contact, const Manifold& oldManifold)
     for (auto i = decltype(count){0}; i < count; ++i)
     {
         const auto ci = worldManifold.GetImpulses(i);
-        cp.normalImpulse = ci.m_normal;
-        cp.tangentImpulse = ci.m_tangent;
+        cp.normalImpulse = Get<0>(ci);
+        cp.tangentImpulse = Get<1>(ci);
         cp.state = pointStates.state2[i];
         cp.position = worldManifold.GetPoint(i);
         cp.separation = worldManifold.GetSeparation(i);
