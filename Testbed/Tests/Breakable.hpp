@@ -18,7 +18,7 @@
 */
 
 #ifndef PLAYRHO_BREAKABLE_TEST_HPP
-#define  PLAYRHO_BREAKABLE_TEST_HPP
+#define PLAYRHO_BREAKABLE_TEST_HPP
 
 #include "../Framework/Test.hpp"
 

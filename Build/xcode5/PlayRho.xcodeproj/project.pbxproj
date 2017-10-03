@@ -402,6 +402,7 @@
 		472724241E310C7600C64921 /* float.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = float.cpp; sourceTree = "<group>"; };
 		4727242D1E315E1A00C64921 /* Fixed.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Fixed.hpp; sourceTree = "<group>"; };
 		472E24651F82C4EA0051E192 /* Interval.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Interval.cpp; sourceTree = "<group>"; };
+		472E24681F83301D0051E192 /* BreakableTwo.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BreakableTwo.hpp; sourceTree = "<group>"; };
 		472E30181DBA925500DA821D /* VertexSet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VertexSet.hpp; sourceTree = "<group>"; };
 		472E301D1DBA98BC00DA821D /* VertexSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexSet.cpp; sourceTree = "<group>"; };
 		47315E031E28A66100DDA856 /* RevoluteJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RevoluteJoint.cpp; sourceTree = "<group>"; };
@@ -1144,6 +1145,7 @@
 				8066C2311890307100985759 /* BasicSliderCrank.hpp */,
 				80BB8A40141C3E8500F1753A /* BodyTypes.hpp */,
 				80BB8A41141C3E8500F1753A /* Breakable.hpp */,
+				472E24681F83301D0051E192 /* BreakableTwo.hpp */,
 				80BB8A42141C3E8500F1753A /* Bridge.hpp */,
 				80BB8A43141C3E8500F1753A /* BulletTest.hpp */,
 				80BB8A44141C3E8500F1753A /* Cantilever.hpp */,
