@@ -1195,10 +1195,10 @@ bool Tumbler::IsWithin(const playrho::AABB& aabb) const
 
 static void TumblerAdd100Squares200Steps(benchmark::State& state)
 {
-    const auto rangeX = playrho::ValueRange<playrho::Length>{
+    const auto rangeX = playrho::Interval<playrho::Length>{
         -15 * playrho::Meter, +15 * playrho::Meter
     };
-    const auto rangeY = playrho::ValueRange<playrho::Length>{
+    const auto rangeY = playrho::Interval<playrho::Length>{
         -5 * playrho::Meter, +25 * playrho::Meter
     };
     const auto aabb = playrho::AABB{rangeX, rangeY};

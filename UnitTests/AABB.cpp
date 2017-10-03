@@ -198,8 +198,8 @@ TEST(AABB, InitializingConstruction)
         EXPECT_FALSE(std::isnan(StripUnit(GetY(GetUpperBound(foo)))));
     }
     {
-        const auto rangeX = ValueRange<Length>{-2 * Meter, +3 * Meter};
-        const auto rangeY = ValueRange<Length>{-8 * Meter, -4 * Meter};
+        const auto rangeX = Interval<Length>{-2 * Meter, +3 * Meter};
+        const auto rangeY = Interval<Length>{-8 * Meter, -4 * Meter};
         AABB foo{rangeX, rangeY};
         EXPECT_EQ(foo.rangeX, rangeX);
         EXPECT_EQ(foo.rangeY, rangeY);
@@ -426,10 +426,10 @@ TEST(AABB, ComparisonOperators)
     EXPECT_FALSE(AABB{} < AABB{});
     EXPECT_FALSE(AABB{} > AABB{});
     
-    const auto vr0 = ValueRange<Length>{1 * Meter, 2 * Meter};
-    const auto vr1 = ValueRange<Length>{3 * Meter, 4 * Meter};
-    const auto vr2 = ValueRange<Length>{5 * Meter, 6 * Meter};
-    const auto vr3 = ValueRange<Length>{7 * Meter, 8 * Meter};
+    const auto vr0 = Interval<Length>{1 * Meter, 2 * Meter};
+    const auto vr1 = Interval<Length>{3 * Meter, 4 * Meter};
+    const auto vr2 = Interval<Length>{5 * Meter, 6 * Meter};
+    const auto vr3 = Interval<Length>{7 * Meter, 8 * Meter};
 
     EXPECT_FALSE(AABB(vr0, vr1) == AABB{});
     EXPECT_TRUE(AABB(vr0, vr1) != AABB{});
@@ -455,8 +455,8 @@ TEST(AABB, ComparisonOperators)
 
 TEST(AABB, StreamOutputOperator)
 {
-    const auto rangeX = ValueRange<Length>{-2 * Meter, +3 * Meter};
-    const auto rangeY = ValueRange<Length>{-8 * Meter, -4 * Meter};
+    const auto rangeX = Interval<Length>{-2 * Meter, +3 * Meter};
+    const auto rangeY = Interval<Length>{-8 * Meter, -4 * Meter};
     AABB foo{rangeX, rangeY};
     ASSERT_EQ(foo.rangeX, rangeX);
     ASSERT_EQ(foo.rangeY, rangeY);
