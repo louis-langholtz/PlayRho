@@ -103,23 +103,23 @@ public:
     /// @brief Move assignment operator.
     DynamicTree& operator= (DynamicTree&& other) noexcept;
 
-    /// @brief Creates a new proxy.
-    /// @details Creates a proxy for a tight fitting AABB and a userData pointer.
-    /// @note The indices of proxies that have been destroyed get reused for new proxies.
+    /// @brief Creates a new leaf node.
+    /// @details Creates a leaf node for a tight fitting AABB and a userData pointer.
+    /// @note The indices of leaf nodes that have been destroyed get reused for new nodes.
     /// @post If the root index had been the GetInvalidSize(), then it will be set to the index
     ///   returned from this method.
-    /// @return Index of the created proxy.
-    Size CreateProxy(const AABB& aabb, void* userData);
+    /// @return Index of the created leaf node.
+    Size CreateLeaf(const AABB& aabb, void* userData);
 
-    /// @brief Destroys a proxy.
+    /// @brief Destroys a leaf node.
     /// @warning Behavior is undefined if the given index is not valid.
-    void DestroyProxy(Size index);
+    void DestroyLeaf(Size index);
 
-    /// @brief Updates a proxy with a new AABB value.
+    /// @brief Updates a leaf node with a new AABB value.
     /// @warning Behavior is undefined if the given index is not valid.
-    /// @param index Proxy ID. Behavior is undefined if this is not a valid ID.
-    /// @param aabb New axis aligned bounding box of the proxy.
-    void UpdateProxy(Size index, const AABB& aabb);
+    /// @param index Leaf node's ID. Behavior is undefined if this is not a valid ID.
+    /// @param aabb New axis aligned bounding box for the leaf node.
+    void UpdateLeaf(Size index, const AABB& aabb);
 
     /// @brief Gets the user data for the node identified by the given identifier.
     /// @warning Behavior is undefined if the given index is not valid.
@@ -130,13 +130,13 @@ public:
     /// @brief Sets the user data for the element at the given index to the given value.
     void SetUserData(Size index, void* value) noexcept;
 
-    /// @brief Gets the AABB for a proxy.
+    /// @brief Gets the AABB for a leaf.
     /// @warning Behavior is undefined if the given index is not valid.
-    /// @param index Proxy ID. Must be a valid ID.
+    /// @param index Leaf node's ID. Must be a valid ID.
     AABB GetAABB(Size index) const noexcept;
 
     /// @brief Query an AABB for overlapping proxies.
-    /// @note The callback instance is called for each proxy that overlaps the supplied AABB.
+    /// @note The callback instance is called for each leaf node that overlaps the supplied AABB.
     void Query(const AABB& aabb, const QueryCallback& callback) const;
 
     /// @brief Calls the given callback for each of the entries overlapping the given AABB.
@@ -144,14 +144,14 @@ public:
 
     /// @brief Ray-cast against the proxies in the tree.
     ///
-    /// @note This relies on the callback to perform an exact ray-cast in the case were the
-    ///    proxy contains a shape.
-    /// @note The callback also performs the any collision filtering.
+    /// @note This relies on the callback to perform an exact ray-cast in the case where the
+    ///    leaf node contains a shape.
+    /// @note The callback also performs collision filtering.
     /// @note Performance is roughly k * log(n), where k is the number of collisions and n is the
-    ///   number of proxies in the tree.
+    ///   number of leaf nodes in the tree.
     ///
     /// @param input the ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
-    /// @param callback A callback instance function that's called for each proxy that is hit
+    /// @param callback A callback instance function that's called for each leaf that is hit
     ///   by the ray. The callback should return 0 to terminate raycasting, or greater than 0
     ///   to update the segment bounding box. Values less than zero are ignored.
     ///
@@ -215,8 +215,8 @@ public:
     /// @return Count of existing proxies (count of nodes currently allocated).
     Size GetNodeCount() const noexcept;
     
-    /// @brief Gets the current proxy count.
-    /// @details Gets the current proxy count which is also the current leaf node count.
+    /// @brief Gets the current leaf node count.
+    /// @details Gets the current leaf node count.
     Size GetProxyCount() const noexcept;
 
     /// @brief Finds the lowest cost node.
@@ -636,9 +636,9 @@ inline AABB GetAABB(const DynamicTree& tree) noexcept
 /// @brief Tests for overlap of the elements identified in the given dynamic tree.
 /// @relatedalso DynamicTree
 inline bool TestOverlap(const DynamicTree& tree,
-                        DynamicTree::Size proxyIdA, DynamicTree::Size proxyIdB) noexcept
+                        DynamicTree::Size leafIdA, DynamicTree::Size leafIdB) noexcept
 {
-    return TestOverlap(tree.GetAABB(proxyIdA), tree.GetAABB(proxyIdB));
+    return TestOverlap(tree.GetAABB(leafIdA), tree.GetAABB(leafIdB));
 }
 
 /// @brief Gets the ratio of the sum of the perimeters of nodes to the root perimeter.
