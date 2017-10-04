@@ -163,9 +163,6 @@ public:
     /// @warning Behavior is undefined if the given index in not a valid branch node.
     BranchData GetBranchData(Size index) const noexcept;
 
-    /// @brief Calls the given callback for each of the entries overlapping the given AABB.
-    void ForEach(const AABB& aabb, const ForEachCallback& callback) const;
-
     /// @brief Validates this tree.
     /// @note Meant for testing.
     /// @return <code>true</code> if valid, <code>false</code> otherwise.
@@ -768,6 +765,10 @@ void Query(const DynamicTree& tree, const AABB& aabb,
 ///
 void RayCast(const DynamicTree& tree, const RayCastInput& input,
              const DynamicTree::RayCastCallback& callback);
+
+/// @brief Calls the given callback for each of the entries overlapping the given AABB.
+void ForEach(const DynamicTree& tree, const AABB& aabb,
+             const DynamicTree::ForEachCallback& callback);
 
 } // namespace playrho
 

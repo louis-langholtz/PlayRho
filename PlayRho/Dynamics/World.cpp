@@ -2359,7 +2359,7 @@ ContactCounter World::FindNewContacts()
 
     for_each(cbegin(m_proxies), cend(m_proxies), [&](ProxyId pid) {
         const auto aabb = m_tree.GetAABB(pid);
-        m_tree.ForEach(aabb, [&](DynamicTree::Size nodeId) {
+        ForEach(m_tree, aabb, [&](DynamicTree::Size nodeId) {
             // A proxy cannot form a pair with itself.
             if (nodeId != pid)
             {

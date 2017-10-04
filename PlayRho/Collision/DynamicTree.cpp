@@ -520,33 +520,6 @@ DynamicTree::Height DynamicTree::ComputeHeight(Size index) const noexcept
     return 0;
 }
 
-void DynamicTree::ForEach(const AABB& aabb, const ForEachCallback& callback) const
-{
-    GrowableStack<Size, 256> stack;
-    stack.push(m_root);
-    
-    while (!stack.empty())
-    {
-        const auto index = stack.top();
-        stack.pop();
-        if (index != GetInvalidSize())
-        {
-            if (TestOverlap(m_nodes[index].GetAABB(), aabb))
-            {
-                if (IsLeaf(m_nodes[index].GetHeight()))
-                {
-                    callback(index);
-                }
-                else
-                {
-                    stack.push(m_nodes[index].AsBranch().child1);
-                    stack.push(m_nodes[index].AsBranch().child2);
-                }
-            }
-        }
-    }
-}
-
 bool DynamicTree::ValidateStructure(Size index) const noexcept
 {
     if (index == GetInvalidSize())
@@ -914,6 +887,37 @@ void RayCast(const DynamicTree& tree, const RayCastInput& input,
                 maxFraction = value;
                 const auto t = p1 + maxFraction * (p2 - p1);
                 segmentAABB = AABB{p1, t};
+            }
+        }
+    }
+}
+
+void ForEach(const DynamicTree& tree, const AABB& aabb,
+             const DynamicTree::ForEachCallback& callback)
+{
+    GrowableStack<DynamicTree::Size, 256> stack;
+    stack.push(tree.GetRootIndex());
+    
+    while (!stack.empty())
+    {
+        const auto index = stack.top();
+        stack.pop();
+        if (index != DynamicTree::GetInvalidSize())
+        {
+            if (TestOverlap(tree.GetAABB(index), aabb))
+            {
+                const auto height = tree.GetHeight(index);
+                if (DynamicTree::IsBranch(height))
+                {
+                    const auto branchData = tree.GetBranchData(index);
+                    stack.push(branchData.child1);
+                    stack.push(branchData.child2);
+                }
+                else
+                {
+                    assert(DynamicTree::IsLeaf(height));
+                    callback(index);
+                }
             }
         }
     }
