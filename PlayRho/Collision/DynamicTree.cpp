@@ -268,7 +268,7 @@ DynamicTree::Size DynamicTree::FindReference(Size index) const noexcept
     return (it != m_nodes + m_nodeCapacity)? static_cast<Size>(it - m_nodes): GetInvalidSize();
 }
 
-DynamicTree::Size DynamicTree::CreateProxy(const AABB& aabb, void* userData)
+DynamicTree::Size DynamicTree::CreateLeaf(const AABB& aabb, void* userData)
 {
     assert(IsValid(aabb));
     const auto index = AllocateNode(LeafNode{userData}, aabb);
@@ -277,7 +277,7 @@ DynamicTree::Size DynamicTree::CreateProxy(const AABB& aabb, void* userData)
     return index;
 }
 
-void DynamicTree::DestroyProxy(Size index)
+void DynamicTree::DestroyLeaf(Size index)
 {
     assert(index != GetInvalidSize());
     assert(index < m_nodeCapacity);
@@ -289,7 +289,7 @@ void DynamicTree::DestroyProxy(Size index)
     FreeNode(index);
 }
 
-void DynamicTree::UpdateProxy(Size index, const AABB& aabb)
+void DynamicTree::UpdateLeaf(Size index, const AABB& aabb)
 {
     assert(index != GetInvalidSize());
     assert(index < m_nodeCapacity);

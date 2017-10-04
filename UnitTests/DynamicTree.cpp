@@ -100,7 +100,7 @@ TEST(DynamicTree, CopyConstruction)
         EXPECT_EQ(copy.GetMaxBalance(), orig.GetMaxBalance());
     }
 
-    const auto pid = orig.CreateProxy(AABB{Length2D{Real(0) * Meter, Real(0) * Meter}, Length2D(Real(1) * Meter, Real(1) * Meter)}, &orig);
+    const auto pid = orig.CreateLeaf(AABB{Length2D{Real(0) * Meter, Real(0) * Meter}, Length2D(Real(1) * Meter, Real(1) * Meter)}, &orig);
     {
         DynamicTree copy{orig};
         EXPECT_EQ(copy.GetRootIndex(), orig.GetRootIndex());
@@ -127,7 +127,7 @@ TEST(DynamicTree, CopyAssignment)
         EXPECT_EQ(copy.GetMaxBalance(), orig.GetMaxBalance());
     }
     
-    const auto pid = orig.CreateProxy(AABB{Length2D{Real(0) * Meter, Real(0) * Meter}, Length2D(Real(1) * Meter, Real(1) * Meter)}, &orig);
+    const auto pid = orig.CreateLeaf(AABB{Length2D{Real(0) * Meter, Real(0) * Meter}, Length2D(Real(1) * Meter, Real(1) * Meter)}, &orig);
     {
         DynamicTree copy;
         copy = orig;
@@ -154,7 +154,7 @@ TEST(DynamicTree, CreateAndDestroyProxy)
     };
     const auto userdata = nullptr;
 
-    const auto pid = foo.CreateProxy(aabb, userdata);
+    const auto pid = foo.CreateLeaf(aabb, userdata);
     EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(1));
     EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
     EXPECT_EQ(foo.GetAABB(pid), aabb);
@@ -165,7 +165,7 @@ TEST(DynamicTree, CreateAndDestroyProxy)
 
     EXPECT_EQ(foo.ComputeHeight(), DynamicTree::Height(0));
 
-    foo.DestroyProxy(pid);
+    foo.DestroyLeaf(pid);
     EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
     EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(0));
     EXPECT_EQ(GetHeight(foo), DynamicTree::Height(0));
@@ -187,7 +187,7 @@ TEST(DynamicTree, FourIdenticalProxies)
     const auto userdata = nullptr;
     
     {
-        const auto pid = foo.CreateProxy(aabb, userdata);
+        const auto pid = foo.CreateLeaf(aabb, userdata);
         EXPECT_EQ(foo.GetAABB(pid), aabb);
         EXPECT_EQ(foo.GetUserData(pid), userdata);
     }
@@ -200,7 +200,7 @@ TEST(DynamicTree, FourIdenticalProxies)
     EXPECT_EQ(foo.ComputeHeight(), DynamicTree::Height(0));
 
     {
-        const auto pid = foo.CreateProxy(aabb, userdata);
+        const auto pid = foo.CreateLeaf(aabb, userdata);
         EXPECT_EQ(foo.GetAABB(pid), aabb);
         EXPECT_EQ(foo.GetUserData(pid), userdata);
     }
@@ -213,7 +213,7 @@ TEST(DynamicTree, FourIdenticalProxies)
     EXPECT_EQ(foo.ComputeHeight(), DynamicTree::Height(1));
     
     {
-        const auto pid = foo.CreateProxy(aabb, userdata);
+        const auto pid = foo.CreateLeaf(aabb, userdata);
         EXPECT_EQ(foo.GetAABB(pid), aabb);
         EXPECT_EQ(foo.GetUserData(pid), userdata);
     }
@@ -226,7 +226,7 @@ TEST(DynamicTree, FourIdenticalProxies)
     EXPECT_EQ(foo.ComputeHeight(), DynamicTree::Height(2));
     
     {
-        const auto pid = foo.CreateProxy(aabb, userdata);
+        const auto pid = foo.CreateLeaf(aabb, userdata);
         EXPECT_EQ(foo.GetAABB(pid), aabb);
         EXPECT_EQ(foo.GetUserData(pid), userdata);
     }

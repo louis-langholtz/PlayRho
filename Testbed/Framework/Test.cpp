@@ -346,7 +346,7 @@ static bool Draw(Drawer& drawer, const World& world, const Settings& settings,
                 for (auto i = decltype(proxy_count){0}; i < proxy_count; ++i)
                 {
                     const auto proxy = f.GetProxy(i);
-                    Draw(drawer, world.GetTree().GetAABB(proxy->proxyId), color);
+                    Draw(drawer, world.GetTree().GetAABB(proxy->treeId), color);
                 }
             }
         }

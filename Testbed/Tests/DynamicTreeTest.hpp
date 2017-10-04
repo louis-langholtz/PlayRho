@@ -42,7 +42,7 @@ public:
         {
             Actor* actor = m_actors + i;
             actor->aabb = GetRandomAABB();
-            actor->proxyId = m_tree.CreateProxy(GetFattenedAABB(actor->aabb, aabbExtension), actor);
+            actor->treeId = m_tree.CreateLeaf(GetFattenedAABB(actor->aabb, aabbExtension), actor);
         }
 
         m_stepCount = 0;
@@ -85,7 +85,7 @@ public:
         for (auto i = 0; i < e_actorCount; ++i)
         {
             const auto actor = m_actors + i;
-            if (actor->proxyId == DynamicTree::GetInvalidSize())
+            if (actor->treeId == DynamicTree::GetInvalidSize())
                 continue;
 
             Color c(0.9f, 0.9f, 0.9f);
@@ -169,11 +169,11 @@ public:
             break;
 
         case Key_C:
-            CreateProxy();
+            CreateLeaf();
             break;
 
         case Key_D:
-            DestroyProxy();
+            DestroyLeaf();
             break;
 
         case Key_M:
@@ -185,16 +185,16 @@ public:
         }
     }
 
-    bool QueryCallback(DynamicTree::Size proxyId)
+    bool QueryCallback(DynamicTree::Size treeId)
     {
-        Actor* actor = (Actor*)m_tree.GetUserData(proxyId);
+        Actor* actor = (Actor*)m_tree.GetUserData(treeId);
         actor->overlap = TestOverlap(m_queryAABB, actor->aabb);
         return true;
     }
 
-    Real RayCastCallback(const RayCastInput& input, DynamicTree::Size proxyId)
+    Real RayCastCallback(const RayCastInput& input, DynamicTree::Size treeId)
     {
-        auto actor = static_cast<Actor*>(m_tree.GetUserData(proxyId));
+        auto actor = static_cast<Actor*>(m_tree.GetUserData(treeId));
 
         const auto output = playrho::RayCast(actor->aabb, input);
 
@@ -216,7 +216,7 @@ private:
         AABB aabb;
         Real fraction;
         bool overlap;
-        DynamicTree::Size proxyId;
+        DynamicTree::Size treeId;
     };
 
     AABB GetRandomAABB()
@@ -246,32 +246,32 @@ private:
         Move(*aabb, c - c0);
     }
 
-    void CreateProxy()
+    void CreateLeaf()
     {
         const auto extension = StepConf{}.aabbExtension;
         for (auto i = decltype(e_actorCount){0}; i < e_actorCount; ++i)
         {
             const auto j = rand() % e_actorCount;
             const auto actor = m_actors + j;
-            if (actor->proxyId == DynamicTree::GetInvalidSize())
+            if (actor->treeId == DynamicTree::GetInvalidSize())
             {
                 actor->aabb = GetRandomAABB();
-                actor->proxyId = m_tree.CreateProxy(GetFattenedAABB(actor->aabb, extension), actor);
+                actor->treeId = m_tree.CreateLeaf(GetFattenedAABB(actor->aabb, extension), actor);
                 return;
             }
         }
     }
 
-    void DestroyProxy()
+    void DestroyLeaf()
     {
         for (auto i = decltype(e_actorCount){0}; i < e_actorCount; ++i)
         {
             const auto j = rand() % e_actorCount;
             const auto actor = m_actors + j;
-            if (actor->proxyId != DynamicTree::GetInvalidSize())
+            if (actor->treeId != DynamicTree::GetInvalidSize())
             {
-                m_tree.DestroyProxy(actor->proxyId);
-                actor->proxyId = DynamicTree::GetInvalidSize();
+                m_tree.DestroyLeaf(actor->treeId);
+                actor->treeId = DynamicTree::GetInvalidSize();
                 return;
             }
         }
@@ -285,7 +285,7 @@ private:
         {
             const auto j = rand() % e_actorCount;
             const auto actor = m_actors + j;
-            if (actor->proxyId == DynamicTree::GetInvalidSize())
+            if (actor->treeId == DynamicTree::GetInvalidSize())
             {
                 continue;
             }
@@ -293,10 +293,10 @@ private:
             const auto aabb0 = actor->aabb;
             MoveAABB(&actor->aabb);
             const auto displacement = GetCenter(actor->aabb) - GetCenter(aabb0);
-            if (!playrho::Contains(m_tree.GetAABB(actor->proxyId), actor->aabb))
+            if (!playrho::Contains(m_tree.GetAABB(actor->treeId), actor->aabb))
             {
                 const auto newAabb = GetDisplacedAABB(GetFattenedAABB(actor->aabb, extension), multiplier * displacement);
-                m_tree.UpdateProxy(actor->proxyId, newAabb);
+                m_tree.UpdateLeaf(actor->treeId, newAabb);
             }
             return;
         }
@@ -309,11 +309,11 @@ private:
         switch (choice)
         {
         case 0:
-            CreateProxy();
+            CreateLeaf();
             break;
 
         case 1:
-            DestroyProxy();
+            DestroyLeaf();
             break;
 
         default:
@@ -327,7 +327,7 @@ private:
 
         for (auto i = decltype(e_actorCount){0}; i < e_actorCount; ++i)
         {
-            if (m_actors[i].proxyId == DynamicTree::GetInvalidSize())
+            if (m_actors[i].treeId == DynamicTree::GetInvalidSize())
             {
                 continue;
             }
@@ -345,8 +345,8 @@ private:
         auto input = m_rayCastInput;
 
         // Ray cast against the dynamic tree.
-        m_tree.RayCast(input, [&](const RayCastInput& rci, DynamicTree::Size proxyId) {
-            return RayCastCallback(rci, proxyId);
+        m_tree.RayCast(input, [&](const RayCastInput& rci, DynamicTree::Size treeId) {
+            return RayCastCallback(rci, treeId);
         });
 
         // Brute force ray cast.
@@ -354,7 +354,7 @@ private:
         RayCastHit bruteOutput;
         for (auto i = decltype(e_actorCount){0}; i < e_actorCount; ++i)
         {
-            if (m_actors[i].proxyId == DynamicTree::GetInvalidSize())
+            if (m_actors[i].treeId == DynamicTree::GetInvalidSize())
             {
                 continue;
             }

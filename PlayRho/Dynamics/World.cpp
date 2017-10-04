@@ -501,8 +501,8 @@ namespace {
                             const Fixture* fixtureA, ChildCounter indexA,
                             const Fixture* fixtureB, ChildCounter indexB)
     {
-        const auto proxyIdA = fixtureA->GetProxy(indexA)->proxyId;
-        const auto proxyIdB = fixtureB->GetProxy(indexB)->proxyId;
+        const auto proxyIdA = fixtureA->GetProxy(indexA)->treeId;
+        const auto proxyIdB = fixtureB->GetProxy(indexB)->treeId;
         return TestOverlap(tree, proxyIdA, proxyIdB);
     }
 
@@ -631,8 +631,8 @@ void World::CopyBodies(std::map<const Body*, Body*>& bodyMap,
             {
                 const auto proxyPtr = proxies + childIndex;
                 const auto fp = otherFixture.GetProxy(childIndex);
-                new (proxyPtr) FixtureProxy{fp->aabb, fp->proxyId, newFixture, childIndex};
-                m_tree.SetUserData(fp->proxyId, proxyPtr);
+                new (proxyPtr) FixtureProxy{fp->aabb, fp->treeId, newFixture, childIndex};
+                m_tree.SetUserData(fp->treeId, proxyPtr);
             }
             FixtureAtty::SetProxies(*newFixture, Span<FixtureProxy>(proxies, childCount));
         }
@@ -2050,8 +2050,8 @@ StepStats World::Step(const StepConf& conf)
 
 void World::QueryAABB(const AABB& aabb, QueryFixtureCallback callback) const
 {
-    m_tree.Query(aabb, [&](DynamicTree::Size proxyId) {
-        const auto proxy = static_cast<FixtureProxy*>(m_tree.GetUserData(proxyId));
+    m_tree.Query(aabb, [&](DynamicTree::Size treeId) {
+        const auto proxy = static_cast<FixtureProxy*>(m_tree.GetUserData(treeId));
         return callback(proxy->fixture, proxy->childIndex);
     });
 }
@@ -2059,9 +2059,9 @@ void World::QueryAABB(const AABB& aabb, QueryFixtureCallback callback) const
 void World::RayCast(Length2D point1, Length2D point2, RayCastCallback callback) const
 {
     m_tree.RayCast(RayCastInput{point1, point2, Real{1}},
-                   [&](const RayCastInput& input, DynamicTree::Size proxyId)
+                   [&](const RayCastInput& input, DynamicTree::Size treeId)
     {
-        const auto userData = m_tree.GetUserData(proxyId);
+        const auto userData = m_tree.GetUserData(treeId);
         const auto proxy = static_cast<FixtureProxy*>(userData);
         const auto fixture = proxy->fixture;
         const auto index = proxy->childIndex;
@@ -2411,8 +2411,8 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
         return false;
     }
 
-    const auto pidA = proxyA.proxyId;
-    const auto pidB = proxyB.proxyId;
+    const auto pidA = proxyA.treeId;
+    const auto pidB = proxyB.treeId;
 #ifndef NDEBUG
     assert(pidA != pidB);
     
@@ -2760,11 +2760,11 @@ void World::CreateProxies(Fixture& fixture, Length aabbExtension)
         const auto aabb = ComputeAABB(dp, xfm);
         const auto proxyPtr = proxies + childIndex;
 
-        // Note: proxyId from CreateProxy can be higher than the number of fixture proxies.
+        // Note: treeId from CreateLeaf can be higher than the number of fixture proxies.
         const auto fattenedAABB = GetFattenedAABB(aabb, aabbExtension);
-        const auto proxyId = m_tree.CreateProxy(fattenedAABB, proxyPtr);
-        RegisterForProcessing(proxyId);
-        new (proxyPtr) FixtureProxy{aabb, proxyId, &fixture, childIndex};
+        const auto treeId = m_tree.CreateLeaf(fattenedAABB, proxyPtr);
+        RegisterForProcessing(treeId);
+        new (proxyPtr) FixtureProxy{aabb, treeId, &fixture, childIndex};
     }
 
     FixtureAtty::SetProxies(fixture, Span<FixtureProxy>(proxies, childCount));
@@ -2780,8 +2780,8 @@ void World::DestroyProxies(Fixture& fixture)
         // Destroy proxies in reverse order from what they were created in.
         for (auto i = childCount - 1; i < childCount; --i)
         {
-            UnregisterForProcessing(proxies[i].proxyId);
-            m_tree.DestroyProxy(proxies[i].proxyId);
+            UnregisterForProcessing(proxies[i].treeId);
+            m_tree.DestroyLeaf(proxies[i].treeId);
             proxies[i].~FixtureProxy();
         }
     }
@@ -2811,7 +2811,7 @@ void World::InternalTouchProxies(Fixture& fixture) noexcept
     const auto proxyCount = fixture.GetProxyCount();
     for (auto i = decltype(proxyCount){0}; i < proxyCount; ++i)
     {
-        RegisterForProcessing(fixture.GetProxy(i)->proxyId);
+        RegisterForProcessing(fixture.GetProxy(i)->treeId);
     }
 }
 
@@ -2835,12 +2835,12 @@ ChildCounter World::Synchronize(Fixture& fixture,
         const auto aabb2 = ComputeAABB(dp, xfm2);
         proxy.aabb = GetEnclosingAABB(aabb1, aabb2);
         
-        if (!Contains(m_tree.GetAABB(proxy.proxyId), proxy.aabb))
+        if (!Contains(m_tree.GetAABB(proxy.treeId), proxy.aabb))
         {
             const auto newAabb = GetDisplacedAABB(GetFattenedAABB(proxy.aabb, extension),
                                                   expandedDisplacement);
-            m_tree.UpdateProxy(proxy.proxyId, newAabb);
-            RegisterForProcessing(proxy.proxyId);
+            m_tree.UpdateLeaf(proxy.treeId, newAabb);
+            RegisterForProcessing(proxy.treeId);
             ++updatedCount;
         }
     }

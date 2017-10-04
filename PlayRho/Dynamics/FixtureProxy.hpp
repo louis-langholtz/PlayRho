@@ -46,18 +46,35 @@ struct FixtureProxy
 
     /// @brief Initializing constructor.
     FixtureProxy(const AABB& bb, size_type pid, Fixture* f, ChildCounter ci):
-        aabb{bb}, fixture{f}, proxyId{pid}, childIndex{ci} {}
+        aabb{bb}, fixture{f}, treeId{pid}, childIndex{ci} {}
     
     ~FixtureProxy() = default;
     
+    // Deleted because some fields are marked <code>const</code>.
     FixtureProxy& operator= (const FixtureProxy& other) = delete;
 
-    FixtureProxy& operator= (FixtureProxy&& other) noexcept = delete;
+    // Deleted because some fields are marked <code>const</code>.
+    FixtureProxy& operator= (FixtureProxy&& other) = delete;
 
     AABB aabb; ///< Axis Aligned Bounding Box. 16-bytes.
-    Fixture* const fixture; ///< Fixture. 8-bytes.
-    const size_type proxyId; ///< Proxy ID. 4-bytes.
-    const ChildCounter childIndex; ///< Child index. 4-bytes.
+    
+    /// @brief Fixture that this proxy is for.
+    /// @note 8-bytes.
+    Fixture* const fixture;
+
+    /// @brief Tree ID.
+    /// @details This is the ID of the leaf node in the dynamic tree for this "proxy".
+    /// @note 4-bytes.
+    const size_type treeId;
+ 
+    /// @brief Child index of the fixture's shape that this proxy is for.
+    /// @note This could potentially be calculated via pointer arithmetic - i.e.
+    ///    this - array, where "this" is the address of this class and "array" is the
+    ///    address of the array that this class is within. While that would shrink
+    ///    this structure's size, it may also cause some fixture proxies to straddle
+    ///    any 64-byte wide cache lines (which would presumably not help performance).
+    /// @note 4-bytes.
+    const ChildCounter childIndex;
 };
 
 } // namespace playrho

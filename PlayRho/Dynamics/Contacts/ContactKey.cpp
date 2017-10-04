@@ -27,7 +27,7 @@ namespace playrho {
 
 ContactKey GetContactKey(const FixtureProxy& fpA, const FixtureProxy& fpB) noexcept
 {
-    return ContactKey{fpA.proxyId, fpB.proxyId};
+    return ContactKey{fpA.treeId, fpB.treeId};
 }
 
 ContactKey GetContactKey(const Fixture* fixtureA, ChildCounter childIndexA,
