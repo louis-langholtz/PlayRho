@@ -163,7 +163,7 @@ TEST(DynamicTree, CreateAndDestroyProxy)
     EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::Height(0));
     EXPECT_EQ(ComputePerimeterRatio(foo), Real(1));
 
-    EXPECT_EQ(foo.ComputeHeight(), DynamicTree::Height(0));
+    EXPECT_EQ(ComputeHeight(foo), DynamicTree::Height(0));
 
     foo.DestroyLeaf(pid);
     EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
@@ -197,7 +197,7 @@ TEST(DynamicTree, FourIdenticalProxies)
     EXPECT_EQ(GetHeight(foo), DynamicTree::Height(0));
     EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::Height(0));
     EXPECT_EQ(ComputePerimeterRatio(foo), Real(1));
-    EXPECT_EQ(foo.ComputeHeight(), DynamicTree::Height(0));
+    EXPECT_EQ(ComputeHeight(foo), DynamicTree::Height(0));
 
     {
         const auto pid = foo.CreateLeaf(aabb, userdata);
@@ -210,7 +210,7 @@ TEST(DynamicTree, FourIdenticalProxies)
     EXPECT_EQ(GetHeight(foo), DynamicTree::Height(1));
     EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::Height(0));
     EXPECT_EQ(ComputePerimeterRatio(foo), Real(3));
-    EXPECT_EQ(foo.ComputeHeight(), DynamicTree::Height(1));
+    EXPECT_EQ(ComputeHeight(foo), DynamicTree::Height(1));
     
     {
         const auto pid = foo.CreateLeaf(aabb, userdata);
@@ -223,7 +223,7 @@ TEST(DynamicTree, FourIdenticalProxies)
     EXPECT_EQ(GetHeight(foo), DynamicTree::Height(2));
     EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::Height(1));
     EXPECT_EQ(ComputePerimeterRatio(foo), Real(5));
-    EXPECT_EQ(foo.ComputeHeight(), DynamicTree::Height(2));
+    EXPECT_EQ(ComputeHeight(foo), DynamicTree::Height(2));
     
     {
         const auto pid = foo.CreateLeaf(aabb, userdata);
@@ -236,7 +236,7 @@ TEST(DynamicTree, FourIdenticalProxies)
     EXPECT_EQ(GetHeight(foo), DynamicTree::Height(2));
     EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::Height(0));
     EXPECT_EQ(ComputePerimeterRatio(foo), Real(7));
-    EXPECT_EQ(foo.ComputeHeight(), DynamicTree::Height(2));
+    EXPECT_EQ(ComputeHeight(foo), DynamicTree::Height(2));
     
     foo.RebuildBottomUp();
     
@@ -245,5 +245,5 @@ TEST(DynamicTree, FourIdenticalProxies)
     EXPECT_EQ(GetHeight(foo), DynamicTree::Height(3));
     EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::Height(2));
     EXPECT_EQ(ComputePerimeterRatio(foo), Real(7));
-    EXPECT_EQ(foo.ComputeHeight(), DynamicTree::Height(3));
+    EXPECT_EQ(ComputeHeight(foo), DynamicTree::Height(3));
 }

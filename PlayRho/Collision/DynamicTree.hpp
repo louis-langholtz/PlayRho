@@ -204,10 +204,6 @@ public:
     /// @param index ID of node to compute height from.
     Height ComputeHeight(Size index) const noexcept;
 
-    /// @brief Computes the height of the tree from its root.
-    /// @warning Behavior is undefined if the tree doesn't have a valid root.
-    Height ComputeHeight() const noexcept;
-
     /// @brief Gets the current node capacity of this tree.
     Size GetNodeCapacity() const noexcept;
 
@@ -320,11 +316,6 @@ inline DynamicTree::Size DynamicTree::GetNodeCount() const noexcept
 inline DynamicTree::Size DynamicTree::GetProxyCount() const noexcept
 {
     return m_proxyCount;
-}
-
-inline DynamicTree::Height DynamicTree::ComputeHeight() const noexcept
-{
-    return ComputeHeight(GetRootIndex());
 }
 
 /// @brief Unused node of a TreeNode.
@@ -611,6 +602,12 @@ inline DynamicTree::TreeNode& SetParent(DynamicTree::TreeNode& node,
 {
     assert(IsBranch(node));
     return node.SetOther(other);
+}
+
+/// @brief Computes the height of the given dynamic tree.
+inline DynamicTree::Height ComputeHeight(const DynamicTree& tree) noexcept
+{
+    return tree.ComputeHeight(tree.GetRootIndex());
 }
 
 /// @brief Gets the height of the binary tree.

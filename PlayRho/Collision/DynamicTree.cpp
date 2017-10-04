@@ -834,7 +834,7 @@ bool DynamicTree::Validate() const
         ++freeCount;
     }
 
-    if ((m_root != GetInvalidSize()) && (playrho::GetHeight(*this) != ComputeHeight()))
+    if ((m_root != GetInvalidSize()) && (playrho::GetHeight(*this) != playrho::ComputeHeight(*this)))
     {
         return false;
     }
