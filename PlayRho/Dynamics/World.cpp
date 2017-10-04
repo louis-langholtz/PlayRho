@@ -632,7 +632,7 @@ void World::CopyBodies(std::map<const Body*, Body*>& bodyMap,
                 const auto proxyPtr = proxies + childIndex;
                 const auto fp = otherFixture.GetProxy(childIndex);
                 new (proxyPtr) FixtureProxy{fp->aabb, fp->treeId, newFixture, childIndex};
-                m_tree.SetUserData(fp->treeId, proxyPtr);
+                m_tree.SetLeafData(fp->treeId, proxyPtr);
             }
             FixtureAtty::SetProxies(*newFixture, Span<FixtureProxy>(proxies, childCount));
         }
@@ -2051,7 +2051,7 @@ StepStats World::Step(const StepConf& conf)
 void World::QueryAABB(const AABB& aabb, QueryFixtureCallback callback) const
 {
     m_tree.Query(aabb, [&](DynamicTree::Size treeId) {
-        const auto proxy = static_cast<FixtureProxy*>(m_tree.GetUserData(treeId));
+        const auto proxy = static_cast<FixtureProxy*>(m_tree.GetLeafData(treeId));
         return callback(proxy->fixture, proxy->childIndex);
     });
 }
@@ -2061,8 +2061,8 @@ void World::RayCast(Length2D point1, Length2D point2, RayCastCallback callback) 
     m_tree.RayCast(RayCastInput{point1, point2, Real{1}},
                    [&](const RayCastInput& input, DynamicTree::Size treeId)
     {
-        const auto userData = m_tree.GetUserData(treeId);
-        const auto proxy = static_cast<FixtureProxy*>(userData);
+        const auto leafData = m_tree.GetLeafData(treeId);
+        const auto proxy = static_cast<FixtureProxy*>(leafData);
         const auto fixture = proxy->fixture;
         const auto index = proxy->childIndex;
         const auto shape = fixture->GetShape();
@@ -2377,8 +2377,8 @@ ContactCounter World::FindNewContacts()
     {
         if (key != lastKey)
         {
-            const auto& proxyA = *static_cast<FixtureProxy*>(m_tree.GetUserData(key.GetMin()));
-            const auto& proxyB = *static_cast<FixtureProxy*>(m_tree.GetUserData(key.GetMax()));
+            const auto& proxyA = *static_cast<FixtureProxy*>(m_tree.GetLeafData(key.GetMin()));
+            const auto& proxyB = *static_cast<FixtureProxy*>(m_tree.GetLeafData(key.GetMax()));
             
             if (Add(proxyA, proxyB))
             {

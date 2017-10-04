@@ -187,14 +187,14 @@ public:
 
     bool QueryCallback(DynamicTree::Size treeId)
     {
-        Actor* actor = (Actor*)m_tree.GetUserData(treeId);
+        Actor* actor = (Actor*)m_tree.GetLeafData(treeId);
         actor->overlap = TestOverlap(m_queryAABB, actor->aabb);
         return true;
     }
 
     Real RayCastCallback(const RayCastInput& input, DynamicTree::Size treeId)
     {
-        auto actor = static_cast<Actor*>(m_tree.GetUserData(treeId));
+        auto actor = static_cast<Actor*>(m_tree.GetLeafData(treeId));
 
         const auto output = playrho::RayCast(actor->aabb, input);
 
