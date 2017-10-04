@@ -202,6 +202,7 @@ public:
     /// @brief Computes the height of the tree from a given node.
     /// @warning Behavior is undefined if the given index is not valid.
     /// @param index ID of node to compute height from.
+    /// @return 0 unless the given index is to a branch node.
     Height ComputeHeight(Size index) const noexcept;
 
     /// @brief Gets the current node capacity of this tree.

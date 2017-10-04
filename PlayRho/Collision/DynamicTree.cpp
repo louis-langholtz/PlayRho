@@ -551,15 +551,13 @@ Length DynamicTree::ComputeTotalPerimeter() const noexcept
 DynamicTree::Height DynamicTree::ComputeHeight(Size index) const noexcept
 {
     assert(index < m_nodeCapacity);
-
-    if (IsLeaf(m_nodes[index]))
+    if (IsBranch(m_nodes[index]))
     {
-        return 0;
+        const auto height1 = ComputeHeight(m_nodes[index].AsBranch().child1);
+        const auto height2 = ComputeHeight(m_nodes[index].AsBranch().child2);
+        return 1 + std::max(height1, height2);
     }
-
-    const auto height1 = ComputeHeight(m_nodes[index].AsBranch().child1);
-    const auto height2 = ComputeHeight(m_nodes[index].AsBranch().child2);
-    return 1 + std::max(height1, height2);
+    return 0;
 }
 
 void DynamicTree::ForEach(const AABB& aabb, const ForEachCallback& callback) const
