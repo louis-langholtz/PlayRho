@@ -323,7 +323,7 @@ private:
 
     void Query()
     {
-        m_tree.Query(m_queryAABB, [&](DynamicTree::Size nodeId){ return QueryCallback(nodeId); });
+        playrho::Query(m_tree, m_queryAABB, [&](DynamicTree::Size nodeId){ return QueryCallback(nodeId); });
 
         for (auto i = decltype(e_actorCount){0}; i < e_actorCount; ++i)
         {

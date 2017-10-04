@@ -107,12 +107,6 @@ DynamicTree::~DynamicTree() noexcept
     Free(m_nodes);
 }
 
-DynamicTree::Size DynamicTree::GetParent(Size index) const noexcept
-{
-    assert(index != GetInvalidSize());
-    return m_nodes[index].GetOther();
-}
-
 void DynamicTree::SwapChild(Size index, Size oldChild, Size newChild) noexcept
 {
     if (index == GetInvalidSize())
@@ -553,36 +547,6 @@ void DynamicTree::ForEach(const AABB& aabb, const ForEachCallback& callback) con
     }
 }
 
-void DynamicTree::Query(const AABB& aabb, const QueryCallback& callback) const
-{
-    GrowableStack<Size, 256> stack;
-    stack.push(GetRootIndex());
-    
-    while (!stack.empty())
-    {
-        const auto index = stack.top();
-        stack.pop();
-        if (index != GetInvalidSize())
-        {
-            if (TestOverlap(GetAABB(index), aabb))
-            {
-                if (IsLeaf(GetHeight(index)))
-                {
-                    if (!callback(index))
-                    {
-                        return;
-                    }
-                }
-                else
-                {
-                    stack.push(m_nodes[index].AsBranch().child1);
-                    stack.push(m_nodes[index].AsBranch().child2);
-                }
-            }
-        }
-    }
-}
-
 void DynamicTree::RayCast(const RayCastInput& input, const RayCastCallback& callback) const
 {
     const auto p1 = input.p1;
@@ -913,6 +877,41 @@ void DynamicTree::ShiftOrigin(Length2D newOrigin)
     for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
     {
         m_nodes[i].SetAABB(GetMovedAABB(m_nodes[i].GetAABB(), -newOrigin));
+    }
+}
+
+// Free functions...
+
+void Query(const DynamicTree& tree, const AABB& aabb, const DynamicTree::QueryCallback& callback)
+{
+    GrowableStack<DynamicTree::Size, 256> stack;
+    stack.push(tree.GetRootIndex());
+    
+    while (!stack.empty())
+    {
+        const auto index = stack.top();
+        stack.pop();
+        if (index != DynamicTree::GetInvalidSize())
+        {
+            if (TestOverlap(tree.GetAABB(index), aabb))
+            {
+                const auto height = tree.GetHeight(index);
+                if (DynamicTree::IsBranch(height))
+                {
+                    const auto branchData = tree.GetBranchData(index);
+                    stack.push(branchData.child1);
+                    stack.push(branchData.child2);
+                }
+                else
+                {
+                    assert(IsLeaf(height));
+                    if (!callback(index))
+                    {
+                        return;
+                    }
+                }
+            }
+        }
     }
 }
 

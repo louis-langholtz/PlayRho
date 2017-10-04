@@ -2050,7 +2050,7 @@ StepStats World::Step(const StepConf& conf)
 
 void World::QueryAABB(const AABB& aabb, QueryFixtureCallback callback) const
 {
-    m_tree.Query(aabb, [&](DynamicTree::Size treeId) {
+    Query(m_tree, aabb, [&](DynamicTree::Size treeId) {
         const auto proxy = static_cast<FixtureProxy*>(m_tree.GetLeafData(treeId));
         return callback(proxy->fixture, proxy->childIndex);
     });

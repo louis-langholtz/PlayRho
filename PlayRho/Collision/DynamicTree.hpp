@@ -163,10 +163,6 @@ public:
     /// @warning Behavior is undefined if the given index in not a valid branch node.
     BranchData GetBranchData(Size index) const noexcept;
 
-    /// @brief Query an AABB for overlapping proxies.
-    /// @note The callback instance is called for each leaf node that overlaps the supplied AABB.
-    void Query(const AABB& aabb, const QueryCallback& callback) const;
-
     /// @brief Calls the given callback for each of the entries overlapping the given AABB.
     void ForEach(const AABB& aabb, const ForEachCallback& callback) const;
 
@@ -625,6 +621,13 @@ inline void DynamicTree::SetLeafData(Size index, LeafData value) noexcept
     m_nodes[index].AsLeaf() = value;
 }
 
+inline DynamicTree::Size DynamicTree::GetParent(Size index) const noexcept
+{
+    assert(index != GetInvalidSize());
+    assert(!IsUnused(m_nodes[index].GetHeight()));
+    return m_nodes[index].GetOther();
+}
+
 inline void DynamicTree::SetParent(Size index, Size newParent) noexcept
 {
     assert(index != GetInvalidSize());
@@ -758,6 +761,10 @@ inline Real ComputePerimeterRatio(const DynamicTree& tree) noexcept
     }
     return 0;
 }
+
+/// @brief Query the given dynamic tree and find nodes overlapping the given AABB.
+/// @note The callback instance is called for each leaf node that overlaps the supplied AABB.
+void Query(const DynamicTree& tree, const AABB& aabb, const DynamicTree::QueryCallback& callback);
 
 } // namespace playrho
 
