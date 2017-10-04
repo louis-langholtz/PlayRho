@@ -2058,7 +2058,7 @@ void World::QueryAABB(const AABB& aabb, QueryFixtureCallback callback) const
 
 void World::RayCast(Length2D point1, Length2D point2, RayCastCallback callback) const
 {
-    m_tree.RayCast(RayCastInput{point1, point2, Real{1}},
+    playrho::RayCast(m_tree, RayCastInput{point1, point2, Real{1}},
                    [&](const RayCastInput& input, DynamicTree::Size treeId)
     {
         const auto leafData = m_tree.GetLeafData(treeId);

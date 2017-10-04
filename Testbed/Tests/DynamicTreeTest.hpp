@@ -345,7 +345,7 @@ private:
         auto input = m_rayCastInput;
 
         // Ray cast against the dynamic tree.
-        m_tree.RayCast(input, [&](const RayCastInput& rci, DynamicTree::Size treeId) {
+        playrho::RayCast(m_tree, input, [&](const RayCastInput& rci, DynamicTree::Size treeId) {
             return RayCastCallback(rci, treeId);
         });
 

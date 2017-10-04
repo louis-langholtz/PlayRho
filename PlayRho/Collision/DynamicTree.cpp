@@ -547,78 +547,6 @@ void DynamicTree::ForEach(const AABB& aabb, const ForEachCallback& callback) con
     }
 }
 
-void DynamicTree::RayCast(const RayCastInput& input, const RayCastCallback& callback) const
-{
-    const auto p1 = input.p1;
-    const auto p2 = input.p2;
-    const auto delta = p2 - p1;
-    
-    // v is perpendicular to the segment.
-    const auto v = GetRevPerpendicular(GetUnitVector(delta, UnitVec2::GetZero()));
-    const auto abs_v = Abs(v);
-    
-    // Separating axis for segment (Gino, p80).
-    // |dot(v, p1 - c)| > dot(|v|, h)
-    
-    auto maxFraction = input.maxFraction;
-    
-    // Build a bounding box for the segment.
-    auto segmentAABB = AABB{p1, p1 + maxFraction * delta};
-    
-    GrowableStack<Size, 256> stack;
-    stack.push(m_root);
-    
-    while (!stack.empty())
-    {
-        const auto index = stack.top();
-        stack.pop();
-        if (index == GetInvalidSize())
-        {
-            continue;
-        }
-        
-        if (!TestOverlap(m_nodes[index].GetAABB(), segmentAABB))
-        {
-            continue;
-        }
-        
-        // Separating axis for segment (Gino, p80).
-        // |dot(v, p1 - ctr)| > dot(|v|, extents)
-        const auto center = GetCenter(m_nodes[index].GetAABB());
-        const auto extents = GetExtents(m_nodes[index].GetAABB());
-        const auto separation = Abs(Dot(v, p1 - center)) - Dot(abs_v, extents);
-        if (separation > Length{0})
-        {
-            continue;
-        }
-        
-        if (IsLeaf(m_nodes[index].GetHeight()))
-        {
-            const auto subInput = RayCastInput{input.p1, input.p2, maxFraction};
-            
-            const auto value = callback(subInput, index);
-            if (value == 0)
-            {
-                // The client has terminated the ray cast.
-                return;
-            }
-            
-            if (value > 0)
-            {
-                // Update segment bounding box.
-                maxFraction = value;
-                const auto t = p1 + maxFraction * (p2 - p1);
-                segmentAABB = AABB{p1, t};
-            }
-        }
-        else
-        {
-            stack.push(m_nodes[index].AsBranch().child1);
-            stack.push(m_nodes[index].AsBranch().child2);
-        }
-    }
-}
-
 bool DynamicTree::ValidateStructure(Size index) const noexcept
 {
     if (index == GetInvalidSize())
@@ -910,6 +838,82 @@ void Query(const DynamicTree& tree, const AABB& aabb, const DynamicTree::QueryCa
                         return;
                     }
                 }
+            }
+        }
+    }
+}
+
+void RayCast(const DynamicTree& tree, const RayCastInput& input,
+             const DynamicTree::RayCastCallback& callback)
+{
+    const auto p1 = input.p1;
+    const auto p2 = input.p2;
+    const auto delta = p2 - p1;
+    
+    // v is perpendicular to the segment.
+    const auto v = GetRevPerpendicular(GetUnitVector(delta, UnitVec2::GetZero()));
+    const auto abs_v = Abs(v);
+    
+    // Separating axis for segment (Gino, p80).
+    // |dot(v, p1 - c)| > dot(|v|, h)
+    
+    auto maxFraction = input.maxFraction;
+    
+    // Build a bounding box for the segment.
+    auto segmentAABB = AABB{p1, p1 + maxFraction * delta};
+    
+    GrowableStack<DynamicTree::Size, 256> stack;
+    stack.push(tree.GetRootIndex());
+    
+    while (!stack.empty())
+    {
+        const auto index = stack.top();
+        stack.pop();
+        if (index == DynamicTree::GetInvalidSize())
+        {
+            continue;
+        }
+        
+        const auto aabb = tree.GetAABB(index);
+        if (!TestOverlap(aabb, segmentAABB))
+        {
+            continue;
+        }
+        
+        // Separating axis for segment (Gino, p80).
+        // |dot(v, p1 - ctr)| > dot(|v|, extents)
+        const auto center = GetCenter(aabb);
+        const auto extents = GetExtents(aabb);
+        const auto separation = Abs(Dot(v, p1 - center)) - Dot(abs_v, extents);
+        if (separation > Length{0})
+        {
+            continue;
+        }
+        
+        if (DynamicTree::IsBranch(tree.GetHeight(index)))
+        {
+            const auto branchData = tree.GetBranchData(index);
+            stack.push(branchData.child1);
+            stack.push(branchData.child2);
+        }
+        else
+        {
+            assert(DynamicTree::IsLeaf(tree.GetHeight(index)));
+            
+            const auto subInput = RayCastInput{input.p1, input.p2, maxFraction};
+            const auto value = callback(subInput, index);
+            if (value == 0)
+            {
+                // The client has terminated the ray cast.
+                return;
+            }
+            
+            if (value > 0)
+            {
+                // Update segment bounding box.
+                maxFraction = value;
+                const auto t = p1 + maxFraction * (p2 - p1);
+                segmentAABB = AABB{p1, t};
             }
         }
     }

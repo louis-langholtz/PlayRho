@@ -166,21 +166,6 @@ public:
     /// @brief Calls the given callback for each of the entries overlapping the given AABB.
     void ForEach(const AABB& aabb, const ForEachCallback& callback) const;
 
-    /// @brief Ray-cast against the proxies in the tree.
-    ///
-    /// @note This relies on the callback to perform an exact ray-cast in the case where the
-    ///    leaf node contains a shape.
-    /// @note The callback also performs collision filtering.
-    /// @note Performance is roughly k * log(n), where k is the number of collisions and n is the
-    ///   number of leaf nodes in the tree.
-    ///
-    /// @param input the ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
-    /// @param callback A callback instance function that's called for each leaf that is hit
-    ///   by the ray. The callback should return 0 to terminate raycasting, or greater than 0
-    ///   to update the segment bounding box. Values less than zero are ignored.
-    ///
-    void RayCast(const RayCastInput& input, const RayCastCallback& callback) const;
-
     /// @brief Validates this tree.
     /// @note Meant for testing.
     /// @return <code>true</code> if valid, <code>false</code> otherwise.
@@ -391,7 +376,7 @@ public:
     constexpr TreeNode(TreeNode&& other) = default;
 
     /// @brief Initializing constructor.
-    constexpr TreeNode(Size other = DynamicTree::GetInvalidSize()) noexcept:
+    constexpr explicit TreeNode(Size other = DynamicTree::GetInvalidSize()) noexcept:
         m_other{other}, m_variant{UnusedData{}}
     {
         assert(IsUnused(m_height));
@@ -764,7 +749,25 @@ inline Real ComputePerimeterRatio(const DynamicTree& tree) noexcept
 
 /// @brief Query the given dynamic tree and find nodes overlapping the given AABB.
 /// @note The callback instance is called for each leaf node that overlaps the supplied AABB.
-void Query(const DynamicTree& tree, const AABB& aabb, const DynamicTree::QueryCallback& callback);
+void Query(const DynamicTree& tree, const AABB& aabb,
+           const DynamicTree::QueryCallback& callback);
+
+/// @brief Ray-cast against the leafs in the given tree.
+///
+/// @note This relies on the callback to perform an exact ray-cast in the case where the
+///    leaf node contains a shape.
+/// @note The callback also performs collision filtering.
+/// @note Performance is roughly k * log(n), where k is the number of collisions and n is the
+///   number of leaf nodes in the tree.
+///
+/// @param tree Dynamic tree to raycast.
+/// @param input the ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
+/// @param callback A callback instance function that's called for each leaf that is hit
+///   by the ray. The callback should return 0 to terminate raycasting, or greater than 0
+///   to update the segment bounding box. Values less than zero are ignored.
+///
+void RayCast(const DynamicTree& tree, const RayCastInput& input,
+             const DynamicTree::RayCastCallback& callback);
 
 } // namespace playrho
 
