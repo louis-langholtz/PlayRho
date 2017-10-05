@@ -805,7 +805,7 @@ void Query(const DynamicTree& tree, const AABB& aabb, const DynamicTree::QueryCa
                 }
                 else
                 {
-                    assert(IsLeaf(height));
+                    assert(DynamicTree::IsLeaf(height));
                     if (!callback(index))
                     {
                         return;
