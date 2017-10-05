@@ -745,7 +745,7 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
 
-    const auto proxyCount = m_world->GetTree().GetProxyCount();
+    const auto proxyCount = m_world->GetTree().GetLeafCount();
     const auto nodeCount = m_world->GetTree().GetNodeCount();
     const auto height = GetHeight(m_world->GetTree());
     const auto balance = m_world->GetTree().GetMaxBalance();

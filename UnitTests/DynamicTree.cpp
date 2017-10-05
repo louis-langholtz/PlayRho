@@ -100,7 +100,11 @@ TEST(DynamicTree, CopyConstruction)
         EXPECT_EQ(copy.GetMaxBalance(), orig.GetMaxBalance());
     }
 
-    const auto pid = orig.CreateLeaf(AABB{Length2D{Real(0) * Meter, Real(0) * Meter}, Length2D(Real(1) * Meter, Real(1) * Meter)}, &orig);
+    const auto aabb = AABB{
+        Length2D{Real(0) * Meter, Real(0) * Meter},
+        Length2D(Real(1) * Meter, Real(1) * Meter)
+    };
+    const auto pid = orig.CreateLeaf(aabb, &orig);
     {
         DynamicTree copy{orig};
         EXPECT_EQ(copy.GetRootIndex(), orig.GetRootIndex());
@@ -127,7 +131,11 @@ TEST(DynamicTree, CopyAssignment)
         EXPECT_EQ(copy.GetMaxBalance(), orig.GetMaxBalance());
     }
     
-    const auto pid = orig.CreateLeaf(AABB{Length2D{Real(0) * Meter, Real(0) * Meter}, Length2D(Real(1) * Meter, Real(1) * Meter)}, &orig);
+    const auto aabb = AABB{
+        Length2D{Real(0) * Meter, Real(0) * Meter},
+        Length2D{Real(1) * Meter, Real(1) * Meter}
+    };
+    const auto pid = orig.CreateLeaf(aabb, &orig);
     {
         DynamicTree copy;
         copy = orig;
@@ -246,4 +254,118 @@ TEST(DynamicTree, FourIdenticalProxies)
     EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::Height(2));
     EXPECT_EQ(ComputePerimeterRatio(foo), Real(7));
     EXPECT_EQ(ComputeHeight(foo), DynamicTree::Height(3));
+}
+
+TEST(DynamicTree, MoveConstruction)
+{
+    DynamicTree foo;
+    
+    const auto aabb = AABB{
+        Length2D{Real(3) * Meter, Real(1) * Meter},
+        Length2D{-Real(5) * Meter, -Real(2) * Meter}
+    };
+
+    const auto leafData = nullptr;
+
+    const auto leaf0 = foo.CreateLeaf(aabb, leafData);
+    const auto leaf1 = foo.CreateLeaf(aabb, leafData);
+    const auto leaf2 = foo.CreateLeaf(aabb, leafData);
+    const auto leaf3 = foo.CreateLeaf(aabb, leafData);
+
+    ASSERT_EQ(foo.GetRootIndex(), DynamicTree::Size(4));
+    ASSERT_EQ(foo.GetNodeCount(), DynamicTree::Size(7));
+    ASSERT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
+    ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(4));
+
+    DynamicTree roo{std::move(foo)};
+
+    EXPECT_EQ(foo.GetRootIndex(), DynamicTree::GetInvalidSize());
+    EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(0));
+    EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::Size(0));
+    EXPECT_EQ(foo.GetLeafCount(), DynamicTree::Size(0));
+    
+    EXPECT_EQ(roo.GetRootIndex(), DynamicTree::Size(4));
+    EXPECT_EQ(roo.GetNodeCount(), DynamicTree::Size(7));
+    EXPECT_EQ(roo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
+    EXPECT_EQ(roo.GetLeafCount(), DynamicTree::Size(4));
+    
+    EXPECT_EQ(roo.GetAABB(leaf0), aabb);
+    EXPECT_EQ(roo.GetAABB(leaf1), aabb);
+    EXPECT_EQ(roo.GetAABB(leaf2), aabb);
+    EXPECT_EQ(roo.GetAABB(leaf3), aabb);
+}
+
+TEST(DynamicTree, MoveAssignment)
+{
+    DynamicTree foo;
+    
+    const auto aabb = AABB{
+        Length2D{Real(3) * Meter, Real(1) * Meter},
+        Length2D{-Real(5) * Meter, -Real(2) * Meter}
+    };
+    
+    const auto leafData = nullptr;
+    
+    const auto leaf0 = foo.CreateLeaf(aabb, leafData);
+    const auto leaf1 = foo.CreateLeaf(aabb, leafData);
+    const auto leaf2 = foo.CreateLeaf(aabb, leafData);
+    const auto leaf3 = foo.CreateLeaf(aabb, leafData);
+    
+    ASSERT_EQ(foo.GetRootIndex(), DynamicTree::Size(4));
+    ASSERT_EQ(foo.GetNodeCount(), DynamicTree::Size(7));
+    ASSERT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
+    ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(4));
+    
+    DynamicTree roo;
+    
+    roo = std::move(foo);
+    
+    EXPECT_EQ(foo.GetRootIndex(), DynamicTree::GetInvalidSize());
+    EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(0));
+    EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::Size(0));
+    EXPECT_EQ(foo.GetLeafCount(), DynamicTree::Size(0));
+    
+    EXPECT_EQ(roo.GetRootIndex(), DynamicTree::Size(4));
+    EXPECT_EQ(roo.GetNodeCount(), DynamicTree::Size(7));
+    EXPECT_EQ(roo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
+    EXPECT_EQ(roo.GetLeafCount(), DynamicTree::Size(4));
+    
+    EXPECT_EQ(roo.GetAABB(leaf0), aabb);
+    EXPECT_EQ(roo.GetAABB(leaf1), aabb);
+    EXPECT_EQ(roo.GetAABB(leaf2), aabb);
+    EXPECT_EQ(roo.GetAABB(leaf3), aabb);
+}
+
+TEST(DynamicTree, CapacityIncreases)
+{
+    DynamicTree foo{DynamicTree::Size{1}};
+    ASSERT_EQ(foo.GetNodeCount(), DynamicTree::Size(0));
+    ASSERT_EQ(foo.GetNodeCapacity(), DynamicTree::Size(1));
+    ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(0));
+
+    const auto aabb = AABB{
+        Length2D{Real(3) * Meter, Real(1) * Meter},
+        Length2D{-Real(5) * Meter, -Real(2) * Meter}
+    };
+    const auto leafData = nullptr;
+
+    foo.CreateLeaf(aabb, leafData);
+    ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(1));
+    EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(1));
+    EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::Size(1));
+    
+    foo.CreateLeaf(aabb, leafData);
+    ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(2));
+    EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(3));
+    EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::Size(4));
+
+    foo.CreateLeaf(aabb, leafData);
+    ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(3));
+    EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(5));
+    EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::Size(8));
+
+    foo.CreateLeaf(aabb, leafData);
+    ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(4));
+    EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(7));
+    EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::Size(8));
 }

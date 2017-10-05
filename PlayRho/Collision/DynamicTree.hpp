@@ -217,7 +217,7 @@ public:
     
     /// @brief Gets the current leaf node count.
     /// @details Gets the current leaf node count.
-    Size GetProxyCount() const noexcept;
+    Size GetLeafCount() const noexcept;
 
     /// @brief Finds the lowest cost node.
     /// @warning Behavior is undefined if the tree doesn't have a valid root.
@@ -292,7 +292,7 @@ private:
     Size m_nodeCount = Size{0}; ///< Node count. @details Count of currently allocated nodes.
     Size m_nodeCapacity; ///< Node capacity. @details Size of buffer allocated for nodes.
 
-    Size m_proxyCount = 0; ///< Proxy count. @details Count of currently allocated leaf nodes.
+    Size m_leafCount = 0; ///< Leaf count. @details Count of currently allocated leaf nodes.
 
     Size m_freeListIndex = Size{0}; ///< Free list. @details Index to free nodes.
 };
@@ -544,9 +544,9 @@ inline DynamicTree::Size DynamicTree::GetNodeCount() const noexcept
     return m_nodeCount;
 }
 
-inline DynamicTree::Size DynamicTree::GetProxyCount() const noexcept
+inline DynamicTree::Size DynamicTree::GetLeafCount() const noexcept
 {
-    return m_proxyCount;
+    return m_leafCount;
 }
 
 inline DynamicTree::Height DynamicTree::GetHeight(Size index) const noexcept

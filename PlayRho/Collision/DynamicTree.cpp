@@ -48,7 +48,7 @@ DynamicTree::DynamicTree(const DynamicTree& other):
     m_root{other.m_root},
     m_nodeCount{other.m_nodeCount},
     m_nodeCapacity{other.m_nodeCapacity},
-    m_proxyCount{other.m_proxyCount},
+    m_leafCount{other.m_leafCount},
     m_freeListIndex{other.m_freeListIndex}
 {
     std::copy(other.m_nodes, other.m_nodes + other.m_nodeCapacity, m_nodes);
@@ -59,12 +59,15 @@ DynamicTree::DynamicTree(DynamicTree&& other) noexcept:
     m_root{other.m_root},
     m_nodeCount{other.m_nodeCount},
     m_nodeCapacity{other.m_nodeCapacity},
-    m_proxyCount{other.m_proxyCount},
+    m_leafCount{other.m_leafCount},
     m_freeListIndex{other.m_freeListIndex}
 {
     other.m_nodes = nullptr;
-    other.m_nodeCapacity = 0u;
+    other.m_root = GetInvalidSize();
     other.m_nodeCount = 0u;
+    other.m_nodeCapacity = 0u;
+    other.m_leafCount = 0u;
+    other.m_freeListIndex = 0u;
 }
 
 DynamicTree& DynamicTree::operator=(const DynamicTree& other)
@@ -77,7 +80,7 @@ DynamicTree& DynamicTree::operator=(const DynamicTree& other)
         m_root = other.m_root;
         m_nodeCount = other.m_nodeCount;
         m_nodeCapacity = other.m_nodeCapacity;
-        m_proxyCount = other.m_proxyCount;
+        m_leafCount = other.m_leafCount;
         m_freeListIndex = other.m_freeListIndex;
         std::copy(other.m_nodes, other.m_nodes + other.m_nodeCapacity, m_nodes);
     }
@@ -92,11 +95,15 @@ DynamicTree& DynamicTree::operator=(DynamicTree&& other) noexcept
         m_root = other.m_root;
         m_nodeCount = other.m_nodeCount;
         m_nodeCapacity = other.m_nodeCapacity;
-        m_proxyCount = other.m_proxyCount;
+        m_leafCount = other.m_leafCount;
         m_freeListIndex = other.m_freeListIndex;
+
         other.m_nodes = nullptr;
-        other.m_nodeCapacity = 0u;
+        other.m_root = GetInvalidSize();
         other.m_nodeCount = 0u;
+        other.m_nodeCapacity = 0u;
+        other.m_leafCount = 0u;
+        other.m_freeListIndex = 0u;
     }
     return *this;
 }
@@ -233,7 +240,7 @@ DynamicTree::Size DynamicTree::CreateLeaf(const AABB& aabb, LeafData leafData)
     assert(IsValid(aabb));
     const auto index = AllocateNode(leafData, aabb);
     InsertLeaf(index);
-    m_proxyCount++;
+    m_leafCount++;
     return index;
 }
 
@@ -242,9 +249,9 @@ void DynamicTree::DestroyLeaf(Size index)
     assert(index != GetInvalidSize());
     assert(index < m_nodeCapacity);
     assert(IsLeaf(m_nodes[index].GetHeight()));
-    assert(m_proxyCount > 0);
+    assert(m_leafCount > 0);
 
-    m_proxyCount--;
+    m_leafCount--;
     RemoveLeaf(index);
     FreeNode(index);
 }

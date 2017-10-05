@@ -126,7 +126,7 @@ TEST(World, DefaultInit)
     World world;
 
     EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
-    EXPECT_EQ(world.GetTree().GetProxyCount(), World::proxy_size_type(0));
+    EXPECT_EQ(world.GetTree().GetLeafCount(), World::proxy_size_type(0));
     EXPECT_EQ(GetJointCount(world), JointCounter(0));
     EXPECT_EQ(GetContactCount(world), ContactCounter(0));
     EXPECT_EQ(GetHeight(world.GetTree()), World::proxy_size_type(0));
@@ -231,7 +231,7 @@ TEST(World, CopyConstruction)
         EXPECT_EQ(world.GetBodies().size(), copy.GetBodies().size());
         EXPECT_EQ(world.GetContacts().size(), copy.GetContacts().size());
         EXPECT_EQ(GetHeight(world.GetTree()), GetHeight(copy.GetTree()));
-        EXPECT_EQ(world.GetTree().GetProxyCount(), copy.GetTree().GetProxyCount());
+        EXPECT_EQ(world.GetTree().GetLeafCount(), copy.GetTree().GetLeafCount());
         EXPECT_EQ(world.GetTree().GetMaxBalance(), copy.GetTree().GetMaxBalance());
     }
     
@@ -270,7 +270,7 @@ TEST(World, CopyConstruction)
         EXPECT_EQ(world.GetBodies().size(), copy.GetBodies().size());
         EXPECT_EQ(world.GetContacts().size(), copy.GetContacts().size());
         EXPECT_EQ(GetHeight(world.GetTree()), GetHeight(copy.GetTree()));
-        EXPECT_EQ(world.GetTree().GetProxyCount(), copy.GetTree().GetProxyCount());
+        EXPECT_EQ(world.GetTree().GetLeafCount(), copy.GetTree().GetLeafCount());
         EXPECT_EQ(world.GetTree().GetMaxBalance(), copy.GetTree().GetMaxBalance());
     }
 }
@@ -289,7 +289,7 @@ TEST(World, CopyAssignment)
         EXPECT_EQ(world.GetBodies().size(), copy.GetBodies().size());
         EXPECT_EQ(world.GetContacts().size(), copy.GetContacts().size());
         EXPECT_EQ(GetHeight(world.GetTree()), GetHeight(copy.GetTree()));
-        EXPECT_EQ(world.GetTree().GetProxyCount(), copy.GetTree().GetProxyCount());
+        EXPECT_EQ(world.GetTree().GetLeafCount(), copy.GetTree().GetLeafCount());
         EXPECT_EQ(world.GetTree().GetMaxBalance(), copy.GetTree().GetMaxBalance());
     }
     
@@ -329,7 +329,7 @@ TEST(World, CopyAssignment)
         EXPECT_EQ(world.GetBodies().size(), copy.GetBodies().size());
         EXPECT_EQ(world.GetContacts().size(), copy.GetContacts().size());
         EXPECT_EQ(GetHeight(world.GetTree()), GetHeight(copy.GetTree()));
-        EXPECT_EQ(world.GetTree().GetProxyCount(), copy.GetTree().GetProxyCount());
+        EXPECT_EQ(world.GetTree().GetLeafCount(), copy.GetTree().GetLeafCount());
         EXPECT_EQ(world.GetTree().GetMaxBalance(), copy.GetTree().GetMaxBalance());
     }
 }
