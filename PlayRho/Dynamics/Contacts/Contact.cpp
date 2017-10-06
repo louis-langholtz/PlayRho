@@ -56,16 +56,16 @@ Contact::UpdateConf Contact::GetUpdateConf(const StepConf& conf) noexcept
     return UpdateConf{GetDistanceConf(conf), GetManifoldConf(conf)};
 }
 
-Contact::Contact(Fixture* fA, ChildCounter iA, Fixture* fB, ChildCounter iB):
-    m_fixtureA{fA}, m_fixtureB{fB}, m_indexA{iA}, m_indexB{iB},
-    m_friction{MixFriction(fA->GetFriction(), fB->GetFriction())},
-    m_restitution{MixRestitution(fA->GetRestitution(), fB->GetRestitution())}
+Contact::Contact(const FixtureProxy* fpA, const FixtureProxy* fpB):
+    m_fixtureProxyA{fpA}, m_fixtureProxyB{fpB},
+    m_friction{MixFriction(fpA->fixture->GetFriction(), fpB->fixture->GetFriction())},
+    m_restitution{MixRestitution(fpA->fixture->GetRestitution(), fpB->fixture->GetRestitution())}
 {
-    assert(fA && fB);
-    assert(fA != fB);
-    assert(fA->GetShape());
-    assert(fB->GetShape());
-    assert(fA->GetBody() != fB->GetBody());
+    assert(fpA != fpB);
+    assert(fpA->fixture != fpB->fixture);
+    assert(fpA->fixture->GetShape());
+    assert(fpB->fixture->GetShape());
+    assert(fpA->fixture->GetBody() != fpB->fixture->GetBody());
 }
 
 void Contact::Update(const UpdateConf& conf, ContactListener* listener)

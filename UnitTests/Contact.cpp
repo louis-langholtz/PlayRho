@@ -21,6 +21,7 @@
 #include "gtest/gtest.h"
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
+#include <PlayRho/Dynamics/FixtureProxy.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyDef.hpp>
 #include <PlayRho/Dynamics/FixtureDef.hpp>
@@ -32,9 +33,9 @@ TEST(Contact, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(Contact), std::size_t(104)); break;
-        case  8: EXPECT_EQ(sizeof(Contact), std::size_t(184)); break;
-        case 16: EXPECT_EQ(sizeof(Contact), std::size_t(352)); break;
+        case  4: EXPECT_EQ(sizeof(Contact), std::size_t(96)); break;
+        case  8: EXPECT_EQ(sizeof(Contact), std::size_t(176)); break;
+        case 16: EXPECT_EQ(sizeof(Contact), std::size_t(336)); break;
         default: FAIL(); break;
     }
 }
@@ -61,7 +62,9 @@ TEST(Contact, SetAwake)
     auto bB = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
     auto fA = Fixture{&bA, FixtureDef{}, shape};
     auto fB = Fixture{&bB, FixtureDef{}, shape};
-    const auto c = Contact{&fA, 0, &fB, 0};
+    const auto fpA = FixtureProxy{AABB{}, 0u, &fA, 0u};
+    const auto fpB = FixtureProxy{AABB{}, 0u, &fB, 0u};
+    const auto c = Contact{&fpA, &fpB};
     
     bA.UnsetAwake();
     ASSERT_FALSE(bA.IsAwake());
@@ -82,8 +85,10 @@ TEST(Contact, ResetFriction)
     auto bB = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
     auto fA = Fixture{&bA, FixtureDef{}, shape};
     auto fB = Fixture{&bB, FixtureDef{}, shape};
-    auto c = Contact{&fA, 0, &fB, 0};
-    
+    const auto fpA = FixtureProxy{AABB{}, 0u, &fA, 0u};
+    const auto fpB = FixtureProxy{AABB{}, 0u, &fB, 0u};
+    auto c = Contact{&fpA, &fpB};
+
     ASSERT_GT(shape->GetFriction(), Real(0));
     ASSERT_EQ(c.GetFriction(), shape->GetFriction());
     c.SetFriction(shape->GetFriction() * Real(2));
@@ -99,8 +104,10 @@ TEST(Contact, ResetRestitution)
     auto bB = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
     auto fA = Fixture{&bA, FixtureDef{}, shape};
     auto fB = Fixture{&bB, FixtureDef{}, shape};
-    auto c = Contact{&fA, 0, &fB, 0};
-    
+    const auto fpA = FixtureProxy{AABB{}, 0u, &fA, 0u};
+    const auto fpB = FixtureProxy{AABB{}, 0u, &fB, 0u};
+    auto c = Contact{&fpA, &fpB};
+
     ASSERT_EQ(shape->GetRestitution(), Real(0));
     ASSERT_EQ(c.GetRestitution(), shape->GetRestitution());
     c.SetRestitution(Real(2));
