@@ -27,6 +27,7 @@
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/TimeOfImpact.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <PlayRho/Dynamics/FixtureProxy.hpp>
 
 namespace playrho {
 
@@ -89,21 +90,22 @@ public:
 
     /// @brief Initializing constructor.
     ///
-    /// @param fA Fixture A. A non-null pointer to fixture A that must have a shape
-    ///   and may not be the same fixture or have the same body as the other fixture.
-    /// @param iA Index of child A (from fixture A).
-    /// @param fB Fixture B. A non-null pointer to fixture B that must have a shape
-    ///   and may not be the same fixture or have the same body as the other fixture.
-    /// @param iB Index of child B (from fixture B).
+    /// @param fpA Non-null pointer to fixture proxy A whose fixture must have a shape
+    ///   and may not be the same or have the same body as the other fixture proxy.
+    /// @param fpB Non-null pointer to fixture proxy B whose fixture must have a shape
+    ///   and may not be the same or have the same body as the other fixture proxy.
     ///
-    /// @warning Behavior is undefined if <code>fixtureA</code> is null.
-    /// @warning Behavior is undefined if <code>fixtureB</code> is null.
-    /// @warning Behavior is undefined if <code>fixtureA == fixtureB</code>.
-    /// @warning Behavior is undefined if <code>fixtureA</code> has no associated shape.
-    /// @warning Behavior is undefined if <code>fixtureB</code> has no associated shape.
-    /// @warning Behavior is undefined if both fixtures have the same body.
+    /// @warning Behavior is undefined if <code>fpA</code> is null.
+    /// @warning Behavior is undefined if <code>fpA->fixture</code> is null.
+    /// @warning Behavior is undefined if <code>fpB</code> is null.
+    /// @warning Behavior is undefined if <code>fpB->fixture</code> is null.
+    /// @warning Behavior is undefined if <code>fpA == fpB</code>.
+    /// @warning Behavior is undefined if <code>fpA->fixture == fpB->fixture</code>.
+    /// @warning Behavior is undefined if <code>fpA->fixture</code> has no associated shape.
+    /// @warning Behavior is undefined if <code>fpB->fixture</code> has no associated shape.
+    /// @warning Behavior is undefined if both fixture proxy's fixture's have the same body.
     ///
-    Contact(Fixture* fA, ChildCounter iA, Fixture* fB, ChildCounter iB);
+    Contact(const FixtureProxy* fpA, const FixtureProxy* fpB);
     
     /// @brief Default construction not allowed.
     Contact() = delete;
@@ -286,13 +288,9 @@ private:
     void UnsetIslanded() noexcept;
 
     // Member variables...
-
-    Fixture* const m_fixtureA; ///< Fixture A. @details Non-null pointer to fixture A.
-    Fixture* const m_fixtureB; ///< Fixture B. @details Non-null pointer to fixture B.
-
-    ChildCounter const m_indexA;
-    ChildCounter const m_indexB;
-
+    const FixtureProxy* const m_fixtureProxyA;
+    const FixtureProxy* const m_fixtureProxyB;
+    
     Manifold mutable m_manifold; ///< Manifold of the contact. 60-bytes. @sa Update.
 
     substep_type m_toiCount = 0; ///< Count of TOI calculations contact has gone through since last reset.
@@ -369,22 +367,22 @@ inline void Contact::UnsetTouching() noexcept
 
 inline Fixture* Contact::GetFixtureA() const noexcept
 {
-    return m_fixtureA;
+    return m_fixtureProxyA->fixture;
 }
 
 inline ChildCounter Contact::GetChildIndexA() const noexcept
 {
-    return m_indexA;
+    return m_fixtureProxyA->childIndex;
 }
 
 inline Fixture* Contact::GetFixtureB() const noexcept
 {
-    return m_fixtureB;
+    return m_fixtureProxyB->fixture;
 }
 
 inline ChildCounter Contact::GetChildIndexB() const noexcept
 {
-    return m_indexB;
+    return m_fixtureProxyB->childIndex;
 }
 
 inline void Contact::FlagForFiltering() noexcept

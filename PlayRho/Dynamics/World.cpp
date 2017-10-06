@@ -657,7 +657,9 @@ void World::CopyContacts(const std::map<const Body*, Body*>& bodyMap,
         const auto newBodyA = bodyMap.at(otherFixtureA->GetBody());
         const auto newBodyB = bodyMap.at(otherFixtureB->GetBody());
         
-        const auto newContact = new Contact{newFixtureA, childIndexA, newFixtureB, childIndexB};
+        const auto fpA = newFixtureA->GetProxy(childIndexA);
+        const auto fpB = newFixtureB->GetProxy(childIndexB);
+        const auto newContact = new Contact{fpA, fpB};
         assert(newContact);
         if (newContact != nullptr)
         {
@@ -2474,7 +2476,7 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
         return false;
     }
 
-    const auto contact = new Contact{fixtureA, proxyA.childIndex, fixtureB, proxyB.childIndex};
+    const auto contact = new Contact{&proxyA, &proxyB};
     
     // Insert into the contacts container.
     //
