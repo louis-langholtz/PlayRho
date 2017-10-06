@@ -52,7 +52,7 @@ namespace playrho {
 
         /// @brief Impulses.
         /// @note 16-bytes.
-        Momentum2D m_impulses[MaxManifoldPoints] = {Momentum2D{0, 0}, Momentum2D{0, 0}};
+        Momentum2D m_impulses[MaxManifoldPoints] = {Momentum2D{}, Momentum2D{}};
         
         /// @brief Separations.
         /// @details A negative value indicates overlap.
@@ -87,7 +87,7 @@ namespace playrho {
         constexpr explicit WorldManifold(UnitVec2 normal, PointData ps0) noexcept:
             m_normal{normal},
             m_points{ps0.location, GetInvalid<Length2D>()},
-            m_impulses{ps0.impulse, Momentum2D{0, 0}},
+            m_impulses{ps0.impulse, Momentum2D{}},
             m_separations{ps0.separation, GetInvalid<Length>()}
         {
             assert(IsValid(normal));

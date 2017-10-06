@@ -517,7 +517,7 @@ template <class Dimension, typename X, typename = std::enable_if_t<
     std::is_arithmetic<X>::value && !std::is_same<X, playrho::Real>::value &&
     std::is_same<decltype(playrho::Real{} / X{}), playrho::Real>::value >
 >
-auto operator/ (quantity<Dimension, playrho::Real> lhs, X rhs)
+constexpr auto operator/ (quantity<Dimension, playrho::Real> lhs, X rhs)
 {
     return lhs / playrho::Real(rhs);
 }
@@ -526,7 +526,7 @@ template <class Dimension, typename X, typename = std::enable_if_t<
     std::is_arithmetic<X>::value && !std::is_same<X, playrho::Real>::value &&
     std::is_same<decltype(X{} / playrho::Real{}), playrho::Real>::value >
 >
-auto operator/ (X lhs, quantity<Dimension, playrho::Real> rhs)
+constexpr auto operator/ (X lhs, quantity<Dimension, playrho::Real> rhs)
 {
     return playrho::Real(lhs) / rhs;
 }
@@ -542,7 +542,7 @@ auto operator/ (X lhs, quantity<Dimension, playrho::Real> rhs)
 template <class Dimension, typename X, typename = std::enable_if_t<
     std::is_arithmetic<X>::value && !std::is_same<X, playrho::Real>::value &&
     std::is_same<decltype(playrho::Real{} * X{}), playrho::Real>::value> >
-auto operator* (quantity<Dimension, playrho::Real> lhs, X rhs)
+constexpr auto operator* (quantity<Dimension, playrho::Real> lhs, X rhs)
 {
     return lhs * playrho::Real(rhs);
 }
@@ -558,7 +558,7 @@ auto operator* (quantity<Dimension, playrho::Real> lhs, X rhs)
 template <class Dimension, typename X, typename = std::enable_if_t<
     std::is_arithmetic<X>::value && !std::is_same<X, playrho::Real>::value &&
     std::is_same<decltype(playrho::Real{} * X{}), playrho::Real>::value> >
-auto operator* (X lhs, quantity<Dimension, playrho::Real> rhs)
+constexpr auto operator* (X lhs, quantity<Dimension, playrho::Real> rhs)
 {
     return playrho::Real(lhs) * rhs;
 }

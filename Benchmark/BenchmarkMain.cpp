@@ -153,6 +153,45 @@ static void FloatAlmostEqual2(benchmark::State& state)
     }
 }
 
+static void FloatPositiveDivTrunc(benchmark::State& state)
+{
+    constexpr auto oneRotation = 2 * playrho::Pi;
+    const auto x = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+    auto turns = 0.0f;
+    auto wholeTurns = 0.0f;
+    auto remainder = 0.0f;
+    while (state.KeepRunning())
+    {
+        benchmark::DoNotOptimize(turns = x / oneRotation);
+        benchmark::DoNotOptimize(wholeTurns = std::trunc(turns));
+        benchmark::DoNotOptimize(remainder = turns - wholeTurns);
+    }
+}
+
+static void FloatPositiveDivModf(benchmark::State& state)
+{
+    constexpr auto oneRotation = 2 * playrho::Pi;
+    const auto x = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+    auto turns = 0.0f;
+    auto wholeTurns = 0.0f;
+    auto remainder = 0.0f;
+    while (state.KeepRunning())
+    {
+        benchmark::DoNotOptimize(turns = x / oneRotation);
+        benchmark::DoNotOptimize(remainder = std::modf(x, &wholeTurns));
+    }
+}
+
+static void FloatPositiveFmod(benchmark::State& state)
+{
+    constexpr auto oneRotation = 2 * playrho::Pi;
+    const auto x = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+    while (state.KeepRunning())
+    {
+        benchmark::DoNotOptimize(std::fmod(x, oneRotation));
+    }
+}
+
 static void AABB(benchmark::State& state)
 {
     const auto pui0 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
@@ -1013,6 +1052,16 @@ static void SolveVC(benchmark::State& state)
     }
 }
 
+static void DefaultWorldStep(benchmark::State& state)
+{
+    auto world = playrho::World{};
+    const auto stepConf = playrho::StepConf{};
+    while (state.KeepRunning())
+    {
+        benchmark::DoNotOptimize(world.Step(stepConf));
+    }
+}
+
 static void DropTiles(int count)
 {
     const auto linearSlop = playrho::Meter / 1000;
@@ -1240,6 +1289,9 @@ BENCHMARK(FloatAlmostEqual2);
 BENCHMARK(DifferentSignsViaSignbit);
 BENCHMARK(DifferentSignsViaMultiplication);
 
+BENCHMARK(FloatPositiveDivTrunc);
+BENCHMARK(FloatPositiveDivModf);
+BENCHMARK(FloatPositiveFmod);
 BENCHMARK(FloatSqrt);
 BENCHMARK(FloatSin);
 BENCHMARK(FloatCos);
@@ -1293,6 +1345,7 @@ BENCHMARK(CrossProductFourRand);
 
 BENCHMARK(ConstructAndAssignVC);
 BENCHMARK(SolveVC);
+BENCHMARK(DefaultWorldStep);
 
 BENCHMARK(MaxSepBetweenAbsRectangles);
 BENCHMARK(MaxSepBetweenRel4x4);
