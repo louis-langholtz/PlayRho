@@ -30,11 +30,11 @@ public:
 
     AddPair()
     {
-        m_world->SetGravity(LinearAcceleration2D{Real(0) * MeterPerSquareSecond, Real(0) * MeterPerSquareSecond});
+        m_world->SetGravity(LinearAcceleration2D{});
         {
-            auto conf = DiskShape::Conf{};
-            conf.vertexRadius = Meter / Real{10};
-            conf.density = Real{0.01f} * KilogramPerSquareMeter;
+            const auto conf = DiskShape::Conf{}
+                .UseVertexRadius(Meter / 10)
+                .UseDensity(0.01f * KilogramPerSquareMeter);
             const auto shape = std::make_shared<DiskShape>(conf);
 
             const auto minX = -6.0f;
@@ -42,26 +42,25 @@ public:
             const auto minY = 4.0f;
             const auto maxY = 6.0f;
 
+            const auto bd = BodyDef{}.UseType(BodyType::Dynamic);
             for (auto i = 0; i < 400; ++i)
             {
-                BodyDef bd;
-                bd.type = BodyType::Dynamic;
-                bd.position = Vec2(RandomFloat(minX, maxX), RandomFloat(minY, maxY)) * Meter;
-                const auto body = m_world->CreateBody(bd);
+                const auto location = Vec2(RandomFloat(minX, maxX), RandomFloat(minY, maxY)) * Meter;
+                const auto body = m_world->CreateBody(BodyDef{bd}.UseLocation(location));
                 body->CreateFixture(shape);
             }
         }
 
         {
-            BodyDef bd;
-            bd.type = BodyType::Dynamic;
-            bd.position = Length2D{Real(-40.0f) * Meter, Real(5.0f) * Meter};
-            bd.bullet = true;
+            const auto bd = BodyDef{}
+                .UseType(BodyType::Dynamic)
+                .UseBullet(true)
+                .UseLocation(Length2D{-40.0f * Meter, 5.0f * Meter})
+                .UseLinearVelocity(LinearVelocity2D{Vec2(150.0f, 0.0f) * MeterPerSecond});
             const auto body = m_world->CreateBody(bd);
-            auto conf = PolygonShape::Conf{};
-            conf.density = Real{1.0f} * KilogramPerSquareMeter;
-            body->CreateFixture(std::make_shared<PolygonShape>(Real{1.5f} * Meter, Real{1.5f} * Meter, conf));
-            body->SetVelocity(Velocity{Vec2(150.0f, 0.0f) * MeterPerSecond, AngularVelocity{0}});
+
+            const auto conf = PolygonShape::Conf{}.UseDensity(1.0f * KilogramPerSquareMeter);
+            body->CreateFixture(std::make_shared<PolygonShape>(1.5f * Meter, 1.5f * Meter, conf));
         }
     }
 };
