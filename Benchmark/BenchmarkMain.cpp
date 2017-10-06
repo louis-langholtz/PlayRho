@@ -46,6 +46,16 @@
 #include <PlayRho/Collision/WorldManifold.hpp>
 #include <PlayRho/Collision/ShapeSeparation.hpp>
 #include <PlayRho/Collision/Shapes/PolygonShape.hpp>
+#include <PlayRho/Collision/Shapes/DiskShape.hpp>
+
+static float RandomFloat(float lo, float hi)
+{
+    constexpr auto RAND_LIMIT = 32767;
+    auto r = static_cast<float>(std::rand() & (RAND_LIMIT));
+    r /= RAND_LIMIT;
+    r = (hi - lo) * r + lo;
+    return r;
+}
 
 static void FloatAdd(benchmark::State& state)
 {
@@ -1062,6 +1072,53 @@ static void DefaultWorldStep(benchmark::State& state)
     }
 }
 
+static void AddPairStressTest(benchmark::State& state)
+{
+    const auto diskConf = playrho::DiskShape::Conf{}
+        .UseVertexRadius(playrho::Meter / 10)
+        .UseDensity(0.01f * playrho::KilogramPerSquareMeter);
+    const auto diskShape = std::make_shared<playrho::DiskShape>(diskConf);
+
+    const auto polygonConf = playrho::PolygonShape::Conf{}.UseDensity(1.0f * playrho::KilogramPerSquareMeter);
+    const auto rectShape = std::make_shared<playrho::PolygonShape>(1.5f * playrho::Meter, 1.5f * playrho::Meter, polygonConf);
+    
+    const auto rectBodyDef = playrho::BodyDef{}
+        .UseType(playrho::BodyType::Dynamic)
+        .UseBullet(true)
+        .UseLocation(playrho::Length2D{-40.0f * playrho::Meter, 5.0f * playrho::Meter})
+        .UseLinearVelocity(playrho::LinearVelocity2D{playrho::Vec2(150.0f, 0.0f) * playrho::MeterPerSecond});
+
+    const auto stepConf = playrho::StepConf{};
+    while (state.KeepRunning())
+    {
+        state.PauseTiming();
+        auto world = playrho::World{playrho::WorldDef{}.UseGravity(playrho::LinearAcceleration2D{})};
+        {
+            const auto minX = -6.0f;
+            const auto maxX = 0.0f;
+            const auto minY = 4.0f;
+            const auto maxY = 6.0f;
+            
+            const auto bd = playrho::BodyDef{}.UseType(playrho::BodyType::Dynamic);
+            for (auto i = 0; i < 400; ++i)
+            {
+                const auto location = playrho::Vec2(RandomFloat(minX, maxX), RandomFloat(minY, maxY)) * playrho::Meter;
+                const auto body = world.CreateBody(playrho::BodyDef{bd}.UseLocation(location));
+                body->CreateFixture(diskShape);
+            }
+        }
+        world.CreateBody(rectBodyDef)->CreateFixture(rectShape);
+        
+        for (auto i = 0; i < state.range(); ++i)
+        {
+            world.Step(stepConf);
+        }
+
+        state.ResumeTiming();
+        world.Step(stepConf);
+    }
+}
+
 static void DropTiles(int count)
 {
     const auto linearSlop = playrho::Meter / 1000;
@@ -1362,6 +1419,7 @@ BENCHMARK(malloc_free_random_size);
 BENCHMARK(random_malloc_free_100);
 
 BENCHMARK(TumblerAdd100Squares200Steps);
+BENCHMARK(AddPairStressTest)->Arg(0)->Arg(10)->Arg(15)->Arg(16)->Arg(17)->Arg(18)->Arg(19)->Arg(20)->Arg(30);
 
 BENCHMARK(TilesComesToRest12);
 BENCHMARK(TilesComesToRest20);
