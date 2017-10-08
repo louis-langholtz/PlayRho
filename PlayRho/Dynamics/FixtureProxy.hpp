@@ -45,8 +45,8 @@ struct FixtureProxy
     FixtureProxy(FixtureProxy&& copy) = default;
 
     /// @brief Initializing constructor.
-    FixtureProxy(const AABB& bb, size_type pid, Fixture* f, ChildCounter ci):
-        aabb{bb}, fixture{f}, treeId{pid}, childIndex{ci} {}
+    FixtureProxy(size_type pid, Fixture* f, ChildCounter ci):
+        fixture{f}, treeId{pid}, childIndex{ci} {}
     
     ~FixtureProxy() = default;
     
@@ -55,8 +55,6 @@ struct FixtureProxy
 
     // Deleted because some fields are marked <code>const</code>.
     FixtureProxy& operator= (FixtureProxy&& other) = delete;
-
-    AABB aabb; ///< Axis Aligned Bounding Box. 16-bytes.
     
     /// @brief Fixture that this proxy is for.
     /// @note 8-bytes.
