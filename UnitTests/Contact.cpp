@@ -62,8 +62,8 @@ TEST(Contact, SetAwake)
     auto bB = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
     auto fA = Fixture{&bA, FixtureDef{}, shape};
     auto fB = Fixture{&bB, FixtureDef{}, shape};
-    const auto fpA = FixtureProxy{AABB{}, 0u, &fA, 0u};
-    const auto fpB = FixtureProxy{AABB{}, 0u, &fB, 0u};
+    const auto fpA = FixtureProxy{0u, &fA, 0u};
+    const auto fpB = FixtureProxy{0u, &fB, 0u};
     const auto c = Contact{&fpA, &fpB};
     
     bA.UnsetAwake();
@@ -85,8 +85,8 @@ TEST(Contact, ResetFriction)
     auto bB = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
     auto fA = Fixture{&bA, FixtureDef{}, shape};
     auto fB = Fixture{&bB, FixtureDef{}, shape};
-    const auto fpA = FixtureProxy{AABB{}, 0u, &fA, 0u};
-    const auto fpB = FixtureProxy{AABB{}, 0u, &fB, 0u};
+    const auto fpA = FixtureProxy{0u, &fA, 0u};
+    const auto fpB = FixtureProxy{0u, &fB, 0u};
     auto c = Contact{&fpA, &fpB};
 
     ASSERT_GT(shape->GetFriction(), Real(0));
@@ -104,8 +104,8 @@ TEST(Contact, ResetRestitution)
     auto bB = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
     auto fA = Fixture{&bA, FixtureDef{}, shape};
     auto fB = Fixture{&bB, FixtureDef{}, shape};
-    const auto fpA = FixtureProxy{AABB{}, 0u, &fA, 0u};
-    const auto fpB = FixtureProxy{AABB{}, 0u, &fB, 0u};
+    const auto fpA = FixtureProxy{0u, &fA, 0u};
+    const auto fpB = FixtureProxy{0u, &fB, 0u};
     auto c = Contact{&fpA, &fpB};
 
     ASSERT_EQ(shape->GetRestitution(), Real(0));

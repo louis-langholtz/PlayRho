@@ -157,8 +157,8 @@ TEST(WorldManifold, GetForContact)
     auto bB = Body{nullptr, BodyDef{}};
     auto fA = Fixture{&bA, FixtureDef{}, shape};
     auto fB = Fixture{&bB, FixtureDef{}, shape};
-    const auto fpA = FixtureProxy{AABB{}, 0u, &fA, 0u};
-    const auto fpB = FixtureProxy{AABB{}, 0u, &fB, 0u};
+    const auto fpA = FixtureProxy{0u, &fA, 0u};
+    const auto fpB = FixtureProxy{0u, &fB, 0u};
     const auto c = Contact{&fpA, &fpB};
 
     const auto wm = GetWorldManifold(c);
