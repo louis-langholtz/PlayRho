@@ -631,7 +631,7 @@ void World::CopyBodies(std::map<const Body*, Body*>& bodyMap,
             {
                 const auto proxyPtr = proxies + childIndex;
                 const auto fp = otherFixture.GetProxy(childIndex);
-                new (proxyPtr) FixtureProxy{fp->aabb, fp->treeId, newFixture, childIndex};
+                new (proxyPtr) FixtureProxy{fp->treeId, newFixture, childIndex};
                 m_tree.SetLeafData(fp->treeId, proxyPtr);
             }
             FixtureAtty::SetProxies(*newFixture, Span<FixtureProxy>(proxies, childCount));
@@ -2766,7 +2766,7 @@ void World::CreateProxies(Fixture& fixture, Length aabbExtension)
         const auto fattenedAABB = GetFattenedAABB(aabb, aabbExtension);
         const auto treeId = m_tree.CreateLeaf(fattenedAABB, proxyPtr);
         RegisterForProcessing(treeId);
-        new (proxyPtr) FixtureProxy{aabb, treeId, &fixture, childIndex};
+        new (proxyPtr) FixtureProxy{treeId, &fixture, childIndex};
     }
 
     FixtureAtty::SetProxies(fixture, Span<FixtureProxy>(proxies, childCount));
@@ -2835,11 +2835,11 @@ ChildCounter World::Synchronize(Fixture& fixture,
         // Compute an AABB that covers the swept shape (may miss some rotation effect).
         const auto aabb1 = ComputeAABB(dp, xfm1);
         const auto aabb2 = ComputeAABB(dp, xfm2);
-        proxy.aabb = GetEnclosingAABB(aabb1, aabb2);
+        const auto aabb = GetEnclosingAABB(aabb1, aabb2);
         
-        if (!Contains(m_tree.GetAABB(proxy.treeId), proxy.aabb))
+        if (!Contains(m_tree.GetAABB(proxy.treeId), aabb))
         {
-            const auto newAabb = GetDisplacedAABB(GetFattenedAABB(proxy.aabb, extension),
+            const auto newAabb = GetDisplacedAABB(GetFattenedAABB(aabb, extension),
                                                   expandedDisplacement);
             m_tree.UpdateLeaf(proxy.treeId, newAabb);
             RegisterForProcessing(proxy.treeId);

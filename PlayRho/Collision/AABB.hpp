@@ -308,14 +308,6 @@ namespace playrho {
     /// @relatedalso Body
     AABB ComputeAABB(const Body& body);
 
-    /// @brief Gets the fixture's AABB.
-    /// @note This AABB may be enlarged and/or stale. If you need a more accurate AABB,
-    ///   compute it using the shape and the body transform.
-    /// @warning Behavior is undefined is child index is not a valid proxy index.
-    /// @sa Fixture::GetProxy.
-    /// @relatedalso Fixture
-    AABB GetAABB(const Fixture& fixture, ChildCounter childIndex) noexcept;
-
     /// @brief Output stream operator.
     inline ::std::ostream& operator<< (::std::ostream& os, const AABB& value)
     {

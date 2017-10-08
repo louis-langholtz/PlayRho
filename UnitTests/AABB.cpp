@@ -389,34 +389,6 @@ TEST(AABB, Move)
     }
 }
 
-TEST(AABB, GetAABBForFixtureChild)
-{
-    const auto shapeA = std::make_shared<DiskShape>(1 * Meter);
-    const auto bodyCtrPos = Length2D(3 * Meter, 2 * Meter);
-    
-    World world;
-
-    const auto body = world.CreateBody(BodyDef{}.UseLocation(bodyCtrPos));
-    ASSERT_NE(body, nullptr);
-    
-    const auto fixture = body->CreateFixture(shapeA);
-    ASSERT_NE(fixture, nullptr);
-    
-    auto aabb = GetAABB(*fixture, ChildCounter{0});
-    ASSERT_EQ(aabb, AABB{});
-    
-    const auto stepConf = StepConf{};
-    world.Step(stepConf);
-
-    aabb = GetAABB(*fixture, ChildCounter{0});
-    ASSERT_NE(aabb, AABB{});
-
-    EXPECT_EQ(aabb.rangeX.GetMin(), 2 * Meter);
-    EXPECT_EQ(aabb.rangeX.GetMax(), 4 * Meter);
-    EXPECT_EQ(aabb.rangeY.GetMin(), 1 * Meter);
-    EXPECT_EQ(aabb.rangeY.GetMax(), 3 * Meter);
-}
-
 TEST(AABB, ComparisonOperators)
 {
     EXPECT_TRUE(AABB{} == AABB{});

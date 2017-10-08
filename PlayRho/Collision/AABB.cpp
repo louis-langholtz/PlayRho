@@ -63,10 +63,4 @@ AABB ComputeAABB(const Body& body)
     return sum;
 }
 
-AABB GetAABB(const Fixture& fixture, ChildCounter childIndex) noexcept
-{
-    const auto proxy = fixture.GetProxy(childIndex);
-    return proxy? proxy->aabb: AABB{};
-}
-
 } // namespace playrho
