@@ -41,6 +41,22 @@ AABB ComputeAABB(const DistanceProxy& proxy, const Transformation& xf) noexcept
     return GetFattenedAABB(result, proxy.GetVertexRadius());
 }
 
+AABB ComputeAABB(const DistanceProxy& proxy,
+                 const Transformation& xfm0, const Transformation& xfm1) noexcept
+{
+    assert(IsValid(xfm0));
+    assert(IsValid(xfm1));
+    auto result = AABB{};
+    const auto count = proxy.GetVertexCount();
+    for (auto i = decltype(count){0}; i < count; ++i)
+    {
+        const auto vertex = proxy.GetVertex(i);
+        Include(result, Transform(vertex, xfm0));
+        Include(result, Transform(vertex, xfm1));
+    }
+    return GetFattenedAABB(result, proxy.GetVertexRadius());
+}
+
 AABB ComputeAABB(const Shape& shape, const Transformation& xf)
 {
     auto sum = AABB{};

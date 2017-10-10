@@ -299,7 +299,19 @@ namespace playrho {
     /// @return AABB for the proxy shape or the default AABB if the proxy has a zero vertex count.
     /// @relatedalso DistanceProxy
     AABB ComputeAABB(const DistanceProxy& proxy, const Transformation& xf) noexcept;
-    
+
+    /// @brief Computes the AABB.
+    /// @details Computes the Axis Aligned Bounding Box (AABB) for the given child shape
+    ///   at the given transforms.
+    /// @warning Behavior is undefined if a given transformation is invalid.
+    /// @param proxy Distance proxy for the child shape.
+    /// @param xfm0 World transform 0 of the shape.
+    /// @param xfm1 World transform 1 of the shape.
+    /// @return AABB for the proxy shape or the default AABB if the proxy has a zero vertex count.
+    /// @relatedalso DistanceProxy
+    AABB ComputeAABB(const DistanceProxy& proxy,
+                     const Transformation& xfm0, const Transformation& xfm1) noexcept;
+
     /// @brief Computes the AABB for the given shape with the given transformation.
     /// @relatedalso Shape
     AABB ComputeAABB(const Shape& shape, const Transformation& xf);
