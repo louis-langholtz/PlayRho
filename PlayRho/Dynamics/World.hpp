@@ -623,14 +623,10 @@ private:
     /// @brief Touches each proxy of the given fixture.
     /// @note This sets things up so that pairs may be created for potentially new contacts.
     void InternalTouchProxies(Fixture& fixture) noexcept;
-
-    ChildCounter Synchronize(Fixture& fixture,
-                             Transformation xfm1, Transformation xfm2,
-                             Real multiplier, Length extension);
-
+    
     ContactCounter Synchronize(Body& body,
                                Transformation xfm1, Transformation xfm2,
-                               Real multiplier, Length aabbExtension);
+                               Real multiplier, Length extension);
     
     void CreateAndDestroyProxies(const StepConf& conf);
     void CreateAndDestroyProxies(Fixture& fixture, const StepConf& conf);
@@ -892,6 +888,12 @@ inline void World::UnsetIslanded(Contact* contact) noexcept
 inline void World::UnsetIslanded(Joint* joint) noexcept
 {
     JointAtty::UnsetIslanded(*joint);
+}
+
+inline void World::RegisterForProcessing(ProxyId pid) noexcept
+{
+    assert(pid != DynamicTree::GetInvalidSize());
+    m_proxies.push_back(pid);
 }
 
 // Free functions.

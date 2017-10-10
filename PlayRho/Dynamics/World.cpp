@@ -2339,12 +2339,6 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
     };
 }
 
-void World::RegisterForProcessing(ProxyId pid) noexcept
-{
-    assert(pid != DynamicTree::GetInvalidSize());
-    m_proxies.push_back(pid);
-}
-
 void World::UnregisterForProcessing(ProxyId pid) noexcept
 {
     const auto itEnd = end(m_proxies);
@@ -2817,45 +2811,36 @@ void World::InternalTouchProxies(Fixture& fixture) noexcept
     }
 }
 
-ChildCounter World::Synchronize(Fixture& fixture,
-                                 Transformation xfm1, Transformation xfm2,
-                                 Real multiplier, Length extension)
+ContactCounter World::Synchronize(Body& body,
+                                  Transformation xfm1, Transformation xfm2,
+                                  Real multiplier, Length extension)
 {
     assert(::playrho::IsValid(xfm1));
     assert(::playrho::IsValid(xfm2));
-    
-    auto updatedCount = ChildCounter{0};
-    const auto shape = fixture.GetShape();
-    const auto expandedDisplacement = multiplier * (xfm2.p - xfm1.p);
-    const auto proxies = FixtureAtty::GetProxies(fixture);
-    for (auto& proxy: proxies)
-    {
-        const auto dp = shape->GetChild(proxy.childIndex);
 
-        // Compute an AABB that covers the swept shape (may miss some rotation effect).
-        const auto aabb1 = ComputeAABB(dp, xfm1);
-        const auto aabb2 = ComputeAABB(dp, xfm2);
-        const auto aabb = GetEnclosingAABB(aabb1, aabb2);
-        
-        if (!Contains(m_tree.GetAABB(proxy.treeId), aabb))
-        {
-            const auto newAabb = GetDisplacedAABB(GetFattenedAABB(aabb, extension),
-                                                  expandedDisplacement);
-            m_tree.UpdateLeaf(proxy.treeId, newAabb);
-            RegisterForProcessing(proxy.treeId);
-            ++updatedCount;
-        }
-    }
-    return updatedCount;
-}
-
-ContactCounter World::Synchronize(Body& body,
-                                  Transformation xfm1, Transformation xfm2,
-                                  Real multiplier, Length aabbExtension)
-{
     auto updatedCount = ContactCounter{0};
     for_each(begin(body.GetFixtures()), end(body.GetFixtures()), [&](Body::Fixtures::value_type& f) {
-        updatedCount += Synchronize(GetRef(f), xfm1, xfm2, multiplier, aabbExtension);
+        auto& fixture = GetRef(f);
+        const auto shape = fixture.GetShape();
+        const auto displacement = multiplier * (xfm2.p - xfm1.p);
+        const auto proxies = FixtureAtty::GetProxies(fixture);
+        for (auto& proxy: proxies)
+        {
+            const auto treeId = proxy.treeId;
+            const auto childIndex = proxy.childIndex;
+            
+            // Compute an AABB that covers the swept shape (may miss some rotation effect).
+            const auto aabb = ComputeAABB(shape->GetChild(childIndex), xfm1, xfm2);
+            if (!Contains(m_tree.GetAABB(treeId), aabb))
+            {
+                const auto newAabb = GetDisplacedAABB(GetFattenedAABB(aabb, extension),
+                                                      displacement);
+                m_tree.UpdateLeaf(treeId, newAabb);
+                RegisterForProcessing(treeId);
+                ++updatedCount;
+            }
+        }
+
     });
     return updatedCount;
 }
