@@ -167,7 +167,7 @@ namespace playrho {
         {
             const auto min = std::max(v.GetMin(), GetMin());
             const auto max = std::min(v.GetMax(), GetMax());
-            *this = (min <= max)? pair_type{min, max}: Interval{};
+            *this = (min <= max)? Interval{pair_type{min, max}}: Interval{};
             return *this;
         }
         
