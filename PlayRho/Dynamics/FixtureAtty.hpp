@@ -25,6 +25,8 @@
 
 #include <PlayRho/Common/Span.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
+#include <vector>
+#include <memory>
 
 namespace playrho {
 
@@ -39,17 +41,23 @@ namespace playrho {
 class FixtureAtty
 {
 private:
-    static Span<FixtureProxy> GetProxies(const Fixture& fixture)
+    static auto GetProxies(const Fixture& fixture)
     {
         return fixture.GetProxies();
     }
     
-    static void SetProxies(Fixture& fixture, Span<FixtureProxy> value)
+    static void SetProxies(Fixture& fixture, std::unique_ptr<FixtureProxy[]> value,
+                           std::size_t count)
     {
-        fixture.SetProxies(value);
+        fixture.SetProxies(std::move(value), count);
     }
     
-    static Fixture* Create(Body* body, const FixtureDef& def,
+    static void ResetProxies(Fixture& fixture)
+    {
+        fixture.ResetProxies();
+    }
+    
+    static auto Create(Body* body, const FixtureDef& def,
                            const std::shared_ptr<const Shape>& shape)
     {
         return new Fixture{body, def, shape};

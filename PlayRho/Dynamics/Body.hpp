@@ -451,7 +451,7 @@ private:
     void SetEnabledFlag() noexcept;
     void UnsetEnabledFlag() noexcept;
 
-    bool Insert(Contact* contact);
+    bool Insert(ContactKey key, Contact* contact);
     bool Insert(Joint* joint);
 
     bool Erase(const Contact* contact);

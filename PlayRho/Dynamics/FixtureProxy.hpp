@@ -29,50 +29,17 @@ class Fixture;
 
 /// @brief Fixture proxy.
 /// @details This proxy is used internally to connect fixtures to the broad-phase.
-/// @note This data structure is 32-bytes large (on at least one 64-bit platform).
+/// @note This data structure is 4-bytes large (on at least one 64-bit platform).
 struct FixtureProxy
 {
     
     /// @brief Size type.
     using size_type = std::remove_const<decltype(MaxContacts)>::type;
-    
-    FixtureProxy() = delete;
-    
-    /// @brief Copy constructor.
-    FixtureProxy(const FixtureProxy& copy) = default;
-
-    /// @brief Move constructor.
-    FixtureProxy(FixtureProxy&& copy) = default;
-
-    /// @brief Initializing constructor.
-    FixtureProxy(size_type pid, Fixture* f, ChildCounter ci):
-        fixture{f}, treeId{pid}, childIndex{ci} {}
-    
-    ~FixtureProxy() = default;
-    
-    // Deleted because some fields are marked <code>const</code>.
-    FixtureProxy& operator= (const FixtureProxy& other) = delete;
-
-    // Deleted because some fields are marked <code>const</code>.
-    FixtureProxy& operator= (FixtureProxy&& other) = delete;
-    
-    /// @brief Fixture that this proxy is for.
-    /// @note 8-bytes.
-    Fixture* const fixture;
 
     /// @brief Tree ID.
     /// @details This is the ID of the leaf node in the dynamic tree for this "proxy".
     /// @note 4-bytes.
-    const size_type treeId;
- 
-    /// @brief Child index of the fixture's shape that this proxy is for.
-    /// @note This could potentially be calculated via pointer arithmetic - i.e.
-    ///    this - array, where "this" is the address of this class and "array" is the
-    ///    address of the array that this class is within. While that would shrink
-    ///    this structure's size, it may also cause some fixture proxies to straddle
-    ///    any 64-byte wide cache lines (which would presumably not help performance).
-    /// @note 4-bytes.
-    const ChildCounter childIndex;
+    size_type treeId;
 };
 
 } // namespace playrho

@@ -40,6 +40,9 @@ namespace playrho {
         /// @brief Uses the given max vertex radius value.
         constexpr WorldDef& UseMaxVertexRadius(Positive<Length> value) noexcept;
         
+        /// @brief Uses the given value as the initial dynamic tree size.
+        constexpr WorldDef& UseInitialTreeSize(ContactCounter value) noexcept;
+
         /// @brief Gravity.
         /// @details The acceleration all dynamic bodies are subject to.
         /// @note Use Vec2{0, 0} to disable gravity.
@@ -63,6 +66,9 @@ namespace playrho {
         ///    having a larger vertex radius shall be rejected with a <code>nullptr</code>
         ///    returned value.
         Positive<Length> maxVertexRadius = DefaultMaxVertexRadius;
+        
+        /// @brief Initial tree size.
+        ContactCounter initialTreeSize = 4096;
     };
     
     constexpr inline WorldDef& WorldDef::UseGravity(LinearAcceleration2D value) noexcept
@@ -80,6 +86,12 @@ namespace playrho {
     constexpr inline WorldDef& WorldDef::UseMaxVertexRadius(Positive<Length> value) noexcept
     {
         maxVertexRadius = value;
+        return *this;
+    }
+    
+    constexpr inline WorldDef& WorldDef::UseInitialTreeSize(ContactCounter value) noexcept
+    {
+        initialTreeSize = value;
         return *this;
     }
 

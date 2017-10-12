@@ -158,31 +158,24 @@ void DynamicTree::SetNodeCapacity(Size value) noexcept
     m_freeListIndex = m_nodeCount;
 }
 
-// Allocate a node from the pool. Grow the pool if necessary.
 DynamicTree::Size DynamicTree::AllocateNode(const LeafData& node, AABB aabb) noexcept
 {
-    // Expand the node pool as needed.
-    if (m_freeListIndex == GetInvalidSize())
-    {
-        assert(m_nodeCount == m_nodeCapacity);
-
-        // The free list is empty. Rebuild a bigger pool.
-        SetNodeCapacity(m_nodeCapacity * 2);
-    }
-
-    // Peel a node off the free list.
-    const auto index = m_freeListIndex;
-    m_freeListIndex = GetNext(m_nodes[index]);
+    const auto index = AllocateNode();
     m_nodes[index] = TreeNode{node, aabb};
-    ++m_nodeCount;
     return index;
 }
 
-DynamicTree::Size DynamicTree::AllocateNode(const BranchData& node, AABB aabb, Height height,
-                                            Size other) noexcept
+DynamicTree::Size DynamicTree::AllocateNode(const BranchData& node, AABB aabb,
+                                            Height height, Size parent) noexcept
 {
     assert(height > 0);
+    const auto index = AllocateNode();
+    m_nodes[index] = TreeNode{node, aabb, height, parent};
+    return index;
+}
 
+DynamicTree::Size DynamicTree::AllocateNode() noexcept
+{
     // Expand the node pool as needed.
     if (m_freeListIndex == GetInvalidSize())
     {
@@ -194,13 +187,11 @@ DynamicTree::Size DynamicTree::AllocateNode(const BranchData& node, AABB aabb, H
     
     // Peel a node off the free list.
     const auto index = m_freeListIndex;
-    m_freeListIndex = GetNext(m_nodes[index]);
-    m_nodes[index] = TreeNode{node, aabb, height, other};
+    m_freeListIndex = m_nodes[index].GetOther();
     ++m_nodeCount;
     return index;
 }
 
-// Return a node to the pool.
 void DynamicTree::FreeNode(Size index) noexcept
 {
     assert(index != GetInvalidSize());
@@ -514,7 +505,6 @@ Length DynamicTree::ComputeTotalPerimeter() const noexcept
     return totalPerimeter;
 }
 
-// Compute the height of a sub-tree.
 DynamicTree::Height DynamicTree::ComputeHeight(Size index) const noexcept
 {
     assert(index < m_nodeCapacity);
@@ -790,7 +780,7 @@ void DynamicTree::ShiftOrigin(Length2D newOrigin)
 
 // Free functions...
 
-void Query(const DynamicTree& tree, const AABB& aabb, const DynamicTree::QueryCallback& callback)
+void Query(const DynamicTree& tree, const AABB& aabb, const DynamicTreeSizeCB& callback)
 {
     GrowableStack<DynamicTree::Size, 256> stack;
     stack.push(tree.GetRootIndex());
@@ -813,7 +803,8 @@ void Query(const DynamicTree& tree, const AABB& aabb, const DynamicTree::QueryCa
                 else
                 {
                     assert(DynamicTree::IsLeaf(height));
-                    if (!callback(index))
+                    const auto sc = callback(index);
+                    if (sc == DynamicTreeOpcode::End)
                     {
                         return;
                     }
@@ -894,37 +885,6 @@ void RayCast(const DynamicTree& tree, const RayCastInput& input,
                 maxFraction = value;
                 const auto t = p1 + maxFraction * (p2 - p1);
                 segmentAABB = AABB{p1, t};
-            }
-        }
-    }
-}
-
-void ForEach(const DynamicTree& tree, const AABB& aabb,
-             const DynamicTree::ForEachCallback& callback)
-{
-    GrowableStack<DynamicTree::Size, 256> stack;
-    stack.push(tree.GetRootIndex());
-    
-    while (!stack.empty())
-    {
-        const auto index = stack.top();
-        stack.pop();
-        if (index != DynamicTree::GetInvalidSize())
-        {
-            if (TestOverlap(tree.GetAABB(index), aabb))
-            {
-                const auto height = tree.GetHeight(index);
-                if (DynamicTree::IsBranch(height))
-                {
-                    const auto branchData = tree.GetBranchData(index);
-                    stack.push(branchData.child1);
-                    stack.push(branchData.child2);
-                }
-                else
-                {
-                    assert(DynamicTree::IsLeaf(height));
-                    callback(index);
-                }
             }
         }
     }

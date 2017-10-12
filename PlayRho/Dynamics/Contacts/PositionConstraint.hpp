@@ -47,7 +47,7 @@ namespace playrho {
             assert(rB >= Length{0});
         }
         
-        Manifold manifold; ///< Copy of contact's manifold with 1 or more contact points (60-bytes).
+        Manifold manifold; ///< Copy of contact's manifold with 1 or more contact points (64-bytes).
 
         /// @brief Gets body A.
         BodyConstraint* GetBodyA() const noexcept { return m_bodyA; }

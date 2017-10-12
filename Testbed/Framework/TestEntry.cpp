@@ -42,7 +42,7 @@
 #include "../Tests/DistanceTest.hpp"
 #include "../Tests/Dominos.hpp"
 #include "../Tests/DumpShell.hpp"
-#include "../Tests/DynamicTreeTest.hpp"
+// #include "../Tests/DynamicTreeTest.hpp"
 #include "../Tests/EdgeShapes.hpp"
 #include "../Tests/EdgeTest.hpp"
 #include "../Tests/FifteenPuzzle.hpp"
@@ -140,7 +140,7 @@ static const TestEntry testEntries[] =
     {"Compound Shapes", MakeUniqueTest<CompoundShapes>},
     {"Distance Test", MakeUniqueTest<DistanceTest>},
     {"Dominos", MakeUniqueTest<Dominos>},
-    {"Dynamic Tree", MakeUniqueTest<DynamicTreeTest>},
+    // {"Dynamic Tree", MakeUniqueTest<DynamicTreeTest>},
     {"Sensor Test", MakeUniqueTest<SensorTest>},
     {"Spinning Circles", MakeUniqueTest<SpinningCircle>},
     {"Half Pipe", MakeUniqueTest<HalfPipe>},

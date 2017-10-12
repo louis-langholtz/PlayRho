@@ -29,15 +29,19 @@
 
 #include <functional>
 #include <type_traits>
+#include <utility>
 
 namespace playrho {
 
-/// @brief A dynamic AABB tree broad-phase, inspired by Nathanael Presson's btDbvt.
+class Fixture;
+
+/// @brief A dynamic AABB tree broad-phase.
 ///
 /// @details A dynamic tree arranges data in a binary tree to accelerate
 ///   queries such as volume queries and ray casts. Leafs are proxies
 ///   with an AABB.
 ///
+/// @note This code was inspired by Nathanael Presson's btDbvt.
 /// @note Nodes are pooled and relocatable, so we use node indices rather than pointers.
 /// @note This data structure is 32-bytes large (on at least one 64-bit platform).
 ///
@@ -50,13 +54,11 @@ class DynamicTree
 public:
     /// @brief Size type.
     using Size = ContactCounter;
-
-    /// @brief Leaf data type alias.
-    using LeafData = void*;
-
+    
     class TreeNode;
     struct UnusedData;
     struct BranchData;
+    struct LeafData;
     union VariantData;
     
     /// @brief Gets the invalid size value.
@@ -91,12 +93,6 @@ public:
     {
         return !IsUnused(value) && !IsLeaf(value);
     }
-    
-    /// @brief Query callback type.
-    using QueryCallback = std::function<bool(Size)>;
-    
-    /// @brief For each callback type.
-    using ForEachCallback = std::function<void(Size)>;
 
     /// @brief Ray cast callback function.
     /// @note Return 0 to terminate raycasting, or > 0 to update the segment bounding box.
@@ -229,14 +225,19 @@ private:
     void SetNodeCapacity(Size value) noexcept;
 
     /// @brief Allocates a node.
+    /// @details This allocates a node from the free list that can be used as either a leaf
+    ///   node or a branch node.
+    Size AllocateNode() noexcept;
+
+    /// @brief Allocates a leaf node.
     /// @details This allocates a node from the free list as a leaf node.
     Size AllocateNode(const LeafData& node, AABB aabb) noexcept;
 
-    /// @brief Allocates a node.
+    /// @brief Allocates a branch node.
     /// @details This allocates a node from the free list as a branch node.
     /// @post The free list no longer references the returned index.
     Size AllocateNode(const BranchData& node, AABB aabb, Height height,
-                      Size other = GetInvalidSize()) noexcept;
+                      Size parent = GetInvalidSize()) noexcept;
         
     Size FindReference(Size index) const noexcept;
 
@@ -311,6 +312,58 @@ struct DynamicTree::BranchData
     Size child2; ///< @brief Child 2.
 };
 
+/// @brief Leaf data of a TreeNode.
+/// @details This is the leaf node specific data for a DynamicTree::TreeNode. It's data that only
+///   pertains to leaf nodes.
+/// @note This class is used in the DynamicTree::VariantData union within a DynamicTree::TreeNode.
+///   This has ramifications on this class's data contents and size.
+struct DynamicTree::LeafData
+{
+    // In terms of what needs to be in this structure, it minimally needs to have enough
+    // information in it to identify the child shape for which the node's AABB represents,
+    // and its associated body. A pointer to the fixture and the index of the child in
+    // its shape could suffice for this. Meanwhile, a Contact is defined to be the
+    // recognition of an overlap between two child shapes having different bodies making
+    // the caching of the bodies a potential speed-up opportunity.
+
+    /// @brief Cached pointer to associated body.
+    /// @note This field serves merely to potentially avoid the lookup of the body through
+    ///   the fixture. It may or may not be worth the extra 8-bytes or so required for it.
+    /// @note On 64-bit architectures, this is an 8-byte sized field. As an 8-byte field it
+    ///   conceptually identifies 2^64 separate bodies within a world. As a practical matter
+    ///   however, even a 4-byte index which could identify 2^32 bodies, is still larger than
+    ///   is usable. This suggests that space could be saved by using indexes into arrays of
+    ///   bodies instead of direct pointers to memory.
+    Body* body;
+    
+    /// @brief Pointer to associated Fixture.
+    /// @note On 64-bit architectures, this is an 8-byte sized field. As an 8-byte field it
+    ///   conceptually identifies 2^64 separate fixtures within a world. As a practical matter
+    ///   however, even a 4-byte index which could identify 2^32 fixtures, is still larger than
+    ///   is usable. This suggests that space could be saved by using indexes into arrays of
+    ///   fixtures instead of direct pointers to memory.
+    Fixture* fixture;
+
+    /// @brief Child index of related Shape.
+    ChildCounter childIndex;
+};
+
+/// @brief Equality operator.
+/// @relatedalso DynamicTree::LeafData
+constexpr inline bool operator== (const DynamicTree::LeafData& lhs,
+                                  const DynamicTree::LeafData& rhs) noexcept
+{
+    return lhs.fixture == rhs.fixture && lhs.childIndex == rhs.childIndex;
+}
+
+/// @brief Inequality operator.
+/// @relatedalso DynamicTree::LeafData
+constexpr inline bool operator!= (const DynamicTree::LeafData& lhs,
+                                  const DynamicTree::LeafData& rhs) noexcept
+{
+    return !(lhs == rhs);
+}
+
 /// @brief Variant data.
 /// @note A union is used intentionally to save space.
 union DynamicTree::VariantData
@@ -360,7 +413,7 @@ constexpr bool IsBranch(const DynamicTree::TreeNode& node) noexcept;
 ///   if the memory for other nodes is relocated.
 /// @note On some 64-bit architectures, pointers are 8-bytes, while indices need only be
 ///   4-bytes. So using indices can also save 4-bytes.
-/// @note This data structure is 32-bytes large on at least one 64-bit platform.
+/// @note This data structure is 48-bytes large on at least one 64-bit platform.
 class DynamicTree::TreeNode
 {
 public:
@@ -396,7 +449,25 @@ public:
     }
     
     /// @brief Copy assignment operator.
-    TreeNode& operator= (const TreeNode& other) = default;
+    TreeNode& operator= (const TreeNode& other)
+    {
+        m_height = other.m_height;
+        m_other = other.m_other;
+        m_aabb = other.m_aabb;
+        switch (other.m_height)
+        {
+            case DynamicTree::GetInvalidHeight():
+                m_variant.unused = other.m_variant.unused;
+                break;
+            case DynamicTree::Size{0}:
+                m_variant.leaf = other.m_variant.leaf;
+                break;
+            default:
+                m_variant.branch = other.m_variant.branch;
+                break;
+        }
+        return *this;
+    }
     
     /// @brief Move assignment operator.
     TreeNode& operator= (TreeNode&& other) = default;
@@ -744,10 +815,20 @@ inline Real ComputePerimeterRatio(const DynamicTree& tree) noexcept
     return 0;
 }
 
+/// @brief Opcodes for DynamicTree callbacks.
+enum class DynamicTreeOpcode
+{
+    End,
+    Continue,
+};
+
+/// @brief Query callback type.
+using DynamicTreeSizeCB = std::function<DynamicTreeOpcode(DynamicTree::Size)>;
+
 /// @brief Query the given dynamic tree and find nodes overlapping the given AABB.
 /// @note The callback instance is called for each leaf node that overlaps the supplied AABB.
 void Query(const DynamicTree& tree, const AABB& aabb,
-           const DynamicTree::QueryCallback& callback);
+           const DynamicTreeSizeCB& callback);
 
 /// @brief Ray-cast against the leafs in the given tree.
 ///
@@ -765,10 +846,6 @@ void Query(const DynamicTree& tree, const AABB& aabb,
 ///
 void RayCast(const DynamicTree& tree, const RayCastInput& input,
              const DynamicTree::RayCastCallback& callback);
-
-/// @brief Calls the given callback for each of the entries overlapping the given AABB.
-void ForEach(const DynamicTree& tree, const AABB& aabb,
-             const DynamicTree::ForEachCallback& callback);
 
 } // namespace playrho
 

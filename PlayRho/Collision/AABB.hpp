@@ -33,6 +33,7 @@ namespace playrho {
     class Shape;
     class Fixture;
     class Body;
+    class Contact;
     class DistanceProxy;
     
     /// @brief Axis Aligned Bounding Box.
@@ -154,6 +155,14 @@ namespace playrho {
     constexpr bool TestOverlap(const AABB& a, const AABB& b) noexcept
     {
         return IsIntersecting(a.rangeX, b.rangeX) && IsIntersecting(a.rangeY, b.rangeY);
+    }
+    
+    /// @brief Gets the intersecting AABB of the two given AABBs'.
+    constexpr AABB GetIntersectingAABB(const AABB& a, const AABB& b) noexcept
+    {
+        const auto rangeX = GetIntersection(a.rangeX, b.rangeX);
+        const auto rangeY = GetIntersection(a.rangeY, b.rangeY);
+        return AABB{rangeX, rangeY};
     }
     
     /// @brief Gets the center of the AABB.
@@ -314,11 +323,22 @@ namespace playrho {
 
     /// @brief Computes the AABB for the given shape with the given transformation.
     /// @relatedalso Shape
-    AABB ComputeAABB(const Shape& shape, const Transformation& xf);
+    AABB ComputeAABB(const Shape& shape, const Transformation& xf) noexcept;
+
+    /// @brief Computes the AABB for the given fixture.
+    /// @relatedalso Fixture
+    AABB ComputeAABB(const Fixture& fixture) noexcept;
 
     /// @brief Computes the AABB for the given body.
     /// @relatedalso Body
     AABB ComputeAABB(const Body& body);
+
+    /// @brief Computes the intersecting AABB for the given pair of fixtures and indexes.
+    AABB ComputeIntersectingAABB(const Fixture& fA, ChildCounter iA,
+                                 const Fixture& fB, ChildCounter iB) noexcept;
+
+    /// @brief Computes the intersecting AABB for the given contact.
+    AABB ComputeIntersectingAABB(const Contact& contact);
 
     /// @brief Output stream operator.
     inline ::std::ostream& operator<< (::std::ostream& os, const AABB& value)

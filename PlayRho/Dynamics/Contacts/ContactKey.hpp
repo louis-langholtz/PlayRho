@@ -33,7 +33,6 @@
 namespace playrho
 {
     class Fixture;
-    struct FixtureProxy;
     class Contact;
 
     /// @brief Key value class for contacts.
@@ -116,11 +115,8 @@ namespace playrho
     using KeyedContactPtr = std::pair<ContactKey, Contact*>;
     
     /// @brief Gets the ContactKey for the given parameters.
-    ContactKey GetContactKey(const FixtureProxy& fpA, const FixtureProxy& fpB) noexcept;
-    
-    /// @brief Gets the ContactKey for the given parameters.
-    ContactKey GetContactKey(const Fixture* fixtureA, ChildCounter childIndexA,
-                             const Fixture* fixtureB, ChildCounter childIndexB) noexcept;
+    ContactKey GetContactKey(const Fixture& fixtureA, ChildCounter childIndexA,
+                             const Fixture& fixtureB, ChildCounter childIndexB) noexcept;
     
     /// @brief Gets the ContactKey for the given contact.
     ContactKey GetContactKey(const Contact& contact) noexcept;

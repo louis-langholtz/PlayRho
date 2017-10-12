@@ -27,7 +27,6 @@
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/TimeOfImpact.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
-#include <PlayRho/Dynamics/FixtureProxy.hpp>
 
 namespace playrho {
 
@@ -67,7 +66,7 @@ inline Real MixRestitution(Real restitution1, Real restitution2) noexcept
 ///
 /// @details The class manages contact between two shapes. A contact exists for each overlapping
 ///   AABB in the broad-phase (except if filtered). Therefore a contact object may exist
-///   that has no contact points.
+///   that has no actual contact points.
 ///
 /// @note This data structure is 104-bytes large (on at least one 64-bit platform).
 ///
@@ -90,22 +89,21 @@ public:
 
     /// @brief Initializing constructor.
     ///
-    /// @param fpA Non-null pointer to fixture proxy A whose fixture must have a shape
-    ///   and may not be the same or have the same body as the other fixture proxy.
-    /// @param fpB Non-null pointer to fixture proxy B whose fixture must have a shape
-    ///   and may not be the same or have the same body as the other fixture proxy.
+    /// @param fA Non-null pointer to fixture A that must have a shape
+    ///   and may not be the same or have the same body as the other fixture.
+    /// @param iA Child index A.
+    /// @param fB Non-null pointer to fixture B that must have a shape
+    ///   and may not be the same or have the same body as the other fixture.
+    /// @param iB Child index B.
     ///
-    /// @warning Behavior is undefined if <code>fpA</code> is null.
-    /// @warning Behavior is undefined if <code>fpA->fixture</code> is null.
-    /// @warning Behavior is undefined if <code>fpB</code> is null.
-    /// @warning Behavior is undefined if <code>fpB->fixture</code> is null.
-    /// @warning Behavior is undefined if <code>fpA == fpB</code>.
-    /// @warning Behavior is undefined if <code>fpA->fixture == fpB->fixture</code>.
-    /// @warning Behavior is undefined if <code>fpA->fixture</code> has no associated shape.
-    /// @warning Behavior is undefined if <code>fpB->fixture</code> has no associated shape.
-    /// @warning Behavior is undefined if both fixture proxy's fixture's have the same body.
+    /// @warning Behavior is undefined if <code>fA</code> is null.
+    /// @warning Behavior is undefined if <code>fB</code> is null.
+    /// @warning Behavior is undefined if <code>fA == fB</code>.
+    /// @warning Behavior is undefined if <code>fA</code> has no associated shape.
+    /// @warning Behavior is undefined if <code>fB</code> has no associated shape.
+    /// @warning Behavior is undefined if both fixture's have the same body.
     ///
-    Contact(const FixtureProxy* fpA, const FixtureProxy* fpB);
+    Contact(Fixture* fA, ChildCounter iA, Fixture* fB, ChildCounter iB);
     
     /// @brief Default construction not allowed.
     Contact() = delete;
@@ -288,14 +286,24 @@ private:
     void UnsetIslanded() noexcept;
 
     // Member variables...
-    const FixtureProxy* const m_fixtureProxyA;
-    const FixtureProxy* const m_fixtureProxyB;
+
+    Manifold mutable m_manifold; ///< Manifold of the contact. 64-bytes. @sa Update.
+
+    // Need to be able to identify two different fixtures, the child shape per fixture,
+    // and the two different bodies that each fixture is associated with. This could be
+    // done by storing whatever information is needed to lookup this information. For
+    // instance, if the dynamic tree's two leaf nodes for this contact contained this
+    // info then minimally only those two indexes are needed. That may be sub-optimal
+    // however depending the speed of cache and memory access.
+
+    Fixture* const m_fixtureA; ///< Fixture A. @details Non-null pointer to fixture A.
+    Fixture* const m_fixtureB; ///< Fixture B. @details Non-null pointer to fixture B.
+    ChildCounter const m_indexA;
+    ChildCounter const m_indexB;
     
-    Manifold mutable m_manifold; ///< Manifold of the contact. 60-bytes. @sa Update.
-
-    substep_type m_toiCount = 0; ///< Count of TOI calculations contact has gone through since last reset.
-
-    FlagsType m_flags = e_enabledFlag|e_dirtyFlag;
+    // initialized on construction (construction-time depedent)
+    Real m_friction; ///< Mix of frictions of the associated fixtures. @sa MixFriction.
+    Real m_restitution; ///< Mix of restitutions of the associated fixtures. @sa MixRestitution.
 
     LinearVelocity m_tangentSpeed = 0;
     
@@ -303,10 +311,10 @@ private:
     /// @note This is a unit interval of time (a value between 0 and 1).
     /// @note Only valid if m_flags & e_toiFlag
     Real m_toi;
-
-    // initialized on construction (construction-time depedent)
-    Real m_friction; ///< Mix of frictions of the associated fixtures. @sa MixFriction.
-    Real m_restitution; ///< Mix of restitutions of the associated fixtures. @sa MixRestitution.
+    
+    substep_type m_toiCount = 0; ///< Count of TOI calculations contact has gone through since last reset.
+    
+    FlagsType m_flags = e_enabledFlag|e_dirtyFlag;
 };
 
 inline const Manifold& Contact::GetManifold() const noexcept
@@ -367,22 +375,12 @@ inline void Contact::UnsetTouching() noexcept
 
 inline Fixture* Contact::GetFixtureA() const noexcept
 {
-    return m_fixtureProxyA->fixture;
-}
-
-inline ChildCounter Contact::GetChildIndexA() const noexcept
-{
-    return m_fixtureProxyA->childIndex;
+    return m_fixtureA;
 }
 
 inline Fixture* Contact::GetFixtureB() const noexcept
 {
-    return m_fixtureProxyB->fixture;
-}
-
-inline ChildCounter Contact::GetChildIndexB() const noexcept
-{
-    return m_fixtureProxyB->childIndex;
+    return m_fixtureB;
 }
 
 inline void Contact::FlagForFiltering() noexcept
@@ -498,6 +496,28 @@ inline void Contact::UnsetIslanded() noexcept
 
 /// @brief Contact pointer type.
 using ContactPtr = Contact*;
+
+/// @brief Gets the body A associated with the given contact.
+/// @relatedalso Contact
+Body* GetBodyA(const Contact& contact) noexcept;
+
+/// @brief Gets the body B associated with the given contact.
+/// @relatedalso Contact
+Body* GetBodyB(const Contact& contact) noexcept;
+
+/// @brief Gets the fixture A associated with the given contact.
+/// @relatedalso Contact
+inline Fixture* GetFixtureA(const Contact& contact) noexcept
+{
+    return contact.GetFixtureA();
+}
+
+/// @brief Gets the fixture B associated with the given contact.
+/// @relatedalso Contact
+inline Fixture* GetFixtureB(const Contact& contact) noexcept
+{
+    return contact.GetFixtureB();
+}
 
 /// @brief Whether the given contact has a sensor.
 /// @relatedalso Contact

@@ -26,8 +26,6 @@
 #include <map>
 #include <utility>
 
-#include <PlayRho/Dynamics/FixtureProxy.hpp>
-
 using namespace playrho;
 
 static void DrawCorner(Drawer& drawer, Length2D p, Length r, Angle a0, Angle a1, Color color)
@@ -330,30 +328,15 @@ static bool Draw(Drawer& drawer, const World& world, const Settings& settings,
     if (settings.drawAABBs)
     {
         const auto color = Color{0.9f, 0.3f, 0.9f};
-
-        for (auto&& body: world.GetBodies())
-        {
-            const auto b = GetPtr(body);
-            if (!b->IsEnabled())
-            {
-                continue;
-            }
-
-            for (auto&& fixture: b->GetFixtures())
-            {
-                const auto& f = GetRef(fixture);
-                const auto proxy_count = f.GetProxyCount();
-                for (auto i = decltype(proxy_count){0}; i < proxy_count; ++i)
-                {
-                    const auto proxy = f.GetProxy(i);
-                    Draw(drawer, world.GetTree().GetAABB(proxy->treeId), color);
-                }
-            }
-        }
         const auto root = world.GetTree().GetRootIndex();
         if (root != DynamicTree::GetInvalidSize())
         {
-            Draw(drawer, world.GetTree().GetAABB(root), color);
+            const auto worldAabb = world.GetTree().GetAABB(root);
+            Draw(drawer, worldAabb, color);
+            Query(world.GetTree(), worldAabb, [&](DynamicTree::Size id) {
+                Draw(drawer, world.GetTree().GetAABB(id), color);
+                return DynamicTreeOpcode::Continue;
+            });
         }
     }
 
@@ -768,7 +751,7 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     for (auto fixture: selectedFixtures)
     {
         const auto b = fixture->GetBody();
-        for (const auto contact: b->GetContacts())
+        for (const auto& contact: b->GetContacts())
         {
             const auto c = GetContactPtr(contact);
             const auto iter = cts.find(c);
@@ -784,7 +767,7 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
         DrawStats(drawer, *fixture);
     }
 
-    for (const auto contact: cts)
+    for (const auto& contact: cts)
     {
         const auto c = contact.first;
         if ((contact.second > 1) && (c->IsTouching()))

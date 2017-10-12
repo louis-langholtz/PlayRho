@@ -28,7 +28,7 @@ namespace playrho {
     class DistanceProxy;
     struct Transformation;
     
-    /// A collision description for the collision two convex shapes.
+    /// @brief A collision description for the collision two convex shapes.
     ///
     /// @details
     /// This describes zero, one, or two points of contact for which impulses should be applied to
@@ -49,12 +49,14 @@ namespace playrho {
     ///   the documentation associated with the different manifold types.
     /// @note Every point adds computational overhead to the collision response calculation - so
     ///   express collision manifolds with one point if possible instead of two.
-    /// @note This data structure is at least 58-bytes large (60-bytes on one 64-bit platform).
+    /// @note While this data structure is at least 58-bytes large (60-bytes on one 64-bit
+    ///   platform), it is intentionally 64-byte aligned making it 64-byte large (on 64-bit
+    ///   platforms with 4-byte Real).
     ///
     /// @sa Contact, PositionConstraint, VelocityConstraint
     /// @sa https://en.wikipedia.org/wiki/Convex_set
     ///
-    class Manifold
+    class alignas(64) Manifold
     {
     public:
         
