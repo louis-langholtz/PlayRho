@@ -1686,7 +1686,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
         for (auto&& contact: contacts)
         {
             ++count;
-            const auto c = GetPtr(contact);
+            const auto c = GetPtr(contact.second);
 
             const auto fa = c->GetFixtureA();
             const auto fb = c->GetFixtureB();

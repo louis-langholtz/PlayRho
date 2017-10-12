@@ -30,13 +30,15 @@
 #include <PlayRho/Common/BoundedValue.hpp>
 #include <PlayRho/Dynamics/Filter.hpp>
 #include <PlayRho/Dynamics/FixtureDef.hpp>
+#include <PlayRho/Dynamics/FixtureProxy.hpp>
 #include <limits>
 #include <memory>
+#include <vector>
+#include <array>
 
 namespace playrho {
 
 class Body;
-struct FixtureProxy;
 class Shape;
 
 /// @brief An association between a body and a shape.
@@ -80,13 +82,15 @@ public:
         assert(shape);
     }
     
+    /// @brief Copy constructor.
+    Fixture(const Fixture& other);
+    
     /// @brief Destructor.
     /// @pre Proxy count is zero.
     /// @warning Behavior is undefined if proxy count is greater than zero.
     ~Fixture()
     {
-        assert(!m_proxies);
-        assert(m_proxyCount == 0);
+        // Intentionally empty.
     }
 
     /// @brief Gets the parent body of this fixture.
@@ -147,17 +151,27 @@ public:
     ChildCounter GetProxyCount() const noexcept;
 
     /// @brief Gets the proxy for the given index.
-    /// @return Pointer to fixture proxy or <code>nullptr</code> if not given a valid index.
-    const FixtureProxy* GetProxy(ChildCounter index) const noexcept;
+    /// @warning Behavior is undefined if given an invalid index.
+    /// @return Fixture proxy value.
+    FixtureProxy GetProxy(ChildCounter index) const noexcept;
 
 private:
 
     friend class FixtureAtty;
     
-    using FixtureProxies = FixtureProxy*;
+    union FixtureProxies {
+        FixtureProxies() noexcept: asArray{} {}
+        ~FixtureProxies() noexcept {}
+
+        std::array<FixtureProxy, 2> asArray;
+        std::unique_ptr<FixtureProxy[]> asBuffer;
+    };
     
-    Span<FixtureProxy> GetProxies() const noexcept;
-    void SetProxies(Span<FixtureProxy> value) noexcept;
+    Span<const FixtureProxy> GetProxies() const noexcept;
+    
+    void SetProxies(std::unique_ptr<FixtureProxy[]> value, std::size_t count) noexcept;
+
+    void ResetProxies() noexcept;
 
     // Data ordered here for memory compaction.
     
@@ -169,7 +183,7 @@ private:
     /// @note 16-bytes.
     std::shared_ptr<const Shape> m_shape;
     
-    FixtureProxies m_proxies = nullptr; ///< Array of fixture proxies for the assigned shape. 8-bytes.
+    FixtureProxies m_proxies; ///< Collection of fixture proxies for the assigned shape. 8-bytes.
     
     void* m_userData = nullptr; ///< User data. 8-bytes.
 
@@ -223,16 +237,38 @@ inline void Fixture::SetFilterData(Filter filter)
     Refilter();
 }
 
-inline Span<FixtureProxy> Fixture::GetProxies() const noexcept
+inline Span<const FixtureProxy> Fixture::GetProxies() const noexcept
 {
-    return Span<FixtureProxy>(m_proxies, m_proxyCount);
+    const auto ptr = (m_proxyCount <= 2)? &(m_proxies.asArray[0]): m_proxies.asBuffer.get();
+    return Span<const FixtureProxy>(ptr, m_proxyCount);
 }
 
-inline void Fixture::SetProxies(Span<FixtureProxy> value) noexcept
+inline void Fixture::SetProxies(std::unique_ptr<FixtureProxy[]> value, std::size_t count) noexcept
 {
-    assert(value.size() < std::numeric_limits<ChildCounter>::max());
-    m_proxies = value.begin();
-    m_proxyCount = static_cast<decltype(m_proxyCount)>(value.size());
+    assert(count < std::numeric_limits<ChildCounter>::max());
+    switch (count)
+    {
+        case 2:
+            m_proxies.asArray[1] = value[1];
+            // [[fallthrough]]
+        case 1:
+            m_proxies.asArray[0] = value[0];
+            // [[fallthrough]]
+        case 0:
+            break;
+        default:
+            m_proxies.asBuffer = std::move(value);
+            break;
+    }
+    m_proxyCount = static_cast<decltype(m_proxyCount)>(count);
+}
+
+inline void Fixture::ResetProxies() noexcept
+{
+    if (m_proxyCount > 2)
+    {
+        m_proxies.asBuffer.reset();
+    }
 }
 
 // Free functions...

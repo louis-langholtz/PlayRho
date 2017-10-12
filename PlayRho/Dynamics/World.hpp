@@ -49,7 +49,6 @@ namespace playrho {
 struct BodyDef;
 struct JointDef;
 struct FixtureDef;
-struct FixtureProxy;
 class Body;
 class Contact;
 class Fixture;
@@ -84,7 +83,7 @@ public:
     using Bodies = std::vector<Body*>;
 
     /// @brief Contacts container type.
-    using Contacts = std::vector<Contact*>;
+    using Contacts = std::vector<KeyedContactPtr>;
     
     /// @brief Joints container type.
     /// @note Cannot be container of Joint instances since joints are polymorphic types.
@@ -531,8 +530,7 @@ private:
     struct DestroyContactsStats
     {
         ContactCounter ignored = 0;
-        ContactCounter filteredOut = 0;
-        ContactCounter notOverlapping = 0;
+        ContactCounter erased = 0;
     };
     
     struct ContactToiData
@@ -593,19 +591,21 @@ private:
     /// @param contact Contact to destroy.
     void Destroy(Contact* contact, Body* from);
     
-    /// @brief Adds a contact for proxyA and proxyB if appropriate.
-    /// @details Adds a new contact object to represent a contact between proxy A and proxy B if
-    /// all of the following are true:
+    /// @brief Adds a contact for the proxies identified by the key if appropriate.
+    /// @details Adds a new contact object to represent a contact between proxy A and proxy B
+    /// if all of the following are true:
     ///   1. The bodies of the fixtures of the proxies are not the one and the same.
     ///   2. No contact already exists for these two proxies.
     ///   3. The bodies of the proxies should collide (according to Body::ShouldCollide).
     ///   4. The contact filter says the fixtures of the proxies should collide.
     ///   5. There exists a contact-create function for the pair of shapes of the proxies.
-    /// @param proxyA Proxy A.
-    /// @param proxyB Proxy B.
-    /// @return <code>true</code> if a new contact was indeed added (and created), else <code>false</code>.
+    /// @post The size of the <code>m_contacts</code> collection is one greater-than it was
+    ///   before this method is called if it returns <code>true</code>.
+    /// @param key ID's of dynamic tree entries identifying the fixture proxies involved.
+    /// @return <code>true</code> if a new contact was indeed added (and created),
+    ///   else <code>false</code>.
     /// @sa bool Body::ShouldCollide(const Body* other) const
-    bool Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB);
+    bool Add(ContactKey key);
     
     void RegisterForProcessing(ProxyId pid) noexcept;
     void UnregisterForProcessing(ProxyId pid) noexcept;
@@ -647,7 +647,7 @@ private:
 
     /******** Member variables. ********/
     
-    DynamicTree m_tree{4096};
+    DynamicTree m_tree;
     
     ContactKeyQueue m_proxyKeys;
     ProxyQueue m_proxies;

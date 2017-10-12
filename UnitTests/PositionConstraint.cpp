@@ -21,13 +21,13 @@
 
 using namespace playrho;
 
-TEST(PositionConstraint, ByteSizeIs_88_152_or_288)
+TEST(PositionConstraint, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(PositionConstraint), std::size_t(88)); break;
-        case  8: EXPECT_EQ(sizeof(PositionConstraint), std::size_t(152)); break;
-        case 16: EXPECT_EQ(sizeof(PositionConstraint), std::size_t(288)); break;
+        case  4: EXPECT_EQ(sizeof(PositionConstraint), std::size_t(128)); break;
+        case  8: EXPECT_EQ(sizeof(PositionConstraint), std::size_t(192)); break;
+        case 16: EXPECT_EQ(sizeof(PositionConstraint), std::size_t(320)); break;
         default: FAIL(); break;
     }
 }

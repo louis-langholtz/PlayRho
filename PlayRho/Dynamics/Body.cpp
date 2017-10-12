@@ -348,7 +348,7 @@ bool Body::Insert(Joint* joint)
     return true;
 }
 
-bool Body::Insert(Contact* contact)
+bool Body::Insert(ContactKey key, Contact* contact)
 {
 #ifndef NDEBUG
     // Prevent the same contact from being added more than once...
@@ -362,7 +362,7 @@ bool Body::Insert(Contact* contact)
     }
 #endif
 
-    m_contacts.emplace_back(GetContactKey(*contact), contact);
+    m_contacts.emplace_back(key, contact);
     return true;
 }
 

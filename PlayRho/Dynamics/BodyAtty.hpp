@@ -28,6 +28,7 @@
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/Joints/JointKey.hpp>
+#include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
 
 #include <algorithm>
 #include <utility>
@@ -142,9 +143,9 @@ private:
         return false;
     }
 
-    static bool Insert(Body& b, Contact* value)
+    static bool Insert(Body& b, ContactKey key, Contact* value)
     {
-        return b.Insert(value);
+        return b.Insert(key, value);
     }
     
     static void SetPosition0(Body& b, const Position value) noexcept

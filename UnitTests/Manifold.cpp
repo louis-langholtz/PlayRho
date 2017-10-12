@@ -21,13 +21,13 @@
 
 using namespace playrho;
 
-TEST(Manifold, ByteSizeIs_60_120_or_240)
+TEST(Manifold, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4:  EXPECT_EQ(sizeof(Manifold), std::size_t(60)); break;
-        case  8: EXPECT_EQ(sizeof(Manifold), std::size_t(120)); break;
-        case 16: EXPECT_EQ(sizeof(Manifold), std::size_t(240)); break;
+        case  4:  EXPECT_EQ(sizeof(Manifold), std::size_t(64)); break;
+        case  8: EXPECT_EQ(sizeof(Manifold), std::size_t(128)); break;
+        case 16: EXPECT_EQ(sizeof(Manifold), std::size_t(256)); break;
         default: FAIL(); break;
     }
 }

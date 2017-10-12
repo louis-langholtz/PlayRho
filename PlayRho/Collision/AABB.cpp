@@ -21,8 +21,8 @@
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
-#include <PlayRho/Dynamics/FixtureProxy.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/Contacts/Contact.hpp>
 
 /// @file
 /// Definitions for the AABB class.
@@ -57,7 +57,7 @@ AABB ComputeAABB(const DistanceProxy& proxy,
     return GetFattenedAABB(result, proxy.GetVertexRadius());
 }
 
-AABB ComputeAABB(const Shape& shape, const Transformation& xf)
+AABB ComputeAABB(const Shape& shape, const Transformation& xf) noexcept
 {
     auto sum = AABB{};
     const auto childCount = shape.GetChildCount();
@@ -66,6 +66,11 @@ AABB ComputeAABB(const Shape& shape, const Transformation& xf)
         Include(sum, ComputeAABB(shape.GetChild(i), xf));
     }
     return sum;
+}
+
+AABB ComputeAABB(const Fixture& fixture) noexcept
+{
+    return ComputeAABB(*fixture.GetShape(), fixture.GetBody()->GetTransformation());
 }
 
 AABB ComputeAABB(const Body& body)
@@ -77,6 +82,24 @@ AABB ComputeAABB(const Body& body)
         Include(sum, ComputeAABB(*(GetRef(f).GetShape()), xf));
     }
     return sum;
+}
+
+AABB ComputeIntersectingAABB(const Fixture& fA, ChildCounter iA,
+                             const Fixture& fB, ChildCounter iB) noexcept
+{
+    const auto xA = fA.GetBody()->GetTransformation();
+    const auto xB = fB.GetBody()->GetTransformation();
+    const auto childA = fA.GetShape()->GetChild(iA);
+    const auto childB = fB.GetShape()->GetChild(iB);
+    const auto aabbA = ComputeAABB(childA, xA);
+    const auto aabbB = ComputeAABB(childB, xB);
+    return GetIntersectingAABB(aabbA, aabbB);
+}
+
+AABB ComputeIntersectingAABB(const Contact& contact)
+{
+    return ComputeIntersectingAABB(*contact.GetFixtureA(), contact.GetChildIndexA(),
+                                   *contact.GetFixtureB(), contact.GetChildIndexB());
 }
 
 } // namespace playrho

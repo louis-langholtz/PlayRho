@@ -1072,7 +1072,30 @@ static void DefaultWorldStep(benchmark::State& state)
     }
 }
 
-static void AddPairStressTest(benchmark::State& state)
+static void DropDisks(benchmark::State& state)
+{
+    auto world = playrho::World{playrho::WorldDef{}.UseGravity(playrho::EarthlyGravity)};
+
+    const auto diskDef = playrho::DiskShape::Conf{}.UseVertexRadius(0.5f * playrho::Meter);
+    const auto shape = std::make_shared<playrho::DiskShape>(diskDef);
+    for (auto i = 0; i < state.range(); ++i)
+    {
+        const auto x = i * 2 * playrho::Meter;
+        const auto location = playrho::Length2D{x, 0 * playrho::Meter};
+        const auto body = world.CreateBody(playrho::BodyDef{}
+                                           .UseType(playrho::BodyType::Dynamic)
+                                           .UseLocation(location));
+        body->CreateFixture(shape);
+    }
+
+    const auto stepConf = playrho::StepConf{};
+    while (state.KeepRunning())
+    {
+        benchmark::DoNotOptimize(world.Step(stepConf));
+    }
+}
+
+static void AddPairStressTest(benchmark::State& state, int count)
 {
     const auto diskConf = playrho::DiskShape::Conf{}
         .UseVertexRadius(playrho::Meter / 10)
@@ -1088,19 +1111,19 @@ static void AddPairStressTest(benchmark::State& state)
         .UseLocation(playrho::Length2D{-40.0f * playrho::Meter, 5.0f * playrho::Meter})
         .UseLinearVelocity(playrho::LinearVelocity2D{playrho::Vec2(150.0f, 0.0f) * playrho::MeterPerSecond});
 
+    const auto worldDef = playrho::WorldDef{}.UseGravity(playrho::LinearAcceleration2D{}).UseInitialTreeSize(8192);
     const auto stepConf = playrho::StepConf{};
+    const auto minX = -6.0f;
+    const auto maxX = 0.0f;
+    const auto minY = 4.0f;
+    const auto maxY = 6.0f;
+    const auto bd = playrho::BodyDef{}.UseType(playrho::BodyType::Dynamic);
     while (state.KeepRunning())
     {
         state.PauseTiming();
-        auto world = playrho::World{playrho::WorldDef{}.UseGravity(playrho::LinearAcceleration2D{})};
+        auto world = playrho::World{worldDef};
         {
-            const auto minX = -6.0f;
-            const auto maxX = 0.0f;
-            const auto minY = 4.0f;
-            const auto maxY = 6.0f;
-            
-            const auto bd = playrho::BodyDef{}.UseType(playrho::BodyType::Dynamic);
-            for (auto i = 0; i < 400; ++i)
+            for (auto i = 0; i < count; ++i)
             {
                 const auto location = playrho::Vec2(RandomFloat(minX, maxX), RandomFloat(minY, maxY)) * playrho::Meter;
                 const auto body = world.CreateBody(playrho::BodyDef{bd}.UseLocation(location));
@@ -1108,15 +1131,19 @@ static void AddPairStressTest(benchmark::State& state)
             }
         }
         world.CreateBody(rectBodyDef)->CreateFixture(rectShape);
-        
         for (auto i = 0; i < state.range(); ++i)
         {
             world.Step(stepConf);
         }
-
         state.ResumeTiming();
+        
         world.Step(stepConf);
     }
+}
+
+static void AddPairStressTest400(benchmark::State& state)
+{
+    AddPairStressTest(state, 400);
 }
 
 static void DropTiles(int count)
@@ -1125,11 +1152,13 @@ static void DropTiles(int count)
     const auto angularSlop = (playrho::Pi * 2 * playrho::Radian) / 180;
     const auto vertexRadius = linearSlop * 2;
     const auto conf = playrho::PolygonShape::Conf{}.UseVertexRadius(vertexRadius);
-    const auto m_world = std::make_unique<playrho::World>(playrho::WorldDef{}.UseMinVertexRadius(vertexRadius));
+    auto m_world = playrho::World{
+        playrho::WorldDef{}.UseMinVertexRadius(vertexRadius).UseInitialTreeSize(8192)
+    };
     
     {
         const auto a = playrho::Real{0.5f};
-        const auto ground = m_world->CreateBody(playrho::BodyDef{}.UseLocation(playrho::Length2D{0, -a * playrho::Meter}));
+        const auto ground = m_world.CreateBody(playrho::BodyDef{}.UseLocation(playrho::Length2D{0, -a * playrho::Meter}));
         
         const auto N = 200;
         const auto M = 10;
@@ -1165,7 +1194,7 @@ static void DropTiles(int count)
             
             for (auto j = i; j < count; ++j)
             {
-                const auto body = m_world->CreateBody(playrho::BodyDef{}.UseType(playrho::BodyType::Dynamic).UseLocation(y));
+                const auto body = m_world.CreateBody(playrho::BodyDef{}.UseType(playrho::BodyType::Dynamic).UseLocation(y));
                 body->CreateFixture(shape);
                 y += deltaY;
             }
@@ -1188,33 +1217,18 @@ static void DropTiles(int count)
     step.velocityThreshold = (playrho::Real{8} / playrho::Real{10}) * playrho::MeterPerSecond;
     step.maxSubSteps = std::uint8_t{48};
 
-    while (GetAwakeCount(*m_world) > 0)
+    while (GetAwakeCount(m_world) > 0)
     {
-        m_world->Step(step);
+        m_world.Step(step);
     }
 }
 
-static void TilesComesToRest12(benchmark::State& state)
+static void TilesComesToRest(benchmark::State& state)
 {
+    const auto range = state.range();
     while (state.KeepRunning())
     {
-        DropTiles(12);
-    }
-}
-
-static void TilesComesToRest20(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        DropTiles(20);
-    }
-}
-
-static void TilesComesToRest36(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        DropTiles(36);
+        DropTiles(range);
     }
 }
 
@@ -1301,7 +1315,8 @@ bool Tumbler::IsWithin(const playrho::AABB& aabb) const
     return playrho::Contains(aabb, GetAABB(m_world.GetTree()));
 }
 
-static void TumblerAdd100Squares200Steps(benchmark::State& state)
+static void TumblerAddSquaresForSteps(benchmark::State& state,
+                                      int squareAddingSteps, int additionalSteps)
 {
     const auto rangeX = playrho::Interval<playrho::Length>{
         -15 * playrho::Meter, +15 * playrho::Meter
@@ -1313,12 +1328,12 @@ static void TumblerAdd100Squares200Steps(benchmark::State& state)
     while (state.KeepRunning())
     {
         Tumbler tumbler;
-        for (auto i = 0; i < 100; ++i)
+        for (auto i = 0; i < squareAddingSteps; ++i)
         {
             tumbler.Step();
             tumbler.AddSquare();
         }
-        for (auto i = 0; i < 100; ++i)
+        for (auto i = 0; i < additionalSteps; ++i)
         {
             tumbler.Step();
         }
@@ -1328,6 +1343,16 @@ static void TumblerAdd100Squares200Steps(benchmark::State& state)
             continue;
         }
     }
+}
+
+static void TumblerAdd100SquaresPlus100Steps(benchmark::State& state)
+{
+    TumblerAddSquaresForSteps(state, 100, 100);
+}
+
+static void TumblerAdd200SquaresPlus200Steps(benchmark::State& state)
+{
+    TumblerAddSquaresForSteps(state, 200, 200);
 }
 
 #if 0
@@ -1416,13 +1441,15 @@ BENCHMARK(ManifoldForTwoSquares1);
 BENCHMARK(ManifoldForTwoSquares2);
 
 BENCHMARK(malloc_free_random_size);
+
+BENCHMARK(DropDisks)->Arg(0)->Arg(1)->Arg(2)->Arg(10)->Arg(100)->Arg(1000);
+
 BENCHMARK(random_malloc_free_100);
 
-BENCHMARK(TumblerAdd100Squares200Steps);
-BENCHMARK(AddPairStressTest)->Arg(0)->Arg(10)->Arg(15)->Arg(16)->Arg(17)->Arg(18)->Arg(19)->Arg(20)->Arg(30);
+BENCHMARK(TumblerAdd100SquaresPlus100Steps);
+BENCHMARK(TumblerAdd200SquaresPlus200Steps);
+BENCHMARK(AddPairStressTest400)->Arg(0)->Arg(10)->Arg(15)->Arg(16)->Arg(17)->Arg(18)->Arg(19)->Arg(20)->Arg(30);
 
-BENCHMARK(TilesComesToRest12);
-BENCHMARK(TilesComesToRest20);
-BENCHMARK(TilesComesToRest36);
+BENCHMARK(TilesComesToRest)->Arg(12)->Arg(20)->Arg(36);
 
 BENCHMARK_MAIN()
