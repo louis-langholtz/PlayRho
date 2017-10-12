@@ -103,6 +103,8 @@ constexpr inline auto Square(TYPE t) noexcept { return t * t; }
 template<typename T>
 inline auto Sqrt(T t)
 {
+    // Note that std::sqrt is not declared noexcept at cppreference.com.
+    // See: http://en.cppreference.com/w/cpp/numeric/math/sqrt
     return std::sqrt(StripUnit(t));
 }
 
