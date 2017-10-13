@@ -57,7 +57,7 @@ public:
 
         BodyDef bodyDef;
         bodyDef.type = BodyType::Dynamic;
-        bodyDef.position = parent->GetLocation() + localAnchor - h;
+        bodyDef.location = parent->GetLocation() + localAnchor - h;
         const auto body = m_world->CreateBody(bodyDef);
         body->CreateFixture(shape);
 

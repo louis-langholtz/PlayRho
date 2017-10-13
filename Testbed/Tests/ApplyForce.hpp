@@ -36,7 +36,7 @@ public:
         Body* ground;
         {
             BodyDef bd;
-            bd.position = Length2D(Real(0) * Meter, Real(20) * Meter);
+            bd.location = Length2D(Real(0) * Meter, Real(20) * Meter);
             ground = m_world->CreateBody(bd);
 
             auto conf = EdgeShape::Conf{};
@@ -92,7 +92,7 @@ public:
             bd.angularDamping = Real(2) * Hertz;
             bd.linearDamping = Real(0.5f) * Hertz;
 
-            bd.position = Vec2(0, 2) * Meter;
+            bd.location = Vec2(0, 2) * Meter;
             bd.angle = Pi * Radian;
             bd.allowSleep = false;
             m_body = m_world->CreateBody(bd);
@@ -112,7 +112,7 @@ public:
             {
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
-                bd.position = Vec2(Real{0}, 5.0f + 1.54f * i) * Meter;
+                bd.location = Vec2(Real{0}, 5.0f + 1.54f * i) * Meter;
                 const auto body = m_world->CreateBody(bd);
 
                 body->CreateFixture(shape);

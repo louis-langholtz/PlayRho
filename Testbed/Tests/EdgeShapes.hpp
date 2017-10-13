@@ -110,7 +110,7 @@ public:
 
         const auto x = RandomFloat(-10.0f, 10.0f);
         const auto y = RandomFloat(10.0f, 20.0f);
-        bd.position = Vec2(x, y) * Meter;
+        bd.location = Vec2(x, y) * Meter;
         bd.angle = Radian * RandomFloat(-Pi, Pi);
         bd.type = BodyType::Dynamic;
 

@@ -218,14 +218,18 @@ inline UnitVec2 PolygonShape::GetNormal(VertexCounter index) const
     return m_normals[index];
 }
 
+// Free functions...
+
 /// Gets the identified edge of the given polygon shape.
 /// @note This must not be called for shapes with less than 2 vertices.
 /// @warning Behavior is undefined if called for a shape with less than 2 vertices.
+/// @relatedalso PolygonShape
 Length2D GetEdge(const PolygonShape& shape, PolygonShape::VertexCounter index);
 
 /// Validate convexity of the given shape.
 /// @note This is a time consuming operation.
 /// @returns true if valid
+/// @relatedalso PolygonShape
 bool Validate(const PolygonShape& shape);
 
 /// Build vertices to represent an oriented box.
@@ -234,9 +238,11 @@ bool Validate(const PolygonShape& shape);
 /// @param hy the half-height.
 /// @param center the center of the box in local coordinates.
 /// @param angle the rotation of the box in local coordinates.
+/// @relatedalso PolygonShape
 void SetAsBox(PolygonShape& shape, Length hx, Length hy, Length2D center, Angle angle) noexcept;
 
 /// @brief Transforms the given shape by the given transformation.
+/// @relatedalso PolygonShape
 inline PolygonShape Transform(PolygonShape value, Transformation xfm) noexcept
 {
     return value.Transform(xfm);

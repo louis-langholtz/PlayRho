@@ -79,6 +79,7 @@
 #include "../Tests/Orbiter.hpp"
 #include "../Tests/NewtonsCradle.hpp"
 #include "../Tests/iforce2d_TopdownCar.hpp"
+#include "../Tests/iforce2d_Trajectories.hpp"
 
 namespace playrho {
 
@@ -149,6 +150,7 @@ static const TestEntry testEntries[] =
     {"Add Pair Stress Test", MakeUniqueTest<AddPair>},
     {"Newton's Cradle", MakeUniqueTest<NewtonsCradle>},
     {"Top-down Car", MakeUniqueTest<iforce2d_TopdownCar>},
+    {"Trajectories", MakeUniqueTest<iforce2d_Trajectories>},
 };
 
 static const std::size_t numTestEntries = sizeof(testEntries) / sizeof(TestEntry);

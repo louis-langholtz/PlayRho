@@ -43,9 +43,9 @@ namespace playrho {
             bodyDef.linearDamping = Real(0.8f) * Hertz;
             bodyDef.bullet = true;
 
-            bodyDef.position = Vec2{0, 26} * Meter;
+            bodyDef.location = Vec2{0, 26} * Meter;
             const auto body1 = m_world->CreateBody(bodyDef);
-            bodyDef.position = Vec2{0, 14} * Meter;
+            bodyDef.location = Vec2{0, 14} * Meter;
             const auto body2 = m_world->CreateBody(bodyDef);
             
             auto shapeConf = DiskShape::Conf{};

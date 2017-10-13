@@ -48,7 +48,7 @@ public:
             {
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
-                bd.position = Vec2(0, 4.0f + 3.0f * i) * Meter;
+                bd.location = Vec2(0, 4.0f + 3.0f * i) * Meter;
 
                 m_bodies[i] = m_world->CreateBody(bd);
                 m_bodies[i]->CreateFixture(shape);

@@ -64,7 +64,7 @@ public:
 
         BodyDef bodyDef;
         bodyDef.type = BodyType::Dynamic;
-        bodyDef.position = p;
+        bodyDef.location = p;
         const auto body = m_world->CreateBody(bodyDef);
 
         body->CreateFixture(shape);

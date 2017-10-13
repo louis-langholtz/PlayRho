@@ -639,6 +639,15 @@ void DebugDraw::DrawSegment(const Length2D& p1, const Length2D& p2, const Color&
     m_lines->Vertex(m_camera, c2, color);
 }
 
+void DebugDraw::DrawSegment(const Length2D& p1, const Color& c1,
+                 const Length2D& p2, const Color& c2)
+{
+    const auto coord1 = Coord2D{static_cast<float>(StripUnit(GetX(p1))), static_cast<float>(StripUnit(GetY(p1)))};
+    const auto coord2 = Coord2D{static_cast<float>(StripUnit(GetX(p2))), static_cast<float>(StripUnit(GetY(p2)))};
+    m_lines->Vertex(m_camera, coord1, c1);
+    m_lines->Vertex(m_camera, coord2, c2);
+}
+
 void DebugDraw::DrawPoint(const Length2D& p, float size, const Color& color)
 {
     const auto c = Coord2D{static_cast<float>(StripUnit(GetX(p))), static_cast<float>(StripUnit(GetY(p)))};

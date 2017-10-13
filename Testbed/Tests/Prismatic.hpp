@@ -36,7 +36,7 @@ public:
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.position = Vec2(-10.0f, 10.0f) * Meter;
+            bd.location = Vec2(-10.0f, 10.0f) * Meter;
             bd.angle = Real{0.5f} * Radian * Pi;
             bd.allowSleep = false;
             const auto body = m_world->CreateBody(bd);

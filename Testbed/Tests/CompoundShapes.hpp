@@ -32,7 +32,7 @@ public:
     {
         {
             BodyDef bd;
-            bd.position = Vec2(0.0f, 0.0f) * Meter;
+            bd.location = Vec2(0.0f, 0.0f) * Meter;
             const auto body = m_world->CreateBody(bd);
             body->CreateFixture(std::make_shared<EdgeShape>(Vec2(50.0f, 0.0f) * Meter, Vec2(-50.0f, 0.0f) * Meter));
         }
@@ -51,7 +51,7 @@ public:
                 const auto x = RandomFloat(-0.1f, 0.1f);
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
-                bd.position = Vec2(x + 5.0f, 1.05f + 2.5f * i) * Meter;
+                bd.location = Vec2(x + 5.0f, 1.05f + 2.5f * i) * Meter;
                 bd.angle = Radian * RandomFloat(-Pi, Pi);
                 const auto body = m_world->CreateBody(bd);
                 body->CreateFixture(circle1);
@@ -70,7 +70,7 @@ public:
                 const auto x = RandomFloat(-0.1f, 0.1f);
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
-                bd.position = Vec2(x - 5.0f, 1.05f + 2.5f * i) * Meter;
+                bd.location = Vec2(x - 5.0f, 1.05f + 2.5f * i) * Meter;
                 bd.angle = Radian * RandomFloat(-Pi, Pi);
                 const auto body = m_world->CreateBody(bd);
                 body->CreateFixture(polygon1);
@@ -108,7 +108,7 @@ public:
                 const auto x = RandomFloat(-0.1f, 0.1f);
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
-                bd.position = Vec2(x, 2.05f + 2.5f * i) * Meter;
+                bd.location = Vec2(x, 2.05f + 2.5f * i) * Meter;
                 bd.angle = Real{0.0f} * Radian;
                 const auto body = m_world->CreateBody(bd);
                 body->CreateFixture(triangle1);
@@ -130,7 +130,7 @@ public:
 
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.position = Vec2( 0.0f, 2.0f ) * Meter;
+            bd.location = Vec2( 0.0f, 2.0f ) * Meter;
             const auto body = m_world->CreateBody(bd);
             body->CreateFixture(bottom);
             body->CreateFixture(left);

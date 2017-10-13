@@ -35,7 +35,7 @@ public:
 
         {
             BodyDef bd;
-            bd.position = Vec2(-1.5f, 10.0f) * Meter;
+            bd.location = Vec2(-1.5f, 10.0f) * Meter;
             const auto ground = m_world->CreateBody(bd);
             ground->CreateFixture(std::make_shared<PolygonShape>(PolygonShape{Real{6.0f} * Meter, Real{0.25f} * Meter}));
         }
@@ -59,7 +59,7 @@ public:
             SetAsBox(shape, Real{7.2f} * Meter, Real{0.25f} * Meter, Vec2_zero * Meter, Real{0.3f} * Radian);
 
             BodyDef bd;
-            bd.position = Vec2(1.2f, 6.0f) * Meter;
+            bd.location = Vec2(1.2f, 6.0f) * Meter;
             const auto ground = m_world->CreateBody(bd);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
         }
@@ -71,7 +71,7 @@ public:
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.position = Vec2(-0.9f, 1.0f) * Meter;
+            bd.location = Vec2(-0.9f, 1.0f) * Meter;
             bd.angle = Real{-0.15f} * Radian;
 
             b3 = m_world->CreateBody(bd);
@@ -88,7 +88,7 @@ public:
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.position = Vec2(-10.0f, 15.0f) * Meter;
+            bd.location = Vec2(-10.0f, 15.0f) * Meter;
             b4 = m_world->CreateBody(bd);
             auto conf = PolygonShape::Conf{};
             conf.density = Real{10} * KilogramPerSquareMeter;
@@ -103,7 +103,7 @@ public:
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.position = Vec2(6.5f, 3.0f) * Meter;
+            bd.location = Vec2(6.5f, 3.0f) * Meter;
             b5 = m_world->CreateBody(bd);
 
             auto conf = PolygonShape::Conf{};
@@ -132,7 +132,7 @@ public:
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.position = Vec2(6.5f, 4.1f) * Meter;
+            bd.location = Vec2(6.5f, 4.1f) * Meter;
             b6 = m_world->CreateBody(bd);
             auto conf = PolygonShape::Conf{};
             conf.density = Real{30} * KilogramPerSquareMeter;
@@ -147,7 +147,7 @@ public:
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.position = Vec2(7.4f, 1.0f) * Meter;
+            bd.location = Vec2(7.4f, 1.0f) * Meter;
 
             b7 = m_world->CreateBody(bd);
             auto conf = PolygonShape::Conf{};
@@ -175,7 +175,7 @@ public:
             {
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
-                bd.position = Length2D{
+                bd.location = Length2D{
                     Real{5.9f} * Meter + Real{2.0f} * radius * static_cast<Real>(i),
                     Real{2.4f} * Meter
                 };

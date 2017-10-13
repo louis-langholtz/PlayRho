@@ -795,12 +795,12 @@ TEST(World, StepZeroTimeDoesNothing)
     World world{WorldDef{}.UseGravity(gravity)};
     
     BodyDef def;
-    def.position = Length2D{Real(31.9) * Meter, Real(-19.24) * Meter};
+    def.location = Length2D{Real(31.9) * Meter, Real(-19.24) * Meter};
     def.type = BodyType::Dynamic;
     
     const auto body = world.CreateBody(def);
     ASSERT_NE(body, nullptr);
-    EXPECT_EQ(body->GetLocation(), def.position);
+    EXPECT_EQ(body->GetLocation(), def.location);
     EXPECT_EQ(GetX(GetLinearVelocity(*body)), Real(0) * MeterPerSecond);
     EXPECT_EQ(GetY(GetLinearVelocity(*body)), Real(0) * MeterPerSecond);
     EXPECT_EQ(GetX(body->GetLinearAcceleration()), Real{0.0f} * MeterPerSquareSecond);
@@ -816,7 +816,7 @@ TEST(World, StepZeroTimeDoesNothing)
         
         EXPECT_EQ(GetY(body->GetLinearAcceleration()), GetY(gravity));
         
-        EXPECT_EQ(GetX(body->GetLocation()), GetX(def.position));
+        EXPECT_EQ(GetX(body->GetLocation()), GetX(def.location));
         EXPECT_EQ(GetY(body->GetLocation()), GetY(pos));
         pos = body->GetLocation();
         
@@ -832,7 +832,7 @@ TEST(World, GravitationalBodyMovement)
 
     auto body_def = BodyDef{};
     body_def.type = BodyType::Dynamic;
-    body_def.position = p0;
+    body_def.location = p0;
 
     const auto a = Real(-10);
     const auto gravity = LinearAcceleration2D{0, a * MeterPerSquareSecond};
@@ -877,12 +877,12 @@ TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
     World world{WorldDef{}.UseGravity(gravity)};
     
     BodyDef def;
-    def.position = Length2D{Real(31.9) * Meter, Real(-19.24) * Meter};
+    def.location = Length2D{Real(31.9) * Meter, Real(-19.24) * Meter};
     def.type = BodyType::Dynamic;
     
     const auto body = world.CreateBody(def);
     ASSERT_NE(body, nullptr);
-    EXPECT_EQ(body->GetLocation(), def.position);
+    EXPECT_EQ(body->GetLocation(), def.location);
     EXPECT_EQ(GetX(GetLinearVelocity(*body)), Real(0) * MeterPerSecond);
     EXPECT_EQ(GetY(GetLinearVelocity(*body)), Real(0) * MeterPerSecond);
     EXPECT_EQ(GetX(body->GetLinearAcceleration()), Real{0.0f} * MeterPerSquareSecond);
@@ -898,7 +898,7 @@ TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
         
         EXPECT_EQ(GetY(body->GetLinearAcceleration()), GetY(gravity));
         
-        EXPECT_EQ(GetX(body->GetLocation()), GetX(def.position));
+        EXPECT_EQ(GetX(body->GetLocation()), GetX(def.location));
         EXPECT_LT(GetY(body->GetLocation()), GetY(pos));
         EXPECT_EQ(GetY(body->GetLocation()), GetY(pos) + ((GetY(vel) + GetY(gravity) * time_inc) * time_inc));
         pos = body->GetLocation();
@@ -918,13 +918,13 @@ TEST(World, BodyAccelRevPerSpecWithNegativeTimeAndNoVelOrPosIterations)
     World world{WorldDef{}.UseGravity(gravity)};
     
     BodyDef def;
-    def.position = Length2D{Real(31.9) * Meter, Real(-19.24) * Meter};
+    def.location = Length2D{Real(31.9) * Meter, Real(-19.24) * Meter};
     def.linearVelocity = LinearVelocity2D{0, Real(-9.8) * MeterPerSecond};
     def.type = BodyType::Dynamic;
     
     const auto body = world.CreateBody(def);
     ASSERT_NE(body, nullptr);
-    EXPECT_EQ(body->GetLocation(), def.position);
+    EXPECT_EQ(body->GetLocation(), def.location);
     EXPECT_EQ(GetX(GetLinearVelocity(*body)), Real(0) * MeterPerSecond);
     EXPECT_EQ(GetY(GetLinearVelocity(*body)), Real(-9.8) * MeterPerSecond);
     EXPECT_EQ(GetX(body->GetLinearAcceleration()), Real{0.0f} * MeterPerSquareSecond);
@@ -947,7 +947,7 @@ TEST(World, BodyAccelRevPerSpecWithNegativeTimeAndNoVelOrPosIterations)
         
         EXPECT_EQ(GetY(body->GetLinearAcceleration()), GetY(gravity));
         
-        EXPECT_EQ(GetX(body->GetLocation()), GetX(def.position));
+        EXPECT_EQ(GetX(body->GetLocation()), GetX(def.location));
         EXPECT_GT(GetY(body->GetLocation()), GetY(pos));
         EXPECT_EQ(GetY(body->GetLocation()), GetY(pos) + ((GetY(vel) + GetY(gravity) * time_inc) * time_inc));
         pos = body->GetLocation();
@@ -1047,7 +1047,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
     shape->SetDensity(Real{1} * KilogramPerSquareMeter);
     shape->SetRestitution(Real(1));
     
-    body_def.position = Length2D{-x * Meter, Real(0) * Meter};
+    body_def.location = Length2D{-x * Meter, Real(0) * Meter};
     body_def.linearVelocity = LinearVelocity2D{+x * MeterPerSecond, Real(0) * MeterPerSecond};
     const auto body_a = world.CreateBody(body_def);
     ASSERT_NE(body_a, nullptr);
@@ -1057,7 +1057,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
     const auto fixture1 = body_a->CreateFixture(shape);
     ASSERT_NE(fixture1, nullptr);
     
-    body_def.position = Length2D{+x * Meter, Real(0) * Meter};
+    body_def.location = Length2D{+x * Meter, Real(0) * Meter};
     body_def.linearVelocity = LinearVelocity2D{-x * MeterPerSecond, Real(0) * MeterPerSecond};
     const auto body_b = world.CreateBody(body_def);
     ASSERT_NE(body_b, nullptr);
@@ -1309,28 +1309,28 @@ TEST(World, PerfectlyOverlappedSameCirclesStayPut)
     auto body_def = BodyDef{};
     body_def.type = BodyType::Dynamic;
     body_def.bullet = false;
-    body_def.position = Length2D{Real(0) * Meter, Real(0) * Meter};
+    body_def.location = Length2D{Real(0) * Meter, Real(0) * Meter};
 
     const auto body1 = world.CreateBody(body_def);
     {
         const auto fixture = body1->CreateFixture(shape);
         ASSERT_NE(fixture, nullptr);
     }
-    ASSERT_EQ(body1->GetLocation(), body_def.position);
+    ASSERT_EQ(body1->GetLocation(), body_def.location);
     
     const auto body2 = world.CreateBody(body_def);
     {
         const auto fixture = body2->CreateFixture(shape);
         ASSERT_NE(fixture, nullptr);
     }
-    ASSERT_EQ(body2->GetLocation(), body_def.position);
+    ASSERT_EQ(body2->GetLocation(), body_def.location);
     
     const auto time_inc = Real(.01);
     for (auto i = 0; i < 100; ++i)
     {
         Step(world, Time{Second * time_inc});
-        EXPECT_EQ(body1->GetLocation(), body_def.position);
-        EXPECT_EQ(body2->GetLocation(), body_def.position);
+        EXPECT_EQ(body1->GetLocation(), body_def.location);
+        EXPECT_EQ(body2->GetLocation(), body_def.location);
     }
 }
 
@@ -1354,28 +1354,28 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
     auto body_def = BodyDef{};
     body_def.type = BodyType::Dynamic;
     body_def.bullet = false;
-    body_def.position = Length2D{};
+    body_def.location = Length2D{};
     
     const auto body1 = world.CreateBody(body_def);
     {
         const auto fixture = body1->CreateFixture(shape1);
         ASSERT_NE(fixture, nullptr);
     }
-    ASSERT_EQ(body1->GetLocation(), body_def.position);
+    ASSERT_EQ(body1->GetLocation(), body_def.location);
     
     const auto body2 = world.CreateBody(body_def);
     {
         const auto fixture = body2->CreateFixture(shape2);
         ASSERT_NE(fixture, nullptr);
     }
-    ASSERT_EQ(body2->GetLocation(), body_def.position);
+    ASSERT_EQ(body2->GetLocation(), body_def.location);
     
     const auto time_inc = Real(.01);
     for (auto i = 0; i < 100; ++i)
     {
         Step(world, Time{Second * time_inc});
-        EXPECT_EQ(body1->GetLocation(), body_def.position);
-        EXPECT_EQ(body2->GetLocation(), body_def.position);
+        EXPECT_EQ(body1->GetLocation(), body_def.location);
+        EXPECT_EQ(body2->GetLocation(), body_def.location);
     }
 }
 
@@ -1391,7 +1391,7 @@ TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
 
     auto body_def = BodyDef{};
     body_def.type = BodyType::Dynamic;
-    body_def.position = Length2D{};
+    body_def.location = Length2D{};
     const auto shape = std::make_shared<DiskShape>(Real{1} * Meter);
     shape->SetDensity(Real{1} * KilogramPerSquareMeter);
     shape->SetRestitution(Real(1));
@@ -1427,7 +1427,7 @@ TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
     
     auto body_def = BodyDef{};
     body_def.type = BodyType::Dynamic;
-    body_def.position = Length2D{};
+    body_def.location = Length2D{};
     auto shape = std::make_shared<PolygonShape>();
     shape->SetVertexRadius(Real{1} * Meter);
     shape->SetAsBox(Real{2} * Meter, Real{2} * Meter);
@@ -1469,22 +1469,22 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
     shape->SetRestitution(Real(1)); // changes where bodies will be after collision
     
     const auto body1pos = Length2D{-radius/Real(4) * Meter, Real(0) * Meter};
-    body_def.position = body1pos;
+    body_def.location = body1pos;
     const auto body1 = world.CreateBody(body_def);
     {
         const auto fixture = body1->CreateFixture(shape);
         ASSERT_NE(fixture, nullptr);
     }
-    ASSERT_EQ(body1->GetLocation(), body_def.position);
+    ASSERT_EQ(body1->GetLocation(), body_def.location);
     
     const auto body2pos = Length2D{+radius/Real(4) * Meter, Real(0) * Meter};
-    body_def.position = body2pos;
+    body_def.location = body2pos;
     const auto body2 = world.CreateBody(body_def);
     {
         const auto fixture = body2->CreateFixture(shape);
         ASSERT_NE(fixture, nullptr);
     }
-    ASSERT_EQ(body2->GetLocation(), body_def.position);
+    ASSERT_EQ(body2->GetLocation(), body_def.location);
     
     auto position_diff = body2pos - body1pos;
     auto distance = GetLength(position_diff);
@@ -1566,21 +1566,21 @@ TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
     auto body_def = BodyDef{};
     body_def.type = BodyType::Dynamic;
     body_def.bullet = false;
-    body_def.position = Length2D{};
+    body_def.location = Length2D{};
     
     const auto body1 = world.CreateBody(body_def);
     {
         const auto fixture = body1->CreateFixture(shape);
         ASSERT_NE(fixture, nullptr);
     }
-    ASSERT_EQ(body1->GetLocation(), body_def.position);
+    ASSERT_EQ(body1->GetLocation(), body_def.location);
     
     const auto body2 = world.CreateBody(body_def);
     {
         const auto fixture = body2->CreateFixture(shape);
         ASSERT_NE(fixture, nullptr);
     }
-    ASSERT_EQ(body2->GetLocation(), body_def.position);
+    ASSERT_EQ(body2->GetLocation(), body_def.location);
     
     auto lastpos1 = body1->GetLocation();
     auto lastpos2 = body2->GetLocation();
@@ -1633,7 +1633,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
     shape->SetRestitution(Real(1)); // changes where bodies will be after collision
     
     const auto body1pos = Length2D{Real(half_dim/2) * Meter, Real(0) * Meter}; // 0 causes additional y-axis separation
-    body_def.position = body1pos;
+    body_def.location = body1pos;
     const auto body1 = world.CreateBody(body_def);
     {
         const auto fixture = body1->CreateFixture(shape);
@@ -1642,7 +1642,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
     ASSERT_EQ(body1->GetLocation(), body1pos);
     
     const auto body2pos = Length2D{-Real(half_dim/2) * Meter, Real(0) * Meter}; // 0 causes additional y-axis separation
-    body_def.position = body2pos;
+    body_def.location = body2pos;
     const auto body2 = world.CreateBody(body_def);
     {
         const auto fixture = body2->CreateFixture(shape);
@@ -1790,7 +1790,7 @@ TEST(World, CollidingDynamicBodies)
     shape->SetDensity(Real{1} * KilogramPerSquareMeter);
     shape->SetRestitution(Real(1)); // changes where bodies will be after collision
 
-    body_def.position = Length2D{-(x + 1) * Meter, Real(0) * Meter};
+    body_def.location = Length2D{-(x + 1) * Meter, Real(0) * Meter};
     body_def.linearVelocity = LinearVelocity2D{+x * MeterPerSecond, Real(0) * MeterPerSecond};
     const auto body_a = world.CreateBody(body_def);
     ASSERT_NE(body_a, nullptr);
@@ -1800,7 +1800,7 @@ TEST(World, CollidingDynamicBodies)
     const auto fixture1 = body_a->CreateFixture(shape);
     ASSERT_NE(fixture1, nullptr);
 
-    body_def.position = Length2D{+(x + 1) * Meter, Real(0) * Meter};
+    body_def.location = Length2D{+(x + 1) * Meter, Real(0) * Meter};
     body_def.linearVelocity = LinearVelocity2D{-x * MeterPerSecond, Real(0) * MeterPerSecond};
     const auto body_b = world.CreateBody(body_def);
     ASSERT_NE(body_b, nullptr);
@@ -2259,7 +2259,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
     BodyDef body_def;
     body_def.type = BodyType::Static;
 
-    body_def.position = Length2D{left_edge_x, Real{0} * Meter};
+    body_def.location = Length2D{left_edge_x, Real{0} * Meter};
     const auto left_wall_body = world.CreateBody(body_def);
     ASSERT_NE(left_wall_body, nullptr);
     {
@@ -2267,7 +2267,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
         ASSERT_NE(wall_fixture, nullptr);
     }
 
-    body_def.position = Length2D{right_edge_x, Real{0} * Meter};
+    body_def.location = Length2D{right_edge_x, Real{0} * Meter};
     const auto right_wall_body = world.CreateBody(body_def);
     ASSERT_NE(right_wall_body, nullptr);
     {
@@ -2278,7 +2278,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
     const auto begin_x = Real(0);
 
     body_def.type = BodyType::Dynamic;
-    body_def.position = Length2D{begin_x * Meter, Real(0) * Meter};
+    body_def.location = Length2D{begin_x * Meter, Real(0) * Meter};
     body_def.bullet = false;
     const auto ball_body = world.CreateBody(body_def);
     ASSERT_NE(ball_body, nullptr);
@@ -2438,7 +2438,7 @@ TEST(World, MouseJointWontCauseTunnelling)
     edge_shape.Set(Length2D{0, +half_box_height * Real(2) * Meter},
                    Length2D{0, -half_box_height * Real(2) * Meter});
 
-    body_def.position = Length2D{left_edge_x * Meter, Real(0) * Meter};
+    body_def.location = Length2D{left_edge_x * Meter, Real(0) * Meter};
     {
         const auto left_wall_body = world.CreateBody(body_def);
         ASSERT_NE(left_wall_body, nullptr);
@@ -2449,7 +2449,7 @@ TEST(World, MouseJointWontCauseTunnelling)
         Include(container_aabb, ComputeAABB(*left_wall_body));
     }
     
-    body_def.position = Length2D{right_edge_x * Meter, Real(0) * Meter};
+    body_def.location = Length2D{right_edge_x * Meter, Real(0) * Meter};
     {
         const auto right_wall_body = world.CreateBody(body_def);
         ASSERT_NE(right_wall_body, nullptr);
@@ -2464,7 +2464,7 @@ TEST(World, MouseJointWontCauseTunnelling)
     edge_shape.Set(Length2D{-half_box_width * Real(2) * Meter, Real(0) * Meter},
                    Length2D{+half_box_width * Real(2) * Meter, Real(0) * Meter});
     
-    body_def.position = Length2D{0, btm_edge_y * Meter};
+    body_def.location = Length2D{0, btm_edge_y * Meter};
     {
         const auto btm_wall_body = world.CreateBody(body_def);
         ASSERT_NE(btm_wall_body, nullptr);
@@ -2475,7 +2475,7 @@ TEST(World, MouseJointWontCauseTunnelling)
         Include(container_aabb, ComputeAABB(*btm_wall_body));
     }
     
-    body_def.position = Length2D{0, top_edge_y * Meter};
+    body_def.location = Length2D{0, top_edge_y * Meter};
     {
         const auto top_wall_body = world.CreateBody(body_def);
         ASSERT_NE(top_wall_body, nullptr);
@@ -2487,7 +2487,7 @@ TEST(World, MouseJointWontCauseTunnelling)
     }
 
     body_def.type = BodyType::Dynamic;
-    body_def.position = Length2D{};
+    body_def.location = Length2D{};
     body_def.bullet = true;
     
     const auto ball_body = world.CreateBody(body_def);
@@ -2511,7 +2511,7 @@ TEST(World, MouseJointWontCauseTunnelling)
         const auto angle = i * 2 * Pi / numBodies;
         const auto x = ball_radius * Real(2.1) * Real(std::cos(angle));
         const auto y = ball_radius * Real(2.1) * Real(std::sin(angle));
-        body_def.position = Length2D{x, y};
+        body_def.location = Length2D{x, y};
         bodies[i] = world.CreateBody(body_def);
         ASSERT_NE(bodies[i], nullptr);
         ASSERT_EQ(GetX(bodies[i]->GetLocation()), x);

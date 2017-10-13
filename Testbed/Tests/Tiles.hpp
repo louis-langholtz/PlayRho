@@ -42,7 +42,7 @@ public:
         {
             const auto a = Real{0.5f};
             BodyDef bd;
-            GetY(bd.position) = -a * Meter;
+            GetY(bd.location) = -a * Meter;
             const auto ground = m_world->CreateBody(bd);
 
             const auto N = 200;
@@ -82,7 +82,7 @@ public:
                 {
                     BodyDef bd;
                     bd.type = BodyType::Dynamic;
-                    bd.position = y * Meter;
+                    bd.location = y * Meter;
 
                     const auto body = m_world->CreateBody(bd);
                     body->CreateFixture(shape);

@@ -67,7 +67,7 @@ public:
                 //const auto x = RandomFloat(-0.02f, 0.02f);
                 //const auto x = i % 2 == 0 ? -0.01f : 0.01f;
                 //bd.position = Vec2(xs[j] + x, (hdim - hdim/20) + (hdim * 2 - hdim / 20) * i);
-                bd.position = Vec2(xs[j] + x, (i + 1) * hdim * 4) * Meter;
+                bd.location = Vec2(xs[j] + x, (i + 1) * hdim * 4) * Meter;
                 
                 const auto body = m_world->CreateBody(bd);
                 body->CreateFixture(shape);
@@ -92,7 +92,7 @@ public:
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
                 bd.bullet = true;
-                bd.position = Vec2(-31.0f, 5.0f) * Meter;
+                bd.location = Vec2(-31.0f, 5.0f) * Meter;
 
                 m_bullet = m_world->CreateBody(bd);
                 m_bullet->CreateFixture(m_bulletshape);

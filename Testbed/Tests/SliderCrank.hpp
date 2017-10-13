@@ -40,7 +40,7 @@ public:
             {
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
-                bd.position = Vec2(0.0f, 7.0f) * Meter;
+                bd.location = Vec2(0.0f, 7.0f) * Meter;
                 const auto body = m_world->CreateBody(bd);
                 auto shapeConf = PolygonShape::Conf{};
                 shapeConf.density = Real{2} * KilogramPerSquareMeter;
@@ -59,7 +59,7 @@ public:
             {
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
-                bd.position = Vec2(0.0f, 13.0f) * Meter;
+                bd.location = Vec2(0.0f, 13.0f) * Meter;
                 const auto body = m_world->CreateBody(bd);
                 auto shapeConf = PolygonShape::Conf{};
                 shapeConf.density = Real{2} * KilogramPerSquareMeter;
@@ -77,7 +77,7 @@ public:
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
                 bd.fixedRotation = true;
-                bd.position = Vec2(0.0f, 17.0f) * Meter;
+                bd.location = Vec2(0.0f, 17.0f) * Meter;
                 const auto body = m_world->CreateBody(bd);
                 auto shapeConf = PolygonShape::Conf{};
                 shapeConf.density = Real{2} * KilogramPerSquareMeter;
@@ -97,7 +97,7 @@ public:
             {
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
-                bd.position = Vec2(0.0f, 23.0f) * Meter;
+                bd.location = Vec2(0.0f, 23.0f) * Meter;
                 const auto body = m_world->CreateBody(bd);
                 auto shapeConf = PolygonShape::Conf{};
                 shapeConf.density = Real{2} * KilogramPerSquareMeter;

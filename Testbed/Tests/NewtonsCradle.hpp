@@ -57,7 +57,7 @@ namespace playrho {
             m_frame = [&]() {
                 BodyDef bd;
                 bd.type = BodyType::Static;
-                bd.position = Length2D{0, frame_height};
+                bd.location = Length2D{0, frame_height};
                 const auto body = m_world->CreateBody(bd);
                 
                 const auto frame_width = frame_width_per_arm * static_cast<Real>(m_num_arms);
@@ -74,7 +74,7 @@ namespace playrho {
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
                 bd.bullet = m_bullet_mode;
-                bd.position = Length2D{x, frame_height - (arm_length / Real{2})};
+                bd.location = Length2D{x, frame_height - (arm_length / Real{2})};
                 
                 m_swings[i] = m_world->CreateBody(bd);
                 CreateArm(m_swings[i], arm_length);
@@ -110,7 +110,7 @@ namespace playrho {
 
                 BodyDef def;
                 def.type = BodyType::Static;
-                def.position = Length2D{frame_width / Real{2} + frame_width / Real{24}, frame_height - (arm_length / Real{2})};
+                def.location = Length2D{frame_width / Real{2} + frame_width / Real{24}, frame_height - (arm_length / Real{2})};
                 const auto body = m_world->CreateBody(def);
                 
                 auto shape = PolygonShape((frame_width/Real{24}), (arm_length / Real{2} + frame_width / Real{24}));
@@ -128,7 +128,7 @@ namespace playrho {
 
                 BodyDef def;
                 def.type = BodyType::Static;
-                def.position = Length2D{
+                def.location = Length2D{
                     -(frame_width / Real{2} + frame_width / Real{24}),
                     frame_height - (arm_length / Real{2})
                 };

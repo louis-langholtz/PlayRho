@@ -126,7 +126,7 @@ public:
         bd.type = BodyType::Dynamic;
 
         const auto x = RandomFloat(-2.0f, 2.0f);
-        bd.position = Vec2(x, 10.0f) * Meter;
+        bd.location = Vec2(x, 10.0f) * Meter;
         bd.angle = Radian * RandomFloat(-Pi, Pi);
 
         if (index == 4)

@@ -90,7 +90,7 @@ public:
         // Teeter
         {
             BodyDef bd;
-            bd.position = Vec2(140.0f, 1.0f) * Meter;
+            bd.location = Vec2(140.0f, 1.0f) * Meter;
             bd.type = BodyType::Dynamic;
             const auto body = m_world->CreateBody(bd);
 
@@ -120,7 +120,7 @@ public:
             {
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
-                bd.position = Vec2(161.0f + 2.0f * i, -0.125f) * Meter;
+                bd.location = Vec2(161.0f + 2.0f * i, -0.125f) * Meter;
                 const auto body = m_world->CreateBody(bd);
                 body->CreateFixture(shape);
 
@@ -144,23 +144,23 @@ public:
             BodyDef bd;
             bd.type = BodyType::Dynamic;
 
-            bd.position = Vec2(230.0f, 0.5f) * Meter;
+            bd.location = Vec2(230.0f, 0.5f) * Meter;
             body = m_world->CreateBody(bd);
             body->CreateFixture(box);
 
-            bd.position = Vec2(230.0f, 1.5f) * Meter;
+            bd.location = Vec2(230.0f, 1.5f) * Meter;
             body = m_world->CreateBody(bd);
             body->CreateFixture(box);
 
-            bd.position = Vec2(230.0f, 2.5f) * Meter;
+            bd.location = Vec2(230.0f, 2.5f) * Meter;
             body = m_world->CreateBody(bd);
             body->CreateFixture(box);
 
-            bd.position = Vec2(230.0f, 3.5f) * Meter;
+            bd.location = Vec2(230.0f, 3.5f) * Meter;
             body = m_world->CreateBody(bd);
             body->CreateFixture(box);
 
-            bd.position = Vec2(230.0f, 4.5f) * Meter;
+            bd.location = Vec2(230.0f, 4.5f) * Meter;
             body = m_world->CreateBody(bd);
             body->CreateFixture(box);
         }
@@ -184,15 +184,15 @@ public:
 
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.position = Vec2(0.0f, 1.0f) * Meter;
+            bd.location = Vec2(0.0f, 1.0f) * Meter;
             m_car = m_world->CreateBody(bd);
             m_car->CreateFixture(chassis);
 
-            bd.position = Vec2(-1.0f, 0.35f) * Meter;
+            bd.location = Vec2(-1.0f, 0.35f) * Meter;
             m_wheel1 = m_world->CreateBody(bd);
             m_wheel1->CreateFixture(circle);
 
-            bd.position = Vec2(1.0f, 0.4f) * Meter;
+            bd.location = Vec2(1.0f, 0.4f) * Meter;
             m_wheel2 = m_world->CreateBody(bd);
             m_wheel2->CreateFixture(circle);
 

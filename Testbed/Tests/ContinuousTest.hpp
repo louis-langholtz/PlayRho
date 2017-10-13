@@ -32,7 +32,7 @@ public:
     {
         {
             BodyDef bd;
-            bd.position = Vec2(0.0f, 0.0f) * Meter;
+            bd.location = Vec2(0.0f, 0.0f) * Meter;
             Body* body = m_world->CreateBody(bd);
 
             body->CreateFixture(std::make_shared<EdgeShape>(Vec2(-10.0f, 0.0f) * Meter, Vec2(10.0f, 0.0f) * Meter));
@@ -45,7 +45,7 @@ public:
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.position = Vec2(0.0f, 20.0f) * Meter;
+            bd.location = Vec2(0.0f, 20.0f) * Meter;
             //bd.angle = 0.1f;
 
             const auto shape = std::make_shared<PolygonShape>(Real{2.0f} * Meter, Real{0.1f} * Meter);

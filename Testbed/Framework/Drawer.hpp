@@ -81,9 +81,13 @@ public:
     
     /// Draw a solid circle.
     virtual void DrawSolidCircle(const Length2D& center, Length radius, const Color& color) = 0;
-    
-    /// Draw a line segment.
-    virtual void DrawSegment(const Length2D& p1, const Length2D& p2, const Color& color) = 0;
+ 
+    /// Draws a line segment from point 1 to point 2.
+    virtual void DrawSegment(const Length2D& p1, const Length2D& p2, const Color& c) = 0;
+
+    /// Draws a line segment from point 1 to point 2 in color 1 to color 2.
+    virtual void DrawSegment(const Length2D& p1, const Color& c1,
+                             const Length2D& p2, const Color& c2) = 0;
 
     virtual void DrawPoint(const Length2D& p, float size, const Color& color) = 0;
     
@@ -99,6 +103,13 @@ public:
 
     virtual Length2D GetTranslation() const = 0;
 };
+
+/// @brief Draws segment with a single constant color.
+inline void DrawSegment(Drawer& drawer, const Length2D& p1, const Length2D& p2,
+                        const Color& color)
+{
+    drawer.DrawSegment(p1, p2, color);
+}
 
 } // namespace playrho
 

@@ -40,7 +40,7 @@ public:
         
         {
             BodyDef bd;
-            bd.position = Vec2(-4.0f, 22.0f) * Meter;
+            bd.location = Vec2(-4.0f, 22.0f) * Meter;
             bd.angle = Real{-0.25f} * Radian;
 
             const auto ground = m_world->CreateBody(bd);
@@ -49,7 +49,7 @@ public:
 
         {
             BodyDef bd;
-            bd.position = Vec2(10.5f, 19.0f) * Meter;
+            bd.location = Vec2(10.5f, 19.0f) * Meter;
 
             const auto ground = m_world->CreateBody(bd);
             ground->CreateFixture(sliderWall);
@@ -57,7 +57,7 @@ public:
 
         {
             BodyDef bd;
-            bd.position = Vec2(4.0f, 14.0f) * Meter;
+            bd.location = Vec2(4.0f, 14.0f) * Meter;
             bd.angle = Real{0.25f} * Radian;
 
             const auto ground = m_world->CreateBody(bd);
@@ -66,7 +66,7 @@ public:
 
         {
             BodyDef bd;
-            bd.position = Vec2(-10.5f, 11.0f) * Meter;
+            bd.location = Vec2(-10.5f, 11.0f) * Meter;
 
             const auto ground = m_world->CreateBody(bd);
             ground->CreateFixture(sliderWall);
@@ -74,7 +74,7 @@ public:
 
         {
             BodyDef bd;
-            bd.position = Vec2(-4.0f, 6.0f) * Meter;
+            bd.location = Vec2(-4.0f, 6.0f) * Meter;
             bd.angle = Real{-0.25f} * Radian;
 
             const auto ground = m_world->CreateBody(bd);
@@ -90,7 +90,7 @@ public:
             {
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
-                bd.position = Vec2(-15.0f + 4.0f * i, 28.0f) * Meter;
+                bd.location = Vec2(-15.0f + 4.0f * i, 28.0f) * Meter;
                 const auto body = m_world->CreateBody(bd);
 
                 shape.SetFriction(Real(friction[i]));

@@ -39,7 +39,7 @@ public:
         // Platform
         {
             BodyDef bd;
-            bd.position = Vec2(-5.0f, 5.0f) * Meter;
+            bd.location = Vec2(-5.0f, 5.0f) * Meter;
             const auto body = m_world->CreateBody(bd);
 
             auto conf = PolygonShape::Conf{};
@@ -54,7 +54,7 @@ public:
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.position = Vec2(-10.0f + 2.0f * i, 7.0f) * Meter;
+            bd.location = Vec2(-10.0f + 2.0f * i, 7.0f) * Meter;
             const auto body = m_world->CreateBody(bd);
             body->CreateFixture(boxshape);
         }
