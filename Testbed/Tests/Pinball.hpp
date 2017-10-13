@@ -53,10 +53,10 @@ public:
             BodyDef bd;
             bd.type = BodyType::Dynamic;
 
-            bd.position = p1;
+            bd.location = p1;
             const auto leftFlipper = m_world->CreateBody(bd);
 
-            bd.position = p2;
+            bd.location = p2;
             const auto rightFlipper = m_world->CreateBody(bd);
 
             const auto box = std::make_shared<PolygonShape>(Real{1.75f} * Meter, Real{0.1f} * Meter);
@@ -90,7 +90,7 @@ public:
         // Disk character
         {
             BodyDef bd;
-            bd.position = Vec2(1.0f, 15.0f) * Meter;
+            bd.location = Vec2(1.0f, 15.0f) * Meter;
             bd.type = BodyType::Dynamic;
             bd.bullet = true;
 

@@ -29,7 +29,7 @@ namespace playrho
     {
         auto def = BodyDef{};
         def.type = body.GetType();
-        def.position = body.GetLocation();
+        def.location = body.GetLocation();
         def.angle = body.GetAngle();
         def.linearVelocity = GetLinearVelocity(body);
         def.angularVelocity = GetAngularVelocity(body);

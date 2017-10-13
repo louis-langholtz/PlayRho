@@ -46,7 +46,7 @@ public:
         // Platform
         {
             BodyDef bd;
-            bd.position = Vec2(0.0f, 10.0f) * Meter;
+            bd.location = Vec2(0.0f, 10.0f) * Meter;
             const auto body = m_world->CreateBody(bd);
             m_platform = body->CreateFixture(std::make_shared<PolygonShape>(Real{3.0f} * Meter, Real{0.5f} * Meter));
             m_bottom = Real(10.0f - 0.5f) * Meter;
@@ -57,7 +57,7 @@ public:
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.position = Vec2(0.0f, 12.0f) * Meter;
+            bd.location = Vec2(0.0f, 12.0f) * Meter;
             const auto body = m_world->CreateBody(bd);
             auto conf = DiskShape::Conf{};
             conf.vertexRadius = m_radius;

@@ -215,7 +215,12 @@ protected:
     }
 
     const Body* GetBomb() const noexcept { return m_bomb; }
+    
     void SetBomb(Body* body) noexcept { m_bomb = body; }
+    
+    Length2D GetMouseWorld() const noexcept { return m_mouseWorld; }
+
+    void SetMouseWorld(Length2D value) noexcept { m_mouseWorld = value; }
     
     World* const m_world;
     TextLinePos m_textLine = TextLinePos{30};

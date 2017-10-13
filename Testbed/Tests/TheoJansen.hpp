@@ -61,8 +61,8 @@ public:
         BodyDef bd1, bd2;
         bd1.type = BodyType::Dynamic;
         bd2.type = BodyType::Dynamic;
-        bd1.position = m_offset;
-        bd2.position = p4 + m_offset;
+        bd1.location = m_offset;
+        bd2.location = p4 + m_offset;
 
         bd1.angularDamping = Real(10) * Hertz;
         bd2.angularDamping = Real(10) * Hertz;
@@ -120,7 +120,7 @@ public:
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.position = Vec2(-40.0f + 2.0f * i, 0.5f) * Meter;
+            bd.location = Vec2(-40.0f + 2.0f * i, 0.5f) * Meter;
 
             const auto body = m_world->CreateBody(bd);
             body->CreateFixture(circle);
@@ -132,7 +132,7 @@ public:
             sd.filter.groupIndex = -1;
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.position = pivot + m_offset;
+            bd.location = pivot + m_offset;
             m_chassis = m_world->CreateBody(bd);
             auto polygonConf = PolygonShape::Conf{};
             polygonConf.density = Real{1} * KilogramPerSquareMeter;
@@ -144,7 +144,7 @@ public:
             sd.filter.groupIndex = -1;
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.position = pivot + m_offset;
+            bd.location = pivot + m_offset;
             m_wheel = m_world->CreateBody(bd);
             auto conf = DiskShape::Conf{};
             conf.vertexRadius = Real{1.6f} * Meter;

@@ -74,7 +74,7 @@ public:
 
         BodyDef triangleBodyDef;
         triangleBodyDef.type = BodyType::Dynamic;
-        triangleBodyDef.position = Vec2(-5.0f, 2.0f) * Meter;
+        triangleBodyDef.location = Vec2(-5.0f, 2.0f) * Meter;
 
         const auto body1 = m_world->CreateBody(triangleBodyDef);
         body1->CreateFixture(std::make_shared<PolygonShape>(polygon), triangleShapeDef);
@@ -85,7 +85,7 @@ public:
         vertices[2] *= 2.0f;
         polygon.Set(Span<const Length2D>{vertices, 3});
         triangleShapeDef.filter.groupIndex = k_largeGroup;
-        triangleBodyDef.position = Vec2(-5.0f, 6.0f) * Meter;
+        triangleBodyDef.location = Vec2(-5.0f, 6.0f) * Meter;
         triangleBodyDef.fixedRotation = true; // look at me!
 
         const auto body2 = m_world->CreateBody(triangleBodyDef);
@@ -94,7 +94,7 @@ public:
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.position = Vec2(-5.0f, 10.0f) * Meter;
+            bd.location = Vec2(-5.0f, 10.0f) * Meter;
             const auto body = m_world->CreateBody(bd);
             auto conf = PolygonShape::Conf{};
             conf.density = Real{1} * KilogramPerSquareMeter;
@@ -126,7 +126,7 @@ public:
 
         BodyDef boxBodyDef;
         boxBodyDef.type = BodyType::Dynamic;
-        boxBodyDef.position = Vec2(0.0f, 2.0f) * Meter;
+        boxBodyDef.location = Vec2(0.0f, 2.0f) * Meter;
 
         const auto body3 = m_world->CreateBody(boxBodyDef);
         body3->CreateFixture(std::make_shared<PolygonShape>(polygon), boxShapeDef);
@@ -134,7 +134,7 @@ public:
         // Large box (recycle definitions)
         polygon.SetAsBox(Real{2.0f} * Meter, Real{1.0f} * Meter);
         boxShapeDef.filter.groupIndex = k_largeGroup;
-        boxBodyDef.position = Vec2(0.0f, 6.0f) * Meter;
+        boxBodyDef.location = Vec2(0.0f, 6.0f) * Meter;
 
         const auto body4 = m_world->CreateBody(boxBodyDef);
         body4->CreateFixture(std::make_shared<PolygonShape>(polygon), boxShapeDef);
@@ -153,7 +153,7 @@ public:
 
         BodyDef circleBodyDef;
         circleBodyDef.type = BodyType::Dynamic;
-        circleBodyDef.position = Vec2(5.0f, 2.0f) * Meter;
+        circleBodyDef.location = Vec2(5.0f, 2.0f) * Meter;
         
         const auto body5 = m_world->CreateBody(circleBodyDef);
         body5->CreateFixture(std::make_shared<DiskShape>(circle), circleShapeDef);
@@ -161,7 +161,7 @@ public:
         // Large circle
         circle.SetRadius(circle.GetRadius() * Real{2});
         circleShapeDef.filter.groupIndex = k_largeGroup;
-        circleBodyDef.position = Vec2(5.0f, 6.0f) * Meter;
+        circleBodyDef.location = Vec2(5.0f, 6.0f) * Meter;
 
         const auto body6 = m_world->CreateBody(circleBodyDef);
         body6->CreateFixture(std::make_shared<DiskShape>(circle), circleShapeDef);

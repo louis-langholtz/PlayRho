@@ -54,11 +54,11 @@ public:
             bd.type = BodyType::Dynamic;
 
             //bd.fixedRotation = true;
-            bd.position = Vec2(-10.0f, y) * Meter;
+            bd.location = Vec2(-10.0f, y) * Meter;
             const auto body1 = m_world->CreateBody(bd);
             body1->CreateFixture(shape);
 
-            bd.position = Vec2(10.0f, y) * Meter;
+            bd.location = Vec2(10.0f, y) * Meter;
             const auto body2 = m_world->CreateBody(bd);
             body2->CreateFixture(shape);
 

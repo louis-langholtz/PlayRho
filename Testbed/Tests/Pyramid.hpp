@@ -54,7 +54,7 @@ public:
             {
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
-                bd.position = y * Meter;
+                bd.location = y * Meter;
                 const auto body = m_world->CreateBody(bd);
                 body->CreateFixture(shape);
 

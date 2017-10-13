@@ -42,23 +42,23 @@ public:
         {
             auto bd1 = BodyDef{};
             bd1.type = BodyType::Static;
-            bd1.position = Vec2(10.0f, 9.0f) * Meter;
+            bd1.location = Vec2(10.0f, 9.0f) * Meter;
             const auto body1 = m_world->CreateBody(bd1);
 
             auto bd2 = BodyDef{};
             bd2.type = BodyType::Dynamic;
-            bd2.position = Vec2(10.0f, 8.0f) * Meter;
+            bd2.location = Vec2(10.0f, 8.0f) * Meter;
             const auto body2 = m_world->CreateBody(bd2);
             body2->CreateFixture(box);
 
             auto bd3 = BodyDef{};
             bd3.type = BodyType::Dynamic;
-            bd3.position = Vec2(10.0f, 6.0f) * Meter;
+            bd3.location = Vec2(10.0f, 6.0f) * Meter;
             const auto body3 = m_world->CreateBody(bd3);
             body3->CreateFixture(circle2);
 
-            auto joint1 = m_world->CreateJoint(RevoluteJointDef{body2, body1, bd1.position});
-            auto joint2 = m_world->CreateJoint(RevoluteJointDef{body2, body3, bd3.position});
+            auto joint1 = m_world->CreateJoint(RevoluteJointDef{body2, body1, bd1.location});
+            auto joint2 = m_world->CreateJoint(RevoluteJointDef{body2, body3, bd3.location});
 
             auto jd4 = GearJointDef{joint1, joint2};
             jd4.ratio = circle2->GetRadius() / circle1->GetRadius();
@@ -68,34 +68,34 @@ public:
         {
             auto bd1 = BodyDef{};
             bd1.type = BodyType::Dynamic;
-            bd1.position = Vec2(-3.0f, 12.0f) * Meter;
+            bd1.location = Vec2(-3.0f, 12.0f) * Meter;
             const auto body1 = m_world->CreateBody(bd1);
             body1->CreateFixture(circle1);
 
             auto jd1 = RevoluteJointDef{};
             jd1.bodyA = ground;
             jd1.bodyB = body1;
-            jd1.localAnchorA = GetLocalPoint(*ground, bd1.position);
-            jd1.localAnchorB = GetLocalPoint(*body1, bd1.position);
+            jd1.localAnchorA = GetLocalPoint(*ground, bd1.location);
+            jd1.localAnchorB = GetLocalPoint(*body1, bd1.location);
             jd1.referenceAngle = body1->GetAngle() - ground->GetAngle();
             m_joint1 = static_cast<RevoluteJoint*>(m_world->CreateJoint(jd1));
 
             auto bd2 = BodyDef{};
             bd2.type = BodyType::Dynamic;
-            bd2.position = Vec2(0.0f, 12.0f) * Meter;
+            bd2.location = Vec2(0.0f, 12.0f) * Meter;
             const auto body2 = m_world->CreateBody(bd2);
             body2->CreateFixture(circle2);
 
-            auto jd2 = RevoluteJointDef{ground, body2, bd2.position};
+            auto jd2 = RevoluteJointDef{ground, body2, bd2.location};
             m_joint2 = static_cast<RevoluteJoint*>(m_world->CreateJoint(jd2));
 
             auto bd3 = BodyDef{};
             bd3.type = BodyType::Dynamic;
-            bd3.position = Vec2(2.5f, 12.0f) * Meter;
+            bd3.location = Vec2(2.5f, 12.0f) * Meter;
             const auto body3 = m_world->CreateBody(bd3);
             body3->CreateFixture(box);
 
-            auto jd3 = PrismaticJointDef{ground, body3, bd3.position, UnitVec2::GetTop()};
+            auto jd3 = PrismaticJointDef{ground, body3, bd3.location, UnitVec2::GetTop()};
             jd3.lowerTranslation = Real{-5.0f} * Meter;
             jd3.upperTranslation = Real{5.0f} * Meter;
             jd3.enableLimit = true;

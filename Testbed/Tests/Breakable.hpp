@@ -49,7 +49,7 @@ public:
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.position = Vec2(0.0f, 40.0f) * Meter;
+            bd.location = Vec2(0.0f, 40.0f) * Meter;
             bd.angle = 0.25f * Pi * Radian;
             m_body1 = m_world->CreateBody(bd);
 
@@ -100,7 +100,7 @@ public:
 
         BodyDef bd;
         bd.type = BodyType::Dynamic;
-        bd.position = body1->GetLocation();
+        bd.location = body1->GetLocation();
         bd.angle = body1->GetAngle();
 
         const auto body2 = m_world->CreateBody(bd);

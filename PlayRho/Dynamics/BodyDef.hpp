@@ -101,9 +101,9 @@ namespace playrho {
         /// @note If a dynamic body would have zero mass, the mass is set to one.
         BodyType type = BodyType::Static;
         
-        /// The world position of the body. Avoid creating bodies at the origin
+        /// The world location of the body. Avoid creating bodies at the origin
         /// since this can lead to many overlapping shapes.
-        Length2D position = Length2D{};
+        Length2D location = Length2D{};
         
         /// The world angle of the body.
         Angle angle = Angle{0};
@@ -167,7 +167,7 @@ namespace playrho {
     
     constexpr inline BodyDef& BodyDef::UseLocation(Length2D l) noexcept
     {
-        position = l;
+        location = l;
         return *this;
     }
     

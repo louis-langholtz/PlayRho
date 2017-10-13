@@ -36,7 +36,7 @@ public:
             BodyDef bd;
             bd.type = BodyType::Dynamic;
 
-            bd.position = Vec2(-10.0f, 20.0f) * Meter;
+            bd.location = Vec2(-10.0f, 20.0f) * Meter;
             const auto body = m_world->CreateBody(bd);
             auto circleConf = DiskShape::Conf{};
             circleConf.vertexRadius = Real{0.5f} * Meter;
@@ -61,7 +61,7 @@ public:
         {
             BodyDef circle_bd;
             circle_bd.type = BodyType::Dynamic;
-            circle_bd.position = Vec2(5.0f, 30.0f) * Meter;
+            circle_bd.location = Vec2(5.0f, 30.0f) * Meter;
 
             FixtureDef fd;
             fd.filter.maskBits = 1;
@@ -77,7 +77,7 @@ public:
             polygon_shape.SetDensity(Real{2} * KilogramPerSquareMeter);
 
             BodyDef polygon_bd;
-            polygon_bd.position = Vec2(20.0f, 10.0f) * Meter;
+            polygon_bd.location = Vec2(20.0f, 10.0f) * Meter;
             polygon_bd.type = BodyType::Dynamic;
             polygon_bd.bullet = true;
             const auto polygon_body = m_world->CreateBody(polygon_bd);

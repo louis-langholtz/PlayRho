@@ -35,7 +35,7 @@ public:
         
         BodyDef bd;
         bd.type = BodyType::Dynamic;
-        bd.position = Vec2(0.0f, 10.0f) * Meter;
+        bd.location = Vec2(0.0f, 10.0f) * Meter;
         m_body = m_world->CreateBody(bd);
 
         PolygonShape shape;

@@ -160,7 +160,7 @@ public:
         // Square character 1
         {
             BodyDef bd;
-            bd.position = Vec2(-3.0f, 8.0f) * Meter;
+            bd.location = Vec2(-3.0f, 8.0f) * Meter;
             bd.type = BodyType::Dynamic;
             bd.fixedRotation = false;
             bd.allowSleep = false;
@@ -173,7 +173,7 @@ public:
             const auto square = std::make_shared<PolygonShape>(Real{0.5f} * Meter, Real{0.5f} * Meter, conf);
             body->CreateFixture(square);
             
-            bd.position = Vec2(19.0f, 7.0f) * Meter;
+            bd.location = Vec2(19.0f, 7.0f) * Meter;
             const auto body2 = m_world->CreateBody(bd);
             body2->CreateFixture(square);
         }
@@ -181,7 +181,7 @@ public:
         // Square character 2
         {
             BodyDef bd;
-            bd.position = Vec2(-5.0f, 5.0f) * Meter;
+            bd.location = Vec2(-5.0f, 5.0f) * Meter;
             bd.type = BodyType::Dynamic;
             bd.fixedRotation = true;
             bd.allowSleep = false;
@@ -196,7 +196,7 @@ public:
         // Hexagon character
         {
             BodyDef bd;
-            bd.position = Vec2(-5.0f, 8.0f) * Meter;
+            bd.location = Vec2(-5.0f, 8.0f) * Meter;
             bd.type = BodyType::Dynamic;
             bd.fixedRotation = true;
             bd.allowSleep = false;
@@ -222,7 +222,7 @@ public:
         // Disk character
         {
             BodyDef bd;
-            bd.position = Vec2(3.0f, 5.0f) * Meter;
+            bd.location = Vec2(3.0f, 5.0f) * Meter;
             bd.type = BodyType::Dynamic;
             bd.fixedRotation = true;
             bd.allowSleep = false;
@@ -237,7 +237,7 @@ public:
         // Disk character
         {
             BodyDef bd;
-            bd.position = Vec2(-7.0f, 6.0f) * Meter;
+            bd.location = Vec2(-7.0f, 6.0f) * Meter;
             bd.type = BodyType::Dynamic;
             bd.allowSleep = false;
 

@@ -63,12 +63,12 @@ public:
                 auto shape = rectangle;
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
-                bd.position = Vec2(0.5f + 1.0f * i, y) * Meter;
+                bd.location = Vec2(0.5f + 1.0f * i, y) * Meter;
                 if (i == N - 1)
                 {
                     shape = square;
                     fd.filter.categoryBits = 0x0002;
-                    bd.position = Vec2(1.0f * i, y) * Meter;
+                    bd.location = Vec2(1.0f * i, y) * Meter;
                     bd.angularDamping = Real(0.4f) * Hertz;
                 }
 

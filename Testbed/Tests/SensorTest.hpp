@@ -65,7 +65,7 @@ public:
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.position = Vec2(-10.0f + 3.0f * i, 20.0f) * Meter;
+            bd.location = Vec2(-10.0f + 3.0f * i, 20.0f) * Meter;
             bd.userData = m_touching + i;
 
             m_touching[i] = false;

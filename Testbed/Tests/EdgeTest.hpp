@@ -65,7 +65,7 @@ public:
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.position = Vec2(-0.5f, 0.6f) * Meter;
+            bd.location = Vec2(-0.5f, 0.6f) * Meter;
             bd.allowSleep = false;
             const auto body = m_world->CreateBody(bd);
 
@@ -78,7 +78,7 @@ public:
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.position = Vec2(1.0f, 0.6f) * Meter;
+            bd.location = Vec2(1.0f, 0.6f) * Meter;
             bd.allowSleep = false;
             const auto body = m_world->CreateBody(bd);
 

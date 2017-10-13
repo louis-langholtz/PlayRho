@@ -53,7 +53,7 @@ public:
             {
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
-                bd.position = Vec2{
+                bd.location = Vec2{
                     -10.0f + (2.1f * j + 1.0f + 0.01f * i) * (radius / Meter),
                     (2.0f * i + 1.0f) * (radius/ Meter)
                 } * Meter;
@@ -86,7 +86,7 @@ public:
         BodyDef bd;
         bd.type = BodyType::Dynamic;
         bd.bullet = m_bullet_mode;
-        bd.position = Vec2{0, 20} * Meter + GetRandomOffset();
+        bd.location = Vec2{0, 20} * Meter + GetRandomOffset();
         //bd.allowSleep = false;
 
         const auto body = m_world->CreateBody(bd);
@@ -109,7 +109,7 @@ public:
         BodyDef bd;
         bd.type = BodyType::Dynamic;
         bd.bullet = m_bullet_mode;
-        bd.position = Vec2{0, 20} * Meter + GetRandomOffset();
+        bd.location = Vec2{0, 20} * Meter + GetRandomOffset();
         const auto body = m_world->CreateBody(bd);
         body->CreateFixture(std::make_shared<PolygonShape>(side_length/Real{2}, side_length/Real{2}, conf));
     }

@@ -35,14 +35,14 @@ namespace playrho {
             const auto radius = Real{12.0f};
 
             bd.type = BodyType::Static;
-            bd.position = m_center;
+            bd.location = m_center;
             const auto ctrBody = m_world->CreateBody(bd);
             const auto ctrShape = std::make_shared<DiskShape>();
             ctrShape->SetRadius(Real{3} * Meter);
             ctrBody->CreateFixture(ctrShape);
 
             bd.type = BodyType::Dynamic;
-            bd.position = Length2D{GetX(m_center), GetY(m_center) + radius * Meter};
+            bd.location = Length2D{GetX(m_center), GetY(m_center) + radius * Meter};
             m_orbiter = m_world->CreateBody(bd);
             const auto ballShape = std::make_shared<DiskShape>();
             ballShape->SetRadius(Real{0.5f} * Meter);
@@ -62,7 +62,7 @@ namespace playrho {
             const auto outerCicle = std::make_shared<ChainShape>(conf);
 
             bd.type = BodyType::Dynamic;
-            bd.position = m_center;
+            bd.location = m_center;
             bd.bullet = true;
             const auto dysonSphere = m_world->CreateBody(bd);
             dysonSphere->CreateFixture(outerCicle);

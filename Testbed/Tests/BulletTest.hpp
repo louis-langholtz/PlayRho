@@ -32,7 +32,7 @@ public:
     {
         {
             BodyDef bd;
-            bd.position = Vec2(0.0f, 0.0f) * Meter;
+            bd.location = Vec2(0.0f, 0.0f) * Meter;
             Body* body = m_world->CreateBody(bd);
 
             body->CreateFixture(std::make_shared<EdgeShape>(Vec2(-10.0f, 0.0f) * Meter, Vec2(10.0f, 0.0f) * Meter));
@@ -45,7 +45,7 @@ public:
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.position = Vec2(0.0f, 4.0f) * Meter;
+            bd.location = Vec2(0.0f, 4.0f) * Meter;
 
             PolygonShape box;
             box.SetAsBox(Real{2.0f} * Meter, Real{0.1f} * Meter);
@@ -59,7 +59,7 @@ public:
 
             //m_x = RandomFloat(-1.0f, 1.0f);
             m_x = 0.20352793f;
-            bd.position = Vec2(m_x, 10.0f) * Meter;
+            bd.location = Vec2(m_x, 10.0f) * Meter;
             bd.bullet = true;
 
             m_bullet = m_world->CreateBody(bd);

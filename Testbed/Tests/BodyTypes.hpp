@@ -36,7 +36,7 @@ public:
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.position = Vec2(0.0f, 3.0f) * Meter;
+            bd.location = Vec2(0.0f, 3.0f) * Meter;
             m_attachment = m_world->CreateBody(bd);
             auto conf = PolygonShape::Conf{};
             conf.density = Real{2} * KilogramPerSquareMeter;
@@ -47,7 +47,7 @@ public:
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.position = Vec2(-4.0f, 5.0f) * Meter;
+            bd.location = Vec2(-4.0f, 5.0f) * Meter;
             m_platform = m_world->CreateBody(bd);
 
             auto conf = PolygonShape::Conf{};
@@ -78,7 +78,7 @@ public:
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.position = Vec2(0.0f, 8.0f) * Meter;
+            bd.location = Vec2(0.0f, 8.0f) * Meter;
             Body* body = m_world->CreateBody(bd);
 
             auto conf = PolygonShape::Conf{};
