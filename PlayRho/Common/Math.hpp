@@ -691,11 +691,11 @@ constexpr inline auto InverseRotate(const Vector2D<T> vector, const UnitVec2& an
 /// @note For a 2-D linear position of the origin (0, 0), the result is simply the translation.
 /// @sa <code>InverseTransform</code>.
 /// @param v 2-D position to transform (to rotate and then translate).
-/// @param T Transformation (a translation and rotation) to apply to the given vector.
+/// @param xfm Transformation (a translation and rotation) to apply to the given vector.
 /// @return Rotated and translated vector.
-constexpr inline Length2D Transform(const Length2D v, const Transformation T) noexcept
+constexpr inline Length2D Transform(const Length2D v, const Transformation xfm) noexcept
 {
-    return Rotate(v, T.q) + T.p;
+    return Rotate(v, xfm.q) + xfm.p;
 }
 
 /// @brief Inverse transforms the given 2-D vector with the given transformation.

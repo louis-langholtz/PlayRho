@@ -277,14 +277,13 @@ Manifold GetFaceManifold(const Manifold::Type type,
     return Manifold{};
 }
 
-Manifold CollideShapes(Manifold::Type type,
+Manifold CollideShapes(Manifold::Type type, Length totalRadius,
                        const DistanceProxy& shape, const Transformation& sxf,
-                       Length2D point, Length radius, const Transformation& xfm)
+                       Length2D point, const Transformation& xfm)
 {
     // Computes the center of the circle in the frame of the polygon.
     const auto cLocal = InverseTransform(Transform(point, xfm), sxf); ///< Center of circle in frame of polygon.
     
-    const auto totalRadius = shape.GetVertexRadius() + radius;
     const auto vertexCount = shape.GetVertexCount();
     
     // Find edge that circle is closest to.
@@ -391,14 +390,14 @@ Manifold CollideShapes(Manifold::Type type,
     return Manifold{};
 }
 
-Manifold CollideShapes(Length2D locationA, Length radiusA, const Transformation& xfA,
-                       Length2D locationB, Length radiusB, const Transformation& xfB)
+inline Manifold CollideShapes(Length2D locationA, const Transformation& xfA,
+                              Length2D locationB, const Transformation& xfB,
+                              Length totalRadius) noexcept
 {
     const auto pA = Transform(locationA, xfA);
     const auto pB = Transform(locationB, xfB);
-    const auto totalRadius = radiusA + radiusB;
     return (GetLengthSquared(pB - pA) > Square(totalRadius))?
-    Manifold{}: Manifold::GetForCircles(locationA, 0, locationB, 0);
+        Manifold{}: Manifold::GetForCircles(locationA, 0, locationB, 0);
 }
 
 } // anonymous namespace
@@ -409,8 +408,8 @@ Manifold CollideShapes(Length2D locationA, Length radiusA, const Transformation&
  */
 
 Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
-                              const DistanceProxy& shapeB, const Transformation& xfB,
-                              Manifold::Conf conf)
+                       const DistanceProxy& shapeB, const Transformation& xfB,
+                       Manifold::Conf conf)
 {
     // Find edge normal of max separation on A - return if separating axis is found
     // Find edge normal of max separation on B - return if separation axis is found
@@ -418,30 +417,23 @@ Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
     // Find incident edge
     // Clip
     
+    const auto totalRadius = shapeA.GetVertexRadius() + shapeB.GetVertexRadius();
     const auto countA = shapeA.GetVertexCount();
     const auto countB = shapeB.GetVertexCount();
-    if (countA == 1)
+    
+    enum: unsigned { ZeroOneVert = 0x0u, OneVertA = 0x1u, OneVertB = 0x2u };
+    switch (((countA == 1)? OneVertA: ZeroOneVert) | ((countB == 1)? OneVertB: ZeroOneVert))
     {
-        if (countB > 1)
-        {
-            return CollideShapes(Manifold::e_faceB, shapeB, xfB,
-                                 shapeA.GetVertex(0), shapeA.GetVertexRadius(), xfA);
-        }
-        return CollideShapes(shapeA.GetVertex(0), shapeA.GetVertexRadius(), xfA,
-                             shapeB.GetVertex(0), shapeB.GetVertexRadius(), xfB);
-    }
-    if (countB == 1)
-    {
-        if (countA > 1)
-        {
-            return CollideShapes(Manifold::e_faceA, shapeA, xfA,
-                                 shapeB.GetVertex(0), shapeB.GetVertexRadius(), xfB);
-        }
-        return CollideShapes(shapeA.GetVertex(0), shapeA.GetVertexRadius(), xfA,
-                             shapeB.GetVertex(0), shapeB.GetVertexRadius(), xfB);
+        case OneVertA|OneVertB:
+            return CollideShapes(shapeA.GetVertex(0), xfA, shapeB.GetVertex(0), xfB, totalRadius);
+        case OneVertA:
+            return CollideShapes(Manifold::e_faceB, totalRadius,
+                                 shapeB, xfB, shapeA.GetVertex(0), xfA);
+        case OneVertB:
+            return CollideShapes(Manifold::e_faceA, totalRadius,
+                                 shapeA, xfA, shapeB.GetVertex(0), xfB);
     }
     
-    const auto totalRadius = shapeA.GetVertexRadius() + shapeB.GetVertexRadius();
     const auto do4x4 = (countA == 4) && (countB == 4);
     
     const auto edgeSepA = do4x4?
