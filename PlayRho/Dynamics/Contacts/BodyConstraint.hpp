@@ -65,7 +65,7 @@ namespace playrho {
         /// @return Value >= 0.
         InvRotInertia GetInvRotInertia() const noexcept;
         
-        /// @brief Gets the local center of the body.
+        /// @brief Gets the location of the body's center of mass in local coordinates.
         Length2D GetLocalCenter() const noexcept;
         
         /// @brief Gets the position of the body.
