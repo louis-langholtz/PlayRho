@@ -30,6 +30,9 @@ class DistanceTest : public Test
 public:
     DistanceTest()
     {
+        m_settings.drawSkins = true;
+        m_neededSettings = (1 << NeedDrawSkinsField);
+
         m_world->SetGravity(Vec2{0, 0} * MeterPerSquareSecond);
 
         const auto def = BodyDef{}

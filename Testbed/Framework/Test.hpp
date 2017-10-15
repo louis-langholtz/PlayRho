@@ -92,15 +92,27 @@ public:
         Key_Unknown
     };
     
+    using NeededSettings = std::uint32_t;
+    enum NeededSettingsField: std::uint8_t {
+        NeedDrawSkinsField,
+        NeedDrawLabelsField,
+    };
+    
     using Fixtures = std::vector<Fixture*>;
     
-    Test(const WorldDef& config = WorldDef{}.UseGravity(LinearAcceleration2D{
+    Test(WorldDef config = WorldDef{}.UseGravity(LinearAcceleration2D{
         Real(0.0f) * MeterPerSquareSecond, -Real(10.0f) * MeterPerSquareSecond
     }).UseMinVertexRadius(Real(0.0001f) * Real{2} * Meter));
 
     virtual ~Test();
 
     void DrawTitle(Drawer& drawer, const char *string);
+    void DrawStats(Drawer& drawer, const StepConf& stepConf);
+    void DrawStats(Drawer& drawer, const Fixture& fixture);
+    void DrawStats(Drawer& drawer, const Manifold& manifold);
+    void DrawContactInfo(const Settings& settings, Drawer& drawer);
+    bool DrawWorld(Drawer& drawer, const World& world, const Settings& settings,
+                   const Test::Fixtures& selected);
 
     /// @brief Steps this test's world forward and visualizes what's going on.
     /// @note This method calls the PreStep and PostStep methods which give
@@ -111,9 +123,6 @@ public:
     /// @sa https://en.wikipedia.org/wiki/Template_method_pattern
     void Step(const Settings& settings, Drawer& drawer);
     
-    void DrawStats(Drawer& drawer, const StepConf& stepConf);
-    void DrawStats(Drawer& drawer, const Fixture& fixture);
-    void DrawContactInfo(const Settings& settings, Drawer& drawer);
     void ShiftMouseDown(const Length2D& p);
     void MouseMove(const Length2D& p);
     void LaunchBomb();
@@ -145,6 +154,9 @@ public:
     {
         m_selectedFixtures = value;
     }
+    
+    NeededSettings GetNeededSettings() const noexcept { return m_neededSettings; }
+    const Settings& GetSettings() const noexcept { return m_settings; }
 
 protected:
     
@@ -224,7 +236,9 @@ protected:
     
     World* const m_world;
     TextLinePos m_textLine = TextLinePos{30};
-    
+    Settings m_settings;
+    NeededSettings m_neededSettings = 0u;
+
 private:
     Fixtures m_selectedFixtures;
     AABB m_maxAABB;
