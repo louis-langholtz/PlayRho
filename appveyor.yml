@@ -47,3 +47,9 @@ after_build:
   - cd Documentation
   - doxygen Doxyfile
   - cd ..
+
+artifacts:
+  - path: Documentation\API
+    name: API Documentation
+  - path: Build\vs2017\bin
+    name: Binary Executables
