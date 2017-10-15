@@ -47,3 +47,7 @@ after_build:
   - cd Documentation
   - doxygen Doxyfile
   - cd ..
+
+artifacts:
+  - path: Documentation\API
+    name: Doxygen Generated API Documentation
