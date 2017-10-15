@@ -50,4 +50,6 @@ after_build:
 
 artifacts:
   - path: Documentation\API
-    name: Doxygen Generated API Documentation
+    name: API Documentation
+  - path: Build\vs2017\bin
+    name: Binary Executables
