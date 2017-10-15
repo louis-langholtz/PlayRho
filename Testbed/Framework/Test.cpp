@@ -295,24 +295,33 @@ static void Draw(Drawer& drawer, const AABB& aabb, const Color& color)
     drawer.DrawPolygon(vs, 4, color);
 }
 
-static bool Draw(Drawer& drawer, const World& world, const Settings& settings,
-                 const Test::Fixtures& selected)
+bool Test::DrawWorld(Drawer& drawer, const World& world, const Settings& settings,
+                     const Test::Fixtures& selected)
 {
     auto found = false;
 
     if (settings.drawShapes)
     {
+        const auto drawLabels = [&]() {
+            const auto useField = m_neededSettings & (1u << NeedDrawLabelsField);
+            return useField? m_settings.drawLabels: settings.drawLabels;
+        }();
+        const auto drawSkins = [&]() {
+            const auto useField = m_neededSettings & (1u << NeedDrawSkinsField);
+            return useField? m_settings.drawSkins: settings.drawSkins;
+        }();
+        
         for (auto&& body: world.GetBodies())
         {
             const auto b = GetPtr(body);
-            if (Draw(drawer, *b, settings.drawSkins, selected))
+            if (Draw(drawer, *b, drawSkins, selected))
             {
                 found = true;
             }
-            if (settings.drawLabels)
+            if (drawLabels)
             {
-                const auto location = b->GetLocation();
-                drawer.DrawString(location, Drawer::Center, "%d", GetWorldIndex(b));
+                // Use center of mass instead of body center since body center may not
+                drawer.DrawString(b->GetWorldCenter(), Drawer::Center, "%d", GetWorldIndex(b));
             }
         }
     }
@@ -383,7 +392,7 @@ void Test::DestructionListenerImpl::SayGoodbye(Joint& joint)
     }
 }
 
-Test::Test(const WorldDef& conf):
+Test::Test(WorldDef conf):
     m_world{new World(conf)}
 {
     m_destructionListener.test = this;
@@ -772,58 +781,64 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
         const auto c = contact.first;
         if ((contact.second > 1) && (c->IsTouching()))
         {
-            const auto m = c->GetManifold();
-            stream = std::stringstream();
-            stream << "Selected manifold: lp=" << m.GetLocalPoint();
-            switch (m.GetType())
-            {
-                case Manifold::e_circles:
-                    stream << " circles";
-                    break;
-                case Manifold::e_faceA:
-                {
-                    const auto count = m.GetPointCount();
-                    stream << " faceA=" << int{count};
-                    for (auto i = decltype(count){0}; i < count; ++i)
-                    {
-                        const auto mp = m.GetPoint(i);
-                        stream << " p[" << int{i} << "]={";
-                        stream << mp.contactFeature;
-                        stream << ",";
-                        stream << mp.localPoint;
-                        stream << ",";
-                        stream << mp.normalImpulse;
-                        stream << ",";
-                        stream << mp.tangentImpulse;
-                        stream << "}";
-                    }
-                    break;
-                }
-                case Manifold::e_faceB:
-                {
-                    const auto count = m.GetPointCount();
-                    stream << " faceB=" << int{count};
-                    for (auto i = decltype(count){0}; i < count; ++i)
-                    {
-                        const auto mp = m.GetPoint(i);
-                        stream << " p[" << int{i} << "]={";
-                        stream << mp.contactFeature;
-                        stream << ",";
-                        stream << mp.localPoint;
-                        stream << ",";
-                        stream << mp.normalImpulse;
-                        stream << ",";
-                        stream << mp.tangentImpulse;
-                        stream << "}";
-                    }
-                    break;
-                }
-                default: break;
-            }
-            drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
-            m_textLine += DRAW_STRING_NEW_LINE;
+            DrawStats(drawer, c->GetManifold());
         }
     }
+}
+
+void Test::DrawStats(Drawer &drawer, const Manifold &m)
+{
+    std::stringstream stream;
+
+    stream = std::stringstream();
+    stream << "Selected manifold: lp=" << m.GetLocalPoint();
+    switch (m.GetType())
+    {
+        case Manifold::e_circles:
+            stream << " circles";
+            break;
+        case Manifold::e_faceA:
+        {
+            const auto count = m.GetPointCount();
+            stream << " faceA=" << int{count};
+            for (auto i = decltype(count){0}; i < count; ++i)
+            {
+                const auto mp = m.GetPoint(i);
+                stream << " p[" << int{i} << "]={";
+                stream << mp.contactFeature;
+                stream << ",";
+                stream << mp.localPoint;
+                stream << ",";
+                stream << mp.normalImpulse;
+                stream << ",";
+                stream << mp.tangentImpulse;
+                stream << "}";
+            }
+            break;
+        }
+        case Manifold::e_faceB:
+        {
+            const auto count = m.GetPointCount();
+            stream << " faceB=" << int{count};
+            for (auto i = decltype(count){0}; i < count; ++i)
+            {
+                const auto mp = m.GetPoint(i);
+                stream << " p[" << int{i} << "]={";
+                stream << mp.contactFeature;
+                stream << ",";
+                stream << mp.localPoint;
+                stream << ",";
+                stream << mp.normalImpulse;
+                stream << ",";
+                stream << mp.tangentImpulse;
+                stream << "}";
+            }
+            break;
+        }
+        default: break;
+    }
+    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
+    m_textLine += DRAW_STRING_NEW_LINE;
 }
 
 void Test::DrawStats(Drawer& drawer, const Fixture& fixture)
@@ -952,9 +967,6 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 
     if (settings.pause)
     {
-        drawer.DrawString(5, m_textLine, Drawer::Left, "****PAUSED****");
-        m_textLine += DRAW_STRING_NEW_LINE;
-
         if ((settings.dt == 0) && m_mouseJoint)
         {
             const auto bodyB = m_mouseJoint->GetBodyB();
@@ -1085,7 +1097,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
     PostStep(settings, drawer);
 
     const auto selectedFixtures = GetSelectedFixtures();
-    const auto selectedFound = Draw(drawer, *m_world, settings, selectedFixtures);
+    const auto selectedFound = DrawWorld(drawer, *m_world, settings, selectedFixtures);
     if (!selectedFixtures.empty() && !selectedFound)
     {
         SetSelectedFixtures(Fixtures{});

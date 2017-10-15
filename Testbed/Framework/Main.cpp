@@ -19,8 +19,15 @@
 
 #include <PlayRho/Common/Version.hpp>
 
+#if defined(__APPLE__)
+#include <OpenGL/gl3.h>
+#else
+#include <GL/glew.h>
+#endif
+
 #include "imgui.h"
-#include "RenderGL3.h"
+#include "imgui_internal.h"
+#include "imgui_impl_glfw_gl3.h"
 #include "DebugDraw.hpp"
 #include "Test.hpp"
 #include "TestEntry.hpp"
@@ -36,12 +43,6 @@
 #include <iomanip>
 #include <memory>
 #include <string>
-
-#if defined(__APPLE__)
-#include <OpenGL/gl3.h>
-#else
-#include <GL/glew.h>
-#endif
 
 #include <GLFW/glfw3.h>
 #include <cstdio>
@@ -63,20 +64,14 @@ using namespace playrho;
 //
 struct UIState
 {
-    bool showMenu;
-    int scroll;
-    int scrollarea1;
-    bool mouseOverMenu;
-    bool chooseTest;
+    bool showMenu = true;
 };
 
 class Selection
 {
 public:
-    /// @brief Size type.
-    using size_type = std::size_t;
     
-    Selection(size_type size, size_type selection = 0):
+    Selection(int size, int selection = 0):
 	    m_size(size),
     	m_selection(selection < size? selection: 0)
     {
@@ -84,12 +79,12 @@ public:
         assert(selection < size);
     }
     
-    size_type Get() const
+    int Get() const
     {
         return m_selection;
     }
     
-    void Set(size_type selection)
+    void Set(int selection)
     {
         assert(selection < m_size);
         if (selection < m_size)
@@ -110,27 +105,24 @@ public:
     }
     
 private:
-    size_type m_selection = 0;
-    size_type m_size = 0;
+    int m_selection = 0;
+    int m_size = 0;
 };
 
 class TestSuite
 {
 public:
-    /// @brief Size type.
-    using size_type = std::size_t;
-    
-    TestSuite(Span<const TestEntry> testEntries, size_type index = 0):
+    TestSuite(Span<const TestEntry> testEntries, int index = 0):
     	m_testEntries(testEntries),
-    	m_testIndex(index < testEntries.size()? index: 0)
+    	m_testIndex(index < static_cast<int>(testEntries.size())? index: 0)
     {
         assert(testEntries.size() > 0);
-        m_test = testEntries[m_testIndex].createFcn();
+        m_test = testEntries[static_cast<unsigned>(m_testIndex)].createFcn();
     }
     
-    size_type GetTestCount() const
+    int GetTestCount() const
     {
-        return m_testEntries.size();
+        return static_cast<int>(m_testEntries.size());
     }
     
     Test* GetTest() const
@@ -138,7 +130,7 @@ public:
         return m_test.get();
     }
     
-    size_type GetIndex() const
+    int GetIndex() const
     {
         return m_testIndex;
     }
@@ -150,10 +142,10 @@ public:
     
     const char* GetName() const
     {
-        return m_testEntries[m_testIndex].name;
+        return m_testEntries[static_cast<unsigned>(m_testIndex)].name;
     }
     
-    void SetIndex(size_type index)
+    void SetIndex(int index)
     {
         assert(index < GetTestCount());
         
@@ -163,13 +155,14 @@ public:
     
     void RestartTest()
     {
-        m_test = m_testEntries[m_testIndex].createFcn();
+        m_test = m_testEntries[static_cast<unsigned>(m_testIndex)].createFcn();
     }
     
 private:
     Span<const TestEntry> m_testEntries;
-    size_type m_testIndex;
     std::unique_ptr<Test> m_test;
+public:
+    int m_testIndex;
 };
         
 //
@@ -190,7 +183,6 @@ namespace
     Coord2D mouseScreen = Coord2D{0.0, 0.0};
     Length2D mouseWorld = Length2D{};
     
-    const auto menuY = 10;
     const auto menuWidth = 200;
     auto menuX = 0;
     auto menuHeight = 0;
@@ -219,25 +211,19 @@ static auto GetCwd()
 }
 #endif
 
-static void CreateUI()
+static void CreateUI(GLFWwindow* window)
 {
-    ui.showMenu = true;
-    ui.scroll = 0;
-    ui.scrollarea1 = 0;
-    ui.chooseTest = false;
-    ui.mouseOverMenu = false;
-
     // Init UI
 #ifdef DONT_EMBED_FONT_DATA
     const char* fontPaths[] = {
-        // Path if Testbed running from MSVS or Xcode Build folder.
-        "../../Testbed/Data/DroidSans.ttf",
+        // Path if Testbed app running from Testbed folder
+        "Data/DroidSans.ttf",
         
         // This is the original path...
         "../Data/DroidSans.ttf",
 
-        // Path if Testbed app running from Testbed folder
-        "Data/DroidSans.ttf",
+        // Path if Testbed running from MSVS or Xcode Build folder.
+        "../../Testbed/Data/DroidSans.ttf",
         
         // Possibly a relative path for windows...
         "../../../../Data/DroidSans.ttf",
@@ -256,27 +242,30 @@ static void CreateUI()
     for (auto&& fontPath: fontPaths)
     {
         fprintf(stderr, "Attempting to load font from \"%s/%s\", ", cwd.c_str(), fontPath);
-        const auto data = RenderGLGetFileData(fontPath);
-	    if (data)
-    	{
-            fontLoaded = RenderGLInitFont(data);
-            std::free(data);
-            
-            if (fontLoaded)
+        auto data_size = 0;
+        void* data = ImFileLoadToMemory(fontPath, "rb", &data_size, 0);
+        if (data)
+        {
+            const auto font = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(data, data_size, 14.f);
+            if (font)
             {
+                fontLoaded = true;
                 fprintf(stderr, "succeeded.\n");
                 break;
             }
-    	}
+        }
         fprintf(stderr, " failed.\n");
     }
     if (!fontLoaded)
     {
-        fprintf(stderr, "Unable to find the font data file. GUI text support disabled.\n",
-                "http://www.kottke.org/plus/type/silkscreen/");
+        fprintf(stderr, "Unable to load external font data. No text may appear.\n");
     }
 #else
-    if (RenderGLInitFont(DroidSans_ttf))
+    auto fontConf = ImFontConfig{};
+    fontConf.FontDataOwnedByAtlas = false;
+    if (ImGui::GetIO().Fonts->AddFontFromMemoryTTF(DroidSans_ttf,
+                                                   static_cast<int>(DroidSans_ttf_len),
+                                                   14.0f, &fontConf))
     {
         printf("Using embedded DroidSans TTF data.\n");
     }
@@ -285,13 +274,22 @@ static void CreateUI()
         fprintf(stderr, "Unable to use embedded font. GUI text support disabled.\n");
     }
 #endif
-
-    if (!RenderGLInit())
+    
+    if (!ImGui_ImplGlfwGL3_Init(window, false))
     {
         fprintf(stderr, "Could not init GUI renderer.\n");
         assert(false);
         return;
     }
+    
+    ImGuiStyle& style = ImGui::GetStyle();
+    style.FrameRounding = style.GrabRounding = style.ScrollbarRounding = 2.0f;
+    style.FramePadding = ImVec2(4, 2);
+    style.DisplayWindowPadding = ImVec2(0, 0);
+    style.DisplaySafeAreaPadding = ImVec2(0, 0);
+
+    //ImGuiIO& io = ImGui::GetIO();
+    //io.FontGlobalScale = 0.95f;
 }
 
 static void ResizeWindow(GLFWwindow*, int width, int height)
@@ -357,7 +355,10 @@ static Test::Key GlfwKeyToTestKey(int key)
 
 static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    NOT_USED(scancode);
+    ImGui_ImplGlfwGL3_KeyCallback(window, key, scancode, action, mods);
+    const auto keys_for_ui = ImGui::GetIO().WantCaptureKeyboard;
+    if (keys_for_ui)
+        return;
 
     if (action == GLFW_PRESS)
     {
@@ -477,8 +478,10 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
     // else GLFW_REPEAT
 }
 
-static void MouseButton(GLFWwindow*, const int button, const int action, const int mods)
+static void MouseButton(GLFWwindow* window, const int button, const int action, const int mods)
 {
+    ImGui_ImplGlfwGL3_MouseButtonCallback(window, button, action, mods);
+
     const auto forMenu = (mouseScreen.x >= menuX);
 
     switch (button)
@@ -553,13 +556,12 @@ static void MouseMotion(GLFWwindow*, double xd, double yd)
     }
 }
 
-static void ScrollCallback(GLFWwindow*, double, double dy)
+static void ScrollCallback(GLFWwindow* window, double dx, double dy)
 {
-    if (ui.mouseOverMenu)
-    {
-        ui.scroll = -int(dy);
-    }
-    else
+    ImGui_ImplGlfwGL3_ScrollCallback(window, dx, dy);
+    const auto mouse_for_ui = ImGui::GetIO().WantCaptureMouse;
+
+    if (!mouse_for_ui)
     {
         if (dy > 0)
         {
@@ -606,133 +608,149 @@ static void Simulate(Drawer& drawer)
     }
 }
 
-static bool UserInterface(int mousex, int mousey, unsigned char mousebutton, int mscroll)
+static bool TestEntriesGetName(void*, int idx, const char** out_name)
+{
+    *out_name = g_testSuite->GetName(static_cast<unsigned>(idx));
+    return true;
+}
+
+static bool UserInterface()
 {
     auto shouldQuit = false;
 
-    imguiBeginFrame(mousex, mousey, mousebutton, mscroll);
-
-    ui.mouseOverMenu = false;
     if (ui.showMenu)
     {
-        const auto over = imguiBeginScrollArea("Testbed Controls",
-                                               menuX, menuY, menuWidth, menuHeight,
-                                               &ui.scrollarea1);
-        if (over) ui.mouseOverMenu = true;
+        const auto neededSettings = g_testSuite->GetTest()->GetNeededSettings();
+        const auto testSettings = g_testSuite->GetTest()->GetSettings();
 
-        imguiLabel("Test:");
-        if (imguiButton(g_testSuite->GetName(), true))
+        ImGui::SetNextWindowPos(ImVec2(camera.m_width - menuWidth - 10, 10));
+        ImGui::SetNextWindowSize(ImVec2(menuWidth, camera.m_height - 20));
+        ImGui::Begin("Testbed Controls", &ui.showMenu,
+                     ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoCollapse);
+        ImGui::PushAllowKeyboardFocus(false); // Disable TAB
+        
+        //ImGui::PushItemWidth(ImGui::CalcItemWidth() /* -1.0f */);
+
+        ImGui::Text("Test:");
+        ImGui::SameLine();
+        auto current_item = g_selection->Get();
+        if (ImGui::Combo("##Test", &current_item, TestEntriesGetName, nullptr,
+                         g_testSuite->GetTestCount(), g_testSuite->GetTestCount()))
         {
-            ui.chooseTest = !ui.chooseTest;
+            g_selection->Set(current_item);
         }
 
-        imguiSeparatorLine();
+        ImGui::Spacing();
+        ImGui::Separator();
+        ImGui::Spacing();
 
-        const auto defaultLinearSlop = StripUnit(DefaultLinearSlop);
-        imguiSlider("Reg Vel Iters", &settings.regVelocityIterations, 0, 100, 1, true);
-        imguiSlider("Reg Pos Iters", &settings.regPositionIterations, 0, 100, 1, true);
-        imguiSlider("TOI Vel Iters", &settings.toiVelocityIterations, 0, 100, 1, true);
-        imguiSlider("TOI Pos Iters", &settings.toiPositionIterations, 0, 100, 1, true);
-        imguiSlider("Max Sub Steps", &settings.maxSubSteps, 0, 100, 1, true);
-        imguiSlider("Hertz", &settings.hz, -120.0f, 120.0f, 5.0f, true);
-        imguiSlider("Linear Slop", &settings.linearSlop,
-                    static_cast<float>(defaultLinearSlop / 10),
-                    static_cast<float>(defaultLinearSlop),
-                    static_cast<float>(defaultLinearSlop / 100),
-                    true);
-        imguiSlider("Angular Slop", &settings.angularSlop,
-                    static_cast<float>(Pi * 2 / 1800.0),
-                    static_cast<float>(Pi * 2 / 18.0), 0.001f,
-                    true);
-        imguiSlider("Reg Min Sep", &settings.regMinSeparation,
-                    -5 * static_cast<float>(defaultLinearSlop),
-                    -0 * static_cast<float>(defaultLinearSlop),
-                    static_cast<float>(defaultLinearSlop) / 20,
-                    true);
-        imguiSlider("TOI Min Sep", &settings.toiMinSeparation,
-                    -5 * static_cast<float>(defaultLinearSlop),
-                    -0 * static_cast<float>(defaultLinearSlop),
-                    static_cast<float>(defaultLinearSlop) / 20,
-                    true);
-        imguiSlider("Max Translation", &settings.maxTranslation, 0.0f, 12.0f, 0.05f, true);
-        imguiSlider("Max Rotation", &settings.maxRotation, 0.0f, 360.0f, 1.0f, true);
-        imguiSlider("Max Lin Correct", &settings.maxLinearCorrection, 0.0f, 1.0f, 0.01f, true);
-        imguiSlider("Max Ang Correct", &settings.maxAngularCorrection, 0.0f, 90.0f, 1.0f, true);
-        imguiSlider("Reg Resol % Rate", &settings.regPosResRate, 0, 100, 1, true);
-        imguiSlider("TOI Resol % Rate", &settings.toiPosResRate, 0, 100, 1, true);
-        
-        if (imguiCheck("Sleep", settings.enableSleep, true))
-            settings.enableSleep = !settings.enableSleep;
-        if (imguiCheck("Warm Starting", settings.enableWarmStarting, true))
-            settings.enableWarmStarting = !settings.enableWarmStarting;
-        if (imguiCheck("Time of Impact", settings.enableContinuous, true))
-            settings.enableContinuous = !settings.enableContinuous;
-        if (imguiCheck("Sub-Stepping", settings.enableSubStepping, true))
-            settings.enableSubStepping = !settings.enableSubStepping;
+        const auto defaultLinearSlop = static_cast<float>(StripUnit(DefaultLinearSlop));
 
-        imguiSeparatorLine();
+        ImGui::PushItemWidth(100);
 
-        if (imguiCheck("Shapes", settings.drawShapes, true))
-            settings.drawShapes = !settings.drawShapes;
-        if (imguiCheck("Joints", settings.drawJoints, true))
-            settings.drawJoints = !settings.drawJoints;
-        if (imguiCheck("Skins", settings.drawSkins, true))
-            settings.drawSkins = !settings.drawSkins;
-        if (imguiCheck("AABBs", settings.drawAABBs, true))
-            settings.drawAABBs = !settings.drawAABBs;
-        if (imguiCheck("Labels", settings.drawLabels, true))
-            settings.drawLabels = !settings.drawLabels;
-        if (imguiCheck("Contact Points", settings.drawContactPoints, true))
-            settings.drawContactPoints = !settings.drawContactPoints;
-        if (imguiCheck("Contact Normals", settings.drawContactNormals, true))
-            settings.drawContactNormals = !settings.drawContactNormals;
-        if (imguiCheck("Contact Impulses", settings.drawContactImpulse, true))
-            settings.drawContactImpulse = !settings.drawContactImpulse;
-        if (imguiCheck("Friction Impulses", settings.drawFrictionImpulse, true))
-            settings.drawFrictionImpulse = !settings.drawFrictionImpulse;
-        if (imguiCheck("Center of Masses", settings.drawCOMs, true))
-            settings.drawCOMs = !settings.drawCOMs;
-        if (imguiCheck("Statistics", settings.drawStats, true))
-            settings.drawStats = !settings.drawStats;
-        if (imguiCheck("Pause", settings.pause, true))
-            settings.pause = !settings.pause;
-
-        if (imguiButton("Single Step", true))
-            settings.singleStep = !settings.singleStep;
-        if (imguiButton("Restart", true))
-            g_testSuite->RestartTest();
-        if (imguiButton("Quit", true))
-            shouldQuit = true;
-
-        imguiEndScrollArea();
-    }
-
-    const auto testMenuWidth = 200;
-    if (ui.chooseTest)
-    {
-        static int testScroll = 0;
-        const auto over = imguiBeginScrollArea("Choose Sample",
-                                               camera.m_width - menuWidth - testMenuWidth - 20, 10,
-                                               testMenuWidth, camera.m_height - 20,
-                                               &testScroll);
-        if (over) ui.mouseOverMenu = true;
-
-        const auto testCount = g_testSuite->GetTestCount();
-        for (auto i = decltype(testCount){0}; i < testCount; ++i)
+        if (ImGui::CollapsingHeader("Basic Step Options", ImGuiTreeNodeFlags_DefaultOpen))
         {
-            if (imguiItem(g_testSuite->GetName(i), true))
+            ImGui::SliderFloat("Frequency", &settings.hz, -120.0f, 120.0f, "%.0f hz");
+            ImGui::SliderInt("Vel. Iter.", &settings.regVelocityIterations, 0, 100);
+            ImGui::SliderInt("Pos. Iter.", &settings.regPositionIterations, 0, 100);
+        }
+
+        if (ImGui::CollapsingHeader("Advanced Step Options"))
+        {
+            ImGui::SliderFloat("Frequency", &settings.hz, -120.0f, 120.0f, "%.0f hz");
+            ImGui::SliderFloat("Max Translation", &settings.maxTranslation, 0.0f, 12.0f);
+            ImGui::SliderFloat("Max Rotation", &settings.maxRotation, 0.0f, 360.0f);
+            ImGui::SliderFloat("Linear Slop", &settings.linearSlop,
+                               defaultLinearSlop / 10, defaultLinearSlop);
+            ImGui::SliderFloat("Angular Slop", &settings.angularSlop,
+                               static_cast<float>(Pi * 2 / 1800.0),
+                               static_cast<float>(Pi * 2 / 18.0));
+            ImGui::SliderFloat("Max Lin Correct", &settings.maxLinearCorrection, 0.0f, 1.0f);
+            ImGui::SliderFloat("Max Ang Correct", &settings.maxAngularCorrection, 0.0f, 90.0f);
+
+            if (ImGui::CollapsingHeader("Reg Phase Processing", ImGuiTreeNodeFlags_DefaultOpen))
             {
-                g_selection->Set(i);
-                g_testSuite->SetIndex(i);
-                ui.chooseTest = false;
+                ImGui::SliderInt("Vel Iters", &settings.regVelocityIterations, 0, 100);
+                ImGui::SliderInt("Pos Iters", &settings.regPositionIterations, 0, 100);
+                ImGui::SliderFloat("Min Sep", &settings.regMinSeparation,
+                                   -5 * defaultLinearSlop, -0 * defaultLinearSlop);
+                ImGui::SliderInt("Resol Rate", &settings.regPosResRate, 0, 100, "%.0f %%");
+                if (ImGui::IsItemHovered())
+                {
+                    ImGui::SetTooltip("This is the %% of overlap that will"
+                                      " be resolved per position iteration.");
+                }
+                ImGui::Checkbox("Allow Sleeping", &settings.enableSleep);
+                ImGui::Checkbox("Warm Starting", &settings.enableWarmStarting);
+            }
+            if (ImGui::CollapsingHeader("TOI Phase Processing", ImGuiTreeNodeFlags_DefaultOpen))
+            {
+                ImGui::Checkbox("Perform Continuous", &settings.enableContinuous);
+                ImGui::SliderInt("Vel Iters", &settings.toiVelocityIterations, 0, 100);
+                ImGui::SliderInt("Pos Iters", &settings.toiPositionIterations, 0, 100);
+                ImGui::SliderFloat("Min Sep", &settings.toiMinSeparation,
+                                   -5 * defaultLinearSlop, -0 * defaultLinearSlop);
+                ImGui::SliderInt("Resol Rate", &settings.toiPosResRate, 0, 100, "%.0f %%");
+                if (ImGui::IsItemHovered())
+                {
+                    ImGui::SetTooltip("This is the %% of overlap that will"
+                                      " be resolved per position iteration.");
+                }
+                ImGui::SliderInt("Max Sub Steps", &settings.maxSubSteps, 0, 100);
+                ImGui::Checkbox("Sub-Step", &settings.enableSubStepping);
             }
         }
 
-        imguiEndScrollArea();
-    }
+        ImGui::PopItemWidth();
 
-    imguiEndFrame();
-    
+        if (ImGui::CollapsingHeader("Output Options", ImGuiTreeNodeFlags_DefaultOpen))
+        {
+            ImGui::Checkbox("Shapes", &settings.drawShapes);
+            ImGui::Checkbox("Joints", &settings.drawJoints);
+            if (neededSettings & (0x1u << Test::NeedDrawSkinsField))
+            {
+                auto value = testSettings.drawSkins;
+                ImGui::Checkbox("Skins (required)", &value);
+            }
+            else
+            {
+                ImGui::Checkbox("Skins", &settings.drawSkins);
+            }
+            ImGui::Checkbox("AABBs", &settings.drawAABBs);
+            if (neededSettings & (0x1u << Test::NeedDrawLabelsField))
+            {
+                auto value = testSettings.drawLabels;
+                ImGui::Checkbox("Labels (required)", &value);
+            }
+            else
+            {
+                ImGui::Checkbox("Labels", &settings.drawLabels);
+            }
+            ImGui::Checkbox("Contact Points", &settings.drawContactPoints);
+            ImGui::Checkbox("Contact Normals", &settings.drawContactNormals);
+            ImGui::Checkbox("Contact Impulses", &settings.drawContactImpulse);
+            ImGui::Checkbox("Friction Impulses", &settings.drawFrictionImpulse);
+            ImGui::Checkbox("Center of Masses", &settings.drawCOMs);
+            ImGui::Checkbox("Statistics", &settings.drawStats);
+        }
+        
+        ImGui::Spacing();
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::Checkbox("Pause", &settings.pause);
+
+        ImVec2 button_sz = ImVec2(-1, 0);
+        if (ImGui::Button("Single Step", button_sz))
+            settings.singleStep = !settings.singleStep;
+        if (ImGui::Button("Restart", button_sz))
+            g_testSuite->RestartTest();
+        if (ImGui::Button("Quit", button_sz))
+            shouldQuit = true;
+
+        ImGui::PopAllowKeyboardFocus();
+        ImGui::End();
+    }
     return !shouldQuit;
 }
 
@@ -754,20 +772,26 @@ static void ShowFrameInfo(double frameTime, double fps)
     stream << " Refresh=" << (1000.0 * frameTime) << "ms";
     stream << std::setprecision(0);
     stream << " FPS=" << fps;
-    AddGfxCmdText(5, 5, TEXT_ALIGN_LEFT, stream.str().c_str(), static_cast<unsigned int>(WHITE));
+    
+    ImGui::Begin("Overlay", nullptr, ImVec2(0,0), 0.0f,
+                 ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoInputs|
+                 ImGuiWindowFlags_AlwaysAutoResize|ImGuiWindowFlags_NoScrollbar);
+    ImGui::SetCursorPos(ImVec2(5, camera.m_height - 20));
+    ImGui::TextUnformatted(stream.str().c_str());
+    ImGui::End();
 }
 
 int main()
 {
-    TestSuite testSuite(GetTestEntries());
-    Selection selection(testSuite.GetTestCount());
-    g_testSuite = &testSuite;
-    g_selection = &selection;
-
 #if defined(_WIN32)
     // Enable memory-leak reports
     _CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF | _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG));
 #endif
+
+    TestSuite testSuite(GetTestEntries());
+    Selection selection(testSuite.GetTestCount());
+    g_testSuite = &testSuite;
+    g_selection = &selection;
 
     camera.m_width = 1280; // 1152;
     camera.m_height = 980; // 864;
@@ -811,6 +835,9 @@ int main()
            buildVersion.major, buildVersion.minor, buildVersion.revision, buildDetails.c_str(),
            glGetString(GL_VERSION), glGetString(GL_SHADING_LANGUAGE_VERSION));
 
+    glfwSwapInterval(1); // Control the frame rate. One draw per monitor refresh.
+    glfwInit();
+
     glfwSetScrollCallback(mainWindow, ScrollCallback);
     glfwSetWindowSizeCallback(mainWindow, ResizeWindow);
     glfwSetKeyCallback(mainWindow, KeyCallback);
@@ -828,10 +855,7 @@ int main()
     }
 #endif
     
-    CreateUI();
-    
-    // Control the frame rate. One draw per monitor refresh.
-    glfwSwapInterval(1);
+    CreateUI(mainWindow);
     
     auto time1 = glfwGetTime();
     auto frameTime = 0.0;
@@ -845,12 +869,9 @@ int main()
             glViewport(0, 0, camera.m_width, camera.m_height);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            const auto mscroll = ui.scroll;
-            ui.scroll = 0;
-            const auto mousex = int(mouseScreen.x);
-            const auto mousey = camera.m_height - int(mouseScreen.y);
-            unsigned char mousebutton = (leftMouseDown)? IMGUI_MBUT_LEFT: 0;
-            if (!UserInterface(mousex, mousey, mousebutton, mscroll))
+            ImGui_ImplGlfwGL3_NewFrame();
+
+            if (!UserInterface())
 	            glfwSetWindowShouldClose(mainWindow, GL_TRUE);
 
             Simulate(drawer);
@@ -867,14 +888,17 @@ int main()
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             glDisable(GL_DEPTH_TEST);
-            RenderGLFlush(camera.m_width, camera.m_height);
+            //RenderGLFlush(camera.m_width, camera.m_height);
+
+            ImGui::Render();
 
             glfwSwapBuffers(mainWindow);
             glfwPollEvents();
         }
     }
 
-    RenderGLDestroy();
+    //RenderGLDestroy();
+    ImGui_ImplGlfwGL3_Shutdown();
     glfwTerminate();
 
     return 0;

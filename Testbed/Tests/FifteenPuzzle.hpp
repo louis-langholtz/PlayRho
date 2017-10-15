@@ -33,6 +33,9 @@ namespace playrho {
         
         FifteenPuzzle()
         {
+            m_settings.drawLabels = true;
+            m_settings.drawSkins = true;
+            m_neededSettings = (1 << NeedDrawLabelsField)|(1 << NeedDrawSkinsField);
             m_world->SetGravity(LinearAcceleration2D{});
             const auto enclosure = CreateSquareEnclosingBody(*m_world,
                 16 * Meter + 2 * GetVertexRadius(), ShapeConf{}
@@ -79,23 +82,11 @@ namespace playrho {
             return body;
         }
         
-        void PostStep(const Settings& settings, Drawer& drawer) override
+        void PostStep(const Settings&, Drawer& drawer) override
         {
             drawer.DrawString(5, m_textLine, Drawer::Left,
                 "Slide square tiles around using the mouse. See if you can re-order them. Good luck!");
             m_textLine += DRAW_STRING_NEW_LINE;
-            if (!settings.drawSkins)
-            {
-                drawer.DrawString(5, m_textLine, Drawer::Left,
-                                  "Enable \"Skins\" to better see what things look like!");
-                m_textLine += DRAW_STRING_NEW_LINE;
-            }
-            if (!settings.drawLabels)
-            {
-                drawer.DrawString(5, m_textLine, Drawer::Left,
-                                  "Enable \"Labels\" to get a better idea of what's what!");
-                m_textLine += DRAW_STRING_NEW_LINE;
-            }
         }
         
     };
