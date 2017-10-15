@@ -33,7 +33,7 @@ public:
         {
             BodyDef bd;
             bd.location = Vec2(0.0f, 0.0f) * Meter;
-            const auto body = m_world->CreateBody(bd);
+            const auto body = m_world.CreateBody(bd);
             body->CreateFixture(std::make_shared<EdgeShape>(Vec2(50.0f, 0.0f) * Meter, Vec2(-50.0f, 0.0f) * Meter));
         }
 
@@ -53,7 +53,7 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(x + 5.0f, 1.05f + 2.5f * i) * Meter;
                 bd.angle = Radian * RandomFloat(-Pi, Pi);
-                const auto body = m_world->CreateBody(bd);
+                const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(circle1);
                 body->CreateFixture(circle2);
             }
@@ -72,7 +72,7 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(x - 5.0f, 1.05f + 2.5f * i) * Meter;
                 bd.angle = Radian * RandomFloat(-Pi, Pi);
-                const auto body = m_world->CreateBody(bd);
+                const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(polygon1);
                 body->CreateFixture(polygon2);
             }
@@ -110,7 +110,7 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(x, 2.05f + 2.5f * i) * Meter;
                 bd.angle = Real{0.0f} * Radian;
-                const auto body = m_world->CreateBody(bd);
+                const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(triangle1);
                 body->CreateFixture(triangle2);
             }
@@ -131,7 +131,7 @@ public:
             BodyDef bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2( 0.0f, 2.0f ) * Meter;
-            const auto body = m_world->CreateBody(bd);
+            const auto body = m_world.CreateBody(bd);
             body->CreateFixture(bottom);
             body->CreateFixture(left);
             body->CreateFixture(right);

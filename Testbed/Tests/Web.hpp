@@ -30,7 +30,7 @@ class Web : public Test
 public:
     Web()
     {
-        const auto ground = m_world->CreateBody();
+        const auto ground = m_world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 
         {
@@ -41,19 +41,19 @@ public:
             bd.type = BodyType::Dynamic;
 
             bd.location = Vec2(-5.0f, 5.0f) * Meter;
-            m_bodies[0] = m_world->CreateBody(bd);
+            m_bodies[0] = m_world.CreateBody(bd);
             m_bodies[0]->CreateFixture(shape);
 
             bd.location = Vec2(5.0f, 5.0f) * Meter;
-            m_bodies[1] = m_world->CreateBody(bd);
+            m_bodies[1] = m_world.CreateBody(bd);
             m_bodies[1]->CreateFixture(shape);
 
             bd.location = Vec2(5.0f, 15.0f) * Meter;
-            m_bodies[2] = m_world->CreateBody(bd);
+            m_bodies[2] = m_world.CreateBody(bd);
             m_bodies[2]->CreateFixture(shape);
 
             bd.location = Vec2(-5.0f, 15.0f) * Meter;
-            m_bodies[3] = m_world->CreateBody(bd);
+            m_bodies[3] = m_world.CreateBody(bd);
             m_bodies[3]->CreateFixture(shape);
 
             DistanceJointDef jd;
@@ -70,7 +70,7 @@ public:
             p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
             d = p2 - p1;
             jd.length = GetLength(d);
-            m_joints[0] = m_world->CreateJoint(jd);
+            m_joints[0] = m_world.CreateJoint(jd);
 
             jd.bodyA = ground;
             jd.bodyB = m_bodies[1];
@@ -80,7 +80,7 @@ public:
             p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
             d = p2 - p1;
             jd.length = GetLength(d);
-            m_joints[1] = m_world->CreateJoint(jd);
+            m_joints[1] = m_world.CreateJoint(jd);
 
             jd.bodyA = ground;
             jd.bodyB = m_bodies[2];
@@ -90,7 +90,7 @@ public:
             p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
             d = p2 - p1;
             jd.length = GetLength(d);
-            m_joints[2] = m_world->CreateJoint(jd);
+            m_joints[2] = m_world.CreateJoint(jd);
 
             jd.bodyA = ground;
             jd.bodyB = m_bodies[3];
@@ -100,7 +100,7 @@ public:
             p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
             d = p2 - p1;
             jd.length = GetLength(d);
-            m_joints[3] = m_world->CreateJoint(jd);
+            m_joints[3] = m_world.CreateJoint(jd);
 
             jd.bodyA = m_bodies[0];
             jd.bodyB = m_bodies[1];
@@ -110,7 +110,7 @@ public:
             p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
             d = p2 - p1;
             jd.length = GetLength(d);
-            m_joints[4] = m_world->CreateJoint(jd);
+            m_joints[4] = m_world.CreateJoint(jd);
 
             jd.bodyA = m_bodies[1];
             jd.bodyB = m_bodies[2];
@@ -120,7 +120,7 @@ public:
             p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
             d = p2 - p1;
             jd.length = GetLength(d);
-            m_joints[5] = m_world->CreateJoint(jd);
+            m_joints[5] = m_world.CreateJoint(jd);
 
             jd.bodyA = m_bodies[2];
             jd.bodyB = m_bodies[3];
@@ -130,7 +130,7 @@ public:
             p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
             d = p2 - p1;
             jd.length = GetLength(d);
-            m_joints[6] = m_world->CreateJoint(jd);
+            m_joints[6] = m_world.CreateJoint(jd);
 
             jd.bodyA = m_bodies[3];
             jd.bodyB = m_bodies[0];
@@ -140,7 +140,7 @@ public:
             p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
             d = p2 - p1;
             jd.length = GetLength(d);
-            m_joints[7] = m_world->CreateJoint(jd);
+            m_joints[7] = m_world.CreateJoint(jd);
         }
     }
 
@@ -153,7 +153,7 @@ public:
             {
                 if (m_bodies[i])
                 {
-                    m_world->Destroy(m_bodies[i]);
+                    m_world.Destroy(m_bodies[i]);
                     m_bodies[i] = nullptr;
                     break;
                 }
@@ -165,7 +165,7 @@ public:
             {
                 if (m_joints[i])
                 {
-                    m_world->Destroy(m_joints[i]);
+                    m_world.Destroy(m_joints[i]);
                     m_joints[i] = nullptr;
                     break;
                 }

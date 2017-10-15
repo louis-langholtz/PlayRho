@@ -34,7 +34,7 @@ public:
         const auto a = Real{1.0f};
         const auto b = Real{2.0f};
 
-        const auto ground = m_world->CreateBody();
+        const auto ground = m_world.CreateBody();
         {
             auto conf = DiskShape::Conf{};
             conf.vertexRadius = Real{2.0f} * Meter;
@@ -55,11 +55,11 @@ public:
 
             //bd.fixedRotation = true;
             bd.location = Vec2(-10.0f, y) * Meter;
-            const auto body1 = m_world->CreateBody(bd);
+            const auto body1 = m_world.CreateBody(bd);
             body1->CreateFixture(shape);
 
             bd.location = Vec2(10.0f, y) * Meter;
-            const auto body2 = m_world->CreateBody(bd);
+            const auto body2 = m_world.CreateBody(bd);
             body2->CreateFixture(shape);
 
             const auto anchor1 = Vec2(-10.0f, y + b) * Meter;
@@ -69,7 +69,7 @@ public:
             const auto pulleyDef = PulleyJointDef{body1, body2,
                 groundAnchor1, groundAnchor2, anchor1, anchor2}.UseRatio(1.5f);
 
-            m_joint1 = static_cast<PulleyJoint*>(m_world->CreateJoint(pulleyDef));
+            m_joint1 = static_cast<PulleyJoint*>(m_world.CreateJoint(pulleyDef));
         }
     }
 

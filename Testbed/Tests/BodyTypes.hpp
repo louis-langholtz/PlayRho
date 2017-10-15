@@ -29,7 +29,7 @@ class BodyTypes : public Test
 public:
     BodyTypes()
     {
-        const auto ground = m_world->CreateBody();
+        const auto ground = m_world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
 
         // Define attachment
@@ -37,7 +37,7 @@ public:
             BodyDef bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(0.0f, 3.0f) * Meter;
-            m_attachment = m_world->CreateBody(bd);
+            m_attachment = m_world.CreateBody(bd);
             auto conf = PolygonShape::Conf{};
             conf.density = Real{2} * KilogramPerSquareMeter;
             m_attachment->CreateFixture(std::make_shared<PolygonShape>(Real{0.5f} * Meter, Real{2.0f} * Meter, conf));
@@ -48,7 +48,7 @@ public:
             BodyDef bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-4.0f, 5.0f) * Meter;
-            m_platform = m_world->CreateBody(bd);
+            m_platform = m_world.CreateBody(bd);
 
             auto conf = PolygonShape::Conf{};
             conf.friction = 0.6f;
@@ -61,7 +61,7 @@ public:
             RevoluteJointDef rjd(m_attachment, m_platform, Vec2(0.0f, 5.0f) * Meter);
             rjd.maxMotorTorque = Torque{Real{50.0f} * NewtonMeter};
             rjd.enableMotor = true;
-            m_world->CreateJoint(rjd);
+            m_world.CreateJoint(rjd);
 
             PrismaticJointDef pjd(ground, m_platform, Vec2(0.0f, 5.0f) * Meter, UnitVec2::GetRight());
             pjd.maxMotorForce = Real{1000.0f} * Newton;
@@ -69,7 +69,7 @@ public:
             pjd.lowerTranslation = Real{-10.0f} * Meter;
             pjd.upperTranslation = Real{10.0f} * Meter;
             pjd.enableLimit = true;
-            m_world->CreateJoint(pjd);
+            m_world.CreateJoint(pjd);
 
             m_speed = 3.0f;
         }
@@ -79,7 +79,7 @@ public:
             BodyDef bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(0.0f, 8.0f) * Meter;
-            Body* body = m_world->CreateBody(bd);
+            Body* body = m_world.CreateBody(bd);
 
             auto conf = PolygonShape::Conf{};
             conf.friction = 0.6f;

@@ -234,7 +234,7 @@ protected:
 
     void SetMouseWorld(Length2D value) noexcept { m_mouseWorld = value; }
     
-    World* const m_world;
+    World m_world;
     TextLinePos m_textLine = TextLinePos{30};
     Settings m_settings;
     NeededSettings m_neededSettings = 0u;

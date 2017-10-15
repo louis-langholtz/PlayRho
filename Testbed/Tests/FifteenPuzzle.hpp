@@ -36,8 +36,8 @@ namespace playrho {
             m_settings.drawLabels = true;
             m_settings.drawSkins = true;
             m_neededSettings = (1 << NeedDrawLabelsField)|(1 << NeedDrawSkinsField);
-            m_world->SetGravity(LinearAcceleration2D{});
-            const auto enclosure = CreateSquareEnclosingBody(*m_world,
+            m_world.SetGravity(LinearAcceleration2D{});
+            const auto enclosure = CreateSquareEnclosingBody(m_world,
                 16 * Meter + 2 * GetVertexRadius(), ShapeConf{}
                 .UseVertexRadius(GetVertexRadius()));
             SetLocation(*enclosure, GetCenter());
@@ -76,7 +76,7 @@ namespace playrho {
             bd.bullet = true;
             bd.location = GetCenter() + relPos + Length2D{sideLength / 2, sideLength / 2};
             bd.linearDamping = 20.0f * Hertz;
-            const auto body = m_world->CreateBody(bd);
+            const auto body = m_world.CreateBody(bd);
             body->CreateFixture(std::make_shared<PolygonShape>(halfSide, halfSide, conf));
             
             return body;

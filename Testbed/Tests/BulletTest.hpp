@@ -33,7 +33,7 @@ public:
         {
             BodyDef bd;
             bd.location = Vec2(0.0f, 0.0f) * Meter;
-            Body* body = m_world->CreateBody(bd);
+            Body* body = m_world.CreateBody(bd);
 
             body->CreateFixture(std::make_shared<EdgeShape>(Vec2(-10.0f, 0.0f) * Meter, Vec2(10.0f, 0.0f) * Meter));
 
@@ -51,7 +51,7 @@ public:
             box.SetAsBox(Real{2.0f} * Meter, Real{0.1f} * Meter);
             box.SetDensity(Real{1} * KilogramPerSquareMeter);
 
-            m_body = m_world->CreateBody(bd);
+            m_body = m_world.CreateBody(bd);
             m_body->CreateFixture(std::make_shared<PolygonShape>(box));
 
             box.SetAsBox(Real{0.25f} * Meter, Real{0.25f} * Meter);
@@ -62,7 +62,7 @@ public:
             bd.location = Vec2(m_x, 10.0f) * Meter;
             bd.bullet = true;
 
-            m_bullet = m_world->CreateBody(bd);
+            m_bullet = m_world.CreateBody(bd);
             m_bullet->CreateFixture(std::make_shared<PolygonShape>(box));
 
             m_bullet->SetVelocity(Velocity{Vec2{0.0f, -50.0f} * MeterPerSecond, AngularVelocity{0}});
@@ -104,7 +104,7 @@ public:
         unsigned toiCalls = 0;
         unsigned toiIters = 0;
 #if 0
-        for (auto&& c: m_world->GetContacts())
+        for (auto&& c: m_world.GetContacts())
         {
             c.GetToiCount();
         }

@@ -67,8 +67,8 @@ public:
         bd1.angularDamping = Real(10) * Hertz;
         bd2.angularDamping = Real(10) * Hertz;
 
-        const auto body1 = m_world->CreateBody(bd1);
-        const auto body2 = m_world->CreateBody(bd2);
+        const auto body1 = m_world.CreateBody(bd1);
+        const auto body2 = m_world.CreateBody(bd2);
 
         body1->CreateFixture(std::make_shared<PolygonShape>(poly1), fd1);
         body2->CreateFixture(std::make_shared<PolygonShape>(poly2), fd2);
@@ -77,15 +77,15 @@ public:
         // It also makes the structure seem a bit more fluid by
         // acting like a suspension system.
 
-        m_world->CreateJoint(DistanceJointDef{body1, body2, p2 + m_offset, p5 + m_offset}
+        m_world.CreateJoint(DistanceJointDef{body1, body2, p2 + m_offset, p5 + m_offset}
                              .UseFrequency(Real(10) * Hertz).UseDampingRatio(Real(0.5)));
-        m_world->CreateJoint(DistanceJointDef{body1, body2, p3 + m_offset, p4 + m_offset}
+        m_world.CreateJoint(DistanceJointDef{body1, body2, p3 + m_offset, p4 + m_offset}
                              .UseFrequency(Real(10) * Hertz).UseDampingRatio(Real(0.5)));
-        m_world->CreateJoint(DistanceJointDef{body1, m_wheel, p3 + m_offset, wheelAnchor + m_offset}
+        m_world.CreateJoint(DistanceJointDef{body1, m_wheel, p3 + m_offset, wheelAnchor + m_offset}
                              .UseFrequency(Real(10) * Hertz).UseDampingRatio(Real(0.5)));
-        m_world->CreateJoint(DistanceJointDef{body2, m_wheel, p6 + m_offset, wheelAnchor + m_offset}
+        m_world.CreateJoint(DistanceJointDef{body2, m_wheel, p6 + m_offset, wheelAnchor + m_offset}
                              .UseFrequency(Real(10) * Hertz).UseDampingRatio(Real(0.5)));
-        m_world->CreateJoint(RevoluteJointDef{body2, m_chassis, p4 + m_offset});
+        m_world.CreateJoint(RevoluteJointDef{body2, m_chassis, p4 + m_offset});
     }
 
     TheoJansen()
@@ -98,7 +98,7 @@ public:
         // Ground
         {
             BodyDef bd;
-            const auto ground = m_world->CreateBody(bd);
+            const auto ground = m_world.CreateBody(bd);
 
             EdgeShape shape;
             shape.Set(Vec2(-50.0f, 0.0f) * Meter, Vec2(50.0f, 0.0f) * Meter);
@@ -122,7 +122,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-40.0f + 2.0f * i, 0.5f) * Meter;
 
-            const auto body = m_world->CreateBody(bd);
+            const auto body = m_world.CreateBody(bd);
             body->CreateFixture(circle);
         }
 
@@ -133,7 +133,7 @@ public:
             BodyDef bd;
             bd.type = BodyType::Dynamic;
             bd.location = pivot + m_offset;
-            m_chassis = m_world->CreateBody(bd);
+            m_chassis = m_world.CreateBody(bd);
             auto polygonConf = PolygonShape::Conf{};
             polygonConf.density = Real{1} * KilogramPerSquareMeter;
             m_chassis->CreateFixture(std::make_shared<PolygonShape>(Real{2.5f} * Meter, Real{1.0f} * Meter, polygonConf), sd);
@@ -145,7 +145,7 @@ public:
             BodyDef bd;
             bd.type = BodyType::Dynamic;
             bd.location = pivot + m_offset;
-            m_wheel = m_world->CreateBody(bd);
+            m_wheel = m_world.CreateBody(bd);
             auto conf = DiskShape::Conf{};
             conf.vertexRadius = Real{1.6f} * Meter;
             conf.density = Real{1} * KilogramPerSquareMeter;
@@ -158,7 +158,7 @@ public:
             jd.motorSpeed = m_motorSpeed;
             jd.maxMotorTorque = Real{400.0f} * NewtonMeter;
             jd.enableMotor = m_motorOn;
-            m_motorJoint = (RevoluteJoint*)m_world->CreateJoint(jd);
+            m_motorJoint = (RevoluteJoint*)m_world.CreateJoint(jd);
         }
 
         const auto wheelAnchor = pivot + Vec2(0.0f, -0.8f) * Meter;

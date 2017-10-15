@@ -30,7 +30,7 @@ class Prismatic : public Test
 public:
     Prismatic()
     {
-        const auto ground = m_world->CreateBody();
+        const auto ground = m_world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 
         {
@@ -39,7 +39,7 @@ public:
             bd.location = Vec2(-10.0f, 10.0f) * Meter;
             bd.angle = Real{0.5f} * Radian * Pi;
             bd.allowSleep = false;
-            const auto body = m_world->CreateBody(bd);
+            const auto body = m_world.CreateBody(bd);
             
             auto polygonConf = PolygonShape::Conf{};
             polygonConf.density = Real{5} * KilogramPerSquareMeter;
@@ -59,7 +59,7 @@ public:
             pjd.upperTranslation = Real{20.0f} * Meter;
             pjd.enableLimit = true;
 
-            m_joint = (PrismaticJoint*)m_world->CreateJoint(pjd);
+            m_joint = (PrismaticJoint*)m_world.CreateJoint(pjd);
         }
     }
 

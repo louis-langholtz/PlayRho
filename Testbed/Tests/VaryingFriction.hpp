@@ -31,7 +31,7 @@ public:
     VaryingFriction()
     {
         {
-            const auto ground = m_world->CreateBody();
+            const auto ground = m_world.CreateBody();
             ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
         }
 
@@ -43,7 +43,7 @@ public:
             bd.location = Vec2(-4.0f, 22.0f) * Meter;
             bd.angle = Real{-0.25f} * Radian;
 
-            const auto ground = m_world->CreateBody(bd);
+            const auto ground = m_world.CreateBody(bd);
             ground->CreateFixture(sliderPlank);
         }
 
@@ -51,7 +51,7 @@ public:
             BodyDef bd;
             bd.location = Vec2(10.5f, 19.0f) * Meter;
 
-            const auto ground = m_world->CreateBody(bd);
+            const auto ground = m_world.CreateBody(bd);
             ground->CreateFixture(sliderWall);
         }
 
@@ -60,7 +60,7 @@ public:
             bd.location = Vec2(4.0f, 14.0f) * Meter;
             bd.angle = Real{0.25f} * Radian;
 
-            const auto ground = m_world->CreateBody(bd);
+            const auto ground = m_world.CreateBody(bd);
             ground->CreateFixture(sliderPlank);
         }
 
@@ -68,7 +68,7 @@ public:
             BodyDef bd;
             bd.location = Vec2(-10.5f, 11.0f) * Meter;
 
-            const auto ground = m_world->CreateBody(bd);
+            const auto ground = m_world.CreateBody(bd);
             ground->CreateFixture(sliderWall);
         }
 
@@ -77,7 +77,7 @@ public:
             bd.location = Vec2(-4.0f, 6.0f) * Meter;
             bd.angle = Real{-0.25f} * Radian;
 
-            const auto ground = m_world->CreateBody(bd);
+            const auto ground = m_world.CreateBody(bd);
             ground->CreateFixture(sliderPlank);
         }
 
@@ -91,7 +91,7 @@ public:
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(-15.0f + 4.0f * i, 28.0f) * Meter;
-                const auto body = m_world->CreateBody(bd);
+                const auto body = m_world.CreateBody(bd);
 
                 shape.SetFriction(Real(friction[i]));
                 body->CreateFixture(std::make_shared<PolygonShape>(shape));

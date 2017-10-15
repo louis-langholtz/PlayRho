@@ -33,7 +33,7 @@ namespace playrho {
 
         BagOfDisks()
         {
-            m_ground = m_world->CreateBody(BodyDef{}.UseType(BodyType::Kinematic));
+            m_ground = m_world.CreateBody(BodyDef{}.UseType(BodyType::Kinematic));
             
             auto boundaryConf = ChainShape::Conf{}.UseFriction(100);
             boundaryConf.UseVertexRadius(0.04f * Meter);
@@ -63,7 +63,7 @@ namespace playrho {
                 {
                     const auto midPoint = (vertex + *prevVertex) / 2;
                     const auto angle = GetAngle(vertex - *prevVertex);
-                    const auto body = m_world->CreateBody(BodyDef{}
+                    const auto body = m_world.CreateBody(BodyDef{}
                                                           .UseType(BodyType::Dynamic)
                                                           .UseBullet(true)
                                                           .UseLocation(midPoint + vertexOffset)
@@ -71,7 +71,7 @@ namespace playrho {
                     body->CreateFixture(shape);
                     if (prevBody)
                     {
-	                    m_world->CreateJoint(RevoluteJointDef{body, prevBody, *prevVertex + vertexOffset});
+	                    m_world.CreateJoint(RevoluteJointDef{body, prevBody, *prevVertex + vertexOffset});
                     }
                     else
                     {
@@ -81,7 +81,7 @@ namespace playrho {
                 }
                 prevVertex = vertex;
             }
-            m_world->CreateJoint(RevoluteJointDef{prevBody, firstBody, vertices[0] + vertexOffset});
+            m_world.CreateJoint(RevoluteJointDef{prevBody, firstBody, vertices[0] + vertexOffset});
 
             const auto diskRadius = 0.15f * Meter;
             const auto diskShape = std::make_shared<DiskShape>(DiskShape::Conf{}
@@ -98,7 +98,7 @@ namespace playrho {
                 const auto radius = alpha + beta * angle;
                 const auto unitVector = UnitVec2::Get(angle);
                 const auto location = radius * unitVector;
-                const auto body = m_world->CreateBody(BodyDef{}
+                const auto body = m_world.CreateBody(BodyDef{}
                                                       .UseType(BodyType::Dynamic)
                                                       .UseLocation(location + vertexOffset));
                 body->CreateFixture(diskShape);

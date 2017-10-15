@@ -39,7 +39,7 @@ public:
     {
         // Ground
         {
-            const auto ground = m_world->CreateBody();
+            const auto ground = m_world.CreateBody();
             ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
         }
 
@@ -47,7 +47,7 @@ public:
         {
             BodyDef bd;
             bd.location = Vec2(0.0f, 10.0f) * Meter;
-            const auto body = m_world->CreateBody(bd);
+            const auto body = m_world.CreateBody(bd);
             m_platform = body->CreateFixture(std::make_shared<PolygonShape>(Real{3.0f} * Meter, Real{0.5f} * Meter));
             m_bottom = Real(10.0f - 0.5f) * Meter;
             m_top = Real(10.0f + 0.5f) * Meter;
@@ -58,7 +58,7 @@ public:
             BodyDef bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(0.0f, 12.0f) * Meter;
-            const auto body = m_world->CreateBody(bd);
+            const auto body = m_world.CreateBody(bd);
             auto conf = DiskShape::Conf{};
             conf.vertexRadius = m_radius;
             conf.density = Real{20} * KilogramPerSquareMeter;

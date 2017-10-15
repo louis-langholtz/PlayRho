@@ -74,14 +74,14 @@ public:
         m_square->SetDensity(Real(1) * KilogramPerSquareMeter);
         m_disk->SetDensity(Real(0.1) * KilogramPerSquareMeter);
 
-        const auto g = m_world->CreateBody(BodyDef{}.UseType(BodyType::Static));
-        const auto b = CreateEnclosure(*m_world);
-        m_joint = CreateRevoluteJoint(*m_world, g, b);
+        const auto g = m_world.CreateBody(BodyDef{}.UseType(BodyType::Static));
+        const auto b = CreateEnclosure(m_world);
+        m_joint = CreateRevoluteJoint(m_world, g, b);
     }
 
     Body* CreateBody()
     {
-        return m_world->CreateBody(BodyDef{}
+        return m_world.CreateBody(BodyDef{}
                             .UseType(BodyType::Dynamic)
                             .UseLocation(Vec2(0, 10) * Meter)
                             .UseUserData(reinterpret_cast<void*>(1)));
@@ -157,7 +157,7 @@ public:
             case Key_C:
             {
                 std::vector<Body*> bodies;
-                for (auto&& body: m_world->GetBodies())
+                for (auto&& body: m_world.GetBodies())
                 {
                     auto& b = GetRef(body);
                     if (b.GetUserData() == reinterpret_cast<void*>(1))
@@ -167,7 +167,7 @@ public:
                 }
                 for (auto&& b: bodies)
                 {
-                    m_world->Destroy(b);
+                    m_world.Destroy(b);
                 }
                 m_count = 0;
                 break;

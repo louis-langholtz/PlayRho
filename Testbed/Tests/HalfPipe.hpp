@@ -29,7 +29,7 @@ namespace playrho {
         
         HalfPipe()
         {
-            const auto pipeBody = m_world->CreateBody(BodyDef{}.UseLocation(Vec2(0, 20) * Meter));
+            const auto pipeBody = m_world.CreateBody(BodyDef{}.UseLocation(Vec2(0, 20) * Meter));
             {
                 auto conf = ChainShape::Conf{};
                 conf.UseFriction(Real(1));
@@ -38,7 +38,7 @@ namespace playrho {
                 pipeBody->CreateFixture(std::make_shared<ChainShape>(conf));
             }
 
-            const auto ballBody = m_world->CreateBody(BodyDef{}
+            const auto ballBody = m_world.CreateBody(BodyDef{}
                                                       .UseType(BodyType::Dynamic)
                                                       .UseLocation(Vec2(-19, 28) * Meter));
             ballBody->CreateFixture(std::make_shared<DiskShape>(DiskShape::Conf{}

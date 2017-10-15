@@ -75,7 +75,7 @@ public:
 
         // Ground body
         {
-            const auto ground = m_world->CreateBody();
+            const auto ground = m_world.CreateBody();
             ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
         }
 
@@ -118,7 +118,7 @@ public:
     {
         if (m_bodies[m_bodyIndex])
         {
-            m_world->Destroy(m_bodies[m_bodyIndex]);
+            m_world.Destroy(m_bodies[m_bodyIndex]);
             m_bodies[m_bodyIndex] = nullptr;
         }
 
@@ -134,7 +134,7 @@ public:
             bd.angularDamping = Real(0.02f) * Hertz;
         }
 
-        m_bodies[m_bodyIndex] = m_world->CreateBody(bd);
+        m_bodies[m_bodyIndex] = m_world.CreateBody(bd);
 
         if (index < 4)
         {
@@ -154,7 +154,7 @@ public:
         {
             if (m_bodies[i])
             {
-                m_world->Destroy(m_bodies[i]);
+                m_world.Destroy(m_bodies[i]);
                 m_bodies[i] = nullptr;
                 return;
             }
@@ -208,7 +208,7 @@ public:
         constexpr int e_maxCount = 4;
         int count = 0;
         const auto aabb = ComputeAABB(circle, transform);
-        m_world->QueryAABB(aabb, [&](Fixture* f, const ChildCounter) {
+        m_world.QueryAABB(aabb, [&](Fixture* f, const ChildCounter) {
             if (count < e_maxCount)
             {
                 const auto xfm = GetTransformation(*f);

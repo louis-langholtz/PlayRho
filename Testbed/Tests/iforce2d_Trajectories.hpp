@@ -36,7 +36,7 @@ namespace playrho {
 class iforce2d_Trajectories : public Test
 {
 public:
-    iforce2d_Trajectories(): m_groundBody{m_world->CreateBody()}
+    iforce2d_Trajectories(): m_groundBody{m_world.CreateBody()}
     {
         //add four walls to the ground body
         FixtureDef myFixtureDef;
@@ -61,7 +61,7 @@ public:
         BodyDef kinematicBody;
         kinematicBody.type = BodyType::Kinematic;
         kinematicBody.location = Length2D{11 * Meter, 22 * Meter};
-        m_targetBody = m_world->CreateBody(kinematicBody);
+        m_targetBody = m_world.CreateBody(kinematicBody);
         const auto w = BallSize * Meter;
         Length2D verts[3];
         verts[0] = Length2D(  0 * Meter, -2*w);
@@ -79,7 +79,7 @@ public:
         BodyDef myBodyDef;
         myBodyDef.type = BodyType::Dynamic;
         myBodyDef.location = Vec2(-15, 5) * Meter;
-        m_launcherBody = m_world->CreateBody(myBodyDef);
+        m_launcherBody = m_world.CreateBody(myBodyDef);
         DiskShape circleShape{DiskShape::Conf{}
             .UseVertexRadius(2 * Meter)
             .UseFriction(0.95f)
@@ -95,17 +95,17 @@ public:
         revoluteJointDef.enableMotor = true;
         revoluteJointDef.maxMotorTorque = 250 * NewtonMeter;
         revoluteJointDef.motorSpeed = 0;
-        m_world->CreateJoint( revoluteJointDef );
+        m_world.CreateJoint( revoluteJointDef );
         
         //create dynamic box body to fire
         myBodyDef.location = Length2D(0 * Meter, -5 * Meter);//will be positioned later
-        m_littleBox = m_world->CreateBody(myBodyDef);
+        m_littleBox = m_world.CreateBody(myBodyDef);
         polygonShape.SetAsBox( 0.5f * Meter, 0.5f * Meter );
         polygonShape.SetDensity(1 * KilogramPerSquareMeter);
         m_littleBox->CreateFixture(std::make_shared<PolygonShape>(polygonShape), myFixtureDef);
         
         //ball for computer 'player' to fire
-        m_littleBox2 = m_world->CreateBody(myBodyDef);
+        m_littleBox2 = m_world.CreateBody(myBodyDef);
         circleShape.SetRadius(BallSize * Meter);
         m_littleBox2->CreateFixture(std::make_shared<DiskShape>(circleShape), myFixtureDef);
         
@@ -132,7 +132,7 @@ public:
     {
         const auto t = Second / 60.0f;
         const auto stepVelocity = t * startingVelocity; // m/s
-        const auto stepGravity = t * t * m_world->GetGravity(); // m/s/s
+        const auto stepGravity = t * t * m_world.GetGravity(); // m/s/s
         
         return startingPosition + n * stepVelocity + 0.5f * (n*n+n) * stepGravity;
     }
@@ -142,7 +142,7 @@ public:
     {
         const auto t = Second / 60.0f;
         const auto stepVelocity = t * startingVelocity; // m/s
-        const auto stepGravity = t * t * m_world->GetGravity(); // m/s/s
+        const auto stepGravity = t * t * m_world.GetGravity(); // m/s/s
         return -GetY(stepVelocity) / GetY(stepGravity) - 1;
     }
     
@@ -154,7 +154,7 @@ public:
         
         const auto t = Second / 60.0f;
         const auto stepVelocity = t * startingVelocity; // m/s
-        const auto stepGravity = t * t * m_world->GetGravity(); // m/s/s
+        const auto stepGravity = t * t * m_world.GetGravity(); // m/s/s
         
         const auto n = -GetY(stepVelocity) / GetY(stepGravity) - 1;
         
@@ -168,7 +168,7 @@ public:
             return 0 * MeterPerSecond;
         
         const auto t = Second / 60.0f;
-        const auto stepGravity = t * t * m_world->GetGravity(); // m/s/s
+        const auto stepGravity = t * t * m_world.GetGravity(); // m/s/s
         
         //quadratic equation setup
         const auto a = 0.5f / GetY(stepGravity);
@@ -276,7 +276,7 @@ public:
             const auto trajectoryPosition = getTrajectoryPoint(startingPosition, startingVelocity, i);
             
             if (i > 0) {
-                m_world->RayCast(lastTP, trajectoryPosition, [&](Fixture* f, ChildCounter,
+                m_world.RayCast(lastTP, trajectoryPosition, [&](Fixture* f, ChildCounter,
                                                                  Length2D p, UnitVec2) {
                     if (f->GetBody() == m_littleBox)
                     {

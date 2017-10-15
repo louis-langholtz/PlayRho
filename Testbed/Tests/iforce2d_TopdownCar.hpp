@@ -370,15 +370,15 @@ class iforce2d_TopdownCar : public Test
 public:
     iforce2d_TopdownCar()
     {
-        m_world->SetGravity(Vec2{0, 0} * MeterPerSquareSecond);
-        m_world->SetDestructionListener(&m_destructionListener);
+        m_world.SetGravity(Vec2{0, 0} * MeterPerSquareSecond);
+        m_world.SetDestructionListener(&m_destructionListener);
         
         //set up ground areas
         {
             Fixture* groundAreaFixture;
 
             BodyDef bodyDef;
-            m_groundBody = m_world->CreateBody(bodyDef);
+            m_groundBody = m_world.CreateBody(bodyDef);
             
             PolygonShape polygonShape;
             FixtureDef fixtureDef;
@@ -396,7 +396,7 @@ public:
         //m_tire = new TDTire(m_world);
         //m_tire->setCharacteristics(100, -20, 150);
         
-        m_car = new TDCar{m_world};
+        m_car = new TDCar{&m_world};
         m_controlState = 0;
     }
     

@@ -32,14 +32,14 @@ class MotorJointTest : public Test
 public:
     MotorJointTest()
     {
-        const auto ground = m_world->CreateBody();
+        const auto ground = m_world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
 
         // Define motorized body
         BodyDef bd;
         bd.type = BodyType::Dynamic;
         bd.location = Vec2(0.0f, 8.0f) * Meter;
-        const auto body = m_world->CreateBody(bd);
+        const auto body = m_world.CreateBody(bd);
 
         auto conf = PolygonShape::Conf{};
         conf.friction = 0.6f;
@@ -49,7 +49,7 @@ public:
         auto mjd = MotorJointDef{ground, body};
         mjd.maxForce = Real{1000.0f} * Newton;
         mjd.maxTorque = Real{1000.0f} * NewtonMeter;
-        m_joint = (MotorJoint*)m_world->CreateJoint(mjd);
+        m_joint = (MotorJoint*)m_world.CreateJoint(mjd);
     }
 
     void KeyboardDown(Key key) override

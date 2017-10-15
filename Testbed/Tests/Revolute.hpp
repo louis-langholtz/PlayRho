@@ -29,7 +29,7 @@ class Revolute : public Test
 public:
     Revolute()
     {
-        const auto ground = m_world->CreateBody();
+        const auto ground = m_world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter,
                                                           Vec2( 40.0f, 0.0f) * Meter));
 
@@ -38,7 +38,7 @@ public:
             bd.type = BodyType::Dynamic;
 
             bd.location = Vec2(-10.0f, 20.0f) * Meter;
-            const auto body = m_world->CreateBody(bd);
+            const auto body = m_world.CreateBody(bd);
             auto circleConf = DiskShape::Conf{};
             circleConf.vertexRadius = 0.5f * Meter;
             circleConf.density = 5 * KilogramPerSquareMeter;
@@ -58,7 +58,7 @@ public:
             rjd.enableLimit = true;
             rjd.collideConnected = true;
 
-            m_joint = (RevoluteJoint*)m_world->CreateJoint(rjd);
+            m_joint = (RevoluteJoint*)m_world.CreateJoint(rjd);
         }
 
         {
@@ -69,7 +69,7 @@ public:
             FixtureDef fd;
             fd.filter.maskBits = 1;
 
-            m_ball = m_world->CreateBody(circle_bd);
+            m_ball = m_world.CreateBody(circle_bd);
             auto circleConf = DiskShape::Conf{};
             circleConf.vertexRadius = 3 * Meter;
             circleConf.density = 5 * KilogramPerSquareMeter;
@@ -84,14 +84,14 @@ public:
             polygon_bd.location = Vec2(20.0f, 10.0f) * Meter;
             polygon_bd.type = BodyType::Dynamic;
             polygon_bd.bullet = true;
-            const auto polygon_body = m_world->CreateBody(polygon_bd);
+            const auto polygon_body = m_world.CreateBody(polygon_bd);
             polygon_body->CreateFixture(std::make_shared<PolygonShape>(polygon_shape));
 
             RevoluteJointDef rjd(ground, polygon_body, Vec2(20.0f, 10.0f) * Meter);
             rjd.lowerAngle = -0.25f * Radian * Pi;
             rjd.upperAngle = 0 * Radian * Pi;
             rjd.enableLimit = true;
-            m_world->CreateJoint(rjd);
+            m_world.CreateJoint(rjd);
         }
 
         // Tests mass computation of a small object far from the origin
@@ -103,7 +103,7 @@ public:
             });
             polyShape.SetDensity(1 * KilogramPerSquareMeter);
         
-            const auto body = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+            const auto body = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
             body->CreateFixture(std::make_shared<PolygonShape>(polyShape));
         }
     }

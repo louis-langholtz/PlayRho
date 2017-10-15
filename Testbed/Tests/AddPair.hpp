@@ -30,7 +30,7 @@ public:
 
     AddPair()
     {
-        m_world->SetGravity(LinearAcceleration2D{});
+        m_world.SetGravity(LinearAcceleration2D{});
         {
             const auto conf = DiskShape::Conf{}
                 .UseVertexRadius(Meter / 10)
@@ -46,7 +46,7 @@ public:
             for (auto i = 0; i < 400; ++i)
             {
                 const auto location = Vec2(RandomFloat(minX, maxX), RandomFloat(minY, maxY)) * Meter;
-                const auto body = m_world->CreateBody(BodyDef{bd}.UseLocation(location));
+                const auto body = m_world.CreateBody(BodyDef{bd}.UseLocation(location));
                 body->CreateFixture(shape);
             }
         }
@@ -57,7 +57,7 @@ public:
                 .UseBullet(true)
                 .UseLocation(Length2D{-40.0f * Meter, 5.0f * Meter})
                 .UseLinearVelocity(LinearVelocity2D{Vec2(150.0f, 0.0f) * MeterPerSecond});
-            const auto body = m_world->CreateBody(bd);
+            const auto body = m_world.CreateBody(bd);
 
             const auto conf = PolygonShape::Conf{}.UseDensity(1.0f * KilogramPerSquareMeter);
             body->CreateFixture(std::make_shared<PolygonShape>(1.5f * Meter, 1.5f * Meter, conf));

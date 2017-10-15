@@ -42,7 +42,7 @@ public:
 
         // Ground body
         {
-            const auto ground = m_world->CreateBody();
+            const auto ground = m_world.CreateBody();
             auto x1 = -20.0f;
             auto y1 = 2.0f * std::cos(x1 / 10.0f * static_cast<float>(Pi));
             for (auto i = 0; i < 80; ++i)
@@ -102,7 +102,7 @@ public:
     {
         if (m_bodies[m_bodyIndex])
         {
-            m_world->Destroy(m_bodies[m_bodyIndex]);
+            m_world.Destroy(m_bodies[m_bodyIndex]);
             m_bodies[m_bodyIndex] = nullptr;
         }
 
@@ -119,7 +119,7 @@ public:
             bd.angularDamping = Real(0.02f) * Hertz;
         }
 
-        m_bodies[m_bodyIndex] = m_world->CreateBody(bd);
+        m_bodies[m_bodyIndex] = m_world.CreateBody(bd);
 
         if (index < 4)
         {
@@ -139,7 +139,7 @@ public:
         {
             if (m_bodies[i])
             {
-                m_world->Destroy(m_bodies[i]);
+                m_world.Destroy(m_bodies[i]);
                 m_bodies[i] = nullptr;
                 return;
             }
@@ -181,7 +181,7 @@ public:
         Length2D point;
         UnitVec2 normal;
 
-        m_world->RayCast(point1, point2, [&](Fixture* f, ChildCounter, Length2D p, UnitVec2 n) {
+        m_world.RayCast(point1, point2, [&](Fixture* f, ChildCounter, Length2D p, UnitVec2 n) {
             fixture = f;
             point = p;
             normal = n;

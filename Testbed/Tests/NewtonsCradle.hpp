@@ -58,7 +58,7 @@ namespace playrho {
                 BodyDef bd;
                 bd.type = BodyType::Static;
                 bd.location = Length2D{0, frame_height};
-                const auto body = m_world->CreateBody(bd);
+                const auto body = m_world.CreateBody(bd);
                 
                 const auto frame_width = frame_width_per_arm * static_cast<Real>(m_num_arms);
                 auto shape = PolygonShape((frame_width/Real{2}), (frame_width / Real{24}));
@@ -76,11 +76,11 @@ namespace playrho {
                 bd.bullet = m_bullet_mode;
                 bd.location = Length2D{x, frame_height - (arm_length / Real{2})};
                 
-                m_swings[i] = m_world->CreateBody(bd);
+                m_swings[i] = m_world.CreateBody(bd);
                 CreateArm(m_swings[i], arm_length);
                 CreateBall(m_swings[i], Length2D{0, -arm_length / Real{2}}, ball_radius);
                 
-                m_world->CreateJoint(RevoluteJointDef(m_frame, m_swings[i], Length2D{x, frame_height}));
+                m_world.CreateJoint(RevoluteJointDef(m_frame, m_swings[i], Length2D{x, frame_height}));
             }            
         }
 
@@ -88,14 +88,14 @@ namespace playrho {
         {
             if (m_frame)
             {
-                m_world->Destroy(m_frame);
+                m_world.Destroy(m_frame);
                 m_frame = nullptr;
             }
             for (auto&& body: m_swings)
             {
                 if (body)
                 {
-                    m_world->Destroy(body);
+                    m_world.Destroy(body);
                     body = nullptr;
                 }
             }
@@ -111,7 +111,7 @@ namespace playrho {
                 BodyDef def;
                 def.type = BodyType::Static;
                 def.location = Length2D{frame_width / Real{2} + frame_width / Real{24}, frame_height - (arm_length / Real{2})};
-                const auto body = m_world->CreateBody(def);
+                const auto body = m_world.CreateBody(def);
                 
                 auto shape = PolygonShape((frame_width/Real{24}), (arm_length / Real{2} + frame_width / Real{24}));
                 shape.SetDensity(Real{20} * KilogramPerSquareMeter);
@@ -132,7 +132,7 @@ namespace playrho {
                     -(frame_width / Real{2} + frame_width / Real{24}),
                     frame_height - (arm_length / Real{2})
                 };
-                const auto body = m_world->CreateBody(def);
+                const auto body = m_world.CreateBody(def);
                 
                 auto shape = PolygonShape(frame_width/Real{24}, (arm_length / Real{2} + frame_width / Real{24}));
                 shape.SetDensity(Real{20} * KilogramPerSquareMeter);
@@ -146,7 +146,7 @@ namespace playrho {
         {
             if (m_right_side_wall)
             {
-                m_world->Destroy(m_right_side_wall);
+                m_world.Destroy(m_right_side_wall);
                 m_right_side_wall = nullptr;
             }
         }
@@ -155,7 +155,7 @@ namespace playrho {
         {
             if (m_left_side_wall)
             {
-                m_world->Destroy(m_left_side_wall);
+                m_world.Destroy(m_left_side_wall);
                 m_left_side_wall = nullptr;
             }
         }
@@ -197,7 +197,7 @@ namespace playrho {
         void ToggleBulletMode()
         {
             m_bullet_mode = !m_bullet_mode;
-            for (auto&& body: m_world->GetBodies())
+            for (auto&& body: m_world.GetBodies())
             {
                 auto& b = GetRef(body);
                 if (b.GetType() == BodyType::Dynamic)

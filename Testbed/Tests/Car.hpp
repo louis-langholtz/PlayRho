@@ -34,7 +34,7 @@ public:
         m_zeta = 0.7f;
         m_speed = Real{50} * RadianPerSecond;
 
-        const auto ground = m_world->CreateBody();
+        const auto ground = m_world.CreateBody();
         {
             EdgeShape shape;
 
@@ -92,7 +92,7 @@ public:
             BodyDef bd;
             bd.location = Vec2(140.0f, 1.0f) * Meter;
             bd.type = BodyType::Dynamic;
-            const auto body = m_world->CreateBody(bd);
+            const auto body = m_world.CreateBody(bd);
 
             const auto box = std::make_shared<PolygonShape>(Real{10.0f} * Meter, Real{0.25f} * Meter);
             box->SetDensity(Real{1} * KilogramPerSquareMeter);
@@ -102,7 +102,7 @@ public:
             jd.lowerAngle = Real{-8.0f} * Degree;
             jd.upperAngle = Real{+8.0f} * Degree;
             jd.enableLimit = true;
-            m_world->CreateJoint(jd);
+            m_world.CreateJoint(jd);
 
             // AngularMomentum is L^2 M T^-1 QP^-1.
             ApplyAngularImpulse(*body, Real{100} * SquareMeter * Kilogram / (Second * Radian));
@@ -121,16 +121,16 @@ public:
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(161.0f + 2.0f * i, -0.125f) * Meter;
-                const auto body = m_world->CreateBody(bd);
+                const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(shape);
 
-                m_world->CreateJoint(RevoluteJointDef{prevBody, body,
+                m_world.CreateJoint(RevoluteJointDef{prevBody, body,
                     Vec2(160.0f + 2.0f * i, -0.125f) * Meter});
 
                 prevBody = body;
             }
 
-            m_world->CreateJoint(RevoluteJointDef{prevBody, ground,
+            m_world.CreateJoint(RevoluteJointDef{prevBody, ground,
                 Vec2(160.0f + 2.0f * N, -0.125f) * Meter});
         }
 
@@ -145,23 +145,23 @@ public:
             bd.type = BodyType::Dynamic;
 
             bd.location = Vec2(230.0f, 0.5f) * Meter;
-            body = m_world->CreateBody(bd);
+            body = m_world.CreateBody(bd);
             body->CreateFixture(box);
 
             bd.location = Vec2(230.0f, 1.5f) * Meter;
-            body = m_world->CreateBody(bd);
+            body = m_world.CreateBody(bd);
             body->CreateFixture(box);
 
             bd.location = Vec2(230.0f, 2.5f) * Meter;
-            body = m_world->CreateBody(bd);
+            body = m_world.CreateBody(bd);
             body->CreateFixture(box);
 
             bd.location = Vec2(230.0f, 3.5f) * Meter;
-            body = m_world->CreateBody(bd);
+            body = m_world.CreateBody(bd);
             body->CreateFixture(box);
 
             bd.location = Vec2(230.0f, 4.5f) * Meter;
-            body = m_world->CreateBody(bd);
+            body = m_world.CreateBody(bd);
             body->CreateFixture(box);
         }
 
@@ -185,15 +185,15 @@ public:
             BodyDef bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(0.0f, 1.0f) * Meter;
-            m_car = m_world->CreateBody(bd);
+            m_car = m_world.CreateBody(bd);
             m_car->CreateFixture(chassis);
 
             bd.location = Vec2(-1.0f, 0.35f) * Meter;
-            m_wheel1 = m_world->CreateBody(bd);
+            m_wheel1 = m_world.CreateBody(bd);
             m_wheel1->CreateFixture(circle);
 
             bd.location = Vec2(1.0f, 0.4f) * Meter;
-            m_wheel2 = m_world->CreateBody(bd);
+            m_wheel2 = m_world.CreateBody(bd);
             m_wheel2->CreateFixture(circle);
 
             const auto axis = UnitVec2::GetTop();
@@ -205,7 +205,7 @@ public:
                 jd.enableMotor = true;
                 jd.frequency = m_hz;
                 jd.dampingRatio = m_zeta;
-                m_spring1 = static_cast<WheelJoint*>(m_world->CreateJoint(jd));
+                m_spring1 = static_cast<WheelJoint*>(m_world.CreateJoint(jd));
             }
             {
                 WheelJointDef jd(m_car, m_wheel2, m_wheel2->GetLocation(), axis);
@@ -214,7 +214,7 @@ public:
                 jd.enableMotor = false;
                 jd.frequency = m_hz;
                 jd.dampingRatio = m_zeta;
-                m_spring2 = static_cast<WheelJoint*>(m_world->CreateJoint(jd));
+                m_spring2 = static_cast<WheelJoint*>(m_world.CreateJoint(jd));
             }
         }
     }

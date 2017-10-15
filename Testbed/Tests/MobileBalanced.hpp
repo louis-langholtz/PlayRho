@@ -37,7 +37,7 @@ public:
 
     MobileBalanced()
     {
-        const auto ground = m_world->CreateBody(BodyDef{}.UseLocation(Vec2(0.0f, 20.0f) * Meter));
+        const auto ground = m_world.CreateBody(BodyDef{}.UseLocation(Vec2(0.0f, 20.0f) * Meter));
 
         const auto a = Real{0.5f};
         const auto h = Vec2(0.0f, a) * Meter;
@@ -52,7 +52,7 @@ public:
         jointDef.bodyB = root;
         jointDef.localAnchorA = Vec2_zero * Meter;
         jointDef.localAnchorB = h;
-        m_world->CreateJoint(jointDef);
+        m_world.CreateJoint(jointDef);
     }
 
     Body* AddNode(const Body* parent, const Length2D localAnchor, const int depth,
@@ -65,7 +65,7 @@ public:
         BodyDef bodyDef;
         bodyDef.type = BodyType::Dynamic;
         bodyDef.location = p;
-        const auto body = m_world->CreateBody(bodyDef);
+        const auto body = m_world.CreateBody(bodyDef);
 
         body->CreateFixture(shape);
 
@@ -90,11 +90,11 @@ public:
 
         jointDef.localAnchorA = a1;
         jointDef.bodyB = body1;
-        m_world->CreateJoint(jointDef);
+        m_world.CreateJoint(jointDef);
 
         jointDef.localAnchorA = a2;
         jointDef.bodyB = body2;
-        m_world->CreateJoint(jointDef);
+        m_world.CreateJoint(jointDef);
 
         return body;
     }

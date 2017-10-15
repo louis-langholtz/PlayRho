@@ -393,28 +393,26 @@ void Test::DestructionListenerImpl::SayGoodbye(Joint& joint)
 }
 
 Test::Test(WorldDef conf):
-    m_world{new World(conf)}
+    m_world{conf}
 {
     m_destructionListener.test = this;
-    m_world->SetDestructionListener(&m_destructionListener);
-    m_world->SetContactListener(this);
+    m_world.SetDestructionListener(&m_destructionListener);
+    m_world.SetContactListener(this);
 }
 
 Test::~Test()
 {
-    // By deleting the world, we delete the bomb, mouse joint, etc.
-    delete m_world;
 }
 
 void Test::ResetWorld(const playrho::World &saved)
 {
     SetSelectedFixtures(Fixtures{});
 
-    auto bombIndex = static_cast<decltype(m_world->GetBodies().size())>(-1);
+    auto bombIndex = static_cast<decltype(m_world.GetBodies().size())>(-1);
 
     {
-        auto i = decltype(m_world->GetBodies().size()){0};
-        for (auto&& b: m_world->GetBodies())
+        auto i = decltype(m_world.GetBodies().size()){0};
+        for (auto&& b: m_world.GetBodies())
         {
             const auto body = GetPtr(b);
             if (body == m_bomb)
@@ -425,11 +423,11 @@ void Test::ResetWorld(const playrho::World &saved)
         }
     }
 
-    *m_world = saved;
+    m_world = saved;
 
     {
-        auto i = decltype(m_world->GetBodies().size()){0};
-        for (auto&& b: m_world->GetBodies())
+        auto i = decltype(m_world.GetBodies().size()){0};
+        for (auto&& b: m_world.GetBodies())
         {
             const auto body = GetPtr(b);
             if (i == bombIndex)
@@ -485,7 +483,7 @@ void Test::MouseDown(const Length2D& p)
     auto fixtures = std::vector<Fixture*>();
 
     // Query the world for overlapping shapes.
-    m_world->QueryAABB(aabb, [&](Fixture* f, const ChildCounter) {
+    m_world.QueryAABB(aabb, [&](Fixture* f, const ChildCounter) {
         if (TestPoint(*f, p))
         {
             fixtures.push_back(f);
@@ -503,7 +501,7 @@ void Test::MouseDown(const Length2D& p)
             md.bodyB = body;
             md.target = p;
             md.maxForce = Real(10000.0f) * GetMass(*body) * MeterPerSquareSecond;
-            m_mouseJoint = static_cast<MouseJoint*>(m_world->CreateJoint(md));
+            m_mouseJoint = static_cast<MouseJoint*>(m_world.CreateJoint(md));
             body->SetAwake();
         }
     }
@@ -547,7 +545,7 @@ void Test::MouseUp(const Length2D& p)
 {
     if (m_mouseJoint)
     {
-        m_world->Destroy(m_mouseJoint);
+        m_world.Destroy(m_mouseJoint);
         m_mouseJoint = nullptr;
     }
 
@@ -581,11 +579,11 @@ void Test::LaunchBomb(const Length2D& position, const LinearVelocity2D linearVel
 {
     if (m_bomb)
     {
-        m_world->Destroy(m_bomb);
+        m_world.Destroy(m_bomb);
         m_bomb = nullptr;
     }
 
-    m_bomb = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(position).UseBullet(true));
+    m_bomb = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(position).UseBullet(true));
     m_bomb->SetVelocity(Velocity{linearVelocity, AngularVelocity{0}});
 
     auto conf = DiskShape::Conf{};
@@ -599,13 +597,13 @@ void Test::LaunchBomb(const Length2D& position, const LinearVelocity2D linearVel
 
 void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
 {
-    const auto bodyCount = GetBodyCount(*m_world);
-    const auto awakeCount = GetAwakeCount(*m_world);
+    const auto bodyCount = GetBodyCount(m_world);
+    const auto awakeCount = GetAwakeCount(m_world);
     const auto sleepCount = bodyCount - awakeCount;
-    const auto jointCount = GetJointCount(*m_world);
-    const auto fixtureCount = GetFixtureCount(*m_world);
-    const auto shapeCount = GetShapeCount(*m_world);
-    const auto touchingCount = GetTouchingCount(*m_world);
+    const auto jointCount = GetJointCount(m_world);
+    const auto fixtureCount = GetFixtureCount(m_world);
+    const auto shapeCount = GetShapeCount(m_world);
+    const auto touchingCount = GetTouchingCount(m_world);
 
     std::stringstream stream;
 
@@ -737,12 +735,12 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
     m_textLine += DRAW_STRING_NEW_LINE;
 
-    const auto proxyCount = m_world->GetTree().GetLeafCount();
-    const auto nodeCount = m_world->GetTree().GetNodeCount();
-    const auto height = GetHeight(m_world->GetTree());
-    const auto balance = m_world->GetTree().GetMaxBalance();
-    const auto quality = ComputePerimeterRatio(m_world->GetTree());
-    const auto capacity = m_world->GetTree().GetNodeCapacity();
+    const auto proxyCount = m_world.GetTree().GetLeafCount();
+    const auto nodeCount = m_world.GetTree().GetNodeCount();
+    const auto height = GetHeight(m_world.GetTree());
+    const auto balance = m_world.GetTree().GetMaxBalance();
+    const auto quality = ComputePerimeterRatio(m_world.GetTree());
+    const auto capacity = m_world.GetTree().GetNodeCapacity();
     stream = std::stringstream();
     stream << "  Dynamic tree:";
     stream << " proxies=" << unsigned{proxyCount};
@@ -984,7 +982,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
         m_points.clear();
     }
 
-    m_world->SetSubStepping(settings.enableSubStepping);
+    m_world.SetSubStepping(settings.enableSubStepping);
 
     auto stepConf = StepConf{};
 
@@ -1014,16 +1012,16 @@ void Test::Step(const Settings& settings, Drawer& drawer)
     if (!settings.enableSleep)
     {
         stepConf.minStillTimeToSleep = Second * std::numeric_limits<Real>::infinity();
-        Awaken(*m_world);
+        Awaken(m_world);
     }
     stepConf.doToi = settings.enableContinuous;
     stepConf.doWarmStart = settings.enableWarmStarting;
 
     const auto start = std::chrono::system_clock::now();
-    const auto stepStats = m_world->Step(stepConf);
+    const auto stepStats = m_world.Step(stepConf);
     const auto end = std::chrono::system_clock::now();
 
-    m_maxAABB = GetEnclosingAABB(m_maxAABB, GetAABB(m_world->GetTree()));
+    m_maxAABB = GetEnclosingAABB(m_maxAABB, GetAABB(m_world.GetTree()));
     
     m_sumContactsUpdatedPre += stepStats.pre.updated;
     m_sumContactsIgnoredPre += stepStats.pre.ignored;
@@ -1067,7 +1065,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
         m_sumStepDuration += m_curStepDuration;
     }
 
-    m_numContacts = GetContactCount(*m_world);
+    m_numContacts = GetContactCount(m_world);
     m_maxContacts = std::max(m_maxContacts, m_numContacts);
 
     if (settings.drawStats)
@@ -1097,7 +1095,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
     PostStep(settings, drawer);
 
     const auto selectedFixtures = GetSelectedFixtures();
-    const auto selectedFound = DrawWorld(drawer, *m_world, settings, selectedFixtures);
+    const auto selectedFound = DrawWorld(drawer, m_world, settings, selectedFixtures);
     if (!selectedFixtures.empty() && !selectedFound)
     {
         SetSelectedFixtures(Fixtures{});
@@ -1108,7 +1106,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 
 void Test::ShiftOrigin(const Length2D& newOrigin)
 {
-    m_world->ShiftOrigin(newOrigin);
+    m_world.ShiftOrigin(newOrigin);
 }
 
 constexpr auto RAND_LIMIT = 32767;

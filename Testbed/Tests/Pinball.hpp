@@ -32,7 +32,7 @@ public:
     Pinball()
     {
         // Ground body
-        const auto ground = m_world->CreateBody();
+        const auto ground = m_world.CreateBody();
         {
             auto conf = ChainShape::Conf{};
             conf.vertices.push_back(Vec2(0.0f, -2.0f) * Meter);
@@ -54,10 +54,10 @@ public:
             bd.type = BodyType::Dynamic;
 
             bd.location = p1;
-            const auto leftFlipper = m_world->CreateBody(bd);
+            const auto leftFlipper = m_world.CreateBody(bd);
 
             bd.location = p2;
-            const auto rightFlipper = m_world->CreateBody(bd);
+            const auto rightFlipper = m_world.CreateBody(bd);
 
             const auto box = std::make_shared<PolygonShape>(Real{1.75f} * Meter, Real{0.1f} * Meter);
             box->SetDensity(Real{1} * KilogramPerSquareMeter);
@@ -77,14 +77,14 @@ public:
             jd.bodyB = leftFlipper;
             jd.lowerAngle = Real{-30.0f} * Degree;
             jd.upperAngle = Real{5.0f} * Degree;
-            m_leftJoint = static_cast<RevoluteJoint*>(m_world->CreateJoint(jd));
+            m_leftJoint = static_cast<RevoluteJoint*>(m_world.CreateJoint(jd));
 
             jd.motorSpeed = AngularVelocity{0};
             jd.localAnchorA = p2;
             jd.bodyB = rightFlipper;
             jd.lowerAngle = Real{-5.0f} * Degree;
             jd.upperAngle = Real{30.0f} * Degree;
-            m_rightJoint = static_cast<RevoluteJoint*>(m_world->CreateJoint(jd));
+            m_rightJoint = static_cast<RevoluteJoint*>(m_world.CreateJoint(jd));
         }
 
         // Disk character
@@ -94,7 +94,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.bullet = true;
 
-            m_ball = m_world->CreateBody(bd);
+            m_ball = m_world.CreateBody(bd);
 
             auto conf = DiskShape::Conf{};
             conf.density = Real{1} * KilogramPerSquareMeter;

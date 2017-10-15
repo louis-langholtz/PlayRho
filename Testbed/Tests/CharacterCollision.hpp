@@ -33,7 +33,7 @@ public:
     CharacterCollision()
     {
         // Ground body
-        const auto ground = m_world->CreateBody();
+        const auto ground = m_world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
 
         {
@@ -108,7 +108,7 @@ public:
 
         // Chain shape
         {
-            const auto body = m_world->CreateBody(BodyDef{}.UseAngle(Real{45} * Degree));
+            const auto body = m_world.CreateBody(BodyDef{}.UseAngle(Real{45} * Degree));
             auto conf = ChainShape::Conf{};
             conf.vertices.push_back(Vec2(5.0f, 7.0f) * Meter);
             conf.vertices.push_back(Vec2(6.0f, 8.0f) * Meter);
@@ -141,7 +141,7 @@ public:
 
         // Edge loop. Collision should be smooth.
         {
-            const auto body = m_world->CreateBody(BodyDef{}.UseLocation(Vec2(-10.0f, 4.0f) * Meter));
+            const auto body = m_world.CreateBody(BodyDef{}.UseLocation(Vec2(-10.0f, 4.0f) * Meter));
             auto conf = ChainShape::Conf{};
             conf.vertices.push_back(Vec2(0.0f, 0.0f) * Meter);
             conf.vertices.push_back(Vec2(6.0f, 0.0f) * Meter);
@@ -165,7 +165,7 @@ public:
             bd.fixedRotation = false;
             bd.allowSleep = false;
 
-            const auto body = m_world->CreateBody(bd);
+            const auto body = m_world.CreateBody(bd);
 
             auto conf = PolygonShape::Conf{};
             conf.friction = Real(0);
@@ -174,7 +174,7 @@ public:
             body->CreateFixture(square);
             
             bd.location = Vec2(19.0f, 7.0f) * Meter;
-            const auto body2 = m_world->CreateBody(bd);
+            const auto body2 = m_world.CreateBody(bd);
             body2->CreateFixture(square);
         }
 
@@ -186,7 +186,7 @@ public:
             bd.fixedRotation = true;
             bd.allowSleep = false;
 
-            const auto body = m_world->CreateBody(bd);
+            const auto body = m_world.CreateBody(bd);
 
             auto conf = PolygonShape::Conf{};
             conf.density = Real{20} * KilogramPerSquareMeter;
@@ -201,7 +201,7 @@ public:
             bd.fixedRotation = true;
             bd.allowSleep = false;
 
-            const auto body = m_world->CreateBody(bd);
+            const auto body = m_world.CreateBody(bd);
 
             auto angle = Real{0.0f};
             const auto delta = Real{Pi / 3.0f};
@@ -227,7 +227,7 @@ public:
             bd.fixedRotation = true;
             bd.allowSleep = false;
 
-            const auto body = m_world->CreateBody(bd);
+            const auto body = m_world.CreateBody(bd);
             auto conf = DiskShape::Conf{};
             conf.density = Real{20} * KilogramPerSquareMeter;
             conf.vertexRadius = Real{0.5f} * Meter;
@@ -241,7 +241,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.allowSleep = false;
 
-            m_character = m_world->CreateBody(bd);
+            m_character = m_world.CreateBody(bd);
 
             auto conf = DiskShape::Conf{};
             conf.density = Real{20} * KilogramPerSquareMeter;

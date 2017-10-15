@@ -42,11 +42,11 @@ public:
         const auto smallerDiskConf = DiskShape::Conf(diskConf).UseVertexRadius(Real{0.5f} * Meter);
         const auto biggerDiskConf = DiskShape::Conf(diskConf).UseVertexRadius(Real{5.0f} * Meter);
 
-        const auto ground = m_world->CreateBody();
+        const auto ground = m_world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(groundConf));
         
-        const auto lowerBody = m_world->CreateBody(lowerBodyDef);
-        const auto upperBody = m_world->CreateBody(upperBodyDef);
+        const auto lowerBody = m_world.CreateBody(lowerBodyDef);
+        const auto upperBody = m_world.CreateBody(upperBodyDef);
 
         lowerBody->CreateFixture(std::make_shared<DiskShape>(smallerDiskConf));
         m_top = upperBody->CreateFixture(std::make_shared<DiskShape>(biggerDiskConf));

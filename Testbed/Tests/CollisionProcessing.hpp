@@ -34,7 +34,7 @@ public:
     {
         // Ground body
         {
-            const auto ground = m_world->CreateBody();
+            const auto ground = m_world.CreateBody();
             ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-50.0f, 0.0f) * Meter, Vec2(50.0f, 0.0f) * Meter));
         }
 
@@ -55,7 +55,7 @@ public:
         triangleBodyDef.type = BodyType::Dynamic;
         triangleBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
 
-        const auto body1 = m_world->CreateBody(triangleBodyDef);
+        const auto body1 = m_world.CreateBody(triangleBodyDef);
         body1->CreateFixture(std::make_shared<PolygonShape>(polygon));
 
         // Large triangle (recycle definitions)
@@ -66,7 +66,7 @@ public:
 
         triangleBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
 
-        const auto body2 = m_world->CreateBody(triangleBodyDef);
+        const auto body2 = m_world.CreateBody(triangleBodyDef);
         body2->CreateFixture(std::make_shared<PolygonShape>(polygon));
         
         // Small box
@@ -76,14 +76,14 @@ public:
         boxBodyDef.type = BodyType::Dynamic;
         boxBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
 
-        const auto body3 = m_world->CreateBody(boxBodyDef);
+        const auto body3 = m_world.CreateBody(boxBodyDef);
         body3->CreateFixture(std::make_shared<PolygonShape>(polygon));
 
         // Large box (recycle definitions)
         polygon.SetAsBox(Real{2.0f} * Meter, Real{1.0f} * Meter);
         boxBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
         
-        const auto body4 = m_world->CreateBody(boxBodyDef);
+        const auto body4 = m_world.CreateBody(boxBodyDef);
         body4->CreateFixture(std::make_shared<PolygonShape>(polygon));
 
         // Small circle
@@ -95,14 +95,14 @@ public:
         circleBodyDef.type = BodyType::Dynamic;
         circleBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
 
-        const auto body5 = m_world->CreateBody(circleBodyDef);
+        const auto body5 = m_world.CreateBody(circleBodyDef);
         body5->CreateFixture(std::make_shared<DiskShape>(circle));
 
         // Large circle
         circle.SetRadius(circle.GetRadius() * Real{2});
         circleBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
 
-        const auto body6 = m_world->CreateBody(circleBodyDef);
+        const auto body6 = m_world.CreateBody(circleBodyDef);
         body6->CreateFixture(std::make_shared<DiskShape>(circle));
     }
 
@@ -157,7 +157,7 @@ public:
 
             if (b != GetBomb())
             {
-                m_world->Destroy(b);
+                m_world.Destroy(b);
             }
         }
     }

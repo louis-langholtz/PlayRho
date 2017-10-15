@@ -41,7 +41,7 @@ public:
 
         // Ground body
         {
-            const auto ground = m_world->CreateBody();
+            const auto ground = m_world.CreateBody();
             ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
         }
 
@@ -51,7 +51,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(0.0f, 40.0f) * Meter;
             bd.angle = 0.25f * Pi * Radian;
-            m_body1 = m_world->CreateBody(bd);
+            m_body1 = m_world.CreateBody(bd);
 
             SetAsBox(*m_shape1, Real{0.5f} * Meter, Real{0.5f} * Meter, Vec2(-0.5f, 0.0f) * Meter, Real{0.0f} * Radian);
             m_piece1 = m_body1->CreateFixture(m_shape1);
@@ -103,7 +103,7 @@ public:
         bd.location = body1->GetLocation();
         bd.angle = body1->GetAngle();
 
-        const auto body2 = m_world->CreateBody(bd);
+        const auto body2 = m_world.CreateBody(bd);
         m_piece2 = body2->CreateFixture(m_shape2);
 
         // Compute consistent velocities for new bodies based on

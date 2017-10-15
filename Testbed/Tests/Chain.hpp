@@ -29,7 +29,7 @@ class Chain : public Test
 public:
     Chain()
     {
-        const auto ground = m_world->CreateBody();
+        const auto ground = m_world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
     
         {
@@ -44,10 +44,10 @@ public:
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(0.5f + i, y) * Meter;
-                const auto body = m_world->CreateBody(bd);
+                const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(shape);
 
-                m_world->CreateJoint(RevoluteJointDef(prevBody, body, Vec2(Real(i), y) * Meter));
+                m_world.CreateJoint(RevoluteJointDef(prevBody, body, Vec2(Real(i), y) * Meter));
 
                 prevBody = body;
             }

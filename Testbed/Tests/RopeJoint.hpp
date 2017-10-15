@@ -37,7 +37,7 @@ class RopeJointTest : public Test
 public:
     RopeJointTest()
     {
-        const auto ground = m_world->CreateBody();
+        const auto ground = m_world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 
         {
@@ -72,11 +72,11 @@ public:
                     bd.angularDamping = Real(0.4f) * Hertz;
                 }
 
-                const auto body = m_world->CreateBody(bd);
+                const auto body = m_world.CreateBody(bd);
 
                 body->CreateFixture(shape, fd);
 
-                m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(Real(i), y) * Meter});
+                m_world.CreateJoint(RevoluteJointDef{prevBody, body, Vec2(Real(i), y) * Meter});
 
                 prevBody = body;
             }
@@ -89,7 +89,7 @@ public:
         }
 
         m_ropeDef.bodyA = ground;
-        m_rope = m_world->CreateJoint(m_ropeDef);
+        m_rope = m_world.CreateJoint(m_ropeDef);
     }
 
     void KeyboardDown(Key key) override
@@ -99,12 +99,12 @@ public:
         case Key_J:
             if (m_rope)
             {
-                m_world->Destroy(m_rope);
+                m_world.Destroy(m_rope);
                 m_rope = nullptr;
             }
             else
             {
-                m_rope = m_world->CreateJoint(m_ropeDef);
+                m_rope = m_world.CreateJoint(m_ropeDef);
             }
             break;
 

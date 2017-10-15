@@ -36,7 +36,7 @@ public:
     Mobile()
     {
         // Create ground body.
-        const auto ground = m_world->CreateBody(BodyDef{}.UseLocation(Vec2(0.0f, 20.0f) * Meter));
+        const auto ground = m_world.CreateBody(BodyDef{}.UseLocation(Vec2(0.0f, 20.0f) * Meter));
 
         const auto a = Real{0.5f};
         const auto shape = std::make_shared<PolygonShape>(Real{0.25f} * a * Meter, a * Meter);
@@ -47,7 +47,7 @@ public:
         jointDef.bodyB = AddNode(ground, Vec2_zero * Meter, 0, 3.0f, static_cast<float>(a), shape);
         jointDef.localAnchorA = Vec2_zero * Meter;
         jointDef.localAnchorB = Vec2(0, a) * Meter;
-        m_world->CreateJoint(jointDef);
+        m_world.CreateJoint(jointDef);
     }
 
     Body* AddNode(Body* parent, Length2D localAnchor, int depth, float offset, float a,
@@ -58,7 +58,7 @@ public:
         BodyDef bodyDef;
         bodyDef.type = BodyType::Dynamic;
         bodyDef.location = parent->GetLocation() + localAnchor - h;
-        const auto body = m_world->CreateBody(bodyDef);
+        const auto body = m_world.CreateBody(bodyDef);
         body->CreateFixture(shape);
 
         if (depth == e_depth)
@@ -75,11 +75,11 @@ public:
 
         jointDef.localAnchorA = a1;
         jointDef.bodyB = AddNode(body, a1, depth + 1, 0.5f * offset, a, shape);
-        m_world->CreateJoint(jointDef);
+        m_world.CreateJoint(jointDef);
 
         jointDef.localAnchorA = a2;
         jointDef.bodyB = AddNode(body, a2, depth + 1, 0.5f * offset, a, shape);
-        m_world->CreateJoint(jointDef);
+        m_world.CreateJoint(jointDef);
 
         return body;
     }

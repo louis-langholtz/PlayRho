@@ -33,14 +33,14 @@ public:
         m_settings.drawSkins = true;
         m_neededSettings = (1 << NeedDrawSkinsField);
 
-        m_world->SetGravity(Vec2{0, 0} * MeterPerSquareSecond);
+        m_world.SetGravity(Vec2{0, 0} * MeterPerSquareSecond);
 
         const auto def = BodyDef{}
         	.UseType(BodyType::Dynamic)
         	.UseLinearDamping(Real(0.9) * Hertz)
         	.UseAngularDamping(Real(0.9) * Hertz);
-        m_bodyA = m_world->CreateBody(def);
-        m_bodyB = m_world->CreateBody(def);
+        m_bodyA = m_world.CreateBody(def);
+        m_bodyB = m_world.CreateBody(def);
 
         m_bodyA->SetTransform(Vec2(-10.0f, 20.2f) * Meter, Angle{0});
         m_bodyB->SetTransform(m_bodyA->GetLocation() + Vec2(19.017401f, 0.13678508f) * Meter, Angle{0});

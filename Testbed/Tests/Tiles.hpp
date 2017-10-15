@@ -43,7 +43,7 @@ public:
             const auto a = Real{0.5f};
             BodyDef bd;
             GetY(bd.location) = -a * Meter;
-            const auto ground = m_world->CreateBody(bd);
+            const auto ground = m_world.CreateBody(bd);
 
             const auto N = 200;
             const auto M = 10;
@@ -84,7 +84,7 @@ public:
                     bd.type = BodyType::Dynamic;
                     bd.location = y * Meter;
 
-                    const auto body = m_world->CreateBody(bd);
+                    const auto body = m_world.CreateBody(bd);
                     body->CreateFixture(shape);
                     ++m_fixtureCount;
                     y += deltaY;
@@ -101,8 +101,8 @@ public:
 
     void PostStep(const Settings&, Drawer& drawer) override
     {
-        const auto height = GetHeight(m_world->GetTree());
-        const auto leafCount = m_world->GetTree().GetLeafCount();
+        const auto height = GetHeight(m_world.GetTree());
+        const auto leafCount = m_world.GetTree().GetLeafCount();
         if (leafCount > 0)
         {
             const auto minimumNodeCount = 2 * leafCount - 1;
@@ -118,7 +118,7 @@ public:
             m_createTime * 1000, m_fixtureCount);
         m_textLine += DRAW_STRING_NEW_LINE;
 
-        //DynamicTree* tree = &m_world->m_contactManager.m_broadPhase.m_tree;
+        //DynamicTree* tree = &m_world.m_contactManager.m_broadPhase.m_tree;
 
         //if (GetStepCount() == 400)
         //{
@@ -131,7 +131,7 @@ public:
         switch (key)
         {
             case Key_C:
-                m_snapshot = *m_world;
+                m_snapshot = m_world;
                 break;
             case Key_Backspace:
                 if (m_snapshot.GetBodies().size() > 0)

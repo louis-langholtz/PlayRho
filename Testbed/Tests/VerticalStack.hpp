@@ -45,7 +45,7 @@ public:
         m_bulletshape->SetDensity(Real{20} * KilogramPerSquareMeter);
         m_bulletshape->SetRestitution(Real(0.05f));
 
-        const auto ground = m_world->CreateBody();
+        const auto ground = m_world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(20.0f, 0.0f) * Meter, Vec2(20.0f, 20.0f) * Meter));
 
@@ -69,7 +69,7 @@ public:
                 //bd.position = Vec2(xs[j] + x, (hdim - hdim/20) + (hdim * 2 - hdim / 20) * i);
                 bd.location = Vec2(xs[j] + x, (i + 1) * hdim * 4) * Meter;
                 
-                const auto body = m_world->CreateBody(bd);
+                const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(shape);
             }
         }
@@ -84,7 +84,7 @@ public:
         case Key_Comma:
             if (m_bullet)
             {
-                m_world->Destroy(m_bullet);
+                m_world.Destroy(m_bullet);
                 m_bullet = nullptr;
             }
 
@@ -94,7 +94,7 @@ public:
                 bd.bullet = true;
                 bd.location = Vec2(-31.0f, 5.0f) * Meter;
 
-                m_bullet = m_world->CreateBody(bd);
+                m_bullet = m_world.CreateBody(bd);
                 m_bullet->CreateFixture(m_bulletshape);
                 m_bullet->SetVelocity(Velocity{Vec2(400.0f, 0.0f) * MeterPerSecond, AngularVelocity{0}});
             }
@@ -122,7 +122,7 @@ public:
         //{
         //    if (m_bullet)
         //    {
-        //        m_world->Destroy(m_bullet);
+        //        m_world.Destroy(m_bullet);
         //        m_bullet = nullptr;
         //    }
 
@@ -140,7 +140,7 @@ public:
         //        bd.bullet = true;
         //        bd.position = Vec2(-31.0f, 5.0f);
 
-        //        m_bullet = m_world->CreateBody(bd);
+        //        m_bullet = m_world.CreateBody(bd);
         //        m_bullet->CreateFixture(fd);
 
         //        m_bullet->SetLinearVelocity(Vec2(400.0f, 0.0f));
