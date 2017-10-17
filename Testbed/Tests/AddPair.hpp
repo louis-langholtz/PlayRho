@@ -27,8 +27,14 @@ namespace playrho {
 class AddPair : public Test
 {
 public:
-
-    AddPair()
+    static Test::Conf GetTestConf()
+    {
+        auto conf = Test::Conf{};
+        conf.description = "Stresses the physics engine's contact detecting and adding code.";
+        return conf;
+    }
+    
+    AddPair(): Test(GetTestConf())
     {
         m_world.SetGravity(LinearAcceleration2D{});
         {

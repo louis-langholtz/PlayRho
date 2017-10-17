@@ -27,9 +27,23 @@ namespace playrho {
 class ApplyForce : public Test
 {
 public:
+    
     ApplyForce()
     {
         m_world.SetGravity(LinearAcceleration2D{});
+
+        RegisterForKey(GLFW_KEY_W, GLFW_PRESS, 0, "Apply Force", [&](KeyActionMods) {
+            const auto lv = Length2D{Vec2{Real{0}, Real{-200}} * Meter};
+            const auto f = Force2D{GetWorldVector(*m_body, lv) * Kilogram / (Second * Second)};
+            const auto p = GetWorldPoint(*m_body, Vec2(Real{0}, Real{2}) * Meter);
+            playrho::ApplyForce(*m_body, f, p);
+        });
+        RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Apply Counter-Clockwise Torque", [&](KeyActionMods) {
+            ApplyTorque(*m_body, Real{50} * NewtonMeter);
+        });
+        RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Apply Clockwise Torque", [&](KeyActionMods) {
+            ApplyTorque(*m_body, Real{-50} * NewtonMeter);
+        });
 
         const auto k_restitution = Real(0.4);
 
@@ -138,36 +152,6 @@ public:
 
                 m_world.CreateJoint(jd);
             }
-        }
-    }
-
-    void KeyboardDown(Key key)
-    {
-        switch (key)
-        {
-        case Key_W:
-            {
-                const auto lv = Length2D{Vec2{Real{0}, Real{-200}} * Meter};
-                const auto f = Force2D{GetWorldVector(*m_body, lv) * Kilogram / (Second * Second)};
-                const auto p = GetWorldPoint(*m_body, Vec2(Real{0}, Real{2}) * Meter);
-                playrho::ApplyForce(*m_body, f, p);
-            }
-            break;
-
-        case Key_A:
-            {
-                ApplyTorque(*m_body, Real{50} * NewtonMeter);
-            }
-            break;
-
-        case Key_D:
-            {
-                ApplyTorque(*m_body, Real{-50} * NewtonMeter);
-            }
-            break;
-
-        default:
-            break;
         }
     }
 

@@ -106,38 +106,13 @@ public:
             const auto body = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
             body->CreateFixture(std::make_shared<PolygonShape>(polyShape));
         }
-    }
-
-    void KeyboardDown(Key key) override
-    {
-        switch (key)
-        {
-        case Key_L:
+        
+        RegisterForKey(GLFW_KEY_L, GLFW_PRESS, 0, "Limits", [&](KeyActionMods) {
             m_joint->EnableLimit(!m_joint->IsLimitEnabled());
-            break;
-
-        case Key_M:
+        });
+        RegisterForKey(GLFW_KEY_M, GLFW_PRESS, 0, "Motor", [&](KeyActionMods) {
             m_joint->EnableMotor(!m_joint->IsMotorEnabled());
-            break;
-                
-        default:
-            break;
-        }
-    }
-
-    void PostStep(const Settings&, Drawer& drawer) override
-    {
-        drawer.DrawString(5, m_textLine, Drawer::Left, "Keys: (l) limits, (m) motor");
-        m_textLine += DRAW_STRING_NEW_LINE;
-
-        //if (GetStepCount() == 360)
-        //{
-        //    m_ball->SetTransform(Vec2(0.0f, 0.5f), 0.0f);
-        //}
-
-        //Real torque1 = m_joint1->GetMotorTorque();
-        //drawer.DrawString(5, m_textLine, "Motor Torque = %4.0f, %4.0f : Motor Force = %4.0f", (float) torque1, (float) torque2, (float) force3);
-        //m_textLine += DRAW_STRING_NEW_LINE;
+        });
     }
 
     Body* m_ball;

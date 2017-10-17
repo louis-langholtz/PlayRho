@@ -21,6 +21,7 @@
 #define  PLAYRHO_CAR_HPP
 
 #include "../Framework/Test.hpp"
+#include <sstream>
 
 namespace playrho {
 
@@ -34,6 +35,26 @@ public:
         m_zeta = 0.7f;
         m_speed = Real{50} * RadianPerSecond;
 
+        RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Move Left.", [&](KeyActionMods) {
+            m_spring1->SetMotorSpeed(m_speed);
+        });
+        RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Brake.", [&](KeyActionMods) {
+            m_spring1->SetMotorSpeed(AngularVelocity{0});
+        });
+        RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Move Right.", [&](KeyActionMods) {
+            m_spring1->SetMotorSpeed(-m_speed);
+        });
+        RegisterForKey(GLFW_KEY_Q, GLFW_PRESS, 0, "Decrease Frequency.", [&](KeyActionMods) {
+            m_hz = std::max(Real(0) * Hertz, m_hz - Real{1} * Hertz);
+            m_spring1->SetSpringFrequency(m_hz);
+            m_spring2->SetSpringFrequency(m_hz);
+        });
+        RegisterForKey(GLFW_KEY_E, GLFW_PRESS, 0, "Increase Frequency.", [&](KeyActionMods) {
+            m_hz += Real{1} * Hertz;
+            m_spring1->SetSpringFrequency(m_hz);
+            m_spring2->SetSpringFrequency(m_hz);
+        });
+        
         const auto ground = m_world.CreateBody();
         {
             EdgeShape shape;
@@ -219,53 +240,17 @@ public:
         }
     }
 
-    void KeyboardDown(Key key) override
-    {
-        switch (key)
-        {
-        case Key_A:
-            m_spring1->SetMotorSpeed(m_speed);
-            break;
-
-        case Key_S:
-            m_spring1->SetMotorSpeed(AngularVelocity{0});
-            break;
-
-        case Key_D:
-            m_spring1->SetMotorSpeed(-m_speed);
-            break;
-
-        case Key_Q:
-            m_hz = std::max(Real(0) * Hertz, m_hz - Real{1} * Hertz);
-            m_spring1->SetSpringFrequency(m_hz);
-            m_spring2->SetSpringFrequency(m_hz);
-            break;
-
-        case Key_E:
-            m_hz += Real{1} * Hertz;
-            m_spring1->SetSpringFrequency(m_hz);
-            m_spring2->SetSpringFrequency(m_hz);
-            break;
-    
-        default:
-            break;
-        }
-    }
-
     void PreStep(const Settings&, Drawer& drawer) override
     {
         drawer.SetTranslation(Length2D{GetX(m_car->GetLocation()), GetY(drawer.GetTranslation())});
     }
 
-    void PostStep(const Settings&, Drawer& drawer) override
+    void PostStep(const Settings&, Drawer&) override
     {
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Keys: left = a, brake = s, right = d, hz down = q, hz up = e");
-        m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "frequency = %g hz, damping ratio = %g",
-                          static_cast<double>(Real{m_hz / Hertz}), m_zeta);
-        m_textLine += DRAW_STRING_NEW_LINE;
+        std::stringstream stream;
+        stream << "Frequency = " << static_cast<double>(Real{m_hz / Hertz}) << " hz, ";
+        stream << "damping ratio = " << m_zeta;
+        m_status = stream.str();
     }
 
     Body* m_car;

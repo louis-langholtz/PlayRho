@@ -173,38 +173,19 @@ public:
         m_wheel->SetTransform(m_wheel->GetLocation(), Real{-120.0f} * Degree);
         CreateLeg(-1.0f, wheelAnchor);
         CreateLeg(1.0f, wheelAnchor);
-    }
-
-    void PostStep(const Settings&, Drawer& drawer) override
-    {
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Keys: left = a, brake = s, right = d, toggle motor = m");
-        m_textLine += DRAW_STRING_NEW_LINE;
-    }
-
-    void KeyboardDown(Key key) override
-    {
-        switch (key)
-        {
-        case Key_A:
+        
+        RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Left", [&](KeyActionMods) {
             m_motorJoint->SetMotorSpeed(-m_motorSpeed);
-            break;
-
-        case Key_S:
+        });
+        RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Brake", [&](KeyActionMods) {
             m_motorJoint->SetMotorSpeed(Real{0.0f} * RadianPerSecond);
-            break;
-
-        case Key_D:
+        });
+        RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Right", [&](KeyActionMods) {
             m_motorJoint->SetMotorSpeed(m_motorSpeed);
-            break;
-
-        case Key_M:
+        });
+        RegisterForKey(GLFW_KEY_M, GLFW_PRESS, 0, "Toggle Motor", [&](KeyActionMods) {
             m_motorJoint->EnableMotor(!m_motorJoint->IsMotorEnabled());
-            break;
-
-        default:
-            break;                
-        }
+        });
     }
 
     Length2D m_offset;

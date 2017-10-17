@@ -62,15 +62,15 @@ public:
         const auto output = GetToiViaSat(m_shapeA.GetChild(0), sweepA,
                                          m_shapeB.GetChild(0), sweepB);
 
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "at toi=%g, state=%s",
-                          static_cast<float>(output.get_t()), GetName(output.get_state()));
-        m_textLine += DRAW_STRING_NEW_LINE;
-
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "TOI iters = %d, max root iters = %d",
-                          output.get_toi_iters(), output.get_max_root_iters());
-        m_textLine += DRAW_STRING_NEW_LINE;
+        std::stringstream stream;
+        stream << "At TOI ";
+        stream << static_cast<float>(output.get_t());
+        stream << ", state is ";
+        stream << GetName(output.get_state());
+        stream << ". TOI iterations is " << unsigned{output.get_toi_iters()};
+        stream << ", max root iterations is " << unsigned{output.get_max_root_iters()};
+        stream << ".";
+        m_status = stream.str();
 
         {
             const auto vertexCount = m_shapeA.GetVertexCount();

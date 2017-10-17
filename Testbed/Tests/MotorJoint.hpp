@@ -50,18 +50,10 @@ public:
         mjd.maxForce = Real{1000.0f} * Newton;
         mjd.maxTorque = Real{1000.0f} * NewtonMeter;
         m_joint = (MotorJoint*)m_world.CreateJoint(mjd);
-    }
-
-    void KeyboardDown(Key key) override
-    {
-        switch (key)
-        {
-        case Key_S:
+        
+        RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Pause Motor", [&](KeyActionMods) {
             m_go = !m_go;
-            break;
-        default:
-            break;
-        }
+        });
     }
 
     void PreStep(const Settings& settings, Drawer& drawer) override
@@ -80,12 +72,6 @@ public:
         m_joint->SetAngularOffset(Real{4} * Radian * m_time);
 
         drawer.DrawPoint(linearOffset, 4.0f, Color(0.9f, 0.9f, 0.9f));
-    }
-
-    void PostStep(const Settings&, Drawer& drawer) override
-    {
-        drawer.DrawString(5, m_textLine, Drawer::Left, "Keys: (s) pause");
-        m_textLine += 15;
     }
 
     MotorJoint* m_joint;

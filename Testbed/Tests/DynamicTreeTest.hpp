@@ -150,13 +150,6 @@ public:
             drawer.DrawPoint(p, 6.0f, cr);
         }
 
-        {
-            const auto height = GetHeight(m_tree);
-            drawer.DrawString(5, m_textLine, Drawer::Left,
-                              "dynamic tree height = %d", height);
-            m_textLine += DRAW_STRING_NEW_LINE;
-        }
-
         ++m_stepCount;
     }
 

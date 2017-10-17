@@ -30,12 +30,18 @@ namespace playrho {
     class FifteenPuzzle: public Test
     {
     public:
-        
-        FifteenPuzzle()
+        static Test::Conf GetTestConf()
         {
-            m_settings.drawLabels = true;
-            m_settings.drawSkins = true;
-            m_neededSettings = (1 << NeedDrawLabelsField)|(1 << NeedDrawSkinsField);
+            auto conf = Test::Conf{};
+            conf.settings.drawSkins = true;
+            conf.settings.drawLabels = true;
+            conf.neededSettings = (1 << NeedDrawLabelsField)|(1 << NeedDrawSkinsField);
+            conf.description = "Slide square tiles around using the mouse. See if you can re-order them. Good luck!";
+            return conf;
+        }
+        
+        FifteenPuzzle(): Test(GetTestConf())
+        {
             m_world.SetGravity(LinearAcceleration2D{});
             const auto enclosure = CreateSquareEnclosingBody(m_world,
                 16 * Meter + 2 * GetVertexRadius(), ShapeConf{}
@@ -81,14 +87,6 @@ namespace playrho {
             
             return body;
         }
-        
-        void PostStep(const Settings&, Drawer& drawer) override
-        {
-            drawer.DrawString(5, m_textLine, Drawer::Left,
-                "Slide square tiles around using the mouse. See if you can re-order them. Good luck!");
-            m_textLine += DRAW_STRING_NEW_LINE;
-        }
-        
     };
     
 } // namespace playrho

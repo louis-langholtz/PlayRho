@@ -37,6 +37,13 @@ public:
     {
         Generate();
         m_auto = false;
+        
+        RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Toggle Auto Generation", [&](KeyActionMods) {
+            m_auto = !m_auto;
+        });
+        RegisterForKey(GLFW_KEY_G, GLFW_PRESS, 0, "Generate New Random Convex Hull", [&](KeyActionMods) {
+            Generate();
+        });
     }
 
     void Generate()
@@ -60,45 +67,22 @@ public:
         }
     }
 
-    void KeyboardDown(Key key) override
-    {
-        switch (key)
-        {
-        case Key_A:
-            m_auto = !m_auto;
-            break;
-
-        case Key_G:
-            Generate();
-            break;
-
-        default:
-            break;
-        }
-    }
-
     void PostStep(const Settings&, Drawer& drawer) override
     {
         const auto conf = PolygonShape::Conf{};
         const auto shape = PolygonShape{Span<const Length2D>{&m_points[0], m_points.size()}, conf};
-
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Press g to generate a new random convex hull");
-        m_textLine += DRAW_STRING_NEW_LINE;
 
         drawer.DrawPolygon(shape.GetVertices().begin(), shape.GetVertexCount(), Color(0.9f, 0.9f, 0.9f));
 
         for (auto i = std::size_t{0}; i < m_points.size(); ++i)
         {
             drawer.DrawPoint(m_points[i], 3.0f, Color(0.3f, 0.9f, 0.3f));
-            drawer.DrawString(m_points[i] + Vec2(0.05f, 0.05f) * Meter, Drawer::Left,
-                              "%d", i);
+            drawer.DrawString(m_points[i] + Vec2(0.05f, 0.05f) * Meter, Drawer::Left, "%d", i);
         }
 
         if (!Validate(shape))
         {
-            drawer.DrawString(5, m_textLine, Drawer::Left, "Note: Invalid convex hull");
-            m_textLine += DRAW_STRING_NEW_LINE;
+            m_status = "Note: Invalid convex hull";
         }
 
         if (m_auto)

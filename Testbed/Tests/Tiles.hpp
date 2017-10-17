@@ -97,51 +97,27 @@ public:
         const auto end = std::chrono::high_resolution_clock::now();
         const auto elapsed_secs = std::chrono::duration<double>{end - start};
         m_createTime = elapsed_secs.count();
+        
+        RegisterForKey(GLFW_KEY_C, GLFW_PRESS, 0, "Make a snapshot.", [&](KeyActionMods) {
+            m_snapshot = m_world;
+        });
+        RegisterForKey(GLFW_KEY_BACKSPACE, GLFW_PRESS, 0, "Restore to snapshot.", [&](KeyActionMods) {
+            if (m_snapshot.GetBodies().size() > 0)
+            {
+                ResetWorld(m_snapshot);
+            }
+        });
     }
 
     void PostStep(const Settings&, Drawer& drawer) override
     {
-        const auto height = GetHeight(m_world.GetTree());
-        const auto leafCount = m_world.GetTree().GetLeafCount();
-        if (leafCount > 0)
-        {
-            const auto minimumNodeCount = 2 * leafCount - 1;
-            const auto minimumHeight = ceilf(logf(float(minimumNodeCount)) / logf(2.0f));
-            drawer.DrawString(5, m_textLine, Drawer::Left,
-                              "dynamic tree height = %d, min = %d",
-                              height, int(minimumHeight));
-            m_textLine += DRAW_STRING_NEW_LINE;
-        }
-
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "create time = %6.2f ms, fixture count = %d",
-            m_createTime * 1000, m_fixtureCount);
-        m_textLine += DRAW_STRING_NEW_LINE;
-
-        //DynamicTree* tree = &m_world.m_contactManager.m_broadPhase.m_tree;
-
-        //if (GetStepCount() == 400)
-        //{
-        //    tree->RebuildBottomUp();
-        //}
-    }
-
-    void KeyboardDown(Key key) override
-    {
-        switch (key)
-        {
-            case Key_C:
-                m_snapshot = m_world;
-                break;
-            case Key_Backspace:
-                if (m_snapshot.GetBodies().size() > 0)
-                {
-	                ResetWorld(m_snapshot);
-                }
-                break;
-            default:
-                break;
-        }
+        std::stringstream stream;
+        stream << "Create time = ";
+        stream << m_createTime * 1000;
+        stream << " ms, fixture count = ";
+        stream << m_fixtureCount;
+        stream << ".";
+        m_status = stream.str();
     }
     
     int m_fixtureCount;

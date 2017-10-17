@@ -77,11 +77,14 @@ public:
     {
         const auto ratio = m_joint1->GetRatio();
         const auto L = GetCurrentLengthA(*m_joint1) + ratio * GetCurrentLengthB(*m_joint1);
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "L1 + %4.2f * L2 = %4.2f",
-                          (float) ratio,
-                          static_cast<double>(Real{L / Meter}));
-        m_textLine += DRAW_STRING_NEW_LINE;
+
+        std::stringstream stream;
+        stream << "L1 + ";
+        stream << static_cast<float>(ratio);
+        stream << " * L2 = ";
+        stream << static_cast<double>(Real{L / Meter});
+        stream << "m.";
+        m_status = stream.str();
     }
 
     PulleyJoint* m_joint1;

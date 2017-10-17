@@ -101,6 +101,13 @@ public:
             conf.vertexRadius = Real{0.2f} * Meter;
             m_ball->CreateFixture(std::make_shared<DiskShape>(conf));
         }
+        
+        RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "To control the flippers", [&](KeyActionMods) {
+            m_button = true;
+        });
+        RegisterForKey(GLFW_KEY_A, GLFW_RELEASE, 0, "To control the flippers", [&](KeyActionMods) {
+            m_button = false;
+        });
     }
 
     void PreStep(const Settings&, Drawer&) override
@@ -114,36 +121,6 @@ public:
         {
             m_leftJoint->SetMotorSpeed(Real{-10.0f} * RadianPerSecond);
             m_rightJoint->SetMotorSpeed(Real{10.0f} * RadianPerSecond);
-        }
-    }
-
-    void PostStep(const Settings&, Drawer& drawer) override
-    {
-        drawer.DrawString(5, m_textLine, Drawer::Left, "Press 'a' to control the flippers");
-        m_textLine += DRAW_STRING_NEW_LINE;
-    }
-    
-    void KeyboardDown(Key key) override
-    {
-        switch (key)
-        {
-        case Key_A:
-            m_button = true;
-            break;
-        default:
-            break;
-        }
-    }
-
-    void KeyboardUp(Key key) override
-    {
-        switch (key)
-        {
-        case Key_A:
-            m_button = false;
-            break;
-        default:
-            break;
         }
     }
 

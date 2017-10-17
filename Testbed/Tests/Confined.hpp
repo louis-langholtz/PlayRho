@@ -21,6 +21,7 @@
 #define  PLAYRHO_CONFINED_HPP
 
 #include "../Framework/Test.hpp"
+#include <sstream>
 
 namespace playrho {
 
@@ -40,6 +41,33 @@ public:
     {
         m_enclosure = CreateEnclosure(m_enclosureVertexRadius, wall_length);
 
+        RegisterForKey(GLFW_KEY_C, GLFW_PRESS, 0, "Create Circle", [&](KeyActionMods) {
+            CreateCircle();
+        });
+        RegisterForKey(GLFW_KEY_B, GLFW_PRESS, 0, "Create Box", [&](KeyActionMods) {
+            CreateBox();
+        });
+        RegisterForKey(GLFW_KEY_I, GLFW_PRESS, 0, "Impart Impulse", [&](KeyActionMods) {
+            ImpartRandomImpulses();
+        });
+        RegisterForKey(GLFW_KEY_PERIOD, GLFW_PRESS, 0, "Toggle Bullet Mode", [&](KeyActionMods) {
+            ToggleBulletMode();
+        });
+        RegisterForKey(GLFW_KEY_KP_ADD, GLFW_PRESS, 0, "Thicken The Walls", [&](KeyActionMods) {
+            m_world.Destroy(m_enclosure);
+            m_enclosureVertexRadius += vertexRadiusIncrement;
+            m_enclosure = CreateEnclosure(m_enclosureVertexRadius, wall_length);
+        });
+        RegisterForKey(GLFW_KEY_KP_SUBTRACT, GLFW_PRESS, 0, "Thin The Walls", [&](KeyActionMods) {
+            m_world.Destroy(m_enclosure);
+            m_enclosureVertexRadius -= vertexRadiusIncrement;
+            if (m_enclosureVertexRadius < Length{0})
+            {
+                m_enclosureVertexRadius = 0;
+            }
+            m_enclosure = CreateEnclosure(m_enclosureVertexRadius, wall_length);
+        });
+        
         const auto radius = Real{0.5f} * Meter;
         auto conf = DiskShape::Conf{};
         conf.vertexRadius = radius;
@@ -148,41 +176,6 @@ public:
         }        
     }
 
-    void KeyboardDown(Key key) override
-    {
-        switch (key)
-        {
-        case Key_C:
-            CreateCircle();
-            break;
-        case Key_B:
-            CreateBox();
-            break;
-        case Key_I:
-            ImpartRandomImpulses();
-            break;
-        case Key_Period:
-            ToggleBulletMode();
-            break;
-        case Key_Add:
-            m_world.Destroy(m_enclosure);
-            m_enclosureVertexRadius += vertexRadiusIncrement;
-            m_enclosure = CreateEnclosure(m_enclosureVertexRadius, wall_length);
-            break;
-        case Key_Subtract:
-            m_world.Destroy(m_enclosure);
-            m_enclosureVertexRadius -= vertexRadiusIncrement;
-            if (m_enclosureVertexRadius < Length{0})
-            {
-                m_enclosureVertexRadius = 0;
-            }
-            m_enclosure = CreateEnclosure(m_enclosureVertexRadius, wall_length);
-            break;
-        default:
-            break;
-        }
-    }
-
     void PreStep(const Settings&, Drawer&) override
     {
         auto sleeping = true;
@@ -207,18 +200,11 @@ public:
         //}
     }
 
-    void PostStep(const Settings&, Drawer& drawer) override
+    void PostStep(const Settings&, Drawer&) override
     {
-        drawer.DrawString(5, m_textLine, Drawer::Left, "Press 'c' to create a circle.");
-        m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, Drawer::Left, "Press 'b' to create a box.");
-        m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Press '.' to toggle bullet mode (currently %s).", m_bullet_mode? "on": "off");
-        m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Press 'i' to impart impulses.");
-        m_textLine += DRAW_STRING_NEW_LINE;
+        std::stringstream stream;
+        stream << "Bullet mode currently " << (m_bullet_mode? "on": "off") << ".";
+        m_status = stream.str();
     }
     
     bool m_bullet_mode = false;

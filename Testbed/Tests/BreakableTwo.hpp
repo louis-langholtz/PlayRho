@@ -28,8 +28,14 @@ namespace playrho {
 class BreakableTwo: public Test
 {
 public:
-    
-    BreakableTwo()
+    static Test::Conf GetTestConf()
+    {
+        auto conf = Test::Conf{};
+        conf.description = "Demonstrates how bodies can be assembled into a breakable cluster.";
+        return conf;
+    }
+
+    BreakableTwo(): Test(GetTestConf())
     {
         const auto vr = 2 * DefaultLinearSlop;
         const auto polygonConf = PolygonShape::Conf{}.UseVertexRadius(vr);

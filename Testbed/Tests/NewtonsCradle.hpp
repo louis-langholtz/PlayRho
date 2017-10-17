@@ -29,9 +29,19 @@ namespace playrho {
     /// @details
     /// Demonstrates the problems that are endemic to the handling multiple collisions.
     /// @sa http://www.myphysicslab.com/Collision-methods.html
+    /// @sa https://en.wikipedia.org/wiki/Newton%27s_cradle
     class NewtonsCradle : public Test
     {
     public:
+        static Test::Conf GetTestConf()
+        {
+            auto conf = Test::Conf{};
+            conf.description = "Demonstrates the physics engine's behavior in a simulation of "
+                "the classic Newton's cradle. "
+                "Drag a circle with mouse, then let go to see how the physics is simulated.";
+            return conf;
+        }
+
         const Real scale = Real(1);
         const Length ball_radius = scale * Real(2) * Meter; // 2
         const Length frame_width_per_arm = ball_radius * Real{2};
@@ -39,13 +49,48 @@ namespace playrho {
         const Length arm_length = scale * Real(16) * Meter; // 16
         static const auto default_num_arms = 5;
 
-        NewtonsCradle()
+        NewtonsCradle(): Test(GetTestConf())
         {
             for (auto&& body: m_swings)
             {
                 body = nullptr;
             }
             CreateCradle();
+            
+            RegisterForKey(GLFW_KEY_PERIOD, GLFW_PRESS, 0, "Toggle bullet mode", [&](KeyActionMods) {
+                ToggleBulletMode();
+            });
+            RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Toggle right side wall", [&](KeyActionMods) {
+                ToggleRightSideWall();
+            });
+            RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Toggle left side wall", [&](KeyActionMods) {
+                ToggleLeftSideWall();
+            });
+            RegisterForKey(GLFW_KEY_1, GLFW_PRESS, 0, "Set to 1 ball.", [&](KeyActionMods) {
+                DestroyCradle();
+                m_num_arms = 1;
+                CreateCradle();
+            });
+            RegisterForKey(GLFW_KEY_2, GLFW_PRESS, 0, "Set to 2 balls.", [&](KeyActionMods) {
+                DestroyCradle();
+                m_num_arms = 2;
+                CreateCradle();
+            });
+            RegisterForKey(GLFW_KEY_3, GLFW_PRESS, 0, "Set to 3 balls.", [&](KeyActionMods) {
+                DestroyCradle();
+                m_num_arms = 3;
+                CreateCradle();
+            });
+            RegisterForKey(GLFW_KEY_4, GLFW_PRESS, 0, "Set to 4 balls.", [&](KeyActionMods) {
+                DestroyCradle();
+                m_num_arms = 4;
+                CreateCradle();
+            });
+            RegisterForKey(GLFW_KEY_5, GLFW_PRESS, 0, "Set to 5 balls.", [&](KeyActionMods) {
+                DestroyCradle();
+                m_num_arms = 5;
+                CreateCradle();
+            });
         }
         
         void CreateCradle()
@@ -206,70 +251,12 @@ namespace playrho {
                 }
             }
         }
-
-        void KeyboardDown(Key key) override
-        {
-            switch (key)
-            {
-                case Key_Period:
-                    ToggleBulletMode();
-                    break;
-                case Key_D:
-                    ToggleRightSideWall();
-                    break;
-                case Key_A:
-                    ToggleLeftSideWall();
-                    break;
-                case Key_1:
-                    DestroyCradle();
-                    m_num_arms = 1;
-                    CreateCradle();
-                    break;
-                case Key_2:
-                    DestroyCradle();
-                    m_num_arms = 2;
-                    CreateCradle();
-                    break;
-                case Key_3:
-                    DestroyCradle();
-                    m_num_arms = 3;
-                    CreateCradle();
-                    break;
-                case Key_4:
-                    DestroyCradle();
-                    m_num_arms = 4;
-                    CreateCradle();
-                    break;
-                case Key_5:
-                    DestroyCradle();
-                    m_num_arms = 5;
-                    CreateCradle();
-                    break;
-                default:
-                    break;
-            }
-        }
         
-        void PostStep(const Settings&, Drawer& drawer) override
+        void PostStep(const Settings&, Drawer&) override
         {
-            drawer.DrawString(5, m_textLine, Drawer::Left,
-                              "Drag a circle with mouse, then let go to see how the physics is simulated");
-            m_textLine += DRAW_STRING_NEW_LINE;
-            drawer.DrawString(5, m_textLine, Drawer::Left,
-                              "Press '.' to toggle bullet mode (currently %s).",
-                              m_bullet_mode? "on": "off");
-            m_textLine += DRAW_STRING_NEW_LINE;
-            drawer.DrawString(5, m_textLine, Drawer::Left,
-                              "Press 'A' to toggle left side wall (currently %s).",
-                              m_left_side_wall? "on": "off");
-            m_textLine += DRAW_STRING_NEW_LINE;
-            drawer.DrawString(5, m_textLine, Drawer::Left,
-                              "Press 'D' to toggle right side wall (currently %s).",
-                              m_right_side_wall? "on": "off");
-            m_textLine += DRAW_STRING_NEW_LINE;
-            drawer.DrawString(5, m_textLine, Drawer::Left,
-                              "Press '1-5' to set # of balls (currently %d).", m_num_arms);
-            m_textLine += DRAW_STRING_NEW_LINE;
+            std::stringstream stream;
+            stream << "Bullet mode currently " << (m_bullet_mode? "on": "off") << ".";
+            m_status = stream.str();
         }
     
         int m_num_arms = default_num_arms;

@@ -112,26 +112,24 @@ public:
         }
     }
 
-    void PostStep(const Settings&, Drawer& drawer) override
+    void PostStep(const Settings&, Drawer&) override
     {
+        std::stringstream stream;
         {
             const auto ratio = m_joint4->GetRatio();
             const auto angle = GetJointAngle(*m_joint1) + ratio * GetJointAngle(*m_joint2);
-            const auto value = static_cast<double>(Real{angle / Radian});
-            drawer.DrawString(5, m_textLine, Drawer::Left,
-                              "theta1 + %4.2f * theta2 = %4.2f", (float) ratio, value);
-            m_textLine += DRAW_STRING_NEW_LINE;
+            stream << "Theta1 + " << static_cast<double>(ratio);
+            stream << " * theta2 = " << static_cast<double>(Real{angle / Radian});
+            stream << " rad.\n";
         }
-
         {
             const auto ratio = m_joint5->GetRatio();
             const auto value = ratio * GetJointTranslation(*m_joint3);
-            drawer.DrawString(5, m_textLine, Drawer::Left,
-                              "theta2 + %4.2f * delta = %4.2f",
-                              static_cast<double>(ratio),
-                              static_cast<double>(Real{value / Meter}));
-            m_textLine += DRAW_STRING_NEW_LINE;
+            stream << "Theta2 + " << static_cast<double>(ratio);
+            stream << " * theta2 = " << static_cast<double>(Real{value / Meter});
+            stream << " m.";
         }
+        m_status = stream.str();
     }
 
     RevoluteJoint* m_joint1;

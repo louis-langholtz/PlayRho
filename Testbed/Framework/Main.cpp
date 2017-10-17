@@ -43,6 +43,7 @@
 #include <iomanip>
 #include <memory>
 #include <string>
+#include <cctype>
 
 #include <GLFW/glfw3.h>
 #include <cstdio>
@@ -65,6 +66,7 @@ using namespace playrho;
 struct UIState
 {
     bool showMenu = true;
+    bool showAboutTest = true;
 };
 
 class Selection
@@ -301,58 +303,6 @@ static void ResizeWindow(GLFWwindow*, int width, int height)
     menuHeight = camera.m_height - 20;
 }
 
-static Test::Key GlfwKeyToTestKey(int key)
-{
-    switch (key)
-    {
-        case GLFW_KEY_SPACE: return Test::Key_Space;
-        case GLFW_KEY_COMMA: return Test::Key_Comma;
-        case GLFW_KEY_MINUS: return Test::Key_Minus;
-        case GLFW_KEY_PERIOD: return Test::Key_Period;
-        case GLFW_KEY_EQUAL: return Test::Key_Equal;
-        case GLFW_KEY_0: return Test::Key_0;
-        case GLFW_KEY_1: return Test::Key_1;
-        case GLFW_KEY_2: return Test::Key_2;
-        case GLFW_KEY_3: return Test::Key_3;
-        case GLFW_KEY_4: return Test::Key_4;
-        case GLFW_KEY_5: return Test::Key_5;
-        case GLFW_KEY_6: return Test::Key_6;
-        case GLFW_KEY_7: return Test::Key_7;
-        case GLFW_KEY_8: return Test::Key_8;
-        case GLFW_KEY_9: return Test::Key_9;
-        case GLFW_KEY_A: return Test::Key_A;
-        case GLFW_KEY_B: return Test::Key_B;
-        case GLFW_KEY_C: return Test::Key_C;
-        case GLFW_KEY_D: return Test::Key_D;
-        case GLFW_KEY_E: return Test::Key_E;
-        case GLFW_KEY_F: return Test::Key_F;
-        case GLFW_KEY_G: return Test::Key_G;
-        case GLFW_KEY_H: return Test::Key_H;
-        case GLFW_KEY_I: return Test::Key_I;
-        case GLFW_KEY_J: return Test::Key_J;
-        case GLFW_KEY_K: return Test::Key_K;
-        case GLFW_KEY_L: return Test::Key_L;
-        case GLFW_KEY_M: return Test::Key_M;
-        case GLFW_KEY_N: return Test::Key_N;
-        case GLFW_KEY_O: return Test::Key_O;
-        case GLFW_KEY_P: return Test::Key_P;
-        case GLFW_KEY_Q: return Test::Key_Q;
-        case GLFW_KEY_R: return Test::Key_R;
-        case GLFW_KEY_S: return Test::Key_S;
-        case GLFW_KEY_T: return Test::Key_T;
-        case GLFW_KEY_U: return Test::Key_U;
-        case GLFW_KEY_V: return Test::Key_V;
-        case GLFW_KEY_W: return Test::Key_W;
-        case GLFW_KEY_X: return Test::Key_X;
-        case GLFW_KEY_Y: return Test::Key_Y;
-        case GLFW_KEY_Z: return Test::Key_Z;
-        case GLFW_KEY_BACKSPACE: return Test::Key_Backspace;
-        case GLFW_KEY_KP_SUBTRACT: return Test::Key_Subtract;
-        case GLFW_KEY_KP_ADD: return Test::Key_Add;
-    }
-    return Test::Key_Unknown;
-}
-
 static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     ImGui_ImplGlfwGL3_KeyCallback(window, key, scancode, action, mods);
@@ -467,13 +417,13 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
         default:
             if (g_testSuite->GetTest())
             {
-                g_testSuite->GetTest()->KeyboardDown(GlfwKeyToTestKey(key));
+                g_testSuite->GetTest()->KeyboardHandler(key, action, mods);
             }
         }
     }
     else if (action == GLFW_RELEASE)
     {
-        g_testSuite->GetTest()->KeyboardUp(GlfwKeyToTestKey(key));
+        g_testSuite->GetTest()->KeyboardHandler(key, action, mods);
     }
     // else GLFW_REPEAT
 }
@@ -587,7 +537,6 @@ static void Simulate(Drawer& drawer)
         }
     }
     
-    g_testSuite->GetTest()->DrawTitle(drawer, g_testSuite->GetName());
     g_testSuite->GetTest()->Step(settings, drawer);
 
     glDisable(GL_DEPTH_TEST);
@@ -614,14 +563,147 @@ static bool TestEntriesGetName(void*, int idx, const char** out_name)
     return true;
 }
 
+static const char* GetKeyActionName(int action)
+{
+    switch (action)
+    {
+        case GLFW_PRESS: return "Press";
+        case GLFW_RELEASE: return "Release";
+        case GLFW_REPEAT: return "Press+Hold";
+        default: return "Unknown action";
+    }
+}
+
+static const char* GetKeyShortName(int key)
+{
+    switch (key)
+    {
+        case GLFW_KEY_SPACE: return "SPACE";
+        case GLFW_KEY_BACKSPACE: return "BS";
+        case GLFW_KEY_TAB: return "TAB";
+        case GLFW_KEY_DELETE: return "DEL";
+        case GLFW_KEY_ESCAPE: return "ESC";
+        case GLFW_KEY_KP_ADD: return "KP+";
+        case GLFW_KEY_KP_SUBTRACT: return "KP-";
+        default: break;
+    }
+    return "Unknown";
+}
+
+static const char* GetKeyLongName(int key)
+{
+    switch (key)
+    {
+        case GLFW_KEY_BACKSPACE: return "Backspace";
+        case GLFW_KEY_DELETE: return "Delete";
+        case GLFW_KEY_ESCAPE: return "Escape";
+        case GLFW_KEY_KP_ADD: return "KeyPad+";
+        case GLFW_KEY_KP_SUBTRACT: return "KeyPad-";
+        default: break;
+    }
+    return nullptr;
+}
+
 static bool UserInterface()
 {
     auto shouldQuit = false;
+    const auto test = g_testSuite->GetTest();
 
+    if (ui.showAboutTest)
+    {
+        // Note: Use ImGuiCond_Appearing to set the position on first appearance of Test
+        //   About info and allow later relocation by user. This is preferred over using
+        //   another condition like ImGuiCond_Once, since user could move this window out
+        //   of viewport and otherwise having no visual way to recover it.
+        ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiCond_Appearing);
+        
+        // Note: without ImGuiWindowFlags_AlwaysAutoResize, ImGui adds a handle icon
+        //   which allows manual resizing but stops automatic resizing.
+        ImGui::Begin("About This Test", &ui.showAboutTest,
+                     ImGuiWindowFlags_NoCollapse|ImGuiWindowFlags_AlwaysAutoResize);
+        
+        const auto name = g_testSuite->GetName();
+        ImGui::LabelText("Test Name", "%s", name);
+
+        if (!test->GetSeeAlso().empty())
+        {
+            const auto length = test->GetSeeAlso().size();
+            char buffer[512];
+            std::strncpy(buffer, test->GetSeeAlso().c_str(), length);
+            buffer[length] = '\0';
+            ImGui::InputText("See Also", buffer, 512,
+                             ImGuiInputTextFlags_ReadOnly|ImGuiInputTextFlags_AutoSelectAll);
+        }
+
+        if (!test->GetDescription().empty())
+        {
+            if (ImGui::CollapsingHeader("Description", ImGuiTreeNodeFlags_DefaultOpen))
+            {
+                ImGui::TextWrapped("%s", test->GetDescription().c_str());
+            }
+        }
+        
+        const auto handledKeys = test->GetHandledKeys();
+        if (!handledKeys.empty())
+        {
+            if (ImGui::CollapsingHeader("Key Controls", ImGuiTreeNodeFlags_DefaultOpen))
+            {
+                ImGui::Columns(3, nullptr, false);
+                ImGui::SetColumnWidth(0, 50);
+                ImGui::SetColumnWidth(1, 50);
+                //ImGui::SetColumnWidth(2, 200);
+                for (auto& handledKey: handledKeys)
+                {
+                    const auto keyID = handledKey.first.key;
+                    
+                    ImGui::TextUnformatted(GetKeyActionName(handledKey.first.action));
+                    ImGui::NextColumn();
+
+                    if (std::isgraph(keyID))
+                    {
+                        ImGui::Text("%c", keyID);
+                    }
+                    else
+                    {
+                        ImGui::Text("%s", GetKeyShortName(handledKey.first.key));
+                        if (ImGui::IsItemHovered() && GetKeyLongName(handledKey.first.key))
+                        {
+                            ImGui::SetTooltip("%s", GetKeyLongName(handledKey.first.key));
+                        }
+                    }
+                    ImGui::NextColumn();
+                    //ImGui::SameLine();
+                    const auto info = test->GetKeyHandlerInfo(handledKey.second);
+                    ImGui::TextWrapped("%s", info.c_str());
+                    ImGui::NextColumn();
+                }
+                ImGui::Columns(1);
+            }
+        }
+        
+        if (!test->GetStatus().empty())
+        {
+            if (ImGui::CollapsingHeader("Status Info", ImGuiTreeNodeFlags_DefaultOpen))
+            {
+                ImGui::TextWrapped("%s", test->GetStatus().c_str());
+            }
+        }
+        
+        if (!test->GetCredits().empty())
+        {
+            if (ImGui::CollapsingHeader("Credits"))
+            {
+                ImGui::TextWrapped("%s", test->GetCredits().c_str());
+            }
+        }
+        
+        ImGui::End();
+    }
+    
     if (ui.showMenu)
     {
-        const auto neededSettings = g_testSuite->GetTest()->GetNeededSettings();
-        const auto testSettings = g_testSuite->GetTest()->GetSettings();
+        const auto neededSettings = test->GetNeededSettings();
+        const auto testSettings = test->GetSettings();
 
         ImGui::SetNextWindowPos(ImVec2(camera.m_width - menuWidth - 10, 10));
         ImGui::SetNextWindowSize(ImVec2(menuWidth, camera.m_height - 20));
@@ -629,8 +711,6 @@ static bool UserInterface()
                      ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoCollapse);
         ImGui::PushAllowKeyboardFocus(false); // Disable TAB
         
-        //ImGui::PushItemWidth(ImGui::CalcItemWidth() /* -1.0f */);
-
         ImGui::Text("Test:");
         ImGui::SameLine();
         auto current_item = g_selection->Get();
@@ -732,6 +812,7 @@ static bool UserInterface()
             ImGui::Checkbox("Friction Impulses", &settings.drawFrictionImpulse);
             ImGui::Checkbox("Center of Masses", &settings.drawCOMs);
             ImGui::Checkbox("Statistics", &settings.drawStats);
+            ImGui::Checkbox("About Test", &ui.showAboutTest);
         }
         
         ImGui::Spacing();

@@ -104,37 +104,24 @@ public:
                 body->CreateFixture(std::make_shared<PolygonShape>(Real{1.5f} * Meter, Real{1.5f} * Meter, shapeConf));
             }
         }
-    }
-
-    void KeyboardDown(Key key) override
-    {
-        switch (key)
-        {
-        case Key_F:
+        RegisterForKey(GLFW_KEY_F, GLFW_PRESS, 0, "toggle friction", [&](KeyActionMods) {
             m_joint2->EnableMotor(!m_joint2->IsMotorEnabled());
             m_joint2->GetBodyB()->SetAwake();
-            break;
-
-        case Key_M:
+        });
+        RegisterForKey(GLFW_KEY_M, GLFW_PRESS, 0, "toggle motor", [&](KeyActionMods) {
             m_joint1->EnableMotor(!m_joint1->IsMotorEnabled());
             m_joint1->GetBodyB()->SetAwake();
-            break;
-        
-        default:
-            break;                
-        }
+        });
     }
 
     void PostStep(const Settings& settings, Drawer& drawer) override
     {
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Keys: (f) toggle friction, (m) toggle motor");
-        m_textLine += DRAW_STRING_NEW_LINE;
         const auto torque = m_joint1->GetMotorTorque(Real{settings.hz} * Hertz);
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Motor Torque = %5.0f",
-                          static_cast<double>(Real{torque / NewtonMeter}));
-        m_textLine += DRAW_STRING_NEW_LINE;
+        std::stringstream stream;
+        stream << "Motor Torque = ";
+        stream << static_cast<double>(Real{torque / NewtonMeter});
+        stream << " Nm.";
+        m_status = stream.str();
     }
 
     RevoluteJoint* m_joint1;

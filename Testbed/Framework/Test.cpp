@@ -392,8 +392,13 @@ void Test::DestructionListenerImpl::SayGoodbye(Joint& joint)
     }
 }
 
-Test::Test(WorldDef conf):
-    m_world{conf}
+Test::Test(Conf conf):
+    m_world(conf.worldDef),
+    m_neededSettings(conf.neededSettings),
+    m_settings(conf.settings),
+    m_description(conf.description),
+    m_credits(conf.credits),
+    m_seeAlso(conf.seeAlso)
 {
     m_destructionListener.test = this;
     m_world.SetDestructionListener(&m_destructionListener);
@@ -406,7 +411,7 @@ Test::~Test()
 
 void Test::ResetWorld(const playrho::World &saved)
 {
-    SetSelectedFixtures(Fixtures{});
+    ClearSelectedFixtures();
 
     auto bombIndex = static_cast<decltype(m_world.GetBodies().size())>(-1);
 
@@ -460,12 +465,6 @@ void Test::PreSolve(Contact& contact, const Manifold& oldManifold)
         cp.separation = worldManifold.GetSeparation(i);
         m_points.push_back(cp);
     }
-}
-
-void Test::DrawTitle(Drawer& drawer, const char *string)
-{
-    drawer.DrawString(5, DRAW_STRING_NEW_LINE, Drawer::Left, string);
-    m_textLine = 3 * DRAW_STRING_NEW_LINE;
 }
 
 void Test::MouseDown(const Length2D& p)
@@ -961,6 +960,8 @@ void Test::DrawContactInfo(const Settings& settings, Drawer& drawer)
 
 void Test::Step(const Settings& settings, Drawer& drawer)
 {
+    m_textLine = 3 * DRAW_STRING_NEW_LINE;
+
     PreStep(settings, drawer);
 
     if (settings.pause)
@@ -1098,7 +1099,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
     const auto selectedFound = DrawWorld(drawer, m_world, settings, selectedFixtures);
     if (!selectedFixtures.empty() && !selectedFound)
     {
-        SetSelectedFixtures(Fixtures{});
+        ClearSelectedFixtures();
     }
 
     drawer.Flush();
@@ -1107,6 +1108,33 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 void Test::ShiftOrigin(const Length2D& newOrigin)
 {
     m_world.ShiftOrigin(newOrigin);
+}
+
+void Test::KeyboardHandler(KeyID key, KeyAction action, KeyMods mods)
+{
+    for (const auto& handledKey: m_handledKeys)
+    {
+        const auto& keyActionMods = handledKey.first;
+        if (keyActionMods.key != key)
+        {
+            continue;
+        }
+        if (keyActionMods.action != action)
+        {
+            continue;
+        }
+        if (mods & keyActionMods.mods)
+        {
+            continue;
+        }
+        const auto handlerID = handledKey.second;
+        m_keyHandlers[handlerID].second(KeyActionMods{key, action, mods});
+    }
+}
+
+void Test::RegisterForKey(KeyID key, KeyAction action, KeyMods mods, KeyHandlerID id)
+{
+    m_handledKeys.push_back(std::make_pair(KeyActionMods{key, action, mods}, id));
 }
 
 constexpr auto RAND_LIMIT = 32767;

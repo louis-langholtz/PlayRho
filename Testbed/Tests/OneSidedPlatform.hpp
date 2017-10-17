@@ -100,17 +100,14 @@ public:
 #endif
     }
 
-    void PostStep(const Settings&, Drawer& drawer) override
+    void PostStep(const Settings&, Drawer&) override
     {
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Press: (c) create a shape, (d) destroy a shape.");
-        m_textLine += DRAW_STRING_NEW_LINE;
-
         const auto v = GetLinearVelocity(*(m_character->GetBody()));
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Character Linear Velocity: %f",
-                          static_cast<double>(Real{GetY(v) / MeterPerSecond}));
-        m_textLine += DRAW_STRING_NEW_LINE;
+        std::stringstream stream;
+        stream << "Character linear velocity: ";
+        stream << static_cast<double>(Real{GetY(v) / MeterPerSecond});
+        stream << " m/s.";
+        m_status = stream.str();
     }
 
     Length m_radius = Real{0.5f} * Meter;

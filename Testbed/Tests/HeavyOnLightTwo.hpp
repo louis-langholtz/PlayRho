@@ -41,6 +41,10 @@ public:
         
         const auto body2 = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 3.5f) * Meter));
         body2->CreateFixture(shape);
+        
+        RegisterForKey(GLFW_KEY_H, GLFW_PRESS, 0, "Toggle Heavy", [&](KeyActionMods) {
+            ToggleHeavy();
+        });
     }
     
     void ToggleHeavy()
@@ -58,18 +62,6 @@ public:
             conf.density = Real{10} * KilogramPerSquareMeter;
             conf.vertexRadius = Real{5.0f} * Meter;
             m_heavy->CreateFixture(std::make_shared<DiskShape>(conf));
-        }
-    }
-    
-    void KeyboardDown(Key key) override
-    {
-        switch (key)
-        {
-        case Key_H:
-            ToggleHeavy();
-            break;
-        default:
-            break;
         }
     }
     

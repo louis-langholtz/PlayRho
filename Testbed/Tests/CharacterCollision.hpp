@@ -30,7 +30,14 @@ namespace playrho {
 class CharacterCollision : public Test
 {
 public:
-    CharacterCollision()
+    static Test::Conf GetTestConf()
+    {
+        auto conf = Test::Conf{};
+        conf.description = "Tests various character shapes for snag-free smooth sliding.";
+        return conf;
+    }
+
+    CharacterCollision(): Test(GetTestConf())
     {
         // Ground body
         const auto ground = m_world.CreateBody();
@@ -256,13 +263,6 @@ public:
         auto velocity = m_character->GetVelocity();
         GetX(velocity.linear) = Real{-5.0f} * MeterPerSecond;
         m_character->SetVelocity(velocity);
-    }
-
-    void PostStep(const Settings&, Drawer& drawer) override
-    {
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "This tests various character collision shapes for snag-free smooth sliding.");
-        m_textLine += DRAW_STRING_NEW_LINE;
     }
 
     Body* m_character;

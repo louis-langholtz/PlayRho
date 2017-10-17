@@ -90,13 +90,8 @@ public:
 
         m_ropeDef.bodyA = ground;
         m_rope = m_world.CreateJoint(m_ropeDef);
-    }
-
-    void KeyboardDown(Key key) override
-    {
-        switch (key)
-        {
-        case Key_J:
+        
+        RegisterForKey(GLFW_KEY_J, GLFW_PRESS, 0, "Toggle the rope joint", [&](KeyActionMods) {
             if (m_rope)
             {
                 m_world.Destroy(m_rope);
@@ -106,27 +101,14 @@ public:
             {
                 m_rope = m_world.CreateJoint(m_ropeDef);
             }
-            break;
-
-        default:
-            break;
-        }
+        });
     }
 
-    void PostStep(const Settings&, Drawer& drawer) override
+    void PostStep(const Settings&, Drawer&) override
     {
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Press (j) to toggle the rope joint.");
-        m_textLine += DRAW_STRING_NEW_LINE;
-        if (m_rope)
-        {
-            drawer.DrawString(5, m_textLine, Drawer::Left, "Rope ON");
-        }
-        else
-        {
-            drawer.DrawString(5, m_textLine, Drawer::Left, "Rope OFF");
-        }
-        m_textLine += DRAW_STRING_NEW_LINE;
+        std::stringstream stream;
+        stream << (m_rope? "Rope ON.": "Rope OFF.");
+        m_status = stream.str();
     }
 
     RopeJointDef m_ropeDef;

@@ -28,7 +28,14 @@ namespace playrho {
 class Web : public Test
 {
 public:
-    Web()
+    static Test::Conf GetTestConf()
+    {
+        auto conf = Test::Conf{};
+        conf.description = "Demonstrates a soft distance joint.";
+        return conf;
+    }
+    
+    Web(): Test(GetTestConf())
     {
         const auto ground = m_world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
@@ -142,13 +149,8 @@ public:
             jd.length = GetLength(d);
             m_joints[7] = m_world.CreateJoint(jd);
         }
-    }
-
-    void KeyboardDown(Key key) override
-    {
-        switch (key)
-        {
-        case Key_B:
+        
+        RegisterForKey(GLFW_KEY_B, GLFW_PRESS, 0, "Delete a body.", [&](KeyActionMods) {
             for (auto i = 0; i < 4; ++i)
             {
                 if (m_bodies[i])
@@ -158,9 +160,8 @@ public:
                     break;
                 }
             }
-            break;
-
-        case Key_J:
+        });
+        RegisterForKey(GLFW_KEY_J, GLFW_PRESS, 0, "Delete a joint.", [&](KeyActionMods) {
             for (auto i = 0; i < 8; ++i)
             {
                 if (m_joints[i])
@@ -170,21 +171,7 @@ public:
                     break;
                 }
             }
-            break;
-                
-        default:
-            break;
-        }
-    }
-
-    void PostStep(const Settings&, Drawer& drawer) override
-    {
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "This demonstrates a soft distance joint.");
-        m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Press: (b) to delete a body, (j) to delete a joint");
-        m_textLine += DRAW_STRING_NEW_LINE;
+        });
     }
 
     void JointDestroyed(Joint* joint) override

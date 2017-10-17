@@ -32,6 +32,17 @@ public:
         const auto ground = m_world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
 
+        RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Dynamic", [&](KeyActionMods) {
+            m_platform->SetType(BodyType::Dynamic);
+        });
+        RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Static", [&](KeyActionMods) {
+            m_platform->SetType(BodyType::Static);
+        });
+        RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Kinematic", [&](KeyActionMods) {
+            m_platform->SetType(BodyType::Kinematic);
+            m_platform->SetVelocity(Velocity{Vec2(-m_speed, 0.0f) * MeterPerSecond, AngularVelocity{0}});
+        });
+
         // Define attachment
         {
             BodyDef bd;
@@ -89,28 +100,6 @@ public:
         }
     }
 
-    void KeyboardDown(Key key) override
-    {
-        switch (key)
-        {
-        case Key_D:
-            m_platform->SetType(BodyType::Dynamic);
-            break;
-
-        case Key_S:
-            m_platform->SetType(BodyType::Static);
-            break;
-
-        case Key_K:
-            m_platform->SetType(BodyType::Kinematic);
-            m_platform->SetVelocity(Velocity{Vec2(-m_speed, 0.0f) * MeterPerSecond, AngularVelocity{0}});
-            break;
-    
-        default:
-            break;
-        }
-    }
-
     void PreStep(const Settings&, Drawer&) override
     {
         // Drive the kinematic body.
@@ -128,13 +117,6 @@ public:
                 });
             }
         }
-    }
-
-    void PostStep(const Settings&, Drawer& drawer) override
-    {
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Keys: (d) dynamic, (s) static, (k) kinematic");
-        m_textLine += DRAW_STRING_NEW_LINE;
     }
 
     Body* m_attachment;

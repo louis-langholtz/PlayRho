@@ -77,6 +77,38 @@ public:
         const auto g = m_world.CreateBody(BodyDef{}.UseType(BodyType::Static));
         const auto b = CreateEnclosure(m_world);
         m_joint = CreateRevoluteJoint(m_world, g, b);
+        
+        RegisterForKey(GLFW_KEY_KP_ADD, GLFW_PRESS, 0, "Speed up rotation.", [&](KeyActionMods) {
+            m_joint->SetMotorSpeed(m_joint->GetMotorSpeed() + 0.01f * Pi * RadianPerSecond);
+        });
+        RegisterForKey(GLFW_KEY_KP_SUBTRACT, GLFW_PRESS, 0, "Slow down rotation.", [&](KeyActionMods) {
+            m_joint->SetMotorSpeed(m_joint->GetMotorSpeed() - 0.01f * Pi * RadianPerSecond);
+        });
+        RegisterForKey(GLFW_KEY_EQUAL, GLFW_PRESS, 0, "Stop rotation.", [&](KeyActionMods) {
+            m_joint->SetMotorSpeed(Real(0) * RadianPerSecond);
+        });
+        RegisterForKey(GLFW_KEY_0, GLFW_PRESS, 0, "for remaining emitted shapes to be disks.", [&](KeyActionMods) {
+            m_shapeType = ShapeType::Disk;
+        });
+        RegisterForKey(GLFW_KEY_1, GLFW_PRESS, 0, "for remaining emitted shapes to be squares.", [&](KeyActionMods) {
+            m_shapeType = ShapeType::Square;
+        });
+        RegisterForKey(GLFW_KEY_C, GLFW_PRESS, 0, "Clear and re-emit shapes.", [&](KeyActionMods) {
+            std::vector<Body*> bodies;
+            for (auto&& body: m_world.GetBodies())
+            {
+                auto& b = GetRef(body);
+                if (b.GetUserData() == reinterpret_cast<void*>(1))
+                {
+                    bodies.push_back(&b);
+                }
+            }
+            for (auto&& b: bodies)
+            {
+                m_world.Destroy(b);
+            }
+            m_count = 0;
+        });
     }
 
     Body* CreateBody()
@@ -97,16 +129,8 @@ public:
         CreateBody()->CreateFixture(m_disk);
     }
 
-    void PostStep(const Settings& settings, Drawer& drawer) override
+    void PostStep(const Settings& settings, Drawer&) override
     {
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Press C to clear and re-emit shapes. "
-                          "Press 0 or 1 for remaining emitted shapes to be disks or squares.");
-        m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Press '+' or '-' to speed up or slow down rotation. '=' to stop it.");
-        m_textLine += DRAW_STRING_NEW_LINE;
-
         if ((!settings.pause || settings.singleStep) && (m_count < Count))
         {
             switch (m_shapeType)
@@ -119,62 +143,6 @@ public:
                     break;
             }
             ++m_count;
-        }
-    }
-
-    void KeyboardDown(Key key) override
-    {
-        const auto selectedFixtures = GetSelectedFixtures();
-        const auto selectedFixture = selectedFixtures.size() == 1? selectedFixtures[0]: nullptr;
-        const auto selectedShape = selectedFixture?
-            selectedFixture->GetShape().get(): static_cast<Shape*>(nullptr);
-
-        switch (key)
-        {
-            case Key_Add:
-                if (selectedShape)
-                    selectedShape->GetDensity();
-                else
-                    m_joint->SetMotorSpeed(m_joint->GetMotorSpeed() + 0.01f * Pi * RadianPerSecond);
-                break;
-            
-            case Key_Subtract:
-                m_joint->SetMotorSpeed(m_joint->GetMotorSpeed() - 0.01f * Pi * RadianPerSecond);
-                break;
-            
-            case Key_Equal:
-                m_joint->SetMotorSpeed(Real(0) * RadianPerSecond);
-                break;
-            
-            case Key_0:
-                m_shapeType = ShapeType::Disk;
-                break;
-                
-            case Key_1:
-                m_shapeType = ShapeType::Square;
-                break;
-                
-            case Key_C:
-            {
-                std::vector<Body*> bodies;
-                for (auto&& body: m_world.GetBodies())
-                {
-                    auto& b = GetRef(body);
-                    if (b.GetUserData() == reinterpret_cast<void*>(1))
-                    {
-                        bodies.push_back(&b);
-                    }
-                }
-                for (auto&& b: bodies)
-                {
-                    m_world.Destroy(b);
-                }
-                m_count = 0;
-                break;
-            }
-
-            default:
-                break;
         }
     }
 

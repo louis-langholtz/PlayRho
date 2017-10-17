@@ -61,37 +61,26 @@ public:
 
             m_joint = (PrismaticJoint*)m_world.CreateJoint(pjd);
         }
-    }
-
-    void KeyboardDown(Key key) override
-    {
-        switch (key)
-        {
-        case Key_L:
+        
+        RegisterForKey(GLFW_KEY_L, GLFW_PRESS, 0, "Limits", [&](KeyActionMods) {
             m_joint->EnableLimit(!m_joint->IsLimitEnabled());
-            break;
-
-        case Key_M:
+        });
+        RegisterForKey(GLFW_KEY_M, GLFW_PRESS, 0, "Motors", [&](KeyActionMods) {
             m_joint->EnableMotor(!m_joint->IsMotorEnabled());
-            break;
-
-        case Key_S:
+        });
+        RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Speed", [&](KeyActionMods) {
             m_joint->SetMotorSpeed(-m_joint->GetMotorSpeed());
-            break;
-
-        default:
-            break;
-        }
+        });
     }
 
-    void PostStep(const Settings& settings, Drawer& drawer) override
+    void PostStep(const Settings& settings, Drawer&) override
     {
-        drawer.DrawString(5, m_textLine, Drawer::Left, "Keys: (l) limits, (m) motors, (s) speed");
-        m_textLine += DRAW_STRING_NEW_LINE;
         const auto force = m_joint->GetMotorForce(Real{settings.hz} * Hertz);
-        drawer.DrawString(5, m_textLine, Drawer::Left, "Motor Force = %4.0f",
-                          static_cast<double>(Real{force / Newton}));
-        m_textLine += DRAW_STRING_NEW_LINE;
+        std::stringstream stream;
+        stream << "Motor Force: ";
+        stream << static_cast<double>(Real{force / Newton});
+        stream << " N.";
+        m_status = stream.str();
     }
 
     PrismaticJoint* m_joint;

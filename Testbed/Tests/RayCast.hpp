@@ -91,6 +91,42 @@ public:
         }
         m_polygons[3]->SetAsBox(Real{0.5f} * Meter, Real{0.5f} * Meter);
         std::memset(m_bodies, 0, sizeof(m_bodies));
+        
+        RegisterForKey(GLFW_KEY_1, GLFW_PRESS, 0, "drop triangles that should be ignored by the ray.", [&](KeyActionMods kam) {
+            Create(kam.key - GLFW_KEY_1);
+        });
+        RegisterForKey(GLFW_KEY_2, GLFW_PRESS, 0, "drop shape that should not be ignored by the ray.", [&](KeyActionMods kam) {
+            Create(kam.key - GLFW_KEY_1);
+        });
+        RegisterForKey(GLFW_KEY_3, GLFW_PRESS, 0, "drop shape that should not be ignored by the ray.", [&](KeyActionMods kam) {
+            Create(kam.key - GLFW_KEY_1);
+        });
+        RegisterForKey(GLFW_KEY_4, GLFW_PRESS, 0, "drop shape that should not be ignored by the ray.", [&](KeyActionMods kam) {
+            Create(kam.key - GLFW_KEY_1);
+        });
+        RegisterForKey(GLFW_KEY_5, GLFW_PRESS, 0, "drop shape that should not be ignored by the ray.", [&](KeyActionMods kam) {
+            Create(kam.key - GLFW_KEY_1);
+        });
+        RegisterForKey(GLFW_KEY_6, GLFW_PRESS, 0, "drop shape that should not be ignored by the ray.", [&](KeyActionMods kam) {
+            Create(kam.key - GLFW_KEY_1);
+        });
+        RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Destroy Bodies", [&](KeyActionMods) {
+            Destroy();
+        });
+        RegisterForKey(GLFW_KEY_M, GLFW_PRESS, 0, "Change mode of the raycast test", [&](KeyActionMods) {
+            if (m_mode == Mode::e_closest)
+            {
+                m_mode = Mode::e_any;
+            }
+            else if (m_mode == Mode::e_any)
+            {
+                m_mode = Mode::e_multiple;
+            }
+            else if (m_mode == Mode::e_multiple)
+            {
+                m_mode = Mode::e_closest;
+            }
+        });
     }
 
     void Create(int index)
@@ -147,43 +183,6 @@ public:
         }
     }
 
-    void KeyboardDown(Key key) override
-    {
-        switch (key)
-        {
-        case Key_1:
-        case Key_2:
-        case Key_3:
-        case Key_4:
-        case Key_5:
-        case Key_6:
-            Create(key - Key_1);
-            break;
-
-        case Key_D:
-            Destroy();
-            break;
-
-        case Key_M:
-                if (m_mode == Mode::e_closest)
-            {
-                m_mode = Mode::e_any;
-            }
-            else if (m_mode == Mode::e_any)
-            {
-                m_mode = Mode::e_multiple;
-            }
-            else if (m_mode == Mode::e_multiple)
-            {
-                m_mode = Mode::e_closest;
-            }
-            break;
-
-        default:
-            break;
-        }
-    }
-
     static const char* GetModeName(Mode mode) noexcept
     {
         switch (mode)
@@ -197,17 +196,11 @@ public:
 
     void PostStep(const Settings& settings, Drawer& drawer) override
     {
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Press '1' to drop triangles that should be ignored by the ray.");
-        m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Press '2'-'6' to drop shapes that should not be ignored by the ray.");
-        m_textLine += DRAW_STRING_NEW_LINE;
-
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Press 'm' to change the mode of the raycast test (currently: %s).",
-                          GetModeName(m_mode));
-        m_textLine += DRAW_STRING_NEW_LINE;
+        std::stringstream stream;
+        stream << "Mode of the raycast test currently: ";
+        stream << GetModeName(m_mode);
+        stream << ".";
+        m_status = stream.str();
 
         const auto L = 11.0f;
         const auto point1 = Vec2(0.0f, 10.0f) * Meter;
