@@ -22,12 +22,6 @@
 #ifndef IFORCE2D_TRAJECTORIES_HPP
 #define IFORCE2D_TRAJECTORIES_HPP
 
-#if defined(__APPLE_CC__)
-#include <OpenGL/gl3.h>
-#else
-#include <GL/glew.h>
-#endif
-
 namespace playrho {
 
 /// @brief iforce2d's Trajectories demo.
