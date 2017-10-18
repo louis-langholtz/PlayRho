@@ -45,6 +45,7 @@
 #include <iomanip>
 #include <memory>
 #include <string>
+#include <cstring>
 #include <cctype>
 
 #include <GLFW/glfw3.h>
@@ -238,7 +239,7 @@ static void CreateUI(GLFWwindow* window)
     auto fontLoaded = false;
     for (auto&& fontPath: fontPaths)
     {
-        fprintf(stderr, "Attempting to load font from \"%s/%s\", ", cwd.c_str(), fontPath);
+        std::fprintf(stderr, "Attempting to load font from \"%s/%s\", ", cwd.c_str(), fontPath);
         auto data_size = 0;
         void* data = ImFileLoadToMemory(fontPath, "rb", &data_size, 0);
         if (data)
@@ -247,15 +248,15 @@ static void CreateUI(GLFWwindow* window)
             if (font)
             {
                 fontLoaded = true;
-                fprintf(stderr, "succeeded.\n");
+                std::fprintf(stderr, "succeeded.\n");
                 break;
             }
         }
-        fprintf(stderr, " failed.\n");
+        std::fprintf(stderr, " failed.\n");
     }
     if (!fontLoaded)
     {
-        fprintf(stderr, "Unable to load external font data. No text may appear.\n");
+        std::fprintf(stderr, "Unable to load external font data. No text may appear.\n");
     }
 #else
     auto fontConf = ImFontConfig{};
@@ -264,17 +265,17 @@ static void CreateUI(GLFWwindow* window)
                                                    static_cast<int>(DroidSans_ttf_len),
                                                    12.0f, &fontConf))
     {
-        printf("Using embedded DroidSans TTF data.\n");
+        std::printf("Using embedded DroidSans TTF data.\n");
     }
     else
     {
-        fprintf(stderr, "Unable to use embedded font. GUI text support disabled.\n");
+        std::fprintf(stderr, "Unable to use embedded font. GUI text support disabled.\n");
     }
 #endif
     
     if (!ImGui_ImplGlfwGL3_Init(window, false))
     {
-        fprintf(stderr, "Could not init GUI renderer.\n");
+        std::fprintf(stderr, "Could not init GUI renderer.\n");
         assert(false);
         return;
     }
@@ -852,7 +853,7 @@ static bool UserInterface()
 
 static void GlfwErrorCallback(int code, const char* str)
 {
-    fprintf(stderr, "GLFW error (%d): %s\n", code, str);
+    std::fprintf(stderr, "GLFW error (%d): %s\n", code, str);
 }
 
 static void ShowFrameInfo(double frameTime, double fps)
@@ -897,12 +898,12 @@ int main()
 
     if (glfwSetErrorCallback(GlfwErrorCallback))
     {
-        fprintf(stderr, "Warning: overriding previously installed GLFW error callback function.\n");
+        std::fprintf(stderr, "Warning: overriding previously installed GLFW error callback function.\n");
     }
 
     if (glfwInit() == 0)
     {
-        fprintf(stderr, "Failed to initialize GLFW\n");
+        std::fprintf(stderr, "Failed to initialize GLFW\n");
         return -1;
     }
 
@@ -910,8 +911,8 @@ int main()
     const auto buildDetails = GetBuildDetails();
     
     char title[64];
-    sprintf(title, "PlayRho Testbed Version %d.%d.%d",
-            buildVersion.major, buildVersion.minor, buildVersion.revision);
+    std::sprintf(title, "PlayRho Testbed Version %d.%d.%d",
+                 buildVersion.major, buildVersion.minor, buildVersion.revision);
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -922,15 +923,15 @@ int main()
                                              nullptr, nullptr);
     if (mainWindow == nullptr)
     {
-        fprintf(stderr, "Failed to open GLFW main window.\n");
+        std::fprintf(stderr, "Failed to open GLFW main window.\n");
         glfwTerminate();
         return -1;
     }
 
     glfwMakeContextCurrent(mainWindow);
-    printf("PlayRho %d.%d.%d (%s), OpenGL %s, GLSL %s\n",
-           buildVersion.major, buildVersion.minor, buildVersion.revision, buildDetails.c_str(),
-           glGetString(GL_VERSION), glGetString(GL_SHADING_LANGUAGE_VERSION));
+    std::printf("PlayRho %d.%d.%d (%s), OpenGL %s, GLSL %s\n",
+                buildVersion.major, buildVersion.minor, buildVersion.revision, buildDetails.c_str(),
+                glGetString(GL_VERSION), glGetString(GL_SHADING_LANGUAGE_VERSION));
 
     glfwSwapInterval(1); // Control the frame rate. One draw per monitor refresh.
     glfwInit();
@@ -947,7 +948,7 @@ int main()
     GLenum err = glewInit();
     if (GLEW_OK != err)
     {
-        fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
+        std::fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
         exit(EXIT_FAILURE);
     }
 #endif
@@ -985,7 +986,6 @@ int main()
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             glDisable(GL_DEPTH_TEST);
-            //RenderGLFlush(camera.m_width, camera.m_height);
 
             ImGui::Render();
 
@@ -994,7 +994,6 @@ int main()
         }
     }
 
-    //RenderGLDestroy();
     ImGui_ImplGlfwGL3_Shutdown();
     glfwTerminate();
 
