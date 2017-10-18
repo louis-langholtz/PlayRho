@@ -34,7 +34,7 @@ namespace playrho {
         
         SpinningCircle()
         {
-            m_world->SetGravity(Vec2{0, 0} * MeterPerSquareSecond);
+            m_world.SetGravity(Vec2{0, 0} * MeterPerSquareSecond);
 
             auto bodyDef = BodyDef{};
             bodyDef.type = BodyType::Dynamic;
@@ -44,9 +44,9 @@ namespace playrho {
             bodyDef.bullet = true;
 
             bodyDef.location = Vec2{0, 26} * Meter;
-            const auto body1 = m_world->CreateBody(bodyDef);
+            const auto body1 = m_world.CreateBody(bodyDef);
             bodyDef.location = Vec2{0, 14} * Meter;
-            const auto body2 = m_world->CreateBody(bodyDef);
+            const auto body2 = m_world.CreateBody(bodyDef);
             
             auto shapeConf = DiskShape::Conf{};
             shapeConf.density = Real{10} * KilogramPerSquareMeter;

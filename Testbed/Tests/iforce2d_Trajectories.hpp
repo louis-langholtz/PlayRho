@@ -22,12 +22,6 @@
 #ifndef IFORCE2D_TRAJECTORIES_HPP
 #define IFORCE2D_TRAJECTORIES_HPP
 
-#if defined(__APPLE_CC__)
-#include <OpenGL/gl3.h>
-#else
-#include <GL/glew.h>
-#endif
-
 namespace playrho {
 
 /// @brief iforce2d's Trajectories demo.
@@ -36,7 +30,16 @@ namespace playrho {
 class iforce2d_Trajectories : public Test
 {
 public:
-    iforce2d_Trajectories(): m_groundBody{m_world->CreateBody()}
+    static Test::Conf GetTestConf()
+    {
+        auto conf = Test::Conf{};
+        conf.seeAlso = "https://www.iforce2d.net/b2dtut/projected-trajectory";
+        conf.credits = "Originally written by Chris Campbell for Box2D. Ported to PlayRho by Louis Langholtz.";
+        conf.description = "Rotate the circle on the left to change launch direction.";
+        return conf;
+    }
+    
+    iforce2d_Trajectories(): Test(GetTestConf()), m_groundBody{m_world.CreateBody()}
     {
         //add four walls to the ground body
         FixtureDef myFixtureDef;
@@ -61,7 +64,7 @@ public:
         BodyDef kinematicBody;
         kinematicBody.type = BodyType::Kinematic;
         kinematicBody.location = Length2D{11 * Meter, 22 * Meter};
-        m_targetBody = m_world->CreateBody(kinematicBody);
+        m_targetBody = m_world.CreateBody(kinematicBody);
         const auto w = BallSize * Meter;
         Length2D verts[3];
         verts[0] = Length2D(  0 * Meter, -2*w);
@@ -79,7 +82,7 @@ public:
         BodyDef myBodyDef;
         myBodyDef.type = BodyType::Dynamic;
         myBodyDef.location = Vec2(-15, 5) * Meter;
-        m_launcherBody = m_world->CreateBody(myBodyDef);
+        m_launcherBody = m_world.CreateBody(myBodyDef);
         DiskShape circleShape{DiskShape::Conf{}
             .UseVertexRadius(2 * Meter)
             .UseFriction(0.95f)
@@ -95,17 +98,17 @@ public:
         revoluteJointDef.enableMotor = true;
         revoluteJointDef.maxMotorTorque = 250 * NewtonMeter;
         revoluteJointDef.motorSpeed = 0;
-        m_world->CreateJoint( revoluteJointDef );
+        m_world.CreateJoint( revoluteJointDef );
         
         //create dynamic box body to fire
         myBodyDef.location = Length2D(0 * Meter, -5 * Meter);//will be positioned later
-        m_littleBox = m_world->CreateBody(myBodyDef);
+        m_littleBox = m_world.CreateBody(myBodyDef);
         polygonShape.SetAsBox( 0.5f * Meter, 0.5f * Meter );
         polygonShape.SetDensity(1 * KilogramPerSquareMeter);
         m_littleBox->CreateFixture(std::make_shared<PolygonShape>(polygonShape), myFixtureDef);
         
         //ball for computer 'player' to fire
-        m_littleBox2 = m_world->CreateBody(myBodyDef);
+        m_littleBox2 = m_world.CreateBody(myBodyDef);
         circleShape.SetRadius(BallSize * Meter);
         m_littleBox2->CreateFixture(std::make_shared<DiskShape>(circleShape), myFixtureDef);
         
@@ -118,6 +121,48 @@ public:
         m_littleBox2->SetVelocity(Velocity{});
 
         SetMouseWorld(Vec2(11,22) * Meter);//sometimes is not set
+        
+        RegisterForKey(GLFW_KEY_Q, GLFW_PRESS, 0, "Launch projectile.", [&](KeyActionMods) {
+            const auto launchSpeed = LinearVelocity2D(m_launchSpeed, 0 * MeterPerSecond);
+            m_littleBox->SetAwake();
+            m_littleBox->SetAcceleration(Gravity, AngularAcceleration{});
+            m_littleBox->SetVelocity(Velocity{});
+            m_littleBox->SetTransform(GetWorldPoint(*m_launcherBody, Vec2(3,0) * Meter),
+                                      m_launcherBody->GetAngle());
+            const auto rotVec = GetWorldVector(*m_launcherBody, UnitVec2::GetRight());
+            const auto speed = Rotate(launchSpeed, rotVec);
+            SetLinearVelocity(*m_littleBox, speed);
+            m_firing = true;
+        });
+        RegisterForKey(GLFW_KEY_W, GLFW_PRESS, 0, "Reset projectile.", [&](KeyActionMods) {
+            m_littleBox->SetAcceleration(LinearAcceleration2D{}, AngularAcceleration{});
+            m_littleBox->SetVelocity(Velocity{});
+            m_firing = false;
+        });
+        RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Increase launch speed.", [&](KeyActionMods) {
+            m_launchSpeed *= 1.02f;
+        });
+        RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Decrease launch speed.", [&](KeyActionMods) {
+            m_launchSpeed *= 0.98f;
+        });
+        RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Launch computer controlled projectile.", [&](KeyActionMods) {
+            m_littleBox2->SetAwake();
+            m_littleBox2->SetAcceleration(Gravity, AngularAcceleration{});
+            m_littleBox2->SetVelocity(Velocity{});
+            const auto launchVel = getComputerLaunchVelocity();
+            const auto computerStartingPosition = Vec2(15,5) * Meter;
+            m_littleBox2->SetTransform(computerStartingPosition, 0 * Radian);
+            SetLinearVelocity(*m_littleBox2, launchVel );
+            m_firing2 = true;
+        });
+        RegisterForKey(GLFW_KEY_F, GLFW_PRESS, 0, "Reset computer controlled projectile.", [&](KeyActionMods) {
+            m_littleBox2->SetAcceleration(LinearAcceleration2D{}, AngularAcceleration{});
+            m_littleBox2->SetVelocity(Velocity{});
+            m_firing2 = false;
+        });
+        RegisterForKey(GLFW_KEY_M, GLFW_PRESS, 0, "Hold down & use left mouse button to move the computer's target", [&](KeyActionMods) {
+            m_targetBody->SetTransform(GetMouseWorld(), 0 * Radian); //m_mouseWorld is from Test class
+        });
     }
     
     //this just returns the current top edge of the golf-tee thingy
@@ -132,7 +177,7 @@ public:
     {
         const auto t = Second / 60.0f;
         const auto stepVelocity = t * startingVelocity; // m/s
-        const auto stepGravity = t * t * m_world->GetGravity(); // m/s/s
+        const auto stepGravity = t * t * m_world.GetGravity(); // m/s/s
         
         return startingPosition + n * stepVelocity + 0.5f * (n*n+n) * stepGravity;
     }
@@ -142,7 +187,7 @@ public:
     {
         const auto t = Second / 60.0f;
         const auto stepVelocity = t * startingVelocity; // m/s
-        const auto stepGravity = t * t * m_world->GetGravity(); // m/s/s
+        const auto stepGravity = t * t * m_world.GetGravity(); // m/s/s
         return -GetY(stepVelocity) / GetY(stepGravity) - 1;
     }
     
@@ -154,7 +199,7 @@ public:
         
         const auto t = Second / 60.0f;
         const auto stepVelocity = t * startingVelocity; // m/s
-        const auto stepGravity = t * t * m_world->GetGravity(); // m/s/s
+        const auto stepGravity = t * t * m_world.GetGravity(); // m/s/s
         
         const auto n = -GetY(stepVelocity) / GetY(stepGravity) - 1;
         
@@ -168,7 +213,7 @@ public:
             return 0 * MeterPerSecond;
         
         const auto t = Second / 60.0f;
-        const auto stepGravity = t * t * m_world->GetGravity(); // m/s/s
+        const auto stepGravity = t * t * m_world.GetGravity(); // m/s/s
         
         //quadratic equation setup
         const auto a = 0.5f / GetY(stepGravity);
@@ -202,62 +247,6 @@ public:
         return LinearVelocity2D(horizontalVelocity, verticalVelocity);
     }
     
-    void KeyboardDown(Key key) override
-    {
-        switch (key) {
-            case Key_Q:
-            {
-                const auto launchSpeed = LinearVelocity2D(m_launchSpeed, 0 * MeterPerSecond);
-                m_littleBox->SetAwake();
-                m_littleBox->SetAcceleration(Gravity, AngularAcceleration{});
-                m_littleBox->SetVelocity(Velocity{});
-                m_littleBox->SetTransform(GetWorldPoint(*m_launcherBody, Vec2(3,0) * Meter),
-                                          m_launcherBody->GetAngle());
-                const auto rotVec = GetWorldVector(*m_launcherBody, UnitVec2::GetRight());
-                const auto speed = Rotate(launchSpeed, rotVec);
-                SetLinearVelocity(*m_littleBox, speed);
-                m_firing = true;
-                break;
-            }
-            case Key_W:
-                m_littleBox->SetAcceleration(LinearAcceleration2D{}, AngularAcceleration{});
-                m_littleBox->SetVelocity(Velocity{});
-                m_firing = false;
-                break;
-            case Key_A:
-                m_launchSpeed *= 1.02f;
-                break;
-            case Key_S:
-                m_launchSpeed *= 0.98f;
-                break;
-                
-            case Key_D:
-            {
-                m_littleBox2->SetAwake();
-                m_littleBox2->SetAcceleration(Gravity, AngularAcceleration{});
-                m_littleBox2->SetVelocity(Velocity{});
-                const auto launchVel = getComputerLaunchVelocity();
-                const auto computerStartingPosition = Vec2(15,5) * Meter;
-                m_littleBox2->SetTransform(computerStartingPosition, 0 * Radian);
-                SetLinearVelocity(*m_littleBox2, launchVel );
-                m_firing2 = true;
-                break;
-            }
-            case Key_F:
-                m_littleBox2->SetAcceleration(LinearAcceleration2D{}, AngularAcceleration{});
-                m_littleBox2->SetVelocity(Velocity{});
-                m_firing2 = false;
-                break;
-                
-            case Key_M:
-                m_targetBody->SetTransform(GetMouseWorld(), 0 * Radian); //m_mouseWorld is from Test class
-                break;
-                
-            default:
-                break;
-        }
-    }
-    
     void PreStep(const Settings&, Drawer& drawer) override
     {
         const auto startingPosition = GetWorldPoint(*m_launcherBody, Vec2(3,0) * Meter);
@@ -276,7 +265,7 @@ public:
             const auto trajectoryPosition = getTrajectoryPoint(startingPosition, startingVelocity, i);
             
             if (i > 0) {
-                m_world->RayCast(lastTP, trajectoryPosition, [&](Fixture* f, ChildCounter,
+                m_world.RayCast(lastTP, trajectoryPosition, [&](Fixture* f, ChildCounter,
                                                                  Length2D p, UnitVec2) {
                     if (f->GetBody() == m_littleBox)
                     {
@@ -325,26 +314,6 @@ public:
         
         if (!m_firing2)
             m_littleBox2->SetTransform(computerStartingPosition, 0 * Radian);
-    }
-    
-    void PostStep(const Settings&, Drawer& drawer) override
-    {
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Rotate the circle on the left to change launch direction");
-        m_textLine += 15;
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Use a/s to change the launch speed");
-        m_textLine += 15;
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Use q/w to launch and reset the projectile");
-        m_textLine += 15;
-        m_textLine += 15;
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Use d/f to launch and reset the computer controlled projectile");
-        m_textLine += 15;
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Hold down m and use the left mouse button to move the computer's target");
-        m_textLine += 15;
     }
     
     static Test* Create()

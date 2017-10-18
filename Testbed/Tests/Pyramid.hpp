@@ -34,7 +34,7 @@ public:
 
     Pyramid()
     {
-        const auto ground = m_world->CreateBody();
+        const auto ground = m_world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 
         const auto a = Real{0.5f} * Meter;
@@ -55,7 +55,7 @@ public:
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = y * Meter;
-                const auto body = m_world->CreateBody(bd);
+                const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(shape);
 
                 y += deltaY;

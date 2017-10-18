@@ -10458,10 +10458,15 @@ void ImGui::Value(const char* prefix, int v)
 
 void ImGui::Value(const char* prefix, unsigned int v)
 {
-    Text("%s: %d", prefix, v);
+    Text("%s: %u", prefix, v);
 }
 
-void ImGui::Value(const char* prefix, float v, const char* float_format)
+void ImGui::Value(const char* prefix, unsigned long v)
+{
+    Text("%s: %lu", prefix, v);
+}
+
+void ImGui::Value(const char* prefix, double v, const char* float_format)
 {
     if (float_format)
     {

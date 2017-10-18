@@ -27,9 +27,13 @@
 #include <PlayRho/Dynamics/Contacts/PositionSolverManifold.hpp>
 #include <PlayRho/Common/Range.hpp>
 #include "Drawer.hpp"
+#include "UiState.hpp"
 #include <chrono>
 #include <vector>
 #include <iterator>
+#include <functional>
+#include <GLFW/glfw3.h>
+#include <deque>
 
 namespace playrho {
 
@@ -70,7 +74,6 @@ struct Settings
     bool drawContactImpulse = false;
     bool drawFrictionImpulse = false;
     bool drawCOMs = false;
-    bool drawStats = false;
     bool enableWarmStarting = true;
     bool enableContinuous = true;
     bool enableSubStepping = false;
@@ -82,37 +85,36 @@ struct Settings
 class Test : public ContactListener
 {
 public:
-    enum Key {
-        Key_Space, Key_Comma, Key_Minus, Key_Period, Key_Equal,
-        Key_0, Key_1, Key_2, Key_3, Key_4, Key_5, Key_6, Key_7, Key_8, Key_9,
-        Key_A, Key_B, Key_C, Key_D, Key_E, Key_F, Key_G, Key_H, Key_I, Key_J,
-        Key_K, Key_L, Key_M, Key_N, Key_O, Key_P, Key_Q, Key_R, Key_S, Key_T,
-        Key_U, Key_V, Key_W, Key_X, Key_Y, Key_Z,
-        Key_Backspace, Key_Subtract, Key_Add,
-        Key_Unknown
-    };
     
+    using KeyHandlerID = std::size_t;
+    
+    using KeyID = int;
+    
+    using KeyMods = int;
+    
+    using KeyAction = int;
+    
+    struct KeyActionMods
+    {
+        KeyID key;
+        KeyAction action;
+        KeyMods mods;
+    };
+
+    using KeyHandler = std::function<void(KeyActionMods keyActMods)>;
+
     using NeededSettings = std::uint32_t;
     enum NeededSettingsField: std::uint8_t {
         NeedDrawSkinsField,
         NeedDrawLabelsField,
     };
     
+    using KeyHandlers = std::vector<std::pair<std::string, KeyHandler>>;
+    using HandledKeys = std::vector<std::pair<KeyActionMods, KeyHandlerID>>;
+
     using Fixtures = std::vector<Fixture*>;
     
-    Test(WorldDef config = WorldDef{}.UseGravity(LinearAcceleration2D{
-        Real(0.0f) * MeterPerSquareSecond, -Real(10.0f) * MeterPerSquareSecond
-    }).UseMinVertexRadius(Real(0.0001f) * Real{2} * Meter));
-
     virtual ~Test();
-
-    void DrawTitle(Drawer& drawer, const char *string);
-    void DrawStats(Drawer& drawer, const StepConf& stepConf);
-    void DrawStats(Drawer& drawer, const Fixture& fixture);
-    void DrawStats(Drawer& drawer, const Manifold& manifold);
-    void DrawContactInfo(const Settings& settings, Drawer& drawer);
-    bool DrawWorld(Drawer& drawer, const World& world, const Settings& settings,
-                   const Test::Fixtures& selected);
 
     /// @brief Steps this test's world forward and visualizes what's going on.
     /// @note This method calls the PreStep and PostStep methods which give
@@ -121,7 +123,7 @@ public:
     ///   Template Method pattern.
     /// @sa https://en.wikipedia.org/wiki/Non-virtual_interface_pattern
     /// @sa https://en.wikipedia.org/wiki/Template_method_pattern
-    void Step(const Settings& settings, Drawer& drawer);
+    void Step(const Settings& settings, Drawer& drawer, UiState& ui);
     
     void ShiftMouseDown(const Length2D& p);
     void MouseMove(const Length2D& p);
@@ -131,10 +133,22 @@ public:
     void CompleteBombSpawn(const Length2D& p);
     void ShiftOrigin(const Length2D& newOrigin);
     
-    virtual void KeyboardDown(Key key) { NOT_USED(key); }
-    virtual void KeyboardUp(Key key) { NOT_USED(key); }
-    virtual void MouseDown(const Length2D& p);
-    virtual void MouseUp(const Length2D& p);
+    void KeyboardHandler(KeyID key, KeyAction action, KeyMods mods);
+    
+    const std::string& GetKeyHandlerInfo(KeyHandlerID id) const
+    {
+        return m_keyHandlers[id].first;
+    }
+    
+    SizedRange<HandledKeys::const_iterator> GetHandledKeys() const
+    {
+        return SizedRange<HandledKeys::const_iterator>(std::cbegin(m_handledKeys),
+                                                       std::cend(m_handledKeys),
+                                                       m_handledKeys.size());
+    }
+
+    void MouseDown(const Length2D& p);
+    void MouseUp(const Length2D& p);
     
     // Let derived tests know that a joint was destroyed.
     virtual void JointDestroyed(Joint* joint) { NOT_USED(joint); }
@@ -147,19 +161,35 @@ public:
                            ContactListener::iteration_type) override { }
 
     static bool Contains(const Fixtures& fixtures, const Fixture* f) noexcept;
-
-    Fixtures GetSelectedFixtures() const noexcept { return m_selectedFixtures; }
-
-    void SetSelectedFixtures(Fixtures value) noexcept
-    {
-        m_selectedFixtures = value;
-    }
     
+    const std::string& GetDescription() const noexcept { return m_description; }
     NeededSettings GetNeededSettings() const noexcept { return m_neededSettings; }
     const Settings& GetSettings() const noexcept { return m_settings; }
+    const std::string& GetCredits() const noexcept { return m_credits; }
+    const std::string& GetSeeAlso() const noexcept { return m_seeAlso; }
+    const std::string& GetStatus() const noexcept { return m_status; }
 
 protected:
     
+    struct Conf
+    {
+        WorldDef worldDef = WorldDef{}.UseGravity(LinearAcceleration2D{
+            Real(0.0f) * MeterPerSquareSecond, -Real(10.0f) * MeterPerSquareSecond
+        }).UseMinVertexRadius(Real(0.0001f) * Real{2} * Meter);
+        Settings settings;
+        NeededSettings neededSettings = 0u;
+        std::string description;
+        std::string seeAlso;
+        std::string credits;
+    };
+
+    static Conf GetDefaultConf()
+    {
+        return Conf{};
+    }
+
+    Test(Conf config = GetDefaultConf());
+
     struct ContactPoint
     {
         Fixture* fixtureA;
@@ -183,7 +213,19 @@ protected:
         }
         return false;
     }
-
+    
+    Fixtures GetSelectedFixtures() const noexcept { return m_selectedFixtures; }
+    
+    void SetSelectedFixtures(Fixtures value) noexcept
+    {
+        m_selectedFixtures = value;
+    }
+    
+    void ClearSelectedFixtures()
+    {
+        m_selectedFixtures.clear();
+    }
+    
     using ContactPoints = std::vector<ContactPoint>;
 
     // This is called when a joint in the world is implicitly destroyed
@@ -234,12 +276,39 @@ protected:
 
     void SetMouseWorld(Length2D value) noexcept { m_mouseWorld = value; }
     
-    World* const m_world;
+    KeyHandlerID RegisterKeyHandler(const std::string& info, KeyHandler handler)
+    {
+        const auto index = m_keyHandlers.size();
+        m_keyHandlers.push_back(std::make_pair(info, handler));
+        return index;
+    }
+
+    void RegisterForKey(KeyID key, KeyAction action, KeyMods mods, KeyHandlerID id);
+
+    void RegisterForKey(KeyID key, KeyAction action, KeyMods mods,
+                        const std::string& info, KeyHandler handler)
+    {
+        RegisterForKey(key, action, mods, RegisterKeyHandler(info, handler));
+    }
+
+    World m_world;
+    std::string m_status;
     TextLinePos m_textLine = TextLinePos{30};
-    Settings m_settings;
-    NeededSettings m_neededSettings = 0u;
 
 private:
+    void DrawStats(const StepConf& stepConf, UiState& ui);
+    void DrawStats(const Fixture& fixture);
+    void DrawStats(const Manifold& manifold);
+    void DrawContactInfo(const Settings& settings, Drawer& drawer);
+    bool DrawWorld(Drawer& drawer, const World& world, const Settings& settings,
+                   const Test::Fixtures& selected);
+
+    const Settings m_settings;
+    const NeededSettings m_neededSettings;
+    const std::string m_description;
+    const std::string m_credits;
+    const std::string m_seeAlso; ///< Reference - like a URL - which user may copy into copy/paste buffer.
+
     Fixtures m_selectedFixtures;
     AABB m_maxAABB;
     ContactPoints m_points;
@@ -252,8 +321,9 @@ private:
     double m_sumDeltaTime = 0.0;
     int m_stepCount = 0;
     StepStats m_stepStats;
-    std::size_t m_numContacts = 0;
-    std::size_t m_maxContacts = 0;
+    ContactCounter m_numContacts = 0;
+    ContactCounter m_maxContacts = 0;
+    ContactCounter m_maxTouching = 0;
     std::uint64_t m_sumContactsUpdatedPre = 0;
     std::uint64_t m_sumContactsSkippedPre = 0;
     std::uint64_t m_sumContactsIgnoredPre = 0;
@@ -286,6 +356,13 @@ private:
     std::chrono::duration<double> m_curStepDuration{0};
     std::chrono::duration<double> m_maxStepDuration{0};
     std::chrono::duration<double> m_sumStepDuration{0};
+    
+    KeyHandlers m_keyHandlers;
+    HandledKeys m_handledKeys;
+    
+    std::size_t m_maxHistory = std::size_t{600u};
+    std::deque<std::size_t> m_numContactsPerStep;
+    std::deque<std::size_t> m_numTouchingPerStep;
 };
 
 // Free functions...

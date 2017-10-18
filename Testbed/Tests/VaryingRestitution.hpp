@@ -32,7 +32,7 @@ public:
 
     VaryingRestitution()
     {
-        const auto ground = m_world->CreateBody();
+        const auto ground = m_world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 
         auto shapeConf = DiskShape::Conf{};
@@ -48,7 +48,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-10.0f + 3.0f * i, 20.0f) * Meter;
 
-            auto body = m_world->CreateBody(bd);
+            auto body = m_world.CreateBody(bd);
 
             shape.SetRestitution(restitution[i]);
             body->CreateFixture(std::make_shared<DiskShape>(shape));

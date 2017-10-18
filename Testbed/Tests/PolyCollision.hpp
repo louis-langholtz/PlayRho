@@ -41,6 +41,31 @@ public:
             m_angleB = Real{1.9160721f} * Radian;
             m_transformB = Transformation{m_positionB, UnitVec2::Get(m_angleB)};
         }
+        
+        RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Move Left", [&](KeyActionMods) {
+            GetX(m_positionB) -= Real{0.1f} * Meter;
+            m_transformB = Transformation{m_positionB, UnitVec2::Get(m_angleB)};
+        });
+        RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Move Right", [&](KeyActionMods) {
+            GetX(m_positionB) += Real{0.1f} * Meter;
+            m_transformB = Transformation{m_positionB, UnitVec2::Get(m_angleB)};
+        });
+        RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Move Down", [&](KeyActionMods) {
+            GetY(m_positionB) -= Real{0.1f} * Meter;
+            m_transformB = Transformation{m_positionB, UnitVec2::Get(m_angleB)};
+        });
+        RegisterForKey(GLFW_KEY_W, GLFW_PRESS, 0, "Move Up", [&](KeyActionMods) {
+            GetY(m_positionB) += Real{0.1f} * Meter;
+            m_transformB = Transformation{m_positionB, UnitVec2::Get(m_angleB)};
+        });
+        RegisterForKey(GLFW_KEY_Q, GLFW_PRESS, 0, "Rotate Counter Clockwise", [&](KeyActionMods) {
+            m_angleB += Real{0.1f} * Radian * Pi;
+            m_transformB = Transformation{m_positionB, UnitVec2::Get(m_angleB)};
+        });
+        RegisterForKey(GLFW_KEY_E, GLFW_PRESS, 0, "Rotate Clockwise", [&](KeyActionMods) {
+            m_angleB -= Real{0.1f} * Radian * Pi;
+            m_transformB = Transformation{m_positionB, UnitVec2::Get(m_angleB)};
+        });
     }
 
     void PostStep(const Settings& settings, Drawer& drawer) override
@@ -53,8 +78,9 @@ public:
         const auto manifold = CollideShapes(proxyA, m_transformA, proxyB, m_transformB);
         const auto pointCount = manifold.GetPointCount();
 
-        drawer.DrawString(5, m_textLine, Drawer::Left, "point count = %d", pointCount);
-        m_textLine += DRAW_STRING_NEW_LINE;
+        std::stringstream stream;
+        stream << "Point count: " << unsigned{pointCount} << ".";
+        m_status = stream.str();
 
         {
             const auto color = Color(0.9f, 0.9f, 0.9f);
@@ -87,42 +113,7 @@ public:
             drawer.DrawPoint(worldManifold.GetPoint(i), 4.0f, Color(0.9f, 0.3f, 0.3f));
         }
     }
-
-    void KeyboardDown(Key key) override
-    {
-        switch (key)
-        {
-        case Key_A:
-            GetX(m_positionB) -= Real{0.1f} * Meter;
-            break;
-
-        case Key_D:
-            GetX(m_positionB) += Real{0.1f} * Meter;
-            break;
-
-        case Key_S:
-            GetY(m_positionB) -= Real{0.1f} * Meter;
-            break;
-
-        case Key_W:
-            GetY(m_positionB) += Real{0.1f} * Meter;
-            break;
-
-        case Key_Q:
-            m_angleB += Real{0.1f} * Radian * Pi;
-            break;
-
-        case Key_E:
-            m_angleB -= Real{0.1f} * Radian * Pi;
-            break;
-
-        default:
-            break;
-        }
-
-        m_transformB = Transformation{m_positionB, UnitVec2::Get(m_angleB)};
-    }
-
+    
     PolygonShape m_polygonA;
     PolygonShape m_polygonB;
 

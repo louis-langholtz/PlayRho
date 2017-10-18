@@ -368,17 +368,25 @@ class MyDestructionListener :  public DestructionListener
 class iforce2d_TopdownCar : public Test
 {
 public:
-    iforce2d_TopdownCar()
+    static Test::Conf GetTestConf()
     {
-        m_world->SetGravity(Vec2{0, 0} * MeterPerSquareSecond);
-        m_world->SetDestructionListener(&m_destructionListener);
+        auto conf = Test::Conf{};
+        conf.seeAlso = "https://www.iforce2d.net/b2dtut/projected-trajectory";
+        conf.credits = "Originally written by Chris Campbell for Box2D. Ported to PlayRho by Louis Langholtz.";
+        return conf;
+    }
+
+    iforce2d_TopdownCar(): Test(GetTestConf())
+    {
+        m_world.SetGravity(Vec2{0, 0} * MeterPerSquareSecond);
+        m_world.SetDestructionListener(&m_destructionListener);
         
         //set up ground areas
         {
             Fixture* groundAreaFixture;
 
             BodyDef bodyDef;
-            m_groundBody = m_world->CreateBody(bodyDef);
+            m_groundBody = m_world.CreateBody(bodyDef);
             
             PolygonShape polygonShape;
             FixtureDef fixtureDef;
@@ -396,36 +404,40 @@ public:
         //m_tire = new TDTire(m_world);
         //m_tire->setCharacteristics(100, -20, 150);
         
-        m_car = new TDCar{m_world};
+        m_car = new TDCar{&m_world};
         m_controlState = 0;
+        
+        RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Turn left.", [&](KeyActionMods) {
+            m_controlState |= TDC_LEFT;
+        });
+        RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Turn right.", [&](KeyActionMods) {
+            m_controlState |= TDC_RIGHT;
+        });
+        RegisterForKey(GLFW_KEY_W, GLFW_PRESS, 0, "Accelerate forward.", [&](KeyActionMods) {
+            m_controlState |= TDC_UP;
+        });
+        RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Accelerate backward.", [&](KeyActionMods) {
+            m_controlState |= TDC_DOWN;
+        });
+        
+        RegisterForKey(GLFW_KEY_A, GLFW_RELEASE, 0, "Stop turning left.", [&](KeyActionMods) {
+            m_controlState &= ~TDC_LEFT;
+        });
+        RegisterForKey(GLFW_KEY_D, GLFW_RELEASE, 0, "Stop turning right.", [&](KeyActionMods) {
+            m_controlState &= ~TDC_RIGHT;
+        });
+        RegisterForKey(GLFW_KEY_W, GLFW_RELEASE, 0, "Stop accelerating forward.", [&](KeyActionMods) {
+            m_controlState &= ~TDC_UP;
+        });
+        RegisterForKey(GLFW_KEY_S, GLFW_RELEASE, 0, "Stop accelerating backward.", [&](KeyActionMods) {
+            m_controlState &= ~TDC_DOWN;
+        });
     }
     
     ~iforce2d_TopdownCar()
     {
         //delete m_tire;
         delete m_car;
-    }
-    
-    void KeyboardDown(Key key) override
-    {
-        switch (key) {
-            case Key_A: m_controlState |= TDC_LEFT; break;
-            case Key_D: m_controlState |= TDC_RIGHT; break;
-            case Key_W: m_controlState |= TDC_UP; break;
-            case Key_S: m_controlState |= TDC_DOWN; break;
-            default: break;
-        }
-    }
-    
-    void KeyboardUp(Key key) override
-    {
-        switch (key) {
-            case Key_A: m_controlState &= ~TDC_LEFT; break;
-            case Key_D: m_controlState &= ~TDC_RIGHT; break;
-            case Key_W: m_controlState &= ~TDC_UP; break;
-            case Key_S: m_controlState &= ~TDC_DOWN; break;
-            default: break;
-        }
     }
     
     void handleContact(Contact* contact, bool began)
@@ -464,17 +476,6 @@ public:
          m_tire->updateTurn(m_controlState);*/
         
         m_car->update(m_controlState);
-    }
-    
-    void PostStep(const Settings&, Drawer& drawer) override
-    {
-        //show some useful info
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Press w/a/s/d to control the car");
-        m_textLine += 15;
-        
-        //drawer.DrawString(5, m_textLine, "Tire traction: %.2f", m_tire->m_currentTraction);
-        //m_textLine += 15;
     }
     
     ControlStateType m_controlState;

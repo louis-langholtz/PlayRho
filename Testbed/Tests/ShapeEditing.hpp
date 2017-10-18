@@ -30,13 +30,13 @@ public:
 
     ShapeEditing()
     {
-        const auto ground = m_world->CreateBody();
+        const auto ground = m_world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
         
         BodyDef bd;
         bd.type = BodyType::Dynamic;
         bd.location = Vec2(0.0f, 10.0f) * Meter;
-        m_body = m_world->CreateBody(bd);
+        m_body = m_world.CreateBody(bd);
 
         PolygonShape shape;
         SetAsBox(shape, Real{4.0f} * Meter, Real{4.0f} * Meter, Vec2(0.0f, 0.0f) * Meter, Angle{0});
@@ -46,13 +46,8 @@ public:
         m_fixture2 = nullptr;
 
         m_sensor = false;
-    }
-
-    void KeyboardDown(Key key) override
-    {
-        switch (key)
-        {
-        case Key_C:
+        
+        RegisterForKey(GLFW_KEY_C, GLFW_PRESS, 0, "Create a shape.", [&](KeyActionMods) {
             if (!m_fixture2)
             {
                 auto conf = DiskShape::Conf{};
@@ -62,38 +57,29 @@ public:
                 m_fixture2 = m_body->CreateFixture(std::make_shared<DiskShape>(conf));
                 m_body->SetAwake();
             }
-            break;
-
-        case Key_D:
+        });
+        RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Destroy a shape.", [&](KeyActionMods) {
             if (m_fixture2)
             {
                 m_body->DestroyFixture(m_fixture2);
                 m_fixture2 = nullptr;
                 m_body->SetAwake();
             }
-            break;
-
-        case Key_S:
+        });
+        RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Toggle Sensor.", [&](KeyActionMods) {
             if (m_fixture2)
             {
                 m_sensor = !m_sensor;
                 m_fixture2->SetSensor(m_sensor);
             }
-            break;
-
-        default:
-            break;
-        }
+        });
     }
 
-    void PostStep(const Settings&, Drawer& drawer) override
+    void PostStep(const Settings&, Drawer&) override
     {
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Press: (c) create a shape, (d) destroy a shape.");
-        m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "sensor = %d", m_sensor);
-        m_textLine += DRAW_STRING_NEW_LINE;
+        std::stringstream stream;
+        stream << "Sensor is " << (m_sensor? "on": "off") << ".";
+        m_status = stream.str();
     }
 
     Body* m_body;

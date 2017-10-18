@@ -27,9 +27,23 @@ namespace playrho {
 class ApplyForce : public Test
 {
 public:
+    
     ApplyForce()
     {
-        m_world->SetGravity(LinearAcceleration2D{});
+        m_world.SetGravity(LinearAcceleration2D{});
+
+        RegisterForKey(GLFW_KEY_W, GLFW_PRESS, 0, "Apply Force", [&](KeyActionMods) {
+            const auto lv = Length2D{Vec2{Real{0}, Real{-200}} * Meter};
+            const auto f = Force2D{GetWorldVector(*m_body, lv) * Kilogram / (Second * Second)};
+            const auto p = GetWorldPoint(*m_body, Vec2(Real{0}, Real{2}) * Meter);
+            playrho::ApplyForce(*m_body, f, p);
+        });
+        RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Apply Counter-Clockwise Torque", [&](KeyActionMods) {
+            ApplyTorque(*m_body, Real{50} * NewtonMeter);
+        });
+        RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Apply Clockwise Torque", [&](KeyActionMods) {
+            ApplyTorque(*m_body, Real{-50} * NewtonMeter);
+        });
 
         const auto k_restitution = Real(0.4);
 
@@ -37,7 +51,7 @@ public:
         {
             BodyDef bd;
             bd.location = Length2D(Real(0) * Meter, Real(20) * Meter);
-            ground = m_world->CreateBody(bd);
+            ground = m_world.CreateBody(bd);
 
             auto conf = EdgeShape::Conf{};
             conf.density = 0;
@@ -95,7 +109,7 @@ public:
             bd.location = Vec2(0, 2) * Meter;
             bd.angle = Pi * Radian;
             bd.allowSleep = false;
-            m_body = m_world->CreateBody(bd);
+            m_body = m_world.CreateBody(bd);
             m_body->CreateFixture(std::make_shared<PolygonShape>(poly1));
             m_body->CreateFixture(std::make_shared<PolygonShape>(poly2));
         }
@@ -113,7 +127,7 @@ public:
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(Real{0}, 5.0f + 1.54f * i) * Meter;
-                const auto body = m_world->CreateBody(bd);
+                const auto body = m_world.CreateBody(bd);
 
                 body->CreateFixture(shape);
 
@@ -136,38 +150,8 @@ public:
                 // Torque is L^2 M T^-2 QP^-1.
                 jd.maxTorque = Torque{mass * radius * gravity / Radian};
 
-                m_world->CreateJoint(jd);
+                m_world.CreateJoint(jd);
             }
-        }
-    }
-
-    void KeyboardDown(Key key)
-    {
-        switch (key)
-        {
-        case Key_W:
-            {
-                const auto lv = Length2D{Vec2{Real{0}, Real{-200}} * Meter};
-                const auto f = Force2D{GetWorldVector(*m_body, lv) * Kilogram / (Second * Second)};
-                const auto p = GetWorldPoint(*m_body, Vec2(Real{0}, Real{2}) * Meter);
-                playrho::ApplyForce(*m_body, f, p);
-            }
-            break;
-
-        case Key_A:
-            {
-                ApplyTorque(*m_body, Real{50} * NewtonMeter);
-            }
-            break;
-
-        case Key_D:
-            {
-                ApplyTorque(*m_body, Real{-50} * NewtonMeter);
-            }
-            break;
-
-        default:
-            break;
         }
     }
 

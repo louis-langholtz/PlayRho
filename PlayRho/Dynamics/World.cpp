@@ -666,7 +666,10 @@ void World::CopyContacts(const std::map<const Body*, Body*>& bodyMap,
             auto& manifold = ContactAtty::GetMutableManifold(*newContact);
             manifold = otherContact.GetManifold();
             ContactAtty::CopyFlags(*newContact, otherContact);
-            ContactAtty::SetToi(*newContact, otherContact.GetToi());
+            if (otherContact.HasValidToi())
+            {
+                ContactAtty::SetToi(*newContact, otherContact.GetToi());
+            }
             ContactAtty::SetToiCount(*newContact, otherContact.GetToiCount());
         }
     }

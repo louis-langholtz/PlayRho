@@ -43,7 +43,7 @@ public:
         //  a World for use as the 'm_world' variable in the code below.
 
         LinearAcceleration2D g(Real{0.000000000000000e+00f} * MeterPerSquareSecond, Real{-1.000000000000000e+01f} * MeterPerSquareSecond);
-        m_world->SetGravity(g);
+        m_world.SetGravity(g);
         Body** bodies = (Body**)Alloc(3 * sizeof(Body*));
         Joint** joints = (Joint**)Alloc(0 * sizeof(Joint*));
         {
@@ -60,7 +60,7 @@ public:
             bd.fixedRotation = bool(0);
             bd.bullet = bool(0);
             bd.enabled = bool(32);
-            bodies[0] = m_world->CreateBody(bd);
+            bodies[0] = m_world.CreateBody(bd);
 
             {
                 PolygonShape shape;
@@ -96,7 +96,7 @@ public:
             bd.fixedRotation = bool(0);
             bd.bullet = bool(0);
             bd.enabled = bool(32);
-            bodies[1] = m_world->CreateBody(bd);
+            bodies[1] = m_world.CreateBody(bd);
 
             {
                 PolygonShape shape;
@@ -133,7 +133,7 @@ public:
             bd.fixedRotation = bool(0);
             bd.bullet = bool(0);
             bd.enabled = bool(32);
-            bodies[2] = m_world->CreateBody(bd);
+            bodies[2] = m_world.CreateBody(bd);
 
             {
                 PolygonShape shape;

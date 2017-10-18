@@ -132,7 +132,7 @@ void SetAwake(const Fixture& f) noexcept
 
 Transformation GetTransformation(const Fixture& f) noexcept
 {
-    assert(f.GetBody() != nullptr);
+    assert(static_cast<Body*>(f.GetBody()) != nullptr);
 
     /*
      * If fixtures have transformations (in addition to the body transformation),

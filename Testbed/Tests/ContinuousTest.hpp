@@ -33,7 +33,7 @@ public:
         {
             BodyDef bd;
             bd.location = Vec2(0.0f, 0.0f) * Meter;
-            Body* body = m_world->CreateBody(bd);
+            Body* body = m_world.CreateBody(bd);
 
             body->CreateFixture(std::make_shared<EdgeShape>(Vec2(-10.0f, 0.0f) * Meter, Vec2(10.0f, 0.0f) * Meter));
 
@@ -51,7 +51,7 @@ public:
             const auto shape = std::make_shared<PolygonShape>(Real{2.0f} * Meter, Real{0.1f} * Meter);
             shape->SetDensity(Real{1} * KilogramPerSquareMeter);
 
-            m_body = m_world->CreateBody(bd);
+            m_body = m_world.CreateBody(bd);
             m_body->CreateFixture(shape);
 
             m_angularVelocity = RadianPerSecond * RandomFloat(-50.0f, 50.0f);
@@ -62,48 +62,16 @@ public:
 
     void Launch()
     {
-        std::uint32_t gjkCalls, gjkIters, gjkMaxIters;
-
-        gjkCalls = 0; gjkIters = 0; gjkMaxIters = 0;
-
         m_body->SetTransform(Vec2(0.0f, 20.0f) * Meter, Angle{0});
         m_angularVelocity = RadianPerSecond * RandomFloat(-50.0f, 50.0f);
         m_body->SetVelocity(Velocity{Vec2(0.0f, -100.0f) * MeterPerSecond, m_angularVelocity});
     }
 
-    void PostStep(const Settings&, Drawer& drawer) override
+    void PostStep(const Settings&, Drawer&) override
     {
-        std::uint32_t gjkCalls = 0, gjkIters = 0, gjkMaxIters = 0;
-
-        if (gjkCalls > 0)
-        {
-            drawer.DrawString(5, m_textLine, Drawer::Left,
-                              "gjk calls = %d, ave gjk iters = %3.1f, max gjk iters = %d",
-                gjkCalls, float(gjkIters) / gjkCalls, gjkMaxIters);
-            m_textLine += DRAW_STRING_NEW_LINE;
-        }
-
-        auto toiCalls = 0, toiIters = 0;
-        auto toiRootIters = 0, toiMaxRootIters = 0;
-
-        if (toiCalls > 0)
-        {
-            drawer.DrawString(5, m_textLine, Drawer::Left,
-                              "toi calls = %d, ave [max] toi iters = %3.1f [%d]",
-                                toiCalls, float(toiIters) / toiCalls, toiMaxRootIters);
-            m_textLine += DRAW_STRING_NEW_LINE;
-            
-            drawer.DrawString(5, m_textLine, Drawer::Left,
-                              "ave [max] toi root iters = %3.1f [%d]",
-                float(toiRootIters) / toiCalls, toiMaxRootIters);
-            m_textLine += DRAW_STRING_NEW_LINE;
-
-            m_textLine += DRAW_STRING_NEW_LINE;
-        }
-
         if (GetStepCount() % 60 == 0)
         {
-            //Launch();
+            Launch();
         }
     }
 

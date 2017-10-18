@@ -25,8 +25,6 @@
 
 namespace playrho {
 
-bool g_blockSolve = true;
-
 class VerticalStack : public Test
 {
 public:
@@ -45,7 +43,7 @@ public:
         m_bulletshape->SetDensity(Real{20} * KilogramPerSquareMeter);
         m_bulletshape->SetRestitution(Real(0.05f));
 
-        const auto ground = m_world->CreateBody();
+        const auto ground = m_world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(20.0f, 0.0f) * Meter, Vec2(20.0f, 20.0f) * Meter));
 
@@ -69,83 +67,31 @@ public:
                 //bd.position = Vec2(xs[j] + x, (hdim - hdim/20) + (hdim * 2 - hdim / 20) * i);
                 bd.location = Vec2(xs[j] + x, (i + 1) * hdim * 4) * Meter;
                 
-                const auto body = m_world->CreateBody(bd);
+                const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(shape);
             }
         }
 
         m_bullet = nullptr;
-    }
-
-    void KeyboardDown(Key key) override
-    {
-        switch (key)
-        {
-        case Key_Comma:
+        
+        RegisterForKey(GLFW_KEY_COMMA, GLFW_PRESS, 0, "Launch a bullet.", [&](KeyActionMods) {
             if (m_bullet)
             {
-                m_world->Destroy(m_bullet);
+                m_world.Destroy(m_bullet);
                 m_bullet = nullptr;
             }
-
+            
             {
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
                 bd.bullet = true;
                 bd.location = Vec2(-31.0f, 5.0f) * Meter;
-
-                m_bullet = m_world->CreateBody(bd);
+                
+                m_bullet = m_world.CreateBody(bd);
                 m_bullet->CreateFixture(m_bulletshape);
                 m_bullet->SetVelocity(Velocity{Vec2(400.0f, 0.0f) * MeterPerSecond, AngularVelocity{0}});
             }
-            break;
-                
-        case Key_B:
-            g_blockSolve = !g_blockSolve;
-            break;
-                
-        default:
-            break;
-        }
-    }
-
-    void PostStep(const Settings&, Drawer& drawer) override
-    {
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Press: (,) to launch a bullet.");
-        m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Blocksolve = %d", g_blockSolve);
-        m_textLine += DRAW_STRING_NEW_LINE;
-
-        //if (GetStepCount() == 300)
-        //{
-        //    if (m_bullet)
-        //    {
-        //        m_world->Destroy(m_bullet);
-        //        m_bullet = nullptr;
-        //    }
-
-        //    {
-        //        DiskShape shape;
-        //        shape.m_radius = 0.25f;
-
-        //        FixtureDef fd;
-        //        fd.shape = &shape;
-        //        fd.density = 20.0f;
-        //        fd.restitution = 0.05f;
-
-        //        BodyDef bd;
-        //        bd.type = BodyType::Dynamic;
-        //        bd.bullet = true;
-        //        bd.position = Vec2(-31.0f, 5.0f);
-
-        //        m_bullet = m_world->CreateBody(bd);
-        //        m_bullet->CreateFixture(fd);
-
-        //        m_bullet->SetLinearVelocity(Vec2(400.0f, 0.0f));
-        //    }
-        //}
+        });
     }
 
     Body* m_bullet;

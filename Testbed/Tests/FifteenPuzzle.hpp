@@ -30,14 +30,20 @@ namespace playrho {
     class FifteenPuzzle: public Test
     {
     public:
-        
-        FifteenPuzzle()
+        static Test::Conf GetTestConf()
         {
-            m_settings.drawLabels = true;
-            m_settings.drawSkins = true;
-            m_neededSettings = (1 << NeedDrawLabelsField)|(1 << NeedDrawSkinsField);
-            m_world->SetGravity(LinearAcceleration2D{});
-            const auto enclosure = CreateSquareEnclosingBody(*m_world,
+            auto conf = Test::Conf{};
+            conf.settings.drawSkins = true;
+            conf.settings.drawLabels = true;
+            conf.neededSettings = (1 << NeedDrawLabelsField)|(1 << NeedDrawSkinsField);
+            conf.description = "Slide square tiles around using the mouse. See if you can re-order them. Good luck!";
+            return conf;
+        }
+        
+        FifteenPuzzle(): Test(GetTestConf())
+        {
+            m_world.SetGravity(LinearAcceleration2D{});
+            const auto enclosure = CreateSquareEnclosingBody(m_world,
                 16 * Meter + 2 * GetVertexRadius(), ShapeConf{}
                 .UseVertexRadius(GetVertexRadius()));
             SetLocation(*enclosure, GetCenter());
@@ -76,19 +82,11 @@ namespace playrho {
             bd.bullet = true;
             bd.location = GetCenter() + relPos + Length2D{sideLength / 2, sideLength / 2};
             bd.linearDamping = 20.0f * Hertz;
-            const auto body = m_world->CreateBody(bd);
+            const auto body = m_world.CreateBody(bd);
             body->CreateFixture(std::make_shared<PolygonShape>(halfSide, halfSide, conf));
             
             return body;
         }
-        
-        void PostStep(const Settings&, Drawer& drawer) override
-        {
-            drawer.DrawString(5, m_textLine, Drawer::Left,
-                "Slide square tiles around using the mouse. See if you can re-order them. Good luck!");
-            m_textLine += DRAW_STRING_NEW_LINE;
-        }
-        
     };
     
 } // namespace playrho

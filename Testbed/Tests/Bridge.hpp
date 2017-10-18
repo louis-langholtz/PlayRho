@@ -32,7 +32,7 @@ public:
 
     Bridge()
     {
-        const auto ground = m_world->CreateBody();
+        const auto ground = m_world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 
         {
@@ -43,12 +43,12 @@ public:
             auto prevBody = ground;
             for (auto i = 0; i < Count; ++i)
             {
-                const auto body = m_world->CreateBody(BodyDef{}
+                const auto body = m_world.CreateBody(BodyDef{}
                                                       .UseType(BodyType::Dynamic)
                                                       .UseLocation(Vec2(-14.5f + 1.0f * i, 5.0f) * Meter));
                 body->CreateFixture(shape);
 
-                m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-15.0f + 1.0f * i, 5.0f) * Meter});
+                m_world.CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-15.0f + 1.0f * i, 5.0f) * Meter});
 
                 if (i == (Count >> 1))
                 {
@@ -57,7 +57,7 @@ public:
                 prevBody = body;
             }
 
-            m_world->CreateJoint(RevoluteJointDef{prevBody, ground, Vec2(-15.0f + 1.0f * Count, 5.0f) * Meter});
+            m_world.CreateJoint(RevoluteJointDef{prevBody, ground, Vec2(-15.0f + 1.0f * Count, 5.0f) * Meter});
         }
 
         const auto polyshape = std::make_shared<PolygonShape>(PolygonShape::Conf{}
@@ -69,7 +69,7 @@ public:
         });
         for (auto i = 0; i < 2; ++i)
         {
-            const auto body = m_world->CreateBody(BodyDef{}
+            const auto body = m_world.CreateBody(BodyDef{}
                                                   .UseType(BodyType::Dynamic)
                                                   .UseLocation(Vec2(-8.0f + 8.0f * i, 12.0f) * Meter));
             body->CreateFixture(polyshape);
@@ -80,7 +80,7 @@ public:
                                                            .UseVertexRadius(Real{0.5f} * Meter));
         for (auto i = 0; i < 3; ++i)
         {
-            const auto body = m_world->CreateBody(BodyDef{}
+            const auto body = m_world.CreateBody(BodyDef{}
                                                   .UseType(BodyType::Dynamic)
                                                   .UseLocation(Vec2(-6.0f + 6.0f * i, 10.0f) * Meter));
             body->CreateFixture(diskShape);

@@ -75,7 +75,7 @@ public:
 
         // Ground body
         {
-            const auto ground = m_world->CreateBody();
+            const auto ground = m_world.CreateBody();
             ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
         }
 
@@ -112,13 +112,42 @@ public:
 
         m_bodyIndex = 0;
         std::memset(m_bodies, 0, sizeof(m_bodies));
+        
+        RegisterForKey(GLFW_KEY_1, GLFW_PRESS, 0, "drop stuff", [&](KeyActionMods kam) {
+            Create(kam.key - GLFW_KEY_1);
+        });
+        RegisterForKey(GLFW_KEY_2, GLFW_PRESS, 0, "drop stuff", [&](KeyActionMods kam) {
+            Create(kam.key - GLFW_KEY_1);
+        });
+        RegisterForKey(GLFW_KEY_3, GLFW_PRESS, 0, "drop stuff", [&](KeyActionMods kam) {
+            Create(kam.key - GLFW_KEY_1);
+        });
+        RegisterForKey(GLFW_KEY_4, GLFW_PRESS, 0, "drop stuff", [&](KeyActionMods kam) {
+            Create(kam.key - GLFW_KEY_1);
+        });
+        RegisterForKey(GLFW_KEY_5, GLFW_PRESS, 0, "drop stuff", [&](KeyActionMods kam) {
+            Create(kam.key - GLFW_KEY_1);
+        });
+        RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "(de)activate some bodies", [&](KeyActionMods) {
+            for (auto i = 0; i < e_maxBodies; i += 2)
+            {
+                if (m_bodies[i])
+                {
+                    const auto enabled = m_bodies[i]->IsEnabled();
+                    m_bodies[i]->SetEnabled(!enabled);
+                }
+            }
+        });
+        RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "destroy a body", [&](KeyActionMods) {
+            Destroy();
+        });
     }
 
     void Create(int index)
     {
         if (m_bodies[m_bodyIndex])
         {
-            m_world->Destroy(m_bodies[m_bodyIndex]);
+            m_world.Destroy(m_bodies[m_bodyIndex]);
             m_bodies[m_bodyIndex] = nullptr;
         }
 
@@ -134,7 +163,7 @@ public:
             bd.angularDamping = Real(0.02f) * Hertz;
         }
 
-        m_bodies[m_bodyIndex] = m_world->CreateBody(bd);
+        m_bodies[m_bodyIndex] = m_world.CreateBody(bd);
 
         if (index < 4)
         {
@@ -154,42 +183,10 @@ public:
         {
             if (m_bodies[i])
             {
-                m_world->Destroy(m_bodies[i]);
+                m_world.Destroy(m_bodies[i]);
                 m_bodies[i] = nullptr;
                 return;
             }
-        }
-    }
-
-    void KeyboardDown(Key key) override
-    {
-        switch (key)
-        {
-        case Key_1:
-        case Key_2:
-        case Key_3:
-        case Key_4:
-        case Key_5:
-            Create(key - Key_1);
-            break;
-
-        case Key_A:
-            for (auto i = 0; i < e_maxBodies; i += 2)
-            {
-                if (m_bodies[i])
-                {
-                    const auto enabled = m_bodies[i]->IsEnabled();
-                    m_bodies[i]->SetEnabled(!enabled);
-                }
-            }
-            break;
-
-        case Key_D:
-            Destroy();
-            break;
-                
-        default:
-            break;
         }
     }
 
@@ -208,7 +205,7 @@ public:
         constexpr int e_maxCount = 4;
         int count = 0;
         const auto aabb = ComputeAABB(circle, transform);
-        m_world->QueryAABB(aabb, [&](Fixture* f, const ChildCounter) {
+        m_world.QueryAABB(aabb, [&](Fixture* f, const ChildCounter) {
             if (count < e_maxCount)
             {
                 const auto xfm = GetTransformation(*f);
@@ -229,13 +226,6 @@ public:
 
         const auto color = Color(0.4f, 0.7f, 0.8f);
         drawer.DrawCircle(circle.GetLocation(), circle.GetRadius(), color);
-
-        drawer.DrawString(5, m_textLine, Drawer::Left, "Press 1-5 to drop stuff");
-        m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, Drawer::Left, "Press 'a' to (de)activate some bodies");
-        m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, Drawer::Left, "Press 'd' to destroy a body");
-        m_textLine += DRAW_STRING_NEW_LINE;
     }
 
     int m_bodyIndex;

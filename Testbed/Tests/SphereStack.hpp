@@ -36,7 +36,7 @@ public:
     SphereStack()
     {
         {
-            const auto ground = m_world->CreateBody();
+            const auto ground = m_world.CreateBody();
             ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
         }
 
@@ -50,7 +50,7 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(0, 4.0f + 3.0f * i) * Meter;
 
-                m_bodies[i] = m_world->CreateBody(bd);
+                m_bodies[i] = m_world.CreateBody(bd);
                 m_bodies[i]->CreateFixture(shape);
                 m_bodies[i]->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * MeterPerSecond, AngularVelocity{0}});
             }

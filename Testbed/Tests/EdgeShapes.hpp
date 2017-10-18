@@ -42,7 +42,7 @@ public:
 
         // Ground body
         {
-            const auto ground = m_world->CreateBody();
+            const auto ground = m_world.CreateBody();
             auto x1 = -20.0f;
             auto y1 = 2.0f * std::cos(x1 / 10.0f * static_cast<float>(Pi));
             for (auto i = 0; i < 80; ++i)
@@ -96,13 +96,32 @@ public:
         std::memset(m_bodies, 0, sizeof(m_bodies));
 
         m_angle = 0.0f;
+        
+        RegisterForKey(GLFW_KEY_1, GLFW_PRESS, 0, "to drop stuff", [&](KeyActionMods kam) {
+            Create(kam.key - GLFW_KEY_1);
+        });
+        RegisterForKey(GLFW_KEY_2, GLFW_PRESS, 0, "to drop stuff", [&](KeyActionMods kam) {
+            Create(kam.key - GLFW_KEY_1);
+        });
+        RegisterForKey(GLFW_KEY_3, GLFW_PRESS, 0, "to drop stuff", [&](KeyActionMods kam) {
+            Create(kam.key - GLFW_KEY_1);
+        });
+        RegisterForKey(GLFW_KEY_4, GLFW_PRESS, 0, "to drop stuff", [&](KeyActionMods kam) {
+            Create(kam.key - GLFW_KEY_1);
+        });
+        RegisterForKey(GLFW_KEY_5, GLFW_PRESS, 0, "to drop stuff", [&](KeyActionMods kam) {
+            Create(kam.key - GLFW_KEY_1);
+        });
+        RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "To Destroy Bodies", [&](KeyActionMods) {
+            Destroy();
+        });
     }
 
     void Create(int index)
     {
         if (m_bodies[m_bodyIndex])
         {
-            m_world->Destroy(m_bodies[m_bodyIndex]);
+            m_world.Destroy(m_bodies[m_bodyIndex]);
             m_bodies[m_bodyIndex] = nullptr;
         }
 
@@ -119,7 +138,7 @@ public:
             bd.angularDamping = Real(0.02f) * Hertz;
         }
 
-        m_bodies[m_bodyIndex] = m_world->CreateBody(bd);
+        m_bodies[m_bodyIndex] = m_world.CreateBody(bd);
 
         if (index < 4)
         {
@@ -139,39 +158,15 @@ public:
         {
             if (m_bodies[i])
             {
-                m_world->Destroy(m_bodies[i]);
+                m_world.Destroy(m_bodies[i]);
                 m_bodies[i] = nullptr;
                 return;
             }
         }
     }
 
-    void KeyboardDown(Key key) override
-    {
-        switch (key)
-        {
-        case Key_1:
-        case Key_2:
-        case Key_3:
-        case Key_4:
-        case Key_5:
-            Create(key - Key_1);
-            break;
-
-        case Key_D:
-            Destroy();
-            break;
-                
-        default:
-            break;
-        }
-    }
-
     void PostStep(const Settings& settings, Drawer& drawer) override
     {
-        drawer.DrawString(5, m_textLine, Drawer::Left, "Press 1-5 to drop stuff");
-        m_textLine += DRAW_STRING_NEW_LINE;
-
         const auto L = Real(25);
         const auto point1 = Vec2(0.0f, 10.0f) * Meter;
         const auto d = Vec2(L * std::cos(m_angle), -L * Abs(std::sin(m_angle))) * Meter;
@@ -181,7 +176,7 @@ public:
         Length2D point;
         UnitVec2 normal;
 
-        m_world->RayCast(point1, point2, [&](Fixture* f, ChildCounter, Length2D p, UnitVec2 n) {
+        m_world.RayCast(point1, point2, [&](Fixture* f, ChildCounter, Length2D p, UnitVec2 n) {
             fixture = f;
             point = p;
             normal = n;

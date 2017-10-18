@@ -32,14 +32,14 @@ class MotorJointTest : public Test
 public:
     MotorJointTest()
     {
-        const auto ground = m_world->CreateBody();
+        const auto ground = m_world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
 
         // Define motorized body
         BodyDef bd;
         bd.type = BodyType::Dynamic;
         bd.location = Vec2(0.0f, 8.0f) * Meter;
-        const auto body = m_world->CreateBody(bd);
+        const auto body = m_world.CreateBody(bd);
 
         auto conf = PolygonShape::Conf{};
         conf.friction = 0.6f;
@@ -49,19 +49,11 @@ public:
         auto mjd = MotorJointDef{ground, body};
         mjd.maxForce = Real{1000.0f} * Newton;
         mjd.maxTorque = Real{1000.0f} * NewtonMeter;
-        m_joint = (MotorJoint*)m_world->CreateJoint(mjd);
-    }
-
-    void KeyboardDown(Key key) override
-    {
-        switch (key)
-        {
-        case Key_S:
+        m_joint = (MotorJoint*)m_world.CreateJoint(mjd);
+        
+        RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Pause Motor", [&](KeyActionMods) {
             m_go = !m_go;
-            break;
-        default:
-            break;
-        }
+        });
     }
 
     void PreStep(const Settings& settings, Drawer& drawer) override
@@ -80,12 +72,6 @@ public:
         m_joint->SetAngularOffset(Real{4} * Radian * m_time);
 
         drawer.DrawPoint(linearOffset, 4.0f, Color(0.9f, 0.9f, 0.9f));
-    }
-
-    void PostStep(const Settings&, Drawer& drawer) override
-    {
-        drawer.DrawString(5, m_textLine, Drawer::Left, "Keys: (s) pause");
-        m_textLine += 15;
     }
 
     MotorJoint* m_joint;

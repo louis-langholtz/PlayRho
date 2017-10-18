@@ -39,7 +39,7 @@ public:
 
     Cantilever()
     {
-        const auto ground = m_world->CreateBody();
+        const auto ground = m_world.CreateBody();
 
         // Creates bottom ground
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
@@ -56,10 +56,10 @@ public:
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(-14.5f + 1.0f * i, 5.0f) * Meter;
-                const auto body = m_world->CreateBody(bd);
+                const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(shape);
 
-                m_world->CreateJoint(WeldJointDef{
+                m_world.CreateJoint(WeldJointDef{
                     prevBody, body, Vec2(-15.0f + 1.0f * i, 5.0f) * Meter
                 });
 
@@ -79,13 +79,13 @@ public:
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(-14.0f + 2.0f * i, 15.0f) * Meter;
-                const auto body = m_world->CreateBody(bd);
+                const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(shape);
 
                 auto jd = WeldJointDef{prevBody, body, Vec2(-15.0f + 2.0f * i, 15.0f) * Meter};
                 jd.frequency = Real{5} * Hertz;
                 jd.dampingRatio = 0.7f;
-                m_world->CreateJoint(jd);
+                m_world.CreateJoint(jd);
 
                 prevBody = body;
             }
@@ -103,12 +103,12 @@ public:
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(-4.5f + 1.0f * i, 5.0f) * Meter;
-                const auto body = m_world->CreateBody(bd);
+                const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(shape);
 
                 if (i > 0)
                 {
-                    m_world->CreateJoint(WeldJointDef{
+                    m_world.CreateJoint(WeldJointDef{
                         prevBody, body, Vec2(-5.0f + 1.0f * i, 5.0f) * Meter
                     });
                 }
@@ -129,7 +129,7 @@ public:
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(5.5f + 1.0f * i, 10.0f) * Meter;
-                const auto body = m_world->CreateBody(bd);
+                const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(shape);
 
                 if (i > 0)
@@ -137,7 +137,7 @@ public:
                     auto jd = WeldJointDef{prevBody, body, Vec2(5.0f + 1.0f * i, 10.0f) * Meter};
                     jd.frequency = Real{8} * Hertz;
                     jd.dampingRatio = 0.7f;
-                    m_world->CreateJoint(jd);
+                    m_world.CreateJoint(jd);
                 }
 
                 prevBody = body;
@@ -153,7 +153,7 @@ public:
             BodyDef bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-8.0f + 8.0f * i, 12.0f) * Meter;
-            const auto body = m_world->CreateBody(bd);
+            const auto body = m_world.CreateBody(bd);
             body->CreateFixture(polyshape);
         }
 
@@ -165,7 +165,7 @@ public:
             BodyDef bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-6.0f + 6.0f * i, 10.0f) * Meter;
-            const auto body = m_world->CreateBody(bd);
+            const auto body = m_world.CreateBody(bd);
             body->CreateFixture(circleshape);
         }
     }

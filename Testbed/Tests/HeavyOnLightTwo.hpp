@@ -30,46 +30,38 @@ public:
     
     HeavyOnLightTwo()
     {
-        const auto ground = m_world->CreateBody();
+        const auto ground = m_world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
         
         const auto shape = std::make_shared<DiskShape>(Real{0.5f} * Meter);
         shape->SetDensity(Real{10} * KilogramPerSquareMeter);
 
-        const auto body1 = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 2.5f) * Meter));
+        const auto body1 = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 2.5f) * Meter));
         body1->CreateFixture(shape);
         
-        const auto body2 = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 3.5f) * Meter));
+        const auto body2 = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 3.5f) * Meter));
         body2->CreateFixture(shape);
+        
+        RegisterForKey(GLFW_KEY_H, GLFW_PRESS, 0, "Toggle Heavy", [&](KeyActionMods) {
+            ToggleHeavy();
+        });
     }
     
     void ToggleHeavy()
     {
         if (m_heavy)
         {
-            m_world->Destroy(m_heavy);
+            m_world.Destroy(m_heavy);
             m_heavy = nullptr;
         }
         else
         {
-            m_heavy = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 9.0f) * Meter));
+            m_heavy = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 9.0f) * Meter));
             
             auto conf = DiskShape::Conf{};
             conf.density = Real{10} * KilogramPerSquareMeter;
             conf.vertexRadius = Real{5.0f} * Meter;
             m_heavy->CreateFixture(std::make_shared<DiskShape>(conf));
-        }
-    }
-    
-    void KeyboardDown(Key key) override
-    {
-        switch (key)
-        {
-        case Key_H:
-            ToggleHeavy();
-            break;
-        default:
-            break;
         }
     }
     

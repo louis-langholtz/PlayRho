@@ -32,7 +32,7 @@ public:
     {
         // Ground
         {
-            const auto ground = m_world->CreateBody();
+            const auto ground = m_world.CreateBody();
             ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
         }
 
@@ -40,7 +40,7 @@ public:
         {
             BodyDef bd;
             bd.location = Vec2(-5.0f, 5.0f) * Meter;
-            const auto body = m_world->CreateBody(bd);
+            const auto body = m_world.CreateBody(bd);
 
             auto conf = PolygonShape::Conf{};
             conf.friction = 0.8f;
@@ -55,7 +55,7 @@ public:
             BodyDef bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-10.0f + 2.0f * i, 7.0f) * Meter;
-            const auto body = m_world->CreateBody(bd);
+            const auto body = m_world.CreateBody(bd);
             body->CreateFixture(boxshape);
         }
     }

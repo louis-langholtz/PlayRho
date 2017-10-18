@@ -37,7 +37,7 @@ class RopeJointTest : public Test
 public:
     RopeJointTest()
     {
-        const auto ground = m_world->CreateBody();
+        const auto ground = m_world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 
         {
@@ -72,11 +72,11 @@ public:
                     bd.angularDamping = Real(0.4f) * Hertz;
                 }
 
-                const auto body = m_world->CreateBody(bd);
+                const auto body = m_world.CreateBody(bd);
 
                 body->CreateFixture(shape, fd);
 
-                m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(Real(i), y) * Meter});
+                m_world.CreateJoint(RevoluteJointDef{prevBody, body, Vec2(Real(i), y) * Meter});
 
                 prevBody = body;
             }
@@ -89,44 +89,26 @@ public:
         }
 
         m_ropeDef.bodyA = ground;
-        m_rope = m_world->CreateJoint(m_ropeDef);
-    }
-
-    void KeyboardDown(Key key) override
-    {
-        switch (key)
-        {
-        case Key_J:
+        m_rope = m_world.CreateJoint(m_ropeDef);
+        
+        RegisterForKey(GLFW_KEY_J, GLFW_PRESS, 0, "Toggle the rope joint", [&](KeyActionMods) {
             if (m_rope)
             {
-                m_world->Destroy(m_rope);
+                m_world.Destroy(m_rope);
                 m_rope = nullptr;
             }
             else
             {
-                m_rope = m_world->CreateJoint(m_ropeDef);
+                m_rope = m_world.CreateJoint(m_ropeDef);
             }
-            break;
-
-        default:
-            break;
-        }
+        });
     }
 
-    void PostStep(const Settings&, Drawer& drawer) override
+    void PostStep(const Settings&, Drawer&) override
     {
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Press (j) to toggle the rope joint.");
-        m_textLine += DRAW_STRING_NEW_LINE;
-        if (m_rope)
-        {
-            drawer.DrawString(5, m_textLine, Drawer::Left, "Rope ON");
-        }
-        else
-        {
-            drawer.DrawString(5, m_textLine, Drawer::Left, "Rope OFF");
-        }
-        m_textLine += DRAW_STRING_NEW_LINE;
+        std::stringstream stream;
+        stream << (m_rope? "Rope ON.": "Rope OFF.");
+        m_status = stream.str();
     }
 
     RopeJointDef m_ropeDef;

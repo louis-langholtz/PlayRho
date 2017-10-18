@@ -30,7 +30,7 @@ class SliderCrank : public Test
 public:
     SliderCrank()
     {
-        const auto ground = m_world->CreateBody();
+        const auto ground = m_world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
 
         {
@@ -41,7 +41,7 @@ public:
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(0.0f, 7.0f) * Meter;
-                const auto body = m_world->CreateBody(bd);
+                const auto body = m_world.CreateBody(bd);
                 auto shapeConf = PolygonShape::Conf{};
                 shapeConf.density = Real{2} * KilogramPerSquareMeter;
                 body->CreateFixture(std::make_shared<PolygonShape>(Real{0.5f} * Meter, Real{2.0f} * Meter, shapeConf));
@@ -50,7 +50,7 @@ public:
                 rjd.motorSpeed = 1.0f * Pi * RadianPerSecond;
                 rjd.maxMotorTorque = Real{10000.0f} * NewtonMeter;
                 rjd.enableMotor = true;
-                m_joint1 = (RevoluteJoint*)m_world->CreateJoint(rjd);
+                m_joint1 = (RevoluteJoint*)m_world.CreateJoint(rjd);
 
                 prevBody = body;
             }
@@ -60,14 +60,14 @@ public:
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(0.0f, 13.0f) * Meter;
-                const auto body = m_world->CreateBody(bd);
+                const auto body = m_world.CreateBody(bd);
                 auto shapeConf = PolygonShape::Conf{};
                 shapeConf.density = Real{2} * KilogramPerSquareMeter;
                 body->CreateFixture(std::make_shared<PolygonShape>(Real{0.5f} * Meter, Real{4.0f} * Meter, shapeConf));
 
                 RevoluteJointDef rjd{prevBody, body, Vec2(0.0f, 9.0f) * Meter};
                 rjd.enableMotor = false;
-                m_world->CreateJoint(rjd);
+                m_world.CreateJoint(rjd);
 
                 prevBody = body;
             }
@@ -78,19 +78,19 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.fixedRotation = true;
                 bd.location = Vec2(0.0f, 17.0f) * Meter;
-                const auto body = m_world->CreateBody(bd);
+                const auto body = m_world.CreateBody(bd);
                 auto shapeConf = PolygonShape::Conf{};
                 shapeConf.density = Real{2} * KilogramPerSquareMeter;
                 body->CreateFixture(std::make_shared<PolygonShape>(Real{1.5f} * Meter, Real{1.5f} * Meter, shapeConf));
 
-                m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(0.0f, 17.0f) * Meter});
+                m_world.CreateJoint(RevoluteJointDef{prevBody, body, Vec2(0.0f, 17.0f) * Meter});
 
                 PrismaticJointDef pjd(ground, body, Vec2(0.0f, 17.0f) * Meter, UnitVec2::GetTop());
 
                 pjd.maxMotorForce = Real{1000.0f} * Newton;
                 pjd.enableMotor = true;
                 
-                m_joint2 = static_cast<PrismaticJoint*>(m_world->CreateJoint(pjd));
+                m_joint2 = static_cast<PrismaticJoint*>(m_world.CreateJoint(pjd));
             }
 
             // Create a payload
@@ -98,43 +98,30 @@ public:
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(0.0f, 23.0f) * Meter;
-                const auto body = m_world->CreateBody(bd);
+                const auto body = m_world.CreateBody(bd);
                 auto shapeConf = PolygonShape::Conf{};
                 shapeConf.density = Real{2} * KilogramPerSquareMeter;
                 body->CreateFixture(std::make_shared<PolygonShape>(Real{1.5f} * Meter, Real{1.5f} * Meter, shapeConf));
             }
         }
-    }
-
-    void KeyboardDown(Key key) override
-    {
-        switch (key)
-        {
-        case Key_F:
+        RegisterForKey(GLFW_KEY_F, GLFW_PRESS, 0, "toggle friction", [&](KeyActionMods) {
             m_joint2->EnableMotor(!m_joint2->IsMotorEnabled());
             m_joint2->GetBodyB()->SetAwake();
-            break;
-
-        case Key_M:
+        });
+        RegisterForKey(GLFW_KEY_M, GLFW_PRESS, 0, "toggle motor", [&](KeyActionMods) {
             m_joint1->EnableMotor(!m_joint1->IsMotorEnabled());
             m_joint1->GetBodyB()->SetAwake();
-            break;
-        
-        default:
-            break;                
-        }
+        });
     }
 
     void PostStep(const Settings& settings, Drawer& drawer) override
     {
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Keys: (f) toggle friction, (m) toggle motor");
-        m_textLine += DRAW_STRING_NEW_LINE;
         const auto torque = m_joint1->GetMotorTorque(Real{settings.hz} * Hertz);
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Motor Torque = %5.0f",
-                          static_cast<double>(Real{torque / NewtonMeter}));
-        m_textLine += DRAW_STRING_NEW_LINE;
+        std::stringstream stream;
+        stream << "Motor Torque = ";
+        stream << static_cast<double>(Real{torque / NewtonMeter});
+        stream << " Nm.";
+        m_status = stream.str();
     }
 
     RevoluteJoint* m_joint1;

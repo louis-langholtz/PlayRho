@@ -28,15 +28,21 @@ namespace playrho {
 class BreakableTwo: public Test
 {
 public:
-    
-    BreakableTwo()
+    static Test::Conf GetTestConf()
+    {
+        auto conf = Test::Conf{};
+        conf.description = "Demonstrates how bodies can be assembled into a breakable cluster.";
+        return conf;
+    }
+
+    BreakableTwo(): Test(GetTestConf())
     {
         const auto vr = 2 * DefaultLinearSlop;
         const auto polygonConf = PolygonShape::Conf{}.UseVertexRadius(vr);
         m_shape = std::make_shared<PolygonShape>(0.5f * Meter - vr, 0.5f * Meter - vr, polygonConf);
         m_shape->SetDensity(100 * KilogramPerSquareMeter);
 
-        m_world->SetGravity(LinearAcceleration2D{});
+        m_world.SetGravity(LinearAcceleration2D{});
 
         Body* bodies[20 * 20];
         const auto startLoc = Length2D{-10 * Meter, 10 * Meter};
@@ -46,7 +52,7 @@ public:
             for (auto x = 0; x < 20; ++x)
             {
                 const auto location = startLoc + Length2D{x * Meter, y * Meter};
-                bodies[y * 20 + x] = m_world->CreateBody(BodyDef{bd}.UseLocation(location));
+                bodies[y * 20 + x] = m_world.CreateBody(BodyDef{bd}.UseLocation(location));
                 bodies[y * 20 + x]->CreateFixture(m_shape);
                 
                 if (x > 0)
@@ -56,7 +62,7 @@ public:
                         bodies[y * 20 + x],
                         location + Length2D{-0.5f * Meter, 0 * Meter}
                     };
-                    m_world->CreateJoint(jd);
+                    m_world.CreateJoint(jd);
                 }
                 if (y > 0)
                 {
@@ -65,7 +71,7 @@ public:
                         bodies[(y + 0) * 20 + x],
                         location + Length2D{0 * Meter, -0.5f * Meter}
                     };
-                    m_world->CreateJoint(jd);
+                    m_world.CreateJoint(jd);
                 }
             }
         }
@@ -98,7 +104,7 @@ public:
     {
         if (m_body)
         {
-            m_world->Destroy(m_body);
+            m_world.Destroy(m_body);
             m_body = nullptr;
         }
     }

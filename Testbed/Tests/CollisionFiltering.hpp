@@ -53,7 +53,7 @@ public:
             conf.friction = 0.3f;
 
             BodyDef bd;
-            const auto ground = m_world->CreateBody(bd);
+            const auto ground = m_world.CreateBody(bd);
             ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter, conf));
         }
 
@@ -76,7 +76,7 @@ public:
         triangleBodyDef.type = BodyType::Dynamic;
         triangleBodyDef.location = Vec2(-5.0f, 2.0f) * Meter;
 
-        const auto body1 = m_world->CreateBody(triangleBodyDef);
+        const auto body1 = m_world.CreateBody(triangleBodyDef);
         body1->CreateFixture(std::make_shared<PolygonShape>(polygon), triangleShapeDef);
 
         // Large triangle (recycle definitions)
@@ -88,14 +88,14 @@ public:
         triangleBodyDef.location = Vec2(-5.0f, 6.0f) * Meter;
         triangleBodyDef.fixedRotation = true; // look at me!
 
-        const auto body2 = m_world->CreateBody(triangleBodyDef);
+        const auto body2 = m_world.CreateBody(triangleBodyDef);
         body2->CreateFixture(std::make_shared<PolygonShape>(polygon), triangleShapeDef);
 
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-5.0f, 10.0f) * Meter;
-            const auto body = m_world->CreateBody(bd);
+            const auto body = m_world.CreateBody(bd);
             auto conf = PolygonShape::Conf{};
             conf.density = Real{1} * KilogramPerSquareMeter;
             body->CreateFixture(std::make_shared<PolygonShape>(Real{0.5f} * Meter, Real{1.0f} * Meter, conf));
@@ -110,7 +110,7 @@ public:
             jd.lowerTranslation = Real{-1.0f} * Meter;
             jd.upperTranslation = Real{1.0f} * Meter;
 
-            m_world->CreateJoint(jd);
+            m_world.CreateJoint(jd);
         }
 
         // Small box
@@ -128,7 +128,7 @@ public:
         boxBodyDef.type = BodyType::Dynamic;
         boxBodyDef.location = Vec2(0.0f, 2.0f) * Meter;
 
-        const auto body3 = m_world->CreateBody(boxBodyDef);
+        const auto body3 = m_world.CreateBody(boxBodyDef);
         body3->CreateFixture(std::make_shared<PolygonShape>(polygon), boxShapeDef);
 
         // Large box (recycle definitions)
@@ -136,7 +136,7 @@ public:
         boxShapeDef.filter.groupIndex = k_largeGroup;
         boxBodyDef.location = Vec2(0.0f, 6.0f) * Meter;
 
-        const auto body4 = m_world->CreateBody(boxBodyDef);
+        const auto body4 = m_world.CreateBody(boxBodyDef);
         body4->CreateFixture(std::make_shared<PolygonShape>(polygon), boxShapeDef);
 
         // Small circle
@@ -155,7 +155,7 @@ public:
         circleBodyDef.type = BodyType::Dynamic;
         circleBodyDef.location = Vec2(5.0f, 2.0f) * Meter;
         
-        const auto body5 = m_world->CreateBody(circleBodyDef);
+        const auto body5 = m_world.CreateBody(circleBodyDef);
         body5->CreateFixture(std::make_shared<DiskShape>(circle), circleShapeDef);
 
         // Large circle
@@ -163,7 +163,7 @@ public:
         circleShapeDef.filter.groupIndex = k_largeGroup;
         circleBodyDef.location = Vec2(5.0f, 6.0f) * Meter;
 
-        const auto body6 = m_world->CreateBody(circleBodyDef);
+        const auto body6 = m_world.CreateBody(circleBodyDef);
         body6->CreateFixture(std::make_shared<DiskShape>(circle), circleShapeDef);
     }
 };

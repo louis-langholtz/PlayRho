@@ -21,6 +21,7 @@
 #define  PLAYRHO_CONFINED_HPP
 
 #include "../Framework/Test.hpp"
+#include <sstream>
 
 namespace playrho {
 
@@ -40,6 +41,33 @@ public:
     {
         m_enclosure = CreateEnclosure(m_enclosureVertexRadius, wall_length);
 
+        RegisterForKey(GLFW_KEY_C, GLFW_PRESS, 0, "Create Circle", [&](KeyActionMods) {
+            CreateCircle();
+        });
+        RegisterForKey(GLFW_KEY_B, GLFW_PRESS, 0, "Create Box", [&](KeyActionMods) {
+            CreateBox();
+        });
+        RegisterForKey(GLFW_KEY_I, GLFW_PRESS, 0, "Impart Impulse", [&](KeyActionMods) {
+            ImpartRandomImpulses();
+        });
+        RegisterForKey(GLFW_KEY_PERIOD, GLFW_PRESS, 0, "Toggle Bullet Mode", [&](KeyActionMods) {
+            ToggleBulletMode();
+        });
+        RegisterForKey(GLFW_KEY_KP_ADD, GLFW_PRESS, 0, "Thicken The Walls", [&](KeyActionMods) {
+            m_world.Destroy(m_enclosure);
+            m_enclosureVertexRadius += vertexRadiusIncrement;
+            m_enclosure = CreateEnclosure(m_enclosureVertexRadius, wall_length);
+        });
+        RegisterForKey(GLFW_KEY_KP_SUBTRACT, GLFW_PRESS, 0, "Thin The Walls", [&](KeyActionMods) {
+            m_world.Destroy(m_enclosure);
+            m_enclosureVertexRadius -= vertexRadiusIncrement;
+            if (m_enclosureVertexRadius < Length{0})
+            {
+                m_enclosureVertexRadius = 0;
+            }
+            m_enclosure = CreateEnclosure(m_enclosureVertexRadius, wall_length);
+        });
+        
         const auto radius = Real{0.5f} * Meter;
         auto conf = DiskShape::Conf{};
         conf.vertexRadius = radius;
@@ -57,17 +85,17 @@ public:
                     -10.0f + (2.1f * j + 1.0f + 0.01f * i) * (radius / Meter),
                     (2.0f * i + 1.0f) * (radius/ Meter)
                 } * Meter;
-                const auto body = m_world->CreateBody(bd);
+                const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(shape);
             }
         }
 
-        m_world->SetGravity(Vec2(0.0f, 0.0f) * MeterPerSquareSecond);
+        m_world.SetGravity(Vec2(0.0f, 0.0f) * MeterPerSquareSecond);
     }
     
     Body* CreateEnclosure(Length vertexRadius, Length wallLength)
     {
-        const auto body = CreateSquareEnclosingBody(*m_world, wallLength, ShapeConf{
+        const auto body = CreateSquareEnclosingBody(m_world, wallLength, ShapeConf{
             }.UseVertexRadius(vertexRadius).UseRestitution(Finite<Real>(0)));
         SetLocation(*body, Length2D{Real(0) * Meter, Real(20) * Meter});
         return body;
@@ -89,7 +117,7 @@ public:
         bd.location = Vec2{0, 20} * Meter + GetRandomOffset();
         //bd.allowSleep = false;
 
-        const auto body = m_world->CreateBody(bd);
+        const auto body = m_world.CreateBody(bd);
         
         auto conf = DiskShape::Conf{};
         conf.density = Real{1} * KilogramPerSquareMeter;
@@ -110,14 +138,14 @@ public:
         bd.type = BodyType::Dynamic;
         bd.bullet = m_bullet_mode;
         bd.location = Vec2{0, 20} * Meter + GetRandomOffset();
-        const auto body = m_world->CreateBody(bd);
+        const auto body = m_world.CreateBody(bd);
         body->CreateFixture(std::make_shared<PolygonShape>(side_length/Real{2}, side_length/Real{2}, conf));
     }
 
     void ToggleBulletMode()
     {
         m_bullet_mode = !m_bullet_mode;
-        for (auto&& body: m_world->GetBodies())
+        for (auto&& body: m_world.GetBodies())
         {
             auto& b = GetRef(body);
             if (b.GetType() == BodyType::Dynamic)
@@ -129,7 +157,7 @@ public:
 
     void ImpartRandomImpulses()
     {
-        for (auto&& body: m_world->GetBodies())
+        for (auto&& body: m_world.GetBodies())
         {
             auto& b = GetRef(body);
             if (b.GetType() == BodyType::Dynamic)
@@ -148,45 +176,10 @@ public:
         }        
     }
 
-    void KeyboardDown(Key key) override
-    {
-        switch (key)
-        {
-        case Key_C:
-            CreateCircle();
-            break;
-        case Key_B:
-            CreateBox();
-            break;
-        case Key_I:
-            ImpartRandomImpulses();
-            break;
-        case Key_Period:
-            ToggleBulletMode();
-            break;
-        case Key_Add:
-            m_world->Destroy(m_enclosure);
-            m_enclosureVertexRadius += vertexRadiusIncrement;
-            m_enclosure = CreateEnclosure(m_enclosureVertexRadius, wall_length);
-            break;
-        case Key_Subtract:
-            m_world->Destroy(m_enclosure);
-            m_enclosureVertexRadius -= vertexRadiusIncrement;
-            if (m_enclosureVertexRadius < Length{0})
-            {
-                m_enclosureVertexRadius = 0;
-            }
-            m_enclosure = CreateEnclosure(m_enclosureVertexRadius, wall_length);
-            break;
-        default:
-            break;
-        }
-    }
-
     void PreStep(const Settings&, Drawer&) override
     {
         auto sleeping = true;
-        for (auto&& body: m_world->GetBodies())
+        for (auto&& body: m_world.GetBodies())
         {
             auto& b = GetRef(body);
 
@@ -207,18 +200,11 @@ public:
         //}
     }
 
-    void PostStep(const Settings&, Drawer& drawer) override
+    void PostStep(const Settings&, Drawer&) override
     {
-        drawer.DrawString(5, m_textLine, Drawer::Left, "Press 'c' to create a circle.");
-        m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, Drawer::Left, "Press 'b' to create a box.");
-        m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Press '.' to toggle bullet mode (currently %s).", m_bullet_mode? "on": "off");
-        m_textLine += DRAW_STRING_NEW_LINE;
-        drawer.DrawString(5, m_textLine, Drawer::Left,
-                          "Press 'i' to impart impulses.");
-        m_textLine += DRAW_STRING_NEW_LINE;
+        std::stringstream stream;
+        stream << "Bullet mode currently " << (m_bullet_mode? "on": "off") << ".";
+        m_status = stream.str();
     }
     
     bool m_bullet_mode = false;

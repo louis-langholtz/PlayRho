@@ -31,10 +31,28 @@ namespace playrho {
     public:
         static constexpr auto Count = 180;
 
-        BagOfDisks()
+        static Test::Conf GetTestConf()
         {
-            m_ground = m_world->CreateBody(BodyDef{}.UseType(BodyType::Kinematic));
+            auto conf = Test::Conf{};
+            conf.description = "Simulates bag of a liquid.";
+            return conf;
+        }
+        
+        BagOfDisks(): Test(GetTestConf())
+        {
+            m_ground = m_world.CreateBody(BodyDef{}.UseType(BodyType::Kinematic));
             
+            RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Increase counter-clockwise angular velocity",
+                           [&](KeyActionMods) {
+                const auto angularVelocity = GetAngularVelocity(*m_ground);
+                SetAngularVelocity(*m_ground, angularVelocity + 0.1f * RadianPerSecond);
+            });
+            RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Increase clockwise angular velocity",
+                           [&](KeyActionMods) {
+                const auto angularVelocity = GetAngularVelocity(*m_ground);
+                SetAngularVelocity(*m_ground, angularVelocity - 0.1f * RadianPerSecond);
+            });
+
             auto boundaryConf = ChainShape::Conf{}.UseFriction(100);
             boundaryConf.UseVertexRadius(0.04f * Meter);
             boundaryConf.vertices.push_back(Vec2(-12, +20) * Meter);
@@ -63,7 +81,7 @@ namespace playrho {
                 {
                     const auto midPoint = (vertex + *prevVertex) / 2;
                     const auto angle = GetAngle(vertex - *prevVertex);
-                    const auto body = m_world->CreateBody(BodyDef{}
+                    const auto body = m_world.CreateBody(BodyDef{}
                                                           .UseType(BodyType::Dynamic)
                                                           .UseBullet(true)
                                                           .UseLocation(midPoint + vertexOffset)
@@ -71,7 +89,7 @@ namespace playrho {
                     body->CreateFixture(shape);
                     if (prevBody)
                     {
-	                    m_world->CreateJoint(RevoluteJointDef{body, prevBody, *prevVertex + vertexOffset});
+	                    m_world.CreateJoint(RevoluteJointDef{body, prevBody, *prevVertex + vertexOffset});
                     }
                     else
                     {
@@ -81,7 +99,7 @@ namespace playrho {
                 }
                 prevVertex = vertex;
             }
-            m_world->CreateJoint(RevoluteJointDef{prevBody, firstBody, vertices[0] + vertexOffset});
+            m_world.CreateJoint(RevoluteJointDef{prevBody, firstBody, vertices[0] + vertexOffset});
 
             const auto diskRadius = 0.15f * Meter;
             const auto diskShape = std::make_shared<DiskShape>(DiskShape::Conf{}
@@ -98,40 +116,13 @@ namespace playrho {
                 const auto radius = alpha + beta * angle;
                 const auto unitVector = UnitVec2::Get(angle);
                 const auto location = radius * unitVector;
-                const auto body = m_world->CreateBody(BodyDef{}
+                const auto body = m_world.CreateBody(BodyDef{}
                                                       .UseType(BodyType::Dynamic)
                                                       .UseLocation(location + vertexOffset));
                 body->CreateFixture(diskShape);
                 angle += angleIncrement;
                 angleIncrement *= 0.999f;
             }
-        }
-        
-        void KeyboardDown(Key key) override
-        {
-            const auto angularVelocity = GetAngularVelocity(*m_ground);
-            switch (key)
-            {
-                case Key_A:
-                {
-                    SetAngularVelocity(*m_ground, angularVelocity + 0.1f * RadianPerSecond);
-                    break;
-                }
-                case Key_D:
-                {
-                    SetAngularVelocity(*m_ground, angularVelocity - 0.1f * RadianPerSecond);
-                    break;
-                }
-                default:
-                    break;
-            }
-        }
-        
-        void PostStep(const Settings&, Drawer& drawer) override
-        {
-            drawer.DrawString(5, m_textLine, Drawer::Left,
-                              "Press 'A' or 'D' to increase angular velocity counter-clockwise or clockwise respectively.");
-            m_textLine += DRAW_STRING_NEW_LINE;
         }
 
     private:

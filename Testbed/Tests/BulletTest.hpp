@@ -33,7 +33,7 @@ public:
         {
             BodyDef bd;
             bd.location = Vec2(0.0f, 0.0f) * Meter;
-            Body* body = m_world->CreateBody(bd);
+            Body* body = m_world.CreateBody(bd);
 
             body->CreateFixture(std::make_shared<EdgeShape>(Vec2(-10.0f, 0.0f) * Meter, Vec2(10.0f, 0.0f) * Meter));
 
@@ -51,7 +51,7 @@ public:
             box.SetAsBox(Real{2.0f} * Meter, Real{0.1f} * Meter);
             box.SetDensity(Real{1} * KilogramPerSquareMeter);
 
-            m_body = m_world->CreateBody(bd);
+            m_body = m_world.CreateBody(bd);
             m_body->CreateFixture(std::make_shared<PolygonShape>(box));
 
             box.SetAsBox(Real{0.25f} * Meter, Real{0.25f} * Meter);
@@ -62,7 +62,7 @@ public:
             bd.location = Vec2(m_x, 10.0f) * Meter;
             bd.bullet = true;
 
-            m_bullet = m_world->CreateBody(bd);
+            m_bullet = m_world.CreateBody(bd);
             m_bullet->CreateFixture(std::make_shared<PolygonShape>(box));
 
             m_bullet->SetVelocity(Velocity{Vec2{0.0f, -50.0f} * MeterPerSecond, AngularVelocity{0}});
@@ -77,51 +77,10 @@ public:
         m_x = RandomFloat(-1.0f, 1.0f);
         m_bullet->SetTransform(Vec2(m_x, 10.0f) * Meter, Real{0.0f} * Radian);
         m_bullet->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * MeterPerSecond, AngularVelocity{0}});
-
-        std::uint32_t gjkCalls, gjkIters, gjkMaxIters;
-        std::remove_const<decltype(DefaultMaxToiIters)>::type toiMaxIters;
-
-        gjkCalls = 0;
-        gjkIters = 0;
-        gjkMaxIters = 0;
-
-        toiMaxIters = 0;
     }
 
-    void PostStep(const Settings&, Drawer& drawer) override
+    void PostStep(const Settings&, Drawer&) override
     {
-        std::uint32_t gjkCalls = 0, gjkIters = 0, gjkMaxIters = 0;
-        auto toiRootIters = 0, toiMaxRootIters = 0;
-
-        if (gjkCalls > 0)
-        {
-            drawer.DrawString(5, m_textLine, Drawer::Left,
-                              "gjk calls = %d, ave gjk iters = %3.1f, max gjk iters = %d",
-                gjkCalls, float(gjkIters) / gjkCalls, gjkMaxIters);
-            m_textLine += DRAW_STRING_NEW_LINE;
-        }
-
-        unsigned toiCalls = 0;
-        unsigned toiIters = 0;
-#if 0
-        for (auto&& c: m_world->GetContacts())
-        {
-            c.GetToiCount();
-        }
-#endif
-        if (toiCalls > 0)
-        {
-            drawer.DrawString(5, m_textLine, Drawer::Left,
-                              "toi calls = %d, ave toi iters = %3.1f, max toi iters = %d",
-                toiCalls, float(toiIters) / toiCalls, toiMaxRootIters);
-            m_textLine += DRAW_STRING_NEW_LINE;
-
-            drawer.DrawString(5, m_textLine, Drawer::Left,
-                              "ave toi root iters = %3.1f, max toi root iters = %d",
-                float(toiRootIters) / toiCalls, toiMaxRootIters);
-            m_textLine += DRAW_STRING_NEW_LINE;
-        }
-
         if (GetStepCount() % 60 == 0)
         {
             Launch();
