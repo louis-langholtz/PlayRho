@@ -27,11 +27,13 @@
 #include <PlayRho/Dynamics/Contacts/PositionSolverManifold.hpp>
 #include <PlayRho/Common/Range.hpp>
 #include "Drawer.hpp"
+#include "UiState.hpp"
 #include <chrono>
 #include <vector>
 #include <iterator>
 #include <functional>
 #include <GLFW/glfw3.h>
+#include <deque>
 
 namespace playrho {
 
@@ -72,7 +74,6 @@ struct Settings
     bool drawContactImpulse = false;
     bool drawFrictionImpulse = false;
     bool drawCOMs = false;
-    bool drawStats = false;
     bool enableWarmStarting = true;
     bool enableContinuous = true;
     bool enableSubStepping = false;
@@ -122,7 +123,7 @@ public:
     ///   Template Method pattern.
     /// @sa https://en.wikipedia.org/wiki/Non-virtual_interface_pattern
     /// @sa https://en.wikipedia.org/wiki/Template_method_pattern
-    void Step(const Settings& settings, Drawer& drawer);
+    void Step(const Settings& settings, Drawer& drawer, UiState& ui);
     
     void ShiftMouseDown(const Length2D& p);
     void MouseMove(const Length2D& p);
@@ -295,9 +296,9 @@ protected:
     TextLinePos m_textLine = TextLinePos{30};
 
 private:
-    void DrawStats(Drawer& drawer, const StepConf& stepConf);
-    void DrawStats(Drawer& drawer, const Fixture& fixture);
-    void DrawStats(Drawer& drawer, const Manifold& manifold);
+    void DrawStats(const StepConf& stepConf, UiState& ui);
+    void DrawStats(const Fixture& fixture);
+    void DrawStats(const Manifold& manifold);
     void DrawContactInfo(const Settings& settings, Drawer& drawer);
     bool DrawWorld(Drawer& drawer, const World& world, const Settings& settings,
                    const Test::Fixtures& selected);
@@ -320,8 +321,9 @@ private:
     double m_sumDeltaTime = 0.0;
     int m_stepCount = 0;
     StepStats m_stepStats;
-    std::size_t m_numContacts = 0;
-    std::size_t m_maxContacts = 0;
+    ContactCounter m_numContacts = 0;
+    ContactCounter m_maxContacts = 0;
+    ContactCounter m_maxTouching = 0;
     std::uint64_t m_sumContactsUpdatedPre = 0;
     std::uint64_t m_sumContactsSkippedPre = 0;
     std::uint64_t m_sumContactsIgnoredPre = 0;
@@ -357,6 +359,10 @@ private:
     
     KeyHandlers m_keyHandlers;
     HandledKeys m_handledKeys;
+    
+    std::size_t m_maxHistory = std::size_t{600u};
+    std::deque<std::size_t> m_numContactsPerStep;
+    std::deque<std::size_t> m_numTouchingPerStep;
 };
 
 // Free functions...

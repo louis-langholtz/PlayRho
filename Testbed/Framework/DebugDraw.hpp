@@ -110,8 +110,6 @@ public:
 
     void DrawPoint(const Length2D& p, float size, const Color& color) override;
 
-    void DrawString(int x, int y, TextAlign align, const char* string, ...) override;
-
     void DrawString(const Length2D& p, TextAlign align, const char* string, ...) override;
 
     void Flush() override;

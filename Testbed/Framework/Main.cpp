@@ -1,21 +1,23 @@
 /*
-* Original work Copyright (c) 2006-2013 Erin Catto http://www.box2d.org
-* Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+ * Original work Copyright (c) 2006-2013 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty. In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ *
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ *
+ * 1. The origin of this software must not be misrepresented; you must not
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ *    misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
 
 #include <PlayRho/Common/Version.hpp>
 
@@ -26,11 +28,11 @@
 #endif
 
 #include "imgui.h"
-#include "imgui_internal.h"
 #include "imgui_impl_glfw_gl3.h"
 #include "DebugDraw.hpp"
 #include "Test.hpp"
 #include "TestEntry.hpp"
+#include "UiState.hpp"
 
 // Uncomment the following define if you'd prefer to use an external file for font data.
 //#define DONT_EMBED_FONT_DATA
@@ -61,13 +63,6 @@
 #endif
 
 using namespace playrho;
-
-//
-struct UIState
-{
-    bool showMenu = true;
-    bool showAboutTest = true;
-};
 
 class Selection
 {
@@ -175,7 +170,7 @@ namespace
 
     Camera camera;
     
-    UIState ui;
+    UiState ui;
 
     Settings settings;
     auto rightMouseDown = false;
@@ -267,7 +262,7 @@ static void CreateUI(GLFWwindow* window)
     fontConf.FontDataOwnedByAtlas = false;
     if (ImGui::GetIO().Fonts->AddFontFromMemoryTTF(DroidSans_ttf,
                                                    static_cast<int>(DroidSans_ttf_len),
-                                                   14.0f, &fontConf))
+                                                   12.0f, &fontConf))
     {
         printf("Using embedded DroidSans TTF data.\n");
     }
@@ -537,7 +532,7 @@ static void Simulate(Drawer& drawer)
         }
     }
     
-    g_testSuite->GetTest()->Step(settings, drawer);
+    g_testSuite->GetTest()->Step(settings, drawer, ui);
 
     glDisable(GL_DEPTH_TEST);
 
@@ -604,234 +599,254 @@ static const char* GetKeyLongName(int key)
     return nullptr;
 }
 
+static void AboutTestUI(bool* openVar)
+{
+    const auto test = g_testSuite->GetTest();
+
+    // Note: Use ImGuiCond_Appearing to set the position on first appearance of Test
+    //   About info and allow later relocation by user. This is preferred over using
+    //   another condition like ImGuiCond_Once, since user could move this window out
+    //   of viewport and otherwise having no visual way to recover it.
+    ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiCond_Appearing);
+    ImGui::SetNextWindowSize(ImVec2(261, 136), ImGuiCond_Once);
+    
+    // Note: without ImGuiWindowFlags_AlwaysAutoResize, ImGui adds a handle icon
+    //   which allows manual resizing but stops automatic resizing.
+    ImGui::WindowContext window("About This Test", openVar,
+                                ImGuiWindowFlags_NoCollapse|ImGuiWindowFlags_AlwaysAutoResize);
+    
+    const auto name = g_testSuite->GetName();
+    ImGui::LabelText("Test Name", "%s", name);
+    
+    if (!test->GetSeeAlso().empty())
+    {
+        const auto length = test->GetSeeAlso().size();
+        char buffer[512];
+        std::strncpy(buffer, test->GetSeeAlso().c_str(), length);
+        buffer[length] = '\0';
+        ImGui::InputText("See Also", buffer, 512,
+                         ImGuiInputTextFlags_ReadOnly|ImGuiInputTextFlags_AutoSelectAll);
+    }
+    
+    if (!test->GetDescription().empty())
+    {
+        if (ImGui::CollapsingHeader("Description", ImGuiTreeNodeFlags_DefaultOpen))
+        {
+            ImGui::TextWrapped("%s", test->GetDescription().c_str());
+        }
+    }
+    
+    const auto handledKeys = test->GetHandledKeys();
+    if (!handledKeys.empty())
+    {
+        if (ImGui::CollapsingHeader("Key Controls", ImGuiTreeNodeFlags_DefaultOpen))
+        {
+            ImGui::Columns(3, "KeyColumns", false);
+            ImGui::SetColumnWidth(0, 50);
+            ImGui::SetColumnWidth(1, 50);
+            //ImGui::SetColumnWidth(2, 200);
+            for (auto& handledKey: handledKeys)
+            {
+                const auto keyID = handledKey.first.key;
+                
+                ImGui::TextUnformatted(GetKeyActionName(handledKey.first.action));
+                ImGui::NextColumn();
+                
+                if (std::isgraph(keyID))
+                {
+                    ImGui::Text("%c", keyID);
+                }
+                else
+                {
+                    ImGui::Text("%s", GetKeyShortName(handledKey.first.key));
+                    if (ImGui::IsItemHovered() && GetKeyLongName(handledKey.first.key))
+                    {
+                        ImGui::SetTooltip("%s", GetKeyLongName(handledKey.first.key));
+                    }
+                }
+                ImGui::NextColumn();
+                //ImGui::SameLine();
+                const auto info = test->GetKeyHandlerInfo(handledKey.second);
+                ImGui::TextWrapped("%s", info.c_str());
+                ImGui::NextColumn();
+            }
+            ImGui::Columns(1);
+        }
+    }
+    
+    if (!test->GetStatus().empty())
+    {
+        if (ImGui::CollapsingHeader("Status Info", ImGuiTreeNodeFlags_DefaultOpen))
+        {
+            ImGui::TextWrapped("%s", test->GetStatus().c_str());
+        }
+    }
+    
+    if (!test->GetCredits().empty())
+    {
+        if (ImGui::CollapsingHeader("Credits"))
+        {
+            ImGui::TextWrapped("%s", test->GetCredits().c_str());
+        }
+    }
+}
+
+static bool MenuUI(bool* openVar)
+{
+    bool shouldQuit = false;
+
+    const auto test = g_testSuite->GetTest();
+
+    const auto neededSettings = test->GetNeededSettings();
+    const auto testSettings = test->GetSettings();
+    
+    ImGui::SetNextWindowPos(ImVec2(camera.m_width - menuWidth - 10, 10));
+    ImGui::SetNextWindowSize(ImVec2(menuWidth, camera.m_height - 20));
+    ImGui::WindowContext window("Testbed Controls", openVar,
+                                ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoCollapse);
+
+    ImGui::PushAllowKeyboardFocus(false); // Disable TAB
+    
+    ImGui::Text("Test:");
+    ImGui::SameLine();
+    auto current_item = g_selection->Get();
+    if (ImGui::Combo("##Test", &current_item, TestEntriesGetName, nullptr,
+                     g_testSuite->GetTestCount(), g_testSuite->GetTestCount()))
+    {
+        g_selection->Set(current_item);
+    }
+    
+    ImGui::Spacing();
+    ImGui::Separator();
+    ImGui::Spacing();
+    
+    const auto defaultLinearSlop = static_cast<float>(StripUnit(DefaultLinearSlop));
+    
+    ImGui::PushItemWidth(100);
+    
+    if (ImGui::CollapsingHeader("Basic Step Options", ImGuiTreeNodeFlags_DefaultOpen))
+    {
+        ImGui::SliderFloat("Frequency", &settings.hz, -120.0f, 120.0f, "%.0f hz");
+        ImGui::SliderInt("Vel. Iter.", &settings.regVelocityIterations, 0, 100);
+        ImGui::SliderInt("Pos. Iter.", &settings.regPositionIterations, 0, 100);
+    }
+    
+    if (ImGui::CollapsingHeader("Advanced Step Options"))
+    {
+        ImGui::SliderFloat("Frequency", &settings.hz, -120.0f, 120.0f, "%.0f hz");
+        ImGui::SliderFloat("Max Translation", &settings.maxTranslation, 0.0f, 12.0f);
+        ImGui::SliderFloat("Max Rotation", &settings.maxRotation, 0.0f, 360.0f);
+        ImGui::SliderFloat("Linear Slop", &settings.linearSlop,
+                           defaultLinearSlop / 10, defaultLinearSlop);
+        ImGui::SliderFloat("Angular Slop", &settings.angularSlop,
+                           static_cast<float>(Pi * 2 / 1800.0),
+                           static_cast<float>(Pi * 2 / 18.0));
+        ImGui::SliderFloat("Max Lin Correct", &settings.maxLinearCorrection, 0.0f, 1.0f);
+        ImGui::SliderFloat("Max Ang Correct", &settings.maxAngularCorrection, 0.0f, 90.0f);
+        
+        if (ImGui::CollapsingHeader("Reg Phase Processing", ImGuiTreeNodeFlags_DefaultOpen))
+        {
+            ImGui::SliderInt("Vel Iters", &settings.regVelocityIterations, 0, 100);
+            ImGui::SliderInt("Pos Iters", &settings.regPositionIterations, 0, 100);
+            ImGui::SliderFloat("Min Sep", &settings.regMinSeparation,
+                               -5 * defaultLinearSlop, -0 * defaultLinearSlop);
+            ImGui::SliderInt("Resol Rate", &settings.regPosResRate, 0, 100, "%.0f %%");
+            if (ImGui::IsItemHovered())
+            {
+                ImGui::SetTooltip("This is the %% of overlap that will"
+                                  " be resolved per position iteration.");
+            }
+            ImGui::Checkbox("Allow Sleeping", &settings.enableSleep);
+            ImGui::Checkbox("Warm Starting", &settings.enableWarmStarting);
+        }
+        if (ImGui::CollapsingHeader("TOI Phase Processing", ImGuiTreeNodeFlags_DefaultOpen))
+        {
+            ImGui::Checkbox("Perform Continuous", &settings.enableContinuous);
+            ImGui::SliderInt("Vel Iters", &settings.toiVelocityIterations, 0, 100);
+            ImGui::SliderInt("Pos Iters", &settings.toiPositionIterations, 0, 100);
+            ImGui::SliderFloat("Min Sep", &settings.toiMinSeparation,
+                               -5 * defaultLinearSlop, -0 * defaultLinearSlop);
+            ImGui::SliderInt("Resol Rate", &settings.toiPosResRate, 0, 100, "%.0f %%");
+            if (ImGui::IsItemHovered())
+            {
+                ImGui::SetTooltip("This is the %% of overlap that will"
+                                  " be resolved per position iteration.");
+            }
+            ImGui::SliderInt("Max Sub Steps", &settings.maxSubSteps, 0, 100);
+            ImGui::Checkbox("Sub-Step", &settings.enableSubStepping);
+        }
+    }
+    
+    ImGui::PopItemWidth();
+    
+    if (ImGui::CollapsingHeader("Output Options", ImGuiTreeNodeFlags_DefaultOpen))
+    {
+        ImGui::Checkbox("Shapes", &settings.drawShapes);
+        ImGui::Checkbox("Joints", &settings.drawJoints);
+        if (neededSettings & (0x1u << Test::NeedDrawSkinsField))
+        {
+            auto value = testSettings.drawSkins;
+            ImGui::Checkbox("Skins (required)", &value);
+        }
+        else
+        {
+            ImGui::Checkbox("Skins", &settings.drawSkins);
+        }
+        ImGui::Checkbox("AABBs", &settings.drawAABBs);
+        if (neededSettings & (0x1u << Test::NeedDrawLabelsField))
+        {
+            auto value = testSettings.drawLabels;
+            ImGui::Checkbox("Labels (required)", &value);
+        }
+        else
+        {
+            ImGui::Checkbox("Labels", &settings.drawLabels);
+        }
+        ImGui::Checkbox("Contact Points", &settings.drawContactPoints);
+        ImGui::Checkbox("Contact Normals", &settings.drawContactNormals);
+        ImGui::Checkbox("Contact Impulses", &settings.drawContactImpulse);
+        ImGui::Checkbox("Friction Impulses", &settings.drawFrictionImpulse);
+        ImGui::Checkbox("Center of Masses", &settings.drawCOMs);
+        ImGui::Checkbox("Statistics", &ui.showStats);
+        ImGui::Checkbox("About Test", &ui.showAboutTest);
+    }
+    
+    ImGui::Spacing();
+    ImGui::Separator();
+    ImGui::Spacing();
+    
+    ImGui::Checkbox("Pause", &settings.pause);
+    
+    ImVec2 button_sz = ImVec2(-1, 0);
+    if (ImGui::Button("Single Step", button_sz))
+        settings.singleStep = !settings.singleStep;
+    if (ImGui::Button("Restart", button_sz))
+        g_testSuite->RestartTest();
+    if (ImGui::Button("Quit", button_sz))
+        shouldQuit = true;
+    
+    ImGui::PopAllowKeyboardFocus();
+    
+    return shouldQuit;
+}
+
 static bool UserInterface()
 {
     auto shouldQuit = false;
-    const auto test = g_testSuite->GetTest();
-
+    
     if (ui.showAboutTest)
     {
-        // Note: Use ImGuiCond_Appearing to set the position on first appearance of Test
-        //   About info and allow later relocation by user. This is preferred over using
-        //   another condition like ImGuiCond_Once, since user could move this window out
-        //   of viewport and otherwise having no visual way to recover it.
-        ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiCond_Appearing);
-        
-        // Note: without ImGuiWindowFlags_AlwaysAutoResize, ImGui adds a handle icon
-        //   which allows manual resizing but stops automatic resizing.
-        ImGui::Begin("About This Test", &ui.showAboutTest,
-                     ImGuiWindowFlags_NoCollapse|ImGuiWindowFlags_AlwaysAutoResize);
-        
-        const auto name = g_testSuite->GetName();
-        ImGui::LabelText("Test Name", "%s", name);
-
-        if (!test->GetSeeAlso().empty())
-        {
-            const auto length = test->GetSeeAlso().size();
-            char buffer[512];
-            std::strncpy(buffer, test->GetSeeAlso().c_str(), length);
-            buffer[length] = '\0';
-            ImGui::InputText("See Also", buffer, 512,
-                             ImGuiInputTextFlags_ReadOnly|ImGuiInputTextFlags_AutoSelectAll);
-        }
-
-        if (!test->GetDescription().empty())
-        {
-            if (ImGui::CollapsingHeader("Description", ImGuiTreeNodeFlags_DefaultOpen))
-            {
-                ImGui::TextWrapped("%s", test->GetDescription().c_str());
-            }
-        }
-        
-        const auto handledKeys = test->GetHandledKeys();
-        if (!handledKeys.empty())
-        {
-            if (ImGui::CollapsingHeader("Key Controls", ImGuiTreeNodeFlags_DefaultOpen))
-            {
-                ImGui::Columns(3, nullptr, false);
-                ImGui::SetColumnWidth(0, 50);
-                ImGui::SetColumnWidth(1, 50);
-                //ImGui::SetColumnWidth(2, 200);
-                for (auto& handledKey: handledKeys)
-                {
-                    const auto keyID = handledKey.first.key;
-                    
-                    ImGui::TextUnformatted(GetKeyActionName(handledKey.first.action));
-                    ImGui::NextColumn();
-
-                    if (std::isgraph(keyID))
-                    {
-                        ImGui::Text("%c", keyID);
-                    }
-                    else
-                    {
-                        ImGui::Text("%s", GetKeyShortName(handledKey.first.key));
-                        if (ImGui::IsItemHovered() && GetKeyLongName(handledKey.first.key))
-                        {
-                            ImGui::SetTooltip("%s", GetKeyLongName(handledKey.first.key));
-                        }
-                    }
-                    ImGui::NextColumn();
-                    //ImGui::SameLine();
-                    const auto info = test->GetKeyHandlerInfo(handledKey.second);
-                    ImGui::TextWrapped("%s", info.c_str());
-                    ImGui::NextColumn();
-                }
-                ImGui::Columns(1);
-            }
-        }
-        
-        if (!test->GetStatus().empty())
-        {
-            if (ImGui::CollapsingHeader("Status Info", ImGuiTreeNodeFlags_DefaultOpen))
-            {
-                ImGui::TextWrapped("%s", test->GetStatus().c_str());
-            }
-        }
-        
-        if (!test->GetCredits().empty())
-        {
-            if (ImGui::CollapsingHeader("Credits"))
-            {
-                ImGui::TextWrapped("%s", test->GetCredits().c_str());
-            }
-        }
-        
-        ImGui::End();
+        AboutTestUI(&ui.showAboutTest);
     }
-    
+
     if (ui.showMenu)
     {
-        const auto neededSettings = test->GetNeededSettings();
-        const auto testSettings = test->GetSettings();
-
-        ImGui::SetNextWindowPos(ImVec2(camera.m_width - menuWidth - 10, 10));
-        ImGui::SetNextWindowSize(ImVec2(menuWidth, camera.m_height - 20));
-        ImGui::Begin("Testbed Controls", &ui.showMenu,
-                     ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoCollapse);
-        ImGui::PushAllowKeyboardFocus(false); // Disable TAB
-        
-        ImGui::Text("Test:");
-        ImGui::SameLine();
-        auto current_item = g_selection->Get();
-        if (ImGui::Combo("##Test", &current_item, TestEntriesGetName, nullptr,
-                         g_testSuite->GetTestCount(), g_testSuite->GetTestCount()))
+        if (MenuUI(&ui.showMenu))
         {
-            g_selection->Set(current_item);
-        }
-
-        ImGui::Spacing();
-        ImGui::Separator();
-        ImGui::Spacing();
-
-        const auto defaultLinearSlop = static_cast<float>(StripUnit(DefaultLinearSlop));
-
-        ImGui::PushItemWidth(100);
-
-        if (ImGui::CollapsingHeader("Basic Step Options", ImGuiTreeNodeFlags_DefaultOpen))
-        {
-            ImGui::SliderFloat("Frequency", &settings.hz, -120.0f, 120.0f, "%.0f hz");
-            ImGui::SliderInt("Vel. Iter.", &settings.regVelocityIterations, 0, 100);
-            ImGui::SliderInt("Pos. Iter.", &settings.regPositionIterations, 0, 100);
-        }
-
-        if (ImGui::CollapsingHeader("Advanced Step Options"))
-        {
-            ImGui::SliderFloat("Frequency", &settings.hz, -120.0f, 120.0f, "%.0f hz");
-            ImGui::SliderFloat("Max Translation", &settings.maxTranslation, 0.0f, 12.0f);
-            ImGui::SliderFloat("Max Rotation", &settings.maxRotation, 0.0f, 360.0f);
-            ImGui::SliderFloat("Linear Slop", &settings.linearSlop,
-                               defaultLinearSlop / 10, defaultLinearSlop);
-            ImGui::SliderFloat("Angular Slop", &settings.angularSlop,
-                               static_cast<float>(Pi * 2 / 1800.0),
-                               static_cast<float>(Pi * 2 / 18.0));
-            ImGui::SliderFloat("Max Lin Correct", &settings.maxLinearCorrection, 0.0f, 1.0f);
-            ImGui::SliderFloat("Max Ang Correct", &settings.maxAngularCorrection, 0.0f, 90.0f);
-
-            if (ImGui::CollapsingHeader("Reg Phase Processing", ImGuiTreeNodeFlags_DefaultOpen))
-            {
-                ImGui::SliderInt("Vel Iters", &settings.regVelocityIterations, 0, 100);
-                ImGui::SliderInt("Pos Iters", &settings.regPositionIterations, 0, 100);
-                ImGui::SliderFloat("Min Sep", &settings.regMinSeparation,
-                                   -5 * defaultLinearSlop, -0 * defaultLinearSlop);
-                ImGui::SliderInt("Resol Rate", &settings.regPosResRate, 0, 100, "%.0f %%");
-                if (ImGui::IsItemHovered())
-                {
-                    ImGui::SetTooltip("This is the %% of overlap that will"
-                                      " be resolved per position iteration.");
-                }
-                ImGui::Checkbox("Allow Sleeping", &settings.enableSleep);
-                ImGui::Checkbox("Warm Starting", &settings.enableWarmStarting);
-            }
-            if (ImGui::CollapsingHeader("TOI Phase Processing", ImGuiTreeNodeFlags_DefaultOpen))
-            {
-                ImGui::Checkbox("Perform Continuous", &settings.enableContinuous);
-                ImGui::SliderInt("Vel Iters", &settings.toiVelocityIterations, 0, 100);
-                ImGui::SliderInt("Pos Iters", &settings.toiPositionIterations, 0, 100);
-                ImGui::SliderFloat("Min Sep", &settings.toiMinSeparation,
-                                   -5 * defaultLinearSlop, -0 * defaultLinearSlop);
-                ImGui::SliderInt("Resol Rate", &settings.toiPosResRate, 0, 100, "%.0f %%");
-                if (ImGui::IsItemHovered())
-                {
-                    ImGui::SetTooltip("This is the %% of overlap that will"
-                                      " be resolved per position iteration.");
-                }
-                ImGui::SliderInt("Max Sub Steps", &settings.maxSubSteps, 0, 100);
-                ImGui::Checkbox("Sub-Step", &settings.enableSubStepping);
-            }
-        }
-
-        ImGui::PopItemWidth();
-
-        if (ImGui::CollapsingHeader("Output Options", ImGuiTreeNodeFlags_DefaultOpen))
-        {
-            ImGui::Checkbox("Shapes", &settings.drawShapes);
-            ImGui::Checkbox("Joints", &settings.drawJoints);
-            if (neededSettings & (0x1u << Test::NeedDrawSkinsField))
-            {
-                auto value = testSettings.drawSkins;
-                ImGui::Checkbox("Skins (required)", &value);
-            }
-            else
-            {
-                ImGui::Checkbox("Skins", &settings.drawSkins);
-            }
-            ImGui::Checkbox("AABBs", &settings.drawAABBs);
-            if (neededSettings & (0x1u << Test::NeedDrawLabelsField))
-            {
-                auto value = testSettings.drawLabels;
-                ImGui::Checkbox("Labels (required)", &value);
-            }
-            else
-            {
-                ImGui::Checkbox("Labels", &settings.drawLabels);
-            }
-            ImGui::Checkbox("Contact Points", &settings.drawContactPoints);
-            ImGui::Checkbox("Contact Normals", &settings.drawContactNormals);
-            ImGui::Checkbox("Contact Impulses", &settings.drawContactImpulse);
-            ImGui::Checkbox("Friction Impulses", &settings.drawFrictionImpulse);
-            ImGui::Checkbox("Center of Masses", &settings.drawCOMs);
-            ImGui::Checkbox("Statistics", &settings.drawStats);
-            ImGui::Checkbox("About Test", &ui.showAboutTest);
-        }
-        
-        ImGui::Spacing();
-        ImGui::Separator();
-        ImGui::Spacing();
-
-        ImGui::Checkbox("Pause", &settings.pause);
-
-        ImVec2 button_sz = ImVec2(-1, 0);
-        if (ImGui::Button("Single Step", button_sz))
-            settings.singleStep = !settings.singleStep;
-        if (ImGui::Button("Restart", button_sz))
-            g_testSuite->RestartTest();
-        if (ImGui::Button("Quit", button_sz))
             shouldQuit = true;
-
-        ImGui::PopAllowKeyboardFocus();
-        ImGui::End();
+        }
     }
+    
     return !shouldQuit;
 }
 
@@ -854,12 +869,13 @@ static void ShowFrameInfo(double frameTime, double fps)
     stream << std::setprecision(0);
     stream << " FPS=" << fps;
     
-    ImGui::Begin("Overlay", nullptr, ImVec2(0,0), 0.0f,
+    ImGui::SetNextWindowPos(ImVec2(0,0));
+    ImGui::SetNextWindowSize(ImVec2(camera.m_width, camera.m_height));
+    ImGui::WindowContext wc("Frame Info", nullptr, ImVec2(0,0), 0.0f,
                  ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoInputs|
                  ImGuiWindowFlags_AlwaysAutoResize|ImGuiWindowFlags_NoScrollbar);
     ImGui::SetCursorPos(ImVec2(5, camera.m_height - 20));
     ImGui::TextUnformatted(stream.str().c_str());
-    ImGui::End();
 }
 
 int main()

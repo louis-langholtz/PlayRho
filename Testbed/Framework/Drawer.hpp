@@ -91,9 +91,6 @@ public:
 
     virtual void DrawPoint(const Length2D& p, float size, const Color& color) = 0;
     
-    /// Draws a string at the given screen coordinates.
-    virtual void DrawString(int x, int y, TextAlign align, const char* string, ...) = 0;
-    
     /// Draws a string at the given world coordinates.
     virtual void DrawString(const Length2D& p, TextAlign align, const char* string, ...) = 0;
         

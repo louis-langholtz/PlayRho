@@ -109,7 +109,7 @@ public:
         });
     }
 
-    void PostStep(const Settings&, Drawer& drawer) override
+    void PostStep(const Settings&, Drawer&) override
     {
         std::stringstream stream;
         stream << "Create time = ";

@@ -709,36 +709,6 @@ void DebugDraw::DrawSolidCircle(const Length2D& center, Length radius, const Col
     }
 }
 
-void DebugDraw::DrawString(int x, int y, TextAlign align, const char *string, ...)
-{
-    char buffer[512];
-    va_list arg;
-    va_start(arg, string);
-    vsprintf(buffer, string, arg);
-    va_end(arg);
-
-    const auto textSize = ImGui::CalcTextSize(buffer);
-    switch (align)
-    {
-        case Left:
-            break;
-        case Right:
-            x -= textSize.x;
-            break;
-        case Center:
-            x -= textSize.x / 2;
-            break;
-    }
-
-    ImGui::Begin("Overlay", nullptr, ImVec2(0,0), 0.0f, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoInputs
-                 | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoScrollbar);
-    ImGui::SetCursorPos(ImVec2(x, y - ImGui::GetFontSize() / 2));
-    ImGui::PushStyleColor(ImGuiCol_Text, ImColor(230, 153, 153, 255).Value);
-    ImGui::TextUnformatted(buffer);
-    ImGui::PopStyleColor();
-    ImGui::End();
-}
-
 void DebugDraw::DrawString(const Length2D& pw, TextAlign align, const char *string, ...)
 {
     auto ps = ConvertWorldToScreen(m_camera, pw);
@@ -762,13 +732,14 @@ void DebugDraw::DrawString(const Length2D& pw, TextAlign align, const char *stri
             break;
     }
 
-    ImGui::Begin("Overlay", nullptr, ImVec2(0,0), 0.0f, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoInputs
-                 | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoScrollbar);
+    ImGui::SetNextWindowPos(ImVec2(0,0));
+    ImGui::WindowContext wc("Overlay", nullptr, ImVec2(0,0), 0.0f,
+                            ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoInputs |
+                            ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoScrollbar);
     ImGui::SetCursorPos(ImVec2(ps.x, ps.y - ImGui::GetFontSize() / 2));
     ImGui::PushStyleColor(ImGuiCol_Text, ImColor(230, 153, 153, 255).Value);
     ImGui::TextUnformatted(buffer);
     ImGui::PopStyleColor();
-    ImGui::End();
 }
 
 Length2D DebugDraw::GetTranslation() const

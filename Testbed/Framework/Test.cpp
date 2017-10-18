@@ -25,8 +25,30 @@
 #include <chrono>
 #include <map>
 #include <utility>
+#include "imgui.h"
 
 using namespace playrho;
+
+static void SetImGuiColumnWidths(float remainingWidth, std::initializer_list<float> widths)
+{
+    //const auto minSpace = style.ColumnsMinSpacing;
+    const auto numColumns = ImGui::GetColumnsCount();
+    auto column = decltype(numColumns){0};
+    for (auto width: widths)
+    {
+        ImGui::SetColumnWidth(column, width);
+        remainingWidth -= width;
+        ++column;
+    }
+    //auto nextColumnOffset = ImGui::GetColumnOffset(column);
+    const auto remainingColumns = numColumns - column;
+    const auto widthPerRemainingColumn = remainingWidth / remainingColumns;
+    for (auto i = column; i < numColumns; ++i)
+    {
+        //nextColumnOffset = ImGui::GetColumnOffset(i);
+        ImGui::SetColumnWidth(i, widthPerRemainingColumn);
+    }
+}
 
 static void DrawCorner(Drawer& drawer, Length2D p, Length r, Angle a0, Angle a1, Color color)
 {
@@ -398,7 +420,9 @@ Test::Test(Conf conf):
     m_settings(conf.settings),
     m_description(conf.description),
     m_credits(conf.credits),
-    m_seeAlso(conf.seeAlso)
+    m_seeAlso(conf.seeAlso),
+    m_numContactsPerStep(m_maxHistory, 0u),
+    m_numTouchingPerStep(m_maxHistory, 0u)
 {
     m_destructionListener.test = this;
     m_world.SetDestructionListener(&m_destructionListener);
@@ -594,7 +618,20 @@ void Test::LaunchBomb(const Length2D& position, const LinearVelocity2D linearVel
     m_bomb->CreateFixture(circle);
 }
 
-void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
+static void ShowHelpMarker(const char* desc)
+{
+    ImGui::TextDisabled("(?)");
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::BeginTooltip();
+        ImGui::PushTextWrapPos(450.0f);
+        ImGui::TextUnformatted(desc);
+        ImGui::PopTextWrapPos();
+        ImGui::EndTooltip();
+    }
+}
+
+void Test::DrawStats(const StepConf& stepConf, UiState& ui)
 {
     const auto bodyCount = GetBodyCount(m_world);
     const auto awakeCount = GetAwakeCount(m_world);
@@ -603,154 +640,348 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
     const auto fixtureCount = GetFixtureCount(m_world);
     const auto shapeCount = GetShapeCount(m_world);
     const auto touchingCount = GetTouchingCount(m_world);
+ 
+    if (m_numTouchingPerStep.size() >= m_maxHistory)
+    {
+        m_numTouchingPerStep.pop_front();
+    }
+    m_numTouchingPerStep.push_back(touchingCount);
+    m_maxTouching = std::max(m_maxTouching, touchingCount);
 
     std::stringstream stream;
 
-    drawer.DrawString(5, m_textLine, Drawer::Left,
-                      "step#=%d (@%fs):", m_stepCount, m_sumDeltaTime);
-    m_textLine += DRAW_STRING_NEW_LINE;
+    ImGuiStyle& style = ImGui::GetStyle();
+    const auto totalWidth = ImGui::GetWindowWidth() - style.FramePadding.x * 2;
+    const auto firstColumnWidth = 65.0f;
 
-    stream = std::stringstream();
-    stream << "  Times:";
-    stream << " cur=" << m_curStepDuration.count();
-    stream << " max=" << m_maxStepDuration.count();
-    stream << " sum=" << m_sumStepDuration.count();
-    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
-    m_textLine += DRAW_STRING_NEW_LINE;
+    ImGui::Text("Step #=%d (@%fs):", m_stepCount, m_sumDeltaTime);
+    ImGui::Separator();
 
-    stream = std::stringstream();
-    stream << "  Object counts:";
-    stream << " bodies=" << bodyCount << " (" << sleepCount << " asleep),";
-    stream << " fixtures=" << fixtureCount << ",";
-    stream << " shapes=" << shapeCount << ",";
-    stream << " contacts=" << m_numContacts;
-    stream << " (" << touchingCount << " touching, " << m_maxContacts << " max),";
-    stream << " joints=" << jointCount;
-    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
-    m_textLine += DRAW_STRING_NEW_LINE;
+    {
+        ImGui::ColumnsContext cc(4, "TimesColumns", false);
+        ImGui::SetColumnWidth(0, firstColumnWidth);
+        ImGui::TextUnformatted("Times:");
+        ImGui::NextColumn();
+        ImGui::Value("Current", m_curStepDuration.count(), "%f");
+        ImGui::NextColumn();
+        ImGui::Value("Max", m_maxStepDuration.count(), "%f");
+        ImGui::NextColumn();
+        ImGui::Value("Sum", m_sumStepDuration.count(), "%f");
+        ImGui::NextColumn();
+    }
 
-    stream = std::stringstream();
-    stream << "  pre-info:";
-    stream << " cts-add=" << m_stepStats.pre.added;
-    stream << " cts-ignor=" << m_stepStats.pre.ignored;
-    stream << " cts-del=" << m_stepStats.pre.destroyed;
-    stream << " cts-upd=" << m_stepStats.pre.updated;
-    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
-    m_textLine += DRAW_STRING_NEW_LINE;
+    {
+        ImGui::ColumnsContext cc(5, "NumObjectsColumns", false);
+        ImGui::SetColumnWidth(0, firstColumnWidth);
+        ImGui::TextUnformatted("# Objects:");
+        ImGui::NextColumn();
+        ImGui::Text("Bodies: %u/%u", bodyCount - sleepCount, bodyCount);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", "Counts of awake bodies over total bodies.");
+        }
+        ImGui::NextColumn();
+        ImGui::Text("Fixtures: %lu/%lu", shapeCount, fixtureCount);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", "Counts of shapes over fixtures.");
+        }
+        ImGui::NextColumn();
+        ImGui::Text("Contacts: %u/%u", touchingCount, m_numContacts);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", "Counts of touching contacts over total contacts. Click to toggle histogram.");
+        }
+        if (ImGui::IsItemClicked())
+        {
+            ui.showContactsHistory = !ui.showContactsHistory;
+        }
+        ImGui::NextColumn();
+        ImGui::Value("Joints", jointCount);
+        ImGui::NextColumn();
+    }
+    
+    {
+        ImGui::ColumnsContext cc(6, "PreStepColumns", false);
+        ImGui::SetColumnWidth(0, firstColumnWidth);
+        ImGui::TextUnformatted("Pre-step:");
+        ImGui::NextColumn();
+        ImGui::Value("cts-add", m_stepStats.pre.added);
+        ImGui::NextColumn();
+        ImGui::Text("c-ign: %u/%llu", m_stepStats.pre.ignored, m_sumContactsIgnoredPre);
+        ImGui::NextColumn();
+        ImGui::Text("c-skip: %u/%llu", m_stepStats.pre.skipped, m_sumContactsSkippedPre);
+        ImGui::NextColumn();
+        ImGui::Value("c-del", m_stepStats.pre.destroyed);
+        ImGui::NextColumn();
+        ImGui::Text("c-upd: %u/%llu", m_stepStats.pre.updated, m_sumContactsUpdatedPre);
+        ImGui::NextColumn();
+    }
 
-    drawer.DrawString(5, m_textLine, Drawer::Left, "  reg-info:");
-    m_textLine += DRAW_STRING_NEW_LINE;
+    ImGui::Separator();
 
-    stream = std::stringstream();
-    stream << "   ";
-    stream << " cts-add=" << m_stepStats.reg.contactsAdded;
-    stream << " isl-find=" << m_stepStats.reg.islandsFound;
-    stream << " isl-solv=" << m_stepStats.reg.islandsSolved;
-    stream << " pos-iter=" << m_stepStats.reg.sumPosIters;
-    stream << " vel-iter=" << m_stepStats.reg.sumVelIters;
-    stream << " proxy-moved=" << m_stepStats.toi.proxiesMoved;
-    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
-    m_textLine += DRAW_STRING_NEW_LINE;
+    {
+        ImGui::ColumnsContext cc(15, nullptr, false);
+        SetImGuiColumnWidths(totalWidth, {firstColumnWidth});
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("c-add");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", "Contacts added.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("i-find");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", "Islands found.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("i-solv");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", "Islands solved.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("posit");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", "Position iterations.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("velit");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", "Velocity iterations.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("pmov");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", "Proxies moved.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("minsep");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", "Minimum separation.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("maxP");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", "Max incremental impulse.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("b-slept");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", "Bodies slept.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("c-find");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", "Contacts found.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("c-@maxs");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", "Contacts at max substeps.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("c-upd");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", "Contacts whose TOI was updated.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("max-d-it");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", "Max distance iterations.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("max-t-it");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", "Max TOI iterations.");
+        }
+        ImGui::NextColumn();
+    }
 
-    stream = std::stringstream();
-    stream << "   ";
-    stream << " bod-slept=" << m_stepStats.reg.bodiesSlept;
-    stream << " min-sep=" << static_cast<double>(Real{m_stepStats.reg.minSeparation / Meter});
-    stream << " max-inc-imp=" << static_cast<double>(Real{m_stepStats.reg.maxIncImpulse / (Kilogram * MeterPerSecond)});
-    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
-    m_textLine += DRAW_STRING_NEW_LINE;
+    {
+        ImGui::ColumnsContext cc(15, nullptr, false);
+        SetImGuiColumnWidths(totalWidth, {firstColumnWidth});
+        ImGui::TextUnformatted("Reg. step:");
+        ImGui::NextColumn();
+        ImGui::Text("%u", m_stepStats.reg.contactsAdded);
+        ImGui::NextColumn();
+        ImGui::Text("%u", m_stepStats.reg.islandsFound);
+        ImGui::NextColumn();
+        ImGui::Text("%u", m_stepStats.reg.islandsSolved);
+        ImGui::NextColumn();
+        ImGui::Text("%u", m_stepStats.reg.sumPosIters);
+        ImGui::NextColumn();
+        ImGui::Text("%u", m_stepStats.reg.sumVelIters);
+        ImGui::NextColumn();
+        ImGui::Text("%u", m_stepStats.toi.proxiesMoved);
+        ImGui::NextColumn();
+        ImGui::Text("%f", static_cast<double>(Real{m_stepStats.reg.minSeparation / Meter}));
+        ImGui::NextColumn();
+        ImGui::Text("%.2f", static_cast<double>(Real{m_stepStats.reg.maxIncImpulse / (Kilogram * MeterPerSecond)}));
+        ImGui::NextColumn();
+        ImGui::Text("%u", m_stepStats.reg.bodiesSlept);
+        ImGui::NextColumn();
+    }
 
-    drawer.DrawString(5, m_textLine, Drawer::Left, "  toi-info:");
-    m_textLine += DRAW_STRING_NEW_LINE;
+    {
+        ImGui::ColumnsContext cc(15, nullptr, false);
+        SetImGuiColumnWidths(totalWidth, {firstColumnWidth});
+        ImGui::TextUnformatted("TOI step:");
+        ImGui::NextColumn();
+        ImGui::Text("%u", m_stepStats.toi.contactsAdded);
+        ImGui::NextColumn();
+        ImGui::Text("%u", m_stepStats.toi.islandsFound);
+        ImGui::NextColumn();
+        ImGui::Text("%u", m_stepStats.toi.islandsSolved);
+        ImGui::NextColumn();
+        ImGui::Text("%u", m_stepStats.toi.sumPosIters);
+        ImGui::NextColumn();
+        ImGui::Text("%u", m_stepStats.toi.sumVelIters);
+        ImGui::NextColumn();
+        ImGui::Text("%u", m_stepStats.toi.proxiesMoved);
+        ImGui::NextColumn();
+        ImGui::Text("%f", static_cast<double>(Real{m_stepStats.toi.minSeparation / Meter}));
+        ImGui::NextColumn();
+        ImGui::Text("%.2f", static_cast<double>(Real{m_stepStats.toi.maxIncImpulse / (Kilogram * MeterPerSecond)}));
+        ImGui::NextColumn();
+        // Skip bodies slept column
+        ImGui::NextColumn();
+        ImGui::Text("%u", m_stepStats.toi.contactsFound);
+        ImGui::NextColumn();
+        ImGui::Text("%u", m_stepStats.toi.contactsAtMaxSubSteps);
+        ImGui::NextColumn();
+        ImGui::Text("%u", m_stepStats.toi.contactsUpdatedToi);
+        ImGui::NextColumn();
+        ImGui::Text("%u", unsigned{m_stepStats.toi.maxDistIters});
+        ImGui::NextColumn();
+        ImGui::Text("%u", unsigned{m_stepStats.toi.maxToiIters});
+        ImGui::NextColumn();
+    }
 
-    stream = std::stringstream();
-    stream << "   ";
-    stream << " cts-add=" << m_stepStats.toi.contactsAdded;
-    stream << " isl-find=" << m_stepStats.toi.islandsFound;
-    stream << " isl-solv=" << m_stepStats.toi.islandsSolved;
-    stream << " pos-iter=" << m_stepStats.toi.sumPosIters;
-    stream << " vel-iter=" << m_stepStats.toi.sumVelIters;
-    stream << " proxy-moved=" << m_stepStats.toi.proxiesMoved;
-    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
-    m_textLine += DRAW_STRING_NEW_LINE;
+    {
+        ImGui::ColumnsContext cc(15, nullptr, false);
+        SetImGuiColumnWidths(totalWidth, {firstColumnWidth});
+        ImGui::TextUnformatted("Reg. sums:");
+        ImGui::NextColumn();
+        // Skip c-add column
+        ImGui::NextColumn();
+        ImGui::Text("%llu", m_sumRegIslandsFound);
+        ImGui::NextColumn();
+        ImGui::Text("%llu", m_sumRegIslandsSolved);
+        ImGui::NextColumn();
+        ImGui::Text("%llu", m_sumRegPosIters);
+        ImGui::NextColumn();
+        ImGui::Text("%llu", m_sumRegVelIters);
+        ImGui::NextColumn();
+        ImGui::Text("%llu", m_sumRegProxiesMoved);
+        ImGui::NextColumn();
+    }
 
-    stream = std::stringstream();
-    stream << "   ";
-    stream << " cts-find=" << m_stepStats.toi.contactsFound;
-    stream << " cts-atmaxsubs=" << m_stepStats.toi.contactsAtMaxSubSteps;
-    stream << " cts-upd=" << m_stepStats.toi.contactsUpdatedToi;
-    stream << " max-dist-iter=" << unsigned{m_stepStats.toi.maxDistIters};
-    stream << " max-toi-iter=" << unsigned{m_stepStats.toi.maxToiIters};
-    stream << " min-sep=" << static_cast<double>(Real{m_stepStats.toi.minSeparation / Meter});
-    stream << " max-inc-imp=" << static_cast<double>(Real{m_stepStats.toi.maxIncImpulse / (Kilogram * MeterPerSecond)});
-    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
-    m_textLine += DRAW_STRING_NEW_LINE;
+    {
+        ImGui::ColumnsContext cc(15, nullptr, false);
+        SetImGuiColumnWidths(totalWidth, {firstColumnWidth});
+        ImGui::TextUnformatted("TOI sums:");
+        ImGui::NextColumn();
+        // Skip c-add column
+        ImGui::NextColumn();
+        ImGui::Text("%llu", m_sumToiIslandsFound);
+        ImGui::NextColumn();
+        ImGui::Text("%llu", m_sumToiIslandsSolved);
+        ImGui::NextColumn();
+        ImGui::Text("%llu", m_sumToiPosIters);
+        ImGui::NextColumn();
+        ImGui::Text("%llu", m_sumToiVelIters);
+        ImGui::NextColumn();
+        ImGui::Text("%llu", m_sumToiProxiesMoved);
+        ImGui::NextColumn();
+        // Skip minSeparation column
+        ImGui::NextColumn();
+        // Skip maxIncImpulse column
+        ImGui::NextColumn();
+        // Skip bodies slept column
+        ImGui::NextColumn();
+        // Skip contacts found column
+        ImGui::NextColumn();
+        ImGui::Text("%llu", m_sumContactsAtMaxSubSteps);
+        ImGui::NextColumn();
+        ImGui::Text("%llu", m_sumContactsUpdatedToi);
+        ImGui::NextColumn();
+        
+#if 0
+        stream = std::stringstream();
+        stream << "  TOI sums:";
+        stream << " cts-touch-upd=" << m_sumToiContactsUpdatedTouching;
+        stream << " cts-touch-skipped=" << m_sumToiContactsSkippedTouching;
+#endif
+    }
 
-    stream = std::stringstream();
-    stream << "  Pre sums:";
-    // stream << " cts-ignored=" << m_sumContactsIgnoredPre;
-    stream << " cts-upd=" << m_sumContactsUpdatedPre;
-    stream << " cts-skipped=" << m_sumContactsSkippedPre;
-    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
-    m_textLine += DRAW_STRING_NEW_LINE;
+    ImGui::Separator();
 
-    stream = std::stringstream();
-    stream << "  Reg sums:";
-    stream << " isl-found=" << m_sumRegIslandsFound;
-    stream << " isl-solv=" << m_sumRegIslandsSolved;
-    stream << " pos-iter=" << m_sumRegPosIters;
-    stream << " vel-iter=" << m_sumRegVelIters;
-    stream << " proxy-moved=" << m_sumRegProxiesMoved;
-    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
-    m_textLine += DRAW_STRING_NEW_LINE;
+    {
+        ImGui::ColumnsContext cc(2, nullptr, false);
+        SetImGuiColumnWidths(totalWidth, {firstColumnWidth});
+        ImGui::TextUnformatted("Reg ranges:");
+        ImGui::NextColumn();
+        stream = std::stringstream();
+        stream << "min-sep=" << static_cast<double>(Real{m_minRegSep / Meter});
+        stream << ", max-sep=" << static_cast<double>(Real{m_maxRegSep / Meter});
+        stream << ".";
+        ImGui::TextUnformatted(stream.str().c_str());
+        ImGui::NextColumn();
+    }
 
-    stream = std::stringstream();
-    stream << "  TOI sums:";
-    stream << " isl-found=" << m_sumToiIslandsFound;
-    stream << " isl-solv=" << m_sumToiIslandsSolved;
-    stream << " pos-iter=" << m_sumToiPosIters;
-    stream << " vel-iter=" << m_sumToiVelIters;
-    stream << " proxy-moved=" << m_sumToiProxiesMoved;
-    stream << " cts-touch-upd=" << m_sumToiContactsUpdatedTouching;
-    stream << " cts-touch-skipped=" << m_sumToiContactsSkippedTouching;
-    stream << " cts-upd-toi=" << m_sumContactsUpdatedToi;
-    stream << " cts-maxstep=" << m_sumContactsAtMaxSubSteps;
-    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
-    m_textLine += DRAW_STRING_NEW_LINE;
+    {
+        ImGui::ColumnsContext cc(2, nullptr, false);
+        SetImGuiColumnWidths(totalWidth, {firstColumnWidth});
+        ImGui::TextUnformatted("TOI ranges:");
+        ImGui::NextColumn();
+        stream = std::stringstream();
+        stream << "min-sep=" << static_cast<double>(Real{m_minToiSep / Meter});
+        stream << ", max-dist-iter=" << unsigned{m_maxDistIters} << "/" << unsigned{stepConf.maxDistanceIters};
+        stream << ", max-toi-iter=" << unsigned{m_maxToiIters} << "/" << unsigned{stepConf.maxToiIters};
+        stream << ", max-root-iter=" << unsigned{m_maxRootIters} << "/" << unsigned{stepConf.maxToiRootIters};
+        stream << ".";
+        ImGui::TextUnformatted(stream.str().c_str());
+        ImGui::NextColumn();
+    }
 
-    stream = std::stringstream();
-    stream << "  Reg ranges:";
-    stream << " min-sep=" << static_cast<double>(Real{m_minRegSep / Meter});
-    stream << " max-sep=" << static_cast<double>(Real{m_maxRegSep / Meter});
-    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
-    m_textLine += DRAW_STRING_NEW_LINE;
+    {
+        const auto leafCount = m_world.GetTree().GetLeafCount();
+        const auto nodeCount = m_world.GetTree().GetNodeCount();
+        const auto height = GetHeight(m_world.GetTree());
+        const auto balance = m_world.GetTree().GetMaxBalance();
+        const auto quality = ComputePerimeterRatio(m_world.GetTree());
+        const auto capacity = m_world.GetTree().GetNodeCapacity();
 
-    stream = std::stringstream();
-    stream << "  TOI ranges:";
-    stream << " min-sep=" << static_cast<double>(Real{m_minToiSep / Meter});
-    stream << " max-dist-iter=" << unsigned{m_maxDistIters} << "/" << unsigned{stepConf.maxDistanceIters};
-    stream << " max-toi-iter=" << unsigned{m_maxToiIters} << "/" << unsigned{stepConf.maxToiIters};
-    stream << " max-root-iter=" << unsigned{m_maxRootIters} << "/" << unsigned{stepConf.maxToiRootIters};
-    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
-    m_textLine += DRAW_STRING_NEW_LINE;
-
-    const auto proxyCount = m_world.GetTree().GetLeafCount();
-    const auto nodeCount = m_world.GetTree().GetNodeCount();
-    const auto height = GetHeight(m_world.GetTree());
-    const auto balance = m_world.GetTree().GetMaxBalance();
-    const auto quality = ComputePerimeterRatio(m_world.GetTree());
-    const auto capacity = m_world.GetTree().GetNodeCapacity();
-    stream = std::stringstream();
-    stream << "  Dynamic tree:";
-    stream << " proxies=" << unsigned{proxyCount};
-    stream << " nodes=" << unsigned{nodeCount};
-    stream << " capacity=" << unsigned{capacity};
-    stream << " height=" << unsigned{height};
-    stream << " balance=" << unsigned{balance};
-    stream << " perim-ratio=" << static_cast<double>(quality);
-    stream << " max-aabb=" << m_maxAABB;
-    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
-    m_textLine += DRAW_STRING_NEW_LINE;
+        ImGui::ColumnsContext cc(2, nullptr, false);
+        SetImGuiColumnWidths(totalWidth, {firstColumnWidth});
+        ImGui::TextUnformatted("Dyn. tree:");
+        ImGui::NextColumn();
+        ImGui::Text("nodes=%u/%u/%u, ", leafCount, nodeCount, capacity);
+        ImGui::SameLine(0, 0);
+        ImGui::Text("height=%u, ", height);
+        ImGui::SameLine(0, 0);
+        ImGui::Text("bal=%u, ", balance);
+        ImGui::SameLine(0, 0);
+        ImGui::Text("p-rat=%.2f, ", static_cast<double>(quality));
+        ImGui::SameLine(0, 0);
+        stream = std::stringstream();
+        stream << m_maxAABB;
+        ImGui::Text("max-aabb=%s.", stream.str().c_str());
+        ImGui::NextColumn();
+    }
 
     auto cts = std::map<Contact*,int>();
     const auto selectedFixtures = GetSelectedFixtures();
@@ -770,7 +1001,7 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
                 ++(iter->second);
             }
         }
-        DrawStats(drawer, *fixture);
+        DrawStats(*fixture);
     }
 
     for (const auto& contact: cts)
@@ -778,17 +1009,15 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
         const auto c = contact.first;
         if ((contact.second > 1) && (c->IsTouching()))
         {
-            DrawStats(drawer, c->GetManifold());
+            DrawStats(c->GetManifold());
         }
     }
 }
 
-void Test::DrawStats(Drawer &drawer, const Manifold &m)
+void Test::DrawStats(const Manifold &m)
 {
     std::stringstream stream;
-
-    stream = std::stringstream();
-    stream << "Selected manifold: lp=" << m.GetLocalPoint();
+    stream << "lp=" << m.GetLocalPoint();
     switch (m.GetType())
     {
         case Manifold::e_circles:
@@ -834,11 +1063,13 @@ void Test::DrawStats(Drawer &drawer, const Manifold &m)
         }
         default: break;
     }
-    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
-    m_textLine += DRAW_STRING_NEW_LINE;
+
+    ImGui::TextUnformatted("Selected manifold:");
+    ImGui::SameLine();
+    ImGui::TextWrapped("%s", stream.str().c_str());
 }
 
-void Test::DrawStats(Drawer& drawer, const Fixture& fixture)
+void Test::DrawStats(const Fixture& fixture)
 {
     const auto density = fixture.GetDensity();
     const auto friction = fixture.GetFriction();
@@ -868,8 +1099,7 @@ void Test::DrawStats(Drawer& drawer, const Fixture& fixture)
     }
 
     std::stringstream stream;
-    stream << "Selected fixture:";
-    stream << " pos={{";
+    stream << "pos={{";
     stream << static_cast<double>(Real{GetX(location) / Meter});
     stream << ",";
     stream << static_cast<double>(Real{GetY(location) / Meter});
@@ -891,8 +1121,10 @@ void Test::DrawStats(Drawer& drawer, const Fixture& fixture)
     stream << " b-cts=" << numTouching;
     stream << "/" << numContacts;
     stream << " b-impulses=" << numImpulses;
-    drawer.DrawString(5, m_textLine, Drawer::Left, stream.str().c_str());
-    m_textLine += DRAW_STRING_NEW_LINE;
+    
+    ImGui::TextUnformatted("Selected fixture:");
+    ImGui::SameLine();
+    ImGui::TextWrapped("%s", stream.str().c_str());
 }
 
 void Test::DrawContactInfo(const Settings& settings, Drawer& drawer)
@@ -958,7 +1190,19 @@ void Test::DrawContactInfo(const Settings& settings, Drawer& drawer)
     }
 }
 
-void Test::Step(const Settings& settings, Drawer& drawer)
+template <typename T>
+struct DequeValuesGetter
+{
+    static float Func(void* data, int idx)
+    {
+        const std::deque<T>& deque = *static_cast<std::deque<T>*>(data);
+        const auto size = deque.size();
+        return (idx >= 0 && static_cast<decltype(size)>(idx) < size)?
+            static_cast<float>(deque[static_cast<decltype(size)>(idx)]): 0.0f;
+    }
+};
+
+void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
 {
     m_textLine = 3 * DRAW_STRING_NEW_LINE;
 
@@ -1068,10 +1312,39 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 
     m_numContacts = GetContactCount(m_world);
     m_maxContacts = std::max(m_maxContacts, m_numContacts);
-
-    if (settings.drawStats)
+    
+    if (m_numContactsPerStep.size() >= m_maxHistory)
     {
-        DrawStats(drawer, stepConf);
+        m_numContactsPerStep.pop_front();
+    }
+    m_numContactsPerStep.push_back(m_numContacts);
+
+    if (ui.showStats)
+    {
+        ImGui::SetNextWindowPos(ImVec2(10, 200), ImGuiCond_Appearing);
+        ImGui::SetNextWindowSize(ImVec2(600, 300), ImGuiCond_Appearing);
+        ImGui::WindowContext wc("Statistics", &ui.showStats, ImGuiWindowFlags_NoCollapse);
+        DrawStats(stepConf, ui);
+    }
+    
+    if (ui.showContactsHistory)
+    {
+        ImGui::SetNextWindowPos(ImVec2(10, 200), ImGuiCond_Once);
+        ImGui::WindowContext wc("Contacts Histogram", &ui.showContactsHistory,
+                                ImGuiWindowFlags_NoCollapse);
+        char buffer[40];
+        
+        std::sprintf(buffer, "Max of %u", m_maxTouching);
+        ImGui::PlotHistogram("# Touching", DequeValuesGetter<std::size_t>::Func,
+                             &m_numTouchingPerStep, static_cast<int>(m_numTouchingPerStep.size()),
+                             0, buffer, 0.0f, static_cast<float>(m_maxContacts),
+                             ImVec2(600, 100));
+
+        std::sprintf(buffer, "Max of %u", m_maxContacts);
+        ImGui::PlotHistogram("# Contacts", DequeValuesGetter<std::size_t>::Func,
+                             &m_numContactsPerStep, static_cast<int>(m_numContactsPerStep.size()),
+                             0, buffer, 0.0f, static_cast<float>(m_maxContacts),
+                             ImVec2(600, 100));
     }
 
     if (m_mouseJoint)
