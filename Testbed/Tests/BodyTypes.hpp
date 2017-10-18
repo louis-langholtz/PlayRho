@@ -38,7 +38,7 @@ public:
         RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Static", [&](KeyActionMods) {
             m_platform->SetType(BodyType::Static);
         });
-        RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Kinematic", [&](KeyActionMods) {
+        RegisterForKey(GLFW_KEY_K, GLFW_PRESS, 0, "Kinematic", [&](KeyActionMods) {
             m_platform->SetType(BodyType::Kinematic);
             m_platform->SetVelocity(Velocity{Vec2(-m_speed, 0.0f) * MeterPerSecond, AngularVelocity{0}});
         });
