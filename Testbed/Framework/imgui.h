@@ -15,6 +15,7 @@
 #include <stdarg.h>         // va_list
 #include <stddef.h>         // ptrdiff_t, NULL
 #include <string.h>         // memset, memmove, memcpy, strlen, strchr, strcpy, strcmp
+#include <string>
 
 #define IMGUI_VERSION       "1.52 WIP"
 
@@ -228,6 +229,18 @@ namespace ImGui
     IMGUI_API void          PushButtonRepeat(bool repeat);                                      // in 'repeat' mode, Button*() functions return repeated true in a typematic manner (using io.KeyRepeatDelay/io.KeyRepeatRate setting). Note that you can call IsItemActive() after any Button() to tell if the button is held in the current frame.
     IMGUI_API void          PopButtonRepeat();
 
+    struct TextWrapPosContext
+    {
+        TextWrapPosContext(float wrap_pos_x = 0.0f)
+        {
+            PushTextWrapPos(wrap_pos_x);
+        }
+        ~TextWrapPosContext()
+        {
+            PopTextWrapPos();
+        }
+    };
+    
     // Cursor / Layout
     IMGUI_API void          Separator();                                                        // separator, generally horizontal. inside a menu bar or in horizontal layout mode, this becomes a vertical separator.
     IMGUI_API void          SameLine(float pos_x = 0.0f, float spacing_w = -1.0f);              // call between widgets or groups to layout them horizontally
@@ -325,6 +338,17 @@ namespace ImGui
     IMGUI_API void          PlotHistogram(const char* label, const float* values, int values_count, int values_offset = 0, const char* overlay_text = NULL, float scale_min = FLT_MAX, float scale_max = FLT_MAX, ImVec2 graph_size = ImVec2(0,0), int stride = sizeof(float));
     IMGUI_API void          PlotHistogram(const char* label, float (*values_getter)(void* data, int idx), void* data, int values_count, int values_offset = 0, const char* overlay_text = NULL, float scale_min = FLT_MAX, float scale_max = FLT_MAX, ImVec2 graph_size = ImVec2(0,0));
     IMGUI_API void          ProgressBar(float fraction, const ImVec2& size_arg = ImVec2(-1,0), const char* overlay = NULL);
+    
+    inline void TextUnformatted(const std::string& str)
+    {
+        ImGui::TextUnformatted(str.c_str(), str.c_str() + str.length());
+    }
+    
+    inline void TextWrappedUnformatted(const std::string& str)
+    {
+        ImGui::TextWrapPosContext ctxt;
+        ImGui::TextUnformatted(str.c_str(), str.c_str() + str.length());
+    }
 
     // Widgets: Drags (tip: ctrl+click on a drag box to input with keyboard. manually input values aren't clamped, can go off-bounds)
     // For all the Float2/Float3/Float4/Int2/Int3/Int4 versions of every functions, note that a 'float v[X]' function argument is the same as 'float* v', the array syntax is just a way to document the number of elements that are expected to be accessible. You can pass address of your first element out of a contiguous set, e.g. &myvector.x

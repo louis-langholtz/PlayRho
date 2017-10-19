@@ -648,8 +648,6 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
     m_numTouchingPerStep.push_back(touchingCount);
     m_maxTouching = std::max(m_maxTouching, touchingCount);
 
-    std::stringstream stream;
-
     ImGuiStyle& style = ImGui::GetStyle();
     const auto totalWidth = ImGui::GetWindowWidth() - style.FramePadding.x * 2;
     const auto firstColumnWidth = 65.0f;
@@ -708,13 +706,25 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         ImGui::NextColumn();
         ImGui::Value("cts-add", m_stepStats.pre.added);
         ImGui::NextColumn();
-        ImGui::Text("c-ign: %u/%llu", m_stepStats.pre.ignored, m_sumContactsIgnoredPre);
+        ImGui::TextUnformatted([=]() {
+            std::ostringstream os;
+            os << "c-ign: " << m_stepStats.pre.ignored << "/" << m_sumContactsIgnoredPre;
+            return os.str();
+        }());
         ImGui::NextColumn();
-        ImGui::Text("c-skip: %u/%llu", m_stepStats.pre.skipped, m_sumContactsSkippedPre);
+        ImGui::TextUnformatted([=]() {
+            std::ostringstream os;
+            os << "c-skip: " << m_stepStats.pre.skipped << "/" << m_sumContactsSkippedPre;
+            return os.str();
+        }());
         ImGui::NextColumn();
         ImGui::Value("c-del", m_stepStats.pre.destroyed);
         ImGui::NextColumn();
-        ImGui::Text("c-upd: %u/%llu", m_stepStats.pre.updated, m_sumContactsUpdatedPre);
+        ImGui::TextUnformatted([=]() {
+            std::ostringstream os;
+            os << "c-upd: " << m_stepStats.pre.updated << "/" << m_sumContactsUpdatedPre;
+            return os.str();
+        }());
         ImGui::NextColumn();
     }
 
@@ -877,15 +887,15 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         ImGui::NextColumn();
         // Skip c-add column
         ImGui::NextColumn();
-        ImGui::Text("%llu", m_sumRegIslandsFound);
+        ImGui::TextUnformatted(std::to_string(m_sumRegIslandsFound));
         ImGui::NextColumn();
-        ImGui::Text("%llu", m_sumRegIslandsSolved);
+        ImGui::TextUnformatted(std::to_string(m_sumRegIslandsSolved));
         ImGui::NextColumn();
-        ImGui::Text("%llu", m_sumRegPosIters);
+        ImGui::TextUnformatted(std::to_string(m_sumRegPosIters));
         ImGui::NextColumn();
-        ImGui::Text("%llu", m_sumRegVelIters);
+        ImGui::TextUnformatted(std::to_string(m_sumRegVelIters));
         ImGui::NextColumn();
-        ImGui::Text("%llu", m_sumRegProxiesMoved);
+        ImGui::TextUnformatted(std::to_string(m_sumRegProxiesMoved));
         ImGui::NextColumn();
     }
 
@@ -896,15 +906,15 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         ImGui::NextColumn();
         // Skip c-add column
         ImGui::NextColumn();
-        ImGui::Text("%llu", m_sumToiIslandsFound);
+        ImGui::TextUnformatted(std::to_string(m_sumToiIslandsFound));
         ImGui::NextColumn();
-        ImGui::Text("%llu", m_sumToiIslandsSolved);
+        ImGui::TextUnformatted(std::to_string(m_sumToiIslandsSolved));
         ImGui::NextColumn();
-        ImGui::Text("%llu", m_sumToiPosIters);
+        ImGui::TextUnformatted(std::to_string(m_sumToiPosIters));
         ImGui::NextColumn();
-        ImGui::Text("%llu", m_sumToiVelIters);
+        ImGui::TextUnformatted(std::to_string(m_sumToiVelIters));
         ImGui::NextColumn();
-        ImGui::Text("%llu", m_sumToiProxiesMoved);
+        ImGui::TextUnformatted(std::to_string(m_sumToiProxiesMoved));
         ImGui::NextColumn();
         // Skip minSeparation column
         ImGui::NextColumn();
@@ -914,13 +924,13 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         ImGui::NextColumn();
         // Skip contacts found column
         ImGui::NextColumn();
-        ImGui::Text("%llu", m_sumContactsAtMaxSubSteps);
+        ImGui::TextUnformatted(std::to_string(m_sumContactsAtMaxSubSteps));
         ImGui::NextColumn();
-        ImGui::Text("%llu", m_sumContactsUpdatedToi);
+        ImGui::TextUnformatted(std::to_string(m_sumContactsUpdatedToi));
         ImGui::NextColumn();
         
 #if 0
-        stream = std::stringstream();
+        stream = std::ostringstream();
         stream << "  TOI sums:";
         stream << " cts-touch-upd=" << m_sumToiContactsUpdatedTouching;
         stream << " cts-touch-skipped=" << m_sumToiContactsSkippedTouching;
@@ -934,11 +944,11 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         SetImGuiColumnWidths(totalWidth, {firstColumnWidth});
         ImGui::TextUnformatted("Reg ranges:");
         ImGui::NextColumn();
-        stream = std::stringstream();
+        std::ostringstream stream;
         stream << "min-sep=" << static_cast<double>(Real{m_minRegSep / Meter});
         stream << ", max-sep=" << static_cast<double>(Real{m_maxRegSep / Meter});
         stream << ".";
-        ImGui::TextUnformatted(stream.str().c_str());
+        ImGui::TextUnformatted(stream.str());
         ImGui::NextColumn();
     }
 
@@ -947,13 +957,13 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         SetImGuiColumnWidths(totalWidth, {firstColumnWidth});
         ImGui::TextUnformatted("TOI ranges:");
         ImGui::NextColumn();
-        stream = std::stringstream();
+        std::ostringstream stream;
         stream << "min-sep=" << static_cast<double>(Real{m_minToiSep / Meter});
         stream << ", max-dist-iter=" << unsigned{m_maxDistIters} << "/" << unsigned{stepConf.maxDistanceIters};
         stream << ", max-toi-iter=" << unsigned{m_maxToiIters} << "/" << unsigned{stepConf.maxToiIters};
         stream << ", max-root-iter=" << unsigned{m_maxRootIters} << "/" << unsigned{stepConf.maxToiRootIters};
         stream << ".";
-        ImGui::TextUnformatted(stream.str().c_str());
+        ImGui::TextUnformatted(stream.str());
         ImGui::NextColumn();
     }
 
@@ -977,7 +987,7 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         ImGui::SameLine(0, 0);
         ImGui::Text("p-rat=%.2f, ", static_cast<double>(quality));
         ImGui::SameLine(0, 0);
-        stream = std::stringstream();
+        std::ostringstream stream;
         stream << m_maxAABB;
         ImGui::Text("max-aabb=%s.", stream.str().c_str());
         ImGui::NextColumn();
@@ -1016,7 +1026,7 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
 
 void Test::DrawStats(const Manifold &m)
 {
-    std::stringstream stream;
+    std::ostringstream stream;
     stream << "lp=" << m.GetLocalPoint();
     switch (m.GetType())
     {
@@ -1066,7 +1076,7 @@ void Test::DrawStats(const Manifold &m)
 
     ImGui::TextUnformatted("Selected manifold:");
     ImGui::SameLine();
-    ImGui::TextWrapped("%s", stream.str().c_str());
+    ImGui::TextWrappedUnformatted(stream.str());
 }
 
 void Test::DrawStats(const Fixture& fixture)
@@ -1098,7 +1108,7 @@ void Test::DrawStats(const Fixture& fixture)
         }
     }
 
-    std::stringstream stream;
+    std::ostringstream stream;
     stream << "pos={{";
     stream << static_cast<double>(Real{GetX(location) / Meter});
     stream << ",";
@@ -1124,7 +1134,7 @@ void Test::DrawStats(const Fixture& fixture)
     
     ImGui::TextUnformatted("Selected fixture:");
     ImGui::SameLine();
-    ImGui::TextWrapped("%s", stream.str().c_str());
+    ImGui::TextWrappedUnformatted(stream.str());
 }
 
 void Test::DrawContactInfo(const Settings& settings, Drawer& drawer)
