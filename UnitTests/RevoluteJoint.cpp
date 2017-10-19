@@ -71,7 +71,9 @@ TEST(RevoluteJoint, Construction)
     EXPECT_EQ(joint.GetBodyB(), jd.bodyB);
     EXPECT_EQ(joint.GetCollideConnected(), jd.collideConnected);
     EXPECT_EQ(joint.GetUserData(), jd.userData);
-    
+    EXPECT_EQ(joint.GetLinearReaction(), Momentum2D{});
+    EXPECT_EQ(joint.GetAngularReaction(), AngularMomentum{0});
+
     EXPECT_EQ(joint.GetLocalAnchorA(), jd.localAnchorA);
     EXPECT_EQ(joint.GetLocalAnchorB(), jd.localAnchorB);
     EXPECT_EQ(joint.GetLowerLimit(), jd.lowerAngle);

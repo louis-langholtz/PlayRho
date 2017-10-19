@@ -112,9 +112,9 @@ private:
     Momentum m_impulse = Momentum{0};
 
     // Solver temp
-    Vec2 m_JvAC;
+    Vec2 m_JvAC = Vec2_zero;
     Vec2 m_JvBD;
-    Length m_JwA;
+    Length m_JwA = Length{0};
     Length m_JwB;
     Length m_JwC;
     Length m_JwD;

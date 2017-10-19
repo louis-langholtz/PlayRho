@@ -48,7 +48,7 @@ class Shape;
 /// such as collision filters, etc.
 ///
 /// @warning you cannot reuse fixtures.
-/// @note Fixtures are created via Body::CreateFixture.
+/// @note Fixtures should be created using the Body::CreateFixture method.
 /// @note This structure is 56-bytes large (using a 4-byte Real on at least one 64-bit
 ///   architecture/build).
 ///

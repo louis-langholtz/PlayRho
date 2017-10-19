@@ -452,3 +452,113 @@ TEST(AABB, StreamOutputOperator)
     comp += '}';
     EXPECT_STREQ(aabbStream.str().c_str(), comp.c_str());
 }
+
+TEST(AABB, ComputeAabbForFixtureAtBodyOrigin)
+{
+    const auto shape = std::make_shared<DiskShape>();
+    const auto shapeAabb = ComputeAABB(*shape, Transformation{});
+
+    World world;
+    const auto body = world.CreateBody();
+    const auto fixture = body->CreateFixture(shape);
+    const auto fixtureAabb = ComputeAABB(*fixture);
+    
+    ASSERT_NE(shapeAabb, AABB{});
+    EXPECT_EQ(shapeAabb, fixtureAabb);
+}
+
+TEST(AABB, ComputeAabbForFixtureOffFromBodyOrigin)
+{
+    const auto shape = std::make_shared<DiskShape>();
+    const auto shapeAabb = ComputeAABB(*shape, Transformation{});
+    
+    const auto bodyLocation = Length2D{2 * Meter, 3 * Meter};
+    World world;
+    const auto body = world.CreateBody(BodyDef{}.UseLocation(bodyLocation));
+    const auto fixture = body->CreateFixture(shape);
+    const auto fixtureAabb = ComputeAABB(*fixture);
+    
+    ASSERT_NE(shapeAabb, AABB{});
+    ASSERT_NE(shapeAabb, fixtureAabb);
+    EXPECT_EQ(GetMovedAABB(shapeAabb, bodyLocation), fixtureAabb);
+}
+
+TEST(AABB, ComputeIntersectingAABBForSameFixture)
+{
+    const auto shape = std::make_shared<DiskShape>();
+    const auto shapeAabb = ComputeAABB(*shape, Transformation{});
+    
+    World world;
+    const auto body = world.CreateBody();
+    const auto fixture = body->CreateFixture(shape);
+    const auto fixtureAabb = ComputeAABB(*fixture);
+    
+    const auto intersectingAabb = ComputeIntersectingAABB(*fixture, 0, *fixture, 0);
+    
+    ASSERT_NE(shapeAabb, AABB{});
+    ASSERT_EQ(shapeAabb, fixtureAabb);
+    EXPECT_EQ(fixtureAabb, intersectingAabb);
+}
+
+TEST(AABB, ComputeIntersectingAABBForTwoFixtures)
+{
+    const auto shapeInterval = LengthInterval{-2 * Meter, +2 * Meter};
+
+    const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}.UseVertexRadius(2 * Meter));
+    const auto shapeAabb = ComputeAABB(*shape, Transformation{});
+    ASSERT_EQ(shapeAabb, (AABB{shapeInterval, shapeInterval}));
+
+    const auto bodyLocation0 = Length2D{+1 * Meter, 0 * Meter};
+    const auto bodyLocation1 = Length2D{-1 * Meter, 0 * Meter};
+
+    World world;
+    const auto body0 = world.CreateBody(BodyDef{}.UseLocation(bodyLocation0));
+    const auto body1 = world.CreateBody(BodyDef{}.UseLocation(bodyLocation1));
+
+    const auto fixture0 = body0->CreateFixture(shape);
+    const auto fixture1 = body1->CreateFixture(shape);
+
+    const auto fixtureAabb0 = ComputeAABB(*fixture0);
+    const auto fixtureAabb1 = ComputeAABB(*fixture1);
+
+    const auto intersectingAabb = ComputeIntersectingAABB(*fixture0, 0, *fixture1, 0);
+    const auto intersectInterval = LengthInterval{-1 * Meter, +1 * Meter};
+
+    ASSERT_NE(shapeAabb, fixtureAabb0);
+    ASSERT_NE(shapeAabb, fixtureAabb1);
+    EXPECT_EQ(intersectingAabb, (AABB{intersectInterval, shapeInterval}));
+}
+
+TEST(AABB, ComputeIntersectingAABBForContact)
+{
+    const auto shapeInterval = LengthInterval{-2 * Meter, +2 * Meter};
+    
+    const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}.UseVertexRadius(2 * Meter));
+    const auto shapeAabb = ComputeAABB(*shape, Transformation{});
+    ASSERT_EQ(shapeAabb, (AABB{shapeInterval, shapeInterval}));
+    
+    const auto bodyLocation0 = Length2D{+1 * Meter, 0 * Meter};
+    const auto bodyLocation1 = Length2D{-1 * Meter, 0 * Meter};
+    
+    World world;
+    const auto body0 = world.CreateBody(BodyDef{}.UseLocation(bodyLocation0));
+    const auto body1 = world.CreateBody(BodyDef{}.UseLocation(bodyLocation1));
+    
+    const auto fixture0 = body0->CreateFixture(shape);
+    const auto fixture1 = body1->CreateFixture(shape);
+    
+    const auto fixtureAabb0 = ComputeAABB(*fixture0);
+    const auto fixtureAabb1 = ComputeAABB(*fixture1);
+    
+    const auto intersectingAabb = ComputeIntersectingAABB(*fixture0, 0, *fixture1, 0);
+    const auto intersectInterval = LengthInterval{-1 * Meter, +1 * Meter};
+    
+    ASSERT_NE(shapeAabb, fixtureAabb0);
+    ASSERT_NE(shapeAabb, fixtureAabb1);
+    ASSERT_EQ(intersectingAabb, (AABB{intersectInterval, shapeInterval}));
+    
+    const auto contact = Contact{fixture0, 0, fixture1, 0};
+    const auto contactAabb = ComputeIntersectingAABB(contact);
+    
+    EXPECT_EQ(contactAabb, intersectingAabb);
+}

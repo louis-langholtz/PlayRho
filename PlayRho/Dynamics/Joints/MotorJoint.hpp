@@ -49,35 +49,35 @@ public:
     Momentum2D GetLinearReaction() const override;
     AngularMomentum GetAngularReaction() const override;
 
+    /// @brief Gets the target linear offset, in frame A.
+    Length2D GetLinearOffset() const noexcept;
+
     /// @brief Sets the target linear offset, in frame A.
     void SetLinearOffset(const Length2D linearOffset);
 
-    /// @brief Gets the target linear offset, in frame A.
-    const Length2D GetLinearOffset() const;
+    /// @brief Gets the target angular offset.
+    Angle GetAngularOffset() const noexcept;
 
     /// @brief Sets the target angular offset.
     void SetAngularOffset(Angle angularOffset);
 
-    /// @brief Gets the target angular offset.
-    Angle GetAngularOffset() const;
+    /// @brief Gets the maximum friction force.
+    NonNegative<Force> GetMaxForce() const noexcept;
 
     /// @brief Sets the maximum friction force.
     void SetMaxForce(NonNegative<Force> force);
 
-    /// @brief Gets the maximum friction force.
-    NonNegative<Force> GetMaxForce() const;
+    /// @brief Gets the maximum friction torque.
+    NonNegative<Torque> GetMaxTorque() const noexcept;
 
-    /// Set the maximum friction torque.
+    /// @brief Sets the maximum friction torque.
     void SetMaxTorque(NonNegative<Torque> torque);
 
-    /// Get the maximum friction torque.
-    NonNegative<Torque> GetMaxTorque() const;
+    /// @brief Gets the position correction factor in the range [0,1].
+    Real GetCorrectionFactor() const noexcept;
 
-    /// Set the position correction factor in the range [0,1].
+    /// @brief Sets the position correction factor in the range [0,1].
     void SetCorrectionFactor(Real factor);
-
-    /// Get the position correction factor in the range [0,1].
-    Real GetCorrectionFactor() const;
 
 private:
 
@@ -105,14 +105,19 @@ private:
     RotInertia m_angularMass;
 };
 
+inline NonNegative<Force> MotorJoint::GetMaxForce() const noexcept
+{
+    return m_maxForce;
+}
+
 inline void MotorJoint::SetMaxForce(NonNegative<Force> force)
 {
     m_maxForce = force;
 }
 
-inline NonNegative<Force> MotorJoint::GetMaxForce() const
+inline NonNegative<Torque> MotorJoint::GetMaxTorque() const noexcept
 {
-    return m_maxForce;
+    return m_maxTorque;
 }
 
 inline void MotorJoint::SetMaxTorque(NonNegative<Torque> torque)
@@ -120,9 +125,29 @@ inline void MotorJoint::SetMaxTorque(NonNegative<Torque> torque)
     m_maxTorque = torque;
 }
 
-inline NonNegative<Torque> MotorJoint::GetMaxTorque() const
+inline Length2D MotorJoint::GetLinearOffset() const noexcept
 {
-    return m_maxTorque;
+    return m_linearOffset;
+}
+
+inline Angle MotorJoint::GetAngularOffset() const noexcept
+{
+    return m_angularOffset;
+}
+
+inline Momentum2D MotorJoint::GetLinearReaction() const
+{
+    return m_linearImpulse;
+}
+
+inline AngularMomentum MotorJoint::GetAngularReaction() const
+{
+    return m_angularImpulse;
+}
+
+inline Real MotorJoint::GetCorrectionFactor() const noexcept
+{
+    return m_correctionFactor;
 }
 
 } // namespace playrho

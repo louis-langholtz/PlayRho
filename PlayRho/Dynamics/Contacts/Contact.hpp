@@ -68,6 +68,8 @@ inline Real MixRestitution(Real restitution1, Real restitution2) noexcept
 ///   AABB in the broad-phase (except if filtered). Therefore a contact object may exist
 ///   that has no actual contact points.
 ///
+/// @note These are created by World instances. Users have no need to instantiate these
+///   themselves.
 /// @note This data structure is 104-bytes large (on at least one 64-bit platform).
 ///
 class Contact
@@ -96,6 +98,7 @@ public:
     ///   and may not be the same or have the same body as the other fixture.
     /// @param iB Child index B.
     ///
+    /// @note This need never be called directly by a user.
     /// @warning Behavior is undefined if <code>fA</code> is null.
     /// @warning Behavior is undefined if <code>fB</code> is null.
     /// @warning Behavior is undefined if <code>fA == fB</code>.

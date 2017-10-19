@@ -25,8 +25,9 @@
 /// @file
 /// Declaration of the AABB class and free functions that return instances of it.
 
-#include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/Interval.hpp>
+#include <PlayRho/Common/Intervals.hpp>
+#include <PlayRho/Common/Vector2D.hpp>
+#include <PlayRho/Common/Templates.hpp>
 
 namespace playrho {
 
@@ -35,6 +36,7 @@ namespace playrho {
     class Body;
     class Contact;
     class DistanceProxy;
+    struct Transformation;
     
     /// @brief Axis Aligned Bounding Box.
     ///
@@ -44,7 +46,7 @@ namespace playrho {
     /// @note This class satisfies at least the following concepts: all the basic concepts,
     ///   EqualityComparable, and Swappable.
     /// @note This class is composed of &mdash; as in contains and owns &mdash two
-    ///   <code>Interval<Length></code> variables.
+    ///   <code>LengthInterval</code> variables.
     /// @note Non-defaulted methods of this class are marked noexcept and expect that
     ///   the Length type doesn't throw.
     /// @note This data structure is 16-bytes large (on at least one 64-bit platform).
@@ -60,14 +62,14 @@ namespace playrho {
         constexpr AABB() = default;
         
         /// @brief Initializing copy constructor.
-        constexpr AABB(const Interval<Length>& x, const Interval<Length>& y) noexcept:
+        constexpr AABB(const LengthInterval& x, const LengthInterval& y) noexcept:
             rangeX{x}, rangeY{y}
         {
             // Intentionally empty.
         }
 
         /// @brief Initializing move constructor.
-        constexpr AABB(Interval<Length>&& x, Interval<Length>&& y) noexcept:
+        constexpr AABB(LengthInterval&& x, LengthInterval&& y) noexcept:
             rangeX{x}, rangeY{y}
         {
             // Intentionally empty.
@@ -80,7 +82,7 @@ namespace playrho {
         /// @post <code>rangeY</code> will have its min and max values both set to the
         ///   given point's Y value.
         constexpr explicit AABB(const Length2D p) noexcept:
-            rangeX{GetX(p)}, rangeY{GetY(p)}
+            rangeX{Get<0>(p)}, rangeY{Get<1>(p)}
         {
             // Intentionally empty.
         }
@@ -89,16 +91,16 @@ namespace playrho {
         /// @param a Point location "A" to initialize this AABB with.
         /// @param b Point location "B" to initialize this AABB with.
         constexpr AABB(const Length2D a, const Length2D b) noexcept:
-            rangeX{GetX(a), GetX(b)}, rangeY{GetY(a), GetY(b)}
+            rangeX{Get<0>(a), Get<0>(b)}, rangeY{Get<1>(a), Get<1>(b)}
         {
             // Intentionally empty.
         }
         
         /// @brief Holds the value range of "X".
-        Interval<Length> rangeX;
+        LengthInterval rangeX;
         
         /// @brief Holds the value range of "Y".
-        Interval<Length> rangeY;
+        LengthInterval rangeY;
     };
     
     /// @brief Gets whether the two AABB objects are equal.
@@ -200,7 +202,7 @@ namespace playrho {
     template <>
     constexpr AABB GetInvalid() noexcept
     {
-        return {Interval<Length>{GetInvalid<Length>()}, Interval<Length>{GetInvalid<Length>()}};
+        return {LengthInterval{GetInvalid<Length>()}, LengthInterval{GetInvalid<Length>()}};
     }
 
     /// @brief Checks whether the first AABB fully contains the second AABB.
@@ -220,8 +222,8 @@ namespace playrho {
     /// @relatedalso AABB
     constexpr AABB& Include(AABB& var, const Length2D& value) noexcept
     {
-        var.rangeX.Include(GetX(value));
-        var.rangeY.Include(GetY(value));
+        var.rangeX.Include(Get<0>(value));
+        var.rangeY.Include(Get<1>(value));
         return var;
     }
 
@@ -240,8 +242,8 @@ namespace playrho {
     /// @brief Moves the given AABB by the given value.
     constexpr AABB& Move(AABB& var, const Length2D value) noexcept
     {
-        var.rangeX.Move(GetX(value));
-        var.rangeY.Move(GetY(value));
+        var.rangeX.Move(Get<0>(value));
+        var.rangeY.Move(Get<1>(value));
         return var;
     }
     
@@ -259,8 +261,8 @@ namespace playrho {
     /// @relatedalso AABB
     constexpr AABB GetDisplacedAABB(AABB aabb, const Length2D displacement)
     {
-        aabb.rangeX.Expand(GetX(displacement));
-        aabb.rangeY.Expand(GetY(displacement));
+        aabb.rangeX.Expand(Get<0>(displacement));
+        aabb.rangeY.Expand(Get<1>(displacement));
         return aabb;
     }
 
@@ -326,6 +328,8 @@ namespace playrho {
     AABB ComputeAABB(const Shape& shape, const Transformation& xf) noexcept;
 
     /// @brief Computes the AABB for the given fixture.
+    /// @details This is the AABB of the entire shape of the given fixture at the body's
+    ///   location for the given fixture.
     /// @relatedalso Fixture
     AABB ComputeAABB(const Fixture& fixture) noexcept;
 
@@ -334,6 +338,9 @@ namespace playrho {
     AABB ComputeAABB(const Body& body);
 
     /// @brief Computes the intersecting AABB for the given pair of fixtures and indexes.
+    /// @details The intersecting AABB for the given pair of fixtures is the intersection
+    ///   of the AABB for child A of the shape of fixture A with the AABB for child B of
+    ///   the shape of fixture B.
     AABB ComputeIntersectingAABB(const Fixture& fA, ChildCounter iA,
                                  const Fixture& fB, ChildCounter iB) noexcept;
 

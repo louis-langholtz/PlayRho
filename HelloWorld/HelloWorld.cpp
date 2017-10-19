@@ -34,7 +34,7 @@ int main()
     // Construct a world object, which will hold and simulate bodies.
     auto world = World{};
 
-    // Call the body factory which allocates memory for the ground body.
+    // Call world's body creation method which allocates memory for ground body.
     // The body is also added to the world.
     const auto ground = world.CreateBody(BodyDef{}
                                          .UseLocation(Length2D{0 * Meter, -10 * Meter}));
@@ -46,7 +46,7 @@ int main()
     // Add the box shape to the ground body.
     ground->CreateFixture(box);
 
-    // Define a location above the ground for a "dynamic" body and call the body factory.
+    // Define location above ground for a "dynamic" body & call world's body creation method.
     const auto ball = world.CreateBody(BodyDef{}
                                        .UseLocation(Length2D{0 * Meter, 4 * Meter})
                                        .UseType(BodyType::Dynamic));

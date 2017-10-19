@@ -155,8 +155,14 @@ public:
     /// @note This function should not be called if the world is locked.
     /// @warning This function is locked during callbacks.
     ///
-    /// @return <code>nullptr</code> if the world is locked or a parameter is dissallowed.
-    ///   A pointer to the created fixture otherwise.
+    /// @return Pointer to the created fixture.
+    ///
+    /// @throws WrongState if called while the world is "locked".
+    /// @throws InvalidArgument if called without a shape.
+    /// @throws InvalidArgument if called for a shape with a vertex radius less than the
+    ///    minimum vertex radius.
+    /// @throws InvalidArgument if called for a shape with a vertex radius greater than the
+    ///    maximum vertex radius.
     ///
     Fixture* CreateFixture(const std::shared_ptr<const Shape>& shape,
                            const FixtureDef& def = GetDefaultFixtureDef(),
