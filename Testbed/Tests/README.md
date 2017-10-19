@@ -19,7 +19,7 @@ Here's some images of what these look like when run.
 
 ### [`AddPair.hpp`](AddPair.hpp)
 
-![Image of AddPair.hpp running](../../Documentation/images/Testbed/AddPair.png)
+![Image of AddPair.hpp running](../../Documentation/images/Testbed/AddPairStressTest.png)
 
 ### [`ApplyForce.hpp`](ApplyForce.hpp)
 
@@ -109,10 +109,6 @@ Here's some images of what these look like when run.
 
 ![Image of DumpShell.hpp running](../../Documentation/images/Testbed/DumpShell.png)
 
-### [`DynamicTreeTest.hpp`](DynamicTreeTest.hpp)
-
-![Image of DynamicTreeTest.hpp running](../../Documentation/images/Testbed/DynamicTreeTest.png)
-
 ### [`EdgeShapes.hpp`](EdgeShapes.hpp)
 
 ![Image of EdgeShapes.hpp running](../../Documentation/images/Testbed/EdgeShapes.png)
@@ -188,10 +184,6 @@ Here's some images of what these look like when run.
 ### [`Pyramid.hpp`](Pyramid.hpp)
 
 ![Image of Pyramid.hpp running](../../Documentation/images/Testbed/Pyramid.png)
-
-### [`README.md`](README.md)
-
-![Image of README.md running](../../Documentation/images/Testbed/README.md)
 
 ### [`RayCast.hpp`](RayCast.hpp)
 
