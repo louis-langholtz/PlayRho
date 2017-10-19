@@ -42,6 +42,7 @@
 		472724231E310BB400C64921 /* Real.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 472724221E310BB400C64921 /* Real.cpp */; };
 		472724251E310C7600C64921 /* float.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 472724241E310C7600C64921 /* float.cpp */; };
 		472724301E315E1A00C64921 /* Fixed.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4727242D1E315E1A00C64921 /* Fixed.hpp */; };
+		472D35381F98C56200574B73 /* Intervals.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 472D35361F98C56200574B73 /* Intervals.hpp */; };
 		472E24661F82C4EA0051E192 /* Interval.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 472E24651F82C4EA0051E192 /* Interval.cpp */; };
 		472E301B1DBA925500DA821D /* VertexSet.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 472E30181DBA925500DA821D /* VertexSet.hpp */; };
 		472E301E1DBA98BC00DA821D /* VertexSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 472E301D1DBA98BC00DA821D /* VertexSet.cpp */; };
@@ -404,6 +405,7 @@
 		472724241E310C7600C64921 /* float.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = float.cpp; sourceTree = "<group>"; };
 		4727242D1E315E1A00C64921 /* Fixed.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Fixed.hpp; sourceTree = "<group>"; };
 		472D35331F968FB100574B73 /* UiState.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = UiState.hpp; sourceTree = "<group>"; };
+		472D35361F98C56200574B73 /* Intervals.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Intervals.hpp; sourceTree = "<group>"; };
 		472E24651F82C4EA0051E192 /* Interval.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Interval.cpp; sourceTree = "<group>"; };
 		472E24681F83301D0051E192 /* BreakableTwo.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BreakableTwo.hpp; sourceTree = "<group>"; };
 		472E30181DBA925500DA821D /* VertexSet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VertexSet.hpp; sourceTree = "<group>"; };
@@ -951,6 +953,7 @@
 				47B58F5C1F5B314400354C34 /* FlagGuard.hpp */,
 				80BB8943141C3E5900F1753A /* GrowableStack.hpp */,
 				47D28D9F1F72B9340094C032 /* Interval.hpp */,
+				472D35361F98C56200574B73 /* Intervals.hpp */,
 				470F9B3A1EE63515007EF7B6 /* InvalidArgument.hpp */,
 				4787D6E91F2FA0CA008C115E /* LengthError.hpp */,
 				471E7EA81F32668E00DFF626 /* Matrix.hpp */,
@@ -1271,6 +1274,7 @@
 				4787D6BF1F2E968E008C115E /* JointDef.hpp in Headers */,
 				80BB8996141C3E5900F1753A /* ChainShape.hpp in Headers */,
 				470F94BA1EC4D4F800AA3C82 /* FixtureAtty.hpp in Headers */,
+				472D35381F98C56200574B73 /* Intervals.hpp in Headers */,
 				470F94AE1EC4CAE600AA3C82 /* FixtureDef.hpp in Headers */,
 				4734B2211DC1340500F15E29 /* Span.hpp in Headers */,
 				80BB8998141C3E5900F1753A /* DiskShape.hpp in Headers */,

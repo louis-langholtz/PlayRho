@@ -232,25 +232,10 @@ Length2D MotorJoint::GetAnchorB() const
     return GetBodyB()->GetLocation();
 }
 
-Momentum2D MotorJoint::GetLinearReaction() const
-{
-    return m_linearImpulse;
-}
-
-AngularMomentum MotorJoint::GetAngularReaction() const
-{
-    return m_angularImpulse;
-}
-
 void MotorJoint::SetCorrectionFactor(Real factor)
 {
     assert(IsValid(factor) && (0 <= factor) && (factor <= Real{1}));
     m_correctionFactor = factor;
-}
-
-Real MotorJoint::GetCorrectionFactor() const
-{
-    return m_correctionFactor;
 }
 
 void MotorJoint::SetLinearOffset(const Length2D linearOffset)
@@ -264,11 +249,6 @@ void MotorJoint::SetLinearOffset(const Length2D linearOffset)
     }
 }
 
-const Length2D MotorJoint::GetLinearOffset() const
-{
-    return m_linearOffset;
-}
-
 void MotorJoint::SetAngularOffset(Angle angularOffset)
 {
     if (angularOffset != m_angularOffset)
@@ -278,11 +258,6 @@ void MotorJoint::SetAngularOffset(Angle angularOffset)
         GetBodyA()->SetAwake();
         GetBodyB()->SetAwake();
     }
-}
-
-Angle MotorJoint::GetAngularOffset() const
-{
-    return m_angularOffset;
 }
 
 } // namespace playrho

@@ -42,6 +42,20 @@ struct FixtureProxy
     size_type treeId;
 };
 
+/// @brief Equality operator
+/// @relatedalso FixtureProxy
+constexpr bool operator== (const FixtureProxy& lhs, const FixtureProxy& rhs) noexcept
+{
+    return lhs.treeId == rhs.treeId;
+}
+
+/// @brief Inequality operator
+/// @relatedalso FixtureProxy
+constexpr bool operator!= (const FixtureProxy& lhs, const FixtureProxy& rhs) noexcept
+{
+    return !(lhs.treeId == rhs.treeId);
+}
+
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_FIXTUREPROXY_HPP

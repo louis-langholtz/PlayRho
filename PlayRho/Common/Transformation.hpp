@@ -33,14 +33,15 @@ namespace playrho
 {
     
     /// @brief Describes a geometric transformation.
-    /// @details
-    /// A transform contains translation and rotation. It is used to represent
-    /// the position and orientation of rigid frames.
+    /// @details A transform contains translation and rotation. It is used to represent
+    ///   the position and orientation of rigid frames.
+    /// @note The default transformation is the identity transformation - the transformation
+    ///   which neither translates nor rotates a location.
     /// @note This data structure is 16-bytes large (on at least one 64-bit platform).
     struct Transformation
     {
-        Length2D p; ///< Translational portion of the transformation. 8-bytes.
-        UnitVec2 q; ///< Rotational portion of the transformation. 8-bytes.
+        Length2D p = Length2D{}; ///< Translational portion of the transformation. 8-bytes.
+        UnitVec2 q = UnitVec2::GetRight(); ///< Rotational portion of the transformation. 8-bytes.
     };
     
     /// @brief Identity transformation value.

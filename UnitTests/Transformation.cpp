@@ -32,6 +32,13 @@ TEST(Transformation, ByteSizeIs_16_32_or_64)
     }
 }
 
+TEST(Transformation, DefaultConstruct)
+{
+    const Transformation xfm;
+    EXPECT_EQ(xfm.p, Length2D{});
+    EXPECT_EQ(xfm.q, UnitVec2::GetRight());
+}
+
 TEST(Transformation, Initialize)
 {
     const auto translation = Length2D{Real(2) * Meter, Real(4) * Meter};

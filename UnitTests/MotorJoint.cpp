@@ -77,7 +77,9 @@ TEST(MotorJoint, Construction)
     EXPECT_EQ(joint.GetBodyB(), def.bodyB);
     EXPECT_EQ(joint.GetCollideConnected(), def.collideConnected);
     EXPECT_EQ(joint.GetUserData(), def.userData);
-    
+    EXPECT_EQ(joint.GetLinearReaction(), Momentum2D{});
+    EXPECT_EQ(joint.GetAngularReaction(), AngularMomentum{0});
+
     EXPECT_EQ(joint.GetLinearOffset(), def.linearOffset);
     EXPECT_EQ(joint.GetAngularOffset(), def.angularOffset);
     EXPECT_EQ(joint.GetMaxForce(), def.maxForce);
@@ -152,4 +154,28 @@ TEST(MotorJoint, WithDynamicCircles)
     EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / Meter}), 0.0, 0.01);
     EXPECT_EQ(b1->GetAngle(), Angle{0});
     EXPECT_EQ(b2->GetAngle(), Angle{0});
+}
+
+TEST(MotorJoint, SetLinearOffset)
+{
+    const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
+    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2D{})};
+    const auto p1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
+    const auto p2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
+    const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    b1->CreateFixture(circle);
+    b2->CreateFixture(circle);
+    //const auto anchor = Length2D(Real(2) * Meter, Real(1) * Meter);
+    const auto jd = MotorJointDef{b1, b2};
+    const auto joint = static_cast<MotorJoint*>(world.CreateJoint(jd));
+    ASSERT_NE(joint, nullptr);
+    EXPECT_EQ(joint->GetAnchorA(), p1);
+    EXPECT_EQ(joint->GetAnchorB(), p2);
+    
+    const auto linearOffset = Length2D{2 * Meter, 1 * Meter};
+    ASSERT_EQ(joint->GetLinearOffset(), jd.linearOffset);
+    ASSERT_NE(jd.linearOffset, linearOffset);
+    joint->SetLinearOffset(linearOffset);
+    EXPECT_EQ(joint->GetLinearOffset(), linearOffset);
 }
