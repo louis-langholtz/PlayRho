@@ -71,7 +71,7 @@ void MouseJoint::Accept(JointVisitor& visitor) const
 void MouseJoint::SetTarget(const Length2D target) noexcept
 {
     assert(IsValid(target));
-    if (target != m_targetA)
+    if (m_targetA != target)
     {
 	    m_targetA = target;
 

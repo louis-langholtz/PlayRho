@@ -31,7 +31,7 @@ namespace playrho {
 class Body;
 class MotorJoint;
     
-/// Motor joint definition.
+/// @brief Motor joint definition.
 struct MotorJointDef : public JointBuilder<MotorJointDef>
 {
     /// @brief Super type.
@@ -39,9 +39,15 @@ struct MotorJointDef : public JointBuilder<MotorJointDef>
     
     constexpr MotorJointDef() noexcept: super{JointType::Motor} {}
     
-    /// Initialize the bodies and offsets using the current transforms.
+    /// @brief Initialize the bodies and offsets using the current transforms.
     MotorJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB) noexcept;
     
+    /// @brief Uses the given linear offset value.
+    MotorJointDef& UseLinearOffset(Length2D v) noexcept;
+
+    /// @brief Uses the given angular offset value.
+    MotorJointDef& UseAngularOffset(Angle v) noexcept;
+
     /// @brief Uses the given maximum force value.
     MotorJointDef& UseMaxForce(NonNegative<Force> v) noexcept;
     
@@ -51,21 +57,33 @@ struct MotorJointDef : public JointBuilder<MotorJointDef>
     /// @brief Uses the given correction factor.
     MotorJointDef& UseCorrectionFactor(Real v) noexcept;
     
-    /// Position of bodyB minus the position of bodyA, in bodyA's frame.
+    /// @brief Position of bodyB minus the position of bodyA, in bodyA's frame.
     Length2D linearOffset = Length2D{};
     
-    /// The bodyB angle minus bodyA angle.
+    /// @brief Angle of bodyB minus angle of bodyA.
     Angle angularOffset = Angle{0};
     
-    /// The maximum motor force.
+    /// @brief Maximum motor force.
     NonNegative<Force> maxForce = NonNegative<Force>(Real{1} * Newton);
     
-    /// The maximum motor torque.
+    /// @brief Maximum motor torque.
     NonNegative<Torque> maxTorque = NonNegative<Torque>(Real{1} * NewtonMeter);
     
-    /// Position correction factor in the range [0,1].
+    /// @brief Position correction factor in the range [0,1].
     Real correctionFactor = Real(0.3);
 };
+
+inline MotorJointDef& MotorJointDef::UseLinearOffset(Length2D v) noexcept
+{
+    linearOffset = v;
+    return *this;
+}
+
+inline MotorJointDef& MotorJointDef::UseAngularOffset(Angle v) noexcept
+{
+    angularOffset = v;
+    return *this;
+}
 
 inline MotorJointDef& MotorJointDef::UseMaxForce(NonNegative<Force> v) noexcept
 {

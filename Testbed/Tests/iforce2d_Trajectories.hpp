@@ -161,7 +161,7 @@ public:
             m_firing2 = false;
         });
         RegisterForKey(GLFW_KEY_M, GLFW_PRESS, 0, "Hold down & use left mouse button to move the computer's target", [&](KeyActionMods) {
-            m_targetBody->SetTransform(GetMouseWorld(), 0 * Radian); //m_mouseWorld is from Test class
+            m_targetBody->SetTransform(GetMouseWorld(), 0 * Radian);
         });
     }
     

@@ -30,21 +30,28 @@ namespace playrho {
 class MotorJointTest : public Test
 {
 public:
-    MotorJointTest()
+    static Test::Conf GetTestConf()
+    {
+        auto conf = Test::Conf{};
+        conf.description =
+            "A motor joint forces two bodies to have a given linear and/or angular"
+            " offset(s) from each other.";
+        return conf;
+    }
+    
+    MotorJointTest(): Test(GetTestConf())
     {
         const auto ground = m_world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
 
         // Define motorized body
-        BodyDef bd;
-        bd.type = BodyType::Dynamic;
-        bd.location = Vec2(0.0f, 8.0f) * Meter;
-        const auto body = m_world.CreateBody(bd);
+        const auto body = m_world.CreateBody(BodyDef{}
+                                             .UseType(BodyType::Dynamic)
+                                             .UseLocation(Vec2(0.0f, 8.0f) * Meter));
 
-        auto conf = PolygonShape::Conf{};
-        conf.friction = 0.6f;
-        conf.density = Real{2} * KilogramPerSquareMeter;
-        body->CreateFixture(std::make_shared<PolygonShape>(Real{2.0f} * Meter, Real{0.5f} * Meter, conf));
+        const auto conf = PolygonShape::Conf{}
+            .UseFriction(0.6f).UseDensity(2 * KilogramPerSquareMeter);
+        body->CreateFixture(std::make_shared<PolygonShape>(2.0f * Meter, 0.5f * Meter, conf));
 
         auto mjd = MotorJointDef{ground, body};
         mjd.maxForce = Real{1000.0f} * Newton;
@@ -58,6 +65,8 @@ public:
 
     void PreStep(const Settings& settings, Drawer& drawer) override
     {
+        m_status = m_go? "Motor going.": "Motor paused.";
+
         if (m_go && settings.dt > 0)
         {
             m_time += settings.dt;
@@ -76,7 +85,7 @@ public:
 
     MotorJoint* m_joint;
     Real m_time = 0;
-    bool m_go = false;
+    bool m_go = true;
 };
 
 } // namespace playrho

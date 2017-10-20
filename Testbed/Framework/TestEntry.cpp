@@ -49,6 +49,7 @@
 #include "../Tests/Gears.hpp"
 #include "../Tests/HeavyOnLight.hpp"
 #include "../Tests/HeavyOnLightTwo.hpp"
+#include "../Tests/JointsTest.hpp"
 #include "../Tests/Mobile.hpp"
 #include "../Tests/MobileBalanced.hpp"
 #include "../Tests/MotorJoint.hpp"
@@ -115,6 +116,7 @@ static const TestEntry testEntries[] =
     {"Cantilever", MakeUniqueTest<Cantilever>},
     {"Character Collision", MakeUniqueTest<CharacterCollision>},
     {"Fifteen Puzzle", MakeUniqueTest<FifteenPuzzle>},
+    {"Joints Overview", MakeUniqueTest<JointsTest>},
     {"Edge Test", MakeUniqueTest<EdgeTest>},
     {"Body Types", MakeUniqueTest<BodyTypes>},
     {"Shape Editing", MakeUniqueTest<ShapeEditing>},

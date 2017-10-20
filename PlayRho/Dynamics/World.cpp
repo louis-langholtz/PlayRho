@@ -1160,6 +1160,7 @@ void World::AddJointsToIsland(Island& island, std::vector<Body*>& stack, const B
                 const auto bodyA = joint->GetBodyA();
                 const auto bodyB = joint->GetBodyB();
                 const auto rwOther = bodyA != b? bodyA: bodyB;
+                assert(rwOther == other);
                 stack.push_back(rwOther);
                 SetIslanded(rwOther);
             }
