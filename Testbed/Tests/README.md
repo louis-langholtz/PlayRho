@@ -137,6 +137,10 @@ Here's some images of what these look like when run.
 
 ![Image of HeavyOnLightTwo.hpp running](../../Documentation/images/Testbed/HeavyOnLightTwo.png)
 
+### [`JointsTest.hpp`](JointsTest.hpp)
+
+![Image of JointsTest.hpp running](../../Documentation/images/Testbed/JointsTest.png)
+
 ### [`Mobile.hpp`](Mobile.hpp)
 
 ![Image of Mobile.hpp running](../../Documentation/images/Testbed/Mobile.png)
