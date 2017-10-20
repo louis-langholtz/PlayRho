@@ -26,7 +26,7 @@
 
 namespace playrho {
 
-    /// Vertex Set.
+    /// @brief Vertex Set.
     ///
     /// @details This is a container that enforces the invariant that no two
     /// vertices can be closer together than the minimum separation distance.

@@ -56,6 +56,36 @@ TEST(MotorJointDef, DefaultConstruction)
     EXPECT_EQ(def.correctionFactor, Real(0.3));
 }
 
+TEST(MotorJointDef, BuilderConstruction)
+{
+    const auto bodyA = reinterpret_cast<Body*>(0x1);
+    const auto bodyB = reinterpret_cast<Body*>(0x2);
+    const auto collideConnected = true;
+    int tmp;
+    const auto userData = &tmp;
+    const auto linearOffset = Length2D{2 * Meter, 3 * Meter};
+    const auto angularOffset = 33 * Radian;
+    const auto maxForce = 22 * Newton;
+    const auto maxTorque = 31 * NewtonMeter;
+    const auto correctionFactor = Real(0.44f);
+    const auto def = MotorJointDef{}
+        .UseBodyA(bodyA).UseBodyB(bodyB).UseCollideConnected(collideConnected).UseUserData(userData)
+        .UseLinearOffset(linearOffset).UseAngularOffset(angularOffset)
+        .UseMaxForce(maxForce).UseMaxTorque(maxTorque).UseCorrectionFactor(correctionFactor);
+    
+    EXPECT_EQ(def.type, JointType::Motor);
+    EXPECT_EQ(def.bodyA, bodyA);
+    EXPECT_EQ(def.bodyB, bodyB);
+    EXPECT_EQ(def.collideConnected, collideConnected);
+    EXPECT_EQ(def.userData, userData);
+    
+    EXPECT_EQ(def.linearOffset, linearOffset);
+    EXPECT_EQ(def.angularOffset, angularOffset);
+    EXPECT_EQ(def.maxForce, maxForce);
+    EXPECT_EQ(def.maxTorque, maxTorque);
+    EXPECT_EQ(def.correctionFactor, correctionFactor);
+}
+
 TEST(MotorJoint, ByteSize)
 {
     switch (sizeof(Real))

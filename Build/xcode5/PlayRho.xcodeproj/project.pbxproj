@@ -406,6 +406,7 @@
 		4727242D1E315E1A00C64921 /* Fixed.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Fixed.hpp; sourceTree = "<group>"; };
 		472D35331F968FB100574B73 /* UiState.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = UiState.hpp; sourceTree = "<group>"; };
 		472D35361F98C56200574B73 /* Intervals.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Intervals.hpp; sourceTree = "<group>"; };
+		472D353A1F99256700574B73 /* JointsTest.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = JointsTest.hpp; sourceTree = "<group>"; };
 		472E24651F82C4EA0051E192 /* Interval.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Interval.cpp; sourceTree = "<group>"; };
 		472E24681F83301D0051E192 /* BreakableTwo.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BreakableTwo.hpp; sourceTree = "<group>"; };
 		472E30181DBA925500DA821D /* VertexSet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VertexSet.hpp; sourceTree = "<group>"; };
@@ -1186,6 +1187,7 @@
 				809BC10218B85A4900F5D9F0 /* HeavyOnLightTwo.hpp */,
 				4745273F1E8AC88F002E28FB /* iforce2d_TopdownCar.hpp */,
 				47791F761F901B8700E257AF /* iforce2d_Trajectories.hpp */,
+				472D353A1F99256700574B73 /* JointsTest.hpp */,
 				4751EE281CEDD78F00D459CB /* Mobile.hpp */,
 				4751EE2D1CEDD7A300D459CB /* MobileBalanced.hpp */,
 				4751EE2C1CEDD7A300D459CB /* MotorJoint.hpp */,
