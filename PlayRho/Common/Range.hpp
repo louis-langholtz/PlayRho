@@ -61,8 +61,8 @@ namespace playrho
         }
 
     private:
-        iterator_type m_begin;
-        iterator_type m_end;
+        iterator_type m_begin; ///< Begin iterator.
+        iterator_type m_end; ///< End iterator.
     };
 
     /// @brief Template sized range value class.

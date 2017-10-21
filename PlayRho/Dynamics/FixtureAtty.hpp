@@ -41,22 +41,27 @@ namespace playrho {
 class FixtureAtty
 {
 private:
+    
+    /// @brief Gets the proxies of the given fixture.
     static auto GetProxies(const Fixture& fixture)
     {
         return fixture.GetProxies();
     }
     
+    /// @brief Sets the proxies of the given fixture.
     static void SetProxies(Fixture& fixture, std::unique_ptr<FixtureProxy[]> value,
                            std::size_t count)
     {
         fixture.SetProxies(std::move(value), count);
     }
     
+    /// @brief Resets the proxies of the given fixture.
     static void ResetProxies(Fixture& fixture)
     {
         fixture.ResetProxies();
     }
     
+    /// @brief Creates a new fixture for the given body and with the given settings.
     static auto Create(Body* body, const FixtureDef& def,
                            const std::shared_ptr<const Shape>& shape)
     {

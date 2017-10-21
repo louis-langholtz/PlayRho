@@ -88,21 +88,21 @@ private:
                                   const ConstraintSolverConf& conf) const override;
 
     // Solver shared
-    Length2D m_linearOffset;
-    Angle m_angularOffset;
-    Momentum2D m_linearImpulse = Momentum2D{};
-    AngularMomentum m_angularImpulse = AngularMomentum{0};
-    NonNegative<Force> m_maxForce = NonNegative<Force>{0};
-    NonNegative<Torque> m_maxTorque = NonNegative<Torque>{0};
-    Real m_correctionFactor;
+    Length2D m_linearOffset; ///< Linear offset.
+    Angle m_angularOffset; ///< Angular offset.
+    Momentum2D m_linearImpulse = Momentum2D{}; ///< Linear impulse.
+    AngularMomentum m_angularImpulse = AngularMomentum{0}; ///< Angular impulse.
+    NonNegative<Force> m_maxForce = NonNegative<Force>{0}; ///< Max force.
+    NonNegative<Torque> m_maxTorque = NonNegative<Torque>{0}; ///< Max torque.
+    Real m_correctionFactor; ///< Correction factor.
 
     // Solver temp
-    Length2D m_rA;
-    Length2D m_rB;
-    Length2D m_linearError;
-    Angle m_angularError;
+    Length2D m_rA; ///< Relative A.
+    Length2D m_rB; ///< Relative B.
+    Length2D m_linearError; ///< Linear error.
+    Angle m_angularError; ///< Angular error.
     Mass22 m_linearMass; ///< 2x2 linear mass matrix in kilograms.
-    RotInertia m_angularMass;
+    RotInertia m_angularMass; ///< Angular mass.
 };
 
 inline NonNegative<Force> MotorJoint::GetMaxForce() const noexcept

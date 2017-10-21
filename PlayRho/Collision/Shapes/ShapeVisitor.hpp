@@ -130,7 +130,7 @@ public:
     }
     
 private:
-    bool visited = false;
+    bool visited = false; ///< Visited flag.
 };
 
 } // namespace playrho

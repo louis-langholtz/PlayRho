@@ -78,21 +78,21 @@ private:
     bool SolvePositionConstraints(BodyConstraintsMap& bodies,
                                   const ConstraintSolverConf& conf) const override;
 
-    Length2D m_localAnchorA;
-    Length2D m_localAnchorB;
-    Angle m_referenceAngle;
-    Frequency m_frequency;
-    Real m_dampingRatio;
+    Length2D m_localAnchorA; ///< Local anchor A.
+    Length2D m_localAnchorB; ///< Local anchor B.
+    Angle m_referenceAngle; ///< Reference angle.
+    Frequency m_frequency; ///< Frequency.
+    Real m_dampingRatio; ///< Damping ratio.
 
     // Solver shared
-    Vec3 m_impulse = Vec3_zero;
+    Vec3 m_impulse = Vec3_zero; ///< Impulse.
 
     // Solver temp
-    InvRotInertia m_gamma;
-    AngularVelocity m_bias;
-    Length2D m_rA;
-    Length2D m_rB;
-    Mat33 m_mass;
+    InvRotInertia m_gamma; ///< Gamma.
+    AngularVelocity m_bias; ///< Bias.
+    Length2D m_rA; ///< Relative A.
+    Length2D m_rB; ///< Relative B.
+    Mat33 m_mass; ///< Mass.
 };
 
 } // namespace playrho

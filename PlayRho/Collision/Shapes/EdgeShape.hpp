@@ -133,9 +133,8 @@ public:
     UnitVec2 GetNormal2() const noexcept { return m_normals[1]; }
 
 private:
-    /// These are the edge vertices
-    Length2D m_vertices[2];
-    UnitVec2 m_normals[2];
+    Length2D m_vertices[2]; ///< Vertices
+    UnitVec2 m_normals[2]; ///< Normals.
 };
 
 inline ChildCounter EdgeShape::GetChildCount() const noexcept

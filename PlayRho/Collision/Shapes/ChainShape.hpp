@@ -106,8 +106,8 @@ public:
     UnitVec2 GetNormal(ChildCounter index) const;
 
 private:
-    std::vector<Length2D> m_vertices;
-    std::vector<UnitVec2> m_normals;
+    std::vector<Length2D> m_vertices; ///< Vertices.
+    std::vector<UnitVec2> m_normals; ///< Normals.
 };
 
 inline ChildCounter ChainShape::GetVertexCount() const noexcept

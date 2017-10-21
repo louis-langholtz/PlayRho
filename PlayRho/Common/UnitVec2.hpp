@@ -173,12 +173,14 @@ public:
     }
 
 private:
+    
+    /// @brief Initializing constructor.
     constexpr UnitVec2(value_type x, value_type y) noexcept : m_elems{x, y}
     {
         // Intentionally empty.
     }
 
-    value_type m_elems[2] = { value_type{0}, value_type{0} };
+    value_type m_elems[2] = { value_type{0}, value_type{0} }; ///< Element values.
 };
 
 /// @brief Gets the "X-axis".

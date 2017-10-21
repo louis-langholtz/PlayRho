@@ -431,8 +431,13 @@ private:
 
     friend class BodyAtty;
 
+    /// @brief Whether this body is in is-islanded state.
     bool IsIslanded() const noexcept;
+
+    /// @brief Sets this body to the is-islanded state.
     void SetIslandedFlag() noexcept;
+    
+    /// @brief Unsets this body to the is-islanded state.
     void UnsetIslandedFlag() noexcept;
     
     /// @brief Sets the body's awake flag.
@@ -441,6 +446,7 @@ private:
     /// @warning Behavior is undefined if called for a body that is not "speedable".
     void SetAwakeFlag() noexcept;
 
+    /// @brief Unsets the body's awake flag.
     void UnsetAwakeFlag() noexcept;
 
     /// Advances the body by a given time ratio.
@@ -451,19 +457,34 @@ private:
     /// @param alpha Valid new time factor in [0,1) to advance the sweep to.
     void Advance(Real alpha) noexcept;
 
+    /// @brief Sets this body to have the mass data dirty state.
     void SetMassDataDirty() noexcept;
+    
+    /// @brief Unsets the body from being in the mass data dirty state.
     void UnsetMassDataDirty() noexcept;
 
+    /// @brief Sets the enabled flag.
     void SetEnabledFlag() noexcept;
+    
+    /// @brief Unsets the enabled flag.
     void UnsetEnabledFlag() noexcept;
 
+    /// @brief Inserts the given key and contact.
     bool Insert(ContactKey key, Contact* contact);
+    
+    /// @brief Inserts the given joint into this body's joints list.
     bool Insert(Joint* joint);
 
+    /// @brief Erases the given contact from this body's contacts list.
     bool Erase(const Contact* contact);
+    
+    /// @brief Erases the given joint from this body's joints list.
     bool Erase(const Joint* joint);
 
+    /// @brief Clears this body's contacts list.
     void ClearContacts();
+    
+    /// @brief Clears this body's joints list.
     void ClearJoints();
 
     /// @brief Sets the transformation for this body.

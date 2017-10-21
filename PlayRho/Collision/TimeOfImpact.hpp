@@ -223,7 +223,7 @@ namespace playrho {
     private:
         State m_state = e_unknown; ///< State at time factor.
         Real m_time = 0; ///< Time factor in range of [0,1] into the future.
-        Stats m_stats;
+        Stats m_stats; ///< Statistics.
     };
 
     /// @brief Gets the time of impact for two disjoint convex sets using the

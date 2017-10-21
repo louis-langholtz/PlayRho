@@ -76,20 +76,20 @@ private:
     bool SolvePositionConstraints(BodyConstraintsMap& bodies,
                                   const ConstraintSolverConf& conf) const override;
 
-    Length2D m_localAnchorA;
-    Length2D m_localAnchorB;
-    NonNegative<Force> m_maxForce = NonNegative<Force>{0};
-    NonNegative<Torque> m_maxTorque = NonNegative<Torque>{0};
+    Length2D m_localAnchorA; ///< Local anchor A.
+    Length2D m_localAnchorB; ///< Local anchor B.
+    NonNegative<Force> m_maxForce = NonNegative<Force>{0}; ///< Max force.
+    NonNegative<Torque> m_maxTorque = NonNegative<Torque>{0}; ///< Max torque.
 
     // Solver shared data - data saved & updated over multiple InitVelocityConstraints calls.
-    Momentum2D m_linearImpulse = Momentum2D{};
-    AngularMomentum m_angularImpulse = AngularMomentum{0};
+    Momentum2D m_linearImpulse = Momentum2D{}; ///< Linear impulse.
+    AngularMomentum m_angularImpulse = AngularMomentum{0}; ///< Angular impulse.
 
     // Solver temp
-    Length2D m_rA;
-    Length2D m_rB;
+    Length2D m_rA; ///< Relative A.
+    Length2D m_rB; ///< Relative B.
     Mass22 m_linearMass; ///< 2x2 linear mass matrix in kilograms.
-    RotInertia m_angularMass;
+    RotInertia m_angularMass; ///< Angular mass.
 };
 
 inline void FrictionJoint::SetMaxForce(NonNegative<Force> force)

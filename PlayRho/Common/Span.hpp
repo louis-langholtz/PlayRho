@@ -119,8 +119,8 @@ namespace playrho {
         pointer data() const noexcept { return m_array; }
 
     private:
-        pointer m_array = nullptr;
-        size_type m_size = 0;
+        pointer m_array = nullptr; ///< Pointer to array of data.
+        size_type m_size = 0; ///< Size of array of data.
     };
     
 } // namespace playrho

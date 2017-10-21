@@ -79,18 +79,18 @@ private:
                                   const ConstraintSolverConf& conf) const override;
 
     // Solver shared
-    Length2D m_localAnchorA;
-    Length2D m_localAnchorB;
-    Length m_maxLength;
-    Length m_length = 0;
-    Momentum m_impulse = Momentum{0};
+    Length2D m_localAnchorA; ///< Local anchor A.
+    Length2D m_localAnchorB; ///< Local anchor B.
+    Length m_maxLength; ///< Max length.
+    Length m_length = 0; ///< Length.
+    Momentum m_impulse = Momentum{0}; ///< Impulse.
 
     // Solver temp
-    UnitVec2 m_u;
-    Length2D m_rA;
-    Length2D m_rB;
-    Mass m_mass = Mass{0};
-    LimitState m_state = e_inactiveLimit;
+    UnitVec2 m_u; ///< U direction.
+    Length2D m_rA; ///< Relative A.
+    Length2D m_rB; ///< Relative B.
+    Mass m_mass = Mass{0}; ///< Mass.
+    LimitState m_state = e_inactiveLimit; ///< Limit state.
 };
 
 } // namespace playrho

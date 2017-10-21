@@ -134,22 +134,23 @@ public:
     
 private:
 
+    /// @brief Allocation record.
     struct AllocationRecord
     {
-        void* data;
-        size_type size;
-        bool usedMalloc;
+        void* data; ///< Data.
+        size_type size; ///< Size.
+        bool usedMalloc; ///< Whether malloc was used.
     };
     
-    char* const m_data;
-    AllocationRecord* const m_entries;
-    size_type const m_size;
-    size_type const m_max_entries;
+    char* const m_data; ///< Data.
+    AllocationRecord* const m_entries; ///< Entries.
+    size_type const m_size; ///< Size.
+    size_type const m_max_entries; ///< Max entries.
     
-    size_type m_index = 0;
-    size_type m_allocation = 0;
-    size_type m_maxAllocation = 0;
-    size_type m_entryCount = 0;
+    size_type m_index = 0; ///< Index.
+    size_type m_allocation = 0; ///< Allocation.
+    size_type m_maxAllocation = 0; ///< Max allocation.
+    size_type m_entryCount = 0; ///< Entry count.
 };
     
 } // namespace playrho

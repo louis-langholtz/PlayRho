@@ -217,8 +217,8 @@ namespace playrho {
             // Intentionally empty.
         }
 
-        value_type m_min = GetHighest();
-        value_type m_max = GetLowest();
+        value_type m_min = GetHighest(); ///< Min value.
+        value_type m_max = GetLowest(); ///< Max value.
     };
     
     /// @brief Gets the size of the given interval.

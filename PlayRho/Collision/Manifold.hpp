@@ -411,10 +411,16 @@ namespace playrho {
         }
 
     private:
+        
+        /// @brief Point array structure.
         struct PointArray
         {
-            Point elements[MaxManifoldPoints];
+            Point elements[MaxManifoldPoints]; ///< Elements.
+
+            /// @brief Array indexing operator.
             constexpr Point& operator[](std::size_t i) { return elements[i]; }
+            
+            /// @brief Array indexing operator.
             constexpr const Point& operator[](std::size_t i) const { return elements[i]; }
         };
     

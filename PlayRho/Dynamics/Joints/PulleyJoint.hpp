@@ -90,24 +90,24 @@ private:
     bool SolvePositionConstraints(BodyConstraintsMap& bodies,
                                   const ConstraintSolverConf& conf) const override;
 
-    Length2D m_groundAnchorA;
-    Length2D m_groundAnchorB;
-    Length m_lengthA;
-    Length m_lengthB;
-    Length2D m_localAnchorA;
-    Length2D m_localAnchorB;
-    Real m_ratio;
-    Length m_constant;
+    Length2D m_groundAnchorA; ///< Ground anchor A.
+    Length2D m_groundAnchorB; ///< Ground anchor B.
+    Length m_lengthA; ///< Length A.
+    Length m_lengthB; ///< Length B.
+    Length2D m_localAnchorA; ///< Local anchor A.
+    Length2D m_localAnchorB; ///< Local anchor B.
+    Real m_ratio; ///< Ratio.
+    Length m_constant; ///< Constant.
     
     // Solver shared (between calls to InitVelocityConstraints).
-    Momentum m_impulse = Momentum{0};
+    Momentum m_impulse = Momentum{0}; ///< Impulse.
 
     // Solver temp (recalculated every call to InitVelocityConstraints).
     UnitVec2 m_uA; ///< Unit vector A.
     UnitVec2 m_uB; ///< Unit vector B.
-    Length2D m_rA;
-    Length2D m_rB;
-    Mass m_mass;
+    Length2D m_rA; ///< Relative A.
+    Length2D m_rB; ///< Relative B.
+    Mass m_mass; ///< Mass.
 };
     
 inline Length2D PulleyJoint::GetLocalAnchorA() const noexcept

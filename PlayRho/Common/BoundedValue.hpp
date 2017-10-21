@@ -265,7 +265,7 @@ namespace playrho {
         }
 
     private:
-        value_type m_value;
+        value_type m_value; ///< Underlying value.
     };
     
     // Common logical operations for BoundedValue<T, lo, hi> OP BoundedValue<T, lo, hi>

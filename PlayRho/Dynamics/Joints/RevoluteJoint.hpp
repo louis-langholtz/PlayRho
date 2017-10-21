@@ -121,19 +121,19 @@ private:
                                   const ConstraintSolverConf& conf) const override;
 
     // Solver shared
-    Length2D m_localAnchorA;
-    Length2D m_localAnchorB;
+    Length2D m_localAnchorA; ///< Local anchor A.
+    Length2D m_localAnchorB; ///< Local anchor B.
     Vec3 m_impulse = Vec3_zero; ///< Impulse. Mofified by: InitVelocityConstraints, SolveVelocityConstraints.
     AngularMomentum m_motorImpulse = 0; ///< Motor impulse. Modified by: InitVelocityConstraints, SolveVelocityConstraints.
 
-    bool m_enableMotor;
-    Torque m_maxMotorTorque;
-    AngularVelocity m_motorSpeed;
+    bool m_enableMotor; ///< Enable motor. <code>true</code> if motor is enabled.
+    Torque m_maxMotorTorque; ///< Max motor torque.
+    AngularVelocity m_motorSpeed; ///< Motor speed.
 
-    bool m_enableLimit;
-    Angle m_referenceAngle;
-    Angle m_lowerAngle;
-    Angle m_upperAngle;
+    bool m_enableLimit; ///< Enable limit. <code>true</code> if limit is enabled.
+    Angle m_referenceAngle; ///< Reference angle.
+    Angle m_lowerAngle; ///< Lower angle.
+    Angle m_upperAngle; ///< Upper angle.
 
     // Solver cached temporary data. Values set by by InitVelocityConstraints.
 

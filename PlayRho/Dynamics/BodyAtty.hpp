@@ -47,6 +47,7 @@ class BodyAtty
 {
 private:
     
+    /// @brief Creates a fixture.
     static Fixture* CreateFixture(Body& b, std::shared_ptr<const Shape> shape, const FixtureDef& def)
     {
         const auto fixture = new Fixture{&b, def, std::move(shape)};
@@ -54,6 +55,7 @@ private:
         return fixture;
     }
     
+    /// @brief Destroys the given fixture.
     static bool DestroyFixture(Body& b, Fixture* value)
     {
         const auto endIter = end(b.m_fixtures);
@@ -69,6 +71,7 @@ private:
         return false;
     }
 
+    /// @brief Clears the fixtures of the given body.
     static void ClearFixtures(Body& b, std::function<void(Fixture&)> callback)
     {
         std::for_each(std::begin(b.m_fixtures), std::end(b.m_fixtures), [&](Body::Fixtures::value_type& f) {
@@ -79,6 +82,7 @@ private:
         b.m_fixtures.clear();
     }
 
+    /// @brief Sets the type flags for the given body.
     static void SetTypeFlags(Body& b, BodyType type) noexcept
     {
         b.m_flags &= ~(Body::e_impenetrableFlag|Body::e_velocityFlag|Body::e_accelerationFlag);
@@ -99,41 +103,49 @@ private:
         }
     }
     
+    /// @brief Sets the awake flag for the given body.
     static void SetAwakeFlag(Body& b) noexcept
     {
         b.SetAwakeFlag();
     }
     
+    /// @brief Sets the mass data dity flag for the given body.
     static void SetMassDataDirty(Body& b) noexcept
     {
         b.SetMassDataDirty();
     }
     
+    /// @brief Erases the given contact from the given body.
     static bool Erase(Body& b, const Contact* value)
     {
         return b.Erase(value);
     }
     
+    /// @brief Erases the given joint from the given body.
     static bool Erase(Body& b, const Joint* value)
     {
         return b.Erase(value);
     }
     
+    /// @brief Clears the contacts from the given body.
     static void ClearContacts(Body &b)
     {
         b.ClearContacts();
     }
 
+    /// @brief Clears the joints from the given body.
     static void ClearJoints(Body &b)
     {
         b.ClearJoints();
     }
 
+    /// @brief Inserts the given joint into the given body's joint list.
     static bool Insert(Body& b, Joint* value)
     {
         return b.Insert(value);
     }
 
+    /// @brief Inserts the given joint into the given body's joint list.
     static bool Insert(Body* b, Joint* value)
     {
         if (b != nullptr)
@@ -143,11 +155,13 @@ private:
         return false;
     }
 
+    /// @brief Inserts the given contact key and contact into the given body's contacts list.
     static bool Insert(Body& b, ContactKey key, Contact* value)
     {
         return b.Insert(key, value);
     }
     
+    /// @brief Sets the position0 value of the given body to the given position.
     static void SetPosition0(Body& b, const Position value) noexcept
     {
         assert(b.IsSpeedable() || b.m_sweep.pos0 == value);
@@ -162,11 +176,13 @@ private:
         b.m_sweep.pos1 = value;
     }
     
+    /// @brief Resets the given body's alpha0 value.
     static void ResetAlpha0(Body& b)
     {
         b.m_sweep.ResetAlpha0();
     }
     
+    /// @brief Sets the sweep value of the given body.
     static void SetSweep(Body& b, const Sweep value) noexcept
     {
         assert(b.IsSpeedable() || value.pos0 == value.pos1);
@@ -187,6 +203,7 @@ private:
         b.m_velocity = value;
     }
     
+    /// @brief Calls the given body sweep's Advance0 method to advance to the given value.
     static void Advance0(Body& b, Real value) noexcept
     {
         // Note: Static bodies must **never** have different sweep position values.
@@ -200,17 +217,20 @@ private:
         assert(b.IsSpeedable() || b.m_sweep.pos1 == b.m_sweep.pos0);
     }
     
+    /// @brief Calls the given body's Advance method to advance to the given TOI.
     static void Advance(Body& b, Real toi) noexcept
     {
         b.Advance(toi);
     }
     
+    /// @brief Restores the given body's sweep to the given sweep value.
     static void Restore(Body& b, const Sweep value) noexcept
     {
         BodyAtty::SetSweep(b, value);
         BodyAtty::SetTransformation(b, GetTransform1(value));
     }
     
+    /// @brief Clears the given body's joints list.
     static void ClearJoints(Body& b, std::function<void(Joint&)> callback)
     {
         auto joints = std::move(b.m_joints);
@@ -220,6 +240,7 @@ private:
         });
     }
     
+    /// @brief Erases the given body's contacts.
     static void EraseContacts(Body& b, const std::function<bool(Contact&)>& callback)
     {
         auto end = b.m_contacts.end();
@@ -242,16 +263,19 @@ private:
         }
     }
     
+    /// @brief Whether the given body is in the is islanded state.
     static bool IsIslanded(const Body& b) noexcept
     {
         return b.IsIslanded();
     }
     
+    /// @brief Sets the given body to the is islanded state.
     static void SetIslanded(Body& b) noexcept
     {
         b.SetIslandedFlag();
     }
     
+    /// @brief Unsets the given body's is islanded state.
     static void UnsetIslanded(Body& b) noexcept
     {
         b.UnsetIslandedFlag();

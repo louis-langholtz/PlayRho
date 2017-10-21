@@ -2805,30 +2805,41 @@ ContactCounter World::Synchronize(Body& body,
     assert(::playrho::IsValid(xfm2));
 
     auto updatedCount = ContactCounter{0};
-    for_each(begin(body.GetFixtures()), end(body.GetFixtures()), [&](Body::Fixtures::value_type& f) {
-        auto& fixture = GetRef(f);
-        const auto shape = fixture.GetShape();
-        const auto displacement = multiplier * (xfm2.p - xfm1.p);
-        const auto proxies = FixtureAtty::GetProxies(fixture);
-        auto childIndex = ChildCounter{0};
-        for (auto& proxy: proxies)
-        {
-            const auto treeId = proxy.treeId;
-            
-            // Compute an AABB that covers the swept shape (may miss some rotation effect).
-            const auto aabb = ComputeAABB(shape->GetChild(childIndex), xfm1, xfm2);
-            if (!Contains(m_tree.GetAABB(treeId), aabb))
-            {
-                const auto newAabb = GetDisplacedAABB(GetFattenedAABB(aabb, extension),
-                                                      displacement);
-                m_tree.UpdateLeaf(treeId, newAabb);
-                RegisterForProcessing(treeId);
-                ++updatedCount;
-            }
-            ++childIndex;
-        }
-
+    const auto displacement = multiplier * (xfm2.p - xfm1.p);
+    const auto fixtures = body.GetFixtures();
+    for_each(begin(fixtures), end(fixtures), [&](Body::Fixtures::value_type& f) {
+        updatedCount += Synchronize(GetRef(f), xfm1, xfm2, displacement, extension);
     });
+    return updatedCount;
+}
+
+ContactCounter World::Synchronize(Fixture& fixture,
+                                  Transformation xfm1, Transformation xfm2,
+                                  Length2D displacement, Length extension)
+{
+    assert(::playrho::IsValid(xfm1));
+    assert(::playrho::IsValid(xfm2));
+    
+    auto updatedCount = ContactCounter{0};
+    const auto shape = fixture.GetShape();
+    const auto proxies = FixtureAtty::GetProxies(fixture);
+    auto childIndex = ChildCounter{0};
+    for (auto& proxy: proxies)
+    {
+        const auto treeId = proxy.treeId;
+        
+        // Compute an AABB that covers the swept shape (may miss some rotation effect).
+        const auto aabb = ComputeAABB(shape->GetChild(childIndex), xfm1, xfm2);
+        if (!Contains(m_tree.GetAABB(treeId), aabb))
+        {
+            const auto newAabb = GetDisplacedAABB(GetFattenedAABB(aabb, extension),
+                                                  displacement);
+            m_tree.UpdateLeaf(treeId, newAabb);
+            RegisterForProcessing(treeId);
+            ++updatedCount;
+        }
+        ++childIndex;
+    }
     return updatedCount;
 }
 

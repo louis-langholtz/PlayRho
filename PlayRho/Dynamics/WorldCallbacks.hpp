@@ -96,9 +96,9 @@ public:
     }
 
 private:
-    Momentum normalImpulses[MaxManifoldPoints];
-    Momentum tangentImpulses[MaxManifoldPoints];
-    Counter count = 0;
+    Momentum normalImpulses[MaxManifoldPoints]; ///< Normal impulses.
+    Momentum tangentImpulses[MaxManifoldPoints]; ///< Tangent impulses.
+    Counter count = 0; ///< Count of entries added.
 };
 
 /// @brief Gets the maximum normal impulse from the given contact impulses list.

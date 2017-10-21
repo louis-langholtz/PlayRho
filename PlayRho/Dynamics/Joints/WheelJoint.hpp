@@ -105,38 +105,38 @@ private:
     bool SolvePositionConstraints(BodyConstraintsMap& bodies,
                                   const ConstraintSolverConf& conf) const override;
 
-    Frequency m_frequency;
-    Real m_dampingRatio;
+    Frequency m_frequency; ///< Frequency.
+    Real m_dampingRatio; ///< Damping ratio.
 
     // Solver shared
-    Length2D m_localAnchorA;
-    Length2D m_localAnchorB;
-    UnitVec2 m_localXAxisA;
-    UnitVec2 m_localYAxisA;
+    Length2D m_localAnchorA; ///< Local anchor A.
+    Length2D m_localAnchorB; ///< Local anchor B.
+    UnitVec2 m_localXAxisA; ///< Local X axis A.
+    UnitVec2 m_localYAxisA; ///< Local Y axis A.
 
-    Momentum m_impulse = 0;
-    AngularMomentum m_motorImpulse = 0;
-    Momentum m_springImpulse = 0;
+    Momentum m_impulse = 0; ///< Impulse.
+    AngularMomentum m_motorImpulse = 0; ///< Motor impulse.
+    Momentum m_springImpulse = 0; ///< Spring impulse.
 
-    Torque m_maxMotorTorque;
-    AngularVelocity m_motorSpeed;
-    bool m_enableMotor;
+    Torque m_maxMotorTorque; ///< Max motor torque.
+    AngularVelocity m_motorSpeed; ///< Motor speed.
+    bool m_enableMotor; ///< Enable motor. <code>true</code> if motor is enabled.
 
     // Solver temp    
-    UnitVec2 m_ax;
-    UnitVec2 m_ay;
+    UnitVec2 m_ax; ///< AX directional.
+    UnitVec2 m_ay; ///< AY directional.
 
-    Length m_sAx;
-    Length m_sBx;
-    Length m_sAy;
-    Length m_sBy;
+    Length m_sAx; ///< sAx location.
+    Length m_sBx; ///< sBx location.
+    Length m_sAy; ///< sAy location.
+    Length m_sBy; ///< sBy location.
 
-    Mass m_mass = Mass{0};
-    RotInertia m_motorMass = RotInertia{0};
-    Mass m_springMass = Mass{0};
+    Mass m_mass = Mass{0}; ///< Mass.
+    RotInertia m_motorMass = RotInertia{0}; ///< Motor mass.
+    Mass m_springMass = Mass{0}; ///< Spring mass.
 
-    LinearVelocity m_bias = LinearVelocity{0};
-    InvMass m_gamma = InvMass{0};
+    LinearVelocity m_bias = LinearVelocity{0}; ///< Bias.
+    InvMass m_gamma = InvMass{0}; ///< Gamma.
 };
 
 inline AngularVelocity WheelJoint::GetMotorSpeed() const

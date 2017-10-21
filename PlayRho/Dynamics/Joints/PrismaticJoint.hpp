@@ -116,30 +116,30 @@ private:
                                   const ConstraintSolverConf& conf) const override;
 
     // Solver shared
-    Length2D m_localAnchorA;
-    Length2D m_localAnchorB;
-    UnitVec2 m_localXAxisA;
-    UnitVec2 m_localYAxisA;
-    Angle m_referenceAngle;
-    Vec3 m_impulse = Vec3_zero;
-    Momentum m_motorImpulse = 0;
-    Length m_lowerTranslation;
-    Length m_upperTranslation;
-    Force m_maxMotorForce;
-    AngularVelocity m_motorSpeed;
-    bool m_enableLimit;
-    bool m_enableMotor;
-    LimitState m_limitState = e_inactiveLimit;
+    Length2D m_localAnchorA; ///< Local anchor A.
+    Length2D m_localAnchorB; ///< Local anchor B.
+    UnitVec2 m_localXAxisA; ///< Local X axis A.
+    UnitVec2 m_localYAxisA; ///< Local Y axis A.
+    Angle m_referenceAngle; ///< Reference angle.
+    Vec3 m_impulse = Vec3_zero; ///< Impulse.
+    Momentum m_motorImpulse = 0; ///< Motor impulse.
+    Length m_lowerTranslation; ///< Lower translation.
+    Length m_upperTranslation; ///< Upper translation.
+    Force m_maxMotorForce; ///< Max motor force.
+    AngularVelocity m_motorSpeed; ///< Motor speed.
+    bool m_enableLimit; ///< Enable limit. <code>true</code> if limit is enabled.
+    bool m_enableMotor; ///< Enable motor. <code>true</code> if motor is enabled.
+    LimitState m_limitState = e_inactiveLimit; ///< Limit state.
 
     // Solver temp
-    UnitVec2 m_axis = UnitVec2::GetZero();
-    UnitVec2 m_perp = UnitVec2::GetZero();
-    Length m_s1;
-    Length m_s2;
-    Length m_a1;
-    Length m_a2;
-    Mat33 m_K;
-    Mass m_motorMass = Mass{0};
+    UnitVec2 m_axis = UnitVec2::GetZero(); ///< Axis.
+    UnitVec2 m_perp = UnitVec2::GetZero(); ///< Perpendicular.
+    Length m_s1; ///< Location S1.
+    Length m_s2; ///< Location S2.
+    Length m_a1; ///< Location A1.
+    Length m_a2; ///< Location A2.
+    Mat33 m_K; ///< K matrix.
+    Mass m_motorMass = Mass{0}; ///< Motor mass.
 };
 
 inline Length PrismaticJoint::GetLowerLimit() const noexcept
