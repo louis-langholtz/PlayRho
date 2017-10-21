@@ -63,8 +63,8 @@ namespace playrho {
         FlagGuard() = delete;
         
     private:
-        T& m_flag;
-        T m_value;
+        T& m_flag; ///< Flag.
+        T m_value; ///< Value.
     };
 
 } // namespace playrho

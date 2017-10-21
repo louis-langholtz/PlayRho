@@ -337,10 +337,19 @@ private:
     /// @brief Flags type data type.
     using FlagsType = std::uint32_t;
 
+    /// @brief Proxy ID type alias.
     using ProxyId = DynamicTree::Size;
+
+    /// @brief Contact key queue type alias.
     using ContactKeyQueue = std::vector<ContactKey>;
+    
+    /// @brief Proxy queue type alias.
     using ProxyQueue = std::vector<ProxyId>;
+    
+    /// @brief Fixture queue type alias.
     using FixtureQueue = std::vector<Fixture*>;
+    
+    /// @brief Body queue type alias.
     using BodyQueue = std::vector<Body*>;
     
     /// @brief Flag enumeration.
@@ -364,19 +373,24 @@ private:
     {
         Length minSeparation = std::numeric_limits<Length>::infinity(); ///< Minimum separation.
         Momentum maxIncImpulse = 0; ///< Maximum incremental impulse.
-        BodyCounter bodiesSlept = 0;
-        ContactCounter contactsUpdated = 0;
-        ContactCounter contactsSkipped = 0;
+        BodyCounter bodiesSlept = 0; ///< Bodies slept.
+        ContactCounter contactsUpdated = 0; ///< Contacts updated.
+        ContactCounter contactsSkipped = 0; ///< Contacts skipped.
         bool solved = false; ///< Solved. <code>true</code> if position constraints solved, <code>false</code> otherwise.
         TimestepIters positionIterations = 0; ///< Position iterations actually performed.
         TimestepIters velocityIterations = 0; ///< Velocity iterations actually performed.
     };
     
+    /// @brief Copies bodies.
     void CopyBodies(std::map<const Body*, Body*>& bodyMap,
                     std::map<const Fixture*, Fixture*>& fixtureMap,
                     SizedRange<World::Bodies::const_iterator> range);
+    
+    /// @brief Copies joints.
     void CopyJoints(const std::map<const Body*, Body*>& bodyMap,
                     SizedRange<World::Joints::const_iterator> range);
+    
+    /// @brief Copies contacts.
     void CopyContacts(const std::map<const Body*, Body*>& bodyMap,
                       const std::map<const Fixture*, Fixture*>& fixtureMap,
                       SizedRange<World::Contacts::const_iterator> range);
@@ -421,14 +435,19 @@ private:
                      Contacts::size_type& remNumContacts,
                      Joints::size_type& remNumJoints);
 
+    /// @brief Adds to the island.
     void AddToIsland(Island& island, std::vector<Body*>& stack,
                      Bodies::size_type& remNumBodies,
                      Contacts::size_type& remNumContacts,
                      Joints::size_type& remNumJoints);
     
+    /// @brief Adds contacts to the island.
     void AddContactsToIsland(Island& island, std::vector<Body*>& stack, const Body* b);
+
+    /// @brief Adds joints to the island.
     void AddJointsToIsland(Island& island, std::vector<Body*>& stack, const Body* b);
     
+    /// @brief Removes unspeedables from the is islanded state.
     Bodies::size_type RemoveUnspeedablesFromIslanded(const std::vector<Body*>& bodies);
 
     /// @brief Solves the step using successive time of impact (TOI) events.
@@ -472,16 +491,23 @@ private:
     ///
     IslandSolverResults SolveToiViaGS(const StepConf& conf, Island& island);
 
+    /// @brief Updates the given body.
     static void UpdateBody(Body& body, const Position& pos, const Velocity& vel);
 
+    /// @brief Reset bodies for solve TOI.
     void ResetBodiesForSolveTOI();
+
+    /// @brief Reset contacts for solve TOI.
     void ResetContactsForSolveTOI();
+    
+    /// @brief Reset contacts for solve TOI.
     void ResetContactsForSolveTOI(Body& body);
 
+    /// @brief Process contacts output.
     struct ProcessContactsOutput
     {
-        ContactCounter contactsUpdated = 0;
-        ContactCounter contactsSkipped = 0;
+        ContactCounter contactsUpdated = 0; ///< Contacts updated.
+        ContactCounter contactsSkipped = 0; ///< Contacts skipped.
     };
 
     /// @brief Processes the contacts of a given body for TOI handling.
@@ -497,12 +523,17 @@ private:
     /// @param[in,out] island Island. On return this may contain additional contacts or bodies.
     /// @param[in,out] body A dynamic/accelerable body.
     /// @param[in] toi Time of impact (TOI). Value between 0 and 1.
+    /// @param[in] conf Step configuration data.
     ProcessContactsOutput ProcessContactsForTOI(Island& island, Body& body, Real toi,
                                                 const StepConf& conf);
 
+    /// @brief Adds the given joint to this world and to the given bodies.
     bool Add(Joint* j, Body* bodyA, Body* bodyB);
 
+    /// @brief Removes the given body from this world.
     bool Remove(const Body& b);
+ 
+    /// @brief Removes the given joint from this world.
     bool Remove(Joint& j);
 
     /// @brief Whether or not "step" is complete.
@@ -510,11 +541,16 @@ private:
     /// @sa <code>SetStepComplete</code>.
     bool IsStepComplete() const noexcept;
 
+    /// @brief Sets the step complete state.
     void SetStepComplete(bool value) noexcept;
 
+    /// @brief Sets the allow sleeping state.
     void SetAllowSleeping() noexcept;
+
+    /// @brief Unsets the allow sleeping state.
     void UnsetAllowSleeping() noexcept;
     
+    /// @brief Update contacts statistics.
     struct UpdateContactsStats
     {
         /// @brief Number of contacts ignored (because both bodies were asleep).
@@ -527,31 +563,39 @@ private:
         ContactCounter skipped = 0;
     };
     
+    /// @brief Destroy contacts statistics.
     struct DestroyContactsStats
     {
-        ContactCounter ignored = 0;
-        ContactCounter erased = 0;
+        ContactCounter ignored = 0; ///< Ignored.
+        ContactCounter erased = 0; ///< Erased.
     };
     
+    /// @brief Contacts TOI data.
     struct ContactToiData
     {
         std::vector<Contact*> contacts; ///< Contacts for which the time of impact is relavant.
         Real toi = std::numeric_limits<Real>::infinity(); ///< Time of impact (TOI) as a fractional value between 0 and 1.
     };
 
+    /// @brief Update contacts data.
     struct UpdateContactsData
     {
-        ContactCounter numAtMaxSubSteps = 0;
+        ContactCounter numAtMaxSubSteps = 0; ///< # at max sub-steps (lower the better).
         ContactCounter numUpdatedTOI = 0; ///< # updated TOIs (made valid).
         ContactCounter numValidTOI = 0; ///< # already valid TOIs.
     
+        /// @brief Distance iterations type alias.
         using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
+
+        /// @brief TOI iterations type alias.
         using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
+        
+        /// @brief Root iterations type alias.
         using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
         
-        dist_iter_type maxDistIters = 0;
-        toi_iter_type maxToiIters = 0;
-        root_iter_type maxRootIters = 0;
+        dist_iter_type maxDistIters = 0; ///< Max distance iterations.
+        toi_iter_type maxToiIters = 0; ///< Max TOI iterations.
+        root_iter_type maxRootIters = 0; ///< Max root iterations.
     };
     
     /// @brief Updates the contact times of impact.
@@ -563,8 +607,10 @@ private:
     ///  These contacts will all be enabled, not have sensors, be active, and impenetrable.
     ContactToiData GetSoonestContacts(std::size_t reserveSize);
 
+    /// @brief Determines whether this world has new fixtures.
     bool HasNewFixtures() const noexcept;
     
+    /// @brief Unsets the new fixtures state.
     void UnsetNewFixtures() noexcept;
     
     /// @brief Finds new contacts.
@@ -581,14 +627,17 @@ private:
     /// Essentially this really just purges contacts that are no longer relevant.
     DestroyContactsStats DestroyContacts(Contacts& contacts);
     
+    /// @brief Update contacts.
     UpdateContactsStats UpdateContacts(Contacts& contacts, const StepConf& conf);
     
+    /// @brief Determines whether the two fixtures should collide.
     bool ShouldCollide(const Fixture* fixtureA, const Fixture* fixtureB);
 
     /// @brief Destroys the given contact and removes it from its container.
     /// @details This updates the contacts container, returns the memory to the allocator,
     ///   and decrements the contact manager's contact count.
     /// @param contact Contact to destroy.
+    /// @param from From body.
     void Destroy(Contact* contact, Body* from);
     
     /// @brief Adds a contact for the proxies identified by the key if appropriate.
@@ -607,9 +656,13 @@ private:
     /// @sa bool Body::ShouldCollide(const Body* other) const
     bool Add(ContactKey key);
     
+    /// @brief Registers the given dynamic tree ID for processing.
     void RegisterForProcessing(ProxyId pid) noexcept;
+
+    /// @brief Unregisters the given dynamic tree ID from processing.
     void UnregisterForProcessing(ProxyId pid) noexcept;
 
+    /// @brief Destroys the given contact.
     void InternalDestroy(Contact* contact, Body* from = nullptr);
 
     /// @brief Creates proxies for every child of the given fixture's shape.
@@ -624,35 +677,64 @@ private:
     /// @note This sets things up so that pairs may be created for potentially new contacts.
     void InternalTouchProxies(Fixture& fixture) noexcept;
     
+    /// @brief Synchronizes the given body.
+    /// @details This updates the broad phase dynamic tree data for all of the given
+    ///   body's fixtures.
     ContactCounter Synchronize(Body& body,
                                Transformation xfm1, Transformation xfm2,
                                Real multiplier, Length extension);
+
+    /// @brief Synchronizes the given fixture.
+    /// @details This updates the broad phase dynamic tree data for all of the given
+    ///   fixture shape's children.
+    ContactCounter Synchronize(Fixture& fixture,
+                               Transformation xfm1, Transformation xfm2,
+                               Length2D displacement, Length extension);
     
+    /// @brief Creates and destroys proxies.
     void CreateAndDestroyProxies(const StepConf& conf);
+
+    /// @brief Creates and destroys proxies for the given fixture.
     void CreateAndDestroyProxies(Fixture& fixture, const StepConf& conf);
     
+    /// @brief Synchronizes proxies of the bodies for proxies.
     PreStepStats::counter_type SynchronizeProxies(const StepConf& conf);
 
+    /// @brief Whether the given body is in an island.
     bool IsIslanded(const Body* body) const noexcept;
+
+    /// @brief Whether the given contact is in an island.
     bool IsIslanded(const Contact* contact) const noexcept;
+
+    /// @brief Whether the given joint is in an island.
     bool IsIslanded(const Joint* joint) const noexcept;
 
+    /// @brief Sets the given body to the in an island state.
     void SetIslanded(Body* body) noexcept;
+
+    /// @brief Sets the given contact to the in an island state.
     void SetIslanded(Contact* contact) noexcept;
+
+    /// @brief Sets the given joint to the in an island state.
     void SetIslanded(Joint* joint) noexcept;
 
+    /// @brief Unsets the given body's in island state.
     void UnsetIslanded(Body* body) noexcept;
+
+    /// @brief Unsets the given contact's in island state.
     void UnsetIslanded(Contact* contact) noexcept;
+    
+    /// @brief Unsets the given joint's in island state.
     void UnsetIslanded(Joint* joint) noexcept;
 
     /******** Member variables. ********/
     
-    DynamicTree m_tree;
+    DynamicTree m_tree; ///< Dynamic tree.
     
-    ContactKeyQueue m_proxyKeys;
-    ProxyQueue m_proxies;
-    FixtureQueue m_fixturesForProxies;
-    BodyQueue m_bodiesForProxies;
+    ContactKeyQueue m_proxyKeys; ///< Proxy keys.
+    ProxyQueue m_proxies; ///< Proxies queue.
+    FixtureQueue m_fixturesForProxies; ///< Fixtures for proxies queue.
+    BodyQueue m_bodiesForProxies; ///< Bodies for proxies queue.
 
     ContactFilter m_defaultFilter; ///< Default contact filter. 8-bytes.
     
@@ -673,7 +755,7 @@ private:
     
     ContactFilter* m_contactFilter = &m_defaultFilter; ///< Contact filter. 8-bytes.
     
-    FlagsType m_flags = e_stepComplete;
+    FlagsType m_flags = e_stepComplete; ///< Flags.
 
     /// Inverse delta-t from previous step.
     /// @details Used to compute time step ratio to support a variable time step.

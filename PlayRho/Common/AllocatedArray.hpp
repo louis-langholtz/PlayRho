@@ -173,6 +173,8 @@ public:
     }
 
 private:
+    
+    /// @brief No-op deleter method.
     static void noop_deleter(void* /*unused*/) {}
 
     size_type m_max_size = 0; ///< Max size. 8-bytes.

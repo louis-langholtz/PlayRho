@@ -544,23 +544,29 @@ namespace playrho
 
     private:
         
+        /// @brief Widened type alias.
         using wider_type = typename Wider<value_type>::type;
+
+        /// @brief Unsigned widened type alias.
         using unsigned_wider_type = typename std::make_unsigned<wider_type>::type;
 
+        /// @brief Scalar type.
         struct scalar_type
         {
-            value_type value = 1;
+            value_type value = 1; ///< Value.
         };
         
+        /// @brief Numeric limits type alias.
         using numeric_limits = std::numeric_limits<value_type>;
         
+        /// @brief Initializing constructor.
         constexpr Fixed(value_type val, scalar_type scalar) noexcept:
             m_value{val * scalar.value}
         {
             // Intentionally empty.
         }
         
-        value_type m_value;
+        value_type m_value; ///< Value in internal form.
     };
 
     /// @brief Equality operator.

@@ -96,10 +96,10 @@ namespace playrho {
         struct Chunk;
         struct Block;
         
-        size_type m_chunkCount = 0;
-        size_type m_chunkSpace = ChunkArrayIncrement;
-        Chunk* m_chunks;
-        Block* m_freeLists[BlockSizes];
+        size_type m_chunkCount = 0; ///< Chunk count.
+        size_type m_chunkSpace = ChunkArrayIncrement; ///< Chunk space.
+        Chunk* m_chunks; ///< Chunks array.
+        Block* m_freeLists[BlockSizes]; ///< Free lists.
     };
     
     /// @brief Deletes the given pointer by calling the pointed-to object's destructor and

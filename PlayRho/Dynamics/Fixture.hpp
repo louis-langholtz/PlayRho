@@ -159,18 +159,22 @@ private:
 
     friend class FixtureAtty;
     
+    /// @brief Fixture proxies union.
     union FixtureProxies {
         FixtureProxies() noexcept: asArray{} {}
         ~FixtureProxies() noexcept {}
 
-        std::array<FixtureProxy, 2> asArray;
-        std::unique_ptr<FixtureProxy[]> asBuffer;
+        std::array<FixtureProxy, 2> asArray; ///< Values accessed as a local array.
+        std::unique_ptr<FixtureProxy[]> asBuffer; ///< Values accessed as pointer to array.
     };
     
+    /// @brief Gets the proxies.
     Span<const FixtureProxy> GetProxies() const noexcept;
     
+    /// @brief Sets the proxies.
     void SetProxies(std::unique_ptr<FixtureProxy[]> value, std::size_t count) noexcept;
 
+    /// @brief Resets the proxies.
     void ResetProxies() noexcept;
 
     // Data ordered here for memory compaction.

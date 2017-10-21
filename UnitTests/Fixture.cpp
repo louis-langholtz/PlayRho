@@ -64,7 +64,7 @@ TEST(Fixture, CreateMatchesDef)
     EXPECT_EQ(fixture->GetUserData(), userData);
     EXPECT_EQ(fixture->GetRestitution(), restitution);
     EXPECT_EQ(fixture->IsSensor(), isSensor);
-    EXPECT_EQ(fixture->GetProxyCount(), 0);
+    EXPECT_EQ(fixture->GetProxyCount(), ChildCounter{0});
 }
 
 TEST(Fixture, SetSensor)

@@ -238,7 +238,8 @@ private:
     /// @post The free list no longer references the returned index.
     Size AllocateNode(const BranchData& node, AABB aabb, Height height,
                       Size parent = GetInvalidSize()) noexcept;
-        
+    
+    /// @brief Finds first node which references the given index.
     Size FindReference(Size index) const noexcept;
 
     /// @brief Frees the specified node.
@@ -269,21 +270,34 @@ private:
     /// @warning Behavior is undefined if the given index is not valid.
     void Rebalance(Size index);
     
+    /// @brief Gets the parent node index of the node identified by the given index.
     Size GetParent(Size index) const noexcept;
+
+    /// @brief Sets the parent node index of the node identified by the given index.
     void SetParent(Size index, Size newParent) noexcept;
     
+    /// @brief Sets the hieght of the node identified by the given index to the given value.
     void SetHeight(Size index, Height value) noexcept;
 
+    /// @brief Gets the child-1 index value of the node identified by the given index.
     Size GetChild1(Size index) const noexcept;
+
+    /// @brief Sets the child-1 index value of the node identified by the given index.
     void SetChild1(Size index, Size value) noexcept;
     
+    /// @brief Gets the child-2 index value of the node identified by the given index.
     Size GetChild2(Size index) const noexcept;
+
+    /// @brief Sets the child-2 index value of the node identified by the given index.
     void SetChild2(Size index, Size value) noexcept;
     
+    /// @brief Sets the AABB of the node identified by the given index to the given value.
     void SetAABB(Size index, AABB value) noexcept;
     
+    /// @brief Swaps the child index of the node identified by the given index.
     void SwapChild(Size index, Size oldChild, Size newChild) noexcept;
     
+    /// @brief Sets the child indexes for the node identified by the given index.
     void SetChildren(Size index, Size child1, Size child2) noexcept;
     
     TreeNode* m_nodes; ///< Nodes. @details Initialized on construction.
@@ -589,9 +603,11 @@ private:
 
     /// @brief Other node.
     Size m_other = DynamicTree::GetInvalidSize(); ///< Index of another node.
-                
+    
+    /// @brief AABB.
     AABB m_aabb;
-                
+    
+    /// @brief Variant data for the node.
     VariantData m_variant;
 };
 

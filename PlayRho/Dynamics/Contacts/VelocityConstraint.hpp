@@ -240,6 +240,7 @@ namespace playrho {
         /// Removes the last point added.
         void RemovePoint() noexcept;
         
+        /// @brief Gets a point instance for the given parameters.
         Point GetPoint(Momentum normalImpulse, Momentum tangentImpulse,
                        Length2D relA, Length2D relB, Conf conf) const noexcept;
         

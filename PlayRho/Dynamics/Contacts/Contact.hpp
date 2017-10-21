@@ -237,9 +237,11 @@ private:
         e_dirtyFlag = 0x20
     };
     
-    /// Flag this contact for filtering. Filtering will occur the next time step.
+    /// @brief Flags this contact for filtering.
+    /// @note Filtering will occur the next time step.
     void UnflagForFiltering() noexcept;
 
+    /// @brief Unflags this contact for updating.
     void UnflagForUpdating() noexcept;
 
     /// @brief Updates the touching related state and notifies listener (if one given).
@@ -258,7 +260,7 @@ private:
     ///
     void Update(const UpdateConf& conf, ContactListener* listener = nullptr);
 
-    /// Sets the time of impact (TOI).
+    /// @brief Sets the time of impact (TOI).
     /// @details After returning, this object will have a TOI that is set as indicated by <code>HasValidToi()</code>.
     /// @note Behavior is undefined if the value assigned is less than 0 or greater than 1.
     /// @sa Real GetToi() const.
@@ -266,17 +268,20 @@ private:
     /// @param toi Time of impact as a fraction between 0 and 1 where 1 indicates no actual impact in the current time slot.
     void SetToi(Real toi) noexcept;
 
+    /// @brief Unsets the TOI.
     void UnsetToi() noexcept;
 
+    /// @brief Sets the TOI count to the given value.
     void SetToiCount(substep_type value) noexcept;
 
-    /// Sets the touching flag state.
+    /// @brief Sets the touching flag state.
     /// @note This should only be called if either:
     ///   1. The contact's manifold has more than 0 contact points, or
     ///   2. The contact has sensors and the two shapes of this contact are found to be overlapping.
     /// @sa IsTouching().
     void SetTouching() noexcept;
 
+    /// @brief Unsets the touching flag state.
     void UnsetTouching() noexcept;
 
     /// @brief Gets the writable manifold.
@@ -284,8 +289,13 @@ private:
     /// @warning Do not modify the manifold unless you understand the internals of the engine.
     Manifold& GetMutableManifold() noexcept;
     
+    /// @brief Whether this contact is in the is islanded state.
     bool IsIslanded() const noexcept;
+    
+    /// @brief Sets this contact to the is islanded state.
     void SetIslanded() noexcept;
+    
+    /// @brief Unsets the is islanded state.
     void UnsetIslanded() noexcept;
 
     // Member variables...
@@ -301,14 +311,14 @@ private:
 
     Fixture* const m_fixtureA; ///< Fixture A. @details Non-null pointer to fixture A.
     Fixture* const m_fixtureB; ///< Fixture B. @details Non-null pointer to fixture B.
-    ChildCounter const m_indexA;
-    ChildCounter const m_indexB;
+    ChildCounter const m_indexA; ///< Index A.
+    ChildCounter const m_indexB; ///< Index B.
     
     // initialized on construction (construction-time depedent)
     Real m_friction; ///< Mix of frictions of the associated fixtures. @sa MixFriction.
     Real m_restitution; ///< Mix of restitutions of the associated fixtures. @sa MixRestitution.
 
-    LinearVelocity m_tangentSpeed = 0;
+    LinearVelocity m_tangentSpeed = 0; ///< Tangent speed.
     
     /// Time of impact.
     /// @note This is a unit interval of time (a value between 0 and 1).
@@ -317,7 +327,7 @@ private:
     
     substep_type m_toiCount = 0; ///< Count of TOI calculations contact has gone through since last reset.
     
-    FlagsType m_flags = e_enabledFlag|e_dirtyFlag;
+    FlagsType m_flags = e_enabledFlag|e_dirtyFlag; ///< Flags.
 };
 
 inline const Manifold& Contact::GetManifold() const noexcept

@@ -174,6 +174,8 @@ namespace playrho {
         constexpr size_type GetSize() const noexcept;
 
     private:
+        
+        /// @brief Initializing constructor.
         Simplex(const SimplexEdges& simplexEdges, const Coefficients& normalizedWeights) noexcept;
 
         /// Collection of valid simplex edges.

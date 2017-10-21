@@ -98,22 +98,23 @@ private:
     bool SolvePositionConstraints(BodyConstraintsMap& bodies,
                                   const ConstraintSolverConf& conf) const override;
 
+    /// @brief Gets the effective mass matrix.
     Mass22 GetEffectiveMassMatrix(const BodyConstraint& body) const noexcept;
 
-    Length2D m_targetA;
-    Length2D m_localAnchorB;
-    NonNegative<Frequency> m_frequency = NonNegative<Frequency>{0};
-    NonNegative<Real> m_dampingRatio = NonNegative<Real>{0};
+    Length2D m_targetA; ///< Target location (A).
+    Length2D m_localAnchorB; ///< Local anchor B.
+    NonNegative<Frequency> m_frequency = NonNegative<Frequency>{0}; ///< Frequency.
+    NonNegative<Real> m_dampingRatio = NonNegative<Real>{0}; ///< Damping ratio.
     
     // Solver shared
-    Momentum2D m_impulse = Momentum2D{};
-    NonNegative<Force> m_maxForce = NonNegative<Force>{0};
-    InvMass m_gamma = InvMass{0};
+    Momentum2D m_impulse = Momentum2D{}; ///< Impulse.
+    NonNegative<Force> m_maxForce = NonNegative<Force>{0}; ///< Max force.
+    InvMass m_gamma = InvMass{0}; ///< Gamma.
 
     // Solver variables. These are only valid after InitVelocityConstraints called.
-    Length2D m_rB;
+    Length2D m_rB; ///< Relative B.
     Mass22 m_mass; ///< 2x2 mass matrix in kilograms.
-    LinearVelocity2D m_C;
+    LinearVelocity2D m_C; ///< Velocity constant.
 };
 
 inline Length2D MouseJoint::GetLocalAnchorB() const noexcept

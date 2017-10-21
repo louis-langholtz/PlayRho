@@ -57,13 +57,19 @@ namespace playrho {
         }
 
     private:
+        /// @brief Initializing constructor.
         constexpr JointKey(const Body* body1, const Body* body2):
         	m_body1(body1), m_body2(body2)
         {
             // Intentionally empty.
         }
 
+        /// @brief Body 1.
+        /// @details This is the body with the lower-than or equal-to address.
         const Body* m_body1;
+
+        /// @brief Body 2.
+        /// @details This is the body with the higher-than or equal-to address.
         const Body* m_body2;
     };
     

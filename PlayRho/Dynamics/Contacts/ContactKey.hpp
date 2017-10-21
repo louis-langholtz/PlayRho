@@ -68,6 +68,7 @@ namespace playrho
         }
 
     private:
+        /// @brief Index ID pair.
         std::pair<Index, Index> m_ids{static_cast<Index>(-1), static_cast<Index>(-1)};
     };
 

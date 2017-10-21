@@ -27,16 +27,35 @@
 
 namespace playrho {
     
-    /// Version numbering scheme.
-    /// See http://en.wikipedia.org/wiki/Software_versioning
+    /// @brief Version numbering scheme.
+    /// @details Version class for numbering the PlayRho library releases. Follows
+    ///   Semantic Versioning 2.0.0.
+    /// @sa http://en.wikipedia.org/wiki/Software_versioning
+    /// @sa http://semver.org
     struct Version
     {
         /// @brief Revision number type.
-        using revnum_type = std::int32_t;
+        using Revnum = std::int32_t;
         
-        revnum_type major; ///< significant changes
-        revnum_type minor; ///< incremental changes
-        revnum_type revision; ///< bug fixes
+        /// @brief Major version number.
+        /// @details Changed to represent significant changes. Specifically this field
+        ///   is incremented when backwards incompatible changes are introduced to the
+        ///   public API. The minor and revision fields are reset to 0 when this field
+        ///   is incremented.
+        /// @note Started at 0.
+        Revnum major;
+        
+        /// @brief Minor version number.
+        /// @details Changed to represent incremental changes. Specifically this field
+        ///   is incremented when new, backwards compatible functionality is introduced
+        ///   to the public API, or when any public API functionality is marked as
+        ///   deprecated.
+        Revnum minor;
+        
+        /// @brief Revision version number.
+        /// @details Changed to represent bug fixes.
+        /// @note Also known as the patch version.
+        Revnum revision;
     };
     
     /// @brief Equality operator.

@@ -121,6 +121,8 @@ namespace playrho {
         constexpr Length2D GetLocalPoint() const noexcept;
 
     private:
+        
+        /// @brief Initializing constructor.
         constexpr SeparationFinder(const DistanceProxy& dpA, const DistanceProxy& dpB,
                                          const UnitVec2 axis, const Length2D lp, const Type type):
             m_proxyA{dpA}, m_proxyB{dpB}, m_axis{axis}, m_localPoint{lp}, m_type{type}
@@ -128,23 +130,29 @@ namespace playrho {
             // Intentionally empty.
         }
         
+        /// @brief Finds the minimum separation for points.
         Data FindMinSeparationForPoints(const Transformation& xfA, const Transformation& xfB) const;
         
+        /// @brief Finds the minimum separation for face A.
         Data FindMinSeparationForFaceA(const Transformation& xfA, const Transformation& xfB) const;
         
+        /// @brief Finds the minimum separation for face B.
         Data FindMinSeparationForFaceB(const Transformation& xfA, const Transformation& xfB) const;
         
+        /// @brief Evaluates for points.
         Length EvaluateForPoints(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const;
         
+        /// @brief Evaluates for face A.
         Length EvaluateForFaceA(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const;
         
+        /// @brief Evaluates for face B.
         Length EvaluateForFaceB(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const;
         
-        const DistanceProxy& m_proxyA;
-        const DistanceProxy& m_proxyB;
+        const DistanceProxy& m_proxyA; ///< Distance proxy A.
+        const DistanceProxy& m_proxyB; ///< Distance proxy B.
         const UnitVec2 m_axis; ///< Axis. @details Directional vector of the axis of separation.
         const Length2D m_localPoint; ///< Local point. @note Only used if type is e_faceA or e_faceB.
-        const Type m_type;
+        const Type m_type; ///< The type of this instance.
     };
 
     constexpr inline SeparationFinder::Type SeparationFinder::GetType() const noexcept

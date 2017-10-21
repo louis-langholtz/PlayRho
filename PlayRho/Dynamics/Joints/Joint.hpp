@@ -141,8 +141,10 @@ private:
         e_collideConnectedFlag = 0x02u
     };
 
+    /// @brief Gets the flags value for the given joint definition.
     static FlagsType GetFlags(const JointDef& def) noexcept;
 
+    /// @brief Dynamically allocates and instantiates the out-type from the given data.
     template <class OUT_TYPE, class IN_TYPE>
     static OUT_TYPE* Create(IN_TYPE def)
     {
@@ -178,13 +180,18 @@ private:
     virtual bool SolvePositionConstraints(BodyConstraintsMap& bodies,
                                           const ConstraintSolverConf& conf) const = 0;
 
+    /// @brief Whether this joint is in the is-islanded state.
     bool IsIslanded() const noexcept;
+    
+    /// @brief Sets this joint to be in the is-islanded state.
     void SetIslanded() noexcept;
+    
+    /// @brief Unsets this joint from being in the is-islanded state.
     void UnsetIslanded() noexcept;
 
-    Body* const m_bodyA;
-    Body* const m_bodyB;
-    void* m_userData;
+    Body* const m_bodyA; ///< Body A.
+    Body* const m_bodyB; ///< Body B.
+    void* m_userData; ///< User data.
     FlagsType m_flags = 0u; ///< Flags. 1-byte.
 };
 

@@ -83,41 +83,41 @@ private:
     bool SolvePositionConstraints(BodyConstraintsMap& bodies,
                                   const ConstraintSolverConf& conf) const override;
 
-    NonNull<Joint*> m_joint1;
-    NonNull<Joint*> m_joint2;
+    NonNull<Joint*> m_joint1; ///< Joint 1.
+    NonNull<Joint*> m_joint2; ///< Joint 2.
 
-    JointType m_typeA;
-    JointType m_typeB;
+    JointType m_typeA; ///< Type of joint 1.
+    JointType m_typeB; ///< Type of joint 2.
 
     // Body A is connected to body C
     // Body B is connected to body D
-    Body* m_bodyC;
-    Body* m_bodyD;
+    Body* m_bodyC; ///< Body C.
+    Body* m_bodyD; ///< Body D.
 
     // Solver shared
-    Length2D m_localAnchorA;
-    Length2D m_localAnchorB;
-    Length2D m_localAnchorC;
-    Length2D m_localAnchorD;
+    Length2D m_localAnchorA; ///< Local anchor A.
+    Length2D m_localAnchorB; ///< Local anchor B.
+    Length2D m_localAnchorC; ///< Local anchor C.
+    Length2D m_localAnchorD; ///< Local anchor D.
 
-    UnitVec2 m_localAxisC;
-    UnitVec2 m_localAxisD;
+    UnitVec2 m_localAxisC; ///< Local axis C.
+    UnitVec2 m_localAxisD; ///< Local axis D.
 
-    Angle m_referenceAngleA;
-    Angle m_referenceAngleB;
+    Angle m_referenceAngleA; ///< Reference angle A.
+    Angle m_referenceAngleB; ///< Reference angle B.
 
-    Real m_constant;
-    Real m_ratio;
+    Real m_constant; ///< Constant.
+    Real m_ratio; ///< Ratio.
 
-    Momentum m_impulse = Momentum{0};
+    Momentum m_impulse = Momentum{0}; ///< Impulse.
 
     // Solver temp
-    Vec2 m_JvAC = Vec2_zero;
-    Vec2 m_JvBD;
-    Length m_JwA = Length{0};
-    Length m_JwB;
-    Length m_JwC;
-    Length m_JwD;
+    Vec2 m_JvAC = Vec2_zero; ///< AC Jv data.
+    Vec2 m_JvBD; ///< BD Jv data.
+    Length m_JwA = Length{0}; ///< A Jw data.
+    Length m_JwB; ///< B Jw data.
+    Length m_JwC; ///< C Jw data.
+    Length m_JwD; ///< D Jw data.
     Real m_mass; ///< Either linear mass or angular mass.
 };
 

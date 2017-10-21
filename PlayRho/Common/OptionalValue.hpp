@@ -101,8 +101,8 @@ namespace playrho {
         constexpr T value_or(const T& alt) const;
         
     private:
-        value_type m_value = value_type{};
-        bool m_set = false;
+        value_type m_value = value_type{}; ///< Underlying value.
+        bool m_set = false; ///< Whether this optional's value is set.
     };
     
     template<typename T>

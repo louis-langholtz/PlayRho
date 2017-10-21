@@ -127,8 +127,8 @@ namespace playrho
 
     private:
     
-        const Length2D* m_vertices = nullptr;
-        const UnitVec2* m_normals = nullptr;
+        const Length2D* m_vertices = nullptr; ///< Vertices.
+        const UnitVec2* m_normals = nullptr; ///< Normals.
         size_type m_count = 0; ///< Count of valid elements of m_vertices.
         NonNegative<Length> m_vertexRadius = Length{0}; ///< Radius of the vertices of the associated shape.
     };

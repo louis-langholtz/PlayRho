@@ -92,22 +92,22 @@ private:
     bool SolvePositionConstraints(BodyConstraintsMap& bodies,
                                   const ConstraintSolverConf& conf) const override;
 
-    Length2D m_localAnchorA;
-    Length2D m_localAnchorB;
-    Length m_length;
-    NonNegative<Frequency> m_frequency = NonNegative<Frequency>{0};
-    Real m_dampingRatio;
+    Length2D m_localAnchorA; ///< Local anchor A.
+    Length2D m_localAnchorB; ///< Local anchor B.
+    Length m_length; ///< Length.
+    NonNegative<Frequency> m_frequency = NonNegative<Frequency>{0}; ///< Frequency.
+    Real m_dampingRatio; ///< Damping ratio.
 
     // Solver shared
-    Momentum m_impulse = Momentum{0};
+    Momentum m_impulse = Momentum{0}; ///< Impulse.
 
     // Solver temp
-    InvMass m_invGamma;
-    LinearVelocity m_bias;
-    Mass m_mass;
-    UnitVec2 m_u;
-    Length2D m_rA;
-    Length2D m_rB;
+    InvMass m_invGamma; ///< Inverse gamma.
+    LinearVelocity m_bias; ///< Bias.
+    Mass m_mass; ///< Mass.
+    UnitVec2 m_u; ///< "u" directional.
+    Length2D m_rA; ///< Relative A position.
+    Length2D m_rB; ///< Relative B position.
 };
 
 inline void DistanceJoint::SetLength(Length length) noexcept

@@ -102,7 +102,7 @@ public:
     }
     
 private:
-    Optional<JointType> m_type;
+    Optional<JointType> m_type; ///< Optional type of the joint (set if visited).
 };
 
 } // namespace playrho

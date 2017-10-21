@@ -98,6 +98,8 @@ namespace playrho {
         void AddConvexHull(const VertexSet& pointSet) noexcept;
 
     private:
+
+        /// @brief Convex hull.
         struct ConvexHull
         {
             /// Array of vertices.
@@ -111,7 +113,7 @@ namespace playrho {
             std::vector<UnitVec2> normals;
         };
         
-        std::vector<ConvexHull> m_children;
+        std::vector<ConvexHull> m_children; ///< Children.
     };
     
     inline ChildCounter MultiShape::GetChildCount() const noexcept
