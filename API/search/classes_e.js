@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['point',['Point',['../structplayrho_1_1Manifold_1_1Point.html',1,'playrho::Manifold::Point'],['../structplayrho_1_1VelocityConstraint_1_1Point.html',1,'playrho::VelocityConstraint::Point']]],
+  ['point',['Point',['../structplayrho_1_1Manifold_1_1Point.html',1,'playrho::Manifold']]],
+  ['point',['Point',['../structplayrho_1_1VelocityConstraint_1_1Point.html',1,'playrho::VelocityConstraint']]],
+  ['pointarray',['PointArray',['../structplayrho_1_1Manifold_1_1PointArray.html',1,'playrho::Manifold']]],
   ['pointdata',['PointData',['../structplayrho_1_1WorldManifold_1_1PointData.html',1,'playrho::WorldManifold']]],
   ['pointstates',['PointStates',['../structplayrho_1_1PointStates.html',1,'playrho']]],
   ['polygonshape',['PolygonShape',['../classplayrho_1_1PolygonShape.html',1,'playrho']]],
@@ -11,6 +13,7 @@ var searchData=
   ['prestepstats',['PreStepStats',['../structplayrho_1_1PreStepStats.html',1,'playrho']]],
   ['prismaticjoint',['PrismaticJoint',['../classplayrho_1_1PrismaticJoint.html',1,'playrho']]],
   ['prismaticjointdef',['PrismaticJointDef',['../structplayrho_1_1PrismaticJointDef.html',1,'playrho']]],
+  ['processcontactsoutput',['ProcessContactsOutput',['../structplayrho_1_1World_1_1ProcessContactsOutput.html',1,'playrho::World']]],
   ['pulleyjoint',['PulleyJoint',['../classplayrho_1_1PulleyJoint.html',1,'playrho']]],
   ['pulleyjointdef',['PulleyJointDef',['../structplayrho_1_1PulleyJointDef.html',1,'playrho']]]
 ];

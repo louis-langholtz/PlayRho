@@ -1,12 +1,11 @@
 var searchData=
 [
-  ['mass',['Mass',['../group__Quantities.html#ga5edfc295416b7690b4f949223b551bc1',1,'playrho']]],
-  ['mass22',['Mass22',['../namespaceplayrho.html#a358c8036b278316ab41b3f35b56342a1',1,'playrho']]],
-  ['mat22',['Mat22',['../namespaceplayrho.html#a02c09bb6556e3168c0085871358d2f71',1,'playrho']]],
-  ['mat33',['Mat33',['../namespaceplayrho.html#aabd44d74c5bc530c9b6676c6a61e6b31',1,'playrho']]],
-  ['matrix',['Matrix',['../namespaceplayrho.html#a17691ea57e6373d5212a66dec97f4490',1,'playrho']]],
-  ['matrix22',['Matrix22',['../namespaceplayrho.html#aed006edfc52c4469ef951a19eb0c56e5',1,'playrho']]],
-  ['matrix33',['Matrix33',['../namespaceplayrho.html#a8cdc39396ed6c7a045fca0426f1659ba',1,'playrho']]],
-  ['momentum',['Momentum',['../group__Quantities.html#ga1d281ffd7cf8e2c8897d03a1cae9f1f8',1,'playrho']]],
-  ['momentum2d',['Momentum2D',['../namespaceplayrho.html#a7eb9e589bb14ae24300d375db57b13d6',1,'playrho']]]
+  ['length',['Length',['../group__Quantities.html#ga7361ef2e10e7853a05b64aa433651014',1,'playrho']]],
+  ['length2d',['Length2D',['../namespaceplayrho.html#a8c25d36dc5524be1b25cbe4f267a27ba',1,'playrho']]],
+  ['lengthinterval',['LengthInterval',['../classplayrho_1_1Interval.html#ab87595595939d0c7469bc1c48524598a',1,'playrho::Interval']]],
+  ['limits',['limits',['../classplayrho_1_1Interval.html#aa866ea1ceb4bd34b4cb87ed352407ddd',1,'playrho::Interval']]],
+  ['linearacceleration',['LinearAcceleration',['../group__Quantities.html#gadf7de472e7f4a6fa26bff6a655f100e7',1,'playrho']]],
+  ['linearacceleration2d',['LinearAcceleration2D',['../namespaceplayrho.html#af58ac53167963bf12700cb3af210bba9',1,'playrho']]],
+  ['linearvelocity',['LinearVelocity',['../group__Quantities.html#ga6e944c18ed210626b5829b8ad2813fde',1,'playrho']]],
+  ['linearvelocity2d',['LinearVelocity2D',['../namespaceplayrho.html#ac0ff68214afc679c84744ef5316134b9',1,'playrho']]]
 ];

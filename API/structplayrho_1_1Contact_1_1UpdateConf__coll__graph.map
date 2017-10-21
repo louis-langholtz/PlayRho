@@ -1,5 +1,8 @@
 <map id="playrho::Contact::UpdateConf" name="playrho::Contact::UpdateConf">
-<area shape="rect" id="node2" href="$structplayrho_1_1Manifold_1_1Conf.html" title="Configuration data for manifold calculation. " alt="" coords="45,119,204,144"/>
-<area shape="rect" id="node5" href="$structplayrho_1_1DistanceConf.html" title="Distance Configuration. " alt="" coords="228,119,381,144"/>
-<area shape="rect" id="node7" href="$classplayrho_1_1Simplex_1_1Cache.html" title="Simplex cache. " alt="" coords="340,5,506,31"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1Manifold_1_1Conf.html" title="Configuration data for manifold calculation. " alt="" coords="57,347,212,373"/>
+<area shape="rect" id="node7" href="$classplayrho_1_1Simplex_1_1Cache.html" title="Simplex cache. " alt="" coords="254,347,418,373"/>
+<area shape="rect" id="node5" href="$structplayrho_1_1DistanceConf.html" title="Distance Configuration. " alt="" coords="261,436,411,463"/>
+<area shape="rect" id="node9" href="$structplayrho_1_1IndexPair.html" title="Index pair. " alt="" coords="297,109,423,136"/>
+<area shape="rect" id="node8" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; MaxSimplex\lEdges, IndexPair \&gt;" alt="" coords="235,213,429,255"/>
+<area shape="rect" id="node11" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="114,109,273,136"/>
 </map>

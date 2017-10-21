@@ -1,3 +1,24 @@
 <map id="playrho::PulleyJoint" name="playrho::PulleyJoint">
-<area shape="rect" id="node2" href="$classplayrho_1_1Joint.html" title="Base joint class. " alt="" coords="23,5,124,31"/>
+<area shape="rect" id="node2" href="$classplayrho_1_1Joint.html" title="Base joint class. " alt="" coords="2245,185,2344,212"/>
+<area shape="rect" id="node4" href="$classplayrho_1_1Body.html" title="Physical entity that exists within a World. " alt="" coords="2035,597,2137,624"/>
+<area shape="rect" id="node8" href="$structplayrho_1_1Transformation.html" title="Describes a geometric transformation. " alt="" coords="1681,496,1839,523"/>
+<area shape="rect" id="node9" href="$classplayrho_1_1UnitVec2.html" title="2&#45;D unit vector. " alt="" coords="1335,91,1460,117"/>
+<area shape="rect" id="node14" href="$classplayrho_1_1Sweep.html" title="Description of a &quot;sweep&quot; of motion. " alt="" coords="1705,547,1815,573"/>
+<area shape="rect" id="node11" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="821,555,995,581"/>
+<area shape="rect" id="node15" href="$structplayrho_1_1Position.html" title="Positional data structure. " alt="" coords="1338,541,1457,568"/>
+<area shape="rect" id="node13" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="457,697,616,724"/>
+<area shape="rect" id="node18" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearAcceleration \&gt;" alt="" coords="1040,768,1281,795"/>
+<area shape="rect" id="node23" href="$classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="459,1014,615,1055"/>
+<area shape="rect" id="node44" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearVelocity \&gt;" alt="" coords="800,633,1016,660"/>
+<area shape="rect" id="node19" href="$classplayrho_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. " alt="" coords="1707,1076,1813,1103"/>
+<area shape="rect" id="node21" href="$classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Length \&gt;" alt="" coords="830,1325,986,1366"/>
+<area shape="rect" id="node24" href="$classplayrho_1_1DynamicTree.html" title="A dynamic AABB tree broad&#45;phase. " alt="" coords="1323,1229,1471,1256"/>
+<area shape="rect" id="node25" href="$classplayrho_1_1DynamicTree_1_1TreeNode.html" title="A node in the dynamic tree. " alt="" coords="834,1102,982,1143"/>
+<area shape="rect" id="node26" href="$unionplayrho_1_1DynamicTree_1_1VariantData.html" title="Variant data. " alt="" coords="463,1131,611,1173"/>
+<area shape="rect" id="node27" href="$structplayrho_1_1DynamicTree_1_1BranchData.html" title="Branch data of a TreeNode. " alt="" coords="204,1131,352,1173"/>
+<area shape="rect" id="node29" href="$structplayrho_1_1AABB.html" title="Axis Aligned Bounding Box. " alt="" coords="483,963,591,989"/>
+<area shape="rect" id="node32" href="$classplayrho_1_1ContactFilter.html" title="Implement this class to provide collision filtering. In other words, you can implement this class if ..." alt="" coords="1324,1027,1471,1053"/>
+<area shape="rect" id="node35" href="$classplayrho_1_1ContactListener.html" title="A pure&#45;virtual interface for &quot;listeners&quot; for contacts. " alt="" coords="1316,1179,1479,1205"/>
+<area shape="rect" id="node36" href="$classplayrho_1_1DestructionListener.html" title="Joints and fixtures are destroyed when their associated body is destroyed. Implement this listener so..." alt="" coords="1305,1280,1489,1307"/>
+<area shape="rect" id="node43" href="$structplayrho_1_1Velocity.html" title="Velocity related data structure. " alt="" coords="1338,655,1457,681"/>
 </map>

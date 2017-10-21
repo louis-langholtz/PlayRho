@@ -1,6 +1,7 @@
 var searchData=
 [
   ['dampingratio',['dampingRatio',['../structplayrho_1_1DistanceJointDef.html#ac887d539abccca66a4e98bd446a8bdf7',1,'playrho::DistanceJointDef::dampingRatio()'],['../structplayrho_1_1MouseJointDef.html#a0fad622e3ebdda8a4ca243f8df6cf107',1,'playrho::MouseJointDef::dampingRatio()'],['../structplayrho_1_1WeldJointDef.html#a0474e4d3efa5452ebaf36241bede203c',1,'playrho::WeldJointDef::dampingRatio()'],['../structplayrho_1_1WheelJointDef.html#a61e2e9a833c37c0335f9b3b66fd09cc3',1,'playrho::WheelJointDef::dampingRatio()']]],
+  ['data',['data',['../structplayrho_1_1StackAllocator_1_1AllocationRecord.html#a3852baf545ea9c93c693470ac454bdd5',1,'playrho::StackAllocator::AllocationRecord']]],
   ['defaultaabbextension',['DefaultAabbExtension',['../namespaceplayrho.html#a3dd06178e859667c8f65b26c4e91972e',1,'playrho']]],
   ['defaultangularsleeptolerance',['DefaultAngularSleepTolerance',['../namespaceplayrho.html#a31907e80be5889667f03ef86ee3bbf0a',1,'playrho']]],
   ['defaultangularslop',['DefaultAngularSlop',['../namespaceplayrho.html#adfccbc3cd8cc0bb78701f62e041acdba',1,'playrho']]],
@@ -26,7 +27,7 @@ var searchData=
   ['defaultvelocitythreshold',['DefaultVelocityThreshold',['../namespaceplayrho.html#a6497dbff92f4140c03fb29f7dc80093d',1,'playrho']]],
   ['degree',['Degree',['../group__Units.html#gaf0840a4c6fcfa4ed0f1e25820fea0ca3',1,'playrho']]],
   ['degreepersecond',['DegreePerSecond',['../group__Units.html#ga987ba57899c87b7d6734d046d1c854b8',1,'playrho']]],
-  ['density',['density',['../structplayrho_1_1Shape_1_1BaseConf.html#a699db110eea776e9a369e363904b8e65',1,'playrho::Shape::BaseConf']]],
+  ['density',['density',['../structplayrho_1_1ShapeDef.html#ad321190e742d1fb345a7692dfb8ed767',1,'playrho::ShapeDef']]],
   ['destroyed',['destroyed',['../structplayrho_1_1PreStepStats.html#a62ba523ddae45bd7f16766075b5d71ee',1,'playrho::PreStepStats']]],
   ['digits',['digits',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed32_01_4.html#af8c07a5fc17242e78ca53d97e70bd071',1,'std::numeric_limits&lt; playrho::Fixed32 &gt;::digits()'],['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed64_01_4.html#aba59d2cb54602f1b067ca35258fc4ce6',1,'std::numeric_limits&lt; playrho::Fixed64 &gt;::digits()']]],
   ['digits10',['digits10',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed32_01_4.html#af544029ee36f0bd4ca7963373588ee07',1,'std::numeric_limits&lt; playrho::Fixed32 &gt;::digits10()'],['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed64_01_4.html#a7ce4a8092e1dfef7f00b2fffcd824b0f',1,'std::numeric_limits&lt; playrho::Fixed64 &gt;::digits10()']]],

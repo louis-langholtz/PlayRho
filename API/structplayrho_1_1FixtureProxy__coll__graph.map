@@ -1,6 +1,2 @@
 <map id="playrho::FixtureProxy" name="playrho::FixtureProxy">
-<area shape="rect" id="node3" href="$classplayrho_1_1Fixture.html" title="An association between a body and a shape. " alt="" coords="143,205,256,231"/>
-<area shape="rect" id="node4" href="$structplayrho_1_1AABB.html" title="Axis Aligned Bounding Box. " alt="" coords="280,205,388,231"/>
-<area shape="rect" id="node5" href="$classplayrho_1_1ValueRange.html" title="playrho::ValueRange\l\&lt; Length \&gt;" alt="" coords="262,92,406,131"/>
-<area shape="rect" id="node6" href="$classplayrho_1_1ValueRange.html" title="Value range template type. " alt="" coords="246,5,422,31"/>
 </map>

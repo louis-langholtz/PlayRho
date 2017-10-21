@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['pointstate',['PointState',['../namespaceplayrho.html#a06f67e158a928ef59e4263facac8fb0b',1,'playrho']]]
+  ['limitstate',['LimitState',['../classplayrho_1_1Joint.html#a0fa6953561715e10e698e851af9893e5',1,'playrho::Joint']]],
+  ['lovaluecheck',['LoValueCheck',['../namespaceplayrho.html#a57593cac21168ed673c77a11d18a35ec',1,'playrho']]]
 ];

@@ -1,3 +1,6 @@
 <map id="playrho::DistanceOutput" name="playrho::DistanceOutput">
-<area shape="rect" id="node3" href="$classplayrho_1_1Simplex.html" title="An encapsulation of a point, line segment, or triangle. " alt="" coords="75,5,195,31"/>
+<area shape="rect" id="node3" href="$classplayrho_1_1Simplex.html" title="An encapsulation of a point, line segment, or triangle. " alt="" coords="831,63,949,90"/>
+<area shape="rect" id="node4" href="$classplayrho_1_1ArrayList.html" title="playrho::ArrayList\l\&lt; Real, MaxSimplexEdges,\l std::remove_const\&lt; decltype\l(MaxSimplexEdges)\&gt;::type \&gt;" alt="" coords="437,5,630,76"/>
+<area shape="rect" id="node5" href="$classplayrho_1_1ArrayList.html" title="Array list. " alt="" coords="5,59,191,115"/>
+<area shape="rect" id="node6" href="$classplayrho_1_1ArrayList.html" title="playrho::ArrayList\l\&lt; SimplexEdge, MaxSimplexEdges,\l std::remove_const\&lt; decltype\l(MaxSimplexEdges)\&gt;::type \&gt;" alt="" coords="417,100,649,171"/>
 </map>

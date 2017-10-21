@@ -1,5 +1,5 @@
 <map id="playrho::PulleyJointDef" name="playrho::PulleyJointDef">
-<area shape="rect" id="node2" href="$structplayrho_1_1JointBuilder.html" title="playrho::JointBuilder\l\&lt; PulleyJointDef \&gt;" alt="" coords="13,167,155,205"/>
-<area shape="rect" id="node3" href="$structplayrho_1_1JointDef.html" title="Abstract base Joint definition class. " alt="" coords="18,5,140,31"/>
-<area shape="rect" id="node4" href="$structplayrho_1_1JointBuilder.html" title="Joint builder definition structure. " alt="" coords="100,80,273,105"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1JointBuilder.html" title="playrho::JointBuilder\l\&lt; PulleyJointDef \&gt;" alt="" coords="13,171,152,212"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1JointDef.html" title="Abstract base Joint definition class. " alt="" coords="41,5,159,32"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1JointBuilder.html" title="Joint builder definition structure. " alt="" coords="99,81,269,108"/>
 </map>

@@ -1,3 +1,7 @@
 <map id="playrho::MultiShape::Conf" name="playrho::MultiShape::Conf">
-<area shape="rect" id="node2" href="$classBuilder.html" title="Builder\&lt; Conf \&gt;" alt="" coords="18,5,132,31"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1ShapeDefBuilder.html" title="playrho::ShapeDefBuilder\l\&lt; Conf \&gt;" alt="" coords="1140,81,1308,122"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1ShapeDef.html" title="Base configuration for initializing shapes. " alt="" coords="692,81,820,108"/>
+<area shape="rect" id="node11" href="$structplayrho_1_1ShapeDefBuilder.html" title="Builder configuration structure. " alt="" coords="869,115,1037,157"/>
+<area shape="rect" id="node7" href="$classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Real \&gt;" alt="" coords="406,158,562,199"/>
+<area shape="rect" id="node9" href="$classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="144,190,300,231"/>
 </map>

@@ -1,3 +1,13 @@
 <map id="playrho::PositionConstraint" name="playrho::PositionConstraint">
-<area shape="rect" id="node2" href="$classplayrho_1_1Manifold.html" title="A collision description for the collision two convex shapes. " alt="" coords="34,5,157,31"/>
+<area shape="rect" id="node3" href="$classplayrho_1_1Manifold.html" title="A collision description for the collision two convex shapes. " alt="" coords="1431,192,1551,219"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="488,336,661,363"/>
+<area shape="rect" id="node10" href="$structplayrho_1_1Manifold_1_1Point.html" title="Data for a point of collision in a Manifold. " alt="" coords="849,151,977,193"/>
+<area shape="rect" id="node16" href="$classplayrho_1_1BodyConstraint.html" title="Body Constraint. " alt="" coords="1131,401,1292,428"/>
+<area shape="rect" id="node21" href="$structplayrho_1_1Position.html" title="Positional data structure. " alt="" coords="854,319,973,345"/>
+<area shape="rect" id="node6" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="149,431,308,457"/>
+<area shape="rect" id="node19" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearVelocity \&gt;" alt="" coords="467,501,683,528"/>
+<area shape="rect" id="node7" href="$classplayrho_1_1UnitVec2.html" title="2&#45;D unit vector. " alt="" coords="1149,268,1274,295"/>
+<area shape="rect" id="node9" href="$structplayrho_1_1Manifold_1_1PointArray.html" title="Point array structure. " alt="" coords="1147,151,1275,193"/>
+<area shape="rect" id="node12" href="$structplayrho_1_1ContactFeature.html" title="Contact Feature. " alt="" coords="494,164,655,191"/>
+<area shape="rect" id="node18" href="$structplayrho_1_1Velocity.html" title="Velocity related data structure. " alt="" coords="854,483,973,509"/>
 </map>

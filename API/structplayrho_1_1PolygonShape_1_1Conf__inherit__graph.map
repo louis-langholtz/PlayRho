@@ -1,3 +1,5 @@
 <map id="playrho::PolygonShape::Conf" name="playrho::PolygonShape::Conf">
-<area shape="rect" id="node2" href="$classBuilder.html" title="Builder\&lt; Conf \&gt;" alt="" coords="28,5,142,31"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1ShapeDefBuilder.html" title="playrho::ShapeDefBuilder\l\&lt; Conf \&gt;" alt="" coords="5,185,173,227"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1ShapeDef.html" title="Base configuration for initializing shapes. " alt="" coords="43,5,171,32"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1ShapeDefBuilder.html" title="Builder configuration structure. " alt="" coords="105,81,273,123"/>
 </map>

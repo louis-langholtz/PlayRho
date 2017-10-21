@@ -1,3 +1,6 @@
 <map id="playrho::DistanceConf" name="playrho::DistanceConf">
-<area shape="rect" id="node3" href="$classplayrho_1_1Simplex_1_1Cache.html" title="Simplex cache. " alt="" coords="76,5,242,31"/>
+<area shape="rect" id="node5" href="$structplayrho_1_1IndexPair.html" title="Index pair. " alt="" coords="102,109,229,136"/>
+<area shape="rect" id="node3" href="$classplayrho_1_1Simplex_1_1Cache.html" title="Simplex cache. " alt="" coords="86,317,250,344"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; MaxSimplex\lEdges, IndexPair \&gt;" alt="" coords="216,213,411,255"/>
+<area shape="rect" id="node7" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="253,109,411,136"/>
 </map>

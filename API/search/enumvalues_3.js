@@ -10,7 +10,11 @@ var searchData=
   ['e_5ffixedrotationflag',['e_fixedRotationFlag',['../classplayrho_1_1Body.html#aecba486f691e6802251fa30db3852488a70c5b9d389c04a7730415ce259e93d99',1,'playrho::Body']]],
   ['e_5fimpenetrableflag',['e_impenetrableFlag',['../classplayrho_1_1Body.html#aecba486f691e6802251fa30db3852488a65820b0b5084817785346beae78c0cb7',1,'playrho::Body']]],
   ['e_5fislandflag',['e_islandFlag',['../classplayrho_1_1Body.html#aecba486f691e6802251fa30db3852488acc146631c111ef595d18608068e3b47c',1,'playrho::Body']]],
+  ['e_5flocked',['e_locked',['../classplayrho_1_1World.html#a4bb42842ec726268c7342a263b0146f7af1a4fad38330d265740d0f067bfcc00b',1,'playrho::World']]],
   ['e_5fmassdatadirtyflag',['e_massDataDirtyFlag',['../classplayrho_1_1Body.html#aecba486f691e6802251fa30db3852488ae3a837b70305e7b85ab880ce0a6fee7a',1,'playrho::Body']]],
+  ['e_5fnewfixture',['e_newFixture',['../classplayrho_1_1World.html#a4bb42842ec726268c7342a263b0146f7ab273ed60584a05c2ec064b60b9f49423',1,'playrho::World']]],
+  ['e_5fstepcomplete',['e_stepComplete',['../classplayrho_1_1World.html#a4bb42842ec726268c7342a263b0146f7a26080fa9eed7584f2d7fb3912e7ba540',1,'playrho::World']]],
+  ['e_5fsubstepping',['e_substepping',['../classplayrho_1_1World.html#a4bb42842ec726268c7342a263b0146f7a5bc72950219ea68cd2dc5ed6cf3f6d3b',1,'playrho::World']]],
   ['e_5funset',['e_unset',['../classplayrho_1_1Manifold.html#a8573007b9e3a27b6b22b1408e34dc1c1aef2fd1032cdd05422b996123c5cb84dc',1,'playrho::Manifold']]],
   ['e_5fvelocityflag',['e_velocityFlag',['../classplayrho_1_1Body.html#aecba486f691e6802251fa30db3852488afe397cc873be0de782bd8ae27ea392b0',1,'playrho::Body']]]
 ];

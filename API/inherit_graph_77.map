@@ -1,4 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classplayrho_1_1ShapeVisitor.html" title="Vistor interface for Shape instances. " alt="" coords="5,5,153,31"/>
-<area shape="rect" id="node2" href="$classplayrho_1_1IsVisitedShapeVisitor.html" title="A ShapeVisitor implementation that reports whether it&#39;s been visited. " alt="" coords="201,5,399,31"/>
+<area shape="rect" id="node1" href="$classplayrho_1_1Range.html" title="Template range value class. " alt="" coords="5,13,148,39"/>
+<area shape="rect" id="node2" href="$classplayrho_1_1SizedRange.html" title="Template sized range value class. " alt="" coords="196,5,339,47"/>
 </map>

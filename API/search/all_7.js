@@ -6,10 +6,12 @@ var searchData=
   ['has_5fone',['has_one',['../structplayrho_1_1ValueCheckHelper.html#a2b898530b3351cb8971a3435aa14462a',1,'playrho::ValueCheckHelper::has_one()'],['../structplayrho_1_1ValueCheckHelper_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__arithmeab6684cc8662da6157a7d1709bd7d1e3.html#ae8d92fb427bd034bcee4b80f017dc3e0',1,'playrho::ValueCheckHelper&lt; T, typename std::enable_if&lt; std::is_arithmetic&lt; T &gt;::value &gt;::type &gt;::has_one()']]],
   ['has_5fquiet_5fnan',['has_quiet_NaN',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed32_01_4.html#ac96bd4f812b4dfa5ceb670b55b6de13a',1,'std::numeric_limits&lt; playrho::Fixed32 &gt;::has_quiet_NaN()'],['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed64_01_4.html#a87ee9d2c0a62269b69c02a45470d0db1',1,'std::numeric_limits&lt; playrho::Fixed64 &gt;::has_quiet_NaN()']]],
   ['has_5fsignaling_5fnan',['has_signaling_NaN',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed32_01_4.html#a2078cbd6487d64c2fb4ad46d2e2c90ff',1,'std::numeric_limits&lt; playrho::Fixed32 &gt;::has_signaling_NaN()'],['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed64_01_4.html#a02b355366fba7ea8f137c4ca06b84dd0',1,'std::numeric_limits&lt; playrho::Fixed64 &gt;::has_signaling_NaN()']]],
-  ['has_5fvalue',['has_value',['../classplayrho_1_1OptionalValue.html#ad76bbf666ea6e9aec5e9a8a3188f154d',1,'playrho::OptionalValue']]],
+  ['has_5fvalue',['has_value',['../classplayrho_1_1OptionalValue.html#af6b0d52871126161b46e2249d65b0911',1,'playrho::OptionalValue']]],
   ['hash_3c_20playrho_3a_3acontactkey_20_3e',['hash&lt; playrho::ContactKey &gt;',['../structstd_1_1hash_3_01playrho_1_1ContactKey_01_4.html',1,'std']]],
+  ['hasnewfixtures',['HasNewFixtures',['../classplayrho_1_1World.html#a988b8684ab12d8a8be12d8661ef7b916',1,'playrho::World']]],
   ['hassensor',['HasSensor',['../classplayrho_1_1Contact.html#a73cfb2e1e624b31d5f37fb3e2018e901',1,'playrho::Contact::HasSensor()'],['../namespaceplayrho.html#a73cfb2e1e624b31d5f37fb3e2018e901',1,'playrho::HasSensor()']]],
-  ['hasvalidtoi',['HasValidToi',['../classplayrho_1_1Contact.html#a46a1a8eaf5990f9dddba23589e3ec058',1,'playrho::Contact']]],
+  ['hasvalidtoi',['HasValidToi',['../classplayrho_1_1Contact.html#a1c2a4e61944372cecdf4c6915059e793',1,'playrho::Contact']]],
+  ['height',['Height',['../classplayrho_1_1DynamicTree.html#a052ce6ef4e386c6ac4092aad3ed3aa29',1,'playrho::DynamicTree']]],
   ['hertz',['Hertz',['../group__Units.html#gadef54036b9480e0cf730100688e20570',1,'playrho']]],
   ['hivaluecheck',['HiValueCheck',['../namespaceplayrho.html#a1f31f7e3449c760decd7f664e16b0390',1,'playrho']]]
 ];

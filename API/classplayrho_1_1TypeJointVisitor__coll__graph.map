@@ -1,3 +1,5 @@
 <map id="playrho::TypeJointVisitor" name="playrho::TypeJointVisitor">
-<area shape="rect" id="node2" href="$classplayrho_1_1JointVisitor.html" title="Vistor interface for Joint instances. " alt="" coords="20,5,157,31"/>
+<area shape="rect" id="node2" href="$classplayrho_1_1JointVisitor.html" title="Vistor interface for Joint instances. " alt="" coords="5,191,141,218"/>
+<area shape="rect" id="node3" href="$classplayrho_1_1OptionalValue.html" title="playrho::OptionalValue\l\&lt; JointType \&gt;" alt="" coords="166,184,319,225"/>
+<area shape="rect" id="node6" href="$classplayrho_1_1OptionalValue.html" title="Optional value template class. " alt="" coords="151,95,335,121"/>
 </map>

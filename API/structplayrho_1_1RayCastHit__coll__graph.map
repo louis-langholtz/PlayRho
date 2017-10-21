@@ -1,5 +1,5 @@
 <map id="playrho::RayCastHit" name="playrho::RayCastHit">
-<area shape="rect" id="node2" href="$classplayrho_1_1UnitVec2.html" title="2&#45;D unit vector. " alt="" coords="5,112,131,137"/>
-<area shape="rect" id="node3" href="$classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Real \&gt;" alt="" coords="155,105,314,144"/>
-<area shape="rect" id="node4" href="$classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="155,5,314,44"/>
+<area shape="rect" id="node2" href="$classplayrho_1_1UnitVec2.html" title="2&#45;D unit vector. " alt="" coords="5,206,131,233"/>
+<area shape="rect" id="node4" href="$classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Real \&gt;" alt="" coords="155,199,311,240"/>
+<area shape="rect" id="node5" href="$classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="161,95,317,136"/>
 </map>

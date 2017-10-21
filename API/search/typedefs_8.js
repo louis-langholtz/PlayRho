@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['keyedcontactptr',['KeyedContactPtr',['../namespaceplayrho.html#a2263d6f00fd89c8bdc0e61306c79ff9d',1,'playrho']]],
-  ['keyedjointptr',['KeyedJointPtr',['../classplayrho_1_1Body.html#aac763bf785f48266a236237bd744d6e5',1,'playrho::Body']]]
+  ['jointcounter',['JointCounter',['../namespaceplayrho.html#aeb8ea60dc388d1e92e2e6fa277a32495',1,'playrho']]],
+  ['joints',['Joints',['../classplayrho_1_1Body.html#a80a0dc4435ecb9436ac69c23f60569b6',1,'playrho::Body::Joints()'],['../structplayrho_1_1Island.html#a346e27e2faccfb6a60db423c3cfe13db',1,'playrho::Island::Joints()'],['../classplayrho_1_1World.html#a72fb813f9b11602479ba59773bbe7de9',1,'playrho::World::Joints()']]]
 ];

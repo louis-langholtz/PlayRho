@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['baseconf',['BaseConf',['../structplayrho_1_1Shape_1_1BaseConf.html',1,'playrho::Shape']]],
   ['block',['Block',['../structplayrho_1_1BlockAllocator_1_1Block.html',1,'playrho::BlockAllocator']]],
   ['blockallocator',['BlockAllocator',['../classplayrho_1_1BlockAllocator.html',1,'playrho']]],
   ['blockdeallocator',['BlockDeallocator',['../structplayrho_1_1BlockDeallocator.html',1,'playrho']]],
@@ -12,5 +11,5 @@ var searchData=
   ['boundedvalue_3c_20angle_20_3e',['BoundedValue&lt; Angle &gt;',['../classplayrho_1_1BoundedValue.html',1,'playrho']]],
   ['boundedvalue_3c_20length_20_3e',['BoundedValue&lt; Length &gt;',['../classplayrho_1_1BoundedValue.html',1,'playrho']]],
   ['boundedvalue_3c_20real_20_3e',['BoundedValue&lt; Real &gt;',['../classplayrho_1_1BoundedValue.html',1,'playrho']]],
-  ['builder',['Builder',['../structplayrho_1_1Shape_1_1Builder.html',1,'playrho::Shape::Builder&lt; ConcreteConf &gt;'],['../classBuilder.html',1,'Builder']]]
+  ['branchdata',['BranchData',['../structplayrho_1_1DynamicTree_1_1BranchData.html',1,'playrho::DynamicTree']]]
 ];
