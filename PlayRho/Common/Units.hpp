@@ -373,6 +373,211 @@ namespace playrho
     constexpr auto NewtonSecond = Newton * Second;
     
     /// @}
+    
+    /// @defgroup Unitsymbols Literals for symbols of units.
+    /// @sa Quantities
+    /// @sa Units
+    /// @{
+
+    /// @brief SI unit symbol for a gram unit of Mass.
+    /// @sa https://en.wikipedia.org/wiki/Gram
+    constexpr Mass operator"" _g(unsigned long long int v)
+    {
+        return static_cast<Real>(v) * (Kilogram / Kilo);
+    }
+    
+    /// @brief SI unit symbol for a gram unit of Mass.
+    /// @sa https://en.wikipedia.org/wiki/Gram
+    constexpr Mass operator"" _g(long double v)
+    {
+        return static_cast<Real>(v) * (Kilogram / Kilo);
+    }
+
+    /// @brief SI unit symbol for a kilogram unit of Mass.
+    /// @sa Kilogram
+    /// @sa https://en.wikipedia.org/wiki/Kilogram
+    constexpr Mass operator"" _kg(unsigned long long int v)
+    {
+        return static_cast<Real>(v) * Kilogram;
+    }
+    
+    /// @brief SI unit symbol for a kilogram unit of Mass.
+    /// @sa Kilogram
+    /// @sa https://en.wikipedia.org/wiki/Kilogram
+    constexpr Mass operator"" _kg(long double v)
+    {
+        return static_cast<Real>(v) * Kilogram;
+    }
+    
+    /// @brief SI unit symbol for a yottagram unit of Mass.
+    /// @sa https://en.wikipedia.org/wiki/Orders_of_magnitude_(mass)
+    constexpr Mass operator"" _Yg(unsigned long long int v)
+    {
+        return static_cast<Real>(v) * Yotta * (Kilogram / Kilo);
+    }
+    
+    /// @brief SI unit symbol for a yottagram unit of Mass.
+    /// @sa https://en.wikipedia.org/wiki/Orders_of_magnitude_(mass)
+    constexpr Mass operator"" _Yg(long double v)
+    {
+        return static_cast<Real>(v) * Yotta * (Kilogram / Kilo);
+    }
+    
+    /// @brief SI unit symbol for a meter of Length.
+    /// @sa Meter
+    /// @sa https://en.wikipedia.org/wiki/Metre
+    constexpr Length operator"" _m(unsigned long long int v)
+    {
+        return static_cast<Real>(v) * Meter;
+    }
+    
+    /// @brief SI unit symbol for a meter of Length.
+    /// @sa Meter
+    /// @sa https://en.wikipedia.org/wiki/Metre
+    constexpr Length operator"" _m(long double v)
+    {
+        return static_cast<Real>(v) * Meter;
+    }
+    
+    /// @brief SI unit symbol for a gigameter unit of Length.
+    /// @sa https://en.wikipedia.org/wiki/Gigametre
+    constexpr Length operator"" _Gm (unsigned long long int v)
+    {
+        return static_cast<Real>(v) * Giga * Meter;
+    }
+    
+    /// @brief SI unit symbol for a gigameter unit of Length.
+    /// @sa https://en.wikipedia.org/wiki/Gigametre
+    constexpr Length operator"" _Gm (long double v)
+    {
+        return static_cast<Real>(v) * Giga * Meter;
+    }
+    
+    /// @brief SI symbol for a kilometer unit of Length.
+    /// @sa https://en.wikipedia.org/wiki/Kilometre
+    constexpr Length operator"" _km (unsigned long long int v)
+    {
+        return static_cast<Real>(v) * Kilo * Meter;
+    }
+    
+    /// @brief SI symbol for a kilometer unit of Length.
+    /// @sa https://en.wikipedia.org/wiki/Kilometre
+    constexpr Length operator"" _km (long double v)
+    {
+        return static_cast<Real>(v) * Kilo * Meter;
+    }
+    
+    /// @brief SI symbol for a second unit of Time.
+    /// @sa Second
+    /// @sa https://en.wikipedia.org/wiki/Second
+    constexpr Time operator"" _s(unsigned long long int v)
+    {
+        return static_cast<Real>(v) * Second;
+    }
+    
+    /// @brief SI symbol for a second unit of Time.
+    /// @sa Second
+    /// @sa https://en.wikipedia.org/wiki/Second
+    constexpr Time operator"" _s(long double v)
+    {
+        return static_cast<Real>(v) * Second;
+    }
+    
+    /// @brief SI symbol for a minute unit of Time.
+    /// @sa https://en.wikipedia.org/wiki/Minute
+    constexpr Time operator"" _min(unsigned long long int v)
+    {
+        return static_cast<Real>(v) * 60 * Second;
+    }
+    
+    /// @brief SI symbol for a minute unit of Time.
+    /// @sa https://en.wikipedia.org/wiki/Minute
+    constexpr Time operator"" _min(long double v)
+    {
+        return static_cast<Real>(v) * 60 * Second;
+    }
+    
+    /// @brief Symbol for an hour unit of Time.
+    /// @sa https://en.wikipedia.org/wiki/Hour
+    constexpr Time operator"" _h(unsigned long long int v)
+    {
+        return static_cast<Real>(v) * 60 * 60 * Second;
+    }
+    
+    /// @brief Symbol for an hour unit of Time.
+    /// @sa https://en.wikipedia.org/wiki/Hour
+    constexpr Time operator"" _h(long double v)
+    {
+        return static_cast<Real>(v) * 60 * 60 * Second;
+    }
+    
+    /// @brief Symbol for a day unit of Time.
+    /// @sa https://en.wikipedia.org/wiki/Day
+    constexpr Time operator"" _d(unsigned long long int v)
+    {
+        return static_cast<Real>(v) * 60 * 60 * 24 * Second;
+    }
+    
+    /// @brief Symbol for a day unit of Time.
+    /// @sa https://en.wikipedia.org/wiki/Day
+    constexpr Time operator"" _d(long double v)
+    {
+        return static_cast<Real>(v) * 60 * 60 * 24 * Second;
+    }
+
+    /// @brief SI symbol for a radian unit of Angle.
+    /// @sa Radian.
+    /// @sa https://en.wikipedia.org/wiki/Radian
+    constexpr Angle operator"" _rad(unsigned long long int v)
+    {
+        return static_cast<Real>(v) * Radian;
+    }
+
+    /// @brief SI symbol for a radian unit of Angle.
+    /// @sa Radian.
+    /// @sa https://en.wikipedia.org/wiki/Radian
+    constexpr Angle operator"" _rad(long double v)
+    {
+        return static_cast<Real>(v) * Radian;
+    }
+    
+    /// @brief Abbreviation for meter per second.
+    /// @sa https://en.wikipedia.org/wiki/Metre_per_second
+    /// @sa Meter
+    /// @sa Second
+    /// @sa MeterPerSecond
+    constexpr LinearVelocity operator"" _mps(unsigned long long int v)
+    {
+        return static_cast<Real>(v) * MeterPerSecond;
+    }
+
+    /// @brief Abbreviation for meter per second.
+    /// @sa https://en.wikipedia.org/wiki/Metre_per_second
+    /// @sa Meter
+    /// @sa Second
+    /// @sa MeterPerSecond
+    constexpr LinearVelocity operator"" _mps(long double v)
+    {
+        return static_cast<Real>(v) * MeterPerSecond;
+    }
+    
+    /// @brief Abbreviation for kilometer per second.
+    /// @sa https://en.wikipedia.org/wiki/Metre_per_second
+    /// @sa Second
+    constexpr LinearVelocity operator"" _kps(unsigned long long int v)
+    {
+        return static_cast<Real>(v) * Kilo * MeterPerSecond;
+    }
+    
+    /// @brief Abbreviation for kilometer per second.
+    /// @sa https://en.wikipedia.org/wiki/Metre_per_second
+    /// @sa Second
+    constexpr LinearVelocity operator"" _kps(long double v)
+    {
+        return static_cast<Real>(v) * Kilo * MeterPerSecond;
+    }
+    
+    /// @}
 
     /// @brief Strips the units off of the given value.
     constexpr inline Real StripUnit(const Real value)

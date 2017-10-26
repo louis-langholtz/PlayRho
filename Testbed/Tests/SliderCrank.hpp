@@ -114,9 +114,9 @@ public:
         });
     }
 
-    void PostStep(const Settings& settings, Drawer& drawer) override
+    void PostStep(const Settings& settings, Drawer&) override
     {
-        const auto torque = m_joint1->GetMotorTorque(Real{settings.hz} * Hertz);
+        const auto torque = m_joint1->GetMotorTorque((1.0f / settings.dt) * Hertz);
         std::stringstream stream;
         stream << "Motor Torque = ";
         stream << static_cast<double>(Real{torque / NewtonMeter});

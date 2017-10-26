@@ -304,6 +304,15 @@ namespace ImGui
     IMGUI_API ImGuiID       GetID(const char* str_id_begin, const char* str_id_end);
     IMGUI_API ImGuiID       GetID(const void* ptr_id);
 
+    struct IdContext
+    {
+        IdContext(const char* key) { PushID(key); }
+        IdContext(const char* key_begin, const char* key_end) { PushID(key_begin, key_end); }
+        IdContext(const void* key) { PushID(key); }
+        IdContext(int key) { PushID(key); }
+        ~IdContext() { PopID(); }
+    };
+
     // Widgets: Text
     IMGUI_API void          TextUnformatted(const char* text, const char* text_end = NULL);               // doesn't require null terminated string if 'text_end' is specified. no copy done, no limits, recommended for long chunks of text
     IMGUI_API void          Text(const char* fmt, ...)                                     IM_FMTARGS(1); // simple formatted text
@@ -438,6 +447,26 @@ namespace ImGui
     IMGUI_API void          SetTooltipV(const char* fmt, va_list args) IM_FMTLIST(1);
     IMGUI_API void          BeginTooltip();                                                     // begin/append a tooltip window. to create full-featured tooltip (with any kind of contents).
     IMGUI_API void          EndTooltip();
+
+    struct TooltipContext
+    {
+        TooltipContext()
+        {
+            BeginTooltip();
+        }
+        
+        ~TooltipContext()
+        {
+            EndTooltip();
+        }
+    };
+    
+    inline void ShowTooltip(const std::string& str, float wrap_pos_x = 0.0f)
+    {
+        TooltipContext ctx;
+        TextWrapPosContext twpc(wrap_pos_x);
+        TextUnformatted(str);
+    }
 
     // Menus
     IMGUI_API bool          BeginMainMenuBar();                                                 // create and append to a full screen menu-bar. only call EndMainMenuBar() if this returns true!

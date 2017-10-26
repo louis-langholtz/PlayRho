@@ -32,7 +32,7 @@ public:
     {
         auto conf = Test::Conf{};
         conf.settings.drawSkins = true;
-        conf.neededSettings = (1 << NeedDrawSkinsField);
+        conf.neededSettings = (0x1u << NeedDrawSkinsField);
         return conf;
     }
     
