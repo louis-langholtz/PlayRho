@@ -79,6 +79,7 @@
 #include "../Tests/HalfPipe.hpp"
 #include "../Tests/Orbiter.hpp"
 #include "../Tests/NewtonsCradle.hpp"
+#include "../Tests/SolarSystem.hpp"
 #include "../Tests/iforce2d_TopdownCar.hpp"
 #include "../Tests/iforce2d_Trajectories.hpp"
 
@@ -153,6 +154,7 @@ static const TestEntry testEntries[] =
     {"Newton's Cradle", MakeUniqueTest<NewtonsCradle>},
     {"Top-down Car", MakeUniqueTest<iforce2d_TopdownCar>},
     {"Trajectories", MakeUniqueTest<iforce2d_Trajectories>},
+    {"Solar System", MakeUniqueTest<SolarSystem>},
 };
 
 static const std::size_t numTestEntries = sizeof(testEntries) / sizeof(TestEntry);

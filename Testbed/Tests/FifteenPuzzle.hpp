@@ -35,7 +35,7 @@ namespace playrho {
             auto conf = Test::Conf{};
             conf.settings.drawSkins = true;
             conf.settings.drawLabels = true;
-            conf.neededSettings = (1 << NeedDrawLabelsField)|(1 << NeedDrawSkinsField);
+            conf.neededSettings = (0x1u << NeedDrawLabelsField)|(0x1u << NeedDrawSkinsField);
             conf.description = "Slide square tiles around using the mouse. See if you can re-order them. Good luck!";
             return conf;
         }

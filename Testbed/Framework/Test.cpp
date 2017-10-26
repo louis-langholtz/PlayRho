@@ -24,6 +24,7 @@
 #include <sstream>
 #include <chrono>
 #include <map>
+#include <set>
 #include <utility>
 #include "imgui.h"
 
@@ -47,6 +48,182 @@ static void SetImGuiColumnWidths(float remainingWidth, std::initializer_list<flo
     {
         //nextColumnOffset = ImGui::GetColumnOffset(i);
         ImGui::SetColumnWidth(i, widthPerRemainingColumn);
+    }
+}
+
+static void DrawStats(const Body& b)
+{
+    const auto location = b.GetLocation();
+    const auto angle = b.GetAngle();
+    const auto velocity = b.GetVelocity();
+    const auto contacts = b.GetContacts();
+    std::ostringstream stream;
+    stream << "pos={{";
+    stream << static_cast<double>(Real{GetX(location) / Meter});
+    stream << ",";
+    stream << static_cast<double>(Real{GetY(location) / Meter});
+    stream << "}, ";
+    stream << static_cast<double>(Real{angle / Degree}) << "deg";
+    stream << "}, ";
+    stream << " vel={{";
+    stream << static_cast<double>(Real{GetX(velocity.linear) / MeterPerSecond});
+    stream << ",";
+    stream << static_cast<double>(Real{GetY(velocity.linear) / MeterPerSecond});
+    stream << "}, ";
+    stream << static_cast<double>(Real{velocity.angular / DegreePerSecond}) << "deg/s";
+    stream << "}";
+    stream << " mass=" << static_cast<double>(Real{GetMass(b) / Kilogram}) << "kg";
+    
+    auto numContacts = 0;
+    auto numTouching = 0;
+    auto numImpulses = 0;
+    for (auto&& ci: contacts)
+    {
+        ++numContacts;
+        const auto contact = GetContactPtr(ci);
+        if (contact->IsTouching())
+        {
+            ++numTouching;
+            const auto manifold = contact->GetManifold();
+            numImpulses += manifold.GetPointCount();
+        }
+    }
+    
+    stream << " body-cts=" << numTouching;
+    stream << "/" << numContacts;
+    stream << " body-impulses=" << numImpulses;
+    ImGui::TextWrappedUnformatted(stream.str());
+}
+
+static void DrawStats(const Fixture& fixture)
+{
+    const auto density = fixture.GetDensity();
+    const auto friction = fixture.GetFriction();
+    const auto restitution = fixture.GetRestitution();
+    const auto shape = fixture.GetShape();
+    const auto childCount = shape->GetChildCount();
+    const auto vertexRadius = shape->GetVertexRadius();
+    //const auto body = fixture.GetBody();
+    
+    std::ostringstream stream;
+    stream << " density=" << static_cast<double>(Real{density * SquareMeter / Kilogram}) << "kg/m^2";
+    stream << " vertex-radius=" << static_cast<double>(Real{vertexRadius / Meter}) << "m";
+    stream << " childCount=" << std::size_t(childCount);
+    stream << " friction=" << friction;
+    stream << " restitution=" << restitution;
+    ImGui::TextWrappedUnformatted(stream.str());
+}
+
+static void DrawStats(const Manifold &m)
+{
+    std::ostringstream stream;
+    stream << "lp=" << m.GetLocalPoint();
+    switch (m.GetType())
+    {
+        case Manifold::e_circles:
+            stream << " circles";
+            break;
+        case Manifold::e_faceA:
+        {
+            const auto count = m.GetPointCount();
+            stream << " faceA=" << int{count};
+            for (auto i = decltype(count){0}; i < count; ++i)
+            {
+                const auto mp = m.GetPoint(i);
+                stream << " p[" << int{i} << "]={";
+                stream << mp.contactFeature;
+                stream << ",";
+                stream << mp.localPoint;
+                stream << ",";
+                stream << mp.normalImpulse;
+                stream << ",";
+                stream << mp.tangentImpulse;
+                stream << "}";
+            }
+            break;
+        }
+        case Manifold::e_faceB:
+        {
+            const auto count = m.GetPointCount();
+            stream << " faceB=" << int{count};
+            for (auto i = decltype(count){0}; i < count; ++i)
+            {
+                const auto mp = m.GetPoint(i);
+                stream << " p[" << int{i} << "]={";
+                stream << mp.contactFeature;
+                stream << ",";
+                stream << mp.localPoint;
+                stream << ",";
+                stream << mp.normalImpulse;
+                stream << ",";
+                stream << mp.tangentImpulse;
+                stream << "}";
+            }
+            break;
+        }
+        default: break;
+    }
+    
+    ImGui::TextUnformatted("Manifold:");
+    ImGui::SameLine();
+    ImGui::TextWrappedUnformatted(stream.str());
+}
+
+static void DrawStats(const std::vector<Fixture*>& selectFixtures)
+{
+    auto bodies = std::set<Body*>();
+    for (auto f: selectFixtures)
+    {
+        bodies.insert(f->GetBody());
+    }
+    
+    for (auto b: bodies)
+    {
+        if (ImGui::TreeNodeEx(b, ImGuiTreeNodeFlags_DefaultOpen,
+                              "Body %d", GetWorldIndex(b)))
+        {
+            ::DrawStats(*b);
+            const auto fixtures = b->GetFixtures();
+            auto fnum = 0;
+            for (auto& f: fixtures)
+            {
+                const auto flags = IsWithin(selectFixtures, f)? ImGuiTreeNodeFlags_DefaultOpen: 0;
+                if (ImGui::TreeNodeEx(f, flags, "Fixture %d", fnum))
+                {
+                    ::DrawStats(*f);
+                    ImGui::TreePop();
+                }
+                ++fnum;
+            }
+            ImGui::TreePop();
+        }
+    }
+
+    auto cts = std::map<Contact*,int>();
+    for (auto b: bodies)
+    {
+        for (const auto& contact: b->GetContacts())
+        {
+            const auto c = GetContactPtr(contact);
+            const auto iter = cts.find(c);
+            if (iter == cts.end())
+            {
+                cts.insert(std::make_pair(c, 1));
+            }
+            else
+            {
+                ++(iter->second);
+            }
+        }
+    }
+
+    for (const auto& contact: cts)
+    {
+        const auto c = contact.first;
+        if ((contact.second > 1) && (c->IsTouching()))
+        {
+            ::DrawStats(c->GetManifold());
+        }
     }
 }
 
@@ -329,7 +506,7 @@ bool Test::DrawWorld(Drawer& drawer, const World& world, const Settings& setting
             return useField? m_settings.drawLabels: settings.drawLabels;
         }();
         const auto drawSkins = [&]() {
-            const auto useField = m_neededSettings & (1u << NeedDrawSkinsField);
+            const auto useField = m_neededSettings & (0x1u << NeedDrawSkinsField);
             return useField? m_settings.drawSkins: settings.drawSkins;
         }();
         
@@ -623,11 +800,7 @@ static void ShowHelpMarker(const char* desc)
     ImGui::TextDisabled("(?)");
     if (ImGui::IsItemHovered())
     {
-        ImGui::BeginTooltip();
-        ImGui::PushTextWrapPos(450.0f);
-        ImGui::TextUnformatted(desc);
-        ImGui::PopTextWrapPos();
-        ImGui::EndTooltip();
+        ImGui::ShowTooltip(desc, 400);
     }
 }
 
@@ -993,148 +1166,14 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         ImGui::NextColumn();
     }
 
-    auto cts = std::map<Contact*,int>();
-    const auto selectedFixtures = GetSelectedFixtures();
-    for (auto fixture: selectedFixtures)
     {
-        const auto b = fixture->GetBody();
-        for (const auto& contact: b->GetContacts())
+        const auto selectedFixtures = GetSelectedFixtures();
+        if (!selectedFixtures.empty() && ImGui::CollapsingHeader("Selected...",
+                                                                 ImGuiTreeNodeFlags_DefaultOpen))
         {
-            const auto c = GetContactPtr(contact);
-            const auto iter = cts.find(c);
-            if (iter == cts.end())
-            {
-                cts.insert(std::make_pair(c, 1));
-            }
-            else
-            {
-                ++(iter->second);
-            }
-        }
-        DrawStats(*fixture);
-    }
-
-    for (const auto& contact: cts)
-    {
-        const auto c = contact.first;
-        if ((contact.second > 1) && (c->IsTouching()))
-        {
-            DrawStats(c->GetManifold());
+            ::DrawStats(selectedFixtures);
         }
     }
-}
-
-void Test::DrawStats(const Manifold &m)
-{
-    std::ostringstream stream;
-    stream << "lp=" << m.GetLocalPoint();
-    switch (m.GetType())
-    {
-        case Manifold::e_circles:
-            stream << " circles";
-            break;
-        case Manifold::e_faceA:
-        {
-            const auto count = m.GetPointCount();
-            stream << " faceA=" << int{count};
-            for (auto i = decltype(count){0}; i < count; ++i)
-            {
-                const auto mp = m.GetPoint(i);
-                stream << " p[" << int{i} << "]={";
-                stream << mp.contactFeature;
-                stream << ",";
-                stream << mp.localPoint;
-                stream << ",";
-                stream << mp.normalImpulse;
-                stream << ",";
-                stream << mp.tangentImpulse;
-                stream << "}";
-            }
-            break;
-        }
-        case Manifold::e_faceB:
-        {
-            const auto count = m.GetPointCount();
-            stream << " faceB=" << int{count};
-            for (auto i = decltype(count){0}; i < count; ++i)
-            {
-                const auto mp = m.GetPoint(i);
-                stream << " p[" << int{i} << "]={";
-                stream << mp.contactFeature;
-                stream << ",";
-                stream << mp.localPoint;
-                stream << ",";
-                stream << mp.normalImpulse;
-                stream << ",";
-                stream << mp.tangentImpulse;
-                stream << "}";
-            }
-            break;
-        }
-        default: break;
-    }
-
-    ImGui::TextUnformatted("Selected manifold:");
-    ImGui::SameLine();
-    ImGui::TextWrappedUnformatted(stream.str());
-}
-
-void Test::DrawStats(const Fixture& fixture)
-{
-    const auto density = fixture.GetDensity();
-    const auto friction = fixture.GetFriction();
-    const auto restitution = fixture.GetRestitution();
-    const auto shape = fixture.GetShape();
-    const auto childCount = shape->GetChildCount();
-    const auto vertexRadius = shape->GetVertexRadius();
-    const auto body = fixture.GetBody();
-    const auto location = body->GetLocation();
-    const auto angle = body->GetAngle();
-    const auto velocity = body->GetVelocity();
-    const auto contacts = body->GetContacts();
-
-    auto numContacts = 0;
-    auto numTouching = 0;
-    auto numImpulses = 0;
-    for (auto&& ci: contacts)
-    {
-        ++numContacts;
-        const auto contact = GetContactPtr(ci);
-        if (contact->IsTouching())
-        {
-            ++numTouching;
-            const auto manifold = contact->GetManifold();
-            numImpulses += manifold.GetPointCount();
-        }
-    }
-
-    std::ostringstream stream;
-    stream << "pos={{";
-    stream << static_cast<double>(Real{GetX(location) / Meter});
-    stream << ",";
-    stream << static_cast<double>(Real{GetY(location) / Meter});
-    stream << "}, ";
-    stream << static_cast<double>(Real{angle / Degree});
-    stream << "}, ";
-    stream << " vel={{";
-    stream << static_cast<double>(Real{GetX(velocity.linear) / MeterPerSecond});
-    stream << ",";
-    stream << static_cast<double>(Real{GetY(velocity.linear) / MeterPerSecond});
-    stream << "}, ";
-    stream << static_cast<double>(Real{velocity.angular / DegreePerSecond});
-    stream << "}";
-    stream << " density=" << static_cast<double>(Real{density * SquareMeter / Kilogram});
-    stream << " vr=" << static_cast<double>(Real{vertexRadius / Meter});
-    stream << " childCount=" << std::size_t(childCount);
-    stream << " friction=" << friction;
-    stream << " restitution=" << restitution;
-    stream << " b-cts=" << numTouching;
-    stream << "/" << numContacts;
-    stream << " b-impulses=" << numImpulses;
-    
-    ImGui::TextUnformatted("Selected fixture:");
-    ImGui::SameLine();
-    ImGui::TextWrappedUnformatted(stream.str());
 }
 
 void Test::DrawContactInfo(const Settings& settings, Drawer& drawer)

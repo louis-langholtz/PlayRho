@@ -65,6 +65,34 @@
 
 using namespace playrho;
 
+class TestSuite;
+class Selection;
+
+namespace
+{
+    TestSuite *g_testSuite = nullptr;
+    Selection *g_selection = nullptr;
+    
+    Camera camera;
+    
+    UiState ui;
+    
+    Test::NeededSettings neededSettings = 0u;
+    Settings testSettings;
+    Settings settings; ///< User settings.
+    auto rightMouseDown = false;
+    auto leftMouseDown = false;
+    Length2D lastp;
+    
+    Coord2D mouseScreen = Coord2D{0.0, 0.0};
+    Length2D mouseWorld = Length2D{};
+    
+    const auto menuWidth = 200;
+    auto menuX = 0;
+    auto menuHeight = 0;
+    auto refreshRate = 0;
+}
+
 class Selection
 {
 public:
@@ -149,11 +177,22 @@ public:
         
         m_testIndex = index;
         RestartTest();
+        if (neededSettings & (0x1u << Test::NeedCameraZoom))
+        {
+            camera.m_zoom = testSettings.cameraZoom;
+        }
+        else
+        {
+            camera.m_zoom = 1.0f;
+        }
+        camera.m_center = Coord2D{0.0f, 20.0f};
     }
     
     void RestartTest()
     {
         m_test = m_testEntries[static_cast<unsigned>(m_testIndex)].createFcn();
+        neededSettings = m_test->GetNeededSettings();
+        testSettings = m_test->GetSettings();
     }
     
 private:
@@ -162,29 +201,6 @@ private:
 public:
     int m_testIndex;
 };
-        
-//
-namespace
-{
-    TestSuite *g_testSuite = nullptr;
-    Selection *g_selection = nullptr;
-
-    Camera camera;
-    
-    UiState ui;
-
-    Settings settings;
-    auto rightMouseDown = false;
-    auto leftMouseDown = false;
-    Length2D lastp;
-    
-    Coord2D mouseScreen = Coord2D{0.0, 0.0};
-    Length2D mouseWorld = Length2D{};
-    
-    const auto menuWidth = 200;
-    auto menuX = 0;
-    auto menuHeight = 0;
-}
 
 #ifdef DONT_EMBED_FONT_DATA
 static auto GetCwd()
@@ -427,8 +443,8 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
 static void MouseButton(GLFWwindow* window, const int button, const int action, const int mods)
 {
     ImGui_ImplGlfwGL3_MouseButtonCallback(window, button, action, mods);
-
-    const auto forMenu = (mouseScreen.x >= menuX);
+    const auto mouseForUI = ImGui::GetIO().WantCaptureMouse;
+    //const auto forMenu = (mouseScreen.x >= menuX);
 
     switch (button)
     {
@@ -438,7 +454,7 @@ static void MouseButton(GLFWwindow* window, const int button, const int action, 
             {
                 case GLFW_PRESS:
                     leftMouseDown = true;
-                    if (!forMenu)
+                    if (!mouseForUI)
                     {
                         if (mods == GLFW_MOD_SHIFT)
                         {
@@ -452,7 +468,7 @@ static void MouseButton(GLFWwindow* window, const int button, const int action, 
                     break;
                 case GLFW_RELEASE:
                     leftMouseDown = false;
-                    if (!forMenu)
+                    if (!mouseForUI)
                     {
                         g_testSuite->GetTest()->MouseUp(mouseWorld);
                     }
@@ -505,9 +521,9 @@ static void MouseMotion(GLFWwindow*, double xd, double yd)
 static void ScrollCallback(GLFWwindow* window, double dx, double dy)
 {
     ImGui_ImplGlfwGL3_ScrollCallback(window, dx, dy);
-    const auto mouse_for_ui = ImGui::GetIO().WantCaptureMouse;
+    const auto mouseForUI = ImGui::GetIO().WantCaptureMouse;
 
-    if (!mouse_for_ui)
+    if (!mouseForUI)
     {
         if (dy > 0)
         {
@@ -524,16 +540,37 @@ static void Simulate(Drawer& drawer)
 {
     glEnable(GL_DEPTH_TEST);
     
-    settings.dt = (settings.hz != 0)? 1 / settings.hz : 0;
-    if (settings.pause)
     {
-        if (!settings.singleStep)
+        auto mergedSettings = settings;
+        if (neededSettings & (0x1u << Test::NeedDrawSkinsField))
         {
-            settings.dt = 0.0f;
+            mergedSettings.drawSkins = testSettings.drawSkins;
         }
+        if (neededSettings & (0x1u << Test::NeedDrawLabelsField))
+        {
+            mergedSettings.drawLabels = testSettings.drawLabels;
+        }
+        if (neededSettings & (0x1u << Test::NeedLinearSlopField))
+        {
+            mergedSettings.linearSlop = testSettings.linearSlop;
+        }
+        if (neededSettings & (0x1u << Test::NeedMaxTranslation))
+        {
+            mergedSettings.maxTranslation = testSettings.maxTranslation;
+        }
+        if (neededSettings & (0x1u << Test::NeedDeltaTime))
+        {
+            mergedSettings.dt = testSettings.dt;
+        }
+        if (settings.pause)
+        {
+            if (!settings.singleStep)
+            {
+                mergedSettings.dt = 0.0f;
+            }
+        }
+        g_testSuite->GetTest()->Step(mergedSettings, drawer, ui);
     }
-    
-    g_testSuite->GetTest()->Step(settings, drawer, ui);
 
     glDisable(GL_DEPTH_TEST);
 
@@ -548,8 +585,6 @@ static void Simulate(Drawer& drawer)
     if (g_testSuite->GetIndex() != g_selection->Get())
     {
         g_testSuite->SetIndex(g_selection->Get());
-        camera.m_zoom = 1.0f;
-        camera.m_center = Coord2D{0.0f, 20.0f};
     }
 }
 
@@ -692,14 +727,177 @@ static void AboutTestUI(bool* openVar)
     }
 }
 
+static std::pair<float,int> ToScientific(float val)
+{
+    std::ostringstream os;
+    os << std::scientific << val;
+    const auto str = os.str();
+    const auto ePos = str.find('e');
+    if (ePos != std::string::npos)
+    {
+        const auto floatPart = str.substr(0, ePos);
+        const auto intPart = str.substr(ePos + 1);
+        return std::make_pair(std::stof(floatPart), std::stoi(intPart));
+    }
+    return std::make_pair(0.0f, 0);
+}
+
+static void BasicStepOptionsUI()
+{
+    if (neededSettings & (0x1u << Test::NeedDeltaTime))
+    {
+        auto frequency = 1.0f / testSettings.dt;
+        const auto max = 1.0f / testSettings.minDt;
+        const auto min = 1.0f / testSettings.maxDt;
+        ImGui::SliderFloat("Frequency", &frequency, min, max, "%.2e hz");
+        frequency = Clamp(frequency, min, max);
+        testSettings.dt = 1.0f / frequency;
+    }
+    else
+    {
+        auto frequency = static_cast<int>(std::nearbyint(1.0f / settings.dt));
+        ImGui::SliderInt("Frequency", &frequency, 5, 120, "%.0f hz");
+        settings.dt = 1.0f / frequency;
+    }
+    
+    ImGui::SliderInt("Vel. Iter.", &settings.regVelocityIterations, 0, 100);
+    ImGui::SliderInt("Pos. Iter.", &settings.regPositionIterations, 0, 100);
+}
+
+static void AdvancedStepOptionsUI()
+{
+    if (neededSettings & (0x1u << Test::NeedDeltaTime))
+    {
+        ImGui::SliderFloat("Sim Time", &testSettings.dt,
+                           testSettings.minDt, testSettings.maxDt, "%.2e s");
+    }
+    else
+    {
+        ImGui::SliderFloat("Sim Time", &settings.dt,
+                           settings.minDt, settings.maxDt, "%.2e s");
+    }
+    if (ImGui::IsItemHovered())
+    {
+        const auto dt = (neededSettings & (0x1u << Test::NeedDeltaTime))?
+        testSettings.dt: settings.dt;
+        std::ostringstream os;
+        os << "Simulating " << dt << " seconds every step.";
+        os << " This is inversely tied to the frequency.";
+        ImGui::ShowTooltip(os.str(), 400);
+    }
+    
+    if (neededSettings & (0x1u << Test::NeedMaxTranslation))
+    {
+        ImGui::LabelText("Max Translation", "%.2e", testSettings.maxTranslation);
+    }
+    else
+    {
+        ImGui::SliderFloat("Max Translation", &settings.maxTranslation, 0.0f, 12.0f);
+    }
+    if (ImGui::IsItemHovered())
+    {
+        const auto maxTranslation = (neededSettings & (0x1u << Test::NeedMaxTranslation))?
+            testSettings.maxTranslation: settings.maxTranslation;
+        const auto dt = (neededSettings & (0x1u << Test::NeedDeltaTime))?
+        testSettings.dt: settings.dt;
+        const auto maxLinearVelocity = maxTranslation / dt;
+        std::ostringstream os;
+        os << "Max translation is the maximum distance of travel allowed per step.";
+        os << " At its current setting and the current simulation time,";
+        os << " this establishes a max linear velocity of " << maxLinearVelocity << " m/s.";
+        ImGui::ShowTooltip(os.str(), 400);
+    }
+    
+    ImGui::SliderFloat("Max Rotation", &settings.maxRotation, 0.0f, 180.0f, "%.1f deg");
+    
+    const auto defaultLinearSlop = static_cast<float>(StripUnit(DefaultLinearSlop));
+
+    if (neededSettings & (0x1u << Test::NeedLinearSlopField))
+    {
+        ImGui::LabelText("Linear Slop", "%f m", testSettings.linearSlop);
+    }
+    else
+    {
+        ImGui::SliderFloat("Linear Slop", &settings.linearSlop,
+                           defaultLinearSlop / 10, defaultLinearSlop);
+    }
+    
+    ImGui::SliderFloat("Angular Slop", &settings.angularSlop,
+                       static_cast<float>(Pi * 2 / 1800.0),
+                       static_cast<float>(Pi * 2 / 18.0));
+    ImGui::SliderFloat("Max Lin Correct", &settings.maxLinearCorrection, 0.0f, 1.0f);
+    ImGui::SliderFloat("Max Ang Correct", &settings.maxAngularCorrection, 0.0f, 90.0f);
+    
+    if (ImGui::CollapsingHeader("Reg Phase Processing", ImGuiTreeNodeFlags_DefaultOpen))
+    {
+        ImGui::SliderInt("Vel Iters", &settings.regVelocityIterations, 0, 100);
+        ImGui::SliderInt("Pos Iters", &settings.regPositionIterations, 0, 100);
+        ImGui::SliderFloat("Min Sep", &settings.regMinSeparation,
+                           -5 * defaultLinearSlop, -0 * defaultLinearSlop);
+        ImGui::SliderInt("Resol Rate", &settings.regPosResRate, 0, 100, "%.0f %%");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("This is the %% of overlap that will"
+                              " be resolved per position iteration.");
+        }
+        ImGui::Checkbox("Allow Sleeping", &settings.enableSleep);
+        ImGui::Checkbox("Warm Starting", &settings.enableWarmStarting);
+    }
+    if (ImGui::CollapsingHeader("TOI Phase Processing", ImGuiTreeNodeFlags_DefaultOpen))
+    {
+        ImGui::Checkbox("Perform Continuous", &settings.enableContinuous);
+        ImGui::SliderInt("Vel Iters", &settings.toiVelocityIterations, 0, 100);
+        ImGui::SliderInt("Pos Iters", &settings.toiPositionIterations, 0, 100);
+        ImGui::SliderFloat("Min Sep", &settings.toiMinSeparation,
+                           -5 * defaultLinearSlop, -0 * defaultLinearSlop);
+        ImGui::SliderInt("Resol Rate", &settings.toiPosResRate, 0, 100, "%.0f %%");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("This is the %% of overlap that will"
+                              " be resolved per position iteration.");
+        }
+        ImGui::SliderInt("Max Sub Steps", &settings.maxSubSteps, 0, 100);
+        ImGui::Checkbox("Sub-Step", &settings.enableSubStepping);
+    }
+}
+
+static void OutputOptionsUI()
+{
+    ImGui::Checkbox("Shapes", &settings.drawShapes);
+    ImGui::Checkbox("Joints", &settings.drawJoints);
+    if (neededSettings & (0x1u << Test::NeedDrawSkinsField))
+    {
+        auto value = testSettings.drawSkins;
+        ImGui::Checkbox("Skins (required)", &value);
+    }
+    else
+    {
+        ImGui::Checkbox("Skins", &settings.drawSkins);
+    }
+    ImGui::Checkbox("AABBs", &settings.drawAABBs);
+    if (neededSettings & (0x1u << Test::NeedDrawLabelsField))
+    {
+        auto value = testSettings.drawLabels;
+        ImGui::Checkbox("Labels (required)", &value);
+    }
+    else
+    {
+        ImGui::Checkbox("Labels", &settings.drawLabels);
+    }
+    ImGui::Checkbox("Contact Points", &settings.drawContactPoints);
+    ImGui::Checkbox("Contact Normals", &settings.drawContactNormals);
+    ImGui::Checkbox("Contact Impulses", &settings.drawContactImpulse);
+    ImGui::Checkbox("Friction Impulses", &settings.drawFrictionImpulse);
+    ImGui::Checkbox("Center of Masses", &settings.drawCOMs);
+    ImGui::Checkbox("Statistics", &ui.showStats);
+    ImGui::Checkbox("About Test", &ui.showAboutTest);
+}
+
 static bool MenuUI(bool* openVar)
 {
     bool shouldQuit = false;
 
-    const auto test = g_testSuite->GetTest();
-
-    const auto neededSettings = test->GetNeededSettings();
-    const auto testSettings = test->GetSettings();
+    //const auto neededSettings = test->GetNeededSettings();
     
     ImGui::SetNextWindowPos(ImVec2(camera.m_width - menuWidth - 10, 10));
     ImGui::SetNextWindowSize(ImVec2(menuWidth, camera.m_height - 20));
@@ -721,95 +919,30 @@ static bool MenuUI(bool* openVar)
     ImGui::Separator();
     ImGui::Spacing();
     
-    const auto defaultLinearSlop = static_cast<float>(StripUnit(DefaultLinearSlop));
-    
     ImGui::PushItemWidth(100);
     
     if (ImGui::CollapsingHeader("Basic Step Options", ImGuiTreeNodeFlags_DefaultOpen))
     {
-        ImGui::SliderFloat("Frequency", &settings.hz, -120.0f, 120.0f, "%.0f hz");
-        ImGui::SliderInt("Vel. Iter.", &settings.regVelocityIterations, 0, 100);
-        ImGui::SliderInt("Pos. Iter.", &settings.regPositionIterations, 0, 100);
+        if (ImGui::IsItemHovered())
+        {
+            std::ostringstream os;
+            os << "These are basic per-\"step\" options. ";
+            os << "One step of the simulation is performed for every display refresh.";
+            ImGui::ShowTooltip(os.str(), 400);
+        }
+        BasicStepOptionsUI();
     }
     
     if (ImGui::CollapsingHeader("Advanced Step Options"))
     {
-        ImGui::SliderFloat("Frequency", &settings.hz, -120.0f, 120.0f, "%.0f hz");
-        ImGui::SliderFloat("Max Translation", &settings.maxTranslation, 0.0f, 12.0f);
-        ImGui::SliderFloat("Max Rotation", &settings.maxRotation, 0.0f, 360.0f);
-        ImGui::SliderFloat("Linear Slop", &settings.linearSlop,
-                           defaultLinearSlop / 10, defaultLinearSlop);
-        ImGui::SliderFloat("Angular Slop", &settings.angularSlop,
-                           static_cast<float>(Pi * 2 / 1800.0),
-                           static_cast<float>(Pi * 2 / 18.0));
-        ImGui::SliderFloat("Max Lin Correct", &settings.maxLinearCorrection, 0.0f, 1.0f);
-        ImGui::SliderFloat("Max Ang Correct", &settings.maxAngularCorrection, 0.0f, 90.0f);
-        
-        if (ImGui::CollapsingHeader("Reg Phase Processing", ImGuiTreeNodeFlags_DefaultOpen))
-        {
-            ImGui::SliderInt("Vel Iters", &settings.regVelocityIterations, 0, 100);
-            ImGui::SliderInt("Pos Iters", &settings.regPositionIterations, 0, 100);
-            ImGui::SliderFloat("Min Sep", &settings.regMinSeparation,
-                               -5 * defaultLinearSlop, -0 * defaultLinearSlop);
-            ImGui::SliderInt("Resol Rate", &settings.regPosResRate, 0, 100, "%.0f %%");
-            if (ImGui::IsItemHovered())
-            {
-                ImGui::SetTooltip("This is the %% of overlap that will"
-                                  " be resolved per position iteration.");
-            }
-            ImGui::Checkbox("Allow Sleeping", &settings.enableSleep);
-            ImGui::Checkbox("Warm Starting", &settings.enableWarmStarting);
-        }
-        if (ImGui::CollapsingHeader("TOI Phase Processing", ImGuiTreeNodeFlags_DefaultOpen))
-        {
-            ImGui::Checkbox("Perform Continuous", &settings.enableContinuous);
-            ImGui::SliderInt("Vel Iters", &settings.toiVelocityIterations, 0, 100);
-            ImGui::SliderInt("Pos Iters", &settings.toiPositionIterations, 0, 100);
-            ImGui::SliderFloat("Min Sep", &settings.toiMinSeparation,
-                               -5 * defaultLinearSlop, -0 * defaultLinearSlop);
-            ImGui::SliderInt("Resol Rate", &settings.toiPosResRate, 0, 100, "%.0f %%");
-            if (ImGui::IsItemHovered())
-            {
-                ImGui::SetTooltip("This is the %% of overlap that will"
-                                  " be resolved per position iteration.");
-            }
-            ImGui::SliderInt("Max Sub Steps", &settings.maxSubSteps, 0, 100);
-            ImGui::Checkbox("Sub-Step", &settings.enableSubStepping);
-        }
+        AdvancedStepOptionsUI();
     }
     
     ImGui::PopItemWidth();
     
     if (ImGui::CollapsingHeader("Output Options", ImGuiTreeNodeFlags_DefaultOpen))
     {
-        ImGui::Checkbox("Shapes", &settings.drawShapes);
-        ImGui::Checkbox("Joints", &settings.drawJoints);
-        if (neededSettings & (0x1u << Test::NeedDrawSkinsField))
-        {
-            auto value = testSettings.drawSkins;
-            ImGui::Checkbox("Skins (required)", &value);
-        }
-        else
-        {
-            ImGui::Checkbox("Skins", &settings.drawSkins);
-        }
-        ImGui::Checkbox("AABBs", &settings.drawAABBs);
-        if (neededSettings & (0x1u << Test::NeedDrawLabelsField))
-        {
-            auto value = testSettings.drawLabels;
-            ImGui::Checkbox("Labels (required)", &value);
-        }
-        else
-        {
-            ImGui::Checkbox("Labels", &settings.drawLabels);
-        }
-        ImGui::Checkbox("Contact Points", &settings.drawContactPoints);
-        ImGui::Checkbox("Contact Normals", &settings.drawContactNormals);
-        ImGui::Checkbox("Contact Impulses", &settings.drawContactImpulse);
-        ImGui::Checkbox("Friction Impulses", &settings.drawFrictionImpulse);
-        ImGui::Checkbox("Center of Masses", &settings.drawCOMs);
-        ImGui::Checkbox("Statistics", &ui.showStats);
-        ImGui::Checkbox("About Test", &ui.showAboutTest);
+        OutputOptionsUI();
     }
     
     ImGui::Spacing();
@@ -822,7 +955,9 @@ static bool MenuUI(bool* openVar)
     if (ImGui::Button("Single Step", button_sz))
         settings.singleStep = !settings.singleStep;
     if (ImGui::Button("Restart", button_sz))
+    {
         g_testSuite->RestartTest();
+    }
     if (ImGui::Button("Quit", button_sz))
         shouldQuit = true;
     
@@ -876,7 +1011,7 @@ static void ShowFrameInfo(double frameTime, double fps)
                  ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoInputs|
                  ImGuiWindowFlags_AlwaysAutoResize|ImGuiWindowFlags_NoScrollbar);
     ImGui::SetCursorPos(ImVec2(5, camera.m_height - 20));
-    ImGui::TextUnformatted(stream.str().c_str());
+    ImGui::TextUnformatted(stream.str());
 }
 
 int main()
@@ -914,11 +1049,12 @@ int main()
     std::sprintf(title, "PlayRho Testbed Version %d.%d.%d",
                  buildVersion.major, buildVersion.minor, buildVersion.revision);
 
+    glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-
+    
     const auto mainWindow = glfwCreateWindow(camera.m_width, camera.m_height, title,
                                              nullptr, nullptr);
     if (mainWindow == nullptr)
@@ -934,7 +1070,11 @@ int main()
                 glGetString(GL_VERSION), glGetString(GL_SHADING_LANGUAGE_VERSION));
 
     glfwSwapInterval(1); // Control the frame rate. One draw per monitor refresh.
-    glfwInit();
+
+    const auto monitor = glfwGetPrimaryMonitor();
+    const auto vidmode = monitor? glfwGetVideoMode(monitor): static_cast<const GLFWvidmode*>(nullptr);
+    refreshRate = vidmode? vidmode->refreshRate: decltype(vidmode->refreshRate){0};
+    std::printf("Primary monitor refresh rate: %d Hz\n", refreshRate);
 
     glfwSetScrollCallback(mainWindow, ScrollCallback);
     glfwSetWindowSizeCallback(mainWindow, ResizeWindow);
@@ -942,7 +1082,7 @@ int main()
     glfwSetMouseButtonCallback(mainWindow, MouseButton);
     glfwSetCursorPosCallback(mainWindow, MouseMotion);
     glfwSetScrollCallback(mainWindow, ScrollCallback);
-
+    
 #if !defined(__APPLE__)
     //glewExperimental = GL_TRUE;
     GLenum err = glewInit();

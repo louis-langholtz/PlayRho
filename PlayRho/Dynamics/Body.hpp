@@ -895,11 +895,18 @@ inline Mass GetMass(const Body& body) noexcept
     return (invMass != InvMass{0})? Mass{Real{1} / invMass}: Mass{0};
 }
 
+/// @brief Sets the given linear acceleration of the given body.
+/// @relatedalso Body
+inline void SetLinearAcceleration(Body& body, LinearAcceleration2D value)
+{
+    body.SetAcceleration(value, body.GetAngularAcceleration());
+}
+
 /// @brief Applies the given linear acceleration to the given body.
 /// @relatedalso Body
 inline void ApplyLinearAcceleration(Body& body, LinearAcceleration2D amount)
 {
-    body.SetAcceleration(body.GetLinearAcceleration() + amount, body.GetAngularAcceleration());
+    SetLinearAcceleration(body, body.GetLinearAcceleration() + amount);
 }
 
 /// @brief Sets the given amount of force at the given point to the given body.

@@ -195,6 +195,7 @@
 		47C85D1B1F0D9D8D00F70C56 /* Units.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47C85D181F0D9D8D00F70C56 /* Units.hpp */; };
 		47C85D211F0DA14500F70C56 /* Templates.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47C85D1E1F0DA14500F70C56 /* Templates.hpp */; };
 		47C85D241F112E2700F70C56 /* GrowableStack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47C85D231F112E2700F70C56 /* GrowableStack.cpp */; };
+		47C96C511FA24BC100A6C587 /* Units.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47C96C501FA24BC100A6C587 /* Units.cpp */; };
 		47CB34401D6F3A8500828126 /* MassData.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47CB343D1D6F3A8500828126 /* MassData.hpp */; };
 		47CF984B1DF9C4A30077F5F2 /* ShapeSeparation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47CF98491DF9C4A30077F5F2 /* ShapeSeparation.cpp */; };
 		47CF984D1DF9C4A30077F5F2 /* ShapeSeparation.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47CF984A1DF9C4A30077F5F2 /* ShapeSeparation.hpp */; };
@@ -506,6 +507,7 @@
 		4768D3F71E3E895A00574143 /* PrismaticJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PrismaticJoint.cpp; sourceTree = "<group>"; };
 		4768D3FA1E414A0100574143 /* Vector2D.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Vector2D.hpp; sourceTree = "<group>"; };
 		4768D3FF1E54E7CB00574143 /* StepConf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StepConf.cpp; sourceTree = "<group>"; };
+		477329D61F9BEFA200C521B4 /* SolarSystem.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SolarSystem.hpp; sourceTree = "<group>"; };
 		4775A9371E05B032001C2332 /* StepConf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StepConf.cpp; sourceTree = "<group>"; };
 		47791F761F901B8700E257AF /* iforce2d_Trajectories.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = iforce2d_Trajectories.hpp; sourceTree = "<group>"; };
 		47791F781F92CD2800E257AF /* imconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imconfig.h; sourceTree = "<group>"; };
@@ -570,6 +572,7 @@
 		47C85D181F0D9D8D00F70C56 /* Units.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Units.hpp; sourceTree = "<group>"; };
 		47C85D1E1F0DA14500F70C56 /* Templates.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Templates.hpp; sourceTree = "<group>"; };
 		47C85D231F112E2700F70C56 /* GrowableStack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GrowableStack.cpp; sourceTree = "<group>"; };
+		47C96C501FA24BC100A6C587 /* Units.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Units.cpp; sourceTree = "<group>"; };
 		47CB343D1D6F3A8500828126 /* MassData.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MassData.hpp; sourceTree = "<group>"; };
 		47CF98491DF9C4A30077F5F2 /* ShapeSeparation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShapeSeparation.cpp; sourceTree = "<group>"; };
 		47CF984A1DF9C4A30077F5F2 /* ShapeSeparation.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ShapeSeparation.hpp; sourceTree = "<group>"; };
@@ -840,6 +843,7 @@
 				474BC4021D41278800447DCD /* Sweep.cpp */,
 				474BC4031D41278800447DCD /* TimeOfImpact.cpp */,
 				474BC4041D41278800447DCD /* Transformation.cpp */,
+				47C96C501FA24BC100A6C587 /* Units.cpp */,
 				470F94DD1ECB94D600AA3C82 /* UnitVec2.cpp */,
 				474BC4051D41278800447DCD /* Vec2.cpp */,
 				4736DE881DB7DB3B003993CB /* Vec3.cpp */,
@@ -1206,6 +1210,7 @@
 				80BB8A5F141C3E8600F1753A /* SensorTest.hpp */,
 				80BB8A60141C3E8600F1753A /* ShapeEditing.hpp */,
 				80BB8A61141C3E8600F1753A /* SliderCrank.hpp */,
+				477329D61F9BEFA200C521B4 /* SolarSystem.hpp */,
 				80BB8A62141C3E8600F1753A /* SphereStack.hpp */,
 				470D533C1E82364F00E96896 /* SpinningCircle.hpp */,
 				80BB8A64141C3E8600F1753A /* TheoJansen.hpp */,
@@ -1529,6 +1534,7 @@
 				474BC4301D413DC200447DCD /* DistanceProxy.cpp in Sources */,
 				47C85D0A1EFA251B00F70C56 /* WheelJoint.cpp in Sources */,
 				475A945D1D959537000CA9A8 /* Joint.cpp in Sources */,
+				47C96C511FA24BC100A6C587 /* Units.cpp in Sources */,
 				47D28D951F6E32720094C032 /* PulleyJoint.cpp in Sources */,
 				47D61F7C1F21112000E702BD /* MultiShape.cpp in Sources */,
 				474BC4311D413DC200447DCD /* Epsilon.cpp in Sources */,

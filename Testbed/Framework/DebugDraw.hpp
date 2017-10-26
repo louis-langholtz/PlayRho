@@ -72,8 +72,6 @@ inline Coord2D operator- (Coord2D a, Coord2D b)
     return Coord2D{a.x - b.x, a.y - b.y};
 }
 
-
-//
 struct Camera
 {
     Coord2D m_center = Coord2D{0.0f, 20.0f};

@@ -34,6 +34,8 @@
 #include <functional>
 #include <GLFW/glfw3.h>
 #include <deque>
+#include <algorithm>
+#include <limits>
 
 namespace playrho {
 
@@ -42,8 +44,11 @@ struct Settings
 {
     float maxTranslation = static_cast<float>(Real{DefaultMaxTranslation / Meter});
     float maxRotation = 90; // in degrees
-    float hz = 60;
-    float dt = 1 / hz;
+
+    float dt = 1.0f / 60; // in seconds.
+    float minDt = 1.0f / 120;
+    float maxDt = 1.0f / 5;
+
     float maxLinearCorrection = static_cast<float>(Real{DefaultMaxLinearCorrection / Meter}); // in meters
     float maxAngularCorrection = static_cast<float>(Real{DefaultMaxAngularCorrection / Degree}); // in degrees
 
@@ -57,6 +62,9 @@ struct Settings
     
     float regMinSeparation = static_cast<float>(Real{DefaultLinearSlop / Meter}) * -3.0f;
     float toiMinSeparation = static_cast<float>(Real{DefaultLinearSlop / Meter}) * -1.5f;
+
+    float cameraZoom = 1.0f;
+
     int regPosResRate = 20; // in percent
     int toiPosResRate = 75; // in percent
     int regVelocityIterations = 8;
@@ -107,6 +115,10 @@ public:
     enum NeededSettingsField: std::uint8_t {
         NeedDrawSkinsField,
         NeedDrawLabelsField,
+        NeedLinearSlopField,
+        NeedCameraZoom,
+        NeedMaxTranslation,
+        NeedDeltaTime,
     };
     
     using KeyHandlers = std::vector<std::pair<std::string, KeyHandler>>;
@@ -297,8 +309,6 @@ protected:
 
 private:
     void DrawStats(const StepConf& stepConf, UiState& ui);
-    void DrawStats(const Fixture& fixture);
-    void DrawStats(const Manifold& manifold);
     void DrawContactInfo(const Settings& settings, Drawer& drawer);
     bool DrawWorld(Drawer& drawer, const World& world, const Settings& settings,
                    const Test::Fixtures& selected);
@@ -372,6 +382,15 @@ Real RandomFloat();
 
 /// Random floating point number in range [lo, hi]
 Real RandomFloat(Real lo, Real hi);
+
+template <class Container, class T>
+inline bool IsWithin(const Container& container, const T& element) noexcept
+{
+    const auto first = std::cbegin(container);
+    const auto last = std::cend(container);
+    const auto it = std::find(first, last, element);
+    return it != last;
+}
 
 ::std::ostream& operator<<(::std::ostream& os, const ContactFeature& value);
 

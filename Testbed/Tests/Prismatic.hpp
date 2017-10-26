@@ -75,7 +75,7 @@ public:
 
     void PostStep(const Settings& settings, Drawer&) override
     {
-        const auto force = m_joint->GetMotorForce(Real{settings.hz} * Hertz);
+        const auto force = m_joint->GetMotorForce((1.0f / settings.dt) * Hertz);
         std::stringstream stream;
         stream << "Motor Force: ";
         stream << static_cast<double>(Real{force / Newton});
