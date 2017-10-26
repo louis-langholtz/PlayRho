@@ -13,6 +13,8 @@ extra instructions for building those after getting the library built:
 - For the `Testbed` GUI application, see the [`Testbed/` folder's](Testbed/)
   `README.md` file.
 
+**NOTE**: These sources make heavy use of the standard C++ library [`assert`](http://en.cppreference.com/w/cpp/error/assert) macro to help confirm correctness of the code logic. As such, this library *must* be compiled with the `NDEBUG` pre-processor macro enabled, and of course optimization turned on, to see any kind of performance.
+
 ## Prerequisite Tasks
 
 1. Make sure you have the tools that will be needed already available.

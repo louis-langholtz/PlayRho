@@ -8,25 +8,17 @@ PlayRho is a real-time oriented physics engine and library that's currently best
 
 ## Background
 
-This is a fork by [Louis Langholtz](https://github.com/louis-langholtz)
-of the Box2D 2.3.2 physics engine originally written by Erin Catto. It's
-[licensed](LICENSE.txt) under a [Zlib License](https://opensource.org/licenses/Zlib).
+PlayRho started off as a port by Louis Langholtz of the Box2D 2.3.2 physics engine to "modern C++" (C++14). It's evolved into a derivative work by Louis and other contributors to the code base. Like its predecessor, PlayRho is also [licensed](LICENSE.txt) under a [Zlib License](https://opensource.org/licenses/Zlib).
 
 General goals of this project are:
-- Using and supporting the newer features of the C++ language standards, particularly [C++14](https://en.wikipedia.org/wiki/C%2B%2B14);
+- Using and supporting newer features of the C++ language standards, particularly [C++14](https://en.wikipedia.org/wiki/C%2B%2B14);
 - Conforming to the [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md),
   particularly in regards to things like avoiding global variables,
   preferring initialization, and preferring pure functions;
-- A greater openness to contributions including pull requests with new features; and
-- Providing a [Continuous Integration](https://en.wikipedia.org/wiki/Continuous_integration)
-  backed, [Build Automation](https://en.wikipedia.org/wiki/Build_automation) supported, and
-  [Unit Tested](https://en.wikipedia.org/wiki/Unit_testing) project.
-
-**NOTE**: These sources make heavy use of the standard C++ library
-[`assert`](http://en.cppreference.com/w/cpp/error/assert) macro to help confirm
-correctness of the code logic. As such, this library *must* be compiled with
-the `NDEBUG` pre-processor macro enabled, and of course optimization turned on,
-to see any kind of performance.
+- Openness to contributions including pull requests with new features; and
+- Providing a [continuous integration](https://en.wikipedia.org/wiki/Continuous_integration)
+  backed, [build automation](https://en.wikipedia.org/wiki/Build_automation) supported,
+  [unit testing](https://en.wikipedia.org/wiki/Unit_testing) validated, and [benchmark](https://en.wikipedia.org/wiki/Benchmark_(computing) assessed, project.
 
 ## Continuous Integration Status
 
