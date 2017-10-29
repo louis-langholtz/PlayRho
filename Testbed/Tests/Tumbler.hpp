@@ -38,18 +38,18 @@ public:
     static Body* CreateEnclosure(World& world)
     {
         const auto b = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic)
-                                        .UseLocation(Vec2(0, 10) * Meter)
+                                        .UseLocation(Vec2(0, 10) * 1_m)
                                         .UseAllowSleep(false));
         
         PolygonShape shape;
-        shape.SetDensity(5 * KilogramPerSquareMeter);
-        SetAsBox(shape, 0.5f * Meter, 10.0f * Meter, Vec2( 10.0f, 0.0f) * Meter, Angle{0});
+        shape.SetDensity(5_kgpm2);
+        SetAsBox(shape, 0.5_m, 10_m, Vec2( 10.0f, 0.0f) * 1_m, Angle{0});
         b->CreateFixture(std::make_shared<PolygonShape>(shape));
-        SetAsBox(shape, 0.5f * Meter, 10.0f * Meter, Vec2(-10.0f, 0.0f) * Meter, Angle{0});
+        SetAsBox(shape, 0.5_m, 10_m, Vec2(-10.0f, 0.0f) * 1_m, Angle{0});
         b->CreateFixture(std::make_shared<PolygonShape>(shape));
-        SetAsBox(shape, 10.0f * Meter, 0.5f * Meter, Vec2(0.0f, 10.0f) * Meter, Angle{0});
+        SetAsBox(shape, 10_m, 0.5_m, Vec2(0.0f, 10.0f) * 1_m, Angle{0});
         b->CreateFixture(std::make_shared<PolygonShape>(shape));
-        SetAsBox(shape, 10.0f * Meter, 0.5f * Meter, Vec2(0.0f, -10.0f) * Meter, Angle{0});
+        SetAsBox(shape, 10_m, 0.5_m, Vec2(0.0f, -10.0f) * 1_m, Angle{0});
         b->CreateFixture(std::make_shared<PolygonShape>(shape));
 
         return b;
@@ -60,32 +60,32 @@ public:
         RevoluteJointDef jd;
         jd.bodyA = stable;
         jd.bodyB = turn;
-        jd.localAnchorA = Vec2(0.0f, 10.0f) * Meter;
-        jd.localAnchorB = Vec2(0.0f, 0.0f) * Meter;
+        jd.localAnchorA = Vec2(0.0f, 10.0f) * 1_m;
+        jd.localAnchorB = Vec2(0.0f, 0.0f) * 1_m;
         jd.referenceAngle = Angle{0};
-        jd.motorSpeed = 0.05f * Pi * RadianPerSecond;
-        jd.maxMotorTorque = Real{100000} * NewtonMeter; // 1e8f;
+        jd.motorSpeed = Pi * 0.05_rad / 1_s;
+        jd.maxMotorTorque = 100000_Nm; // 1e8f;
         jd.enableMotor = true;
         return static_cast<RevoluteJoint*>(world.CreateJoint(jd));
     }
     
     Tumbler()
     {
-        m_square->SetDensity(Real(1) * KilogramPerSquareMeter);
-        m_disk->SetDensity(Real(0.1) * KilogramPerSquareMeter);
+        m_square->SetDensity(1_kgpm2);
+        m_disk->SetDensity(0.1_kgpm2);
 
         const auto g = m_world.CreateBody(BodyDef{}.UseType(BodyType::Static));
         const auto b = CreateEnclosure(m_world);
         m_joint = CreateRevoluteJoint(m_world, g, b);
         
         RegisterForKey(GLFW_KEY_KP_ADD, GLFW_PRESS, 0, "Speed up rotation.", [&](KeyActionMods) {
-            m_joint->SetMotorSpeed(m_joint->GetMotorSpeed() + 0.01f * Pi * RadianPerSecond);
+            m_joint->SetMotorSpeed(m_joint->GetMotorSpeed() + Pi * 0.01_rad / 1_s);
         });
         RegisterForKey(GLFW_KEY_KP_SUBTRACT, GLFW_PRESS, 0, "Slow down rotation.", [&](KeyActionMods) {
-            m_joint->SetMotorSpeed(m_joint->GetMotorSpeed() - 0.01f * Pi * RadianPerSecond);
+            m_joint->SetMotorSpeed(m_joint->GetMotorSpeed() - Pi * 0.01_rad / 1_s);
         });
         RegisterForKey(GLFW_KEY_EQUAL, GLFW_PRESS, 0, "Stop rotation.", [&](KeyActionMods) {
-            m_joint->SetMotorSpeed(Real(0) * RadianPerSecond);
+            m_joint->SetMotorSpeed(0_rad / 1_s);
         });
         RegisterForKey(GLFW_KEY_0, GLFW_PRESS, 0, "for remaining emitted shapes to be disks.", [&](KeyActionMods) {
             m_shapeType = ShapeType::Disk;
@@ -115,7 +115,7 @@ public:
     {
         return m_world.CreateBody(BodyDef{}
                             .UseType(BodyType::Dynamic)
-                            .UseLocation(Vec2(0, 10) * Meter)
+                            .UseLocation(Vec2(0, 10) * 1_m)
                             .UseUserData(reinterpret_cast<void*>(1)));
     }
 
@@ -149,10 +149,9 @@ public:
     RevoluteJoint* m_joint;
     ShapeType m_shapeType = ShapeType::Square;
     int m_count = 0;
-    std::shared_ptr<PolygonShape> m_square = std::make_shared<PolygonShape>(Real{0.125f} * Meter,
-                                                                            Real{0.125f} * Meter);
+    std::shared_ptr<PolygonShape> m_square = std::make_shared<PolygonShape>(0.125_m, 0.125_m);
     std::shared_ptr<DiskShape> m_disk = std::make_shared<DiskShape>(DiskShape::Conf{}
-                                                                    .UseVertexRadius(Real(0.125f) * Meter)
+                                                                    .UseVertexRadius(0.125_m)
                                                                     .UseFriction(Real(0)));
 };
 

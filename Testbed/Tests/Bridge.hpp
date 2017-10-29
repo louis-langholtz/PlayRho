@@ -33,22 +33,22 @@ public:
     Bridge()
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
+        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40, 0) * 1_m, Vec2(40, 0) * 1_m));
 
         {
             auto conf = PolygonShape::Conf{};
-            conf.density = Real{20} * KilogramPerSquareMeter;
+            conf.density = 20_kgpm2;
             conf.friction = 0.2f;
-            const auto shape = std::make_shared<PolygonShape>(Real{0.5f} * Meter, Real{0.125f} * Meter, conf);
+            const auto shape = std::make_shared<PolygonShape>(0.5_m, 0.125_m, conf);
             auto prevBody = ground;
             for (auto i = 0; i < Count; ++i)
             {
                 const auto body = m_world.CreateBody(BodyDef{}
-                                                      .UseType(BodyType::Dynamic)
-                                                      .UseLocation(Vec2(-14.5f + 1.0f * i, 5.0f) * Meter));
+                                                     .UseType(BodyType::Dynamic)
+                                                     .UseLocation(Vec2(-14.5f + i, 5.0f) * 1_m));
                 body->CreateFixture(shape);
 
-                m_world.CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-15.0f + 1.0f * i, 5.0f) * Meter});
+                m_world.CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-15.0f + i, 5.0f) * 1_m});
 
                 if (i == (Count >> 1))
                 {
@@ -57,32 +57,31 @@ public:
                 prevBody = body;
             }
 
-            m_world.CreateJoint(RevoluteJointDef{prevBody, ground, Vec2(-15.0f + 1.0f * Count, 5.0f) * Meter});
+            m_world.CreateJoint(RevoluteJointDef{prevBody, ground, Vec2(-15.0f + Count, 5.0f) * 1_m});
         }
 
-        const auto polyshape = std::make_shared<PolygonShape>(PolygonShape::Conf{}
-                                                              .UseDensity(Real{1} * KilogramPerSquareMeter));
+        const auto polyshape = std::make_shared<PolygonShape>(PolygonShape::Conf{}.UseDensity(1_kgpm2));
         polyshape->Set({
-            Vec2(-0.5f, 0.0f) * Meter,
-            Vec2(0.5f, 0.0f) * Meter,
-            Vec2(0.0f, 1.5f) * Meter
+            Vec2(-0.5f, 0.0f) * 1_m,
+            Vec2(0.5f, 0.0f) * 1_m,
+            Vec2(0.0f, 1.5f) * 1_m
         });
         for (auto i = 0; i < 2; ++i)
         {
             const auto body = m_world.CreateBody(BodyDef{}
-                                                  .UseType(BodyType::Dynamic)
-                                                  .UseLocation(Vec2(-8.0f + 8.0f * i, 12.0f) * Meter));
+                                                 .UseType(BodyType::Dynamic)
+                                                 .UseLocation(Vec2(-8.0f + 8.0f * i, 12.0f) * 1_m));
             body->CreateFixture(polyshape);
         }
 
         const auto diskShape = std::make_shared<DiskShape>(DiskShape::Conf{}
-                                                           .UseDensity(Real{1} * KilogramPerSquareMeter)
-                                                           .UseVertexRadius(Real{0.5f} * Meter));
+                                                           .UseDensity(1_kgpm2)
+                                                           .UseVertexRadius(0.5_m));
         for (auto i = 0; i < 3; ++i)
         {
             const auto body = m_world.CreateBody(BodyDef{}
-                                                  .UseType(BodyType::Dynamic)
-                                                  .UseLocation(Vec2(-6.0f + 6.0f * i, 10.0f) * Meter));
+                                                 .UseType(BodyType::Dynamic)
+                                                 .UseLocation(Vec2(-6.0f + 6.0f * i, 10.0f) * 1_m));
             body->CreateFixture(diskShape);
         }
     }

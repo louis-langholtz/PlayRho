@@ -88,9 +88,9 @@ TEST(PrismaticJoint, SetMaxMotorForce)
     jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
     
     auto joint = PrismaticJoint{jd};
-    ASSERT_EQ(joint.GetMaxMotorForce(), Real(0) * Newton);
-    joint.SetMaxMotorForce(Real(2) * Newton);
-    EXPECT_EQ(joint.GetMaxMotorForce(), Real(2) * Newton);
+    ASSERT_EQ(joint.GetMaxMotorForce(), 0_N);
+    joint.SetMaxMotorForce(2_N);
+    EXPECT_EQ(joint.GetMaxMotorForce(), 2_N);
 }
 
 TEST(PrismaticJoint, MotorSpeed)
@@ -216,7 +216,7 @@ TEST(PrismaticJoint, WithDynamicCirclesAndLimitEnabled)
     ASSERT_EQ(joint->GetLowerLimit(), Length(0));
     ASSERT_EQ(joint->GetUpperLimit(), Length(0));
 
-    Step(world, Time{Second * Real{1}});
+    Step(world, 1_s);
     EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
     EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);
@@ -228,13 +228,13 @@ TEST(PrismaticJoint, WithDynamicCirclesAndLimitEnabled)
     EXPECT_EQ(joint->GetLimitState(), Joint::e_equalLimits);
     
     joint->SetLimits(Real(0) * Meter, Real(2) * Meter);
-    Step(world, Time{Second * Real{1}});
+    Step(world, 1_s);
     EXPECT_EQ(joint->GetLowerLimit(), Length(0));
     EXPECT_EQ(joint->GetUpperLimit(), Real(2) * Meter);
     EXPECT_EQ(joint->GetLimitState(), Joint::e_atLowerLimit);
     
     joint->SetLimits(Real(-2) * Meter, Real(0) * Meter);
-    Step(world, Time{Second * Real{1}});
+    Step(world, 1_s);
     EXPECT_EQ(joint->GetLowerLimit(), Real(-2) * Meter);
     EXPECT_EQ(joint->GetUpperLimit(), Real(0) * Meter);
     EXPECT_EQ(joint->GetLimitState(), Joint::e_atUpperLimit);

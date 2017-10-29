@@ -38,7 +38,7 @@ TEST(Fixture, ByteSize)
 
 TEST(Fixture, CreateMatchesDef)
 {
-    const auto density = Real{2} * KilogramPerSquareMeter;
+    const auto density = 2_kgpm2;
     int variable;
     const auto userData = &variable;
     const auto friction = Real(0.5);
@@ -70,7 +70,7 @@ TEST(Fixture, CreateMatchesDef)
 TEST(Fixture, SetSensor)
 {
     const auto shapeA = std::make_shared<DiskShape>();
-    const auto bodyCtrPos = Length2D(Real(1) * Meter, Real(2) * Meter);
+    const auto bodyCtrPos = Length2D(1_m, 2_m);
     
     World world;
     const auto body = world.CreateBody(BodyDef{}.UseLocation(bodyCtrPos));
@@ -86,7 +86,7 @@ TEST(Fixture, SetSensor)
 TEST(Fixture, TestPointFreeFunction)
 {
     const auto shapeA = std::make_shared<DiskShape>();
-    const auto bodyCtrPos = Length2D(Real(1) * Meter, Real(2) * Meter);
+    const auto bodyCtrPos = Length2D(1_m, 2_m);
 
     World world;
     const auto body = world.CreateBody(BodyDef{}.UseLocation(bodyCtrPos));
@@ -110,7 +110,7 @@ TEST(Fixture, SetAwakeFreeFunction)
 
 TEST(Fixture, CopyConstructor)
 {
-    const auto density = Real{2} * KilogramPerSquareMeter;
+    const auto density = 2_kgpm2;
     int variable;
     const auto userData = &variable;
     const auto friction = Real(0.5);

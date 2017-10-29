@@ -119,7 +119,7 @@ TEST(Math, Square)
 TEST(Math, Atan2)
 {
     EXPECT_EQ(Atan2(Real(0), Real(0)), Angle{0});
-    //EXPECT_EQ(Atan2(Real(1), Real(0)), Real(90) * Degree);
+    //EXPECT_EQ(Atan2(Real(1), Real(0)), 90_deg);
 }
 
 TEST(Math, Span)
@@ -255,19 +255,17 @@ TEST(Math, Vec2NegationAndRotationIsOrderIndependent)
     }
     {
         const auto v = Vec2{Real(1), Real(1)};
-        const auto r = UnitVec2::Get(Angle{Real{33.0f} * Degree});
+        const auto r = UnitVec2::Get(33_deg);
         EXPECT_EQ(Rotate(-v, r), -Rotate(v, r));
     }
     {
         const auto v = Vec2{Real(-3.2), Real(1.9)};
-        const auto r = UnitVec2::Get(Angle{Real{33.0f} * Degree});
+        const auto r = UnitVec2::Get(33_deg);
         EXPECT_EQ(Rotate(-v, r), -Rotate(v, r));
     }
     {
         const auto v = Vec2{Real(-3.2), Real(-21.4)};
-        for (auto angle = Angle{-Real{360.0f} * Degree};
-             angle < Angle{Real{360.0f} * Degree};
-             angle += Angle{Real{15.0f} * Degree})
+        for (auto angle = -360_deg; angle < 360_deg; angle += 15_deg)
         {
             const auto r = UnitVec2::Get(angle);
             EXPECT_EQ(Rotate(-v, r), -Rotate(v, r));
@@ -275,12 +273,12 @@ TEST(Math, Vec2NegationAndRotationIsOrderIndependent)
     }
     {
         const auto v = Vec2{Real(-3.2), Real(1.9)};
-        const auto r = UnitVec2::Get(Angle{Real{33.0f} * Degree});
+        const auto r = UnitVec2::Get(33_deg);
         EXPECT_EQ(Rotate(v, r), -Rotate(-v, r));
     }
     {
         const auto v = Vec2{Real(-3.2), Real(1.9)};
-        const auto r = UnitVec2::Get(Angle{Real{33.0f} * Degree});
+        const auto r = UnitVec2::Get(33_deg);
         EXPECT_EQ(Rotate(v, r), -Rotate(v, -r));
     }
 }
@@ -289,9 +287,7 @@ TEST(Math, InverseRotationRevertsRotation)
 {
     const auto vec_list = {Vec2{-10.7f, 5.3f}, Vec2{3.2f, 21.04f}, Vec2{-1.2f, -0.78f}};
     for (auto&& vec: vec_list) {
-        for (auto angle = Angle{0};
-             angle < Angle{Real{360.0f} * Degree};
-             angle += Angle{Real{10.0f} * Degree})
+        for (auto angle = 0_deg; angle < 360_deg; angle += 10_deg)
         {
             const auto unit_vec = UnitVec2::Get(angle);
             EXPECT_NEAR(double(GetX(InverseRotate(Rotate(vec, unit_vec), unit_vec))), double(GetX(vec)), 0.004);
@@ -511,14 +507,8 @@ TEST(Math, ComputeCentroidOfHexagonalVertices)
 
 TEST(Math, GetContactRelVelocity)
 {
-    const auto velA = Velocity{
-        LinearVelocity2D(+Real(1) * MeterPerSecond, +Real(4) * MeterPerSecond),
-        Real{3.2f} * RadianPerSecond
-    };
-    const auto velB = Velocity{
-        LinearVelocity2D(+Real(3) * MeterPerSecond, +Real(1) * MeterPerSecond),
-        Real{0.4f} * RadianPerSecond
-    };
+    const auto velA = Velocity{LinearVelocity2D(+1_mps, +4_mps), 3.2f * RadianPerSecond};
+    const auto velB = Velocity{LinearVelocity2D(+3_mps, +1_mps), 0.4f * RadianPerSecond};
     const auto relA = Length2D{};
     const auto relB = Length2D{};
     const auto result = GetContactRelVelocity(velA, relA, velB, relB);
@@ -628,7 +618,7 @@ TEST(Math, GetPosition)
     const auto y = Real{5.515012264251709e+00f};
     const auto value = Real{0.0866042823f};
 
-    const auto oldPos = Position{Vec2{x, y} * (Real(1) * Meter), Real{0.0f} * Radian};
+    const auto oldPos = Position{Vec2{x, y} * (Real(1) * Meter), 0_rad};
     const auto newPos = GetPosition(oldPos, oldPos, value);
     
     EXPECT_EQ(oldPos.linear, newPos.linear);

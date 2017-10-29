@@ -42,20 +42,19 @@ public:
     MotorJointTest(): Test(GetTestConf())
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
+        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m));
 
         // Define motorized body
         const auto body = m_world.CreateBody(BodyDef{}
                                              .UseType(BodyType::Dynamic)
-                                             .UseLocation(Vec2(0.0f, 8.0f) * Meter));
+                                             .UseLocation(Vec2(0.0f, 8.0f) * 1_m));
 
-        const auto conf = PolygonShape::Conf{}
-            .UseFriction(0.6f).UseDensity(2 * KilogramPerSquareMeter);
-        body->CreateFixture(std::make_shared<PolygonShape>(2.0f * Meter, 0.5f * Meter, conf));
+        const auto conf = PolygonShape::Conf{}.UseFriction(Real(0.6f)).UseDensity(2_kgpm2);
+        body->CreateFixture(std::make_shared<PolygonShape>(2_m, 0.5_m, conf));
 
         auto mjd = MotorJointDef{ground, body};
-        mjd.maxForce = Real{1000.0f} * Newton;
-        mjd.maxTorque = Real{1000.0f} * NewtonMeter;
+        mjd.maxForce = 1000_N;
+        mjd.maxTorque = 1000_Nm;
         m_joint = (MotorJoint*)m_world.CreateJoint(mjd);
         
         RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Pause Motor", [&](KeyActionMods) {
@@ -72,13 +71,10 @@ public:
             m_time += settings.dt;
         }
 
-        const auto linearOffset = Vec2{
-            Real{6} * std::sin(Real{2} * m_time),
-            Real{8} + Real{4} * std::sin(Real{1} * m_time)
-        } * Meter;
+        const auto linearOffset = Vec2{6 * std::sin(2 * m_time), 8 + 4 * std::sin(m_time)} * 1_m;
 
         m_joint->SetLinearOffset(linearOffset);
-        m_joint->SetAngularOffset(Real{4} * Radian * m_time);
+        m_joint->SetAngularOffset(4_rad * m_time);
 
         drawer.DrawPoint(linearOffset, 4.0f, Color(0.9f, 0.9f, 0.9f));
     }

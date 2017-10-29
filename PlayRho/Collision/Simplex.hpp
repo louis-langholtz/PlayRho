@@ -258,7 +258,7 @@ namespace playrho {
             }
                 
             default:
-                return Length2D{Real(0) * Meter, Real(0) * Meter};
+                return Length2D{0_m, 0_m};
         }
     }
 
@@ -332,8 +332,8 @@ namespace playrho {
         {
             case 1: return GetScaledDelta(simplex, 0);
             case 2: return GetScaledDelta(simplex, 0) + GetScaledDelta(simplex, 1);
-            case 3: return Length2D{Real(0) * Meter, Real(0) * Meter};
-            default: return Length2D{Real(0) * Meter, Real(0) * Meter};
+            case 3: return Length2D{0_m, 0_m};
+            default: return Length2D{0_m, 0_m};
         }
     }
 

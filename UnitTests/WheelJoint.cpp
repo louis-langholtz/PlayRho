@@ -55,7 +55,7 @@ TEST(WheelJointDef, DefaultConstruction)
     EXPECT_FALSE(def.enableMotor);
     EXPECT_EQ(def.maxMotorTorque, Torque(0));
     EXPECT_EQ(def.motorSpeed, AngularVelocity(0));
-    EXPECT_EQ(def.frequency, Real{2} * Hertz);
+    EXPECT_EQ(def.frequency, 2_Hz);
     EXPECT_EQ(def.dampingRatio, Real(0.7f));
 }
 
@@ -125,7 +125,7 @@ TEST(WheelJoint, MotorSpeed)
     jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
     jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
     
-    const auto newValue = Real(5) * RadianPerSecond;
+    const auto newValue = 5_rad / 1_s;
     auto joint = WheelJoint{jd};
     ASSERT_NE(joint.GetMotorSpeed(), newValue);
     EXPECT_EQ(joint.GetMotorSpeed(), jd.motorSpeed);
@@ -145,7 +145,7 @@ TEST(WheelJoint, MaxMotorTorque)
     jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
     jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
     
-    const auto newValue = Real(5) * NewtonMeter;
+    const auto newValue = 5_Nm;
     auto joint = WheelJoint{jd};
     ASSERT_NE(joint.GetMaxMotorTorque(), newValue);
     EXPECT_EQ(joint.GetMaxMotorTorque(), jd.maxMotorTorque);
@@ -229,7 +229,7 @@ TEST(WheelJoint, GetWheelJointDef)
     EXPECT_FALSE(cdef.enableMotor);
     EXPECT_EQ(cdef.maxMotorTorque, Torque(0));
     EXPECT_EQ(cdef.motorSpeed, AngularVelocity(0));
-    EXPECT_EQ(cdef.frequency, Real{2} * Hertz);
+    EXPECT_EQ(cdef.frequency, 2_Hz);
     EXPECT_EQ(cdef.dampingRatio, Real(0.7f));
 }
 
@@ -246,7 +246,7 @@ TEST(WheelJoint, WithDynamicCircles)
     const auto anchor = Length2D(Real(2) * Meter, Real(1) * Meter);
     const auto jd = WheelJointDef{b1, b2, anchor, UnitVec2::GetRight()};
     world.CreateJoint(jd);
-    Step(world, Time{Second * Real{1}});
+    Step(world, 1_s);
     EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
     EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);

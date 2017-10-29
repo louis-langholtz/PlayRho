@@ -224,13 +224,10 @@ void PrismaticJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
         m_motorImpulse *= step.dtRatio;
 
         const auto ulImpulseX = GetX(m_impulse) * m_perp;
-        const auto Px = Momentum2D{
-            GetX(ulImpulseX) * Kilogram * MeterPerSecond,
-            GetY(ulImpulseX) * Kilogram * MeterPerSecond
-        };
+        const auto Px = Momentum2D{GetX(ulImpulseX) * NewtonSecond, GetY(ulImpulseX) * NewtonSecond};
         const auto Pxs1 = Momentum{GetX(m_impulse) * m_s1 * Kilogram / Second};
         const auto Pxs2 = Momentum{GetX(m_impulse) * m_s2 * Kilogram / Second};
-        const auto PzLength = Momentum{m_motorImpulse + GetZ(m_impulse) * Kilogram * MeterPerSecond};
+        const auto PzLength = Momentum{m_motorImpulse + GetZ(m_impulse) * NewtonSecond};
         const auto Pz = Momentum2D{PzLength * m_axis};
         const auto P = Px + Pz;
         
@@ -325,15 +322,12 @@ bool PrismaticJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const 
         const auto df = m_impulse - f1;
 
         const auto ulP = GetX(df) * m_perp + GetZ(df) * m_axis;
-        const auto P = Momentum2D{
-            GetX(ulP) * Kilogram * MeterPerSecond,
-            GetY(ulP) * Kilogram * MeterPerSecond
-        };
+        const auto P = Momentum2D{GetX(ulP) * NewtonSecond, GetY(ulP) * NewtonSecond};
         const auto LA = AngularMomentum{
-            (GetX(df) * m_s1 + GetY(df) * Meter + GetZ(df) * m_a1) * Kilogram * MeterPerSecond / Radian
+            (GetX(df) * m_s1 + GetY(df) * Meter + GetZ(df) * m_a1) * NewtonSecond / Radian
         };
         const auto LB = AngularMomentum{
-            (GetX(df) * m_s2 + GetY(df) * Meter + GetZ(df) * m_a2) * Kilogram * MeterPerSecond / Radian
+            (GetX(df) * m_s2 + GetY(df) * Meter + GetZ(df) * m_a2) * NewtonSecond / Radian
         };
 
         velA -= Velocity{invMassA * P, invRotInertiaA * LA};
@@ -349,15 +343,12 @@ bool PrismaticJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const 
         GetY(m_impulse) += GetY(df);
 
         const auto ulP = GetX(df) * m_perp;
-        const auto P = Momentum2D{
-            GetX(ulP) * Kilogram * MeterPerSecond,
-            GetY(ulP) * Kilogram * MeterPerSecond
-        };
+        const auto P = Momentum2D{GetX(ulP) * NewtonSecond, GetY(ulP) * NewtonSecond};
         const auto LA = AngularMomentum{
-            (GetX(df) * m_s1 + GetY(df) * Meter) * Kilogram * MeterPerSecond / Radian
+            (GetX(df) * m_s1 + GetY(df) * Meter) * NewtonSecond / Radian
         };
         const auto LB = AngularMomentum{
-            (GetX(df) * m_s2 + GetY(df) * Meter) * Kilogram * MeterPerSecond / Radian
+            (GetX(df) * m_s2 + GetY(df) * Meter) * NewtonSecond / Radian
         };
 
         velA -= Velocity{invMassA * P, invRotInertiaA * LA};
@@ -509,7 +500,7 @@ bool PrismaticJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const 
         GetZ(impulse) = 0;
     }
 
-    const auto P = (GetX(impulse) * perp + GetZ(impulse) * axis) * (Real(1) * Kilogram * Meter);
+    const auto P = (GetX(impulse) * perp + GetZ(impulse) * axis) * Kilogram * Meter;
     const auto LA = (GetX(impulse) * s1 + GetY(impulse) * Meter + GetZ(impulse) * a1) * Kilogram * Meter / Radian;
     const auto LB = (GetX(impulse) * s2 + GetY(impulse) * Meter + GetZ(impulse) * a2) * Kilogram * Meter / Radian;
 
@@ -535,13 +526,8 @@ Length2D PrismaticJoint::GetAnchorB() const
 Momentum2D PrismaticJoint::GetLinearReaction() const
 {
     const auto ulImpulse = GetX(m_impulse) * m_perp;
-    const auto impulse = Momentum2D{
-        GetX(ulImpulse) * Kilogram * MeterPerSecond,
-        GetY(ulImpulse) * Kilogram * MeterPerSecond
-    };
-    return Momentum2D{
-        impulse + (m_motorImpulse + GetZ(m_impulse) * Kilogram * MeterPerSecond) * m_axis
-    };
+    const auto impulse = Momentum2D{GetX(ulImpulse) * NewtonSecond, GetY(ulImpulse) * NewtonSecond};
+    return Momentum2D{impulse + (m_motorImpulse + GetZ(m_impulse) * NewtonSecond) * m_axis};
 }
 
 AngularMomentum PrismaticJoint::GetAngularReaction() const

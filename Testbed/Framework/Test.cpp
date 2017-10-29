@@ -230,8 +230,8 @@ static void DrawStats(const std::vector<Fixture*>& selectFixtures)
 static void DrawCorner(Drawer& drawer, Length2D p, Length r, Angle a0, Angle a1, Color color)
 {
     const auto angleDiff = GetRevRotationalAngle(a0, a1);
-    auto lastAngle = Angle{0};
-    for (auto angle = Degree * Real{5}; angle < angleDiff; angle += Degree * Real{5})
+    auto lastAngle = 0_deg;
+    for (auto angle = 5_deg; angle < angleDiff; angle += 5_deg)
     {
         const auto c0 = p + r * UnitVec2::Get(a0 + lastAngle);
         const auto c1 = p + r * UnitVec2::Get(a0 + angle);
@@ -377,7 +377,7 @@ void ShapeDrawer::Draw(const DistanceProxy& shape)
     }
     else if (vertexCount == 1)
     {
-        DrawCorner(drawer, vertices[0], r, Angle{0}, Real{360} * Degree, skinColor);
+        DrawCorner(drawer, vertices[0], r, Angle{0}, 360_deg, skinColor);
     }
 }
 
@@ -550,7 +550,7 @@ bool Test::DrawWorld(Drawer& drawer, const World& world, const Settings& setting
 
     if (settings.drawCOMs)
     {
-        const auto k_axisScale = Real(0.4) * Meter;
+        const auto k_axisScale = 0.4_m;
         const auto red = Color{1.0f, 0.0f, 0.0f};
         const auto green = Color{0.0f, 1.0f, 0.0f};
         for (auto&& body: world.GetBodies())
@@ -678,7 +678,7 @@ void Test::MouseDown(const Length2D& p)
     }
 
     // Make a small box.
-    const auto aabb = GetFattenedAABB(AABB{p}, Meter / Real{1000});
+    const auto aabb = GetFattenedAABB(AABB{p}, 1_m / 1000);
 
     auto fixtures = std::vector<Fixture*>();
 
@@ -767,7 +767,7 @@ void Test::MouseMove(const Length2D& p)
 
 void Test::LaunchBomb()
 {
-    const auto p = Length2D(RandomFloat(-15.0f, 15.0f) * Meter, Real(40.0f) * Meter);
+    const auto p = Length2D(RandomFloat(-15.0f, 15.0f) * 1_m, 40_m);
     const auto v = LinearVelocity2D{
         Real{-100} * GetX(p) / Second,
         Real{-100} * GetY(p) / Second
@@ -787,8 +787,8 @@ void Test::LaunchBomb(const Length2D& position, const LinearVelocity2D linearVel
     m_bomb->SetVelocity(Velocity{linearVelocity, AngularVelocity{0}});
 
     auto conf = DiskShape::Conf{};
-    conf.vertexRadius = Real{0.3f} * Meter;
-    conf.density = Density{Real{20} * Kilogram / SquareMeter};
+    conf.vertexRadius = 0.3_m;
+    conf.density = 20_kgpm2;
     conf.restitution = 0.0f;
     const auto circle = std::make_shared<DiskShape>(conf);
 
@@ -1012,7 +1012,7 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         ImGui::NextColumn();
         ImGui::Text("%f", static_cast<double>(Real{m_stepStats.reg.minSeparation / Meter}));
         ImGui::NextColumn();
-        ImGui::Text("%.2f", static_cast<double>(Real{m_stepStats.reg.maxIncImpulse / (Kilogram * MeterPerSecond)}));
+        ImGui::Text("%.2f", static_cast<double>(Real{m_stepStats.reg.maxIncImpulse / NewtonSecond}));
         ImGui::NextColumn();
         ImGui::Text("%u", m_stepStats.reg.bodiesSlept);
         ImGui::NextColumn();
@@ -1037,7 +1037,7 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         ImGui::NextColumn();
         ImGui::Text("%f", static_cast<double>(Real{m_stepStats.toi.minSeparation / Meter}));
         ImGui::NextColumn();
-        ImGui::Text("%.2f", static_cast<double>(Real{m_stepStats.toi.maxIncImpulse / (Kilogram * MeterPerSecond)}));
+        ImGui::Text("%.2f", static_cast<double>(Real{m_stepStats.toi.maxIncImpulse / NewtonSecond}));
         ImGui::NextColumn();
         // Skip bodies slept column
         ImGui::NextColumn();
@@ -1178,8 +1178,8 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
 
 void Test::DrawContactInfo(const Settings& settings, Drawer& drawer)
 {
-    const auto k_impulseScale = Real(0.1) * Second / Kilogram;
-    const auto k_axisScale = (Real(3) / Real(10)) * Meter;
+    const auto k_impulseScale = 0.1_s / 1_kg;
+    const auto k_axisScale = 0.3_m;
     const auto addStateColor = Color{0.3f, 0.9f, 0.3f}; // greenish
     const auto persistStateColor = Color{0.3f, 0.3f, 0.9f}; // blueish
     const auto contactNormalColor = Color{0.7f, 0.7f, 0.7f}; // light gray
@@ -1280,7 +1280,7 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
 
     auto stepConf = StepConf{};
 
-    stepConf.SetTime(Second * Real{settings.dt});
+    stepConf.SetTime(settings.dt * Second);
 
     stepConf.regVelocityIterations = static_cast<StepConf::iteration_type>(settings.regVelocityIterations);
     stepConf.regPositionIterations = static_cast<StepConf::iteration_type>(settings.regPositionIterations);
@@ -1305,7 +1305,7 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
     stepConf.toiResolutionRate = settings.toiPosResRate / 100.0f;
     if (!settings.enableSleep)
     {
-        stepConf.minStillTimeToSleep = Second * std::numeric_limits<Real>::infinity();
+        stepConf.minStillTimeToSleep = std::numeric_limits<Time>::infinity();
         Awaken(m_world);
     }
     stepConf.doToi = settings.enableContinuous;
@@ -1341,7 +1341,7 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
     m_maxRootIters = std::max(m_maxRootIters, stepStats.toi.maxRootIters);
     m_maxToiIters = std::max(m_maxToiIters, stepStats.toi.maxToiIters);
 
-    if (stepStats.reg.minSeparation < std::numeric_limits<Real>::infinity() * Meter)
+    if (stepStats.reg.minSeparation < std::numeric_limits<Length>::infinity())
     {
         m_minRegSep = std::min(m_minRegSep, stepStats.reg.minSeparation);
         m_maxRegSep = std::max(m_maxRegSep, stepStats.reg.minSeparation);

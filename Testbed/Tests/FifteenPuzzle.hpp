@@ -44,7 +44,7 @@ namespace playrho {
         {
             m_world.SetGravity(LinearAcceleration2D{});
             const auto enclosure = CreateSquareEnclosingBody(m_world,
-                16 * Meter + 2 * GetVertexRadius(), ShapeConf{}
+                16_m + 2 * GetVertexRadius(), ShapeConf{}
                 .UseVertexRadius(GetVertexRadius()));
             SetLocation(*enclosure, GetCenter());
             
@@ -63,25 +63,25 @@ namespace playrho {
 
         Length2D GetCenter() const
         {
-            return Vec2{Real{0}, Real{20}} * Meter;
+            return Vec2{Real{0}, Real{20}} * 1_m;
         }
 
         Body* CreateSquareTile(int col, int row)
         {
-            const auto sideLength = Real{4} * Meter;
+            const auto sideLength = 4_m;
             const auto skinWidth = GetVertexRadius();
             const auto halfSide = sideLength / Real{2} - skinWidth;
             const auto relPos = Length2D{(col - 2) * sideLength, (row - 2) * sideLength};
             
             auto conf = PolygonShape::Conf{};
-            conf.density = Real{1} * KilogramPerSquareMeter;
+            conf.density = 1_kgpm2;
             conf.vertexRadius = skinWidth;
             
             BodyDef bd;
             bd.type = BodyType::Dynamic;
             bd.bullet = true;
             bd.location = GetCenter() + relPos + Length2D{sideLength / 2, sideLength / 2};
-            bd.linearDamping = 20.0f * Hertz;
+            bd.linearDamping = 20_Hz;
             const auto body = m_world.CreateBody(bd);
             body->CreateFixture(std::make_shared<PolygonShape>(halfSide, halfSide, conf));
             

@@ -48,10 +48,10 @@ struct JointDef
     /// @brief Type of the joint is set automatically for concrete joint types.
     JointType type = JointType::Unknown;
     
-    /// @brief First attached body.
+    /// @brief 1st attached body.
     Body* bodyA = nullptr;
     
-    /// @brief Second attached body.
+    /// @brief 2nd attached body.
     Body* bodyB = nullptr;
     
     /// @brief Collide connected.

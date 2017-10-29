@@ -134,7 +134,7 @@ namespace playrho {
         
         /// Under-active time.
         /// @details Set this to the value retrieved from Body::GetUnderActiveTime() or leave it as 0.
-        Time underActiveTime = Second * Real{0};
+        Time underActiveTime = 0_s;
         
         /// Set this flag to false if this body should never fall asleep. Note that
         /// this increases CPU usage.

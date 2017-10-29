@@ -335,7 +335,7 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
             // Pan left
             if (mods == GLFW_MOD_CONTROL)
             {
-                g_testSuite->GetTest()->ShiftOrigin(Length2D(Real(2) * Meter, Real(0) * Meter));
+                g_testSuite->GetTest()->ShiftOrigin(Length2D(2_m, 0_m));
             }
             else
             {
@@ -347,7 +347,7 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
             // Pan right
             if (mods == GLFW_MOD_CONTROL)
             {
-                g_testSuite->GetTest()->ShiftOrigin(Length2D(-Real(2) * Meter, Real(0) * Meter));
+                g_testSuite->GetTest()->ShiftOrigin(Length2D(-2_m, 0_m));
             }
             else
             {
@@ -359,7 +359,7 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
             // Pan down
             if (mods == GLFW_MOD_CONTROL)
             {
-                g_testSuite->GetTest()->ShiftOrigin(Length2D(Real(0) * Meter, Real(2) * Meter));
+                g_testSuite->GetTest()->ShiftOrigin(Length2D(0_m, 2_m));
             }
             else
             {
@@ -371,7 +371,7 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
             // Pan up
             if (mods == GLFW_MOD_CONTROL)
             {
-                g_testSuite->GetTest()->ShiftOrigin(Length2D(Real(0) * Meter, -Real(2) * Meter));
+                g_testSuite->GetTest()->ShiftOrigin(Length2D(0_m, -2_m));
             }
             else
             {

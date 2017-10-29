@@ -31,32 +31,32 @@ public:
     Prismatic()
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
+        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
 
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.location = Vec2(-10.0f, 10.0f) * Meter;
-            bd.angle = Real{0.5f} * Radian * Pi;
+            bd.location = Vec2(-10.0f, 10.0f) * 1_m;
+            bd.angle = 0.5_rad * Pi;
             bd.allowSleep = false;
             const auto body = m_world.CreateBody(bd);
             
             auto polygonConf = PolygonShape::Conf{};
-            polygonConf.density = Real{5} * KilogramPerSquareMeter;
-            body->CreateFixture(std::make_shared<PolygonShape>(Real{2.0f} * Meter, Real{0.5f} * Meter, polygonConf));
+            polygonConf.density = 5_kgpm2;
+            body->CreateFixture(std::make_shared<PolygonShape>(2_m, 0.5_m, polygonConf));
 
             // Bouncy limit
             const auto axis = GetUnitVector(Vec2(2.0f, 1.0f));
-            PrismaticJointDef pjd(ground, body, Vec2(0.0f, 0.0f) * Meter, axis);
+            PrismaticJointDef pjd(ground, body, Vec2(0.0f, 0.0f) * 1_m, axis);
 
             // Non-bouncy limit
             //pjd.Initialize(ground, body, Vec2(-10.0f, 10.0f), Vec2(1.0f, 0.0f));
 
-            pjd.motorSpeed = Real{10.0f} * RadianPerSecond;
-            pjd.maxMotorForce = Real{10000.0f} * Newton;
+            pjd.motorSpeed = 10_rad / 1_s;
+            pjd.maxMotorForce = 10000_N;
             pjd.enableMotor = true;
-            pjd.lowerTranslation = Real{0.0f} * Meter;
-            pjd.upperTranslation = Real{20.0f} * Meter;
+            pjd.lowerTranslation = 0_m;
+            pjd.upperTranslation = 20_m;
             pjd.enableLimit = true;
 
             m_joint = (PrismaticJoint*)m_world.CreateJoint(pjd);
@@ -75,10 +75,10 @@ public:
 
     void PostStep(const Settings& settings, Drawer&) override
     {
-        const auto force = m_joint->GetMotorForce((1.0f / settings.dt) * Hertz);
+        const auto force = m_joint->GetMotorForce((1.0f / settings.dt) * 1_Hz);
         std::stringstream stream;
         stream << "Motor Force: ";
-        stream << static_cast<double>(Real{force / Newton});
+        stream << static_cast<double>(Real{force / 1_N});
         stream << " N.";
         m_status = stream.str();
     }

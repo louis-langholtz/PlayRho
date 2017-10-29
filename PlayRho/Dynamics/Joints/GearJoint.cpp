@@ -162,8 +162,8 @@ void GearJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
     if (m_typeA == JointType::Revolute)
     {
         m_JvAC = Vec2_zero;
-        m_JwA = Real{1} * Meter;
-        m_JwC = Real{1} * Meter;
+        m_JwA = 1_m;
+        m_JwC = 1_m;
         const auto invAngMass = bodyConstraintA->GetInvRotInertia() + bodyConstraintC->GetInvRotInertia();
         invMass += StripUnit(invAngMass);
     }

@@ -62,7 +62,7 @@ public:
             const auto v = Vec2{
                 Clamp(x, GetX(lowerBound), GetX(upperBound)),
                 Clamp(y, GetY(lowerBound), GetY(upperBound))
-            } * Meter;
+            } * 1_m;
             m_points.emplace_back(v);
         }
     }
@@ -77,7 +77,7 @@ public:
         for (auto i = std::size_t{0}; i < m_points.size(); ++i)
         {
             drawer.DrawPoint(m_points[i], 3.0f, Color(0.3f, 0.9f, 0.3f));
-            drawer.DrawString(m_points[i] + Vec2(0.05f, 0.05f) * Meter, Drawer::Left, "%d", i);
+            drawer.DrawString(m_points[i] + Vec2(0.05f, 0.05f) * 1_m, Drawer::Left, "%d", i);
         }
 
         if (!Validate(shape))

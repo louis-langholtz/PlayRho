@@ -37,35 +37,35 @@ public:
         const auto ground = m_world.CreateBody();
         {
             auto conf = DiskShape::Conf{};
-            conf.vertexRadius = Real{2.0f} * Meter;
-            conf.location = Vec2(-10.0f, y + b + L) * Meter;
+            conf.vertexRadius = 2_m;
+            conf.location = Vec2(-10.0f, y + b + L) * 1_m;
             DiskShape circle(conf);
             ground->CreateFixture(std::make_shared<DiskShape>(circle));
 
-            circle.SetLocation(Vec2(10.0f, y + b + L) * Meter);
+            circle.SetLocation(Vec2(10.0f, y + b + L) * 1_m);
             ground->CreateFixture(std::make_shared<DiskShape>(circle));
         }
 
         {
-            const auto shape = std::make_shared<PolygonShape>(a * Meter, b * Meter);
-            shape->SetDensity(Real{5} * KilogramPerSquareMeter);
+            const auto shape = std::make_shared<PolygonShape>(a * 1_m, b * 1_m);
+            shape->SetDensity(5_kgpm2);
 
             BodyDef bd;
             bd.type = BodyType::Dynamic;
 
             //bd.fixedRotation = true;
-            bd.location = Vec2(-10.0f, y) * Meter;
+            bd.location = Vec2(-10.0f, y) * 1_m;
             const auto body1 = m_world.CreateBody(bd);
             body1->CreateFixture(shape);
 
-            bd.location = Vec2(10.0f, y) * Meter;
+            bd.location = Vec2(10.0f, y) * 1_m;
             const auto body2 = m_world.CreateBody(bd);
             body2->CreateFixture(shape);
 
-            const auto anchor1 = Vec2(-10.0f, y + b) * Meter;
-            const auto anchor2 = Vec2(10.0f, y + b) * Meter;
-            const auto groundAnchor1 = Vec2(-10.0f, y + b + L) * Meter;
-            const auto groundAnchor2 = Vec2(10.0f, y + b + L) * Meter;
+            const auto anchor1 = Vec2(-10.0f, y + b) * 1_m;
+            const auto anchor2 = Vec2(10.0f, y + b) * 1_m;
+            const auto groundAnchor1 = Vec2(-10.0f, y + b + L) * 1_m;
+            const auto groundAnchor2 = Vec2(10.0f, y + b + L) * 1_m;
             const auto pulleyDef = PulleyJointDef{body1, body2,
                 groundAnchor1, groundAnchor2, anchor1, anchor2}.UseRatio(1.5f);
 
@@ -82,7 +82,7 @@ public:
         stream << "L1 + ";
         stream << static_cast<float>(ratio);
         stream << " * L2 = ";
-        stream << static_cast<double>(Real{L / Meter});
+        stream << static_cast<double>(Real{L / 1_m});
         stream << "m.";
         m_status = stream.str();
     }

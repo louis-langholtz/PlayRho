@@ -34,8 +34,8 @@ TEST(Angle, ByteSizeIs_4_8_or_16)
 
 TEST(Angle, DegreeAndRadian)
 {
-    EXPECT_NEAR(double(Real{Angle{Real(1) * Degree} / Angle{Real(1) * Radian}}),
-                double(Real{((Pi * Radian) / Real{180}) / Radian}), 0.0001);
+    EXPECT_NEAR(double(Real{Angle{Real(1) * Degree} / 1_rad}),
+                double(Real{((Pi * 1_rad) / Real{180}) / 1_rad}), 0.0001);
 }
 
 TEST(Angle, GetRevRotationalAngle)
@@ -50,8 +50,8 @@ TEST(Angle, GetRevRotationalAngle)
                 double(350), 0.0001);
     EXPECT_EQ(GetRevRotationalAngle(Angle{-Real{10.0f} * Degree}, Angle{0}),
               Angle{Real{10.0f} * Degree});
-    EXPECT_NEAR(static_cast<double>(Real{GetRevRotationalAngle(Angle{Real{90.0f} * Degree}, Angle{-Real{90.0f} * Degree})/Radian}),
-                static_cast<double>(Real{Angle{Real{180.0f} * Degree}/Radian}),
+    EXPECT_NEAR(static_cast<double>(Real{GetRevRotationalAngle(Angle{Real{90.0f} * Degree}, Angle{-Real{90.0f} * Degree})/1_rad}),
+                static_cast<double>(Real{Angle{Real{180.0f} * Degree}/1_rad}),
                 0.0001);
 }
 
@@ -69,8 +69,8 @@ TEST(Angle, GetNormalized)
     
     // Following test doesn't work when Real=long double, presumably because of rounding issues.
     //EXPECT_NEAR(double(Real(GetNormalized(Angle{ Real{ 360.0} * Degree}) / Angle{Real(1) * Degree})),   0.0, 0.0001);
-    EXPECT_NEAR(double(Real(GetNormalized(Angle{ 2 * Pi * Radian}) / Angle{Real(1) * Radian})),   0.0, 0.0001);
+    EXPECT_NEAR(double(Real(GetNormalized(Angle{ 2 * Pi * 1_rad}) / 1_rad)),   0.0, 0.0001);
     // Following test doesn't work when Real=long double, presumably because of rounding issues.
     //EXPECT_NEAR(double(Real(GetNormalized(Angle{ Real( 720.0) * Degree}) / Angle{Real(1) * Degree})),   0.0, 0.0001);
-    EXPECT_NEAR(double(Real(GetNormalized(Angle{ 4 * Pi * Radian}) / Angle{Real(1) * Radian})),   0.0, 0.0001);
+    EXPECT_NEAR(double(Real(GetNormalized(Angle{ 4 * Pi * 1_rad}) / 1_rad)),   0.0, 0.0001);
 }

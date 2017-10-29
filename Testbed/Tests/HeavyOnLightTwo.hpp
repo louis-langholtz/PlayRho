@@ -31,15 +31,15 @@ public:
     HeavyOnLightTwo()
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
+        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
         
-        const auto shape = std::make_shared<DiskShape>(Real{0.5f} * Meter);
-        shape->SetDensity(Real{10} * KilogramPerSquareMeter);
+        const auto shape = std::make_shared<DiskShape>(0.5_m);
+        shape->SetDensity(10_kgpm2);
 
-        const auto body1 = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 2.5f) * Meter));
+        const auto body1 = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 2.5f) * 1_m));
         body1->CreateFixture(shape);
         
-        const auto body2 = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 3.5f) * Meter));
+        const auto body2 = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 3.5f) * 1_m));
         body2->CreateFixture(shape);
         
         RegisterForKey(GLFW_KEY_H, GLFW_PRESS, 0, "Toggle Heavy", [&](KeyActionMods) {
@@ -56,11 +56,11 @@ public:
         }
         else
         {
-            m_heavy = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 9.0f) * Meter));
+            m_heavy = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 9.0f) * 1_m));
             
             auto conf = DiskShape::Conf{};
-            conf.density = Real{10} * KilogramPerSquareMeter;
-            conf.vertexRadius = Real{5.0f} * Meter;
+            conf.density = 10_kgpm2;
+            conf.vertexRadius = 5_m;
             m_heavy->CreateFixture(std::make_shared<DiskShape>(conf));
         }
     }

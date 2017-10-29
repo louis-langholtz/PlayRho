@@ -23,6 +23,7 @@
 
 #include <limits>
 #include <typeinfo>
+#include <type_traits>
 
 namespace playrho
 {
@@ -184,6 +185,27 @@ namespace playrho
         return "long double";
     }
 
+    /// @brief Template class for VoidT.
+    template<class...> struct Voidify {
+        /// @brief Type alias.
+        using type = void;
+    };
+
+    /// @brief Templated alias type for IsArithmetic.
+    template<class... Ts> using VoidT = typename Voidify<Ts...>::type;
+    
+    /// @brief Template for determining if the given type is an arithmetic type.
+    template<class T, class = void>
+    struct IsArithmetic: std::false_type {};
+    
+    /// @brief Template specialization for arithmetic types.
+    template<class T>
+    struct IsArithmetic<T,
+      VoidT<decltype(std::declval<T>() + std::declval<T>()),
+            decltype(std::declval<T>() - std::declval<T>()),
+            decltype(std::declval<T>() * std::declval<T>()),
+            decltype(std::declval<T>() / std::declval<T>())>>: std::true_type {};
+    
 } // namespace playrho
 
 #endif // PLAYRHO_COMMON_TEMPLATES_HPP

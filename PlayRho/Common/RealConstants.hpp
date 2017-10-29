@@ -66,13 +66,24 @@ constexpr auto SquareRootTwo =
 /// @sa https://en.wikipedia.org/wiki/Metric_prefix
 /// @{
 
+/// @brief Centi (1 x 10^-2).
+/// @sa https://en.wikipedia.org/wiki/Centi-
+constexpr auto Centi = Real(1e-2);
+
+/// @brief Deci (1 x 10^-1).
+/// @sa https://en.wikipedia.org/wiki/Deci-
+constexpr auto Deci = Real(1e-1);
+
 /// @brief Kilo (1 x 10^3).
+/// @sa https://en.wikipedia.org/wiki/Kilo-
 constexpr auto Kilo = Real(1e3);
 
 /// @brief Giga (1 x 10^9).
+/// @sa https://en.wikipedia.org/wiki/Giga-
 constexpr auto Giga = Real(1e9);
 
 /// @brief Yotta (1 x 10^24).
+/// @sa https://en.wikipedia.org/wiki/Yotta-
 constexpr auto Yotta = Real(1e24);
 
 /// @}

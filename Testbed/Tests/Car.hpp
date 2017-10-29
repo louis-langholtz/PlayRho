@@ -31,9 +31,9 @@ class Car : public Test
 public:
     Car()
     {        
-        m_hz = Real{4} * Hertz;
+        m_hz = 4_Hz;
         m_zeta = 0.7f;
-        m_speed = Real{50} * RadianPerSecond;
+        m_speed = 50_rad / 1_s;
 
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Move Left.", [&](KeyActionMods) {
             m_spring1->SetMotorSpeed(m_speed);
@@ -45,12 +45,12 @@ public:
             m_spring1->SetMotorSpeed(-m_speed);
         });
         RegisterForKey(GLFW_KEY_Q, GLFW_PRESS, 0, "Decrease Frequency.", [&](KeyActionMods) {
-            m_hz = std::max(Real(0) * Hertz, m_hz - Real{1} * Hertz);
+            m_hz = std::max(0_Hz, m_hz - 1_Hz);
             m_spring1->SetSpringFrequency(m_hz);
             m_spring2->SetSpringFrequency(m_hz);
         });
         RegisterForKey(GLFW_KEY_E, GLFW_PRESS, 0, "Increase Frequency.", [&](KeyActionMods) {
-            m_hz += Real{1} * Hertz;
+            m_hz += 1_Hz;
             m_spring1->SetSpringFrequency(m_hz);
             m_spring2->SetSpringFrequency(m_hz);
         });
@@ -59,8 +59,8 @@ public:
         {
             EdgeShape shape;
 
-            shape.Set(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter);
-            shape.SetDensity(Real{0} * KilogramPerSquareMeter);
+            shape.Set(Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m);
+            shape.SetDensity(0_kgpm2);
             shape.SetFriction(Real(0.6f));
             ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
@@ -73,7 +73,7 @@ public:
             for (auto i = 0; i < 10; ++i)
             {
                 const auto y2 = hs[i];
-                shape.Set(Vec2(x, y1) * Meter, Vec2(x + dx, y2) * Meter);
+                shape.Set(Vec2(x, y1) * 1_m, Vec2(x + dx, y2) * 1_m);
                 ground->CreateFixture(std::make_shared<EdgeShape>(shape));
                 y1 = y2;
                 x += dx;
@@ -82,58 +82,58 @@ public:
             for (auto i = 0; i < 10; ++i)
             {
                 const auto y2 = hs[i];
-                shape.Set(Vec2(x, y1) * Meter, Vec2(x + dx, y2) * Meter);
+                shape.Set(Vec2(x, y1) * 1_m, Vec2(x + dx, y2) * 1_m);
                 ground->CreateFixture(std::make_shared<EdgeShape>(shape));
                 y1 = y2;
                 x += dx;
             }
 
-            shape.Set(Vec2(x, 0.0f) * Meter, Vec2(x + 40.0f, 0.0f) * Meter);
+            shape.Set(Vec2(x, 0.0f) * 1_m, Vec2(x + 40.0f, 0.0f) * 1_m);
             ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
             x += 80.0f;
-            shape.Set(Vec2(x, 0.0f) * Meter, Vec2(x + 40.0f, 0.0f) * Meter);
+            shape.Set(Vec2(x, 0.0f) * 1_m, Vec2(x + 40.0f, 0.0f) * 1_m);
             ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
             x += 40.0f;
-            shape.Set(Vec2(x, 0.0f) * Meter, Vec2(x + 10.0f, 5.0f) * Meter);
+            shape.Set(Vec2(x, 0.0f) * 1_m, Vec2(x + 10.0f, 5.0f) * 1_m);
             ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
             x += 20.0f;
-            shape.Set(Vec2(x, 0.0f) * Meter, Vec2(x + 40.0f, 0.0f) * Meter);
+            shape.Set(Vec2(x, 0.0f) * 1_m, Vec2(x + 40.0f, 0.0f) * 1_m);
             ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
             x += 40.0f;
-            shape.Set(Vec2(x, 0.0f) * Meter, Vec2(x, 20.0f) * Meter);
+            shape.Set(Vec2(x, 0.0f) * 1_m, Vec2(x, 20.0f) * 1_m);
             ground->CreateFixture(std::make_shared<EdgeShape>(shape));
         }
 
         // Teeter
         {
             BodyDef bd;
-            bd.location = Vec2(140.0f, 1.0f) * Meter;
+            bd.location = Vec2(140.0f, 1.0f) * 1_m;
             bd.type = BodyType::Dynamic;
             const auto body = m_world.CreateBody(bd);
 
-            const auto box = std::make_shared<PolygonShape>(Real{10.0f} * Meter, Real{0.25f} * Meter);
-            box->SetDensity(Real{1} * KilogramPerSquareMeter);
+            const auto box = std::make_shared<PolygonShape>(10_m, 0.25_m);
+            box->SetDensity(1_kgpm2);
             body->CreateFixture(box);
 
             RevoluteJointDef jd(ground, body, body->GetLocation());
-            jd.lowerAngle = Real{-8.0f} * Degree;
-            jd.upperAngle = Real{+8.0f} * Degree;
+            jd.lowerAngle = -8_deg;
+            jd.upperAngle = +8_deg;
             jd.enableLimit = true;
             m_world.CreateJoint(jd);
 
             // AngularMomentum is L^2 M T^-1 QP^-1.
-            ApplyAngularImpulse(*body, Real{100} * SquareMeter * Kilogram / (Second * Radian));
+            ApplyAngularImpulse(*body, 100 * SquareMeter * 1_kg / (1_s * 1_rad));
         }
 
         // Bridge
         {
             const auto N = 20;
-            const auto shape = std::make_shared<PolygonShape>(Real{1.0f} * Meter, Real{0.125f} * Meter);
-            shape->SetDensity(Real{1} * KilogramPerSquareMeter);
+            const auto shape = std::make_shared<PolygonShape>(1_m, 0.125_m);
+            shape->SetDensity(1_kgpm2);
             shape->SetFriction(Real(0.6f));
 
             auto prevBody = ground;
@@ -141,47 +141,47 @@ public:
             {
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
-                bd.location = Vec2(161.0f + 2.0f * i, -0.125f) * Meter;
+                bd.location = Vec2(161.0f + 2.0f * i, -0.125f) * 1_m;
                 const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(shape);
 
                 m_world.CreateJoint(RevoluteJointDef{prevBody, body,
-                    Vec2(160.0f + 2.0f * i, -0.125f) * Meter});
+                    Vec2(160.0f + 2.0f * i, -0.125f) * 1_m});
 
                 prevBody = body;
             }
 
             m_world.CreateJoint(RevoluteJointDef{prevBody, ground,
-                Vec2(160.0f + 2.0f * N, -0.125f) * Meter});
+                Vec2(160.0f + 2.0f * N, -0.125f) * 1_m});
         }
 
         // Boxes
         {
-            const auto box = std::make_shared<PolygonShape>(Real{0.5f} * Meter, Real{0.5f} * Meter);
-            box->SetDensity(Real{0.5f} * KilogramPerSquareMeter);
+            const auto box = std::make_shared<PolygonShape>(0.5_m, 0.5_m);
+            box->SetDensity(0.5_kgpm2);
 
             auto body = static_cast<Body*>(nullptr);
 
             BodyDef bd;
             bd.type = BodyType::Dynamic;
 
-            bd.location = Vec2(230.0f, 0.5f) * Meter;
+            bd.location = Vec2(230.0f, 0.5f) * 1_m;
             body = m_world.CreateBody(bd);
             body->CreateFixture(box);
 
-            bd.location = Vec2(230.0f, 1.5f) * Meter;
+            bd.location = Vec2(230.0f, 1.5f) * 1_m;
             body = m_world.CreateBody(bd);
             body->CreateFixture(box);
 
-            bd.location = Vec2(230.0f, 2.5f) * Meter;
+            bd.location = Vec2(230.0f, 2.5f) * 1_m;
             body = m_world.CreateBody(bd);
             body->CreateFixture(box);
 
-            bd.location = Vec2(230.0f, 3.5f) * Meter;
+            bd.location = Vec2(230.0f, 3.5f) * 1_m;
             body = m_world.CreateBody(bd);
             body->CreateFixture(box);
 
-            bd.location = Vec2(230.0f, 4.5f) * Meter;
+            bd.location = Vec2(230.0f, 4.5f) * 1_m;
             body = m_world.CreateBody(bd);
             body->CreateFixture(box);
         }
@@ -190,30 +190,30 @@ public:
         {
             auto chassis = std::make_shared<PolygonShape>();
             chassis->Set({
-                Vec2(-1.5f, -0.5f) * Meter,
-                Vec2(1.5f, -0.5f) * Meter,
-                Vec2(1.5f, 0.0f) * Meter,
-                Vec2(0.0f, 0.9f) * Meter,
-                Vec2(-1.15f, 0.9f) * Meter,
-                Vec2(-1.5f, 0.2f) * Meter
+                Vec2(-1.5f, -0.5f) * 1_m,
+                Vec2(1.5f, -0.5f) * 1_m,
+                Vec2(1.5f, 0.0f) * 1_m,
+                Vec2(0.0f, 0.9f) * 1_m,
+                Vec2(-1.15f, 0.9f) * 1_m,
+                Vec2(-1.5f, 0.2f) * 1_m
             });
-            chassis->SetDensity(Real{1} * KilogramPerSquareMeter);
+            chassis->SetDensity(1_kgpm2);
 
-            const auto circle = std::make_shared<DiskShape>(Real(0.4) * Meter);
-            circle->SetDensity(Real{1} * KilogramPerSquareMeter);
+            const auto circle = std::make_shared<DiskShape>(0.4_m);
+            circle->SetDensity(1_kgpm2);
             circle->SetFriction(Real(0.9f));
 
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.location = Vec2(0.0f, 1.0f) * Meter;
+            bd.location = Vec2(0.0f, 1.0f) * 1_m;
             m_car = m_world.CreateBody(bd);
             m_car->CreateFixture(chassis);
 
-            bd.location = Vec2(-1.0f, 0.35f) * Meter;
+            bd.location = Vec2(-1.0f, 0.35f) * 1_m;
             m_wheel1 = m_world.CreateBody(bd);
             m_wheel1->CreateFixture(circle);
 
-            bd.location = Vec2(1.0f, 0.4f) * Meter;
+            bd.location = Vec2(1.0f, 0.4f) * 1_m;
             m_wheel2 = m_world.CreateBody(bd);
             m_wheel2->CreateFixture(circle);
 
@@ -222,7 +222,7 @@ public:
             {
                 WheelJointDef jd(m_car, m_wheel1, m_wheel1->GetLocation(), axis);
                 jd.motorSpeed = AngularVelocity{0};
-                jd.maxMotorTorque = Real{20} * NewtonMeter;
+                jd.maxMotorTorque = 20_Nm;
                 jd.enableMotor = true;
                 jd.frequency = m_hz;
                 jd.dampingRatio = m_zeta;
@@ -231,7 +231,7 @@ public:
             {
                 WheelJointDef jd(m_car, m_wheel2, m_wheel2->GetLocation(), axis);
                 jd.motorSpeed = AngularVelocity{0};
-                jd.maxMotorTorque = Real{10} * NewtonMeter;
+                jd.maxMotorTorque = 10_Nm;
                 jd.enableMotor = false;
                 jd.frequency = m_hz;
                 jd.dampingRatio = m_zeta;
@@ -248,7 +248,7 @@ public:
     void PostStep(const Settings&, Drawer&) override
     {
         std::stringstream stream;
-        stream << "Frequency = " << static_cast<double>(Real{m_hz / Hertz}) << " hz, ";
+        stream << "Frequency = " << static_cast<double>(Real{m_hz / 1_Hz}) << " hz, ";
         stream << "damping ratio = " << m_zeta;
         m_status = stream.str();
     }

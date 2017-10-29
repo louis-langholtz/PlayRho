@@ -32,51 +32,51 @@ public:
     {
         {
             BodyDef bd;
-            bd.location = Vec2(0.0f, 0.0f) * Meter;
+            bd.location = Vec2(0.0f, 0.0f) * 1_m;
             Body* body = m_world.CreateBody(bd);
 
-            body->CreateFixture(std::make_shared<EdgeShape>(Vec2(-10.0f, 0.0f) * Meter, Vec2(10.0f, 0.0f) * Meter));
+            body->CreateFixture(std::make_shared<EdgeShape>(Vec2(-10.0f, 0.0f) * 1_m, Vec2(10.0f, 0.0f) * 1_m));
 
             PolygonShape shape;
-            SetAsBox(shape, Real{0.2f} * Meter, Real{1.0f} * Meter, Vec2(0.5f, 1.0f) * Meter, Real{0.0f} * Radian);
+            SetAsBox(shape, 0.2_m, 1_m, Vec2(0.5f, 1.0f) * 1_m, 0_rad);
             body->CreateFixture(std::make_shared<PolygonShape>(shape));
         }
 
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.location = Vec2(0.0f, 4.0f) * Meter;
+            bd.location = Vec2(0.0f, 4.0f) * 1_m;
 
             PolygonShape box;
-            box.SetAsBox(Real{2.0f} * Meter, Real{0.1f} * Meter);
-            box.SetDensity(Real{1} * KilogramPerSquareMeter);
+            box.SetAsBox(2_m, 0.1_m);
+            box.SetDensity(1_kgpm2);
 
             m_body = m_world.CreateBody(bd);
             m_body->CreateFixture(std::make_shared<PolygonShape>(box));
 
-            box.SetAsBox(Real{0.25f} * Meter, Real{0.25f} * Meter);
-            box.SetDensity(Real{100} * KilogramPerSquareMeter);
+            box.SetAsBox(0.25_m, 0.25_m);
+            box.SetDensity(100_kgpm2);
 
             //m_x = RandomFloat(-1.0f, 1.0f);
             m_x = 0.20352793f;
-            bd.location = Vec2(m_x, 10.0f) * Meter;
+            bd.location = Vec2(m_x, 10.0f) * 1_m;
             bd.bullet = true;
 
             m_bullet = m_world.CreateBody(bd);
             m_bullet->CreateFixture(std::make_shared<PolygonShape>(box));
 
-            m_bullet->SetVelocity(Velocity{Vec2{0.0f, -50.0f} * MeterPerSecond, AngularVelocity{0}});
+            m_bullet->SetVelocity(Velocity{Vec2{0.0f, -50.0f} * 1_mps, AngularVelocity{0}});
         }
     }
 
     void Launch()
     {
-        m_body->SetTransform(Vec2(0.0f, 4.0f) * Meter, Real{0.0f} * Radian);
+        m_body->SetTransform(Vec2(0.0f, 4.0f) * 1_m, 0_rad);
         m_body->SetVelocity(Velocity{LinearVelocity2D{}, AngularVelocity{0}});
 
         m_x = RandomFloat(-1.0f, 1.0f);
-        m_bullet->SetTransform(Vec2(m_x, 10.0f) * Meter, Real{0.0f} * Radian);
-        m_bullet->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * MeterPerSecond, AngularVelocity{0}});
+        m_bullet->SetTransform(Vec2(m_x, 10.0f) * 1_m, 0_rad);
+        m_bullet->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * 1_mps, AngularVelocity{0}});
     }
 
     void PostStep(const Settings&, Drawer&) override

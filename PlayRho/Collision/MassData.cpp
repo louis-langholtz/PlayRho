@@ -202,7 +202,7 @@ MassData ComputeMassData(const Body& body) noexcept
 
 MassData GetMassData(const Body& body) noexcept
 {
-    const auto I = GetLocalInertia(body);
+    const auto I = GetLocalRotInertia(body);
     return MassData{body.GetLocalCenter(), GetMass(body), I};
 }
 

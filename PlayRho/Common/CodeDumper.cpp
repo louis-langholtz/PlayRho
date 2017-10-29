@@ -340,7 +340,7 @@ void playrho::Dump(const MouseJoint& joint, std::size_t index)
         static_cast<double>(Real{Get<1>(joint.GetLocalAnchorB()) / Meter}));
     log("  jd.frequency = %.15lef;\n",
         static_cast<double>(Real{joint.GetFrequency() / Hertz}));
-    log("  jd.dampingRatio = %.15lef;\n", static_cast<double>(joint.GetDampingRatio()));
+    log("  jd.dampingRatio = %.15lef;\n", static_cast<double>(Real{joint.GetDampingRatio()}));
     log("  jd.maxForce = %.15lef;\n",
         static_cast<double>(Real{joint.GetMaxForce() / Newton}));
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);

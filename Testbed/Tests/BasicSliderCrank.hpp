@@ -30,63 +30,48 @@ class BasicSliderCrank : public Test
 public:
     BasicSliderCrank()
     {
-        const auto ground = [&]()
+        const auto ground = m_world.CreateBody(BodyDef{}.UseLocation(Vec2(0.0f, 17.0f) * 1_m));
+        auto prevBody = ground;
+        
+        // Define crank.
         {
             BodyDef bd;
-            bd.location = Vec2(0.0f, 17.0f) * Meter;
-            return m_world.CreateBody(bd);
-        }();
+            bd.type = BodyType::Dynamic;
+            bd.location = Vec2(-8.0f, 20.0f) * 1_m;
+            const auto body = m_world.CreateBody(bd);
+            auto conf = PolygonShape::Conf{};
+            conf.density = 2_kgpm2;
+            body->CreateFixture(std::make_shared<PolygonShape>(4_m, 1_m, conf));
+            m_world.CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-12.0f, 20.0f) * 1_m});
+            prevBody = body;
+        }
         
+        // Define connecting rod
         {
-            auto prevBody = ground;
-            
-            // Define crank.
-            {
-                BodyDef bd;
-                bd.type = BodyType::Dynamic;
-                bd.location = Vec2(-8.0f, 20.0f) * Meter;
-                const auto body = m_world.CreateBody(bd);
-                auto conf = PolygonShape::Conf{};
-                conf.density = Real{2} * KilogramPerSquareMeter;
-                body->CreateFixture(std::make_shared<PolygonShape>(Real{4} * Meter, Real{1} * Meter, conf));
-                
-                m_world.CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-12.0f, 20.0f) * Meter});
-                
-                prevBody = body;
-            }
-            
-            // Define connecting rod
-            {
-                BodyDef bd;
-                bd.type = BodyType::Dynamic;
-                bd.location = Vec2(4.0f, 20.0f) * Meter;
-                const auto body = m_world.CreateBody(bd);
-                auto conf = PolygonShape::Conf{};
-                conf.density = Real{2} * KilogramPerSquareMeter;
-                body->CreateFixture(std::make_shared<PolygonShape>(Real{8} * Meter, Real{1} * Meter, conf));
-                
-                m_world.CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-4.0f, 20.0f) * Meter});
-                
-                prevBody = body;
-            }
-            
-            // Define piston
-            {
-                BodyDef bd;
-                bd.type = BodyType::Dynamic;
-                bd.fixedRotation = true;
-                bd.location = Vec2(12.0f, 20.0f) * Meter;
-                const auto body = m_world.CreateBody(bd);
-                auto conf = PolygonShape::Conf{};
-                conf.density = Real{2} * KilogramPerSquareMeter;
-                body->CreateFixture(std::make_shared<PolygonShape>(Real{3} * Meter, Real{3} * Meter, conf));
-                
-                m_world.CreateJoint(RevoluteJointDef{prevBody, body, Vec2(12.0f, 20.0f) * Meter});
-                
-                const PrismaticJointDef pjd{ground, body, Vec2(12.0f, 17.0f) * Meter, UnitVec2::GetRight()};
-                m_world.CreateJoint(pjd);
-            }
-          }
+            BodyDef bd;
+            bd.type = BodyType::Dynamic;
+            bd.location = Vec2(4.0f, 20.0f) * 1_m;
+            const auto body = m_world.CreateBody(bd);
+            auto conf = PolygonShape::Conf{};
+            conf.density = 2_kgpm2;
+            body->CreateFixture(std::make_shared<PolygonShape>(8_m, 1_m, conf));
+            m_world.CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-4.0f, 20.0f) * 1_m});
+            prevBody = body;
+        }
+        
+        // Define piston
+        {
+            BodyDef bd;
+            bd.type = BodyType::Dynamic;
+            bd.fixedRotation = true;
+            bd.location = Vec2(12.0f, 20.0f) * 1_m;
+            const auto body = m_world.CreateBody(bd);
+            const auto conf = PolygonShape::Conf{}.UseDensity(2_kgpm2);
+            body->CreateFixture(std::make_shared<PolygonShape>(3_m, 3_m, conf));
+            m_world.CreateJoint(RevoluteJointDef{prevBody, body, Vec2(12.0f, 20.0f) * 1_m});
+            const PrismaticJointDef pjd{ground, body, Vec2(12.0f, 17.0f) * 1_m, UnitVec2::GetRight()};
+            m_world.CreateJoint(pjd);
+        }
     }
 };
 

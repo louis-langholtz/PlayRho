@@ -30,7 +30,7 @@ public:
     BodyTypes()
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
+        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m));
 
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Dynamic", [&](KeyActionMods) {
             m_platform->SetType(BodyType::Dynamic);
@@ -40,45 +40,38 @@ public:
         });
         RegisterForKey(GLFW_KEY_K, GLFW_PRESS, 0, "Kinematic", [&](KeyActionMods) {
             m_platform->SetType(BodyType::Kinematic);
-            m_platform->SetVelocity(Velocity{Vec2(-m_speed, 0.0f) * MeterPerSecond, AngularVelocity{0}});
+            m_platform->SetVelocity(Velocity{Vec2(-m_speed, 0) * 1_mps, AngularVelocity{0}});
         });
 
         // Define attachment
         {
-            BodyDef bd;
-            bd.type = BodyType::Dynamic;
-            bd.location = Vec2(0.0f, 3.0f) * Meter;
+            const auto bd = BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0, 3) * 1_m);
             m_attachment = m_world.CreateBody(bd);
-            auto conf = PolygonShape::Conf{};
-            conf.density = Real{2} * KilogramPerSquareMeter;
-            m_attachment->CreateFixture(std::make_shared<PolygonShape>(Real{0.5f} * Meter, Real{2.0f} * Meter, conf));
+            const auto conf = PolygonShape::Conf{}.UseDensity(2_kgpm2);
+            m_attachment->CreateFixture(std::make_shared<PolygonShape>(0.5_m, 2_m, conf));
         }
 
         // Define platform
         {
-            BodyDef bd;
-            bd.type = BodyType::Dynamic;
-            bd.location = Vec2(-4.0f, 5.0f) * Meter;
+            const auto bd = BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(-4, 5) * 1_m);
             m_platform = m_world.CreateBody(bd);
 
-            auto conf = PolygonShape::Conf{};
-            conf.friction = 0.6f;
-            conf.density = Real{2} * KilogramPerSquareMeter;
+            const auto conf = PolygonShape::Conf{}.UseFriction(Real(0.6f)).UseDensity(2_kgpm2);
             PolygonShape shape{conf};
-            SetAsBox(shape, Real{0.5f} * Meter, Real{4.0f} * Meter, Vec2(4.0f, 0.0f) * Meter, Real{0.5f} * Pi * Radian);
+            SetAsBox(shape, 0.5_m, 4_m, Vec2(4, 0) * 1_m, Pi * 0.5_rad);
 
             m_platform->CreateFixture(std::make_shared<PolygonShape>(shape));
 
-            RevoluteJointDef rjd(m_attachment, m_platform, Vec2(0.0f, 5.0f) * Meter);
-            rjd.maxMotorTorque = Torque{Real{50.0f} * NewtonMeter};
+            RevoluteJointDef rjd(m_attachment, m_platform, Vec2(0, 5) * 1_m);
+            rjd.maxMotorTorque = 50_Nm;
             rjd.enableMotor = true;
             m_world.CreateJoint(rjd);
 
-            PrismaticJointDef pjd(ground, m_platform, Vec2(0.0f, 5.0f) * Meter, UnitVec2::GetRight());
-            pjd.maxMotorForce = Real{1000.0f} * Newton;
+            PrismaticJointDef pjd(ground, m_platform, Vec2(0, 5) * 1_m, UnitVec2::GetRight());
+            pjd.maxMotorForce = 1000_N;
             pjd.enableMotor = true;
-            pjd.lowerTranslation = Real{-10.0f} * Meter;
-            pjd.upperTranslation = Real{10.0f} * Meter;
+            pjd.lowerTranslation = -10_m;
+            pjd.upperTranslation = 10_m;
             pjd.enableLimit = true;
             m_world.CreateJoint(pjd);
 
@@ -87,16 +80,11 @@ public:
 
         // Create a payload
         {
-            BodyDef bd;
-            bd.type = BodyType::Dynamic;
-            bd.location = Vec2(0.0f, 8.0f) * Meter;
-            Body* body = m_world.CreateBody(bd);
+            const auto bd = BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0, 8) * 1_m);
+            const auto body = m_world.CreateBody(bd);
 
-            auto conf = PolygonShape::Conf{};
-            conf.friction = 0.6f;
-            conf.density = Real{2} * KilogramPerSquareMeter;
-
-            body->CreateFixture(std::make_shared<PolygonShape>(Real{0.75f} * Meter, Real{0.75f} * Meter, conf));
+            const auto conf = PolygonShape::Conf{}.UseFriction(Real(0.6f)).UseDensity(2_kgpm2);
+            body->CreateFixture(std::make_shared<PolygonShape>(0.75_m, 0.75_m, conf));
         }
     }
 
@@ -108,8 +96,8 @@ public:
             const auto p = m_platform->GetLocation();
             const auto velocity = m_platform->GetVelocity();
 
-            if ((GetX(p) < Real{-10.0f} * Meter && GetX(velocity.linear) < Real{0.0f} * MeterPerSecond) ||
-                (GetX(p) > Real{10.0f} * Meter && GetX(velocity.linear) > Real{0.0f} * MeterPerSecond))
+            if ((GetX(p) < -10_m && GetX(velocity.linear) < 0_mps) ||
+                (GetX(p) > +10_m && GetX(velocity.linear) > 0_mps))
             {
                 m_platform->SetVelocity(Velocity{
                     LinearVelocity2D{-GetX(velocity.linear), GetY(velocity.linear)},

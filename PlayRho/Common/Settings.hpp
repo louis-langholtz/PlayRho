@@ -55,7 +55,7 @@ struct Defaults
     static constexpr auto GetLinearSlop() noexcept
     {
         // Return the value used by Box2D 2.3.2 b2_linearSlop define....
-        return Length{Real(0.005f) * Meter};
+        return 0.005_m;
     }
     
     /// @brief Gets the max vertex radius.
@@ -63,7 +63,7 @@ struct Defaults
     {
         // DefaultLinearSlop * Real{2 * 1024 * 1024};
         // linearSlop * 2550000
-        return Length{Real(255) * Meter};
+        return 255_m;
     }
 };
 
@@ -77,14 +77,14 @@ struct Defaults<Fixed<std::int32_t,FRACTION_BITS>>
     {
         // Needs to be big enough that the step tolerance doesn't go to zero.
         // ex: FRACTION_BITS==10, then divisor==256
-        return Length{Meter / Real{(1u << (FRACTION_BITS - 2))}};
+        return Length{1_m / Real{(1u << (FRACTION_BITS - 2))}};
     }
     
     /// @brief Gets the max vertex radius.
     static constexpr auto GetMaxVertexRadius() noexcept
     {
         // linearSlop * 2550000
-        return Length{Real(1u << (28 - FRACTION_BITS)) * Meter};
+        return Length{Real(1u << (28 - FRACTION_BITS)) * 1_m};
     }
 };
 
@@ -146,26 +146,26 @@ constexpr auto DefaultDistanceMultiplier = Real{2};
 /// @details
 /// A small angle used as a collision and constraint tolerance. Usually it is
 /// chosen to be numerically significant, but visually insignificant.
-constexpr auto DefaultAngularSlop = (Pi * Real{2} * Radian) / Real{180};
+constexpr auto DefaultAngularSlop = (Pi * 2_rad) / Real{180};
 
 /// @brief Default maximum linear correction.
 /// @details The maximum linear position correction used when solving constraints.
 ///   This helps to prevent overshoot.
 /// @note This value should be greater than the linear slop value.
-constexpr auto DefaultMaxLinearCorrection = Real{0.2f} * Meter;
+constexpr auto DefaultMaxLinearCorrection = 0.2_m;
 
 /// @brief Default maximum angular correction.
 /// @note This value should be greater than the angular slop value.
-constexpr auto DefaultMaxAngularCorrection = Real(8.0f / 180.0f) * Pi * Radian;
+constexpr auto DefaultMaxAngularCorrection = Real(8.0f / 180.0f) * Pi * 1_rad;
 
 /// @brief Default maximum translation amount.
-constexpr auto DefaultMaxTranslation = Length{Real(2.0f) * Meter};
+constexpr auto DefaultMaxTranslation = 2_m;
 
 /// @brief Default maximum rotation per world step.
 /// @warning This value should be less than Pi * Radian.
 /// @note This limit is meant to prevent numerical problems. Adjusting this value isn't advised.
 /// @sa StepConf::maxRotation.
-constexpr auto DefaultMaxRotation = Angle{Pi * Radian / Real(2)};
+constexpr auto DefaultMaxRotation = Angle{Pi * 1_rad / Real(2)};
 
 /// @brief Default maximum time of impact iterations.
 constexpr auto DefaultMaxToiIters = std::uint8_t{20};
@@ -187,13 +187,13 @@ constexpr auto DefaultMaxSubSteps = std::uint8_t{8};
 // Dynamics
 
 /// @brief Default velocity threshold.
-constexpr auto DefaultVelocityThreshold = Real(1) * MeterPerSecond;
+constexpr auto DefaultVelocityThreshold = 1_mps;
 
 /// @brief Default regular-phase minimum momentum.
-constexpr auto DefaultRegMinMomentum = Momentum{(Real(0) / Real(100)) * NewtonSecond};
+constexpr auto DefaultRegMinMomentum = Momentum{0_Ns / 100};
 
 /// @brief Default TOI-phase minimum momentum.
-constexpr auto DefaultToiMinMomentum = Momentum{(Real(0) / Real(100)) * NewtonSecond};
+constexpr auto DefaultToiMinMomentum = Momentum{0_Ns / 100};
 
 /// @brief Maximum number of bodies in a world.
 /// @note This is 65534 based off std::uint16_t and eliminating one value for invalid.
@@ -226,20 +226,20 @@ constexpr auto MaxJoints = static_cast<std::uint16_t>(std::numeric_limits<std::u
 using JointCounter = std::remove_const<decltype(MaxJoints)>::type;
 
 /// @brief Default step time.
-constexpr auto DefaultStepTime = Time{Second / Real{60}};
+constexpr auto DefaultStepTime = Time{1_s / 60};
 
 /// @brief Default step frequency.
-constexpr auto DefaultStepFrequency = Frequency{Hertz * Real{60}};
+constexpr auto DefaultStepFrequency = 60_Hz;
 
 // Sleep
 
 /// Default minimum still time to sleep.
 /// @details The default minimum time bodies must be still for bodies to be put to sleep.
-constexpr auto DefaultMinStillTimeToSleep = Time{Second / Real{2}}; // aka 0.5 secs
+constexpr auto DefaultMinStillTimeToSleep = Time{1_s / 2}; // aka 0.5 secs
 
 /// Default linear sleep tolerance.
 /// @details A body cannot sleep if the magnitude of its linear velocity is above this amount.
-constexpr auto DefaultLinearSleepTolerance = Real{0.01f} * MeterPerSecond; // aka 0.01
+constexpr auto DefaultLinearSleepTolerance = 0.01_mps; // aka 0.01
 
 /// Default angular sleep tolerance.
 /// @details A body cannot sleep if its angular velocity is above this amount.

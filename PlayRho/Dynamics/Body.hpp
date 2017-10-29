@@ -696,7 +696,7 @@ inline Time Body::GetUnderActiveTime() const noexcept
 
 inline void Body::SetUnderActiveTime(Time value) noexcept
 {
-    if ((value == Second * Real{0}) || IsAccelerable())
+    if ((value == 0_s) || IsAccelerable())
     {
         m_underActiveTime = value;
     }
@@ -704,7 +704,7 @@ inline void Body::SetUnderActiveTime(Time value) noexcept
 
 inline void Body::ResetUnderActiveTime() noexcept
 {
-    m_underActiveTime = Second * Real(0);
+    m_underActiveTime = 0_s;
 }
 
 inline bool Body::IsEnabled() const noexcept
@@ -1027,7 +1027,7 @@ inline RotInertia GetRotInertia(const Body& body) noexcept
 /// @brief Gets the rotational inertia of the body about the local origin.
 /// @return the rotational inertia.
 /// @relatedalso Body
-inline RotInertia GetLocalInertia(const Body& body) noexcept
+inline RotInertia GetLocalRotInertia(const Body& body) noexcept
 {
     return GetRotInertia(body)
          + GetMass(body) * GetLengthSquared(body.GetLocalCenter()) / SquareRadian;

@@ -70,24 +70,24 @@ public:
 
     PolyShapes()
     {
-        m_circle->SetDensity(Real{1} * KilogramPerSquareMeter);
+        m_circle->SetDensity(1_kgpm2);
         m_circle->SetFriction(Real(0.3f));
 
         // Ground body
         {
             const auto ground = m_world.CreateBody();
-            ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
+            ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
         }
 
         for (auto&& p: m_polygons)
         {
             p = std::make_shared<PolygonShape>();
-            p->SetDensity(Real{1} * KilogramPerSquareMeter);
+            p->SetDensity(1_kgpm2);
             p->SetFriction(Real(0.3f));
         }
 
-        m_polygons[0]->Set({Vec2(-0.5f, 0.0f) * Meter, Vec2(0.5f, 0.0f) * Meter, Vec2(0.0f, 1.5f) * Meter});
-        m_polygons[1]->Set({Vec2(-0.1f, 0.0f) * Meter, Vec2(0.1f, 0.0f) * Meter, Vec2(0.0f, 1.5f) * Meter});
+        m_polygons[0]->Set({Vec2(-0.5f, 0.0f) * 1_m, Vec2(0.5f, 0.0f) * 1_m, Vec2(0.0f, 1.5f) * 1_m});
+        m_polygons[1]->Set({Vec2(-0.1f, 0.0f) * 1_m, Vec2(0.1f, 0.0f) * 1_m, Vec2(0.0f, 1.5f) * 1_m});
 
         {
             const auto w = Real(1);
@@ -95,19 +95,19 @@ public:
             const auto s = Sqrt(2.0f) * b;
 
             m_polygons[2]->Set({
-                Vec2(0.5f * s, 0.0f) * Meter,
-                Vec2(0.5f * w, b) * Meter,
-                Vec2(0.5f * w, b + s) * Meter,
-                Vec2(0.5f * s, w) * Meter,
-                Vec2(-0.5f * s, w) * Meter,
-                Vec2(-0.5f * w, b + s) * Meter,
-                Vec2(-0.5f * w, b) * Meter,
-                Vec2(-0.5f * s, 0.0f) * Meter
+                Vec2(0.5f * s, 0.0f) * 1_m,
+                Vec2(0.5f * w, b) * 1_m,
+                Vec2(0.5f * w, b + s) * 1_m,
+                Vec2(0.5f * s, w) * 1_m,
+                Vec2(-0.5f * s, w) * 1_m,
+                Vec2(-0.5f * w, b + s) * 1_m,
+                Vec2(-0.5f * w, b) * 1_m,
+                Vec2(-0.5f * s, 0.0f) * 1_m
             });
         }
 
         {
-            m_polygons[3]->SetAsBox(Real{0.5f} * Meter, Real{0.5f} * Meter);
+            m_polygons[3]->SetAsBox(0.5_m, 0.5_m);
         }
 
         m_bodyIndex = 0;
@@ -155,12 +155,12 @@ public:
         bd.type = BodyType::Dynamic;
 
         const auto x = RandomFloat(-2.0f, 2.0f);
-        bd.location = Vec2(x, 10.0f) * Meter;
-        bd.angle = Radian * RandomFloat(-Pi, Pi);
+        bd.location = Vec2(x, 10.0f) * 1_m;
+        bd.angle = 1_rad * RandomFloat(-Pi, Pi);
 
         if (index == 4)
         {
-            bd.angularDamping = Real(0.02f) * Hertz;
+            bd.angularDamping = 0.02_Hz;
         }
 
         m_bodies[m_bodyIndex] = m_world.CreateBody(bd);
@@ -193,8 +193,8 @@ public:
     void PostStep(const Settings&, Drawer& drawer) override
     {
         auto circleConf = DiskShape::Conf{};
-        circleConf.location = Vec2(0.0f, 1.1f) * Meter;
-        circleConf.vertexRadius = Real(2) * Meter;
+        circleConf.location = Vec2(0.0f, 1.1f) * 1_m;
+        circleConf.vertexRadius = 2_m;
         const auto circle = DiskShape{circleConf};
 
         const auto transform = Transform_identity;
@@ -231,7 +231,7 @@ public:
     int m_bodyIndex;
     Body* m_bodies[e_maxBodies];
     std::shared_ptr<PolygonShape> m_polygons[4];
-    std::shared_ptr<DiskShape> m_circle = std::make_shared<DiskShape>(Real{0.5f} * Meter);
+    std::shared_ptr<DiskShape> m_circle = std::make_shared<DiskShape>(0.5_m);
 };
 
 } // namespace playrho

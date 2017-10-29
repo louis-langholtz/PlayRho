@@ -64,7 +64,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
     const auto minTarget = target - conf.tolerance;
     assert(minTarget != target);
     assert(minTarget < maxTarget);
-    assert(minTarget > Length{0} && !AlmostZero(minTarget / Meter));
+    assert(minTarget > 0_m && !AlmostZero(minTarget / Meter));
     
     const auto maxTargetSquared = Square(maxTarget);
 

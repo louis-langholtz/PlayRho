@@ -62,7 +62,7 @@ std::vector<Length2D> GetCircleVertices(Length radius, unsigned slices, Angle st
     {
         const auto integralTurns = static_cast<long int>(turns);
         const auto wholeNum = (turns == Real(integralTurns * Real(1)));
-        const auto deltaAngle = (Pi * Radian * Real(2) * turns) / Real(slices);
+        const auto deltaAngle = (Pi * 2_rad * turns) / Real(slices);
         auto i = decltype(slices){0};
         while (i < slices)
         {

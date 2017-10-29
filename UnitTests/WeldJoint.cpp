@@ -52,7 +52,7 @@ TEST(WeldJointDef, DefaultConstruction)
     EXPECT_EQ(def.localAnchorA, (Length2D{}));
     EXPECT_EQ(def.localAnchorB, (Length2D{}));
     EXPECT_EQ(def.referenceAngle, Angle(0));
-    EXPECT_EQ(def.frequency, Real{0} * Hertz);
+    EXPECT_EQ(def.frequency, 0_Hz);
     EXPECT_EQ(def.dampingRatio, Real(0));
 }
 
@@ -117,7 +117,7 @@ TEST(WeldJoint, GetWeldJointDef)
     EXPECT_EQ(cdef.localAnchorA, anchor);
     EXPECT_EQ(cdef.localAnchorB, anchor);
     EXPECT_EQ(def.referenceAngle, Angle(0));
-    EXPECT_EQ(def.frequency, Real(0) * Hertz);
+    EXPECT_EQ(def.frequency, 0_Hz);
     EXPECT_EQ(def.dampingRatio, Real(0));
 }
 
@@ -134,7 +134,7 @@ TEST(WeldJoint, WithDynamicCircles)
     const auto anchor = Length2D(Real(2) * Meter, Real(1) * Meter);
     const auto jd = WeldJointDef{b1, b2, anchor};
     world.CreateJoint(jd);
-    Step(world, Time{Second * Real{1}});
+    Step(world, 1_s);
     EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
     EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);
@@ -154,12 +154,12 @@ TEST(WeldJoint, WithDynamicCircles2)
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
     const auto anchor = Length2D(Real(2) * Meter, Real(1) * Meter);
-    const auto jd = WeldJointDef{b1, b2, anchor}.UseFrequency(Real(10) * Hertz);
+    const auto jd = WeldJointDef{b1, b2, anchor}.UseFrequency(10_Hz);
     const auto joint = static_cast<WeldJoint*>(world.CreateJoint(jd));
     ASSERT_NE(joint, nullptr);
-    ASSERT_EQ(joint->GetFrequency(), Real(10) * Hertz);
+    ASSERT_EQ(joint->GetFrequency(), 10_Hz);
 
-    Step(world, Time{Second * Real{1}});
+    Step(world, 1_s);
     EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
     EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);

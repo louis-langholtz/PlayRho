@@ -83,7 +83,7 @@ struct WheelJointDef : public JointBuilder<WheelJointDef>
     AngularVelocity motorSpeed = AngularVelocity{0};
     
     /// Suspension frequency, zero indicates no suspension
-    Frequency frequency = Real{2} * Hertz;
+    Frequency frequency = 2_Hz;
     
     /// Suspension damping ratio, one indicates critical damping
     Real dampingRatio = 0.7f;

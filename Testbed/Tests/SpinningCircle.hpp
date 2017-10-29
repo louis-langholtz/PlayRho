@@ -38,28 +38,28 @@ namespace playrho {
 
             auto bodyDef = BodyDef{};
             bodyDef.type = BodyType::Dynamic;
-            bodyDef.angularVelocity = Real{45.0f} * Degree / Second;
+            bodyDef.angularVelocity = 45_deg / 1_s;
             bodyDef.linearVelocity = LinearVelocity2D{};
-            bodyDef.linearDamping = Real(0.8f) * Hertz;
+            bodyDef.linearDamping = 0.8_Hz;
             bodyDef.bullet = true;
 
-            bodyDef.location = Vec2{0, 26} * Meter;
+            bodyDef.location = Vec2{0, 26} * 1_m;
             const auto body1 = m_world.CreateBody(bodyDef);
-            bodyDef.location = Vec2{0, 14} * Meter;
+            bodyDef.location = Vec2{0, 14} * 1_m;
             const auto body2 = m_world.CreateBody(bodyDef);
             
             auto shapeConf = DiskShape::Conf{};
-            shapeConf.density = Real{10} * KilogramPerSquareMeter;
+            shapeConf.density = 10_kgpm2;
 
-            shapeConf.vertexRadius = Real{2} * Meter;
-            shapeConf.location = Vec2{0, 0} * Meter;
+            shapeConf.vertexRadius = 2_m;
+            shapeConf.location = Vec2{0, 0} * 1_m;
             auto circle = std::make_shared<DiskShape>(shapeConf);
 
-            shapeConf.vertexRadius = Real{1.5f} * Meter;
-            shapeConf.location = Vec2{0,  3} * Meter;
+            shapeConf.vertexRadius = 1.5_m;
+            shapeConf.location = Vec2{0,  3} * 1_m;
             auto circleA = std::make_shared<DiskShape>(shapeConf);
-            shapeConf.vertexRadius = Real{1.5f} * Meter;
-            shapeConf.location = Vec2{0, -3} * Meter;
+            shapeConf.vertexRadius = 1.5_m;
+            shapeConf.location = Vec2{0, -3} * 1_m;
             auto circleB = std::make_shared<DiskShape>(shapeConf);
             
             body1->CreateFixture(circleA);

@@ -36,23 +36,22 @@ int main()
 
     // Call world's body creation method which allocates memory for ground body.
     // The body is also added to the world.
-    const auto ground = world.CreateBody(BodyDef{}
-                                         .UseLocation(Length2D{0 * Meter, -10 * Meter}));
+    const auto ground = world.CreateBody(BodyDef{}.UseLocation(Length2D{0_m, -10_m}));
 
     // Define the ground shape. Use a polygon configured as a box for this.
     // The extents are the half-width and half-height of the box.
-    const auto box = std::make_shared<PolygonShape>(50 * Meter, 10 * Meter);
+    const auto box = std::make_shared<PolygonShape>(50_m, 10_m);
 
     // Add the box shape to the ground body.
     ground->CreateFixture(box);
 
     // Define location above ground for a "dynamic" body & call world's body creation method.
     const auto ball = world.CreateBody(BodyDef{}
-                                       .UseLocation(Length2D{0 * Meter, 4 * Meter})
+                                       .UseLocation(Length2D{0_m, 4_m})
                                        .UseType(BodyType::Dynamic));
 
     // Define a disk shape for the ball body.
-    const auto disk = std::make_shared<DiskShape>(1 * Meter);
+    const auto disk = std::make_shared<DiskShape>(1_m);
 
     // Add the disk shape to the ball body.
     ball->CreateFixture(disk);

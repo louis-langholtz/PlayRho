@@ -88,10 +88,10 @@ class TDTire
 private:
     Body* m_body;
     std::set<GroundAreaFUD*> m_groundAreas;
-    Force m_maxDriveForce = Force{0};
-    LinearVelocity m_maxForwardSpeed = LinearVelocity{0};
-    LinearVelocity m_maxBackwardSpeed = LinearVelocity{0};
-    Momentum m_maxLateralImpulse = Momentum{0};
+    Force m_maxDriveForce = 0_N;
+    LinearVelocity m_maxForwardSpeed = 0_mps;
+    LinearVelocity m_maxBackwardSpeed = 0_mps;
+    Momentum m_maxLateralImpulse = 0_Ns;
     Real m_currentTraction = 1;
     
 public:
@@ -166,7 +166,7 @@ public:
     {
         //lateral linear velocity
         auto impulse = Momentum2D{GetMass(*m_body) * -getLateralVelocity()};
-        const auto length = GetLength(GetVec2(impulse)) * Kilogram * MeterPerSecond;
+        const auto length = GetLength(GetVec2(impulse)) * 1_kg * 1_mps;
         if ( length > m_maxLateralImpulse )
             impulse *= m_maxLateralImpulse / length;
         ApplyLinearImpulse(*m_body, m_currentTraction * impulse, m_body->GetWorldCenter());
@@ -178,17 +178,17 @@ public:
         
         //forward linear velocity
         const auto forwardVelocity = getForwardVelocity();
-        auto currentForwardSpeed = LinearVelocity{0};
+        auto currentForwardSpeed = 0_mps;
         const auto forwardDir = GetUnitVector(forwardVelocity, currentForwardSpeed, UnitVec2::GetZero());
-        const auto dragForceMagnitude = Real{-2} * currentForwardSpeed;
-        const auto newForce = Force2D{m_currentTraction * dragForceMagnitude * forwardDir * Kilogram / Second};
+        const auto dragForceMagnitude = -2 * currentForwardSpeed;
+        const auto newForce = Force2D{m_currentTraction * dragForceMagnitude * forwardDir * 1_kg / 1_s};
         SetForce(*m_body, newForce, m_body->GetWorldCenter());
     }
     
     void updateDrive(ControlStateType controlState)
     {
         //find desired speed
-        auto desiredSpeed = LinearVelocity{0};
+        auto desiredSpeed = 0_mps;
         switch ( controlState & (TDC_UP|TDC_DOWN) ) {
             case TDC_UP:   desiredSpeed = m_maxForwardSpeed;  break;
             case TDC_DOWN: desiredSpeed = m_maxBackwardSpeed; break;
@@ -200,7 +200,7 @@ public:
         const auto currentSpeed = Dot(getForwardVelocity(), currentForwardNormal);
         
         //apply necessary force
-        auto forceMagnitude = Force{0};
+        auto forceMagnitude = 0_N;
         if (desiredSpeed > currentSpeed)
             forceMagnitude = m_maxDriveForce;
         else if (desiredSpeed < currentSpeed)
@@ -214,11 +214,11 @@ public:
     
     void updateTurn(ControlStateType controlState)
     {
-        auto desiredTorque = Real{0} * NewtonMeter;
+        auto desiredTorque = 0_Nm;
         switch (controlState & (TDC_LEFT|TDC_RIGHT))
         {
-            case TDC_LEFT:  desiredTorque = Real{+15} * NewtonMeter; break;
-            case TDC_RIGHT: desiredTorque = Real{-15} * NewtonMeter; break;
+            case TDC_LEFT:  desiredTorque = +15_Nm; break;
+            case TDC_RIGHT: desiredTorque = -15_Nm; break;
             default: ;//nothing
         }
         SetTorque(*m_body, desiredTorque);
@@ -240,40 +240,40 @@ public:
         BodyDef bodyDef;
         bodyDef.type = BodyType::Dynamic;
         m_body = world->CreateBody(bodyDef);
-        m_body->SetAngularDamping(Real(3) * Hertz);
+        m_body->SetAngularDamping(3_Hz);
         
         Length2D vertices[8];
-        vertices[0] = Vec2(+1.5f,  +0.0f) * Meter;
-        vertices[1] = Vec2(+3.0f,  +2.5f) * Meter;
-        vertices[2] = Vec2(+2.8f,  +5.5f) * Meter;
-        vertices[3] = Vec2(+1.0f, +10.0f) * Meter;
-        vertices[4] = Vec2(-1.0f, +10.0f) * Meter;
-        vertices[5] = Vec2(-2.8f,  +5.5f) * Meter;
-        vertices[6] = Vec2(-3.0f,  +2.5f) * Meter;
-        vertices[7] = Vec2(-1.5f,  +0.0f) * Meter;
+        vertices[0] = Vec2(+1.5f,  +0.0f) * 1_m;
+        vertices[1] = Vec2(+3.0f,  +2.5f) * 1_m;
+        vertices[2] = Vec2(+2.8f,  +5.5f) * 1_m;
+        vertices[3] = Vec2(+1.0f, +10.0f) * 1_m;
+        vertices[4] = Vec2(-1.0f, +10.0f) * 1_m;
+        vertices[5] = Vec2(-2.8f,  +5.5f) * 1_m;
+        vertices[6] = Vec2(-3.0f,  +2.5f) * 1_m;
+        vertices[7] = Vec2(-1.5f,  +0.0f) * 1_m;
         PolygonShape polygonShape;
         polygonShape.Set(Span<const Length2D>(vertices, 8));
-        polygonShape.SetDensity(Real{0.1f} * KilogramPerSquareMeter);
+        polygonShape.SetDensity(0.1_kgpm2);
         m_body->CreateFixture(std::make_shared<PolygonShape>(polygonShape));
         
         //prepare common joint parameters
         RevoluteJointDef jointDef;
         jointDef.bodyA = m_body;
         jointDef.enableLimit = true;
-        jointDef.lowerAngle = Angle{0};
-        jointDef.upperAngle = Angle{0};
-        jointDef.localAnchorB = Vec2{0, 0} * Meter; //center of tire
+        jointDef.lowerAngle = 0_deg;
+        jointDef.upperAngle = 0_deg;
+        jointDef.localAnchorB = Vec2{0, 0} * 1_m; //center of tire
         
-        const auto maxForwardSpeed = Real{250.0f} * MeterPerSecond;
-        const auto maxBackwardSpeed = Real{-40.0f} * MeterPerSecond;
-        const auto backTireMaxDriveForce = Real{950.0f} * Newton; // 300.0f;
-        const auto frontTireMaxDriveForce = Real{400.0f} * Newton; // 500.0f;
-        const auto backTireMaxLateralImpulse = Real{9.0f} * Kilogram * MeterPerSecond; // 8.5f;
-        const auto frontTireMaxLateralImpulse = Real{9.0f} * Kilogram * MeterPerSecond; // 7.5f;
+        const auto maxForwardSpeed = 250_mps;
+        const auto maxBackwardSpeed = -40_mps;
+        const auto backTireMaxDriveForce = 950_N; // 300.0f;
+        const auto frontTireMaxDriveForce = 400_N; // 500.0f;
+        const auto backTireMaxLateralImpulse = 9_Ns; // 8.5f;
+        const auto frontTireMaxLateralImpulse = 9_Ns; // 7.5f;
 
         PolygonShape tireShape;
-        tireShape.SetAsBox(Real{0.5f} * Meter, Real{1.25f} * Meter);
-        tireShape.SetDensity(Real{1} * KilogramPerSquareMeter);
+        tireShape.SetAsBox(0.5_m, 1.25_m);
+        tireShape.SetDensity(1_kgpm2);
         const auto sharedTireShape = std::make_shared<PolygonShape>(tireShape);
 
         TDTire* tire;
@@ -282,7 +282,7 @@ public:
         tire = new TDTire{world, sharedTireShape};
         tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
         jointDef.bodyB = tire->GetBody();
-        jointDef.localAnchorA = Vec2(-3, 0.75f) * Meter; // sets car relative location of tire
+        jointDef.localAnchorA = Vec2(-3, 0.75f) * 1_m; // sets car relative location of tire
         world->CreateJoint(jointDef);
         m_tires.push_back(tire);
         
@@ -290,7 +290,7 @@ public:
         tire = new TDTire{world, sharedTireShape};
         tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
         jointDef.bodyB = tire->GetBody();
-        jointDef.localAnchorA = Vec2(+3, 0.75f) * Meter; // sets car relative location of tire
+        jointDef.localAnchorA = Vec2(+3, 0.75f) * 1_m; // sets car relative location of tire
         world->CreateJoint(jointDef);
         m_tires.push_back(tire);
         
@@ -298,7 +298,7 @@ public:
         tire = new TDTire{world, sharedTireShape};
         tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
         jointDef.bodyB = tire->GetBody();
-        jointDef.localAnchorA = Vec2(-3, 8.5f) * Meter; // sets car relative location of tire
+        jointDef.localAnchorA = Vec2(-3, 8.5f) * 1_m; // sets car relative location of tire
         flJoint = static_cast<RevoluteJoint*>(world->CreateJoint(jointDef));
         m_tires.push_back(tire);
         
@@ -306,7 +306,7 @@ public:
         tire = new TDTire{world, sharedTireShape};
         tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
         jointDef.bodyB = tire->GetBody();
-        jointDef.localAnchorA = Vec2(+3, 8.5f) * Meter; // sets car relative location of tire
+        jointDef.localAnchorA = Vec2(+3, 8.5f) * 1_m; // sets car relative location of tire
         frJoint = static_cast<RevoluteJoint*>(world->CreateJoint(jointDef));
         m_tires.push_back(tire);
     }
@@ -329,10 +329,10 @@ public:
         }
         
         //control steering
-        const auto lockAngle = Real{35.0f} * Degree;
-        const auto turnSpeedPerSec = Real{160.0f} * Degree;//from lock to lock in 0.5 sec
+        const auto lockAngle = 35_deg;
+        const auto turnSpeedPerSec = 160_deg;//from lock to lock in 0.5 sec
         const auto turnPerTimeStep = turnSpeedPerSec / Real{60.0f};
-        auto desiredAngle = Angle{0};
+        auto desiredAngle = 0_deg;
         switch ( controlState & (TDC_LEFT|TDC_RIGHT) ) {
             case TDC_LEFT:  desiredAngle = lockAngle;  break;
             case TDC_RIGHT: desiredAngle = -lockAngle; break;
@@ -341,7 +341,7 @@ public:
         const auto angleNow = GetJointAngle(*flJoint);
         const auto desiredAngleToTurn = desiredAngle - angleNow;
         const auto angleToTurn = Clamp(desiredAngleToTurn, -turnPerTimeStep, turnPerTimeStep);
-        if (angleToTurn != Angle{0})
+        if (angleToTurn != 0_deg)
         {
             const auto newAngle = angleNow + angleToTurn;
             flJoint->SetLimits( newAngle, newAngle );
@@ -392,11 +392,11 @@ public:
             FixtureDef fixtureDef;
             fixtureDef.isSensor = true;
             
-            SetAsBox(polygonShape, Real{9} * Meter, Real{7} * Meter, Vec2(-10,15) * Meter, Real{20.0f} * Degree );
+            SetAsBox(polygonShape, 9_m, 7_m, Vec2(-10,15) * 1_m, 20_deg );
             groundAreaFixture = m_groundBody->CreateFixture(std::make_shared<PolygonShape>(polygonShape), fixtureDef);
             groundAreaFixture->SetUserData( new GroundAreaFUD( 0.5f, false ) );
             
-            SetAsBox(polygonShape, Real{9} * Meter, Real{5} * Meter, Vec2(5,20) * Meter, Real{-40.0f} * Degree );
+            SetAsBox(polygonShape, 9_m, 5_m, Vec2(5,20) * 1_m, -40_deg );
             groundAreaFixture = m_groundBody->CreateFixture(std::make_shared<PolygonShape>(polygonShape), fixtureDef);
             groundAreaFixture->SetUserData( new GroundAreaFUD( 0.2f, false ) );
         }

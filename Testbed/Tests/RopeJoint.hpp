@@ -38,15 +38,15 @@ public:
     RopeJointTest()
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
+        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
 
         {
-            const auto rectangle = std::make_shared<PolygonShape>(Real{0.5f} * Meter, Real{0.125f} * Meter);
-            rectangle->SetDensity(Real{20} * KilogramPerSquareMeter);
+            const auto rectangle = std::make_shared<PolygonShape>(0.5_m, 0.125_m);
+            rectangle->SetDensity(20_kgpm2);
             rectangle->SetFriction(Real(0.2f));
 
-            const auto square = std::make_shared<PolygonShape>(Real{1.5f} * Meter, Real{1.5f} * Meter);
-            square->SetDensity(Real{100} * KilogramPerSquareMeter);
+            const auto square = std::make_shared<PolygonShape>(1.5_m, 1.5_m);
+            square->SetDensity(100_kgpm2);
             square->SetFriction(Real(0.2f));
 
             FixtureDef fd;
@@ -55,7 +55,7 @@ public:
 
             const auto N = 10;
             const auto y = 15.0f;
-            m_ropeDef.localAnchorA = Vec2(0.0f, y) * Meter;
+            m_ropeDef.localAnchorA = Vec2(0.0f, y) * 1_m;
 
             auto prevBody = ground;
             for (auto i = 0; i < N; ++i)
@@ -63,28 +63,28 @@ public:
                 auto shape = rectangle;
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
-                bd.location = Vec2(0.5f + 1.0f * i, y) * Meter;
+                bd.location = Vec2(0.5f + 1.0f * i, y) * 1_m;
                 if (i == N - 1)
                 {
                     shape = square;
                     fd.filter.categoryBits = 0x0002;
-                    bd.location = Vec2(1.0f * i, y) * Meter;
-                    bd.angularDamping = Real(0.4f) * Hertz;
+                    bd.location = Vec2(1.0f * i, y) * 1_m;
+                    bd.angularDamping = 0.4_Hz;
                 }
 
                 const auto body = m_world.CreateBody(bd);
 
                 body->CreateFixture(shape, fd);
 
-                m_world.CreateJoint(RevoluteJointDef{prevBody, body, Vec2(Real(i), y) * Meter});
+                m_world.CreateJoint(RevoluteJointDef{prevBody, body, Vec2(Real(i), y) * 1_m});
 
                 prevBody = body;
             }
 
-            m_ropeDef.localAnchorB = Vec2_zero * Meter;
+            m_ropeDef.localAnchorB = Vec2_zero * 1_m;
 
             const auto extraLength = 0.01f;
-            m_ropeDef.maxLength = Real(N - 1.0f + extraLength) * Meter;
+            m_ropeDef.maxLength = Real(N - 1.0f + extraLength) * 1_m;
             m_ropeDef.bodyB = prevBody;
         }
 

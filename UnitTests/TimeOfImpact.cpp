@@ -232,14 +232,14 @@ TEST(TimeOfImpact, RodCircleMissAt360)
     const UnitVec2 normals[] = {nA0, -nA0};
     const auto proxyA = DistanceProxy{radius, 2, vertices, normals};
     const auto sweepA = Sweep{
-        Position{Length2D{-x * Meter, Real(4) * Meter}, Angle{0}},
-        Position{Length2D{+x * Meter, Real(4) * Meter}, Angle{Real{360.0f} * Degree}}
+        Position{Length2D{-x * Meter, Real(4) * Meter}, 0_deg},
+        Position{Length2D{+x * Meter, Real(4) * Meter}, 360_deg}
     };
     const auto pos = Length2D{};
     const auto proxyB = DistanceProxy{radius, 1, &pos, nullptr};
     const auto sweepB = Sweep{
-        Position{Length2D{+x * Meter, Real(0) * Meter}, Angle{0}},
-        Position{Length2D{-x * Meter, Real(0) * Meter}, Angle{0}}
+        Position{Length2D{+x * Meter, Real(0) * Meter}, 0_deg},
+        Position{Length2D{-x * Meter, Real(0) * Meter}, 0_deg}
     };
     
     // Compute the time of impact information now...
@@ -267,7 +267,7 @@ TEST(TimeOfImpact, RodCircleHitAt180)
     const auto proxyA = DistanceProxy{radius, 2, vertices, normals};
     const auto sweepA = Sweep{
         Position{Length2D{-x * Meter, Real(4) * Meter}, Angle{0}},
-        Position{Length2D{+x * Meter, Real(4) * Meter}, Angle{Real{180.0f} * Degree}}
+        Position{Length2D{+x * Meter, Real(4) * Meter}, Angle{Real{180.0f} * 1_deg}}
     };
     const auto pos = Length2D{};
     const auto proxyB = DistanceProxy{radius, 1, &pos, nullptr};
@@ -425,12 +425,12 @@ TEST(TimeOfImpact, ForNonCollidingShapesFails)
     const auto dpB = shapeB.GetChild(0);
 
     const auto sweepA = Sweep{
-        Position{Length2D{-Real(11) * Meter, Real(10) * Meter}, Real{2.95000005f} * Radian},
-        Position{Length2D{-Real(11) * Meter, Real(10) * Meter}, Real{2.95000005f} * Radian}
+        Position{Length2D{-Real(11) * Meter, Real(10) * Meter}, 2.95000005_rad},
+        Position{Length2D{-Real(11) * Meter, Real(10) * Meter}, 2.95000005_rad}
     };
     const auto sweepB = Sweep{
-        Position{Length2D{Real(18.4742737f) * Meter, Real(19.7474861f) * Meter}, Real{513.36676f} * Radian},
-        Position{Length2D{Real(19.5954781f) * Meter, Real(18.9165268f) * Meter}, Real{513.627808f} * Radian}
+        Position{Length2D{Real(18.4742737f) * Meter, Real(19.7474861f) * Meter}, 513.36676_rad},
+        Position{Length2D{Real(19.5954781f) * Meter, Real(18.9165268f) * Meter}, 513.627808_rad}
     };
     
     const auto conf = ToiConf{}
@@ -474,8 +474,8 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
         Position{Length2D{Real(0.0f) * Meter, Real(-0.5f) * Meter}, Angle{0}}
     };
     const auto sweepB = Sweep{
-        Position{Length2D{Real(14.3689661f) * Meter, Real(0.500306308f) * Meter}, Real{0.0000139930862f} * Radian},
-        Position{Length2D{Real(14.3689451f) * Meter, Real(0.500254989f) * Meter}, Real{0.000260060915f} * Radian}
+        Position{Length2D{Real(14.3689661f) * Meter, Real(0.500306308f) * Meter}, 0.0000139930862_rad},
+        Position{Length2D{Real(14.3689451f) * Meter, Real(0.500254989f) * Meter}, 0.000260060915_rad}
     };
 
     const Length2D vertices[] = {

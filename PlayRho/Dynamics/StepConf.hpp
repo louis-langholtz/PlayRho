@@ -67,7 +67,7 @@ public:
     constexpr StepConf& SetTime(Time value) noexcept
     {
         time = value;
-        invTime = (value != Time{0})? Real{1} / value: Hertz * Real{0};
+        invTime = (value != Time{0})? Real{1} / value: 0_Hz;
         return *this;
     }
 

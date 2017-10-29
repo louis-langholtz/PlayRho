@@ -128,7 +128,7 @@ TEST(RopeJoint, WithDynamicCircles)
     b2->CreateFixture(circle);
     const auto jd = RopeJointDef{b1, b2};
     world.CreateJoint(jd);
-    Step(world, Time{Second * Real{1}});
+    Step(world, 1_s);
     EXPECT_GT(GetX(b1->GetLocation()), Real(-1) * Meter);
     EXPECT_EQ(GetY(b1->GetLocation()), Real(0) * Meter);
     EXPECT_LT(GetX(b2->GetLocation()), Real(+1) * Meter);

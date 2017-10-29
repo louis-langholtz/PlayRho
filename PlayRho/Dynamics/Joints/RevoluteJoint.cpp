@@ -174,10 +174,7 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
         m_impulse *= step.dtRatio;
         m_motorImpulse *= step.dtRatio;
 
-        const auto P = Momentum2D{
-            GetX(m_impulse) * Kilogram * MeterPerSecond,
-            GetY(m_impulse) * Kilogram * MeterPerSecond
-        };
+        const auto P = Momentum2D{GetX(m_impulse) * NewtonSecond, GetY(m_impulse) * NewtonSecond};
         
         // AngularMomentum is L^2 M T^-1 QP^-1.
         const auto L = AngularMomentum{
@@ -286,10 +283,7 @@ bool RevoluteJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
             }
         }
 
-        const auto P = Momentum2D{
-            GetX(impulse) * Kilogram * MeterPerSecond,
-            GetY(impulse) * Kilogram * MeterPerSecond
-        };
+        const auto P = Momentum2D{GetX(impulse) * NewtonSecond, GetY(impulse) * NewtonSecond};
         const auto L = AngularMomentum{GetZ(impulse) * SquareMeter * Kilogram / (Second * Radian)};
         const auto LA = AngularMomentum{Cross(m_rA, P) / Radian} + L;
         const auto LB = AngularMomentum{Cross(m_rB, P) / Radian} + L;
@@ -307,10 +301,7 @@ bool RevoluteJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
         GetX(m_impulse) += GetX(impulse);
         GetY(m_impulse) += GetY(impulse);
 
-        const auto P = Momentum2D{
-            GetX(impulse) * Kilogram * MeterPerSecond,
-            GetY(impulse) * Kilogram * MeterPerSecond
-        };
+        const auto P = Momentum2D{GetX(impulse) * NewtonSecond, GetY(impulse) * NewtonSecond};
         const auto LA = AngularMomentum{Cross(m_rA, P) / Radian};
         const auto LB = AngularMomentum{Cross(m_rB, P) / Radian};
 
@@ -362,7 +353,7 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
             angularError = -C;
 
             // Prevent large angular corrections and allow some slop.
-            C = Clamp(C + conf.angularSlop, -conf.maxAngularCorrection, Real{0} * Radian);
+            C = Clamp(C + conf.angularSlop, -conf.maxAngularCorrection, 0_rad);
             limitImpulse = -m_motorMass * C;
         }
         else if (m_limitState == e_atUpperLimit)
@@ -371,7 +362,7 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
             angularError = C;
 
             // Prevent large angular corrections and allow some slop.
-            C = Clamp(C - conf.angularSlop, Real{0} * Radian, conf.maxAngularCorrection);
+            C = Clamp(C - conf.angularSlop, 0_rad, conf.maxAngularCorrection);
             limitImpulse = -m_motorMass * C;
         }
 
@@ -437,10 +428,7 @@ Length2D RevoluteJoint::GetAnchorB() const
 
 Momentum2D RevoluteJoint::GetLinearReaction() const
 {
-    return Momentum2D{
-        GetX(m_impulse) * Kilogram * MeterPerSecond,
-        GetY(m_impulse) * Kilogram * MeterPerSecond
-    };
+    return Momentum2D{GetX(m_impulse) * NewtonSecond, GetY(m_impulse) * NewtonSecond};
 }
 
 AngularMomentum RevoluteJoint::GetAngularReaction() const

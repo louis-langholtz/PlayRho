@@ -48,10 +48,10 @@ public:
         m_stepCount = 0;
 
         const auto h = m_worldExtent;
-        m_queryAABB = AABB{Vec2(-3.0f, -4.0f + h) * Meter, Vec2(5.0f, 6.0f + h) * Meter};
+        m_queryAABB = AABB{Vec2(-3.0f, -4.0f + h) * 1_m, Vec2(5.0f, 6.0f + h) * 1_m};
 
-        m_rayCastInput.p1 = Vec2(-5.0f, 5.0f + h) * Meter;
-        m_rayCastInput.p2 = Vec2(7.0f, -4.0f + h) * Meter;
+        m_rayCastInput.p1 = Vec2(-5.0f, 5.0f + h) * 1_m;
+        m_rayCastInput.p2 = Vec2(7.0f, -4.0f + h) * 1_m;
         //m_rayCastInput.p1 = Vec2(0.0f, 2.0f + h);
         //m_rayCastInput.p2 = Vec2(0.0f, -2.0f + h);
         m_rayCastInput.maxFraction = 1.0f;
@@ -214,24 +214,24 @@ private:
 
     AABB GetRandomAABB()
     {
-        const auto w = Vec2(m_proxyExtent * 2, m_proxyExtent * 2) * Meter;
+        const auto w = Vec2(m_proxyExtent * 2, m_proxyExtent * 2) * 1_m;
         //aabb->lowerBound.x = -m_proxyExtent;
         //aabb->lowerBound.y = -m_proxyExtent + m_worldExtent;
-        const auto lowerBound = Vec2(RandomFloat(-m_worldExtent, m_worldExtent), RandomFloat(0.0f, 2.0f * m_worldExtent)) * Meter;
+        const auto lowerBound = Vec2(RandomFloat(-m_worldExtent, m_worldExtent), RandomFloat(0.0f, 2.0f * m_worldExtent)) * 1_m;
         const auto upperBound = lowerBound + w;
         return AABB{lowerBound, upperBound};
     }
 
     void MoveAABB(AABB* aabb)
     {
-        const auto d = Vec2{RandomFloat(-0.5f, 0.5f), RandomFloat(-0.5f, 0.5f)} * Meter;
+        const auto d = Vec2{RandomFloat(-0.5f, 0.5f), RandomFloat(-0.5f, 0.5f)} * 1_m;
         //d.x = 2.0f;
         //d.y = 0.0f;
         Move(*aabb, d);
 
         const auto c0 = GetCenter(*aabb);
-        const auto min = Vec2(-m_worldExtent, Real(0)) * Meter;
-        const auto max = Vec2(m_worldExtent, 2.0f * m_worldExtent) * Meter;
+        const auto min = Vec2(-m_worldExtent, Real(0)) * 1_m;
+        const auto max = Vec2(m_worldExtent, 2.0f * m_worldExtent) * 1_m;
         const auto c = Length2D{
             Clamp(GetX(c0), GetX(min), GetX(max)), Clamp(GetY(c0), GetY(min), GetY(max))
         };

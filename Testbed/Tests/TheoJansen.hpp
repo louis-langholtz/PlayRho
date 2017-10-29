@@ -33,26 +33,26 @@ public:
 
     void CreateLeg(Real s, const Length2D wheelAnchor)
     {
-        const auto p1 = Vec2(5.4f * s, -6.1f) * Meter;
-        const auto p2 = Vec2(7.2f * s, -1.2f) * Meter;
-        const auto p3 = Vec2(4.3f * s, -1.9f) * Meter;
-        const auto p4 = Vec2(3.1f * s, 0.8f) * Meter;
-        const auto p5 = Vec2(6.0f * s, 1.5f) * Meter;
-        const auto p6 = Vec2(2.5f * s, 3.7f) * Meter;
+        const auto p1 = Vec2(5.4f * s, -6.1f) * 1_m;
+        const auto p2 = Vec2(7.2f * s, -1.2f) * 1_m;
+        const auto p3 = Vec2(4.3f * s, -1.9f) * 1_m;
+        const auto p4 = Vec2(3.1f * s, 0.8f) * 1_m;
+        const auto p5 = Vec2(6.0f * s, 1.5f) * 1_m;
+        const auto p6 = Vec2(2.5f * s, 3.7f) * 1_m;
 
         PolygonShape poly1, poly2;
         if (s > 0.0f)
         {
             poly1.Set({p1, p2, p3});
-            poly2.Set({Vec2_zero * Meter, p5 - p4, p6 - p4});
+            poly2.Set({Vec2_zero * 1_m, p5 - p4, p6 - p4});
         }
         else
         {
             poly1.Set({p1, p3, p2});
-            poly2.Set({Vec2_zero * Meter, p6 - p4, p5 - p4});
+            poly2.Set({Vec2_zero * 1_m, p6 - p4, p5 - p4});
         }
-        poly1.SetDensity(Real{1} * KilogramPerSquareMeter);
-        poly2.SetDensity(Real{1} * KilogramPerSquareMeter);
+        poly1.SetDensity(1_kgpm2);
+        poly2.SetDensity(1_kgpm2);
 
         FixtureDef fd1, fd2;
         fd1.filter.groupIndex = -1;
@@ -64,8 +64,8 @@ public:
         bd1.location = m_offset;
         bd2.location = p4 + m_offset;
 
-        bd1.angularDamping = Real(10) * Hertz;
-        bd2.angularDamping = Real(10) * Hertz;
+        bd1.angularDamping = 10_Hz;
+        bd2.angularDamping = 10_Hz;
 
         const auto body1 = m_world.CreateBody(bd1);
         const auto body2 = m_world.CreateBody(bd2);
@@ -78,22 +78,22 @@ public:
         // acting like a suspension system.
 
         m_world.CreateJoint(DistanceJointDef{body1, body2, p2 + m_offset, p5 + m_offset}
-                             .UseFrequency(Real(10) * Hertz).UseDampingRatio(Real(0.5)));
+                             .UseFrequency(10_Hz).UseDampingRatio(Real(0.5)));
         m_world.CreateJoint(DistanceJointDef{body1, body2, p3 + m_offset, p4 + m_offset}
-                             .UseFrequency(Real(10) * Hertz).UseDampingRatio(Real(0.5)));
+                             .UseFrequency(10_Hz).UseDampingRatio(Real(0.5)));
         m_world.CreateJoint(DistanceJointDef{body1, m_wheel, p3 + m_offset, wheelAnchor + m_offset}
-                             .UseFrequency(Real(10) * Hertz).UseDampingRatio(Real(0.5)));
+                             .UseFrequency(10_Hz).UseDampingRatio(Real(0.5)));
         m_world.CreateJoint(DistanceJointDef{body2, m_wheel, p6 + m_offset, wheelAnchor + m_offset}
-                             .UseFrequency(Real(10) * Hertz).UseDampingRatio(Real(0.5)));
+                             .UseFrequency(10_Hz).UseDampingRatio(Real(0.5)));
         m_world.CreateJoint(RevoluteJointDef{body2, m_chassis, p4 + m_offset});
     }
 
     TheoJansen()
     {
-        m_offset = Vec2(0.0f, 8.0f) * Meter;
-        m_motorSpeed = Real{2.0f} * RadianPerSecond;
+        m_offset = Vec2(0.0f, 8.0f) * 1_m;
+        m_motorSpeed = 2_rad / 1_s;
         m_motorOn = true;
-        const auto pivot = Vec2(0.0f, 0.8f) * Meter;
+        const auto pivot = Vec2(0.0f, 0.8f) * 1_m;
 
         // Ground
         {
@@ -101,26 +101,26 @@ public:
             const auto ground = m_world.CreateBody(bd);
 
             EdgeShape shape;
-            shape.Set(Vec2(-50.0f, 0.0f) * Meter, Vec2(50.0f, 0.0f) * Meter);
+            shape.Set(Vec2(-50.0f, 0.0f) * 1_m, Vec2(50.0f, 0.0f) * 1_m);
             ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
-            shape.Set(Vec2(-50.0f, 0.0f) * Meter, Vec2(-50.0f, 10.0f) * Meter);
+            shape.Set(Vec2(-50.0f, 0.0f) * 1_m, Vec2(-50.0f, 10.0f) * 1_m);
             ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
-            shape.Set(Vec2(50.0f, 0.0f) * Meter, Vec2(50.0f, 10.0f) * Meter);
+            shape.Set(Vec2(50.0f, 0.0f) * 1_m, Vec2(50.0f, 10.0f) * 1_m);
             ground->CreateFixture(std::make_shared<EdgeShape>(shape));
         }
 
         // Balls
         auto circleConf = DiskShape::Conf{};
-        circleConf.vertexRadius = Real{0.25f} * Meter;
-        circleConf.density = Real{1} * KilogramPerSquareMeter;
+        circleConf.vertexRadius = 0.25_m;
+        circleConf.density = 1_kgpm2;
         const auto circle = std::make_shared<DiskShape>(circleConf);
         for (auto i = 0; i < 40; ++i)
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.location = Vec2(-40.0f + 2.0f * i, 0.5f) * Meter;
+            bd.location = Vec2(-40.0f + 2.0f * i, 0.5f) * 1_m;
 
             const auto body = m_world.CreateBody(bd);
             body->CreateFixture(circle);
@@ -135,8 +135,8 @@ public:
             bd.location = pivot + m_offset;
             m_chassis = m_world.CreateBody(bd);
             auto polygonConf = PolygonShape::Conf{};
-            polygonConf.density = Real{1} * KilogramPerSquareMeter;
-            m_chassis->CreateFixture(std::make_shared<PolygonShape>(Real{2.5f} * Meter, Real{1.0f} * Meter, polygonConf), sd);
+            polygonConf.density = 1_kgpm2;
+            m_chassis->CreateFixture(std::make_shared<PolygonShape>(2.5_m, 1_m, polygonConf), sd);
         }
 
         {
@@ -147,8 +147,8 @@ public:
             bd.location = pivot + m_offset;
             m_wheel = m_world.CreateBody(bd);
             auto conf = DiskShape::Conf{};
-            conf.vertexRadius = Real{1.6f} * Meter;
-            conf.density = Real{1} * KilogramPerSquareMeter;
+            conf.vertexRadius = 1.6_m;
+            conf.density = 1_kgpm2;
             m_wheel->CreateFixture(std::make_shared<DiskShape>(conf), sd);
         }
 
@@ -156,21 +156,21 @@ public:
             RevoluteJointDef jd{m_wheel, m_chassis, pivot + m_offset};
             jd.collideConnected = false;
             jd.motorSpeed = m_motorSpeed;
-            jd.maxMotorTorque = Real{400.0f} * NewtonMeter;
+            jd.maxMotorTorque = 400_Nm;
             jd.enableMotor = m_motorOn;
             m_motorJoint = (RevoluteJoint*)m_world.CreateJoint(jd);
         }
 
-        const auto wheelAnchor = pivot + Vec2(0.0f, -0.8f) * Meter;
+        const auto wheelAnchor = pivot + Vec2(0.0f, -0.8f) * 1_m;
 
         CreateLeg(-1.0f, wheelAnchor);
         CreateLeg(1.0f, wheelAnchor);
 
-        m_wheel->SetTransform(m_wheel->GetLocation(), Real{120.0f} * Degree);
+        m_wheel->SetTransform(m_wheel->GetLocation(), 120_deg);
         CreateLeg(-1.0f, wheelAnchor);
         CreateLeg(1.0f, wheelAnchor);
 
-        m_wheel->SetTransform(m_wheel->GetLocation(), Real{-120.0f} * Degree);
+        m_wheel->SetTransform(m_wheel->GetLocation(), -120_deg);
         CreateLeg(-1.0f, wheelAnchor);
         CreateLeg(1.0f, wheelAnchor);
         
@@ -178,7 +178,7 @@ public:
             m_motorJoint->SetMotorSpeed(-m_motorSpeed);
         });
         RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Brake", [&](KeyActionMods) {
-            m_motorJoint->SetMotorSpeed(Real{0.0f} * RadianPerSecond);
+            m_motorJoint->SetMotorSpeed(0_rad / 1_s);
         });
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Right", [&](KeyActionMods) {
             m_motorJoint->SetMotorSpeed(m_motorSpeed);

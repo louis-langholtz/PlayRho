@@ -94,8 +94,8 @@ TEST(ChainShape, BaseVisitorForDiskShape)
 
 TEST(ChainShape, OneVertexLikeDisk)
 {
-    const auto vertexRadius = Real(1) * Meter;
-    const auto density = Real(1) * KilogramPerSquareMeter;
+    const auto vertexRadius = 1_m;
+    const auto density = 1_kgpm2;
     const auto location = Length2D{};
     const auto expectedMassData = ::GetMassData(vertexRadius, density, location);
     const auto expectedDistanceProxy = DistanceProxy{vertexRadius, 1, &location, nullptr};
@@ -116,10 +116,10 @@ TEST(ChainShape, OneVertexLikeDisk)
 
 TEST(ChainShape, TwoVertexLikeEdge)
 {
-    const auto vertexRadius = Real(1) * Meter;
-    const auto density = NonNegative<Density>(Real(1) * KilogramPerSquareMeter);
+    const auto vertexRadius = 1_m;
+    const auto density = NonNegative<Density>(1_kgpm2);
     const auto locations = std::array<Length2D, 2>{{
-        Length2D{Real(0) * Meter, Real(0) * Meter}, Length2D(Real(4) * Meter, Real(0) * Meter)
+        Length2D{0_m, 0_m}, Length2D(4_m, 0_m)
     }};
     
     auto conf = ChainShape::Conf{};
@@ -135,10 +135,10 @@ TEST(ChainShape, TwoVertexLikeEdge)
 
 TEST(ChainShape, TwoVertexDpLikeEdgeDp)
 {
-    const auto vertexRadius = Real(1) * Meter;
-    const auto density = NonNegative<Density>(Real(1) * KilogramPerSquareMeter);
+    const auto vertexRadius = 1_m;
+    const auto density = NonNegative<Density>(1_kgpm2);
     const auto locations = std::array<Length2D, 2>{{
-        Length2D{Real(0) * Meter, Real(0) * Meter}, Length2D(Real(4) * Meter, Real(0) * Meter)
+        Length2D{0_m, 0_m}, Length2D(4_m, 0_m)
     }};
     const auto normals = std::array<UnitVec2, 2>{{UnitVec2::GetTop(), UnitVec2::GetBottom()}};
     const auto expectedDistanceProxy = DistanceProxy{vertexRadius, 2, locations.data(), normals.data()};
@@ -157,10 +157,10 @@ TEST(ChainShape, TwoVertexDpLikeEdgeDp)
 
 TEST(ChainShape, TwoVertexMassLikeEdgeMass)
 {
-    const auto vertexRadius = Real(1) * Meter;
-    const auto density = NonNegative<Density>(Real(1) * KilogramPerSquareMeter);
+    const auto vertexRadius = 1_m;
+    const auto density = NonNegative<Density>(1_kgpm2);
     const auto locations = std::array<Length2D, 2>{{
-        Length2D{Real(0) * Meter, Real(0) * Meter}, Length2D(Real(4) * Meter, Real(0) * Meter)
+        Length2D{0_m, 0_m}, Length2D(4_m, 0_m)
     }};
     const auto expectedMassData = ::GetMassData(vertexRadius, density, locations[0], locations[1]);
     
@@ -172,11 +172,11 @@ TEST(ChainShape, TwoVertexMassLikeEdgeMass)
     auto foo = ChainShape{conf};
     
     const auto massData = foo.GetMassData();
-    EXPECT_NEAR(static_cast<double>(Real{GetX(massData.center)/Meter}),
-                static_cast<double>(Real{GetX(expectedMassData.center)/Meter}),
+    EXPECT_NEAR(static_cast<double>(Real{GetX(massData.center)/1_m}),
+                static_cast<double>(Real{GetX(expectedMassData.center)/1_m}),
                 0.000001);
-    EXPECT_NEAR(static_cast<double>(Real{GetY(massData.center)/Meter}),
-                static_cast<double>(Real{GetY(expectedMassData.center)/Meter}),
+    EXPECT_NEAR(static_cast<double>(Real{GetY(massData.center)/1_m}),
+                static_cast<double>(Real{GetY(expectedMassData.center)/1_m}),
                 0.000001);
     EXPECT_EQ(massData.mass, expectedMassData.mass);
     EXPECT_EQ(massData.I, expectedMassData.I);
@@ -184,14 +184,14 @@ TEST(ChainShape, TwoVertexMassLikeEdgeMass)
 
 TEST(ChainShape, FourVertex)
 {
-    const auto vertexRadius = Real(1) * Meter;
-    const auto density = Real(1) * KilogramPerSquareMeter;
+    const auto vertexRadius = 1_m;
+    const auto density = 1_kgpm2;
     const auto locations = std::array<Length2D, 5>{{
-        Length2D(Real(-4) * Meter, Real(-4) * Meter),
-        Length2D(Real(-4) * Meter, Real(+4) * Meter),
-        Length2D(Real(+4) * Meter, Real(+4) * Meter),
-        Length2D(Real(+4) * Meter, Real(-4) * Meter),
-        Length2D(Real(-4) * Meter, Real(-4) * Meter)
+        Length2D(-4_m, -4_m),
+        Length2D(-4_m, +4_m),
+        Length2D(+4_m, +4_m),
+        Length2D(+4_m, -4_m),
+        Length2D(-4_m, -4_m)
     }};
     const auto edgeMassData0 = ::GetMassData(vertexRadius, density, locations[0], locations[1]);
 
@@ -212,10 +212,10 @@ TEST(ChainShape, FourVertex)
 
 TEST(ChainShape, WithCircleVertices)
 {
-    const auto circleRadius = Real(4) * Meter;
+    const auto circleRadius = 4_m;
     const auto vertices = GetCircleVertices(circleRadius, 4, Angle(0), Real(1) / Real(2));
-    const auto density = Real(1) * KilogramPerSquareMeter;
-    const auto vertexRadius = Meter / Real(10);
+    const auto density = 1_kgpm2;
+    const auto vertexRadius = 1_m / 10;
 
     auto conf = ChainShape::Conf{};
     conf.density = density;
@@ -227,14 +227,14 @@ TEST(ChainShape, WithCircleVertices)
     EXPECT_EQ(foo.GetVertexRadius(), vertexRadius);
     
     const auto massData = foo.GetMassData();
-    EXPECT_NEAR(static_cast<double>(Real(GetX(massData.center) / Meter)), 0.0, 0.0001);
-    EXPECT_NEAR(static_cast<double>(Real(GetY(massData.center) / Meter)), 2.4142134189605713, 0.0001);
+    EXPECT_NEAR(static_cast<double>(Real(GetX(massData.center) / 1_m)), 0.0, 0.0001);
+    EXPECT_NEAR(static_cast<double>(Real(GetY(massData.center) / 1_m)), 2.4142134189605713, 0.0001);
 }
 
 TEST(ChainShape, TooManyVertices)
 {
-    const auto density = Real(1) * KilogramPerSquareMeter;
-    const auto vertexRadius = Meter / Real(10);
+    const auto density = 1_kgpm2;
+    const auto vertexRadius = 1_m / 10;
     
     auto conf = ChainShape::Conf{};
     conf.density = density;

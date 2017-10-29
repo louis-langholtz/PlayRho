@@ -187,7 +187,7 @@ protected:
     {
         WorldDef worldDef = WorldDef{}.UseGravity(LinearAcceleration2D{
             Real(0.0f) * MeterPerSquareSecond, -Real(10.0f) * MeterPerSquareSecond
-        }).UseMinVertexRadius(Real(0.0001f) * Real{2} * Meter);
+        }).UseMinVertexRadius(0.0002_m);
         Settings settings;
         NeededSettings neededSettings = 0u;
         std::string description;
@@ -351,8 +351,8 @@ private:
     std::uint64_t m_sumToiContactsSkippedTouching = 0;
     std::uint64_t m_sumRegProxiesMoved = 0;
     std::uint64_t m_sumToiProxiesMoved = 0;
-    Length m_minRegSep = std::numeric_limits<Real>::infinity() * Meter;
-    Length m_maxRegSep = -std::numeric_limits<Real>::infinity() * Meter;
+    Length m_minRegSep = std::numeric_limits<Length>::infinity();
+    Length m_maxRegSep = -std::numeric_limits<Length>::infinity();
     Length m_minToiSep = 0;
 
     using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;

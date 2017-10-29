@@ -38,7 +38,7 @@ public:
     EdgeShapes()
     {
         m_circle->SetFriction(Real(0.3f));
-        m_circle->SetDensity(Real{20} * KilogramPerSquareMeter);
+        m_circle->SetDensity(20_kgpm2);
 
         // Ground body
         {
@@ -49,7 +49,7 @@ public:
             {
                 const auto x2 = x1 + 0.5f;
                 const auto y2 = 2.0f * std::cos(x2 / 10.0f * static_cast<float>(Pi));
-                ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(x1, y1) * Meter, Vec2(x2, y2) * Meter));
+                ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(x1, y1) * 1_m, Vec2(x2, y2) * 1_m));
                 x1 = x2;
                 y1 = y2;
             }
@@ -59,18 +59,18 @@ public:
         {
             m_polygons[i] = std::make_shared<PolygonShape>();
             m_polygons[i]->SetFriction(Real(0.3f));
-            m_polygons[i]->SetDensity(Real{20} * KilogramPerSquareMeter);
+            m_polygons[i]->SetDensity(20_kgpm2);
         }
         
         m_polygons[0]->Set({
-            Vec2(-0.5f, 0.0f) * Meter,
-            Vec2(0.5f, 0.0f) * Meter,
-            Vec2(0.0f, 1.5f) * Meter
+            Vec2(-0.5f, 0.0f) * 1_m,
+            Vec2(0.5f, 0.0f) * 1_m,
+            Vec2(0.0f, 1.5f) * 1_m
         });
         m_polygons[1]->Set({
-            Vec2(-0.1f, 0.0f) * Meter,
-            Vec2(0.1f, 0.0f) * Meter,
-            Vec2(0.0f, 1.5f) * Meter
+            Vec2(-0.1f, 0.0f) * 1_m,
+            Vec2(0.1f, 0.0f) * 1_m,
+            Vec2(0.0f, 1.5f) * 1_m
         });
 
         {
@@ -79,18 +79,18 @@ public:
             const auto s = Sqrt(2.0f) * b;
 
             m_polygons[2]->Set({
-                Vec2(0.5f * s, 0.0f) * Meter,
-                Vec2(0.5f * w, b) * Meter,
-                Vec2(0.5f * w, b + s) * Meter,
-                Vec2(0.5f * s, w) * Meter,
-                Vec2(-0.5f * s, w) * Meter,
-                Vec2(-0.5f * w, b + s) * Meter,
-                Vec2(-0.5f * w, b) * Meter,
-                Vec2(-0.5f * s, 0.0f) * Meter
+                Vec2(0.5f * s, 0.0f) * 1_m,
+                Vec2(0.5f * w, b) * 1_m,
+                Vec2(0.5f * w, b + s) * 1_m,
+                Vec2(0.5f * s, w) * 1_m,
+                Vec2(-0.5f * s, w) * 1_m,
+                Vec2(-0.5f * w, b + s) * 1_m,
+                Vec2(-0.5f * w, b) * 1_m,
+                Vec2(-0.5f * s, 0.0f) * 1_m
             });
         }
 
-        m_polygons[3]->SetAsBox(Real{0.5f} * Meter, Real{0.5f} * Meter);
+        m_polygons[3]->SetAsBox(0.5_m, 0.5_m);
 
         m_bodyIndex = 0;
         std::memset(m_bodies, 0, sizeof(m_bodies));
@@ -129,13 +129,13 @@ public:
 
         const auto x = RandomFloat(-10.0f, 10.0f);
         const auto y = RandomFloat(10.0f, 20.0f);
-        bd.location = Vec2(x, y) * Meter;
-        bd.angle = Radian * RandomFloat(-Pi, Pi);
+        bd.location = Vec2(x, y) * 1_m;
+        bd.angle = 1_rad * RandomFloat(-Pi, Pi);
         bd.type = BodyType::Dynamic;
 
         if (index == 4)
         {
-            bd.angularDamping = Real(0.02f) * Hertz;
+            bd.angularDamping = 0.02_Hz;
         }
 
         m_bodies[m_bodyIndex] = m_world.CreateBody(bd);
@@ -168,8 +168,8 @@ public:
     void PostStep(const Settings& settings, Drawer& drawer) override
     {
         const auto L = Real(25);
-        const auto point1 = Vec2(0.0f, 10.0f) * Meter;
-        const auto d = Vec2(L * std::cos(m_angle), -L * Abs(std::sin(m_angle))) * Meter;
+        const auto point1 = Vec2(0.0f, 10.0f) * 1_m;
+        const auto d = Vec2(L * std::cos(m_angle), -L * Abs(std::sin(m_angle))) * 1_m;
         const auto point2 = point1 + d;
 
         auto fixture = static_cast<Fixture*>(nullptr);
@@ -187,7 +187,7 @@ public:
         {
             drawer.DrawPoint(point, 5.0f, Color(0.4f, 0.9f, 0.4f));
             drawer.DrawSegment(point1, point, Color(0.8f, 0.8f, 0.8f));
-            const auto head = point + Real{0.5f} * normal * Meter;
+            const auto head = point + Real{0.5f} * normal * 1_m;
             drawer.DrawSegment(point, head, Color(0.9f, 0.9f, 0.4f));
         }
         else
@@ -205,7 +205,7 @@ public:
     int m_bodyIndex;
     Body* m_bodies[e_maxBodies];
     std::shared_ptr<PolygonShape> m_polygons[4];
-    std::shared_ptr<DiskShape> m_circle = std::make_shared<DiskShape>(Real{0.5f} * Meter);
+    std::shared_ptr<DiskShape> m_circle = std::make_shared<DiskShape>(0.5_m);
 
     Real m_angle;
 };

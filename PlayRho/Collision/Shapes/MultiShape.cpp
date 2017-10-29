@@ -30,7 +30,7 @@ namespace playrho {
 /// @return Mass data for this shape.
 MassData MultiShape::GetMassData() const noexcept
 {
-    auto mass = Mass(Real(0) * Kilogram);
+    auto mass = 0_kg;
     const auto origin = Length2D{};
     auto weightedCenter = origin * Kilogram;
     auto I = RotInertia(0);

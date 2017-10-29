@@ -442,8 +442,7 @@ namespace {
         const auto underactive = IsUnderActive(b.GetVelocity(), conf.linearSleepTolerance,
                                                conf.angularSleepTolerance);
         const auto sleepable = b.IsSleepingAllowed();
-        return (sleepable && underactive)?
-            b.GetUnderActiveTime() + conf.GetTime(): Second * Real{0};
+        return (sleepable && underactive)? b.GetUnderActiveTime() + conf.GetTime(): 0_s;
     }
 
     inline Time UpdateUnderActiveTimes(Island::Bodies& bodies, const StepConf& conf)
@@ -2019,7 +2018,7 @@ StepStats World::Step(const StepConf& conf)
             stepStats.pre.added = FindNewContacts();
         }
 
-        if (conf.GetTime() != Second * Real{0})
+        if (conf.GetTime() != 0_s)
         {
             m_inv_dt0 = conf.GetInvTime();
 

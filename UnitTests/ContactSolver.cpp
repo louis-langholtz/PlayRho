@@ -32,8 +32,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
 {
     const auto old_pA = Position{Vec2{-2, 0} * (Real(1) * Meter), Angle{0}};
     const auto old_pB = Position{Vec2{+2, 0} * (Real(1) * Meter), Angle{0}};
-    const auto old_vA = Velocity{LinearVelocity2D{}, Angle{0} / Second};
-    const auto old_vB = Velocity{LinearVelocity2D{}, Angle{0} / Second};
+    const auto old_vA = Velocity{LinearVelocity2D{}, Angle{0} / 1_s};
+    const auto old_vB = Velocity{LinearVelocity2D{}, Angle{0} / 1_s};
 
     const auto dim = Real(2) * Meter;
     const auto shape = PolygonShape(dim, dim);
@@ -46,13 +46,13 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
     const auto lcA = Length2D{};
     const auto lcB = Length2D{};
     auto bA = BodyConstraint{
-        Real(1) / Kilogram,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * Kilogram)},
+        Real(1) / 1_kg,
+        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
         lcA, old_pA, old_vA}
     ;
     auto bB = BodyConstraint{
-        Real(1) / Kilogram,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * Kilogram)},
+        Real(1) / 1_kg,
+        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
         lcB, old_pB, old_vB
     };
     const auto pc = PositionConstraint{manifold, bA, Real{0} * Meter, bB, Real{0} * Meter};
@@ -89,13 +89,13 @@ TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
     const auto lcA = Length2D{};
     const auto lcB = Length2D{};
     auto bA = BodyConstraint{
-        Real(1) / Kilogram,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * Kilogram)},
+        Real(1) / 1_kg,
+        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
         lcA, old_pA, old_vA
     };
     auto bB = BodyConstraint{
-        Real(1) / Kilogram,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * Kilogram)},
+        Real(1) / 1_kg,
+        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
         lcB, old_pB, old_vB
     };
     const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
@@ -131,13 +131,13 @@ TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
     const auto old_vA = Velocity{};
     const auto old_vB = Velocity{};
     auto bA = BodyConstraint{
-        Real(1) / Kilogram,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * Kilogram)},
+        Real(1) / 1_kg,
+        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
         lcA, old_pA, old_vA
     };
     auto bB = BodyConstraint{
-        Real(1) / Kilogram,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * Kilogram)},
+        Real(1) / 1_kg,
+        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
         lcB, old_pB, old_vB
     };
     const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
@@ -186,13 +186,13 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
     const auto lcA = Length2D{};
     const auto lcB = Length2D{};
     auto bA = BodyConstraint{
-        Real(1) / Kilogram,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * Kilogram)},
+        Real(1) / 1_kg,
+        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
         lcA, old_pA, old_vA
     };
     auto bB = BodyConstraint{
-        Real(1) / Kilogram,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * Kilogram)},
+        Real(1) / 1_kg,
+        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
         lcB, old_pB, old_vB
     };
     const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
@@ -240,13 +240,13 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
     const auto lcA = Length2D{};
     const auto lcB = Length2D{};
     auto bA = BodyConstraint{
-        Real(1) / Kilogram,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * Kilogram)},
+        Real(1) / 1_kg,
+        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
         lcA, old_pA, old_vA
     };
     auto bB = BodyConstraint{
-        Real(1) / Kilogram,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * Kilogram)},
+        Real(1) / 1_kg,
+        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
         lcB, old_pB, old_vB
     };
     const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
@@ -294,13 +294,13 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
     const auto lcA = Length2D{};
     const auto lcB = Length2D{};
     auto bA = BodyConstraint{
-        Real(1) / Kilogram,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * Kilogram)},
+        Real(1) / 1_kg,
+        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
         lcA, old_pA, old_vA
     };
     auto bB = BodyConstraint{
-        Real(1) / Kilogram,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * Kilogram)},
+        Real(1) / 1_kg,
+        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
         lcB, old_pB, old_vB
     };
     const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
@@ -361,13 +361,13 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
     const auto lcA = Length2D{};
     const auto lcB = Length2D{};
     auto bA = BodyConstraint{
-        Real(1) / Kilogram,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * Kilogram)},
+        Real(1) / 1_kg,
+        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
         lcA, old_pA, old_vA
     };
     auto bB = BodyConstraint{
-        Real(1) / Kilogram,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * Kilogram)},
+        Real(1) / 1_kg,
+        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
         lcB, old_pB, old_vB
     };
     const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
@@ -419,13 +419,13 @@ TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
     const auto lcA = Vec2{} * (Real(1) * Meter);
     const auto lcB = Vec2{} * (Real(1) * Meter);
     auto bA = BodyConstraint{
-        Real(1) / Kilogram,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * Kilogram)},
+        Real(1) / 1_kg,
+        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
         lcA, old_pA, old_vA
     };
     auto bB = BodyConstraint{
-        Real(1) / Kilogram,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * Kilogram)},
+        Real(1) / 1_kg,
+        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
         lcB, old_pB, old_vB
     };
     const auto pc = PositionConstraint{manifold, bA, GetVertexRadius(shape), bB, GetVertexRadius(shape)};

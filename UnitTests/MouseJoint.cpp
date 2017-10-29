@@ -31,14 +31,14 @@ TEST(MouseJointDef, UseTarget)
 
 TEST(MouseJointDef, UseMaxForce)
 {
-    const auto value = Force(Real(19) * Newton);
+    const auto value = Force(19_N);
     EXPECT_NE(MouseJointDef{}.maxForce, value);
     EXPECT_EQ(MouseJointDef{}.UseMaxForce(value).maxForce, value);
 }
 
 TEST(MouseJointDef, UseFrequency)
 {
-    const auto value = Frequency(Real(19) * Hertz);
+    const auto value = 19_Hz;
     EXPECT_NE(MouseJointDef{}.frequency, value);
     EXPECT_EQ(MouseJointDef{}.UseFrequency(value).frequency, value);
 }
@@ -96,8 +96,8 @@ TEST(MouseJoint, GetLocalAnchorB)
     def.bodyB = bB;
     def.userData = reinterpret_cast<void*>(71);
     def.target = Length2D(Real(-1.4) * Meter, Real(-2) * Meter);
-    def.maxForce = Real(3) * Newton;
-    def.frequency = Real(67) * Hertz;
+    def.maxForce = 3_N;
+    def.frequency = 67_Hz;
     def.dampingRatio = Real(0.8);
     
     const auto joint = MouseJoint{def};
@@ -118,8 +118,8 @@ TEST(MouseJointDef, GetMouseJointDefFreeFunction)
     def.bodyB = bB;
     def.userData = reinterpret_cast<void*>(71);
     def.target = Length2D(Real(-1.4) * Meter, Real(-2) * Meter);
-    def.maxForce = Real(3) * Newton;
-    def.frequency = Real(67) * Hertz;
+    def.maxForce = 3_N;
+    def.frequency = 67_Hz;
     def.dampingRatio = Real(0.8);
 
     const auto joint = MouseJoint{def};

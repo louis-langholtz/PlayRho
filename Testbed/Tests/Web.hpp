@@ -38,41 +38,41 @@ public:
     Web(): Test(GetTestConf())
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
+        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
 
         {
-            const auto shape = std::make_shared<PolygonShape>(Real{0.5f} * Meter, Real{0.5f} * Meter);
-            shape->SetDensity(Real{5} * KilogramPerSquareMeter);
+            const auto shape = std::make_shared<PolygonShape>(0.5_m, 0.5_m);
+            shape->SetDensity(5_kgpm2);
 
             BodyDef bd;
             bd.type = BodyType::Dynamic;
 
-            bd.location = Vec2(-5.0f, 5.0f) * Meter;
+            bd.location = Vec2(-5.0f, 5.0f) * 1_m;
             m_bodies[0] = m_world.CreateBody(bd);
             m_bodies[0]->CreateFixture(shape);
 
-            bd.location = Vec2(5.0f, 5.0f) * Meter;
+            bd.location = Vec2(5.0f, 5.0f) * 1_m;
             m_bodies[1] = m_world.CreateBody(bd);
             m_bodies[1]->CreateFixture(shape);
 
-            bd.location = Vec2(5.0f, 15.0f) * Meter;
+            bd.location = Vec2(5.0f, 15.0f) * 1_m;
             m_bodies[2] = m_world.CreateBody(bd);
             m_bodies[2]->CreateFixture(shape);
 
-            bd.location = Vec2(-5.0f, 15.0f) * Meter;
+            bd.location = Vec2(-5.0f, 15.0f) * 1_m;
             m_bodies[3] = m_world.CreateBody(bd);
             m_bodies[3]->CreateFixture(shape);
 
             DistanceJointDef jd;
             Length2D p1, p2, d;
 
-            jd.frequency = Real{2.0f} * Hertz;
+            jd.frequency = 2_Hz;
             jd.dampingRatio = 0.0f;
 
             jd.bodyA = ground;
             jd.bodyB = m_bodies[0];
-            jd.localAnchorA = Vec2(-10.0f, 0.0f) * Meter;
-            jd.localAnchorB = Vec2(-0.5f, -0.5f) * Meter;
+            jd.localAnchorA = Vec2(-10.0f, 0.0f) * 1_m;
+            jd.localAnchorB = Vec2(-0.5f, -0.5f) * 1_m;
             p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
             p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
             d = p2 - p1;
@@ -81,8 +81,8 @@ public:
 
             jd.bodyA = ground;
             jd.bodyB = m_bodies[1];
-            jd.localAnchorA = Vec2(10.0f, 0.0f) * Meter;
-            jd.localAnchorB = Vec2(0.5f, -0.5f) * Meter;
+            jd.localAnchorA = Vec2(10.0f, 0.0f) * 1_m;
+            jd.localAnchorB = Vec2(0.5f, -0.5f) * 1_m;
             p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
             p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
             d = p2 - p1;
@@ -91,8 +91,8 @@ public:
 
             jd.bodyA = ground;
             jd.bodyB = m_bodies[2];
-            jd.localAnchorA = Vec2(10.0f, 20.0f) * Meter;
-            jd.localAnchorB = Vec2(0.5f, 0.5f) * Meter;
+            jd.localAnchorA = Vec2(10.0f, 20.0f) * 1_m;
+            jd.localAnchorB = Vec2(0.5f, 0.5f) * 1_m;
             p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
             p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
             d = p2 - p1;
@@ -101,8 +101,8 @@ public:
 
             jd.bodyA = ground;
             jd.bodyB = m_bodies[3];
-            jd.localAnchorA = Vec2(-10.0f, 20.0f) * Meter;
-            jd.localAnchorB = Vec2(-0.5f, 0.5f) * Meter;
+            jd.localAnchorA = Vec2(-10.0f, 20.0f) * 1_m;
+            jd.localAnchorB = Vec2(-0.5f, 0.5f) * 1_m;
             p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
             p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
             d = p2 - p1;
@@ -111,8 +111,8 @@ public:
 
             jd.bodyA = m_bodies[0];
             jd.bodyB = m_bodies[1];
-            jd.localAnchorA = Vec2(0.5f, 0.0f) * Meter;
-            jd.localAnchorB = Vec2(-0.5f, 0.0f) * Meter;
+            jd.localAnchorA = Vec2(0.5f, 0.0f) * 1_m;
+            jd.localAnchorB = Vec2(-0.5f, 0.0f) * 1_m;
             p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
             p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
             d = p2 - p1;
@@ -121,8 +121,8 @@ public:
 
             jd.bodyA = m_bodies[1];
             jd.bodyB = m_bodies[2];
-            jd.localAnchorA = Vec2(0.0f, 0.5f) * Meter;
-            jd.localAnchorB = Vec2(0.0f, -0.5f) * Meter;
+            jd.localAnchorA = Vec2(0.0f, 0.5f) * 1_m;
+            jd.localAnchorB = Vec2(0.0f, -0.5f) * 1_m;
             p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
             p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
             d = p2 - p1;
@@ -131,8 +131,8 @@ public:
 
             jd.bodyA = m_bodies[2];
             jd.bodyB = m_bodies[3];
-            jd.localAnchorA = Vec2(-0.5f, 0.0f) * Meter;
-            jd.localAnchorB = Vec2(0.5f, 0.0f) * Meter;
+            jd.localAnchorA = Vec2(-0.5f, 0.0f) * 1_m;
+            jd.localAnchorB = Vec2(0.5f, 0.0f) * 1_m;
             p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
             p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
             d = p2 - p1;
@@ -141,8 +141,8 @@ public:
 
             jd.bodyA = m_bodies[3];
             jd.bodyB = m_bodies[0];
-            jd.localAnchorA = Vec2(0.0f, -0.5f) * Meter;
-            jd.localAnchorB = Vec2(0.0f, 0.5f) * Meter;
+            jd.localAnchorA = Vec2(0.0f, -0.5f) * 1_m;
+            jd.localAnchorB = Vec2(0.0f, 0.5f) * 1_m;
             p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
             p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
             d = p2 - p1;

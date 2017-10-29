@@ -51,8 +51,8 @@ TEST(MotorJointDef, DefaultConstruction)
     
     EXPECT_EQ(def.linearOffset, (Length2D{}));
     EXPECT_EQ(def.angularOffset, Angle(0));
-    EXPECT_EQ(def.maxForce, Real(1) * Newton);
-    EXPECT_EQ(def.maxTorque, Real{1} * NewtonMeter);
+    EXPECT_EQ(def.maxForce, 1_N);
+    EXPECT_EQ(def.maxTorque, 1_Nm);
     EXPECT_EQ(def.correctionFactor, Real(0.3));
 }
 
@@ -64,9 +64,9 @@ TEST(MotorJointDef, BuilderConstruction)
     int tmp;
     const auto userData = &tmp;
     const auto linearOffset = Length2D{2 * Meter, 3 * Meter};
-    const auto angularOffset = 33 * Radian;
-    const auto maxForce = 22 * Newton;
-    const auto maxTorque = 31 * NewtonMeter;
+    const auto angularOffset = 33_rad;
+    const auto maxForce = 22_N;
+    const auto maxTorque = 31_Nm;
     const auto correctionFactor = Real(0.44f);
     const auto def = MotorJointDef{}
         .UseBodyA(bodyA).UseBodyB(bodyB).UseCollideConnected(collideConnected).UseUserData(userData)
@@ -155,8 +155,8 @@ TEST(MotorJoint, GetMotorJointDef)
     
     EXPECT_EQ(cdef.linearOffset, (Length2D{}));
     EXPECT_EQ(cdef.angularOffset, Angle(0));
-    EXPECT_EQ(cdef.maxForce, Real(1) * Newton);
-    EXPECT_EQ(cdef.maxTorque, Real{1} * NewtonMeter);
+    EXPECT_EQ(cdef.maxForce, 1_N);
+    EXPECT_EQ(cdef.maxTorque, 1_Nm);
     EXPECT_EQ(cdef.correctionFactor, Real(0.3));
 }
 
@@ -177,7 +177,7 @@ TEST(MotorJoint, WithDynamicCircles)
     EXPECT_EQ(joint->GetAnchorA(), p1);
     EXPECT_EQ(joint->GetAnchorB(), p2);
 
-    Step(world, Time{Second * Real{1}});
+    Step(world, 1_s);
     EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
     EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);
