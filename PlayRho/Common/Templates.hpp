@@ -24,6 +24,7 @@
 #include <limits>
 #include <typeinfo>
 #include <type_traits>
+#include <utility>
 
 namespace playrho
 {
@@ -205,7 +206,7 @@ namespace playrho
         decltype(std::declval<T>() - std::declval<T>()),
         decltype(std::declval<T>() * std::declval<T>()),
         decltype(std::declval<T>() / std::declval<T>())
-    >>: std::true_type {};
+    > >: std::true_type {};
     
 } // namespace playrho
 
