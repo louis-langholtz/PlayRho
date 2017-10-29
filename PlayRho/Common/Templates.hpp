@@ -24,7 +24,6 @@
 #include <limits>
 #include <typeinfo>
 #include <type_traits>
-#include <utility>
 
 namespace playrho
 {
@@ -186,7 +185,7 @@ namespace playrho
         return "long double";
     }
 
-    /// @brief Voidify template class.
+    /// @brief Voiding template class.
     template<class...> struct Voidify {
         /// @brief Type alias.
         using type = void;
@@ -202,10 +201,7 @@ namespace playrho
     /// @brief Template specialization for arithmetic types.
     template<class T>
     struct IsArithmetic<T, VoidT<
-        decltype(std::declval<T>() + std::declval<T>()),
-        decltype(std::declval<T>() - std::declval<T>()),
-        decltype(std::declval<T>() * std::declval<T>()),
-        decltype(std::declval<T>() / std::declval<T>())
+        decltype(T{} + T{}), decltype(T{} - T{}), decltype(T{} * T{}), decltype(T{} / T{})
     > >: std::true_type {};
     
 } // namespace playrho
