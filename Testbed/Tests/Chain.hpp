@@ -30,11 +30,10 @@ public:
     Chain()
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
-    
+        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40, 0) * 1_m, Vec2(40, 0) * 1_m));
         {
-            const auto shape = std::make_shared<PolygonShape>(Real{0.6f} * Meter, Real{0.125f} * Meter);
-            shape->SetDensity(Real{20} * KilogramPerSquareMeter);
+            const auto shape = std::make_shared<PolygonShape>(0.6_m, 0.125_m);
+            shape->SetDensity(20_kgpm2);
             shape->SetFriction(Real(0.2f));
 
             const auto y = 25.0f;
@@ -43,12 +42,10 @@ public:
             {
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
-                bd.location = Vec2(0.5f + i, y) * Meter;
+                bd.location = Vec2(0.5f + i, y) * 1_m;
                 const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(shape);
-
-                m_world.CreateJoint(RevoluteJointDef(prevBody, body, Vec2(Real(i), y) * Meter));
-
+                m_world.CreateJoint(RevoluteJointDef(prevBody, body, Vec2(Real(i), y) * 1_m));
                 prevBody = body;
             }
         }

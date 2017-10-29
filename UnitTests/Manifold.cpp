@@ -42,8 +42,8 @@ TEST(Manifold, DefaultConstruction)
 TEST(Manifold, PointInitializingConstructor)
 {
     const auto lp = Length2D{Real(3) * Meter, Real(4) * Meter};
-    const auto ni = Real(1.2) * Kilogram * MeterPerSecond;
-    const auto ti = Real(2.4) * Kilogram * MeterPerSecond;
+    const auto ni = 1.2_Ns;
+    const auto ti = 2.4_Ns;
     const auto cf = ContactFeature{};
     const auto foo = Manifold::Point{lp, cf, ni, ti};
     EXPECT_EQ(GetX(foo.localPoint), GetX(lp));
@@ -78,8 +78,8 @@ TEST(Manifold, GetForFaceA)
     {
         const auto pl = Length2D{Real(-0.12) * Meter, Real(0.34) * Meter};
         const auto cf = GetFaceFaceContactFeature(0, 0);
-        const auto ni = Real(2.9) * Kilogram * MeterPerSecond;
-        const auto ti = Real(.7) * Kilogram * MeterPerSecond;
+        const auto ni = 2.9_Ns;
+        const auto ti = .7_Ns;
         const auto foo = Manifold::GetForFaceA(ln, lp, Manifold::Point{pl, cf, ni, ti});
         EXPECT_EQ(foo.GetType(), Manifold::e_faceA);
         EXPECT_EQ(foo.GetLocalNormal(), ln);
@@ -95,8 +95,8 @@ TEST(Manifold, GetForFaceA)
     {
         const auto pl = Length2D{Real(-0.12) * Meter, Real(0.34) * Meter};
         const auto cf = GetFaceFaceContactFeature(0, 1);
-        const auto ni = Real(2.9) * Kilogram * MeterPerSecond;
-        const auto ti = Real(.7) * Kilogram * MeterPerSecond;
+        const auto ni = 2.9_Ns;
+        const auto ti = 0.7_Ns;
         const auto foo = Manifold::GetForFaceA(ln, lp, Manifold::Point{pl, cf, ni, ti}, Manifold::Point{-pl, Flip(cf), -ni, -ti});
         EXPECT_EQ(foo.GetType(), Manifold::e_faceA);
         EXPECT_EQ(foo.GetLocalNormal(), ln);
@@ -130,8 +130,8 @@ TEST(Manifold, GetForFaceB)
     {
         const auto pl = Length2D{Real(-0.12) * Meter, Real(0.34) * Meter};
         const auto cf = GetFaceFaceContactFeature(0, 0);
-        const auto ni = Real(2.9) * Kilogram * MeterPerSecond;
-        const auto ti = Real(.7) * Kilogram * MeterPerSecond;
+        const auto ni = 2.9_Ns;
+        const auto ti = 0.7_Ns;
         Manifold foo = Manifold::GetForFaceB(ln, lp, Manifold::Point{pl, cf, ni, ti});
         EXPECT_EQ(foo.GetType(), Manifold::e_faceB);
         EXPECT_EQ(foo.GetLocalNormal(), ln);
@@ -147,8 +147,8 @@ TEST(Manifold, GetForFaceB)
     {
         const auto pl = Length2D{Real(-0.12) * Meter, Real(0.34) * Meter};
         const auto cf = GetFaceFaceContactFeature(0, 1);
-        const auto ni = Real(2.9) * Kilogram * MeterPerSecond;
-        const auto ti = Real(.7) * Kilogram * MeterPerSecond;
+        const auto ni = 2.9_Ns;
+        const auto ti = 0.7_Ns;
         Manifold foo = Manifold::GetForFaceB(ln, lp, Manifold::Point{pl, cf, ni, ti}, Manifold::Point{-pl, Flip(cf), -ni, -ti});
         EXPECT_EQ(foo.GetType(), Manifold::e_faceB);
         EXPECT_EQ(foo.GetLocalNormal(), ln);
@@ -174,10 +174,10 @@ TEST(Manifold, PointEqualsFreeFunction)
     const auto localPoint2 = Length2D{Real(3) * Meter, Real(-1) * Meter};
     const auto cf1 = ContactFeature{ContactFeature::e_vertex, 1, ContactFeature::e_vertex, 2};
     const auto cf2 = ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 1};
-    const auto normalImpulse1 = Momentum{Real(1) * Kilogram * MeterPerSecond};
-    const auto normalImpulse2 = Momentum{Real(9) * Kilogram * MeterPerSecond};
-    const auto tangentImpulse1 = Momentum{Real(2) * Kilogram * MeterPerSecond};
-    const auto tangentImpulse2 = Momentum{Real(1.1) * Kilogram * MeterPerSecond};
+    const auto normalImpulse1 = 1_Ns;
+    const auto normalImpulse2 = 9_Ns;
+    const auto tangentImpulse1 = 2_Ns;
+    const auto tangentImpulse2 = 1.1_Ns;
     const auto mp1 = Manifold::Point{localPoint1, cf1, normalImpulse1, tangentImpulse1};
     const auto mp2 = Manifold::Point{localPoint1, cf1, normalImpulse1, tangentImpulse1};
     const auto mp3 = Manifold::Point{localPoint2, cf1, normalImpulse1, tangentImpulse1};
@@ -208,8 +208,8 @@ TEST(Manifold, EqualsFreeFunction)
     const auto localPoint1 = Length2D{Real(1) * Meter, Real(2) * Meter};
     const auto cf1 = ContactFeature{ContactFeature::e_vertex, 1, ContactFeature::e_vertex, 2};
     const auto cf2 = ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 1};
-    const auto normalImpulse1 = Momentum{Real(1) * Kilogram * MeterPerSecond};
-    const auto tangentImpulse1 = Momentum{Real(2) * Kilogram * MeterPerSecond};
+    const auto normalImpulse1 = 1_Ns;
+    const auto tangentImpulse1 = 2_Ns;
     const auto mp0 = Manifold::Point{localPoint1, cf1, normalImpulse1, tangentImpulse1};
     const auto mp1 = Manifold::Point{localPoint1, cf2, normalImpulse1, tangentImpulse1};
     const auto faceA000 = Manifold::GetForFaceA(ln0, lp0, mp0);

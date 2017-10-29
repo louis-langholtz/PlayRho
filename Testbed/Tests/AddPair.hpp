@@ -38,9 +38,7 @@ public:
     {
         m_world.SetGravity(LinearAcceleration2D{});
         {
-            const auto conf = DiskShape::Conf{}
-                .UseVertexRadius(Meter / 10)
-                .UseDensity(0.01f * KilogramPerSquareMeter);
+            const auto conf = DiskShape::Conf{}.UseVertexRadius(1_dm).UseDensity(0.01_kgpm2);
             const auto shape = std::make_shared<DiskShape>(conf);
 
             const auto minX = -6.0f;
@@ -51,7 +49,7 @@ public:
             const auto bd = BodyDef{}.UseType(BodyType::Dynamic);
             for (auto i = 0; i < 400; ++i)
             {
-                const auto location = Vec2(RandomFloat(minX, maxX), RandomFloat(minY, maxY)) * Meter;
+                const auto location = Vec2(RandomFloat(minX, maxX), RandomFloat(minY, maxY)) * 1_m;
                 const auto body = m_world.CreateBody(BodyDef{bd}.UseLocation(location));
                 body->CreateFixture(shape);
             }
@@ -61,12 +59,12 @@ public:
             const auto bd = BodyDef{}
                 .UseType(BodyType::Dynamic)
                 .UseBullet(true)
-                .UseLocation(Length2D{-40.0f * Meter, 5.0f * Meter})
-                .UseLinearVelocity(LinearVelocity2D{Vec2(150.0f, 0.0f) * MeterPerSecond});
+                .UseLocation(Length2D{-40_m, 5_m})
+                .UseLinearVelocity(LinearVelocity2D{150_mps, 0_mps});
             const auto body = m_world.CreateBody(bd);
 
-            const auto conf = PolygonShape::Conf{}.UseDensity(1.0f * KilogramPerSquareMeter);
-            body->CreateFixture(std::make_shared<PolygonShape>(1.5f * Meter, 1.5f * Meter, conf));
+            const auto conf = PolygonShape::Conf{}.UseDensity(1.0_kgpm2);
+            body->CreateFixture(std::make_shared<PolygonShape>(1.5_m, 1.5_m, conf));
         }
     }
 };

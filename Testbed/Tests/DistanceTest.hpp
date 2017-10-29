@@ -41,14 +41,14 @@ public:
         m_world.SetGravity(Vec2{0, 0} * MeterPerSquareSecond);
 
         const auto def = BodyDef{}
-        	.UseType(BodyType::Dynamic)
-        	.UseLinearDamping(Real(0.9) * Hertz)
-        	.UseAngularDamping(Real(0.9) * Hertz);
+            .UseType(BodyType::Dynamic)
+            .UseLinearDamping(0.9_Hz)
+        	.UseAngularDamping(0.9_Hz);
         m_bodyA = m_world.CreateBody(def);
         m_bodyB = m_world.CreateBody(def);
 
-        m_bodyA->SetTransform(Vec2(-10.0f, 20.2f) * Meter, Angle{0});
-        m_bodyB->SetTransform(m_bodyA->GetLocation() + Vec2(19.017401f, 0.13678508f) * Meter, Angle{0});
+        m_bodyA->SetTransform(Vec2(-10.0f, 20.2f) * 1_m, Angle{0});
+        m_bodyB->SetTransform(m_bodyA->GetLocation() + Vec2(19.017401f, 0.13678508f) * 1_m, Angle{0});
         
         CreateFixtures();
         
@@ -58,7 +58,7 @@ public:
             const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
             if (body)
             {
-                body->SetTransform(body->GetLocation() - Vec2{Real(0.1), 0} * Meter, body->GetAngle());
+                body->SetTransform(body->GetLocation() - Vec2{Real(0.1), 0} * 1_m, body->GetAngle());
                 body->SetAwake();
             }
         });
@@ -68,7 +68,7 @@ public:
             const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
             if (body)
             {
-                body->SetTransform(body->GetLocation() + Vec2{Real(0.1), 0} * Meter, body->GetAngle());
+                body->SetTransform(body->GetLocation() + Vec2{Real(0.1), 0} * 1_m, body->GetAngle());
                 body->SetAwake();
             }
         });
@@ -78,7 +78,7 @@ public:
             const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
             if (body)
             {
-                body->SetTransform(body->GetLocation() + Vec2{0, Real(0.1)} * Meter, body->GetAngle());
+                body->SetTransform(body->GetLocation() + Vec2{0, Real(0.1)} * 1_m, body->GetAngle());
                 body->SetAwake();
             }
         });
@@ -88,7 +88,7 @@ public:
             const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
             if (body)
             {
-                body->SetTransform(body->GetLocation() - Vec2{0, Real(0.1)} * Meter, body->GetAngle());
+                body->SetTransform(body->GetLocation() - Vec2{0, Real(0.1)} * 1_m, body->GetAngle());
                 body->SetAwake();
             }
         });
@@ -98,7 +98,7 @@ public:
             const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
             if (body)
             {
-                body->SetTransform(body->GetLocation(), body->GetAngle() + Real{5} * Degree);
+                body->SetTransform(body->GetLocation(), body->GetAngle() + 5_deg);
                 body->SetAwake();
             }
         });
@@ -108,7 +108,7 @@ public:
             const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
             if (body)
             {
-                body->SetTransform(body->GetLocation(), body->GetAngle() - Real{5} * Degree);
+                body->SetTransform(body->GetLocation(), body->GetAngle() - 5_deg);
                 body->SetAwake();
             }
         });
@@ -162,18 +162,18 @@ public:
     {
         const auto radius = RadiusIncrement * Real{20};
         auto conf = PolygonShape::Conf{};
-        conf.density = Real{1} * KilogramPerSquareMeter;
+        conf.density = 1_kgpm2;
 
         conf.vertexRadius = radius;
         PolygonShape polygonA{conf};
         //polygonA.SetAsBox(8.0f, 6.0f);
-        polygonA.Set(Span<const Length2D>{Vec2{-8, -6} * Meter, Vec2{8, -6} * Meter, Vec2{0, 6} * Meter});
+        polygonA.Set(Span<const Length2D>{Vec2{-8, -6} * 1_m, Vec2{8, -6} * 1_m, Vec2{0, 6} * 1_m});
         m_bodyA->CreateFixture(std::make_shared<PolygonShape>(polygonA));
         
         conf.vertexRadius = radius * Real{2};
         PolygonShape polygonB{conf};
-        // polygonB.SetAsBox(7.2f * Meter, 0.8f * Meter);
-        polygonB.Set(Span<const Length2D>{Vec2{-7.2f, 0} * Meter, Vec2{+7.2f, 0} * Meter});
+        // polygonB.SetAsBox(7.2_m, 0.8_m);
+        polygonB.Set(Span<const Length2D>{Vec2{-7.2f, 0} * 1_m, Vec2{+7.2f, 0} * 1_m});
         //polygonB.Set(Span<const Vec2>{Vec2{float(-7.2), 0}, Vec2{float(7.2), 0}});
         m_bodyB->CreateFixture(std::make_shared<PolygonShape>(polygonB));
     }
@@ -210,18 +210,18 @@ public:
             case Manifold::e_circles:
                 stream << GetName(manifold.GetType()) << " " << name << ": ";
                 stream << "lp={";
-                stream << static_cast<double>(Real{GetX(manifold.GetLocalPoint()) / Meter});
+                stream << static_cast<double>(Real{GetX(manifold.GetLocalPoint()) / 1_m});
                 stream << ",";
-                stream << static_cast<double>(Real{GetY(manifold.GetLocalPoint()) / Meter});
+                stream << static_cast<double>(Real{GetY(manifold.GetLocalPoint()) / 1_m});
                 stream << "}, #=" << unsigned{count} << strbuf.str();
                 break;
             case Manifold::e_faceA:
             case Manifold::e_faceB:
                 stream << GetName(manifold.GetType()) << " " << name << ": ";
                 stream << "lp={";
-                stream << static_cast<double>(Real{GetX(manifold.GetLocalPoint()) / Meter});
+                stream << static_cast<double>(Real{GetX(manifold.GetLocalPoint()) / 1_m});
                 stream << ",";
-                stream << static_cast<double>(Real{GetY(manifold.GetLocalPoint()) / Meter});
+                stream << static_cast<double>(Real{GetY(manifold.GetLocalPoint()) / 1_m});
                 stream << "}, ln={";
                 stream << static_cast<double>(GetX(manifold.GetLocalNormal()));
                 stream << ",";
@@ -290,9 +290,9 @@ public:
 
         std::stringstream os;
         os << "Vertex radius of selected shape (";
-        os << static_cast<double>(Real{rA / Meter});
+        os << static_cast<double>(Real{rA / 1_m});
         os << " & ";
-        os << static_cast<double>(Real{rB / Meter});
+        os << static_cast<double>(Real{rB / 1_m});
         os << ").\n\n";
         
         os << "Simplex drawing " << (m_drawSimplexInfo? "on": "off");
@@ -300,15 +300,15 @@ public:
         os << ".\n\n";
 
         os << "Max separation:\n";
-        os << "  " << static_cast<double>(Real{maxIndicesAB.separation / Meter});
+        os << "  " << static_cast<double>(Real{maxIndicesAB.separation / 1_m});
         os << " for a-face[" << unsigned{maxIndicesAB.index1} << "]";
         os << " b-vert[" << unsigned{maxIndicesAB.index2} << "].\n";
-        os << "  " << static_cast<double>(Real{maxIndicesBA.separation / Meter});
+        os << "  " << static_cast<double>(Real{maxIndicesBA.separation / 1_m});
         os << " for b-face[" << unsigned{maxIndicesBA.index1} << "]";
         os << " a-vert[" << unsigned{maxIndicesBA.index2} << "].\n\n";
 
-        if (AlmostEqual(static_cast<double>(Real{maxIndicesAB.separation / Meter}),
-                         static_cast<double>(Real{maxIndicesBA.separation / Meter})))
+        if (AlmostEqual(static_cast<double>(Real{maxIndicesAB.separation / 1_m}),
+                         static_cast<double>(Real{maxIndicesBA.separation / 1_m})))
         {
             //assert(maxIndicesAB.index1 == maxIndicesBA.index2);
             //assert(maxIndicesAB.index2 == maxIndicesBA.index1);
@@ -343,20 +343,20 @@ public:
             // Circles or Face-B manifold type.
         }
 
-        os << "Distance = " << static_cast<double>(Real{adjustedDistance / Meter}) << " (from ";
-        os << static_cast<double>(Real{outputDistance / Meter}) << "), iterations = ";
+        os << "Distance = " << static_cast<double>(Real{adjustedDistance / 1_m}) << " (from ";
+        os << static_cast<double>(Real{outputDistance / 1_m}) << "), iterations = ";
         os << unsigned{output.iterations} << ".\n\n";
         
         {
             const auto size = output.simplex.GetSize();
             os << "Simplex info: size=" << unsigned{size} << ", wpt-a={";
-            os << static_cast<double>(Real{GetX(witnessPoints.a) / Meter});
+            os << static_cast<double>(Real{GetX(witnessPoints.a) / 1_m});
             os << ",";
-            os << static_cast<double>(Real{GetY(witnessPoints.a) / Meter});
+            os << static_cast<double>(Real{GetY(witnessPoints.a) / 1_m});
             os << "}, wpt-b={";
-            os << static_cast<double>(Real{GetX(witnessPoints.b) / Meter});
+            os << static_cast<double>(Real{GetX(witnessPoints.b) / 1_m});
             os << ",";
-            os << static_cast<double>(Real{GetY(witnessPoints.b) / Meter});
+            os << static_cast<double>(Real{GetY(witnessPoints.b) / 1_m});
             os << "}:\n";
             for (auto i = decltype(size){0}; i < size; ++i)
             {
@@ -364,13 +364,13 @@ public:
                 const auto coef = output.simplex.GetCoefficient(i);
                 
                 os << "  a[" << unsigned{edge.GetIndexA()} << "]={";
-                os << static_cast<double>(Real{GetX(edge.GetPointA()) / Meter});
+                os << static_cast<double>(Real{GetX(edge.GetPointA()) / 1_m});
                 os << ",";
-                os << static_cast<double>(Real{GetY(edge.GetPointA()) / Meter});
+                os << static_cast<double>(Real{GetY(edge.GetPointA()) / 1_m});
                 os << "} b[" << unsigned{edge.GetIndexB()} << "]={";
-                os << static_cast<double>(Real{GetX(edge.GetPointB()) / Meter});
+                os << static_cast<double>(Real{GetX(edge.GetPointB()) / 1_m});
                 os << ",";
-                os << static_cast<double>(Real{GetY(edge.GetPointB()) / Meter});
+                os << static_cast<double>(Real{GetY(edge.GetPointB()) / 1_m});
                 os << "} coef=" << coef << ".\n";
             }
             os << "\n";
@@ -475,7 +475,7 @@ public:
     }
 
 private:
-    const Length RadiusIncrement = (Meter / Real(1000)) * Real{200};
+    const Length RadiusIncrement = 2_dm;
     const Color simplexSegmentColor = Color{0.0f, 0.5f, 0.5f}; // dark cyan
     const Color simplexPointColor = Color{0, 1, 1, 0.6f}; // semi-transparent cyan
     const Color witnessPointColor = Color{1, 1, 0, 0.5}; // semi-transparent yellow

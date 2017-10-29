@@ -32,39 +32,39 @@ public:
     {
         {
             BodyDef bd;
-            bd.location = Vec2(0.0f, 0.0f) * Meter;
+            bd.location = Vec2(0.0f, 0.0f) * 1_m;
             Body* body = m_world.CreateBody(bd);
 
-            body->CreateFixture(std::make_shared<EdgeShape>(Vec2(-10.0f, 0.0f) * Meter, Vec2(10.0f, 0.0f) * Meter));
+            body->CreateFixture(std::make_shared<EdgeShape>(Vec2(-10.0f, 0.0f) * 1_m, Vec2(10.0f, 0.0f) * 1_m));
 
             PolygonShape shape;
-            SetAsBox(shape, Real{0.2f} * Meter, Real{1.0f} * Meter, Vec2(0.5f, 1.0f) * Meter, Real{0.0f} * Radian);
+            SetAsBox(shape, 0.2_m, 1_m, Vec2(0.5f, 1.0f) * 1_m, 0_rad);
             body->CreateFixture(std::make_shared<PolygonShape>(shape));
         }
 
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.location = Vec2(0.0f, 20.0f) * Meter;
+            bd.location = Vec2(0.0f, 20.0f) * 1_m;
             //bd.angle = 0.1f;
 
-            const auto shape = std::make_shared<PolygonShape>(Real{2.0f} * Meter, Real{0.1f} * Meter);
-            shape->SetDensity(Real{1} * KilogramPerSquareMeter);
+            const auto shape = std::make_shared<PolygonShape>(2_m, 0.1_m);
+            shape->SetDensity(1_kgpm2);
 
             m_body = m_world.CreateBody(bd);
             m_body->CreateFixture(shape);
 
-            m_angularVelocity = RadianPerSecond * RandomFloat(-50.0f, 50.0f);
+            m_angularVelocity = RandomFloat(-50.0f, 50.0f) * 1_rad / 1_s;
             //m_angularVelocity = 46.661274f;
-            m_body->SetVelocity(Velocity{Vec2(0.0f, -100.0f) * MeterPerSecond, m_angularVelocity});
+            m_body->SetVelocity(Velocity{Vec2(0.0f, -100.0f) * 1_mps, m_angularVelocity});
         }
     }
 
     void Launch()
     {
-        m_body->SetTransform(Vec2(0.0f, 20.0f) * Meter, Angle{0});
-        m_angularVelocity = RadianPerSecond * RandomFloat(-50.0f, 50.0f);
-        m_body->SetVelocity(Velocity{Vec2(0.0f, -100.0f) * MeterPerSecond, m_angularVelocity});
+        m_body->SetTransform(Vec2(0.0f, 20.0f) * 1_m, Angle{0});
+        m_angularVelocity = RandomFloat(-50.0f, 50.0f) * 1_rad / 1_s;
+        m_body->SetVelocity(Velocity{Vec2(0.0f, -100.0f) * 1_mps, m_angularVelocity});
     }
 
     void PostStep(const Settings&, Drawer&) override

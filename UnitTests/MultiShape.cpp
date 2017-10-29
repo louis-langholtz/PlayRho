@@ -103,7 +103,7 @@ TEST(MultiShape, AddConvexHullWithOnePointSameAsDisk)
     ASSERT_EQ(pointSet.size(), std::size_t(1));
 
     auto conf = MultiShape::Conf{};
-    conf.density = Real(2.3f) * KilogramPerSquareMeter;
+    conf.density = 2.3_kgpm2;
     conf.vertexRadius = Real(0.7f) * Meter;
 
     auto foo = MultiShape{conf};
@@ -139,7 +139,7 @@ TEST(MultiShape, AddConvexHullWithTwoPointsSameAsEdge)
     ASSERT_EQ(pointSet.size(), std::size_t(2));
     
     auto conf = MultiShape::Conf{};
-    conf.density = Real(2.3f) * KilogramPerSquareMeter;
+    conf.density = 2.3_kgpm2;
     conf.vertexRadius = Real(0.7f) * Meter;
     
     auto foo = MultiShape{conf};
@@ -162,8 +162,8 @@ TEST(MultiShape, AddConvexHullWithTwoPointsSameAsEdge)
     EXPECT_EQ(massData.center, edgeMassData.center);
     /// @note Units of L^-2 M^-1 QP^2.
 
-    EXPECT_NEAR(static_cast<double>(Real{massData.I / (SquareMeter*Kilogram/SquareRadian)}),
-                static_cast<double>(Real{edgeMassData.I / (SquareMeter*Kilogram/SquareRadian)}),
+    EXPECT_NEAR(static_cast<double>(Real{massData.I / (SquareMeter*1_kg/SquareRadian)}),
+                static_cast<double>(Real{edgeMassData.I / (SquareMeter*1_kg/SquareRadian)}),
                 228.4113/1000000.0);
     EXPECT_EQ(massData.mass, edgeMassData.mass);
 }
@@ -178,7 +178,7 @@ TEST(MultiShape, AddTwoConvexHullWithOnePoint)
     ASSERT_EQ(pointSet.size(), std::size_t(0));
 
     auto conf = MultiShape::Conf{};
-    conf.density = Real(2.3f) * KilogramPerSquareMeter;
+    conf.density = 2.3_kgpm2;
     conf.vertexRadius = Real(0.7f) * Meter;
     
     auto foo = MultiShape{conf};

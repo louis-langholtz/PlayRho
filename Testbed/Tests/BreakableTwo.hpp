@@ -39,19 +39,19 @@ public:
     {
         const auto vr = 2 * DefaultLinearSlop;
         const auto polygonConf = PolygonShape::Conf{}.UseVertexRadius(vr);
-        m_shape = std::make_shared<PolygonShape>(0.5f * Meter - vr, 0.5f * Meter - vr, polygonConf);
-        m_shape->SetDensity(100 * KilogramPerSquareMeter);
+        m_shape = std::make_shared<PolygonShape>(0.5_m - vr, 0.5_m - vr, polygonConf);
+        m_shape->SetDensity(100_kgpm2);
 
         m_world.SetGravity(LinearAcceleration2D{});
 
         Body* bodies[20 * 20];
-        const auto startLoc = Length2D{-10 * Meter, 10 * Meter};
+        const auto startLoc = Length2D{-10_m, 10_m};
         const auto bd = BodyDef{}.UseType(BodyType::Dynamic);
         for (auto y = 0; y < 20; ++y)
         {
             for (auto x = 0; x < 20; ++x)
             {
-                const auto location = startLoc + Length2D{x * Meter, y * Meter};
+                const auto location = startLoc + Length2D{x * 1_m, y * 1_m};
                 bodies[y * 20 + x] = m_world.CreateBody(BodyDef{bd}.UseLocation(location));
                 bodies[y * 20 + x]->CreateFixture(m_shape);
                 
@@ -60,7 +60,7 @@ public:
                     const auto jd = WeldJointDef{
                         bodies[y * 20 + x - 1],
                         bodies[y * 20 + x],
-                        location + Length2D{-0.5f * Meter, 0 * Meter}
+                        location + Length2D{-0.5_m, 0_m}
                     };
                     m_world.CreateJoint(jd);
                 }
@@ -69,7 +69,7 @@ public:
                     const auto jd = WeldJointDef{
                         bodies[(y - 1) * 20 + x],
                         bodies[(y + 0) * 20 + x],
-                        location + Length2D{0 * Meter, -0.5f * Meter}
+                        location + Length2D{0_m, -0.5_m}
                     };
                     m_world.CreateJoint(jd);
                 }
@@ -84,7 +84,7 @@ public:
         {
             // Should the body break?
             auto maxImpulse = GetMaxNormalImpulse(impulses);
-            if (maxImpulse > Real{60} * Kilogram * MeterPerSecond)
+            if (maxImpulse > 60_Ns)
             {
                 const auto fA = contact.GetFixtureA();
                 const auto fB = contact.GetFixtureB();

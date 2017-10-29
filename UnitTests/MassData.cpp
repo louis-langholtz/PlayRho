@@ -168,7 +168,7 @@ TEST(MassData, GetAreaOfPolygon)
 TEST(MassData, GetMassDataFreeFunctionForNoVertices)
 {
     const auto vertexRadius = Length{Real(1) * Meter};
-    const auto density = NonNegative<Density>(Real(1) * KilogramPerSquareMeter);
+    const auto density = NonNegative<Density>(1_kgpm2);
     const auto vertices = Span<const Length2D>{
         static_cast<const Length2D*>(nullptr), Span<const Length2D>::size_type{0}
     };
@@ -181,9 +181,9 @@ TEST(MassData, GetMassDataFreeFunctionForNoVertices)
 TEST(MassData, GetForZeroVertexRadiusCircle)
 {
     auto shape = DiskShape(0);
-    shape.SetDensity(Real(1) * KilogramPerSquareMeter);
+    shape.SetDensity(1_kgpm2);
     const auto mass_data = shape.GetMassData();
-    EXPECT_EQ(mass_data.mass, NonNegative<Mass>(Real{0} * Kilogram));
+    EXPECT_EQ(mass_data.mass, NonNegative<Mass>(0_kg));
     EXPECT_EQ(mass_data.I, RotInertia{0});
     EXPECT_EQ(GetX(mass_data.center), Real{0} * Meter);
     EXPECT_EQ(GetY(mass_data.center), Real{0} * Meter);
@@ -194,15 +194,15 @@ TEST(MassData, GetForOriginCenteredCircle)
     auto conf = DiskShape::Conf{};
     conf.vertexRadius = Real{1} * Meter;
     conf.location = Length2D{};
-    conf.density = Real{1} * KilogramPerSquareMeter;
+    conf.density = 1_kgpm2;
     const auto foo = DiskShape{conf};
     const auto mass_data = foo.GetMassData();
-    EXPECT_EQ(Real{Mass{mass_data.mass} / Kilogram}, Pi);
+    EXPECT_EQ(Real{Mass{mass_data.mass} / 1_kg}, Pi);
     EXPECT_NEAR(double(StripUnit(mass_data.I)), 1.5707964, 0.0005);
     const auto squareVertexRadius = Square(Length{conf.vertexRadius});
     const auto expectedI = RotInertia{
         // L^2 M QP^-2
-        Density{conf.density} * squareVertexRadius * squareVertexRadius * Pi / (Real{2} * Radian * Radian)
+        Density{conf.density} * squareVertexRadius * squareVertexRadius * Pi / (2 * 1_rad * 1_rad)
     };
     EXPECT_TRUE(AlmostEqual(StripUnit(mass_data.I), StripUnit(expectedI)));
     EXPECT_EQ(mass_data.center, conf.location);
@@ -212,21 +212,21 @@ TEST(MassData, GetForCircle)
 {
     const auto radius = Real(1) * Meter;
     const auto position = Length2D{-Real(1) * Meter, Real(1) * Meter};
-    const auto density = Real{1} * KilogramPerSquareMeter;
+    const auto density = 1_kgpm2;
     auto conf = DiskShape::Conf{};
     conf.vertexRadius = radius;
     conf.location = position;
     conf.density = density;
     const auto foo = DiskShape{conf};
     const auto mass_data = foo.GetMassData();
-    EXPECT_EQ(Real{Mass{mass_data.mass} / Kilogram}, Pi);
+    EXPECT_EQ(Real{Mass{mass_data.mass} / 1_kg}, Pi);
     EXPECT_NEAR(double(StripUnit(mass_data.I)), 7.85398, 0.003);
     EXPECT_EQ(mass_data.center, position);
 }
 
 TEST(MassData, GetForZeroVertexRadiusRectangle)
 {
-    const auto density = Real{2.1f} * KilogramPerSquareMeter;
+    const auto density = 2.1_kgpm2;
     auto conf = PolygonShape::Conf{};
     conf.vertexRadius = 0;
     conf.density = density;
@@ -235,7 +235,7 @@ TEST(MassData, GetForZeroVertexRadiusRectangle)
     ASSERT_EQ(GetX(shape.GetCentroid()), Real(0) * Meter);
     ASSERT_EQ(GetY(shape.GetCentroid()), Real(0) * Meter);
     const auto mass_data = shape.GetMassData();
-    EXPECT_TRUE(AlmostEqual(Real(Mass{mass_data.mass} / Kilogram),
+    EXPECT_TRUE(AlmostEqual(Real(Mass{mass_data.mass} / 1_kg),
                              Real((density / KilogramPerSquareMeter) * (8 * 2))));
     EXPECT_NEAR(double(StripUnit(mass_data.I)),
                 90.666664 * double(StripUnit(density)),
@@ -250,8 +250,8 @@ TEST(MassData, GetForZeroVertexRadiusRectangle)
                 0.004);
     
     const auto i_z = GetPolarMoment(shape.GetVertices());
-    EXPECT_NEAR(double(Real{RotInertia{mass_data.I} / (SquareMeter * Kilogram / SquareRadian)}),
-                double(Real{density * i_z / (SquareMeter * Kilogram)}),
+    EXPECT_NEAR(double(Real{RotInertia{mass_data.I} / (SquareMeter * 1_kg / SquareRadian)}),
+                double(Real{density * i_z / (SquareMeter * 1_kg)}),
                 0.004);
     
     EXPECT_TRUE(AlmostEqual(Real(GetAreaOfPolygon(shape.GetVertices()) / SquareMeter), Real(16)));
@@ -261,14 +261,14 @@ TEST(MassData, GetForZeroVertexRadiusEdge)
 {
     const auto v1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
     const auto v2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
-    const auto density = Real{2.1f} * KilogramPerSquareMeter;
+    const auto density = 2.1_kgpm2;
     auto conf = EdgeShape::Conf{};
     conf.vertexRadius = Length{0};
     conf.density = density;
     const auto shape = EdgeShape(v1, v2, conf);
     const auto mass_data = shape.GetMassData();
-    EXPECT_EQ(Real(Mass{mass_data.mass} / Kilogram), Real(0));
-    EXPECT_NEAR(double(Real{RotInertia{mass_data.I} / (SquareMeter * Kilogram / SquareRadian)}),
+    EXPECT_EQ(Real(Mass{mass_data.mass} / 1_kg), Real(0));
+    EXPECT_NEAR(double(Real{RotInertia{mass_data.I} / (SquareMeter * 1_kg / SquareRadian)}),
                 0.0, 0.00001);
     EXPECT_EQ(GetX(mass_data.center), Length{0});
     EXPECT_EQ(GetY(mass_data.center), Length{0});
@@ -277,7 +277,7 @@ TEST(MassData, GetForZeroVertexRadiusEdge)
 TEST(MassData, GetForSamePointedEdgeIsSameAsCircle)
 {
     const auto v1 = Length2D{-Real(1) * Meter, Real(1) * Meter};
-    const auto density = Real{1} * KilogramPerSquareMeter;
+    const auto density = 1_kgpm2;
     auto conf = EdgeShape::Conf{};
     conf.vertexRadius = Real{1} * Meter;
     conf.density = density;
@@ -291,7 +291,7 @@ TEST(MassData, GetForSamePointedEdgeIsSameAsCircle)
     EXPECT_TRUE(IsValid(mass_data.I));
     if (IsValid(mass_data.I))
     {
-        EXPECT_NEAR(double(Real{RotInertia{mass_data.I} / (SquareMeter * Kilogram / SquareRadian)}),
+        EXPECT_NEAR(double(Real{RotInertia{mass_data.I} / (SquareMeter * 1_kg / SquareRadian)}),
                     7.85398, 0.003);
     }
     EXPECT_TRUE(AlmostEqual(StripUnit(GetX(mass_data.center)), StripUnit(GetX(v1))));
@@ -303,7 +303,7 @@ TEST(MassData, GetForCenteredEdge)
     const auto v1 = Length2D{-Real(2) * Meter, Real(0) * Meter};
     const auto v2 = Length2D{+Real(2) * Meter, Real(0) * Meter};
     const auto radius = Real{0.5f} * Meter;
-    const auto density = Real{2.1f} * KilogramPerSquareMeter;
+    const auto density = 2.1_kgpm2;
     
     const auto radiusSquared = Area{radius * radius};
     const auto circleArea = radiusSquared * Pi;
@@ -354,16 +354,16 @@ TEST(MassData, GetForCenteredEdge)
 
     const auto totalMoment = polarMoment + I1 + I2;
     const auto I = totalMoment * density / SquareRadian;
-    EXPECT_NEAR(static_cast<double>(Real{I / (Kilogram * SquareMeter / SquareRadian)}),
+    EXPECT_NEAR(static_cast<double>(Real{I / (1_kg * SquareMeter / SquareRadian)}),
                 18.703510284423828, 18.703510284423828 / 1000000.0);
 
     const auto mass_data = shape.GetMassData();
     EXPECT_EQ(mass_data.mass, density * area);
     {
-        EXPECT_NEAR(static_cast<double>(Real{RotInertia{mass_data.I} / (SquareMeter * Kilogram / SquareRadian)}),
-                    static_cast<double>(Real{I / (SquareMeter * Kilogram / SquareRadian)}),
+        EXPECT_NEAR(static_cast<double>(Real{RotInertia{mass_data.I} / (SquareMeter * 1_kg / SquareRadian)}),
+                    static_cast<double>(Real{I / (SquareMeter * 1_kg / SquareRadian)}),
                     0.0001);
-        EXPECT_NEAR(static_cast<double>(Real{RotInertia{mass_data.I} / (SquareMeter * Kilogram / SquareRadian)}),
+        EXPECT_NEAR(static_cast<double>(Real{RotInertia{mass_data.I} / (SquareMeter * 1_kg / SquareRadian)}),
                     18.70351, 0.009);
         EXPECT_GE(mass_data.I, (polarMoment * density) / SquareRadian);
     }
@@ -381,9 +381,8 @@ TEST(MassData, Equals)
     EXPECT_TRUE(foo == boo);
     
     const auto poo = MassData{
-        Length2D(Real(1) * Meter, Real(1) * Meter),
-        Real(4) * Kilogram,
-        RotInertia{Real(1) * Kilogram * Real(2) * SquareMeter / SquareRadian}};
+        Length2D(1_m, 1_m), 4_kg, RotInertia{2_kg * SquareMeter / SquareRadian}
+    };
     EXPECT_FALSE(foo == poo);
 }
 
@@ -396,8 +395,7 @@ TEST(MassData, NotEquals)
     EXPECT_FALSE(foo != boo);
     
     const auto poo = MassData{
-        Length2D(Real(1) * Meter, Real(1) * Meter),
-        Real(4) * Kilogram,
-        RotInertia{Real(1) * Kilogram * Real(2) * SquareMeter / SquareRadian}};
+        Length2D(1_m, 1_m), 4_kg, RotInertia{2_kg * SquareMeter / SquareRadian}
+    };
     EXPECT_TRUE(foo != poo);
 }

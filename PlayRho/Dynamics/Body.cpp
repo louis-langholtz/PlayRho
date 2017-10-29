@@ -153,7 +153,7 @@ void Body::ResetMassData()
     const auto massData = ComputeMassData(*this);
 
     // Force all dynamic bodies to have a positive mass.
-    const auto mass = (massData.mass > Mass{0})? Mass{massData.mass}: (Real(1) * Kilogram);
+    const auto mass = (massData.mass > 0_kg)? Mass{massData.mass}: 1_kg;
     m_invMass = Real{1} / mass;
 
     // Compute center of mass.
@@ -196,7 +196,7 @@ void Body::SetMassData(const MassData& massData)
         return;
     }
 
-    const auto mass = (massData.mass > Mass{0})? Mass{massData.mass}: (Real(1) * Kilogram);
+    const auto mass = (massData.mass > 0_kg)? Mass{massData.mass}: 1_kg;
     m_invMass = Real{1} / mass;
 
     if ((massData.I > RotInertia{0}) && (!IsFixedRotation()))

@@ -61,17 +61,17 @@ public:
         RegisterForKey(GLFW_KEY_KP_SUBTRACT, GLFW_PRESS, 0, "Thin The Walls", [&](KeyActionMods) {
             m_world.Destroy(m_enclosure);
             m_enclosureVertexRadius -= vertexRadiusIncrement;
-            if (m_enclosureVertexRadius < Length{0})
+            if (m_enclosureVertexRadius < 0_m)
             {
-                m_enclosureVertexRadius = 0;
+                m_enclosureVertexRadius = 0_m;
             }
             m_enclosure = CreateEnclosure(m_enclosureVertexRadius, wall_length);
         });
         
-        const auto radius = Real{0.5f} * Meter;
+        const auto radius = 0.5_m;
         auto conf = DiskShape::Conf{};
         conf.vertexRadius = radius;
-        conf.density = Real{1} * KilogramPerSquareMeter;
+        conf.density = 1_kgpm2;
         conf.friction = 0.1f;
         const auto shape = std::make_shared<DiskShape>(conf);
 
@@ -82,9 +82,9 @@ public:
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2{
-                    -10.0f + (2.1f * j + 1.0f + 0.01f * i) * (radius / Meter),
-                    (2.0f * i + 1.0f) * (radius/ Meter)
-                } * Meter;
+                    -10.0f + (2.1f * j + 1.0f + 0.01f * i) * (radius / 1_m),
+                    (2.0f * i + 1.0f) * (radius/ 1_m)
+                } * 1_m;
                 const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(shape);
             }
@@ -97,30 +97,30 @@ public:
     {
         const auto body = CreateSquareEnclosingBody(m_world, wallLength, ShapeConf{
             }.UseVertexRadius(vertexRadius).UseRestitution(Finite<Real>(0)));
-        SetLocation(*body, Length2D{Real(0) * Meter, Real(20) * Meter});
+        SetLocation(*body, Length2D{0_m, 20_m});
         return body;
     }
 
     Length2D GetRandomOffset() const
     {
-        const auto halfWL = StripUnit(wall_length) / Real{2};
-        return Vec2{RandomFloat(-halfWL, +halfWL), RandomFloat(-halfWL, +halfWL)} * Meter;
+        const auto halfWL = StripUnit(wall_length) / 2;
+        return Vec2{RandomFloat(-halfWL, +halfWL), RandomFloat(-halfWL, +halfWL)} * 1_m;
     }
     
     void CreateCircle()
     {
-        const auto radius = wall_length/Real{10}; // 2
+        const auto radius = wall_length/ 10; // 2
 
         BodyDef bd;
         bd.type = BodyType::Dynamic;
         bd.bullet = m_bullet_mode;
-        bd.location = Vec2{0, 20} * Meter + GetRandomOffset();
+        bd.location = Vec2{0, 20} * 1_m + GetRandomOffset();
         //bd.allowSleep = false;
 
         const auto body = m_world.CreateBody(bd);
         
         auto conf = DiskShape::Conf{};
-        conf.density = Real{1} * KilogramPerSquareMeter;
+        conf.density = 1_kgpm2;
         conf.restitution = 0.8f;
         conf.vertexRadius = radius;
         body->CreateFixture(std::make_shared<DiskShape>(conf));
@@ -131,13 +131,13 @@ public:
         const auto side_length = wall_length / Real{5}; // 4
 
         auto conf = PolygonShape::Conf{};
-        conf.density = Real{1} * KilogramPerSquareMeter;
+        conf.density = 1_kgpm2;
         conf.restitution = 0; // originally 0.8
         
         BodyDef bd;
         bd.type = BodyType::Dynamic;
         bd.bullet = m_bullet_mode;
-        bd.location = Vec2{0, 20} * Meter + GetRandomOffset();
+        bd.location = Vec2{0, 20} * 1_m + GetRandomOffset();
         const auto body = m_world.CreateBody(bd);
         body->CreateFixture(std::make_shared<PolygonShape>(side_length/Real{2}, side_length/Real{2}, conf));
     }
@@ -167,9 +167,9 @@ public:
                     GetX(position), GetY(position) - (wall_length / Real{2})
                 };
                 const auto angle_from_center = GetAngle(centerPos);
-                const auto direction = angle_from_center + Pi * Radian;
-                const auto magnitude = Sqrt(Square(StripUnit(wall_length)) * Real{2}) *
-                	GetMass(b) * Real{20} * MeterPerSecond;
+                const auto direction = angle_from_center + Pi * 1_rad;
+                const auto magnitude = Sqrt(Square(StripUnit(wall_length)) * 2) *
+                	GetMass(b) * 20_mps;
                 const auto impulse = Momentum2D{magnitude * UnitVec2::Get(direction)};
                 ApplyLinearImpulse(b, impulse, b.GetWorldCenter());
             }

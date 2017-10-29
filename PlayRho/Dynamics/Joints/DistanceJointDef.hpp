@@ -70,7 +70,7 @@ struct DistanceJointDef : public JointBuilder<DistanceJointDef>
     Length2D localAnchorB = Length2D{};
     
     /// @brief Natural length between the anchor points.
-    Length length = Real{1} * Meter;
+    Length length = 1_m;
     
     /// @brief Mass-spring-damper frequency.
     /// @note 0 disables softness.

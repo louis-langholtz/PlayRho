@@ -1204,7 +1204,7 @@ static void DropTiles(int count)
     }
     
     auto step = playrho::StepConf{};
-    step.SetTime(playrho::Time{playrho::Second / playrho::Real{60}});
+    step.SetTime(playrho::Second / 60);
     step.linearSlop = linearSlop;
     step.regMinSeparation = -linearSlop * playrho::Real(3);
     step.toiMinSeparation = -linearSlop * playrho::Real(1.5f);
@@ -1292,7 +1292,7 @@ playrho::RevoluteJoint* Tumbler::CreateRevoluteJoint(playrho::World& world,
     // Make it turn 4 times faster than Testbed Tumbler demo
     jd.motorSpeed = 0.2f * playrho::Pi * playrho::RadianPerSecond;
 
-    jd.maxMotorTorque = playrho::Real{100000} * playrho::NewtonMeter; // 1e8f;
+    jd.maxMotorTorque = 100000 * playrho::NewtonMeter; // 1e8f;
     jd.enableMotor = true;
     return static_cast<playrho::RevoluteJoint*>(world.CreateJoint(jd));
 }

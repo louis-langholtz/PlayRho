@@ -31,16 +31,16 @@ public:
     ShapeEditing()
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
+        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
         
         BodyDef bd;
         bd.type = BodyType::Dynamic;
-        bd.location = Vec2(0.0f, 10.0f) * Meter;
+        bd.location = Vec2(0.0f, 10.0f) * 1_m;
         m_body = m_world.CreateBody(bd);
 
         PolygonShape shape;
-        SetAsBox(shape, Real{4.0f} * Meter, Real{4.0f} * Meter, Vec2(0.0f, 0.0f) * Meter, Angle{0});
-        shape.SetDensity(Real{10} * KilogramPerSquareMeter);
+        SetAsBox(shape, 4_m, 4_m, Vec2(0.0f, 0.0f) * 1_m, Angle{0});
+        shape.SetDensity(10_kgpm2);
         m_fixture1 = m_body->CreateFixture(std::make_shared<PolygonShape>(shape));
 
         m_fixture2 = nullptr;
@@ -51,9 +51,9 @@ public:
             if (!m_fixture2)
             {
                 auto conf = DiskShape::Conf{};
-                conf.vertexRadius = Real{3.0f} * Meter;
-                conf.location = Vec2(0.5f, -4.0f) * Meter;
-                conf.density = Real{10} * KilogramPerSquareMeter;
+                conf.vertexRadius = 3_m;
+                conf.location = Vec2(0.5f, -4.0f) * 1_m;
+                conf.density = 10_kgpm2;
                 m_fixture2 = m_body->CreateFixture(std::make_shared<DiskShape>(conf));
                 m_body->SetAwake();
             }

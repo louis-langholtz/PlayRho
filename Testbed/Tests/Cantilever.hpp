@@ -42,25 +42,25 @@ public:
         const auto ground = m_world.CreateBody();
 
         // Creates bottom ground
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter));
+        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40, 0) * 1_m, Vec2(40, 0) * 1_m));
 
         // Creates left-end-fixed 8-part plank (below the top one)
         {
             auto conf = PolygonShape::Conf{};
-            conf.density = Real{20} * KilogramPerSquareMeter;
-            const auto shape = std::make_shared<PolygonShape>(Real{0.5f} * Meter, Real{0.125f} * Meter, conf);
+            conf.density = 20_kgpm2;
+            const auto shape = std::make_shared<PolygonShape>(0.5_m, 0.125_m, conf);
 
             auto prevBody = ground;
             for (auto i = 0; i < e_count; ++i)
             {
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
-                bd.location = Vec2(-14.5f + 1.0f * i, 5.0f) * Meter;
+                bd.location = Vec2(-14.5f + 1.0f * i, 5.0f) * 1_m;
                 const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(shape);
 
                 m_world.CreateJoint(WeldJointDef{
-                    prevBody, body, Vec2(-15.0f + 1.0f * i, 5.0f) * Meter
+                    prevBody, body, Vec2(-15.0f + 1.0f * i, 5.0f) * 1_m
                 });
 
                 prevBody = body;
@@ -70,20 +70,20 @@ public:
         // Creates left-end-fixed 3-part plank at top
         {
             auto conf = PolygonShape::Conf{};
-            conf.density = Real{20} * KilogramPerSquareMeter;
-            const auto shape = std::make_shared<PolygonShape>(Real{1.0f} * Meter, Real{0.125f} * Meter, conf);
+            conf.density = 20_kgpm2;
+            const auto shape = std::make_shared<PolygonShape>(1_m, 0.125_m, conf);
 
             auto prevBody = ground;
             for (auto i = 0; i < 3; ++i)
             {
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
-                bd.location = Vec2(-14.0f + 2.0f * i, 15.0f) * Meter;
+                bd.location = Vec2(-14.0f + 2.0f * i, 15.0f) * 1_m;
                 const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(shape);
 
-                auto jd = WeldJointDef{prevBody, body, Vec2(-15.0f + 2.0f * i, 15.0f) * Meter};
-                jd.frequency = Real{5} * Hertz;
+                auto jd = WeldJointDef{prevBody, body, Vec2(-15.0f + 2.0f * i, 15.0f) * 1_m};
+                jd.frequency = 5_Hz;
                 jd.dampingRatio = 0.7f;
                 m_world.CreateJoint(jd);
 
@@ -94,22 +94,22 @@ public:
         // Creates 8-part plank to the right of the fixed planks (but not farthest right)
         {
             auto conf = PolygonShape::Conf{};
-            conf.density = Real{20} * KilogramPerSquareMeter;
-            const auto shape = std::make_shared<PolygonShape>(Real{0.5f} * Meter, Real{0.125f} * Meter, conf);
+            conf.density = 20_kgpm2;
+            const auto shape = std::make_shared<PolygonShape>(0.5_m, 0.125_m, conf);
 
             auto prevBody = ground;
             for (auto i = 0; i < e_count; ++i)
             {
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
-                bd.location = Vec2(-4.5f + 1.0f * i, 5.0f) * Meter;
+                bd.location = Vec2(-4.5f + 1.0f * i, 5.0f) * 1_m;
                 const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(shape);
 
                 if (i > 0)
                 {
                     m_world.CreateJoint(WeldJointDef{
-                        prevBody, body, Vec2(-5.0f + 1.0f * i, 5.0f) * Meter
+                        prevBody, body, Vec2(-5.0f + 1.0f * i, 5.0f) * 1_m
                     });
                 }
 
@@ -120,22 +120,22 @@ public:
         // Creates 8-part farthest-right plank
         {
             auto conf = PolygonShape::Conf{};
-            conf.density = Real{20} * KilogramPerSquareMeter;
-            const auto shape = std::make_shared<PolygonShape>(Real{0.5f} * Meter, Real{0.125f} * Meter, conf);
+            conf.density = 20_kgpm2;
+            const auto shape = std::make_shared<PolygonShape>(0.5_m, 0.125_m, conf);
 
             auto prevBody = ground;
             for (auto i = 0; i < e_count; ++i)
             {
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
-                bd.location = Vec2(5.5f + 1.0f * i, 10.0f) * Meter;
+                bd.location = Vec2(5.5f + 1.0f * i, 10.0f) * 1_m;
                 const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(shape);
 
                 if (i > 0)
                 {
-                    auto jd = WeldJointDef{prevBody, body, Vec2(5.0f + 1.0f * i, 10.0f) * Meter};
-                    jd.frequency = Real{8} * Hertz;
+                    auto jd = WeldJointDef{prevBody, body, Vec2(5.0f + 1.0f * i, 10.0f) * 1_m};
+                    jd.frequency = 8_Hz;
                     jd.dampingRatio = 0.7f;
                     m_world.CreateJoint(jd);
                 }
@@ -146,25 +146,25 @@ public:
 
         // Creates triangles
         auto polyshape = std::make_shared<PolygonShape>();
-        polyshape->Set({Vec2(-0.5f, 0.0f) * Meter, Vec2(0.5f, 0.0f) * Meter, Vec2(0.0f, 1.5f) * Meter});
-        polyshape->SetDensity(Real{1} * KilogramPerSquareMeter);
+        polyshape->Set({Vec2(-0.5f, 0.0f) * 1_m, Vec2(0.5f, 0.0f) * 1_m, Vec2(0.0f, 1.5f) * 1_m});
+        polyshape->SetDensity(1_kgpm2);
         for (auto i = 0; i < 2; ++i)
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.location = Vec2(-8.0f + 8.0f * i, 12.0f) * Meter;
+            bd.location = Vec2(-8.0f + 8.0f * i, 12.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
             body->CreateFixture(polyshape);
         }
 
         // Creates circles
-        const auto circleshape = std::make_shared<DiskShape>(Real(0.5) * Meter);
-        circleshape->SetDensity(Real{1} * KilogramPerSquareMeter);
+        const auto circleshape = std::make_shared<DiskShape>(0.5_m);
+        circleshape->SetDensity(1_kgpm2);
         for (auto i = 0; i < 2; ++i)
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.location = Vec2(-6.0f + 6.0f * i, 10.0f) * Meter;
+            bd.location = Vec2(-6.0f + 6.0f * i, 10.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
             body->CreateFixture(circleshape);
         }

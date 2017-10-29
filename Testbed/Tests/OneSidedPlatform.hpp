@@ -40,30 +40,30 @@ public:
         // Ground
         {
             const auto ground = m_world.CreateBody();
-            ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * Meter, Vec2(20.0f, 0.0f) * Meter));
+            ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m));
         }
 
         // Platform
         {
             BodyDef bd;
-            bd.location = Vec2(0.0f, 10.0f) * Meter;
+            bd.location = Vec2(0.0f, 10.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
-            m_platform = body->CreateFixture(std::make_shared<PolygonShape>(Real{3.0f} * Meter, Real{0.5f} * Meter));
-            m_bottom = Real(10.0f - 0.5f) * Meter;
-            m_top = Real(10.0f + 0.5f) * Meter;
+            m_platform = body->CreateFixture(std::make_shared<PolygonShape>(3_m, 0.5_m));
+            m_bottom = Real(10.0f - 0.5f) * 1_m;
+            m_top = Real(10.0f + 0.5f) * 1_m;
         }
 
         // Actor
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.location = Vec2(0.0f, 12.0f) * Meter;
+            bd.location = Vec2(0.0f, 12.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
             auto conf = DiskShape::Conf{};
             conf.vertexRadius = m_radius;
-            conf.density = Real{20} * KilogramPerSquareMeter;
+            conf.density = 20_kgpm2;
             m_character = body->CreateFixture(std::make_shared<DiskShape>(conf));
-            body->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * MeterPerSecond, AngularVelocity{0}});
+            body->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * 1_mps, AngularVelocity{0}});
         }
     }
 
@@ -105,12 +105,12 @@ public:
         const auto v = GetLinearVelocity(*(m_character->GetBody()));
         std::stringstream stream;
         stream << "Character linear velocity: ";
-        stream << static_cast<double>(Real{GetY(v) / MeterPerSecond});
+        stream << static_cast<double>(Real{GetY(v) / 1_mps});
         stream << " m/s.";
         m_status = stream.str();
     }
 
-    Length m_radius = Real{0.5f} * Meter;
+    Length m_radius = 0.5_m;
     Length m_top;
     Length m_bottom;
     State m_state = e_unknown;

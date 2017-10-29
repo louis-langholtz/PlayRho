@@ -45,9 +45,7 @@ namespace playrho
     };
     
     /// @brief Identity transformation value.
-    constexpr auto Transform_identity = Transformation{
-        Length2D{Real(0) * Meter, Real(0) * Meter}, UnitVec2::GetRight()
-    };
+    constexpr auto Transform_identity = Transformation{Length2D{0_m, 0_m}, UnitVec2::GetRight()};
     
     /// @brief Determines if the given value is valid.
     /// @relatedalso Transformation

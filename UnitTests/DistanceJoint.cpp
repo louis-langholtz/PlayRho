@@ -64,7 +64,7 @@ TEST(DistanceJointDef, UseLength)
 
 TEST(DistanceJointDef, UseFrequency)
 {
-    const auto value = Frequency(Real(19) * Hertz);
+    const auto value = 19_Hz;
     EXPECT_NE(DistanceJointDef{}.frequency, value);
     EXPECT_EQ(DistanceJointDef{}.UseFrequency(value).frequency, value);
 }
@@ -155,7 +155,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
     World world{WorldDef{}.UseGravity(LinearAcceleration2D{0, Real(10) * MeterPerSquareSecond})};
     
     const auto shape = std::make_shared<DiskShape>(Real{0.2f} * Meter);
-    shape->SetDensity(Real{1} * KilogramPerSquareMeter);
+    shape->SetDensity(1_kgpm2);
     
     const auto location1 = Length2D{-Real(10) * Meter, Real(10) * Meter};
     const auto body1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location1));
@@ -174,7 +174,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
     jointdef.localAnchorA = Length2D{};
     jointdef.localAnchorB = Length2D{};
     jointdef.length = Real{5} * Meter;
-    jointdef.frequency = Real{60} * Hertz;
+    jointdef.frequency = 60_Hz;
     jointdef.dampingRatio = 0;
     EXPECT_NE(world.CreateJoint(jointdef), nullptr);
     
@@ -225,7 +225,7 @@ TEST(DistanceJointDef, GetDistanceJointDefFreeFunction)
     def.localAnchorA = Length2D(Real(21) * Meter, Real(-2) * Meter);
     def.localAnchorB = Length2D(Real(13) * Meter, Real(12) * Meter);
     def.length = Real{5} * Meter;
-    def.frequency = Real(67) * Hertz;
+    def.frequency = 67_Hz;
     def.dampingRatio = Real(0.8);
     
     const auto joint = DistanceJoint{def};

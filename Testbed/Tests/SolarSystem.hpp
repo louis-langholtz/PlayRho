@@ -50,7 +50,7 @@ static constexpr SolarSystemObject SolarSystemBodies[] = {
     { "Neptune", 24622_km,     102430.0_Yg, 60182.000_d, 4500_Gm,    0.671_d },
 };
 
-static constexpr auto G = 6.67408e-11f * SquareMeter * Meter / (Kilogram * Square(Second));
+static constexpr auto G = 6.67408e-11f * SquareMeter * 1_m / (1_kg * Square(1_s));
 
 class SolarSystem: public Test
 {
@@ -91,7 +91,7 @@ public:
             const auto l = Length2D{odds? -sso.aveDist: sso.aveDist, 0_m};
             const auto v = (p != 0_s)? (c / p) * (odds? -1: +1): 0_mps;
             const auto b = m_world.CreateBody(BodyDef{DynamicBD}.UseLocation(l));
-            const auto a = 2 * Pi * Radian / sso.rotationalPeriod;
+            const auto a = 2 * Pi * 1_rad / sso.rotationalPeriod;
             b->SetVelocity(Velocity{LinearVelocity2D{0_mps, v}, a});
             const auto d = sso.mass / (Pi * Square(sso.radius));
             const auto sconf = DiskShape::Conf{}.UseVertexRadius(sso.radius).UseDensity(d);
@@ -127,11 +127,11 @@ public:
             // F = m a... i.e.  a = F / m.
             const auto linearAcceleration = sumForce / m1;
             SetLinearAcceleration(*b1, linearAcceleration);
-            const auto v = GetVelocity(*b1, settings.dt * Second, MovementConf{
+            const auto v = GetVelocity(*b1, settings.dt * 1_s, MovementConf{
                 std::numeric_limits<Length>::infinity(),
                 std::numeric_limits<Angle>::infinity()
             });
-            const auto stepDist = v.linear * settings.dt * Second;
+            const auto stepDist = v.linear * settings.dt * 1_s;
             const auto location = GetLocation(*b1);
             const auto newLoc = location + stepDist;
             if (newLoc == location && stepDist != Length2D{})

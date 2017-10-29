@@ -31,16 +31,16 @@ public:
     HeavyOnLight()
     {
         const auto bd = BodyDef{}.UseType(BodyType::Dynamic);
-        const auto upperBodyDef = BodyDef(bd).UseLocation(Vec2(0.0f, 6.0f) * Meter);
-        const auto lowerBodyDef = BodyDef(bd).UseLocation(Vec2(0.0f, 0.5f) * Meter);
+        const auto upperBodyDef = BodyDef(bd).UseLocation(Vec2(0.0f, 6.0f) * 1_m);
+        const auto lowerBodyDef = BodyDef(bd).UseLocation(Vec2(0.0f, 0.5f) * 1_m);
         
         const auto groundConf = EdgeShape::Conf{}
-            .UseVertex1(Vec2(-40.0f, 0.0f) * Meter)
-            .UseVertex2(Vec2(40.0f, 0.0f) * Meter);
+            .UseVertex1(Vec2(-40.0f, 0.0f) * 1_m)
+            .UseVertex2(Vec2(40.0f, 0.0f) * 1_m);
         
-        const auto diskConf = DiskShape::Conf{}.UseDensity(Real(10) * KilogramPerSquareMeter);
-        const auto smallerDiskConf = DiskShape::Conf(diskConf).UseVertexRadius(Real{0.5f} * Meter);
-        const auto biggerDiskConf = DiskShape::Conf(diskConf).UseVertexRadius(Real{5.0f} * Meter);
+        const auto diskConf = DiskShape::Conf{}.UseDensity(10_kgpm2);
+        const auto smallerDiskConf = DiskShape::Conf(diskConf).UseVertexRadius(0.5_m);
+        const auto biggerDiskConf = DiskShape::Conf(diskConf).UseVertexRadius(5_m);
 
         const auto ground = m_world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(groundConf));
@@ -52,17 +52,17 @@ public:
         m_top = upperBody->CreateFixture(std::make_shared<DiskShape>(biggerDiskConf));
         
         RegisterForKey(GLFW_KEY_KP_ADD, GLFW_PRESS, 0, "increase density of top shape", [&](KeyActionMods) {
-            ChangeDensity(+KilogramPerSquareMeter);
+            ChangeDensity(+1_kgpm2);
         });
         RegisterForKey(GLFW_KEY_KP_SUBTRACT, GLFW_PRESS, 0, "decrease density of top shape", [&](KeyActionMods) {
-            ChangeDensity(-KilogramPerSquareMeter);
+            ChangeDensity(-1_kgpm2);
         });
     }
 
     void ChangeDensity(Density change)
     {
         const auto oldDensity = m_top->GetShape()->GetDensity();
-        const auto newDensity = std::max(oldDensity + change, KilogramPerSquareMeter);
+        const auto newDensity = std::max(oldDensity + change, 1_kgpm2);
         if (newDensity != oldDensity)
         {
             auto selectedFixtures = GetSelectedFixtures();
@@ -71,7 +71,7 @@ public:
             const auto body = m_top->GetBody();
             body->DestroyFixture(m_top);
             auto conf = DiskShape::Conf{};
-            conf.vertexRadius = Real{5.0f} * Meter;
+            conf.vertexRadius = 5_m;
             conf.density = newDensity;
             m_top = body->CreateFixture(std::make_shared<DiskShape>(conf));
             if (wasSelected)
@@ -82,11 +82,11 @@ public:
         }
     }
 
-    void PostStep(const Settings&, Drawer& drawer) override
+    void PostStep(const Settings&, Drawer&) override
     {
         std::stringstream stream;
         stream << "Density of top shape: ";
-        stream << double(Real{m_top->GetShape()->GetDensity() / KilogramPerSquareMeter});
+        stream << double(Real{m_top->GetShape()->GetDensity() / 1_kgpm2});
         stream << " kg/m^2.";
         m_status = stream.str();
     }

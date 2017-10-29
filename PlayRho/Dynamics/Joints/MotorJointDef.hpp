@@ -64,10 +64,10 @@ struct MotorJointDef : public JointBuilder<MotorJointDef>
     Angle angularOffset = Angle{0};
     
     /// @brief Maximum motor force.
-    NonNegative<Force> maxForce = NonNegative<Force>(Real{1} * Newton);
+    NonNegative<Force> maxForce = NonNegative<Force>(1_N);
     
     /// @brief Maximum motor torque.
-    NonNegative<Torque> maxTorque = NonNegative<Torque>(Real{1} * NewtonMeter);
+    NonNegative<Torque> maxTorque = NonNegative<Torque>(1_Nm);
     
     /// @brief Position correction factor in the range [0,1].
     Real correctionFactor = Real(0.3);

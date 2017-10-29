@@ -157,10 +157,10 @@ protected:
 private:
     
     /// @brief Vertex radius.
-    NonNegative<Length> m_vertexRadius = NonNegative<Length>{Real(0) * Meter};
+    NonNegative<Length> m_vertexRadius = NonNegative<Length>{0_m};
     
     /// @brief Density.
-    NonNegative<Density> m_density = NonNegative<Density>{KilogramPerSquareMeter * Real{0}};
+    NonNegative<Density> m_density = NonNegative<Density>{0_kgpm2};
     
     /// @brief Friction as a coefficient.
     NonNegative<Real> m_friction = NonNegative<Real>{Real{2} / Real{10}};

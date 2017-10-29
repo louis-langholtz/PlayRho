@@ -30,30 +30,30 @@ public:
     Gears()
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(50.0f, 0.0f) * Meter, Vec2(-50.0f, 0.0f) * Meter));
+        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(50.0f, 0.0f) * 1_m, Vec2(-50.0f, 0.0f) * 1_m));
 
-        const auto circle1 = std::make_shared<DiskShape>(Real{1} * Meter);
-        circle1->SetDensity(Real{5} * KilogramPerSquareMeter);
-        const auto circle2 = std::make_shared<DiskShape>(Real{2} * Meter);
-        circle2->SetDensity(Real{5} * KilogramPerSquareMeter);
-        const auto box = std::make_shared<PolygonShape>(Real{0.5f} * Meter, Real{5.0f} * Meter);
-        box->SetDensity(Real{5} * KilogramPerSquareMeter);
+        const auto circle1 = std::make_shared<DiskShape>(1_m);
+        circle1->SetDensity(5_kgpm2);
+        const auto circle2 = std::make_shared<DiskShape>(2_m);
+        circle2->SetDensity(5_kgpm2);
+        const auto box = std::make_shared<PolygonShape>(0.5_m, 5_m);
+        box->SetDensity(5_kgpm2);
     
         {
             auto bd1 = BodyDef{};
             bd1.type = BodyType::Static;
-            bd1.location = Vec2(10.0f, 9.0f) * Meter;
+            bd1.location = Vec2(10.0f, 9.0f) * 1_m;
             const auto body1 = m_world.CreateBody(bd1);
 
             auto bd2 = BodyDef{};
             bd2.type = BodyType::Dynamic;
-            bd2.location = Vec2(10.0f, 8.0f) * Meter;
+            bd2.location = Vec2(10.0f, 8.0f) * 1_m;
             const auto body2 = m_world.CreateBody(bd2);
             body2->CreateFixture(box);
 
             auto bd3 = BodyDef{};
             bd3.type = BodyType::Dynamic;
-            bd3.location = Vec2(10.0f, 6.0f) * Meter;
+            bd3.location = Vec2(10.0f, 6.0f) * 1_m;
             const auto body3 = m_world.CreateBody(bd3);
             body3->CreateFixture(circle2);
 
@@ -68,7 +68,7 @@ public:
         {
             auto bd1 = BodyDef{};
             bd1.type = BodyType::Dynamic;
-            bd1.location = Vec2(-3.0f, 12.0f) * Meter;
+            bd1.location = Vec2(-3.0f, 12.0f) * 1_m;
             const auto body1 = m_world.CreateBody(bd1);
             body1->CreateFixture(circle1);
 
@@ -82,7 +82,7 @@ public:
 
             auto bd2 = BodyDef{};
             bd2.type = BodyType::Dynamic;
-            bd2.location = Vec2(0.0f, 12.0f) * Meter;
+            bd2.location = Vec2(0.0f, 12.0f) * 1_m;
             const auto body2 = m_world.CreateBody(bd2);
             body2->CreateFixture(circle2);
 
@@ -91,13 +91,13 @@ public:
 
             auto bd3 = BodyDef{};
             bd3.type = BodyType::Dynamic;
-            bd3.location = Vec2(2.5f, 12.0f) * Meter;
+            bd3.location = Vec2(2.5f, 12.0f) * 1_m;
             const auto body3 = m_world.CreateBody(bd3);
             body3->CreateFixture(box);
 
             auto jd3 = PrismaticJointDef{ground, body3, bd3.location, UnitVec2::GetTop()};
-            jd3.lowerTranslation = Real{-5.0f} * Meter;
-            jd3.upperTranslation = Real{5.0f} * Meter;
+            jd3.lowerTranslation = -5_m;
+            jd3.upperTranslation = 5_m;
             jd3.enableLimit = true;
 
             m_joint3 = static_cast<PrismaticJoint*>(m_world.CreateJoint(jd3));
@@ -107,7 +107,7 @@ public:
             m_joint4 = static_cast<GearJoint*>(m_world.CreateJoint(jd4));
 
             auto jd5 = GearJointDef{m_joint2, m_joint3};
-            jd5.ratio = -1.0f / (circle2->GetRadius() / Meter);
+            jd5.ratio = -1.0f / (circle2->GetRadius() / 1_m);
             m_joint5 = static_cast<GearJoint*>(m_world.CreateJoint(jd5));
         }
     }
@@ -119,14 +119,14 @@ public:
             const auto ratio = m_joint4->GetRatio();
             const auto angle = GetJointAngle(*m_joint1) + ratio * GetJointAngle(*m_joint2);
             stream << "Theta1 + " << static_cast<double>(ratio);
-            stream << " * theta2 = " << static_cast<double>(Real{angle / Radian});
+            stream << " * theta2 = " << static_cast<double>(Real{angle / 1_rad});
             stream << " rad.\n";
         }
         {
             const auto ratio = m_joint5->GetRatio();
             const auto value = ratio * GetJointTranslation(*m_joint3);
             stream << "Theta2 + " << static_cast<double>(ratio);
-            stream << " * theta2 = " << static_cast<double>(Real{value / Meter});
+            stream << " * theta2 = " << static_cast<double>(Real{value / 1_m});
             stream << " m.";
         }
         m_status = stream.str();

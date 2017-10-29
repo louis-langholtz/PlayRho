@@ -173,7 +173,7 @@ TEST(GearJoint, WithDynamicCirclesAndRevoluteJoints)
     ASSERT_NE(def.joint2, nullptr);
     const auto joint = world.CreateJoint(def);
     ASSERT_NE(joint, nullptr);
-    Step(world, Time{Second * Real{1}});
+    Step(world, 1_s);
     EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
     EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);
@@ -204,7 +204,7 @@ TEST(GearJoint, WithDynamicCirclesAndPrismaticJoints)
     ASSERT_NE(def.joint2, nullptr);
     const auto joint = world.CreateJoint(def);
     ASSERT_NE(joint, nullptr);
-    Step(world, Time{Second * Real{1}});
+    Step(world, 1_s);
     EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
     EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);

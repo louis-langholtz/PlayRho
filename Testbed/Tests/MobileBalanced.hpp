@@ -33,24 +33,24 @@ public:
         e_depth = 4
     };
 
-    const Density density = Real{20} * KilogramPerSquareMeter;
+    const Density density = 20_kgpm2;
 
     MobileBalanced()
     {
-        const auto ground = m_world.CreateBody(BodyDef{}.UseLocation(Vec2(0.0f, 20.0f) * Meter));
+        const auto ground = m_world.CreateBody(BodyDef{}.UseLocation(Vec2(0.0f, 20.0f) * 1_m));
 
         const auto a = Real{0.5f};
-        const auto h = Vec2(0.0f, a) * Meter;
+        const auto h = Vec2(0.0f, a) * 1_m;
 
         auto conf = PolygonShape::Conf{};
         conf.density = density;
-        const auto shape = std::make_shared<const PolygonShape>(Real{0.25f} * a * Meter, a * Meter, conf);
-        const auto root = AddNode(ground, Vec2_zero * Meter, 0, 3.0f, a, shape);
+        const auto shape = std::make_shared<const PolygonShape>(Real{0.25f} * a * 1_m, a * 1_m, conf);
+        const auto root = AddNode(ground, Vec2_zero * 1_m, 0, 3.0f, a, shape);
 
         RevoluteJointDef jointDef;
         jointDef.bodyA = ground;
         jointDef.bodyB = root;
-        jointDef.localAnchorA = Vec2_zero * Meter;
+        jointDef.localAnchorA = Vec2_zero * 1_m;
         jointDef.localAnchorB = h;
         m_world.CreateJoint(jointDef);
     }
@@ -58,7 +58,7 @@ public:
     Body* AddNode(const Body* parent, const Length2D localAnchor, const int depth,
                   const Real offset, const Real a, std::shared_ptr<const Shape> shape)
     {
-        const auto h = Vec2(0.0f, a) * Meter;
+        const auto h = Vec2(0.0f, a) * 1_m;
 
         const auto p = parent->GetLocation() + localAnchor - h;
 
@@ -74,13 +74,13 @@ public:
             return body;
         }
 
-        PolygonShape shape2(Real{0.25f} * a * Meter, Real{a} * Meter);
+        PolygonShape shape2(Real{0.25f} * a * 1_m, Real{a} * 1_m);
         shape2.SetDensity(density);
-        SetAsBox(shape2, offset * Meter, Real{0.25f} * a * Meter, Vec2(0, -a) * Meter, Real{0.0f} * Radian);
+        SetAsBox(shape2, offset * 1_m, Real{0.25f} * a * 1_m, Vec2(0, -a) * 1_m, 0_rad);
         body->CreateFixture(std::make_shared<PolygonShape>(shape2));
 
-        const auto a1 = Vec2(offset, -a) * Meter;
-        const auto a2 = Vec2(-offset, -a) * Meter;
+        const auto a1 = Vec2(offset, -a) * 1_m;
+        const auto a2 = Vec2(-offset, -a) * 1_m;
         const auto body1 = AddNode(body, a1, depth + 1, 0.5f * offset, a, shape);
         const auto body2 = AddNode(body, a2, depth + 1, 0.5f * offset, a, shape);
 

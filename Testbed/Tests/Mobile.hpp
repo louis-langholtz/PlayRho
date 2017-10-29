@@ -36,24 +36,24 @@ public:
     Mobile()
     {
         // Create ground body.
-        const auto ground = m_world.CreateBody(BodyDef{}.UseLocation(Vec2(0.0f, 20.0f) * Meter));
+        const auto ground = m_world.CreateBody(BodyDef{}.UseLocation(Vec2(0.0f, 20.0f) * 1_m));
 
         const auto a = Real{0.5f};
-        const auto shape = std::make_shared<PolygonShape>(Real{0.25f} * a * Meter, a * Meter);
-        shape->SetDensity(Real{20} * KilogramPerSquareMeter);
+        const auto shape = std::make_shared<PolygonShape>(Real{0.25f} * a * 1_m, a * 1_m);
+        shape->SetDensity(20_kgpm2);
 
         RevoluteJointDef jointDef;
         jointDef.bodyA = ground;
-        jointDef.bodyB = AddNode(ground, Vec2_zero * Meter, 0, 3.0f, static_cast<float>(a), shape);
-        jointDef.localAnchorA = Vec2_zero * Meter;
-        jointDef.localAnchorB = Vec2(0, a) * Meter;
+        jointDef.bodyB = AddNode(ground, Vec2_zero * 1_m, 0, 3.0f, static_cast<float>(a), shape);
+        jointDef.localAnchorA = Vec2_zero * 1_m;
+        jointDef.localAnchorB = Vec2(0, a) * 1_m;
         m_world.CreateJoint(jointDef);
     }
 
     Body* AddNode(Body* parent, Length2D localAnchor, int depth, float offset, float a,
                   std::shared_ptr<Shape> shape)
     {
-        const auto h = Vec2(0.0f, a) * Meter;
+        const auto h = Vec2(0.0f, a) * 1_m;
 
         BodyDef bodyDef;
         bodyDef.type = BodyType::Dynamic;
@@ -66,8 +66,8 @@ public:
             return body;
         }
 
-        const auto a1 = Vec2(offset, -a) * Meter;
-        const auto a2 = Vec2(-offset, -a) * Meter;
+        const auto a1 = Vec2(offset, -a) * 1_m;
+        const auto a2 = Vec2(-offset, -a) * 1_m;
 
         RevoluteJointDef jointDef;
         jointDef.bodyA = body;

@@ -290,7 +290,7 @@ bool WheelJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Cons
 
     const auto k = InvMass{invMassA + invMassB + invRotMassA + invRotMassB};
 
-    const auto impulse = (k != InvMass{0})? -(C / k): Real{0} * Kilogram * Meter;
+    const auto impulse = (k != InvMass{0})? -(C / k): 0 * Kilogram * Meter;
 
     const auto P = impulse * ay;
     const auto LA = impulse * sAy / Radian;

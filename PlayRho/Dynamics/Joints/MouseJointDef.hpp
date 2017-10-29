@@ -73,7 +73,7 @@ struct MouseJointDef : public JointBuilder<MouseJointDef>
     /// Frequency.
     /// @details The has to do with the response speed.
     /// @note This value may not be negative.
-    NonNegative<Frequency> frequency = NonNegative<Frequency>(Real{5} * Hertz);
+    NonNegative<Frequency> frequency = NonNegative<Frequency>(5_Hz);
     
     /// The damping ratio. 0 = no damping, 1 = critical damping.
     NonNegative<Real> dampingRatio = NonNegative<Real>(0.7f);

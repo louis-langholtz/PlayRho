@@ -35,7 +35,7 @@ public:
         // Ground body
         {
             const auto ground = m_world.CreateBody();
-            ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-50.0f, 0.0f) * Meter, Vec2(50.0f, 0.0f) * Meter));
+            ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-50, 0) * 1_m, Vec2(50, 0) * 1_m));
         }
 
         auto xLo = -5.0f, xHi = 5.0f;
@@ -43,17 +43,17 @@ public:
 
         // Small triangle
         Length2D vertices[3];
-        vertices[0] = Vec2(-1.0f, 0.0f) * Meter;
-        vertices[1] = Vec2(1.0f, 0.0f) * Meter;
-        vertices[2] = Vec2(0.0f, 2.0f) * Meter;
+        vertices[0] = Vec2(-1.0f, 0.0f) * 1_m;
+        vertices[1] = Vec2(1.0f, 0.0f) * 1_m;
+        vertices[2] = Vec2(0.0f, 2.0f) * 1_m;
 
         PolygonShape polygon;
         polygon.Set(Span<const Length2D>{vertices, 3});
-        polygon.SetDensity(Real{1} * KilogramPerSquareMeter);
+        polygon.SetDensity(1_kgpm2);
 
         BodyDef triangleBodyDef;
         triangleBodyDef.type = BodyType::Dynamic;
-        triangleBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
+        triangleBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
         const auto body1 = m_world.CreateBody(triangleBodyDef);
         body1->CreateFixture(std::make_shared<PolygonShape>(polygon));
@@ -64,43 +64,43 @@ public:
         vertices[2] *= 2.0f;
         polygon.Set(Span<const Length2D>{vertices, 3});
 
-        triangleBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
+        triangleBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
         const auto body2 = m_world.CreateBody(triangleBodyDef);
         body2->CreateFixture(std::make_shared<PolygonShape>(polygon));
         
         // Small box
-        polygon.SetAsBox(Real{1.0f} * Meter, Real{0.5f} * Meter);
+        polygon.SetAsBox(1_m, 0.5_m);
 
         BodyDef boxBodyDef;
         boxBodyDef.type = BodyType::Dynamic;
-        boxBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
+        boxBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
         const auto body3 = m_world.CreateBody(boxBodyDef);
         body3->CreateFixture(std::make_shared<PolygonShape>(polygon));
 
         // Large box (recycle definitions)
-        polygon.SetAsBox(Real{2.0f} * Meter, Real{1.0f} * Meter);
-        boxBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
+        polygon.SetAsBox(2_m, 1_m);
+        boxBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
         
         const auto body4 = m_world.CreateBody(boxBodyDef);
         body4->CreateFixture(std::make_shared<PolygonShape>(polygon));
 
         // Small circle
         DiskShape circle;
-        circle.SetRadius(Real{1} * Meter);
-        circle.SetDensity(Real{1} * KilogramPerSquareMeter);
+        circle.SetRadius(1_m);
+        circle.SetDensity(1_kgpm2);
 
         BodyDef circleBodyDef;
         circleBodyDef.type = BodyType::Dynamic;
-        circleBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
+        circleBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
         const auto body5 = m_world.CreateBody(circleBodyDef);
         body5->CreateFixture(std::make_shared<DiskShape>(circle));
 
         // Large circle
         circle.SetRadius(circle.GetRadius() * Real{2});
-        circleBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * Meter;
+        circleBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
         const auto body6 = m_world.CreateBody(circleBodyDef);
         body6->CreateFixture(std::make_shared<DiskShape>(circle));

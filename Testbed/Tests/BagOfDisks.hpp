@@ -45,32 +45,32 @@ namespace playrho {
             RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Increase counter-clockwise angular velocity",
                            [&](KeyActionMods) {
                 const auto angularVelocity = GetAngularVelocity(*m_ground);
-                SetAngularVelocity(*m_ground, angularVelocity + 0.1f * RadianPerSecond);
+                SetAngularVelocity(*m_ground, angularVelocity + 0.1_rad / Second);
             });
             RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Increase clockwise angular velocity",
                            [&](KeyActionMods) {
                 const auto angularVelocity = GetAngularVelocity(*m_ground);
-                SetAngularVelocity(*m_ground, angularVelocity - 0.1f * RadianPerSecond);
+                SetAngularVelocity(*m_ground, angularVelocity - 0.1_rad / Second);
             });
 
-            auto boundaryConf = ChainShape::Conf{}.UseFriction(100);
-            boundaryConf.UseVertexRadius(0.04f * Meter);
-            boundaryConf.vertices.push_back(Vec2(-12, +20) * Meter);
-            boundaryConf.vertices.push_back(Vec2(-12,  +0) * Meter);
-            boundaryConf.vertices.push_back(Vec2(+12,  +0) * Meter);
-            boundaryConf.vertices.push_back(Vec2(+12, +20) * Meter);
+            auto boundaryConf = ChainShape::Conf{}.UseFriction(Real(100));
+            boundaryConf.UseVertexRadius(0.04_m);
+            boundaryConf.vertices.push_back(Vec2(-12, +20) * 1_m);
+            boundaryConf.vertices.push_back(Vec2(-12,  +0) * 1_m);
+            boundaryConf.vertices.push_back(Vec2(+12,  +0) * 1_m);
+            boundaryConf.vertices.push_back(Vec2(+12, +20) * 1_m);
             m_ground->CreateFixture(std::make_shared<ChainShape>(boundaryConf));
             
-            const auto vertices = GetCircleVertices(10 * Meter, 90);
+            const auto vertices = GetCircleVertices(10_m, 90);
             const auto halfSegmentLength = GetLength(vertices[1] - vertices[0]) / 2;
 
             auto conf = EdgeShape::Conf{};
-            conf.vertexRadius = 0.125f * Meter;
-            conf.density = 10 * KilogramPerSquareMeter;
+            conf.vertexRadius = 0.125_m;
+            conf.density = 10_kgpm2;
             conf.friction = 0.2f;
-            conf.vertex1 = Length2D{-halfSegmentLength, 0 * Meter};
-            conf.vertex2 = Length2D{+halfSegmentLength, 0 * Meter};
-            const auto vertexOffset = Vec2(0, 14) * Meter;
+            conf.vertex1 = Length2D{-halfSegmentLength, 0_m};
+            conf.vertex2 = Length2D{+halfSegmentLength, 0_m};
+            const auto vertexOffset = Vec2(0, 14) * 1_m;
             const auto shape = std::make_shared<EdgeShape>(conf);
             auto prevBody = static_cast<Body*>(nullptr);
             auto firstBody = static_cast<Body*>(nullptr);
@@ -101,16 +101,16 @@ namespace playrho {
             }
             m_world.CreateJoint(RevoluteJointDef{prevBody, firstBody, vertices[0] + vertexOffset});
 
-            const auto diskRadius = 0.15f * Meter;
+            const auto diskRadius = 0.15_m;
             const auto diskShape = std::make_shared<DiskShape>(DiskShape::Conf{}
                                                                .UseVertexRadius(diskRadius)
-                                                               .UseDensity(10 * KilogramPerSquareMeter)
-                                                               .UseFriction(0));
+                                                               .UseDensity(10_kgpm2)
+                                                               .UseFriction(Real(0)));
             
-            auto angleIncrement = 90 * Degree;
+            auto angleIncrement = 90_deg;
             auto angle = Angle(0);
             const auto alpha = diskRadius;
-            const auto beta = 0.000125f * Meter / Degree;
+            const auto beta = 0.000125_m / Degree;
             for (auto i = 0; i < 2000; ++i)
             {
                 const auto radius = alpha + beta * angle;

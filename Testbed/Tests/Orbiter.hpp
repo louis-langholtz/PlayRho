@@ -38,27 +38,27 @@ namespace playrho {
             bd.location = m_center;
             const auto ctrBody = m_world.CreateBody(bd);
             const auto ctrShape = std::make_shared<DiskShape>();
-            ctrShape->SetRadius(Real{3} * Meter);
+            ctrShape->SetRadius(3_m);
             ctrBody->CreateFixture(ctrShape);
 
             bd.type = BodyType::Dynamic;
-            bd.location = Length2D{GetX(m_center), GetY(m_center) + radius * Meter};
+            bd.location = Length2D{GetX(m_center), GetY(m_center) + radius * 1_m};
             m_orbiter = m_world.CreateBody(bd);
             const auto ballShape = std::make_shared<DiskShape>();
-            ballShape->SetRadius(Real{0.5f} * Meter);
-            ballShape->SetDensity(Real(1) * KilogramPerSquareMeter);
+            ballShape->SetRadius(0.5_m);
+            ballShape->SetDensity(1_kgpm2);
             m_orbiter->CreateFixture(ballShape);
             
             const auto velocity = Velocity{
-                Vec2{Pi * radius / Real{2}, 0} * MeterPerSecond,
-                Real{360.0f} * Degree / Second
+                Vec2{Pi * radius / 2, 0} * 1_mps,
+                360_deg / 1_s
             };
             m_orbiter->SetVelocity(velocity);
             
             auto conf = ChainShape::Conf{};
-            conf.vertices = GetCircleVertices(Real(20.0f) * Meter, 180);
-            conf.UseVertexRadius(Real(0.1) * Meter);
-            conf.UseDensity(Real(1) * KilogramPerSquareMeter);
+            conf.vertices = GetCircleVertices(20_m, 180);
+            conf.UseVertexRadius(0.1_m);
+            conf.UseDensity(1_kgpm2);
             const auto outerCicle = std::make_shared<ChainShape>(conf);
 
             bd.type = BodyType::Dynamic;
@@ -72,13 +72,13 @@ namespace playrho {
         {
             const auto force = GetCentripetalForce(*m_orbiter, m_center);
             const auto linAccel = force * m_orbiter->GetInvMass();
-            const auto angAccel = Real{0.0f} * RadianPerSquareSecond;
+            const auto angAccel = 0 * RadianPerSquareSecond;
             m_orbiter->SetAcceleration(linAccel, angAccel);
         }
         
     private:
         Body* m_orbiter = nullptr;
-        Length2D const m_center = Vec2{0, 20} * Meter;
+        Length2D const m_center = Vec2{0, 20} * 1_m;
 
     };
     

@@ -381,14 +381,14 @@ namespace playrho
 
     /// @brief SI unit symbol for a gram unit of Mass.
     /// @sa https://en.wikipedia.org/wiki/Gram
-    constexpr Mass operator"" _g(unsigned long long int v)
+    constexpr Mass operator"" _g(unsigned long long int v) noexcept
     {
         return static_cast<Real>(v) * (Kilogram / Kilo);
     }
     
     /// @brief SI unit symbol for a gram unit of Mass.
     /// @sa https://en.wikipedia.org/wiki/Gram
-    constexpr Mass operator"" _g(long double v)
+    constexpr Mass operator"" _g(long double v) noexcept
     {
         return static_cast<Real>(v) * (Kilogram / Kilo);
     }
@@ -396,7 +396,7 @@ namespace playrho
     /// @brief SI unit symbol for a kilogram unit of Mass.
     /// @sa Kilogram
     /// @sa https://en.wikipedia.org/wiki/Kilogram
-    constexpr Mass operator"" _kg(unsigned long long int v)
+    constexpr Mass operator"" _kg(unsigned long long int v) noexcept
     {
         return static_cast<Real>(v) * Kilogram;
     }
@@ -404,21 +404,21 @@ namespace playrho
     /// @brief SI unit symbol for a kilogram unit of Mass.
     /// @sa Kilogram
     /// @sa https://en.wikipedia.org/wiki/Kilogram
-    constexpr Mass operator"" _kg(long double v)
+    constexpr Mass operator"" _kg(long double v) noexcept
     {
         return static_cast<Real>(v) * Kilogram;
     }
     
     /// @brief SI unit symbol for a yottagram unit of Mass.
     /// @sa https://en.wikipedia.org/wiki/Orders_of_magnitude_(mass)
-    constexpr Mass operator"" _Yg(unsigned long long int v)
+    constexpr Mass operator"" _Yg(unsigned long long int v) noexcept
     {
         return static_cast<Real>(v) * Yotta * (Kilogram / Kilo);
     }
     
     /// @brief SI unit symbol for a yottagram unit of Mass.
     /// @sa https://en.wikipedia.org/wiki/Orders_of_magnitude_(mass)
-    constexpr Mass operator"" _Yg(long double v)
+    constexpr Mass operator"" _Yg(long double v) noexcept
     {
         return static_cast<Real>(v) * Yotta * (Kilogram / Kilo);
     }
@@ -426,7 +426,7 @@ namespace playrho
     /// @brief SI unit symbol for a meter of Length.
     /// @sa Meter
     /// @sa https://en.wikipedia.org/wiki/Metre
-    constexpr Length operator"" _m(unsigned long long int v)
+    constexpr Length operator"" _m(unsigned long long int v) noexcept
     {
         return static_cast<Real>(v) * Meter;
     }
@@ -434,35 +434,63 @@ namespace playrho
     /// @brief SI unit symbol for a meter of Length.
     /// @sa Meter
     /// @sa https://en.wikipedia.org/wiki/Metre
-    constexpr Length operator"" _m(long double v)
+    constexpr Length operator"" _m(long double v) noexcept
     {
         return static_cast<Real>(v) * Meter;
     }
     
+    /// @brief SI unit symbol for a decimeter of Length.
+    /// @sa https://en.wikipedia.org/wiki/Decimetre
+    constexpr Length operator"" _dm(unsigned long long int v) noexcept
+    {
+        return static_cast<Real>(v) * Deci * Meter;
+    }
+    
+    /// @brief SI unit symbol for a decimeter of Length.
+    /// @sa https://en.wikipedia.org/wiki/Decimetre
+    constexpr Length operator"" _dm(long double v) noexcept
+    {
+        return static_cast<Real>(v) * Deci * Meter;
+    }
+    
+    /// @brief SI unit symbol for a centimeter of Length.
+    /// @sa https://en.wikipedia.org/wiki/Centimetre
+    constexpr Length operator"" _cm(unsigned long long int v) noexcept
+    {
+        return static_cast<Real>(v) * Centi * Meter;
+    }
+    
+    /// @brief SI unit symbol for a centimeter of Length.
+    /// @sa https://en.wikipedia.org/wiki/Centimetre
+    constexpr Length operator"" _cm(long double v) noexcept
+    {
+        return static_cast<Real>(v) * Centi * Meter;
+    }
+    
     /// @brief SI unit symbol for a gigameter unit of Length.
     /// @sa https://en.wikipedia.org/wiki/Gigametre
-    constexpr Length operator"" _Gm (unsigned long long int v)
+    constexpr Length operator"" _Gm (unsigned long long int v) noexcept
     {
         return static_cast<Real>(v) * Giga * Meter;
     }
     
     /// @brief SI unit symbol for a gigameter unit of Length.
     /// @sa https://en.wikipedia.org/wiki/Gigametre
-    constexpr Length operator"" _Gm (long double v)
+    constexpr Length operator"" _Gm (long double v) noexcept
     {
         return static_cast<Real>(v) * Giga * Meter;
     }
     
     /// @brief SI symbol for a kilometer unit of Length.
     /// @sa https://en.wikipedia.org/wiki/Kilometre
-    constexpr Length operator"" _km (unsigned long long int v)
+    constexpr Length operator"" _km (unsigned long long int v) noexcept
     {
         return static_cast<Real>(v) * Kilo * Meter;
     }
     
     /// @brief SI symbol for a kilometer unit of Length.
     /// @sa https://en.wikipedia.org/wiki/Kilometre
-    constexpr Length operator"" _km (long double v)
+    constexpr Length operator"" _km (long double v) noexcept
     {
         return static_cast<Real>(v) * Kilo * Meter;
     }
@@ -470,7 +498,7 @@ namespace playrho
     /// @brief SI symbol for a second unit of Time.
     /// @sa Second
     /// @sa https://en.wikipedia.org/wiki/Second
-    constexpr Time operator"" _s(unsigned long long int v)
+    constexpr Time operator"" _s(unsigned long long int v) noexcept
     {
         return static_cast<Real>(v) * Second;
     }
@@ -478,49 +506,49 @@ namespace playrho
     /// @brief SI symbol for a second unit of Time.
     /// @sa Second
     /// @sa https://en.wikipedia.org/wiki/Second
-    constexpr Time operator"" _s(long double v)
+    constexpr Time operator"" _s(long double v) noexcept
     {
         return static_cast<Real>(v) * Second;
     }
     
     /// @brief SI symbol for a minute unit of Time.
     /// @sa https://en.wikipedia.org/wiki/Minute
-    constexpr Time operator"" _min(unsigned long long int v)
+    constexpr Time operator"" _min(unsigned long long int v) noexcept
     {
         return static_cast<Real>(v) * 60 * Second;
     }
     
     /// @brief SI symbol for a minute unit of Time.
     /// @sa https://en.wikipedia.org/wiki/Minute
-    constexpr Time operator"" _min(long double v)
+    constexpr Time operator"" _min(long double v) noexcept
     {
         return static_cast<Real>(v) * 60 * Second;
     }
     
     /// @brief Symbol for an hour unit of Time.
     /// @sa https://en.wikipedia.org/wiki/Hour
-    constexpr Time operator"" _h(unsigned long long int v)
+    constexpr Time operator"" _h(unsigned long long int v) noexcept
     {
         return static_cast<Real>(v) * 60 * 60 * Second;
     }
     
     /// @brief Symbol for an hour unit of Time.
     /// @sa https://en.wikipedia.org/wiki/Hour
-    constexpr Time operator"" _h(long double v)
+    constexpr Time operator"" _h(long double v) noexcept
     {
         return static_cast<Real>(v) * 60 * 60 * Second;
     }
     
     /// @brief Symbol for a day unit of Time.
     /// @sa https://en.wikipedia.org/wiki/Day
-    constexpr Time operator"" _d(unsigned long long int v)
+    constexpr Time operator"" _d(unsigned long long int v) noexcept
     {
         return static_cast<Real>(v) * 60 * 60 * 24 * Second;
     }
     
     /// @brief Symbol for a day unit of Time.
     /// @sa https://en.wikipedia.org/wiki/Day
-    constexpr Time operator"" _d(long double v)
+    constexpr Time operator"" _d(long double v) noexcept
     {
         return static_cast<Real>(v) * 60 * 60 * 24 * Second;
     }
@@ -528,7 +556,7 @@ namespace playrho
     /// @brief SI symbol for a radian unit of Angle.
     /// @sa Radian.
     /// @sa https://en.wikipedia.org/wiki/Radian
-    constexpr Angle operator"" _rad(unsigned long long int v)
+    constexpr Angle operator"" _rad(unsigned long long int v) noexcept
     {
         return static_cast<Real>(v) * Radian;
     }
@@ -536,9 +564,41 @@ namespace playrho
     /// @brief SI symbol for a radian unit of Angle.
     /// @sa Radian.
     /// @sa https://en.wikipedia.org/wiki/Radian
-    constexpr Angle operator"" _rad(long double v)
+    constexpr Angle operator"" _rad(long double v) noexcept
     {
         return static_cast<Real>(v) * Radian;
+    }
+
+    /// @brief Abbreviation for a degree unit of Angle.
+    /// @sa Degree.
+    /// @sa https://en.wikipedia.org/wiki/Degree_(angle)
+    constexpr Angle operator"" _deg(unsigned long long int v) noexcept
+    {
+        return static_cast<Real>(v) * Degree;
+    }
+    
+    /// @brief Abbreviation for a degree unit of Angle.
+    /// @sa Degree.
+    /// @sa https://en.wikipedia.org/wiki/Degree_(angle)
+    constexpr Angle operator"" _deg(long double v) noexcept
+    {
+        return static_cast<Real>(v) * Degree;
+    }
+
+    /// @brief SI symbol for a newton unit of Force.
+    /// @sa Newton
+    /// @sa https://en.wikipedia.org/wiki/Newton_(unit)
+    constexpr Force operator"" _N(unsigned long long int v) noexcept
+    {
+        return static_cast<Real>(v) * Newton;
+    }
+    
+    /// @brief SI symbol for a newton unit of Force.
+    /// @sa Newton
+    /// @sa https://en.wikipedia.org/wiki/Newton_(unit)
+    constexpr Force operator"" _N(long double v) noexcept
+    {
+        return static_cast<Real>(v) * Newton;
     }
     
     /// @brief Abbreviation for meter per second.
@@ -546,7 +606,7 @@ namespace playrho
     /// @sa Meter
     /// @sa Second
     /// @sa MeterPerSecond
-    constexpr LinearVelocity operator"" _mps(unsigned long long int v)
+    constexpr LinearVelocity operator"" _mps(unsigned long long int v) noexcept
     {
         return static_cast<Real>(v) * MeterPerSecond;
     }
@@ -556,7 +616,7 @@ namespace playrho
     /// @sa Meter
     /// @sa Second
     /// @sa MeterPerSecond
-    constexpr LinearVelocity operator"" _mps(long double v)
+    constexpr LinearVelocity operator"" _mps(long double v) noexcept
     {
         return static_cast<Real>(v) * MeterPerSecond;
     }
@@ -564,7 +624,7 @@ namespace playrho
     /// @brief Abbreviation for kilometer per second.
     /// @sa https://en.wikipedia.org/wiki/Metre_per_second
     /// @sa Second
-    constexpr LinearVelocity operator"" _kps(unsigned long long int v)
+    constexpr LinearVelocity operator"" _kps(unsigned long long int v) noexcept
     {
         return static_cast<Real>(v) * Kilo * MeterPerSecond;
     }
@@ -572,11 +632,87 @@ namespace playrho
     /// @brief Abbreviation for kilometer per second.
     /// @sa https://en.wikipedia.org/wiki/Metre_per_second
     /// @sa Second
-    constexpr LinearVelocity operator"" _kps(long double v)
+    constexpr LinearVelocity operator"" _kps(long double v) noexcept
     {
         return static_cast<Real>(v) * Kilo * MeterPerSecond;
     }
     
+    /// @brief Abbreviation for meter per second squared.
+    /// @sa https://en.wikipedia.org/wiki/Metre_per_second_squared
+    /// @sa MeterPerSquareSecond
+    constexpr LinearAcceleration operator"" _mps2(unsigned long long int v) noexcept
+    {
+        return static_cast<Real>(v) * MeterPerSquareSecond;
+    }
+    
+    /// @brief Abbreviation for meter per second squared.
+    /// @sa https://en.wikipedia.org/wiki/Metre_per_second_squared
+    /// @sa MeterPerSquareSecond
+    constexpr LinearAcceleration operator"" _mps2(long double v) noexcept
+    {
+        return static_cast<Real>(v) * MeterPerSquareSecond;
+    }
+    
+    /// @brief SI symbol for a hertz unit of Frequency.
+    /// @sa Hertz
+    /// @sa https://en.wikipedia.org/wiki/Hertz
+    constexpr Frequency operator"" _Hz(unsigned long long int v) noexcept
+    {
+        return static_cast<Real>(v) * Hertz;
+    }
+    
+    /// @brief SI symbol for a hertz unit of Frequency.
+    /// @sa Hertz
+    /// @sa https://en.wikipedia.org/wiki/Hertz
+    constexpr Frequency operator"" _Hz(long double v) noexcept
+    {
+        return static_cast<Real>(v) * Hertz;
+    }
+    
+    /// @brief Abbreviation for newton-meter unit of torque.
+    /// @sa NewtonMeter
+    /// @sa https://en.wikipedia.org/wiki/Newton_metre
+    constexpr Torque operator"" _Nm(unsigned long long int v) noexcept
+    {
+        return static_cast<Real>(v) * NewtonMeter;
+    }
+    
+    /// @brief Abbreviation for newton-meter unit of torque.
+    /// @sa NewtonMeter
+    /// @sa https://en.wikipedia.org/wiki/Newton_metre
+    constexpr Torque operator"" _Nm(long double v) noexcept
+    {
+        return static_cast<Real>(v) * NewtonMeter;
+    }
+    
+    /// @brief SI symbol for a newton second of impulse.
+    /// @sa NewtonSecond
+    /// @sa https://en.wikipedia.org/wiki/Newton_second
+    constexpr Momentum operator"" _Ns(unsigned long long int v) noexcept
+    {
+        return static_cast<Real>(v) * NewtonSecond;
+    }
+    
+    /// @brief SI symbol for a newton second of impulse.
+    /// @sa NewtonSecond
+    /// @sa https://en.wikipedia.org/wiki/Newton_second
+    constexpr Momentum operator"" _Ns(long double v) noexcept
+    {
+        return static_cast<Real>(v) * NewtonSecond;
+    }
+    
+    /// @brief Abbreviation for kilogram per square meter.
+    constexpr Density operator"" _kgpm2(unsigned long long int v) noexcept
+    {
+        return static_cast<Real>(v) * KilogramPerSquareMeter;
+    }
+    
+    /// @brief Abbreviation for kilogram per square meter.
+    constexpr Density operator"" _kgpm2(long double v) noexcept
+    {
+        return static_cast<Real>(v) * KilogramPerSquareMeter;
+    }
+
     /// @}
 
     /// @brief Strips the units off of the given value.
@@ -719,7 +855,7 @@ namespace units {
 ///   ambiguous overload support.
 ///
 template <class Dimension, typename X, typename = std::enable_if_t<
-    std::is_arithmetic<X>::value && !std::is_same<X, playrho::Real>::value &&
+    playrho::IsArithmetic<X>::value && !std::is_same<X, playrho::Real>::value &&
     std::is_same<decltype(playrho::Real{} / X{}), playrho::Real>::value >
 >
 constexpr auto operator/ (quantity<Dimension, playrho::Real> lhs, X rhs)
@@ -728,7 +864,7 @@ constexpr auto operator/ (quantity<Dimension, playrho::Real> lhs, X rhs)
 }
 
 template <class Dimension, typename X, typename = std::enable_if_t<
-    std::is_arithmetic<X>::value && !std::is_same<X, playrho::Real>::value &&
+    playrho::IsArithmetic<X>::value && !std::is_same<X, playrho::Real>::value &&
     std::is_same<decltype(X{} / playrho::Real{}), playrho::Real>::value >
 >
 constexpr auto operator/ (X lhs, quantity<Dimension, playrho::Real> rhs)
@@ -745,7 +881,7 @@ constexpr auto operator/ (X lhs, quantity<Dimension, playrho::Real> rhs)
 ///   ambiguous overload support.
 ///
 template <class Dimension, typename X, typename = std::enable_if_t<
-    std::is_arithmetic<X>::value && !std::is_same<X, playrho::Real>::value &&
+    playrho::IsArithmetic<X>::value && !std::is_same<X, playrho::Real>::value &&
     std::is_same<decltype(playrho::Real{} * X{}), playrho::Real>::value> >
 constexpr auto operator* (quantity<Dimension, playrho::Real> lhs, X rhs)
 {
@@ -761,7 +897,7 @@ constexpr auto operator* (quantity<Dimension, playrho::Real> lhs, X rhs)
 ///   ambiguous overload support.
 ///
 template <class Dimension, typename X, typename = std::enable_if_t<
-    std::is_arithmetic<X>::value && !std::is_same<X, playrho::Real>::value &&
+    playrho::IsArithmetic<X>::value && !std::is_same<X, playrho::Real>::value &&
     std::is_same<decltype(playrho::Real{} * X{}), playrho::Real>::value> >
 constexpr auto operator* (X lhs, quantity<Dimension, playrho::Real> rhs)
 {

@@ -47,14 +47,14 @@ public:
 
     RayCast()
     {
-        m_circle->SetVertexRadius(Real{0.5f} * Meter);
+        m_circle->SetVertexRadius(0.5_m);
         m_circle->SetFriction(Real(0.3f));
         m_edge->SetFriction(Real(0.3f));
         
         // Ground body
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * Meter,
-                                                          Vec2(40.0f, 0.0f) * Meter));
+        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m,
+                                                          Vec2(40.0f, 0.0f) * 1_m));
         
         for (auto&& p: m_polygons)
         {
@@ -63,14 +63,14 @@ public:
         }
 
         m_polygons[0]->Set({
-            Vec2(-0.5f, 0.0f) * Meter,
-            Vec2(0.5f, 0.0f) * Meter,
-            Vec2(0.0f, 1.5f) * Meter
+            Vec2(-0.5f, 0.0f) * 1_m,
+            Vec2(0.5f, 0.0f) * 1_m,
+            Vec2(0.0f, 1.5f) * 1_m
         });
         m_polygons[1]->Set({
-            Vec2(-0.1f, 0.0f) * Meter,
-            Vec2(0.1f, 0.0f) * Meter,
-            Vec2(0.0f, 1.5f) * Meter
+            Vec2(-0.1f, 0.0f) * 1_m,
+            Vec2(0.1f, 0.0f) * 1_m,
+            Vec2(0.0f, 1.5f) * 1_m
         });
 
         {
@@ -79,17 +79,17 @@ public:
             const auto s = Sqrt(2.0f) * b;
 
             m_polygons[2]->Set({
-                Vec2(0.5f * s, 0.0f) * Meter,
-                Vec2(0.5f * w, b) * Meter,
-                Vec2(0.5f * w, b + s) * Meter,
-                Vec2(0.5f * s, w) * Meter,
-                Vec2(-0.5f * s, w) * Meter,
-                Vec2(-0.5f * w, b + s) * Meter,
-                Vec2(-0.5f * w, b) * Meter,
-                Vec2(-0.5f * s, 0.0f) * Meter
+                Vec2(0.5f * s, 0.0f) * 1_m,
+                Vec2(0.5f * w, b) * 1_m,
+                Vec2(0.5f * w, b + s) * 1_m,
+                Vec2(0.5f * s, w) * 1_m,
+                Vec2(-0.5f * s, w) * 1_m,
+                Vec2(-0.5f * w, b + s) * 1_m,
+                Vec2(-0.5f * w, b) * 1_m,
+                Vec2(-0.5f * s, 0.0f) * 1_m
             });
         }
-        m_polygons[3]->SetAsBox(Real{0.5f} * Meter, Real{0.5f} * Meter);
+        m_polygons[3]->SetAsBox(0.5_m, 0.5_m);
         std::memset(m_bodies, 0, sizeof(m_bodies));
         
         RegisterForKey(GLFW_KEY_1, GLFW_PRESS, 0, "drop triangles that should be ignored by the ray.", [&](KeyActionMods kam) {
@@ -141,15 +141,15 @@ public:
 
         const auto x = RandomFloat(-10.0f, 10.0f);
         const auto y = RandomFloat(0.0f, 20.0f);
-        bd.location = Vec2(x, y) * Meter;
-        bd.angle = Radian * RandomFloat(-Pi, Pi);
+        bd.location = Vec2(x, y) * 1_m;
+        bd.angle = 1_rad * RandomFloat(-Pi, Pi);
 
         m_userData[m_bodyIndex] = index;
         bd.userData = m_userData + m_bodyIndex;
 
         if (index == 4)
         {
-            bd.angularDamping = Real(0.02f) * Hertz;
+            bd.angularDamping = 0.02_Hz;
         }
 
         m_bodies[m_bodyIndex] = m_world.CreateBody(bd);
@@ -203,8 +203,8 @@ public:
         m_status = stream.str();
 
         const auto L = 11.0f;
-        const auto point1 = Vec2(0.0f, 10.0f) * Meter;
-        const auto d = Vec2(L * std::cos(m_angle), L * std::sin(m_angle)) * Meter;
+        const auto point1 = Vec2(0.0f, 10.0f) * 1_m;
+        const auto d = Vec2(L * std::cos(m_angle), L * std::sin(m_angle)) * 1_m;
         const auto point2 = point1 + d;
 
         if (m_mode == Mode::e_closest)
@@ -243,7 +243,7 @@ public:
             {
                 drawer.DrawPoint(point, 5.0f, Color(0.4f, 0.9f, 0.4f));
                 drawer.DrawSegment(point1, point, Color(0.8f, 0.8f, 0.8f));
-                const auto head = point + Real{0.5f} * normal * Meter;
+                const auto head = point + Real{0.5f} * normal * 1_m;
                 drawer.DrawSegment(point, head, Color(0.9f, 0.9f, 0.4f));
             }
             else
@@ -288,7 +288,7 @@ public:
             {
                 drawer.DrawPoint(point, 5.0f, Color(0.4f, 0.9f, 0.4f));
                 drawer.DrawSegment(point1, point, Color(0.8f, 0.8f, 0.8f));
-                const auto head = point + Real{0.5f} * normal * Meter;
+                const auto head = point + Real{0.5f} * normal * 1_m;
                 drawer.DrawSegment(point, head, Color(0.9f, 0.9f, 0.4f));
             }
             else
@@ -321,7 +321,7 @@ public:
                 
                 drawer.DrawPoint(p, 5.0f, Color(0.4f, 0.9f, 0.4f));
                 drawer.DrawSegment(point1, p, Color(0.8f, 0.8f, 0.8f));
-                const auto head = p + Real{0.5f} * n * Meter;
+                const auto head = p + Real{0.5f} * n * 1_m;
                 drawer.DrawSegment(p, head, Color(0.9f, 0.9f, 0.4f));
                 
                 // Instruct the caller to continue without clipping the ray.
@@ -381,7 +381,7 @@ public:
     int m_userData[e_maxBodies];
     std::shared_ptr<PolygonShape> m_polygons[4];
     std::shared_ptr<DiskShape> m_circle = std::make_shared<DiskShape>();
-    std::shared_ptr<EdgeShape> m_edge = std::make_shared<EdgeShape>(Vec2(-1.0f, 0.0f) * Meter, Vec2(1.0f, 0.0f) * Meter);
+    std::shared_ptr<EdgeShape> m_edge = std::make_shared<EdgeShape>(Vec2(-1.0f, 0.0f) * 1_m, Vec2(1.0f, 0.0f) * 1_m);
     Real m_angle = 0.0f;
     Mode m_mode = Mode::e_closest;
 };
