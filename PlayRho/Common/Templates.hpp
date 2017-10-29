@@ -185,13 +185,13 @@ namespace playrho
         return "long double";
     }
 
-    /// @brief Template class for VoidT.
+    /// @brief Voidify template class.
     template<class...> struct Voidify {
         /// @brief Type alias.
         using type = void;
     };
 
-    /// @brief Templated alias type for IsArithmetic.
+    /// @brief Void type templated alias.
     template<class... Ts> using VoidT = typename Voidify<Ts...>::type;
     
     /// @brief Template for determining if the given type is an arithmetic type.
@@ -200,11 +200,12 @@ namespace playrho
     
     /// @brief Template specialization for arithmetic types.
     template<class T>
-    struct IsArithmetic<T,
-      VoidT<decltype(std::declval<T>() + std::declval<T>()),
-            decltype(std::declval<T>() - std::declval<T>()),
-            decltype(std::declval<T>() * std::declval<T>()),
-            decltype(std::declval<T>() / std::declval<T>())>>: std::true_type {};
+    struct IsArithmetic<T, VoidT<
+        decltype(std::declval<T>() + std::declval<T>()),
+        decltype(std::declval<T>() - std::declval<T>()),
+        decltype(std::declval<T>() * std::declval<T>()),
+        decltype(std::declval<T>() / std::declval<T>())
+    >>: std::true_type {};
     
 } // namespace playrho
 
