@@ -18,7 +18,7 @@ General goals of this project are:
 - Openness to contributions including pull requests with new features; and
 - Providing a [continuous integration](https://en.wikipedia.org/wiki/Continuous_integration)
   backed, [build automation](https://en.wikipedia.org/wiki/Build_automation) supported,
-  [unit testing](https://en.wikipedia.org/wiki/Unit_testing) validated, and [benchmark](https://en.wikipedia.org/wiki/Benchmark_(computing) assessed, project.
+  [unit testing](https://en.wikipedia.org/wiki/Unit_testing) validated, and [benchmark](https://en.wikipedia.org/wiki/Benchmark_(computing)) assessed, project.
 
 ## Continuous Integration Status
 
