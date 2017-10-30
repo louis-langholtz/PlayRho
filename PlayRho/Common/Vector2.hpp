@@ -89,24 +89,6 @@ namespace playrho
         return IsValid(Get<0>(value)) && IsValid(Get<1>(value));
     }
     
-    /// Increment the left hand side value by the right hand side value.
-    template <typename TYPE>
-    constexpr Vector2<TYPE>& operator += (Vector2<TYPE>& lhs, const Vector2<TYPE> rhs) noexcept
-    {
-        Get<0>(lhs) += Get<0>(rhs);
-        Get<1>(lhs) += Get<1>(rhs);
-        return lhs;
-    }
-    
-    /// Decrement the left hand side value by the right hand side value.
-    template <typename TYPE>
-    constexpr Vector2<TYPE>& operator -= (Vector2<TYPE>& lhs, const Vector2<TYPE> rhs) noexcept
-    {
-        Get<0>(lhs) -= Get<0>(rhs);
-        Get<1>(lhs) -= Get<1>(rhs);
-        return lhs;
-    }
-
     /// @brief Multiplication assignment operator.
     template <typename TYPE>
     constexpr Vector2<TYPE>& operator*= (Vector2<TYPE>& lhs, const Real rhs) noexcept
@@ -124,35 +106,7 @@ namespace playrho
         Get<1>(lhs) /= rhs;
         return lhs;
     }
-    
-    /// @brief Positive operator.
-    template <typename T>
-    constexpr auto operator+ (const Vector2<T> v) noexcept
-    {
-        return Vector2<T>{+Get<0>(v), +Get<1>(v)};
-    }
 
-    /// @brief Negation operator.
-    template <typename T>
-    constexpr auto operator- (const Vector2<T> v) noexcept
-    {
-        return Vector2<T>{-Get<0>(v), -Get<1>(v)};
-    }
-
-    /// Add two vectors component-wise.
-    template <typename TYPE>
-    constexpr Vector2<TYPE> operator + (Vector2<TYPE> lhs, const Vector2<TYPE> rhs) noexcept
-    {
-        return lhs += rhs;
-    }
-    
-    /// Subtract two vectors component-wise.
-    template <typename TYPE>
-    constexpr Vector2<TYPE> operator - (Vector2<TYPE> lhs, const Vector2<TYPE> rhs) noexcept
-    {
-        return lhs -= rhs;
-    }
-    
     /// @brief Multiplication operator.
     template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{} * TYPE2{})>
     constexpr inline Vector2<OUT_TYPE> operator* (const TYPE1 s, Vector2<TYPE2> a) noexcept

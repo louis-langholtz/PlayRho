@@ -32,26 +32,6 @@ namespace playrho
     template <typename T>
     using Vector3 = Vector<3, T>;
     
-    /// Increment the left hand side value by the right hand side value.
-    template <typename TYPE>
-    constexpr Vector3<TYPE>& operator += (Vector3<TYPE>& lhs, const Vector3<TYPE> rhs) noexcept
-    {
-        Get<0>(lhs) += Get<0>(rhs);
-        Get<1>(lhs) += Get<1>(rhs);
-        Get<2>(lhs) += Get<2>(rhs);
-        return lhs;
-    }
-    
-    /// Decrement the left hand side value by the right hand side value.
-    template <typename TYPE>
-    constexpr Vector3<TYPE>& operator -= (Vector3<TYPE>& lhs, const Vector3<TYPE> rhs) noexcept
-    {
-        Get<0>(lhs) -= Get<0>(rhs);
-        Get<1>(lhs) -= Get<1>(rhs);
-        Get<2>(lhs) -= Get<2>(rhs);
-        return lhs;
-    }
-    
     /// @brief Multiplication assignment operator.
     template <typename TYPE>
     constexpr Vector3<TYPE>& operator*= (Vector3<TYPE>& lhs, const Real rhs) noexcept
@@ -70,34 +50,6 @@ namespace playrho
         Get<1>(lhs) /= rhs;
         Get<2>(lhs) /= rhs;
         return lhs;
-    }
-    
-    /// @brief Positive operator.
-    template <typename T>
-    constexpr auto operator+ (const Vector3<T> v) noexcept
-    {
-        return Vector3<T>{+Get<0>(v), +Get<1>(v), +Get<2>(v)};
-    }
-    
-    /// @brief Negation operator.
-    template <typename T>
-    constexpr auto operator- (const Vector3<T> v) noexcept
-    {
-        return Vector3<T>{-Get<0>(v), -Get<1>(v), -Get<2>(v)};
-    }
-    
-    /// Add two vectors component-wise.
-    template <typename TYPE>
-    constexpr Vector3<TYPE> operator + (Vector3<TYPE> lhs, const Vector3<TYPE> rhs) noexcept
-    {
-        return lhs += rhs;
-    }
-    
-    /// Subtract two vectors component-wise.
-    template <typename TYPE>
-    constexpr Vector3<TYPE> operator - (Vector3<TYPE> lhs, const Vector3<TYPE> rhs) noexcept
-    {
-        return lhs -= rhs;
     }
     
     /// @brief Multiplication operator.
