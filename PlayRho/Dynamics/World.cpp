@@ -2953,4 +2953,23 @@ Body* CreateRectangularEnclosingBody(World& world, Length2D dimensions, const Sh
     return body;
 }
 
+Body* FindClosestBody(const World& world, Length2D location) noexcept
+{
+    const auto bodies = world.GetBodies();
+    auto found = static_cast<decltype(bodies)::iterator_type::value_type>(nullptr);
+    auto minLengthSquared = std::numeric_limits<Area>::infinity();
+    for (const auto& b: bodies)
+    {
+        auto& body = GetRef(b);
+        const auto bodyLoc = body.GetLocation();
+        const auto lengthSquared = GetLengthSquared(bodyLoc - location);
+        if (minLengthSquared > lengthSquared)
+        {
+            minLengthSquared = lengthSquared;
+            found = &body;
+        }
+    }
+    return found;
+}
+
 } // namespace playrho

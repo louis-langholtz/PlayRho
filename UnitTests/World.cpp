@@ -542,6 +542,19 @@ TEST(World, SetAccelerationsFunctionalFF)
     EXPECT_EQ(GetAcceleration(*b2), a2 * 2);
 }
 
+TEST(World, FindClosestBodyFF)
+{
+    World world;
+    ASSERT_EQ(FindClosestBody(world, Length2D{}), nullptr);
+    const auto b1 = world.CreateBody(BodyDef{}.UseLocation(Length2D{10_m, 10_m}));
+    EXPECT_EQ(FindClosestBody(world, Length2D{0_m, 0_m}), b1);
+    const auto b2 = world.CreateBody(BodyDef{}.UseLocation(Length2D{1_m, -2_m}));
+    EXPECT_EQ(FindClosestBody(world, Length2D{0_m, 0_m}), b2);
+    const auto b3 = world.CreateBody(BodyDef{}.UseLocation(Length2D{-5_m, 4_m}));
+    EXPECT_NE(FindClosestBody(world, Length2D{0_m, 0_m}), b3);
+    EXPECT_EQ(FindClosestBody(world, Length2D{0_m, 0_m}), b2);
+}
+
 TEST(World, GetShapeCountFreeFunction)
 {
     World world{WorldDef{}.UseGravity(LinearAcceleration2D{})};

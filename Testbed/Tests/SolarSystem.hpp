@@ -96,12 +96,38 @@ public:
             const auto shape = std::make_shared<DiskShape>(sconf);
             b->CreateFixture(shape);
         }
+        RegisterForKey(GLFW_KEY_EQUAL, GLFW_PRESS, 0,
+                       "Locks camera to following planet nearest mouse.",
+                       [&](KeyActionMods) {
+                           m_focalBody = FindClosestBody(m_world, GetMouseWorld());
+                       });
+        RegisterForKey(GLFW_KEY_BACKSPACE, GLFW_PRESS, 0,
+                       "Unlock camera from following planet.",
+                       [&](KeyActionMods) {
+                           m_focalBody = nullptr;
+                       });
     }
     
-    void PreStep(const Settings&, Drawer&) override
+    void PreStep(const Settings&, Drawer& drawer) override
     {
         SetAccelerations(m_world, CalcGravitationalAcceleration);
+
+        if (m_focalBody)
+        {
+            const auto location = m_focalBody->GetLocation();
+            drawer.SetTranslation(location);
+            
+            std::ostringstream os;
+            os << "Camera locked on planet " << GetWorldIndex(m_focalBody) << ".";
+            m_status = os.str();
+        }
+        else
+        {
+            m_status = "Camera unlocked from following any planet.";
+        }
     }
+    
+    const Body* m_focalBody = nullptr;
 };
 
 } // namespace playrho

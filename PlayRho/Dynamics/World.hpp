@@ -1091,6 +1091,10 @@ inline Body* CreateSquareEnclosingBody(World& world, Length size, const ShapeDef
 {
     return CreateRectangularEnclosingBody(world, Length2D{size, size}, baseConf);
 }
+    
+/// @brief Finds body in given world that's closest to the given location.
+/// @relatedalso World
+Body* FindClosestBody(const World& world, Length2D location) noexcept;
 
 } // namespace playrho
 
