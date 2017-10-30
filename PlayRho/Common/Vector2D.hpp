@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_VECTOR2D_HPP
-#define PLAYRHO_COMMON_VECTOR2D_HPP
+#ifndef PLAYRHO_COMMON_VECTOR2_HPP
+#define PLAYRHO_COMMON_VECTOR2_HPP
 
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/InvalidArgument.hpp>
@@ -251,4 +251,4 @@ namespace playrho
 #endif
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_VECTOR2D_HPP
+#endif // PLAYRHO_COMMON_VECTOR2_HPP
