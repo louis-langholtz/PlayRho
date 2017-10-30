@@ -849,6 +849,30 @@ inline void Body::UnsetIslandedFlag() noexcept
 
 // Free functions...
 
+/// @brief Gets the given body's acceleration.
+/// @param body Body whose acceleration should be returned.
+/// @relatedalso Body
+inline Acceleration GetAcceleration(const Body& body) noexcept
+{
+    return Acceleration{body.GetLinearAcceleration(), body.GetAngularAcceleration()};
+}
+
+/// @brief Sets the accelerations on the given body.
+/// @note This has no effect on non-accelerable bodies.
+/// @note A non-zero acceleration will also awaken the body.
+/// @param body Body whose acceleration should be set.
+/// @param value Acceleration value to set.
+/// @relatedalso Body
+inline void SetAcceleration(Body& body, Acceleration value) noexcept
+{
+    body.SetAcceleration(value.linear, value.angular);
+}
+
+/// @brief Calculates the gravitationally associated acceleration of the given body
+///   within its world.
+/// @relatedalso Body
+Acceleration CalcGravitationalAcceleration(const Body& body) noexcept;
+    
 /// @brief Awakens the body if it's asleep.
 /// @relatedalso Body
 inline bool Awaken(Body& body) noexcept

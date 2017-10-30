@@ -2911,11 +2911,17 @@ BodyCounter Awaken(World& world) noexcept
     return awoken;
 }
 
-void ClearForces(World& world) noexcept
+void SetAccelerations(World& world, std::function<Acceleration(const Body& b)> fn) noexcept
 {
-    const auto g = world.GetGravity();
     for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](World::Bodies::value_type &b) {
-        GetRef(b).SetAcceleration(g, AngularAcceleration{0});
+        SetAcceleration(GetRef(b), fn(GetRef(b)));
+    });
+}
+
+void SetAccelerations(World& world, Acceleration acceleration) noexcept
+{
+    for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](World::Bodies::value_type &b) {
+        SetAcceleration(GetRef(b), acceleration);
     });
 }
 

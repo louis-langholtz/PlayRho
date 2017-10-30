@@ -515,6 +515,33 @@ TEST(World, ClearForcesFreeFunction)
     EXPECT_EQ(GetY(body->GetLinearAcceleration()), GetY(world.GetGravity()));
 }
 
+TEST(World, SetAccelerationsFunctionalFF)
+{
+    World world;
+    const auto a1 = Acceleration{
+        LinearAcceleration2D{1_mps2, 2_mps2}, 2.1f * RadianPerSquareSecond
+    };
+    const auto a2 = a1 * 2;
+    ASSERT_EQ(a1.linear * 2, a2.linear);
+    ASSERT_EQ(a1.angular * 2, a2.angular);
+
+    const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+    ASSERT_NE(b1, nullptr);
+    ASSERT_TRUE(b1->IsAccelerable());
+    SetAcceleration(*b1, a1);
+    ASSERT_EQ(GetAcceleration(*b1), a1);
+  
+    const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+    ASSERT_NE(b2, nullptr);
+    ASSERT_TRUE(b2->IsAccelerable());
+    SetAcceleration(*b2, a2);
+    ASSERT_EQ(GetAcceleration(*b2), a2);
+   
+    SetAccelerations(world, [](const Body& b){ return GetAcceleration(b) * 2; });
+    EXPECT_EQ(GetAcceleration(*b1), a1 * 2);
+    EXPECT_EQ(GetAcceleration(*b2), a2 * 2);
+}
+
 TEST(World, GetShapeCountFreeFunction)
 {
     World world{WorldDef{}.UseGravity(LinearAcceleration2D{})};

@@ -196,6 +196,8 @@
 		47C85D211F0DA14500F70C56 /* Templates.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47C85D1E1F0DA14500F70C56 /* Templates.hpp */; };
 		47C85D241F112E2700F70C56 /* GrowableStack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47C85D231F112E2700F70C56 /* GrowableStack.cpp */; };
 		47C96C511FA24BC100A6C587 /* Units.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47C96C501FA24BC100A6C587 /* Units.cpp */; };
+		47C96C551FA67D1F00A6C587 /* Acceleration.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47C96C531FA67D1D00A6C587 /* Acceleration.hpp */; };
+		47C96C571FA6815F00A6C587 /* Acceleration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47C96C561FA6815E00A6C587 /* Acceleration.cpp */; };
 		47CB34401D6F3A8500828126 /* MassData.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47CB343D1D6F3A8500828126 /* MassData.hpp */; };
 		47CF984B1DF9C4A30077F5F2 /* ShapeSeparation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47CF98491DF9C4A30077F5F2 /* ShapeSeparation.cpp */; };
 		47CF984D1DF9C4A30077F5F2 /* ShapeSeparation.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47CF984A1DF9C4A30077F5F2 /* ShapeSeparation.hpp */; };
@@ -573,6 +575,8 @@
 		47C85D1E1F0DA14500F70C56 /* Templates.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Templates.hpp; sourceTree = "<group>"; };
 		47C85D231F112E2700F70C56 /* GrowableStack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GrowableStack.cpp; sourceTree = "<group>"; };
 		47C96C501FA24BC100A6C587 /* Units.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Units.cpp; sourceTree = "<group>"; };
+		47C96C531FA67D1D00A6C587 /* Acceleration.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Acceleration.hpp; sourceTree = "<group>"; };
+		47C96C561FA6815E00A6C587 /* Acceleration.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Acceleration.cpp; sourceTree = "<group>"; };
 		47CB343D1D6F3A8500828126 /* MassData.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MassData.hpp; sourceTree = "<group>"; };
 		47CF98491DF9C4A30077F5F2 /* ShapeSeparation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShapeSeparation.cpp; sourceTree = "<group>"; };
 		47CF984A1DF9C4A30077F5F2 /* ShapeSeparation.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ShapeSeparation.hpp; sourceTree = "<group>"; };
@@ -778,6 +782,7 @@
 			isa = PBXGroup;
 			children = (
 				474BC3F41D41278800447DCD /* AABB.cpp */,
+				47C96C561FA6815E00A6C587 /* Acceleration.cpp */,
 				47CF984F1E0088ED0077F5F2 /* Angle.cpp */,
 				4734B21B1DC1121900F15E29 /* ArrayList.cpp */,
 				475A94531D930503000CA9A8 /* BlockAllocator.cpp */,
@@ -945,6 +950,7 @@
 		80BB893E141C3E5900F1753A /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				47C96C531FA67D1D00A6C587 /* Acceleration.hpp */,
 				47F932A41D11C283006A193C /* AllocatedArray.hpp */,
 				4734B2161DC00AFD00F15E29 /* ArrayList.hpp */,
 				80BB893F141C3E5900F1753A /* BlockAllocator.cpp */,
@@ -1314,6 +1320,7 @@
 				80BB89AC141C3E5900F1753A /* Body.hpp in Headers */,
 				80BB89B0141C3E5900F1753A /* Fixture.hpp in Headers */,
 				4726DD0F1D3014990012A882 /* IndexPair.hpp in Headers */,
+				47C96C551FA67D1F00A6C587 /* Acceleration.hpp in Headers */,
 				47D61F741F1F148500E702BD /* SilkscreenTtfData.h in Headers */,
 				80BB89B2141C3E5900F1753A /* Island.hpp in Headers */,
 				47327E801EA585790048FCD8 /* Defines.hpp in Headers */,
@@ -1534,6 +1541,7 @@
 				474BC4301D413DC200447DCD /* DistanceProxy.cpp in Sources */,
 				47C85D0A1EFA251B00F70C56 /* WheelJoint.cpp in Sources */,
 				475A945D1D959537000CA9A8 /* Joint.cpp in Sources */,
+				47C96C571FA6815F00A6C587 /* Acceleration.cpp in Sources */,
 				47C96C511FA24BC100A6C587 /* Units.cpp in Sources */,
 				47D28D951F6E32720094C032 /* PulleyJoint.cpp in Sources */,
 				47D61F7C1F21112000E702BD /* MultiShape.cpp in Sources */,

@@ -50,8 +50,6 @@ static constexpr SolarSystemObject SolarSystemBodies[] = {
     { "Neptune", 24622_km,     102430.0_Yg, 60182.000_d, 4500_Gm,    0.671_d },
 };
 
-static constexpr auto G = 6.67408e-11f * SquareMeter * 1_m / (1_kg * Square(1_s));
-
 class SolarSystem: public Test
 {
 public:
@@ -100,45 +98,9 @@ public:
         }
     }
     
-    void PreStep(const Settings& settings, Drawer&) override
+    void PreStep(const Settings&, Drawer&) override
     {
-        const auto bodies = m_world.GetBodies();
-        for (auto it = std::begin(bodies); it != std::end(bodies); it = std::next(it))
-        {
-            const auto& b1 = *it;
-            const auto m1 = GetMass(*b1);
-            const auto loc1 = GetLocation(*b1);
-            auto sumForce = Force2D{};
-            for (auto jt = std::begin(bodies); jt != std::end(bodies); jt = std::next(jt))
-            {
-                const auto& b2 = *jt;
-                if (b1 == b2)
-                {
-                    continue;
-                }
-                const auto m2 = GetMass(*b2);
-                const auto delta = GetLocation(*b2) - loc1;
-                const auto dir = GetUnitVector(delta);
-                const auto rr = GetLengthSquared(delta);
-                const auto orderedMass = std::minmax(m1, m2);
-                const auto f = (G * orderedMass.first) * (orderedMass.second / rr);
-                sumForce += f * dir;
-            }
-            // F = m a... i.e.  a = F / m.
-            const auto linearAcceleration = sumForce / m1;
-            SetLinearAcceleration(*b1, linearAcceleration);
-            const auto v = GetVelocity(*b1, settings.dt * 1_s, MovementConf{
-                std::numeric_limits<Length>::infinity(),
-                std::numeric_limits<Angle>::infinity()
-            });
-            const auto stepDist = v.linear * settings.dt * 1_s;
-            const auto location = GetLocation(*b1);
-            const auto newLoc = location + stepDist;
-            if (newLoc == location && stepDist != Length2D{})
-            {
-                //std::cout << "no move\n";
-            }
-        }
+        SetAccelerations(m_world, CalcGravitationalAcceleration);
     }
 };
 

@@ -440,3 +440,55 @@ TEST(Body, ApplyLinearAccelDoesNothingToStatic)
     EXPECT_NE(body->GetLinearAcceleration(), linAccel);
     EXPECT_EQ(body->GetLinearAcceleration(), zeroAccel);
 }
+
+TEST(Body, GetAccelerationFF)
+{
+    World world;
+    const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+    body->SetAcceleration(LinearAcceleration2D{}, AngularAcceleration{});
+    
+    ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2D{});
+    ASSERT_EQ(body->GetAngularAcceleration(), AngularAcceleration{});
+    
+    EXPECT_EQ(GetAcceleration(*body), Acceleration{});
+}
+
+TEST(Body, SetAccelerationFF)
+{
+    World world;
+    const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+    body->SetAcceleration(LinearAcceleration2D{}, AngularAcceleration{});
+    
+    ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2D{});
+    ASSERT_EQ(body->GetAngularAcceleration(), AngularAcceleration{});
+ 
+    const auto newAccel = Acceleration{
+        LinearAcceleration2D{2_mps2, 3_mps2}, AngularAcceleration{1.2f * RadianPerSquareSecond}
+    };
+    SetAcceleration(*body, newAccel);
+    EXPECT_EQ(GetAcceleration(*body), newAccel);
+}
+
+TEST(Body, CalcGravitationalAcceleration)
+{
+    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2D{})};
+
+    const auto l1 = Length2D{-8_m, 0_m};
+    const auto l2 = Length2D{+8_m, 0_m};
+
+    const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}
+                                                   .UseVertexRadius(2_m)
+                                                   .UseDensity(1e10_kgpm2));
+    
+    const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(l1));
+    b1->CreateFixture(shape);
+    EXPECT_EQ(CalcGravitationalAcceleration(*b1), Acceleration{});
+    
+    const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(l2));
+    b2->CreateFixture(shape);
+    const auto accel = CalcGravitationalAcceleration(*b1);
+    EXPECT_NEAR(static_cast<double>(Real(GetX(accel.linear)/MeterPerSquareSecond)),
+                0.032761313021183014, 0.000001);
+    EXPECT_EQ(GetY(accel.linear), 0 * MeterPerSquareSecond);
+    EXPECT_EQ(accel.angular, 0 * RadianPerSquareSecond);
+}
