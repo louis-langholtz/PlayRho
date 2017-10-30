@@ -30,6 +30,7 @@
 #include <functional>
 #include <iostream>
 #include <PlayRho/Common/InvalidArgument.hpp>
+#include <PlayRho/Common/Real.hpp>
 
 namespace playrho
 {
@@ -252,6 +253,7 @@ constexpr auto operator- (Vector<N, T> v) noexcept
 }
 
 /// @brief Increments the left hand side value by the right hand side value.
+/// @relatedalso Vector
 template <std::size_t N, typename T>
 constexpr auto& operator+= (Vector<N, T>& lhs, const Vector<N, T> rhs) noexcept
 {
@@ -263,6 +265,7 @@ constexpr auto& operator+= (Vector<N, T>& lhs, const Vector<N, T> rhs) noexcept
 }
 
 /// @brief Decrements the left hand side value by the right hand side value.
+/// @relatedalso Vector
 template <std::size_t N, typename T>
 constexpr auto& operator-= (Vector<N, T>& lhs, const Vector<N, T> rhs) noexcept
 {
@@ -274,6 +277,7 @@ constexpr auto& operator-= (Vector<N, T>& lhs, const Vector<N, T> rhs) noexcept
 }
 
 /// @brief Adds two vectors component-wise.
+/// @relatedalso Vector
 template <std::size_t N, typename T>
 constexpr auto operator+ (Vector<N, T> lhs, const Vector<N, T> rhs) noexcept
 {
@@ -281,10 +285,35 @@ constexpr auto operator+ (Vector<N, T> lhs, const Vector<N, T> rhs) noexcept
 }
 
 /// @brief Subtracts two vectors component-wise.
+/// @relatedalso Vector
 template <std::size_t N, typename T>
 constexpr auto operator- (Vector<N, T> lhs, const Vector<N, T> rhs) noexcept
 {
     return lhs -= rhs;
+}
+
+/// @brief Multiplication assignment operator.
+/// @relatedalso Vector
+template <std::size_t N, typename T>
+constexpr auto& operator*= (Vector<N, T>& lhs, const Real rhs) noexcept
+{
+    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    {
+        lhs[i] *= rhs;
+    }
+    return lhs;
+}
+
+/// @brief Division assignment operator.
+/// @relatedalso Vector
+template <std::size_t N, typename T>
+constexpr auto& operator/= (Vector<N, T>& lhs, const Real rhs) noexcept
+{
+    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    {
+        lhs[i] /= rhs;
+    }
+    return lhs;
 }
 
 /// @brief Lexicographical less-than operator.

@@ -32,26 +32,6 @@ namespace playrho
     template <typename T>
     using Vector3 = Vector<3, T>;
     
-    /// @brief Multiplication assignment operator.
-    template <typename TYPE>
-    constexpr Vector3<TYPE>& operator*= (Vector3<TYPE>& lhs, const Real rhs) noexcept
-    {
-        Get<0>(lhs) *= rhs;
-        Get<1>(lhs) *= rhs;
-        Get<2>(lhs) *= rhs;
-        return lhs;
-    }
-    
-    /// @brief Division assignment operator.
-    template <typename TYPE>
-    constexpr Vector3<TYPE>& operator/= (Vector3<TYPE>& lhs, const Real rhs) noexcept
-    {
-        Get<0>(lhs) /= rhs;
-        Get<1>(lhs) /= rhs;
-        Get<2>(lhs) /= rhs;
-        return lhs;
-    }
-    
     /// @brief Multiplication operator.
     template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{0} * TYPE2{0})>
     constexpr inline Vector3<OUT_TYPE> operator* (const TYPE1 s, Vector3<TYPE2> a) noexcept

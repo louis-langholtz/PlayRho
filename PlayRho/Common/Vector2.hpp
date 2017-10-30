@@ -88,24 +88,6 @@ namespace playrho
     {
         return IsValid(Get<0>(value)) && IsValid(Get<1>(value));
     }
-    
-    /// @brief Multiplication assignment operator.
-    template <typename TYPE>
-    constexpr Vector2<TYPE>& operator*= (Vector2<TYPE>& lhs, const Real rhs) noexcept
-    {
-        Get<0>(lhs) *= rhs;
-        Get<1>(lhs) *= rhs;
-        return lhs;
-    }
-    
-    /// @brief Division assignment operator.
-    template <typename TYPE>
-    constexpr Vector2<TYPE>& operator/= (Vector2<TYPE>& lhs, const Real rhs) noexcept
-    {
-        Get<0>(lhs) /= rhs;
-        Get<1>(lhs) /= rhs;
-        return lhs;
-    }
 
     /// @brief Multiplication operator.
     template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{} * TYPE2{})>
