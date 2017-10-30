@@ -35,14 +35,14 @@ namespace playrho
 {
 
 /// @brief Vector.
-/// @details Basically a constexpr and constructor enhanced std::array for C++14.
+/// @details This is a <code>constexpr</code> and constructor enhanced
+///   <code>std::array</code>-like template class for C++14.
 /// @note This type is trivially default constructible - i.e. default construction
 ///   performs no actions (no initialization).
-/// @note This type should be drop-in replacable with std::array in C++17.
 template <std::size_t N, typename T>
 struct Vector
 {
-    static_assert(N > 0, "Dimension must be greater than 0");
+    static_assert(N > 0, "Number of elements must be greater than 0");
 
     /// @brief Value type.
     using value_type = T;
@@ -209,6 +209,7 @@ struct Vector
 };
 
 /// @brief Equality operator.
+/// @relatedalso Vector
 template <std::size_t N, typename T>
 constexpr bool operator== (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noexcept
 {
@@ -223,6 +224,7 @@ constexpr bool operator== (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noe
 }
 
 /// @brief Inequality operator.
+/// @relatedalso Vector
 template <std::size_t N, typename T>
 constexpr bool operator!= (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noexcept
 {
@@ -230,6 +232,7 @@ constexpr bool operator!= (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noe
 }
 
 /// @brief Lexicographical less-than operator.
+/// @relatedalso Vector
 template <std::size_t N, typename T>
 constexpr bool operator< (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noexcept
 {
@@ -238,6 +241,7 @@ constexpr bool operator< (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noex
 }
 
 /// @brief Lexicographical less-than or equal-to operator.
+/// @relatedalso Vector
 template <std::size_t N, typename T>
 constexpr bool operator<= (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noexcept
 {
@@ -246,6 +250,7 @@ constexpr bool operator<= (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noe
 }
 
 /// @brief Lexicographical greater-than operator.
+/// @relatedalso Vector
 template <std::size_t N, typename T>
 constexpr bool operator> (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noexcept
 {
@@ -254,6 +259,7 @@ constexpr bool operator> (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noex
 }
 
 /// @brief Lexicographical greater-than or equal-to operator.
+/// @relatedalso Vector
 template <std::size_t N, typename T>
 constexpr bool operator>= (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noexcept
 {
@@ -262,6 +268,7 @@ constexpr bool operator>= (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noe
 }
 
 /// @brief Gets the I'th element of the given collection.
+/// @relatedalso Vector
 template <size_t I, size_t N, typename T>
 constexpr auto& Get(Vector<N, T>& v) noexcept
 {
