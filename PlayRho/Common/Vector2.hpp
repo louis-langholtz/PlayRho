@@ -88,27 +88,6 @@ namespace playrho
     {
         return IsValid(Get<0>(value)) && IsValid(Get<1>(value));
     }
-
-    /// @brief Multiplication operator.
-    template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{} * TYPE2{})>
-    constexpr inline Vector2<OUT_TYPE> operator* (const TYPE1 s, Vector2<TYPE2> a) noexcept
-    {
-        return Vector2<OUT_TYPE>{Get<0>(a) * s, Get<1>(a) * s};
-    }
-    
-    /// @brief Multiplication operator.
-    template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{} * TYPE2{})>
-    constexpr inline Vector2<OUT_TYPE> operator* (Vector2<TYPE1> a, const TYPE2 s) noexcept
-    {
-        return Vector2<OUT_TYPE>{Get<0>(a) * s, Get<1>(a) * s};
-    }
-    
-    /// @brief Division operator.
-    template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{} / TYPE2{})>
-    constexpr Vector2<OUT_TYPE> operator/ (Vector2<TYPE1> a, const TYPE2 s) noexcept
-    {
-        return Vector2<OUT_TYPE>{Get<0>(a) / s, Get<1>(a) / s};
-    }
     
 #ifdef USE_BOOST_UNITS
     /// @brief Gets an invalid value for the Length2D type.

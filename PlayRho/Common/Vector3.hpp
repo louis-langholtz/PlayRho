@@ -32,27 +32,6 @@ namespace playrho
     template <typename T>
     using Vector3 = Vector<3, T>;
     
-    /// @brief Multiplication operator.
-    template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{0} * TYPE2{0})>
-    constexpr inline Vector3<OUT_TYPE> operator* (const TYPE1 s, Vector3<TYPE2> a) noexcept
-    {
-        return a *= s;
-    }
-    
-    /// @brief Multiplication operator.
-    template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{0} * TYPE2{0})>
-    constexpr inline Vector3<OUT_TYPE> operator* (Vector3<TYPE1> a, const TYPE2 s) noexcept
-    {
-        return a *= s;
-    }
-    
-    /// @brief Division operator.
-    template <typename TYPE1, typename TYPE2, typename OUT_TYPE = decltype(TYPE1{0} / TYPE2{0})>
-    constexpr Vector3<OUT_TYPE> operator/ (Vector3<TYPE1> a, const TYPE2 s) noexcept
-    {
-        return a /= s;
-    }
-
     /// A 3D column vector with 3 elements.
     /// @note This data structure is 3 times the size of <code>Real</code> -
     ///   i.e. 12-bytes (with 4-byte Real).

@@ -316,6 +316,45 @@ constexpr auto& operator/= (Vector<N, T>& lhs, const Real rhs) noexcept
     return lhs;
 }
 
+/// @brief Multiplication operator.
+/// @relatedalso Vector
+template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} * T2{})>
+constexpr auto operator* (const T1 s, const Vector<N, T2>& a) noexcept
+{
+    Vector<N, OT> result;
+    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    {
+        result[i] = a[i] * s;
+    }
+    return result;
+}
+
+/// @brief Multiplication operator.
+/// @relatedalso Vector
+template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} * T2{})>
+constexpr auto operator* (const Vector<N, T1>& a, const T2 s) noexcept
+{
+    Vector<N, OT> result;
+    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    {
+        result[i] = a[i] * s;
+    }
+    return result;
+}
+
+/// @brief Division operator.
+/// @relatedalso Vector
+template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} / T2{})>
+constexpr auto operator/ (const Vector<N, T1>& a, const T2 s) noexcept
+{
+    Vector<N, OT> result;
+    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    {
+        result[i] = a[i] / s;
+    }
+    return result;
+}
+
 /// @brief Lexicographical less-than operator.
 /// @relatedalso Vector
 template <std::size_t N, typename T>
