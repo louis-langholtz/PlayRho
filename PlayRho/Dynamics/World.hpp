@@ -43,6 +43,7 @@
 #include <unordered_set>
 #include <memory>
 #include <stdexcept>
+#include <functional>
 
 namespace playrho {
 
@@ -1063,10 +1064,21 @@ BodyCounter GetAwakeCount(const World& world) noexcept;
 /// @relatedalso World
 BodyCounter Awaken(World& world) noexcept;
 
+/// @brief Sets the accelerations of all the world's bodies.
+/// @relatedalso World
+void SetAccelerations(World& world, std::function<Acceleration(const Body& b)> fn) noexcept;
+
+/// @brief Sets the accelerations of all the world's bodies to the given value.
+/// @relatedalso World
+void SetAccelerations(World& world, Acceleration acceleration) noexcept;
+
 /// @brief Clears forces.
 /// @details Manually clear the force buffer on all bodies.
 /// @relatedalso World
-void ClearForces(World& world) noexcept;
+inline void ClearForces(World& world) noexcept
+{
+    SetAccelerations(world, Acceleration{world.GetGravity(), 0 * RadianPerSquareSecond});
+}
 
 /// @brief Creates a rectanglular enclosure.
 /// @relatedalso World

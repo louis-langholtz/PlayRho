@@ -28,6 +28,7 @@
 #include <PlayRho/Common/Vector3D.hpp>
 #include <PlayRho/Common/Position.hpp>
 #include <PlayRho/Common/Velocity.hpp>
+#include <PlayRho/Common/Acceleration.hpp>
 #include <PlayRho/Common/Transformation.hpp>
 #include <PlayRho/Common/Sweep.hpp>
 #include <PlayRho/Common/Matrix.hpp>

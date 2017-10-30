@@ -521,4 +521,32 @@ Force2D GetCentripetalForce(const Body& body, Length2D axis)
     return Force2D{dir * mass * Square(magnitude) / radius};
 }
 
+Acceleration CalcGravitationalAcceleration(const Body& body) noexcept
+{
+    constexpr auto G = 6.67408e-11f * Meter * Meter * Meter / (Kilogram * Second * Second);
+
+    const auto world = body.GetWorld();
+    const auto bodies = world->GetBodies();
+    const auto m1 = GetMass(body);
+    const auto loc1 = GetLocation(body);
+    auto sumForce = Force2D{};
+    for (auto jt = std::begin(bodies); jt != std::end(bodies); jt = std::next(jt))
+    {
+        const auto& b2 = *(*jt);
+        if (&b2 == &body)
+        {
+            continue;
+        }
+        const auto m2 = GetMass(b2);
+        const auto delta = GetLocation(b2) - loc1;
+        const auto dir = GetUnitVector(delta);
+        const auto rr = GetLengthSquared(delta);
+        const auto orderedMass = std::minmax(m1, m2);
+        const auto f = (G * orderedMass.first) * (orderedMass.second / rr);
+        sumForce += f * dir;
+    }
+    // F = m a... i.e.  a = F / m.
+    return Acceleration{sumForce / m1, 0 * RadianPerSquareSecond};
+}
+
 } // namespace playrho
