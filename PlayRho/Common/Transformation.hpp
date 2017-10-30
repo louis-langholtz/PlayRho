@@ -23,7 +23,7 @@
 #define PLAYRHO_COMMON_TRANSFORMATION_HPP
 
 #include <PlayRho/Common/Settings.hpp>
-#include <PlayRho/Common/Vector2D.hpp>
+#include <PlayRho/Common/Vector2.hpp>
 #include <PlayRho/Common/UnitVec2.hpp>
 
 /// @file

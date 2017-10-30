@@ -30,19 +30,20 @@
 #include <functional>
 #include <iostream>
 #include <PlayRho/Common/InvalidArgument.hpp>
+#include <PlayRho/Common/Real.hpp>
 
 namespace playrho
 {
 
 /// @brief Vector.
-/// @details Basically a constexpr and constructor enhanced std::array for C++14.
+/// @details This is a <code>constexpr</code> and constructor enhanced
+///   <code>std::array</code>-like template class for C++14.
 /// @note This type is trivially default constructible - i.e. default construction
 ///   performs no actions (no initialization).
-/// @note This type should be drop-in replacable with std::array in C++17.
 template <std::size_t N, typename T>
 struct Vector
 {
-    static_assert(N > 0, "Dimension must be greater than 0");
+    static_assert(N > 0, "Number of elements must be greater than 0");
 
     /// @brief Value type.
     using value_type = T;
@@ -209,6 +210,7 @@ struct Vector
 };
 
 /// @brief Equality operator.
+/// @relatedalso Vector
 template <std::size_t N, typename T>
 constexpr bool operator== (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noexcept
 {
@@ -223,13 +225,138 @@ constexpr bool operator== (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noe
 }
 
 /// @brief Inequality operator.
+/// @relatedalso Vector
 template <std::size_t N, typename T>
 constexpr bool operator!= (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noexcept
 {
     return !(lhs == rhs);
 }
 
+/// @brief Unary plus operator.
+/// @relatedalso Vector
+template <std::size_t N, typename T>
+constexpr auto operator+ (Vector<N, T> v) noexcept
+{
+    return v;
+}
+
+/// @brief Unary negation operator.
+/// @relatedalso Vector
+template <std::size_t N, typename T>
+constexpr auto operator- (Vector<N, T> v) noexcept
+{
+    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    {
+        v[i] = -v[i];
+    }
+    return v;
+}
+
+/// @brief Increments the left hand side value by the right hand side value.
+/// @relatedalso Vector
+template <std::size_t N, typename T>
+constexpr auto& operator+= (Vector<N, T>& lhs, const Vector<N, T> rhs) noexcept
+{
+    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    {
+        lhs[i] += rhs[i];
+    }
+    return lhs;
+}
+
+/// @brief Decrements the left hand side value by the right hand side value.
+/// @relatedalso Vector
+template <std::size_t N, typename T>
+constexpr auto& operator-= (Vector<N, T>& lhs, const Vector<N, T> rhs) noexcept
+{
+    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    {
+        lhs[i] -= rhs[i];
+    }
+    return lhs;
+}
+
+/// @brief Adds two vectors component-wise.
+/// @relatedalso Vector
+template <std::size_t N, typename T>
+constexpr auto operator+ (Vector<N, T> lhs, const Vector<N, T> rhs) noexcept
+{
+    return lhs += rhs;
+}
+
+/// @brief Subtracts two vectors component-wise.
+/// @relatedalso Vector
+template <std::size_t N, typename T>
+constexpr auto operator- (Vector<N, T> lhs, const Vector<N, T> rhs) noexcept
+{
+    return lhs -= rhs;
+}
+
+/// @brief Multiplication assignment operator.
+/// @relatedalso Vector
+template <std::size_t N, typename T>
+constexpr auto& operator*= (Vector<N, T>& lhs, const Real rhs) noexcept
+{
+    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    {
+        lhs[i] *= rhs;
+    }
+    return lhs;
+}
+
+/// @brief Division assignment operator.
+/// @relatedalso Vector
+template <std::size_t N, typename T>
+constexpr auto& operator/= (Vector<N, T>& lhs, const Real rhs) noexcept
+{
+    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    {
+        lhs[i] /= rhs;
+    }
+    return lhs;
+}
+
+/// @brief Multiplication operator.
+/// @relatedalso Vector
+template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} * T2{})>
+constexpr auto operator* (const T1 s, const Vector<N, T2>& a) noexcept
+{
+    auto result = Vector<N, OT>{};
+    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    {
+        result[i] = a[i] * s;
+    }
+    return result;
+}
+
+/// @brief Multiplication operator.
+/// @relatedalso Vector
+template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} * T2{})>
+constexpr auto operator* (const Vector<N, T1>& a, const T2 s) noexcept
+{
+    auto result = Vector<N, OT>{};
+    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    {
+        result[i] = a[i] * s;
+    }
+    return result;
+}
+
+/// @brief Division operator.
+/// @relatedalso Vector
+template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} / T2{})>
+constexpr auto operator/ (const Vector<N, T1>& a, const T2 s) noexcept
+{
+    auto result = Vector<N, OT>{};
+    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    {
+        result[i] = a[i] / s;
+    }
+    return result;
+}
+
 /// @brief Lexicographical less-than operator.
+/// @relatedalso Vector
 template <std::size_t N, typename T>
 constexpr bool operator< (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noexcept
 {
@@ -238,6 +365,7 @@ constexpr bool operator< (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noex
 }
 
 /// @brief Lexicographical less-than or equal-to operator.
+/// @relatedalso Vector
 template <std::size_t N, typename T>
 constexpr bool operator<= (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noexcept
 {
@@ -246,6 +374,7 @@ constexpr bool operator<= (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noe
 }
 
 /// @brief Lexicographical greater-than operator.
+/// @relatedalso Vector
 template <std::size_t N, typename T>
 constexpr bool operator> (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noexcept
 {
@@ -254,6 +383,7 @@ constexpr bool operator> (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noex
 }
 
 /// @brief Lexicographical greater-than or equal-to operator.
+/// @relatedalso Vector
 template <std::size_t N, typename T>
 constexpr bool operator>= (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noexcept
 {
@@ -262,6 +392,7 @@ constexpr bool operator>= (const Vector<N, T>& lhs, const Vector<N, T>& rhs) noe
 }
 
 /// @brief Gets the I'th element of the given collection.
+/// @relatedalso Vector
 template <size_t I, size_t N, typename T>
 constexpr auto& Get(Vector<N, T>& v) noexcept
 {

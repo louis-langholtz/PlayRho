@@ -136,11 +136,11 @@ TEST(Fixture, CopyConstructor)
     ASSERT_EQ(fixture->GetUserData(), userData);
     ASSERT_EQ(fixture->GetRestitution(), restitution);
     ASSERT_EQ(fixture->IsSensor(), isSensor);
-    ASSERT_EQ(fixture->GetProxyCount(), 0);
+    ASSERT_EQ(fixture->GetProxyCount(), ChildCounter{0});
 
     const auto stepConf = StepConf{};
     world.Step(stepConf);
-    ASSERT_EQ(fixture->GetProxyCount(), 1);
+    ASSERT_EQ(fixture->GetProxyCount(), ChildCounter{1});
     ASSERT_EQ(fixture->GetProxy(0), FixtureProxy{0});
 
     Fixture copy{*fixture};

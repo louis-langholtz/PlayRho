@@ -26,7 +26,7 @@
 /// Declaration of the AABB class and free functions that return instances of it.
 
 #include <PlayRho/Common/Intervals.hpp>
-#include <PlayRho/Common/Vector2D.hpp>
+#include <PlayRho/Common/Vector2.hpp>
 #include <PlayRho/Common/Templates.hpp>
 
 namespace playrho {

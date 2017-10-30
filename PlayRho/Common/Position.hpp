@@ -24,7 +24,7 @@
 
 #include <PlayRho/Common/Templates.hpp>
 #include <PlayRho/Common/Settings.hpp>
-#include <PlayRho/Common/Vector2D.hpp>
+#include <PlayRho/Common/Vector2.hpp>
 
 namespace playrho
 {

@@ -24,8 +24,8 @@
 #include <PlayRho/Common/BoundedValue.hpp>
 #include <PlayRho/Common/Span.hpp>
 #include <PlayRho/Common/UnitVec2.hpp>
-#include <PlayRho/Common/Vector2D.hpp>
-#include <PlayRho/Common/Vector3D.hpp>
+#include <PlayRho/Common/Vector2.hpp>
+#include <PlayRho/Common/Vector3.hpp>
 #include <PlayRho/Common/Position.hpp>
 #include <PlayRho/Common/Velocity.hpp>
 #include <PlayRho/Common/Acceleration.hpp>
@@ -321,7 +321,7 @@ inline Angle GetAngle(const UnitVec2 value)
 /// @brief Gets the angle.
 /// @return Angular value in the range of -Pi to +Pi radians.
 template <class T>
-inline Angle GetAngle(const Vector2D<T> value)
+inline Angle GetAngle(const Vector2<T> value)
 {
     return Atan2(GetY(value), GetX(value));
 }
@@ -445,15 +445,15 @@ constexpr inline auto Cross(const Vec3 a, const Vec3 b) noexcept
 /// @brief Solves A * x = b, where b is a column vector.
 /// @note This is more efficient than computing the inverse in one-shot cases.
 template <typename T, typename U>
-constexpr auto Solve(const Matrix22<U> mat, const Vector2D<T> b) noexcept
+constexpr auto Solve(const Matrix22<U> mat, const Vector2<T> b) noexcept
 {
     const auto cp = Cross(Get<0>(mat), Get<1>(mat));
     using OutType = decltype((U{} * T{}) / cp);
     return (!AlmostZero(StripUnit(cp)))?
-        Vector2D<OutType>{
+        Vector2<OutType>{
             (Get<1>(mat)[1] * b[0] - Get<1>(mat)[0] * b[1]) / cp,
             (Get<0>(mat)[0] * b[1] - Get<0>(mat)[1] * b[0]) / cp
-        }: Vector2D<OutType>{};
+        }: Vector2<OutType>{};
 }
 
 /// @brief Inverts the given value.
@@ -464,8 +464,8 @@ constexpr auto Invert(const Matrix22<IN_TYPE> value) noexcept
     using OutType = decltype(Get<0>(value)[0] / cp);
     return (!AlmostZero(StripUnit(cp)))?
         Matrix22<OutType>{
-            Vector2D<OutType>{ Get<1>(Get<1>(value)) / cp, -Get<1>(Get<0>(value)) / cp},
-            Vector2D<OutType>{-Get<0>(Get<1>(value)) / cp,  Get<0>(Get<0>(value)) / cp}
+            Vector2<OutType>{ Get<1>(Get<1>(value)) / cp, -Get<1>(Get<0>(value)) / cp},
+            Vector2<OutType>{-Get<0>(Get<1>(value)) / cp,  Get<0>(Get<0>(value)) / cp}
         }:
         Matrix22<OutType>{};
 }
@@ -594,30 +594,30 @@ constexpr inline Vec2 InverseTransform(const Vec2 v, const Mat22& A) noexcept
 
 /// @brief Multiplication operator.
 template <class T, LoValueCheck lo, HiValueCheck hi>
-constexpr inline Vector2D<T> operator* (BoundedValue<T, lo, hi> s, UnitVec2 u) noexcept
+constexpr inline Vector2<T> operator* (BoundedValue<T, lo, hi> s, UnitVec2 u) noexcept
 {
-    return Vector2D<T>{u.GetX() * s, u.GetY() * T{s}};
+    return Vector2<T>{u.GetX() * s, u.GetY() * T{s}};
 }
 
 /// @brief Multiplication operator.
 template <class T>
-constexpr inline Vector2D<T> operator* (const T s, const UnitVec2 u) noexcept
+constexpr inline Vector2<T> operator* (const T s, const UnitVec2 u) noexcept
 {
-    return Vector2D<T>{u.GetX() * s, u.GetY() * s};
+    return Vector2<T>{u.GetX() * s, u.GetY() * s};
 }
 
 /// @brief Multiplication operator.
 template <class T, LoValueCheck lo, HiValueCheck hi>
-constexpr inline Vector2D<T> operator* (UnitVec2 u, BoundedValue<T, lo, hi> s) noexcept
+constexpr inline Vector2<T> operator* (UnitVec2 u, BoundedValue<T, lo, hi> s) noexcept
 {
-    return Vector2D<T>{u.GetX() * s, u.GetY() * T{s}};
+    return Vector2<T>{u.GetX() * s, u.GetY() * T{s}};
 }
 
 /// @brief Multiplication operator.
 template <class T>
-constexpr inline Vector2D<T> operator* (const UnitVec2 u, const T s) noexcept
+constexpr inline Vector2<T> operator* (const UnitVec2 u, const T s) noexcept
 {
-    return Vector2D<T>{u.GetX() * s, u.GetY() * s};
+    return Vector2<T>{u.GetX() * s, u.GetY() * s};
 }
 
 /// @brief Division operator.
@@ -661,11 +661,11 @@ constexpr inline Vec2 Transform(const Vec2 v, const Mat33& A) noexcept
 /// @param angle Expresses the angle to forward rotate the given vector by.
 /// @sa InverseRotate.
 template <class T>
-constexpr inline auto Rotate(const Vector2D<T> vector, const UnitVec2& angle) noexcept
+constexpr inline auto Rotate(const Vector2<T> vector, const UnitVec2& angle) noexcept
 {
     const auto newX = (angle.cos() * GetX(vector)) - (angle.sin() * GetY(vector));
     const auto newY = (angle.sin() * GetX(vector)) + (angle.cos() * GetY(vector));
-    return Vector2D<T>{newX, newY};
+    return Vector2<T>{newX, newY};
 }
 
 /// @brief Inverse rotates a vector.
@@ -676,11 +676,11 @@ constexpr inline auto Rotate(const Vector2D<T> vector, const UnitVec2& angle) no
 /// @param angle Expresses the angle to reverse rotate the given vector by.
 /// @sa Rotate.
 template <class T>
-constexpr inline auto InverseRotate(const Vector2D<T> vector, const UnitVec2& angle) noexcept
+constexpr inline auto InverseRotate(const Vector2<T> vector, const UnitVec2& angle) noexcept
 {
     const auto newX = (angle.cos() * GetX(vector)) + (angle.sin() * GetY(vector));
     const auto newY = (angle.cos() * GetY(vector)) - (angle.sin() * GetX(vector));
-    return Vector2D<T>{newX, newY};
+    return Vector2<T>{newX, newY};
 }
 
 /// @brief Transforms the given 2-D vector with the given transformation.
@@ -941,7 +941,7 @@ constexpr inline Angle GetRevRotationalAngle(Angle a1, Angle a2) noexcept
 /// @return value divided by its length if length not almost zero otherwise invalid value.
 /// @sa AlmostEqual.
 template <class T>
-inline UnitVec2 GetUnitVector(const Vector2D<T> value,
+inline UnitVec2 GetUnitVector(const Vector2<T> value,
                               const UnitVec2 fallback = UnitVec2::GetDefaultFallback())
 {
     auto magnitude = Real(1);
@@ -956,12 +956,12 @@ inline UnitVec2 GetUnitVector(const Vector2D<T> value,
 /// @return value divided by its length if length not almost zero otherwise invalid value.
 /// @sa AlmostEqual.
 template <class T>
-inline UnitVec2 GetUnitVector(Vector2D<T> value, T& magnitude,
+inline UnitVec2 GetUnitVector(Vector2<T> value, T& magnitude,
                               UnitVec2 fallback = UnitVec2::GetDefaultFallback());
 
 /// @brief Gets the unit vector of the given value.
 template <>
-inline UnitVec2 GetUnitVector(Vector2D<Real> value, Real& magnitude, UnitVec2 fallback)
+inline UnitVec2 GetUnitVector(Vector2<Real> value, Real& magnitude, UnitVec2 fallback)
 {
     return UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), magnitude, fallback);
 }
@@ -970,7 +970,7 @@ inline UnitVec2 GetUnitVector(Vector2D<Real> value, Real& magnitude, UnitVec2 fa
 
 /// @brief Gets the unit vector of the given value.
 template <>
-inline UnitVec2 GetUnitVector(Vector2D<Length> value, Length& magnitude, UnitVec2 fallback)
+inline UnitVec2 GetUnitVector(Vector2<Length> value, Length& magnitude, UnitVec2 fallback)
 {
     auto tmp = Real{0};
     const auto uv = UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), tmp, fallback);
@@ -980,7 +980,7 @@ inline UnitVec2 GetUnitVector(Vector2D<Length> value, Length& magnitude, UnitVec
 
 /// @brief Gets the unit vector of the given value.
 template <>
-inline UnitVec2 GetUnitVector(Vector2D<LinearVelocity> value, LinearVelocity& magnitude,
+inline UnitVec2 GetUnitVector(Vector2<LinearVelocity> value, LinearVelocity& magnitude,
                               UnitVec2 fallback)
 {
     auto tmp = Real{0};
