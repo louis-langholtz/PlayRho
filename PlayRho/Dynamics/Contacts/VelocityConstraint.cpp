@@ -65,7 +65,7 @@ inline InvMass22 ComputeK(const VelocityConstraint& vc) noexcept
     const auto k11 = invMass + invRotMassA1 + invRotMassB1;
     const auto k01 = invMass + invRotMassA + invRotMassB;
     
-    return InvMass22{Vector2D<InvMass>{k00, k01}, Vector2D<InvMass>{k01, k11}};
+    return InvMass22{Vector2<InvMass>{k00, k01}, Vector2<InvMass>{k01, k11}};
 }
 
 } // anonymous namespace
