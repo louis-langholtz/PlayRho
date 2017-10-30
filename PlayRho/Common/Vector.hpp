@@ -321,7 +321,7 @@ constexpr auto& operator/= (Vector<N, T>& lhs, const Real rhs) noexcept
 template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} * T2{})>
 constexpr auto operator* (const T1 s, const Vector<N, T2>& a) noexcept
 {
-    Vector<N, OT> result;
+    auto result = Vector<N, OT>{};
     for (auto i = static_cast<size_t>(0); i < N; ++i)
     {
         result[i] = a[i] * s;
@@ -334,7 +334,7 @@ constexpr auto operator* (const T1 s, const Vector<N, T2>& a) noexcept
 template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} * T2{})>
 constexpr auto operator* (const Vector<N, T1>& a, const T2 s) noexcept
 {
-    Vector<N, OT> result;
+    auto result = Vector<N, OT>{};
     for (auto i = static_cast<size_t>(0); i < N; ++i)
     {
         result[i] = a[i] * s;
@@ -347,7 +347,7 @@ constexpr auto operator* (const Vector<N, T1>& a, const T2 s) noexcept
 template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} / T2{})>
 constexpr auto operator/ (const Vector<N, T1>& a, const T2 s) noexcept
 {
-    Vector<N, OT> result;
+    auto result = Vector<N, OT>{};
     for (auto i = static_cast<size_t>(0); i < N; ++i)
     {
         result[i] = a[i] / s;
