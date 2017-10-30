@@ -6,7 +6,7 @@ that ties physical values to their required types.
 
 The base implementation for the *physical units interface* simply uses
 the `Real` type. To get the interface to enforce strong typing, an
-implementation that enforces it has to be used &mdash; otherwise, the
+implementation that enforces it has to be used &mdash; otherwise the
 interface is just syntactic sugar that states only to the programmer
 what the unit is supposed to be.
 
