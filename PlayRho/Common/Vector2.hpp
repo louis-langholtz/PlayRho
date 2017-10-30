@@ -89,20 +89,6 @@ namespace playrho
         return IsValid(Get<0>(value)) && IsValid(Get<1>(value));
     }
     
-    /// @brief Equality operator.
-    template <typename TYPE>
-    constexpr bool operator== (const Vector2<TYPE> a, const Vector2<TYPE> b) noexcept
-    {
-        return (Get<0>(a) == Get<0>(b)) && (Get<1>(a) == Get<1>(b));
-    }
-    
-    /// @brief Inequality operator.
-    template <typename TYPE>
-    constexpr bool operator!= (const Vector2<TYPE> a, const Vector2<TYPE> b) noexcept
-    {
-        return !(a == b);
-    }
-    
     /// Increment the left hand side value by the right hand side value.
     template <typename TYPE>
     constexpr Vector2<TYPE>& operator += (Vector2<TYPE>& lhs, const Vector2<TYPE> rhs) noexcept

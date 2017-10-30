@@ -32,21 +32,6 @@ namespace playrho
     template <typename T>
     using Vector3 = Vector<3, T>;
     
-    /// @brief Equality operator.
-    template <typename TYPE>
-    constexpr inline bool operator== (const Vector3<TYPE> a, const Vector3<TYPE> b) noexcept
-    {
-        return (Get<0>(a) == Get<0>(b)) && (Get<1>(a) == Get<1>(b))
-            && (Get<2>(a) == Get<2>(b));
-    }
-    
-    /// @brief Inequality operator.
-    template <typename TYPE>
-    constexpr inline bool operator!= (const Vector3<TYPE> a, const Vector3<TYPE> b) noexcept
-    {
-        return !(a == b);
-    }
-    
     /// Increment the left hand side value by the right hand side value.
     template <typename TYPE>
     constexpr Vector3<TYPE>& operator += (Vector3<TYPE>& lhs, const Vector3<TYPE> rhs) noexcept
