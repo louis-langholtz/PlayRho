@@ -6,8 +6,8 @@ that ties physical values to their required types.
 
 The base implementation for the *physical units interface* simply uses
 the `Real` type. To get the interface to enforce strong typing, an
-implementation that enforces it needs to be used. Otherwise, the physical
-units interface is just syntactic sugar that states only to the programmer
+implementation that enforces it has to be used &mdash; otherwise the
+interface is just syntactic sugar that states only to the programmer
 what the unit is supposed to be.
 
 To date, a modified version of the Boost Units library has been used as an
@@ -35,7 +35,7 @@ To build with this Boost units support:
      named "units".
   7. Go back to the PlayRho project setup and add "USE_BOOST_UNITS" as a
      C pre-processor define so that the file
-     `PlayRho/Common/Settings.hpp` can see that it's defined.
+     [`PlayRho/Common/Units.hpp`](../PlayRho/Common/Units.hpp) can see that it's defined.
   8. Now rebuild the PlayRho library and any applications. If you've used the
      physical units interface correctly everywhere, you should get no units
      related warnings or errors.
