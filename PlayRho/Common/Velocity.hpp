@@ -23,7 +23,7 @@
 #define PLAYRHO_COMMON_VELOCITY_HPP
 
 #include <PlayRho/Common/Settings.hpp>
-#include <PlayRho/Common/Vector2D.hpp>
+#include <PlayRho/Common/Vector2.hpp>
 
 namespace playrho
 {

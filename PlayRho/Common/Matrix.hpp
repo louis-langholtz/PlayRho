@@ -23,7 +23,7 @@
 #define PLAYRHO_COMMON_MATRIX_HPP
 
 #include <PlayRho/Common/Vector.hpp>
-#include <PlayRho/Common/Vector2D.hpp>
+#include <PlayRho/Common/Vector2.hpp>
 #include <PlayRho/Common/Templates.hpp>
 #include <PlayRho/Common/Real.hpp>
 #include <PlayRho/Common/Units.hpp>
