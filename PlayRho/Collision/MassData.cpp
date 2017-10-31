@@ -70,7 +70,7 @@ MassData GetMassData(Length r, NonNegative<Density> density, Length2D v0, Length
     const auto halfCircleArea = circle_area / Real{2};
     const auto halfRSquared = r_squared / Real{2};
     
-    const auto vertices = Vector<4, const Length2D>{
+    const auto vertices = Vector<const Length2D, 4>{
         Length2D{v0 + offset},
         Length2D{v0 - offset},
         Length2D{v1 - offset},

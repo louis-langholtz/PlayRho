@@ -31,35 +31,35 @@ namespace playrho
     /// @brief Vector with 2-elements.
     /// @note This is just a C++11 alias template for 2-element uses of the Vector template.
     template <typename T>
-    using Vector2 = Vector<2, T>;
+    using Vector2 = Vector<T, 2>;
     
-    /// @brief Vector 2D of Real.
+    /// @brief Vector with 2 Real elements.
     /// @note This data structure is two-times the size of the <code>Real</code> type
     ///   (or 8 using Real of float).
     using Vec2 = Vector2<Real>;
     
-    /// An all zero Vec2 value.
+    /// @brief An all zero Vec2 value.
     /// @see Vec2.
     constexpr auto Vec2_zero = Vec2{0, 0};
 
-    /// @brief 2D vector for the Length unit-type.
-    /// @details A 2-dimensional location vector.
+    /// @brief 2-element vector of Length quanties.
+    /// @note Often used as a 2-dimensional distance or location vector.
     using Length2D = Vector2<Length>;
 
-    /// @brief 2D vector for the LinearVelocity unit-type.
-    /// @details A 2-dimensional speed vector.
+    /// @brief 2-element vector of LinearVelocity quantities.
+    /// @note Often used as a 2-dimensional speed vector.
     using LinearVelocity2D = Vector2<LinearVelocity>;
     
-    /// @brief 2D vector for the LinearAcceleration unit-type.
-    /// @details A 2-dimensional acceleration vector.
+    /// @brief 2-element vector of LinearAcceleration quantities.
+    /// @note Often used as a 2-dimensional linear acceleration vector.
     using LinearAcceleration2D = Vector2<LinearAcceleration>;
     
-    /// @brief 2D vector for the Force unit-type.
-    /// @details A 2-dimensional force vector.
+    /// @brief 2-element vector of Force quantities.
+    /// @note Often used as a 2-dimensional force vector.
     using Force2D = Vector2<Force>;
     
-    /// @brief 2D vector for the Momentum unit-type.
-    /// @details A 2-dimensional momentum vector.
+    /// @brief 2-element vector of Momentum quantities.
+    /// @note Often used as a 2-dimensional momentum vector.
     using Momentum2D = Vector2<Momentum>;
         
     /// @brief Earthly gravity.

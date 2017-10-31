@@ -30,7 +30,7 @@ namespace playrho
     /// @brief Vector with 3-elements.
     /// @note This is just a C++11 alias template for 3-element uses of the Vector template.
     template <typename T>
-    using Vector3 = Vector<3, T>;
+    using Vector3 = Vector<T, 3>;
     
     /// A 3D column vector with 3 elements.
     /// @note This data structure is 3 times the size of <code>Real</code> -

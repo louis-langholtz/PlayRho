@@ -85,7 +85,7 @@ TEST(ArrayList, ArrayConstruction)
         EXPECT_EQ(list[2], 3);
     }
     {
-        constexpr auto list = Vector<3, int>{1, 2, 3};
+        constexpr auto list = Vector<int, 3>{1, 2, 3};
         EXPECT_EQ(list.size(), decltype(list.size()){3});
         EXPECT_EQ(list[0], 1);
         EXPECT_EQ(list[1], 2);
