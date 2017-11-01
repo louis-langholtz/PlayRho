@@ -64,7 +64,7 @@ TEST(SeparationFinder, BehavesAsExpected)
     EXPECT_EQ(fcn.GetType(), SeparationFinder::e_faceA);
     EXPECT_NEAR(static_cast<double>(GetX(GetVec2(fcn.GetAxis()))), 1.0, 0.000001);
     EXPECT_NEAR(static_cast<double>(GetY(GetVec2(fcn.GetAxis()))), 0.0, 0.000001);
-    EXPECT_EQ(fcn.GetLocalPoint(), Length2(Real(0.5f) * Meter, 0_m));
+    EXPECT_EQ(fcn.GetLocalPoint(), Length2(0.5_m, 0_m));
 
     auto last_min_sep = MaxFloat * Meter;
     for (auto i = 0u; i < 500; ++i)

@@ -104,7 +104,7 @@ TEST(MultiShape, AddConvexHullWithOnePointSameAsDisk)
 
     auto conf = MultiShape::Conf{};
     conf.density = 2.3_kgpm2;
-    conf.vertexRadius = Real(0.7f) * Meter;
+    conf.vertexRadius = 0.7_m;
 
     auto foo = MultiShape{conf};
     ASSERT_EQ(foo.GetChildCount(), ChildCounter{0});
@@ -140,7 +140,7 @@ TEST(MultiShape, AddConvexHullWithTwoPointsSameAsEdge)
     
     auto conf = MultiShape::Conf{};
     conf.density = 2.3_kgpm2;
-    conf.vertexRadius = Real(0.7f) * Meter;
+    conf.vertexRadius = 0.7_m;
     
     auto foo = MultiShape{conf};
     ASSERT_EQ(foo.GetChildCount(), ChildCounter{0});
@@ -179,7 +179,7 @@ TEST(MultiShape, AddTwoConvexHullWithOnePoint)
 
     auto conf = MultiShape::Conf{};
     conf.density = 2.3_kgpm2;
-    conf.vertexRadius = Real(0.7f) * Meter;
+    conf.vertexRadius = 0.7_m;
     
     auto foo = MultiShape{conf};
     ASSERT_EQ(foo.GetChildCount(), ChildCounter{0});

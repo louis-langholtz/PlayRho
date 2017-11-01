@@ -1962,7 +1962,7 @@ TEST(World, TilesComesToRest)
         const auto N = 200;
         const auto M = 10;
         Length2 position;
-        GetY(position) = Real(0.0f) * Meter;
+        GetY(position) = 0.0_m;
         for (auto j = 0; j < M; ++j)
         {
             GetX(position) = -N * a * Meter;
@@ -1982,10 +1982,10 @@ TEST(World, TilesComesToRest)
         const auto shape = std::make_shared<PolygonShape>(a * Meter, a * Meter, conf);
         shape->SetDensity(5_kgpm2);
         
-        Length2 x(Real(-7.0f) * Meter, Real(0.75f) * Meter);
+        Length2 x(-7.0_m, 0.75_m);
         Length2 y;
-        const auto deltaX = Length2(Real(0.5625f) * Meter, Real(1.25f) * Meter);
-        const auto deltaY = Length2(Real(1.125f) * Meter, Real(0.0f) * Meter);
+        const auto deltaX = Length2(0.5625_m, 1.25_m);
+        const auto deltaY = Length2(1.125_m, 0.0_m);
         
         for (auto i = 0; i < e_count; ++i)
         {
@@ -2323,7 +2323,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
     const auto ball_body = world.CreateBody(body_def);
     ASSERT_NE(ball_body, nullptr);
     
-    const auto ball_radius = Real(.01) * Meter;
+    const auto ball_radius = 0.01_m;
     const auto circle_shape = std::make_shared<DiskShape>(ball_radius);
     circle_shape->SetDensity(1_kgpm2);
     circle_shape->SetRestitution(Real(1)); // changes where bodies will be after collision
@@ -3006,7 +3006,7 @@ class VerticalStackTest: public ::testing::TestWithParam<Real>
 public:
     virtual void SetUp()
     {
-        const auto hw_ground = Real(40.0f) * Meter;
+        const auto hw_ground = 40.0_m;
         const auto ground = world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Length2{-hw_ground, 0_m},
                                                           Length2{hw_ground, 0_m}));
