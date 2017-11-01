@@ -99,10 +99,7 @@ TEST(AABB, DefaultAabbAddsToOther)
         EXPECT_EQ(GetUpperBound(sum_aabb), GetUpperBound(other_aabb));
     }
     {
-        const auto other_aabb = AABB{
-            Length2{Real( -1) * Meter, Real(-2) * Meter},
-            Length2{Real(+99) * Meter, Real(+3) * Meter}
-        };
+        const auto other_aabb = AABB{Length2{ -1_m, -2_m}, Length2{+99_m, +3_m}};
         const auto sum_aabb = GetEnclosingAABB(other_aabb, default_aabb);
         EXPECT_EQ(GetLowerBound(sum_aabb), GetLowerBound(other_aabb));
         EXPECT_EQ(GetUpperBound(sum_aabb), GetUpperBound(other_aabb));
@@ -120,10 +117,7 @@ TEST(AABB, DefaultAabbIncrementsToOther)
     }
     {
         auto default_aabb = AABB{};
-        const auto other_aabb = AABB{
-            Length2{Real(-1) * Meter, Real(-2) * Meter},
-            Length2{Real(+99) * Meter, Real(+3) * Meter}
-        };
+        const auto other_aabb = AABB{Length2{-1_m, -2_m}, Length2{+99_m, +3_m}};
         Include(default_aabb, other_aabb);
         EXPECT_EQ(GetLowerBound(default_aabb), GetLowerBound(other_aabb));
         EXPECT_EQ(GetUpperBound(default_aabb), GetUpperBound(other_aabb));
@@ -132,10 +126,10 @@ TEST(AABB, DefaultAabbIncrementsToOther)
 
 TEST(AABB, InitializingConstruction)
 {
-    const auto lower_x = Real(-2) * Meter;
-    const auto lower_y = Real(-3) * Meter;
-    const auto upper_x = Real(+1.6) * Meter;
-    const auto upper_y = Real(+1.9) * Meter;
+    const auto lower_x = -2_m;
+    const auto lower_y = -3_m;
+    const auto upper_x = +1.6_m;
+    const auto upper_y = +1.9_m;
     
     const auto center_x = (lower_x + upper_x) / Real{2};
     const auto center_y = (lower_y + upper_y) / Real{2};
@@ -172,7 +166,7 @@ TEST(AABB, InitializingConstruction)
     }
     {
         const auto pa = Length2{GetInvalid<Length>(), GetInvalid<Length>()};
-        const auto pb = Length2{GetInvalid<Length>(), 0 * Meter};
+        const auto pb = Length2{GetInvalid<Length>(), 0_m};
         AABB foo{pa, pb};
         EXPECT_TRUE(std::isnan(StripUnit(GetX(GetLowerBound(foo)))));
         EXPECT_TRUE(std::isnan(StripUnit(GetY(GetLowerBound(foo)))));
@@ -180,7 +174,7 @@ TEST(AABB, InitializingConstruction)
         EXPECT_FALSE(std::isnan(StripUnit(GetY(GetUpperBound(foo)))));
     }
     {
-        const auto pa = Length2{GetInvalid<Length>(), 0 * Meter};
+        const auto pa = Length2{GetInvalid<Length>(), 0_m};
         const auto pb = Length2{GetInvalid<Length>(), GetInvalid<Length>()};
         AABB foo{pa, pb};
         EXPECT_TRUE(std::isnan(StripUnit(GetX(GetLowerBound(foo)))));
@@ -189,8 +183,8 @@ TEST(AABB, InitializingConstruction)
         EXPECT_TRUE(std::isnan(StripUnit(GetY(GetUpperBound(foo)))));
     }
     {
-        const auto pa = Length2{GetInvalid<Length>(), 0 * Meter};
-        const auto pb = Length2{GetInvalid<Length>(), 0 * Meter};
+        const auto pa = Length2{GetInvalid<Length>(), 0_m};
+        const auto pb = Length2{GetInvalid<Length>(), 0_m};
         AABB foo{pa, pb};
         EXPECT_TRUE(std::isnan(StripUnit(GetX(GetLowerBound(foo)))));
         EXPECT_FALSE(std::isnan(StripUnit(GetY(GetLowerBound(foo)))));
@@ -198,8 +192,8 @@ TEST(AABB, InitializingConstruction)
         EXPECT_FALSE(std::isnan(StripUnit(GetY(GetUpperBound(foo)))));
     }
     {
-        const auto rangeX = Interval<Length>{-2 * Meter, +3 * Meter};
-        const auto rangeY = Interval<Length>{-8 * Meter, -4 * Meter};
+        const auto rangeX = Interval<Length>{-2_m, +3_m};
+        const auto rangeY = Interval<Length>{-8_m, -4_m};
         AABB foo{rangeX, rangeY};
         EXPECT_EQ(foo.rangeX, rangeX);
         EXPECT_EQ(foo.rangeY, rangeY);
@@ -214,7 +208,7 @@ TEST(AABB, Swappable)
     std::swap(a, b);
     EXPECT_EQ(a, b);
     const auto aBefore = a;
-    Include(a, Length2{2 * Meter, 3 * Meter});
+    Include(a, Length2{2_m, 3_m});
     const auto aAfter = a;
     ASSERT_NE(a, b);
     std::swap(a, b);
@@ -224,9 +218,9 @@ TEST(AABB, Swappable)
 
 TEST(AABB, GetPerimeterOfPoint)
 {
-    EXPECT_EQ(GetPerimeter(AABB{Length2{}}), Real(0) * Meter);
-    EXPECT_EQ(GetPerimeter(AABB{Length2{Real(-1) * Meter, Real(-2) * Meter}}), Real(0) * Meter);
-    EXPECT_EQ(GetPerimeter(AABB{Length2{Real(+99) * Meter, Real(+3) * Meter}}), Real(0) * Meter);
+    EXPECT_EQ(GetPerimeter(AABB{Length2{}}), 0_m);
+    EXPECT_EQ(GetPerimeter(AABB{Length2{-1_m, -2_m}}), 0_m);
+    EXPECT_EQ(GetPerimeter(AABB{Length2{+99_m, +3_m}}), 0_m);
     EXPECT_TRUE(std::isnan(StripUnit(GetPerimeter(AABB{
         Length2{
             Real(+std::numeric_limits<Real>::infinity()) * Meter,
@@ -237,10 +231,10 @@ TEST(AABB, GetPerimeterOfPoint)
 
 TEST(AABB, Include)
 {
-    const auto p1 = Length2{Real{2} * Meter, Real{3} * Meter};
-    const auto p2 = Length2{Real{20} * Meter, Real{30} * Meter};
-    const auto p3 = Length2{Real{-3} * Meter, Real{-4} * Meter};
-    const auto p4 = Length2{Real{0} * Meter, Real{0} * Meter};
+    const auto p1 = Length2{2_m, 3_m};
+    const auto p2 = Length2{20_m, 30_m};
+    const auto p3 = Length2{-3_m, -4_m};
+    const auto p4 = Length2{0_m, 0_m};
     const auto p5 = AABB{};
 
     auto foo = AABB{};
@@ -274,7 +268,7 @@ TEST(AABB, Contains)
     EXPECT_TRUE(Contains(AABB{Length2{}}, AABB{Length2{}}));
     EXPECT_TRUE((Contains(AABB{Length2{}, Length2{}}, AABB{Length2{}})));
     EXPECT_TRUE((Contains(AABB{Length2{}}, AABB{Length2{}, Length2{}})));
-    EXPECT_TRUE((Contains(AABB{Length2{1 * Meter, 2 * Meter}}, AABB{})));
+    EXPECT_TRUE((Contains(AABB{Length2{1_m, 2_m}}, AABB{})));
     EXPECT_FALSE(Contains(GetInvalid<AABB>(), GetInvalid<AABB>()));
     EXPECT_FALSE(Contains(GetInvalid<AABB>(), AABB{}));
     EXPECT_FALSE(Contains(AABB{}, GetInvalid<AABB>()));
@@ -283,70 +277,37 @@ TEST(AABB, Contains)
 TEST(AABB, TestOverlap)
 {
     {
-        AABB bb1{
-            Length2{Real(-2) * Meter, Real(-3) * Meter},
-            Length2{Real(-1) * Meter, Real( 0) * Meter}
-        };
+        AABB bb1{Length2{-2_m, -3_m}, Length2{-1_m,  0_m}};
         EXPECT_TRUE(TestOverlap(bb1, bb1));
     }
     {
-        const auto vec = Length2{Real(-2) * Meter, Real(-3) * Meter};
+        const auto vec = Length2{-2_m, -3_m};
         AABB bb1{vec, vec};
         EXPECT_TRUE(TestOverlap(bb1, bb1));
     }
     {
-        AABB bb1{
-            Length2{Real(-2) * Meter, Real(-3) * Meter},
-            Length2{Real(-1) * Meter, Real( 0) * Meter}
-        };
-        AABB bb2{
-            Length2{Real(-1) * Meter, Real(-1) * Meter},
-            Length2{Real( 1) * Meter, Real( 2) * Meter}
-        };
+        AABB bb1{Length2{-2_m, -3_m}, Length2{-1_m,  0_m}};
+        AABB bb2{Length2{-1_m, -1_m}, Length2{ 1_m,  2_m}};
         EXPECT_TRUE(TestOverlap(bb1, bb2));
     }
     {
-        AABB bb1{
-            Length2{Real(-99) * Meter, Real(-3) * Meter},
-            Length2{Real( -1) * Meter, Real( 0) * Meter}
-        };
-        AABB bb2{
-            Length2{Real(76) * Meter, Real(-1) * Meter},
-            Length2{Real(-2) * Meter, Real( 2) * Meter}
-        };
+        AABB bb1{Length2{-99_m, -3_m}, Length2{-1_m,  0_m}};
+        AABB bb2{Length2{ 76_m, -1_m}, Length2{-2_m,  2_m}};
         EXPECT_TRUE(TestOverlap(bb1, bb2));
     }
     {
-        AABB bb1{
-            Length2{Real(-20) * Meter, Real(-3) * Meter},
-            Length2{Real(-18) * Meter, Real( 0) * Meter}
-        };
-        AABB bb2{
-            Length2{Real(-1) * Meter, Real(-1) * Meter},
-            Length2{Real( 1) * Meter, Real( 2) * Meter}
-        };
+        AABB bb1{Length2{-20_m, -3_m}, Length2{-18_m,  0_m}};
+        AABB bb2{Length2{ -1_m, -1_m}, Length2{  1_m,  2_m}};
         EXPECT_FALSE(TestOverlap(bb1, bb2));
     }
     {
-        AABB bb1{
-            Length2{Real(-2) * Meter, Real(-3) * Meter},
-            Length2{Real(-1) * Meter, Real( 0) * Meter}
-        };
-        AABB bb2{
-            Length2{Real(-1) * Meter, Real(+1) * Meter},
-            Length2{Real( 1) * Meter, Real( 2) * Meter}
-        };
+        AABB bb1{Length2{-2_m, -3_m}, Length2{-1_m,  0_m}};
+        AABB bb2{Length2{-1_m, +1_m}, Length2{ 1_m,  2_m}};
         EXPECT_FALSE(TestOverlap(bb1, bb2));
     }
     {
-        AABB bb1{
-            Length2{Real(-2) * Meter, Real(+3) * Meter},
-            Length2{Real(-1) * Meter, Real( 0) * Meter}
-        };
-        AABB bb2{
-            Length2{Real(-1) * Meter, Real(-1) * Meter},
-            Length2{Real( 0) * Meter, Real(-2) * Meter}
-        };
+        AABB bb1{Length2{-2_m, +3_m}, Length2{-1_m,  0_m}};
+        AABB bb2{Length2{-1_m, -1_m}, Length2{ 0_m, -2_m}};
         EXPECT_FALSE(TestOverlap(bb1, bb2));
     }
 }
@@ -366,25 +327,25 @@ TEST(AABB, Move)
     {
         auto aabb = AABB{};
         EXPECT_EQ(Move(aabb, zeroLoc), AABB{});
-        EXPECT_EQ(Move(aabb, Length2{Real(10) * Meter, Real(-4) * Meter}), AABB{});
+        EXPECT_EQ(Move(aabb, Length2{10_m, -4_m}), AABB{});
     }
     {
         auto aabb = AABB{Length2{}};
         EXPECT_EQ(Move(aabb, Length2{}), zeroAabb);
     }
     {
-        const auto aabb1 = AABB{Length2{Real(1) * Meter, Real(1) * Meter}};
-        const auto aabb2 = AABB{Length2{Real(-10) * Meter, Real(11) * Meter}};
+        const auto aabb1 = AABB{Length2{1_m, 1_m}};
+        const auto aabb2 = AABB{Length2{-10_m, 11_m}};
         auto aabb = zeroAabb;
-        EXPECT_EQ(Move(aabb, Length2{Real(1) * Meter, Real(1) * Meter}), aabb1);
-        EXPECT_EQ(Move(aabb, Length2{Real(-1) * Meter, Real(-1) * Meter}), zeroAabb);
-        EXPECT_EQ(Move(aabb, Length2{Real(-10) * Meter, Real(11) * Meter}), aabb2);
+        EXPECT_EQ(Move(aabb, Length2{1_m, 1_m}), aabb1);
+        EXPECT_EQ(Move(aabb, Length2{-1_m, -1_m}), zeroAabb);
+        EXPECT_EQ(Move(aabb, Length2{-10_m, 11_m}), aabb2);
     }
     {
-        const auto lower = Length2{Real(-1) * Meter, Real(-1) * Meter};
-        const auto upper = Length2{Real(+3) * Meter, Real(+9) * Meter};
+        const auto lower = Length2{-1_m, -1_m};
+        const auto upper = Length2{+3_m, +9_m};
         auto aabb = AABB{lower, upper};
-        const auto moveby = Length2{Real(1) * Meter, Real(1) * Meter};
+        const auto moveby = Length2{1_m, 1_m};
         EXPECT_EQ(Move(aabb, moveby), AABB(lower + moveby, upper + moveby));
     }
 }
@@ -398,10 +359,10 @@ TEST(AABB, ComparisonOperators)
     EXPECT_FALSE(AABB{} < AABB{});
     EXPECT_FALSE(AABB{} > AABB{});
     
-    const auto vr0 = Interval<Length>{1 * Meter, 2 * Meter};
-    const auto vr1 = Interval<Length>{3 * Meter, 4 * Meter};
-    const auto vr2 = Interval<Length>{5 * Meter, 6 * Meter};
-    const auto vr3 = Interval<Length>{7 * Meter, 8 * Meter};
+    const auto vr0 = Interval<Length>{1_m, 2_m};
+    const auto vr1 = Interval<Length>{3_m, 4_m};
+    const auto vr2 = Interval<Length>{5_m, 6_m};
+    const auto vr3 = Interval<Length>{7_m, 8_m};
 
     EXPECT_FALSE(AABB(vr0, vr1) == AABB{});
     EXPECT_TRUE(AABB(vr0, vr1) != AABB{});
@@ -427,8 +388,8 @@ TEST(AABB, ComparisonOperators)
 
 TEST(AABB, StreamOutputOperator)
 {
-    const auto rangeX = Interval<Length>{-2 * Meter, +3 * Meter};
-    const auto rangeY = Interval<Length>{-8 * Meter, -4 * Meter};
+    const auto rangeX = Interval<Length>{-2_m, +3_m};
+    const auto rangeY = Interval<Length>{-8_m, -4_m};
     AABB foo{rangeX, rangeY};
     ASSERT_EQ(foo.rangeX, rangeX);
     ASSERT_EQ(foo.rangeY, rangeY);
@@ -472,7 +433,7 @@ TEST(AABB, ComputeAabbForFixtureOffFromBodyOrigin)
     const auto shape = std::make_shared<DiskShape>();
     const auto shapeAabb = ComputeAABB(*shape, Transformation{});
     
-    const auto bodyLocation = Length2{2 * Meter, 3 * Meter};
+    const auto bodyLocation = Length2{2_m, 3_m};
     World world;
     const auto body = world.CreateBody(BodyDef{}.UseLocation(bodyLocation));
     const auto fixture = body->CreateFixture(shape);
@@ -502,14 +463,14 @@ TEST(AABB, ComputeIntersectingAABBForSameFixture)
 
 TEST(AABB, ComputeIntersectingAABBForTwoFixtures)
 {
-    const auto shapeInterval = LengthInterval{-2 * Meter, +2 * Meter};
+    const auto shapeInterval = LengthInterval{-2_m, +2_m};
 
-    const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}.UseVertexRadius(2 * Meter));
+    const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}.UseVertexRadius(2_m));
     const auto shapeAabb = ComputeAABB(*shape, Transformation{});
     ASSERT_EQ(shapeAabb, (AABB{shapeInterval, shapeInterval}));
 
-    const auto bodyLocation0 = Length2{+1 * Meter, 0 * Meter};
-    const auto bodyLocation1 = Length2{-1 * Meter, 0 * Meter};
+    const auto bodyLocation0 = Length2{+1_m, 0_m};
+    const auto bodyLocation1 = Length2{-1_m, 0_m};
 
     World world;
     const auto body0 = world.CreateBody(BodyDef{}.UseLocation(bodyLocation0));
@@ -522,7 +483,7 @@ TEST(AABB, ComputeIntersectingAABBForTwoFixtures)
     const auto fixtureAabb1 = ComputeAABB(*fixture1);
 
     const auto intersectingAabb = ComputeIntersectingAABB(*fixture0, 0, *fixture1, 0);
-    const auto intersectInterval = LengthInterval{-1 * Meter, +1 * Meter};
+    const auto intersectInterval = LengthInterval{-1_m, +1_m};
 
     ASSERT_NE(shapeAabb, fixtureAabb0);
     ASSERT_NE(shapeAabb, fixtureAabb1);
@@ -531,14 +492,14 @@ TEST(AABB, ComputeIntersectingAABBForTwoFixtures)
 
 TEST(AABB, ComputeIntersectingAABBForContact)
 {
-    const auto shapeInterval = LengthInterval{-2 * Meter, +2 * Meter};
+    const auto shapeInterval = LengthInterval{-2_m, +2_m};
     
-    const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}.UseVertexRadius(2 * Meter));
+    const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}.UseVertexRadius(2_m));
     const auto shapeAabb = ComputeAABB(*shape, Transformation{});
     ASSERT_EQ(shapeAabb, (AABB{shapeInterval, shapeInterval}));
     
-    const auto bodyLocation0 = Length2{+1 * Meter, 0 * Meter};
-    const auto bodyLocation1 = Length2{-1 * Meter, 0 * Meter};
+    const auto bodyLocation0 = Length2{+1_m, 0_m};
+    const auto bodyLocation1 = Length2{-1_m, 0_m};
     
     World world;
     const auto body0 = world.CreateBody(BodyDef{}.UseLocation(bodyLocation0));
@@ -551,7 +512,7 @@ TEST(AABB, ComputeIntersectingAABBForContact)
     const auto fixtureAabb1 = ComputeAABB(*fixture1);
     
     const auto intersectingAabb = ComputeIntersectingAABB(*fixture0, 0, *fixture1, 0);
-    const auto intersectInterval = LengthInterval{-1 * Meter, +1 * Meter};
+    const auto intersectInterval = LengthInterval{-1_m, +1_m};
     
     ASSERT_NE(shapeAabb, fixtureAabb0);
     ASSERT_NE(shapeAabb, fixtureAabb1);

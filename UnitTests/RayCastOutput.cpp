@@ -58,10 +58,10 @@ TEST(RayCastOutput, InitConstruction)
 
 TEST(RayCastOutput, RayCastFreeFunctionHits)
 {
-    const auto radius = Real(0.1) * Meter;
-    const auto location = Length2(Real(5) * Meter, Real(2) * Meter);
-    const auto p1 = Length2(Real(10) * Meter, Real(2) * Meter);
-    const auto p2 = Length2(Real(0) * Meter, Real(2) * Meter);
+    const auto radius = 0.1_m;
+    const auto location = Length2(5_m, 2_m);
+    const auto p1 = Length2(10_m, 2_m);
+    const auto p2 = Length2(0_m, 2_m);
     const auto maxFraction = Real(1);
     auto input = RayCastInput{p1, p2, maxFraction};
     const auto output = RayCast(radius, location, input);
@@ -78,20 +78,20 @@ TEST(RayCastOutput, RayCastFreeFunctionHits)
 TEST(RayCastOutput, RayCastLocationFreeFunctionMisses)
 {
     {
-        const auto radius = Real(0.1) * Meter;
-        const auto location = Length2(Real(15) * Meter, Real(2) * Meter);
-        const auto p1 = Length2(Real(10) * Meter, Real(2) * Meter);
-        const auto p2 = Length2(Real(0) * Meter, Real(2) * Meter);
+        const auto radius = 0.1_m;
+        const auto location = Length2(15_m, 2_m);
+        const auto p1 = Length2(10_m, 2_m);
+        const auto p2 = Length2(0_m, 2_m);
         const auto maxFraction = Real(1);
         auto input = RayCastInput{p1, p2, maxFraction};
         const auto output = RayCast(radius, location, input);
         EXPECT_FALSE(output.has_value());
     }
     {
-        const auto radius = Real(0.1) * Meter;
-        const auto location = Length2(Real(10) * Meter, Real(3) * Meter);
-        const auto p1 = Length2(Real(0) * Meter, Real(2) * Meter);
-        const auto p2 = Length2(Real(10) * Meter, Real(2) * Meter);
+        const auto radius = 0.1_m;
+        const auto location = Length2(10_m, 3_m);
+        const auto p1 = Length2(0_m, 2_m);
+        const auto p2 = Length2(10_m, 2_m);
         const auto maxFraction = Real(1);
         auto input = RayCastInput{p1, p2, maxFraction};
         const auto output = RayCast(radius, location, input);
@@ -102,8 +102,8 @@ TEST(RayCastOutput, RayCastLocationFreeFunctionMisses)
 TEST(RayCastOutput, RayCastAabbFreeFunction)
 {
     AABB aabb;
-    const auto p1 = Length2(Real(10) * Meter, Real(2) * Meter);
-    const auto p2 = Length2(Real(0) * Meter, Real(2) * Meter);
+    const auto p1 = Length2(10_m, 2_m);
+    const auto p2 = Length2(0_m, 2_m);
     const auto maxFraction = Real(1);
     RayCastInput input{p1, p2, maxFraction};
     const auto output = RayCast(aabb, input);
@@ -112,21 +112,21 @@ TEST(RayCastOutput, RayCastAabbFreeFunction)
 
 TEST(RayCastOutput, RayCastDistanceProxyFF)
 {
-    const auto pos1 = Length2{Real(3) * Meter, Real(1) * Meter}; // bottom right
-    const auto pos2 = Length2{Real(3) * Meter, Real(3) * Meter}; // top right
-    const auto pos3 = Length2{Real(1) * Meter, Real(3) * Meter}; // top left
-    const auto pos4 = Length2{Real(1) * Meter, Real(1) * Meter}; // bottom left
+    const auto pos1 = Length2{3_m, 1_m}; // bottom right
+    const auto pos2 = Length2{3_m, 3_m}; // top right
+    const auto pos3 = Length2{1_m, 3_m}; // top left
+    const auto pos4 = Length2{1_m, 1_m}; // bottom left
     const Length2 squareVerts[] = {pos1, pos2, pos3, pos4};
     const auto n1 = GetUnitVector(GetFwdPerpendicular(pos2 - pos1));
     const auto n2 = GetUnitVector(GetFwdPerpendicular(pos3 - pos2));
     const auto n3 = GetUnitVector(GetFwdPerpendicular(pos4 - pos3));
     const auto n4 = GetUnitVector(GetFwdPerpendicular(pos1 - pos4));
     const UnitVec2 squareNormals[] = {n1, n2, n3, n4};
-    const auto radius = Real(0.5) * Meter;
+    const auto radius = 0.5_m;
     DistanceProxy dp{radius, 4, squareVerts, squareNormals};
 
-    const auto p1 = Length2(Real(0) * Meter, Real(2) * Meter);
-    const auto p2 = Length2(Real(10) * Meter, Real(2) * Meter);
+    const auto p1 = Length2(0_m, 2_m);
+    const auto p2 = Length2(10_m, 2_m);
     const auto maxFraction = Real(1);
     const auto input0 = RayCastInput{p1, p2, maxFraction};
     {

@@ -41,7 +41,7 @@ TEST(Manifold, DefaultConstruction)
 
 TEST(Manifold, PointInitializingConstructor)
 {
-    const auto lp = Length2{Real(3) * Meter, Real(4) * Meter};
+    const auto lp = Length2{3_m, 4_m};
     const auto ni = 1.2_Ns;
     const auto ti = 2.4_Ns;
     const auto cf = ContactFeature{};
@@ -55,7 +55,7 @@ TEST(Manifold, PointInitializingConstructor)
 
 TEST(Manifold, GetForCircles)
 {
-    const auto ctr = Length2{Real(99) * Meter, Real(21) * Meter};
+    const auto ctr = Length2{99_m, 21_m};
     const auto foo = Manifold::GetForCircles(ctr, 0, ctr, 0);
     EXPECT_EQ(foo.GetType(), Manifold::e_circles);
     EXPECT_EQ(foo.GetLocalPoint(), ctr);
@@ -76,7 +76,7 @@ TEST(Manifold, GetForFaceA)
         EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(0));
     }
     {
-        const auto pl = Length2{Real(-0.12) * Meter, Real(0.34) * Meter};
+        const auto pl = Length2{Real(-0.12) * Meter, 0.34_m};
         const auto cf = GetFaceFaceContactFeature(0, 0);
         const auto ni = 2.9_Ns;
         const auto ti = .7_Ns;
@@ -93,7 +93,7 @@ TEST(Manifold, GetForFaceA)
         EXPECT_EQ(p0.tangentImpulse, ti);
     }
     {
-        const auto pl = Length2{Real(-0.12) * Meter, Real(0.34) * Meter};
+        const auto pl = Length2{Real(-0.12) * Meter, 0.34_m};
         const auto cf = GetFaceFaceContactFeature(0, 1);
         const auto ni = 2.9_Ns;
         const auto ti = 0.7_Ns;
@@ -128,7 +128,7 @@ TEST(Manifold, GetForFaceB)
         EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(0));
     }
     {
-        const auto pl = Length2{Real(-0.12) * Meter, Real(0.34) * Meter};
+        const auto pl = Length2{Real(-0.12) * Meter, 0.34_m};
         const auto cf = GetFaceFaceContactFeature(0, 0);
         const auto ni = 2.9_Ns;
         const auto ti = 0.7_Ns;
@@ -145,7 +145,7 @@ TEST(Manifold, GetForFaceB)
         EXPECT_EQ(p0.tangentImpulse, ti);
     }
     {
-        const auto pl = Length2{Real(-0.12) * Meter, Real(0.34) * Meter};
+        const auto pl = Length2{Real(-0.12) * Meter, 0.34_m};
         const auto cf = GetFaceFaceContactFeature(0, 1);
         const auto ni = 2.9_Ns;
         const auto ti = 0.7_Ns;
@@ -170,8 +170,8 @@ TEST(Manifold, GetForFaceB)
 
 TEST(Manifold, PointEqualsFreeFunction)
 {
-    const auto localPoint1 = Length2{Real(1) * Meter, Real(2) * Meter};
-    const auto localPoint2 = Length2{Real(3) * Meter, Real(-1) * Meter};
+    const auto localPoint1 = Length2{1_m, 2_m};
+    const auto localPoint2 = Length2{3_m, -1_m};
     const auto cf1 = ContactFeature{ContactFeature::e_vertex, 1, ContactFeature::e_vertex, 2};
     const auto cf2 = ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 1};
     const auto normalImpulse1 = 1_Ns;
@@ -197,15 +197,15 @@ TEST(Manifold, EqualsFreeFunction)
 {
     const auto ln0 = UnitVec2::GetLeft();
     const auto ln1 = UnitVec2::GetRight();
-    const auto lp0 = Length2{Real(0) * Meter, Real(0) * Meter};
-    const auto lp1 = Length2(Real(1) * Meter, Real(1) * Meter);
+    const auto lp0 = Length2{0_m, 0_m};
+    const auto lp1 = Length2(1_m, 1_m);
     const auto foo = Manifold::GetForFaceB(ln0, lp0);
     const auto boo = Manifold::GetForFaceA(ln0, lp0);
     const auto poo = Manifold::GetForFaceA(ln0, lp0);
     const auto goo = Manifold::GetForFaceA(ln0, lp1);
     const auto too = Manifold::GetForFaceA(ln1, lp0);
     //const auto nottoo = Manifold::GetForFaceA(UnitVec2{}, lp0);
-    const auto localPoint1 = Length2{Real(1) * Meter, Real(2) * Meter};
+    const auto localPoint1 = Length2{1_m, 2_m};
     const auto cf1 = ContactFeature{ContactFeature::e_vertex, 1, ContactFeature::e_vertex, 2};
     const auto cf2 = ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 1};
     const auto normalImpulse1 = 1_Ns;
@@ -237,8 +237,8 @@ TEST(Manifold, NotEqualsFreeFunction)
 {
     const auto ln0 = UnitVec2::GetLeft();
     const auto ln1 = UnitVec2::GetRight();
-    const auto lp0 = Length2{Real(0) * Meter, Real(0) * Meter};
-    const auto lp1 = Length2(Real(1) * Meter, Real(1) * Meter);
+    const auto lp0 = Length2{0_m, 0_m};
+    const auto lp1 = Length2(1_m, 1_m);
     const auto foo = Manifold::GetForFaceB(ln0, lp0);
     const auto boo = Manifold::GetForFaceA(ln0, lp0);
     const auto poo = Manifold::GetForFaceA(ln0, lp0);

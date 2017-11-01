@@ -49,8 +49,8 @@ TEST(RopeJointDef, DefaultConstruction)
     EXPECT_EQ(def.collideConnected, false);
     EXPECT_EQ(def.userData, nullptr);
     
-    EXPECT_EQ(def.localAnchorA, Length2(-Real(1) * Meter, Real(0) * Meter));
-    EXPECT_EQ(def.localAnchorB, Length2(+Real(1) * Meter, Real(0) * Meter));
+    EXPECT_EQ(def.localAnchorA, Length2(-1_m, 0_m));
+    EXPECT_EQ(def.localAnchorB, Length2(+1_m, 0_m));
     EXPECT_EQ(def.maxLength, Length{0});
 }
 
@@ -88,8 +88,8 @@ TEST(RopeJoint, GetRopeJointDef)
     auto bodyA = Body{nullptr, BodyDef{}};
     auto bodyB = Body{nullptr, BodyDef{}};
     RopeJointDef def{&bodyA, &bodyB};
-    const auto localAnchorA = Length2{-Real(2) * Meter, Real(0) * Meter};
-    const auto localAnchorB = Length2{+Real(2) * Meter, Real(0) * Meter};
+    const auto localAnchorA = Length2{-2_m, 0_m};
+    const auto localAnchorB = Length2{+2_m, 0_m};
     def.localAnchorA = localAnchorA;
     def.localAnchorB = localAnchorB;
     RopeJoint joint{def};
@@ -120,8 +120,8 @@ TEST(RopeJoint, WithDynamicCircles)
 {
     const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
     auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
-    const auto p1 = Length2{-Real(1) * Meter, Real(0) * Meter};
-    const auto p2 = Length2{+Real(1) * Meter, Real(0) * Meter};
+    const auto p1 = Length2{-1_m, 0_m};
+    const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
@@ -129,10 +129,10 @@ TEST(RopeJoint, WithDynamicCircles)
     const auto jd = RopeJointDef{b1, b2};
     world.CreateJoint(jd);
     Step(world, 1_s);
-    EXPECT_GT(GetX(b1->GetLocation()), Real(-1) * Meter);
-    EXPECT_EQ(GetY(b1->GetLocation()), Real(0) * Meter);
-    EXPECT_LT(GetX(b2->GetLocation()), Real(+1) * Meter);
-    EXPECT_EQ(GetY(b2->GetLocation()), Real(0) * Meter);
+    EXPECT_GT(GetX(b1->GetLocation()), -1_m);
+    EXPECT_EQ(GetY(b1->GetLocation()), 0_m);
+    EXPECT_LT(GetX(b2->GetLocation()), +1_m);
+    EXPECT_EQ(GetY(b2->GetLocation()), 0_m);
     EXPECT_EQ(b1->GetAngle(), Angle{0});
     EXPECT_EQ(b2->GetAngle(), Angle{0});
 }

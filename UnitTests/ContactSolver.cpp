@@ -35,7 +35,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
     const auto old_vA = Velocity{LinearVelocity2{}, Angle{0} / 1_s};
     const auto old_vB = Velocity{LinearVelocity2{}, Angle{0} / 1_s};
 
-    const auto dim = Real(2) * Meter;
+    const auto dim = 2_m;
     const auto shape = PolygonShape(dim, dim);
     const auto xfmA = Transformation{old_pA.linear, UnitVec2::Get(old_pA.angular)};
     const auto xfmB = Transformation{old_pB.linear, UnitVec2::Get(old_pB.angular)};
@@ -55,7 +55,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
         InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
         lcB, old_pB, old_vB
     };
-    const auto pc = PositionConstraint{manifold, bA, Real{0} * Meter, bB, Real{0} * Meter};
+    const auto pc = PositionConstraint{manifold, bA, 0_m, bB, 0_m};
     
     const auto conf = ConstraintSolverConf{};
     const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
@@ -78,7 +78,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
     const auto old_vA = Velocity{};
     const auto old_vB = Velocity{};
     
-    const auto dim = Real(2) * Meter;
+    const auto dim = 2_m;
     const auto shape = PolygonShape(dim, dim);
     const auto xfmA = Transformation{old_pA.linear, UnitVec2::Get(old_pA.angular)};
     const auto xfmB = Transformation{old_pB.linear, UnitVec2::Get(old_pB.angular)};
@@ -116,7 +116,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
 
 TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
 {
-    const auto dim = Real(2) * Meter;
+    const auto dim = 2_m;
     const auto shape = PolygonShape(dim, dim);
     const auto xfmA = Transformation{Length2{}, UnitVec2::GetRight()};
     const auto xfmB = Transformation{Length2{}, UnitVec2::GetRight()};
@@ -170,7 +170,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
     const auto old_vA = Velocity{};
     const auto old_vB = Velocity{};
     
-    const auto dim = Real(2) * Meter;
+    const auto dim = 2_m;
     const auto shape = PolygonShape(dim, dim);
     const auto xfmA = Transformation{old_pA.linear, UnitVec2::Get(old_pA.angular)};
     const auto xfmB = Transformation{old_pB.linear, UnitVec2::Get(old_pB.angular)};
@@ -224,7 +224,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
     const auto old_vA = Velocity{};
     const auto old_vB = Velocity{};
 
-    const auto dim = Real(2) * Meter;
+    const auto dim = 2_m;
     const auto shape = PolygonShape(dim, dim);
     const auto xfmA = Transformation{old_pA.linear, UnitVec2::Get(old_pA.angular)};
     const auto xfmB = Transformation{old_pB.linear, UnitVec2::Get(old_pB.angular)};
@@ -278,7 +278,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
     const auto old_vA = Velocity{};
     const auto old_vB = Velocity{};
 
-    const auto dim = Real(2) * Meter;
+    const auto dim = 2_m;
     const auto shape = PolygonShape(dim, dim);
     const auto xfmA = Transformation{old_pA.linear, UnitVec2::Get(old_pA.angular)};
     const auto xfmB = Transformation{old_pB.linear, UnitVec2::Get(old_pB.angular)};
@@ -344,7 +344,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
     const auto old_vA = Velocity{};
     const auto old_vB = Velocity{};
 
-    const auto dim = Real(2) * Meter;
+    const auto dim = 2_m;
     const auto shape = PolygonShape(dim, dim);
     const auto xfmA = Transformation{old_pA.linear, UnitVec2::Get(old_pA.angular)};
     const auto xfmB = Transformation{old_pB.linear, UnitVec2::Get(old_pB.angular)};
@@ -403,7 +403,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
 
 TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
 {
-    const auto dim = Real(2) * Meter;
+    const auto dim = 2_m;
     const auto shape = PolygonShape(dim, dim);
     const auto xfmA = Transformation{Length2{}, UnitVec2::GetRight()};
     const auto xfmB = Transformation{Length2{}, UnitVec2::GetRight()};

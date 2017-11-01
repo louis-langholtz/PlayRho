@@ -102,8 +102,8 @@ TEST(WheelJoint, EnableMotor)
     auto jd = WheelJointDef{};
     jd.bodyA = b0;
     jd.bodyB = b1;
-    jd.localAnchorA = Length2(Real(4) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2(Real(6) * Meter, Real(7) * Meter);
+    jd.localAnchorA = Length2(4_m, 5_m);
+    jd.localAnchorB = Length2(6_m, 7_m);
     
     auto joint = WheelJoint{jd};
     EXPECT_FALSE(joint.IsMotorEnabled());
@@ -122,8 +122,8 @@ TEST(WheelJoint, MotorSpeed)
     auto jd = WheelJointDef{};
     jd.bodyA = b0;
     jd.bodyB = b1;
-    jd.localAnchorA = Length2(Real(4) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2(Real(6) * Meter, Real(7) * Meter);
+    jd.localAnchorA = Length2(4_m, 5_m);
+    jd.localAnchorB = Length2(6_m, 7_m);
     
     const auto newValue = 5_rad / 1_s;
     auto joint = WheelJoint{jd};
@@ -142,8 +142,8 @@ TEST(WheelJoint, MaxMotorTorque)
     auto jd = WheelJointDef{};
     jd.bodyA = b0;
     jd.bodyB = b1;
-    jd.localAnchorA = Length2(Real(4) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2(Real(6) * Meter, Real(7) * Meter);
+    jd.localAnchorA = Length2(4_m, 5_m);
+    jd.localAnchorB = Length2(6_m, 7_m);
     
     const auto newValue = 5_Nm;
     auto joint = WheelJoint{jd};
@@ -157,8 +157,8 @@ TEST(WheelJoint, GetAnchorAandB)
 {
     World world;
     
-    const auto loc0 = Length2{Real(+1) * Meter, Real(-3) * Meter};
-    const auto loc1 = Length2{Real(-2) * Meter, Real(+1.2f) * Meter};
+    const auto loc0 = Length2{+1_m, -3_m};
+    const auto loc1 = Length2{-2_m, Real(+1.2f) * Meter};
     
     const auto b0 = world.CreateBody(BodyDef{}.UseLocation(loc0));
     const auto b1 = world.CreateBody(BodyDef{}.UseLocation(loc1));
@@ -166,8 +166,8 @@ TEST(WheelJoint, GetAnchorAandB)
     auto jd = WheelJointDef{};
     jd.bodyA = b0;
     jd.bodyB = b1;
-    jd.localAnchorA = Length2(Real(4) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2(Real(6) * Meter, Real(7) * Meter);
+    jd.localAnchorA = Length2(4_m, 5_m);
+    jd.localAnchorB = Length2(6_m, 7_m);
     
     auto joint = WheelJoint{jd};
     ASSERT_EQ(joint.GetLocalAnchorA(), jd.localAnchorA);
@@ -180,8 +180,8 @@ TEST(WheelJoint, GetJointTranslation)
 {
     World world;
     
-    const auto loc0 = Length2{Real(+1) * Meter, Real(-3) * Meter};
-    const auto loc1 = Length2{Real(+1) * Meter, Real(+3) * Meter};
+    const auto loc0 = Length2{+1_m, -3_m};
+    const auto loc1 = Length2{+1_m, +3_m};
     
     const auto b0 = world.CreateBody(BodyDef{}.UseLocation(loc0));
     const auto b1 = world.CreateBody(BodyDef{}.UseLocation(loc1));
@@ -189,11 +189,11 @@ TEST(WheelJoint, GetJointTranslation)
     auto jd = WheelJointDef{};
     jd.bodyA = b0;
     jd.bodyB = b1;
-    jd.localAnchorA = Length2(Real(-1) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2(Real(+1) * Meter, Real(5) * Meter);
+    jd.localAnchorA = Length2(-1_m, 5_m);
+    jd.localAnchorB = Length2(+1_m, 5_m);
     
     auto joint = WheelJoint{jd};
-    EXPECT_EQ(GetJointTranslation(joint), Length(Real(2) * Meter));
+    EXPECT_EQ(GetJointTranslation(joint), Length(2_m));
 }
 
 TEST(WheelJoint, GetWheelJointDef)
@@ -237,13 +237,13 @@ TEST(WheelJoint, WithDynamicCircles)
 {
     const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
     auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
-    const auto p1 = Length2{-Real(1) * Meter, Real(0) * Meter};
-    const auto p2 = Length2{+Real(1) * Meter, Real(0) * Meter};
+    const auto p1 = Length2{-1_m, 0_m};
+    const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
-    const auto anchor = Length2(Real(2) * Meter, Real(1) * Meter);
+    const auto anchor = Length2(2_m, 1_m);
     const auto jd = WheelJointDef{b1, b2, anchor, UnitVec2::GetRight()};
     world.CreateJoint(jd);
     Step(world, 1_s);

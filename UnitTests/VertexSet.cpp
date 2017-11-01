@@ -45,18 +45,18 @@ TEST(VertexSet, Add)
     auto set = VertexSet{};
     ASSERT_EQ(set.size(), std::size_t(0));
 
-    EXPECT_TRUE(set.add(Length2{Real(1) * Meter, Real(1) * Meter}));
+    EXPECT_TRUE(set.add(Length2{1_m, 1_m}));
     EXPECT_EQ(set.size(), std::size_t(1));
 
-    EXPECT_FALSE(set.add(Length2{Real(1) * Meter, Real(1) * Meter}));
+    EXPECT_FALSE(set.add(Length2{1_m, 1_m}));
     EXPECT_EQ(set.size(), std::size_t(1));
     
-    const auto v = Length2{Real(0) * Meter, Real(0) * Meter};
+    const auto v = Length2{0_m, 0_m};
 
     EXPECT_TRUE(set.add(v));
     EXPECT_EQ(set.size(), std::size_t(2));
     
-    EXPECT_FALSE(set.add(Length2{Real(1) * Meter, Real(1) * Meter}));
+    EXPECT_FALSE(set.add(Length2{1_m, 1_m}));
     EXPECT_EQ(set.size(), std::size_t(2));
     
     EXPECT_FALSE(set.add(v));
@@ -72,12 +72,12 @@ TEST(VertexSet, Add)
     EXPECT_FALSE(set.add(v_prime));
     EXPECT_EQ(set.size(), std::size_t(2));
     
-    EXPECT_TRUE(set.add(Length2{Real(4) * Meter, Real(5) * Meter}));
+    EXPECT_TRUE(set.add(Length2{4_m, 5_m}));
     EXPECT_EQ(set.size(), std::size_t(3));
     
-    EXPECT_TRUE(set.add(Length2{Real(6) * Meter, Real(5) * Meter}));
+    EXPECT_TRUE(set.add(Length2{6_m, 5_m}));
     EXPECT_EQ(set.size(), std::size_t(4));
 
-    EXPECT_TRUE(set.add(Length2{Real(8) * Meter, Real(5) * Meter}));
+    EXPECT_TRUE(set.add(Length2{8_m, 5_m}));
     EXPECT_EQ(set.size(), std::size_t(5));
 }

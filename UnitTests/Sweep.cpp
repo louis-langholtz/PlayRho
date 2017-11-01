@@ -33,14 +33,14 @@ TEST(Sweep, ByteSizeIs_36_or_72)
 }
 
 TEST(Sweep, ConstructorSetsPos0and1) {
-    const auto pos = Position{Length2{Real(-0.4) * Meter, Real(2.34) * Meter}, 3.14_rad};
+    const auto pos = Position{Length2{Real(-0.4) * Meter, 2.34_m}, 3.14_rad};
     Sweep sweep{pos};
     EXPECT_EQ(pos, sweep.pos0);
     EXPECT_EQ(pos, sweep.pos1);
 }
 
 TEST(Sweep, ResetSetsAlpha0to0) {
-    const auto pos = Position{Length2{Real(-0.4) * Meter, Real(2.34) * Meter}, 3.14_rad};
+    const auto pos = Position{Length2{Real(-0.4) * Meter, 2.34_m}, 3.14_rad};
     Sweep sweep{pos, pos, Length2{}, Real(0.6)};
     EXPECT_NE(Real{0}, sweep.GetAlpha0());
     sweep.ResetAlpha0();

@@ -38,8 +38,8 @@ TEST(PositionSolverManifold, ByteSizeIs_20_40_or_80)
 TEST(PositionSolverManifold, InitializingConstructor)
 {
     const auto normal = UnitVec2::GetBottom();
-    const auto point = Length2{-Real(1) * Meter, Real(3) * Meter};
-    const auto separation = Real(8.12) * Meter;
+    const auto point = Length2{-1_m, 3_m};
+    const auto separation = 8.12_m;
     
     const auto psm = PositionSolverManifold{normal, point, separation};
     
@@ -51,7 +51,7 @@ TEST(PositionSolverManifold, InitializingConstructor)
 TEST(PositionSolverManifold, GetPSM)
 {
     // wide rectangle
-    const auto shape0 = PolygonShape(Real{3} * Meter, Real{1.5f} * Meter);
+    const auto shape0 = PolygonShape(3_m, Real{1.5f} * Meter);
     ASSERT_EQ(GetX(shape0.GetVertex(0)), Real(+3.0) * Meter); // right
     ASSERT_EQ(GetY(shape0.GetVertex(0)), Real(-1.5) * Meter); // bottom
     ASSERT_EQ(GetX(shape0.GetVertex(1)), Real(+3.0) * Meter); // right
@@ -62,26 +62,26 @@ TEST(PositionSolverManifold, GetPSM)
     ASSERT_EQ(GetY(shape0.GetVertex(3)), Real(-1.5) * Meter); // bottom
     
     // square
-    const auto shape1 = PolygonShape(Real{2} * Meter, Real{2} * Meter);
-    ASSERT_EQ(GetX(shape1.GetVertex(0)), Real(+2) * Meter); // right
-    ASSERT_EQ(GetY(shape1.GetVertex(0)), Real(-2) * Meter); // bottom
-    ASSERT_EQ(GetX(shape1.GetVertex(1)), Real(+2) * Meter); // right
-    ASSERT_EQ(GetY(shape1.GetVertex(1)), Real(+2) * Meter); // top
-    ASSERT_EQ(GetX(shape1.GetVertex(2)), Real(-2) * Meter); // left
-    ASSERT_EQ(GetY(shape1.GetVertex(2)), Real(+2) * Meter); // top
-    ASSERT_EQ(GetX(shape1.GetVertex(3)), Real(-2) * Meter); // left
-    ASSERT_EQ(GetY(shape1.GetVertex(3)), Real(-2) * Meter); // bottom
+    const auto shape1 = PolygonShape(2_m, 2_m);
+    ASSERT_EQ(GetX(shape1.GetVertex(0)), +2_m); // right
+    ASSERT_EQ(GetY(shape1.GetVertex(0)), -2_m); // bottom
+    ASSERT_EQ(GetX(shape1.GetVertex(1)), +2_m); // right
+    ASSERT_EQ(GetY(shape1.GetVertex(1)), +2_m); // top
+    ASSERT_EQ(GetX(shape1.GetVertex(2)), -2_m); // left
+    ASSERT_EQ(GetY(shape1.GetVertex(2)), +2_m); // top
+    ASSERT_EQ(GetX(shape1.GetVertex(3)), -2_m); // left
+    ASSERT_EQ(GetY(shape1.GetVertex(3)), -2_m); // bottom
     
-    const auto xfm0 = Transformation{Length2{-Real(2) * Meter, Real(0) * Meter}, UnitVec2::GetRight()}; // left
-    const auto xfm1 = Transformation{Length2{+Real(2) * Meter, Real(0) * Meter}, UnitVec2::GetRight()}; // right
+    const auto xfm0 = Transformation{Length2{-2_m, 0_m}, UnitVec2::GetRight()}; // left
+    const auto xfm1 = Transformation{Length2{+2_m, 0_m}, UnitVec2::GetRight()}; // right
     
     // put wide rectangle on left, square on right
     const auto manifold = CollideShapes(shape0.GetChild(0), xfm0, shape1.GetChild(0), xfm1);
     
     ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
     
-    ASSERT_EQ(GetX(manifold.GetLocalPoint()), Real(+3) * Meter);
-    ASSERT_EQ(GetY(manifold.GetLocalPoint()), Real(0) * Meter);
+    ASSERT_EQ(GetX(manifold.GetLocalPoint()), +3_m);
+    ASSERT_EQ(GetY(manifold.GetLocalPoint()), 0_m);
     
     ASSERT_NEAR(static_cast<double>(manifold.GetLocalNormal().GetX()), +1.0, 0.00001);
     ASSERT_NEAR(static_cast<double>(manifold.GetLocalNormal().GetY()), +0.0, 0.00001);

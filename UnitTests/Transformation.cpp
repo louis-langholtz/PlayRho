@@ -41,7 +41,7 @@ TEST(Transformation, DefaultConstruct)
 
 TEST(Transformation, Initialize)
 {
-    const auto translation = Length2{Real(2) * Meter, Real(4) * Meter};
+    const auto translation = Length2{2_m, 4_m};
     const auto rotation = UnitVec2::Get(1_rad * Real{Pi / 2});
     const Transformation xfm{translation, rotation};
     EXPECT_EQ(translation, xfm.p);
@@ -50,7 +50,7 @@ TEST(Transformation, Initialize)
 
 TEST(Transformation, Equality)
 {
-    const auto translation = Length2{Real(2) * Meter, Real(4) * Meter};
+    const auto translation = Length2{2_m, 4_m};
     const auto rotation = UnitVec2::Get(1_rad * Real{Pi / 2});
     const Transformation xfm{translation, rotation};
     EXPECT_EQ(xfm, xfm);
@@ -58,11 +58,11 @@ TEST(Transformation, Equality)
 
 TEST(Transformation, Inequality)
 {
-    const auto translation1 = Length2{Real(2) * Meter, Real(4) * Meter};
+    const auto translation1 = Length2{2_m, 4_m};
     const auto rotation1 = UnitVec2::Get(1_rad * Pi * Real{0.7f});
     const Transformation xfm1{translation1, rotation1};
 
-    const auto translation2 = Length2{-Real(3) * Meter, Real(37) * Meter};
+    const auto translation2 = Length2{-3_m, 37_m};
     const auto rotation2 = UnitVec2::Get(1_rad * Pi * Real{0.002f});
     const Transformation xfm2{translation2, rotation2};
 
@@ -73,7 +73,7 @@ TEST(Transformation, Inequality)
 
 TEST(Transformation, Mul)
 {
-    const auto translation1 = Length2{Real(2) * Meter, Real(4) * Meter};
+    const auto translation1 = Length2{2_m, 4_m};
     const auto rotation1 = UnitVec2::Get(1_rad * Real{Pi / 2});
     const Transformation xfm{translation1, rotation1};
 
@@ -93,7 +93,7 @@ TEST(Transformation, Mul)
 
 TEST(Transformation, MulSameAsTransformTwice)
 {
-    const auto translation1 = Length2{Real(2) * Meter, Real(4) * Meter};
+    const auto translation1 = Length2{2_m, 4_m};
     const auto rotation1 = UnitVec2::Get(1_rad * Real{Pi / 2});
     const Transformation xfm{translation1, rotation1};
     const auto xfm2 = Mul(xfm, xfm);

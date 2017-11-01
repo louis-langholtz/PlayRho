@@ -155,10 +155,10 @@ TEST(GearJoint, WithDynamicCirclesAndRevoluteJoints)
 {
     const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
     auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
-    const auto p1 = Length2{-Real(1) * Meter, Real(0) * Meter};
-    const auto p2 = Length2{+Real(1) * Meter, Real(0) * Meter};
-    const auto p3 = Length2{+Real(2) * Meter, Real(0) * Meter};
-    const auto p4 = Length2{+Real(3) * Meter, Real(0) * Meter};
+    const auto p1 = Length2{-1_m, 0_m};
+    const auto p2 = Length2{+1_m, 0_m};
+    const auto p3 = Length2{+2_m, 0_m};
+    const auto p4 = Length2{+3_m, 0_m};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     const auto b3 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p3));
@@ -186,10 +186,10 @@ TEST(GearJoint, WithDynamicCirclesAndPrismaticJoints)
 {
     const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
     auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
-    const auto p1 = Length2{-Real(1) * Meter, Real(0) * Meter};
-    const auto p2 = Length2{+Real(1) * Meter, Real(0) * Meter};
-    const auto p3 = Length2{+Real(2) * Meter, Real(0) * Meter};
-    const auto p4 = Length2{+Real(3) * Meter, Real(0) * Meter};
+    const auto p1 = Length2{-1_m, 0_m};
+    const auto p2 = Length2{+1_m, 0_m};
+    const auto p3 = Length2{+2_m, 0_m};
+    const auto p4 = Length2{+3_m, 0_m};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     const auto b3 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p3));
@@ -217,10 +217,10 @@ TEST(GearJoint, GetAnchorAandB)
 {
     const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
     auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
-    const auto p1 = Length2{-Real(1) * Meter, Real(0) * Meter};
-    const auto p2 = Length2{+Real(1) * Meter, Real(0) * Meter};
-    const auto p3 = Length2{+Real(2) * Meter, Real(0) * Meter};
-    const auto p4 = Length2{+Real(3) * Meter, Real(0) * Meter};
+    const auto p1 = Length2{-1_m, 0_m};
+    const auto p2 = Length2{+1_m, 0_m};
+    const auto p3 = Length2{+2_m, 0_m};
+    const auto p4 = Length2{+3_m, 0_m};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     const auto b3 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p3));

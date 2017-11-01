@@ -87,7 +87,7 @@ TEST(PolygonShape, FindLowestRightMostVertex)
 {
     Length2 vertices[4];
     
-    vertices[0] = Length2{Real(0) * Meter, +Real(1) * Meter};
+    vertices[0] = Length2{0_m, +1_m};
     vertices[1] = Vec2{-1, -2} * Meter;
     vertices[2] = Vec2{+3, -4} * Meter;
     vertices[3] = Vec2{+2, +2} * Meter;
@@ -99,8 +99,8 @@ TEST(PolygonShape, FindLowestRightMostVertex)
 
 TEST(PolygonShape, BoxConstruction)
 {
-    const auto hx = Real(2.3) * Meter;
-    const auto hy = Real(54.1) * Meter;
+    const auto hx = 2.3_m;
+    const auto hy = 54.1_m;
     const auto shape = PolygonShape{hx, hy};
 
     EXPECT_EQ(shape.GetCentroid(), (Length2{}));
@@ -126,8 +126,8 @@ TEST(PolygonShape, BoxConstruction)
 
 TEST(PolygonShape, Copy)
 {
-    const auto hx = Real(2.3) * Meter;
-    const auto hy = Real(54.1) * Meter;
+    const auto hx = 2.3_m;
+    const auto hy = 54.1_m;
     
     auto shape = PolygonShape{hx, hy};
     ASSERT_EQ(shape.GetCentroid(), (Length2{}));
@@ -170,8 +170,8 @@ TEST(PolygonShape, Copy)
 
 TEST(PolygonShape, Translate)
 {
-    const auto hx = Real(2.3) * Meter;
-    const auto hy = Real(54.1) * Meter;
+    const auto hx = 2.3_m;
+    const auto hy = 54.1_m;
     
     auto shape = PolygonShape{hx, hy};
     ASSERT_EQ(shape.GetCentroid(), (Length2{}));
@@ -190,7 +190,7 @@ TEST(PolygonShape, Translate)
     ASSERT_EQ(shape.GetNormal(2) * Real{1}, Vec2(-1, 0));
     ASSERT_EQ(shape.GetNormal(3) * Real{1}, Vec2(0, -1));
     
-    const auto new_ctr = Length2{-Real(3) * Meter, Real(67) * Meter};
+    const auto new_ctr = Length2{-3_m, 67_m};
     shape.Transform(Transformation{new_ctr, UnitVec2::GetRight()});
     
     EXPECT_EQ(shape.GetCentroid(), new_ctr);
@@ -212,8 +212,8 @@ TEST(PolygonShape, Translate)
 
 TEST(PolygonShape, SetAsBox)
 {
-    const auto hx = Real(2.3) * Meter;
-    const auto hy = Real(54.1) * Meter;
+    const auto hx = 2.3_m;
+    const auto hy = 54.1_m;
     PolygonShape shape;
     shape.SetAsBox(hx, hy);
     EXPECT_EQ(shape.GetCentroid(), (Length2{}));
@@ -237,8 +237,8 @@ TEST(PolygonShape, SetAsBox)
 
 TEST(PolygonShape, SetAsZeroCenteredRotatedBox)
 {
-    const auto hx = Real(2.3) * Meter;
-    const auto hy = Real(54.1) * Meter;
+    const auto hx = 2.3_m;
+    const auto hy = 54.1_m;
     PolygonShape shape;
     SetAsBox(shape, hx, hy, Length2{}, Angle{0});
     EXPECT_EQ(shape.GetCentroid(), (Length2{}));
@@ -262,11 +262,11 @@ TEST(PolygonShape, SetAsZeroCenteredRotatedBox)
 
 TEST(PolygonShape, SetAsCenteredBox)
 {
-    const auto hx = Real(2.3) * Meter;
-    const auto hy = Real(54.1) * Meter;
+    const auto hx = 2.3_m;
+    const auto hy = 54.1_m;
     PolygonShape shape;
-    const auto x_off = Real(10.2) * Meter;
-    const auto y_off = Real(-5) * Meter;
+    const auto x_off = 10.2_m;
+    const auto y_off = -5_m;
     SetAsBox(shape, hx, hy, Length2(x_off, y_off), Angle{0});
     EXPECT_EQ(shape.GetCentroid(), Length2(x_off, y_off));
     EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));
@@ -295,8 +295,8 @@ TEST(PolygonShape, SetAsBoxAngledDegrees90)
     const auto angle = 90_deg;
     SetAsBox(shape, hx * Meter, hy * Meter, Length2{}, angle);
 
-    EXPECT_EQ(GetX(shape.GetCentroid()), Real(0) * Meter);
-    EXPECT_EQ(GetY(shape.GetCentroid()), Real(0) * Meter);
+    EXPECT_EQ(GetX(shape.GetCentroid()), 0_m);
+    EXPECT_EQ(GetY(shape.GetCentroid()), 0_m);
     EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
     
@@ -357,7 +357,7 @@ TEST(PolygonShape, CanSetTwoPoints)
         Vec2{-1, +0} * Meter,
         Vec2{+1, +0} * Meter
     };
-    const auto vertexRadius = Real(2) * Meter;
+    const auto vertexRadius = 2_m;
     PolygonShape shape;
     shape.SetVertexRadius(vertexRadius);
     shape.Set(points);
@@ -381,7 +381,7 @@ TEST(PolygonShape, CanSetTwoPoints)
 TEST(PolygonShape, CanSetOnePoint)
 {
     const auto points = Vector<const Length2, 1>{Length2{}};
-    const auto vertexRadius = Real(2) * Meter;
+    const auto vertexRadius = 2_m;
     PolygonShape shape;
     shape.SetVertexRadius(vertexRadius);
     shape.Set(points);

@@ -298,8 +298,8 @@ TEST(Math, InverseRotationRevertsRotation)
 
 TEST(Math, TransformIsRotatePlusTranslate)
 {
-    const auto vector = Length2{Real(19) * Meter, Real(-0.5) * Meter};
-    const auto translation = Length2{Real(-3) * Meter, Real(+5) * Meter};
+    const auto vector = Length2{19_m, Real(-0.5) * Meter};
+    const auto translation = Length2{-3_m, +5_m};
     const auto rotation = UnitVec2::GetTop();
     const auto transformation = Transformation{translation, rotation};
     
@@ -311,8 +311,8 @@ TEST(Math, TransformIsRotatePlusTranslate)
 
 TEST(Math, InverseTransformIsUntranslateAndInverseRotate)
 {
-    const auto vector = Length2{Real(19) * Meter, Real(-0.5) * Meter};
-    const auto translation = Length2{Real(-3) * Meter, Real(+5) * Meter};
+    const auto vector = Length2{19_m, Real(-0.5) * Meter};
+    const auto translation = Length2{-3_m, +5_m};
     const auto rotation = UnitVec2::GetTop();
     const auto transformation = Transformation{translation, rotation};
     
@@ -324,8 +324,8 @@ TEST(Math, InverseTransformIsUntranslateAndInverseRotate)
 
 TEST(Math, InverseTransformTransformedIsOriginal)
 {
-    const auto vector = Length2{Real(19) * Meter, Real(-0.5) * Meter};
-    const auto translation = Length2{Real(-3) * Meter, Real(+5) * Meter};
+    const auto vector = Length2{19_m, Real(-0.5) * Meter};
+    const auto translation = Length2{-3_m, +5_m};
     const auto rotation = UnitVec2::GetTop();
     const auto transformation = Transformation{translation, rotation};
 
@@ -340,8 +340,8 @@ TEST(Math, InverseTransformTransformedIsOriginal)
 
 TEST(Math, TransformInverseTransformedIsOriginal)
 {
-    const auto vector = Length2{Real(19) * Meter, Real(-0.5) * Meter};
-    const auto translation = Length2{Real(-3) * Meter, Real(+5) * Meter};
+    const auto vector = Length2{19_m, Real(-0.5) * Meter};
+    const auto translation = Length2{-3_m, +5_m};
     const auto rotation = UnitVec2::GetTop();
     const auto transformation = Transformation{translation, rotation};
 
@@ -730,19 +730,19 @@ TEST(Math, GetCircleVertices)
         EXPECT_EQ(vertices, std::vector<Length2>({Length2{}, Length2{}, Length2{}, Length2{}}));
     }
     {
-        const auto vertices = GetCircleVertices(Real(1) * Meter, 0);
+        const auto vertices = GetCircleVertices(1_m, 0);
         EXPECT_EQ(vertices, std::vector<Length2>());
     }
     {
-        const auto vertices = GetCircleVertices(Real(1) * Meter, 1);
-        EXPECT_EQ(vertices, std::vector<Length2>({Length2(Real(1) * Meter, Real(0) * Meter), Length2(Real(1) * Meter, Real(0) * Meter)}));
+        const auto vertices = GetCircleVertices(1_m, 1);
+        EXPECT_EQ(vertices, std::vector<Length2>({Length2(1_m, 0_m), Length2(1_m, 0_m)}));
     }
     {
-        const auto vertices = GetCircleVertices(Real(1) * Meter, 2);
-        EXPECT_EQ(vertices[0], Length2(Real(1) * Meter, Real(0) * Meter));
+        const auto vertices = GetCircleVertices(1_m, 2);
+        EXPECT_EQ(vertices[0], Length2(1_m, 0_m));
         EXPECT_NEAR(static_cast<double>(Real(GetX(vertices[1]) / Meter)), -1.0, 0.0001);
         EXPECT_NEAR(static_cast<double>(Real(GetY(vertices[1]) / Meter)),  0.0, 0.0001);
-        EXPECT_EQ(vertices[2], Length2(Real(1) * Meter, Real(0) * Meter));
+        EXPECT_EQ(vertices[2], Length2(1_m, 0_m));
     }
 }
 

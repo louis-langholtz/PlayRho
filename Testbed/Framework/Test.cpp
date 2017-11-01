@@ -1296,8 +1296,8 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
     stepConf.angularSlop = Real{settings.angularSlop} * Radian;
     stepConf.regMinSeparation = Real{settings.regMinSeparation} * Meter;
     stepConf.toiMinSeparation = Real{settings.toiMinSeparation} * Meter;
-    stepConf.targetDepth = settings.linearSlop * Real{3} * Meter;
-    stepConf.tolerance = (settings.linearSlop / Real{4}) * Meter;
+    stepConf.targetDepth = 3 * settings.linearSlop * Meter;
+    stepConf.tolerance = (settings.linearSlop / 4) * Meter;
 
     stepConf.maxLinearCorrection = Real{settings.maxLinearCorrection} * Meter;
     stepConf.maxAngularCorrection = Real{settings.maxAngularCorrection} * Degree;

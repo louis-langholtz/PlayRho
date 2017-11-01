@@ -28,7 +28,7 @@ using namespace playrho;
 
 TEST(CollideShapes, IdenticalOverlappingCircles)
 {
-    const auto radius = Real(1) * Meter;
+    const auto radius = 1_m;
     const auto shape = DiskShape{radius};
     const auto position = Vec2{11, -4} * Meter;
     const auto xfm = Transformation{position, UnitVec2::GetRight()};
@@ -52,8 +52,8 @@ TEST(CollideShapes, IdenticalOverlappingCircles)
 
 TEST(CollideShapes, CircleCircleOrientedHorizontally)
 {
-    const auto r1 = Real(1) * Meter;
-    const auto r2 = Real(1) * Meter;
+    const auto r1 = 1_m;
+    const auto r2 = 1_m;
     const auto s1 = DiskShape{r1};
     const auto s2 = DiskShape{r2};
     const auto p1 = Vec2{11, -4} * Meter;
@@ -80,8 +80,8 @@ TEST(CollideShapes, CircleCircleOrientedHorizontally)
 
 TEST(CollideShapes, CircleCircleOrientedVertically)
 {
-    const auto r1 = Real(1) * Meter;
-    const auto r2 = Real(1) * Meter;
+    const auto r1 = 1_m;
+    const auto r2 = 1_m;
     const auto s1 = DiskShape{r1};
     const auto s2 = DiskShape{r2};
     const auto p1 = Vec2{7, -2} * Meter;
@@ -110,7 +110,7 @@ TEST(CollideShapes, CircleCircleOrientedVertically)
 
 TEST(CollideShapes, CircleTouchingTrianglePointBelow)
 {
-    const auto circleRadius = Real(1) * Meter;
+    const auto circleRadius = 1_m;
     const auto circle = DiskShape(circleRadius);
     const auto triangleTopPt = Vec2{0, +1} * Meter;
     const auto triangleLeftPt = Vec2{-1, -1} * Meter;
@@ -140,7 +140,7 @@ TEST(CollideShapes, CircleTouchingTrianglePointBelow)
 
 TEST(CollideShapes, CircleTouchingTrianglePointLeft)
 {
-    const auto circleRadius = Real(1) * Meter;
+    const auto circleRadius = 1_m;
     const auto circle = DiskShape(circleRadius);
     const auto triangleTopPt = Vec2{0, +1} * Meter;
     const auto triangleLeftPt = Vec2{-1, -1} * Meter;
@@ -170,7 +170,7 @@ TEST(CollideShapes, CircleTouchingTrianglePointLeft)
 
 TEST(CollideShapes, CircleTouchingTrianglePointRight)
 {
-    const auto circleRadius = Real(1) * Meter;
+    const auto circleRadius = 1_m;
     const auto circle = DiskShape(circleRadius);
     const auto triangleTopPt = Vec2{0, +1} * Meter;
     const auto triangleLeftPt = Vec2{-1, -1} * Meter;
@@ -197,7 +197,7 @@ TEST(CollideShapes, CircleTouchingTrianglePointRight)
 
 TEST(CollideShapes, CircleJustPastTrianglePointRightDoesntCollide)
 {
-    const auto circleRadius = Real(1) * Meter;
+    const auto circleRadius = 1_m;
     const auto circle = DiskShape(circleRadius);
     const auto triangleTopPt = Vec2{0, +1} * Meter;
     const auto triangleLeftPt = Vec2{-1, -1} * Meter;
@@ -222,7 +222,7 @@ TEST(CollideShapes, CircleJustPastTrianglePointRightDoesntCollide)
 
 TEST(CollideShapes, CircleOverRightFaceOfTriangle)
 {
-    const auto circleRadius = Real(1) * Meter;
+    const auto circleRadius = 1_m;
     const auto circle = DiskShape(circleRadius);
     const auto triangleTopPt = Vec2{0, +1} * Meter;
     const auto triangleLeftPt = Vec2{-1, -1} * Meter;
@@ -258,7 +258,7 @@ TEST(CollideShapes, CircleOverRightFaceOfTriangle)
 
 TEST(CollideShapes, CircleOverLeftFaceOfTriangle)
 {
-    const auto circleRadius = Real(1) * Meter;
+    const auto circleRadius = 1_m;
     const auto circle = DiskShape(circleRadius);
     const auto triangle = PolygonShape({Vec2{-1, -1} * Meter, Vec2{+1, -1} * Meter, Vec2{0, +1} * Meter});
     const auto circleXfm = Transformation{
@@ -291,7 +291,7 @@ TEST(CollideShapes, CircleOverLeftFaceOfTriangle)
 
 TEST(CollideShapes, TallRectangleLeftCircleRight)
 {
-    const auto r2 = Real(1) * Meter;
+    const auto r2 = 1_m;
     const auto hx = Real(2.2);
     const auto hy = Real(4.8);
 
@@ -413,7 +413,7 @@ TEST(CollideShapes, IdenticalOverlappingSquaresDim2)
 
 TEST(CollideShapes, IdenticalVerticalTouchingSquares)
 {
-    const auto dim = Real(2) * Meter;
+    const auto dim = 2_m;
     const auto shape = PolygonShape(dim, dim);
     ASSERT_EQ(shape.GetVertex(0), (Vec2{+2, -2} * Meter)); // bottom right
     ASSERT_EQ(shape.GetVertex(1), (Vec2{+2, +2} * Meter)); // top right
@@ -461,7 +461,7 @@ TEST(CollideShapes, IdenticalVerticalTouchingSquares)
 
 TEST(CollideShapes, IdenticalHorizontalTouchingSquares)
 {
-    const auto dim = Real(2) * Meter;
+    const auto dim = 2_m;
     const auto shape = PolygonShape(dim, dim);
     ASSERT_EQ(shape.GetVertex(0), Vec2(+2, -2) * Meter); // bottom right
     ASSERT_EQ(shape.GetVertex(1), Vec2(+2, +2) * Meter); // top right
@@ -599,7 +599,7 @@ TEST(CollideShapes, GetMaxSeparationFreeFunction1)
 
 TEST(CollideShapes, GetMaxSeparationFreeFunction2)
 {
-    const auto dim = Real(2) * Meter;
+    const auto dim = 2_m;
     const auto shape = PolygonShape(dim, dim);
     ASSERT_EQ(shape.GetVertex(0), Vec2(+2, -2) * Meter); // bottom right
     ASSERT_EQ(shape.GetVertex(1), Vec2(+2, +2) * Meter); // top right
@@ -640,7 +640,7 @@ TEST(CollideShapes, GetMaxSeparationFreeFunction2)
 
 TEST(CollideShapes, SquareCornerTouchingSquareFaceAbove)
 {
-    const auto dim = Real(2) * Meter;
+    const auto dim = 2_m;
 
     // creates a square
     const auto shape = PolygonShape(dim, dim);
@@ -701,7 +701,7 @@ TEST(CollideShapes, SquareCornerTouchingSquareFaceAbove)
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexB, 3); // Shape B bottom edge
     
     // Also check things in terms of world coordinates...
-    const auto world_manifold = GetWorldManifold(manifold, xfm0, Real(0) * Meter, xfm1, Real(0) * Meter);
+    const auto world_manifold = GetWorldManifold(manifold, xfm0, 0_m, xfm1, 0_m);
     EXPECT_EQ(world_manifold.GetPointCount(), manifold.GetPointCount());
     
     EXPECT_NEAR(static_cast<double>(GetX(GetVec2(world_manifold.GetNormal()))),
@@ -715,9 +715,9 @@ TEST(CollideShapes, SquareCornerTouchingSquareFaceAbove)
     
     ASSERT_GT(world_manifold.GetPointCount(), Manifold::size_type(0));
     EXPECT_NEAR(double(Real{GetX(world_manifold.GetPoint(0)) / Meter}),
-                double(Real{GetX(corner_point) / (Real{2} * Meter)}), 0.04);
+                double(Real{GetX(corner_point) / (2_m)}), 0.04);
     EXPECT_NEAR(double(Real{GetY(world_manifold.GetPoint(0)) / Meter}),
-                double(Real{GetY(corner_point) / (Real{2} * Meter)}), 0.04);
+                double(Real{GetY(corner_point) / (2_m)}), 0.04);
     EXPECT_NEAR(double(Real{world_manifold.GetSeparation(0) / Meter}),
                 double(Real{GetY(-corner_point) / Meter}), 0.008);
 }
@@ -725,14 +725,14 @@ TEST(CollideShapes, SquareCornerTouchingSquareFaceAbove)
 TEST(CollideShapes, HorizontalOverlappingRects1)
 {
     // Shape A: square
-    const auto shape0 = PolygonShape(Real{2} * Meter, Real{2} * Meter);
+    const auto shape0 = PolygonShape(2_m, 2_m);
     ASSERT_EQ(shape0.GetVertex(0), Vec2(+2,-2) * Meter); // bottom right
     ASSERT_EQ(shape0.GetVertex(1), Vec2(+2,+2) * Meter); // top right
     ASSERT_EQ(shape0.GetVertex(2), Vec2(-2,+2) * Meter); // top left
     ASSERT_EQ(shape0.GetVertex(3), Vec2(-2,-2) * Meter); // bottom left
     
     // Shape B: wide rectangle
-    const auto shape1 = PolygonShape(Real{3} * Meter, Real{1.5f} * Meter);
+    const auto shape1 = PolygonShape(3_m, Real{1.5f} * Meter);
     ASSERT_EQ(shape1.GetVertex(0), Length2(Real(+3.0) * Meter, Real(-1.5) * Meter)); // bottom right
     ASSERT_EQ(shape1.GetVertex(1), Length2(Real(+3.0) * Meter, Real(+1.5) * Meter)); // top right
     ASSERT_EQ(shape1.GetVertex(2), Length2(Real(-3.0) * Meter, Real(+1.5) * Meter)); // top left
@@ -811,18 +811,18 @@ TEST(CollideShapes, HorizontalOverlappingRects1)
 TEST(CollideShapes, HorizontalOverlappingRects2)
 {
     // Shape A: wide rectangle
-    const auto shape0 = PolygonShape(Real{3} * Meter, Real{1.5f} * Meter);
+    const auto shape0 = PolygonShape(3_m, Real{1.5f} * Meter);
     ASSERT_EQ(shape0.GetVertex(0), Length2(Real(+3.0) * Meter, Real(-1.5) * Meter)); // bottom right
     ASSERT_EQ(shape0.GetVertex(1), Length2(Real(+3.0) * Meter, Real(+1.5) * Meter)); // top right
     ASSERT_EQ(shape0.GetVertex(2), Length2(Real(-3.0) * Meter, Real(+1.5) * Meter)); // top left
     ASSERT_EQ(shape0.GetVertex(3), Length2(Real(-3.0) * Meter, Real(-1.5) * Meter)); // bottom left
     
     // Shape B: square
-    const auto shape1 = PolygonShape(Real{2} * Meter, Real{2} * Meter);
-    ASSERT_EQ(shape1.GetVertex(0), Length2(+Real(2) * Meter,-Real(2) * Meter)); // bottom right
-    ASSERT_EQ(shape1.GetVertex(1), Length2(+Real(2) * Meter,+Real(2) * Meter)); // top right
-    ASSERT_EQ(shape1.GetVertex(2), Length2(-Real(2) * Meter,+Real(2) * Meter)); // top left
-    ASSERT_EQ(shape1.GetVertex(3), Length2(-Real(2) * Meter,-Real(2) * Meter)); // bottom left
+    const auto shape1 = PolygonShape(2_m, 2_m);
+    ASSERT_EQ(shape1.GetVertex(0), Length2(+2_m,-2_m)); // bottom right
+    ASSERT_EQ(shape1.GetVertex(1), Length2(+2_m,+2_m)); // top right
+    ASSERT_EQ(shape1.GetVertex(2), Length2(-2_m,+2_m)); // top left
+    ASSERT_EQ(shape1.GetVertex(3), Length2(-2_m,-2_m)); // bottom left
     
     const auto xfm0 = Transformation{
         Vec2{-2, 0} * Meter,
@@ -893,8 +893,8 @@ TEST(CollideShapes, EdgeBelowPolygon)
         UnitVec2::GetRight()
     };
 
-    const auto hx = Real(1) * Meter;
-    const auto hy = Real(1) * Meter;
+    const auto hx = 1_m;
+    const auto hy = 1_m;
     const auto polygon_shape = PolygonShape(hx, hy);
     const auto polygon_xfm = Transformation{
         Length2{},
@@ -939,8 +939,8 @@ TEST(CollideShapes, EdgeAbovePolygon)
     const auto edge_shape = EdgeShape(p1, p2);
     const auto edge_xfm = Transformation{Vec2{0, +1} * Meter, UnitVec2::GetRight()};
     
-    const auto hx = Real(1) * Meter;
-    const auto hy = Real(1) * Meter;
+    const auto hx = 1_m;
+    const auto hy = 1_m;
     const auto polygon_shape = PolygonShape(hx, hy);
     const auto polygon_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     
@@ -982,8 +982,8 @@ TEST(CollideShapes, EdgeLeftOfPolygon)
     const auto edge_shape = EdgeShape(p1, p2);
     const auto edge_xfm = Transformation{Vec2{-1, 0} * Meter, UnitVec2::GetRight()};
     
-    const auto hx = Real(1) * Meter;
-    const auto hy = Real(1) * Meter;
+    const auto hx = 1_m;
+    const auto hy = 1_m;
     const auto polygon_shape = PolygonShape(hx, hy);
     const auto polygon_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     
@@ -1007,8 +1007,8 @@ TEST(CollideShapes, EdgeRightOfPolygon)
     const auto edge_shape = EdgeShape(p1, p2);
     const auto edge_xfm = Transformation{Vec2{+1, 0} * Meter, UnitVec2::GetRight()};
     
-    const auto hx = Real(1) * Meter;
-    const auto hy = Real(1) * Meter;
+    const auto hx = 1_m;
+    const auto hy = 1_m;
     const auto polygon_shape = PolygonShape(hx, hy);
     const auto polygon_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     
@@ -1031,7 +1031,7 @@ TEST(CollideShapes, EdgeInsideSquare)
     const auto p2 = Vec2(0, +1) * Meter;
     const auto edge_shape = EdgeShape(p1, p2);
     const auto edge_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
-    const auto s = Real(1) * Meter;
+    const auto s = 1_m;
     const auto polygon_shape = PolygonShape(s, s);
     const auto polygon_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     
@@ -1056,7 +1056,7 @@ TEST(CollideShapes, EdgeTwiceInsideSquare)
     const auto p2 = Vec2(0, +2) * Meter;
     const auto edge_shape = EdgeShape(p1, p2);
     const auto edge_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
-    const auto s = Real(1) * Meter;
+    const auto s = 1_m;
     const auto polygon_shape = PolygonShape(s, s);
     const auto polygon_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     
@@ -1081,7 +1081,7 @@ TEST(CollideShapes, EdgeHalfInsideSquare)
     const auto p2 = Vec2(0, +0.5) * Meter;
     const auto edge_shape = EdgeShape(p1, p2);
     const auto edge_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
-    const auto s = Real(1) * Meter;
+    const auto s = 1_m;
     const auto polygon_shape = PolygonShape(s, s);
     const auto polygon_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     
@@ -1106,7 +1106,7 @@ TEST(CollideShapes, EdgeR90InsideSquare)
     const auto p2 = Vec2(0, +1) * Meter;
     const auto edge_shape = EdgeShape(p1, p2);
     const auto edge_xfm = Transformation{Length2{}, UnitVec2::GetTop()};
-    const auto s = Real(1) * Meter;
+    const auto s = 1_m;
     const auto polygon_shape = PolygonShape(s, s);
     const auto polygon_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     
@@ -1162,7 +1162,7 @@ TEST(CollideShapes, EdgeR45InsideSquare)
     const auto p2 = Vec2(0, +1) * Meter;
     const auto edge_shape = EdgeShape(p1, p2);
     const auto edge_xfm = Transformation{Length2{}, UnitVec2::Get(45_deg)};
-    const auto s = Real(1) * Meter;
+    const auto s = 1_m;
     const auto polygon_shape = PolygonShape(s, s);
     const auto polygon_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     
@@ -1205,7 +1205,7 @@ TEST(CollideShapes, EdgeR180InsideSquare)
     const auto p2 = Vec2(0, +1) * Meter;
     const auto edge_shape = EdgeShape(p1, p2);
     const auto edge_xfm = Transformation{Length2{}, UnitVec2::GetLeft()};
-    const auto s = Real(1) * Meter;
+    const auto s = 1_m;
     const auto polygon_shape = PolygonShape(s, s);
     const auto polygon_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     
@@ -1268,7 +1268,7 @@ TEST(CollideShapes, EdgeTwiceR180Square)
         Vec2{0, 1} * Meter,
         UnitVec2::GetLeft()
     };
-    const auto s = Real(1) * Meter;
+    const auto s = 1_m;
     const auto polygon_shape = PolygonShape(s, s);
     const auto polygon_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     
@@ -1326,10 +1326,10 @@ TEST(CollideShapes, EdgeFooTriangle)
     const auto p1 = Vec2(2, -2) * Meter;
     const auto p2 = Vec2(-2, +2) * Meter;
     const auto edge_shape = EdgeShape(p2, p1,
-                                      EdgeShape::Conf{}.UseVertexRadius(Real(0) * Meter));
+                                      EdgeShape::Conf{}.UseVertexRadius(0_m));
     const auto edge_xfm = Transformation{Vec2(0, 0.5) * Meter, UnitVec2::Get(-5_deg)};
     auto polygon_shape = PolygonShape{};
-    polygon_shape.SetVertexRadius(Real{0} * Meter);
+    polygon_shape.SetVertexRadius(0_m);
     const auto triangleTopPt = Vec2{0, +1} * Meter;
     const auto triangleLeftPt = Vec2{-1, -1} * Meter;
     const auto triangleRightPt = Vec2{+1, -1} * Meter;
@@ -1451,7 +1451,7 @@ TEST(CollideShapes, R1EdgeCollinearAndTouchingR1Edge)
     const auto p1 = Vec2(-1, 0) * Meter;
     const auto p2 = Vec2(+1, 0) * Meter;
     auto conf = EdgeShape::Conf{};
-    conf.vertexRadius = Real{1} * Meter;
+    conf.vertexRadius = 1_m;
     auto edge_shape = EdgeShape(conf);
     edge_shape.Set(p1, p2);
     const auto xfm1 = Transformation{Vec2{+1, 0} * Meter, UnitVec2::GetRight()};

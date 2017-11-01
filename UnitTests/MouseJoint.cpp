@@ -24,7 +24,7 @@ using namespace playrho;
 
 TEST(MouseJointDef, UseTarget)
 {
-    const auto value = Length2(Real(19) * Meter, Real(-9) * Meter);
+    const auto value = Length2(19_m, -9_m);
     EXPECT_NE(MouseJointDef{}.target, value);
     EXPECT_EQ(MouseJointDef{}.UseTarget(value).target, value);
 }
@@ -95,7 +95,7 @@ TEST(MouseJoint, GetLocalAnchorB)
     def.bodyA = bA;
     def.bodyB = bB;
     def.userData = reinterpret_cast<void*>(71);
-    def.target = Length2(Real(-1.4) * Meter, Real(-2) * Meter);
+    def.target = Length2(Real(-1.4) * Meter, -2_m);
     def.maxForce = 3_N;
     def.frequency = 67_Hz;
     def.dampingRatio = Real(0.8);
@@ -117,7 +117,7 @@ TEST(MouseJointDef, GetMouseJointDefFreeFunction)
     def.bodyA = bA;
     def.bodyB = bB;
     def.userData = reinterpret_cast<void*>(71);
-    def.target = Length2(Real(-1.4) * Meter, Real(-2) * Meter);
+    def.target = Length2(Real(-1.4) * Meter, -2_m);
     def.maxForce = 3_N;
     def.frequency = 67_Hz;
     def.dampingRatio = Real(0.8);

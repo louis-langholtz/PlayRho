@@ -90,7 +90,7 @@ public:
             }
         }
 
-        m_world.SetGravity(Vec2(0.0f, 0.0f) * MeterPerSquareSecond);
+        m_world.SetGravity(LinearAcceleration2{});
     }
     
     Body* CreateEnclosure(Length vertexRadius, Length wallLength)

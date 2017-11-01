@@ -63,7 +63,7 @@ TEST(MotorJointDef, BuilderConstruction)
     const auto collideConnected = true;
     int tmp;
     const auto userData = &tmp;
-    const auto linearOffset = Length2{2 * Meter, 3 * Meter};
+    const auto linearOffset = Length2{2_m, 3_m};
     const auto angularOffset = 33_rad;
     const auto maxForce = 22_N;
     const auto maxTorque = 31_Nm;
@@ -164,13 +164,13 @@ TEST(MotorJoint, WithDynamicCircles)
 {
     const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
     auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
-    const auto p1 = Length2{-Real(1) * Meter, Real(0) * Meter};
-    const auto p2 = Length2{+Real(1) * Meter, Real(0) * Meter};
+    const auto p1 = Length2{-1_m, 0_m};
+    const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
-    //const auto anchor = Length2(Real(2) * Meter, Real(1) * Meter);
+    //const auto anchor = Length2(2_m, 1_m);
     const auto jd = MotorJointDef{b1, b2};
     const auto joint = static_cast<MotorJoint*>(world.CreateJoint(jd));
     ASSERT_NE(joint, nullptr);
@@ -190,20 +190,20 @@ TEST(MotorJoint, SetLinearOffset)
 {
     const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
     auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
-    const auto p1 = Length2{-Real(1) * Meter, Real(0) * Meter};
-    const auto p2 = Length2{+Real(1) * Meter, Real(0) * Meter};
+    const auto p1 = Length2{-1_m, 0_m};
+    const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
-    //const auto anchor = Length2(Real(2) * Meter, Real(1) * Meter);
+    //const auto anchor = Length2(2_m, 1_m);
     const auto jd = MotorJointDef{b1, b2};
     const auto joint = static_cast<MotorJoint*>(world.CreateJoint(jd));
     ASSERT_NE(joint, nullptr);
     EXPECT_EQ(joint->GetAnchorA(), p1);
     EXPECT_EQ(joint->GetAnchorB(), p2);
     
-    const auto linearOffset = Length2{2 * Meter, 1 * Meter};
+    const auto linearOffset = Length2{2_m, 1_m};
     ASSERT_EQ(joint->GetLinearOffset(), jd.linearOffset);
     ASSERT_NE(jd.linearOffset, linearOffset);
     joint->SetLinearOffset(linearOffset);

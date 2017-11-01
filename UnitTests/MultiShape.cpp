@@ -95,7 +95,7 @@ TEST(MultiShape, BaseVisitorForDiskShape)
 TEST(MultiShape, AddConvexHullWithOnePointSameAsDisk)
 {
     const auto defaultMassData = MassData{};
-    const auto center = Length2(Real(1) * Meter, Real(-4) * Meter);
+    const auto center = Length2(1_m, -4_m);
 
     auto pointSet = VertexSet{};
     ASSERT_EQ(pointSet.size(), std::size_t(0));
@@ -129,8 +129,8 @@ TEST(MultiShape, AddConvexHullWithOnePointSameAsDisk)
 TEST(MultiShape, AddConvexHullWithTwoPointsSameAsEdge)
 {
     const auto defaultMassData = MassData{};
-    const auto p0 = Length2(Real(1) * Meter, Real(-4) * Meter);
-    const auto p1 = Length2(Real(1) * Meter, Real(+4) * Meter);
+    const auto p0 = Length2(1_m, -4_m);
+    const auto p1 = Length2(1_m, +4_m);
     
     auto pointSet = VertexSet{};
     ASSERT_EQ(pointSet.size(), std::size_t(0));
@@ -171,8 +171,8 @@ TEST(MultiShape, AddConvexHullWithTwoPointsSameAsEdge)
 TEST(MultiShape, AddTwoConvexHullWithOnePoint)
 {
     const auto defaultMassData = MassData{};
-    const auto p0 = Length2(Real(1) * Meter, Real(-4) * Meter);
-    const auto p1 = Length2(Real(1) * Meter, Real(+4) * Meter);
+    const auto p0 = Length2(1_m, -4_m);
+    const auto p1 = Length2(1_m, +4_m);
 
     auto pointSet = VertexSet{};
     ASSERT_EQ(pointSet.size(), std::size_t(0));

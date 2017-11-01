@@ -73,14 +73,10 @@ TEST(WorldManifold, UnitVecConstruction)
 TEST(WorldManifold, GetWorldManifoldForUnsetManifold)
 {
     const auto manifold = Manifold{};
-    const auto xfA = Transformation{
-        Length2{Real(4-1) * Meter, Real(0) * Meter}, UnitVec2::GetRight()
-    };
-    const auto xfB = Transformation{
-        Length2{Real(4+1) * Meter, Real(0) * Meter}, UnitVec2::GetRight()
-    };
-    const auto rA = Real(1) * Meter;
-    const auto rB = Real(1) * Meter;
+    const auto xfA = Transformation{Length2{(4-1) * Meter, 0_m}, UnitVec2::GetRight()};
+    const auto xfB = Transformation{Length2{(4+1) * Meter, 0_m}, UnitVec2::GetRight()};
+    const auto rA = 1_m;
+    const auto rB = 1_m;
     const auto wm = GetWorldManifold(manifold, xfA, rA, xfB, rB);
     
     EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){0});
@@ -91,34 +87,34 @@ TEST(WorldManifold, GetWorldManifoldForCirclesTouchingManifold)
 {
     const auto manifold = Manifold::GetForCircles(Length2{}, 0, Length2{}, 0);
     const auto xfA = Transformation{
-        Length2{Real(4-1) * Meter, Real(0) * Meter}, UnitVec2::GetRight()
+        Length2{Real(4-1) * Meter, 0_m}, UnitVec2::GetRight()
     };
     const auto xfB = Transformation{
-        Length2{Real(4+1) * Meter, Real(0) * Meter}, UnitVec2::GetRight()
+        Length2{Real(4+1) * Meter, 0_m}, UnitVec2::GetRight()
     };
-    const auto rA = Real(1) * Meter;
-    const auto rB = Real(1) * Meter;
+    const auto rA = 1_m;
+    const auto rB = 1_m;
     const auto wm = GetWorldManifold(manifold, xfA, rA, xfB, rB);
     
     EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){1});
     EXPECT_TRUE(IsValid(wm.GetNormal()));
     EXPECT_NEAR(static_cast<double>(GetX(GetVec2(wm.GetNormal()))), 1.0, 0.00001);
     EXPECT_NEAR(static_cast<double>(GetY(GetVec2(wm.GetNormal()))), 0.0, 0.00001);
-    EXPECT_EQ(wm.GetSeparation(0), Real{0} * Meter);
-    EXPECT_EQ(wm.GetPoint(0), Length2(Real(4) * Meter, Real(0) * Meter));
+    EXPECT_EQ(wm.GetSeparation(0), 0_m);
+    EXPECT_EQ(wm.GetPoint(0), Length2(4_m, 0_m));
 }
 
 TEST(WorldManifold, GetWorldManifoldForCirclesHalfOverlappingManifold)
 {
     const auto manifold = Manifold::GetForCircles(Length2{}, 0, Length2{}, 0);
     const auto xfA = Transformation{
-        Length2{Real(7-0.5) * Meter, Real(0) * Meter}, UnitVec2::GetRight()
+        Length2{Real(7-0.5) * Meter, 0_m}, UnitVec2::GetRight()
     };
     const auto xfB = Transformation{
-        Length2{Real(7+0.5) * Meter, Real(0) * Meter}, UnitVec2::GetRight()
+        Length2{Real(7+0.5) * Meter, 0_m}, UnitVec2::GetRight()
     };
-    const auto rA = Real(1) * Meter;
-    const auto rB = Real(1) * Meter;
+    const auto rA = 1_m;
+    const auto rB = 1_m;
     const auto wm = GetWorldManifold(manifold, xfA, rA, xfB, rB);
     
     EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){1});
@@ -126,23 +122,23 @@ TEST(WorldManifold, GetWorldManifoldForCirclesHalfOverlappingManifold)
     EXPECT_NEAR(static_cast<double>(GetX(GetVec2(wm.GetNormal()))), 1.0, 0.00001);
     EXPECT_NEAR(static_cast<double>(GetY(GetVec2(wm.GetNormal()))), 0.0, 0.00001);
     EXPECT_NEAR(static_cast<double>(Real{wm.GetSeparation(0)/Meter}), -1.0, 0.00001);
-    EXPECT_EQ(wm.GetPoint(0), Length2(Real(7) * Meter, Real(0) * Meter));
+    EXPECT_EQ(wm.GetPoint(0), Length2(7_m, 0_m));
 }
 
 TEST(WorldManifold, GetWorldManifoldForCirclesFullyOverlappingManifold)
 {
     const auto manifold = Manifold::GetForCircles(Length2{}, 0, Length2{}, 0);
-    const auto xfA = Transformation{Length2{Real(3-0) * Meter, Real(0) * Meter}, UnitVec2::GetRight()};
-    const auto xfB = Transformation{Length2{Real(3+0) * Meter, Real(0) * Meter}, UnitVec2::GetRight()};
-    const auto rA = Real(1) * Meter;
-    const auto rB = Real(1) * Meter;
+    const auto xfA = Transformation{Length2{Real(3-0) * Meter, 0_m}, UnitVec2::GetRight()};
+    const auto xfB = Transformation{Length2{Real(3+0) * Meter, 0_m}, UnitVec2::GetRight()};
+    const auto rA = 1_m;
+    const auto rB = 1_m;
     const auto wm = GetWorldManifold(manifold, xfA, rA, xfB, rB);
     
     EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){1});
-    EXPECT_EQ(wm.GetSeparation(0), Real{-2} * Meter);
+    EXPECT_EQ(wm.GetSeparation(0), -2_m);
     if (IsValid(wm.GetNormal()))
     {
-        EXPECT_EQ(wm.GetPoint(0), Length2(Real(3) * Meter, Real(0) * Meter));
+        EXPECT_EQ(wm.GetPoint(0), Length2(3_m, 0_m));
     }
     else
     {
