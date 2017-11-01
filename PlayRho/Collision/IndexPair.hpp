@@ -21,7 +21,7 @@
 #define PLAYRHO_COLLISION_INDEXPAIR_HPP
 
 #include <PlayRho/Common/Settings.hpp>
-#include <PlayRho/Common/Vector.hpp>
+#include <array>
 
 namespace playrho {
     
@@ -59,7 +59,7 @@ namespace playrho {
     
     /// @brief Index pairs.
     /// @note This data type is 6-bytes large (on at least one 64-bit platform).
-    using IndexPair3 = Vector<MaxSimplexEdges, IndexPair>;
+    using IndexPair3 = std::array<IndexPair, MaxSimplexEdges>;
     
     static_assert(MaxSimplexEdges == 3, "Invalid assumption about size of MaxSimplexEdges");
 
@@ -67,9 +67,9 @@ namespace playrho {
     constexpr inline std::size_t GetNumIndices(IndexPair3 pairs) noexcept
     {
         return std::size_t{3}
-        - ((pairs[0] == InvalidIndexPair)? 1u: 0u)
-        - ((pairs[1] == InvalidIndexPair)? 1u: 0u)
-        - ((pairs[2] == InvalidIndexPair)? 1u: 0u);
+        - ((std::get<0>(pairs) == InvalidIndexPair)? 1u: 0u)
+        - ((std::get<1>(pairs) == InvalidIndexPair)? 1u: 0u)
+        - ((std::get<2>(pairs) == InvalidIndexPair)? 1u: 0u);
     }
 
 } // namespace playrho

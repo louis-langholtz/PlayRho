@@ -61,7 +61,7 @@ TEST(SimplexCache, InitializingConstructor)
 {
     {
         const auto metric = Real(.3);
-        const auto indices = IndexPair3{InvalidIndexPair, InvalidIndexPair, InvalidIndexPair};
+        const auto indices = IndexPair3{{InvalidIndexPair, InvalidIndexPair, InvalidIndexPair}};
         Simplex::Cache foo{metric, indices};
         
         EXPECT_EQ(GetNumIndices(foo.GetIndices()), decltype(GetNumIndices(foo.GetIndices())){0});
@@ -72,7 +72,7 @@ TEST(SimplexCache, InitializingConstructor)
         const auto ip0 = IndexPair{0, 0};
         const auto ip1 = IndexPair{1, 0};
         const auto metric = Real(-1.4);
-        Simplex::Cache foo{metric, IndexPair3{ip0, ip1, InvalidIndexPair}};
+        Simplex::Cache foo{metric, IndexPair3{{ip0, ip1, InvalidIndexPair}}};
         
         EXPECT_EQ(GetNumIndices(foo.GetIndices()), decltype(GetNumIndices(foo.GetIndices())){2});
         EXPECT_EQ(foo.GetIndexPair(0), ip0);
@@ -85,7 +85,7 @@ TEST(SimplexCache, InitializingConstructor)
         const auto ip1 = IndexPair{1, 0};
         const auto ip2 = IndexPair{4, 3};
         const auto metric = Real(-1.4);
-        Simplex::Cache foo{metric, IndexPair3{ip0, ip1, ip2}};
+        Simplex::Cache foo{metric, IndexPair3{{ip0, ip1, ip2}}};
         
         EXPECT_EQ(GetNumIndices(foo.GetIndices()), decltype(GetNumIndices(foo.GetIndices())){3});
         EXPECT_EQ(foo.GetIndexPair(0), ip0);
@@ -99,7 +99,7 @@ TEST(SimplexCache, InitializingConstructor)
 TEST(SimplexCache, Assignment)
 {
     const auto metric = Real(.3);
-    const auto indices = IndexPair3{InvalidIndexPair, InvalidIndexPair, InvalidIndexPair};
+    const auto indices = IndexPair3{{InvalidIndexPair, InvalidIndexPair, InvalidIndexPair}};
     Simplex::Cache foo{metric, indices};
     
     ASSERT_EQ(GetNumIndices(foo.GetIndices()), decltype(GetNumIndices(foo.GetIndices())){0});
@@ -110,7 +110,7 @@ TEST(SimplexCache, Assignment)
     const auto ip1 = IndexPair{1, 0};
     const auto ip2 = IndexPair{4, 3};
     const auto roo_metric = Real(-1.4);
-    Simplex::Cache roo{roo_metric, IndexPair3{ip0, ip1, ip2}};
+    Simplex::Cache roo{roo_metric, IndexPair3{{ip0, ip1, ip2}}};
     
     foo = roo;
     

@@ -87,7 +87,7 @@ TEST(MassData, GetAreaOfPolygon)
     }
     {
         // point
-        const auto vertices = Vector<1, const Length2D>{
+        const auto vertices = Vector<const Length2D, 1>{
             Length2D{Real(-2) * Meter, Real(+0.5) * Meter},
         };
         const auto area = GetAreaOfPolygon(vertices);
@@ -95,7 +95,7 @@ TEST(MassData, GetAreaOfPolygon)
     }
     {
         // edge
-        const auto vertices = Vector<2, const Length2D>{
+        const auto vertices = Vector<const Length2D, 2>{
             Length2D{Real(-2) * Meter, Real(+0.5) * Meter},
             Length2D{Real(+2) * Meter, Real(+0.5) * Meter},
         };
@@ -104,7 +104,7 @@ TEST(MassData, GetAreaOfPolygon)
     }
     {
         // CCW triangle
-        const auto vertices = Vector<3, const Length2D>{
+        const auto vertices = Vector<const Length2D, 3>{
             Length2D{Real(-2) * Meter, Real(+1.0) * Meter},
             Length2D{Real(-2) * Meter, Real(-1.0) * Meter},
             Length2D{Real(+2) * Meter, Real(+0.0) * Meter},
@@ -114,7 +114,7 @@ TEST(MassData, GetAreaOfPolygon)
     }
     {
         // CCW triangle
-        const auto vertices = Vector<3, const Length2D>{
+        const auto vertices = Vector<const Length2D, 3>{
             Length2D{Real(-2) * Meter, Real(-1.0) * Meter},
             Length2D{Real(+2) * Meter, Real(+0.0) * Meter},
             Length2D{Real(-2) * Meter, Real(+1.0) * Meter},
@@ -124,7 +124,7 @@ TEST(MassData, GetAreaOfPolygon)
     }
     {
         // CCW triangle
-        const auto vertices = Vector<3, const Length2D>{
+        const auto vertices = Vector<const Length2D, 3>{
             Length2D{Real(+2) * Meter, Real(+0.0) * Meter},
             Length2D{Real(-2) * Meter, Real(+1.0) * Meter},
             Length2D{Real(-2) * Meter, Real(-1.0) * Meter},
@@ -134,7 +134,7 @@ TEST(MassData, GetAreaOfPolygon)
     }
     {
         // CW triangle
-        const auto vertices = Vector<3, const Length2D>{
+        const auto vertices = Vector<const Length2D, 3>{
             Length2D{Real(+2) * Meter, Real(+0.0) * Meter},
             Length2D{Real(-2) * Meter, Real(-1.0) * Meter},
             Length2D{Real(-2) * Meter, Real(+1.0) * Meter},
@@ -144,7 +144,7 @@ TEST(MassData, GetAreaOfPolygon)
     }
     {
         // CCW triangle
-        const auto vertices = Vector<3, const Length2D>{
+        const auto vertices = Vector<const Length2D, 3>{
             Length2D{Real(+0) * Meter, Real(-2.0) * Meter},
             Length2D{Real(-4) * Meter, Real(-1.0) * Meter},
             Length2D{Real(-4) * Meter, Real(-3.0) * Meter},
@@ -154,7 +154,7 @@ TEST(MassData, GetAreaOfPolygon)
     }
     {
         // CCW quadrilateral
-        const auto vertices = Vector<4, const Length2D>{
+        const auto vertices = Vector<const Length2D, 4>{
             Length2D{Real(-2) * Meter, Real(+0.5) * Meter},
             Length2D{Real(-2) * Meter, Real(-0.5) * Meter},
             Length2D{Real(+2) * Meter, Real(-0.5) * Meter},
@@ -321,7 +321,7 @@ TEST(MassData, GetForCenteredEdge)
     ASSERT_EQ(shape.GetVertex2(), v2);
     ASSERT_EQ(shape.GetDensity(), density);
     
-    const auto vertices = Vector<4, Length2D>{
+    const auto vertices = Vector<Length2D, 4>{
         Length2D(Real(-2) * Meter, Real(+0.5) * Meter),
         Length2D(Real(-2) * Meter, Real(-0.5) * Meter),
         Length2D(Real(+2) * Meter, Real(-0.5) * Meter),

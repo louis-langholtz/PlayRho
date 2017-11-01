@@ -428,7 +428,7 @@ BodyCounter GetWorldIndex(const Body* body) noexcept
         const auto bodies = world->GetBodies();
         auto i = BodyCounter{0};
         const auto it = std::find_if(cbegin(bodies), cend(bodies), [&](const Body *b) {
-            return b == body || (++i, false);
+            return b == body || ((void) ++i, false);
         });
         if (it != end(bodies))
         {

@@ -29,8 +29,8 @@ using namespace playrho;
 
 TEST(Vector, Equality)
 {
-    Vector<10, int> a;
-    Vector<10, int> b;
+    Vector<int, 10> a;
+    Vector<int, 10> b;
     
     std::fill(a.begin(), a.end(), 1);
     std::fill(b.begin(), b.end(), 1);
@@ -55,8 +55,8 @@ TEST(Vector, Equality)
 
 TEST(Vector, Inequality)
 {
-    Vector<10, int> a;
-    Vector<10, int> b;
+    Vector<int, 10> a;
+    Vector<int, 10> b;
     
     std::fill(a.begin(), a.end(), 1);
     std::fill(b.begin(), b.end(), 1);
@@ -81,8 +81,8 @@ TEST(Vector, Inequality)
 
 TEST(Vector, LessThan)
 {
-    Vector<10, int> a;
-    Vector<10, int> b;
+    Vector<int, 10> a;
+    Vector<int, 10> b;
     
     std::fill(a.begin(), a.end(), 1);
     std::fill(b.begin(), b.end(), 1);
@@ -107,8 +107,8 @@ TEST(Vector, LessThan)
 
 TEST(Vector, GreaterThan)
 {
-    Vector<10, int> a;
-    Vector<10, int> b;
+    Vector<int, 10> a;
+    Vector<int, 10> b;
     
     std::fill(a.begin(), a.end(), 1);
     std::fill(b.begin(), b.end(), 1);
@@ -133,8 +133,8 @@ TEST(Vector, GreaterThan)
 
 TEST(Vector, LessThanOrEqualTo)
 {
-    Vector<10, int> a;
-    Vector<10, int> b;
+    Vector<int, 10> a;
+    Vector<int, 10> b;
     
     std::fill(a.begin(), a.end(), 1);
     std::fill(b.begin(), b.end(), 1);
@@ -159,8 +159,8 @@ TEST(Vector, LessThanOrEqualTo)
 
 TEST(Vector, GreaterThanOrEqualTo)
 {
-    Vector<10, int> a;
-    Vector<10, int> b;
+    Vector<int, 10> a;
+    Vector<int, 10> b;
     
     std::fill(a.begin(), a.end(), 1);
     std::fill(b.begin(), b.end(), 1);
@@ -185,7 +185,7 @@ TEST(Vector, GreaterThanOrEqualTo)
 
 TEST(Vector, ReverseIterateWith_crbeginend)
 {
-    Vector<4, int> vector{0, 1, 2, 3};
+    Vector<int, 4> vector{0, 1, 2, 3};
     
     int n = 0;
     for (auto it = vector.crbegin(); it != vector.crend(); ++it)
@@ -198,7 +198,7 @@ TEST(Vector, ReverseIterateWith_crbeginend)
 TEST(Vector, ReverseIterateWith_rbeginend)
 {
     {
-        Vector<4, int> vector{0, 1, 2, 3};
+        Vector<int, 4> vector{0, 1, 2, 3};
         int n = 0;
         for (auto it = vector.rbegin(); it != vector.rend(); ++it)
         {
@@ -207,7 +207,7 @@ TEST(Vector, ReverseIterateWith_rbeginend)
         }
     }
     {
-        const Vector<4, int> vector{0, 1, 2, 3};
+        const Vector<int, 4> vector{0, 1, 2, 3};
         int n = 0;
         for (auto it = vector.rbegin(); it != vector.rend(); ++it)
         {

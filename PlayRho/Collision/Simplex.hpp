@@ -112,7 +112,7 @@ namespace playrho {
 
             /// @brief Indices.
             /// @details Collection of index-pairs.
-            IndexPair3 m_indices{InvalidIndexPair, InvalidIndexPair, InvalidIndexPair};
+            IndexPair3 m_indices{{InvalidIndexPair, InvalidIndexPair, InvalidIndexPair}};
         };
 
         /// @brief Gets the cache value for the given edges.
@@ -228,7 +228,7 @@ namespace playrho {
 
     inline IndexPair3 Simplex::GetIndexPairs(const SimplexEdges& collection) noexcept
     {
-        auto list = IndexPair3{InvalidIndexPair, InvalidIndexPair, InvalidIndexPair};
+        auto list = IndexPair3{{InvalidIndexPair, InvalidIndexPair, InvalidIndexPair}};
         switch (collection.size())
         {
             case 3: list[2] = collection[2].GetIndexPair(); // fall through

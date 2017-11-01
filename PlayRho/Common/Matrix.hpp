@@ -31,16 +31,16 @@
 namespace playrho {
     
     /// @brief Generic N by M matrix.
-    template <std::size_t N, std::size_t M, typename T>
-    using Matrix = Vector<N, Vector<M, T>>;
+    template <typename T, std::size_t N, std::size_t M>
+    using Matrix = Vector<Vector<T, M>, N>;
     
     /// @brief 2 by 2 matrix.
     template <typename T>
-    using Matrix22 = Matrix<2, 2, T>;
+    using Matrix22 = Matrix<T, 2, 2>;
     
     /// @brief 3 by 3 matrix.
     template <typename T>
-    using Matrix33 = Matrix<3, 3, T>;
+    using Matrix33 = Matrix<T, 3, 3>;
     
     /// @brief 2 by 2 matrix of Real elements.
     using Mat22 = Matrix22<Real>;

@@ -359,10 +359,12 @@ inline auto GetLength(T value)
 ///   The middle value of 0 indicates that two vectors are perpendicular to each other
 ///   (at an angle of +/- 90 degrees from each other).
 ///
-///
 /// @note This operation is commutative. I.e. Dot(a, b) == Dot(b, a).
 /// @note If A and B are the same vectors, GetLengthSquared(Vec2) returns the same value
 ///   using effectively one less input parameter.
+/// @note This is similar to the <code>std::inner_product</code> standard library algorithm
+///   except benchmark tests suggest this implementation is faster at least for
+///   <code>Vec2</code> like instances.
 ///
 /// @sa https://en.wikipedia.org/wiki/Dot_product
 ///
@@ -372,17 +374,19 @@ inline auto GetLength(T value)
 /// @return Dot product of the vectors (0 means the two vectors are perpendicular).
 ///
 template <typename T1, typename T2>
-constexpr inline auto Dot(const T1 a, const T2 b) noexcept
+constexpr auto Dot(const T1 a, const T2 b) noexcept
 {
-    return (Get<0>(a) * Get<0>(b)) + (Get<1>(a) * Get<1>(b));
-}
-
-/// @brief Performs the dot product on two vectors.
-template <>
-constexpr inline auto Dot(const Vec3 a, const Vec3 b) noexcept
-{
-    return (Get<0>(a) * Get<0>(b)) + (Get<1>(a) * Get<1>(b))
-        + (Get<2>(a) * Get<2>(b));
+    static_assert(a.size() == b.size(), "Dot only for same sized values");
+    using VT1 = typename T1::value_type;
+    using VT2 = typename T2::value_type;
+    using OT = decltype(VT1{} * VT2{});
+    auto result = OT{};
+    const auto size = a.size();
+    for (auto i = decltype(size){0}; i < size; ++i)
+    {
+        result += a[i] * b[i];
+    }
+    return result;
 }
 
 /// @brief Performs the 2D analog of the cross product of two vectors.

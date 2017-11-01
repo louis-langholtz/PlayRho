@@ -194,11 +194,13 @@ namespace playrho
     /// @brief Void type templated alias.
     template<class... Ts> using VoidT = typename Voidify<Ts...>::type;
     
-    /// @brief Template for determining if the given type is an arithmetic type.
+    /// @brief Template for determining if the given type is an "arithmetic" type.
+    /// @note In the context of this library, "arithmetic" types are all types which
+    ///   have +, -, *, / arithmetic operator support.
     template<class T, class = void>
     struct IsArithmetic: std::false_type {};
     
-    /// @brief Template specialization for arithmetic types.
+    /// @brief Template specialization for valid/acceptable "arithmetic" types.
     template<class T>
     struct IsArithmetic<T, VoidT<
         decltype(T{} + T{}), decltype(T{} - T{}), decltype(T{} * T{}), decltype(T{} / T{})

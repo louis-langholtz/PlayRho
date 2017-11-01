@@ -125,7 +125,7 @@ TEST(Math, Atan2)
 TEST(Math, Span)
 {
     {
-        const auto vector = Vector<3, int>{1, 2, 4};
+        const auto vector = Vector<int, 3>{1, 2, 4};
         const Span<const int> foo = Span<const int>(vector.data(), vector.size());
         EXPECT_EQ(foo.size(), std::size_t(3));
         EXPECT_EQ(foo[0], 1);

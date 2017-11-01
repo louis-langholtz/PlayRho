@@ -138,7 +138,7 @@ JointCounter GetWorldIndex(const Joint* joint)
             auto i = JointCounter{0};
             const auto joints = world->GetJoints();
             const auto it = std::find_if(std::cbegin(joints), std::cend(joints), [&](const Joint *j) {
-                return (j == joint) || (++i, false);
+                return (j == joint) || ((void) ++i, false);
             });
             if (it != std::end(joints))
             {
