@@ -167,7 +167,7 @@ void WeldJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
         // Scale impulses to support a variable time step.
         m_impulse *= step.dtRatio;
 
-        const auto P = Momentum2D{GetX(m_impulse) * NewtonSecond, GetY(m_impulse) * NewtonSecond};
+        const auto P = Momentum2{GetX(m_impulse) * NewtonSecond, GetY(m_impulse) * NewtonSecond};
 
         // AngularMomentum is L^2 M T^-1 QP^-1.
         const auto L = AngularMomentum{GetZ(m_impulse) * SquareMeter * Kilogram / (Second * Radian)};
@@ -215,8 +215,8 @@ bool WeldJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
         velA.angular -= AngularVelocity{invRotInertiaA * impulse2 * SquareMeter * Kilogram / (Second * Radian)};
         velB.angular += AngularVelocity{invRotInertiaB * impulse2 * SquareMeter * Kilogram / (Second * Radian)};
 
-        const auto vb = velB.linear + LinearVelocity2D{(GetRevPerpendicular(m_rB) * (velB.angular / Radian))};
-        const auto va = velA.linear + LinearVelocity2D{(GetRevPerpendicular(m_rA) * (velA.angular / Radian))};
+        const auto vb = velB.linear + LinearVelocity2{(GetRevPerpendicular(m_rB) * (velB.angular / Radian))};
+        const auto va = velA.linear + LinearVelocity2{(GetRevPerpendicular(m_rA) * (velA.angular / Radian))};
 
         const auto Cdot1 = vb - va;
 
@@ -224,7 +224,7 @@ bool WeldJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
         GetX(m_impulse) += GetX(impulse1);
         GetY(m_impulse) += GetY(impulse1);
 
-        const auto P = Momentum2D{GetX(impulse1) * NewtonSecond, GetY(impulse1) * NewtonSecond};
+        const auto P = Momentum2{GetX(impulse1) * NewtonSecond, GetY(impulse1) * NewtonSecond};
         const auto LA = AngularMomentum{Cross(m_rA, P) / Radian};
         const auto LB = AngularMomentum{Cross(m_rB, P) / Radian};
 
@@ -233,8 +233,8 @@ bool WeldJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     }
     else
     {
-        const auto vb = velB.linear + LinearVelocity2D{(GetRevPerpendicular(m_rB) * (velB.angular / Radian))};
-        const auto va = velA.linear + LinearVelocity2D{(GetRevPerpendicular(m_rA) * (velA.angular / Radian))};
+        const auto vb = velB.linear + LinearVelocity2{(GetRevPerpendicular(m_rB) * (velB.angular / Radian))};
+        const auto va = velA.linear + LinearVelocity2{(GetRevPerpendicular(m_rA) * (velA.angular / Radian))};
 
         const auto Cdot1 = vb - va;
         const auto Cdot2 = Real{(velB.angular - velA.angular) / RadianPerSecond};
@@ -243,7 +243,7 @@ bool WeldJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
         const auto impulse = -Transform(Cdot, m_mass);
         m_impulse += impulse;
 
-        const auto P = Momentum2D{GetX(impulse) * NewtonSecond, GetY(impulse) * NewtonSecond};
+        const auto P = Momentum2{GetX(impulse) * NewtonSecond, GetY(impulse) * NewtonSecond};
         
         // AngularMomentum is L^2 M T^-1 QP^-1.
         const auto L = AngularMomentum{GetZ(impulse) * SquareMeter * Kilogram / (Second * Radian)};
@@ -320,7 +320,7 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
 
     if (m_frequency > Frequency{0})
     {
-        const auto C1 = Length2D{(posB.linear + rB) - (posA.linear + rA)};
+        const auto C1 = Length2{(posB.linear + rB) - (posA.linear + rA)};
 
         positionError = GetLength(C1);
         angularError = Angle{0};
@@ -334,7 +334,7 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
     }
     else
     {
-        const auto C1 = Length2D{(posB.linear + rB) - (posA.linear + rA)};
+        const auto C1 = Length2{(posB.linear + rB) - (posA.linear + rA)};
         const auto C2 = Angle{posB.angular - posA.angular - m_referenceAngle};
 
         positionError = GetLength(C1);
@@ -353,7 +353,7 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
             impulse = Vec3{GetX(impulse2), GetY(impulse2), 0};
         }
 
-        const auto P = Length2D{GetX(impulse) * Meter, GetY(impulse) * Meter} * Kilogram;
+        const auto P = Length2{GetX(impulse) * Meter, GetY(impulse) * Meter} * Kilogram;
         const auto L = GetZ(impulse) * Kilogram * SquareMeter / Radian;
         const auto LA = L + Cross(rA, P) / Radian;
         const auto LB = L + Cross(rB, P) / Radian;
@@ -368,19 +368,19 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
     return (positionError <= conf.linearSlop) && (angularError <= conf.angularSlop);
 }
 
-Length2D WeldJoint::GetAnchorA() const
+Length2 WeldJoint::GetAnchorA() const
 {
     return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
 }
 
-Length2D WeldJoint::GetAnchorB() const
+Length2 WeldJoint::GetAnchorB() const
 {
     return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Momentum2D WeldJoint::GetLinearReaction() const
+Momentum2 WeldJoint::GetLinearReaction() const
 {
-    return Momentum2D{GetX(m_impulse) * NewtonSecond, GetY(m_impulse) * NewtonSecond};
+    return Momentum2{GetX(m_impulse) * NewtonSecond, GetY(m_impulse) * NewtonSecond};
 }
 
 AngularMomentum WeldJoint::GetAngularReaction() const

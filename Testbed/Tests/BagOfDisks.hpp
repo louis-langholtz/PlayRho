@@ -68,13 +68,13 @@ namespace playrho {
             conf.vertexRadius = 0.125_m;
             conf.density = 10_kgpm2;
             conf.friction = 0.2f;
-            conf.vertex1 = Length2D{-halfSegmentLength, 0_m};
-            conf.vertex2 = Length2D{+halfSegmentLength, 0_m};
+            conf.vertex1 = Length2{-halfSegmentLength, 0_m};
+            conf.vertex2 = Length2{+halfSegmentLength, 0_m};
             const auto vertexOffset = Vec2(0, 14) * 1_m;
             const auto shape = std::make_shared<EdgeShape>(conf);
             auto prevBody = static_cast<Body*>(nullptr);
             auto firstBody = static_cast<Body*>(nullptr);
-            auto prevVertex = Optional<Length2D>{};
+            auto prevVertex = Optional<Length2>{};
             for (const auto& vertex: vertices)
             {
                 if (prevVertex.has_value())

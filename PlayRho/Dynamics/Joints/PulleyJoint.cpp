@@ -83,8 +83,8 @@ void PulleyJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     m_rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB);
 
     // Get the pulley axes.
-    const auto pulleyAxisA = Length2D{posA.linear + m_rA - m_groundAnchorA};
-    const auto pulleyAxisB = Length2D{posB.linear + m_rB - m_groundAnchorB};
+    const auto pulleyAxisA = Length2{posA.linear + m_rA - m_groundAnchorA};
+    const auto pulleyAxisB = Length2{posB.linear + m_rB - m_groundAnchorB};
 
     m_uA = GetUnitVector(pulleyAxisA, UnitVec2::GetZero());
     m_uB = GetUnitVector(pulleyAxisB, UnitVec2::GetZero());
@@ -134,8 +134,8 @@ bool PulleyJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Ste
     const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
     auto velB = bodyConstraintB->GetVelocity();
 
-    const auto vpA = LinearVelocity2D{velA.linear + GetRevPerpendicular(m_rA) * (velA.angular / Radian)};
-    const auto vpB = LinearVelocity2D{velB.linear + GetRevPerpendicular(m_rB) * (velB.angular / Radian)};
+    const auto vpA = LinearVelocity2{velA.linear + GetRevPerpendicular(m_rA) * (velA.angular / Radian)};
+    const auto vpB = LinearVelocity2{velB.linear + GetRevPerpendicular(m_rB) * (velB.angular / Radian)};
 
     const auto Cdot = LinearVelocity{-Dot(m_uA, vpA) - m_ratio * Dot(m_uB, vpB)};
     const auto impulse = -m_mass * Cdot;
@@ -172,11 +172,11 @@ bool PulleyJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
                            UnitVec2::Get(posB.angular));
 
     // Get the pulley axes.
-    const auto pA = Length2D{posA.linear + rA - m_groundAnchorA};
+    const auto pA = Length2{posA.linear + rA - m_groundAnchorA};
     auto lengthA = Length{0};
     const auto uA = GetUnitVector(pA, lengthA, UnitVec2::GetZero());
 
-    const auto pB = Length2D{posB.linear + rB - m_groundAnchorB};
+    const auto pB = Length2{posB.linear + rB - m_groundAnchorB};
     auto lengthB = Length{0};
     const auto uB = GetUnitVector(pB, lengthB, UnitVec2::GetZero());
 
@@ -207,17 +207,17 @@ bool PulleyJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
     return linearError < conf.linearSlop;
 }
 
-Length2D PulleyJoint::GetAnchorA() const
+Length2 PulleyJoint::GetAnchorA() const
 {
     return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
 }
 
-Length2D PulleyJoint::GetAnchorB() const
+Length2 PulleyJoint::GetAnchorB() const
 {
     return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Momentum2D PulleyJoint::GetLinearReaction() const
+Momentum2 PulleyJoint::GetLinearReaction() const
 {
     return m_impulse * m_uB;
 }
@@ -227,7 +227,7 @@ AngularMomentum PulleyJoint::GetAngularReaction() const
     return AngularMomentum{0};
 }
 
-void PulleyJoint::ShiftOrigin(const Length2D newOrigin)
+void PulleyJoint::ShiftOrigin(const Length2 newOrigin)
 {
     m_groundAnchorA -= newOrigin;
     m_groundAnchorB -= newOrigin;

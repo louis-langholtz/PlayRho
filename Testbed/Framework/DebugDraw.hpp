@@ -81,9 +81,9 @@ struct Camera
     int m_height = 800;
 };
 
-Length2D ConvertScreenToWorld(const Camera& camera, const Coord2D screenPoint);
+Length2 ConvertScreenToWorld(const Camera& camera, const Coord2D screenPoint);
 AABB ConvertScreenToWorld(const Camera& camera);
-Coord2D ConvertWorldToScreen(const Camera& camera, const Length2D worldPoint);
+Coord2D ConvertWorldToScreen(const Camera& camera, const Length2 worldPoint);
 ProjectionMatrix GetProjectionMatrix(const Camera& camera, float zBias);
 
 class DebugDraw : public Drawer
@@ -93,31 +93,31 @@ public:
 
     virtual ~DebugDraw() noexcept;
     
-    void DrawPolygon(const Length2D* vertices, size_type vertexCount, const Color& color) override;
+    void DrawPolygon(const Length2* vertices, size_type vertexCount, const Color& color) override;
 
-    void DrawSolidPolygon(const Length2D* vertices, size_type vertexCount, const Color& color) override;
+    void DrawSolidPolygon(const Length2* vertices, size_type vertexCount, const Color& color) override;
 
-    void DrawCircle(const Length2D& center, Length radius, const Color& color) override;
+    void DrawCircle(const Length2& center, Length radius, const Color& color) override;
 
-    void DrawSolidCircle(const Length2D& center, Length radius, const Color& color) override;
+    void DrawSolidCircle(const Length2& center, Length radius, const Color& color) override;
 
-    void DrawSegment(const Length2D& p1, const Length2D& p2, const Color& color) override;
+    void DrawSegment(const Length2& p1, const Length2& p2, const Color& color) override;
 
-    void DrawSegment(const Length2D& p1, const Color& c1,
-                     const Length2D& p2, const Color& c2) override;
+    void DrawSegment(const Length2& p1, const Color& c1,
+                     const Length2& p2, const Color& c2) override;
 
-    void DrawPoint(const Length2D& p, float size, const Color& color) override;
+    void DrawPoint(const Length2& p, float size, const Color& color) override;
 
-    void DrawString(const Length2D& p, TextAlign align, const char* string, ...) override;
+    void DrawString(const Length2& p, TextAlign align, const char* string, ...) override;
 
     void Flush() override;
     
-    Length2D GetTranslation() const override;
+    Length2 GetTranslation() const override;
 
-    void SetTranslation(Length2D value) override;
+    void SetTranslation(Length2 value) override;
 
 private:
-    void DrawTriangle(const Length2D& p1, const Length2D& p2, const Length2D& p3, const Color& color);
+    void DrawTriangle(const Length2& p1, const Length2& p2, const Length2& p3, const Color& color);
 
     Camera& m_camera;
     GLRenderPoints* m_points;

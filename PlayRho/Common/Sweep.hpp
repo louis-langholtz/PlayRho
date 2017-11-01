@@ -50,7 +50,7 @@ namespace playrho
         
         /// @brief Initializing constructor.
         constexpr Sweep(const Position p0, const Position p1,
-                        const Length2D lc = Length2D{0_m, 0_m},
+                        const Length2 lc = Length2{0_m, 0_m},
                         Real a0 = 0) noexcept:
         	pos0{p0}, pos1{p1}, localCenter{lc}, alpha0{a0}
         {
@@ -60,7 +60,7 @@ namespace playrho
         
         /// @brief Initializing constructor.
         constexpr explicit Sweep(const Position p,
-                                 const Length2D lc = Length2D{0_m, 0_m}):
+                                 const Length2 lc = Length2{0_m, 0_m}):
         	Sweep{p, p, lc, 0}
         {
             // Intentionally empty.
@@ -69,7 +69,7 @@ namespace playrho
         /// @brief Gets the local center of mass position.
         /// @note This value can only be set via a sweep constructed using an initializing
         ///   constructor.
-        Length2D GetLocalCenter() const noexcept { return localCenter; }
+        Length2 GetLocalCenter() const noexcept { return localCenter; }
         
         /// @brief Gets the alpha0 for this sweep.
         /// @return Value between 0 and less than 1.
@@ -99,7 +99,7 @@ namespace playrho
     private:
         /// @brief Local center of mass position.
         /// @note 8-bytes.
-        Length2D localCenter = Length2D{0_m, 0_m};
+        Length2 localCenter = Length2{0_m, 0_m};
         
         /// @brief Fraction of the current time step in the range [0,1]
         /// @note pos0.linear and pos0.angular are the positions at alpha0.

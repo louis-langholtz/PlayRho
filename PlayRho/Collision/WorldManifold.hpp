@@ -48,11 +48,11 @@ namespace playrho {
         /// @brief Points.
         /// @details Manifold's contact points in world coordinates (mid-point of intersection)
         /// @note 16-bytes.
-        Length2D m_points[MaxManifoldPoints] = {GetInvalid<Length2D>(), GetInvalid<Length2D>()};
+        Length2 m_points[MaxManifoldPoints] = {GetInvalid<Length2>(), GetInvalid<Length2>()};
 
         /// @brief Impulses.
         /// @note 16-bytes.
-        Momentum2D m_impulses[MaxManifoldPoints] = {Momentum2D{}, Momentum2D{}};
+        Momentum2 m_impulses[MaxManifoldPoints] = {Momentum2{}, Momentum2{}};
         
         /// @brief Separations.
         /// @details A negative value indicates overlap.
@@ -64,8 +64,8 @@ namespace playrho {
         /// @note This data structure is 20-bytes large at least on one 64-bit architecture.
         struct PointData
         {
-            Length2D location; ///< Location of point or the invalid Length2D value.
-            Momentum2D impulse; ///< "Normal" and "tangent" impulses at the point.
+            Length2 location; ///< Location of point or the invalid Length2 value.
+            Momentum2 impulse; ///< "Normal" and "tangent" impulses at the point.
             Length separation; ///< Separation at point or the invalid Length value.
         };
         
@@ -86,8 +86,8 @@ namespace playrho {
         /// @brief Initializing constructor.
         constexpr explicit WorldManifold(UnitVec2 normal, PointData ps0) noexcept:
             m_normal{normal},
-            m_points{ps0.location, GetInvalid<Length2D>()},
-            m_impulses{ps0.impulse, Momentum2D{}},
+            m_points{ps0.location, GetInvalid<Length2>()},
+            m_impulses{ps0.impulse, Momentum2{}},
             m_separations{ps0.separation, GetInvalid<Length>()}
         {
             assert(IsValid(normal));
@@ -132,7 +132,7 @@ namespace playrho {
         ///
         /// @return Point or an invalid value if the given index was invalid.
         ///
-        Length2D GetPoint(size_type index) const noexcept
+        Length2 GetPoint(size_type index) const noexcept
         {
             assert(index < MaxManifoldPoints);
             return m_points[index];
@@ -156,7 +156,7 @@ namespace playrho {
         
         /// @brief Gets the given index contact impulses.
         /// @return "Normal impulse" and "tangent impulse" pair.
-        Momentum2D GetImpulses(size_type index) const noexcept
+        Momentum2 GetImpulses(size_type index) const noexcept
         {
             assert(index < MaxManifoldPoints);
             return m_impulses[index];

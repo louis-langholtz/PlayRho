@@ -162,8 +162,8 @@ TEST(Simplex, DefaultConstruction)
 
 TEST(Simplex, Get1)
 {
-    const auto va = Length2D{-Real(4) * Meter, Real(33) * Meter};
-    const auto vb = Length2D{Real(901.5) * Meter, Real(0.06) * Meter};
+    const auto va = Length2{-4_m, 33_m};
+    const auto vb = Length2{901.5_m, 0.06_m};
     const auto ia = SimplexEdge::index_type{2};
     const auto ib = SimplexEdge::index_type{7};
     const auto sv = SimplexEdge{va, ia, vb, ib};
@@ -184,8 +184,8 @@ TEST(Simplex, Get1)
 
 TEST(Simplex, Get2_of_same)
 {
-    const auto va = Length2D{-Real(4) * Meter, Real(33) * Meter};
-    const auto vb = Length2D{Real(901.5) * Meter, Real(0.06) * Meter};
+    const auto va = Length2{-4_m, 33_m};
+    const auto vb = Length2{901.5_m, 0.06_m};
     const auto ia = SimplexEdge::index_type{2};
     const auto ib = SimplexEdge::index_type{7};
     const auto sv = SimplexEdge{va, ia, vb, ib};
@@ -207,8 +207,8 @@ TEST(Simplex, Get2_of_same)
 
 TEST(Simplex, Get2_fwd_perp)
 {
-    const auto va0 = Length2D{-Real(4) * Meter, Real(33) * Meter};
-    const auto vb0 = Length2D{Real(901.5) * Meter, Real(0.06) * Meter};
+    const auto va0 = Length2{-4_m, 33_m};
+    const auto vb0 = Length2{901.5_m, 0.06_m};
     const auto ia0 = SimplexEdge::index_type{2};
     const auto ib0 = SimplexEdge::index_type{7};
     const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
@@ -247,8 +247,8 @@ TEST(Simplex, Get2_fwd_perp)
 
 TEST(Simplex, Get2_rev_perp)
 {
-    const auto va0 = Length2D{-Real(4) * Meter, Real(33) * Meter};
-    const auto vb0 = Length2D{Real(901.5) * Meter, Real(0.06) * Meter};
+    const auto va0 = Length2{-4_m, 33_m};
+    const auto vb0 = Length2{901.5_m, 0.06_m};
     const auto ia0 = SimplexEdge::index_type{2};
     const auto ib0 = SimplexEdge::index_type{7};
     const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
@@ -287,8 +287,8 @@ TEST(Simplex, Get2_rev_perp)
 
 TEST(Simplex, Get2_rot_plus_45)
 {
-    const auto va0 = Length2D{-Real(4) * Meter, Real(33) * Meter};
-    const auto vb0 = Length2D{Real(901.5) * Meter, Real(0.06) * Meter};
+    const auto va0 = Length2{-4_m, 33_m};
+    const auto vb0 = Length2{901.5_m, 0.06_m};
     const auto ia0 = SimplexEdge::index_type{2};
     const auto ib0 = SimplexEdge::index_type{7};
     const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
@@ -327,8 +327,8 @@ TEST(Simplex, Get2_rot_plus_45)
 
 TEST(Simplex, Get2_rot45_half)
 {
-    const auto va0 = Length2D{-Real(4) * Meter, Real(33) * Meter}; // upper left
-    const auto vb0 = Length2D{Real(901) * Meter, Real(6) * Meter}; // lower right
+    const auto va0 = Length2{-4_m, 33_m}; // upper left
+    const auto vb0 = Length2{901_m, 6_m}; // lower right
     const auto ia0 = SimplexEdge::index_type{2};
     const auto ib0 = SimplexEdge::index_type{7};
     const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};

@@ -173,10 +173,10 @@ public:
         const auto point2 = point1 + d;
 
         auto fixture = static_cast<Fixture*>(nullptr);
-        Length2D point;
+        Length2 point;
         UnitVec2 normal;
 
-        m_world.RayCast(point1, point2, [&](Fixture* f, ChildCounter, Length2D p, UnitVec2 n) {
+        m_world.RayCast(point1, point2, [&](Fixture* f, ChildCounter, Length2 p, UnitVec2 n) {
             fixture = f;
             point = p;
             normal = n;

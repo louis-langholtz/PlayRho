@@ -104,7 +104,7 @@ namespace playrho {
         {
             /// Array of vertices.
             /// @details Consecutive vertices constitute "edges" of the polygon.
-            std::vector<Length2D> vertices;
+            std::vector<Length2> vertices;
             
             /// Normals of edges.
             /// @details

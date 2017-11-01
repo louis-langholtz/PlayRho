@@ -51,8 +51,8 @@ struct DistanceJointDef : public JointBuilder<DistanceJointDef>
     /// @brief Initializing constructor.
     /// @details Initialize the bodies, anchors, and length using the world anchors.
     DistanceJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB,
-                     Length2D anchorA = Length2D{},
-                     Length2D anchorB = Length2D{}) noexcept;
+                     Length2 anchorA = Length2{},
+                     Length2 anchorB = Length2{}) noexcept;
     
     /// @brief Uses the given length.
     constexpr DistanceJointDef& UseLength(Length v) noexcept;
@@ -64,10 +64,10 @@ struct DistanceJointDef : public JointBuilder<DistanceJointDef>
     constexpr DistanceJointDef& UseDampingRatio(Real v) noexcept;
     
     /// @brief Local anchor point relative to bodyA's origin.
-    Length2D localAnchorA = Length2D{};
+    Length2 localAnchorA = Length2{};
     
     /// @brief Local anchor point relative to bodyB's origin.
-    Length2D localAnchorB = Length2D{};
+    Length2 localAnchorB = Length2{};
     
     /// @brief Natural length between the anchor points.
     Length length = 1_m;

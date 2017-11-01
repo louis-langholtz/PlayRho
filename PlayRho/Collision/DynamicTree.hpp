@@ -196,7 +196,7 @@ public:
     /// @note Useful for large worlds.
     /// @note The shift formula is: position -= newOrigin
     /// @param newOrigin the new origin with respect to the old origin
-    void ShiftOrigin(Length2D newOrigin);
+    void ShiftOrigin(Length2 newOrigin);
     
     /// @brief Computes the height of the tree from a given node.
     /// @warning Behavior is undefined if the given index is not valid.

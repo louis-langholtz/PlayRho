@@ -126,7 +126,7 @@ namespace playrho {
         /// @param simplexEdges A one or two edge list.
         /// @warning Behavior is undefined if the given edge list has zero edges.
         /// @return "search direction" vector.
-        static constexpr Length2D CalcSearchDirection(const SimplexEdges& simplexEdges) noexcept;
+        static constexpr Length2 CalcSearchDirection(const SimplexEdges& simplexEdges) noexcept;
         
         /// Gets the given simplex's "metric".
         static inline Real CalcMetric(const SimplexEdges& simplexEdges);
@@ -238,7 +238,7 @@ namespace playrho {
         return list;
     }
 
-    constexpr inline Length2D Simplex::CalcSearchDirection(const SimplexEdges& simplexEdges) noexcept
+    constexpr inline Length2 Simplex::CalcSearchDirection(const SimplexEdges& simplexEdges) noexcept
     {
         assert((simplexEdges.size() == 1) || (simplexEdges.size() == 2));
         switch (simplexEdges.size())
@@ -258,7 +258,7 @@ namespace playrho {
             }
                 
             default:
-                return Length2D{0_m, 0_m};
+                return Length2{0_m, 0_m};
         }
     }
 
@@ -320,20 +320,20 @@ namespace playrho {
     }
 
     /// @brief Gets the scaled delta for the given indexed element of the given simplex.
-    inline Length2D GetScaledDelta(const Simplex& simplex, Simplex::size_type index)
+    inline Length2 GetScaledDelta(const Simplex& simplex, Simplex::size_type index)
     {
         return GetPointDelta(simplex.GetSimplexEdge(index)) * simplex.GetCoefficient(index);
     }
 
     /// Gets the "closest point".
-    constexpr inline Length2D GetClosestPoint(const Simplex& simplex)
+    constexpr inline Length2 GetClosestPoint(const Simplex& simplex)
     {
         switch (simplex.GetSize())
         {
             case 1: return GetScaledDelta(simplex, 0);
             case 2: return GetScaledDelta(simplex, 0) + GetScaledDelta(simplex, 1);
-            case 3: return Length2D{0_m, 0_m};
-            default: return Length2D{0_m, 0_m};
+            case 3: return Length2{0_m, 0_m};
+            default: return Length2{0_m, 0_m};
         }
     }
 

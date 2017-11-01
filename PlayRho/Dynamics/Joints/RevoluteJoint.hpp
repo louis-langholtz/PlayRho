@@ -51,14 +51,14 @@ public:
     
     void Accept(JointVisitor& visitor) const override;
 
-    Length2D GetAnchorA() const override;
-    Length2D GetAnchorB() const override;
+    Length2 GetAnchorA() const override;
+    Length2 GetAnchorB() const override;
 
     /// The local anchor point relative to bodyA's origin.
-    Length2D GetLocalAnchorA() const noexcept { return m_localAnchorA; }
+    Length2 GetLocalAnchorA() const noexcept { return m_localAnchorA; }
 
     /// The local anchor point relative to bodyB's origin.
-    Length2D GetLocalAnchorB() const noexcept { return m_localAnchorB; }
+    Length2 GetLocalAnchorB() const noexcept { return m_localAnchorB; }
 
     /// Get the reference angle.
     Angle GetReferenceAngle() const noexcept { return m_referenceAngle; }
@@ -97,7 +97,7 @@ public:
     Torque GetMaxMotorTorque() const noexcept { return m_maxMotorTorque; }
 
     /// Get the linear reaction.
-    Momentum2D GetLinearReaction() const override;
+    Momentum2 GetLinearReaction() const override;
 
     /// Get the angular reaction due to the joint limit.
     AngularMomentum GetAngularReaction() const override;
@@ -121,8 +121,8 @@ private:
                                   const ConstraintSolverConf& conf) const override;
 
     // Solver shared
-    Length2D m_localAnchorA; ///< Local anchor A.
-    Length2D m_localAnchorB; ///< Local anchor B.
+    Length2 m_localAnchorA; ///< Local anchor A.
+    Length2 m_localAnchorB; ///< Local anchor B.
     Vec3 m_impulse = Vec3_zero; ///< Impulse. Mofified by: InitVelocityConstraints, SolveVelocityConstraints.
     AngularMomentum m_motorImpulse = 0; ///< Motor impulse. Modified by: InitVelocityConstraints, SolveVelocityConstraints.
 
@@ -137,8 +137,8 @@ private:
 
     // Solver cached temporary data. Values set by by InitVelocityConstraints.
 
-    Length2D m_rA; ///< Rotated delta of body A's local center from local anchor A.
-    Length2D m_rB; ///< Rotated delta of body B's local center from local anchor B.
+    Length2 m_rA; ///< Rotated delta of body A's local center from local anchor A.
+    Length2 m_rB; ///< Rotated delta of body B's local center from local anchor B.
     Mat33 m_mass; ///< Effective mass for point-to-point constraint.
     RotInertia m_motorMass; ///< Effective mass for motor/limit angular constraint.
     LimitState m_limitState = e_inactiveLimit; ///< Limit state.

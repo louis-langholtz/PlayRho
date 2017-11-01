@@ -769,7 +769,7 @@ void DynamicTree::RebuildBottomUp()
     Validate();
 }
 
-void DynamicTree::ShiftOrigin(Length2D newOrigin)
+void DynamicTree::ShiftOrigin(Length2 newOrigin)
 {
     // Build array of leaves. Free the rest.
     for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)

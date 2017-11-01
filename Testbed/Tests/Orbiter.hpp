@@ -29,7 +29,7 @@ namespace playrho {
         
         Orbiter()
         {
-            m_world.SetGravity(Vec2{0, 0} * MeterPerSquareSecond);
+            m_world.SetGravity(LinearAcceleration2{});
 
             BodyDef bd;
             const auto radius = Real{12.0f};
@@ -42,7 +42,7 @@ namespace playrho {
             ctrBody->CreateFixture(ctrShape);
 
             bd.type = BodyType::Dynamic;
-            bd.location = Length2D{GetX(m_center), GetY(m_center) + radius * 1_m};
+            bd.location = Length2{GetX(m_center), GetY(m_center) + radius * 1_m};
             m_orbiter = m_world.CreateBody(bd);
             const auto ballShape = std::make_shared<DiskShape>();
             ballShape->SetRadius(0.5_m);
@@ -78,7 +78,7 @@ namespace playrho {
         
     private:
         Body* m_orbiter = nullptr;
-        Length2D const m_center = Vec2{0, 20} * 1_m;
+        Length2 const m_center = Vec2{0, 20} * 1_m;
 
     };
     

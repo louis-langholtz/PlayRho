@@ -242,7 +242,7 @@ public:
 
     void PreStep(const Settings&, Drawer& drawer) override
     {
-        drawer.SetTranslation(Length2D{GetX(m_car->GetLocation()), GetY(drawer.GetTranslation())});
+        drawer.SetTranslation(Length2{GetX(m_car->GetLocation()), GetY(drawer.GetTranslation())});
     }
 
     void PostStep(const Settings&, Drawer&) override

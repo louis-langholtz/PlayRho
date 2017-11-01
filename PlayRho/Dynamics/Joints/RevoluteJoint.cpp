@@ -174,7 +174,7 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
         m_impulse *= step.dtRatio;
         m_motorImpulse *= step.dtRatio;
 
-        const auto P = Momentum2D{GetX(m_impulse) * NewtonSecond, GetY(m_impulse) * NewtonSecond};
+        const auto P = Momentum2{GetX(m_impulse) * NewtonSecond, GetY(m_impulse) * NewtonSecond};
         
         // AngularMomentum is L^2 M T^-1 QP^-1.
         const auto L = AngularMomentum{
@@ -283,7 +283,7 @@ bool RevoluteJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
             }
         }
 
-        const auto P = Momentum2D{GetX(impulse) * NewtonSecond, GetY(impulse) * NewtonSecond};
+        const auto P = Momentum2{GetX(impulse) * NewtonSecond, GetY(impulse) * NewtonSecond};
         const auto L = AngularMomentum{GetZ(impulse) * SquareMeter * Kilogram / (Second * Radian)};
         const auto LA = AngularMomentum{Cross(m_rA, P) / Radian} + L;
         const auto LB = AngularMomentum{Cross(m_rB, P) / Radian} + L;
@@ -301,7 +301,7 @@ bool RevoluteJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
         GetX(m_impulse) += GetX(impulse);
         GetY(m_impulse) += GetY(impulse);
 
-        const auto P = Momentum2D{GetX(impulse) * NewtonSecond, GetY(impulse) * NewtonSecond};
+        const auto P = Momentum2{GetX(impulse) * NewtonSecond, GetY(impulse) * NewtonSecond};
         const auto LA = AngularMomentum{Cross(m_rA, P) / Radian};
         const auto LB = AngularMomentum{Cross(m_rB, P) / Radian};
 
@@ -377,8 +377,8 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
         const auto qA = UnitVec2::Get(posA.angular);
         const auto qB = UnitVec2::Get(posB.angular);
 
-        const auto rA = Length2D{Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA)};
-        const auto rB = Length2D{Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB)};
+        const auto rA = Length2{Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA)};
+        const auto rB = Length2{Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB)};
 
         const auto C = (posB.linear + rB) - (posA.linear + rA);
         positionError = GetLengthSquared(C);
@@ -416,19 +416,19 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
     return (positionError <= Square(conf.linearSlop)) && (angularError <= conf.angularSlop);
 }
 
-Length2D RevoluteJoint::GetAnchorA() const
+Length2 RevoluteJoint::GetAnchorA() const
 {
     return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
 }
 
-Length2D RevoluteJoint::GetAnchorB() const
+Length2 RevoluteJoint::GetAnchorB() const
 {
     return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Momentum2D RevoluteJoint::GetLinearReaction() const
+Momentum2 RevoluteJoint::GetLinearReaction() const
 {
-    return Momentum2D{GetX(m_impulse) * NewtonSecond, GetY(m_impulse) * NewtonSecond};
+    return Momentum2{GetX(m_impulse) * NewtonSecond, GetY(m_impulse) * NewtonSecond};
 }
 
 AngularMomentum RevoluteJoint::GetAngularReaction() const

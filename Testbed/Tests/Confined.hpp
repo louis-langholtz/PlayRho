@@ -90,18 +90,18 @@ public:
             }
         }
 
-        m_world.SetGravity(Vec2(0.0f, 0.0f) * MeterPerSquareSecond);
+        m_world.SetGravity(LinearAcceleration2{});
     }
     
     Body* CreateEnclosure(Length vertexRadius, Length wallLength)
     {
         const auto body = CreateSquareEnclosingBody(m_world, wallLength, ShapeConf{
             }.UseVertexRadius(vertexRadius).UseRestitution(Finite<Real>(0)));
-        SetLocation(*body, Length2D{0_m, 20_m});
+        SetLocation(*body, Length2{0_m, 20_m});
         return body;
     }
 
-    Length2D GetRandomOffset() const
+    Length2 GetRandomOffset() const
     {
         const auto halfWL = StripUnit(wall_length) / 2;
         return Vec2{RandomFloat(-halfWL, +halfWL), RandomFloat(-halfWL, +halfWL)} * 1_m;
@@ -163,14 +163,14 @@ public:
             if (b.GetType() == BodyType::Dynamic)
             {
                 const auto position = b.GetLocation();
-                const auto centerPos = Length2D{
+                const auto centerPos = Length2{
                     GetX(position), GetY(position) - (wall_length / Real{2})
                 };
                 const auto angle_from_center = GetAngle(centerPos);
                 const auto direction = angle_from_center + Pi * 1_rad;
                 const auto magnitude = Sqrt(Square(StripUnit(wall_length)) * 2) *
                 	GetMass(b) * 20_mps;
-                const auto impulse = Momentum2D{magnitude * UnitVec2::Get(direction)};
+                const auto impulse = Momentum2{magnitude * UnitVec2::Get(direction)};
                 ApplyLinearImpulse(b, impulse, b.GetWorldCenter());
             }
         }        

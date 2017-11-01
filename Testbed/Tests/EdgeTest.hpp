@@ -36,7 +36,7 @@ public:
             const auto v1 = Vec2(-10.0f, 0.0f) * 1_m;
             const auto v2 = Vec2(-7.0f, -2.0f) * 1_m;
             const auto v3 = Vec2(-4.0f, 0.0f) * 1_m;
-            const auto v4 = Vec2(0.0f, 0.0f) * 1_m;
+            const auto v4 = Length2{};
             const auto v5 = Vec2(4.0f, 0.0f) * 1_m;
             const auto v6 = Vec2(7.0f, 2.0f) * 1_m;
             const auto v7 = Vec2(10.0f, 0.0f) * 1_m;

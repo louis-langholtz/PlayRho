@@ -109,8 +109,8 @@ TEST(VelocityConstraint, AddPoint)
     const auto ni = Real(1.2);
     const auto ti = Real(0.3);
     
-    const auto rA = Vec2{0, 0};
-    const auto rB = Vec2{0, 0};
+    const auto rA = Length2{};
+    const auto rB = Length2{};
     
     vc.AddPoint(ni, ti, rA, rB, VelocityConstraint::Conf{});
     EXPECT_EQ(vc.GetPointCount(), VelocityConstraint::size_type(1));

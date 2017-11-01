@@ -36,7 +36,7 @@ public:
     
     AddPair(): Test(GetTestConf())
     {
-        m_world.SetGravity(LinearAcceleration2D{});
+        m_world.SetGravity(LinearAcceleration2{});
         {
             const auto conf = DiskShape::Conf{}.UseVertexRadius(1_dm).UseDensity(0.01_kgpm2);
             const auto shape = std::make_shared<DiskShape>(conf);
@@ -59,8 +59,8 @@ public:
             const auto bd = BodyDef{}
                 .UseType(BodyType::Dynamic)
                 .UseBullet(true)
-                .UseLocation(Length2D{-40_m, 5_m})
-                .UseLinearVelocity(LinearVelocity2D{150_mps, 0_mps});
+                .UseLocation(Length2{-40_m, 5_m})
+                .UseLinearVelocity(LinearVelocity2{150_mps, 0_mps});
             const auto body = m_world.CreateBody(bd);
 
             const auto conf = PolygonShape::Conf{}.UseDensity(1.0_kgpm2);

@@ -81,7 +81,7 @@ public:
                 prevBody = body;
             }
 
-            m_ropeDef.localAnchorB = Vec2_zero * 1_m;
+            m_ropeDef.localAnchorB = Length2{};
 
             const auto extraLength = 0.01f;
             m_ropeDef.maxLength = Real(N - 1.0f + extraLength) * 1_m;

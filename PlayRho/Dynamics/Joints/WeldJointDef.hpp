@@ -50,7 +50,7 @@ struct WeldJointDef : public JointBuilder<WeldJointDef>
     /// @param bodyA Body A.
     /// @param bodyB Body B.
     /// @param anchor Anchor location in world coordinates.
-    WeldJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB, const Length2D anchor) noexcept;
+    WeldJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB, const Length2 anchor) noexcept;
     
     /// @brief Uses the given frequency value.
     constexpr WeldJointDef& UseFrequency(Frequency v) noexcept;
@@ -59,10 +59,10 @@ struct WeldJointDef : public JointBuilder<WeldJointDef>
     constexpr WeldJointDef& UseDampingRatio(Real v) noexcept;
     
     /// The local anchor point relative to bodyA's origin.
-    Length2D localAnchorA = Length2D{};
+    Length2 localAnchorA = Length2{};
     
     /// The local anchor point relative to bodyB's origin.
-    Length2D localAnchorB = Length2D{};
+    Length2 localAnchorB = Length2{};
     
     /// The bodyB angle minus bodyA angle in the reference state (radians).
     Angle referenceAngle = Angle{0};

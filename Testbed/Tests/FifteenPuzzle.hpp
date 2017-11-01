@@ -42,7 +42,7 @@ namespace playrho {
         
         FifteenPuzzle(): Test(GetTestConf())
         {
-            m_world.SetGravity(LinearAcceleration2D{});
+            m_world.SetGravity(LinearAcceleration2{});
             const auto enclosure = CreateSquareEnclosingBody(m_world,
                 16_m + 2 * GetVertexRadius(), ShapeConf{}
                 .UseVertexRadius(GetVertexRadius()));
@@ -61,7 +61,7 @@ namespace playrho {
             return DefaultLinearSlop * Real{100};
         }
 
-        Length2D GetCenter() const
+        Length2 GetCenter() const
         {
             return Vec2{Real{0}, Real{20}} * 1_m;
         }
@@ -71,7 +71,7 @@ namespace playrho {
             const auto sideLength = 4_m;
             const auto skinWidth = GetVertexRadius();
             const auto halfSide = sideLength / Real{2} - skinWidth;
-            const auto relPos = Length2D{(col - 2) * sideLength, (row - 2) * sideLength};
+            const auto relPos = Length2{(col - 2) * sideLength, (row - 2) * sideLength};
             
             auto conf = PolygonShape::Conf{};
             conf.density = 1_kgpm2;
@@ -80,7 +80,7 @@ namespace playrho {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
             bd.bullet = true;
-            bd.location = GetCenter() + relPos + Length2D{sideLength / 2, sideLength / 2};
+            bd.location = GetCenter() + relPos + Length2{sideLength / 2, sideLength / 2};
             bd.linearDamping = 20_Hz;
             const auto body = m_world.CreateBody(bd);
             body->CreateFixture(std::make_shared<PolygonShape>(halfSide, halfSide, conf));

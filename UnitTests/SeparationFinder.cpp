@@ -39,17 +39,17 @@ TEST(SeparationFinder, ByteSizeIs_40_56_or_96)
 
 TEST(SeparationFinder, BehavesAsExpected)
 {
-    const auto shape = PolygonShape{Real{0.5f} * Meter, Real{0.5f} * Meter};
+    const auto shape = PolygonShape{0.5_m, 0.5_m};
     const auto distproxy = shape.GetChild(0);
 
     const auto x = Real(100);
     const auto sweepA = Sweep{
-        Position{Length2D{-x * Meter, Real(0) * Meter}, Angle{0}},
-        Position{Length2D{+x * Meter, Real(0) * Meter}, Angle{0}}
+        Position{Length2{-x * Meter, 0_m}, Angle{0}},
+        Position{Length2{+x * Meter, 0_m}, Angle{0}}
     };
     const auto sweepB = Sweep{
-        Position{Length2D{+x * Meter, Real(0) * Meter}, Angle{0}},
-        Position{Length2D{-x * Meter, Real(0) * Meter}, Angle{0}}
+        Position{Length2{+x * Meter, 0_m}, Angle{0}},
+        Position{Length2{-x * Meter, 0_m}, Angle{0}}
     };
     
     auto t = Real{0}; // Will be set to value of t2
@@ -64,7 +64,7 @@ TEST(SeparationFinder, BehavesAsExpected)
     EXPECT_EQ(fcn.GetType(), SeparationFinder::e_faceA);
     EXPECT_NEAR(static_cast<double>(GetX(GetVec2(fcn.GetAxis()))), 1.0, 0.000001);
     EXPECT_NEAR(static_cast<double>(GetY(GetVec2(fcn.GetAxis()))), 0.0, 0.000001);
-    EXPECT_EQ(fcn.GetLocalPoint(), Length2D(Real(0.5f) * Meter, Real(0) * Meter));
+    EXPECT_EQ(fcn.GetLocalPoint(), Length2(0.5_m, 0_m));
 
     auto last_min_sep = MaxFloat * Meter;
     for (auto i = 0u; i < 500; ++i)

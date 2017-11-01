@@ -125,7 +125,7 @@ VelocityConstraint::VelocityConstraint(Real friction, Real restitution,
 
 VelocityConstraint::Point
 VelocityConstraint::GetPoint(Momentum normalImpulse, Momentum tangentImpulse,
-                             Length2D relA, Length2D relB, Conf conf) const noexcept
+                             Length2 relA, Length2 relB, Conf conf) const noexcept
 {
     assert(IsValid(normalImpulse));
     assert(IsValid(tangentImpulse));
@@ -172,7 +172,7 @@ VelocityConstraint::GetPoint(Momentum normalImpulse, Momentum tangentImpulse,
 }
 
 void VelocityConstraint::AddPoint(Momentum normalImpulse, Momentum tangentImpulse,
-                                  Length2D relA, Length2D relB, Conf conf)
+                                  Length2 relA, Length2 relB, Conf conf)
 {
     assert(m_pointCount < MaxManifoldPoints);
     m_points[m_pointCount] = GetPoint(normalImpulse * conf.dtRatio, tangentImpulse * conf.dtRatio,

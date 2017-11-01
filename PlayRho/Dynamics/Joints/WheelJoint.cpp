@@ -83,9 +83,9 @@ void WheelJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     const auto qB = UnitVec2::Get(posB.angular);
 
     // Compute the effective masses.
-    const auto rA = Length2D{Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA)};
-    const auto rB = Length2D{Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB)};
-    const auto dd = Length2D{(posB.linear + rB) - (posA.linear + rA)};
+    const auto rA = Length2{Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA)};
+    const auto rB = Length2{Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB)};
+    const auto dd = Length2{(posB.linear + rB) - (posA.linear + rA)};
 
     // Point to line constraint
     {
@@ -276,7 +276,7 @@ bool WheelJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Cons
 
     const auto rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA);
     const auto rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB);
-    const auto d = Length2D{(posB.linear - posA.linear) + (rB - rA)};
+    const auto d = Length2{(posB.linear - posA.linear) + (rB - rA)};
 
     const auto ay = Rotate(m_localYAxisA, qA);
 
@@ -305,17 +305,17 @@ bool WheelJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Cons
     return Abs(C) <= conf.linearSlop;
 }
 
-Length2D WheelJoint::GetAnchorA() const
+Length2 WheelJoint::GetAnchorA() const
 {
     return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
 }
 
-Length2D WheelJoint::GetAnchorB() const
+Length2 WheelJoint::GetAnchorB() const
 {
     return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Momentum2D WheelJoint::GetLinearReaction() const
+Momentum2 WheelJoint::GetLinearReaction() const
 {
     return m_impulse * m_ay + m_springImpulse * m_ax;
 }

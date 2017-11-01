@@ -62,7 +62,7 @@ TEST(StepConf, maxTranslation)
     ASSERT_GT(inc, Real(0));
     ASSERT_LT(inc, Real(1));
     const auto max_inc = inc * StepConf{}.maxTranslation;
-    EXPECT_GT(max_inc, Real(0) * Meter);
+    EXPECT_GT(max_inc, 0_m);
     EXPECT_LT(max_inc, DefaultLinearSlop / Real{2});
     EXPECT_LT(max_inc, Length{StepConf{}.linearSlop} / Real{2});
     EXPECT_LT(max_inc, Length{StepConf{}.tolerance});
@@ -76,8 +76,8 @@ TEST(StepConf, maxTranslation)
     
     {
         StepConf conf;
-        conf.tolerance = Real(0.0000001) * Meter;
-        conf.maxTranslation = Real(8.0) * Meter;
+        conf.tolerance = 0.0000001_m;
+        conf.maxTranslation = 8.0_m;
         switch (sizeof(Real))
         {
             case 4: EXPECT_FALSE(IsMaxTranslationWithinTolerance(conf)); break;

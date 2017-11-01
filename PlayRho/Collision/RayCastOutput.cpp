@@ -27,7 +27,7 @@
 
 namespace playrho {
 
-RayCastOutput RayCast(Length radius, Length2D location, const RayCastInput& input) noexcept
+RayCastOutput RayCast(Length radius, Length2 location, const RayCastInput& input) noexcept
 {
     // Collision Detection in Interactive 3D Environments by Gino van den Bergen
     // From Section 3.1.2
@@ -38,7 +38,7 @@ RayCastOutput RayCast(Length radius, Length2D location, const RayCastInput& inpu
     const auto b = GetLengthSquared(s) - Square(radius);
     
     // Solve quadratic equation.
-    const auto raySegment = input.p2 - input.p1; // Length2D
+    const auto raySegment = input.p2 - input.p1; // Length2
     const auto c =  Dot(s, raySegment); // Area
     const auto rr = GetLengthSquared(raySegment); // Area
     const auto sigma = (Square(c) - rr * b) / (SquareMeter * SquareMeter);

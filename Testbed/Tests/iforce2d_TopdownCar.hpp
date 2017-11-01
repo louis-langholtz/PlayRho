@@ -148,14 +148,14 @@ public:
         return m_body;
     }
     
-    LinearVelocity2D getLateralVelocity() const
+    LinearVelocity2 getLateralVelocity() const
     {
         const auto currentRightNormal = GetWorldVector(*m_body, UnitVec2::GetRight());
         const auto vel = GetLinearVelocity(*m_body);
         return Dot(currentRightNormal, vel) * currentRightNormal;
     }
     
-    LinearVelocity2D getForwardVelocity() const
+    LinearVelocity2 getForwardVelocity() const
     {
         const auto currentForwardNormal = GetWorldVector(*m_body, UnitVec2::GetTop());
         const auto vel = GetLinearVelocity(*m_body);
@@ -165,7 +165,7 @@ public:
     void updateFriction()
     {
         //lateral linear velocity
-        auto impulse = Momentum2D{GetMass(*m_body) * -getLateralVelocity()};
+        auto impulse = Momentum2{GetMass(*m_body) * -getLateralVelocity()};
         const auto length = GetLength(GetVec2(impulse)) * 1_kg * 1_mps;
         if ( length > m_maxLateralImpulse )
             impulse *= m_maxLateralImpulse / length;
@@ -181,7 +181,7 @@ public:
         auto currentForwardSpeed = 0_mps;
         const auto forwardDir = GetUnitVector(forwardVelocity, currentForwardSpeed, UnitVec2::GetZero());
         const auto dragForceMagnitude = -2 * currentForwardSpeed;
-        const auto newForce = Force2D{m_currentTraction * dragForceMagnitude * forwardDir * 1_kg / 1_s};
+        const auto newForce = Force2{m_currentTraction * dragForceMagnitude * forwardDir * 1_kg / 1_s};
         SetForce(*m_body, newForce, m_body->GetWorldCenter());
     }
     
@@ -208,7 +208,7 @@ public:
         else
             return;
         
-        const auto newForce = Force2D{m_currentTraction * forceMagnitude * currentForwardNormal};
+        const auto newForce = Force2{m_currentTraction * forceMagnitude * currentForwardNormal};
         SetForce(*m_body, newForce, m_body->GetWorldCenter());
     }
     
@@ -242,7 +242,7 @@ public:
         m_body = world->CreateBody(bodyDef);
         m_body->SetAngularDamping(3_Hz);
         
-        Length2D vertices[8];
+        Length2 vertices[8];
         vertices[0] = Vec2(+1.5f,  +0.0f) * 1_m;
         vertices[1] = Vec2(+3.0f,  +2.5f) * 1_m;
         vertices[2] = Vec2(+2.8f,  +5.5f) * 1_m;
@@ -252,7 +252,7 @@ public:
         vertices[6] = Vec2(-3.0f,  +2.5f) * 1_m;
         vertices[7] = Vec2(-1.5f,  +0.0f) * 1_m;
         PolygonShape polygonShape;
-        polygonShape.Set(Span<const Length2D>(vertices, 8));
+        polygonShape.Set(Span<const Length2>(vertices, 8));
         polygonShape.SetDensity(0.1_kgpm2);
         m_body->CreateFixture(std::make_shared<PolygonShape>(polygonShape));
         
@@ -262,7 +262,7 @@ public:
         jointDef.enableLimit = true;
         jointDef.lowerAngle = 0_deg;
         jointDef.upperAngle = 0_deg;
-        jointDef.localAnchorB = Vec2{0, 0} * 1_m; //center of tire
+        jointDef.localAnchorB = Length2{}; //center of tire
         
         const auto maxForwardSpeed = 250_mps;
         const auto maxBackwardSpeed = -40_mps;
@@ -378,7 +378,7 @@ public:
 
     iforce2d_TopdownCar(): Test(GetTestConf())
     {
-        m_world.SetGravity(Vec2{0, 0} * MeterPerSquareSecond);
+        m_world.SetGravity(LinearAcceleration2{});
         m_world.SetDestructionListener(&m_destructionListener);
         
         //set up ground areas

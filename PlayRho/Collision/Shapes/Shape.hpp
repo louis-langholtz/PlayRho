@@ -229,7 +229,7 @@ inline NonNegative<Length> GetVertexRadius(const Shape& shape) noexcept
 ///   <code>false</code> otherwise.
 /// @relatedalso Shape
 /// @ingroup TestPointGroup
-bool TestPoint(const Shape& shape, Length2D point) noexcept;
+bool TestPoint(const Shape& shape, Length2 point) noexcept;
 
 } // namespace playrho
 

@@ -53,22 +53,22 @@ public:
     void Accept(JointVisitor& visitor) const override;
 
     /// @brief Gets the local anchor A.
-    Length2D GetLocalAnchorA() const noexcept;
+    Length2 GetLocalAnchorA() const noexcept;
 
     /// @brief Gets the local anchor B.
-    Length2D GetLocalAnchorB() const noexcept;
+    Length2 GetLocalAnchorB() const noexcept;
 
-    Length2D GetAnchorA() const override;
-    Length2D GetAnchorB() const override;
+    Length2 GetAnchorA() const override;
+    Length2 GetAnchorB() const override;
 
-    Momentum2D GetLinearReaction() const override;
+    Momentum2 GetLinearReaction() const override;
     AngularMomentum GetAngularReaction() const override;
 
     /// Get the first ground anchor.
-    Length2D GetGroundAnchorA() const noexcept;
+    Length2 GetGroundAnchorA() const noexcept;
 
     /// Get the second ground anchor.
-    Length2D GetGroundAnchorB() const noexcept;
+    Length2 GetGroundAnchorB() const noexcept;
 
     /// Get the current length of the segment attached to bodyA.
     Length GetLengthA() const noexcept;
@@ -80,7 +80,7 @@ public:
     Real GetRatio() const noexcept;
 
     /// Implement Joint::ShiftOrigin
-    void ShiftOrigin(const Length2D newOrigin) override;
+    void ShiftOrigin(const Length2 newOrigin) override;
 
 private:
 
@@ -90,12 +90,12 @@ private:
     bool SolvePositionConstraints(BodyConstraintsMap& bodies,
                                   const ConstraintSolverConf& conf) const override;
 
-    Length2D m_groundAnchorA; ///< Ground anchor A.
-    Length2D m_groundAnchorB; ///< Ground anchor B.
+    Length2 m_groundAnchorA; ///< Ground anchor A.
+    Length2 m_groundAnchorB; ///< Ground anchor B.
     Length m_lengthA; ///< Length A.
     Length m_lengthB; ///< Length B.
-    Length2D m_localAnchorA; ///< Local anchor A.
-    Length2D m_localAnchorB; ///< Local anchor B.
+    Length2 m_localAnchorA; ///< Local anchor A.
+    Length2 m_localAnchorB; ///< Local anchor B.
     Real m_ratio; ///< Ratio.
     Length m_constant; ///< Constant.
     
@@ -105,27 +105,27 @@ private:
     // Solver temp (recalculated every call to InitVelocityConstraints).
     UnitVec2 m_uA; ///< Unit vector A.
     UnitVec2 m_uB; ///< Unit vector B.
-    Length2D m_rA; ///< Relative A.
-    Length2D m_rB; ///< Relative B.
+    Length2 m_rA; ///< Relative A.
+    Length2 m_rB; ///< Relative B.
     Mass m_mass; ///< Mass.
 };
     
-inline Length2D PulleyJoint::GetLocalAnchorA() const noexcept
+inline Length2 PulleyJoint::GetLocalAnchorA() const noexcept
 {
     return m_localAnchorA;
 }
 
-inline Length2D PulleyJoint::GetLocalAnchorB() const noexcept
+inline Length2 PulleyJoint::GetLocalAnchorB() const noexcept
 {
     return m_localAnchorB;
 }
 
-inline Length2D PulleyJoint::GetGroundAnchorA() const noexcept
+inline Length2 PulleyJoint::GetGroundAnchorA() const noexcept
 {
     return m_groundAnchorA;
 }
 
-inline Length2D PulleyJoint::GetGroundAnchorB() const noexcept
+inline Length2 PulleyJoint::GetGroundAnchorB() const noexcept
 {
     return m_groundAnchorB;
 }

@@ -26,7 +26,7 @@
 namespace playrho {
 
 RevoluteJointDef::RevoluteJointDef(NonNull<Body*> bA, NonNull<Body*> bB,
-                                   const Length2D anchor) noexcept:
+                                   const Length2 anchor) noexcept:
     super{super{JointType::Revolute}.UseBodyA(bA).UseBodyB(bB)},
     localAnchorA{GetLocalPoint(*bA, anchor)},
     localAnchorB{GetLocalPoint(*bB, anchor)},

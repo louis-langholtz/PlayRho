@@ -38,36 +38,30 @@ namespace playrho
     ///   (or 8 using Real of float).
     using Vec2 = Vector2<Real>;
     
-    /// @brief An all zero Vec2 value.
-    /// @see Vec2.
-    constexpr auto Vec2_zero = Vec2{0, 0};
-
     /// @brief 2-element vector of Length quanties.
     /// @note Often used as a 2-dimensional distance or location vector.
-    using Length2D = Vector2<Length>;
+    using Length2 = Vector2<Length>;
 
     /// @brief 2-element vector of LinearVelocity quantities.
     /// @note Often used as a 2-dimensional speed vector.
-    using LinearVelocity2D = Vector2<LinearVelocity>;
+    using LinearVelocity2 = Vector2<LinearVelocity>;
     
     /// @brief 2-element vector of LinearAcceleration quantities.
     /// @note Often used as a 2-dimensional linear acceleration vector.
-    using LinearAcceleration2D = Vector2<LinearAcceleration>;
+    using LinearAcceleration2 = Vector2<LinearAcceleration>;
     
     /// @brief 2-element vector of Force quantities.
     /// @note Often used as a 2-dimensional force vector.
-    using Force2D = Vector2<Force>;
+    using Force2 = Vector2<Force>;
     
     /// @brief 2-element vector of Momentum quantities.
     /// @note Often used as a 2-dimensional momentum vector.
-    using Momentum2D = Vector2<Momentum>;
-        
-    /// @brief Earthly gravity.
-    /// @details An approximation of Earth's average gravity at sea-level in 2-dimensions.
-    constexpr auto EarthlyGravity = LinearAcceleration2D{
-        Real{0} * MeterPerSquareSecond,
-        Real{-9.8f} * MeterPerSquareSecond
-    };
+    using Momentum2 = Vector2<Momentum>;
+    
+    /// @brief Earthly gravity in 2-dimensions.
+    /// @details Linear acceleration in 2-dimensions of an earthly object due to Earth's mass.
+    /// @sa EarthlyLinearAcceleration
+    constexpr auto EarthlyGravity2D = LinearAcceleration2{0_mps2, EarthlyLinearAcceleration};
 
     /// @brief Gets the given value as a Vec2.
     constexpr inline Vec2 GetVec2(const Vector2<Real> value)
@@ -90,35 +84,35 @@ namespace playrho
     }
     
 #ifdef USE_BOOST_UNITS
-    /// @brief Gets an invalid value for the Length2D type.
+    /// @brief Gets an invalid value for the Length2 type.
     template <>
-    constexpr Length2D GetInvalid() noexcept
+    constexpr Length2 GetInvalid() noexcept
     {
-        return Length2D{GetInvalid<Length>(), GetInvalid<Length>()};
+        return Length2{GetInvalid<Length>(), GetInvalid<Length>()};
     }
     
-    /// @brief Gets an invalid value for the LinearVelocity2D type.
+    /// @brief Gets an invalid value for the LinearVelocity2 type.
     template <>
-    constexpr LinearVelocity2D GetInvalid() noexcept
+    constexpr LinearVelocity2 GetInvalid() noexcept
     {
-        return LinearVelocity2D{GetInvalid<LinearVelocity>(), GetInvalid<LinearVelocity>()};
+        return LinearVelocity2{GetInvalid<LinearVelocity>(), GetInvalid<LinearVelocity>()};
     }
     
-    /// @brief Gets an invalid value for the Force2D type.
+    /// @brief Gets an invalid value for the Force2 type.
     template <>
-    constexpr Force2D GetInvalid() noexcept
+    constexpr Force2 GetInvalid() noexcept
     {
-        return Force2D{GetInvalid<Force>(), GetInvalid<Force>()};
+        return Force2{GetInvalid<Force>(), GetInvalid<Force>()};
     }
     
-    /// @brief Gets an invalid value for the Momentum2D type.
+    /// @brief Gets an invalid value for the Momentum2 type.
     template <>
-    constexpr Momentum2D GetInvalid() noexcept
+    constexpr Momentum2 GetInvalid() noexcept
     {
-        return Momentum2D{GetInvalid<Momentum>(), GetInvalid<Momentum>()};
+        return Momentum2{GetInvalid<Momentum>(), GetInvalid<Momentum>()};
     }
     
-    constexpr inline Vec2 GetVec2(const Length2D value)
+    constexpr inline Vec2 GetVec2(const Length2 value)
     {
         return Vec2{
             Get<0>(value) / Meter,
@@ -126,7 +120,7 @@ namespace playrho
         };
     }
     
-    constexpr inline Vec2 GetVec2(const LinearVelocity2D value)
+    constexpr inline Vec2 GetVec2(const LinearVelocity2 value)
     {
         return Vec2{
             Get<0>(value) / MeterPerSecond,
@@ -134,7 +128,7 @@ namespace playrho
         };
     }
     
-    constexpr inline Vec2 GetVec2(const Momentum2D value)
+    constexpr inline Vec2 GetVec2(const Momentum2 value)
     {
         return Vec2{
             Get<0>(value) / (Kilogram * MeterPerSecond),
@@ -142,7 +136,7 @@ namespace playrho
         };
     }
     
-    constexpr inline Vec2 GetVec2(const Force2D value)
+    constexpr inline Vec2 GetVec2(const Force2 value)
     {
         return Vec2{
             Get<0>(value) / Newton,

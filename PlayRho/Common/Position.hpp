@@ -33,7 +33,7 @@ namespace playrho
     /// @note This structure is likely to be 12-bytes large (at least on 64-bit platforms).
     struct Position
     {
-        Length2D linear; ///< Linear position.
+        Length2 linear; ///< Linear position.
         Angle angular; ///< Angular position.
     };
     

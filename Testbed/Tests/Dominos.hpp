@@ -56,7 +56,7 @@ public:
 
         {
             PolygonShape shape;
-            SetAsBox(shape, 7.2_m, 0.25_m, Vec2_zero * 1_m, 0.3_rad);
+            SetAsBox(shape, 7.2_m, 0.25_m, Length2{}, 0.3_rad);
 
             BodyDef bd;
             bd.location = Vec2(1.2f, 6.0f) * 1_m;
@@ -165,7 +165,7 @@ public:
             {
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
-                bd.location = Length2D{5.9_m + 2 * radius * static_cast<Real>(i), 2.4_m};
+                bd.location = Length2{5.9_m + 2 * radius * static_cast<Real>(i), 2.4_m};
                 const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(shape);
             }

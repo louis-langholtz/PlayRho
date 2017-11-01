@@ -154,7 +154,7 @@ public:
                 continue;
             }
 
-            const auto F = Force2D{GetUnitVector(d) * 100_N};
+            const auto F = Force2{GetUnitVector(d) * 100_N};
             ApplyForce(*body, F, position);
         }
     }

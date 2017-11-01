@@ -26,7 +26,7 @@ namespace playrho {
 
 namespace {
 #if 0
-    inline bool IsEachVertexFarEnoughApart(Span<const Length2D> vertices)
+    inline bool IsEachVertexFarEnoughApart(Span<const Length2> vertices)
     {
         for (auto i = decltype(vertices.size()){1}; i < vertices.size(); ++i)
         {
@@ -82,7 +82,7 @@ MassData ChainShape::GetMassData() const noexcept
             auto mass = Mass{0};
             auto I = RotInertia{0};
             auto area = Area(0);
-            auto center = Length2D{};
+            auto center = Length2{};
             const auto vertexRadius = GetVertexRadius();
             auto vprev = GetVertex(0);
             const auto circle_area = Square(vertexRadius) * Pi;

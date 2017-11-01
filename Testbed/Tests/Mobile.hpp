@@ -44,13 +44,13 @@ public:
 
         RevoluteJointDef jointDef;
         jointDef.bodyA = ground;
-        jointDef.bodyB = AddNode(ground, Vec2_zero * 1_m, 0, 3.0f, static_cast<float>(a), shape);
-        jointDef.localAnchorA = Vec2_zero * 1_m;
+        jointDef.bodyB = AddNode(ground, Length2{}, 0, 3.0f, static_cast<float>(a), shape);
+        jointDef.localAnchorA = Length2{};
         jointDef.localAnchorB = Vec2(0, a) * 1_m;
         m_world.CreateJoint(jointDef);
     }
 
-    Body* AddNode(Body* parent, Length2D localAnchor, int depth, float offset, float a,
+    Body* AddNode(Body* parent, Length2 localAnchor, int depth, float offset, float a,
                   std::shared_ptr<Shape> shape)
     {
         const auto h = Vec2(0.0f, a) * 1_m;

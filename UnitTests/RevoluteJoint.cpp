@@ -54,8 +54,8 @@ TEST(RevoluteJoint, Construction)
     jd.collideConnected = true;
     jd.userData = reinterpret_cast<void*>(0x011);
 
-    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    jd.localAnchorA = Length2(4_m, 5_m);
+    jd.localAnchorB = Length2(6_m, 7_m);
     jd.enableLimit = true;
     jd.enableMotor = true;
     jd.motorSpeed = Real{4.4f} * RadianPerSecond;
@@ -71,7 +71,7 @@ TEST(RevoluteJoint, Construction)
     EXPECT_EQ(joint.GetBodyB(), jd.bodyB);
     EXPECT_EQ(joint.GetCollideConnected(), jd.collideConnected);
     EXPECT_EQ(joint.GetUserData(), jd.userData);
-    EXPECT_EQ(joint.GetLinearReaction(), Momentum2D{});
+    EXPECT_EQ(joint.GetLinearReaction(), Momentum2{});
     EXPECT_EQ(joint.GetAngularReaction(), AngularMomentum{0});
 
     EXPECT_EQ(joint.GetLocalAnchorA(), jd.localAnchorA);
@@ -94,8 +94,8 @@ TEST(RevoluteJoint, EnableMotor)
     auto jd = RevoluteJointDef{};
     jd.bodyA = b0;
     jd.bodyB = b1;
-    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    jd.localAnchorA = Length2(4_m, 5_m);
+    jd.localAnchorB = Length2(6_m, 7_m);
 
     auto joint = RevoluteJoint{jd};
     EXPECT_FALSE(joint.IsMotorEnabled());
@@ -114,8 +114,8 @@ TEST(RevoluteJoint, MotorSpeed)
     auto jd = RevoluteJointDef{};
     jd.bodyA = b0;
     jd.bodyB = b1;
-    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    jd.localAnchorA = Length2(4_m, 5_m);
+    jd.localAnchorB = Length2(6_m, 7_m);
     
     const auto newValue = Real(5) * RadianPerSecond;
     auto joint = RevoluteJoint{jd};
@@ -134,8 +134,8 @@ TEST(RevoluteJoint, EnableLimit)
     auto jd = RevoluteJointDef{};
     jd.bodyA = b0;
     jd.bodyB = b1;
-    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    jd.localAnchorA = Length2(4_m, 5_m);
+    jd.localAnchorB = Length2(6_m, 7_m);
     
     auto joint = RevoluteJoint{jd};
     EXPECT_FALSE(joint.IsLimitEnabled());
@@ -154,8 +154,8 @@ TEST(RevoluteJoint, SetLimits)
     auto jd = RevoluteJointDef{};
     jd.bodyA = b0;
     jd.bodyB = b1;
-    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    jd.localAnchorA = Length2(4_m, 5_m);
+    jd.localAnchorB = Length2(6_m, 7_m);
     
     const auto upperValue = +5_deg;
     const auto lowerValue = -8_deg;
@@ -176,8 +176,8 @@ TEST(RevoluteJoint, MaxMotorTorque)
     auto jd = RevoluteJointDef{};
     jd.bodyA = b0;
     jd.bodyB = b1;
-    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    jd.localAnchorA = Length2(4_m, 5_m);
+    jd.localAnchorB = Length2(6_m, 7_m);
     
     const auto newValue = 5_Nm;
     auto joint = RevoluteJoint{jd};
@@ -189,10 +189,10 @@ TEST(RevoluteJoint, MaxMotorTorque)
 
 TEST(RevoluteJoint, MovesDynamicCircles)
 {
-    const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
+    const auto circle = std::make_shared<DiskShape>(0.2_m);
     World world;
-    const auto p1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
-    const auto p2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
+    const auto p1 = Length2{-1_m, 0_m};
+    const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
@@ -218,16 +218,16 @@ TEST(RevoluteJoint, MovesDynamicCircles)
 TEST(RevoluteJoint, LimitEnabledDynamicCircles)
 {
     const auto circle = std::make_shared<DiskShape>(DiskShape::Conf{}
-                                                    .UseVertexRadius(Real{0.2f} * Meter)
+                                                    .UseVertexRadius(0.2_m)
                                                     .UseDensity(1_kgpm2));
     World world;
-    const auto p1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
-    const auto p2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
+    const auto p1 = Length2{-1_m, 0_m};
+    const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
-    auto jd = RevoluteJointDef{b1, b2, Length2D{}};
+    auto jd = RevoluteJointDef{b1, b2, Length2{}};
     jd.enableLimit = true;
     ASSERT_EQ(jd.lowerAngle, Angle(0));
     ASSERT_EQ(jd.upperAngle, Angle(0));
@@ -288,26 +288,26 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
 
 TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
 {
-    World world{WorldDef{}.UseGravity(LinearAcceleration2D{
+    World world{WorldDef{}.UseGravity(LinearAcceleration2{
         Real(0) * MeterPerSquareSecond,
         -Real(10) * MeterPerSquareSecond
     })};
     
-    const auto p1 = Length2D{Real(0) * Meter, Real(4) * Meter}; // Vec2{-1, 0};
-    const auto p2 = Length2D{Real(0) * Meter, -Real(2) * Meter}; // Vec2{+1, 0};
+    const auto p1 = Length2{0_m, 4_m}; // Vec2{-1, 0};
+    const auto p2 = Length2{0_m, -2_m}; // Vec2{+1, 0};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Static).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
 
     const auto shape1 = std::make_shared<PolygonShape>();
-    shape1->SetAsBox(Real{1} * Meter, Real{1} * Meter);
+    shape1->SetAsBox(1_m, 1_m);
     b1->CreateFixture(shape1);
     
     const auto shape2 = std::make_shared<PolygonShape>();
-    shape2->SetAsBox(Real{0.5f} * Meter, Real{0.5f} * Meter);
+    shape2->SetAsBox(0.5_m, 0.5_m);
     shape2->SetDensity(1_kgpm2);
     b2->CreateFixture(shape2);
     
-    auto jd = RevoluteJointDef{b1, b2, Length2D{}};
+    auto jd = RevoluteJointDef{b1, b2, Length2{}};
     const auto joint = world.CreateJoint(jd);
     
     for (auto i = 0; i < 1000; ++i)

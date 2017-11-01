@@ -42,7 +42,7 @@ namespace playrho {
         BodyConstraint() = default;
         
         /// @brief Initializing constructor.
-        constexpr BodyConstraint(InvMass invMass, InvRotInertia invRotI, Length2D localCenter,
+        constexpr BodyConstraint(InvMass invMass, InvRotInertia invRotI, Length2 localCenter,
                                  Position position, Velocity velocity) noexcept:
             m_position{position},
             m_velocity{velocity},
@@ -66,7 +66,7 @@ namespace playrho {
         InvRotInertia GetInvRotInertia() const noexcept;
         
         /// @brief Gets the location of the body's center of mass in local coordinates.
-        Length2D GetLocalCenter() const noexcept;
+        Length2 GetLocalCenter() const noexcept;
         
         /// @brief Gets the position of the body.
         Position GetPosition() const noexcept;
@@ -87,7 +87,7 @@ namespace playrho {
     private:
         Position m_position; ///< Body position data.
         Velocity m_velocity; ///< Body velocity data.
-        Length2D m_localCenter; ///< Local center of the associated body's sweep.
+        Length2 m_localCenter; ///< Local center of the associated body's sweep.
         InvMass m_invMass; ///< Inverse mass of associated body (a non-negative value).
 
         /// Inverse rotational inertia about the center of mass of the associated body
@@ -105,7 +105,7 @@ namespace playrho {
         return m_invRotI;
     }
     
-    inline Length2D BodyConstraint::GetLocalCenter() const noexcept
+    inline Length2 BodyConstraint::GetLocalCenter() const noexcept
     {
         return m_localCenter;
     }

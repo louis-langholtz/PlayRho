@@ -25,7 +25,7 @@
 
 namespace playrho {
 
-WeldJointDef::WeldJointDef(NonNull<Body*> bA, NonNull<Body*> bB, const Length2D anchor) noexcept:
+WeldJointDef::WeldJointDef(NonNull<Body*> bA, NonNull<Body*> bB, const Length2 anchor) noexcept:
     super{super{JointType::Weld}.UseBodyA(bA).UseBodyB(bB)},
     localAnchorA{GetLocalPoint(*bA, anchor)},
     localAnchorB{GetLocalPoint(*bB, anchor)},

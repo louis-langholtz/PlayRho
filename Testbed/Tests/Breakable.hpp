@@ -137,7 +137,7 @@ public:
     }
 
     Body* m_body1;
-    LinearVelocity2D m_velocity;
+    LinearVelocity2 m_velocity;
     AngularVelocity m_angularVelocity;
     std::shared_ptr<PolygonShape> m_shape1 = std::make_shared<PolygonShape>();
     std::shared_ptr<PolygonShape> m_shape2 = std::make_shared<PolygonShape>();

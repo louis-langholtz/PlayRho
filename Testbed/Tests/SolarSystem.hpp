@@ -78,7 +78,7 @@ public:
     
     SolarSystem(): Test(GetTestConf())
     {
-        m_world.SetGravity(LinearAcceleration2D{});
+        m_world.SetGravity(LinearAcceleration2{});
         const auto DynamicBD = BodyDef{}.UseType(BodyType::Dynamic);
         for (auto& sso: SolarSystemBodies)
         {
@@ -86,11 +86,11 @@ public:
             const auto c = sso.aveDist * Pi * 2;
             const auto n = &sso - SolarSystemBodies;
             const auto odds = n % 2;
-            const auto l = Length2D{odds? -sso.aveDist: sso.aveDist, 0_m};
+            const auto l = Length2{odds? -sso.aveDist: sso.aveDist, 0_m};
             const auto v = (p != 0_s)? (c / p) * (odds? -1: +1): 0_mps;
             const auto b = m_world.CreateBody(BodyDef{DynamicBD}.UseLocation(l));
             const auto a = 2 * Pi * 1_rad / sso.rotationalPeriod;
-            b->SetVelocity(Velocity{LinearVelocity2D{0_mps, v}, a});
+            b->SetVelocity(Velocity{LinearVelocity2{0_mps, v}, a});
             const auto d = sso.mass / (Pi * Square(sso.radius));
             const auto sconf = DiskShape::Conf{}.UseVertexRadius(sso.radius).UseDensity(d);
             const auto shape = std::make_shared<DiskShape>(sconf);

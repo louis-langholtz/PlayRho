@@ -103,11 +103,11 @@ public:
             }
 
             const auto p1 = GetLowerBound(actor->aabb);
-            const auto p2 = Length2D{
+            const auto p2 = Length2{
                 GetX(GetUpperBound(actor->aabb)), GetY(GetLowerBound(actor->aabb))
             };
             const auto p3 = GetUpperBound(actor->aabb);
-            const auto p4 = Length2D{
+            const auto p4 = Length2{
                 GetX(GetLowerBound(actor->aabb)), GetY(GetUpperBound(actor->aabb))
             };
             
@@ -122,11 +122,11 @@ public:
             // Draw the AABB.
 
             const auto p1 = GetLowerBound(m_queryAABB);
-            const auto p2 = Length2D{
+            const auto p2 = Length2{
                 GetX(GetUpperBound(m_queryAABB)), GetY(GetLowerBound(m_queryAABB))
             };
             const auto p3 = GetUpperBound(m_queryAABB);
-            const auto p4 = Length2D{
+            const auto p4 = Length2{
                 GetX(GetLowerBound(m_queryAABB)), GetY(GetUpperBound(m_queryAABB))
             };
             
@@ -232,7 +232,7 @@ private:
         const auto c0 = GetCenter(*aabb);
         const auto min = Vec2(-m_worldExtent, Real(0)) * 1_m;
         const auto max = Vec2(m_worldExtent, 2.0f * m_worldExtent) * 1_m;
-        const auto c = Length2D{
+        const auto c = Length2{
             Clamp(GetX(c0), GetX(min), GetX(max)), Clamp(GetY(c0), GetY(min), GetY(max))
         };
 

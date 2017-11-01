@@ -161,7 +161,7 @@ void GearJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
 
     if (m_typeA == JointType::Revolute)
     {
-        m_JvAC = Vec2_zero;
+        m_JvAC = Vec2{};
         m_JwA = 1_m;
         m_JwC = 1_m;
         const auto invAngMass = bodyConstraintA->GetInvRotInertia() + bodyConstraintC->GetInvRotInertia();
@@ -170,8 +170,8 @@ void GearJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
     else
     {
         const auto u = Rotate(m_localAxisC, qC);
-        const auto rC = Length2D{Rotate(m_localAnchorC - bodyConstraintC->GetLocalCenter(), qC)};
-        const auto rA = Length2D{Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA)};
+        const auto rC = Length2{Rotate(m_localAnchorC - bodyConstraintC->GetLocalCenter(), qC)};
+        const auto rA = Length2{Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA)};
         m_JvAC = Real{1} * u;
         m_JwC = Cross(rC, u);
         m_JwA = Cross(rA, u);
@@ -183,7 +183,7 @@ void GearJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
 
     if (m_typeB == JointType::Revolute)
     {
-        m_JvBD = Vec2_zero;
+        m_JvBD = Vec2{};
         m_JwB = m_ratio * Meter;
         m_JwD = m_ratio * Meter;
         const auto invAngMass = InvRotInertia{Square(m_ratio) * (bodyConstraintB->GetInvRotInertia() + bodyConstraintD->GetInvRotInertia())};
@@ -313,7 +313,7 @@ bool GearJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
 
     if (m_typeA == JointType::Revolute)
     {
-        JvAC = Vec2_zero;
+        JvAC = Vec2{};
         JwA = 1;
         JwC = 1;
         const auto invAngMass = bodyConstraintA->GetInvRotInertia() + bodyConstraintC->GetInvRotInertia();
@@ -339,7 +339,7 @@ bool GearJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
 
     if (m_typeB == JointType::Revolute)
     {
-        JvBD = Vec2_zero;
+        JvBD = Vec2{};
         JwB = m_ratio;
         JwD = m_ratio;
         const auto invAngMass = InvRotInertia{
@@ -395,17 +395,17 @@ bool GearJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
     return linearError < conf.linearSlop;
 }
 
-Length2D GearJoint::GetAnchorA() const
+Length2 GearJoint::GetAnchorA() const
 {
     return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
 }
 
-Length2D GearJoint::GetAnchorB() const
+Length2 GearJoint::GetAnchorB() const
 {
     return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Momentum2D GearJoint::GetLinearReaction() const
+Momentum2 GearJoint::GetLinearReaction() const
 {
     return m_impulse * m_JvAC;
 }

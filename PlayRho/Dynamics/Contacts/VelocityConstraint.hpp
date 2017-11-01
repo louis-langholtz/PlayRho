@@ -164,12 +164,12 @@ namespace playrho {
         /// Gets the point relative position of A.
         /// @note The <code>AddPoint</code> method sets this value.
         /// @return Previously set value or an invalid value.
-        Length2D GetPointRelPosA(size_type index) const noexcept;
+        Length2 GetPointRelPosA(size_type index) const noexcept;
         
         /// Gets the point relative position of B.
         /// @note The <code>AddPoint</code> method sets this value.
         /// @return Previously set value or an invalid value.
-        Length2D GetPointRelPosB(size_type index) const noexcept;
+        Length2 GetPointRelPosB(size_type index) const noexcept;
         
         /// @brief Sets the normal impulse at the given point.
         void SetNormalImpulseAtPoint(size_type index, Momentum value);
@@ -189,10 +189,10 @@ namespace playrho {
         struct Point
         {
             /// Position of body A relative to world manifold point.
-            Length2D relA = Length2D{};
+            Length2 relA = Length2{};
             
             /// Position of body B relative to world manifold point.
-            Length2D relB = Length2D{};
+            Length2 relB = Length2{};
             
             /// Normal impulse.
             Momentum normalImpulse = Momentum{0};
@@ -235,14 +235,14 @@ namespace playrho {
         /// @warning Behavior is undefined if an attempt is made to add more than MaxManifoldPoints points.
         /// @sa GetPointCount().
         void AddPoint(Momentum normalImpulse, Momentum tangentImpulse,
-                      Length2D relA, Length2D relB, Conf conf);
+                      Length2 relA, Length2 relB, Conf conf);
         
         /// Removes the last point added.
         void RemovePoint() noexcept;
         
         /// @brief Gets a point instance for the given parameters.
         Point GetPoint(Momentum normalImpulse, Momentum tangentImpulse,
-                       Length2D relA, Length2D relB, Conf conf) const noexcept;
+                       Length2 relA, Length2 relB, Conf conf) const noexcept;
         
         /// Accesses the point identified by the given index.
         /// @warning Behavior is undefined if given index is not less than <code>MaxManifoldPoints</code>.
@@ -307,12 +307,12 @@ namespace playrho {
         return m_normalMass;
     }
     
-    inline Length2D VelocityConstraint::GetPointRelPosA(VelocityConstraint::size_type index) const noexcept
+    inline Length2 VelocityConstraint::GetPointRelPosA(VelocityConstraint::size_type index) const noexcept
     {
         return GetPointAt(index).relA;
     }
     
-    inline Length2D VelocityConstraint::GetPointRelPosB(VelocityConstraint::size_type index) const noexcept
+    inline Length2 VelocityConstraint::GetPointRelPosB(VelocityConstraint::size_type index) const noexcept
     {
         return GetPointAt(index).relB;
     }
@@ -376,14 +376,14 @@ namespace playrho {
     }
     
     /// @brief Gets the point relative position A data.
-    inline Length2D GetPointRelPosA(const VelocityConstraint& vc,
+    inline Length2 GetPointRelPosA(const VelocityConstraint& vc,
                                     VelocityConstraint::size_type index)
     {
         return vc.GetPointRelPosA(index);
     }
     
     /// @brief Gets the point relative position B data.
-    inline Length2D GetPointRelPosB(const VelocityConstraint& vc,
+    inline Length2 GetPointRelPosB(const VelocityConstraint& vc,
                                     VelocityConstraint::size_type index)
     {
         return vc.GetPointRelPosB(index);
@@ -424,15 +424,15 @@ namespace playrho {
     }
     
     /// @brief Gets the normal impulses of the given velocity constraint.
-    inline Momentum2D GetNormalImpulses(const VelocityConstraint& vc)
+    inline Momentum2 GetNormalImpulses(const VelocityConstraint& vc)
     {
-        return Momentum2D{GetNormalImpulseAtPoint(vc, 0), GetNormalImpulseAtPoint(vc, 1)};
+        return Momentum2{GetNormalImpulseAtPoint(vc, 0), GetNormalImpulseAtPoint(vc, 1)};
     }
     
     /// @brief Gets the tangent impulses of the given velocity constraint.
-    inline Momentum2D GetTangentImpulses(const VelocityConstraint& vc)
+    inline Momentum2 GetTangentImpulses(const VelocityConstraint& vc)
     {
-        return Momentum2D{GetTangentImpulseAtPoint(vc, 0), GetTangentImpulseAtPoint(vc, 1)};
+        return Momentum2{GetTangentImpulseAtPoint(vc, 0), GetTangentImpulseAtPoint(vc, 1)};
     }
     
     /// @brief Sets the normal impulse at the given point of the given velocity constraint.
@@ -448,14 +448,14 @@ namespace playrho {
     }
     
     /// @brief Sets the normal impulses of the given velocity constraint.
-    inline void SetNormalImpulses(VelocityConstraint& vc, const Momentum2D impulses)
+    inline void SetNormalImpulses(VelocityConstraint& vc, const Momentum2 impulses)
     {
         SetNormalImpulseAtPoint(vc, 0, impulses[0]);
         SetNormalImpulseAtPoint(vc, 1, impulses[1]);
     }
     
     /// @brief Sets the tangent impulses of the given velocity constraint.
-    inline void SetTangentImpulses(VelocityConstraint& vc, const Momentum2D impulses)
+    inline void SetTangentImpulses(VelocityConstraint& vc, const Momentum2 impulses)
     {
         SetTangentImpulseAtPoint(vc, 0, impulses[0]);
         SetTangentImpulseAtPoint(vc, 1, impulses[1]);

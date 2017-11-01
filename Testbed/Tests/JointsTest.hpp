@@ -60,46 +60,46 @@ public:
         auto centerY = Length{20_m + RowSize};
         {
             auto centerX = columnStart;
-            SetupDistanceJoint(Length2D{centerX, centerY}); // ok
+            SetupDistanceJoint(Length2{centerX, centerY}); // ok
             centerX += ColumnSize;
-            SetupFrictionJoint(Length2D{centerX, centerY});
+            SetupFrictionJoint(Length2{centerX, centerY});
             centerX += ColumnSize;
-            SetupGearJoint(Length2D{centerX, centerY});
+            SetupGearJoint(Length2{centerX, centerY});
             centerX += ColumnSize;
-            SetupMotorJoint(Length2D{centerX, centerY});
+            SetupMotorJoint(Length2{centerX, centerY});
         }
         
         // Row two...
         centerY -= RowSize;
         {
             auto centerX = columnStart;
-            SetupMouseJoint(Length2D{centerX, centerY});
+            SetupMouseJoint(Length2{centerX, centerY});
             centerX += ColumnSize;
-            SetupPrismaticJoint(Length2D{centerX, centerY});
+            SetupPrismaticJoint(Length2{centerX, centerY});
             centerX += ColumnSize;
-            SetupPulleyJoint(Length2D{centerX, centerY});
+            SetupPulleyJoint(Length2{centerX, centerY});
             centerX += ColumnSize;
-            SetupRevoluteJoint(Length2D{centerX, centerY});
+            SetupRevoluteJoint(Length2{centerX, centerY});
         }
 
         // Row three...
         centerY -= RowSize;
         {
             auto centerX = columnStart;
-            SetupRopeJoint(Length2D{centerX, centerY});
+            SetupRopeJoint(Length2{centerX, centerY});
             centerX += ColumnSize;
-            SetupWeldJoint(Length2D{centerX, centerY});
+            SetupWeldJoint(Length2{centerX, centerY});
             centerX += ColumnSize;
-            SetupWheelJoint(Length2D{centerX, centerY});
+            SetupWheelJoint(Length2{centerX, centerY});
         }
     }
     
 private:
     void PostStep(const Settings&, Drawer& drawer) override
     {
-        const auto startLoc = Length2D{-1.5f * ColumnSize, 21_m + 0.5f * RowSize};
+        const auto startLoc = Length2{-1.5f * ColumnSize, 21_m + 0.5f * RowSize};
         {
-            auto loc = startLoc - Length2D{0_m, 0 * RowSize};
+            auto loc = startLoc - Length2{0_m, 0 * RowSize};
             drawer.DrawString(loc, Drawer::Center, "DistanceJoint (fixed length)");
             GetX(loc) += ColumnSize;
             drawer.DrawString(loc, Drawer::Center, "FrictionJoint (dampened point & angle)");
@@ -109,7 +109,7 @@ private:
             drawer.DrawString(loc, Drawer::Center, "MotorJoint");
         }
         {
-            auto loc = startLoc - Length2D{0_m, 1 * RowSize};
+            auto loc = startLoc - Length2{0_m, 1 * RowSize};
             drawer.DrawString(loc, Drawer::Center, "MouseJoint");
             GetX(loc) += ColumnSize;
             drawer.DrawString(loc, Drawer::Center, "PrismaticJoint (fixed line)");
@@ -119,7 +119,7 @@ private:
             drawer.DrawString(loc, Drawer::Center, "RevoluteJoint (fixed point)");
         }
         {
-            auto loc = startLoc - Length2D{0_m, 2 * RowSize};
+            auto loc = startLoc - Length2{0_m, 2 * RowSize};
             drawer.DrawString(loc, Drawer::Center, "RopeJoint (fixed max length)");
             GetX(loc) += ColumnSize;
             drawer.DrawString(loc, Drawer::Center, "WeldJoint (fixed point & angle)");
@@ -141,15 +141,15 @@ private:
         }
     }
 
-    Body* SetupContainer(Length2D center)
+    Body* SetupContainer(Length2 center)
     {
-        const auto b = CreateRectangularEnclosingBody(m_world, Length2D{ColumnSize, RowSize},
+        const auto b = CreateRectangularEnclosingBody(m_world, Length2{ColumnSize, RowSize},
                                                       ShapeDef{});
         SetLocation(*b, center);
         return b;
     }
 
-    void SetupRevoluteJoint(Length2D center)
+    void SetupRevoluteJoint(Length2 center)
     {
         const auto fb = m_world.CreateBody(BodyDef{StaticBD}.UseLocation(center - offset));
         fb->CreateFixture(m_rectShape);
@@ -160,9 +160,9 @@ private:
         SetupContainer(center);
     }
 
-    void SetupPrismaticJoint(Length2D center)
+    void SetupPrismaticJoint(Length2 center)
     {
-        const auto offs = Length2D{3.5_m, 3.5_m};
+        const auto offs = Length2{3.5_m, 3.5_m};
         const auto fb = m_world.CreateBody(BodyDef{StaticBD}.UseLocation(center));
         fb->CreateFixture(m_diskShape);
         const auto mb = m_world.CreateBody(BodyDef{DynamicBD}.UseLocation(center + offs));
@@ -175,7 +175,7 @@ private:
         SetupContainer(center);
     }
     
-    void SetupDistanceJoint(Length2D center)
+    void SetupDistanceJoint(Length2 center)
     {
         const auto fb = m_world.CreateBody(BodyDef{StaticBD}.UseLocation(center));
         fb->CreateFixture(m_diskShape);
@@ -186,11 +186,11 @@ private:
         SetupContainer(center);
     }
     
-    void SetupPulleyJoint(Length2D center)
+    void SetupPulleyJoint(Length2 center)
     {
         const auto cbody = SetupContainer(center);
-        const auto left  = Length2D{-2_m, +2.5_m};
-        const auto right = Length2D{+2_m, +2.5_m};
+        const auto left  = Length2{-2_m, +2.5_m};
+        const auto right = Length2{+2_m, +2.5_m};
         {
             const auto conf = DiskConf{}.UseVertexRadius(0.7_m);
             cbody->CreateFixture(std::make_shared<DiskShape>(DiskConf{conf}.UseLocation(left)));
@@ -201,8 +201,8 @@ private:
             const auto shape = std::make_shared<PolygonShape>(0.5_m, 0.5_m, pconf);
             const auto ganchor1 = center + left;
             const auto ganchor2 = center + right;
-            const auto anchor1 = ganchor1 - Length2D{0_m, 1.5_m};
-            const auto anchor2 = ganchor2 - Length2D{0_m, 5_m};
+            const auto anchor1 = ganchor1 - Length2{0_m, 1.5_m};
+            const auto anchor2 = ganchor2 - Length2{0_m, 5_m};
 
             const auto body1 = m_world.CreateBody(BodyDef{DynamicBD}.UseLocation(anchor1));
             body1->CreateFixture(shape);
@@ -215,14 +215,14 @@ private:
         }
     }
     
-    void SetupGearJoint(Length2D center)
+    void SetupGearJoint(Length2 center)
     {
         const auto containerBody = SetupContainer(center);
 
         const auto sr = m_smallDiskShape->GetVertexRadius();
         const auto nr = m_diskShape->GetVertexRadius();
         const auto tr = sr + nr;
-        const auto bd1 = BodyDef{DynamicBD}.UseLocation(center - Length2D{tr, 0_m});
+        const auto bd1 = BodyDef{DynamicBD}.UseLocation(center - Length2{tr, 0_m});
         const auto body1 = m_world.CreateBody(bd1);
         body1->CreateFixture(m_smallDiskShape);
         
@@ -242,7 +242,7 @@ private:
         const auto joint2 = static_cast<RevoluteJoint*>(m_world.CreateJoint(jd2));
         
         auto bd3 = BodyDef{DynamicBD}
-            .UseLocation(center + Length2D{nr + RectHHeight, RectHWidth})
+            .UseLocation(center + Length2{nr + RectHHeight, RectHWidth})
             .UseAngle(Pi * 1_rad / 2);
         const auto body3 = m_world.CreateBody(bd3);
         body3->CreateFixture(m_rectShape);
@@ -263,12 +263,12 @@ private:
         m_gearJoint1 = static_cast<GearJoint*>(m_world.CreateJoint(jd5));
     }
 
-    void SetupWheelJoint(Length2D center)
+    void SetupWheelJoint(Length2 center)
     {
         SetupContainer(center);
         
         // Vertices from car Testbed code.
-        const auto carVerts = std::vector<Length2D>({
+        const auto carVerts = std::vector<Length2>({
             Vec2(-1.5f, -0.5f) * 1_m,
             Vec2(1.5f, -0.5f) * 1_m,
             Vec2(1.5f, 0.0f) * 1_m,
@@ -276,7 +276,7 @@ private:
             Vec2(-1.15f, 0.9f) * 1_m,
             Vec2(-1.5f, 0.2f) * 1_m
         });
-        auto chassis = std::make_shared<PolygonShape>(Span<const Length2D>(carVerts.data(), carVerts.size()));
+        auto chassis = std::make_shared<PolygonShape>(Span<const Length2>(carVerts.data(), carVerts.size()));
         chassis->SetDensity(1_kgpm2);
         
         const auto circle = std::make_shared<DiskShape>(0.4_m);
@@ -317,9 +317,9 @@ private:
         }
     }
 
-    void SetupWeldJoint(Length2D center)
+    void SetupWeldJoint(Length2 center)
     {
-        const auto offs = Length2D{RectHWidth, 0_m};
+        const auto offs = Length2{RectHWidth, 0_m};
         const auto containerBody = SetupContainer(center);
         const auto fb = m_world.CreateBody(BodyDef{DynamicBD}.UseLocation(center - offs));
         fb->CreateFixture(m_rectShape);
@@ -333,7 +333,7 @@ private:
         m_weldJoint1 = static_cast<WeldJoint*>(m_world.CreateJoint(jd1));
     }
     
-    void SetupFrictionJoint(Length2D center)
+    void SetupFrictionJoint(Length2 center)
     {
         const auto fb = m_world.CreateBody(BodyDef{StaticBD}.UseLocation(center));
         fb->CreateFixture(m_diskShape);
@@ -345,26 +345,26 @@ private:
         SetupContainer(center);
     }
     
-    void SetupRopeJoint(Length2D center)
+    void SetupRopeJoint(Length2 center)
     {
         const auto fb = m_world.CreateBody(BodyDef{StaticBD}.UseLocation(center));
         fb->CreateFixture(m_diskShape);
         const auto mb = m_world.CreateBody(BodyDef{DynamicBD}.UseLocation(center + offset));
         mb->CreateFixture(m_squareShape);
         auto jd = RopeJointDef{fb, mb};
-        jd.localAnchorA = Length2D{};
-        jd.localAnchorB = Length2D{};
+        jd.localAnchorA = Length2{};
+        jd.localAnchorB = Length2{};
         jd.maxLength = 3_m;
         m_ropeJoint = static_cast<RopeJoint*>(m_world.CreateJoint(jd));
         SetupContainer(center);
     }
     
-    void SetupMouseJoint(Length2D ctr)
+    void SetupMouseJoint(Length2 ctr)
     {
         SetupContainer(ctr);
 
-        const auto lftOffs = Length2D{-2_m, 0.8_m};
-        const auto rgtOffs = Length2D{+2_m, 0.8_m};
+        const auto lftOffs = Length2{-2_m, 0.8_m};
+        const auto rgtOffs = Length2{+2_m, 0.8_m};
 
         {
             const auto lftEye = m_world.CreateBody(BodyDef{StaticBD}.UseLocation(ctr + lftOffs));
@@ -384,8 +384,8 @@ private:
         rgtPup->CreateFixture(m_smallDiskShape);
         
         // Remove gravity on dynamic bodies...
-        lftPup->SetAcceleration(LinearAcceleration2D{}, AngularAcceleration{});
-        rgtPup->SetAcceleration(LinearAcceleration2D{}, AngularAcceleration{});
+        lftPup->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
+        rgtPup->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
 
         m_lftMouseJoint = static_cast<MouseJoint*>(m_world.CreateJoint(MouseJointDef{lftPup}
                                                                        .UseMaxForce(200_N)
@@ -397,7 +397,7 @@ private:
                                                                        .UseTarget(GetLocation(*rgtPup))));
     }
     
-    void SetupMotorJoint(Length2D center)
+    void SetupMotorJoint(Length2 center)
     {
         m_motorJointCenter = center;
         const auto containerBody = SetupContainer(center);
@@ -419,7 +419,7 @@ private:
 
         {
             // For the motor joint...
-            const auto linearOffset = Length2D{
+            const auto linearOffset = Length2{
                 static_cast<Real>(2.6 * std::sin(2 * m_time)) * 1_m,
                 static_cast<Real>(2.0 * std::sin(1 * m_time)) * 1_m
             };
@@ -440,10 +440,10 @@ private:
     std::shared_ptr<DiskShape> m_smallDiskShape;
     std::shared_ptr<PolygonShape> m_squareShape;
     std::shared_ptr<PolygonShape> m_rectShape;
-    const Length2D offset = Length2D{+2_m, 0_m};
+    const Length2 offset = Length2{+2_m, 0_m};
     
     double m_time = 0;
-    Length2D m_motorJointCenter = Length2D{};
+    Length2 m_motorJointCenter = Length2{};
     MouseJoint* m_lftMouseJoint = nullptr;
     MouseJoint* m_rgtMouseJoint = nullptr;
     MotorJoint* m_motorJoint = nullptr;

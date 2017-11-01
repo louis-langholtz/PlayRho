@@ -60,7 +60,7 @@ namespace playrho
     /// @param radius Radius of the circle.
     /// @param location Location in world coordinates of the circle.
     /// @param input Ray-cast input parameters.
-    RayCastOutput RayCast(Length radius, Length2D location, const RayCastInput& input) noexcept;
+    RayCastOutput RayCast(Length radius, Length2 location, const RayCastInput& input) noexcept;
 
     /// @brief Cast a ray against the given AABB.
     /// @param aabb Axis Aligned Bounding Box.

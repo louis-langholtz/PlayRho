@@ -51,19 +51,19 @@ namespace playrho {
         constexpr BodyDef& UseType(BodyType t) noexcept;
 
         /// @brief Use the given location.
-        constexpr BodyDef& UseLocation(Length2D l) noexcept;
+        constexpr BodyDef& UseLocation(Length2 l) noexcept;
         
         /// @brief Use the given angle.
         constexpr BodyDef& UseAngle(Angle a) noexcept;
         
         /// @brief Use the given linear velocity.
-        constexpr BodyDef& UseLinearVelocity(LinearVelocity2D v) noexcept;
+        constexpr BodyDef& UseLinearVelocity(LinearVelocity2 v) noexcept;
         
         /// @brief Use the given angular velocity.
         constexpr BodyDef& UseAngularVelocity(AngularVelocity v) noexcept;
         
         /// @brief Use the given linear acceleration.
-        constexpr BodyDef& UseLinearAcceleration(LinearAcceleration2D v) noexcept;
+        constexpr BodyDef& UseLinearAcceleration(LinearAcceleration2 v) noexcept;
         
         /// @brief Use the given angular acceleration.
         constexpr BodyDef& UseAngularAcceleration(AngularAcceleration v) noexcept;
@@ -103,20 +103,20 @@ namespace playrho {
         
         /// The world location of the body. Avoid creating bodies at the origin
         /// since this can lead to many overlapping shapes.
-        Length2D location = Length2D{};
+        Length2 location = Length2{};
         
         /// The world angle of the body.
         Angle angle = Angle{0};
         
         /// The linear velocity of the body's origin in world co-ordinates (in m/s).
-        LinearVelocity2D linearVelocity = LinearVelocity2D{};
+        LinearVelocity2 linearVelocity = LinearVelocity2{};
         
         /// The angular velocity of the body.
         AngularVelocity angularVelocity = AngularVelocity{0};
         
         /// Initial linear acceleration of the body.
         /// @note Usually this should be 0.
-        LinearAcceleration2D linearAcceleration = LinearAcceleration2D{};
+        LinearAcceleration2 linearAcceleration = LinearAcceleration2{};
         
         /// Initial angular acceleration of the body.
         /// @note Usually this should be 0.
@@ -165,7 +165,7 @@ namespace playrho {
         return *this;
     }
     
-    constexpr inline BodyDef& BodyDef::UseLocation(Length2D l) noexcept
+    constexpr inline BodyDef& BodyDef::UseLocation(Length2 l) noexcept
     {
         location = l;
         return *this;
@@ -177,13 +177,13 @@ namespace playrho {
         return *this;
     }
     
-    constexpr BodyDef& BodyDef::UseLinearVelocity(LinearVelocity2D v) noexcept
+    constexpr BodyDef& BodyDef::UseLinearVelocity(LinearVelocity2 v) noexcept
     {
         linearVelocity = v;
         return *this;
     }
     
-    constexpr BodyDef& BodyDef::UseLinearAcceleration(LinearAcceleration2D v) noexcept
+    constexpr BodyDef& BodyDef::UseLinearAcceleration(LinearAcceleration2 v) noexcept
     {
         linearAcceleration = v;
         return *this;

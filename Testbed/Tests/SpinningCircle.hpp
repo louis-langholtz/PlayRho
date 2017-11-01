@@ -34,12 +34,12 @@ namespace playrho {
         
         SpinningCircle()
         {
-            m_world.SetGravity(Vec2{0, 0} * MeterPerSquareSecond);
+            m_world.SetGravity(LinearAcceleration2{});
 
             auto bodyDef = BodyDef{};
             bodyDef.type = BodyType::Dynamic;
             bodyDef.angularVelocity = 45_deg / 1_s;
-            bodyDef.linearVelocity = LinearVelocity2D{};
+            bodyDef.linearVelocity = LinearVelocity2{};
             bodyDef.linearDamping = 0.8_Hz;
             bodyDef.bullet = true;
 
@@ -52,7 +52,7 @@ namespace playrho {
             shapeConf.density = 10_kgpm2;
 
             shapeConf.vertexRadius = 2_m;
-            shapeConf.location = Vec2{0, 0} * 1_m;
+            shapeConf.location = Length2{};
             auto circle = std::make_shared<DiskShape>(shapeConf);
 
             shapeConf.vertexRadius = 1.5_m;

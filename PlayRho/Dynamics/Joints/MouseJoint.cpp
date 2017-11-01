@@ -68,7 +68,7 @@ void MouseJoint::Accept(JointVisitor& visitor) const
     visitor.Visit(*this);
 }
 
-void MouseJoint::SetTarget(const Length2D target) noexcept
+void MouseJoint::SetTarget(const Length2 target) noexcept
 {
     assert(IsValid(target));
     if (m_targetA != target)
@@ -137,7 +137,7 @@ void MouseJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
 
     m_mass = GetEffectiveMassMatrix(*bodyConstraintB);
 
-    m_C = LinearVelocity2D{((posB.linear + m_rB) - m_targetA) * beta};
+    m_C = LinearVelocity2{((posB.linear + m_rB) - m_targetA) * beta};
     assert(IsValid(m_C));
 
     // Cheat with some damping
@@ -152,7 +152,7 @@ void MouseJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     }
     else
     {
-        m_impulse = Momentum2D{};
+        m_impulse = Momentum2{};
     }
 
     bodyConstraintB->SetVelocity(velB);
@@ -165,8 +165,8 @@ bool MouseJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
     auto velB = bodyConstraintB->GetVelocity();
     assert(IsValid(velB));
 
-    const auto Cdot = LinearVelocity2D{velB.linear + (GetRevPerpendicular(m_rB) * (velB.angular / Radian))};
-    const auto ev = Cdot + LinearVelocity2D{m_C + (m_gamma * m_impulse)};
+    const auto Cdot = LinearVelocity2{velB.linear + (GetRevPerpendicular(m_rB) * (velB.angular / Radian))};
+    const auto ev = Cdot + LinearVelocity2{m_C + (m_gamma * m_impulse)};
     const auto oldImpulse = m_impulse;
     const auto addImpulse = Transform(-ev, m_mass);
     assert(IsValid(addImpulse));
@@ -187,7 +187,7 @@ bool MouseJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
 
     bodyConstraintB->SetVelocity(velB);
     
-    return incImpulse == Momentum2D{};
+    return incImpulse == Momentum2{};
 }
 
 bool MouseJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const
@@ -197,17 +197,17 @@ bool MouseJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Cons
     return true;
 }
 
-Length2D MouseJoint::GetAnchorA() const
+Length2 MouseJoint::GetAnchorA() const
 {
     return GetTarget();
 }
 
-Length2D MouseJoint::GetAnchorB() const
+Length2 MouseJoint::GetAnchorB() const
 {
-    return GetBodyB()? GetWorldPoint(*GetBodyB(), GetLocalAnchorB()): GetInvalid<Length2D>();
+    return GetBodyB()? GetWorldPoint(*GetBodyB(), GetLocalAnchorB()): GetInvalid<Length2>();
 }
 
-Momentum2D MouseJoint::GetLinearReaction() const
+Momentum2 MouseJoint::GetLinearReaction() const
 {
     return m_impulse;
 }
@@ -217,7 +217,7 @@ AngularMomentum MouseJoint::GetAngularReaction() const
     return AngularMomentum{0};
 }
 
-void MouseJoint::ShiftOrigin(const Length2D newOrigin)
+void MouseJoint::ShiftOrigin(const Length2 newOrigin)
 {
     m_targetA -= newOrigin;
 }

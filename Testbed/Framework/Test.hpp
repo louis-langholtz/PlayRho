@@ -137,13 +137,13 @@ public:
     /// @sa https://en.wikipedia.org/wiki/Template_method_pattern
     void Step(const Settings& settings, Drawer& drawer, UiState& ui);
     
-    void ShiftMouseDown(const Length2D& p);
-    void MouseMove(const Length2D& p);
+    void ShiftMouseDown(const Length2& p);
+    void MouseMove(const Length2& p);
     void LaunchBomb();
-    void LaunchBomb(const Length2D& position, const LinearVelocity2D velocity);
-    void SpawnBomb(const Length2D& worldPt);
-    void CompleteBombSpawn(const Length2D& p);
-    void ShiftOrigin(const Length2D& newOrigin);
+    void LaunchBomb(const Length2& position, const LinearVelocity2 velocity);
+    void SpawnBomb(const Length2& worldPt);
+    void CompleteBombSpawn(const Length2& p);
+    void ShiftOrigin(const Length2& newOrigin);
     
     void KeyboardHandler(KeyID key, KeyAction action, KeyMods mods);
     
@@ -159,8 +159,8 @@ public:
                                                        m_handledKeys.size());
     }
 
-    void MouseDown(const Length2D& p);
-    void MouseUp(const Length2D& p);
+    void MouseDown(const Length2& p);
+    void MouseUp(const Length2& p);
     
     // Let derived tests know that a joint was destroyed.
     virtual void JointDestroyed(Joint* joint) { NOT_USED(joint); }
@@ -185,11 +185,17 @@ protected:
     
     struct Conf
     {
-        WorldDef worldDef = WorldDef{}.UseGravity(LinearAcceleration2D{
+        /// @brief World definition/configuration data.
+        /// @note Explicitly uses -10 for gravity here to behave more like
+        ///   Erin Catto's Box2D Testbed (which uses -10 for Earthly gravity).
+        WorldDef worldDef = WorldDef{}.UseGravity(LinearAcceleration2{
             Real(0.0f) * MeterPerSquareSecond, -Real(10.0f) * MeterPerSquareSecond
         }).UseMinVertexRadius(0.0002_m);
+
         Settings settings;
+        
         NeededSettings neededSettings = 0u;
+        
         std::string description;
         std::string seeAlso;
         std::string credits;
@@ -207,7 +213,7 @@ protected:
         Fixture* fixtureA;
         Fixture* fixtureB;
         UnitVec2 normal;
-        Length2D position;
+        Length2 position;
         PointState state;
         Momentum normalImpulse;
         Momentum tangentImpulse;
@@ -284,9 +290,9 @@ protected:
     
     void SetBomb(Body* body) noexcept { m_bomb = body; }
     
-    Length2D GetMouseWorld() const noexcept { return m_mouseWorld; }
+    Length2 GetMouseWorld() const noexcept { return m_mouseWorld; }
 
-    void SetMouseWorld(Length2D value) noexcept { m_mouseWorld = value; }
+    void SetMouseWorld(Length2 value) noexcept { m_mouseWorld = value; }
     
     KeyHandlerID RegisterKeyHandler(const std::string& info, KeyHandler handler)
     {
@@ -325,9 +331,9 @@ private:
     DestructionListenerImpl m_destructionListener;
     Body* m_bomb = nullptr;
     MouseJoint* m_mouseJoint = nullptr;
-    Length2D m_bombSpawnPoint;
+    Length2 m_bombSpawnPoint;
     bool m_bombSpawning = false;
-    Length2D m_mouseWorld;
+    Length2 m_mouseWorld;
     double m_sumDeltaTime = 0.0;
     int m_stepCount = 0;
     StepStats m_stepStats;

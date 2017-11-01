@@ -49,17 +49,17 @@ public:
     
     void Accept(JointVisitor& visitor) const override;
 
-    Length2D GetAnchorA() const override;
-    Length2D GetAnchorB() const override;
+    Length2 GetAnchorA() const override;
+    Length2 GetAnchorB() const override;
 
-    Momentum2D GetLinearReaction() const override;
+    Momentum2 GetLinearReaction() const override;
     AngularMomentum GetAngularReaction() const override;
 
     /// The local anchor point relative to bodyA's origin.
-    Length2D GetLocalAnchorA() const { return m_localAnchorA; }
+    Length2 GetLocalAnchorA() const { return m_localAnchorA; }
 
     /// The local anchor point relative to bodyB's origin.
-    Length2D GetLocalAnchorB() const  { return m_localAnchorB; }
+    Length2 GetLocalAnchorB() const  { return m_localAnchorB; }
 
     /// @brief Sets the maximum length of the rope.
     void SetMaxLength(Length length) { m_maxLength = length; }
@@ -79,16 +79,16 @@ private:
                                   const ConstraintSolverConf& conf) const override;
 
     // Solver shared
-    Length2D m_localAnchorA; ///< Local anchor A.
-    Length2D m_localAnchorB; ///< Local anchor B.
+    Length2 m_localAnchorA; ///< Local anchor A.
+    Length2 m_localAnchorB; ///< Local anchor B.
     Length m_maxLength; ///< Max length.
     Length m_length = 0; ///< Length.
     Momentum m_impulse = Momentum{0}; ///< Impulse.
 
     // Solver temp
     UnitVec2 m_u; ///< U direction.
-    Length2D m_rA; ///< Relative A.
-    Length2D m_rB; ///< Relative B.
+    Length2 m_rA; ///< Relative A.
+    Length2 m_rB; ///< Relative B.
     Mass m_mass = Mass{0}; ///< Mass.
     LimitState m_state = e_inactiveLimit; ///< Limit state.
 };

@@ -282,7 +282,7 @@ inline void Fixture::ResetProxies() noexcept
 /// @param p Point in world coordinates.
 /// @relatedalso Fixture
 /// @ingroup TestPointGroup
-bool TestPoint(const Fixture& f, Length2D p) noexcept;
+bool TestPoint(const Fixture& f, Length2 p) noexcept;
 
 /// @brief Sets the associated body's sleep status to awake.
 /// @note This is a convenience function that simply looks up the fixture's body and

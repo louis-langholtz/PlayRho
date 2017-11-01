@@ -210,8 +210,8 @@ namespace {
     inline VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc)
     {
         auto vp = VelocityPair{
-            Velocity{LinearVelocity2D{}, AngularVelocity{0}},
-            Velocity{LinearVelocity2D{}, AngularVelocity{0}}
+            Velocity{LinearVelocity2{}, AngularVelocity{0}},
+            Velocity{LinearVelocity2{}, AngularVelocity{0}}
         };
         
         const auto normal = vc.GetNormal();
@@ -230,8 +230,8 @@ namespace {
         {
             // inverse moment of inertia : L^-2 M^-1 QP^2
             // P is M L T^-2
-            // GetPointRelPosA() is Length2D
-            // Cross(Length2D, P) is: M L^2 T^-2
+            // GetPointRelPosA() is Length2
+            // Cross(Length2, P) is: M L^2 T^-2
             // L^-2 M^-1 QP^2 M L^2 T^-2 is: QP^2 T^-2
             const auto& vcp = vc.GetPointAt(j);
             const auto P = vcp.normalImpulse * normal + vcp.tangentImpulse * tangent;
@@ -856,7 +856,7 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
     }
 }
 
-void World::SetGravity(LinearAcceleration2D gravity) noexcept
+void World::SetGravity(LinearAcceleration2 gravity) noexcept
 {
     if (m_gravity != gravity)
     {
@@ -2053,7 +2053,7 @@ void World::QueryAABB(const AABB& aabb, QueryFixtureCallback callback) const
     });
 }
 
-void World::RayCast(Length2D point1, Length2D point2, RayCastCallback callback) const
+void World::RayCast(Length2 point1, Length2 point2, RayCastCallback callback) const
 {
     playrho::RayCast(m_tree, RayCastInput{point1, point2, Real{1}},
                    [&](const RayCastInput& input, DynamicTree::Size treeId)
@@ -2100,7 +2100,7 @@ void World::RayCast(Length2D point1, Length2D point2, RayCastCallback callback) 
     });
 }
 
-void World::ShiftOrigin(Length2D newOrigin)
+void World::ShiftOrigin(Length2 newOrigin)
 {
     if (IsLocked())
     {
@@ -2611,7 +2611,7 @@ void World::SetType(Body& body, BodyType type)
     else
     {
         body.SetAwake();
-        body.SetAcceleration(body.IsAccelerable()? GetGravity(): LinearAcceleration2D{},
+        body.SetAcceleration(body.IsAccelerable()? GetGravity(): LinearAcceleration2{},
                              AngularAcceleration{0});
         const auto fixtures = body.GetFixtures();
         for_each(begin(fixtures), end(fixtures), [&](Body::Fixtures::value_type& f) {
@@ -2814,7 +2814,7 @@ ContactCounter World::Synchronize(Body& body,
 
 ContactCounter World::Synchronize(Fixture& fixture,
                                   Transformation xfm1, Transformation xfm2,
-                                  Length2D displacement, Length extension)
+                                  Length2 displacement, Length extension)
 {
     assert(::playrho::IsValid(xfm1));
     assert(::playrho::IsValid(xfm2));
@@ -2925,7 +2925,7 @@ void SetAccelerations(World& world, Acceleration acceleration) noexcept
     });
 }
 
-Body* CreateRectangularEnclosingBody(World& world, Length2D dimensions, const ShapeDef& baseConf)
+Body* CreateRectangularEnclosingBody(World& world, Length2 dimensions, const ShapeDef& baseConf)
 {
     const auto body = world.CreateBody();
     
@@ -2937,10 +2937,10 @@ Body* CreateRectangularEnclosingBody(World& world, Length2D dimensions, const Sh
     
     const auto halfWidth = GetX(dimensions) / Real{2};
     const auto halfHeight = GetY(dimensions) / Real{2};
-    const auto btmLeft  = Length2D(-halfWidth, -halfHeight);
-    const auto btmRight = Length2D(+halfWidth, -halfHeight);
-    const auto topLeft  = Length2D(-halfWidth, +halfHeight);
-    const auto topRight = Length2D(+halfWidth, +halfHeight);
+    const auto btmLeft  = Length2(-halfWidth, -halfHeight);
+    const auto btmRight = Length2(+halfWidth, -halfHeight);
+    const auto topLeft  = Length2(-halfWidth, +halfHeight);
+    const auto topRight = Length2(+halfWidth, +halfHeight);
     
     conf.vertices.push_back(btmRight);
     conf.vertices.push_back(topRight);
@@ -2953,7 +2953,7 @@ Body* CreateRectangularEnclosingBody(World& world, Length2D dimensions, const Sh
     return body;
 }
 
-Body* FindClosestBody(const World& world, Length2D location) noexcept
+Body* FindClosestBody(const World& world, Length2 location) noexcept
 {
     const auto bodies = world.GetBodies();
     auto found = static_cast<decltype(bodies)::iterator_type::value_type>(nullptr);

@@ -25,7 +25,7 @@
 
 namespace playrho {
 
-WheelJointDef::WheelJointDef(NonNull<Body*> bA, NonNull<Body*> bB, const Length2D anchor,
+WheelJointDef::WheelJointDef(NonNull<Body*> bA, NonNull<Body*> bB, const Length2 anchor,
                              const UnitVec2 axis) noexcept:
     super{super{JointType::Wheel}.UseBodyA(bA).UseBodyB(bB)},
     localAnchorA{GetLocalPoint(*bA, anchor)},

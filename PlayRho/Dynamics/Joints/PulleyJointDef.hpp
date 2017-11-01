@@ -44,23 +44,23 @@ struct PulleyJointDef : public JointBuilder<PulleyJointDef>
     
     /// Initialize the bodies, anchors, lengths, max lengths, and ratio using the world anchors.
     PulleyJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB,
-                   const Length2D groundAnchorA, const Length2D groundAnchorB,
-                   const Length2D anchorA, const Length2D anchorB);
+                   const Length2 groundAnchorA, const Length2 groundAnchorB,
+                   const Length2 anchorA, const Length2 anchorB);
     
     /// @brief Uses the given ratio value.
     PulleyJointDef& UseRatio(Real v) noexcept;
     
     /// The first ground anchor in world coordinates. This point never moves.
-    Length2D groundAnchorA = Length2D{-1_m, 1_m};
+    Length2 groundAnchorA = Length2{-1_m, 1_m};
     
     /// The second ground anchor in world coordinates. This point never moves.
-    Length2D groundAnchorB = Length2D{1_m, 1_m};
+    Length2 groundAnchorB = Length2{1_m, 1_m};
     
     /// The local anchor point relative to bodyA's origin.
-    Length2D localAnchorA = Length2D{-1_m, 0_m};
+    Length2 localAnchorA = Length2{-1_m, 0_m};
     
     /// The local anchor point relative to bodyB's origin.
-    Length2D localAnchorB = Length2D{+1_m, 0_m};
+    Length2 localAnchorB = Length2{+1_m, 0_m};
     
     /// The a reference length for the segment attached to bodyA.
     Length lengthA = Length{0};

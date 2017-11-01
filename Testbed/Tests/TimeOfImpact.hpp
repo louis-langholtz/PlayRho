@@ -74,7 +74,7 @@ public:
 
         {
             const auto vertexCount = m_shapeA.GetVertexCount();
-            auto vertices = std::vector<Length2D>(vertexCount);
+            auto vertices = std::vector<Length2>(vertexCount);
             const auto transformA = GetTransformation(sweepA, 0.0f);
             for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
             {
@@ -85,7 +85,7 @@ public:
 
         {
             const auto vertexCount = m_shapeB.GetVertexCount();
-            auto vertices = std::vector<Length2D>(vertexCount);
+            auto vertices = std::vector<Length2>(vertexCount);
             const auto transformB = GetTransformation(sweepB, 0.0f);
             for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
             {
@@ -96,7 +96,7 @@ public:
 
         {
             const auto vertexCount = m_shapeB.GetVertexCount();
-            auto vertices = std::vector<Length2D>(vertexCount);
+            auto vertices = std::vector<Length2>(vertexCount);
             const auto transformB = GetTransformation(sweepB, output.get_t());
             for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
             {
@@ -107,7 +107,7 @@ public:
 
         {
             const auto vertexCount = m_shapeB.GetVertexCount();
-            auto vertices = std::vector<Length2D>(vertexCount);
+            auto vertices = std::vector<Length2>(vertexCount);
             const auto transformB = GetTransformation(sweepB, 1.0f);
             for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
             {
@@ -121,7 +121,7 @@ public:
         {
             const auto transformB = GetTransformation(sweepB, t);
             const auto vertexCount = m_shapeB.GetVertexCount();
-            auto vertices = std::vector<Length2D>(vertexCount);
+            auto vertices = std::vector<Length2>(vertexCount);
             for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
             {
                 vertices[i] = Transform(m_shapeB.GetVertex(i), transformB);

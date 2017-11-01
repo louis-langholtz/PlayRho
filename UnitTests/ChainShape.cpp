@@ -96,7 +96,7 @@ TEST(ChainShape, OneVertexLikeDisk)
 {
     const auto vertexRadius = 1_m;
     const auto density = 1_kgpm2;
-    const auto location = Length2D{};
+    const auto location = Length2{};
     const auto expectedMassData = ::GetMassData(vertexRadius, density, location);
     const auto expectedDistanceProxy = DistanceProxy{vertexRadius, 1, &location, nullptr};
 
@@ -118,8 +118,8 @@ TEST(ChainShape, TwoVertexLikeEdge)
 {
     const auto vertexRadius = 1_m;
     const auto density = NonNegative<Density>(1_kgpm2);
-    const auto locations = std::array<Length2D, 2>{{
-        Length2D{0_m, 0_m}, Length2D(4_m, 0_m)
+    const auto locations = std::array<Length2, 2>{{
+        Length2{0_m, 0_m}, Length2(4_m, 0_m)
     }};
     
     auto conf = ChainShape::Conf{};
@@ -137,8 +137,8 @@ TEST(ChainShape, TwoVertexDpLikeEdgeDp)
 {
     const auto vertexRadius = 1_m;
     const auto density = NonNegative<Density>(1_kgpm2);
-    const auto locations = std::array<Length2D, 2>{{
-        Length2D{0_m, 0_m}, Length2D(4_m, 0_m)
+    const auto locations = std::array<Length2, 2>{{
+        Length2{0_m, 0_m}, Length2(4_m, 0_m)
     }};
     const auto normals = std::array<UnitVec2, 2>{{UnitVec2::GetTop(), UnitVec2::GetBottom()}};
     const auto expectedDistanceProxy = DistanceProxy{vertexRadius, 2, locations.data(), normals.data()};
@@ -159,8 +159,8 @@ TEST(ChainShape, TwoVertexMassLikeEdgeMass)
 {
     const auto vertexRadius = 1_m;
     const auto density = NonNegative<Density>(1_kgpm2);
-    const auto locations = std::array<Length2D, 2>{{
-        Length2D{0_m, 0_m}, Length2D(4_m, 0_m)
+    const auto locations = std::array<Length2, 2>{{
+        Length2{0_m, 0_m}, Length2(4_m, 0_m)
     }};
     const auto expectedMassData = ::GetMassData(vertexRadius, density, locations[0], locations[1]);
     
@@ -186,26 +186,26 @@ TEST(ChainShape, FourVertex)
 {
     const auto vertexRadius = 1_m;
     const auto density = 1_kgpm2;
-    const auto locations = std::array<Length2D, 5>{{
-        Length2D(-4_m, -4_m),
-        Length2D(-4_m, +4_m),
-        Length2D(+4_m, +4_m),
-        Length2D(+4_m, -4_m),
-        Length2D(-4_m, -4_m)
+    const auto locations = std::array<Length2, 5>{{
+        Length2(-4_m, -4_m),
+        Length2(-4_m, +4_m),
+        Length2(+4_m, +4_m),
+        Length2(+4_m, -4_m),
+        Length2(-4_m, -4_m)
     }};
     const auto edgeMassData0 = ::GetMassData(vertexRadius, density, locations[0], locations[1]);
 
     auto conf = ChainShape::Conf{};
     conf.density = density;
     conf.vertexRadius = vertexRadius;
-    conf.vertices = std::vector<Length2D>(std::begin(locations), std::end(locations));
+    conf.vertices = std::vector<Length2>(std::begin(locations), std::end(locations));
     auto foo = ChainShape{conf};
     EXPECT_EQ(foo.GetChildCount(), ChildCounter{4});
     EXPECT_EQ(foo.GetVertexCount(), ChildCounter{5});
     EXPECT_EQ(foo.GetVertexRadius(), vertexRadius);
     
     const auto massData = foo.GetMassData();
-    EXPECT_EQ(massData.center, (Length2D{}));
+    EXPECT_EQ(massData.center, (Length2{}));
     const auto expectedMass = Mass{edgeMassData0.mass} * Real(4);
     EXPECT_EQ(massData.mass, NonNegative<Mass>{expectedMass});
 }
@@ -239,6 +239,6 @@ TEST(ChainShape, TooManyVertices)
     auto conf = ChainShape::Conf{};
     conf.density = density;
     conf.vertexRadius = vertexRadius;
-    conf.vertices = std::vector<Length2D>(MaxChildCount + 1);
+    conf.vertices = std::vector<Length2>(MaxChildCount + 1);
     EXPECT_THROW(ChainShape{conf}, InvalidArgument);
 }

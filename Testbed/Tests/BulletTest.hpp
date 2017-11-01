@@ -32,7 +32,7 @@ public:
     {
         {
             BodyDef bd;
-            bd.location = Vec2(0.0f, 0.0f) * 1_m;
+            bd.location = Length2{};
             Body* body = m_world.CreateBody(bd);
 
             body->CreateFixture(std::make_shared<EdgeShape>(Vec2(-10.0f, 0.0f) * 1_m, Vec2(10.0f, 0.0f) * 1_m));
@@ -72,7 +72,7 @@ public:
     void Launch()
     {
         m_body->SetTransform(Vec2(0.0f, 4.0f) * 1_m, 0_rad);
-        m_body->SetVelocity(Velocity{LinearVelocity2D{}, AngularVelocity{0}});
+        m_body->SetVelocity(Velocity{LinearVelocity2{}, AngularVelocity{0}});
 
         m_x = RandomFloat(-1.0f, 1.0f);
         m_bullet->SetTransform(Vec2(m_x, 10.0f) * 1_m, 0_rad);

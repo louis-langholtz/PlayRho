@@ -30,12 +30,12 @@ public:
     
     ApplyForce()
     {
-        m_world.SetGravity(LinearAcceleration2D{});
+        m_world.SetGravity(LinearAcceleration2{});
 
         RegisterForKey(GLFW_KEY_W, GLFW_PRESS, 0, "Apply Force", [&](KeyActionMods) {
-            const auto lv = Length2D{0_m, -200_m};
-            const auto f = Force2D{GetWorldVector(*m_body, lv) * 1_kg / (1_s * 1_s)};
-            const auto p = GetWorldPoint(*m_body, Length2D{0_m, 2_m});
+            const auto lv = Length2{0_m, -200_m};
+            const auto f = Force2{GetWorldVector(*m_body, lv) * 1_kg / (1_s * 1_s)};
+            const auto p = GetWorldPoint(*m_body, Length2{0_m, 2_m});
             playrho::ApplyForce(*m_body, f, p);
         });
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Apply Counter-Clockwise Torque", [&](KeyActionMods) {
@@ -50,7 +50,7 @@ public:
         Body* ground;
         {
             BodyDef bd;
-            bd.location = Length2D(0_m, 20_m);
+            bd.location = Length2(0_m, 20_m);
             ground = m_world.CreateBody(bd);
 
             auto conf = EdgeShape::Conf{};
@@ -59,19 +59,19 @@ public:
             EdgeShape shape(conf);
 
             // Left vertical
-            shape.Set(Length2D{-20_m, -20_m}, Length2D{-20_m, 20_m});
+            shape.Set(Length2{-20_m, -20_m}, Length2{-20_m, 20_m});
             ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
             // Right vertical
-            shape.Set(Length2D{20_m, -20_m}, Length2D{20_m, 20_m});
+            shape.Set(Length2{20_m, -20_m}, Length2{20_m, 20_m});
             ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
             // Top horizontal
-            shape.Set(Length2D{-20_m, 20_m}, Length2D{20_m, 20_m});
+            shape.Set(Length2{-20_m, 20_m}, Length2{20_m, 20_m});
             ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
             // Bottom horizontal
-            shape.Set(Length2D{-20_m, -20_m}, Length2D{20_m, -20_m});
+            shape.Set(Length2{-20_m, -20_m}, Length2{20_m, -20_m});
             ground->CreateFixture(std::make_shared<EdgeShape>(shape));
         }
 
@@ -80,32 +80,32 @@ public:
             xf1.q = UnitVec2::Get(0.3524_rad * Pi);
             xf1.p = GetVec2(GetXAxis(xf1.q)) * 1_m;
 
-            Length2D vertices[3];
-            vertices[0] = Transform(Length2D{-1_m, 0_m}, xf1);
-            vertices[1] = Transform(Length2D{1_m, 0_m}, xf1);
-            vertices[2] = Transform(Length2D{0_m, 0.5_m}, xf1);
+            Length2 vertices[3];
+            vertices[0] = Transform(Length2{-1_m, 0_m}, xf1);
+            vertices[1] = Transform(Length2{1_m, 0_m}, xf1);
+            vertices[2] = Transform(Length2{0_m, 0.5_m}, xf1);
 
             auto conf = PolygonShape::Conf{};
 
             conf.density = 4_kgpm2;
-            const auto poly1 = PolygonShape(Span<const Length2D>(vertices, 3), conf);
+            const auto poly1 = PolygonShape(Span<const Length2>(vertices, 3), conf);
 
             Transformation xf2;
             xf2.q = UnitVec2::Get(-0.3524_rad * Pi);
             xf2.p = GetVec2(-GetXAxis(xf2.q)) * 1_m;
 
-            vertices[0] = Transform(Length2D{-1_m, 0_m}, xf2);
-            vertices[1] = Transform(Length2D{1_m, 0_m}, xf2);
-            vertices[2] = Transform(Length2D{0_m, 0.5_m}, xf2);
+            vertices[0] = Transform(Length2{-1_m, 0_m}, xf2);
+            vertices[1] = Transform(Length2{1_m, 0_m}, xf2);
+            vertices[2] = Transform(Length2{0_m, 0.5_m}, xf2);
 
             conf.density = 2_kgpm2;
-            const auto poly2 = PolygonShape(Span<const Length2D>(vertices, 3), conf);
+            const auto poly2 = PolygonShape(Span<const Length2>(vertices, 3), conf);
 
             BodyDef bd;
             bd.type = BodyType::Dynamic;
             bd.angularDamping = 2_Hz;
             bd.linearDamping = 0.5_Hz;
-            bd.location = Length2D{0_m, 2_m};
+            bd.location = Length2{0_m, 2_m};
             bd.angle = Pi * 1_rad;
             bd.allowSleep = false;
             m_body = m_world.CreateBody(bd);
@@ -124,7 +124,7 @@ public:
             {
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
-                bd.location = Length2D{0_m, (5.0f + 1.54f * i) * 1_m};
+                bd.location = Length2{0_m, (5.0f + 1.54f * i) * 1_m};
                 const auto body = m_world.CreateBody(bd);
 
                 body->CreateFixture(shape);
@@ -138,8 +138,8 @@ public:
                 const auto radius = Length{Real{std::sqrt(Real{radiusSquaredUnitless})} * 1_m};
 
                 FrictionJointDef jd;
-                jd.localAnchorA = Vec2_zero * 1_m;
-                jd.localAnchorB = Vec2_zero * 1_m;
+                jd.localAnchorA = Length2{};
+                jd.localAnchorB = Length2{};
                 jd.bodyA = ground;
                 jd.bodyB = body;
                 jd.collideConnected = true;

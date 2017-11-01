@@ -39,7 +39,7 @@ TEST(PolygonShape, DefaultConstruction)
 {
     PolygonShape shape;
     EXPECT_EQ(shape.GetVertexCount(), 0);
-    EXPECT_EQ(shape.GetCentroid(), (Length2D{}));
+    EXPECT_EQ(shape.GetCentroid(), (Length2{}));
     EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
 }
@@ -85,12 +85,12 @@ TEST(PolygonShape, BaseVisitorForDiskShape)
 
 TEST(PolygonShape, FindLowestRightMostVertex)
 {
-    Length2D vertices[4];
+    Length2 vertices[4];
     
-    vertices[0] = Length2D{Real(0) * Meter, +Real(1) * Meter};
-    vertices[1] = Vec2{-1, -2} * (Real(1) * Meter);
-    vertices[2] = Vec2{+3, -4} * (Real(1) * Meter);
-    vertices[3] = Vec2{+2, +2} * (Real(1) * Meter);
+    vertices[0] = Length2{0_m, +1_m};
+    vertices[1] = Vec2{-1, -2} * Meter;
+    vertices[2] = Vec2{+3, -4} * Meter;
+    vertices[3] = Vec2{+2, +2} * Meter;
 
     const auto index = FindLowestRightMostVertex(vertices);
     
@@ -99,11 +99,11 @@ TEST(PolygonShape, FindLowestRightMostVertex)
 
 TEST(PolygonShape, BoxConstruction)
 {
-    const auto hx = Real(2.3) * Meter;
-    const auto hy = Real(54.1) * Meter;
+    const auto hx = 2.3_m;
+    const auto hy = 54.1_m;
     const auto shape = PolygonShape{hx, hy};
 
-    EXPECT_EQ(shape.GetCentroid(), (Length2D{}));
+    EXPECT_EQ(shape.GetCentroid(), (Length2{}));
     EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
 
@@ -111,10 +111,10 @@ TEST(PolygonShape, BoxConstruction)
     
     // vertices go counter-clockwise from lowest right-most (and normals follow their edges)...
 
-    EXPECT_EQ(shape.GetVertex(0), Length2D(hx, -hy)); // bottom right
-    EXPECT_EQ(shape.GetVertex(1), Length2D(hx, hy)); // top right
-    EXPECT_EQ(shape.GetVertex(2), Length2D(-hx, hy)); // top left
-    EXPECT_EQ(shape.GetVertex(3), Length2D(-hx, -hy)); // bottom left
+    EXPECT_EQ(shape.GetVertex(0), Length2(hx, -hy)); // bottom right
+    EXPECT_EQ(shape.GetVertex(1), Length2(hx, hy)); // top right
+    EXPECT_EQ(shape.GetVertex(2), Length2(-hx, hy)); // top left
+    EXPECT_EQ(shape.GetVertex(3), Length2(-hx, -hy)); // bottom left
 
     EXPECT_EQ(shape.GetNormal(0) * Real{1}, Vec2(+1, 0));
     EXPECT_EQ(shape.GetNormal(1) * Real{1}, Vec2(0, +1));
@@ -126,20 +126,20 @@ TEST(PolygonShape, BoxConstruction)
 
 TEST(PolygonShape, Copy)
 {
-    const auto hx = Real(2.3) * Meter;
-    const auto hy = Real(54.1) * Meter;
+    const auto hx = 2.3_m;
+    const auto hy = 54.1_m;
     
     auto shape = PolygonShape{hx, hy};
-    ASSERT_EQ(shape.GetCentroid(), (Length2D{}));
+    ASSERT_EQ(shape.GetCentroid(), (Length2{}));
     ASSERT_EQ(shape.GetChildCount(), ChildCounter(1));
     ASSERT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
     ASSERT_EQ(shape.GetVertexCount(), PolygonShape::VertexCounter(4));
     
     // vertices go counter-clockwise from lowest right-most (and normals follow their edges)...
-    ASSERT_EQ(shape.GetVertex(0), Length2D(hx, -hy)); // bottom right
-    ASSERT_EQ(shape.GetVertex(1), Length2D(hx, hy)); // top right
-    ASSERT_EQ(shape.GetVertex(2), Length2D(-hx, hy)); // top left
-    ASSERT_EQ(shape.GetVertex(3), Length2D(-hx, -hy)); // bottom left
+    ASSERT_EQ(shape.GetVertex(0), Length2(hx, -hy)); // bottom right
+    ASSERT_EQ(shape.GetVertex(1), Length2(hx, hy)); // top right
+    ASSERT_EQ(shape.GetVertex(2), Length2(-hx, hy)); // top left
+    ASSERT_EQ(shape.GetVertex(3), Length2(-hx, -hy)); // bottom left
     
     ASSERT_EQ(shape.GetNormal(0) * Real{1}, Vec2(+1, 0));
     ASSERT_EQ(shape.GetNormal(1) * Real{1}, Vec2(0, +1));
@@ -149,7 +149,7 @@ TEST(PolygonShape, Copy)
     const auto copy = shape;
     
     EXPECT_EQ(typeid(copy), typeid(shape));
-    EXPECT_EQ(copy.GetCentroid(), (Length2D{}));
+    EXPECT_EQ(copy.GetCentroid(), (Length2{}));
     EXPECT_EQ(copy.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(copy), PolygonShape::GetDefaultVertexRadius());
     
@@ -157,10 +157,10 @@ TEST(PolygonShape, Copy)
     
     // vertices go counter-clockwise from lowest right-most (and normals follow their edges)...
     
-    EXPECT_EQ(copy.GetVertex(0), Length2D(hx, -hy)); // bottom right
-    EXPECT_EQ(copy.GetVertex(1), Length2D(hx, hy)); // top right
-    EXPECT_EQ(copy.GetVertex(2), Length2D(-hx, hy)); // top left
-    EXPECT_EQ(copy.GetVertex(3), Length2D(-hx, -hy)); // bottom left
+    EXPECT_EQ(copy.GetVertex(0), Length2(hx, -hy)); // bottom right
+    EXPECT_EQ(copy.GetVertex(1), Length2(hx, hy)); // top right
+    EXPECT_EQ(copy.GetVertex(2), Length2(-hx, hy)); // top left
+    EXPECT_EQ(copy.GetVertex(3), Length2(-hx, -hy)); // bottom left
     
     EXPECT_EQ(copy.GetNormal(0) * Real{1}, Vec2(+1, 0));
     EXPECT_EQ(copy.GetNormal(1) * Real{1}, Vec2(0, +1));
@@ -170,27 +170,27 @@ TEST(PolygonShape, Copy)
 
 TEST(PolygonShape, Translate)
 {
-    const auto hx = Real(2.3) * Meter;
-    const auto hy = Real(54.1) * Meter;
+    const auto hx = 2.3_m;
+    const auto hy = 54.1_m;
     
     auto shape = PolygonShape{hx, hy};
-    ASSERT_EQ(shape.GetCentroid(), (Length2D{}));
+    ASSERT_EQ(shape.GetCentroid(), (Length2{}));
     ASSERT_EQ(shape.GetChildCount(), ChildCounter(1));
     ASSERT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
     ASSERT_EQ(shape.GetVertexCount(), PolygonShape::VertexCounter(4));
     
     // vertices go counter-clockwise from lowest right-most (and normals follow their edges)...
-    ASSERT_EQ(shape.GetVertex(0), Length2D(hx, -hy)); // bottom right
-    ASSERT_EQ(shape.GetVertex(1), Length2D(hx, hy)); // top right
-    ASSERT_EQ(shape.GetVertex(2), Length2D(-hx, hy)); // top left
-    ASSERT_EQ(shape.GetVertex(3), Length2D(-hx, -hy)); // bottom left
+    ASSERT_EQ(shape.GetVertex(0), Length2(hx, -hy)); // bottom right
+    ASSERT_EQ(shape.GetVertex(1), Length2(hx, hy)); // top right
+    ASSERT_EQ(shape.GetVertex(2), Length2(-hx, hy)); // top left
+    ASSERT_EQ(shape.GetVertex(3), Length2(-hx, -hy)); // bottom left
     
     ASSERT_EQ(shape.GetNormal(0) * Real{1}, Vec2(+1, 0));
     ASSERT_EQ(shape.GetNormal(1) * Real{1}, Vec2(0, +1));
     ASSERT_EQ(shape.GetNormal(2) * Real{1}, Vec2(-1, 0));
     ASSERT_EQ(shape.GetNormal(3) * Real{1}, Vec2(0, -1));
     
-    const auto new_ctr = Length2D{-Real(3) * Meter, Real(67) * Meter};
+    const auto new_ctr = Length2{-3_m, 67_m};
     shape.Transform(Transformation{new_ctr, UnitVec2::GetRight()});
     
     EXPECT_EQ(shape.GetCentroid(), new_ctr);
@@ -199,10 +199,10 @@ TEST(PolygonShape, Translate)
 
     ASSERT_EQ(shape.GetVertexCount(), PolygonShape::VertexCounter(4));
 
-    EXPECT_EQ(shape.GetVertex(0), Length2D(hx, -hy) + new_ctr); // bottom right
-    EXPECT_EQ(shape.GetVertex(1), Length2D(hx, hy) + new_ctr); // top right
-    EXPECT_EQ(shape.GetVertex(2), Length2D(-hx, hy) + new_ctr); // top left
-    EXPECT_EQ(shape.GetVertex(3), Length2D(-hx, -hy) + new_ctr); // bottom left
+    EXPECT_EQ(shape.GetVertex(0), Length2(hx, -hy) + new_ctr); // bottom right
+    EXPECT_EQ(shape.GetVertex(1), Length2(hx, hy) + new_ctr); // top right
+    EXPECT_EQ(shape.GetVertex(2), Length2(-hx, hy) + new_ctr); // top left
+    EXPECT_EQ(shape.GetVertex(3), Length2(-hx, -hy) + new_ctr); // bottom left
 
     EXPECT_EQ(shape.GetNormal(0) * Real{1}, Vec2(+1, 0));
     EXPECT_EQ(shape.GetNormal(1) * Real{1}, Vec2(0, +1));
@@ -212,11 +212,11 @@ TEST(PolygonShape, Translate)
 
 TEST(PolygonShape, SetAsBox)
 {
-    const auto hx = Real(2.3) * Meter;
-    const auto hy = Real(54.1) * Meter;
+    const auto hx = 2.3_m;
+    const auto hy = 54.1_m;
     PolygonShape shape;
     shape.SetAsBox(hx, hy);
-    EXPECT_EQ(shape.GetCentroid(), (Length2D{}));
+    EXPECT_EQ(shape.GetCentroid(), (Length2{}));
     EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
     
@@ -224,10 +224,10 @@ TEST(PolygonShape, SetAsBox)
     
     // vertices go counter-clockwise from lowest right-most (and normals follow their edges)...
     
-    EXPECT_EQ(shape.GetVertex(0), Length2D(hx, -hy)); // bottom right
-    EXPECT_EQ(shape.GetVertex(1), Length2D(hx, hy)); // top right
-    EXPECT_EQ(shape.GetVertex(2), Length2D(-hx, hy)); // top left
-    EXPECT_EQ(shape.GetVertex(3), Length2D(-hx, -hy)); // bottom left
+    EXPECT_EQ(shape.GetVertex(0), Length2(hx, -hy)); // bottom right
+    EXPECT_EQ(shape.GetVertex(1), Length2(hx, hy)); // top right
+    EXPECT_EQ(shape.GetVertex(2), Length2(-hx, hy)); // top left
+    EXPECT_EQ(shape.GetVertex(3), Length2(-hx, -hy)); // bottom left
     
     EXPECT_EQ(shape.GetNormal(0) * Real{1}, Vec2(+1, 0));
     EXPECT_EQ(shape.GetNormal(1) * Real{1}, Vec2(0, +1));
@@ -237,11 +237,11 @@ TEST(PolygonShape, SetAsBox)
 
 TEST(PolygonShape, SetAsZeroCenteredRotatedBox)
 {
-    const auto hx = Real(2.3) * Meter;
-    const auto hy = Real(54.1) * Meter;
+    const auto hx = 2.3_m;
+    const auto hy = 54.1_m;
     PolygonShape shape;
-    SetAsBox(shape, hx, hy, Length2D{}, Angle{0});
-    EXPECT_EQ(shape.GetCentroid(), (Length2D{}));
+    SetAsBox(shape, hx, hy, Length2{}, Angle{0});
+    EXPECT_EQ(shape.GetCentroid(), (Length2{}));
     EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
     
@@ -249,10 +249,10 @@ TEST(PolygonShape, SetAsZeroCenteredRotatedBox)
     
     // vertices go counter-clockwise from lowest right-most (and normals follow their edges)...
     
-    EXPECT_EQ(shape.GetVertex(0), Length2D(hx, -hy)); // bottom right
-    EXPECT_EQ(shape.GetVertex(1), Length2D(hx, hy)); // top right
-    EXPECT_EQ(shape.GetVertex(2), Length2D(-hx, hy)); // top left
-    EXPECT_EQ(shape.GetVertex(3), Length2D(-hx, -hy)); // bottom left
+    EXPECT_EQ(shape.GetVertex(0), Length2(hx, -hy)); // bottom right
+    EXPECT_EQ(shape.GetVertex(1), Length2(hx, hy)); // top right
+    EXPECT_EQ(shape.GetVertex(2), Length2(-hx, hy)); // top left
+    EXPECT_EQ(shape.GetVertex(3), Length2(-hx, -hy)); // bottom left
     
     EXPECT_EQ(shape.GetNormal(0) * Real{1}, Vec2(+1, 0));
     EXPECT_EQ(shape.GetNormal(1) * Real{1}, Vec2(0, +1));
@@ -262,13 +262,13 @@ TEST(PolygonShape, SetAsZeroCenteredRotatedBox)
 
 TEST(PolygonShape, SetAsCenteredBox)
 {
-    const auto hx = Real(2.3) * Meter;
-    const auto hy = Real(54.1) * Meter;
+    const auto hx = 2.3_m;
+    const auto hy = 54.1_m;
     PolygonShape shape;
-    const auto x_off = Real(10.2) * Meter;
-    const auto y_off = Real(-5) * Meter;
-    SetAsBox(shape, hx, hy, Length2D(x_off, y_off), Angle{0});
-    EXPECT_EQ(shape.GetCentroid(), Length2D(x_off, y_off));
+    const auto x_off = 10.2_m;
+    const auto y_off = -5_m;
+    SetAsBox(shape, hx, hy, Length2(x_off, y_off), Angle{0});
+    EXPECT_EQ(shape.GetCentroid(), Length2(x_off, y_off));
     EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
     
@@ -276,10 +276,10 @@ TEST(PolygonShape, SetAsCenteredBox)
     
     // vertices go counter-clockwise from lowest right-most (and normals follow their edges)...
     
-    EXPECT_EQ(shape.GetVertex(0), Length2D(hx + x_off, -hy + y_off)); // bottom right
-    EXPECT_EQ(shape.GetVertex(1), Length2D(hx + x_off, hy + y_off)); // top right
-    EXPECT_EQ(shape.GetVertex(2), Length2D(-hx + x_off, hy + y_off)); // top left
-    EXPECT_EQ(shape.GetVertex(3), Length2D(-hx + x_off, -hy + y_off)); // bottom left
+    EXPECT_EQ(shape.GetVertex(0), Length2(hx + x_off, -hy + y_off)); // bottom right
+    EXPECT_EQ(shape.GetVertex(1), Length2(hx + x_off, hy + y_off)); // top right
+    EXPECT_EQ(shape.GetVertex(2), Length2(-hx + x_off, hy + y_off)); // top left
+    EXPECT_EQ(shape.GetVertex(3), Length2(-hx + x_off, -hy + y_off)); // bottom left
     
     EXPECT_EQ(shape.GetNormal(0) * Real{1}, Vec2(+1, 0));
     EXPECT_EQ(shape.GetNormal(1) * Real{1}, Vec2(0, +1));
@@ -293,10 +293,10 @@ TEST(PolygonShape, SetAsBoxAngledDegrees90)
     const auto hy = Real(54.1);
     PolygonShape shape;
     const auto angle = 90_deg;
-    SetAsBox(shape, hx * Meter, hy * Meter, Length2D{}, angle);
+    SetAsBox(shape, hx * Meter, hy * Meter, Length2{}, angle);
 
-    EXPECT_EQ(GetX(shape.GetCentroid()), Real(0) * Meter);
-    EXPECT_EQ(GetY(shape.GetCentroid()), Real(0) * Meter);
+    EXPECT_EQ(GetX(shape.GetCentroid()), 0_m);
+    EXPECT_EQ(GetY(shape.GetCentroid()), 0_m);
     EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
     
@@ -329,12 +329,12 @@ TEST(PolygonShape, SetAsBoxAngledDegrees90)
 TEST(PolygonShape, SetPoints)
 {
     PolygonShape shape;
-    const auto points = Vector<const Length2D, 5>{
-        Vec2{-1, +2} * (Real(1) * Meter),
-        Vec2{+3, +3} * (Real(1) * Meter),
-        Vec2{+2, -1} * (Real(1) * Meter),
-        Vec2{-1, -2} * (Real(1) * Meter),
-        Vec2{-4, -1} * (Real(1) * Meter)
+    const auto points = Vector<const Length2, 5>{
+        Vec2{-1, +2} * Meter,
+        Vec2{+3, +3} * Meter,
+        Vec2{+2, -1} * Meter,
+        Vec2{-1, -2} * Meter,
+        Vec2{-4, -1} * Meter
     };
     shape.Set(points);
     
@@ -353,11 +353,11 @@ TEST(PolygonShape, SetPoints)
 
 TEST(PolygonShape, CanSetTwoPoints)
 {
-    const auto points = Vector<const Length2D, 2>{
-        Vec2{-1, +0} * (Real(1) * Meter),
-        Vec2{+1, +0} * (Real(1) * Meter)
+    const auto points = Vector<const Length2, 2>{
+        Vec2{-1, +0} * Meter,
+        Vec2{+1, +0} * Meter
     };
-    const auto vertexRadius = Real(2) * Meter;
+    const auto vertexRadius = 2_m;
     PolygonShape shape;
     shape.SetVertexRadius(vertexRadius);
     shape.Set(points);
@@ -372,7 +372,7 @@ TEST(PolygonShape, CanSetTwoPoints)
                 +0.0, 1.0/100000.0);
     EXPECT_NEAR(static_cast<double>(GetY(GetVec2(shape.GetNormal(1)))),
                 -1.0, 1.0/100000.0);
-    EXPECT_EQ(shape.GetCentroid(), Average(Span<const Length2D>(points.data(), points.size())));
+    EXPECT_EQ(shape.GetCentroid(), Average(Span<const Length2>(points.data(), points.size())));
     EXPECT_EQ(shape.GetVertexRadius(), vertexRadius);
 
     EXPECT_TRUE(Validate(shape));
@@ -380,8 +380,8 @@ TEST(PolygonShape, CanSetTwoPoints)
 
 TEST(PolygonShape, CanSetOnePoint)
 {
-    const auto points = Vector<const Length2D, 1>{Length2D{}};
-    const auto vertexRadius = Real(2) * Meter;
+    const auto points = Vector<const Length2, 1>{Length2{}};
+    const auto vertexRadius = 2_m;
     PolygonShape shape;
     shape.SetVertexRadius(vertexRadius);
     shape.Set(points);

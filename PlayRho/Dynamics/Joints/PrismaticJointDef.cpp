@@ -25,7 +25,7 @@
 
 namespace playrho {
 
-PrismaticJointDef::PrismaticJointDef(NonNull<Body*> bA, NonNull<Body*> bB, const Length2D anchor,
+PrismaticJointDef::PrismaticJointDef(NonNull<Body*> bA, NonNull<Body*> bB, const Length2 anchor,
                                      const UnitVec2 axis) noexcept:
     super{super{JointType::Prismatic}.UseBodyA(bA).UseBodyB(bB)},
     localAnchorA{GetLocalPoint(*bA, anchor)},

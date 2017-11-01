@@ -95,7 +95,7 @@ TEST(MultiShape, BaseVisitorForDiskShape)
 TEST(MultiShape, AddConvexHullWithOnePointSameAsDisk)
 {
     const auto defaultMassData = MassData{};
-    const auto center = Length2D(Real(1) * Meter, Real(-4) * Meter);
+    const auto center = Length2(1_m, -4_m);
 
     auto pointSet = VertexSet{};
     ASSERT_EQ(pointSet.size(), std::size_t(0));
@@ -104,7 +104,7 @@ TEST(MultiShape, AddConvexHullWithOnePointSameAsDisk)
 
     auto conf = MultiShape::Conf{};
     conf.density = 2.3_kgpm2;
-    conf.vertexRadius = Real(0.7f) * Meter;
+    conf.vertexRadius = 0.7_m;
 
     auto foo = MultiShape{conf};
     ASSERT_EQ(foo.GetChildCount(), ChildCounter{0});
@@ -129,8 +129,8 @@ TEST(MultiShape, AddConvexHullWithOnePointSameAsDisk)
 TEST(MultiShape, AddConvexHullWithTwoPointsSameAsEdge)
 {
     const auto defaultMassData = MassData{};
-    const auto p0 = Length2D(Real(1) * Meter, Real(-4) * Meter);
-    const auto p1 = Length2D(Real(1) * Meter, Real(+4) * Meter);
+    const auto p0 = Length2(1_m, -4_m);
+    const auto p1 = Length2(1_m, +4_m);
     
     auto pointSet = VertexSet{};
     ASSERT_EQ(pointSet.size(), std::size_t(0));
@@ -140,7 +140,7 @@ TEST(MultiShape, AddConvexHullWithTwoPointsSameAsEdge)
     
     auto conf = MultiShape::Conf{};
     conf.density = 2.3_kgpm2;
-    conf.vertexRadius = Real(0.7f) * Meter;
+    conf.vertexRadius = 0.7_m;
     
     auto foo = MultiShape{conf};
     ASSERT_EQ(foo.GetChildCount(), ChildCounter{0});
@@ -171,15 +171,15 @@ TEST(MultiShape, AddConvexHullWithTwoPointsSameAsEdge)
 TEST(MultiShape, AddTwoConvexHullWithOnePoint)
 {
     const auto defaultMassData = MassData{};
-    const auto p0 = Length2D(Real(1) * Meter, Real(-4) * Meter);
-    const auto p1 = Length2D(Real(1) * Meter, Real(+4) * Meter);
+    const auto p0 = Length2(1_m, -4_m);
+    const auto p1 = Length2(1_m, +4_m);
 
     auto pointSet = VertexSet{};
     ASSERT_EQ(pointSet.size(), std::size_t(0));
 
     auto conf = MultiShape::Conf{};
     conf.density = 2.3_kgpm2;
-    conf.vertexRadius = Real(0.7f) * Meter;
+    conf.vertexRadius = 0.7_m;
     
     auto foo = MultiShape{conf};
     ASSERT_EQ(foo.GetChildCount(), ChildCounter{0});

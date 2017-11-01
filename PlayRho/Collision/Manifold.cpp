@@ -279,7 +279,7 @@ Manifold GetFaceManifold(const Manifold::Type type,
 
 Manifold CollideShapes(Manifold::Type type, Length totalRadius,
                        const DistanceProxy& shape, const Transformation& sxf,
-                       Length2D point, const Transformation& xfm)
+                       Length2 point, const Transformation& xfm)
 {
     // Computes the center of the circle in the frame of the polygon.
     const auto cLocal = InverseTransform(Transform(point, xfm), sxf); ///< Center of circle in frame of polygon.
@@ -390,8 +390,8 @@ Manifold CollideShapes(Manifold::Type type, Length totalRadius,
     return Manifold{};
 }
 
-inline Manifold CollideShapes(Length2D locationA, const Transformation& xfA,
-                              Length2D locationB, const Transformation& xfB,
+inline Manifold CollideShapes(Length2 locationA, const Transformation& xfA,
+                              Length2 locationB, const Transformation& xfB,
                               Length totalRadius) noexcept
 {
     const auto pA = Transform(locationA, xfA);
@@ -505,8 +505,8 @@ Manifold CollideCached(const DistanceProxy& shapeA, const Transformation& xfA,
 
     if (vertexCountShapeA == 4 && vertexCountShapeB == 4)
     {
-        Length2D verticesA[4];
-        Length2D verticesB[4];
+        Length2 verticesA[4];
+        Length2 verticesB[4];
         UnitVec2 normalsA[4];
         UnitVec2 normalsB[4];
         
@@ -782,7 +782,7 @@ Manifold GetManifold(const DistanceProxy& proxyA, const Transformation& transfor
             case 3:
             {
                 const auto ln = UnitVec2::GetLeft();
-                const auto lp = Length2D{};
+                const auto lp = Length2{};
                 return Manifold::GetForFaceA(ln, lp);
             }
             default:
@@ -915,7 +915,7 @@ bool operator!=(const Manifold& lhs, const Manifold& rhs) noexcept
 }
 
 #if 0
-Length2D GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type type,
+Length2 GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type type,
                                 ContactFeature::Index index)
 {
     switch (type)
@@ -927,7 +927,7 @@ Length2D GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type type,
             return proxy.GetVertex(index);
         }
     }
-    return GetInvalid<Length2D>();
+    return GetInvalid<Length2>();
 }
 #endif
 
