@@ -38,10 +38,13 @@ namespace playrho
 
 /// @brief Vector.
 /// @details This is a <code>constexpr</code> and constructor enhanced
-///   <code>std::array</code>-like template class for C++14 that comes with non-member
-///   arithmetic operator support.
+///   <code>std::array</code>-like template class for types supporting the +, -, *, /
+///   arithmetic operators ("arithmetic types" as defined by the <code>IsArithmetic</code>
+///   type trait) that itself comes with non-member arithmetic operator support making
+///   Vector instances arithmetic types as well.
 /// @note This type is trivially default constructible - i.e. default construction
 ///   performs no actions (no initialization).
+/// @sa IsArithmetic
 template <typename T, std::size_t N>
 struct Vector
 {
@@ -91,7 +94,7 @@ struct Vector
     constexpr explicit Vector(typename std::enable_if<sizeof...(Tail)+1 == N, T>::type
                      head, Tail... tail) noexcept: elements{head, T(tail)...}
     {
-        //static_assert(sizeof...(args) == N, "Invalid number of arguments");
+        // Intentionally empty.
     }
 
     /// @brief Gets the max size.

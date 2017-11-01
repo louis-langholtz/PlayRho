@@ -362,6 +362,9 @@ inline auto GetLength(T value)
 /// @note This operation is commutative. I.e. Dot(a, b) == Dot(b, a).
 /// @note If A and B are the same vectors, GetLengthSquared(Vec2) returns the same value
 ///   using effectively one less input parameter.
+/// @note This is similar to the <code>std::inner_product</code> standard library algorithm
+///   except benchmark tests suggest this implementation is faster at least for
+///   <code>Vec2</code> like instances.
 ///
 /// @sa https://en.wikipedia.org/wiki/Dot_product
 ///
