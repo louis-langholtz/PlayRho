@@ -88,9 +88,9 @@ TEST(PolygonShape, FindLowestRightMostVertex)
     Length2 vertices[4];
     
     vertices[0] = Length2{Real(0) * Meter, +Real(1) * Meter};
-    vertices[1] = Vec2{-1, -2} * (Real(1) * Meter);
-    vertices[2] = Vec2{+3, -4} * (Real(1) * Meter);
-    vertices[3] = Vec2{+2, +2} * (Real(1) * Meter);
+    vertices[1] = Vec2{-1, -2} * Meter;
+    vertices[2] = Vec2{+3, -4} * Meter;
+    vertices[3] = Vec2{+2, +2} * Meter;
 
     const auto index = FindLowestRightMostVertex(vertices);
     
@@ -330,11 +330,11 @@ TEST(PolygonShape, SetPoints)
 {
     PolygonShape shape;
     const auto points = Vector<const Length2, 5>{
-        Vec2{-1, +2} * (Real(1) * Meter),
-        Vec2{+3, +3} * (Real(1) * Meter),
-        Vec2{+2, -1} * (Real(1) * Meter),
-        Vec2{-1, -2} * (Real(1) * Meter),
-        Vec2{-4, -1} * (Real(1) * Meter)
+        Vec2{-1, +2} * Meter,
+        Vec2{+3, +3} * Meter,
+        Vec2{+2, -1} * Meter,
+        Vec2{-1, -2} * Meter,
+        Vec2{-4, -1} * Meter
     };
     shape.Set(points);
     
@@ -354,8 +354,8 @@ TEST(PolygonShape, SetPoints)
 TEST(PolygonShape, CanSetTwoPoints)
 {
     const auto points = Vector<const Length2, 2>{
-        Vec2{-1, +0} * (Real(1) * Meter),
-        Vec2{+1, +0} * (Real(1) * Meter)
+        Vec2{-1, +0} * Meter,
+        Vec2{+1, +0} * Meter
     };
     const auto vertexRadius = Real(2) * Meter;
     PolygonShape shape;

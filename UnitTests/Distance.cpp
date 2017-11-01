@@ -461,10 +461,10 @@ TEST(Distance, VerEdgeSquareTouching)
 
 TEST(Distance, SquareTwice)
 {
-    const auto pos1 = Vec2{2, 2} * (Real(1) * Meter);
-    const auto pos2 = Vec2{2, 4} * (Real(1) * Meter);
-    const auto pos3 = Vec2{4, 4} * (Real(1) * Meter);
-    const auto pos4 = Vec2{4, 2} * (Real(1) * Meter);
+    const auto pos1 = Vec2{2, 2} * Meter;
+    const auto pos2 = Vec2{2, 4} * Meter;
+    const auto pos3 = Vec2{4, 4} * Meter;
+    const auto pos4 = Vec2{4, 2} * Meter;
     const Length2 square[] = {pos1, pos2, pos3, pos4};
     const auto n1 = GetUnitVector(pos2 - pos1);
     const auto n2 = GetUnitVector(pos3 - pos2);
@@ -501,10 +501,10 @@ TEST(Distance, SquareTwice)
 
 TEST(Distance, SquareSquareTouchingVertically)
 {
-    const auto pos1 = Vec2{2, 2} * (Real(1) * Meter);
-    const auto pos2 = Vec2{2, 4} * (Real(1) * Meter);
-    const auto pos3 = Vec2{4, 4} * (Real(1) * Meter);
-    const auto pos4 = Vec2{4, 2} * (Real(1) * Meter);
+    const auto pos1 = Vec2{2, 2} * Meter;
+    const auto pos2 = Vec2{2, 4} * Meter;
+    const auto pos3 = Vec2{4, 4} * Meter;
+    const auto pos4 = Vec2{4, 2} * Meter;
     const Length2 square[] = {pos1, pos2, pos3, pos4};
     const auto n1 = GetUnitVector(pos2 - pos1);
     const auto n2 = GetUnitVector(pos3 - pos2);
@@ -513,10 +513,10 @@ TEST(Distance, SquareSquareTouchingVertically)
     const UnitVec2 squareNormals[] = {n1, n2, n3, n4};
     DistanceProxy dp1{Real(0.05) * Meter, 4, square, squareNormals};
     
-    const auto pos5 = Vec2{4, 2} * (Real(1) * Meter);
-    const auto pos6 = Vec2{4, 4} * (Real(1) * Meter);
-    const auto pos7 = Vec2{6, 4} * (Real(1) * Meter);
-    const auto pos8 = Vec2{6, 2} * (Real(1) * Meter);
+    const auto pos5 = Vec2{4, 2} * Meter;
+    const auto pos6 = Vec2{4, 4} * Meter;
+    const auto pos7 = Vec2{6, 4} * Meter;
+    const auto pos8 = Vec2{6, 2} * Meter;
     const Length2 square2[] = {pos5, pos6, pos7, pos8};
     const auto n5 = GetUnitVector(pos6 - pos5);
     const auto n6 = GetUnitVector(pos7 - pos6);
@@ -552,10 +552,10 @@ TEST(Distance, SquareSquareTouchingVertically)
 
 TEST(Distance, SquareSquareDiagonally)
 {
-    const auto pos1 = Vec2{-3, -3} * (Real(1) * Meter);
-    const auto pos2 = Vec2{-3, -1} * (Real(1) * Meter);
-    const auto pos3 = Vec2{-1, -1} * (Real(1) * Meter);
-    const auto pos4 = Vec2{-1, -3} * (Real(1) * Meter);
+    const auto pos1 = Vec2{-3, -3} * Meter;
+    const auto pos2 = Vec2{-3, -1} * Meter;
+    const auto pos3 = Vec2{-1, -1} * Meter;
+    const auto pos4 = Vec2{-1, -3} * Meter;
     const Length2 square1[] = {pos1, pos2, pos3, pos4};
     const auto n1 = GetUnitVector(pos2 - pos1);
     const auto n2 = GetUnitVector(pos3 - pos2);
@@ -564,10 +564,10 @@ TEST(Distance, SquareSquareDiagonally)
     const UnitVec2 normals1[] = {n1, n2, n3, n4};
     DistanceProxy dp1{Real(0.05) * Meter, 4, square1, normals1};
     
-    const auto pos5 = Vec2{1, 3} * (Real(1) * Meter);
-    const auto pos6 = Vec2{3, 3} * (Real(1) * Meter);
-    const auto pos7 = Vec2{3, 1} * (Real(1) * Meter);
-    const auto pos8 = Vec2{1, 1} * (Real(1) * Meter);
+    const auto pos5 = Vec2{1, 3} * Meter;
+    const auto pos6 = Vec2{3, 3} * Meter;
+    const auto pos7 = Vec2{3, 1} * Meter;
+    const auto pos8 = Vec2{1, 1} * Meter;
     const Length2 square2[] = {pos5, pos6, pos7, pos8};
     const auto n5 = GetUnitVector(pos6 - pos5);
     const auto n6 = GetUnitVector(pos7 - pos6);
@@ -615,10 +615,10 @@ TEST(Distance, SquareSquareOverlappingDiagnally)
      *  +-----3-+
      */
     // Go counter-clockwise...
-    const auto pos1 = Vec2{-3, 1} * (Real(1) * Meter);
-    const auto pos2 = Vec2{-3, -3} * (Real(1) * Meter);
-    const auto pos3 = Vec2{1, -3} * (Real(1) * Meter);
-    const auto pos4 = Vec2{1, 1} * (Real(1) * Meter);
+    const auto pos1 = Vec2{-3, 1} * Meter;
+    const auto pos2 = Vec2{-3, -3} * Meter;
+    const auto pos3 = Vec2{1, -3} * Meter;
+    const auto pos4 = Vec2{1, 1} * Meter;
     const Length2 square1[] = {pos1, pos2, pos3, pos4};
     const auto n1 = GetUnitVector(pos2 - pos1);
     const auto n2 = GetUnitVector(pos3 - pos2);
@@ -639,10 +639,10 @@ TEST(Distance, SquareSquareOverlappingDiagnally)
      *  +-1-----+
      */
     // Go counter-clockwise...
-    const auto pos5 = Vec2{3, 3} * (Real(1) * Meter);
-    const auto pos6 = Vec2{-1, 3} * (Real(1) * Meter);
-    const auto pos7 = Vec2{-1, -1} * (Real(1) * Meter);
-    const auto pos8 = Vec2{-1, 3} * (Real(1) * Meter);
+    const auto pos5 = Vec2{3, 3} * Meter;
+    const auto pos6 = Vec2{-1, 3} * Meter;
+    const auto pos7 = Vec2{-1, -1} * Meter;
+    const auto pos8 = Vec2{-1, 3} * Meter;
     const Length2 square2[] = {pos5, pos6, pos7, pos8};
     const auto n5 = GetUnitVector(pos6 - pos5);
     const auto n6 = GetUnitVector(pos7 - pos6);

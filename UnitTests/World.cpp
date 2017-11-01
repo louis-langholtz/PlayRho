@@ -237,7 +237,7 @@ TEST(World, CopyConstruction)
     
     const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}
                                                    .UseDensity(1_kgpm2)
-                                                   .UseVertexRadius(Real(1) * Meter));
+                                                   .UseVertexRadius(1_m));
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
     b1->CreateFixture(shape);
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
@@ -295,7 +295,7 @@ TEST(World, CopyAssignment)
     
     const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}
                                                    .UseDensity(1_kgpm2)
-                                                   .UseVertexRadius(Real(1) * Meter));
+                                                   .UseVertexRadius(1_m));
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
     b1->CreateFixture(shape);
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));

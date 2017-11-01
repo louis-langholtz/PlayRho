@@ -479,10 +479,10 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
     };
 
     const Length2 vertices[] = {
-        Vec2{14.5f, -0.5f} * (Real(1) * Meter),
-        Vec2{14.5f, +0.5f} * (Real(1) * Meter),
-        Vec2{13.5f, +0.5f} * (Real(1) * Meter),
-        Vec2{13.5f, -0.5f} * (Real(1) * Meter)
+        Vec2{14.5f, -0.5f} * Meter,
+        Vec2{14.5f, +0.5f} * Meter,
+        Vec2{13.5f, +0.5f} * Meter,
+        Vec2{13.5f, -0.5f} * Meter
     };
 
     const UnitVec2 normals[] = {

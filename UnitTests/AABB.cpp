@@ -41,8 +41,8 @@ TEST(AABB, ByteSizeIsTwiceVec2)
 TEST(AABB, DefaultConstruction)
 {
     const auto infinity = std::numeric_limits<Real>::infinity();
-    const auto lb = Vec2{infinity, infinity} * (Real(1) * Meter);
-    const auto ub = Vec2{-infinity, -infinity} * (Real(1) * Meter);
+    const auto lb = Vec2{infinity, infinity} * Meter;
+    const auto ub = Vec2{-infinity, -infinity} * Meter;
     const auto aabb = AABB{};
     EXPECT_EQ(GetLowerBound(aabb), lb);
     EXPECT_EQ(GetUpperBound(aabb), ub);

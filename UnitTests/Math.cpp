@@ -360,10 +360,10 @@ TEST(Math, ComputeCentroidCenteredR1)
     const auto hy = Real(1);
     const auto real_center = Vec2{0, 0};
     const auto vertices = {
-        (real_center + Vec2{hx, hy}) * (Real(1) * Meter),
-        (real_center + Vec2{-hx, +hy}) * (Real(1) * Meter),
-        (real_center - Vec2{hx, hy}) * (Real(1) * Meter),
-        (real_center + Vec2{+hx, -hy}) * (Real(1) * Meter),
+        (real_center + Vec2{hx, hy}) * Meter,
+        (real_center + Vec2{-hx, +hy}) * Meter,
+        (real_center - Vec2{hx, hy}) * Meter,
+        (real_center + Vec2{+hx, -hy}) * Meter,
     };
     const auto center = ComputeCentroid(vertices);
     EXPECT_EQ(GetX(center), GetX(real_center) * Meter);
@@ -389,10 +389,10 @@ TEST(Math, ComputeCentroidCentered0R1000)
     const auto hy = Real(1000);
     const auto real_center = Vec2{0, 0};
     const auto vertices = {
-        (real_center + Vec2{hx, hy}) * (Real(1) * Meter),
-        (real_center + Vec2{-hx, +hy}) * (Real(1) * Meter),
-        (real_center + Vec2{-hx, -hy}) * (Real(1) * Meter),
-        (real_center + Vec2{+hx, -hy}) * (Real(1) * Meter)
+        (real_center + Vec2{hx, hy}) * Meter,
+        (real_center + Vec2{-hx, +hy}) * Meter,
+        (real_center + Vec2{-hx, -hy}) * Meter,
+        (real_center + Vec2{+hx, -hy}) * Meter
     };
     const auto center = ComputeCentroid(vertices);
     
@@ -409,10 +409,10 @@ TEST(Math, ComputeCentroidUpRight1000R1)
     const auto hy = Real(1);
     const auto real_center = Vec2{1000, 1000};
     const auto vertices = {
-        (real_center + Vec2{+hx, +hy}) * (Real(1) * Meter),
-        (real_center + Vec2{-hx, +hy}) * (Real(1) * Meter),
-        (real_center + Vec2{-hx, -hy}) * (Real(1) * Meter),
-        (real_center + Vec2{+hx, -hy}) * (Real(1) * Meter)
+        (real_center + Vec2{+hx, +hy}) * Meter,
+        (real_center + Vec2{-hx, +hy}) * Meter,
+        (real_center + Vec2{-hx, -hy}) * Meter,
+        (real_center + Vec2{+hx, -hy}) * Meter
     };
     const auto center = ComputeCentroid(vertices);
     EXPECT_NEAR(double(Real{GetX(center) / Meter}), double(GetX(real_center)), 0.01);
@@ -429,10 +429,10 @@ TEST(Math, ComputeCentroidUpRight1000R100)
     const auto hy = Real(100);
     const auto real_center = Vec2{1000, 1000};
     const auto vertices = {
-        (real_center + Vec2{+hx, +hy}) * (Real(1) * Meter),
-        (real_center + Vec2{-hx, +hy}) * (Real(1) * Meter),
-        (real_center + Vec2{-hx, -hy}) * (Real(1) * Meter),
-        (real_center + Vec2{+hx, -hy}) * (Real(1) * Meter)
+        (real_center + Vec2{+hx, +hy}) * Meter,
+        (real_center + Vec2{-hx, +hy}) * Meter,
+        (real_center + Vec2{-hx, -hy}) * Meter,
+        (real_center + Vec2{+hx, -hy}) * Meter
     };
     const auto center = ComputeCentroid(vertices);
     EXPECT_NEAR(double(Real{GetX(center) / Meter}), double(GetX(real_center)), 0.01);
@@ -449,10 +449,10 @@ TEST(Math, ComputeCentroidUpRight10000R01)
     const auto hy = Real(0.1);
     const auto real_center = Vec2{10000, 10000};
     const auto vertices = {
-        (real_center + Vec2{+hx, +hy}) * (Real(1) * Meter),
-        (real_center + Vec2{-hx, +hy}) * (Real(1) * Meter),
-        (real_center + Vec2{-hx, -hy}) * (Real(1) * Meter),
-        (real_center + Vec2{+hx, -hy}) * (Real(1) * Meter)
+        (real_center + Vec2{+hx, +hy}) * Meter,
+        (real_center + Vec2{-hx, +hy}) * Meter,
+        (real_center + Vec2{-hx, -hy}) * Meter,
+        (real_center + Vec2{+hx, -hy}) * Meter
     };
     const auto center = ComputeCentroid(vertices);
     EXPECT_NEAR(double(Real{GetX(center) / Meter}), double(GetX(real_center)), 0.1);
@@ -469,10 +469,10 @@ TEST(Math, ComputeCentroidDownLeft1000R1)
     const auto hy = Real(1);
     const auto real_center = Vec2{-1000, -1000};
     const auto vertices = {
-        Vec2{GetX(real_center) + hx, GetY(real_center) + hy} * (Real(1) * Meter),
-        Vec2{GetX(real_center) - hx, GetY(real_center) + hy} * (Real(1) * Meter),
-        Vec2{GetX(real_center) - hx, GetY(real_center) - hy} * (Real(1) * Meter),
-        Vec2{GetX(real_center) + hx, GetY(real_center) - hy} * (Real(1) * Meter)
+        Vec2{GetX(real_center) + hx, GetY(real_center) + hy} * Meter,
+        Vec2{GetX(real_center) - hx, GetY(real_center) + hy} * Meter,
+        Vec2{GetX(real_center) - hx, GetY(real_center) - hy} * Meter,
+        Vec2{GetX(real_center) + hx, GetY(real_center) - hy} * Meter
     };
     const auto center = ComputeCentroid(vertices);
     EXPECT_NEAR(double(Real{GetX(center) / Meter}), double(GetX(real_center)), 0.01);
@@ -489,12 +489,12 @@ TEST(Math, ComputeCentroidOfHexagonalVertices)
     const auto hy = Real(1);
     const auto real_center = Vec2{-1000, -1000};
     const auto vertices = {
-        Vec2{GetX(real_center) + 00, GetY(real_center) + 2 * hy} * (Real(1) * Meter),
-        Vec2{GetX(real_center) - hx, GetY(real_center) + 1 * hy} * (Real(1) * Meter),
-        Vec2{GetX(real_center) - hx, GetY(real_center) - 1 * hy} * (Real(1) * Meter),
-        Vec2{GetX(real_center) + 00, GetY(real_center) - 2 * hy} * (Real(1) * Meter),
-        Vec2{GetX(real_center) + hx, GetY(real_center) - 1 * hy} * (Real(1) * Meter),
-        Vec2{GetX(real_center) + hx, GetY(real_center) + 1 * hy} * (Real(1) * Meter),
+        Vec2{GetX(real_center) + 00, GetY(real_center) + 2 * hy} * Meter,
+        Vec2{GetX(real_center) - hx, GetY(real_center) + 1 * hy} * Meter,
+        Vec2{GetX(real_center) - hx, GetY(real_center) - 1 * hy} * Meter,
+        Vec2{GetX(real_center) + 00, GetY(real_center) - 2 * hy} * Meter,
+        Vec2{GetX(real_center) + hx, GetY(real_center) - 1 * hy} * Meter,
+        Vec2{GetX(real_center) + hx, GetY(real_center) + 1 * hy} * Meter,
     };
     const auto center = ComputeCentroid(vertices);
     EXPECT_NEAR(double(Real{GetX(center) / Meter}), double(GetX(real_center)), 0.01);
@@ -618,7 +618,7 @@ TEST(Math, GetPosition)
     const auto y = Real{5.515012264251709e+00f};
     const auto value = Real{0.0866042823f};
 
-    const auto oldPos = Position{Vec2{x, y} * (Real(1) * Meter), 0_rad};
+    const auto oldPos = Position{Vec2{x, y} * Meter, 0_rad};
     const auto newPos = GetPosition(oldPos, oldPos, value);
     
     EXPECT_EQ(oldPos.linear, newPos.linear);
