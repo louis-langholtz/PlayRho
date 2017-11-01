@@ -29,7 +29,7 @@ PolygonShape::PolygonShape(Length hx, Length hy, const Conf& conf) noexcept:
     SetAsBox(hx, hy);
 }
 
-PolygonShape::PolygonShape(Span<const Length2D> points, const Conf& conf) noexcept:
+PolygonShape::PolygonShape(Span<const Length2> points, const Conf& conf) noexcept:
     Shape{conf}
 {
     Set(points);
@@ -38,19 +38,19 @@ PolygonShape::PolygonShape(Span<const Length2D> points, const Conf& conf) noexce
 MassData PolygonShape::GetMassData() const noexcept
 {
     return playrho::GetMassData(GetVertexRadius(), GetDensity(),
-                                Span<const Length2D>(m_vertices.data(), m_vertices.size()));
+                                Span<const Length2>(m_vertices.data(), m_vertices.size()));
 }
 
 void PolygonShape::SetAsBox(Length hx, Length hy) noexcept
 {
-    m_centroid = Length2D{};
+    m_centroid = Length2{};
 
     // vertices must be counter-clockwise
 
-    const auto btm_rgt = Length2D{+hx, -hy};
-    const auto top_rgt = Length2D{ hx,  hy};
-    const auto top_lft = Length2D{-hx, +hy};
-    const auto btm_lft = Length2D{-hx, -hy};
+    const auto btm_rgt = Length2{+hx, -hy};
+    const auto top_rgt = Length2{ hx,  hy};
+    const auto top_lft = Length2{-hx, +hy};
+    const auto btm_lft = Length2{-hx, -hy};
     
     m_vertices.clear();
     m_vertices.emplace_back(btm_rgt);
@@ -65,7 +65,7 @@ void PolygonShape::SetAsBox(Length hx, Length hy) noexcept
     m_normals.emplace_back(UnitVec2::GetBottom());
 }
 
-void SetAsBox(PolygonShape& shape, Length hx, Length hy, Length2D center, Angle angle) noexcept
+void SetAsBox(PolygonShape& shape, Length hx, Length hy, Length2 center, Angle angle) noexcept
 {
     shape.SetAsBox(hx, hy);
     shape.Transform(Transformation{center, UnitVec2::Get(angle)});
@@ -82,7 +82,7 @@ PolygonShape& PolygonShape::Transform(Transformation xfm) noexcept
     return *this;
 }
 
-void PolygonShape::Set(Span<const Length2D> points) noexcept
+void PolygonShape::Set(Span<const Length2> points) noexcept
 {
     // Perform welding and copy vertices into local buffer.
     auto point_set = VertexSet(Square(DefaultLinearSlop));
@@ -119,7 +119,7 @@ void PolygonShape::Set(const VertexSet& points) noexcept
     switch (count)
     {
         case 0:
-            m_centroid = GetInvalid<Length2D>();
+            m_centroid = GetInvalid<Length2>();
             break;
         case 1:
             m_centroid = m_vertices[0];
@@ -138,7 +138,7 @@ void PolygonShape::Accept(ShapeVisitor& visitor) const
     visitor.Visit(*this);
 }
 
-Length2D GetEdge(const PolygonShape& shape, PolygonShape::VertexCounter index)
+Length2 GetEdge(const PolygonShape& shape, PolygonShape::VertexCounter index)
 {
     assert(shape.GetVertexCount() > 1);
 

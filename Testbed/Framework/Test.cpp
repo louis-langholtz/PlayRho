@@ -227,7 +227,7 @@ static void DrawStats(const std::vector<Fixture*>& selectFixtures)
     }
 }
 
-static void DrawCorner(Drawer& drawer, Length2D p, Length r, Angle a0, Angle a1, Color color)
+static void DrawCorner(Drawer& drawer, Length2 p, Length r, Angle a0, Angle a1, Color color)
 {
     const auto angleDiff = GetRevRotationalAngle(a0, a1);
     auto lastAngle = 0_deg;
@@ -335,7 +335,7 @@ void ShapeDrawer::Visit(const ChainShape& shape)
 void ShapeDrawer::Draw(const DistanceProxy& shape)
 {
     const auto vertexCount = shape.GetVertexCount();
-    auto vertices = std::vector<Length2D>(vertexCount);
+    auto vertices = std::vector<Length2>(vertexCount);
     for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
     {
         vertices[i] = Transform(shape.GetVertex(i), xf);
@@ -486,11 +486,11 @@ static void Draw(Drawer& drawer, const Joint& joint)
 
 static void Draw(Drawer& drawer, const AABB& aabb, const Color& color)
 {
-    Length2D vs[4];
-    vs[0] = Length2D{aabb.rangeX.GetMin(), aabb.rangeY.GetMin()};
-    vs[1] = Length2D{aabb.rangeX.GetMax(), aabb.rangeY.GetMin()};
-    vs[2] = Length2D{aabb.rangeX.GetMax(), aabb.rangeY.GetMax()};
-    vs[3] = Length2D{aabb.rangeX.GetMin(), aabb.rangeY.GetMax()};
+    Length2 vs[4];
+    vs[0] = Length2{aabb.rangeX.GetMin(), aabb.rangeY.GetMin()};
+    vs[1] = Length2{aabb.rangeX.GetMax(), aabb.rangeY.GetMin()};
+    vs[2] = Length2{aabb.rangeX.GetMax(), aabb.rangeY.GetMax()};
+    vs[3] = Length2{aabb.rangeX.GetMin(), aabb.rangeY.GetMax()};
     drawer.DrawPolygon(vs, 4, color);
 }
 
@@ -668,7 +668,7 @@ void Test::PreSolve(Contact& contact, const Manifold& oldManifold)
     }
 }
 
-void Test::MouseDown(const Length2D& p)
+void Test::MouseDown(const Length2& p)
 {
     m_mouseWorld = p;
 
@@ -707,13 +707,13 @@ void Test::MouseDown(const Length2D& p)
     }
 }
 
-void Test::SpawnBomb(const Length2D& worldPt)
+void Test::SpawnBomb(const Length2& worldPt)
 {
     m_bombSpawnPoint = worldPt;
     m_bombSpawning = true;
 }
 
-void Test::CompleteBombSpawn(const Length2D& p)
+void Test::CompleteBombSpawn(const Length2& p)
 {
     if (!m_bombSpawning)
     {
@@ -721,7 +721,7 @@ void Test::CompleteBombSpawn(const Length2D& p)
     }
 
     const auto relP = m_bombSpawnPoint - p;
-    const auto vel = LinearVelocity2D{
+    const auto vel = LinearVelocity2{
         Real{30} * GetX(relP) / Second,
         Real{30} * GetY(relP) / Second
     };
@@ -729,7 +729,7 @@ void Test::CompleteBombSpawn(const Length2D& p)
     m_bombSpawning = false;
 }
 
-void Test::ShiftMouseDown(const Length2D& p)
+void Test::ShiftMouseDown(const Length2& p)
 {
     m_mouseWorld = p;
 
@@ -741,7 +741,7 @@ void Test::ShiftMouseDown(const Length2D& p)
     SpawnBomb(p);
 }
 
-void Test::MouseUp(const Length2D& p)
+void Test::MouseUp(const Length2& p)
 {
     if (m_mouseJoint)
     {
@@ -755,7 +755,7 @@ void Test::MouseUp(const Length2D& p)
     }
 }
 
-void Test::MouseMove(const Length2D& p)
+void Test::MouseMove(const Length2& p)
 {
     m_mouseWorld = p;
 
@@ -767,15 +767,15 @@ void Test::MouseMove(const Length2D& p)
 
 void Test::LaunchBomb()
 {
-    const auto p = Length2D(RandomFloat(-15.0f, 15.0f) * 1_m, 40_m);
-    const auto v = LinearVelocity2D{
+    const auto p = Length2(RandomFloat(-15.0f, 15.0f) * 1_m, 40_m);
+    const auto v = LinearVelocity2{
         Real{-100} * GetX(p) / Second,
         Real{-100} * GetY(p) / Second
     };
     LaunchBomb(p, v);
 }
 
-void Test::LaunchBomb(const Length2D& position, const LinearVelocity2D linearVelocity)
+void Test::LaunchBomb(const Length2& position, const LinearVelocity2 linearVelocity)
 {
     if (m_bomb)
     {
@@ -1427,7 +1427,7 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
     drawer.Flush();
 }
 
-void Test::ShiftOrigin(const Length2D& newOrigin)
+void Test::ShiftOrigin(const Length2& newOrigin)
 {
     m_world.ShiftOrigin(newOrigin);
 }

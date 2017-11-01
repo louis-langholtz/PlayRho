@@ -49,8 +49,8 @@ TEST(WeldJointDef, DefaultConstruction)
     EXPECT_EQ(def.collideConnected, false);
     EXPECT_EQ(def.userData, nullptr);
     
-    EXPECT_EQ(def.localAnchorA, (Length2D{}));
-    EXPECT_EQ(def.localAnchorB, (Length2D{}));
+    EXPECT_EQ(def.localAnchorA, (Length2{}));
+    EXPECT_EQ(def.localAnchorB, (Length2{}));
     EXPECT_EQ(def.referenceAngle, Angle(0));
     EXPECT_EQ(def.frequency, 0_Hz);
     EXPECT_EQ(def.dampingRatio, Real(0));
@@ -77,7 +77,7 @@ TEST(WeldJoint, Construction)
     EXPECT_EQ(joint.GetBodyB(), def.bodyB);
     EXPECT_EQ(joint.GetCollideConnected(), def.collideConnected);
     EXPECT_EQ(joint.GetUserData(), def.userData);
-    EXPECT_EQ(joint.GetLinearReaction(), Momentum2D{});
+    EXPECT_EQ(joint.GetLinearReaction(), Momentum2{});
     EXPECT_EQ(joint.GetAngularReaction(), AngularMomentum{0});
 
     EXPECT_EQ(joint.GetLocalAnchorA(), def.localAnchorA);
@@ -91,7 +91,7 @@ TEST(WeldJoint, GetWeldJointDef)
 {
     auto bodyA = Body{nullptr, BodyDef{}};
     auto bodyB = Body{nullptr, BodyDef{}};
-    const auto anchor = Length2D(Real(2) * Meter, Real(1) * Meter);
+    const auto anchor = Length2(Real(2) * Meter, Real(1) * Meter);
     WeldJointDef def{&bodyA, &bodyB, anchor};
     WeldJoint joint{def};
     
@@ -124,14 +124,14 @@ TEST(WeldJoint, GetWeldJointDef)
 TEST(WeldJoint, WithDynamicCircles)
 {
     const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
-    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2D{})};
-    const auto p1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
-    const auto p2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
+    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
+    const auto p1 = Length2{-Real(1) * Meter, Real(0) * Meter};
+    const auto p2 = Length2{+Real(1) * Meter, Real(0) * Meter};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
-    const auto anchor = Length2D(Real(2) * Meter, Real(1) * Meter);
+    const auto anchor = Length2(Real(2) * Meter, Real(1) * Meter);
     const auto jd = WeldJointDef{b1, b2, anchor};
     world.CreateJoint(jd);
     Step(world, 1_s);
@@ -146,14 +146,14 @@ TEST(WeldJoint, WithDynamicCircles)
 TEST(WeldJoint, WithDynamicCircles2)
 {
     const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
-    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2D{})};
-    const auto p1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
-    const auto p2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
+    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
+    const auto p1 = Length2{-Real(1) * Meter, Real(0) * Meter};
+    const auto p2 = Length2{+Real(1) * Meter, Real(0) * Meter};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
-    const auto anchor = Length2D(Real(2) * Meter, Real(1) * Meter);
+    const auto anchor = Length2(Real(2) * Meter, Real(1) * Meter);
     const auto jd = WeldJointDef{b1, b2, anchor}.UseFrequency(10_Hz);
     const auto joint = static_cast<WeldJoint*>(world.CreateJoint(jd));
     ASSERT_NE(joint, nullptr);

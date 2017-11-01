@@ -136,7 +136,7 @@ public:
         {
             const auto body = m_world.CreateBody(BodyDef{}.UseLocation(Vec2(-10.0f, 4.0f) * 1_m));
             auto conf = ChainShape::Conf{};
-            conf.vertices.push_back(Vec2(0.0f, 0.0f) * 1_m);
+            conf.vertices.push_back(Length2{});
             conf.vertices.push_back(Vec2(6.0f, 0.0f) * 1_m);
             conf.vertices.push_back(Vec2(6.0f, 2.0f) * 1_m);
             conf.vertices.push_back(Vec2(4.0f, 1.0f) * 1_m);
@@ -198,7 +198,7 @@ public:
 
             auto angle = Real{0.0f};
             const auto delta = Real{Pi / 3.0f};
-            Length2D vertices[6];
+            Length2 vertices[6];
             for (auto i = 0; i < 6; ++i)
             {
                 vertices[i] = Vec2(0.5f * std::cos(angle), 0.5f * std::sin(angle)) * 1_m;
@@ -208,7 +208,7 @@ public:
             auto conf = PolygonShape::Conf{};
             conf.density = 20_kgpm2;
             auto hexshape = std::make_shared<PolygonShape>(conf);
-            hexshape->Set(Span<const Length2D>(vertices, 6));
+            hexshape->Set(Span<const Length2>(vertices, 6));
             body->CreateFixture(hexshape);
         }
 

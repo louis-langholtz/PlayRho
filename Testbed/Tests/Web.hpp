@@ -64,7 +64,7 @@ public:
             m_bodies[3]->CreateFixture(shape);
 
             DistanceJointDef jd;
-            Length2D p1, p2, d;
+            Length2 p1, p2, d;
 
             jd.frequency = 2_Hz;
             jd.dampingRatio = 0.0f;

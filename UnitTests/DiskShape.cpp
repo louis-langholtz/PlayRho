@@ -50,7 +50,7 @@ TEST(DiskShape, DefaultConstruction)
 TEST(DiskShape, InitConstruction)
 {
     const auto radius = 1_m;
-    const auto position = Length2D{-1_m, 1_m};
+    const auto position = Length2{-1_m, 1_m};
     auto conf = DiskShape::Conf{};
     conf.vertexRadius = radius;
     conf.location = position;
@@ -105,25 +105,25 @@ TEST(DiskShape, BaseVisitorForDiskShape)
 TEST(DiskShape, TestPoint)
 {
     const auto radius = 1_m;
-    const auto position = Length2D{};
+    const auto position = Length2{};
     auto conf = DiskShape::Conf{};
     conf.vertexRadius = radius;
     conf.location = position;
     DiskShape foo{conf};
-    EXPECT_TRUE(TestPoint(foo, Length2D{ 0_m,  0_m}));
-    EXPECT_TRUE(TestPoint(foo, Length2D{+1_m,  0_m}));
-    EXPECT_TRUE(TestPoint(foo, Length2D{ 0_m, +1_m}));
-    EXPECT_TRUE(TestPoint(foo, Length2D{ 0_m, -1_m}));
-    EXPECT_TRUE(TestPoint(foo, Length2D{-1_m,  0_m}));
-    EXPECT_FALSE(TestPoint(foo, Length2D{-1_m,  -1_m}));
-    EXPECT_FALSE(TestPoint(foo, Length2D{+1_m,  +1_m}));
-    EXPECT_FALSE(TestPoint(foo, Length2D{+0.9_m,  +0.9_m}));
+    EXPECT_TRUE(TestPoint(foo, Length2{ 0_m,  0_m}));
+    EXPECT_TRUE(TestPoint(foo, Length2{+1_m,  0_m}));
+    EXPECT_TRUE(TestPoint(foo, Length2{ 0_m, +1_m}));
+    EXPECT_TRUE(TestPoint(foo, Length2{ 0_m, -1_m}));
+    EXPECT_TRUE(TestPoint(foo, Length2{-1_m,  0_m}));
+    EXPECT_FALSE(TestPoint(foo, Length2{-1_m,  -1_m}));
+    EXPECT_FALSE(TestPoint(foo, Length2{+1_m,  +1_m}));
+    EXPECT_FALSE(TestPoint(foo, Length2{+0.9_m,  +0.9_m}));
 }
 
 TEST(DiskShape, ComputeAABB)
 {
     const auto radius = 2.4_m;
-    const auto position = Length2D{2_m, 1_m};
+    const auto position = Length2{2_m, 1_m};
     auto conf = DiskShape::Conf{};
     conf.vertexRadius = radius;
     conf.location = position;

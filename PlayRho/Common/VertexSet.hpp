@@ -36,7 +36,7 @@ namespace playrho {
     public:
         
         /// @brief Constant pointer type.
-        using const_pointer = const Length2D*;
+        using const_pointer = const Length2*;
 
         /// @brief Gets the default minimum separation squared value.
         static Area GetDefaultMinSeparationSquared()
@@ -55,7 +55,7 @@ namespace playrho {
         Area GetMinSeparationSquared() const noexcept { return m_minSepSquared; }
 
         /// @brief Adds the given vertex into the set if allowed.
-        bool add(Length2D value)
+        bool add(Length2 value)
         {
             if (find(value) != end())
             {
@@ -82,25 +82,25 @@ namespace playrho {
 
         /// Finds contained point whose delta with the given point has a squared length less
         /// than or equal to this set's minimum length squared value.
-        const_pointer find(Length2D value) const
+        const_pointer find(Length2 value) const
         {
             // squaring anything smaller than the sqrt(std::numeric_limits<Vec2::data_type>::min())
             // won't be reversible.
             // i.e. won't obey the property that square(sqrt(a)) == a and sqrt(square(a)) == a.
-            return std::find_if(begin(), end(), [&](Length2D elem) {
+            return std::find_if(begin(), end(), [&](Length2 elem) {
                 // length squared must be large enough to have a reasonable enough unit vector.
                 return GetLengthSquared(value - elem) <= m_minSepSquared;
             });
         }
 
         /// @brief Indexed access.
-        Length2D operator[](std::size_t index) const noexcept
+        Length2 operator[](std::size_t index) const noexcept
         {
             return m_elements[index];
         }
 
     private:
-        std::vector<Length2D> m_elements; ///< Elements.
+        std::vector<Length2> m_elements; ///< Elements.
         const Area m_minSepSquared; ///< Minimum length squared. sizeof(Vec2)/2 or 4-bytes.
     };
 

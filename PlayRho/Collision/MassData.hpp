@@ -39,7 +39,7 @@ namespace playrho {
     struct MassData
     {
         /// @brief Position of the shape's centroid relative to the shape's origin.
-        Length2D center = Length2D{};
+        Length2 center = Length2{};
         
         /// @brief Mass of the shape in kilograms.
         NonNegative<Mass> mass = NonNegative<Mass>{0};
@@ -74,7 +74,7 @@ namespace playrho {
     ///
     /// @relatedalso MassData
     ///
-    MassData GetMassData(Length r, NonNegative<Density> density, Length2D location);
+    MassData GetMassData(Length r, NonNegative<Density> density, Length2 location);
 
     /// @brief Computes the mass data for a linear shape.
     ///
@@ -85,13 +85,13 @@ namespace playrho {
     ///
     /// @relatedalso MassData
     ///
-    MassData GetMassData(Length r, NonNegative<Density> density, Length2D v0, Length2D v1);
+    MassData GetMassData(Length r, NonNegative<Density> density, Length2 v0, Length2 v1);
 
     /// @brief Gets the mass data for the given collection of vertices with the given
     ///    properties.
     /// @relatedalso MassData
     MassData GetMassData(Length vertexRadius, NonNegative<Density> density,
-                         Span<const Length2D> vertices);
+                         Span<const Length2> vertices);
     
     /// @brief Computes the mass data for the given fixture.
     ///

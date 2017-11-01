@@ -34,8 +34,8 @@ TEST(PulleyJointDef, DefaultConstruction)
     EXPECT_EQ(def.collideConnected, true);
     EXPECT_EQ(def.userData, nullptr);
     
-    EXPECT_EQ(def.localAnchorA, (Length2D{-1 * Meter, 0 * Meter}));
-    EXPECT_EQ(def.localAnchorB, (Length2D{+1 * Meter, 0 * Meter}));
+    EXPECT_EQ(def.localAnchorA, (Length2{-1 * Meter, 0 * Meter}));
+    EXPECT_EQ(def.localAnchorB, (Length2{+1 * Meter, 0 * Meter}));
     EXPECT_EQ(def.lengthA, Real(0) * Meter);
     EXPECT_EQ(def.lengthB, Real(0) * Meter);
     EXPECT_EQ(def.ratio, Real(1));
@@ -69,7 +69,7 @@ TEST(PulleyJoint, Construction)
     EXPECT_EQ(joint.GetBodyB(), def.bodyB);
     EXPECT_EQ(joint.GetCollideConnected(), def.collideConnected);
     EXPECT_EQ(joint.GetUserData(), def.userData);
-    EXPECT_EQ(joint.GetLinearReaction(), Momentum2D{});
+    EXPECT_EQ(joint.GetLinearReaction(), Momentum2{});
     EXPECT_EQ(joint.GetAngularReaction(), AngularMomentum{0});
 
     EXPECT_EQ(joint.GetGroundAnchorA(), def.groundAnchorA);
@@ -85,8 +85,8 @@ TEST(PulleyJoint, GetAnchorAandB)
 {
     World world;
     
-    const auto loc0 = Length2D{Real(+1) * Meter, Real(-3) * Meter};
-    const auto loc1 = Length2D{Real(-2) * Meter, Real(+1.2f) * Meter};
+    const auto loc0 = Length2{Real(+1) * Meter, Real(-3) * Meter};
+    const auto loc1 = Length2{Real(-2) * Meter, Real(+1.2f) * Meter};
     
     const auto b0 = world.CreateBody(BodyDef{}.UseLocation(loc0));
     const auto b1 = world.CreateBody(BodyDef{}.UseLocation(loc1));
@@ -94,8 +94,8 @@ TEST(PulleyJoint, GetAnchorAandB)
     auto jd = PulleyJointDef{};
     jd.bodyA = b0;
     jd.bodyB = b1;
-    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    jd.localAnchorA = Length2(Real(4) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2(Real(6) * Meter, Real(7) * Meter);
     
     auto joint = PulleyJoint{jd};
     ASSERT_EQ(joint.GetLocalAnchorA(), jd.localAnchorA);
@@ -112,7 +112,7 @@ TEST(PulleyJoint, ShiftOrigin)
     ASSERT_EQ(joint.GetGroundAnchorA(), def.groundAnchorA);
     ASSERT_EQ(joint.GetGroundAnchorB(), def.groundAnchorB);
     
-    const auto newOrigin = Length2D{1 * Meter, 1 * Meter};
+    const auto newOrigin = Length2{1 * Meter, 1 * Meter};
 
     joint.ShiftOrigin(newOrigin);
 

@@ -55,7 +55,7 @@ TEST(DistanceProxy, DefaultInitialization)
 TEST(DistanceProxy, OneVecInitialization)
 {
     const auto radius = Real{1} * Meter;
-    const auto vertex0 = Length2D{Real(2) * Meter, Real(-3) * Meter};
+    const auto vertex0 = Length2{Real(2) * Meter, Real(-3) * Meter};
     const auto normal0 = UnitVec2{};
     const DistanceProxy foo{radius, 1, &vertex0, &normal0};
     EXPECT_EQ(radius, foo.GetVertexRadius());
@@ -66,20 +66,20 @@ TEST(DistanceProxy, OneVecInitialization)
 TEST(DistanceProxy, OneVecSupportIndex)
 {
     const auto radius = Real{1} * Meter;
-    const auto vertex0 = Length2D{Real(2) * Meter, Real(-3) * Meter};
+    const auto vertex0 = Length2{Real(2) * Meter, Real(-3) * Meter};
     const auto normal0 = UnitVec2{};
     const DistanceProxy foo{radius, 1, &vertex0, &normal0};
     EXPECT_EQ(0, GetSupportIndex(foo, GetVec2(vertex0)));
-    EXPECT_EQ(0, GetSupportIndex(foo, GetVec2(Length2D{})));
-    EXPECT_EQ(0, GetSupportIndex(foo, GetVec2(Length2D{GetY(vertex0), GetX(vertex0)})));
+    EXPECT_EQ(0, GetSupportIndex(foo, GetVec2(Length2{})));
+    EXPECT_EQ(0, GetSupportIndex(foo, GetVec2(Length2{GetY(vertex0), GetX(vertex0)})));
 }
 
 TEST(DistanceProxy, TwoVecInitialization)
 {
     const auto radius = Real{1} * Meter;
-    const auto vertex0 = Length2D{Real(2) * Meter, Real(3) * Meter};
-    const auto vertex1 = Length2D{Real(-10) * Meter, Real(-1) * Meter};
-    const Length2D vertices[] = {vertex0, vertex1};
+    const auto vertex0 = Length2{Real(2) * Meter, Real(3) * Meter};
+    const auto vertex1 = Length2{Real(-10) * Meter, Real(-1) * Meter};
+    const Length2 vertices[] = {vertex0, vertex1};
     const auto normal0 = GetUnitVector(vertex1 - vertex0);
     const UnitVec2 normals[] = {normal0, -normal0};
     const DistanceProxy foo{radius, 2, vertices, normals};
@@ -92,27 +92,27 @@ TEST(DistanceProxy, TwoVecInitialization)
 TEST(DistanceProxy, TwoVecSupportIndex)
 {
     const auto radius = Real{1} * Meter;
-    const auto vertex0 = Length2D{Real(2) * Meter, Real(3) * Meter};
-    const auto vertex1 = Length2D{Real(-10) * Meter, Real(-1) * Meter};
-    const Length2D vertices[] = {vertex0, vertex1};
+    const auto vertex0 = Length2{Real(2) * Meter, Real(3) * Meter};
+    const auto vertex1 = Length2{Real(-10) * Meter, Real(-1) * Meter};
+    const Length2 vertices[] = {vertex0, vertex1};
     const auto normal0 = GetUnitVector(vertex1 - vertex0);
     const UnitVec2 normals[] = {normal0, -normal0};
     const DistanceProxy foo{radius, 2, vertices, normals};
     EXPECT_EQ(0, GetSupportIndex(foo, GetVec2(vertex0)));
-    EXPECT_EQ(0, GetSupportIndex(foo, GetVec2(Length2D{GetY(vertex0), GetX(vertex0)})));
-    EXPECT_EQ(0, GetSupportIndex(foo, GetVec2(Length2D{Real(0) * Meter, Real(0) * Meter})));
+    EXPECT_EQ(0, GetSupportIndex(foo, GetVec2(Length2{GetY(vertex0), GetX(vertex0)})));
+    EXPECT_EQ(0, GetSupportIndex(foo, GetVec2(Length2{Real(0) * Meter, Real(0) * Meter})));
     EXPECT_EQ(1, GetSupportIndex(foo, GetVec2(vertex1)));
-    EXPECT_EQ(1, GetSupportIndex(foo, GetVec2(Length2D{GetY(vertex1), GetX(vertex1)})));
+    EXPECT_EQ(1, GetSupportIndex(foo, GetVec2(Length2{GetY(vertex1), GetX(vertex1)})));
 }
 
 TEST(DistanceProxy, ThreeVertices)
 {
     const auto radius = Real(33) * Meter;
     const auto count = DistanceProxy::size_type(3);
-    const auto v0 = Length2D{Real(1) * Meter, Real(2) * Meter};
-    const auto v1 = Length2D{Real(-3) * Meter, Real(-4) * Meter};
-    const auto v2 = Length2D{Real(-6) * Meter, Real(5) * Meter};
-    const Length2D vertices[] = {v0, v1, v2};
+    const auto v0 = Length2{Real(1) * Meter, Real(2) * Meter};
+    const auto v1 = Length2{Real(-3) * Meter, Real(-4) * Meter};
+    const auto v2 = Length2{Real(-6) * Meter, Real(5) * Meter};
+    const Length2 vertices[] = {v0, v1, v2};
     const auto n0 = GetUnitVector(v1 - v0);
     const auto n1 = GetUnitVector(v2 - v1);
     const auto n2 = GetUnitVector(v0 - v2);
@@ -132,8 +132,8 @@ TEST(DistanceProxy, ThreeVertices)
 
 TEST(DistanceProxy, FindLowestRightMostVertex)
 {
-    const auto vertices = std::vector<Length2D>();
-    const auto span = Span<const Length2D>(vertices.data(), std::size_t{0});
+    const auto vertices = std::vector<Length2>();
+    const auto span = Span<const Length2>(vertices.data(), std::size_t{0});
     const auto result = FindLowestRightMostVertex(span);
     EXPECT_EQ(result, static_cast<std::size_t>(-1));
 }
@@ -142,16 +142,16 @@ TEST(DistanceProxy, TestPointWithEmptyProxyReturnsFalse)
 {
     const auto defaultDp = DistanceProxy{};
     ASSERT_EQ(defaultDp.GetVertexCount(), 0);
-    EXPECT_FALSE(TestPoint(defaultDp, Length2D{}));
+    EXPECT_FALSE(TestPoint(defaultDp, Length2{}));
 }
 
 TEST(DistanceProxy, TestPoint)
 {
-    const auto pos1 = Length2D{Real(3) * Meter, Real(1) * Meter};
-    const auto pos2 = Length2D{Real(3) * Meter, Real(3) * Meter};
-    const auto pos3 = Length2D{Real(1) * Meter, Real(3) * Meter};
-    const auto pos4 = Length2D{Real(1) * Meter, Real(1) * Meter};
-    const Length2D squareVerts[] = {pos1, pos2, pos3, pos4};
+    const auto pos1 = Length2{Real(3) * Meter, Real(1) * Meter};
+    const auto pos2 = Length2{Real(3) * Meter, Real(3) * Meter};
+    const auto pos3 = Length2{Real(1) * Meter, Real(3) * Meter};
+    const auto pos4 = Length2{Real(1) * Meter, Real(1) * Meter};
+    const Length2 squareVerts[] = {pos1, pos2, pos3, pos4};
     const auto n1 = GetUnitVector(GetFwdPerpendicular(pos2 - pos1));
     const auto n2 = GetUnitVector(GetFwdPerpendicular(pos3 - pos2));
     const auto n3 = GetUnitVector(GetFwdPerpendicular(pos4 - pos3));
@@ -160,7 +160,7 @@ TEST(DistanceProxy, TestPoint)
     const auto radius = Real(0.5) * Meter;
     DistanceProxy dp{radius, 4, squareVerts, squareNormals};
 
-    const auto pos0 = Length2D{Real(2) * Meter, Real(2) * Meter};
+    const auto pos0 = Length2{Real(2) * Meter, Real(2) * Meter};
     
     ASSERT_EQ(dp.GetVertexCount(), 4);
     EXPECT_TRUE(TestPoint(dp, pos0));
@@ -168,21 +168,21 @@ TEST(DistanceProxy, TestPoint)
     EXPECT_TRUE(TestPoint(dp, pos2));
     EXPECT_TRUE(TestPoint(dp, pos3));
     EXPECT_TRUE(TestPoint(dp, pos4));
-    EXPECT_TRUE(TestPoint(dp, Length2D{Real(3.2f) * Meter, Real(3.2f) * Meter}));
-    EXPECT_TRUE(TestPoint(dp, pos2 + Length2D{radius, radius} / Real(2)));
-    EXPECT_FALSE(TestPoint(dp, pos2 + Length2D{radius, radius}));
-    EXPECT_FALSE(TestPoint(dp, Length2D{Real(10) * Meter, Real(10) * Meter}));
-    EXPECT_FALSE(TestPoint(dp, Length2D{-Real(10) * Meter, Real(10) * Meter}));
-    EXPECT_FALSE(TestPoint(dp, Length2D{Real(10) * Meter, -Real(10) * Meter}));
+    EXPECT_TRUE(TestPoint(dp, Length2{Real(3.2f) * Meter, Real(3.2f) * Meter}));
+    EXPECT_TRUE(TestPoint(dp, pos2 + Length2{radius, radius} / Real(2)));
+    EXPECT_FALSE(TestPoint(dp, pos2 + Length2{radius, radius}));
+    EXPECT_FALSE(TestPoint(dp, Length2{Real(10) * Meter, Real(10) * Meter}));
+    EXPECT_FALSE(TestPoint(dp, Length2{-Real(10) * Meter, Real(10) * Meter}));
+    EXPECT_FALSE(TestPoint(dp, Length2{Real(10) * Meter, -Real(10) * Meter}));
 }
 
 TEST(DistanceProxy, GetMaxSeparationFromWorld)
 {
-    const auto pos1 = Length2D{Real(3) * Meter, Real(1) * Meter};
-    const auto pos2 = Length2D{Real(3) * Meter, Real(3) * Meter};
-    const auto pos3 = Length2D{Real(1) * Meter, Real(3) * Meter};
-    const auto pos4 = Length2D{Real(1) * Meter, Real(1) * Meter};
-    const Length2D squareVerts[] = {pos1, pos2, pos3, pos4};
+    const auto pos1 = Length2{Real(3) * Meter, Real(1) * Meter};
+    const auto pos2 = Length2{Real(3) * Meter, Real(3) * Meter};
+    const auto pos3 = Length2{Real(1) * Meter, Real(3) * Meter};
+    const auto pos4 = Length2{Real(1) * Meter, Real(1) * Meter};
+    const Length2 squareVerts[] = {pos1, pos2, pos3, pos4};
     const auto n1 = GetUnitVector(GetFwdPerpendicular(pos2 - pos1));
     const auto n2 = GetUnitVector(GetFwdPerpendicular(pos3 - pos2));
     const auto n3 = GetUnitVector(GetFwdPerpendicular(pos4 - pos3));
@@ -191,8 +191,8 @@ TEST(DistanceProxy, GetMaxSeparationFromWorld)
     const auto radius = Real(0.5) * Meter;
     const auto squareDp = DistanceProxy{radius, 4, squareVerts, squareNormals};
     
-    const auto pos5 = Length2D{Real(-2) * Meter, Real(2) * Meter};
-    const Length2D circleVerts[] = {pos5};
+    const auto pos5 = Length2{Real(-2) * Meter, Real(2) * Meter};
+    const Length2 circleVerts[] = {pos5};
     const auto n5 = UnitVec2::GetZero();
     const UnitVec2 circleNormals[] = {n5};
     const auto circleDp = DistanceProxy{radius, 1, circleVerts, circleNormals};

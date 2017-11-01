@@ -71,7 +71,7 @@ void RopeJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
 
     m_rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA);
     m_rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB);
-    const auto posDelta = Length2D{(posB.linear + m_rB) - (posA.linear + m_rA)};
+    const auto posDelta = Length2{(posB.linear + m_rB) - (posA.linear + m_rA)};
     
     const auto uv = GetUnitVector(posDelta, m_length);
 
@@ -134,7 +134,7 @@ bool RopeJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     const auto vpA = velA.linear + GetRevPerpendicular(m_rA) * (velA.angular / Radian);
     const auto vpB = velB.linear + GetRevPerpendicular(m_rB) * (velB.angular / Radian);
     const auto C = m_length - m_maxLength;
-    const auto vpDelta = LinearVelocity2D{vpB - vpA};
+    const auto vpDelta = LinearVelocity2{vpB - vpA};
 
     // Predictive constraint.
     const auto Cdot = LinearVelocity{Dot(m_u, vpDelta)}
@@ -171,8 +171,8 @@ bool RopeJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
     const auto qA = UnitVec2::Get(posA.angular);
     const auto qB = UnitVec2::Get(posB.angular);
 
-    const auto rA = Length2D{Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA)};
-    const auto rB = Length2D{Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB)};
+    const auto rA = Length2{Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA)};
+    const auto rB = Length2{Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB)};
     const auto posDelta = (posB.linear + rB) - (posA.linear + rA);
     
     auto length = Length{0};
@@ -195,17 +195,17 @@ bool RopeJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
     return (length - m_maxLength) < conf.linearSlop;
 }
 
-Length2D RopeJoint::GetAnchorA() const
+Length2 RopeJoint::GetAnchorA() const
 {
     return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
 }
 
-Length2D RopeJoint::GetAnchorB() const
+Length2 RopeJoint::GetAnchorB() const
 {
     return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Momentum2D RopeJoint::GetLinearReaction() const
+Momentum2 RopeJoint::GetLinearReaction() const
 {
     return m_impulse * m_u;
 }

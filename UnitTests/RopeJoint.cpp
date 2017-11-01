@@ -49,8 +49,8 @@ TEST(RopeJointDef, DefaultConstruction)
     EXPECT_EQ(def.collideConnected, false);
     EXPECT_EQ(def.userData, nullptr);
     
-    EXPECT_EQ(def.localAnchorA, Length2D(-Real(1) * Meter, Real(0) * Meter));
-    EXPECT_EQ(def.localAnchorB, Length2D(+Real(1) * Meter, Real(0) * Meter));
+    EXPECT_EQ(def.localAnchorA, Length2(-Real(1) * Meter, Real(0) * Meter));
+    EXPECT_EQ(def.localAnchorB, Length2(+Real(1) * Meter, Real(0) * Meter));
     EXPECT_EQ(def.maxLength, Length{0});
 }
 
@@ -75,7 +75,7 @@ TEST(RopeJoint, Construction)
     EXPECT_EQ(joint.GetBodyB(), def.bodyB);
     EXPECT_EQ(joint.GetCollideConnected(), def.collideConnected);
     EXPECT_EQ(joint.GetUserData(), def.userData);
-    EXPECT_EQ(joint.GetLinearReaction(), Momentum2D{});
+    EXPECT_EQ(joint.GetLinearReaction(), Momentum2{});
     EXPECT_EQ(joint.GetAngularReaction(), AngularMomentum{0});
 
     EXPECT_EQ(joint.GetLocalAnchorA(), def.localAnchorA);
@@ -88,8 +88,8 @@ TEST(RopeJoint, GetRopeJointDef)
     auto bodyA = Body{nullptr, BodyDef{}};
     auto bodyB = Body{nullptr, BodyDef{}};
     RopeJointDef def{&bodyA, &bodyB};
-    const auto localAnchorA = Length2D{-Real(2) * Meter, Real(0) * Meter};
-    const auto localAnchorB = Length2D{+Real(2) * Meter, Real(0) * Meter};
+    const auto localAnchorA = Length2{-Real(2) * Meter, Real(0) * Meter};
+    const auto localAnchorB = Length2{+Real(2) * Meter, Real(0) * Meter};
     def.localAnchorA = localAnchorA;
     def.localAnchorB = localAnchorB;
     RopeJoint joint{def};
@@ -119,9 +119,9 @@ TEST(RopeJoint, GetRopeJointDef)
 TEST(RopeJoint, WithDynamicCircles)
 {
     const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
-    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2D{})};
-    const auto p1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
-    const auto p2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
+    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
+    const auto p1 = Length2{-Real(1) * Meter, Real(0) * Meter};
+    const auto p2 = Length2{+Real(1) * Meter, Real(0) * Meter};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);

@@ -61,7 +61,7 @@ public:
         jd.bodyA = stable;
         jd.bodyB = turn;
         jd.localAnchorA = Vec2(0.0f, 10.0f) * 1_m;
-        jd.localAnchorB = Vec2(0.0f, 0.0f) * 1_m;
+        jd.localAnchorB = Length2{};
         jd.referenceAngle = Angle{0};
         jd.motorSpeed = Pi * 0.05_rad / 1_s;
         jd.maxMotorTorque = 100000_Nm; // 1e8f;

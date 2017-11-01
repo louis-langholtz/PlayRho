@@ -208,10 +208,10 @@ static void AABB(benchmark::State& state)
     const auto pui1 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
     const auto pui2 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
     const auto pui3 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-    const auto p0 = playrho::Length2D{pui0 * playrho::Meter, 1.0f * playrho::Meter};
-    const auto p1 = playrho::Length2D{pui1 * playrho::Meter, 2.0f * playrho::Meter};
-    const auto p2 = playrho::Length2D{pui2 * playrho::Meter, 1.0f * playrho::Meter};
-    const auto p3 = playrho::Length2D{pui3 * playrho::Meter, 2.0f * playrho::Meter};
+    const auto p0 = playrho::Length2{pui0 * playrho::Meter, 1.0f * playrho::Meter};
+    const auto p1 = playrho::Length2{pui1 * playrho::Meter, 2.0f * playrho::Meter};
+    const auto p2 = playrho::Length2{pui2 * playrho::Meter, 1.0f * playrho::Meter};
+    const auto p3 = playrho::Length2{pui3 * playrho::Meter, 2.0f * playrho::Meter};
     
     while (state.KeepRunning())
     {
@@ -952,23 +952,23 @@ static void ConstructAndAssignVC(benchmark::State& state)
     const auto invMass = playrho::Real(1) / playrho::Kilogram;
     const auto invRotI = playrho::Real(1) / ((playrho::SquareMeter * playrho::Kilogram) / playrho::SquareRadian);
     const auto normal = playrho::UnitVec2::GetRight();
-    const auto location = playrho::Length2D{playrho::Real(0) * playrho::Meter, playrho::Real(0) * playrho::Meter};
-    const auto impulse = playrho::Momentum2D{playrho::Momentum{0}, playrho::Momentum{0}};
+    const auto location = playrho::Length2{playrho::Real(0) * playrho::Meter, playrho::Real(0) * playrho::Meter};
+    const auto impulse = playrho::Momentum2{playrho::Momentum{0}, playrho::Momentum{0}};
     const auto separation = playrho::Length{playrho::Real(-0.001) * playrho::Meter};
     const auto ps0 = playrho::WorldManifold::PointData{location, impulse, separation};
     const auto worldManifold = playrho::WorldManifold{normal, ps0};
     
-    const auto locA = playrho::Length2D{playrho::Real(+1) * playrho::Meter, playrho::Real(0) * playrho::Meter};
+    const auto locA = playrho::Length2{playrho::Real(+1) * playrho::Meter, playrho::Real(0) * playrho::Meter};
     const auto posA = playrho::Position{locA, playrho::Angle(0)};
     const auto velA = playrho::Velocity{
-        playrho::LinearVelocity2D{playrho::Real(-0.5) * playrho::MeterPerSecond, playrho::Real(0) * playrho::MeterPerSecond},
+        playrho::LinearVelocity2{playrho::Real(-0.5) * playrho::MeterPerSecond, playrho::Real(0) * playrho::MeterPerSecond},
         playrho::AngularVelocity{playrho::Real(0) * playrho::RadianPerSecond}
     };
     
-    const auto locB = playrho::Length2D{playrho::Real(-1) * playrho::Meter, playrho::Real(0) * playrho::Meter};
+    const auto locB = playrho::Length2{playrho::Real(-1) * playrho::Meter, playrho::Real(0) * playrho::Meter};
     const auto posB = playrho::Position{locB, playrho::Angle(0)};
     const auto velB = playrho::Velocity{
-        playrho::LinearVelocity2D{playrho::Real(+0.5) * playrho::MeterPerSecond, playrho::Real(0) * playrho::MeterPerSecond},
+        playrho::LinearVelocity2{playrho::Real(+0.5) * playrho::MeterPerSecond, playrho::Real(0) * playrho::MeterPerSecond},
         playrho::AngularVelocity{playrho::Real(0) * playrho::RadianPerSecond}
     };
     
@@ -1031,23 +1031,23 @@ static void SolveVC(benchmark::State& state)
     const auto invMass = playrho::Real(1) / playrho::Kilogram;
     const auto invRotI = playrho::Real(1) / ((playrho::SquareMeter * playrho::Kilogram) / playrho::SquareRadian);
     const auto normal = playrho::UnitVec2::GetRight();
-    const auto location = playrho::Length2D{playrho::Real(0) * playrho::Meter, playrho::Real(0) * playrho::Meter};
-    const auto impulse = playrho::Momentum2D{playrho::Momentum{0}, playrho::Momentum{0}};
+    const auto location = playrho::Length2{playrho::Real(0) * playrho::Meter, playrho::Real(0) * playrho::Meter};
+    const auto impulse = playrho::Momentum2{playrho::Momentum{0}, playrho::Momentum{0}};
     const auto separation = playrho::Length{playrho::Real(-0.001) * playrho::Meter};
     const auto ps0 = playrho::WorldManifold::PointData{location, impulse, separation};
     const auto worldManifold = playrho::WorldManifold{normal, ps0};
     
-    const auto locA = playrho::Length2D{playrho::Real(+1) * playrho::Meter, playrho::Real(0) * playrho::Meter};
+    const auto locA = playrho::Length2{playrho::Real(+1) * playrho::Meter, playrho::Real(0) * playrho::Meter};
     const auto posA = playrho::Position{locA, playrho::Angle(0)};
     const auto velA = playrho::Velocity{
-        playrho::LinearVelocity2D{playrho::Real(-0.5) * playrho::MeterPerSecond, playrho::Real(0) * playrho::MeterPerSecond},
+        playrho::LinearVelocity2{playrho::Real(-0.5) * playrho::MeterPerSecond, playrho::Real(0) * playrho::MeterPerSecond},
         playrho::AngularVelocity{playrho::Real(0) * playrho::RadianPerSecond}
     };
 
-    const auto locB = playrho::Length2D{playrho::Real(-1) * playrho::Meter, playrho::Real(0) * playrho::Meter};
+    const auto locB = playrho::Length2{playrho::Real(-1) * playrho::Meter, playrho::Real(0) * playrho::Meter};
     const auto posB = playrho::Position{locB, playrho::Angle(0)};
     const auto velB = playrho::Velocity{
-        playrho::LinearVelocity2D{playrho::Real(+0.5) * playrho::MeterPerSecond, playrho::Real(0) * playrho::MeterPerSecond},
+        playrho::LinearVelocity2{playrho::Real(+0.5) * playrho::MeterPerSecond, playrho::Real(0) * playrho::MeterPerSecond},
         playrho::AngularVelocity{playrho::Real(0) * playrho::RadianPerSecond}
     };
 
@@ -1074,14 +1074,14 @@ static void DefaultWorldStep(benchmark::State& state)
 
 static void DropDisks(benchmark::State& state)
 {
-    auto world = playrho::World{playrho::WorldDef{}.UseGravity(playrho::EarthlyGravity2)};
+    auto world = playrho::World{playrho::WorldDef{}.UseGravity(playrho::EarthlyGravity2D)};
 
     const auto diskDef = playrho::DiskShape::Conf{}.UseVertexRadius(0.5f * playrho::Meter);
     const auto shape = std::make_shared<playrho::DiskShape>(diskDef);
     for (auto i = 0; i < state.range(); ++i)
     {
         const auto x = i * 2 * playrho::Meter;
-        const auto location = playrho::Length2D{x, 0 * playrho::Meter};
+        const auto location = playrho::Length2{x, 0 * playrho::Meter};
         const auto body = world.CreateBody(playrho::BodyDef{}
                                            .UseType(playrho::BodyType::Dynamic)
                                            .UseLocation(location));
@@ -1108,10 +1108,10 @@ static void AddPairStressTest(benchmark::State& state, int count)
     const auto rectBodyDef = playrho::BodyDef{}
         .UseType(playrho::BodyType::Dynamic)
         .UseBullet(true)
-        .UseLocation(playrho::Length2D{-40.0f * playrho::Meter, 5.0f * playrho::Meter})
-        .UseLinearVelocity(playrho::LinearVelocity2D{playrho::Vec2(150.0f, 0.0f) * playrho::MeterPerSecond});
+        .UseLocation(playrho::Length2{-40.0f * playrho::Meter, 5.0f * playrho::Meter})
+        .UseLinearVelocity(playrho::LinearVelocity2{playrho::Vec2(150.0f, 0.0f) * playrho::MeterPerSecond});
 
-    const auto worldDef = playrho::WorldDef{}.UseGravity(playrho::LinearAcceleration2D{}).UseInitialTreeSize(8192);
+    const auto worldDef = playrho::WorldDef{}.UseGravity(playrho::LinearAcceleration2{}).UseInitialTreeSize(8192);
     const auto stepConf = playrho::StepConf{};
     const auto minX = -6.0f;
     const auto maxX = 0.0f;
@@ -1158,11 +1158,11 @@ static void DropTiles(int count)
     
     {
         const auto a = playrho::Real{0.5f};
-        const auto ground = m_world.CreateBody(playrho::BodyDef{}.UseLocation(playrho::Length2D{0, -a * playrho::Meter}));
+        const auto ground = m_world.CreateBody(playrho::BodyDef{}.UseLocation(playrho::Length2{0, -a * playrho::Meter}));
         
         const auto N = 200;
         const auto M = 10;
-        playrho::Length2D position;
+        playrho::Length2 position;
         GetY(position) = playrho::Real(0.0f) * playrho::Meter;
         for (auto j = 0; j < M; ++j)
         {
@@ -1183,10 +1183,10 @@ static void DropTiles(int count)
         const auto shape = std::make_shared<playrho::PolygonShape>(a * playrho::Meter, a * playrho::Meter, conf);
         shape->SetDensity(playrho::Real{5} * playrho::KilogramPerSquareMeter);
         
-        playrho::Length2D x(playrho::Real(-7.0f) * playrho::Meter, playrho::Real(0.75f) * playrho::Meter);
-        playrho::Length2D y;
-        const auto deltaX = playrho::Length2D(playrho::Real(0.5625f) * playrho::Meter, playrho::Real(1.25f) * playrho::Meter);
-        const auto deltaY = playrho::Length2D(playrho::Real(1.125f) * playrho::Meter, playrho::Real(0.0f) * playrho::Meter);
+        playrho::Length2 x(playrho::Real(-7.0f) * playrho::Meter, playrho::Real(0.75f) * playrho::Meter);
+        playrho::Length2 y;
+        const auto deltaX = playrho::Length2(playrho::Real(0.5625f) * playrho::Meter, playrho::Real(1.25f) * playrho::Meter);
+        const auto deltaY = playrho::Length2(playrho::Real(1.125f) * playrho::Meter, playrho::Real(0.0f) * playrho::Meter);
         
         for (auto i = 0; i < count; ++i)
         {
@@ -1286,7 +1286,7 @@ playrho::RevoluteJoint* Tumbler::CreateRevoluteJoint(playrho::World& world,
     jd.bodyA = stable;
     jd.bodyB = turn;
     jd.localAnchorA = playrho::Vec2(0.0f, 10.0f) * playrho::Meter;
-    jd.localAnchorB = playrho::Vec2(0.0f, 0.0f) * playrho::Meter;
+    jd.localAnchorB = playrho::Length2{};
     jd.referenceAngle = playrho::Angle{0};
     
     // Make it turn 4 times faster than Testbed Tumbler demo

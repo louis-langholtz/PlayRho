@@ -43,17 +43,17 @@ public:
     
     void Accept(JointVisitor& visitor) const override;
 
-    Length2D GetAnchorA() const override;
-    Length2D GetAnchorB() const override;
+    Length2 GetAnchorA() const override;
+    Length2 GetAnchorB() const override;
 
-    Momentum2D GetLinearReaction() const override;
+    Momentum2 GetLinearReaction() const override;
     AngularMomentum GetAngularReaction() const override;
 
     /// @brief Gets the target linear offset, in frame A.
-    Length2D GetLinearOffset() const noexcept;
+    Length2 GetLinearOffset() const noexcept;
 
     /// @brief Sets the target linear offset, in frame A.
-    void SetLinearOffset(const Length2D linearOffset);
+    void SetLinearOffset(const Length2 linearOffset);
 
     /// @brief Gets the target angular offset.
     Angle GetAngularOffset() const noexcept;
@@ -88,18 +88,18 @@ private:
                                   const ConstraintSolverConf& conf) const override;
 
     // Solver shared
-    Length2D m_linearOffset; ///< Linear offset.
+    Length2 m_linearOffset; ///< Linear offset.
     Angle m_angularOffset; ///< Angular offset.
-    Momentum2D m_linearImpulse = Momentum2D{}; ///< Linear impulse.
+    Momentum2 m_linearImpulse = Momentum2{}; ///< Linear impulse.
     AngularMomentum m_angularImpulse = AngularMomentum{0}; ///< Angular impulse.
     NonNegative<Force> m_maxForce = NonNegative<Force>{0}; ///< Max force.
     NonNegative<Torque> m_maxTorque = NonNegative<Torque>{0}; ///< Max torque.
     Real m_correctionFactor; ///< Correction factor.
 
     // Solver temp
-    Length2D m_rA; ///< Relative A.
-    Length2D m_rB; ///< Relative B.
-    Length2D m_linearError; ///< Linear error.
+    Length2 m_rA; ///< Relative A.
+    Length2 m_rB; ///< Relative B.
+    Length2 m_linearError; ///< Linear error.
     Angle m_angularError; ///< Angular error.
     Mass22 m_linearMass; ///< 2x2 linear mass matrix in kilograms.
     RotInertia m_angularMass; ///< Angular mass.
@@ -125,7 +125,7 @@ inline void MotorJoint::SetMaxTorque(NonNegative<Torque> torque)
     m_maxTorque = torque;
 }
 
-inline Length2D MotorJoint::GetLinearOffset() const noexcept
+inline Length2 MotorJoint::GetLinearOffset() const noexcept
 {
     return m_linearOffset;
 }
@@ -135,7 +135,7 @@ inline Angle MotorJoint::GetAngularOffset() const noexcept
     return m_angularOffset;
 }
 
-inline Momentum2D MotorJoint::GetLinearReaction() const
+inline Momentum2 MotorJoint::GetLinearReaction() const
 {
     return m_linearImpulse;
 }

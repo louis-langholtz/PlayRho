@@ -35,7 +35,7 @@ Shape::Shape(const ShapeDef& conf) noexcept:
 
 // Free functions...
 
-bool TestPoint(const Shape& shape, Length2D point) noexcept
+bool TestPoint(const Shape& shape, Length2 point) noexcept
 {
     const auto childCount = shape.GetChildCount();
     for (auto i = decltype(childCount){0}; i < childCount; ++i)

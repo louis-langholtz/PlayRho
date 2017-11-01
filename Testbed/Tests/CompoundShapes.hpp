@@ -32,7 +32,7 @@ public:
     {
         {
             BodyDef bd;
-            bd.location = Vec2(0.0f, 0.0f) * 1_m;
+            bd.location = Length2{};
             const auto body = m_world.CreateBody(bd);
             body->CreateFixture(std::make_shared<EdgeShape>(Vec2(50.0f, 0.0f) * 1_m, Vec2(-50.0f, 0.0f) * 1_m));
         }
@@ -84,7 +84,7 @@ public:
             xf1.p = GetVec2(GetXAxis(xf1.q)) * 1_m;
 
             auto triangle1 = std::make_shared<PolygonShape>();
-            triangle1->Set(Span<const Length2D>{
+            triangle1->Set(Span<const Length2>{
                 Transform(Vec2(-1.0f, 0.0f) * 1_m, xf1),
                 Transform(Vec2(1.0f, 0.0f) * 1_m, xf1),
                 Transform(Vec2(0.0f, 0.5f) * 1_m, xf1)
@@ -96,7 +96,7 @@ public:
             xf2.p = -GetVec2(GetXAxis(xf2.q)) * 1_m;
 
             auto triangle2 = std::make_shared<PolygonShape>();
-            triangle2->Set(Span<const Length2D>{
+            triangle2->Set(Span<const Length2>{
                 Transform(Vec2(-1.0f, 0.0f) * 1_m, xf2),
                 Transform(Vec2(1.0f, 0.0f) * 1_m, xf2),
                 Transform(Vec2(0.0f, 0.5f) * 1_m, xf2)

@@ -54,21 +54,21 @@ public:
         }
         
         /// @brief Uses the given value for vertex 1.
-        constexpr Conf& UseVertex1(Length2D value) noexcept
+        constexpr Conf& UseVertex1(Length2 value) noexcept
         {
             vertex1 = value;
             return *this;
         }
 
         /// @brief Uses the given value for vertex 2.
-        constexpr Conf& UseVertex2(Length2D value) noexcept
+        constexpr Conf& UseVertex2(Length2 value) noexcept
         {
             vertex2 = value;
             return *this;
         }
 
-        Length2D vertex1 = Length2D{}; ///< Vertex 1.
-        Length2D vertex2 = Length2D{}; ///< Vertex 2.
+        Length2 vertex1 = Length2{}; ///< Vertex 1.
+        Length2 vertex2 = Length2{}; ///< Vertex 2.
     };
     
     /// @brief Gets the default configuration for an EdgeShape.
@@ -87,7 +87,7 @@ public:
     }
 
     /// @brief Initializing constructor.
-    EdgeShape(Length2D v1, Length2D v2, const Conf& conf = GetDefaultConf()) noexcept:
+    EdgeShape(Length2 v1, Length2 v2, const Conf& conf = GetDefaultConf()) noexcept:
         Shape{conf},
         m_vertices{v1, v2}
     {
@@ -118,13 +118,13 @@ public:
     void Accept(ShapeVisitor& visitor) const override;
 
     /// @brief Sets this as an isolated edge.
-    void Set(Length2D v1, Length2D v2);
+    void Set(Length2 v1, Length2 v2);
 
     /// @brief Gets vertex number 1 (of 2).
-    Length2D GetVertex1() const noexcept { return m_vertices[0]; }
+    Length2 GetVertex1() const noexcept { return m_vertices[0]; }
 
     /// @brief Gets vertex number 2 (of 2).
-    Length2D GetVertex2() const noexcept { return m_vertices[1]; }
+    Length2 GetVertex2() const noexcept { return m_vertices[1]; }
 
     /// @brief Gets normal number 1 (of 2).
     UnitVec2 GetNormal1() const noexcept { return m_normals[0]; }
@@ -133,7 +133,7 @@ public:
     UnitVec2 GetNormal2() const noexcept { return m_normals[1]; }
 
 private:
-    Length2D m_vertices[2]; ///< Vertices
+    Length2 m_vertices[2]; ///< Vertices
     UnitVec2 m_normals[2]; ///< Normals.
 };
 

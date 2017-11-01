@@ -54,8 +54,8 @@ TEST(RevoluteJoint, Construction)
     jd.collideConnected = true;
     jd.userData = reinterpret_cast<void*>(0x011);
 
-    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    jd.localAnchorA = Length2(Real(4) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2(Real(6) * Meter, Real(7) * Meter);
     jd.enableLimit = true;
     jd.enableMotor = true;
     jd.motorSpeed = Real{4.4f} * RadianPerSecond;
@@ -71,7 +71,7 @@ TEST(RevoluteJoint, Construction)
     EXPECT_EQ(joint.GetBodyB(), jd.bodyB);
     EXPECT_EQ(joint.GetCollideConnected(), jd.collideConnected);
     EXPECT_EQ(joint.GetUserData(), jd.userData);
-    EXPECT_EQ(joint.GetLinearReaction(), Momentum2D{});
+    EXPECT_EQ(joint.GetLinearReaction(), Momentum2{});
     EXPECT_EQ(joint.GetAngularReaction(), AngularMomentum{0});
 
     EXPECT_EQ(joint.GetLocalAnchorA(), jd.localAnchorA);
@@ -94,8 +94,8 @@ TEST(RevoluteJoint, EnableMotor)
     auto jd = RevoluteJointDef{};
     jd.bodyA = b0;
     jd.bodyB = b1;
-    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    jd.localAnchorA = Length2(Real(4) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2(Real(6) * Meter, Real(7) * Meter);
 
     auto joint = RevoluteJoint{jd};
     EXPECT_FALSE(joint.IsMotorEnabled());
@@ -114,8 +114,8 @@ TEST(RevoluteJoint, MotorSpeed)
     auto jd = RevoluteJointDef{};
     jd.bodyA = b0;
     jd.bodyB = b1;
-    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    jd.localAnchorA = Length2(Real(4) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2(Real(6) * Meter, Real(7) * Meter);
     
     const auto newValue = Real(5) * RadianPerSecond;
     auto joint = RevoluteJoint{jd};
@@ -134,8 +134,8 @@ TEST(RevoluteJoint, EnableLimit)
     auto jd = RevoluteJointDef{};
     jd.bodyA = b0;
     jd.bodyB = b1;
-    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    jd.localAnchorA = Length2(Real(4) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2(Real(6) * Meter, Real(7) * Meter);
     
     auto joint = RevoluteJoint{jd};
     EXPECT_FALSE(joint.IsLimitEnabled());
@@ -154,8 +154,8 @@ TEST(RevoluteJoint, SetLimits)
     auto jd = RevoluteJointDef{};
     jd.bodyA = b0;
     jd.bodyB = b1;
-    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    jd.localAnchorA = Length2(Real(4) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2(Real(6) * Meter, Real(7) * Meter);
     
     const auto upperValue = +5_deg;
     const auto lowerValue = -8_deg;
@@ -176,8 +176,8 @@ TEST(RevoluteJoint, MaxMotorTorque)
     auto jd = RevoluteJointDef{};
     jd.bodyA = b0;
     jd.bodyB = b1;
-    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    jd.localAnchorA = Length2(Real(4) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2(Real(6) * Meter, Real(7) * Meter);
     
     const auto newValue = 5_Nm;
     auto joint = RevoluteJoint{jd};
@@ -191,8 +191,8 @@ TEST(RevoluteJoint, MovesDynamicCircles)
 {
     const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
     World world;
-    const auto p1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
-    const auto p2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
+    const auto p1 = Length2{-Real(1) * Meter, Real(0) * Meter};
+    const auto p2 = Length2{+Real(1) * Meter, Real(0) * Meter};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
@@ -221,13 +221,13 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
                                                     .UseVertexRadius(Real{0.2f} * Meter)
                                                     .UseDensity(1_kgpm2));
     World world;
-    const auto p1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
-    const auto p2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
+    const auto p1 = Length2{-Real(1) * Meter, Real(0) * Meter};
+    const auto p2 = Length2{+Real(1) * Meter, Real(0) * Meter};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
-    auto jd = RevoluteJointDef{b1, b2, Length2D{}};
+    auto jd = RevoluteJointDef{b1, b2, Length2{}};
     jd.enableLimit = true;
     ASSERT_EQ(jd.lowerAngle, Angle(0));
     ASSERT_EQ(jd.upperAngle, Angle(0));
@@ -288,13 +288,13 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
 
 TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
 {
-    World world{WorldDef{}.UseGravity(LinearAcceleration2D{
+    World world{WorldDef{}.UseGravity(LinearAcceleration2{
         Real(0) * MeterPerSquareSecond,
         -Real(10) * MeterPerSquareSecond
     })};
     
-    const auto p1 = Length2D{Real(0) * Meter, Real(4) * Meter}; // Vec2{-1, 0};
-    const auto p2 = Length2D{Real(0) * Meter, -Real(2) * Meter}; // Vec2{+1, 0};
+    const auto p1 = Length2{Real(0) * Meter, Real(4) * Meter}; // Vec2{-1, 0};
+    const auto p2 = Length2{Real(0) * Meter, -Real(2) * Meter}; // Vec2{+1, 0};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Static).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
 
@@ -307,7 +307,7 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
     shape2->SetDensity(1_kgpm2);
     b2->CreateFixture(shape2);
     
-    auto jd = RevoluteJointDef{b1, b2, Length2D{}};
+    auto jd = RevoluteJointDef{b1, b2, Length2{}};
     const auto joint = world.CreateJoint(jd);
     
     for (auto i = 0; i < 1000; ++i)

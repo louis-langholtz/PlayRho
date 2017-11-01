@@ -31,7 +31,7 @@ class TheoJansen : public Test
 {
 public:
 
-    void CreateLeg(Real s, const Length2D wheelAnchor)
+    void CreateLeg(Real s, const Length2 wheelAnchor)
     {
         const auto p1 = Vec2(5.4f * s, -6.1f) * 1_m;
         const auto p2 = Vec2(7.2f * s, -1.2f) * 1_m;
@@ -44,12 +44,12 @@ public:
         if (s > 0.0f)
         {
             poly1.Set({p1, p2, p3});
-            poly2.Set({Vec2_zero * 1_m, p5 - p4, p6 - p4});
+            poly2.Set({Length2{}, p5 - p4, p6 - p4});
         }
         else
         {
             poly1.Set({p1, p3, p2});
-            poly2.Set({Vec2_zero * 1_m, p6 - p4, p5 - p4});
+            poly2.Set({Length2{}, p6 - p4, p5 - p4});
         }
         poly1.SetDensity(1_kgpm2);
         poly2.SetDensity(1_kgpm2);
@@ -188,7 +188,7 @@ public:
         });
     }
 
-    Length2D m_offset;
+    Length2 m_offset;
     Body* m_chassis;
     Body* m_wheel;
     RevoluteJoint* m_motorJoint;

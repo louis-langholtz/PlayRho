@@ -42,7 +42,7 @@ namespace playrho {
         /// Point.
         /// @details Point at which position resolution should be relatively applied.
         /// @note This field is 8-bytes large.
-        Length2D m_point;
+        Length2 m_point;
         
         /// Separation.
         /// @details Separation between two points (i.e. penetration if negative).

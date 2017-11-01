@@ -43,7 +43,7 @@ struct MotorJointDef : public JointBuilder<MotorJointDef>
     MotorJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB) noexcept;
     
     /// @brief Uses the given linear offset value.
-    MotorJointDef& UseLinearOffset(Length2D v) noexcept;
+    MotorJointDef& UseLinearOffset(Length2 v) noexcept;
 
     /// @brief Uses the given angular offset value.
     MotorJointDef& UseAngularOffset(Angle v) noexcept;
@@ -58,7 +58,7 @@ struct MotorJointDef : public JointBuilder<MotorJointDef>
     MotorJointDef& UseCorrectionFactor(Real v) noexcept;
     
     /// @brief Position of bodyB minus the position of bodyA, in bodyA's frame.
-    Length2D linearOffset = Length2D{};
+    Length2 linearOffset = Length2{};
     
     /// @brief Angle of bodyB minus angle of bodyA.
     Angle angularOffset = Angle{0};
@@ -73,7 +73,7 @@ struct MotorJointDef : public JointBuilder<MotorJointDef>
     Real correctionFactor = Real(0.3);
 };
 
-inline MotorJointDef& MotorJointDef::UseLinearOffset(Length2D v) noexcept
+inline MotorJointDef& MotorJointDef::UseLinearOffset(Length2 v) noexcept
 {
     linearOffset = v;
     return *this;

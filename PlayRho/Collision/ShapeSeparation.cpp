@@ -26,7 +26,7 @@ namespace playrho {
 namespace {
 
 inline IndexSeparation GetMinIndexSeparation(const DistanceProxy& proxy,
-                                             UnitVec2 normal, Length2D offset)
+                                             UnitVec2 normal, Length2 offset)
 {
     // Search for the vector that's most anti-parallel to the normal.
     // See: https://en.wikipedia.org/wiki/Antiparallel_(mathematics)#Antiparallel_vectors
@@ -66,7 +66,7 @@ IndexPairSeparation GetMaxSeparation4x4(const DistanceProxy& proxy1, Transformat
     };
     
     const auto xf = MulT(xf1, xf2);
-    const Length2D p2vertices[4] = {
+    const Length2 p2vertices[4] = {
         Transform(proxy2.GetVertex(0), xf),
         Transform(proxy2.GetVertex(1), xf),
         Transform(proxy2.GetVertex(2), xf),

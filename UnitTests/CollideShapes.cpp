@@ -96,12 +96,12 @@ TEST(CollideShapes, CircleCircleOrientedVertically)
     
     EXPECT_EQ(manifold.GetType(), Manifold::e_circles);
     
-    EXPECT_EQ(manifold.GetLocalPoint(), Vec2_zero * (Real(1) * Meter));
+    EXPECT_EQ(manifold.GetLocalPoint(), Length2{});
     
     EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
     
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
-    EXPECT_EQ(manifold.GetPoint(0).localPoint, Vec2_zero * (Real(1) * Meter));
+    EXPECT_EQ(manifold.GetPoint(0).localPoint, Length2{});
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_vertex);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexA, 0);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_vertex);
@@ -117,7 +117,7 @@ TEST(CollideShapes, CircleTouchingTrianglePointBelow)
     const auto triangleRightPt = Vec2{+1, -1} * (Real(1) * Meter);
     const auto triangle = PolygonShape({triangleLeftPt, triangleRightPt, triangleTopPt});
     const auto triangleXfm = Transformation{
-        Vec2{0, 0} * (Real(1) * Meter),
+        Length2{},
         UnitVec2::GetRight()
     };
     const auto circleXfm = Transformation{
@@ -131,7 +131,7 @@ TEST(CollideShapes, CircleTouchingTrianglePointBelow)
     EXPECT_EQ(manifold.GetLocalPoint(), triangleTopPt);
     EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
-    EXPECT_EQ(manifold.GetPoint(0).localPoint, Vec2_zero * (Real(1) * Meter));
+    EXPECT_EQ(manifold.GetPoint(0).localPoint, Length2{});
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_vertex);
     EXPECT_EQ(triangle.GetVertex(manifold.GetPoint(0).contactFeature.indexA), triangleTopPt);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_vertex);
@@ -151,7 +151,7 @@ TEST(CollideShapes, CircleTouchingTrianglePointLeft)
         UnitVec2::GetRight()
     };
     const auto triangleXfm = Transformation{
-        Vec2{0, 0} * (Real(1) * Meter),
+        Length2{},
         UnitVec2::GetRight()
     };
     
@@ -161,7 +161,7 @@ TEST(CollideShapes, CircleTouchingTrianglePointLeft)
     EXPECT_EQ(manifold.GetLocalPoint(), triangleLeftPt);
     EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
-    EXPECT_EQ(manifold.GetPoint(0).localPoint, (Length2D{}));
+    EXPECT_EQ(manifold.GetPoint(0).localPoint, (Length2{}));
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_vertex);
     EXPECT_EQ(triangle.GetVertex(manifold.GetPoint(0).contactFeature.indexA), triangleLeftPt);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_vertex);
@@ -180,7 +180,7 @@ TEST(CollideShapes, CircleTouchingTrianglePointRight)
         triangleRightPt + UnitVec2::Get(-45_deg) * circleRadius,
         UnitVec2::GetRight()
     };
-    const auto triangleXfm = Transformation{Vec2{0, 0} * Meter, UnitVec2::GetRight()};
+    const auto triangleXfm = Transformation{Length2{}, UnitVec2::GetRight()};
     
     const auto manifold = CollideShapes(triangle.GetChild(0), triangleXfm, circle.GetChild(0), circleXfm);
     
@@ -188,7 +188,7 @@ TEST(CollideShapes, CircleTouchingTrianglePointRight)
     EXPECT_EQ(manifold.GetLocalPoint(), triangleRightPt);
     EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
-    EXPECT_EQ(manifold.GetPoint(0).localPoint, (Length2D{}));
+    EXPECT_EQ(manifold.GetPoint(0).localPoint, (Length2{}));
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_vertex);
     EXPECT_EQ(triangle.GetVertex(manifold.GetPoint(0).contactFeature.indexA), triangleRightPt);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_vertex);
@@ -210,7 +210,7 @@ TEST(CollideShapes, CircleJustPastTrianglePointRightDoesntCollide)
         UnitVec2::GetRight()
     };
     const auto triangleXfm = Transformation{
-        Length2D{},
+        Length2{},
         UnitVec2::GetRight()
     };
     
@@ -233,7 +233,7 @@ TEST(CollideShapes, CircleOverRightFaceOfTriangle)
         UnitVec2::GetRight()
     };
     const auto triangleXfm = Transformation{
-        Vec2{0, 0} * (Real(1) * Meter),
+        Length2{},
         UnitVec2::GetRight()
     };
     
@@ -266,7 +266,7 @@ TEST(CollideShapes, CircleOverLeftFaceOfTriangle)
         UnitVec2::GetRight()
     };
     const auto triangleXfm = Transformation{
-        Vec2{0, 0} * (Real(1) * Meter),
+        Length2{},
         UnitVec2::GetRight()
     };
     
@@ -280,7 +280,7 @@ TEST(CollideShapes, CircleOverLeftFaceOfTriangle)
     EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
     
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
-    EXPECT_EQ(manifold.GetPoint(0).localPoint, (Length2D{}));
+    EXPECT_EQ(manifold.GetPoint(0).localPoint, (Length2{}));
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_face);
     EXPECT_EQ(triangle.GetNormal(manifold.GetPoint(0).contactFeature.indexA), manifold.GetLocalNormal());
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_vertex);
@@ -322,7 +322,7 @@ TEST(CollideShapes, TallRectangleLeftCircleRight)
     EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
     
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
-    EXPECT_EQ(manifold.GetPoint(0).localPoint, (Length2D{}));
+    EXPECT_EQ(manifold.GetPoint(0).localPoint, (Length2{}));
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_face);
     EXPECT_EQ(s1.GetNormal(manifold.GetPoint(0).contactFeature.indexA), manifold.GetLocalNormal());
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_vertex);
@@ -338,7 +338,7 @@ TEST(CollideShapes, IdenticalOverlappingSquaresDim1)
     ASSERT_EQ(shape.GetVertex(2), (Vec2{-dim, +dim} * (Real(1) * Meter))); // top left
     ASSERT_EQ(shape.GetVertex(3), (Vec2{-dim, -dim} * (Real(1) * Meter))); // bottom left
     
-    const auto xfm = Transformation{Length2D{}, UnitVec2::GetRight()};
+    const auto xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     const auto manifold = CollideShapes(shape.GetChild(0), xfm, shape.GetChild(0), xfm);
     
     EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
@@ -379,7 +379,7 @@ TEST(CollideShapes, IdenticalOverlappingSquaresDim2)
     ASSERT_EQ(shape.GetVertex(2), (Vec2{-dim, +dim} * (Real(1) * Meter))); // top left
     ASSERT_EQ(shape.GetVertex(3), (Vec2{-dim, -dim} * (Real(1) * Meter))); // bottom left
     
-    const auto xfm = Transformation{Length2D{}, UnitVec2::GetRight()};
+    const auto xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     const auto manifold = CollideShapes(shape.GetChild(0), xfm, shape.GetChild(0), xfm);
     
     EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
@@ -709,7 +709,7 @@ TEST(CollideShapes, SquareCornerTouchingSquareFaceAbove)
     EXPECT_NEAR(static_cast<double>(GetY(GetVec2(world_manifold.GetNormal()))),
                 +1.0, 1.0/100000.0);
 
-    const auto corner_point = Rotate(Length2D{dim, dim}, UnitVec2::Get(rot0)) + xfm0.p;
+    const auto corner_point = Rotate(Length2{dim, dim}, UnitVec2::Get(rot0)) + xfm0.p;
     EXPECT_NEAR(double(Real{GetX(corner_point) / Meter}), 0.0,        0.02);
     EXPECT_NEAR(double(Real{GetY(corner_point) / Meter}), 0.82842684, 0.02);
     
@@ -733,10 +733,10 @@ TEST(CollideShapes, HorizontalOverlappingRects1)
     
     // Shape B: wide rectangle
     const auto shape1 = PolygonShape(Real{3} * Meter, Real{1.5f} * Meter);
-    ASSERT_EQ(shape1.GetVertex(0), Length2D(Real(+3.0) * Meter, Real(-1.5) * Meter)); // bottom right
-    ASSERT_EQ(shape1.GetVertex(1), Length2D(Real(+3.0) * Meter, Real(+1.5) * Meter)); // top right
-    ASSERT_EQ(shape1.GetVertex(2), Length2D(Real(-3.0) * Meter, Real(+1.5) * Meter)); // top left
-    ASSERT_EQ(shape1.GetVertex(3), Length2D(Real(-3.0) * Meter, Real(-1.5) * Meter)); // bottom left
+    ASSERT_EQ(shape1.GetVertex(0), Length2(Real(+3.0) * Meter, Real(-1.5) * Meter)); // bottom right
+    ASSERT_EQ(shape1.GetVertex(1), Length2(Real(+3.0) * Meter, Real(+1.5) * Meter)); // top right
+    ASSERT_EQ(shape1.GetVertex(2), Length2(Real(-3.0) * Meter, Real(+1.5) * Meter)); // top left
+    ASSERT_EQ(shape1.GetVertex(3), Length2(Real(-3.0) * Meter, Real(-1.5) * Meter)); // bottom left
 
     const auto xfm0 = Transformation{
         Vec2{-2, 0} * (Real(1) * Meter),
@@ -812,17 +812,17 @@ TEST(CollideShapes, HorizontalOverlappingRects2)
 {
     // Shape A: wide rectangle
     const auto shape0 = PolygonShape(Real{3} * Meter, Real{1.5f} * Meter);
-    ASSERT_EQ(shape0.GetVertex(0), Length2D(Real(+3.0) * Meter, Real(-1.5) * Meter)); // bottom right
-    ASSERT_EQ(shape0.GetVertex(1), Length2D(Real(+3.0) * Meter, Real(+1.5) * Meter)); // top right
-    ASSERT_EQ(shape0.GetVertex(2), Length2D(Real(-3.0) * Meter, Real(+1.5) * Meter)); // top left
-    ASSERT_EQ(shape0.GetVertex(3), Length2D(Real(-3.0) * Meter, Real(-1.5) * Meter)); // bottom left
+    ASSERT_EQ(shape0.GetVertex(0), Length2(Real(+3.0) * Meter, Real(-1.5) * Meter)); // bottom right
+    ASSERT_EQ(shape0.GetVertex(1), Length2(Real(+3.0) * Meter, Real(+1.5) * Meter)); // top right
+    ASSERT_EQ(shape0.GetVertex(2), Length2(Real(-3.0) * Meter, Real(+1.5) * Meter)); // top left
+    ASSERT_EQ(shape0.GetVertex(3), Length2(Real(-3.0) * Meter, Real(-1.5) * Meter)); // bottom left
     
     // Shape B: square
     const auto shape1 = PolygonShape(Real{2} * Meter, Real{2} * Meter);
-    ASSERT_EQ(shape1.GetVertex(0), Length2D(+Real(2) * Meter,-Real(2) * Meter)); // bottom right
-    ASSERT_EQ(shape1.GetVertex(1), Length2D(+Real(2) * Meter,+Real(2) * Meter)); // top right
-    ASSERT_EQ(shape1.GetVertex(2), Length2D(-Real(2) * Meter,+Real(2) * Meter)); // top left
-    ASSERT_EQ(shape1.GetVertex(3), Length2D(-Real(2) * Meter,-Real(2) * Meter)); // bottom left
+    ASSERT_EQ(shape1.GetVertex(0), Length2(+Real(2) * Meter,-Real(2) * Meter)); // bottom right
+    ASSERT_EQ(shape1.GetVertex(1), Length2(+Real(2) * Meter,+Real(2) * Meter)); // top right
+    ASSERT_EQ(shape1.GetVertex(2), Length2(-Real(2) * Meter,+Real(2) * Meter)); // top left
+    ASSERT_EQ(shape1.GetVertex(3), Length2(-Real(2) * Meter,-Real(2) * Meter)); // bottom left
     
     const auto xfm0 = Transformation{
         Vec2{-2, 0} * (Real(1) * Meter),
@@ -897,7 +897,7 @@ TEST(CollideShapes, EdgeBelowPolygon)
     const auto hy = Real(1) * Meter;
     const auto polygon_shape = PolygonShape(hx, hy);
     const auto polygon_xfm = Transformation{
-        Vec2{0, 0} * (Real(1) * Meter),
+        Length2{},
         UnitVec2::GetRight()
     };
 
@@ -905,7 +905,7 @@ TEST(CollideShapes, EdgeBelowPolygon)
     
     EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
     
-    EXPECT_EQ(manifold.GetLocalPoint(), (Length2D{}));
+    EXPECT_EQ(manifold.GetLocalPoint(), (Length2{}));
     EXPECT_NEAR(static_cast<double>(GetX(GetVec2(manifold.GetLocalNormal()))),
                 0.0, 1.0/100000.0);
     EXPECT_NEAR(static_cast<double>(GetY(GetVec2(manifold.GetLocalNormal()))),
@@ -942,13 +942,13 @@ TEST(CollideShapes, EdgeAbovePolygon)
     const auto hx = Real(1) * Meter;
     const auto hy = Real(1) * Meter;
     const auto polygon_shape = PolygonShape(hx, hy);
-    const auto polygon_xfm = Transformation{Vec2{0, 0} * (Real(1) * Meter), UnitVec2::GetRight()};
+    const auto polygon_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     
     const auto manifold = CollideShapes(edge_shape.GetChild(0), edge_xfm, polygon_shape.GetChild(0), polygon_xfm);
     
     EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
     
-    EXPECT_EQ(manifold.GetLocalPoint(), (Length2D{}));
+    EXPECT_EQ(manifold.GetLocalPoint(), (Length2{}));
     EXPECT_NEAR(static_cast<double>(GetX(GetVec2(manifold.GetLocalNormal()))),
                 +0.0, 1.0/100000.0);
     EXPECT_NEAR(static_cast<double>(GetY(GetVec2(manifold.GetLocalNormal()))),
@@ -985,13 +985,13 @@ TEST(CollideShapes, EdgeLeftOfPolygon)
     const auto hx = Real(1) * Meter;
     const auto hy = Real(1) * Meter;
     const auto polygon_shape = PolygonShape(hx, hy);
-    const auto polygon_xfm = Transformation{Vec2{0, 0} * (Real(1) * Meter), UnitVec2::GetRight()};
+    const auto polygon_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     
     const auto manifold = CollideShapes(edge_shape.GetChild(0), edge_xfm, polygon_shape.GetChild(0), polygon_xfm);
     
     EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
     
-    EXPECT_EQ(manifold.GetLocalPoint(), (Length2D{}));
+    EXPECT_EQ(manifold.GetLocalPoint(), (Length2{}));
     EXPECT_NEAR(static_cast<double>(GetX(GetVec2(manifold.GetLocalNormal()))),
                 1.0, 1.0/100000.0);
     EXPECT_NEAR(static_cast<double>(GetY(GetVec2(manifold.GetLocalNormal()))),
@@ -1010,13 +1010,13 @@ TEST(CollideShapes, EdgeRightOfPolygon)
     const auto hx = Real(1) * Meter;
     const auto hy = Real(1) * Meter;
     const auto polygon_shape = PolygonShape(hx, hy);
-    const auto polygon_xfm = Transformation{Vec2{0, 0} * (Real(1) * Meter), UnitVec2::GetRight()};
+    const auto polygon_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     
     const auto manifold = CollideShapes(edge_shape.GetChild(0), edge_xfm, polygon_shape.GetChild(0), polygon_xfm);
     
     EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
     
-    EXPECT_EQ(manifold.GetLocalPoint(), (Length2D{}));
+    EXPECT_EQ(manifold.GetLocalPoint(), (Length2{}));
     EXPECT_NEAR(static_cast<double>(GetX(GetVec2(manifold.GetLocalNormal()))),
                 -1.0, 1.0/100000.0);
     EXPECT_NEAR(static_cast<double>(GetY(GetVec2(manifold.GetLocalNormal()))),
@@ -1030,15 +1030,15 @@ TEST(CollideShapes, EdgeInsideSquare)
     const auto p1 = Vec2(0, -1) * (Real(1) * Meter);
     const auto p2 = Vec2(0, +1) * (Real(1) * Meter);
     const auto edge_shape = EdgeShape(p1, p2);
-    const auto edge_xfm = Transformation{Vec2{0, 0} * (Real(1) * Meter), UnitVec2::GetRight()};
+    const auto edge_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     const auto s = Real(1) * Meter;
     const auto polygon_shape = PolygonShape(s, s);
-    const auto polygon_xfm = Transformation{Vec2{0, 0} * (Real(1) * Meter), UnitVec2::GetRight()};
+    const auto polygon_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     
     const auto manifold = CollideShapes(edge_shape.GetChild(0), edge_xfm, polygon_shape.GetChild(0), polygon_xfm);
     
     EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
-    EXPECT_EQ(manifold.GetLocalPoint(), (Length2D{}));
+    EXPECT_EQ(manifold.GetLocalPoint(), (Length2{}));
     EXPECT_NEAR(static_cast<double>(GetX(GetVec2(manifold.GetLocalNormal()))),
                 1.0, 1.0/100000.0);
     EXPECT_NEAR(static_cast<double>(GetY(GetVec2(manifold.GetLocalNormal()))),
@@ -1055,15 +1055,15 @@ TEST(CollideShapes, EdgeTwiceInsideSquare)
     const auto p1 = Vec2(0, -2) * (Real(1) * Meter);
     const auto p2 = Vec2(0, +2) * (Real(1) * Meter);
     const auto edge_shape = EdgeShape(p1, p2);
-    const auto edge_xfm = Transformation{Length2D{}, UnitVec2::GetRight()};
+    const auto edge_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     const auto s = Real(1) * Meter;
     const auto polygon_shape = PolygonShape(s, s);
-    const auto polygon_xfm = Transformation{Length2D{}, UnitVec2::GetRight()};
+    const auto polygon_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     
     const auto manifold = CollideShapes(edge_shape.GetChild(0), edge_xfm, polygon_shape.GetChild(0), polygon_xfm);
     
     EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
-    EXPECT_EQ(manifold.GetLocalPoint(), (Length2D{}));
+    EXPECT_EQ(manifold.GetLocalPoint(), (Length2{}));
     EXPECT_NEAR(static_cast<double>(GetX(GetVec2(manifold.GetLocalNormal()))),
                 1.0, 1.0/100000.0);
     EXPECT_NEAR(static_cast<double>(GetY(GetVec2(manifold.GetLocalNormal()))),
@@ -1080,15 +1080,15 @@ TEST(CollideShapes, EdgeHalfInsideSquare)
     const auto p1 = Vec2(0, -0.5) * (Real(1) * Meter);
     const auto p2 = Vec2(0, +0.5) * (Real(1) * Meter);
     const auto edge_shape = EdgeShape(p1, p2);
-    const auto edge_xfm = Transformation{Length2D{}, UnitVec2::GetRight()};
+    const auto edge_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     const auto s = Real(1) * Meter;
     const auto polygon_shape = PolygonShape(s, s);
-    const auto polygon_xfm = Transformation{Length2D{}, UnitVec2::GetRight()};
+    const auto polygon_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     
     const auto manifold = CollideShapes(edge_shape.GetChild(0), edge_xfm, polygon_shape.GetChild(0), polygon_xfm);
     
     EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
-    EXPECT_EQ(manifold.GetLocalPoint(), (Length2D{}));
+    EXPECT_EQ(manifold.GetLocalPoint(), (Length2{}));
     EXPECT_NEAR(static_cast<double>(GetX(GetVec2(manifold.GetLocalNormal()))),
                 1.0, 1.0/100000.0);
     EXPECT_NEAR(static_cast<double>(GetY(GetVec2(manifold.GetLocalNormal()))),
@@ -1105,10 +1105,10 @@ TEST(CollideShapes, EdgeR90InsideSquare)
     const auto p1 = Vec2(0, -1) * (Real(1) * Meter);
     const auto p2 = Vec2(0, +1) * (Real(1) * Meter);
     const auto edge_shape = EdgeShape(p1, p2);
-    const auto edge_xfm = Transformation{Length2D{}, UnitVec2::GetTop()};
+    const auto edge_xfm = Transformation{Length2{}, UnitVec2::GetTop()};
     const auto s = Real(1) * Meter;
     const auto polygon_shape = PolygonShape(s, s);
-    const auto polygon_xfm = Transformation{Length2D{}, UnitVec2::GetRight()};
+    const auto polygon_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     
     // Sets up a collision between a line segment (A) and a square (B) where the line segment is
     // fully inside the square and bisects the square into an upper and low rectangular area like
@@ -1130,7 +1130,7 @@ TEST(CollideShapes, EdgeR90InsideSquare)
     const auto manifold = CollideShapes(edge_shape.GetChild(0), edge_xfm, polygon_shape.GetChild(0), polygon_xfm);
     
     EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
-    EXPECT_EQ(manifold.GetLocalPoint(), (Length2D{}));
+    EXPECT_EQ(manifold.GetLocalPoint(), (Length2{}));
     EXPECT_NEAR(static_cast<double>(GetX(GetVec2(manifold.GetLocalNormal()))),
                 1.0, 1.0/100000.0);
     EXPECT_NEAR(static_cast<double>(GetY(GetVec2(manifold.GetLocalNormal()))),
@@ -1161,15 +1161,15 @@ TEST(CollideShapes, EdgeR45InsideSquare)
     const auto p1 = Vec2(0, -1) * (Real(1) * Meter);
     const auto p2 = Vec2(0, +1) * (Real(1) * Meter);
     const auto edge_shape = EdgeShape(p1, p2);
-    const auto edge_xfm = Transformation{Length2D{}, UnitVec2::Get(45_deg)};
+    const auto edge_xfm = Transformation{Length2{}, UnitVec2::Get(45_deg)};
     const auto s = Real(1) * Meter;
     const auto polygon_shape = PolygonShape(s, s);
-    const auto polygon_xfm = Transformation{Length2D{}, UnitVec2::GetRight()};
+    const auto polygon_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     
     const auto manifold = CollideShapes(edge_shape.GetChild(0), edge_xfm, polygon_shape.GetChild(0), polygon_xfm);
     
     EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
-    EXPECT_EQ(manifold.GetLocalPoint(), (Length2D{}));
+    EXPECT_EQ(manifold.GetLocalPoint(), (Length2{}));
     EXPECT_NEAR(static_cast<double>(GetX(GetVec2(manifold.GetLocalNormal()))),
                 1.0, 1.0/100000.0);
     EXPECT_NEAR(static_cast<double>(GetY(GetVec2(manifold.GetLocalNormal()))),
@@ -1204,15 +1204,15 @@ TEST(CollideShapes, EdgeR180InsideSquare)
     const auto p1 = Vec2(0, -1) * (Real(1) * Meter);
     const auto p2 = Vec2(0, +1) * (Real(1) * Meter);
     const auto edge_shape = EdgeShape(p1, p2);
-    const auto edge_xfm = Transformation{Length2D{}, UnitVec2::GetLeft()};
+    const auto edge_xfm = Transformation{Length2{}, UnitVec2::GetLeft()};
     const auto s = Real(1) * Meter;
     const auto polygon_shape = PolygonShape(s, s);
-    const auto polygon_xfm = Transformation{Length2D{}, UnitVec2::GetRight()};
+    const auto polygon_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     
     const auto manifold = CollideShapes(edge_shape.GetChild(0), edge_xfm, polygon_shape.GetChild(0), polygon_xfm);
     
     EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
-    EXPECT_EQ(manifold.GetLocalPoint(), (Length2D{}));
+    EXPECT_EQ(manifold.GetLocalPoint(), (Length2{}));
     EXPECT_NEAR(static_cast<double>(GetX(GetVec2(manifold.GetLocalNormal()))),
                 1.0, 1.0/100000.0);
     EXPECT_NEAR(static_cast<double>(GetY(GetVec2(manifold.GetLocalNormal()))),
@@ -1270,12 +1270,12 @@ TEST(CollideShapes, EdgeTwiceR180Square)
     };
     const auto s = Real(1) * Meter;
     const auto polygon_shape = PolygonShape(s, s);
-    const auto polygon_xfm = Transformation{Length2D{}, UnitVec2::GetRight()};
+    const auto polygon_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     
     const auto manifold = CollideShapes(edge_shape.GetChild(0), edge_xfm, polygon_shape.GetChild(0), polygon_xfm);
     
     EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
-    EXPECT_EQ(manifold.GetLocalPoint(), (Length2D{}));
+    EXPECT_EQ(manifold.GetLocalPoint(), (Length2{}));
     EXPECT_NEAR(static_cast<double>(GetX(GetVec2(manifold.GetLocalNormal()))),
                 1.0, 1.0/100000.0);
     EXPECT_NEAR(static_cast<double>(GetY(GetVec2(manifold.GetLocalNormal()))),
@@ -1334,13 +1334,13 @@ TEST(CollideShapes, EdgeFooTriangle)
     const auto triangleLeftPt = Vec2{-1, -1} * (Real(1) * Meter);
     const auto triangleRightPt = Vec2{+1, -1} * (Real(1) * Meter);
     polygon_shape.Set({triangleLeftPt, triangleRightPt, triangleTopPt});
-    const auto polygon_xfm = Transformation{Length2D{}, UnitVec2::GetRight()};
+    const auto polygon_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     
     const auto manifold = CollideShapes(edge_shape.GetChild(0), edge_xfm,
                                         polygon_shape.GetChild(0), polygon_xfm);
     
     EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
-    EXPECT_EQ(manifold.GetLocalPoint(), (Length2D{}));
+    EXPECT_EQ(manifold.GetLocalPoint(), (Length2{}));
     EXPECT_NEAR(double(GetX(GetVec2(manifold.GetLocalNormal()))), -0.707107, 0.0001);
     EXPECT_NEAR(double(GetY(GetVec2(manifold.GetLocalNormal()))), -0.707107, 0.0001);
     EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
@@ -1353,7 +1353,7 @@ TEST(CollideShapes, EdgePolygonFaceB1)
     auto conf = EdgeShape::Conf{};
     conf.vertexRadius = 0;
     const auto edge_shape = EdgeShape(Vec2(6, 8) * (Real(1) * Meter), Vec2(7, 8) * (Real(1) * Meter), conf);
-    const auto edge_xfm = Transformation{Length2D{}, GetUnitVector(Vec2(Real(0.707106769), Real(0.707106769)))};
+    const auto edge_xfm = Transformation{Length2{}, GetUnitVector(Vec2(Real(0.707106769), Real(0.707106769)))};
     const auto poly_shape = PolygonShape({
         Vec2(0.5, 0) * (Real(1) * Meter),
         Vec2(0.249999985f, 0.433012724f) * (Real(1) * Meter),
@@ -1390,7 +1390,7 @@ TEST(CollideShapes, EdgePolygonFaceB2)
         Vec2(0.5f, -0.5f) * (Real(1) * Meter),
         Vec2(0.5f, 0.5f) * (Real(1) * Meter),
         Vec2(-0.5f, 0.5f) * (Real(1) * Meter),
-        Vec2(0.0f, 0.0f) * (Real(1) * Meter)
+        Length2{}
     });
     const auto poly_xfm = Transformation{Vec2(-16.0989342f, 3.49960017f) * (Real(1) * Meter), GetUnitVector(Vec2(1, 0))};
     
@@ -1505,8 +1505,8 @@ TEST(CollideShapes, R0EdgePerpendicularCrossingFromR0Edge)
     conf.vertexRadius = 0;
     auto edge_shape = EdgeShape(conf);
     edge_shape.Set(p1, p2);
-    const auto xfm1 = Transformation{Length2D{}, UnitVec2::GetRight()};
-    const auto xfm2 = Transformation{Length2D{}, UnitVec2::GetTop()};
+    const auto xfm1 = Transformation{Length2{}, UnitVec2::GetRight()};
+    const auto xfm2 = Transformation{Length2{}, UnitVec2::GetTop()};
     
     const auto manifold = CollideShapes(edge_shape.GetChild(0), xfm1, edge_shape.GetChild(0), xfm2);
     

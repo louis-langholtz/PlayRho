@@ -21,11 +21,11 @@
 
 namespace playrho {
 
-Length2D ComputeCentroid(const Span<const Length2D>& vertices)
+Length2 ComputeCentroid(const Span<const Length2>& vertices)
 {
     assert(vertices.size() >= 3);
     
-    auto c = Length2D{} * Area{0};
+    auto c = Length2{} * Area{0};
     auto area = Area{0};
     
     // pRef is the reference point for forming triangles.
@@ -55,9 +55,9 @@ Length2D ComputeCentroid(const Span<const Length2D>& vertices)
     return c / area;
 }
 
-std::vector<Length2D> GetCircleVertices(Length radius, unsigned slices, Angle start, Real turns)
+std::vector<Length2> GetCircleVertices(Length radius, unsigned slices, Angle start, Real turns)
 {
-    std::vector<Length2D> vertices;
+    std::vector<Length2> vertices;
     if (slices > 0)
     {
         const auto integralTurns = static_cast<long int>(turns);
@@ -93,7 +93,7 @@ NonNegative<Area> GetAreaOfCircle(Length radius)
     return Area{radius * radius * Pi};
 }
 
-NonNegative<Area> GetAreaOfPolygon(Span<const Length2D> vertices)
+NonNegative<Area> GetAreaOfPolygon(Span<const Length2> vertices)
 {
     // Uses the "Shoelace formula".
     // See: https://en.wikipedia.org/wiki/Shoelace_formula
@@ -112,7 +112,7 @@ NonNegative<Area> GetAreaOfPolygon(Span<const Length2D> vertices)
     return Abs(sum) / Real{2};
 }
 
-SecondMomentOfArea GetPolarMoment(Span<const Length2D> vertices)
+SecondMomentOfArea GetPolarMoment(Span<const Length2> vertices)
 {
     assert(vertices.size() > 2);
     

@@ -44,8 +44,8 @@ TEST(PrismaticJoint, EnableLimit)
     auto jd = PrismaticJointDef{};
     jd.bodyA = b0;
     jd.bodyB = b1;
-    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    jd.localAnchorA = Length2(Real(4) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2(Real(6) * Meter, Real(7) * Meter);
     
     auto joint = PrismaticJoint{jd};
     EXPECT_FALSE(joint.IsLimitEnabled());
@@ -64,8 +64,8 @@ TEST(PrismaticJoint, EnableMotor)
     auto jd = PrismaticJointDef{};
     jd.bodyA = b0;
     jd.bodyB = b1;
-    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    jd.localAnchorA = Length2(Real(4) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2(Real(6) * Meter, Real(7) * Meter);
     
     auto joint = PrismaticJoint{jd};
     EXPECT_FALSE(joint.IsMotorEnabled());
@@ -84,8 +84,8 @@ TEST(PrismaticJoint, SetMaxMotorForce)
     auto jd = PrismaticJointDef{};
     jd.bodyA = b0;
     jd.bodyB = b1;
-    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    jd.localAnchorA = Length2(Real(4) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2(Real(6) * Meter, Real(7) * Meter);
     
     auto joint = PrismaticJoint{jd};
     ASSERT_EQ(joint.GetMaxMotorForce(), 0_N);
@@ -102,8 +102,8 @@ TEST(PrismaticJoint, MotorSpeed)
     auto jd = PrismaticJointDef{};
     jd.bodyA = b0;
     jd.bodyB = b1;
-    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    jd.localAnchorA = Length2(Real(4) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2(Real(6) * Meter, Real(7) * Meter);
     
     const auto newValue = Real(5) * RadianPerSecond;
     auto joint = PrismaticJoint{jd};
@@ -122,8 +122,8 @@ TEST(PrismaticJoint, SetLimits)
     auto jd = PrismaticJointDef{};
     jd.bodyA = b0;
     jd.bodyB = b1;
-    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    jd.localAnchorA = Length2(Real(4) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2(Real(6) * Meter, Real(7) * Meter);
     
     const auto upperValue = Real(+5) * Meter;
     const auto lowerValue = Real(-8) * Meter;
@@ -139,8 +139,8 @@ TEST(PrismaticJoint, GetAnchorAandB)
 {
     World world;
     
-    const auto loc0 = Length2D{Real(+1) * Meter, Real(-3) * Meter};
-    const auto loc1 = Length2D{Real(-2) * Meter, Real(+1.2f) * Meter};
+    const auto loc0 = Length2{Real(+1) * Meter, Real(-3) * Meter};
+    const auto loc1 = Length2{Real(-2) * Meter, Real(+1.2f) * Meter};
 
     const auto b0 = world.CreateBody(BodyDef{}.UseLocation(loc0));
     const auto b1 = world.CreateBody(BodyDef{}.UseLocation(loc1));
@@ -148,8 +148,8 @@ TEST(PrismaticJoint, GetAnchorAandB)
     auto jd = PrismaticJointDef{};
     jd.bodyA = b0;
     jd.bodyB = b1;
-    jd.localAnchorA = Length2D(Real(4) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2D(Real(6) * Meter, Real(7) * Meter);
+    jd.localAnchorA = Length2(Real(4) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2(Real(6) * Meter, Real(7) * Meter);
     
     auto joint = PrismaticJoint{jd};
     ASSERT_EQ(joint.GetLocalAnchorA(), jd.localAnchorA);
@@ -162,8 +162,8 @@ TEST(PrismaticJoint, GetJointTranslation)
 {
     World world;
     
-    const auto loc0 = Length2D{Real(+1) * Meter, Real(-3) * Meter};
-    const auto loc1 = Length2D{Real(+1) * Meter, Real(+3) * Meter};
+    const auto loc0 = Length2{Real(+1) * Meter, Real(-3) * Meter};
+    const auto loc1 = Length2{Real(+1) * Meter, Real(+3) * Meter};
     
     const auto b0 = world.CreateBody(BodyDef{}.UseLocation(loc0));
     const auto b1 = world.CreateBody(BodyDef{}.UseLocation(loc1));
@@ -171,8 +171,8 @@ TEST(PrismaticJoint, GetJointTranslation)
     auto jd = PrismaticJointDef{};
     jd.bodyA = b0;
     jd.bodyB = b1;
-    jd.localAnchorA = Length2D(Real(-1) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2D(Real(+1) * Meter, Real(5) * Meter);
+    jd.localAnchorA = Length2(Real(-1) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2(Real(+1) * Meter, Real(5) * Meter);
     
     auto joint = PrismaticJoint{jd};
     EXPECT_EQ(GetJointTranslation(joint), Length(Real(2) * Meter));
@@ -182,8 +182,8 @@ TEST(PrismaticJoint, GetLinearVelocity)
 {
     World world;
     
-    const auto loc0 = Length2D{Real(+1) * Meter, Real(-3) * Meter};
-    const auto loc1 = Length2D{Real(+1) * Meter, Real(+3) * Meter};
+    const auto loc0 = Length2{Real(+1) * Meter, Real(-3) * Meter};
+    const auto loc1 = Length2{Real(+1) * Meter, Real(+3) * Meter};
     
     const auto b0 = world.CreateBody(BodyDef{}.UseLocation(loc0));
     const auto b1 = world.CreateBody(BodyDef{}.UseLocation(loc1));
@@ -191,8 +191,8 @@ TEST(PrismaticJoint, GetLinearVelocity)
     auto jd = PrismaticJointDef{};
     jd.bodyA = b0;
     jd.bodyB = b1;
-    jd.localAnchorA = Length2D(Real(-1) * Meter, Real(5) * Meter);
-    jd.localAnchorB = Length2D(Real(+1) * Meter, Real(5) * Meter);
+    jd.localAnchorA = Length2(Real(-1) * Meter, Real(5) * Meter);
+    jd.localAnchorB = Length2(Real(+1) * Meter, Real(5) * Meter);
     
     auto joint = PrismaticJoint{jd};
     EXPECT_EQ(GetLinearVelocity(joint), LinearVelocity(0));
@@ -201,14 +201,14 @@ TEST(PrismaticJoint, GetLinearVelocity)
 TEST(PrismaticJoint, WithDynamicCirclesAndLimitEnabled)
 {
     const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
-    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2D{})};
-    const auto p1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
-    const auto p2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
+    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
+    const auto p1 = Length2{-Real(1) * Meter, Real(0) * Meter};
+    const auto p2 = Length2{+Real(1) * Meter, Real(0) * Meter};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
-    const auto anchor = Length2D(Real(2) * Meter, Real(1) * Meter);
+    const auto anchor = Length2(Real(2) * Meter, Real(1) * Meter);
     const auto jd = PrismaticJointDef{b1, b2, anchor, UnitVec2::GetRight()}.UseEnableLimit(true);
     const auto joint = static_cast<PrismaticJoint*>(world.CreateJoint(jd));
     ASSERT_NE(joint, nullptr);

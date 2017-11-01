@@ -70,7 +70,7 @@ DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, Vec2 d) noe
     return index;
 }
 
-std::size_t FindLowestRightMostVertex(Span<const Length2D> vertices)
+std::size_t FindLowestRightMostVertex(Span<const Length2> vertices)
 {
     const auto size = vertices.size();
     if (size > 0)
@@ -91,9 +91,9 @@ std::size_t FindLowestRightMostVertex(Span<const Length2D> vertices)
     return static_cast<std::size_t>(-1);
 }
 
-std::vector<Length2D> GetConvexHullAsVector(Span<const Length2D> vertices)
+std::vector<Length2> GetConvexHullAsVector(Span<const Length2> vertices)
 {
-    std::vector<Length2D> result;
+    std::vector<Length2> result;
     
     // Create the convex hull using the Gift wrapping algorithm
     // http://en.wikipedia.org/wiki/Gift_wrapping_algorithm
@@ -144,7 +144,7 @@ std::vector<Length2D> GetConvexHullAsVector(Span<const Length2D> vertices)
     return result;
 }
 
-bool TestPoint(const DistanceProxy& proxy, Length2D point) noexcept
+bool TestPoint(const DistanceProxy& proxy, Length2 point) noexcept
 {
     const auto count = proxy.GetVertexCount();
     const auto vr = proxy.GetVertexRadius();

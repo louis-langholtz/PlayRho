@@ -27,7 +27,7 @@ MassData EdgeShape::GetMassData() const noexcept
     return playrho::GetMassData(GetVertexRadius(), GetDensity(), GetVertex1(), GetVertex2());
 }
 
-void EdgeShape::Set(Length2D v1, Length2D v2)
+void EdgeShape::Set(Length2 v1, Length2 v2)
 {
     m_vertices[0] = v1;
     m_vertices[1] = v2;

@@ -44,17 +44,17 @@ public:
 
     void Accept(JointVisitor& visitor) const override;
 
-    Length2D GetAnchorA() const override;
-    Length2D GetAnchorB() const override;
+    Length2 GetAnchorA() const override;
+    Length2 GetAnchorB() const override;
 
-    Momentum2D GetLinearReaction() const override;
+    Momentum2 GetLinearReaction() const override;
     AngularMomentum GetAngularReaction() const override;
 
     /// The local anchor point relative to bodyA's origin.
-    Length2D GetLocalAnchorA() const { return m_localAnchorA; }
+    Length2 GetLocalAnchorA() const { return m_localAnchorA; }
 
     /// The local anchor point relative to bodyB's origin.
-    Length2D GetLocalAnchorB() const  { return m_localAnchorB; }
+    Length2 GetLocalAnchorB() const  { return m_localAnchorB; }
 
     /// Set the maximum friction force in N.
     void SetMaxForce(NonNegative<Force> force);
@@ -76,18 +76,18 @@ private:
     bool SolvePositionConstraints(BodyConstraintsMap& bodies,
                                   const ConstraintSolverConf& conf) const override;
 
-    Length2D m_localAnchorA; ///< Local anchor A.
-    Length2D m_localAnchorB; ///< Local anchor B.
+    Length2 m_localAnchorA; ///< Local anchor A.
+    Length2 m_localAnchorB; ///< Local anchor B.
     NonNegative<Force> m_maxForce = NonNegative<Force>{0}; ///< Max force.
     NonNegative<Torque> m_maxTorque = NonNegative<Torque>{0}; ///< Max torque.
 
     // Solver shared data - data saved & updated over multiple InitVelocityConstraints calls.
-    Momentum2D m_linearImpulse = Momentum2D{}; ///< Linear impulse.
+    Momentum2 m_linearImpulse = Momentum2{}; ///< Linear impulse.
     AngularMomentum m_angularImpulse = AngularMomentum{0}; ///< Angular impulse.
 
     // Solver temp
-    Length2D m_rA; ///< Relative A.
-    Length2D m_rB; ///< Relative B.
+    Length2 m_rA; ///< Relative A.
+    Length2 m_rB; ///< Relative B.
     Mass22 m_linearMass; ///< 2x2 linear mass matrix in kilograms.
     RotInertia m_angularMass; ///< Angular mass.
 };

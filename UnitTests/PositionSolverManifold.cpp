@@ -38,7 +38,7 @@ TEST(PositionSolverManifold, ByteSizeIs_20_40_or_80)
 TEST(PositionSolverManifold, InitializingConstructor)
 {
     const auto normal = UnitVec2::GetBottom();
-    const auto point = Length2D{-Real(1) * Meter, Real(3) * Meter};
+    const auto point = Length2{-Real(1) * Meter, Real(3) * Meter};
     const auto separation = Real(8.12) * Meter;
     
     const auto psm = PositionSolverManifold{normal, point, separation};
@@ -72,8 +72,8 @@ TEST(PositionSolverManifold, GetPSM)
     ASSERT_EQ(GetX(shape1.GetVertex(3)), Real(-2) * Meter); // left
     ASSERT_EQ(GetY(shape1.GetVertex(3)), Real(-2) * Meter); // bottom
     
-    const auto xfm0 = Transformation{Length2D{-Real(2) * Meter, Real(0) * Meter}, UnitVec2::GetRight()}; // left
-    const auto xfm1 = Transformation{Length2D{+Real(2) * Meter, Real(0) * Meter}, UnitVec2::GetRight()}; // right
+    const auto xfm0 = Transformation{Length2{-Real(2) * Meter, Real(0) * Meter}, UnitVec2::GetRight()}; // left
+    const auto xfm1 = Transformation{Length2{+Real(2) * Meter, Real(0) * Meter}, UnitVec2::GetRight()}; // right
     
     // put wide rectangle on left, square on right
     const auto manifold = CollideShapes(shape0.GetChild(0), xfm0, shape1.GetChild(0), xfm1);

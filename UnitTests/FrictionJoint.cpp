@@ -49,20 +49,20 @@ TEST(FrictionJointDef, DefaultConstruction)
     EXPECT_EQ(def.collideConnected, false);
     EXPECT_EQ(def.userData, nullptr);
     
-    EXPECT_EQ(def.localAnchorA, (Length2D{}));
-    EXPECT_EQ(def.localAnchorB, (Length2D{}));
+    EXPECT_EQ(def.localAnchorA, (Length2{}));
+    EXPECT_EQ(def.localAnchorB, (Length2{}));
     EXPECT_EQ(def.maxForce, 0_N);
     EXPECT_EQ(def.maxTorque, 0_Nm);
 }
 
 TEST(FrictionJointDef, InitializingConstructor)
 {
-    World world{WorldDef{}.UseGravity(LinearAcceleration2D{})};
-    const auto p1 = Length2D{-1_m, 0_m};
-    const auto p2 = Length2D{+1_m, 0_m};
+    World world{WorldDef{}.UseGravity(LinearAcceleration2{})};
+    const auto p1 = Length2{-1_m, 0_m};
+    const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    const auto anchor = Length2D{0_m, 0_m};
+    const auto anchor = Length2{0_m, 0_m};
     const auto def = FrictionJointDef{b1, b2, anchor};
     EXPECT_EQ(def.bodyA, b1);
     EXPECT_EQ(def.bodyB, b2);
@@ -80,7 +80,7 @@ TEST(FrictionJoint, Construction)
     EXPECT_EQ(joint.GetBodyB(), def.bodyB);
     EXPECT_EQ(joint.GetCollideConnected(), def.collideConnected);
     EXPECT_EQ(joint.GetUserData(), def.userData);
-    EXPECT_EQ(joint.GetLinearReaction(), Momentum2D{});
+    EXPECT_EQ(joint.GetLinearReaction(), Momentum2{});
     EXPECT_EQ(joint.GetAngularReaction(), AngularMomentum{0});
     
     EXPECT_EQ(joint.GetLocalAnchorA(), def.localAnchorA);
@@ -112,8 +112,8 @@ TEST(FrictionJoint, GetFrictionJointDef)
     EXPECT_EQ(cdef.collideConnected, false);
     EXPECT_EQ(cdef.userData, nullptr);
     
-    EXPECT_EQ(cdef.localAnchorA, (Length2D{}));
-    EXPECT_EQ(cdef.localAnchorB, (Length2D{}));
+    EXPECT_EQ(cdef.localAnchorA, (Length2{}));
+    EXPECT_EQ(cdef.localAnchorB, (Length2{}));
     EXPECT_EQ(cdef.maxForce, 0_N);
     EXPECT_EQ(cdef.maxTorque, 0_Nm);
 }
@@ -121,9 +121,9 @@ TEST(FrictionJoint, GetFrictionJointDef)
 TEST(FrictionJoint, WithDynamicCircles)
 {
     const auto circle = std::make_shared<DiskShape>(0.2_m);
-    World world{WorldDef{}.UseGravity(LinearAcceleration2D{})};
-    const auto p1 = Length2D{-1_m, 0_m};
-    const auto p2 = Length2D{+1_m, 0_m};
+    World world{WorldDef{}.UseGravity(LinearAcceleration2{})};
+    const auto p1 = Length2{-1_m, 0_m};
+    const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);

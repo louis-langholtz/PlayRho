@@ -31,7 +31,7 @@ namespace playrho
     /// @note This data structure is 12-bytes (with 4-byte Real on at least one 64-bit platform).
     struct Velocity
     {
-        LinearVelocity2D linear; ///< Linear velocity.
+        LinearVelocity2 linear; ///< Linear velocity.
         AngularVelocity angular; ///< Angular velocity.
     };
     

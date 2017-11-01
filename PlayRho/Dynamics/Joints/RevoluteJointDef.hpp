@@ -50,7 +50,7 @@ struct RevoluteJointDef : public JointBuilder<RevoluteJointDef>
     constexpr RevoluteJointDef() noexcept: super{JointType::Revolute} {}
     
     /// @brief Initialize the bodies, anchors, and reference angle using a world anchor point.
-    RevoluteJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB, const Length2D anchor) noexcept;
+    RevoluteJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB, const Length2 anchor) noexcept;
     
     /// @brief Uses the given enable limit state value.
     constexpr RevoluteJointDef& UseEnableLimit(bool v) noexcept;
@@ -65,10 +65,10 @@ struct RevoluteJointDef : public JointBuilder<RevoluteJointDef>
     constexpr RevoluteJointDef& UseEnableMotor(bool v) noexcept;
 
     /// @brief Local anchor point relative to bodyA's origin.
-    Length2D localAnchorA = Length2D{};
+    Length2 localAnchorA = Length2{};
     
     /// @brief Local anchor point relative to bodyB's origin.
-    Length2D localAnchorB = Length2D{};
+    Length2 localAnchorB = Length2{};
     
     /// @brief Reference angle.
     /// @details This is the bodyB angle minus bodyA angle in the reference state (radians).

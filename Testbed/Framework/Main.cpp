@@ -82,10 +82,10 @@ namespace
     Settings settings; ///< User settings.
     auto rightMouseDown = false;
     auto leftMouseDown = false;
-    Length2D lastp;
+    Length2 lastp;
     
     Coord2D mouseScreen = Coord2D{0.0, 0.0};
-    Length2D mouseWorld = Length2D{};
+    Length2 mouseWorld = Length2{};
     
     const auto menuWidth = 200;
     auto menuX = 0;
@@ -335,7 +335,7 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
             // Pan left
             if (mods == GLFW_MOD_CONTROL)
             {
-                g_testSuite->GetTest()->ShiftOrigin(Length2D(2_m, 0_m));
+                g_testSuite->GetTest()->ShiftOrigin(Length2(2_m, 0_m));
             }
             else
             {
@@ -347,7 +347,7 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
             // Pan right
             if (mods == GLFW_MOD_CONTROL)
             {
-                g_testSuite->GetTest()->ShiftOrigin(Length2D(-2_m, 0_m));
+                g_testSuite->GetTest()->ShiftOrigin(Length2(-2_m, 0_m));
             }
             else
             {
@@ -359,7 +359,7 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
             // Pan down
             if (mods == GLFW_MOD_CONTROL)
             {
-                g_testSuite->GetTest()->ShiftOrigin(Length2D(0_m, 2_m));
+                g_testSuite->GetTest()->ShiftOrigin(Length2(0_m, 2_m));
             }
             else
             {
@@ -371,7 +371,7 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
             // Pan up
             if (mods == GLFW_MOD_CONTROL)
             {
-                g_testSuite->GetTest()->ShiftOrigin(Length2D(0_m, -2_m));
+                g_testSuite->GetTest()->ShiftOrigin(Length2(0_m, -2_m));
             }
             else
             {

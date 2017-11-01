@@ -32,7 +32,7 @@ public:
     {
         {
             BodyDef bd;
-            bd.location = Vec2(0.0f, 0.0f) * 1_m;
+            bd.location = Length2{};
             Body* body = m_world.CreateBody(bd);
 
             body->CreateFixture(std::make_shared<EdgeShape>(Vec2(-10.0f, 0.0f) * 1_m, Vec2(10.0f, 0.0f) * 1_m));

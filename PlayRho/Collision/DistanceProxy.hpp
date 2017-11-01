@@ -76,7 +76,7 @@ namespace playrho
         ///   more than <code>MaxShapeVertices</code> elements.
         ///
         constexpr DistanceProxy(const NonNegative<Length> vertexRadius, const size_type count,
-                                const Length2D* vertices, const UnitVec2* normals) noexcept:
+                                const Length2* vertices, const UnitVec2* normals) noexcept:
             m_vertices{vertices},
             m_normals{normals},
             m_count{count},
@@ -106,7 +106,7 @@ namespace playrho
         ///   represented by this proxy.
         /// @warning Behavior is undefined if InvalidIndex is given as the index value.
         ///
-        /// @return 2D vector position (relative to the shape's origin) at the given index.
+        /// @return Vertex linear position (relative to the shape's origin) at the given index.
         ///
         /// @sa Distance.
         ///
@@ -127,7 +127,7 @@ namespace playrho
 
     private:
     
-        const Length2D* m_vertices = nullptr; ///< Vertices.
+        const Length2* m_vertices = nullptr; ///< Vertices.
         const UnitVec2* m_normals = nullptr; ///< Normals.
         size_type m_count = 0; ///< Count of valid elements of m_vertices.
         NonNegative<Length> m_vertexRadius = Length{0}; ///< Radius of the vertices of the associated shape.
@@ -157,10 +157,10 @@ namespace playrho
     DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, Vec2 d) noexcept;
 
     /// @brief Finds the lowest right most vertex in the given collection.
-    std::size_t FindLowestRightMostVertex(Span<const Length2D> vertices);
+    std::size_t FindLowestRightMostVertex(Span<const Length2> vertices);
     
     /// @brief Gets the convex hull for the given collection of vertices as a vector.
-    std::vector<Length2D> GetConvexHullAsVector(Span<const Length2D> vertices);
+    std::vector<Length2> GetConvexHullAsVector(Span<const Length2> vertices);
 
     /// @brief Tests a point for containment in the given distance proxy.
     /// @param proxy Distance proxy to check if point is within.
@@ -168,7 +168,7 @@ namespace playrho
     /// @return <code>true</code> if point is contained in the proxy, <code>false</code> otherwise.
     /// @relatedalso DistanceProxy
     /// @ingroup TestPointGroup
-    bool TestPoint(const DistanceProxy& proxy, Length2D point) noexcept;
+    bool TestPoint(const DistanceProxy& proxy, Length2 point) noexcept;
     
 } // namespace playrho
 

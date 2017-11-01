@@ -46,7 +46,7 @@ public:
     void Visit(const PolygonShape& shape) override
     {
         const auto vertexCount = shape.GetVertexCount();
-        auto vertices = std::vector<Length2D>(vertexCount);
+        auto vertices = std::vector<Length2>(vertexCount);
         for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
         {
             vertices[i] = Transform(shape.GetVertex(i), m_xf);

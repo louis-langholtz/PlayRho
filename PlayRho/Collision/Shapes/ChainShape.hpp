@@ -62,7 +62,7 @@ public:
         }
         
         /// @brief Vertices that define a chain shape.
-        std::vector<Length2D> vertices;
+        std::vector<Length2> vertices;
     };
 
     /// @brief Gets the default configuration.
@@ -100,13 +100,13 @@ public:
     ChildCounter GetVertexCount() const noexcept;
 
     /// @brief Gets a vertex by index.
-    Length2D GetVertex(ChildCounter index) const;
+    Length2 GetVertex(ChildCounter index) const;
 
     /// @brief Gets the normal at the given index.
     UnitVec2 GetNormal(ChildCounter index) const;
 
 private:
-    std::vector<Length2D> m_vertices; ///< Vertices.
+    std::vector<Length2> m_vertices; ///< Vertices.
     std::vector<UnitVec2> m_normals; ///< Normals.
 };
 
@@ -115,7 +115,7 @@ inline ChildCounter ChainShape::GetVertexCount() const noexcept
     return static_cast<ChildCounter>(m_vertices.size());
 }
 
-inline Length2D ChainShape::GetVertex(ChildCounter index) const
+inline Length2 ChainShape::GetVertex(ChildCounter index) const
 {
     assert((0 <= index) && (index < GetVertexCount()));
     return m_vertices[index];

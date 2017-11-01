@@ -42,13 +42,13 @@ public:
         auto yLo = 2.0f, yHi = 35.0f;
 
         // Small triangle
-        Length2D vertices[3];
+        Length2 vertices[3];
         vertices[0] = Vec2(-1.0f, 0.0f) * 1_m;
         vertices[1] = Vec2(1.0f, 0.0f) * 1_m;
         vertices[2] = Vec2(0.0f, 2.0f) * 1_m;
 
         PolygonShape polygon;
-        polygon.Set(Span<const Length2D>{vertices, 3});
+        polygon.Set(Span<const Length2>{vertices, 3});
         polygon.SetDensity(1_kgpm2);
 
         BodyDef triangleBodyDef;
@@ -62,7 +62,7 @@ public:
         vertices[0] *= 2.0f;
         vertices[1] *= 2.0f;
         vertices[2] *= 2.0f;
-        polygon.Set(Span<const Length2D>{vertices, 3});
+        polygon.Set(Span<const Length2>{vertices, 3});
 
         triangleBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 

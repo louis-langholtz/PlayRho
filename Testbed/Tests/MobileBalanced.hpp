@@ -45,17 +45,17 @@ public:
         auto conf = PolygonShape::Conf{};
         conf.density = density;
         const auto shape = std::make_shared<const PolygonShape>(Real{0.25f} * a * 1_m, a * 1_m, conf);
-        const auto root = AddNode(ground, Vec2_zero * 1_m, 0, 3.0f, a, shape);
+        const auto root = AddNode(ground, Length2{}, 0, 3.0f, a, shape);
 
         RevoluteJointDef jointDef;
         jointDef.bodyA = ground;
         jointDef.bodyB = root;
-        jointDef.localAnchorA = Vec2_zero * 1_m;
+        jointDef.localAnchorA = Length2{};
         jointDef.localAnchorB = h;
         m_world.CreateJoint(jointDef);
     }
 
-    Body* AddNode(const Body* parent, const Length2D localAnchor, const int depth,
+    Body* AddNode(const Body* parent, const Length2 localAnchor, const int depth,
                   const Real offset, const Real a, std::shared_ptr<const Shape> shape)
     {
         const auto h = Vec2(0.0f, a) * 1_m;

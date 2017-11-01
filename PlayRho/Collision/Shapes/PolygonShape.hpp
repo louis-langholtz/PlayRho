@@ -97,7 +97,7 @@ public:
     /// @warning the points may be re-ordered, even if they form a convex polygon
     /// @warning collinear points are handled but not removed. Collinear points
     /// may lead to poor stacking behavior.
-    explicit PolygonShape(Span<const Length2D> points, const Conf& conf = GetDefaultConf()) noexcept;
+    explicit PolygonShape(Span<const Length2> points, const Conf& conf = GetDefaultConf()) noexcept;
     
     ~PolygonShape() override = default;
     
@@ -120,7 +120,7 @@ public:
     /// @warning the points may be re-ordered, even if they form a convex polygon
     /// @warning collinear points are handled but not removed. Collinear points
     /// may lead to poor stacking behavior.
-    void Set(Span<const Length2D> points) noexcept;
+    void Set(Span<const Length2> points) noexcept;
 
     /// Creates a convex hull from the given set of local points.
     /// The size of the set must be in the range [1, MaxShapeVertices].
@@ -144,7 +144,7 @@ public:
 
     /// Gets a vertex by index.
     /// @details Vertices go counter-clockwise.
-    Length2D GetVertex(VertexCounter index) const;
+    Length2 GetVertex(VertexCounter index) const;
 
     /// Gets a normal by index.
     /// @details
@@ -156,9 +156,9 @@ public:
 
     /// Gets the span of vertices.
     /// @details Vertices go counter-clockwise.
-    Span<const Length2D> GetVertices() const noexcept
+    Span<const Length2> GetVertices() const noexcept
     {
-        return Span<const Length2D>(&m_vertices[0], GetVertexCount());
+        return Span<const Length2>(&m_vertices[0], GetVertexCount());
     }
 
     /// @brief Gets the span of normals.
@@ -168,12 +168,12 @@ public:
     }
     
     /// @brief Gets the centroid.
-    Length2D GetCentroid() const noexcept { return m_centroid; }
+    Length2 GetCentroid() const noexcept { return m_centroid; }
     
 private:
     /// Array of vertices.
     /// @details Consecutive vertices constitute "edges" of the polygon.
-    std::vector<Length2D> m_vertices;
+    std::vector<Length2> m_vertices;
 
     /// Normals of edges.
     /// @details
@@ -182,7 +182,7 @@ private:
     std::vector<UnitVec2> m_normals;
 
     /// Centroid of this shape.
-    Length2D m_centroid = Length2D{};
+    Length2 m_centroid = Length2{};
 };
 
 inline ChildCounter PolygonShape::GetChildCount() const noexcept
@@ -206,7 +206,7 @@ inline PolygonShape::VertexCounter PolygonShape::GetVertexCount() const noexcept
     return static_cast<VertexCounter>(m_vertices.size());
 }
 
-inline Length2D PolygonShape::GetVertex(VertexCounter index) const
+inline Length2 PolygonShape::GetVertex(VertexCounter index) const
 {
     assert(0 <= index && index < GetVertexCount());
     return m_vertices[index];
@@ -224,7 +224,7 @@ inline UnitVec2 PolygonShape::GetNormal(VertexCounter index) const
 /// @note This must not be called for shapes with less than 2 vertices.
 /// @warning Behavior is undefined if called for a shape with less than 2 vertices.
 /// @relatedalso PolygonShape
-Length2D GetEdge(const PolygonShape& shape, PolygonShape::VertexCounter index);
+Length2 GetEdge(const PolygonShape& shape, PolygonShape::VertexCounter index);
 
 /// Validate convexity of the given shape.
 /// @note This is a time consuming operation.
@@ -239,7 +239,7 @@ bool Validate(const PolygonShape& shape);
 /// @param center the center of the box in local coordinates.
 /// @param angle the rotation of the box in local coordinates.
 /// @relatedalso PolygonShape
-void SetAsBox(PolygonShape& shape, Length hx, Length hy, Length2D center, Angle angle) noexcept;
+void SetAsBox(PolygonShape& shape, Length hx, Length hy, Length2 center, Angle angle) noexcept;
 
 /// @brief Transforms the given shape by the given transformation.
 /// @relatedalso PolygonShape

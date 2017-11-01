@@ -43,7 +43,7 @@ struct FrictionJointDef : public JointBuilder<FrictionJointDef>
     /// @brief Initializing constructor.
     /// @details Initialize the bodies, anchors, axis, and reference angle using the world
     ///   anchor and world axis.
-    FrictionJointDef(Body* bodyA, Body* bodyB, const Length2D anchor) noexcept;
+    FrictionJointDef(Body* bodyA, Body* bodyB, const Length2 anchor) noexcept;
     
     /// @brief Uses the given maximum force value.
     constexpr FrictionJointDef& UseMaxForce(NonNegative<Force> v) noexcept;
@@ -52,10 +52,10 @@ struct FrictionJointDef : public JointBuilder<FrictionJointDef>
     constexpr FrictionJointDef& UseMaxTorque(NonNegative<Torque> v) noexcept;
     
     /// @brief Local anchor point relative to bodyA's origin.
-    Length2D localAnchorA = Length2D{};
+    Length2 localAnchorA = Length2{};
     
     /// @brief Local anchor point relative to bodyB's origin.
-    Length2D localAnchorB = Length2D{};
+    Length2 localAnchorB = Length2{};
     
     /// @brief Maximum friction force.
     NonNegative<Force> maxForce = NonNegative<Force>{0};

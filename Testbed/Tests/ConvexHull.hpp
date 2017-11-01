@@ -70,7 +70,7 @@ public:
     void PostStep(const Settings&, Drawer& drawer) override
     {
         const auto conf = PolygonShape::Conf{};
-        const auto shape = PolygonShape{Span<const Length2D>{&m_points[0], m_points.size()}, conf};
+        const auto shape = PolygonShape{Span<const Length2>{&m_points[0], m_points.size()}, conf};
 
         drawer.DrawPolygon(shape.GetVertices().begin(), shape.GetVertexCount(), Color(0.9f, 0.9f, 0.9f));
 
@@ -91,7 +91,7 @@ public:
         }
     }
 
-    std::vector<Length2D> m_points{e_count};
+    std::vector<Length2> m_points{e_count};
     bool m_auto;
 };
 

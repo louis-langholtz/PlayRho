@@ -101,8 +101,8 @@ TEST(DynamicTree, CopyConstruction)
     }
 
     const auto aabb = AABB{
-        Length2D{Real(0) * Meter, Real(0) * Meter},
-        Length2D(Real(1) * Meter, Real(1) * Meter)
+        Length2{Real(0) * Meter, Real(0) * Meter},
+        Length2(Real(1) * Meter, Real(1) * Meter)
     };
     const auto pid = orig.CreateLeaf(aabb, DynamicTree::LeafData{nullptr, nullptr, 0u});
     {
@@ -132,8 +132,8 @@ TEST(DynamicTree, CopyAssignment)
     }
     
     const auto aabb = AABB{
-        Length2D{Real(0) * Meter, Real(0) * Meter},
-        Length2D{Real(1) * Meter, Real(1) * Meter}
+        Length2{Real(0) * Meter, Real(0) * Meter},
+        Length2{Real(1) * Meter, Real(1) * Meter}
     };
     const auto pid = orig.CreateLeaf(aabb, DynamicTree::LeafData{nullptr, nullptr, 0u});
     {
@@ -157,8 +157,8 @@ TEST(DynamicTree, CreateAndDestroyProxy)
     ASSERT_EQ(foo.GetNodeCount(), DynamicTree::Size(0));
 
     const auto aabb = AABB{
-        Length2D{Real(3) * Meter, Real(1) * Meter},
-        Length2D{-Real(5) * Meter, -Real(2) * Meter}
+        Length2{Real(3) * Meter, Real(1) * Meter},
+        Length2{-Real(5) * Meter, -Real(2) * Meter}
     };
     const auto userdata = DynamicTree::LeafData{nullptr, nullptr, 0u};
 
@@ -189,8 +189,8 @@ TEST(DynamicTree, FourIdenticalProxies)
     ASSERT_EQ(foo.GetNodeCount(), DynamicTree::Size(0));
 
     const auto aabb = AABB{
-        Length2D{Real(3) * Meter, Real(1) * Meter},
-        Length2D{-Real(5) * Meter, -Real(2) * Meter}
+        Length2{Real(3) * Meter, Real(1) * Meter},
+        Length2{-Real(5) * Meter, -Real(2) * Meter}
     };
     const auto leafData = DynamicTree::LeafData{nullptr, nullptr, 0u};
 
@@ -261,8 +261,8 @@ TEST(DynamicTree, MoveConstruction)
     DynamicTree foo;
     
     const auto aabb = AABB{
-        Length2D{Real(3) * Meter, Real(1) * Meter},
-        Length2D{-Real(5) * Meter, -Real(2) * Meter}
+        Length2{Real(3) * Meter, Real(1) * Meter},
+        Length2{-Real(5) * Meter, -Real(2) * Meter}
     };
 
     const auto leafData = DynamicTree::LeafData{nullptr, nullptr, 0u};
@@ -301,8 +301,8 @@ TEST(DynamicTree, MoveAssignment)
     DynamicTree foo;
     
     const auto aabb = AABB{
-        Length2D{Real(3) * Meter, Real(1) * Meter},
-        Length2D{-Real(5) * Meter, -Real(2) * Meter}
+        Length2{Real(3) * Meter, Real(1) * Meter},
+        Length2{-Real(5) * Meter, -Real(2) * Meter}
     };
     
     const auto leafData = DynamicTree::LeafData{nullptr, nullptr, 0u};
@@ -346,8 +346,8 @@ TEST(DynamicTree, CapacityIncreases)
     ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(0));
 
     const auto aabb = AABB{
-        Length2D{Real(3) * Meter, Real(1) * Meter},
-        Length2D{-Real(5) * Meter, -Real(2) * Meter}
+        Length2{Real(3) * Meter, Real(1) * Meter},
+        Length2{-Real(5) * Meter, -Real(2) * Meter}
     };
     const auto leafData = DynamicTree::LeafData{nullptr, nullptr, 0u};
 

@@ -65,7 +65,7 @@ PointStates GetPointStates(const Manifold& manifold1, const Manifold& manifold2)
 /// @note This data structure is 12-bytes large (on at least one 64-bit platform).
 struct ClipVertex
 {
-    Length2D v; ///< Vertex of edge or polygon. 8-bytes.
+    Length2 v; ///< Vertex of edge or polygon. 8-bytes.
     ContactFeature cf; ///< Contact feature information. 4-bytes.
 };
 

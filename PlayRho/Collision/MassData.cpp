@@ -29,7 +29,7 @@
 
 namespace playrho {
 
-MassData GetMassData(Length r, NonNegative<Density> density, Length2D location)
+MassData GetMassData(Length r, NonNegative<Density> density, Length2 location)
 {
     // Uses parallel axis theorem, perpendicular axis theorem, and the second moment of area.
     // See: https://en.wikipedia.org/wiki/Second_moment_of_area
@@ -52,7 +52,7 @@ MassData GetMassData(Length r, NonNegative<Density> density, Length2D location)
     return MassData{location, mass, I};
 }
 
-MassData GetMassData(Length r, NonNegative<Density> density, Length2D v0, Length2D v1)
+MassData GetMassData(Length r, NonNegative<Density> density, Length2 v0, Length2 v1)
 {
     const auto r_squared = Area{r * r};
     const auto circle_area = r_squared * Pi;
@@ -70,11 +70,11 @@ MassData GetMassData(Length r, NonNegative<Density> density, Length2D v0, Length
     const auto halfCircleArea = circle_area / Real{2};
     const auto halfRSquared = r_squared / Real{2};
     
-    const auto vertices = Vector<const Length2D, 4>{
-        Length2D{v0 + offset},
-        Length2D{v0 - offset},
-        Length2D{v1 - offset},
-        Length2D{v1 + offset}
+    const auto vertices = Vector<const Length2, 4>{
+        Length2{v0 + offset},
+        Length2{v0 - offset},
+        Length2{v1 - offset},
+        Length2{v1 + offset}
     };
     const auto I_z = GetPolarMoment(vertices);
     const auto I0 = SecondMomentOfArea{halfCircleArea * (halfRSquared + GetLengthSquared(v0))};
@@ -87,7 +87,7 @@ MassData GetMassData(Length r, NonNegative<Density> density, Length2D v0, Length
 }
 
 MassData GetMassData(Length vertexRadius, NonNegative<Density> density,
-                              Span<const Length2D> vertices)
+                              Span<const Length2> vertices)
 {
     // See: https://en.wikipedia.org/wiki/Centroid#Centroid_of_polygon
     
@@ -128,7 +128,7 @@ MassData GetMassData(Length vertexRadius, NonNegative<Density> density,
             break;
     }
     
-    auto center = Length2D{};
+    auto center = Length2{};
     auto area = Area{0};
     auto I = SecondMomentOfArea{0};
     
@@ -185,7 +185,7 @@ MassData ComputeMassData(const Body& body) noexcept
 {
     auto mass = Mass{0};
     auto I = RotInertia{0};
-    auto center = Length2D{};
+    auto center = Length2{};
     for (auto&& f: body.GetFixtures())
     {
         const auto& fixture = GetRef(f);

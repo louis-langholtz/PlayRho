@@ -93,13 +93,13 @@ public:
     Body* GetBodyB() const noexcept;
 
     /// Get the anchor point on bodyA in world coordinates.
-    virtual Length2D GetAnchorA() const = 0;
+    virtual Length2 GetAnchorA() const = 0;
 
     /// Get the anchor point on bodyB in world coordinates.
-    virtual Length2D GetAnchorB() const = 0;
+    virtual Length2 GetAnchorB() const = 0;
 
     /// Get the linear reaction on bodyB at the joint anchor.
-    virtual Momentum2D GetLinearReaction() const = 0;
+    virtual Momentum2 GetLinearReaction() const = 0;
 
     /// Get the angular reaction on bodyB.
     virtual AngularMomentum GetAngularReaction() const = 0;
@@ -119,7 +119,7 @@ public:
     bool GetCollideConnected() const noexcept;
 
     /// @brief Shifts the origin for any points stored in world coordinates.
-    virtual void ShiftOrigin(const Length2D newOrigin) { NOT_USED(newOrigin);  }
+    virtual void ShiftOrigin(const Length2 newOrigin) { NOT_USED(newOrigin);  }
 
 protected:
     

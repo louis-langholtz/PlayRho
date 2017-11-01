@@ -120,7 +120,7 @@ void Fixture::SetSensor(bool sensor) noexcept
     }
 }
 
-bool TestPoint(const Fixture& f, Length2D p) noexcept
+bool TestPoint(const Fixture& f, Length2 p) noexcept
 {
     return TestPoint(*f.GetShape(), InverseTransform(p, GetTransformation(f)));
 }

@@ -43,7 +43,7 @@ SeparationFinder SeparationFinder::Get(IndexPair3 indices,
             const auto pointA = Transform(localPointA, xfA);
             const auto pointB = Transform(localPointB, xfB);
             const auto axis = GetUnitVector(pointB - pointA, UnitVec2::GetZero());
-            return SeparationFinder{proxyA, proxyB, axis, GetInvalid<Length2D>(), type};
+            return SeparationFinder{proxyA, proxyB, axis, GetInvalid<Length2>(), type};
         }
         case e_faceB:
         {
@@ -102,7 +102,7 @@ SeparationFinder SeparationFinder::Get(IndexPair3 indices,
     }
 
     // Should never be reached
-    return SeparationFinder{proxyA, proxyB, UnitVec2{}, GetInvalid<Length2D>(), type};
+    return SeparationFinder{proxyA, proxyB, UnitVec2{}, GetInvalid<Length2>(), type};
 }
 
 SeparationFinder::Data SeparationFinder::FindMinSeparationForPoints(const Transformation& xfA, const Transformation& xfB) const

@@ -54,13 +54,13 @@ TEST(AABB, Traits)
     //EXPECT_TRUE(std::is_nothrow_default_constructible<AABB>::value);
     EXPECT_FALSE(std::is_trivially_default_constructible<AABB>::value);
 
-    EXPECT_TRUE((std::is_constructible<AABB, Length2D>::value));
-    //EXPECT_FALSE((std::is_nothrow_constructible<AABB, Length2D>::value));
-    EXPECT_FALSE((std::is_trivially_constructible<AABB, Length2D>::value));
+    EXPECT_TRUE((std::is_constructible<AABB, Length2>::value));
+    //EXPECT_FALSE((std::is_nothrow_constructible<AABB, Length2>::value));
+    EXPECT_FALSE((std::is_trivially_constructible<AABB, Length2>::value));
     
-    EXPECT_TRUE((std::is_constructible<AABB, Length2D, Length2D>::value));
-    //EXPECT_FALSE((std::is_nothrow_constructible<AABB, Length2D, Length2D>::value));
-    EXPECT_FALSE((std::is_trivially_constructible<AABB, Length2D, Length2D>::value));
+    EXPECT_TRUE((std::is_constructible<AABB, Length2, Length2>::value));
+    //EXPECT_FALSE((std::is_nothrow_constructible<AABB, Length2, Length2>::value));
+    EXPECT_FALSE((std::is_trivially_constructible<AABB, Length2, Length2>::value));
     
     EXPECT_TRUE(std::is_copy_constructible<AABB>::value);
     //EXPECT_TRUE(std::is_nothrow_copy_constructible<AABB>::value);
@@ -87,21 +87,21 @@ TEST(AABB, DefaultAabbAddsToOther)
 {
     const auto default_aabb = AABB{};
     {
-        const auto other_aabb = AABB{Length2D{}, Length2D{}};
+        const auto other_aabb = AABB{Length2{}, Length2{}};
         const auto sum_aabb = GetEnclosingAABB(default_aabb, other_aabb);
         EXPECT_EQ(GetLowerBound(sum_aabb), GetLowerBound(other_aabb));
         EXPECT_EQ(GetUpperBound(sum_aabb), GetUpperBound(other_aabb));
     }
     {
-        const auto other_aabb = AABB{Length2D{}, Length2D{}};
+        const auto other_aabb = AABB{Length2{}, Length2{}};
         const auto sum_aabb = GetEnclosingAABB(other_aabb, default_aabb);
         EXPECT_EQ(GetLowerBound(sum_aabb), GetLowerBound(other_aabb));
         EXPECT_EQ(GetUpperBound(sum_aabb), GetUpperBound(other_aabb));
     }
     {
         const auto other_aabb = AABB{
-            Length2D{Real( -1) * Meter, Real(-2) * Meter},
-            Length2D{Real(+99) * Meter, Real(+3) * Meter}
+            Length2{Real( -1) * Meter, Real(-2) * Meter},
+            Length2{Real(+99) * Meter, Real(+3) * Meter}
         };
         const auto sum_aabb = GetEnclosingAABB(other_aabb, default_aabb);
         EXPECT_EQ(GetLowerBound(sum_aabb), GetLowerBound(other_aabb));
@@ -113,7 +113,7 @@ TEST(AABB, DefaultAabbIncrementsToOther)
 {
     {
         auto default_aabb = AABB{};
-        const auto other_aabb = AABB{Length2D{}, Length2D{}};
+        const auto other_aabb = AABB{Length2{}, Length2{}};
         Include(default_aabb, other_aabb);
         EXPECT_EQ(GetLowerBound(default_aabb), GetLowerBound(other_aabb));
         EXPECT_EQ(GetUpperBound(default_aabb), GetUpperBound(other_aabb));
@@ -121,8 +121,8 @@ TEST(AABB, DefaultAabbIncrementsToOther)
     {
         auto default_aabb = AABB{};
         const auto other_aabb = AABB{
-            Length2D{Real(-1) * Meter, Real(-2) * Meter},
-            Length2D{Real(+99) * Meter, Real(+3) * Meter}
+            Length2{Real(-1) * Meter, Real(-2) * Meter},
+            Length2{Real(+99) * Meter, Real(+3) * Meter}
         };
         Include(default_aabb, other_aabb);
         EXPECT_EQ(GetLowerBound(default_aabb), GetLowerBound(other_aabb));
@@ -140,8 +140,8 @@ TEST(AABB, InitializingConstruction)
     const auto center_x = (lower_x + upper_x) / Real{2};
     const auto center_y = (lower_y + upper_y) / Real{2};
 
-    const auto v0 = Length2D{upper_x, lower_y};
-    const auto v1 = Length2D{lower_x, upper_y};
+    const auto v0 = Length2{upper_x, lower_y};
+    const auto v1 = Length2{lower_x, upper_y};
     
     {
         AABB foo{v0, v1};
@@ -162,8 +162,8 @@ TEST(AABB, InitializingConstruction)
         EXPECT_EQ(GetY(GetUpperBound(foo)), upper_y);
     }
     {
-        const auto pa = Length2D{GetInvalid<Length>(), GetInvalid<Length>()};
-        const auto pb = Length2D{GetInvalid<Length>(), GetInvalid<Length>()};
+        const auto pa = Length2{GetInvalid<Length>(), GetInvalid<Length>()};
+        const auto pb = Length2{GetInvalid<Length>(), GetInvalid<Length>()};
         AABB foo{pa, pb};
         EXPECT_TRUE(std::isnan(StripUnit(GetX(GetLowerBound(foo)))));
         EXPECT_TRUE(std::isnan(StripUnit(GetY(GetLowerBound(foo)))));
@@ -171,8 +171,8 @@ TEST(AABB, InitializingConstruction)
         EXPECT_TRUE(std::isnan(StripUnit(GetY(GetUpperBound(foo)))));
     }
     {
-        const auto pa = Length2D{GetInvalid<Length>(), GetInvalid<Length>()};
-        const auto pb = Length2D{GetInvalid<Length>(), 0 * Meter};
+        const auto pa = Length2{GetInvalid<Length>(), GetInvalid<Length>()};
+        const auto pb = Length2{GetInvalid<Length>(), 0 * Meter};
         AABB foo{pa, pb};
         EXPECT_TRUE(std::isnan(StripUnit(GetX(GetLowerBound(foo)))));
         EXPECT_TRUE(std::isnan(StripUnit(GetY(GetLowerBound(foo)))));
@@ -180,8 +180,8 @@ TEST(AABB, InitializingConstruction)
         EXPECT_FALSE(std::isnan(StripUnit(GetY(GetUpperBound(foo)))));
     }
     {
-        const auto pa = Length2D{GetInvalid<Length>(), 0 * Meter};
-        const auto pb = Length2D{GetInvalid<Length>(), GetInvalid<Length>()};
+        const auto pa = Length2{GetInvalid<Length>(), 0 * Meter};
+        const auto pb = Length2{GetInvalid<Length>(), GetInvalid<Length>()};
         AABB foo{pa, pb};
         EXPECT_TRUE(std::isnan(StripUnit(GetX(GetLowerBound(foo)))));
         EXPECT_FALSE(std::isnan(StripUnit(GetY(GetLowerBound(foo)))));
@@ -189,8 +189,8 @@ TEST(AABB, InitializingConstruction)
         EXPECT_TRUE(std::isnan(StripUnit(GetY(GetUpperBound(foo)))));
     }
     {
-        const auto pa = Length2D{GetInvalid<Length>(), 0 * Meter};
-        const auto pb = Length2D{GetInvalid<Length>(), 0 * Meter};
+        const auto pa = Length2{GetInvalid<Length>(), 0 * Meter};
+        const auto pb = Length2{GetInvalid<Length>(), 0 * Meter};
         AABB foo{pa, pb};
         EXPECT_TRUE(std::isnan(StripUnit(GetX(GetLowerBound(foo)))));
         EXPECT_FALSE(std::isnan(StripUnit(GetY(GetLowerBound(foo)))));
@@ -214,7 +214,7 @@ TEST(AABB, Swappable)
     std::swap(a, b);
     EXPECT_EQ(a, b);
     const auto aBefore = a;
-    Include(a, Length2D{2 * Meter, 3 * Meter});
+    Include(a, Length2{2 * Meter, 3 * Meter});
     const auto aAfter = a;
     ASSERT_NE(a, b);
     std::swap(a, b);
@@ -224,11 +224,11 @@ TEST(AABB, Swappable)
 
 TEST(AABB, GetPerimeterOfPoint)
 {
-    EXPECT_EQ(GetPerimeter(AABB{Length2D{}}), Real(0) * Meter);
-    EXPECT_EQ(GetPerimeter(AABB{Length2D{Real(-1) * Meter, Real(-2) * Meter}}), Real(0) * Meter);
-    EXPECT_EQ(GetPerimeter(AABB{Length2D{Real(+99) * Meter, Real(+3) * Meter}}), Real(0) * Meter);
+    EXPECT_EQ(GetPerimeter(AABB{Length2{}}), Real(0) * Meter);
+    EXPECT_EQ(GetPerimeter(AABB{Length2{Real(-1) * Meter, Real(-2) * Meter}}), Real(0) * Meter);
+    EXPECT_EQ(GetPerimeter(AABB{Length2{Real(+99) * Meter, Real(+3) * Meter}}), Real(0) * Meter);
     EXPECT_TRUE(std::isnan(StripUnit(GetPerimeter(AABB{
-        Length2D{
+        Length2{
             Real(+std::numeric_limits<Real>::infinity()) * Meter,
             Real(+std::numeric_limits<Real>::infinity()) * Meter
         }
@@ -237,10 +237,10 @@ TEST(AABB, GetPerimeterOfPoint)
 
 TEST(AABB, Include)
 {
-    const auto p1 = Length2D{Real{2} * Meter, Real{3} * Meter};
-    const auto p2 = Length2D{Real{20} * Meter, Real{30} * Meter};
-    const auto p3 = Length2D{Real{-3} * Meter, Real{-4} * Meter};
-    const auto p4 = Length2D{Real{0} * Meter, Real{0} * Meter};
+    const auto p1 = Length2{Real{2} * Meter, Real{3} * Meter};
+    const auto p2 = Length2{Real{20} * Meter, Real{30} * Meter};
+    const auto p3 = Length2{Real{-3} * Meter, Real{-4} * Meter};
+    const auto p4 = Length2{Real{0} * Meter, Real{0} * Meter};
     const auto p5 = AABB{};
 
     auto foo = AABB{};
@@ -271,10 +271,10 @@ TEST(AABB, Include)
 TEST(AABB, Contains)
 {
     EXPECT_TRUE(Contains(AABB{}, AABB{}));
-    EXPECT_TRUE(Contains(AABB{Length2D{}}, AABB{Length2D{}}));
-    EXPECT_TRUE((Contains(AABB{Length2D{}, Length2D{}}, AABB{Length2D{}})));
-    EXPECT_TRUE((Contains(AABB{Length2D{}}, AABB{Length2D{}, Length2D{}})));
-    EXPECT_TRUE((Contains(AABB{Length2D{1 * Meter, 2 * Meter}}, AABB{})));
+    EXPECT_TRUE(Contains(AABB{Length2{}}, AABB{Length2{}}));
+    EXPECT_TRUE((Contains(AABB{Length2{}, Length2{}}, AABB{Length2{}})));
+    EXPECT_TRUE((Contains(AABB{Length2{}}, AABB{Length2{}, Length2{}})));
+    EXPECT_TRUE((Contains(AABB{Length2{1 * Meter, 2 * Meter}}, AABB{})));
     EXPECT_FALSE(Contains(GetInvalid<AABB>(), GetInvalid<AABB>()));
     EXPECT_FALSE(Contains(GetInvalid<AABB>(), AABB{}));
     EXPECT_FALSE(Contains(AABB{}, GetInvalid<AABB>()));
@@ -284,68 +284,68 @@ TEST(AABB, TestOverlap)
 {
     {
         AABB bb1{
-            Length2D{Real(-2) * Meter, Real(-3) * Meter},
-            Length2D{Real(-1) * Meter, Real( 0) * Meter}
+            Length2{Real(-2) * Meter, Real(-3) * Meter},
+            Length2{Real(-1) * Meter, Real( 0) * Meter}
         };
         EXPECT_TRUE(TestOverlap(bb1, bb1));
     }
     {
-        const auto vec = Length2D{Real(-2) * Meter, Real(-3) * Meter};
+        const auto vec = Length2{Real(-2) * Meter, Real(-3) * Meter};
         AABB bb1{vec, vec};
         EXPECT_TRUE(TestOverlap(bb1, bb1));
     }
     {
         AABB bb1{
-            Length2D{Real(-2) * Meter, Real(-3) * Meter},
-            Length2D{Real(-1) * Meter, Real( 0) * Meter}
+            Length2{Real(-2) * Meter, Real(-3) * Meter},
+            Length2{Real(-1) * Meter, Real( 0) * Meter}
         };
         AABB bb2{
-            Length2D{Real(-1) * Meter, Real(-1) * Meter},
-            Length2D{Real( 1) * Meter, Real( 2) * Meter}
+            Length2{Real(-1) * Meter, Real(-1) * Meter},
+            Length2{Real( 1) * Meter, Real( 2) * Meter}
         };
         EXPECT_TRUE(TestOverlap(bb1, bb2));
     }
     {
         AABB bb1{
-            Length2D{Real(-99) * Meter, Real(-3) * Meter},
-            Length2D{Real( -1) * Meter, Real( 0) * Meter}
+            Length2{Real(-99) * Meter, Real(-3) * Meter},
+            Length2{Real( -1) * Meter, Real( 0) * Meter}
         };
         AABB bb2{
-            Length2D{Real(76) * Meter, Real(-1) * Meter},
-            Length2D{Real(-2) * Meter, Real( 2) * Meter}
+            Length2{Real(76) * Meter, Real(-1) * Meter},
+            Length2{Real(-2) * Meter, Real( 2) * Meter}
         };
         EXPECT_TRUE(TestOverlap(bb1, bb2));
     }
     {
         AABB bb1{
-            Length2D{Real(-20) * Meter, Real(-3) * Meter},
-            Length2D{Real(-18) * Meter, Real( 0) * Meter}
+            Length2{Real(-20) * Meter, Real(-3) * Meter},
+            Length2{Real(-18) * Meter, Real( 0) * Meter}
         };
         AABB bb2{
-            Length2D{Real(-1) * Meter, Real(-1) * Meter},
-            Length2D{Real( 1) * Meter, Real( 2) * Meter}
+            Length2{Real(-1) * Meter, Real(-1) * Meter},
+            Length2{Real( 1) * Meter, Real( 2) * Meter}
         };
         EXPECT_FALSE(TestOverlap(bb1, bb2));
     }
     {
         AABB bb1{
-            Length2D{Real(-2) * Meter, Real(-3) * Meter},
-            Length2D{Real(-1) * Meter, Real( 0) * Meter}
+            Length2{Real(-2) * Meter, Real(-3) * Meter},
+            Length2{Real(-1) * Meter, Real( 0) * Meter}
         };
         AABB bb2{
-            Length2D{Real(-1) * Meter, Real(+1) * Meter},
-            Length2D{Real( 1) * Meter, Real( 2) * Meter}
+            Length2{Real(-1) * Meter, Real(+1) * Meter},
+            Length2{Real( 1) * Meter, Real( 2) * Meter}
         };
         EXPECT_FALSE(TestOverlap(bb1, bb2));
     }
     {
         AABB bb1{
-            Length2D{Real(-2) * Meter, Real(+3) * Meter},
-            Length2D{Real(-1) * Meter, Real( 0) * Meter}
+            Length2{Real(-2) * Meter, Real(+3) * Meter},
+            Length2{Real(-1) * Meter, Real( 0) * Meter}
         };
         AABB bb2{
-            Length2D{Real(-1) * Meter, Real(-1) * Meter},
-            Length2D{Real( 0) * Meter, Real(-2) * Meter}
+            Length2{Real(-1) * Meter, Real(-1) * Meter},
+            Length2{Real( 0) * Meter, Real(-2) * Meter}
         };
         EXPECT_FALSE(TestOverlap(bb1, bb2));
     }
@@ -361,30 +361,30 @@ TEST(AABB, ComputeAabbForDefaultDistanceProxy)
 
 TEST(AABB, Move)
 {
-    const auto zeroLoc = Length2D{};
+    const auto zeroLoc = Length2{};
     const auto zeroAabb = AABB{zeroLoc};
     {
         auto aabb = AABB{};
         EXPECT_EQ(Move(aabb, zeroLoc), AABB{});
-        EXPECT_EQ(Move(aabb, Length2D{Real(10) * Meter, Real(-4) * Meter}), AABB{});
+        EXPECT_EQ(Move(aabb, Length2{Real(10) * Meter, Real(-4) * Meter}), AABB{});
     }
     {
-        auto aabb = AABB{Length2D{}};
-        EXPECT_EQ(Move(aabb, Length2D{}), zeroAabb);
+        auto aabb = AABB{Length2{}};
+        EXPECT_EQ(Move(aabb, Length2{}), zeroAabb);
     }
     {
-        const auto aabb1 = AABB{Length2D{Real(1) * Meter, Real(1) * Meter}};
-        const auto aabb2 = AABB{Length2D{Real(-10) * Meter, Real(11) * Meter}};
+        const auto aabb1 = AABB{Length2{Real(1) * Meter, Real(1) * Meter}};
+        const auto aabb2 = AABB{Length2{Real(-10) * Meter, Real(11) * Meter}};
         auto aabb = zeroAabb;
-        EXPECT_EQ(Move(aabb, Length2D{Real(1) * Meter, Real(1) * Meter}), aabb1);
-        EXPECT_EQ(Move(aabb, Length2D{Real(-1) * Meter, Real(-1) * Meter}), zeroAabb);
-        EXPECT_EQ(Move(aabb, Length2D{Real(-10) * Meter, Real(11) * Meter}), aabb2);
+        EXPECT_EQ(Move(aabb, Length2{Real(1) * Meter, Real(1) * Meter}), aabb1);
+        EXPECT_EQ(Move(aabb, Length2{Real(-1) * Meter, Real(-1) * Meter}), zeroAabb);
+        EXPECT_EQ(Move(aabb, Length2{Real(-10) * Meter, Real(11) * Meter}), aabb2);
     }
     {
-        const auto lower = Length2D{Real(-1) * Meter, Real(-1) * Meter};
-        const auto upper = Length2D{Real(+3) * Meter, Real(+9) * Meter};
+        const auto lower = Length2{Real(-1) * Meter, Real(-1) * Meter};
+        const auto upper = Length2{Real(+3) * Meter, Real(+9) * Meter};
         auto aabb = AABB{lower, upper};
-        const auto moveby = Length2D{Real(1) * Meter, Real(1) * Meter};
+        const auto moveby = Length2{Real(1) * Meter, Real(1) * Meter};
         EXPECT_EQ(Move(aabb, moveby), AABB(lower + moveby, upper + moveby));
     }
 }
@@ -472,7 +472,7 @@ TEST(AABB, ComputeAabbForFixtureOffFromBodyOrigin)
     const auto shape = std::make_shared<DiskShape>();
     const auto shapeAabb = ComputeAABB(*shape, Transformation{});
     
-    const auto bodyLocation = Length2D{2 * Meter, 3 * Meter};
+    const auto bodyLocation = Length2{2 * Meter, 3 * Meter};
     World world;
     const auto body = world.CreateBody(BodyDef{}.UseLocation(bodyLocation));
     const auto fixture = body->CreateFixture(shape);
@@ -508,8 +508,8 @@ TEST(AABB, ComputeIntersectingAABBForTwoFixtures)
     const auto shapeAabb = ComputeAABB(*shape, Transformation{});
     ASSERT_EQ(shapeAabb, (AABB{shapeInterval, shapeInterval}));
 
-    const auto bodyLocation0 = Length2D{+1 * Meter, 0 * Meter};
-    const auto bodyLocation1 = Length2D{-1 * Meter, 0 * Meter};
+    const auto bodyLocation0 = Length2{+1 * Meter, 0 * Meter};
+    const auto bodyLocation1 = Length2{-1 * Meter, 0 * Meter};
 
     World world;
     const auto body0 = world.CreateBody(BodyDef{}.UseLocation(bodyLocation0));
@@ -537,8 +537,8 @@ TEST(AABB, ComputeIntersectingAABBForContact)
     const auto shapeAabb = ComputeAABB(*shape, Transformation{});
     ASSERT_EQ(shapeAabb, (AABB{shapeInterval, shapeInterval}));
     
-    const auto bodyLocation0 = Length2D{+1 * Meter, 0 * Meter};
-    const auto bodyLocation1 = Length2D{-1 * Meter, 0 * Meter};
+    const auto bodyLocation0 = Length2{+1 * Meter, 0 * Meter};
+    const auto bodyLocation1 = Length2{-1 * Meter, 0 * Meter};
     
     World world;
     const auto body0 = world.CreateBody(BodyDef{}.UseLocation(bodyLocation0));

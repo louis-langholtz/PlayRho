@@ -91,7 +91,7 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
 
     m_rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA);
     m_rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB);
-    const auto deltaLocation = Length2D{(posB.linear + m_rB) - (posA.linear + m_rA)};
+    const auto deltaLocation = Length2{(posB.linear + m_rB) - (posA.linear + m_rA)};
 
     // Handle singularity.
     auto length = Length{0};
@@ -142,7 +142,7 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
         const auto P = m_impulse * m_u;
 
         // P is M L T^-2
-        // Cross(Length2D, P) is: M L^2 T^-1
+        // Cross(Length2, P) is: M L^2 T^-1
         // inv rotational inertia is: L^-2 M^-1 QP^2
         // Product is: L^-2 M^-1 QP^2 M L^2 T^-1 = QP^2 T^-1
         const auto LA = Cross(m_rA, P) / Radian;
@@ -215,9 +215,9 @@ bool DistanceJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
     const auto qA = UnitVec2::Get(posA.angular);
     const auto qB = UnitVec2::Get(posB.angular);
 
-    const auto rA = Length2D{Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA)};
-    const auto rB = Length2D{Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB)};
-    const auto relLoc = Length2D{(posB.linear + rB) - (posA.linear + rA)};
+    const auto rA = Length2{Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA)};
+    const auto rB = Length2{Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB)};
+    const auto relLoc = Length2{(posB.linear + rB) - (posA.linear + rA)};
 
     auto length = Length{0};
     const auto u = GetUnitVector(relLoc, length);
@@ -236,17 +236,17 @@ bool DistanceJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
     return Abs(C) < conf.linearSlop;
 }
 
-Length2D DistanceJoint::GetAnchorA() const
+Length2 DistanceJoint::GetAnchorA() const
 {
     return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
 }
 
-Length2D DistanceJoint::GetAnchorB() const
+Length2 DistanceJoint::GetAnchorB() const
 {
     return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Momentum2D DistanceJoint::GetLinearReaction() const
+Momentum2 DistanceJoint::GetLinearReaction() const
 {
     return m_impulse * m_u;
 }

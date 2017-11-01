@@ -32,7 +32,7 @@ namespace playrho {
     struct WorldDef
     {
         /// @brief Uses the given gravity value.
-        constexpr WorldDef& UseGravity(LinearAcceleration2D value) noexcept;
+        constexpr WorldDef& UseGravity(LinearAcceleration2 value) noexcept;
 
         /// @brief Uses the given min vertex radius value.
         constexpr WorldDef& UseMinVertexRadius(Positive<Length> value) noexcept;
@@ -45,8 +45,8 @@ namespace playrho {
 
         /// @brief Gravity.
         /// @details The acceleration all dynamic bodies are subject to.
-        /// @note Use <code>LinearAcceleration2D{}</code> to disable gravity.
-        LinearAcceleration2D gravity = EarthlyGravity2;
+        /// @note Use <code>LinearAcceleration2{}</code> to disable gravity.
+        LinearAcceleration2 gravity = EarthlyGravity2D;
         
         /// @brief Minimum vertex radius.
         /// @details This is the minimum vertex radius that this world establishes which bodies
@@ -71,7 +71,7 @@ namespace playrho {
         ContactCounter initialTreeSize = 4096;
     };
     
-    constexpr inline WorldDef& WorldDef::UseGravity(LinearAcceleration2D value) noexcept
+    constexpr inline WorldDef& WorldDef::UseGravity(LinearAcceleration2 value) noexcept
     {
         gravity = value;
         return *this;

@@ -37,16 +37,16 @@ TEST(Acceleration, ByteSize)
 TEST(Acceleration, Addition)
 {
     EXPECT_EQ(Acceleration{} + Acceleration{}, Acceleration{});
-    EXPECT_EQ((Acceleration{LinearAcceleration2D{1_mps2, 1_mps2}, 1 * RadianPerSquareSecond})
-            + (Acceleration{LinearAcceleration2D{1_mps2, 1_mps2}, 1 * RadianPerSquareSecond}),
-              (Acceleration{LinearAcceleration2D{2_mps2, 2_mps2}, 2 * RadianPerSquareSecond}));
+    EXPECT_EQ((Acceleration{LinearAcceleration2{1_mps2, 1_mps2}, 1 * RadianPerSquareSecond})
+            + (Acceleration{LinearAcceleration2{1_mps2, 1_mps2}, 1 * RadianPerSquareSecond}),
+              (Acceleration{LinearAcceleration2{2_mps2, 2_mps2}, 2 * RadianPerSquareSecond}));
 }
 
 TEST(Acceleration, Subtraction)
 {
     EXPECT_EQ(Acceleration{} - Acceleration{}, Acceleration{});
-    EXPECT_EQ((Acceleration{LinearAcceleration2D{1_mps2, 1_mps2}, 1 * RadianPerSquareSecond})
-            - (Acceleration{LinearAcceleration2D{1_mps2, 1_mps2}, 1 * RadianPerSquareSecond}),
-              (Acceleration{LinearAcceleration2D{0_mps2, 0_mps2}, 0 * RadianPerSquareSecond}));
+    EXPECT_EQ((Acceleration{LinearAcceleration2{1_mps2, 1_mps2}, 1 * RadianPerSquareSecond})
+            - (Acceleration{LinearAcceleration2{1_mps2, 1_mps2}, 1 * RadianPerSquareSecond}),
+              (Acceleration{LinearAcceleration2{0_mps2, 0_mps2}, 0 * RadianPerSquareSecond}));
 }
 

@@ -58,12 +58,12 @@ public:
         }
 
         // Small triangle
-        Length2D vertices[3];
+        Length2 vertices[3];
         vertices[0] = Vec2(-1.0f, 0.0f) * 1_m;
         vertices[1] = Vec2(1.0f, 0.0f) * 1_m;
         vertices[2] = Vec2(0.0f, 2.0f) * 1_m;
         PolygonShape polygon;
-        polygon.Set(Span<const Length2D>{vertices, 3});
+        polygon.Set(Span<const Length2>{vertices, 3});
         polygon.SetDensity(1_kgpm2);
 
         FixtureDef triangleShapeDef;
@@ -83,7 +83,7 @@ public:
         vertices[0] *= 2.0f;
         vertices[1] *= 2.0f;
         vertices[2] *= 2.0f;
-        polygon.Set(Span<const Length2D>{vertices, 3});
+        polygon.Set(Span<const Length2>{vertices, 3});
         triangleShapeDef.filter.groupIndex = k_largeGroup;
         triangleBodyDef.location = Vec2(-5.0f, 6.0f) * 1_m;
         triangleBodyDef.fixedRotation = true; // look at me!
@@ -105,7 +105,7 @@ public:
             jd.bodyB = body;
             jd.enableLimit = true;
             jd.localAnchorA = Vec2(0.0f, 4.0f) * 1_m;
-            jd.localAnchorB = Vec2_zero * 1_m;
+            jd.localAnchorB = Length2{};
             jd.localAxisA = UnitVec2::GetTop();
             jd.lowerTranslation = -1.0_m;
             jd.upperTranslation = +1.0_m;

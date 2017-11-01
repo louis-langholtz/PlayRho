@@ -48,22 +48,22 @@ public:
 
     void Accept(JointVisitor& visitor) const override;
 
-    Length2D GetAnchorA() const override;
+    Length2 GetAnchorA() const override;
 
-    Length2D GetAnchorB() const override;
+    Length2 GetAnchorB() const override;
 
     /// @brief Get the linear reaction.
-    Momentum2D GetLinearReaction() const override;
+    Momentum2 GetLinearReaction() const override;
 
     /// @brief Gets the angular reaction.
     /// @note This is always zero for a distance joint.
     AngularMomentum GetAngularReaction() const override;
 
     /// @brief Gets the local anchor point relative to bodyA's origin.
-    Length2D GetLocalAnchorA() const noexcept { return m_localAnchorA; }
+    Length2 GetLocalAnchorA() const noexcept { return m_localAnchorA; }
 
     /// @brief Gets the local anchor point relative to bodyB's origin.
-    Length2D GetLocalAnchorB() const noexcept { return m_localAnchorB; }
+    Length2 GetLocalAnchorB() const noexcept { return m_localAnchorB; }
 
     /// @brief Sets the natural length.
     /// @note Manipulating the length can lead to non-physical behavior when the frequency is zero.
@@ -92,8 +92,8 @@ private:
     bool SolvePositionConstraints(BodyConstraintsMap& bodies,
                                   const ConstraintSolverConf& conf) const override;
 
-    Length2D m_localAnchorA; ///< Local anchor A.
-    Length2D m_localAnchorB; ///< Local anchor B.
+    Length2 m_localAnchorA; ///< Local anchor A.
+    Length2 m_localAnchorB; ///< Local anchor B.
     Length m_length; ///< Length.
     NonNegative<Frequency> m_frequency = NonNegative<Frequency>{0}; ///< Frequency.
     Real m_dampingRatio; ///< Damping ratio.
@@ -106,8 +106,8 @@ private:
     LinearVelocity m_bias; ///< Bias.
     Mass m_mass; ///< Mass.
     UnitVec2 m_u; ///< "u" directional.
-    Length2D m_rA; ///< Relative A position.
-    Length2D m_rB; ///< Relative B position.
+    Length2 m_rA; ///< Relative A position.
+    Length2 m_rB; ///< Relative B position.
 };
 
 inline void DistanceJoint::SetLength(Length length) noexcept

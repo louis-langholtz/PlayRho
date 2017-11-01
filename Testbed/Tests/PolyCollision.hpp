@@ -32,7 +32,7 @@ public:
     {
         {
             m_polygonA.SetAsBox(0.2_m, 0.4_m);
-            m_transformA = Transformation{Vec2(0.0f, 0.0f) * 1_m, UnitVec2::GetRight()};
+            m_transformA = Transformation{Length2{}, UnitVec2::GetRight()};
         }
 
         {
@@ -86,7 +86,7 @@ public:
             const auto color = Color(0.9f, 0.9f, 0.9f);
             {
                 const auto vertexCount = m_polygonA.GetVertexCount();
-                auto v = std::vector<Length2D>(vertexCount);
+                auto v = std::vector<Length2>(vertexCount);
                 for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
                 {
                     v[i] = Transform(m_polygonA.GetVertex(i), m_transformA);
@@ -96,7 +96,7 @@ public:
 
             {
                 const auto vertexCount = m_polygonB.GetVertexCount();
-                auto v = std::vector<Length2D>(vertexCount);
+                auto v = std::vector<Length2>(vertexCount);
                 for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
                 {
                     v[i] = Transform(m_polygonB.GetVertex(i), m_transformB);
@@ -120,7 +120,7 @@ public:
     Transformation m_transformA;
     Transformation m_transformB;
 
-    Length2D m_positionB;
+    Length2 m_positionB;
     Angle m_angleB;
 };
 

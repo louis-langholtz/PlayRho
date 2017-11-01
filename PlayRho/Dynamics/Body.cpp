@@ -229,7 +229,7 @@ void Body::SetMassData(const MassData& massData)
 
 void Body::SetVelocity(const Velocity& velocity) noexcept
 {
-    if ((velocity.linear != LinearVelocity2D{}) || (velocity.angular != AngularVelocity{0}))
+    if ((velocity.linear != LinearVelocity2{}) || (velocity.angular != AngularVelocity{0}))
     {
         if (!IsSpeedable())
         {
@@ -241,12 +241,12 @@ void Body::SetVelocity(const Velocity& velocity) noexcept
     m_velocity = velocity;
 }
 
-void Body::SetAcceleration(LinearAcceleration2D linear, AngularAcceleration angular) noexcept
+void Body::SetAcceleration(LinearAcceleration2 linear, AngularAcceleration angular) noexcept
 {
     assert(IsValid(linear));
     assert(IsValid(angular));
 
-    if ((linear != LinearAcceleration2D{}) || (angular != AngularAcceleration{0}))
+    if ((linear != LinearAcceleration2{}) || (angular != AngularAcceleration{0}))
     {
         if (!IsAccelerable())
         {
@@ -271,7 +271,7 @@ void Body::SetTransformation(Transformation value) noexcept
     }
 }
 
-void Body::SetTransform(Length2D location, Angle angle)
+void Body::SetTransform(Length2 location, Angle angle)
 {
     assert(IsValid(location));
     assert(IsValid(angle));
@@ -487,7 +487,7 @@ std::size_t GetFixtureCount(const Body& body) noexcept
     return fixtures.size();
 }
 
-void RotateAboutWorldPoint(Body& body, Angle amount, Length2D worldPoint)
+void RotateAboutWorldPoint(Body& body, Angle amount, Length2 worldPoint)
 {
     const auto xfm = body.GetTransformation();
     const auto p = xfm.p - worldPoint;
@@ -495,17 +495,17 @@ void RotateAboutWorldPoint(Body& body, Angle amount, Length2D worldPoint)
     const auto s = Real{std::sin(amount / Radian)};
     const auto x = GetX(p) * c - GetY(p) * s;
     const auto y = GetX(p) * s + GetY(p) * c;
-    const auto pos = Length2D{x, y} + worldPoint;
+    const auto pos = Length2{x, y} + worldPoint;
     const auto angle = GetAngle(xfm.q) + amount;
     body.SetTransform(pos, angle);
 }
 
-void RotateAboutLocalPoint(Body& body, Angle amount, Length2D localPoint)
+void RotateAboutLocalPoint(Body& body, Angle amount, Length2 localPoint)
 {
     RotateAboutWorldPoint(body, amount, GetWorldPoint(body, localPoint));
 }
 
-Force2D GetCentripetalForce(const Body& body, Length2D axis)
+Force2 GetCentripetalForce(const Body& body, Length2 axis)
 {
     // For background on centripetal force, see:
     //   https://en.wikipedia.org/wiki/Centripetal_force
@@ -515,10 +515,10 @@ Force2D GetCentripetalForce(const Body& body, Length2D axis)
     const auto magnitude = GetLength(GetVec2(velocity)) * MeterPerSecond;
     const auto location = body.GetLocation();
     const auto mass = GetMass(body);
-    const auto delta = Length2D{axis - location};
+    const auto delta = Length2{axis - location};
     const auto radius = GetLength(delta);
     const auto dir = delta / radius;
-    return Force2D{dir * mass * Square(magnitude) / radius};
+    return Force2{dir * mass * Square(magnitude) / radius};
 }
 
 Acceleration CalcGravitationalAcceleration(const Body& body) noexcept
@@ -527,7 +527,7 @@ Acceleration CalcGravitationalAcceleration(const Body& body) noexcept
     const auto bodies = world->GetBodies();
     const auto m1 = GetMass(body);
     const auto loc1 = GetLocation(body);
-    auto sumForce = Force2D{};
+    auto sumForce = Force2{};
     for (auto jt = std::begin(bodies); jt != std::end(bodies); jt = std::next(jt))
     {
         const auto& b2 = *(*jt);

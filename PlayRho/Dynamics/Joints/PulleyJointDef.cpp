@@ -26,8 +26,8 @@
 namespace playrho {
 
 PulleyJointDef::PulleyJointDef(NonNull<Body*> bA, NonNull<Body*> bB,
-                               const Length2D groundA, const Length2D groundB,
-                               const Length2D anchorA, const Length2D anchorB):
+                               const Length2 groundA, const Length2 groundB,
+                               const Length2 anchorA, const Length2 anchorB):
     super{super{JointType::Pulley}.UseBodyA(bA).UseBodyB(bB).UseCollideConnected(true)},
     groundAnchorA{groundA},
     groundAnchorB{groundB},

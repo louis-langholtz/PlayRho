@@ -26,7 +26,7 @@
 namespace playrho {
 
 DistanceJointDef::DistanceJointDef(NonNull<Body*> bA, NonNull<Body*> bB,
-                                   Length2D anchor1, Length2D anchor2) noexcept :
+                                   Length2 anchor1, Length2 anchor2) noexcept :
     super{super{JointType::Distance}.UseBodyA(bA).UseBodyB(bB)},
     localAnchorA{GetLocalPoint(*bA, anchor1)},
     localAnchorB{GetLocalPoint(*bB, anchor2)},

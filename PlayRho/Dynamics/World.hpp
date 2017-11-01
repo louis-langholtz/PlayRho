@@ -210,7 +210,7 @@ public:
     /// @brief Ray cast callback function signature.
     using RayCastCallback = std::function<RayCastOpcode(Fixture* fixture,
                                                         ChildCounter child,
-                                                        Length2D point,
+                                                        Length2 point,
                                                         UnitVec2 normal)>;
 
     /// @brief Ray-cast the world for all fixtures in the path of the ray.
@@ -222,7 +222,7 @@ public:
     /// @param point2 Ray ending point.
     /// @param callback A user implemented callback function.
     ///
-    void RayCast(Length2D point1, Length2D point2, RayCastCallback callback) const;
+    void RayCast(Length2 point1, Length2 point2, RayCastCallback callback) const;
 
     /// @brief Gets the world body range for this world.
     /// @return Body range that can be iterated over using its begin and end methods
@@ -259,10 +259,10 @@ public:
     const DynamicTree& GetTree() const noexcept;
     
     /// @brief Changes the global gravity vector.
-    void SetGravity(LinearAcceleration2D gravity) noexcept;
+    void SetGravity(LinearAcceleration2 gravity) noexcept;
     
     /// @brief Gets the global gravity vector.
-    LinearAcceleration2D GetGravity() const noexcept;
+    LinearAcceleration2 GetGravity() const noexcept;
 
     /// @brief Is the world locked (in the middle of a time step).
     bool IsLocked() const noexcept;
@@ -272,7 +272,7 @@ public:
     /// @note The body shift formula is: position -= newOrigin
     /// @param newOrigin the new origin with respect to the old origin
     /// @throws WrongState if this method is called while the world is locked.
-    void ShiftOrigin(Length2D newOrigin);
+    void ShiftOrigin(Length2 newOrigin);
 
     /// @brief Gets the minimum vertex radius that shapes in this world can be.
     Length GetMinVertexRadius() const noexcept;
@@ -690,7 +690,7 @@ private:
     ///   fixture shape's children.
     ContactCounter Synchronize(Fixture& fixture,
                                Transformation xfm1, Transformation xfm2,
-                               Length2D displacement, Length extension);
+                               Length2 displacement, Length extension);
     
     /// @brief Creates and destroys proxies.
     void CreateAndDestroyProxies(const StepConf& conf);
@@ -748,7 +748,7 @@ private:
     ///   during a given time step.
     Contacts m_contacts;
 
-    LinearAcceleration2D m_gravity; ///< Gravity setting. 8-bytes.
+    LinearAcceleration2 m_gravity; ///< Gravity setting. 8-bytes.
 
     DestructionListener* m_destructionListener = nullptr; ///< Destruction listener. 8-bytes.
     
@@ -829,7 +829,7 @@ inline SizedRange<World::Contacts::const_iterator> World::GetContacts() const no
     return {m_contacts.begin(), m_contacts.end(), m_contacts.size()};
 }
 
-inline LinearAcceleration2D World::GetGravity() const noexcept
+inline LinearAcceleration2 World::GetGravity() const noexcept
 {
     return m_gravity;
 }
@@ -1082,19 +1082,19 @@ inline void ClearForces(World& world) noexcept
 
 /// @brief Creates a rectanglular enclosure.
 /// @relatedalso World
-Body* CreateRectangularEnclosingBody(World& world, Length2D dimensions,
+Body* CreateRectangularEnclosingBody(World& world, Length2 dimensions,
                                      const ShapeDef& baseConf);
 
 /// @brief Creates a square enclosure.
 /// @relatedalso World
 inline Body* CreateSquareEnclosingBody(World& world, Length size, const ShapeDef& baseConf)
 {
-    return CreateRectangularEnclosingBody(world, Length2D{size, size}, baseConf);
+    return CreateRectangularEnclosingBody(world, Length2{size, size}, baseConf);
 }
     
 /// @brief Finds body in given world that's closest to the given location.
 /// @relatedalso World
-Body* FindClosestBody(const World& world, Length2D location) noexcept;
+Body* FindClosestBody(const World& world, Length2 location) noexcept;
 
 } // namespace playrho
 

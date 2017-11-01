@@ -43,17 +43,17 @@ public:
     
     void Accept(JointVisitor& visitor) const override;
 
-    Length2D GetAnchorA() const override;
-    Length2D GetAnchorB() const override;
+    Length2 GetAnchorA() const override;
+    Length2 GetAnchorB() const override;
 
-    Momentum2D GetLinearReaction() const override;
+    Momentum2 GetLinearReaction() const override;
     AngularMomentum GetAngularReaction() const override;
 
     /// The local anchor point relative to bodyA's origin.
-    Length2D GetLocalAnchorA() const { return m_localAnchorA; }
+    Length2 GetLocalAnchorA() const { return m_localAnchorA; }
 
     /// The local anchor point relative to bodyB's origin.
-    Length2D GetLocalAnchorB() const  { return m_localAnchorB; }
+    Length2 GetLocalAnchorB() const  { return m_localAnchorB; }
 
     /// Get the reference angle.
     Angle GetReferenceAngle() const { return m_referenceAngle; }
@@ -78,8 +78,8 @@ private:
     bool SolvePositionConstraints(BodyConstraintsMap& bodies,
                                   const ConstraintSolverConf& conf) const override;
 
-    Length2D m_localAnchorA; ///< Local anchor A.
-    Length2D m_localAnchorB; ///< Local anchor B.
+    Length2 m_localAnchorA; ///< Local anchor A.
+    Length2 m_localAnchorB; ///< Local anchor B.
     Angle m_referenceAngle; ///< Reference angle.
     Frequency m_frequency; ///< Frequency.
     Real m_dampingRatio; ///< Damping ratio.
@@ -90,8 +90,8 @@ private:
     // Solver temp
     InvRotInertia m_gamma; ///< Gamma.
     AngularVelocity m_bias; ///< Bias.
-    Length2D m_rA; ///< Relative A.
-    Length2D m_rB; ///< Relative B.
+    Length2 m_rA; ///< Relative A.
+    Length2 m_rB; ///< Relative B.
     Mat33 m_mass; ///< Mass.
 };
 

@@ -389,7 +389,7 @@ constexpr auto Dot(const T1 a, const T2 b) noexcept
     return result;
 }
 
-/// @brief Performs the 2D analog of the cross product of two vectors.
+/// @brief Performs the 2-element analog of the cross product of two vectors.
 ///
 /// @details Defined as the result of: <code>(a.x * b.y) - (a.y * b.x)</code>.
 ///
@@ -572,17 +572,17 @@ constexpr inline Vec2 Transform(const Vec2 v, const Mat22& A) noexcept
 }
 
 #ifdef USE_BOOST_UNITS
-constexpr inline auto Transform(const LinearVelocity2D v, const Mass22& A) noexcept
+constexpr inline auto Transform(const LinearVelocity2 v, const Mass22& A) noexcept
 {
-    return Momentum2D{
+    return Momentum2{
         Get<0>(Get<0>(A)) * Get<0>(v) + Get<0>(Get<1>(A)) * Get<1>(v),
         Get<1>(Get<0>(A)) * Get<0>(v) + Get<1>(Get<1>(A)) * Get<1>(v)
     };
 }
 
-constexpr inline auto Transform(const Momentum2D v, const InvMass22 A) noexcept
+constexpr inline auto Transform(const Momentum2 v, const InvMass22 A) noexcept
 {
-    return LinearVelocity2D{
+    return LinearVelocity2{
         Get<0>(Get<0>(A)) * Get<0>(v) + Get<0>(Get<1>(A)) * Get<1>(v),
         Get<1>(Get<0>(A)) * Get<0>(v) + Get<1>(Get<1>(A)) * Get<1>(v)
     };
@@ -698,7 +698,7 @@ constexpr inline auto InverseRotate(const Vector2<T> vector, const UnitVec2& ang
 /// @param v 2-D position to transform (to rotate and then translate).
 /// @param xfm Transformation (a translation and rotation) to apply to the given vector.
 /// @return Rotated and translated vector.
-constexpr inline Length2D Transform(const Length2D v, const Transformation xfm) noexcept
+constexpr inline Length2 Transform(const Length2 v, const Transformation xfm) noexcept
 {
     return Rotate(v, xfm.q) + xfm.p;
 }
@@ -713,7 +713,7 @@ constexpr inline Length2D Transform(const Length2D v, const Transformation xfm) 
 /// @param v 2-D vector to inverse transform (inverse translate and inverse rotate).
 /// @param T Transformation (a translation and rotation) to inversely apply to the given vector.
 /// @return Inverse transformed vector.
-constexpr inline Length2D InverseTransform(const Length2D v, const Transformation T) noexcept
+constexpr inline Length2 InverseTransform(const Length2 v, const Transformation T) noexcept
 {
     const auto v2 = v - T.p;
     return InverseRotate(v2, T.q);
@@ -785,15 +785,15 @@ inline std::uint64_t NextPowerOfTwo(std::uint64_t x)
 }
 
 /// @brief Gets the transformation for the given values.
-constexpr inline Transformation GetTransformation(const Length2D ctr, const UnitVec2 rot,
-                                                  const Length2D localCtr) noexcept
+constexpr inline Transformation GetTransformation(const Length2 ctr, const UnitVec2 rot,
+                                                  const Length2 localCtr) noexcept
 {
     assert(IsValid(rot));
     return Transformation{ctr - (Rotate(localCtr, rot)), rot};
 }
 
 /// @brief Gets the transformation for the given values.
-inline Transformation GetTransformation(const Position pos, const Length2D local_ctr) noexcept
+inline Transformation GetTransformation(const Position pos, const Length2 local_ctr) noexcept
 {
     assert(IsValid(pos));
     assert(IsValid(local_ctr));
@@ -868,9 +868,9 @@ inline Real Normalize(Vec2& vector)
 /// @brief Gets the contact relative velocity.
 /// @note If relA and relB are the zero vectors, the resulting value is simply
 ///    velB.linear - velA.linear.
-inline LinearVelocity2D
-GetContactRelVelocity(const Velocity velA, const Length2D relA,
-                      const Velocity velB, const Length2D relB) noexcept
+inline LinearVelocity2
+GetContactRelVelocity(const Velocity velA, const Length2 relA,
+                      const Velocity velB, const Length2 relB) noexcept
 {
 #if 0 // Using std::fma appears to be slower!
     const auto revPerpRelB = GetRevPerpendicular(relB);
@@ -905,7 +905,7 @@ GetContactRelVelocity(const Velocity velA, const Length2D relA,
 /// @brief Computes the centroid of a counter-clockwise array of 3 or more vertices.
 /// @note Behavior is undefined if there are less than 3 vertices or the vertices don't
 ///   go counter-clockwise.
-Length2D ComputeCentroid(const Span<const Length2D>& vertices);
+Length2 ComputeCentroid(const Span<const Length2>& vertices);
 
 /// @brief Gets the modulo next value.
 template <typename T>
@@ -996,7 +996,7 @@ inline UnitVec2 GetUnitVector(Vector2<LinearVelocity> value, LinearVelocity& mag
 #endif // USE_BOOST_UNITS
 
 /// @brief Gets the vertices for a circle described by the given parameters.
-std::vector<Length2D> GetCircleVertices(Length radius, unsigned slices,
+std::vector<Length2> GetCircleVertices(Length radius, unsigned slices,
                                         Angle start = Angle{0}, Real turns = Real{1});
 
 /// @brief Gets the area of a cirlce.
@@ -1006,7 +1006,7 @@ NonNegative<Area> GetAreaOfCircle(Length radius);
 /// @note This function is valid for any non-self-intersecting (simple) polygon,
 ///   which can be convex or concave.
 /// @note Winding order doesn't matter.
-NonNegative<Area> GetAreaOfPolygon(Span<const Length2D> vertices);
+NonNegative<Area> GetAreaOfPolygon(Span<const Length2> vertices);
 
 /// @brief Gets the polar moment of the area enclosed by the given vertices.
 ///
@@ -1014,7 +1014,7 @@ NonNegative<Area> GetAreaOfPolygon(Span<const Length2D> vertices);
 ///
 /// @param vertices Collection of three or more vertices.
 ///
-SecondMomentOfArea GetPolarMoment(Span<const Length2D> vertices);
+SecondMomentOfArea GetPolarMoment(Span<const Length2> vertices);
 
 /// @}
 

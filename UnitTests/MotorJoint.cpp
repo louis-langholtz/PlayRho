@@ -49,7 +49,7 @@ TEST(MotorJointDef, DefaultConstruction)
     EXPECT_EQ(def.collideConnected, false);
     EXPECT_EQ(def.userData, nullptr);
     
-    EXPECT_EQ(def.linearOffset, (Length2D{}));
+    EXPECT_EQ(def.linearOffset, (Length2{}));
     EXPECT_EQ(def.angularOffset, Angle(0));
     EXPECT_EQ(def.maxForce, 1_N);
     EXPECT_EQ(def.maxTorque, 1_Nm);
@@ -63,7 +63,7 @@ TEST(MotorJointDef, BuilderConstruction)
     const auto collideConnected = true;
     int tmp;
     const auto userData = &tmp;
-    const auto linearOffset = Length2D{2 * Meter, 3 * Meter};
+    const auto linearOffset = Length2{2 * Meter, 3 * Meter};
     const auto angularOffset = 33_rad;
     const auto maxForce = 22_N;
     const auto maxTorque = 31_Nm;
@@ -107,7 +107,7 @@ TEST(MotorJoint, Construction)
     EXPECT_EQ(joint.GetBodyB(), def.bodyB);
     EXPECT_EQ(joint.GetCollideConnected(), def.collideConnected);
     EXPECT_EQ(joint.GetUserData(), def.userData);
-    EXPECT_EQ(joint.GetLinearReaction(), Momentum2D{});
+    EXPECT_EQ(joint.GetLinearReaction(), Momentum2{});
     EXPECT_EQ(joint.GetAngularReaction(), AngularMomentum{0});
 
     EXPECT_EQ(joint.GetLinearOffset(), def.linearOffset);
@@ -153,7 +153,7 @@ TEST(MotorJoint, GetMotorJointDef)
     EXPECT_EQ(cdef.collideConnected, false);
     EXPECT_EQ(cdef.userData, nullptr);
     
-    EXPECT_EQ(cdef.linearOffset, (Length2D{}));
+    EXPECT_EQ(cdef.linearOffset, (Length2{}));
     EXPECT_EQ(cdef.angularOffset, Angle(0));
     EXPECT_EQ(cdef.maxForce, 1_N);
     EXPECT_EQ(cdef.maxTorque, 1_Nm);
@@ -163,14 +163,14 @@ TEST(MotorJoint, GetMotorJointDef)
 TEST(MotorJoint, WithDynamicCircles)
 {
     const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
-    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2D{})};
-    const auto p1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
-    const auto p2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
+    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
+    const auto p1 = Length2{-Real(1) * Meter, Real(0) * Meter};
+    const auto p2 = Length2{+Real(1) * Meter, Real(0) * Meter};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
-    //const auto anchor = Length2D(Real(2) * Meter, Real(1) * Meter);
+    //const auto anchor = Length2(Real(2) * Meter, Real(1) * Meter);
     const auto jd = MotorJointDef{b1, b2};
     const auto joint = static_cast<MotorJoint*>(world.CreateJoint(jd));
     ASSERT_NE(joint, nullptr);
@@ -189,21 +189,21 @@ TEST(MotorJoint, WithDynamicCircles)
 TEST(MotorJoint, SetLinearOffset)
 {
     const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
-    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2D{})};
-    const auto p1 = Length2D{-Real(1) * Meter, Real(0) * Meter};
-    const auto p2 = Length2D{+Real(1) * Meter, Real(0) * Meter};
+    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
+    const auto p1 = Length2{-Real(1) * Meter, Real(0) * Meter};
+    const auto p2 = Length2{+Real(1) * Meter, Real(0) * Meter};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
-    //const auto anchor = Length2D(Real(2) * Meter, Real(1) * Meter);
+    //const auto anchor = Length2(Real(2) * Meter, Real(1) * Meter);
     const auto jd = MotorJointDef{b1, b2};
     const auto joint = static_cast<MotorJoint*>(world.CreateJoint(jd));
     ASSERT_NE(joint, nullptr);
     EXPECT_EQ(joint->GetAnchorA(), p1);
     EXPECT_EQ(joint->GetAnchorB(), p2);
     
-    const auto linearOffset = Length2D{2 * Meter, 1 * Meter};
+    const auto linearOffset = Length2{2 * Meter, 1 * Meter};
     ASSERT_EQ(joint->GetLinearOffset(), jd.linearOffset);
     ASSERT_NE(jd.linearOffset, linearOffset);
     joint->SetLinearOffset(linearOffset);

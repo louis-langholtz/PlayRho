@@ -31,13 +31,13 @@ namespace playrho {
 MassData MultiShape::GetMassData() const noexcept
 {
     auto mass = 0_kg;
-    const auto origin = Length2D{};
+    const auto origin = Length2{};
     auto weightedCenter = origin * Kilogram;
     auto I = RotInertia(0);
 
     std::for_each(std::begin(m_children), std::end(m_children), [&](const ConvexHull& ch) {
         const auto md = playrho::GetMassData(GetVertexRadius(), GetDensity(),
-                                      Span<const Length2D>(ch.vertices.data(), ch.vertices.size()));
+                                      Span<const Length2>(ch.vertices.data(), ch.vertices.size()));
         mass += Mass{md.mass};
         weightedCenter += md.center * Mass{md.mass};
         I += RotInertia{md.I};

@@ -53,22 +53,22 @@ public:
     
     void Accept(JointVisitor& visitor) const override;
 
-    Length2D GetAnchorA() const override;
+    Length2 GetAnchorA() const override;
 
-    Length2D GetAnchorB() const override;
+    Length2 GetAnchorB() const override;
 
-    Momentum2D GetLinearReaction() const override;
+    Momentum2 GetLinearReaction() const override;
 
     AngularMomentum GetAngularReaction() const override;
 
     /// @brief Gets the local anchor B.
-    Length2D GetLocalAnchorB() const noexcept;
+    Length2 GetLocalAnchorB() const noexcept;
 
     /// @brief Sets the target point.
-    void SetTarget(const Length2D target) noexcept;
+    void SetTarget(const Length2 target) noexcept;
 
     /// @brief Gets the target point.
-    Length2D GetTarget() const noexcept;
+    Length2 GetTarget() const noexcept;
 
     /// @brief Sets the maximum force.
     void SetMaxForce(NonNegative<Force> force) noexcept;
@@ -89,7 +89,7 @@ public:
     NonNegative<Real> GetDampingRatio() const noexcept;
 
     /// Implement Joint::ShiftOrigin
-    void ShiftOrigin(const Length2D newOrigin) override;
+    void ShiftOrigin(const Length2 newOrigin) override;
 
 private:
     void InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
@@ -101,28 +101,28 @@ private:
     /// @brief Gets the effective mass matrix.
     Mass22 GetEffectiveMassMatrix(const BodyConstraint& body) const noexcept;
 
-    Length2D m_targetA; ///< Target location (A).
-    Length2D m_localAnchorB; ///< Local anchor B.
+    Length2 m_targetA; ///< Target location (A).
+    Length2 m_localAnchorB; ///< Local anchor B.
     NonNegative<Frequency> m_frequency = NonNegative<Frequency>{0}; ///< Frequency.
     NonNegative<Real> m_dampingRatio = NonNegative<Real>{0}; ///< Damping ratio.
     
     // Solver shared
-    Momentum2D m_impulse = Momentum2D{}; ///< Impulse.
+    Momentum2 m_impulse = Momentum2{}; ///< Impulse.
     NonNegative<Force> m_maxForce = NonNegative<Force>{0}; ///< Max force.
     InvMass m_gamma = InvMass{0}; ///< Gamma.
 
     // Solver variables. These are only valid after InitVelocityConstraints called.
-    Length2D m_rB; ///< Relative B.
+    Length2 m_rB; ///< Relative B.
     Mass22 m_mass; ///< 2x2 mass matrix in kilograms.
-    LinearVelocity2D m_C; ///< Velocity constant.
+    LinearVelocity2 m_C; ///< Velocity constant.
 };
 
-inline Length2D MouseJoint::GetLocalAnchorB() const noexcept
+inline Length2 MouseJoint::GetLocalAnchorB() const noexcept
 {
     return m_localAnchorB;
 }
 
-inline Length2D MouseJoint::GetTarget() const noexcept
+inline Length2 MouseJoint::GetTarget() const noexcept
 {
     return m_targetA;
 }

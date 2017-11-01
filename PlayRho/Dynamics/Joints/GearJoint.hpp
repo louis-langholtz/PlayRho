@@ -51,17 +51,17 @@ public:
     
     void Accept(JointVisitor& visitor) const override;
 
-    Length2D GetAnchorA() const override;
-    Length2D GetAnchorB() const override;
+    Length2 GetAnchorA() const override;
+    Length2 GetAnchorB() const override;
 
-    Momentum2D GetLinearReaction() const override;
+    Momentum2 GetLinearReaction() const override;
     AngularMomentum GetAngularReaction() const override;
 
     /// @brief Gets the local anchor point relative to bodyA's origin.
-    Length2D GetLocalAnchorA() const noexcept { return m_localAnchorA; }
+    Length2 GetLocalAnchorA() const noexcept { return m_localAnchorA; }
     
     /// @brief Gets the local anchor point relative to bodyB's origin.
-    Length2D GetLocalAnchorB() const noexcept { return m_localAnchorB; }
+    Length2 GetLocalAnchorB() const noexcept { return m_localAnchorB; }
 
     /// @brief Gets the first joint.
     NonNull<Joint*> GetJoint1() const noexcept { return m_joint1; }
@@ -95,10 +95,10 @@ private:
     Body* m_bodyD; ///< Body D.
 
     // Solver shared
-    Length2D m_localAnchorA; ///< Local anchor A.
-    Length2D m_localAnchorB; ///< Local anchor B.
-    Length2D m_localAnchorC; ///< Local anchor C.
-    Length2D m_localAnchorD; ///< Local anchor D.
+    Length2 m_localAnchorA; ///< Local anchor A.
+    Length2 m_localAnchorB; ///< Local anchor B.
+    Length2 m_localAnchorC; ///< Local anchor C.
+    Length2 m_localAnchorD; ///< Local anchor D.
 
     UnitVec2 m_localAxisC; ///< Local axis C.
     UnitVec2 m_localAxisD; ///< Local axis D.
@@ -112,7 +112,7 @@ private:
     Momentum m_impulse = Momentum{0}; ///< Impulse.
 
     // Solver temp
-    Vec2 m_JvAC = Vec2_zero; ///< AC Jv data.
+    Vec2 m_JvAC = Vec2{}; ///< AC Jv data.
     Vec2 m_JvBD; ///< BD Jv data.
     Length m_JwA = Length{0}; ///< A Jw data.
     Length m_JwB; ///< B Jw data.

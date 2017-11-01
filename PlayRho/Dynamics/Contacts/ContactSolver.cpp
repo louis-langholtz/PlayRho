@@ -64,7 +64,7 @@ struct ImpulseChange
     UnitVec2 direction; ///< Direction.
 };
 
-VelocityPair GetVelocityDelta(const VelocityConstraint& vc, const Momentum2D impulses)
+VelocityPair GetVelocityDelta(const VelocityConstraint& vc, const Momentum2 impulses)
 {
     assert(IsValid(impulses));
 
@@ -94,7 +94,7 @@ VelocityPair GetVelocityDelta(const VelocityConstraint& vc, const Momentum2D imp
     };
 }
 
-Momentum BlockSolveUpdate(VelocityConstraint& vc, const Momentum2D newImpulses)
+Momentum BlockSolveUpdate(VelocityConstraint& vc, const Momentum2 newImpulses)
 {
     const auto delta_v = GetVelocityDelta(vc, newImpulses - GetNormalImpulses(vc));
     vc.GetBodyA()->SetVelocity(vc.GetBodyA()->GetVelocity() + delta_v.vel_a);
@@ -104,7 +104,7 @@ Momentum BlockSolveUpdate(VelocityConstraint& vc, const Momentum2D newImpulses)
 }
 
 Optional<Momentum> BlockSolveNormalCase1(VelocityConstraint& vc,
-                                         const LinearVelocity2D b_prime)
+                                         const LinearVelocity2 b_prime)
 {
     //
     // Case 1: vn = 0
@@ -143,7 +143,7 @@ Optional<Momentum> BlockSolveNormalCase1(VelocityConstraint& vc,
     return Optional<Momentum>{};
 }
 
-Optional<Momentum> BlockSolveNormalCase2(VelocityConstraint& vc, const LinearVelocity2D b_prime)
+Optional<Momentum> BlockSolveNormalCase2(VelocityConstraint& vc, const LinearVelocity2 b_prime)
 {
     //
     // Case 2: vn1 = 0 and x2 = 0
@@ -151,7 +151,7 @@ Optional<Momentum> BlockSolveNormalCase2(VelocityConstraint& vc, const LinearVel
     //   0 = a11 * x1 + a12 * 0 + b1'
     // vn2 = a21 * x1 + a22 * 0 + b2'
     //
-    const auto newImpulses = Momentum2D{
+    const auto newImpulses = Momentum2{
         -GetNormalMassAtPoint(vc, 0) * Get<0>(b_prime), Momentum{0}
     };
     const auto K = vc.GetK();
@@ -178,7 +178,7 @@ Optional<Momentum> BlockSolveNormalCase2(VelocityConstraint& vc, const LinearVel
     return Optional<Momentum>{};
 }
 
-Optional<Momentum> BlockSolveNormalCase3(VelocityConstraint& vc, const LinearVelocity2D b_prime)
+Optional<Momentum> BlockSolveNormalCase3(VelocityConstraint& vc, const LinearVelocity2 b_prime)
 {
     //
     // Case 3: vn2 = 0 and x1 = 0
@@ -186,7 +186,7 @@ Optional<Momentum> BlockSolveNormalCase3(VelocityConstraint& vc, const LinearVel
     // vn1 = a11 * 0 + a12 * x2 + b1'
     //   0 = a21 * 0 + a22 * x2 + b2'
     //
-    const auto newImpulses = Momentum2D{
+    const auto newImpulses = Momentum2{
         Momentum{0}, -GetNormalMassAtPoint(vc, 1) * Get<1>(b_prime)
     };
     const auto K = vc.GetK();
@@ -213,7 +213,7 @@ Optional<Momentum> BlockSolveNormalCase3(VelocityConstraint& vc, const LinearVel
     return Optional<Momentum>{};
 }
 
-Optional<Momentum> BlockSolveNormalCase4(VelocityConstraint& vc, const LinearVelocity2D b_prime)
+Optional<Momentum> BlockSolveNormalCase4(VelocityConstraint& vc, const LinearVelocity2 b_prime)
 {
     //
     // Case 4: x1 = 0 and x2 = 0
@@ -224,7 +224,7 @@ Optional<Momentum> BlockSolveNormalCase4(VelocityConstraint& vc, const LinearVel
     const auto vn2 = Get<1>(b_prime);
     if ((vn1 >= LinearVelocity{0}) && (vn2 >= LinearVelocity{0}))
     {
-        return Optional<Momentum>{BlockSolveUpdate(vc, Momentum2D{Momentum(0), Momentum(0)})};
+        return Optional<Momentum>{BlockSolveUpdate(vc, Momentum2{Momentum(0), Momentum(0)})};
     }
     return Optional<Momentum>{};
 }
@@ -284,7 +284,7 @@ inline Momentum BlockSolveNormalConstraint(VelocityConstraint& vc)
         const auto vn1 = Dot(dv1, normal);
         
         // Compute b
-        const auto b = LinearVelocity2D{
+        const auto b = LinearVelocity2{
             vn0 - vc.GetVelocityBiasAtPoint(0),
             vn1 - vc.GetVelocityBiasAtPoint(1)
         };
@@ -499,14 +499,14 @@ PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
     const auto totalRadius = pc.GetRadiusA() + pc.GetRadiusB();
 
     const auto solver_fn = [&](const PositionSolverManifold psm,
-                               const Length2D pA, const Length2D pB) {
+                               const Length2 pA, const Length2 pB) {
         const auto separation = psm.m_separation - totalRadius;
         // Positive separation means shapes not overlapping and not touching.
         // Zero separation means shapes are touching.
         // Negative separation means shapes are overlapping.
 
-        const auto rA = Length2D{psm.m_point - pA};
-        const auto rB = Length2D{psm.m_point - pB};
+        const auto rA = Length2{psm.m_point - pA};
+        const auto rB = Length2{psm.m_point - pB};
 
         // Compute the effective mass.
         const auto K = InvMass{[&]() {
@@ -526,7 +526,7 @@ PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
                               -conf.maxLinearCorrection, Length{0});
 
         // Compute response factors...
-        const auto P = Length2D{psm.m_normal * C} / K; // L M
+        const auto P = Length2{psm.m_normal * C} / K; // L M
         const auto LA = Cross(rA, P) / Radian; // L^2 M QP^-1
         const auto LB = Cross(rB, P) / Radian; // L^2 M QP^-1
 

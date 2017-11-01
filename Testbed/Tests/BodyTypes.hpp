@@ -100,7 +100,7 @@ public:
                 (GetX(p) > +10_m && GetX(velocity.linear) > 0_mps))
             {
                 m_platform->SetVelocity(Velocity{
-                    LinearVelocity2D{-GetX(velocity.linear), GetY(velocity.linear)},
+                    LinearVelocity2{-GetX(velocity.linear), GetY(velocity.linear)},
                     velocity.angular
                 });
             }

@@ -24,7 +24,7 @@
 
 namespace playrho {
 
-FrictionJointDef::FrictionJointDef(Body* bA, Body* bB, const Length2D anchor) noexcept:
+FrictionJointDef::FrictionJointDef(Body* bA, Body* bB, const Length2 anchor) noexcept:
     super{super{JointType::Friction}.UseBodyA(bA).UseBodyB(bB)},
     localAnchorA{GetLocalPoint(*bA, anchor)},
     localAnchorB{GetLocalPoint(*bB, anchor)}

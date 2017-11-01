@@ -132,7 +132,7 @@ void MotorJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     }
     else
     {
-        m_linearImpulse = Momentum2D{};
+        m_linearImpulse = Momentum2{};
         m_angularImpulse = AngularMomentum{0};
     }
 
@@ -178,10 +178,10 @@ bool MotorJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
 
     // Solve linear friction
     {
-        const auto vb = LinearVelocity2D{velB.linear + (GetRevPerpendicular(m_rB) * (velB.angular / Radian))};
-        const auto va = LinearVelocity2D{velA.linear - (GetRevPerpendicular(m_rA) * (velA.angular / Radian))};
+        const auto vb = LinearVelocity2{velB.linear + (GetRevPerpendicular(m_rB) * (velB.angular / Radian))};
+        const auto va = LinearVelocity2{velA.linear - (GetRevPerpendicular(m_rA) * (velA.angular / Radian))};
 
-        const auto Cdot = LinearVelocity2D{(vb - va) + inv_h * m_correctionFactor * m_linearError};
+        const auto Cdot = LinearVelocity2{(vb - va) + inv_h * m_correctionFactor * m_linearError};
 
         const auto impulse = -Transform(Cdot, m_linearMass);
         const auto oldImpulse = m_linearImpulse;
@@ -198,7 +198,7 @@ bool MotorJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
         const auto angImpulseA = AngularMomentum{Cross(m_rA, incImpulse) / Radian};
         const auto angImpulseB = AngularMomentum{Cross(m_rB, incImpulse) / Radian};
 
-        if (incImpulse != Momentum2D{})
+        if (incImpulse != Momentum2{})
         {
             solved = false;
         }
@@ -222,12 +222,12 @@ bool MotorJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
     return true;
 }
 
-Length2D MotorJoint::GetAnchorA() const
+Length2 MotorJoint::GetAnchorA() const
 {
     return GetBodyA()->GetLocation();
 }
 
-Length2D MotorJoint::GetAnchorB() const
+Length2 MotorJoint::GetAnchorB() const
 {
     return GetBodyB()->GetLocation();
 }
@@ -238,7 +238,7 @@ void MotorJoint::SetCorrectionFactor(Real factor)
     m_correctionFactor = factor;
 }
 
-void MotorJoint::SetLinearOffset(const Length2D linearOffset)
+void MotorJoint::SetLinearOffset(const Length2 linearOffset)
 {
     if (m_linearOffset != linearOffset)
     {

@@ -81,7 +81,7 @@ namespace playrho {
         ///   given point's X value.
         /// @post <code>rangeY</code> will have its min and max values both set to the
         ///   given point's Y value.
-        constexpr explicit AABB(const Length2D p) noexcept:
+        constexpr explicit AABB(const Length2 p) noexcept:
             rangeX{Get<0>(p)}, rangeY{Get<1>(p)}
         {
             // Intentionally empty.
@@ -90,7 +90,7 @@ namespace playrho {
         /// @brief Initializing constructor for two points.
         /// @param a Point location "A" to initialize this AABB with.
         /// @param b Point location "B" to initialize this AABB with.
-        constexpr AABB(const Length2D a, const Length2D b) noexcept:
+        constexpr AABB(const Length2 a, const Length2 b) noexcept:
             rangeX{Get<0>(a), Get<0>(b)}, rangeY{Get<1>(a), Get<1>(b)}
         {
             // Intentionally empty.
@@ -169,21 +169,21 @@ namespace playrho {
     
     /// @brief Gets the center of the AABB.
     /// @relatedalso AABB
-    constexpr Length2D GetCenter(const AABB& aabb) noexcept
+    constexpr Length2 GetCenter(const AABB& aabb) noexcept
     {
-        return Length2D{GetCenter(aabb.rangeX), GetCenter(aabb.rangeY)};
+        return Length2{GetCenter(aabb.rangeX), GetCenter(aabb.rangeY)};
     }
     
     /// @brief Gets dimensions of the given AABB.
     /// @relatedalso AABB
-    constexpr Length2D GetDimensions(const AABB& aabb) noexcept
+    constexpr Length2 GetDimensions(const AABB& aabb) noexcept
     {
-        return Length2D{GetSize(aabb.rangeX), GetSize(aabb.rangeY)};
+        return Length2{GetSize(aabb.rangeX), GetSize(aabb.rangeY)};
     }
     
     /// @brief Gets the extents of the AABB (half-widths).
     /// @relatedalso AABB
-    constexpr Length2D GetExtents(const AABB& aabb) noexcept
+    constexpr Length2 GetExtents(const AABB& aabb) noexcept
     {
         return GetDimensions(aabb) / Real{2};
     }
@@ -220,7 +220,7 @@ namespace playrho {
 
     /// @brief Includes the given location into the given AABB.
     /// @relatedalso AABB
-    constexpr AABB& Include(AABB& var, const Length2D& value) noexcept
+    constexpr AABB& Include(AABB& var, const Length2& value) noexcept
     {
         var.rangeX.Include(Get<0>(value));
         var.rangeY.Include(Get<1>(value));
@@ -240,7 +240,7 @@ namespace playrho {
     }
     
     /// @brief Moves the given AABB by the given value.
-    constexpr AABB& Move(AABB& var, const Length2D value) noexcept
+    constexpr AABB& Move(AABB& var, const Length2 value) noexcept
     {
         var.rangeX.Move(Get<0>(value));
         var.rangeY.Move(Get<1>(value));
@@ -259,7 +259,7 @@ namespace playrho {
     /// @brief Gets the AABB that the result of displacing the given AABB by the given
     ///   displacement amount.
     /// @relatedalso AABB
-    constexpr AABB GetDisplacedAABB(AABB aabb, const Length2D displacement)
+    constexpr AABB GetDisplacedAABB(AABB aabb, const Length2 displacement)
     {
         aabb.rangeX.Expand(Get<0>(displacement));
         aabb.rangeY.Expand(Get<1>(displacement));
@@ -275,7 +275,7 @@ namespace playrho {
 
     /// @brief Gets the result of moving the given AABB by the given value.
     /// @relatedalso AABB
-    constexpr AABB GetMovedAABB(AABB aabb, const Length2D value) noexcept
+    constexpr AABB GetMovedAABB(AABB aabb, const Length2 value) noexcept
     {
         return Move(aabb, value);
     }
@@ -289,16 +289,16 @@ namespace playrho {
 
     /// @brief Gets the lower bound.
     /// @relatedalso AABB
-    constexpr Length2D GetLowerBound(const AABB& aabb) noexcept
+    constexpr Length2 GetLowerBound(const AABB& aabb) noexcept
     {
-        return Length2D{aabb.rangeX.GetMin(), aabb.rangeY.GetMin()};
+        return Length2{aabb.rangeX.GetMin(), aabb.rangeY.GetMin()};
     }
     
     /// @brief Gets the upper bound.
     /// @relatedalso AABB
-    constexpr Length2D GetUpperBound(const AABB& aabb) noexcept
+    constexpr Length2 GetUpperBound(const AABB& aabb) noexcept
     {
-        return Length2D{aabb.rangeX.GetMax(), aabb.rangeY.GetMax()};
+        return Length2{aabb.rangeX.GetMax(), aabb.rangeY.GetMax()};
     }
     
     /// @brief Computes the AABB.

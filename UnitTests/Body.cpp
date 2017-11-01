@@ -161,7 +161,7 @@ TEST(Body, WorldCreated)
 TEST(Body, SetVelocityDoesNothingToStatic)
 {
     const auto zeroVelocity = Velocity{
-        LinearVelocity2D{0_mps, 0_mps},
+        LinearVelocity2{0_mps, 0_mps},
         AngularVelocity{Real(0) * RadianPerSecond}
     };
 
@@ -175,7 +175,7 @@ TEST(Body, SetVelocityDoesNothingToStatic)
     ASSERT_EQ(body->GetVelocity(), zeroVelocity);
     
     const auto velocity = Velocity{
-        LinearVelocity2D{1.1_mps, 1.1_mps},
+        LinearVelocity2{1.1_mps, 1.1_mps},
         AngularVelocity{Real(1.1) * RadianPerSecond}
     };
     body->SetVelocity(velocity);
@@ -319,7 +319,7 @@ TEST(Body, SetTransform)
     bd.type = BodyType::Dynamic;
     World world;
     const auto body = world.CreateBody(bd);
-    const auto xfm1 = Transformation{Vec2_zero * 1_m, UnitVec2::GetRight()};
+    const auto xfm1 = Transformation{Length2{}, UnitVec2::GetRight()};
     ASSERT_EQ(body->GetTransformation(), xfm1);
     const auto xfm2 = Transformation{Vec2(10, -12) * 1_m, UnitVec2::GetLeft()};
     body->SetTransform(xfm2.p, GetAngle(xfm2.q));
@@ -430,10 +430,10 @@ TEST(Body, ApplyLinearAccelDoesNothingToStatic)
     ASSERT_FALSE(body->IsSpeedable());
     ASSERT_FALSE(body->IsAccelerable());
     
-    const auto zeroAccel = LinearAcceleration2D{
+    const auto zeroAccel = LinearAcceleration2{
         Real(0) * MeterPerSquareSecond, Real(0) * MeterPerSquareSecond
     };
-    const auto linAccel = LinearAcceleration2D{
+    const auto linAccel = LinearAcceleration2{
         Real(2) * MeterPerSquareSecond, Real(2) * MeterPerSquareSecond
     };
     ApplyLinearAcceleration(*body, linAccel);
@@ -445,9 +445,9 @@ TEST(Body, GetAccelerationFF)
 {
     World world;
     const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
-    body->SetAcceleration(LinearAcceleration2D{}, AngularAcceleration{});
+    body->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
     
-    ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2D{});
+    ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
     ASSERT_EQ(body->GetAngularAcceleration(), AngularAcceleration{});
     
     EXPECT_EQ(GetAcceleration(*body), Acceleration{});
@@ -457,13 +457,13 @@ TEST(Body, SetAccelerationFF)
 {
     World world;
     const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
-    body->SetAcceleration(LinearAcceleration2D{}, AngularAcceleration{});
+    body->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
     
-    ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2D{});
+    ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
     ASSERT_EQ(body->GetAngularAcceleration(), AngularAcceleration{});
  
     const auto newAccel = Acceleration{
-        LinearAcceleration2D{2_mps2, 3_mps2}, AngularAcceleration{1.2f * RadianPerSquareSecond}
+        LinearAcceleration2{2_mps2, 3_mps2}, AngularAcceleration{1.2f * RadianPerSquareSecond}
     };
     SetAcceleration(*body, newAccel);
     EXPECT_EQ(GetAcceleration(*body), newAccel);
@@ -471,10 +471,10 @@ TEST(Body, SetAccelerationFF)
 
 TEST(Body, CalcGravitationalAcceleration)
 {
-    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2D{})};
+    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
 
-    const auto l1 = Length2D{-8_m, 0_m};
-    const auto l2 = Length2D{+8_m, 0_m};
+    const auto l1 = Length2{-8_m, 0_m};
+    const auto l2 = Length2{+8_m, 0_m};
 
     const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}
                                                    .UseVertexRadius(2_m)

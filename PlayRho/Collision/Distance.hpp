@@ -30,8 +30,8 @@ namespace playrho {
     /// @brief Witness Points.
     struct WitnessPoints
     {
-        Length2D a; ///< Point A.
-        Length2D b; ///< Point B.
+        Length2 a; ///< Point A.
+        Length2 b; ///< Point B.
     };
     
     /// @brief Gets the witness points of the given simplex.

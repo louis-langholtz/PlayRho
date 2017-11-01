@@ -47,7 +47,7 @@ struct MouseJointDef : public JointBuilder<MouseJointDef>
     }
     
     /// @brief Use value for target.
-    constexpr MouseJointDef& UseTarget(Length2D v) noexcept;
+    constexpr MouseJointDef& UseTarget(Length2 v) noexcept;
 
     /// @brief Use value for max force.
     constexpr MouseJointDef& UseMaxForce(NonNegative<Force> v) noexcept;
@@ -60,7 +60,7 @@ struct MouseJointDef : public JointBuilder<MouseJointDef>
 
     /// The initial world target point. This is assumed
     /// to coincide with the body anchor initially.
-    Length2D target = Length2D{};
+    Length2 target = Length2{};
     
     /// Max force.
     /// @details
@@ -79,7 +79,7 @@ struct MouseJointDef : public JointBuilder<MouseJointDef>
     NonNegative<Real> dampingRatio = NonNegative<Real>(0.7f);
 };
 
-constexpr MouseJointDef& MouseJointDef::UseTarget(Length2D v) noexcept
+constexpr MouseJointDef& MouseJointDef::UseTarget(Length2 v) noexcept
 {
     target = v;
     return *this;

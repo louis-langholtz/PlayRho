@@ -118,13 +118,13 @@ namespace playrho {
         constexpr UnitVec2 GetAxis() const noexcept;
         
         /// @brief Gets the local point.
-        constexpr Length2D GetLocalPoint() const noexcept;
+        constexpr Length2 GetLocalPoint() const noexcept;
 
     private:
         
         /// @brief Initializing constructor.
         constexpr SeparationFinder(const DistanceProxy& dpA, const DistanceProxy& dpB,
-                                         const UnitVec2 axis, const Length2D lp, const Type type):
+                                         const UnitVec2 axis, const Length2 lp, const Type type):
             m_proxyA{dpA}, m_proxyB{dpB}, m_axis{axis}, m_localPoint{lp}, m_type{type}
         {
             // Intentionally empty.
@@ -151,7 +151,7 @@ namespace playrho {
         const DistanceProxy& m_proxyA; ///< Distance proxy A.
         const DistanceProxy& m_proxyB; ///< Distance proxy B.
         const UnitVec2 m_axis; ///< Axis. @details Directional vector of the axis of separation.
-        const Length2D m_localPoint; ///< Local point. @note Only used if type is e_faceA or e_faceB.
+        const Length2 m_localPoint; ///< Local point. @note Only used if type is e_faceA or e_faceB.
         const Type m_type; ///< The type of this instance.
     };
 
@@ -165,7 +165,7 @@ namespace playrho {
         return m_axis;
     }
     
-    constexpr inline Length2D SeparationFinder::GetLocalPoint() const noexcept
+    constexpr inline Length2 SeparationFinder::GetLocalPoint() const noexcept
     {
         return m_localPoint;
     }

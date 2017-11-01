@@ -74,8 +74,8 @@ namespace {
 
 WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept
 {
-    auto pointA = Length2D{};
-    auto pointB = Length2D{};
+    auto pointA = Length2{};
+    auto pointB = Length2{};
 
     const auto size = simplex.GetSize();
     for (auto i = decltype(size){0}; i < size; ++i)

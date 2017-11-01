@@ -71,38 +71,38 @@ public:
     virtual ~Drawer() noexcept = 0;
 
     /// Draw a closed polygon provided in CCW order.
-    virtual void DrawPolygon(const Length2D* vertices, size_type vertexCount, const Color& color) = 0;
+    virtual void DrawPolygon(const Length2* vertices, size_type vertexCount, const Color& color) = 0;
 
     /// Draw a solid closed polygon provided in CCW order.
-    virtual void DrawSolidPolygon(const Length2D* vertices, size_type vertexCount, const Color& color) = 0;
+    virtual void DrawSolidPolygon(const Length2* vertices, size_type vertexCount, const Color& color) = 0;
 
     /// Draw a circle.
-    virtual void DrawCircle(const Length2D& center, Length radius, const Color& color) = 0;
+    virtual void DrawCircle(const Length2& center, Length radius, const Color& color) = 0;
     
     /// Draw a solid circle.
-    virtual void DrawSolidCircle(const Length2D& center, Length radius, const Color& color) = 0;
+    virtual void DrawSolidCircle(const Length2& center, Length radius, const Color& color) = 0;
  
     /// Draws a line segment from point 1 to point 2.
-    virtual void DrawSegment(const Length2D& p1, const Length2D& p2, const Color& c) = 0;
+    virtual void DrawSegment(const Length2& p1, const Length2& p2, const Color& c) = 0;
 
     /// Draws a line segment from point 1 to point 2 in color 1 to color 2.
-    virtual void DrawSegment(const Length2D& p1, const Color& c1,
-                             const Length2D& p2, const Color& c2) = 0;
+    virtual void DrawSegment(const Length2& p1, const Color& c1,
+                             const Length2& p2, const Color& c2) = 0;
 
-    virtual void DrawPoint(const Length2D& p, float size, const Color& color) = 0;
+    virtual void DrawPoint(const Length2& p, float size, const Color& color) = 0;
     
     /// Draws a string at the given world coordinates.
-    virtual void DrawString(const Length2D& p, TextAlign align, const char* string, ...) = 0;
+    virtual void DrawString(const Length2& p, TextAlign align, const char* string, ...) = 0;
         
     virtual void Flush() = 0;
     
-    virtual void SetTranslation(Length2D value) = 0;
+    virtual void SetTranslation(Length2 value) = 0;
 
-    virtual Length2D GetTranslation() const = 0;
+    virtual Length2 GetTranslation() const = 0;
 };
 
 /// @brief Draws segment with a single constant color.
-inline void DrawSegment(Drawer& drawer, const Length2D& p1, const Length2D& p2,
+inline void DrawSegment(Drawer& drawer, const Length2& p1, const Length2& p2,
                         const Color& color)
 {
     drawer.DrawSegment(p1, p2, color);

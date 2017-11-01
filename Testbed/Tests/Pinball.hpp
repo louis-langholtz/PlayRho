@@ -67,7 +67,7 @@ public:
 
             RevoluteJointDef jd;
             jd.bodyA = ground;
-            jd.localAnchorB = Vec2_zero * 1_m;
+            jd.localAnchorB = Length2{};
             jd.enableMotor = true;
             jd.maxMotorTorque = 1000_Nm;
             jd.enableLimit = true;

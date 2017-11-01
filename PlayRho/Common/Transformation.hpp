@@ -40,12 +40,12 @@ namespace playrho
     /// @note This data structure is 16-bytes large (on at least one 64-bit platform).
     struct Transformation
     {
-        Length2D p = Length2D{}; ///< Translational portion of the transformation. 8-bytes.
+        Length2 p = Length2{}; ///< Translational portion of the transformation. 8-bytes.
         UnitVec2 q = UnitVec2::GetRight(); ///< Rotational portion of the transformation. 8-bytes.
     };
     
     /// @brief Identity transformation value.
-    constexpr auto Transform_identity = Transformation{Length2D{0_m, 0_m}, UnitVec2::GetRight()};
+    constexpr auto Transform_identity = Transformation{Length2{0_m, 0_m}, UnitVec2::GetRight()};
     
     /// @brief Determines if the given value is valid.
     /// @relatedalso Transformation

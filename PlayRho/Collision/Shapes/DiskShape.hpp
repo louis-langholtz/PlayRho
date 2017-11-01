@@ -55,14 +55,14 @@ public:
         }
         
         /// @brief Uses the given value as the location.
-        constexpr Conf& UseLocation(Length2D value) noexcept
+        constexpr Conf& UseLocation(Length2 value) noexcept
         {
             location = value;
             return *this;
         }
 
         /// @brief Location for the disk shape to be centered at.
-        Length2D location = Length2D{};
+        Length2 location = Length2{};
     };
 
     /// @brief Gets the default configuration.
@@ -118,15 +118,15 @@ public:
     /// @return The origin (0, 0) unless explicitly set otherwise on construction or via
     ///   the set location method.
     /// @sa SetPosition.
-    Length2D GetLocation() const noexcept { return m_location; }
+    Length2 GetLocation() const noexcept { return m_location; }
     
     /// @brief Sets the location to the given value.
-    void SetLocation(const Length2D value) noexcept { m_location = value; }
+    void SetLocation(const Length2 value) noexcept { m_location = value; }
 
 private:
     /// Location of the shape as initialized on construction or as assigned using the
     ///   SetPosition method.
-    Length2D m_location = Length2D{};
+    Length2 m_location = Length2{};
 };
 
 constexpr DiskShape::Conf DiskShape::GetDefaultConf() noexcept

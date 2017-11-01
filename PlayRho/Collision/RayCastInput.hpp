@@ -34,9 +34,9 @@ namespace playrho {
     /// @details The ray extends from p1 to p1 + maxFraction * (p2 - p1).
     struct RayCastInput
     {
-        Length2D p1; ///< Point 1.
+        Length2 p1; ///< Point 1.
 
-        Length2D p2; ///< Point 2.
+        Length2 p2; ///< Point 2.
 
         /// @brief Max fraction.
         /// @details Unit interval value - a value between 0 and 1 inclusive.

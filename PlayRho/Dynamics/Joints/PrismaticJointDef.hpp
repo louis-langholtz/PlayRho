@@ -50,7 +50,7 @@ struct PrismaticJointDef : public JointBuilder<PrismaticJointDef>
     /// @brief Initializing constructor.
     /// @details Initializes the bodies, anchors, axis, and reference angle using the world
     ///   anchor and unit world axis.
-    PrismaticJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB, const Length2D anchor,
+    PrismaticJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB, const Length2 anchor,
                       const UnitVec2 axis) noexcept;
     
     /// @brief Uses the given enable limit state value.
@@ -66,10 +66,10 @@ struct PrismaticJointDef : public JointBuilder<PrismaticJointDef>
     PrismaticJointDef& UseEnableMotor(bool v) noexcept;
     
     /// The local anchor point relative to bodyA's origin.
-    Length2D localAnchorA = Length2D{};
+    Length2 localAnchorA = Length2{};
     
     /// The local anchor point relative to bodyB's origin.
-    Length2D localAnchorB = Length2D{};
+    Length2 localAnchorB = Length2{};
     
     /// The local translation unit axis in bodyA.
     UnitVec2 localAxisA = UnitVec2::GetRight();
