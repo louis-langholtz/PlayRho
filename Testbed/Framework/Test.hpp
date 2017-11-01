@@ -185,11 +185,17 @@ protected:
     
     struct Conf
     {
+        /// @brief World definition/configuration data.
+        /// @note Explicitly uses -10 for gravity here to behave more like
+        ///   Erin Catto's Box2D Testbed (which uses -10 for Earthly gravity).
         WorldDef worldDef = WorldDef{}.UseGravity(LinearAcceleration2D{
             Real(0.0f) * MeterPerSquareSecond, -Real(10.0f) * MeterPerSquareSecond
         }).UseMinVertexRadius(0.0002_m);
+
         Settings settings;
+        
         NeededSettings neededSettings = 0u;
+        
         std::string description;
         std::string seeAlso;
         std::string credits;

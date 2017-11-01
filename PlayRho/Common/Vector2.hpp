@@ -61,13 +61,11 @@ namespace playrho
     /// @brief 2-element vector of Momentum quantities.
     /// @note Often used as a 2-dimensional momentum vector.
     using Momentum2D = Vector2<Momentum>;
-        
-    /// @brief Earthly gravity.
-    /// @details An approximation of Earth's average gravity at sea-level in 2-dimensions.
-    constexpr auto EarthlyGravity = LinearAcceleration2D{
-        Real{0} * MeterPerSquareSecond,
-        Real{-9.8f} * MeterPerSquareSecond
-    };
+    
+    /// @brief Earthly gravity in 2-dimensions.
+    /// @details Linear acceleration in 2-dimensions of an earthly object due to Earth's mass.
+    /// @sa EarthlyLinearAcceleration
+    constexpr auto EarthlyGravity2 = LinearAcceleration2D{0_mps2, EarthlyLinearAcceleration};
 
     /// @brief Gets the given value as a Vec2.
     constexpr inline Vec2 GetVec2(const Vector2<Real> value)

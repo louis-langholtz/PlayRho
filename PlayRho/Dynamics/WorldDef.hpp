@@ -45,8 +45,8 @@ namespace playrho {
 
         /// @brief Gravity.
         /// @details The acceleration all dynamic bodies are subject to.
-        /// @note Use Vec2{0, 0} to disable gravity.
-        LinearAcceleration2D gravity = EarthlyGravity;
+        /// @note Use <code>LinearAcceleration2D{}</code> to disable gravity.
+        LinearAcceleration2D gravity = EarthlyGravity2;
         
         /// @brief Minimum vertex radius.
         /// @details This is the minimum vertex radius that this world establishes which bodies

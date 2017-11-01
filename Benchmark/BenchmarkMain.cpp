@@ -1074,7 +1074,7 @@ static void DefaultWorldStep(benchmark::State& state)
 
 static void DropDisks(benchmark::State& state)
 {
-    auto world = playrho::World{playrho::WorldDef{}.UseGravity(playrho::EarthlyGravity)};
+    auto world = playrho::World{playrho::WorldDef{}.UseGravity(playrho::EarthlyGravity2)};
 
     const auto diskDef = playrho::DiskShape::Conf{}.UseVertexRadius(0.5f * playrho::Meter);
     const auto shape = std::make_shared<playrho::DiskShape>(diskDef);

@@ -132,7 +132,7 @@ TEST(World, DefaultInit)
     EXPECT_EQ(GetHeight(world.GetTree()), World::proxy_size_type(0));
     EXPECT_EQ(ComputePerimeterRatio(world.GetTree()), Real(0));
 
-    EXPECT_EQ(world.GetGravity(), EarthlyGravity);
+    EXPECT_EQ(world.GetGravity(), EarthlyGravity2);
 
     {
         const auto& bodies = world.GetBodies();
@@ -830,7 +830,7 @@ TEST(World, MaxJoints)
 
 TEST(World, StepZeroTimeDoesNothing)
 {
-    const auto gravity = EarthlyGravity;
+    const auto gravity = EarthlyGravity2;
     
     World world{WorldDef{}.UseGravity(gravity)};
     
@@ -912,7 +912,7 @@ TEST(World, GravitationalBodyMovement)
 
 TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
 {
-    const auto gravity = EarthlyGravity;
+    const auto gravity = EarthlyGravity2;
     
     World world{WorldDef{}.UseGravity(gravity)};
     
@@ -953,7 +953,7 @@ TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
 
 TEST(World, BodyAccelRevPerSpecWithNegativeTimeAndNoVelOrPosIterations)
 {
-    const auto gravity = EarthlyGravity;
+    const auto gravity = EarthlyGravity2;
     
     World world{WorldDef{}.UseGravity(gravity)};
     

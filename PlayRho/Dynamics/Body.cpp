@@ -523,8 +523,6 @@ Force2D GetCentripetalForce(const Body& body, Length2D axis)
 
 Acceleration CalcGravitationalAcceleration(const Body& body) noexcept
 {
-    constexpr auto G = 6.67408e-11f * Meter * Meter * Meter / (Kilogram * Second * Second);
-
     const auto world = body.GetWorld();
     const auto bodies = world->GetBodies();
     const auto m1 = GetMass(body);
@@ -542,7 +540,7 @@ Acceleration CalcGravitationalAcceleration(const Body& body) noexcept
         const auto dir = GetUnitVector(delta);
         const auto rr = GetLengthSquared(delta);
         const auto orderedMass = std::minmax(m1, m2);
-        const auto f = (G * orderedMass.first) * (orderedMass.second / rr);
+        const auto f = (BigG * orderedMass.first) * (orderedMass.second / rr);
         sumForce += f * dir;
     }
     // F = m a... i.e.  a = F / m.

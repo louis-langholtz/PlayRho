@@ -298,6 +298,10 @@ namespace playrho
     /// @sa Time.
     constexpr auto Second = PLAYRHO_UNIT(Time, boost::units::si::second);
 
+    /// @brief Square second unit.
+    /// @sa Second
+    constexpr auto SquareSecond = Second * Second;
+
     /// @brief Hertz unit of Frequency.
     /// @details Represents the hertz unit of Frequency (Hz).
     /// @sa Frequency.
@@ -326,6 +330,9 @@ namespace playrho
     /// @brief Square meter unit of Area.
     /// @sa Area.
     constexpr auto SquareMeter = PLAYRHO_UNIT(Area, boost::units::si::square_meter);
+
+    /// @brief Cubic meter unit of Volume.
+    constexpr auto CubicMeter = Meter * Meter * Meter;
 
     /// @brief Kilogram per square meter unit of Density.
     /// @sa Density.
@@ -714,13 +721,32 @@ namespace playrho
     }
 
     /// @}
-
+    
     /// @brief Strips the units off of the given value.
     constexpr inline Real StripUnit(const Real value)
     {
         return value;
     }
     
+    /// @defgroup UnitConstants Physical constants.
+    /// @sa Quantities
+    /// @sa Units
+    /// @{
+
+    /// @brief Earthly gravity.
+    /// @details An approximation of the average acceleration of Earthly objects towards
+    ///   the Earth due to the Earth's gravity.
+    /// @note This constant is only appropriate for use for objects of low mass and close
+    ///   distance relative to the Earth.
+    constexpr auto EarthlyLinearAcceleration = -9.8f * MeterPerSquareSecond;
+    
+    /// @brief Big "G".
+    /// @details Gravitational constant used in calculating the attractive force on a mass
+    ///   to another mass at a given distance due to gravity.
+    constexpr auto BigG = 6.67408e-11f * CubicMeter / (Kilogram * SquareSecond);
+    
+    /// @}
+
 #if defined(USE_BOOST_UNITS)
     
     /// @brief Strips the units off of the given value.
