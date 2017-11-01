@@ -659,10 +659,10 @@ TEST(Distance, SquareSquareOverlappingDiagnally)
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
     EXPECT_EQ(GetX(witnessPoints.a), Length{0});
-    EXPECT_EQ(GetY(witnessPoints.a), Real{0.5f} * Meter);
+    EXPECT_EQ(GetY(witnessPoints.a), 0.5_m);
     
     EXPECT_EQ(GetX(witnessPoints.b), Length{0});
-    EXPECT_EQ(GetY(witnessPoints.b), Real{0.5f} * Meter);
+    EXPECT_EQ(GetY(witnessPoints.b), 0.5_m);
     
     EXPECT_EQ(decltype(output.iterations){3}, output.iterations);
     

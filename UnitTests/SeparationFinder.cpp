@@ -39,7 +39,7 @@ TEST(SeparationFinder, ByteSizeIs_40_56_or_96)
 
 TEST(SeparationFinder, BehavesAsExpected)
 {
-    const auto shape = PolygonShape{Real{0.5f} * Meter, Real{0.5f} * Meter};
+    const auto shape = PolygonShape{0.5_m, 0.5_m};
     const auto distproxy = shape.GetChild(0);
 
     const auto x = Real(100);

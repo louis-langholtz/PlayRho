@@ -51,15 +51,15 @@ TEST(PositionSolverManifold, InitializingConstructor)
 TEST(PositionSolverManifold, GetPSM)
 {
     // wide rectangle
-    const auto shape0 = PolygonShape(3_m, Real{1.5f} * Meter);
-    ASSERT_EQ(GetX(shape0.GetVertex(0)), Real(+3.0) * Meter); // right
-    ASSERT_EQ(GetY(shape0.GetVertex(0)), Real(-1.5) * Meter); // bottom
-    ASSERT_EQ(GetX(shape0.GetVertex(1)), Real(+3.0) * Meter); // right
-    ASSERT_EQ(GetY(shape0.GetVertex(1)), Real(+1.5) * Meter); // top
-    ASSERT_EQ(GetX(shape0.GetVertex(2)), Real(-3.0) * Meter); // left
-    ASSERT_EQ(GetY(shape0.GetVertex(2)), Real(+1.5) * Meter); // top
-    ASSERT_EQ(GetX(shape0.GetVertex(3)), Real(-3.0) * Meter); // left
-    ASSERT_EQ(GetY(shape0.GetVertex(3)), Real(-1.5) * Meter); // bottom
+    const auto shape0 = PolygonShape(3_m, 1.5_m);
+    ASSERT_EQ(GetX(shape0.GetVertex(0)), +3.0_m); // right
+    ASSERT_EQ(GetY(shape0.GetVertex(0)), -1.5_m); // bottom
+    ASSERT_EQ(GetX(shape0.GetVertex(1)), +3.0_m); // right
+    ASSERT_EQ(GetY(shape0.GetVertex(1)), +1.5_m); // top
+    ASSERT_EQ(GetX(shape0.GetVertex(2)), -3.0_m); // left
+    ASSERT_EQ(GetY(shape0.GetVertex(2)), +1.5_m); // top
+    ASSERT_EQ(GetX(shape0.GetVertex(3)), -3.0_m); // left
+    ASSERT_EQ(GetY(shape0.GetVertex(3)), -1.5_m); // bottom
     
     // square
     const auto shape1 = PolygonShape(2_m, 2_m);

@@ -732,11 +732,11 @@ TEST(CollideShapes, HorizontalOverlappingRects1)
     ASSERT_EQ(shape0.GetVertex(3), Vec2(-2,-2) * Meter); // bottom left
     
     // Shape B: wide rectangle
-    const auto shape1 = PolygonShape(3_m, Real{1.5f} * Meter);
-    ASSERT_EQ(shape1.GetVertex(0), Length2(Real(+3.0) * Meter, Real(-1.5) * Meter)); // bottom right
-    ASSERT_EQ(shape1.GetVertex(1), Length2(Real(+3.0) * Meter, Real(+1.5) * Meter)); // top right
-    ASSERT_EQ(shape1.GetVertex(2), Length2(Real(-3.0) * Meter, Real(+1.5) * Meter)); // top left
-    ASSERT_EQ(shape1.GetVertex(3), Length2(Real(-3.0) * Meter, Real(-1.5) * Meter)); // bottom left
+    const auto shape1 = PolygonShape(3_m, 1.5_m);
+    ASSERT_EQ(shape1.GetVertex(0), Length2(+3.0_m, -1.5_m)); // bottom right
+    ASSERT_EQ(shape1.GetVertex(1), Length2(+3.0_m, +1.5_m)); // top right
+    ASSERT_EQ(shape1.GetVertex(2), Length2(-3.0_m, +1.5_m)); // top left
+    ASSERT_EQ(shape1.GetVertex(3), Length2(-3.0_m, -1.5_m)); // bottom left
 
     const auto xfm0 = Transformation{
         Vec2{-2, 0} * Meter,
@@ -811,11 +811,11 @@ TEST(CollideShapes, HorizontalOverlappingRects1)
 TEST(CollideShapes, HorizontalOverlappingRects2)
 {
     // Shape A: wide rectangle
-    const auto shape0 = PolygonShape(3_m, Real{1.5f} * Meter);
-    ASSERT_EQ(shape0.GetVertex(0), Length2(Real(+3.0) * Meter, Real(-1.5) * Meter)); // bottom right
-    ASSERT_EQ(shape0.GetVertex(1), Length2(Real(+3.0) * Meter, Real(+1.5) * Meter)); // top right
-    ASSERT_EQ(shape0.GetVertex(2), Length2(Real(-3.0) * Meter, Real(+1.5) * Meter)); // top left
-    ASSERT_EQ(shape0.GetVertex(3), Length2(Real(-3.0) * Meter, Real(-1.5) * Meter)); // bottom left
+    const auto shape0 = PolygonShape(3_m, 1.5_m);
+    ASSERT_EQ(shape0.GetVertex(0), Length2(+3.0_m, -1.5_m)); // bottom right
+    ASSERT_EQ(shape0.GetVertex(1), Length2(+3.0_m, +1.5_m)); // top right
+    ASSERT_EQ(shape0.GetVertex(2), Length2(-3.0_m, +1.5_m)); // top left
+    ASSERT_EQ(shape0.GetVertex(3), Length2(-3.0_m, -1.5_m)); // bottom left
     
     // Shape B: square
     const auto shape1 = PolygonShape(2_m, 2_m);
@@ -1383,7 +1383,7 @@ TEST(CollideShapes, EdgePolygonFaceB1)
 TEST(CollideShapes, EdgePolygonFaceB2)
 {
     auto conf = EdgeShape::Conf{};
-    conf.vertexRadius = Real{0.000199999995f} * Meter;
+    conf.vertexRadius = 0.000199999995_m;
     const auto edge_shape = EdgeShape(Vec2(-6, 2) * Meter, Vec2(-6, 0) * Meter, conf);
     const auto edge_xfm = Transformation{Vec2(-9.99999904f, 4.0f) * Meter, GetUnitVector(Vec2(Real(1), Real(0)))};
     const auto poly_shape = PolygonShape({

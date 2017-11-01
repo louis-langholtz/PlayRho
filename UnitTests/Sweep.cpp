@@ -33,14 +33,14 @@ TEST(Sweep, ByteSizeIs_36_or_72)
 }
 
 TEST(Sweep, ConstructorSetsPos0and1) {
-    const auto pos = Position{Length2{Real(-0.4) * Meter, 2.34_m}, 3.14_rad};
+    const auto pos = Position{Length2{-0.4_m, 2.34_m}, 3.14_rad};
     Sweep sweep{pos};
     EXPECT_EQ(pos, sweep.pos0);
     EXPECT_EQ(pos, sweep.pos1);
 }
 
 TEST(Sweep, ResetSetsAlpha0to0) {
-    const auto pos = Position{Length2{Real(-0.4) * Meter, 2.34_m}, 3.14_rad};
+    const auto pos = Position{Length2{-0.4_m, 2.34_m}, 3.14_rad};
     Sweep sweep{pos, pos, Length2{}, Real(0.6)};
     EXPECT_NE(Real{0}, sweep.GetAlpha0());
     sweep.ResetAlpha0();
@@ -48,16 +48,16 @@ TEST(Sweep, ResetSetsAlpha0to0) {
 }
 
 TEST(Sweep, GetPosition) {
-    const auto pos0 = Position{Length2{Real(-0.4) * Meter, Real(+2.34) * Meter}, 3.14_rad};
-    const auto pos1 = Position{Length2{Real(+0.4) * Meter, Real(-2.34) * Meter}, -3.14_rad};
+    const auto pos0 = Position{Length2{-0.4_m, +2.34_m}, 3.14_rad};
+    const auto pos1 = Position{Length2{+0.4_m, -2.34_m}, -3.14_rad};
     Sweep sweep{pos0, pos1, Length2{}, Real(0.6)};
     EXPECT_EQ(pos0, GetPosition(sweep.pos0, sweep.pos1, 0));
     EXPECT_EQ(pos1, GetPosition(sweep.pos0, sweep.pos1, 1));
 }
 
 TEST(Sweep, Advance) {
-    const auto pos0 = Position{Length2{Real(-0.4) * Meter, Real(+2.34) * Meter}, 3.14_rad};
-    const auto pos1 = Position{Length2{Real(+0.4) * Meter, Real(-2.34) * Meter}, -3.14_rad};
+    const auto pos0 = Position{Length2{-0.4_m, +2.34_m}, 3.14_rad};
+    const auto pos1 = Position{Length2{+0.4_m, -2.34_m}, -3.14_rad};
     
     Sweep sweep{pos0, pos1, Length2{}, 0};
     EXPECT_EQ(Real{0}, sweep.GetAlpha0());

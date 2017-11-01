@@ -168,7 +168,7 @@ TEST(DistanceProxy, TestPoint)
     EXPECT_TRUE(TestPoint(dp, pos2));
     EXPECT_TRUE(TestPoint(dp, pos3));
     EXPECT_TRUE(TestPoint(dp, pos4));
-    EXPECT_TRUE(TestPoint(dp, Length2{Real(3.2f) * Meter, Real(3.2f) * Meter}));
+    EXPECT_TRUE(TestPoint(dp, Length2{3.2_m, 3.2_m}));
     EXPECT_TRUE(TestPoint(dp, pos2 + Length2{radius, radius} / Real(2)));
     EXPECT_FALSE(TestPoint(dp, pos2 + Length2{radius, radius}));
     EXPECT_FALSE(TestPoint(dp, Length2{10_m, 10_m}));

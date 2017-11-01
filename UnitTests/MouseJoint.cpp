@@ -95,7 +95,7 @@ TEST(MouseJoint, GetLocalAnchorB)
     def.bodyA = bA;
     def.bodyB = bB;
     def.userData = reinterpret_cast<void*>(71);
-    def.target = Length2(Real(-1.4) * Meter, -2_m);
+    def.target = Length2(-1.4_m, -2_m);
     def.maxForce = 3_N;
     def.frequency = 67_Hz;
     def.dampingRatio = Real(0.8);
@@ -117,7 +117,7 @@ TEST(MouseJointDef, GetMouseJointDefFreeFunction)
     def.bodyA = bA;
     def.bodyB = bB;
     def.userData = reinterpret_cast<void*>(71);
-    def.target = Length2(Real(-1.4) * Meter, -2_m);
+    def.target = Length2(-1.4_m, -2_m);
     def.maxForce = 3_N;
     def.frequency = 67_Hz;
     def.dampingRatio = Real(0.8);

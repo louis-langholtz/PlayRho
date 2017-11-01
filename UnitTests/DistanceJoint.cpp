@@ -100,7 +100,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 {
     World world{WorldDef{}.UseGravity(LinearAcceleration2{})};
 
-    const auto shape = std::make_shared<DiskShape>(Real{0.2f} * Meter);
+    const auto shape = std::make_shared<DiskShape>(0.2_m);
     
     const auto location1 = Length2{-1_m, 0_m};
     const auto body1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location1));
@@ -142,7 +142,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
             EXPECT_GE(newDistance, oldDistance);
         }
         
-        if (!distanceMet && (Abs(newDistance - jointdef.length) < Real{0.01f} * Meter))
+        if (!distanceMet && (Abs(newDistance - jointdef.length) < 0.01_m))
         {
             distanceMet = i;
         }
@@ -154,7 +154,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
 {
     World world{WorldDef{}.UseGravity(LinearAcceleration2{0, Real(10) * MeterPerSquareSecond})};
     
-    const auto shape = std::make_shared<DiskShape>(Real{0.2f} * Meter);
+    const auto shape = std::make_shared<DiskShape>(0.2_m);
     shape->SetDensity(1_kgpm2);
     
     const auto location1 = Length2{-10_m, 10_m};

@@ -76,7 +76,7 @@ TEST(Manifold, GetForFaceA)
         EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(0));
     }
     {
-        const auto pl = Length2{Real(-0.12) * Meter, 0.34_m};
+        const auto pl = Length2{-0.12_m, 0.34_m};
         const auto cf = GetFaceFaceContactFeature(0, 0);
         const auto ni = 2.9_Ns;
         const auto ti = .7_Ns;
@@ -93,7 +93,7 @@ TEST(Manifold, GetForFaceA)
         EXPECT_EQ(p0.tangentImpulse, ti);
     }
     {
-        const auto pl = Length2{Real(-0.12) * Meter, 0.34_m};
+        const auto pl = Length2{-0.12_m, 0.34_m};
         const auto cf = GetFaceFaceContactFeature(0, 1);
         const auto ni = 2.9_Ns;
         const auto ti = 0.7_Ns;
@@ -128,7 +128,7 @@ TEST(Manifold, GetForFaceB)
         EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(0));
     }
     {
-        const auto pl = Length2{Real(-0.12) * Meter, 0.34_m};
+        const auto pl = Length2{-0.12_m, 0.34_m};
         const auto cf = GetFaceFaceContactFeature(0, 0);
         const auto ni = 2.9_Ns;
         const auto ti = 0.7_Ns;
@@ -145,7 +145,7 @@ TEST(Manifold, GetForFaceB)
         EXPECT_EQ(p0.tangentImpulse, ti);
     }
     {
-        const auto pl = Length2{Real(-0.12) * Meter, 0.34_m};
+        const auto pl = Length2{-0.12_m, 0.34_m};
         const auto cf = GetFaceFaceContactFeature(0, 1);
         const auto ni = 2.9_Ns;
         const auto ti = 0.7_Ns;

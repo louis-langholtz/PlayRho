@@ -698,7 +698,7 @@ TEST(World, GetTouchingCountFreeFunction)
     const auto bd = BodyDef{}.UseType(BodyType::Dynamic);
     const auto lowerBodyDef = BodyDef(bd).UseLocation(Vec2(0.0f, 0.5f) * Meter);
     const auto diskConf = DiskShape::Conf{}.UseDensity(10_kgpm2);
-    const auto smallerDiskConf = DiskShape::Conf(diskConf).UseVertexRadius(Real{0.5f} * Meter);
+    const auto smallerDiskConf = DiskShape::Conf(diskConf).UseVertexRadius(0.5_m);
 
     const auto lowerBody = world.CreateBody(lowerBodyDef);
     lowerBody->CreateFixture(std::make_shared<DiskShape>(smallerDiskConf));
@@ -775,8 +775,8 @@ TEST(World, CreateAndDestroyJoint)
     EXPECT_TRUE(world.GetJoints().empty());
     EXPECT_EQ(world.GetJoints().begin(), world.GetJoints().end());
     
-    const auto anchorA = Length2{Real(+0.4) * Meter, Real(-1.2) * Meter};
-    const auto anchorB = Length2{Real(-2.3) * Meter, Real(+0.7) * Meter};
+    const auto anchorA = Length2{+0.4_m, -1.2_m};
+    const auto anchorB = Length2{-2.3_m, +0.7_m};
     const auto joint = world.CreateJoint(DistanceJointDef{body1, body2, anchorA, anchorB});
     EXPECT_EQ(GetJointCount(world), JointCounter(1));
     EXPECT_FALSE(world.GetJoints().empty());
@@ -835,7 +835,7 @@ TEST(World, StepZeroTimeDoesNothing)
     World world{WorldDef{}.UseGravity(gravity)};
     
     BodyDef def;
-    def.location = Length2{31.9_m, Real(-19.24) * Meter};
+    def.location = Length2{31.9_m, -19.24_m};
     def.type = BodyType::Dynamic;
     
     const auto body = world.CreateBody(def);
@@ -917,7 +917,7 @@ TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
     World world{WorldDef{}.UseGravity(gravity)};
     
     BodyDef def;
-    def.location = Length2{31.9_m, Real(-19.24) * Meter};
+    def.location = Length2{31.9_m, -19.24_m};
     def.type = BodyType::Dynamic;
     
     const auto body = world.CreateBody(def);
@@ -1170,8 +1170,8 @@ TEST(World, HeavyOnLight)
         .UseVertex2(Vec2(40.0f, 0.0f) * Meter);
     
     const auto diskConf = DiskShape::Conf{}.UseDensity(10_kgpm2);
-    const auto smallerDiskConf = DiskShape::Conf(diskConf).UseVertexRadius(Real{0.5f} * Meter);
-    const auto biggerDiskConf = DiskShape::Conf(diskConf).UseVertexRadius(Real{5.0f} * Meter);
+    const auto smallerDiskConf = DiskShape::Conf(diskConf).UseVertexRadius(0.5_m);
+    const auto biggerDiskConf = DiskShape::Conf(diskConf).UseVertexRadius(5.0_m);
     
     const auto baseStepConf = []() {
         auto step = StepConf{}.SetInvTime(60_Hz);
@@ -2286,8 +2286,8 @@ TEST(World, SpeedingBulletBallWontTunnel)
 
     ASSERT_EQ(listener.begin_contacts, unsigned{0});
 
-    const auto left_edge_x = Real(-0.1) * Meter;
-    const auto right_edge_x = Real(+0.1) * Meter;
+    const auto left_edge_x = -0.1_m;
+    const auto right_edge_x = +0.1_m;
 
     const auto edgeConf = EdgeShape::Conf{}
         .UseVertexRadius(VertexRadius)
@@ -3047,7 +3047,7 @@ protected:
     const std::size_t maxLoops = 10000;
     std::vector<Body*> boxes{10};
     Real original_x = 0;
-    const Length hdim = Real{0.1f} * Meter;
+    const Length hdim = 0.1_m;
 };
 
 TEST_P(VerticalStackTest, EndsBeforeMaxLoops)

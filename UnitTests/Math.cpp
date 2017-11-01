@@ -298,7 +298,7 @@ TEST(Math, InverseRotationRevertsRotation)
 
 TEST(Math, TransformIsRotatePlusTranslate)
 {
-    const auto vector = Length2{19_m, Real(-0.5) * Meter};
+    const auto vector = Length2{19_m, -0.5_m};
     const auto translation = Length2{-3_m, +5_m};
     const auto rotation = UnitVec2::GetTop();
     const auto transformation = Transformation{translation, rotation};
@@ -311,7 +311,7 @@ TEST(Math, TransformIsRotatePlusTranslate)
 
 TEST(Math, InverseTransformIsUntranslateAndInverseRotate)
 {
-    const auto vector = Length2{19_m, Real(-0.5) * Meter};
+    const auto vector = Length2{19_m, -0.5_m};
     const auto translation = Length2{-3_m, +5_m};
     const auto rotation = UnitVec2::GetTop();
     const auto transformation = Transformation{translation, rotation};
@@ -324,7 +324,7 @@ TEST(Math, InverseTransformIsUntranslateAndInverseRotate)
 
 TEST(Math, InverseTransformTransformedIsOriginal)
 {
-    const auto vector = Length2{19_m, Real(-0.5) * Meter};
+    const auto vector = Length2{19_m, -0.5_m};
     const auto translation = Length2{-3_m, +5_m};
     const auto rotation = UnitVec2::GetTop();
     const auto transformation = Transformation{translation, rotation};
@@ -340,7 +340,7 @@ TEST(Math, InverseTransformTransformedIsOriginal)
 
 TEST(Math, TransformInverseTransformedIsOriginal)
 {
-    const auto vector = Length2{19_m, Real(-0.5) * Meter};
+    const auto vector = Length2{19_m, -0.5_m};
     const auto translation = Length2{-3_m, +5_m};
     const auto rotation = UnitVec2::GetTop();
     const auto transformation = Transformation{translation, rotation};

@@ -88,7 +88,7 @@ TEST(MassData, GetAreaOfPolygon)
     {
         // point
         const auto vertices = Vector<const Length2, 1>{
-            Length2{-2_m, Real(+0.5) * Meter},
+            Length2{-2_m, +0.5_m},
         };
         const auto area = GetAreaOfPolygon(vertices);
         EXPECT_NEAR(static_cast<double>(Real{area / SquareMeter}), 0.0, 0.0);
@@ -96,8 +96,8 @@ TEST(MassData, GetAreaOfPolygon)
     {
         // edge
         const auto vertices = Vector<const Length2, 2>{
-            Length2{-2_m, Real(+0.5) * Meter},
-            Length2{+2_m, Real(+0.5) * Meter},
+            Length2{-2_m, +0.5_m},
+            Length2{+2_m, +0.5_m},
         };
         const auto area = GetAreaOfPolygon(vertices);
         EXPECT_NEAR(static_cast<double>(Real{area / SquareMeter}), 0.0, 0.0);
@@ -105,9 +105,9 @@ TEST(MassData, GetAreaOfPolygon)
     {
         // CCW triangle
         const auto vertices = Vector<const Length2, 3>{
-            Length2{-2_m, Real(+1.0) * Meter},
-            Length2{-2_m, Real(-1.0) * Meter},
-            Length2{+2_m, Real(+0.0) * Meter},
+            Length2{-2_m, +1.0_m},
+            Length2{-2_m, -1.0_m},
+            Length2{+2_m, +0.0_m},
         };
         const auto area = GetAreaOfPolygon(vertices);
         EXPECT_NEAR(static_cast<double>(Real{area / SquareMeter}), 4.0, 0.0);
@@ -115,9 +115,9 @@ TEST(MassData, GetAreaOfPolygon)
     {
         // CCW triangle
         const auto vertices = Vector<const Length2, 3>{
-            Length2{-2_m, Real(-1.0) * Meter},
-            Length2{+2_m, Real(+0.0) * Meter},
-            Length2{-2_m, Real(+1.0) * Meter},
+            Length2{-2_m, -1.0_m},
+            Length2{+2_m, +0.0_m},
+            Length2{-2_m, +1.0_m},
         };
         const auto area = GetAreaOfPolygon(vertices);
         EXPECT_NEAR(static_cast<double>(Real{area / SquareMeter}), 4.0, 0.0);
@@ -125,9 +125,9 @@ TEST(MassData, GetAreaOfPolygon)
     {
         // CCW triangle
         const auto vertices = Vector<const Length2, 3>{
-            Length2{+2_m, Real(+0.0) * Meter},
-            Length2{-2_m, Real(+1.0) * Meter},
-            Length2{-2_m, Real(-1.0) * Meter},
+            Length2{+2_m, +0.0_m},
+            Length2{-2_m, +1.0_m},
+            Length2{-2_m, -1.0_m},
         };
         const auto area = GetAreaOfPolygon(vertices);
         EXPECT_NEAR(static_cast<double>(Real{area / SquareMeter}), 4.0, 0.0);
@@ -135,9 +135,9 @@ TEST(MassData, GetAreaOfPolygon)
     {
         // CW triangle
         const auto vertices = Vector<const Length2, 3>{
-            Length2{+2_m, Real(+0.0) * Meter},
-            Length2{-2_m, Real(-1.0) * Meter},
-            Length2{-2_m, Real(+1.0) * Meter},
+            Length2{+2_m, +0.0_m},
+            Length2{-2_m, -1.0_m},
+            Length2{-2_m, +1.0_m},
         };
         const auto area = GetAreaOfPolygon(vertices);
         EXPECT_NEAR(static_cast<double>(Real{area / SquareMeter}), 4.0, 0.0);
@@ -145,9 +145,9 @@ TEST(MassData, GetAreaOfPolygon)
     {
         // CCW triangle
         const auto vertices = Vector<const Length2, 3>{
-            Length2{+0_m, Real(-2.0) * Meter},
-            Length2{-4_m, Real(-1.0) * Meter},
-            Length2{-4_m, Real(-3.0) * Meter},
+            Length2{+0_m, -2.0_m},
+            Length2{-4_m, -1.0_m},
+            Length2{-4_m, -3.0_m},
         };
         const auto area = GetAreaOfPolygon(vertices);
         EXPECT_NEAR(static_cast<double>(Real{area / SquareMeter}), 4.0, 0.0);
@@ -155,10 +155,10 @@ TEST(MassData, GetAreaOfPolygon)
     {
         // CCW quadrilateral
         const auto vertices = Vector<const Length2, 4>{
-            Length2{-2_m, Real(+0.5) * Meter},
-            Length2{-2_m, Real(-0.5) * Meter},
-            Length2{+2_m, Real(-0.5) * Meter},
-            Length2{+2_m, Real(+0.5) * Meter}
+            Length2{-2_m, +0.5_m},
+            Length2{-2_m, -0.5_m},
+            Length2{+2_m, -0.5_m},
+            Length2{+2_m, +0.5_m}
         };
         const auto area = GetAreaOfPolygon(vertices);
         EXPECT_NEAR(static_cast<double>(Real{area / SquareMeter}), 4.0, 0.0);
@@ -302,7 +302,7 @@ TEST(MassData, GetForCenteredEdge)
 {
     const auto v1 = Length2{-2_m, 0_m};
     const auto v2 = Length2{+2_m, 0_m};
-    const auto radius = Real{0.5f} * Meter;
+    const auto radius = 0.5_m;
     const auto density = 2.1_kgpm2;
     
     const auto radiusSquared = Area{radius * radius};
@@ -322,10 +322,10 @@ TEST(MassData, GetForCenteredEdge)
     ASSERT_EQ(shape.GetDensity(), density);
     
     const auto vertices = Vector<Length2, 4>{
-        Length2(-2_m, Real(+0.5) * Meter),
-        Length2(-2_m, Real(-0.5) * Meter),
-        Length2(+2_m, Real(-0.5) * Meter),
-        Length2(+2_m, Real(+0.5) * Meter)
+        Length2(-2_m, +0.5_m),
+        Length2(-2_m, -0.5_m),
+        Length2(+2_m, -0.5_m),
+        Length2(+2_m, +0.5_m)
     };
     const auto polarMoment = GetPolarMoment(vertices);
     EXPECT_NEAR(static_cast<double>(Real{polarMoment / (SquareMeter * SquareMeter)}),

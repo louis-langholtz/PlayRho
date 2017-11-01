@@ -189,7 +189,7 @@ TEST(RevoluteJoint, MaxMotorTorque)
 
 TEST(RevoluteJoint, MovesDynamicCircles)
 {
-    const auto circle = std::make_shared<DiskShape>(Real{0.2f} * Meter);
+    const auto circle = std::make_shared<DiskShape>(0.2_m);
     World world;
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
@@ -218,7 +218,7 @@ TEST(RevoluteJoint, MovesDynamicCircles)
 TEST(RevoluteJoint, LimitEnabledDynamicCircles)
 {
     const auto circle = std::make_shared<DiskShape>(DiskShape::Conf{}
-                                                    .UseVertexRadius(Real{0.2f} * Meter)
+                                                    .UseVertexRadius(0.2_m)
                                                     .UseDensity(1_kgpm2));
     World world;
     const auto p1 = Length2{-1_m, 0_m};
@@ -303,7 +303,7 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
     b1->CreateFixture(shape1);
     
     const auto shape2 = std::make_shared<PolygonShape>();
-    shape2->SetAsBox(Real{0.5f} * Meter, Real{0.5f} * Meter);
+    shape2->SetAsBox(0.5_m, 0.5_m);
     shape2->SetDensity(1_kgpm2);
     b2->CreateFixture(shape2);
     

@@ -415,11 +415,11 @@ TEST(TimeOfImpact, ForNonCollidingShapesFails)
 
     auto shapeA = PolygonShape{};
     shapeA.SetVertexRadius(Real{0.0001f * 2} * Meter);
-    shapeA.SetAsBox(Real{25.0f} * Meter, Real{5.0f} * Meter);
+    shapeA.SetAsBox(25.0_m, 5.0_m);
 
     auto shapeB = PolygonShape{};
     shapeB.SetVertexRadius(Real{0.0001f * 2} * Meter);
-    shapeB.SetAsBox(Real{2.5f} * Meter, Real{2.5f} * Meter);
+    shapeB.SetAsBox(2.5_m, 2.5_m);
 
     const auto dpA = shapeA.GetChild(0);
     const auto dpB = shapeB.GetChild(0);
@@ -493,12 +493,12 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
     };
 
     const auto dpA = DistanceProxy{
-        Real{0.000199999995f} * Meter, 4, vertices, normals
+        0.000199999995_m, 4, vertices, normals
     };
     
     auto shapeB = PolygonShape{};
     shapeB.SetVertexRadius(Real{0.0001f * 2} * Meter);
-    shapeB.SetAsBox(Real{0.5f} * Meter, Real{0.5f} * Meter);
+    shapeB.SetAsBox(0.5_m, 0.5_m);
     const auto dpB = shapeB.GetChild(0);
     
     const auto conf = ToiConf{}
