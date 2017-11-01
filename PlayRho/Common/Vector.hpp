@@ -373,7 +373,7 @@ constexpr auto operator* (const Vector<T1, N>& lhs, const Vector<T2, N>& rhs) no
     return result;
 }
 
-/// @brief Multiplication operator.
+/// @brief Division operator.
 /// @relatedalso Vector
 template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} / T2{})>
 constexpr auto operator/ (const Vector<T1, N>& lhs, const Vector<T2, N>& rhs) noexcept
