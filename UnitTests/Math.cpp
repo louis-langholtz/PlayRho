@@ -792,3 +792,19 @@ TEST(Math, InvertOneIsZero)
     EXPECT_EQ(Get<1>(Get<0>(out)), Real(0));
     EXPECT_EQ(Get<1>(Get<1>(out)), Real(0));
 }
+
+TEST(Math, Clamp)
+{
+    // Check lo and hi work as documented on Clamp...
+    const auto NaN = std::numeric_limits<double>::quiet_NaN();
+    EXPECT_EQ(Clamp(-1.0,  0.0, +1.0), 0.0);
+    EXPECT_EQ(Clamp(+1.0, -1.0,  0.0), 0.0);
+    EXPECT_EQ(Clamp(0.0, NaN, NaN), 0.0);
+    EXPECT_EQ(Clamp(0.0, -1.0, NaN), 0.0);
+    EXPECT_EQ(Clamp(0.0, NaN, +1.0), 0.0);
+    EXPECT_EQ(Clamp(0.0, -1.0, +1.0), 0.0);
+    EXPECT_TRUE(std::isnan(Clamp(NaN, -1.0, +1.0)));
+    EXPECT_TRUE(std::isnan(Clamp(NaN, NaN, +1.0)));
+    EXPECT_TRUE(std::isnan(Clamp(NaN, -1.0, NaN)));
+    EXPECT_TRUE(std::isnan(Clamp(NaN, NaN, NaN)));
+}
