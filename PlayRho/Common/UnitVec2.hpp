@@ -378,6 +378,7 @@ class tuple_size< playrho::UnitVec2 >: public std::integral_constant<size_t, 2> 
 template<std::size_t I>
 struct tuple_element<I, playrho::UnitVec2>
 {
+    /// @brief Type alias revealing the actual type of the element.
     using type = playrho::Real;
 };
 
