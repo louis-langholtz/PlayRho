@@ -414,14 +414,20 @@ constexpr auto Dot(const T1 a, const T2 b) noexcept
 ///
 /// @sa https://en.wikipedia.org/wiki/Cross_product
 ///
-/// @param a Vector A.
-/// @param b Vector B.
+/// @param a Value A of a 2-element type.
+/// @param b Value B of a 2-element type.
 ///
-/// @return Cross product of the two vectors.
+/// @return Cross product of the two values.
 ///
-template <class T1, class T2>
-constexpr inline auto Cross(const T1 a, const T2 b) noexcept
+template <class T1, class T2, std::enable_if_t<
+    std::tuple_size<T1>::value == 2 && std::tuple_size<T2>::value == 2, int> = 0>
+constexpr auto Cross(T1 a, T2 b) noexcept
 {
+    assert(std::isfinite(Get<0>(a)));
+    assert(std::isfinite(Get<1>(a)));
+    assert(std::isfinite(Get<0>(b)));
+    assert(std::isfinite(Get<1>(b)));
+
     // Both vectors of same direction...
     // If a = Vec2{1, 2} and b = Vec2{1, 2} then: a x b = 1 * 2 - 2 * 1 = 0.
     // If a = Vec2{1, 2} and b = Vec2{2, 4} then: a x b = 1 * 4 - 2 * 2 = 0.
@@ -432,14 +438,32 @@ constexpr inline auto Cross(const T1 a, const T2 b) noexcept
     //
     // Vectors between 0 and 180 degrees of each other excluding 90 degrees...
     // If a = Vec2{1, 2} and b = Vec2{-1, 2} then: a x b = 1 * 2 - 2 * (-1) = 2 + 2 = 4.
-    return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
+    const auto minuend = Get<0>(a) * Get<1>(b);
+    const auto subtrahend = Get<1>(a) * Get<0>(b);
+    assert(std::isfinite(minuend));
+    assert(std::isfinite(subtrahend));
+    return minuend - subtrahend;
 }
 
 /// @brief Cross-products the given two values.
-template <>
-constexpr inline auto Cross(const Vec3 a, const Vec3 b) noexcept
+/// @note This operation is anti-commutative. I.e. Cross(a, b) == -Cross(b, a).
+/// @sa https://en.wikipedia.org/wiki/Cross_product
+/// @param a Value A of a 3-element type.
+/// @param b Value B of a 3-element type.
+/// @return Cross product of the two values.
+template <class T1, class T2, std::enable_if_t<
+    std::tuple_size<T1>::value == 3 && std::tuple_size<T2>::value == 3, int> = 0>
+constexpr auto Cross(T1 a, T2 b) noexcept
 {
-    return Vec3{
+    assert(std::isfinite(Get<0>(a)));
+    assert(std::isfinite(Get<1>(a)));
+    assert(std::isfinite(Get<2>(a)));
+    assert(std::isfinite(Get<0>(b)));
+    assert(std::isfinite(Get<1>(b)));
+    assert(std::isfinite(Get<2>(b)));
+
+    using OT = decltype(Get<0>(a) * Get<0>(b));
+    return Vector<OT, 3>{
         GetY(a) * GetZ(b) - GetZ(a) * GetY(b),
         GetZ(a) * GetX(b) - GetX(a) * GetZ(b),
         GetX(a) * GetY(b) - GetY(a) * GetX(b)

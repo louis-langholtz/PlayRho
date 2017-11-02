@@ -368,4 +368,19 @@ inline ::std::ostream& operator<<(::std::ostream& os, const UnitVec2& value)
 
 } // namespace playrho
 
+namespace std {
+
+/// @brief Tuple size info for UnitVec2
+template<>
+class tuple_size< playrho::UnitVec2 >: public std::integral_constant<size_t, 2> {};
+
+/// @brief Tuple element type info for UnitVec2
+template<std::size_t I>
+struct tuple_element<I, playrho::UnitVec2>
+{
+    using type = playrho::Real;
+};
+
+} // namespace std
+
 #endif // PLAYRHO_COMMON_UNITVEC2_HPP
