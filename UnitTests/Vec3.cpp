@@ -166,3 +166,15 @@ TEST(Vec3, ScalarMultiplication)
     EXPECT_EQ(a * b, c);
     EXPECT_EQ(b * a, c);
 }
+
+TEST(Vec3, std_tuple_size)
+{
+    EXPECT_EQ(std::tuple_size<Vec3>::value, 3);
+}
+
+TEST(Vec3, std_tuple_element)
+{
+    ::testing::StaticAssertTypeEq<std::tuple_element<0, Vec3>::type, Real>();
+    ::testing::StaticAssertTypeEq<std::tuple_element<1, Vec3>::type, Real>();
+    ::testing::StaticAssertTypeEq<std::tuple_element<2, Vec3>::type, Real>();
+}

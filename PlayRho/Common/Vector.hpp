@@ -459,4 +459,20 @@ template <typename T, std::size_t N>
 
 } // namespace playrho
 
+namespace std {
+
+/// @brief Tuple size info for playrho::Vector
+template<class T, std::size_t N>
+class tuple_size< playrho::Vector<T, N> >: public std::integral_constant<size_t, N> {};
+
+/// @brief Tuple element type info for playrho::Vector
+template<std::size_t I, class T, size_t N>
+struct tuple_element<I, playrho::Vector<T, N>>
+{
+    /// @brief Type alias revealing the actual element type of the given Vector.
+    using type = T;
+};
+
+} // namespace std
+
 #endif // PLAYRHO_COMMON_VECTOR_HPP
