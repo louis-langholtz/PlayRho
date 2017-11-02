@@ -396,8 +396,10 @@ inline Manifold CollideShapes(Length2 locationA, const Transformation& xfA,
 {
     const auto pA = Transform(locationA, xfA);
     const auto pB = Transform(locationB, xfB);
-    return (GetLengthSquared(pB - pA) > Square(totalRadius))?
-        Manifold{}: Manifold::GetForCircles(locationA, 0, locationB, 0);
+    // Intermediary results here for debugging...
+    const auto lenSq = GetLengthSquared(pB - pA);
+    const auto totSq = Square(totalRadius);
+    return (lenSq > totSq)? Manifold{}: Manifold::GetForCircles(locationA, 0, locationB, 0);
 }
 
 } // anonymous namespace
