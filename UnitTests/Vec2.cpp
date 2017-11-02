@@ -233,3 +233,15 @@ TEST(Vec2, InvalidIndex)
     EXPECT_THROW(b.at(2) = Real(5), InvalidArgument);
     EXPECT_THROW(b.at(3) = Real(6), InvalidArgument);
 }
+
+TEST(Vec2, std_tuple_size)
+{
+    EXPECT_EQ(std::tuple_size<Vec2>::value, 2);
+}
+
+TEST(Vec2, std_tuple_element)
+{
+    ::testing::StaticAssertTypeEq<std::tuple_element<0, Vec2>::type, Real>();
+    ::testing::StaticAssertTypeEq<std::tuple_element<1, Vec2>::type, Real>();
+}
+
