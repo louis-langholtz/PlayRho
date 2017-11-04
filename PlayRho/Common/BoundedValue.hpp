@@ -494,7 +494,8 @@ namespace playrho {
     
     // Common useful aliases...
 
-    /// @defgroup BoundedAliases Bounded value type aliases.
+    /// @defgroup BoundedAliases Bounded Value Types
+    /// @brief Types for bounding values.
     /// @details Type aliases for bounding values via on-construction checks that
     ///   throw the <code>InvalidArgument</code> exception if an attempt is made
     ///   to construct the bounded value type with a value not allowed by the specific

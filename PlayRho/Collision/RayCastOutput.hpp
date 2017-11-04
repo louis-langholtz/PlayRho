@@ -52,7 +52,7 @@ namespace playrho
     using RayCastOutput = Optional<RayCastHit>;
     
     /// @defgroup RayCastGroup Ray Casting Functions
-    /// @details Collection of functions that do ray casting.
+    /// @brief Collection of functions that do ray casting.
     /// @image html raycast.png
     /// @{
 

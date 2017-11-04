@@ -58,11 +58,11 @@ constexpr auto Pi = Real(3.14159265358979323846264338327950288);
 constexpr auto SquareRootTwo =
     Real(1.414213562373095048801688724209698078569671875376948073176679737990732478462);
 
-/// @defgroup Decimalunitprefix Decimal unit prefices in the metric system.
-/// @details Decimal unit prefices in the metric system for denoting a multiple, or
+/// @defgroup DecimalUnitPrefices Decimal Unit Prefices
+/// @brief Decimal unit prefices in the metric system for denoting a multiple, or
 ///   a fraction of, a unit.
 /// @note <code>std::ratio</code> doesn't necessarily support larger sizes like Yotta
-//    (or bigger) so floating-point literal notation is used instead.
+///    or bigger so floating-point literal notation is used instead.
 /// @sa https://en.wikipedia.org/wiki/Metric_prefix
 /// @{
 

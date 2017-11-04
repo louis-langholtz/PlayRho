@@ -64,6 +64,8 @@ struct MassData;
 /// @note On a 64-bit architecture with 4-byte Real, this data structure is at least
 ///   192-bytes large.
 ///
+/// @ingroup PhysicalEntities
+///
 /// @sa World, Fixture
 ///
 class Body
@@ -164,6 +166,8 @@ public:
     /// @throws InvalidArgument if called for a shape with a vertex radius greater than the
     ///    maximum vertex radius.
     ///
+    /// @sa PhysicalEntities
+    ///
     Fixture* CreateFixture(const std::shared_ptr<const Shape>& shape,
                            const FixtureDef& def = GetDefaultFixtureDef(),
                            bool resetMassData = true);
@@ -181,9 +185,12 @@ public:
     /// @param fixture the fixture to be removed.
     /// @param resetMassData Whether or not to reset the mass data.
     ///
+    /// @sa PhysicalEntities
+    ///
     bool DestroyFixture(Fixture* fixture, bool resetMassData = true);
     
-    /// @brief Destory fixtures.
+    /// @brief Destroy fixtures.
+    /// @sa PhysicalEntities
     void DestroyFixtures();
     
     /// @brief Sets the position of the body's origin and rotation.

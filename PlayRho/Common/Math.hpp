@@ -91,7 +91,8 @@ constexpr inline auto StripUnit(const BoundedValue<T, lo, hi>& v)
     return StripUnit(v.get());
 }
 
-/// @defgroup Math Mathematical functions.
+/// @defgroup Math Mathematical Functions
+/// @brief Functions for common mathematical operations.
 /// @details These are non-member non-friend functions for mathematical operations
 ///   especially those with mixed input and output types.
 /// @{
