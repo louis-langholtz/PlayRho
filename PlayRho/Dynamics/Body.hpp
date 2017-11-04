@@ -868,9 +868,11 @@ inline void SetAcceleration(Body& body, Acceleration value) noexcept
     body.SetAcceleration(value.linear, value.angular);
 }
 
-/// @brief Calculates the gravitationally associated acceleration of the given body
+/// @brief Calculates the gravitationally associated acceleration for the given body
 ///   within its world.
 /// @relatedalso Body
+/// @return Zero acceleration if given body is has no mass, else the acceleration of
+///    the body due to the gravitational attraction to the other bodies.
 Acceleration CalcGravitationalAcceleration(const Body& body) noexcept;
     
 /// @brief Awakens the body if it's asleep.
@@ -921,9 +923,16 @@ inline Mass GetMass(const Body& body) noexcept
 
 /// @brief Sets the given linear acceleration of the given body.
 /// @relatedalso Body
-inline void SetLinearAcceleration(Body& body, LinearAcceleration2 value)
+inline void SetLinearAcceleration(Body& body, LinearAcceleration2 value) noexcept
 {
     body.SetAcceleration(value, body.GetAngularAcceleration());
+}
+
+/// @brief Sets the given angular acceleration of the given body.
+/// @relatedalso Body
+inline void SetAngularAcceleration(Body& body, AngularAcceleration value) noexcept
+{
+    body.SetAcceleration(body.GetLinearAcceleration(), value);
 }
 
 /// @brief Applies the given linear acceleration to the given body.

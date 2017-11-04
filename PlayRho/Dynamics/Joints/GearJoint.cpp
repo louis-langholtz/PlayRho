@@ -132,6 +132,11 @@ void GearJoint::Accept(JointVisitor& visitor) const
     visitor.Visit(*this);
 }
 
+void GearJoint::Accept(JointVisitor& visitor)
+{
+    visitor.Visit(*this);
+}
+
 void GearJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
                                         const ConstraintSolverConf&)
 {

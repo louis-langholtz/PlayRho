@@ -20,6 +20,7 @@
 
 #include "gtest/gtest.h"
 #include <PlayRho/Dynamics/Joints/FrictionJoint.hpp>
+#include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Collision/Shapes/DiskShape.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
@@ -87,6 +88,10 @@ TEST(FrictionJoint, Construction)
     EXPECT_EQ(joint.GetLocalAnchorB(), def.localAnchorB);
     EXPECT_EQ(joint.GetMaxForce(), def.maxForce);
     EXPECT_EQ(joint.GetMaxTorque(), def.maxTorque);
+    
+    TypeJointVisitor visitor;
+    joint.Accept(visitor);
+    EXPECT_EQ(visitor.GetType().value(), JointType::Friction);
 }
 
 TEST(FrictionJoint, GetFrictionJointDef)

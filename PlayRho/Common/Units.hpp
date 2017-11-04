@@ -367,6 +367,10 @@ namespace playrho
     /// @sa AngularAcceleration.
     constexpr auto RadianPerSquareSecond = Radian / (Second * Second);
 
+    /// @brief Degree per square second unit of AngularAcceleration.
+    /// @sa AngularAcceleration.
+    constexpr auto DegreePerSquareSecond = Degree / (Second * Second);
+
     /// @brief Newton unit of Force.
     /// @sa Force.
     constexpr auto Newton = PLAYRHO_UNIT(Force, boost::units::si::newton);
@@ -378,6 +382,10 @@ namespace playrho
     /// @brief Newton second unit of Momentum.
     /// @sa Momentum.
     constexpr auto NewtonSecond = Newton * Second;
+    
+    /// @brief Newton meter second unit of AngularMomentum.
+    /// @sa AngularMomentum.
+    constexpr auto NewtonMeterSecond = NewtonMeter * Second;
     
     /// @}
     

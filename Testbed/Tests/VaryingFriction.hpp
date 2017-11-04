@@ -30,7 +30,7 @@ public:
 
     VaryingFriction()
     {
-        m_world.CreateBody()->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40, 0) * 1_m, Vec2(40, 0) * 1_m));
+        m_world.CreateBody()->CreateFixture(std::make_shared<EdgeShape>(GetGroundEdgeConf()));
         
         const auto sliderPlank = std::make_shared<PolygonShape>(13_m, 0.25_m);
         const auto sliderWall = std::make_shared<PolygonShape>(0.25_m, 1_m);

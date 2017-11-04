@@ -10163,6 +10163,24 @@ int ImGui::GetColumnsCount()
     return window->DC.ColumnsCount;
 }
 
+void ImGui::SetColumnWidths(float remainingWidth, std::initializer_list<float> widths)
+{
+    const auto numColumns = GetColumnsCount();
+    auto column = decltype(numColumns){0};
+    for (auto width: widths)
+    {
+        SetColumnWidth(column, width);
+        remainingWidth -= width;
+        ++column;
+    }
+    const auto remainingColumns = numColumns - column;
+    const auto widthPerRemainingColumn = remainingWidth / remainingColumns;
+    for (auto i = column; i < numColumns; ++i)
+    {
+        SetColumnWidth(i, widthPerRemainingColumn);
+    }
+}
+
 static float OffsetNormToPixels(ImGuiWindow* window, float offset_norm)
 {
     return offset_norm * (window->DC.ColumnsMaxX - window->DC.ColumnsMinX);

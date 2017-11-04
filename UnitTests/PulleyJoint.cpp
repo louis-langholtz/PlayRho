@@ -20,6 +20,7 @@
 
 #include "gtest/gtest.h"
 #include <PlayRho/Dynamics/Joints/PulleyJoint.hpp>
+#include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 
 using namespace playrho;
@@ -79,6 +80,10 @@ TEST(PulleyJoint, Construction)
     EXPECT_EQ(joint.GetLengthA(), def.lengthA);
     EXPECT_EQ(joint.GetLengthB(), def.lengthB);
     EXPECT_EQ(joint.GetRatio(), def.ratio);
+    
+    TypeJointVisitor visitor;
+    joint.Accept(visitor);
+    EXPECT_EQ(visitor.GetType().value(), JointType::Pulley);
 }
 
 TEST(PulleyJoint, GetAnchorAandB)

@@ -200,9 +200,14 @@ TEST(Body, SetEnabled)
     World world;
     const auto body = world.CreateBody();
     const auto valid_shape = std::make_shared<DiskShape>(1_m);
-    ASSERT_NE(body->CreateFixture(valid_shape, FixtureDef{}), nullptr);
     
+    ASSERT_NE(body->CreateFixture(valid_shape, FixtureDef{}), nullptr);
+    ASSERT_TRUE(body->IsEnabled());
+
+    // Test that set enabled to flag already set is not a toggle
+    body->SetEnabled(true);
     EXPECT_TRUE(body->IsEnabled());
+
     body->SetEnabled(false);
     EXPECT_FALSE(body->IsEnabled());
     body->SetEnabled(true);
@@ -214,9 +219,14 @@ TEST(Body, SetFixedRotation)
     World world;
     const auto body = world.CreateBody();
     const auto valid_shape = std::make_shared<DiskShape>(1_m);
+
     ASSERT_NE(body->CreateFixture(valid_shape, FixtureDef{}), nullptr);
-    
+    ASSERT_FALSE(body->IsFixedRotation());
+
+    // Test that set fixed rotation to flag already set is not a toggle
+    body->SetFixedRotation(false);
     EXPECT_FALSE(body->IsFixedRotation());
+
     body->SetFixedRotation(true);
     EXPECT_TRUE(body->IsFixedRotation());
     body->SetFixedRotation(false);
@@ -475,6 +485,7 @@ TEST(Body, CalcGravitationalAcceleration)
 
     const auto l1 = Length2{-8_m, 0_m};
     const auto l2 = Length2{+8_m, 0_m};
+    const auto l3 = Length2{+16_m, 0_m};
 
     const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}
                                                    .UseVertexRadius(2_m)
@@ -491,4 +502,7 @@ TEST(Body, CalcGravitationalAcceleration)
                 0.032761313021183014, 0.000001);
     EXPECT_EQ(GetY(accel.linear), 0 * MeterPerSquareSecond);
     EXPECT_EQ(accel.angular, 0 * RadianPerSquareSecond);
+    
+    const auto b3 = world.CreateBody(BodyDef{}.UseType(BodyType::Static).UseLocation(l3));
+    EXPECT_EQ(CalcGravitationalAcceleration(*b3), Acceleration{});
 }

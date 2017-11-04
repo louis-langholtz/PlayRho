@@ -55,6 +55,11 @@ void MotorJoint::Accept(JointVisitor& visitor) const
     visitor.Visit(*this);
 }
 
+void MotorJoint::Accept(JointVisitor& visitor)
+{
+    visitor.Visit(*this);
+}
+
 void MotorJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step, const ConstraintSolverConf&)
 {
     auto& bodyConstraintA = At(bodies, GetBodyA());

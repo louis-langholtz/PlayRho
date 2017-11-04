@@ -66,7 +66,7 @@ public:
         if (newDensity != oldDensity)
         {
             auto selectedFixtures = GetSelectedFixtures();
-            const auto selectedFixture = selectedFixtures.size() == 1? selectedFixtures[0]: nullptr;
+            const auto selectedFixture = selectedFixtures.size() == 1? *(selectedFixtures.begin()): nullptr;
             const auto wasSelected = selectedFixture == m_top;
             const auto body = m_top->GetBody();
             body->DestroyFixture(m_top);
@@ -76,7 +76,8 @@ public:
             m_top = body->CreateFixture(std::make_shared<DiskShape>(conf));
             if (wasSelected)
             {
-                selectedFixtures[0] = m_top;
+                selectedFixtures.erase(selectedFixtures.begin());
+                selectedFixtures.insert(m_top);
                 SetSelectedFixtures(selectedFixtures);
             }
         }

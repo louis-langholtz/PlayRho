@@ -21,6 +21,7 @@
 #include "gtest/gtest.h"
 
 #include <PlayRho/Dynamics/Joints/MotorJoint.hpp>
+#include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyDef.hpp>
 #include <PlayRho/Dynamics/World.hpp>
@@ -115,6 +116,10 @@ TEST(MotorJoint, Construction)
     EXPECT_EQ(joint.GetMaxForce(), def.maxForce);
     EXPECT_EQ(joint.GetMaxTorque(), def.maxTorque);
     EXPECT_EQ(joint.GetCorrectionFactor(), def.correctionFactor);
+    
+    TypeJointVisitor visitor;
+    joint.Accept(visitor);
+    EXPECT_EQ(visitor.GetType().value(), JointType::Motor);
 }
 
 TEST(MotorJoint, SetCorrectionFactor)
@@ -208,4 +213,26 @@ TEST(MotorJoint, SetLinearOffset)
     ASSERT_NE(jd.linearOffset, linearOffset);
     joint->SetLinearOffset(linearOffset);
     EXPECT_EQ(joint->GetLinearOffset(), linearOffset);
+}
+
+TEST(MotorJoint, SetAngularOffset)
+{
+    const auto circle = std::make_shared<DiskShape>(0.2_m);
+    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
+    const auto p1 = Length2{-1_m, 0_m};
+    const auto p2 = Length2{+1_m, 0_m};
+    const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    b1->CreateFixture(circle);
+    b2->CreateFixture(circle);
+    //const auto anchor = Length2(2_m, 1_m);
+    const auto jd = MotorJointDef{b1, b2};
+    const auto joint = static_cast<MotorJoint*>(world.CreateJoint(jd));
+    ASSERT_NE(joint, nullptr);
+    EXPECT_EQ(joint->GetAnchorA(), p1);
+    EXPECT_EQ(joint->GetAnchorB(), p2);
+
+    ASSERT_EQ(joint->GetAngularOffset(), 0_deg);
+    joint->SetAngularOffset(45_deg);
+    EXPECT_EQ(joint->GetAngularOffset(), 45_deg);
 }

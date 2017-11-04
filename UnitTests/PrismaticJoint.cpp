@@ -18,6 +18,7 @@
 
 #include "gtest/gtest.h"
 #include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
+#include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Collision/Shapes/DiskShape.hpp>
@@ -53,6 +54,13 @@ TEST(PrismaticJoint, EnableLimit)
     EXPECT_FALSE(joint.IsLimitEnabled());
     joint.EnableLimit(true);
     EXPECT_TRUE(joint.IsLimitEnabled());
+    EXPECT_EQ(joint.GetMotorImpulse(), Momentum{0});
+
+    EXPECT_EQ(GetMotorForce(joint, 1_Hz), 0 * Newton);
+
+    TypeJointVisitor visitor;
+    joint.Accept(visitor);
+    EXPECT_EQ(visitor.GetType().value(), JointType::Prismatic);
 }
 
 TEST(PrismaticJoint, EnableMotor)

@@ -31,4 +31,23 @@ JointType GetType(const Joint& joint) noexcept
     return visitor.GetType().value_or(JointType::Unknown);
 }
 
+const char* ToString(JointType type) noexcept
+{
+    switch (type)
+    {
+        case JointType::Revolute: return "Revolute";
+        case JointType::Prismatic: return "Prismatic";
+        case JointType::Distance: return "Distance";
+        case JointType::Pulley: return "Pulley";
+        case JointType::Mouse: return "Mouse";
+        case JointType::Gear: return "Gear";
+        case JointType::Wheel: return "Wheel";
+        case JointType::Weld: return "Weld";
+        case JointType::Friction: return "Friction";
+        case JointType::Rope: return "Rope";
+        case JointType::Motor: return "Motor";
+        case JointType::Unknown: return "Unknown";
+    }
+}
+
 } // namespace playrho

@@ -18,6 +18,7 @@
 
 #include "gtest/gtest.h"
 #include <PlayRho/Dynamics/Joints/MouseJoint.hpp>
+#include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 
 using namespace playrho;
@@ -80,6 +81,10 @@ TEST(MouseJoint, DefaultInitialized)
     EXPECT_EQ(joint.GetMaxForce(), def.maxForce);
     EXPECT_EQ(joint.GetFrequency(), def.frequency);
     EXPECT_EQ(joint.GetDampingRatio(), def.dampingRatio);
+    
+    TypeJointVisitor visitor;
+    joint.Accept(visitor);
+    EXPECT_EQ(visitor.GetType().value(), JointType::Mouse);
 }
 
 TEST(MouseJoint, GetLocalAnchorB)

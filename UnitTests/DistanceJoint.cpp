@@ -24,6 +24,7 @@
 #include <PlayRho/Dynamics/BodyDef.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Collision/Shapes/DiskShape.hpp>
+#include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 
 using namespace playrho;
 
@@ -94,6 +95,10 @@ TEST(DistanceJoint, Construction)
     EXPECT_EQ(joint.GetLength(), def.length);
     EXPECT_EQ(joint.GetFrequency(), def.frequency);
     EXPECT_EQ(joint.GetDampingRatio(), def.dampingRatio);
+    
+    TypeJointVisitor visitor;
+    joint.Accept(visitor);
+    EXPECT_EQ(visitor.GetType().value(), JointType::Distance);
 }
 
 TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)

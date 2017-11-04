@@ -42,7 +42,7 @@ public:
         const auto ground = m_world.CreateBody();
 
         // Creates bottom ground
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40, 0) * 1_m, Vec2(40, 0) * 1_m));
+        ground->CreateFixture(std::make_shared<EdgeShape>(GetGroundEdgeConf()));
 
         // Creates left-end-fixed 8-part plank (below the top one)
         {

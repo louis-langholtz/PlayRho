@@ -38,12 +38,27 @@ public:
         m_type = JointType::Revolute;
     }
     
+    void Visit(RevoluteJoint& /*joint*/) override
+    {
+        m_type = JointType::Revolute;
+    }
+
     void Visit(const PrismaticJoint& /*joint*/) override
     {
         m_type = JointType::Prismatic;
     }
     
+    void Visit(PrismaticJoint& /*joint*/) override
+    {
+        m_type = JointType::Prismatic;
+    }
+
     void Visit(const DistanceJoint& /*joint*/) override
+    {
+        m_type = JointType::Distance;
+    }
+    
+    void Visit(DistanceJoint& /*joint*/) override
     {
         m_type = JointType::Distance;
     }
@@ -53,48 +68,81 @@ public:
         m_type = JointType::Pulley;
     }
     
-    /// @brief Visits a MouseJoint.
+    void Visit(PulleyJoint& /*joint*/) override
+    {
+        m_type = JointType::Pulley;
+    }
+
     void Visit(const MouseJoint& /*joint*/) override
     {
         m_type = JointType::Mouse;
     }
+
+    void Visit(MouseJoint& /*joint*/) override
+    {
+        m_type = JointType::Mouse;
+    }
     
-    /// @brief Visits a GearJoint.
     void Visit(const GearJoint& /*joint*/) override
     {
         m_type = JointType::Gear;
     }
     
-    /// @brief Visits a WheelJoint.
+    void Visit(GearJoint& /*joint*/) override
+    {
+        m_type = JointType::Gear;
+    }
+
     void Visit(const WheelJoint& /*joint*/) override
     {
         m_type = JointType::Wheel;
     }
-    
-    /// @brief Visits a WeldJoint.
+
+    void Visit(WheelJoint& /*joint*/) override
+    {
+        m_type = JointType::Wheel;
+    }
+
     void Visit(const WeldJoint& /*joint*/) override
     {
         m_type = JointType::Weld;
     }
-    
-    /// @brief Visits a FrictionJoint.
+
+    void Visit(WeldJoint& /*joint*/) override
+    {
+        m_type = JointType::Weld;
+    }
+
     void Visit(const FrictionJoint& /*joint*/) override
     {
         m_type = JointType::Friction;
     }
+
+    void Visit(FrictionJoint& /*joint*/) override
+    {
+        m_type = JointType::Friction;
+    }
     
-    /// @brief Visits a RopeJoint.
     void Visit(const RopeJoint& /*joint*/) override
     {
         m_type = JointType::Rope;
     }
     
-    /// @brief Visits a MotorJoint.
+    void Visit(RopeJoint& /*joint*/) override
+    {
+        m_type = JointType::Rope;
+    }
+    
     void Visit(const MotorJoint& /*joint*/) override
     {
         m_type = JointType::Motor;
     }
     
+    void Visit(MotorJoint& /*joint*/) override
+    {
+        m_type = JointType::Motor;
+    }
+
     /// @brief Gets the type of joint that had been visited.
     Optional<JointType> GetType() const noexcept
     {

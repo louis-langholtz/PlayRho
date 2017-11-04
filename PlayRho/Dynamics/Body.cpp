@@ -523,28 +523,32 @@ Force2 GetCentripetalForce(const Body& body, Length2 axis)
 
 Acceleration CalcGravitationalAcceleration(const Body& body) noexcept
 {
-    const auto world = body.GetWorld();
-    const auto bodies = world->GetBodies();
     const auto m1 = GetMass(body);
-    const auto loc1 = GetLocation(body);
-    auto sumForce = Force2{};
-    for (auto jt = std::begin(bodies); jt != std::end(bodies); jt = std::next(jt))
+    if (m1 != 0_kg)
     {
-        const auto& b2 = *(*jt);
-        if (&b2 == &body)
+        const auto loc1 = GetLocation(body);
+        auto sumForce = Force2{};
+        const auto world = body.GetWorld();
+        const auto bodies = world->GetBodies();
+        for (auto jt = std::begin(bodies); jt != std::end(bodies); jt = std::next(jt))
         {
-            continue;
+            const auto& b2 = *(*jt);
+            if (&b2 == &body)
+            {
+                continue;
+            }
+            const auto m2 = GetMass(b2);
+            const auto delta = GetLocation(b2) - loc1;
+            const auto dir = GetUnitVector(delta);
+            const auto rr = GetLengthSquared(delta);
+            const auto orderedMass = std::minmax(m1, m2);
+            const auto f = (BigG * orderedMass.first) * (orderedMass.second / rr);
+            sumForce += f * dir;
         }
-        const auto m2 = GetMass(b2);
-        const auto delta = GetLocation(b2) - loc1;
-        const auto dir = GetUnitVector(delta);
-        const auto rr = GetLengthSquared(delta);
-        const auto orderedMass = std::minmax(m1, m2);
-        const auto f = (BigG * orderedMass.first) * (orderedMass.second / rr);
-        sumForce += f * dir;
+        // F = m a... i.e.  a = F / m.
+        return Acceleration{sumForce / m1, 0 * RadianPerSquareSecond};
     }
-    // F = m a... i.e.  a = F / m.
-    return Acceleration{sumForce / m1, 0 * RadianPerSquareSecond};
+    return Acceleration{};
 }
 
 } // namespace playrho

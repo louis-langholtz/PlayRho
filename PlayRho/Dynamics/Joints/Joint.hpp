@@ -106,6 +106,9 @@ public:
     
     /// @brief Accepts a visitor.
     virtual void Accept(JointVisitor& visitor) const = 0;
+    
+    /// @brief Accepts a visitor.
+    virtual void Accept(JointVisitor& visitor) = 0;
 
     /// Get the user data pointer.
     void* GetUserData() const noexcept;
@@ -257,6 +260,9 @@ BodyConstraintPtr& At(std::vector<BodyConstraintPair>& container, const Body* ke
 /// @brief Provides referenced access to the identified element of the given container.
 BodyConstraintPtr& At(std::unordered_map<const Body*, BodyConstraint*>& container,
                       const Body* key);
+
+/// @brief Provides a human readable C-style string uniquely identifying the given limit state.
+const char* ToString(Joint::LimitState val) noexcept;
 
 } // namespace playrho
 
