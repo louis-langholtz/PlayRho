@@ -285,13 +285,13 @@ static void Draw(Drawer& drawer, const Joint& joint)
     }
 }
 
-static void Draw(Drawer& drawer, const AABB& aabb, const Color& color)
+static void Draw(Drawer& drawer, const AABB2D& aabb, const Color& color)
 {
     Length2 vs[4];
-    vs[0] = Length2{aabb.rangeX.GetMin(), aabb.rangeY.GetMin()};
-    vs[1] = Length2{aabb.rangeX.GetMax(), aabb.rangeY.GetMin()};
-    vs[2] = Length2{aabb.rangeX.GetMax(), aabb.rangeY.GetMax()};
-    vs[3] = Length2{aabb.rangeX.GetMin(), aabb.rangeY.GetMax()};
+    vs[0] = Length2{aabb.ranges[0].GetMin(), aabb.ranges[1].GetMin()};
+    vs[1] = Length2{aabb.ranges[0].GetMax(), aabb.ranges[1].GetMin()};
+    vs[2] = Length2{aabb.ranges[0].GetMax(), aabb.ranges[1].GetMax()};
+    vs[3] = Length2{aabb.ranges[0].GetMin(), aabb.ranges[1].GetMax()};
     drawer.DrawPolygon(vs, 4, color);
 }
 
@@ -489,7 +489,7 @@ void Test::MouseDown(const Length2& p)
     }
 
     // Make a small box.
-    const auto aabb = GetFattenedAABB(AABB{p}, 1_m / 1000);
+    const auto aabb = GetFattenedAABB(AABB2D{p}, 1_m / 1000);
 
     auto fixtures = FixtureSet{};
 

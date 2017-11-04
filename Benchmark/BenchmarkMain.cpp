@@ -202,7 +202,7 @@ static void FloatPositiveFmod(benchmark::State& state)
     }
 }
 
-static void AABB(benchmark::State& state)
+static void AABB2D(benchmark::State& state)
 {
     const auto pui0 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
     const auto pui1 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
@@ -215,8 +215,8 @@ static void AABB(benchmark::State& state)
     
     while (state.KeepRunning())
     {
-        const auto aabb0 = playrho::AABB{p0, p1};
-        const auto aabb1 = playrho::AABB{p2, p3};
+        const auto aabb0 = playrho::AABB2D{p0, p1};
+        const auto aabb1 = playrho::AABB2D{p2, p3};
         benchmark::DoNotOptimize(playrho::TestOverlap(aabb0, aabb1));
         benchmark::DoNotOptimize(playrho::Contains(aabb0, aabb1));
     }
@@ -1238,7 +1238,7 @@ public:
     Tumbler();
     void Step();
     void AddSquare();
-    bool IsWithin(const playrho::AABB& aabb) const;
+    bool IsWithin(const playrho::AABB2D& aabb) const;
 
 private:
     static playrho::Body* CreateEnclosure(playrho::World& world);
@@ -1310,7 +1310,7 @@ void Tumbler::AddSquare()
     b->CreateFixture(m_square);
 }
 
-bool Tumbler::IsWithin(const playrho::AABB& aabb) const
+bool Tumbler::IsWithin(const playrho::AABB2D& aabb) const
 {
     return playrho::Contains(aabb, GetAABB(m_world.GetTree()));
 }
@@ -1324,7 +1324,7 @@ static void TumblerAddSquaresForSteps(benchmark::State& state,
     const auto rangeY = playrho::Interval<playrho::Length>{
         -5 * playrho::Meter, +25 * playrho::Meter
     };
-    const auto aabb = playrho::AABB{rangeX, rangeY};
+    const auto aabb = playrho::AABB2D{rangeX, rangeY};
     while (state.KeepRunning())
     {
         Tumbler tumbler;
@@ -1380,7 +1380,7 @@ BENCHMARK(FloatCos);
 BENCHMARK(FloatSinCos);
 BENCHMARK(FloatAtan2);
 
-BENCHMARK(AABB);
+BENCHMARK(AABB2D);
 
 BENCHMARK(DotProduct);
 BENCHMARK(CrossProduct);

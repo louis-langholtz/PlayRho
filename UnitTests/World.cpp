@@ -178,7 +178,7 @@ TEST(World, Init)
     
     {
         auto calls = 0;
-        world.QueryAABB(AABB{}, [&](Fixture*, ChildCounter) {
+        world.QueryAABB(AABB2D{}, [&](Fixture*, ChildCounter) {
             ++calls;
             return true;
         });
@@ -433,7 +433,7 @@ TEST(World, QueryAABB)
     {
         auto foundOurs = 0;
         auto foundOthers = 0;
-        world.QueryAABB(AABB{v1, v2}, [&](Fixture* f, ChildCounter i) {
+        world.QueryAABB(AABB2D{v1, v2}, [&](Fixture* f, ChildCounter i) {
             if (f == fixture && i == 0)
             {
                 ++foundOurs;
@@ -2487,7 +2487,7 @@ TEST(World, MouseJointWontCauseTunnelling)
     const auto btm_edge_y = -half_box_height;
     const auto top_edge_y = +half_box_height;
 
-    AABB container_aabb;
+    AABB2D container_aabb;
 
     BodyDef body_def;
     EdgeShape edge_shape;

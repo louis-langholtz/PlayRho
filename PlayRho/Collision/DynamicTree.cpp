@@ -158,14 +158,14 @@ void DynamicTree::SetNodeCapacity(Size value) noexcept
     m_freeListIndex = m_nodeCount;
 }
 
-DynamicTree::Size DynamicTree::AllocateNode(const LeafData& node, AABB aabb) noexcept
+DynamicTree::Size DynamicTree::AllocateNode(const LeafData& node, AABB2D aabb) noexcept
 {
     const auto index = AllocateNode();
     m_nodes[index] = TreeNode{node, aabb};
     return index;
 }
 
-DynamicTree::Size DynamicTree::AllocateNode(const BranchData& node, AABB aabb,
+DynamicTree::Size DynamicTree::AllocateNode(const BranchData& node, AABB2D aabb,
                                             Height height, Size parent) noexcept
 {
     assert(height > 0);
@@ -226,7 +226,7 @@ DynamicTree::Size DynamicTree::FindReference(Size index) const noexcept
     return (it != m_nodes + m_nodeCapacity)? static_cast<Size>(it - m_nodes): GetInvalidSize();
 }
 
-DynamicTree::Size DynamicTree::CreateLeaf(const AABB& aabb, LeafData leafData)
+DynamicTree::Size DynamicTree::CreateLeaf(const AABB2D& aabb, LeafData leafData)
 {
     assert(IsValid(aabb));
     const auto index = AllocateNode(leafData, aabb);
@@ -247,7 +247,7 @@ void DynamicTree::DestroyLeaf(Size index)
     FreeNode(index);
 }
 
-void DynamicTree::UpdateLeaf(Size index, const AABB& aabb)
+void DynamicTree::UpdateLeaf(Size index, const AABB2D& aabb)
 {
     assert(index != GetInvalidSize());
     assert(index < m_nodeCapacity);
@@ -258,7 +258,7 @@ void DynamicTree::UpdateLeaf(Size index, const AABB& aabb)
     InsertLeaf(index);
 }
 
-DynamicTree::Size DynamicTree::FindLowestCostNode(AABB leafAABB) const noexcept
+DynamicTree::Size DynamicTree::FindLowestCostNode(AABB2D leafAABB) const noexcept
 {
     assert(m_root != GetInvalidSize());
     assert(IsValid(leafAABB));
@@ -780,7 +780,7 @@ void DynamicTree::ShiftOrigin(Length2 newOrigin)
 
 // Free functions...
 
-void Query(const DynamicTree& tree, const AABB& aabb, const DynamicTreeSizeCB& callback)
+void Query(const DynamicTree& tree, const AABB2D& aabb, const DynamicTreeSizeCB& callback)
 {
     GrowableStack<DynamicTree::Size, 256> stack;
     stack.push(tree.GetRootIndex());
@@ -831,7 +831,7 @@ void RayCast(const DynamicTree& tree, const RayCastInput& input,
     auto maxFraction = input.maxFraction;
     
     // Build a bounding box for the segment.
-    auto segmentAABB = AABB{p1, p1 + maxFraction * delta};
+    auto segmentAABB = AABB2D{p1, p1 + maxFraction * delta};
     
     GrowableStack<DynamicTree::Size, 256> stack;
     stack.push(tree.GetRootIndex());
@@ -884,7 +884,7 @@ void RayCast(const DynamicTree& tree, const RayCastInput& input,
                 // Update segment bounding box.
                 maxFraction = value;
                 const auto t = p1 + maxFraction * (p2 - p1);
-                segmentAABB = AABB{p1, t};
+                segmentAABB = AABB2D{p1, t};
             }
         }
     }

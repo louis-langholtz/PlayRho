@@ -2087,7 +2087,7 @@ StepStats World::Step(const StepConf& conf)
     return stepStats;
 }
 
-void World::QueryAABB(const AABB& aabb, QueryFixtureCallback callback) const
+void World::QueryAABB(const AABB2D& aabb, QueryFixtureCallback callback) const
 {
     Query(m_tree, aabb, [&](DynamicTree::Size treeId) {
         const auto leafData = m_tree.GetLeafData(treeId);

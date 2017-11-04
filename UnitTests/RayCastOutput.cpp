@@ -101,7 +101,7 @@ TEST(RayCastOutput, RayCastLocationFreeFunctionMisses)
 
 TEST(RayCastOutput, RayCastAabbFreeFunction)
 {
-    AABB aabb;
+    AABB2D aabb;
     const auto p1 = Length2(10_m, 2_m);
     const auto p2 = Length2(0_m, 2_m);
     const auto maxFraction = Real(1);
