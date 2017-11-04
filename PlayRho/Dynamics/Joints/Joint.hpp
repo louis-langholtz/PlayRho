@@ -40,8 +40,7 @@ class JointVisitor;
 struct JointDef;
 
 /// @defgroup JointsGroup Joint Classes
-/// @details These are user creatable classes that specify constraints on one or more
-///   Body instances.
+/// @brief The user creatable classes that specify constraints on one or more Body instances.
 
 /// @brief A body constraint pointer alias.
 using BodyConstraintPtr = BodyConstraint*;
@@ -65,6 +64,7 @@ using BodyConstraintsMap =
 ///   Some joints also feature limits and motors.
 ///
 /// @ingroup JointsGroup
+/// @ingroup PhysicalEntities
 ///
 /// @sa World
 ///

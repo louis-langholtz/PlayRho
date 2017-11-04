@@ -30,6 +30,7 @@
 namespace playrho {
 
 /// @defgroup PartsGroup Shape Classes
+/// @brief Classes for describing shapes with material properties.
 /// @details These are classes that specify physical characteristics of: shape,
 ///   friction, density and restitution. They've historically been called shape classes
 ///   but are now &mdash; with the other properties like friction and density having been

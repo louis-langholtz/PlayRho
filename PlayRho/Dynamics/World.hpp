@@ -59,6 +59,23 @@ class StepConf;
 class Shape;
 enum class BodyType;
 
+/// @defgroup PhysicalEntities Physical Entity Classes
+///
+/// @brief Classes representing physical entities typically created/destroyed via factory methods.
+///
+/// @details Classes of creatable and destroyable managed instances that associate
+///   physical properties to simulations. These instances are typically created via a
+///   method whose name begins with the prefix of <code>Create</code>. Similarly, these
+///   instances are typically destroyed using a method whose name begins with the prefix
+///   of <code>Destroy</code>.
+///
+/// @sa World::CreateBody
+/// @sa World::CreateJoint
+/// @sa World::Destroy
+/// @sa Body::CreateFixture
+/// @sa Body::DestroyFixture
+/// @sa Body::DestroyFixtures
+
 /// @brief Definition of an independent and simulatable "world".
 ///
 /// @details The world class manages physics entities, dynamic simulation, and queries.
@@ -127,6 +144,7 @@ public:
     /// @return Pointer to newly created body.
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws LengthError if this operation would create more than MaxBodies.
+    /// @sa PhysicalEntities
     Body* CreateBody(const BodyDef& def = GetDefaultBodyDef());
 
     /// @brief Destroys the given body.
@@ -134,6 +152,7 @@ public:
     /// @warning This automatically deletes all associated shapes and joints.
     /// @warning This function is locked during callbacks.
     /// @throws WrongState if this method is called while the world is locked.
+    /// @sa PhysicalEntities
     void Destroy(Body* body);
 
     /// @brief Creates a joint to constrain bodies together.
@@ -143,19 +162,16 @@ public:
     /// @return Pointer to newly created joint.
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws LengthError if this operation would create more than MaxJoints.
+    /// @sa PhysicalEntities
     Joint* CreateJoint(const JointDef& def);
 
     /// @brief Destroys a joint.
-    ///
     /// @details This may cause the connected bodies to begin colliding.
-    ///
     /// @warning This function is locked during callbacks.
     /// @warning Behavior is undefined if the passed joint was not created by this world.
-    ///
     /// @param joint Joint, created by this world, to destroy.
-    ///
     /// @throws WrongState if this method is called while the world is locked.
-    ///
+    /// @sa PhysicalEntities
     void Destroy(Joint* joint);
 
     /// @brief Steps the world simulation according to the given configuration.

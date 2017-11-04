@@ -30,13 +30,22 @@
 For source code, please see: https://github.com/louis-langholtz/PlayRho .
 
 For issues, visit: https://github.com/louis-langholtz/PlayRho/issues .
+
+For coding, simply begin by including the <code>PlayRho/PlayRho.hpp</code> file and
+make an instance of the <a href="classplayrho_1_1World.html"><code>World</code></a> class.
+For a more elaborate starting point, see the
+ <a href="HelloWorld_8cpp-example.html"><code>HelloWorld.cpp</code></a> example application.
+
+@sa PhysicalEntities
 */
 
 // These include files constitute the main PlayRho API
 
-/// @defgroup TestPointGroup Functions Testing For Point Containment
+/// @defgroup TestPointGroup Point Containment Test Functions
+/// @brief Collection of functions testing for a point's containment within various objects.
 
 /// @defgroup ExceptionsGroup Library Defined Exceptions
+/// @brief Exceptions defined and used by the PlayRho library.
 /// @details The PlayRho library defines its own exception classes to recognize errors.
 ///    These classes are all sub-classed from sub-classes of the C++ Standard Library
 ///    std::exception class.

@@ -52,6 +52,8 @@ class Shape;
 /// @note This structure is 56-bytes large (using a 4-byte Real on at least one 64-bit
 ///   architecture/build).
 ///
+/// @ingroup PhysicalEntities
+///
 /// @sa Body, Shape
 ///
 class Fixture

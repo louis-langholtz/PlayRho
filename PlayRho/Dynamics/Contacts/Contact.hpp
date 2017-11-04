@@ -72,6 +72,8 @@ inline Real MixRestitution(Real restitution1, Real restitution2) noexcept
 ///   themselves.
 /// @note This data structure is 104-bytes large (on at least one 64-bit platform).
 ///
+/// @ingroup PhysicalEntities
+///
 class Contact
 {
 public:

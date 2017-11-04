@@ -82,12 +82,13 @@
 
 namespace playrho
 {
-    /// @defgroup Quantities Physical quantity type aliases.
+    /// @defgroup PhysicalQuantities Physical Quantity Types
+    /// @brief Types for physical quantities.
     /// @details These are the type aliases for physical quantities like time and length
     ///   that are used by the PlayRho library.
     ///   Conceptually a given quantity is only expressable in the units that are defined
     ///   for that quantity.
-    /// @sa Units.
+    /// @sa PhysicalUnits
     /// @sa https://en.wikipedia.org/wiki/List_of_physical_quantities
     /// @{
     
@@ -287,11 +288,12 @@ namespace playrho
     
     /// @}
 
-    /// @defgroup Units Unit definitions for expressing quantities.
-    /// @details These are the unit definitions for physical quantities like time and length.
-    ///   Conceptually a given unit is only usable with the quantities that are made up of
-    ///   the dimensions which the unit is associated with.
-    /// @sa Quantities.
+    /// @defgroup PhysicalUnits Units For Physical Quantities
+    /// @brief Units for expressing physical quantities like time and length.
+    /// @details These are the unit definitions for expressing physical quantities like time
+    ///   and length. Conceptually a given unit is only usable with the quantities that are
+    ///   made up of the dimensions which the unit is associated with.
+    /// @sa PhysicalQuantities.
     /// @{
 
     /// @brief Second unit of Time.
@@ -389,9 +391,11 @@ namespace playrho
     
     /// @}
     
-    /// @defgroup Unitsymbols Literals for symbols of units.
-    /// @sa Quantities
-    /// @sa Units
+    /// @defgroup Unitsymbols Literals For Unit Symbols
+    /// @brief User defined literals for more conveniently setting the value of physical
+    ///   quantities.
+    /// @sa PhysicalQuantities
+    /// @sa PhysicalUnits
     /// @{
 
     /// @brief SI unit symbol for a gram unit of Mass.
@@ -736,9 +740,10 @@ namespace playrho
         return value;
     }
     
-    /// @defgroup UnitConstants Physical constants.
-    /// @sa Quantities
-    /// @sa Units
+    /// @defgroup UnitConstants Physical Constants
+    /// @brief Definitions of universal and Earthly physical constants.
+    /// @sa PhysicalQuantities
+    /// @sa PhysicalUnits
     /// @{
 
     /// @brief Earthly gravity.
