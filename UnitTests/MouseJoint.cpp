@@ -65,7 +65,7 @@ TEST(MouseJoint, ByteSize)
 TEST(MouseJoint, DefaultInitialized)
 {
     const auto def = MouseJointDef{};
-    const auto joint = MouseJoint{def};
+    auto joint = MouseJoint{def};
     
     EXPECT_EQ(GetType(joint), JointType::Mouse);
     EXPECT_EQ(joint.GetBodyA(), def.bodyA);
@@ -85,6 +85,7 @@ TEST(MouseJoint, DefaultInitialized)
     TypeJointVisitor visitor;
     joint.Accept(visitor);
     EXPECT_EQ(visitor.GetType().value(), JointType::Mouse);
+    EXPECT_TRUE(visitor.GetWritable());
 }
 
 TEST(MouseJoint, GetLocalAnchorB)

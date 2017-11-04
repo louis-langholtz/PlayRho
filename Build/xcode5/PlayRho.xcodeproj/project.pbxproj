@@ -142,6 +142,7 @@
 		477D20061E32B6E80069D610 /* Fixed.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 477D20051E32B6E80069D610 /* Fixed.cpp */; };
 		477DB2AC1D1C4BE800846ED6 /* PositionSolverManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 477DB2AA1D1C4BE800846ED6 /* PositionSolverManifold.cpp */; };
 		477DB2AD1D1C4BE800846ED6 /* PositionSolverManifold.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 477DB2AB1D1C4BE800846ED6 /* PositionSolverManifold.hpp */; };
+		477FACC21FAD74C4001A6030 /* JointType.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 477FACC11FAD74C4001A6030 /* JointType.cpp */; };
 		4787D6BA1F2E946E008C115E /* PrismaticJointDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4787D6B81F2E946E008C115E /* PrismaticJointDef.cpp */; };
 		4787D6BB1F2E946E008C115E /* PrismaticJointDef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6B91F2E946E008C115E /* PrismaticJointDef.hpp */; };
 		4787D6BE1F2E968E008C115E /* JointDef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4787D6BC1F2E968E008C115E /* JointDef.cpp */; };
@@ -520,6 +521,7 @@
 		477D20051E32B6E80069D610 /* Fixed.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fixed.cpp; sourceTree = "<group>"; };
 		477DB2AA1D1C4BE800846ED6 /* PositionSolverManifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PositionSolverManifold.cpp; sourceTree = "<group>"; };
 		477DB2AB1D1C4BE800846ED6 /* PositionSolverManifold.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PositionSolverManifold.hpp; sourceTree = "<group>"; };
+		477FACC11FAD74C4001A6030 /* JointType.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = JointType.cpp; sourceTree = "<group>"; };
 		4787D6B81F2E946E008C115E /* PrismaticJointDef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PrismaticJointDef.cpp; sourceTree = "<group>"; };
 		4787D6B91F2E946E008C115E /* PrismaticJointDef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PrismaticJointDef.hpp; sourceTree = "<group>"; };
 		4787D6BC1F2E968E008C115E /* JointDef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JointDef.cpp; sourceTree = "<group>"; };
@@ -819,6 +821,7 @@
 				472E24651F82C4EA0051E192 /* Interval.cpp */,
 				4731DDFB1DC8FBEE00E7F931 /* Island.cpp */,
 				475A945C1D959537000CA9A8 /* Joint.cpp */,
+				477FACC11FAD74C4001A6030 /* JointType.cpp */,
 				474BC3FC1D41278800447DCD /* main.cpp */,
 				474BC3FD1D41278800447DCD /* Manifold.cpp */,
 				4731DE4C1DE90D8200E7F931 /* MassData.cpp */,
@@ -1538,6 +1541,7 @@
 				474BC42F1D413DC200447DCD /* Distance.cpp in Sources */,
 				4768D3F81E3E895A00574143 /* PrismaticJoint.cpp in Sources */,
 				473273211F44AB9B00E22AE2 /* ContactImpulsesList.cpp in Sources */,
+				477FACC21FAD74C4001A6030 /* JointType.cpp in Sources */,
 				474BC4301D413DC200447DCD /* DistanceProxy.cpp in Sources */,
 				47C85D0A1EFA251B00F70C56 /* WheelJoint.cpp in Sources */,
 				475A945D1D959537000CA9A8 /* Joint.cpp in Sources */,

@@ -65,7 +65,7 @@ TEST(RevoluteJoint, Construction)
     jd.upperAngle = 40_deg;
     jd.referenceAngle = 45_deg;
     
-    const auto joint = RevoluteJoint{jd};
+    auto joint = RevoluteJoint{jd};
 
     EXPECT_EQ(GetType(joint), jd.type);
     EXPECT_EQ(joint.GetBodyA(), jd.bodyA);
