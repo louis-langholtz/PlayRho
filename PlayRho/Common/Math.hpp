@@ -423,10 +423,10 @@ template <class T1, class T2, std::enable_if_t<
     std::tuple_size<T1>::value == 2 && std::tuple_size<T2>::value == 2, int> = 0>
 constexpr auto Cross(T1 a, T2 b) noexcept
 {
-    assert(std::isfinite(Get<0>(a)));
-    assert(std::isfinite(Get<1>(a)));
-    assert(std::isfinite(Get<0>(b)));
-    assert(std::isfinite(Get<1>(b)));
+    assert(std::isfinite(StripUnit(Get<0>(a))));
+    assert(std::isfinite(StripUnit(Get<1>(a))));
+    assert(std::isfinite(StripUnit(Get<0>(b))));
+    assert(std::isfinite(StripUnit(Get<1>(b))));
 
     // Both vectors of same direction...
     // If a = Vec2{1, 2} and b = Vec2{1, 2} then: a x b = 1 * 2 - 2 * 1 = 0.
@@ -440,8 +440,8 @@ constexpr auto Cross(T1 a, T2 b) noexcept
     // If a = Vec2{1, 2} and b = Vec2{-1, 2} then: a x b = 1 * 2 - 2 * (-1) = 2 + 2 = 4.
     const auto minuend = Get<0>(a) * Get<1>(b);
     const auto subtrahend = Get<1>(a) * Get<0>(b);
-    assert(std::isfinite(minuend));
-    assert(std::isfinite(subtrahend));
+    assert(std::isfinite(StripUnit(minuend)));
+    assert(std::isfinite(StripUnit(subtrahend)));
     return minuend - subtrahend;
 }
 

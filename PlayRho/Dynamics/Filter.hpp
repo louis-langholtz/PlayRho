@@ -59,6 +59,22 @@ namespace playrho {
         index_type groupIndex = 0;
     };
     
+    /// @brief Equality operator.
+    /// @relatedalso Filter
+    constexpr bool operator== (const Filter lhs, const Filter rhs) noexcept
+    {
+        return lhs.categoryBits == rhs.categoryBits
+            && lhs.maskBits == rhs.maskBits
+            && lhs.groupIndex == rhs.groupIndex;
+    }
+
+    /// @brief Inequality operator.
+    /// @relatedalso Filter
+    constexpr bool operator!= (const Filter lhs, const Filter rhs) noexcept
+    {
+        return !(lhs == rhs);
+    }
+
     /// @brief Determines whether collision processing should be performed.
     inline bool ShouldCollide(const Filter filterA, const Filter filterB) noexcept
     {

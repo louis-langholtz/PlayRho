@@ -48,6 +48,7 @@ public:
     PrismaticJoint(const PrismaticJointDef& def);
     
     void Accept(JointVisitor& visitor) const override;
+    void Accept(JointVisitor& visitor) override;
 
     Length2 GetAnchorA() const override;
     Length2 GetAnchorB() const override;
@@ -100,8 +101,8 @@ public:
     /// @brief Gets the maximum motor force.
     Force GetMaxMotorForce() const noexcept { return m_maxMotorForce; }
 
-    /// @brief Gets the current motor force given the inverse time step.
-    Force GetMotorForce(Frequency inv_dt) const noexcept;
+    /// @brief Gets the current motor impulse.
+    Momentum GetMotorImpulse() const noexcept { return m_motorImpulse; }
 
     /// @brief Gets the current limit state.
     /// @note This will be <code>e_inactiveLimit</code> unless the joint limit has been
@@ -179,6 +180,13 @@ Length GetJointTranslation(const PrismaticJoint& joint) noexcept;
 /// @brief Get the current joint translation speed.
 /// @relatedalso PrismaticJoint
 LinearVelocity GetLinearVelocity(const PrismaticJoint& joint) noexcept;
+
+/// @brief Gets the current motor force for the given joint, given the inverse time step.
+/// @relatedalso PrismaticJoint
+inline Force GetMotorForce(const PrismaticJoint& joint, Frequency inv_dt) noexcept
+{
+    return joint.GetMotorImpulse() * inv_dt;
+}
 
 } // namespace playrho
 

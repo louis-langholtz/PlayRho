@@ -21,6 +21,7 @@
 #include "gtest/gtest.h"
 
 #include <PlayRho/Dynamics/Joints/RopeJoint.hpp>
+#include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyDef.hpp>
 #include <PlayRho/Dynamics/World.hpp>
@@ -81,6 +82,11 @@ TEST(RopeJoint, Construction)
     EXPECT_EQ(joint.GetLocalAnchorA(), def.localAnchorA);
     EXPECT_EQ(joint.GetLocalAnchorB(), def.localAnchorB);
     EXPECT_EQ(joint.GetMaxLength(), def.maxLength);
+    EXPECT_EQ(joint.GetLimitState(), Joint::e_inactiveLimit);
+    
+    TypeJointVisitor visitor;
+    joint.Accept(visitor);
+    EXPECT_EQ(visitor.GetType().value(), JointType::Rope);
 }
 
 TEST(RopeJoint, GetRopeJointDef)

@@ -33,7 +33,7 @@ public:
     Bridge()
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40, 0) * 1_m, Vec2(40, 0) * 1_m));
+        ground->CreateFixture(std::make_shared<EdgeShape>(GetGroundEdgeConf()));
 
         {
             auto conf = PolygonShape::Conf{};

@@ -61,6 +61,11 @@ void RevoluteJoint::Accept(JointVisitor& visitor) const
     visitor.Visit(*this);
 }
 
+void RevoluteJoint::Accept(JointVisitor& visitor)
+{
+    visitor.Visit(*this);
+}
+
 void RevoluteJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
                                             const StepConf& step,
                                             const ConstraintSolverConf& conf)
@@ -447,11 +452,6 @@ void RevoluteJoint::EnableMotor(bool flag)
 	    GetBodyA()->SetAwake();
     	GetBodyB()->SetAwake();
     }
-}
-
-Torque RevoluteJoint::GetMotorTorque(Frequency inv_dt) const
-{
-    return inv_dt * m_motorImpulse;
 }
 
 void RevoluteJoint::SetMotorSpeed(AngularVelocity speed)

@@ -38,14 +38,32 @@ public:
         m_type = JointType::Revolute;
     }
     
+    void Visit(RevoluteJoint& /*joint*/) override
+    {
+        m_type = JointType::Revolute;
+        m_writable = true;
+    }
+
     void Visit(const PrismaticJoint& /*joint*/) override
     {
         m_type = JointType::Prismatic;
     }
     
+    void Visit(PrismaticJoint& /*joint*/) override
+    {
+        m_type = JointType::Prismatic;
+        m_writable = true;
+    }
+
     void Visit(const DistanceJoint& /*joint*/) override
     {
         m_type = JointType::Distance;
+    }
+    
+    void Visit(DistanceJoint& /*joint*/) override
+    {
+        m_type = JointType::Distance;
+        m_writable = true;
     }
     
     void Visit(const PulleyJoint& /*joint*/) override
@@ -53,56 +71,104 @@ public:
         m_type = JointType::Pulley;
     }
     
-    /// @brief Visits a MouseJoint.
+    void Visit(PulleyJoint& /*joint*/) override
+    {
+        m_type = JointType::Pulley;
+        m_writable = true;
+    }
+
     void Visit(const MouseJoint& /*joint*/) override
     {
         m_type = JointType::Mouse;
     }
+
+    void Visit(MouseJoint& /*joint*/) override
+    {
+        m_type = JointType::Mouse;
+        m_writable = true;
+    }
     
-    /// @brief Visits a GearJoint.
     void Visit(const GearJoint& /*joint*/) override
     {
         m_type = JointType::Gear;
     }
     
-    /// @brief Visits a WheelJoint.
+    void Visit(GearJoint& /*joint*/) override
+    {
+        m_type = JointType::Gear;
+        m_writable = true;
+    }
+
     void Visit(const WheelJoint& /*joint*/) override
     {
         m_type = JointType::Wheel;
     }
-    
-    /// @brief Visits a WeldJoint.
+
+    void Visit(WheelJoint& /*joint*/) override
+    {
+        m_type = JointType::Wheel;
+        m_writable = true;
+    }
+
     void Visit(const WeldJoint& /*joint*/) override
     {
         m_type = JointType::Weld;
     }
-    
-    /// @brief Visits a FrictionJoint.
+
+    void Visit(WeldJoint& /*joint*/) override
+    {
+        m_type = JointType::Weld;
+        m_writable = true;
+    }
+
     void Visit(const FrictionJoint& /*joint*/) override
     {
         m_type = JointType::Friction;
     }
+
+    void Visit(FrictionJoint& /*joint*/) override
+    {
+        m_type = JointType::Friction;
+        m_writable = true;
+    }
     
-    /// @brief Visits a RopeJoint.
     void Visit(const RopeJoint& /*joint*/) override
     {
         m_type = JointType::Rope;
     }
     
-    /// @brief Visits a MotorJoint.
+    void Visit(RopeJoint& /*joint*/) override
+    {
+        m_type = JointType::Rope;
+        m_writable = true;
+    }
+    
     void Visit(const MotorJoint& /*joint*/) override
     {
         m_type = JointType::Motor;
     }
     
+    void Visit(MotorJoint& /*joint*/) override
+    {
+        m_type = JointType::Motor;
+        m_writable = true;
+    }
+
     /// @brief Gets the type of joint that had been visited.
     Optional<JointType> GetType() const noexcept
     {
         return m_type;
     }
     
+    /// @brief Gets whether the visited type was writable or not.
+    bool GetWritable() const noexcept
+    {
+        return m_writable;
+    }
+    
 private:
     Optional<JointType> m_type; ///< Optional type of the joint (set if visited).
+    bool m_writable = false; ///< Whether visited type was writable.
 };
 
 } // namespace playrho

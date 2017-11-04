@@ -64,6 +64,11 @@ void WheelJoint::Accept(JointVisitor& visitor) const
     visitor.Visit(*this);
 }
 
+void WheelJoint::Accept(JointVisitor& visitor)
+{
+    visitor.Visit(*this);
+}
+
 void WheelJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step, const ConstraintSolverConf&)
 {
     auto& bodyConstraintA = At(bodies, GetBodyA());
@@ -320,11 +325,6 @@ Momentum2 WheelJoint::GetLinearReaction() const
     return m_impulse * m_ay + m_springImpulse * m_ax;
 }
 
-AngularMomentum WheelJoint::GetAngularReaction() const
-{
-    return m_motorImpulse;
-}
-
 void WheelJoint::EnableMotor(bool flag)
 {
     if (m_enableMotor != flag)
@@ -359,11 +359,6 @@ void WheelJoint::SetMaxMotorTorque(Torque torque)
     	GetBodyA()->SetAwake();
     	GetBodyB()->SetAwake();
     }
-}
-
-Torque WheelJoint::GetMotorTorque(Frequency inv_dt) const
-{
-    return inv_dt * m_motorImpulse;
 }
 
 Length GetJointTranslation(const WheelJoint& joint) noexcept

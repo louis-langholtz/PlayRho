@@ -35,6 +35,10 @@
 #include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
 #include <PlayRho/Dynamics/Joints/DistanceJoint.hpp>
 #include <PlayRho/Dynamics/Joints/PulleyJoint.hpp>
+#include <PlayRho/Dynamics/Joints/WeldJoint.hpp>
+#include <PlayRho/Dynamics/Joints/FrictionJoint.hpp>
+#include <PlayRho/Dynamics/Joints/MotorJoint.hpp>
+#include <PlayRho/Dynamics/Joints/WheelJoint.hpp>
 #include <PlayRho/Common/LengthError.hpp>
 #include <PlayRho/Common/WrongState.hpp>
 #include <chrono>
@@ -242,14 +246,31 @@ TEST(World, CopyConstruction)
     b1->CreateFixture(shape);
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
     b2->CreateFixture(shape);
+    
+    // Add another body on top of previous and that's not part of any joints to ensure at 1 contact
+    const auto b3 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+    b3->CreateFixture(shape);
+
+    const auto b4 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+    b4->CreateFixture(shape);
+    const auto b5 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+    b5->CreateFixture(shape);
 
     world.CreateJoint(RevoluteJointDef{b1, b2, Length2{}});
     world.CreateJoint(PrismaticJointDef{b1, b2, Length2{}, UnitVec2::GetRight()});
     world.CreateJoint(PulleyJointDef{b1, b2, Length2{}, Length2{},
         Length2{}, Length2{}}.UseRatio(Real(1)));
-    
+    world.CreateJoint(DistanceJointDef{b4, b5});
+    world.CreateJoint(WeldJointDef{b4, b5, Length2{}});
+    world.CreateJoint(FrictionJointDef{b4, b5, Length2{}});
+    world.CreateJoint(RopeJointDef{b4, b5});
+    world.CreateJoint(MotorJointDef{b4, b5});
+    world.CreateJoint(WheelJointDef{b4, b5, Length2{}, UnitVec2::GetRight()});
+    world.CreateJoint(MouseJointDef{b4});
+
     auto stepConf = StepConf{};
     world.Step(stepConf);
+    ASSERT_FALSE(world.GetContacts().empty());
 
     {
         const auto copy = World{world};

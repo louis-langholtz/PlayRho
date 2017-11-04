@@ -68,6 +68,11 @@ void DistanceJoint::Accept(JointVisitor& visitor) const
     visitor.Visit(*this);
 }
 
+void DistanceJoint::Accept(JointVisitor& visitor)
+{
+    visitor.Visit(*this);
+}
+
 void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
                                             const StepConf& step,
                                             const ConstraintSolverConf&)

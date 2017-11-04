@@ -47,6 +47,7 @@ public:
     WheelJoint(const WheelJointDef& def);
     
     void Accept(JointVisitor& visitor) const override;
+    void Accept(JointVisitor& visitor) override;
 
     Length2 GetAnchorA() const override;
     Length2 GetAnchorB() const override;
@@ -80,9 +81,6 @@ public:
 
     /// @brief Gets the maximum motor torque.
     Torque GetMaxMotorTorque() const;
-
-    /// Get the current motor torque given the inverse time step.
-    Torque GetMotorTorque(Frequency inv_dt) const;
 
     /// @brief Sets the spring frequency.
     /// @note Setting the frequency to zero disables the spring.
@@ -139,6 +137,11 @@ private:
     InvMass m_gamma = InvMass{0}; ///< Gamma.
 };
 
+inline AngularMomentum WheelJoint::GetAngularReaction() const
+{
+    return m_motorImpulse;
+}
+
 inline AngularVelocity WheelJoint::GetMotorSpeed() const
 {
     return m_motorSpeed;
@@ -178,6 +181,12 @@ Length GetJointTranslation(const WheelJoint& joint) noexcept;
 /// @brief Get the current joint translation speed.
 /// @relatedalso WheelJoint
 AngularVelocity GetAngularVelocity(const WheelJoint& joint) noexcept;
+
+/// @brief Gets the current motor torque for the given joint for the given the inverse time step.
+inline Torque GetMotorTorque(const WheelJoint& joint, Frequency inv_dt) noexcept
+{
+    return joint.GetAngularReaction() * inv_dt;
+}
 
 } // namespace playrho
 

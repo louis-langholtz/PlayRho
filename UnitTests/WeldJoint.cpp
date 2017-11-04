@@ -21,6 +21,7 @@
 #include "gtest/gtest.h"
 
 #include <PlayRho/Dynamics/Joints/WeldJoint.hpp>
+#include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyDef.hpp>
 #include <PlayRho/Dynamics/World.hpp>
@@ -85,6 +86,10 @@ TEST(WeldJoint, Construction)
     EXPECT_EQ(joint.GetReferenceAngle(), def.referenceAngle);
     EXPECT_EQ(joint.GetFrequency(), def.frequency);
     EXPECT_EQ(joint.GetDampingRatio(), def.dampingRatio);
+    
+    TypeJointVisitor visitor;
+    joint.Accept(visitor);
+    EXPECT_EQ(visitor.GetType().value(), JointType::Weld);
 }
 
 TEST(WeldJoint, GetWeldJointDef)

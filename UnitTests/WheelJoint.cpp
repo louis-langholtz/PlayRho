@@ -21,6 +21,7 @@
 #include "gtest/gtest.h"
 
 #include <PlayRho/Dynamics/Joints/WheelJoint.hpp>
+#include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyDef.hpp>
 #include <PlayRho/Dynamics/World.hpp>
@@ -91,6 +92,12 @@ TEST(WheelJoint, Construction)
     EXPECT_EQ(joint.GetMotorSpeed(), def.motorSpeed);
     EXPECT_EQ(joint.GetSpringFrequency(), def.frequency);
     EXPECT_EQ(joint.GetSpringDampingRatio(), def.dampingRatio);
+    
+    TypeJointVisitor visitor;
+    joint.Accept(visitor);
+    EXPECT_EQ(visitor.GetType().value(), JointType::Wheel);
+    
+    EXPECT_EQ(GetMotorTorque(joint, 1_Hz), 0 * NewtonMeter);
 }
 
 TEST(WheelJoint, EnableMotor)
@@ -245,7 +252,7 @@ TEST(WheelJoint, WithDynamicCircles)
     b2->CreateFixture(circle);
     const auto anchor = Length2(2_m, 1_m);
     const auto jd = WheelJointDef{b1, b2, anchor, UnitVec2::GetRight()};
-    world.CreateJoint(jd);
+    const auto joint = static_cast<WheelJoint*>(world.CreateJoint(jd));
     Step(world, 1_s);
     EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
     EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
@@ -253,4 +260,5 @@ TEST(WheelJoint, WithDynamicCircles)
     EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / Meter}), 0.0, 0.01);
     EXPECT_EQ(b1->GetAngle(), Angle{0});
     EXPECT_EQ(b2->GetAngle(), Angle{0});
+    EXPECT_EQ(GetAngularVelocity(*joint), 0 * RadianPerSecond);
 }

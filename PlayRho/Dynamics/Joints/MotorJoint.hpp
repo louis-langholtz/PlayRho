@@ -42,6 +42,7 @@ public:
     MotorJoint(const MotorJointDef& def);
     
     void Accept(JointVisitor& visitor) const override;
+    void Accept(JointVisitor& visitor) override;
 
     Length2 GetAnchorA() const override;
     Length2 GetAnchorB() const override;

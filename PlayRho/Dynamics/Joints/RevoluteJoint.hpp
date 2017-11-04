@@ -50,6 +50,7 @@ public:
     RevoluteJoint(const RevoluteJointDef& def);
     
     void Accept(JointVisitor& visitor) const override;
+    void Accept(JointVisitor& visitor) override;
 
     Length2 GetAnchorA() const override;
     Length2 GetAnchorB() const override;
@@ -102,8 +103,8 @@ public:
     /// Get the angular reaction due to the joint limit.
     AngularMomentum GetAngularReaction() const override;
 
-    /// Get the current motor torque given the inverse time step.
-    Torque GetMotorTorque(Frequency inv_dt) const;
+    /// @brief Gets the current motor impulse.
+    AngularMomentum GetMotorImpulse() const noexcept;
     
     /// @brief Gets the current limit state.
     /// @note This will be <code>e_inactiveLimit</code> unless the joint limit has been
@@ -174,6 +175,11 @@ inline Joint::LimitState RevoluteJoint::GetLimitState() const noexcept
     return m_limitState;
 }
 
+inline AngularMomentum RevoluteJoint::GetMotorImpulse() const noexcept
+{
+    return m_motorImpulse;
+}
+
 // Free functions...
 
 /// @brief Gets the current joint angle.
@@ -183,6 +189,13 @@ Angle GetJointAngle(const RevoluteJoint& joint);
 /// @brief Gets the current joint angle speed.
 /// @relatedalso RevoluteJoint
 AngularVelocity GetAngularVelocity(const RevoluteJoint& joint);
+
+/// @brief Gets the current motor torque for the given joint given the inverse time step.
+/// @relatedalso RevoluteJoint
+inline Torque GetMotorTorque(const RevoluteJoint& joint, Frequency inv_dt) noexcept
+{
+    return joint.GetMotorImpulse() * inv_dt;
+}
 
 } // namespace playrho
 

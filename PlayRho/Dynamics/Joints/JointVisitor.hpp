@@ -49,35 +49,68 @@ public:
     /// @brief Visits a RevoluteJoint.
     virtual void Visit(const RevoluteJoint& joint) = 0;
     
+    /// @brief Visits a RevoluteJoint.
+    virtual void Visit(RevoluteJoint& joint) = 0;
+    
     /// @brief Visits a PrismaticJoint.
     virtual void Visit(const PrismaticJoint& joint) = 0;
+    
+    /// @brief Visits a PrismaticJoint.
+    virtual void Visit(PrismaticJoint& joint) = 0;
     
     /// @brief Visits a DistanceJoint.
     virtual void Visit(const DistanceJoint& joint) = 0;
     
+    /// @brief Visits a DistanceJoint.
+    virtual void Visit(DistanceJoint& joint) = 0;
+    
     /// @brief Visits a PulleyJoint.
     virtual void Visit(const PulleyJoint& joint) = 0;
     
+    /// @brief Visits a PulleyJoint.
+    virtual void Visit(PulleyJoint& joint) = 0;
+
     /// @brief Visits a MouseJoint.
     virtual void Visit(const MouseJoint& joint) = 0;
-    
+
+    /// @brief Visits a MouseJoint.
+    virtual void Visit(MouseJoint& joint) = 0;
+
     /// @brief Visits a GearJoint.
     virtual void Visit(const GearJoint& joint) = 0;
-    
+
+    /// @brief Visits a GearJoint.
+    virtual void Visit(GearJoint& joint) = 0;
+
     /// @brief Visits a WheelJoint.
     virtual void Visit(const WheelJoint& joint) = 0;
+
+    /// @brief Visits a WheelJoint.
+    virtual void Visit(WheelJoint& joint) = 0;
     
     /// @brief Visits a WeldJoint.
     virtual void Visit(const WeldJoint& joint) = 0;
     
+    /// @brief Visits a WeldJoint.
+    virtual void Visit(WeldJoint& joint) = 0;
+    
     /// @brief Visits a FrictionJoint.
     virtual void Visit(const FrictionJoint& joint) = 0;
+    
+    /// @brief Visits a FrictionJoint.
+    virtual void Visit(FrictionJoint& joint) = 0;
     
     /// @brief Visits a RopeJoint.
     virtual void Visit(const RopeJoint& joint) = 0;
     
+    /// @brief Visits a RopeJoint.
+    virtual void Visit(RopeJoint& joint) = 0;
+
     /// @brief Visits a MotorJoint.
     virtual void Visit(const MotorJoint& joint) = 0;
+
+    /// @brief Visits a MotorJoint.
+    virtual void Visit(MotorJoint& joint) = 0;
     
 protected:
     JointVisitor() = default;

@@ -51,6 +51,7 @@ public:
     PulleyJoint(const PulleyJointDef& data);
     
     void Accept(JointVisitor& visitor) const override;
+    void Accept(JointVisitor& visitor) override;
 
     /// @brief Gets the local anchor A.
     Length2 GetLocalAnchorA() const noexcept;

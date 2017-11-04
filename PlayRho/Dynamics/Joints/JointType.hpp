@@ -49,6 +49,10 @@ class Joint;
 /// @relatedalso Joint
 JointType GetType(const Joint& joint) noexcept;
 
+/// @brief Provides a C-style (null-terminated) string name for given joint type.
+/// @return C-style English-language human-readable string uniquely identifying the joint type.
+const char* ToString(JointType type) noexcept;
+
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_JOINTTYPE_HPP

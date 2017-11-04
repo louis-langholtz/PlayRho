@@ -52,6 +52,7 @@ public:
     MouseJoint(const MouseJointDef& def);
     
     void Accept(JointVisitor& visitor) const override;
+    void Accept(JointVisitor& visitor) override;
 
     Length2 GetAnchorA() const override;
 

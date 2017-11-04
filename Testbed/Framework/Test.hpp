@@ -36,6 +36,7 @@
 #include <deque>
 #include <algorithm>
 #include <limits>
+#include <set>
 
 namespace playrho {
 
@@ -124,8 +125,9 @@ public:
     using KeyHandlers = std::vector<std::pair<std::string, KeyHandler>>;
     using HandledKeys = std::vector<std::pair<KeyActionMods, KeyHandlerID>>;
 
-    using Fixtures = std::vector<Fixture*>;
-    
+    using FixtureSet = std::set<Fixture*>;
+    using BodySet = std::set<Body*>;
+
     virtual ~Test();
 
     /// @brief Steps this test's world forward and visualizes what's going on.
@@ -172,7 +174,7 @@ public:
     virtual void PostSolve(Contact&, const ContactImpulsesList&,
                            ContactListener::iteration_type) override { }
 
-    static bool Contains(const Fixtures& fixtures, const Fixture* f) noexcept;
+    static bool Contains(const FixtureSet& fixtures, const Fixture* f) noexcept;
     
     const std::string& GetDescription() const noexcept { return m_description; }
     NeededSettings GetNeededSettings() const noexcept { return m_neededSettings; }
@@ -181,8 +183,18 @@ public:
     const std::string& GetSeeAlso() const noexcept { return m_seeAlso; }
     const std::string& GetStatus() const noexcept { return m_status; }
 
+    FixtureSet GetSelectedFixtures() const noexcept { return m_selectedFixtures; }
+    BodySet GetSelectedBodies() const noexcept { return m_selectedBodies; }
+
+    World m_world;
+
 protected:
     
+    EdgeShape::Conf GetGroundEdgeConf() const noexcept
+    {
+        return EdgeShape::Conf{}.UseVertex1(Vec2(-40, 0) * 1_m).UseVertex2(Vec2(40, 0) * 1_m);
+    }
+
     struct Conf
     {
         /// @brief World definition/configuration data.
@@ -220,7 +232,7 @@ protected:
         Length separation;
     };
     
-    static inline bool HasFixture(const ContactPoint& cp, const Fixtures& fixtures) noexcept
+    static inline bool HasFixture(const ContactPoint& cp, const FixtureSet& fixtures) noexcept
     {
         for (auto fixture: fixtures)
         {
@@ -232,16 +244,12 @@ protected:
         return false;
     }
     
-    Fixtures GetSelectedFixtures() const noexcept { return m_selectedFixtures; }
-    
-    void SetSelectedFixtures(Fixtures value) noexcept
-    {
-        m_selectedFixtures = value;
-    }
+    void SetSelectedFixtures(FixtureSet value) noexcept;
     
     void ClearSelectedFixtures()
     {
         m_selectedFixtures.clear();
+        m_selectedBodies.clear();
     }
     
     using ContactPoints = std::vector<ContactPoint>;
@@ -309,7 +317,6 @@ protected:
         RegisterForKey(key, action, mods, RegisterKeyHandler(info, handler));
     }
 
-    World m_world;
     std::string m_status;
     TextLinePos m_textLine = TextLinePos{30};
 
@@ -317,7 +324,7 @@ private:
     void DrawStats(const StepConf& stepConf, UiState& ui);
     void DrawContactInfo(const Settings& settings, Drawer& drawer);
     bool DrawWorld(Drawer& drawer, const World& world, const Settings& settings,
-                   const Test::Fixtures& selected);
+                   const FixtureSet& selected);
 
     const Settings m_settings;
     const NeededSettings m_neededSettings;
@@ -325,7 +332,8 @@ private:
     const std::string m_credits;
     const std::string m_seeAlso; ///< Reference - like a URL - which user may copy into copy/paste buffer.
 
-    Fixtures m_selectedFixtures;
+    FixtureSet m_selectedFixtures;
+    BodySet m_selectedBodies;
     AABB m_maxAABB;
     ContactPoints m_points;
     DestructionListenerImpl m_destructionListener;
@@ -333,7 +341,7 @@ private:
     MouseJoint* m_mouseJoint = nullptr;
     Length2 m_bombSpawnPoint;
     bool m_bombSpawning = false;
-    Length2 m_mouseWorld;
+    Length2 m_mouseWorld = Length2{};
     double m_sumDeltaTime = 0.0;
     int m_stepCount = 0;
     StepStats m_stepStats;

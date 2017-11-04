@@ -3,22 +3,24 @@
  * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
 #ifndef PLAYRHO_HEAVY_ON_LIGHT_TWO_HPP
-#define  PLAYRHO_HEAVY_ON_LIGHT_TWO_HPP
+#define PLAYRHO_HEAVY_ON_LIGHT_TWO_HPP
 
 #include "../Framework/Test.hpp"
 
@@ -27,21 +29,11 @@ namespace playrho {
 class HeavyOnLightTwo : public Test
 {
 public:
-    
     HeavyOnLightTwo()
     {
-        const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
-        
-        const auto shape = std::make_shared<DiskShape>(0.5_m);
-        shape->SetDensity(10_kgpm2);
-
-        const auto body1 = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 2.5f) * 1_m));
-        body1->CreateFixture(shape);
-        
-        const auto body2 = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 3.5f) * 1_m));
-        body2->CreateFixture(shape);
-        
+        m_world.CreateBody()->CreateFixture(std::make_shared<EdgeShape>(GetGroundEdgeConf()));
+        m_world.CreateBody(BodyDef{DynBD}.UseLocation(Length2{0_m, 2.5_m}))->CreateFixture(lilDisk);
+        m_world.CreateBody(BodyDef{DynBD}.UseLocation(Length2{0_m, 3.5_m}))->CreateFixture(lilDisk);
         RegisterForKey(GLFW_KEY_H, GLFW_PRESS, 0, "Toggle Heavy", [&](KeyActionMods) {
             ToggleHeavy();
         });
@@ -56,15 +48,15 @@ public:
         }
         else
         {
-            m_heavy = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 9.0f) * 1_m));
-            
-            auto conf = DiskShape::Conf{};
-            conf.density = 10_kgpm2;
-            conf.vertexRadius = 5_m;
-            m_heavy->CreateFixture(std::make_shared<DiskShape>(conf));
+            m_heavy = m_world.CreateBody(BodyDef{DynBD}.UseLocation(Length2{0_m, 9_m}));
+            m_heavy->CreateFixture(bigDisk);
         }
     }
     
+    const BodyDef DynBD = BodyDef{}.UseType(BodyType::Dynamic);
+    const DiskShape::Conf DiskDef = DiskShape::Conf{}.UseDensity(10_kgpm2);
+    const std::shared_ptr<DiskShape> lilDisk = std::make_shared<DiskShape>(0.5_m, DiskDef);
+    const std::shared_ptr<DiskShape> bigDisk = std::make_shared<DiskShape>(5.0_m, DiskDef);
     Body* m_heavy = nullptr;
 };
 

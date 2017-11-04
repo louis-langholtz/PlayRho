@@ -49,6 +49,11 @@ void RopeJoint::Accept(JointVisitor& visitor) const
     visitor.Visit(*this);
 }
 
+void RopeJoint::Accept(JointVisitor& visitor)
+{
+    visitor.Visit(*this);
+}
+
 void RopeJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
                                         const StepConf& step,
                                         const ConstraintSolverConf& conf)

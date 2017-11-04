@@ -114,3 +114,22 @@ TEST(Joint, GetWorldIndexFreeFunction)
 {
     EXPECT_EQ(GetWorldIndex(static_cast<const Joint*>(nullptr)), JointCounter(-1));
 }
+
+TEST(Joint, LimitStateToStringFF)
+{
+    const auto equalLimitsString = std::string(ToString(Joint::e_equalLimits));
+    const auto inactiveLimitString = std::string(ToString(Joint::e_inactiveLimit));
+    const auto upperLimitsString = std::string(ToString(Joint::e_atUpperLimit));
+    const auto lowerLimitsString = std::string(ToString(Joint::e_atLowerLimit));
+    
+    EXPECT_FALSE(equalLimitsString.empty());
+    EXPECT_FALSE(inactiveLimitString.empty());
+    EXPECT_FALSE(upperLimitsString.empty());
+    EXPECT_FALSE(lowerLimitsString.empty());
+    std::set<std::string> names;
+    names.insert(equalLimitsString);
+    names.insert(inactiveLimitString);
+    names.insert(upperLimitsString);
+    names.insert(lowerLimitsString);
+    EXPECT_EQ(names.size(), decltype(names.size()){4});
+}

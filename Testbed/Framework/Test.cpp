@@ -23,209 +23,10 @@
 #include <vector>
 #include <sstream>
 #include <chrono>
-#include <map>
-#include <set>
 #include <utility>
 #include "imgui.h"
 
 using namespace playrho;
-
-static void SetImGuiColumnWidths(float remainingWidth, std::initializer_list<float> widths)
-{
-    //const auto minSpace = style.ColumnsMinSpacing;
-    const auto numColumns = ImGui::GetColumnsCount();
-    auto column = decltype(numColumns){0};
-    for (auto width: widths)
-    {
-        ImGui::SetColumnWidth(column, width);
-        remainingWidth -= width;
-        ++column;
-    }
-    //auto nextColumnOffset = ImGui::GetColumnOffset(column);
-    const auto remainingColumns = numColumns - column;
-    const auto widthPerRemainingColumn = remainingWidth / remainingColumns;
-    for (auto i = column; i < numColumns; ++i)
-    {
-        //nextColumnOffset = ImGui::GetColumnOffset(i);
-        ImGui::SetColumnWidth(i, widthPerRemainingColumn);
-    }
-}
-
-static void DrawStats(const Body& b)
-{
-    const auto location = b.GetLocation();
-    const auto angle = b.GetAngle();
-    const auto velocity = b.GetVelocity();
-    const auto contacts = b.GetContacts();
-    std::ostringstream stream;
-    stream << "pos={{";
-    stream << static_cast<double>(Real{GetX(location) / Meter});
-    stream << ",";
-    stream << static_cast<double>(Real{GetY(location) / Meter});
-    stream << "}, ";
-    stream << static_cast<double>(Real{angle / Degree}) << "deg";
-    stream << "}, ";
-    stream << " vel={{";
-    stream << static_cast<double>(Real{GetX(velocity.linear) / MeterPerSecond});
-    stream << ",";
-    stream << static_cast<double>(Real{GetY(velocity.linear) / MeterPerSecond});
-    stream << "}, ";
-    stream << static_cast<double>(Real{velocity.angular / DegreePerSecond}) << "deg/s";
-    stream << "}";
-    stream << " mass=" << static_cast<double>(Real{GetMass(b) / Kilogram}) << "kg";
-    
-    auto numContacts = 0;
-    auto numTouching = 0;
-    auto numImpulses = 0;
-    for (auto&& ci: contacts)
-    {
-        ++numContacts;
-        const auto contact = GetContactPtr(ci);
-        if (contact->IsTouching())
-        {
-            ++numTouching;
-            const auto manifold = contact->GetManifold();
-            numImpulses += manifold.GetPointCount();
-        }
-    }
-    
-    stream << " body-cts=" << numTouching;
-    stream << "/" << numContacts;
-    stream << " body-impulses=" << numImpulses;
-    ImGui::TextWrappedUnformatted(stream.str());
-}
-
-static void DrawStats(const Fixture& fixture)
-{
-    const auto density = fixture.GetDensity();
-    const auto friction = fixture.GetFriction();
-    const auto restitution = fixture.GetRestitution();
-    const auto shape = fixture.GetShape();
-    const auto childCount = shape->GetChildCount();
-    const auto vertexRadius = shape->GetVertexRadius();
-    //const auto body = fixture.GetBody();
-    
-    std::ostringstream stream;
-    stream << " density=" << static_cast<double>(Real{density * SquareMeter / Kilogram}) << "kg/m^2";
-    stream << " vertex-radius=" << static_cast<double>(Real{vertexRadius / Meter}) << "m";
-    stream << " childCount=" << std::size_t(childCount);
-    stream << " friction=" << friction;
-    stream << " restitution=" << restitution;
-    ImGui::TextWrappedUnformatted(stream.str());
-}
-
-static void DrawStats(const Manifold &m)
-{
-    std::ostringstream stream;
-    stream << "lp=" << m.GetLocalPoint();
-    switch (m.GetType())
-    {
-        case Manifold::e_circles:
-            stream << " circles";
-            break;
-        case Manifold::e_faceA:
-        {
-            const auto count = m.GetPointCount();
-            stream << " faceA=" << int{count};
-            for (auto i = decltype(count){0}; i < count; ++i)
-            {
-                const auto mp = m.GetPoint(i);
-                stream << " p[" << int{i} << "]={";
-                stream << mp.contactFeature;
-                stream << ",";
-                stream << mp.localPoint;
-                stream << ",";
-                stream << mp.normalImpulse;
-                stream << ",";
-                stream << mp.tangentImpulse;
-                stream << "}";
-            }
-            break;
-        }
-        case Manifold::e_faceB:
-        {
-            const auto count = m.GetPointCount();
-            stream << " faceB=" << int{count};
-            for (auto i = decltype(count){0}; i < count; ++i)
-            {
-                const auto mp = m.GetPoint(i);
-                stream << " p[" << int{i} << "]={";
-                stream << mp.contactFeature;
-                stream << ",";
-                stream << mp.localPoint;
-                stream << ",";
-                stream << mp.normalImpulse;
-                stream << ",";
-                stream << mp.tangentImpulse;
-                stream << "}";
-            }
-            break;
-        }
-        default: break;
-    }
-    
-    ImGui::TextUnformatted("Manifold:");
-    ImGui::SameLine();
-    ImGui::TextWrappedUnformatted(stream.str());
-}
-
-static void DrawStats(const std::vector<Fixture*>& selectFixtures)
-{
-    auto bodies = std::set<Body*>();
-    for (auto f: selectFixtures)
-    {
-        bodies.insert(f->GetBody());
-    }
-    
-    for (auto b: bodies)
-    {
-        if (ImGui::TreeNodeEx(b, ImGuiTreeNodeFlags_DefaultOpen,
-                              "Body %d", GetWorldIndex(b)))
-        {
-            ::DrawStats(*b);
-            const auto fixtures = b->GetFixtures();
-            auto fnum = 0;
-            for (auto& f: fixtures)
-            {
-                const auto flags = IsWithin(selectFixtures, f)? ImGuiTreeNodeFlags_DefaultOpen: 0;
-                if (ImGui::TreeNodeEx(f, flags, "Fixture %d", fnum))
-                {
-                    ::DrawStats(*f);
-                    ImGui::TreePop();
-                }
-                ++fnum;
-            }
-            ImGui::TreePop();
-        }
-    }
-
-    auto cts = std::map<Contact*,int>();
-    for (auto b: bodies)
-    {
-        for (const auto& contact: b->GetContacts())
-        {
-            const auto c = GetContactPtr(contact);
-            const auto iter = cts.find(c);
-            if (iter == cts.end())
-            {
-                cts.insert(std::make_pair(c, 1));
-            }
-            else
-            {
-                ++(iter->second);
-            }
-        }
-    }
-
-    for (const auto& contact: cts)
-    {
-        const auto c = contact.first;
-        if ((contact.second > 1) && (c->IsTouching()))
-        {
-            ::DrawStats(c->GetManifold());
-        }
-    }
-}
 
 static void DrawCorner(Drawer& drawer, Length2 p, Length r, Angle a0, Angle a1, Color color)
 {
@@ -424,7 +225,7 @@ static Color GetColor(const Body& body)
     return Color{0.9f, 0.7f, 0.7f};
 }
 
-static bool Draw(Drawer& drawer, const Body& body, bool skins, const Test::Fixtures& selected)
+static bool Draw(Drawer& drawer, const Body& body, bool skins, const Test::FixtureSet& selected)
 {
     auto found = false;
     const auto bodyColor = GetColor(body);
@@ -495,7 +296,7 @@ static void Draw(Drawer& drawer, const AABB& aabb, const Color& color)
 }
 
 bool Test::DrawWorld(Drawer& drawer, const World& world, const Settings& settings,
-                     const Test::Fixtures& selected)
+                     const FixtureSet& selected)
 {
     auto found = false;
 
@@ -567,16 +368,9 @@ bool Test::DrawWorld(Drawer& drawer, const World& world, const Settings& setting
     return found;
 }
 
-bool Test::Contains(const Fixtures& fixtures, const Fixture* f) noexcept
+bool Test::Contains(const FixtureSet& fixtures, const Fixture* f) noexcept
 {
-    for (auto fixture: fixtures)
-    {
-        if (fixture == f)
-        {
-            return true;
-        }
-    }
-    return false;
+    return fixtures.find(const_cast<Fixture*>(f)) != fixtures.end();
 }
 
 void Test::DestructionListenerImpl::SayGoodbye(Joint& joint)
@@ -668,6 +462,23 @@ void Test::PreSolve(Contact& contact, const Manifold& oldManifold)
     }
 }
 
+template <class T>
+static std::set<Body*> GetBodySetFromFixtures(const T& fixtures)
+{
+    auto collection = std::set<Body*>();
+    for (auto f: fixtures)
+    {
+        collection.insert(f->GetBody());
+    }
+    return collection;
+}
+
+void Test::SetSelectedFixtures(FixtureSet value) noexcept
+{
+    m_selectedFixtures = value;
+    m_selectedBodies = GetBodySetFromFixtures(value);
+}
+
 void Test::MouseDown(const Length2& p)
 {
     m_mouseWorld = p;
@@ -680,13 +491,13 @@ void Test::MouseDown(const Length2& p)
     // Make a small box.
     const auto aabb = GetFattenedAABB(AABB{p}, 1_m / 1000);
 
-    auto fixtures = std::vector<Fixture*>();
+    auto fixtures = FixtureSet{};
 
     // Query the world for overlapping shapes.
     m_world.QueryAABB(aabb, [&](Fixture* f, const ChildCounter) {
         if (TestPoint(*f, p))
         {
-            fixtures.push_back(f);
+            fixtures.insert(f);
         }
         return true; // Continue the query.
     });
@@ -694,7 +505,7 @@ void Test::MouseDown(const Length2& p)
     SetSelectedFixtures(fixtures);
     if (fixtures.size() == 1)
     {
-        const auto body = fixtures[0]->GetBody();
+        const auto body = (*(fixtures.begin()))->GetBody();
         if (body->GetType() == BodyType::Dynamic)
         {
             auto md = MouseJointDef{};
@@ -905,7 +716,7 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
 
     {
         ImGui::ColumnsContext cc(15, nullptr, false);
-        SetImGuiColumnWidths(totalWidth, {firstColumnWidth});
+        ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
         ImGui::NextColumn();
         ImGui::TextUnformatted("c-add");
         if (ImGui::IsItemHovered())
@@ -995,7 +806,7 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
 
     {
         ImGui::ColumnsContext cc(15, nullptr, false);
-        SetImGuiColumnWidths(totalWidth, {firstColumnWidth});
+        ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
         ImGui::TextUnformatted("Reg. step:");
         ImGui::NextColumn();
         ImGui::Text("%u", m_stepStats.reg.contactsAdded);
@@ -1020,7 +831,7 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
 
     {
         ImGui::ColumnsContext cc(15, nullptr, false);
-        SetImGuiColumnWidths(totalWidth, {firstColumnWidth});
+        ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
         ImGui::TextUnformatted("TOI step:");
         ImGui::NextColumn();
         ImGui::Text("%u", m_stepStats.toi.contactsAdded);
@@ -1055,7 +866,7 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
 
     {
         ImGui::ColumnsContext cc(15, nullptr, false);
-        SetImGuiColumnWidths(totalWidth, {firstColumnWidth});
+        ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
         ImGui::TextUnformatted("Reg. sums:");
         ImGui::NextColumn();
         // Skip c-add column
@@ -1074,7 +885,7 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
 
     {
         ImGui::ColumnsContext cc(15, nullptr, false);
-        SetImGuiColumnWidths(totalWidth, {firstColumnWidth});
+        ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
         ImGui::TextUnformatted("TOI sums:");
         ImGui::NextColumn();
         // Skip c-add column
@@ -1114,7 +925,7 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
 
     {
         ImGui::ColumnsContext cc(2, nullptr, false);
-        SetImGuiColumnWidths(totalWidth, {firstColumnWidth});
+        ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
         ImGui::TextUnformatted("Reg ranges:");
         ImGui::NextColumn();
         std::ostringstream stream;
@@ -1127,7 +938,7 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
 
     {
         ImGui::ColumnsContext cc(2, nullptr, false);
-        SetImGuiColumnWidths(totalWidth, {firstColumnWidth});
+        ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
         ImGui::TextUnformatted("TOI ranges:");
         ImGui::NextColumn();
         std::ostringstream stream;
@@ -1149,7 +960,7 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         const auto capacity = m_world.GetTree().GetNodeCapacity();
 
         ImGui::ColumnsContext cc(2, nullptr, false);
-        SetImGuiColumnWidths(totalWidth, {firstColumnWidth});
+        ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
         ImGui::TextUnformatted("Dyn. tree:");
         ImGui::NextColumn();
         ImGui::Text("nodes=%u/%u/%u, ", leafCount, nodeCount, capacity);
@@ -1164,15 +975,6 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         stream << m_maxAABB;
         ImGui::Text("max-aabb=%s.", stream.str().c_str());
         ImGui::NextColumn();
-    }
-
-    {
-        const auto selectedFixtures = GetSelectedFixtures();
-        if (!selectedFixtures.empty() && ImGui::CollapsingHeader("Selected...",
-                                                                 ImGuiTreeNodeFlags_DefaultOpen))
-        {
-            ::DrawStats(selectedFixtures);
-        }
     }
 }
 
@@ -1372,7 +1174,7 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
     {
         ImGui::SetNextWindowPos(ImVec2(10, 200), ImGuiCond_Appearing);
         ImGui::SetNextWindowSize(ImVec2(600, 300), ImGuiCond_Appearing);
-        ImGui::WindowContext wc("Statistics", &ui.showStats, ImGuiWindowFlags_NoCollapse);
+        ImGui::WindowContext wc("Step Statistics", &ui.showStats, ImGuiWindowFlags_NoCollapse);
         DrawStats(stepConf, ui);
     }
     

@@ -171,4 +171,16 @@ BodyConstraintPtr& At(std::unordered_map<const Body*, BodyConstraint*>& containe
     return container.at(key);
 }
 
+const char* ToString(Joint::LimitState val) noexcept
+{
+    switch (val)
+    {
+        case Joint::e_inactiveLimit: return "inactive";
+        case Joint::e_atLowerLimit: return "at lower";
+        case Joint::e_atUpperLimit: return "at upper";
+        case Joint::e_equalLimits: return "equal";
+    }
+    return "unknown";
+}
+
 } // namespace playrho

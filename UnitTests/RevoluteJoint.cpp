@@ -20,6 +20,7 @@
 
 #include "gtest/gtest.h"
 #include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
+#include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
@@ -64,7 +65,7 @@ TEST(RevoluteJoint, Construction)
     jd.upperAngle = 40_deg;
     jd.referenceAngle = 45_deg;
     
-    const auto joint = RevoluteJoint{jd};
+    auto joint = RevoluteJoint{jd};
 
     EXPECT_EQ(GetType(joint), jd.type);
     EXPECT_EQ(joint.GetBodyA(), jd.bodyA);
@@ -83,6 +84,14 @@ TEST(RevoluteJoint, Construction)
     EXPECT_EQ(joint.IsMotorEnabled(), jd.enableMotor);
     EXPECT_EQ(joint.GetMaxMotorTorque(), jd.maxMotorTorque);
     EXPECT_EQ(joint.IsLimitEnabled(), jd.enableLimit);
+    EXPECT_EQ(joint.GetMotorImpulse(), AngularMomentum{0});
+    
+    TypeJointVisitor visitor;
+    joint.Accept(visitor);
+    EXPECT_EQ(visitor.GetType().value(), JointType::Revolute);
+    
+    EXPECT_EQ(GetMotorTorque(joint, 1_Hz), 0 * NewtonMeter);
+    EXPECT_EQ(GetAngularVelocity(joint), 0 * RadianPerSecond);
 }
 
 TEST(RevoluteJoint, EnableMotor)

@@ -54,7 +54,7 @@ public:
         
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Move selected shape left.", [&](KeyActionMods) {
             auto fixtures = GetSelectedFixtures();
-            const auto fixture = fixtures.size() == 1? fixtures[0]: nullptr;
+            const auto fixture = fixtures.size() == 1? *(fixtures.begin()): nullptr;
             const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
             if (body)
             {
@@ -64,7 +64,7 @@ public:
         });
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Move selected shape right.", [&](KeyActionMods) {
             auto fixtures = GetSelectedFixtures();
-            const auto fixture = fixtures.size() == 1? fixtures[0]: nullptr;
+            const auto fixture = fixtures.size() == 1? *(fixtures.begin()): nullptr;
             const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
             if (body)
             {
@@ -74,7 +74,7 @@ public:
         });
         RegisterForKey(GLFW_KEY_W, GLFW_PRESS, 0, "Move selected shape up.", [&](KeyActionMods) {
             auto fixtures = GetSelectedFixtures();
-            const auto fixture = fixtures.size() == 1? fixtures[0]: nullptr;
+            const auto fixture = fixtures.size() == 1? *(fixtures.begin()): nullptr;
             const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
             if (body)
             {
@@ -84,7 +84,7 @@ public:
         });
         RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Move selected shape down.", [&](KeyActionMods) {
             auto fixtures = GetSelectedFixtures();
-            const auto fixture = fixtures.size() == 1? fixtures[0]: nullptr;
+            const auto fixture = fixtures.size() == 1? *(fixtures.begin()): nullptr;
             const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
             if (body)
             {
@@ -94,7 +94,7 @@ public:
         });
         RegisterForKey(GLFW_KEY_Q, GLFW_PRESS, 0, "Move selected counter-clockwise.", [&](KeyActionMods) {
             auto fixtures = GetSelectedFixtures();
-            const auto fixture = fixtures.size() == 1? fixtures[0]: nullptr;
+            const auto fixture = fixtures.size() == 1? *(fixtures.begin()): nullptr;
             const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
             if (body)
             {
@@ -104,7 +104,7 @@ public:
         });
         RegisterForKey(GLFW_KEY_E, GLFW_PRESS, 0, "Move selected clockwise.", [&](KeyActionMods) {
             auto fixtures = GetSelectedFixtures();
-            const auto fixture = fixtures.size() == 1? fixtures[0]: nullptr;
+            const auto fixture = fixtures.size() == 1? *(fixtures.begin()): nullptr;
             const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
             if (body)
             {
@@ -114,7 +114,7 @@ public:
         });
         RegisterForKey(GLFW_KEY_KP_ADD, GLFW_PRESS, 0, "increase vertex radius of selected shape", [&](KeyActionMods) {
             auto fixtures = GetSelectedFixtures();
-            const auto fixture = fixtures.size() == 1? fixtures[0]: nullptr;
+            const auto fixture = fixtures.size() == 1? *(fixtures.begin()): nullptr;
             const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
             if (body && fixture)
             {
@@ -122,14 +122,15 @@ public:
                 auto polygon = *static_cast<const PolygonShape*>(shape.get());
                 polygon.SetVertexRadius(shape->GetVertexRadius() + RadiusIncrement);
                 const auto newf = body->CreateFixture(std::make_shared<PolygonShape>(polygon));
-                fixtures[0] = newf;
+                fixtures.erase(fixtures.begin());
+                fixtures.insert(newf);
                 SetSelectedFixtures(fixtures);
                 body->DestroyFixture(fixture);
             }
         });
         RegisterForKey(GLFW_KEY_KP_SUBTRACT, GLFW_PRESS, 0, "decrease vertex radius of selected shape", [&](KeyActionMods) {
             auto fixtures = GetSelectedFixtures();
-            const auto fixture = fixtures.size() == 1? fixtures[0]: nullptr;
+            const auto fixture = fixtures.size() == 1? *(fixtures.begin()): nullptr;
             const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
             if (body && fixture)
             {
@@ -143,7 +144,8 @@ public:
                     auto newf = body->CreateFixture(std::make_shared<PolygonShape>(polygon));
                     if (newf)
                     {
-                        fixtures[0] = newf;
+                        fixtures.erase(fixtures.begin());
+                        fixtures.insert(newf);
                         SetSelectedFixtures(fixtures);
                         body->DestroyFixture(fixture);
                     }

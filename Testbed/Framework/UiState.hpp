@@ -28,6 +28,7 @@ struct UiState
     bool showAboutTest = true;
     bool showStats = false;
     bool showContactsHistory = false;
+    bool showEntities = false;
 };
 
 #endif /* UiState_hpp */

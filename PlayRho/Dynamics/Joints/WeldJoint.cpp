@@ -58,6 +58,11 @@ void WeldJoint::Accept(JointVisitor& visitor) const
     visitor.Visit(*this);
 }
 
+void WeldJoint::Accept(JointVisitor& visitor)
+{
+    visitor.Visit(*this);
+}
+
 void WeldJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
                                         const ConstraintSolverConf&)
 {

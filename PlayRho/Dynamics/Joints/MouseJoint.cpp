@@ -68,6 +68,11 @@ void MouseJoint::Accept(JointVisitor& visitor) const
     visitor.Visit(*this);
 }
 
+void MouseJoint::Accept(JointVisitor& visitor)
+{
+    visitor.Visit(*this);
+}
+
 void MouseJoint::SetTarget(const Length2 target) noexcept
 {
     assert(IsValid(target));

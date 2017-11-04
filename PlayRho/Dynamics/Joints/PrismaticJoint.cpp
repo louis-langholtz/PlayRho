@@ -116,6 +116,11 @@ void PrismaticJoint::Accept(JointVisitor& visitor) const
     visitor.Visit(*this);
 }
 
+void PrismaticJoint::Accept(JointVisitor& visitor)
+{
+    visitor.Visit(*this);
+}
+
 void PrismaticJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
                                              const StepConf& step,
                                              const ConstraintSolverConf& conf)
@@ -595,11 +600,6 @@ void PrismaticJoint::SetMaxMotorForce(Force force) noexcept
         GetBodyA()->SetAwake();
         GetBodyB()->SetAwake();
     }
-}
-
-Force PrismaticJoint::GetMotorForce(Frequency inv_dt) const noexcept
-{
-    return inv_dt * m_motorImpulse;
 }
 
 Length GetJointTranslation(const PrismaticJoint& joint) noexcept

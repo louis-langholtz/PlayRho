@@ -23,6 +23,7 @@
 #include <PlayRho/Dynamics/Joints/GearJoint.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
 #include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
+#include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyDef.hpp>
 #include <PlayRho/Dynamics/World.hpp>
@@ -103,6 +104,10 @@ TEST(GearJoint, Construction)
     EXPECT_EQ(joint.GetJoint1(), def.joint1);
     EXPECT_EQ(joint.GetJoint2(), def.joint2);
     EXPECT_EQ(joint.GetRatio(), def.ratio);
+    
+    TypeJointVisitor visitor;
+    joint.Accept(visitor);
+    EXPECT_EQ(visitor.GetType().value(), JointType::Gear);
 }
 
 TEST(GearJoint, SetRatio)

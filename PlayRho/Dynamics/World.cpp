@@ -687,7 +687,6 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
             // Intentionally empty.
         }
 
-        /// @brief Visits a RevoluteJoint.
         void Visit(const RevoluteJoint& oldJoint) override
         {
             auto def = GetRevoluteJointDef(oldJoint);
@@ -701,7 +700,11 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
             }
         }
         
-        /// @brief Visits a PrismaticJoint.
+        void Visit(RevoluteJoint& oldJoint) override
+        {
+            Visit(const_cast<const RevoluteJoint&>(oldJoint));
+        }
+
         void Visit(const PrismaticJoint& oldJoint) override
         {
             auto def = GetPrismaticJointDef(oldJoint);
@@ -715,7 +718,11 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
             }
         }
         
-        /// @brief Visits a DistanceJoint.
+        void Visit(PrismaticJoint& oldJoint) override
+        {
+            Visit(const_cast<const PrismaticJoint&>(oldJoint));
+        }
+
         void Visit(const DistanceJoint& oldJoint) override
         {
             auto def = GetDistanceJointDef(oldJoint);
@@ -729,7 +736,11 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
             }
         }
         
-        /// @brief Visits a PulleyJoint.
+        void Visit(DistanceJoint& oldJoint) override
+        {
+            Visit(const_cast<const DistanceJoint&>(oldJoint));
+        }
+
         void Visit(const PulleyJoint& oldJoint) override
         {
             auto def = GetPulleyJointDef(oldJoint);
@@ -743,12 +754,16 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
             }
         }
         
-        /// @brief Visits a MouseJoint.
+        void Visit(PulleyJoint& oldJoint) override
+        {
+            Visit(const_cast<const PulleyJoint&>(oldJoint));
+        }
+
         void Visit(const MouseJoint& oldJoint) override
         {
             auto def = GetMouseJointDef(oldJoint);
-            def.bodyA = bodyMap.at(def.bodyA);
-            def.bodyB = bodyMap.at(def.bodyB);
+            def.bodyA = (def.bodyA)? bodyMap.at(def.bodyA): nullptr;
+            def.bodyB = (def.bodyB)? bodyMap.at(def.bodyB): nullptr;
             const auto newJoint = JointAtty::Create(def);
             if (newJoint != nullptr)
             {
@@ -757,7 +772,11 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
             }
         }
         
-        /// @brief Visits a GearJoint.
+        void Visit(MouseJoint& oldJoint) override
+        {
+            Visit(const_cast<const MouseJoint&>(oldJoint));
+        }
+        
         void Visit(const GearJoint& oldJoint) override
         {
             auto def = GetGearJointDef(oldJoint);
@@ -773,7 +792,11 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
             }
         }
         
-        /// @brief Visits a WheelJoint.
+        void Visit(GearJoint& oldJoint) override
+        {
+            Visit(const_cast<const GearJoint&>(oldJoint));
+        }
+
         void Visit(const WheelJoint& oldJoint) override
         {
             auto def = GetWheelJointDef(oldJoint);
@@ -787,7 +810,11 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
             }
         }
     
-        /// @brief Visits a WeldJoint.
+        void Visit(WheelJoint& oldJoint) override
+        {
+            Visit(const_cast<const WheelJoint&>(oldJoint));
+        }
+
         void Visit(const WeldJoint& oldJoint) override
         {
             auto def = GetWeldJointDef(oldJoint);
@@ -801,7 +828,11 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
             }
         }
         
-        /// @brief Visits a FrictionJoint.
+        void Visit(WeldJoint& oldJoint) override
+        {
+            Visit(const_cast<const WeldJoint&>(oldJoint));
+        }
+
         void Visit(const FrictionJoint& oldJoint) override
         {
             auto def = GetFrictionJointDef(oldJoint);
@@ -815,7 +846,11 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
             }
         }
         
-        /// @brief Visits a RopeJoint.
+        void Visit(FrictionJoint& oldJoint) override
+        {
+            Visit(const_cast<const FrictionJoint&>(oldJoint));
+        }
+
         void Visit(const RopeJoint& oldJoint) override
         {
             auto def = GetRopeJointDef(oldJoint);
@@ -829,7 +864,11 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
             }
         }
         
-        /// @brief Visits a MotorJoint.
+        void Visit(RopeJoint& oldJoint) override
+        {
+            Visit(const_cast<const RopeJoint&>(oldJoint));
+        }
+
         void Visit(const MotorJoint& oldJoint) override
         {
             auto def = GetMotorJointDef(oldJoint);
@@ -841,6 +880,11 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
                 world.Add(newJoint, def.bodyA, def.bodyB);
                 jointMap[&oldJoint] = newJoint;
             }
+        }
+        
+        void Visit(MotorJoint& oldJoint) override
+        {
+            Visit(const_cast<const MotorJoint&>(oldJoint));
         }
         
         World& world;
@@ -1214,7 +1258,6 @@ RegStepStats World::SolveReg(const StepConf& conf)
     {
         auto& body = GetRef(b);
         assert(!body.IsAwake() || body.IsSpeedable());
-        assert(!body.IsAwake() || body.IsEnabled());
         if (!IsIslanded(&body) && body.IsAwake() && body.IsEnabled())
         {
             ++stats.islandsFound;
@@ -2765,8 +2808,9 @@ void World::DestroyProxies(Fixture& fixture)
         // Destroy proxies in reverse order from what they were created in.
         for (auto i = childCount - 1; i < childCount; --i)
         {
-            UnregisterForProcessing(proxies[i].treeId);
-            m_tree.DestroyLeaf(proxies[i].treeId);
+            const auto treeId = proxies[i].treeId;
+            UnregisterForProcessing(treeId);
+            m_tree.DestroyLeaf(treeId);
         }
     }
     FixtureAtty::ResetProxies(fixture);

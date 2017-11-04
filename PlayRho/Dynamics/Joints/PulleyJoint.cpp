@@ -59,6 +59,11 @@ void PulleyJoint::Accept(JointVisitor& visitor) const
     visitor.Visit(*this);
 }
 
+void PulleyJoint::Accept(JointVisitor& visitor)
+{
+    visitor.Visit(*this);
+}
+
 void PulleyJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
                                           const StepConf& step,
                                           const ConstraintSolverConf&)

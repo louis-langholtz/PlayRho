@@ -54,6 +54,11 @@ void FrictionJoint::Accept(JointVisitor& visitor) const
     visitor.Visit(*this);
 }
 
+void FrictionJoint::Accept(JointVisitor& visitor)
+{
+    visitor.Visit(*this);
+}
+
 void FrictionJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
                                             const ConstraintSolverConf&)
 {

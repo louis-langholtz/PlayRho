@@ -30,7 +30,7 @@ public:
     Chain()
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40, 0) * 1_m, Vec2(40, 0) * 1_m));
+        ground->CreateFixture(std::make_shared<EdgeShape>(GetGroundEdgeConf()));
         {
             const auto shape = std::make_shared<PolygonShape>(0.6_m, 0.125_m);
             shape->SetDensity(20_kgpm2);

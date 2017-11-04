@@ -20,6 +20,7 @@
  */
 
 #include <PlayRho/Common/Version.hpp>
+#include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 
 #if defined(__APPLE__)
 #include <OpenGL/gl3.h>
@@ -47,6 +48,8 @@
 #include <string>
 #include <cstring>
 #include <cctype>
+#include <map>
+#include <set>
 
 #include <GLFW/glfw3.h>
 #include <cstdio>
@@ -306,6 +309,37 @@ static void CreateUI(GLFWwindow* window)
     //io.FontGlobalScale = 0.95f;
 }
 
+static int ToInt(BodyType type)
+{
+    switch (type)
+    {
+        case BodyType::Static: return 0;
+        case BodyType::Kinematic: return 1;
+        case BodyType::Dynamic: return 2;
+    }
+}
+
+static const char* ToString(BodyType type)
+{
+    switch (type)
+    {
+        case BodyType::Static: return "Static";
+        case BodyType::Kinematic: return "Kinematic";
+        case BodyType::Dynamic: return "Dynamic";
+    }
+}
+
+static BodyType ToBodyType(int val)
+{
+    switch (val)
+    {
+        case 0: return BodyType::Static;
+        case 1: return BodyType::Kinematic;
+        case 2: return BodyType::Dynamic;
+    }
+    return BodyType::Static;
+}
+
 static void ResizeWindow(GLFWwindow*, int width, int height)
 {
     camera.m_width = width;
@@ -522,7 +556,6 @@ static void ScrollCallback(GLFWwindow* window, double dx, double dy)
 {
     ImGui_ImplGlfwGL3_ScrollCallback(window, dx, dy);
     const auto mouseForUI = ImGui::GetIO().WantCaptureMouse;
-
     if (!mouseForUI)
     {
         if (dy > 0)
@@ -635,23 +668,11 @@ static const char* GetKeyLongName(int key)
     return nullptr;
 }
 
-static void AboutTestUI(bool* openVar)
+static void AboutTestUI()
 {
     const auto test = g_testSuite->GetTest();
-
-    // Note: Use ImGuiCond_Appearing to set the position on first appearance of Test
-    //   About info and allow later relocation by user. This is preferred over using
-    //   another condition like ImGuiCond_Once, since user could move this window out
-    //   of viewport and otherwise having no visual way to recover it.
-    ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiCond_Appearing);
-    ImGui::SetNextWindowSize(ImVec2(261, 136), ImGuiCond_Once);
-    
-    // Note: without ImGuiWindowFlags_AlwaysAutoResize, ImGui adds a handle icon
-    //   which allows manual resizing but stops automatic resizing.
-    ImGui::WindowContext window("About This Test", openVar,
-                                ImGuiWindowFlags_NoCollapse|ImGuiWindowFlags_AlwaysAutoResize);
-    
     const auto name = g_testSuite->GetName();
+
     ImGui::LabelText("Test Name", "%s", name);
     
     if (!test->GetSeeAlso().empty())
@@ -889,20 +910,11 @@ static void OutputOptionsUI()
     ImGui::Checkbox("Contact Impulses", &settings.drawContactImpulse);
     ImGui::Checkbox("Friction Impulses", &settings.drawFrictionImpulse);
     ImGui::Checkbox("Center of Masses", &settings.drawCOMs);
-    ImGui::Checkbox("Statistics", &ui.showStats);
-    ImGui::Checkbox("About Test", &ui.showAboutTest);
 }
 
-static bool MenuUI(bool* openVar)
+static bool MenuUI()
 {
     bool shouldQuit = false;
-
-    //const auto neededSettings = test->GetNeededSettings();
-    
-    ImGui::SetNextWindowPos(ImVec2(camera.m_width - menuWidth - 10, 10));
-    ImGui::SetNextWindowSize(ImVec2(menuWidth, camera.m_height - 20));
-    ImGui::WindowContext window("Testbed Controls", openVar,
-                                ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoCollapse);
 
     ImGui::PushAllowKeyboardFocus(false); // Disable TAB
     
@@ -945,25 +957,900 @@ static bool MenuUI(bool* openVar)
         OutputOptionsUI();
     }
     
+    if (ImGui::CollapsingHeader("Windows", ImGuiTreeNodeFlags_DefaultOpen))
+    {
+        ImGui::Checkbox("About Test", &ui.showAboutTest);
+        ImGui::Checkbox("Step Statistics", &ui.showStats);
+        ImGui::Checkbox("Entity Editor", &ui.showEntities);
+    }
+    
     ImGui::Spacing();
     ImGui::Separator();
     ImGui::Spacing();
-    
+
     ImGui::Checkbox("Pause", &settings.pause);
     
     ImVec2 button_sz = ImVec2(-1, 0);
     if (ImGui::Button("Single Step", button_sz))
+    {
         settings.singleStep = !settings.singleStep;
+    }
     if (ImGui::Button("Restart", button_sz))
     {
         g_testSuite->RestartTest();
     }
     if (ImGui::Button("Quit", button_sz))
+    {
         shouldQuit = true;
+    }
     
     ImGui::PopAllowKeyboardFocus();
     
     return shouldQuit;
+}
+
+static void EntityUI(Body& b)
+{
+    ImGui::ItemWidthContext itemWidthCtx(100);
+    {
+        const auto location = b.GetLocation();
+        float vals[2];
+        vals[0] = static_cast<float>(Real{GetX(location) / Meter});
+        vals[1] = static_cast<float>(Real{GetY(location) / Meter});
+        if (ImGui::InputFloat2("Lin. Pos.", vals, -1, ImGuiInputTextFlags_EnterReturnsTrue))
+        {
+            SetLocation(b, Length2{vals[0] * 1_m, vals[1] * 1_m});
+        }
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::ShowTooltip("Linear position in meters.", 400);
+        }
+        const auto angle = b.GetAngle();
+        auto val = static_cast<float>(Real{angle / Degree});
+        if (ImGui::InputFloat("Ang. Pos.", &val, 0, 0, -1, ImGuiInputTextFlags_EnterReturnsTrue))
+        {
+            SetAngle(b, val * Degree);
+        }
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::ShowTooltip("Angular position in degrees.", 400);
+        }
+    }
+    {
+        const auto velocity = b.GetVelocity();
+        float vals[2];
+        vals[0] = static_cast<float>(Real{GetX(velocity.linear) / MeterPerSecond});
+        vals[1] = static_cast<float>(Real{GetY(velocity.linear) / MeterPerSecond});
+        if (ImGui::InputFloat2("Lin. Vel.", vals, -1, ImGuiInputTextFlags_EnterReturnsTrue))
+        {
+            SetLinearVelocity(b, LinearVelocity2{vals[0] * 1_mps, vals[1] * 1_mps});
+        }
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::ShowTooltip("Linear velocity in meters/second.", 400);
+        }
+        auto val = static_cast<float>(Real{velocity.angular / DegreePerSecond});
+        if (ImGui::InputFloat("Ang. Vel.", &val, 0, 0, -1, ImGuiInputTextFlags_EnterReturnsTrue))
+        {
+            SetAngularVelocity(b, val * DegreePerSecond);
+        }
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::ShowTooltip("Angular velocity in degrees/second.", 400);
+        }
+    }
+    {
+        const auto acceleration = GetAcceleration(b);
+        float vals[2];
+        vals[0] = static_cast<float>(Real{GetX(acceleration.linear) / MeterPerSquareSecond});
+        vals[1] = static_cast<float>(Real{GetY(acceleration.linear) / MeterPerSquareSecond});
+        if (ImGui::InputFloat2("Lin. Acc.", vals, -1, ImGuiInputTextFlags_EnterReturnsTrue))
+        {
+            SetLinearAcceleration(b, LinearAcceleration2{vals[0] * 1_mps2, vals[1] * 1_mps2});
+        }
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::ShowTooltip("Linear acceleration in meters/second/second.", 400);
+        }
+        auto val = static_cast<float>(Real{acceleration.angular / DegreePerSquareSecond});
+        if (ImGui::InputFloat("Ang. Acc.", &val, 0, 0, -1, ImGuiInputTextFlags_EnterReturnsTrue))
+        {
+            SetAngularAcceleration(b, val * DegreePerSquareSecond);
+        }
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::ShowTooltip("Angular acceleration in degrees/second/second.", 400);
+        }
+    }
+    {
+        auto v = b.IsImpenetrable();
+        if (ImGui::Checkbox("Bullet", &v))
+        {
+            b.SetBullet(v);
+        }
+    }
+    ImGui::SameLine();
+    {
+        auto v = !b.IsFixedRotation();
+        if (ImGui::Checkbox("Rotatable", &v))
+        {
+            b.SetFixedRotation(!v);
+        }
+    }
+
+    {
+        auto v = b.IsSleepingAllowed();
+        if (ImGui::Checkbox("Sleepable", &v))
+        {
+            b.SetSleepingAllowed(v);
+        }
+    }
+    ImGui::SameLine();
+    {
+        auto v = b.IsAwake();
+        if (ImGui::Checkbox("Awake", &v))
+        {
+            if (v)
+            {
+                b.SetAwake();
+            }
+            else
+            {
+                b.UnsetAwake();
+            }
+        }
+    }
+
+    {
+        ImGui::GroupContext grpCtx;
+        auto v = ToInt(b.GetType());
+        ImGui::RadioButton("Static", &v, 0);
+        ImGui::SameLine();
+        ImGui::RadioButton("Kinem.", &v, 1);
+        ImGui::SameLine();
+        ImGui::RadioButton("Dynam.", &v, 2);
+        b.SetType(ToBodyType(v));
+    }
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::ShowTooltip("Body type selection: either Static, Kinematic, or Dynamic.", 400);
+    }
+    
+    {
+        auto v = b.IsEnabled();
+        if (ImGui::Checkbox("Enabled", &v))
+        {
+            // XXX lou: commented out because disabling/enabling causes problems ATM.
+            //b.SetEnabled(v);
+        }
+    }
+    
+    ImGui::LabelText("Total mass", "%.2e kg", static_cast<double>(Real{GetMass(b) / Kilogram}));
+}
+
+static void EntityUI(Fixture& fixture)
+{
+    const auto density = fixture.GetDensity();
+    const auto friction = fixture.GetFriction();
+    const auto restitution = fixture.GetRestitution();
+    const auto shape = fixture.GetShape();
+    const auto childCount = shape->GetChildCount();
+    const auto vertexRadius = shape->GetVertexRadius();
+    //const auto body = fixture.GetBody();
+    
+    ImGui::Spacing();
+
+    {
+        auto v = fixture.IsSensor();
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+        if (ImGui::Checkbox("Sensor", &v))
+        {
+            fixture.SetSensor(v);
+        }
+        ImGui::PopStyleVar();
+    }
+
+    ImGui::Spacing();
+    ImGui::Spacing();
+
+    {
+        using uint = unsigned int;
+        const auto oldFilterData = fixture.GetFilterData();
+        auto cateBits = uint{oldFilterData.categoryBits};
+        auto maskBits = uint{oldFilterData.maskBits};
+        
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0,0));
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(-2.5f,-2.5f));
+        auto cateChanged = false;
+        for (auto bit = 15u; bit < 16u; --bit)
+        {
+            ImGui::IdContext idCtx(static_cast<int>(bit));
+            auto flags = (0x1u << bit);
+            cateChanged |= ImGui::CheckboxFlags("##catebits", &cateBits, flags);
+            if (bit > 0) ImGui::SameLine();
+        }
+        ImGui::PopStyleVar();
+        ImGui::PopStyleVar();
+        ImGui::SameLine(0, 4);
+        ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 4);
+        ImGui::Text("Category");
+
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0,0));
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(-2.5f,-2.5f));
+        auto maskChanged = false;
+        for (auto bit = 15u; bit < 16u; --bit)
+        {
+            ImGui::IdContext idCtx(static_cast<int>(bit));
+            auto flags = (0x1u << bit);
+            maskChanged |= ImGui::CheckboxFlags("##maskbits", &maskBits, flags);
+            if (bit > 0) ImGui::SameLine();
+        }
+        ImGui::PopStyleVar();
+        ImGui::PopStyleVar();
+        ImGui::SameLine(0, 4);
+        ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 4);
+        ImGui::Text("Mask");
+
+        auto groupIndex = int{oldFilterData.groupIndex};
+        {
+            ImGui::ItemWidthContext itemWidthCtx(80);
+            //ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0,0));
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
+            ImGui::InputInt("Group Index", &groupIndex);
+            ImGui::PopStyleVar();
+            //ImGui::PopStyleVar();
+        }
+
+        const auto newFilterData = Filter{
+            static_cast<Filter::bits_type>(cateBits),
+            static_cast<Filter::bits_type>(maskBits),
+            static_cast<Filter::index_type>(groupIndex)
+        };
+        if (newFilterData != oldFilterData)
+        {
+            fixture.SetFilterData(newFilterData);
+        }
+    }
+    
+    ImGui::Spacing();
+    ImGui::Spacing();
+
+    if (ImGui::Button("Refilter"))
+    {
+        fixture.Refilter();
+    }
+
+    std::ostringstream stream;
+    stream << "density=" << static_cast<double>(Real{density * SquareMeter / Kilogram}) << "kg/m^2";
+    stream << " vertex-radius=" << static_cast<double>(Real{vertexRadius / Meter}) << "m";
+    stream << " childCount=" << std::size_t(childCount);
+    stream << " friction=" << friction;
+    stream << " restitution=" << restitution;
+    ImGui::TextWrappedUnformatted(stream.str());
+}
+
+static void EntityUI(const Manifold& m)
+{
+    std::ostringstream stream;
+    stream << "lp=" << m.GetLocalPoint();
+    switch (m.GetType())
+    {
+        case Manifold::e_circles:
+            stream << " circles";
+            break;
+        case Manifold::e_faceA:
+        {
+            const auto count = m.GetPointCount();
+            stream << " faceA=" << int{count};
+            for (auto i = decltype(count){0}; i < count; ++i)
+            {
+                const auto mp = m.GetPoint(i);
+                stream << " p[" << int{i} << "]={";
+                stream << mp.contactFeature;
+                stream << ",";
+                stream << mp.localPoint;
+                stream << ",";
+                stream << mp.normalImpulse;
+                stream << ",";
+                stream << mp.tangentImpulse;
+                stream << "}";
+            }
+            break;
+        }
+        case Manifold::e_faceB:
+        {
+            const auto count = m.GetPointCount();
+            stream << " faceB=" << int{count};
+            for (auto i = decltype(count){0}; i < count; ++i)
+            {
+                const auto mp = m.GetPoint(i);
+                stream << " p[" << int{i} << "]={";
+                stream << mp.contactFeature;
+                stream << ",";
+                stream << mp.localPoint;
+                stream << ",";
+                stream << mp.normalImpulse;
+                stream << ",";
+                stream << mp.tangentImpulse;
+                stream << "}";
+            }
+            break;
+        }
+        default: break;
+    }
+    
+    ImGui::TextUnformatted("Manifold:");
+    ImGui::SameLine();
+    ImGui::TextWrappedUnformatted(stream.str());
+}
+
+using BodiesRange = SizedRange<World::Bodies::iterator>;
+using JointsRange = SizedRange<World::Joints::iterator>;
+using ContactsRange = SizedRange<World::Contacts::const_iterator>;
+using FixturesRange = SizedRange<Body::Fixtures::iterator>;
+using FixtureSet = Test::FixtureSet;
+using BodySet = Test::BodySet;
+
+static void EntityUI(Contact& contact);
+static void EntityUI(Joint& e);
+static void CollectionUI(const ContactsRange& contacts);
+
+static void CollectionUI(const FixturesRange& fixtures, const FixtureSet& selectedFixtures)
+{
+    auto fnum = 0;
+    for (auto& f: fixtures)
+    {
+        const auto flags = IsWithin(selectedFixtures, f)? ImGuiTreeNodeFlags_DefaultOpen: 0;
+        if (ImGui::TreeNodeEx(f, flags, "Fixture %d", fnum))
+        {
+            EntityUI(*f);
+            ImGui::TreePop();
+        }
+        ++fnum;
+    }
+}
+
+static void EntityUI(Body& b, const FixtureSet& selectedFixtures)
+{
+    EntityUI(b);
+    {
+        const auto contacts = b.GetContacts();
+        if (ImGui::TreeNodeEx("Contacts", 0,
+                              "Contacts (%lu)", contacts.size()))
+        {
+            CollectionUI(contacts);
+            ImGui::TreePop();
+        }
+    }
+    {
+        const auto fixtures = b.GetFixtures();
+        if (ImGui::TreeNodeEx("Fixtures", 0, "Fixtures (%lu)", fixtures.size()))
+        {
+            CollectionUI(fixtures, selectedFixtures);
+            ImGui::TreePop();
+        }
+    }
+}
+
+static void EntityUI(RevoluteJoint& j)
+{
+    ImGui::LabelText("Reference Angle (deg)", "%.1f",
+                     static_cast<double>(Real{j.GetReferenceAngle() / Degree}));
+    ImGui::LabelText("Limit State", "%s", ToString(j.GetLimitState()));
+    ImGui::LabelText("Motor Impulse (N*m*s)", "%.1e",
+                     static_cast<double>(Real{j.GetMotorImpulse() / NewtonMeterSecond}));
+    {
+        auto v = j.IsLimitEnabled();
+        if (ImGui::Checkbox("Enable Limit", &v))
+        {
+            j.EnableLimit(v);
+        }
+    }
+    {
+        auto v = static_cast<float>(Real{j.GetLowerLimit() / Degree});
+        if (ImGui::InputFloat("Lower Limit (deg)", &v, 0, 0, 2))
+        {
+            j.SetLimits(v * Degree, j.GetUpperLimit());
+        }
+    }
+    {
+        auto v = static_cast<float>(Real{j.GetUpperLimit() / Degree});
+        if (ImGui::InputFloat("Upper Limit (deg)", &v, 0, 0, 2))
+        {
+            j.SetLimits(j.GetLowerLimit(), v * Degree);
+        }
+    }
+    {
+        auto v = j.IsMotorEnabled();
+        if (ImGui::Checkbox("Enable Motor", &v))
+        {
+            j.EnableMotor(v);
+        }
+    }
+    {
+        auto v = static_cast<float>(Real{j.GetMotorSpeed() / DegreePerSecond});
+        if (ImGui::InputFloat("Motor Speed (deg/sec)", &v, 0, 0, 2))
+        {
+            j.SetMotorSpeed(v * DegreePerSecond);
+        }
+    }
+    {
+        auto v = static_cast<float>(Real{j.GetMaxMotorTorque() / NewtonMeter});
+        if (ImGui::InputFloat("Max Mot. Torq. (N*m)", &v))
+        {
+            j.SetMaxMotorTorque(v * NewtonMeter);
+        }
+    }
+}
+
+static void EntityUI(PrismaticJoint& j)
+{
+    ImGui::LabelText("Limit State", "%s", ToString(j.GetLimitState()));
+    ImGui::LabelText("Motor Impulse (N*s)", "%.1e",
+                     static_cast<double>(Real{j.GetMotorImpulse() / NewtonSecond}));
+    {
+        auto v = j.IsLimitEnabled();
+        if (ImGui::Checkbox("Enable Limit", &v))
+        {
+            j.EnableLimit(v);
+        }
+    }
+    {
+        auto v = j.IsMotorEnabled();
+        if (ImGui::Checkbox("Enable Motor", &v))
+        {
+            j.EnableMotor(v);
+        }
+    }
+    {
+        auto v = static_cast<float>(Real{j.GetMotorSpeed() / DegreePerSecond});
+        if (ImGui::InputFloat("Motor Speed (deg/sec)", &v))
+        {
+            j.SetMotorSpeed(v * DegreePerSecond);
+        }
+    }
+}
+
+static void EntityUI(DistanceJoint& j)
+{
+    // All settings implemented here...
+    {
+        auto v = static_cast<float>(Real{j.GetLength() / Meter});
+        if (ImGui::InputFloat("Length (m)", &v))
+        {
+            j.SetLength(v * Meter);
+        }
+    }
+    {
+        auto v = static_cast<float>(Real{j.GetFrequency() / Hertz});
+        if (ImGui::InputFloat("Frequency (Hz)", &v))
+        {
+            j.SetFrequency(v * Hertz);
+        }
+    }
+    {
+        auto v = static_cast<float>(j.GetDampingRatio());
+        if (ImGui::InputFloat("Damping Ratio", &v))
+        {
+            j.SetDampingRatio(static_cast<Real>(v));
+        }
+    }
+}
+
+static void EntityUI(PulleyJoint& j)
+{
+    ImGui::LabelText("Length A (m)", "%f", static_cast<double>(Real{j.GetLengthA()/Meter}));
+    ImGui::LabelText("Length B (m)", "%f", static_cast<double>(Real{j.GetLengthB()/Meter}));
+    ImGui::LabelText("Ratio", "%f", static_cast<double>(j.GetRatio()));
+}
+
+static void EntityUI(MouseJoint& j)
+{
+    {
+        const auto target = j.GetTarget();
+        auto x = static_cast<float>(Real{GetX(target) / Meter});
+        auto y = static_cast<float>(Real{GetY(target) / Meter});
+        if (ImGui::InputFloat("Target X (m)", &x))
+        {
+            j.SetTarget(Length2{x * Meter, y * Meter});
+        }
+        if (ImGui::InputFloat("Target Y (m)", &y))
+        {
+            j.SetTarget(Length2{x * Meter, y * Meter});
+        }
+    }
+    {
+        auto v = static_cast<float>(Real{j.GetMaxForce() / Newton});
+        if (ImGui::InputFloat("Max Force (N)", &v))
+        {
+            j.SetMaxForce(v * Newton);
+        }
+    }
+    {
+        auto v = static_cast<float>(Real{j.GetFrequency() / Hertz});
+        if (ImGui::InputFloat("Frequency (Hz)", &v))
+        {
+            j.SetFrequency(v * Hertz);
+        }
+    }
+    {
+        auto v = static_cast<float>(j.GetDampingRatio());
+        if (ImGui::InputFloat("Damping Ratio", &v))
+        {
+            j.SetDampingRatio(static_cast<Real>(v));
+        }
+    }
+}
+
+static void EntityUI(GearJoint& j)
+{
+    {
+        auto v = static_cast<float>(j.GetRatio());
+        if (ImGui::InputFloat("Ratio", &v))
+        {
+            j.SetRatio(static_cast<Real>(v));
+        }
+    }
+    {
+        const auto j1 = j.GetJoint1();
+        const auto j2 = j.GetJoint2();
+        if (ImGui::TreeNodeEx(j1, 0, "Joint 1 (%s)", ToString(GetType(*j1))))
+        {
+            EntityUI(*j1);
+            ImGui::TreePop();
+        }
+        if (ImGui::TreeNodeEx(j2, 0, "Joint 2 (%s)", ToString(GetType(*j1))))
+        {
+            EntityUI(*j2);
+            ImGui::TreePop();
+        }
+    }
+}
+
+static void EntityUI(WheelJoint& j)
+{
+    {
+        auto v = j.IsMotorEnabled();
+        if (ImGui::Checkbox("Enable Motor", &v))
+        {
+            j.EnableMotor(v);
+        }
+    }
+    {
+        auto v = static_cast<float>(Real{j.GetMotorSpeed() / DegreePerSecond});
+        if (ImGui::InputFloat("Motor Speed (deg/sec)", &v))
+        {
+            j.SetMotorSpeed(v * DegreePerSecond);
+        }
+    }
+    {
+        auto v = static_cast<float>(Real{j.GetMaxMotorTorque() / NewtonMeter});
+        if (ImGui::InputFloat("Max Mot. Torq. (N*m)", &v))
+        {
+            j.SetMaxMotorTorque(v * NewtonMeter);
+        }
+    }
+    {
+        auto v = static_cast<float>(Real{j.GetSpringFrequency() / Hertz});
+        if (ImGui::InputFloat("Spring Freq. (Hz)", &v))
+        {
+            j.SetSpringFrequency(v * Hertz);
+        }
+    }
+    {
+        auto v = static_cast<float>(j.GetSpringDampingRatio());
+        if (ImGui::InputFloat("Spring Damp. Ratio", &v))
+        {
+            j.SetSpringDampingRatio(static_cast<Real>(v));
+        }
+    }
+}
+
+static void EntityUI(WeldJoint& j)
+{
+    ImGui::LabelText("Reference Angle (deg)", "%.1f",
+                     static_cast<double>(Real{j.GetReferenceAngle() / Degree}));
+    {
+        auto v = static_cast<float>(Real{j.GetFrequency() / Hertz});
+        if (ImGui::InputFloat("Frequency (Hz)", &v))
+        {
+            j.SetFrequency(v * Hertz);
+        }
+    }
+    {
+        auto v = static_cast<float>(j.GetDampingRatio());
+        if (ImGui::InputFloat("Damping Ratio", &v))
+        {
+            j.SetDampingRatio(static_cast<Real>(v));
+        }
+    }
+}
+
+static void EntityUI(FrictionJoint& j)
+{
+    {
+        auto v = static_cast<float>(Real{j.GetMaxForce() / Newton});
+        if (ImGui::InputFloat("Max Force (N)", &v))
+        {
+            j.SetMaxForce(v * Newton);
+        }
+    }
+    {
+        auto v = static_cast<float>(Real{j.GetMaxTorque() / NewtonMeter});
+        if (ImGui::InputFloat("Max Torq. (N*m)", &v))
+        {
+            j.SetMaxTorque(v * NewtonMeter);
+        }
+    }
+}
+
+static void EntityUI(RopeJoint& j)
+{
+    ImGui::LabelText("Limit State", "%s", ToString(j.GetLimitState()));
+    {
+        auto v = static_cast<float>(Real{j.GetMaxLength() / Meter});
+        if (ImGui::InputFloat("Max. Length (m)", &v))
+        {
+            j.SetMaxLength(v * Meter);
+        }
+    }
+}
+
+static void EntityUI(MotorJoint& j)
+{
+    {
+        const auto linOff = j.GetLinearOffset();
+        auto x = static_cast<float>(Real{GetX(linOff) / Meter});
+        auto y = static_cast<float>(Real{GetY(linOff) / Meter});
+        if (ImGui::InputFloat("Lin. Offset X (m)", &x))
+        {
+            j.SetLinearOffset(Length2{x * Meter, y * Meter});
+        }
+        if (ImGui::InputFloat("Lin. Offset Y (m)", &y))
+        {
+            j.SetLinearOffset(Length2{x * Meter, y * Meter});
+        }
+    }
+    {
+        auto v = static_cast<float>(Real{j.GetAngularOffset() / Degree});
+        if (ImGui::InputFloat("Ang. Offset (deg)", &v, 0, 0, 2))
+        {
+            j.SetAngularOffset(v * Degree);
+        }
+    }
+    {
+        auto v = static_cast<float>(Real{j.GetMaxForce() / Newton});
+        if (ImGui::InputFloat("Max Force (N)", &v))
+        {
+            j.SetMaxForce(v * Newton);
+        }
+    }
+    {
+        auto v = static_cast<float>(Real{j.GetMaxTorque() / NewtonMeter});
+        if (ImGui::InputFloat("Max Torq. (N*m)", &v))
+        {
+            j.SetMaxTorque(v * NewtonMeter);
+        }
+    }
+    {
+        auto v = static_cast<float>(j.GetCorrectionFactor());
+        if (ImGui::InputFloat("Correction Factor", &v))
+        {
+            j.SetCorrectionFactor(static_cast<Real>(v));
+        }
+    }
+}
+
+class JointVisitorUI: public JointVisitor
+{
+public:
+    void Visit(const RevoluteJoint&) override {}
+    void Visit(RevoluteJoint& j) override { EntityUI(j); }
+    
+    void Visit(const PrismaticJoint&) override {}
+    void Visit(PrismaticJoint& j) override { EntityUI(j); }
+
+    void Visit(const DistanceJoint&) override {}
+    void Visit(DistanceJoint& j) override { EntityUI(j); }
+
+    void Visit(const PulleyJoint&) override {}
+    void Visit(PulleyJoint& j) override { EntityUI(j); }
+
+    void Visit(const MouseJoint&) override {}
+    void Visit(MouseJoint& j) override { EntityUI(j); }
+
+    void Visit(const GearJoint&) override {}
+    void Visit(GearJoint& j) override { EntityUI(j); }
+
+    void Visit(const WheelJoint&) override {}
+    void Visit(WheelJoint& j) override { EntityUI(j); }
+
+    void Visit(const WeldJoint&) override {}
+    void Visit(WeldJoint& j) override { EntityUI(j); }
+
+    void Visit(const FrictionJoint&) override {}
+    void Visit(FrictionJoint& j) override { EntityUI(j); }
+
+    void Visit(const RopeJoint&) override {}
+    void Visit(RopeJoint& j) override { EntityUI(j); }
+
+    void Visit(const MotorJoint&) override {}
+    void Visit(MotorJoint& j) override { EntityUI(j); }
+};
+
+static void EntityUI(Joint& e)
+{
+    ImGui::ItemWidthContext itemWidthCtx(50);
+
+    ImGui::LabelText("Collide Connected", "%s", e.GetCollideConnected()? "true": "false");
+    {
+        const auto linReact = e.GetLinearReaction();
+        ImGui::LabelText("Lin. Reaction X (N*s)", "%.2e",
+                         static_cast<double>(Real{GetX(linReact) / NewtonSecond}));
+        ImGui::LabelText("Lin. Reaction Y (N*s)", "%.2e",
+                         static_cast<double>(Real{GetY(linReact) / NewtonSecond}));
+    }
+    ImGui::LabelText("Ang. Reaction (N*m*s)", "%.2e",
+                     static_cast<double>(Real{e.GetAngularReaction() / NewtonMeterSecond}));
+    auto visitor = JointVisitorUI{};
+    e.Accept(visitor);
+}
+
+static void EntityUI(Contact& c)
+{
+    ImGui::ItemWidthContext itemWidthCtx(50);
+    {
+        auto v = c.IsEnabled();
+        if (ImGui::Checkbox("Enabled", &v))
+        {
+            if (v)
+            {
+                c.SetEnabled();
+            }
+            else
+            {
+                c.UnsetEnabled();
+            }
+        }
+    }
+    {
+        auto val = static_cast<float>(c.GetRestitution());
+        if (ImGui::InputFloat("Restitution", &val, 0, 0, -1, ImGuiInputTextFlags_EnterReturnsTrue))
+        {
+            c.SetRestitution(val);
+        }
+    }
+    {
+        auto val = static_cast<float>(c.GetFriction());
+        if (ImGui::InputFloat("Friction", &val, 0, 0, -1, ImGuiInputTextFlags_EnterReturnsTrue))
+        {
+            c.SetFriction(val);
+        }
+    }
+    {
+        auto val = static_cast<float>(c.GetTangentSpeed() / MeterPerSecond);
+        if (ImGui::InputFloat("Belt Speed", &val, 0, 0, -1, ImGuiInputTextFlags_EnterReturnsTrue))
+        {
+            c.SetTangentSpeed(val * MeterPerSecond);
+        }
+    }
+    if (c.HasValidToi())
+    {
+        ImGui::LabelText("TOI", "%f", c.GetToi());
+    }
+    ImGui::LabelText("TOI Count", "%d", c.GetToiCount());
+
+    if (c.IsTouching())
+    {
+        EntityUI(c.GetManifold());
+    }
+    
+    {
+        const auto f = c.GetFixtureA();
+        if (ImGui::TreeNodeEx(f, 0, "Fixture A"))
+        {
+            EntityUI(*f);
+            ImGui::TreePop();
+        }
+    }
+    {
+        const auto f = c.GetFixtureB();
+        if (ImGui::TreeNodeEx(f, 0, "Fixture B"))
+        {
+            EntityUI(*f);
+            ImGui::TreePop();
+        }
+    }
+}
+
+static void CollectionUI(const BodiesRange& bodies,
+                     const BodySet& selectedBodies,
+                     const FixtureSet& selectedFixtures)
+{
+    auto i = 0;
+    for (auto e: bodies)
+    {
+        const auto typeName = ToString(e->GetType());
+        const auto flags = IsWithin(selectedBodies, e)? ImGuiTreeNodeFlags_DefaultOpen: 0;
+        if (ImGui::TreeNodeEx(e, flags, "Body %d: %s", i, typeName))
+        {
+            EntityUI(*e, selectedFixtures);
+            ImGui::TreePop();
+        }
+        ++i;
+    }
+}
+
+static void CollectionUI(const JointsRange& joints)
+{
+    auto i = 0;
+    for (auto& e: joints)
+    {
+        const auto flags = 0;
+        if (ImGui::TreeNodeEx(e, flags, "Joint %d (%s)", i, ToString(GetType(*e))))
+        {
+            EntityUI(*e);
+            ImGui::TreePop();
+        }
+        ++i;
+    }
+}
+
+static void CollectionUI(const ContactsRange& contacts)
+{
+    auto i = 0;
+    for (auto& ct: contacts)
+    {
+        const auto e = ct.second;
+        const auto flags = 0;
+        if (ImGui::TreeNodeEx(e, flags, "Contact %d%s",
+                              i, ((e->IsTouching())? " (touching)": "")))
+        {
+            EntityUI(*e);
+            ImGui::TreePop();
+        }
+        ++i;
+    }
+}
+
+static void ModelEntitiesUI()
+{
+    const auto test = g_testSuite->GetTest();
+    const auto selectedFixtures = test->GetSelectedFixtures();
+    const auto selectedBodies = test->GetSelectedBodies();
+    const auto selBodies = !selectedFixtures.empty();
+    const auto selJoints = false;
+    const auto selContacts = false;
+
+    ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, ImGui::GetFontSize()*1);
+    {
+        const auto bodies = test->m_world.GetBodies();
+        if (ImGui::TreeNodeEx("Bodies", selBodies? ImGuiTreeNodeFlags_DefaultOpen: 0,
+                              "Bodies (%lu)", bodies.size()))
+        {
+            CollectionUI(bodies, selectedBodies, selectedFixtures);
+            ImGui::TreePop();
+        }
+    }
+    {
+        const auto joints = test->m_world.GetJoints();
+        if (ImGui::TreeNodeEx("Joints", selJoints? ImGuiTreeNodeFlags_DefaultOpen: 0,
+                              "Joints (%lu)", joints.size()))
+        {
+            CollectionUI(joints);
+            ImGui::TreePop();
+        }
+    }
+    {
+        const auto contacts = test->m_world.GetContacts();
+        if (ImGui::TreeNodeEx("Contacts", selContacts? ImGuiTreeNodeFlags_DefaultOpen: 0,
+                              "Contacts (%lu)", contacts.size()))
+        {
+            CollectionUI(contacts);
+            ImGui::TreePop();
+        }
+    }
+    ImGui::PopStyleVar();
 }
 
 static bool UserInterface()
@@ -972,17 +1859,38 @@ static bool UserInterface()
     
     if (ui.showAboutTest)
     {
-        AboutTestUI(&ui.showAboutTest);
+        // Note: Use ImGuiCond_Appearing to set the position on first appearance of Test
+        //   About info and allow later relocation by user. This is preferred over using
+        //   another condition like ImGuiCond_Once, since user could move this window out
+        //   of viewport and otherwise having no visual way to recover it.
+        ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiCond_Appearing);
+        ImGui::SetNextWindowSize(ImVec2(261, 136), ImGuiCond_Once);
+        
+        // Note: without ImGuiWindowFlags_AlwaysAutoResize, ImGui adds a handle icon
+        //   which allows manual resizing but stops automatic resizing.
+        ImGui::WindowContext window("About This Test", &ui.showAboutTest,
+                                    ImGuiWindowFlags_NoCollapse|ImGuiWindowFlags_AlwaysAutoResize);
+        AboutTestUI();
     }
 
     if (ui.showMenu)
     {
-        if (MenuUI(&ui.showMenu))
-        {
-            shouldQuit = true;
-        }
+        ImGui::SetNextWindowPos(ImVec2(camera.m_width - menuWidth - 10, 10));
+        ImGui::SetNextWindowSize(ImVec2(menuWidth, camera.m_height - 20));
+        ImGui::WindowContext window("Testbed Controls", &ui.showMenu,
+                                    ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoCollapse);
+        shouldQuit = MenuUI();
     }
     
+    if (ui.showEntities)
+    {
+        ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiCond_FirstUseEver);
+        ImGui::SetNextWindowSize(ImVec2(240, 700), ImGuiCond_FirstUseEver);
+        ImGui::WindowContext window("Entity Editor", &ui.showEntities,
+                                    ImGuiWindowFlags_HorizontalScrollbar|ImGuiWindowFlags_NoCollapse);
+        ModelEntitiesUI();
+    }
+
     return !shouldQuit;
 }
 
@@ -1082,7 +1990,8 @@ int main()
     glfwSetMouseButtonCallback(mainWindow, MouseButton);
     glfwSetCursorPosCallback(mainWindow, MouseMotion);
     glfwSetScrollCallback(mainWindow, ScrollCallback);
-    
+    glfwSetCharCallback(mainWindow, ImGui_ImplGlfwGL3_CharCallback);
+
 #if !defined(__APPLE__)
     //glewExperimental = GL_TRUE;
     GLenum err = glewInit();

@@ -62,3 +62,17 @@ TEST(Filter, ShouldCollide)
     filter.groupIndex = Filter::index_type(-1);
     EXPECT_FALSE(ShouldCollide(filter, filter));
 }
+
+TEST(Filter, Equals)
+{
+    EXPECT_TRUE(  Filter{} == Filter{});
+    EXPECT_TRUE( (Filter{0x1u, 0x2u, -3}) == (Filter{0x1u, 0x2u, -3}));
+    EXPECT_FALSE((Filter{0x1u, 0x2u, -3}) == (Filter{0x3u, 0x2u, -1}));
+}
+
+TEST(Filter, NotEquals)
+{
+    EXPECT_FALSE( Filter{} != Filter{});
+    EXPECT_FALSE((Filter{0x1u, 0x2u, -3}) != (Filter{0x1u, 0x2u, -3}));
+    EXPECT_TRUE( (Filter{0x1u, 0x2u, -3}) != (Filter{0x3u, 0x2u, -1}));
+}
