@@ -29,7 +29,7 @@
 
 namespace playrho {
 
-MassData GetMassData(Length r, NonNegative<Density> density, Length2 location)
+MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 location)
 {
     // Uses parallel axis theorem, perpendicular axis theorem, and the second moment of area.
     // See: https://en.wikipedia.org/wiki/Second_moment_of_area
@@ -46,13 +46,13 @@ MassData GetMassData(Length r, NonNegative<Density> density, Length2 location)
     // Iz = Pi * r^2 * ((r^2 / 2) + (dx^2 + dy^2))
     const auto r_squared = r * r;
     const auto area = r_squared * Pi;
-    const auto mass = Mass{Density{density} * area};
+    const auto mass = Mass{AreaDensity{density} * area};
     const auto Iz = SecondMomentOfArea{area * ((r_squared / Real{2}) + GetLengthSquared(location))};
-    const auto I = RotInertia{Iz * Density{density} / SquareRadian};
+    const auto I = RotInertia{Iz * AreaDensity{density} / SquareRadian};
     return MassData{location, mass, I};
 }
 
-MassData GetMassData(Length r, NonNegative<Density> density, Length2 v0, Length2 v1)
+MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 v0, Length2 v1)
 {
     const auto r_squared = Area{r * r};
     const auto circle_area = r_squared * Pi;
@@ -86,7 +86,7 @@ MassData GetMassData(Length r, NonNegative<Density> density, Length2 v0, Length2
     return MassData{center, totalMass, I};
 }
 
-MassData GetMassData(Length vertexRadius, NonNegative<Density> density,
+MassData GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
                               Span<const Length2> vertices)
 {
     // See: https://en.wikipedia.org/wiki/Centroid#Centroid_of_polygon
@@ -159,7 +159,7 @@ MassData GetMassData(Length vertexRadius, NonNegative<Density> density,
     }
     
     // Total mass
-    const auto mass = Mass{Density{density} * area};
+    const auto mass = Mass{AreaDensity{density} * area};
     
     // Center of mass
     assert((area > Area{0}) && !AlmostZero(StripUnit(area)));
@@ -171,7 +171,7 @@ MassData GetMassData(Length vertexRadius, NonNegative<Density> density,
     const auto massCenterOffset = GetLengthSquared(massDataCenter);
     const auto centerOffset = GetLengthSquared(center);
     const auto intertialLever = massCenterOffset - centerOffset;
-    const auto massDataI = RotInertia{((Density{density} * I) + (mass * intertialLever)) / SquareRadian};
+    const auto massDataI = RotInertia{((AreaDensity{density} * I) + (mass * intertialLever)) / SquareRadian};
     
     return MassData{massDataCenter, mass, massDataI};
 }
@@ -189,7 +189,7 @@ MassData ComputeMassData(const Body& body) noexcept
     for (auto&& f: body.GetFixtures())
     {
         const auto& fixture = GetRef(f);
-        if (fixture.GetDensity() > Density{0})
+        if (fixture.GetDensity() > AreaDensity{0})
         {
             const auto massData = GetMassData(fixture);
             mass += Mass{massData.mass};

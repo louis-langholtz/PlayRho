@@ -33,98 +33,98 @@
 
 using namespace playrho;
 
-TEST(AABB, ByteSizeIsTwiceVec2)
+TEST(AABB2D, ByteSizeIsTwiceVec2)
 {
-    EXPECT_EQ(sizeof(AABB), sizeof(Vec2) * 2);
+    EXPECT_EQ(sizeof(AABB2D), sizeof(Vec2) * 2);
 }
 
-TEST(AABB, DefaultConstruction)
+TEST(AABB2D, DefaultConstruction)
 {
     const auto infinity = std::numeric_limits<Real>::infinity();
     const auto lb = Vec2{infinity, infinity} * Meter;
     const auto ub = Vec2{-infinity, -infinity} * Meter;
-    const auto aabb = AABB{};
+    const auto aabb = AABB2D{};
     EXPECT_EQ(GetLowerBound(aabb), lb);
     EXPECT_EQ(GetUpperBound(aabb), ub);
 }
 
-TEST(AABB, Traits)
+TEST(AABB2D, Traits)
 {
-    EXPECT_TRUE(std::is_default_constructible<AABB>::value);
-    //EXPECT_TRUE(std::is_nothrow_default_constructible<AABB>::value);
-    EXPECT_FALSE(std::is_trivially_default_constructible<AABB>::value);
+    EXPECT_TRUE(std::is_default_constructible<AABB2D>::value);
+    //EXPECT_TRUE(std::is_nothrow_default_constructible<AABB2D>::value);
+    EXPECT_FALSE(std::is_trivially_default_constructible<AABB2D>::value);
 
-    EXPECT_TRUE((std::is_constructible<AABB, Length2>::value));
-    //EXPECT_FALSE((std::is_nothrow_constructible<AABB, Length2>::value));
-    EXPECT_FALSE((std::is_trivially_constructible<AABB, Length2>::value));
+    EXPECT_TRUE((std::is_constructible<AABB2D, Length2>::value));
+    //EXPECT_FALSE((std::is_nothrow_constructible<AABB2D, Length2>::value));
+    EXPECT_FALSE((std::is_trivially_constructible<AABB2D, Length2>::value));
     
-    EXPECT_TRUE((std::is_constructible<AABB, Length2, Length2>::value));
-    //EXPECT_FALSE((std::is_nothrow_constructible<AABB, Length2, Length2>::value));
-    EXPECT_FALSE((std::is_trivially_constructible<AABB, Length2, Length2>::value));
+    EXPECT_TRUE((std::is_constructible<AABB2D, Length2, Length2>::value));
+    //EXPECT_FALSE((std::is_nothrow_constructible<AABB2D, Length2, Length2>::value));
+    EXPECT_FALSE((std::is_trivially_constructible<AABB2D, Length2, Length2>::value));
     
-    EXPECT_TRUE(std::is_copy_constructible<AABB>::value);
-    //EXPECT_TRUE(std::is_nothrow_copy_constructible<AABB>::value);
-    //EXPECT_TRUE(std::is_trivially_copy_constructible<AABB>::value);
+    EXPECT_TRUE(std::is_copy_constructible<AABB2D>::value);
+    //EXPECT_TRUE(std::is_nothrow_copy_constructible<AABB2D>::value);
+    //EXPECT_TRUE(std::is_trivially_copy_constructible<AABB2D>::value);
 
-    EXPECT_TRUE(std::is_move_constructible<AABB>::value);
-    //EXPECT_TRUE(std::is_nothrow_move_constructible<AABB>::value);
-    //EXPECT_FALSE(std::is_trivially_move_constructible<AABB>::value);
+    EXPECT_TRUE(std::is_move_constructible<AABB2D>::value);
+    //EXPECT_TRUE(std::is_nothrow_move_constructible<AABB2D>::value);
+    //EXPECT_FALSE(std::is_trivially_move_constructible<AABB2D>::value);
 
-    EXPECT_TRUE(std::is_copy_assignable<AABB>::value);
-    //EXPECT_FALSE(std::is_nothrow_copy_assignable<AABB>::value);
-    //EXPECT_FALSE(std::is_trivially_copy_assignable<AABB>::value);
+    EXPECT_TRUE(std::is_copy_assignable<AABB2D>::value);
+    //EXPECT_FALSE(std::is_nothrow_copy_assignable<AABB2D>::value);
+    //EXPECT_FALSE(std::is_trivially_copy_assignable<AABB2D>::value);
 
-    EXPECT_TRUE(std::is_move_assignable<AABB>::value);
-    //EXPECT_FALSE(std::is_nothrow_move_assignable<AABB>::value);
-    //EXPECT_FALSE(std::is_trivially_move_assignable<AABB>::value);
+    EXPECT_TRUE(std::is_move_assignable<AABB2D>::value);
+    //EXPECT_FALSE(std::is_nothrow_move_assignable<AABB2D>::value);
+    //EXPECT_FALSE(std::is_trivially_move_assignable<AABB2D>::value);
 
-    EXPECT_TRUE(std::is_destructible<AABB>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<AABB>::value);
-    EXPECT_TRUE(std::is_trivially_destructible<AABB>::value);
+    EXPECT_TRUE(std::is_destructible<AABB2D>::value);
+    EXPECT_TRUE(std::is_nothrow_destructible<AABB2D>::value);
+    EXPECT_TRUE(std::is_trivially_destructible<AABB2D>::value);
 }
 
-TEST(AABB, DefaultAabbAddsToOther)
+TEST(AABB2D, DefaultAabbAddsToOther)
 {
-    const auto default_aabb = AABB{};
+    const auto default_aabb = AABB2D{};
     {
-        const auto other_aabb = AABB{Length2{}, Length2{}};
+        const auto other_aabb = AABB2D{Length2{}, Length2{}};
         const auto sum_aabb = GetEnclosingAABB(default_aabb, other_aabb);
         EXPECT_EQ(GetLowerBound(sum_aabb), GetLowerBound(other_aabb));
         EXPECT_EQ(GetUpperBound(sum_aabb), GetUpperBound(other_aabb));
     }
     {
-        const auto other_aabb = AABB{Length2{}, Length2{}};
+        const auto other_aabb = AABB2D{Length2{}, Length2{}};
         const auto sum_aabb = GetEnclosingAABB(other_aabb, default_aabb);
         EXPECT_EQ(GetLowerBound(sum_aabb), GetLowerBound(other_aabb));
         EXPECT_EQ(GetUpperBound(sum_aabb), GetUpperBound(other_aabb));
     }
     {
-        const auto other_aabb = AABB{Length2{ -1_m, -2_m}, Length2{+99_m, +3_m}};
+        const auto other_aabb = AABB2D{Length2{ -1_m, -2_m}, Length2{+99_m, +3_m}};
         const auto sum_aabb = GetEnclosingAABB(other_aabb, default_aabb);
         EXPECT_EQ(GetLowerBound(sum_aabb), GetLowerBound(other_aabb));
         EXPECT_EQ(GetUpperBound(sum_aabb), GetUpperBound(other_aabb));
     }
 }
 
-TEST(AABB, DefaultAabbIncrementsToOther)
+TEST(AABB2D, DefaultAabbIncrementsToOther)
 {
     {
-        auto default_aabb = AABB{};
-        const auto other_aabb = AABB{Length2{}, Length2{}};
+        auto default_aabb = AABB2D{};
+        const auto other_aabb = AABB2D{Length2{}, Length2{}};
         Include(default_aabb, other_aabb);
         EXPECT_EQ(GetLowerBound(default_aabb), GetLowerBound(other_aabb));
         EXPECT_EQ(GetUpperBound(default_aabb), GetUpperBound(other_aabb));
     }
     {
-        auto default_aabb = AABB{};
-        const auto other_aabb = AABB{Length2{-1_m, -2_m}, Length2{+99_m, +3_m}};
+        auto default_aabb = AABB2D{};
+        const auto other_aabb = AABB2D{Length2{-1_m, -2_m}, Length2{+99_m, +3_m}};
         Include(default_aabb, other_aabb);
         EXPECT_EQ(GetLowerBound(default_aabb), GetLowerBound(other_aabb));
         EXPECT_EQ(GetUpperBound(default_aabb), GetUpperBound(other_aabb));
     }
 }
 
-TEST(AABB, InitializingConstruction)
+TEST(AABB2D, InitializingConstruction)
 {
     const auto lower_x = -2_m;
     const auto lower_y = -3_m;
@@ -138,7 +138,7 @@ TEST(AABB, InitializingConstruction)
     const auto v1 = Length2{lower_x, upper_y};
     
     {
-        AABB foo{v0, v1};
+        AABB2D foo{v0, v1};
         EXPECT_EQ(GetX(GetCenter(foo)), center_x);
         EXPECT_EQ(GetY(GetCenter(foo)), center_y);
         EXPECT_EQ(GetX(GetLowerBound(foo)), lower_x);
@@ -147,7 +147,7 @@ TEST(AABB, InitializingConstruction)
         EXPECT_EQ(GetY(GetUpperBound(foo)), upper_y);
     }
     {
-        AABB foo{v1, v0};
+        AABB2D foo{v1, v0};
         EXPECT_EQ(GetX(GetCenter(foo)), center_x);
         EXPECT_EQ(GetY(GetCenter(foo)), center_y);
         EXPECT_EQ(GetX(GetLowerBound(foo)), lower_x);
@@ -158,7 +158,7 @@ TEST(AABB, InitializingConstruction)
     {
         const auto pa = Length2{GetInvalid<Length>(), GetInvalid<Length>()};
         const auto pb = Length2{GetInvalid<Length>(), GetInvalid<Length>()};
-        AABB foo{pa, pb};
+        AABB2D foo{pa, pb};
         EXPECT_TRUE(std::isnan(StripUnit(GetX(GetLowerBound(foo)))));
         EXPECT_TRUE(std::isnan(StripUnit(GetY(GetLowerBound(foo)))));
         EXPECT_TRUE(std::isnan(StripUnit(GetX(GetUpperBound(foo)))));
@@ -167,7 +167,7 @@ TEST(AABB, InitializingConstruction)
     {
         const auto pa = Length2{GetInvalid<Length>(), GetInvalid<Length>()};
         const auto pb = Length2{GetInvalid<Length>(), 0_m};
-        AABB foo{pa, pb};
+        AABB2D foo{pa, pb};
         EXPECT_TRUE(std::isnan(StripUnit(GetX(GetLowerBound(foo)))));
         EXPECT_TRUE(std::isnan(StripUnit(GetY(GetLowerBound(foo)))));
         EXPECT_TRUE(std::isnan(StripUnit(GetX(GetUpperBound(foo)))));
@@ -176,7 +176,7 @@ TEST(AABB, InitializingConstruction)
     {
         const auto pa = Length2{GetInvalid<Length>(), 0_m};
         const auto pb = Length2{GetInvalid<Length>(), GetInvalid<Length>()};
-        AABB foo{pa, pb};
+        AABB2D foo{pa, pb};
         EXPECT_TRUE(std::isnan(StripUnit(GetX(GetLowerBound(foo)))));
         EXPECT_FALSE(std::isnan(StripUnit(GetY(GetLowerBound(foo)))));
         EXPECT_TRUE(std::isnan(StripUnit(GetX(GetUpperBound(foo)))));
@@ -185,7 +185,7 @@ TEST(AABB, InitializingConstruction)
     {
         const auto pa = Length2{GetInvalid<Length>(), 0_m};
         const auto pb = Length2{GetInvalid<Length>(), 0_m};
-        AABB foo{pa, pb};
+        AABB2D foo{pa, pb};
         EXPECT_TRUE(std::isnan(StripUnit(GetX(GetLowerBound(foo)))));
         EXPECT_FALSE(std::isnan(StripUnit(GetY(GetLowerBound(foo)))));
         EXPECT_TRUE(std::isnan(StripUnit(GetX(GetUpperBound(foo)))));
@@ -194,16 +194,16 @@ TEST(AABB, InitializingConstruction)
     {
         const auto rangeX = Interval<Length>{-2_m, +3_m};
         const auto rangeY = Interval<Length>{-8_m, -4_m};
-        AABB foo{rangeX, rangeY};
-        EXPECT_EQ(foo.rangeX, rangeX);
-        EXPECT_EQ(foo.rangeY, rangeY);
+        AABB2D foo{rangeX, rangeY};
+        EXPECT_EQ(foo.ranges[0], rangeX);
+        EXPECT_EQ(foo.ranges[1], rangeY);
     }
 }
 
-TEST(AABB, Swappable)
+TEST(AABB2D, Swappable)
 {
-    auto a = AABB{};
-    auto b = AABB{};
+    auto a = AABB2D{};
+    auto b = AABB2D{};
     ASSERT_EQ(a, b);
     std::swap(a, b);
     EXPECT_EQ(a, b);
@@ -216,12 +216,12 @@ TEST(AABB, Swappable)
     EXPECT_EQ(b, aAfter);
 }
 
-TEST(AABB, GetPerimeterOfPoint)
+TEST(AABB2D, GetPerimeterOfPoint)
 {
-    EXPECT_EQ(GetPerimeter(AABB{Length2{}}), 0_m);
-    EXPECT_EQ(GetPerimeter(AABB{Length2{-1_m, -2_m}}), 0_m);
-    EXPECT_EQ(GetPerimeter(AABB{Length2{+99_m, +3_m}}), 0_m);
-    EXPECT_TRUE(std::isnan(StripUnit(GetPerimeter(AABB{
+    EXPECT_EQ(GetPerimeter(AABB2D{Length2{}}), 0_m);
+    EXPECT_EQ(GetPerimeter(AABB2D{Length2{-1_m, -2_m}}), 0_m);
+    EXPECT_EQ(GetPerimeter(AABB2D{Length2{+99_m, +3_m}}), 0_m);
+    EXPECT_TRUE(std::isnan(StripUnit(GetPerimeter(AABB2D{
         Length2{
             Real(+std::numeric_limits<Real>::infinity()) * Meter,
             Real(+std::numeric_limits<Real>::infinity()) * Meter
@@ -229,15 +229,15 @@ TEST(AABB, GetPerimeterOfPoint)
     }))));
 }
 
-TEST(AABB, Include)
+TEST(AABB2D, Include)
 {
     const auto p1 = Length2{2_m, 3_m};
     const auto p2 = Length2{20_m, 30_m};
     const auto p3 = Length2{-3_m, -4_m};
     const auto p4 = Length2{0_m, 0_m};
-    const auto p5 = AABB{};
+    const auto p5 = AABB2D{};
 
-    auto foo = AABB{};
+    auto foo = AABB2D{};
     
     Include(foo, p1);
     EXPECT_EQ(GetLowerBound(foo), p1);
@@ -259,83 +259,83 @@ TEST(AABB, Include)
         const auto copyOfFoo = foo;
         EXPECT_EQ(Include(foo, p5), copyOfFoo);
     }
-    EXPECT_EQ(GetEnclosingAABB(AABB{}, foo), foo);
+    EXPECT_EQ(GetEnclosingAABB(AABB2D{}, foo), foo);
 }
 
-TEST(AABB, Contains)
+TEST(AABB2D, Contains)
 {
-    EXPECT_TRUE(Contains(AABB{}, AABB{}));
-    EXPECT_TRUE(Contains(AABB{Length2{}}, AABB{Length2{}}));
-    EXPECT_TRUE((Contains(AABB{Length2{}, Length2{}}, AABB{Length2{}})));
-    EXPECT_TRUE((Contains(AABB{Length2{}}, AABB{Length2{}, Length2{}})));
-    EXPECT_TRUE((Contains(AABB{Length2{1_m, 2_m}}, AABB{})));
-    EXPECT_FALSE(Contains(GetInvalid<AABB>(), GetInvalid<AABB>()));
-    EXPECT_FALSE(Contains(GetInvalid<AABB>(), AABB{}));
-    EXPECT_FALSE(Contains(AABB{}, GetInvalid<AABB>()));
+    EXPECT_TRUE(Contains(AABB2D{}, AABB2D{}));
+    EXPECT_TRUE(Contains(AABB2D{Length2{}}, AABB2D{Length2{}}));
+    EXPECT_TRUE((Contains(AABB2D{Length2{}, Length2{}}, AABB2D{Length2{}})));
+    EXPECT_TRUE((Contains(AABB2D{Length2{}}, AABB2D{Length2{}, Length2{}})));
+    EXPECT_TRUE((Contains(AABB2D{Length2{1_m, 2_m}}, AABB2D{})));
+    EXPECT_FALSE(Contains(GetInvalid<AABB2D>(), GetInvalid<AABB2D>()));
+    EXPECT_FALSE(Contains(GetInvalid<AABB2D>(), AABB2D{}));
+    EXPECT_FALSE(Contains(AABB2D{}, GetInvalid<AABB2D>()));
 }
 
-TEST(AABB, TestOverlap)
+TEST(AABB2D, TestOverlap)
 {
     {
-        AABB bb1{Length2{-2_m, -3_m}, Length2{-1_m,  0_m}};
+        AABB2D bb1{Length2{-2_m, -3_m}, Length2{-1_m,  0_m}};
         EXPECT_TRUE(TestOverlap(bb1, bb1));
     }
     {
         const auto vec = Length2{-2_m, -3_m};
-        AABB bb1{vec, vec};
+        AABB2D bb1{vec, vec};
         EXPECT_TRUE(TestOverlap(bb1, bb1));
     }
     {
-        AABB bb1{Length2{-2_m, -3_m}, Length2{-1_m,  0_m}};
-        AABB bb2{Length2{-1_m, -1_m}, Length2{ 1_m,  2_m}};
+        AABB2D bb1{Length2{-2_m, -3_m}, Length2{-1_m,  0_m}};
+        AABB2D bb2{Length2{-1_m, -1_m}, Length2{ 1_m,  2_m}};
         EXPECT_TRUE(TestOverlap(bb1, bb2));
     }
     {
-        AABB bb1{Length2{-99_m, -3_m}, Length2{-1_m,  0_m}};
-        AABB bb2{Length2{ 76_m, -1_m}, Length2{-2_m,  2_m}};
+        AABB2D bb1{Length2{-99_m, -3_m}, Length2{-1_m,  0_m}};
+        AABB2D bb2{Length2{ 76_m, -1_m}, Length2{-2_m,  2_m}};
         EXPECT_TRUE(TestOverlap(bb1, bb2));
     }
     {
-        AABB bb1{Length2{-20_m, -3_m}, Length2{-18_m,  0_m}};
-        AABB bb2{Length2{ -1_m, -1_m}, Length2{  1_m,  2_m}};
+        AABB2D bb1{Length2{-20_m, -3_m}, Length2{-18_m,  0_m}};
+        AABB2D bb2{Length2{ -1_m, -1_m}, Length2{  1_m,  2_m}};
         EXPECT_FALSE(TestOverlap(bb1, bb2));
     }
     {
-        AABB bb1{Length2{-2_m, -3_m}, Length2{-1_m,  0_m}};
-        AABB bb2{Length2{-1_m, +1_m}, Length2{ 1_m,  2_m}};
+        AABB2D bb1{Length2{-2_m, -3_m}, Length2{-1_m,  0_m}};
+        AABB2D bb2{Length2{-1_m, +1_m}, Length2{ 1_m,  2_m}};
         EXPECT_FALSE(TestOverlap(bb1, bb2));
     }
     {
-        AABB bb1{Length2{-2_m, +3_m}, Length2{-1_m,  0_m}};
-        AABB bb2{Length2{-1_m, -1_m}, Length2{ 0_m, -2_m}};
+        AABB2D bb1{Length2{-2_m, +3_m}, Length2{-1_m,  0_m}};
+        AABB2D bb2{Length2{-1_m, -1_m}, Length2{ 0_m, -2_m}};
         EXPECT_FALSE(TestOverlap(bb1, bb2));
     }
 }
 
-TEST(AABB, ComputeAabbForDefaultDistanceProxy)
+TEST(AABB2D, ComputeAabbForDefaultDistanceProxy)
 {
-    const auto defaultAabb = AABB{};
+    const auto defaultAabb = AABB2D{};
     const auto proxyAabb = ComputeAABB(DistanceProxy{}, Transform_identity);
     
     EXPECT_EQ(defaultAabb, proxyAabb);
 }
 
-TEST(AABB, Move)
+TEST(AABB2D, Move)
 {
     const auto zeroLoc = Length2{};
-    const auto zeroAabb = AABB{zeroLoc};
+    const auto zeroAabb = AABB2D{zeroLoc};
     {
-        auto aabb = AABB{};
-        EXPECT_EQ(Move(aabb, zeroLoc), AABB{});
-        EXPECT_EQ(Move(aabb, Length2{10_m, -4_m}), AABB{});
+        auto aabb = AABB2D{};
+        EXPECT_EQ(Move(aabb, zeroLoc), AABB2D{});
+        EXPECT_EQ(Move(aabb, Length2{10_m, -4_m}), AABB2D{});
     }
     {
-        auto aabb = AABB{Length2{}};
+        auto aabb = AABB2D{Length2{}};
         EXPECT_EQ(Move(aabb, Length2{}), zeroAabb);
     }
     {
-        const auto aabb1 = AABB{Length2{1_m, 1_m}};
-        const auto aabb2 = AABB{Length2{-10_m, 11_m}};
+        const auto aabb1 = AABB2D{Length2{1_m, 1_m}};
+        const auto aabb2 = AABB2D{Length2{-10_m, 11_m}};
         auto aabb = zeroAabb;
         EXPECT_EQ(Move(aabb, Length2{1_m, 1_m}), aabb1);
         EXPECT_EQ(Move(aabb, Length2{-1_m, -1_m}), zeroAabb);
@@ -344,55 +344,55 @@ TEST(AABB, Move)
     {
         const auto lower = Length2{-1_m, -1_m};
         const auto upper = Length2{+3_m, +9_m};
-        auto aabb = AABB{lower, upper};
+        auto aabb = AABB2D{lower, upper};
         const auto moveby = Length2{1_m, 1_m};
-        EXPECT_EQ(Move(aabb, moveby), AABB(lower + moveby, upper + moveby));
+        EXPECT_EQ(Move(aabb, moveby), AABB2D(lower + moveby, upper + moveby));
     }
 }
 
-TEST(AABB, ComparisonOperators)
+TEST(AABB2D, ComparisonOperators)
 {
-    EXPECT_TRUE(AABB{} == AABB{});
-    EXPECT_FALSE(AABB{} != AABB{});
-    EXPECT_TRUE(AABB{} <= AABB{});
-    EXPECT_TRUE(AABB{} >= AABB{});
-    EXPECT_FALSE(AABB{} < AABB{});
-    EXPECT_FALSE(AABB{} > AABB{});
+    EXPECT_TRUE(AABB2D{} == AABB2D{});
+    EXPECT_FALSE(AABB2D{} != AABB2D{});
+    EXPECT_TRUE(AABB2D{} <= AABB2D{});
+    EXPECT_TRUE(AABB2D{} >= AABB2D{});
+    EXPECT_FALSE(AABB2D{} < AABB2D{});
+    EXPECT_FALSE(AABB2D{} > AABB2D{});
     
     const auto vr0 = Interval<Length>{1_m, 2_m};
     const auto vr1 = Interval<Length>{3_m, 4_m};
     const auto vr2 = Interval<Length>{5_m, 6_m};
     const auto vr3 = Interval<Length>{7_m, 8_m};
 
-    EXPECT_FALSE(AABB(vr0, vr1) == AABB{});
-    EXPECT_TRUE(AABB(vr0, vr1) != AABB{});
-    EXPECT_TRUE(AABB(vr0, vr1) <= AABB{});
-    EXPECT_FALSE(AABB(vr0, vr1) >= AABB{});
-    EXPECT_TRUE(AABB(vr0, vr1) < AABB{});
-    EXPECT_FALSE(AABB(vr0, vr1) > AABB{});
+    EXPECT_FALSE(AABB2D(vr0, vr1) == AABB2D{});
+    EXPECT_TRUE(AABB2D(vr0, vr1) != AABB2D{});
+    EXPECT_TRUE(AABB2D(vr0, vr1) <= AABB2D{});
+    EXPECT_FALSE(AABB2D(vr0, vr1) >= AABB2D{});
+    EXPECT_TRUE(AABB2D(vr0, vr1) < AABB2D{});
+    EXPECT_FALSE(AABB2D(vr0, vr1) > AABB2D{});
 
-    EXPECT_FALSE(AABB{} == AABB(vr0, vr1));
-    EXPECT_TRUE(AABB{} != AABB(vr0, vr1));
-    EXPECT_FALSE(AABB{} <= AABB(vr0, vr1));
-    EXPECT_TRUE(AABB{} >= AABB(vr0, vr1));
-    EXPECT_FALSE(AABB{} < AABB(vr0, vr1));
-    EXPECT_TRUE(AABB{} > AABB(vr0, vr1));
+    EXPECT_FALSE(AABB2D{} == AABB2D(vr0, vr1));
+    EXPECT_TRUE(AABB2D{} != AABB2D(vr0, vr1));
+    EXPECT_FALSE(AABB2D{} <= AABB2D(vr0, vr1));
+    EXPECT_TRUE(AABB2D{} >= AABB2D(vr0, vr1));
+    EXPECT_FALSE(AABB2D{} < AABB2D(vr0, vr1));
+    EXPECT_TRUE(AABB2D{} > AABB2D(vr0, vr1));
 
-    EXPECT_FALSE(AABB(vr0, vr1) == AABB(vr2, vr3));
-    EXPECT_TRUE(AABB(vr0, vr1) != AABB(vr2, vr3));
-    EXPECT_TRUE(AABB(vr0, vr1) <= AABB(vr2, vr3));
-    EXPECT_FALSE(AABB(vr0, vr1) >= AABB(vr2, vr3));
-    EXPECT_TRUE(AABB(vr0, vr1) < AABB(vr2, vr3));
-    EXPECT_FALSE(AABB(vr0, vr1) > AABB(vr2, vr3));
+    EXPECT_FALSE(AABB2D(vr0, vr1) == AABB2D(vr2, vr3));
+    EXPECT_TRUE(AABB2D(vr0, vr1) != AABB2D(vr2, vr3));
+    EXPECT_TRUE(AABB2D(vr0, vr1) <= AABB2D(vr2, vr3));
+    EXPECT_FALSE(AABB2D(vr0, vr1) >= AABB2D(vr2, vr3));
+    EXPECT_TRUE(AABB2D(vr0, vr1) < AABB2D(vr2, vr3));
+    EXPECT_FALSE(AABB2D(vr0, vr1) > AABB2D(vr2, vr3));
 }
 
-TEST(AABB, StreamOutputOperator)
+TEST(AABB2D, StreamOutputOperator)
 {
     const auto rangeX = Interval<Length>{-2_m, +3_m};
     const auto rangeY = Interval<Length>{-8_m, -4_m};
-    AABB foo{rangeX, rangeY};
-    ASSERT_EQ(foo.rangeX, rangeX);
-    ASSERT_EQ(foo.rangeY, rangeY);
+    AABB2D foo{rangeX, rangeY};
+    ASSERT_EQ(foo.ranges[0], rangeX);
+    ASSERT_EQ(foo.ranges[1], rangeY);
     
     std::stringstream aabbStream;
     ASSERT_TRUE(aabbStream.str().empty());
@@ -400,10 +400,10 @@ TEST(AABB, StreamOutputOperator)
     ASSERT_FALSE(aabbStream.str().empty());
     
     std::stringstream xRangeStream;
-    xRangeStream << foo.rangeX;
+    xRangeStream << foo.ranges[0];
     
     std::stringstream yRangeStream;
-    yRangeStream << foo.rangeY;
+    yRangeStream << foo.ranges[1];
     
     std::string comp;
     comp += '{';
@@ -414,7 +414,7 @@ TEST(AABB, StreamOutputOperator)
     EXPECT_STREQ(aabbStream.str().c_str(), comp.c_str());
 }
 
-TEST(AABB, ComputeAabbForFixtureAtBodyOrigin)
+TEST(AABB2D, ComputeAabbForFixtureAtBodyOrigin)
 {
     const auto shape = std::make_shared<DiskShape>();
     const auto shapeAabb = ComputeAABB(*shape, Transformation{});
@@ -424,11 +424,11 @@ TEST(AABB, ComputeAabbForFixtureAtBodyOrigin)
     const auto fixture = body->CreateFixture(shape);
     const auto fixtureAabb = ComputeAABB(*fixture);
     
-    ASSERT_NE(shapeAabb, AABB{});
+    ASSERT_NE(shapeAabb, AABB2D{});
     EXPECT_EQ(shapeAabb, fixtureAabb);
 }
 
-TEST(AABB, ComputeAabbForFixtureOffFromBodyOrigin)
+TEST(AABB2D, ComputeAabbForFixtureOffFromBodyOrigin)
 {
     const auto shape = std::make_shared<DiskShape>();
     const auto shapeAabb = ComputeAABB(*shape, Transformation{});
@@ -439,12 +439,12 @@ TEST(AABB, ComputeAabbForFixtureOffFromBodyOrigin)
     const auto fixture = body->CreateFixture(shape);
     const auto fixtureAabb = ComputeAABB(*fixture);
     
-    ASSERT_NE(shapeAabb, AABB{});
+    ASSERT_NE(shapeAabb, AABB2D{});
     ASSERT_NE(shapeAabb, fixtureAabb);
     EXPECT_EQ(GetMovedAABB(shapeAabb, bodyLocation), fixtureAabb);
 }
 
-TEST(AABB, ComputeIntersectingAABBForSameFixture)
+TEST(AABB2D, ComputeIntersectingAABBForSameFixture)
 {
     const auto shape = std::make_shared<DiskShape>();
     const auto shapeAabb = ComputeAABB(*shape, Transformation{});
@@ -456,18 +456,18 @@ TEST(AABB, ComputeIntersectingAABBForSameFixture)
     
     const auto intersectingAabb = ComputeIntersectingAABB(*fixture, 0, *fixture, 0);
     
-    ASSERT_NE(shapeAabb, AABB{});
+    ASSERT_NE(shapeAabb, AABB2D{});
     ASSERT_EQ(shapeAabb, fixtureAabb);
     EXPECT_EQ(fixtureAabb, intersectingAabb);
 }
 
-TEST(AABB, ComputeIntersectingAABBForTwoFixtures)
+TEST(AABB2D, ComputeIntersectingAABBForTwoFixtures)
 {
     const auto shapeInterval = LengthInterval{-2_m, +2_m};
 
     const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}.UseVertexRadius(2_m));
     const auto shapeAabb = ComputeAABB(*shape, Transformation{});
-    ASSERT_EQ(shapeAabb, (AABB{shapeInterval, shapeInterval}));
+    ASSERT_EQ(shapeAabb, (AABB2D{shapeInterval, shapeInterval}));
 
     const auto bodyLocation0 = Length2{+1_m, 0_m};
     const auto bodyLocation1 = Length2{-1_m, 0_m};
@@ -487,16 +487,16 @@ TEST(AABB, ComputeIntersectingAABBForTwoFixtures)
 
     ASSERT_NE(shapeAabb, fixtureAabb0);
     ASSERT_NE(shapeAabb, fixtureAabb1);
-    EXPECT_EQ(intersectingAabb, (AABB{intersectInterval, shapeInterval}));
+    EXPECT_EQ(intersectingAabb, (AABB2D{intersectInterval, shapeInterval}));
 }
 
-TEST(AABB, ComputeIntersectingAABBForContact)
+TEST(AABB2D, ComputeIntersectingAABBForContact)
 {
     const auto shapeInterval = LengthInterval{-2_m, +2_m};
     
     const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}.UseVertexRadius(2_m));
     const auto shapeAabb = ComputeAABB(*shape, Transformation{});
-    ASSERT_EQ(shapeAabb, (AABB{shapeInterval, shapeInterval}));
+    ASSERT_EQ(shapeAabb, (AABB2D{shapeInterval, shapeInterval}));
     
     const auto bodyLocation0 = Length2{+1_m, 0_m};
     const auto bodyLocation1 = Length2{-1_m, 0_m};
@@ -516,7 +516,7 @@ TEST(AABB, ComputeIntersectingAABBForContact)
     
     ASSERT_NE(shapeAabb, fixtureAabb0);
     ASSERT_NE(shapeAabb, fixtureAabb1);
-    ASSERT_EQ(intersectingAabb, (AABB{intersectInterval, shapeInterval}));
+    ASSERT_EQ(intersectingAabb, (AABB2D{intersectInterval, shapeInterval}));
     
     const auto contact = Contact{fixture0, 0, fixture1, 0};
     const auto contactAabb = ComputeIntersectingAABB(contact);

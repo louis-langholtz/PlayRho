@@ -74,7 +74,7 @@ namespace playrho {
     ///
     /// @relatedalso MassData
     ///
-    MassData GetMassData(Length r, NonNegative<Density> density, Length2 location);
+    MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 location);
 
     /// @brief Computes the mass data for a linear shape.
     ///
@@ -85,12 +85,12 @@ namespace playrho {
     ///
     /// @relatedalso MassData
     ///
-    MassData GetMassData(Length r, NonNegative<Density> density, Length2 v0, Length2 v1);
+    MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 v0, Length2 v1);
 
     /// @brief Gets the mass data for the given collection of vertices with the given
     ///    properties.
     /// @relatedalso MassData
-    MassData GetMassData(Length vertexRadius, NonNegative<Density> density,
+    MassData GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
                          Span<const Length2> vertices);
     
     /// @brief Computes the mass data for the given fixture.

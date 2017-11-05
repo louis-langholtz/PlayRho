@@ -63,7 +63,7 @@ RayCastOutput RayCast(Length radius, Length2 location, const RayCastInput& input
     return RayCastOutput{};
 }
 
-RayCastOutput RayCast(const AABB& aabb, const RayCastInput& input) noexcept
+RayCastOutput RayCast(const AABB2D& aabb, const RayCastInput& input) noexcept
 {
     // From Real-time Collision Detection, p179.
 

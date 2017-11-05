@@ -26,11 +26,11 @@
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
 #include <PlayRho/Common/OptionalValue.hpp>
+#include <PlayRho/Collision/AABB.hpp>
 
 namespace playrho
 {
     struct RayCastInput;
-    struct AABB;
     class Shape;
     class DistanceProxy;
     
@@ -66,7 +66,7 @@ namespace playrho
     /// @param aabb Axis Aligned Bounding Box.
     /// @param input the ray-cast input parameters.
     /// @relatedalso AABB
-    RayCastOutput RayCast(const AABB& aabb, const RayCastInput& input) noexcept;
+    RayCastOutput RayCast(const AABB2D& aabb, const RayCastInput& input) noexcept;
     
     /// @brief Cast a ray against the distance proxy.
     /// @param proxy Distance-proxy object (in local coordinates).

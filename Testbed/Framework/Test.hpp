@@ -334,7 +334,7 @@ private:
 
     FixtureSet m_selectedFixtures;
     BodySet m_selectedBodies;
-    AABB m_maxAABB;
+    AABB2D m_maxAABB;
     ContactPoints m_points;
     DestructionListenerImpl m_destructionListener;
     Body* m_bomb = nullptr;

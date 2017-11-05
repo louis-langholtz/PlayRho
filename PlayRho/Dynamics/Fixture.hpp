@@ -71,7 +71,7 @@ public:
     /// @param body Body the new fixture is to be associated with.
     /// @param def Initial fixture settings.
     ///    Friction must be greater-than-or-equal-to zero.
-    ///    Density must be greater-than-or-equal-to zero.
+    ///    AreaDensity must be greater-than-or-equal-to zero.
     /// @param shape Sharable shape to associate fixture with. Must be non-null.
     ///
     Fixture(NonNull<Body*> body, const FixtureDef& def, const std::shared_ptr<const Shape>& shape):
@@ -134,7 +134,7 @@ public:
 
     /// @brief Gets the density of this fixture.
     /// @return Non-negative density (in mass per area).
-    Density GetDensity() const noexcept;
+    AreaDensity GetDensity() const noexcept;
 
     /// @brief Gets the coefficient of friction.
     /// @return Value of 0 or higher.

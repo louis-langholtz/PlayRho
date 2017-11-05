@@ -59,7 +59,7 @@ Fixture::Fixture(const Fixture& other):
     }
 }
 
-Density Fixture::GetDensity() const noexcept
+AreaDensity Fixture::GetDensity() const noexcept
 {
     return m_shape->GetDensity();
 }

@@ -29,8 +29,6 @@ struct GLRenderPoints;
 struct GLRenderLines;
 struct GLRenderTriangles;
 
-struct AABB;
-
 struct ProjectionMatrix
 {
     float m[16];
@@ -82,7 +80,7 @@ struct Camera
 };
 
 Length2 ConvertScreenToWorld(const Camera& camera, const Coord2D screenPoint);
-AABB ConvertScreenToWorld(const Camera& camera);
+AABB2D ConvertScreenToWorld(const Camera& camera);
 Coord2D ConvertWorldToScreen(const Camera& camera, const Length2 worldPoint);
 ProjectionMatrix GetProjectionMatrix(const Camera& camera, float zBias);
 

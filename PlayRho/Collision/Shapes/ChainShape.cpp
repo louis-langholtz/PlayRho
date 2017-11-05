@@ -73,7 +73,7 @@ ChainShape::ChainShape(const Conf& conf):
 MassData ChainShape::GetMassData() const noexcept
 {
     const auto density = GetDensity();
-    if (density > Density(0))
+    if (density > AreaDensity(0))
     {
         const auto vertexCount = GetVertexCount();
         if (vertexCount > 1)

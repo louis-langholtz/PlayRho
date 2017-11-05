@@ -117,7 +117,7 @@ TEST(ChainShape, OneVertexLikeDisk)
 TEST(ChainShape, TwoVertexLikeEdge)
 {
     const auto vertexRadius = 1_m;
-    const auto density = NonNegative<Density>(1_kgpm2);
+    const auto density = NonNegative<AreaDensity>(1_kgpm2);
     const auto locations = std::array<Length2, 2>{{
         Length2{0_m, 0_m}, Length2(4_m, 0_m)
     }};
@@ -136,7 +136,7 @@ TEST(ChainShape, TwoVertexLikeEdge)
 TEST(ChainShape, TwoVertexDpLikeEdgeDp)
 {
     const auto vertexRadius = 1_m;
-    const auto density = NonNegative<Density>(1_kgpm2);
+    const auto density = NonNegative<AreaDensity>(1_kgpm2);
     const auto locations = std::array<Length2, 2>{{
         Length2{0_m, 0_m}, Length2(4_m, 0_m)
     }};
@@ -158,7 +158,7 @@ TEST(ChainShape, TwoVertexDpLikeEdgeDp)
 TEST(ChainShape, TwoVertexMassLikeEdgeMass)
 {
     const auto vertexRadius = 1_m;
-    const auto density = NonNegative<Density>(1_kgpm2);
+    const auto density = NonNegative<AreaDensity>(1_kgpm2);
     const auto locations = std::array<Length2, 2>{{
         Length2{0_m, 0_m}, Length2(4_m, 0_m)
     }};

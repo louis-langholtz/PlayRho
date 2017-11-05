@@ -168,7 +168,7 @@ TEST(MassData, GetAreaOfPolygon)
 TEST(MassData, GetMassDataFreeFunctionForNoVertices)
 {
     const auto vertexRadius = Length{1_m};
-    const auto density = NonNegative<Density>(1_kgpm2);
+    const auto density = NonNegative<AreaDensity>(1_kgpm2);
     const auto vertices = Span<const Length2>{
         static_cast<const Length2*>(nullptr), Span<const Length2>::size_type{0}
     };
@@ -202,7 +202,7 @@ TEST(MassData, GetForOriginCenteredCircle)
     const auto squareVertexRadius = Square(Length{conf.vertexRadius});
     const auto expectedI = RotInertia{
         // L^2 M QP^-2
-        Density{conf.density} * squareVertexRadius * squareVertexRadius * Pi / (2 * 1_rad * 1_rad)
+        AreaDensity{conf.density} * squareVertexRadius * squareVertexRadius * Pi / (2 * 1_rad * 1_rad)
     };
     EXPECT_TRUE(AlmostEqual(StripUnit(mass_data.I), StripUnit(expectedI)));
     EXPECT_EQ(mass_data.center, conf.location);

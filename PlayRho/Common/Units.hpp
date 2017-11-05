@@ -171,7 +171,7 @@ namespace playrho
     /// @sa Area.
     /// @sa KilogramPerSquareMeter.
     /// @sa https://en.wikipedia.org/wiki/Area_density
-    using Density = PLAYRHO_QUANTITY(boost::units::si::surface_density);
+    using AreaDensity = PLAYRHO_QUANTITY(boost::units::si::surface_density);
     
     /// @brief Angle quantity.
     /// @details This is the type alias for the plane angle base quantity.
@@ -336,9 +336,9 @@ namespace playrho
     /// @brief Cubic meter unit of Volume.
     constexpr auto CubicMeter = Meter * Meter * Meter;
 
-    /// @brief Kilogram per square meter unit of Density.
-    /// @sa Density.
-    constexpr auto KilogramPerSquareMeter = PLAYRHO_UNIT(Density,
+    /// @brief Kilogram per square meter unit of AreaDensity.
+    /// @sa AreaDensity.
+    constexpr auto KilogramPerSquareMeter = PLAYRHO_UNIT(AreaDensity,
         boost::units::si::kilogram_per_square_meter);
 
     /// @brief Radian unit of Angle.
@@ -721,13 +721,13 @@ namespace playrho
     }
     
     /// @brief Abbreviation for kilogram per square meter.
-    constexpr Density operator"" _kgpm2(unsigned long long int v) noexcept
+    constexpr AreaDensity operator"" _kgpm2(unsigned long long int v) noexcept
     {
         return static_cast<Real>(v) * KilogramPerSquareMeter;
     }
     
     /// @brief Abbreviation for kilogram per square meter.
-    constexpr Density operator"" _kgpm2(long double v) noexcept
+    constexpr AreaDensity operator"" _kgpm2(long double v) noexcept
     {
         return static_cast<Real>(v) * KilogramPerSquareMeter;
     }

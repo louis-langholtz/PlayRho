@@ -215,7 +215,7 @@ public:
     /// @brief Queries the world for all fixtures that potentially overlap the provided AABB.
     /// @param aabb the query box.
     /// @param callback User implemented callback function.
-    void QueryAABB(const AABB& aabb, QueryFixtureCallback callback) const;
+    void QueryAABB(const AABB2D& aabb, QueryFixtureCallback callback) const;
 
     /// @brief Ray-cast operation code.
     ///
