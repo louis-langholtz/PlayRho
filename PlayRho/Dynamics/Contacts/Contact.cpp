@@ -302,9 +302,8 @@ TOIOutput CalcToi(const Contact& contact, ToiConf conf)
     const auto proxyA = fA->GetShape()->GetChild(contact.GetChildIndexA());
     const auto proxyB = fB->GetShape()->GetChild(contact.GetChildIndexB());
 
-    // Large rotations can make the root finder of TimeOfImpact fail, so normalize sweep angles.
-    const auto sweepA = GetAnglesNormalized(bA->GetSweep());
-    const auto sweepB = GetAnglesNormalized(bB->GetSweep());
+    const auto sweepA = bA->GetSweep();
+    const auto sweepB = bB->GetSweep();
 
     // Compute the TOI for this contact (one or both bodies are active and impenetrable).
     // Computes the time of impact in interval [0, 1]

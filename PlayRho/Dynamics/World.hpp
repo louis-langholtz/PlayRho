@@ -426,7 +426,7 @@ private:
     ///
     /// @details This:
     ///   1. Updates every island-body's sweep.pos0 to its sweep.pos1.
-    ///   2. Updates every island-body's sweep.pos1 to the new "solved" position for it.
+    ///   2. Updates every island-body's sweep.pos1 to the new normalized "solved" position for it.
     ///   3. Updates every island-body's velocity to the new accelerated, dampened, and "solved"
     ///      velocity for it.
     ///   4. Synchronizes every island-body's transform (by updating it to transform one of the
@@ -509,6 +509,10 @@ private:
     IslandSolverResults SolveToiViaGS(const StepConf& conf, Island& island);
 
     /// @brief Updates the given body.
+    /// @details Updates the given body's velocity, sweep position 1, and its transformation.
+    /// @param body Body to update.
+    /// @param pos New position to set the given body to.
+    /// @param vel New velocity to set the given body to.
     static void UpdateBody(Body& body, const Position& pos, const Velocity& vel);
 
     /// @brief Reset bodies for solve TOI.

@@ -1411,7 +1411,8 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
     for_each(cbegin(bodyConstraints), cend(bodyConstraints), [&](const BodyConstraint& bc) {
         const auto i = static_cast<size_t>(&bc - bodyConstraints.data());
         assert(i < bodyConstraints.size());
-        UpdateBody(*island.m_bodies[i], bc.GetPosition(), bc.GetVelocity());
+        // Normalize position to avoid unbounded body angles.
+        UpdateBody(*island.m_bodies[i], GetNormalized(bc.GetPosition()), bc.GetVelocity());
     });
     
     // XXX: Should contacts needing updating be updated now??

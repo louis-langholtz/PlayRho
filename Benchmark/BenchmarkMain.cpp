@@ -202,6 +202,29 @@ static void FloatPositiveFmod(benchmark::State& state)
     }
 }
 
+static void NormalizeAngleViaTrunc(benchmark::State& state)
+{
+    const auto value = ((rand() * 20 * playrho::Pi) / static_cast<float>(RAND_MAX)) * playrho::Radian;
+    constexpr auto oneRotation = 2 * playrho::Pi * playrho::Radian;
+    auto turns = 0.0f;
+    while (state.KeepRunning())
+    {
+        benchmark::DoNotOptimize(turns = value / oneRotation);
+        benchmark::DoNotOptimize((turns - std::trunc(turns)) * oneRotation);
+    }
+}
+
+static void NormalizeAngleViaFmod(benchmark::State& state)
+{
+    const auto value = ((rand() * 20 * playrho::Pi) / static_cast<float>(RAND_MAX)) * playrho::Radian;
+    constexpr auto oneRotationInRadians = playrho::Real{2 * playrho::Pi};
+    const auto angleInRadians = playrho::Real{value / playrho::Radian};
+    while (state.KeepRunning())
+    {
+        benchmark::DoNotOptimize(std::fmod(angleInRadians, oneRotationInRadians) * playrho::Radian);
+    }
+}
+
 static void AABB2D(benchmark::State& state)
 {
     const auto pui0 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
@@ -1372,8 +1395,10 @@ BENCHMARK(DifferentSignsViaSignbit);
 BENCHMARK(DifferentSignsViaMultiplication);
 
 BENCHMARK(FloatPositiveDivTrunc);
+BENCHMARK(NormalizeAngleViaTrunc);
 BENCHMARK(FloatPositiveDivModf);
 BENCHMARK(FloatPositiveFmod);
+BENCHMARK(NormalizeAngleViaFmod);
 BENCHMARK(FloatSqrt);
 BENCHMARK(FloatSin);
 BENCHMARK(FloatCos);

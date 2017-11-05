@@ -931,6 +931,27 @@ TEST(World, GravitationalBodyMovement)
     EXPECT_EQ(GetY(body->GetLocation()), GetY(p0) + GetY(GetLinearVelocity(*body)) * t);
 }
 
+TEST(World, BodyAngleDoesntGrowUnbounded)
+{
+    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
+    const auto body = world.CreateBody(BodyDef{}
+                                       .UseType(BodyType::Dynamic)
+                                       .UseAngularVelocity(10_rad / Second));
+    ASSERT_EQ(GetAngle(*body), 0_rad);
+    auto stepConf = StepConf{};
+    auto lastAngle = 0_rad;
+    auto maxAngle = 0_rad;
+    for (auto i = 0; i < 1000000; ++i)
+    {
+        world.Step(stepConf);
+        const auto angle = GetAngle(*body);
+        EXPECT_NE(angle, lastAngle);
+        ASSERT_LE(angle, 360_deg);
+        maxAngle = std::max(maxAngle, angle);
+        lastAngle = angle;
+    }
+}
+
 TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
 {
     const auto gravity = EarthlyGravity2D;
@@ -2112,12 +2133,18 @@ TEST(World, TilesComesToRest)
         case  4:
         {
 #ifndef __FAST_MATH__
+            EXPECT_EQ(numSteps, 1798ul);
+            EXPECT_EQ(sumRegPosIters, 36507ul);
+            EXPECT_EQ(sumRegVelIters, 46923ul);
+            EXPECT_EQ(sumToiPosIters, 43989ul);
+            EXPECT_EQ(sumToiVelIters, 113664ul);
+
             // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 onward:
-            EXPECT_EQ(numSteps, 1912ul);
-            EXPECT_EQ(sumRegPosIters, 36657ul);
-            EXPECT_EQ(sumRegVelIters, 47843ul);
-            EXPECT_EQ(sumToiPosIters, 43931ul);
-            EXPECT_EQ(sumToiVelIters, 113034ul);
+            //EXPECT_EQ(numSteps, 1912ul);
+            //EXPECT_EQ(sumRegPosIters, 36657ul);
+            //EXPECT_EQ(sumRegVelIters, 47843ul);
+            //EXPECT_EQ(sumToiPosIters, 43931ul);
+            //EXPECT_EQ(sumToiVelIters, 113034ul);
 
             // From commit ee74290c17422ccbd6a73f07d6fd9abe960da84a onward:
             //EXPECT_EQ(numSteps, 1802ul);
@@ -2165,12 +2192,18 @@ TEST(World, TilesComesToRest)
         }
         case  8:
         {
-            // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 onward:
             EXPECT_EQ(numSteps,         1828ul);
             EXPECT_EQ(sumRegPosIters,  36540ul);
             EXPECT_EQ(sumRegVelIters,  47173ul);
             EXPECT_EQ(sumToiPosIters,  44005ul);
-            EXPECT_EQ(sumToiVelIters, 114490ul);
+            EXPECT_EQ(sumToiVelIters, 114140ul);
+
+            // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 onward:
+            //EXPECT_EQ(numSteps,         1828ul);
+            //EXPECT_EQ(sumRegPosIters,  36540ul);
+            //EXPECT_EQ(sumRegVelIters,  47173ul);
+            //EXPECT_EQ(sumToiPosIters,  44005ul);
+            //EXPECT_EQ(sumToiVelIters, 114490ul);
             
             // From commit 6b16f3722d5daac80ebaefd1dfda424939498dd4 onward:
             //EXPECT_EQ(numSteps,         1807ul);
@@ -2208,11 +2241,18 @@ TEST(World, TilesComesToRest)
         case  4:
         {
             // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 onward:
-            EXPECT_EQ(numSteps,         1799ul);
-            EXPECT_EQ(sumRegPosIters,  36515ul);
-            EXPECT_EQ(sumRegVelIters,  46964ul);
-            EXPECT_EQ(sumToiPosIters,  43999ul);
-            EXPECT_EQ(sumToiVelIters, 113153ul);
+            EXPECT_EQ(numSteps,         1798ul);
+            EXPECT_EQ(sumRegPosIters,  36511ul);
+            EXPECT_EQ(sumRegVelIters,  46939ul);
+            EXPECT_EQ(sumToiPosIters,  44198ul);
+            EXPECT_EQ(sumToiVelIters, 114170ul);
+
+            // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 onward:
+            //EXPECT_EQ(numSteps,         1799ul);
+            //EXPECT_EQ(sumRegPosIters,  36515ul);
+            //EXPECT_EQ(sumRegVelIters,  46964ul);
+            //EXPECT_EQ(sumToiPosIters,  43999ul);
+            //EXPECT_EQ(sumToiVelIters, 113153ul);
             
             // From commit ee74290c17422ccbd6a73f07d6fd9abe960da84a onward:
             //EXPECT_EQ(numSteps,         1803ul);
@@ -2244,7 +2284,14 @@ TEST(World, TilesComesToRest)
             EXPECT_EQ(sumRegPosIters,  36540ul);
             EXPECT_EQ(sumRegVelIters,  47173ul);
             EXPECT_EQ(sumToiPosIters,  44005ul);
-            EXPECT_EQ(sumToiVelIters, 114259ul);
+            EXPECT_EQ(sumToiVelIters, 114196ul);
+
+            // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 onward:
+            //EXPECT_EQ(numSteps,         1828ul);
+            //EXPECT_EQ(sumRegPosIters,  36540ul);
+            //EXPECT_EQ(sumRegVelIters,  47173ul);
+            //EXPECT_EQ(sumToiPosIters,  44005ul);
+            //EXPECT_EQ(sumToiVelIters, 114259ul);
             
             // From commit 6b16f3722d5daac80ebaefd1dfda424939498dd4 onward:
             //EXPECT_EQ(numSteps,         1807ul);
@@ -2352,7 +2399,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
     ASSERT_NE(ball_fixture, nullptr);
 
     const auto velocity = LinearVelocity2{+1_mps, 0_mps};
-    ball_body->SetVelocity(Velocity{velocity, Angle{0} / 1_s});
+    ball_body->SetVelocity(Velocity{velocity, 0_deg / 1_s});
 
     const auto time_inc = .01_s;
     auto step = StepConf{};
@@ -3098,7 +3145,7 @@ TEST_P(VerticalStackTest, EachBodyLevel)
 {
     for (auto&& box: boxes)
     {
-        EXPECT_EQ(box->GetAngle(), Angle{0});
+        EXPECT_EQ(box->GetAngle(), 0_deg);
     }
 }
 

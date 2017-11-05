@@ -125,7 +125,8 @@ namespace playrho
     /// @return pos0 if pos0 == pos1 or beta == 0, pos1 if beta == 1, or at the given
     ///   unit interval value between pos0 and pos1.
     /// @relatedalso Position
-    inline Position GetPosition(const Position pos0, const Position pos1, const Real beta) noexcept
+    constexpr Position GetPosition(const Position pos0, const Position pos1,
+                                   const Real beta) noexcept
     {
         // Note: have to be careful how this is done.
         //   If pos0 == pos1 then return value should always be equal to pos0 too.
@@ -139,6 +140,14 @@ namespace playrho
         return pos0 + (pos1 - pos0) * beta;
     }
 
+    /// @brief Gets the "normalized" position.
+    /// @details Enforces a wrap-around of one rotation on the angular position.
+    /// @note Use to prevent unbounded angles in positions.
+    inline Position GetNormalized(const Position& val) noexcept
+    {
+        return Position{val.linear, GetNormalized(val.angular)};
+    }
+    
 } // namespace playrho
 
 #endif // PLAYRHO_COMMON_POSITION_HPP
