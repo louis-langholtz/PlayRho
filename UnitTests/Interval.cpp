@@ -317,3 +317,25 @@ TEST_F(Interval, GreaterThanOrEqualTo)
         }
     }
 }
+
+TEST_F(Interval, GetLowest)
+{
+    EXPECT_EQ(playrho::Interval<int>::GetLowest(), std::numeric_limits<int>::lowest());
+    EXPECT_EQ(playrho::Interval<float>::GetLowest(), -std::numeric_limits<float>::infinity());
+}
+
+TEST_F(Interval, GetHighest)
+{
+    EXPECT_EQ(playrho::Interval<int>::GetHighest(), std::numeric_limits<int>::max());
+    EXPECT_EQ(playrho::Interval<float>::GetHighest(), std::numeric_limits<float>::infinity());
+}
+
+TEST_F(Interval, DefaultConstruction)
+{
+    EXPECT_EQ(playrho::Interval<int>{}, playrho::Interval<int>{});
+    EXPECT_EQ(playrho::Interval<int>{}.GetMin(), std::numeric_limits<int>::max());
+    EXPECT_EQ(playrho::Interval<int>{}.GetMax(), std::numeric_limits<int>::lowest());
+    EXPECT_EQ(playrho::Interval<float>{}, playrho::Interval<float>{});
+    EXPECT_EQ(playrho::Interval<float>{}.GetMin(),  std::numeric_limits<float>::infinity());
+    EXPECT_EQ(playrho::Interval<float>{}.GetMax(), -std::numeric_limits<float>::infinity());
+}
