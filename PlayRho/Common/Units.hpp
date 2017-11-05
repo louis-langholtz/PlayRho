@@ -41,6 +41,7 @@
 #include <PlayRho/Common/RealConstants.hpp>
 #include <PlayRho/Common/Templates.hpp>
 #include <type_traits>
+#include <cmath>
 
 // #define USE_BOOST_UNITS
 #if defined(USE_BOOST_UNITS)
@@ -740,6 +741,26 @@ namespace playrho
         return value;
     }
     
+    /// @brief Gets the "normalized" value of the given angle.
+    inline Angle GetNormalized(Angle value) noexcept
+    {
+#if defined(NORMALIZE_ANGLE_VIA_FMOD)
+        // Note: std::fmod appears slower than std::trunc.
+        //   See Benchmark NormalizeAngleViaFmod for data.
+        constexpr auto oneRotationInRadians = Real{2 * Pi};
+        const auto angleInRadians = Real{value / Radian};
+        return std::fmod(angleInRadians, oneRotationInRadians) * Radian;
+#else
+        // Note: std::trunc appears more than twice as fast as std::fmod.
+        //   See Benchmark NormalizeAngleViaTrunc for data.
+        constexpr auto oneRotation = 2 * Pi * Radian;
+        const auto turns = value / oneRotation;
+        const auto wholeTurns = std::trunc(turns);
+        const auto remainder = turns - wholeTurns;
+        return remainder * oneRotation;
+#endif
+    }
+
     /// @defgroup UnitConstants Physical Constants
     /// @brief Definitions of universal and Earthly physical constants.
     /// @sa PhysicalQuantities

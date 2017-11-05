@@ -124,6 +124,22 @@ namespace playrho
         alpha0 = 0;
     }
     
+    // Free functions...
+    
+    /// @brief Gets a sweep with the given sweeps's angles normalized.
+    /// @param sweep Sweep to return with its angles normalized.
+    /// @return Sweep with its pos0 angle to be between -2 pi and 2 pi
+    ///    and its pos1 angle reduced by the amount pos0's angle was reduced by.
+    /// @relatedalso Sweep
+    inline Sweep GetNormalized(Sweep sweep) noexcept
+    {
+        const auto pos0a = GetNormalized(sweep.pos0.angular);
+        const auto d = sweep.pos0.angular - pos0a;
+        sweep.pos0.angular = pos0a;
+        sweep.pos1.angular -= d;
+        return sweep;
+    }
+
 } // namespace playrho
 
 #endif // PLAYRHO_COMMON_SWEEP_HPP
