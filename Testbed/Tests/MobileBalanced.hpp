@@ -33,7 +33,7 @@ public:
         e_depth = 4
     };
 
-    const Density density = 20_kgpm2;
+    const AreaDensity density = 20_kgpm2;
 
     MobileBalanced()
     {

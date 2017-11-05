@@ -62,12 +62,12 @@ struct ShapeDef
     ///
     Finite<Real> restitution = Finite<Real>{0};
     
-    /// @brief Density of the associated shape.
+    /// @brief AreaDensity of the associated shape.
     ///
     /// @note This must be a non-negative value.
     /// @note Use 0 to indicate that the shape's associated mass should be 0.
     ///
-    NonNegative<Density> density = NonNegative<Density>{0};
+    NonNegative<AreaDensity> density = NonNegative<AreaDensity>{0};
 };
 
 /// @brief Builder configuration structure.
@@ -98,7 +98,7 @@ struct ShapeDefBuilder: ShapeDef
     constexpr ConcreteConf& UseRestitution(Finite<Real> value) noexcept;
     
     /// @brief Uses the given density.
-    constexpr ConcreteConf& UseDensity(NonNegative<Density> value) noexcept;
+    constexpr ConcreteConf& UseDensity(NonNegative<AreaDensity> value) noexcept;
 };
 
 template <typename ConcreteConf>
@@ -127,7 +127,7 @@ ShapeDefBuilder<ConcreteConf>::UseRestitution(Finite<Real> value) noexcept
 
 template <typename ConcreteConf>
 constexpr ConcreteConf&
-ShapeDefBuilder<ConcreteConf>::UseDensity(NonNegative<Density> value) noexcept
+ShapeDefBuilder<ConcreteConf>::UseDensity(NonNegative<AreaDensity> value) noexcept
 {
     density = value;
     return static_cast<ConcreteConf&>(*this);

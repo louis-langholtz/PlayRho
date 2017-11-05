@@ -109,13 +109,13 @@ public:
 
     /// @brief Gets the density of this fixture.
     /// @return Non-negative density (in mass per area).
-    NonNegative<Density> GetDensity() const noexcept;
+    NonNegative<AreaDensity> GetDensity() const noexcept;
 
     /// @brief Sets the density of this fixture.
     /// @note This will _not_ automatically adjust the mass of the body.
     ///   You must call Body::ResetMassData to update the body's mass.
     /// @param density Non-negative density (in mass per area).
-    void SetDensity(NonNegative<Density> density) noexcept;
+    void SetDensity(NonNegative<AreaDensity> density) noexcept;
     
     /// @brief Gets the coefficient of friction.
     /// @return Value of 0 or higher.
@@ -160,8 +160,8 @@ private:
     /// @brief Vertex radius.
     NonNegative<Length> m_vertexRadius = NonNegative<Length>{0_m};
     
-    /// @brief Density.
-    NonNegative<Density> m_density = NonNegative<Density>{0_kgpm2};
+    /// @brief AreaDensity.
+    NonNegative<AreaDensity> m_density = NonNegative<AreaDensity>{0_kgpm2};
     
     /// @brief Friction as a coefficient.
     NonNegative<Real> m_friction = NonNegative<Real>{Real{2} / Real{10}};
@@ -180,7 +180,7 @@ inline void Shape::SetVertexRadius(NonNegative<Length> vertexRadius) noexcept
     m_vertexRadius = vertexRadius;
 }
 
-inline NonNegative<Density> Shape::GetDensity() const noexcept
+inline NonNegative<AreaDensity> Shape::GetDensity() const noexcept
 {
     return m_density;
 }
@@ -195,7 +195,7 @@ inline Real Shape::GetRestitution() const noexcept
     return m_restitution;
 }
 
-inline void Shape::SetDensity(NonNegative<Density> density) noexcept
+inline void Shape::SetDensity(NonNegative<AreaDensity> density) noexcept
 {
     m_density = density;
 }

@@ -59,7 +59,7 @@ public:
         });
     }
 
-    void ChangeDensity(Density change)
+    void ChangeDensity(AreaDensity change)
     {
         const auto oldDensity = m_top->GetShape()->GetDensity();
         const auto newDensity = std::max(oldDensity + change, 1_kgpm2);
@@ -86,7 +86,7 @@ public:
     void PostStep(const Settings&, Drawer&) override
     {
         std::stringstream stream;
-        stream << "Density of top shape: ";
+        stream << "Area density of top shape: ";
         stream << double(Real{m_top->GetShape()->GetDensity() / 1_kgpm2});
         stream << " kg/m^2.";
         m_status = stream.str();
