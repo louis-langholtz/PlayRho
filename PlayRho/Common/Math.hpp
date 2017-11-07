@@ -313,6 +313,66 @@ constexpr inline bool AlmostEqual(Fixed64 x, Fixed64 y, int ulp = 2)
 }
 #endif
 
+/// @brief Modulo operation using std::fmod.
+/// @note Modulo via std::fmod appears slower than via std::trunc.
+/// @sa ModuloViaTrunc
+template <typename T>
+inline auto ModuloViaFmod(T dividend, T divisor) noexcept
+{
+    // Note: modulo via std::fmod appears slower than via std::trunc.
+    return static_cast<T>(std::fmod(dividend, divisor));
+}
+
+/// @brief Modulo operation using std::trunc.
+/// @note Modulo via std::fmod appears slower than via std::trunc.
+/// @sa ModuloViaFmod
+template <typename T>
+inline auto ModuloViaTrunc(T dividend, T divisor) noexcept
+{
+    const auto quotient = dividend / divisor;
+    const auto integer = static_cast<T>(std::trunc(quotient));
+    const auto remainder = quotient - integer;
+    return remainder * divisor;
+}
+
+/// @brief Gets the "normalized" value of the given angle.
+inline Angle GetNormalized(Angle value) noexcept
+{
+    constexpr auto oneRotationInRadians = Real{2 * Pi};
+    const auto angleInRadians = Real{value / Radian};
+#if defined(NORMALIZE_ANGLE_VIA_FMOD)
+    // Note: std::fmod appears slower than std::trunc.
+    //   See Benchmark ModuloViaFmod for data.
+    return ModuloViaFmod(angleInRadians, oneRotationInRadians) * Radian;
+#else
+    // Note: std::trunc appears more than twice as fast as std::fmod.
+    //   See Benchmark ModuloViaTrunc for data.
+    return ModuloViaTrunc(angleInRadians, oneRotationInRadians) * Radian;
+#endif
+}
+
+/// @brief Gets the "normalized" position.
+/// @details Enforces a wrap-around of one rotation on the angular position.
+/// @note Use to prevent unbounded angles in positions.
+inline Position GetNormalized(const Position& val) noexcept
+{
+    return Position{val.linear, GetNormalized(val.angular)};
+}
+
+/// @brief Gets a sweep with the given sweeps's angles normalized.
+/// @param sweep Sweep to return with its angles normalized.
+/// @return Sweep with its pos0 angle to be between -2 pi and 2 pi
+///    and its pos1 angle reduced by the amount pos0's angle was reduced by.
+/// @relatedalso Sweep
+inline Sweep GetNormalized(Sweep sweep) noexcept
+{
+    const auto pos0a = GetNormalized(sweep.pos0.angular);
+    const auto d = sweep.pos0.angular - pos0a;
+    sweep.pos0.angular = pos0a;
+    sweep.pos1.angular -= d;
+    return sweep;
+}
+
 /// @brief Gets the angle of the given unit vector.
 inline Angle GetAngle(const UnitVec2 value)
 {

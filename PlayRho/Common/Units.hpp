@@ -390,6 +390,10 @@ namespace playrho
     /// @sa AngularMomentum.
     constexpr auto NewtonMeterSecond = NewtonMeter * Second;
     
+    /// @brief Revolutions per minute units of AngularVelocity.
+    /// @sa AngularVelocity
+    constexpr auto RevolutionsPerMinute = 2 * Pi * Radian / (Real{60} * Second);
+    
     /// @}
     
     /// @defgroup Unitsymbols Literals For Unit Symbols
@@ -733,32 +737,26 @@ namespace playrho
         return static_cast<Real>(v) * KilogramPerSquareMeter;
     }
 
+    /// @brief Abbreviation for revolutions per minute.
+    /// @sa RevolutionsPerMinute
+    constexpr AngularVelocity operator"" _rpm(unsigned long long int v) noexcept
+    {
+        return static_cast<Real>(v) * RevolutionsPerMinute;
+    }
+
+    /// @brief Abbreviation for revolutions per minute.
+    /// @sa RevolutionsPerMinute
+    constexpr AngularVelocity operator"" _rpm(long double v) noexcept
+    {
+        return static_cast<Real>(v) * RevolutionsPerMinute;
+    }
+
     /// @}
     
     /// @brief Strips the units off of the given value.
     constexpr inline Real StripUnit(const Real value)
     {
         return value;
-    }
-    
-    /// @brief Gets the "normalized" value of the given angle.
-    inline Angle GetNormalized(Angle value) noexcept
-    {
-#if defined(NORMALIZE_ANGLE_VIA_FMOD)
-        // Note: std::fmod appears slower than std::trunc.
-        //   See Benchmark NormalizeAngleViaFmod for data.
-        constexpr auto oneRotationInRadians = Real{2 * Pi};
-        const auto angleInRadians = Real{value / Radian};
-        return std::fmod(angleInRadians, oneRotationInRadians) * Radian;
-#else
-        // Note: std::trunc appears more than twice as fast as std::fmod.
-        //   See Benchmark NormalizeAngleViaTrunc for data.
-        constexpr auto oneRotation = 2 * Pi * Radian;
-        const auto turns = value / oneRotation;
-        const auto wholeTurns = std::trunc(turns);
-        const auto remainder = turns - wholeTurns;
-        return remainder * oneRotation;
-#endif
     }
 
     /// @defgroup UnitConstants Physical Constants
@@ -772,12 +770,12 @@ namespace playrho
     ///   the Earth due to the Earth's gravity.
     /// @note This constant is only appropriate for use for objects of low mass and close
     ///   distance relative to the Earth.
-    constexpr auto EarthlyLinearAcceleration = -9.8f * MeterPerSquareSecond;
+    constexpr auto EarthlyLinearAcceleration = Real{-9.8f} * MeterPerSquareSecond;
     
     /// @brief Big "G".
     /// @details Gravitational constant used in calculating the attractive force on a mass
     ///   to another mass at a given distance due to gravity.
-    constexpr auto BigG = 6.67408e-11f * CubicMeter / (Kilogram * SquareSecond);
+    constexpr auto BigG = Real{6.67408e-11f} * CubicMeter / (Kilogram * SquareSecond);
     
     /// @}
 

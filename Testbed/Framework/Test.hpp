@@ -408,6 +408,21 @@ inline bool IsWithin(const Container& container, const T& element) noexcept
 
 ::std::ostream& operator<<(::std::ostream& os, const ContactFeature& value);
 
+template <class T>
+inline void ForAll(World& world, const std::function<void(T& e)>& action);
+
+template <>
+inline void ForAll(World& world, const std::function<void(RevoluteJoint& e)>& action)
+{
+    const auto range = world.GetJoints();
+    std::for_each(std::begin(range), std::end(range), [&](Joint* j) {
+        if (GetType(*j) == JointType::Revolute)
+        {
+            action(*reinterpret_cast<RevoluteJoint*>(j));
+        }
+    });
+}
+
 } // namespace playrho
 
 #endif

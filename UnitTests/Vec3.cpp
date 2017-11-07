@@ -169,7 +169,7 @@ TEST(Vec3, ScalarMultiplication)
 
 TEST(Vec3, std_tuple_size)
 {
-    EXPECT_EQ(std::tuple_size<Vec3>::value, 3);
+    EXPECT_EQ(std::tuple_size<Vec3>::value, 3u);
 }
 
 TEST(Vec3, std_tuple_element)

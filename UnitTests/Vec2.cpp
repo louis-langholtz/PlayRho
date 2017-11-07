@@ -236,7 +236,7 @@ TEST(Vec2, InvalidIndex)
 
 TEST(Vec2, std_tuple_size)
 {
-    EXPECT_EQ(std::tuple_size<Vec2>::value, 2);
+    EXPECT_EQ(std::tuple_size<Vec2>::value, 2u);
 }
 
 TEST(Vec2, std_tuple_element)
