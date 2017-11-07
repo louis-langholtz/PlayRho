@@ -32,631 +32,571 @@
  */
 
 #include <benchmark/benchmark.h>
+#include <tuple>
+#include <utility>
+#include <cstdlib>
+#include <vector>
 
 #include <PlayRho/Common/Math.hpp>
-
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
-
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
-
 #include <PlayRho/Collision/Manifold.hpp>
 #include <PlayRho/Collision/WorldManifold.hpp>
 #include <PlayRho/Collision/ShapeSeparation.hpp>
 #include <PlayRho/Collision/Shapes/PolygonShape.hpp>
 #include <PlayRho/Collision/Shapes/DiskShape.hpp>
 
-static float RandomFloat(float lo, float hi)
+static float Rand(float lo, float hi)
 {
-    constexpr auto RAND_LIMIT = 32767;
-    auto r = static_cast<float>(std::rand() & (RAND_LIMIT));
-    r /= RAND_LIMIT;
-    r = (hi - lo) * r + lo;
-    return r;
+    const auto u = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX); // # between 0 and 1
+    return (hi - lo) * u + lo;
 }
+
+static double Rand(double lo, double hi)
+{
+    const auto u = static_cast<double>(std::rand()) / static_cast<double>(RAND_MAX); // # between 0 and 1
+    return (hi - lo) * u + lo;
+}
+
+static std::vector<float> Rands(unsigned count, float lo, float hi)
+{
+    auto rands = std::vector<float>{};
+    rands.reserve(count);
+    for (auto i = decltype(count){0}; i < count; ++i)
+    {
+        rands.push_back(Rand(lo, hi));
+    }
+    return rands;
+}
+
+static std::vector<double> Rands(unsigned count, double lo, double hi)
+{
+    auto rands = std::vector<double>{};
+    rands.reserve(count);
+    for (auto i = decltype(count){0}; i < count; ++i)
+    {
+        rands.push_back(Rand(lo, hi));
+    }
+    return rands;
+}
+
+static std::pair<float, float> RandPair(float lo, float hi)
+{
+    const auto first = Rand(lo, hi);
+    const auto second = Rand(lo, hi);
+    return std::make_pair(first, second);
+}
+
+static std::pair<double, double> RandPair(double lo, double hi)
+{
+    const auto first = Rand(lo, hi);
+    const auto second = Rand(lo, hi);
+    return std::make_pair(first, second);
+}
+
+static std::tuple<float, float, float, float> RandQuad(float lo, float hi)
+{
+    const auto first = Rand(lo, hi);
+    const auto second = Rand(lo, hi);
+    const auto third = Rand(lo, hi);
+    const auto fourth = Rand(lo, hi);
+    return std::make_tuple(first, second, third, fourth);
+}
+
+static std::tuple<float, float, float, float, float, float, float, float> RandOctet(float lo, float hi)
+{
+    const auto first = Rand(lo, hi);
+    const auto second = Rand(lo, hi);
+    const auto third = Rand(lo, hi);
+    const auto fourth = Rand(lo, hi);
+    const auto fifth = Rand(lo, hi);
+    const auto sixth = Rand(lo, hi);
+    const auto seventh = Rand(lo, hi);
+    const auto eighth = Rand(lo, hi);
+    return std::make_tuple(first, second, third, fourth, fifth, sixth, seventh, eighth);
+}
+
+static std::vector<std::pair<float, float>> RandPairs(unsigned count, float lo, float hi)
+{
+    auto rands = std::vector<std::pair<float, float>>{};
+    rands.reserve(count);
+    for (auto i = decltype(count){0}; i < count; ++i)
+    {
+        rands.push_back(RandPair(lo, hi));
+    }
+    return rands;
+}
+
+static std::vector<std::pair<double, double>> RandPairs(unsigned count, double lo, double hi)
+{
+    auto rands = std::vector<std::pair<double, double>>{};
+    rands.reserve(count);
+    for (auto i = decltype(count){0}; i < count; ++i)
+    {
+        rands.push_back(RandPair(lo, hi));
+    }
+    return rands;
+}
+
+static std::vector<std::tuple<float, float, float, float>> RandQuads(unsigned count, float lo, float hi)
+{
+    auto rands = std::vector<std::tuple<float, float, float, float>>{};
+    rands.reserve(count);
+    for (auto i = decltype(count){0}; i < count; ++i)
+    {
+        rands.push_back(RandQuad(lo, hi));
+    }
+    return rands;
+}
+
+static std::vector<std::tuple<float, float, float, float, float, float, float, float>> RandOctets(unsigned count, float lo, float hi)
+{
+    auto rands = std::vector<std::tuple<float, float, float, float, float, float, float, float>>{};
+    rands.reserve(count);
+    for (auto i = decltype(count){0}; i < count; ++i)
+    {
+        rands.push_back(RandOctet(lo, hi));
+    }
+    return rands;
+}
+
+// ----
 
 static void FloatAdd(benchmark::State& state)
 {
-    const auto a = 22.93f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-    const auto b = 91.1092f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-    while (state.KeepRunning())
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
+    for (auto _: state)
     {
-        benchmark::DoNotOptimize(a + b);
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(val.first + val.second);
+        }
     }
 }
 
-static void FloatMult(benchmark::State& state)
+static void FloatMul(benchmark::State& state)
 {
-    const auto a = 22.93f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-    const auto b = 91.1092f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-    while (state.KeepRunning())
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
+    for (auto _: state)
     {
-        benchmark::DoNotOptimize(a * b);
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(val.first * val.second);
+        }
     }
 }
 
 static void FloatDiv(benchmark::State& state)
 {
-    const auto a = 5.93f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-    const auto b = -4.1092f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-    while (state.KeepRunning())
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
+    for (auto _: state)
     {
-        benchmark::DoNotOptimize(a / b);
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(val.first / val.second);
+        }
     }
 }
 
 static void FloatSqrt(benchmark::State& state)
 {
-    const auto a = 15.91f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-    while (state.KeepRunning())
+    const auto vals = Rands(static_cast<unsigned>(state.range()), 0.0f, 100.0f);
+    for (auto _: state)
     {
-        benchmark::DoNotOptimize(std::sqrt(a));
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(std::sqrt(val));
+        }
     }
 }
 
 static void FloatSin(benchmark::State& state)
 {
-    const auto a = 15.91f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-    while (state.KeepRunning())
+    const auto vals = Rands(static_cast<unsigned>(state.range()), -4.0f, +4.0f);
+    for (auto _: state)
     {
-        benchmark::DoNotOptimize(std::sin(a));
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(std::sin(val));
+        }
     }
 }
 
 static void FloatCos(benchmark::State& state)
 {
-    const auto b = -4.1092f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-    while (state.KeepRunning())
+    const auto vals = Rands(static_cast<unsigned>(state.range()), -4.0f, +4.0f);
+    for (auto _: state)
     {
-        benchmark::DoNotOptimize(std::cos(b));
-    }
-}
-
-static void FloatAtan2(benchmark::State& state)
-{
-    const auto a = 15.91f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-    const auto b = -4.1092f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-    while (state.KeepRunning())
-    {
-        benchmark::DoNotOptimize(std::atan2(a, b));
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(std::cos(val));
+        }
     }
 }
 
 static void FloatSinCos(benchmark::State& state)
 {
-    const auto b = -4.1092f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-    while (state.KeepRunning())
+    const auto vals = Rands(static_cast<unsigned>(state.range()), -4.0f, +4.0f);
+    for (auto _: state)
     {
-        // If runtime of sin + cos = sin or cos then seemingly hardware
-        //   calculates both at same time and compiler knows that.
-        benchmark::DoNotOptimize(std::sin(b));
-        benchmark::DoNotOptimize(std::cos(b));
+        for (const auto& val: vals)
+        {
+            // If runtime of sin + cos = sin or cos then seemingly hardware
+            //   calculates both at same time and compiler knows that.
+            benchmark::DoNotOptimize(std::make_pair(std::sin(val), std::cos(val)));
+        }
     }
 }
 
-static void FloatAlmostEqual1(benchmark::State& state)
+static void FloatAtan2(benchmark::State& state)
 {
-    const auto x = static_cast<float>(rand() - (RAND_MAX / 2)) / static_cast<float>(RAND_MAX / 2);
-    const auto y = static_cast<float>(rand() - (RAND_MAX / 2)) / static_cast<float>(RAND_MAX / 2);
-    const auto ulp = static_cast<int>(rand() % 8);
-    while (state.KeepRunning())
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
+    for (auto _: state)
     {
-        benchmark::DoNotOptimize((playrho::Abs(x - y) < (std::numeric_limits<float>::epsilon() * playrho::Abs(x + y) * ulp)) || playrho::AlmostZero(x - y));
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(std::atan2(val.first, val.second));
+        }
     }
 }
 
-static void FloatAlmostEqual2(benchmark::State& state)
+static void FloatHypot(benchmark::State& state)
 {
-    const auto x = static_cast<float>(rand() - (RAND_MAX / 2)) / static_cast<float>(RAND_MAX / 2);
-    const auto y = static_cast<float>(rand() - (RAND_MAX / 2)) / static_cast<float>(RAND_MAX / 2);
-    const auto ulp = static_cast<unsigned>(rand() % 8);
-    while (state.KeepRunning())
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
+    for (auto _: state)
     {
-        // Accesses the floats as unsigned 32 bit ints and strips off the signbits.
-        const auto nX = (*reinterpret_cast<const std::uint32_t*>(&x)) & 0x7FFFFFF;
-        const auto nY = (*reinterpret_cast<const std::uint32_t*>(&y)) & 0x7FFFFFF;
-        // Checks if difference between the greater 32-bit unsigned int and the lesser is
-        // less than or equal to the ULP value.
-        benchmark::DoNotOptimize(((nX >= nY)? nX - nY: nY - nX) <= ulp);
-    }
-}
-
-static void FloatPositiveDivTrunc(benchmark::State& state)
-{
-    constexpr auto oneRotation = 2 * playrho::Pi;
-    const auto x = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-    auto turns = 0.0f;
-    auto wholeTurns = 0.0f;
-    auto remainder = 0.0f;
-    while (state.KeepRunning())
-    {
-        benchmark::DoNotOptimize(turns = x / oneRotation);
-        benchmark::DoNotOptimize(wholeTurns = std::trunc(turns));
-        benchmark::DoNotOptimize(remainder = turns - wholeTurns);
-    }
-}
-
-static void FloatPositiveDivModf(benchmark::State& state)
-{
-    constexpr auto oneRotation = 2 * playrho::Pi;
-    const auto x = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-    auto turns = 0.0f;
-    auto wholeTurns = 0.0f;
-    auto remainder = 0.0f;
-    while (state.KeepRunning())
-    {
-        benchmark::DoNotOptimize(turns = x / oneRotation);
-        benchmark::DoNotOptimize(remainder = std::modf(x, &wholeTurns));
-    }
-}
-
-static void FloatPositiveFmod(benchmark::State& state)
-{
-    constexpr auto oneRotation = 2 * playrho::Pi;
-    const auto x = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-    while (state.KeepRunning())
-    {
-        benchmark::DoNotOptimize(std::fmod(x, oneRotation));
-    }
-}
-
-static void NormalizeAngleViaTrunc(benchmark::State& state)
-{
-    const auto value = ((rand() * 20 * playrho::Pi) / static_cast<float>(RAND_MAX)) * playrho::Radian;
-    constexpr auto oneRotation = 2 * playrho::Pi * playrho::Radian;
-    auto turns = 0.0f;
-    while (state.KeepRunning())
-    {
-        benchmark::DoNotOptimize(turns = value / oneRotation);
-        benchmark::DoNotOptimize((turns - std::trunc(turns)) * oneRotation);
-    }
-}
-
-static void NormalizeAngleViaFmod(benchmark::State& state)
-{
-    const auto value = ((rand() * 20 * playrho::Pi) / static_cast<float>(RAND_MAX)) * playrho::Radian;
-    constexpr auto oneRotationInRadians = playrho::Real{2 * playrho::Pi};
-    const auto angleInRadians = playrho::Real{value / playrho::Radian};
-    while (state.KeepRunning())
-    {
-        benchmark::DoNotOptimize(std::fmod(angleInRadians, oneRotationInRadians) * playrho::Radian);
-    }
-}
-
-static void AABB2D(benchmark::State& state)
-{
-    const auto pui0 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-    const auto pui1 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-    const auto pui2 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-    const auto pui3 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-    const auto p0 = playrho::Length2{pui0 * playrho::Meter, 1.0f * playrho::Meter};
-    const auto p1 = playrho::Length2{pui1 * playrho::Meter, 2.0f * playrho::Meter};
-    const auto p2 = playrho::Length2{pui2 * playrho::Meter, 1.0f * playrho::Meter};
-    const auto p3 = playrho::Length2{pui3 * playrho::Meter, 2.0f * playrho::Meter};
-    
-    while (state.KeepRunning())
-    {
-        const auto aabb0 = playrho::AABB2D{p0, p1};
-        const auto aabb1 = playrho::AABB2D{p2, p3};
-        benchmark::DoNotOptimize(playrho::TestOverlap(aabb0, aabb1));
-        benchmark::DoNotOptimize(playrho::Contains(aabb0, aabb1));
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(std::hypot(val.first, val.second));
+        }
     }
 }
 
 // ----
 
+static void DoubleAdd(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0, 100.0);
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(val.first + val.second);
+        }
+    }
+}
+
+static void DoubleMul(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0, 100.0);
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(val.first * val.second);
+        }
+    }
+}
+
+static void DoubleDiv(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0, 100.0);
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(val.first / val.second);
+        }
+    }
+}
+
+static void DoubleSqrt(benchmark::State& state)
+{
+    const auto vals = Rands(static_cast<unsigned>(state.range()), 0.0, 100.0);
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(std::sqrt(val));
+        }
+    }
+}
+
+static void DoubleSin(benchmark::State& state)
+{
+    const auto vals = Rands(static_cast<unsigned>(state.range()), -4.0, +4.0);
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(std::sin(val));
+        }
+    }
+}
+
+static void DoubleCos(benchmark::State& state)
+{
+    const auto vals = Rands(static_cast<unsigned>(state.range()), -4.0, +4.0);
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(std::cos(val));
+        }
+    }
+}
+
+static void DoubleSinCos(benchmark::State& state)
+{
+    const auto vals = Rands(static_cast<unsigned>(state.range()), -4.0, +4.0);
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            // If runtime of sin + cos = sin or cos then seemingly hardware
+            //   calculates both at same time and compiler knows that.
+            benchmark::DoNotOptimize(std::make_pair(std::sin(val), std::cos(val)));
+        }
+    }
+}
+
+static void DoubleAtan2(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0, 100.0);
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(std::atan2(val.first, val.second));
+        }
+    }
+}
+
+static void DoubleHypot(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0, 100.0);
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(std::hypot(val.first, val.second));
+        }
+    }
+}
+
+// ---
+
+static void AlmostEqual1(benchmark::State& state)
+{
+    const auto ulp = static_cast<int>(rand() % 8);
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            const auto x = val.first;
+            const auto y = val.second;
+            benchmark::DoNotOptimize((playrho::Abs(x - y) < (std::numeric_limits<float>::epsilon() * playrho::Abs(x + y) * ulp)) || playrho::AlmostZero(x - y));
+        }
+    }
+}
+
+static void AlmostEqual2(benchmark::State& state)
+{
+    const auto ulp = static_cast<unsigned>(rand() % 8);
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            const auto x = val.first;
+            const auto y = val.second;
+            // Accesses the floats as unsigned 32 bit ints and strips off the signbits.
+            const auto nX = (*reinterpret_cast<const std::uint32_t*>(&x)) & 0x7FFFFFF;
+            const auto nY = (*reinterpret_cast<const std::uint32_t*>(&y)) & 0x7FFFFFF;
+            // Checks if difference between the greater 32-bit unsigned int and the lesser is
+            // less than or equal to the ULP value.
+            benchmark::DoNotOptimize(((nX >= nY)? nX - nY: nY - nX) <= ulp);
+        }
+    }
+}
+
+static void ModuloViaTrunc(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(playrho::ModuloViaTrunc(val.first, val.second));
+        }
+    }
+}
+
+static void ModuloViaFmod(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(playrho::ModuloViaFmod(val.first, val.second));
+        }
+    }
+}
+
 static void LengthSquaredViaDotProduct(benchmark::State& state)
 {
-    const auto a = playrho::Real(15.91) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-    const auto b = playrho::Real(-4.1092) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-    const auto v1 = playrho::Vec2(a, b);
-    while (state.KeepRunning())
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
+    for (auto _: state)
     {
-        benchmark::DoNotOptimize(playrho::Dot(v1, v1));
+        for (const auto& val: vals)
+        {
+            const auto vec = playrho::Vec2(val.first, val.second);
+            benchmark::DoNotOptimize(playrho::Dot(vec, vec));
+        }
     }
 }
 
 static void GetLengthSquared(benchmark::State& state)
 {
-    const auto a = playrho::Real(15.91) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-    const auto b = playrho::Real(-4.1092) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-    while (state.KeepRunning())
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
+    for (auto _: state)
     {
-        benchmark::DoNotOptimize(playrho::GetLengthSquared(playrho::Vec2(a, b)));
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(playrho::GetLengthSquared(playrho::Vec2(val.first, val.second)));
+        }
     }
 }
 
 static void GetLength(benchmark::State& state)
 {
-    const auto a = playrho::Real(15.91) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-    const auto b = playrho::Real(-4.1092) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-    while (state.KeepRunning())
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
+    for (auto _: state)
     {
-        benchmark::DoNotOptimize(playrho::GetLength(playrho::Vec2(a, b)));
-    }
-}
-
-static void hypot(benchmark::State& state)
-{
-    const auto a = playrho::Real(15.91) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-    const auto b = playrho::Real(-4.1092) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-    while (state.KeepRunning())
-    {
-        benchmark::DoNotOptimize(std::hypot(a, b));
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(playrho::GetLength(playrho::Vec2(val.first, val.second)));
+        }
     }
 }
 
 static void UnitVectorFromVector(benchmark::State& state)
 {
-    const auto a = static_cast<float>(rand() - (RAND_MAX / 2)) * 22.93f / static_cast<float>(RAND_MAX);
-    const auto b = static_cast<float>(rand() - (RAND_MAX / 2)) * 91.1092f / static_cast<float>(RAND_MAX);
-    while (state.KeepRunning())
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
+    for (auto _: state)
     {
-        benchmark::DoNotOptimize(playrho::GetUnitVector(playrho::Vec2{a, b}));
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(playrho::GetUnitVector(playrho::Vec2{val.first, val.second}));
+        }
     }
 }
 
 static void UnitVectorFromVectorAndBack(benchmark::State& state)
 {
-    const auto a = static_cast<float>(rand() - (RAND_MAX / 2)) * 22.93f / static_cast<float>(RAND_MAX);
-    const auto b = static_cast<float>(rand() - (RAND_MAX / 2)) * 91.1092f / static_cast<float>(RAND_MAX);
-    while (state.KeepRunning())
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
+    for (auto _: state)
     {
-        benchmark::DoNotOptimize(playrho::GetVec2(playrho::GetUnitVector(playrho::Vec2{a, b})));
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(playrho::GetVec2(playrho::GetUnitVector(playrho::Vec2{val.first, val.second})));
+        }
     }
 }
 
 static void UnitVecFromAngle(benchmark::State& state)
 {
-    const auto a = static_cast<float>(rand()) * (23.1f * playrho::Radian * playrho::Pi / static_cast<float>(RAND_MAX));
-    while (state.KeepRunning())
+    // With angle modulo in the regular phase solver code it's unlikely to see angles
+    // outside of the range -2 * Pi to +2 * Pi.
+    const auto vals = Rands(static_cast<unsigned>(state.range()), -8.0f, +8.0f);
+    for (auto _: state)
     {
-        benchmark::DoNotOptimize(playrho::UnitVec2::Get(a));
+        for (const auto& val: vals)
+        {
+            // If runtime of sin + cos = sin or cos then seemingly hardware
+            //   calculates both at same time and compiler knows that.
+            benchmark::DoNotOptimize(playrho::UnitVec2::Get(val * playrho::Radian));
+        }
     }
 }
 
-static void DifferentSignsViaSignbit(benchmark::State& state)
+static void DiffSignsViaSignbit(benchmark::State& state)
 {
-    const auto a = static_cast<float>(rand() - (RAND_MAX / 2));
-    const auto b = static_cast<float>(rand() - (RAND_MAX / 2));
-    while (state.KeepRunning())
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -1.0f, 1.0f);
+    for (auto _: state)
     {
-        benchmark::DoNotOptimize(std::signbit(a) != std::signbit(b));
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(std::signbit(val.first) != std::signbit(val.second));
+        }
     }
 }
 
-static void DifferentSignsViaMultiplication(benchmark::State& state)
+static void DiffSignsViaMul(benchmark::State& state)
 {
-    const auto a = static_cast<float>(rand() - (RAND_MAX / 2));
-    const auto b = static_cast<float>(rand() - (RAND_MAX / 2));
-    while (state.KeepRunning())
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -1.0f, 1.0f);
+    for (auto _: state)
     {
-        benchmark::DoNotOptimize(a * b < 0.0f);
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(val.first * val.second < 0.0f);
+        }
     }
 }
-
-// ----
-
-static void FloatAddTwoRand(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        const auto a = 22.93f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-        const auto b = 91.1092f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-        benchmark::DoNotOptimize(a + b);
-    }
-}
-
-static void FloatMultTwoRand(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        const auto a = 22.93f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-        const auto b = 91.1092f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-        benchmark::DoNotOptimize(a * b);
-    }
-}
-
-static void FloatDivTwoRand(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        const auto a = 5.93f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-        const auto b = -4.1092f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-        benchmark::DoNotOptimize(a / b);
-    }
-}
-
-static void FloatSqrtTwoRand(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        const auto a = 15.91f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-        const auto b = 91.1092f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-        benchmark::DoNotOptimize(std::sqrt(a));
-        benchmark::DoNotOptimize(std::sqrt(b));
-    }
-}
-
-static void FloatSinTwoRand(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        const auto a = 15.91f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-        const auto b = -4.1092f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-        benchmark::DoNotOptimize(std::sin(a));
-        benchmark::DoNotOptimize(std::sin(b));
-    }
-}
-
-static void FloatCosTwoRand(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        const auto a = 15.91f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-        const auto b = -4.1092f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-        benchmark::DoNotOptimize(std::cos(a));
-        benchmark::DoNotOptimize(std::cos(b));
-    }
-}
-
-static void FloatAtan2TwoRand(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        const auto a = 15.91f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-        const auto b = -4.1092f * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-        benchmark::DoNotOptimize(std::atan2(a, b));
-        benchmark::DoNotOptimize(std::atan2(b, a));
-    }
-}
-
-static void FloatAlmostEqualThreeRand1(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        const auto x = static_cast<float>(rand() - (RAND_MAX / 2)) / static_cast<float>(RAND_MAX / 2);
-        const auto y = static_cast<float>(rand() - (RAND_MAX / 2)) / static_cast<float>(RAND_MAX / 2);
-        const auto ulp = static_cast<int>(rand() % 8);
-        benchmark::DoNotOptimize((playrho::Abs(x - y) <
-                                  (std::numeric_limits<float>::epsilon() *
-                                   playrho::Abs(x + y) * ulp)) || playrho::AlmostZero(x - y));
-    }
-}
-
-static void DoubleAddTwoRand(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        const auto a = 22.93 * static_cast<double>(rand()) / static_cast<double>(RAND_MAX);
-        const auto b = 91.1092 * static_cast<double>(rand()) / static_cast<double>(RAND_MAX);
-        benchmark::DoNotOptimize(a + b);
-    }
-}
-
-static void DoubleMultTwoRand(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        const auto a = 22.93 * static_cast<double>(rand()) / static_cast<double>(RAND_MAX);
-        const auto b = 91.1092 * static_cast<double>(rand()) / static_cast<double>(RAND_MAX);
-        benchmark::DoNotOptimize(a * b);
-    }
-}
-
-static void DoubleDivTwoRand(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        const auto a = 5.93 * static_cast<double>(rand()) / static_cast<double>(RAND_MAX);
-        const auto b = -4.1092 * static_cast<double>(rand()) / static_cast<double>(RAND_MAX);
-        benchmark::DoNotOptimize(a / b);
-    }
-}
-
-static void DoubleSqrtTwoRand(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        const auto a = 15.91 * static_cast<double>(rand()) / static_cast<double>(RAND_MAX);
-        const auto b = 91.1092 * static_cast<double>(rand()) / static_cast<double>(RAND_MAX);
-        benchmark::DoNotOptimize(std::sqrt(a));
-        benchmark::DoNotOptimize(std::sqrt(b));
-    }
-}
-
-static void DoubleSinTwoRand(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        const auto a = 15.91 * static_cast<double>(rand()) / static_cast<double>(RAND_MAX);
-        const auto b = -4.1092 * static_cast<double>(rand()) / static_cast<double>(RAND_MAX);
-        benchmark::DoNotOptimize(std::sin(a));
-        benchmark::DoNotOptimize(std::sin(b));
-    }
-}
-
-static void DoubleCosTwoRand(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        const auto a = 15.91 * static_cast<double>(rand()) / static_cast<double>(RAND_MAX);
-        const auto b = -4.1092 * static_cast<double>(rand()) / static_cast<double>(RAND_MAX);
-        benchmark::DoNotOptimize(std::cos(a));
-        benchmark::DoNotOptimize(std::cos(b));
-    }
-}
-
-static void DoubleAtan2TwoRand(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        const auto a = 15.91 * static_cast<double>(rand()) / static_cast<double>(RAND_MAX);
-        const auto b = -4.1092 * static_cast<double>(rand()) / static_cast<double>(RAND_MAX);
-        benchmark::DoNotOptimize(std::atan2(a, b));
-        benchmark::DoNotOptimize(std::atan2(b, a));
-    }
-}
-
-// ---
-
-static void LengthSquaredViaDotProductTwoRand(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        const auto a = playrho::Real(15.91) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-        const auto b = playrho::Real(-4.1092) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-        const auto v1 = playrho::Vec2(a, b);
-        benchmark::DoNotOptimize(playrho::Dot(v1, v1));
-    }
-}
-
-static void GetLengthSquaredTwoRand(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        const auto a = playrho::Real(15.91) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-        const auto b = playrho::Real(-4.1092) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-        benchmark::DoNotOptimize(playrho::GetLengthSquared(playrho::Vec2(a, b)));
-    }
-}
-
-static void GetLengthTwoRand(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        const auto a = playrho::Real(15.91) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-        const auto b = playrho::Real(-4.1092) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-        benchmark::DoNotOptimize(playrho::GetLength(playrho::Vec2(a, b)));
-    }
-}
-
-static void hypotTwoRand(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        const auto a = playrho::Real(15.91) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-        const auto b = playrho::Real(-4.1092) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-        benchmark::DoNotOptimize(std::hypot(a, b));
-    }
-}
-
-static void UnitVectorFromVectorTwoRand(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        const auto a = static_cast<float>(rand() - (RAND_MAX / 2)) * 22.93f / static_cast<float>(RAND_MAX);
-        const auto b = static_cast<float>(rand() - (RAND_MAX / 2)) * 91.1092f / static_cast<float>(RAND_MAX);
-        benchmark::DoNotOptimize(playrho::GetUnitVector(playrho::Vec2{a, b}));
-    }
-}
-
-static void UnitVectorFromVectorAndBackTwoRand(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        const auto a = static_cast<float>(rand() - (RAND_MAX / 2)) * 22.93f / static_cast<float>(RAND_MAX);
-        const auto b = static_cast<float>(rand() - (RAND_MAX / 2)) * 91.1092f / static_cast<float>(RAND_MAX);
-        benchmark::DoNotOptimize(playrho::GetVec2(playrho::GetUnitVector(playrho::Vec2{a, b})));
-    }
-}
-
-// ---
-
-static void TwoRandValues(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        benchmark::DoNotOptimize(playrho::Real(15.91) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX));
-        benchmark::DoNotOptimize(playrho::Real(-4.1092) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX));
-    }
-}
-
-static void ThreeRandValues(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        benchmark::DoNotOptimize(playrho::Real(15.91) * static_cast<playrho::Real>(rand()) /
-                                 static_cast<playrho::Real>(RAND_MAX));
-        benchmark::DoNotOptimize(playrho::Real(-4.1092) * static_cast<playrho::Real>(rand()) /
-                                 static_cast<playrho::Real>(RAND_MAX));
-        benchmark::DoNotOptimize(static_cast<float>(rand() - (RAND_MAX / 2)) /
-                                 static_cast<float>(RAND_MAX / 2));
-    }
-}
-
-static void FourRandValues(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        benchmark::DoNotOptimize(playrho::Real(15.91) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX));
-        benchmark::DoNotOptimize(playrho::Real(-4.1092) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX));
-        benchmark::DoNotOptimize(playrho::Real(81.91) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX));
-        benchmark::DoNotOptimize(playrho::Real(+0.1092) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX));
-    }
-}
-
-// ----
 
 static void DotProduct(benchmark::State& state)
 {
-    const auto a = playrho::Real(15.91) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-    const auto b = playrho::Real(-4.1092) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-    const auto v1 = playrho::Vec2(a, b);
-    const auto c = playrho::Real(81.91) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-    const auto d = playrho::Real(+0.1092) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-    const auto v2 = playrho::Vec2(c, d);
-    while (state.KeepRunning())
+    const auto vals = RandQuads(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
+    for (auto _: state)
     {
-        benchmark::DoNotOptimize(playrho::Dot(v1, v2));
+        for (const auto& val: vals)
+        {
+            const auto v1 = playrho::Vec2{std::get<0>(val), std::get<1>(val)};
+            const auto v2 = playrho::Vec2{std::get<2>(val), std::get<3>(val)};
+            benchmark::DoNotOptimize(playrho::Dot(v1, v2));
+        }
     }
 }
 
 static void CrossProduct(benchmark::State& state)
 {
-    const auto a = playrho::Real(15.91) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-    const auto b = playrho::Real(-4.1092) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-    const auto v1 = playrho::Vec2(a, b);
-    const auto c = playrho::Real(81.91) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-    const auto d = playrho::Real(+0.1092) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-    const auto v2 = playrho::Vec2(c, d);
-    while (state.KeepRunning())
+    const auto vals = RandQuads(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
+    for (auto _: state)
     {
-        benchmark::DoNotOptimize(playrho::Cross(v1, v2));
+        for (const auto& val: vals)
+        {
+            const auto v1 = playrho::Vec2{std::get<0>(val), std::get<1>(val)};
+            const auto v2 = playrho::Vec2{std::get<2>(val), std::get<3>(val)};
+            benchmark::DoNotOptimize(playrho::Cross(v1, v2));
+        }
+    }
+}
+
+static void AABB2D(benchmark::State& state)
+{
+    const auto vals = RandOctets(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            const auto p0 = playrho::Length2{std::get<0>(val) * playrho::Meter, std::get<1>(val) * playrho::Meter};
+            const auto p1 = playrho::Length2{std::get<2>(val) * playrho::Meter, std::get<3>(val) * playrho::Meter};
+            const auto p2 = playrho::Length2{std::get<4>(val) * playrho::Meter, std::get<5>(val) * playrho::Meter};
+            const auto p3 = playrho::Length2{std::get<6>(val) * playrho::Meter, std::get<7>(val) * playrho::Meter};
+            const auto aabb0 = playrho::AABB2D{p0, p1};
+            const auto aabb1 = playrho::AABB2D{p2, p3};
+            benchmark::DoNotOptimize(playrho::TestOverlap(aabb0, aabb1));
+            benchmark::DoNotOptimize(playrho::Contains(aabb0, aabb1));
+        }
     }
 }
 
 // ----
-
-static void DotProductFourRand(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        const auto a = playrho::Real(15.91) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-        const auto b = playrho::Real(-4.1092) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-        const auto v1 = playrho::Vec2(a, b);
-        const auto c = playrho::Real(81.91) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-        const auto d = playrho::Real(+0.1092) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-        const auto v2 = playrho::Vec2(c, d);
-        benchmark::DoNotOptimize(playrho::Dot(v1, v2));
-    }
-}
-
-static void CrossProductFourRand(benchmark::State& state)
-{
-    while (state.KeepRunning())
-    {
-        const auto a = playrho::Real(15.91) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-        const auto b = playrho::Real(-4.1092) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-        const auto v1 = playrho::Vec2(a, b);
-        const auto c = playrho::Real(81.91) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-        const auto d = playrho::Real(+0.1092) * static_cast<playrho::Real>(rand()) / static_cast<playrho::Real>(RAND_MAX);
-        const auto v2 = playrho::Vec2(c, d);
-        benchmark::DoNotOptimize(Cross(v1, v2));
-    }
-}
 
 static void MaxSepBetweenRelRectanglesNoStop(benchmark::State& state)
 {
@@ -692,7 +632,7 @@ static void MaxSepBetweenRelRectanglesNoStop(benchmark::State& state)
     const auto child0 = shape0.GetChild(0);
     const auto child1 = shape1.GetChild(0);
     
-    while (state.KeepRunning())
+    for (auto _: state)
     {
         benchmark::DoNotOptimize(playrho::GetMaxSeparation(child0, xfm0, child1, xfm1));
         benchmark::DoNotOptimize(playrho::GetMaxSeparation(child1, xfm1, child0, xfm0));
@@ -734,7 +674,7 @@ static void MaxSepBetweenRelRectangles(benchmark::State& state)
     const auto child1 = shape1.GetChild(0);
     const auto totalRadius = child0.GetVertexRadius() + child1.GetVertexRadius();
 
-    while (state.KeepRunning())
+    for (auto _: state)
     {
         benchmark::DoNotOptimize(playrho::GetMaxSeparation(child0, xfm0, child1, xfm1, totalRadius));
         benchmark::DoNotOptimize(playrho::GetMaxSeparation(child1, xfm1, child0, xfm0, totalRadius));
@@ -756,7 +696,7 @@ static void MaxSepBetweenRelRectangles2NoStop(benchmark::State& state)
     }; // top
     
     const auto child0 = shape.GetChild(0);
-    while (state.KeepRunning())
+    for (auto _: state)
     {
         benchmark::DoNotOptimize(playrho::GetMaxSeparation(child0, xfm0, child0, xfm1));
         benchmark::DoNotOptimize(playrho::GetMaxSeparation(child0, xfm1, child0, xfm0));
@@ -779,7 +719,7 @@ static void MaxSepBetweenRelRectangles2(benchmark::State& state)
     
     const auto child0 = shape.GetChild(0);
     const auto totalRadius = child0.GetVertexRadius() * playrho::Real(2);
-    while (state.KeepRunning())
+    for (auto _: state)
     {
         benchmark::DoNotOptimize(playrho::GetMaxSeparation(child0, xfm0, child0, xfm1, totalRadius));
         benchmark::DoNotOptimize(playrho::GetMaxSeparation(child0, xfm1, child0, xfm0, totalRadius));
@@ -820,7 +760,7 @@ static void MaxSepBetweenRel4x4(benchmark::State& state)
     const auto child0 = shape0.GetChild(0);
     const auto child1 = shape1.GetChild(0);
 
-    while (state.KeepRunning())
+    for (auto _: state)
     {
         benchmark::DoNotOptimize(playrho::GetMaxSeparation4x4(child0, xfm0, child1, xfm1));
         benchmark::DoNotOptimize(playrho::GetMaxSeparation4x4(child1, xfm1, child0, xfm0));
@@ -842,7 +782,7 @@ static void MaxSepBetweenRel2_4x4(benchmark::State& state)
     }; // top
     
     const auto child0 = shape.GetChild(0);
-    while (state.KeepRunning())
+    for (auto _: state)
     {
         benchmark::DoNotOptimize(playrho::GetMaxSeparation4x4(child0, xfm0, child0, xfm1));
         benchmark::DoNotOptimize(playrho::GetMaxSeparation4x4(child0, xfm1, child0, xfm0));
@@ -884,7 +824,7 @@ static void MaxSepBetweenAbsRectangles(benchmark::State& state)
     const auto child1 = shape1.GetChild(0);
     const auto totalRadius = child0.GetVertexRadius() + child1.GetVertexRadius();
     
-    while (state.KeepRunning())
+    for (auto _: state)
     {
         benchmark::DoNotOptimize(playrho::GetMaxSeparation(child0, child1, totalRadius));
         benchmark::DoNotOptimize(playrho::GetMaxSeparation(child1, child0, totalRadius));
@@ -923,7 +863,7 @@ static void ManifoldForTwoSquares1(benchmark::State& state)
     //      \4/
     //       +
 
-    while (state.KeepRunning())
+    for (auto _: state)
     {
         // CollideShapes(shape.GetChild(0), xfm0, shape.GetChild(0), xfm1);
         benchmark::DoNotOptimize(playrho::CollideShapes(shape.GetChild(0), xfm0, shape.GetChild(0), xfm1));
@@ -960,7 +900,7 @@ static void ManifoldForTwoSquares2(benchmark::State& state)
     //   |     +-+---------+
     //   +-------2
     //
-    while (state.KeepRunning())
+    for (auto _: state)
     {
         //CollideShapes(shape0.GetChild(0), xfm0, shape1.GetChild(0), xfm1);
         benchmark::DoNotOptimize(CollideShapes(shape0.GetChild(0), xfm0, shape1.GetChild(0), xfm1));
@@ -999,12 +939,13 @@ static void ConstructAndAssignVC(benchmark::State& state)
     auto bcB = playrho::BodyConstraint{invMass, invRotI, locB, posB, velB};
     
     auto vc = playrho::VelocityConstraint{};
-    while (state.KeepRunning())
+    for (auto _: state)
     {
         benchmark::DoNotOptimize(vc = playrho::VelocityConstraint{friction, restitution, tangentSpeed, worldManifold, bcA, bcB});
     }
 }
 
+#if 0
 static void malloc_free_random_size(benchmark::State& state)
 {
     auto sizes = std::array<size_t, 100>();
@@ -1015,7 +956,7 @@ static void malloc_free_random_size(benchmark::State& state)
 
     auto i = std::size_t{0};
     auto p = static_cast<void*>(nullptr);
-    while (state.KeepRunning())
+    for (auto _: state)
     {
         benchmark::DoNotOptimize(p = std::malloc(sizes[i]));
         std::free(p);
@@ -1031,7 +972,7 @@ static void random_malloc_free_100(benchmark::State& state)
         size = (static_cast<std::size_t>(std::rand()) % std::size_t{1ul << 18ul}) + std::size_t{1ul};
     }
     auto pointers = std::array<void*, 100>();
-    while (state.KeepRunning())
+    for (auto _: state)
     {
         auto ptr = std::begin(pointers);
         for (auto size: sizes)
@@ -1045,6 +986,7 @@ static void random_malloc_free_100(benchmark::State& state)
         }
     }
 }
+#endif
 
 static void SolveVC(benchmark::State& state)
 {
@@ -1078,32 +1020,68 @@ static void SolveVC(benchmark::State& state)
     auto bcB = playrho::BodyConstraint{invMass, invRotI, locB, posB, velB};
 
     auto vc = playrho::VelocityConstraint{friction, restitution, tangentSpeed, worldManifold, bcA, bcB};
-    while (state.KeepRunning())
+    for (auto _: state)
     {
         benchmark::DoNotOptimize(playrho::GaussSeidel::SolveVelocityConstraint(vc));
         benchmark::ClobberMemory();
     }
 }
 
-static void DefaultWorldStep(benchmark::State& state)
+static void WorldStep(benchmark::State& state)
 {
-    auto world = playrho::World{};
+    auto world = playrho::World{playrho::WorldDef{}.UseGravity(playrho::LinearAcceleration2{})};
     const auto stepConf = playrho::StepConf{};
-    while (state.KeepRunning())
+    for (auto _: state)
     {
         benchmark::DoNotOptimize(world.Step(stepConf));
     }
 }
 
+static void WorldStepWithStatsStatic(benchmark::State& state)
+{
+    auto world = playrho::World{playrho::WorldDef{}.UseGravity(playrho::LinearAcceleration2{})};
+    const auto stepConf = playrho::StepConf{};
+    auto stepStats = playrho::StepStats{};
+    const auto numBodies = state.range();
+    for (auto i = decltype(numBodies){0}; i < numBodies; ++i)
+    {
+        world.CreateBody(playrho::BodyDef{}.UseType(playrho::BodyType::Static));
+    }
+    for (auto _: state)
+    {
+        benchmark::DoNotOptimize(stepStats = world.Step(stepConf));
+    }
+}
+
+#if 0
+static void WorldStepWithStatsDynamicBodies(benchmark::State& state)
+{
+    auto world = playrho::World{playrho::WorldDef{}.UseGravity(playrho::LinearAcceleration2{})};
+    const auto stepConf = playrho::StepConf{};
+    auto stepStats = playrho::StepStats{};
+    const auto numBodies = state.range();
+    for (auto i = decltype(numBodies){0}; i < numBodies; ++i)
+    {
+        world.CreateBody(playrho::BodyDef{}.UseType(playrho::BodyType::Dynamic));
+    }
+    for (auto _: state)
+    {
+        benchmark::DoNotOptimize(stepStats = world.Step(stepConf));
+    }
+}
+#endif
+
 static void DropDisks(benchmark::State& state)
 {
     auto world = playrho::World{playrho::WorldDef{}.UseGravity(playrho::EarthlyGravity2D)};
 
-    const auto diskDef = playrho::DiskShape::Conf{}.UseVertexRadius(0.5f * playrho::Meter);
+    const auto diskRadius = 0.5f * playrho::Meter;
+    const auto diskDef = playrho::DiskShape::Conf{}.UseVertexRadius(diskRadius);
     const auto shape = std::make_shared<playrho::DiskShape>(diskDef);
-    for (auto i = 0; i < state.range(); ++i)
+    const auto numDisks = state.range();
+    for (auto i = decltype(numDisks){0}; i < numDisks; ++i)
     {
-        const auto x = i * 2 * playrho::Meter;
+        const auto x = i * diskRadius * 4;
         const auto location = playrho::Length2{x, 0 * playrho::Meter};
         const auto body = world.CreateBody(playrho::BodyDef{}
                                            .UseType(playrho::BodyType::Dynamic)
@@ -1112,7 +1090,7 @@ static void DropDisks(benchmark::State& state)
     }
 
     const auto stepConf = playrho::StepConf{};
-    while (state.KeepRunning())
+    for (auto _ : state)
     {
         benchmark::DoNotOptimize(world.Step(stepConf));
     }
@@ -1141,14 +1119,14 @@ static void AddPairStressTest(benchmark::State& state, int count)
     const auto minY = 4.0f;
     const auto maxY = 6.0f;
     const auto bd = playrho::BodyDef{}.UseType(playrho::BodyType::Dynamic);
-    while (state.KeepRunning())
+    for (auto _: state)
     {
         state.PauseTiming();
         auto world = playrho::World{worldDef};
         {
             for (auto i = 0; i < count; ++i)
             {
-                const auto location = playrho::Vec2(RandomFloat(minX, maxX), RandomFloat(minY, maxY)) * playrho::Meter;
+                const auto location = playrho::Vec2(Rand(minX, maxX), Rand(minY, maxY)) * playrho::Meter;
                 const auto body = world.CreateBody(playrho::BodyDef{bd}.UseLocation(location));
                 body->CreateFixture(diskShape);
             }
@@ -1249,7 +1227,7 @@ static void DropTiles(int count)
 static void TilesComesToRest(benchmark::State& state)
 {
     const auto range = state.range();
-    while (state.KeepRunning())
+    for (auto _: state)
     {
         DropTiles(range);
     }
@@ -1348,7 +1326,7 @@ static void TumblerAddSquaresForSteps(benchmark::State& state,
         -5 * playrho::Meter, +25 * playrho::Meter
     };
     const auto aabb = playrho::AABB2D{rangeX, rangeY};
-    while (state.KeepRunning())
+    for (auto _: state)
     {
         Tumbler tumbler;
         for (auto i = 0; i < squareAddingSteps; ++i)
@@ -1384,75 +1362,47 @@ static void TumblerAdd200SquaresPlus200Steps(benchmark::State& state)
         benchmark::RegisterBenchmark(n, f);
 #endif
 
-BENCHMARK(FloatAdd);
-BENCHMARK(FloatMult);
-BENCHMARK(FloatDiv);
+BENCHMARK(FloatAdd)->Arg(1000);
+BENCHMARK(FloatMul)->Arg(1000);
+BENCHMARK(FloatDiv)->Arg(1000);
+BENCHMARK(FloatSqrt)->Arg(1000);
+BENCHMARK(FloatSin)->Arg(1000);
+BENCHMARK(FloatCos)->Arg(1000);
+BENCHMARK(FloatSinCos)->Arg(1000);
+BENCHMARK(FloatAtan2)->Arg(1000);
+BENCHMARK(FloatHypot)->Arg(1000);
 
-BENCHMARK(FloatAlmostEqual1);
-BENCHMARK(FloatAlmostEqual2);
+BENCHMARK(DoubleAdd)->Arg(1000);
+BENCHMARK(DoubleMul)->Arg(1000);
+BENCHMARK(DoubleDiv)->Arg(1000);
+BENCHMARK(DoubleSqrt)->Arg(1000);
+BENCHMARK(DoubleSin)->Arg(1000);
+BENCHMARK(DoubleCos)->Arg(1000);
+BENCHMARK(DoubleSinCos)->Arg(1000);
+BENCHMARK(DoubleAtan2)->Arg(1000);
+BENCHMARK(DoubleHypot)->Arg(1000);
 
-BENCHMARK(DifferentSignsViaSignbit);
-BENCHMARK(DifferentSignsViaMultiplication);
+BENCHMARK(AlmostEqual1)->Arg(1000);
+BENCHMARK(AlmostEqual2)->Arg(1000);
+BENCHMARK(DiffSignsViaSignbit)->Arg(1000);
+BENCHMARK(DiffSignsViaMul)->Arg(1000);
+BENCHMARK(ModuloViaTrunc)->Arg(1000);
+BENCHMARK(ModuloViaFmod)->Arg(1000);
 
-BENCHMARK(FloatPositiveDivTrunc);
-BENCHMARK(NormalizeAngleViaTrunc);
-BENCHMARK(FloatPositiveDivModf);
-BENCHMARK(FloatPositiveFmod);
-BENCHMARK(NormalizeAngleViaFmod);
-BENCHMARK(FloatSqrt);
-BENCHMARK(FloatSin);
-BENCHMARK(FloatCos);
-BENCHMARK(FloatSinCos);
-BENCHMARK(FloatAtan2);
+BENCHMARK(DotProduct)->Arg(1000);
+BENCHMARK(CrossProduct)->Arg(1000);
+BENCHMARK(LengthSquaredViaDotProduct)->Arg(1000);
+BENCHMARK(GetLengthSquared)->Arg(1000);
+BENCHMARK(GetLength)->Arg(1000);
+BENCHMARK(UnitVectorFromVector)->Arg(1000);
+BENCHMARK(UnitVectorFromVectorAndBack)->Arg(1000);
+BENCHMARK(UnitVecFromAngle)->Arg(1000);
 
-BENCHMARK(AABB2D);
-
-BENCHMARK(DotProduct);
-BENCHMARK(CrossProduct);
-BENCHMARK(LengthSquaredViaDotProduct);
-BENCHMARK(GetLengthSquared);
-BENCHMARK(GetLength);
-BENCHMARK(hypot);
-BENCHMARK(UnitVectorFromVector);
-BENCHMARK(UnitVectorFromVectorAndBack);
-BENCHMARK(UnitVecFromAngle);
-
-BENCHMARK(TwoRandValues);
-
-BENCHMARK(FloatAddTwoRand);
-BENCHMARK(FloatMultTwoRand);
-BENCHMARK(FloatDivTwoRand);
-BENCHMARK(FloatSqrtTwoRand);
-BENCHMARK(FloatSinTwoRand);
-BENCHMARK(FloatCosTwoRand);
-BENCHMARK(FloatAtan2TwoRand);
-
-BENCHMARK(ThreeRandValues);
-BENCHMARK(FloatAlmostEqualThreeRand1);
-
-BENCHMARK(DoubleAddTwoRand);
-BENCHMARK(DoubleMultTwoRand);
-BENCHMARK(DoubleDivTwoRand);
-BENCHMARK(DoubleSqrtTwoRand);
-BENCHMARK(DoubleSinTwoRand);
-BENCHMARK(DoubleCosTwoRand);
-BENCHMARK(DoubleAtan2TwoRand);
-
-BENCHMARK(LengthSquaredViaDotProductTwoRand);
-BENCHMARK(GetLengthSquaredTwoRand);
-BENCHMARK(GetLengthTwoRand);
-BENCHMARK(hypotTwoRand);
-BENCHMARK(UnitVectorFromVectorTwoRand);
-BENCHMARK(UnitVectorFromVectorAndBackTwoRand);
-
-BENCHMARK(FourRandValues);
-
-BENCHMARK(DotProductFourRand);
-BENCHMARK(CrossProductFourRand);
+BENCHMARK(AABB2D)->Arg(1000);
+// BENCHMARK(malloc_free_random_size);
 
 BENCHMARK(ConstructAndAssignVC);
 BENCHMARK(SolveVC);
-BENCHMARK(DefaultWorldStep);
 
 BENCHMARK(MaxSepBetweenAbsRectangles);
 BENCHMARK(MaxSepBetweenRel4x4);
@@ -1465,11 +1415,15 @@ BENCHMARK(MaxSepBetweenRelRectangles2);
 BENCHMARK(ManifoldForTwoSquares1);
 BENCHMARK(ManifoldForTwoSquares2);
 
-BENCHMARK(malloc_free_random_size);
+BENCHMARK(WorldStep);
 
-BENCHMARK(DropDisks)->Arg(0)->Arg(1)->Arg(2)->Arg(10)->Arg(100)->Arg(1000);
+// Next two benchmarks can have a stddev time of some 20% between repeats.
+BENCHMARK(WorldStepWithStatsStatic)->Arg(0)->Arg(1)->Arg(10)->Arg(100)->Arg(1000)->Arg(10000);
+//BENCHMARK(WorldStepWithStatsDynamicBodies)->Arg(0)->Arg(1)->Arg(10)->Arg(100)->Arg(1000)->Arg(10000)->Repetitions(4);
 
-BENCHMARK(random_malloc_free_100);
+BENCHMARK(DropDisks)->Arg(0)->Arg(1)->Arg(10)->Arg(100)->Arg(1000)->Arg(10000);
+
+// BENCHMARK(random_malloc_free_100);
 
 BENCHMARK(TumblerAdd100SquaresPlus100Steps);
 BENCHMARK(TumblerAdd200SquaresPlus200Steps);
@@ -1477,4 +1431,12 @@ BENCHMARK(AddPairStressTest400)->Arg(0)->Arg(10)->Arg(15)->Arg(16)->Arg(17)->Arg
 
 BENCHMARK(TilesComesToRest)->Arg(12)->Arg(20)->Arg(36);
 
-BENCHMARK_MAIN()
+// BENCHMARK_MAIN()
+int main(int argc, char** argv)
+{
+    ::benchmark::Initialize(&argc, argv);
+    if (::benchmark::ReportUnrecognizedArguments(argc, argv)) return 1;
+    
+    std::srand(static_cast<unsigned>(std::time(0))); // use current time as seed for random generator
+    ::benchmark::RunSpecifiedBenchmarks();
+}

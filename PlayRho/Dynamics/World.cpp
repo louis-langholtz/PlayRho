@@ -575,6 +575,11 @@ World::~World()
 
 void World::Clear() noexcept
 {
+    m_proxyKeys.clear();
+    m_proxies.clear();
+    m_fixturesForProxies.clear();
+    m_bodiesForProxies.clear();
+
     for_each(cbegin(m_joints), cend(m_joints), [&](const Joint *j) {
         JointAtty::Destroy(j);
     });
@@ -1274,15 +1279,7 @@ RegStepStats World::SolveReg(const StepConf& conf)
                                          this, conf, island));
 #else
             const auto solverResults = SolveRegIslandViaGS(conf, island);
-            stats.maxIncImpulse = std::max(stats.maxIncImpulse, solverResults.maxIncImpulse);
-            stats.minSeparation = std::min(stats.minSeparation, solverResults.minSeparation);
-            if (solverResults.solved)
-            {
-                ++stats.islandsSolved;
-            }
-            stats.sumPosIters += solverResults.positionIterations;
-            stats.sumVelIters += solverResults.velocityIterations;
-            stats.bodiesSlept += solverResults.bodiesSlept;
+            Update(stats, solverResults);
 #endif
         }
     }
@@ -1291,15 +1288,7 @@ RegStepStats World::SolveReg(const StepConf& conf)
     for (auto&& future: futures)
     {
         const auto solverResults = future.get();
-        stats.maxIncImpulse = std::max(stats.maxIncImpulse, solverResults.maxIncImpulse);
-        stats.minSeparation = std::min(stats.minSeparation, solverResults.minSeparation);
-        if (solverResults.solved)
-        {
-            ++stats.islandsSolved;
-        }
-        stats.sumPosIters += solverResults.positionIterations;
-        stats.sumVelIters += solverResults.velocityIterations;
-        stats.bodiesSlept += solverResults.bodiesSlept;
+        Update(stats, solverResults);
     }
 #endif
 
@@ -1594,15 +1583,12 @@ ToiStepStats World::SolveToi(const StepConf& conf)
                 const auto solverResults = SolveToi(conf, *contact);
                 stats.minSeparation = std::min(stats.minSeparation, solverResults.minSeparation);
                 stats.maxIncImpulse = std::max(stats.maxIncImpulse, solverResults.maxIncImpulse);
-                if (solverResults.solved)
-                {
-                    ++stats.islandsSolved;
-                }
+                stats.islandsSolved += solverResults.solved;
+                stats.sumPosIters += solverResults.positionIterations;
+                stats.sumVelIters += solverResults.velocityIterations;
                 if ((solverResults.positionIterations > 0) || (solverResults.velocityIterations > 0))
                 {
                     ++islandsFound;
-                    stats.sumPosIters += solverResults.positionIterations;
-                    stats.sumVelIters += solverResults.velocityIterations;
                 }
                 stats.contactsUpdatedTouching += solverResults.contactsUpdated;
                 stats.contactsSkippedTouching += solverResults.contactsSkipped;

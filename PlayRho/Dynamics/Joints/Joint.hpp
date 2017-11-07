@@ -264,6 +264,15 @@ BodyConstraintPtr& At(std::unordered_map<const Body*, BodyConstraint*>& containe
 /// @brief Provides a human readable C-style string uniquely identifying the given limit state.
 const char* ToString(Joint::LimitState val) noexcept;
 
+/// @brief Increment motor speed.
+/// @details Template function for incrementally changing the motor speed of a joint that has
+///   the <code>SetMotorSpeed</code> and <code>GetMotorSpeed</code> methods.
+template <class T>
+inline void IncMotorSpeed(T& j, AngularVelocity delta)
+{
+    j.SetMotorSpeed(j.GetMotorSpeed() + delta);
+}
+
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_JOINT_HPP

@@ -139,14 +139,6 @@ namespace playrho
         // pos0 + (pos1 - pos0) * beta
         return pos0 + (pos1 - pos0) * beta;
     }
-
-    /// @brief Gets the "normalized" position.
-    /// @details Enforces a wrap-around of one rotation on the angular position.
-    /// @note Use to prevent unbounded angles in positions.
-    inline Position GetNormalized(const Position& val) noexcept
-    {
-        return Position{val.linear, GetNormalized(val.angular)};
-    }
     
 } // namespace playrho
 

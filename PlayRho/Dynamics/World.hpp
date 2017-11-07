@@ -398,6 +398,9 @@ private:
         TimestepIters velocityIterations = 0; ///< Velocity iterations actually performed.
     };
     
+    /// @brief Updates the given regular step statistics.
+    static RegStepStats& Update(RegStepStats& lhs, const IslandSolverResults& rhs) noexcept;
+
     /// @brief Copies bodies.
     void CopyBodies(std::map<const Body*, Body*>& bodyMap,
                     std::map<const Fixture*, Fixture*>& fixtureMap,
@@ -997,6 +1000,17 @@ inline void World::RegisterForProcessing(ProxyId pid) noexcept
 {
     assert(pid != DynamicTree::GetInvalidSize());
     m_proxies.push_back(pid);
+}
+
+inline RegStepStats& World::Update(RegStepStats& lhs, const World::IslandSolverResults& rhs) noexcept
+{
+    lhs.maxIncImpulse = std::max(lhs.maxIncImpulse, rhs.maxIncImpulse);
+    lhs.minSeparation = std::min(lhs.minSeparation, rhs.minSeparation);
+    lhs.islandsSolved += rhs.solved;
+    lhs.sumPosIters += rhs.positionIterations;
+    lhs.sumVelIters += rhs.velocityIterations;
+    lhs.bodiesSlept += rhs.bodiesSlept;
+    return lhs;
 }
 
 // Free functions.

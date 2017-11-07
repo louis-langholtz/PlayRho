@@ -27,71 +27,31 @@ namespace playrho {
 class Tumbler : public Test
 {
 public:
-
     static constexpr auto Count = 800;
-
-    enum class ShapeType
-    {
-        Square, Disk
-    };
-    
-    static Body* CreateEnclosure(World& world)
-    {
-        const auto b = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic)
-                                        .UseLocation(Vec2(0, 10) * 1_m)
-                                        .UseAllowSleep(false));
-        
-        PolygonShape shape;
-        shape.SetDensity(5_kgpm2);
-        SetAsBox(shape, 0.5_m, 10_m, Vec2( 10.0f, 0.0f) * 1_m, Angle{0});
-        b->CreateFixture(std::make_shared<PolygonShape>(shape));
-        SetAsBox(shape, 0.5_m, 10_m, Vec2(-10.0f, 0.0f) * 1_m, Angle{0});
-        b->CreateFixture(std::make_shared<PolygonShape>(shape));
-        SetAsBox(shape, 10_m, 0.5_m, Vec2(0.0f, 10.0f) * 1_m, Angle{0});
-        b->CreateFixture(std::make_shared<PolygonShape>(shape));
-        SetAsBox(shape, 10_m, 0.5_m, Vec2(0.0f, -10.0f) * 1_m, Angle{0});
-        b->CreateFixture(std::make_shared<PolygonShape>(shape));
-
-        return b;
-    }
-
-    static RevoluteJoint* CreateRevoluteJoint(World& world, Body* stable, Body* turn)
-    {
-        RevoluteJointDef jd;
-        jd.bodyA = stable;
-        jd.bodyB = turn;
-        jd.localAnchorA = Vec2(0.0f, 10.0f) * 1_m;
-        jd.localAnchorB = Length2{};
-        jd.referenceAngle = Angle{0};
-        jd.motorSpeed = Pi * 0.05_rad / 1_s;
-        jd.maxMotorTorque = 100000_Nm; // 1e8f;
-        jd.enableMotor = true;
-        return static_cast<RevoluteJoint*>(world.CreateJoint(jd));
-    }
     
     Tumbler()
     {
         m_square->SetDensity(1_kgpm2);
         m_disk->SetDensity(0.1_kgpm2);
-
-        const auto g = m_world.CreateBody(BodyDef{}.UseType(BodyType::Static));
-        const auto b = CreateEnclosure(m_world);
-        m_joint = CreateRevoluteJoint(m_world, g, b);
-        
+        SetupTumblers(1);
         RegisterForKey(GLFW_KEY_KP_ADD, GLFW_PRESS, 0, "Speed up rotation.", [&](KeyActionMods) {
-            m_joint->SetMotorSpeed(m_joint->GetMotorSpeed() + Pi * 0.01_rad / 1_s);
+            ForAll<RevoluteJoint>(m_world, [=](RevoluteJoint& j) { IncMotorSpeed(j, +MotorInc); });
         });
         RegisterForKey(GLFW_KEY_KP_SUBTRACT, GLFW_PRESS, 0, "Slow down rotation.", [&](KeyActionMods) {
-            m_joint->SetMotorSpeed(m_joint->GetMotorSpeed() - Pi * 0.01_rad / 1_s);
+            ForAll<RevoluteJoint>(m_world, [=](RevoluteJoint& j) { IncMotorSpeed(j, -MotorInc); });
         });
         RegisterForKey(GLFW_KEY_EQUAL, GLFW_PRESS, 0, "Stop rotation.", [&](KeyActionMods) {
-            m_joint->SetMotorSpeed(0_rad / 1_s);
+            ForAll<RevoluteJoint>(m_world, [=](RevoluteJoint& j) { j.SetMotorSpeed(0_rpm); });
         });
-        RegisterForKey(GLFW_KEY_0, GLFW_PRESS, 0, "for remaining emitted shapes to be disks.", [&](KeyActionMods) {
-            m_shapeType = ShapeType::Disk;
+        RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "for remaining emitted shapes to be disks.",
+                       [&](KeyActionMods) { m_shape = m_disk; });
+        RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "for remaining emitted shapes to be squares.",
+                       [&](KeyActionMods) { m_shape = m_square; });
+        RegisterForKey(GLFW_KEY_1, GLFW_PRESS, 0, "Restart with 1 tumbler.", [&](KeyActionMods) {
+            SetupTumblers(1);
         });
-        RegisterForKey(GLFW_KEY_1, GLFW_PRESS, 0, "for remaining emitted shapes to be squares.", [&](KeyActionMods) {
-            m_shapeType = ShapeType::Square;
+        RegisterForKey(GLFW_KEY_2, GLFW_PRESS, 0, "Restart with 2 tumblers.", [&](KeyActionMods) {
+            SetupTumblers(2);
         });
         RegisterForKey(GLFW_KEY_C, GLFW_PRESS, 0, "Clear and re-emit shapes.", [&](KeyActionMods) {
             std::vector<Body*> bodies;
@@ -110,49 +70,77 @@ public:
             m_count = 0;
         });
     }
-
-    Body* CreateBody()
+    
+    void SetupTumblers(unsigned int num)
     {
-        return m_world.CreateBody(BodyDef{}
-                            .UseType(BodyType::Dynamic)
-                            .UseLocation(Vec2(0, 10) * 1_m)
-                            .UseUserData(reinterpret_cast<void*>(1)));
+        m_world.Clear();
+        m_count = 0;
+
+        const auto width = 30_m;
+        const auto halfWidth = width / 2;
+        const auto totalWidth = num * width;
+        auto ctrX = halfWidth - (totalWidth / 2);
+        for (auto i = decltype(num){0}; i < num; ++i)
+        {
+            CreateRevoluteJoint(CreateEnclosure(Length2{ctrX, 20_m}));
+            ctrX += width;
+        }
     }
 
-    void AddSquare()
+    Body* CreateEnclosure(Length2 at)
     {
-        CreateBody()->CreateFixture(m_square);
+        const auto b = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic)
+                                          .UseLocation(at).UseAllowSleep(false));
+        auto shape = PolygonShape{PolygonShape::Conf{}.UseDensity(5_kgpm2)};
+        SetAsBox(shape, 0.5_m, 10_m, Vec2( 10,   0) * 1_m, 0_rad);
+        b->CreateFixture(std::make_shared<PolygonShape>(shape));
+        SetAsBox(shape, 0.5_m, 10_m, Vec2(-10,   0) * 1_m, 0_rad);
+        b->CreateFixture(std::make_shared<PolygonShape>(shape));
+        SetAsBox(shape, 10_m, 0.5_m, Vec2(  0,  10) * 1_m, 0_rad);
+        b->CreateFixture(std::make_shared<PolygonShape>(shape));
+        SetAsBox(shape, 10_m, 0.5_m, Vec2(  0, -10) * 1_m, 0_rad);
+        b->CreateFixture(std::make_shared<PolygonShape>(shape));
+        return b;
     }
     
-    void AddDisk()
+    RevoluteJoint* CreateRevoluteJoint(Body* turn)
     {
-        CreateBody()->CreateFixture(m_disk);
+        RevoluteJointDef jd;
+        jd.bodyA = m_world.CreateBody(BodyDef{}.UseLocation(GetLocation(*turn)));
+        jd.bodyB = turn;
+        jd.referenceAngle = 0_rad;
+        jd.motorSpeed = 1.5_rpm; // same as Pi*0.05_rad/s = 0.025 rev/s
+        jd.maxMotorTorque = 100000_Nm; // 1e8f;
+        jd.enableMotor = true;
+        return static_cast<RevoluteJoint*>(m_world.CreateJoint(jd));
+    }
+    
+    void CreateTumblee(Length2 at)
+    {
+        const auto b = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(at)
+                                          .UseUserData(reinterpret_cast<void*>(1)));
+        b->CreateFixture(m_shape);
     }
 
     void PostStep(const Settings& settings, Drawer&) override
     {
         if ((!settings.pause || settings.singleStep) && (m_count < Count))
         {
-            switch (m_shapeType)
-            {
-                case ShapeType::Square:
-                    AddSquare();
-                    break;
-                case ShapeType::Disk:
-                    AddDisk();
-                    break;
-            }
+            ForAll<RevoluteJoint>(m_world, [&](RevoluteJoint& j) {
+                CreateTumblee(GetLocation(*j.GetBodyB()));
+            });
             ++m_count;
+            m_status = std::string("Count = ") + std::to_string(m_count);
         }
     }
 
-    RevoluteJoint* m_joint;
-    ShapeType m_shapeType = ShapeType::Square;
+    const AngularVelocity MotorInc = 0.5_rpm;
     int m_count = 0;
     std::shared_ptr<PolygonShape> m_square = std::make_shared<PolygonShape>(0.125_m, 0.125_m);
     std::shared_ptr<DiskShape> m_disk = std::make_shared<DiskShape>(DiskShape::Conf{}
                                                                     .UseVertexRadius(0.125_m)
                                                                     .UseFriction(Real(0)));
+    std::shared_ptr<Shape> m_shape = m_square;
 };
 
 } // namespace playrho
