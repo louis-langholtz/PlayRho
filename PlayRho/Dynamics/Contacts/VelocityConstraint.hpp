@@ -30,7 +30,7 @@ namespace playrho {
     /// Contact velocity constraint.
     ///
     /// @note A valid contact velocity constraint must have a point count of either 1 or 2.
-    /// @note This data structure is 160-bytes large (on at least one 64-bit platform).
+    /// @note This data structure is 144-bytes large (on at least one 64-bit platform).
     ///
     /// @invariant The "K" value cannot be changed independent of: the total inverse mass,
     ///   the normal, and the point relative positions.
@@ -89,9 +89,6 @@ namespace playrho {
         
         /// @brief Gets the tangent.
         UnitVec2 GetTangent() const noexcept { return GetFwdPerpendicular(m_normal); }
-        
-        /// @brief Gets the inverse mass.
-        InvMass GetInvMass() const noexcept { return m_invMass; }
         
         /// Gets the count of points added to this object.
         /// @return Value between 0 and MaxManifoldPoints
@@ -277,8 +274,6 @@ namespace playrho {
         BodyConstraint* m_bodyB = nullptr; ///< Body B contact velocity constraint data.
         
         UnitVec2 m_normal = GetInvalid<UnitVec2>(); ///< Normal of the world manifold. 8-bytes.
-        
-        InvMass m_invMass = GetInvalid<InvMass>(); ///< Total inverse mass.
         
         /// Friction coefficient (4-bytes). Usually in the range of [0,1].
         Real m_friction = GetInvalid<Real>();

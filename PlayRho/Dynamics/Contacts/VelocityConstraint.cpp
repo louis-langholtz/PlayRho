@@ -78,7 +78,6 @@ VelocityConstraint::VelocityConstraint(Real friction, Real restitution,
                                        Conf conf):
     m_friction{friction}, m_restitution{restitution}, m_tangentSpeed{tangentSpeed},
     m_bodyA{&bA}, m_bodyB{&bB},
-    m_invMass{bA.GetInvMass() + bB.GetInvMass()},
     m_normal{worldManifold.GetNormal()}
 {
     assert(IsValid(friction));
@@ -135,10 +134,12 @@ VelocityConstraint::GetPoint(Momentum normalImpulse, Momentum tangentImpulse,
     const auto bodyA = GetBodyA();
     const auto bodyB = GetBodyB();
     
-    const auto invMass = GetInvMass();
     const auto invRotInertiaA = bodyA->GetInvRotInertia();
+    const auto invMassA = bodyA->GetInvMass();
     const auto invRotInertiaB = bodyB->GetInvRotInertia();
-    
+    const auto invMassB = bodyB->GetInvMass();
+    const auto invMass = invMassA + invMassB;
+
     Point point;
     point.normalImpulse = normalImpulse;
     point.tangentImpulse = tangentImpulse;
