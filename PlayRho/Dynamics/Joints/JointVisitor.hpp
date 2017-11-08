@@ -128,6 +128,34 @@ protected:
     JointVisitor& operator= (JointVisitor&& other) = default;
 };
 
+/// @brief Constant joint visitor interface class.
+class ConstJointVisitor: public JointVisitor
+{
+public:
+    void Visit(const RevoluteJoint& j) override = 0;
+    void Visit(RevoluteJoint& j) override { Visit(static_cast<const RevoluteJoint&>(j)); }
+    void Visit(const PrismaticJoint& j) override = 0;
+    void Visit(PrismaticJoint& j) override { Visit(static_cast<const PrismaticJoint&>(j)); }
+    void Visit(const DistanceJoint& j) override = 0;
+    void Visit(DistanceJoint& j) override { Visit(static_cast<const DistanceJoint&>(j)); }
+    void Visit(const PulleyJoint& j) override = 0;
+    void Visit(PulleyJoint& j) override { Visit(static_cast<const PulleyJoint&>(j)); }
+    void Visit(const MouseJoint& j) override = 0;
+    void Visit(MouseJoint& j) override { Visit(static_cast<const MouseJoint&>(j)); }
+    void Visit(const GearJoint& j) override = 0;
+    void Visit(GearJoint& j) override { Visit(static_cast<const GearJoint&>(j)); }
+    void Visit(const WheelJoint& j) override = 0;
+    void Visit(WheelJoint& j) override { Visit(static_cast<const WheelJoint&>(j)); }
+    void Visit(const WeldJoint& j) override = 0;
+    void Visit(WeldJoint& j) override { Visit(static_cast<const WeldJoint&>(j)); }
+    void Visit(const FrictionJoint& j) override = 0;
+    void Visit(FrictionJoint& j) override { Visit(static_cast<const FrictionJoint&>(j)); }
+    void Visit(const RopeJoint& j) override = 0;
+    void Visit(RopeJoint& j) override { Visit(static_cast<const RopeJoint&>(j)); }
+    void Visit(const MotorJoint& j) override = 0;
+    void Visit(MotorJoint& j) override { Visit(static_cast<const MotorJoint&>(j)); }
+};
+
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_JOINTVISITOR_HPP
