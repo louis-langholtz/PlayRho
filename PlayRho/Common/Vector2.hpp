@@ -54,6 +54,12 @@ namespace playrho
     /// @note Often used as a 2-dimensional force vector.
     using Force2 = Vector2<Force>;
     
+    /// @brief 2-element vector of Mass quantities.
+    using Mass2 = Vector2<Mass>;
+
+    /// @brief 2-element vector of InvMass quantities.
+    using InvMass2 = Vector2<InvMass>;
+    
     /// @brief 2-element vector of Momentum quantities.
     /// @note Often used as a 2-dimensional momentum vector.
     using Momentum2 = Vector2<Momentum>;

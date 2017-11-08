@@ -30,7 +30,7 @@ namespace playrho {
     /// Contact velocity constraint.
     ///
     /// @note A valid contact velocity constraint must have a point count of either 1 or 2.
-    /// @note This data structure is 144-bytes large (on at least one 64-bit platform).
+    /// @note This data structure is 136-bytes large (on at least one 64-bit platform).
     ///
     /// @invariant The "K" value cannot be changed independent of: the total inverse mass,
     ///   the normal, and the point relative positions.
@@ -260,15 +260,15 @@ namespace playrho {
         /// Block solver "K" info.
         /// @note Depends on the total inverse mass, the normal, and the point relative positions.
         /// @note Only used by block solver.
-        /// @note This field is 16-bytes (on at least one 64-bit platform).
-        InvMass22 m_K = InvMass22{};
+        /// @note This field is 12-bytes (on at least one 64-bit platform).
+        InvMass3 m_K = InvMass3{};
         
         /// Normal mass information.
         /// @details This is the cached inverse of the K value or the zero initialized value.
         /// @note Depends on the K value.
         /// @note Only used by block solver.
-        /// @note This field is 16-bytes (on at least one 64-bit platform).
-        Mass22 m_normalMass = Mass22{};
+        /// @note This field is 12-bytes (on at least one 64-bit platform).
+        Mass3 m_normalMass = Mass3{};
         
         BodyConstraint* m_bodyA = nullptr; ///< Body A contact velocity constraint data.
         BodyConstraint* m_bodyB = nullptr; ///< Body B contact velocity constraint data.
@@ -294,12 +294,18 @@ namespace playrho {
     
     inline InvMass22 VelocityConstraint::GetK() const noexcept
     {
-        return m_K;
+        return InvMass22{
+            InvMass2{Get<0>(m_K), Get<2>(m_K)},
+            InvMass2{Get<2>(m_K), Get<1>(m_K)}
+        };
     }
     
     inline Mass22 VelocityConstraint::GetNormalMass() const noexcept
     {
-        return m_normalMass;
+        return Mass22{
+            Mass2{Get<0>(m_normalMass), Get<2>(m_normalMass)},
+            Mass2{Get<2>(m_normalMass), Get<1>(m_normalMass)}
+        };
     }
     
     inline Length2 VelocityConstraint::GetPointRelPosA(VelocityConstraint::size_type index) const noexcept

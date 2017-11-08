@@ -27,7 +27,7 @@ namespace playrho {
 
 namespace {
 
-inline InvMass22 ComputeK(const VelocityConstraint& vc) noexcept
+inline InvMass3 ComputeK(const VelocityConstraint& vc) noexcept
 {
     assert(vc.GetPointCount() == 2);
 
@@ -65,7 +65,7 @@ inline InvMass22 ComputeK(const VelocityConstraint& vc) noexcept
     const auto k11 = invMass + invRotMassA1 + invRotMassB1;
     const auto k01 = invMass + invRotMassA + invRotMassB;
     
-    return InvMass22{Vector2<InvMass>{k00, k01}, Vector2<InvMass>{k01, k11}};
+    return InvMass3{k00, k11, k01};
 }
 
 } // anonymous namespace
@@ -101,9 +101,9 @@ VelocityConstraint::VelocityConstraint(Real friction, Real restitution,
         const auto k = ComputeK(*this);
         
         // Ensure a reasonable condition number.
-        const auto k00_squared = Square(Get<0>(Get<0>(k)));
-        const auto k00_times_k11 = Get<0>(Get<0>(k)) * Get<1>(Get<1>(k));
-        const auto k01_squared = Square(Get<1>(Get<0>(k)));
+        const auto k00_squared = Square(Get<0>(k));
+        const auto k00_times_k11 = Get<0>(k) * Get<1>(k);
+        const auto k01_squared = Square(Get<2>(k));
         const auto k_diff = k00_times_k11 - k01_squared;
         constexpr auto maxCondNum = PLAYRHO_MAGIC(Real(1000.0f));
         if (k00_squared < maxCondNum * k_diff)
@@ -111,7 +111,8 @@ VelocityConstraint::VelocityConstraint(Real friction, Real restitution,
             // K is safe to invert.
             // Prepare the block solver.
             m_K = k;
-            m_normalMass = Invert(k);
+            const auto normalMass = Invert(InvMass22{InvMass2{Get<0>(k), Get<2>(k)}, InvMass2{Get<2>(k), Get<1>(k)}});
+            m_normalMass = Mass3{Get<0>(Get<0>(normalMass)), Get<1>(Get<1>(normalMass)), Get<1>(Get<0>(normalMass))};
         }
         else
         {
