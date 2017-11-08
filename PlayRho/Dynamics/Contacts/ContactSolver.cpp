@@ -154,7 +154,7 @@ Optional<Momentum> BlockSolveNormalCase2(VelocityConstraint& vc, const LinearVel
     // vn2 = a21 * x1 + a22 * 0 + b2'
     //
     const auto newImpulses = Momentum2{
-        -GetNormalMassAtPoint(vc, 0) * Get<0>(b_prime), Momentum{0}
+        -GetNormalMassAtPoint(vc, 0) * Get<0>(b_prime), 0_Ns
     };
     const auto K = vc.GetK();
     const auto vn2 = Get<1>(Get<0>(K)) * Get<0>(newImpulses) + Get<1>(b_prime);
@@ -348,10 +348,10 @@ inline Momentum SeqSolveNormalConstraint(VelocityConstraint& vc)
         const auto directionalVel = LinearVelocity{Dot(closingVel, direction)};
         const auto lambda = Momentum{vcp.normalMass * (vcp.velocityBias - directionalVel)};
         const auto oldImpulse = vcp.normalImpulse;
-        const auto newImpulse = std::max(oldImpulse + lambda, Momentum{0});
+        const auto newImpulse = std::max(oldImpulse + lambda, 0_Ns);
 #if 0
         // Note: using AlmostEqual here results in increased iteration counts and is slower.
-        const auto incImpulse = AlmostEqual(newImpulse, oldImpulse)? Momentum{0}: newImpulse - oldImpulse;
+        const auto incImpulse = AlmostEqual(newImpulse, oldImpulse)? 0_Ns: newImpulse - oldImpulse;
 #else
         const auto incImpulse = newImpulse - oldImpulse;
 #endif
@@ -411,7 +411,7 @@ inline Momentum SolveTangentConstraint(VelocityConstraint& vc)
         const auto newImpulse = Clamp(oldImpulse + lambda, -maxImpulse, maxImpulse);
 #if 0
         // Note: using AlmostEqual here results in increased iteration counts and is slower.
-        const auto incImpulse = AlmostEqual(newImpulse, oldImpulse)? Momentum{0}: newImpulse - oldImpulse;
+        const auto incImpulse = AlmostEqual(newImpulse, oldImpulse)? 0_Ns: newImpulse - oldImpulse;
 #else
         const auto incImpulse = newImpulse - oldImpulse;
 #endif

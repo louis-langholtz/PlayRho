@@ -44,9 +44,6 @@ namespace playrho {
         
         /// @brief Size type.
         using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
-
-        /// @brief Index type.
-        using index_type = std::size_t;
         
         /// @brief Configuration data for velocity constraints.
         struct Conf
@@ -192,24 +189,24 @@ namespace playrho {
             Length2 relB = Length2{};
             
             /// Normal impulse.
-            Momentum normalImpulse = Momentum{0};
+            Momentum normalImpulse = 0_Ns;
             
             /// Tangent impulse.
-            Momentum tangentImpulse = Momentum{0};
+            Momentum tangentImpulse = 0_Ns;
             
             /// Normal mass.
             /// @note 0 or greater.
             /// @note Dependent on rA and rB.
-            Mass normalMass = Mass{0};
+            Mass normalMass = 0_kg;
             
             /// Tangent mass.
             /// @note 0 or greater.
             /// @note Dependent on rA and rB.
-            Mass tangentMass = Mass{0};
+            Mass tangentMass = 0_kg;
             
             /// Velocity bias.
             /// @note A product of the contact restitution.
-            LinearVelocity velocityBias = LinearVelocity{0};
+            LinearVelocity velocityBias = 0_mps;
         };
         
         /// Accesses the point identified by the given index.
@@ -445,7 +442,7 @@ namespace playrho {
     /// @brief Sets the tangent impulse at the given point of the given velocity constraint.
     inline void SetTangentImpulseAtPoint(VelocityConstraint& vc, VelocityConstraint::size_type index, Momentum value)
     {
-        vc.SetTangentImpulseAtPoint(index, value);        
+        vc.SetTangentImpulseAtPoint(index, value);
     }
     
     /// @brief Sets the normal impulses of the given velocity constraint.

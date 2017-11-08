@@ -104,7 +104,7 @@ private:
 /// @brief Gets the maximum normal impulse from the given contact impulses list.
 inline Momentum GetMaxNormalImpulse(const ContactImpulsesList& impulses) noexcept
 {
-    auto maxImpulse = Momentum(0);
+    auto maxImpulse = 0_Ns;
     const auto count = impulses.GetCount();
     for (auto i = decltype(count){0}; i < count; ++i)
     {
