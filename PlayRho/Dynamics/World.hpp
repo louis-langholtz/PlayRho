@@ -162,6 +162,7 @@ public:
     /// @return Pointer to newly created joint.
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws LengthError if this operation would create more than MaxJoints.
+    /// @throws InvalidArgument if the given definition is not allowed.
     /// @sa PhysicalEntities
     Joint* CreateJoint(const JointDef& def);
 
@@ -551,8 +552,9 @@ private:
     ProcessContactsOutput ProcessContactsForTOI(Island& island, Body& body, Real toi,
                                                 const StepConf& conf);
 
-    /// @brief Adds the given joint to this world and to the given bodies.
-    bool Add(Joint* j, Body* bodyA, Body* bodyB);
+    /// @brief Adds the given joint to this world.
+    /// @note This also adds the joint to the bodies of the joint.
+    bool Add(Joint* j);
 
     /// @brief Removes the given body from this world.
     bool Remove(const Body& b);

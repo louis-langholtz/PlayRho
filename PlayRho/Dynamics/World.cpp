@@ -682,7 +682,7 @@ void World::CopyContacts(const std::map<const Body*, Body*>& bodyMap,
 void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
                        SizedRange<World::Joints::const_iterator> range)
 {
-    class JointCopier: public JointVisitor
+    class JointCopier: public ConstJointVisitor
     {
     public:
         
@@ -697,35 +697,15 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
             auto def = GetRevoluteJointDef(oldJoint);
             def.bodyA = bodyMap.at(def.bodyA);
             def.bodyB = bodyMap.at(def.bodyB);
-            const auto newJoint = JointAtty::Create(def);
-            if (newJoint != nullptr)
-            {
-                world.Add(newJoint, def.bodyA, def.bodyB);
-                jointMap[&oldJoint] = newJoint;
-            }
+            jointMap[&oldJoint] = Add(JointAtty::Create(def));
         }
         
-        void Visit(RevoluteJoint& oldJoint) override
-        {
-            Visit(const_cast<const RevoluteJoint&>(oldJoint));
-        }
-
         void Visit(const PrismaticJoint& oldJoint) override
         {
             auto def = GetPrismaticJointDef(oldJoint);
             def.bodyA = bodyMap.at(def.bodyA);
             def.bodyB = bodyMap.at(def.bodyB);
-            const auto newJoint = JointAtty::Create(def);
-            if (newJoint != nullptr)
-            {
-                world.Add(newJoint, def.bodyA, def.bodyB);
-                jointMap[&oldJoint] = newJoint;
-            }
-        }
-        
-        void Visit(PrismaticJoint& oldJoint) override
-        {
-            Visit(const_cast<const PrismaticJoint&>(oldJoint));
+            jointMap[&oldJoint] = Add(JointAtty::Create(def));
         }
 
         void Visit(const DistanceJoint& oldJoint) override
@@ -733,53 +713,23 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
             auto def = GetDistanceJointDef(oldJoint);
             def.bodyA = bodyMap.at(def.bodyA);
             def.bodyB = bodyMap.at(def.bodyB);
-            const auto newJoint = JointAtty::Create(def);
-            if (newJoint != nullptr)
-            {
-                world.Add(newJoint, def.bodyA, def.bodyB);
-                jointMap[&oldJoint] = newJoint;
-            }
+            jointMap[&oldJoint] = Add(JointAtty::Create(def));
         }
         
-        void Visit(DistanceJoint& oldJoint) override
-        {
-            Visit(const_cast<const DistanceJoint&>(oldJoint));
-        }
-
         void Visit(const PulleyJoint& oldJoint) override
         {
             auto def = GetPulleyJointDef(oldJoint);
             def.bodyA = bodyMap.at(def.bodyA);
             def.bodyB = bodyMap.at(def.bodyB);
-            const auto newJoint = JointAtty::Create(def);
-            if (newJoint != nullptr)
-            {
-                world.Add(newJoint, def.bodyA, def.bodyB);
-                jointMap[&oldJoint] = newJoint;
-            }
+            jointMap[&oldJoint] = Add(JointAtty::Create(def));
         }
         
-        void Visit(PulleyJoint& oldJoint) override
-        {
-            Visit(const_cast<const PulleyJoint&>(oldJoint));
-        }
-
         void Visit(const MouseJoint& oldJoint) override
         {
             auto def = GetMouseJointDef(oldJoint);
             def.bodyA = (def.bodyA)? bodyMap.at(def.bodyA): nullptr;
             def.bodyB = (def.bodyB)? bodyMap.at(def.bodyB): nullptr;
-            const auto newJoint = JointAtty::Create(def);
-            if (newJoint != nullptr)
-            {
-                world.Add(newJoint, def.bodyA, def.bodyB);
-                jointMap[&oldJoint] = newJoint;
-            }
-        }
-        
-        void Visit(MouseJoint& oldJoint) override
-        {
-            Visit(const_cast<const MouseJoint&>(oldJoint));
+            jointMap[&oldJoint] = Add(JointAtty::Create(def));
         }
         
         void Visit(const GearJoint& oldJoint) override
@@ -789,17 +739,7 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
             def.bodyB = bodyMap.at(def.bodyB);
             def.joint1 = jointMap.at(def.joint1);
             def.joint2 = jointMap.at(def.joint2);
-            const auto newJoint = JointAtty::Create(def);
-            if (newJoint != nullptr)
-            {
-                world.Add(newJoint, def.bodyA, def.bodyB);
-                jointMap[&oldJoint] = newJoint;
-            }
-        }
-        
-        void Visit(GearJoint& oldJoint) override
-        {
-            Visit(const_cast<const GearJoint&>(oldJoint));
+            jointMap[&oldJoint] = Add(JointAtty::Create(def));
         }
 
         void Visit(const WheelJoint& oldJoint) override
@@ -807,17 +747,7 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
             auto def = GetWheelJointDef(oldJoint);
             def.bodyA = bodyMap.at(def.bodyA);
             def.bodyB = bodyMap.at(def.bodyB);
-            const auto newJoint = JointAtty::Create(def);
-            if (newJoint != nullptr)
-            {
-                world.Add(newJoint, def.bodyA, def.bodyB);
-                jointMap[&oldJoint] = newJoint;
-            }
-        }
-    
-        void Visit(WheelJoint& oldJoint) override
-        {
-            Visit(const_cast<const WheelJoint&>(oldJoint));
+            jointMap[&oldJoint] = Add(JointAtty::Create(def));
         }
 
         void Visit(const WeldJoint& oldJoint) override
@@ -825,17 +755,7 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
             auto def = GetWeldJointDef(oldJoint);
             def.bodyA = bodyMap.at(def.bodyA);
             def.bodyB = bodyMap.at(def.bodyB);
-            const auto newJoint = JointAtty::Create(def);
-            if (newJoint != nullptr)
-            {
-                world.Add(newJoint, def.bodyA, def.bodyB);
-                jointMap[&oldJoint] = newJoint;
-            }
-        }
-        
-        void Visit(WeldJoint& oldJoint) override
-        {
-            Visit(const_cast<const WeldJoint&>(oldJoint));
+            jointMap[&oldJoint] = Add(JointAtty::Create(def));
         }
 
         void Visit(const FrictionJoint& oldJoint) override
@@ -843,17 +763,7 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
             auto def = GetFrictionJointDef(oldJoint);
             def.bodyA = bodyMap.at(def.bodyA);
             def.bodyB = bodyMap.at(def.bodyB);
-            const auto newJoint = JointAtty::Create(def);
-            if (newJoint != nullptr)
-            {
-                world.Add(newJoint, def.bodyA, def.bodyB);
-                jointMap[&oldJoint] = newJoint;
-            }
-        }
-        
-        void Visit(FrictionJoint& oldJoint) override
-        {
-            Visit(const_cast<const FrictionJoint&>(oldJoint));
+            jointMap[&oldJoint] = Add(JointAtty::Create(def));
         }
 
         void Visit(const RopeJoint& oldJoint) override
@@ -861,17 +771,7 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
             auto def = GetRopeJointDef(oldJoint);
             def.bodyA = bodyMap.at(def.bodyA);
             def.bodyB = bodyMap.at(def.bodyB);
-            const auto newJoint = JointAtty::Create(def);
-            if (newJoint != nullptr)
-            {
-                world.Add(newJoint, def.bodyA, def.bodyB);
-                jointMap[&oldJoint] = newJoint;
-            }
-        }
-        
-        void Visit(RopeJoint& oldJoint) override
-        {
-            Visit(const_cast<const RopeJoint&>(oldJoint));
+            jointMap[&oldJoint] = Add(JointAtty::Create(def));
         }
 
         void Visit(const MotorJoint& oldJoint) override
@@ -879,19 +779,15 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
             auto def = GetMotorJointDef(oldJoint);
             def.bodyA = bodyMap.at(def.bodyA);
             def.bodyB = bodyMap.at(def.bodyB);
-            const auto newJoint = JointAtty::Create(def);
-            if (newJoint != nullptr)
-            {
-                world.Add(newJoint, def.bodyA, def.bodyB);
-                jointMap[&oldJoint] = newJoint;
-            }
+            jointMap[&oldJoint] = Add(JointAtty::Create(def));
         }
         
-        void Visit(MotorJoint& oldJoint) override
+        Joint* Add(Joint* newJoint)
         {
-            Visit(const_cast<const MotorJoint&>(oldJoint));
+            world.Add(newJoint);
+            return newJoint;
         }
-        
+
         World& world;
         const std::map<const Body*, Body*> bodyMap;
         std::map<const Joint*, Joint*> jointMap;
@@ -1012,25 +908,27 @@ Joint* World::CreateJoint(const JointDef& def)
     
     // Note: creating a joint doesn't wake the bodies.
     const auto j = JointAtty::Create(def);
-    if (j != nullptr)
-    {
-        const auto bodyA = j->GetBodyA();
-        const auto bodyB = j->GetBodyB();
 
-        Add(j, bodyA, bodyB);
-        
-        // If the joint prevents collisions, then flag any contacts for filtering.
-        if ((!def.collideConnected) && (bodyA != nullptr) && (bodyB != nullptr))
-        {
-            FlagContactsForFiltering(*bodyA, *bodyB);
-        }
+    Add(j);
+ 
+    const auto bodyA = j->GetBodyA();
+    const auto bodyB = j->GetBodyB();
+
+    // If the joint prevents collisions, then flag any contacts for filtering.
+    if ((!def.collideConnected) && (bodyA != nullptr) && (bodyB != nullptr))
+    {
+        FlagContactsForFiltering(*bodyA, *bodyB);
     }
+    
     return j;
 }
 
-bool World::Add(Joint* j, Body* bodyA, Body* bodyB)
+bool World::Add(Joint* j)
 {
+    assert(j);
     m_joints.push_back(j);
+    const auto bodyA = j->GetBodyA();
+    const auto bodyB = j->GetBodyB();
     BodyAtty::Insert(bodyA, j);
     BodyAtty::Insert(bodyB, j);
     return true;

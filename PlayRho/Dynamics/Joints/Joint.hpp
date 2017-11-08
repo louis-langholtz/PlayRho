@@ -155,7 +155,7 @@ private:
         {
             return new OUT_TYPE(def);
         }
-        return nullptr;
+        throw InvalidArgument("definition not okay");
     }
     
     /// @brief Creates a new joint based on the given definition.
