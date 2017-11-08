@@ -371,7 +371,7 @@ namespace {
     ///   the velocity constraints.
     Momentum SolveVelocityConstraintsViaGS(VelocityConstraints& velConstraints)
     {
-        auto maxIncImpulse = Momentum{0};
+        auto maxIncImpulse = 0_Ns;
         for_each(begin(velConstraints), end(velConstraints), [&](VelocityConstraint& vc)
         {
             maxIncImpulse = std::max(maxIncImpulse, GaussSeidel::SolveVelocityConstraint(vc));
@@ -1768,7 +1768,7 @@ World::IslandSolverResults World::SolveToiViaGS(const StepConf& conf, Island& is
     // starting impulses were applied in the discrete solver.
 
     // Solve velocity constraints.
-    assert(results.maxIncImpulse == Momentum{0});
+    assert(results.maxIncImpulse == 0_Ns);
     results.velocityIterations = conf.toiVelocityIterations;
     for (auto i = decltype(conf.toiVelocityIterations){0}; i < conf.toiVelocityIterations; ++i)
     {

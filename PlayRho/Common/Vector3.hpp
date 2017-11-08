@@ -36,6 +36,12 @@ namespace playrho
     /// @note This data structure is 3 times the size of <code>Real</code> -
     ///   i.e. 12-bytes (with 4-byte Real).
     using Vec3 = Vector3<Real>;
+    
+    /// @brief 3-element vector of Mass quantities.
+    using Mass3 = Vector3<Mass>;
+    
+    /// @brief 3-element vector of InvMass quantities.
+    using InvMass3 = Vector3<InvMass>;
 
     /// An all zero Vec3 value.
     /// @see Vec3.

@@ -141,13 +141,13 @@ namespace playrho {
             /// @details This is the non-penetration impulse.
             /// @note This is only used for velocity constraint resolution.
             /// @note 4-bytes.
-            Momentum normalImpulse = 0;
+            Momentum normalImpulse = 0_Ns;
             
             /// @brief Tangent impulse.
             /// @details This is the friction impulse.
             /// @note This is only used for velocity constraint resolution.
             /// @note 4-bytes.
-            Momentum tangentImpulse = 0;
+            Momentum tangentImpulse = 0_Ns;
         };
         
         // For Circles type manifolds...
@@ -361,7 +361,7 @@ namespace playrho {
         /// @brief Sets the point impulses for the given index.
         void SetPointImpulses(size_type index, Momentum n, Momentum t)
         {
-            assert((index < m_pointCount) || (index < MaxManifoldPoints && n == Momentum{0} && t == Momentum{0}));
+            assert((index < m_pointCount) || (index < MaxManifoldPoints && n == 0_Ns && t == 0_Ns));
             m_points[index].normalImpulse = n;
             m_points[index].tangentImpulse = t;
         }
