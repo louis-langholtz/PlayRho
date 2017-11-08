@@ -153,7 +153,7 @@ VelocityConstraint::GetPoint(Momentum normalImpulse, Momentum tangentImpulse,
         const auto dv = GetContactRelVelocity(bodyA->GetVelocity(), relA,
                                               bodyB->GetVelocity(), relB);
         const auto vn = LinearVelocity{Dot(dv, GetNormal())};
-        return (vn < -conf.velocityThreshold)? -GetRestitution() * vn: LinearVelocity{0};
+        return (vn < -conf.velocityThreshold)? -GetRestitution() * vn: 0_mps;
     }();
     point.relA = relA;
     point.relB = relB;
@@ -161,13 +161,13 @@ VelocityConstraint::GetPoint(Momentum normalImpulse, Momentum tangentImpulse,
         const auto invRotMassA = invRotInertiaA * Square(Cross(relA, GetNormal())) / SquareRadian;
         const auto invRotMassB = invRotInertiaB * Square(Cross(relB, GetNormal())) / SquareRadian;
         const auto value = invMass + invRotMassA + invRotMassB;
-        return (value != InvMass{0})? Real{1} / value : Mass{0};
+        return (value != InvMass{0})? Real{1} / value : 0_kg;
     }();
     point.tangentMass = [&]() {
         const auto invRotMassA = invRotInertiaA * Square(Cross(relA, GetTangent())) / SquareRadian;
         const auto invRotMassB = invRotInertiaB * Square(Cross(relB, GetTangent())) / SquareRadian;
         const auto value = invMass + invRotMassA + invRotMassB;
-        return (value != InvMass{0})? Real{1} / value : Mass{0};
+        return (value != InvMass{0})? Real{1} / value : 0_kg;
     }();
 
     return point;

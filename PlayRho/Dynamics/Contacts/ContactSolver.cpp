@@ -53,9 +53,11 @@ struct VelocityPair
 /// This describes the change in impulse necessary for a solution.
 /// To apply this: let P = magnitude * direction, then
 ///   the change to body A's velocity is
-///   -Velocity{vc.GetBodyA()->GetInvMass() * P, Radian * vc.GetBodyA()->GetInvRotInertia() * Cross(vcp.relA, P)}
+///   -Velocity{vc.GetBodyA()->GetInvMass() * P,
+///       Radian * vc.GetBodyA()->GetInvRotInertia() * Cross(vcp.relA, P)}
 ///   the change to body B's velocity is
-///   +Velocity{vc.GetBodyB()->GetInvMass() * P, Radian * vc.GetBodyB()->GetInvRotInertia() * Cross(vcp.relB, P)}
+///   +Velocity{vc.GetBodyB()->GetInvMass() * P,
+///       Radian * vc.GetBodyB()->GetInvRotInertia() * Cross(vcp.relB, P)}
 ///   and the new impulse = oldImpulse + magnitude.
 ///
 struct ImpulseChange
@@ -117,7 +119,7 @@ Optional<Momentum> BlockSolveNormalCase1(VelocityConstraint& vc,
     //
     const auto normalMass = vc.GetNormalMass();
     const auto newImpulses = -Transform(b_prime, normalMass);
-    if ((newImpulses[0] >= Momentum{0}) && (newImpulses[1] >= Momentum{0}))
+    if ((newImpulses[0] >= 0_Ns) && (newImpulses[1] >= 0_Ns))
     {
         const auto max = BlockSolveUpdate(vc, newImpulses);
 
@@ -156,7 +158,7 @@ Optional<Momentum> BlockSolveNormalCase2(VelocityConstraint& vc, const LinearVel
     };
     const auto K = vc.GetK();
     const auto vn2 = Get<1>(Get<0>(K)) * Get<0>(newImpulses) + Get<1>(b_prime);
-    if ((Get<0>(newImpulses) >= Momentum{0}) && (vn2 >= LinearVelocity{0}))
+    if ((Get<0>(newImpulses) >= 0_Ns) && (vn2 >= 0_mps))
     {
         const auto max = BlockSolveUpdate(vc, newImpulses);
 
@@ -187,11 +189,11 @@ Optional<Momentum> BlockSolveNormalCase3(VelocityConstraint& vc, const LinearVel
     //   0 = a21 * 0 + a22 * x2 + b2'
     //
     const auto newImpulses = Momentum2{
-        Momentum{0}, -GetNormalMassAtPoint(vc, 1) * Get<1>(b_prime)
+        0_Ns, -GetNormalMassAtPoint(vc, 1) * Get<1>(b_prime)
     };
     const auto K = vc.GetK();
     const auto vn1 = Get<0>(Get<1>(K)) * Get<1>(newImpulses) + Get<0>(b_prime);
-    if ((Get<1>(newImpulses) >= Momentum{0}) && (vn1 >= LinearVelocity{0}))
+    if ((Get<1>(newImpulses) >= 0_Ns) && (vn1 >= 0_mps))
     {
         const auto max = BlockSolveUpdate(vc, newImpulses);
 
@@ -222,9 +224,9 @@ Optional<Momentum> BlockSolveNormalCase4(VelocityConstraint& vc, const LinearVel
     // vn2 = b2;
     const auto vn1 = Get<0>(b_prime);
     const auto vn2 = Get<1>(b_prime);
-    if ((vn1 >= LinearVelocity{0}) && (vn2 >= LinearVelocity{0}))
+    if ((vn1 >= 0_mps) && (vn2 >= 0_mps))
     {
-        return Optional<Momentum>{BlockSolveUpdate(vc, Momentum2{Momentum(0), Momentum(0)})};
+        return Optional<Momentum>{BlockSolveUpdate(vc, Momentum2{0_Ns, 0_Ns})};
     }
     return Optional<Momentum>{};
 }
@@ -322,7 +324,7 @@ inline Momentum BlockSolveNormalConstraint(VelocityConstraint& vc)
 
 inline Momentum SeqSolveNormalConstraint(VelocityConstraint& vc)
 {
-    auto maxIncImpulse = Momentum{0};
+    auto maxIncImpulse = 0_Ns;
     
     const auto direction = vc.GetNormal();
     const auto count = vc.GetPointCount();
@@ -379,7 +381,7 @@ inline Momentum SeqSolveNormalConstraint(VelocityConstraint& vc)
 
 inline Momentum SolveTangentConstraint(VelocityConstraint& vc)
 {
-    auto maxIncImpulse = Momentum{0};
+    auto maxIncImpulse = 0_Ns;
     
     const auto direction = vc.GetTangent();
     const auto friction = vc.GetFriction();
@@ -461,7 +463,7 @@ namespace GaussSeidel {
 
 Momentum SolveVelocityConstraint(VelocityConstraint& vc)
 {
-    auto maxIncImpulse = Momentum{0};
+    auto maxIncImpulse = 0_Ns;
     
     // Applies frictional changes to velocity.
     maxIncImpulse = std::max(maxIncImpulse, SolveTangentConstraint(vc));
