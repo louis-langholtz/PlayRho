@@ -275,6 +275,7 @@ inline void Fixture::ResetProxies() noexcept
     {
         m_proxies.asBuffer.reset();
     }
+    m_proxyCount = 0;
 }
 
 // Free functions...

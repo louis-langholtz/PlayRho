@@ -20,6 +20,7 @@
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyDef.hpp>
 #include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Collision/Shapes/DiskShape.hpp>
@@ -197,21 +198,36 @@ TEST(Body, CreateFixture)
 
 TEST(Body, SetEnabled)
 {
+    auto stepConf = StepConf{};
     World world;
     const auto body = world.CreateBody();
     const auto valid_shape = std::make_shared<DiskShape>(1_m);
     
-    ASSERT_NE(body->CreateFixture(valid_shape, FixtureDef{}), nullptr);
+    const auto fixture = body->CreateFixture(valid_shape, FixtureDef{});
+    ASSERT_NE(fixture, nullptr);
     ASSERT_TRUE(body->IsEnabled());
+    ASSERT_EQ(fixture->GetProxyCount(), 0u);
+
+    world.Step(stepConf);
+    EXPECT_EQ(fixture->GetProxyCount(), 1u);
 
     // Test that set enabled to flag already set is not a toggle
     body->SetEnabled(true);
     EXPECT_TRUE(body->IsEnabled());
+    EXPECT_EQ(fixture->GetProxyCount(), 1u);
 
     body->SetEnabled(false);
     EXPECT_FALSE(body->IsEnabled());
+    EXPECT_EQ(fixture->GetProxyCount(), 1u);
+
+    world.Step(stepConf);
+    EXPECT_EQ(fixture->GetProxyCount(), 0u);
+    
     body->SetEnabled(true);
     EXPECT_TRUE(body->IsEnabled());
+
+    world.Step(stepConf);
+    EXPECT_EQ(fixture->GetProxyCount(), 1u);
 }
 
 TEST(Body, SetFixedRotation)
