@@ -1120,8 +1120,7 @@ static void EntityUI(Body& b)
         auto v = b.IsEnabled();
         if (ImGui::Checkbox("Enabled", &v))
         {
-            // XXX lou: commented out because disabling/enabling causes problems ATM.
-            //b.SetEnabled(v);
+            b.SetEnabled(v);
         }
     }
     
