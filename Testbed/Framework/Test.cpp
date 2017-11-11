@@ -30,7 +30,7 @@ using namespace playrho;
 
 static void DrawCorner(Drawer& drawer, Length2 p, Length r, Angle a0, Angle a1, Color color)
 {
-    const auto angleDiff = GetRevRotationalAngle(a0, a1);
+    const auto angleDiff = GetDelta(a0, a1);
     auto lastAngle = 0_deg;
     for (auto angle = 5_deg; angle < angleDiff; angle += 5_deg)
     {

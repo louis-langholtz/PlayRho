@@ -60,7 +60,7 @@ public:
         auto centerY = Length{20_m + RowSize};
         {
             auto centerX = columnStart;
-            SetupDistanceJoint(Length2{centerX, centerY}); // ok
+            SetupDistanceJoint(Length2{centerX, centerY});
             centerX += ColumnSize;
             SetupFrictionJoint(Length2{centerX, centerY});
             centerX += ColumnSize;

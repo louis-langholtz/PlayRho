@@ -1298,8 +1298,9 @@ World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Isla
     for_each(cbegin(bodyConstraints), cend(bodyConstraints), [&](const BodyConstraint& bc) {
         const auto i = static_cast<size_t>(&bc - bodyConstraints.data());
         assert(i < bodyConstraints.size());
-        // Normalize position to avoid unbounded body angles.
-        UpdateBody(*island.m_bodies[i], GetNormalized(bc.GetPosition()), bc.GetVelocity());
+        // Could normalize position here to avoid unbounded angles but angular
+        // normalization isn't handled correctly by joints that constrain rotation.
+        UpdateBody(*island.m_bodies[i], bc.GetPosition(), bc.GetVelocity());
     });
     
     // XXX: Should contacts needing updating be updated now??

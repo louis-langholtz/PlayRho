@@ -251,7 +251,6 @@ void MotorJoint::SetLinearOffset(const Length2 linearOffset)
 
 void MotorJoint::SetAngularOffset(Angle angularOffset)
 {
-    angularOffset = GetNormalized(angularOffset);
     if (angularOffset != m_angularOffset)
     {
         m_angularOffset = angularOffset;
