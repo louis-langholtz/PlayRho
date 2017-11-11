@@ -1005,20 +1005,12 @@ constexpr inline T GetModuloPrev(T value, T count) noexcept
     return (value? value: count) - 1;
 }
 
-/// Gets the reverse (counter) clockwise rotational angle to go from angle 1 to angle 2.
-/// @note The given angles must be normalized between -Pi to Pi radians.
-/// @return Angular rotation in the counter clockwise direction to go from angle 1 to angle 2.
-constexpr inline Angle GetRevRotationalAngle(Angle a1, Angle a2) noexcept
-{
-    // If a1=90 * Degree and a2=45 * Degree then, 360 * Degree - (90 * Degree - 45) = 315 * Degree
-    // If a1=90 * Degree and a2=-90 * Degree then, 360 * Degree - (90 * Degree - -90 * Degree) = 180 * Degree
-    // If a1=45 * Degree and a2=90 * Degree then, 90 * Degree - 45 * Degree = 45 * Degree
-    // If a1=90 * Degree and a2=45 * Degree then, 360 * Degree - 45 * Degree - 90 * Degree = 235 * Degree
-    // If a1=-45 * Degree and a2=0 * Degree then, 45 * Degree
-    // If a1=-90 * Degree and a2=-100 * Degree then, 360 * Degree - (-90 * Degree - -100 * Degree) = 350 * Degree
-    // If a1=-100 * Degree and a2=-90 * Degree then, -90 * Degree - -100 * Degree = 10 * Degree
-    return (a1 > a2)? 360_deg - (a1 - a2): a2 - a1;
-}
+/// @brief Gets the shortest angular distance to go from angle 1 to angle 2.
+/// @details This gets the angle to rotate angle 1 by in order to get to angle 2 with the
+///   least amount of rotation.
+/// @return Angle between -Pi and Pi radians inclusively.
+/// @sa GetNormalized
+Angle GetDelta(Angle a1, Angle a2) noexcept;
 
 /// Gets the unit vector for the given value.
 /// @param value Value to get the unit vector for.

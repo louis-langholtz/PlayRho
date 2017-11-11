@@ -21,6 +21,24 @@
 
 namespace playrho {
 
+Angle GetDelta(Angle a1, Angle a2) noexcept
+{
+    a1 = GetNormalized(a1);
+    a2 = GetNormalized(a2);
+    const auto a12 = a2 - a1;
+    if (a12 > Pi * Radian)
+    {
+        // 190_deg becomes 190_deg - 360_deg = -170_deg
+        return a12 - 2 * Pi * Radian;
+    }
+    if (a12 < -Pi * Radian)
+    {
+        // -200_deg becomes -200_deg + 360_deg = 100_deg
+        return a12 + 2 * Pi * Radian;
+    }
+    return a12;
+}
+
 Length2 ComputeCentroid(const Span<const Length2>& vertices)
 {
     assert(vertices.size() >= 3);
