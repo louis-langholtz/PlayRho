@@ -142,6 +142,6 @@ TEST(FrictionJoint, WithDynamicCircles)
     EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / 1_m}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / 1_m}), +1.0, 0.01);
     EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / 1_m}), 0.0, 0.01);
-    EXPECT_EQ(b1->GetAngle(), Angle{0});
-    EXPECT_EQ(b2->GetAngle(), Angle{0});
+    EXPECT_EQ(b1->GetAngle(), 0_deg);
+    EXPECT_EQ(b2->GetAngle(), 0_deg);
 }

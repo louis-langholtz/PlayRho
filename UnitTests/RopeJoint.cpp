@@ -52,7 +52,7 @@ TEST(RopeJointDef, DefaultConstruction)
     
     EXPECT_EQ(def.localAnchorA, Length2(-1_m, 0_m));
     EXPECT_EQ(def.localAnchorB, Length2(+1_m, 0_m));
-    EXPECT_EQ(def.maxLength, Length{0});
+    EXPECT_EQ(def.maxLength, 0_m);
 }
 
 TEST(RopeJoint, ByteSize)
@@ -119,7 +119,7 @@ TEST(RopeJoint, GetRopeJointDef)
     
     EXPECT_EQ(cdef.localAnchorA, localAnchorA);
     EXPECT_EQ(cdef.localAnchorB, localAnchorB);
-    EXPECT_EQ(cdef.maxLength, Length{0});
+    EXPECT_EQ(cdef.maxLength, 0_m);
 }
 
 TEST(RopeJoint, WithDynamicCircles)
@@ -139,7 +139,7 @@ TEST(RopeJoint, WithDynamicCircles)
     EXPECT_EQ(GetY(b1->GetLocation()), 0_m);
     EXPECT_LT(GetX(b2->GetLocation()), +1_m);
     EXPECT_EQ(GetY(b2->GetLocation()), 0_m);
-    EXPECT_EQ(b1->GetAngle(), Angle{0});
-    EXPECT_EQ(b2->GetAngle(), Angle{0});
+    EXPECT_EQ(b1->GetAngle(), 0_deg);
+    EXPECT_EQ(b2->GetAngle(), 0_deg);
 }
 

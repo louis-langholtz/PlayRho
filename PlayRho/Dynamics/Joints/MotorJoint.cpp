@@ -218,12 +218,8 @@ bool MotorJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
     return solved;
 }
 
-bool MotorJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
-                                          const ConstraintSolverConf& conf) const
+bool MotorJoint::SolvePositionConstraints(BodyConstraintsMap&, const ConstraintSolverConf&) const
 {
-    NOT_USED(bodies);
-    NOT_USED(conf);
-
     return true;
 }
 
@@ -248,7 +244,6 @@ void MotorJoint::SetLinearOffset(const Length2 linearOffset)
     if (m_linearOffset != linearOffset)
     {
         m_linearOffset = linearOffset;
-
         GetBodyA()->SetAwake();
         GetBodyB()->SetAwake();
     }
@@ -256,10 +251,10 @@ void MotorJoint::SetLinearOffset(const Length2 linearOffset)
 
 void MotorJoint::SetAngularOffset(Angle angularOffset)
 {
+    angularOffset = GetNormalized(angularOffset);
     if (angularOffset != m_angularOffset)
     {
         m_angularOffset = angularOffset;
-
         GetBodyA()->SetAwake();
         GetBodyB()->SetAwake();
     }

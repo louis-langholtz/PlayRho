@@ -55,7 +55,7 @@ TEST(WheelJointDef, DefaultConstruction)
     EXPECT_EQ(def.localAxisA, UnitVec2::GetRight());
     EXPECT_FALSE(def.enableMotor);
     EXPECT_EQ(def.maxMotorTorque, Torque(0));
-    EXPECT_EQ(def.motorSpeed, AngularVelocity(0));
+    EXPECT_EQ(def.motorSpeed, 0_rpm);
     EXPECT_EQ(def.frequency, 2_Hz);
     EXPECT_EQ(def.dampingRatio, Real(0.7f));
 }
@@ -235,7 +235,7 @@ TEST(WheelJoint, GetWheelJointDef)
     EXPECT_EQ(cdef.localAxisA, UnitVec2::GetRight());
     EXPECT_FALSE(cdef.enableMotor);
     EXPECT_EQ(cdef.maxMotorTorque, Torque(0));
-    EXPECT_EQ(cdef.motorSpeed, AngularVelocity(0));
+    EXPECT_EQ(cdef.motorSpeed, 0_rpm);
     EXPECT_EQ(cdef.frequency, 2_Hz);
     EXPECT_EQ(cdef.dampingRatio, Real(0.7f));
 }
@@ -258,7 +258,7 @@ TEST(WheelJoint, WithDynamicCircles)
     EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);
     EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / Meter}), 0.0, 0.01);
-    EXPECT_EQ(b1->GetAngle(), Angle{0});
-    EXPECT_EQ(b2->GetAngle(), Angle{0});
+    EXPECT_EQ(b1->GetAngle(), 0_deg);
+    EXPECT_EQ(b2->GetAngle(), 0_deg);
     EXPECT_EQ(GetAngularVelocity(*joint), 0 * RadianPerSecond);
 }

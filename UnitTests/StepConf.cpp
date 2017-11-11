@@ -95,7 +95,7 @@ TEST(StepConf, maxRotation)
     ASSERT_GT(inc, Real(0));
     ASSERT_LT(inc, Real(1));
     const auto max_inc = inc * StepConf{}.maxRotation;
-    EXPECT_GT(max_inc, Angle(0));
+    EXPECT_GT(max_inc, 0_deg);
     EXPECT_LT(max_inc, DefaultAngularSlop / Real{2});
 #if 0
     std::cout << std::setprecision(std::numeric_limits<long double>::digits10 + 1);

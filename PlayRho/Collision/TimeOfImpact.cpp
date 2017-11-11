@@ -47,7 +47,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
     auto stats = TOIOutput::Stats{};
 
     assert(conf.tMax >= 0 && conf.tMax <=1);
-    assert(conf.tolerance > Length{0});
+    assert(conf.tolerance > 0_m);
 
     const auto totalRadius = proxyA.GetVertexRadius() + proxyB.GetVertexRadius();
     assert(conf.targetDepth < totalRadius);

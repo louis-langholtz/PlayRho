@@ -68,7 +68,7 @@ SeparationFinder SeparationFinder::Get(IndexPair3 indices,
             const auto deltaPoint = pointA - pointB;
             return SeparationFinder{
                 proxyA, proxyB,
-                (Dot(deltaPoint, normal) < Length{0})? -axis: axis,
+                (Dot(deltaPoint, normal) < 0_m)? -axis: axis,
                 localPoint, type
             };
         }
@@ -94,7 +94,7 @@ SeparationFinder SeparationFinder::Get(IndexPair3 indices,
             const auto deltaPoint = pointB - pointA;
             return SeparationFinder{
                 proxyA, proxyB,
-                (Dot(deltaPoint, normal) < Length{0})? -axis: axis,
+                (Dot(deltaPoint, normal) < 0_m)? -axis: axis,
                 localPoint, type
             };
         }

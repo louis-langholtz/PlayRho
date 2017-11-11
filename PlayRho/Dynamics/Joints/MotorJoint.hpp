@@ -79,6 +79,10 @@ public:
 
     /// @brief Sets the position correction factor in the range [0,1].
     void SetCorrectionFactor(Real factor);
+    
+    /// @brief Gets the angular error.
+    /// @note This is caluclated by the <code>InitVelocityConstraints</code> method.
+    Angle GetAngularError() const noexcept;
 
 private:
 
@@ -100,8 +104,8 @@ private:
     // Solver temp
     Length2 m_rA; ///< Relative A.
     Length2 m_rB; ///< Relative B.
-    Length2 m_linearError; ///< Linear error.
-    Angle m_angularError; ///< Angular error.
+    Length2 m_linearError = Length2{}; ///< Linear error.
+    Angle m_angularError = 0_deg; ///< Angular error.
     Mass22 m_linearMass; ///< 2x2 linear mass matrix in kilograms.
     RotInertia m_angularMass; ///< Angular mass.
 };
@@ -149,6 +153,11 @@ inline AngularMomentum MotorJoint::GetAngularReaction() const
 inline Real MotorJoint::GetCorrectionFactor() const noexcept
 {
     return m_correctionFactor;
+}
+
+inline Angle MotorJoint::GetAngularError() const noexcept
+{
+    return m_angularError;
 }
 
 } // namespace playrho

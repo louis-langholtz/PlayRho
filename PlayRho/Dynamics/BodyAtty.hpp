@@ -97,7 +97,7 @@ private:
             case BodyType::Static:
                 b.UnsetAwakeFlag();
                 b.m_underActiveTime = 0;
-                b.m_velocity = Velocity{LinearVelocity2{}, AngularVelocity{0}};
+                b.m_velocity = Velocity{LinearVelocity2{}, 0_rpm};
                 b.m_sweep.pos0 = b.m_sweep.pos1;
                 break;
         }

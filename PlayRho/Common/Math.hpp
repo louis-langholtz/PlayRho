@@ -119,6 +119,8 @@ inline auto Sqrt(Area t)
 #endif
 
 /// @brief Computes the arc-tangent of the given y and x values.
+/// @return Normalized angle - an angle between -Pi and Pi inclusively.
+/// @sa http://en.cppreference.com/w/cpp/numeric/math/atan2
 template<typename T>
 inline auto Atan2(T y, T x)
 {
@@ -126,6 +128,8 @@ inline auto Atan2(T y, T x)
 }
 
 /// @brief Computes the arc-tangent of the given y and x values.
+/// @return Normalized angle - an angle between -Pi and Pi inclusively.
+/// @sa http://en.cppreference.com/w/cpp/numeric/math/atan2
 template<>
 inline auto Atan2(double y, double x)
 {
@@ -336,19 +340,32 @@ inline auto ModuloViaTrunc(T dividend, T divisor) noexcept
 }
 
 /// @brief Gets the "normalized" value of the given angle.
+/// @return Angle between -Pi and Pi radians inclusively where 0 represents the positive X-axis.
+/// @sa Atan2
 inline Angle GetNormalized(Angle value) noexcept
 {
     constexpr auto oneRotationInRadians = Real{2 * Pi};
-    const auto angleInRadians = Real{value / Radian};
+    auto angleInRadians = Real{value / Radian};
 #if defined(NORMALIZE_ANGLE_VIA_FMOD)
     // Note: std::fmod appears slower than std::trunc.
     //   See Benchmark ModuloViaFmod for data.
-    return ModuloViaFmod(angleInRadians, oneRotationInRadians) * Radian;
+    angleInRadians = ModuloViaFmod(angleInRadians, oneRotationInRadians);
 #else
     // Note: std::trunc appears more than twice as fast as std::fmod.
     //   See Benchmark ModuloViaTrunc for data.
-    return ModuloViaTrunc(angleInRadians, oneRotationInRadians) * Radian;
+    angleInRadians = ModuloViaTrunc(angleInRadians, oneRotationInRadians);
 #endif
+    if (angleInRadians > Pi)
+    {
+        // 190_deg becomes 190_deg - 360_deg = -170_deg
+        angleInRadians -= Pi * 2;
+    }
+    else if (angleInRadians < -Pi)
+    {
+        // -200_deg becomes -200_deg + 360_deg = 100_deg
+        angleInRadians += Pi * 2;
+    }
+    return angleInRadians * Radian;
 }
 
 /// @brief Gets the "normalized" position.
@@ -1000,7 +1017,7 @@ constexpr inline Angle GetRevRotationalAngle(Angle a1, Angle a2) noexcept
     // If a1=-45 * Degree and a2=0 * Degree then, 45 * Degree
     // If a1=-90 * Degree and a2=-100 * Degree then, 360 * Degree - (-90 * Degree - -100 * Degree) = 350 * Degree
     // If a1=-100 * Degree and a2=-90 * Degree then, -90 * Degree - -100 * Degree = 10 * Degree
-    return (a1 > a2)? Angle(Real{360} * Degree) - (a1 - a2): a2 - a1;
+    return (a1 > a2)? 360_deg - (a1 - a2): a2 - a1;
 }
 
 /// Gets the unit vector for the given value.
@@ -1062,7 +1079,7 @@ inline UnitVec2 GetUnitVector(Vector2<LinearVelocity> value, LinearVelocity& mag
 
 /// @brief Gets the vertices for a circle described by the given parameters.
 std::vector<Length2> GetCircleVertices(Length radius, unsigned slices,
-                                        Angle start = Angle{0}, Real turns = Real{1});
+                                        Angle start = 0_deg, Real turns = Real{1});
 
 /// @brief Gets the area of a cirlce.
 NonNegative<Area> GetAreaOfCircle(Length radius);

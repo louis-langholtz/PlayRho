@@ -108,7 +108,7 @@ namespace playrho {
                                                                .UseFriction(Real(0)));
             
             auto angleIncrement = 90_deg;
-            auto angle = Angle(0);
+            auto angle = 0_deg;
             const auto alpha = diskRadius;
             const auto beta = 0.000125_m / Degree;
             for (auto i = 0; i < 2000; ++i)

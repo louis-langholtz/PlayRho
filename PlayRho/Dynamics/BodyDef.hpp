@@ -106,13 +106,13 @@ namespace playrho {
         Length2 location = Length2{};
         
         /// The world angle of the body.
-        Angle angle = Angle{0};
+        Angle angle = 0_deg;
         
         /// The linear velocity of the body's origin in world co-ordinates (in m/s).
         LinearVelocity2 linearVelocity = LinearVelocity2{};
         
         /// The angular velocity of the body.
-        AngularVelocity angularVelocity = AngularVelocity{0};
+        AngularVelocity angularVelocity = 0_rpm;
         
         /// Initial linear acceleration of the body.
         /// @note Usually this should be 0.

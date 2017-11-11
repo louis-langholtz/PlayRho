@@ -54,7 +54,7 @@ TEST(PrismaticJoint, EnableLimit)
     EXPECT_FALSE(joint.IsLimitEnabled());
     joint.EnableLimit(true);
     EXPECT_TRUE(joint.IsLimitEnabled());
-    EXPECT_EQ(joint.GetMotorImpulse(), Momentum{0});
+    EXPECT_EQ(joint.GetMotorImpulse(), 0_Ns);
 
     EXPECT_EQ(GetMotorForce(joint, 1_Hz), 0 * Newton);
 
@@ -221,23 +221,23 @@ TEST(PrismaticJoint, WithDynamicCirclesAndLimitEnabled)
     const auto joint = static_cast<PrismaticJoint*>(world.CreateJoint(jd));
     ASSERT_NE(joint, nullptr);
     ASSERT_EQ(joint->GetLimitState(), Joint::e_inactiveLimit);
-    ASSERT_EQ(joint->GetLowerLimit(), Length(0));
-    ASSERT_EQ(joint->GetUpperLimit(), Length(0));
+    ASSERT_EQ(joint->GetLowerLimit(), 0_m);
+    ASSERT_EQ(joint->GetUpperLimit(), 0_m);
 
     Step(world, 1_s);
     EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
     EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);
     EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / Meter}), 0.0, 0.01);
-    EXPECT_EQ(b1->GetAngle(), Angle{0});
-    EXPECT_EQ(b2->GetAngle(), Angle{0});
-    EXPECT_EQ(joint->GetLowerLimit(), Length(0));
-    EXPECT_EQ(joint->GetUpperLimit(), Length(0));
+    EXPECT_EQ(b1->GetAngle(), 0_deg);
+    EXPECT_EQ(b2->GetAngle(), 0_deg);
+    EXPECT_EQ(joint->GetLowerLimit(), 0_m);
+    EXPECT_EQ(joint->GetUpperLimit(), 0_m);
     EXPECT_EQ(joint->GetLimitState(), Joint::e_equalLimits);
     
     joint->SetLimits(0_m, 2_m);
     Step(world, 1_s);
-    EXPECT_EQ(joint->GetLowerLimit(), Length(0));
+    EXPECT_EQ(joint->GetLowerLimit(), 0_m);
     EXPECT_EQ(joint->GetUpperLimit(), 2_m);
     EXPECT_EQ(joint->GetLimitState(), Joint::e_atLowerLimit);
     

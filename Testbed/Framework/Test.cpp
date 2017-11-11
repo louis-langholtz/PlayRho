@@ -91,7 +91,7 @@ void ShapeDrawer::Visit(const EdgeShape& shape)
     if (skins)
     {
         const auto r = shape.GetVertexRadius();
-        if (r > Length{0})
+        if (r > 0_m)
         {
             const auto skinColor = Color{color.r * 0.6f, color.g * 0.6f, color.b * 0.6f};
             const auto worldNormal0 = GetFwdPerpendicular(GetUnitVector(v2 - v1));
@@ -118,7 +118,7 @@ void ShapeDrawer::Visit(const ChainShape& shape)
     {
         const auto v2 = Transform(shape.GetVertex(i), xf);
         drawer.DrawSegment(v1, v2, color);
-        if (skins && r > Length{0})
+        if (skins && r > 0_m)
         {
             const auto worldNormal0 = GetFwdPerpendicular(GetUnitVector(v2 - v1));
             const auto offset = worldNormal0 * r;
@@ -178,7 +178,7 @@ void ShapeDrawer::Draw(const DistanceProxy& shape)
     }
     else if (vertexCount == 1)
     {
-        DrawCorner(drawer, vertices[0], r, Angle{0}, 360_deg, skinColor);
+        DrawCorner(drawer, vertices[0], r, 0_deg, 360_deg, skinColor);
     }
 }
 
@@ -595,7 +595,7 @@ void Test::LaunchBomb(const Length2& position, const LinearVelocity2 linearVeloc
     }
 
     m_bomb = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(position).UseBullet(true));
-    m_bomb->SetVelocity(Velocity{linearVelocity, AngularVelocity{0}});
+    m_bomb->SetVelocity(Velocity{linearVelocity, 0_rpm});
 
     auto conf = DiskShape::Conf{};
     conf.vertexRadius = 0.3_m;

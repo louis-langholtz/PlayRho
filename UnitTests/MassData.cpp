@@ -39,7 +39,7 @@ TEST(MassData, DefaultConstruct)
 {
     MassData foo;
     EXPECT_EQ(foo.center, (Length2{}));
-    EXPECT_EQ(foo.mass, Mass(0));
+    EXPECT_EQ(foo.mass, 0_kg);
     EXPECT_EQ(foo.I, RotInertia(0));
 }
 
@@ -174,7 +174,7 @@ TEST(MassData, GetMassDataFreeFunctionForNoVertices)
     };
     const auto massData = GetMassData(vertexRadius, density, vertices);
     EXPECT_EQ(massData.center, (Length2{}));
-    EXPECT_EQ(massData.mass, Mass(0));
+    EXPECT_EQ(massData.mass, 0_kg);
     EXPECT_EQ(massData.I, RotInertia(0));
 }
 
@@ -263,15 +263,15 @@ TEST(MassData, GetForZeroVertexRadiusEdge)
     const auto v2 = Length2{+1_m, 0_m};
     const auto density = 2.1_kgpm2;
     auto conf = EdgeShape::Conf{};
-    conf.vertexRadius = Length{0};
+    conf.vertexRadius = 0_m;
     conf.density = density;
     const auto shape = EdgeShape(v1, v2, conf);
     const auto mass_data = shape.GetMassData();
     EXPECT_EQ(Real(Mass{mass_data.mass} / 1_kg), Real(0));
     EXPECT_NEAR(double(Real{RotInertia{mass_data.I} / (SquareMeter * 1_kg / SquareRadian)}),
                 0.0, 0.00001);
-    EXPECT_EQ(GetX(mass_data.center), Length{0});
-    EXPECT_EQ(GetY(mass_data.center), Length{0});
+    EXPECT_EQ(GetX(mass_data.center), 0_m);
+    EXPECT_EQ(GetY(mass_data.center), 0_m);
 }
 
 TEST(MassData, GetForSamePointedEdgeIsSameAsCircle)
@@ -368,8 +368,8 @@ TEST(MassData, GetForCenteredEdge)
         EXPECT_GE(mass_data.I, (polarMoment * density) / SquareRadian);
     }
     EXPECT_NEAR(double(Real(polarMoment / (SquareMeter * SquareMeter))), 5.6666665, 0.0007);
-    EXPECT_EQ(GetX(mass_data.center), Length(0));
-    EXPECT_EQ(GetY(mass_data.center), Length(0));
+    EXPECT_EQ(GetX(mass_data.center), 0_m);
+    EXPECT_EQ(GetY(mass_data.center), 0_m);
 }
 
 TEST(MassData, Equals)

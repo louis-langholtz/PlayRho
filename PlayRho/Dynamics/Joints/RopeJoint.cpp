@@ -81,7 +81,7 @@ void RopeJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     const auto uv = GetUnitVector(posDelta, m_length);
 
     const auto C = m_length - m_maxLength;
-    m_state = (C > Length{0})? e_atUpperLimit: e_inactiveLimit;
+    m_state = (C > 0_m)? e_atUpperLimit: e_inactiveLimit;
 
     if (m_length > conf.linearSlop)
     {
@@ -90,7 +90,7 @@ void RopeJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     else
     {
         m_u = UnitVec2::GetZero();
-        m_mass = Mass{0};
+        m_mass = 0_kg;
         m_impulse = 0;
         return;
     }
@@ -102,7 +102,7 @@ void RopeJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     const auto invRotMassB = InvMass{invRotInertiaB * Square(crB) / SquareRadian};
     const auto invMass = invMassA + invMassB + invRotMassA + invRotMassB;
 
-    m_mass = (invMass != InvMass{0}) ? Real{1} / invMass : Mass{0};
+    m_mass = (invMass != InvMass{0}) ? Real{1} / invMass : 0_kg;
 
     if (step.doWarmStart)
     {
@@ -143,11 +143,11 @@ bool RopeJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
 
     // Predictive constraint.
     const auto Cdot = LinearVelocity{Dot(m_u, vpDelta)}
-                    + ((C < Length{0})? LinearVelocity{step.GetInvTime() * C}: LinearVelocity{0});
+                    + ((C < 0_m)? LinearVelocity{step.GetInvTime() * C}: 0_mps);
 
     auto impulse = -m_mass * Cdot;
     const auto oldImpulse = m_impulse;
-    m_impulse = std::min(Momentum{0}, m_impulse + impulse);
+    m_impulse = std::min(0_Ns, m_impulse + impulse);
     impulse = m_impulse - oldImpulse;
 
     const auto P = impulse * m_u;
@@ -162,7 +162,7 @@ bool RopeJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     bodyConstraintA->SetVelocity(velA);
     bodyConstraintB->SetVelocity(velB);
     
-    return impulse == Momentum(0);
+    return impulse == 0_Ns;
 }
 
 bool RopeJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const
@@ -180,10 +180,10 @@ bool RopeJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
     const auto rB = Length2{Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB)};
     const auto posDelta = (posB.linear + rB) - (posA.linear + rA);
     
-    auto length = Length{0};
+    auto length = 0_m;
     const auto u = GetUnitVector(posDelta, length);
     
-    const auto C = Clamp(length - m_maxLength, Length{0}, conf.maxLinearCorrection);
+    const auto C = Clamp(length - m_maxLength, 0_m, conf.maxLinearCorrection);
 
     const auto impulse = -m_mass * C;
     const auto linImpulse = impulse * u;

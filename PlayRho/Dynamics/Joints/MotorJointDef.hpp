@@ -61,7 +61,7 @@ struct MotorJointDef : public JointBuilder<MotorJointDef>
     Length2 linearOffset = Length2{};
     
     /// @brief Angle of bodyB minus angle of bodyA.
-    Angle angularOffset = Angle{0};
+    Angle angularOffset = 0_deg;
     
     /// @brief Maximum motor force.
     NonNegative<Force> maxForce = NonNegative<Force>(1_N);

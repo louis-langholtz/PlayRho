@@ -55,6 +55,7 @@ namespace playrho {
     ///
     /// @sa Contact, PositionConstraint, VelocityConstraint
     /// @sa https://en.wikipedia.org/wiki/Convex_set
+    /// @sa http://box2d.org/files/GDC2007/GDC2007_Catto_Erin_Physics2.ppt
     ///
     class alignas(64) Manifold
     {

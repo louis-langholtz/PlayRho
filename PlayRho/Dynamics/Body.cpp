@@ -229,7 +229,7 @@ void Body::SetMassData(const MassData& massData)
 
 void Body::SetVelocity(const Velocity& velocity) noexcept
 {
-    if ((velocity.linear != LinearVelocity2{}) || (velocity.angular != AngularVelocity{0}))
+    if ((velocity.linear != LinearVelocity2{}) || (velocity.angular != 0_rpm))
     {
         if (!IsSpeedable())
         {
@@ -333,7 +333,7 @@ void Body::SetFixedRotation(bool flag)
         m_flags &= ~e_fixedRotationFlag;
     }
 
-    m_velocity.angular = AngularVelocity{0};
+    m_velocity.angular = 0_rpm;
 
     ResetMassData();
 }

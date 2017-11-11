@@ -99,7 +99,7 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     const auto deltaLocation = Length2{(posB.linear + m_rB) - (posA.linear + m_rA)};
 
     // Handle singularity.
-    auto length = Length{0};
+    auto length = 0_m;
     m_u = GetUnitVector(deltaLocation, length, UnitVec2::GetZero());
 
     const auto crAu = Length{Cross(m_rA, m_u)} / Radian;
@@ -109,9 +109,9 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     auto invMass = InvMass{invMassA + invRotMassA + invMassB + invRotMassB};
 
     // Compute the effective mass matrix.
-    m_mass = (invMass != InvMass{0}) ? Real{1} / invMass: Mass{0};
+    m_mass = (invMass != InvMass{0}) ? Real{1} / invMass: 0_kg;
 
-    if (m_frequency > Frequency{0})
+    if (m_frequency > 0_Hz)
     {
         const auto C = length - m_length; // L
 
@@ -127,7 +127,7 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
         // magic formulas
         const auto h = step.GetTime();
         const auto gamma = Mass{h * (d + h * k)}; // T (M T^-1 + T M T^-2) = M
-        m_invGamma = (gamma != Mass{0})? Real{1} / gamma: 0;
+        m_invGamma = (gamma != 0_kg)? Real{1} / gamma: 0;
         m_bias = C * h * k * m_invGamma; // L T M T^-2 M^-1 = L T^-1
 
         invMass += m_invGamma;
@@ -136,7 +136,7 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     else
     {
         m_invGamma = InvMass{0};
-        m_bias = LinearVelocity{0};
+        m_bias = 0_mps;
     }
 
     if (step.doWarmStart)
@@ -194,13 +194,13 @@ bool DistanceJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
     bodyConstraintA->SetVelocity(velA);
     bodyConstraintB->SetVelocity(velB);
 
-    return impulse == Momentum{0};
+    return impulse == 0_Ns;
 }
 
 bool DistanceJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
                                              const ConstraintSolverConf& conf) const
 {
-    if (m_frequency > Frequency{0})
+    if (m_frequency > 0_Hz)
     {
         // There is no position correction for soft distance constraints.
         return true;
@@ -224,7 +224,7 @@ bool DistanceJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
     const auto rB = Length2{Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB)};
     const auto relLoc = Length2{(posB.linear + rB) - (posA.linear + rA)};
 
-    auto length = Length{0};
+    auto length = 0_m;
     const auto u = GetUnitVector(relLoc, length);
     const auto deltaLength = length - m_length;
     const auto C = Clamp(deltaLength, -conf.maxLinearCorrection, conf.maxLinearCorrection);

@@ -39,7 +39,7 @@ public:
             m_spring1->SetMotorSpeed(m_speed);
         });
         RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Brake.", [&](KeyActionMods) {
-            m_spring1->SetMotorSpeed(AngularVelocity{0});
+            m_spring1->SetMotorSpeed(0_rpm);
         });
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Move Right.", [&](KeyActionMods) {
             m_spring1->SetMotorSpeed(-m_speed);
@@ -221,7 +221,7 @@ public:
 
             {
                 WheelJointDef jd(m_car, m_wheel1, m_wheel1->GetLocation(), axis);
-                jd.motorSpeed = AngularVelocity{0};
+                jd.motorSpeed = 0_rpm;
                 jd.maxMotorTorque = 20_Nm;
                 jd.enableMotor = true;
                 jd.frequency = m_hz;
@@ -230,7 +230,7 @@ public:
             }
             {
                 WheelJointDef jd(m_car, m_wheel2, m_wheel2->GetLocation(), axis);
-                jd.motorSpeed = AngularVelocity{0};
+                jd.motorSpeed = 0_rpm;
                 jd.maxMotorTorque = 10_Nm;
                 jd.enableMotor = false;
                 jd.frequency = m_hz;

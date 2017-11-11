@@ -118,7 +118,7 @@ TEST(Math, Square)
 
 TEST(Math, Atan2)
 {
-    EXPECT_EQ(Atan2(Real(0), Real(0)), Angle{0});
+    EXPECT_EQ(Atan2(Real(0), Real(0)), 0_deg);
     //EXPECT_EQ(Atan2(Real(1), Real(0)), 90_deg);
 }
 
@@ -714,19 +714,19 @@ TEST(Math, LengthFasterThanHypot)
 TEST(Math, GetCircleVertices)
 {
     {
-        const auto vertices = GetCircleVertices(Length{0}, 0);
+        const auto vertices = GetCircleVertices(0_m, 0);
         EXPECT_EQ(vertices, std::vector<Length2>());
     }
     {
-        const auto vertices = GetCircleVertices(Length{0}, 1);
+        const auto vertices = GetCircleVertices(0_m, 1);
         EXPECT_EQ(vertices, std::vector<Length2>({Length2{}, Length2{}}));
     }
     {
-        const auto vertices = GetCircleVertices(Length{0}, 2);
+        const auto vertices = GetCircleVertices(0_m, 2);
         EXPECT_EQ(vertices, std::vector<Length2>({Length2{}, Length2{}, Length2{}}));
     }
     {
-        const auto vertices = GetCircleVertices(Length{0}, 3);
+        const auto vertices = GetCircleVertices(0_m, 3);
         EXPECT_EQ(vertices, std::vector<Length2>({Length2{}, Length2{}, Length2{}, Length2{}}));
     }
     {

@@ -687,7 +687,7 @@ inline void Body::UnsetAwake() noexcept
     {
         UnsetAwakeFlag();
         m_underActiveTime = 0;
-        m_velocity = Velocity{LinearVelocity2{}, AngularVelocity{0}};
+        m_velocity = Velocity{LinearVelocity2{}, 0_rpm};
     }
 }
 
@@ -925,7 +925,7 @@ inline Position GetPosition1(const Body& body) noexcept
 inline Mass GetMass(const Body& body) noexcept
 {
     const auto invMass = body.GetInvMass();
-    return (invMass != InvMass{0})? Mass{Real{1} / invMass}: Mass{0};
+    return (invMass != InvMass{0})? Mass{Real{1} / invMass}: 0_kg;
 }
 
 /// @brief Sets the given linear acceleration of the given body.

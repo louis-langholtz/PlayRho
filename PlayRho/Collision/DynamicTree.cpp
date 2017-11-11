@@ -491,7 +491,7 @@ void DynamicTree::Rebalance(Size index)
 
 Length DynamicTree::ComputeTotalPerimeter() const noexcept
 {
-    auto totalPerimeter = Length{0};
+    auto totalPerimeter = 0_m;
     if (m_root != GetInvalidSize())
     {
         for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
@@ -856,7 +856,7 @@ void RayCast(const DynamicTree& tree, const RayCastInput& input,
         const auto center = GetCenter(aabb);
         const auto extents = GetExtents(aabb);
         const auto separation = Abs(Dot(v, p1 - center)) - Dot(abs_v, extents);
-        if (separation > Length{0})
+        if (separation > 0_m)
         {
             continue;
         }

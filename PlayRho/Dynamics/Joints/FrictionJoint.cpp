@@ -207,11 +207,8 @@ bool FrictionJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
     return solved;
 }
 
-bool FrictionJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const
+bool FrictionJoint::SolvePositionConstraints(BodyConstraintsMap&, const ConstraintSolverConf&) const
 {
-    NOT_USED(bodies);
-    NOT_USED(conf);
-
     return true;
 }
 

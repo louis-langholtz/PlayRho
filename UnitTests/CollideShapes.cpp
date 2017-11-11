@@ -394,8 +394,8 @@ TEST(CollideShapes, IdenticalOverlappingSquaresDim2)
     
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
     EXPECT_EQ(manifold.GetPoint(0).localPoint, (Vec2{-dim, +dim} * Meter)); // top left
-    EXPECT_EQ(manifold.GetPoint(0).normalImpulse, Momentum(0));
-    EXPECT_EQ(manifold.GetPoint(0).tangentImpulse, Momentum(0));
+    EXPECT_EQ(manifold.GetPoint(0).normalImpulse, 0_Ns);
+    EXPECT_EQ(manifold.GetPoint(0).tangentImpulse, 0_Ns);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_face);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexA, 0);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_vertex);
@@ -403,8 +403,8 @@ TEST(CollideShapes, IdenticalOverlappingSquaresDim2)
     
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(1));
     EXPECT_EQ(manifold.GetPoint(1).localPoint, (Vec2{-dim, -dim} * Meter)); // bottom left
-    EXPECT_EQ(manifold.GetPoint(1).normalImpulse, Momentum(0));
-    EXPECT_EQ(manifold.GetPoint(1).tangentImpulse, Momentum(0));
+    EXPECT_EQ(manifold.GetPoint(1).normalImpulse, 0_Ns);
+    EXPECT_EQ(manifold.GetPoint(1).tangentImpulse, 0_Ns);
     EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeA, ContactFeature::e_face);
     EXPECT_EQ(manifold.GetPoint(1).contactFeature.indexA, 0);
     EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeB, ContactFeature::e_vertex);
@@ -442,8 +442,8 @@ TEST(CollideShapes, IdenticalVerticalTouchingSquares)
     
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
     EXPECT_EQ(manifold.GetPoint(0).localPoint, Vec2(-2, -2) * Meter); // bottom left
-    EXPECT_EQ(manifold.GetPoint(0).normalImpulse, Momentum(0));
-    EXPECT_EQ(manifold.GetPoint(0).tangentImpulse, Momentum(0));
+    EXPECT_EQ(manifold.GetPoint(0).normalImpulse, 0_Ns);
+    EXPECT_EQ(manifold.GetPoint(0).tangentImpulse, 0_Ns);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_face);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexA, 1);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_vertex);
@@ -451,8 +451,8 @@ TEST(CollideShapes, IdenticalVerticalTouchingSquares)
     
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(1));
     EXPECT_EQ(manifold.GetPoint(1).localPoint, Vec2(+2, -2) * Meter); // bottom right
-    EXPECT_EQ(manifold.GetPoint(1).normalImpulse, Momentum(0));
-    EXPECT_EQ(manifold.GetPoint(1).tangentImpulse, Momentum(0));
+    EXPECT_EQ(manifold.GetPoint(1).normalImpulse, 0_Ns);
+    EXPECT_EQ(manifold.GetPoint(1).tangentImpulse, 0_Ns);
     EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeA, ContactFeature::e_face);
     EXPECT_EQ(manifold.GetPoint(1).contactFeature.indexA, 1);
     EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeB, ContactFeature::e_vertex);
@@ -490,8 +490,8 @@ TEST(CollideShapes, IdenticalHorizontalTouchingSquares)
     
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
     EXPECT_EQ(manifold.GetPoint(0).localPoint, Vec2(-2, +2) * Meter); // top left
-    EXPECT_EQ(manifold.GetPoint(0).normalImpulse, Momentum(0));
-    EXPECT_EQ(manifold.GetPoint(0).tangentImpulse, Momentum(0));
+    EXPECT_EQ(manifold.GetPoint(0).normalImpulse, 0_Ns);
+    EXPECT_EQ(manifold.GetPoint(0).tangentImpulse, 0_Ns);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_face);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexA, 0);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_vertex);
@@ -499,8 +499,8 @@ TEST(CollideShapes, IdenticalHorizontalTouchingSquares)
     
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(1));
     EXPECT_EQ(manifold.GetPoint(1).localPoint, Vec2(-2, -2) * Meter); // bottom left
-    EXPECT_EQ(manifold.GetPoint(1).normalImpulse, Momentum(0));
-    EXPECT_EQ(manifold.GetPoint(1).tangentImpulse, Momentum(0));
+    EXPECT_EQ(manifold.GetPoint(1).normalImpulse, 0_Ns);
+    EXPECT_EQ(manifold.GetPoint(1).tangentImpulse, 0_Ns);
     EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeA, ContactFeature::e_face);
     EXPECT_EQ(manifold.GetPoint(1).contactFeature.indexA, 0);
     EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeB, ContactFeature::e_vertex);
@@ -693,8 +693,8 @@ TEST(CollideShapes, SquareCornerTouchingSquareFaceAbove)
     EXPECT_NEAR(double(Real{GetX(manifold.GetPoint(0).localPoint) / Meter}), 2.0, 0.006); // top right shape A
     EXPECT_NEAR(double(Real{GetY(manifold.GetPoint(0).localPoint) / Meter}), 2.0, 0.004); // top right shape A
     
-    EXPECT_EQ(manifold.GetPoint(0).normalImpulse, Momentum(0));
-    EXPECT_EQ(manifold.GetPoint(0).tangentImpulse, Momentum(0));
+    EXPECT_EQ(manifold.GetPoint(0).normalImpulse, 0_Ns);
+    EXPECT_EQ(manifold.GetPoint(0).tangentImpulse, 0_Ns);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_vertex);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexA, 1); // Shape A top right vertex
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_face);
@@ -775,8 +775,8 @@ TEST(CollideShapes, HorizontalOverlappingRects1)
     
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
     EXPECT_EQ(manifold.GetPoint(0).localPoint, Vec2(Real(-3.0), Real(+1.5)) * Meter); // top left shape B
-    EXPECT_EQ(manifold.GetPoint(0).normalImpulse, Momentum(0));
-    EXPECT_EQ(manifold.GetPoint(0).tangentImpulse, Momentum(0));
+    EXPECT_EQ(manifold.GetPoint(0).normalImpulse, 0_Ns);
+    EXPECT_EQ(manifold.GetPoint(0).tangentImpulse, 0_Ns);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_face);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexA, 0);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_vertex);
@@ -784,8 +784,8 @@ TEST(CollideShapes, HorizontalOverlappingRects1)
     
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(1));
     EXPECT_EQ(manifold.GetPoint(1).localPoint, Vec2(Real(-3.0), Real(-1.5)) * Meter); // bottom left shape B
-    EXPECT_EQ(manifold.GetPoint(1).normalImpulse, Momentum(0));
-    EXPECT_EQ(manifold.GetPoint(1).tangentImpulse, Momentum(0));
+    EXPECT_EQ(manifold.GetPoint(1).normalImpulse, 0_Ns);
+    EXPECT_EQ(manifold.GetPoint(1).tangentImpulse, 0_Ns);
     EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeA, ContactFeature::e_face);
     EXPECT_EQ(manifold.GetPoint(1).contactFeature.indexA, 0);
     EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeB, ContactFeature::e_vertex);
@@ -915,8 +915,8 @@ TEST(CollideShapes, EdgeBelowPolygon)
     
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
     EXPECT_EQ(manifold.GetPoint(0).localPoint, Vec2(-1, -1) * Meter);
-    EXPECT_EQ(manifold.GetPoint(0).normalImpulse, Momentum(0));
-    EXPECT_EQ(manifold.GetPoint(0).tangentImpulse, Momentum(0));
+    EXPECT_EQ(manifold.GetPoint(0).normalImpulse, 0_Ns);
+    EXPECT_EQ(manifold.GetPoint(0).tangentImpulse, 0_Ns);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_face);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexA, 1);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_vertex);
@@ -924,8 +924,8 @@ TEST(CollideShapes, EdgeBelowPolygon)
     
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(1));
     EXPECT_EQ(manifold.GetPoint(1).localPoint, Vec2(+1, -1) * Meter);
-    EXPECT_EQ(manifold.GetPoint(1).normalImpulse, Momentum(0));
-    EXPECT_EQ(manifold.GetPoint(1).tangentImpulse, Momentum(0));
+    EXPECT_EQ(manifold.GetPoint(1).normalImpulse, 0_Ns);
+    EXPECT_EQ(manifold.GetPoint(1).tangentImpulse, 0_Ns);
     EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeA, ContactFeature::e_face);
     EXPECT_EQ(manifold.GetPoint(1).contactFeature.indexA, 1);
     EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeB, ContactFeature::e_vertex);
@@ -958,8 +958,8 @@ TEST(CollideShapes, EdgeAbovePolygon)
     
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
     EXPECT_EQ(manifold.GetPoint(0).localPoint, Vec2(+1, +1) * Meter);
-    EXPECT_EQ(manifold.GetPoint(0).normalImpulse, Momentum(0));
-    EXPECT_EQ(manifold.GetPoint(0).tangentImpulse, Momentum(0));
+    EXPECT_EQ(manifold.GetPoint(0).normalImpulse, 0_Ns);
+    EXPECT_EQ(manifold.GetPoint(0).tangentImpulse, 0_Ns);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_face);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexA, 0);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_vertex);
@@ -967,8 +967,8 @@ TEST(CollideShapes, EdgeAbovePolygon)
     
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(1));
     EXPECT_EQ(manifold.GetPoint(1).localPoint, Vec2(-1, +1) * Meter);
-    EXPECT_EQ(manifold.GetPoint(1).normalImpulse, Momentum(0));
-    EXPECT_EQ(manifold.GetPoint(1).tangentImpulse, Momentum(0));
+    EXPECT_EQ(manifold.GetPoint(1).normalImpulse, 0_Ns);
+    EXPECT_EQ(manifold.GetPoint(1).tangentImpulse, 0_Ns);
     EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeA, ContactFeature::e_face);
     EXPECT_EQ(manifold.GetPoint(1).contactFeature.indexA, 0);
     EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeB, ContactFeature::e_vertex);

@@ -127,7 +127,7 @@ void WeldJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
     GetZ(GetY(K)) = GetY(GetZ(K));
     GetZ(GetZ(K)) = StripUnit(ezz);
 
-    if (m_frequency > Frequency{0})
+    if (m_frequency > 0_Hz)
     {
         m_mass = GetInverse22(K);
 
@@ -158,13 +158,13 @@ void WeldJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
     {
         m_mass = GetInverse22(K);
         m_gamma = InvRotInertia{0};
-        m_bias = AngularVelocity{0};
+        m_bias = 0_rpm;
     }
     else
     {
         m_mass = GetSymInverse33(K);
         m_gamma = InvRotInertia{0};
-        m_bias = AngularVelocity{0};
+        m_bias = 0_rpm;
     }
 
     if (step.doWarmStart)
@@ -184,7 +184,7 @@ void WeldJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
     }
     else
     {
-        m_impulse = Vec3_zero;
+        m_impulse = Vec3{};
     }
 
     bodyConstraintA->SetVelocity(velA);
@@ -206,7 +206,7 @@ bool WeldJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     const auto invMassB = bodyConstraintB->GetInvMass();
     const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
 
-    if (m_frequency > Frequency{0})
+    if (m_frequency > 0_Hz)
     {
         const auto Cdot2 = velB.angular - velA.angular;
         
@@ -287,8 +287,8 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
     const auto rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA);
     const auto rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB);
 
-    auto positionError = Length{0};
-    auto angularError = Angle{0};
+    auto positionError = 0_m;
+    auto angularError = 0_deg;
 
     const auto exx = InvMass{
         invMassA + Square(GetY(rA)) * invRotInertiaA / SquareRadian +
@@ -323,12 +323,12 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
     GetZ(GetY(K)) = GetY(GetZ(K));
     GetZ(GetZ(K)) = StripUnit(ezz);
 
-    if (m_frequency > Frequency{0})
+    if (m_frequency > 0_Hz)
     {
         const auto C1 = Length2{(posB.linear + rB) - (posA.linear + rA)};
 
         positionError = GetLength(C1);
-        angularError = Angle{0};
+        angularError = 0_deg;
 
         const auto P = -Solve22(K, C1) * Kilogram;
         const auto LA = Cross(rA, P) / Radian;

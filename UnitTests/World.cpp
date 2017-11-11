@@ -1572,7 +1572,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
     auto distance = GetLength(position_diff);
 
     const auto angle = GetAngle(position_diff);
-    ASSERT_EQ(angle, Angle{0});
+    ASSERT_EQ(angle, 0_deg);
 
     auto lastpos1 = body1->GetLocation();
     auto lastpos2 = body2->GetLocation();
@@ -1732,8 +1732,8 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
     }
     ASSERT_EQ(body2->GetLocation(), body2pos);
 
-    ASSERT_EQ(body1->GetAngle(), Angle{0});
-    ASSERT_EQ(body2->GetAngle(), Angle{0});
+    ASSERT_EQ(body1->GetAngle(), 0_deg);
+    ASSERT_EQ(body2->GetAngle(), 0_deg);
     auto last_angle_1 = body1->GetAngle();
     auto last_angle_2 = body2->GetAngle();
 
@@ -1784,12 +1784,12 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
         ASSERT_EQ(count, decltype(world.GetContacts().size())(1));
 
         const auto v1 = body1->GetVelocity();
-        EXPECT_EQ(v1.angular, Angle{0} / 1_s);
+        EXPECT_EQ(v1.angular, 0_deg / 1_s);
         EXPECT_EQ(GetX(v1.linear), 0_mps);
         EXPECT_EQ(GetY(v1.linear), 0_mps);
 
         const auto v2 = body2->GetVelocity();
-        EXPECT_EQ(v2.angular, Angle{0} / 1_s);
+        EXPECT_EQ(v2.angular, 0_deg / 1_s);
         EXPECT_EQ(GetX(v2.linear), 0_mps);
         EXPECT_EQ(GetY(v2.linear), 0_mps);
 
@@ -1935,8 +1935,8 @@ TEST(World, CollidingDynamicBodies)
 
     EXPECT_TRUE(listener.touching);
     EXPECT_NEAR(double(time_contacting), double(time_collision), 0.02);
-    EXPECT_EQ(GetY(body_a->GetLocation()), Length{0});
-    EXPECT_EQ(GetY(body_b->GetLocation()), Length{0});
+    EXPECT_EQ(GetY(body_a->GetLocation()), 0_m);
+    EXPECT_EQ(GetY(body_b->GetLocation()), 0_m);
 
     const auto tolerance = x / 100;
     
@@ -2011,7 +2011,7 @@ TEST(World, TilesComesToRest)
             for (auto i = 0; i < N; ++i)
             {
                 auto shape = PolygonShape{conf};
-                SetAsBox(shape, a * Meter, a * Meter, position, Angle{0});
+                SetAsBox(shape, a * Meter, a * Meter, position, 0_deg);
                 ground->CreateFixture(std::make_shared<PolygonShape>(shape));
                 GetX(position) += 2.0f * a * Meter;
             }
@@ -2600,8 +2600,8 @@ TEST(World, MouseJointWontCauseTunnelling)
     
     const auto ball_body = world.CreateBody(body_def);
     ASSERT_NE(ball_body, nullptr);
-    ASSERT_EQ(GetX(ball_body->GetLocation()), Length{0});
-    ASSERT_EQ(GetY(ball_body->GetLocation()), Length{0});
+    ASSERT_EQ(GetX(ball_body->GetLocation()), 0_m);
+    ASSERT_EQ(GetY(ball_body->GetLocation()), 0_m);
     
     const auto ball_radius = Real(half_box_width / 4) * Meter;
     const auto object_shape = std::make_shared<PolygonShape>(ball_radius, ball_radius);
@@ -2740,7 +2740,7 @@ TEST(World, MouseJointWontCauseTunnelling)
                 const auto lt = Length2{right_edge_x * Meter, top_edge_y * Meter} - bpos;
                 const auto gt = bpos - Length2{left_edge_x * Meter, btm_edge_y * Meter};
                 
-                if (GetX(lt) <= Length{0} || GetY(lt) <= Length{0} || GetX(gt) <= Length{0} || GetY(gt) <= Length{0})
+                if (GetX(lt) <= 0_m || GetY(lt) <= 0_m || GetX(gt) <= 0_m || GetY(gt) <= 0_m)
                 {
                     if (!TestOverlap(container_aabb, ComputeAABB(*body)))
                     {
@@ -2864,7 +2864,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 
             if (loops > 50)
             {
-                if (GetX(mouse_joint->GetTarget()) < Length{0})
+                if (GetX(mouse_joint->GetTarget()) < 0_m)
                 {
                     if (GetX(ball_body->GetLocation()) >= GetX(last_pos))
                         break;                    
@@ -2874,7 +2874,7 @@ TEST(World, MouseJointWontCauseTunnelling)
                     if (GetX(ball_body->GetLocation()) <= GetX(last_pos))
                         break;
                 }
-                if (GetY(mouse_joint->GetTarget()) < Length{0})
+                if (GetY(mouse_joint->GetTarget()) < 0_m)
                 {
                     if (GetY(ball_body->GetLocation()) >= GetY(last_pos))
                         break;
@@ -3133,7 +3133,7 @@ TEST_P(VerticalStackTest, BoxesAtOriginalX)
 
 TEST_P(VerticalStackTest, EachBoxAboveLast)
 {
-    auto lasty = Length{0};
+    auto lasty = 0_m;
     for (auto&& box: boxes)
     {
         EXPECT_GT(GetY(box->GetLocation()), lasty + hdim);

@@ -42,10 +42,6 @@ namespace playrho
     
     /// @brief 3-element vector of InvMass quantities.
     using InvMass3 = Vector3<InvMass>;
-
-    /// An all zero Vec3 value.
-    /// @see Vec3.
-    constexpr auto Vec3_zero = Vec3{0, 0, 0};
     
     /// @brief Gets an invalid value for the Vec3 type.
     template <>

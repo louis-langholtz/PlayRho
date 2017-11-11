@@ -235,7 +235,7 @@ void GearJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
     }
     else
     {
-        m_impulse = Momentum{0};
+        m_impulse = 0_Ns;
     }
 
     bodyConstraintA->SetVelocity(velA);
@@ -287,7 +287,7 @@ bool GearJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     bodyConstraintC->SetVelocity(velC);
     bodyConstraintD->SetVelocity(velD);
     
-    return impulse == Momentum(0);
+    return impulse == 0_Ns;
 }
 
 bool GearJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const
@@ -307,7 +307,7 @@ bool GearJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
     const auto qC = UnitVec2::Get(posC.angular);
     const auto qD = UnitVec2::Get(posD.angular);
 
-    const auto linearError = Length{0};
+    const auto linearError = 0_m;
 
     Vec2 JvAC, JvBD;
     Real JwA, JwB, JwC, JwD;

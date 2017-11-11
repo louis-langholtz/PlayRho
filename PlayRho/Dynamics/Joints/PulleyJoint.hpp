@@ -101,7 +101,7 @@ private:
     Length m_constant; ///< Constant.
     
     // Solver shared (between calls to InitVelocityConstraints).
-    Momentum m_impulse = Momentum{0}; ///< Impulse.
+    Momentum m_impulse = 0_Ns; ///< Impulse.
 
     // Solver temp (recalculated every call to InitVelocityConstraints).
     UnitVec2 m_uA; ///< Unit vector A.

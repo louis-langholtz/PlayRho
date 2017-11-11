@@ -193,7 +193,7 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     }
     else
     {
-        m_impulse = Vec3_zero;
+        m_impulse = Vec3{};
         m_motorImpulse = 0;
     }
 
@@ -337,7 +337,7 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
     const auto fixedRotation = ((invRotInertiaA + invRotInertiaB) == InvRotInertia{0});
 
     // Solve angular limit constraint.
-    auto angularError = Angle{0};
+    auto angularError = 0_rad;
     if (m_enableLimit && m_limitState != e_inactiveLimit && !fixedRotation)
     {
         const auto angle = posB.angular - posA.angular - GetReferenceAngle();

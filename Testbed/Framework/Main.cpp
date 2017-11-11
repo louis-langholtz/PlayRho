@@ -1285,6 +1285,7 @@ static void EntityUI(const Manifold& m)
 
 using BodiesRange = SizedRange<World::Bodies::iterator>;
 using JointsRange = SizedRange<World::Joints::iterator>;
+using BodyJointsRange = SizedRange<Body::Joints::iterator>;
 using ContactsRange = SizedRange<World::Contacts::const_iterator>;
 using FixturesRange = SizedRange<Body::Fixtures::iterator>;
 using FixtureSet = Test::FixtureSet;
@@ -1293,6 +1294,8 @@ using BodySet = Test::BodySet;
 static void EntityUI(Contact& contact);
 static void EntityUI(Joint& e);
 static void CollectionUI(const ContactsRange& contacts);
+static void CollectionUI(const JointsRange& joints);
+static void CollectionUI(const BodyJointsRange& joints);
 
 static void CollectionUI(const FixturesRange& fixtures, const FixtureSet& selectedFixtures)
 {
@@ -1313,6 +1316,14 @@ static void EntityUI(Body& b, const FixtureSet& selectedFixtures)
 {
     EntityUI(b);
     {
+        const auto fixtures = b.GetFixtures();
+        if (ImGui::TreeNodeEx("Fixtures", 0, "Fixtures (%lu)", fixtures.size()))
+        {
+            CollectionUI(fixtures, selectedFixtures);
+            ImGui::TreePop();
+        }
+    }
+    {
         const auto contacts = b.GetContacts();
         if (ImGui::TreeNodeEx("Contacts", 0,
                               "Contacts (%lu)", contacts.size()))
@@ -1322,10 +1333,11 @@ static void EntityUI(Body& b, const FixtureSet& selectedFixtures)
         }
     }
     {
-        const auto fixtures = b.GetFixtures();
-        if (ImGui::TreeNodeEx("Fixtures", 0, "Fixtures (%lu)", fixtures.size()))
+        const auto joints = b.GetJoints();
+        if (ImGui::TreeNodeEx("Joints", 0,
+                              "Joints (%lu)", joints.size()))
         {
-            CollectionUI(fixtures, selectedFixtures);
+            CollectionUI(joints);
             ImGui::TreePop();
         }
     }
@@ -1378,6 +1390,22 @@ static void EntityUI(RevoluteJoint& j)
         if (ImGui::InputFloat("Max Mot. Torq. (N*m)", &v))
         {
             j.SetMaxMotorTorque(v * NewtonMeter);
+        }
+    }
+    {
+        const auto b = j.GetBodyA();
+        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(b->GetType())))
+        {
+            EntityUI(*b, FixtureSet{});
+            ImGui::TreePop();
+        }
+    }
+    {
+        const auto b = j.GetBodyB();
+        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(b->GetType())))
+        {
+            EntityUI(*b, FixtureSet{});
+            ImGui::TreePop();
         }
     }
 }
@@ -1483,6 +1511,7 @@ static void EntityUI(MouseJoint& j)
 
 static void EntityUI(GearJoint& j)
 {
+    ImGui::LabelText("Constant", "%.2e", static_cast<double>(j.GetConstant()));
     {
         auto v = static_cast<float>(j.GetRatio());
         if (ImGui::InputFloat("Ratio", &v))
@@ -1597,6 +1626,8 @@ static void EntityUI(RopeJoint& j)
 
 static void EntityUI(MotorJoint& j)
 {
+    ImGui::LabelText("Ang. Error (deg)", "%.2e",
+                     static_cast<double>(Real{j.GetAngularError() / Degree}));
     {
         const auto linOff = j.GetLinearOffset();
         auto x = static_cast<float>(Real{GetX(linOff) / Meter});
@@ -1636,6 +1667,22 @@ static void EntityUI(MotorJoint& j)
         if (ImGui::InputFloat("Correction Factor", &v))
         {
             j.SetCorrectionFactor(static_cast<Real>(v));
+        }
+    }
+    {
+        const auto b = j.GetBodyA();
+        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(b->GetType())))
+        {
+            EntityUI(*b, FixtureSet{});
+            ImGui::TreePop();
+        }
+    }
+    {
+        const auto b = j.GetBodyB();
+        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(b->GetType())))
+        {
+            EntityUI(*b, FixtureSet{});
+            ImGui::TreePop();
         }
     }
 }
@@ -1789,6 +1836,22 @@ static void CollectionUI(const JointsRange& joints)
         if (ImGui::TreeNodeEx(e, flags, "Joint %d (%s)", i, ToString(GetType(*e))))
         {
             EntityUI(*e);
+            ImGui::TreePop();
+        }
+        ++i;
+    }
+}
+
+static void CollectionUI(const BodyJointsRange& joints)
+{
+    auto i = 0;
+    for (auto& e: joints)
+    {
+        const auto j = e.second;
+        const auto flags = 0;
+        if (ImGui::TreeNodeEx(j, flags, "Joint %d (%s)", i, ToString(GetType(*j))))
+        {
+            EntityUI(*j);
             ImGui::TreePop();
         }
         ++i;

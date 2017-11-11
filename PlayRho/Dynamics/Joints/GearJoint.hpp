@@ -72,9 +72,12 @@ public:
    
     /// @brief Sets the gear ratio.
     void SetRatio(Real ratio);
-    
-    /// @brief Gets the ratio.
+
+    /// @brief Gets the ratio for position solving.
     Real GetRatio() const noexcept;
+    
+    /// @brief Gets the constant for position solving.
+    Real GetConstant() const noexcept;
 
 private:
 
@@ -107,15 +110,15 @@ private:
     Angle m_referenceAngleA; ///< Reference angle A.
     Angle m_referenceAngleB; ///< Reference angle B.
 
-    Real m_constant; ///< Constant.
-    Real m_ratio; ///< Ratio.
+    Real m_constant; ///< Constant for position solving.
+    Real m_ratio; ///< Ratio for position solving.
 
-    Momentum m_impulse = Momentum{0}; ///< Impulse.
+    Momentum m_impulse = 0_Ns; ///< Impulse.
 
     // Solver temp
     Vec2 m_JvAC = Vec2{}; ///< AC Jv data.
     Vec2 m_JvBD; ///< BD Jv data.
-    Length m_JwA = Length{0}; ///< A Jw data.
+    Length m_JwA = 0_m; ///< A Jw data.
     Length m_JwB; ///< B Jw data.
     Length m_JwC; ///< C Jw data.
     Length m_JwD; ///< D Jw data.
@@ -126,7 +129,12 @@ inline Real GearJoint::GetRatio() const noexcept
 {
     return m_ratio;
 }
-    
+
+inline Real GearJoint::GetConstant() const noexcept
+{
+    return m_constant;
+}
+
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_GEARJOINT_HPP

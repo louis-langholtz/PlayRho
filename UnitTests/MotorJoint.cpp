@@ -51,7 +51,7 @@ TEST(MotorJointDef, DefaultConstruction)
     EXPECT_EQ(def.userData, nullptr);
     
     EXPECT_EQ(def.linearOffset, (Length2{}));
-    EXPECT_EQ(def.angularOffset, Angle(0));
+    EXPECT_EQ(def.angularOffset, 0_deg);
     EXPECT_EQ(def.maxForce, 1_N);
     EXPECT_EQ(def.maxTorque, 1_Nm);
     EXPECT_EQ(def.correctionFactor, Real(0.3));
@@ -159,7 +159,7 @@ TEST(MotorJoint, GetMotorJointDef)
     EXPECT_EQ(cdef.userData, nullptr);
     
     EXPECT_EQ(cdef.linearOffset, (Length2{}));
-    EXPECT_EQ(cdef.angularOffset, Angle(0));
+    EXPECT_EQ(cdef.angularOffset, 0_deg);
     EXPECT_EQ(cdef.maxForce, 1_N);
     EXPECT_EQ(cdef.maxTorque, 1_Nm);
     EXPECT_EQ(cdef.correctionFactor, Real(0.3));
@@ -187,8 +187,8 @@ TEST(MotorJoint, WithDynamicCircles)
     EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);
     EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / Meter}), 0.0, 0.01);
-    EXPECT_EQ(b1->GetAngle(), Angle{0});
-    EXPECT_EQ(b2->GetAngle(), Angle{0});
+    EXPECT_EQ(b1->GetAngle(), 0_deg);
+    EXPECT_EQ(b2->GetAngle(), 0_deg);
 }
 
 TEST(MotorJoint, SetLinearOffset)

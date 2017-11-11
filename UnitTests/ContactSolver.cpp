@@ -30,10 +30,10 @@ static constexpr auto Baumgarte = Real{2} / Real{10};
 
 TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
 {
-    const auto old_pA = Position{Vec2{-2, 0} * Meter, Angle{0}};
-    const auto old_pB = Position{Vec2{+2, 0} * Meter, Angle{0}};
-    const auto old_vA = Velocity{LinearVelocity2{}, Angle{0} / 1_s};
-    const auto old_vB = Velocity{LinearVelocity2{}, Angle{0} / 1_s};
+    const auto old_pA = Position{Vec2{-2, 0} * Meter, 0_deg};
+    const auto old_pB = Position{Vec2{+2, 0} * Meter, 0_deg};
+    const auto old_vA = Velocity{LinearVelocity2{}, 0_deg / 1_s};
+    const auto old_vB = Velocity{LinearVelocity2{}, 0_deg / 1_s};
 
     const auto dim = 2_m;
     const auto shape = PolygonShape(dim, dim);
@@ -60,7 +60,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
     const auto conf = ConstraintSolverConf{};
     const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
     
-    EXPECT_EQ(solution.min_separation, Length{0});
+    EXPECT_EQ(solution.min_separation, 0_m);
     
     EXPECT_EQ(GetX(old_pA.linear), GetX(solution.pos_a.linear));
     EXPECT_EQ(GetY(old_pA.linear), GetY(solution.pos_a.linear));
@@ -73,8 +73,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
 
 TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
 {
-    const auto old_pA = Position{Vec2{0, -2} * Meter, Angle{0}};
-    const auto old_pB = Position{Vec2{0, +2} * Meter, Angle{0}};
+    const auto old_pA = Position{Vec2{0, -2} * Meter, 0_deg};
+    const auto old_pB = Position{Vec2{0, +2} * Meter, 0_deg};
     const auto old_vA = Velocity{};
     const auto old_vB = Velocity{};
     
@@ -103,7 +103,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
     const auto conf = ConstraintSolverConf{};
     const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
     
-    EXPECT_EQ(solution.min_separation, Length{0});
+    EXPECT_EQ(solution.min_separation, 0_m);
     
     EXPECT_EQ(GetX(old_pA.linear), GetX(solution.pos_a.linear));
     EXPECT_EQ(GetY(old_pA.linear), GetY(solution.pos_a.linear));
@@ -126,8 +126,8 @@ TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
     
     const auto lcA = Length2{};
     const auto lcB = Length2{};
-    const auto old_pA = Position{Length2{}, Angle{0}};
-    const auto old_pB = Position{Length2{}, Angle{0}};
+    const auto old_pA = Position{Length2{}, 0_deg};
+    const auto old_pB = Position{Length2{}, 0_deg};
     const auto old_vA = Velocity{};
     const auto old_vB = Velocity{};
     auto bA = BodyConstraint{
@@ -164,8 +164,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
     const auto ctr_x = Real(100);
     
     // square A is left of square B
-    const auto old_pA = Position{Vec2{ctr_x - 1, 0} * Meter, Angle{0}};
-    const auto old_pB = Position{Vec2{ctr_x + 1, 0} * Meter, Angle{0}};
+    const auto old_pA = Position{Vec2{ctr_x - 1, 0} * Meter, 0_deg};
+    const auto old_pB = Position{Vec2{ctr_x + 1, 0} * Meter, 0_deg};
 
     const auto old_vA = Velocity{};
     const auto old_vB = Velocity{};
@@ -219,8 +219,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
     const auto ctr_x = Real(100);
     
     // square A is right of square B
-    const auto old_pA = Position{Vec2{ctr_x + 1, 0} * Meter, Angle{0}};
-    const auto old_pB = Position{Vec2{ctr_x - 1, 0} * Meter, Angle{0}};
+    const auto old_pA = Position{Vec2{ctr_x + 1, 0} * Meter, 0_deg};
+    const auto old_pB = Position{Vec2{ctr_x - 1, 0} * Meter, 0_deg};
     const auto old_vA = Velocity{};
     const auto old_vB = Velocity{};
 
@@ -273,8 +273,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
     const auto ctr_y = Real(100);
     
     // square A is below square B
-    const auto old_pA = Position{Vec2{0, ctr_y - 1} * Meter, Angle{0}};
-    const auto old_pB = Position{Vec2{0, ctr_y + 1} * Meter, Angle{0}};
+    const auto old_pA = Position{Vec2{0, ctr_y - 1} * Meter, 0_deg};
+    const auto old_pB = Position{Vec2{0, ctr_y + 1} * Meter, 0_deg};
     const auto old_vA = Velocity{};
     const auto old_vB = Velocity{};
 
@@ -339,8 +339,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
     const auto ctr_y = Real(100);
 
     // square A is above square B
-    const auto old_pA = Position{Vec2{0, ctr_y + 1} * Meter, Angle{0}};
-    const auto old_pB = Position{Vec2{0, ctr_y - 1} * Meter, Angle{0}};
+    const auto old_pA = Position{Vec2{0, ctr_y + 1} * Meter, 0_deg};
+    const auto old_pB = Position{Vec2{0, ctr_y - 1} * Meter, 0_deg};
     const auto old_vA = Velocity{};
     const auto old_vB = Velocity{};
 
@@ -411,8 +411,8 @@ TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
     ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
     ASSERT_EQ(manifold.GetPointCount(), 2);
 
-    const auto old_pA = Position{Length2{}, Angle{0}};
-    const auto old_pB = Position{Length2{}, Angle{0}};
+    const auto old_pA = Position{Length2{}, 0_deg};
+    const auto old_pB = Position{Length2{}, 0_deg};
     const auto old_vA = Velocity{};
     const auto old_vB = Velocity{};
 
@@ -454,10 +454,10 @@ TEST(ContactSolver, SolveVelocityConstraint1)
     const auto inverse_mass = inverse_mass_a + inverse_mass_b;
 
     const auto linear_velocity = Vec2{1, 1};
-    const auto angular_velocity = Angle{0};
+    const auto angular_velocity = 0_deg;
 
-    const auto old_pA = Position{Vec2{0, 0}, Angle{0}};
-    const auto old_pB = Position{Vec2{0, 0}, Angle{0}};
+    const auto old_pA = Position{Vec2{0, 0}, 0_deg};
+    const auto old_pB = Position{Vec2{0, 0}, 0_deg};
     const auto vel_a = Velocity{linear_velocity, angular_velocity};
     const auto vel_b = Velocity{linear_velocity, angular_velocity};
     const auto lcA = Vec2{};
@@ -517,10 +517,10 @@ TEST(ContactSolver, SolveVelocityConstraint1)
 TEST(ContactSolver, SolveVelocityConstraint2)
 {
     const auto linear_velocity = Vec2{1, 1};
-    const auto angular_velocity = Angle{0};
+    const auto angular_velocity = 0_deg;
     
-    const auto old_pA = Position{Vec2{0, 0}, Angle{0}};
-    const auto old_pB = Position{Vec2{0, 0}, Angle{0}};
+    const auto old_pA = Position{Vec2{0, 0}, 0_deg};
+    const auto old_pB = Position{Vec2{0, 0}, 0_deg};
     
     auto vel_a = Velocity{linear_velocity, angular_velocity};
     auto vel_b = Velocity{linear_velocity, angular_velocity};

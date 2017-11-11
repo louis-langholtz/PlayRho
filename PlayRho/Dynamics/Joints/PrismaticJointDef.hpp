@@ -75,16 +75,16 @@ struct PrismaticJointDef : public JointBuilder<PrismaticJointDef>
     UnitVec2 localAxisA = UnitVec2::GetRight();
     
     /// The constrained angle between the bodies: bodyB_angle - bodyA_angle.
-    Angle referenceAngle = Angle{0};
+    Angle referenceAngle = 0_deg;
     
     /// Enable/disable the joint limit.
     bool enableLimit = false;
     
     /// The lower translation limit.
-    Length lowerTranslation = Length{0};
+    Length lowerTranslation = 0_m;
     
     /// The upper translation limit.
-    Length upperTranslation = Length{0};
+    Length upperTranslation = 0_m;
     
     /// Enable/disable the joint motor.
     bool enableMotor = false;
@@ -93,7 +93,7 @@ struct PrismaticJointDef : public JointBuilder<PrismaticJointDef>
     Force maxMotorForce = Force{0};
     
     /// The desired angular motor speed.
-    AngularVelocity motorSpeed = AngularVelocity{0};
+    AngularVelocity motorSpeed = 0_rpm;
 };
 
 inline PrismaticJointDef& PrismaticJointDef::UseEnableLimit(bool v) noexcept
