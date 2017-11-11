@@ -313,7 +313,7 @@ Manifold CollideShapes(Manifold::Type type, Length totalRadius,
     const auto v1 = shape.GetVertex(indexOfMax);
     const auto v2 = shape.GetVertex(indexOfMax2);
     
-    if (maxSeparation < Length{0})
+    if (maxSeparation < 0_m)
     {
         const auto faceCenter = (v1 + v2) / Real{2};
         // Circle's center is inside the polygon and closest to edge[indexOfMax].

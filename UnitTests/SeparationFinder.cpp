@@ -44,12 +44,12 @@ TEST(SeparationFinder, BehavesAsExpected)
 
     const auto x = Real(100);
     const auto sweepA = Sweep{
-        Position{Length2{-x * Meter, 0_m}, Angle{0}},
-        Position{Length2{+x * Meter, 0_m}, Angle{0}}
+        Position{Length2{-x * Meter, 0_m}, 0_deg},
+        Position{Length2{+x * Meter, 0_m}, 0_deg}
     };
     const auto sweepB = Sweep{
-        Position{Length2{+x * Meter, 0_m}, Angle{0}},
-        Position{Length2{-x * Meter, 0_m}, Angle{0}}
+        Position{Length2{+x * Meter, 0_m}, 0_deg},
+        Position{Length2{-x * Meter, 0_m}, 0_deg}
     };
     
     auto t = Real{0}; // Will be set to value of t2
@@ -77,16 +77,16 @@ TEST(SeparationFinder, BehavesAsExpected)
 
         EXPECT_EQ(minSeparation.indexPair, (IndexPair{IndexPair::InvalidIndex, 2}));
         EXPECT_LT(minSeparation.distance, last_s);
-        if (minSeparation.distance > Length{0})
+        if (minSeparation.distance > 0_m)
         {
             EXPECT_LT(distance, last_distance);
             EXPECT_NEAR(static_cast<double>(Real{minSeparation.distance / Meter}),
                         static_cast<double>(Real{distance / Meter}),
                         0.0001);
         }
-        else if (minSeparation.distance < Length{0})
+        else if (minSeparation.distance < 0_m)
         {
-            if (last_min_sep < Length{0} && distance != Length{0})
+            if (last_min_sep < 0_m && distance != 0_m)
             {
                 EXPECT_GT(distance, last_distance);
             }
@@ -95,7 +95,7 @@ TEST(SeparationFinder, BehavesAsExpected)
         
         const auto s = fcn.Evaluate(minSeparation.indexPair, xfA, xfB);
         EXPECT_EQ(s, minSeparation.distance);
-        if (s >= Length{0})
+        if (s >= 0_m)
         {
             EXPECT_NEAR(double(Real{s / Meter}), double(Real{distance / Meter}), 0.0001);
         }

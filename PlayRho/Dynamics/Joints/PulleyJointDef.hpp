@@ -63,10 +63,10 @@ struct PulleyJointDef : public JointBuilder<PulleyJointDef>
     Length2 localAnchorB = Length2{+1_m, 0_m};
     
     /// The a reference length for the segment attached to bodyA.
-    Length lengthA = Length{0};
+    Length lengthA = 0_m;
     
     /// The a reference length for the segment attached to bodyB.
-    Length lengthB = Length{0};
+    Length lengthB = 0_m;
     
     /// The pulley ratio, used to simulate a block-and-tackle.
     Real ratio = 1;

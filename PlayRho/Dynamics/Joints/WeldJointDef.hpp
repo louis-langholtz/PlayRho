@@ -65,12 +65,12 @@ struct WeldJointDef : public JointBuilder<WeldJointDef>
     Length2 localAnchorB = Length2{};
     
     /// The bodyB angle minus bodyA angle in the reference state (radians).
-    Angle referenceAngle = Angle{0};
+    Angle referenceAngle = 0_deg;
     
     /// @brief Mass-spring-damper frequency.
     /// @note Rotation only.
     /// @note Disable softness with a value of 0.
-    Frequency frequency = Frequency{0};
+    Frequency frequency = 0_Hz;
     
     /// @brief Damping ratio.
     /// @note 0 = no damping, 1 = critical damping.

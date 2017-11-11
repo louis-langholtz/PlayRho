@@ -40,7 +40,7 @@ public:
         });
         RegisterForKey(GLFW_KEY_K, GLFW_PRESS, 0, "Kinematic", [&](KeyActionMods) {
             m_platform->SetType(BodyType::Kinematic);
-            m_platform->SetVelocity(Velocity{Vec2(-m_speed, 0) * 1_mps, AngularVelocity{0}});
+            m_platform->SetVelocity(Velocity{Vec2(-m_speed, 0) * 1_mps, 0_rpm});
         });
 
         // Define attachment

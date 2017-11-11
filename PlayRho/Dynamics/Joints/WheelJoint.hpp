@@ -129,11 +129,11 @@ private:
     Length m_sAy; ///< sAy location.
     Length m_sBy; ///< sBy location.
 
-    Mass m_mass = Mass{0}; ///< Mass.
+    Mass m_mass = 0_kg; ///< Mass.
     RotInertia m_motorMass = RotInertia{0}; ///< Motor mass.
-    Mass m_springMass = Mass{0}; ///< Spring mass.
+    Mass m_springMass = 0_kg; ///< Spring mass.
 
-    LinearVelocity m_bias = LinearVelocity{0}; ///< Bias.
+    LinearVelocity m_bias = 0_mps; ///< Bias.
     InvMass m_gamma = InvMass{0}; ///< Gamma.
 };
 

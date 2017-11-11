@@ -43,7 +43,7 @@ MassData MultiShape::GetMassData() const noexcept
         I += RotInertia{md.I};
     });
 
-    const auto center = (mass > Mass{0})? weightedCenter / mass: origin;
+    const auto center = (mass > 0_kg)? weightedCenter / mass: origin;
     return MassData{center, mass, I};
 }
 

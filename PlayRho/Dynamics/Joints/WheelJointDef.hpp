@@ -80,7 +80,7 @@ struct WheelJointDef : public JointBuilder<WheelJointDef>
     Torque maxMotorTorque = Torque{0};
     
     /// The desired angular motor speed.
-    AngularVelocity motorSpeed = AngularVelocity{0};
+    AngularVelocity motorSpeed = 0_rpm;
     
     /// Suspension frequency, zero indicates no suspension
     Frequency frequency = 2_Hz;

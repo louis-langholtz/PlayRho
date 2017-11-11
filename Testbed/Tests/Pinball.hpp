@@ -72,14 +72,14 @@ public:
             jd.maxMotorTorque = 1000_Nm;
             jd.enableLimit = true;
 
-            jd.motorSpeed = AngularVelocity{0};
+            jd.motorSpeed = 0_rpm;
             jd.localAnchorA = p1;
             jd.bodyB = leftFlipper;
             jd.lowerAngle = -30_deg;
             jd.upperAngle = 5_deg;
             m_leftJoint = static_cast<RevoluteJoint*>(m_world.CreateJoint(jd));
 
-            jd.motorSpeed = AngularVelocity{0};
+            jd.motorSpeed = 0_rpm;
             jd.localAnchorA = p2;
             jd.bodyB = rightFlipper;
             jd.lowerAngle = -5_deg;

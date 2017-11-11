@@ -51,6 +51,14 @@ TEST(Angle, GetRevRotationalAngle)
     EXPECT_NEAR(static_cast<double>(Real{GetRevRotationalAngle(90_deg, -90_deg)/1_rad}),
                 static_cast<double>(Real{180_deg/1_rad}),
                 0.0001);
+    EXPECT_NEAR(double(Real{GetRevRotationalAngle(-2_deg, +3_deg) / Degree}),
+                double(Real{  5_deg / Degree}), 0.001);
+    EXPECT_NEAR(double(Real{GetRevRotationalAngle(+2_deg, -3_deg) / Degree}),
+                double(Real{355_deg / Degree}), 0.001);
+    EXPECT_NEAR(double(Real{GetRevRotationalAngle(-13_deg, -3_deg) / Degree}),
+                double(Real{ 10_deg / Degree}), 0.001);
+    EXPECT_NEAR(double(Real{GetRevRotationalAngle(-10_deg, -20_deg) / Degree}),
+                double(Real{350_deg / Degree}), 0.001);
 }
 
 TEST(Angle, limits)
@@ -64,20 +72,23 @@ TEST(Angle, limits)
 TEST(Angle, GetNormalized)
 {
     EXPECT_EQ(GetNormalized(Angle(0)) / Degree, Real(0));
-    EXPECT_NEAR(double(Real(GetNormalized(    0.0_deg) / Degree)),   0.0, 0.01);
-    EXPECT_NEAR(double(Real(GetNormalized(   21.3_deg) / Degree)),  21.3, 0.01);
-    EXPECT_NEAR(double(Real(GetNormalized(   90.0_deg) / Degree)),  90.0, 0.01);
-    EXPECT_NEAR(double(Real(GetNormalized(   93.2_deg) / Degree)),  93.2, 0.01);
-    EXPECT_NEAR(double(Real(GetNormalized(  180.0_deg) / Degree)), 180.0, 0.01);
-    EXPECT_NEAR(double(Real(GetNormalized(  270.0_deg) / Degree)), 270.0, 0.01);
-    EXPECT_NEAR(double(Real(GetNormalized(  395.0_deg) / Degree)),  35.0, 0.01);
-    EXPECT_NEAR(double(Real(GetNormalized(  396.4_deg) / Degree)),  36.4, 0.01);
-    EXPECT_NEAR(double(Real(GetNormalized(  733.0_deg) / Degree)),  13.0, 0.01);
-    EXPECT_NEAR(double(Real(GetNormalized(  734.5_deg) / Degree)),  14.5, 0.01);
-    EXPECT_NEAR(double(Real(GetNormalized(  -45.0_deg) / Degree)), -45.0, 0.01);
-    EXPECT_NEAR(double(Real(GetNormalized(  -90.0_deg) / Degree)), -90.0, 0.01);
-    EXPECT_NEAR(double(Real(GetNormalized(-3610.0_deg) / Degree)), -10.0, 0.01);
-    EXPECT_NEAR(double(Real(GetNormalized(-3611.2_deg) / Degree)), -11.2, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(    0.0_deg) / Degree)),    0.0, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(   21.3_deg) / Degree)),   21.3, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(   90.0_deg) / Degree)),   90.0, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(   93.2_deg) / Degree)),   93.2, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(  180.0_deg) / Degree)),  180.0, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized( -180.0_deg) / Degree)), -180.0, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(  Pi*Radian) / Degree)),  180.0, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized( -Pi*Radian) / Degree)), -180.0, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(  270.0_deg) / Degree)),  -90.0, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(  395.0_deg) / Degree)),   35.0, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(  396.4_deg) / Degree)),   36.4, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(  733.0_deg) / Degree)),   13.0, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(  734.5_deg) / Degree)),   14.5, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(  -45.0_deg) / Degree)),  -45.0, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(  -90.0_deg) / Degree)),  -90.0, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(-3610.0_deg) / Degree)),  -10.0, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(-3611.2_deg) / Degree)),  -11.2, 0.01);
     EXPECT_TRUE(std::isnan(double(Real(GetNormalized(std::numeric_limits<Angle>::infinity()) / Degree))));
     EXPECT_TRUE(std::isnan(float(Real(GetNormalized(std::numeric_limits<Angle>::infinity()) / Degree))));
     EXPECT_TRUE(std::isnan(float(Real(GetNormalized(std::numeric_limits<Angle>::quiet_NaN()) / Degree))));

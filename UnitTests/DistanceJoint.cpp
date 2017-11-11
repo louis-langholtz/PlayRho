@@ -52,7 +52,7 @@ TEST(DistanceJointDef, DefaultConstruction)
     EXPECT_EQ(def.localAnchorA, (Length2{}));
     EXPECT_EQ(def.localAnchorB, (Length2{}));
     EXPECT_EQ(def.length, 1_m);
-    EXPECT_EQ(def.frequency, Frequency(0));
+    EXPECT_EQ(def.frequency, 0_Hz);
     EXPECT_EQ(def.dampingRatio, Real(0));
 }
 
@@ -192,7 +192,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
         world.Step(stepConf);
         
         const auto newDistance = GetLength(body1->GetLocation() - body2->GetLocation());
-        if (!distanceMet && (newDistance - oldDistance) >= Length{0})
+        if (!distanceMet && (newDistance - oldDistance) >= 0_m)
         {
             distanceMet = i;
         }

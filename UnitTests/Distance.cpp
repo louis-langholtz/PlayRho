@@ -658,10 +658,10 @@ TEST(Distance, SquareSquareOverlappingDiagnally)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(GetX(witnessPoints.a), Length{0});
+    EXPECT_EQ(GetX(witnessPoints.a), 0_m);
     EXPECT_EQ(GetY(witnessPoints.a), 0.5_m);
     
-    EXPECT_EQ(GetX(witnessPoints.b), Length{0});
+    EXPECT_EQ(GetX(witnessPoints.b), 0_m);
     EXPECT_EQ(GetY(witnessPoints.b), 0.5_m);
     
     EXPECT_EQ(decltype(output.iterations){3}, output.iterations);

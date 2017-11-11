@@ -103,7 +103,7 @@ void PulleyJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
 
     const auto totalInvMass = totInvMassA + m_ratio * m_ratio * totInvMassB;
 
-    m_mass = (totalInvMass > InvMass{0})? Real{1} / totalInvMass: Mass{0};
+    m_mass = (totalInvMass > InvMass{0})? Real{1} / totalInvMass: 0_kg;
 
     if (step.doWarmStart)
     {
@@ -154,7 +154,7 @@ bool PulleyJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Ste
     bodyConstraintA->SetVelocity(velA);
     bodyConstraintB->SetVelocity(velB);
     
-    return impulse == Momentum(0);
+    return impulse == 0_Ns;
 }
 
 bool PulleyJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
@@ -178,11 +178,11 @@ bool PulleyJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
 
     // Get the pulley axes.
     const auto pA = Length2{posA.linear + rA - m_groundAnchorA};
-    auto lengthA = Length{0};
+    auto lengthA = 0_m;
     const auto uA = GetUnitVector(pA, lengthA, UnitVec2::GetZero());
 
     const auto pB = Length2{posB.linear + rB - m_groundAnchorB};
-    auto lengthB = Length{0};
+    auto lengthB = 0_m;
     const auto uB = GetUnitVector(pB, lengthB, UnitVec2::GetZero());
 
     // Compute effective mass.
@@ -193,7 +193,7 @@ bool PulleyJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
     const auto totalInvMassB = invMassB + invRotInertiaB * ruB * ruB / SquareRadian;
 
     const auto totalInvMass = totalInvMassA + m_ratio * m_ratio * totalInvMassB;
-    const auto mass = (totalInvMass > InvMass{0})? Real{1} / totalInvMass: Mass{0};
+    const auto mass = (totalInvMass > InvMass{0})? Real{1} / totalInvMass: 0_kg;
 
     const auto C = Length{m_constant - lengthA - (m_ratio * lengthB)};
     const auto linearError = Abs(C);

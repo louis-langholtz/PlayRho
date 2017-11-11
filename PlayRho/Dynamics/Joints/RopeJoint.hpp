@@ -84,13 +84,13 @@ private:
     Length2 m_localAnchorB; ///< Local anchor B.
     Length m_maxLength; ///< Max length.
     Length m_length = 0; ///< Length.
-    Momentum m_impulse = Momentum{0}; ///< Impulse.
+    Momentum m_impulse = 0_Ns; ///< Impulse.
 
     // Solver temp
     UnitVec2 m_u; ///< U direction.
     Length2 m_rA; ///< Relative A.
     Length2 m_rB; ///< Relative B.
-    Mass m_mass = Mass{0}; ///< Mass.
+    Mass m_mass = 0_kg; ///< Mass.
     LimitState m_state = e_inactiveLimit; ///< Limit state.
 };
 

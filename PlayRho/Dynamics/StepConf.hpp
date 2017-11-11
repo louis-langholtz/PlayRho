@@ -81,7 +81,7 @@ public:
     constexpr StepConf& SetInvTime(Frequency value) noexcept
     {
         invTime = value;
-        time = (value != Frequency{0})? Time{Real{1} / value}: Time{0};
+        time = (value != 0_Hz)? Time{Real{1} / value}: Time{0};
         return *this;
     }
     

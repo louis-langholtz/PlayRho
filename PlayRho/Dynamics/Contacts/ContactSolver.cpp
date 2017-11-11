@@ -525,7 +525,7 @@ PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
         
         // Prevent large corrections & don't push separation above -conf.linearSlop.
         const auto C = -Clamp(conf.resolutionRate * (separation + conf.linearSlop),
-                              -conf.maxLinearCorrection, Length{0});
+                              -conf.maxLinearCorrection, 0_m);
 
         // Compute response factors...
         const auto P = Length2{psm.m_normal * C} / K; // L M

@@ -124,7 +124,7 @@ public:
             const auto mass1 = GetMass(*body1);
             const auto mass2 = GetMass(*body2);
 
-            if (mass1 > Mass{0} && mass2 > Mass{0})
+            if (mass1 > 0_kg && mass2 > 0_kg)
             {
                 if (mass2 > mass1)
                 {

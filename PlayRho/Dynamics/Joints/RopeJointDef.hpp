@@ -58,7 +58,7 @@ struct RopeJointDef : public JointBuilder<RopeJointDef>
     Length2 localAnchorB = Length2{1_m, 0_m};
     
     /// The maximum length of the rope.
-    Length maxLength = Length{0};
+    Length maxLength = 0_m;
 };
 
 constexpr RopeJointDef& RopeJointDef::UseMaxLength(Length v) noexcept

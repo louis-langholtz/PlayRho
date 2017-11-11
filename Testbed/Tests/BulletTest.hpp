@@ -65,18 +65,18 @@ public:
             m_bullet = m_world.CreateBody(bd);
             m_bullet->CreateFixture(std::make_shared<PolygonShape>(box));
 
-            m_bullet->SetVelocity(Velocity{Vec2{0.0f, -50.0f} * 1_mps, AngularVelocity{0}});
+            m_bullet->SetVelocity(Velocity{Vec2{0.0f, -50.0f} * 1_mps, 0_rpm});
         }
     }
 
     void Launch()
     {
         m_body->SetTransform(Vec2(0.0f, 4.0f) * 1_m, 0_rad);
-        m_body->SetVelocity(Velocity{LinearVelocity2{}, AngularVelocity{0}});
+        m_body->SetVelocity(Velocity{LinearVelocity2{}, 0_rpm});
 
         m_x = RandomFloat(-1.0f, 1.0f);
         m_bullet->SetTransform(Vec2(m_x, 10.0f) * 1_m, 0_rad);
-        m_bullet->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * 1_mps, AngularVelocity{0}});
+        m_bullet->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * 1_mps, 0_rpm});
     }
 
     void PostStep(const Settings&, Drawer&) override

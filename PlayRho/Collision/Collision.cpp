@@ -83,11 +83,11 @@ ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, Length o
         // calculate. Note that it also helps to avoid changing the contact feature from the
         // given clip vertices. So the code here also accepts distances that are just slightly
         // over zero.
-        if (distance0 <= Length{0} || AlmostZero(StripUnit(distance0)))
+        if (distance0 <= 0_m || AlmostZero(StripUnit(distance0)))
         {
             vOut.push_back(vIn[0]);
         }
-        if (distance1 <= Length{0} || AlmostZero(StripUnit(distance1)))
+        if (distance1 <= 0_m || AlmostZero(StripUnit(distance1)))
         {
             vOut.push_back(vIn[1]);
         }

@@ -213,7 +213,7 @@ TEST(ChainShape, FourVertex)
 TEST(ChainShape, WithCircleVertices)
 {
     const auto circleRadius = 4_m;
-    const auto vertices = GetCircleVertices(circleRadius, 4, Angle(0), Real(1) / Real(2));
+    const auto vertices = GetCircleVertices(circleRadius, 4, 0_deg, Real(1) / Real(2));
     const auto density = 1_kgpm2;
     const auto vertexRadius = 1_m / 10;
 

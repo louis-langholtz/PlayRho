@@ -108,7 +108,7 @@ namespace playrho {
                 default: break;
             }
             assert(false);
-            return Length{0};
+            return 0_m;
         }
         
         /// @brief Gets the type.

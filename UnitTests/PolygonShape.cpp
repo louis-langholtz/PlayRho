@@ -240,7 +240,7 @@ TEST(PolygonShape, SetAsZeroCenteredRotatedBox)
     const auto hx = 2.3_m;
     const auto hy = 54.1_m;
     PolygonShape shape;
-    SetAsBox(shape, hx, hy, Length2{}, Angle{0});
+    SetAsBox(shape, hx, hy, Length2{}, 0_deg);
     EXPECT_EQ(shape.GetCentroid(), (Length2{}));
     EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
@@ -267,7 +267,7 @@ TEST(PolygonShape, SetAsCenteredBox)
     PolygonShape shape;
     const auto x_off = 10.2_m;
     const auto y_off = -5_m;
-    SetAsBox(shape, hx, hy, Length2(x_off, y_off), Angle{0});
+    SetAsBox(shape, hx, hy, Length2(x_off, y_off), 0_deg);
     EXPECT_EQ(shape.GetCentroid(), Length2(x_off, y_off));
     EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());

@@ -36,6 +36,10 @@ make an instance of the <a href="classplayrho_1_1World.html"><code>World</code><
 For a more elaborate starting point, see the
  <a href="HelloWorld_8cpp-example.html"><code>HelloWorld.cpp</code></a> example application.
 
+For mathemtical insight, see:
+<a href="http://box2d.org/files/GDC2009/GDC2009_Catto_Erin_Solver.ppt">Erin Catto's
+2009 Modeling and Solving Constraints slides</a>.
+
 @sa PhysicalEntities
 */
 

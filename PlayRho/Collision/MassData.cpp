@@ -183,7 +183,7 @@ MassData GetMassData(const Fixture& f)
 
 MassData ComputeMassData(const Body& body) noexcept
 {
-    auto mass = Mass{0};
+    auto mass = 0_kg;
     auto I = RotInertia{0};
     auto center = Length2{};
     for (auto&& f: body.GetFixtures())

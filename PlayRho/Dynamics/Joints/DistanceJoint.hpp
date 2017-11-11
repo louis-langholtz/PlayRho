@@ -100,7 +100,7 @@ private:
     Real m_dampingRatio; ///< Damping ratio.
 
     // Solver shared
-    Momentum m_impulse = Momentum{0}; ///< Impulse.
+    Momentum m_impulse = 0_Ns; ///< Impulse.
 
     // Solver temp
     InvMass m_invGamma; ///< Inverse gamma.

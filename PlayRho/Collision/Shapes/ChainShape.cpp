@@ -79,7 +79,7 @@ MassData ChainShape::GetMassData() const noexcept
         if (vertexCount > 1)
         {
             // XXX: This overcounts for the overlapping circle shape.
-            auto mass = Mass{0};
+            auto mass = 0_kg;
             auto I = RotInertia{0};
             auto area = Area(0);
             auto center = Length2{};

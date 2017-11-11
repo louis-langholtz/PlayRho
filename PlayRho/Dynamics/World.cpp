@@ -210,8 +210,8 @@ namespace {
     inline VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc)
     {
         auto vp = VelocityPair{
-            Velocity{LinearVelocity2{}, AngularVelocity{0}},
-            Velocity{LinearVelocity2{}, AngularVelocity{0}}
+            Velocity{LinearVelocity2{}, 0_rpm},
+            Velocity{LinearVelocity2{}, 0_rpm}
         };
         
         const auto normal = vc.GetNormal();

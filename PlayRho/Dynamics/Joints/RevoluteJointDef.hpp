@@ -72,22 +72,22 @@ struct RevoluteJointDef : public JointBuilder<RevoluteJointDef>
     
     /// @brief Reference angle.
     /// @details This is the bodyB angle minus bodyA angle in the reference state (radians).
-    Angle referenceAngle = Angle{0};
+    Angle referenceAngle = 0_deg;
     
     /// @brief Flag to enable joint limits.
     bool enableLimit = false;
     
     /// @brief Lower angle for the joint limit.
-    Angle lowerAngle = Angle{0};
+    Angle lowerAngle = 0_deg;
     
     /// @brief Upper angle for the joint limit.
-    Angle upperAngle = Angle{0};
+    Angle upperAngle = 0_deg;
     
     /// @brief Flag to enable the joint motor.
     bool enableMotor = false;
     
     /// @brief Desired motor speed.
-    AngularVelocity motorSpeed = AngularVelocity{0};
+    AngularVelocity motorSpeed = 0_rpm;
     
     /// @brief Maximum motor torque used to achieve the desired motor speed.
     Torque maxMotorTorque = 0;

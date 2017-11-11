@@ -62,7 +62,7 @@ public:
 
     void Launch()
     {
-        m_body->SetTransform(Vec2(0.0f, 20.0f) * 1_m, Angle{0});
+        m_body->SetTransform(Vec2(0.0f, 20.0f) * 1_m, 0_rad);
         m_angularVelocity = RandomFloat(-50.0f, 50.0f) * 1_rad / 1_s;
         m_body->SetVelocity(Velocity{Vec2(0.0f, -100.0f) * 1_mps, m_angularVelocity});
     }

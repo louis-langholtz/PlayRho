@@ -52,7 +52,7 @@ TEST(WeldJointDef, DefaultConstruction)
     
     EXPECT_EQ(def.localAnchorA, (Length2{}));
     EXPECT_EQ(def.localAnchorB, (Length2{}));
-    EXPECT_EQ(def.referenceAngle, Angle(0));
+    EXPECT_EQ(def.referenceAngle, 0_deg);
     EXPECT_EQ(def.frequency, 0_Hz);
     EXPECT_EQ(def.dampingRatio, Real(0));
 }
@@ -121,7 +121,7 @@ TEST(WeldJoint, GetWeldJointDef)
     
     EXPECT_EQ(cdef.localAnchorA, anchor);
     EXPECT_EQ(cdef.localAnchorB, anchor);
-    EXPECT_EQ(def.referenceAngle, Angle(0));
+    EXPECT_EQ(def.referenceAngle, 0_deg);
     EXPECT_EQ(def.frequency, 0_Hz);
     EXPECT_EQ(def.dampingRatio, Real(0));
 }
@@ -144,8 +144,8 @@ TEST(WeldJoint, WithDynamicCircles)
     EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);
     EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / Meter}), 0.0, 0.01);
-    EXPECT_EQ(b1->GetAngle(), Angle{0});
-    EXPECT_EQ(b2->GetAngle(), Angle{0});
+    EXPECT_EQ(b1->GetAngle(), 0_deg);
+    EXPECT_EQ(b2->GetAngle(), 0_deg);
 }
 
 TEST(WeldJoint, WithDynamicCircles2)
@@ -169,6 +169,6 @@ TEST(WeldJoint, WithDynamicCircles2)
     EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);
     EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / Meter}), 0.0, 0.01);
-    EXPECT_EQ(b1->GetAngle(), Angle{0});
-    EXPECT_EQ(b2->GetAngle(), Angle{0});
+    EXPECT_EQ(b1->GetAngle(), 0_deg);
+    EXPECT_EQ(b2->GetAngle(), 0_deg);
 }

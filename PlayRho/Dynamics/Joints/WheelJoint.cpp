@@ -106,10 +106,10 @@ void WheelJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     }
 
     // Spring constraint
-    m_springMass = Mass{0};
+    m_springMass = 0_kg;
     m_bias = 0;
     m_gamma = 0;
-    if (m_frequency > Frequency{0})
+    if (m_frequency > 0_Hz)
     {
         m_ax = Rotate(m_localXAxisA, qA);
         m_sAx = Cross(dd + rA, m_ax);
@@ -138,11 +138,11 @@ void WheelJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
             const auto h = step.GetTime();
             
             const auto invGamma = Mass{h * (d + h * k)};
-            m_gamma = (invGamma > Mass{0})? Real{1} / invGamma: 0;
+            m_gamma = (invGamma > 0_kg)? Real{1} / invGamma: 0;
             m_bias = LinearVelocity{C * h * k * m_gamma};
 
             const auto totalInvMass = invMass + m_gamma;
-            m_springMass = (totalInvMass > InvMass{0})? Real{1} / totalInvMass: Mass{0};
+            m_springMass = (totalInvMass > InvMass{0})? Real{1} / totalInvMass: 0_kg;
         }
     }
     else
@@ -150,8 +150,8 @@ void WheelJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
         m_springImpulse = 0;
 
         m_ax = UnitVec2::GetZero();
-        m_sAx = Length{0};
-        m_sBx = Length{0};
+        m_sAx = 0_m;
+        m_sBx = 0_m;
     }
 
     // Rotational motor

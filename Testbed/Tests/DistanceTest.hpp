@@ -47,8 +47,8 @@ public:
         m_bodyA = m_world.CreateBody(def);
         m_bodyB = m_world.CreateBody(def);
 
-        m_bodyA->SetTransform(Vec2(-10.0f, 20.2f) * 1_m, Angle{0});
-        m_bodyB->SetTransform(m_bodyA->GetLocation() + Vec2(19.017401f, 0.13678508f) * 1_m, Angle{0});
+        m_bodyA->SetTransform(Vec2(-10.0f, 20.2f) * 1_m, 0_deg);
+        m_bodyB->SetTransform(m_bodyA->GetLocation() + Vec2(19.017401f, 0.13678508f) * 1_m, 0_deg);
         
         CreateFixtures();
         
@@ -137,7 +137,7 @@ public:
                 const auto shape = fixture->GetShape();
                 const auto lastLegitVertexRadius = shape->GetVertexRadius();
                 const auto newVertexRadius = lastLegitVertexRadius - RadiusIncrement;
-                if (newVertexRadius >= Length{0})
+                if (newVertexRadius >= 0_m)
                 {
                     PolygonShape polygon{*static_cast<const PolygonShape*>(shape.get())};
                     polygon.SetVertexRadius(newVertexRadius);

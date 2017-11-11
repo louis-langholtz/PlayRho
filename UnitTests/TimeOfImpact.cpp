@@ -78,10 +78,10 @@ TEST(TimeOfImpact, Overlapped)
     const auto radius = 1_m;
     const auto pA = Length2{};
     const auto proxyA = DistanceProxy{radius, 1, &pA, nullptr};
-    const auto sweepA = Sweep{Position{Length2{}, Angle{0}}};
+    const auto sweepA = Sweep{Position{Length2{}, 0_deg}};
     const auto pB = Length2{};
     const auto proxyB = DistanceProxy{radius, 1, &pB, nullptr};
-    const auto sweepB = Sweep{Position{Length2{}, Angle{0}}};
+    const auto sweepB = Sweep{Position{Length2{}, 0_deg}};
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, limits);
     EXPECT_EQ(output.get_state(), TOIOutput::e_overlapped);
     EXPECT_EQ(output.get_t(), Real(0));
@@ -97,11 +97,11 @@ TEST(TimeOfImpact, Touching)
 
     const auto pA = Length2{};
     const auto proxyA = DistanceProxy{radius, 1, &pA, nullptr};
-    const auto sweepA = Sweep{Position{Length2{}, Angle{0}}};
+    const auto sweepA = Sweep{Position{Length2{}, 0_deg}};
     
     const auto pB = Length2{};
     const auto proxyB = DistanceProxy{radius, 1, &pB, nullptr};
-    const auto sweepB = Sweep{Position{Length2{2_m, 0_m}, Angle{0}}};
+    const auto sweepB = Sweep{Position{Length2{2_m, 0_m}, 0_deg}};
 
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, limits);
     
@@ -118,11 +118,11 @@ TEST(TimeOfImpact, Separated)
     
     const auto pA = Length2{};
     const auto proxyA = DistanceProxy{radius, 1, &pA, nullptr};
-    const auto sweepA = Sweep{Position{Length2{}, Angle{0}}};
+    const auto sweepA = Sweep{Position{Length2{}, 0_deg}};
     
     const auto pB = Length2{};
     const auto proxyB = DistanceProxy{radius, 1, &pB, nullptr};
-    const auto sweepB = Sweep{Position{Length2{4_m, 0_m}, Angle{0}}};
+    const auto sweepB = Sweep{Position{Length2{4_m, 0_m}, 0_deg}};
     
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, limits);
     
@@ -142,10 +142,10 @@ TEST(TimeOfImpact, CollideCirclesHorizontally)
     const auto x = Real(2);
     const auto pA = Length2{};
     const auto proxyA = DistanceProxy{radius, 1, &pA, nullptr};
-    const auto sweepA = Sweep{Position{Length2{-x * Meter, 0_m}, Angle{0}}, Position{Length2{}, Angle{0}}};
+    const auto sweepA = Sweep{Position{Length2{-x * Meter, 0_m}, 0_deg}, Position{Length2{}, 0_deg}};
     const auto pB = Length2{};
     const auto proxyB = DistanceProxy{radius, 1, &pB, nullptr};
-    const auto sweepB = Sweep{Position{Length2{+x * Meter, 0_m}, Angle{0}}, Position{Length2{}, Angle{0}}};
+    const auto sweepB = Sweep{Position{Length2{+x * Meter, 0_m}, 0_deg}, Position{Length2{}, 0_deg}};
     
     // Compute the time of impact information now...
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, limits);
@@ -168,14 +168,14 @@ TEST(TimeOfImpact, CollideCirclesVertically)
 
     const auto proxyA = DistanceProxy{radius, 1, &pos, nullptr};
     const auto sweepA = Sweep{
-        Position{Length2{0_m, -y * Meter}, Angle{0}},
-        Position{Length2{0_m, +y * Meter}, Angle{0}}
+        Position{Length2{0_m, -y * Meter}, 0_deg},
+        Position{Length2{0_m, +y * Meter}, 0_deg}
     };
     
     const auto proxyB = DistanceProxy{radius, 1, &pos, nullptr};
     const auto sweepB = Sweep{
-        Position{Length2{0_m, +y * Meter}, Angle{0}},
-        Position{Length2{0_m, -y * Meter}, Angle{0}}
+        Position{Length2{0_m, +y * Meter}, 0_deg},
+        Position{Length2{0_m, -y * Meter}, 0_deg}
     };
     
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, limits);
@@ -199,13 +199,13 @@ TEST(TimeOfImpact, CirclesPassingParallelSeparatedPathsDontCollide)
     const auto y = Real(1);
     const auto proxyA = DistanceProxy{radius, 1, &pos, nullptr};
     const auto sweepA = Sweep{
-        Position{Length2{-x * Meter, +y * Meter}, Angle{0}},
-        Position{Length2{+x * Meter, +y * Meter}, Angle{0}}
+        Position{Length2{-x * Meter, +y * Meter}, 0_deg},
+        Position{Length2{+x * Meter, +y * Meter}, 0_deg}
     };
     const auto proxyB = DistanceProxy{radius, 1, &pos, nullptr};
     const auto sweepB = Sweep{
-        Position{Length2{+x * Meter, -y * Meter}, Angle{0}},
-        Position{Length2{-x * Meter, -y * Meter}, Angle{0}}
+        Position{Length2{+x * Meter, -y * Meter}, 0_deg},
+        Position{Length2{-x * Meter, -y * Meter}, 0_deg}
     };
     
     // Compute the time of impact information now...
@@ -266,14 +266,14 @@ TEST(TimeOfImpact, RodCircleHitAt180)
     const UnitVec2 normals[] = {nA0, -nA0};
     const auto proxyA = DistanceProxy{radius, 2, vertices, normals};
     const auto sweepA = Sweep{
-        Position{Length2{-x * Meter, 4_m}, Angle{0}},
+        Position{Length2{-x * Meter, 4_m}, 0_deg},
         Position{Length2{+x * Meter, 4_m}, Angle{Real{180.0f} * 1_deg}}
     };
     const auto pos = Length2{};
     const auto proxyB = DistanceProxy{radius, 1, &pos, nullptr};
     const auto sweepB = Sweep{
-        Position{Length2{+x * Meter, 0_m}, Angle{0}},
-        Position{Length2{-x * Meter, 0_m}, Angle{0}}
+        Position{Length2{+x * Meter, 0_m}, 0_deg},
+        Position{Length2{-x * Meter, 0_m}, 0_deg}
     };
     
     // Compute the time of impact information now...
@@ -292,13 +292,13 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_1)
     const auto pos = Length2{};
     const auto proxyA = DistanceProxy{radius, 1, &pos, nullptr};
     const auto sweepA = Sweep{
-        Position{Length2{-x * Meter, 0_m}, Angle{0}},
-        Position{Length2{+x * Meter, 0_m}, Angle{0}}
+        Position{Length2{-x * Meter, 0_m}, 0_deg},
+        Position{Length2{+x * Meter, 0_m}, 0_deg}
     };
     const auto proxyB = DistanceProxy{radius, 1, &pos, nullptr};
     const auto sweepB = Sweep{
-        Position{Length2{+x * Meter, 0_m}, Angle{0}},
-        Position{Length2{-x * Meter, 0_m}, Angle{0}}
+        Position{Length2{+x * Meter, 0_m}, 0_deg},
+        Position{Length2{-x * Meter, 0_m}, 0_deg}
     };
     
     const auto conf = ToiConf{}
@@ -325,13 +325,13 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_2)
     const auto pos = Length2{};
     const auto proxyA = DistanceProxy{radius, 1, &pos, nullptr};
     const auto sweepA = Sweep{
-        Position{Length2{-x * Meter, 0_m}, Angle{0}},
-        Position{Length2{}, Angle{0}}
+        Position{Length2{-x * Meter, 0_m}, 0_deg},
+        Position{Length2{}, 0_deg}
     };
     const auto proxyB = DistanceProxy{radius, 1, &pos, nullptr};
     const auto sweepB = Sweep{
-        Position{Length2{+x * Meter, 0_m}, Angle{0}},
-        Position{Length2{}, Angle{0}}
+        Position{Length2{+x * Meter, 0_m}, 0_deg},
+        Position{Length2{}, 0_deg}
     };
     
     const auto conf = ToiConf{}
@@ -388,9 +388,9 @@ TEST(TimeOfImpact, WithClosingSpeedOf1600)
     const auto x = Real(400);
     const auto pos = Length2{};
     const auto proxyA = DistanceProxy{radius, 1, &pos, nullptr};
-    const auto sweepA = Sweep{Position{Length2{-x * Meter, 0_m}, Angle{0}}, Position{Length2{+x * Meter, 0_m}, Angle{0}}};
+    const auto sweepA = Sweep{Position{Length2{-x * Meter, 0_m}, 0_deg}, Position{Length2{+x * Meter, 0_m}, 0_deg}};
     const auto proxyB = DistanceProxy{radius, 1, &pos, nullptr};
-    const auto sweepB = Sweep{Position{Length2{+x * Meter, 0_m}, Angle{0}}, Position{Length2{-x * Meter, 0_m}, Angle{0}}};
+    const auto sweepB = Sweep{Position{Length2{+x * Meter, 0_m}, 0_deg}, Position{Length2{-x * Meter, 0_m}, 0_deg}};
     
     const auto conf = ToiConf{}
         .UseMaxToiIters(200)
@@ -470,8 +470,8 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
     // separation has reached tolerance but t2 already equals t1.
 
     const auto sweepA = Sweep{
-        Position{Length2{0.0_m, -0.5_m}, Angle{0}},
-        Position{Length2{0.0_m, -0.5_m}, Angle{0}}
+        Position{Length2{0.0_m, -0.5_m}, 0_deg},
+        Position{Length2{0.0_m, -0.5_m}, 0_deg}
     };
     const auto sweepB = Sweep{
         Position{Length2{14.3689661_m, 0.500306308_m}, 0.0000139930862_rad},

@@ -76,7 +76,7 @@ public:
             m_ball->CreateFixture(std::make_shared<DiskShape>(circleConf), fd);
 
             PolygonShape polygon_shape;
-            SetAsBox(polygon_shape, 10_m, 0.2_m, Vec2(-10.0f, 0.0f) * 1_m, Angle{0});
+            SetAsBox(polygon_shape, 10_m, 0.2_m, Vec2(-10.0f, 0.0f) * 1_m, 0_rad);
             polygon_shape.SetDensity(2_kgpm2);
 
             BodyDef polygon_bd;

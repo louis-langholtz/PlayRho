@@ -154,7 +154,7 @@ void PrismaticJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     const auto invRotMassA = InvMass{invRotInertiaA * m_a1 * m_a1 / SquareRadian};
     const auto invRotMassB = InvMass{invRotInertiaB * m_a2 * m_a2 / SquareRadian};
     const auto totalInvMass = invMassA + invMassB + invRotMassA + invRotMassB;
-    m_motorMass = (totalInvMass > InvMass{0})? Real{1} / totalInvMass: Mass{0};
+    m_motorMass = (totalInvMass > InvMass{0})? Real{1} / totalInvMass: 0_kg;
 
     // Prismatic constraint.
     {
@@ -247,7 +247,7 @@ void PrismaticJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     }
     else
     {
-        m_impulse = Vec3_zero;
+        m_impulse = Vec3{};
         m_motorImpulse = 0;
     }
 
@@ -431,14 +431,14 @@ bool PrismaticJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const 
         else if (translation <= m_lowerTranslation)
         {
             // Prevent large linear corrections and allow some slop.
-            C2 = StripUnit(Clamp(translation - m_lowerTranslation + conf.linearSlop, -conf.maxLinearCorrection, Length{0}));
+            C2 = StripUnit(Clamp(translation - m_lowerTranslation + conf.linearSlop, -conf.maxLinearCorrection, 0_m));
             linearError = std::max(linearError, m_lowerTranslation - translation);
             active = true;
         }
         else if (translation >= m_upperTranslation)
         {
             // Prevent large linear corrections and allow some slop.
-            C2 = StripUnit(Clamp(translation - m_upperTranslation - conf.linearSlop, Length{0}, conf.maxLinearCorrection));
+            C2 = StripUnit(Clamp(translation - m_upperTranslation - conf.linearSlop, 0_m, conf.maxLinearCorrection));
             linearError = std::max(linearError, translation - m_upperTranslation);
             active = true;
         }

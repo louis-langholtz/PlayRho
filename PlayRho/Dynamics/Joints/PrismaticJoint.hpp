@@ -122,7 +122,7 @@ private:
     UnitVec2 m_localXAxisA; ///< Local X axis A.
     UnitVec2 m_localYAxisA; ///< Local Y axis A.
     Angle m_referenceAngle; ///< Reference angle.
-    Vec3 m_impulse = Vec3_zero; ///< Impulse.
+    Vec3 m_impulse = Vec3{}; ///< Impulse.
     Momentum m_motorImpulse = 0; ///< Motor impulse.
     Length m_lowerTranslation; ///< Lower translation.
     Length m_upperTranslation; ///< Upper translation.
@@ -140,7 +140,7 @@ private:
     Length m_a1; ///< Location A1.
     Length m_a2; ///< Location A2.
     Mat33 m_K; ///< K matrix.
-    Mass m_motorMass = Mass{0}; ///< Motor mass.
+    Mass m_motorMass = 0_kg; ///< Motor mass.
 };
 
 inline Length PrismaticJoint::GetLowerLimit() const noexcept

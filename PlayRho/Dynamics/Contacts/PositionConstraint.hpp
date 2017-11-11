@@ -43,8 +43,8 @@ namespace playrho {
         {
             assert(m.GetPointCount() > 0);
             assert(&bA != &bB);
-            assert(rA >= Length{0});
-            assert(rB >= Length{0});
+            assert(rA >= 0_m);
+            assert(rB >= 0_m);
         }
         
         Manifold manifold; ///< Copy of contact's manifold with 1 or more contact points (64-bytes).
