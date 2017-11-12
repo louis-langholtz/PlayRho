@@ -38,6 +38,21 @@ TEST(Angle, DegreeAndRadian)
                 double(Real{((Pi * 1_rad) / Real{180}) / 1_rad}), 0.0001);
 }
 
+TEST(Angle, GetRevRotationalAngle)
+{
+    EXPECT_EQ(GetRevRotationalAngle(0_deg, 0_deg), 0_deg);
+    EXPECT_EQ(GetRevRotationalAngle(0_deg, 10_deg), 10_deg);
+    // GetRevRotationalAngle(100 * Degree, 110 * Degree) almost equals 10 * Degree (but not exactly)
+    EXPECT_EQ(GetRevRotationalAngle(-10_deg, 0_deg), 10_deg);
+    EXPECT_NEAR(static_cast<double>(Real{GetRevRotationalAngle(90_deg, -90_deg)/1_deg}), 180.0, 0.0001);
+    EXPECT_NEAR(double(Real{GetRevRotationalAngle(100_deg, 110_deg) / 1_deg}),  10.0, 0.0001);
+    EXPECT_NEAR(double(Real{GetRevRotationalAngle( 10_deg,   0_deg) / 1_deg}), 350.0, 0.0001);
+    EXPECT_NEAR(double(Real{GetRevRotationalAngle( -2_deg,  +3_deg) / 1_deg}),   5.0, 0.001);
+    EXPECT_NEAR(double(Real{GetRevRotationalAngle( +2_deg,  -3_deg) / 1_deg}), 355.0, 0.001);
+    EXPECT_NEAR(double(Real{GetRevRotationalAngle(-13_deg,  -3_deg) / 1_deg}),  10.0, 0.001);
+    EXPECT_NEAR(double(Real{GetRevRotationalAngle(-10_deg, -20_deg) / 1_deg}), 350.0, 0.001);
+}
+
 TEST(Angle, GetDelta)
 {
     EXPECT_EQ(GetDelta(0_deg, 0_deg), 0_deg);

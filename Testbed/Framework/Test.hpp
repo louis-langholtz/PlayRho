@@ -50,6 +50,7 @@ struct Settings
     float minDt = 1.0f / 120;
     float maxDt = 1.0f / 5;
 
+    float minStillTimeToSleep = static_cast<float>(Real{DefaultMinStillTimeToSleep / Second});
     float maxLinearCorrection = static_cast<float>(Real{DefaultMaxLinearCorrection / Meter}); // in meters
     float maxAngularCorrection = static_cast<float>(Real{DefaultMaxAngularCorrection / Degree}); // in degrees
 
@@ -142,7 +143,7 @@ public:
     void ShiftMouseDown(const Length2& p);
     void MouseMove(const Length2& p);
     void LaunchBomb();
-    void LaunchBomb(const Length2& position, const LinearVelocity2 velocity);
+    void LaunchBomb(const Length2& at, const LinearVelocity2 velocity);
     void SpawnBomb(const Length2& worldPt);
     void CompleteBombSpawn(const Length2& p);
     void ShiftOrigin(const Length2& newOrigin);
@@ -342,6 +343,7 @@ private:
     Length2 m_bombSpawnPoint;
     bool m_bombSpawning = false;
     Length2 m_mouseWorld = Length2{};
+    Time m_lastDeltaTime = 0_s;
     double m_sumDeltaTime = 0.0;
     int m_stepCount = 0;
     StepStats m_stepStats;

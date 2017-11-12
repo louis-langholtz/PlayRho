@@ -156,6 +156,9 @@ public:
     /// @warning Behavior is undefined if given an invalid index.
     /// @return Fixture proxy value.
     FixtureProxy GetProxy(ChildCounter index) const noexcept;
+    
+    /// @brief Gets the proxies.
+    Span<const FixtureProxy> GetProxies() const noexcept;
 
 private:
 
@@ -169,9 +172,6 @@ private:
         std::array<FixtureProxy, 2> asArray; ///< Values accessed as a local array.
         std::unique_ptr<FixtureProxy[]> asBuffer; ///< Values accessed as pointer to array.
     };
-    
-    /// @brief Gets the proxies.
-    Span<const FixtureProxy> GetProxies() const noexcept;
     
     /// @brief Sets the proxies.
     void SetProxies(std::unique_ptr<FixtureProxy[]> value, std::size_t count) noexcept;
