@@ -83,10 +83,10 @@ Body::Body(World* world, const BodyDef& bd):
     m_sweep{Position{bd.location, bd.angle}},
     m_flags{GetFlags(bd)},
     m_world{world},
+    m_userData{bd.userData},
     m_invMass{(bd.type == BodyType::Dynamic)? InvMass{Real{1} / Kilogram}: InvMass{0}},
     m_linearDamping{bd.linearDamping},
-    m_angularDamping{bd.angularDamping},
-    m_userData{bd.userData}
+    m_angularDamping{bd.angularDamping}
 {
     assert(IsValid(bd.location));
     assert(IsValid(bd.angle));

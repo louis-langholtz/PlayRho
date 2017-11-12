@@ -106,11 +106,10 @@ private:
     Length2 m_localAnchorB; ///< Local anchor B.
     NonNegative<Frequency> m_frequency = NonNegative<Frequency>{0}; ///< Frequency.
     NonNegative<Real> m_dampingRatio = NonNegative<Real>{0}; ///< Damping ratio.
-    
-    // Solver shared
-    Momentum2 m_impulse = Momentum2{}; ///< Impulse.
     NonNegative<Force> m_maxForce = NonNegative<Force>{0}; ///< Max force.
     InvMass m_gamma = InvMass{0}; ///< Gamma.
+
+    Momentum2 m_impulse = Momentum2{}; ///< Impulse.
 
     // Solver variables. These are only valid after InitVelocityConstraints called.
     Length2 m_rB; ///< Relative B.

@@ -87,7 +87,7 @@ Joint::FlagsType Joint::GetFlags(const JointDef& def) noexcept
 }
 
 Joint::Joint(const JointDef& def):
-    m_bodyA{def.bodyA}, m_bodyB{def.bodyB}, m_flags{GetFlags(def)}, m_userData{def.userData}
+    m_bodyA{def.bodyA}, m_bodyB{def.bodyB}, m_userData{def.userData}, m_flags{GetFlags(def)}
 {
     // Intentionally empty.
 }

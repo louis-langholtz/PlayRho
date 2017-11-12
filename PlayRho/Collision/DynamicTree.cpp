@@ -26,8 +26,8 @@
 namespace playrho {
 
 DynamicTree::DynamicTree(Size nodeCapacity):
-    m_nodeCapacity{nodeCapacity},
-    m_nodes{Alloc<TreeNode>(nodeCapacity)}
+    m_nodes{Alloc<TreeNode>(nodeCapacity)},
+    m_nodeCapacity{nodeCapacity}
 {
     if (nodeCapacity == Size{0})
     {

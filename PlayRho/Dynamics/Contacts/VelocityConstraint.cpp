@@ -76,9 +76,9 @@ VelocityConstraint::VelocityConstraint(Real friction, Real restitution,
                                        BodyConstraint& bA,
                                        BodyConstraint& bB,
                                        Conf conf):
-    m_friction{friction}, m_restitution{restitution}, m_tangentSpeed{tangentSpeed},
     m_bodyA{&bA}, m_bodyB{&bB},
-    m_normal{worldManifold.GetNormal()}
+    m_normal{worldManifold.GetNormal()},
+    m_friction{friction}, m_restitution{restitution}, m_tangentSpeed{tangentSpeed}
 {
     assert(IsValid(friction));
     assert(IsValid(restitution));

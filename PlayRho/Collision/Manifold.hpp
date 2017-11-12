@@ -497,7 +497,7 @@ namespace playrho {
 
     constexpr inline Manifold::Manifold(Type t, UnitVec2 ln, Length2 lp, size_type n,
                                               const PointArray& mpa) noexcept:
-        m_type{t}, m_localNormal{ln}, m_localPoint{lp}, m_pointCount{n}, m_points{mpa}
+        m_type{t}, m_pointCount{n}, m_localNormal{ln}, m_localPoint{lp}, m_points{mpa}
     {
         assert(t != e_unset || n == 0);
         assert(t == e_unset || IsValid(lp));

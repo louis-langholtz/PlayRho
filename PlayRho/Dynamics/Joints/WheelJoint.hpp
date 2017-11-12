@@ -103,14 +103,14 @@ private:
     bool SolvePositionConstraints(BodyConstraintsMap& bodies,
                                   const ConstraintSolverConf& conf) const override;
 
-    Frequency m_frequency; ///< Frequency.
-    Real m_dampingRatio; ///< Damping ratio.
-
     // Solver shared
     Length2 m_localAnchorA; ///< Local anchor A.
     Length2 m_localAnchorB; ///< Local anchor B.
     UnitVec2 m_localXAxisA; ///< Local X axis A.
     UnitVec2 m_localYAxisA; ///< Local Y axis A.
+
+    Frequency m_frequency; ///< Frequency.
+    Real m_dampingRatio; ///< Damping ratio.
 
     Momentum m_impulse = 0; ///< Impulse.
     AngularMomentum m_motorImpulse = 0; ///< Motor impulse.

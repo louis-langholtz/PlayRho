@@ -93,10 +93,10 @@ private:
 
     Length2 m_groundAnchorA; ///< Ground anchor A.
     Length2 m_groundAnchorB; ///< Ground anchor B.
-    Length m_lengthA; ///< Length A.
-    Length m_lengthB; ///< Length B.
     Length2 m_localAnchorA; ///< Local anchor A.
     Length2 m_localAnchorB; ///< Local anchor B.
+    Length m_lengthA; ///< Length A.
+    Length m_lengthB; ///< Length B.
     Real m_ratio; ///< Ratio.
     Length m_constant; ///< Constant.
     

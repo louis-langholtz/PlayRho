@@ -50,11 +50,11 @@ WheelJoint::WheelJoint(const WheelJointDef& def):
     m_localAnchorB(def.localAnchorB),
     m_localXAxisA(def.localAxisA),
     m_localYAxisA(GetRevPerpendicular(m_localXAxisA)),
+    m_frequency(def.frequency),
+    m_dampingRatio(def.dampingRatio),
     m_maxMotorTorque(def.maxMotorTorque),
     m_motorSpeed(def.motorSpeed),
-    m_enableMotor(def.enableMotor),
-    m_frequency(def.frequency),
-    m_dampingRatio(def.dampingRatio)
+    m_enableMotor(def.enableMotor)
 {
     // Intentionally empty.
 }
