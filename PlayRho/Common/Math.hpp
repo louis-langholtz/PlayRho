@@ -344,6 +344,7 @@ inline auto ModuloViaTrunc(T dividend, T divisor) noexcept
 /// @sa Atan2
 inline Angle GetNormalized(Angle value) noexcept
 {
+    assert(IsValid(value));
     constexpr auto oneRotationInRadians = Real{2 * Pi};
     auto angleInRadians = Real{value / Radian};
 #if defined(NORMALIZE_ANGLE_VIA_FMOD)
@@ -373,6 +374,7 @@ inline Angle GetNormalized(Angle value) noexcept
 /// @note Use to prevent unbounded angles in positions.
 inline Position GetNormalized(const Position& val) noexcept
 {
+    assert(IsValid(val));
     return Position{val.linear, GetNormalized(val.angular)};
 }
 
@@ -1011,6 +1013,13 @@ constexpr inline T GetModuloPrev(T value, T count) noexcept
 /// @return Angle between -Pi and Pi radians inclusively.
 /// @sa GetNormalized
 Angle GetDelta(Angle a1, Angle a2) noexcept;
+
+/// Gets the reverse (counter) clockwise rotational angle to go from angle 1 to angle 2.
+/// @return Angular rotation in the counter clockwise direction to go from angle 1 to angle 2.
+constexpr inline Angle GetRevRotationalAngle(Angle a1, Angle a2) noexcept
+{
+    return (a1 > a2)? 360_deg - (a1 - a2): a2 - a1;
+}
 
 /// Gets the unit vector for the given value.
 /// @param value Value to get the unit vector for.
