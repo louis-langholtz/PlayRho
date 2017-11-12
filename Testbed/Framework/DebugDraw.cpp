@@ -34,6 +34,8 @@
 
 namespace playrho {
 
+Camera g_camera;
+
 namespace {
 
 static void sCheckGLError()
@@ -121,7 +123,7 @@ static GLuint sCreateShaderProgram(const char* vs, const char* fs)
 } // namespace
 
 
-Length2 ConvertScreenToWorld(const Camera& camera, const Coord2D ps)
+Length2 ConvertScreenToWorld(const Coord2D ps, const Camera& camera)
 {
     const auto w = float(camera.m_width);
     const auto h = float(camera.m_height);
@@ -156,7 +158,7 @@ AABB2D ConvertScreenToWorld(const Camera& camera)
     };
 }
 
-Coord2D ConvertWorldToScreen(const Camera& camera, const Length2 pw)
+Coord2D ConvertWorldToScreen(const Length2 pw, const Camera& camera)
 {
     const auto w = float(camera.m_width);
     const auto h = float(camera.m_height);
@@ -174,7 +176,7 @@ Coord2D ConvertWorldToScreen(const Camera& camera, const Length2 pw)
 
 // Convert from world coordinates to normalized device coordinates.
 // http://www.songho.ca/opengl/gl_projectionmatrix.html
-ProjectionMatrix GetProjectionMatrix(const Camera& camera, float zBias)
+ProjectionMatrix GetProjectionMatrix(float zBias, const Camera& camera)
 {
     const auto w = float(camera.m_width);
     const auto h = float(camera.m_height);
@@ -302,7 +304,7 @@ struct GLRenderPoints
         
         glUseProgram(m_programId);
         
-        const auto proj = GetProjectionMatrix(camera, 0.0f);
+        const auto proj = GetProjectionMatrix(0.0f, camera);
         
         glUniformMatrix4fv(m_projectionUniform, 1, GL_FALSE, proj.m);
         
@@ -434,7 +436,7 @@ struct GLRenderLines
         
         glUseProgram(m_programId);
         
-        const auto proj = GetProjectionMatrix(camera, 0.1f);
+        const auto proj = GetProjectionMatrix(0.1f, camera);
         
         glUniformMatrix4fv(m_projectionUniform, 1, GL_FALSE, proj.m);
         
@@ -559,7 +561,7 @@ struct GLRenderTriangles
         
         glUseProgram(m_programId);
         
-        const auto proj = GetProjectionMatrix(camera, 0.2f);
+        const auto proj = GetProjectionMatrix(0.2f, camera);
         
         glUniformMatrix4fv(m_projectionUniform, 1, GL_FALSE, proj.m);
         
@@ -711,7 +713,7 @@ void DebugDraw::DrawSolidCircle(const Length2& center, Length radius, const Colo
 
 void DebugDraw::DrawString(const Length2& pw, TextAlign align, const char *string, ...)
 {
-    auto ps = ConvertWorldToScreen(m_camera, pw);
+    auto ps = ConvertWorldToScreen(pw, m_camera);
 
     char buffer[512];
     va_list arg;

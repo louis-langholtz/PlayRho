@@ -79,10 +79,12 @@ struct Camera
     int m_height = 800;
 };
 
-Length2 ConvertScreenToWorld(const Camera& camera, const Coord2D screenPoint);
-AABB2D ConvertScreenToWorld(const Camera& camera);
-Coord2D ConvertWorldToScreen(const Camera& camera, const Length2 worldPoint);
-ProjectionMatrix GetProjectionMatrix(const Camera& camera, float zBias);
+extern Camera g_camera;
+    
+Length2 ConvertScreenToWorld(const Coord2D screenPoint, const Camera& camera = g_camera);
+AABB2D ConvertScreenToWorld(const Camera& camera = g_camera);
+Coord2D ConvertWorldToScreen(const Length2 worldPoint, const Camera& camera = g_camera);
+ProjectionMatrix GetProjectionMatrix(float zBias, const Camera& camera = g_camera);
 
 class DebugDraw : public Drawer
 {

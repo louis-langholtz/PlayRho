@@ -18,7 +18,7 @@
  */
 
 #include "Test.hpp"
-#include "Drawer.hpp"
+#include "DebugDraw.hpp"
 #include <stdio.h>
 #include <vector>
 #include <sstream>
@@ -30,7 +30,7 @@ using namespace playrho;
 
 static void DrawCorner(Drawer& drawer, Length2 p, Length r, Angle a0, Angle a1, Color color)
 {
-    const auto angleDiff = GetDelta(a0, a1);
+    const auto angleDiff = GetRevRotationalAngle(a0, a1);
     auto lastAngle = 0_deg;
     for (auto angle = 5_deg; angle < angleDiff; angle += 5_deg)
     {
@@ -357,11 +357,12 @@ bool Test::DrawWorld(Drawer& drawer, const World& world, const Settings& setting
         for (auto&& body: world.GetBodies())
         {
             const auto b = GetPtr(body);
+            const auto massScale = std::pow(static_cast<float>(StripUnit(GetMass(*b))), 1.0f/3);
             auto xf = b->GetTransformation();
             xf.p = b->GetWorldCenter();
             const auto p1 = xf.p;
-            drawer.DrawSegment(p1, p1 + k_axisScale * GetXAxis(xf.q), red);
-            drawer.DrawSegment(p1, p1 + k_axisScale * GetYAxis(xf.q), green);
+            drawer.DrawSegment(p1, p1 + massScale * k_axisScale * GetXAxis(xf.q), red);
+            drawer.DrawSegment(p1, p1 + massScale * k_axisScale * GetYAxis(xf.q), green);
         }
     }
 
@@ -533,8 +534,8 @@ void Test::CompleteBombSpawn(const Length2& p)
 
     const auto relP = m_bombSpawnPoint - p;
     const auto vel = LinearVelocity2{
-        Real{30} * GetX(relP) / Second,
-        Real{30} * GetY(relP) / Second
+        Real{0.25f} * GetX(relP) / m_lastDeltaTime,
+        Real{0.25f} * GetY(relP) / m_lastDeltaTime
     };
     LaunchBomb(m_bombSpawnPoint, vel);
     m_bombSpawning = false;
@@ -578,15 +579,17 @@ void Test::MouseMove(const Length2& p)
 
 void Test::LaunchBomb()
 {
-    const auto p = Length2(RandomFloat(-15.0f, 15.0f) * 1_m, 40_m);
-    const auto v = LinearVelocity2{
-        Real{-100} * GetX(p) / Second,
-        Real{-100} * GetY(p) / Second
-    };
-    LaunchBomb(p, v);
+    const auto viewport = ConvertScreenToWorld();
+    const auto worldX = RandomFloat(viewport.ranges[0].GetMin()/1_m, viewport.ranges[0].GetMax()/1_m);
+    const auto atA = Length2{worldX * 1_m, viewport.ranges[1].GetMax()};
+    const auto centerX = GetCenter(viewport.ranges[0]);
+    const auto height = GetSize(viewport.ranges[1]);
+    const auto atB = Length2{centerX, viewport.ranges[1].GetMax() - (height * 9.0f / 10.0f)};
+    const auto v = (atB - atA) / (m_lastDeltaTime * 30);
+    LaunchBomb(atA, v);
 }
 
-void Test::LaunchBomb(const Length2& position, const LinearVelocity2 linearVelocity)
+void Test::LaunchBomb(const Length2& at, const LinearVelocity2 linearVelocity)
 {
     if (m_bomb)
     {
@@ -594,7 +597,7 @@ void Test::LaunchBomb(const Length2& position, const LinearVelocity2 linearVeloc
         m_bomb = nullptr;
     }
 
-    m_bomb = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(position).UseBullet(true));
+    m_bomb = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(at).UseBullet(true));
     m_bomb->SetVelocity(Velocity{linearVelocity, 0_rpm});
 
     auto conf = DiskShape::Conf{};
@@ -1091,6 +1094,7 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
 
     stepConf.maxSubSteps = static_cast<StepConf::iteration_type>(settings.maxSubSteps);
 
+    stepConf.minStillTimeToSleep = static_cast<Real>(settings.minStillTimeToSleep) * Second;
     stepConf.maxTranslation = static_cast<Real>(settings.maxTranslation) * Meter;
     stepConf.maxRotation = Real{settings.maxRotation} * Degree;
 
@@ -1151,7 +1155,9 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
 
     if (settings.dt != 0)
     {
+        m_lastDeltaTime = settings.dt * Second;
         m_sumDeltaTime += settings.dt;
+
         ++m_stepCount;
         m_stepStats = stepStats;
         m_minToiSep = std::min(m_minToiSep, stepStats.toi.minSeparation);

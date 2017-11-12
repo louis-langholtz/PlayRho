@@ -71,13 +71,25 @@ using namespace playrho;
 class TestSuite;
 class Selection;
 
+using BodiesRange = SizedRange<World::Bodies::iterator>;
+using JointsRange = SizedRange<World::Joints::iterator>;
+using BodyJointsRange = SizedRange<Body::Joints::iterator>;
+using ContactsRange = SizedRange<World::Contacts::const_iterator>;
+using FixturesRange = SizedRange<Body::Fixtures::iterator>;
+using FixtureSet = Test::FixtureSet;
+using BodySet = Test::BodySet;
+
+static void EntityUI(Contact& contact);
+static void EntityUI(Joint& e);
+static void CollectionUI(const ContactsRange& contacts);
+static void CollectionUI(const JointsRange& joints);
+static void CollectionUI(const BodyJointsRange& joints);
+
 namespace
 {
     TestSuite *g_testSuite = nullptr;
     Selection *g_selection = nullptr;
-    
-    Camera camera;
-    
+        
     UiState ui;
     
     Test::NeededSettings neededSettings = 0u;
@@ -182,13 +194,13 @@ public:
         RestartTest();
         if (neededSettings & (0x1u << Test::NeedCameraZoom))
         {
-            camera.m_zoom = testSettings.cameraZoom;
+            g_camera.m_zoom = testSettings.cameraZoom;
         }
         else
         {
-            camera.m_zoom = 1.0f;
+            g_camera.m_zoom = 1.0f;
         }
-        camera.m_center = Coord2D{0.0f, 20.0f};
+        g_camera.m_center = Coord2D{0.0f, 20.0f};
     }
     
     void RestartTest()
@@ -342,11 +354,11 @@ static BodyType ToBodyType(int val)
 
 static void ResizeWindow(GLFWwindow*, int width, int height)
 {
-    camera.m_width = width;
-    camera.m_height = height;
+    g_camera.m_width = width;
+    g_camera.m_height = height;
     
-    menuX = camera.m_width - menuWidth - 10;
-    menuHeight = camera.m_height - 20;
+    menuX = g_camera.m_width - menuWidth - 10;
+    menuHeight = g_camera.m_height - 20;
 }
 
 static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -373,7 +385,7 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
             }
             else
             {
-                camera.m_center.x -= 0.5f;
+                g_camera.m_center.x -= 0.5f;
             }
             break;
 
@@ -385,7 +397,7 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
             }
             else
             {
-                camera.m_center.x += 0.5f;
+                g_camera.m_center.x += 0.5f;
             }
             break;
 
@@ -397,7 +409,7 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
             }
             else
             {
-                camera.m_center.y -= 0.5f;
+                g_camera.m_center.y -= 0.5f;
             }
             break;
 
@@ -409,24 +421,24 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
             }
             else
             {
-                camera.m_center.y += 0.5f;
+                g_camera.m_center.y += 0.5f;
             }
             break;
 
         case GLFW_KEY_HOME:
             // Reset view
-            camera.m_zoom = 1.0f;
-            camera.m_center = Coord2D{0.0f, 20.0f};
+            g_camera.m_zoom = 1.0f;
+            g_camera.m_center = Coord2D{0.0f, 20.0f};
             break;
 
         case GLFW_KEY_Z:
             // Zoom out
-            camera.m_zoom = std::min(1.1f * camera.m_zoom, 20.0f);
+            g_camera.m_zoom = std::min(1.1f * g_camera.m_zoom, 20.0f);
             break;
 
         case GLFW_KEY_X:
             // Zoom in
-            camera.m_zoom = std::max(0.9f * camera.m_zoom, 0.02f);
+            g_camera.m_zoom = std::max(0.9f * g_camera.m_zoom, 0.02f);
             break;
 
         case GLFW_KEY_R:
@@ -539,16 +551,16 @@ static void MouseMotion(GLFWwindow*, double xd, double yd)
     // client area of the window.
     
     mouseScreen = Coord2D{static_cast<float>(xd), static_cast<float>(yd)};
-    mouseWorld = ConvertScreenToWorld(camera, mouseScreen);
+    mouseWorld = ConvertScreenToWorld(mouseScreen);
 
     g_testSuite->GetTest()->MouseMove(mouseWorld);
     
     if (rightMouseDown)
     {
         const auto movement = mouseWorld - lastp;
-        camera.m_center.x -= static_cast<float>(Real{GetX(movement) / Meter});
-        camera.m_center.y -= static_cast<float>(Real{GetY(movement) / Meter});
-        lastp = ConvertScreenToWorld(camera, mouseScreen);
+        g_camera.m_center.x -= static_cast<float>(Real{GetX(movement) / Meter});
+        g_camera.m_center.y -= static_cast<float>(Real{GetY(movement) / Meter});
+        lastp = ConvertScreenToWorld(mouseScreen);
     }
 }
 
@@ -560,11 +572,11 @@ static void ScrollCallback(GLFWwindow* window, double dx, double dy)
     {
         if (dy > 0)
         {
-            camera.m_zoom /= 1.1f;
+            g_camera.m_zoom /= 1.1f;
         }
         else
         {
-            camera.m_zoom *= 1.1f;
+            g_camera.m_zoom *= 1.1f;
         }
     }
 }
@@ -862,6 +874,12 @@ static void AdvancedStepOptionsUI()
                               " be resolved per position iteration.");
         }
         ImGui::Checkbox("Allow Sleeping", &settings.enableSleep);
+        ImGui::InputFloat("Still To Sleep", &settings.minStillTimeToSleep);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("The min. time in seconds (in simulated time) that a body"
+                              " must be still for before it will be put to sleep.");
+        }
         ImGui::Checkbox("Warm Starting", &settings.enableWarmStarting);
     }
     if (ImGui::CollapsingHeader("TOI Phase Processing", ImGuiTreeNodeFlags_DefaultOpen))
@@ -1127,14 +1145,27 @@ static void EntityUI(Body& b)
     ImGui::LabelText("Total mass", "%.2e kg", static_cast<double>(Real{GetMass(b) / Kilogram}));
 }
 
+static void EntityUI(const Shape& shape)
+{
+    ImGui::ItemWidthContext itemWidthCtx(60);
+
+    const auto density = shape.GetDensity();
+    const auto vertexRadius = shape.GetVertexRadius();
+    const auto friction = shape.GetFriction();
+    const auto restitution = shape.GetRestitution();
+    const auto childCount = shape.GetChildCount();
+
+    ImGui::LabelText("Density (kg/m^2)", "%.2e",
+                     static_cast<double>(Real{density * SquareMeter / Kilogram}));
+    ImGui::LabelText("Vertex Radius (m)", "%.2e",
+                     static_cast<double>(Real{vertexRadius / Meter}));
+    ImGui::LabelText("Friction", "%f", static_cast<double>(friction));
+    ImGui::LabelText("Restitution", "%f", static_cast<double>(restitution));
+    ImGui::LabelText("Child Count", "%u", childCount);
+}
+
 static void EntityUI(Fixture& fixture)
 {
-    const auto density = fixture.GetDensity();
-    const auto friction = fixture.GetFriction();
-    const auto restitution = fixture.GetRestitution();
-    const auto shape = fixture.GetShape();
-    const auto childCount = shape->GetChildCount();
-    const auto vertexRadius = shape->GetVertexRadius();
     //const auto body = fixture.GetBody();
     
     ImGui::Spacing();
@@ -1218,14 +1249,25 @@ static void EntityUI(Fixture& fixture)
     {
         fixture.Refilter();
     }
-
-    std::ostringstream stream;
-    stream << "density=" << static_cast<double>(Real{density * SquareMeter / Kilogram}) << "kg/m^2";
-    stream << " vertex-radius=" << static_cast<double>(Real{vertexRadius / Meter}) << "m";
-    stream << " childCount=" << std::size_t(childCount);
-    stream << " friction=" << friction;
-    stream << " restitution=" << restitution;
-    ImGui::TextWrappedUnformatted(stream.str());
+    
+    {
+        const auto shape = fixture.GetShape().get();
+        if (ImGui::TreeNodeEx(shape, 0, "Shape/Part"))
+        {
+            EntityUI(*shape);
+            ImGui::TreePop();
+        }
+    }
+#if 0
+    {
+        const auto proxies = fixture.GetProxies();
+        if (ImGui::TreeNodeEx("Proxies", 0, "Proxies (%u)", proxies.size()))
+        {
+            CollectionUI(proxies);
+            ImGui::TreePop();
+        }
+    }
+#endif
 }
 
 static void EntityUI(const Manifold& m)
@@ -1283,20 +1325,6 @@ static void EntityUI(const Manifold& m)
     ImGui::TextWrappedUnformatted(stream.str());
 }
 
-using BodiesRange = SizedRange<World::Bodies::iterator>;
-using JointsRange = SizedRange<World::Joints::iterator>;
-using BodyJointsRange = SizedRange<Body::Joints::iterator>;
-using ContactsRange = SizedRange<World::Contacts::const_iterator>;
-using FixturesRange = SizedRange<Body::Fixtures::iterator>;
-using FixtureSet = Test::FixtureSet;
-using BodySet = Test::BodySet;
-
-static void EntityUI(Contact& contact);
-static void EntityUI(Joint& e);
-static void CollectionUI(const ContactsRange& contacts);
-static void CollectionUI(const JointsRange& joints);
-static void CollectionUI(const BodyJointsRange& joints);
-
 static void CollectionUI(const FixturesRange& fixtures, const FixtureSet& selectedFixtures)
 {
     auto fnum = 0;
@@ -1324,20 +1352,20 @@ static void EntityUI(Body& b, const FixtureSet& selectedFixtures)
         }
     }
     {
-        const auto contacts = b.GetContacts();
-        if (ImGui::TreeNodeEx("Contacts", 0,
-                              "Contacts (%lu)", contacts.size()))
-        {
-            CollectionUI(contacts);
-            ImGui::TreePop();
-        }
-    }
-    {
         const auto joints = b.GetJoints();
         if (ImGui::TreeNodeEx("Joints", 0,
                               "Joints (%lu)", joints.size()))
         {
             CollectionUI(joints);
+            ImGui::TreePop();
+        }
+    }
+    {
+        const auto contacts = b.GetContacts();
+        if (ImGui::TreeNodeEx("Contacts", 0,
+                              "Contacts (%lu)", contacts.size()))
+        {
+            CollectionUI(contacts);
             ImGui::TreePop();
         }
     }
@@ -2083,8 +2111,8 @@ static bool UserInterface()
 
     if (ui.showMenu)
     {
-        ImGui::SetNextWindowPos(ImVec2(camera.m_width - menuWidth - 10, 10));
-        ImGui::SetNextWindowSize(ImVec2(menuWidth, camera.m_height - 20));
+        ImGui::SetNextWindowPos(ImVec2(g_camera.m_width - menuWidth - 10, 10));
+        ImGui::SetNextWindowSize(ImVec2(menuWidth, g_camera.m_height - 20));
         ImGui::WindowContext window("Testbed Controls", &ui.showMenu,
                                     ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoCollapse);
         shouldQuit = MenuUI();
@@ -2110,10 +2138,10 @@ static void GlfwErrorCallback(int code, const char* str)
 static void ShowFrameInfo(double frameTime, double fps)
 {
     std::stringstream stream;
-    const auto viewport = ConvertScreenToWorld(camera);
-    stream << "Zoom=" << camera.m_zoom;
+    const auto viewport = ConvertScreenToWorld();
+    stream << "Zoom=" << g_camera.m_zoom;
     stream << " Center=";
-    stream << "{" << camera.m_center.x << "," << camera.m_center.y << "}";
+    stream << "{" << g_camera.m_center.x << "," << g_camera.m_center.y << "}";
     stream << " Viewport=" << viewport;
     stream << std::setprecision(1);
     stream << std::fixed;
@@ -2122,11 +2150,11 @@ static void ShowFrameInfo(double frameTime, double fps)
     stream << " FPS=" << fps;
     
     ImGui::SetNextWindowPos(ImVec2(0,0));
-    ImGui::SetNextWindowSize(ImVec2(camera.m_width, camera.m_height));
+    ImGui::SetNextWindowSize(ImVec2(g_camera.m_width, g_camera.m_height));
     ImGui::WindowContext wc("Frame Info", nullptr, ImVec2(0,0), 0.0f,
                  ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoInputs|
                  ImGuiWindowFlags_AlwaysAutoResize|ImGuiWindowFlags_NoScrollbar);
-    ImGui::SetCursorPos(ImVec2(5, camera.m_height - 20));
+    ImGui::SetCursorPos(ImVec2(5, g_camera.m_height - 20));
     ImGui::TextUnformatted(stream.str());
 }
 
@@ -2142,10 +2170,10 @@ int main()
     g_testSuite = &testSuite;
     g_selection = &selection;
 
-    camera.m_width = 1280; // 1152;
-    camera.m_height = 980; // 864;
-    menuX = camera.m_width - menuWidth - 10;
-    menuHeight = camera.m_height - 20;
+    g_camera.m_width = 1280; // 1152;
+    g_camera.m_height = 980; // 864;
+    menuX = g_camera.m_width - menuWidth - 10;
+    menuHeight = g_camera.m_height - 20;
 
     if (glfwSetErrorCallback(GlfwErrorCallback))
     {
@@ -2171,7 +2199,7 @@ int main()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     
-    const auto mainWindow = glfwCreateWindow(camera.m_width, camera.m_height, title,
+    const auto mainWindow = glfwCreateWindow(g_camera.m_width, g_camera.m_height, title,
                                              nullptr, nullptr);
     if (mainWindow == nullptr)
     {
@@ -2218,10 +2246,10 @@ int main()
     
     glClearColor(0.3f, 0.3f, 0.3f, 1.f);
     {
-        DebugDraw drawer(camera);
+        DebugDraw drawer(g_camera);
         while (!glfwWindowShouldClose(mainWindow))
         {
-            glViewport(0, 0, camera.m_width, camera.m_height);
+            glViewport(0, 0, g_camera.m_width, g_camera.m_height);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             ImGui_ImplGlfwGL3_NewFrame();

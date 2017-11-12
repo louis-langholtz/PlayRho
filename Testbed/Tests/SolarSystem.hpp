@@ -39,15 +39,15 @@ struct SolarSystemObject
 };
 
 static constexpr SolarSystemObject SolarSystemBodies[] = {
-    { "Sun",    696342_km, 1988550000.0_Yg,     0.000_d,    0_Gm,   25.050_d },
-    { "Mercury",  2439_km,        330.2_Yg,    87.969_d,   57_Gm,   58.646_d },
-    { "Venus",    6051_km,       4868.5_Yg,   224.701_d,  108_Gm, -243.025_d },
-    { "Earth",    6371_km,       5973.6_Yg,   365.256_d,  150_Gm,    0.997_d },
-    { "Mars",     3389_km,        641.8_Yg,   686.971_d,  230_Gm,    1.025_d },
-    { "Jupiter", 69911_km,    1898600.0_Yg,  4332.590_d,  778_Gm,    0.413_d },
-    { "Saturn",  58232_km,     568460.0_Yg, 10759.220_d, 1430_Gm,    0.439_d },
-    { "Uranus",  25362_km,      86832.0_Yg, 30688.500_d, 2880_Gm,   -0.718_d },
-    { "Neptune", 24622_km,     102430.0_Yg, 60182.000_d, 4500_Gm,    0.671_d },
+    { "The Sun", 696342_km, 1988550000.0_Yg,     0.000_d,    0_Gm,   25.050_d },
+    { "Mercury",   2439_km,        330.2_Yg,    87.969_d,   57_Gm,   58.646_d },
+    { "Venus",     6051_km,       4868.5_Yg,   224.701_d,  108_Gm, -243.025_d },
+    { "Earth",     6371_km,       5973.6_Yg,   365.256_d,  150_Gm,    0.997_d },
+    { "Mars",      3389_km,        641.8_Yg,   686.971_d,  230_Gm,    1.025_d },
+    { "Jupiter",  69911_km,    1898600.0_Yg,  4332.590_d,  778_Gm,    0.413_d },
+    { "Saturn",   58232_km,     568460.0_Yg, 10759.220_d, 1430_Gm,    0.439_d },
+    { "Uranus",   25362_km,      86832.0_Yg, 30688.500_d, 2880_Gm,   -0.718_d },
+    { "Neptune",  24622_km,     102430.0_Yg, 60182.000_d, 4500_Gm,    0.671_d },
 };
 
 class SolarSystem: public Test
@@ -55,10 +55,37 @@ class SolarSystem: public Test
 public:
     static Test::Conf GetTestConf()
     {
+        auto minRadius = std::numeric_limits<Length>::max();
+        auto minName = "";
+        auto maxRadius = std::numeric_limits<Length>::min();
+        auto maxName = "";
+
+        for (auto& sso: SolarSystemBodies)
+        {
+            if (minRadius > sso.radius)
+            {
+                minRadius = sso.radius;
+                minName = sso.name;
+            }
+            if (maxRadius < sso.radius)
+            {
+                maxRadius = sso.radius;
+                maxName = sso.name;
+            }
+        }
+        
+        std::ostringstream os;
+        os << "A demo of grand scales!";
+        os << " The Sun and planets radiuses, masses, orbital and rotational periods";
+        os << " are all simulated to scale.";
+        os << " Radiuses range from ";
+        os << static_cast<float>(minRadius / 1_km);
+        os << " km (" << minName << "), to ";
+        os << static_cast<float>(maxRadius / 1_km);
+        os << " km (" << maxName << ").";
+
         auto conf = Test::Conf{};
-        conf.description = "A demo of grand scales."
-            " The Sun and planets radiuses, masses, orbital and rotational periods"
-            " are all simulated to scale.";
+        conf.description = os.str();
         conf.worldDef = WorldDef{}.UseMaxVertexRadius(700000_km);
         conf.neededSettings = 0;
         conf.neededSettings |= (1u << NeedLinearSlopField);
@@ -66,7 +93,7 @@ public:
         conf.neededSettings |= (1u << NeedDrawLabelsField);
         conf.neededSettings |= (1u << NeedMaxTranslation);
         conf.neededSettings |= (1u << NeedDeltaTime);
-        conf.settings.linearSlop = 1000.0f;
+        conf.settings.linearSlop = 1000.0f; // minRadius / 1000_m;
         conf.settings.cameraZoom = 2.2e11f;
         conf.settings.drawLabels = true;
         conf.settings.maxTranslation = std::numeric_limits<float>::infinity();
@@ -112,19 +139,22 @@ public:
     {
         SetAccelerations(m_world, CalcGravitationalAcceleration);
 
+        std::ostringstream os;
         if (m_focalBody)
         {
             const auto location = m_focalBody->GetLocation();
             drawer.SetTranslation(location);
             
-            std::ostringstream os;
-            os << "Camera locked on planet " << GetWorldIndex(m_focalBody) << ".";
-            m_status = os.str();
+            const auto index = GetWorldIndex(m_focalBody);
+            os << "Camera locked on body " << index << ": ";
+            os << SolarSystemBodies[index].name;
+            os << ".";
         }
         else
         {
-            m_status = "Camera unlocked from following any planet.";
+            os << "Camera unlocked from following any planet.";
         }
+        m_status = os.str();
     }
     
     const Body* m_focalBody = nullptr;
