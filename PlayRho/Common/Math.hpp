@@ -344,7 +344,6 @@ inline auto ModuloViaTrunc(T dividend, T divisor) noexcept
 /// @sa Atan2
 inline Angle GetNormalized(Angle value) noexcept
 {
-    assert(IsValid(value));
     constexpr auto oneRotationInRadians = Real{2 * Pi};
     auto angleInRadians = Real{value / Radian};
 #if defined(NORMALIZE_ANGLE_VIA_FMOD)
@@ -374,7 +373,6 @@ inline Angle GetNormalized(Angle value) noexcept
 /// @note Use to prevent unbounded angles in positions.
 inline Position GetNormalized(const Position& val) noexcept
 {
-    assert(IsValid(val));
     return Position{val.linear, GetNormalized(val.angular)};
 }
 
