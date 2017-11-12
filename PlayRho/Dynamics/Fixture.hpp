@@ -76,10 +76,10 @@ public:
     ///
     Fixture(NonNull<Body*> body, const FixtureDef& def, const std::shared_ptr<const Shape>& shape):
         m_body{body},
+        m_userData{def.userData},
         m_shape{shape},
         m_filter{def.filter},
-        m_isSensor{def.isSensor},
-        m_userData{def.userData}
+        m_isSensor{def.isSensor}
     {
         assert(shape);
     }
@@ -183,6 +183,8 @@ private:
     
     NonNull<Body*> const m_body; ///< Parent body. Set on construction. 8-bytes.
 
+    void* m_userData = nullptr; ///< User data. 8-bytes.
+
     /// Shape (of fixture).
     /// @note Set on construction.
     /// @note Either null or pointer to a heap-memory private copy of the assigned shape.
@@ -191,8 +193,6 @@ private:
     
     FixtureProxies m_proxies; ///< Collection of fixture proxies for the assigned shape. 8-bytes.
     
-    void* m_userData = nullptr; ///< User data. 8-bytes.
-
     /// Proxy count.
     /// @details This is the fixture shape's child count after proxy creation. 4-bytes.
     ChildCounter m_proxyCount = 0;

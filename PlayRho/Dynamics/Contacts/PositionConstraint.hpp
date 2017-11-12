@@ -39,7 +39,7 @@ namespace playrho {
         PositionConstraint(const Manifold& m,
                            BodyConstraint& bA, Length rA,
                            BodyConstraint& bB, Length rB):
-            manifold{m}, m_bodyA{&bA}, m_radiusA{rA}, m_bodyB{&bB}, m_radiusB{rB}
+            manifold{m}, m_bodyA{&bA}, m_bodyB{&bB}, m_radiusA{rA}, m_radiusB{rB}
         {
             assert(m.GetPointCount() > 0);
             assert(&bA != &bB);

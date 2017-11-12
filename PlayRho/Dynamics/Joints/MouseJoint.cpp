@@ -51,13 +51,13 @@ bool MouseJoint::IsOkay(const MouseJointDef& def) noexcept
 
 MouseJoint::MouseJoint(const MouseJointDef& def):
     Joint{def},
+    m_targetA{def.target},
     m_localAnchorB{def.bodyB?
         InverseTransform(def.target, def.bodyB->GetTransformation()):
         GetInvalid<decltype(m_localAnchorB)>()},
-    m_targetA{def.target},
-    m_maxForce{def.maxForce},
     m_frequency{def.frequency},
-    m_dampingRatio{def.dampingRatio}
+    m_dampingRatio{def.dampingRatio},
+    m_maxForce{def.maxForce}
 {
     assert(IsValid(def.target));
     assert(IsValid(def.dampingRatio));

@@ -34,8 +34,8 @@ using std::cend;
 
 Fixture::Fixture(const Fixture& other):
     m_body{other.m_body},
-    m_shape{other.m_shape},
     m_userData{other.m_userData},
+    m_shape{other.m_shape},
     m_proxyCount{other.m_proxyCount},
     m_filter{other.m_filter},
     m_isSensor{other.m_isSensor}

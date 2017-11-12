@@ -528,6 +528,7 @@ World::World(const WorldDef& def):
 }
 
 World::World(const World& other):
+    m_tree{other.m_tree},
     m_gravity{other.m_gravity},
     m_destructionListener{other.m_destructionListener},
     m_contactListener{other.m_contactListener},
@@ -535,8 +536,7 @@ World::World(const World& other):
     m_flags{other.m_flags},
     m_inv_dt0{other.m_inv_dt0},
     m_minVertexRadius{other.m_minVertexRadius},
-    m_maxVertexRadius{other.m_maxVertexRadius},
-    m_tree{other.m_tree}
+    m_maxVertexRadius{other.m_maxVertexRadius}
 {
     auto bodyMap = std::map<const Body*, Body*>();
     auto fixtureMap = std::map<const Fixture*, Fixture*>();

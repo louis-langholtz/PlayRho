@@ -467,8 +467,9 @@ class tuple_size< playrho::Vector<T, N> >: public std::integral_constant<size_t,
 
 /// @brief Tuple element type info for playrho::Vector
 template<std::size_t I, class T, size_t N>
-struct tuple_element<I, playrho::Vector<T, N>>
+class tuple_element<I, playrho::Vector<T, N>>
 {
+public:
     /// @brief Type alias revealing the actual element type of the given Vector.
     using type = T;
 };
