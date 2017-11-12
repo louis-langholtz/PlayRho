@@ -128,6 +128,10 @@ namespace playrho
     constexpr Position GetPosition(const Position pos0, const Position pos1,
                                    const Real beta) noexcept
     {
+        assert(IsValid(pos0));
+        assert(IsValid(pos1));
+        assert(IsValid(beta));
+
         // Note: have to be careful how this is done.
         //   If pos0 == pos1 then return value should always be equal to pos0 too.
         //   But if Real is float, pos0 * (1 - beta) + pos1 * beta can fail this requirement.
