@@ -1362,8 +1362,8 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
         {
             // What are the pros/cons of this?
             // Larger m_maxSubSteps slows down the simulation.
-            // m_maxSubSteps of 44 and higher seems to decrease the occurrance of tunneling of multiple
-            // bullet body collisions with static objects.
+            // m_maxSubSteps of 44 and higher seems to decrease the occurrance of tunneling
+            // of multiple bullet body collisions with static objects.
             ++results.numAtMaxSubSteps;
             continue;
         }
@@ -1375,9 +1375,9 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
                 
         /*
          * Put the sweeps onto the same time interval.
-         * Presumably no unresolved collisions happen before the maximum of the bodies' alpha-0 times.
-         * So long as the least TOI of the contacts is always the first collision that gets dealt with,
-         * this presumption is safe.
+         * Presumably no unresolved collisions happen before the maximum of the bodies'
+         * alpha-0 times. So long as the least TOI of the contacts is always the first
+         * collision that gets dealt with, this presumption is safe.
          */
         const auto alpha0 = std::max(bA->GetSweep().GetAlpha0(), bB->GetSweep().GetAlpha0());
         assert(alpha0 >= 0 && alpha0 < 1);

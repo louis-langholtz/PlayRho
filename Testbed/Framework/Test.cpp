@@ -532,11 +532,12 @@ void Test::CompleteBombSpawn(const Length2& p)
         return;
     }
 
+    const auto deltaTime = m_lastDeltaTime;
     const auto relP = m_bombSpawnPoint - p;
-    const auto vel = LinearVelocity2{
-        Real{0.25f} * GetX(relP) / m_lastDeltaTime,
-        Real{0.25f} * GetY(relP) / m_lastDeltaTime
-    };
+    const auto vel = (deltaTime != 0)? LinearVelocity2{
+        Real{0.25f} * GetX(relP) / deltaTime,
+        Real{0.25f} * GetY(relP) / deltaTime
+    }: LinearVelocity2{};
     LaunchBomb(m_bombSpawnPoint, vel);
     m_bombSpawning = false;
 }
@@ -579,34 +580,32 @@ void Test::MouseMove(const Length2& p)
 
 void Test::LaunchBomb()
 {
+    const auto deltaTime = m_lastDeltaTime;
     const auto viewport = ConvertScreenToWorld();
     const auto worldX = RandomFloat(viewport.ranges[0].GetMin()/1_m, viewport.ranges[0].GetMax()/1_m);
     const auto atA = Length2{worldX * 1_m, viewport.ranges[1].GetMax()};
     const auto centerX = GetCenter(viewport.ranges[0]);
     const auto height = GetSize(viewport.ranges[1]);
     const auto atB = Length2{centerX, viewport.ranges[1].GetMax() - (height * 9.0f / 10.0f)};
-    const auto v = (atB - atA) / (m_lastDeltaTime * 30);
+    const auto v = (deltaTime != 0)? (atB - atA) / (deltaTime * 30): LinearVelocity2{};
     LaunchBomb(atA, v);
 }
 
-void Test::LaunchBomb(const Length2& at, const LinearVelocity2 linearVelocity)
+void Test::LaunchBomb(const Length2& at, const LinearVelocity2 v)
 {
     if (m_bomb)
     {
         m_world.Destroy(m_bomb);
-        m_bomb = nullptr;
     }
 
-    m_bomb = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(at).UseBullet(true));
-    m_bomb->SetVelocity(Velocity{linearVelocity, 0_rpm});
+    m_bomb = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseBullet(true)
+                                .UseLocation(at).UseLinearVelocity(v));
 
     auto conf = DiskShape::Conf{};
     conf.vertexRadius = 0.3_m;
     conf.density = 20_kgpm2;
     conf.restitution = 0.0f;
-    const auto circle = std::make_shared<DiskShape>(conf);
-
-    m_bomb->CreateFixture(circle);
+    m_bomb->CreateFixture(std::make_shared<DiskShape>(conf));
 }
 
 static void ShowHelpMarker(const char* desc)
@@ -1058,6 +1057,7 @@ struct DequeValuesGetter
 
 void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
 {
+    m_lastDeltaTime = settings.dt * Second;
     m_textLine = 3 * DRAW_STRING_NEW_LINE;
 
     PreStep(settings, drawer);
@@ -1155,7 +1155,6 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
 
     if (settings.dt != 0)
     {
-        m_lastDeltaTime = settings.dt * Second;
         m_sumDeltaTime += settings.dt;
 
         ++m_stepCount;

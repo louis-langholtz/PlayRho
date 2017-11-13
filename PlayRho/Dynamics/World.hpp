@@ -151,6 +151,8 @@ public:
     /// @note This function is locked during callbacks.
     /// @warning This automatically deletes all associated shapes and joints.
     /// @warning This function is locked during callbacks.
+    /// @warning Behavior is undefined if given a null body.
+    /// @warning Behavior is undefined if the passed body was not created by this world.
     /// @throws WrongState if this method is called while the world is locked.
     /// @sa PhysicalEntities
     void Destroy(Body* body);
