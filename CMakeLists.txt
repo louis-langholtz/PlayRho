@@ -33,17 +33,25 @@ else()
 	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
 endif()
 
+# Include in the CMakeDependentOption macro in order to use it.
+include(CMakeDependentOption)
+
 # Provide options that user can optionally select.
 # Details at: https://cmake.org/cmake/help/v3.1/command/option.html
-option(PLAYRHO_BUILD_STATIC "Build PlayRho static libraries" ON)
-option(PLAYRHO_BUILD_SHARED "Build PlayRho shared libraries" OFF)
-option(PLAYRHO_INSTALL "Install PlayRho libs, includes, and CMake scripts" OFF)
-option(PLAYRHO_INSTALL_DOC "Install PlayRho documentation" OFF)
-option(PLAYRHO_BUILD_HELLOWORLD "Build PlayRho HelloWorld console application" OFF)
-option(PLAYRHO_BUILD_UNIT_TESTS "Build PlayRho Unit Tests console application" OFF)
-option(PLAYRHO_BUILD_BENCHMARK "Build PlayRho Benchmark console application" OFF)
-option(PLAYRHO_BUILD_TESTBED "Build PlayRho Testbed GUI application" OFF)
-option(PLAYRHO_ENABLE_COVERAGE "Enable code coverage generation" OFF)
+option(PLAYRHO_BUILD_STATIC "Build PlayRho static libraries." ON)
+option(PLAYRHO_BUILD_SHARED "Build PlayRho shared libraries." OFF)
+option(PLAYRHO_INSTALL "Enable installation of PlayRho libs, includes, and CMake scripts." OFF)
+option(PLAYRHO_INSTALL_DOC "Enable installation of PlayRho documentation." OFF)
+option(PLAYRHO_BUILD_HELLOWORLD "Build PlayRho HelloWorld console application." OFF)
+option(PLAYRHO_BUILD_UNIT_TESTS "Build PlayRho Unit Tests console application." OFF)
+option(PLAYRHO_BUILD_BENCHMARK "Build PlayRho Benchmark console application." OFF)
+option(PLAYRHO_BUILD_TESTBED "Build PlayRho Testbed GUI application." OFF)
+option(PLAYRHO_ENABLE_COVERAGE "Enable code coverage generation." OFF)
+
+# Use CMakeDependentOption macro to provide options dependent on other options.
+# Details at: https://cmake.org/cmake/help/v3.1/module/CMakeDependentOption.html
+cmake_dependent_option(INSTALL_GTEST "Enable installation of googletest." OFF "PLAYRHO_BUILD_UNIT_TESTS AND PLAYRHO_INSTALL" OFF)
+cmake_dependent_option(INSTALL_GTEST "Enable installation of googlemock." OFF "PLAYRHO_BUILD_UNIT_TESTS AND PLAYRHO_INSTALL" OFF)
 
 set(PLAYRHO_VERSION 0.9.0)
 set(LIB_INSTALL_DIR lib${LIB_SUFFIX})
