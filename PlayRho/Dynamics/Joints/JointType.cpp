@@ -48,6 +48,8 @@ const char* ToString(JointType type) noexcept
         case JointType::Motor: return "Motor";
         case JointType::Unknown: return "Unknown";
     }
+    // Ensure "all control paths return a value" (as Visual Studio warns otherwise)...
+    return "Unknown";
 }
 
 } // namespace playrho

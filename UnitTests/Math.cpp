@@ -785,12 +785,16 @@ TEST(Math, InvertZeroIsZero)
 
 TEST(Math, InvertOneIsZero)
 {
+    // Use pragmas to quiet MS Visual Studio re: "potential divide by zero".
+#pragma warning( push )
+#pragma warning( disable: 4723 )
     const auto mat = Mat22{Vec2{Real(1), Real(1)}, Vec2{Real(1), Real(1)}};
     const auto out = Invert(mat);
     EXPECT_EQ(Get<0>(Get<0>(out)), Real(0));
     EXPECT_EQ(Get<0>(Get<1>(out)), Real(0));
     EXPECT_EQ(Get<1>(Get<0>(out)), Real(0));
     EXPECT_EQ(Get<1>(Get<1>(out)), Real(0));
+#pragma warning( pop )
 }
 
 TEST(Math, Clamp)

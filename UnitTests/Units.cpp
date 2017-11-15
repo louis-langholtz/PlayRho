@@ -74,8 +74,10 @@ TEST(Units, IsArithmetic)
     ASSERT_TRUE(IsArithmetic<int>::value);
     ASSERT_TRUE(IsArithmetic<float>::value);
     ASSERT_TRUE(IsArithmetic<double>::value);
+#ifndef _WIN32
     ASSERT_TRUE(IsArithmetic<Fixed64>::value);
-
+#endif
+    
     EXPECT_TRUE(IsArithmetic<Length>::value);
     EXPECT_TRUE(IsArithmetic<Mass>::value);
     EXPECT_TRUE(IsArithmetic<Time>::value);
