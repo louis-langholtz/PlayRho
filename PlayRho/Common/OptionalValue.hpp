@@ -100,6 +100,13 @@ namespace playrho {
         /// @brief Gets the value or provides the alternate given value instead.
         constexpr T value_or(const T& alt) const;
         
+        /// @brief Resets the optional value back to its default constructed state.
+        void reset() noexcept
+        {
+            m_value = value_type{};
+            m_set = false;
+        }
+        
     private:
         value_type m_value = value_type{}; ///< Underlying value.
         bool m_set = false; ///< Whether this optional's value is set.

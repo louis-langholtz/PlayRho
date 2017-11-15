@@ -36,8 +36,15 @@
 #include <utility>
 #include <cstdlib>
 #include <vector>
+#include <future>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <queue>
+#include <atomic>
 
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/OptionalValue.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
@@ -385,6 +392,391 @@ static void DoubleHypot(benchmark::State& state)
             benchmark::DoNotOptimize(std::hypot(val.first, val.second));
         }
     }
+}
+
+// ---
+
+static void noopFunc()
+{
+}
+
+static void AsyncFutureDeferred(benchmark::State& state)
+{
+    std::future<void> f;
+    for (auto _: state)
+    {
+        benchmark::DoNotOptimize(f = std::async(std::launch::deferred, noopFunc));
+        f.get();
+    }
+}
+
+static void AsyncFutureAsync(benchmark::State& state)
+{
+    std::future<void> f;
+    for (auto _: state)
+    {
+        benchmark::DoNotOptimize(f = std::async(std::launch::async, noopFunc));
+        f.get();
+    }
+}
+
+static void ThreadCreateAndDestroy(benchmark::State& state)
+{
+    for (auto _: state)
+    {
+        std::thread t{noopFunc};
+        t.join();
+    }
+}
+
+/// @brief Concurrent queue.
+/// @details A pretty conventional concurrent queue implementation using a regular queue
+///   structure made thread safe with a mutex and a condition variable.
+/// @note Behavior is undefined if destroyed in one thread while being accessed in another.
+/// @sa https://www.justsoftwaresolutions.co.uk/threading/implementing-a-thread-safe-queue-using-condition-variables.html
+template <typename T>
+class ConcurrentQueue
+{
+public:
+    using value_type = T;
+
+    void Enqueue(const T& e)
+    {
+        {
+            std::lock_guard<decltype(m_mutex)> lock{m_mutex};
+            m_queue.push(e); // inserts e at back
+        }
+        m_cond.notify_one();
+    }
+    
+    void Enqueue(T&& e)
+    {
+        {
+            std::lock_guard<decltype(m_mutex)> lock{m_mutex};
+            m_queue.push(std::move(e)); // inserts e at back
+        }
+        m_cond.notify_one();
+    }
+    
+    T Dequeue()
+    {
+        std::unique_lock<decltype(m_mutex)> lock{m_mutex};
+        while (m_queue.empty())
+        {
+            m_cond.wait(lock);
+        }
+        // Use std::move to be explicit about the intention of moving the data.
+        T e = std::move(m_queue.front());
+        m_queue.pop(); // removes element from front
+        return e;
+    }
+    
+    void Dequeue(T& e)
+    {
+        std::unique_lock<decltype(m_mutex)> lock{m_mutex};
+        while (m_queue.empty())
+        {
+            m_cond.wait(lock);
+        }
+        // Use std::move to be explicit about the intention of moving the data.
+        e = std::move(m_queue.front());
+        m_queue.pop(); // removes element from front
+    }
+
+private:
+    std::queue<T> m_queue;
+    std::mutex m_mutex;
+    std::condition_variable m_cond;
+};
+
+template <typename T>
+class Concurrent
+{
+public:
+    using value_type = T;
+    
+    void Enqueue(const T& e)
+    {
+        {
+            std::lock_guard<decltype(m_mutex)> lock{m_mutex};
+            m_element = e;
+        }
+        m_cond.notify_one();
+    }
+    
+    void Enqueue(T&& e)
+    {
+        {
+            std::lock_guard<decltype(m_mutex)> lock{m_mutex};
+            m_element = std::move(e);
+        }
+        m_cond.notify_one();
+    }
+    
+    T Dequeue()
+    {
+        std::unique_lock<decltype(m_mutex)> lock{m_mutex};
+        while (!m_element.has_value())
+        {
+            m_cond.wait(lock);
+        }
+        // Use std::move to be explicit about the intention of moving the data.
+        T e = std::move(m_element.value());
+        m_element.reset();
+        return e;
+    }
+    
+    void Dequeue(T& e)
+    {
+        std::unique_lock<decltype(m_mutex)> lock{m_mutex};
+        while (!m_element.has_value())
+        {
+            m_cond.wait(lock);
+        }
+        // Use std::move to be explicit about the intention of moving the data.
+        e = std::move(m_element.value());
+        m_element.reset();
+    }
+    
+private:
+    playrho::OptionalValue<T> m_element;
+    std::mutex m_mutex;
+    std::condition_variable m_cond;
+};
+
+/// @brief Atomic element.
+/// @note Supports single reader, single writer.
+/// @sa http://en.cppreference.com/w/cpp/atomic/atomic_flag
+template <typename T>
+class AtomicSingleElementQueue
+{
+public:
+    using value_type = T;
+
+    AtomicSingleElementQueue()
+    {
+        // Reader starts locked out...
+        while (m_lock.test_and_set(std::memory_order_acquire)) // acquire lock
+            ; // spin
+    }
+
+    void Enqueue(const T& e)
+    {
+        m_element = e;
+        m_lock.clear(std::memory_order_release); // release lock
+    }
+    
+    void Enqueue(T&& e)
+    {
+        m_element = std::move(e);
+        m_lock.clear(std::memory_order_release); // release lock
+    }
+    
+    T Dequeue()
+    {
+        while (m_lock.test_and_set(std::memory_order_acquire))  // acquire lock
+            ; // spin
+        // Use std::move to be explicit about the intention of moving the data.
+        T e = std::move(m_element);
+        m_element = T{};
+        return e;
+    }
+    
+    void Dequeue(T& e)
+    {
+        while (m_lock.test_and_set(std::memory_order_acquire))  // acquire lock
+            ; // spin
+        // Use std::move to be explicit about the intention of moving the data.
+        e = std::move(m_element);
+        m_element = T{};
+    }
+    
+private:
+    T m_element = T{};
+    std::atomic_flag m_lock = ATOMIC_FLAG_INIT;
+};
+
+/// @brief Atomic queue.
+/// @note Supports multiple readers, single writer.
+/// @sa http://en.cppreference.com/w/cpp/atomic/atomic_flag
+template <typename T>
+class AtomicQueue
+{
+public:
+    using value_type = T;
+    
+    void Enqueue(const T& e)
+    {
+        while (m_lock.test_and_set(std::memory_order_acquire)) // acquire lock
+        {
+            // spin
+        }
+        m_queue.push(e);
+        m_lock.clear(std::memory_order_release); // release lock
+    }
+    
+    void Enqueue(T&& e)
+    {
+        while (m_lock.test_and_set(std::memory_order_acquire)) // acquire lock
+        {
+            // spin
+        }
+        m_queue.push(std::move(e));
+        m_lock.clear(std::memory_order_release); // release lock
+    }
+    
+    T Dequeue()
+    {
+        for (;;)
+        {
+            while (m_lock.test_and_set(std::memory_order_acquire))  // acquire lock
+            {
+                // spin
+            }
+            if (!m_queue.empty())
+            {
+                break;
+            }
+            m_lock.clear(std::memory_order_release); // release lock
+        }
+        
+        // Use std::move to be explicit about the intention of moving the data.
+        T e = std::move(m_queue.front());
+        m_queue.pop(); // removes element from front
+        m_lock.clear(std::memory_order_release); // release lock
+        return e;
+    }
+    
+    void Dequeue(T& e)
+    {
+        for (;;)
+        {
+            while (m_lock.test_and_set(std::memory_order_acquire))  // acquire lock
+            {
+                // spin
+            }
+            if (!m_queue.empty())
+            {
+                break;
+            }
+            m_lock.clear(std::memory_order_release); // release lock
+        }
+
+        // Use std::move to be explicit about the intention of moving the data.
+        e = std::move(m_queue.front());
+        m_queue.pop(); // removes element from front
+        m_lock.clear(std::memory_order_release); // release lock
+    }
+    
+private:
+    std::queue<T> m_queue;
+    std::atomic_flag m_lock = ATOMIC_FLAG_INIT;
+};
+
+static void MultiThreadQD(benchmark::State& state)
+{
+    ConcurrentQueue<int> queue01;
+    ConcurrentQueue<int> queue10;
+
+    // 13538 ns with stddev of 1479 ns.
+    // 11541 ns on another run with 6081 ns of CPU time.
+
+    std::thread t{[&](){
+        for (;;)
+        {
+            const auto v = queue01.Dequeue();
+            if (v == 0) break;
+            queue10.Enqueue(v);
+        }
+    }};
+    
+    const auto in = 12;
+    auto out = 0;
+    for (auto _: state)
+    {
+        queue01.Enqueue(in);
+        queue10.Dequeue(out);
+    }
+    queue01.Enqueue(0);
+    t.join();
+}
+
+static void MultiThreadQDE(benchmark::State& state)
+{
+    Concurrent<int> queue01;
+    Concurrent<int> queue10;
+    
+    // 13538 ns with stddev of 1479 ns.
+    // 11541 ns on another run with 6081 ns of CPU time.
+    
+    std::thread t{[&](){
+        for (;;)
+        {
+            const auto v = queue01.Dequeue();
+            if (v == 0) break;
+            queue10.Enqueue(v);
+        }
+    }};
+    
+    const auto in = 12;
+    auto out = 0;
+    for (auto _: state)
+    {
+        queue01.Enqueue(in);
+        queue10.Dequeue(out);
+    }
+    queue01.Enqueue(0);
+    t.join();
+}
+
+static void MultiThreadQDA(benchmark::State& state)
+{
+    AtomicSingleElementQueue<int> queue01;
+    AtomicSingleElementQueue<int> queue10;
+    
+    std::thread t{[&](){
+        for (;;)
+        {
+            const auto v = queue01.Dequeue();
+            if (v == 0) break;
+            queue10.Enqueue(v);
+        }
+    }};
+    
+    const auto in = 12;
+    auto out = 0;
+    for (auto _: state)
+    {
+        queue01.Enqueue(in);
+        queue10.Dequeue(out);
+    }
+    queue01.Enqueue(0);
+    t.join();
+}
+
+static void MultiThreadQDAQ(benchmark::State& state)
+{
+    AtomicQueue<int> queue01;
+    AtomicQueue<int> queue10;
+
+    const auto in = 12;
+    auto out = 0;
+
+    std::thread t{[&](){
+        for (;;)
+        {
+            const auto v = queue01.Dequeue();
+            if (v == 0) break;
+            queue10.Enqueue(v);
+        }
+    }};
+    for (auto _: state)
+    {
+        queue01.Enqueue(in);
+        queue10.Dequeue(out);
+    }
+    queue01.Enqueue(0);
+    t.join();
 }
 
 // ---
@@ -1414,6 +1806,14 @@ BENCHMARK(MaxSepBetweenRelRectangles2);
 
 BENCHMARK(ManifoldForTwoSquares1);
 BENCHMARK(ManifoldForTwoSquares2);
+
+BENCHMARK(AsyncFutureDeferred);
+BENCHMARK(AsyncFutureAsync);
+BENCHMARK(ThreadCreateAndDestroy);
+BENCHMARK(MultiThreadQD);
+BENCHMARK(MultiThreadQDE);
+BENCHMARK(MultiThreadQDA);
+BENCHMARK(MultiThreadQDAQ);
 
 BENCHMARK(WorldStep);
 
