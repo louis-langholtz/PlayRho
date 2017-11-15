@@ -86,6 +86,9 @@ TEST(float, BiggerValsIncreasinglyInaccurate)
 
 TEST(float, max)
 {
+    // Use pragmas to quiet MS Visual Studio re: "overflow in constant arithmetic".
+#pragma warning( push )
+#pragma warning( disable: 4756 )
     EXPECT_EQ(std::numeric_limits<float>::max() * 2, std::numeric_limits<float>::infinity());
     EXPECT_EQ(std::numeric_limits<float>::max() + std::numeric_limits<float>::max(), std::numeric_limits<float>::infinity());
     
@@ -102,6 +105,7 @@ TEST(float, max)
     EXPECT_NEAR(std::sqrt(std::numeric_limits<float>::max()), 1.8446742974197924e+19, 0.0);
     EXPECT_LT(  std::sqrt(std::numeric_limits<float>::max()), std::numeric_limits<float>::max());
     EXPECT_GT(            std::numeric_limits<float>::max(),  std::sqrt(std::numeric_limits<float>::max()));
+#pragma warning( pop )
 }
 
 TEST(float, infinity)
