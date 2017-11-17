@@ -2,6 +2,16 @@
 # Top level docs for 3.1.3 at: https://cmake.org/cmake/help/v3.1/
 # Commands herein described at: https://cmake.org/cmake/help/v3.1/manual/cmake-commands.7.html
 
+if (MSVC)
+  if (BUILD_SHARED_LIBS)
+    message(STATUS "UnitTests: Adding definition for linking with googletest as shared library.")
+    add_definitions(-DGTEST_LINKED_AS_SHARED_LIBRARY)
+  else()
+    message(STATUS "UnitTests: Adding option setting for linking with googletest as static library.")
+    set(gtest_force_shared_crt ON)
+  endif()
+endif()
+
 # Add subdirectory to build.
 # For cmd details, see: https://cmake.org/cmake/help/v3.1/command/add_subdirectory.html
 # googletest build instructions at: https://github.com/google/googletest/blob/master/googletest/README.md
