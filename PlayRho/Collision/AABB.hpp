@@ -144,9 +144,9 @@ namespace playrho {
     template <std::size_t N>
     inline bool operator<= (const AABB<N>& lhs, const AABB<N>& rhs) noexcept
     {
-        return std::lexicographical_compare(std::cbegin(lhs.ranges), std::cend(lhs.ranges),
-                                            std::cbegin(rhs.ranges), std::cend(rhs.ranges),
-                                            std::less_equal<LengthInterval>{});
+        const auto lhsEnd = std::cend(lhs.ranges);
+        const auto diff = std::mismatch(std::cbegin(lhs.ranges), lhsEnd, std::cbegin(rhs.ranges));
+        return (diff.first == lhsEnd) || (*diff.first < *diff.second);
     }
     
     /// @brief Greater-than operator.
@@ -164,9 +164,9 @@ namespace playrho {
     template <std::size_t N>
     inline bool operator>= (const AABB<N>& lhs, const AABB<N>& rhs) noexcept
     {
-        return std::lexicographical_compare(std::cbegin(lhs.ranges), std::cend(lhs.ranges),
-                                            std::cbegin(rhs.ranges), std::cend(rhs.ranges),
-                                            std::greater_equal<LengthInterval>{});
+        const auto lhsEnd = std::cend(lhs.ranges);
+        const auto diff = std::mismatch(std::cbegin(lhs.ranges), lhsEnd, std::cbegin(rhs.ranges));
+        return (diff.first == lhsEnd) || (*diff.first > *diff.second);
     }
 
     /// @brief Tests for overlap between two axis aligned bounding boxes.

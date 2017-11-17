@@ -400,8 +400,9 @@ constexpr bool operator< (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noex
 template <typename T, std::size_t N>
 constexpr bool operator<= (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noexcept
 {
-    return std::lexicographical_compare(lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend(),
-                                        std::less_equal<T>{});
+    const auto lhsEnd = std::cend(lhs);
+    const auto diff = std::mismatch(std::cbegin(lhs), lhsEnd, std::cbegin(rhs));
+    return (diff.first == lhsEnd) || (*diff.first < *diff.second);
 }
 
 /// @brief Lexicographical greater-than operator.
@@ -418,8 +419,9 @@ constexpr bool operator> (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noex
 template <typename T, std::size_t N>
 constexpr bool operator>= (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noexcept
 {
-    return std::lexicographical_compare(lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend(),
-                                        std::greater_equal<T>{});
+    const auto lhsEnd = std::cend(lhs);
+    const auto diff = std::mismatch(std::cbegin(lhs), lhsEnd, std::cbegin(rhs));
+    return (diff.first == lhsEnd) || (*diff.first > *diff.second);
 }
 
 /// @brief Gets the I'th element of the given collection.
