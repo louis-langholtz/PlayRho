@@ -50,7 +50,8 @@ public:
             for (auto i = 0; i < 400; ++i)
             {
                 const auto location = Vec2(RandomFloat(minX, maxX), RandomFloat(minY, maxY)) * 1_m;
-                const auto body = m_world.CreateBody(BodyDef{bd}.UseLocation(location));
+                // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
+                const auto body = m_world.CreateBody(BodyDef(bd).UseLocation(location));
                 body->CreateFixture(shape);
             }
         }
