@@ -32,8 +32,9 @@ public:
     HeavyOnLightTwo()
     {
         m_world.CreateBody()->CreateFixture(std::make_shared<EdgeShape>(GetGroundEdgeConf()));
-        m_world.CreateBody(BodyDef{DynBD}.UseLocation(Length2{0_m, 2.5_m}))->CreateFixture(lilDisk);
-        m_world.CreateBody(BodyDef{DynBD}.UseLocation(Length2{0_m, 3.5_m}))->CreateFixture(lilDisk);
+        // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
+        m_world.CreateBody(BodyDef(DynBD).UseLocation(Length2{0_m, 2.5_m}))->CreateFixture(lilDisk);
+        m_world.CreateBody(BodyDef(DynBD).UseLocation(Length2{0_m, 3.5_m}))->CreateFixture(lilDisk);
         RegisterForKey(GLFW_KEY_H, GLFW_PRESS, 0, "Toggle Heavy", [&](KeyActionMods) {
             ToggleHeavy();
         });
@@ -48,7 +49,8 @@ public:
         }
         else
         {
-            m_heavy = m_world.CreateBody(BodyDef{DynBD}.UseLocation(Length2{0_m, 9_m}));
+            // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
+            m_heavy = m_world.CreateBody(BodyDef(DynBD).UseLocation(Length2{0_m, 9_m}));
             m_heavy->CreateFixture(bigDisk);
         }
     }
