@@ -52,9 +52,16 @@ Fixture::Fixture(const Fixture& other):
             break;
         default:
             m_proxies.asBuffer = std::make_unique<FixtureProxy[]>(other.m_proxyCount);
+#ifdef _WIN32
+#pragma warning(push)
+#pragma warning(disable: 4996) // @VC++ don't warn about unchecked iterators
+#endif
             std::copy(other.m_proxies.asBuffer.get(),
                       other.m_proxies.asBuffer.get() + other.m_proxyCount,
                       m_proxies.asBuffer.get());
+#ifdef _WIN32
+#pragma warning(pop)
+#endif
             break;
     }
 }

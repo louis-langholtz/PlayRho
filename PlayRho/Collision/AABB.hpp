@@ -144,9 +144,16 @@ namespace playrho {
     template <std::size_t N>
     inline bool operator<= (const AABB<N>& lhs, const AABB<N>& rhs) noexcept
     {
+#ifdef _WIN32
+#pragma warning(push)
+#pragma warning(disable: 4996) // @VC++ don't warn about unchecked iterators
+#endif
         const auto lhsEnd = std::cend(lhs.ranges);
         const auto diff = std::mismatch(std::cbegin(lhs.ranges), lhsEnd, std::cbegin(rhs.ranges));
         return (diff.first == lhsEnd) || (*diff.first < *diff.second);
+#ifdef _WIN32
+#pragma warning(pop)
+#endif
     }
     
     /// @brief Greater-than operator.
@@ -164,9 +171,16 @@ namespace playrho {
     template <std::size_t N>
     inline bool operator>= (const AABB<N>& lhs, const AABB<N>& rhs) noexcept
     {
+#ifdef _WIN32
+#pragma warning(push)
+#pragma warning(disable: 4996) // @VC++ don't warn about unchecked iterators
+#endif
         const auto lhsEnd = std::cend(lhs.ranges);
         const auto diff = std::mismatch(std::cbegin(lhs.ranges), lhsEnd, std::cbegin(rhs.ranges));
         return (diff.first == lhsEnd) || (*diff.first > *diff.second);
+#ifdef _WIN32
+#pragma warning(pop)
+#endif
     }
 
     /// @brief Tests for overlap between two axis aligned bounding boxes.

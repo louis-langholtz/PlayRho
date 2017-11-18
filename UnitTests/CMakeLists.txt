@@ -2,13 +2,25 @@
 # Top level docs for 3.1.3 at: https://cmake.org/cmake/help/v3.1/
 # Commands herein described at: https://cmake.org/cmake/help/v3.1/manual/cmake-commands.7.html
 
+# Hides options.
+mark_as_advanced(FORCE BUILD_GMOCK BUILD_GTEST BUILD_SHARED_LIBS)
+mark_as_advanced(FORCE INSTALL_GMOCK INSTALL_GTEST)
+mark_as_advanced(FORCE gmock_build_tests)
+mark_as_advanced(FORCE gtest_build_samples gtest_build_tests gtest_disable_pthreads gtest_hide_internal_symbols)
+mark_as_advanced(FORCE gtest_force_shared_crt)
+mark_as_advanced(FORCE CMAKE_DEBUG_POSTFIX)
+
+set(BUILD_GMOCK ON)
+set(INSTALL_GTEST OFF CACHE BOOL "Enable installation of googletest.")
+set(INSTALL_GMOCK OFF CACHE BOOL "Enable installation of googlemock.")
+
 if (MSVC)
-  if (BUILD_SHARED_LIBS)
+  if (PLAYRHO_BUILD_SHARED)
     message(STATUS "UnitTests: Adding definition for linking with googletest as shared library.")
     add_definitions(-DGTEST_LINKED_AS_SHARED_LIBRARY)
   else()
-    message(STATUS "UnitTests: Adding option setting for linking with googletest as static library.")
-    set(gtest_force_shared_crt ON)
+    message(STATUS "UnitTests: Setting option value for linking googletest with static library.")
+    set(gtest_force_shared_crt ON CACHE BOOL "Required setting for linking googletest with static library." FORCE)
   endif()
 endif()
 
@@ -16,7 +28,7 @@ endif()
 # For cmd details, see: https://cmake.org/cmake/help/v3.1/command/add_subdirectory.html
 # googletest build instructions at: https://github.com/google/googletest/blob/master/googletest/README.md
 # Adds googletest here...
-add_subdirectory(googletest)
+add_subdirectory(googletest EXCLUDE_FROM_ALL)
 
 # Add include directories to build...
 # For cmd details, see: https://cmake.org/cmake/help/v3.1/command/include_directories.html
