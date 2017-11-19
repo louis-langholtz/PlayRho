@@ -30,14 +30,14 @@ branches:
 
 environment:
   matrix:
-    - GENERATOR: "Visual Studio 15 2017 Win64"
-      CONFIG: Debug
-    - GENERATOR: "Visual Studio 15 2017 Win64"
-      CONFIG: Release
-    - GENERATOR: "Visual Studio 15 2017"
-      CONFIG: Debug
-    - GENERATOR: "Visual Studio 15 2017"
-      CONFIG: Release
+    - generator: "Visual Studio 15 2017 Win64"
+      configuration: Debug
+    - generator: "Visual Studio 15 2017 Win64"
+      configuration: Release
+    - generator: "Visual Studio 15 2017"
+      configuration: Debug
+    - generator: "Visual Studio 15 2017"
+      configuration: Release
 
 install:
   - ps: choco install doxygen.portable
@@ -53,11 +53,13 @@ install:
 #    }
 #    Start-Process -FilePath "\projects\playrho\Build\vs2017\bin\$env:PLAYRHO_EXE\$env:CONFIGURATION\HelloWorld.exe" -RedirectStandardOutput "Hello.txt" -Wait -NoNewWindow
 
-build_script:
+before_build:
+  - cd %APPVEYOR_BUILD_FOLDER%
   - cd c:\projects\PlayRho\Build
-  - echo Running cmake...
-  - cmake -G "%GENERATOR%" -DPLAYRHO_BUILD_HELLOWORLD=ON ..
-  - cmake --build . --config "%CONFIG%"
+  - cmake -G"%generator%" -DPLAYRHO_BUILD_HELLOWORLD=ON ..
+
+build_script:
+  - cmake --build . --config "%configuration%"
 
 #build:
 #  project: Build/vs2017/PlayRho.sln
