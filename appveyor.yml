@@ -34,7 +34,10 @@ environment:
       configuration: Release
 
 cache:
-  - c:\tools\vcpkg\installed\ # preserve any vcpkg installed stuff
+  - C:\tools\vcpkg\installed\ -> appveyor.yml # preserve any vcpkg installed stuff
+  - C:\tools\vcpkg\downloads\ -> appveyor.yml # preserve any vcpkg installed stuff
+  - C:\ProgramData\chocolatey\bin -> appveyor.yml
+  - C:\ProgramData\chocolatey\lib -> appveyor.yml
 
 install:
   - if "%platform%" equ "noarch" choco install doxygen.portable
