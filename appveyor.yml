@@ -66,12 +66,12 @@ before_build:
   - echo %generator%
 
 build_script:
-  - if "%platform%"!="noarch" cd %APPVEYOR_BUILD_FOLDER%\Build
-  - if "%platform%"=="noarch" cd %APPVEYOR_BUILD_FOLDER%\Documentation
-  - if "%platform%"!="noarch" cmake -G"%generator%" -DCMAKE_BUILD_TYPE=%configuration% -DPLAYRHO_BUILD_HELLOWORLD=ON -DPLAYRHO_BUILD_UNIT_TESTS=ON ..
-  - if "%platform%"!="noarch" cmake --build . --config "%configuration%"
-  - if "%platform%"=="noarch" set PATH=c:\Program Files (x86)\graphviz2.38\bin;%PATH%
-  - if "%platform%"=="noarch" doxygen Doxyfile
+  - if "%platform%" neq "noarch" cd %APPVEYOR_BUILD_FOLDER%\Build
+  - if "%platform%" neq "noarch" cmake -G"%generator%" -DCMAKE_BUILD_TYPE=%configuration% -DPLAYRHO_BUILD_HELLOWORLD=ON -DPLAYRHO_BUILD_UNIT_TESTS=ON ..
+  - if "%platform%" neq "noarch" cmake --build . --config "%configuration%"
+  - if "%platform%" equ "noarch" cd %APPVEYOR_BUILD_FOLDER%\Documentation
+  - if "%platform%" equ "noarch" set PATH=c:\Program Files (x86)\graphviz2.38\bin;%PATH%
+  - if "%platform%" equ "noarch" doxygen Doxyfile
   - cd ..
 
 #build:
@@ -80,8 +80,8 @@ build_script:
 
 after_build:
   - cd %APPVEYOR_BUILD_FOLDER%
-  - if "%platform%"!="noarch" 7z a artifacts.zip Build\PlayRho\*\*.lib Build\*\*\*.exe
-  - if "%platform%"=="noarch" 7z a artifacts.zip Documentation\API
+  - if not "%platform%"=="noarch" 7z a artifacts.zip Build\PlayRho\*\*.lib Build\*\*\*.exe
+  - if     "%platform%"=="noarch" 7z a artifacts.zip Documentation\API
 
 artifacts:
   - path: artifacts.zip
