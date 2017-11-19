@@ -30,13 +30,13 @@ branches:
 
 environment:
   matrix:
-    - generator: "Visual Studio 15 2017 Win64"
+    - platform: x64
       configuration: Debug
-    - generator: "Visual Studio 15 2017 Win64"
+    - platform: x64
       configuration: Release
-    - generator: "Visual Studio 15 2017"
+    - platform: Win32
       configuration: Debug
-    - generator: "Visual Studio 15 2017"
+    - platform: Win32
       configuration: Release
 
 install:
@@ -56,12 +56,16 @@ install:
 
 before_build:
   - echo %APPVEYOR_BUILD_FOLDER%
-  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - cmd: if "%platform%"=="Win32" set generator="Visual Studio 15 2017"
+  - cmd: if "%platform%"=="x64" set generator="Visual Studio 15 2017 Win64"
+  - cmd: if "%platform%"=="Win32" call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
+  - cmd: if "%platform%"=="x64" call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
 
 build_script:
-  - cd c:\projects\PlayRho\Build
-  - cmake -G"%generator%" -DCMAKE_BUILD_TYPE=%configuration% -DPLAYRHO_BUILD_HELLOWORLD=ON ..
+  - cd %APPVEYOR_BUILD_FOLDER%\Build
+  - cmake -G"%generator%" -DCMAKE_BUILD_TYPE=%configuration% -DPLAYRHO_BUILD_HELLOWORLD=ON -DPLAYRHO_BUILD_UNIT_TESTS=ON ..
   - cmake --build . --config "%configuration%"
+  - cd ..
 
 #build:
 #  project: Build/vs2017/PlayRho.sln
@@ -69,7 +73,7 @@ build_script:
 
 after_build:
   - set PATH=c:\Program Files (x86)\graphviz2.38\bin;%PATH%
-  - cd Documentation
+  - cd %APPVEYOR_BUILD_FOLDER%\Documentation
   - doxygen Doxyfile
   - cd ..
 
