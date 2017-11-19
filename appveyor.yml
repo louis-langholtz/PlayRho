@@ -34,14 +34,10 @@ environment:
       configuration: Release
 
 install:
-  - ps: if($env:platform -eq 'noarch') {
-          choco install doxygen.portable;
-          choco install graphviz;
-        }
-        else {
-          cmake --version;
-          git submodule update --init --recursive;
-        }
+  - if "%platform%" equ "noarch" choco install doxygen.portable
+  - if "%platform%" equ "noarch" choco install graphviz
+  - if "%platform%" neq "noarch" cmake --version
+  - if "%platform%" neq "noarch" git submodule update --init --recursive
 
 #test_script:
 #- ps: |
@@ -59,7 +55,6 @@ before_build:
   - if "%platform%" equ "x64" set generator=Visual Studio 15 2017 Win64
   - if "%platform%" equ "Win32" call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
   - if "%platform%" equ "x64" call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - echo %generator%
 
 build_script:
   - if "%platform%" neq "noarch" cd %APPVEYOR_BUILD_FOLDER%\Build
