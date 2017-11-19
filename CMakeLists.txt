@@ -28,9 +28,10 @@ project(PlayRho)
 # however and it'd be nice to use an option that works for both compilers. So use '-O3'.
 # For Visual Studio Compilers, the speed optimization flag is /O2, which is the default setting for release builds
 if(MSVC)
-	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
+  add_definitions(-D_SCL_SECURE_NO_WARNINGS)
 else()
-	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
 endif()
 
 # Provide options that user can optionally select.

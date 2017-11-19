@@ -51,14 +51,7 @@ DynamicTree::DynamicTree(const DynamicTree& other):
     m_leafCount{other.m_leafCount},
     m_freeListIndex{other.m_freeListIndex}
 {
-#ifdef _WIN32
-#pragma warning(push)
-#pragma warning(disable: 4996) // @VC++ don't warn about unchecked iterators
-#endif
     std::copy(other.m_nodes, other.m_nodes + other.m_nodeCapacity, m_nodes);
-#ifdef _WIN32
-#pragma warning(pop)
-#endif
 }
 
 DynamicTree::DynamicTree(DynamicTree&& other) noexcept:
@@ -89,14 +82,7 @@ DynamicTree& DynamicTree::operator=(const DynamicTree& other)
         m_nodeCapacity = other.m_nodeCapacity;
         m_leafCount = other.m_leafCount;
         m_freeListIndex = other.m_freeListIndex;
-#ifdef _WIN32
-#pragma warning(push)
-#pragma warning(disable: 4996) // @VC++ don't warn about unchecked iterators
-#endif
         std::copy(other.m_nodes, other.m_nodes + other.m_nodeCapacity, m_nodes);
-#ifdef _WIN32
-#pragma warning(pop)
-#endif
     }
     return *this;
 }

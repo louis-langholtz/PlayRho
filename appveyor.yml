@@ -20,40 +20,60 @@ branches:
   only:
     - master
 
-build:
-  project: Build/vs2017/PlayRho.sln
-  verbosity: normal
-
-platform:
-  - Win32
-  - x64
-
-configuration:
-  - Debug
-  - Release
+environment:
+  matrix:
+    - platform: noarch
+      configuration: none
+    - platform: x64
+      configuration: Debug
+    - platform: x64
+      configuration: Release
+    - platform: Win32
+      configuration: Debug
+    - platform: Win32
+      configuration: Release
 
 install:
-  - ps: choco install doxygen.portable
-  - ps: choco install graphviz
+  - if "%platform%" equ "noarch" choco install doxygen.portable
+  - if "%platform%" equ "noarch" choco install graphviz
+  - if "%platform%" neq "noarch" cmake --version
+  - if "%platform%" neq "noarch" git submodule update --init --recursive
 
-test_script:
-- ps: |
-    If ($env:PLATFORM -Match "Win32") {
-      $env:PLAYRHO_EXE="x32"
-    }
-    If ($env:PLATFORM -Match "x64") {
-      $env:PLAYRHO_EXE="x64"
-    }
-    Start-Process -FilePath "\projects\playrho\Build\vs2017\bin\$env:PLAYRHO_EXE\$env:CONFIGURATION\HelloWorld.exe" -RedirectStandardOutput "Hello.txt" -Wait -NoNewWindow
+#test_script:
+#- ps: |
+#    If ($env:PLATFORM -Match "Win32") {
+#      $env:PLAYRHO_EXE="x32"
+#    }
+#    If ($env:PLATFORM -Match "x64") {
+#      $env:PLAYRHO_EXE="x64"
+#    }
+#    Start-Process -FilePath "\projects\playrho\Build\vs2017\bin\$env:PLAYRHO_EXE\$env:CONFIGURATION\HelloWorld.exe" -RedirectStandardOutput "Hello.txt" -Wait -NoNewWindow
 
-after_build:
-  - set PATH=c:\Program Files (x86)\graphviz2.38\bin;%PATH%
-  - cd Documentation
-  - doxygen Doxyfile
+before_build:
+  - echo %APPVEYOR_BUILD_FOLDER%
+  - if "%platform%" equ "Win32" set generator=Visual Studio 15 2017
+  - if "%platform%" equ "x64" set generator=Visual Studio 15 2017 Win64
+  - if "%platform%" equ "Win32" call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
+  - if "%platform%" equ "x64" call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+
+build_script:
+  - if "%platform%" neq "noarch" cd %APPVEYOR_BUILD_FOLDER%\Build
+  - if "%platform%" neq "noarch" cmake -G"%generator%" -DCMAKE_BUILD_TYPE=%configuration% -DPLAYRHO_BUILD_HELLOWORLD=ON -DPLAYRHO_BUILD_UNIT_TESTS=ON ..
+  - if "%platform%" neq "noarch" cmake --build . --config "%configuration%"
+  - if "%platform%" equ "noarch" cd %APPVEYOR_BUILD_FOLDER%\Documentation
+  - if "%platform%" equ "noarch" set PATH=c:\Program Files (x86)\graphviz2.38\bin;%PATH%
+  - if "%platform%" equ "noarch" doxygen Doxyfile
   - cd ..
 
+#build:
+#  project: Build/vs2017/PlayRho.sln
+#  verbosity: normal
+
+after_build:
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - if "%platform%" neq "noarch" 7z a artifacts.zip Build\PlayRho\*\*.lib Build\*\*\*.exe
+  - if "%platform%" equ "noarch" 7z a artifacts.zip Documentation\API
+
 artifacts:
-  - path: Documentation\API
-    name: API Documentation
-  - path: Build\vs2017\bin
-    name: Binary Executables
+  - path: artifacts.zip
+    name: artifacts

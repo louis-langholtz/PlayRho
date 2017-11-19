@@ -400,16 +400,10 @@ constexpr bool operator< (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noex
 template <typename T, std::size_t N>
 constexpr bool operator<= (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noexcept
 {
-#ifdef _WIN32
-#pragma warning(push)
-#pragma warning(disable: 4996) // @VC++ don't warn about unchecked iterators
-#endif
     const auto lhsEnd = std::cend(lhs);
-    const auto diff = std::mismatch(std::cbegin(lhs), lhsEnd, std::cbegin(rhs));
+    const auto rhsEnd = std::cend(rhs);
+    const auto diff = std::mismatch(std::cbegin(lhs), lhsEnd, std::cbegin(rhs), rhsEnd);
     return (diff.first == lhsEnd) || (*diff.first < *diff.second);
-#ifdef _WIN32
-#pragma warning(pop)
-#endif
 }
 
 /// @brief Lexicographical greater-than operator.
@@ -426,16 +420,10 @@ constexpr bool operator> (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noex
 template <typename T, std::size_t N>
 constexpr bool operator>= (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noexcept
 {
-#ifdef _WIN32
-#pragma warning(push)
-#pragma warning(disable: 4996) // @VC++ don't warn about unchecked iterators
-#endif
     const auto lhsEnd = std::cend(lhs);
-    const auto diff = std::mismatch(std::cbegin(lhs), lhsEnd, std::cbegin(rhs));
+    const auto rhsEnd = std::cend(rhs);
+    const auto diff = std::mismatch(std::cbegin(lhs), lhsEnd, std::cbegin(rhs), rhsEnd);
     return (diff.first == lhsEnd) || (*diff.first > *diff.second);
-#ifdef _WIN32
-#pragma warning(pop)
-#endif
 }
 
 /// @brief Gets the I'th element of the given collection.
