@@ -54,3 +54,6 @@ target_link_libraries(UnitTests PlayRho gtest)
 if(${PLAYRHO_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   target_link_libraries(UnitTests -fprofile-arcs -ftest-coverage)
 endif()
+
+# Adds UnitTests to be run when like "make test" is executed.
+add_test(UnitTests UnitTests)
