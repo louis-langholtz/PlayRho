@@ -42,6 +42,7 @@ environment:
 install:
   - ps: choco install doxygen.portable
   - ps: choco install graphviz
+  - cmake --version
 
 #test_script:
 #- ps: |
@@ -56,7 +57,7 @@ install:
 before_build:
   - cd %APPVEYOR_BUILD_FOLDER%
   - cd c:\projects\PlayRho\Build
-  - cmake -G"%generator%" -DPLAYRHO_BUILD_HELLOWORLD=ON ..
+  - cmake -G"%generator%" -DCMAKE_BUILD_TYPE=%configuration% -DPLAYRHO_BUILD_HELLOWORLD=ON ..
 
 build_script:
   - cmake --build . --config "%configuration%"
