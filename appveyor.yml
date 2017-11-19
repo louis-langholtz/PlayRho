@@ -62,7 +62,7 @@ before_build:
   - cmd: if "%platform%"=="Win32" call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
   - cmd: if "%platform%"=="x64" call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
   - echo %generator%
-  - ps: md -f %APPVEYOR_BUILD_FOLDER%\Build-%platform%
+  - cmd: if not exist "%APPVEYOR_BUILD_FOLDER%\Build-%platform%" md %APPVEYOR_BUILD_FOLDER%\Build-%platform%
 
 build_script:
   - cd %APPVEYOR_BUILD_FOLDER%\Build-%platform%
