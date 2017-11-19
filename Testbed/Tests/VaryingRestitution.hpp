@@ -43,7 +43,7 @@ public:
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
-            bd.location = Vec2(-10 + 3 * i, 20) * 1_m;
+            bd.location = Vec2(Real(-10 + 3 * i), 20) * 1_m;
             const auto body = m_world.CreateBody(bd);
             shape.SetRestitution(restitution[i]);
             body->CreateFixture(std::make_shared<DiskShape>(shape));

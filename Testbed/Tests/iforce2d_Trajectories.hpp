@@ -262,7 +262,7 @@ public:
         //draw predicted trajectory
         auto lastTP = startingPosition;
         for (auto i = 0; i < 300; ++i) { //5 seconds, should be long enough to hit something
-            const auto trajectoryPosition = getTrajectoryPoint(startingPosition, startingVelocity, i);
+            const auto trajectoryPosition = getTrajectoryPoint(startingPosition, startingVelocity, i * 1.0f);
             
             if (i > 0) {
                 m_world.RayCast(lastTP, trajectoryPosition, [&](Fixture* f, ChildCounter,
