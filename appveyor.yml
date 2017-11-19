@@ -14,37 +14,54 @@
 #skip_commits:
 #  message: /\[appveyor skip\]/|/\[skip appveyor\]/
 
-image: Visual Studio 2017
+#image: Visual Studio 2017
 
 branches:
   only:
     - master
 
-build:
-  project: Build/vs2017/PlayRho.sln
-  verbosity: normal
+#platform:
+#  - Win32
+#  - x64
 
-platform:
-  - Win32
-  - x64
+#configuration:
+#  - Debug
+#  - Release
 
-configuration:
-  - Debug
-  - Release
+environment:
+  matrix:
+    - GENERATOR: "Visual Studio 15 2017 Win64"
+      CONFIG: Debug
+    - GENERATOR: "Visual Studio 15 2017 Win64"
+      CONFIG: Release
+    - GENERATOR: "Visual Studio 15 2017"
+      CONFIG: Debug
+    - GENERATOR: "Visual Studio 15 2017"
+      CONFIG: Release
 
 install:
   - ps: choco install doxygen.portable
   - ps: choco install graphviz
 
-test_script:
-- ps: |
-    If ($env:PLATFORM -Match "Win32") {
-      $env:PLAYRHO_EXE="x32"
-    }
-    If ($env:PLATFORM -Match "x64") {
-      $env:PLAYRHO_EXE="x64"
-    }
-    Start-Process -FilePath "\projects\playrho\Build\vs2017\bin\$env:PLAYRHO_EXE\$env:CONFIGURATION\HelloWorld.exe" -RedirectStandardOutput "Hello.txt" -Wait -NoNewWindow
+#test_script:
+#- ps: |
+#    If ($env:PLATFORM -Match "Win32") {
+#      $env:PLAYRHO_EXE="x32"
+#    }
+#    If ($env:PLATFORM -Match "x64") {
+#      $env:PLAYRHO_EXE="x64"
+#    }
+#    Start-Process -FilePath "\projects\playrho\Build\vs2017\bin\$env:PLAYRHO_EXE\$env:CONFIGURATION\HelloWorld.exe" -RedirectStandardOutput "Hello.txt" -Wait -NoNewWindow
+
+build_script:
+  - cd c:\projects\PlayRho\Build
+  - echo Running cmake...
+  - cmake -G "%GENERATOR%" -DPLAYRHO_BUILD_HELLOWORLD=ON ..
+  - cmake --build . --config "%CONFIG%"
+
+#build:
+#  project: Build/vs2017/PlayRho.sln
+#  verbosity: normal
 
 after_build:
   - set PATH=c:\Program Files (x86)\graphviz2.38\bin;%PATH%
