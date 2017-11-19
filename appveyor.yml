@@ -56,10 +56,11 @@ install:
 
 before_build:
   - echo %APPVEYOR_BUILD_FOLDER%
-  - cmd: if "%platform%"=="Win32" set generator="Visual Studio 15 2017"
-  - cmd: if "%platform%"=="x64" set generator="Visual Studio 15 2017 Win64"
+  - cmd: if "%platform%"=="Win32" set generator=Visual Studio 15 2017
+  - cmd: if "%platform%"=="x64" set generator=Visual Studio 15 2017 Win64
   - cmd: if "%platform%"=="Win32" call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
   - cmd: if "%platform%"=="x64" call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - echo %generator%
 
 build_script:
   - cd %APPVEYOR_BUILD_FOLDER%\Build
