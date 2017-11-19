@@ -62,9 +62,10 @@ before_build:
   - cmd: if "%platform%"=="Win32" call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
   - cmd: if "%platform%"=="x64" call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
   - echo %generator%
+  - ps: md -f %APPVEYOR_BUILD_FOLDER%\Build-%platform%
 
 build_script:
-  - cd %APPVEYOR_BUILD_FOLDER%\Build
+  - cd %APPVEYOR_BUILD_FOLDER%\Build-%platform%
   - cmake -G"%generator%" -DCMAKE_BUILD_TYPE=%configuration% -DPLAYRHO_BUILD_HELLOWORLD=ON -DPLAYRHO_BUILD_UNIT_TESTS=ON ..
   - cmake --build . --config "%configuration%"
   - cd ..
@@ -78,9 +79,15 @@ after_build:
   - cd %APPVEYOR_BUILD_FOLDER%\Documentation
   - doxygen Doxyfile
   - cd ..
+  - 7z a binaries-x64.zip Build-x64\*\*\*.lib
+  - 7z a binaries-Win32.zip Build-Win32\*\*\*.exe
 
 artifacts:
   - path: Documentation\API
-    name: API Documentation
+    name: API-docs
+  - path: binaries-x64.zip
+    name: binaries-x64
+  - path: binaries-Win32.zip
+    name: binaries-Win32
   - path: Build\vs2017\bin
     name: Binary Executables
