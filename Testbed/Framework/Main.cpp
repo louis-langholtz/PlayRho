@@ -321,16 +321,6 @@ static void CreateUI(GLFWwindow* window)
     //io.FontGlobalScale = 0.95f;
 }
 
-static int ToInt(BodyType type)
-{
-    switch (type)
-    {
-        case BodyType::Static: return 0;
-        case BodyType::Kinematic: return 1;
-        case BodyType::Dynamic: return 2;
-    }
-}
-
 static const char* ToString(BodyType type)
 {
     switch (type)
@@ -339,6 +329,7 @@ static const char* ToString(BodyType type)
         case BodyType::Kinematic: return "Kinematic";
         case BodyType::Dynamic: return "Dynamic";
     }
+    return "Unknown"; // should not be reached
 }
 
 static BodyType ToBodyType(int val)
@@ -349,7 +340,7 @@ static BodyType ToBodyType(int val)
         case 1: return BodyType::Kinematic;
         case 2: return BodyType::Dynamic;
     }
-    return BodyType::Static;
+    return BodyType::Static; // should not be reached
 }
 
 static void ResizeWindow(GLFWwindow*, int width, int height)
@@ -1121,7 +1112,7 @@ static void EntityUI(Body& b)
 
     {
         ImGui::GroupContext grpCtx;
-        auto v = ToInt(b.GetType());
+        auto v = static_cast<int>(b.GetType());
         ImGui::RadioButton("Static", &v, 0);
         ImGui::SameLine();
         ImGui::RadioButton("Kinem.", &v, 1);
@@ -2111,8 +2102,8 @@ static bool UserInterface()
 
     if (ui.showMenu)
     {
-        ImGui::SetNextWindowPos(ImVec2(g_camera.m_width - menuWidth - 10, 10));
-        ImGui::SetNextWindowSize(ImVec2(menuWidth, g_camera.m_height - 20));
+        ImGui::SetNextWindowPos(ImVec2(float(g_camera.m_width - menuWidth - 10), 10));
+        ImGui::SetNextWindowSize(ImVec2(float(menuWidth), float(g_camera.m_height - 20)));
         ImGui::WindowContext window("Testbed Controls", &ui.showMenu,
                                     ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoCollapse);
         shouldQuit = MenuUI();
@@ -2150,11 +2141,11 @@ static void ShowFrameInfo(double frameTime, double fps)
     stream << " FPS=" << fps;
     
     ImGui::SetNextWindowPos(ImVec2(0,0));
-    ImGui::SetNextWindowSize(ImVec2(g_camera.m_width, g_camera.m_height));
+    ImGui::SetNextWindowSize(ImVec2(float(g_camera.m_width), float(g_camera.m_height)));
     ImGui::WindowContext wc("Frame Info", nullptr, ImVec2(0,0), 0.0f,
                  ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoInputs|
                  ImGuiWindowFlags_AlwaysAutoResize|ImGuiWindowFlags_NoScrollbar);
-    ImGui::SetCursorPos(ImVec2(5, g_camera.m_height - 20));
+    ImGui::SetCursorPos(ImVec2(5, float(g_camera.m_height - 20)));
     ImGui::TextUnformatted(stream.str());
 }
 
