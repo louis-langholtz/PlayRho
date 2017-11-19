@@ -55,11 +55,12 @@ install:
 #    Start-Process -FilePath "\projects\playrho\Build\vs2017\bin\$env:PLAYRHO_EXE\$env:CONFIGURATION\HelloWorld.exe" -RedirectStandardOutput "Hello.txt" -Wait -NoNewWindow
 
 before_build:
-  - cd %APPVEYOR_BUILD_FOLDER%
-  - cd c:\projects\PlayRho\Build
-  - cmake -G"%generator%" -DCMAKE_BUILD_TYPE=%configuration% -DPLAYRHO_BUILD_HELLOWORLD=ON ..
+  - echo %APPVEYOR_BUILD_FOLDER%
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
 
 build_script:
+  - cd c:\projects\PlayRho\Build
+  - cmake -G"%generator%" -DCMAKE_BUILD_TYPE=%configuration% -DPLAYRHO_BUILD_HELLOWORLD=ON ..
   - cmake --build . --config "%configuration%"
 
 #build:
