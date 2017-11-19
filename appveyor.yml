@@ -43,6 +43,7 @@ install:
   - ps: choco install doxygen.portable
   - ps: choco install graphviz
   - cmake --version
+  - git submodule update --init --recursive
 
 #test_script:
 #- ps: |
