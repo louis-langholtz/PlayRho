@@ -2326,12 +2326,18 @@ TEST(World, TilesComesToRest)
     //EXPECT_EQ(sumRegVelIters, 264096ul);
     //EXPECT_EQ(sumToiPosIters, 44415ul);
     //EXPECT_EQ(sumToiVelIters, 146800ul);
-#elif defined(_WIN32) // This is likely wrong as the results are more likely arch dependent
+#elif defined(_WIN64) // This is likely wrong as the results are more likely arch dependent
     EXPECT_EQ(numSteps, 1800ul);
     EXPECT_EQ(sumRegPosIters, 36516ul);
     EXPECT_EQ(sumRegVelIters, 46948ul);
     EXPECT_EQ(sumToiPosIters, 43970ul);
     EXPECT_EQ(sumToiVelIters, 112904ul);
+#elif defined(_WIN32)
+    EXPECT_EQ(numSteps, 1793ul);
+    EXPECT_EQ(sumRegPosIters, 36495ul);
+    EXPECT_EQ(sumRegVelIters, 46884ul);
+    EXPECT_EQ(sumToiPosIters, 43982ul);
+    EXPECT_EQ(sumToiVelIters, 112969ul);
 #else
     // These will likely fail and need to be tweaked for the particular hardware...
     EXPECT_EQ(numSteps, 1814ul);

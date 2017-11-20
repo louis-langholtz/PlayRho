@@ -109,8 +109,18 @@ TEST(Body, ByteSize)
     const auto fixturesSize = sizeof(Body::Fixtures);
     const auto allSize = contactsSize + jointsSize + fixturesSize;
 
-#if defined(_WIN32) && !defined(NDEBUG)
+#if defined(_WIN64)
+#if !defined(NDEBUG)
     EXPECT_EQ(allSize, std::size_t(96));
+#else
+    EXPECT_EQ(allSize, std::size_t(72));
+#endif
+#elif defined(_WIN32)
+#if !defined(NDEBUG)
+    EXPECT_EQ(allSize, std::size_t(48));
+#else
+    EXPECT_EQ(allSize, std::size_t(36));
+#endif
 #else
     EXPECT_EQ(allSize, std::size_t(72));
 #endif
@@ -118,7 +128,13 @@ TEST(Body, ByteSize)
     // architecture dependent...
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(Body), std::size_t(120 + allSize)); break;
+        case  4:
+#if defined(_WIN32) && !defined(_WIN64)
+            EXPECT_EQ(sizeof(Body), std::size_t(108 + allSize));
+#else
+            EXPECT_EQ(sizeof(Body), std::size_t(120 + allSize));
+#endif
+            break;
         case  8: EXPECT_EQ(sizeof(Body), std::size_t(216 + allSize)); break;
         case 16: EXPECT_EQ(sizeof(Body), std::size_t(496)); break;
         default: FAIL(); break;

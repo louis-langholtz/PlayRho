@@ -39,7 +39,13 @@ TEST(DynamicTree, TreeNodeByteSize)
 {    
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(48)); break;
+        case  4:
+#if defined(_WIN32) && !defined(_WIN64)
+            EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(36));
+#else
+            EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(48));
+#endif
+            break;
         case  8: EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(64)); break;
         case 16: EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(112)); break;
     }
