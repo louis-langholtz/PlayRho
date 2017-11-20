@@ -29,7 +29,7 @@ TEST(Fixed32, ByteSizeIs4)
 
 TEST(Fixed32, GetTypeName)
 {
-    EXPECT_EQ(GetTypeName<Fixed32>(), "Fixed32");
+    EXPECT_STREQ(GetTypeName<Fixed32>(), "Fixed32");
 }
 
 #ifndef _WIN32
@@ -40,7 +40,7 @@ TEST(Fixed64, ByteSizeIs8)
 
 TEST(Fixed64, GetTypeName)
 {
-    EXPECT_EQ(GetTypeName<Fixed64>(), "Fixed64");
+    EXPECT_STREQ(GetTypeName<Fixed64>(), "Fixed64");
 }
 #endif
 

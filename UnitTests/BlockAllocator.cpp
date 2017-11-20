@@ -21,9 +21,15 @@
 
 using namespace playrho;
 
-TEST(BlockAllocator, ByteSizeIs136)
+TEST(BlockAllocator, ByteSize)
 {
+#if defined(__x86_64__) || defined(_M_X64)
     EXPECT_EQ(sizeof(BlockAllocator), std::size_t(136));
+#elif defined(__i386) || defined(_M_IX86)
+    EXPECT_EQ(sizeof(BlockAllocator), std::size_t(68));
+#else
+    EXPECT_EQ(sizeof(BlockAllocator), std::size_t(136));
+#endif
 }
 
 TEST(BlockAllocator, Equals)

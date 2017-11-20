@@ -28,7 +28,13 @@ TEST(EdgeShape, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(EdgeShape), std::size_t(56)); break;
+        case  4:
+#if defined(_WIN32) && !defined(_WIN64)
+            EXPECT_EQ(sizeof(EdgeShape), std::size_t(52));
+#else
+            EXPECT_EQ(sizeof(EdgeShape), std::size_t(56));
+#endif
+            break;
         case  8: EXPECT_EQ(sizeof(EdgeShape), std::size_t(104)); break;
         case 16: EXPECT_EQ(sizeof(EdgeShape), std::size_t(208)); break;
         default: FAIL(); break;

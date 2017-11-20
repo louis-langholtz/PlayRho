@@ -28,7 +28,11 @@ TEST(DistanceProxy, ByteSize)
 {
     if (sizeof(Real) == 4)
     {
+#if defined(_WIN32) && !defined(_WIN64)
+        EXPECT_EQ(sizeof(DistanceProxy), std::size_t(16));
+#else
         EXPECT_EQ(sizeof(DistanceProxy), std::size_t(24));
+#endif
     }
     else if (sizeof(Real) == 8)
     {

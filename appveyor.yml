@@ -77,6 +77,11 @@ build_script:
   - if "%platform%" equ "noarch" doxygen Doxyfile
   - cd ..
 
+test_script:
+  - if "%platform%" neq "noarch" cd %APPVEYOR_BUILD_FOLDER%\Build
+  - if "%platform%" neq "noarch" ctest --output-on-failure
+  - if "%platform%" neq "noarch" cd ..
+
 #build:
 #  project: Build/vs2017/PlayRho.sln
 #  verbosity: normal

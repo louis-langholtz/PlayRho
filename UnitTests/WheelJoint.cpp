@@ -33,7 +33,13 @@ TEST(WheelJointDef, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(WheelJointDef), std::size_t(88)); break;
+        case  4:
+#if defined(_WIN32) && !defined(_WIN64)
+            EXPECT_EQ(sizeof(WheelJointDef), std::size_t(64));
+#else
+            EXPECT_EQ(sizeof(WheelJointDef), std::size_t(88));
+#endif
+            break;
         case  8: EXPECT_EQ(sizeof(WheelJointDef), std::size_t(128)); break;
         case 16: EXPECT_EQ(sizeof(WheelJointDef), std::size_t(224)); break;
         default: FAIL(); break;
@@ -64,7 +70,15 @@ TEST(WheelJoint, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(WheelJoint), std::size_t(152)); break;
+        case  4:
+#if defined(_WIN64)
+            EXPECT_EQ(sizeof(WheelJoint), std::size_t(160));
+#elif defined(_WIN32)
+            EXPECT_EQ(sizeof(WheelJoint), std::size_t(136));
+#else
+            EXPECT_EQ(sizeof(WheelJoint), std::size_t(152));
+#endif
+            break;
         case  8: EXPECT_EQ(sizeof(WheelJoint), std::size_t(272)); break;
         case 16: EXPECT_EQ(sizeof(WheelJoint), std::size_t(512)); break;
         default: FAIL(); break;

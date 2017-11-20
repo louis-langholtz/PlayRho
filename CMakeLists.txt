@@ -64,6 +64,12 @@ endif(PLAYRHO_BUILD_TESTBED)
 
 # Unit tests console application.
 if(PLAYRHO_BUILD_UNIT_TESTS)
+
+  # Have CMake produce a "test" make target.
+  # From https://cmake.org/cmake/help/v3.4/command/enable_testing.html :
+  #   "Enable testing for current directory and below".
+  enable_testing()
+
   add_subdirectory(UnitTests)
 endif(PLAYRHO_BUILD_UNIT_TESTS)
 

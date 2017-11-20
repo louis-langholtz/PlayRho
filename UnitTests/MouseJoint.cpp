@@ -55,7 +55,13 @@ TEST(MouseJoint, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(MouseJoint), std::size_t(112)); break;
+        case  4:
+#if defined(_WIN32) && !defined(_WIN64)
+            EXPECT_EQ(sizeof(MouseJoint), std::size_t(92));
+#else
+            EXPECT_EQ(sizeof(MouseJoint), std::size_t(112));
+#endif
+            break;
         case  8: EXPECT_EQ(sizeof(MouseJoint), std::size_t(184)); break;
         case 16: EXPECT_EQ(sizeof(MouseJoint), std::size_t(336)); break;
         default: FAIL(); break;

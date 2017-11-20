@@ -28,7 +28,11 @@ class Body;
 
 TEST(StackAllocator, ByteSizeIs64)
 {
+#if defined(_WIN32) && !defined(_WIN64)
+    EXPECT_EQ(sizeof(StackAllocator), std::size_t(32));
+#else
     EXPECT_EQ(sizeof(StackAllocator), std::size_t(64));
+#endif
 }
 
 TEST(StackAllocator, DefaultConstruction)

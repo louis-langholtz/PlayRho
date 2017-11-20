@@ -29,7 +29,15 @@ TEST(PrismaticJoint, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(PrismaticJoint), std::size_t(184)); break;
+        case  4:
+#if defined(_WIN64)
+            EXPECT_EQ(sizeof(PrismaticJoint), std::size_t(192));
+#elif defined(_WIN32)
+            EXPECT_EQ(sizeof(PrismaticJoint), std::size_t(168));
+#else
+            EXPECT_EQ(sizeof(PrismaticJoint), std::size_t(184));
+#endif
+            break;
         case  8: EXPECT_EQ(sizeof(PrismaticJoint), std::size_t(328)); break;
         case 16: EXPECT_EQ(sizeof(PrismaticJoint), std::size_t(624)); break;
         default: FAIL(); break;
