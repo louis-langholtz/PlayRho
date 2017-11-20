@@ -91,7 +91,13 @@ TEST(MotorJoint, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(MotorJoint), std::size_t(120)); break;
+        case  4:
+#if defined(_WIN32)
+            EXPECT_EQ(sizeof(MotorJoint), std::size_t(128));
+#else
+            EXPECT_EQ(sizeof(MotorJoint), std::size_t(120));
+#endif
+            break;
         case  8: EXPECT_EQ(sizeof(MotorJoint), std::size_t(208)); break;
         case 16: EXPECT_EQ(sizeof(MotorJoint), std::size_t(384)); break;
         default: FAIL(); break;

@@ -29,7 +29,19 @@ TEST(ChainShape, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(ChainShape), std::size_t(72)); break;
+        case  4:
+#if defined(_WIN64)
+#if !defined(NDEBUG)
+            EXPECT_EQ(sizeof(ChainShape), std::size_t(88));
+#else
+            EXPECT_EQ(sizeof(ChainShape), std::size_t(72));
+#endif
+#elif defined(_WIN32)
+            EXPECT_EQ(sizeof(ChainShape), std::size_t(44));
+#else
+            EXPECT_EQ(sizeof(ChainShape), std::size_t(72));
+#endif
+            break;
         case  8: EXPECT_EQ(sizeof(ChainShape), std::size_t(88)); break;
         case 16: EXPECT_EQ(sizeof(ChainShape), std::size_t(128)); break;
         default: FAIL(); break;

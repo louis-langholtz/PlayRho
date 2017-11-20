@@ -31,10 +31,20 @@ using namespace playrho;
 
 TEST(Body, ContactsByteSize)
 {
-    // Size is C++ library dependent.
-    // Some platforms it's 24-bytes. Others 16.
-    EXPECT_TRUE(sizeof(Body::Contacts) == std::size_t(24)
-                || sizeof(Body::Contacts) == std::size_t(16));
+#if defined(__APPLE__)
+    EXPECT_EQ(sizeof(Body::Contacts), std::size_t(24));
+#elif defined(__linux__)
+    EXPECT_EQ(sizeof(Body::Contacts), std::size_t(16));
+#elif defined(_WIN32)
+#if !defined(NDEBUG)
+    EXPECT_EQ(sizeof(Body::Contacts), std::size_t(32));
+#else
+    EXPECT_EQ(sizeof(Body::Contacts), std::size_t(24));
+#endif
+#else
+    // Intentionally fail for unknown platform...
+    EXPECT_EQ(sizeof(Body::Contacts), std::size_t(0));
+#endif
 }
 
 TEST(Body, JointsByteSize)
@@ -42,19 +52,32 @@ TEST(Body, JointsByteSize)
     // Size is arch, os, or library dependent.
 #ifdef __APPLE__
     EXPECT_EQ(sizeof(Body::Joints), std::size_t(24));
-#endif
-#ifdef __linux__
+#elif __linux__
     EXPECT_EQ(sizeof(Body::Joints), std::size_t(24));
+#elif _WIN32
+    EXPECT_EQ(sizeof(Body::Joints), std::size_t(24));
+#else
+    // Intentionally fail for unknown platform...
+    EXPECT_EQ(sizeof(Body::Joints), std::size_t(0));
 #endif
 }
 
 TEST(Body, FixturesByteSize)
 {
     // Size is arch, os, or library dependent.
-#ifdef __linux__
+#ifdef __APPLE__
     EXPECT_EQ(sizeof(Body::Fixtures), std::size_t(24));
+#elif __linux__
+    EXPECT_EQ(sizeof(Body::Fixtures), std::size_t(24));
+#elif _WIN32
+#if !defined(NDEBUG)
+    EXPECT_EQ(sizeof(Body::Fixtures), std::size_t(32));
 #else
     EXPECT_EQ(sizeof(Body::Fixtures), std::size_t(24));
+#endif
+#else
+    // Intentionally fail for unknown platform...
+    EXPECT_EQ(sizeof(Body::Fixtures), std::size_t(0));
 #endif
 }
 
@@ -65,7 +88,11 @@ TEST(Body, ByteSize)
     const auto fixturesSize = sizeof(Body::Fixtures);
     const auto allSize = contactsSize + jointsSize + fixturesSize;
 
+#if defined(_WIN32) && !defined(NDEBUG)
+    EXPECT_EQ(allSize, std::size_t(96));
+#else
     EXPECT_EQ(allSize, std::size_t(72));
+#endif
 
     // architecture dependent...
     switch (sizeof(Real))

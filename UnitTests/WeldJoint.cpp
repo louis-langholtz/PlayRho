@@ -61,7 +61,13 @@ TEST(WeldJoint, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(WeldJoint), std::size_t(136)); break;
+        case  4:
+#if defined(_WIN32)
+            EXPECT_EQ(sizeof(WeldJoint), std::size_t(144));
+#else
+            EXPECT_EQ(sizeof(WeldJoint), std::size_t(136));
+#endif
+            break;
         case  8: EXPECT_EQ(sizeof(WeldJoint), std::size_t(240)); break;
         case 16: EXPECT_EQ(sizeof(WeldJoint), std::size_t(448)); break;
         default: FAIL(); break;

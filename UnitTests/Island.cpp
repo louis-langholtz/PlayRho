@@ -23,24 +23,40 @@
 
 using namespace playrho;
 
-TEST(IslandBodyContainer, BytesSizeIs24)
+TEST(IslandBodyContainer, BytesSize)
 {
+#if defined(_WIN32) && !defined(NDEBUG)
+    EXPECT_EQ(sizeof(Island::Bodies), std::size_t(32));
+#else
     EXPECT_EQ(sizeof(Island::Bodies), std::size_t(24));
+#endif
 }
 
-TEST(IslandContactContainer, BytesSizeIs24)
+TEST(IslandContactContainer, BytesSize)
 {
+#if defined(_WIN32) && !defined(NDEBUG)
+    EXPECT_EQ(sizeof(Island::Contacts), std::size_t(32));
+#else
     EXPECT_EQ(sizeof(Island::Contacts), std::size_t(24));
+#endif
 }
 
-TEST(IslandJointContainer, BytesSizeIs24)
+TEST(IslandJointContainer, BytesSize)
 {
+#if defined(_WIN32) && !defined(NDEBUG)
+    EXPECT_EQ(sizeof(Island::Joints), std::size_t(32));
+#else
     EXPECT_EQ(sizeof(Island::Joints), std::size_t(24));
+#endif
 }
 
-TEST(Island, ByteSizeIs72)
+TEST(Island, ByteSize)
 {
+#if defined(_WIN32) && !defined(NDEBUG)
+    EXPECT_EQ(sizeof(Island), std::size_t(96));
+#else
     EXPECT_EQ(sizeof(Island), std::size_t(72));
+#endif
 }
 
 TEST(Island, NotDefaultConstructible)

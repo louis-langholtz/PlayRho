@@ -59,7 +59,13 @@ TEST(RopeJoint, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(RopeJoint), std::size_t(96)); break;
+        case  4:
+#if defined(_WIN32)
+            EXPECT_EQ(sizeof(RopeJoint), std::size_t(104));
+#else
+            EXPECT_EQ(sizeof(RopeJoint), std::size_t(96));
+#endif
+            break;
         case  8: EXPECT_EQ(sizeof(RopeJoint), std::size_t(160)); break;
         case 16: EXPECT_EQ(sizeof(RopeJoint), std::size_t(288)); break;
         default: FAIL(); break;

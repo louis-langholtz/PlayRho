@@ -25,7 +25,13 @@ TEST(VertexSet, ByteSizeIs_32_or_48)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(VertexSet), std::size_t(32)); break;
+        case  4:
+#if defined(_WIN32) && !defined(NDEBUG)
+            EXPECT_EQ(sizeof(VertexSet), std::size_t(40));
+#else
+            EXPECT_EQ(sizeof(VertexSet), std::size_t(32));
+#endif
+            break;
         case  8: EXPECT_EQ(sizeof(VertexSet), std::size_t(32)); break;
         case 16: EXPECT_EQ(sizeof(VertexSet), std::size_t(48)); break;
         default: FAIL(); break;
