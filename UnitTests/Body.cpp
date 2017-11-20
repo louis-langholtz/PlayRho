@@ -34,12 +34,18 @@ TEST(Body, ContactsByteSize)
 #if defined(__APPLE__)
     EXPECT_EQ(sizeof(Body::Contacts), std::size_t(24));
 #elif defined(__linux__)
-    EXPECT_EQ(sizeof(Body::Contacts), std::size_t(16));
-#elif defined(_WIN32)
+    EXPECT_EQ(sizeof(Body::Contacts), std::size_t(24));
+#elif defined(_WIN64)
 #if !defined(NDEBUG)
     EXPECT_EQ(sizeof(Body::Contacts), std::size_t(32));
 #else
     EXPECT_EQ(sizeof(Body::Contacts), std::size_t(24));
+#endif
+#elif defined(_WIN32)
+#if !defined(NDEBUG)
+    EXPECT_EQ(sizeof(Body::Contacts), std::size_t(16));
+#else
+    EXPECT_EQ(sizeof(Body::Contacts), std::size_t(12));
 #endif
 #else
     // Intentionally fail for unknown platform...
@@ -49,14 +55,23 @@ TEST(Body, ContactsByteSize)
 
 TEST(Body, JointsByteSize)
 {
-    // Size is arch, os, or library dependent.
 #ifdef __APPLE__
     EXPECT_EQ(sizeof(Body::Joints), std::size_t(24));
 #elif __linux__
     EXPECT_EQ(sizeof(Body::Joints), std::size_t(24));
-#elif _WIN32
+#elif _WIN64
+#if defined(NDEBUG)
     EXPECT_EQ(sizeof(Body::Joints), std::size_t(24));
 #else
+    EXPECT_EQ(sizeof(Body::Joints), std::size_t(32));
+#endif
+#elif _WIN32
+#if defined(NDEBUG)
+    EXPECT_EQ(sizeof(Body::Joints), std::size_t(12));
+#else
+    EXPECT_EQ(sizeof(Body::Joints), std::size_t(16));
+#endif
+#else // !__APPLE__ && !__linux__ && !_WIN64 && !_WIN32
     // Intentionally fail for unknown platform...
     EXPECT_EQ(sizeof(Body::Joints), std::size_t(0));
 #endif
@@ -69,11 +84,17 @@ TEST(Body, FixturesByteSize)
     EXPECT_EQ(sizeof(Body::Fixtures), std::size_t(24));
 #elif __linux__
     EXPECT_EQ(sizeof(Body::Fixtures), std::size_t(24));
-#elif _WIN32
+#elif _WIN64
 #if !defined(NDEBUG)
     EXPECT_EQ(sizeof(Body::Fixtures), std::size_t(32));
 #else
     EXPECT_EQ(sizeof(Body::Fixtures), std::size_t(24));
+#endif
+#elif _WIN32
+#if !defined(NDEBUG)
+    EXPECT_EQ(sizeof(Body::Fixtures), std::size_t(16));
+#else
+    EXPECT_EQ(sizeof(Body::Fixtures), std::size_t(12));
 #endif
 #else
     // Intentionally fail for unknown platform...

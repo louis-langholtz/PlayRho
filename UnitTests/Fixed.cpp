@@ -29,7 +29,13 @@ TEST(Fixed32, ByteSizeIs4)
 
 TEST(Fixed32, GetTypeName)
 {
+#if defined(_WIN32) && !defined(NDEBUG)
+    const auto name = GetTypeName<Fixed32>();
+    std::cout << "GetTypeName<Fixed32>=" << name << "\n";
     EXPECT_EQ(GetTypeName<Fixed32>(), "Fixed32");
+#else
+    EXPECT_EQ(GetTypeName<Fixed32>(), "Fixed32");
+#endif
 }
 
 #ifndef _WIN32

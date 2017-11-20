@@ -21,7 +21,7 @@
 
 using namespace playrho;
 
-TEST(Velocity, ByteSizeIs_12_24_or_48)
+TEST(Velocity, ByteSize)
 {
     switch (sizeof(Real))
     {

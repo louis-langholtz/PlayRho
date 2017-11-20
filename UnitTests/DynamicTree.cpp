@@ -26,7 +26,13 @@ using namespace playrho;
 
 TEST(DynamicTree, ByteSize)
 {
+#if defined(_WIN64)
     EXPECT_EQ(sizeof(DynamicTree), std::size_t(32));
+#elif defined(_WIN32)
+    EXPECT_EQ(sizeof(DynamicTree), std::size_t(24));
+#else
+    EXPECT_EQ(sizeof(DynamicTree), std::size_t(32));
+#endif
 }
 
 TEST(DynamicTree, TreeNodeByteSize)

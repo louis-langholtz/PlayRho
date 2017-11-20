@@ -33,7 +33,13 @@ TEST(MotorJointDef, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(MotorJointDef), std::size_t(64)); break;
+        case  4:
+#if defined(_WIN32) && !defined(_WIN64)
+            EXPECT_EQ(sizeof(MotorJointDef), std::size_t(44));
+#else
+            EXPECT_EQ(sizeof(MotorJointDef), std::size_t(64));
+#endif
+            break;
         case  8: EXPECT_EQ(sizeof(MotorJointDef), std::size_t(88)); break;
         case 16: EXPECT_EQ(sizeof(MotorJointDef), std::size_t(144)); break;
         default: FAIL(); break;
@@ -92,8 +98,10 @@ TEST(MotorJoint, ByteSize)
     switch (sizeof(Real))
     {
         case  4:
-#if defined(_WIN32)
+#if defined(_WIN64)
             EXPECT_EQ(sizeof(MotorJoint), std::size_t(128));
+#elif defined(_WIN32)
+            EXPECT_EQ(sizeof(MotorJoint), std::size_t(104));
 #else
             EXPECT_EQ(sizeof(MotorJoint), std::size_t(120));
 #endif

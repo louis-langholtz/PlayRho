@@ -25,8 +25,18 @@ using namespace playrho;
 
 TEST(IslandBodyContainer, BytesSize)
 {
-#if defined(_WIN32) && !defined(NDEBUG)
+#if defined(_WIN64)
+#if !defined(NDEBUG)
     EXPECT_EQ(sizeof(Island::Bodies), std::size_t(32));
+#else
+    EXPECT_EQ(sizeof(Island::Bodies), std::size_t(24));
+#endif
+#elif defined(_WIN32)
+#if !defined(NDEBUG)
+    EXPECT_EQ(sizeof(Island::Bodies), std::size_t(16));
+#else
+    EXPECT_EQ(sizeof(Island::Bodies), std::size_t(12));
+#endif
 #else
     EXPECT_EQ(sizeof(Island::Bodies), std::size_t(24));
 #endif
@@ -34,8 +44,18 @@ TEST(IslandBodyContainer, BytesSize)
 
 TEST(IslandContactContainer, BytesSize)
 {
-#if defined(_WIN32) && !defined(NDEBUG)
+#if defined(_WIN64)
+#if !defined(NDEBUG)
     EXPECT_EQ(sizeof(Island::Contacts), std::size_t(32));
+#else
+    EXPECT_EQ(sizeof(Island::Contacts), std::size_t(24));
+#endif
+#elif defined(_WIN32)
+#if !defined(NDEBUG)
+    EXPECT_EQ(sizeof(Island::Contacts), std::size_t(16));
+#else
+    EXPECT_EQ(sizeof(Island::Contacts), std::size_t(12));
+#endif
 #else
     EXPECT_EQ(sizeof(Island::Contacts), std::size_t(24));
 #endif
@@ -43,8 +63,18 @@ TEST(IslandContactContainer, BytesSize)
 
 TEST(IslandJointContainer, BytesSize)
 {
-#if defined(_WIN32) && !defined(NDEBUG)
+#if defined(_WIN64)
+#if !defined(NDEBUG)
     EXPECT_EQ(sizeof(Island::Joints), std::size_t(32));
+#else
+    EXPECT_EQ(sizeof(Island::Joints), std::size_t(24));
+#endif
+#elif defined(_WIN32)
+#if !defined(NDEBUG)
+    EXPECT_EQ(sizeof(Island::Joints), std::size_t(16));
+#else
+    EXPECT_EQ(sizeof(Island::Joints), std::size_t(12));
+#endif
 #else
     EXPECT_EQ(sizeof(Island::Joints), std::size_t(24));
 #endif
@@ -52,8 +82,18 @@ TEST(IslandJointContainer, BytesSize)
 
 TEST(Island, ByteSize)
 {
-#if defined(_WIN32) && !defined(NDEBUG)
+#if defined(_WIN64)
+#if !defined(NDEBUG)
     EXPECT_EQ(sizeof(Island), std::size_t(96));
+#else
+    EXPECT_EQ(sizeof(Island), std::size_t(72));
+#endif
+#elif defined(_WIN32)
+#if !defined(NDEBUG)
+    EXPECT_EQ(sizeof(Island), std::size_t(48));
+#else
+    EXPECT_EQ(sizeof(Island), std::size_t(36));
+#endif
 #else
     EXPECT_EQ(sizeof(Island), std::size_t(72));
 #endif

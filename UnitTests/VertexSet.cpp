@@ -21,13 +21,23 @@
 
 using namespace playrho;
 
-TEST(VertexSet, ByteSizeIs_32_or_48)
+TEST(VertexSet, ByteSize)
 {
     switch (sizeof(Real))
     {
         case  4:
-#if defined(_WIN32) && !defined(NDEBUG)
+#if defined(_WIN64)
+#if !defined(NDEBUG)
             EXPECT_EQ(sizeof(VertexSet), std::size_t(40));
+#else
+            EXPECT_EQ(sizeof(VertexSet), std::size_t(32));
+#endif
+#elif defined(_WIN32)
+#if !defined(NDEBUG)
+            EXPECT_EQ(sizeof(VertexSet), std::size_t(20));
+#else
+            EXPECT_EQ(sizeof(VertexSet), std::size_t(16));
+#endif
 #else
             EXPECT_EQ(sizeof(VertexSet), std::size_t(32));
 #endif

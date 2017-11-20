@@ -31,8 +31,18 @@ TEST(MultiShape, ByteSize)
     switch (sizeof(Real))
     {
         case  4:
-#if defined(_WIN32) && !defined(NDEBUG)
+#if defined(_WIN64)
+#if !defined(NDEBUG)
             EXPECT_EQ(sizeof(MultiShape), std::size_t(56));
+#else
+            EXPECT_EQ(sizeof(MultiShape), std::size_t(48));
+#endif
+#elif defined(_WIN32)
+#if !defined(NDEBUG)
+            EXPECT_EQ(sizeof(MultiShape), std::size_t(36));
+#else
+            EXPECT_EQ(sizeof(MultiShape), std::size_t(32));
+#endif
 #else
             EXPECT_EQ(sizeof(MultiShape), std::size_t(48));
 #endif

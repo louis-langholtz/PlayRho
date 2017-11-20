@@ -30,7 +30,13 @@ TEST(Shape, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(Shape), std::size_t(24)); break;
+        case  4:
+#if defined(_WIN32) && !defined(_WIN64)
+            EXPECT_EQ(sizeof(Shape), std::size_t(20));
+#else
+            EXPECT_EQ(sizeof(Shape), std::size_t(24));
+#endif
+            break;
         case  8: EXPECT_EQ(sizeof(Shape), std::size_t(40)); break;
         case 16: EXPECT_EQ(sizeof(Shape), std::size_t(80)); break;
         default: FAIL(); break;
