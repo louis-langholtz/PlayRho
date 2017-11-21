@@ -42,6 +42,7 @@
 #include <condition_variable>
 #include <queue>
 #include <atomic>
+#include <ctime>
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/OptionalValue.hpp>
@@ -1519,7 +1520,8 @@ static void AddPairStressTest(benchmark::State& state, int count)
             for (auto i = 0; i < count; ++i)
             {
                 const auto location = playrho::Vec2(Rand(minX, maxX), Rand(minY, maxY)) * playrho::Meter;
-                const auto body = world.CreateBody(playrho::BodyDef{bd}.UseLocation(location));
+                // Uses parenthesis here to work around Visual C++'s const propagating of the copy.
+                const auto body = world.CreateBody(playrho::BodyDef(bd).UseLocation(location));
                 body->CreateFixture(diskShape);
             }
         }
