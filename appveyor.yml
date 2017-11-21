@@ -49,16 +49,6 @@ install:
   - if "%platform%" equ "Win32" vcpkg install glew:x86-windows-static
   - if "%platform%" equ "Win32" vcpkg install glfw3:x86-windows-static
 
-#test_script:
-#- ps: |
-#    If ($env:PLATFORM -Match "Win32") {
-#      $env:PLAYRHO_EXE="x32"
-#    }
-#    If ($env:PLATFORM -Match "x64") {
-#      $env:PLAYRHO_EXE="x64"
-#    }
-#    Start-Process -FilePath "\projects\playrho\Build\vs2017\bin\$env:PLAYRHO_EXE\$env:CONFIGURATION\HelloWorld.exe" -RedirectStandardOutput "Hello.txt" -Wait -NoNewWindow
-
 before_build:
   - echo %APPVEYOR_BUILD_FOLDER%
   - if "%platform%" equ "Win32" set generator=Visual Studio 15 2017
@@ -68,18 +58,24 @@ before_build:
   - if "%platform%" equ "x64" set triplet=x64-windows-static
   - if "%platform%" equ "x64" call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
 
+# Handle building the library & binary executables or generating the doxygen docs
+# depending on the current environment matrix variable settings.
+# Only builds Benchmark app for Release builds. No sense benchmarking Debug builds.
 build_script:
   - if "%platform%" neq "noarch" cd %APPVEYOR_BUILD_FOLDER%\Build
-  - if "%platform%" neq "noarch" cmake -G"%generator%" -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%triplet% -DPLAYRHO_BUILD_HELLOWORLD=ON -DPLAYRHO_BUILD_UNIT_TESTS=ON -DPLAYRHO_BUILD_TESTBED=ON ..
+  - if "%configuration%" equ "Debug" cmake -G"%generator%" -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%triplet% -DPLAYRHO_BUILD_HELLOWORLD=ON -DPLAYRHO_BUILD_UNIT_TESTS=ON -DPLAYRHO_BUILD_TESTBED=ON ..
+  - if "%configuration%" equ "Release" cmake -G"%generator%" -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%triplet% -DPLAYRHO_BUILD_HELLOWORLD=ON -DPLAYRHO_BUILD_UNIT_TESTS=ON -DPLAYRHO_BUILD_TESTBED=ON -DPLAYRHO_BUILD_BENCHMARK=ON ..
   - if "%platform%" neq "noarch" cmake --build . --config "%configuration%"
   - if "%platform%" equ "noarch" cd %APPVEYOR_BUILD_FOLDER%\Documentation
   - if "%platform%" equ "noarch" set PATH=c:\Program Files (x86)\graphviz2.38\bin;%PATH%
   - if "%platform%" equ "noarch" doxygen Doxyfile
   - cd ..
 
+# Run the UnitTests application via CMake's ctest command.
+# Just run ctest for Release builds since it's much faster than the Debug build.
 test_script:
   - if "%platform%" neq "noarch" cd %APPVEYOR_BUILD_FOLDER%\Build
-  - if "%platform%" neq "noarch" ctest --output-on-failure
+  - if "%configuration%" equ "Release" ctest --output-on-failure
   - if "%platform%" neq "noarch" cd ..
 
 #build:
