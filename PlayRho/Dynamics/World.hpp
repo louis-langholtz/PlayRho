@@ -458,17 +458,22 @@ private:
                      Contacts::size_type& remNumContacts,
                      Joints::size_type& remNumJoints);
 
+    /// @brief Body stack.
+    /// @note Using a std::stack<Body*, std::vector<Body*>> would be nice except it doesn't
+    ///   support the reserve method.
+    using BodyStack = std::vector<Body*>;
+
     /// @brief Adds to the island.
-    void AddToIsland(Island& island, std::vector<Body*>& stack,
+    void AddToIsland(Island& island, BodyStack& stack,
                      Bodies::size_type& remNumBodies,
                      Contacts::size_type& remNumContacts,
                      Joints::size_type& remNumJoints);
     
     /// @brief Adds contacts to the island.
-    void AddContactsToIsland(Island& island, std::vector<Body*>& stack, const Body* b);
+    void AddContactsToIsland(Island& island, BodyStack& stack, const Body* b);
 
     /// @brief Adds joints to the island.
-    void AddJointsToIsland(Island& island, std::vector<Body*>& stack, const Body* b);
+    void AddJointsToIsland(Island& island, BodyStack& stack, const Body* b);
     
     /// @brief Removes unspeedables from the is islanded state.
     Bodies::size_type RemoveUnspeedablesFromIslanded(const std::vector<Body*>& bodies);
