@@ -1009,7 +1009,7 @@ void World::AddToIsland(Island& island, Body& seed,
     // Perform a depth first search (DFS) on the constraint graph.
 
     // Create a stack for bodies to be islanded that aren't already islanded.
-    auto stack = std::vector<Body*>();
+    auto stack = BodyStack{};
     stack.reserve(remNumBodies);
 
     stack.push_back(&seed);
@@ -1017,7 +1017,7 @@ void World::AddToIsland(Island& island, Body& seed,
     AddToIsland(island, stack, remNumBodies, remNumContacts, remNumJoints);
 }
 
-void World::AddToIsland(Island& island, std::vector<Body*>& stack,
+void World::AddToIsland(Island& island, BodyStack& stack,
                  Bodies::size_type& remNumBodies,
                  Contacts::size_type& remNumContacts,
                  Joints::size_type& remNumJoints)
@@ -1062,7 +1062,7 @@ void World::AddToIsland(Island& island, std::vector<Body*>& stack,
     }
 }
 
-void World::AddContactsToIsland(Island& island, std::vector<Body*>& stack, const Body* b)
+void World::AddContactsToIsland(Island& island, BodyStack& stack, const Body* b)
 {
     const auto contacts = b->GetContacts();
     for_each(cbegin(contacts), cend(contacts), [&](const KeyedContactPtr& ci) {
@@ -1088,7 +1088,7 @@ void World::AddContactsToIsland(Island& island, std::vector<Body*>& stack, const
     });
 }
 
-void World::AddJointsToIsland(Island& island, std::vector<Body*>& stack, const Body* b)
+void World::AddJointsToIsland(Island& island, BodyStack& stack, const Body* b)
 {
     const auto joints = b->GetJoints();
     for_each(cbegin(joints), cend(joints), [&](const Body::KeyedJointPtr& ji) {
