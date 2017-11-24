@@ -97,6 +97,32 @@ constexpr inline auto StripUnit(const BoundedValue<T, lo, hi>& v)
 ///   especially those with mixed input and output types.
 /// @{
 
+/// @brief Secant method.
+/// @sa https://en.wikipedia.org/wiki/Secant_method
+template <typename T, typename U>
+constexpr inline U Secant(T target, U a1, T s1, U a2, T s2) noexcept
+{
+    static_assert(IsArithmetic<T>::value && IsArithmetic<U>::value, "Arithmetic types required.");
+    return (a1 + (target - s1) * (a2 - a1) / (s2 - s1));
+}
+
+/// @brief Bisection method.
+/// @sa https://en.wikipedia.org/wiki/Bisection_method
+template <typename T>
+constexpr inline T Bisect(T a1, T a2) noexcept
+{
+    return (a1 + a2) / 2;
+}
+
+/// @brief Is-odd.
+/// @details Determines whether the given integral value is odd (as opposed to being even).
+template <typename T>
+constexpr inline bool IsOdd(T val) noexcept
+{
+    static_assert(std::is_integral<T>::value, "Integral type required.");
+    return val % 2;
+}
+
 /// @brief Squares the given value.
 template<class TYPE>
 constexpr inline auto Square(TYPE t) noexcept { return t * t; }
