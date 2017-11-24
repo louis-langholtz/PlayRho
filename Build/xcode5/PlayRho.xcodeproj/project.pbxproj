@@ -2020,14 +2020,11 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
-					"DO_GJK_PROFILING=1",
 					"$(inherited)",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
 					"-Wextra",
-					"-mllvm",
-					"-inline-threshold=-1",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -2042,15 +2039,10 @@
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				EXECUTABLE_PREFIX = lib;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DO_GJK_PROFILING=1",
-					"NDEBUG=1",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
 					"-Wextra",
-					"-mllvm",
-					"-inline-threshold=-1",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
