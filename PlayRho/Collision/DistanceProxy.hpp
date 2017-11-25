@@ -22,6 +22,13 @@
 
 #include <PlayRho/Common/Math.hpp>
 #include <vector>
+#include <algorithm>
+
+// Define IMPLEMENT_DISTANCEPROXY_WITH_BUFFERS to implement the DistanceProxy class
+// using buffers instead of pointers. Note that timing tests suggest implementing with
+// buffers is significantly slower. Using buffers could make subclassing the Shape class
+// easier though so a buffering code alternative is kept in the source code for now.
+// #define IMPLEMENT_DISTANCEPROXY_WITH_BUFFERS
 
 namespace playrho
 {
@@ -52,14 +59,22 @@ namespace playrho
         DistanceProxy() = default;
         
         /// @brief Copy constructor.
-        constexpr DistanceProxy(const DistanceProxy& copy) noexcept:
+        DistanceProxy(const DistanceProxy& copy) noexcept:
+#ifndef IMPLEMENT_DISTANCEPROXY_WITH_BUFFERS
             m_vertices{copy.m_vertices},
             m_normals{copy.m_normals},
+#endif
             m_count{copy.m_count},
             m_vertexRadius{copy.m_vertexRadius}
         {
+#ifdef IMPLEMENT_DISTANCEPROXY_WITH_BUFFERS
+            const auto count = copy.m_count;
+            std::copy(copy.m_vertices, copy.m_vertices + count, m_vertices);
+            std::copy(copy.m_normals, copy.m_normals + count, m_normals);
+#else
             // Intentionall empty.
-        }
+#endif
+       }
 
         /// Initializing constructor.
         ///
@@ -75,10 +90,12 @@ namespace playrho
         /// @warning Behavior is undefined if the vertices collection has less than one element or
         ///   more than <code>MaxShapeVertices</code> elements.
         ///
-        constexpr DistanceProxy(const NonNegative<Length> vertexRadius, const size_type count,
+        DistanceProxy(const NonNegative<Length> vertexRadius, const size_type count,
                                 const Length2* vertices, const UnitVec2* normals) noexcept:
+#ifndef IMPLEMENT_DISTANCEPROXY_WITH_BUFFERS
             m_vertices{vertices},
             m_normals{normals},
+#endif
             m_count{count},
             m_vertexRadius{vertexRadius}
         {
@@ -86,6 +103,16 @@ namespace playrho
             assert(count >= 0);
             assert(count < 1 || vertices);
             assert(count < 2 || normals);
+#ifdef IMPLEMENT_DISTANCEPROXY_WITH_BUFFERS
+            if (vertices)
+            {
+                std::copy(vertices, vertices + count, m_vertices);
+            }
+            if (normals)
+            {
+                std::copy(normals, normals + count, m_normals);
+            }
+#endif
         }
         
         /// Gets the vertexRadius of the vertices of the associated shape.
@@ -126,9 +153,13 @@ namespace playrho
         }
 
     private:
-    
+#ifdef IMPLEMENT_DISTANCEPROXY_WITH_BUFFERS
+        Length2 m_vertices[MaxShapeVertices]; ///< Vertices.
+        UnitVec2 m_normals[MaxShapeVertices]; ///< Normals.
+#else
         const Length2* m_vertices = nullptr; ///< Vertices.
         const UnitVec2* m_normals = nullptr; ///< Normals.
+#endif
         size_type m_count = 0; ///< Count of valid elements of m_vertices.
         NonNegative<Length> m_vertexRadius = 0_m; ///< Radius of the vertices of the associated shape.
     };
