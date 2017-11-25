@@ -499,23 +499,24 @@ inline Angle GetAngle(const Vector2<T> value)
     return Atan2(GetY(value), GetX(value));
 }
 
-/// @brief Gets the square of the length/magnitude of the given value.
+/// @brief Gets the square of the length/magnitude of the given iterable value.
 /// @note For performance, use this instead of GetLength(T value) (if possible).
 /// @return Non-negative value.
 template <typename T>
 constexpr inline auto GetLengthSquared(T value) noexcept
 {
-    return Square(GetX(value)) + Square(GetY(value));
-}
-
-/// @brief Gets the square of the length/magnitude of the given value.
-template <>
-constexpr inline auto GetLengthSquared(Vec3 value) noexcept
-{
-    return Square(GetX(value)) + Square(GetY(value)) + Square(GetZ(value));
+    using VT = typename T::value_type;
+    using OT = decltype(VT{} * VT{});
+    auto result = OT{};
+    for (auto&& e: value)
+    {
+        result += Square(e);
+    }
+    return result;
 }
 
 /// @brief Gets the length/magnitude of the given value.
+/// @note Works for any type for which <code>GetLengthSquared</code> also works.
 template <typename T>
 inline auto GetLength(T value)
 {
