@@ -341,16 +341,16 @@ TEST(Fixed32, Division)
 TEST(Fixed32, Sin)
 {
     EXPECT_FLOAT_EQ(static_cast<float>(Sin(Fixed32(0))), 0.0f);
-    EXPECT_FLOAT_EQ(static_cast<float>(Sin(Fixed32(1))), std::sin(1.0f));
-    EXPECT_FLOAT_EQ(static_cast<float>(Sin(Fixed32(2))), std::sin(2.0f));
-    EXPECT_FLOAT_EQ(static_cast<float>(Sin(Fixed32(Pi/2))), 1.0f);
+    EXPECT_NEAR(static_cast<double>(Sin(Fixed32(1))), std::sin(1.0), 0.002);
+    EXPECT_NEAR(static_cast<double>(Sin(Fixed32(2))), std::sin(2.0), 0.002);
+    EXPECT_NEAR(static_cast<double>(Sin(Fixed32(Pi/2))), 1.0, 0.002);
 }
 
 TEST(Fixed32, Cos)
 {
     EXPECT_FLOAT_EQ(static_cast<float>(Cos(Fixed32(0))), float(1));
-    EXPECT_FLOAT_EQ(static_cast<float>(Cos(Fixed32(1))), std::cos(1.0f));
-    EXPECT_FLOAT_EQ(static_cast<float>(Cos(Fixed32(2))), std::cos(2.0f));
+    EXPECT_NEAR(static_cast<double>(Cos(Fixed32(1))), std::cos(1.0), 0.002);
+    EXPECT_NEAR(static_cast<double>(Cos(Fixed32(2))), std::cos(2.0), 0.002);
     EXPECT_LT(static_cast<float>(Cos(Fixed32(Pi/2))), +0.001f);
     EXPECT_GT(static_cast<float>(Cos(Fixed32(Pi/2))), -0.001f);
 }

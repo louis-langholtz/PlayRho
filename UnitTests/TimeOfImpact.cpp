@@ -53,7 +53,7 @@ TEST(TOIOutput, ByteSize)
     switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(TOIOutput), std::size_t(16)); break;
-        case  8: EXPECT_EQ(sizeof(TOIOutput), std::size_t(20)); break;
+        case  8: EXPECT_EQ(sizeof(TOIOutput), std::size_t(24)); break;
         case 16: EXPECT_EQ(sizeof(TOIOutput), std::size_t(32)); break;
         default: FAIL(); break;
     }
@@ -647,20 +647,21 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
         Position{Length2{14.3689451_m, 0.500254989_m}, 0.000260060915_rad}
     };
 
+    // Note that these vertices are interpretted by code using the DistanceProxy as
+    // being relative to the body's origin. Don't confuse the locations as being in
+    // world coordinates.
     const Length2 vertices[] = {
         Vec2{14.5f, -0.5f} * Meter,
         Vec2{14.5f, +0.5f} * Meter,
         Vec2{13.5f, +0.5f} * Meter,
         Vec2{13.5f, -0.5f} * Meter
     };
-
     const UnitVec2 normals[] = {
         GetUnitVector(vertices[1] - vertices[0]),
         GetUnitVector(vertices[2] - vertices[1]),
         GetUnitVector(vertices[3] - vertices[2]),
         GetUnitVector(vertices[0] - vertices[3]),
     };
-
     const auto dpA = DistanceProxy{
         0.000199999995_m, 4, vertices, normals
     };
@@ -723,31 +724,188 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
     }
 }
 
-TEST(TimeOfImpact, foo)
+TEST(TimeOfImpact, TryOutDifferentConfs)
 {
     const auto radius = 1_m;
     const auto pos = Length2{};
     const auto proxyA = DistanceProxy{radius, 1, &pos, nullptr};
     const auto proxyB = DistanceProxy{radius, 1, &pos, nullptr};
 
-    const auto sweepA = Sweep{
-        Position{Length2{0.0_m, -0.5_m}, 0_deg},
-        Position{Length2{0.0_m, -0.5_m}, 0_deg}
-    };
-    const auto sweepB = Sweep{
-        Position{Length2{14.3689661_m, 0.500306308_m}, 0.0000139930862_rad},
-        Position{Length2{14.3689451_m, 0.500254989_m}, 0.000260060915_rad}
-    };
-
-    const auto conf = ToiConf{}
-        .UseTargetDepth(0_m)
-        .UseTolerance(0_m)
-        .UseMaxRootIters(0)
-        .UseMaxToiIters(0)
-        .UseMaxDistIters(0)
-        ;
-
-    const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
+    {
+        const auto sweepA = Sweep{
+            Position{Length2{-5_m, 0_m}, 0_deg},
+            Position{Length2{-5_m, 0_m}, 0_deg}
+        };
+        const auto sweepB = Sweep{
+            Position{Length2{+5_m, 0_m}, 0_deg},
+            Position{Length2{+5_m, 0_m}, 0_deg}
+        };
+        const auto conf = ToiConf{}
+            .UseTargetDepth(0_m)
+            .UseTolerance(0_m)
+            .UseMaxRootIters(0)
+            .UseMaxToiIters(0)
+            .UseMaxDistIters(0)
+            ;
+        const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
+        EXPECT_EQ(output.state, TOIOutput::e_maxToiIters);
+    }
     
-    EXPECT_EQ(output.state, TOIOutput::e_maxToiIters);
+    {
+        const auto sweepA = Sweep{
+            Position{Length2{-5_m, 0_m}, 0_deg},
+            Position{Length2{-5_m, 0_m}, 0_deg}
+        };
+        const auto sweepB = Sweep{
+            Position{Length2{+5_m, 0_m}, 0_deg},
+            Position{Length2{+5_m, 0_m}, 0_deg}
+        };
+        const auto conf = ToiConf{}
+            .UseTargetDepth(0_m)
+            .UseTolerance(0_m)
+            .UseMaxRootIters(0)
+            .UseMaxToiIters(1)
+            .UseMaxDistIters(0)
+            ;
+        const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
+        EXPECT_EQ(output.state, TOIOutput::e_maxDistIters);
+    }
+    
+    {
+        const auto sweepA = Sweep{
+            Position{Length2{-5_m, 0_m}, 0_deg},
+            Position{Length2{-5_m, 0_m}, 0_deg}
+        };
+        const auto sweepB = Sweep{
+            Position{Length2{+5_m, 0_m}, 0_deg},
+            Position{Length2{+5_m, 0_m}, 0_deg}
+        };
+        const auto conf = ToiConf{}
+            .UseTargetDepth(0_m)
+            .UseTolerance(0_m)
+            .UseMaxRootIters(0)
+            .UseMaxToiIters(1)
+            .UseMaxDistIters(1)
+            ;
+        const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
+        EXPECT_EQ(output.state, TOIOutput::e_separated);
+    }
+    
+    {
+        const auto sweepA = Sweep{
+            Position{Length2{0_m, 0_m}, 0_deg},
+            Position{Length2{0_m, 0_m}, 0_deg}
+        };
+        const auto sweepB = Sweep{
+            Position{Length2{0_m, 0_m}, 0_deg},
+            Position{Length2{0_m, 0_m}, 0_deg}
+        };
+        const auto conf = ToiConf{}
+            .UseTargetDepth(0_m)
+            .UseTolerance(0_m)
+            .UseMaxRootIters(0)
+            .UseMaxToiIters(1)
+            .UseMaxDistIters(1)
+            ;
+        const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
+        EXPECT_EQ(output.state, TOIOutput::e_overlapped);
+    }
+    
+    {
+        const auto sweepA = Sweep{
+            Position{Length2{-2_m, 0_m}, 0_deg},
+            Position{Length2{+0_m, 0_m}, 0_deg}
+        };
+        const auto sweepB = Sweep{
+            Position{Length2{+2_m, 0_m}, 0_deg},
+            Position{Length2{+0_m, 0_m}, 0_deg}
+        };
+        // Negative tolerance results in a TOIOutput::e_nextAfter result no matter how
+        // many iterations are allowed.
+        const auto conf = ToiConf{}
+            .UseTargetDepth(0_m)
+            .UseTolerance(-1_m)
+            .UseMaxRootIters(255)
+            .UseMaxToiIters(255)
+            .UseMaxDistIters(255)
+            ;
+        const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
+        EXPECT_EQ(output.state, TOIOutput::e_nextAfter);
+        EXPECT_NEAR(static_cast<double>(output.time), 0.49999994039535522, 0.0001);
+        EXPECT_EQ(output.stats.max_dist_iters, 1);
+        if (std::is_same<Real, float>::value)
+        {
+            EXPECT_EQ(output.stats.max_root_iters, 49);
+        }
+        else if (std::is_same<Real, double>::value)
+        {
+            EXPECT_EQ(output.stats.max_root_iters, 107);
+        }
+        else if (std::is_same<Real, long double>::value)
+        {
+            EXPECT_EQ(output.stats.max_root_iters, 129);
+        }
+#ifndef _WIN32
+        else if (std::is_same<Real, Fixed64>::value)
+        {
+            EXPECT_EQ(output.stats.max_root_iters, 47);
+        }
+#endif
+        else
+        {
+            EXPECT_EQ(output.stats.max_root_iters, 0);
+        }
+        EXPECT_EQ(output.stats.toi_iters, 1);
+        EXPECT_EQ(output.stats.sum_dist_iters, 1);
+        EXPECT_EQ(output.stats.sum_finder_iters, 0);
+        if (std::is_same<Real, float>::value)
+        {
+            EXPECT_EQ(output.stats.sum_root_iters, 49);
+        }
+        else if (std::is_same<Real, double>::value)
+        {
+            EXPECT_EQ(output.stats.sum_root_iters, 107);
+        }
+        else if (std::is_same<Real, long double>::value)
+        {
+            EXPECT_EQ(output.stats.sum_root_iters, 129);
+        }
+#ifndef _WIN32
+        else if (std::is_same<Real, Fixed64>::value)
+        {
+            EXPECT_EQ(output.stats.sum_root_iters, 47);
+        }
+#endif
+        else
+        {
+            EXPECT_EQ(output.stats.sum_root_iters, 0);
+        }
+    }
+    
+    {
+        const auto sweepA = Sweep{
+            Position{Length2{-2_m, 0_m}, 0_deg},
+            Position{Length2{+0_m, 0_m}, 0_deg}
+        };
+        const auto sweepB = Sweep{
+            Position{Length2{+2_m, 0_m}, 0_deg},
+            Position{Length2{+0_m, 0_m}, 0_deg}
+        };
+        const auto conf = ToiConf{}
+            .UseTargetDepth(0.002_m)
+            .UseTolerance(0.0005_m)
+            .UseMaxRootIters(2)
+            .UseMaxToiIters(2)
+            .UseMaxDistIters(1)
+            ;
+        const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
+        EXPECT_EQ(output.state, TOIOutput::e_touching);
+        EXPECT_NEAR(static_cast<double>(output.time), 0.50049996376037598, 0.0001);
+        EXPECT_EQ(output.stats.max_dist_iters, 1);
+        EXPECT_EQ(output.stats.max_root_iters, 2);
+        EXPECT_EQ(output.stats.toi_iters, 2);
+        EXPECT_EQ(output.stats.sum_dist_iters, 2);
+        EXPECT_EQ(output.stats.sum_finder_iters, 1);
+        EXPECT_EQ(output.stats.sum_root_iters, 2);
+    }
 }

@@ -82,7 +82,11 @@ namespace playrho {
         /// @note Value must be less than twice the minimum vertex radius of any shape.
         Length targetDepth = DefaultLinearSlop * Real{3};
 
-        Length tolerance = DefaultLinearSlop / Real{4}; ///< Tolerance.
+        /// @brief Tolerance.
+        /// @note Use the default value unless you really know what you're doing.
+        /// @note Use 0 to require a TOI at exactly the target depth. This is ill-advised.
+        /// @note Use a negative value to prevent the calculation of a TOI.
+        Length tolerance = DefaultLinearSlop / Real{4};
         
         /// @brief Maximum number of root finder iterations.
         /// @details This is the maximum number of iterations for calculating the 1D root of
@@ -184,10 +188,10 @@ namespace playrho {
             e_touching,
             e_separated,
             e_maxRootIters,
-            e_indifferent,
             e_nextAfter,
             e_maxToiIters,
             e_belowMinTarget,
+            e_maxDistIters,
         };
         
         /// @brief Default constructor.
@@ -213,7 +217,8 @@ namespace playrho {
     ///
     /// @sa https://en.wikipedia.org/wiki/Hyperplane_separation_theorem
     /// @pre The given sweeps are both at the same alpha0.
-    /// @warning Behavior is undefined if the given sweeps are not at the same alpha0.
+    /// @warning Behavior is undefined if sweeps are not at the same alpha0.
+    /// @warning Behavior is undefined if conf's <code>tMax</code> is not between 0 and 1 inclusive.
     /// @note Uses Distance to compute the contact point and normal at the time of impact.
     /// @note This only works for two disjoint convex sets.
     ///
