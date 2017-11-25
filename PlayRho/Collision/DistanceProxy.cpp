@@ -121,7 +121,7 @@ std::vector<Length2> GetConvexHullAsVector(Span<const Length2> vertices)
                 const auto r = vertices[ie] - vertices[ih];
                 const auto v = vertices[j] - vertices[ih];
                 const auto c = Cross(r, v);
-                if ((c < Area{0}) || ((c == Area{0}) && (GetLengthSquared(v) > GetLengthSquared(r))))
+                if ((c < Area{0}) || ((c == Area{0}) && (GetMagnitudeSquared(v) > GetMagnitudeSquared(r))))
                 {
                     ie = j;
                 }
@@ -158,7 +158,7 @@ bool TestPoint(const DistanceProxy& proxy, Length2 point) noexcept
     {
         const auto v0 = proxy.GetVertex(0);
         const auto delta = point - v0;
-        return GetLengthSquared(delta) <= Square(vr);
+        return GetMagnitudeSquared(delta) <= Square(vr);
     }
     
     auto maxDot = -MaxFloat * Meter;
@@ -191,14 +191,14 @@ bool TestPoint(const DistanceProxy& proxy, Length2 point) noexcept
     if (d0 >= Area{0})
     {
         // point is nearest v0 and not within edge
-        return GetLengthSquared(delta0) <= Square(vr);
+        return GetMagnitudeSquared(delta0) <= Square(vr);
     }
     const auto delta1 = point - v1;
     const auto d1 = Dot(edge, delta1);
     if (d1 >= Area{0})
     {
         // point is nearest v1 and not within edge
-        return GetLengthSquared(delta1) <= Square(vr);
+        return GetMagnitudeSquared(delta1) <= Square(vr);
     }
     return true;
 }

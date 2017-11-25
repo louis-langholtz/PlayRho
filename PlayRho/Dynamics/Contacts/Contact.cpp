@@ -167,7 +167,7 @@ void Contact::Update(const UpdateConf& conf, ContactListener* listener)
                 for (auto j = decltype(old_point_count){0}; j < old_point_count; ++j)
                 {
                     const auto oldPt = oldManifold.GetPoint(j);
-                    const auto squareDiff = GetLengthSquared(oldPt.localPoint - newPt.localPoint);
+                    const auto squareDiff = GetMagnitudeSquared(oldPt.localPoint - newPt.localPoint);
                     if (leastSquareDiff > squareDiff)
                     {
                         leastSquareDiff = squareDiff;

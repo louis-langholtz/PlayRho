@@ -94,7 +94,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
         distanceConf.cache = Simplex::GetCache(dinfo.simplex.GetEdges());
         
         // Get the real distance squared between shapes at the time of t1.
-        const auto distSquared = GetLengthSquared(GetDelta(GetWitnessPoints(dinfo.simplex)));
+        const auto distSquared = GetMagnitudeSquared(GetDelta(GetWitnessPoints(dinfo.simplex)));
         
         // If the shapes aren't separated, give up on continuous collision.
         if (distSquared <= Area{0}) // Failure!

@@ -47,7 +47,7 @@ MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 locatio
     const auto r_squared = r * r;
     const auto area = r_squared * Pi;
     const auto mass = Mass{AreaDensity{density} * area};
-    const auto Iz = SecondMomentOfArea{area * ((r_squared / Real{2}) + GetLengthSquared(location))};
+    const auto Iz = SecondMomentOfArea{area * ((r_squared / Real{2}) + GetMagnitudeSquared(location))};
     const auto I = RotInertia{Iz * AreaDensity{density} / SquareRadian};
     return MassData{location, mass, I};
 }
@@ -59,7 +59,7 @@ MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 v0, Len
     const auto circle_mass = density * circle_area;
     const auto d = v1 - v0;
     const auto offset = GetRevPerpendicular(GetUnitVector(d, UnitVec2::GetZero())) * r;
-    const auto b = GetLength(d);
+    const auto b = GetMagnitude(d);
     const auto h = r * Real{2};
     const auto rect_mass = density * b * h;
     const auto totalMass = circle_mass + rect_mass;
@@ -77,8 +77,8 @@ MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 v0, Len
         Length2{v1 + offset}
     };
     const auto I_z = GetPolarMoment(vertices);
-    const auto I0 = SecondMomentOfArea{halfCircleArea * (halfRSquared + GetLengthSquared(v0))};
-    const auto I1 = SecondMomentOfArea{halfCircleArea * (halfRSquared + GetLengthSquared(v1))};
+    const auto I0 = SecondMomentOfArea{halfCircleArea * (halfRSquared + GetMagnitudeSquared(v0))};
+    const auto I1 = SecondMomentOfArea{halfCircleArea * (halfRSquared + GetMagnitudeSquared(v1))};
     assert(I0 >= SecondMomentOfArea{0});
     assert(I1 >= SecondMomentOfArea{0});
     assert(I_z >= SecondMomentOfArea{0});
@@ -168,8 +168,8 @@ MassData GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
     
     // Inertia tensor relative to the local origin (point s).
     // Shift to center of mass then to original body origin.
-    const auto massCenterOffset = GetLengthSquared(massDataCenter);
-    const auto centerOffset = GetLengthSquared(center);
+    const auto massCenterOffset = GetMagnitudeSquared(massDataCenter);
+    const auto centerOffset = GetMagnitudeSquared(center);
     const auto intertialLever = massCenterOffset - centerOffset;
     const auto massDataI = RotInertia{((AreaDensity{density} * I) + (mass * intertialLever)) / SquareRadian};
     

@@ -260,7 +260,7 @@ public:
         const auto output = Distance(proxyA, xfmA, proxyB, xfmB, distanceConf);
         distanceConf.cache = Simplex::GetCache(output.simplex.GetEdges());
         const auto witnessPoints = GetWitnessPoints(output.simplex);
-        const auto outputDistance = Sqrt(GetLengthSquared(witnessPoints.a - witnessPoints.b));
+        const auto outputDistance = Sqrt(GetMagnitudeSquared(witnessPoints.a - witnessPoints.b));
         
         const auto rA = proxyA.GetVertexRadius();
         const auto rB = proxyB.GetVertexRadius();

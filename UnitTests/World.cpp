@@ -772,7 +772,7 @@ TEST(World, DynamicEdgeBodyHasCorrectMass)
     ASSERT_EQ(fixture->GetDensity(), 1_kgpm2);
 
     const auto circleMass = Mass{fixture->GetDensity() * (Pi * Square(shape->GetVertexRadius()))};
-    const auto rectMass = Mass{fixture->GetDensity() * (shape->GetVertexRadius() * Real{2} * GetLength(v2 - v1))};
+    const auto rectMass = Mass{fixture->GetDensity() * (shape->GetVertexRadius() * Real{2} * GetMagnitude(v2 - v1))};
     const auto totalMass = Mass{circleMass + rectMass};
     
     EXPECT_EQ(body->GetType(), BodyType::Dynamic);
@@ -1571,7 +1571,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
     ASSERT_EQ(body2->GetLocation(), body_def.location);
     
     auto position_diff = body2pos - body1pos;
-    auto distance = GetLength(position_diff);
+    auto distance = GetMagnitude(position_diff);
 
     const auto angle = GetAngle(position_diff);
     ASSERT_EQ(angle, 0_deg);
@@ -1590,7 +1590,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
         world.Step(step);
 
         const auto new_pos_diff = body2->GetLocation() - body1->GetLocation();
-        const auto new_distance = GetLength(new_pos_diff);
+        const auto new_distance = GetMagnitude(new_pos_diff);
         
         if (AlmostEqual(new_distance / Meter, full_separation / Meter) || new_distance > full_separation)
         {
@@ -1743,7 +1743,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
     ASSERT_EQ(world.GetContacts().size(), World::Contacts::size_type(0));
 
     auto position_diff = body1pos - body2pos;
-    auto distance = GetLength(position_diff);
+    auto distance = GetMagnitude(position_diff);
     
     auto angle = GetAngle(position_diff);
     EXPECT_TRUE(AlmostEqual(angle / 1_rad, Real{0}));
@@ -1801,7 +1801,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
         last_angle_2 = body2->GetAngle();
 
         const auto new_pos_diff = body1->GetLocation() - body2->GetLocation();
-        const auto new_distance = GetLength(new_pos_diff);
+        const auto new_distance = GetMagnitude(new_pos_diff);
         
         if (AlmostEqual(new_distance / Meter, full_separation / Meter) || new_distance > full_separation)
         {
@@ -2876,7 +2876,7 @@ TEST(World, MouseJointWontCauseTunnelling)
             min_y = std::min(Real{GetY(ball_body->GetLocation()) / Meter}, min_y);
 
             const auto linVel = ball_body->GetVelocity().linear;
-            max_velocity = std::max(GetLength(GetVec2(linVel)), max_velocity);
+            max_velocity = std::max(GetMagnitude(GetVec2(linVel)), max_velocity);
 
             if (loops > 50)
             {

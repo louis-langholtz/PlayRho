@@ -1070,7 +1070,7 @@ inline RotInertia GetRotInertia(const Body& body) noexcept
 inline RotInertia GetLocalRotInertia(const Body& body) noexcept
 {
     return GetRotInertia(body)
-         + GetMass(body) * GetLengthSquared(body.GetLocalCenter()) / SquareRadian;
+         + GetMass(body) * GetMagnitudeSquared(body.GetLocalCenter()) / SquareRadian;
 }
 
 /// @brief Gets the linear velocity of the center of mass.

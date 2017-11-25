@@ -156,7 +156,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 #if defined(DO_COMPUTE_CLOSEST_POINT)
         // Compute closest point.
         const auto p = GetClosestPoint(simplexEdges);
-        const auto distanceSqr2 = GetLengthSquared(p);
+        const auto distanceSqr2 = GetMagnitudeSquared(p);
 
         // Ensure progress
         if (distanceSqr2 >= distanceSqr1)
@@ -170,7 +170,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
         assert(IsValid(d));
 
         // Ensure the search direction is numerically fit.
-        if (AlmostZero(StripUnit(GetLengthSquared(d))))
+        if (AlmostZero(StripUnit(GetMagnitudeSquared(d))))
         {
             state = DistanceOutput::UnfitSearchDir;
 
@@ -212,7 +212,7 @@ Area TestOverlap(const DistanceProxy& proxyA, const Transformation& xfA,
     assert(distanceInfo.state != DistanceOutput::Unknown && distanceInfo.state != DistanceOutput::HitMaxIters);
     
     const auto witnessPoints = GetWitnessPoints(distanceInfo.simplex);
-    const auto distanceSquared = GetLengthSquared(witnessPoints.a - witnessPoints.b);
+    const auto distanceSquared = GetMagnitudeSquared(GetDelta(witnessPoints));
     const auto totalRadiusSquared = Square(proxyA.GetVertexRadius() + proxyB.GetVertexRadius());
     return totalRadiusSquared - distanceSquared;
 }

@@ -183,7 +183,7 @@ bool FrictionJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
 
         const auto maxImpulse = h * m_maxForce;
 
-        if (GetLengthSquared(m_linearImpulse) > Square(maxImpulse))
+        if (GetMagnitudeSquared(m_linearImpulse) > Square(maxImpulse))
         {
             m_linearImpulse = GetUnitVector(m_linearImpulse, UnitVec2::GetZero()) * maxImpulse;
         }

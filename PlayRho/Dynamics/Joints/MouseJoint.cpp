@@ -177,7 +177,7 @@ bool MouseJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
     assert(IsValid(addImpulse));
     m_impulse += addImpulse;
     const auto maxImpulse = step.GetTime() * Force{m_maxForce};
-    if (GetLengthSquared(m_impulse) > Square(maxImpulse))
+    if (GetMagnitudeSquared(m_impulse) > Square(maxImpulse))
     {
         m_impulse = GetUnitVector(m_impulse, UnitVec2::GetZero()) * maxImpulse;
     }

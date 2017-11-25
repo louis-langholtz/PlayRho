@@ -35,12 +35,12 @@ RayCastOutput RayCast(Length radius, Length2 location, const RayCastInput& input
     // norm(x) = radius
     
     const auto s = input.p1 - location;
-    const auto b = GetLengthSquared(s) - Square(radius);
+    const auto b = GetMagnitudeSquared(s) - Square(radius);
     
     // Solve quadratic equation.
     const auto raySegment = input.p2 - input.p1; // Length2
     const auto c =  Dot(s, raySegment); // Area
-    const auto rr = GetLengthSquared(raySegment); // Area
+    const auto rr = GetMagnitudeSquared(raySegment); // Area
     const auto sigma = Real{(Square(c) - rr * b) / (SquareMeter * SquareMeter)};
     
     // Check for negative discriminant and short segment.

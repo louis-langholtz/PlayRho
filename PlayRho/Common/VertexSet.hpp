@@ -89,7 +89,7 @@ namespace playrho {
             // i.e. won't obey the property that square(sqrt(a)) == a and sqrt(square(a)) == a.
             return std::find_if(begin(), end(), [&](Length2 elem) {
                 // length squared must be large enough to have a reasonable enough unit vector.
-                return GetLengthSquared(value - elem) <= m_minSepSquared;
+                return GetMagnitudeSquared(value - elem) <= m_minSepSquared;
             });
         }
 

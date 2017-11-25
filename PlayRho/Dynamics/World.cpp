@@ -2893,7 +2893,7 @@ Body* FindClosestBody(const World& world, Length2 location) noexcept
     {
         auto& body = GetRef(b);
         const auto bodyLoc = body.GetLocation();
-        const auto lengthSquared = GetLengthSquared(bodyLoc - location);
+        const auto lengthSquared = GetMagnitudeSquared(bodyLoc - location);
         if (minLengthSquared > lengthSquared)
         {
             minLengthSquared = lengthSquared;

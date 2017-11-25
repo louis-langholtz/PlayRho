@@ -499,11 +499,11 @@ inline Angle GetAngle(const Vector2<T> value)
     return Atan2(GetY(value), GetX(value));
 }
 
-/// @brief Gets the square of the length/magnitude of the given iterable value.
-/// @note For performance, use this instead of GetLength(T value) (if possible).
+/// @brief Gets the square of the magnitude of the given iterable value.
+/// @note For performance, use this instead of GetMagnitude(T value) (if possible).
 /// @return Non-negative value.
 template <typename T>
-constexpr inline auto GetLengthSquared(T value) noexcept
+constexpr inline auto GetMagnitudeSquared(T value) noexcept
 {
     using VT = typename T::value_type;
     using OT = decltype(VT{} * VT{});
@@ -515,12 +515,12 @@ constexpr inline auto GetLengthSquared(T value) noexcept
     return result;
 }
 
-/// @brief Gets the length/magnitude of the given value.
-/// @note Works for any type for which <code>GetLengthSquared</code> also works.
+/// @brief Gets the magnitude of the given value.
+/// @note Works for any type for which <code>GetMagnitudeSquared</code> also works.
 template <typename T>
-inline auto GetLength(T value)
+inline auto GetMagnitude(T value)
 {
-    return Sqrt(GetLengthSquared(value));
+    return Sqrt(GetMagnitudeSquared(value));
 }
 
 /// @brief Performs the dot product on two vectors (A and B).
@@ -534,7 +534,7 @@ inline auto GetLength(T value)
 ///   (at an angle of +/- 90 degrees from each other).
 ///
 /// @note This operation is commutative. I.e. Dot(a, b) == Dot(b, a).
-/// @note If A and B are the same vectors, GetLengthSquared(Vec2) returns the same value
+/// @note If A and B are the same vectors, GetMagnitudeSquared(Vec2) returns the same value
 ///   using effectively one less input parameter.
 /// @note This is similar to the <code>std::inner_product</code> standard library algorithm
 ///   except benchmark tests suggest this implementation is faster at least for
@@ -1032,7 +1032,7 @@ inline Transformation GetTransform1(const Sweep& sweep) noexcept
 /// @brief Converts the given vector into a unit vector and returns its original length.
 inline Real Normalize(Vec2& vector)
 {
-    const auto length = GetLength(vector);
+    const auto length = GetMagnitude(vector);
     if (!AlmostZero(length))
     {
         const auto invLength = 1 / length;
@@ -1199,7 +1199,7 @@ SecondMomentOfArea GetPolarMoment(Span<const Length2> vertices);
 inline bool IsUnderActive(Velocity velocity,
                           LinearVelocity linSleepTol, AngularVelocity angSleepTol) noexcept
 {
-    const auto linVelSquared = GetLengthSquared(velocity.linear);
+    const auto linVelSquared = GetMagnitudeSquared(velocity.linear);
     const auto angVelSquared = Square(velocity.angular);
     return (angVelSquared <= Square(angSleepTol)) && (linVelSquared <= Square(linSleepTol));
 }

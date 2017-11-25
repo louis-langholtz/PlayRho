@@ -152,7 +152,7 @@ public:
         djd.localAnchorA = Vec2(6.0f, 0.0f) * 1_m;
         djd.localAnchorB = Vec2(0.0f, -1.0f) * 1_m;
         const auto d = GetWorldPoint(*djd.bodyB, djd.localAnchorB) - GetWorldPoint(*djd.bodyA, djd.localAnchorA);
-        djd.length = GetLength(d);
+        djd.length = GetMagnitude(d);
         m_world.CreateJoint(djd);
 
         {

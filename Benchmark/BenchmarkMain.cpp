@@ -854,26 +854,26 @@ static void LengthSquaredViaDotProduct(benchmark::State& state)
     }
 }
 
-static void GetLengthSquared(benchmark::State& state)
+static void GetMagnitudeSquared(benchmark::State& state)
 {
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
     for (auto _: state)
     {
         for (const auto& val: vals)
         {
-            benchmark::DoNotOptimize(playrho::GetLengthSquared(playrho::Vec2(val.first, val.second)));
+            benchmark::DoNotOptimize(playrho::GetMagnitudeSquared(playrho::Vec2(val.first, val.second)));
         }
     }
 }
 
-static void GetLength(benchmark::State& state)
+static void GetMagnitude(benchmark::State& state)
 {
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
     for (auto _: state)
     {
         for (const auto& val: vals)
         {
-            benchmark::DoNotOptimize(playrho::GetLength(playrho::Vec2(val.first, val.second)));
+            benchmark::DoNotOptimize(playrho::GetMagnitude(playrho::Vec2(val.first, val.second)));
         }
     }
 }
@@ -1786,8 +1786,8 @@ BENCHMARK(ModuloViaFmod)->Arg(1000);
 BENCHMARK(DotProduct)->Arg(1000);
 BENCHMARK(CrossProduct)->Arg(1000);
 BENCHMARK(LengthSquaredViaDotProduct)->Arg(1000);
-BENCHMARK(GetLengthSquared)->Arg(1000);
-BENCHMARK(GetLength)->Arg(1000);
+BENCHMARK(GetMagnitudeSquared)->Arg(1000);
+BENCHMARK(GetMagnitude)->Arg(1000);
 BENCHMARK(UnitVectorFromVector)->Arg(1000);
 BENCHMARK(UnitVectorFromVectorAndBack)->Arg(1000);
 BENCHMARK(UnitVecFromAngle)->Arg(1000);
