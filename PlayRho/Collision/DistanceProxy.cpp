@@ -56,7 +56,7 @@ bool operator== (const DistanceProxy& lhs, const DistanceProxy& rhs) noexcept
 DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, Vec2 d) noexcept
 {
     auto index = DistanceProxy::InvalidIndex; ///< Index of vertex that when dotted with d has the max value.
-    auto maxValue = -MaxFloat * Meter; ///< Max dot value.
+    auto maxValue = -std::numeric_limits<Length>::infinity(); ///< Max dot value.
     const auto count = proxy.GetVertexCount();
     for (auto i = decltype(count){0}; i < count; ++i)
     {
