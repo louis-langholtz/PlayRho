@@ -159,37 +159,37 @@ TEST(AABB2D, InitializingConstruction)
         const auto pa = Length2{GetInvalid<Length>(), GetInvalid<Length>()};
         const auto pb = Length2{GetInvalid<Length>(), GetInvalid<Length>()};
         AABB2D foo{pa, pb};
-        EXPECT_TRUE(std::isnan(StripUnit(GetX(GetLowerBound(foo)))));
-        EXPECT_TRUE(std::isnan(StripUnit(GetY(GetLowerBound(foo)))));
-        EXPECT_TRUE(std::isnan(StripUnit(GetX(GetUpperBound(foo)))));
-        EXPECT_TRUE(std::isnan(StripUnit(GetY(GetUpperBound(foo)))));
+        EXPECT_TRUE(IsNan(StripUnit(GetX(GetLowerBound(foo)))));
+        EXPECT_TRUE(IsNan(StripUnit(GetY(GetLowerBound(foo)))));
+        EXPECT_TRUE(IsNan(StripUnit(GetX(GetUpperBound(foo)))));
+        EXPECT_TRUE(IsNan(StripUnit(GetY(GetUpperBound(foo)))));
     }
     {
         const auto pa = Length2{GetInvalid<Length>(), GetInvalid<Length>()};
         const auto pb = Length2{GetInvalid<Length>(), 0_m};
         AABB2D foo{pa, pb};
-        EXPECT_TRUE(std::isnan(StripUnit(GetX(GetLowerBound(foo)))));
-        EXPECT_TRUE(std::isnan(StripUnit(GetY(GetLowerBound(foo)))));
-        EXPECT_TRUE(std::isnan(StripUnit(GetX(GetUpperBound(foo)))));
-        EXPECT_FALSE(std::isnan(StripUnit(GetY(GetUpperBound(foo)))));
+        EXPECT_TRUE(IsNan(StripUnit(GetX(GetLowerBound(foo)))));
+        EXPECT_TRUE(IsNan(StripUnit(GetY(GetLowerBound(foo)))));
+        EXPECT_TRUE(IsNan(StripUnit(GetX(GetUpperBound(foo)))));
+        EXPECT_FALSE(IsNan(StripUnit(GetY(GetUpperBound(foo)))));
     }
     {
         const auto pa = Length2{GetInvalid<Length>(), 0_m};
         const auto pb = Length2{GetInvalid<Length>(), GetInvalid<Length>()};
         AABB2D foo{pa, pb};
-        EXPECT_TRUE(std::isnan(StripUnit(GetX(GetLowerBound(foo)))));
-        EXPECT_FALSE(std::isnan(StripUnit(GetY(GetLowerBound(foo)))));
-        EXPECT_TRUE(std::isnan(StripUnit(GetX(GetUpperBound(foo)))));
-        EXPECT_TRUE(std::isnan(StripUnit(GetY(GetUpperBound(foo)))));
+        EXPECT_TRUE(IsNan(StripUnit(GetX(GetLowerBound(foo)))));
+        EXPECT_FALSE(IsNan(StripUnit(GetY(GetLowerBound(foo)))));
+        EXPECT_TRUE(IsNan(StripUnit(GetX(GetUpperBound(foo)))));
+        EXPECT_TRUE(IsNan(StripUnit(GetY(GetUpperBound(foo)))));
     }
     {
         const auto pa = Length2{GetInvalid<Length>(), 0_m};
         const auto pb = Length2{GetInvalid<Length>(), 0_m};
         AABB2D foo{pa, pb};
-        EXPECT_TRUE(std::isnan(StripUnit(GetX(GetLowerBound(foo)))));
-        EXPECT_FALSE(std::isnan(StripUnit(GetY(GetLowerBound(foo)))));
-        EXPECT_TRUE(std::isnan(StripUnit(GetX(GetUpperBound(foo)))));
-        EXPECT_FALSE(std::isnan(StripUnit(GetY(GetUpperBound(foo)))));
+        EXPECT_TRUE(IsNan(StripUnit(GetX(GetLowerBound(foo)))));
+        EXPECT_FALSE(IsNan(StripUnit(GetY(GetLowerBound(foo)))));
+        EXPECT_TRUE(IsNan(StripUnit(GetX(GetUpperBound(foo)))));
+        EXPECT_FALSE(IsNan(StripUnit(GetY(GetUpperBound(foo)))));
     }
     {
         const auto rangeX = Interval<Length>{-2_m, +3_m};
@@ -221,7 +221,7 @@ TEST(AABB2D, GetPerimeterOfPoint)
     EXPECT_EQ(GetPerimeter(AABB2D{Length2{}}), 0_m);
     EXPECT_EQ(GetPerimeter(AABB2D{Length2{-1_m, -2_m}}), 0_m);
     EXPECT_EQ(GetPerimeter(AABB2D{Length2{+99_m, +3_m}}), 0_m);
-    EXPECT_TRUE(std::isnan(StripUnit(GetPerimeter(AABB2D{
+    EXPECT_TRUE(IsNan(StripUnit(GetPerimeter(AABB2D{
         Length2{
             Real(+std::numeric_limits<Real>::infinity()) * Meter,
             Real(+std::numeric_limits<Real>::infinity()) * Meter

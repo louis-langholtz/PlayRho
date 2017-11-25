@@ -653,6 +653,76 @@ namespace playrho
         lhs %= rhs;
         return lhs;
     }    
+
+    /// @brief Square root's the given value.
+    /// @note This is a specialization of the Sqrt template function for Fixed types.
+    /// @note This implementation isn't meant to be fast, only correct enough.
+    template <typename BT, unsigned int FB>
+    inline auto Sqrt(Fixed<BT, FB> arg)
+    {
+        return static_cast<Fixed<BT, FB>>(std::sqrt(static_cast<long double>(arg)));
+    }
+
+    /// @brief Gets whether the given value is normal - i.e. not 0 nor infinite.
+    template <typename BT, unsigned int FB>
+    inline bool IsNormal(Fixed<BT, FB> arg)
+    {
+        return arg != Fixed<BT, FB>{0} && arg.isfinite();
+    }
+    
+    /// @brief Computes the sine of the argument for Fixed types.
+    template <typename BT, unsigned int FB>
+    inline Fixed<BT, FB> Sin(Fixed<BT, FB> arg)
+    {
+        return static_cast<Fixed<BT, FB>>(std::sin(static_cast<double>(arg)));
+    }
+    
+    /// @brief Computes the cosine of the argument for Fixed types.
+    template <typename BT, unsigned int FB>
+    inline Fixed<BT, FB> Cos(Fixed<BT, FB> arg)
+    {
+        return static_cast<Fixed<BT, FB>>(std::cos(static_cast<double>(arg)));
+    }
+    
+    /// @brief Rounds the given value.
+    /// @sa http://en.cppreference.com/w/cpp/numeric/math/round
+    template <typename BT, unsigned int FB>
+    inline Fixed<BT, FB> Round(Fixed<BT, FB> value) noexcept
+    {
+        const auto tmp = value + (Fixed<BT, FB>{1} / Fixed<BT, FB>{2});
+        const auto truncated = static_cast<typename Fixed<BT, FB>::value_type>(tmp);
+        return Fixed<BT, FB>{truncated, 0};
+    }
+    
+    /// @brief Truncates the given value.
+    /// @sa http://en.cppreference.com/w/c/numeric/math/trunc
+    template <typename BT, unsigned int FB>
+    inline Fixed<BT, FB> Trunc(Fixed<BT, FB> arg)
+    {
+        return static_cast<Fixed<BT, FB>>(static_cast<long long>(arg));
+    }
+    
+    /// @brief Determines whether the given value is negative.
+    template <typename BT, unsigned int FB>
+    inline bool SignBit(Fixed<BT, FB> value) noexcept
+    {
+        return value.getsign() < 0;
+    }
+    
+    /// @brief Gets whether the given value is not-a-number.
+    template <typename BT, unsigned int FB>
+    constexpr inline bool IsNan(Fixed<BT, FB> value) noexcept
+    {
+        return value.Compare(0) == Fixed<BT, FB>::CmpResult::Incomparable;
+    }
+    
+    /// @brief Gets whether the given value is finite.
+    template <typename BT, unsigned int FB>
+    inline bool IsFinite(Fixed<BT, FB> value) noexcept
+    {
+        return (value > Fixed<BT, FB>::GetNegativeInfinity())
+            && (value < Fixed<BT, FB>::GetInfinity());
+    }
     
     /// @brief 32-bit fixed precision type.
     ///
@@ -874,12 +944,54 @@ namespace std
 {
     // Generic Fixed
     
+    /// @brief Computes the arc tangent.
+    /// @note Since C++11, std::atan2 may be specialized as:
+    ///   <code>Promoted atan2(Arithmetic1 y, Arithmetic2 x)</code>. Where <code>Promoted</code>
+    ///   must always be double for inputs of type Fixed.
     template <typename BT, unsigned int FB>
-    constexpr bool isnormal(playrho::Fixed<BT, FB> arg)
+    inline double atan2(playrho::Fixed<BT, FB> y, playrho::Fixed<BT, FB> x)
     {
-        return arg != playrho::Fixed<BT, FB>{0} && arg.isfinite();
+        return atan2(static_cast<double>(y), static_cast<double>(x));
     }
     
+    /// @brief Next after function specialization for Fixed types.
+    /// @note Since C++11, std::nextafter may be specialized as:
+    ///   <code>Promoted nextafter(Arithmetic from, Arithmetic to)</code>.
+    ///   Where <code>Promoted</code> must always be double for inputs of type Fixed.
+    template <typename BT, unsigned int FB>
+    inline double nextafter(playrho::Fixed<BT, FB> from, playrho::Fixed<BT, FB> to) noexcept
+    {
+        if (from < to)
+        {
+            return static_cast<double>(from + numeric_limits<playrho::Fixed<BT, FB>>::min());
+        }
+        if (from > to)
+        {
+            return static_cast<double>(from - numeric_limits<playrho::Fixed<BT, FB>>::min());
+        }
+        return static_cast<double>(to);
+    }
+    
+    /// @brief Computes the floating point remainder.
+    /// @note Since C++11, std::nextafter may be specialized as:
+    ///   <code>Promoted fmod(Arithmetic1 x, Arithmetic2 y)</code>.
+    ///   Where <code>Promoted</code> must always be double for inputs of type Fixed.
+    template <typename BT, unsigned int FB>
+    inline double fmod(playrho::Fixed<BT, FB> x, playrho::Fixed<BT, FB> y)
+    {
+        return fmod(static_cast<double>(x), static_cast<double>(y));
+    }
+    
+    /// @brief Computes the square root of the sum of the squares.
+    /// @note Since C++11, std::hypot may be specialized as:
+    ///   <code>Promoted hypot(Arithmetic1 x, Arithmetic2 y)</code>.
+    ///   Where <code>Promoted</code> must always be double for inputs of type Fixed.
+    template <typename BT, unsigned int FB>
+    inline double hypot(playrho::Fixed<BT, FB> x, playrho::Fixed<BT, FB> y)
+    {
+        return hypot(static_cast<double>(x), static_cast<double>(y));
+    }
+
     // Fixed32
 
     /// @brief Template specialization of numeric limits for Fixed32.
@@ -960,79 +1072,6 @@ namespace std
         static constexpr float_round_style round_style = round_toward_zero; ///< Rounds down.
     };
 
-    inline playrho::Fixed32 abs(playrho::Fixed32 value) noexcept
-    {
-        return (value < playrho::Fixed32{0})? -value: value;
-    }
-    
-    inline playrho::Fixed32 sqrt(playrho::Fixed32 value)
-    {
-        return playrho::Fixed32{::std::sqrt(static_cast<double>(value))};
-    }
-
-    inline float atan2(playrho::Fixed32 y, playrho::Fixed32 x)
-    {
-        return atan2(static_cast<float>(y), static_cast<float>(x));
-    }
-    
-    inline playrho::Fixed32 round(playrho::Fixed32 value) noexcept
-    {
-        return playrho::Fixed32{static_cast<int16_t>(value + (playrho::Fixed32{1} / playrho::Fixed32{2}))};
-    }
-    
-    inline playrho::Fixed32 nextafter(playrho::Fixed32 from, playrho::Fixed32 to) noexcept
-    {
-        if (from < to)
-        {
-            return from + numeric_limits<playrho::Fixed32>::min();
-        }
-        if (from > to)
-        {
-            return from - numeric_limits<playrho::Fixed32>::min();
-        }
-        return to;
-    }
-    
-    inline float cos(playrho::Fixed32 value)
-    {
-        return static_cast<float>(cos(static_cast<double>(value)));
-    }
-    
-    inline float sin(playrho::Fixed32 value)
-    {
-        return static_cast<float>(sin(static_cast<double>(value)));
-    }
-
-    inline double exp(playrho::Fixed32 value)
-    {
-        return exp(static_cast<double>(value));
-    }
-    
-    inline bool isfinite(playrho::Fixed32 value) noexcept
-    {
-        return (value > playrho::Fixed32::GetNegativeInfinity()) && (value < playrho::Fixed32::GetInfinity());
-    }
-    
-    constexpr inline bool isnan(playrho::Fixed32 value) noexcept
-    {
-        return value.Compare(0) == playrho::Fixed32::CmpResult::Incomparable;
-    }
-    
-    inline playrho::Fixed32 fmod(playrho::Fixed32 x, playrho::Fixed32 y)
-    {
-        return playrho::Fixed32(fmod(static_cast<double>(x), static_cast<double>(y)));
-    }
-
-    inline bool signbit(playrho::Fixed32 value) noexcept
-    {
-        return value.getsign() < 0;
-    }
-    
-    inline double hypot(playrho::Fixed32 x, playrho::Fixed32 y)
-    {
-        return hypot(static_cast<double>(x), static_cast<double>(y));
-    }
-
 #ifndef _WIN32
 
     /// @brief Template specialization of numeric limits for Fixed64.
@@ -1112,82 +1151,7 @@ namespace std
         static constexpr bool tinyness_before = false; ///< Doesn't detect tinyness before rounding.
         static constexpr float_round_style round_style = round_toward_zero; ///< Rounds down.
     };
-
-    inline playrho::Fixed64 abs(playrho::Fixed64 value) noexcept
-    {
-        return (value < playrho::Fixed64{0})? -value: value;
-    }
     
-    inline playrho::Fixed64 sqrt(playrho::Fixed64 value)
-    {
-        return playrho::Fixed64{::std::sqrt(static_cast<double>(value))};
-    }
-    
-    inline double atan2(playrho::Fixed64 y, playrho::Fixed64 x)
-    {
-        return atan2(static_cast<double>(y), static_cast<double>(x));
-    }
-    
-    inline playrho::Fixed64 round(playrho::Fixed64 value) noexcept
-    {
-        const auto tmp = value + (playrho::Fixed64{1} / playrho::Fixed64{2});
-        const auto truncated = static_cast<playrho::Fixed64::value_type>(tmp);
-        return playrho::Fixed64{truncated, 0};
-    }
-    
-    inline playrho::Fixed64 nextafter(playrho::Fixed64 from, playrho::Fixed64 to) noexcept
-    {
-        if (from < to)
-        {
-            return from + numeric_limits<playrho::Fixed64>::min();
-        }
-        if (from > to)
-        {
-            return from - numeric_limits<playrho::Fixed64>::min();
-        }
-        return to;
-    }
-    
-    inline double cos(playrho::Fixed64 value)
-    {
-        return cos(static_cast<double>(value));
-    }
-    
-    inline double sin(playrho::Fixed64 value)
-    {
-        return sin(static_cast<double>(value));
-    }
-    
-    inline double exp(playrho::Fixed64 value)
-    {
-        return exp(static_cast<double>(value));
-    }
-
-    inline bool isfinite(playrho::Fixed64 value) noexcept
-    {
-        return (value > playrho::Fixed64::GetNegativeInfinity()) && (value < playrho::Fixed64::GetInfinity());
-    }
-
-    constexpr inline bool isnan(playrho::Fixed64 value) noexcept
-    {
-        return value.Compare(0) == playrho::Fixed64::CmpResult::Incomparable;
-    }
-    
-    inline playrho::Fixed64 fmod(playrho::Fixed64 x, playrho::Fixed64 y)
-    {
-        return playrho::Fixed64(fmod(static_cast<double>(x), static_cast<double>(y)));
-    }
-    
-    inline bool signbit(playrho::Fixed64 value) noexcept
-    {
-        return value.getsign() < 0;
-    }
-    
-    inline double hypot(playrho::Fixed64 x, playrho::Fixed64 y)
-    {
-        return hypot(static_cast<double>(x), static_cast<double>(y));
-    }
-
 #endif /* _WIN32 */
 
 } // namespace std

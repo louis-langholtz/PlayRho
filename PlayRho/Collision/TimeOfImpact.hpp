@@ -142,88 +142,63 @@ namespace playrho {
     }
 
     /// @brief Output data for time of impact.
-    class TOIOutput
+    struct TOIOutput
     {
-    public:
-        
-        /// @brief TOI iterations type.
-        using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
-
-        /// @brief Distance iterations type.
-        using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
-        
-        /// @brief Root iterations type.
-        using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
-        
-        /// @brief TOI iterations sum type.
-        using toi_sum_type = Wider<toi_iter_type>::type;
-        
-        /// @brief Distance iterations sum type.
-        using dist_sum_type = Wider<dist_iter_type>::type;
-        
-        /// @brief Root iterations sum type.
-        using root_sum_type = Wider<root_iter_type>::type;
-
         /// @brief Time of impact statistics.
-        struct Stats
+        struct Statistics
         {
+            /// @brief TOI iterations type.
+            using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
+            
+            /// @brief Distance iterations type.
+            using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
+            
+            /// @brief Root iterations type.
+            using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
+            
+            /// @brief TOI iterations sum type.
+            using toi_sum_type = Wider<toi_iter_type>::type;
+            
+            /// @brief Distance iterations sum type.
+            using dist_sum_type = Wider<dist_iter_type>::type;
+            
+            /// @brief Root iterations sum type.
+            using root_sum_type = Wider<root_iter_type>::type;
+
+            // 6-bytes
+            toi_sum_type sum_finder_iters = 0; ///< Sum total TOI iterations.
+            dist_sum_type sum_dist_iters = 0; ///< Sum total distance iterations.
+            root_sum_type sum_root_iters = 0; ///< Sum total of root finder iterations.
+
             // 3-bytes
             toi_iter_type toi_iters = 0; ///< Time of impact iterations.
             dist_iter_type max_dist_iters = 0; ///< Max. distance iterations count.
             root_iter_type max_root_iters = 0; ///< Max. root finder iterations for all TOI iterations.
-
-            // 4-bytes
-            toi_sum_type sum_finder_iters = 0; ///< Sum total TOI iterations.
-            dist_sum_type sum_dist_iters = 0; ///< Sum total distance iterations.
-            root_sum_type sum_root_iters = 0; ///< Sum total of root finder iterations.
         };
-
+        
         /// @brief State.
-        enum State: std::uint16_t
+        enum State: std::uint8_t
         {
             e_unknown,
-            e_failed,
             e_overlapped,
             e_touching,
-            e_separated
+            e_separated,
+            e_maxRootIters,
+            e_indifferent,
+            e_nextAfter,
+            e_maxToiIters,
+            e_belowMinTarget,
         };
-
+        
+        /// @brief Default constructor.
         TOIOutput() = default;
         
         /// @brief Initializing constructor.
-        constexpr TOIOutput(State state, Real time, Stats stats):
-            m_state(state), m_time(time), m_stats(stats)
-        {
-            assert(time >= 0);
-            assert(time <= 1);
-        }
+        TOIOutput(Real t, Statistics s, State z) noexcept: time{t}, stats{s}, state{z} {}
 
-        /// @brief Gets the state at time factor.
-        State get_state() const noexcept { return m_state; }
-
-        /// @brief Gets time factor at which state occurs.
-        /// @return Time factor in range of [0,1] into the future.
-        Real get_t() const noexcept { return m_time; }
-
-        /// @brief Gets the TOI iterations.
-        toi_iter_type get_toi_iters() const noexcept { return m_stats.toi_iters; }
-        
-        /// @brief Gets the sum distance iterations.
-        dist_sum_type get_sum_dist_iters() const noexcept { return m_stats.sum_dist_iters; }
-        
-        /// @brief Gets the max distance iterations.
-        dist_iter_type get_max_dist_iters() const noexcept { return m_stats.max_dist_iters; }
-
-        /// @brief Gets the sum root iterations.
-        root_sum_type get_sum_root_iters() const noexcept { return m_stats.sum_root_iters; }
-        
-        /// @brief Gets the max root iterations.
-        root_iter_type get_max_root_iters() const noexcept { return m_stats.max_root_iters; }
-        
-    private:
-        State m_state = e_unknown; ///< State at time factor.
-        Real m_time = 0; ///< Time factor in range of [0,1] into the future.
-        Stats m_stats; ///< Statistics.
+        Real time = 0; ///< Time factor in range of [0,1] into the future.
+        Statistics stats; ///< Statistics.
+        State state = e_unknown; ///< State at time factor.
     };
 
     /// @brief Gets the time of impact for two disjoint convex sets using the
@@ -255,6 +230,10 @@ namespace playrho {
     TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
                            const DistanceProxy& proxyB, const Sweep& sweepB,
                            ToiConf conf = GetDefaultToiConf());
+    
+    
+    /// @brief Gets a human readable name for the given output state.
+    const char *GetName(TOIOutput::State state) noexcept;
 
 } // namespace playrho
 

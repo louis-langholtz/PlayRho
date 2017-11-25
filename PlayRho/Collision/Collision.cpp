@@ -93,7 +93,7 @@ ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, Length o
         }
 
         // If we didn't already find two points & the points are on different sides of the plane...
-        if (vOut.size() < 2 && std::signbit(StripUnit(distance0)) != std::signbit(StripUnit(distance1)))
+        if (vOut.size() < 2 && SignBit(StripUnit(distance0)) != SignBit(StripUnit(distance1)))
         {
             // Neither distance0 nor distance1 is 0 and either one or the other is negative (but not both).
             // Find intersection point of edge and plane

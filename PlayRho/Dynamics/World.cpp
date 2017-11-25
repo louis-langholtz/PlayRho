@@ -1390,14 +1390,14 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
         
         // Use Min function to handle floating point imprecision which possibly otherwise
         // could provide a TOI that's greater than 1.
-        const auto toi = IsValidForTime(output.get_state())?
-            std::min(alpha0 + (1 - alpha0) * output.get_t(), Real{1}): Real{1};
+        const auto toi = IsValidForTime(output.state)?
+            std::min(alpha0 + (1 - alpha0) * output.time, Real{1}): Real{1};
         assert(toi >= alpha0 && toi <= 1);
         ContactAtty::SetToi(c, toi);
         
-        results.maxDistIters = std::max(results.maxDistIters, output.get_max_dist_iters());
-        results.maxToiIters = std::max(results.maxToiIters, output.get_toi_iters());
-        results.maxRootIters = std::max(results.maxRootIters, output.get_max_root_iters());
+        results.maxDistIters = std::max(results.maxDistIters, output.stats.max_dist_iters);
+        results.maxToiIters = std::max(results.maxToiIters, output.stats.toi_iters);
+        results.maxRootIters = std::max(results.maxRootIters, output.stats.max_root_iters);
         ++results.numUpdatedTOI;
     }
 
@@ -1406,7 +1406,7 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
     
 World::ContactToiData World::GetSoonestContacts(size_t reserveSize)
 {
-    auto minToi = std::nextafter(Real{1}, Real{0});
+    auto minToi = NextAfter(Real{1}, Real{0});
     auto minContacts = std::vector<Contact*>();
     minContacts.reserve(reserveSize);
     for (auto&& contact: m_contacts)
@@ -2497,6 +2497,7 @@ PreStepStats::counter_type World::SynchronizeProxies(const StepConf& conf)
     auto proxiesMoved = PreStepStats::counter_type{0};
     for_each(begin(m_bodiesForProxies), end(m_bodiesForProxies), [&](Body *b) {
         const auto xfm = b->GetTransformation();
+        assert(GetTransform0(b->GetSweep()) == xfm);
         proxiesMoved += Synchronize(*b, xfm, xfm, conf.displaceMultiplier, conf.aabbExtension);
     });
     m_bodiesForProxies.clear();

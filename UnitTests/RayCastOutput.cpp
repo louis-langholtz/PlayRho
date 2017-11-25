@@ -72,7 +72,7 @@ TEST(RayCastOutput, RayCastFreeFunctionHits)
     EXPECT_NEAR(static_cast<double>(output->normal.GetY()),
                 static_cast<double>(UnitVec2::GetRight().GetY()),
                 0.02);
-    EXPECT_NEAR(static_cast<double>(output->fraction), 0.49, 0.01);
+    EXPECT_NEAR(static_cast<double>(output->fraction.get()), 0.49, 0.01);
 }
 
 TEST(RayCastOutput, RayCastLocationFreeFunctionMisses)
@@ -135,7 +135,7 @@ TEST(RayCastOutput, RayCastDistanceProxyFF)
         if (output.has_value())
         {
             EXPECT_EQ(output->normal, UnitVec2::GetLeft());
-            EXPECT_NEAR(static_cast<double>(output->fraction), 0.05, 0.002);
+            EXPECT_NEAR(static_cast<double>(output->fraction.get()), 0.05, 0.002);
         }
     }
     

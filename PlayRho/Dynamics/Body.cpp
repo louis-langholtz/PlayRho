@@ -491,8 +491,8 @@ void RotateAboutWorldPoint(Body& body, Angle amount, Length2 worldPoint)
 {
     const auto xfm = body.GetTransformation();
     const auto p = xfm.p - worldPoint;
-    const auto c = Real{std::cos(amount / Radian)};
-    const auto s = Real{std::sin(amount / Radian)};
+    const auto c = Cos(amount);
+    const auto s = Sin(amount);
     const auto x = GetX(p) * c - GetY(p) * s;
     const auto y = GetX(p) * s + GetY(p) * c;
     const auto pos = Length2{x, y} + worldPoint;

@@ -227,23 +227,23 @@ TEST(Math, CrossProductOfTwoVecTwoIsAntiCommutative)
 
 TEST(Math, DotProductOfInvalidIsInvalid)
 {
-    EXPECT_TRUE(std::isnan(Dot(GetInvalid<Vec2>(), GetInvalid<Vec2>())));
+    EXPECT_TRUE(IsNan(Dot(GetInvalid<Vec2>(), GetInvalid<Vec2>())));
 
-    EXPECT_TRUE(std::isnan(Dot(Vec2(0, 0), GetInvalid<Vec2>())));
-    EXPECT_TRUE(std::isnan(Dot(Vec2(0, 0), Vec2(GetInvalid<Real>(), 0))));
-    EXPECT_TRUE(std::isnan(Dot(Vec2(0, 0), Vec2(0, GetInvalid<Real>()))));
+    EXPECT_TRUE(IsNan(Dot(Vec2(0, 0), GetInvalid<Vec2>())));
+    EXPECT_TRUE(IsNan(Dot(Vec2(0, 0), Vec2(GetInvalid<Real>(), 0))));
+    EXPECT_TRUE(IsNan(Dot(Vec2(0, 0), Vec2(0, GetInvalid<Real>()))));
     
-    EXPECT_TRUE(std::isnan(Dot(GetInvalid<Vec2>(),             Vec2(0, 0))));
-    EXPECT_TRUE(std::isnan(Dot(Vec2(GetInvalid<Real>(), 0), Vec2(0, 0))));
-    EXPECT_TRUE(std::isnan(Dot(Vec2(0, GetInvalid<Real>()), Vec2(0, 0))));
+    EXPECT_TRUE(IsNan(Dot(GetInvalid<Vec2>(),             Vec2(0, 0))));
+    EXPECT_TRUE(IsNan(Dot(Vec2(GetInvalid<Real>(), 0), Vec2(0, 0))));
+    EXPECT_TRUE(IsNan(Dot(Vec2(0, GetInvalid<Real>()), Vec2(0, 0))));
 
-    EXPECT_TRUE(std::isnan(Dot(GetInvalid<Vec2>(), GetInvalid<UnitVec2>())));
-    //EXPECT_TRUE(std::isnan(Dot(Vec2(0, 0),         GetInvalid<UnitVec2>())));
-    EXPECT_TRUE(std::isnan(Dot(GetInvalid<Vec2>(), UnitVec2::GetZero())));
+    EXPECT_TRUE(IsNan(Dot(GetInvalid<Vec2>(), GetInvalid<UnitVec2>())));
+    //EXPECT_TRUE(IsNan(Dot(Vec2(0, 0),         GetInvalid<UnitVec2>())));
+    EXPECT_TRUE(IsNan(Dot(GetInvalid<Vec2>(), UnitVec2::GetZero())));
 
-    EXPECT_TRUE(std::isnan(Dot(GetInvalid<UnitVec2>(), GetInvalid<Vec2>())));
-    //EXPECT_TRUE(std::isnan(Dot(GetInvalid<UnitVec2>(), Vec2(0, 0))));
-    EXPECT_TRUE(std::isnan(Dot(UnitVec2::GetZero(),    GetInvalid<Vec2>())));
+    EXPECT_TRUE(IsNan(Dot(GetInvalid<UnitVec2>(), GetInvalid<Vec2>())));
+    //EXPECT_TRUE(IsNan(Dot(GetInvalid<UnitVec2>(), Vec2(0, 0))));
+    EXPECT_TRUE(IsNan(Dot(UnitVec2::GetZero(),    GetInvalid<Vec2>())));
 }
 
 TEST(Math, Vec2NegationAndRotationIsOrderIndependent)

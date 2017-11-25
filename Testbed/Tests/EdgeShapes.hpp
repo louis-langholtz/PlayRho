@@ -169,7 +169,7 @@ public:
     {
         const auto L = Real(25);
         const auto point1 = Vec2(0.0f, 10.0f) * 1_m;
-        const auto d = Vec2(L * std::cos(m_angle), -L * Abs(std::sin(m_angle))) * 1_m;
+        const auto d = Vec2(L * Cos(m_angle), -L * Abs(Sin(m_angle))) * 1_m;
         const auto point2 = point1 + d;
 
         auto fixture = static_cast<Fixture*>(nullptr);

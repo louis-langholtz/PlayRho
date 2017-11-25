@@ -124,10 +124,10 @@ DECL_INT_CONSTRUCTION_AND_COMPARE_TEST(Fixed64)
 #define DECL_ISFINITE_TEST(type) \
 TEST(type, isfinite) \
 { \
-    EXPECT_TRUE(std::isfinite(type(0))); \
-    EXPECT_FALSE(std::isfinite( type::GetInfinity())); \
-    EXPECT_FALSE(std::isfinite(-type::GetInfinity())); \
-    EXPECT_FALSE(std::isfinite(type::GetNaN())); \
+    EXPECT_TRUE(IsFinite(type(0))); \
+    EXPECT_FALSE(IsFinite( type::GetInfinity())); \
+    EXPECT_FALSE(IsFinite(-type::GetInfinity())); \
+    EXPECT_FALSE(IsFinite(type::GetNaN())); \
 }
 
 DECL_ISFINITE_TEST(Fixed32)
@@ -135,24 +135,24 @@ DECL_ISFINITE_TEST(Fixed32)
 DECL_ISFINITE_TEST(Fixed64)
 #endif
 
-// Tests of std::isnan(Fixed<T>)
+// Tests of IsNan(Fixed<T>)
 
 #define DECL_ISNAN_TEST(type) \
 TEST(type, isnan) \
 { \
-    EXPECT_FALSE(std::isnan(type( 0))); \
-    EXPECT_FALSE(std::isnan(type( 1))); \
-    EXPECT_FALSE(std::isnan(type(-1))); \
-    EXPECT_FALSE(std::isnan( type::GetInfinity())); \
-    EXPECT_FALSE(std::isnan(-type::GetInfinity())); \
-    EXPECT_FALSE(std::isnan( type::GetNegativeInfinity())); \
-    EXPECT_TRUE(std::isnan(type::GetNaN())); \
-    EXPECT_TRUE(std::isnan(type(std::numeric_limits<float>::quiet_NaN()))); \
-    EXPECT_TRUE(std::isnan(type(std::numeric_limits<float>::signaling_NaN()))); \
-    EXPECT_TRUE(std::isnan(type(std::numeric_limits<double>::quiet_NaN()))); \
-    EXPECT_TRUE(std::isnan(type(std::numeric_limits<double>::signaling_NaN()))); \
-    EXPECT_TRUE(std::isnan(type(std::numeric_limits<long double>::quiet_NaN()))); \
-    EXPECT_TRUE(std::isnan(type(std::numeric_limits<long double>::signaling_NaN()))); \
+    EXPECT_FALSE(IsNan(type( 0))); \
+    EXPECT_FALSE(IsNan(type( 1))); \
+    EXPECT_FALSE(IsNan(type(-1))); \
+    EXPECT_FALSE(IsNan( type::GetInfinity())); \
+    EXPECT_FALSE(IsNan(-type::GetInfinity())); \
+    EXPECT_FALSE(IsNan( type::GetNegativeInfinity())); \
+    EXPECT_TRUE(IsNan(type::GetNaN())); \
+    EXPECT_TRUE(IsNan(type(std::numeric_limits<float>::quiet_NaN()))); \
+    EXPECT_TRUE(IsNan(type(std::numeric_limits<float>::signaling_NaN()))); \
+    EXPECT_TRUE(IsNan(type(std::numeric_limits<double>::quiet_NaN()))); \
+    EXPECT_TRUE(IsNan(type(std::numeric_limits<double>::signaling_NaN()))); \
+    EXPECT_TRUE(IsNan(type(std::numeric_limits<long double>::quiet_NaN()))); \
+    EXPECT_TRUE(IsNan(type(std::numeric_limits<long double>::signaling_NaN()))); \
 }
 
 DECL_ISNAN_TEST(Fixed32)
@@ -223,8 +223,8 @@ TEST(Fixed32, FloatConstruction)
     EXPECT_EQ(Fixed32(std::numeric_limits<float>::infinity()), Fixed32::GetInfinity());
     EXPECT_EQ(Fixed32(-std::numeric_limits<float>::infinity()), -Fixed32::GetInfinity());
     EXPECT_EQ(Fixed32(-std::numeric_limits<float>::infinity()), Fixed32::GetNegativeInfinity());
-    EXPECT_TRUE(std::isnan(Fixed32(std::numeric_limits<float>::quiet_NaN())));
-    EXPECT_TRUE(std::isnan(Fixed32(std::numeric_limits<float>::signaling_NaN())));
+    EXPECT_TRUE(IsNan(Fixed32(std::numeric_limits<float>::quiet_NaN())));
+    EXPECT_TRUE(IsNan(Fixed32(std::numeric_limits<float>::signaling_NaN())));
 
     const auto range = 30000;
     for (auto i = -range; i < range; ++i)
@@ -314,8 +314,8 @@ TEST(Fixed32, Multiplication)
     EXPECT_EQ(Fixed32(9) * Fixed32(3), Fixed32(27));
     EXPECT_EQ(Fixed32(-5) * Fixed32(-4), Fixed32(20));
     EXPECT_EQ(Fixed32(0.5) * Fixed32(0.5), Fixed32(0.25));
-    EXPECT_EQ(Round(Fixed32(-0.05) * Fixed32(0.05), 1000), Round(Fixed32(-0.0025), 1000));
-    EXPECT_EQ(Round(Fixed32(Pi) * 2, 100), Round(Fixed32(Pi * 2), 100));
+    EXPECT_EQ(RoundOff(Fixed32(-0.05) * Fixed32(0.05), 1000), RoundOff(Fixed32(-0.0025), 1000));
+    EXPECT_EQ(RoundOff(Fixed32(Pi) * 2, 100), RoundOff(Fixed32(Pi * 2), 100));
     EXPECT_EQ(Fixed32(181) * Fixed32(181), Fixed32(32761));
 }
 
@@ -340,19 +340,19 @@ TEST(Fixed32, Division)
 
 TEST(Fixed32, Sin)
 {
-    EXPECT_FLOAT_EQ(std::sin(Fixed32(0)), 0.0f);
-    EXPECT_FLOAT_EQ(std::sin(Fixed32(1)), std::sin(1.0f));
-    EXPECT_FLOAT_EQ(std::sin(Fixed32(2)), std::sin(2.0f));
-    EXPECT_FLOAT_EQ(std::sin(Fixed32(Pi/2)), 1.0f);
+    EXPECT_FLOAT_EQ(static_cast<float>(Sin(Fixed32(0))), 0.0f);
+    EXPECT_FLOAT_EQ(static_cast<float>(Sin(Fixed32(1))), std::sin(1.0f));
+    EXPECT_FLOAT_EQ(static_cast<float>(Sin(Fixed32(2))), std::sin(2.0f));
+    EXPECT_FLOAT_EQ(static_cast<float>(Sin(Fixed32(Pi/2))), 1.0f);
 }
 
 TEST(Fixed32, Cos)
 {
-    EXPECT_FLOAT_EQ(std::cos(Fixed32(0)), float(1));
-    EXPECT_FLOAT_EQ(std::cos(Fixed32(1)), std::cos(1.0f));
-    EXPECT_FLOAT_EQ(std::cos(Fixed32(2)), std::cos(2.0f));
-    EXPECT_LT(std::cos(Fixed32(Pi/2)), +0.001f);
-    EXPECT_GT(std::cos(Fixed32(Pi/2)), -0.001f);
+    EXPECT_FLOAT_EQ(static_cast<float>(Cos(Fixed32(0))), float(1));
+    EXPECT_FLOAT_EQ(static_cast<float>(Cos(Fixed32(1))), std::cos(1.0f));
+    EXPECT_FLOAT_EQ(static_cast<float>(Cos(Fixed32(2))), std::cos(2.0f));
+    EXPECT_LT(static_cast<float>(Cos(Fixed32(Pi/2))), +0.001f);
+    EXPECT_GT(static_cast<float>(Cos(Fixed32(Pi/2))), -0.001f);
 }
 
 TEST(Fixed32, Max)
@@ -462,7 +462,7 @@ TEST(Fixed32, InifnityDividedByPositiveIsInfinity)
 
 TEST(Fixed32, InfinityDividedByInfinityIsNaN)
 {
-    EXPECT_TRUE(std::isnan(Fixed32::GetInfinity() / Fixed32::GetInfinity()));
+    EXPECT_TRUE(IsNan(Fixed32::GetInfinity() / Fixed32::GetInfinity()));
 }
 
 TEST(Fixed32, InifnityTimesNegativeIsNegativeInfinity)
@@ -491,25 +491,25 @@ TEST(Fixed32, NegativeInfinityMinusInfinityIsNegativeInfinity)
 
 TEST(Fixed32, NaN)
 {
-    EXPECT_TRUE(std::isnan(Fixed32::GetNaN()));
-    EXPECT_TRUE(std::isnan(Fixed32::GetInfinity() / Fixed32::GetInfinity()));
-    EXPECT_TRUE(std::isnan(Fixed32::GetInfinity() - Fixed32::GetInfinity()));
-    EXPECT_TRUE(std::isnan(-Fixed32::GetInfinity() - -Fixed32::GetInfinity()));
-    EXPECT_TRUE(std::isnan(-Fixed32::GetInfinity() + Fixed32::GetInfinity()));
+    EXPECT_TRUE(IsNan(Fixed32::GetNaN()));
+    EXPECT_TRUE(IsNan(Fixed32::GetInfinity() / Fixed32::GetInfinity()));
+    EXPECT_TRUE(IsNan(Fixed32::GetInfinity() - Fixed32::GetInfinity()));
+    EXPECT_TRUE(IsNan(-Fixed32::GetInfinity() - -Fixed32::GetInfinity()));
+    EXPECT_TRUE(IsNan(-Fixed32::GetInfinity() + Fixed32::GetInfinity()));
 
-    EXPECT_FALSE(std::isnan(Fixed32{0}));
-    EXPECT_FALSE(std::isnan(Fixed32{10.0f}));
-    EXPECT_FALSE(std::isnan(Fixed32{-10.0f}));
-    EXPECT_FALSE(std::isnan(Fixed32::GetInfinity()));
-    EXPECT_FALSE(std::isnan(Fixed32::GetNegativeInfinity()));
-    EXPECT_FALSE(std::isnan(Fixed32::GetMax()));
-    EXPECT_FALSE(std::isnan(Fixed32::GetMin()));
-    EXPECT_FALSE(std::isnan(Fixed32::GetLowest()));
+    EXPECT_FALSE(IsNan(Fixed32{0}));
+    EXPECT_FALSE(IsNan(Fixed32{10.0f}));
+    EXPECT_FALSE(IsNan(Fixed32{-10.0f}));
+    EXPECT_FALSE(IsNan(Fixed32::GetInfinity()));
+    EXPECT_FALSE(IsNan(Fixed32::GetNegativeInfinity()));
+    EXPECT_FALSE(IsNan(Fixed32::GetMax()));
+    EXPECT_FALSE(IsNan(Fixed32::GetMin()));
+    EXPECT_FALSE(IsNan(Fixed32::GetLowest()));
 }
 
 TEST(Fixed32, InfinityTimesZeroIsNaN)
 {
-    EXPECT_TRUE(std::isnan(Fixed32::GetInfinity() * 0));
+    EXPECT_TRUE(IsNan(Fixed32::GetInfinity() * 0));
 }
 
 TEST(Fixed32, Comparators)

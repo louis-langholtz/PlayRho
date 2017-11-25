@@ -41,7 +41,7 @@ RayCastOutput RayCast(Length radius, Length2 location, const RayCastInput& input
     const auto raySegment = input.p2 - input.p1; // Length2
     const auto c =  Dot(s, raySegment); // Area
     const auto rr = GetLengthSquared(raySegment); // Area
-    const auto sigma = (Square(c) - rr * b) / (SquareMeter * SquareMeter);
+    const auto sigma = Real{(Square(c) - rr * b) / (SquareMeter * SquareMeter)};
     
     // Check for negative discriminant and short segment.
     if ((sigma < Real{0}) || AlmostZero(Real{rr / SquareMeter}))
@@ -171,7 +171,7 @@ RayCastOutput RayCast(const DistanceProxy& proxy, const RayCastInput& input,
     const auto ray0 = transformedInput.p1;
     const auto ray = transformedInput.p2 - transformedInput.p1; // Ray delta (p2 - p1)
     
-    auto minT = std::nextafter(Real{input.maxFraction}, Real(2));
+    auto minT = NextAfter(Real{input.maxFraction}, Real(2));
     auto normalFound = GetInvalid<UnitVec2>();
     
     for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)

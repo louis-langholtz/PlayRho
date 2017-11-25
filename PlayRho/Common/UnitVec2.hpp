@@ -26,7 +26,6 @@
 
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/InvalidArgument.hpp>
-#include <cmath>
 #include <iostream>
 
 namespace playrho
@@ -101,13 +100,7 @@ public:
 
     /// @brief Gets the unit vector from the given parameters.
     static UnitVec2 Get(const Real x, const Real y, Real& magnitude,
-                        const UnitVec2 fallback = GetDefaultFallback()) noexcept
-    {
-        // XXX perhaps this should use std::hypot() instead like so:
-        //    magnitude = std::hypot(x, y);
-        magnitude = std::sqrt(x * x + y * y);
-        return (std::isnormal(magnitude)) ? UnitVec2{x / magnitude, y / magnitude} : fallback;
-    }
+                        const UnitVec2 fallback = GetDefaultFallback()) noexcept;
 
     /// @brief Gets the given angled unit vector.
     ///
@@ -115,10 +108,7 @@ public:
     ///   better accuracy will be had by using one of the four oriented unit
     ///   vector returning methods - for the right, top, left, bottom orientations.
     ///
-    static UnitVec2 Get(const Angle angle) noexcept
-    {
-        return UnitVec2{std::cos(angle / Radian), std::sin(angle / Radian)};
-    }
+    static UnitVec2 Get(const Angle angle) noexcept;
 
     constexpr UnitVec2() noexcept = default;
     
@@ -257,7 +247,7 @@ public:
     /// @brief Gets the absolute value.
     constexpr inline UnitVec2 Absolute() const noexcept
     {
-        return UnitVec2{std::abs(GetX()), std::abs(GetY())};
+        return UnitVec2{Abs(GetX()), Abs(GetY())};
     }
 
 private:

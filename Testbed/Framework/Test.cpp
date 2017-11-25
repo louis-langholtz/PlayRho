@@ -534,7 +534,7 @@ void Test::CompleteBombSpawn(const Length2& p)
 
     const auto deltaTime = m_lastDeltaTime;
     const auto relP = m_bombSpawnPoint - p;
-    const auto vel = (deltaTime != 0)? LinearVelocity2{
+    const auto vel = (deltaTime != 0_s)? LinearVelocity2{
         Real{0.25f} * GetX(relP) / deltaTime,
         Real{0.25f} * GetY(relP) / deltaTime
     }: LinearVelocity2{};
@@ -587,7 +587,7 @@ void Test::LaunchBomb()
     const auto centerX = GetCenter(viewport.ranges[0]);
     const auto height = GetSize(viewport.ranges[1]);
     const auto atB = Length2{centerX, viewport.ranges[1].GetMax() - (height * 9.0f / 10.0f)};
-    const auto v = (deltaTime != 0)? (atB - atA) / (deltaTime * 30): LinearVelocity2{};
+    const auto v = (deltaTime != 0_s)? (atB - atA) / (deltaTime * 30): LinearVelocity2{};
     LaunchBomb(atA, v);
 }
 

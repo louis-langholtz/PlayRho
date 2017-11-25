@@ -33,21 +33,7 @@ public:
         m_shapeA.SetAsBox(25_m, 5_m);
         m_shapeB.SetAsBox(2.5_m, 2.5_m);
     }
-
-    static const char *GetName(TOIOutput::State state)
-    {
-        switch (state)
-        {
-            case TOIOutput::e_failed: return "failed";
-            case TOIOutput::e_unknown: return "unknown";
-            case TOIOutput::e_touching: return "touching";
-            case TOIOutput::e_separated: return "separated";
-            case TOIOutput::e_overlapped: return "overlapped";
-            default: break;
-        }
-        return "unknown";
-    }
-
+    
     void PostStep(const Settings&, Drawer& drawer) override
     {
         const auto offset = Vec2{Real(-35), Real(70)} * 1_m;
@@ -64,11 +50,11 @@ public:
 
         std::stringstream stream;
         stream << "At TOI ";
-        stream << static_cast<float>(output.get_t());
+        stream << static_cast<float>(output.time);
         stream << ", state is ";
-        stream << GetName(output.get_state());
-        stream << ". TOI iterations is " << unsigned{output.get_toi_iters()};
-        stream << ", max root iterations is " << unsigned{output.get_max_root_iters()};
+        stream << GetName(output.state);
+        stream << ". TOI iterations is " << unsigned{output.stats.toi_iters};
+        stream << ", max root iterations is " << unsigned{output.stats.max_root_iters};
         stream << ".";
         m_status = stream.str();
 
@@ -97,7 +83,7 @@ public:
         {
             const auto vertexCount = m_shapeB.GetVertexCount();
             auto vertices = std::vector<Length2>(vertexCount);
-            const auto transformB = GetTransformation(sweepB, output.get_t());
+            const auto transformB = GetTransformation(sweepB, output.time);
             for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
             {
                 vertices[i] = Transform(m_shapeB.GetVertex(i), transformB);
