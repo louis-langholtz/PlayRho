@@ -772,7 +772,7 @@ TEST(World, DynamicEdgeBodyHasCorrectMass)
     ASSERT_EQ(fixture->GetDensity(), 1_kgpm2);
 
     const auto circleMass = Mass{fixture->GetDensity() * (Pi * Square(shape->GetVertexRadius()))};
-    const auto rectMass = Mass{fixture->GetDensity() * (shape->GetVertexRadius() * Real{2} * GetLength(v2 - v1))};
+    const auto rectMass = Mass{fixture->GetDensity() * (shape->GetVertexRadius() * Real{2} * GetMagnitude(v2 - v1))};
     const auto totalMass = Mass{circleMass + rectMass};
     
     EXPECT_EQ(body->GetType(), BodyType::Dynamic);
@@ -1571,7 +1571,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
     ASSERT_EQ(body2->GetLocation(), body_def.location);
     
     auto position_diff = body2pos - body1pos;
-    auto distance = GetLength(position_diff);
+    auto distance = GetMagnitude(position_diff);
 
     const auto angle = GetAngle(position_diff);
     ASSERT_EQ(angle, 0_deg);
@@ -1590,7 +1590,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
         world.Step(step);
 
         const auto new_pos_diff = body2->GetLocation() - body1->GetLocation();
-        const auto new_distance = GetLength(new_pos_diff);
+        const auto new_distance = GetMagnitude(new_pos_diff);
         
         if (AlmostEqual(new_distance / Meter, full_separation / Meter) || new_distance > full_separation)
         {
@@ -1607,12 +1607,12 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
         }
         else // new_distance > distance
         {
-            if (std::cos(angle / 1_rad) != 0)
+            if (Cos(angle) != 0)
             {
                 EXPECT_LT(GetX(body1->GetLocation()), GetX(lastpos1));
                 EXPECT_GT(GetX(body2->GetLocation()), GetX(lastpos2));
             }
-            if (std::sin(angle / 1_rad) != 0)
+            if (Sin(angle) != 0)
             {
                 EXPECT_LT(GetY(body1->GetLocation()), GetY(lastpos1));
                 EXPECT_GT(GetY(body2->GetLocation()), GetY(lastpos2));
@@ -1743,7 +1743,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
     ASSERT_EQ(world.GetContacts().size(), World::Contacts::size_type(0));
 
     auto position_diff = body1pos - body2pos;
-    auto distance = GetLength(position_diff);
+    auto distance = GetMagnitude(position_diff);
     
     auto angle = GetAngle(position_diff);
     EXPECT_TRUE(AlmostEqual(angle / 1_rad, Real{0}));
@@ -1801,7 +1801,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
         last_angle_2 = body2->GetAngle();
 
         const auto new_pos_diff = body1->GetLocation() - body2->GetLocation();
-        const auto new_distance = GetLength(new_pos_diff);
+        const auto new_distance = GetMagnitude(new_pos_diff);
         
         if (AlmostEqual(new_distance / Meter, full_separation / Meter) || new_distance > full_separation)
         {
@@ -1810,12 +1810,12 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
         
         if (new_distance == distance)
         {
-            if (std::cos(angle / 1_rad) != 0)
+            if (Cos(angle) != 0)
             {
                 EXPECT_NE(GetX(body1->GetLocation()), GetX(lastpos1));
                 EXPECT_NE(GetX(body2->GetLocation()), GetX(lastpos2));
             }
-            if (std::sin(angle / 1_rad) != 0)
+            if (Sin(angle) != 0)
             {
                 EXPECT_NE(GetY(body1->GetLocation()), GetY(lastpos1));
                 EXPECT_NE(GetY(body2->GetLocation()), GetY(lastpos2));
@@ -1878,9 +1878,10 @@ TEST(World, CollidingDynamicBodies)
     body_def.linearVelocity = LinearVelocity2{+x * 1_mps, 0_mps};
     const auto body_a = world.CreateBody(body_def);
     ASSERT_NE(body_a, nullptr);
-    EXPECT_EQ(body_a->GetType(), BodyType::Dynamic);
-    EXPECT_TRUE(body_a->IsSpeedable());
-    EXPECT_TRUE(body_a->IsAccelerable());
+    ASSERT_EQ(body_a->GetType(), BodyType::Dynamic);
+    ASSERT_TRUE(body_a->IsSpeedable());
+    ASSERT_TRUE(body_a->IsAccelerable());
+    
     const auto fixture1 = body_a->CreateFixture(shape);
     ASSERT_NE(fixture1, nullptr);
 
@@ -1888,11 +1889,12 @@ TEST(World, CollidingDynamicBodies)
     body_def.linearVelocity = LinearVelocity2{-x * 1_mps, 0_mps};
     const auto body_b = world.CreateBody(body_def);
     ASSERT_NE(body_b, nullptr);
+    ASSERT_EQ(body_b->GetType(), BodyType::Dynamic);
+    ASSERT_TRUE(body_b->IsSpeedable());
+    ASSERT_TRUE(body_b->IsAccelerable());
+
     const auto fixture2 = body_b->CreateFixture(shape);
     ASSERT_NE(fixture2, nullptr);
-    EXPECT_EQ(body_b->GetType(), BodyType::Dynamic);
-    EXPECT_TRUE(body_b->IsSpeedable());
-    EXPECT_TRUE(body_b->IsAccelerable());
 
     EXPECT_EQ(GetX(GetLinearVelocity(*body_a)), +x * 1_mps);
     EXPECT_EQ(GetY(GetLinearVelocity(*body_a)), 0_mps);
@@ -2631,8 +2633,8 @@ TEST(World, MouseJointWontCauseTunnelling)
     for (auto i = decltype(numBodies){0}; i < numBodies; ++i)
     {
         const auto angle = i * 2 * Pi / numBodies;
-        const auto x = ball_radius * Real(2.1) * Real(std::cos(angle));
-        const auto y = ball_radius * Real(2.1) * Real(std::sin(angle));
+        const auto x = ball_radius * Real(2.1) * Cos(angle);
+        const auto y = ball_radius * Real(2.1) * Sin(angle);
         body_def.location = Length2{x, y};
         bodies[i] = world.CreateBody(body_def);
         ASSERT_NE(bodies[i], nullptr);
@@ -2772,7 +2774,7 @@ TEST(World, MouseJointWontCauseTunnelling)
                 std::cout << " angl=" << angle;
                 std::cout << " ctoi=" << 0 + contact.GetToiCount();
                 std::cout << " solv=" << 0 + solved;
-                std::cout << " targ=(" << distance * std::cos(angle) << "," << distance * std::sin(angle) << ")";
+                std::cout << " targ=(" << distance * Cos(angle) << "," << distance * Sin(angle) << ")";
                 std::cout << " maxv=" << max_velocity;
                 std::cout << " rang=(" << min_x << "," << min_y << ")-(" << max_x << "," << max_y << ")";
                 std::cout << " bpos=(" << GetX(ball_body->GetLocation()) << "," << GetY(ball_body->GetLocation()) << ")";
@@ -2849,7 +2851,7 @@ TEST(World, MouseJointWontCauseTunnelling)
         auto last_pos = ball_body->GetLocation();
         for (auto loops = unsigned{0};; ++loops)
         {
-            mouse_joint->SetTarget(Length2{distance * std::cos(angle) * Meter, distance * std::sin(angle) * Meter});
+            mouse_joint->SetTarget(Length2{distance * Cos(angle) * Meter, distance * Sin(angle) * Meter});
             angle += anglular_speed;
             distance += distance_speed;
 
@@ -2874,7 +2876,7 @@ TEST(World, MouseJointWontCauseTunnelling)
             min_y = std::min(Real{GetY(ball_body->GetLocation()) / Meter}, min_y);
 
             const auto linVel = ball_body->GetVelocity().linear;
-            max_velocity = std::max(GetLength(GetVec2(linVel)), max_velocity);
+            max_velocity = std::max(GetMagnitude(GetVec2(linVel)), max_velocity);
 
             if (loops > 50)
             {

@@ -138,7 +138,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
     jointdef.dampingRatio = 0;
     EXPECT_NE(world.CreateJoint(jointdef), nullptr);
     
-    auto oldDistance = GetLength(body1->GetLocation() - body2->GetLocation());
+    auto oldDistance = GetMagnitude(body1->GetLocation() - body2->GetLocation());
     
     auto distanceMet = 0u;
     StepConf stepConf;
@@ -146,7 +146,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
     {
         world.Step(stepConf);
 
-        const auto newDistance = GetLength(body1->GetLocation() - body2->GetLocation());
+        const auto newDistance = GetMagnitude(body1->GetLocation() - body2->GetLocation());
         if (distanceMet)
         {
             EXPECT_NEAR(double(Real{newDistance / Meter}),
@@ -193,7 +193,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
     jointdef.dampingRatio = 0;
     EXPECT_NE(world.CreateJoint(jointdef), nullptr);
     
-    auto oldDistance = GetLength(body1->GetLocation() - body2->GetLocation());
+    auto oldDistance = GetMagnitude(body1->GetLocation() - body2->GetLocation());
     
     auto distanceMet = 0u;
     StepConf stepConf;
@@ -201,7 +201,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
     {
         world.Step(stepConf);
         
-        const auto newDistance = GetLength(body1->GetLocation() - body2->GetLocation());
+        const auto newDistance = GetMagnitude(body1->GetLocation() - body2->GetLocation());
         if (!distanceMet && (newDistance - oldDistance) >= 0_m)
         {
             distanceMet = i;

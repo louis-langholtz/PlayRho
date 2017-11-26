@@ -85,8 +85,8 @@ std::vector<Length2> GetCircleVertices(Length radius, unsigned slices, Angle sta
         while (i < slices)
         {
             const auto angleInRadians = Real{(start + (Real(i) * deltaAngle)) / Radian};
-            const auto x = radius * static_cast<Real>(std::cos(angleInRadians));
-            const auto y = radius * static_cast<Real>(std::sin(angleInRadians));
+            const auto x = radius * Cos(angleInRadians);
+            const auto y = radius * Sin(angleInRadians);
             vertices.emplace_back(x, y);
             ++i;
         }
@@ -98,8 +98,8 @@ std::vector<Length2> GetCircleVertices(Length radius, unsigned slices, Angle sta
         else
         {
             const auto angleInRadians = Real{(start + (Real(i) * deltaAngle)) / Radian};
-            const auto x = radius * static_cast<Real>(std::cos(angleInRadians));
-            const auto y = radius * static_cast<Real>(std::sin(angleInRadians));
+            const auto x = radius * Cos(angleInRadians);
+            const auto y = radius * Sin(angleInRadians);
             vertices.emplace_back(x, y);
         }
     }

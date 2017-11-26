@@ -1575,7 +1575,7 @@ static void EntityUI(MouseJoint& j)
         }
     }
     {
-        auto v = static_cast<float>(j.GetDampingRatio());
+        auto v = static_cast<float>(Real{j.GetDampingRatio()});
         if (ImGui::InputFloat("Damping Ratio", &v))
         {
             j.SetDampingRatio(static_cast<Real>(v));
@@ -1939,7 +1939,7 @@ static void EntityUI(Contact& c)
         }
     }
     {
-        auto val = static_cast<float>(c.GetTangentSpeed() / MeterPerSecond);
+        auto val = static_cast<float>(Real{c.GetTangentSpeed() / MeterPerSecond});
         if (ImGui::InputFloat("Belt Speed", &val, 0, 0, -1, ImGuiInputTextFlags_EnterReturnsTrue))
         {
             c.SetTangentSpeed(val * MeterPerSecond);
@@ -1947,7 +1947,7 @@ static void EntityUI(Contact& c)
     }
     if (c.HasValidToi())
     {
-        ImGui::LabelText("TOI", "%f", c.GetToi());
+        ImGui::LabelText("TOI", "%f", static_cast<double>(c.GetToi()));
     }
     ImGui::LabelText("TOI Count", "%d", c.GetToiCount());
 

@@ -206,6 +206,13 @@ namespace playrho
         decltype(T{} + T{}), decltype(T{} - T{}), decltype(T{} * T{}), decltype(T{} / T{})
     > >: std::true_type {};
     
+    /// @brief Computes the absolute value of the given value.
+    template <typename T>
+    constexpr inline T Abs(T a)
+    {
+        return (a >= T{0}) ? a : -a;
+    }
+    
 } // namespace playrho
 
 #endif // PLAYRHO_COMMON_TEMPLATES_HPP

@@ -62,7 +62,7 @@ namespace playrho {
             m_ground->CreateFixture(std::make_shared<ChainShape>(boundaryConf));
             
             const auto vertices = GetCircleVertices(10_m, 90);
-            const auto halfSegmentLength = GetLength(vertices[1] - vertices[0]) / 2;
+            const auto halfSegmentLength = GetMagnitude(vertices[1] - vertices[0]) / 2;
 
             auto conf = EdgeShape::Conf{};
             conf.vertexRadius = 0.125_m;

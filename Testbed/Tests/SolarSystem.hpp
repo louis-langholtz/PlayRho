@@ -79,9 +79,9 @@ public:
         os << " The Sun and planets radiuses, masses, orbital and rotational periods";
         os << " are all simulated to scale.";
         os << " Radiuses range from ";
-        os << static_cast<float>(minRadius / 1_km);
+        os << static_cast<float>(Real{minRadius / 1_km});
         os << " km (" << minName << "), to ";
-        os << static_cast<float>(maxRadius / 1_km);
+        os << static_cast<float>(Real{maxRadius / 1_km});
         os << " km (" << maxName << ").";
 
         auto conf = Test::Conf{};

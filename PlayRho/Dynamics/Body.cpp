@@ -162,7 +162,7 @@ void Body::ResetMassData()
     if ((massData.I > RotInertia{0}) && (!IsFixedRotation()))
     {
         // Center the inertia about the center of mass.
-        const auto lengthSquared = GetLengthSquared(localCenter);
+        const auto lengthSquared = GetMagnitudeSquared(localCenter);
         const auto I = RotInertia{massData.I} - RotInertia{(mass * lengthSquared / SquareRadian)};
         //assert((massData.I - mass * lengthSquared) > 0);
         m_invRotI = Real{1} / I;
@@ -201,7 +201,7 @@ void Body::SetMassData(const MassData& massData)
 
     if ((massData.I > RotInertia{0}) && (!IsFixedRotation()))
     {
-        const auto lengthSquared = GetLengthSquared(massData.center);
+        const auto lengthSquared = GetMagnitudeSquared(massData.center);
         // L^2 M QP^-2
         const auto I = RotInertia{massData.I} - RotInertia{(mass * lengthSquared) / SquareRadian};
         assert(I > RotInertia{0});
@@ -462,7 +462,7 @@ Velocity GetVelocity(const Body& body, Time h, MovementConf conf) noexcept
     // Enforce maximums...
 
     const auto translation = h * velocity.linear;
-    const auto lsquared = GetLengthSquared(translation);
+    const auto lsquared = GetMagnitudeSquared(translation);
     if (lsquared > Square(conf.maxTranslation))
     {
         // Scale back linear velocity so max translation not exceeded.
@@ -491,8 +491,8 @@ void RotateAboutWorldPoint(Body& body, Angle amount, Length2 worldPoint)
 {
     const auto xfm = body.GetTransformation();
     const auto p = xfm.p - worldPoint;
-    const auto c = Real{std::cos(amount / Radian)};
-    const auto s = Real{std::sin(amount / Radian)};
+    const auto c = Cos(amount);
+    const auto s = Sin(amount);
     const auto x = GetX(p) * c - GetY(p) * s;
     const auto y = GetX(p) * s + GetY(p) * c;
     const auto pos = Length2{x, y} + worldPoint;
@@ -512,13 +512,13 @@ Force2 GetCentripetalForce(const Body& body, Length2 axis)
 
     // Force is M L T^-2.
     const auto velocity = GetLinearVelocity(body);
-    const auto magnitude = GetLength(GetVec2(velocity)) * MeterPerSecond;
+    const auto magnitudeOfVelocity = GetMagnitude(GetVec2(velocity)) * MeterPerSecond;
     const auto location = body.GetLocation();
     const auto mass = GetMass(body);
-    const auto delta = Length2{axis - location};
-    const auto radius = GetLength(delta);
+    const auto delta = axis - location;
+    const auto radius = GetMagnitude(delta);
     const auto dir = delta / radius;
-    return Force2{dir * mass * Square(magnitude) / radius};
+    return Force2{dir * mass * Square(magnitudeOfVelocity) / radius};
 }
 
 Acceleration CalcGravitationalAcceleration(const Body& body) noexcept
@@ -540,7 +540,7 @@ Acceleration CalcGravitationalAcceleration(const Body& body) noexcept
             const auto m2 = GetMass(b2);
             const auto delta = GetLocation(b2) - loc1;
             const auto dir = GetUnitVector(delta);
-            const auto rr = GetLengthSquared(delta);
+            const auto rr = GetMagnitudeSquared(delta);
             const auto orderedMass = std::minmax(m1, m2);
             const auto f = (BigG * orderedMass.first) * (orderedMass.second / rr);
             sumForce += f * dir;

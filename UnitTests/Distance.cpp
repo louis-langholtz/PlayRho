@@ -435,7 +435,7 @@ TEST(Distance, VerEdgeSquareTouching)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_NEAR(static_cast<double>(Real{Sqrt(GetLengthSquared(witnessPoints.a - witnessPoints.b)) / Meter}),
+    EXPECT_NEAR(static_cast<double>(Real{Sqrt(GetMagnitudeSquared(witnessPoints.a - witnessPoints.b)) / Meter}),
                 1.0, 0.000001);
     EXPECT_EQ(GetX(witnessPoints.a), 3_m);
     EXPECT_EQ(GetY(witnessPoints.a), 2_m);

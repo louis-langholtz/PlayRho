@@ -345,8 +345,8 @@ TEST(MassData, GetForCenteredEdge)
 
     const auto halfCircleArea = circleArea / Real{2};
     const auto halfRSquared = radiusSquared / Real{2};
-    const auto I1 = SecondMomentOfArea{halfCircleArea * (halfRSquared + GetLengthSquared(v1))};
-    const auto I2 = SecondMomentOfArea{halfCircleArea * (halfRSquared + GetLengthSquared(v2))};
+    const auto I1 = SecondMomentOfArea{halfCircleArea * (halfRSquared + GetMagnitudeSquared(v1))};
+    const auto I2 = SecondMomentOfArea{halfCircleArea * (halfRSquared + GetMagnitudeSquared(v2))};
     EXPECT_NEAR(static_cast<double>(Real{I1 / (SquareMeter * SquareMeter)}),
                 1.6198837757110596, 1.6198837757110596 / 1000000.0);
     EXPECT_NEAR(static_cast<double>(Real{I2 / (SquareMeter * SquareMeter)}),

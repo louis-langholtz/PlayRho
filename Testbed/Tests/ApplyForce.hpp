@@ -135,7 +135,7 @@ public:
 
                 // For a circle: I = 0.5 * m * r * r ==> r = sqrt(2 * I / m)
                 const auto radiusSquaredUnitless = 2 * I * invMass * SquareRadian / SquareMeter;
-                const auto radius = Length{Real{std::sqrt(Real{radiusSquaredUnitless})} * 1_m};
+                const auto radius = Length{Sqrt(Real{radiusSquaredUnitless}) * 1_m};
 
                 FrictionJointDef jd;
                 jd.localAnchorA = Length2{};

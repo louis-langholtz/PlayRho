@@ -33,7 +33,7 @@ namespace {
             const auto delta = vertices[i-1] - vertices[i];
             
             // XXX not quite right unit-wise but this works well enough.
-            if (GetLengthSquared(GetVec2(delta)) * Meter <= DefaultLinearSlop)
+            if (GetMagnitudeSquared(GetVec2(delta)) * Meter <= DefaultLinearSlop)
             {
                 return false;
             }
@@ -95,7 +95,7 @@ MassData ChainShape::GetMassData() const noexcept
                 I += RotInertia{massData.I};
                 
                 const auto d = v - vprev;
-                const auto b = GetLength(d);
+                const auto b = GetMagnitude(d);
                 const auto h = vertexRadius * Real{2};
                 area += b * h + circle_area;
 

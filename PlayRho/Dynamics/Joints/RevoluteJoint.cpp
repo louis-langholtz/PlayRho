@@ -386,7 +386,7 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
         const auto rB = Length2{Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB)};
 
         const auto C = (posB.linear + rB) - (posA.linear + rA);
-        positionError = GetLengthSquared(C);
+        positionError = GetMagnitudeSquared(C);
 
         const auto invMassA = bodyConstraintA->GetInvMass();
         const auto invMassB = bodyConstraintB->GetInvMass();

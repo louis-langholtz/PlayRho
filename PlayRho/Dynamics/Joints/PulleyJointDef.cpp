@@ -33,8 +33,8 @@ PulleyJointDef::PulleyJointDef(NonNull<Body*> bA, NonNull<Body*> bB,
     groundAnchorB{groundB},
     localAnchorA{GetLocalPoint(*bA, anchorA)},
     localAnchorB{GetLocalPoint(*bB, anchorB)},
-    lengthA{GetLength(anchorA - groundA)},
-    lengthB{GetLength(anchorB - groundB)}
+    lengthA{GetMagnitude(anchorA - groundA)},
+    lengthB{GetMagnitude(anchorB - groundB)}
 {
     // Intentionally empty.
 }

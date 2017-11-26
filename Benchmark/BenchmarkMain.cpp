@@ -105,6 +105,14 @@ static std::pair<double, double> RandPair(double lo, double hi)
     return std::make_pair(first, second);
 }
 
+static std::tuple<float, float, float> RandTriplet(float lo, float hi)
+{
+    const auto first = Rand(lo, hi);
+    const auto second = Rand(lo, hi);
+    const auto third = Rand(lo, hi);
+    return std::make_tuple(first, second, third);
+}
+
 static std::tuple<float, float, float, float> RandQuad(float lo, float hi)
 {
     const auto first = Rand(lo, hi);
@@ -145,6 +153,28 @@ static std::vector<std::pair<double, double>> RandPairs(unsigned count, double l
     for (auto i = decltype(count){0}; i < count; ++i)
     {
         rands.push_back(RandPair(lo, hi));
+    }
+    return rands;
+}
+
+static std::vector<std::tuple<float, float, float>> RandTriplets(unsigned count, float lo, float hi)
+{
+    auto rands = std::vector<std::tuple<float, float, float>>{};
+    rands.reserve(count);
+    for (auto i = decltype(count){0}; i < count; ++i)
+    {
+        rands.push_back(RandTriplet(lo, hi));
+    }
+    return rands;
+}
+
+static std::vector<std::tuple<double, double, double>> RandTriplets(unsigned count, double lo, double hi)
+{
+    auto rands = std::vector<std::tuple<double, double, double>>{};
+    rands.reserve(count);
+    for (auto i = decltype(count){0}; i < count; ++i)
+    {
+        rands.push_back(RandTriplet(lo, hi));
     }
     return rands;
 }
@@ -283,6 +313,30 @@ static void FloatHypot(benchmark::State& state)
     }
 }
 
+static void FloatMulAdd(benchmark::State& state)
+{
+    const auto vals = RandTriplets(static_cast<unsigned>(state.range()), -1000.0f, 1000.0f);
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize((std::get<0>(val) * std::get<1>(val)) + std::get<2>(val));
+        }
+    }
+}
+
+static void FloatFma(benchmark::State& state)
+{
+    const auto vals = RandTriplets(static_cast<unsigned>(state.range()), -1000.0f, 1000.0f);
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(std::fma(std::get<0>(val), std::get<1>(val), std::get<2>(val)));
+        }
+    }
+}
+
 // ----
 
 static void DoubleAdd(benchmark::State& state)
@@ -391,6 +445,30 @@ static void DoubleHypot(benchmark::State& state)
         for (const auto& val: vals)
         {
             benchmark::DoNotOptimize(std::hypot(val.first, val.second));
+        }
+    }
+}
+
+static void DoubleMulAdd(benchmark::State& state)
+{
+    const auto vals = RandTriplets(static_cast<unsigned>(state.range()), -1000.0, 1000.0);
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize((std::get<0>(val) * std::get<1>(val)) + std::get<2>(val));
+        }
+    }
+}
+
+static void DoubleFma(benchmark::State& state)
+{
+    const auto vals = RandTriplets(static_cast<unsigned>(state.range()), -1000.0, 1000.0);
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(std::fma(std::get<0>(val), std::get<1>(val), std::get<2>(val)));
         }
     }
 }
@@ -854,26 +932,26 @@ static void LengthSquaredViaDotProduct(benchmark::State& state)
     }
 }
 
-static void GetLengthSquared(benchmark::State& state)
+static void GetMagnitudeSquared(benchmark::State& state)
 {
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
     for (auto _: state)
     {
         for (const auto& val: vals)
         {
-            benchmark::DoNotOptimize(playrho::GetLengthSquared(playrho::Vec2(val.first, val.second)));
+            benchmark::DoNotOptimize(playrho::GetMagnitudeSquared(playrho::Vec2(val.first, val.second)));
         }
     }
 }
 
-static void GetLength(benchmark::State& state)
+static void GetMagnitude(benchmark::State& state)
 {
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
     for (auto _: state)
     {
         for (const auto& val: vals)
         {
-            benchmark::DoNotOptimize(playrho::GetLength(playrho::Vec2(val.first, val.second)));
+            benchmark::DoNotOptimize(playrho::GetMagnitude(playrho::Vec2(val.first, val.second)));
         }
     }
 }
@@ -1758,6 +1836,7 @@ static void TumblerAdd200SquaresPlus200Steps(benchmark::State& state)
 
 BENCHMARK(FloatAdd)->Arg(1000);
 BENCHMARK(FloatMul)->Arg(1000);
+BENCHMARK(FloatMulAdd)->Arg(1000);
 BENCHMARK(FloatDiv)->Arg(1000);
 BENCHMARK(FloatSqrt)->Arg(1000);
 BENCHMARK(FloatSin)->Arg(1000);
@@ -1765,9 +1844,11 @@ BENCHMARK(FloatCos)->Arg(1000);
 BENCHMARK(FloatSinCos)->Arg(1000);
 BENCHMARK(FloatAtan2)->Arg(1000);
 BENCHMARK(FloatHypot)->Arg(1000);
+BENCHMARK(FloatFma)->Arg(1000);
 
 BENCHMARK(DoubleAdd)->Arg(1000);
 BENCHMARK(DoubleMul)->Arg(1000);
+BENCHMARK(DoubleMulAdd)->Arg(1000);
 BENCHMARK(DoubleDiv)->Arg(1000);
 BENCHMARK(DoubleSqrt)->Arg(1000);
 BENCHMARK(DoubleSin)->Arg(1000);
@@ -1775,6 +1856,7 @@ BENCHMARK(DoubleCos)->Arg(1000);
 BENCHMARK(DoubleSinCos)->Arg(1000);
 BENCHMARK(DoubleAtan2)->Arg(1000);
 BENCHMARK(DoubleHypot)->Arg(1000);
+BENCHMARK(DoubleFma)->Arg(1000);
 
 BENCHMARK(AlmostEqual1)->Arg(1000);
 BENCHMARK(AlmostEqual2)->Arg(1000);
@@ -1786,8 +1868,8 @@ BENCHMARK(ModuloViaFmod)->Arg(1000);
 BENCHMARK(DotProduct)->Arg(1000);
 BENCHMARK(CrossProduct)->Arg(1000);
 BENCHMARK(LengthSquaredViaDotProduct)->Arg(1000);
-BENCHMARK(GetLengthSquared)->Arg(1000);
-BENCHMARK(GetLength)->Arg(1000);
+BENCHMARK(GetMagnitudeSquared)->Arg(1000);
+BENCHMARK(GetMagnitude)->Arg(1000);
 BENCHMARK(UnitVectorFromVector)->Arg(1000);
 BENCHMARK(UnitVectorFromVectorAndBack)->Arg(1000);
 BENCHMARK(UnitVecFromAngle)->Arg(1000);

@@ -37,6 +37,12 @@ namespace playrho {
     /// @brief Gets the witness points of the given simplex.
     WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept;
     
+    /// @brief Gets the delta of the two points of the given witness points.
+    constexpr Length2 GetDelta(WitnessPoints arg) noexcept
+    {
+        return arg.a - arg.b;
+    }
+    
     /// @brief Distance Configuration.
     struct DistanceConf
     {

@@ -147,7 +147,7 @@ TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
     const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
 
     EXPECT_NEAR(static_cast<double>(Real{solution.min_separation / Meter}),
-                static_cast<double>(Real{-2} * dim / Meter),
+                static_cast<double>(Real{-2 * dim / Meter}),
                 0.0001);
     
     EXPECT_EQ(GetX(old_pA.linear), GetX(solution.pos_a.linear));

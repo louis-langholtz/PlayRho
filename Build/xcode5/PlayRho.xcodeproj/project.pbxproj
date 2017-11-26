@@ -135,6 +135,7 @@
 		4768D3F81E3E895A00574143 /* PrismaticJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4768D3F71E3E895A00574143 /* PrismaticJoint.cpp */; };
 		4768D3FD1E414A0100574143 /* Vector2.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4768D3FA1E414A0100574143 /* Vector2.hpp */; };
 		4768D4001E54E7CC00574143 /* StepConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4768D3FF1E54E7CB00574143 /* StepConf.cpp */; };
+		476E8ABE1FC8CD9F00705BB5 /* UnitVec2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 476E8ABD1FC8CD9F00705BB5 /* UnitVec2.cpp */; };
 		4775A9381E05B032001C2332 /* StepConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4775A9371E05B032001C2332 /* StepConf.cpp */; };
 		47791F801F92DB0700E257AF /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47791F7A1F92D78F00E257AF /* imgui_draw.cpp */; };
 		47791F811F92DB0D00E257AF /* imgui_impl_glfw_gl3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47791F7C1F92D83500E257AF /* imgui_impl_glfw_gl3.cpp */; };
@@ -510,6 +511,7 @@
 		4768D3F71E3E895A00574143 /* PrismaticJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PrismaticJoint.cpp; sourceTree = "<group>"; };
 		4768D3FA1E414A0100574143 /* Vector2.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Vector2.hpp; sourceTree = "<group>"; };
 		4768D3FF1E54E7CB00574143 /* StepConf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StepConf.cpp; sourceTree = "<group>"; };
+		476E8ABD1FC8CD9F00705BB5 /* UnitVec2.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UnitVec2.cpp; sourceTree = "<group>"; };
 		477329D61F9BEFA200C521B4 /* SolarSystem.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SolarSystem.hpp; sourceTree = "<group>"; };
 		4775A9371E05B032001C2332 /* StepConf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StepConf.cpp; sourceTree = "<group>"; };
 		47791F761F901B8700E257AF /* iforce2d_Trajectories.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = iforce2d_Trajectories.hpp; sourceTree = "<group>"; };
@@ -987,6 +989,7 @@
 				47C85D1E1F0DA14500F70C56 /* Templates.hpp */,
 				470F9B151EDF2959007EF7B6 /* Transformation.hpp */,
 				47C85D181F0D9D8D00F70C56 /* Units.hpp */,
+				476E8ABD1FC8CD9F00705BB5 /* UnitVec2.cpp */,
 				4731DE551DEC908600E7F931 /* UnitVec2.hpp */,
 				474FFC3A1F2CEE6C0037CCE0 /* Vector.hpp */,
 				4768D3FA1E414A0100574143 /* Vector2.hpp */,
@@ -1660,6 +1663,7 @@
 				80BB898F141C3E5900F1753A /* Distance.cpp in Sources */,
 				4787D6D61F2ECD87008C115E /* PulleyJointDef.cpp in Sources */,
 				80BB8991141C3E5900F1753A /* DynamicTree.cpp in Sources */,
+				476E8ABE1FC8CD9F00705BB5 /* UnitVec2.cpp in Sources */,
 				47D28D8E1F6E2C7C0094C032 /* JointType.cpp in Sources */,
 				80BB8993141C3E5900F1753A /* TimeOfImpact.cpp in Sources */,
 				470F9B4C1EEF20B6007EF7B6 /* BodyDef.cpp in Sources */,
@@ -2020,14 +2024,11 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
-					"DO_GJK_PROFILING=1",
 					"$(inherited)",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
 					"-Wextra",
-					"-mllvm",
-					"-inline-threshold=-1",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -2042,15 +2043,10 @@
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				EXECUTABLE_PREFIX = lib;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DO_GJK_PROFILING=1",
-					"NDEBUG=1",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
 					"-Wextra",
-					"-mllvm",
-					"-inline-threshold=-1",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

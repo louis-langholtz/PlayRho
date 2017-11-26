@@ -21,7 +21,7 @@
 
 using namespace playrho;
 
-TEST(Sweep, ByteSizeIs_36_or_72)
+TEST(Sweep, ByteSize)
 {
     switch (sizeof(Real))
     {

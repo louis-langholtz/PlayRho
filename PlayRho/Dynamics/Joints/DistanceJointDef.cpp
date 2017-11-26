@@ -30,7 +30,7 @@ DistanceJointDef::DistanceJointDef(NonNull<Body*> bA, NonNull<Body*> bB,
     super{super{JointType::Distance}.UseBodyA(bA).UseBodyB(bB)},
     localAnchorA{GetLocalPoint(*bA, anchor1)},
     localAnchorB{GetLocalPoint(*bB, anchor2)},
-    length{GetLength(anchor2 - anchor1)}
+    length{GetMagnitude(anchor2 - anchor1)}
 {
     // Intentionally empty.
 }

@@ -28,7 +28,7 @@ namespace {
         
 inline DistanceConf GetDistanceConf(const ToiConf& conf)
 {
-    DistanceConf distanceConf;
+    auto distanceConf = DistanceConf{};
     distanceConf.maxIterations = conf.maxDistIters;
     return distanceConf;
 }
@@ -40,31 +40,29 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
                        ToiConf conf)
 {
     assert(sweepA.GetAlpha0() == sweepB.GetAlpha0());
+    assert(conf.tMax >= 0 && conf.tMax <=1);
 
     // CCD via the local separating axis method. This seeks progression
     // by computing the largest time at which separation is maintained.
     
-    auto stats = TOIOutput::Stats{};
-
-    assert(conf.tMax >= 0 && conf.tMax <=1);
-    assert(conf.tolerance > 0_m);
-
+    auto stats = TOIOutput::Statistics{};
+    
     const auto totalRadius = proxyA.GetVertexRadius() + proxyB.GetVertexRadius();
-    assert(conf.targetDepth < totalRadius);
-    assert(conf.targetDepth >= conf.tolerance);
+    //assert(conf.targetDepth < totalRadius);
+    //assert(conf.targetDepth >= conf.tolerance);
     
     const auto target = totalRadius - conf.targetDepth;
-    assert(target != totalRadius);
-    assert(target > conf.tolerance);
+    //assert(target != totalRadius);
+    //assert(target > conf.tolerance);
     
     const auto maxTarget = target + conf.tolerance;
-    assert(maxTarget != target);
-    assert(maxTarget <= totalRadius);
+    //assert(maxTarget != target);
+    //assert(maxTarget <= totalRadius);
     
     const auto minTarget = target - conf.tolerance;
-    assert(minTarget != target);
-    assert(minTarget < maxTarget);
-    assert(minTarget > 0_m && !AlmostZero(minTarget / Meter));
+    //assert(minTarget != target);
+    //assert(minTarget < maxTarget);
+    //assert(minTarget > 0_m && !AlmostZero(minTarget / Meter));
     
     const auto maxTargetSquared = Square(maxTarget);
 
@@ -81,30 +79,32 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
     {
         // Get information on the distance between shapes. We can also use the results
         // to get a separating axis.
-        const auto distanceInfo = Distance(proxyA, t1xfA, proxyB, t1xfB, distanceConf);
-        assert(distanceInfo.state != DistanceOutput::Unknown && distanceInfo.state != DistanceOutput::HitMaxIters);
-
-        distanceConf.cache = Simplex::GetCache(distanceInfo.simplex.GetEdges());
-
+        const auto dinfo = Distance(proxyA, t1xfA, proxyB, t1xfB, distanceConf);
         ++stats.toi_iters;
-        stats.sum_dist_iters += distanceInfo.iterations;
-        stats.max_dist_iters = std::max(stats.max_dist_iters, distanceInfo.iterations);
+        stats.sum_dist_iters += dinfo.iterations;
+        stats.max_dist_iters = std::max(stats.max_dist_iters, dinfo.iterations);
 
-        const auto witnessPoints = GetWitnessPoints(distanceInfo.simplex);
-        const auto dwp = witnessPoints.a - witnessPoints.b;
-
-        // Get the real distance squared between shapes at the time of t1.
-        const auto distanceSquared = GetLengthSquared(dwp);
-        
-        // If the shapes aren't separated, give up on continuous collision.
-        if (distanceSquared <= Area{0}) // Failure!
+        if (dinfo.state == DistanceOutput::HitMaxIters)
         {
-            return TOIOutput{TOIOutput::e_overlapped, 0, stats};
+            return TOIOutput{0, stats, TOIOutput::e_maxDistIters};
         }
 
-        if (distanceSquared <= maxTargetSquared) // Victory!
+        assert(dinfo.state != DistanceOutput::Unknown);
+
+        distanceConf.cache = Simplex::GetCache(dinfo.simplex.GetEdges());
+        
+        // Get the real distance squared between shapes at the time of t1.
+        const auto distSquared = GetMagnitudeSquared(GetDelta(GetWitnessPoints(dinfo.simplex)));
+        
+        // If the shapes aren't separated, give up on continuous collision.
+        if (distSquared <= Area{0}) // Failure!
         {
-            return TOIOutput{TOIOutput::e_touching, t1, stats};
+            return TOIOutput{0, stats, TOIOutput::e_overlapped};
+        }
+
+        if (distSquared <= maxTargetSquared) // Victory!
+        {
+            return TOIOutput{t1, stats, TOIOutput::e_touching};
         }
 
         // From here on, the real distance squared at time t1 is > than maxTargetSquared
@@ -134,7 +134,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
                 // t2 seems more appropriate however given s2 was derived from it.
                 // Meanwhile t2 always seems equal to input.tMax at this point.
                 stats.sum_finder_iters += pbIter;
-                return TOIOutput{TOIOutput::e_separated, t2, stats};
+                return TOIOutput{t2, stats, TOIOutput::e_separated};
             }
 
             // From here on, t2MinSeparation.distance <= maxTarget
@@ -149,14 +149,13 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
                     //
                     // This state happens when the real distance is greater than maxTarget but the
                     // t2MinSeparation distance is less than maxTarget. If function not stopped,
-                    // it runs till stats.toi_iters == conf.maxToiIters and returns
-                    // TOIOutput{TOIOutput::e_failed, t1, stats}. Given that the function can't
-                    // advance anymore, there's certainly no need to run anymore. Additionally,
-                    // given that t1 is the same as t2 and the real distance is separated, this
-                    // function can return the separated state.
+                    // it runs till stats.toi_iters == conf.maxToiIters and returns a failed state.
+                    // Given that the function can't advance anymore, there's no need to run
+                    // anymore. Additionally, given that t1 is the same as t2 and the real
+                    // distance is separated, this function can return the separated state.
                     //
                     stats.sum_finder_iters += pbIter;
-                    return TOIOutput{TOIOutput::e_separated, t2, stats};
+                    return TOIOutput{t2, stats, TOIOutput::e_separated};
                 }
 
                 // Advance the sweeps
@@ -177,7 +176,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
             if (t1EvaluatedDistance < minTarget)
             {
                 stats.sum_finder_iters += pbIter;
-                return TOIOutput{TOIOutput::e_failed, t1, stats};
+                return TOIOutput{t1, stats, TOIOutput::e_belowMinTarget};
             }
 
             // Check for touching
@@ -185,7 +184,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
             {
                 // Victory! t1 should hold the TOI (could be 0.0).
                 stats.sum_finder_iters += pbIter;
-                return TOIOutput{TOIOutput::e_touching, t1, stats};
+                return TOIOutput{t1, stats, TOIOutput::e_touching};
             }
 
             // Now: t1EvaluatedDistance > maxTarget
@@ -201,7 +200,16 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
                 assert(!AlmostZero((s2 - s1) / Meter));
                 assert(a1 <= a2);
 
-                if ((roots == conf.maxRootIters) || (a1 == a2) || (std::nextafter(a1, a2) >= a2))
+                auto state = TOIOutput::e_unknown;
+                if (roots == conf.maxRootIters)
+                {
+                    state = TOIOutput::e_maxRootIters;
+                }
+                else if (std::nextafter(a1, a2) >= a2)
+                {
+                    state = TOIOutput::e_nextAfter;
+                }
+                if (state != TOIOutput::e_unknown)
                 {
                     // Reached max root iterations or...
                     // Reached the limit of the Real type's precision!
@@ -210,13 +218,11 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
                     stats.sum_finder_iters += pbIter;
                     stats.sum_root_iters += roots;
                     stats.max_root_iters = std::max(stats.max_root_iters, roots);
-                    return TOIOutput{TOIOutput::e_failed, a1, stats};
+                    return TOIOutput{a1, stats, state};
                 }
 
-                // Uses secant method to improve convergence (see https://en.wikipedia.org/wiki/Secant_method ).
-                // Uses bisection method to guarantee progress (see https://en.wikipedia.org/wiki/Bisection_method ).
-                const auto t = ((roots & 1u) != 0u)?
-                    a1 + (target - s1) * (a2 - a1) / (s2 - s1): (a1 + a2) / 2;
+                // Uses secant to improve convergence & bisection to guarantee progress.
+                const auto t = IsOdd(roots)? Secant(target, a1, s1, a2, s2): Bisect(a1, a2);
                 
                 // Using secant method, t may equal a2 now.
                 //assert(t != a1);
@@ -229,7 +235,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
                 const auto txfB = GetTransformation(sweepB, t);
                 const auto s = fcn.Evaluate(t2MinSeparation.indexPair, txfA, txfB);
 
-                if (Abs(s - target) < conf.tolerance) // Root finding succeeded!
+                if (Abs(s - target) <= conf.tolerance) // Root finding succeeded!
                 {
                     assert(t != t2);
                     t2 = t; // t2 holds a tentative value for t1
@@ -261,7 +267,24 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
     // stats.toi_iters == conf.maxToiIters
     // Root finder got stuck.
     // This can happen if the two shapes never actually collide within their sweeps.
-    return TOIOutput{TOIOutput::e_failed, t1, stats};
+    return TOIOutput{t1, stats, TOIOutput::e_maxToiIters};
+}
+
+const char *GetName(TOIOutput::State state) noexcept
+{
+    switch (state)
+    {
+        case TOIOutput::e_unknown: return "unknown";
+        case TOIOutput::e_touching: return "touching";
+        case TOIOutput::e_separated: return "separated";
+        case TOIOutput::e_overlapped: return "overlapped";
+        case TOIOutput::e_nextAfter: return "next-after";
+        case TOIOutput::e_maxRootIters: return "max-root-iters";
+        case TOIOutput::e_maxToiIters: return "max-toi-iters";
+        case TOIOutput::e_belowMinTarget: return "below-min-target";
+        case TOIOutput::e_maxDistIters: return "max-dist-iters";
+    }
+    return "unknown";
 }
 
 } // namespace playrho

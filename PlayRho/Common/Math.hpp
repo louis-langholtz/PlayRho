@@ -97,24 +97,126 @@ constexpr inline auto StripUnit(const BoundedValue<T, lo, hi>& v)
 ///   especially those with mixed input and output types.
 /// @{
 
+/// @brief Secant method.
+/// @sa https://en.wikipedia.org/wiki/Secant_method
+template <typename T, typename U>
+constexpr inline U Secant(T target, U a1, T s1, U a2, T s2) noexcept
+{
+    static_assert(IsArithmetic<T>::value && IsArithmetic<U>::value, "Arithmetic types required.");
+    return (a1 + (target - s1) * (a2 - a1) / (s2 - s1));
+}
+
+/// @brief Bisection method.
+/// @sa https://en.wikipedia.org/wiki/Bisection_method
+template <typename T>
+constexpr inline T Bisect(T a1, T a2) noexcept
+{
+    return (a1 + a2) / 2;
+}
+
+/// @brief Is-odd.
+/// @details Determines whether the given integral value is odd (as opposed to being even).
+template <typename T>
+constexpr inline bool IsOdd(T val) noexcept
+{
+    static_assert(std::is_integral<T>::value, "Integral type required.");
+    return val % 2;
+}
+
 /// @brief Squares the given value.
 template<class TYPE>
 constexpr inline auto Square(TYPE t) noexcept { return t * t; }
 
 /// @brief Square root's the given value.
 template<typename T>
-inline auto Sqrt(T t)
+inline typename std::enable_if<std::is_arithmetic<T>::value, T>::type Sqrt(T t)
 {
     // Note that std::sqrt is not declared noexcept at cppreference.com.
     // See: http://en.cppreference.com/w/cpp/numeric/math/sqrt
-    return std::sqrt(StripUnit(t));
+    return std::sqrt(t);
+}
+
+/// @brief Determines if the given argument is normal.
+template <typename T>
+inline typename std::enable_if<std::is_arithmetic<T>::value, bool>::type IsNormal(T arg)
+{
+    return std::isnormal(arg);
+}
+
+/// @brief Gets whether the given value is not-a-number.
+template <typename T>
+inline typename std::enable_if<std::is_arithmetic<T>::value, bool>::type IsNan(T arg)
+{
+    return std::isnan(arg);
+}
+
+/// @brief Gets whether the given value is finite.
+template <typename T>
+inline typename std::enable_if<std::is_arithmetic<T>::value, bool>::type IsFinite(T arg)
+{
+    return std::isfinite(arg);
+}
+
+/// @brief Rounds the given value.
+template <typename T>
+inline T Round(T arg)
+{
+    return std::round(arg);
+}
+
+/// @brief Truncates the given value.
+template <typename T>
+inline typename std::enable_if<std::is_arithmetic<T>::value, T>::type Trunc(T arg)
+{
+    return std::trunc(arg);
+}
+
+/// @brief Determines whether the given value is negative.
+template <typename T>
+inline typename std::enable_if<std::is_arithmetic<T>::value, bool>::type SignBit(T value) noexcept
+{
+    return std::signbit(value);
+}
+
+/// @brief Gets the next representable value after the given from value and going towards
+///   the to value.
+template <typename T>
+inline T NextAfter(T from, T to)
+{
+    return static_cast<T>(std::nextafter(from, to));
+}
+
+/// @brief Computes the cosine of the argument.
+template <typename T>
+inline typename std::enable_if<std::is_arithmetic<T>::value, T>::type Cos(T arg)
+{
+    return std::cos(arg);
+}
+
+/// @brief Computes the sine of the argument.
+template <typename T>
+inline typename std::enable_if<std::is_arithmetic<T>::value, T>::type Sin(T arg)
+{
+    return std::sin(arg);
 }
 
 #ifdef USE_BOOST_UNITS
-template<>
+/// @brief Square roots the given area.
 inline auto Sqrt(Area t)
 {
-    return std::sqrt(StripUnit(t)) * Meter;
+    return Sqrt(StripUnit(t)) * Meter;
+}
+
+/// @brief Computes the cosine of the argument.
+inline Real Cos(Angle a)
+{
+    return Cos(Real{a / Radian});
+}
+
+/// @brief Computes the sine of the argument.
+inline Real Sin(Angle a)
+{
+    return Sin(Real{a / Radian});
 }
 #endif
 
@@ -136,13 +238,6 @@ inline auto Atan2(double y, double x)
     return Angle{static_cast<Real>(std::atan2(y, x)) * Radian};
 }
 
-/// @brief Computes the absolute value of the given value.
-template <typename T>
-constexpr inline T Abs(T a)
-{
-    return (a >= T{0}) ? a : -a;
-}
-
 /// @brief Computes the average of the given values.
 template <typename T>
 inline auto Average(Span<const T> span)
@@ -162,11 +257,11 @@ inline auto Average(Span<const T> span)
 
 /// @brief Computes the rounded value of the given value.
 template <typename T>
-inline T Round(T value, unsigned precision = 100000);
+inline T RoundOff(T value, unsigned precision = 100000);
 
 /// @brief Computes the rounded value of the given value.
 template <>
-inline float Round(float value, std::uint32_t precision)
+inline float RoundOff(float value, std::uint32_t precision)
 {
     const auto factor = float(static_cast<std::int64_t>(precision));
     return std::round(value * factor) / factor;
@@ -174,7 +269,7 @@ inline float Round(float value, std::uint32_t precision)
 
 /// @brief Computes the rounded value of the given value.
 template <>
-inline double Round(double value, std::uint32_t precision)
+inline double RoundOff(double value, std::uint32_t precision)
 {
     const auto factor = double(static_cast<std::int64_t>(precision));
     return std::round(value * factor) / factor;
@@ -182,7 +277,7 @@ inline double Round(double value, std::uint32_t precision)
 
 /// @brief Computes the rounded value of the given value.
 template <>
-inline long double Round(long double value, std::uint32_t precision)
+inline long double RoundOff(long double value, std::uint32_t precision)
 {
     using ldouble = long double;
     const auto factor = ldouble(static_cast<std::int64_t>(precision));
@@ -191,27 +286,27 @@ inline long double Round(long double value, std::uint32_t precision)
 
 /// @brief Computes the rounded value of the given value.
 template <>
-inline Fixed32 Round(Fixed32 value, std::uint32_t precision)
+inline Fixed32 RoundOff(Fixed32 value, std::uint32_t precision)
 {
     const auto factor = Fixed32(precision);
-    return std::round(value * factor) / factor;
+    return Round(value * factor) / factor;
 }
 
 #ifndef _WIN32
 /// @brief Computes the rounded value of the given value.
 template <>
-inline Fixed64 Round(Fixed64 value, std::uint32_t precision)
+inline Fixed64 RoundOff(Fixed64 value, std::uint32_t precision)
 {
     const auto factor = Fixed64(precision);
-    return std::round(value * factor) / factor;
+    return Round(value * factor) / factor;
 }
 #endif
 
 /// @brief Computes the rounded value of the given value.
 template <>
-inline Vec2 Round(Vec2 value, std::uint32_t precision)
+inline Vec2 RoundOff(Vec2 value, std::uint32_t precision)
 {
-    return Vec2{Round(value[0], precision), Round(value[1], precision)};
+    return Vec2{RoundOff(value[0], precision), RoundOff(value[1], precision)};
 }
 
 /// @brief Gets a Vec2 representation of the given value.
@@ -334,7 +429,7 @@ template <typename T>
 inline auto ModuloViaTrunc(T dividend, T divisor) noexcept
 {
     const auto quotient = dividend / divisor;
-    const auto integer = static_cast<T>(std::trunc(quotient));
+    const auto integer = static_cast<T>(Trunc(quotient));
     const auto remainder = quotient - integer;
     return remainder * divisor;
 }
@@ -404,27 +499,28 @@ inline Angle GetAngle(const Vector2<T> value)
     return Atan2(GetY(value), GetX(value));
 }
 
-/// @brief Gets the square of the length/magnitude of the given value.
-/// @note For performance, use this instead of GetLength(T value) (if possible).
+/// @brief Gets the square of the magnitude of the given iterable value.
+/// @note For performance, use this instead of GetMagnitude(T value) (if possible).
 /// @return Non-negative value.
 template <typename T>
-constexpr inline auto GetLengthSquared(T value) noexcept
+constexpr inline auto GetMagnitudeSquared(T value) noexcept
 {
-    return Square(GetX(value)) + Square(GetY(value));
+    using VT = typename T::value_type;
+    using OT = decltype(VT{} * VT{});
+    auto result = OT{};
+    for (auto&& e: value)
+    {
+        result += Square(e);
+    }
+    return result;
 }
 
-/// @brief Gets the square of the length/magnitude of the given value.
-template <>
-constexpr inline auto GetLengthSquared(Vec3 value) noexcept
-{
-    return Square(GetX(value)) + Square(GetY(value)) + Square(GetZ(value));
-}
-
-/// @brief Gets the length/magnitude of the given value.
+/// @brief Gets the magnitude of the given value.
+/// @note Works for any type for which <code>GetMagnitudeSquared</code> also works.
 template <typename T>
-inline auto GetLength(T value)
+inline auto GetMagnitude(T value)
 {
-    return Sqrt(GetLengthSquared(value));
+    return Sqrt(GetMagnitudeSquared(value));
 }
 
 /// @brief Performs the dot product on two vectors (A and B).
@@ -438,7 +534,7 @@ inline auto GetLength(T value)
 ///   (at an angle of +/- 90 degrees from each other).
 ///
 /// @note This operation is commutative. I.e. Dot(a, b) == Dot(b, a).
-/// @note If A and B are the same vectors, GetLengthSquared(Vec2) returns the same value
+/// @note If A and B are the same vectors, GetMagnitudeSquared(Vec2) returns the same value
 ///   using effectively one less input parameter.
 /// @note This is similar to the <code>std::inner_product</code> standard library algorithm
 ///   except benchmark tests suggest this implementation is faster at least for
@@ -501,10 +597,10 @@ template <class T1, class T2, std::enable_if_t<
     std::tuple_size<T1>::value == 2 && std::tuple_size<T2>::value == 2, int> = 0>
 constexpr auto Cross(T1 a, T2 b) noexcept
 {
-    assert(std::isfinite(StripUnit(Get<0>(a))));
-    assert(std::isfinite(StripUnit(Get<1>(a))));
-    assert(std::isfinite(StripUnit(Get<0>(b))));
-    assert(std::isfinite(StripUnit(Get<1>(b))));
+    assert(IsFinite(StripUnit(Get<0>(a))));
+    assert(IsFinite(StripUnit(Get<1>(a))));
+    assert(IsFinite(StripUnit(Get<0>(b))));
+    assert(IsFinite(StripUnit(Get<1>(b))));
 
     // Both vectors of same direction...
     // If a = Vec2{1, 2} and b = Vec2{1, 2} then: a x b = 1 * 2 - 2 * 1 = 0.
@@ -518,8 +614,8 @@ constexpr auto Cross(T1 a, T2 b) noexcept
     // If a = Vec2{1, 2} and b = Vec2{-1, 2} then: a x b = 1 * 2 - 2 * (-1) = 2 + 2 = 4.
     const auto minuend = Get<0>(a) * Get<1>(b);
     const auto subtrahend = Get<1>(a) * Get<0>(b);
-    assert(std::isfinite(StripUnit(minuend)));
-    assert(std::isfinite(StripUnit(subtrahend)));
+    assert(IsFinite(StripUnit(minuend)));
+    assert(IsFinite(StripUnit(subtrahend)));
     return minuend - subtrahend;
 }
 
@@ -533,12 +629,12 @@ template <class T1, class T2, std::enable_if_t<
     std::tuple_size<T1>::value == 3 && std::tuple_size<T2>::value == 3, int> = 0>
 constexpr auto Cross(T1 a, T2 b) noexcept
 {
-    assert(std::isfinite(Get<0>(a)));
-    assert(std::isfinite(Get<1>(a)));
-    assert(std::isfinite(Get<2>(a)));
-    assert(std::isfinite(Get<0>(b)));
-    assert(std::isfinite(Get<1>(b)));
-    assert(std::isfinite(Get<2>(b)));
+    assert(IsFinite(Get<0>(a)));
+    assert(IsFinite(Get<1>(a)));
+    assert(IsFinite(Get<2>(a)));
+    assert(IsFinite(Get<0>(b)));
+    assert(IsFinite(Get<1>(b)));
+    assert(IsFinite(Get<2>(b)));
 
     using OT = decltype(Get<0>(a) * Get<0>(b));
     return Vector<OT, 3>{
@@ -936,7 +1032,7 @@ inline Transformation GetTransform1(const Sweep& sweep) noexcept
 /// @brief Converts the given vector into a unit vector and returns its original length.
 inline Real Normalize(Vec2& vector)
 {
-    const auto length = GetLength(vector);
+    const auto length = GetMagnitude(vector);
     if (!AlmostZero(length))
     {
         const auto invLength = 1 / length;
@@ -1103,7 +1199,7 @@ SecondMomentOfArea GetPolarMoment(Span<const Length2> vertices);
 inline bool IsUnderActive(Velocity velocity,
                           LinearVelocity linSleepTol, AngularVelocity angSleepTol) noexcept
 {
-    const auto linVelSquared = GetLengthSquared(velocity.linear);
+    const auto linVelSquared = GetMagnitudeSquared(velocity.linear);
     const auto angVelSquared = Square(velocity.angular);
     return (angVelSquared <= Square(angSleepTol)) && (linVelSquared <= Square(linSleepTol));
 }

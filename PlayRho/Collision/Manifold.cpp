@@ -79,7 +79,7 @@ Manifold GetFaceManifold(const Manifold::Type type,
     const auto shape0_abs_v0 = Transform(shape0_rel_v0, xf0);
     const auto shape0_abs_v1 = Transform(shape0_rel_v1, xf0);
     
-    auto shape0_len_edge0 = GetLengthSquared(shape0_rel_v1 - shape0_rel_v0);
+    auto shape0_len_edge0 = GetMagnitudeSquared(shape0_rel_v1 - shape0_rel_v0);
 
     // Clip incident edge against extruded edge1 side edges.
     // Side offsets, extended by polytope skin thickness.
@@ -170,7 +170,7 @@ Manifold GetFaceManifold(const Manifold::Type type,
     // or a face manifold.
     const auto totalRadiusSquared = Square(totalRadius);
     const auto mustUseFaceManifold = shape0_len_edge0 > Square(conf.maxCirclesRatio * r0);
-    if (GetLengthSquared(shape0_abs_v0 - shape1_abs_v0) <= totalRadiusSquared)
+    if (GetMagnitudeSquared(shape0_abs_v0 - shape1_abs_v0) <= totalRadiusSquared)
     {
         // shape 1 vertex 1 is colliding with shape 2 vertex 1
         // shape 1 vertex 1 is the vertex at index idx0, or one before idx0Next.
@@ -199,7 +199,7 @@ Manifold GetFaceManifold(const Manifold::Type type,
                 break;
         }
     }
-    else if (GetLengthSquared(shape0_abs_v0 - shape1_abs_v1) <= totalRadiusSquared)
+    else if (GetMagnitudeSquared(shape0_abs_v0 - shape1_abs_v1) <= totalRadiusSquared)
     {
         // shape 1 vertex 1 is colliding with shape 2 vertex 2
         switch (type)
@@ -224,7 +224,7 @@ Manifold GetFaceManifold(const Manifold::Type type,
                 break;
         }
     }
-    else if (GetLengthSquared(shape0_abs_v1 - shape1_abs_v1) <= totalRadiusSquared)
+    else if (GetMagnitudeSquared(shape0_abs_v1 - shape1_abs_v1) <= totalRadiusSquared)
     {
         // shape 1 vertex 2 is colliding with shape 2 vertex 2
         switch (type)
@@ -249,7 +249,7 @@ Manifold GetFaceManifold(const Manifold::Type type,
                 break;
         }
     }
-    else if (GetLengthSquared(shape0_abs_v1 - shape1_abs_v0) <= totalRadiusSquared)
+    else if (GetMagnitudeSquared(shape0_abs_v1 - shape1_abs_v0) <= totalRadiusSquared)
     {
         // shape 1 vertex 2 is colliding with shape 2 vertex 1
         switch (type)
@@ -337,7 +337,7 @@ Manifold CollideShapes(Manifold::Type type, Length totalRadius,
     if (Dot(cLocalV1, v2 - v1) <= Area{0})
     {
         // Circle's center right of v1 (in direction of v1 to v2).
-        if (GetLengthSquared(cLocalV1) > Square(totalRadius))
+        if (GetMagnitudeSquared(cLocalV1) > Square(totalRadius))
         {
             return Manifold{};
         }
@@ -356,7 +356,7 @@ Manifold CollideShapes(Manifold::Type type, Length totalRadius,
     if (Dot(ClocalV2, v1 - v2) <= Area{0})
     {
         // Circle's center left of v2 (in direction of v2 to v1).
-        if (GetLengthSquared(ClocalV2) > Square(totalRadius))
+        if (GetMagnitudeSquared(ClocalV2) > Square(totalRadius))
         {
             return Manifold{};
         }
@@ -397,7 +397,7 @@ inline Manifold CollideShapes(Length2 locationA, const Transformation& xfA,
     const auto pA = Transform(locationA, xfA);
     const auto pB = Transform(locationB, xfB);
     // Intermediary results here for debugging...
-    const auto lenSq = GetLengthSquared(pB - pA);
+    const auto lenSq = GetMagnitudeSquared(pB - pA);
     const auto totSq = Square(totalRadius);
     return (lenSq > totSq)? Manifold{}: Manifold::GetForCircles(locationA, 0, locationB, 0);
 }
@@ -580,7 +580,7 @@ Manifold GetManifold(const DistanceProxy& proxyA, const Transformation& transfor
     const auto totalRadius = proxyA.GetVertexRadius() + proxyB.GetVertexRadius();
     const auto witnessPoints = GetWitnessPoints(distanceInfo.simplex);
 
-    const auto distance = Sqrt(GetLengthSquared(witnessPoints.a - witnessPoints.b));
+    const auto distance = Sqrt(GetMagnitudeSquared(witnessPoints.a - witnessPoints.b));
     if (distance > totalRadius)
     {
         // no collision

@@ -166,7 +166,7 @@ public:
     {
         //lateral linear velocity
         auto impulse = Momentum2{GetMass(*m_body) * -getLateralVelocity()};
-        const auto length = GetLength(GetVec2(impulse)) * 1_kg * 1_mps;
+        const auto length = GetMagnitude(GetVec2(impulse)) * 1_kg * 1_mps;
         if ( length > m_maxLateralImpulse )
             impulse *= m_maxLateralImpulse / length;
         ApplyLinearImpulse(*m_body, m_currentTraction * impulse, m_body->GetWorldCenter());

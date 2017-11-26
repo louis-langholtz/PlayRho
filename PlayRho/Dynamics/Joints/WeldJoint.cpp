@@ -327,7 +327,7 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
     {
         const auto C1 = Length2{(posB.linear + rB) - (posA.linear + rA)};
 
-        positionError = GetLength(C1);
+        positionError = GetMagnitude(C1);
         angularError = 0_deg;
 
         const auto P = -Solve22(K, C1) * Kilogram;
@@ -342,7 +342,7 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
         const auto C1 = Length2{(posB.linear + rB) - (posA.linear + rA)};
         const auto C2 = Angle{posB.angular - posA.angular - m_referenceAngle};
 
-        positionError = GetLength(C1);
+        positionError = GetMagnitude(C1);
         angularError = Abs(C2);
 
         const auto C = Vec3{StripUnit(GetX(C1)), StripUnit(GetY(C1)), StripUnit(C2)};

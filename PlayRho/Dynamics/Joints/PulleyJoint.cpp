@@ -240,13 +240,13 @@ void PulleyJoint::ShiftOrigin(const Length2 newOrigin)
 
 Length GetCurrentLengthA(const PulleyJoint& joint)
 {
-    return GetLength(GetWorldPoint(*joint.GetBodyA(),
+    return GetMagnitude(GetWorldPoint(*joint.GetBodyA(),
                                    joint.GetLocalAnchorA()) - joint.GetGroundAnchorA());
 }
 
 Length GetCurrentLengthB(const PulleyJoint& joint)
 {
-    return GetLength(GetWorldPoint(*joint.GetBodyB(),
+    return GetMagnitude(GetWorldPoint(*joint.GetBodyB(),
                                    joint.GetLocalAnchorB()) - joint.GetGroundAnchorB());
 }
 

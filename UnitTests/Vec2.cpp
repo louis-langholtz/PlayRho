@@ -50,9 +50,11 @@ TEST(Vec2, Traits)
     EXPECT_TRUE((std::is_constructible<Vec2, Real, Real>::value));
     EXPECT_FALSE((std::is_constructible<Vec2, Real>::value));
     EXPECT_TRUE((std::is_constructible<Vec2>::value));
+
     EXPECT_TRUE((std::is_nothrow_constructible<Vec2, Real, Real>::value));
     EXPECT_FALSE((std::is_nothrow_constructible<Vec2, Real>::value));
     EXPECT_TRUE((std::is_nothrow_constructible<Vec2>::value));
+    
     EXPECT_FALSE((std::is_trivially_constructible<Vec2, Real, Real>::value));
     EXPECT_FALSE((std::is_trivially_constructible<Vec2, Real>::value));
     EXPECT_TRUE((std::is_trivially_constructible<Vec2>::value));
@@ -189,11 +191,11 @@ TEST(Vec2, Rotate)
     Vec2 v10{1, 0};
     Vec2 v01{0, 1};
 
-    EXPECT_EQ(Round(v01), Round(Rotate(v10, UnitVec2::GetTop())));
+    EXPECT_EQ(RoundOff(v01), RoundOff(Rotate(v10, UnitVec2::GetTop())));
 
-    EXPECT_EQ(Round(Vec2{22, 30}), Round(Rotate(Vec2{22, 30}, UnitVec2::GetRight())));
-    EXPECT_EQ(Round(Vec2{22, 30}, 1000), Round(Rotate(Vec2{22, 30}, UnitVec2::Get(360_deg)), 1000));
-    EXPECT_EQ(Round(-Vec2{22, 30}, 1000), Round(Rotate(Vec2{22, 30}, UnitVec2::GetLeft()), 1000));
+    EXPECT_EQ(RoundOff(Vec2{22, 30}), RoundOff(Rotate(Vec2{22, 30}, UnitVec2::GetRight())));
+    EXPECT_EQ(RoundOff(Vec2{22, 30}, 1000), RoundOff(Rotate(Vec2{22, 30}, UnitVec2::Get(360_deg)), 1000));
+    EXPECT_EQ(RoundOff(-Vec2{22, 30}, 1000), RoundOff(Rotate(Vec2{22, 30}, UnitVec2::GetLeft()), 1000));
 }
 
 TEST(Vec2, IncrementOperator)

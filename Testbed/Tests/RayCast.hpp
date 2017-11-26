@@ -204,7 +204,7 @@ public:
 
         const auto L = 11.0f;
         const auto point1 = Vec2(0.0f, 10.0f) * 1_m;
-        const auto d = Vec2(L * std::cos(m_angle), L * std::sin(m_angle)) * 1_m;
+        const auto d = Vec2(L * Cos(m_angle), L * Sin(m_angle)) * 1_m;
         const auto point2 = point1 + d;
 
         if (m_mode == Mode::e_closest)
