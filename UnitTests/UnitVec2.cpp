@@ -21,6 +21,7 @@
 #include "gtest/gtest.h"
 #include <PlayRho/Common/UnitVec2.hpp>
 #include <PlayRho/Common/Math.hpp>
+#include <iostream>
 
 using namespace playrho;
 
@@ -210,4 +211,28 @@ TEST(UnitVec2, Copy)
     auto c = UnitVec2{};
     c = a;
     EXPECT_EQ(a, b);
+}
+
+TEST(UnitVec2, StreamOut)
+{
+    {
+        std::ostringstream os;
+        os << UnitVec2::GetLeft();
+        EXPECT_STREQ(os.str().c_str(), "UnitVec2(-1,0)");
+    }
+    {
+        std::ostringstream os;
+        os << UnitVec2::GetTop();
+        EXPECT_STREQ(os.str().c_str(), "UnitVec2(0,1)");
+    }
+    {
+        std::ostringstream os;
+        os << UnitVec2::GetRight();
+        EXPECT_STREQ(os.str().c_str(), "UnitVec2(1,0)");
+    }
+    {
+        std::ostringstream os;
+        os << UnitVec2::GetBottom();
+        EXPECT_STREQ(os.str().c_str(), "UnitVec2(0,-1)");
+    }
 }

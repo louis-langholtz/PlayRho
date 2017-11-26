@@ -19,6 +19,7 @@
 #include "gtest/gtest.h"
 #include <PlayRho/Common/Fixed.hpp>
 #include <PlayRho/Common/Math.hpp>
+#include <iostream>
 
 using namespace playrho;
 
@@ -551,6 +552,95 @@ TEST(Fixed32, BiggerValsIdenticallyInaccurate)
     }
 }
 
+TEST(Fixed32, AdditionAssignment)
+{
+    Fixed32 foo;
+    foo = 0;
+    foo += Fixed32::GetNegativeInfinity();
+    EXPECT_EQ(foo, -std::numeric_limits<Fixed32>::infinity());
+    foo = std::numeric_limits<Fixed32>::lowest();
+    foo += -1;
+    EXPECT_EQ(foo, Fixed32::GetNegativeInfinity());
+}
+
+TEST(Fixed32, SubtractionAssignment)
+{
+    Fixed32 foo;
+    foo = 0;
+    foo -= 0;
+    EXPECT_EQ(foo, Fixed32{0});
+    foo = 0;
+    foo -= 1;
+    EXPECT_EQ(foo, Fixed32{-1});
+    foo = std::numeric_limits<Fixed32>::max();
+    foo -= Fixed32{-2};
+    EXPECT_EQ(foo, Fixed32::GetInfinity());
+}
+
+TEST(Fixed32, MultiplicationAssignment)
+{
+    Fixed32 foo;
+    foo = Fixed32::GetNaN();
+    foo *= Fixed32{0};
+    EXPECT_TRUE(foo.isnan());
+    foo = 0;
+    foo *= Fixed32::GetNaN();
+    EXPECT_TRUE(foo.isnan());
+    foo = std::numeric_limits<Fixed32>::min();
+    foo *= std::numeric_limits<Fixed32>::min();
+    EXPECT_EQ(foo, Fixed32(0));
+    foo = std::numeric_limits<Fixed32>::lowest();
+    foo *= 2;
+    EXPECT_EQ(foo, Fixed32::GetNegativeInfinity());
+}
+
+TEST(Fixed32, DivisionAssignment)
+{
+    Fixed32 foo;
+    foo = Fixed32::GetNaN();
+    foo /= Fixed32{1};
+    EXPECT_TRUE(foo.isnan());
+    foo = 0;
+    foo /= Fixed32::GetNaN();
+    EXPECT_TRUE(foo.isnan());
+    foo = 1;
+    foo /= Fixed32::GetInfinity();
+    EXPECT_EQ(foo, Fixed32(0));
+    foo = std::numeric_limits<Fixed32>::max();
+    ASSERT_EQ(foo, std::numeric_limits<Fixed32>::max());
+    foo /= Fixed32(0.5f);
+    EXPECT_EQ(foo, Fixed32::GetInfinity());
+    foo = std::numeric_limits<Fixed32>::lowest();
+    ASSERT_TRUE(foo.isfinite());
+    foo /= Fixed32(0.5);
+    EXPECT_EQ(foo, Fixed32::GetNegativeInfinity());
+}
+
+TEST(Fixed32, GetSign)
+{
+    Fixed32 foo;
+    foo = 0;
+    EXPECT_GT(foo.getsign(), 0);
+    foo = Fixed32(-32.412);
+    EXPECT_LT(foo.getsign(), 0);
+}
+
+TEST(Fixed32, StreamOut)
+{
+    std::ostringstream os;
+    os << Fixed32(2.2f);
+    EXPECT_STREQ(os.str().c_str(), "2.19922");
+}
+
+#ifndef _WIN32
+TEST(Fixed64, StreamOut)
+{
+    std::ostringstream os;
+    os << Fixed64(2.2f);
+    EXPECT_STREQ(os.str().c_str(), "2.2");
+}
+#endif
+
 TEST(Fixed, Int32TypeAnd0bits)
 {
     using fixed = Fixed<std::int32_t, 0>;
@@ -580,4 +670,28 @@ TEST(Fixed, Int32TypeAnd0bits)
     EXPECT_EQ(one * two, two);
     EXPECT_EQ(two / two, one);
     EXPECT_EQ(two - two, zero);
+}
+
+TEST(Fixed, LessThan)
+{
+    using fixed_32_0 = Fixed<std::int32_t, 0>;
+    EXPECT_LT(fixed_32_0(0), fixed_32_0(1));
+}
+
+TEST(Fixed, nextafter)
+{
+    using fixed_32_0 = Fixed<std::int32_t, 0>;
+    EXPECT_EQ(std::nextafter(fixed_32_0(0), fixed_32_0( 0)),  0.0);
+    EXPECT_EQ(std::nextafter(fixed_32_0(0), fixed_32_0(+1)), +1.0);
+    EXPECT_EQ(std::nextafter(fixed_32_0(0), fixed_32_0(-1)), -1.0);
+
+    using fixed_32_1 = Fixed<std::int32_t, 1>;
+    EXPECT_EQ(std::nextafter(fixed_32_1(0), fixed_32_1( 0)),  0.0);
+    EXPECT_EQ(std::nextafter(fixed_32_1(0), fixed_32_1(+1)), +0.5);
+    EXPECT_EQ(std::nextafter(fixed_32_1(0), fixed_32_1(-1)), -0.5);
+
+    using fixed_32_2 = Fixed<std::int32_t, 2>;
+    EXPECT_EQ(std::nextafter(fixed_32_2(0), fixed_32_2( 0)),  0.0);
+    EXPECT_EQ(std::nextafter(fixed_32_2(0), fixed_32_2(+1)), +0.25);
+    EXPECT_EQ(std::nextafter(fixed_32_2(0), fixed_32_2(-1)), -0.25);
 }

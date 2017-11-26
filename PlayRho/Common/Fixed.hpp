@@ -49,9 +49,15 @@ namespace playrho
         /// @brief Value type.
         using value_type = BASE_TYPE;
         
+        /// @brief Total number of bits.
+        static constexpr unsigned int TotalBits = sizeof(BASE_TYPE) * 8;
+
         /// @brief Fraction bits.
         static constexpr unsigned int FractionBits = FRACTION_BITS;
         
+        /// @brief Whole value bits.
+        static constexpr unsigned int WholeBits = TotalBits - FractionBits;
+
         /// @brief Scale factor.
         static constexpr value_type ScaleFactor = static_cast<value_type>(1u << FractionBits);
 
@@ -724,6 +730,13 @@ namespace playrho
             && (value < Fixed<BT, FB>::GetInfinity());
     }
     
+    /// @brief Output stream operator.
+    template <typename BT, unsigned int FB>
+    inline ::std::ostream& operator<<(::std::ostream& os, const Fixed<BT, FB>& value)
+    {
+        return os << static_cast<double>(value);
+    }
+
     /// @brief 32-bit fixed precision type.
     ///
     /// @note The available numeric fidelity of any 32-bit fixed point type is very limited.
@@ -825,12 +838,6 @@ namespace playrho
     {
         return "Fixed32";
     }
-    
-    /// @brief Output stream operator.
-    inline ::std::ostream& operator<<(::std::ostream& os, const Fixed32& value)
-    {
-        return os << static_cast<double>(value);
-    }
 
 #ifndef _WIN32
     // Fixed64 free functions.
@@ -929,12 +936,6 @@ namespace playrho
     {
         return "Fixed64";
     }
-                
-    /// @brief Output stream operator.
-    inline ::std::ostream& operator<<(::std::ostream& os, const Fixed64& value)
-    {
-        return os << static_cast<double>(value);
-    }
 
 #endif /* !_WIN32 */
 
@@ -991,31 +992,29 @@ namespace std
     {
         return hypot(static_cast<double>(x), static_cast<double>(y));
     }
-
-    // Fixed32
-
-    /// @brief Template specialization of numeric limits for Fixed32.
+    
+    /// @brief Template specialization of numeric limits for Fixed types.
     /// @sa http://en.cppreference.com/w/cpp/types/numeric_limits
-    template <>
-    class numeric_limits<playrho::Fixed32>
+    template <typename BT, unsigned int FB>
+    class numeric_limits<playrho::Fixed<BT,FB>>
     {
     public:
         static constexpr bool is_specialized = true; ///< Type is specialized.
         
         /// @brief Gets the min value available for the type.
-        static constexpr playrho::Fixed32 min() noexcept { return playrho::Fixed32::GetMin(); }
+        static constexpr playrho::Fixed<BT,FB> min() noexcept { return playrho::Fixed<BT,FB>::GetMin(); }
 
         /// @brief Gets the max value available for the type.
-        static constexpr playrho::Fixed32 max() noexcept    { return playrho::Fixed32::GetMax(); }
+        static constexpr playrho::Fixed<BT,FB> max() noexcept    { return playrho::Fixed<BT,FB>::GetMax(); }
 
         /// @brief Gets the lowest value available for the type.
-        static constexpr playrho::Fixed32 lowest() noexcept { return playrho::Fixed32::GetLowest(); }
+        static constexpr playrho::Fixed<BT,FB> lowest() noexcept { return playrho::Fixed<BT,FB>::GetLowest(); }
         
         /// @brief Number of radix digits that can be represented.
-        static constexpr int digits = 31 - playrho::Fixed32::FractionBits;
+        static constexpr int digits = playrho::Fixed<BT,FB>::WholeBits - 1;
 
         /// @brief Number of decimal digits that can be represented.
-        static constexpr int digits10 = 31 - playrho::Fixed32::FractionBits;
+        static constexpr int digits10 = playrho::Fixed<BT,FB>::WholeBits - 1;
         
         /// @brief Number of decimal digits necessary to differentiate all values.
         static constexpr int max_digits10 = 5; // TODO(lou): check this
@@ -1026,10 +1025,10 @@ namespace std
         static constexpr int radix = 0; ///< Radix used by the type.
 
         /// @brief Gets the epsilon value for the type.
-        static constexpr playrho::Fixed32 epsilon() noexcept { return playrho::Fixed32{0}; } // TODO(lou)
+        static constexpr playrho::Fixed32 epsilon() noexcept { return playrho::Fixed<BT,FB>{0}; } // TODO(lou)
         
         /// @brief Gets the round error value for the type.
-        static constexpr playrho::Fixed32 round_error() noexcept { return playrho::Fixed32{0}; } // TODO(lou)
+        static constexpr playrho::Fixed32 round_error() noexcept { return playrho::Fixed<BT,FB>{0}; } // TODO(lou)
         
         /// @brief One more than smallest negative power of the radix that's a valid
         ///    normalized floating-point value.
@@ -1052,16 +1051,16 @@ namespace std
         static constexpr bool has_denorm_loss = false; ///< Has denorm loss amount.
 
         /// @brief Gets the infinite value for the type.
-        static constexpr playrho::Fixed32 infinity() noexcept { return playrho::Fixed32::GetInfinity(); }
+        static constexpr playrho::Fixed<BT,FB> infinity() noexcept { return playrho::Fixed<BT,FB>::GetInfinity(); }
         
         /// @brief Gets the quiet NaN value for the type.
-        static constexpr playrho::Fixed32 quiet_NaN() noexcept { return playrho::Fixed32::GetNaN(); }
+        static constexpr playrho::Fixed<BT,FB> quiet_NaN() noexcept { return playrho::Fixed<BT,FB>::GetNaN(); }
 
         /// @brief Gets the signaling NaN value for the type.
-        static constexpr playrho::Fixed32 signaling_NaN() noexcept { return playrho::Fixed32{0}; }
+        static constexpr playrho::Fixed<BT,FB> signaling_NaN() noexcept { return playrho::Fixed<BT,FB>{0}; }
         
         /// @brief Gets the denorm value for the type.
-        static constexpr playrho::Fixed32 denorm_min() noexcept { return playrho::Fixed32{0}; }
+        static constexpr playrho::Fixed<BT,FB> denorm_min() noexcept { return playrho::Fixed<BT,FB>{0}; }
         
         static constexpr bool is_iec559 = false; ///< @brief Not an IEEE 754 floating-point type.
         static constexpr bool is_bounded = true; ///< Type bounded: has limited precision.
@@ -1071,89 +1070,7 @@ namespace std
         static constexpr bool tinyness_before = false; ///< Doesn't detect tinyness before rounding.
         static constexpr float_round_style round_style = round_toward_zero; ///< Rounds down.
     };
-
-#ifndef _WIN32
-
-    /// @brief Template specialization of numeric limits for Fixed64.
-    /// @sa http://en.cppreference.com/w/cpp/types/numeric_limits
-    template <>
-    class numeric_limits<playrho::Fixed64>
-    {
-    public:
-        static constexpr bool is_specialized = true; ///< Type is specialized.
-        
-        /// @brief Gets the min value available for the type.
-        static constexpr playrho::Fixed64 min() noexcept { return playrho::Fixed64::GetMin(); }
-
-        /// @brief Gets the max value available for the type.
-        static constexpr playrho::Fixed64 max() noexcept    { return playrho::Fixed64::GetMax(); }
-        
-        /// @brief Gets the lowest value available for the type.
-        static constexpr playrho::Fixed64 lowest() noexcept { return playrho::Fixed64::GetLowest(); }
-        
-        /// @brief Number of radix digits that can be represented.
-        static constexpr int digits = 63 - playrho::Fixed64::FractionBits;
-
-        /// @brief Number of decimal digits that can be represented.
-        static constexpr int digits10 = 63 - playrho::Fixed64::FractionBits;
-
-        /// @brief Number of decimal digits necessary to differentiate all values.
-        static constexpr int max_digits10 = 10; // TODO(lou): check this
-        
-        static constexpr bool is_signed = true; ///< Identifies signed types.
-        static constexpr bool is_integer = false; ///< Identifies integer types.
-        static constexpr bool is_exact = true; ///< Identifies exact type.
-        static constexpr int radix = 0; ///< Radix used by the type.
-
-        /// @brief Gets the epsilon value for the type.
-        static constexpr playrho::Fixed64 epsilon() noexcept { return playrho::Fixed64{0}; } // TODO(lou)
-        
-        /// @brief Gets the round error value for the type.
-        static constexpr playrho::Fixed64 round_error() noexcept { return playrho::Fixed64{0}; } // TODO(lou)
-        
-        /// @brief One more than smallest negative power of the radix that's a valid
-        ///    normalized floating-point value.
-        static constexpr int min_exponent = 0;
-
-        /// @brief Smallest negative power of ten that's a valid normalized floating-point value.
-        static constexpr int min_exponent10 = 0;
-        
-        /// @brief One more than largest integer power of radix that's a valid finite
-        ///   floating-point value.
-        static constexpr int max_exponent = 0;
-        
-        /// @brief Largest integer power of 10 that's a valid finite floating-point value.
-        static constexpr int max_exponent10 = 0;
-        
-        static constexpr bool has_infinity = true; ///< Whether can represent infinity.
-        static constexpr bool has_quiet_NaN = true; ///< Whether can represent quiet-NaN.
-        static constexpr bool has_signaling_NaN = false; ///< Whether can represent signaling-NaN.
-        static constexpr float_denorm_style has_denorm = denorm_absent; ///< Denorm style used.
-        static constexpr bool has_denorm_loss = false; ///< Has denorm loss amount.
-
-        /// @brief Gets the infinite value for the type.
-        static constexpr playrho::Fixed64 infinity() noexcept { return playrho::Fixed64::GetInfinity(); }
-
-        /// @brief Gets the quiet NaN value for the type.
-        static constexpr playrho::Fixed64 quiet_NaN() noexcept { return playrho::Fixed64::GetNaN(); }
-        
-        /// @brief Gets the signaling NaN value for the type.
-        static constexpr playrho::Fixed64 signaling_NaN() noexcept { return playrho::Fixed64{0}; }
-
-        /// @brief Gets the denorm value for the type.
-        static constexpr playrho::Fixed64 denorm_min() noexcept { return playrho::Fixed64{0}; }
-        
-        static constexpr bool is_iec559 = false; ///< Not an IEEE 754 floating-point type.
-        static constexpr bool is_bounded = true; ///< Type bounded: has limited precision.
-        static constexpr bool is_modulo = false; ///< Doesn't modulo arithmetic overflows.
-        
-        static constexpr bool traps = false; ///< Doesn't do traps.
-        static constexpr bool tinyness_before = false; ///< Doesn't detect tinyness before rounding.
-        static constexpr float_round_style round_style = round_toward_zero; ///< Rounds down.
-    };
     
-#endif /* _WIN32 */
-
 } // namespace std
 
 #endif // PLAYRHO_COMMON_FIXED_HPP

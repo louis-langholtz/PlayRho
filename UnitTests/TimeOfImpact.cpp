@@ -20,6 +20,7 @@
 #include <PlayRho/Collision/TimeOfImpact.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/Shapes/PolygonShape.hpp>
+#include <set>
 
 using namespace playrho;
 
@@ -134,6 +135,20 @@ TEST(TOIOutput, InitConstruction)
     //EXPECT_EQ(foo.get_sum_finder_iters(), 0);
     EXPECT_EQ(foo.stats.sum_dist_iters, 5);
     EXPECT_EQ(foo.stats.sum_root_iters, 10);
+}
+
+TEST(TOIOutput, GetName)
+{
+    std::set<std::string> names;
+    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_unknown)).second);
+    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_overlapped)).second);
+    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_touching)).second);
+    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_separated)).second);
+    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_maxRootIters)).second);
+    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_nextAfter)).second);
+    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_maxToiIters)).second);
+    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_belowMinTarget)).second);
+    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_maxDistIters)).second);
 }
 
 TEST(TimeOfImpact, Overlapped)
@@ -774,6 +789,26 @@ TEST(TimeOfImpact, TryOutDifferentConfs)
     {
         const auto sweepA = Sweep{
             Position{Length2{-5_m, 0_m}, 0_deg},
+            Position{Length2{-0_m, 0_m}, 0_deg}
+        };
+        const auto sweepB = Sweep{
+            Position{Length2{+5_m, 0_m}, 0_deg},
+            Position{Length2{+0_m, 0_m}, 0_deg}
+        };
+        const auto conf = ToiConf{}
+            .UseTargetDepth(0_m)
+            .UseTolerance(0_m)
+            .UseMaxRootIters(0)
+            .UseMaxToiIters(1)
+            .UseMaxDistIters(1)
+            ;
+        const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
+        EXPECT_EQ(output.state, TOIOutput::e_maxRootIters);
+    }
+
+    {
+        const auto sweepA = Sweep{
+            Position{Length2{-5_m, 0_m}, 0_deg},
             Position{Length2{-5_m, 0_m}, 0_deg}
         };
         const auto sweepB = Sweep{
@@ -909,3 +944,4 @@ TEST(TimeOfImpact, TryOutDifferentConfs)
         EXPECT_EQ(output.stats.sum_root_iters, 2);
     }
 }
+
