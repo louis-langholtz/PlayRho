@@ -882,7 +882,7 @@ TEST(World, StepZeroTimeDoesNothing)
         pos = body->GetLocation();
         
         EXPECT_EQ(GetX(GetLinearVelocity(*body)), 0_mps);
-        EXPECT_TRUE(AlmostEqual(Real{GetY(GetLinearVelocity(*body)) / 1_mps}, GetY(vel) / 1_mps));
+        EXPECT_TRUE(AlmostEqual(Real{GetY(GetLinearVelocity(*body)) / 1_mps}, Real{GetY(vel) / 1_mps}));
         vel = GetLinearVelocity(*body);
     }
 }
@@ -989,7 +989,8 @@ TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
         
         EXPECT_EQ(GetX(GetLinearVelocity(*body)), 0_mps);
         EXPECT_LT(GetY(GetLinearVelocity(*body)), GetY(vel));
-        EXPECT_TRUE(AlmostEqual(GetY(GetLinearVelocity(*body)) / 1_mps, (GetY(vel) + GetY(gravity) * time_inc) / 1_mps));
+        EXPECT_TRUE(AlmostEqual(Real{GetY(GetLinearVelocity(*body)) / 1_mps},
+                                Real{(GetY(vel) + GetY(gravity) * time_inc) / 1_mps}));
         vel = GetLinearVelocity(*body);
     }
 }
@@ -1038,7 +1039,8 @@ TEST(World, BodyAccelRevPerSpecWithNegativeTimeAndNoVelOrPosIterations)
         
         EXPECT_EQ(GetX(GetLinearVelocity(*body)), 0_mps);
         EXPECT_GT(GetY(GetLinearVelocity(*body)), GetY(vel));
-        EXPECT_TRUE(AlmostEqual(GetY(GetLinearVelocity(*body)) / 1_mps, (GetY(vel) + GetY(gravity) * time_inc) / 1_mps));
+        EXPECT_TRUE(AlmostEqual(Real{GetY(GetLinearVelocity(*body)) / 1_mps},
+                                Real{(GetY(vel) + GetY(gravity) * time_inc) / 1_mps}));
         vel = GetLinearVelocity(*body);
     }
 }
@@ -1176,9 +1178,11 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
         world.Step(conf);
         ++steps;
         
-        EXPECT_TRUE(AlmostEqual(GetX(body_a->GetLocation()) / Meter, (GetX(pos_a) + x * time_inc * 1_mps) / Meter));
+        EXPECT_TRUE(AlmostEqual(Real{GetX(body_a->GetLocation()) / Meter},
+                                Real{(GetX(pos_a) + x * time_inc * 1_mps) / Meter}));
         EXPECT_EQ(GetY(body_a->GetLocation()), 0_m);
-        EXPECT_TRUE(AlmostEqual(GetX(body_b->GetLocation()) / Meter, (GetX(pos_b) - x * time_inc * 1_mps) / Meter));
+        EXPECT_TRUE(AlmostEqual(Real{GetX(body_b->GetLocation()) / Meter},
+                                Real{(GetX(pos_b) - x * time_inc * 1_mps) / Meter}));
         EXPECT_EQ(GetY(body_b->GetLocation()), 0_m);
 
         EXPECT_EQ(GetX(GetLinearVelocity(*body_a)), +x * 1_mps);
@@ -1592,7 +1596,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
         const auto new_pos_diff = body2->GetLocation() - body1->GetLocation();
         const auto new_distance = GetMagnitude(new_pos_diff);
         
-        if (AlmostEqual(new_distance / Meter, full_separation / Meter) || new_distance > full_separation)
+        if (AlmostEqual(Real{new_distance / Meter}, Real{full_separation / Meter}) || new_distance > full_separation)
         {
             break;
         }
@@ -1746,7 +1750,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
     auto distance = GetMagnitude(position_diff);
     
     auto angle = GetAngle(position_diff);
-    EXPECT_TRUE(AlmostEqual(angle / 1_rad, Real{0}));
+    EXPECT_TRUE(AlmostEqual(Real{angle / 1_rad}, Real{0}));
     
     auto lastpos1 = body1->GetLocation();
     auto lastpos2 = body2->GetLocation();
@@ -1795,15 +1799,15 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
         EXPECT_EQ(GetX(v2.linear), 0_mps);
         EXPECT_EQ(GetY(v2.linear), 0_mps);
 
-        EXPECT_TRUE(AlmostEqual(body1->GetAngle() / 1_rad, last_angle_1 / 1_rad));
-        EXPECT_TRUE(AlmostEqual(body2->GetAngle() / 1_rad, last_angle_2 / 1_rad));
+        EXPECT_TRUE(AlmostEqual(Real{body1->GetAngle() / 1_rad}, Real{last_angle_1 / 1_rad}));
+        EXPECT_TRUE(AlmostEqual(Real{body2->GetAngle() / 1_rad}, Real{last_angle_2 / 1_rad}));
         last_angle_1 = body1->GetAngle();
         last_angle_2 = body2->GetAngle();
 
         const auto new_pos_diff = body1->GetLocation() - body2->GetLocation();
         const auto new_distance = GetMagnitude(new_pos_diff);
         
-        if (AlmostEqual(new_distance / Meter, full_separation / Meter) || new_distance > full_separation)
+        if (AlmostEqual(Real{new_distance / Meter}, Real{full_separation / Meter}) || new_distance > full_separation)
         {
             break;
         }
@@ -1829,11 +1833,11 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
         
         // Body 1 moves right only.
         EXPECT_GT(GetX(body1->GetLocation()), GetX(lastpos1));
-        EXPECT_TRUE(AlmostEqual(GetY(body1->GetLocation()) / Meter, GetY(lastpos1) / Meter));
+        EXPECT_TRUE(AlmostEqual(Real{GetY(body1->GetLocation()) / Meter}, Real{GetY(lastpos1) / Meter}));
 
         // Body 2 moves left only.
         EXPECT_LT(GetX(body2->GetLocation()), GetX(lastpos2));
-        EXPECT_TRUE(AlmostEqual(GetY(body2->GetLocation()) / Meter, GetY(lastpos2) / Meter));
+        EXPECT_TRUE(AlmostEqual(Real{GetY(body2->GetLocation()) / Meter}, Real{GetY(lastpos2) / Meter}));
 
         lastpos1 = body1->GetLocation();
         lastpos2 = body2->GetLocation();
@@ -1845,7 +1849,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
         distance = new_distance;
         
         const auto new_angle = GetAngle(new_pos_diff);
-        EXPECT_TRUE(AlmostEqual(angle / 1_rad, new_angle / 1_rad));
+        EXPECT_TRUE(AlmostEqual(Real{angle / 1_rad}, Real{new_angle / 1_rad}));
         
         angle = new_angle;
     }
@@ -1953,7 +1957,8 @@ TEST(World, CollidingDynamicBodies)
     EXPECT_GT(GetX(body_b->GetLocation()) / Meter, Real(+1) - tolerance);
     
     // and their deltas from -1 and +1 should be about equal.
-    EXPECT_TRUE(AlmostEqual((GetX(body_a->GetLocation()) + 1_m) / Meter, (1_m - GetX(body_b->GetLocation())) / Meter));
+    EXPECT_TRUE(AlmostEqual(Real{(GetX(body_a->GetLocation()) + 1_m) / Meter},
+                            Real{(1_m - GetX(body_b->GetLocation())) / Meter}));
 
     EXPECT_GE(GetX(listener.body_a[0]), -1_m);
     EXPECT_LE(GetX(listener.body_b[0]), +1_m);
@@ -1976,7 +1981,8 @@ TEST(World, CollidingDynamicBodies)
     EXPECT_GT(GetX(body_b->GetLocation()), +1_m);
     
     // and their deltas from -1 and +1 should be about equal.
-    EXPECT_TRUE(AlmostEqual((GetX(body_a->GetLocation()) + 1_m) / Meter, (1_m - GetX(body_b->GetLocation())) / Meter));
+    EXPECT_TRUE(AlmostEqual(Real{(GetX(body_a->GetLocation()) + 1_m) / Meter},
+                            Real{(1_m - GetX(body_b->GetLocation())) / Meter}));
 
     EXPECT_LT(GetX(listener.body_a[1]), -1_m);
     EXPECT_GT(GetX(listener.body_b[1]), +1_m);
@@ -2482,8 +2488,8 @@ TEST(World, SpeedingBulletBallWontTunnel)
             }
             else
             {
-                EXPECT_TRUE(AlmostEqual(GetX(ball_body->GetVelocity().linear) / 1_mps,
-                                         static_cast<Real>(increments) * GetX(velocity) / 1_mps));
+                EXPECT_TRUE(AlmostEqual(Real{GetX(ball_body->GetVelocity().linear) / 1_mps},
+                                        Real{static_cast<Real>(increments) * GetX(velocity) / 1_mps}));
             }
         }
         
@@ -2524,8 +2530,8 @@ TEST(World, SpeedingBulletBallWontTunnel)
             }
             else
             {
-                EXPECT_TRUE(AlmostEqual(GetX(ball_body->GetVelocity().linear) / 1_mps,
-                                         -static_cast<Real>(increments) * GetX(velocity) / 1_mps));
+                EXPECT_TRUE(AlmostEqual(Real{GetX(ball_body->GetVelocity().linear) / 1_mps},
+                                        Real{-static_cast<Real>(increments) * GetX(velocity) / 1_mps}));
             }
         }
         

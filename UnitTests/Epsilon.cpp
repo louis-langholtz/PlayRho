@@ -76,13 +76,13 @@ TEST(Epsilon, AlmostEqual)
         EXPECT_LT(a, std::numeric_limits<float>::min());
         EXPECT_LT(a, std::numeric_limits<float>::epsilon());
         EXPECT_TRUE(AlmostZero(a));
-        EXPECT_TRUE(AlmostEqual(std::numeric_limits<float>::min() * std::numeric_limits<float>::epsilon() * 2, 0));
+        EXPECT_TRUE(AlmostEqual(std::numeric_limits<float>::min() * std::numeric_limits<float>::epsilon() * 2, 0.0f));
         EXPECT_TRUE(AlmostZero(std::numeric_limits<float>::min() * std::numeric_limits<float>::epsilon() * 2));
         EXPECT_FALSE(AlmostZero(std::numeric_limits<float>::min()));
 
         EXPECT_FALSE(AlmostEqual(std::numeric_limits<float>::min() * 2, std::numeric_limits<float>::min()));
         EXPECT_FALSE(AlmostEqual(std::numeric_limits<float>::min(), 0.0f));
-        EXPECT_FALSE(AlmostEqual(std::numeric_limits<float>::min() * float(1.001), 0));
+        EXPECT_FALSE(AlmostEqual(std::numeric_limits<float>::min() * float(1.001), 0.0f));
         EXPECT_TRUE(AlmostEqual(std::numeric_limits<float>::min() * 0.5f, std::numeric_limits<float>::min()));
         EXPECT_TRUE(AlmostEqual(std::numeric_limits<float>::min() * 0.5f, 0.0f));
         EXPECT_TRUE(AlmostZero(std::numeric_limits<float>::min() * 0.5f));

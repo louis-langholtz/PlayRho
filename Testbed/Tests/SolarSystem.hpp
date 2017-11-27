@@ -83,6 +83,12 @@ public:
         os << " km (" << minName << "), to ";
         os << static_cast<float>(Real{maxRadius / 1_km});
         os << " km (" << maxName << ").";
+        if (std::is_same<Real, float>::value)
+        {
+            os << "\n\n";
+            os << "Note: recompile with playrho::Real set to use double (or bigger)";
+            os << " for collisions to work better at these scales.";
+        }
 
         auto conf = Test::Conf{};
         conf.description = os.str();
@@ -93,7 +99,7 @@ public:
         conf.neededSettings |= (1u << NeedDrawLabelsField);
         conf.neededSettings |= (1u << NeedMaxTranslation);
         conf.neededSettings |= (1u << NeedDeltaTime);
-        conf.settings.linearSlop = 1000.0f; // minRadius / 1000_m;
+        conf.settings.linearSlop = 200 * 1000.0f; // 200_km;
         conf.settings.cameraZoom = 2.2e11f;
         conf.settings.drawLabels = true;
         conf.settings.maxTranslation = std::numeric_limits<float>::infinity();
@@ -106,7 +112,7 @@ public:
     SolarSystem(): Test(GetTestConf())
     {
         m_world.SetGravity(LinearAcceleration2{});
-        const auto DynamicBD = BodyDef{}.UseType(BodyType::Dynamic);
+        const auto DynamicBD = BodyDef{}.UseType(BodyType::Dynamic).UseBullet(true);
         for (auto& sso: SolarSystemBodies)
         {
             const auto p = sso.orbitalPeriod;

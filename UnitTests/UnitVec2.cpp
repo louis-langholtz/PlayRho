@@ -150,6 +150,22 @@ TEST(UnitVec2, GetForInvalid)
     }
 }
 
+TEST(UnitVec2, Get)
+{
+    EXPECT_EQ(UnitVec2::Get(Real(+1), Real(0)).first, UnitVec2::GetRight());
+    EXPECT_EQ(UnitVec2::Get(Real(-1), Real(0)).first, UnitVec2::GetLeft());
+    EXPECT_EQ(UnitVec2::Get(Real(0), Real(+1)).first, UnitVec2::GetTop());
+    EXPECT_EQ(UnitVec2::Get(Real(0), Real(-1)).first, UnitVec2::GetBottom());
+    EXPECT_EQ(UnitVec2::Get(+std::numeric_limits<Real>::max(), Real(0)).first, UnitVec2::GetRight());
+    EXPECT_EQ(UnitVec2::Get(-std::numeric_limits<Real>::max(), Real(0)).first, UnitVec2::GetLeft());
+    EXPECT_EQ(UnitVec2::Get(Real(0), +std::numeric_limits<Real>::max()).first, UnitVec2::GetTop());
+    EXPECT_EQ(UnitVec2::Get(Real(0), -std::numeric_limits<Real>::max()).first, UnitVec2::GetBottom());
+    EXPECT_EQ(UnitVec2::Get(+std::numeric_limits<Real>::min(), Real(0)).first, UnitVec2::GetRight());
+    EXPECT_EQ(UnitVec2::Get(-std::numeric_limits<Real>::min(), Real(0)).first, UnitVec2::GetLeft());
+    EXPECT_EQ(UnitVec2::Get(Real(0), +std::numeric_limits<Real>::min()).first, UnitVec2::GetTop());
+    EXPECT_EQ(UnitVec2::Get(Real(0), -std::numeric_limits<Real>::min()).first, UnitVec2::GetBottom());
+}
+
 TEST(UnitVec2, Absolute)
 {
     EXPECT_EQ(UnitVec2::GetZero().Absolute(), UnitVec2::GetZero());

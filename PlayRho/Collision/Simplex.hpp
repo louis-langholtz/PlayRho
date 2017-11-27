@@ -293,7 +293,7 @@ namespace playrho {
 #ifndef NDEBUG
         const auto sum = std::accumulate(std::begin(normalizedWeights), std::end(normalizedWeights),
                                          Real(0));
-        assert(AlmostEqual(1, sum));
+        assert(AlmostEqual(Real{1}, sum));
 #endif
     }
 

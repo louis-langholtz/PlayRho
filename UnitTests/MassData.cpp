@@ -240,8 +240,8 @@ TEST(MassData, GetForZeroVertexRadiusRectangle)
     EXPECT_NEAR(double(StripUnit(mass_data.I)),
                 90.666664 * double(StripUnit(density)),
                 0.008);
-    EXPECT_TRUE(AlmostEqual(GetX(mass_data.center) / Meter, GetX(shape.GetCentroid()) / Meter));
-    EXPECT_TRUE(AlmostEqual(GetY(mass_data.center) / Meter, GetY(shape.GetCentroid()) / Meter));
+    EXPECT_TRUE(AlmostEqual(Real{GetX(mass_data.center) / Meter}, Real{GetX(shape.GetCentroid()) / Meter}));
+    EXPECT_TRUE(AlmostEqual(Real{GetY(mass_data.center) / Meter}, Real{GetY(shape.GetCentroid()) / Meter}));
     
     // Area moment of inertia (I) for a rectangle is Ix + Iy = (b * h^3) / 12 + (b^3 * h) / 12....
     const auto i = 8.0 * 2.0 * 2.0 * 2.0 / 12.0 + 8.0 * 8.0 * 8.0 * 2.0 / 12.0;

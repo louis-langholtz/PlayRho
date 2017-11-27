@@ -152,11 +152,9 @@ public:
 
     /// @brief Target depth.
     /// @details Target depth of overlap for calculating the TOI for CCD elligible bodies.
-    /// @note Must be greater than 0.
-    /// @note Must not be subnormal.
-    /// @note Must be less than twice the world's minimum vertex radius.
+    /// @note Recommend value that's less than twice the world's minimum vertex radius.
     /// @note Used in the TOI phase of step processing.
-    Positive<Length> targetDepth = DefaultLinearSlop * Real{3};
+    Length targetDepth = DefaultLinearSlop * Real{3};
     
     /// @brief Tolerance.
     /// @details The acceptable plus or minus tolerance from the target depth for TOI calculations.

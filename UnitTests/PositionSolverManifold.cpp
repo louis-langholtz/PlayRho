@@ -91,16 +91,16 @@ TEST(PositionSolverManifold, GetPSM)
     const auto total_radius = GetVertexRadius(shape0) + GetVertexRadius(shape1);
     
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
-    EXPECT_TRUE(AlmostEqual(GetX(manifold.GetPoint(0).localPoint) / Meter, Real(-2.0))); // left
-    EXPECT_TRUE(AlmostEqual(GetY(manifold.GetPoint(0).localPoint) / Meter, Real(-1.5))); // top
+    EXPECT_TRUE(AlmostEqual(Real{GetX(manifold.GetPoint(0).localPoint) / Meter}, Real(-2.0))); // left
+    EXPECT_TRUE(AlmostEqual(Real{GetY(manifold.GetPoint(0).localPoint) / Meter}, Real(-1.5))); // top
     ASSERT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_vertex);
     ASSERT_EQ(manifold.GetPoint(0).contactFeature.indexA, 0);
     ASSERT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_face);
     ASSERT_EQ(manifold.GetPoint(0).contactFeature.indexB, 2);
     
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(1));
-    EXPECT_TRUE(AlmostEqual(GetX(manifold.GetPoint(1).localPoint) / Meter, Real(-2.0))); // left
-    EXPECT_TRUE(AlmostEqual(GetY(manifold.GetPoint(1).localPoint) / Meter, Real(+1.5))); // bottom
+    EXPECT_TRUE(AlmostEqual(Real{GetX(manifold.GetPoint(1).localPoint) / Meter}, Real(-2.0))); // left
+    EXPECT_TRUE(AlmostEqual(Real{GetY(manifold.GetPoint(1).localPoint) / Meter}, Real(+1.5))); // bottom
     ASSERT_EQ(manifold.GetPoint(1).contactFeature.typeA, ContactFeature::e_vertex);
     ASSERT_EQ(manifold.GetPoint(1).contactFeature.indexA, 1);
     ASSERT_EQ(manifold.GetPoint(1).contactFeature.typeB, ContactFeature::e_face);
@@ -117,14 +117,14 @@ TEST(PositionSolverManifold, GetPSM)
         EXPECT_TRUE(AlmostEqual(world_manifold.GetNormal().GetY(), Real(0)));
         
         ASSERT_GT(world_manifold.GetPointCount(), Manifold::size_type(0));
-        EXPECT_TRUE(AlmostEqual(GetX(world_manifold.GetPoint(0)) / Meter, Real(+0.5)));
-        EXPECT_TRUE(AlmostEqual(GetY(world_manifold.GetPoint(0)) / Meter, Real(-1.5)));
-        EXPECT_TRUE(AlmostEqual(world_manifold.GetSeparation(0) / Meter, Real(-1) - total_radius / Meter));
+        EXPECT_TRUE(AlmostEqual(Real{GetX(world_manifold.GetPoint(0)) / Meter}, Real(+0.5)));
+        EXPECT_TRUE(AlmostEqual(Real{GetY(world_manifold.GetPoint(0)) / Meter}, Real(-1.5)));
+        EXPECT_TRUE(AlmostEqual(Real{world_manifold.GetSeparation(0) / Meter}, Real(-1) - total_radius / Meter));
         
         ASSERT_GT(world_manifold.GetPointCount(), Manifold::size_type(1));
-        EXPECT_TRUE(AlmostEqual(GetX(world_manifold.GetPoint(1)) / Meter, Real(+0.5)));
-        EXPECT_TRUE(AlmostEqual(GetY(world_manifold.GetPoint(1)) / Meter, Real(+1.5)));
-        EXPECT_TRUE(AlmostEqual(world_manifold.GetSeparation(1) / Meter, Real(-1) - total_radius / Meter));
+        EXPECT_TRUE(AlmostEqual(Real{GetX(world_manifold.GetPoint(1)) / Meter}, Real(+0.5)));
+        EXPECT_TRUE(AlmostEqual(Real{GetY(world_manifold.GetPoint(1)) / Meter}, Real(+1.5)));
+        EXPECT_TRUE(AlmostEqual(Real{world_manifold.GetSeparation(1) / Meter}, Real(-1) - total_radius / Meter));
     }
     
     {
@@ -132,15 +132,15 @@ TEST(PositionSolverManifold, GetPSM)
         EXPECT_NEAR(static_cast<double>(psm0.m_normal.GetX()), 1.0, 0.00001);
         EXPECT_NEAR(static_cast<double>(psm0.m_normal.GetY()), 0.0, 0.00001);
         EXPECT_NEAR(static_cast<double>(Real{psm0.m_separation/Meter}), -1.0, 0.00001);
-        EXPECT_TRUE(AlmostEqual(GetX(psm0.m_point) / Meter, Real(0)));
-        EXPECT_TRUE(AlmostEqual(GetY(psm0.m_point) / Meter, Real(-1.5)));
+        EXPECT_TRUE(AlmostEqual(Real{GetX(psm0.m_point) / Meter}, Real(0)));
+        EXPECT_TRUE(AlmostEqual(Real{GetY(psm0.m_point) / Meter}, Real(-1.5)));
     }
     {
         const auto psm1 = GetPSM(manifold, 1, xfm0, xfm1);
         EXPECT_NEAR(static_cast<double>(psm1.m_normal.GetX()), 1.0, 0.0001);
         EXPECT_NEAR(static_cast<double>(psm1.m_normal.GetY()), 0.0, 0.0001);
         EXPECT_NEAR(static_cast<double>(Real{psm1.m_separation/Meter}), -1.0, 0.00001);
-        EXPECT_TRUE(AlmostEqual(GetX(psm1.m_point) / Meter, Real(0)));
-        EXPECT_TRUE(AlmostEqual(GetY(psm1.m_point) / Meter, Real(+1.5)));
+        EXPECT_TRUE(AlmostEqual(Real{GetX(psm1.m_point) / Meter}, Real(0)));
+        EXPECT_TRUE(AlmostEqual(Real{GetY(psm1.m_point) / Meter}, Real(+1.5)));
     }
 }

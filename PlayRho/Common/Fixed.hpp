@@ -737,6 +737,38 @@ namespace playrho
             && (value < Fixed<BT, FB>::GetInfinity());
     }
     
+    /// @brief Computes the rounded value of the given value.
+    template <typename BT, unsigned int FB>
+    inline Fixed<BT, FB> RoundOff(Fixed<BT, FB> value, std::uint32_t precision = 100000)
+    {
+        const auto factor = Fixed<BT, FB>(precision);
+        return Round(value * factor) / factor;
+    }
+
+    /// @brief Gets whether a given value is almost zero.
+    /// @details An almost zero value is "subnormal". Dividing by these values can lead to
+    /// odd results like a divide by zero trap occurring.
+    /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
+    template <typename BT, unsigned int FB>
+    constexpr inline bool AlmostZero(Fixed<BT, FB> value)
+    {
+        return value == 0;
+    }
+
+    /// @brief Determines whether the given two values are "almost equal".
+    template <typename BT, unsigned int FB>
+    constexpr inline bool AlmostEqual(Fixed<BT, FB> x, Fixed<BT, FB> y, int ulp = 2)
+    {
+        return Abs(x - y) <= Fixed<BT, FB>{0, static_cast<std::uint32_t>(ulp)};
+    }
+    
+    /// @brief Gets an invalid value.
+    template <typename BT, unsigned int FB>
+    constexpr Fixed<BT, FB> GetInvalid() noexcept
+    {
+        return Fixed<BT, FB>::GetNaN();
+    }
+
     /// @brief Output stream operator.
     template <typename BT, unsigned int FB>
     inline ::std::ostream& operator<<(::std::ostream& os, const Fixed<BT, FB>& value)
@@ -827,13 +859,6 @@ namespace playrho
     {
         const auto result = lhs.Compare(rhs);
         return result == Fixed32::CmpResult::GreaterThan;
-    }
-
-    /// @brief Gets an invalid value.
-    template <>
-    constexpr Fixed32 GetInvalid() noexcept
-    {
-        return Fixed32::GetNaN();
     }
     
     /// @brief Gets the specialized name for the Fixed32 type.
@@ -926,13 +951,6 @@ namespace playrho
     template<> struct Wider<Fixed32> {
         using type = Fixed64; ///< Wider type.
     };
-
-    /// @brief Gets an invalid value.
-    template <>
-    constexpr Fixed64 GetInvalid() noexcept
-    {
-        return Fixed64::GetNaN();
-    }
     
     /// @brief Gets the specialized name for the Fixed64 type.
     /// @details Provides an interface to a specialized function for getting C-style
