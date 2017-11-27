@@ -303,7 +303,8 @@ AlmostEqual(T x, T y, int ulp = 2)
 /// @note Modulo via std::fmod appears slower than via std::trunc.
 /// @sa ModuloViaTrunc
 template <typename T>
-inline auto ModuloViaFmod(T dividend, T divisor) noexcept
+inline typename std::enable_if<std::is_floating_point<T>::value, T>::type
+ModuloViaFmod(T dividend, T divisor) noexcept
 {
     // Note: modulo via std::fmod appears slower than via std::trunc.
     return static_cast<T>(std::fmod(dividend, divisor));

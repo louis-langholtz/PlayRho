@@ -1387,6 +1387,9 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
         // Compute the TOI for this contact (one or both bodies are active and impenetrable).
         // Computes the time of impact in interval [0, 1]
         const auto output = CalcToi(c, toiConf);
+        assert((output.state == TOIOutput::State::e_touching)
+            || (output.state == TOIOutput::State::e_separated)
+            || (output.state == TOIOutput::State::e_overlapped));
         
         // Use Min function to handle floating point imprecision which possibly otherwise
         // could provide a TOI that's greater than 1.

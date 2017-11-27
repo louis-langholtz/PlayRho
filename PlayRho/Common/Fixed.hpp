@@ -761,6 +761,13 @@ namespace playrho
     {
         return Abs(x - y) <= Fixed<BT, FB>{0, static_cast<std::uint32_t>(ulp)};
     }
+    
+    /// @brief Gets an invalid value.
+    template <typename BT, unsigned int FB>
+    constexpr Fixed<BT, FB> GetInvalid() noexcept
+    {
+        return Fixed<BT, FB>::GetNaN();
+    }
 
     /// @brief Output stream operator.
     template <typename BT, unsigned int FB>
@@ -853,13 +860,6 @@ namespace playrho
         const auto result = lhs.Compare(rhs);
         return result == Fixed32::CmpResult::GreaterThan;
     }
-
-    /// @brief Gets an invalid value.
-    template <>
-    constexpr Fixed32 GetInvalid() noexcept
-    {
-        return Fixed32::GetNaN();
-    }
     
     /// @brief Gets the specialized name for the Fixed32 type.
     /// @details Provides an interface to a specialized function for getting C-style
@@ -951,13 +951,6 @@ namespace playrho
     template<> struct Wider<Fixed32> {
         using type = Fixed64; ///< Wider type.
     };
-
-    /// @brief Gets an invalid value.
-    template <>
-    constexpr Fixed64 GetInvalid() noexcept
-    {
-        return Fixed64::GetNaN();
-    }
     
     /// @brief Gets the specialized name for the Fixed64 type.
     /// @details Provides an interface to a specialized function for getting C-style
