@@ -819,16 +819,22 @@ TEST(TimeOfImpact, MaxRootIters)
 
 TEST(TimeOfImpact, NextAfter)
 {
+    if (!std::is_floating_point<Real>::value)
+    {
+        // Test only designed for fundamental floating point types.
+        return;
+    }
+
     const auto radius = 1_m;
     const auto pos = Length2{};
     const auto proxyA = DistanceProxy{radius, 1, &pos, nullptr};
     const auto proxyB = DistanceProxy{radius, 1, &pos, nullptr};
     const auto sweepA = Sweep{
-        Position{Length2{-2e10_m, 0_m}, 0_deg},
-        Position{Length2{+0_m, 0_m}, 0_deg}
+        Position{Length2{-2e18_m, 0_m}, 0_deg},
+        Position{Length2{+1e16_m, 0_m}, 0_deg}
     };
     const auto sweepB = Sweep{
-        Position{Length2{+2e10_m, 0_m}, 0_deg},
+        Position{Length2{+2e18_m, 0_m}, 0_deg},
         Position{Length2{+0_m, 0_m}, 0_deg}
     };
 
@@ -843,51 +849,35 @@ TEST(TimeOfImpact, NextAfter)
         ;
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
     EXPECT_EQ(output.state, TOIOutput::e_nextAfter);
-    EXPECT_NEAR(static_cast<double>(output.time), 0.99999994039535522, 0.0001);
+    EXPECT_NEAR(static_cast<double>(output.time), 0.99750623441396513, 0.0001);
     EXPECT_EQ(output.stats.max_dist_iters, 1);
     if (std::is_same<Real, float>::value)
     {
-        EXPECT_EQ(output.stats.max_root_iters, 47);
+        EXPECT_EQ(output.stats.max_root_iters, 8);
     }
     else if (std::is_same<Real, double>::value)
     {
-        EXPECT_EQ(output.stats.max_root_iters, 107);
+        EXPECT_EQ(output.stats.max_root_iters, 8);
     }
     else if (std::is_same<Real, long double>::value)
     {
-        EXPECT_EQ(output.stats.max_root_iters, 129);
-    }
-#ifndef _WIN32
-    else if (std::is_same<Real, Fixed64>::value)
-    {
-        EXPECT_EQ(output.stats.max_root_iters, 47);
-    }
-#endif
-    else
-    {
-        EXPECT_EQ(output.stats.max_root_iters, 0);
+        EXPECT_EQ(output.stats.max_root_iters, 6);
     }
     EXPECT_EQ(output.stats.toi_iters, 1);
     EXPECT_EQ(output.stats.sum_dist_iters, 1);
     EXPECT_EQ(output.stats.sum_finder_iters, 0);
     if (std::is_same<Real, float>::value)
     {
-        EXPECT_EQ(output.stats.sum_root_iters, 47);
+        EXPECT_EQ(output.stats.sum_root_iters, 8);
     }
     else if (std::is_same<Real, double>::value)
     {
-        EXPECT_EQ(output.stats.sum_root_iters, 107);
+        EXPECT_EQ(output.stats.sum_root_iters, 8);
     }
     else if (std::is_same<Real, long double>::value)
     {
-        EXPECT_EQ(output.stats.sum_root_iters, 129);
+        EXPECT_EQ(output.stats.sum_root_iters, 6);
     }
-#ifndef _WIN32
-    else if (std::is_same<Real, Fixed64>::value)
-    {
-        EXPECT_EQ(output.stats.sum_root_iters, 47);
-    }
-#endif
     else
     {
         EXPECT_EQ(output.stats.sum_root_iters, 0);
@@ -901,30 +891,40 @@ TEST(TimeOfImpact, MaxTargetSquaredOverflow)
     const auto proxyA = DistanceProxy{radius, 1, &pos, nullptr};
     const auto proxyB = DistanceProxy{radius, 1, &pos, nullptr};
 
-    const auto sweepA = Sweep{
-        Position{Length2{-2e34_m, 0_m}, 0_deg},
-        Position{Length2{+1e34_m, 0_m}, 0_deg}
-    };
-    const auto sweepB = Sweep{
-        Position{Length2{+2e34_m, 0_m}, 0_deg},
-        Position{Length2{-1e33_m, 0_m}, 0_deg}
-    };
     const auto conf = ToiConf{}
-        .UseTargetDepth(0.002_m)
-        .UseTolerance(5e26_m)
+        .UseTargetDepth(0.2_m)
         .UseMaxRootIters(0)
         .UseMaxToiIters(0)
         .UseMaxDistIters(0)
         ;
-    const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
-    EXPECT_EQ(output.state, TOIOutput::e_maxTargetSquaredOverflow);
-    EXPECT_NEAR(static_cast<double>(output.time), 0.0, 0.0001);
-    EXPECT_EQ(output.stats.max_dist_iters, 0);
-    EXPECT_EQ(output.stats.max_root_iters, 0);
-    EXPECT_EQ(output.stats.toi_iters, 0);
-    EXPECT_EQ(output.stats.sum_dist_iters, 0);
-    EXPECT_EQ(output.stats.sum_finder_iters, 0);
-    EXPECT_EQ(output.stats.sum_root_iters, 0);
+
+    if (std::is_floating_point<Real>::value)
+    {
+        const auto sweepA = Sweep{
+            Position{Length2{-2e34_m, 0_m}, 0_deg},
+            Position{Length2{+1e34_m, 0_m}, 0_deg}
+        };
+        const auto sweepB = Sweep{
+            Position{Length2{+2e34_m, 0_m}, 0_deg},
+            Position{Length2{-1e33_m, 0_m}, 0_deg}
+        };
+        const auto output = (std::is_same<Real, float>::value)?
+        GetToiViaSat(proxyA, sweepA, proxyB, sweepB, ToiConf(conf).UseTolerance(5e26_m)):
+        ((std::is_same<Real, double>::value)?
+         GetToiViaSat(proxyA, sweepA, proxyB, sweepB, ToiConf(conf).UseTolerance(5e260_m)):
+         ((std::is_same<Real, long double>::value)?
+          GetToiViaSat(proxyA, sweepA, proxyB, sweepB, ToiConf(conf).UseTolerance(5e3000_m)):
+          TOIOutput{}));
+        
+        EXPECT_EQ(output.state, TOIOutput::e_maxTargetSquaredOverflow);
+        EXPECT_NEAR(static_cast<double>(output.time), 0.0, 0.0001);
+        EXPECT_EQ(output.stats.max_dist_iters, 0);
+        EXPECT_EQ(output.stats.max_root_iters, 0);
+        EXPECT_EQ(output.stats.toi_iters, 0);
+        EXPECT_EQ(output.stats.sum_dist_iters, 0);
+        EXPECT_EQ(output.stats.sum_finder_iters, 0);
+        EXPECT_EQ(output.stats.sum_root_iters, 0);
+    }
 }
 
 #if 0
@@ -965,6 +965,12 @@ TEST(TimeOfImpact, BelowMinTarget)
 
 TEST(TimeOfImpact, TryOutDifferentConfs)
 {
+    if (!std::is_floating_point<Real>::value)
+    {
+        // Test only designed for fundamental floating point types.
+        return;
+    }
+
     const auto radius = 1e10_m;
     const auto pos = Length2{};
     const auto proxyA = DistanceProxy{radius, 1, &pos, nullptr};

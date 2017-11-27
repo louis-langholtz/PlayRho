@@ -222,6 +222,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
             auto s1 = t1EvaluatedDistance;
             auto s2 = t2MinSeparation.distance;
             auto roots = decltype(conf.maxRootIters){0}; // counts # times f(t) checked
+            auto t = t1;
             for (;;)
             {
                 assert(!AlmostZero(s2 - s1));
@@ -245,11 +246,11 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
                     stats.sum_finder_iters += pbIter;
                     stats.sum_root_iters += roots;
                     stats.max_root_iters = std::max(stats.max_root_iters, roots);
-                    return TOIOutput{a1, stats, state};
+                    return TOIOutput{t, stats, state};
                 }
 
                 // Uses secant to improve convergence & bisection to guarantee progress.
-                const auto t = IsOdd(roots)? Secant(target, a1, s1, a2, s2): Bisect(a1, a2);
+                t = IsOdd(roots)? Secant(target, a1, s1, a2, s2): Bisect(a1, a2);
                 
                 // Using secant method, t may equal a2 now.
                 //assert(t != a1);

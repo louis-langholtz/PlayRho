@@ -1335,7 +1335,7 @@ TEST(World, HeavyOnLight)
         switch (sizeof(Real))
         {
             case 4: EXPECT_EQ(numSteps, 736ul); break;
-            case 8: EXPECT_EQ(numSteps, 1826ul); break;
+            case 8: EXPECT_EQ(numSteps, 736ul); break;
         }
 
         // Here we see that the upper body at some point sunk into most of the lower body.
@@ -1373,7 +1373,7 @@ TEST(World, HeavyOnLight)
         switch (sizeof(Real))
         {
             case 4: EXPECT_EQ(numSteps, 724ul); break;
-            case 8: EXPECT_EQ(numSteps, 513ul); break;
+            case 8: EXPECT_EQ(numSteps, 724ul); break;
         }
 
         EXPECT_NEAR(static_cast<double>(Real(upperBodysLowestPoint / Meter)), 5.9476470947265625, 0.001);
