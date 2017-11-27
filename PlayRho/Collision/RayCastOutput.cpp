@@ -82,7 +82,7 @@ RayCastOutput RayCast(const AABB2D& aabb, const RayCastInput& input) noexcept
         const auto lbi = GetLowerBound(aabb)[i];
         const auto ubi = GetUpperBound(aabb)[i];
 
-        if (AlmostZero(pdi / Meter))
+        if (AlmostZero(pdi))
         {
             // Parallel.
             if ((p1i < lbi) || (ubi < p1i))

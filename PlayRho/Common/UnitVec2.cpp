@@ -23,13 +23,25 @@
 
 namespace playrho {
 
-UnitVec2 UnitVec2::Get(const Real x, const Real y, Real& magnitude,
-                       const UnitVec2 fallback) noexcept
+UnitVec2::PolarCoord UnitVec2::Get(const Real x, const Real y, const UnitVec2 fallback) noexcept
 {
-    // XXX perhaps this should use std::hypot() instead like so:
-    //    magnitude = std::hypot(x, y);
-    magnitude = Sqrt(x * x + y * y);
-    return (IsNormal(magnitude)) ? UnitVec2{x / magnitude, y / magnitude} : fallback;
+    // Try the faster way first...
+    const auto magnitudeSquared = x * x + y * y;
+    if (IsNormal(magnitudeSquared))
+    {
+        const auto magnitude = Sqrt(magnitudeSquared);
+        return std::make_pair(UnitVec2{x / magnitude, y / magnitude}, magnitude);
+    }
+    
+    // Failed the faster way, try the more accurate and robust way...
+    const auto magnitude = Hypot(x, y);
+    if (IsNormal(magnitude))
+    {
+        return std::make_pair(UnitVec2{x / magnitude, y / magnitude}, magnitude);
+    }
+    
+    // Give up and return the fallback value.
+    return std::make_pair(fallback, Real(0));
 }
 
 UnitVec2 UnitVec2::Get(const Angle angle) noexcept

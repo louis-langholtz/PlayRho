@@ -125,6 +125,15 @@ namespace playrho
     }
     
     // Free functions...
+    
+    /// @brief Determines if the given value is valid.
+    /// @relatedalso Transformation
+    template <>
+    constexpr inline bool IsValid(const Sweep& value) noexcept
+    {
+        return IsValid(value.pos0) && IsValid(value.pos1)
+            && IsValid(value.GetLocalCenter()) && IsValid(value.GetAlpha0());
+    }
 
 } // namespace playrho
 

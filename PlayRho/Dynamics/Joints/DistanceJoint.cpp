@@ -99,8 +99,9 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     const auto deltaLocation = Length2{(posB.linear + m_rB) - (posA.linear + m_rA)};
 
     // Handle singularity.
-    auto length = 0_m;
-    m_u = GetUnitVector(deltaLocation, length, UnitVec2::GetZero());
+    const auto uvresult = UnitVec2::Get(deltaLocation[0]/Meter, deltaLocation[1]/Meter);
+    m_u = uvresult.first;
+    const auto length = uvresult.second * Meter;
 
     const auto crAu = Length{Cross(m_rA, m_u)} / Radian;
     const auto crBu = Length{Cross(m_rB, m_u)} / Radian;
@@ -224,8 +225,9 @@ bool DistanceJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
     const auto rB = Length2{Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB)};
     const auto relLoc = Length2{(posB.linear + rB) - (posA.linear + rA)};
 
-    auto length = 0_m;
-    const auto u = GetUnitVector(relLoc, length);
+    const auto uvresult = UnitVec2::Get(relLoc[0]/Meter, relLoc[1]/Meter);
+    const auto u = uvresult.first;
+    const auto length = uvresult.second * Meter;
     const auto deltaLength = length - m_length;
     const auto C = Clamp(deltaLength, -conf.maxLinearCorrection, conf.maxLinearCorrection);
 

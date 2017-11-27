@@ -21,6 +21,7 @@
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/SeparationFinder.hpp>
+#include <algorithm>
 
 namespace playrho {
 
@@ -39,7 +40,13 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
                        const DistanceProxy& proxyB, const Sweep& sweepB,
                        ToiConf conf)
 {
+    assert(IsValid(sweepA));
+    assert(IsValid(sweepB));
     assert(sweepA.GetAlpha0() == sweepB.GetAlpha0());
+    //assert(IsFinite(GetMagnitudeSquared(sweepA.pos0.linear - sweepB.pos0.linear)));
+    //assert(IsFinite(GetMagnitudeSquared(sweepA.pos0.linear - sweepB.pos1.linear)));
+    //assert(IsFinite(GetMagnitudeSquared(sweepA.pos1.linear - sweepB.pos0.linear)));
+    //assert(IsFinite(GetMagnitudeSquared(sweepA.pos1.linear - sweepB.pos1.linear)));
     assert(conf.tMax >= 0 && conf.tMax <=1);
 
     // CCD via the local separating axis method. This seeks progression
@@ -48,23 +55,36 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
     auto stats = TOIOutput::Statistics{};
     
     const auto totalRadius = proxyA.GetVertexRadius() + proxyB.GetVertexRadius();
-    //assert(conf.targetDepth < totalRadius);
+    if (conf.targetDepth > totalRadius)
+    {
+        return TOIOutput{0, stats, TOIOutput::e_targetDepthExceedsTotalRadius};
+    }
     //assert(conf.targetDepth >= conf.tolerance);
     
     const auto target = totalRadius - conf.targetDepth;
     //assert(target != totalRadius);
     //assert(target > conf.tolerance);
     
-    const auto maxTarget = target + conf.tolerance;
+    const auto maxTarget = std::max(target + conf.tolerance, 0_m);
     //assert(maxTarget != target);
     //assert(maxTarget <= totalRadius);
     
-    const auto minTarget = target - conf.tolerance;
+    const auto minTarget = std::max(target - conf.tolerance, 0_m);
     //assert(minTarget != target);
     //assert(minTarget < maxTarget);
     //assert(minTarget > 0_m && !AlmostZero(minTarget / Meter));
     
+    const auto minTargetSquared = Square(minTarget);
+    if (!IsFinite(minTargetSquared) && IsFinite(minTargetSquared))
+    {
+        return TOIOutput{0, stats, TOIOutput::e_minTargetSquaredOverflow};
+    }
+
     const auto maxTargetSquared = Square(maxTarget);
+    if (!isfinite(maxTargetSquared) && isfinite(maxTarget))
+    {
+        return TOIOutput{0, stats, TOIOutput::e_maxTargetSquaredOverflow};
+    }
 
     auto t1 = Real{0}; // Will be set to value of t2
     auto t1xfA = GetTransformation(sweepA, t1);
@@ -86,7 +106,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
 
         if (dinfo.state == DistanceOutput::HitMaxIters)
         {
-            return TOIOutput{0, stats, TOIOutput::e_maxDistIters};
+            return TOIOutput{t1, stats, TOIOutput::e_maxDistIters};
         }
 
         assert(dinfo.state != DistanceOutput::Unknown);
@@ -95,11 +115,17 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
         
         // Get the real distance squared between shapes at the time of t1.
         const auto distSquared = GetMagnitudeSquared(GetDelta(GetWitnessPoints(dinfo.simplex)));
-        
-        // If the shapes aren't separated, give up on continuous collision.
-        if (distSquared <= Area{0}) // Failure!
+#if 0
+        if (!IsFinite(distSquared))
         {
-            return TOIOutput{0, stats, TOIOutput::e_overlapped};
+            return TOIOutput{t1, stats, TOIOutput::e_notFinite};
+        }
+#endif
+        // If the shapes aren't separated, give up on continuous collision.
+        if (distSquared <= minTargetSquared)
+        {
+            /// XXX maybe should return TOIOutput{t1, stats, TOIOutput::e_belowMinTarget}?
+            return TOIOutput{t1, stats, TOIOutput::e_overlapped};
         }
 
         if (distSquared <= maxTargetSquared) // Victory!
@@ -110,7 +136,8 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
         // From here on, the real distance squared at time t1 is > than maxTargetSquared
 
         // Initialize the separating axis.
-        const auto fcn = SeparationFinder::Get(distanceConf.cache.GetIndices(), proxyA, t1xfA, proxyB, t1xfB);
+        const auto fcn = SeparationFinder::Get(distanceConf.cache.GetIndices(),
+                                               proxyA, t1xfA, proxyB, t1xfB);
 
         // Compute the TOI on the separating axis. We do this by successively
         // resolving the deepest point. This loop is bounded by the number of vertices.
@@ -197,7 +224,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
             auto roots = decltype(conf.maxRootIters){0}; // counts # times f(t) checked
             for (;;)
             {
-                assert(!AlmostZero((s2 - s1) / Meter));
+                assert(!AlmostZero(s2 - s1));
                 assert(a1 <= a2);
 
                 auto state = TOIOutput::e_unknown;
@@ -283,6 +310,10 @@ const char *GetName(TOIOutput::State state) noexcept
         case TOIOutput::e_maxToiIters: return "max-toi-iters";
         case TOIOutput::e_belowMinTarget: return "below-min-target";
         case TOIOutput::e_maxDistIters: return "max-dist-iters";
+        case TOIOutput::e_targetDepthExceedsTotalRadius: return "target-depth-exceeds-total-radius";
+        case TOIOutput::e_minTargetSquaredOverflow: return "min-target-squared-overflow";
+        case TOIOutput::e_maxTargetSquaredOverflow: return "max-target-squared-overflow";
+        case TOIOutput::e_notFinite: return "not-finite";
     }
     return "unknown";
 }

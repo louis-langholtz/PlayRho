@@ -113,6 +113,14 @@ static std::tuple<float, float, float> RandTriplet(float lo, float hi)
     return std::make_tuple(first, second, third);
 }
 
+static std::tuple<double, double, double> RandTriplet(double lo, double hi)
+{
+    const auto first = Rand(lo, hi);
+    const auto second = Rand(lo, hi);
+    const auto third = Rand(lo, hi);
+    return std::make_tuple(first, second, third);
+}
+
 static std::tuple<float, float, float, float> RandQuad(float lo, float hi)
 {
     const auto first = Rand(lo, hi);
@@ -964,6 +972,57 @@ static void UnitVectorFromVector(benchmark::State& state)
         for (const auto& val: vals)
         {
             benchmark::DoNotOptimize(playrho::GetUnitVector(playrho::Vec2{val.first, val.second}));
+        }
+    }
+}
+
+static playrho::Vec2 GetUnitVec1(playrho::Vec2 vec, playrho::Vec2 fallback)
+{
+    const auto magSquared = playrho::Square(vec[0]) + playrho::Square(vec[1]);
+    if (playrho::IsNormal(magSquared))
+    {
+        const auto mag = playrho::Sqrt(magSquared);
+        return playrho::Vec2{vec[0] / mag, vec[1] / mag};
+    }
+    return fallback;
+}
+
+static playrho::Vec2 GetUnitVec2(playrho::Vec2 vec, playrho::Vec2 fallback)
+{
+    const auto magSquared = playrho::Square(vec[0]) + playrho::Square(vec[1]);
+    if (playrho::IsNormal(magSquared))
+    {
+        const auto mag = playrho::Sqrt(magSquared);
+        return playrho::Vec2{vec[0] / mag, vec[1] / mag};
+    }
+    const auto mag = playrho::Hypot(vec[0], vec[1]);
+    if (playrho::IsNormal(mag))
+    {
+        return playrho::Vec2{vec[0] / mag, vec[1] / mag};
+    }
+    return fallback;
+}
+
+static void GetUnitVec1(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -10000.0f, 10000.0f);
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(GetUnitVec1(playrho::Vec2{val.first, val.second}, playrho::Vec2{0,0}));
+        }
+    }
+}
+
+static void GetUnitVec2(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -10000.0f, 10000.0f);
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            benchmark::DoNotOptimize(GetUnitVec2(playrho::Vec2{val.first, val.second}, playrho::Vec2{0,0}));
         }
     }
 }
@@ -1870,6 +1929,8 @@ BENCHMARK(CrossProduct)->Arg(1000);
 BENCHMARK(LengthSquaredViaDotProduct)->Arg(1000);
 BENCHMARK(GetMagnitudeSquared)->Arg(1000);
 BENCHMARK(GetMagnitude)->Arg(1000);
+BENCHMARK(GetUnitVec1)->Arg(1000);
+BENCHMARK(GetUnitVec2)->Arg(1000);
 BENCHMARK(UnitVectorFromVector)->Arg(1000);
 BENCHMARK(UnitVectorFromVectorAndBack)->Arg(1000);
 BENCHMARK(UnitVecFromAngle)->Arg(1000);

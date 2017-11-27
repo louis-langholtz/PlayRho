@@ -22,6 +22,7 @@
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/Wider.hpp>
+#include <PlayRho/Common/BoundedValue.hpp>
 
 namespace playrho {
 
@@ -64,7 +65,7 @@ namespace playrho {
         constexpr ToiConf& UseTargetDepth(Length value) noexcept;
         
         /// @brief Uses the given tolerance value.
-        constexpr ToiConf& UseTolerance(Length value) noexcept;
+        constexpr ToiConf& UseTolerance(NonNegative<Length> value) noexcept;
         
         /// @brief Uses the given max root iterations value.
         constexpr ToiConf& UseMaxRootIters(root_iter_type value) noexcept;
@@ -85,8 +86,7 @@ namespace playrho {
         /// @brief Tolerance.
         /// @note Use the default value unless you really know what you're doing.
         /// @note Use 0 to require a TOI at exactly the target depth. This is ill-advised.
-        /// @note Use a negative value to prevent the calculation of a TOI.
-        Length tolerance = DefaultLinearSlop / Real{4};
+        NonNegative<Length> tolerance = NonNegative<Length>{DefaultLinearSlop / Real{4}};
         
         /// @brief Maximum number of root finder iterations.
         /// @details This is the maximum number of iterations for calculating the 1D root of
@@ -114,7 +114,7 @@ namespace playrho {
         return *this;
     }
 
-    constexpr ToiConf& ToiConf::UseTolerance(Length value) noexcept
+    constexpr ToiConf& ToiConf::UseTolerance(NonNegative<Length> value) noexcept
     {
         tolerance = value;
         return *this;
@@ -183,15 +183,54 @@ namespace playrho {
         /// @brief State.
         enum State: std::uint8_t
         {
+            /// @brief Unknown.
+            /// @details Unknown state.
+            /// @note This is the default initialized state.
             e_unknown,
-            e_overlapped,
+            
+            /// @brief Touching.
+            /// @note This is a desirable result.
+            /// @note Time of impact is the time when the two convex polygons "touch".
             e_touching,
+            
+            /// @brief Separated.
+            /// @details Indicates that the two convex polygons never actually collide
+            ///   during their defined sweeps.
+            /// @note This is a desirable result.
+            /// @note Time of impact should be 1.
             e_separated,
+            
+            /// @brief Overlapped.
+            /// @note Can happen if total radius of the two convex polygons is too small.
+            /// @note Time of impact is the time when the two convex polygons collide.
+            e_overlapped,
+
+            /// @brief Max root iterations.
+            /// @details Got to max number of root iterations allowed.
+            /// @note Can happen if the configured max number of root iterations is too low.
+            /// @note Can happen if the tolerance is too small.
             e_maxRootIters,
+            
+            /// @brief Next after.
+            /// @note Can happen if the length moved is too much bigger than the tolerance.
             e_nextAfter,
+            
+            /// @brief Max TOI iterations.
             e_maxToiIters,
+            
+            /// @brief Below minimum target.
             e_belowMinTarget,
+            
+            /// @brief Max distance iterations.
+            /// @details Indicates that the maximum number of distance iterations was done.
+            /// @note Can happen if the configured max number of distance iterations was too low.
             e_maxDistIters,
+            
+            e_targetDepthExceedsTotalRadius,
+            e_minTargetSquaredOverflow,
+            e_maxTargetSquaredOverflow,
+            
+            e_notFinite,
         };
         
         /// @brief Default constructor.

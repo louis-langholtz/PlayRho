@@ -164,7 +164,7 @@ public:
     /// @note Must not be subnormal.
     /// @note Must be less than the target depth.
     /// @note Used in the TOI phase of step processing.
-    Positive<Length> tolerance = DefaultLinearSlop / Real{4};
+    NonNegative<Length> tolerance = DefaultLinearSlop / Real{4};
 
     /// @brief Velocity threshold.
     /// @details A velocity threshold for elastic collisions. Any collision with a relative linear
