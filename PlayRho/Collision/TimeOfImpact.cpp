@@ -75,7 +75,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
     //assert(minTarget > 0_m && !AlmostZero(minTarget / Meter));
     
     const auto minTargetSquared = Square(minTarget);
-    if (!IsFinite(minTargetSquared) && IsFinite(minTargetSquared))
+    if (!IsFinite(minTargetSquared) && IsFinite(minTarget))
     {
         return TOIOutput{0, stats, TOIOutput::e_minTargetSquaredOverflow};
     }
