@@ -141,6 +141,7 @@ TEST(TOIOutput, GetName)
 {
     std::set<std::string> names;
     EXPECT_TRUE(names.insert(GetName(TOIOutput::e_unknown)).second);
+    ASSERT_FALSE(names.insert(GetName(TOIOutput::e_unknown)).second);
     EXPECT_TRUE(names.insert(GetName(TOIOutput::e_overlapped)).second);
     EXPECT_TRUE(names.insert(GetName(TOIOutput::e_touching)).second);
     EXPECT_TRUE(names.insert(GetName(TOIOutput::e_separated)).second);
@@ -149,6 +150,10 @@ TEST(TOIOutput, GetName)
     EXPECT_TRUE(names.insert(GetName(TOIOutput::e_maxToiIters)).second);
     EXPECT_TRUE(names.insert(GetName(TOIOutput::e_belowMinTarget)).second);
     EXPECT_TRUE(names.insert(GetName(TOIOutput::e_maxDistIters)).second);
+    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_targetDepthExceedsTotalRadius)).second);
+    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_minTargetSquaredOverflow)).second);
+    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_maxTargetSquaredOverflow)).second);
+    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_notFinite)).second);
 }
 
 TEST(TimeOfImpact, Overlapped)
@@ -882,6 +887,76 @@ TEST(TimeOfImpact, NextAfter)
     {
         EXPECT_EQ(output.stats.sum_root_iters, 0);
     }
+}
+
+TEST(TimeOfImpact, TargetDepthExceedsTotalRadius)
+{
+    const auto radius = 1_m;
+    const auto pos = Length2{};
+    const auto proxyA = DistanceProxy{radius, 1, &pos, nullptr};
+    const auto proxyB = DistanceProxy{radius, 1, &pos, nullptr};
+    
+    const auto conf = ToiConf{}
+        .UseTargetDepth(4_m)
+        .UseMaxRootIters(0)
+        .UseMaxToiIters(0)
+        .UseMaxDistIters(0)
+        .UseTolerance(0)
+        ;
+    
+    const auto sweepA = Sweep{
+        Position{Length2{-200_m, 0_m}, 0_deg},
+        Position{Length2{+100_m, 0_m}, 0_deg}
+    };
+    const auto sweepB = Sweep{
+        Position{Length2{+200_m, 0_m}, 0_deg},
+        Position{Length2{-10_m, 0_m}, 0_deg}
+    };
+    const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
+    
+    EXPECT_EQ(output.state, TOIOutput::e_targetDepthExceedsTotalRadius);
+    EXPECT_NEAR(static_cast<double>(output.time), 0.0, 0.0001);
+    EXPECT_EQ(output.stats.max_dist_iters, 0);
+    EXPECT_EQ(output.stats.max_root_iters, 0);
+    EXPECT_EQ(output.stats.toi_iters, 0);
+    EXPECT_EQ(output.stats.sum_dist_iters, 0);
+    EXPECT_EQ(output.stats.sum_finder_iters, 0);
+    EXPECT_EQ(output.stats.sum_root_iters, 0);
+}
+
+TEST(TimeOfImpact, MinTargetSquaredOverflow)
+{
+    const auto radius = std::numeric_limits<Length>::max() / 4;
+    const auto pos = Length2{};
+    const auto proxyA = DistanceProxy{radius, 1, &pos, nullptr};
+    const auto proxyB = DistanceProxy{radius, 1, &pos, nullptr};
+    
+    const auto conf = ToiConf{}
+        .UseTargetDepth(0_m)
+        .UseMaxRootIters(0)
+        .UseMaxToiIters(0)
+        .UseMaxDistIters(0)
+        .UseTolerance(0_m)
+        ;
+    
+    const auto sweepA = Sweep{
+        Position{Length2{-200_m, 0_m}, 0_deg},
+        Position{Length2{+100_m, 0_m}, 0_deg}
+    };
+    const auto sweepB = Sweep{
+        Position{Length2{+200_m, 0_m}, 0_deg},
+        Position{Length2{-10_m, 0_m}, 0_deg}
+    };
+    const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
+    
+    EXPECT_EQ(output.state, TOIOutput::e_minTargetSquaredOverflow);
+    EXPECT_NEAR(static_cast<double>(output.time), 0.0, 0.0001);
+    EXPECT_EQ(output.stats.max_dist_iters, 0);
+    EXPECT_EQ(output.stats.max_root_iters, 0);
+    EXPECT_EQ(output.stats.toi_iters, 0);
+    EXPECT_EQ(output.stats.sum_dist_iters, 0);
+    EXPECT_EQ(output.stats.sum_finder_iters, 0);
+    EXPECT_EQ(output.stats.sum_root_iters, 0);
 }
 
 TEST(TimeOfImpact, MaxTargetSquaredOverflow)
