@@ -344,8 +344,8 @@ TEST(Simplex, Get2_rot45_half)
     const auto sv1 = SimplexEdge{va1, ia1, vb1, ib1};
 
     const auto w1 = vb0 - va0; // Vec2{901, 6} - Vec2{-4, 33} = Vec2{905, -27}
-    EXPECT_TRUE(AlmostEqual(GetX(w1) / Meter, Real(905)));
-    EXPECT_TRUE(AlmostEqual(GetY(w1) / Meter, Real(-27)));
+    EXPECT_TRUE(AlmostEqual(Real{GetX(w1) / Meter}, Real(905)));
+    EXPECT_TRUE(AlmostEqual(Real{GetY(w1) / Meter}, Real(-27)));
     const auto w2 = vb1 - va1; // Vec2{316.4303, 320.67291} - Vec2{-13.081475, 10.253049} = Vec2{329.51178, 310.41986}
     EXPECT_NEAR(double(Real{GetX(w2) / Meter}), 329.51178, 0.001);
     EXPECT_NEAR(double(Real{GetY(w2) / Meter}), 310.41986, 0.001);

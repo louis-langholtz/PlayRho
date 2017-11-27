@@ -847,20 +847,20 @@ TEST(CollideShapes, HorizontalOverlappingRects2)
     EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
     
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
-    EXPECT_TRUE(AlmostEqual(GetX(manifold.GetPoint(0).localPoint) / Meter, Real(-2.0))); // left
-    EXPECT_TRUE(AlmostEqual(GetY(manifold.GetPoint(0).localPoint) / Meter, Real(-1.5))); // top
-    EXPECT_TRUE(AlmostEqual(manifold.GetPoint(0).normalImpulse / (1_Ns), Real(0)));
-    EXPECT_TRUE(AlmostEqual(manifold.GetPoint(0).tangentImpulse / (1_Ns), Real(0)));
+    EXPECT_TRUE(AlmostEqual(Real{GetX(manifold.GetPoint(0).localPoint) / Meter}, Real(-2.0))); // left
+    EXPECT_TRUE(AlmostEqual(Real{GetY(manifold.GetPoint(0).localPoint) / Meter}, Real(-1.5))); // top
+    EXPECT_TRUE(AlmostEqual(Real{manifold.GetPoint(0).normalImpulse / 1_Ns}, Real(0)));
+    EXPECT_TRUE(AlmostEqual(Real{manifold.GetPoint(0).tangentImpulse / 1_Ns}, Real(0)));
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_vertex);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexA, 0);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_face);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexB, 2);
     
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(1));
-    EXPECT_TRUE(AlmostEqual(GetX(manifold.GetPoint(1).localPoint) / Meter, Real(-2.0))); // left
-    EXPECT_TRUE(AlmostEqual(GetY(manifold.GetPoint(1).localPoint) / Meter, Real(+1.5))); // bottom
-    EXPECT_TRUE(AlmostEqual(manifold.GetPoint(1).normalImpulse / (1_Ns), Real(0)));
-    EXPECT_TRUE(AlmostEqual(manifold.GetPoint(1).tangentImpulse / (1_Ns), Real(0)));
+    EXPECT_TRUE(AlmostEqual(Real{GetX(manifold.GetPoint(1).localPoint) / Meter}, Real(-2.0))); // left
+    EXPECT_TRUE(AlmostEqual(Real{GetY(manifold.GetPoint(1).localPoint) / Meter}, Real(+1.5))); // bottom
+    EXPECT_TRUE(AlmostEqual(Real{manifold.GetPoint(1).normalImpulse / 1_Ns}, Real(0)));
+    EXPECT_TRUE(AlmostEqual(Real{manifold.GetPoint(1).tangentImpulse / 1_Ns}, Real(0)));
     EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeA, ContactFeature::e_vertex);
     EXPECT_EQ(manifold.GetPoint(1).contactFeature.indexA, 1);
     EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeB, ContactFeature::e_face);
@@ -875,12 +875,12 @@ TEST(CollideShapes, HorizontalOverlappingRects2)
     EXPECT_TRUE(AlmostEqual(world_manifold.GetNormal().GetY(), Real(0)));
     
     ASSERT_GT(world_manifold.GetPointCount(), Manifold::size_type(0));
-    EXPECT_TRUE(AlmostEqual(GetX(world_manifold.GetPoint(0)) / Meter, Real(+0.5)));
-    EXPECT_TRUE(AlmostEqual(GetY(world_manifold.GetPoint(0)) / Meter, Real(-1.5)));
+    EXPECT_TRUE(AlmostEqual(Real{GetX(world_manifold.GetPoint(0)) / Meter}, Real(+0.5)));
+    EXPECT_TRUE(AlmostEqual(Real{GetY(world_manifold.GetPoint(0)) / Meter}, Real(-1.5)));
     
     ASSERT_GT(world_manifold.GetPointCount(), Manifold::size_type(1));
-    EXPECT_TRUE(AlmostEqual(GetX(world_manifold.GetPoint(1)) / Meter, Real(+0.5)));
-    EXPECT_TRUE(AlmostEqual(GetY(world_manifold.GetPoint(1)) / Meter, Real(+1.5)));
+    EXPECT_TRUE(AlmostEqual(Real{GetX(world_manifold.GetPoint(1)) / Meter}, Real(+0.5)));
+    EXPECT_TRUE(AlmostEqual(Real{GetY(world_manifold.GetPoint(1)) / Meter}, Real(+1.5)));
 }
 
 TEST(CollideShapes, EdgeBelowPolygon)
@@ -1398,14 +1398,14 @@ TEST(CollideShapes, EdgePolygonFaceB2)
     
     EXPECT_EQ(manifold.GetType(), Manifold::e_faceB);
     EXPECT_NEAR(double(StripUnit(GetX(manifold.GetLocalPoint()))), 0.0, 0.0001);
-    EXPECT_TRUE(AlmostEqual(GetY(manifold.GetLocalPoint()) / Meter, Real{0.5f}));
+    EXPECT_TRUE(AlmostEqual(Real{GetY(manifold.GetLocalPoint()) / Meter}, Real{0.5f}));
     EXPECT_TRUE(AlmostEqual(GetX(GetVec2(manifold.GetLocalNormal())), Real{0.0f}));
     EXPECT_TRUE(AlmostEqual(GetY(GetVec2(manifold.GetLocalNormal())), Real{1.0f}));
     EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
     EXPECT_EQ(manifold.GetContactFeature(0), GetVertexFaceContactFeature(1, 1));
-    EXPECT_TRUE(AlmostEqual(GetX(manifold.GetOpposingPoint(0)) / Meter, Real{-6.0f}));
-    EXPECT_TRUE(AlmostEqual(GetY(manifold.GetOpposingPoint(0)) / Meter, Real{0.0f}));
+    EXPECT_TRUE(AlmostEqual(Real{GetX(manifold.GetOpposingPoint(0)) / Meter}, Real{-6.0f}));
+    EXPECT_TRUE(AlmostEqual(Real{GetY(manifold.GetOpposingPoint(0)) / Meter}, Real{0.0f}));
 }
 
 #if 0

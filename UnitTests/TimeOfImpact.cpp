@@ -236,13 +236,13 @@ TEST(TimeOfImpact, CollideCirclesHorizontally)
     if (std::is_same<Real, Fixed32>::value)
     {
         EXPECT_EQ(output.state, TOIOutput::e_nextAfter);
-        EXPECT_TRUE(AlmostEqual(output.time, approx_time_of_collision));
+        EXPECT_TRUE(AlmostEqual(output.time, Real{approx_time_of_collision}));
         EXPECT_EQ(output.stats.toi_iters, 1);
     }
     else
     {
         EXPECT_EQ(output.state, TOIOutput::e_touching);
-        EXPECT_TRUE(AlmostEqual(output.time, approx_time_of_collision));
+        EXPECT_TRUE(AlmostEqual(output.time, Real{approx_time_of_collision}));
         EXPECT_EQ(output.stats.toi_iters, 2);
     }
 }

@@ -166,7 +166,7 @@ inline typename std::enable_if<std::is_arithmetic<T>::value, bool>::type IsFinit
 
 /// @brief Rounds the given value.
 template <typename T>
-inline T Round(T arg)
+inline typename std::enable_if<std::is_arithmetic<T>::value, T>::type Round(T arg)
 {
     return std::round(arg);
 }
@@ -236,15 +236,6 @@ inline auto Atan2(T y, T x)
     return Angle{static_cast<Real>(std::atan2(StripUnit(y), StripUnit(x))) * Radian};
 }
 
-/// @brief Computes the arc-tangent of the given y and x values.
-/// @return Normalized angle - an angle between -Pi and Pi inclusively.
-/// @sa http://en.cppreference.com/w/cpp/numeric/math/atan2
-template<>
-inline auto Atan2(double y, double x)
-{
-    return Angle{static_cast<Real>(std::atan2(y, x)) * Radian};
-}
-
 /// @brief Computes the average of the given values.
 template <typename T>
 inline auto Average(Span<const T> span)
@@ -264,54 +255,15 @@ inline auto Average(Span<const T> span)
 
 /// @brief Computes the rounded value of the given value.
 template <typename T>
-inline T RoundOff(T value, unsigned precision = 100000);
-
-/// @brief Computes the rounded value of the given value.
-template <>
-inline float RoundOff(float value, std::uint32_t precision)
+inline typename std::enable_if<std::is_arithmetic<T>::value, T>::type
+RoundOff(T value, unsigned precision = 100000)
 {
-    const auto factor = float(static_cast<std::int64_t>(precision));
+    const auto factor = static_cast<T>(precision);
     return std::round(value * factor) / factor;
 }
 
 /// @brief Computes the rounded value of the given value.
-template <>
-inline double RoundOff(double value, std::uint32_t precision)
-{
-    const auto factor = double(static_cast<std::int64_t>(precision));
-    return std::round(value * factor) / factor;
-}
-
-/// @brief Computes the rounded value of the given value.
-template <>
-inline long double RoundOff(long double value, std::uint32_t precision)
-{
-    using ldouble = long double;
-    const auto factor = ldouble(static_cast<std::int64_t>(precision));
-    return std::round(value * factor) / factor;
-}
-
-/// @brief Computes the rounded value of the given value.
-template <>
-inline Fixed32 RoundOff(Fixed32 value, std::uint32_t precision)
-{
-    const auto factor = Fixed32(precision);
-    return Round(value * factor) / factor;
-}
-
-#ifndef _WIN32
-/// @brief Computes the rounded value of the given value.
-template <>
-inline Fixed64 RoundOff(Fixed64 value, std::uint32_t precision)
-{
-    const auto factor = Fixed64(precision);
-    return Round(value * factor) / factor;
-}
-#endif
-
-/// @brief Computes the rounded value of the given value.
-template <>
-inline Vec2 RoundOff(Vec2 value, std::uint32_t precision)
+inline Vec2 RoundOff(Vec2 value, std::uint32_t precision = 100000)
 {
     return Vec2{RoundOff(value[0], precision), RoundOff(value[1], precision)};
 }
@@ -333,28 +285,10 @@ AlmostZero(T value)
     return Abs(value) < std::numeric_limits<T>::min();
 }
 
-/// @brief Gets whether a given value is almost zero.
-/// @details An almost zero value is "subnormal". Dividing by these values can lead to
-/// odd results like a divide by zero trap occurring.
-/// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
-constexpr inline bool AlmostZero(Fixed32 value)
-{
-    return value == 0;
-}
-
-#ifndef _WIN32
-/// @brief Gets whether a given value is almost zero.
-/// @details An almost zero value is "subnormal". Dividing by these values can lead to
-/// odd results like a divide by zero trap occurring.
-/// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
-constexpr inline bool AlmostZero(Fixed64 value)
-{
-    return value == 0;
-}
-#endif
-
 /// @brief Determines whether the given two values are "almost equal".
-constexpr inline bool AlmostEqual(float x, float y, int ulp = 2)
+template <typename T>
+constexpr inline typename std::enable_if<std::is_floating_point<T>::value, bool>::type
+AlmostEqual(T x, T y, int ulp = 2)
 {
     // From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
     //   "the machine epsilon has to be scaled to the magnitude of the values used
@@ -362,46 +296,8 @@ constexpr inline bool AlmostEqual(float x, float y, int ulp = 2)
     //    unless the result is subnormal".
     // Where "subnormal" means almost zero.
     //
-    return (Abs(x - y) < (std::numeric_limits<float>::epsilon() * Abs(x + y) * ulp)) || AlmostZero(x - y);
+    return (Abs(x - y) < (std::numeric_limits<T>::epsilon() * Abs(x + y) * ulp)) || AlmostZero(x - y);
 }
-
-/// @brief Determines whether the given two values are "almost equal".
-constexpr inline bool AlmostEqual(double x, double y, int ulp = 2)
-{
-    // From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
-    //   "the machine epsilon has to be scaled to the magnitude of the values used
-    //    and multiplied by the desired precision in ULPs (units in the last place)
-    //    unless the result is subnormal".
-    // Where "subnormal" means almost zero.
-    //
-    return (Abs(x - y) < (std::numeric_limits<double>::epsilon() * Abs(x + y) * ulp)) || AlmostZero(x - y);
-}
-
-/// @brief Determines whether the given two values are "almost equal".
-constexpr inline bool AlmostEqual(long double x, long double y, int ulp = 2)
-{
-    // From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
-    //   "the machine epsilon has to be scaled to the magnitude of the values used
-    //    and multiplied by the desired precision in ULPs (units in the last place)
-    //    unless the result is subnormal".
-    // Where "subnormal" means almost zero.
-    //
-    return (Abs(x - y) < (std::numeric_limits<long double>::epsilon() * Abs(x + y) * ulp)) || AlmostZero(x - y);
-}
-
-/// @brief Determines whether the given two values are "almost equal".
-constexpr inline bool AlmostEqual(Fixed32 x, Fixed32 y, int ulp = 2)
-{
-    return Abs(x - y) <= Fixed32{0, static_cast<std::uint32_t>(ulp)};
-}
-
-#ifndef _WIN32
-/// @brief Determines whether the given two values are "almost equal".
-constexpr inline bool AlmostEqual(Fixed64 x, Fixed64 y, int ulp = 2)
-{
-    return Abs(x - y) <= Fixed64{0, static_cast<std::uint32_t>(ulp)};
-}
-#endif
 
 /// @brief Modulo operation using std::fmod.
 /// @note Modulo via std::fmod appears slower than via std::trunc.

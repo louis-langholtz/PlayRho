@@ -201,7 +201,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
     const auto conf = ConstraintSolverConf{}.UseResolutionRate(Baumgarte).UseMaxLinearCorrection(maxLinearCorrection);
     const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
     
-    EXPECT_TRUE(AlmostEqual(solution.min_separation / Meter, Real(-2))); // -2.002398
+    EXPECT_TRUE(AlmostEqual(Real{solution.min_separation / Meter}, Real(-2))); // -2.002398
         
     // object a just moves left
     EXPECT_LT(GetX(solution.pos_a.linear), GetX(old_pA.linear));
@@ -255,7 +255,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
     const auto conf = ConstraintSolverConf{}.UseResolutionRate(Baumgarte).UseMaxLinearCorrection(maxLinearCorrection);
     const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
     
-    EXPECT_TRUE(AlmostEqual(solution.min_separation / Meter, Real(-2))); // -2.002398
+    EXPECT_TRUE(AlmostEqual(Real{solution.min_separation / Meter}, Real(-2))); // -2.002398
     
     // square A just moves right
     EXPECT_GT(GetX(solution.pos_a.linear), GetX(old_pA.linear));
@@ -309,7 +309,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
     const auto conf = ConstraintSolverConf{}.UseResolutionRate(Baumgarte).UseMaxLinearCorrection(maxLinearCorrection);
     const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
     
-    EXPECT_TRUE(AlmostEqual(solution.min_separation / Meter, Real(-2))); // -2.002398
+    EXPECT_TRUE(AlmostEqual(Real{solution.min_separation / Meter}, Real(-2))); // -2.002398
     
     // object a just moves down only
     EXPECT_EQ(GetX(solution.pos_a.linear), GetX(old_pA.linear));
@@ -376,7 +376,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
     const auto conf = ConstraintSolverConf{}.UseResolutionRate(Baumgarte).UseMaxLinearCorrection(maxLinearCorrection);
     const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
     
-    EXPECT_TRUE(AlmostEqual(solution.min_separation / Meter, Real(-2))); // -2.002398
+    EXPECT_TRUE(AlmostEqual(Real{solution.min_separation / Meter}, Real(-2))); // -2.002398
     
     // square A just moves up only
     EXPECT_EQ(GetX(solution.pos_a.linear), GetX(old_pA.linear));
