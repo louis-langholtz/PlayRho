@@ -1334,12 +1334,12 @@ TEST(World, HeavyOnLight)
         // XXX Is this a bug or did the algorithm just work least well here?
         switch (sizeof(Real))
         {
-            case 4: EXPECT_EQ(numSteps, 1823ul); break;
-            case 8: EXPECT_EQ(numSteps, 1826ul); break;
+            case 4: EXPECT_EQ(numSteps, 736ul); break;
+            case 8: EXPECT_EQ(numSteps, 736ul); break;
         }
 
         // Here we see that the upper body at some point sunk into most of the lower body.
-        EXPECT_NEAR(static_cast<double>(Real(upperBodysLowestPoint / Meter)), 5.0089659690856934, 0.001);
+        EXPECT_NEAR(static_cast<double>(Real(upperBodysLowestPoint / Meter)), 5.9473052024841309, 0.001);
     }
     
     // Create upper body, then lower body using the smaller step conf
@@ -1372,8 +1372,8 @@ TEST(World, HeavyOnLight)
         // the step conf that's five times smaller.
         switch (sizeof(Real))
         {
-            case 4: EXPECT_EQ(numSteps, 512ul); break;
-            case 8: EXPECT_EQ(numSteps, 513ul); break;
+            case 4: EXPECT_EQ(numSteps, 724ul); break;
+            case 8: EXPECT_EQ(numSteps, 724ul); break;
         }
 
         EXPECT_NEAR(static_cast<double>(Real(upperBodysLowestPoint / Meter)), 5.9476470947265625, 0.001);

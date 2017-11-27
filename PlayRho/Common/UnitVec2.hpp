@@ -27,6 +27,7 @@
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/InvalidArgument.hpp>
 #include <iostream>
+#include <utility>
 
 namespace playrho
 {
@@ -98,9 +99,15 @@ public:
     /// @brief Gets the default fallback.
     static constexpr UnitVec2 GetDefaultFallback() noexcept { return UnitVec2{}; }
 
-    /// @brief Gets the unit vector from the given parameters.
-    static UnitVec2 Get(const Real x, const Real y, Real& magnitude,
-                        const UnitVec2 fallback = GetDefaultFallback()) noexcept;
+    /// @brief Polar coordinate.
+    /// @details This is a direction and magnitude pair defined by the unit vector class.
+    /// @note A magnitude of 0 indicates that no conclusive direction could be determined.
+    ///   The magnitude will otherwise be a normal value.
+    using PolarCoord = std::pair<UnitVec2, Real>;
+
+    /// @brief Gets the unit vector & magnitude from the given parameters.
+    static PolarCoord Get(const Real x, const Real y,
+                          const UnitVec2 fallback = GetDefaultFallback()) noexcept;
 
     /// @brief Gets the given angled unit vector.
     ///

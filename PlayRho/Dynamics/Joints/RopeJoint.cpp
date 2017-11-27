@@ -78,7 +78,9 @@ void RopeJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     m_rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB);
     const auto posDelta = Length2{(posB.linear + m_rB) - (posA.linear + m_rA)};
     
-    const auto uv = GetUnitVector(posDelta, m_length);
+    const auto uvresult = UnitVec2::Get(posDelta[0]/Meter, posDelta[1]/Meter);
+    const auto uv = uvresult.first;
+    m_length = uvresult.second * Meter;
 
     const auto C = m_length - m_maxLength;
     m_state = (C > 0_m)? e_atUpperLimit: e_inactiveLimit;
@@ -180,8 +182,9 @@ bool RopeJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
     const auto rB = Length2{Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB)};
     const auto posDelta = (posB.linear + rB) - (posA.linear + rA);
     
-    auto length = 0_m;
-    const auto u = GetUnitVector(posDelta, length);
+    const auto uvresult = UnitVec2::Get(posDelta[0]/Meter, posDelta[1]/Meter);
+    const auto u = uvresult.first;
+    const auto length = uvresult.second * Meter;
     
     const auto C = Clamp(length - m_maxLength, 0_m, conf.maxLinearCorrection);
 

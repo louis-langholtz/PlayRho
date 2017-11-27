@@ -136,6 +136,13 @@ inline typename std::enable_if<std::is_arithmetic<T>::value, T>::type Sqrt(T t)
     return std::sqrt(t);
 }
 
+/// @brief Computes the square root of the sum of the squares.
+template <typename T>
+inline typename std::enable_if<std::is_arithmetic<T>::value, T>::type Hypot(T x, T y)
+{
+    return std::hypot(x, y);
+}
+
 /// @brief Determines if the given argument is normal.
 template <typename T>
 inline typename std::enable_if<std::is_arithmetic<T>::value, bool>::type IsNormal(T arg)
@@ -319,27 +326,11 @@ constexpr inline Vec2 GetVec2(const UnitVec2 value)
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
 /// odd results like a divide by zero trap occurring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
-constexpr inline bool AlmostZero(float value)
+template <typename T>
+constexpr typename std::enable_if<std::is_arithmetic<T>::value, bool>::type
+AlmostZero(T value)
 {
-    return Abs(value) < std::numeric_limits<decltype(value)>::min();
-}
-
-/// @brief Gets whether a given value is almost zero.
-/// @details An almost zero value is "subnormal". Dividing by these values can lead to
-/// odd results like a divide by zero trap occurring.
-/// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
-constexpr inline bool AlmostZero(double value)
-{
-    return Abs(value) < std::numeric_limits<decltype(value)>::min();
-}
-
-/// @brief Gets whether a given value is almost zero.
-/// @details An almost zero value is "subnormal". Dividing by these values can lead to
-/// odd results like a divide by zero trap occurring.
-/// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
-constexpr inline bool AlmostZero(long double value)
-{
-    return Abs(value) < std::numeric_limits<decltype(value)>::min();
+    return Abs(value) < std::numeric_limits<T>::min();
 }
 
 /// @brief Gets whether a given value is almost zero.
@@ -1122,56 +1113,11 @@ constexpr inline Angle GetRevRotationalAngle(Angle a1, Angle a2) noexcept
 /// @return value divided by its length if length not almost zero otherwise invalid value.
 /// @sa AlmostEqual.
 template <class T>
-inline UnitVec2 GetUnitVector(const Vector2<T> value,
-                              const UnitVec2 fallback = UnitVec2::GetDefaultFallback())
+inline UnitVec2 GetUnitVector(Vector2<T> value, UnitVec2 fallback = UnitVec2::GetDefaultFallback())
 {
-    auto magnitude = Real(1);
-    return UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), magnitude, fallback);
+    return UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), fallback).first;
 }
-
-/// Gets the unit vector for the given value.
-/// @param value Value to get the unit vector for.
-/// @param magnitude Returns the calculated magnitude of the given vector.
-/// @param fallback Fallback unit vector value to use in case a unit vector can't effectively be
-///   calculated from the given value.
-/// @return value divided by its length if length not almost zero otherwise invalid value.
-/// @sa AlmostEqual.
-template <class T>
-inline UnitVec2 GetUnitVector(Vector2<T> value, T& magnitude,
-                              UnitVec2 fallback = UnitVec2::GetDefaultFallback());
-
-/// @brief Gets the unit vector of the given value.
-template <>
-inline UnitVec2 GetUnitVector(Vector2<Real> value, Real& magnitude, UnitVec2 fallback)
-{
-    return UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), magnitude, fallback);
-}
-
-#ifdef USE_BOOST_UNITS
-
-/// @brief Gets the unit vector of the given value.
-template <>
-inline UnitVec2 GetUnitVector(Vector2<Length> value, Length& magnitude, UnitVec2 fallback)
-{
-    auto tmp = Real{0};
-    const auto uv = UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), tmp, fallback);
-    magnitude = tmp * Meter;
-    return uv;
-}
-
-/// @brief Gets the unit vector of the given value.
-template <>
-inline UnitVec2 GetUnitVector(Vector2<LinearVelocity> value, LinearVelocity& magnitude,
-                              UnitVec2 fallback)
-{
-    auto tmp = Real{0};
-    const auto uv = UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), tmp, fallback);
-    magnitude = tmp * MeterPerSecond;
-    return uv;
-}
-
-#endif // USE_BOOST_UNITS
-
+    
 /// @brief Gets the vertices for a circle described by the given parameters.
 std::vector<Length2> GetCircleVertices(Length radius, unsigned slices,
                                         Angle start = 0_deg, Real turns = Real{1});

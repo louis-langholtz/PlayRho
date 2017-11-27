@@ -122,36 +122,31 @@ TEST(UnitVec2, GetForInvalid)
     {
         const auto x = GetInvalid<Real>();
         const auto y = GetInvalid<Real>();
-        auto magnitude = GetInvalid<Real>();
-        EXPECT_FALSE(IsValid(UnitVec2::Get(x, y, magnitude)));
+        EXPECT_FALSE(IsValid(UnitVec2::Get(x, y).first));
     }
     {
         const auto x = GetInvalid<Real>();
         const auto y = Real(0);
-        auto magnitude = GetInvalid<Real>();
-        EXPECT_FALSE(IsValid(UnitVec2::Get(x, y, magnitude)));
+        EXPECT_FALSE(IsValid(UnitVec2::Get(x, y).first));
     }
     {
         const auto x = Real(0);
         const auto y = GetInvalid<Real>();
-        auto magnitude = GetInvalid<Real>();
-        EXPECT_FALSE(IsValid(UnitVec2::Get(x, y, magnitude)));
+        EXPECT_FALSE(IsValid(UnitVec2::Get(x, y).first));
     }
     {
         const auto x = Real(0);
         const auto y = Real(0);
-        auto magnitude = GetInvalid<Real>();
-        EXPECT_FALSE(IsValid(UnitVec2::Get(x, y, magnitude, UnitVec2::GetDefaultFallback())));
-        EXPECT_EQ(magnitude, Real(0));
+        EXPECT_FALSE(IsValid(UnitVec2::Get(x, y, UnitVec2::GetDefaultFallback()).first));
+        EXPECT_EQ(UnitVec2::Get(x, y, UnitVec2::GetDefaultFallback()).second, Real(0));
     }
     {
         const auto x = Real(0);
         const auto y = Real(0);
-        auto magnitude = GetInvalid<Real>();
-        EXPECT_EQ(UnitVec2::Get(x, y, magnitude, UnitVec2::GetZero()), UnitVec2::GetZero());
-        EXPECT_EQ(magnitude, Real(0));
-        EXPECT_EQ(GetX(UnitVec2::Get(x, y, magnitude, UnitVec2::GetZero())), Real(0));
-        EXPECT_EQ(GetY(UnitVec2::Get(x, y, magnitude, UnitVec2::GetZero())), Real(0));
+        EXPECT_EQ(UnitVec2::Get(x, y, UnitVec2::GetZero()).first, UnitVec2::GetZero());
+        EXPECT_EQ(UnitVec2::Get(x, y, UnitVec2::GetZero()).second, Real(0));
+        EXPECT_EQ(GetX(UnitVec2::Get(x, y, UnitVec2::GetZero()).first), Real(0));
+        EXPECT_EQ(GetY(UnitVec2::Get(x, y, UnitVec2::GetZero()).first), Real(0));
     }
 }
 
@@ -163,9 +158,8 @@ TEST(UnitVec2, Absolute)
     EXPECT_EQ(UnitVec2::GetLeft().Absolute(), UnitVec2::GetRight());
     EXPECT_EQ(UnitVec2::GetRight().Absolute(), UnitVec2::GetRight());
 
-    Real magnitude;
-    EXPECT_EQ(UnitVec2::Get(Real(-1), Real(-1), magnitude).Absolute(),
-              UnitVec2::Get(Real(+1), Real(+1), magnitude));
+    EXPECT_EQ(UnitVec2::Get(Real(-1), Real(-1)).first.Absolute(),
+              UnitVec2::Get(Real(+1), Real(+1)).first);
 }
 
 TEST(UnitVec2, RotateMethod)

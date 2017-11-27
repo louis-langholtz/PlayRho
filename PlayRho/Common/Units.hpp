@@ -31,7 +31,7 @@
  *   one conceptually typed unit asscociated with it.
  *
  * @note In the simplest way that the PlayRho library can be configured, there's no compiler
- *   enforcement on the usage of the units for there associated quantities beyond the usage
+ *   enforcement on the usage of the units for their associated quantities beyond the usage
  *   of the Real type.
  */
 
@@ -47,6 +47,7 @@
 #if defined(USE_BOOST_UNITS)
 #include <boost/units/io.hpp>
 #include <boost/units/limits.hpp>
+#include <boost/units/cmath.hpp>
 #include <boost/units/systems/si/length.hpp>
 #include <boost/units/systems/si/time.hpp>
 #include <boost/units/systems/si/velocity.hpp>
@@ -781,6 +782,27 @@ namespace playrho
 
 #if defined(USE_BOOST_UNITS)
     
+    /// @brief Is finite.
+    template <class Y>
+    inline auto IsFinite(const boost::units::quantity<Y, Real> v)
+    {
+        return boost::units::isfinite(v);
+    }
+    
+    /// @brief Is normal.
+    template <class Y>
+    inline auto IsNormal(const boost::units::quantity<Y, Real> v)
+    {
+        return boost::units::isnormal(v);
+    }
+    
+    /// @brief Almost zero.
+    template <class Y>
+    inline auto AlmostZero(const boost::units::quantity<Y, Real> v)
+    {
+        return Abs(v) < std::numeric_limits<boost::units::quantity<Y, Real>>::min();
+    }
+
     /// @brief Strips the units off of the given value.
     template<typename Y>
     inline constexpr auto StripUnit(const boost::units::quantity<Y, Real> source)

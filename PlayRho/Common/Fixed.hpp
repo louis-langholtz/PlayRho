@@ -689,6 +689,13 @@ namespace playrho
     {
         return static_cast<Fixed<BT, FB>>(std::cos(static_cast<double>(arg)));
     }
+
+    /// @brief Computes the square root of the sum of the squares.
+    template <typename BT, unsigned int FB>
+    inline Fixed<BT, FB> Hypot(Fixed<BT, FB> x, Fixed<BT, FB> y)
+    {
+        return static_cast<Fixed<BT, FB>>(std::hypot(static_cast<double>(x), static_cast<double>(y)));
+    }
     
     /// @brief Rounds the given value.
     /// @sa http://en.cppreference.com/w/cpp/numeric/math/round
