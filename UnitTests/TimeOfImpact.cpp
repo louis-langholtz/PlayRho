@@ -892,39 +892,31 @@ TEST(TimeOfImpact, MaxTargetSquaredOverflow)
     const auto proxyB = DistanceProxy{radius, 1, &pos, nullptr};
 
     const auto conf = ToiConf{}
-        .UseTargetDepth(0.2_m)
+        .UseTargetDepth(2_m)
         .UseMaxRootIters(0)
         .UseMaxToiIters(0)
         .UseMaxDistIters(0)
+        .UseTolerance(NonNegative<Length>{std::numeric_limits<Length>::max()})
         ;
 
-    if (std::is_floating_point<Real>::value)
-    {
-        const auto sweepA = Sweep{
-            Position{Length2{-2e34_m, 0_m}, 0_deg},
-            Position{Length2{+1e34_m, 0_m}, 0_deg}
-        };
-        const auto sweepB = Sweep{
-            Position{Length2{+2e34_m, 0_m}, 0_deg},
-            Position{Length2{-1e33_m, 0_m}, 0_deg}
-        };
-        const auto output = (std::is_same<Real, float>::value)?
-        GetToiViaSat(proxyA, sweepA, proxyB, sweepB, ToiConf(conf).UseTolerance(5e26_m)):
-        ((std::is_same<Real, double>::value)?
-         GetToiViaSat(proxyA, sweepA, proxyB, sweepB, ToiConf(conf).UseTolerance(5e260_m)):
-         ((std::is_same<Real, long double>::value)?
-          GetToiViaSat(proxyA, sweepA, proxyB, sweepB, ToiConf(conf).UseTolerance(5e3000_m)):
-          TOIOutput{}));
-        
-        EXPECT_EQ(output.state, TOIOutput::e_maxTargetSquaredOverflow);
-        EXPECT_NEAR(static_cast<double>(output.time), 0.0, 0.0001);
-        EXPECT_EQ(output.stats.max_dist_iters, 0);
-        EXPECT_EQ(output.stats.max_root_iters, 0);
-        EXPECT_EQ(output.stats.toi_iters, 0);
-        EXPECT_EQ(output.stats.sum_dist_iters, 0);
-        EXPECT_EQ(output.stats.sum_finder_iters, 0);
-        EXPECT_EQ(output.stats.sum_root_iters, 0);
-    }
+    const auto sweepA = Sweep{
+        Position{Length2{-200_m, 0_m}, 0_deg},
+        Position{Length2{+100_m, 0_m}, 0_deg}
+    };
+    const auto sweepB = Sweep{
+        Position{Length2{+200_m, 0_m}, 0_deg},
+        Position{Length2{-10_m, 0_m}, 0_deg}
+    };
+    const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
+    
+    EXPECT_EQ(output.state, TOIOutput::e_maxTargetSquaredOverflow);
+    EXPECT_NEAR(static_cast<double>(output.time), 0.0, 0.0001);
+    EXPECT_EQ(output.stats.max_dist_iters, 0);
+    EXPECT_EQ(output.stats.max_root_iters, 0);
+    EXPECT_EQ(output.stats.toi_iters, 0);
+    EXPECT_EQ(output.stats.sum_dist_iters, 0);
+    EXPECT_EQ(output.stats.sum_finder_iters, 0);
+    EXPECT_EQ(output.stats.sum_root_iters, 0);
 }
 
 #if 0
