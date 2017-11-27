@@ -81,7 +81,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
     }
 
     const auto maxTargetSquared = Square(maxTarget);
-    if (!isfinite(maxTargetSquared) && isfinite(maxTarget))
+    if (!IsFinite(maxTargetSquared) && IsFinite(maxTarget))
     {
         return TOIOutput{0, stats, TOIOutput::e_maxTargetSquaredOverflow};
     }
