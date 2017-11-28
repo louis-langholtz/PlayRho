@@ -602,8 +602,8 @@ void Test::LaunchBomb(const Length2& at, const LinearVelocity2 v)
                                 .UseLocation(at).UseLinearVelocity(v));
 
     auto conf = DiskShape::Conf{};
-    conf.vertexRadius = 0.3_m;
-    conf.density = 20_kgpm2;
+    conf.vertexRadius = m_bombRadius;
+    conf.density = m_bombDensity;
     conf.restitution = 0.0f;
     m_bomb->CreateFixture(std::make_shared<DiskShape>(conf));
 }
@@ -1252,7 +1252,7 @@ void Test::KeyboardHandler(KeyID key, KeyAction action, KeyMods mods)
         {
             continue;
         }
-        if (mods & keyActionMods.mods)
+        if (mods != keyActionMods.mods)
         {
             continue;
         }

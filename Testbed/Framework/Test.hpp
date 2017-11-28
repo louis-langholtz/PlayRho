@@ -320,6 +320,8 @@ protected:
 
     std::string m_status;
     TextLinePos m_textLine = TextLinePos{30};
+    AreaDensity m_bombDensity = 20_kgpm2;
+    Length m_bombRadius = 0.3_m;
 
 private:
     void DrawStats(const StepConf& stepConf, UiState& ui);

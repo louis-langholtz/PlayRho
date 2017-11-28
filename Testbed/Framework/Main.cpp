@@ -708,13 +708,16 @@ static void AboutTestUI()
             for (auto& handledKey: handledKeys)
             {
                 const auto keyID = handledKey.first.key;
+                const auto mods = handledKey.first.mods;
                 
                 ImGui::TextUnformatted(GetKeyActionName(handledKey.first.action));
                 ImGui::NextColumn();
                 
                 if (std::isgraph(keyID))
                 {
-                    ImGui::Text("%c", keyID);
+                    const auto shift = mods & GLFW_MOD_SHIFT;
+                    const auto ctrl = mods & GLFW_MOD_CONTROL;
+                    ImGui::Text("%s%s%c", (ctrl? "ctrl-": ""), (shift? "shift-": ""), keyID);
                 }
                 else
                 {
