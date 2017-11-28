@@ -92,7 +92,7 @@ public:
 
         auto conf = Test::Conf{};
         conf.description = os.str();
-        conf.worldDef = WorldDef{}.UseMaxVertexRadius(700000_km);
+        conf.worldDef = WorldDef{}.UseMaxVertexRadius(1e7_km);
         conf.neededSettings = 0;
         conf.neededSettings |= (1u << NeedLinearSlopField);
         conf.neededSettings |= (1u << NeedCameraZoom);
@@ -111,6 +111,8 @@ public:
     
     SolarSystem(): Test(GetTestConf())
     {
+        m_bombRadius = 100_km;
+        m_bombDensity = 2e12_kgpm2;
         m_world.SetGravity(LinearAcceleration2{});
         const auto DynamicBD = BodyDef{}.UseType(BodyType::Dynamic).UseBullet(true);
         for (auto& sso: SolarSystemBodies)
@@ -140,6 +142,26 @@ public:
                        [&](KeyActionMods) {
                            m_focalBody = nullptr;
                        });
+        RegisterForKey(GLFW_KEY_S, GLFW_PRESS, GLFW_MOD_SHIFT,
+                       "Increases bomb size.",
+                       [&](KeyActionMods) {
+                           m_bombRadius *= 2;
+                       });
+        RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0,
+                       "Decreases bomb size.",
+                       [&](KeyActionMods) {
+                           m_bombRadius /= 2;;
+                       });
+        RegisterForKey(GLFW_KEY_D, GLFW_PRESS, GLFW_MOD_SHIFT,
+                       "Increases bomb density.",
+                       [&](KeyActionMods) {
+                           m_bombDensity *= 2;
+                       });
+        RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0,
+                       "Decreases bomb density.",
+                       [&](KeyActionMods) {
+                           m_bombDensity /= 2;;
+                       });
     }
     
     void PreStep(const Settings&, Drawer& drawer) override
@@ -161,6 +183,8 @@ public:
         {
             os << "Camera unlocked from following any planet.";
         }
+        os << " 'Bomb' size (radial) is now at " << Real{m_bombRadius/1_km} << "km.";
+        os << " 'Bomb' density (areal) is now at " << Real{m_bombDensity/1_kgpm2} << "kg/m^2.";
         m_status = os.str();
     }
     
