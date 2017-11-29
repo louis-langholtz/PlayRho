@@ -49,6 +49,30 @@ namespace playrho {
 // J = [ug cross(r, ug)]
 // K = J * invM * JT = invMass + invI * cross(r, ug)^2
 
+namespace {
+
+inline bool IsValidType(JointType t) noexcept
+{
+    return (t == JointType::Revolute) || (t == JointType::Prismatic);
+}
+
+} // unnamed namespace
+
+bool GearJoint::IsOkay(const GearJointDef& def) noexcept
+{
+    const auto t1 = GetType(*def.joint1);
+    const auto t2 = GetType(*def.joint2);
+    if (!IsValidType(t1) || !IsValidType(t2))
+    {
+        return false;
+    }
+    if (!Joint::IsOkay(def))
+    {
+        return false;
+    }
+    return true;
+}
+
 GearJoint::GearJoint(const GearJointDef& def):
     Joint(def),
     m_joint1(def.joint1),
@@ -57,9 +81,9 @@ GearJoint::GearJoint(const GearJointDef& def):
     m_typeB(GetType(*def.joint2)),
     m_ratio(def.ratio)
 {
-    assert(m_typeA == JointType::Revolute || m_typeA == JointType::Prismatic);
-    assert(m_typeB == JointType::Revolute || m_typeB == JointType::Prismatic);
-
+    assert(IsValidType(m_typeA));
+    assert(IsValidType(m_typeB));
+    
     // TODO_ERIN there might be some problem with the joint edges in Joint.
 
     m_bodyC = m_joint1->GetBodyA();

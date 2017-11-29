@@ -46,6 +46,9 @@ class GearJoint : public Joint
 {
 public:
     
+    /// @brief Is the given definition okay.
+    static bool IsOkay(const GearJointDef& data) noexcept;
+
     /// @brief Initializing constructor.
     GearJoint(const GearJointDef& data);
     
