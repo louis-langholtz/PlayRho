@@ -105,9 +105,17 @@ public:
     virtual AngularMomentum GetAngularReaction() const = 0;
     
     /// @brief Accepts a visitor.
+    /// @details This is the Accept method definition of a "visitor design pattern" for
+    ///   for doing joint subclass specific types of processing for a constant joint.
+    /// @sa JointVisitor
+    /// @sa https://en.wikipedia.org/wiki/Visitor_pattern
     virtual void Accept(JointVisitor& visitor) const = 0;
     
     /// @brief Accepts a visitor.
+    /// @details This is the Accept method definition of a "visitor design pattern" for
+    ///   for doing joint subclass specific types of processing.
+    /// @sa JointVisitor
+    /// @sa https://en.wikipedia.org/wiki/Visitor_pattern
     virtual void Accept(JointVisitor& visitor) = 0;
 
     /// Get the user data pointer.

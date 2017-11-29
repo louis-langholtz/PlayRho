@@ -33,13 +33,16 @@
 
 namespace playrho
 {
-    /// @brief A fixed-point template class.
+    /// @brief Template class for fixed-point numbers.
     ///
     /// @details This is a fixed point type template for a given base type using a given number
-    ///   of fraction bits.
+    ///   of fraction bits that satisfies the "LiteralType" concept.
     ///
     /// @note For a 32-bit sized fixed point type with a 14-bit fraction part
     ///   0.000061035156250 is the smallest double precision value that can be represented.
+    ///
+    /// @sa https://en.wikipedia.org/wiki/Fixed-point_arithmetic
+    /// @sa http://en.cppreference.com/w/cpp/concept/LiteralType
     ///
     template <typename BASE_TYPE, unsigned int FRACTION_BITS>
     class Fixed

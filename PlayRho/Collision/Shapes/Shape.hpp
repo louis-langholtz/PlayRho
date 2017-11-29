@@ -43,12 +43,14 @@ struct ShapeDef;
 ///
 /// @details This is a polymorphic abstract base class for shapes.
 ///   A shape is used for collision detection. You can create a shape however you like.
-///   Shapes used for simulation in World are created automatically when a Fixture
-///   is created. Shapes may encapsulate zero or more child shapes.
+///   Shapes used for simulation in <code>World</code> are created automatically when a
+///   <code>Fixture</code> is created. Shapes may encapsulate zero or more child shapes.
 ///
 /// @note This data structure is 32-bytes large (on at least one 64-bit platform).
 ///
 /// @ingroup PartsGroup
+///
+/// @sa Fixture
 ///
 class Shape
 {
@@ -73,6 +75,10 @@ public:
     virtual MassData GetMassData() const noexcept = 0;
 
     /// @brief Accepts a visitor.
+    /// @details This is the Accept method definition of a "visitor design pattern" for
+    ///   for doing shape subclass specific types of processing for a constant shape.
+    /// @sa ShapeVisitor
+    /// @sa https://en.wikipedia.org/wiki/Visitor_pattern
     virtual void Accept(ShapeVisitor& visitor) const = 0;
     
     /// @brief Gets the vertex radius.
