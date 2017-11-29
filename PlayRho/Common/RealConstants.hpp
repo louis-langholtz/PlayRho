@@ -29,6 +29,7 @@
 #ifndef PLAYRHO_COMMON_REALCONSTANTS_HPP
 #define PLAYRHO_COMMON_REALCONSTANTS_HPP
 
+#include <PlayRho/Defines.hpp>
 #include <PlayRho/Common/Real.hpp>
 
 namespace playrho {

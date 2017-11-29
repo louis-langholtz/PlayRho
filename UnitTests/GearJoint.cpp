@@ -21,6 +21,7 @@
 #include "gtest/gtest.h"
 
 #include <PlayRho/Dynamics/Joints/GearJoint.hpp>
+#include <PlayRho/Dynamics/Joints/DistanceJointDef.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
 #include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
 #include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
@@ -92,6 +93,20 @@ TEST(GearJoint, ByteSize)
         case 16: EXPECT_EQ(sizeof(GearJoint), std::size_t(496)); break;
         default: FAIL(); break;
     }
+}
+
+TEST(GearJoint, IsOkay)
+{
+    auto world = World{};
+    const auto b1 = world.CreateBody();
+    const auto b2 = world.CreateBody();
+    const auto b3 = world.CreateBody();
+    const auto b4 = world.CreateBody();
+    const auto dj = world.CreateJoint(DistanceJointDef{b1, b2});
+    EXPECT_FALSE(GearJoint::IsOkay(GearJointDef{dj, dj}));
+    const auto rj1 = world.CreateJoint(RevoluteJointDef{b1, b2, Length2{}});
+    const auto rj2 = world.CreateJoint(RevoluteJointDef{b3, b4, Length2{}});
+    EXPECT_TRUE(GearJoint::IsOkay(GearJointDef{rj1, rj2}));
 }
 
 TEST(GearJoint, Construction)

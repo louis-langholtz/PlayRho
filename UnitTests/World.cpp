@@ -39,6 +39,7 @@
 #include <PlayRho/Dynamics/Joints/FrictionJoint.hpp>
 #include <PlayRho/Dynamics/Joints/MotorJoint.hpp>
 #include <PlayRho/Dynamics/Joints/WheelJoint.hpp>
+#include <PlayRho/Dynamics/Joints/GearJoint.hpp>
 #include <PlayRho/Common/LengthError.hpp>
 #include <PlayRho/Common/WrongState.hpp>
 #include <chrono>
@@ -256,7 +257,8 @@ TEST(World, CopyConstruction)
     const auto b5 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
     b5->CreateFixture(shape);
 
-    world.CreateJoint(RevoluteJointDef{b1, b2, Length2{}});
+    const auto rj1 = world.CreateJoint(RevoluteJointDef{b1, b2, Length2{}});
+    const auto rj2 = world.CreateJoint(RevoluteJointDef{b3, b4, Length2{}});
     world.CreateJoint(PrismaticJointDef{b1, b2, Length2{}, UnitVec2::GetRight()});
     world.CreateJoint(PulleyJointDef{b1, b2, Length2{}, Length2{},
         Length2{}, Length2{}}.UseRatio(Real(1)));
@@ -267,6 +269,7 @@ TEST(World, CopyConstruction)
     world.CreateJoint(MotorJointDef{b4, b5});
     world.CreateJoint(WheelJointDef{b4, b5, Length2{}, UnitVec2::GetRight()});
     world.CreateJoint(MouseJointDef{b4});
+    world.CreateJoint(GearJointDef{rj1, rj2});
 
     auto stepConf = StepConf{};
     world.Step(stepConf);
