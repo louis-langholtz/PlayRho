@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bounded_20value_20type_20aliases_2e',['Bounded value type aliases.',['../group__BoundedAliases.html',1,'']]]
+  ['bounded_20value_20types',['Bounded Value Types',['../group__BoundedAliases.html',1,'']]]
 ];

@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['point',['Point',['../structplayrho_1_1Manifold_1_1Point.html',1,'playrho::Manifold']]],
-  ['point',['Point',['../structplayrho_1_1VelocityConstraint_1_1Point.html',1,'playrho::VelocityConstraint']]],
+  ['point',['Point',['../structplayrho_1_1VelocityConstraint_1_1Point.html',1,'playrho::VelocityConstraint::Point'],['../structplayrho_1_1Manifold_1_1Point.html',1,'playrho::Manifold::Point']]],
   ['pointarray',['PointArray',['../structplayrho_1_1Manifold_1_1PointArray.html',1,'playrho::Manifold']]],
   ['pointdata',['PointData',['../structplayrho_1_1WorldManifold_1_1PointData.html',1,'playrho::WorldManifold']]],
   ['pointstates',['PointStates',['../structplayrho_1_1PointStates.html',1,'playrho']]],

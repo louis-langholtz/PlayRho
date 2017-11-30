@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['lowest',['lowest',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed32_01_4.html#adb7eee84277aaf7b152dddfde973cca3',1,'std::numeric_limits&lt; playrho::Fixed32 &gt;::lowest()'],['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed64_01_4.html#af8dc3f37a36aea6eb18ba821302ceaa6',1,'std::numeric_limits&lt; playrho::Fixed64 &gt;::lowest()']]]
+  ['lowest',['lowest',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html#a3d12a7d0a2975e2d7d7eb665ea93d8f6',1,'std::numeric_limits&lt; playrho::Fixed&lt; BT, FB &gt; &gt;']]]
 ];

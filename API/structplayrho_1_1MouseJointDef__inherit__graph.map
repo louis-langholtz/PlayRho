@@ -1,5 +1,5 @@
 <map id="playrho::MouseJointDef" name="playrho::MouseJointDef">
-<area shape="rect" id="node2" href="$structplayrho_1_1JointBuilder.html" title="playrho::JointBuilder\l\&lt; MouseJointDef \&gt;" alt="" coords="15,171,153,212"/>
-<area shape="rect" id="node3" href="$structplayrho_1_1JointDef.html" title="Abstract base Joint definition class. " alt="" coords="42,5,161,32"/>
-<area shape="rect" id="node4" href="$structplayrho_1_1JointBuilder.html" title="Joint builder definition structure. " alt="" coords="100,81,271,108"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1JointBuilder.html" title="playrho::JointBuilder\l\&lt; MouseJointDef \&gt;" alt="" coords="15,167,157,205"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1JointDef.html" title="Abstract base Joint definition class. " alt="" coords="20,5,141,31"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1JointBuilder.html" title="Joint builder definition structure. " alt="" coords="102,80,275,105"/>
 </map>

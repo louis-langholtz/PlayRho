@@ -1,5 +1,5 @@
 <map id="playrho::StepConf" name="playrho::StepConf">
-<area shape="rect" id="node4" href="$classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Length \&gt;" alt="" coords="416,285,572,326"/>
-<area shape="rect" id="node6" href="$classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="144,317,300,358"/>
-<area shape="rect" id="node11" href="$classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Angle \&gt;" alt="" coords="416,350,572,391"/>
+<area shape="rect" id="node5" href="$classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Length \&gt;" alt="" coords="422,310,581,349"/>
+<area shape="rect" id="node7" href="$classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="146,341,305,379"/>
+<area shape="rect" id="node12" href="$classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Angle \&gt;" alt="" coords="422,373,581,411"/>
 </map>

@@ -1,7 +1,7 @@
 <map id="playrho::ShapeConf" name="playrho::ShapeConf">
-<area shape="rect" id="node2" href="$structplayrho_1_1ShapeDefBuilder.html" title="playrho::ShapeDefBuilder\l\&lt; ShapeConf \&gt;" alt="" coords="1177,81,1345,122"/>
-<area shape="rect" id="node3" href="$structplayrho_1_1ShapeDef.html" title="Base configuration for initializing shapes. " alt="" coords="692,81,820,108"/>
-<area shape="rect" id="node11" href="$structplayrho_1_1ShapeDefBuilder.html" title="Builder configuration structure. " alt="" coords="869,115,1037,157"/>
-<area shape="rect" id="node7" href="$classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Real \&gt;" alt="" coords="406,158,562,199"/>
-<area shape="rect" id="node9" href="$classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="144,190,300,231"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1ShapeDefBuilder.html" title="playrho::ShapeDefBuilder\l\&lt; ShapeConf \&gt;" alt="" coords="1226,73,1399,112"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1ShapeDef.html" title="Base configuration for initializing shapes. " alt="" coords="730,80,862,105"/>
+<area shape="rect" id="node11" href="$structplayrho_1_1ShapeDefBuilder.html" title="Builder configuration structure. " alt="" coords="911,101,1084,140"/>
+<area shape="rect" id="node7" href="$classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Real \&gt;" alt="" coords="424,153,583,192"/>
+<area shape="rect" id="node9" href="$classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="146,181,305,220"/>
 </map>

@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['gravity',['gravity',['../structplayrho_1_1WorldDef.html#ab2d4bd686a2dedc2ec3687f525453d6e',1,'playrho::WorldDef']]],
-  ['groundanchora',['groundAnchorA',['../structplayrho_1_1PulleyJointDef.html#ad07c127e517ae2b03b057bcdba8e890e',1,'playrho::PulleyJointDef']]],
-  ['groundanchorb',['groundAnchorB',['../structplayrho_1_1PulleyJointDef.html#a790a3d6f7ca5e32ac15568457ffa218d',1,'playrho::PulleyJointDef']]],
+  ['giga',['Giga',['../group__DecimalUnitPrefices.html#ga66ca2124fd143e2433bb2f409dc83f92',1,'playrho']]],
+  ['gravity',['gravity',['../structplayrho_1_1WorldDef.html#a521bcffa82fe232baf4f1aed321d92d4',1,'playrho::WorldDef']]],
+  ['groundanchora',['groundAnchorA',['../structplayrho_1_1PulleyJointDef.html#a0594c73b34c4d0027e913419f46e1045',1,'playrho::PulleyJointDef']]],
+  ['groundanchorb',['groundAnchorB',['../structplayrho_1_1PulleyJointDef.html#ab6333515bb572932438bc9c0ab10005b',1,'playrho::PulleyJointDef']]],
   ['groupindex',['groupIndex',['../structplayrho_1_1Filter.html#a8388c2614c205b7aaa2226849779619f',1,'playrho::Filter']]]
 ];

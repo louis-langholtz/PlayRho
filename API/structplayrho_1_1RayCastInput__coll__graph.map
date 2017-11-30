@@ -1,6 +1,6 @@
 <map id="playrho::RayCastInput" name="playrho::RayCastInput">
-<area shape="rect" id="node2" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="73,206,246,233"/>
-<area shape="rect" id="node4" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="83,102,241,129"/>
-<area shape="rect" id="node7" href="$classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="265,95,421,136"/>
-<area shape="rect" id="node5" href="$classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Real \&gt;" alt="" coords="271,199,427,240"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="77,199,251,224"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="91,99,248,124"/>
+<area shape="rect" id="node8" href="$classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="272,92,431,131"/>
+<area shape="rect" id="node6" href="$classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Real \&gt;" alt="" coords="276,192,435,231"/>
 </map>

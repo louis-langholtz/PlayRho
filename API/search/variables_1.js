@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['b',['b',['../structplayrho_1_1WitnessPoints.html#adb1cb3dbec6ea4ef427206633a5d0a41',1,'playrho::WitnessPoints::b()'],['../structplayrho_1_1IndexPair.html#a35db30e2d77104fb9c8c4c9a861097eb',1,'playrho::IndexPair::b()']]],
+  ['b',['b',['../structplayrho_1_1WitnessPoints.html#a7552b0269fb34337c17f41bd9f34daeb',1,'playrho::WitnessPoints::b()'],['../structplayrho_1_1IndexPair.html#a35db30e2d77104fb9c8c4c9a861097eb',1,'playrho::IndexPair::b()']]],
+  ['bigg',['BigG',['../group__UnitConstants.html#ga4435a07d3cb65258172c132b134c02fb',1,'playrho']]],
   ['blocks',['blocks',['../structplayrho_1_1BlockAllocator_1_1Chunk.html#a4be991e1465ee5b0e52cceb8ee2b444a',1,'playrho::BlockAllocator::Chunk']]],
   ['blocksize',['blockSize',['../structplayrho_1_1BlockAllocator_1_1Chunk.html#a9f089d6471c64f144bfd554b13bb215e',1,'playrho::BlockAllocator::Chunk']]],
   ['blocksizes',['BlockSizes',['../classplayrho_1_1BlockAllocator.html#a23e7f083753aa14c4489206790f1cfa2',1,'playrho::BlockAllocator']]],

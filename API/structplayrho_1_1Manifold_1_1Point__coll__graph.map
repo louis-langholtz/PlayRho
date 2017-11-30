@@ -1,5 +1,5 @@
 <map id="playrho::Manifold::Point" name="playrho::Manifold::Point">
-<area shape="rect" id="node2" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="5,199,179,225"/>
-<area shape="rect" id="node4" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="122,95,281,121"/>
-<area shape="rect" id="node6" href="$structplayrho_1_1ContactFeature.html" title="Contact Feature. " alt="" coords="318,199,479,225"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="5,192,179,217"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="102,92,259,117"/>
+<area shape="rect" id="node7" href="$structplayrho_1_1ContactFeature.html" title="Contact Feature. " alt="" coords="320,192,484,217"/>
 </map>

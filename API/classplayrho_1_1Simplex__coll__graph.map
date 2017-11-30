@@ -1,5 +1,5 @@
 <map id="playrho::Simplex" name="playrho::Simplex">
-<area shape="rect" id="node2" href="$classplayrho_1_1ArrayList.html" title="playrho::ArrayList\l\&lt; Real, MaxSimplexEdges,\l std::remove_const\&lt; decltype\l(MaxSimplexEdges)\&gt;::type \&gt;" alt="" coords="437,5,630,76"/>
-<area shape="rect" id="node3" href="$classplayrho_1_1ArrayList.html" title="Array list. " alt="" coords="5,59,191,115"/>
-<area shape="rect" id="node4" href="$classplayrho_1_1ArrayList.html" title="playrho::ArrayList\l\&lt; SimplexEdge, MaxSimplexEdges,\l std::remove_const\&lt; decltype\l(MaxSimplexEdges)\&gt;::type \&gt;" alt="" coords="417,100,649,171"/>
+<area shape="rect" id="node2" href="$classplayrho_1_1ArrayList.html" title="playrho::ArrayList\l\&lt; Real, MaxSimplexEdges,\l std::remove_const\&lt; decltype\l(MaxSimplexEdges)\&gt;::type \&gt;" alt="" coords="440,5,635,71"/>
+<area shape="rect" id="node3" href="$classplayrho_1_1ArrayList.html" title="Array list. " alt="" coords="5,57,193,109"/>
+<area shape="rect" id="node4" href="$classplayrho_1_1ArrayList.html" title="playrho::ArrayList\l\&lt; SimplexEdge, MaxSimplexEdges,\l std::remove_const\&lt; decltype\l(MaxSimplexEdges)\&gt;::type \&gt;" alt="" coords="421,95,654,160"/>
 </map>

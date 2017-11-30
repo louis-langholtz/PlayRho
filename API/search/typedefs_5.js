@@ -6,7 +6,7 @@ var searchData=
   ['fixturequeue',['FixtureQueue',['../classplayrho_1_1World.html#a9c6058a3afcdc1ecd062483e02bb6d6b',1,'playrho::World']]],
   ['fixtures',['Fixtures',['../classplayrho_1_1Body.html#a6e24f722210f9c15185f5abfe46964a5',1,'playrho::Body']]],
   ['flagstype',['FlagsType',['../classplayrho_1_1Body.html#aeea820d5f1eb504acd52aeef5c18ef69',1,'playrho::Body::FlagsType()'],['../classplayrho_1_1Contact.html#a8a587e1238fc75c24c0e47ab32796409',1,'playrho::Contact::FlagsType()'],['../classplayrho_1_1Joint.html#a4824603d7fe34118ba3ff5f9a535618b',1,'playrho::Joint::FlagsType()'],['../classplayrho_1_1World.html#aa475bfd0bff16c072ad8d7fa386d21f5',1,'playrho::World::FlagsType()']]],
-  ['force',['Force',['../group__Quantities.html#gabdbf955ed1cafec5062f074511ee4829',1,'playrho']]],
-  ['force2d',['Force2D',['../namespaceplayrho.html#ad409812375f6863156f08f4db02629b1',1,'playrho']]],
-  ['frequency',['Frequency',['../group__Quantities.html#gad39135cf298be76964c70829ec84a51e',1,'playrho']]]
+  ['force',['Force',['../group__PhysicalQuantities.html#gabdbf955ed1cafec5062f074511ee4829',1,'playrho']]],
+  ['force2',['Force2',['../namespaceplayrho.html#a2d09dc7b51321c052b071485357ca1f9',1,'playrho']]],
+  ['frequency',['Frequency',['../group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e',1,'playrho']]]
 ];

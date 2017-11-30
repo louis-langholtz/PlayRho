@@ -1,0 +1,10 @@
+<map id="playrho::Shape::Builder&lt; ConcreteConf &gt;" name="playrho::Shape::Builder&lt; ConcreteConf &gt;">
+<area shape="rect" id="node3" href="$structplayrho_1_1MultiShape_1_1Conf.html" title="Configuration data for multi&#45;shape shapes. " alt="" coords="505,68,644,107"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1Shape_1_1Builder.html" title="playrho::Shape::Builder\l\&lt; Conf \&gt;" alt="" coords="494,131,654,169"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1Shape_1_1BaseConf.html" title="Base configuration for initializing shapes. " alt="" coords="5,107,182,132"/>
+<area shape="rect" id="node5" href="$structplayrho_1_1ChainShape_1_1Conf.html" title="Configuration data for chain shapes. " alt="" coords="710,5,856,44"/>
+<area shape="rect" id="node6" href="$structplayrho_1_1DiskShape_1_1Conf.html" title="Configuration data for disk shapes. " alt="" coords="715,68,852,107"/>
+<area shape="rect" id="node7" href="$structplayrho_1_1EdgeShape_1_1Conf.html" title="Configuration data for edge shapes. " alt="" coords="712,131,854,169"/>
+<area shape="rect" id="node8" href="$structplayrho_1_1PolygonShape_1_1Conf.html" title="Configuration data for polygon shapes. " alt="" coords="704,193,863,232"/>
+<area shape="rect" id="node9" href="$structplayrho_1_1Shape_1_1Conf.html" title="Shape configuration structure. " alt="" coords="710,256,857,281"/>
+</map>

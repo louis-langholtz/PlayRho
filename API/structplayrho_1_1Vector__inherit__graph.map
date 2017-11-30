@@ -1,10 +1,9 @@
-<map id="playrho::Vector&lt; N, T &gt;" name="playrho::Vector&lt; N, T &gt;">
-<area shape="rect" id="node2" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearAcceleration \&gt;" alt="" coords="348,13,589,40"/>
-<area shape="rect" id="node3" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Momentum \&gt;" alt="" coords="369,64,568,91"/>
-<area shape="rect" id="node4" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Mass \&gt;" alt="" coords="385,115,552,141"/>
-<area shape="rect" id="node5" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; MaxSimplex\lEdges, IndexPair \&gt;" alt="" coords="371,166,566,207"/>
-<area shape="rect" id="node6" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="382,232,555,259"/>
-<area shape="rect" id="node7" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearVelocity \&gt;" alt="" coords="361,283,577,309"/>
-<area shape="rect" id="node8" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; InvMass \&gt;" alt="" coords="378,333,559,360"/>
-<area shape="rect" id="node9" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Real \&gt;" alt="" coords="389,384,549,411"/>
+<map id="playrho::Vector&lt; T, N &gt;" name="playrho::Vector&lt; T, N &gt;">
+<area shape="rect" id="node2" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearAcceleration \&gt;" alt="" coords="347,5,591,31"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Momentum \&gt;" alt="" coords="369,55,569,80"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Mass \&gt;" alt="" coords="386,104,552,129"/>
+<area shape="rect" id="node5" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="382,153,556,179"/>
+<area shape="rect" id="node6" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearVelocity \&gt;" alt="" coords="361,203,577,228"/>
+<area shape="rect" id="node7" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; InvMass \&gt;" alt="" coords="378,252,560,277"/>
+<area shape="rect" id="node8" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Real \&gt;" alt="" coords="389,301,549,327"/>
 </map>

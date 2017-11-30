@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structplayrho_1_1IndexPairSeparation.html" title="Index pair separation. " alt="" coords="5,5,193,32"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1HasType_3_01T_00_01std_1_1tuple_3_01T_00_01Ts_8_8_8_01_4_01_4.html" title="Has&#45;type trait true class. " alt="" coords="144,5,295,44"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1IsArithmetic_3_01T_00_01VoidT_3_01decltype_07T_02_03_09T_02_03_08_00_01decltype0b2e449314e00fef5ceeea648917bc10.html" title="Template specialization for valid/acceptable &quot;arithmetic&quot; types. " alt="" coords="130,68,309,147"/>
 </map>

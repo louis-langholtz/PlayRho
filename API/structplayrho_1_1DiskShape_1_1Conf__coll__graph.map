@@ -1,9 +1,9 @@
 <map id="playrho::DiskShape::Conf" name="playrho::DiskShape::Conf">
-<area shape="rect" id="node2" href="$structplayrho_1_1ShapeDefBuilder.html" title="playrho::ShapeDefBuilder\l\&lt; Conf \&gt;" alt="" coords="1172,158,1340,199"/>
-<area shape="rect" id="node3" href="$structplayrho_1_1ShapeDef.html" title="Base configuration for initializing shapes. " alt="" coords="724,107,852,133"/>
-<area shape="rect" id="node11" href="$structplayrho_1_1ShapeDefBuilder.html" title="Builder configuration structure. " alt="" coords="901,158,1069,199"/>
-<area shape="rect" id="node7" href="$classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Real \&gt;" alt="" coords="433,158,589,199"/>
-<area shape="rect" id="node9" href="$classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="151,158,307,199"/>
-<area shape="rect" id="node12" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="424,225,597,252"/>
-<area shape="rect" id="node13" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="149,287,308,313"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1ShapeDefBuilder.html" title="playrho::ShapeDefBuilder\l\&lt; Conf \&gt;" alt="" coords="1204,155,1378,193"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1ShapeDef.html" title="Base configuration for initializing shapes. " alt="" coords="747,104,879,129"/>
+<area shape="rect" id="node11" href="$structplayrho_1_1ShapeDefBuilder.html" title="Builder configuration structure. " alt="" coords="928,155,1101,193"/>
+<area shape="rect" id="node7" href="$classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Real \&gt;" alt="" coords="441,153,600,192"/>
+<area shape="rect" id="node9" href="$classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="150,153,309,192"/>
+<area shape="rect" id="node14" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="151,216,308,241"/>
+<area shape="rect" id="node12" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="434,219,608,244"/>
 </map>

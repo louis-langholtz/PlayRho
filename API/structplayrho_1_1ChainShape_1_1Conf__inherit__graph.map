@@ -1,5 +1,5 @@
 <map id="playrho::ChainShape::Conf" name="playrho::ChainShape::Conf">
-<area shape="rect" id="node2" href="$structplayrho_1_1ShapeDefBuilder.html" title="playrho::ShapeDefBuilder\l\&lt; Conf \&gt;" alt="" coords="5,185,173,227"/>
-<area shape="rect" id="node3" href="$structplayrho_1_1ShapeDef.html" title="Base configuration for initializing shapes. " alt="" coords="43,5,171,32"/>
-<area shape="rect" id="node4" href="$structplayrho_1_1ShapeDefBuilder.html" title="Builder configuration structure. " alt="" coords="105,81,273,123"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1ShapeDefBuilder.html" title="playrho::ShapeDefBuilder\l\&lt; Conf \&gt;" alt="" coords="5,180,179,219"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1ShapeDef.html" title="Base configuration for initializing shapes. " alt="" coords="21,5,153,31"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1ShapeDefBuilder.html" title="Builder configuration structure. " alt="" coords="108,80,281,119"/>
 </map>

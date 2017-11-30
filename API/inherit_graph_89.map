@@ -1,3 +1,12 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classplayrho_1_1Span.html" title="A C++ encapsulation of an array and its size. " alt="" coords="5,5,139,32"/>
+<area shape="rect" id="node1" href="$structplayrho_1_1ShapeDef.html" title="Base configuration for initializing shapes. " alt="" coords="5,169,137,195"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1ShapeDefBuilder.html" title="Builder configuration structure. " alt="" coords="185,100,358,139"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1ShapeDefBuilder.html" title="playrho::ShapeDefBuilder\l\&lt; Conf \&gt;" alt="" coords="185,163,358,201"/>
+<area shape="rect" id="node9" href="$structplayrho_1_1ShapeDefBuilder.html" title="playrho::ShapeDefBuilder\l\&lt; ShapeConf \&gt;" alt="" coords="185,253,358,292"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1ChainShape_1_1Conf.html" title="Configuration data for chain shapes. " alt="" coords="413,5,559,44"/>
+<area shape="rect" id="node5" href="$structplayrho_1_1DiskShape_1_1Conf.html" title="Configuration data for disk shapes. " alt="" coords="418,68,554,107"/>
+<area shape="rect" id="node6" href="$structplayrho_1_1EdgeShape_1_1Conf.html" title="Configuration data for edge shapes. " alt="" coords="415,131,557,169"/>
+<area shape="rect" id="node7" href="$structplayrho_1_1MultiShape_1_1Conf.html" title="Configuration data for multi&#45;shape shapes. " alt="" coords="416,193,556,232"/>
+<area shape="rect" id="node8" href="$structplayrho_1_1PolygonShape_1_1Conf.html" title="Configuration data for polygon shapes. " alt="" coords="406,256,566,295"/>
+<area shape="rect" id="node10" href="$structplayrho_1_1ShapeConf.html" title="Shape configuration structure. " alt="" coords="416,319,556,344"/>
 </map>

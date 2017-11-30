@@ -1,5 +1,5 @@
 <map id="playrho::ClipVertex" name="playrho::ClipVertex">
-<area shape="rect" id="node2" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="50,199,224,225"/>
-<area shape="rect" id="node4" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="80,95,239,121"/>
-<area shape="rect" id="node5" href="$structplayrho_1_1ContactFeature.html" title="Contact Feature. " alt="" coords="248,199,410,225"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="51,192,225,217"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="91,92,248,117"/>
+<area shape="rect" id="node6" href="$structplayrho_1_1ContactFeature.html" title="Contact Feature. " alt="" coords="249,192,413,217"/>
 </map>

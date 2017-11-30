@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['a',['a',['../structplayrho_1_1WitnessPoints.html#a8e711c25eb4d3b3881ecf6b7d065ae28',1,'playrho::WitnessPoints::a()'],['../structplayrho_1_1IndexPair.html#a06334874699e650d55816369951a4ccb',1,'playrho::IndexPair::a()']]],
+  ['a',['a',['../structplayrho_1_1WitnessPoints.html#a90ba10c66a24a16c8f9332cef7c99315',1,'playrho::WitnessPoints::a()'],['../structplayrho_1_1IndexPair.html#a06334874699e650d55816369951a4ccb',1,'playrho::IndexPair::a()']]],
   ['aabbextension',['aabbExtension',['../classplayrho_1_1StepConf.html#a2843eaacd8bc5a99f9764d734deb5399',1,'playrho::StepConf']]],
   ['added',['added',['../structplayrho_1_1PreStepStats.html#a9342f0dc6ecefd1d1519804f013cd164',1,'playrho::PreStepStats']]],
   ['allocation_5frecords',['allocation_records',['../structplayrho_1_1StackAllocator_1_1Configuration.html#a32f1e804766165759965182deb1db010',1,'playrho::StackAllocator::Configuration']]],
@@ -8,7 +8,7 @@ var searchData=
   ['allowsleep',['allowSleep',['../structplayrho_1_1BodyDef.html#a500b442484e118604e9162a10ed267d2',1,'playrho::BodyDef']]],
   ['alpha0',['alpha0',['../classplayrho_1_1Sweep.html#a276115e141ff7805db8ce8b2c982a134',1,'playrho::Sweep']]],
   ['angle',['angle',['../structplayrho_1_1BodyDef.html#a56acbf01844e127abd19b770264ed2c9',1,'playrho::BodyDef']]],
-  ['angular',['angular',['../structplayrho_1_1Position.html#ab858bfaeca23cafe725eac7a594569e9',1,'playrho::Position::angular()'],['../structplayrho_1_1Velocity.html#a9432ff8ea8f5cd2403d57d13f5847614',1,'playrho::Velocity::angular()']]],
+  ['angular',['angular',['../structplayrho_1_1Acceleration.html#ae079ac9e444ee6c8d175f4428fcd81c0',1,'playrho::Acceleration::angular()'],['../structplayrho_1_1Position.html#ab858bfaeca23cafe725eac7a594569e9',1,'playrho::Position::angular()'],['../structplayrho_1_1Velocity.html#a9432ff8ea8f5cd2403d57d13f5847614',1,'playrho::Velocity::angular()']]],
   ['angularacceleration',['angularAcceleration',['../structplayrho_1_1BodyDef.html#ae83c7e73cbd34dcb332856476144229f',1,'playrho::BodyDef']]],
   ['angulardamping',['angularDamping',['../structplayrho_1_1BodyDef.html#ac2245bd44c9c3d8e939516613ff88828',1,'playrho::BodyDef']]],
   ['angularoffset',['angularOffset',['../structplayrho_1_1MotorJointDef.html#a0205ac4deaafb1e1f9fb0671a1e7261a',1,'playrho::MotorJointDef']]],

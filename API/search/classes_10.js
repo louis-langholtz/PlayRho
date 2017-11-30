@@ -14,8 +14,9 @@ var searchData=
   ['sizedrange',['SizedRange',['../classplayrho_1_1SizedRange.html',1,'playrho']]],
   ['span',['Span',['../classplayrho_1_1Span.html',1,'playrho']]],
   ['stackallocator',['StackAllocator',['../classplayrho_1_1StackAllocator.html',1,'playrho']]],
-  ['stats',['Stats',['../structplayrho_1_1TOIOutput_1_1Stats.html',1,'playrho::TOIOutput']]],
+  ['statistics',['Statistics',['../structplayrho_1_1TOIOutput_1_1Statistics.html',1,'playrho::TOIOutput']]],
   ['stepconf',['StepConf',['../classplayrho_1_1StepConf.html',1,'playrho']]],
   ['stepstats',['StepStats',['../structplayrho_1_1StepStats.html',1,'playrho']]],
+  ['strongtyped',['StrongTyped',['../classplayrho_1_1StrongTyped.html',1,'playrho']]],
   ['sweep',['Sweep',['../classplayrho_1_1Sweep.html',1,'playrho']]]
 ];

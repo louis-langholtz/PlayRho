@@ -1,11 +1,11 @@
 <map id="playrho::ShapeDef" name="playrho::ShapeDef">
-<area shape="rect" id="node2" href="$structplayrho_1_1ShapeDefBuilder.html" title="Builder configuration structure. " alt="" coords="183,94,351,135"/>
-<area shape="rect" id="node3" href="$structplayrho_1_1ShapeDefBuilder.html" title="playrho::ShapeDefBuilder\l\&lt; ShapeConf \&gt;" alt="" coords="491,31,659,73"/>
-<area shape="rect" id="node5" href="$structplayrho_1_1ShapeDefBuilder.html" title="playrho::ShapeDefBuilder\l\&lt; Conf \&gt;" alt="" coords="491,155,659,197"/>
-<area shape="rect" id="node4" href="$structplayrho_1_1ShapeConf.html" title="Shape configuration structure. " alt="" coords="719,5,853,32"/>
-<area shape="rect" id="node6" href="$structplayrho_1_1ChainShape_1_1Conf.html" title="Configuration data for chain shapes. " alt="" coords="715,122,857,163"/>
-<area shape="rect" id="node7" href="$structplayrho_1_1DiskShape_1_1Conf.html" title="Configuration data for disk shapes. " alt="" coords="719,187,853,229"/>
-<area shape="rect" id="node8" href="$structplayrho_1_1EdgeShape_1_1Conf.html" title="Configuration data for edge shapes. " alt="" coords="717,253,855,294"/>
-<area shape="rect" id="node9" href="$structplayrho_1_1MultiShape_1_1Conf.html" title="Configuration data for multi&#45;shape shapes. " alt="" coords="717,318,855,359"/>
-<area shape="rect" id="node10" href="$structplayrho_1_1PolygonShape_1_1Conf.html" title="Configuration data for polygon shapes. " alt="" coords="708,57,864,98"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1ShapeDefBuilder.html" title="Builder configuration structure. " alt="" coords="186,91,360,129"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1ShapeDefBuilder.html" title="playrho::ShapeDefBuilder\l\&lt; ShapeConf \&gt;" alt="" coords="501,29,674,68"/>
+<area shape="rect" id="node5" href="$structplayrho_1_1ShapeDefBuilder.html" title="playrho::ShapeDefBuilder\l\&lt; Conf \&gt;" alt="" coords="501,151,674,189"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1ShapeConf.html" title="Shape configuration structure. " alt="" coords="734,5,873,31"/>
+<area shape="rect" id="node6" href="$structplayrho_1_1ChainShape_1_1Conf.html" title="Configuration data for chain shapes. " alt="" coords="730,117,876,156"/>
+<area shape="rect" id="node7" href="$structplayrho_1_1DiskShape_1_1Conf.html" title="Configuration data for disk shapes. " alt="" coords="735,180,872,219"/>
+<area shape="rect" id="node8" href="$structplayrho_1_1EdgeShape_1_1Conf.html" title="Configuration data for edge shapes. " alt="" coords="732,243,874,281"/>
+<area shape="rect" id="node9" href="$structplayrho_1_1MultiShape_1_1Conf.html" title="Configuration data for multi&#45;shape shapes. " alt="" coords="734,305,873,344"/>
+<area shape="rect" id="node10" href="$structplayrho_1_1PolygonShape_1_1Conf.html" title="Configuration data for polygon shapes. " alt="" coords="724,55,883,93"/>
 </map>
