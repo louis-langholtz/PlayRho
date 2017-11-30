@@ -136,6 +136,8 @@
 		4768D3FD1E414A0100574143 /* Vector2.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4768D3FA1E414A0100574143 /* Vector2.hpp */; };
 		4768D4001E54E7CC00574143 /* StepConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4768D3FF1E54E7CB00574143 /* StepConf.cpp */; };
 		476E8ABE1FC8CD9F00705BB5 /* UnitVec2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 476E8ABD1FC8CD9F00705BB5 /* UnitVec2.cpp */; };
+		476E8AC31FCF926F00705BB5 /* FunctionalShapeVisitor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 476E8AC11FCF926F00705BB5 /* FunctionalShapeVisitor.hpp */; };
+		476E8AC71FCFA0D400705BB5 /* FunctionalJointVisitor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 476E8AC51FCFA0D400705BB5 /* FunctionalJointVisitor.hpp */; };
 		4775A9381E05B032001C2332 /* StepConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4775A9371E05B032001C2332 /* StepConf.cpp */; };
 		47791F801F92DB0700E257AF /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47791F7A1F92D78F00E257AF /* imgui_draw.cpp */; };
 		47791F811F92DB0D00E257AF /* imgui_impl_glfw_gl3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47791F7C1F92D83500E257AF /* imgui_impl_glfw_gl3.cpp */; };
@@ -512,6 +514,8 @@
 		4768D3FA1E414A0100574143 /* Vector2.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Vector2.hpp; sourceTree = "<group>"; };
 		4768D3FF1E54E7CB00574143 /* StepConf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StepConf.cpp; sourceTree = "<group>"; };
 		476E8ABD1FC8CD9F00705BB5 /* UnitVec2.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UnitVec2.cpp; sourceTree = "<group>"; };
+		476E8AC11FCF926F00705BB5 /* FunctionalShapeVisitor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FunctionalShapeVisitor.hpp; sourceTree = "<group>"; };
+		476E8AC51FCFA0D400705BB5 /* FunctionalJointVisitor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FunctionalJointVisitor.hpp; sourceTree = "<group>"; };
 		477329D61F9BEFA200C521B4 /* SolarSystem.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SolarSystem.hpp; sourceTree = "<group>"; };
 		4775A9371E05B032001C2332 /* StepConf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StepConf.cpp; sourceTree = "<group>"; };
 		47791F761F901B8700E257AF /* iforce2d_Trajectories.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = iforce2d_Trajectories.hpp; sourceTree = "<group>"; };
@@ -940,6 +944,7 @@
 				80BB8938141C3E5900F1753A /* DiskShape.hpp */,
 				80BB8939141C3E5900F1753A /* EdgeShape.cpp */,
 				80BB893A141C3E5900F1753A /* EdgeShape.hpp */,
+				476E8AC11FCF926F00705BB5 /* FunctionalShapeVisitor.hpp */,
 				474AFBF61EB1B2CB002AA6C8 /* MultiShape.cpp */,
 				474AFBF71EB1B2CB002AA6C8 /* MultiShape.hpp */,
 				80BB893B141C3E5900F1753A /* PolygonShape.cpp */,
@@ -1070,6 +1075,7 @@
 				80BB8971141C3E5900F1753A /* FrictionJoint.hpp */,
 				4787D6C41F2EA1DB008C115E /* FrictionJointDef.cpp */,
 				4787D6C51F2EA1DB008C115E /* FrictionJointDef.hpp */,
+				476E8AC51FCFA0D400705BB5 /* FunctionalJointVisitor.hpp */,
 				80BB8972141C3E5900F1753A /* GearJoint.cpp */,
 				80BB8973141C3E5900F1753A /* GearJoint.hpp */,
 				4787D6C81F2EA3A1008C115E /* GearJointDef.cpp */,
@@ -1275,6 +1281,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4726DD1F1D305E5D0012A882 /* ContactFeature.hpp in Headers */,
+				476E8AC71FCFA0D400705BB5 /* FunctionalJointVisitor.hpp in Headers */,
 				80BB8987141C3E5900F1753A /* PlayRho.hpp in Headers */,
 				47D28D9D1F6F28C70094C032 /* WrongState.hpp in Headers */,
 				4731DE581DEC908600E7F931 /* UnitVec2.hpp in Headers */,
@@ -1298,6 +1305,7 @@
 				4734B2211DC1340500F15E29 /* Span.hpp in Headers */,
 				80BB8998141C3E5900F1753A /* DiskShape.hpp in Headers */,
 				472724301E315E1A00C64921 /* Fixed.hpp in Headers */,
+				476E8AC31FCF926F00705BB5 /* FunctionalShapeVisitor.hpp in Headers */,
 				47C85D211F0DA14500F70C56 /* Templates.hpp in Headers */,
 				80BB899A141C3E5900F1753A /* EdgeShape.hpp in Headers */,
 				470F94CC1EC4D95D00AA3C82 /* BodyAtty.hpp in Headers */,
