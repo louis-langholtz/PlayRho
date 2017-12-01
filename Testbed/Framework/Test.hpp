@@ -23,8 +23,9 @@
 #include <PlayRho/PlayRho.hpp>
 #include <PlayRho/Collision/RayCastOutput.hpp>
 #include <PlayRho/Collision/ShapeSeparation.hpp>
-#include <PlayRho/Collision/Shapes/ShapeVisitor.hpp>
+#include <PlayRho/Collision/Shapes/FunctionalShapeVisitor.hpp>
 #include <PlayRho/Dynamics/Contacts/PositionSolverManifold.hpp>
+#include <PlayRho/Dynamics/Joints/FunctionalJointVisitor.hpp>
 #include <PlayRho/Common/Range.hpp>
 #include "Drawer.hpp"
 #include "UiState.hpp"
@@ -418,12 +419,10 @@ inline void ForAll(World& world, const std::function<void(T& e)>& action);
 template <>
 inline void ForAll(World& world, const std::function<void(RevoluteJoint& e)>& action)
 {
+    auto visitor = FunctionalJointVisitor{}.Use(action);
     const auto range = world.GetJoints();
     std::for_each(std::begin(range), std::end(range), [&](Joint* j) {
-        if (GetType(*j) == JointType::Revolute)
-        {
-            action(*reinterpret_cast<RevoluteJoint*>(j));
-        }
+        j->Accept(visitor);
     });
 }
 
