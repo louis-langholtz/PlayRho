@@ -765,12 +765,14 @@ namespace playrho
         return Abs(x - y) <= Fixed<BT, FB>{0, static_cast<std::uint32_t>(ulp)};
     }
     
+#ifdef CONFLICT_WITH_GETINVALID
     /// @brief Gets an invalid value.
     template <typename BT, unsigned int FB>
     constexpr Fixed<BT, FB> GetInvalid() noexcept
     {
         return Fixed<BT, FB>::GetNaN();
     }
+#endif // CONFLICT_WITH_GETINVALID
 
     /// @brief Output stream operator.
     template <typename BT, unsigned int FB>
@@ -788,6 +790,13 @@ namespace playrho
     using Fixed32 = Fixed<std::int32_t,9>;
 
     // Fixed32 free functions.
+    
+    /// @brief Gets an invalid value.
+    template <>
+    constexpr Fixed32 GetInvalid() noexcept
+    {
+        return Fixed32::GetNaN();
+    }
     
     /// @brief Addition operator.
     constexpr Fixed32 operator+ (Fixed32 lhs, Fixed32 rhs) noexcept
@@ -879,6 +888,13 @@ namespace playrho
 
     /// @brief 64-bit fixed precision type.
     using Fixed64 = Fixed<std::int64_t,24>;
+    
+    /// @brief Gets an invalid value.
+    template <>
+    constexpr Fixed64 GetInvalid() noexcept
+    {
+        return Fixed64::GetNaN();
+    }
 
     /// @brief Addition operator.
     constexpr Fixed64 operator+ (Fixed64 lhs, Fixed64 rhs) noexcept
