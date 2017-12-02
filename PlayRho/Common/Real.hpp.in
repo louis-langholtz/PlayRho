@@ -55,7 +55,7 @@ namespace playrho {
 ///  - Meanwhile, dividing every time by a real isolates any underflows to the particular
 ///    division where underflow occurs.
 ///
-/// @warning Using <code>Fixed32</code> is not advised as it's numerical limitations are more
+/// @warning Using <code>Fixed32</code> is not advised as its numerical limitations are more
 ///   likely to result in problems like overflows or underflows.
 /// @warning The note regarding division applies even more so when using a fixed-point type
 ///   (for <code>Real</code>).
