@@ -413,6 +413,7 @@ Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
                        const DistanceProxy& shapeB, const Transformation& xfB,
                        Manifold::Conf conf)
 {
+    // Assumes called after detecting AABB overlap.
     // Find edge normal of max separation on A - return if separating axis is found
     // Find edge normal of max separation on B - return if separation axis is found
     // Choose reference edge as min(minA, minB)
@@ -440,7 +441,7 @@ Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
     
     const auto edgeSepA = do4x4?
         GetMaxSeparation4x4(shapeA, xfA, shapeB, xfB):
-        GetMaxSeparation(shapeA, xfA, shapeB, xfB, totalRadius);
+        GetMaxSeparation(shapeA, xfA, shapeB, xfB);
     if (edgeSepA.separation > totalRadius)
     {
         return Manifold{};
@@ -448,7 +449,7 @@ Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
     
     const auto edgeSepB = do4x4?
         GetMaxSeparation4x4(shapeB, xfB, shapeA, xfA):
-        GetMaxSeparation(shapeB, xfB, shapeA, xfA, totalRadius);
+        GetMaxSeparation(shapeB, xfB, shapeA, xfA);
     if (edgeSepB.separation > totalRadius)
     {
         return Manifold{};
