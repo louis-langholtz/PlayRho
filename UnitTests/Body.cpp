@@ -579,7 +579,7 @@ TEST(Body, CalcGravitationalAcceleration)
     b2->CreateFixture(shape);
     const auto accel = CalcGravitationalAcceleration(*b1);
     EXPECT_NEAR(static_cast<double>(Real(GetX(accel.linear)/MeterPerSquareSecond)),
-                0.032761313021183014, 0.000001);
+                0.032761313021183014, 0.032761313021183014/100);
     EXPECT_EQ(GetY(accel.linear), 0 * MeterPerSquareSecond);
     EXPECT_EQ(accel.angular, 0 * RadianPerSquareSecond);
     

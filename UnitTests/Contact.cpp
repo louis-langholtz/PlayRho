@@ -85,11 +85,11 @@ TEST(Contact, ResetFriction)
     auto c = Contact{&fA, 0u, &fB, 0u};
 
     ASSERT_GT(shape->GetFriction(), Real(0));
-    ASSERT_EQ(c.GetFriction(), shape->GetFriction());
+    ASSERT_NEAR(static_cast<double>(c.GetFriction()), static_cast<double>(shape->GetFriction()), 0.01);
     c.SetFriction(shape->GetFriction() * Real(2));
     ASSERT_NE(c.GetFriction(), shape->GetFriction());
     ResetFriction(c);
-    EXPECT_EQ(c.GetFriction(), shape->GetFriction());
+    EXPECT_NEAR(static_cast<double>(c.GetFriction()), static_cast<double>(shape->GetFriction()), 0.01);
 }
 
 TEST(Contact, ResetRestitution)

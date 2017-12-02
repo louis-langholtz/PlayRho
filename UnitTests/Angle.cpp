@@ -56,7 +56,7 @@ TEST(Angle, GetRevRotationalAngle)
 TEST(Angle, GetDelta)
 {
     EXPECT_EQ(GetDelta(0_deg, 0_deg), 0_deg);
-    EXPECT_EQ(GetDelta(0_deg, 10_deg), 10_deg);
+    EXPECT_NEAR(static_cast<double>(Real{GetDelta(0_deg, 10_deg) / Degree}), 10.0, 0.01);
     // GetDelta(100 * Degree, 110 * Degree) almost equals 10 * Degree (but not exactly)
     EXPECT_NEAR(double(Real{GetDelta(100_deg, 110_deg) / Degree}), 10.0, 0.0001);
     EXPECT_NEAR(double(Real{GetDelta(10_deg, 0_deg) / Degree}), -10.0, 0.0001);
@@ -67,17 +67,17 @@ TEST(Angle, GetDelta)
     EXPECT_NEAR(static_cast<double>(Real{GetDelta(-80_deg, +80_deg)/1_deg}), +160.0, 0.0001);
     EXPECT_NEAR(double(Real{GetDelta(-Pi * Radian, +Pi * Radian) / Degree}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetDelta(+Pi * Radian, -Pi * Radian) / Degree}), 0.0, 0.001);
-    EXPECT_NEAR(double(Real{GetDelta(-2_deg, +3_deg) / Degree}), 5.0, 0.001);
-    EXPECT_NEAR(double(Real{GetDelta(+2_deg, -3_deg) / Degree}), -5.0, 0.001);
-    EXPECT_NEAR(double(Real{GetDelta(-13_deg, -3_deg) / Degree}), 10.0, 0.001);
-    EXPECT_NEAR(double(Real{GetDelta(-10_deg, -20_deg) / Degree}), -10.0, 0.001);
-    EXPECT_NEAR(double(Real{GetDelta(10_deg, 340_deg) / Degree}), -30.0, 0.001);
-    EXPECT_NEAR(double(Real{GetDelta(400_deg, 440_deg) / Degree}), 40.0, 0.001);
-    EXPECT_NEAR(double(Real{GetDelta(400_deg, 300_deg) / Degree}), -100.0, 0.001);
-    EXPECT_NEAR(double(Real{GetDelta(400_deg, 100_deg) / Degree}), 60.0, 0.001);
-    EXPECT_NEAR(double(Real{GetDelta(800_deg, 100_deg) / Degree}), 20.0, 0.001);
-    EXPECT_NEAR(double(Real{GetDelta(400_deg, -100_deg) / Degree}), -140.0, 0.001);
-    EXPECT_NEAR(double(Real{GetDelta(-400_deg, 10_deg) / Degree}), 50.0, 0.001);
+    EXPECT_NEAR(double(Real{GetDelta(-2_deg, +3_deg) / Degree}), 5.0, 0.01);
+    EXPECT_NEAR(double(Real{GetDelta(+2_deg, -3_deg) / Degree}), -5.0, 0.01);
+    EXPECT_NEAR(double(Real{GetDelta(-13_deg, -3_deg) / Degree}), 10.0, 0.01);
+    EXPECT_NEAR(double(Real{GetDelta(-10_deg, -20_deg) / Degree}), -10.0, 0.01);
+    EXPECT_NEAR(double(Real{GetDelta(10_deg, 340_deg) / Degree}), -30.0, 0.01);
+    EXPECT_NEAR(double(Real{GetDelta(400_deg, 440_deg) / Degree}), 40.0, 0.01);
+    EXPECT_NEAR(double(Real{GetDelta(400_deg, 300_deg) / Degree}), -100.0, 0.01);
+    EXPECT_NEAR(double(Real{GetDelta(400_deg, 100_deg) / Degree}), 60.0, 0.01);
+    EXPECT_NEAR(double(Real{GetDelta(800_deg, 100_deg) / Degree}), 20.0, 0.01);
+    EXPECT_NEAR(double(Real{GetDelta(400_deg, -100_deg) / Degree}), -140.0, 0.01);
+    EXPECT_NEAR(double(Real{GetDelta(-400_deg, 10_deg) / Degree}), 50.0, 0.01);
 }
 
 TEST(Angle, limits)

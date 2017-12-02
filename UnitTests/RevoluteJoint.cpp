@@ -288,7 +288,7 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
     EXPECT_EQ(joint->GetReferenceAngle(), 0_deg);
     EXPECT_EQ(joint->GetLimitState(), Joint::e_atLowerLimit);
     EXPECT_NEAR(static_cast<double>(Real(GetJointAngle(*joint)/1_rad)),
-                0.28610128164291382, 0.000001);
+                0.28610128164291382, 0.28610128164291382/100);
 
     joint->SetLimits(-90_deg, -45_deg);
     EXPECT_EQ(joint->GetLowerLimit(), -90_deg);
@@ -298,7 +298,7 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
     EXPECT_EQ(joint->GetReferenceAngle(), 0_deg);
     EXPECT_EQ(joint->GetLimitState(), Joint::e_atUpperLimit);
     EXPECT_NEAR(static_cast<double>(Real(GetJointAngle(*joint)/1_rad)),
-                -0.082102291285991669, 0.000001);
+                -0.082102291285991669, 0.082102291285991669/100);
 }
 
 TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)

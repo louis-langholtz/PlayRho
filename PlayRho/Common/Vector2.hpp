@@ -79,7 +79,7 @@ namespace playrho
     template <>
     constexpr inline Vec2 GetInvalid() noexcept
     {
-        return Vec2{GetInvalid<Real>(), GetInvalid<Real>()};
+        return Vec2{GetInvalid<Vec2::value_type>(), GetInvalid<Vec2::value_type>()};
     }
 
     /// @brief Determines whether the given vector contains finite coordinates.

@@ -901,7 +901,7 @@ TEST(TimeOfImpact, TargetDepthExceedsTotalRadius)
         .UseMaxRootIters(0)
         .UseMaxToiIters(0)
         .UseMaxDistIters(0)
-        .UseTolerance(0)
+        .UseTolerance(0_m)
         ;
     
     const auto sweepA = Sweep{

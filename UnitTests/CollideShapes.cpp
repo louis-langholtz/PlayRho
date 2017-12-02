@@ -582,19 +582,16 @@ TEST(CollideShapes, GetMaxSeparationFreeFunction1)
     EXPECT_EQ(maxSep10_NxN.index2, decltype(maxSep10_NxN.index1){1}); // v1 of shape0
     EXPECT_EQ(maxSep10_nos.index2, decltype(maxSep10_nos.index2){1}); // v1 of shape0
     
-    EXPECT_NEAR(static_cast<double>(Real(maxSep01_4x4.separation / Meter)),
-                -2.0, std::abs(-2.0) / 1000000.0);
-    EXPECT_NEAR(static_cast<double>(Real(maxSep01_NxN.separation / Meter)),
-                -2.0, std::abs(-2.0) / 1000000.0);
-    EXPECT_NEAR(static_cast<double>(Real(maxSep01_nos.separation / Meter)),
-                -2.0, std::abs(-2.0) / 1000000.0);
+    EXPECT_NEAR(static_cast<double>(Real(maxSep01_4x4.separation / Meter)), -2.0, std::abs(-2.0) / 100);
+    EXPECT_NEAR(static_cast<double>(Real(maxSep01_NxN.separation / Meter)), -2.0, std::abs(-2.0) / 100);
+    EXPECT_NEAR(static_cast<double>(Real(maxSep01_nos.separation / Meter)), -2.0, std::abs(-2.0) / 100);
 
     EXPECT_NEAR(static_cast<double>(Real(maxSep10_4x4.separation / Meter)),
-                -0.82842707633972168, std::abs(-0.82842707633972168) / 1000000.0);
+                -0.82842707633972168, std::abs(-0.82842707633972168) / 100);
     EXPECT_NEAR(static_cast<double>(Real(maxSep10_NxN.separation / Meter)),
-                -0.82842707633972168, std::abs(-0.82842707633972168) / 1000000.0);
+                -0.82842707633972168, std::abs(-0.82842707633972168) / 100);
     EXPECT_NEAR(static_cast<double>(Real(maxSep10_nos.separation / Meter)),
-                -0.82842707633972168, std::abs(-0.82842707633972168) / 1000000.0);
+                -0.82842707633972168, std::abs(-0.82842707633972168) / 100);
 }
 
 TEST(CollideShapes, GetMaxSeparationFreeFunction2)

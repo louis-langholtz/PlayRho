@@ -33,10 +33,9 @@ AABB2D ComputeAABB(const DistanceProxy& proxy, const Transformation& xf) noexcep
 {
     assert(IsValid(xf));
     auto result = AABB2D{};
-    const auto count = proxy.GetVertexCount();
-    for (auto i = decltype(count){0}; i < count; ++i)
+    for (const auto& vertex: proxy.GetVertices())
     {
-        Include(result, Transform(proxy.GetVertex(i), xf));
+        Include(result, Transform(vertex, xf));
     }
     return GetFattenedAABB(result, proxy.GetVertexRadius());
 }
@@ -47,10 +46,8 @@ AABB2D ComputeAABB(const DistanceProxy& proxy,
     assert(IsValid(xfm0));
     assert(IsValid(xfm1));
     auto result = AABB2D{};
-    const auto count = proxy.GetVertexCount();
-    for (auto i = decltype(count){0}; i < count; ++i)
+    for (const auto& vertex: proxy.GetVertices())
     {
-        const auto vertex = proxy.GetVertex(i);
         Include(result, Transform(vertex, xfm0));
         Include(result, Transform(vertex, xfm1));
     }
